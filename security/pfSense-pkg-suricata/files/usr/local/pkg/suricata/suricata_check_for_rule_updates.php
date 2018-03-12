@@ -49,7 +49,7 @@ $snortcommunityrules = $config['installedpackages']['suricata']['config'][0]['sn
 /* Working directory for downloaded rules tarballs */
 $tmpfname = "{$g['tmp_path']}/suricata_rules_up";
 
-/* Snort VRT Rules filenames and URL */
+/* Snort Rules filenames and URL */
 $snort_filename_md5 = "{$snort_filename}.md5";
 $snort_rule_url = VRT_DNLD_URL;
 
@@ -78,7 +78,7 @@ else {
 	$emergingthreats_filename = ET_DNLD_FILENAME;
 	$emergingthreats_filename_md5 = ET_DNLD_FILENAME . ".md5";
 	$emergingthreats_url = ET_BASE_DNLD_URL;
-	// If using Sourcefire VRT rules with ET, then we should use the open-nogpl ET rules
+	// If using Snort rules with ET, then we should use the open-nogpl ET rules
 	$emergingthreats_url .= $vrt_enabled == "on" ? "open-nogpl/" : "open/";
 	$emergingthreats_url .= "suricata-{$suri_eng_ver}/";
 	$et_name = "Emerging Threats Open";
@@ -397,17 +397,17 @@ if ($emergingthreats == 'on') {
 		$emergingthreats = 'off';
 }
 
-/*  Check for and download any new Snort VRT sigs */
+/*  Check for and download any new Snort rule sigs */
 if ($snortdownload == 'on') {
 	if (empty($snort_filename)) {
-		log_error(gettext("No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort VRT rules cannot be updated."));
-		error_log(gettext("\tWARNING-- No snortrules-snapshot filename set on GLOBAL SETTINGS tab. Snort VRT rules cannot be updated!\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		log_error(gettext("No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."));
+		error_log(gettext("\tWARNING-- No snortrules-snapshot filename set on GLOBAL SETTINGS tab. Snort rules cannot be updated!\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		$snortdownload = 'off';
 	}
 	elseif (suricata_check_rule_md5("{$snort_rule_url}{$snort_filename_md5}?oinkcode={$oinkid}", "{$tmpfname}/{$snort_filename_md5}", "Snort VRT rules")) {
 		/* download snortrules file */
 		$file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_filename_md5}"));
-		if (!suricata_fetch_new_rules("{$snort_rule_url}{$snort_filename}?oinkcode={$oinkid}", "{$tmpfname}/{$snort_filename}", $file_md5, "Snort VRT rules"))
+		if (!suricata_fetch_new_rules("{$snort_rule_url}{$snort_filename}?oinkcode={$oinkid}", "{$tmpfname}/{$snort_filename}", $file_md5, "Snort rules"))
 			$snortdownload = 'off';
 	}
 	else
@@ -495,8 +495,8 @@ if ($snortdownload == 'on') {
 		/* Remove the old Snort rules files */
 		$vrt_prefix = VRT_FILE_PREFIX;
 		unlink_if_exists("{$suricatadir}rules/{$vrt_prefix}*.rules");
-		suricata_update_status(gettext("Installing Sourcefire VRT rules..."));
-		error_log(gettext("\tExtracting and installing Snort VRT rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		suricata_update_status(gettext("Installing Snort rules..."));
+		error_log(gettext("\tExtracting and installing Snort rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 
 		/* extract snort.org rules and add prefix to all snort.org files */
 		safe_mkdir("{$tmpfname}/snortrules");
@@ -526,7 +526,7 @@ if ($snortdownload == 'on') {
 			@copy("{$tmpfname}/{$snort_filename_md5}", "{$suricatadir}{$snort_filename_md5}");
 		}
 		suricata_update_status(gettext(" done.") . "\n");
-		error_log(gettext("\tInstallation of Snort VRT rules completed.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		error_log(gettext("\tInstallation of Snort rules completed.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 	}
 }
 
