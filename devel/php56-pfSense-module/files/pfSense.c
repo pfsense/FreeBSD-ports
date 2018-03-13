@@ -1737,6 +1737,8 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 		add_assoc_long(swcaps, "PORTS_MASK", 1);
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_LAGG)
 		add_assoc_long(swcaps, "LAGG", 1);
+	if (info.es_switch_caps & ETHERSWITCH_CAPS_PSTATE)
+		add_assoc_long(swcaps, "PSTATE", 1);
 	add_assoc_zval(return_value, "switch_caps", swcaps);
 
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_PORTS_MASK) {
@@ -1779,7 +1781,7 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 	etherswitch_port_t p;
 	int fd, ifm_ulist[IFMEDIAREQ_NULISTENTRIES];
 	long devlen, port;
-	zval *flags, *media;
+	zval *flags, *media, *state;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
 	    &devlen, &port) == FAILURE)
@@ -1813,6 +1815,18 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 		add_assoc_long(return_value, "pvid", p.es_pvid);
 	add_assoc_string(return_value, "status",
 	    (p.es_ifmr.ifm_status & IFM_ACTIVE) ? "active" : "no carrier", 1);
+
+	ALLOC_INIT_ZVAL(state);
+	array_init(state);
+	if (p.es_state & ETHERSWITCH_PSTATE_DISABLED)
+		add_assoc_long(flags, "DISABLED", 1);
+	if (p.es_state & ETHERSWITCH_PSTATE_BLOCKING)
+		add_assoc_long(flags, "BLOCKING", 1);
+	if (p.es_state & ETHERSWITCH_PSTATE_LEARNING)
+		add_assoc_long(flags, "LEARNING", 1);
+	if (p.es_state & ETHERSWITCH_PSTATE_FORWARDING)
+		add_assoc_long(flags, "FORWARDING", 1);
+	add_assoc_zval(return_value, "state", state);
 
 	ALLOC_INIT_ZVAL(flags);
 	array_init(flags);
@@ -1874,6 +1888,7 @@ PHP_FUNCTION(pfSense_etherswitch_setport)
 	if (pvid >= 0 && pvid <= 4094)
 		p.es_pvid = pvid;
 
+	/* XXX - port state */
 	/* XXX - ports flags */
 
 	if (ioctl(fd, IOETHERSWITCHSETPORT, &p) != 0) {
