@@ -295,23 +295,27 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 	$home_net = array();
 
 	if (!$externallist && ($listname == 'default' || empty($listname))) {
-		// When using inline IPS mode, do not include
-		// locally-attached network segments or the WAN IP in
+		// When using inline IPS mode, exclude VPNs, VIPs,
+		// locally-attached network segments and the WAN IP from
 		// the default Pass List as this will kill all alerts
 		// and allow all traffic to pass!  We do include
-		// locally-attached networks and the WAN IP when
-		// building only the HOME_NET variable.
+		// locally-attached networks, VPNs, VIPs and the WAN IP
+		// when building only the HOME_NET variable.
 		if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $passlist == TRUE) {
 			$localnet = 'no';
 			$wanip = 'no';
+			$vpns = 'no';
+			$vips = 'no';
 		}
 		else {
 			$localnet = 'yes';
 			$wanip = 'yes';
+			$vpns = 'yes';
+			$vips = 'yes';
 		}
 
 		// Default the remaining Pass List/HOME_NET items to 'yes'.
-		$wangw = 'yes'; $wandns = 'yes'; $vips = 'yes'; $vpns = 'yes';
+		$wangw = 'yes'; $wandns = 'yes';
 	}
 	else {
 		$list = suricata_find_list($listname);

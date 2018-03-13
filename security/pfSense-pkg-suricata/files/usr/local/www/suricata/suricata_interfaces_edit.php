@@ -1361,9 +1361,9 @@ $group->add(new Form_Button(
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#passlist')->setAttribute('data-toggle', 'modal');
 
-$group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . 
-				'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation ' . 
-				'and is the recommended choice when using Inline IPS Mode.');
+$group->setHelp('The default Pass List adds Gateways, DNS servers and, when Legacy Mode Blocking is used, locally-attached networks, the WAN IP, VPNs and VIPs.  Create a Pass List with an alias to customize.  ' . 
+		'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation ' . 
+		'and this is the recommended choice when using Inline IPS Mode.');
 
 $section->add($group);
 
