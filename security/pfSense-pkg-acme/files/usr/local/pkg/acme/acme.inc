@@ -195,13 +195,13 @@ $a_acmeserver = array();
 $a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging ACME v1 (for TESTING purposes)",
     'url' => 'https://acme-staging.api.letsencrypt.org',
 );
-$a_acmeserver['letsencrypt-staging-2'] = array('name' => "EXPERIMENTAL: Let's Encrypt Staging ACME v2 (for TESTING purposes)",
+$a_acmeserver['letsencrypt-staging-2'] = array('name' => "Let's Encrypt Staging ACME v2 (for TESTING purposes)",
     'url' => 'https://acme-staging-v02.api.letsencrypt.org'
 );
 $a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production ACME v1 (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v01.api.letsencrypt.org',
 );
-$a_acmeserver['letsencrypt-production-2'] = array('name' => "EXPERIMENTAL/NOT YET LIVE: Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
+$a_acmeserver['letsencrypt-production-2'] = array('name' => "Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v02.api.letsencrypt.org'
 );
 /*$a_acmeserver['dummy'] = array('name' => "dummy",
