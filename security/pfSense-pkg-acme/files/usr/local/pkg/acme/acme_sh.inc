@@ -174,14 +174,15 @@ class acme_sh {
 			/* Prefix to use as a base for server/key/private files */
 			$nsupdatefileprefix = "{$certpath}nsupdate";
 			foreach (array_keys($extras) as $nsupdatedomain) {
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$nsupdatedomain}.server", $extras[$nsupdatedomain]['NSUPDATE_SERVER']);
+				$acmechalengedom = (substr($nsupdatedomain, 0, 2) === "*.") ? substr($nsupdatedomain, 2) : $nsupdatedomain;
+				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.server", $extras[$nsupdatedomain]['NSUPDATE_SERVER']);
 				$envvariables['NSUPDATE_SERVER'] = $nsupdatefileprefix;
 				$nsupdatekey = base64_decode($extras[$nsupdatedomain]['NSUPDATE_KEY']);
 
 				/* Set a default key algo of HMAC-MD5 if the key type is invalid. */
 				$key_algo = empty($extras[$nsupdatedomain]['NSUPDATE_KEYALGO']) || !array_key_exists($extras[$nsupdatedomain]['NSUPDATE_KEYALGO'], $acme_domain_validation_method['dns_nsupdate']['fields']['NSUPDATE_KEYALGO']['items']) ? '157' : $extras[$nsupdatedomain]['NSUPDATE_KEYALGO'];
 
-				$key_name = empty($extras[$nsupdatedomain]['NSUPDATE_KEYNAME']) ? "_acme-challenge.{$nsupdatedomain}" : rtrim($extras[$nsupdatedomain]['NSUPDATE_KEYNAME'], '.');
+				$key_name = empty($extras[$nsupdatedomain]['NSUPDATE_KEYNAME']) ? "_acme-challenge.{$acmechalengedom}" : rtrim($extras[$nsupdatedomain]['NSUPDATE_KEYNAME'], '.');
 
 				/* Use ddns-confgen format key */
 				$keydata = <<<EOD
@@ -191,7 +192,7 @@ key "{$key_name}." {
 };
 
 EOD;
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$nsupdatedomain}.key", $keydata);
+				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.key", $keydata);
 			}
 			$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
 		}
