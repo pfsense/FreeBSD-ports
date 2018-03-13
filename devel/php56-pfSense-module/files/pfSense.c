@@ -1819,13 +1819,13 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 	ALLOC_INIT_ZVAL(state);
 	array_init(state);
 	if (p.es_state & ETHERSWITCH_PSTATE_DISABLED)
-		add_assoc_long(flags, "DISABLED", 1);
+		add_assoc_long(state, "DISABLED", 1);
 	if (p.es_state & ETHERSWITCH_PSTATE_BLOCKING)
-		add_assoc_long(flags, "BLOCKING", 1);
+		add_assoc_long(state, "BLOCKING", 1);
 	if (p.es_state & ETHERSWITCH_PSTATE_LEARNING)
-		add_assoc_long(flags, "LEARNING", 1);
+		add_assoc_long(state, "LEARNING", 1);
 	if (p.es_state & ETHERSWITCH_PSTATE_FORWARDING)
-		add_assoc_long(flags, "FORWARDING", 1);
+		add_assoc_long(state, "FORWARDING", 1);
 	add_assoc_zval(return_value, "state", state);
 
 	ALLOC_INIT_ZVAL(flags);
