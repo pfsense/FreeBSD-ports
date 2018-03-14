@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,8 +42,17 @@ if (isset($_POST['id']) && is_numericint($_POST['id']))
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
+// If postback is from system function print_apply_box(),
+// then we won't have our customary $_POST['id'] field set
+// in the response, but the system function will pass back a
+// $_POST[;if'] field we can use instead.
 if (is_null($id)) {
-	$id = 0;
+	if (isset($_POST['if'])) {
+		$id = $_POST['if'];
+	}
+	else {
+		$id = 0;
+	}
 }
 
 if (isset($id) && $a_rule[$id]) {
@@ -95,7 +104,8 @@ $categories = explode("||", $pconfig['rulesets']);
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled, and adjust the available rulesets
-// in the CATEGORY drop-down box as necessary.
+// in the CATEGORY drop-down box as necessary by removing disabled
+// categories and adding enabled ones.
 $cat_mods = suricata_sid_mgmt_auto_categories($a_rule[$id], FALSE);
 foreach ($cat_mods as $k => $v) {
 	switch ($v) {
@@ -114,6 +124,18 @@ foreach ($cat_mods as $k => $v) {
 	}
 }
 
+// Add custom Categories list items for User Forced rules
+$categories[] = "User Forced Enabled Rules";
+$categories[] = "User Forced Disabled Rules";
+$categories[] = "User Forced ALERT Action Rules";
+$categories[] = "User Forced DROP Action Rules";
+
+// Add custom Category to view all Active Rules
+// on the interface.
+$categories[] = "Active Rules";
+
+// See if we should open a specific ruleset or
+// just default to the first one in the list.
 if ($_GET['openruleset'])
 	$currentruleset = htmlspecialchars($_GET['openruleset'], ENT_QUOTES | ENT_HTML401);
 elseif ($_POST['selectbox'])
@@ -123,6 +145,8 @@ elseif ($_POST['openruleset'])
 else
 	$currentruleset = $categories[0];
 
+// If we don't have any Category to display, then
+// default to showing the Custom Rules text control.
 if (empty($categories[0]) && ($currentruleset != "custom.rules") && ($currentruleset != "Auto-Flowbit Rules")) {
 	if (!empty($a_rule[$id]['ips_policy']))
 		$currentruleset = "IPS Policy - " . ucfirst($a_rule[$id]['ips_policy']);
@@ -138,18 +162,68 @@ if (empty($tmp))
 $ruledir = "{$suricatadir}rules";
 $rulefile = "{$ruledir}/{$currentruleset}";
 if ($currentruleset != 'custom.rules') {
-	// Read the current rules file into our rules map array.
+	// Read the currently selected rules file into our rules map array.
+	// There are a few special cases possible, so test and adjust as
+	// necessary to get the correct set of rules to display.
+
 	// If it is the auto-flowbits file, set the full path.
 	if ($currentruleset == "Auto-Flowbit Rules") {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 	}
-	// Test for the special case of an IPS Policy file.
+	// Test for the special case of an IPS Policy file
+	// and load the selected policy's rules.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
 		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
 	}
+	// Test for the special case of "Active Rules".  This
+	// displays all currently active rules for the
+	// interface.
+	elseif ($currentruleset == "Active Rules") {
+		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/");
+	}
+	// Test for the special cases of "User Forced" rules
+	// and load the required rules for display.
+	elseif ($currentruleset == "User Forced Enabled Rules") {
+		// Search and display forced enabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rule_files[] = "{$suricatacfgdir}/rules/passlist.rules";
+		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_on']));
+	}
+	elseif ($currentruleset == "User Forced Disabled Rules") {
+		// Search and display forced disabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rule_files[] = "{$suricatacfgdir}/rules/passlist.rules";
+		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_off']));
+	}
+	elseif ($currentruleset == "User Forced ALERT Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+	}
+	elseif ($currentruleset == "User Forced DROP Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+	}
+	// If it's not a special case, and we can't find
+	// the given rule file, then notify the user.
 	elseif (!file_exists($rulefile)) {
 		$input_errors[] = gettext("{$currentruleset} seems to be missing!!! Please verify rules files have been downloaded, then go to the Categories tab and save the rule set again.");
 	}
+	// Not a special case, and we have the matching
+	// rule file, so load it up for display.
 	else {
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
@@ -466,13 +540,64 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 
 	// Reload the rules so we can accurately show content after
 	// resetting any user overrides.
+	// If it is the auto-flowbits file, set the full path.
 	if ($currentruleset == "Auto-Flowbit Rules") {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 	}
-	// Test for the special case of an IPS Policy file.
+	// Test for the special case of an IPS Policy file
+	// and load the selected policy's rules.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
 		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
 	}
+	// Test for the special case of "Active Rules".  This
+	// displays all currently active rules for the
+	// interface.
+	elseif ($currentruleset == "Active Rules") {
+		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/");
+	}
+	// Test for the special cases of "User Forced" rules
+	// and load the required rules for display.
+	elseif ($currentruleset == "User Forced Enabled Rules") {
+		// Search and display forced enabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rule_files[] = "{$suricatacfgdir}/rules/passlist.rules";
+		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_on']));
+	}
+	elseif ($currentruleset == "User Forced Disabled Rules") {
+		// Search and display forced disabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rule_files[] = "{$suricatacfgdir}/rules/passlist.rules";
+		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_off']));
+	}
+	elseif ($currentruleset == "User Forced ALERT Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+	}
+	elseif ($currentruleset == "User Forced DROP Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+	}
+	// If it's not a special case, and we can't find
+	// the given rule file, then notify the user.
+	elseif (!file_exists($rulefile)) {
+		$input_errors[] = gettext("{$currentruleset} seems to be missing!!! Please verify rules files have been downloaded, then go to the Categories tab and save the rule set again.");
+	}
+	// Not a special case, and we have the matching
+	// rule file, so load it up for display.
 	else {
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
@@ -493,13 +618,64 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 
 	// Reload the rules so we can accurately show content after
 	// resetting any user overrides.
+	// If it is the auto-flowbits file, set the full path.
 	if ($currentruleset == "Auto-Flowbit Rules") {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 	}
-	// Test for the special case of an IPS Policy file.
+	// Test for the special case of an IPS Policy file
+	// and load the selected policy's rules.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
 		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
 	}
+	// Test for the special case of "Active Rules".  This
+	// displays all currently active rules for the
+	// interface.
+	elseif ($currentruleset == "Active Rules") {
+		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/");
+	}
+	// Test for the special cases of "User Forced" rules
+	// and load the required rules for display.
+	elseif ($currentruleset == "User Forced Enabled Rules") {
+		// Search and display forced enabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rules_file[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rules_file[] = "{$suricatacfgdir}/rules/passlist.rules";
+		$rules_file[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_on']));
+	}
+	elseif ($currentruleset == "User Forced Disabled Rules") {
+		// Search and display forced disabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rules_file[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rules_file[] = "{$suricatacfgdir}/rules/passlist.rules";
+		$rules_file[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_off']));
+	}
+	elseif ($currentruleset == "User Forced ALERT Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+	}
+	elseif ($currentruleset == "User Forced DROP Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+	}
+	// If it's not a special case, and we can't find
+	// the given rule file, then notify the user.
+	elseif (!file_exists($rulefile)) {
+		$input_errors[] = gettext("{$currentruleset} seems to be missing!!! Please verify rules files have been downloaded, then go to the Categories tab and save the rule set again.");
+	}
+	// Not a special case, and we have the matching
+	// rule file, so load it up for display.
 	else {
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
@@ -612,6 +788,7 @@ $pgtitle = array(gettext("Suricata"), gettext("Interface ") . $if_friendly, gett
 include_once("head.inc");
 
 if (is_subsystem_dirty('suricata_rules')) {
+	$_POST['if'] = $id;
 	print_apply_box(gettext("A change has been made to a rule state or action.") . "<br/>" . gettext("Click APPLY when finished to send the changes to the running configuration."));
 }
 
@@ -667,7 +844,10 @@ $group->add(new Form_Select(
 	$currentruleset,
 	build_cat_list()
 ))->setHelp("Select the rule category to view and manage.");
-if ($currentruleset != 'custom.rules') {
+
+// Don't show the VIEW ALL button when displaying Custom Rules,
+// Active Rules or any of the "User Forced" special categories.
+if ($currentruleset != 'custom.rules' && $currentruleset != 'Active Rules' && strpos($currentruleset, 'User Forced ') === FALSE) {
 	$group->add(new Form_Button(
 		'',
 		'View All',
@@ -804,16 +984,18 @@ print($section);
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle-o text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Enabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Enabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-enabled by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action/content modified by SID Mgmt');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is alert');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action and/or content modified by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle-o text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Disabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
-						<td></td><td></td>
+						<td><td></td></td>
+						<td style="padding-left: 8px;"><i class="fa fa-hand-stop-o text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa fa-thumbs-up text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is pass');?></small></td>
 					</tr>
 				</tbody>
 			</table>
@@ -921,6 +1103,16 @@ print($section);
 								$textss = $textse = "";
 								$iconact_class = 'class="fa fa-thumbs-down text-danger text-center"';
 								$title_act = gettext("Rule will drop traffic when triggered.  Click to force alert action instead.");
+							}
+							elseif ($v['action'] == 'pass') {
+								$textss = $textse = "";
+								$iconact_class = 'class="fa fa-thumbs-up text-success text-center"';
+								$title_act = gettext("Rule will pass traffic when triggered.  Click to force alert action instead.");
+							}
+							elseif ($v['action'] == 'reject') {
+								$textss = $textse = "";
+								$iconact_class = 'class="fa fa-hand-stop-o text-warning text-center"';
+								$title_act = gettext("Rule will reject traffic when triggered.  Click to force alert action instead.");
 							}
 							else {
 								$textss = $textse = "";
@@ -1038,6 +1230,7 @@ print($form);
 //<![CDATA[
 
 function toggleRule(sid, gid) {
+	$('#toggle_state').remove();
 	$('#sid').val(sid);
 	$('#gid').val(gid);
 	$('#openruleset').val($('#selectbox').val());
@@ -1046,6 +1239,7 @@ function toggleRule(sid, gid) {
 }
 
 function toggleAction(sid, gid) {
+	$('#toggle_action').remove();
 	$('#sid').val(sid);
 	$('#gid').val(gid);
 	$('#openruleset').val($('#selectbox').val());
@@ -1064,6 +1258,7 @@ function wopen(url, name)
 
 function showRuleContents(gid, sid) {
 		// Show the modal dialog with rule text
+		$('#rulesviewer_text').text("...Loading...");
 		$('#rulesviewer').modal('show');
 		$('#modal_rule_category').html($('#selectbox').val());
 
@@ -1074,6 +1269,7 @@ function showRuleContents(gid, sid) {
 				data: {
 					sid:         sid,
 					gid:         gid,
+					id:	     $('#id').val(),
 					openruleset: $('#selectbox').val(),
 					action:      'loadRule'
 				},
