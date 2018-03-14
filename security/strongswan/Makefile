@@ -12,6 +12,7 @@ MAINTAINER=	strongswan@nanoteq.com
 COMMENT=	Open Source IKEv2 IPsec-based VPN solution
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe libtool:keepla pkgconfig tar:bzip2 ssl
 USE_RC_SUBR=	strongswan
