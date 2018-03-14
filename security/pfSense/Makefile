@@ -95,7 +95,8 @@ PLIST_DIRS=	/etc
 RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
 		${LOCALBASE}/sbin/smartctl:sysutils/smartmontools \
 		${LOCALBASE}/sbin/wrapresetbtn:sysutils/wrapalixresetbutton \
-		${LOCALBASE}/bin/beep:audio/beep
+		${LOCALBASE}/bin/beep:audio/beep \
+		devcpu-data>=0:sysutils/devcpu-data
 .endif
 
 do-install:
