@@ -3090,6 +3090,58 @@ function suricata_modify_sids_action(&$rule_map, $suricatacfg) {
 	unset($alertsid, $dropsid);
 }
 
+function suricata_get_filtered_rules($rules, $filter) {
+
+	/************************************************/
+	/* This function returns a rules_map array of   */
+	/* of rules filtered using the GID:SID pairs    */
+	/* found in the passed filter criteria array.   */
+	/*                                              */
+	/*   $rules --> file, a directory or an array   */
+	/*              containing rules files to scan  */
+	/*                                              */
+	/*  $filter --> array of GID:SID pairs to use   */
+	/*              for filtering returned rules    */
+	/*              map array.                      */
+	/*                                              */
+	/*  Returns --> rules_map array                 */
+	/************************************************/
+
+	$tmp_map = array();
+	$filtered_map = array();
+
+	// If the filter array is empty, just
+	// return an empty result to save time
+	// since nothing would match.
+	if (empty($filter)) {
+		return filtered_map;
+	}
+
+	// Load up all the rules from the location passed
+	$tmp_map = suricata_load_rules_map($rules);
+
+	// Now walk the loaded filter list and copy
+	// matching GID:SID rules from the target list
+	// over to the filtered array.
+	foreach ($filter as $k1 => $rulem) {
+		foreach($rulem as $k2 => $v) {
+			$filtered_map[$k1][$k2] = array();
+			$filtered_map[$k1][$k2]['rule'] = $tmp_map[$k1][$k2]['rule'];
+			$filtered_map[$k1][$k2]['category'] = $tmp_map[$k1][$k2]['category'];
+			$filtered_map[$k1][$k2]['action'] = $tmp_map[$k1][$k2]['action'];
+			$filtered_map[$k1][$k2]['modified'] = $tmp_map[$k1][$k2]['modified'];
+			$filtered_map[$k1][$k2]['disabled'] = $tmp_map[$k1][$k2]['disabled'];
+			$filtered_map[$k1][$k2]['flowbits'] = $tmp_map[$k1][$k2]['flowbits'];
+			$filtered_map[$k1][$k2]['managed'] = $tmp_map[$k1][$k2]['managed'];
+			$filtered_map[$k1][$k2]['state_toggled'] = $tmp_map[$k1][$k2]['state_toggled'];
+		}
+	}
+
+	// Clean up and return the filtered list of rules
+	unset($tmp_map);
+	return $filtered_map;
+}
+
 function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 	/***********************************************************/
