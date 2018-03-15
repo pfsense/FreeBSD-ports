@@ -212,10 +212,10 @@ $section->addInput(new \Form_Select(
 	'Acme Server',
 	$pconfig['acmeserver'],
 	form_keyvalue_array($a_acmeserver)
-))->setHelp('The ACME server which will be used to issue certificates using this key.%1$s' .
-	'Use testing servers until certificate validation works, then switch to production.%1$s' .
-	'Only ACME v2 servers support wildcard certificates.%1$s%1$s' .
-	'ACME v2 servers are experimental and only the staging service is active at the moment. ', '<br/>');
+))->setHelp('The ACME server which will be used to issue certificates using this key.<br/>' .
+	'Use testing servers until certificate validation works, then switch to production.<br/>' .
+	'Only ACME v2 servers support wildcard certificates.<br/><br/>' .
+	'ACME v2 servers are experimental and only the staging service is active at the moment.');
 
 $section->addInput(new \Form_Input(
 	'email',
