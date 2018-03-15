@@ -234,14 +234,14 @@ $section->addInput(new Form_Checkbox(
 	'Add firewall Locally-Attached Networks to the list (excluding WAN).  Default is checked (but see warning below).',
 	$pconfig['localnets'] == 'yes' ? true:false,
 	'yes'
-))->setHelp('WARNING - when creating a custom Pass List for use with Inline IPS Mode you should uncheck this box to prevent whitelisting all locally-attached network segments! If creating a custom HOME_NET list, then this box should be checked.');
+))->setHelp('If creating a custom HOME_NET list, then this box should usually be checked.');
 $section->addInput(new Form_Checkbox(
 	'wanips',
 	'WAN IP',
-	'Add WAN interface IP to the list.  Default is checked (but see warning below).',
+	'Add WAN interface IP to the list.  Default is checked).',
 	$pconfig['wanips'] == 'yes' ? true:false,
 	'yes'
-))->setHelp('WARNING - when creating a custom Pass List for use with Inline IPS Mode you should uncheck this box to prevent inadvertent whitelisting all LAN segments when using NAT! If creating a custom HOME_NET list and using NAT, then this box should be checked.');
+))->setHelp('If creating a custom HOME_NET list and using NAT, then this box should usually be checked.');
 $section->addInput(new Form_Checkbox(
 	'wangateips',
 	'WAN Gateways',
@@ -266,10 +266,10 @@ $section->addInput(new Form_Checkbox(
 $section->addInput(new Form_Checkbox(
 	'vpnips',
 	'VPN Addresses',
-	'Add VPN Addresses to the list.  Default is checked (but see warning below).',
+	'Add VPN Addresses to the list.  Default is checked.',
 	$pconfig['vpnips'] == 'yes' ? true:false,
 	'yes'
-))->setHelp('WARNING - when creating a custom Pass List for use with Inline IPS Mode you should uncheck this box to prevent whitelisting all VPN segments! If creating a custom HOME_NET list, then this box should be checked.');
+))->setHelp('If creating a custom HOME_NET list, then this box should usually be checked.');
 $form->add($section);
 
 $section = new Form_Section('Custom IP Address from Configured Alias');
@@ -279,7 +279,7 @@ $group->add(new Form_Input(
 	'Assigned Alias',
 	'text',
 	$pconfig['address']
-))->setHelp('Enter the name of an existing Alias.')->setAttribute('title', trim(filter_expand_alias($pconfig['address'])));
+))->setHelp('Enter the name of an existing Alias in order to further customize IP addresses included on this Pass List.')->setAttribute('title', trim(filter_expand_alias($pconfig['address'])));
 $group->add(new Form_Button(
 	'btnSelectAlias',
 	'Aliases',
