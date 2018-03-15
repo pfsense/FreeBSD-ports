@@ -59,20 +59,17 @@ else {
 	$external_net = trim($external_net, ', ') . "]";
 }
 
-// Set the PASS LIST and write its contents to disk
-$plist = suricata_build_list($suricatacfg, $suricatacfg['passlistname'], true);
-@file_put_contents("{$suricatacfgdir}/passlist", implode("\n", $plist));
+// Set the PASS LIST and write its contents to disk,
+// but only if using Legacy Mode blocking. Otherwise,
+// just create an empty placeholder file.
+unlink_if_exists("{$suricatacfgdir}/rules/passlist.rules");
 $suri_passlist = "{$suricatacfgdir}/passlist";
-
-// If using inline IPS mode, generate PASS rules to substitute for the PASS LIST
-@file_put_contents("{$suricatacfgdir}/rules/passlist.rules", '');
-if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on' && $suricatacfg['passlistname'] <> 'none') {
-	$sid_tmp = 1000001;
-	foreach ($plist as $ip_tmp) {
-		$line = "pass ip {$ip_tmp} any <> any any (msg:\"Pass List Entry - allow all traffic from/to {$ip_tmp}\"; sid:{$sid_tmp};)\n";
-		@file_put_contents("{$suricatacfgdir}/rules/passlist.rules", $line, FILE_APPEND);
-		$sid_tmp++;
-	}
+if ($suricatacfg['ips_mode'] == 'ips_mode_legacy' && $suricatacfg['blockoffenders'] == 'on' && $suricatacfg['passlistname'] != 'none') {
+	$plist = suricata_build_list($suricatacfg, $suricatacfg['passlistname'], true);
+	@file_put_contents("{$suricatacfgdir}/passlist", implode("\n", $plist));
+}
+else {
+	file_put_contents("{$suricatacfgdir}/passlist", '');
 }
 
 // Set default and user-defined variables for SERVER_VARS and PORT_VARS
