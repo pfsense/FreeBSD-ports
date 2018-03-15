@@ -1361,9 +1361,8 @@ $group->add(new Form_Button(
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#passlist')->setAttribute('data-toggle', 'modal');
 
-$group->setHelp('The default Pass List adds Gateways, DNS servers and, when Legacy Mode Blocking is used, locally-attached networks, the WAN IP, VPNs and VIPs.  Create a Pass List with an alias to customize.  ' . 
-		'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation ' . 
-		'and this is the recommended choice when using Inline IPS Mode.');
+$group->setHelp('The default Pass List adds Gateways, DNS servers, locally-attached networks, the WAN IP, VPNs and VIPs.  Create a Pass List with an alias to customize whitelisted IP addresses.  ' . 
+		'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation.');
 
 $section->add($group);
 
@@ -1488,6 +1487,7 @@ events.push(function(){
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
+			hideClass('passlist', true);
 			hideInput('intf_snaplen', true);
 			if (hide) {
 				$('#eve_log_drop').parent().hide();
@@ -1848,6 +1848,7 @@ events.push(function(){
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
+			hideClass('passlist', true);
 			hideInput('intf_snaplen', true);
 			$('#eve_log_drop').parent().show();
 			$('#ips_warn_dlg').modal('show');
