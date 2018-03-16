@@ -856,8 +856,6 @@ if (filesize("{$suricatacfgdir}/rules/".FLOWBITS_FILENAME) > 0)
 	$rules_files .= "\n - " . FLOWBITS_FILENAME;
 if (filesize("{$suricatacfgdir}/rules/custom.rules") > 0)
 	$rules_files .= "\n - custom.rules";
-if (filesize("{$suricatacfgdir}/rules/passlist.rules") > 0)
-	$rules_files .= "\n - passlist.rules";
 $rules_files = ltrim($rules_files, '\n -');
 
 // Add the general logging settings to the configuration (non-interface specific)
