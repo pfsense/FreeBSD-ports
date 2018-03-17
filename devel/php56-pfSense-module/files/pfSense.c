@@ -1948,7 +1948,7 @@ PHP_FUNCTION(pfSense_etherswitch_getlaggroup)
 {
 	char buf[32], *dev;
 	etherswitch_info_t info;
-	etherswitch_laggroup lg;
+	etherswitch_laggroup_t lg;
 	int fd, i;
 	long devlen, laggroup;
 	zval *members;
