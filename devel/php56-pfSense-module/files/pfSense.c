@@ -1890,7 +1890,6 @@ PHP_FUNCTION(pfSense_etherswitch_setport)
 	if (pvid >= 0 && pvid <= 4094)
 		p.es_pvid = pvid;
 
-	/* XXX - port state */
 	/* XXX - ports flags */
 
 	if (ioctl(fd, IOETHERSWITCHSETPORT, &p) != 0) {
@@ -1907,13 +1906,13 @@ PHP_FUNCTION(pfSense_etherswitch_setport_state)
 	char *dev, *state;
 	etherswitch_port_t p;
 	int fd;
-	long devlen, statelen;
+	long devlen, port, statelen;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &dev,
-	    &devlen, &state, &statelen) == FAILURE)
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sls", &dev,
+	    &devlen, &port, &state, &statelen) == FAILURE)
 		RETURN_FALSE;
 	if (statelen == 0)
-		return (-1);
+		RETURN_FALSE;
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
 	if (etherswitch_dev_is_valid(dev) < 0)
@@ -1970,11 +1969,11 @@ PHP_FUNCTION(pfSense_etherswitch_getlaggroup)
 		close(fd);
 		RETURN_NULL();
 	}
-	if ((info.es_switchcaps & ETHERSWITCH_CAPS_LAGG) == 0) {
+	if ((info.es_switch_caps & ETHERSWITCH_CAPS_LAGG) == 0) {
 		close(fd);
 		RETURN_NULL();
 	}
-	if (vlangroup >= info.es_nlaggroups) {
+	if (laggroup >= info.es_nlaggroups) {
 		close(fd);
 		RETURN_NULL();
 	}
