@@ -113,7 +113,7 @@ struct etherswitch_port {
 typedef struct etherswitch_port etherswitch_port_t;
 
 struct etherswitch_laggroup {
-	int		es_lag_valid;
+	int		es_lagg_valid;
 	int		es_laggroup;
 	int		es_member_ports;
 	int		es_untagged_ports;

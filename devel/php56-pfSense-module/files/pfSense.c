@@ -174,6 +174,8 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_etherswitch_getinfo, NULL)
     PHP_FE(pfSense_etherswitch_getport, NULL)
     PHP_FE(pfSense_etherswitch_setport, NULL)
+    PHP_FE(pfSense_etherswitch_setport_state, NULL)
+    PHP_FE(pfSense_etherswitch_getlaggroup, NULL)
     PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
     PHP_FE(pfSense_etherswitch_setvlangroup, NULL)
 #endif
@@ -1888,7 +1890,6 @@ PHP_FUNCTION(pfSense_etherswitch_setport)
 	if (pvid >= 0 && pvid <= 4094)
 		p.es_pvid = pvid;
 
-	/* XXX - port state */
 	/* XXX - ports flags */
 
 	if (ioctl(fd, IOETHERSWITCHSETPORT, &p) != 0) {
@@ -1898,6 +1899,107 @@ PHP_FUNCTION(pfSense_etherswitch_setport)
 	close(fd);
 
 	RETURN_TRUE;
+}
+
+PHP_FUNCTION(pfSense_etherswitch_setport_state)
+{
+	char *dev, *state;
+	etherswitch_port_t p;
+	int fd;
+	long devlen, port, statelen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sls", &dev,
+	    &devlen, &port, &state, &statelen) == FAILURE)
+		RETURN_FALSE;
+	if (statelen == 0)
+		RETURN_FALSE;
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_FALSE;
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_FALSE;
+
+	memset(&p, 0, sizeof(p));
+	p.es_port = port;
+	if (ioctl(fd, IOETHERSWITCHGETPORT, &p) != 0) {
+		close(fd);
+		RETURN_FALSE;
+	}
+	if (strcasecmp(state, "forwarding") == 0)
+		p.es_state = ETHERSWITCH_PSTATE_FORWARDING;
+	else if (strcasecmp(state, "blocking") == 0)
+		p.es_state = ETHERSWITCH_PSTATE_BLOCKING;
+	else if (strcasecmp(state, "learning") == 0)
+		p.es_state = ETHERSWITCH_PSTATE_LEARNING;
+	else if (strcasecmp(state, "disabled") == 0)
+		p.es_state = ETHERSWITCH_PSTATE_DISABLED;
+	if (ioctl(fd, IOETHERSWITCHSETPORT, &p) != 0) {
+		close(fd);
+		RETURN_FALSE;
+	}
+	close(fd);
+
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(pfSense_etherswitch_getlaggroup)
+{
+	char buf[32], *dev;
+	etherswitch_info_t info;
+	etherswitch_laggroup_t lg;
+	int fd, i;
+	long devlen, laggroup;
+	zval *members;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
+	    &devlen, &laggroup) == FAILURE)
+		RETURN_NULL();
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_NULL();
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_NULL();
+
+	memset(&info, 0, sizeof(info));
+	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
+		close(fd);
+		RETURN_NULL();
+	}
+	if ((info.es_switch_caps & ETHERSWITCH_CAPS_LAGG) == 0) {
+		close(fd);
+		RETURN_NULL();
+	}
+	if (laggroup >= info.es_nlaggroups) {
+		close(fd);
+		RETURN_NULL();
+	}
+	memset(&lg, 0, sizeof(lg));
+	lg.es_laggroup = laggroup;
+	if (ioctl(fd, IOETHERSWITCHGETLAGGROUP, &lg) != 0) {
+		close(fd);
+		RETURN_NULL();
+	}
+	close(fd);
+	if (lg.es_lagg_valid == 0)
+		RETURN_NULL();
+
+	array_init(return_value);
+	add_assoc_long(return_value, "laggroup", lg.es_laggroup);
+
+	ALLOC_INIT_ZVAL(members);
+	array_init(members);
+	for (i = 0; i < info.es_nports; i++) {
+		if ((lg.es_member_ports & ETHERSWITCH_PORTMASK(i)) != 0) {
+			memset(buf, 0, sizeof(buf));
+			snprintf(buf, sizeof(buf) - 1, "%d", i);
+			add_assoc_long(members, buf, 1);
+		}
+	}
+	add_assoc_zval(return_value, "members", members);
 }
 
 PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
