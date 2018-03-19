@@ -271,28 +271,54 @@ if ($_POST['action'] == 'loadRule') {
 	exit;
 }
 
-if (isset($_POST['toggle_state']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
+if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
 
 	// Get the GID:SID tags embedded in the clicked rule icon.
 	$gid = $_POST['gid'];
 	$sid = $_POST['sid'];
 
-	// See if the target SID is in our list of modified SIDs,
-	// and toggle it opposite state if present; otherwise,
-	// add it to the appropriate modified SID list.
-	if (isset($enablesid[$gid][$sid])) {
-		unset($enablesid[$gid][$sid]);
-		$disablesid[$gid][$sid] = "disablesid";
-	}
-	elseif (isset($disablesid[$gid][$sid])) {
-		unset($disablesid[$gid][$sid]);
-		$enablesid[$gid][$sid] = "enablesid";
-	}
-	else {
-		if ($rules_map[$gid][$sid]['disabled'] == 1)
+	// Get the posted rule state
+	$state = $_POST['ruleStateOptions'];
+
+	// Use the user-desired rule state to set or clear
+	// entries in the Forced Rule State arrays stored
+	// in the firewall config.xml configuration file.
+
+	switch ($state) {
+		case "state_default":
+			// Return the rule to it's default state
+			// by removing all state override entries.
+			if (isset($enablesid[$gid][$sid])) {
+				unset($enablesid[$gid][$sid]);
+			}
+			if (isset($disablesid[$gid][$sid])) {
+				unset($disablesid[$gid][$sid]);
+			}
+			// Restore the default state flag so we
+			// can display state properly on RULES
+			// page without needing to reload the
+			// entire set of rules.
+			if (isset($rules_map[$gid][$sid])) {
+				$rules_map[$gid][$sid]['disabled'] = !$rules_map[$gid][$sid]['default_state'];
+			}
+			break;
+
+		case "state_enabled":
+			if (isset($disablesid[$gid][$sid])) {
+				unset($disablesid[$gid][$sid]);
+			}
 			$enablesid[$gid][$sid] = "enablesid";
-		else
+			break;
+
+		case "state_disabled":
+			if (isset($enablesid[$gid][$sid])) {
+				unset($enablesid[$gid][$sid]);
+			}
 			$disablesid[$gid][$sid] = "disablesid";
+			break;
+
+		default:
+			$input_errors[] = gettext("WARNING - unknown rule state of '{$state}' passed in $_POST parameter.  No change made to rule state.");
 	}
 
 	// Write the updated enablesid and disablesid values to the config file.
@@ -1255,7 +1281,7 @@ print($section);
 					?>
 								<tr class="text-nowrap">
 									<td><?=$textss; ?>
-										<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="toggleRule('<?=$sid; ?>', '<?=$gid; ?>');" 
+										<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="toggleState('<?=$sid; ?>', '<?=$gid; ?>');" 
 										<?=$iconb_class; ?> title="<?=$title; ?>"></a><?=$textse; ?>
 						<?php if ($v['managed'] == 1 && $v['modified'] == 1) : ?>
 										<i class="fa fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
@@ -1336,7 +1362,6 @@ print($section);
 				<h3 class="modal-title"><?=gettext("Rule Action Selection")?></h3>
 			</div>
 			<div class="modal-body">
-				<input type="hidden" name="id" id="id" value="<?=$id;?>" />
 				<h4><?=gettext("Choose desired rule action from selections below: ");?></h4>
 				<label class="radio-inline">
 					<input type="radio" name="ruleActionOptions" id="action_default" value="action_default"> <span class = "label label-default">Default</span>
@@ -1358,6 +1383,43 @@ print($section);
 			</div>
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-sm btn-primary" id="rule_action_save" name="rule_action_save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close selector");?>">
+					<i class="fa fa-save icon-embed-btn"></i>
+					<?=gettext("Save");?>
+				</button>
+				<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
+					<?=gettext("Cancel");?>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal Rule SID state selector window -->
+<div class="modal fade" role="dialog" id="sid_state_selector">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title"><?=gettext("Rule State Selection")?></h3>
+			</div>
+			<div class="modal-body">
+				<h4><?=gettext("Choose desired rule state from selections below: ");?></h4>
+				<label class="radio-inline">
+					<input type="radio" name="ruleStateOptions" id="state_default" value="state_default"> <span class = "label label-default">Default</span>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="ruleStateOptions" id="state_enabled" value="state_enabled"> <span class = "label label-success">Enabled</span>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="ruleStateOptions" id="state_disabled" value="state_disabled"> <span class = "label label-danger">Disabled</span>
+				</label>
+				<br /><br />
+					<p><?=gettext("Choosing 'Default' will return the rule state to the original state specified by the rule package author.");?></p>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-sm btn-primary" id="rule_state_save" name="rule_state_save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close selector");?>">
 					<i class="fa fa-save icon-embed-btn"></i>
 					<?=gettext("Save");?>
 				</button>
@@ -1391,13 +1453,11 @@ print($form);
 <script language="javascript" type="text/javascript">
 //<![CDATA[
 
-function toggleRule(sid, gid) {
-	$('#toggle_state').remove();
+function toggleState(sid, gid) {
 	$('#sid').val(sid);
 	$('#gid').val(gid);
 	$('#openruleset').val($('#selectbox').val());
-	$('<input name="toggle_state" value="1" />').appendTo($('#iform'));
-	$('#iform').submit();
+	$('#sid_state_selector').modal('show');
 }
 
 function toggleAction(sid, gid) {
