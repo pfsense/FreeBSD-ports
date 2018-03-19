@@ -90,7 +90,7 @@ if (isset($_POST['upload'])) {
 		$tmp['modtime'] = time();
 		$tmp_fname = $_FILES["sidmods_fileup"]["tmp_name"];
 		$data = file_get_contents($tmp_fname);
-		$tmp['content'] = Base64_encode(str_replace("\r\n", "\n", $data));
+		$tmp['content'] = base64_encode(str_replace("\r\n", "\n", $data));
 
 		// Check for duplicate conflicting list name
 		foreach ($a_list as $list) {
@@ -123,7 +123,7 @@ if (isset($_POST['sidlist_delete']) && isset($a_list[$_POST['sidlist_id']])) {
 }
 
 if (isset($_POST['sidlist_edit']) && isset($a_list[$_POST['sidlist_id']])) {
-	$data = Base64_decode($a_list[$_POST['sidlist_id']]['content']);
+	$data = base64_decode($a_list[$_POST['sidlist_id']]['content']);
 	$sidmodlist_data = htmlspecialchars($data);
 	$sidmodlist_edit_style = "show";
 	$sidmodlist_name = $a_list[$_POST['sidlist_id']]['name'];
@@ -136,7 +136,7 @@ if (isset($_POST['save']) && isset($_POST['sidlist_data']) && isset($_POST['list
 		$tmp = array();
 		$tmp['name'] = $_POST['sidlist_name'];
 		$tmp['modtime'] = time();
-		$tmp['content'] = Base64_encode(str_replace("\r\n", "\n", $_POST['sidlist_data']));
+		$tmp['content'] = base64_encode(str_replace("\r\n", "\n", $_POST['sidlist_data']));
 
 		// If this test is TRUE, then we are adding a new list
 		if ($_POST['listid'] == count($a_list)) {
@@ -231,7 +231,7 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
 	$tmpdirname = "{$g['tmp_path']}/sidmods/";
 	safe_mkdir("{$tmpdirname}");
 
-	file_put_contents($tmpdirname . $file, Base64_decode($a_list[$_POST['sidlist_id']]['content']));
+	file_put_contents($tmpdirname . $file, base64_decode($a_list[$_POST['sidlist_id']]['content']));
 	touch($tmpdirname . $file, $a_list[$_POST['sidlist_id']]['modtime']);	
 
 	if (file_exists($tmpdirname . $file)) {
@@ -274,7 +274,7 @@ if (isset($_POST['sidlist_dnload_all'])) {
 
 	// Walk all saved lists and write them out to individual files
 	foreach($a_list as $list) {
-		file_put_contents($tmpdirname . $list['name'], Base64_decode($list['content']));
+		file_put_contents($tmpdirname . $list['name'], base64_decode($list['content']));
 		touch($tmpdirname . $list['name'], $list['modtime']);	
 	}
 
