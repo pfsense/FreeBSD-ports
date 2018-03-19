@@ -1971,7 +1971,7 @@ function suricata_parse_sidconf_file($sidconf_file,$split_lines=TRUE) {
 		log_error("[Suricata] Failed to open SID MGMT list '{$sidconf_file}' for processing.");
 		return $sid_mods;
 	}
-	fwrite($fd, Base64_decode($list['content']));
+	fwrite($fd, base64_decode($list['content']));
 	rewind($fd);
 
 	// Read and parse the conf list line-by-line
