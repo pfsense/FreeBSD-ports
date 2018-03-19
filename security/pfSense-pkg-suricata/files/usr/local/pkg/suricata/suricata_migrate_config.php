@@ -91,7 +91,7 @@ if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migrat
 			$tmp = array();
 			$tmp['name'] = basename($sidfile);
 			$tmp['modtime'] = filemtime("/var/db/suricata/sidmods/" . $sidfile);
-			$tmp['content'] = Base64_encode($data);
+			$tmp['content'] = base64_encode($data);
 			$a_list[] = $tmp;
 		}
 	}
