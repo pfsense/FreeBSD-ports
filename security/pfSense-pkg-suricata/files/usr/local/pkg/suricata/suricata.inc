@@ -1346,26 +1346,28 @@ function suricata_load_rules_map($rules_path) {
 	 * Read all the rules into the map array.
 	 * The structure of the map array is:
 	 *
-	 *  map[gid][sid]['rule']['category']['action']['disabled']['managed']['flowbits']
+	 *  map[gid][sid]['rule']['category']['action']['disabled']['managed']
+         *     ['default_state']['default_action']['state_toggled']['modified']['flowbits']
 	 *
 	 *  where:
-	 *   gid           = Generator ID from rule, or 1 if general text 
-	 *                   rule
-	 *   sid           = Signature ID from rule
-         *   rule          = Complete rule text
-	 *   category      = File name of file containing the rule
-	 *   action        = alert, drop, reject or pass
-	 *   disabled      = 1 if rule is disabled (commented out), 0 if 
-	 *                   rule is enabled
-	 *   managed       = 1 if rule is auto-managed by SID MGMT process,
-	 *                   0 if not auto-managed 
-	 *   state_toggled = 1 if rule was toggled by SID MGMT process,
-	 *                   0 if not toggled
-	 *   modified      = 1 if rule action or content is modified by SID MGMT or
-	 *                     IPS Poliocy process,
-	 *                   0 if not modified
-	 *   flowbits      = Array of applicable flowbits if rule contains 
-	 *                   flowbits options
+	 *   gid            = Generator ID from rule, or 1 if general text rule
+	 *   sid            = Signature ID from rule
+         *   rule           = Complete rule text
+	 *   category       = File name of file containing the rule
+	 *   action         = alert, drop, reject or pass
+	 *   disabled       = 1 if rule is disabled (commented out), 0 if 
+	 *                    rule is enabled
+	 *   managed        = 1 if rule is auto-managed by SID MGMT process,
+	 *                    0 if not auto-managed
+	 *   default_state  = 1 if rule is default enabled, 0 if default disabled
+	 *   default_action = alert, drop, reject or pass  
+	 *   state_toggled  = 1 if rule was toggled by SID MGMT process,
+	 *                    0 if not toggled
+	 *   modified       = 1 if rule action or content is modified by SID MGMT or
+	 *                      IPS Policy process,
+	 *                    0 if not modified
+	 *   flowbits       = Array of applicable flowbits if rule contains 
+	 *                    flowbits options
 	 ************************************************************************************/
 
 	// First check if we were passed a directory, a single file
@@ -1459,11 +1461,13 @@ function suricata_load_rules_map($rules_path) {
 			$map_ref[$gid][$sid]['category'] = basename($file, ".rules");
 			$map_ref[$gid][$sid]['state_toggled'] = 0;
 			$map_ref[$gid][$sid]['modified'] = 0;
+			$map_ref[$gid][$sid]['managed'] = 0;
 
 			// Grab the rule action
 			$matches = array();
 			if (preg_match('/^\s*#*\s*(alert|drop|pass|reject)/i', $rule, $matches)) {
 				$map_ref[$gid][$sid]['action'] = $matches[1];
+				$map_ref[$gid][$sid]['default_action'] = $matches[1];
 			} else {
 				$map_ref[$gid][$sid]['action'] = "";
 			}
@@ -1471,8 +1475,10 @@ function suricata_load_rules_map($rules_path) {
 			// Determine if default state is "disabled"
 			if (preg_match('/^\s*\#+/', $rule)) {
 				$map_ref[$gid][$sid]['disabled'] = 1;
+				$map_ref[$gid][$sid]['default_state'] = 0;
 			} else {
 				$map_ref[$gid][$sid]['disabled'] = 0;
+				$map_ref[$gid][$sid]['default_state'] = 1;
 			}
 
 			// Grab any associated flowbits from the rule.
@@ -1676,6 +1682,15 @@ function suricata_find_flowbit_required_rules($rules, $unchecked_flowbits) {
 	/* in order to satisfy the "checked flowbits" used by   */
 	/* the currently enabled rules.  It returns the list    */
 	/* of required rules in an array.                       */
+	/*                                                      */
+	/*           $rules     = rules_map array of all rules  */
+	/*  $unchecked_flowbits = array of flowbit strings with */
+	/*                        unmatched set/isset pairings  */
+	/*                                                      */
+	/*              Returns = rules_map array consisting    */
+	/*                        of additional rules needed    */
+	/*                        to satisfy all set/isset      */
+	/*                        flowbit pairings              */
 	/********************************************************/
 
 	$required_flowbits_rules = array();
@@ -1704,15 +1719,24 @@ function suricata_find_flowbit_required_rules($rules, $unchecked_flowbits) {
 						if (!is_array($required_flowbits_rules[$k1][$k2])) {
 							$required_flowbits_rules[$k1][$k2] = array();
 						}
-						$required_flowbits_rules[$k1][$k2]['category'] = $rule2['category'];
 						if ($rule2['disabled'] == 0) {
 							// If not disabled, just return the rule text "as is"
 							$required_flowbits_rules[$k1][$k2]['rule'] = ltrim($rule2['rule']);
+							$required_flowbits_rules[$k1][$k2]['disabled'] = $rule2['disabled'];
 						} else {
 							// If rule is disabled, remove leading '#' to enable it
 							$required_flowbits_rules[$k1][$k2]['rule'] = ltrim(substr($rule2['rule'], strpos($rule2['rule'], "#") + 1));
 							$required_flowbits_rules[$k1][$k2]['disabled'] = 0;
 						}
+						// Copy over the remaining rule_map entries for this rule
+						$required_flowbits_rules[$k1][$k2]['category'] = $rule2['category'];
+						$required_flowbits_rules[$k1][$k2]['action'] = $rule2['action'];
+						$required_flowbits_rules[$k1][$k2]['managed'] = $rule2['managed'];
+						$required_flowbits_rules[$k1][$k2]['modified'] = $rule2['modified'];
+						$required_flowbits_rules[$k1][$k2]['default_state'] = $rule2['default_state'];
+						$required_flowbits_rules[$k1][$k2]['default_action'] = $rule2['default_action'];
+						$required_flowbits_rules[$k1][$k2]['state_toggled'] = $rule2['state_toggled'];
+						$required_flowbits_rules[$k1][$k2]['flowbits'] = $rule2['flowbits'];
 					}
 				}
 			}
@@ -2387,7 +2411,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 
 	// Walk the SID mod tokens and decode each one.
 	// Place all matching GID:SID combos along with
-	// the requestion $action into our $sids[] array.
+	// the requested $action into our $sids[] array.
 	foreach ($sid_mods as $tok) {
 		$matches = array();
 		// Test the SID token for a GID:SID range
@@ -3042,13 +3066,15 @@ function suricata_modify_sids_action(&$rule_map, $suricatacfg) {
 	/***********************************************/
 
 	if (!isset($suricatacfg['rule_sid_force_alert']) && 
-	    !isset($suricatacfg['rule_sid_force_drop'])) {
+	    !isset($suricatacfg['rule_sid_force_drop']) && 
+	    !isset($suricatacfg['rule_sid_force_reject'])) {
 		return;
 	}
 
-	/* Load up our alertsid and dropsid arrays with manually changed SID actions */
+	/* Load up our SID forced action arrays with manually changed SID actions */
 	$alertsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_alert']);
 	$dropsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_drop']);
+	$rejectsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_reject']);
 
 	/* Change action for any rules that need to be */
 	/* forced to "alert" with alertsid mods.       */
@@ -3087,7 +3113,27 @@ function suricata_modify_sids_action(&$rule_map, $suricatacfg) {
 			}
 		}
 	}
-	unset($alertsid, $dropsid);
+
+	/* Change action for any rules that need to be */
+	/* forced to "reject" with rejectsid mods.     */
+	if (!empty($rejectsid)) {
+		foreach ($rule_map as $k1 => $rulem) {
+			foreach ($rulem as $k2 => $v) {
+				if (isset($rejectsid[$k1][$k2]) && $v['action'] != 'reject') {
+					$matches = array();
+					if (preg_match('/^\s*#*\s*(alert|pass|drop)/i', $v['rule'], $matches)) {
+						$txt_regx = '/^\s*' . "{$matches[1]}" . '\s/';
+						if ($tmp = preg_replace($txt_regx, 'reject ', $v['rule'], 1)) {
+							$rule_map[$k1][$k2]['rule'] = $tmp;
+							$rule_map[$k1][$k2]['action'] = 'reject';
+						}
+					}
+				}
+			}
+		}
+	}
+
+	unset($alertsid, $dropsid, $rejectsid);
 }
 
 function suricata_get_filtered_rules($rules, $filter) {
@@ -3114,7 +3160,7 @@ function suricata_get_filtered_rules($rules, $filter) {
 	// return an empty result to save time
 	// since nothing would match.
 	if (empty($filter)) {
-		return filtered_map;
+		return $filtered_map;
 	}
 
 	// Load up all the rules from the location passed
@@ -3125,15 +3171,20 @@ function suricata_get_filtered_rules($rules, $filter) {
 	// over to the filtered array.
 	foreach ($filter as $k1 => $rulem) {
 		foreach($rulem as $k2 => $v) {
-			$filtered_map[$k1][$k2] = array();
-			$filtered_map[$k1][$k2]['rule'] = $tmp_map[$k1][$k2]['rule'];
-			$filtered_map[$k1][$k2]['category'] = $tmp_map[$k1][$k2]['category'];
-			$filtered_map[$k1][$k2]['action'] = $tmp_map[$k1][$k2]['action'];
-			$filtered_map[$k1][$k2]['modified'] = $tmp_map[$k1][$k2]['modified'];
-			$filtered_map[$k1][$k2]['disabled'] = $tmp_map[$k1][$k2]['disabled'];
-			$filtered_map[$k1][$k2]['flowbits'] = $tmp_map[$k1][$k2]['flowbits'];
-			$filtered_map[$k1][$k2]['managed'] = $tmp_map[$k1][$k2]['managed'];
-			$filtered_map[$k1][$k2]['state_toggled'] = $tmp_map[$k1][$k2]['state_toggled'];
+			if (isset($tmp_map[$k1][$k2])) {
+				$filtered_map[$k1] = array();
+				$filtered_map[$k1][$k2] = array();
+				$filtered_map[$k1][$k2]['rule'] = $tmp_map[$k1][$k2]['rule'];
+				$filtered_map[$k1][$k2]['category'] = $tmp_map[$k1][$k2]['category'];
+				$filtered_map[$k1][$k2]['action'] = $tmp_map[$k1][$k2]['action'];
+				$filtered_map[$k1][$k2]['modified'] = $tmp_map[$k1][$k2]['modified'];
+				$filtered_map[$k1][$k2]['disabled'] = $tmp_map[$k1][$k2]['disabled'];
+				$filtered_map[$k1][$k2]['flowbits'] = $tmp_map[$k1][$k2]['flowbits'];
+				$filtered_map[$k1][$k2]['managed'] = $tmp_map[$k1][$k2]['managed'];
+				$filtered_map[$k1][$k2]['state_toggled'] = $tmp_map[$k1][$k2]['state_toggled'];
+				$filtered_map[$k1][$k2]['default_state'] = $tmp_map[$k1][$k2]['default_state'];
+				$filtered_map[$k1][$k2]['default_action'] = $tmp_map[$k1][$k2]['default_action'];
+			}
 		}
 	}
 
@@ -3241,6 +3292,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 						$enabled_rules[$k1][$k2]['rule'] = $v['rule'];
 						$enabled_rules[$k1][$k2]['category'] = $v['category'];
 						$enabled_rules[$k1][$k2]['disabled'] = $v['disabled'];
+						$enabled_rules[$k1][$k2]['action'] = $v['action'];
 						$enabled_rules[$k1][$k2]['flowbits'] = $v['flowbits'];
 					}
 				}
