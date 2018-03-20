@@ -136,7 +136,12 @@ $categories[] = "User Forced Disabled Rules";
 // option if blocking is enabled.
 if ($a_rule[$id]['blockoffenders'] == 'on') {
 	$categories[] = "User Forced ALERT Action Rules";
-	$categories[] = "User Forced DROP Action Rules";
+
+	// Show custom DROP rules only if using Inline IPS
+	// mode or "Block Drops Only" option.
+	if ($a_rule[$id]['block_drops_only'] == 'on' || $a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+		$categories[] = "User Forced DROP Action Rules";
+	}
 }
 
 // Only add custom REJECT option if using IPS Inline Mode with blocking enabled
