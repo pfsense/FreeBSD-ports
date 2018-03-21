@@ -230,6 +230,8 @@ if (empty($pconfig['eve_redis_key']))
 
 if (empty($pconfig['intf_promisc_mode']))
 	$pconfig['intf_promisc_mode'] = "on";
+if (empty($pconfig['intf_snaplen']))
+	$pconfig['intf_snaplen'] = "1518";
 
 // See if creating a new interface by duplicating an existing one
 if (strcasecmp($action, 'dup') == 0) {
@@ -316,6 +318,9 @@ if (isset($_POST["save"]) && !$input_errors) {
 	if (!empty($_POST['inspect_recursion_limit']) && !is_numeric($_POST['inspect_recursion_limit']))
 		$input_errors[] = gettext("The value for Inspect Recursion Limit can either be blank or contain only digits evaluating to an integer greater than or equal to 0.");
 
+	if ($_POST['intf_snaplen'] < 1 || !is_numeric($_POST['intf_snaplen']))
+		$input_errors[] = gettext("The value for Interface Snaplen must contain only digits evaluating to an integer value greater than or equal to 1.");
+
 	if (!empty($_POST['eve_redis_server']) && !is_ipaddr($_POST['eve_redis_server']))
 		$input_errors[] = gettext("The value for 'EVE REDIS Server' must be an IP address.");
 
@@ -353,6 +358,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
 		if ($_POST['max_pending_packets']) $natent['max_pending_packets'] = $_POST['max_pending_packets']; else unset($natent['max_pending_packets']);
 		if ($_POST['inspect_recursion_limit'] >= '0') $natent['inspect_recursion_limit'] = $_POST['inspect_recursion_limit']; else unset($natent['inspect_recursion_limit']);
+		if ($_POST['intf_snaplen'] > '0') $natent['intf_snaplen'] = $_POST['intf_snaplen']; else $natent['inspect_recursion_limit'] = "1518";
 		if ($_POST['detect_eng_profile']) $natent['detect_eng_profile'] = $_POST['detect_eng_profile']; else unset($natent['detect_eng_profile']);
 		if ($_POST['mpm_algo']) $natent['mpm_algo'] = $_POST['mpm_algo']; else unset($natent['mpm_algo']);
 		if ($_POST['sgh_mpm_context']) $natent['sgh_mpm_context'] = $_POST['sgh_mpm_context']; else unset($natent['sgh_mpm_context']);
@@ -498,6 +504,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['enable_async_sessions'] = 'off';
 			$natent['delayed_detect'] = 'off';
 			$natent['intf_promisc_mode'] = 'on';
+			$natent['intf_snaplen'] = '1518';
 
 			$natent['asn1_max_frames'] = '256';
 			$natent['dns_global_memcap'] = "16777216";
@@ -1085,7 +1092,7 @@ $group->add(new Form_Checkbox(
 
 
 
-$group->setHelp('Selected which logs should have extended info.');
+$group->setHelp('Select which logs should have extended info.');
 $section->add($group)->addClass('eve_log_info');
 
 $section->addInput(new Form_Select(
@@ -1094,7 +1101,7 @@ $section->addInput(new Form_Select(
 	explode(", ",$pconfig['eve_log_http_extended_headers']),
 	array("accept"=>"accept","accept-charset"=>"accept-charset","accept-datetime"=>"accept-datetime","accept-encoding"=>"accept-encoding","accept-language"=>"accept-language","accept-range"=>"accept-range","age"=>"age","allow"=>"allow","authorization"=>"authorization","cache-control"=>"cache-control","connection"=>"connection","content-encoding"=>"content-encoding","content-language"=>"content-language","content-length"=>"content-length","content-location"=>"content-location","content-md5"=>"content-md5","content-range"=>"content-range","content-type"=>"content-type","cookie"=>"cookie","date"=>"date","dnt"=>"dnt","etags"=>"etags","from"=>"from","last-modified"=>"last-modified","link"=>"link","location"=>"location","max-forwards"=>"max-forwards","origin"=>"origin","pragma"=>"pragma","proxy-authenticate"=>"proxy-authenticate","proxy-authorization"=>"proxy-authorization","range"=>"range","referrer"=>"referrer","refresh"=>"refresh","retry-after"=>"retry-after","server"=>"server","set-cookie"=>"set-cookie","te"=>"te","trailer"=>"trailer","transfer-encoding"=>"transfer-encoding","upgrade"=>"upgrade","vary"=>"vary","via"=>"via","warning"=>"warning","www-authenticate"=>"www-authenticate","x-authenticated-user"=>"x-authenticated-user","x-flash-version"=>"x-flash-version","x-forwarded-proto"=>"x-forwarded-proto","x-requested-with"=>"x-requested-with"),
 	true
-))->setHelp('Select HTTP headers for logging');
+))->setHelp('Select HTTP headers for logging.  Use CTRL + click for multiple selections.');
 
 
 $section->addInput(new Form_Select(
@@ -1103,7 +1110,7 @@ $section->addInput(new Form_Select(
 	explode(", ",$pconfig['eve_log_smtp_extended_fields']),
 	array("bcc"=>"bcc","content-md5"=>"content-md5","date"=>"date","importance"=>"importance","in-reply-to"=>"in-reply-to","message-id"=>"message-id","organization"=>"organization","priority"=>"priority","received"=>"received","references"=>"references","reply-to"=>"reply-to","sensitivity"=>"sensitivity","subject"=>"subject","user-agent"=>"user-agent","x-mailer"=>"x-mailer","x-originating-ip"=>"x-originating-ip"),
 	true
-))->setHelp('Select SMTP fields for logging');
+))->setHelp('Select SMTP fields for logging.  Use CTRL + click for multiple selections.');
 
 
 
@@ -1217,7 +1224,7 @@ $modal->addInput(new Form_StaticText (
 	gettext('block traffic when using Inline IPS Mode for blocking. ') . 
 	'<br/><br/>' . 
 	gettext('Use the "dropsid.conf" feature on the SID MGMT tab to select rules whose action ') . 
-	gettext('should be changed from ALERT to DROP.  If you run the Snort VRT rules and have ') . 
+	gettext('should be changed from ALERT to DROP.  If you run the Snort rules and have ') . 
 	gettext('an IPS policy selected on the CATEGORIES tab, then rules defined as DROP by the ') . 
 	gettext('selected IPS policy will have their action automatically changed to DROP when the ') . 
 	gettext('"IPS Policy Mode" selector is configured for "Policy".') . 
@@ -1281,6 +1288,13 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['intf_promisc_mode'] == 'on' ? true:false,
 	'on'
 ));
+
+$section->addInput(new Form_Input(
+	'intf_snaplen',
+	'Interface PCAP Snaplen',
+	'text',
+	$pconfig['intf_snaplen']
+))->setHelp('Enter value in bytes for the interface PCAP snaplen. Default is 1518.  This parameter is only valid when IDS or Legacy Mode IPS is enabled.<br />This value may need to be increased if the physical interface is passing VLAN traffic and expected alerts are not being received.');
 
 $form->add($section);
 
@@ -1347,9 +1361,8 @@ $group->add(new Form_Button(
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#passlist')->setAttribute('data-toggle', 'modal');
 
-$group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . 
-				'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation ' . 
-				'and is the recommended choice when using Inline IPS Mode.');
+$group->setHelp('The default Pass List adds Gateways, DNS servers, locally-attached networks, the WAN IP, VPNs and VIPs.  Create a Pass List with an alias to customize whitelisted IP addresses.  ' . 
+		'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation.');
 
 $section->add($group);
 
@@ -1474,6 +1487,8 @@ events.push(function(){
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
+			hideClass('passlist', true);
+			hideInput('intf_snaplen', true);
 			if (hide) {
 				$('#eve_log_drop').parent().hide();
 			}
@@ -1483,6 +1498,7 @@ events.push(function(){
 		}
 		else {
 			$('#eve_log_drop').parent().hide();
+			hideInput('intf_snaplen', false);
 		}
 	}
 
@@ -1616,6 +1632,7 @@ events.push(function(){
 		disableInput('sgh_mpm_context', disable);
 		disableInput('delayed_detect', disable);
 		disableInput('intf_promisc_mode', disable);
+		disableInput('intf_snaplen', disable);
 		disableInput('fpm_split_any_any', disable);
 		disableInput('fpm_search_optimize', disable);
 		disableInput('fpm_no_stream_inserts', disable);
@@ -1831,6 +1848,8 @@ events.push(function(){
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
+			hideClass('passlist', true);
+			hideInput('intf_snaplen', true);
 			$('#eve_log_drop').parent().show();
 			$('#ips_warn_dlg').modal('show');
 		}
@@ -1838,6 +1857,7 @@ events.push(function(){
 			hideCheckbox('blockoffenderskill', false);
 			hideCheckbox('block_drops_only', false);
 			hideSelect('blockoffendersip', false);
+			hideInput('intf_snaplen', false);
 			hideClass('passlist', false);
 			$('#eve_log_drop').parent().hide();
 			$('#ips_warn_dlg').modal('hide');

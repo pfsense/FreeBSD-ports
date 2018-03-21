@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -231,45 +231,45 @@ $section = new Form_Section('Auto-Generated IP Addresses');
 $section->addInput(new Form_Checkbox(
 	'localnets',
 	'Local Networks',
-	'Add firewall Locally-Attached Networks to the list (excluding WAN).',
+	'Add firewall Locally-Attached Networks to the list (excluding WAN).  Default is checked (but see warning below).',
 	$pconfig['localnets'] == 'yes' ? true:false,
 	'yes'
-));
+))->setHelp('If creating a custom HOME_NET list, then this box should usually be checked.');
 $section->addInput(new Form_Checkbox(
 	'wanips',
 	'WAN IP',
-	'Add WAN interface IP to the list.',
+	'Add WAN interface IP to the list.  Default is checked).',
 	$pconfig['wanips'] == 'yes' ? true:false,
 	'yes'
-));
+))->setHelp('If creating a custom HOME_NET list and using NAT, then this box should usually be checked.');
 $section->addInput(new Form_Checkbox(
 	'wangateips',
 	'WAN Gateways',
-	'Add WAN Gateways to the list.',
+	'Add WAN Gateways to the list.  Default is checked.',
 	$pconfig['wangateips'] == 'yes' ? true:false,
 	'yes'
 ));
 $section->addInput(new Form_Checkbox(
 	'wandnsips',
 	'WAN DNS Servers',
-	'Add WAN DNS servers to the list.',
+	'Add WAN DNS servers to the list.  Default is checked.',
 	$pconfig['wandnsips'] == 'yes' ? true:false,
 	'yes'
 ));
 $section->addInput(new Form_Checkbox(
 	'vips',
 	'Virtual IP Addresses',
-	'Add Virtual IP Addresses to the list.',
+	'Add Virtual IP Addresses to the list.  Default is checked.',
 	$pconfig['vips'] == 'yes' ? true:false,
 	'yes'
 ));
 $section->addInput(new Form_Checkbox(
 	'vpnips',
 	'VPN Addresses',
-	'Add VPN Addresses to the list.',
+	'Add VPN Addresses to the list.  Default is checked.',
 	$pconfig['vpnips'] == 'yes' ? true:false,
 	'yes'
-));
+))->setHelp('If creating a custom HOME_NET list, then this box should usually be checked.');
 $form->add($section);
 
 $section = new Form_Section('Custom IP Address from Configured Alias');
@@ -279,7 +279,7 @@ $group->add(new Form_Input(
 	'Assigned Alias',
 	'text',
 	$pconfig['address']
-))->setHelp('Enter the name of an existing Alias.')->setAttribute('title', trim(filter_expand_alias($pconfig['address'])));
+))->setHelp('Enter the name of an existing Alias in order to further customize IP addresses included on this Pass List.')->setAttribute('title', trim(filter_expand_alias($pconfig['address'])));
 $group->add(new Form_Button(
 	'btnSelectAlias',
 	'Aliases',
