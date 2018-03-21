@@ -90,6 +90,18 @@
 			<encoding>base64</encoding>
         </field>
         <field>
+            <fielddescr>Skip SSL verify</fielddescr>
+            <fieldname>insecure_skip_verify</fieldname>
+            <type>checkbox</type>
+            <description>Use SSL but skip chain and host verification</description>
+        </field>
+        <field>
+            <fielddescr>Short Hostname</fielddescr>
+            <fieldname>shortname</fieldname>
+            <type>checkbox</type>
+            <description>Use short hostname instead of FQDN</description>
+        </field>
+        <field>
             <fielddescr>*ElasticSearch Servers</fielddescr>
             <fieldname>elasticsearch_server</fieldname>
             <type>input</type>
