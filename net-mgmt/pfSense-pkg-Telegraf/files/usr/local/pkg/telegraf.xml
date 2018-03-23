@@ -61,6 +61,7 @@
             <options>
                 <option><name>InfluxDB</name><value>influxdb</value></option>
                 <option><name>ElasticSearch</name><value>elasticsearch</value></option>
+		<option><name>Graphite</name><value>graphite</value></option>
             </options>
             <multiple/>
         </field>
@@ -94,6 +95,24 @@
             <fieldname>elasticsearch_server</fieldname>
             <type>input</type>
             <description>Full HTTP endpoint URL for ElasticSearch instance. E.g.: http://192.168.1.23:9200</description>
+        </field>
+	<field>
+            <fielddescr>*Graphite Server</fielddescr>
+            <fieldname>graphite_server</fieldname>
+            <type>input</type>
+            <description>Graphite Endpoint E.g.: host.fqdn:port</description>
+        </field>
+	<field>
+            <fielddescr>Graphite Prefix</fielddescr>
+            <fieldname>graphite_prefix</fieldname>
+            <type>input</type>
+            <description>Prefix to be used when submitting data to Graphite</description>
+        </field>
+	<field>
+            <fielddescr>Graphite Timeout</fielddescr>
+            <fieldname>graphite_timeout</fieldname>
+            <type>input</type>
+            <description>Timeout when submitting data to Graphite</description>
         </field>
     </fields>
     <custom_php_resync_config_command>
