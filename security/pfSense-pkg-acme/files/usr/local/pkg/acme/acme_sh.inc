@@ -133,10 +133,11 @@ class acme_sh {
 		if ($api && substr($api, 0, 4 ) === "dns_") {
 			if ($api == "dns_manual") {
 				$cmdapi = "";
+				$cmdparameters .= " --yes-I-know-dns-manual-mode-enough-go-ahead-please ";
 			} else {
 				$cmdapi = escapeshellarg($api);
 			}
-			$cmdparameters = " --dns {$cmdapi} ";
+			$cmdparameters .= " --dns {$cmdapi} ";
 		} elseif ($api == "standalone") {
 			$port = empty($envvariables['port']) ? 80 : $envvariables['port'];
 			$listen = ($envvariables['ipv6'] == "yes") ? "--listen-v6" : "--listen-v4";
