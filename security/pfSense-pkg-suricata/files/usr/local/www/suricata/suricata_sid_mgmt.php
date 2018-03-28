@@ -196,6 +196,14 @@ if (isset($_POST['save_auto_sid_conf'])) {
 		$a_nat[$k]['drop_sid_file'] = $v;
 	}
 
+	foreach ($_POST['reject_sid_file'] as $k => $v) {
+		if ($v == "None") {
+			unset($a_nat[$k]['reject_sid_file']);
+			continue;
+		}
+		$a_nat[$k]['reject_sid_file'] = $v;
+	}
+
 	// Write the new configuration
 	write_config("Suricata pkg: updated automatic SID management settings.");
 
@@ -520,16 +528,17 @@ if ($savemsg) {
 					<th><?=gettext("Disable SID List")?></th>
 					<th><?=gettext("Modify SID List")?></th>
 					<th><?=gettext("Drop SID List")?></th>
+					<th><?=gettext("Reject SID List")?></th>
 				   </tr>
 				</thead>
 				<tbody>
 			   <?php foreach ($a_nat as $k => $natent): ?>
 				<tr>
-					<td>
+					<td class="text-center">
 						<input type="checkbox" name="torestart[]" id="torestart[]" value="<?=$k;?>" title="<?=gettext("Apply new configuration and rebuild rules for this interface when saving");?>" />
 					</td>
-					<td class="listbg"><?=convert_friendly_interface_to_friendly_descr($natent['interface']); ?></td>
-					<td class="listr" align="center">
+					<td><?=convert_friendly_interface_to_friendly_descr($natent['interface']); ?></td>
+					<td>
 						<select name="sid_state_order[<?=$k?>]" class="form-control" id="sid_state_order[<?=$k?>]">
 							<?php
 								foreach (array("disable_enable" => "Disable, Enable", "enable_disable" => "Enable, Disable") as $key => $order) {
@@ -586,18 +595,42 @@ if ($savemsg) {
 						</select>
 					</td>
 					<td>
-						<select name="drop_sid_file[<?=$k?>]" class="form-control" id="drop_sid_file[<?=$k?>]">
-							<?php
-								foreach ($sidmodselections as $choice) {
-									if ($choice == $natent['drop_sid_file'])
-										echo "<option value='{$choice}' selected>";
-									else
-										echo "<option value='{$choice}'>";
+						<?php if ($natent['blockoffenders'] == 'on' && ($natent['ips_mode'] == 'ips_mode_inline' || $natent['block_drops_only'] == 'on')) : ?>
+							<select name="drop_sid_file[<?=$k?>]" class="form-control" id="drop_sid_file[<?=$k?>]">
+								<?php
+									foreach ($sidmodselections as $choice) {
+										if ($choice == $natent['drop_sid_file'])
+											echo "<option value='{$choice}' selected>";
+										else
+											echo "<option value='{$choice}'>";
 
-									echo htmlspecialchars(gettext($choice)) . '</option>';
-								}
-							?>
-						</select>
+										echo htmlspecialchars(gettext($choice)) . '</option>';
+									}
+								?>
+							</select>
+						<?php else : ?>
+							<input type="hidden" name="drop_sid_file[<?=$k?>]" id="drop_sid_file[<?=$k?>]" value="<?=isset($natent['drop_sid_file']) ? $natent['drop_sid_file'] : 'none';?>">
+							<span class="text-center"><?=gettext("Not Applicable")?></span>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php if ($natent['blockoffenders'] == 'on' && $natent['ips_mode'] == 'ips_mode_inline') : ?>
+							<select name="reject_sid_file[<?=$k?>]" class="form-control" id="reject_sid_file[<?=$k?>]">
+								<?php
+									foreach ($sidmodselections as $choice) {
+										if ($choice == $natent['reject_sid_file'])
+											echo "<option value='{$choice}' selected>";
+										else
+											echo "<option value='{$choice}'>";
+
+										echo htmlspecialchars(gettext($choice)) . '</option>';
+									}
+								?>
+							</select>
+						<?php else : ?>
+							<input type="hidden" name="reject_sid_file[<?=$k?>]" id="reject_sid_file[<?=$k?>]" value="<?=isset($natent['reject_sid_file']) ? $natent['reject_sid_file'] : 'none';?>">
+							<span class="text-center"><?=gettext("Not Applicable")?></span>
+						<?php endif; ?>
 					</td>
 				</tr>
 			   <?php endforeach; ?>
