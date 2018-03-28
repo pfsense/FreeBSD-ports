@@ -109,7 +109,7 @@ function upgrade_coreboot($coreboot, &$output) {
 	    "/usr/local/sbin");
 
 	if ($coreboot['model'] == 'PLCC') {
-		$_gc = exec("/usr/local/sbin/adi_smbios_util -u " .
+		$_gc = exec("/usr/local/sbin/adi_smbios_util -w -u " .
 		    $coreboot['rom_path'] . ' 2>&1', $output, $rc);
 	} else {
 		$_gc = exec("/usr/local/sbin/adi_flash_util -u " .
