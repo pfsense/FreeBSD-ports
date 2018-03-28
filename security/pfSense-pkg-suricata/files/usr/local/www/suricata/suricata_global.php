@@ -37,21 +37,29 @@ if (!empty($_POST)) {
 }
 else {
 	$pconfig['enable_vrt_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'] == "on" ? 'on' : 'off';
-	$pconfig['oinkcode'] = $config['installedpackages']['suricata']['config'][0]['oinkcode'];
-	$pconfig['etprocode'] = $config['installedpackages']['suricata']['config'][0]['etprocode'];
+	$pconfig['oinkcode'] = htmlentities($config['installedpackages']['suricata']['config'][0]['oinkcode']);
+	$pconfig['etprocode'] = htmlentities($config['installedpackages']['suricata']['config'][0]['etprocode']);
 	$pconfig['enable_etopen_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'] == "on" ? 'on' : 'off';
 	$pconfig['enable_etpro_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == "on" ? 'on' : 'off';
 	$pconfig['rm_blocked'] = $config['installedpackages']['suricata']['config'][0]['rm_blocked'];
 	$pconfig['autoruleupdate'] = $config['installedpackages']['suricata']['config'][0]['autoruleupdate'];
-	$pconfig['autoruleupdatetime'] = $config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'];
+	$pconfig['autoruleupdatetime'] = htmlentities($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']);
 	$pconfig['live_swap_updates'] = $config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == "on" ? 'on' : 'off';
 	$pconfig['log_to_systemlog'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] == "on" ? 'on' : 'off';
 	$pconfig['log_to_systemlog_facility'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'];
 	$pconfig['forcekeepsettings'] = $config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == "on" ? 'on' : 'off';
 	$pconfig['snortcommunityrules'] = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == "on" ? 'on' : 'off';
-	$pconfig['snort_rules_file'] = $config['installedpackages']['suricata']['config'][0]['snort_rules_file'];
+	$pconfig['snort_rules_file'] = htmlentities($config['installedpackages']['suricata']['config'][0]['snort_rules_file']);
 	$pconfig['autogeoipupdate'] = $config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "off" ? 'off' : 'on';
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on" ? 'on' : 'off';
+	$pconfig['enable_etopen_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] == "on" ? 'on' : 'off';
+	$pconfig['enable_etpro_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] == "on" ? 'on' : 'off';
+	$pconfig['enable_snort_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == "on" ? 'on' : 'off';
+	$pconfig['enable_gplv2_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] == "on" ? 'on' : 'off';
+	$pconfig['etopen_custom_rule_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url']);
+	$pconfig['etpro_custom_rule_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url']);
+	$pconfig['snort_custom_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['snort_custom_url']);
+	$pconfig['gplv2_custom_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url']);
 }
 
 // Do input validation on parameters
@@ -75,6 +83,18 @@ if ($_POST['enable_vrt_rules'] == "on" && empty($_POST['oinkcode']))
 if ($_POST['enable_etpro_rules'] == "on" && empty($_POST['etprocode']))
 		$input_errors[] = "You must supply a subscription code in the box provided in order to enable Emerging Threats Pro rules!";
 
+if ($_POST['enable_etopen_custom_url'] == "on" && empty(trim(html_entity_decode($_POST['etopen_custom_rule_url']))))
+		$input_errors[] = "'Use Custom ET Open Rule download URL' is checked, but the ET Open Custom URL field is blank!";
+
+if ($_POST['enable_etpro_custom_url'] == "on" && empty(trim(html_entity_decode($_POST['etpro_custom_rule_url']))))
+		$input_errors[] = "'Use Custom ET Pro Rule download URL' is checked, but the ET Pro Custom URL field is blank!";
+
+if ($_POST['enable_snort_custom_url'] == "on" && empty(trim(html_entity_decode($_POST['snort_custom_url']))))
+		$input_errors[] = "'Use Custom Snort Rule download URL' is checked, but the Snort Custom URL field is blank!";
+
+if ($_POST['enable_gplv2_custom_url'] == "on" && empty(trim(html_entity_decode($_POST['gplv2_custom_url']))))
+		$input_errors[] = "'Use Custom Snort GPLv2 Rule download URL' is checked, but the Snort GPLv2 Custom URL field is blank!";
+
 /* if no errors move foward with save */
 if (!$input_errors) {
 	if ($_POST["save"]) {
@@ -85,6 +105,10 @@ if (!$input_errors) {
 		$config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] = $_POST['enable_etpro_rules'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] = $_POST['autogeoipupdate'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] = $_POST['hide_deprecated_rules'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] = $_POST['enable_etopen_custom_url'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] = $_POST['enable_etpro_custom_url'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] = $_POST['enable_snort_custom_url'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] = $_POST['enable_gplv2_custom_url'] ? 'on' : 'off';
 
 		// If any rule sets are being turned off, then remove them
 		// from the active rules section of each interface.  Start
@@ -127,11 +151,15 @@ if (!$input_errors) {
 			suricata_remove_dead_rules();
 		}
 
-		$config['installedpackages']['suricata']['config'][0]['snort_rules_file'] = $_POST['snort_rules_file'];
-		$config['installedpackages']['suricata']['config'][0]['oinkcode'] = $_POST['oinkcode'];
-		$config['installedpackages']['suricata']['config'][0]['etprocode'] = $_POST['etprocode'];
+		$config['installedpackages']['suricata']['config'][0]['snort_rules_file'] = html_entity_decode($_POST['snort_rules_file']);
+		$config['installedpackages']['suricata']['config'][0]['oinkcode'] = html_entity_decode($_POST['oinkcode']);
+		$config['installedpackages']['suricata']['config'][0]['etprocode'] = html_entity_decode($_POST['etprocode']);
 		$config['installedpackages']['suricata']['config'][0]['rm_blocked'] = $_POST['rm_blocked'];
 		$config['installedpackages']['suricata']['config'][0]['autoruleupdate'] = $_POST['autoruleupdate'];
+		$config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'] = trim(html_entity_decode($_POST['etopen_custom_rule_url']));
+		$config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'] = trim(html_entity_decode($_POST['etpro_custom_rule_url']));
+		$config['installedpackages']['suricata']['config'][0]['snort_custom_url'] = trim(html_entity_decode($_POST['snort_custom_url']));
+		$config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'] = trim(html_entity_decode($_POST['gplv2_custom_url']));
 
 		/* Check and adjust format of Rule Update Starttime string to add colon and leading zero if necessary */
 		if ($_POST['autoruleupdatetime']) {
@@ -140,7 +168,7 @@ if (!$input_errors) {
 				$tmp = str_pad($_POST['autoruleupdatetime'], 4, "0", STR_PAD_LEFT);
 				$_POST['autoruleupdatetime'] = substr($tmp, 0, 2) . ":" . substr($tmp, -2);
 			}
-			$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = str_pad($_POST['autoruleupdatetime'], 4, "0", STR_PAD_LEFT);
+			$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = str_pad(html_entity_decode($_POST['autoruleupdatetime']), 4, "0", STR_PAD_LEFT);
 		}
 		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] = $_POST['log_to_systemlog'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'] = $_POST['log_to_systemlog_facility'];
@@ -204,33 +232,85 @@ display_top_tabs($tab_array, true);
 
 $form = new Form;
 $section = new Form_Section('Please Choose The Type Of Rules You Wish To Download');
-$section->addInput(new Form_Checkbox(
+
+$group = new Form_Group('Install ETOpen Emerging Threats rules');
+$group->add(new Form_Checkbox(
 	'enable_etopen_rules',
 	'Install ETOpen Emerging Threats rules',
-	'ETOpen is an open source set of Suricata rules whose coverage is more limited than ETPro.',
+	'ETOpen is a free open source set of Suricata rules whose coverage is more limited than ETPro.',
 	$pconfig['enable_etopen_rules'] == 'on' ? true:false,
 	'on'
 ));
-$section->addInput(new Form_Checkbox(
+$group->add(new Form_Checkbox(
+	'enable_etopen_custom_url',
+	'Enable ETOpen Custom Download URL',
+	'Use a custom URL for ETOpen downloads',
+	$pconfig['enable_etopen_custom_url'] == 'on' ? true:false,
+	'on'
+));
+$group->setHelp('Enabling the custom URL option will force the use of a custom user-supplied URL when downloading ETOpen rules.');
+$section->add($group);
+$section->addInput(new Form_Input(
+	'etopen_custom_rule_url',
+	'ETOpen Custom Rule Download URL',
+	'text',
+	$pconfig['etopen_custom_rule_url']
+))->setHelp('You must provide the complete URL including the filename!  The code will assume a matching filename exists at the same URL with an additional extension of ".md5".');
+
+$group = new Form_Group('Install ETPro Emerging Threats rules');
+$group->add(new Form_Checkbox(
 	'enable_etpro_rules',
 	'Install ETPro Emerging Threats rules',
 	'ETPro for Suricata offers daily updates and extensive coverage of current malware threats.',
 	$pconfig['enable_etpro_rules'] == 'on' ? true:false,
 	'on'
-))->setHelp('The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are disabled when the ETPro rules are selected. <a href="https://www.proofpoint.com/us/products/et-pro-ruleset">Sign Up for an ETPro Account</a>');
+));
+$group->add(new Form_Checkbox(
+	'enable_etpro_custom_url',
+	'Enable ETPro Custom Download URL',
+	'Use a custom URL for ETPro rule downloads',
+	$pconfig['enable_etpro_custom_url'] == 'on' ? true:false,
+	'on'
+));
+$group->setHelp('The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are disabled when the ETPro rules are selected. ' . 
+		'<a href="https://www.proofpoint.com/us/products/et-pro-ruleset">Sign Up for an ETPro Account</a>.  Enabling the custom URL option will force the use of a custom user-supplied URL when downloading ETPro rules.');
+$section->add($group);
+$section->addInput(new Form_Input(
+	'etpro_custom_rule_url',
+	'ETPro Custom Rule Download URL',
+	'text',
+	$pconfig['etpro_custom_rule_url']
+))->setHelp('You must provide the complete URL including the filename!  The code will assume a matching filename exists at the same URL with an additional extension of ".md5".');
 $section->addInput(new Form_Input(
 	'etprocode',
 	'ETPro Subscription Configuration Code',
 	'text',
 	$pconfig['etprocode']
 ))->setHelp('Obtain an ETPro subscription code and paste it here.');
-$section->addInput(new Form_Checkbox(
+
+$group = new Form_Group('Install Snort rules');
+$group->add(new Form_Checkbox(
 	'enable_vrt_rules',
 	'Install Snort rules',
 	'Snort free Registered User or paid Subscriber rules',
 	$pconfig['enable_vrt_rules'] == 'on' ? true:false,
 	'on'
 ))->setHelp('<a href="https://www.snort.org/users/sign_up">Sign Up for a free Registered User Rules Account</a><br /><a href="https://www.snort.org/products">Sign Up for paid Snort Subscriber Rule Set (by Talos)</a>');
+$group->add(new Form_Checkbox(
+	'enable_snort_custom_url',
+	'Enable Snort Custom Download URL',
+	'Use a custom URL for Snort rule downloads',
+	$pconfig['enable_snort_custom_url'] == 'on' ? true:false,
+	'on'
+));
+$group->setHelp('Enabling the custom URL option will force the use of a custom user-supplied URL when downloading Snort Subscriber rules.');
+$section->add($group);
+$section->addInput(new Form_Input(
+	'snort_custom_url',
+	'Snort Rules Custom Download URL',
+	'text',
+	$pconfig['snort_custom_url']
+))->setHelp('You must provide the complete URL including the filename!  The code will assume a matching filename exists at the same URL with an additional extension of ".md5".');
 $section->addInput(new Form_Input(
 	'snort_rules_file',
 	'Snort Rules Filename',
@@ -243,13 +323,32 @@ $section->addInput(new Form_Input(
 	'text',
 	$pconfig['oinkcode']
 ))->setHelp('Obtain a snort.org Oinkmaster code and paste it here.');
-$section->addInput(new Form_Checkbox(
+
+$group = new Form_Group('Install Snort GPLv2 Community rules');
+$group->add(new Form_Checkbox(
 	'snortcommunityrules',
 	'Install Snort GPLv2 Community rules',
-	'The Snort Community Ruleset is a GPLv2 Talos-certified ruleset that is distributed free of charge without any Snort Subscriber License restrictions. This ruleset is updated daily and is a subset of the subscriber ruleset.',
+	'The Snort Community Ruleset is a GPLv2 Talos-certified ruleset that is distributed free of charge without any Snort Subscriber License restrictions.',
 	$pconfig['snortcommunityrules'] == 'on' ? true:false,
 	'on'
-))->setHelp('If you are a Snort Subscriber Rules customer (paid subscriber), the community ruleset is already built into your download of the Snort Subscriber rules, and there is no benefit in adding this rule set separately.');
+));
+$group->add(new Form_Checkbox(
+	'enable_gplv2_custom_url',
+	'Enable Snort GPLv2 Custom Download URL',
+	'Use a custom URL for Snort GPLv2 rule downloads',
+	$pconfig['enable_gplv2_custom_url'] == 'on' ? true:false,
+	'on'
+));
+$group->setHelp('This ruleset is updated daily and is a subset of the subscriber ruleset.  If you are a Snort Subscriber Rules customer (paid subscriber), ' .
+		'the community ruleset is already built into your download of the Snort Subscriber rules, and there is no benefit in adding this rule set separately.');
+$section->add($group);
+$section->addInput(new Form_Input(
+	'gplv2_custom_url',
+	'Snort GPLv2 Custom Rule Download URL',
+	'text',
+	$pconfig['gplv2_custom_url']
+))->setHelp('You must provide the complete URL including the filename!  The code will assume a matching filename exists at the same URL with an additional extension of ".md5".');
+
 $section->addInput(new Form_Checkbox(
 	'hide_deprecated_rules',
 	'Hide Deprecated Rules Categories',
@@ -339,21 +438,60 @@ events.push(function(){
 		var hide = ! $('#enable_vrt_rules').prop('checked');
 		hideInput('snort_rules_file', hide);
 		hideInput('oinkcode', hide);
+		$('#enable_snort_custom_url').prop('disabled', hide);
+		if (!hide && $('#enable_snort_custom_url').prop('checked')) {
+			hideInput('snort_custom_url', false);
+		}
+		else {
+			hideInput('snort_custom_url', true);
+		}
 	}
 
 	function enable_et_rules() {
 		var hide = $('#enable_etopen_rules').prop('checked');
+		$('#enable_etopen_custom_url').prop('disabled', !hide);
+		if (hide && $('#enable_etopen_custom_url').prop('checked')) {
+			hideInput('etopen_custom_rule_url', false);
+		}
+		else {
+			hideInput('etopen_custom_rule_url', true);
+		}
 		if (hide && $('#enable_etpro_rules').prop('checked')) {
 			hideInput('etprocode', hide);
+			hideInput('etpro_custom_rule_url', hide);
 			$('#enable_etpro_rules').prop('checked', false);
+			$('#enable_etpro_custom_url').prop('disabled', hide);
 		}
 	}
 
 	function enable_etpro_rules() {
 		var hide = ! $('#enable_etpro_rules').prop('checked');
-		hideInput('etprocode', hide);
-		if (!hide && $('#enable_etopen_rules').prop('checked'))
+		$('#enable_etpro_custom_url').prop('disabled', hide);
+		if (!hide && $('#enable_etpro_custom_url').prop('checked')) {
+			hideInput('etpro_custom_rule_url', false);
+			hideInput('etprocode', true);
+		}
+		else {
+			hideInput('etpro_custom_rule_url', true);
+			hideInput('etprocode', false);
+
+		}
+		if (!hide && $('#enable_etopen_rules').prop('checked')) {
 			$('#enable_etopen_rules').prop('checked', false);
+			$('#enable_etopen_custom_url').prop('disabled', !hide);
+			hideInput('etopen_custom_rule_url', !hide);
+		}
+	}
+
+	function enable_gplv2_rules() {
+		var hide = ! $('#snortcommunityrules').prop('checked');
+		$('#enable_gplv2_custom_url').prop('disabled', hide);
+		if (!hide && $('#enable_gplv2_custom_url').prop('checked')) {
+			hideInput('gplv2_custom_url', false);
+		}
+		else {
+			hideInput('gplv2_custom_url', true);
+		}
 	}
 
 	function enable_change_rules_upd(val) {
@@ -374,14 +512,44 @@ events.push(function(){
 		enable_snort_vrt();
 	});
 
+	// When 'enable_snort_custom_url' is clicked, toggle the custom URL control
+	$('#enable_snort_custom_url').click(function() {
+		var hide = ! $('#enable_snort_custom_url').prop('checked');
+		hideInput('snort_custom_url', hide);
+	});
+
 	// When 'enable_etopen_rules' is clicked, uncheck ETPro and hide the ETPro Code text control
 	$('#enable_etopen_rules').click(function() {
 		enable_et_rules();
 	});
 
+	// When 'enable_etopen_custom_url' is clicked, toggle the custom URL control
+	$('#enable_etopen_custom_url').click(function() {
+		var hide = ! $('#enable_etopen_custom_url').prop('checked');
+		hideInput('etopen_custom_rule_url', hide);
+	});
+
 	// When 'enable_etpro_rules' is clicked, uncheck ET Open checkbox control and show code
 	$('#enable_etpro_rules').click(function() {
 		enable_etpro_rules();
+	});
+
+	// When 'enable_etpro_custom_url' is clicked, toggle the custom URL control
+	$('#enable_etpro_custom_url').click(function() {
+		var hide = ! $('#enable_etpro_custom_url').prop('checked');
+		hideInput('etpro_custom_rule_url', hide);
+		hideInput('etprocode', !hide);
+	});
+
+	// When 'snortcommunityrules' is clicked, toggle the custom URL control
+	$('#snortcommunityrules').click(function() {
+		enable_gplv2_rules();
+	});
+
+	// When 'enable_gplv2_custom_url' is clicked, toggle the custom URL control
+	$('#enable_gplv2_custom_url').click(function() {
+		var hide = ! $('#enable_gplv2_custom_url').prop('checked');
+		hideInput('gplv2_custom_url', hide);
 	});
 
 	// When 'autoruleupdate' is set to never, disable 'autoruleupdatetime'
@@ -398,6 +566,7 @@ events.push(function(){
 	enable_snort_vrt();
 	enable_et_rules();
 	enable_etpro_rules();
+	enable_gplv2_rules();
 	enable_change_rules_upd($('#autoruleupdate').prop('selectedIndex'));
 	toggle_log_to_systemlog();
 
