@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Coreboot_Upgrade
-PORTVERSION=	0.19
+PORTVERSION=	0.20
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 
