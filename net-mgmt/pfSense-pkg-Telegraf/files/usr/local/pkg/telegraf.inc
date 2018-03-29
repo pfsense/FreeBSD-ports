@@ -51,20 +51,22 @@ function telegraf_resync_config() {
 		$telegraf_conf['interval'] = 10;
 	}
 
-	$shortname='';
+	$shortname = '';
 	if ($telegraf_conf['shortname'] == 'on') {
-		$shortname="\thostname = \"" . $config['system']['hostname'] . "\"";
+		$shortname = "\thostname = \"" . $config['system']['hostname'] . "\"";
 	}
 
 	$ca_pem_file = "/usr/local/etc/telegraf.ca";
-	$a_ca=$config['ca'];
-	if (!is_array($a_ca)) $a_ca=array();
+	$a_ca = $config['ca'];
+	if (!is_array($a_ca)) {
+		$a_ca=array();
+	}
 	if (count($a_ca)) {
-		$ca_pem='';
+		$ca_pem = '';
 		foreach ($a_ca as $ca) {
 			$ca_pem .= base64_decode($ca['crt']);
 		}
-		 file_put_contents($ca_pem_file, $ca_pem);
+		file_put_contents($ca_pem_file, $ca_pem);
 	}
 
 	/* generate telegraf.conf */
