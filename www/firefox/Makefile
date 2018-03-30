@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	59.0
-PORTREVISION=	2
+DISTVERSION=	59.0.2
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	https://hg.mozilla.org/releases/mozilla-release/archive/
-DISTNAME=	${MASTER_SITES:M*hg*:S,/archive/,,:T}-c61f5f5ead48c78a80c80db5c489bdc7cfaf8175
+DISTNAME=	${MASTER_SITES:M*hg*:S,/archive/,,:T}-239e434d6d2b8e1e2b697c3416d1e96d48fe98e5
 DISTFILES=	${DISTNAME:C/.*-//}${EXTRACT_SUFX}
 DIST_SUBDIR=	firefox
 
