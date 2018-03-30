@@ -2363,8 +2363,8 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 	/*                  tokens                    */
 	/*      $action ==> modification action for   */
 	/*                  matching SID targets:     */
-	/*                  'enable', 'disable' or    */
-	/*		    'drop'.
+	/*                  'enable', 'disable',      */
+	/*		    'drop' or 'reject'.       */
 	/* $log_results ==> [optional] 'yes' to log   */
 	/*                   results to $log_file     */
 	/*    $log_file ==> full path and filename    */
@@ -2381,6 +2381,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 
 	$sids = array();
 	$log_action = '';
+	$log_what = '';
 
 	// If no rules in $rule_map or mods in $sid_mods,
 	// then nothing to do.
@@ -2393,15 +2394,23 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 	switch ($action) {
 
 		case "enable":
+			$log_what = 'state';
 			$log_action = 'enabled';
 			break;
 
 		case "disable":
+			$log_what = 'state';
 			$log_action = 'disabled';
 			break;
 
 		case "drop":
+			$log_what = 'action';
 			$log_action = 'drop';
+			break;
+
+		case "reject":
+			$log_what = 'action';
+			$log_action = 'reject';
 			break;
 
 		default:
@@ -2537,13 +2546,23 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 						$modcount++;
 					}
 				}
+				elseif ($action == 'reject' && $rule_map[$k1][$k2]['action'] != 'reject') {
+					if ($tmp = preg_replace('/\s*alert\s*/', 'reject ', $rule_map[$k1][$k2]['rule'], 1)) {
+						$rule_map[$k1][$k2]['rule'] = $tmp;
+						$rule_map[$k1][$k2]['action'] = 'reject';
+						$rule_map[$k1][$k2]['managed'] = 1;
+						$rule_map[$k1][$k2]['modified'] = 1;
+						$changecount++;
+						$modcount++;
+					}
+				}
 			}
 		}
 	}
 
 	if ($log_results == TRUE && !empty($log_file)) {
 		error_log(gettext("    Found {$modcount} matching SIDs in the active rules.\n"), 3, $log_file);
-		error_log(gettext("    Changed state for {$changecount} SIDs to '{$log_action}'.\n"), 3, $log_file);
+		error_log(gettext("    Changed {$log_what} for {$changecount} SIDs to '{$log_action}'.\n"), 3, $log_file);
 	}
 
 	// Return the array of matching SIDs
@@ -2850,6 +2869,53 @@ function suricata_process_dropsid(&$rule_map, $suricatacfg, $log_results = FALSE
 	unset($sid_mods);
 }
 
+function suricata_process_rejectsid(&$rule_map, $suricatacfg, $log_results = FALSE, $log_file = NULL) {
+
+	/**********************************************/
+	/* This function loads and processes the list */
+	/* specified by 'reject_sid_file' for the     */
+	/* interface.  The list is assumed to be a    */
+	/* valid rejectsid.conf list containing       */
+	/* instructions for modifying the action for  */
+	/* matching rule SIDs.                        */
+	/*                                            */
+	/*     $rule_map ==> reference to array of    */
+	/*                   current rules            */
+	/*  $suricatacfg ==> interface config params  */
+	/*  $log_results ==> [optional] 'yes' to log  */
+	/*                   results to $log_file     */
+	/*     $log_file ==> full path and filename   */
+	/*                   of log file to write to  */
+	/*                                            */
+	/*     On Return ==> suitably modified        */
+	/*                   $rule_map array          */
+	/**********************************************/
+
+	$suricatalogdir = SURICATALOGDIR;
+	$sid_mods = array();
+
+	// If no rules in $rule_map, then nothing to do
+	if (empty($rule_map)) {
+		return;
+	}
+
+	// Verify the 'reject_sid' list for the interface exists
+	if (!suricata_sid_mgmt_list_exist($suricatacfg['reject_sid_file'])) {
+		log_error(gettext("[Suricata] Error - unable to find reject_sid list \"{$suricatacfg['reject_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+		return;
+	} else {
+		$sid_mods = suricata_parse_sidconf_file($suricatacfg['reject_sid_file']);
+	}
+
+	if (!empty($sid_mods)) {
+		suricata_modify_sid_state($rule_map, $sid_mods, "reject", $log_results, $log_file);
+	} elseif ($log_results == TRUE && !empty($log_file)) {
+		error_log(gettext("WARNING: no valid SID match tokens found in list \"{$suricatacfg['reject_sid_file']}\".\n"), 3, $log_file);
+	}
+
+	unset($sid_mods);
+}
+
 function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) {
 
 	/**************************************************/
@@ -2915,11 +2981,17 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 					}
 					suricata_process_modifysid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
-				if (!empty($suricatacfg['drop_sid_file'])) {
+				if (!empty($suricatacfg['drop_sid_file']) && ($suricatacfg['blockoffenders'] == 'on' && ($suricatacfg['block_drops_only'] == 'on' || $suricatacfg['ips_mode'] == 'ips_mode_inline'))) {
 					if ($log_results == TRUE) {
 						error_log(gettext("Processing drop_sid list: {$suricatacfg['drop_sid_file']}\n"), 3, $log_file);
 					}
 					suricata_process_dropsid($rule_map, $suricatacfg, $log_results, $log_file);
+				}
+				if (!empty($suricatacfg['reject_sid_file']) && $suricatacfg['blockoffenders'] == 'on' && $suricatacfg['ips_mode'] == 'ips_mode_inline') {
+					if ($log_results == TRUE) {
+						error_log(gettext("Processing reject_sid list: {$suricatacfg['reject_sid_file']}\n"), 3, $log_file);
+					}
+					suricata_process_rejectsid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				$result = TRUE;
 				break;
@@ -2943,11 +3015,17 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 					}
 					suricata_process_modifysid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
-				if (!empty($suricatacfg['drop_sid_file'])) {
+				if (!empty($suricatacfg['drop_sid_file']) && ($suricatacfg['blockoffenders'] == 'on' && ($suricatacfg['block_drops_only'] == 'on' || $suricatacfg['ips_mode'] == 'ips_mode_inline'))) {
 					if ($log_results == TRUE) {
 						error_log(gettext("Processing drop_sid list: {$suricatacfg['drop_sid_file']}\n"), 3, $log_file);
 					}
 					suricata_process_dropsid($rule_map, $suricatacfg, $log_results, $log_file);
+				}
+				if (!empty($suricatacfg['reject_sid_file']) && $suricatacfg['blockoffenders'] == 'on' && $suricatacfg['ips_mode'] == 'ips_mode_inline') {
+					if ($log_results == TRUE) {
+						error_log(gettext("Processing reject_sid list: {$suricatacfg['reject_sid_file']}\n"), 3, $log_file);
+					}
+					suricata_process_rejectsid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				$result = TRUE;
 				break;
@@ -3073,8 +3151,24 @@ function suricata_modify_sids_action(&$rule_map, $suricatacfg) {
 
 	/* Load up our SID forced action arrays with manually changed SID actions */
 	$alertsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_alert']);
-	$dropsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_drop']);
-	$rejectsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_reject']);
+
+	/* DROP is only applicable when blocking offenders is enabled and when    */
+	/* 'block drops only' is enabled, or when using Inline IPS Mode.          */
+	if ($suricatacfg['blockoffenders'] == 'on' && ($suricatacfg['block_drops_only'] == 'on' || $suricatacfg['ips_mode'] == 'ips_mode_inline')) {
+		$dropsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_drop']);
+	}
+	else {
+		$dropsid = array();
+	}
+
+	/* REJECT is only applicable when blocking offenders is enabled and when  */
+	/* Inline IPS Mode is also enabled.                                       */
+	if ($suricatacfg['blockoffenders'] == 'on' && $suricatacfg['ips_mode'] == 'ips_mode_inline') {
+		$rejectsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_reject']);
+	}
+	else {
+		$rejectsid = array();
+	}
 
 	/* Change action for any rules that need to be */
 	/* forced to "alert" with alertsid mods.       */
@@ -3305,7 +3399,13 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 		// Check if a pre-defined Snort VRT policy is selected. If so,
 		// add all the VRT policy rules to our enforcing rule set.
 		if ($suricatacfg['ips_policy_enable'] == 'on' && !empty($suricatacfg['ips_policy'])) {
-			$policy_rules = suricata_load_vrt_policy($suricatacfg['ips_policy'], $suricatacfg['ips_policy_mode'], $all_rules);
+			if ($suricatacfg['blockoffenders'] == 'on' && ($suricatacfg['ips_mode'] == 'ips_mode_inline' || $suricatacfg['block_drops_only'] == 'on')) {
+				$policy_mode = $suricatacfg['ips_policy_mode'];
+			}
+			else {
+				$policy_mode = 'alert';
+			}
+			$policy_rules = suricata_load_vrt_policy($suricatacfg['ips_policy'], $policy_mode, $all_rules);
 			foreach ($policy_rules as $k1 => $policy) {
 				foreach ($policy as $k2 => $p) {
 					if (!is_array($enabled_rules[$k1])) {
