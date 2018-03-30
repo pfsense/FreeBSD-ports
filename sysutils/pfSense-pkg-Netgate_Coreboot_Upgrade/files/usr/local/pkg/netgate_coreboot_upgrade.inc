@@ -29,6 +29,7 @@ function get_coreboot_model() {
 
 	switch($specplatform['name']) {
 	case 'RCC-DFF':
+	case 'SG-2220':
 		return 'DFF2';
 		break;
 	case 'SG-2440':
