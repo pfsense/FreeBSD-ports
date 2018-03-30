@@ -106,19 +106,15 @@ EOD;
         } else if ((is_array($telegraf_conf['telegraf_output']) && in_array("graphite", $telegraf_conf['telegraf_output'])) || $telegraf_conf['telegraf_output'] == "graphite") {
 		$cfg .= "[[outputs.graphite]]\n";
 		$cfg .= "\tservers = [\"" . $telegraf_conf['graphite_server'] . "\"]\n";
-		if (!empty($telegraf_conf['graphite_prefix'])) 
-		{
+		if (!empty($telegraf_conf['graphite_prefix'])) {
 			$cfg .= "\tprefix = " . $telegraf_conf['graphite_prefix'] . "\n";
-		} else
-		{
+		} else {
 			$cfg .= "\tprefix = \"monitor\"\n";
 		}
 		$cfg .= "\ttemplate = \"host.tags.measurement.field\"\n";
-		if (!empty($telegraf_conf['graphite_timeout'])) 
-		{
+		if (!empty($telegraf_conf['graphite_timeout'])) {
 			$cfg .= "\ttimeout = " . $telegraf_conf['graphite_timeout'] . "\n";
-		} else
-		{
+		} else {
 			$cfg .= "\ttimeout = 2\n";
 		}
 	}
