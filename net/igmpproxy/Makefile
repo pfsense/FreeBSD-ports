@@ -2,19 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	igmpproxy
-PORTVERSION=	0.1
-PORTREVISION=	5
+DISTVERSION=	0.2.1
 PORTEPOCH=	1
 CATEGORIES=	net
-MASTER_SITES=	SF
 
-MAINTAINER=	melifaro@ipfw.ru
+MAINTAINER=	franco@opnsense.org
 COMMENT=	Multicast forwarding IGMP proxy
 
-HOMEPAGE=	http://igmpproxy.sourceforge.net/
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_RC_SUBR=	igmpproxy
-USES=		gmake
+USES=		autoreconf
+USE_GITHUB=	yes
+GH_ACCOUNT=	pali
 GNU_CONFIGURE=	yes
+USE_RC_SUBR=	igmpproxy
+
+post-install:
+	${INSTALL_DATA} ${WRKSRC}/igmpproxy.conf \
+	    ${STAGEDIR}${PREFIX}/etc/igmpproxy.conf.sample
 
 .include <bsd.port.mk>

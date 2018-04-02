@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	calibre
-PORTVERSION=	3.14.0
+PORTVERSION=	3.20.0
 CATEGORIES=	deskutils python
 MASTER_SITES=	http://download.calibre-ebook.com/${PORTVERSION}/
 
@@ -48,7 +48,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		pdftohtml:graphics/poppler-utils
 
 USES=		desktop-file-utils gettext-runtime gnome localbase:ldflags pkgconfig \
-		python:2 pyqt:5 shared-mime-info shebangfix ssl tar:xz
+		python:2.7 pyqt:5 shared-mime-info shebangfix ssl tar:xz
 USE_RC_SUBR=	calibre
 EXTRACT_BEFORE_ARGS=	-x -s '/^calibre/~-src/' -f
 SHEBANG_GLOB=	*.sh *.py
@@ -93,8 +93,12 @@ do-install:
 		${PYSETUP} install --prefix ${PREFIX} \
 		--staging-root ${STAGEDIR}${PREFIX})
 	@${RM} ${STAGEDIR}${PREFIX}/bin/calibre-uninstall \
-		${STAGEDIR}${PREFIX}/share/applications/defaults.list
-	@${RMDIR} ${STAGEDIR}${PREFIX}/share/desktop-directories
+		${STAGEDIR}${PREFIX}/share/applications/defaults.list \
+		${STAGEDIR}${PREFIX}/share/mime/application/* \
+		${STAGEDIR}${PREFIX}/share/mime/text/*
+	@${RMDIR} ${STAGEDIR}${PREFIX}/share/desktop-directories \
+		${STAGEDIR}${PREFIX}/share/mime/application \
+		${STAGEDIR}${PREFIX}/share/mime/text
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/calibre/calibre/plugins/*
 
 .include <bsd.port.mk>

@@ -101,7 +101,7 @@ pop3vscan:*:151:6::0:0:POP3VScan Daemon:/var/spool/pop3vscan:/usr/sbin/nologin
 iog:*:152:80::0:0:iog Monitoring Owner:/usr/local/iog:/usr/sbin/nologin
 rbldns:*:153:153::0:0:rbldnsd pseudo-user:/nonexistent:/usr/sbin/nologin
 trircd:*:154:154::0:0:& user:/usr/local/etc/tr-ircd:/usr/sbin/nologin
-# free: 155
+xmrig:*:155:65534::0:0:XMRig:/nonexistent:/usr/sbin/nologin
 monetdb:*:156:156::0:0:MonetDB user:/usr/local/monetdb5:/bin/sh
 barman:*:157:157::0:0:Barman user:/var/barman:/bin/sh
 pootle:*:158:158::0:0:Pootle User:/var/db/pootle:/usr/sbin/nologin
@@ -166,16 +166,16 @@ anvil:*:217:217::0:0:anvil certificate dropper:/var/db/anvil:/bin/sh
 zap:*:218:218::0:0:zap user:/usr/local/zap:/bin/sh
 sddm:*:219:219::0:0:SDDM Display Manager user:/usr/local/etc/sddm/home:/usr/sbin/nologin
 bs:*:220:220::0:0:Big Sister:/usr/local/bigsister:/bin/sh
-# free: 221
+opensips:*:221:221::0:0:OpenSIPS user:/nonexistent:/usr/sbin/nologin
 rtpproxy:*:222:222::0:0:& user:/nonexistent:/sbin/nologin
-# free: 223
+mqttwarn:*:223:223::0:0:mqttwarn:/nonexistent:/sbin/nologin
 # free: 224
 postgrey:*:225:225::0:0:Postgrey Owner:/nonexistent:/usr/sbin/nologin
 sqlgrey:*:226:226::0:0:SQLgrey Owner:/nonexistent:/usr/sbin/nologin
 _hfm:*:227:227::0:0:hfm daemon:/nonexistent:/usr/sbin/nologin
-# free: 228
+osrm:*:228:228::0:0:osrm:/nonexistent:/usr/sbin/nologin
 # free: 229
-# free: 230
+carbon:*:230:230::0:0:osrm:/nonexistent:/usr/sbin/nologin
 # free: 231
 # free: 232
 # free: 233
@@ -549,7 +549,7 @@ avahi-autoipd:*:588:588::0:0:Avahi Autoipd Daemon user:/nonexistent:/usr/sbin/no
 _xsi:*:600:600::0:0:XMLSysInfo User:/nonexistent:/usr/sbin/nologin
 _tss:*:601:601:daemon:0:0:TrouSerS user:/var/empty:/usr/sbin/nologin
 _pkcs11:*:602:602:daemon:0:0:opencryptoki user:/var/empty:/usr/sbin/nologin
-# free: 603
+_acme:*:603:603::0:0:ACME client user:/var/empty:/usr/sbin/nologin
 # free: 604
 # free: 605
 # free: 606
@@ -835,8 +835,8 @@ archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
 # free: 886
 # free: 887
 vuls:*:888:888::0:0:VULnerability Scanner:/var/db/vuls:/usr/sbin/nologin
-# free: 889
-# free: 890
+mattermost:*:889:889::0:0:Mattermost:/usr/local/www/mattermost:/usr/sbin/nologin
+matterircd:*:890:890::0:0:Matterircd User:/nonexistent:/usr/sbin/nologin
 # free: 891
 # free: 892
 # free: 893

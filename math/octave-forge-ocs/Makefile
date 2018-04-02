@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-ocs
 PORTVERSION=	0.1.5
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -11,6 +11,8 @@ COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
+
+BROKEN=		depends upon math/octave-forge-odepkg, which is depreciated
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.

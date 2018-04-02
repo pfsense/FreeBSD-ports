@@ -2,6 +2,7 @@
 
 PORTNAME=	twmn
 PORTVERSION=	g20171216
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	dg@syrec.org
@@ -31,7 +32,7 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

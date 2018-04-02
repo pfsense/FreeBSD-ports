@@ -3,7 +3,7 @@
 
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION}
-PORTREVISION=	0
+PORTREVISION=	4
 CATEGORIES=	editors java
 MASTER_SITES=	APACHE/openoffice/${PORTVERSION}/sources \
 		http://tools.openoffice.org/unowinreg_prebuild/680/:unoreg \
@@ -14,7 +14,7 @@ PKGNAMEPREFIX=		${LANG_PKGNAME}-
 .if defined(LANG_SUFFIX)
 PKGNAMESUFFIX=		-${LANG_SUFFIX}
 .endif
-DISTFILES=	${AOOSRC} unowinreg.dll:unoreg ${EXTSRC}:extsrc
+DISTFILES=	${AOOSRC} ${EXTSRC}:extsrc
 DIST_SUBDIR=	openoffice
 EXTRACT_ONLY=	${AOOSRC}
 
@@ -119,7 +119,7 @@ XDGDIR=			${OOPATH}/share/xdg
 XDGREL=			../../${INSTALLATION_BASEDIR}/openoffice${AOOVERSION1}/share/xdg
 EXECBASE?=		openoffice-${AOOSUFFIX}
 
-USES=		autoreconf:autoconf bison compiler:c++11-lib cpe \
+USES=		autoreconf bison compiler:c++11-lib cpe \
 		desktop-file-utils \
 		gettext-runtime gmake iconv jpeg perl5 pkgconfig python \
 		shared-mime-info ssl tar:bzip2
@@ -138,17 +138,27 @@ WITHOUT_CPU_CFLAGS=	true
 CPE_PRODUCT=	${PORTNAME:S|apache-||}
 CPE_VENDOR=	apache
 
-OPTIONS_DEFINE=		CUPS GNOME GNOMEVFS MMEDIA SDK WIKI_PUBLISHER CCACHE
+OPTIONS_DEFINE=		CRASHDUMP CUPS DBGUTIL DEBUG GNOME GNOMEVFS MMEDIA \
+			SDK WIKI_PUBLISHER
 OPTIONS_DEFAULT=	CUPS GNOME GNOMEVFS MMEDIA WIKI_PUBLISHER
+CRASHDUMP_DESC=		Enable crashdumps, sets WITH_DEBUG
+DBGUTIL_DESC=		Enable assertions, object counting. (non-production)
+DEBUG_DESC=		Compile with -O0, sets WITH_DEBUG
 GNOME_DESC=		GConf + screensaver presentation control via DBUS
 GNOMEVFS_DESC=		GNOME Virtual File System
 MMEDIA_DESC=		Multimedia backend for impress
 SDK_DESC=		Build and install software development kit
 WIKI_PUBLISHER_DESC=	Build and install Wiki Publisher extension
-CCACHE_DESC=		Mimimize compile time of C/C++ programs
+
+CRASHDUMP_CONFIGURE_ENABLE=	crashdump
+CRASHDUMP_VARS=			WITH_DEBUG=yes
 
 CUPS_CONFIGURE_ENABLE=		cups
 CUPS_LIB_DEPENDS=		libcups.so:print/cups
+
+DBGUTIL_CONFIGURE_ENABLE=	dbgutil
+
+DEBUG_CONFIGURE_ENABLE=		debug
 
 GNOME_CONFIGURE_ENABLE=		dbus gconf lockdown
 GNOME_LIB_DEPENDS=		libdbus-1.so:devel/dbus \
@@ -165,6 +175,7 @@ MMEDIA_LIB_DEPENDS=		libgstreamer-0.10.so:multimedia/gstreamer
 MMEDIA_USE=			GSTREAMER=yes
 
 SDK_CONFIGURE_ENABLE=		odk
+SDK_DISTFILES=			unowinreg.dll:unoreg
 
 WIKI_PUBLISHER_CONFIGURE_ENABLE=	wiki-publisher
 WIKI_PUBLISHER_CONFIGURE_WITH=						\
@@ -183,6 +194,10 @@ WIKI_PUBLISHER_VARS=	BUNDLED_EXTENSIONS+=swext/wiki-publisher.oxt
 TARGET_ORDER_OVERRIDE=	710:gnome-post-icons
 
 .include <bsd.port.pre.mk>
+
+.if defined(WITH_DEBUG)
+CONFIGURE_ARGS+=	--enable-symbols
+.endif
 
 .include <${FILESDIR}/Makefile.localized>
 
@@ -207,18 +222,7 @@ PACKAGE_PREFIX=		Apache_OpenOffice
 
 LOCALIZED_LANG?=	en-US
 
-.if ${PORT_OPTIONS:MCCACHE} || defined(WITH_CCACHE)
-BUILD_DEPENDS+=	ccache:devel/ccache
-CCACHE_PREFIX=	ccache
-AOOCC=		${CCACHE_PREFIX} ${CC}
-AOOCXX=		${CCACHE_PREFIX} ${CXX}
-.else
-AOOCC=		${CC}
-AOOCXX=		${CXX}
-.endif
-
-CONFIGURE_ENV+=	CC="${AOOCC}" CXX="${AOOCXX}"		\
-		PATH=${WRKSRC}/solenv/bin:$$PATH
+AOO_MAKE_ENV=	${MAKE_ENV:NCPPFLAGS=*:NCFLAGS=*:NCXXFLAGS=*}
 
 GNU_CONFIGURE=	yes
 WRKSUBDIR=	${WRKDIR}/aoo-${AOOVERSION}
@@ -242,7 +246,6 @@ CONFIGURE_ARGS+=							\
 			--with-system-cairo --enable-cairo		\
 			--with-system-coinmp				\
 			--with-system-curl				\
-			--enable-crashdump				\
 			--with-system-dicts				\
 			--with-epm=${LOCALBASE}/bin/epm			\
 			--with-system-expat				\
@@ -311,11 +314,15 @@ pre-everything::
 	${TOUCH} ${BUILD_COOKIE}
 .endif
 
+do-extract-SDK-on:
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/unowinreg.dll ${WRKSRC}/external/unowinreg/
+
 post-extract:
 	${TAR} -C ${WRKSUBDIR} -xzf ${DISTDIR}/${DIST_SUBDIR}/${EXTSRC}
-	${CP} ${DISTDIR}/${DIST_SUBDIR}/unowinreg.dll ${WRKSRC}/external/unowinreg/
-	${CP} ${FILESDIR}/freebsd-aoo-intro.png ${WRKSRC}/default_images/introabout/intro.png
-	${CP} ${FILESDIR}/freebsd-aoo-about.png ${WRKSRC}/default_images/introabout/about.png
+	${CP} ${FILESDIR}/freebsd-aoo-intro.png \
+		${WRKSRC}/default_images/introabout/intro.png
+	${CP} ${FILESDIR}/freebsd-aoo-about.png \
+		${WRKSRC}/default_images/introabout/about.png
 	${RM} -r ${WRKSRC}/l10n
 	${LN} -sf ${UNZIP_CMD} ${WRKSRC}/solenv/bin/unzip
 	${SED}  -e '\|^For main/vcl/unx/generic/fontmanager/parseAFM|,/^__/p' \
@@ -415,13 +422,16 @@ do-build:
 	 fi ;								  \
 	fi ;								  \
 	cd ${WRKSRC}/instsetoo_native ;					  \
+	export ${AOO_MAKE_ENV} ;					  \
 	. ../${FREEBSD_ENV_SET} ;					  \
 	build.pl --all -P$${numproc} -- -P$${dmproc}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PRINSTALLATION_BASEDIR} \
 		${STAGEDIR}${PREFIX}/share/mime/packages
-	@cd ${WRKSRC}/instsetoo_native/unxfbsd*.pro/Apache_OpenOffice/archive/install/${LOCALIZED_LANG}/ ; \
+	@cd ${WRKSRC} ; \
+		. ${FREEBSD_ENV_SET} ; \
+		cd instsetoo_native/$${INPATH}/Apache_OpenOffice/archive/install/${LOCALIZED_LANG}/ ; \
 		for i in *.tar.?z ; do \
 			${ECHO_CMD} "extracting $$i" ; \
 			${TAR} -s '|./[^/]*/||' -xz -f $$i \
@@ -445,7 +455,9 @@ do-install:
 	done
 	@${ECHO_CMD} "adding desktop support"
 	@${LN} -sf ${XDGREL} ${STAGEDIR}${DESKTOPDIR}/${EXECBASE}
-	@cd ${WRKSRC}/sysui/unxfbsd*.pro/misc/openoffice ;	\
+	@cd ${WRKSRC} ;						\
+	    . ${FREEBSD_ENV_SET} ;				\
+	    cd sysui/$${INPATH}/misc/openoffice ;		\
 	    DESTDIR=${STAGEDIR}					\
 		GNOMEDIR=${PREFIX}				\
 		ICON_PREFIX=openoffice${AOOVERSION1}		\

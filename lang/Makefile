@@ -30,6 +30,7 @@
     SUBDIR += chibi-scheme
     SUBDIR += chicken
     SUBDIR += cilkplus
+    SUBDIR += cim
     SUBDIR += cint
     SUBDIR += cjs
     SUBDIR += clang-devel
@@ -45,6 +46,7 @@
     SUBDIR += cmucl-extra
     SUBDIR += cocor
     SUBDIR += cparser
+    SUBDIR += crystal
     SUBDIR += csharp-mode.el
     SUBDIR += cython
     SUBDIR += diveintopython
@@ -87,6 +89,7 @@
     SUBDIR += fpc-units
     SUBDIR += fpc-utils
     SUBDIR += fsharp
+    SUBDIR += fth
     SUBDIR += gambit-c
     SUBDIR += gauche
     SUBDIR += gawk
@@ -102,7 +105,6 @@
     SUBDIR += gcc7
     SUBDIR += gcc7-devel
     SUBDIR += gcc8-devel
-    SUBDIR += gcl
     SUBDIR += gforth
     SUBDIR += ghc
     SUBDIR += gjs
@@ -148,7 +150,7 @@
     SUBDIR += jython
     SUBDIR += kawa
     SUBDIR += kf5-kross
-    SUBDIR += kturtle
+    SUBDIR += kturtle-kde4
     SUBDIR += lafontaine
     SUBDIR += lci
     SUBDIR += ldc
@@ -180,6 +182,7 @@
     SUBDIR += mosh
     SUBDIR += mosml
     SUBDIR += mtasc
+    SUBDIR += mujs
     SUBDIR += munger
     SUBDIR += myrddin
     SUBDIR += nawk
@@ -260,12 +263,12 @@
     SUBDIR += php72-extensions
     SUBDIR += php_doc
     SUBDIR += picoc
-    SUBDIR += pike78
     SUBDIR += pocl
     SUBDIR += polyml
+    SUBDIR += ponyc
     SUBDIR += ptoc
     SUBDIR += pure
-    SUBDIR += py-clojure
+    SUBDIR += py-clojure_py
     SUBDIR += py-hy
     SUBDIR += py-mx-base
     SUBDIR += py-prolog
@@ -293,13 +296,13 @@
     SUBDIR += racket-minimal
     SUBDIR += ratfor
     SUBDIR += referenceassemblies-pcl
+    SUBDIR += retro12
     SUBDIR += rexx-imc
     SUBDIR += rexx-regina
     SUBDIR += rexx-regutil
     SUBDIR += rexx-wrapper
     SUBDIR += rhino
     SUBDIR += rubinius
-    SUBDIR += ruby22
     SUBDIR += ruby23
     SUBDIR += ruby24
     SUBDIR += ruby25
@@ -328,6 +331,8 @@
     SUBDIR += smalltalk
     SUBDIR += smlnj
     SUBDIR += snobol4
+    SUBDIR += solidity
+    SUBDIR += spec.alpha
     SUBDIR += spidermonkey17
     SUBDIR += spidermonkey170
     SUBDIR += spidermonkey185
@@ -359,7 +364,6 @@
     SUBDIR += v8-devel
     SUBDIR += vala
     SUBDIR += visualworks
-    SUBDIR += x10
     SUBDIR += yabasic
     SUBDIR += yap
     SUBDIR += yap-devel

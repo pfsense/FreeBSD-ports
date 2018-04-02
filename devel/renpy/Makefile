@@ -60,9 +60,6 @@ DIST_DESC=	Distribution runtimes for Windows, OS X, Linux
 DIST_VARS=	LICENSE+="ART20 PSFL" \
 		PORTDATA+="lib renpy.app renpy.exe renpy.sh"
 EXAMPLES_VARS=	PORTDATA+="the_question tutorial"
-.ifndef PKGNAMESUFFIX
-EXAMPLES_VARS+=	PORTDATA+="oldtutorial"
-.endif
 TKINTER_DESC=	Install Tkinter to allow choosing Projects Directory
 TKINTER_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${FLAVOR}
 

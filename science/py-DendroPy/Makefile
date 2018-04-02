@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	DendroPy
-PORTVERSION=	4.2.0
+PORTVERSION=	4.3.0
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,11 +12,7 @@ COMMENT=	Phylogenetic computing library
 
 LICENSE=	BSD3CLAUSE
 
-py34_BROKEN=	does not package
-py35_BROKEN=	does not package
-py36_BROKEN=	does not package
-
 USES=		python
-USE_PYTHON=	distutils
+USE_PYTHON=	distutils py3kplist
 
 .include <bsd.port.mk>

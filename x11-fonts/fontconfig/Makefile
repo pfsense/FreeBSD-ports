@@ -3,7 +3,7 @@
 
 PORTNAME=	fontconfig
 PORTVERSION=	2.12.1
-PORTREVISION?=	0
+PORTREVISION?=	3
 PORTEPOCH?=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://www.freedesktop.org/software/fontconfig/release/
@@ -49,7 +49,12 @@ INSTALL_TARGET=install-strip
 PLIST_SUB=	PREFERRED_HINTING=${PREFERRED_HINTING}
 PORTDOCS=	fontconfig-user.html fontconfig-user.pdf fontconfig-user.txt
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS NO_BITMAPS
+OPTIONS_DEFAULT=HINTING_SLIGHT
+OPTIONS_SUB=	yes
+
+NO_BITMAPS_DESC=	Reject bitmap fonts by default
+
 OPTIONS_SINGLE=	HINTING
 HINTING_DESC=	Preferred pixel hinting configuration
 .for opt in NONE SLIGHT MEDIUM FULL
@@ -57,7 +62,11 @@ OPTIONS_SINGLE_HINTING+=	HINTING_${opt}
 HINTING_${opt}_DESC=	${opt:tl}
 HINTING_${opt}_VARS=	PREFERRED_HINTING=${opt:tl}
 .endfor
-OPTIONS_DEFAULT=	HINTING_SLIGHT
+
+post-patch-NO_BITMAPS-on:
+	@${REINPLACE_CMD} -i '.bitmaps.bak' -e \
+		'/^CONF_LINKS =/s|$$|\${.newline}	70-no-bitmaps.conf \\|' \
+		${WRKSRC}/conf.d/Makefile.in
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/fc-*/*.1 \

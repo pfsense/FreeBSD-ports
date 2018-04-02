@@ -3,7 +3,7 @@
 
 PORTNAME=	openbmp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.0
+DISTVERSION=	0.14.0
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	pizzamig@FreeBSD.org
@@ -12,6 +12,7 @@ COMMENT=	OpenBMP Server Collector
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/exception/all.hpp:devel/boost-libs
 LIB_DEPENDS=	librdkafka.so:net/librdkafka \
 				libsasl2.so:security/cyrus-sasl2 \
 				libyaml-cpp.so:devel/yaml-cpp

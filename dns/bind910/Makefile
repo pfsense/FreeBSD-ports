@@ -19,7 +19,7 @@ DEPRECATED=	Going out of support, please migrate to dns/bind911
 EXPIRATION_DATE=	2018-06-30
 
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.10.6-P1
+ISCVERSION=	9.10.7
 
 USES=	cpe libedit
 
@@ -41,7 +41,7 @@ CONFIGURE_ARGS=	--localstatedir=/var --disable-linux-caps \
 		--sysconfdir=${ETCDIR}
 ETCDIR=		${PREFIX}/etc/namedb
 
-CONFLICTS=	bind-tools bind99 bind911 bind9-devel
+CONFLICTS=	bind-tools bind99 bind911 bind912 bind9-devel
 
 SUB_FILES=	pkg-message named.conf
 USE_RC_SUBR=	named
@@ -51,12 +51,12 @@ MAKE_JOBS_UNSAFE=	yes
 PORTDOCS=	*
 
 OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE JSON \
-			DLZ_FILESYSTEM RPZ_NSIP RPZ_NSDNAME PYTHON
+			DLZ_FILESYSTEM RPZ_NSIP RPZ_NSDNAME PYTHON FILTER_AAAA
 OPTIONS_DEFINE=		IDN LARGE_FILE PYTHON JSON \
 			FIXED_RRSET SIGCHASE IPV6 THREADS FILTER_AAAA \
 			RPZ_NSIP RPZ_NSDNAME DOCS GEOIP \
 			MINCACHE PORTREVISION FETCHLIMIT QUERYTRACE \
-			START_LATE
+			START_LATE TUNING_LARGE
 
 OPTIONS_RADIO=	CRYPTO GOSTDEF
 OPTIONS_RADIO_CRYPTO=	SSL NATIVE_PKCS11
@@ -100,6 +100,7 @@ RPZ_NSIP_DESC=		Enable RPZ NSIP trigger rules
 SIGCHASE_DESC=		dig/host/nslookup will do DNSSEC validation
 SSL_DESC=		Build with OpenSSL (Required for DNSSEC)
 START_LATE_DESC=	Start BIND late in the boot process (see help)
+TUNING_LARGE_DESC=	Tune named for large systems (**READ HELP**)
 
 DLZ_BDB_CONFIGURE_ON=	--with-dlz-bdb=yes
 DLZ_BDB_USES=		bdb
@@ -183,6 +184,10 @@ START_LATE_SUB_LIST_OFF=NAMED_REQUIRE="NETWORKING ldconfig syslogd" \
 			NAMED_BEFORE="SERVERS"
 
 THREADS_CONFIGURE_ENABLE=	threads
+
+TUNING_LARGE_IMPLIES=	THREADS
+TUNING_LARGE_CONFIGURE_ON=	--with-tuning=large
+TUNING_LARGE_CONFIGURE_OFF=	--with-tuning=default
 
 .include <bsd.port.pre.mk>
 

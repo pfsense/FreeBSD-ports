@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	knot-resolver
-PORTVERSION=	1.3.3
-PORTREVISION=	2
+DISTVERSION=	2.1.1
 CATEGORIES=	dns ipv6
 MASTER_SITES=	https://secure.nic.cz/files/knot-resolver/ \
 		https://dns.company/downloads/knot-resolver/
@@ -27,8 +26,7 @@ MAKE_ARGS+=	MANDIR=${PREFIX}/man
 MAKE_ARGS+=	PKGCONFIGDIR=${PREFIX}/libdata/pkgconfig
 MAKE_ARGS+=	lmdb_CFLAGS=-I${PREFIX}/include lmdb_LIBS=-llmdb
 
-USES=		gmake libedit libtool pkgconfig tar:xz
-USE_CSTD=	c99
+USES=		gmake libedit libtool ncurses pkgconfig tar:xz
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	COOKIES DNSTAP DOXYGEN GO MEMCACHED REDIS TRUSTANCHOR
@@ -66,7 +64,7 @@ MEMCACHED_DESC=			memcached in-memory data-backend
 MEMCACHED_LIB_DEPENDS=		libmemcached.so:databases/libmemcached
 MEMCACHED_MAKE_ARGS_ON=		HAS_libmemcached=yes
 MEMCACHED_MAKE_ARGS_OFF=	HAS_libmemcached=no
-MEMCACHED_PLIST_FILES=		lib/kdns_modules/kmemcached.so
+MEMCACHED_PLIST_FILES=		lib/kdns_modules/memcached.so
 
 REDIS_DESC=			redis in-memory data-backend
 REDIS_LIB_DEPENDS=		libhiredis.so:databases/hiredis
@@ -74,7 +72,7 @@ REDIS_MAKE_ARGS_ON=		HAS_hiredis=yes
 REDIS_MAKE_ARGS_OFF=		HAS_hiredis=no
 REDIS_PLIST_FILES=		lib/kdns_modules/redis.so
 
-TRUSTANCHOR_DESC=		Trust anchor bootstrapping and stats 
+TRUSTANCHOR_DESC=		Trust anchor bootstrapping and stats
 TRUSTANCHOR_USES=		lua
 TRUSTANCHOR_MAKE_ARGS_ON=	HAS_ltn12=yes HAS_ssl.https=yes
 TRUSTANCHOR_MAKE_ARGS_OFF=	HAS_ltn12=no  HAS_ssl.https=no
@@ -88,7 +86,8 @@ PORTDOCS=	AUTHORS COPYING CodingStyle README.md
 
 STRIP_TARGETS=	sbin/kresd			\
 		sbin/kresc			\
-		lib/libkres.so.3		\
+		lib/libkres.so.6		\
+		lib/kdns_modules/ahocorasick.so	\
 		lib/kdns_modules/cookies.so	\
 		lib/kdns_modules/dnstap.so	\
 		lib/kdns_modules/hints.so	\

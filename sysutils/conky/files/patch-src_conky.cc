@@ -1,6 +1,6 @@
---- src/conky.cc.orig	2016-10-04 07:49:19 UTC
+--- src/conky.cc.orig	2018-02-07 14:16:39 UTC
 +++ src/conky.cc
-@@ -129,7 +129,7 @@
+@@ -132,7 +132,7 @@
  #include <microhttpd.h>
  #endif
  

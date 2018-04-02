@@ -2,6 +2,7 @@
 
 PORTNAME=	gcc
 PORTVERSION=	6.3.0
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	GCC/releases/gcc-${DISTVERSION}
 PKGNAMEPREFIX?=	powerpc64-
@@ -18,8 +19,6 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 BUILD_DEPENDS=	${BU_PREFIX}-as:devel/${PKGNAMEPREFIX}binutils
 RUN_DEPENDS=	${BU_PREFIX}-as:devel/${PKGNAMEPREFIX}binutils
 
-CONFIGURE_ENV=	gcc_gxx_include_dir="/usr/include/c++/v1"
-
 USES=	gmake iconv libtool tar:bzip2 makeinfo compiler
 PLIST_SUB=	TARGETARCH=${PKGNAMEPREFIX:C/-//g} \
 		OPSYS=${OPSYS:tl} \
@@ -29,7 +28,7 @@ PLIST_SUB=	TARGETARCH=${PKGNAMEPREFIX:C/-//g} \
 .if empty(GCC_TARGET)
 # We are building for a FreeBSD target
 GCC_TARGET?=	${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}
-BU_PREFIX?=	${PKGNAMEPREFIX}${OPSYS:tl}
+BU_PREFIX?=	${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}
 EXTRA_PATCHES+= ${FILESDIR}/freebsd-format-extensions
 .else
 BU_PREFIX?=	${GCC_TARGET}
@@ -47,7 +46,8 @@ CONFIGURE_ARGS+=--target=${GCC_TARGET} --disable-nls --enable-languages=c,c++ \
 		--with-gmp=${LOCALBASE} \
 		--with-pkgversion="FreeBSD Ports Collection for ${PKGNAMEPREFIX:C/-//g}" \
 		--with-system-zlib \
-		--with-gcc-include-dir=/usr/include/c++/v1/ \
+		--with-gxx-include-dir=/usr/include/c++/v1/ \
+		--with-sysroot="/" \
 		--with-as=${LOCALBASE}/bin/${BU_PREFIX}-as \
 		--with-ld=${LOCALBASE}/bin/${BU_PREFIX}-ld
 
@@ -60,6 +60,8 @@ INSTALL_TARGET?=	install-gcc
 post-patch:
 	@${REINPLACE_CMD} -e '/LIBSTDCXX/ s/stdc\+\+/c\+\+/g ' \
 		${WRKSRC}//gcc/cp/g++spec.c
+	@${REINPLACE_CMD} -e '/LOCAL_INCLUDE_DIR/ d ' \
+		${WRKSRC}//gcc/Makefile.in
 
 .if ${TARGETARCH} == "amd64"
 CONFIGURE_TARGET=	x86_64-unknown-${OPSYS:tl}${OSREL}
@@ -93,6 +95,7 @@ post-install:
 .endfor
 	@${RM} ${STAGEDIR}${PREFIX}/info/*
 	@${RM} ${STAGEDIR}${PREFIX}/man/man7/*
+	@${RM} -r ${STAGEDIR}${PREFIX}/lib/gcc/${GCC_TARGET}/${PORTVERSION}/include-fixed
 
 # This port and all its slave ports fail on aarch64 -- but not all
 # the same way.  Provide this definition for the master.

@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	npm
-PORTVERSION=	5.6.0
-PORTREVISION=	2
+PORTVERSION=	5.7.1
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Node package manager
 
-LICENSE=	MIT
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/lib/node_modules/npm/LICENSE
 
 RUN_DEPENDS=	gmake:devel/gmake
 

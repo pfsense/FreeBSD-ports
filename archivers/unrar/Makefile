@@ -5,7 +5,7 @@ PORTNAME=	unrar
 DISTVERSION=	5.50
 PORTEPOCH=	6
 CATEGORIES+=	archivers
-MASTER_SITES=	http://www.rarlab.com/rar/ \
+MASTER_SITES=	https://www.rarlab.com/rar/ \
 		LOCAL/sunpoet
 DISTNAME=	unrarsrc-5.5.8
 

@@ -14,9 +14,11 @@ MAINTAINER=	brnrd@freebsd.org
 COMMENT=	Notes app for Nextcloud
 
 LICENSE=	AGPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	nextcloud>=12:www/nextcloud
+RUN_DEPENDS=	nextcloud>=9:www/nextcloud
 
+USES=		php
 NO_BUILD=	yes
 NO_ARCH=	yes
 

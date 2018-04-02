@@ -2,7 +2,7 @@
 
 PORTNAME=	caffe
 PORTVERSION=	1.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	graphics
 
 MAINTAINER=	eric@camachat.org
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libsnappy.so:archivers/snappy \
 		libleveldb.so:databases/leveldb \
 		liblmdb.so:databases/lmdb \
 		libboost_system.so:devel/boost-libs \
-		libboost_python.so:devel/boost-python-libs \
+		${PY_BOOST} \
 		libgflags.so:devel/gflags \
 		libglog.so:devel/glog \
 		libprotobuf.so:devel/protobuf \

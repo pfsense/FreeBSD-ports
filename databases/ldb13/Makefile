@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=		ldb
-PORTVERSION=		1.3.0
+PORTVERSION=		1.3.2
 PORTREVISION=		0
 PORTEPOCH=		0
 CATEGORIES=		databases
@@ -18,13 +18,18 @@ IGNORE_NONTHREAD_PYTHON=needs port lang/python${PYTHON_SUFFIX} to be build with 
 BUILD_DEPENDS=		${LDB_DEPENDS}
 RUN_DEPENDS=		${LDB_DEPENDS}
 
-LDB_DEPENDS=		talloc>=2.1.10:devel/talloc \
-			tevent>=0.9.33:devel/tevent \
+LDB_DEPENDS=		talloc>=2.1.11:devel/talloc \
+			tevent>=0.9.35:devel/tevent \
 			tdb>=1.3.15:databases/tdb \
 			cmocka>=1.1.1:sysutils/cmocka \
 			popt>=0:devel/popt
 
 CONFLICTS_INSTALL=	ldb-1.1.* ldb12-1.2.*
+
+#FLAVORS=		default nopython
+#nopython_PKGNAMESUFFIX=	-nopython
+#nopython_CONFLICTS=	ldb
+#default_CONFLICTS=	ldb-nopython
 
 USES=			compiler pkgconfig waf
 USE_LDCONFIG=		yes
@@ -40,14 +45,18 @@ CONFIGURE_ARGS+=	--bundled-libraries=!talloc,!tevent,!tdb,!popt,!cmocka \
 			--with-privatelibdir=${PREFIX}/lib/ldb
 
 CONFIGURE_ARGS+=	--mandir=${MANPREFIX}/man \
-			--infodir=${PREFIX}/${INFO_PATH}/${INFO_SUBDIR} \
+			--with-openldap=${LOCALBASE} \
 			--disable-rpath \
 			--without-gettext
 
-OPTIONS_DEFINE=		MANPAGES
+OPTIONS_DEFINE=		MANPAGES DEBUG
 MANPAGES_DESC=		Build and install manpages (requires textproc/docbook-xsl)
 
 .include <bsd.port.options.mk>
+
+DEBUG_CONFIGURE_ON=	--verbose --enable-debug
+DEBUG_MAKE_ARGS=	--verbose
+DEBUG_FLAGS=		-g -ggdb3 -O0
 
 LDB_BINS=		bin/ldbedit \
 			bin/ldbmodify \
@@ -113,7 +122,7 @@ PLIST_SUB+=		SAMBA4_PYTHON3_SO_ABI=${SAMBA4_PYTHON3_SO_ABI} \
 
 PLIST_FILES+=		lib/libpyldb-util.%%SAMBA4_PYTHON3_SO_ABI%%.so \
 			lib/libpyldb-util.%%SAMBA4_PYTHON3_SO_ABI%%.so.1 \
-			%%SAMBA4_PYTHON3_SITELIBDIR%%/ldb.so \
+			%%SAMBA4_PYTHON3_SITELIBDIR%%/ldb.%%SAMBA4_PYTHON3_SO_ABI%%.so \
 			%%SAMBA4_PYTHON3_SITELIBDIR%%/_ldb_text.py  \
 			%%PKGCONFIGDIR%%/pyldb-util.%%SAMBA4_PYTHON3_SO_ABI%%.pc
 .endif
@@ -169,12 +178,12 @@ post-install:
 			${STRIP_CMD} ${STAGEDIR}${PREFIX}/${lib}
 .endfor
 .if !defined(NO_PYTHON)
-			${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpyldb-util.so
-			${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ldb.so
-.if defined(SAMBA4_PYTHON3)
-			${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpyldb-util.${SAMBA4_PYTHON3_SO_ABI}.so
-			${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SAMBA4_PYTHON3_SITELIBDIR}/ldb.so
-.endif
+		${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpyldb-util.so
+		${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ldb.so
+.	if defined(SAMBA4_PYTHON3)
+		${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpyldb-util.${SAMBA4_PYTHON3_SO_ABI}.so
+		${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SAMBA4_PYTHON3_SITELIBDIR}/ldb.${SAMBA4_PYTHON3_SO_ABI}.so
+.	endif
 .endif
 
 .include <bsd.port.post.mk>

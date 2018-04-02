@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-fpl
 PORTVERSION=	1.3.5
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -22,6 +22,8 @@ RUN_DEPENDS+=	dx:graphics/opendx
 
 do-build:
 	@${DO_NADA}
+
+NO_ARCH=	yes
 
 post-build:
 	cd ${WRKDIR} && ${TAR} cfz ${DISTNAME}.tar.gz ${OCTSRC}

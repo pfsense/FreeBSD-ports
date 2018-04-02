@@ -2,6 +2,7 @@
 
 PORTNAME=	aircraft-datcom
 DISTVERSION=	0.0.20120723
+PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	mike.d.ft402@gmail.com
@@ -19,6 +20,6 @@ USES=	fortran cmake
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

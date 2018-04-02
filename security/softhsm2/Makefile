@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	softhsm
-PORTVERSION=	2.3.0
-PORTREVISION=	1
+PORTVERSION=	2.4.0
 CATEGORIES=	security
 MASTER_SITES=	http://dist.opendnssec.org/source/ \
 		http://dist.opendnssec.org/source/testing/
@@ -56,5 +55,10 @@ CONFIGURE_ARGS+=	--disable-gost
 .if ${SSL_DEFAULT:Mopenssl-devel}
 CONFIGURE_ARGS+=	--disable-gost
 .endif
+
+post-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/p11-kit/modules
+	${INSTALL_DATA} ${WRKSRC}/softhsm2.module \
+		${STAGEDIR}${PREFIX}/share/p11-kit/modules
 
 .include <bsd.port.mk>

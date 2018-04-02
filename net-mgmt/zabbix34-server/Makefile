@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix34
-PORTVERSION=	3.4.5
-PORTREVISION?=	0
+PORTVERSION=	3.4.7
+PORTREVISION?=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
 PKGNAMESUFFIX?=	-server
@@ -27,6 +27,7 @@ ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
 
 .if ${ZABBIX_BUILD} != "frontend" # frontend only needs the version/distribution settings
 .if ${ZABBIX_BUILD} != "agent"
+CONFIGURE_ARGS+=	--with-libevent=${LOCALBASE}
 LIB_DEPENDS+=	libevent.so:devel/libevent
 USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}
 .else
@@ -157,7 +158,9 @@ post-patch:
 	@${GREP} -rl "/etc/zabbix" ${WRKSRC} \
 	  | ${XARGS} ${REINPLACE_CMD} -e 's#/etc/zabbix#${ETCDIR}#g'
 	@${REINPLACE_CMD} -e 's#/usr/sbin/fping#${LOCALBASE}/sbin/fping#g' \
-		${WRKSRC}/conf/zabbix_*.conf
+		${WRKSRC}/conf/zabbix_*.conf \
+		${WRKSRC}/src/zabbix_proxy/proxy.c \
+		${WRKSRC}/src/zabbix_server/server.c
 
 .if ${ZABBIX_BUILD} == "server"
 	@${REINPLACE_CMD} -e 's#PidFile=/tmp/zabbix_server.pid#PidFile=/var/run/zabbix/zabbix_server.pid#g' \

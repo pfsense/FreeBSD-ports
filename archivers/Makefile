@@ -8,7 +8,7 @@
     SUBDIR += amigadepacker
     SUBDIR += arc
     SUBDIR += arj
-    SUBDIR += ark
+    SUBDIR += ark-kde4
     SUBDIR += atool
     SUBDIR += bicom
     SUBDIR += brotli
@@ -65,6 +65,7 @@
     SUBDIR += libarchive
     SUBDIR += libcabinet
     SUBDIR += libcomprex
+    SUBDIR += libdeflate
     SUBDIR += libdynamite
     SUBDIR += liblz4
     SUBDIR += liblzxcomp
@@ -104,6 +105,7 @@
     SUBDIR += p5-Archive-Rar
     SUBDIR += p5-Archive-SimpleExtractor
     SUBDIR += p5-Archive-Tar
+    SUBDIR += p5-Archive-Tar-Wrapper
     SUBDIR += p5-Archive-Zip
     SUBDIR += p5-Compress-Bzip2
     SUBDIR += p5-Compress-LZ4
@@ -190,9 +192,10 @@
     SUBDIR += py-rjsmin
     SUBDIR += py-warctools
     SUBDIR += py-xopen
+    SUBDIR += py-zstandard
+    SUBDIR += py-zstd
     SUBDIR += qpress
     SUBDIR += quazip
-    SUBDIR += quazip-qt5
     SUBDIR += rar
     SUBDIR += rox-archive
     SUBDIR += rpm2cpio

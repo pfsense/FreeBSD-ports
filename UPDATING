@@ -5,6 +5,262 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20180330:
+  AFFECTS: users of lang/perl5*
+  AUTHOR: mat@FreeBSD.org
+
+  The default Perl version has been switched to Perl 5.26.  If you are using
+  binary packages to upgrade your system, you do not have anything to do, pkg
+  upgrade will do the right thing.  For the other people, follow the
+  instructions in entry 20161103, it should still be the same.
+
+20180325:
+  AFFECTS: users of net/samba48
+  AUTHOR: timur@FreeBSD.org
+
+  New Samba 4.8 upgrades the relevant database files in the way, that doesn't
+  allow easy fallback to the previous versions of Samba. So, before upgrading
+  to the new version make a backup of the /var/db/samba4/ directory.
+
+  Full list of changes, new features and upgrade procedure is available at:
+
+        https://www.samba.org/samba/history/samba-4.8.0.html
+
+  Please, read it carefully before upgrading!.
+
+20180320:
+  AFFECTS: users of x11/sterm
+  AUTHOR: pkubaj@anongoth.pl
+
+  The user-defined options in config.h have changed.  You should
+  compare your config.h file with the default one and change
+  appropriately.
+
+20180319:
+  AFFECTS: users of dns/dnsmasq
+  AUTHOR: mandree@FreeBSD.org
+
+  Note that with dnsmasq 2.79, some parts of the interface have changed in an
+  incompatible way versus previous versions. This comprises changed recursion
+  behaviour, signature support, a change for SIGINT (vs. SIGHUP) behaviour.
+
+  Note especially that dnsmasq will no longer answer non-recursive queries
+  unless it is marked authoritative!  Be sure to see the manual page for the
+  various --auth-* options, such as --auth-zone.
+
+  Please see the CHANGELOG that ships with dnsmasq for details.
+
+20180317:
+  AFFECTS: users of multimedia/plexpy
+  AUTHOR: feld@FreeBSD.org
+
+  Plexpy project has been renamed to Tautulli due to copyright
+  infringement. The software also has received a major update. Please
+  see the following upgrade instructions:
+
+  - Install multimedia/tautulli
+  - Create /var/db/tautulli, owned by the user you will run the daemon as
+    (default: nobody).
+  - Copy your config.ini and plexpy.db to /var/db/tautulli
+  - Enable the service and start the software
+
+   Tautulli should automatically find your database file, rename it to
+   tautulli.db, and perform the required updates.
+
+20180310:
+  AFFECTS: users of security/openssl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The EXPCIPHERS option has been removed from the security/openssl port.
+  Use the security/openssl-unsafe port if you require this feature.
+
+20180309:
+  AFFECTS: users of net/unison
+  AUTHOR: madpilot@FreeBSD.org
+
+  Unison has been upgraded to version 2.51, which uses a different
+  wire protocol than 2.48 did.  In order to support synchronization
+  with other computers where Unison is still at version 2.48, a new
+  port net/unison248 has been created.  It provides unison248 and,
+  for the x11 flavor, also unison248-text.  This unison248 port can
+  be installed in parallel with the existing net/unison port.
+
+20180308:
+  AFFECTS: */php* */pecl* */pear*
+  AUTHOR: mat@FreeBSD.org
+
+  PHP extensions and modules have been flavored.
+
+  People using Poudriere 3.2+ and binary packages do not have to do anything.
+
+  PHP modules and extensions may have change their names from php5- or php7- to
+  fully versionned phpXY-.
+  PECL extensions and PEAR modules package names have changed from pecl- and
+  pear- to phpXX-pecl and phpXX-pear-.
+
+  For other people, to build the PHP 7.2 version of, for example,
+  databases/php-memcached, you need to run:
+
+    # make FLAVOR=php72 install
+
+20180220:
+  AFFECTS: users of www/nextcloud
+  AUTHOR: brnrd@FreeBSD.org
+
+  The file and directory permissions of Nextcloud have changed. Write
+  permissions have been removed from all directories except `data' and
+  `config'. For the updater to work, the app store of your installation
+  must be disabled. To disable the app-store prior to updating the
+  package:
+
+  # cd /usr/local/www/nextcloud
+  # su -m www -c "php ./occ config:system:set appstoreenabled --value=false --type=boolean"
+
+  If you've already updated your nextcloud package, you must manually edit
+  the configuration of nextcloud (config/config.php) and add
+
+  	'appstoreenabled' => false,
+
+  to the CONFIG array before the updater will run.
+
+20180214:
+  AFFECTS: users of lang/ruby23
+  AUTHOR: swills@FreeBSD.org
+
+  The default ruby version has been updated from 2.3 to 2.4.
+
+  If you compile your own ports you may keep 2.3 as the default version by
+  adding the following lines to your /etc/make.conf file:
+
+  #
+  # Keep ruby 2.3 as default version
+  #
+  DEFAULT_VERSIONS+=ruby=2.3
+
+  If you wish to update to the new default version, you need to first stop any
+  software that uses ruby. Then, you will need to follow these steps, depending
+  upon how you manage your system.
+
+  If you use pkgng, simply upgrade:
+  # pkg upgrade
+
+  If you use portmaster, install new ruby, then rebuild all ports that depend
+  on ruby:
+  # portmaster -o lang/ruby24 lang/ruby23
+  # portmaster -R -r ruby-2.4
+
+  If you use portupgrade, install new ruby, then rebuild all ports that depend
+  on ruby:
+
+  # pkg delete -f ruby portupgrade
+  # make -C /usr/ports/ports-mgmt/portupgrade install clean
+  # pkg set -o lang/ruby23:lang/ruby24
+  # portupgrade -x ruby-2.4.\* -fr lang/ruby24
+
+20180209:
+  AFFECTS: users of japanese/lookup
+  AUTHOR: yasu@utahime.org
+
+  japanese/lookup is update to 1.99.96.20130920. This version is not
+  compatible with previous version 1.4.1 and incompatibility includes
+  how to setup. See info of Lookup for detail.
+
+20180209:
+  AFFECTS: users of net-mgmt/pmacct
+  AUTHOR: pi@FreeBSD.org
+
+  To allow separete pmacctd instances per interface, use
+
+    pmacctd_enable="YES"
+    pmacctd_interfaces="re1 re2"
+
+  in /etc/rc.conf. The path to the config files will be
+
+    /usr/local/etc/pmacct/<interface>
+
+20180208:
+  AFFECTS: users of mail/mailman*
+  AUTHOR: mandree@FreeBSD.org
+
+  In order to overcome complaints about mismatched checksums in
+  Mailman/Default.py, mailman now configures the DEFAULT_EMAIL_HOST
+  and DEFAULT_URL_HOST to "localhost" statically, and the rc script
+  will check this and refuse to start on next boot.
+
+  Users must configure DEFAULT_EMAIL_HOST and DEFAULT_URL_HOST in
+  Mailman/mm_cfg.py properly and add this line below:
+  add_virtualhost(DEFAULT_URL_HOST, DEFAULT_EMAIL_HOST)
+
+  A short example has been added to:
+  ${PREFIX}/local/share/doc/mailman/FreeBSD-post-install-notes.
+
+  As of 2.1.26_3, the post-install script will add back the prior
+  default settings to mm_cfg.py (instead of Defaults.py) if no
+  virtual hosts have been defined, to cover the normal use cases
+  and initial installation.
+
+20180201:
+  AFFECTS: users of editors/emacs* and all ports using Emacs via USES=emacs
+  AUTHOR: jrm@FreeBSD.org
+
+  The Emacs ports framework has been updated to support flavors and the
+  editors/emacs-nox11 port has been replaced by the nox flavors of
+  editors/emacs and editors/emacs-devel.
+
+  Supported Flavors
+  --------------------------------------------------------
+  editors/emacs:       full canna nox
+  editors/emacs-devel: full nox
+  ports using Emacs:   full canna nox devel_full devel_nox
+  --------------------------------------------------------
+
+  For those using pre-built packages, if
+
+     # pkg upgrade
+
+  does not install the new Emacs package, use one of
+
+     # pkg install emacs
+     # pkg install emacs-canna
+     # pkg install emacs-nox
+     # pkg install emacs-devel
+     # pkg install emacs-devel_nox
+
+  For those building their own packages, a flavor other than the default must be
+  specified.  For example, to build the nox flavor of editors/emacs, or to build
+  the devel_full flavor of a port using Emacs, use
+
+     # poudriere bulk -j 11amd64 editors/emacs@nox
+     # poudriere bulk -j 11amd64 print/pdf-tools@devel_full
+
+  or
+
+     # make FLAVOR=nox install
+     # make FLAVOR=devel_full
+
+  An alternative to the default flavor, full, for editors/emacs and
+  editors/emacs-devel can be set in make.conf.  For example, to specify nox as
+  the default flavor for both ports, use
+
+     .if ${.CURDIR:M*/editors/emacs*}
+     FLAVOR?=nox
+     .endif
+
+  For ports using Emacs, an alternative to the default flavor, full,
+  can be also be set in make.conf.  For example, to automatically depend on
+  emacs-nox, use
+
+     DEFAULT_VERSIONS+=emacs=nox
+
+20180117:
+  AFFECTS: users of x11-toolkits/kf5-kirigami2 and x11/kf5-plasma-framework
+  AUTHOR: kde@FreeBSD.org
+
+  Files that were previously installed by kf5-kirigami2 are now installed 
+  by kf5-plasma-framework. This can lead to a conflict during the upgrade
+  of the packages. 
+  It is recommended to first remove the package kf5-kirigami2.
+
 20180115
   AFFECTS: users of net-p2p/transmission-daemon
   AUTHOR: woodsb02@FreeBSD.org
@@ -28,6 +284,46 @@ you update your ports collection, before attempting any port upgrades.
       in settings.json (must be done whilst the transmission service is
       stopped). Note that this value is NOT a list of allowed CLIENTS,
       but instead a list of allowed SERVER hostnames.
+
+20180111
+  AFFECTS: users of editors/vim-lite
+  AUTHOR: adamw@FreeBSD.org
+
+  The vim-lite port has been renamed to vim-console, because it isn't
+  actually any lighter. All three vim packages are built with
+  --enable-features=huge. Portmaster users will need to run this
+  command:
+
+  	portmaster -o editors/vim-console editors/vim-lite
+
+  If the switch doesn't happen automatically for you, just delete the
+  vim-lite package and install vim-console.
+
+20180109
+  AFFECTS: users of www/qt5-webengine
+  AUTHOR: kde@FreeBSD.org
+
+  The upgrade of www/qt5-webengine to 5.9.3 may fail if an older version
+  of it is installed. It is recommended to either build the port in a
+  builder like poudriere, or to deinstall and then doing an install.
+
+20180107
+  AFFECTS: users of security/gnupg and mail/mutt and mail/neomutt
+  AUTHOR: adamw@FreeBSD.org
+
+  The invocation for gpg from mutt/neomutt changed between gnupg-2.0
+  (which has expired and is now removed) and gnupg-2.2 (the current
+  version in the tree). Unless you're using gpgme, PGP-related
+  commands may fail in (neo)mutt.
+
+  In all cases, users are strongly urged to use security/gpgme to take
+  care of the setup for you. If you prefer to roll your own, the
+  following muttrc/neomuttrc entry has been reported to work:
+
+  pgp_decrypt_command="gpg2 %?p?--passphrase-fd 0 --pinentry-mode=loopback? --no-verbose --batch --output - %f"
+
+  See muttrc(5), neomuttrc(5), mutt.org, and neomutt.org for instructions
+  on (neo)mutt's gpg and gpgme instructions.
 
 20180102:
   AFFECTS: users of devel/awscli

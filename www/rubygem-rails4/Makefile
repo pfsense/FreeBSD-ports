@@ -3,6 +3,7 @@
 
 PORTNAME=	rails
 PORTVERSION=	4.2.10
+PORTREVISION=	2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	4
@@ -31,7 +32,7 @@ RUN_DEPENDS=	rubygem-actionmailer4>=${PORTVERSION}:mail/rubygem-actionmailer4 \
 		rubygem-rake>=10.3:devel/rubygem-rake \
 		rubygem-rdoc>=4.0.2:devel/rubygem-rdoc \
 		rubygem-sass>=3.4.1:textproc/rubygem-sass \
-		rubygem-sass-rails5>=5.0.3:textproc/rubygem-sass-rails5 \
+		rubygem-sass-rails-rails4>=5.0.3:textproc/rubygem-sass-rails-rails4 \
 		rubygem-sdoc>=0.4.1:devel/rubygem-sdoc \
 		rubygem-spring>=1.1.3:devel/rubygem-spring \
 		rubygem-sqlite3>=1.3.9:databases/rubygem-sqlite3 \
@@ -49,11 +50,9 @@ USES=		cpe gem
 CPE_VENDOR=	rubyonrails
 CPE_PRODUCT=	ruby_on_rails
 
-OPTIONS_DEFINE=	PASSENGER MEMCACHE_CLIENT
-PASSENGER_DESC=	Passenger backend
+OPTIONS_DEFINE=	MEMCACHE_CLIENT
 MEMCACHE_CLIENT_DESC=	MemCache-Client support
 
 MEMCACHE_CLIENT_RUN_DEPENDS=	rubygem-memcache-client>=1.2.0:databases/rubygem-memcache-client
-PASSENGER_RUN_DEPENDS=	rubygem-passenger>=2.2.15:www/rubygem-passenger
 
 .include <bsd.port.mk>

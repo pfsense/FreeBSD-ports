@@ -2,27 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	tile38
-PORTVERSION=	1.9.1
+DISTVERSION=	1.11.1
 CATEGORIES=	databases
 
-MAINTAINER=	olevole@olevole.ru
+MAINTAINER=	a.andersson.thn@gmail.com
 COMMENT=	In-memory geolocation data store, spatial index, and realtime geofence
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go>=1.4:lang/go \
-		bash:shells/bash
-RUN_DEPENDS=	go>=1.4:lang/go \
+BUILD_DEPENDS=	go>=1.7:lang/go \
 		bash:shells/bash
 
 USES=		shebangfix
 SHEBANG_FILES=	build.sh
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	tidwall
-
 USE_RC_SUBR=	tile38
+SSP_UNSAFE=	yes
 
 USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
@@ -41,7 +38,7 @@ PLIST_SUB=	TILE38_USER=${USERS} \
 		TILE38_RUNDIR=${TILE38_RUNDIR}
 
 do-build:
-	@cd ${WRKSRC} && ./build.sh
+	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ./build.sh
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${TILE38_DBDIR} ${STAGEDIR}${TILE38_RUNDIR}

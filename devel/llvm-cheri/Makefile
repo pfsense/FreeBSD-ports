@@ -2,6 +2,7 @@
 
 PORTNAME=	llvm
 PORTVERSION=	${LLVM_MAJOR}.d${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
 
@@ -46,7 +47,6 @@ OPTIONS_DEFAULT=	CLANG LIT LLD
 OPTIONS_SUB=	yes
 
 CLANG_DESC=	Build clang
-CLANG_EXTRA_PATCHES= ${PATCHDIR}/clang-patch-tools_clang_lib_Headers_CMakeLists.txt
 CLANG_GH_PROJECT=	clang:clang
 CLANG_GH_SUBDIR=	tools/clang:clang
 CLANG_GH_TAGNAME=	${CLANG_COMMIT}:clang
@@ -157,13 +157,14 @@ DOCS_PLIST_FILES+=	man/man1/scan-build${LLVM_SUFFIX}.1.gz
 
 .if ${PORT_OPTIONS:MLIT}
 MAN1SRCS+=	lit.1 FileCheck.1
-_USES_PYTHON=	python
+_USES_PYTHON=	python:2.7
 LIT_COMMANDS=	lit llvm-lit FileCheck
 .endif
 
 .if ${PORT_OPTIONS:MLLD}
 COMMANDS+=	ld.lld \
-		ld64.lld
+		ld64.lld \
+		wasm-ld
 .endif
 
 .if ${PORT_OPTIONS:MLLDB}
@@ -171,13 +172,13 @@ COMMANDS+=	argdumper \
 		lldb \
 		lldb-mi \
 		lldb-server
-_USES_PYTHON=	python
+_USES_PYTHON=	python:2.7
 .endif
 
-_USES_PYTHON?=	python:build
+_USES_PYTHON?=	python:2.7,build
 USES+=		${_USES_PYTHON}
 
-MAN1SRCS+=	bugpoint.1 llc.1 lli.1 llvm-ar.1 llvm-as.1 \
+MAN1SRCS+=	bugpoint.1 dsymutil.1 llc.1 lli.1 llvm-ar.1 llvm-as.1 \
 		llvm-bcanalyzer.1 llvm-build.1 llvm-config.1 llvm-cov.1 \
 		llvm-diff.1 llvm-dis.1 llvm-dwarfdump.1 \
 		llvm-extract.1 llvm-lib.1 llvm-link.1 llvm-nm.1 \
@@ -294,7 +295,7 @@ build-plist:
 	    ${SORT} >> ${PLIST}.tmp
 	awk '{ \
 	    if ($$0 ~ /clang/ && $$0 !~ /omp.h/) {printf "%%%%CLANG%%%%"} \
-	    if ($$0 ~ /lld/ && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
+	    if ($$0 ~ /lld|wasm-ld/ && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
 	    if ($$0 ~ /(argdumper|lldb)/) {printf "%%%%LLDB%%%%"} \
 	    print \
 	}' \${PLIST}.tmp >> ${PLIST}

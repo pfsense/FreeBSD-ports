@@ -3,7 +3,7 @@
 
 PORTNAME=	scribe
 DISTVERSION=	2.2.2013.04.15
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	net
 
 MAINTAINER=	ports@FreeBSD.org
@@ -27,6 +27,7 @@ GH_ACCOUNT=	facebookarchive
 GH_TAGNAME=	7359a09
 
 USES=		autoreconf compiler gmake perl5 python
+USE_PYTHON=	py3kplist
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-boost-filesystem=boost_filesystem \
 		--with-boost-system=boost_system \

@@ -2,6 +2,7 @@
 
 PORTNAME=	PyWavelets
 PORTVERSION=	0.5.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,7 +21,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 USE_GITHUB=	yes
 GH_PROJECT=	pywt
 
-USES=		cpe python:2.7
+USES=		cpe python
 USE_PYTHON=	autoplist distutils cython cython_run
 
 PYDISTUTILS_BUILD_TARGET=	build build_ext

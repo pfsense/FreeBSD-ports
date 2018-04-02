@@ -2,7 +2,7 @@
 
 PORTNAME=	usrp
 PORTVERSION=	3.4.3
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	comms hamradio
 MASTER_SITES=	LOCAL/adrian
 DISTNAME=	Ettus-USRP-3.4.3
@@ -10,7 +10,9 @@ DISTNAME=	Ettus-USRP-3.4.3
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Ettus Research USRP driver framework
 
-LIB_DEPENDS=	libboost_python.so:devel/boost-python-libs
+BROKEN=		fails to build with boost 1.66, see bug 224088
+
+LIB_DEPENDS=	${PY_BOOST}
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/tuple/tuple.hpp:devel/boost-libs \
 		cheetah-analyze:devel/py-cheetah \
 		rst2html:textproc/py-docutils \

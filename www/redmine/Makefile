@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	redmine
-PORTVERSION=	3.4.3
+PORTVERSION=	3.4.4
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	http://www.redmine.org/releases/
 
@@ -23,7 +24,8 @@ RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
 		rubygem-roadie-rails>=1.2.0:mail/rubygem-roadie-rails \
 		rubygem-roadie>=3.2.1:mail/rubygem-roadie \
 		rubygem-mimemagic>=0:misc/rubygem-mimemagic \
-		rubygem-nokogiri>=1.7.2:textproc/rubygem-nokogiri \
+		rubygem-mail>=2.6.4:mail/rubygem-mail \
+		rubygem-nokogiri>=1.8.1:textproc/rubygem-nokogiri \
 		rubygem-i18n>=0.8.5:devel/rubygem-i18n \
 		rubygem-ffi>=1.9.14:devel/rubygem-ffi \
 		rubygem-rails-html-sanitizer>=1.0.3:textproc/rubygem-rails-html-sanitizer \
@@ -43,22 +45,18 @@ GROUPS=		${WWWGRP}
 PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 SUB_LIST=	RUBY_NAME=${RUBY_NAME}
 
-OPTIONS_DEFINE=	MYSQL POSTGRESQL LDAP MARKDOWN RMAGIC
+OPTIONS_DEFINE=	MYSQL POSTGRESQL LDAP MARKDOWN RMAGIC THIN
 OPTIONS_DEFAULT=MYSQL MARKDOWN RMAGIC THIN
-OPTIONS_SINGLE=	WWWSERVER
-OPTIONS_SINGLE_WWWSERVER=	THIN PASSENGER
 OPTIONS_SUB=	yes
 POSTGRESQL_DESC=Enable PostgreSQL support
 LDAP_DESC=	Enable LDAP Authentification
 MARKDOWN_DESC=	Enable Markdown support
 RMAGIC_DESC=	Enable Gantt charts support
 THIN_DESC=	Use Thin WEB server
-PASSENGER_DESC=	Use Apache/Nginx WEB server
 MYSQL_DESC=	MySQL database support (via mysql2 rubygem)
 NO_OPTIONS_SORT=	yes
 
 MYSQL_RUN_DEPENDS=	rubygem-mysql2>=0.4.6:databases/rubygem-mysql2
-PASSENGER_RUN_DEPENDS=	passenger-config:www/rubygem-passenger
 POSTGRESQL_RUN_DEPENDS=	rubygem-pg>=0.18.1:databases/rubygem-pg
 MARKDOWN_RUN_DEPENDS=	rubygem-redcarpet>=3.4.0:textproc/rubygem-redcarpet
 RMAGIC_RUN_DEPENDS=	rubygem-rmagick>=2.14.0:graphics/rubygem-rmagick

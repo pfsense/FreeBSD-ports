@@ -2,19 +2,30 @@
 # $FreeBSD$
 
 PORTNAME=	mdnsd
-PORTVERSION=	0.7G
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.7G-107
+DISTVERSIONSUFFIX=	-gf4aee59
 PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	dns
-MASTER_SITES=	http://www.cs.cmu.edu/~dpelleg/download/
 
 MAINTAINER=	daniel+mdnsd@pelleg.org
 COMMENT=	Advertise a service via Rendezvous
 
-PLIST_FILES=	bin/mhttp bin/mquery
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		cmake:outsource
+USE_GITHUB=	yes
+GH_ACCOUNT=	Pro
+USE_LDCONFIG=	yes
+
+PLIST_FILES=	bin/mdnsd bin/mquery lib/liblibmdnsd.so
 
 do-install:
-.for f in mhttp mquery
-	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
-.endfor
+	cd ${CONFIGURE_WRKSRC} && ${INSTALL_PROGRAM} mdnsd mquery \
+		${STAGEDIR}${PREFIX}/bin
+	${INSTALL_LIB} ${CONFIGURE_WRKSRC}/libmdnsd/liblibmdnsd.so \
+		${STAGEDIR}${PREFIX}/lib
 
 .include <bsd.port.mk>

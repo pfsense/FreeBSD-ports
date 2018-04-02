@@ -102,7 +102,6 @@
     SUBDIR += clutter-gtk
     SUBDIR += clutter-gtk3
     SUBDIR += cluttermm
-    SUBDIR += code-eli
     SUBDIR += cogl
     SUBDIR += colmap
     SUBDIR += colord
@@ -151,6 +150,7 @@
     SUBDIR += drawpile
     SUBDIR += driconf
     SUBDIR += drm-next-kmod
+    SUBDIR += drm-stable-kmod
     SUBDIR += dspdfviewer
     SUBDIR += duhdraw
     SUBDIR += dynamechs
@@ -165,6 +165,7 @@
     SUBDIR += eom
     SUBDIR += eos-movrec
     SUBDIR += epdfview
+    SUBDIR += ephoto
     SUBDIR += epix
     SUBDIR += eps2png
     SUBDIR += epstool
@@ -356,6 +357,7 @@
     SUBDIR += hs-svgcairo
     SUBDIR += hugin
     SUBDIR += icat
+    SUBDIR += icc-profiles-adobe-cs4
     SUBDIR += icc-profiles-basiccolor
     SUBDIR += icc-profiles-openicc
     SUBDIR += iccexamin
@@ -378,6 +380,7 @@
     SUBDIR += impressive
     SUBDIR += imv
     SUBDIR += inkscape
+    SUBDIR += instant-meshes
     SUBDIR += intel-backlight
     SUBDIR += intergif
     SUBDIR += inventor
@@ -403,13 +406,13 @@
     SUBDIR += jpgtn
     SUBDIR += jslice
     SUBDIR += kamera-kde4
-    SUBDIR += kcolorchooser
+    SUBDIR += kcolorchooser-kde4
     SUBDIR += kcoloredit
-    SUBDIR += kdegraphics4
-    SUBDIR += kdegraphics4-mobipocket
-    SUBDIR += kdegraphics4-strigi-analyzer
-    SUBDIR += kdegraphics4-svgpart
-    SUBDIR += kdegraphics4-thumbnailers
+    SUBDIR += kdegraphics-kde4
+    SUBDIR += kdegraphics-mobipocket-kde4
+    SUBDIR += kdegraphics-strigi-analyzer-kde4
+    SUBDIR += kdegraphics-svgpart-kde4
+    SUBDIR += kdegraphics-thumbnailers-kde4
     SUBDIR += kdiagram
     SUBDIR += kf5-kimageformats
     SUBDIR += kf5-kplotting
@@ -460,13 +463,13 @@
     SUBDIR += kix-kmod
     SUBDIR += klatexformula
     SUBDIR += kludge3d
-    SUBDIR += kolourpaint
+    SUBDIR += kolourpaint-kde4
     SUBDIR += kphotoalbum-kde4
     SUBDIR += kpovmodeler
-    SUBDIR += kqtquickcharts
+    SUBDIR += kqtquickcharts-kde4
     SUBDIR += krita
-    SUBDIR += ksaneplugin
-    SUBDIR += ksnapshot
+    SUBDIR += ksaneplugin-kde4
+    SUBDIR += ksnapshot-kde4
     SUBDIR += kudu
     SUBDIR += l2p
     SUBDIR += largetifftools
@@ -520,7 +523,7 @@
     SUBDIR += libkface
     SUBDIR += libkipi-kde4
     SUBDIR += libkipiplugins
-    SUBDIR += libksane
+    SUBDIR += libksane-kde4
     SUBDIR += libkscreen
     SUBDIR += liblqr-1
     SUBDIR += liblug
@@ -628,7 +631,7 @@
     SUBDIR += ocrad
     SUBDIR += ocre
     SUBDIR += ogre3d
-    SUBDIR += okular
+    SUBDIR += okular-kde4
     SUBDIR += opencollada
     SUBDIR += opencolorio
     SUBDIR += opencolorio-tools
@@ -757,6 +760,7 @@
     SUBDIR += panoglview
     SUBDIR += panomatic
     SUBDIR += partio
+    SUBDIR += pcl-pointclouds
     SUBDIR += pdf2svg
     SUBDIR += pdfpc
     SUBDIR += pear-Horde_Image
@@ -776,8 +780,6 @@
     SUBDIR += pencil
     SUBDIR += peps
     SUBDIR += perceptualdiff
-    SUBDIR += pfscalibration
-    SUBDIR += pfstmo
     SUBDIR += pfstools
     SUBDIR += pgplot
     SUBDIR += pho
@@ -905,7 +907,6 @@
     SUBDIR += py-pyproj
     SUBDIR += py-qt4-svg
     SUBDIR += py-qt5-svg
-    SUBDIR += py-rabbyt
     SUBDIR += py-sane
     SUBDIR += py-scikit-image
     SUBDIR += py-seqdiag
@@ -917,6 +918,7 @@
     SUBDIR += py-traitsui
     SUBDIR += py-wand
     SUBDIR += py-webcolors
+    SUBDIR += py-yaswfp
     SUBDIR += pygts
     SUBDIR += pymorph
     SUBDIR += pysvg
@@ -1021,7 +1023,7 @@
     SUBDIR += simage
     SUBDIR += simpleviewer
     SUBDIR += sk1libs
-    SUBDIR += skanlite
+    SUBDIR += skanlite-kde4
     SUBDIR += smillaenlarger
     SUBDIR += springgraph
     SUBDIR += squish
@@ -1029,6 +1031,7 @@
     SUBDIR += sswf
     SUBDIR += stamp
     SUBDIR += structuresynth
+    SUBDIR += sverchok-blender
     SUBDIR += svg2pdf
     SUBDIR += svg2png
     SUBDIR += svgalib
@@ -1076,6 +1079,7 @@
     SUBDIR += waffle
     SUBDIR += waifu2x-converter-cpp
     SUBDIR += wayland
+    SUBDIR += waylandpp
     SUBDIR += wayland-protocols
     SUBDIR += webp
     SUBDIR += wings

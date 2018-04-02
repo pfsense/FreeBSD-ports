@@ -84,6 +84,10 @@
     SUBDIR += font-screen-cyrillic
     SUBDIR += font-sony-misc
     SUBDIR += font-sun-misc
+    SUBDIR += font-tex-gyre-bonum-math
+    SUBDIR += font-tex-gyre-pagella-math
+    SUBDIR += font-tex-gyre-schola-math
+    SUBDIR += font-tex-gyre-termes-math
     SUBDIR += font-util
     SUBDIR += font-winitzki-cyrillic
     SUBDIR += font-xfree86-type1
@@ -145,6 +149,7 @@
     SUBDIR += montecarlo_fonts
     SUBDIR += montserrat
     SUBDIR += moveable-type-fonts
+    SUBDIR += nerd-fonts
     SUBDIR += nexfontsel
     SUBDIR += noto
     SUBDIR += noto-lite
@@ -163,6 +168,7 @@
     SUBDIR += profont
     SUBDIR += proggy_fonts
     SUBDIR += proggy_fonts-ttf
+    SUBDIR += py-QtAwesome
     SUBDIR += py-bdflib
     SUBDIR += roboto-fonts-ttf
     SUBDIR += sgifonts

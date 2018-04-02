@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	cppunit
-PORTVERSION=	1.13.2
-PORTREVISION=	2
+PORTVERSION=	1.14.0
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://dev-www.libreoffice.org/src/
 
@@ -22,7 +22,13 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 OPTIONS_SUB=	yes
 USE_LDCONFIG=	yes
-USES=		libtool pathfix
+USES=		libtool pathfix compiler:c++11-lang
+
+SUB_FILES=	cppunit-config
+SUB_LIST+=	DISTVERSION=${DISTVERSION}
+
+post-install:
+	${INSTALL_SCRIPT} ${WRKDIR}/cppunit-config ${STAGEDIR}${PREFIX}/bin/
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
