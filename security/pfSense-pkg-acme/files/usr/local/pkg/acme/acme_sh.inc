@@ -28,6 +28,7 @@ class acme_sh {
 	private $name;
 	private $debug = true;
 	public $dnssleep;
+	public $ocspstaple;
 	
 	private function execacmesh($command, $envvariables = null) {
 		$command = "/usr/local/pkg/acme/acme.sh " . $command;
@@ -151,6 +152,9 @@ class acme_sh {
 		}
 		if (is_numericint($this->dnssleep)) {
 			$cmdparameters .= " --dnssleep " . escapeshellarg($this->dnssleep);
+		}
+		if ($this->ocspstaple == "yes") {
+			$cmdparameters .= " --ocsp-must-staple ";
 		}
 		
 		$Le_Domain = $domainstosign[0];
