@@ -13,7 +13,7 @@ COMMENT=	pfSense package nrpe
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/nrpe2:net-mgmt/nrpe-ssl
+RUN_DEPENDS=	${LOCALBASE}/sbin/nrpe3:net-mgmt/nrpe3
 
 NO_BUILD=	yes
 NO_MTREE=	yes
