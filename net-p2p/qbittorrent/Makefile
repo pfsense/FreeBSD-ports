@@ -3,10 +3,11 @@
 
 PORTNAME=	qbittorrent
 DISTVERSION=	3.3.16
+PORTREVISION=	1
 CATEGORIES=	net-p2p ipv6
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT?=	Bittorrent client using Qt4/5 and libtorrent-rasterbar
 
 LICENSE=	GPLv2+

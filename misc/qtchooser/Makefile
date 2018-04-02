@@ -17,6 +17,9 @@ USES=		gmake
 DESTDIRNAME=	INSTALL_ROOT
 MAKE_ARGS=	prefix=${PREFIX}
 
+# bin/linguist
+CONFLICTS_INSTALL=	rubygem-github-linguist rubygem-github-linguist47 rubygem-gitlab-linguist
+
 QT_QTCHOOSERDIR=${PREFIX}/etc/xdg/qtchooser
 
 post-patch:
@@ -42,6 +45,5 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/qtchooser.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 # Create the default profile.
 	cd ${STAGEDIR}/${QT_QTCHOOSERDIR} && ${LN} -s qt5.conf default.conf
-
 
 .include <bsd.port.mk>

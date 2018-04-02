@@ -7,60 +7,49 @@ PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
-MAINTAINER=	koalative@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable framework for OpenGL development
 
 LICENSE=	ZLIB
+LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 USES=		cmake localbase zip
-USE_XORG=	x11 xcursor xinerama xrandr xxf86vm
 USE_GL=		glu
 USE_LDCONFIG=	yes
-CMAKE_ARGS=	-DBUILD_SHARED_LIBS:BOOL=ON
+CMAKE_ON=	BUILD_SHARED_LIBS
 
 PORTDOCS=	*
-
-DOCSRCDIR1=	${WRKSRC}
-DOC_FILES1=	README.md
-
-DOCSRCDIR2=	${WRKSRC}/docs/html/search
-DOCSDIR2=	${DOCSDIR}/docs/html/search
-DOC_FILES2=	*
-
-DOCSRCDIR3=	${WRKSRC}/docs/html
-DOCSDIR3=	${DOCSDIR}/docs/html
-DOC_FILES3=	*.html *.png *.css *.js
-
 PORTEXAMPLES=	*
 
-EXAMPLESSRCDIR1=	${WRKSRC}/examples
-EXAMPLES_FILES1=	boing gears heightmap particles simple splitview wave
+OPTIONS_DEFINE=	DOCS EXAMPLES WAYLAND
+OPTIONS_EXCLUDE_FreeBSD_10=	WAYLAND # needs dev/evdev/input.h
 
-EXAMPLESSRCDIR2=	${WRKSRC}/tests
-EXAMPLESDIR2=		${EXAMPLESDIR}/tests
-EXAMPLES_FILES2=	clipboard cursor empty events gamma glfwinfo iconify \
-			joysticks monitors msaa reopen sharing tearing threads \
-			title windows
-
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|lib$${LIB_SUFFIX}/pkgconfig|libdata/pkgconfig|' \
-		${WRKSRC}/CMakeLists.txt
+WAYLAND_BUILD_DEPENDS=	wayland-protocols>=0:graphics/wayland-protocols
+WAYLAND_CMAKE_BOOL=	GLFW_USE_WAYLAND
+WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
+			libwayland-egl.so:graphics/mesa-libs \
+			libxkbcommon.so:x11/libxkbcommon
+WAYLAND_USES=		kde:5 pkgconfig
+WAYLAND_USE=		KDE=ecm
+WAYLAND_USE_OFF=	XORG=x11,xcursor,xinerama,xrandr,xxf86vm
 
 do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR2}
-	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
-	${INSTALL_DATA} ${DOC_FILES3:S|^|${DOCSRCDIR3}/|} ${STAGEDIR}${DOCSDIR3}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}/docs/html/search
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/docs/html/search/* \
+		${STAGEDIR}${DOCSDIR}/docs/html/search
+	cd ${WRKSRC}/docs/html && ${INSTALL_DATA} *.html *.png *.css *.js \
+		 ${STAGEDIR}${DOCSDIR}/docs/html
 
 do-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_PROGRAM} ${EXAMPLES_FILES1:S|^|${EXAMPLESSRCDIR1}/|} \
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/tests
+	cd ${WRKSRC}/examples && ${INSTALL_PROGRAM} \
+		boing gears heightmap particles simple splitview wave \
 		${STAGEDIR}${EXAMPLESDIR}
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR2}
-	${INSTALL_PROGRAM} ${EXAMPLES_FILES2:S|^|${EXAMPLESSRCDIR2}/|} \
-		${STAGEDIR}${EXAMPLESDIR2}
+	cd ${WRKSRC}/tests && ${INSTALL_PROGRAM} \
+		clipboard cursor empty events gamma glfwinfo iconify \
+		joysticks monitors msaa reopen sharing tearing \
+		threads title windows \
+		${STAGEDIR}${EXAMPLESDIR}/tests
 
 .include <bsd.port.mk>

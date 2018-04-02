@@ -13,11 +13,11 @@ LICENSE=	PHP301
 
 LIB_DEPENDS=	libxdiff.so:textproc/libxdiff
 
-PORTSCOUT=	limit:^1.*
-
 USES=		php:pecl
 IGNORE_WITH_PHP=	70 71 72
 
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+PORTSCOUT=	limit:^1.*
 
 .include <bsd.port.mk>

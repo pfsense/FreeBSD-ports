@@ -1,0 +1,2 @@
+@sample etc/dnscrypt-proxy.toml.sample
+sbin/dnscrypt-proxy

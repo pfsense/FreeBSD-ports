@@ -11,12 +11,12 @@
     SUBDIR += atkmm
     SUBDIR += caribou
     SUBDIR += eflite
-    SUBDIR += jovie
-    SUBDIR += kaccessible
-    SUBDIR += kdeaccessibility4
-    SUBDIR += kmag
-    SUBDIR += kmousetool
-    SUBDIR += kmouth
+    SUBDIR += jovie-kde4
+    SUBDIR += kaccessible-kde4
+    SUBDIR += kdeaccessibility-kde4
+    SUBDIR += kmag-kde4
+    SUBDIR += kmousetool-kde4
+    SUBDIR += kmouth-kde4
     SUBDIR += linux-c6-atk
     SUBDIR += linux-c7-atk
     SUBDIR += mousetweaks
@@ -25,8 +25,10 @@
     SUBDIR += py-papi
     SUBDIR += py-speech-dispatcher
     SUBDIR += qt4-accessible
+    SUBDIR += qt5-speech
     SUBDIR += redshift
     SUBDIR += rubygem-atk
+    SUBDIR += sct
     SUBDIR += speech-dispatcher
     SUBDIR += yasr
 

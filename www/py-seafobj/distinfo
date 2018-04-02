@@ -1,5 +1,3 @@
-TIMESTAMP = 1513799164
-SHA256 (/usr/ports/distfiles) = bb2afa1715d8499e891d117d8432cfafa8def2488869f160d9fe70cb90e4ec65
-SIZE (/usr/ports/distfiles) = 373
-SHA256 (haiwen-seafobj-v6.2.4-pro_GH0.tar.gz) = f473a30cc7aab844fc0686a6e8711ad88779547f064c54d99001434ba380e99e
-SIZE (haiwen-seafobj-v6.2.4-pro_GH0.tar.gz) = 6627249
+TIMESTAMP = 1521503377
+SHA256 (haiwen-seafobj-v6.2.10-pro_GH0.tar.gz) = 429566dfb8f334acb1dbafe5d6c1686128e349384de106cd630b9f1effd2399a
+SIZE (haiwen-seafobj-v6.2.10-pro_GH0.tar.gz) = 6656061

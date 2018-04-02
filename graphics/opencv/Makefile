@@ -65,7 +65,7 @@ DC1394_LIB_DEPENDS=	libdc1394.so:multimedia/libdc1394
 DC1394_CMAKE_BOOL=	WITH_1394
 
 EIGEN3_DESC=		Eigen 3 support
-EIGEN3_BUILD_DEPENDS=	${LOCALBASE}/include/eigen3/Eigen/Eigen:math/eigen3
+EIGEN3_USES=		eigen:3
 EIGEN3_CMAKE_BOOL=	WITH_EIGEN
 
 . if !defined(OCV_SLAVE)
@@ -151,7 +151,7 @@ INSTALL_WRKSRC=	${WRKSRC}/modules/python
 .elif defined(OCV_JAVA)
 BUILD_DEPENDS+=	ant:devel/apache-ant
 LIB_DEPENDS+=	libopencv_legacy.so:graphics/opencv
-USES+=		python:build
+USES+=		python:2.7,build
 USE_JAVA=	yes
 CMAKE_ARGS+=	-DBUILD_opencv_java:BOOL=On
 . for module in apps python stitching superres videostab

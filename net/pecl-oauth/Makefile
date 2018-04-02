@@ -14,13 +14,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-PORTSCOUT=	limit:^1.*
+USES=		php:pecl
+IGNORE_WITH_PHP=	70 71 72
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=	CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
 
-USES=		php:pecl
-IGNORE_WITH_PHP=	70 71 72
+PORTSCOUT=	limit:^1.*
 
 .include <bsd.port.mk>

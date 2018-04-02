@@ -97,7 +97,7 @@
     SUBDIR += hyperlatex
     SUBDIR += indexinfo
     SUBDIR += jabref
-    SUBDIR += kde4-print-manager
+    SUBDIR += print-manager-kde4
     SUBDIR += kde_poster
     SUBDIR += kover
     SUBDIR += kpdftool
@@ -158,6 +158,7 @@
     SUBDIR += paps
     SUBDIR += pcal
     SUBDIR += pdf-renderer
+    SUBDIR += pdf-tools
     SUBDIR += pdf4tcl
     SUBDIR += pdfbox
     SUBDIR += pdfcube

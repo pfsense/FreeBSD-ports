@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	grass
-PORTVERSION=	7.2.2
-PORTREVISION=	4
+PORTVERSION=	7.4.0
 CATEGORIES=	databases geography
 MASTER_SITES=	http://grass.osgeo.org/%SUBDIR%/ \
 		http://grass.cict.fr/%SUBDIR%/ \
@@ -16,7 +15,7 @@ MASTER_SITES=	http://grass.osgeo.org/%SUBDIR%/ \
 		http://pinus.gntech.ac.kr/grass/%SUBDIR%/ \
 		http://wgbis.ces.iisc.ernet.in/grass/%SUBDIR%/ \
 		http://wgrass.media.osaka-cu.ac.jp/grassh/%SUBDIR%/
-MASTER_SITE_SUBDIR=	grass72/source
+MASTER_SITE_SUBDIR=	grass74/source
 PKGNAMESUFFIX=	7
 
 MAINTAINER=	lbartoletti@tuxfamily.org
@@ -24,6 +23,8 @@ COMMENT=	Open source Geographical Information System (GIS)
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL.TXT
+
+BROKEN=		fails to package
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.2:math/py-numpy@${PY_FLAVOR}
 LIB_DEPENDS=	libgdal.so:graphics/gdal \
@@ -36,7 +37,7 @@ LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libgeos.so:graphics/geos
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		fortran gettext gmake iconv jpeg perl5 pkgconfig python:2 \
+USES=		fortran gettext gmake iconv jpeg perl5 pkgconfig python:2.7 \
 		readline shebangfix tk
 SHEBANG_LANG=	nviz
 nviz_OLD_CMD=	nviz
@@ -48,7 +49,7 @@ USE_WX=		3.0
 WX_COMPS=	wx:build python:run
 USE_GCC=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	PERL="${PERL}"
+
 CONFIGURE_ARGS=	--with-includes=${LOCALBASE}/include \
 		--with-libs=${LOCALBASE}/lib \
 		--with-opengl-includes=${LOCALBASE}/include/ \
@@ -70,8 +71,7 @@ CONFIGURE_ARGS=	--with-includes=${LOCALBASE}/include \
 
 ALL_TARGET=	default
 USE_LDCONFIG=	${PREFIX}/${GRASS_INST_DIR}/lib
-MAKE_JOBS_UNSAFE=yes
-MAKE_ENV+=		TARGET="${CONFIGURE_TARGET}"
+MAKE_ENV+=	TARGET="${CONFIGURE_TARGET}"
 
 PLIST_SUB=	GRASS_INST_DIR="${GRASS_INST_DIR}" \
 		VERSION="${PORTVERSION}" \
@@ -93,13 +93,13 @@ ATLAS_USES_OFF=		blaslapack
 DB_DESC=		Database support
 LAS_CONFIGURE_ON=	--with-liblas=yes
 LAS_LIB_DEPENDS=	liblas.so:devel/liblas \
-					libboost_program_options.so:devel/boost-libs \
-					libboost_thread.so:devel/boost-libs \
-					libgeotiff.so:graphics/libgeotiff
+			libboost_program_options.so:devel/boost-libs \
+			libboost_thread.so:devel/boost-libs \
+			libgeotiff.so:graphics/libgeotiff
 MOTIF_USES=		motif
 MOTIF_USE=		GL=glw
 MOTIF_CONFIGURE_ON=	--with-motif --with-glw
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 MYSQL_CONFIGURE_ON=	--with-mysql \
 			--with-mysql-includes=${LOCALBASE}/include/mysql \
 			--with-mysql-libs=${LOCALBASE}/lib/mysql

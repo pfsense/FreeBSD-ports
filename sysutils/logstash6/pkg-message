@@ -1,0 +1,7 @@
+To start logstash as an agent during startup, add
+
+    logstash_enable="YES"
+
+to your /etc/rc.conf.
+
+Extra options can be found in startup script.

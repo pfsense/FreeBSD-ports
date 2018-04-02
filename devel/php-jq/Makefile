@@ -5,7 +5,7 @@ PORTNAME=	jq
 PORTVERSION=	0.0.1
 PORTREVISION=	1
 CATEGORIES=	devel
-PKGNAMEPREFIX=	php-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	Jq shared extension for php
@@ -19,7 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	kjdev
 GH_PROJECT=	php-ext-jq
 
-IGNORE_WITH_PHP=	70 71
+IGNORE_WITH_PHP=	70 71 72
 USES=		php:ext
 
 JQ_CMD=		${LOCALBASE}/bin/jq

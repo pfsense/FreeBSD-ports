@@ -3,7 +3,7 @@
 
 PORTNAME=	med
 DISTVERSION=	3.2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	french science
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -19,6 +19,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 USES=		fortran gmake libtool tk
+USE_CXXSTD=	gnu++98
 CFLAGS+=	-fPIC
 CONFIGURE_ARGS=	--disable-python --with-hdf5=${LOCALBASE}	\
 		--with-hdf5-include=${LOCALBASE}/include/hdf5-18

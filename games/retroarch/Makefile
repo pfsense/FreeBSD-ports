@@ -7,7 +7,7 @@ DISTVERSIONPREFIX=	v
 PORTREVISION=	9
 CATEGORIES=	games
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Cross-platform entertainment system based on libretro API
 
 LICENSE=	GPLv3
@@ -57,14 +57,15 @@ LDFLAGS+=	-pthread
 CONFIGURE_ARGS+=--enable-threads
 CONFIGURE_ENV+=	MAN_DIR=${MANPREFIX}/man
 
+USES=		compiler:c++11-lib gmake pkgconfig shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
-
 SUB_FILES=	pkg-message
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--global-config-dir=${LOCALBASE}/etc
-USES=		compiler:c++11-lib gmake pkgconfig
 USE_XORG=	x11 xcb xext xinerama xv xxf86vm
+LLD_UNSAFE=	yes
+SHEBANG_FILES=	libretro-common/glsym/glgen.py libretro-common/glsym/rglgen.py tools/cg2glsl.py tools/vulkan_loader_generator.py
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|<malloc.h>|<stdlib.h>|' \

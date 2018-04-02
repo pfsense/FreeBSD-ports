@@ -1,147 +1,258 @@
---- portmaster.orig	2017-12-21 09:02:44 UTC
+--- portmaster.orig	2018-01-14 21:53:23 UTC
 +++ portmaster
-@@ -113,13 +113,13 @@ kill_bad_children () {
- 		[ "$pid" -gt 25 ] || continue
- 		case "$ppid" in
- 		1)	case "$command" in
--			*" progcmd "*) pm_kill $pid ;;
-+			*" $progcmd "*) pm_kill $pid ;;
- 			*'make -DBATCH checksum'*|*'/fetch '*|\[sh\]) pm_kill -9 $pid ;;
- 			esac ;;
- 		*)	[ $pgid -eq $mypgid ] || continue
- 			[ $pid -eq $PM_PARENT_PID ] && continue
- 			case "$command" in
--			*" progcmd "*) pm_kill $pid ;;
-+			*" $progcmd "*) pm_kill $pid ;;
- 			*'make -DBATCH checksum'*|*'/fetch '*|\[sh\]) pm_kill $pid ;;
- 			esac ;;
- 		esac
-@@ -1616,15 +1616,14 @@ pm_pkg_create () {
- 				NB_DELETE="${NB_DELETE}${pkg} "
- 			fi
- 		elif [ "$1" = "$PACKAGES" ]; then
--			local pkg ; pkg=`echo $2.*`
-+			local pkg ; pkg=$2.txz
+@@ -45,7 +45,7 @@ if [ -z "$PM_PARENT_PID" ]; then
+ 	my_environment=`set`
  
- 			if [ -z "$PM_INDEX_ONLY" ]; then
--				local latest_link
-+				local pkg_latest_file
+ 	# If we are already root, unset this to avoid potential conflict
+-	[ `ps -o uid= $$` -eq 0 ] && unset PM_SU_CMD PM_SU_VERBOSE
++	[ `id -u` -eq 0 ] && unset PM_SU_CMD PM_SU_VERBOSE
+ fi
  
- 				pm_cd_pd $portdir
--				latest_link=`pm_make -V LATEST_LINK`
--				cd ${1}/Latest
--				$PM_SU_CMD ln -sf ../All/$pkg ${latest_link}.txz
-+				pkg_latest_file=`pm_make -V PKGLATESTFILE`
-+				$PM_SU_CMD install -lr $1/All/$pkg ${pkg_latest_file}
- 			fi
+ #=============== Begin functions we always want to have ===============
+@@ -181,7 +181,7 @@ parent_exit () {
  
- 			cd ${1}/${portdir%/*}
-@@ -1665,7 +1664,7 @@ find_dl_distfiles () {
- 	else
- 		# Old method, for now
- 		if pm_cd $pd/$1; then
--			dist_list=`pm_make_b -V OPTIONSFILE`
-+			dist_list=`pm_make_b -V OPTIONS_FILE`
- 			dist_list="${dist_list%options}distfiles"
- 		else
- 			# The port might have moved, etc.; so take a stab at it,
-@@ -1803,6 +1802,7 @@ set_distfiles_and_subdir () {
- }
- 
- delete_stale_distfiles () {
-+	[ -n "$DISTDIR" ] || return # DISTDIR not set because of PM_PACKAGES
- 	# Global: distfiles_checked
- 	local file answer
- 
-@@ -1849,6 +1849,7 @@ delete_stale_distfiles () {
- }
- 
- delete_all_distfiles () {
-+	[ -n "$DISTDIR" ] || return # DISTDIR not set because of PM_PACKAGES
- 	# Global: delete_all DISTDIR
- 	local origin rc delete_current
- 
-@@ -2264,12 +2265,14 @@ make_dep_list () {
- 
- 	for dep_type in $*; do
- 		case $dep_type in
--		all-depends-list)
--			var_opt="$var_opt -V BUILD_DEPENDS -V LIB_DEPENDS -V RUN_DEPENDS" ;;
--		build-depends-list)
--			var_opt="$var_opt -V BUILD_DEPENDS -V LIB_DEPENDS" ;;
-+		all-depends-list|build-depends-list)
-+			var_opt="$var_opt -V PKG_DEPENDS -V EXTRACT_DEPENDS \
-+				-V PATCH_DEPENDS -V FETCH_DEPENDS -V BUILD_DEPENDS -V LIB_DEPENDS"
-+			[ "$dep_type" = all-depends-list ] && var_opt="$var_opt -V RUN_DEPENDS" ;;
- 		run-depends-list)
-- 			var_opt="$var_opt -V RUN_DEPENDS -V LIB_DEPENDS" ;;
-+			var_opt="$var_opt -V RUN_DEPENDS -V LIB_DEPENDS" ;;
-+		test-depends-list)
-+			var_opt="$var_opt -V TEST_DEPENDS" ;;
- 		*)
- 			fail "make_dep_list: Unsupported option '$dep_type'"
- 		esac
-@@ -3302,7 +3305,7 @@ pm_cd_pd $portdir
- 
- if [ -n "$PM_BUILD_ONLY_LIST" ]; then
- 	case "$build_only_dl_g" in
--	*" $pd/$portdir "*)
-+	*" $pd/$portdir "*|*" $portdir "*)
- 		[ -n "$PM_PACKAGES_BUILD" ] && PM_PACKAGES_BUILD=doing_build_only_dep
- 		[ -n "$PM_DEL_BUILD_ONLY" ] && PM_DEL_BUILD_ONLY=doing_build_only_dep ;;
- 	*)	[ -n "$PM_PACKAGES_BUILD" ] && PM_PACKAGES_BUILD=pmp_build
-@@ -3402,31 +3405,19 @@ fetch_package () {
- }
- 	if [ -z "$PACKAGESITE" -a -z "$PM_PACKAGES_LOCAL" ]; then
- 		release=`uname -r`
-+		major_rel=${release%.*}
-+		arch=`uname -p`
- 
--		case "$release" in
--		[789]\.[0-9]-STABLE|[789]\.[0-9]-PRERELEASE)
--				release=packages-${release%%\.*}-stable ;;
--		[789]\.[0-9]-RELEASE*)
--				release=packages-${release%-RELEASE*}-release ;;
--		9\.0-CURRENT*)	release=packages-9-current ;;
--		10\.0-CURRENT*)	release=packages-10-current ;;
--		11\.0-CURRENT*)	release=packages-11-current ;;
--		12\.0-CURRENT*)	release=packages-12-current ;;
--		*RC[0-9]*)	release=${release%-RC[0-9]*}
--				release=packages-${release}-release ;;
--		*BETA[0-9]*)	release=${release%-BETA[0-9]*}
--				release=packages-${release}-release ;;
--		esac
- 
--		sitepath="${PACKAGEROOT:-"http://ftp.freebsd.org"}/pub/FreeBSD/ports/`uname -p`/${release}/"
--		unset release
-+		sitepath="${PACKAGEROOT:-"http://pkg.freebsd.org"}/FreeBSD:$major_rel:$arch/latest/All/"
-+		unset release major_rel arch
- 	else
- 		sitepath="${PACKAGESITE%/}"
- 		sitepath="${sitepath%Latest}"
- 		sitepath="${sitepath%All}"
+ 		pm_v "===>>> Removing empty directories from WRKDIRPREFIX"
+ 		[ -n "$needws" ] && echo '' || pm_v
+-		find $PM_WRKDIRPREFIX -depth -mindepth 1 -type d -empty -delete 2>/dev/null
++		find $PM_WRKDIRPREFIX -depth -mindepth 1 -maxdepth 2 -type d -empty -delete 2>/dev/null
  	fi
  
--	sitepath="${sitepath%/}/${portdir%/*}/"
-+#	sitepath="${sitepath%/}/${portdir%/*}/" # may be required for local packages
+ 	case "$DISPLAY_LIST" in
+@@ -308,20 +308,19 @@ safe_exit () {
+ 	exit ${1:-0}
+ } # safe_exit()
  
- 	echo "===>>> Checking package repository for latest available version"
- 
-@@ -3437,11 +3428,12 @@ fetch_package () {
- 			latest_pv=${local_package##*/}
- 		fi
- 		if [ -z "$latest_pv" -a -z "$PM_INDEX_ONLY" ]; then
--			s=`pm_make -V LATEST_LINK`
--			echo "===>>> ... checking: ${LOCAL_PACKAGEDIR}/Latest/${s}.txz"
--			if [ -r "${LOCAL_PACKAGEDIR}/Latest/${s}.txz" ]; then
--				local_package=${LOCAL_PACKAGEDIR}/Latest/${s}.txz
--				latest_pv=`readlink ${LOCAL_PACKAGEDIR}/Latest/${s}.txz`
-+			s=`pm_make -V PKGLATESTFILE`
+-flavor_part	() { expr "$1" : ".*@" >/dev/null && echo "${1#*@}"; }
+-dir_part	() { echo "${1%%@*}"; }
+-export_flavor	() { local flavor="$1"; if [ "$FLAVOR" != "$flavor" ]; then
+-			pm_v "===>>> Setting FLAVOR to '$flavor' (was '$FLAVOR')";
+-			export FLAVOR="$flavor"; fi; }
+- 
++target_part	() { [ -z "${1##*:*}" ] && echo "${1#*:}" || echo install; }
++flavor_part	() { local tmp="${1%%:*}"; [ -z "${tmp##*@*}" ] && echo "${tmp#*@}"; }
++dir_part	() { local tmp="${1%%:*}"; echo "${tmp%%@*}"; }
++export_flavor	() { [ "$FLAVOR" != "$1" ] && export FLAVOR="$1"; }
 +
-+			echo "===>>> ... checking: ${s}"
-+			if [ -r "${s}" ]; then
-+				local_package=${s}
-+				latest_pv=`readlink ${s}`
- 				latest_pv=${latest_pv##*/}
- 			else
- 				pm_v "===>>> No local package for ${new_port}, attempting fetch"
+ pm_cd     () { builtin cd $1 2>/dev/null || return 1; }
+ pm_cd_pd  () { [ -n "$PM_INDEX_ONLY" ] && return 2;
+ 			local dir=$pd/$(dir_part $1);
+ 			builtin cd $dir 2>/dev/null ||
+ 			fail "Cannot cd to port directory: $dir"; }
+ pm_isdir	() { builtin test -d "$1"; }
+-pm_isdir_pd	() { local dir=$pd/$(dir_part "$1");
+-			builtin test -d "$dir"; }
++pm_isdir_pd	() { local dir=$(dir_part "$1");
++			builtin test -n "$dir" -a -d "$pd/$dir"; }
+ pm_kill   () { kill $* >/dev/null 2>/dev/null; }
+ pm_make   () { ( unset -v CUR_DEPS INSTALLED_LIST PM_DEPTH build_l PM_URB_LIST;
+ 		 /usr/bin/nice /usr/bin/make $PM_MAKE_ARGS $*; ); }
+@@ -2175,23 +2174,29 @@ update_pm_nu () {
+ }
+ 
+ update_build_l () {
+-	local originflavor origin flavor iport
++	local originflavor origin flavor iport make_target
+ 
+ 	originflavor=$1 ; update_pm_nu $originflavor
+ 	origin=$(dir_part "$originflavor")
+ 	flavor=$(flavor_part "$originflavor")
+ 	iport="$2"
++	make_target=$3
+ 
+ 	[ -n "$PM_NO_CONFIRM" ] && return
+ 
+ 	if [ -z "$iport" ]; then
+ 		case "$build_l" in *\ $origin\\*) return ;; esac
+-		build_l="${build_l}\tInstall $originflavor\n"
++		case $make_target in
++		install)
++			build_l="${build_l}\tInstall $originflavor\n" ;;
++		*)
++			build_l="${build_l}\tExecute make $make_target for $originflavor\n" ;;
++		esac
+ 		return
+-	else
+-		case "$build_l" in *\ $iport\ *|*\ $iport\\*) return ;; esac
+ 	fi
+ 
++	case "$build_l" in *\ $iport\ *|*\ $iport\\*) return ;; esac
++
+ 	find_new_port "$originflavor" # sets global variable new_port
+ 
+ 	case `pkg version -t $iport $new_port 2>/dev/null` in
+@@ -2203,8 +2208,9 @@ update_build_l () {
+ }
+ 
+ update_port () {
+-	local deps
++	local make_target deps
+ 
++	make_target=$(target_part "$1")
+ 	if [ -n "$2" ]; then
+ 		echo "===>>> Launching child to update $1 to $2"
+ 	else
+@@ -2300,7 +2306,7 @@ make_dep_list () {
+ 			fail "make_dep_list: Unsupported option '$dep_type'"
+ 		esac
+ 	done
+-	[ -n "$var_opt" ] && make $var_opt | tr ' ' '\n' | cut -d: -f2 | sort -u
++	[ -n "$var_opt" ] && make $var_opt | tr ' ' '\n' | cut -d: -f2-3 | sort -u
+ }
+ 
+ gen_dep_list () {
+@@ -2368,15 +2374,17 @@ dependency_check () {
+ 		rundeps=`gen_dep_list run-depends-list`
+ 
+ 		for dep in $d_port_list; do
++			# strip optional make target
++			local depdir=${dep%:*}
+ 			# If the port is already installed, do not mark
+ 			# it as a build-only dependency, or it will be
+ 			# installed by package and/or removed
+-			pkg info -e ${dep#$pd/} &&
+-				run_dl="$run_dl $dep" &&
++			pkg info -e ${depdir#$pd/} &&
++				run_dl="$run_dl $depdir" &&
+ 				continue
+ 			case "$rundeps" in
+ 			*" ${dep} "*|*${dep}*)
+-				varname=`echo ${dep#$pd/} | sed 's#[-+/\.@]#_#g'`
++				varname=`echo ${dep#$pd/} | sed 's#[-+/\.@:]#_#g'`
+ 				rundep_list="$rundep_list $varname"
+ 				eval $varname=\"$portdir \$$varname\"
+ 				eval ${varname}_p=$dep
+@@ -2409,7 +2417,10 @@ dependency_check () {
+ 
+ 	# Do not export, for THIS parent process only
+ 	[ -n "$PM_FIRST_PASS" ] && doing_dep_check=doing_dep_check
+-	for d_port in $d_port_list; do
++	for d_port_target in $d_port_list; do
++		# strip optional make target
++		local d_port=${d_port_target%:*}
++		local make_target=$(target_part "$d_port_target")
+ 		origin="${d_port#$pd/}"
+ 		if [ -n "$SHOW_WORK" ]; then
+ 			iport=`iport_from_origin $origin`
+@@ -2429,20 +2440,14 @@ dependency_check () {
+ 		[ -z "$PM_URB_UP" ] &&
+ 			case "$CUR_DEPS" in *:${origin}:*) continue ;; esac
+ 
+-		if [ -z "$PM_INDEX_ONLY" ]; then
++		if [ -z "$PM_INDEX_ONLY" -a "$make_target" = install ]; then
+ 			local conflicts glob confl_p dir flavor
+ 			dir=$(dir_part $d_port)
+ 			flavor=$(flavor_part $d_port)
+ 			conflicts=''
+-			if pm_cd "$pd/$dir"; then
+-				if grep -ql ^CONFLICTS Makefile ; then
+-					conflicts=`FLAVOR=$flavor pm_make_b \
+-							-V CONFLICTS \
+-							-V CONFLICTS_BUILD \
+-							-V CONFLICTS_INSTALL`
+-				fi
+-			else
+-				fail "Cannot cd to $dir"
++			pm_cd "$pd/$dir" || fail "Cannot cd to $dir"
++			if grep -ql ^CONFLICTS Makefile ; then
++				conflicts=`FLAVOR=$flavor pm_make_b -V CONFLICTS -V CONFLICTS_BUILD -V CONFLICTS_INSTALL`	 
+ 			fi
+ 			for glob in $conflicts; do
+ 				confl_p=`pkg query -g "%n-%v" $glob 2>/dev/null`
+@@ -2498,7 +2503,11 @@ dependency_check () {
+ 			check_for_updates $iport $origin || fail 'Update failed'
+ 		else
+ 			check_interactive $origin || continue
+-			update_port $origin
++			if [ "$make_target" != "install" ]; then
++				[ -z "$PM_FIRST_PASS" ] && post_clean_l="$post_clean_l $origin"
++				origin="$origin:$make_target"
++			fi
++			update_port "$origin"
+ 		fi
+ 	done
+ 	[ -n "$PM_FIRST_PASS" ] && unset doing_dep_check
+@@ -3029,8 +3038,12 @@ no_valid_port () {
+ 	echo "===>>> Try $progname --help" ; echo '' ; safe_exit 1
+ }
+ 
++make_target=$(target_part "$1")
++post_clean_l=""
++
+ # Figure out what we are going to be working on
+ if [ -z "$REPLACE_ORIGIN" ]; then
++	portdir="${1%:*}"
+ 	export_flavor $(flavor_part $portdir)
+ 	[ -n "$portdir" ] && { argv=$portdir ; unset portdir; }
+ 	argv=${argv:-$1} ; argv=${argv%/} ; argv=`globstrip $argv`
+@@ -3061,6 +3074,8 @@ if [ -z "$REPLACE_ORIGIN" ]; then
+ 		unset glob_dirs
+ 	fi
+ 	unset argv
++
++	[ "$make_target" != install ] && PM_MAKE_ARGS="-DDISABLE_CONFLICTS $PM_MAKE_ARGS"
+ else
+ 	portdir="${1#$pd/}" ; portdir="${portdir%/}"
+ 	export_flavor=$(flavor_part $portdir)
+@@ -3143,7 +3158,7 @@ iport_from_pkgname () {
+ 	dir=$(dir_part $1)
+ 	flavor=$(flavor_part $1)
+ 	pkgname=$(FLAVOR=$flavor make -C "$pd/$dir" -V PKGNAME) || return 1
+-	pkg info -x "^${pkgname%-*}"'-[^-]*' 2>/dev/null
++	pkg info -xC "^${pkgname%-*}\$" 2>/dev/null
+ }
+ 
+ if [ -z "$upg_port" -a -z "$REPLACE_ORIGIN" ]; then
+@@ -3229,11 +3244,14 @@ if [ -n "$PM_FIRST_PASS" -a -z "$FETCH_ONLY" ]; then
+ 		fi
+ 	fi
+ 
+-	update_build_l $portdir $upg_port
++	update_build_l "$portdir" "$upg_port" "$make_target"
+ elif [ -n "$FETCH_ONLY" -a -n "$PM_PACKAGES" ]; then
+ 	update_pm_nu $portdir
+ fi
+ 
++# Test for necessary privileges to actually install ports
++[ "$($PM_SU_CMD id -u)" = 0 ] || fail "Insufficient privileges to install ports (run as root or set PM_SU_CMD)"
++
+ # Do these things first time through
+ if [ -z "$PM_INDEX_ONLY" -a -z "$PM_BUILDING" -a -z "$SHOW_WORK" -a -z "$NO_ACTION" ]; then
+ 	# Do not start this in the background until we are sure we are going to proceed
+@@ -3636,15 +3654,21 @@ pkg_flavor () {
+ 	pm_make pretty-flavors-package-names | sed -ne 's!^\([A-Za-z0-9_]*\): *'$pkg'$!\1!p';
+ }
+ 	export_flavor=$(pkg_flavor $new_port)
+-	if [ -n "$HIDE_BUILD" ] && [ -n "$(pm_make -V LICENSE)" ]; then
++	if [ -n "$HIDE_BUILD" ] && [ -n "$(pm_make -V LICENSE)" ] && [ -z "$(pm_make -V DISABLE_LICENSES)" ]; then
+ 		pm_make extract ask-license || fail "make extract ask-license failed for $portdir"
+ 	fi
++	if [ "$make_target" = "extract" -o "$make_target" = "patch" ]; then
++		eval pm_make -DNO_DEPENDS $make_target $port_log_args || fail "make $make_target failed for $portdir"
++		safe_exit
++	fi
+ 	eval pm_make build $port_log_args || fail "make build failed for $portdir"
++	[ "$make_target" = "build" ] && safe_exit
+ 
+ 	pm_sv Running make stage
+ 	# Defining NO_DEPENDS ensures that we will control the installation
+ 	# of the depends, not bsd.port.mk.
+ 	eval pm_make -DNO_DEPENDS stage $port_log_args || fail "make stage failed for $portdir"
++	[ "$make_target" = "stage" ] && safe_exit
+ else
+ 	[ -z "$local_package" ] && {
+ 		fetch_package $latest_pv || fail "Fetch for ${latest_pv}.txz failed"; }
+@@ -3876,9 +3900,12 @@ if [ -n "$MAKE_PACKAGE" ]; then
+ fi
+ 
+ if [ -z "$use_package" -a -z "$DONT_POST_CLEAN" ]; then
+-#	export_flavor $(flavor_part $portdir)
++	for dir in $post_clean_l; do
++		pm_v "===>>> Running 'make clean' for special build dependency $dir"
++		(FLAVOR=$(flavor_part $portdir) pm_make_s -C "$pd/$dir" clean NOCLEANDEPENDS=ncd2 >/dev/null)&
++	done
+ 	pm_v "===>>> Running 'make clean' in the background"
+-	(pm_make_s clean NOCLEANDEPENDS=ncd2 >/dev/null)&
++	(FLAVOR=$(flavor_part $portdir) pm_make_s clean NOCLEANDEPENDS=ncd2 >/dev/null)&
+ 	pm_v
+ fi
+ if [ -n "$ro_opd" ]; then

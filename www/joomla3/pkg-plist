@@ -129,6 +129,8 @@
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/mysql/3.8.0-2017-07-28.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/mysql/3.8.0-2017-07-31.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/mysql/3.8.2-2017-10-14.sql
+%%WWWDIR%%/administrator/components/com_admin/sql/updates/mysql/3.8.4-2018-01-16.sql
+%%WWWDIR%%/administrator/components/com_admin/sql/updates/mysql/3.8.6-2018-02-14.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/postgresql/3.0.0.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/postgresql/3.0.1.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/postgresql/3.0.2.sql
@@ -202,6 +204,8 @@
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/postgresql/3.8.0-2017-07-28.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/postgresql/3.8.0-2017-07-31.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/postgresql/3.8.2-2017-10-14.sql
+%%WWWDIR%%/administrator/components/com_admin/sql/updates/postgresql/3.8.4-2018-01-16.sql
+%%WWWDIR%%/administrator/components/com_admin/sql/updates/postgresql/3.8.6-2018-02-14.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/sqlazure/2.5.2-2012-03-05.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/sqlazure/2.5.3-2012-03-13.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/sqlazure/2.5.4-2012-03-18.sql
@@ -281,6 +285,8 @@
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/sqlazure/3.8.0-2017-07-28.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/sqlazure/3.8.0-2017-07-31.sql
 %%WWWDIR%%/administrator/components/com_admin/sql/updates/sqlazure/3.8.2-2017-10-14.sql
+%%WWWDIR%%/administrator/components/com_admin/sql/updates/sqlazure/3.8.4-2018-01-16.sql
+%%WWWDIR%%/administrator/components/com_admin/sql/updates/sqlazure/3.8.6-2018-02-14.sql
 %%WWWDIR%%/administrator/components/com_admin/views/help/tmpl/default.php
 %%WWWDIR%%/administrator/components/com_admin/views/help/tmpl/default.xml
 %%WWWDIR%%/administrator/components/com_admin/views/help/tmpl/langforum.php
@@ -1500,6 +1506,8 @@
 %%WWWDIR%%/administrator/language/en-GB/en-GB.plg_system_remember.sys.ini
 %%WWWDIR%%/administrator/language/en-GB/en-GB.plg_system_sef.ini
 %%WWWDIR%%/administrator/language/en-GB/en-GB.plg_system_sef.sys.ini
+%%WWWDIR%%/administrator/language/en-GB/en-GB.plg_system_sessiongc.ini
+%%WWWDIR%%/administrator/language/en-GB/en-GB.plg_system_sessiongc.sys.ini
 %%WWWDIR%%/administrator/language/en-GB/en-GB.plg_system_stats.ini
 %%WWWDIR%%/administrator/language/en-GB/en-GB.plg_system_stats.sys.ini
 %%WWWDIR%%/administrator/language/en-GB/en-GB.plg_system_updatenotification.ini
@@ -2255,6 +2263,7 @@
 %%WWWDIR%%/build/travis/phpenv/apcu-5.6.ini
 %%WWWDIR%%/build/travis/phpenv/apcu-7.0.ini
 %%WWWDIR%%/build/travis/phpenv/apcu-7.1.ini
+%%WWWDIR%%/build/travis/phpenv/apcu-7.2.ini
 %%WWWDIR%%/build/travis/phpenv/memcache.ini
 %%WWWDIR%%/build/travis/phpenv/memcached.ini
 %%WWWDIR%%/build/travis/phpenv/redis.ini
@@ -2264,6 +2273,8 @@
 %%WWWDIR%%/cli/finder_indexer.php
 %%WWWDIR%%/cli/garbagecron.php
 %%WWWDIR%%/cli/index.html
+%%WWWDIR%%/cli/sessionGc.php
+%%WWWDIR%%/cli/sessionMetadataGc.php
 %%WWWDIR%%/cli/update_cron.php
 %%WWWDIR%%/codeception.yml
 %%WWWDIR%%/components/com_ajax/ajax.php
@@ -3900,7 +3911,7 @@
 %%WWWDIR%%/libraries/src/Mail/Mail.php
 %%WWWDIR%%/libraries/src/Mail/MailHelper.php
 %%WWWDIR%%/libraries/src/Mail/MailWrapper.php
-%%WWWDIR%%/libraries/src/Mail/language/phpmailer.lang-joomla.php
+%%WWWDIR%%/libraries/src/Mail/language/phpmailer.lang-en_gb.php
 %%WWWDIR%%/libraries/src/Menu/AbstractMenu.php
 %%WWWDIR%%/libraries/src/Menu/AdministratorMenu.php
 %%WWWDIR%%/libraries/src/Menu/MenuHelper.php
@@ -3935,6 +3946,7 @@
 %%WWWDIR%%/libraries/src/Schema/ChangeItem/SqlsrvChangeItem.php
 %%WWWDIR%%/libraries/src/Schema/ChangeSet.php
 %%WWWDIR%%/libraries/src/Session/Exception/UnsupportedStorageException.php
+%%WWWDIR%%/libraries/src/Session/MetadataManager.php
 %%WWWDIR%%/libraries/src/Session/Session.php
 %%WWWDIR%%/libraries/src/String/PunycodeHelper.php
 %%WWWDIR%%/libraries/src/Table/Asset.php
@@ -4796,6 +4808,7 @@
 %%WWWDIR%%/media/editors/codemirror/theme/neat.css
 %%WWWDIR%%/media/editors/codemirror/theme/neo.css
 %%WWWDIR%%/media/editors/codemirror/theme/night.css
+%%WWWDIR%%/media/editors/codemirror/theme/oceanic-next.css
 %%WWWDIR%%/media/editors/codemirror/theme/panda-syntax.css
 %%WWWDIR%%/media/editors/codemirror/theme/paraiso-dark.css
 %%WWWDIR%%/media/editors/codemirror/theme/paraiso-light.css
@@ -4803,6 +4816,7 @@
 %%WWWDIR%%/media/editors/codemirror/theme/railscasts.css
 %%WWWDIR%%/media/editors/codemirror/theme/rubyblue.css
 %%WWWDIR%%/media/editors/codemirror/theme/seti.css
+%%WWWDIR%%/media/editors/codemirror/theme/shadowfox.css
 %%WWWDIR%%/media/editors/codemirror/theme/solarized.css
 %%WWWDIR%%/media/editors/codemirror/theme/the-matrix.css
 %%WWWDIR%%/media/editors/codemirror/theme/tomorrow-night-bright.css
@@ -5649,6 +5663,7 @@
 %%WWWDIR%%/plugins/authentication/joomla/joomla.xml
 %%WWWDIR%%/plugins/authentication/ldap/ldap.php
 %%WWWDIR%%/plugins/authentication/ldap/ldap.xml
+%%WWWDIR%%/plugins/captcha/recaptcha/postinstall/actions.php
 %%WWWDIR%%/plugins/captcha/recaptcha/recaptcha.php
 %%WWWDIR%%/plugins/captcha/recaptcha/recaptcha.xml
 %%WWWDIR%%/plugins/captcha/recaptcha/recaptchalib.php
@@ -5830,6 +5845,8 @@
 %%WWWDIR%%/plugins/system/remember/remember.xml
 %%WWWDIR%%/plugins/system/sef/sef.php
 %%WWWDIR%%/plugins/system/sef/sef.xml
+%%WWWDIR%%/plugins/system/sessiongc/sessiongc.php
+%%WWWDIR%%/plugins/system/sessiongc/sessiongc.xml
 %%WWWDIR%%/plugins/system/stats/field/base.php
 %%WWWDIR%%/plugins/system/stats/field/data.php
 %%WWWDIR%%/plugins/system/stats/field/uniqueid.php

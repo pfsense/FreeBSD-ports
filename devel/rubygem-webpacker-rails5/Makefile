@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	webpacker
-DISTVERSION=	3.2.0
+DISTVERSION=	3.4.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails5
@@ -20,8 +20,5 @@ RUN_DEPENDS=	rubygem-activesupport5>=4.2:devel/rubygem-activesupport5 \
 USES=		gem
 USE_RUBY=	yes
 NO_ARCH=	yes
-
-PLIST_FILES=	bin/webpack \
-		bin/webpack-dev-server
 
 .include <bsd.port.mk>

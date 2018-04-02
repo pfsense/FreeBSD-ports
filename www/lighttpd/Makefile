@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	lighttpd
-PORTVERSION=	1.4.48
-PORTREVISION=	1
+PORTVERSION=	1.4.49
 CATEGORIES?=	www
 MASTER_SITES?=	http://download.lighttpd.net/lighttpd/releases-1.4.x/
 
@@ -29,6 +28,8 @@ CONFIGURE_ARGS+=	--libdir=${PREFIX}/lib/lighttpd
 INSTALL_TARGET=	install-strip
 
 .if !defined(_BUILDING_LIGHTTPD_MODULE)
+TEST_TARGET=	check
+
 PORTDOCS=	AUTHORS COPYING INSTALL NEWS README
 
 USE_RC_SUBR=	lighttpd
@@ -166,13 +167,6 @@ post-install:
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
-
-test: build
-	@cd ${WRKSRC}/tests && ${SETENV} ${MAKE_ENV} ${MAKE} \
-		${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} \
-		check-TESTS
-
-regression-test: test
 
 .endif # !defined(_BUILDING_LIGHTTPD_MODULE)
 

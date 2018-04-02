@@ -1,8 +1,7 @@
-# Created by: Nikolai Lifanov <lifanov@mail.lifanov.com>
 # $FreeBSD$
 
 PORTNAME=	ansible
-PORTVERSION?=	2.4.2.0
+PORTVERSION?=	2.5.0
 PORTREVISION?=	0
 CATEGORIES=	sysutils python
 MASTER_SITES=	http://releases.ansible.com/ansible/
@@ -20,7 +19,7 @@ RUN_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pycrypto>0:security/py-pycrypto@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 
-CONFLICTS?=	ansible1-* ansible23-*
+CONFLICTS?=	ansible1-* ansible23-* ansible24-*
 
 EXTRA_PATCHES?=	#
 

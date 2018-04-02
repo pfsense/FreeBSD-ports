@@ -2,11 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	matplotlib
-PORTVERSION=	1.5.3
-PORTREVISION=	3
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.1.2
+PORTREVISION=	2
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	5b7a21e53e11a7064b2171c0d91afda67f30c4e7.patch:-p1 # fix of the failure on 12 i386: https://github.com/matplotlib/matplotlib/issues/10698
 
 MAINTAINER=	mainland@apeiron.net
 COMMENT=	Plotting library uses a syntax familiar to MATLAB users
@@ -24,10 +27,10 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=0:devel/py-pytz@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>=0:devel/py-pyparsing@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tornado>0:www/py-tornado@${FLAVOR}
-
-USE_GITHUB=	yes
+py27_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}backports.functools_lru_cache>0:devel/py-backports.functools_lru_cache@${FLAVOR}
 
 USES=		compiler:c++11-lib gettext pkgconfig python shebangfix uniquefiles:dirs
+USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 CFLAGS+=	-I${LOCALBASE}/include
 

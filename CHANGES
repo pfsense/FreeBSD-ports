@@ -10,6 +10,100 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20180311:
+AUTHOR: brnrd@FreeBSD.org
+
+  USE_APACHE has been replaced by USES=apache.
+
+20180308:
+AUTHOR: mat@FreeBSD.org
+
+  Ports using USES=php:phpize, php:ext, php:zend, and php:pecl are now
+  flavored.  They will automatically get flavors (php56, php70, php71, php72)
+  depending of the versions they support (set with IGNORE_WITH_PHP).  As a
+  consequence, ports using USES=pear and USES=horde are also flavored.
+
+  As all packages must have different package names, the following variables
+  must be used in PKGNAMEPREFIX/SUFFIX:
+
+    Variable                     + Values                +
+    --------------------------------------------------------------------------------------
+    PHP_PKGNAMEPREFIX            | php56- php72-         | PHP Extensions
+                                 |                       | and modules
+    --------------------------------------------------------------------------------------
+    PHP_PKGNAMESUFFIX            | -php56 -php72         | PHP Applications
+    --------------------------------------------------------------------------------------
+    PECL_PKGNAMEPREFIX           | php56-pecl-           | PECL extensions
+                                 |                       | automatic
+    --------------------------------------------------------------------------------------
+    PEAR_PKGNAMEPREFIX           | php56-pear-           | PEAR modules
+                                 |                       | without PEAR_CHANNEL
+    PEAR_<channel>_PKGNAMEPREFIX | php56-pear-channel-   | with PEAR_CHANNEL
+                                 |                       | automatic
+
+  In all the ports with PHP dependencies, the *_DEPENDS entries MUST end with
+  the flavor so that the framework knows which to build/use.  This is done by
+  appending '@${PHP_FLAVOR}' after the origin.  For example:
+
+    RUN_DEPENDS=  ${PEAR_PKGNAMEPREFIX}Validate>=0.5.0:devel/pear-Validate@${PHP_FLAVOR} \
+                  ${PECL_PKGNAMEPREFIX}smbclient>=0.8.0:net/pecl-smbclient@${PHP_FLAVOR} \
+
+  PHP applications (for example, www/wordpress) can also get flavors, add the
+  flavors keyword to USES=php, for example: USES=php:flavors, and add
+  ${PHP_PKGNAMESUFFIX} to its PKGNAMESUFFIX.
+
+20180125:
+AUTHOR: mat@FreeBSD.org
+
+  Add support to passing directories to EXTRA_PATCHES.
+
+  Instead of:
+
+    EXTRA_PATCHES=        ${PATCHDIR}/feat-foo-patch-file.c \
+                          ${PATCHDIR}/feat-foo-patch-file.h \
+                          ${PATCHDIR}/feat-foo-patch-file2.c
+
+  Move those files to ${PATCHDIR}/feat-foo/, name them patch-*, and set:
+
+    EXTRA_PATCHES=        ${PATCHDIR}/feat-foo
+
+20180116:
+AUTHOR: mat@FreeBSD.org
+
+  The deprecated PYTHON_DEFAULT_VERSION, PYTHON2_DEFAULT_VERSION, and
+  PYTHON3_DEFAULT_VERSION have been removed.
+
+20180106:
+AUTHOR: kde@FreeBSD.org
+
+  USES=qmake now accepts a new variable, QMAKE_CONFIGURE_ARGS.
+
+  Starting with Qt 5.8.0, qmake can use configure.json files to help define
+  configuration options and configuration time checks. These options are
+  generally in the form '-foo -no-bar', and must be passed after "--" at the
+  end of qmake's command line.
+
+  The QMAKE_CONFIGURE_ARGS variable allows one to set those options, and
+  USES=qmake takes care of passing them at the right position when invoking
+  qmake.
+
+20180102:
+AUTHOR: kde@FreeBSD.org
+  
+  There is a new USES=eigen to depend on math/eigen[23].
+  
+  Usage: 
+    USES=eigen:<version>[,<type>]
+
+    version: 2 or 3 (required)
+    type:    build (default), run
+
+  For example:
+    USES=eigen:2,build,run
+  will add a BUILD- and RUN_DEPENDS on math/eigen2, and
+    USES=eigen:3 
+  will add a BUILD_DEPENDS on math/eigen3.
+
 20171231:
 AUTHOR: kde@FreeBSD.org
 

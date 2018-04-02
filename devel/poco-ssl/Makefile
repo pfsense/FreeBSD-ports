@@ -16,12 +16,16 @@ COMMENT=	C++ libraries with a network/internet focus (full version)
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	field has incomplete type 'EVP_CIPHER_CTX' (aka 'evp_cipher_ctx_st')
+
 CONFLICTS=	poco-[0-9]*
 
 USES=		gmake tar:bzip2 ssl
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} --config=FreeBSD
 USE_LDCONFIG=	yes
+CXXFLAGS+=	-D_WANT_SEMUN
 
 OPTIONS_DEFINE=	TEST SAMPLES MYSQL SQLITE ODBC
 OPTIONS_DEFAULT=MYSQL SQLITE

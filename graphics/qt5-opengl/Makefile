@@ -21,4 +21,10 @@ INSTALL_WRKSRC=	${BUILD_WRKSRC}
 QT_DEFINES=	OPENGL
 QT_CONFIG=	opengl
 
+post-configure:
+.for d in src/opengl
+	${MKDIR} ${WRKSRC}/${d}
+	cd ${WRKSRC}/${d} && ${SETENV} ${QMAKE_ENV} ${_QMAKE} ${QMAKE_ARGS} ${WRKSRC}/${d}
+.endfor
+
 .include <bsd.port.mk>

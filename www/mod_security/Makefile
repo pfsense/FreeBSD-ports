@@ -2,6 +2,7 @@
 
 PORTNAME=	mod_security
 PORTVERSION=	2.9.2
+PORTREVISION=	2
 CATEGORIES=	www security
 MASTER_SITES=	http://www.modsecurity.org/tarball/${PORTVERSION}/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
@@ -19,8 +20,7 @@ LIB_DEPENDS+=	libpcre.so:devel/pcre \
 		libgdbm.so:databases/gdbm \
 		libexpat.so:textproc/expat2
 
-USES=		perl5 pkgconfig shebangfix bdb
-USE_APACHE=	22+
+USES=		apache:2.2+ perl5 pkgconfig shebangfix bdb
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 SHEBANG_FILES=	tools/rules-updater.pl.in mlogc/mlogc-batch-load.pl.in

@@ -17,8 +17,11 @@ USES=	gmake
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix "${PREFIX}"
-WRKSRC=	${WRKDIR}/mc
 TEST_TARGET=	check
+WRKSRC=	${WRKDIR}/mc
+
+# ld: error: <internal>: section sh_addralign is not a power of 2
+LLD_UNSAFE=	yes
 
 OPTIONS_DEFINE=	DEBUG VIM
 OPTIONS_DEFAULT=	VIM

@@ -2,6 +2,7 @@
 
 PORTNAME=	lamprop
 PORTVERSION=	3.4
+PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	GH
 
@@ -13,9 +14,9 @@ LICENSE=	BSD2CLAUSE
 RUN_DEPENDS=	${PYNUMPY}
 
 USES=		python:3.4+
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	rsmith-nl
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/lamprop \
 		man/man1/lamprop.1.gz \

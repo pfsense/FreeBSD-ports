@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	poudriere
-DISTVERSION=	3.2.99.20171213
+DISTVERSION=	3.2.99.20180328
 PORTREVISION=	0
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	LOCAL/bdrewery/${PORTNAME}/ \
@@ -18,20 +18,24 @@ CONFLICTS_INSTALL=	poudriere-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
-GH_TAGNAME=	3.2.3-56-g0d8338bc
+GH_TAGNAME=	3.2.5-363-g9c2944629
 #DISTNAME=	${GH_ACCOUNT}-${GH_PROJECT}-${GH_TAGNAME}
 
 GNU_CONFIGURE=	yes
 ETCDIR=		${PREFIX}/etc/poudriere.d
 
-OPTIONS_DEFINE=	ZSH QEMU EXAMPLES
-OPTIONS_DEFAULT=ZSH
+OPTIONS_DEFINE=	BASH CERTS DIALOG4PORTS EXAMPLES QEMU ZSH
+OPTIONS_DEFAULT=BASH CERTS DIALOG4PORTS ZSH
 OPTIONS_SUB=	yes
 
-RUN_DEPENDS+=	ca_root_nss>=0:security/ca_root_nss
-RUN_DEPENDS+=	freebsd-release-manifests>0:misc/freebsd-release-manifests
+CERTS_DESC=		Install checksum and SSL certificates for jail creation
+CERTS_RUN_DEPENDS+=	ca_root_nss>=0:security/ca_root_nss
+CERTS_RUN_DEPENDS+=	freebsd-release-manifests>0:misc/freebsd-release-manifests
 
-QEMU_DESC=	Add qemu-user-static to compile ports for non-x86 architectures
+DIALOG4PORTS_DESC=	Install dialog4ports for options command
+DIALOG4PORTS_RUN_DEPENDS=	dialog4ports>0:ports-mgmt/dialog4ports
+
+QEMU_DESC=	Add qemu-user-static for non-x86 architectures
 QEMU_RUN_DEPENDS=	qemu-user-static>0:emulators/qemu-user-static
 
 .include <bsd.port.options.mk>
@@ -55,10 +59,17 @@ post-patch:
 	${REINPLACE_CMD} '/.PHONY: poudriere/d' ${WRKSRC}/Makefile.*
 
 post-install:
+	${LN} -fs ${LOCALBASE}/share/freebsd/MANIFESTS \
+	    ${STAGEDIR}${DATADIR}/MANIFESTS
+
+post-install-BASH-on:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/bash-completion/completions/
+	${INSTALL_DATA} ${WRKSRC}/completions/bash/poudriere \
+	    ${STAGEDIR}${PREFIX}/share/bash-completion/completions/
+
+post-install-ZSH-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions/
 	${INSTALL_DATA} ${WRKSRC}/completions/zsh/_poudriere \
 	    ${STAGEDIR}${PREFIX}/share/zsh/site-functions/
-	${LN} -fs ${LOCALBASE}/share/freebsd/MANIFESTS \
-	    ${STAGEDIR}${DATADIR}/MANIFESTS
 
 .include <bsd.port.mk>

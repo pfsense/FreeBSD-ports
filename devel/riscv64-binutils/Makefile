@@ -1,7 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	binutils
-PORTVERSION=	2.29.51.20170726
+PORTVERSION=	2.29
+PORTREVISION=	20180213
+PORTEPOCH=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	riscv64-
 
@@ -20,10 +22,12 @@ USES=	bison gmake libtool makeinfo
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd-riscv
 GH_PROJECT=	riscv-binutils-gdb
-GH_TAGNAME=	ba0b7ff
+GH_TAGNAME=	dc03ed3
+
+BUTARGET=	${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--target=${PKGNAMEPREFIX}${OPSYS:tl} \
+CONFIGURE_ARGS=	--target=${BUTARGET} \
 		--with-sysroot=/ \
 		--disable-gdb \
 		--disable-sim \
@@ -35,6 +39,8 @@ CONFIGURE_ARGS=	--target=${PKGNAMEPREFIX}${OPSYS:tl} \
 		--with-system-zlib \
 		--with-gmp=${LOCALBASE} \
 		--with-mpfr=${LOCALBASE}
+
+PLIST_SUB=	BUTARGET=${BUTARGET}
 
 .include <bsd.port.pre.mk>
 

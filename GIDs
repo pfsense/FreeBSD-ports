@@ -161,16 +161,16 @@ anvil:*:217:
 zap:*:218:
 sddm:*:219:
 bs:*:220:
-# free: 221
+opensips:*:221:
 rtpproxy:*:222:
-# free: 223
+mqttwarn:*:223:
 # free: 224
 postgrey:*:225:
 sqlgrey:*:226:
 _hfm:*:227:
-# free: 228
+osrm:*:228:
 kismet:*:229:
-# free: 230
+carbon:*:230:
 # free: 231
 # free: 232
 # free: 233
@@ -543,7 +543,7 @@ avahi-autoipd:*:588:
 _xsi:*:600:
 _tss:*:601:
 _pkcs11:*:602:
-# free: 603
+_acme:*:603:
 # free: 604
 # free: 605
 # free: 606
@@ -829,8 +829,8 @@ chronyd:*:849:
 # free: 886
 # free: 887
 vuls:*:888:
-# free: 889
-# free: 890
+mattermost:*:889:
+matterircd:*:890:
 # free: 891
 # free: 892
 # free: 893

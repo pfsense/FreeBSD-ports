@@ -2,7 +2,7 @@
 
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER:S/^0//}
-PORTREVISION=	3
+PORTREVISION=	2
 CATEGORIES=	java devel
 MASTER_SITES=	http://download.java.net/openjdk/jdk${JDK_MAJOR_VERSION}/promoted/b${DIST_BUILD_NUMBER}/:jdk \
 		https://adopt-openjdk.ci.cloudbees.com/job/jtreg/${JTREG_JENKINS_BUILD}/artifact/:jtreg \
@@ -31,7 +31,8 @@ PATCHFILES=	patch-8u05-b13.xz \
 		patch-8u121-b13.xz \
 		patch-8u131-b11.xz \
 		patch-8u144-b01.xz \
-		patch-8u152-b16.xz
+		patch-8u152-b16.xz \
+		patch-8u162-b12.xz
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
@@ -204,8 +205,8 @@ NO_CCACHE=		yes
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	152
-JDK_BUILD_NUMBER=	16
+JDK_UPDATE_VERSION=	162
+JDK_BUILD_NUMBER=	12
 DIST_BUILD_NUMBER=	132
 JTREG_VERSION=		4.1
 JTREG_BUILD_NUMBER=	b08
@@ -233,7 +234,7 @@ CONFIGURE_ARGS+=	--disable-ccache \
 CONFIGURE_SCRIPT=	../../configure
 CONFIGURE_WRKSRC=	${WRKSRC}/common/autoconf
 
-OPTIONS_DEFINE=		ALSA POLICY TZUPDATE X11
+OPTIONS_DEFINE=		ALSA POLICY TZUPDATE X11 FONTCONFIG
 OPTIONS_DEFINE_armv6=	FPUHACK
 OPTIONS_DEFINE_armv7=	FPUHACK
 OPTIONS_DEFAULT=	ALSA POLICY TZUPDATE X11
@@ -263,6 +264,7 @@ X11_MAKE_ENV_OFF=	BUILD_HEADLESS_ONLY=1 \
 			MAKEFLAGS=X_CFLAGS="-I${LOCALBASE}/include"
 X11_MAKE_ENV_ON=	MAKEFLAGS=""
 X11_USE=		XORG=x11,xext,xi,xrender,xt,xtst
+FONTCONFIG_IMPLIES=	X11
 
 JAVAVMS_COMMENT=	OpenJDK${JDK_MAJOR_VERSION}
 
@@ -331,6 +333,12 @@ CONFIGURE_ARGS+=	--with-boot-jdk-jvmargs="-Xmx768m"
 MAKE_ENV+=	JAVADOC_CMD_MEM="-Xmx768m"
 .endif
 
+.if ${ARCH} == i386
+# Fix the build for i386 when WITH_LLD_IS_LD is set
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=225741
+MAKE_ENV+=	LFLAGS="-Wl,-z,notext"
+.endif
+
 .if ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == powerpc64
 JDK_BUILD_JVM=	server
 .else
@@ -377,6 +385,9 @@ post-extract:
 post-extract-TEST-on:
 	@${LN} -sf ${WRKDIR}/jtreg/linux/bin ${WRKDIR}/jtreg/
 
+do-patch-FONTCONFIG-on:
+	@${PATCH} -d ${PATCH_WRKSRC} < ${PATCHDIR}/fontconfig.patch
+
 post-patch:
 	@${FIND} ${WRKSRC} -name '*.orig' -delete
 	@${RMDIR} ${WRKSRC}/jdk/src/macosx/classes/java/net \
@@ -389,6 +400,7 @@ post-patch:
 	    -e 's|%%OBJCOPY%%|${OBJCOPY}|' \
 	    ${WRKSRC}/configure \
 	    ${WRKSRC}/common/autoconf/toolchain.m4 \
+	    ${WRKSRC}/jdk/make/lib/Awt2dLibraries.gmk \
 	    ${WRKSRC}/jdk/src/share/classes/com/sun/java/swing/plaf/gtk/Metacity.java \
 	    ${WRKSRC}/jdk/src/share/classes/sun/print/PSPrinterJob.java \
 	    ${WRKSRC}/jdk/src/solaris/classes/sun/nio/fs/BsdFileSystemProvider.java

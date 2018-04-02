@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mod_qos
-PORTVERSION=	11.43
+DISTVERSION=	11.51
 CATEGORIES=	www
 MASTER_SITES=	SF/mod-qos
 DIST_SUBDIR=	apache2
@@ -12,7 +12,7 @@ COMMENT=	QoS for Apache
 
 LICENSE=	GPLv2+
 
-USE_APACHE=	22+
+USES=		apache:2.2+
 AP_GENPLIST=	yes
 AP_FAST_BUILD=	yes
 

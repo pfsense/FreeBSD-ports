@@ -3,14 +3,18 @@
 
 PORTNAME=	elasticsearch
 PORTVERSION=	1.7.6
+PORTREVISION=	1
 CATEGORIES=	textproc java devel
 MASTER_SITES=	http://download.elasticsearch.org/${PORTNAME}/${PORTNAME}/ \
 		http://mirrors.rit.edu/zi/
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	elastic@FreeBSD.org
 COMMENT=	Full-text search engine for Java
 
 LICENSE=	APACHE20
+
+DEPRECATED=	Elastic 1.7 EoL was 2017-01-16
+EXPIRATION_DATE=2018-04-01
 
 RUN_DEPENDS=	java-sigar>=0:java/sigar
 
@@ -77,7 +81,7 @@ SUB_LIST=	SEARCHUSER=${SEARCHUSER} \
 		SEARCHGROUP=${SEARCHGROUP} \
 		PORTVERSION=${PORTVERSION}
 SUB_FILES=	elasticsearch-plugin pkg-message
-PLIST_SUB=	SIGAR_ARCH=${SIGAR_ARCH} \
+PLIST_SUB+=	SIGAR_ARCH=${SIGAR_ARCH} \
 		SEARCHUSER=${SEARCHUSER} \
 		SEARCHGROUP=${SEARCHGROUP} \
 		LUCENEVER=${LUCENEVER} \

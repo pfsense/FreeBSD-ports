@@ -17,7 +17,7 @@ LIB_DEPENDS=		libnspr4.so:devel/nspr
 CONFLICTS=		njs-[0-9]*
 
 GNU_CONFIGURE=		yes
-USES=			gmake pathfix perl5 python:2,build
+USES=			gmake pathfix perl5 python:2.7,build
 USE_PERL5=		build
 USE_LDCONFIG=		yes
 
@@ -29,6 +29,11 @@ CONFIGURE_ARGS=		--with-pthreads \
 OPTIONS_DEFINE=		DEBUG DTRACE GCZEAL JEMALLOC METHODJIT OPTIMIZE READLINE \
 			THREADSAFE TRACEJIT UTF8
 OPTIONS_DEFAULT=	METHODJIT OPTIMIZE READLINE THREADSAFE TRACEJIT
+# ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
+OPTIONS_EXCLUDE_aarch64=	DTRACE
+# dt_modtext:opensolaris/lib/libdtrace/common/dt_link.c: arm not implemented
+OPTIONS_EXCLUDE_armv6=	DTRACE
+OPTIONS_EXCLUDE_armv7=	DTRACE
 OPTIONS_SUB=		yes
 
 DEBUG_CONFIGURE_ENABLE=	debug debug-symbols

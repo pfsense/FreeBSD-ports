@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pam-modules
-PORTVERSION=	2.0
+PORTVERSION=	2.2
 CATEGORIES=	security
 MASTER_SITES=	ftp://download.gnu.org.ua/pub/release/pam-modules/
 
@@ -31,7 +31,8 @@ MYSQL_USE=	MYSQL
 
 PGSQL_CONFIGURE_ENABLE=	pgsql
 PGSQL_DESC=	Build pam_pgsql
-PGSQL_VARS=	USES+=pgsql  WANT_PGSQL=client
+PGSQL_USES=	pgsql
+PGSQL_VARS=	WANT_PGSQL=client
 
 SYSLOG_CONFIGURE_ENABLE=	log
 SYSLOG_DESC=	Build pam_log

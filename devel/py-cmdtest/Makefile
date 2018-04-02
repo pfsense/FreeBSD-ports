@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cmdtest
-PORTVERSION=	0.29
+PORTVERSION=	0.32
 CATEGORIES=	devel
 MASTER_SITES=	http://git.liw.fi/cgi-bin/cgit/cgit.cgi/cmdtest/snapshot/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,7 +19,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}markdown>0:textproc/py-markdown@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cliapp>0:devel/py-cliapp@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ttystatus>0:devel/py-ttystatus@${FLAVOR}
 
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

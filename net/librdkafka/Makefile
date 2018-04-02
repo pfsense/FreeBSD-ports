@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	librdkafka
-PORTVERSION=	0.11.3
+PORTVERSION=	0.11.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -19,16 +19,22 @@ BROKEN_powerpc64=	fails to build: cc: Internal error: Segmentation fault (progra
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	liblz4.so:archivers/liblz4
 
+USES=		gmake python:build shebangfix ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	edenhill
 
-USES=		gmake perl5 python shebangfix ssl
 SHEBANG_FILES=	lds-gen.py
 GNU_CONFIGURE=	yes
 MAKE_ARGS=	pkgconfigdir=${PREFIX}/libdata/pkgconfig
 CONFIGURE_ARGS+=	--disable-sasl --enable-ssl
 
 USE_LDCONFIG=	yes
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200056 && ${ARCH} == i386
+BROKEN=	undefined reference to '__atomic_fetch_add_8'
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e \

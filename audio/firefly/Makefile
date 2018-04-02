@@ -3,7 +3,7 @@
 
 PORTNAME=	firefly
 PORTVERSION=	1696
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	audio
 MASTER_SITES=	SF/fireflyserver-server/Sources/mt-daapd/svn-${PORTVERSION}
 DISTNAME=	mt-daapd-svn-${PORTVERSION}
@@ -73,6 +73,5 @@ post-install-DOCS-on:
 	ChangeLog INSTALL NEWS TODO
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
-
 
 .include <bsd.port.mk>

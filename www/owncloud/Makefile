@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	owncloud
-PORTVERSION=	10.0.4
+PORTVERSION=	10.0.7
 CATEGORIES=	www
-MASTER_SITES=	http://download.owncloud.org/community/
+MASTER_SITES=	https://download.owncloud.org/community/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Personal cloud which runs on your own server
@@ -41,7 +41,7 @@ MYSQL_USES=	mysql
 PGSQL_USES=	pgsql
 PGSQL_USE=	PHP=pdo_pgsql,pgsql
 SQLITE_USE=	PHP=pdo_sqlite,sqlite3
-SMB_RUN_DEPENDS=	pecl-smbclient>=0.8.0:net/pecl-smbclient
+SMB_RUN_DEPENDS=	${PECL_PKGNAMEPREFIX}smbclient>=0.8.0:net/pecl-smbclient@${PHP_FLAVOR}
 SSL_USE=	PHP=openssl
 
 do-install:

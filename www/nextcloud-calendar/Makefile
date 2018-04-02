@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	calendar
-PORTVERSION=	1.5.6
+PORTVERSION=	1.6.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PKGNAMEPREFIX:S/-//}/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
@@ -17,6 +17,7 @@ LICENSE=	AGPLv3
 
 RUN_DEPENDS=	nextcloud>=12:www/nextcloud
 
+USES=		php
 NO_BUILD=	yes
 NO_ARCH=	yes
 

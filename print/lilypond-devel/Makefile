@@ -2,9 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-PORTVERSION=	2.19.57
+DISTVERSION=	2.19.81
+PORTREVISION=	1
 CATEGORIES=	print audio
-MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${PORTVERSION:R}/
+MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${DISTVERSION:R}/ \
+		http://lilypond.org/downloads/sources/v${DISTVERSION:R}/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	m.ne@gmx.net
@@ -45,7 +47,7 @@ INFO=		internals \
 		music-glossary
 
 USES=		bison:build gettext ghostscript gmake pkgconfig perl5 \
-		compiler:gcc-c++11-lib python:-3
+		compiler:gcc-c++11-lib python:2.7
 USE_CXXSTD=	c++11
 USE_TEX=	latex texmf
 USE_PERL5=	build
@@ -56,30 +58,30 @@ GNU_MAKEFILE=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-texgyre-dir=${LOCALBASE}/${TEXMFDISTDIR}/fonts/opentype/public/tex-gyre \
-		--with-python-include=${PYTHON_INCLUDEDIR}
+		--with-python-include=${PYTHON_INCLUDEDIR} --without-urwotf-dir
 CONFIGURE_ENV+=	ac_cv_prog_MAKEINFO="${LOCALBASE}/bin/makeinfo" \
 		FLEX=${FLEX} YACC=${YACC} HOME=${WRKDIR}
 
 ALL_TARGET=	all
 
-NO_CCACHE=	yes
-
-PLIST_SUB=	PORTVERSION=${PORTVERSION}
+PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
 post-patch:
-	${FIND} ${WRKSRC} -name "*.cc" | ${XARGS} \
+	@${FIND} ${WRKSRC} -name "*.cc" | ${XARGS} \
 	    ${REINPLACE_CMD} -e 's|isinf[ ]*(|::isinf(|g' -e 's|isnan|::isnan|g'
-	${REINPLACE_CMD} -e 's|<FlexLexer.h>|"/usr/include/FlexLexer.h"|' \
+	@${REINPLACE_CMD} -e 's|<FlexLexer.h>|"/usr/include/FlexLexer.h"|' \
 	    ${WRKSRC}/lily/include/includable-lexer.hh
+		${SED} -e 's|%%FONTDIR%%|${WRKDIR}/fontconfig/cache/|'  \
+			${FILESDIR}/fonts.conf > ${WRKDIR}/.fonts.conf
 
 post-patch-NLS-off:
-	${REINPLACE_CMD} -e '/po \\$$/d' ${WRKSRC}/${MAKEFILE}.in
+	@${REINPLACE_CMD} -e '/po \\$$/d' ${WRKSRC}/${MAKEFILE}.in
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/lilypond
-	(cd ${STAGEDIR}/${DATADIR} && ${LN} -fs ${PORTVERSION} current)
+	(cd ${STAGEDIR}/${DATADIR} && ${LN} -fs ${DISTVERSION} current)
 
 .include <bsd.port.mk>

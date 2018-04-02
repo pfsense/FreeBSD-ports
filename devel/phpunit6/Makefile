@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	phpunit
-DISTVERSION=	6.5.5
+DISTVERSION=	6.5.7
 CATEGORIES=	devel www
 MASTER_SITES=	https://phar.phpunit.de/
-PKGNAMESUFFIX=	6
+PKGNAMESUFFIX=	6${PHP_PKGNAMESUFFIX}
 EXTRACT_SUFX=	.phar
 
 MAINTAINER=	joneum@FreeBSD.org
@@ -13,13 +13,13 @@ COMMENT=	Testing framework for unit tests
 
 LICENSE=	BSD3CLAUSE
 
+IGNORE_WITH_PHP=	56
+
 CONFLICTS_INSTALL=	phpunit
 
-USES=		cpe php
+USES=		cpe php:flavors
 CPE_VENDOR=	phpunit_project
 USE_PHP=	dom json spl pcre phar
-
-IGNORE_WITH_PHP=	56
 
 NO_ARCH=	yes
 NO_BUILD=	yes
