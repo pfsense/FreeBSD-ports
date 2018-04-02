@@ -200,7 +200,7 @@ LET_GH_TUPLE=		arut:nginx-let-module:v0.0.4:let
 LET_CONFIGURE_ARGS=	--add-module=${WRKSRC_let}
 
 LUA_IMPLIES=		DEVEL_KIT
-LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit21
 LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.0 \
 			LUAJIT_LIB=${LOCALBASE}/lib
 LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.11:lua
@@ -211,7 +211,7 @@ MEMC_VARS=		DSO_EXTMODS+=memc
 
 MODSECURITY_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 				libcurl.so:ftp/curl \
-				libluajit-5.1.so:lang/luajit \
+				libluajit-5.1.so:lang/luajit21 \
 				libpcre.so:devel/pcre \
 				libyajl.so:devel/yajl
 MODSECURITY_USE=		GNOME=libxml2
