@@ -497,6 +497,15 @@ $acme_domain_validation_method['dns_lexicon'] = array(name => "DNS-Lexicon",
 			'description' =>"Fill in the API Id"
 		)
 	));*/
+$acme_domain_validation_method['dns_kinghost'] = array(name => "DNS-Kinghost API",
+	'fields' => array(
+		'KINGHOST_Username' => array('name'=>"kinghost_username",'columnheader'=>"Kinghost Username",'type'=>"textbox",
+			'description' =>"Fill in the Kinghost API Username"
+		),
+		'KINGHOST_Password' => array('name'=>"kinghost_password",'columnheader'=>"Kinghost Password",'type'=>"textbox",
+			'description' =>"Fill in the Kinghost API Password"
+		)
+	));
 $acme_domain_validation_method['dns_knot'] = array(name => "DNS-Knot API",
 	'fields' => array(
 		'KNOT_SERVER' => array('name'=>"knot_server",'columnheader'=>"Knot Server",'type'=>"textbox",
@@ -612,6 +621,12 @@ $acme_domain_validation_method['dns_zonomi'] = array(name => "DNS-Zonomi",
 	'fields' => array(
 		'ZM_Key' => array('name'=>"zm_key",'columnheader'=>"API Key",'type'=>"textbox",
 			'description' =>"Fill in the Zonomi API Key"
+		)
+	));
+$acme_domain_validation_method['dns_zilore'] = array(name => "DNS-Zilore",
+	'fields' => array(
+		'Zilore_Key' => array('name'=>"zilore_key",'columnheader'=>"Zilore API Key",'type'=>"textbox",
+			'description' =>"Fill in the Zilore API Key"
 		)
 	));
 
@@ -884,6 +899,7 @@ function & get_certificate($name) {
 			$acmesh = new acme_sh($certificate['name'], $url);
 			$action = $renew == true ? "renew" : "issue";
 			$acmesh->dnssleep = $certificate['dnssleep'];
+			$acmesh->ocspstaple = $certificate['ocspstaple'];
 			$acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $method, $envvariables, $extras);
 		}
 	}
