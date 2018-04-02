@@ -50,7 +50,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
-		php-suhosin>=0:security/php-suhosin \
+		php56-suhosin>=0:security/php-suhosin \
 		php56-pfSense-module>=0:devel/php56-pfSense-module \
 		qstats>=0:sysutils/qstats \
 		radvd>=0:net/radvd \
