@@ -56,7 +56,7 @@ if (!is_numeric($id))
 global $simplefields;
 $simplefields = array(
 	"name","desc","status",
-	"acmeaccount","keylength",
+	"acmeaccount","keylength","ocspstaple",
 	"dnssleep","renewafter"
 );
 
@@ -349,6 +349,13 @@ $section->addInput(new \Form_Select(
 	$pconfig['keylength'],
 	form_name_array($a_keylength)
 ));
+
+$section->addInput(new \Form_Checkbox(
+	'ocspstaple',
+	'OCSP Must Staple',
+	'Add the OCSP Must Staple extension to the certificate.',
+	$pconfig['ocspstaple']
+))->setHelp('Do not enable this option unless the software using the certificate also supports OCSP stapling.');
 
 $section->addInput(new \Form_StaticText(
 	'Domain SAN list', 
