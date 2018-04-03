@@ -1,4 +1,3 @@
-# Created by: Fernando Apesteguia <fernando.apesteguia@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	basic256
@@ -8,7 +7,7 @@ CATEGORIES=	lang
 MASTER_SITES=	SF/kidbasic/${PORTNAME}
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
-MAINTAINER=	fernando.apesteguia@gmail.com
+MAINTAINER=	fernape@FreeBSD.org
 COMMENT=	Easy to use BASIC language and IDE for education
 
 LICENSE=	GPLv2

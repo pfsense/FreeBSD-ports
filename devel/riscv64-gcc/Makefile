@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	7.1.1
+PORTVERSION=	7.2.0
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	riscv64-
 
@@ -24,7 +25,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd-riscv
 GH_PROJECT=	riscv-gcc
-GH_TAGNAME=	b2cdb72
+GH_TAGNAME=	2ea300e
 
 GCC_TARGET=	${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}
 
@@ -36,8 +37,8 @@ CONFIGURE_ARGS=	--target=${GCC_TARGET} \
 		--without-headers \
 		--with-pkgversion="FreeBSD Ports Collection for ${PKGNAMEPREFIX:C/-//g}" \
 		--with-system-zlib \
-		--with-as=${LOCALBASE}/bin/${PKGNAMEPREFIX}freebsd-as \
-		--with-ld=${LOCALBASE}/bin/${PKGNAMEPREFIX}freebsd-ld \
+		--with-as=${LOCALBASE}/bin/${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}-as \
+		--with-ld=${LOCALBASE}/bin/${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}-ld \
 		--disable-werror \
 		--disable-shared \
 		--enable-threads \

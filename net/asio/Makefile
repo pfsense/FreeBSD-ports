@@ -3,7 +3,7 @@
 
 PORTNAME=	asio
 PORTVERSION=	1.10.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20(Stable)/
 
@@ -15,9 +15,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
 
 RUN_DEPENDS=	${LOCALBASE}/include/boost/chrono/system_clocks.hpp:devel/boost-libs
 
+USES=		tar:bz2
 GNU_CONFIGURE=	yes
-USES=		gmake tar:bz2
 NO_BUILD=	yes
+NO_ARCH=	yes
 INSTALL_TARGET=	install-data
 
 .include <bsd.port.mk>

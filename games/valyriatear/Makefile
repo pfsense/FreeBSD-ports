@@ -3,7 +3,7 @@
 
 PORTNAME=	valyriatear
 PORTVERSION=	1.0.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -29,6 +29,7 @@ USE_SDL=	sdl image ttf
 USE_GL=		gl glu
 USE_XORG=	x11 xext sm ice
 INSTALLS_ICONS=	yes
+LLD_UNSAFE=	yes
 
 PORTDOCS=	*
 PORTDATA=	*

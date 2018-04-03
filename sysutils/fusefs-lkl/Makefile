@@ -4,7 +4,7 @@
 PORTNAME=	lkl
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.8-493
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONSUFFIX=	-g4b77c32b1a88
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
@@ -13,6 +13,8 @@ MAINTAINER=	cem@FreeBSD.org
 COMMENT=	Full-featured Linux BTRFS, Ext4, XFS as a FUSE module
 
 LICENSE=	GPLv2
+
+BROKEN=		inconsistent kallsyms data
 
 BUILD_DEPENDS=	gnubc>0:math/gnubc
 

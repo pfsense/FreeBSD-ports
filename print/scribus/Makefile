@@ -3,7 +3,7 @@
 
 PORTNAME=	scribus
 PORTVERSION=	1.4.6
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	print editors
 MASTER_SITES=	SF \
 		http://www.scribus.net/downloads/${PORTVERSION}/
@@ -12,6 +12,9 @@ MAINTAINER=	bsam@FreeBSD.org
 COMMENT=	Comprehensive desktop publishing program
 
 LICENSE=	GPLv2+
+
+BROKEN_armv6=		fails to build: scribus.cpp:6711:36: assigning to 'double *' from incompatible type 'qreal *'
+BROKEN_armv7=		fails to build: scribus.cpp:6711:36: assigning to 'double *' from incompatible type 'qreal *'
 
 LIB_DEPENDS=	liblcms.so:graphics/lcms \
 		libpng.so:graphics/png \
@@ -27,10 +30,10 @@ LIB_DEPENDS=	liblcms.so:graphics/lcms \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR}
 
-USE_QT4=	corelib gui linguist_build moc_build qmake_build rcc_build uic_build xml network
-USE_GNOME=	libartlgpl2 libxml2
 USES=		cmake:outsource desktop-file-utils ghostscript:run jpeg \
 		pkgconfig python:2.7 shared-mime-info tar:xz
+USE_QT4=	corelib gui linguist_build moc_build qmake_build rcc_build uic_build xml network
+USE_GNOME=	libartlgpl2 libxml2
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS+=	-DWANT_HUNSPELL=YES -Wno-ferror-limit

@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# $FreeBSD: branches/2018Q1/japanese/mailman/files/pkg-deinstall.in 360783 2014-07-05 17:42:23Z tota $
+# $FreeBSD$
 
 PATH=/bin:/usr/bin:/usr/sbin
 

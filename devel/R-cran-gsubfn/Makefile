@@ -3,7 +3,7 @@
 
 PORTNAME=	gsubfn
 DISTVERSION=	0.6-5
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -11,8 +11,6 @@ MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	R package used for string matching, substitution and parsing
 
 LICENSE=	GPLv2
-
-BROKEN=		fails to stage
 
 RUN_DEPENDS=	R-cran-proto>=0.3.9.2_6:devel/R-cran-proto
 

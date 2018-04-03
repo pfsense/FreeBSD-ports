@@ -2,32 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	opendht
-PORTVERSION=	0.5.2
-PORTREVISION=	3
+DISTVERSION=	1.6.1
 CATEGORIES=	devel net
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Lightweight Distributed Hash Table implementation
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libmsgpackc.so:devel/msgpack \
+BROKEN_FreeBSD_10=	Missing __cxa_thread_atexit
+
+LIB_DEPENDS=	libargon2.so:security/libargon2 \
+		libmsgpackc.so:devel/msgpack \
 		libnettle.so:security/nettle \
 		libgnutls.so:security/gnutls
 
+USES=		cmake:outsource compiler:c++11-lib pathfix pkgconfig readline:port
 USE_GITHUB=	yes
 GH_ACCOUNT=	savoirfairelinux
-
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--disable-python
 USE_LDCONFIG=	yes
 
-USES=		autoreconf compiler:c++11-lib libtool pathfix pkgconfig readline:port
-CFLAGS+=	-I${LOCALBASE}/include
-CXXFLAGS+=	-I${LOCALBASE}/include
+CMAKE_OFF=	OPENDHT_STATIC
 
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libopendht.so.0.0.0
+OPTIONS_DEFINE=	PROXY_SERVER PROXY_CLIENT PUSH_NOTIFICATIONS DOCS
+
+PROXY_SERVER_DESC=		Enable DHT proxy server
+PROXY_CLIENT_DESC=		Enable DHT proxy client
+PUSH_NOTIFICATIONS_DESC=	Enable push notifications support
+
+PROXY_SERVER_CMAKE_BOOL=	OPENDHT_PROXY_SERVER
+PROXY_CLIENT_CMAKE_BOOL=	OPENDHT_PROXY_CLIENT
+PUSH_NOTIFICATIONS_CMAKE_BOOL=	OPENDHT_PUSH_NOTIFICATIONS
+
+PROXY_SERVER_LIB_DEPENDS=	libjsoncpp.so:devel/jsoncpp \
+				librestbed.so:www/restbed
+
+PORTDOCS=	*
 
 .include <bsd.port.mk>

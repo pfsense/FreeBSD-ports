@@ -12,7 +12,7 @@ COMMENT=	ACME package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	pecl-ssh2-0>=0.13:security/pecl-ssh2-0 \
+RUN_DEPENDS=	php56-pecl-ssh2>=0.13:security/pecl-ssh2-0 \
 		${LOCALBASE}/bin/socat:net/socat
 
 USES=		php

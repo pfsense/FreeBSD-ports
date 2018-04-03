@@ -73,6 +73,7 @@
     SUBDIR += jd-gui
     SUBDIR += jdbcpool
     SUBDIR += jdk8-doc
+    SUBDIR += jdk9-doc
     SUBDIR += jdom
     SUBDIR += jflex
     SUBDIR += jfreechart
@@ -94,8 +95,8 @@
     SUBDIR += langspec
     SUBDIR += lightweight-java-profiler
     SUBDIR += linux-oracle-jdk18
-    SUBDIR += linux-oracle-jre18
     SUBDIR += linux-oracle-jdk9
+    SUBDIR += linux-oracle-jre18
     SUBDIR += linux-oracle-jre9
     SUBDIR += mmake
     SUBDIR += mx4j

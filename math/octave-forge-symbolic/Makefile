@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-symbolic
 PORTVERSION=	2.6.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -25,6 +25,8 @@ WRKSRC=		${WRKDIR}/${OCTSRC}/src
 
 do-build:
 	${DO_NADA}
+
+NO_ARCH=	yes
 
 post-build:
 	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure

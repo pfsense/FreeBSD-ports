@@ -72,11 +72,12 @@
     SUBDIR += p5-WWW-BitTorrent
     SUBDIR += phex
     SUBDIR += py-py2play
-    SUBDIR += py-tremc
     SUBDIR += py-transmissionrpc
+    SUBDIR += py-tremc
     SUBDIR += py-vertex
     SUBDIR += qbittorrent
     SUBDIR += qbittorrent-nox11
+    SUBDIR += qtum
     SUBDIR += radarr
     SUBDIR += retroshare
     SUBDIR += rtorrent

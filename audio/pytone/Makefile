@@ -3,7 +3,7 @@
 
 PORTNAME=	pytone
 PORTVERSION=	3.0.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio python
 MASTER_SITES=	http://www.luga.de/pytone/download/ \
 		http://redundancy.redundancy.org/mirror/
@@ -18,8 +18,7 @@ LIB_DEPENDS=	libao.so:audio/libao
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${FLAVOR}
 
-
-USES=		ncurses python:2
+USES=		ncurses python:2.7
 USE_PYTHON=	autoplist distutils
 
 CFLAGS+=	-I${LOCALBASE}/include
@@ -31,7 +30,7 @@ PLIST_FILES=	etc/pytonerc.sample
 OPTIONS_DEFINE=		MAD MPG123 MPG321 VORBIS
 OPTIONS_DEFAULT=	MAD VORBIS
 
-MAD_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mad>0:audio/py-mad@${FLAVOR}
+MAD_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pymad>0:audio/py-pymad@${FLAVOR}
 MPG123_RUN_DEPENDS=	mpg123:audio/mpg123
 MPG321_DESC=		MP3 decoding support via mpg321
 MPG321_RUN_DEPENDS=	mpg321:audio/mpg321

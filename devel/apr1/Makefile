@@ -3,7 +3,7 @@
 
 PORTNAME=	apr
 PORTVERSION=	${APR_VERSION}.${APU_VERSION}
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/apr
 DISTFILES=	apr-${APR_VERSION}.tar.gz \
@@ -29,7 +29,7 @@ CPE_VERSION=	${APU_VERSION}
 
 OPTIONS_SUB=		yes
 OPTIONS_GROUP=		APU
-OPTIONS_DEFINE=		IPV6 DEVRANDOM
+OPTIONS_DEFINE=		IPV6
 OPTIONS_GROUP_APU=	BDB GDBM LDAP MYSQL NDBM ODBC PGSQL SQLITE
 OPTIONS_RADIO=		CRYPTO
 OPTIONS_RADIO_CRYPTO=	SSL NSS
@@ -46,7 +46,7 @@ SSL_DESC=		OpenSSL crypto driver
 BDB_USES=		bdb:5+
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 LDAP_USE=		OPENLDAP=yes
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 NSS_LIB_DEPENDS=	libnss3.so:security/nss
 ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 PGSQL_USES=		pgsql
@@ -67,17 +67,15 @@ PLIST_SUB+=	SHLIB_APR_MAJOR="${SHLIB_APR_MAJOR}" \
 
 APR_CONF_ARGS=	--with-installbuilddir=${DATADIR}/build-1 \
 		--enable-threads \
-		--enable-posix-shm
+		--enable-posix-shm \
+		--with-devrandom
 
 APU_CONF_ARGS=	--with-apr=${APR_WRKDIR} \
-		--with-expat=${LOCALBASE} \
-		--with-iconv=${ICONV_PREFIX}
+		--with-expat=${LOCALBASE}
 
 ########## APR Options
 IPV6_VARS=		APR_CONF_ARGS+=--enable-ipv6
 IPV6_VARS_OFF=		APR_CONF_ARGS+=--disable-ipv6
-DEVRANDOM_VARS=		APR_CONF_ARGS+=--with-devrandom
-DEVRANDOM_VARS_OFF=	APR_CONF_ARGS+=--without-devrandom
 
 ######### APR-Util Options
 # make sure 1st include is "${APR_WRKDIR}/include"
@@ -116,7 +114,6 @@ APU_CONF_ENV+=	${CONFIGURE_ENV:O:u} CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${AP
 
 .include <bsd.port.options.mk>
 
-# crypto (apache24)
 .if ${PORT_OPTIONS:MSSL} || ${PORT_OPTIONS:MNSS}
 APU_CONF_ARGS+=	--with-crypto
 .else
@@ -160,7 +157,7 @@ do-install:
 
 	-${FIND} ${STAGEDIR}${PREFIX}/lib/ -name \*.so | ${XARGS} ${STRIP_CMD}
 
-test: build
+do-test:
 	@${ECHO_MSG} "# ===> ${.TARGET} apr-${APR_VERSION}"
 	-(cd ${APR_WRKDIR} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} test)
 	@${ECHO_MSG} "# ===> ${.TARGET} apr-util-${APU_VERSION}"

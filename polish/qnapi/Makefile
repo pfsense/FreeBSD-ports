@@ -3,10 +3,10 @@
 
 PORTNAME=	qnapi
 PORTVERSION=	0.2.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	polish multimedia
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt5 based subtitle downloader
 
 LICENSE=	GPLv2

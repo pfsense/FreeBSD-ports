@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	audio python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -15,8 +15,6 @@ TEST_DEPENDS=	sox:audio/sox \
 
 USES+=		python
 USE_PYTHON=	autoplist distutils
-
-CPPFLAGS+=	-I${PYTHON_SITELIBDIR}/numpy/core/include
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${WRKSRC}/`ls -rtd build/lib.* | head -1`
 TEST_TARGET=	test

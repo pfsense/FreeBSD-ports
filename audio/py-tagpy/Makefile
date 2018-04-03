@@ -3,7 +3,7 @@
 
 PORTNAME=	tagpy
 PORTVERSION=	2013.1
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	audio python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ COMMENT=	Python bindings for Scott Wheeler's TagLib
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	libboost_python.so:devel/boost-python-libs \
+LIB_DEPENDS=	${PY_BOOST} \
 		libtag.so:audio/taglib
 
 USES=		compiler:c++11-lang python shebangfix
@@ -23,7 +23,7 @@ CONFIGURE_ARGS=	--taglib-inc-dir="${LOCALBASE}/include/taglib" \
 		--taglib-lib-dir="${LOCALBASE}/lib" \
 		--boost-inc-dir="${PYTHON_INCLUDEDIR},${LOCALBASE}/include" \
 		--boost-lib-dir="${PYTHON_LIBDIR},${LOCALBASE}/lib" \
-		--boost-python-libname="boost_python"
+		--boost-python-libname="${PY_BOOST_LIB}"
 SHEBANG_FILES=	configure.py
 USE_PYTHON=	distutils autoplist
 

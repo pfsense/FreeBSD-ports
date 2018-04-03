@@ -15,7 +15,7 @@ LICENSE=	GPLv3
 USE_GITHUB=	yes
 GH_ACCOUNT=	librenms
 
-USES=		php:cli python${PY_MYSQL} shebangfix
+USES=		python${PY_MYSQL} shebangfix
 SHEBANG_FILES=	scripts/auth_test.php scripts/deploy-docs.sh scripts/github-remove \
 		scripts/Migration/Standard_Conversion/convert_no_xml.sh \
 		scripts/Migration/Standard_Conversion/destwork_no_xml.sh \
@@ -49,8 +49,8 @@ NO_BUILD=	yes
 
 RUN_DEPENDS+=	rrdtool:databases/rrdtool \
 		dot:graphics/graphviz \
-		${LOCALBASE}/share/pear/Net/IPv4.php:net/pear-Net_IPv4 \
-		${LOCALBASE}/share/pear/Net/IPv6.php:net/pear-Net_IPv6 \
+		${LOCALBASE}/share/pear/Net/IPv4.php:net/pear-Net_IPv4@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Net/IPv6.php:net/pear-Net_IPv6@${PHP_FLAVOR} \
 		snmpget:net-mgmt/net-snmp \
 		bash:shells/bash \
 		sudo:security/sudo

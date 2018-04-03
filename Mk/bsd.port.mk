@@ -380,10 +380,6 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				- If set, the system should use OpenLDAP libraries
 #				  with SASL support.
 ##
-# USE_AUTOTOOLS	- If set, this port uses various GNU autotools
-#				  (libtool, autoconf, autoheader, automake et al.)
-#				  See bsd.autotools.mk for more details.
-##
 # USE_FPC		- If set, this port relies on the Free Pascal language.
 # 				  Implies inclusion of bsd.fpc.mk.  (Also see
 #				  that file for more information on WANT_FPC_*).
@@ -437,8 +433,6 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  ${PREFIX}/etc/rc.d if ${PREFIX} is not /usr, otherwise they
 #				  will be installed in /etc/rc.d/ and added to the packing list.
 ##
-# USE_APACHE	- If set, this port relies on an apache webserver.
-#
 # Conflict checking.  Use if your port cannot be installed at the same time as
 # another package.
 #
@@ -753,7 +747,9 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  ${WRKDIR}, then point EXTRA_PATCHES to them.
 #				  The patches specified by this variable will be
 #				  applied after the normal distribution patches but
-#				  before those in ${PATCHDIR}.
+#				  before those in ${PATCHDIR}.  This can also contain
+#				  directories, all the files named patch-* in those directories
+#				  will be applied.
 # EXTRA_PATCH_TREE - where to find extra 'out-of-tree' patches
 #				  Points to a directory hierarchy with the same layout
 #				  as the ports tree, where local patches can be found.
@@ -1099,10 +1095,17 @@ IGNORE=	CROSS_SYSROOT should be defined
 HOSTCC:=	${CC}
 HOSTCXX:=	${CXX}
 .endif
+.if !defined(CC_FOR_BUILD)
+CC_FOR_BUILD:=	${HOSTCC}
+CXX_FOR_BUILD:=	${HOSTCXX}
+.endif
+CONFIGURE_ENV+= HOSTCC="${HOSTCC}" HOSTCXX="${HOSTCXX}" CC_FOR_BUILD="${CC_FOR_BUILD}" CXX_FOR_BUILD="${CXX_FOR_BUILD}"
+
 CC=		${XCC}
 CXX=	${XCXX}
 CFLAGS+=	--sysroot=${CROSS_SYSROOT} -isystem ${CROSS_SYSROOT}/usr/include
-CXXFLAGS+=	--sysroot=${CROSS_SYSROOT} -isystem ${CROSS_SYSROOT}/usr/include/c++/v1 -nostdinc++
+CXXFLAGS+=	--sysroot=${CROSS_SYSROOT} -isystem ${CROSS_SYSROOT}/usr/include -isystem ${CROSS_SYSROOT}/usr/include/c++/v1 -nostdinc++
+CPPFLAGS+=	--sysroot=${CROSS_SYSROOT} -isystem ${CROSS_SYSROOT}/usr/include
 LDFLAGS+=	--sysroot=${CROSS_SYSROOT}
 .for _tool in AS AR LD NM OBJCOPY RANLIB SIZE STRINGS
 ${_tool}=	${CROSS_BINUTILS_PREFIX}${tool:tl}
@@ -1367,10 +1370,6 @@ PKGCOMPATDIR?=		${LOCALBASE}/lib/compat/pkg
 .include "${PORTSDIR}/Mk/bsd.local.mk"
 .endif
 
-.if defined(USE_EMACS)
-.include "${PORTSDIR}/Mk/bsd.emacs.mk"
-.endif
-
 .if defined(USE_PHP) && (!defined(USES) || ( defined(USES) && !${USES:Mphp*} ))
 DEV_WARNING+=		"Using USE_PHP alone is deprecated, please use USES=php"
 USES+=	php
@@ -1392,8 +1391,13 @@ USES+=	php
 .include "${PORTSDIR}/Mk/bsd.ocaml.mk"
 .endif
 
-.if defined(USE_APACHE) || defined(USE_APACHE_BUILD) || defined(USE_APACHE_RUN)
-.include "${PORTSDIR}/Mk/bsd.apache.mk"
+.if defined(USE_APACHE_BUILD)
+USES+=	apache:build,${USE_APACHE_BUILD:C/2([0-9])/2.\1/g}
+.elif defined(USE_APACHE_RUN)
+USES+=	apache:run,${USE_APACHE_RUN:C/2([0-9])/2.\1/g}
+.elif defined(USE_APACHE)
+USE_APACHE:=	${USE_APACHE:S/common/server,/}
+USES+=	apache:${USE_APACHE:C/2([0-9])/2.\1/g}
 .endif
 
 .if defined(USE_QT4) || defined(USE_QT5)
@@ -1408,7 +1412,7 @@ USES+=	php
 .include "${PORTSDIR}/Mk/bsd.gecko.mk"
 .endif
 
-.if defined(WANT_GNOME) || defined(USE_GNOME) || defined(INSTALLS_ICONS)
+.if defined(USE_GNOME) || defined(INSTALLS_ICONS)
 USES+=	gnome
 .endif
 
@@ -1625,7 +1629,8 @@ QA_ENV+=		STAGEDIR=${STAGEDIR} \
 				PKGBASE=${PKGBASE} \
 				PORTNAME=${PORTNAME} \
 				NO_ARCH=${NO_ARCH} \
-				"NO_ARCH_IGNORE=${NO_ARCH_IGNORE}"
+				"NO_ARCH_IGNORE=${NO_ARCH_IGNORE}" \
+				USE_RUBY=${USE_RUBY}
 .if !empty(USES:Mssl)
 QA_ENV+=		USESSSL=yes
 .endif
@@ -1678,10 +1683,15 @@ CONFIGURE_ENV+=		PATH=${PATH}
 
 .if !defined(IGNORE_MASTER_SITE_GITHUB) && defined(USE_GITHUB) && empty(USE_GITHUB:Mnodefault)
 .if defined(WRKSRC)
-DEV_WARNING+=	"You are using USE_GITHUB and WRKSRC is set which is wrong.  Set GH_PROJECT correctly, or set WRKSRC_SUBDIR instead."
+DEV_WARNING+=	"You are using USE_GITHUB and WRKSRC is set which is wrong.  Set GH_PROJECT correctly, set WRKSRC_SUBDIR or remove WRKSRC entirely."
 .endif
 WRKSRC?=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME_EXTRACT}
 .endif
+
+.if !default(IGNORE_MASTER_SITE_GITLAB) && defined(USE_GITLAB) && empty(USE_GITLAB:Mnodefault)
+WRKSRC?=		${WRKDIR}/${GL_PROJECT}-${GL_COMMIT}-${GL_COMMIT}
+.endif
+
 # If the distname is not extracting into a specific subdirectory, have the
 # ports framework force extract into a subdirectory so that metadata files
 # do not get in the way of the build, and vice-versa.
@@ -1778,18 +1788,6 @@ MAKE_ENV+=	WITHOUT_DEBUG_FILES=yes
 MAKE_ENV+=	WITHOUT_KERNEL_SYMBOLS=yes
 .endif
 
-.if defined(NOPORTDOCS)
-PLIST_SUB+=		PORTDOCS="@comment "
-.else
-PLIST_SUB+=		PORTDOCS=""
-.endif
-
-.if defined(NOPORTEXAMPLES)
-PLIST_SUB+=	        PORTEXAMPLES="@comment "
-.else
-PLIST_SUB+=	        PORTEXAMPLES=""
-.endif
-
 CONFIGURE_SHELL?=	${SH}
 MAKE_SHELL?=	${SH}
 
@@ -1844,9 +1842,9 @@ PKG_DEPENDS+=	${LOCALBASE}/sbin/pkg:${PKG_ORIGIN}
 .include "${PORTSDIR}/Mk/bsd.gcc.mk"
 .endif
 
-_TEST_LD=/usr/bin/ld
-.if defined(LLD_UNSAFE) && ${_TEST_LD:tA} == "/usr/bin/ld.lld"
+.if defined(LLD_UNSAFE) && ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
 LDFLAGS+=	-fuse-ld=bfd
+BINARY_ALIAS+=	ld=${LD}
 .  if !defined(USE_BINUTILS)
 .    if exists(/usr/bin/ld.bfd)
 LD=	/usr/bin/ld.bfd
@@ -1993,14 +1991,6 @@ _USES_POST+=	php
 .include "${PORTSDIR}/Mk/bsd.wx.mk"
 .endif
 
-.if defined(USE_APACHE) || defined(USE_APACHE_BUILD) || defined(USE_APACHE_RUN)
-.include "${PORTSDIR}/Mk/bsd.apache.mk"
-.endif
-
-.if defined(USE_AUTOTOOLS)
-.include "${PORTSDIR}/Mk/bsd.autotools.mk"
-.endif
-
 .if defined(USE_FPC) || defined(WANT_FPC_BASE) || defined(WANT_FPC_ALL)
 .include "${PORTSDIR}/Mk/bsd.fpc.mk"
 .endif
@@ -2130,8 +2120,12 @@ FETCH_CMD?=		${FETCH_BINARY} ${FETCH_ARGS}
 .if defined(RANDOMIZE_MASTER_SITES)
 .if exists(/usr/games/random)
 RANDOM_CMD?=	/usr/games/random
+.elif exists(/usr/bin/random)
+RANDOM_CMD?=	/usr/bin/random
+.endif
+.if defined(RANDOM_CMD) && !empty(RANDOM_CMD)
 RANDOM_ARGS?=	-w -f -
-_RANDOMIZE_SITES=	 |${RANDOM_CMD} ${RANDOM_ARGS}
+_RANDOMIZE_SITES=	 ${RANDOM_CMD} ${RANDOM_ARGS}
 .endif
 .endif
 
@@ -2611,7 +2605,7 @@ VALID_CATEGORIES+= accessibility afterstep arabic archivers astro audio \
 	tcl textproc tk \
 	ukrainian vietnamese windowmaker wayland www \
 	x11 x11-clocks x11-drivers x11-fm x11-fonts x11-servers x11-themes \
-	x11-toolkits x11-wm xfce zope
+	x11-toolkits x11-wm xfce zope base
 
 check-categories:
 .for cat in ${CATEGORIES}
@@ -2647,6 +2641,7 @@ CONFIGURE_LOG?=		config.log
 # A default message to print if do-configure fails.
 CONFIGURE_FAIL_MESSAGE?=	"Please report the problem to ${MAINTAINER} [maintainer] and attach the \"${CONFIGURE_WRKSRC}/${CONFIGURE_LOG}\" including the output of the failure of your make command. Also, it might be a good idea to provide an overview of all packages installed on your system (e.g. a ${PKG_INFO} -Ea)."
 
+CONFIG_SITE?=		${PORTSDIR}/Templates/config.site
 .if defined(GNU_CONFIGURE)
 # Maximum command line length
 .if !defined(CONFIGURE_MAX_CMD_LEN)
@@ -2655,10 +2650,9 @@ CONFIGURE_MAX_CMD_LEN!=	${SYSCTL} -n kern.argmax
 _EXPORTED_VARS+=	CONFIGURE_MAX_CMD_LEN
 GNU_CONFIGURE_PREFIX?=	${PREFIX}
 GNU_CONFIGURE_MANPREFIX?=	${MANPREFIX}
-CONFIG_SITE?=		${PORTSDIR}/Templates/config.site
 CONFIGURE_ARGS+=	--prefix=${GNU_CONFIGURE_PREFIX} $${_LATE_CONFIGURE_ARGS}
 .if defined(CROSS_TOOLCHAIN)
-CROSS_HOST=		${CROSS_TOOLCHAIN:C,-.*$,,}-${OPSYS:tl}
+CROSS_HOST=		${CROSS_TOOLCHAIN:C,-.*$,,}-unknown-${OPSYS:tl}${OSREL}
 CONFIGURE_ARGS+=	--host=${CROSS_HOST}
 .endif
 CONFIGURE_ENV+=		CONFIG_SITE=${CONFIG_SITE} lt_cv_sys_max_cmd_len=${CONFIGURE_MAX_CMD_LEN}
@@ -2966,6 +2960,12 @@ DEPENDS_TARGET+=	install
 DEPENDS_TARGET+=	clean
 DEPENDS_ARGS+=	NOCLEANDEPENDS=yes
 .endif
+.endif
+
+.if defined(USE_GITLAB) && !${USE_GITLAB:Mnodefault} && empty(GL_COMMIT_DEFAULT)
+check-makevars::
+	@${ECHO_MSG} "GL_COMMIT is a required 40 character hash for use USE_GITLAB"
+	@${FALSE}
 .endif
 
 ################################################################
@@ -3662,11 +3662,12 @@ package-message:
 
 # Empty pre-* and post-* targets
 
+.if exists(${SCRIPTDIR})
 .for stage in pre post
 .for name in pkg check-sanity fetch extract patch configure build stage install package
 
-.if exists(${SCRIPTDIR}/${stage}-${name})
 .if !target(${stage}-${name}-script)
+.if exists(${SCRIPTDIR}/${stage}-${name})
 ${stage}-${name}-script:
 	@ cd ${.CURDIR} && ${SETENV} ${SCRIPTS_ENV} ${SH} \
 			${SCRIPTDIR}/${.TARGET:S/-script$//}
@@ -3675,6 +3676,7 @@ ${stage}-${name}-script:
 
 .endfor
 .endfor
+.endif
 
 .if !target(pretty-print-www-site)
 pretty-print-www-site:
@@ -4507,9 +4509,11 @@ generate-plist: ${WRKDIR}
 	@for file in ${PLIST_FILES}; do \
 		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} >> ${TMPPLIST}; \
 	done
+.if !empty(PLIST)
 	@if [ -f ${PLIST} ]; then \
 		${SED} ${PLIST_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} ${PLIST} >> ${TMPPLIST}; \
 	fi
+.endif
 
 .for dir in ${PLIST_DIRS}
 	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@dir ,' >> ${TMPPLIST}
@@ -4548,7 +4552,7 @@ ${TMPPLIST}:
 
 .for _type in EXAMPLES DOCS
 .if !target(add-plist-${_type:tl})
-.if defined(PORT${_type}) && !defined(NOPORT${_type})
+.if defined(PORT${_type}) && !empty(PORT_OPTIONS:M${_type})
 add-plist-${_type:tl}:
 .for x in ${PORT${_type}}
 	@if ${ECHO_CMD} "${x}"| ${AWK} '$$1 ~ /(\*|\||\[|\]|\?|\{|\}|\$$)/ { exit 1};'; then \
@@ -4714,7 +4718,7 @@ flavors-package-names: .PHONY
 STAGE_ARGS=		-i ${STAGEDIR}
 
 .if !defined(NO_PKG_REGISTER)
-fake-pkg: create-manifest
+fake-pkg:
 .if defined(INSTALLS_DEPENDS)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME} as automatic"
 .else
@@ -4747,6 +4751,7 @@ ${_t}:
 .endif
 .endfor
 .endif
+PORTS_ENV_VARS+=	${_EXPORTED_VARS}
 
 .if !target(pre-check-config)
 pre-check-config:
@@ -5117,196 +5122,44 @@ pretty-print-config:
 .endif # pretty-print-config
 
 desktop-categories:
-	@categories=""; \
-	for native_category in ${CATEGORIES}; do \
-		c=""; \
-		case $$native_category in \
-			accessibility)	c="Utility Accessibility"		;; \
-			archivers)		c="Utility Archiving"			;; \
-			astro)			c="Education Science Astronomy"	;; \
-			audio)			c="AudioVideo Audio"			;; \
-			benchmarks)		c="System"						;; \
-			biology)		c="Education Science Biology"	;; \
-			cad)			c="Graphics Engineering"		;; \
-			comms)			c="Utility"						;; \
-			converters)		c="Utility"						;; \
-			databases)		c="Office Database"				;; \
-			deskutils)		c="Utility"						;; \
-			devel)			c="Development"					;; \
-			dns)			c="Network"						;; \
-			elisp)			c="Development"					;; \
-			editors)		c="Utility"						;; \
-			emulators)		c="System Emulator"				;; \
-			finance)		c="Office Finance"				;; \
-			ftp)			c="Network FileTransfer"		;; \
-			games)			c="Game"						;; \
-			geography)		c="Education Science Geography"	;; \
-			gnome)			c="GNOME GTK"					;; \
-			graphics)		c="Graphics"					;; \
-			hamradio)		c="HamRadio"					;; \
-			haskell)		c="Development"					;; \
-			irc)			c="Network IRCClient"			;; \
-			java)			c="Development Java"			;; \
-			kde)			c="KDE Qt"						;; \
-			lang)			c="Development"					;; \
-			lisp)			c="Development"					;; \
-			mail)			c="Office Email"				;; \
-			mate)			c="MATE GTK"		;; \
-			math)			c="Education Science Math"		;; \
-			mbone)			c="Network AudioVideo"			;; \
-			multimedia)		c="AudioVideo"					;; \
-			net)			c="Network"						;; \
-			net-im)			c="Network InstantMessaging"	;; \
-			net-mgmt)		c="Network"						;; \
-			net-p2p)		c="Network P2P"					;; \
-			news)			c="Network News"				;; \
-			palm)			c="Office PDA"					;; \
-			parallel)		c="ParallelComputing"			;; \
-			pear)			c="Development WebDevelopment"	;; \
-			perl5)			c="Development"					;; \
-			python)			c="Development"					;; \
-			ruby)			c="Development"					;; \
-			rubygems)		c="Development"					;; \
-			scheme)			c="Development"					;; \
-			science)		c="Science Education"			;; \
-			security)		c="System Security"				;; \
-			shells)			c="System Shell"				;; \
-			sysutils)		c="System"						;; \
-			tcl*|tk*)		c="Development"					;; \
-			textproc)		c="Utility TextTools"			;; \
-			www)			c="Network"						;; \
-			x11-clocks)		c="Utility Clock"				;; \
-			x11-fm)			c="System FileManager"			;; \
-			xfce)			c="GTK XFCE"					;; \
-			zope)			c="Development WebDevelopment"	;; \
-		esac; \
-		if [ -n "$$c" ]; then \
-			categories="$$categories $$c"; \
-		fi; \
-	done; \
-	if [ -n "$$categories" ]; then \
-		for c in $$categories; do ${ECHO_MSG} "$$c"; done \
-			| ${SORT} -u | ${TR} '\n' ';'; \
-		${ECHO_MSG}; \
-	fi
-
-# http://standards.freedesktop.org/menu-spec/menu-spec-latest.html
-DESKTOP_CATEGORIES_MAIN=	AudioVideo Audio Video Development Education \
-	Game Graphics Network Office Science Settings System Utility
-DESKTOP_CATEGORIES_ADDITIONAL=	Building Debugger IDE GUIDesigner Profiling \
-	RevisionControl Translation Calendar ContactManagement Database \
-	Dictionary Chart Email Finance FlowChart PDA ProjectManagement \
-	Presentation Spreadsheet WordProcessor 2DGraphics VectorGraphics \
-	RasterGraphics 3DGraphics Scanning OCR Photography Publishing Viewer \
-	TextTools DesktopSettings HardwareSettings Printing PackageManager \
-	Dialup InstantMessaging Chat IRCClient Feed FileTransfer HamRadio News \
-	P2P RemoteAccess Telephony TelephonyTools VideoConference WebBrowser \
-	WebDevelopment Midi Mixer Sequencer Tuner TV AudioVideoEditing Player \
-	Recorder DiscBurning ActionGame AdventureGame ArcadeGame BoardGame \
-	BlocksGame CardGame KidsGame LogicGame RolePlaying Shooter Simulation \
-	SportsGame StrategyGame Art Construction Music Languages \
-	ArtificialIntelligence Astronomy Biology Chemistry ComputerScience \
-	DataVisualization Economy Electricity Geography Geology Geoscience \
-	History Humanities ImageProcessing Literature Maps Math \
-	NumericalAnalysis MedicalSoftware Physics Robotics Spirituality Sports \
-	ParallelComputing Amusement Archiving Compression Electronics Emulator \
-	Engineering FileTools FileManager TerminalEmulator Filesystem Monitor \
-	Security Accessibility Calculator Clock TextEditor Documentation Adult \
-	Core KDE GNOME MATE XFCE GTK Qt Motif Java ConsoleOnly
-DESKTOP_CATEGORIES_RESERVED=	Screensaver TrayIcon Applet Shell
-
-VALID_DESKTOP_CATEGORIES+=	${DESKTOP_CATEGORIES_MAIN} \
-	${DESKTOP_CATEGORIES_ADDITIONAL} \
-	${DESKTOP_CATEGORIES_RESERVED}
+	@${SETENV} \
+			dp_CATEGORIES="${CATEGORIES}" \
+			dp_ECHO_CMD=${ECHO_CMD} \
+			dp_SCRIPTSDIR="${SCRIPTSDIR}" \
+			dp_SORT="${SORT}" \
+			dp_TR="${TR}" \
+			${SH} ${SCRIPTSDIR}/desktop-categories.sh
 
 .if defined(DESKTOP_ENTRIES)
 check-desktop-entries:
-	@set -- ${DESKTOP_ENTRIES} XXX; \
-	if [ `${EXPR} \( $$# - 1 \) % 6` -ne 0 ]; then \
-		${ECHO_MSG} "${PKGNAME}: Makefile error: the DESKTOP_ENTRIES list must contain one or more groups of 6 elements"; \
-		exit 1; \
-	fi; \
-	num=1; \
-	while [ $$# -gt 6 ]; do \
-		entry="#$$num"; \
-		if [ -n "$$4" ]; then \
-			entry="$$entry ($$4)"; \
-		elif [ -n "$$1" ]; then \
-			entry="$$entry ($$1)"; \
-		fi; \
-		if [ -z "$$1" ]; then \
-			${ECHO_MSG} "${PKGNAME}: Makefile error: in desktop entry $$entry: field 1 (Name) is empty"; \
-			exit 1; \
-		fi; \
-		if ${ECHO_CMD} "$$3" | ${EGREP} -iq '.(png|svg|xpm)$$'; then \
-			if ! ${ECHO_CMD} "$$3" | ${GREP} -iq '^/'; then \
-				${ECHO_MSG} "${PKGNAME}: Makefile warning: in desktop entry $$entry: field 3 (Icon) should be either absolute path or icon name without extension if installed icons follow Icon Theme Specification"; \
-			fi; \
-		fi; \
-		if [ -z "$$4" ]; then \
-			${ECHO_MSG} "${PKGNAME}: Makefile error: in desktop entry $$entry: field 4 (Exec) is empty"; \
-			exit 1; \
-		fi; \
-		if [ -n "$$5" ]; then \
-			for c in `${ECHO_CMD} "$$5" | ${TR} ';' ' '`; do \
-				if ! ${ECHO_CMD} ${VALID_DESKTOP_CATEGORIES} | ${GREP} -wq $$c; then \
-					${ECHO_CMD} "${PKGNAME}: Makefile warning: in desktop entry $$entry: category $$c is not a valid desktop category"; \
-				fi; \
-			done; \
-			if ! ${ECHO_CMD} "$$5" | ${GREP} -q "`${ECHO_CMD} ${DESKTOP_CATEGORIES_MAIN} | ${SED} -E 's,[[:blank:]]+,\\\|,g'`"; then \
-				${ECHO_CMD} "${PKGNAME}: Makefile warning: in desktop entry $$entry: field 5 (Categories) must contain at least one main desktop category (make -VDESKTOP_CATEGORIES_MAIN)"; \
-			fi; \
-			if ! ${ECHO_CMD} "$$5" | ${GREP} -q ';$$'; then \
-				${ECHO_MSG} "${PKGNAME}: Makefile error: in desktop entry $$entry: field 5 (Categories) does not end with a semicolon"; \
-				exit 1; \
-			fi; \
-		else \
-			if [ -z "`cd ${.CURDIR} && ${MAKE} desktop-categories`" ]; then \
-				${ECHO_MSG} "${PKGNAME}: Makefile error: in desktop entry $$entry: field 5 (Categories) is empty and could not be deduced from the CATEGORIES variable"; \
-				exit 1; \
-			fi; \
-		fi; \
-		if [ "x$$6" != "xtrue" ] && [ "x$$6" != "xfalse" ] && [ "x$$6" != "x" ]; then \
-			${ECHO_MSG} "${PKGNAME}: Makefile error: in desktop entry $$entry: field 6 (StartupNotify) is not \"true\", \"false\" or \"\"(empty)"; \
-			exit 1; \
-		fi; \
-		shift 6; \
-		num=`${EXPR} $$num + 1`; \
-	done
+	@${SETENV} \
+			dp_CURDIR="${.CURDIR}" \
+			dp_ECHO_CMD=${ECHO_CMD} \
+			dp_ECHO_MSG=${ECHO_MSG} \
+			dp_EXPR="${EXPR}" \
+			dp_GREP="${GREP}" \
+			dp_MAKE="${MAKE}" \
+			dp_PKGNAME="${PKGNAME}" \
+			dp_SCRIPTSDIR="${SCRIPTSDIR}" \
+			dp_SED="${SED}" \
+			dp_VALID_DESKTOP_CATEGORIES="${VALID_DESKTOP_CATEGORIES}" \
+			dp_TR="${TR}" \
+			${SH} ${SCRIPTSDIR}/check-desktop-entries.sh ${DESKTOP_ENTRIES}
 .endif
 
 .if !target(install-desktop-entries)
 .if defined(DESKTOP_ENTRIES)
 install-desktop-entries:
-	@set -- ${DESKTOP_ENTRIES} XXX; \
-	while [ $$# -gt 6 ]; do \
-		filename="`${ECHO_CMD} "$$4" | ${SED} -e 's,^/,,g;s,[/ ],_,g;s,[^_[:alnum:]],,g'`.desktop"; \
-		pathname="${STAGEDIR}${DESKTOPDIR}/$$filename"; \
-		categories="$$5"; \
-		if [ -z "$$categories" ]; then \
-			categories="`cd ${.CURDIR} && ${MAKE} desktop-categories`"; \
-		fi; \
-		${ECHO_CMD} "${DESKTOPDIR}/$$filename" >> ${TMPPLIST}; \
-		${ECHO_CMD} "[Desktop Entry]" > $$pathname; \
-		${ECHO_CMD} "Type=Application" >> $$pathname; \
-		${ECHO_CMD} "Version=1.0" >> $$pathname; \
-		${ECHO_CMD} "Name=$$1" >> $$pathname; \
-		comment="$$2"; \
-		if [ -z "$$2" ]; then \
-			comment="`cd ${.CURDIR} && ${MAKE} -VCOMMENT`"; \
-		fi; \
-		${ECHO_CMD} "GenericName=$$comment" >> $$pathname; \
-		${ECHO_CMD} "Comment=$$comment" >> $$pathname; \
-		if [ -n "$$3" ]; then \
-			${ECHO_CMD} "Icon=$$3" >> $$pathname; \
-		fi; \
-		${ECHO_CMD} "Exec=$$4" >> $$pathname; \
-		${ECHO_CMD} "Categories=$$categories" >> $$pathname; \
-		if [ -n "$$6" ]; then \
-			${ECHO_CMD} "StartupNotify=$$6" >> $$pathname; \
-		fi; \
-		shift 6; \
-	done
+	@${SETENV} \
+			dp_CURDIR="${.CURDIR}" \
+			dp_ECHO_CMD=${ECHO_CMD} \
+			dp_SCRIPTSDIR="${SCRIPTSDIR}" \
+			dp_STAGEDIR="${STAGEDIR}" \
+			dp_DESKTOPDIR="${DESKTOPDIR}" \
+			dp_TMPPLIST="${TMPPLIST}" \
+			dp_MAKE="${MAKE}" \
+			dp_SED="${SED}" \
+			${SH} ${SCRIPTSDIR}/install-desktop-entries.sh ${DESKTOP_ENTRIES}
 .endif
 .endif
 
@@ -5329,6 +5182,17 @@ show-warnings:
 	@${ECHO_MSG}
 .endfor
 	@sleep ${WARNING_WAIT}
+.endif
+
+.if defined(ERROR)
+show-errors:
+	@${ECHO_MSG} "/!\\ ERRORS /!\\"
+	@${ECHO_MSG}
+.for m in ${ERROR}
+	@${ECHO_MSG} "${m}" | ${FMT_80}
+	@${ECHO_MSG}
+.endfor
+	@${FALSE}
 .endif
 
 .if defined(DEVELOPER)
@@ -5379,7 +5243,8 @@ _TARGETS_STAGES=	SANITY PKG FETCH EXTRACT PATCH CONFIGURE BUILD INSTALL TEST PAC
 
 _SANITY_SEQ=	050:post-chroot 100:pre-everything \
 				125:show-unsupported-system-error 150:check-makefile \
-				200:show-warnings 210:show-dev-warnings 220:show-dev-errors \
+				190:show-errors 200:show-warnings \
+				210:show-dev-errors 220:show-dev-warnings \
 				250:check-categories 300:check-makevars \
 				350:check-desktop-entries 400:check-depends \
 				450:identify-install-conflicts 500:check-deprecated \
@@ -5441,8 +5306,9 @@ _TEST_SEQ=		100:test-message 150:test-depends 300:pre-test 500:do-test \
 				${_OPTIONS_test} ${_USES_test}
 _INSTALL_DEP=	stage
 _INSTALL_SEQ=	100:install-message \
-				200:check-already-installed
-_INSTALL_SUSEQ=	300:fake-pkg 500:security-check
+				200:check-already-installed \
+				300:create-manifest
+_INSTALL_SUSEQ=	400:fake-pkg 500:security-check
 
 _PACKAGE_DEP=	stage
 _PACKAGE_SEQ=	100:package-message 300:pre-package 450:pre-package-script \

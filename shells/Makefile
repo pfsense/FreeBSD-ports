@@ -4,13 +4,13 @@
     COMMENT = Shells
 
     SUBDIR += 44bsd-csh
-    SUBDIR += ambit
     SUBDIR += bash
     SUBDIR += bash-completion
     SUBDIR += bash-static
     SUBDIR += bashc
     SUBDIR += ch
     SUBDIR += dash
+    SUBDIR += envy
     SUBDIR += es
     SUBDIR += esh
     SUBDIR += fd
@@ -25,6 +25,7 @@
     SUBDIR += lshell
     SUBDIR += mksh
     SUBDIR += nologinmsg
+    SUBDIR += oksh
     SUBDIR += osh
     SUBDIR += p5-Bash-Completion
     SUBDIR += p5-Shell-Perl

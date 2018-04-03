@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		R
-DISTVERSION=		3.4.3
-PORTREVISION=		1
+DISTVERSION=		3.4.4
 CATEGORIES=		math lang
 MASTER_SITES=		CRAN/src/base/R-${PORTVERSION:C|\..*||}
 
@@ -51,7 +50,7 @@ OPTIONS_SINGLE_BLAS=	ATLAS OPENBLAS NETLIB RBLAS
 OPTIONS_SUB=		YES
 
 ATLAS_DESC=		ATLAS BLAS implementation
-FLANG_DESC=		Use flang instead of the default Fortran compiler
+FLANG_DESC=		Use experimental flang instead of default Fortran compiler
 GHOSTSCRIPT_DESC=	Graphics device for bitmap files via Ghostscript
 CAIROPANGO_DESC=	Cairo graphics device and Pango multi-language text
 INFO_DESC=		GNU info manuals
@@ -69,7 +68,7 @@ TEXDOCS_DESC=		Build/Install TeX-dependent documentation files
 X11_DESC=		X11 graphics device
 
 OPTIONS_DEFAULT=	CAIROPANGO GHOSTSCRIPT ICU INFO JPEG LDOUBLE OPENMP \
-			PNG RBLAS RPROF TIFF X11
+			PNG RBLAS RPROF TCLTK TIFF X11
 
 ATLAS_USES=		blaslapack:atlas
 ATLAS_CONFIGURE_ON=	--disable-BLAS-shlib
@@ -91,7 +90,7 @@ INFO_INFO=		R-FAQ R-admin R-data R-exts R-ints R-intro R-lang
 JPEG_IMPLIES=		X11
 JPEG_CONFIGURE_WITH=	jpeglib
 JPEG_CONFIGURE_ENV=	r_cv_header_jpeglib_h=yes
-JPEG_USES=		jpeg
+JPEG_USES=		jpeg pkgconfig
 LDOUBLE_CONFIGURE_ENABLE=	long-double
 LETTER_CONFIGURE_ENV=	R_PAPERSIZE=letter
 MEMPROF_CONFIGURE_ENABLE=	memory-profiling

@@ -68,8 +68,8 @@ post-patch:
 		${WRKSRC}/Makefile
 	${REINPLACE_CMD} -e '/noget\.sh/d' \
 			${WRKSRC}/thirdparty/fetch-thirdparty-deps.sh
-	${FIND} ${WRKSRC}/thirdparty -name '*.config*' -exec ${REINPLACE_CMD} \
-		-i '.bak.os' -e '/linux/{ p; s//${OPSYS:tl}/; }' {} +
+	${FIND} -L ${WRKSRC}/thirdparty -name '*.config*' -exec ${REINPLACE_CMD} \
+		-i '.bak.os' -e '/${OPSYS:tl}/d; /linux/{ p; s//${OPSYS:tl}/; }' {} +
 	${SED} 's/@LIBLUA51@/liblua-${LUA_VER}.so/' \
 		${WRKSRC}/thirdparty/Eluant.dll.config.in \
 		>${WRKSRC}/Eluant.dll.config

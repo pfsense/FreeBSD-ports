@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	owncloudclient
-PORTVERSION=	2.3.4
+PORTVERSION=	2.4.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
 MAINTAINER=	yonas@fizk.net
@@ -12,7 +13,7 @@ COMMENT=	OwnCloud Desktop Syncing Client
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
-		libqt5keychain.so:security/qtkeychain-qt5
+		libqt5keychain.so:security/qtkeychain@qt5
 
 USES=		cmake:outsource,noninja compiler:c++11-lib gmake iconv \
 		localbase:ldflags pkgconfig sqlite ssl
@@ -38,11 +39,17 @@ DEBUG_CMAKE_ON=		-DCMAKE_BUILD_TYPE:STRING=Debug
 
 PLIST_SUB=	VERSION=${PORTVERSION}
 
+.include <bsd.port.pre.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|.lst |.lst.sample |' ${WRKSRC}/CMakeLists.txt
+.if ${OSVERSION} < 1100101
+	@${REINPLACE_CMD} -e 's/ -fstack-protector-strong//' \
+		${WRKSRC}/src/CMakeLists.txt
+.endif
 
 pre-configure:
 	@(cd ${WRKSRC} && ${CP} -f sync-exclude.lst sync-exclude.lst.sample)
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

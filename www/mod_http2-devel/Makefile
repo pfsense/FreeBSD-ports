@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mod_http2
-PORTVERSION=	1.10.14
+PORTVERSION=	1.10.16
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
@@ -16,9 +16,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libnghttp2.so:www/libnghttp2
 
-USES=		autoreconf libtool ssl
+USES=		apache:2.4+ autoreconf libtool ssl
 USE_GITHUB=	yes
-USE_APACHE=	24+
 
 GH_ACCOUNT=	icing
 GH_PROJECT=	mod_h2

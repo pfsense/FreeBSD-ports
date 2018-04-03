@@ -3,11 +3,11 @@
 
 PORTNAME=	leechcraft
 PORTVERSION=	0.6.70
-PORTREVISION=	25
+PORTREVISION=	28
 CATEGORIES=	x11
 MASTER_SITES=	http://dist.leechcraft.org/LeechCraft/0.6.70/
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform modular live environment
 
 LICENSE=	BSL
@@ -273,7 +273,7 @@ POLEEMERY_CMAKE_OFF=	-DENABLE_POLEEMERY:BOOL=false
 POPISHU_DESC=		Text editor with IDE features
 POPISHU_CMAKE_ON=	-DENABLE_POPISHU:BOOL=true
 POPISHU_CMAKE_OFF=	-DENABLE_POPISHU:BOOL=false
-POPISHU_LIB_DEPENDS=	libqscintilla2.so:devel/qscintilla2
+POPISHU_LIB_DEPENDS=	libqscintilla2_qt4.so:devel/qscintilla2
 
 POSHUKU_DESC=		The full-featured web browser plugin
 POSHUKU_CMAKE_ON=	-DENABLE_POSHUKU:BOOL=true

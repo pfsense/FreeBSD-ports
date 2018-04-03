@@ -1,4 +1,4 @@
---- src/pppoe.c.orig	2017-10-21 15:58:27 UTC
+--- src/pppoe.c.orig	2016-01-06 15:42:06 UTC
 +++ src/pppoe.c
 @@ -71,6 +71,7 @@
  
@@ -73,7 +73,7 @@
  {
          union {
  		u_char          buf[sizeof(struct ng_mesg) + 2048];
-@@ -893,11 +902,6 @@ CreatePppoeNode(struct PppoeIf *PIf, con
+@@ -892,11 +901,6 @@ CreatePppoeNode(struct PppoeIf *PIf, con
  	uint32_t f;
  
  	/* Make sure interface is up. */
@@ -85,7 +85,7 @@
  	if (ExecCmdNosh(LG_PHYS2, iface, "%s %s up", _PATH_IFCONFIG, iface) != 0) {
  		Log(LG_ERR, ("PPPoE: can't bring up interface %s",
  		    iface));
-@@ -1515,7 +1519,7 @@ PppoeGetNode(Link l)
+@@ -1501,7 +1505,7 @@ PppoeGetNode(Link l)
  		    l->name));
  		return;
  	}
@@ -94,7 +94,7 @@
  		strlcpy(PppoeIfs[free].ifnodepath,
  		    pi->path,
  		    sizeof(PppoeIfs[free].ifnodepath));
-@@ -1687,7 +1691,7 @@ PppoeSetCommand(Context ctx, int ac, cha
+@@ -1673,7 +1677,7 @@ PppoeSetCommand(Context ctx, int ac, cha
  {
  	const PppoeInfo pi = (PppoeInfo) ctx->lnk->info;
  	const char *hookname = ETHER_DEFAULT_HOOK;
@@ -103,7 +103,7 @@
  #ifdef NGM_PPPOE_SETMAXP_COOKIE
  	int ap;
  #endif
-@@ -1698,9 +1702,17 @@ PppoeSetCommand(Context ctx, int ac, cha
+@@ -1684,9 +1688,17 @@ PppoeSetCommand(Context ctx, int ac, cha
  			hookname = av[1];
  			/* fall through */
  		case 1:

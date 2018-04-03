@@ -2,8 +2,7 @@
 
 PORTNAME=	z3
 DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	4.5.0
-PORTREVISION=	2
+DISTVERSION=	4.6.0
 CATEGORIES=	math
 
 MAINTAINER=	6yearold@gmail.com
@@ -12,7 +11,6 @@ COMMENT=	Z3 Theorem Prover
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN_powerpc64=	Does not build
 # compiler picks ${LOCALBASE}/include/dictionary.h from iniparser
 CONFLICTS=		iniparser-*
 
@@ -50,5 +48,6 @@ INSTALL_WRKSRC=		${WRKSRC}/build
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/z3
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libz3.so
+	${LN} -s libz3.so ${STAGEDIR}${PREFIX}/lib/libz3.so.0
 
 .include <bsd.port.mk>

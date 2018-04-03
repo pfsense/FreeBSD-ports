@@ -66,8 +66,6 @@ Gecko_Pre_Include=	bsd.gecko.mk
 # MOZ_TOOLKIT			A variable for the --enable-default-toolkit= in
 # 						CONFIGURE_ARGS. The default is cairo-gtk2.
 #
-# MOZ_EXTENSIONS		A list of extensions to build
-#
 # PORT_MOZCONFIG		Defaults to ${FILESDIR}/mozconfig.in, but can be
 # 						set to a generic mozconfig included with the port
 #
@@ -266,12 +264,6 @@ MOZ_OPTIONS+=	\
 		--disable-updater \
 		--enable-pie \
 		--with-pthreads
-# Configure options for install
-.if !defined(MOZ_EXTENSIONS)
-MOZ_OPTIONS+=	--enable-extensions=default
-.else
-MOZ_OPTIONS+=	--enable-extensions=${MOZ_EXTENSIONS}
-.endif
 # others
 MOZ_OPTIONS+=	--with-system-zlib		\
 		--with-system-bz2
@@ -332,8 +324,7 @@ MOZ_OPTIONS+=	--disable-gstreamer
 .endif
 
 .if ${PORT_OPTIONS:MGCONF}
-BUILD_DEPENDS+=	${gconf2_DETECT}:${gconf2_LIB_DEPENDS:C/.*://}
-USE_GNOME+=		gconf2:build
+USE_GNOME+=		gconf2
 MOZ_OPTIONS+=	--enable-gconf
 .else
 MOZ_OPTIONS+=	--disable-gconf
@@ -374,13 +365,17 @@ post-patch-SNDIO-on:
 . for tests in tests gtest
 	@if [ -f "${MOZSRC}/media/libcubeb/${tests}/moz.build" ]; then \
 		${REINPLACE_CMD} -e 's|OpenBSD|${OPSYS}|g' \
-			 ${MOZSRC}/media/libcubeb/${tests}/moz.build \
-	; fi
+			 ${MOZSRC}/media/libcubeb/${tests}/moz.build; \
+	fi
 . endfor
-	@${REINPLACE_CMD} -e 's|OS==\"openbsd\"|OS==\"${OPSYS:tl}\"|g' \
-		${MOZSRC}/media/webrtc/trunk/webrtc/build/common.gypi
-	@${ECHO_CMD} "OS_LIBS += ['sndio']" >> \
-		${MOZSRC}/media/webrtc/signaling/test/common.build
+	@if [ -f "${MOZSRC}/media/webrtc/trunk/webrtc/build/common.gypi" ]; then \
+		${REINPLACE_CMD} -e 's|OS==\"openbsd\"|OS==\"${OPSYS:tl}\"|g' \
+			${MOZSRC}/media/webrtc/trunk/webrtc/build/common.gypi; \
+	fi
+	@if [ -f "${MOZSRC}/media/webrtc/signaling/test/common.build" ]; then \
+		${ECHO_CMD} "OS_LIBS += ['sndio']" >> \
+			${MOZSRC}/media/webrtc/signaling/test/common.build; \
+	fi
 .endif
 
 .if ${PORT_OPTIONS:MRUST} || ${MOZILLA_VER:R:R} >= 54

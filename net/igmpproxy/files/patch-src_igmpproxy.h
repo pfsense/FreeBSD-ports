@@ -1,11 +1,22 @@
---- src/igmpproxy.h.orig	2016-02-28 22:07:18 UTC
+--- src/igmpproxy.h.orig	2018-02-13 19:17:30 UTC
 +++ src/igmpproxy.h
-@@ -172,7 +172,7 @@ extern int upStreamVif;
- /* ifvc.c
+@@ -35,9 +35,6 @@
+ *   igmpproxy.h - Header file for common includes.
+ */
+ 
+-#include "config.h"
+-#include "os.h"
+-
+ #include <errno.h>
+ #include <stdarg.h>
+ #include <stdio.h>
+@@ -60,6 +57,9 @@
+ #include <netinet/in.h>
+ #include <arpa/inet.h>
+ 
++#include "os.h"
++#include "config.h"
++
+ /*
+  * Limit on length of route data
   */
- void buildIfVc( void );
--struct IfDesc *getIfByName( const char *IfName );
-+struct IfDesc *getIfByName( const char *IfName, int iponly );
- struct IfDesc *getIfByIx( unsigned Ix );
- struct IfDesc *getIfByAddress( uint32_t Ix );
- int isAdressValidForIf(struct IfDesc* intrface, uint32_t ipaddr);

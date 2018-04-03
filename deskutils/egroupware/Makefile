@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	eGroupware
-PORTVERSION=	16.1.20170415
+PORTVERSION=	17.1.20180209
 CATEGORIES=	deskutils
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME:tl}/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME:tl}-epl-${PORTVERSION}
@@ -13,17 +13,18 @@ COMMENT=	Web-based GroupWare system
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKDIR}/${PORTNAME:tl}/doc/LICENSE
 
-RUN_DEPENDS=	${LOCALBASE}/share/pear/Net/Sieve.php:net/pear-Net_Sieve \
-		${LOCALBASE}/share/pear/Horde/Imap/Client.php:mail/pear-Horde_Imap_Client \
-		${LOCALBASE}/share/pear/Horde/Nls.php:devel/pear-Horde_Nls \
-		${LOCALBASE}/share/pear/Horde/Mail/Transport.php:mail/pear-Horde_Mail \
-		${LOCALBASE}/share/pear/Horde/Smtp.php:mail/pear-Horde_Smtp \
-		${LOCALBASE}/share/pear/Horde/Compress.php:archivers/pear-Horde_Compress \
-		${LOCALBASE}/share/pear/Horde/Icalendar.php:devel/pear-Horde_Icalendar \
-		${LOCALBASE}/share/pear/Horde/Mapi.php:mail/pear-Horde_Mapi
+RUN_DEPENDS=	${LOCALBASE}/share/pear/Net/Sieve.php:net/pear-Net_Sieve@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Horde/Imap/Client.php:mail/pear-Horde_Imap_Client@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Horde/Nls.php:devel/pear-Horde_Nls@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Horde/Mail/Transport.php:mail/pear-Horde_Mail@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Horde/Smtp.php:mail/pear-Horde_Smtp@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Horde/Compress.php:archivers/pear-Horde_Compress@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Horde/Icalendar.php:devel/pear-Horde_Icalendar@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Horde/Mapi.php:mail/pear-Horde_Mapi@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Horde/Crypt.php:security/pear-Horde_Crypt@${PHP_FLAVOR}
 
 USES=		cpe php tar:bzip2
-USE_PHP=	bcmath bz2 ctype json mcrypt session simplexml tidy xmlreader zlib
+USE_PHP=	bcmath bz2 ctype json session simplexml tidy xmlreader zlib
 NO_BUILD=	yes
 PLIST=		${WRKDIR}/plist
 SUB_FILES=	pkg-message

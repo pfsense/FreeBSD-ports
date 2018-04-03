@@ -9,16 +9,17 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}-rc1/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	${PORTNAME}-${PORTVERSION}rc1
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python library that provides easy scripting with Jabber
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dnspython>=1.7.1:dns/py-dnspython@${FLAVOR}
 
-USES=		python:2.7
-USE_PYTHON=	distutils
+USES=		python:2.7 shebangfix
+USE_PYTHON=	autoplist distutils
+NO_ARCH=	yes
 
-post-patch:
-	@${GREP} -lr '/usr/bin/python' ${WRKSRC} | \
-		${XARGS} ${REINPLACE_CMD} -e "s,^#!/usr/bin/python,#!${PYTHON_CMD},"
+PORTSCOUT=	ignore:1
+
+SHEBANG_FILES=	doc/examples/*.py
 
 .include <bsd.port.mk>

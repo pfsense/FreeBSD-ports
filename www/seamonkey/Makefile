@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	seamonkey
-DISTVERSION=	2.49.2
+DISTVERSION=	2.49.3
 MOZILLA_VER=	52 # above + 3
 CATEGORIES?=	www mail news editors irc ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
@@ -36,7 +36,6 @@ USE_GL=		gl
 USES=		tar:xz
 MOZ_PIS_SCRIPTS=	moz_pis_S50cleanhome
 
-MOZ_EXTENSIONS=	default
 MOZ_OPTIONS+=	--enable-application=suite
 
 USE_MOZILLA=	-soundtouch

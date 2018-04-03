@@ -3,7 +3,7 @@
 
 PORTNAME=	polyorb
 PORTVERSION=	2.11.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	http://downloads.dragonlace.net/src/
 DISTNAME=	polyorb-gpl-${YEAR}-src
@@ -47,7 +47,6 @@ OPTIONS_SUB=	yes
 TESTSUITE_ALL_TARGET=	testsuite
 TESTSUITE_BUILD_DEPENDS=gnatpython>=20101207:devel/gnatpython
 TESTSUITE_DESC=		Enable 'make run-testsuite' target
-
 
 .include <bsd.port.options.mk>
 

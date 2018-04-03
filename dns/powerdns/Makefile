@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	powerdns
-DISTVERSION=	4.1.0
-PORTREVISION=	1
+DISTVERSION=	4.1.1
 CATEGORIES=	dns ipv6
 MASTER_SITES=	http://downloads.powerdns.com/releases/
 DISTNAME=	pdns-${DISTVERSION}
@@ -39,28 +38,24 @@ SUB_FILES=	pkg-message
 
 USE_RC_SUBR=	pdns
 
-OPTIONS_DEFINE=	GEOIP MYDNS MYSQL OPENDBX OPENLDAP OPTALGO PGSQL PROTOBUF REMOTE SQLITE3 TINYDNS TOOLS UNIXODBC
+OPTIONS_DEFINE=	GEOIP LUAJIT MYDNS MYSQL OPENDBX OPENLDAP OPTALGO PGSQL PROTOBUF REMOTE SQLITE3 TINYDNS TOOLS UNIXODBC
 OPTIONS_GROUP=	EXPERIMENTAL REMOTEOPT
 OPTIONS_GROUP_EXPERIMENTAL=	LUABACKEND
 OPTIONS_GROUP_REMOTEOPT=	ZEROMQ
-OPTIONS_SINGLE=			LUASG
-OPTIONS_SINGLE_LUASG=		LUA LUAJIT
 ZEROMQ_IMPLIES=			REMOTE
 
-OPTIONS_DEFAULT=	LUA PGSQL
+OPTIONS_DEFAULT=	MYSQL PGSQL
 OPTIONS_SUB=		yes
 
 GEOIP_LIB_DEPENDS=	libyaml-cpp.so:devel/yaml-cpp \
 			libGeoIP.so:net/GeoIP
 GEOIP_VARS=		MODULES+=geoip
 
-LUA_CONFIGURE_WITH=	lua
-LUA_USES=		lua
-
 LUABACKEND_VARS=	MODULES+=lua
 
 LUAJIT_CONFIGURE_WITH=	luajit
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so.2:lang/luajit
+LUAJIT_USES_OFF=	lua
 
 MYDNS_CONFIGURE_ON=	--with-mysql=${LOCALBASE}
 MYDNS_USES=		mysql
@@ -79,12 +74,13 @@ OPENLDAP_USE=		OPENLDAP=YES
 OPENLDAP_VARS=		MODULES+=ldap
 
 OPTALGO_CONFIGURE_ON=	--enable-botan \
+			--enable-libdecaf \
 			--enable-libsodium
 OPTALGO_LIB_DEPENDS=	libbotan-2.so:security/botan2 \
+			libdecaf.so:security/libdecaf \
 			libsodium.so:security/libsodium
 
-PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}
-PGSQL_CONFIGURE_OFF=	--without-pgsql
+PGSQL_CONFIGURE_ON=	--with-pg-config=${LOCALBASE}/bin/pg_config
 PGSQL_USES=		pgsql
 PGSQL_VARS=		MODULES+=gpgsql
 
@@ -109,14 +105,13 @@ ZEROMQ_CONFIGURE_ARGS=	--enable-remotebackend-zeromq
 ZEROMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
 
 GEOIP_DESC=		GeoIP backend
-LUASG_DESC=		Lua Engine
 LUABACKEND_DESC=	Lua backend
-LUAJIT_DESC=		Enable LuaJIT
+LUAJIT_DESC=		Use LuaJIT instead of Lua
 MYDNS_DESC=		MyDNS backend
 MYSQL_DESC=		MySQL backend
 OPENDBX_DESC=		OpenDBX backend
 OPENLDAP_DESC=		OpenLDAP backend
-OPTALGO_DESC=		Enable optional algorithms (12 & 15)
+OPTALGO_DESC=		Enable optional algorithms (12, 15 & 16)
 PGSQL_DESC=		PostgreSQL backend
 PROTOBUF_DESC=		Protobuf support
 REMOTE_DESC=		Remote backend

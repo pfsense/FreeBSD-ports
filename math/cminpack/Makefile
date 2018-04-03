@@ -1,4 +1,3 @@
-# Created by: Fernando Apesteguia <fernando.apesteguia@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	cminpack
@@ -6,7 +5,7 @@ PORTVERSION=	1.3.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math
 
-MAINTAINER=	fernando.apesteguia@gmail.com
+MAINTAINER=	fernape@FreeBSD.org
 COMMENT=	Solving nonlinear equations and nonlinear least squares problems
 
 LICENSE_FILE=	${WRKSRC}/CopyrightMINPACK.txt

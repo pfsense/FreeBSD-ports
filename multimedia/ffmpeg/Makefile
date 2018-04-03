@@ -5,7 +5,7 @@ PORTNAME=	ffmpeg
 PORTVERSION=	3.4.2
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
-MASTER_SITES=	http://ffmpeg.org/releases/
+MASTER_SITES=	https://ffmpeg.org/releases/
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Realtime audio/video encoder/converter and streaming server
@@ -37,13 +37,8 @@ OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB ASS BS2B CACA CDIO CELT CHROMAPRINT DC1394 \
 		XVIDEO ZIMG ZMQ ZVBI
 
 OPTIONS_DEFAULT=	FFSERVER FONTCONFIG FREETYPE FREI0R GMP GNUTLS ICONV \
-			OPENCV OPTIMIZED_CFLAGS RTCPU THEORA V4L VAAPI VDPAU \
+			OPENCV OPTIMIZED_CFLAGS OPUS RTCPU THEORA V4L VAAPI VDPAU \
 			VORBIS VPX X264 X265 XVID
-
-.if !exists(${.CURDIR:H:H}/science/libmysofa)
-# https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/2336c76b2246
-OPTIONS_EXCLUDE+=	MYSOFA
-.endif
 
 OPTIONS_RADIO=	RTMP SSL
 OPTIONS_RADIO_RTMP=	GCRYPT GMP LIBRTMP
@@ -70,8 +65,8 @@ GPL3_DESC=	Allow (L)GPL version 3 code(cs)
 ILBC_DESC=	Internet Low Bit Rate codec
 KVAZAAR_DESC=	H.265 video codec support via Kvazaar
 LICENSE_DESC=	Licensing options
-NEON_DESC=	Media Processing Engine instructions
 MYSOFA_DESC=	SOFAlizer binaural filter
+NEON_DESC=	Media Processing Engine instructions
 NONFREE_DESC=	Allow use of nonfree code
 OPENH264_DESC=	H.264 video codec support via OpenH264
 RUBBERBAND_DESC=Time-stretching and pitch-shifting with librubberband
@@ -245,7 +240,7 @@ MODPLUG_LIB_DEPENDS=	libmodplug.so:audio/libmodplug
 MODPLUG_CONFIGURE_ENABLE=	libmodplug
 
 # mysofa
-MYSOFA_LIB_DEPENDS=	libmysofa.so:science/libmysofa
+MYSOFA_LIB_DEPENDS=	libmysofa.so:audio/libmysofa
 MYSOFA_CONFIGURE_ENABLE=	libmysofa
 
 # OpenAL

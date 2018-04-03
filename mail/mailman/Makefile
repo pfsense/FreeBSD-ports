@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mailman
-DISTVERSION=	2.1.25
-PORTREVISION=	0
+DISTVERSION=	2.1.26
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	GNU \
 		SF/${PORTNAME}/Mailman%202.1%20%28stable%29/${PORTVERSION} \
@@ -21,7 +21,7 @@ LICENSE_FILE=	${WRKSRC}/gnu-COPYING-GPL
 
 CONFLICTS=	ja-mailman-2.1.*
 
-USES=		autoreconf cpe fakeroot python:2 shebangfix tar:tgz
+USES=		autoreconf cpe fakeroot python:2.7 shebangfix tar:tgz
 USE_RC_SUBR=	mailman
 SHEBANG_FILES=	bin/msgfmt.py \
 		tests/fblast.py \
@@ -36,8 +36,8 @@ CONFIGURE_ARGS+=--with-python=${PYTHON_CMD} \
 		--with-groupname=${MM_GROUPNAME} \
 		--with-mail-gid=${MAIL_GID} --with-cgi-gid=${CGI_GID} \
 		--with-permcheck=no \
-		--with-mailhost=// \
-		--with-urlhost=//
+		--with-mailhost=localhost \
+		--with-urlhost=localhost
 
 # The Mailman port supports a number of variables that may be tweaked at
 # build time.  Getting the values of some of them right is crucial!
@@ -57,8 +57,9 @@ GROUPS=		${MM_GROUPNAME}
 
 MAILMANDIR=	${PREFIX}/${MM_DIR}
 PLIST_SUB=	MMDIR=${MM_DIR} IMGDIR=${IMGDIR} MM_USERNAME=${MM_USERNAME} MM_GROUPNAME=${MM_GROUPNAME}
-SUB_FILES=	pkg-message pkg-install pkg-deinstall mailman.newsyslog.sample
+SUB_FILES=	pkg-message pkg-install mailman.newsyslog.sample
 SUB_LIST=	MAILMANDIR=${MAILMANDIR} USER=${MM_USERNAME} GROUP=${MM_GROUPNAME} PYTHON_CMD="${PYTHON_CMD}"
+PKGDEINSTALL=	${PKGINSTALL}
 
 PORTDOCS=	ACKNOWLEDGMENTS BUGS FAQ INSTALL NEWS README README-I18N.en \
 		README.CONTRIB README.NETSCAPE \
@@ -128,7 +129,7 @@ PKGNAMESUFFIX+=	-with-htdig
 #X unpack this tarball, and the original distfile
 #X diff -NEur original-unpack bazaar-unpack | xz --best -c >msapiro-htdig-1702.patch.xz
 #X upload the latter with mode 0644 or similar to freefall's public_distfiles/ directory
-_HTDIGREV=	1717
+_HTDIGREV=	1734
 PATCHFILES+=	msapiro-htdig-${_HTDIGREV}.patch.xz
 RUN_DEPENDS+=	htdig:textproc/htdig
 PLIST_SUB+=	SUB_HTDIG=""

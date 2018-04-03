@@ -1,13 +1,16 @@
 # $FreeBSD$
 
 PORTNAME=	qtconsole
-PORTVERSION=	4.3.0
+PORTVERSION=	4.3.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Qt-based console for Jupyter with support for rich media output
+
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING.md
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}traitlets>=0:devel/py-traitlets@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jupyter_core>=0:devel/py-jupyter_core@${FLAVOR} \
@@ -17,7 +20,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}traitlets>=0:devel/py-traitlets@${FLAVOR} \
 
 USES=		pyqt:4 python
 USE_PYQT=	core gui svg
-
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

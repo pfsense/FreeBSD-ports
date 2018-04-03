@@ -20,9 +20,6 @@ RUN_DEPENDS=	sox:audio/sox
 USES=		alias libtool
 GNU_CONFIGURE=	yes
 
-NOT_FOR_ARCHS=		aarch64 armv6
-NOT_FOR_ARCHS_REASON=	fails to build: error: Cannot determine endian-ness of processor
-
 OPTIONS_DEFINE=	DOCS
 
 post-install:

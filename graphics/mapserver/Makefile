@@ -3,6 +3,7 @@
 
 PORTNAME=		mapserver
 PORTVERSION=		7.0.7
+PORTREVISION=	1
 CATEGORIES=		graphics www geography
 MASTER_SITES=		http://download.osgeo.org/mapserver/
 
@@ -43,7 +44,7 @@ WCS_DESC=		WCS Server support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USES+=			python:2
+USES+=			python:2.7
 BUILD_DEPENDS+=		swig3.0:devel/swig30
 BINARY_ALIAS=		swig=swig3.0
 CMAKE_ARGS+=		-DWITH_PYTHON=yes
@@ -199,10 +200,8 @@ do-install-PHP-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/php
 	@${ECHO_CMD} "extension=php_mapscript.so" > ${STAGEDIR}${PREFIX}/etc/php/ext-20-php_mapscript.ini
 
-
 do-install-PYTHON-on:
 	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/
 	(cd ${BUILD_WRKSRC}/mapscript/python && ${CP} mapscript.py _mapscript.so ${STAGEDIR}${PYTHON_SITELIBDIR}/)
-
 
 .include <bsd.port.mk>
