@@ -355,7 +355,7 @@ $section->addInput(new \Form_Checkbox(
 	'OCSP Must Staple',
 	'Add the OCSP Must Staple extension to the certificate.',
 	$pconfig['ocspstaple']
-))->setHelp('Do not enable this option unless the software using the certificate also supports OSCP stapling.');
+))->setHelp('Do not enable this option unless the software using the certificate also supports OCSP stapling.');
 
 $section->addInput(new \Form_StaticText(
 	'Domain SAN list', 
