@@ -223,8 +223,8 @@ function upload_config($reasonm = "") {
 	* Syncing vouchers happens every minute and sometimes multiple times. We don't
 	* want to fill up our db with a lot of the same config so just ignore that case.
 	*/
-
-	if(strpos($reason, 'Syncing vouchers') !== false && ignore_vouchers()){
+	if((strpos($reason, 'Syncing vouchers') !== false ||
+		strpos($reason, 'Captive Portal Voucher database synchronized') !== false) && ignore_vouchers() ){
 		return;
 	}
 	// Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
