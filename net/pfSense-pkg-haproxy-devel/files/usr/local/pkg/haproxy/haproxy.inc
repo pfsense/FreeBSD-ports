@@ -44,25 +44,25 @@ $a_frontendmode['health'] = array('name' => "health", 'shortname' => "health");
 global $a_acltypes;
 $a_acltypes = array();
 $a_acltypes["host_starts_with"] = array('name' => 'Host starts with:',
-				'mode' => 'http', 'syntax' => 'hdr_beg(host) -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["host_ends_with"] = array('name' => 'Host ends with:',
-				'mode' =>'http', 'syntax' => 'hdr_end(host) -i %1$s');
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["host_matches"] = array('name' => 'Host matches:',
-				'mode' =>'http', 'syntax' => 'hdr(host) -i %1$s');
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["host_regex"] = array('name' => 'Host regex:',
-				'mode' =>'http', 'syntax' => 'hdr_reg(host) -i %1$s');
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["host_contains"] = array('name' => 'Host contains:',
-				'mode' => 'http', 'syntax' => 'hdr_sub(host) -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["path_starts_with"] = array('name' => 'Path starts with:',
-				'mode' => 'http', 'syntax' => 'path_beg -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
 $a_acltypes["path_ends_with"] = array('name' => 'Path ends with:',
-				'mode' => 'http', 'syntax' => 'path_end -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
 $a_acltypes["path_matches"] = array('name' => 'Path matches:',
-				'mode' => 'http', 'syntax' => 'path -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
 $a_acltypes["path_regex"] = array('name' => 'Path regex:',
-				'mode' => 'http', 'syntax' => 'path_reg -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
 $a_acltypes["path_contains"] = array('name' => 'Path contains:',
-				'mode' => 'http', 'syntax' => 'path_sub -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
 $a_acltypes["url_parameter"] = array('name' => 'Url parameter contains:',
 				'mode' => 'http', 'syntax' => 'url_param({parameter}) -i %1$s',
 	'fields' => array(
@@ -252,7 +252,7 @@ $a_action["use_backend"] = array('name' => "Use Backend", 'mode' => '', 'syntax'
 	));
 $a_action["use_server"] = array('name' => "Use Server", 'mode' => '', 'syntax' => 'use-server {server}', 'usage' => 'backend',
 	'fields' => array(
-		'server' => array('name'=>"server",'columnheader'=>"Server",'type'=>"select",'size'=>"50",'mask'=>'server')
+		'server' => array('name'=>"server",'columnheader'=>"Server",'type'=>"textbox",'size'=>"50",'mask'=>'server')
 	));
 //
 $a_action["custom"] = array('name' => "Custom", 'mode' => '', 'syntax' => '{customaction}',
@@ -309,6 +309,23 @@ $a_action["http-request_replace-value"] = array('name' => "http-request header r
 		array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
 		array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
 	));
+
+$a_action["http-request_set-method"] = array('name' => "http-request set method", 'mode'=> 'http', 'syntax' => 'http-request set-method {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+$a_action["http-request_set-path"] = array('name' => "http-request set path", 'mode'=> 'http', 'syntax' => 'http-request set-path {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+$a_action["http-request_set-query"] = array('name' => "http-request set query", 'mode'=> 'http', 'syntax' => 'http-request set-query {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+$a_action["http-request_set-uri"] = array('name' => "http-request set uri", 'mode'=> 'http', 'syntax' => 'http-request set-uri {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
 //
 $a_action["http-response_allow"] = array('name' => "http-response allow", 'mode'=> 'http', 'syntax' => 'http-response allow');
 $a_action["http-response_deny"] = array('name' => "http-response deny", 'mode'=> 'http', 'syntax' => 'http-response deny');
@@ -343,6 +360,11 @@ $a_action["http-response_replace-value"] = array('name' => "http-response header
 		array('name'=>"name",'columnheader'=>"Headername",'type'=>"textbox",'size'=>"50",'mask'=>'headername'),
 		array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
 		array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
+	));
+$a_action["http-response_set-status"] = array('name' => "http-response set status", 'mode'=> 'http', 'syntax' => 'http-response set-status {status} {reason}',
+	'fields' => array(
+		array('name'=>"status",'columnheader'=>"Status",'type'=>"textbox",'size'=>"50",'mask'=>'text'),
+		array('name'=>"reason",'columnheader'=>"Reason",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'reason')
 	));
 //
 $a_action["tcp-request_connection_accept"] = array('name' => "tcp-request connection accept", 'mode'=> '', 'syntax' => 'tcp-request connection accept');
@@ -429,7 +451,7 @@ function haproxy_addressoralias_to_list($address_or_alias) {
 		if ($alias_type == "host") {
 			$result = explode(' ',$alias);
 		}
-	} else {
+		} else {
 		$result[] = $address_or_alias;
 	}
 	return $result;
@@ -439,9 +461,9 @@ function haproxy_hostoralias_to_list($host_or_alias) {
 	if (is_alias($host_or_alias)){
 		$result = filter_expand_alias_array($host_or_alias);
 	} else {
-		$result = array();
+	$result = array();
 		$result[] = $host_or_alias;
-	}
+			}
 	return $result;
 }
 
@@ -889,6 +911,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	if (!is_array($a_acl)) {
 		$a_acl = array();
 	}
+	$advancedextra = array();
 	// ACL's
 	foreach ($a_acl as $entry) {
 		$aclitem = $entry['ref'];
@@ -908,7 +931,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$inspectdelay = $acltype['inspect-delay'];
 		}
 		if ($acltype['advancedoptions'] != '') {
-			$advancedextra[$acltype['syntax']] = $acltype['advancedoptions']."\n";
+			$advancedextra[$acltype['advancedoptions']] = $acltype['advancedoptions'];
 		}
 		if ($acltype['require_client_cert']) {
 			$needs_clientcert[$aclname] = true;
@@ -947,6 +970,9 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	foreach($config_acls as $acl => $dummy) {
 		fwrite ($fd, $acl);
 	}
+	foreach($advancedextra as $extra) {
+		fwrite ($fd, "\t".$extra."\n");
+	}
 
 	$a_actionitems = $pool['a_actionitems']['item'];
 	if (!is_array($a_actionitems)) {
@@ -975,6 +1001,9 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 						$a_pendingpl[$backendname]['ipversion'] = $ipversion;
 					}*/
 					$parameter = $backendname;
+				}
+				if (!empty($parameter)) {
+					$parameter = $field['prefix'] . " ". $parameter;
 				}
 				$action_cfg = str_replace("{{$fieldname}}", $parameter, $action_cfg);
 			}
@@ -1138,7 +1167,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 				if (count($servers) > 1) {
 					$servername .= "_" . $counter;
 				}
-				fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+					fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
 				$counter++;
 			}
 		}
@@ -1829,7 +1858,7 @@ function haproxy_writeconf($configpath) {
 							$inspectdelay = $acltype['inspect-delay'];
 						}
 						if ($acltype['advancedoptions'] != '') {
-							$advancedextra[$acltype['syntax']] = $acltype['advancedoptions']."\n";
+							$advancedextra[$acltype['advancedoptions']] = $acltype['advancedoptions'];
 						}
 						if ($acltype['require_client_cert']) {
 							$needs_clientcert[$aclname] = true;
@@ -1889,6 +1918,9 @@ function haproxy_writeconf($configpath) {
 										$a_pendingpl[$backendname]['ipversion'] = $ipversion;
 									}
 									$parameter = $backendname;
+								}
+								if (!empty($parameter)) {
+									$parameter = $field['prefix'] . " ". $parameter;
 								}
 								$action_cfg = str_replace("{{$fieldname}}", $parameter, $action_cfg);
 							}
