@@ -1026,7 +1026,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 					}*/
 					$parameter = $backendname;
 				}
-				if (!empty($parameter)) {
+				if (!empty($parameter) && !empty($field['prefix'])) {
 					$parameter = $field['prefix'] . " ". $parameter;
 				}
 				$action_cfg = str_replace("{{$fieldname}}", $parameter, $action_cfg);
@@ -1948,7 +1948,7 @@ function haproxy_writeconf($configpath) {
 									}
 									$parameter = $backendname;
 								}
-								if (!empty($parameter)) {
+								if (!empty($parameter) && !empty($field['prefix'])) {
 									$parameter = $field['prefix'] . " ". $parameter;
 								}
 								$action_cfg = str_replace("{{$fieldname}}", $parameter, $action_cfg);
