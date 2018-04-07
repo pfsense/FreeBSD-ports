@@ -436,34 +436,58 @@ function haproxy_portoralias_to_list($port_or_alias) {
 		return $portresult;
 	}
 }
-function haproxy_addressoralias_to_list($address_or_alias) {
+
+function haproxy_expand_alias_array($address_or_alias) {
 	global $aliastable;
 	$result = array();
-	$alias_type = alias_get_type($address_or_alias);
-	if (!empty($alias_type)) {
-		$alias = $aliastable[$address_or_alias];
+	$items = explode(' ', $address_or_alias);
+	
+	$i = 0;
+	while($i < count($items)) {
+		$item = $items[$i];
+		$alias_type = alias_get_type($item);
+		$alias = $aliastable[$item];
 		if ($alias_type == "url") {
-			$result = explode(' ',$alias);
+			$items = array_merge($items, explode(' ',$alias));
 		} else
 		if ($alias_type == "network") {
-			//$result = explode(' ',$alias);
+			$items = array_merge($items, explode(' ',$alias));
 		} else
 		if ($alias_type == "host") {
-			$result = explode(' ',$alias);
-		}
+			$items = array_merge($items, explode(' ',$alias));
 		} else {
-		$result[] = $address_or_alias;
+			$result[] = $item;
+		}
+		$i++;
+	}
+	return $result;
+}
+
+function haproxy_filter_alias_array($list, $ip=false, $subnet=false, $hostname=false, $convertiptosubnet=false) {
+	$result = array();
+	foreach($list as $item) {
+		if ($ip && $ipv = is_ipaddr($item)) {
+			if ($convertiptosubnet) {
+				if ($ipv == 4) {
+					$item .= "/32";
+				} elseif ($ipv == 6) {
+					$item .= "/128";
+				}
+			}
+			$result[] = $item;
+		} elseif ($subnet && is_subnet($item)) {
+			$result[] = $item;
+		} elseif ($hostname && is_hostname($item)) {
+			$result[] = $item;
+		}
 	}
 	return $result;
 }
 
 function haproxy_hostoralias_to_list($host_or_alias) {
-	if (is_alias($host_or_alias)){
-		$result = filter_expand_alias_array($host_or_alias);
-	} else {
-	$result = array();
-		$result[] = $host_or_alias;
-			}
+	//used by source_ip acl
+	$items = haproxy_expand_alias_array($host_or_alias);
+	$result = haproxy_filter_alias_array($items, true, true);
 	return $result;
 }
 
@@ -2491,8 +2515,8 @@ function get_frontend_bindips($frontend) {
 		if (isset($extaddr['extaddr']) && $extaddr['extaddr'] != "custom") {
 			$a_ip[] = haproxy_interface_ip($extaddr['extaddr']);
 		} else {						
-			$iporalias = $extaddr['extaddr_custom'];
-			$a_ip = haproxy_addressoralias_to_list($iporalias);
+			$items = haproxy_expand_alias_array($extaddr['extaddr_custom']);
+			$a_ip = haproxy_filter_alias_array($items, true);
 		}
 		foreach($a_ip as $ip) {
 			$portsnumeric = group_ports(haproxy_portoralias_to_list($extaddr['extaddr_port']));
