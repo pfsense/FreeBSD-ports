@@ -171,6 +171,11 @@ $fields_externalAddress[4]['colwidth']="20%";
 $fields_externalAddress[4]['type']="textbox";
 $fields_externalAddress[4]['size']="30";
 
+foreach ($a_action as $key => $value) {
+	if (!empty($value['usage']) && !stristr('frontend', $value['usage'])) {
+		unset($a_action[$key]);
+	}
+}
 $fields_actions=array();
 $fields_actions[0]['name']="action";
 $fields_actions[0]['columnheader']="Action";
@@ -233,7 +238,7 @@ foreach($a_acltypes as $key => $action) {
 			$item = $field;
 			$name = $key . $item['name'];
 			$item['name'] = $name;
-			$item['columnheader'] = $field['name'];
+			$item['columnheader'] = $field['columnheader'];
 			$item['customdrawcell'] = customdrawcell_actions;
 			$fields_acl_details[$name] = $item;
 		}
@@ -446,6 +451,9 @@ if ($_POST) {
 		
 		foreach($simplefields as $stat) {
 			update_if_changed($stat, $backend[$stat], $_POST[$stat]);
+			if (empty($backend[$stat])) {
+				unset($backend[$stat]);
+			}
 		}
 		
 		update_if_changed("advanced", $backend['advanced'], base64_encode($_POST['advanced']));

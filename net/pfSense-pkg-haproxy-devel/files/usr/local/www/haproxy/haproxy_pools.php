@@ -193,7 +193,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 					<a href="haproxy_pool_edit.php?id=<?=$i;?>">
 						<?=haproxyicon("edit", gettext("edit backend"))?>
 					</a>
-					<a href="haproxy_pools.php?act=del&amp;id=<?=$i;?>" onclick="return confirm('Do you really want to delete this entry?')">
+					<a href="haproxy_pools.php?act=del&amp;id=<?=$i;?>">
 						<?=haproxyicon("delete", gettext("delete backend"))?>
 					</a>
 					<a href="haproxy_pool_edit.php?dup=<?=$i;?>">
