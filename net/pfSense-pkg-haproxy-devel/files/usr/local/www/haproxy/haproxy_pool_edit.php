@@ -180,6 +180,12 @@ $fields_servers_details[7]['description']="Advanced, Allows for adding custom HA
 $fields_servers_details[7]['colwidth']="15%";
 $fields_servers_details[7]['type']="textbox";
 $fields_servers_details[7]['size']="80";
+$fields_servers_details[8]['name']="istemplate";
+$fields_servers_details[8]['columnheader']="DNS template count";
+$fields_servers_details[8]['description']="If set configures this server item as a template to provision servers from dns/srv responses.";
+$fields_servers_details[8]['colwidth']="15%";
+$fields_servers_details[8]['type']="textbox";
+$fields_servers_details[8]['size']="80";
 
 $fields_errorfile = array();
 $fields_errorfile[0]['name']="errorcode";
@@ -227,6 +233,11 @@ $fields_aclSelectionList[3]['colwidth']="35%";
 $fields_aclSelectionList[3]['type']="textbox";
 $fields_aclSelectionList[3]['size']="35";
 
+foreach ($a_action as $key => $value) {
+	if (!empty($value['usage']) && !stristr('backend', $value['usage'])) {
+		unset($a_action[$key]);
+	}
+}
 $fields_actions=array();
 $fields_actions[0]['name']="action";
 $fields_actions[0]['columnheader']="Action";
@@ -269,7 +280,7 @@ foreach($a_acltypes as $key => $action) {
 			$item = $field;
 			$name = $key . $item['name'];
 			$item['name'] = $name;
-			$item['columnheader'] = $field['name'];
+			$item['columnheader'] = $field['columnheader'];
 			$item['customdrawcell'] = customdrawcell_actions;
 			$fields_acl_details[$name] = $item;
 		}

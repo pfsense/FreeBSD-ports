@@ -1191,7 +1191,12 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 				if (count($servers) > 1) {
 					$servername .= "_" . $counter;
 				}
+				if (is_numeric($be['istemplate'])) {
+					$istemplate = " {$be['istemplate']}";
+					fwrite ($fd, "\tserver-template\t\t\t" . $servername . $istemplate . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+				} else {
 					fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+				}
 				$counter++;
 			}
 		}
@@ -1973,7 +1978,7 @@ function haproxy_writeconf($configpath) {
 						
 						if ($actionid == "use_backend") {							
 							if (empty($condition)) {
-								$config_usedefaultbackends .= "\tdefault_backend {$parameter}{$condition}\n";
+								$config_usedefaultbackends .= "\tdefault_backend {$parameter}\n";
 							} else {
 								if (!empty($actionitem['acl'])){
 									$config_usebackends .= $action;
