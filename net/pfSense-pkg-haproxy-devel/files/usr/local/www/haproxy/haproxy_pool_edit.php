@@ -537,36 +537,13 @@ foreach($simplefields as $field){
   </style>
 </head>
 <script type="text/javascript">
+	<?php haproxy_js_css(); ?>
+
 	function clearcombo(){
 	  for (var i=document.iform.serversSelect.options.length-1; i>=0; i--){
 		document.iform.serversSelect.options[i] = null;
 	  }
 	  document.iform.serversSelect.selectedIndex = -1;
-	}
-
-	function setCSSdisplay(cssID, display)
-	{
-		var ss = document.styleSheets;
-		for (var i=0; i<ss.length; i++) {
-			var rules = ss[i].cssRules || ss[i].rules;
-			for (var j=0; j<rules.length; j++) {
-				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = display ? "" : "none";
-				}
-			}
-		}
-	}
-	function toggleCSSdisplay(cssID)
-	{
-		var ss = document.styleSheets;
-		for (var i=0; i<ss.length; i++) {
-			var rules = ss[i].cssRules || ss[i].rules;
-			for (var j=0; j<rules.length; j++) {
-				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = rules[j].style.display === "none" ? "" : "none";
-				}
-			}
-		}
 	}
 	
 	function updatevisibility()
