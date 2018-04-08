@@ -888,7 +888,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	}
 	fwrite ($fd, "\ttimeout server\t\t" . $pool['server_timeout'] . "\n");
 
-	if (empty($pool['retries'])) {
+	if (!is_numeric($pool['retries'])) {
 		$pool['retries'] = 3;
 	}
 	fwrite ($fd, "\tretries\t\t\t" . $pool['retries'] . "\n");
@@ -2841,4 +2841,30 @@ function haproxy_find_create_certificate($certificatename) {
 	cert_import($cert, $crt, $prv);
 	$a_cert[] = $cert;
 	return $cert;
+}
+
+function haproxy_config_init(){
+	global $config;
+	if (!is_array($config['installedpackages']['haproxy'])) {
+		$config['installedpackages']['haproxy'] = array();
+	}
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	if (!is_array($haproxycfg['email_mailers']['item'])) {
+		$haproxycfg['email_mailers']['item'] = array();
+	}
+	if (!is_array($haproxycfg['dns_resolvers']['item'])) {
+		$haproxycfg['dns_resolvers']['item'] = array();
+	}
+	if (!is_array($haproxycfg['ha_backends']['item'])) {
+		$haproxycfg['ha_backends']['item'] = array();
+	}
+	if (!is_array($haproxycfg['ha_pools']['item'])) {
+		$haproxycfg['ha_pools']['item'] = array();
+	}
+	if (!is_array($haproxycfg['ha_pools']['item'])) {
+		$haproxycfg['ha_pools']['item'] = array();
+	}
+	if (!is_array($haproxycfg['files']['item'])) {
+		$haproxycfg['files']['item'] = array();
+	}
 }
