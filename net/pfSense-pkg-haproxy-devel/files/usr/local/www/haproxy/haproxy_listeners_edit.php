@@ -500,6 +500,8 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 </head>
 
 <script type="text/javascript">
+	<?php haproxy_js_css(); ?>
+		
 	function htmllist_get_select_options(tableId, fieldname, itemstable) {
 		if (tableId === 'table_acls' && fieldname === 'expression') {
 			var type;
@@ -521,18 +523,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 		}
 		return itemstable;
 	}
-
-	function setCSSdisplay(cssID, display) {
-		var ss = document.styleSheets;
-		for (var i=0; i<ss.length; i++) {
-			var rules = ss[i].cssRules || ss[i].rules;
-			for (var j=0; j<rules.length; j++) {
-				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = display ? "" : "none";
-				}
-			}
-		}
-	}
+		
 	function updatevisibility()	{
 		d = document;
 		ssl = false;

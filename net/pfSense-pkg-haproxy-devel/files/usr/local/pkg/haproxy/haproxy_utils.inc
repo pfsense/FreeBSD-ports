@@ -520,3 +520,47 @@ function haproxy_keyvalue_array($hap_array) {
 	}
 	return $result;
 }
+
+function haproxy_js_css() {
+	echo <<<PRE
+	function getCSSrule(cssID) {
+		var ss = document.styleSheets;
+		for (var i=0; i<ss.length; i++) {
+			var rules;
+			try {
+				rules = ss[i].cssRules || ss[i].rules;
+			} catch(e) {
+				// some plugins add 3rd party stylesheets, FF throws an SecurityError when trying to access those rules.
+				if(e.name !== "SecurityError") {
+					throw e;
+				}
+			}
+			if (rules) {
+				for (var j=0; j<rules.length; j++) {
+					if (rules[j].selectorText === cssID) {
+						return rules[j];
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	function setCSSdisplay(cssID, display) {
+		rule = getCSSrule(cssID);
+		if (rule) {
+			rule.style.display = display ? "" : "none";
+		}
+	}
+	
+	function toggleCSSdisplay(cssID)
+	{
+		rule = getCSSrule(cssID);
+		if (rule) {
+			rule.style.display = rule.style.display === "none" ? "" : "none";
+		}
+	}
+	
+PRE;
+
+}
