@@ -39,15 +39,9 @@ if (!function_exists("cert_get_purpose")) {
 }
 /**/
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
-
+haproxy_config_init();
 $a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 $a_pools = $config['installedpackages']['haproxy']['ha_pools']['item'];
-if (!is_array($a_pools)) {
-	$a_pools = array();
-}
 uasort($a_pools, haproxy_compareByName);
 
 global $simplefields;

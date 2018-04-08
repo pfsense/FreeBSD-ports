@@ -76,8 +76,7 @@ $mailerslist->keyfield = "name";
 $resolverslist = new HaproxyHtmlList("table_resolvers", $fields_resolvers);
 $resolverslist->keyfield = "name";
 
-if (!is_array($config['installedpackages']['haproxy'])) 
-	$config['installedpackages']['haproxy'] = array();
+haproxy_config_init();
 
 if ($_POST) {
 	unset($input_errors);
@@ -144,13 +143,7 @@ if ($_POST) {
 }
 
 $a_mailers = $config['installedpackages']['haproxy']['email_mailers']['item'];
-if (!is_array($a_mailers)) {
-	$a_mailers = array();
-}
 $a_resolvers = $config['installedpackages']['haproxy']['dns_resolvers']['item'];
-if (!is_array($a_resolvers)) {
-	$a_resolvers = array();
-}
 
 $pconfig['enable'] = isset($config['installedpackages']['haproxy']['enable']);
 $pconfig['terminate_on_reload'] = isset($config['installedpackages']['haproxy']['terminate_on_reload']);
