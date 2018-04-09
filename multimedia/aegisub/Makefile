@@ -3,7 +3,7 @@
 
 PORTNAME=	aegisub
 PORTVERSION=	3.2.2
-PORTREVISION=	25
+PORTREVISION=	26
 CATEGORIES=	multimedia
 MASTER_SITES=	http://ftp.aegisub.org/pub/archives/releases/source/ \
 		ftp://ftp.aegisub.org/pub/archives/releases/source/ \
@@ -28,6 +28,7 @@ WX_CONF_ARGS=	absolute
 USE_GL=		gl
 USE_CSTD=	c99
 USE_CXXSTD=	c++11
+CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 CXXFLAGS+=	-D_GLIBCXX_USE_C99 # XXX ports/193528
 LDFLAGS+=	-Wl,--as-needed # freetype
 GNU_CONFIGURE=	yes

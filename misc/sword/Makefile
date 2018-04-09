@@ -3,6 +3,7 @@
 
 PORTNAME=	sword
 PORTVERSION=	1.8.0
+PORTREVISION=	1
 CATEGORIES=	misc
 MASTER_SITES=	ftp://ftp.crosswire.org/pub/sword/source/v${PORTVERSION:R}/ \
 		http://crosswire.org/ftpmirror/pub/sword/source/v${PORTVERSION:R}/
@@ -16,6 +17,7 @@ BUILD_DEPENDS=	cppunit-config:devel/cppunit
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-conf --with-zlib
+CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 INSTALL_TARGET=	install-strip
 USES=		gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes

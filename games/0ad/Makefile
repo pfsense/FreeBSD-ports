@@ -2,7 +2,7 @@
 
 PORTNAME=	0ad
 PORTVERSION=	0.0.22
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	http://releases.wildfiregames.com/ \
 		SF/zero-ad/releases
@@ -29,6 +29,7 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-alpha
 BUILD_WRKSRC=	${WRKSRC}/build/workspaces/gcc
 MAKE_ARGS=	config=release
+CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 USES=		compiler:c++11-lib dos2unix gmake iconv jpeg openal:al \
 		pkgconfig python:build tar:xz
 USE_GNOME=	libxml2 gtk20
