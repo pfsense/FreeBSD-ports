@@ -28,10 +28,7 @@ require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-}
-
+haproxy_config_init();
 $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 
 $a_files = haproxy_get_fileslist();
@@ -180,6 +177,12 @@ $fields_servers_details[7]['description']="Advanced, Allows for adding custom HA
 $fields_servers_details[7]['colwidth']="15%";
 $fields_servers_details[7]['type']="textbox";
 $fields_servers_details[7]['size']="80";
+$fields_servers_details[8]['name']="istemplate";
+$fields_servers_details[8]['columnheader']="DNS template count";
+$fields_servers_details[8]['description']="If set configures this server item as a template to provision servers from dns/srv responses.";
+$fields_servers_details[8]['colwidth']="15%";
+$fields_servers_details[8]['type']="textbox";
+$fields_servers_details[8]['size']="80";
 
 $fields_errorfile = array();
 $fields_errorfile[0]['name']="errorcode";
@@ -227,6 +230,11 @@ $fields_aclSelectionList[3]['colwidth']="35%";
 $fields_aclSelectionList[3]['type']="textbox";
 $fields_aclSelectionList[3]['size']="35";
 
+foreach ($a_action as $key => $value) {
+	if (!empty($value['usage']) && !stristr('backend', $value['usage'])) {
+		unset($a_action[$key]);
+	}
+}
 $fields_actions=array();
 $fields_actions[0]['name']="action";
 $fields_actions[0]['columnheader']="Action";
@@ -269,7 +277,7 @@ foreach($a_acltypes as $key => $action) {
 			$item = $field;
 			$name = $key . $item['name'];
 			$item['name'] = $name;
-			$item['columnheader'] = $field['name'];
+			$item['columnheader'] = $field['columnheader'];
 			$item['customdrawcell'] = customdrawcell_actions;
 			$fields_acl_details[$name] = $item;
 		}
@@ -529,36 +537,13 @@ foreach($simplefields as $field){
   </style>
 </head>
 <script type="text/javascript">
+	<?php haproxy_js_css(); ?>
+
 	function clearcombo(){
 	  for (var i=document.iform.serversSelect.options.length-1; i>=0; i--){
 		document.iform.serversSelect.options[i] = null;
 	  }
 	  document.iform.serversSelect.selectedIndex = -1;
-	}
-
-	function setCSSdisplay(cssID, display)
-	{
-		var ss = document.styleSheets;
-		for (var i=0; i<ss.length; i++) {
-			var rules = ss[i].cssRules || ss[i].rules;
-			for (var j=0; j<rules.length; j++) {
-				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = display ? "" : "none";
-				}
-			}
-		}
-	}
-	function toggleCSSdisplay(cssID)
-	{
-		var ss = document.styleSheets;
-		for (var i=0; i<ss.length; i++) {
-			var rules = ss[i].cssRules || ss[i].rules;
-			for (var j=0; j<rules.length; j++) {
-				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = rules[j].style.display === "none" ? "" : "none";
-				}
-			}
-		}
 	}
 	
 	function updatevisibility()
