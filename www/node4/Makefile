@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	4.9.0
+PORTVERSION=	4.9.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
 PKGNAMESUFFIX=	4
@@ -13,6 +14,10 @@ COMMENT=	V8 JavaScript for client and server (4.x LTS)
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Node.js v4.x reaches end-of-life on 2018-04-30, see https://github.com/nodejs/Release
+EXPIRATION_DATE=	2018-04-30
+ONLY_FOR_ARCHS=	amd64 i386
 
 OPTIONS_DEFINE=	BUNDLED_SSL DOCS NLS
 OPTIONS_DEFAULT=
@@ -30,11 +35,9 @@ NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
 
 USES=		compiler:c++11-lib gmake python:2.7 pkgconfig localbase
 HAS_CONFIGURE=	yes
-USE_LDCONFIG=	yes
 
 CONFLICTS_INSTALL=	node[568]-[0-9]* node-[0-9]*
 
-ONLY_FOR_ARCHS=	amd64 i386
 CONFIGURE_ARGS=	--prefix=${PREFIX_RELDEST} \
 		--without-npm \
 		--shared-libuv \
