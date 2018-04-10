@@ -54,15 +54,15 @@ $a_acltypes["host_regex"] = array('name' => 'Host regex:',
 $a_acltypes["host_contains"] = array('name' => 'Host contains:',
 				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["path_starts_with"] = array('name' => 'Path starts with:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["path_ends_with"] = array('name' => 'Path ends with:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["path_matches"] = array('name' => 'Path matches:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["path_regex"] = array('name' => 'Path regex:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["path_contains"] = array('name' => 'Path contains:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) hdr(path)");
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["url_parameter"] = array('name' => 'Url parameter contains:',
 				'mode' => 'http', 'syntax' => 'url_param({parameter}) -i %1$s',
 	'fields' => array(
