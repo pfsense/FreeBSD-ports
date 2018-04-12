@@ -2423,9 +2423,11 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 function squid_list_ssl_ca() {
 	global $config;
 	$prvca_list = array();
-	foreach ($config['ca'] as $ca) {
-		if (!empty($ca['prv'])) {
-			$prvca_list[] = $ca;
+	if (isset($config['ca']) && is_array($config['ca'])) {
+		foreach ($config['ca'] as $ca) {
+			if (!empty($ca['prv'])) {
+				$prvca_list[] = $ca;
+			}
 		}
 	}
 	return $prvca_list;
