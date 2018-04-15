@@ -13,6 +13,8 @@ COMMENT=	pfSense package pfBlockerNG
 
 LICENSE=	APACHE20
 
+CONFLICTS= 	pfBlockerNG
+
 USES=		php
 RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
 		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \
