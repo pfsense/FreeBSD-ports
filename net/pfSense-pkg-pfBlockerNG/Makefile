@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-pfBlockerNG
 PORTVERSION=	2.1.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,6 +12,8 @@ MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package pfBlockerNG
 
 LICENSE=	APACHE20
+
+CONFLICTS=	pfBlockerNG-devel
 
 USES=		php
 RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
