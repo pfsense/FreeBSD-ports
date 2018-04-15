@@ -886,7 +886,7 @@ $xml = <<<EOF
 			<fielddescr>NOTES</fielddescr>
 			<description><![CDATA[Click here for IMPORTANT info on:&emsp;
 				<a target="_blank" href="https://dev.maxmind.com/geoip/geoip2/whats-new-in-geoip2/">
-				<span class="text-danger"><strong>What new in GeoIP2</strong></span></a><br /><br /> 
+				<span class="text-danger"><strong>What's new in GeoIP2</strong></span></a><br /><br /> 
 				<span class="text-danger"><strong>Note:&emsp;</strong></span>
 				pfSense by default implicitly blocks all unsolicited inbound traffic to the WAN interface.<br />
 				Therefore adding GeoIP based firewall rules to the WAN will <strong>not</strong> provide any benefit, unless there are
