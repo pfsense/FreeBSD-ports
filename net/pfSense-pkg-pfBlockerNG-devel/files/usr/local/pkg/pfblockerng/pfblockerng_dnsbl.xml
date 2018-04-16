@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * pfblockerng_dnsbl.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>pfblockerngdnsblsettings</name>
+	<title>Firewall/pfBlockerNG</title>
+	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
+	<addedit_string>pfBlockerNG: Save DNSBL general settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
+	<menu>
+		<name>pfBlockerNG</name>
+		<tooltiptext></tooltiptext>
+		<section>Firewall</section>
+		<configfile>pfblockerng_dnsbl.xml</configfile>
+	</menu>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
+			<tooltiptext></tooltiptext>
+		</tab>
+		<tab>
+			<text>Update</text>
+			<url>/pfblockerng/pfblockerng_update.php</url>
+		</tab>
+		<tab>
+			<text>Alerts</text>
+			<url>/pfblockerng/pfblockerng_alerts.php</url>
+		</tab>
+		<tab>
+			<text>Reputation</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
+		</tab>
+		<tab>
+			<text>IPv4</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
+		</tab>
+		<tab>
+			<text>IPv6</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
+		</tab>
+		<tab>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
+		</tab>
+		<tab>
+			<text>GeoIP</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
+		</tab>
+		<tab>
+			<text>Logs</text>
+			<url>/pfblockerng/pfblockerng_log.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
+		</tab>
+		<tab>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
+			<tab_level>2</tab_level>
+			<active/>
+		</tab>
+		<tab>
+			<text>DNSBL Feeds</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_dnsbl_lists.xml</url>
+			<tab_level>2</tab_level>
+		</tab>
+		<tab>
+			<text>DNSBL EasyList</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl_easylist.xml</url>
+			<tab_level>2</tab_level>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name><![CDATA[DNSBL Configuration]]></name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>LINKS</fielddescr>
+			<fieldname></fieldname>
+			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<type>info</type>
+			<fielddescr>Info</fielddescr>
+			<description><![CDATA[<div class="infoblock">
+				<span class="text-danger">Note: </span>DNSBL requires the DNS Resolver (Unbound) to be used as the DNS service.<br />
+				When a DNS request is made for a Domain that is listed in DNSBL, the request is redirected to the Virtual IP address<br />
+				where an instance of Lighttpd Web Server will collect the packet statistics and push a '1x1' GIF image to the Browser.
+				If browsing is slow, check for Firewall LAN Rules/Limiters that might be blocking access to the DNSBL VIP.<br /><br />
+
+				<span class="text-danger">Note: </span>DNSBL will block and <u>partially</u> log Alerts for HTTPS requests.
+					To debug issues with 'False Positives', the following tools below can be used:<br /><ol>
+
+				<li>Browser Dev mode (F12) and goto 'Console' to review any error messages.</li>
+				<li>Execute the following command from pfSense Shell (Changing the interface 're1' to the pfSense Lan Interface):<br />
+				&emsp;<strong>tcpdump -nnvli re1 port 53 | grep -B1 'A 10.10.10.1'</strong></li>
+				<li>Packet capture software such as Wireshark.</li></ol></div>]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Enable DNSBL</fielddescr>
+			<fieldname>pfb_dnsbl</fieldname>
+			<type>checkbox</type>
+			<sethelp><![CDATA[This will enable DNS Block List for Malicious and/or unwanted Adverts Domains<br />
+				To Utilize, <strong>Unbound DNS Resolver</strong> must be enabled.]]>
+			</sethelp>
+		</field>
+		<field>
+			<fielddescr>Enable TLD</fielddescr>
+			<fieldname>pfb_tld</fieldname>
+			<type>checkbox</type>
+			<sethelp><![CDATA[<span class="badge" title="This feature is in BETA">BETA</span>&emsp;
+				This is an <strong>Advanced process</strong> to determine if all Sub-Domains should be blocked for each listed Domain.<br />
+				<span class="text-danger">Click infoblock before enabling this feature!</span>&emsp;
+				<div class="infoblock">
+					<strong>This Feature is not recommended for Low-Perfomance/Low-Memory installations!</strong><br /><br />
+
+					The 'Unbound Resolver Reloads' can take several seconds or more to complete and may temporarily interrupt
+					DNS Resolution until the Resolver has been fully Reloaded with the updated Domain changes.
+					Consider updating the DNSBL Feeds <strong>'Once per Day'</strong>, if network issues arise.<br /><br />
+
+					When enabled and after all downloads for DNSBL Feeds have completed; TLD will process the Domains.<br />
+					TLD uses a predetermined list of TLDs, to determine if the listed Domain should be configured to block all Sub-Domains.<br />
+					The predetermined TLD list can be found in &emsp;<u>/usr/local/pkg/pfblockerng/dnsbl_tld</u><br /><br />
+
+					To exclude a TLD/Domain from the TLD process, add the TLD/Domain to the <strong>TLD Exclusion</strong>.
+					The specific Domain will be Blocked, but all other Sub-Domains will only be blocked if they are listed elsewhere.
+					Whitelisting a Domain in the <strong>Custom Domain Whitelist</strong> can also be used to bypass TLD, however,
+					the listed Domain will not be Blocked.<br /><br />
+
+					<strong>TLD Blacklist</strong>, can be used to block whole TLDs. &emsp;IE: <strong>xyz</strong><br />
+					<strong>TLD Whitelist</strong> is <strong><u>only</u></strong> used in conjunction with <strong>TLD Blacklist</strong> and
+					is used to allow access to a Domain that is being blocked by a TLD Blacklist.<br /><br />
+
+					When Enabling/Disabling TLD, a <strong>Force Reload - DNSBL</strong> is required.<br /><br />
+
+					Once the TLD Domain limit below is exceeded, the balance of the Domains will be listed as-is.
+					IE: Blocking only the listed Domain (Not Sub-Domains)<br /><strong>TLD Domain Limit Restrictions:</strong><br />
+					<ul>
+						<li>< 1.0GB RAM - Max 100k Domains</li>
+						<li>< 1.5GB RAM - Max 150k Domains</li>
+						<li>< 2.0GB RAM - Max 200k Domains</li>
+						<li>< 2.5GB RAM - Max 250k Domains</li>
+						<li>< 3.0GB RAM - Max 400k Domains</li>
+						<li>< 4.0GB RAM - Max 600k Domains</li>
+						<li>< 5.0GB RAM - Max 1.0M Domains</li>
+						<li>< 6.0GB RAM - Max 1.5M Domains</li>
+						<li>< 7.0GB RAM - Max 2.5M Domains</li>
+						<li>> 7.0GB RAM - > 2.5M Domains</li>
+					</ul>
+				</div>]]>
+			</sethelp>
+			<enablefields>pfb_resolver_check</enablefields>
+		</field>
+		<field>
+			<fielddescr>DNSBL Virtual IP</fielddescr>
+			<fieldname>pfb_dnsvip</fieldname>
+			<type>input</type>
+			<description><![CDATA[Example ( 10.10.10.1 )<br />
+				Enter a &emsp;<strong>single IPv4 VIP address</strong> &emsp;that is RFC1918 Compliant.<br /><br />
+				This address should be in an Isolated Range than what is used in your Network.<br />
+				Rejected DNS Requests will be forwarded to this VIP (Virtual IP)<br />
+				RFC1918 Compliant - (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)]]>
+			</description>
+			<default_value>10.10.10.1</default_value>
+		</field>
+		<field>
+			<fielddescr>DNSBL Listening Port</fielddescr>
+			<fieldname>pfb_dnsport</fieldname>
+			<type>input</type>
+			<description><![CDATA[Example ( 8081 )<br />
+				Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br />
+				This Port must not be in use by any other process.]]>
+			</description>
+			<default_value>8081</default_value>
+		</field>
+		<field>
+			<fielddescr>DNSBL SSL Listening Port</fielddescr>
+			<fieldname>pfb_dnsport_ssl</fieldname>
+			<type>input</type>
+			<description><![CDATA[Example ( 8443 )<br />
+				Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br />
+				This Port must not be in use by any other process.]]>
+			</description>
+			<default_value>8443</default_value>
+		</field>
+		<field>
+			<fielddescr>DNSBL Listening Interface</fielddescr>
+			<fieldname>dnsbl_interface</fieldname>
+			<description><![CDATA[Select the interface you want DNSBL to Listen on.<br />
+				Default: <strong>LAN</strong> - Selected Interface should be a Local Interface only.]]>
+			</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>wan|loopback</hideinterfaceregex>
+			<default_value>lan</default_value>
+		</field>
+		<field>
+			<fielddescr>DNSBL Firewall Rule</fielddescr>
+			<fieldname>pfb_dnsbl_rule</fieldname>
+			<type>checkbox</type>
+			<sethelp><![CDATA[<div class="infoblock">This will create a 'Floating' Firewall rule to allow traffic from the Selected Interface(s) below
+				<br />to access the DNSBL VIP on the LAN interface. This is only required for multiple LAN Segments.</div>]]>
+			</sethelp>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fieldname>dnsbl_allow_int</fieldname>
+			<type>select_source</type>
+			<source><![CDATA[pfb_build_if_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<width>7</width>
+			<multiple/>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<name>DNSBL IP Firewall Rule Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<description>Configure settings for Firewall Rules when any DNSBL Feed contain IP Addresses</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>List Action</fielddescr>
+			<description><![CDATA[Default: <strong>Disabled</strong><div class="infoblock">
+				Select the <strong>Action</strong> for Firewall Rules when any DNSBL Feed contain IP addresses.<br /><br />
+				<strong><u>'Disabled' Rule:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
+
+				<strong><u>'Deny' Rules:</u></strong><br />
+				'Deny' rules create high priority 'block' or 'reject' rules on the stated interfaces. They don't change the 'pass' rules on other
+				interfaces. Typical uses of 'Deny' rules are:<br />
+				<ul><li><strong>Deny Both</strong> - blocks all traffic in both directions, if the source or destination IP is in the block list</li>
+				<li><strong>Deny Inbound/Deny Outbound</strong> - blocks all traffic in one direction <u>unless</u> it is part of a session started by
+				traffic sent in the other direction. Does not affect traffic in the other direction.</li>
+				<li>One way 'Deny' rules can be used to selectively block <u>unsolicited</u> incoming (new session) packets in one direction, while
+				still allowing <u>deliberate</u> outgoing sessions to be created in the other direction.</li></ul>
+				<strong><u>'Alias' Rule:</u></strong><br />
+				<strong>'Alias'</strong> rules create an <a href="/firewall_aliases.php">alias</a> for the list (and do nothing else).
+				This enables a pfBlockerNG list to be used by name, in any firewall rule or pfSense function, as desired.</div>]]>
+			</description>
+			<fieldname>action</fieldname>
+			<type>select</type>
+			<options>
+				<option><name>Disabled</name><value>Disabled</value></option>
+				<option><name>Deny Inbound</name><value>Deny_Inbound</value></option>
+				<option><name>Deny Outbound</name><value>Deny_Outbound</value></option>
+				<option><name>Deny Both</name><value>Deny_Both</value></option>
+				<option><name>Alias Deny</name><value>Alias_Deny</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Enable Logging</fielddescr>
+			<fieldname>aliaslog</fieldname>
+			<description><![CDATA[Default: <strong>Enable</strong><br />
+				Select - Logging to Status: System Logs: FIREWALL ( Log )<br />
+				This can be overriden by the 'Global Logging' Option in the General Tab.]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Enable</name><value>enabled</value></option>
+				<option><name>Disable</name><value>disabled</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Advanced Inbound Firewall Rule Settings</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<type>info</type>
+			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+				<dl class="dl-horizontal">
+					<dt>Inbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
+				</dl>
+				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Invert Source</fielddescr>
+			<fieldname>autoaddrnot_in</fieldname>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
+				ie - Not (!) Source Address(es)]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Custom DST Port</fielddescr>
+			<fieldname>autoports_in</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasports_in</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Port</fielddescr>
+			<fieldname>aliasports_in</fieldname>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>port</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Destination</fielddescr>
+			<fieldname>autoaddr_in</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasaddr_in,autonot_in</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Invert</fielddescr>
+			<fieldname>autonot_in</fieldname>
+			<type>checkbox</type>
+			<sethelp>Invert</sethelp>
+			<combinefields/>
+		</field>
+		<field>
+			<fieldname>aliasaddr_in</fieldname>
+			<fielddescr>Custom Destination</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
+				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>network</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Protocol</fielddescr>
+			<fieldname>autoproto_in</fieldname>
+			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Inbound Firewall Rule(s).<br />
+				Do not use 'any' with Adv. Inbound Rules as it will bypass these settings!]]></description>
+			<type>select</type>
+			<options>
+				<option><name>any</name><value></value></option>
+				<option><name>TCP</name><value>tcp</value></option>
+				<option><name>UDP</name><value>udp</value></option>
+				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
+			</options>
+			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>Custom Gateway</fielddescr>
+			<fieldname>agateway_in</fieldname>
+			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
+			<type>select_source</type>
+			<source><![CDATA[pfb_get_gateways()]]></source>
+			<source_name>name</source_name>
+			<source_value>name</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
+		</field>
+		<field>
+			<name>Advanced Outbound Firewall Rule Settings</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<type>info</type>
+			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+				<dl class="dl-horizontal">
+					<dt>Outbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
+				</dl>
+				Configuring the Adv. Outbound Rule settings, will allow for more customization of the Outbound Auto-Rules.]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Invert Destination</fielddescr>
+			<fieldname>autoaddrnot_out</fieldname>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
+				ie - Not (!) Destination Address(es)]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Custom DST Port</fielddescr>
+			<fieldname>autoports_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasports_out</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Port</fielddescr>
+			<fieldname>aliasports_out</fieldname>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>port</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Source</fielddescr>
+			<fieldname>autoaddr_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasaddr_out,autonot_out</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Invert</fielddescr>
+			<fieldname>autonot_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Invert</sethelp>
+			<combinefields/>
+		</field>
+		<field>
+			<fieldname>aliasaddr_out</fieldname>
+			<fielddescr>Custom Source</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
+				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Select 'invert' to invert the sense of the match. ie - Not (!) Source Address(es)]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>network</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Protocol</fielddescr>
+			<fieldname>autoproto_out</fieldname>
+			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Outbound Firewall Rule(s).<br />
+				Do not use 'any' with Adv. Outbound Rules as it will bypass these settings!]]></description>
+			<type>select</type>
+			<options>
+				<option><name>any</name><value></value></option>
+				<option><name>TCP</name><value>tcp</value></option>
+				<option><name>UDP</name><value>udp</value></option>
+				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
+			</options>
+			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>Custom Gateway</fielddescr>
+			<fieldname>agateway_out</fieldname>
+			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
+			<type>select_source</type>
+			<source><![CDATA[pfb_get_gateways()]]></source>
+			<source_name>name</source_name>
+			<source_value>name</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
+		</field>
+		<field>
+			<name><![CDATA[Alexa Whitelist]]></name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<fielddescr>Enable Alexa</fielddescr>
+			<fieldname>alexa_enable</fieldname>
+			<sethelp><![CDATA[Alexa provides a <a target="_blank" href="https://aws.amazon.com/alexa-top-sites/">Top 1 million sites list.</a>
+				(Global 1 month average traffic ranking)<br />
+				Alexa can be used to whitelist the most popular Domain names to avoid false positives.
+				To use this feature, select the number of 'Top Domains' to whitelist. You can also 'include' which TLDs to whitelist.
+
+				<div class="infoblock"><span class="text-danger">Recommendation: </span>
+				<ul>Alexa also contains the 'Top' AD Servers, so its recommended to configure the first DNSBL Alias with AD Server<br />
+				(ie. yoyo, Adaway...) based feeds. Alexa whitelisting can be disabled for this first defined Alias.<br /><br />
+				Generally, Alexa should be used for feeds that post full URLs like PhishTank, OpenPhish or MalwarePatrol.<br /><br />
+				To bypass an Alexa Domain, add the Domain to the first defined Alias 'Custom Block list' with Alexa disabled in this alias.</ul>
+
+				The complete 'Top 1M list' can be downloaded from
+				<a target=_blank href="https://s3.amazonaws.com/alexa-static/top-1m.csv.zip">Here</a> (Database is free to use.)<br />
+				When enabled, this list will be automatically updated once per month along with the MaxMind Database.</div>]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr><![CDATA[Number of Alexa<br />Top Domains to Whitelisting]]></fielddescr>
+			<fieldname>alexa_count</fieldname>
+			<description><![CDATA[<strong>Default: Top 1k</strong><br />
+				Select the <strong>number</strong> of Alexa 'Top Domain global ranking' to whitelist.]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Top 100</name><value>100</value></option>
+				<option><name>Top 1k</name><value>1000</value></option>
+				<option><name>Top 10k</name><value>10000</value></option>
+				<option><name>Top 100k</name><value>100000</value></option>
+				<option><name>Top 250k</name><value>250000</value></option>
+				<option><name>Top 500k</name><value>500000</value></option>
+				<option><name>Top 750k</name><value>750000</value></option>
+				<option><name>Top 1M</name><value>1000000</value></option>
+			</options>
+			<default_value>1000</default_value>
+		</field>
+		<field>
+			<fielddescr>Alexa TLD Inclusion</fielddescr>
+			<fieldname>alexa_inclusion</fieldname>
+			<description><![CDATA[Select the TLDs for Whitelist. (Only showing the Top 150 TLDs)<br />
+				<strong>Default: COM, NET, ORG, CA, CO, IO</strong><br /><br />
+				Detailed listing : <a target=_blank href="http://www.iana.org/domains/root/db">Root Zone Top-Level Domains.</a> ]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>AE</name><value>ae</value></option>
+				<option><name>AERO</name><value>aero</value></option>
+				<option><name>AG</name><value>ag</value></option>
+				<option><name>AL</name><value>al</value></option>
+				<option><name>AM</name><value>am</value></option>
+				<option><name>AR</name><value>ar</value></option>
+				<option><name>AE</name><value>ae</value></option>
+				<option><name>AERO</name><value>aero</value></option>
+				<option><name>AG</name><value>ag</value></option>
+				<option><name>AL</name><value>al</value></option>
+				<option><name>AM</name><value>am</value></option>
+				<option><name>AR</name><value>ar</value></option>
+				<option><name>ASIA</name><value>asia</value></option>
+				<option><name>AT</name><value>at</value></option>
+				<option><name>AU (16)</name><value>au</value></option>
+				<option><name>AZ</name><value>az</value></option>
+				<option><name>BA</name><value>ba</value></option>
+				<option><name>BD</name><value>bd</value></option>
+				<option><name>BE</name><value>be</value></option>
+				<option><name>BG</name><value>bg</value></option>
+				<option><name>BIZ</name><value>biz</value></option>
+				<option><name>BO</name><value>bo</value></option>
+				<option><name>BR (7)</name><value>br</value></option>
+				<option><name>BY</name><value>by</value></option>
+				<option><name>BZ</name><value>bz</value></option>
+				<option><name>CA (21)</name><value>ca</value></option>
+				<option><name>CAT</name><value>cat</value></option>
+				<option><name>CC</name><value>cc</value></option>
+				<option><name>CF</name><value>cf</value></option>
+				<option><name>CH</name><value>ch</value></option>
+				<option><name>CL</name><value>cl</value></option>
+				<option><name>CLUB</name><value>club</value></option>
+				<option><name>CN (14)</name><value>cn</value></option>
+				<option><name>CO (22)</name><value>co</value></option>
+				<option><name>COM (1)</name><value>com</value></option>
+				<option><name>COOP</name><value>coop</value></option>
+				<option><name>CR</name><value>cr</value></option>
+				<option><name>CU</name><value>cu</value></option>
+				<option><name>CY</name><value>cy</value></option>
+				<option><name>CZ (23)</name><value>cz</value></option>
+				<option><name>DE (5)</name><value>de</value></option>
+				<option><name>DEV</name><value>dev</value></option>
+				<option><name>DK</name><value>dk</value></option>
+				<option><name>DO</name><value>do</value></option>
+				<option><name>DZ</name><value>dz</value></option>
+				<option><name>EC</name><value>ec</value></option>
+				<option><name>EDU</name><value>edu</value></option>
+				<option><name>EE</name><value>ee</value></option>
+				<option><name>EG</name><value>eg</value></option>
+				<option><name>ES (18)</name><value>es</value></option>
+				<option><name>EU (25)</name><value>eu</value></option>
+				<option><name>FI</name><value>fi</value></option>
+				<option><name>FM</name><value>fm</value></option>
+				<option><name>FR (12)</name><value>fr</value></option>
+				<option><name>GA</name><value>ga</value></option>
+				<option><name>GE</name><value>ge</value></option>
+				<option><name>GOV</name><value>gov</value></option>
+				<option><name>GR (20)</name><value>gr</value></option>
+				<option><name>GT</name><value>gt</value></option>
+				<option><name>GURU</name><value>guru</value></option>
+				<option><name>HK</name><value>hk</value></option>
+				<option><name>HR</name><value>hr</value></option>
+				<option><name>HU</name><value>hu</value></option>
+				<option><name>ID</name><value>id</value></option>
+				<option><name>IE</name><value>ie</value></option>
+				<option><name>IL</name><value>il</value></option>
+				<option><name>IM</name><value>im</value></option>
+				<option><name>IN (9)</name><value>in</value></option>
+				<option><name>INFO (15)</name><value>info</value></option>
+				<option><name>INT</name><value>int</value></option>
+				<option><name>IO</name><value>io</value></option>
+				<option><name>IR (13)</name><value>ir</value></option>
+				<option><name>IS</name><value>is</value></option>
+				<option><name>IT (11)</name><value>it</value></option>
+				<option><name>JO</name><value>jo</value></option>
+				<option><name>JOBS</name><value>jobs</value></option>
+				<option><name>JP (6)</name><value>jp</value></option>
+				<option><name>KE</name><value>ke</value></option>
+				<option><name>KG</name><value>kg</value></option>
+				<option><name>KR (19)</name><value>kr</value></option>
+				<option><name>KW</name><value>kw</value></option>
+				<option><name>KZ</name><value>kz</value></option>
+				<option><name>LA</name><value>la</value></option>
+				<option><name>LI</name><value>li</value></option>
+				<option><name>LINK</name><value>link</value></option>
+				<option><name>LK</name><value>lk</value></option>
+				<option><name>LT</name><value>lt</value></option>
+				<option><name>LU</name><value>lu</value></option>
+				<option><name>LV</name><value>lv</value></option>
+				<option><name>LY</name><value>ly</value></option>
+				<option><name>MA</name><value>ma</value></option>
+				<option><name>MD</name><value>md</value></option>
+				<option><name>ME</name><value>me</value></option>
+				<option><name>MK</name><value>mk</value></option>
+				<option><name>ML</name><value>ml</value></option>
+				<option><name>MN</name><value>mn</value></option>
+				<option><name>MOBI</name><value>mobi</value></option>
+				<option><name>MX</name><value>mx</value></option>
+				<option><name>MY</name><value>my</value></option>
+				<option><name>NAME</name><value>name</value></option>
+				<option><name>NET (2)</name><value>net</value></option>
+				<option><name>NG</name><value>ng</value></option>
+				<option><name>NINJA</name><value>ninja</value></option>
+				<option><name>NL (17)</name><value>nl</value></option>
+				<option><name>NO</name><value>no</value></option>
+				<option><name>NP</name><value>np</value></option>
+				<option><name>NU</name><value>nu</value></option>
+				<option><name>NZ</name><value>nz</value></option>
+				<option><name>OM</name><value>om</value></option>
+				<option><name>ORG (4)</name><value>org</value></option>
+				<option><name>PA</name><value>pa</value></option>
+				<option><name>PE</name><value>pe</value></option>
+				<option><name>PH</name><value>ph</value></option>
+				<option><name>PK</name><value>pk</value></option>
+				<option><name>PL (10)</name><value>pl</value></option>
+				<option><name>PRO</name><value>pro</value></option>
+				<option><name>PT</name><value>pt</value></option>
+				<option><name>PW</name><value>pw</value></option>
+				<option><name>PY</name><value>py</value></option>
+				<option><name>QA</name><value>qa</value></option>
+				<option><name>RO</name><value>ro</value></option>
+				<option><name>RS</name><value>rs</value></option>
+				<option><name>RU (3)</name><value>ru</value></option>
+				<option><name>SA</name><value>sa</value></option>
+				<option><name>SE</name><value>se</value></option>
+				<option><name>SG</name><value>sg</value></option>
+				<option><name>SI</name><value>si</value></option>
+				<option><name>SK</name><value>sk</value></option>
+				<option><name>SO</name><value>so</value></option>
+				<option><name>SPACE</name><value>space</value></option>
+				<option><name>SU</name><value>su</value></option>
+				<option><name>TH</name><value>th</value></option>
+				<option><name>TK</name><value>tk</value></option>
+				<option><name>TN</name><value>tn</value></option>
+				<option><name>TO</name><value>to</value></option>
+				<option><name>TODAY</name><value>today</value></option>
+				<option><name>TOP</name><value>top</value></option>
+				<option><name>TR</name><value>tr</value></option>
+				<option><name>TRAVEL</name><value>travel</value></option>
+				<option><name>TV</name><value>tv</value></option>
+				<option><name>TW (24)</name><value>tw</value></option>
+				<option><name>TZ</name><value>tz</value></option>
+				<option><name>UA</name><value>ua</value></option>
+				<option><name>UK (8)</name><value>uk</value></option>
+				<option><name>US</name><value>us</value></option>
+				<option><name>UY</name><value>uy</value></option>
+				<option><name>UZ</name><value>uz</value></option>
+				<option><name>VC</name><value>vc</value></option>
+				<option><name>VE</name><value>ve</value></option>
+				<option><name>VN</name><value>vn</value></option>
+				<option><name>WEBSITE</name><value>website</value></option>
+				<option><name>WS</name><value>ws</value></option>
+				<option><name>XN--P1AI</name><value>xn--p1ai</value></option>
+				<option><name>XXX</name><value>xxx</value></option>
+				<option><name>XYZ</name><value>xyz</value></option>
+				<option><name>ZA</name><value>za</value></option>
+			</options>
+			<default_value><![CDATA[com,net,org,ca,co,io]]></default_value>
+			<size>10</size>
+			<multiple/>
+		</field>
+		<field>
+			<name>Custom Domain Whitelist</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<fielddescr>Custom List</fielddescr>
+			<fieldname>suppression</fieldname>
+			<description><![CDATA[No Regex Entries Allowed!&emsp;
+				<div class="infoblock">
+				Enter one &emsp; <strong>Domain Name</strong>&emsp; per line<br />
+				Prefix Domain with a "." to Whitelist all Sub-Domains. &emsp;IE: (.example.com)<br />
+				You may use "<strong>#</strong>" after any Domain name to add comments. &emsp;IE: (example.com # Whitelist example.com)<br />
+				This List is stored as 'Base64' format in the config.xml file.<br /><br />
+				<span class="text-danger">Note: </span>These entries are only Whitelisted when Feeds are downloaded or on a
+				<span class="text-danger">'Force Reload'.</span><br />
+				Use the Alerts Tab '+' Whitelist Icon to immediately remove a Domain from Unbound DNSBL.</div>]]> 
+			</description>
+			<type>textarea</type>
+			<cols>90</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>TLD Exclusion List</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<fielddescr>TLD Exclusion List</fielddescr>
+			<fieldname>tldexclusion</fieldname>
+			<description><![CDATA[Enter TLD(s) and/or Domain(s) to be excluded from the TLD function.&emsp;
+				<div class="infoblock">
+					Enter one &emsp; <strong>Domain Name or TLD</strong>&emsp; per line<br />
+					No Regex Entries and no leading/trailing 'dot' allowed!<br />
+					You may use "<strong>#</strong>" after any Domain/TLD to add comments. &emsp;<br />
+					IE: (example.com # Exclude example.com)<br />
+					IE: (co.uk # Exclude CO.UK)<br />
+					This List is stored as 'Base64' format in the config.xml file.<br /><br />
+				</div>]]>
+			</description>
+			<type>textarea</type>
+			<cols>90</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>TLD Blacklist</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<fielddescr>TLD Blacklist</fielddescr>
+			<fieldname>tldblacklist</fieldname>
+			<description><![CDATA[Enter TLD(s) to be blacklisted.&emsp;
+				<div class="infoblock">
+					Enter one &emsp; <strong>TLD</strong>&emsp; per line. ie: xyz<br />
+					No Regex Entries and no leading/trailing 'dot' allowed!<br />
+					You may use "<strong>#</strong>" after any TLD to add comments. example (xyz # Blacklist XYZ TLD)<br />
+					This List is stored as 'Base64' format in the config.xml file.<br /><br />
+				</div>]]>
+			</description>
+			<type>textarea</type>
+			<cols>90</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>TLD Whitelist</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<fielddescr>TLD Whitelist</fielddescr>
+			<fieldname>tldwhitelist</fieldname>
+			<description><![CDATA[Enter <strong>each specific</strong> Domain and/or Sub-Domains to be Whitelisted.
+				(Used in conjunction with <strong>TLD Blacklist only</strong>)&emsp;
+				<div class="infoblock">
+					Enter one &emsp;<strong>Domain</strong>&emsp; per line, followed by &emsp;<strong>|x.x.x.x</strong>&emsp;
+					(IP Address for Domain or Sub-Domain) &emsp;<br />Examples:<br />
+					<ul>
+						<li>example.com|x.x.x.x</li>
+						<li>news.example.com|x.x.x.x &emsp;&emsp;(Replace x.x.x.x with associated Domain/Sub-Domain IP Address.</li>
+					</ul>
+					You must Whitelist every Domain or Sub-Domain individually.<br />
+					No Regex Entries and no leading/trailing 'dot' allowed!<br />
+					You may use "<strong>#</strong>" after any Domain/Sub-Domain to add comments. IE: (example.com|x.x.x.x # TLD Whitelist)<br />
+					This List is stored as 'Base64' format in the config.xml file.<br /><br />
+				</div>]]>
+			</description>
+			<type>textarea</type>
+			<cols>90</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		<![CDATA[
+		pfblockerng_validate_input($_POST, $input_errors);
+		]]>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		<![CDATA[
+		global $pfb;
+		$pfb['save'] = TRUE;
+		sync_package_pfblockerng();
+		]]>
+	</custom_php_resync_config_command>
+</packagegui>
