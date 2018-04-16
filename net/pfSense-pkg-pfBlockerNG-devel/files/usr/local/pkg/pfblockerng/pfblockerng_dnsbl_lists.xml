@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * pfblockerng_dnsbl_lists.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>pfblockerngdnsbl</name>
+	<title>Firewall/pfBlockerNG</title>
+	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
+	<addedit_string>pfBlockerNG: Save DNSBL Feeds settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
+	<menu>
+		<name>pfBlockerNG</name>
+		<section>Firewall</section>
+		<configfile>pfblockerng_dnsbl_lists.xml</configfile>
+	</menu>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
+		</tab>
+		<tab>
+			<text>Update</text>
+			<url>/pfblockerng/pfblockerng_update.php</url>
+		</tab>
+		<tab>
+			<text>Alerts</text>
+			<url>/pfblockerng/pfblockerng_alerts.php</url>
+		</tab>
+		<tab>
+			<text>Reputation</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
+		</tab>
+		<tab>
+			<text>IPv4</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
+		</tab>
+		<tab>
+			<text>IPv6</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
+		</tab>
+		<tab>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
+		</tab>
+		<tab>
+			<text>GeoIP</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
+		</tab>
+		<tab>
+			<text>Logs</text>
+			<url>/pfblockerng/pfblockerng_log.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
+		</tab>
+		<tab>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
+			<tab_level>2</tab_level>
+		</tab>
+		<tab>
+			<text>DNSBL Feeds</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_dnsbl_lists.xml</url>
+			<tab_level>2</tab_level>
+			<active/>
+		</tab>
+		<tab>
+			<text>DNSBL EasyList</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl_easylist.xml</url>
+			<tab_level>2</tab_level>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>DNS Group Name</fielddescr>
+			<fieldname>aliasname</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>DNS Group Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Action</fielddescr>
+			<fieldname>action</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Frequency</fielddescr>
+			<fieldname>cron</fieldname>
+		</columnitem>
+		<addtext>Add a new Alias</addtext>
+		<movable>on</movable>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>DNSBL Feeds</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>LINKS</fielddescr>
+			<fieldname></fieldname>
+			<type>info</type>
+			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>DNS GROUP Name</fielddescr>
+			<fieldname>aliasname</fieldname>
+			<type>input</type>
+			<description><![CDATA[Enter DNS Group Name.&emsp; Example: Ads]]></description>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<type>input</type>
+			<width>9</width>
+		</field>
+		<field>
+			<fieldname>InfoLists</fieldname>
+			<fielddescr>DNSBL Settings</fielddescr>
+			<type>info</type>
+			<description><![CDATA[<div class="infoblock"><dl class="dl-horizontal">
+				<dt>Format:</dt><dd>Select the Format type:</dd>
+				<dt>State:</dt><dd>Select the run State:
+					<dl class="dl-horizontal">
+						<dt>On:</dt><dd>Enable List</dd>
+						<dt>Off:</dt><dd>Disable List</dd>
+						<dt>Hold:</dt><dd>Download List only once</dd>
+						<dt>Flex:</dt><dd>Downgrade the SSL Connection (Not Recommended)</dd>
+					</dl></dd>
+				<dt>Source:</dt><dd>Select the Source type:
+					<dl class="dl-horizontal">
+						<dt>URL:</dt><dd>External link to source&emsp;(ie:&nbsp;
+							<a target="_blank" href="http://pgl.yoyo.org/adservers/serverlist.php?hostformat=;showintro=0">yoyo</a>,&nbsp;
+							<a target="_blank" href="http://someonewhocares.org/hosts/hosts">SomeoneWhoCares</a>,&nbsp;
+							<a target="_blank" href="https://adaway.org/hosts.txt">Adaway</a>)</dd>
+						<dt>Local file:</dt><dd>http(s)://127.0.0.1/filename
+							&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename</dd>
+					</dl></dd>
+				<dt>Header/Label:</dt><dd>This field must be <u>unique.</u> This names the file and is referenced in the widget.
+					&emsp;(ie: hpHosts_ads,&emsp;hpHosts_partial)</dd>
+				<dt>Note:</dt><dd><strong>AdBlock Easylists <u>cannot</u> be used in this Tab.</strong></dd>
+			</dl></div>]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>DNSBL</fielddescr>
+			<type>rowhelper</type>
+			<sortablefields/>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Format</fielddescr>
+					<fieldname>format</fieldname>
+					<type>select</type>
+					<width>1</width>
+					<options>
+						<option><name>Auto</name><value>auto</value></option>
+						<option><name>RSync</name><value>rsync</value></option>
+					</options>
+					<default_value>auto</default_value>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>State</fielddescr>
+					<fieldname>state</fieldname>
+					<type>select</type>
+					<width>1</width>
+					<options>
+						<option><name>ON</name><value>Enabled</value></option>
+						<option><name>OFF</name><value>Disabled</value></option>
+						<option><name>HOLD</name><value>Hold</value></option>
+						<option><name>FLEX</name><value>Flex</value></option>
+					</options>
+					<default_value>Enabled</default_value>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Source</fielddescr>
+					<fieldname>url</fieldname>
+					<type>input</type>
+					<width>5</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Header/Label</fielddescr>
+					<fieldname>header</fieldname>
+					<type>input</type>
+					<width>2</width>
+					<sortablefields/>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<fielddescr>List Action</fielddescr>
+			<description><![CDATA[Default: <strong>Disabled</strong><br />
+				Select <strong>Unbound</strong> to enable 'Domain Name' blocking for this Alias.]]>
+			</description>
+			<fieldname>action</fieldname>
+			<type>select</type>
+			<options>
+				<option><name>Disabled</name><value>Disabled</value></option>
+				<option><name>Unbound</name><value>unbound</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Update Frequency</fielddescr>
+			<fieldname>cron</fieldname>
+			<description><![CDATA[Default: <strong>Never</strong><br />
+				Select how often List files will be downloaded. <strong>This must be within the Cron Interval/Start Hour settings.</strong>]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Never</name><value>Never</value></option>
+				<option><name>Every Hour</name><value>01hour</value></option>
+				<option><name>Every 2 Hours</name><value>02hours</value></option>
+				<option><name>Every 3 Hours</name><value>03hours</value></option>
+				<option><name>Every 4 Hours</name><value>04hours</value></option>
+				<option><name>Every 6 Hours</name><value>06hours</value></option>
+				<option><name>Every 8 Hours</name><value>08hours</value></option>
+				<option><name>Every 12 Hours</name><value>12hours</value></option>
+				<option><name>Once a day</name><value>EveryDay</value></option>
+				<option><name>Weekly</name><value>Weekly</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Weekly (Day of Week)</fielddescr>
+			<fieldname>dow</fieldname>
+			<description><![CDATA[Default: <strong>Monday</strong><br />
+				Select the 'Weekly' ( Day of the Week ) to Update <br />
+				This is only required for the 'Weekly' Frequency Selection. The 24 Hour Download 'Time' will be used.]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Monday</name><value>1</value></option>
+				<option><name>Tuesday</name><value>2</value></option>
+				<option><name>Wednesday</name><value>3</value></option>
+				<option><name>Thursday</name><value>4</value></option>
+				<option><name>Friday</name><value>5</value></option>
+				<option><name>Saturday</name><value>6</value></option>
+				<option><name>Sunday</name><value>7</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Enable Alexa Whitelist</fielddescr>
+			<fieldname>filter_alexa</fieldname>
+			<description>Filter Alias via Alexa</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name><![CDATA[Custom Block List]]></name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<fielddescr>Custom Domain Name Block List</fielddescr>
+			<fieldname>custom</fieldname>
+			<description><![CDATA[No Regex Entries Allowed!
+				<div class="infoblock">Enter one &emsp; <strong>'Domain Name'</strong> &emsp; per line<br /><br />
+				You may use "<strong>#</strong>" after any Domain name to add comments. example ( ads.google.com # Block Google Ads )<br />
+				This List is stored as 'Base64' format in the config.xml file.</div>]]>
+			</description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>20</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Update Custom List</fielddescr>
+			<fieldname>custom_update</fieldname>
+			<description><![CDATA[Select - '<strong>Default</strong>' to update Custom List as per Update Frequency setting.<br />
+				Select - '<strong>Update Custom List</strong>' followed by a 'Force Update' to apply Custom List Changes.<br />
+				Cron will also resync this Custom List at the next Update Frequency.]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Default</name><value>disabled</value></option>
+				<option><name>Update Custom List</name><value>enabled</value></option>
+			</options>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		<![CDATA[
+		pfblockerng_validate_input($_POST, $input_errors);
+		]]>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		<![CDATA[
+		global $pfb;
+		$pfb['save'] = TRUE;
+		sync_package_pfblockerng();
+		]]>
+	</custom_php_resync_config_command>
+</packagegui>
