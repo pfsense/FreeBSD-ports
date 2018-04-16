@@ -13,7 +13,7 @@ COMMENT=	pfSense package pfBlockerNG
 
 LICENSE=	APACHE20
 
-CONFLICTS= 	pfBlockerNG
+CONFLICTS= 	pfSense-pkg-pfBlockerNG
 
 USES=		php
 RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
