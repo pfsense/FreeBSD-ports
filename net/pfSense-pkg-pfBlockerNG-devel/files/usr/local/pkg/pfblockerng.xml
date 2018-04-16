@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * pfblockerng.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * All rights reserved.
+ *
+ * Originally based upon pfBlocker by
+ * Copyright (c) 2011 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>pfblockerng</name>
+	<title>Firewall/pfBlockerNG</title>
+	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
+	<addedit_string>pfBlockerNG: Save General Settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
+	<menu>
+		<name>pfBlockerNG</name>
+		<configfile>pfblockerng.xml</configfile>
+		<section>Firewall</section>
+		<url>/pkg_edit.php?xml=pfblockerng.xml</url>
+	</menu>
+	<service>
+		<name>dnsbl</name>
+		<rcfile>dnsbl.sh</rcfile>
+		<executable>lighttpd_pfb</executable>
+		<description>pfBlockerNG DNSBL Web Server</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Update</text>
+			<url>/pfblockerng/pfblockerng_update.php</url>
+		</tab>
+		<tab>
+			<text>Alerts</text>
+			<url>/pfblockerng/pfblockerng_alerts.php</url>
+		</tab>	
+		<tab>
+			<text>Reputation</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
+		</tab>
+		<tab>
+			<text>IPv4</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
+		</tab>
+		<tab>
+			<text>IPv6</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
+		</tab>
+		<tab>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
+		</tab>
+		<tab>
+			<text>GeoIP</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
+		</tab>
+		<tab>
+			<text>Logs</text>
+			<url>/pfblockerng/pfblockerng_log.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>LINKS</fielddescr>
+			<fieldname></fieldname>
+			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Enable pfBlockerNG</fielddescr>
+			<fieldname>enable_cb</fieldname>
+			<description>Enable/Disable</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Keep Settings</fielddescr>
+			<fieldname>pfb_keep</fieldname>
+			<description>Keep settings</description>
+			<type>checkbox</type>
+			<sethelp><![CDATA[<span class="text-danger">Note: </span>With 'Keep settings' enabled, pfBlockerNG will maintain run state
+				on Installation/Upgrade.<br /> If 'Keep Settings' is not 'enabled' on pkg Install/De-Install, all settings will be Wiped!<br /><br />
+				<span class="text-danger">Note: </span>To clear all downloaded lists, uncheck these two checkboxes and 'Save'.
+				re-check both boxes and run a 'Force Update']]>
+			</sethelp>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>CRON Settings</fielddescr>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Hour Interval</fielddescr>
+			<fieldname>pfb_interval</fieldname>
+			<description><![CDATA[Default: <strong>Every hour</strong><br />
+				Select the Cron hour interval.]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Every hour</name><value>1</value></option>
+				<option><name>Every 2 hours</name><value>2</value></option>
+				<option><name>Every 3 hours</name><value>3</value></option>
+				<option><name>Every 4 hours</name><value>4</value></option>
+				<option><name>Every 6 hours</name><value>6</value></option>
+				<option><name>Every 8 hours</name><value>8</value></option>
+				<option><name>Every 12 hours</name><value>12</value></option>
+				<option><name>Once a day</name><value>24</value></option>
+				<option><name>Disabled</name><value>Disabled</value></option>
+			</options>
+			<default_value>1</default_value>
+			<combinefields/>
+		</field>
+		<field>
+			<fielddescr>Start Min</fielddescr>
+			<fieldname>pfb_min</fieldname>
+			<description><![CDATA[Default: <strong>:00</strong><br />
+				Select the Cron update minute.]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>: 00</name><value>0</value></option>
+				<option><name>: 15</name><value>15</value></option>
+				<option><name>: 30</name><value>30</value></option>
+				<option><name>: 45</name><value>45</value></option>
+			</options>
+			<default_value>0</default_value>
+			<combinefields/>
+		</field>
+		<field>
+			<fielddescr>Start Hour</fielddescr>
+			<fieldname>pfb_hour</fieldname>
+			<description><![CDATA[Default: <strong>0</strong><br />
+				Select the Cron start hour.]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>0</name><value>0</value></option>
+				<option><name>1</name><value>1</value></option>
+				<option><name>2</name><value>2</value></option>
+				<option><name>3</name><value>3</value></option>
+				<option><name>4</name><value>4</value></option>
+				<option><name>5</name><value>5</value></option>
+				<option><name>6</name><value>6</value></option>
+				<option><name>7</name><value>7</value></option>
+				<option><name>8</name><value>8</value></option>
+				<option><name>9</name><value>9</value></option>
+				<option><name>10</name><value>10</value></option>
+				<option><name>11</name><value>11</value></option>
+				<option><name>12</name><value>12</value></option>
+				<option><name>13</name><value>13</value></option>
+				<option><name>14</name><value>14</value></option>
+				<option><name>15</name><value>15</value></option>
+				<option><name>16</name><value>16</value></option>
+				<option><name>17</name><value>17</value></option>
+				<option><name>18</name><value>18</value></option>
+				<option><name>19</name><value>19</value></option>
+				<option><name>20</name><value>20</value></option>
+				<option><name>21</name><value>21</value></option>
+				<option><name>22</name><value>22</value></option>
+				<option><name>23</name><value>23</value></option>
+			</options>
+			<default_value>0</default_value>
+			<combinefields/>
+		</field>
+		<field>
+			<fielddescr><![CDATA['Daily/Weekly'<br />Start Hour]]></fielddescr>
+			<fieldname>pfb_dailystart</fieldname>
+			<description><![CDATA[Default: <strong>0</strong><br />Select the 'Daily/Weekly' start hour.]]></description>
+			<type>select</type>
+			<options>
+				<option><name>0</name><value>0</value></option>
+				<option><name>1</name><value>1</value></option>
+				<option><name>2</name><value>2</value></option>
+				<option><name>3</name><value>3</value></option>
+				<option><name>4</name><value>4</value></option>
+				<option><name>5</name><value>5</value></option>
+				<option><name>6</name><value>6</value></option>
+				<option><name>7</name><value>7</value></option>
+				<option><name>8</name><value>8</value></option>
+				<option><name>9</name><value>9</value></option>
+				<option><name>10</name><value>10</value></option>
+				<option><name>11</name><value>11</value></option>
+				<option><name>12</name><value>12</value></option>
+				<option><name>13</name><value>13</value></option>
+				<option><name>14</name><value>14</value></option>
+				<option><name>15</name><value>15</value></option>
+				<option><name>16</name><value>16</value></option>
+				<option><name>17</name><value>17</value></option>
+				<option><name>18</name><value>18</value></option>
+				<option><name>19</name><value>19</value></option>
+				<option><name>20</name><value>20</value></option>
+				<option><name>21</name><value>21</value></option>
+				<option><name>22</name><value>22</value></option>
+				<option><name>23</name><value>23</value></option>
+			</options>
+			<default_value>0</default_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>De-Duplication</fielddescr>
+			<fieldname>enable_dup</fieldname>
+			<type>checkbox</type>
+			<description>Only used for IPv4 Deny Lists</description>
+		</field>
+		<field>
+			<fielddescr>CIDR Aggregation</fielddescr>
+			<fieldname>enable_agg</fieldname>
+			<type>checkbox</type>
+			<description>Optimise CIDRs (not recommended for slow systems with large lists)</description>
+		</field>
+		<field>
+			<fielddescr>Suppression</fielddescr>
+			<fieldname>suppression</fieldname>
+			<sethelp><![CDATA[This will prevent Selected IPs from being blocked. Only for IPv4 lists (/32 and /24).<div class="infoblock">
+					Country blocking lists cannot be suppressed. This will also remove any RFC1918 addresses from all lists.<br /><br />
+					Alerts can be suppressed using the '+' icon in the Alerts tab and IPs added to the 'pfBlockerNGSuppress' alias
+					A blocked IP in a CIDR other than /32 or /24 will need a 'Whitelist alias' w/ list action: 'Permit Outbound' Firewall rule
+					<br /><br />Do not use the pfBlockerNGSuppress Alias in a Firewall Rule.
+					This alias is used during the cron download process only.</div>]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Global Logging</fielddescr>
+			<fieldname>enable_log</fieldname>
+			<type>checkbox</type>
+			<sethelp><![CDATA[Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ].<br />
+				This overrides any log settings in the Continent/IPv4/6 Alias tabs. (DNSBL not included)]]>
+			</sethelp>
+		</field>
+		<field>
+			<fielddescr>MaxMind Localized Language</fielddescr>
+			<fieldname>maxmind_locale</fieldname>
+			<type>select</type>
+			<description><![CDATA[Select the localized name data from the Language options available.<br />
+				Changes to the Locale will be executed in the background, and will take a few minutes to complete.<br />
+				Upon completion, a pfSense Notice will be generated.]]>
+			</description>
+			<options>
+				<option><name>English</name><value>en</value></option>
+				<option><name>French</name><value>fr</value></option>
+				<option><name>Brazilian Portuguese</name><value>pt-BR</value></option>
+				<option><name>German</name><value>de</value></option>
+				<option><name>Japanese</name><value>ja</value></option>
+				<option><name>Simplified Chinese</name><value>zh-CN</value></option>
+				<option><name>Spanish</name><value>es</value></option>
+			</options>
+			<default_value>en</default_value>
+		</field>
+		<field>
+			<fielddescr>Disable MaxMind Updates</fielddescr>
+			<fieldname>database_cc</fieldname>
+			<type>checkbox</type>
+			<description>This will disable the MaxMind monthly GeoIP database Cron update.
+				This does not affect the MaxMind binary cron task.
+			</description>
+		</field>
+		<field>
+			<fielddescr>Download Failure Threshold</fielddescr>
+			<fieldname>skipfeed</fieldname>
+			<description><![CDATA[Default: <strong>No limit</strong><br />
+				Select max daily download failure threshold via CRON. Clear widget 'failed downloads' to reset.<br />
+				On a download failure, the previously downloaded list is reloaded.]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>No limit</name><value>0</value></option>
+				<option><name>1</name><value>1</value></option>
+				<option><name>2</name><value>2</value></option>
+				<option><name>3</name><value>3</value></option>
+				<option><name>4</name><value>4</value></option>
+				<option><name>5</name><value>5</value></option>
+				<option><name>6</name><value>6</value></option>
+			</options>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Logfile Size</fielddescr>
+			<fieldname>log_maxlines</fieldname>
+			<description><![CDATA[Default: <strong>20000</strong><br />
+				Select number of Lines to keep in the pfblockerng.log, geoip.log, extras.log and dnsbl.log files]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>5000</name><value>5000</value></option>
+				<option><name>10000</name><value>10000</value></option>
+				<option><name>20000</name><value>20000</value></option>
+				<option><name>40000</name><value>40000</value></option>
+				<option><name>60000</name><value>60000</value></option>
+				<option><name>80000</name><value>80000</value></option>
+				<option><name>100000</name><value>100000</value></option>
+				<option><name>No Limit</name><value>nolimit</value></option>
+			</options>
+			<default_value>20000</default_value>
+		</field>
+		<field>
+			<name><![CDATA[Interface/Rules Configuration]]></name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Inbound Firewall Rules</fielddescr>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Interface(s)</fielddescr>
+			<fieldname>inbound_interface</fieldname>
+			<description>Select the Inbound interface(s) you want to apply auto rules to:</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>loopback</hideinterfaceregex>
+			<required/>
+			<multiple/>
+			<combinefields/>
+			<default_value>wan</default_value>
+		</field>
+		<field>
+			<fielddescr>Rule Action</fielddescr>
+			<fieldname>inbound_deny_action</fieldname>
+			<description><![CDATA[Default: <strong>Block</strong><br />Select 'Rule action' for Inbound rules:]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Block</name><value>block</value></option>
+				<option><name>Reject</name><value>reject</value></option>
+			</options>
+			<required/>
+			<combinefields>end</combinefields>
+			<default_value>block</default_value>
+		</field>
+		<field>
+			<fielddescr>Outbound Firewall Rules</fielddescr>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Interface(s)</fielddescr>
+			<fieldname>outbound_interface</fieldname>
+			<description>Select the Outbound interface(s) you want to apply auto rules to:</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>loopback</hideinterfaceregex>
+			<required/>
+			<multiple/>
+			<combinefields/>
+			<default_value>lan</default_value>
+		</field>
+		<field>
+			<fielddescr>Rule Action</fielddescr>
+			<fieldname>outbound_deny_action</fieldname>
+			<description><![CDATA[Default: <strong>Reject</strong><br />Select 'Rule action' for Outbound rules:]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Reject</name><value>reject</value></option>
+				<option><name>Block</name><value>block</value></option>
+			</options>
+			<required/>
+			<default_value>reject</default_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>OpenVPN Interface</fielddescr>
+			<fieldname>openvpn_action</fieldname>
+			<type>checkbox</type>
+			<sethelp><![CDATA[Select to add auto-rules for OpenVPN. This is only required when the OpenVPN Interface is not listed above.<br />
+				OpenVPN Server (Outbound auto-rules only), OpenVPN Client (Both In/Outbound auto-rules)<br />
+				These will be added to 'Floating Rules' or OpenVPN rules tab.]]></sethelp>
+		</field>
+		<field>
+			<fielddescr>IPSec Interface</fielddescr>
+			<fieldname>ipsec_action</fieldname>
+			<type>checkbox</type>
+			<description>Select to add 'Outbound' auto-rules for IPSec. These will be added to 'Floating Rules' or IPSec rules tab.</description>
+		</field>
+		<field>
+			<fielddescr>Floating Rules</fielddescr>
+			<fieldname>enable_float</fieldname>
+			<type>checkbox</type>
+			<sethelp><![CDATA[<strong>Enabled:</strong> Auto-rules will be generated in the 'Floating Rules' tab<br />
+				<strong>Disabled:</strong> Auto-rules will be generated in the selected Inbound/Outbound interfaces<br />
+				<strong>Rules will be ordered by the selection below.</strong>]]>
+			</sethelp>
+		</field>
+		<field>
+			<fielddescr>Rule Order</fielddescr>
+			<fieldname>pass_order</fieldname>
+			<description><![CDATA[Default Order:<strong> | pfB_Block/Reject | All other Rules | (original format)</strong>
+				<div class="infoblock">Select the '<strong>Order</strong>' of the Rules<br />
+				&emsp;Selecting 'original format', sets pfBlockerNG rules at the top of the Firewall TAB.<br />
+				&emsp;Selecting any other 'Order' will re-order <strong>all the rules to the format indicated!</strong></div>]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>| pfB_Block/Reject | All other Rules | (original format)</name><value>order_0</value></option>
+				<option><name>| pfSense Pass/Match | pfB_Pass/Match | pfB_Block/Reject | pfSense Block/Reject |</name><value>order_1</value></option>
+				<option><name>| pfB_Pass/Match | pfSense Pass/Match | pfB_Block/Reject | pfSense Block/Reject |</name><value>order_2</value></option>
+				<option><name>| pfB_Pass/Match | pfB_Block/Reject | pfSense Pass/Match | pfSense Block/Reject |</name><value>order_3</value></option>
+				<option><name>| pfB_Pass/Match | pfB_Block/Reject | pfSense Block/Reject | pfSense Pass/Match |</name><value>order_4</value></option>
+			</options>
+			<default_value>order_0</default_value>
+		</field>
+		<field>
+			<fielddescr>Auto Rule Suffix</fielddescr>
+			<fieldname>autorule_suffix</fieldname>
+			<description><![CDATA[Default: <strong>auto rule</strong><br />
+				Select 'Auto Rule' description suffix for auto defined rules. pfBlockerNG must be disabled to modify suffix]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>auto rule</name><value>autorule</value></option>
+				<option><name>Null (no suffix)</name><value>standard</value></option>
+				<option><name>AR</name><value>ar</value></option>
+			</options>
+			<default_value>autorule</default_value>
+		</field>
+		<field>
+			<fielddescr>Kill States</fielddescr>
+			<fieldname>killstates</fieldname>
+			<description>When 'Enabled', after a cron event or any 'Force' commands, any blocked IPs found in the
+				Firewall states will be cleared.
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name><![CDATA[Acknowledgements]]></name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Credits</fielddescr>
+			<fieldname>credits</fieldname>
+			<description><![CDATA[<strong>pfBlockerNG </strong>
+				Created in 2015 by <a target="_blank" href="https://forum.pfsense.org/index.php?action=profile;u=238481">BBcan177.</a><br /><br />
+				Based upon pfBlocker by Marcello Coutinho and Tom Schaefer.<br />
+				GeoIP database GeoLite2 distributed under the Creative Commons Attribution-ShareAlike 4.0 International License by:
+				MaxMind Inc. @ <a target="_blank" href="http://www.maxmind.com">MaxMind.com</a>.
+				The GeoIP database is automatically updated the first Tuesday of each month]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Support</fielddescr>
+			<description><![CDATA[pfBlockerNG is developed by BBcan177, and can be reached at&emsp; [ bbcan177 'at' gmail 'dot' com ]]]></description>
+			<type>info</type>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		<![CDATA[
+		include_once('/usr/local/pkg/pfblockerng/pfblockerng_install.inc');
+		]]>
+	</custom_php_install_command>
+	<custom_php_pre_deinstall_command>
+		<![CDATA[
+		pfblockerng_php_pre_deinstall_command();
+		]]>
+	</custom_php_pre_deinstall_command>
+	<custom_php_validation_command>
+		<![CDATA[
+		global $pfb, $input_errors;
+		pfblockerng_validate_input($_POST, $input_errors);
+
+		// Determine if MaxMind GeoIP Update is running before changing Language Locale
+		if (file_exists("{$pfb['dbdir']}/GeoIP_Locale")) {
+			$ex_geoip_locale	= file("{$pfb['dbdir']}/GeoIP_Locale");
+			$ex_geoip_locale	= trim($ex_geoip_locale[0]);
+			$new_geoip_locale	= htmlspecialchars($_POST['maxmind_locale']);
+
+			if ($new_geoip_locale != $ex_geoip_locale) {
+				exec('/bin/ps -wx', $result_cron);
+				if (!preg_grep("/pfblockerng[.]php\s+?(uc|gc|ugc)/", $result_cron)) {
+					// Execute MaxMind update and generate pfSense Notice message on completion
+					mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php ugc {$ex_geoip_locale} {$new_geoip_locale} >> {$pfb['extraslog']} 2>&1");
+				} else {
+					$input_errors[] = 'MaxMind GeoIP conversion already in process!';
+					$input_errors[] = 'Cannot change Language Locale at this time!';
+				}
+			}
+		}
+
+		]]>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		<![CDATA[
+		global $pfb;
+		$pfb['save'] = TRUE;
+		sync_package_pfblockerng();
+		]]>
+	</custom_php_resync_config_command>
+</packagegui>
