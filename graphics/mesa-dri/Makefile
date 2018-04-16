@@ -3,7 +3,6 @@
 
 PORTNAME=	mesa-dri
 PORTVERSION=	${MESAVERSION}
-PORTREVISION=	1
 CATEGORIES=	graphics
 
 COMMENT=	OpenGL hardware acceleration drivers for DRI2+
@@ -52,7 +51,7 @@ VULKAN_DRIVERS+=	RADEON
 .if ${ARCH} == amd64 || ${ARCH} == i386
 DRI_DRIVERS+=		I915 I965
 GALLIUM_DRIVERS+=	SVGA
-. if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
+. if ${OPSYS} == FreeBSD
 EXTRA_PATCHES+=	${PATCHDIR}/extra-src_mesa_drivers_dri_i965_intel__screen.c
 . endif
 VULKAN_DRIVERS+=	INTEL
