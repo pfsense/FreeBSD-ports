@@ -14,7 +14,7 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
 		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \
-		${LOCALBASE}/bin/aggregate:net-mgmt/aggregate \
+		${LOCALBASE}/bin/iprange:net-mgmt/iprange \
 		${LOCALBASE}/bin/mwhois:net/whois \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd \
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/intl.so:devel/pecl-intl
@@ -49,17 +49,37 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_extra.inc \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfBlockerNG.js \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_asn.txt \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_alerts.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_alerts_ar.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_blacklist.php \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_category.php \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_category_edit.php \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_dnsbl.php \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_feeds.json \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_feeds.php \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_general.php \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_ip.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_update.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_log.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_sync.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_threats.php \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_log.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/pfblockerng.widget.php \
 		${STAGEDIR}${PREFIX}/www/widgets/widgets
@@ -69,21 +89,15 @@ do-install:
 		${STAGEDIR}${PREFIX}/www/widgets/javascript
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/dnsbl_tld \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_dnsbl.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/shallalist_global_usage \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_dnsbl_lists.xml \
-		${STAGEDIR}${PREFIX}/pkg/pfblockerng
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_dnsbl_easylist.xml \
-		${STAGEDIR}${PREFIX}/pkg/pfblockerng
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_v4lists.xml \
-		${STAGEDIR}${PREFIX}/pkg/pfblockerng
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_v6lists.xml \
-		${STAGEDIR}${PREFIX}/pkg/pfblockerng
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_sync.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/ut1_global_usage \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng.sh \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/pfblockerng/www/index.php \
+		${STAGEDIR}${PREFIX}/www/pfblockerng/www
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/pfblockerng/www/dnsbl_default.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng/www
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
