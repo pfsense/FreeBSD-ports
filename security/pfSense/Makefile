@@ -46,15 +46,15 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		nginx>=0:www/nginx \
 		ntp>=0:net/ntp \
 		openvpn>=0:security/openvpn \
-		${PHP_PKGNAMEPREFIX}pear-Auth_RADIUS>=0:net/pear-Auth_RADIUS \
-		${PHP_PKGNAMEPREFIX}pear-Crypt_CHAP>=0:security/pear-Crypt_CHAP \
-		${PHP_PKGNAMEPREFIX}pear-Mail>=0:mail/pear-Mail \
-		${PHP_PKGNAMEPREFIX}pear-Net_Growl>=0:net/pear-Net_Growl \
-		${PHP_PKGNAMEPREFIX}pear-Net_IPv6>=0:net/pear-Net_IPv6 \
-		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2 \
-		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq \
-		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module \
-		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring \
+		${PHP_PKGNAMEPREFIX}pear-Auth_RADIUS>=0:net/pear-Auth_RADIUS@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-Crypt_CHAP>=0:security/pear-Crypt_CHAP@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-Mail>=0:mail/pear-Mail@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-Net_Growl>=0:net/pear-Net_Growl@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-Net_IPv6>=0:net/pear-Net_IPv6@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
+		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
 		qstats>=0:sysutils/qstats \
@@ -72,7 +72,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		wpa_supplicant>=0:security/wpa_supplicant \
 		xinetd>=0:security/xinetd
 
-php56_RUN_DEPENDS=	php${PHP_VER}-suhosin>=0:security/php-suhosin
+php56_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}-suhosin>=0:security/php-suhosin
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
