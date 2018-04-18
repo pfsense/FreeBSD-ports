@@ -54,7 +54,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		php${PHP_VER}-pear-XML_RPC2>=0:net/pear-XML_RPC2 \
 		php${PHP_VER}-pecl-zmq>=0:net/pecl-zmq \
 		php${PHP_VER}-pfSense-module>=0:devel/php-pfSense-module \
-		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring \
+		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
 		qstats>=0:sysutils/qstats \
