@@ -4,6 +4,7 @@ PORTNAME=	pfSense-Status_Monitoring
 PORTVERSION=	1.7.6
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
@@ -12,15 +13,16 @@ COMMENT=	pfSense Status Monitoring
 
 LICENSE=	APACHE20
 
+IGNORE_WITH_PHP=	70 71
+USES=		php:flavors
+
 NO_BUILD=	yes
 NO_MTREE=	yes
-USE_PHP=	yes
 
 PLIST_SUB=	PORTNAME=${PORTNAME}
 
-.include <bsd.port.pre.mk>
-
-RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/rrd.so:databases/pecl-rrd1
+php56_RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/rrd.so:databases/pecl-rrd1
+php72_RUN_DEPENDS+=	${PECL_PKGNAMEPREFIX}rrd>=2.0.0:databases/pecl-rrd@${PHP_FLAVOR}
 
 do-extract:
 	${MKDIR} ${WRKSRC}
@@ -38,4 +40,4 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/menu.xml \
 		${STAGEDIR}${PREFIX}/share/pfSense/menu/${PORTNAME}.xml
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -20,7 +20,7 @@ IPFW_DESC=	Enable IPFW functions
 ETHERSWITCH_DESC=	Enable etherswitch functions
 
 USES=		php:ext
-IGNORE_WITH_PHP=56 70 71
+IGNORE_WITH_PHP=70 71 72
 
 CFLAGS+=	-I/usr/local/include -I. -DTCPSTATES
 CFLAGS+=	-Wall -Wredundant-decls -Wnested-externs -Winline
