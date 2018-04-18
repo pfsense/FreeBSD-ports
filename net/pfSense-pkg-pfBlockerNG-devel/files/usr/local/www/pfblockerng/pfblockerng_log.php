@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * Copyright (c) 2015-2018 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for the
@@ -50,7 +50,7 @@ function getlogs($logdir, $log_extentions = array('log')) {
 	$log_filenames = array();
 	foreach ($log_extentions as $extention) {
 		if ($extention != '*') {
-			$log_filenames = array_merge($log_filenames, glob($logdir . '*.' . $extention));
+			$log_filenames = array_merge($log_filenames, glob($logdir . '*' . $extention));
 		} else {
 			$log_filenames = array_merge($log_filenames, glob($logdir . '*'));
 		}
@@ -77,7 +77,8 @@ function getlogs($logdir, $log_extentions = array('log')) {
 
 $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> "{$pfb['logdir']}/",
-						'logs'		=> array('pfblockerng.log', 'error.log', 'dnsbl.log', 'extras.log', 'maxmind_ver'),
+						'logs'		=> array('pfblockerng.log', 'error.log', 'ip_block.log', 'ip_permit.log', 'ip_match.log',
+									'dnsbl.log', 'extras.log', 'dnsbl_parsed_error.log', 'maxmind_ver'),
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
@@ -140,25 +141,45 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'clear'		=> FALSE
 						),
 			'etiprep'	=> array('name'		=> 'ET IPRep Files',
-						'ext'		=> '*',
+						'ext'		=> '.*',
 						'logdir'	=> "{$pfb['etdir']}/",
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
-			'GeoIP'		=> array('name'		=> 'Country Files',
+			'GeoIP'		=> array('name'		=> 'GeoIP Files',
 						'ext'		=> 'txt',
 						'logdir'	=> "{$pfb['ccdir']}/",
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
-			'unbound'	=> array('name'		=> 'Unbound',
-						'ext'		=> 'conf',
+			'unbound'	=> array('name'		=> 'Unbound Resolver DNSBL',
+						'ext'		=> array('pfb_dnsbl.conf'),
 						'logdir'	=> "{$pfb['dnsbldir']}/",
+						'download'	=> TRUE,
+						'clear'		=> FALSE
+						),
+			'dnsbl_tld'	=> array('name'		=> 'DNSBL TLD List',
+						'ext'		=> array('dnsbl_tld'),
+						'logdir'	=> '/usr/local/pkg/pfblockerng/',
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						)
 		);
 
+// Dynamically add any configured DNSBL Categeory Feeds
+if ($pfb['blconfig'] &&
+    !empty($pfb['blconfig']['blacklist_selected']) &&
+    isset($pfb['blconfig']['item'])) {
+	foreach ($pfb['blconfig']['item'] as $item) {
+		$bl_title = htmlspecialchars($item['title']);
+		$log = array( $bl_title . 'logs' => array(	'name'		=> 'Original ' . $bl_title . ' Files',
+								'ext'		=> '*',
+								'logdir'	=> "{$pfb['dbdir']}/" . strtolower($bl_title) . '/',
+								'download'	=> TRUE,
+								'clear'		=> FALSE));
+		$pfb_logtypes = array_merge($pfb_logtypes, $log);
+	}
+}
 
 // Function to escape Log viewer output
 function pfb_htmlspecialchars($line) {
@@ -228,38 +249,39 @@ if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Log Browser'));
+$pglinks = array('', '/pfblockerng/pfblockerng_general.php', '@self');
 include_once('head.inc');
 
-if ($input_errors) {
+if (isset($input_errors)) {
 	print_input_errors($input_errors);
 }
-if ($savemsg) {
+if (isset($savemsg)) {
 	print_info_box($savemsg);
 }
 
+// Define default Alerts Tab href link (Top row)
+$get_req = pfb_alerts_default_page();
+
 $tab_array	= array();
-$tab_array[]	= array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
-$tab_array[]	= array(gettext("Update"), false, "/pfblockerng/pfblockerng_update.php");
-$tab_array[]	= array(gettext("Alerts"), false, "/pfblockerng/pfblockerng_alerts.php");
-$tab_array[]	= array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
-$tab_array[]	= array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
-$tab_array[]	= array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
-$tab_array[]	= array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
-$tab_array[]	= array(gettext("GeoIP"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml");
-$tab_array[]	= array(gettext("Logs"), true, "/pfblockerng/pfblockerng_log.php");
-$tab_array[]	= array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
+$tab_array[]	= array(gettext('General'),	false,	'/pfblockerng/pfblockerng_general.php');
+$tab_array[]	= array(gettext('IP'),		false,	'/pfblockerng/pfblockerng_ip.php');
+$tab_array[]	= array(gettext('DNSBL'),	false,	'/pfblockerng/pfblockerng_dnsbl.php');
+$tab_array[]	= array(gettext('Update'),	false,	'/pfblockerng/pfblockerng_update.php');
+$tab_array[]	= array(gettext('Reports'),	false,	"/pfblockerng/pfblockerng_alerts.php{$get_req}");
+$tab_array[]	= array(gettext('Feeds'),	false,	'/pfblockerng/pfblockerng_feeds.php');
+$tab_array[]	= array(gettext('Logs'),	true,	'/pfblockerng/pfblockerng_log.php');
+$tab_array[]	= array(gettext('Sync'),	false,	'/pfblockerng/pfblockerng_sync.php');
 display_top_tabs($tab_array, true);
 
 // Create Form
 $form = new Form(false);
-$form->setAction('/pfblockerng/pfblockerng_log.php');
 
 // Build 'Shortcut Links' section
 $section = new Form_Section('Log/File Browser selections');
 $section->addInput(new Form_StaticText(
-	NULL,
+	'Links',
 	'<small>'
-	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
+	. '<a href="/firewall_aliases.php" target="_blank">Firewall Aliases</a>&emsp;'
 	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
 	. '<a href="/status_logs_filter.php" target="_blank">Firewall Logs</a></small>'
 ));
@@ -323,7 +345,7 @@ if ($clearable) {
 	$logbtns .= '&emsp;<i class="fa fa-trash icon-pointer icon-primary" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
 }
 
-$section = new Form_Section('Log/File Contents');
+$section = new Form_Section('Log/File Details');
 $section->addInput(new Form_StaticText(
 	NULL,
 	'<div style="display:none;" id="fileStatusBox"><strong id="fileStatus"></strong></div>'
@@ -341,7 +363,7 @@ $section->addInput(new Form_Textarea(
 	NULL,
 	''
 ))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '30')->setAttribute('wrap', 'off')
-  ->setAttribute('style', 'background:#fafafa;');
+  ->setAttribute('style', 'background:#fafafa; width: 100%');
 $form->add($section);
 
 $form->addGlobal(new Form_Input('download', 'download', 'hidden', ''));
@@ -396,6 +418,7 @@ function loadComplete(req) {
 		$("#fileRefreshBtn").show();
 		$("#fileContent").prop("disabled", false);
 		$("#fileContent").val(fileContent);
+		$("#fileContent").css("overflow", "scroll");
 	} else {
 		$("#fileStatus").html(values[0]);
 		$("#fbTarget").html("");
@@ -415,7 +438,6 @@ events.push(function() {
 		$('form').submit();
 	});
 
-	// Open selected logfile
 	$('#logFile').on('click', function() {
 		// Toggle used to prevent opening the logfile on first click of dropdown menu
 		if (toggle) {
@@ -442,4 +464,4 @@ events.push(function() {
 });
 //]]>
 </script>
-<?php include("foot.inc"); ?>
+<?php include('foot.inc'); ?>
