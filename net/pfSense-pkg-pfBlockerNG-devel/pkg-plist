@@ -3,13 +3,13 @@ pkg/pfblockerng.xml
 pkg/pfblockerng/dnsbl_tld
 pkg/pfblockerng/pfblockerng.inc
 pkg/pfblockerng/pfblockerng.sh
-pkg/pfblockerng/pfblockerng_asn.txt
 pkg/pfblockerng/pfblockerng_extra.inc
 pkg/pfblockerng/pfblockerng_install.inc
 pkg/pfblockerng/shallalist_global_usage
 pkg/pfblockerng/ut1_global_usage
 www/pfblockerng/pfBlockerNG.js
 www/pfblockerng/pfblockerng.php
+www/pfblockerng/pfblockerng_asn.txt
 www/pfblockerng/pfblockerng_alerts.php
 www/pfblockerng/pfblockerng_blacklist.php
 www/pfblockerng/pfblockerng_category.php
