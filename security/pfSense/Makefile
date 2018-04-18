@@ -46,18 +46,17 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		nginx>=0:www/nginx \
 		ntp>=0:net/ntp \
 		openvpn>=0:security/openvpn \
-		php56-pear-Auth_RADIUS>=0:net/pear-Auth_RADIUS \
-		php56-pear-Crypt_CHAP>=0:security/pear-Crypt_CHAP \
-		php56-pear-Mail>=0:mail/pear-Mail \
-		php56-pear-Net_Growl>=0:net/pear-Net_Growl \
-		php56-pear-Net_IPv6>=0:net/pear-Net_IPv6 \
-		php56-pear-XML_RPC2>=0:net/pear-XML_RPC2 \
-		php56-pecl-zmq>=0:net/pecl-zmq \
+		php${PHP_VER}-pear-Auth_RADIUS>=0:net/pear-Auth_RADIUS \
+		php${PHP_VER}-pear-Crypt_CHAP>=0:security/pear-Crypt_CHAP \
+		php${PHP_VER}-pear-Mail>=0:mail/pear-Mail \
+		php${PHP_VER}-pear-Net_Growl>=0:net/pear-Net_Growl \
+		php${PHP_VER}-pear-Net_IPv6>=0:net/pear-Net_IPv6 \
+		php${PHP_VER}-pear-XML_RPC2>=0:net/pear-XML_RPC2 \
+		php${PHP_VER}-pecl-zmq>=0:net/pecl-zmq \
+		php${PHP_VER}-pfSense-module>=0:devel/php-pfSense-module \
 		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
-		php56-suhosin>=0:security/php-suhosin \
-		php56-pfSense-module>=0:devel/php-pfSense-module \
 		qstats>=0:sysutils/qstats \
 		radvd>=0:net/radvd \
 		rate>=0:net-mgmt/rate \
@@ -72,10 +71,14 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
 		xinetd>=0:security/xinetd
+
+php56_RUN_DEPENDS=	php${PHP_VER}-suhosin>=0:security/php-suhosin
+
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		kmod
+USES=		kmod php:flavors
 
+IGNORE_WITH_PHP=	70 71
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext json mbstring \
 		mcrypt hash opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
