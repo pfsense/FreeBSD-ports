@@ -1,0 +1,1081 @@
+# shallalist_global_usage
+# pfBlockerNG - Blacklist configuration
+#
+# part of pfSense (https://www.pfsense.org)
+# Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2015-2018 BBcan177@gmail.com
+# All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Based upon layout by Franck Bourdonnec (IPCop)
+#
+#	Blacklist - pfSense settings
+#
+#	XML:		Name of pfSense XML configuration name (single lowercase word, no whitespace/special characters)
+#	TITLE:		Name of Blacklist
+#	DESCR:		Description of Blacklist
+#	FEED:		URL of Feed source
+#	SIZE:		Approx. MB size of archive
+#	WEBSITE:	Website URL
+#	LICENSE:	License URL
+#
+#	Blacklist - Format of Categories
+#
+#	NAME:		Category filename
+#	NAME xx:	Category Name (per Language)
+#	DESC xx:	Category Description (per language)
+#
+XML:	shallalist
+TITLE:	Shallalist
+DESCR:	Shalla Secure Services - Shallalist
+FEED:	http://www.shallalist.de/Downloads/shallalist.tar.gz
+SIZE:	10
+WEBSITE:http://www.shallalist.de/cgi-bin/stat.cgi
+LICENSE:http://www.shallalist.de/licence.html
+
+NAME:	adv
+DESC EN: All about advertising: This includes sites offering banners and banner creation as well as sites delivering banners to be shown in webpages and advertising companies.
+DESC DE: Werbe- und Markeingseiten: Beinhaltet Seiten, die Werbebanner einblenden sowie auch Werbefirmen.
+DESC FR: Vente et de Publicité: comprend des côtés, les bannières publicitaires insérer ainsi qu'également entreprises publicitaires.
+DESC RU: Все о рекламе: услуги по созданию, продаже и резмещению баннеров, рекламные компании.
+NAME EN: Advertisements
+NAME DE: Werbung
+NAME FR: Annonces
+NAME IT: Pubblicità
+NAME NL: Reclame
+NAME PT: Propagandas
+NAME ES: Anuncios
+NAME RU: Реклама
+
+NAME:	aggressive
+DESC EN: Sites with aggressive content such as racism and hate speech.
+DESC DE: Agressive Inhalte wie Rassismus, Beleidungen, Hassreden.
+DESC FR: Quelques sites raçistes, antisémites, inçitant à la haine.
+DESC RU: Сайты, содержащие информацию насильственного характера, призывающие к расизму, ненависти.
+NAME EN: Aggressive
+NAME DE: Aggressiv
+NAME FR: Agréssif
+NAME IT: Aggressività
+NAME NL: Aggressief
+NAME PT: Aggressive
+NAME ES: Agresivo
+NAME RU: Насилие
+
+NAME:	alcohol
+DESC EN: Sites of breweries, wineries and destilleries. This category also covers sites that explain how to make beer, wines and spirits.
+DESC DE: Seiten von Brauereien, Keltereien und Brennereien. Ebenso werden in dieser Kategorie Seiten aufgenommen, die erklären, wie man Alkohol herstellt.
+DESC FR:
+DESC RU: Сайты винных, пивоваренных заводов. Также в эту категорию включены сайты с рецептами по изготовлению пива, вина и спиртовых напитков.
+NAME EN: Alcohol
+NAME DE: Alkohol
+NAME FR:
+NAME IT: Alcol
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Алкоголь
+
+NAME:	anonvpn
+DESC EN: Sites providing vpn services to the public. The focus is on vpn sites used to hide the origin of the traffic, f.e. tor nodes.
+DESC DE: Seiten, die VPN Dienste anbieten (keine Firmen-VPNs). Es betrifft haupts?chlich Seiten, die den Ursprung der Kommunikation verschleiern wie z.B. Tor Knoten.
+DESC FR:
+DESC RU:
+NAME EN: Anonymous VPN
+NAME DE: Anonymes VPN
+NAME FR: VPN anonyme
+NAME IT: VPN anonimo
+NAME NL:
+NAME PT:
+NAME ES: VPN an?nimo
+NAME RU:
+
+NAME:	automobile_cars
+DESC EN: All sites related to cars. Included are automobile companies and automotive suppliers.
+DESC DE: Rund um das Auto: Hersteller, Zulieferer, Reparaturen u.ä.
+DESC FR:
+DESC RU: Сайты об автомобилях, автопроизводители, автодилеры.
+NAME EN: Automobile - Cars
+NAME DE: Automobil - Autos
+NAME FR:
+NAME IT: Automobile - Automobili
+NAME NL: Automobile - Auto
+NAME PT:
+NAME ES:
+NAME RU: Автотранспорт/Автомобили
+
+NAME:	automobile_bikes
+DESC EN: All sites related to motorcycles. Included are vendor sites, resellers, fan and hobby pages as well as and suppliers. Scooters included.
+DESC DE: Rund um das Motorad: Hersteller, Zulieferer, Reparaturen u.ä.
+DESC FR:
+DESC RU: Сайты о мототранспорте, скутерах, включая производителей, дилеров. Также в категорию включены ресурсы описаний, забавных историй владельцев и фанатов мототехники.
+NAME EN: Automobile - Bikes
+NAME DE: Automobile - Motorräder
+NAME FR:
+NAME IT: Automobile - Biciclette
+NAME NL: Automobile - Motorfiets 
+NAME PT:
+NAME ES:
+NAME RU: Автотранспорт/Мототехника
+
+NAME:	automobile_boats
+DESC EN: All sites related motorboats. Included are vendor sites, resellers, fan and hobby pages as well as and suppliers.
+DESC DE: Alles zur Thematik Motorboote; Bezug, Typen, Hersteller, Zulieferer, Wartung und Pflege.
+DESC FR:
+DESC RU: Сайты о водном транспорте, судоходстве, включая производителей, дилеров. Также в категорию включены ресурсы описаний, забавных историй владельцев и фанатов водного транспорта.
+NAME EN: Automobile - Boats
+NAME DE: Automobile - Boote
+NAME FR:
+NAME IT: Automobile - Barche
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Автотранспорт/Водный транспорт
+
+NAME:	automobile_planes
+DESC EN: All sites related to planes ranging from small one and two seaters up to the large traffic planes, old and new, private, commercial and military. Vendors and supplier are included (airports are not). Helicopter sites are included as well.
+DESC DE:
+DESC FR:
+DESC RU: Сайты, посвященные различному авиатранспорту, включая малые одноместные, большие пассажирские, частные, коммерческие, военные самолеты, вертолеты. Информация о производителях и поставщиках (аэропорты не включены). 
+NAME EN: Automobile - Planes
+NAME DE: Automobile - Flugzeuge
+NAME FR:
+NAME IT: Automobile - Aerei
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Автотранспорт/Авиатранспорт
+
+NAME:	chat
+DESC EN: Site for real-time chatting and instant messaging.
+DESC DE: Plaudern via Internet in Echtzeit.
+DESC FR:
+DESC RU: Сайты обмена сообщениями в реальном времени, чаты.
+NAME EN: Chat
+NAME DE: Chat
+NAME FR:
+NAME IT: Chat
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Чат
+
+NAME:	costtraps
+DESC EN: Sites that lure with free of charge services but then give then give you a costly subscription (written somewhere in tiny letters nearly unreadable).
+DESC DE: Seiten mit undurchsichtiger Preisgestaltung: scheinbar kostenlose Dienste, die jedoch in einem kostenpflichtigen Abbonement enden (in kleinster Schrift unleserlich dargelegt).
+DESC FR:
+DESC RU: Сайты, привлекающие бесплатными сервисами, но впоследствии взымающие оплату за подписку (о необходимости оплаты обычно указано в письме мелким незаметным шрифтом).
+NAME EN: Cost Traps
+NAME DE: Kostenfallen
+NAME FR:
+NAME IT: Servizi Gratuiti Fittizzi
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Мошенничество
+
+NAME:	dating
+DESC EN: Sites to contact people for love and living together. He seeks her, she seeks him and so on.
+DESC DE: Kontaktbörsen für das Leben zu zweit.
+DESC FR: Sites de rencontres
+DESC RU: Сайты знакомств, обещния, поиск людей для создания отношений. Ищу парня, девушку и т.д.
+NAME EN: Dating
+NAME DE: Kontaktbörsen
+NAME FR: Rencontre
+NAME IT: Incontri
+NAME NL: Dating
+NAME PT: Dating
+NAME ES: Dating
+NAME RU: Знакомства, общение
+
+NAME:	downloads
+DESC EN: This covers mostly filesharing, p2p and torrent sites. Other download sites (for software, wallpapers, ..) are included as well.
+DESC DE: Herunterladen von Software, Bilder, u.ä. sei es direkt oder über P2P/Torrent Seiten.
+DESC FR:
+DESC RU: Ресурсы, предоставляющие доступ к файлам, файлообменным сетям, торрентам. Включены сайты с архивами программ, обоев для рабочих столов.
+NAME EN: Downloads
+NAME DE: Downloads
+NAME FR: Téléchargements
+NAME IT: Downloads
+NAME NL:
+NAME PT: Transferências
+NAME ES: Загрузка
+
+NAME:	drugs
+DESC EN: Sites offering drugs or explain how to make drugs. Covers alcohol and tobacco as well as viagra and similar substances.
+DESC DE: Seiten, die Drogen und Medikamente anbieten. Beinhaltet auch Alkohol, Zigaretten und Viagra, Cialis, etc.
+NAME EN: Drugs
+DESC RU: Сайты по продаже и изготовлению наркотических средств, алкогольных и тобачных изделий, подобные виагре препараты.
+NAME DE: Drogen
+NAME FR: Drogue
+NAME IT: Droghe
+NAME NL: Verdovende middelen
+NAME PT:
+NAME ES:
+NAME RU: Наркотики
+
+NAME:	dynamic
+DESC EN: All domains where people login obtaining a dynamic IP address.
+DESC DE: Domänen, die direkt dynamischen IP Bereichen zugeordnet sind; typischerweise die Zugänge von Endbenutzern.
+DESC FR:
+DESC RU: Домены с динамическими IP-адресами
+NAME EN: Dynamic (Dialup) Addresses
+NAME DE: Dynamische Adressen
+NAME FR:
+NAME IT: Indirizzi Dinamici
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Динамические ресурсы
+
+NAME:	education_schools
+DESC EN: Home pages of schools, colleges and universities.
+DESC DE: Seiten von Schulen und Universitäten.
+DESC FR:
+DESC RU: Сайты школ, университетов, институтов.
+NAME EN: Schools
+NAME DE: Schulen
+NAME FR:
+NAME IT: Scuole, colleggi e università
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Образовательные учереждения
+
+NAME:	finance_banking
+DESC EN: Home page of banking companies are listed here. This is not restricted to online banking.
+DESC DE:
+DESC FR:
+DESC RU: Саты о банковских организациях, онлайн-платежах.
+NAME EN: Finance - Banking
+NAME DE: Finanzen - Banken
+NAME FR:
+NAME IT: Finanza - Banche
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Финансы - Банки
+
+NAME:	finance_insurance
+DESC EN: Sites of insurance companies, information about insurances and link collections concering this subject.
+DESC DE: Alles zur Thematik Versicherungen und Versicherer.
+DESC FR:
+DESC RU: Сайты страховых компаний, информация о страховании, а также различные статьи по данной тематике.
+NAME EN: Finance - Insurance
+NAME DE: Finanzen - Versicherungen
+NAME FR:
+NAME IT: Finanza - Assicurazioni
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Финансы - Страхование
+
+NAME:	   finance_moneylending
+DESC EN: Sites one can apply for loans and mortgages or can obtain information about this business.
+DESC DE: Seiten, die sich speziell mit der Thematik Geldverleih und Kredite befassen, Kreditaufnahme und -abzahlung.
+DESC FR:
+DESC RU: Сайты о кредитовании, займах, а также различные статьи по данной тематике.
+NAME EN: Finance - Moneylending
+NAME DE: Finanzen - Geldverleih
+NAME FR:
+NAME IT: Finanza - Prestiti
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Финансы - Кредитование
+
+NAME:	finance_other
+DESC EN: Finance in general.
+DESC DE: Seiten, die ganz allgemein mit Finanzen zu tun haben (Wechselkurse, Anlegertips u.ä.).
+DESC FR:
+DESC RU: Сайты о финансах.
+NAME EN: Finance - Other
+NAME DE: Finanzen - Allgemein
+NAME FR:
+NAME IT: Finanza - Altro
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Финансы - Другое
+
+NAME:	finance_realestate
+DESC EN: Sites about all types of real estate, buying and selling homes, finding apartments for rent.
+DESC DE: Seite über alle Arten von Immobilien, Kauf und Verkauf von Wohnungen und Häusern, auch Mietmarkt.
+DESC FR:
+DESC RU: Сайты о недвижимоси, покупке и продаже жилья, аренде помещений.
+
+NAME EN: Finance - Realestate
+NAME DE: Finanzen - Immobilien
+NAME FR:
+NAME IT: Finanza - Appartamenti
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Финансы - недвижимость
+Финансы - недвижимость
+
+NAME:	finance_trading
+DESC EN: Sites about and related to stock exchange.
+DESC DE: Seite über die Börse und den Börsenhandel (Aktien, Optionen usw.).
+DESC FR:
+DESC RU: Сайты с информацией о фондовых биржах
+NAME EN: Finance - Trading
+NAME DE: Finanzen - Börse
+NAME FR:
+NAME IT: Finanza - Borsa
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Финансы/Торговля
+
+NAME:	fortunetelling
+DESC EN: All sites about astrology, horoscopes, numerology, palm reading and so on; sites that offer services to fortell the future.
+DESC DE: Seiten über Astrologie, Horoskope, Nummerologie, Handlesen usw.; Seiten, die Dienste bzgl. Wahrsagerei und der Zukunftsvorhersage anbieten.
+DESC FR:
+DESC RU: Сайты о гороскопах, астрологии, хиромантии, предсказаниях и т.д.
+NAME EN: Fortune telling
+NAME DE: Wahrsagerei
+NAME FR:
+NAME IT: Indovini
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Гадание
+
+NAME:	forum
+DESC EN: Discussion sites. Covers explicit forum sites and some blogs. Sites where people can discuss and share information in a non interactive/real-time way.
+DESC DE: Forums- und Diskussionsseiten sowie teilweise auch Blogs. 
+DESC FR:
+DESC RU: Сайты для обсуждений, форумы, блоги. Ресурсы, где можно обсудить или поделиться информацией в неинтерактивном режиме.
+NAME EN: Forum
+NAME DE: Foren
+NAME FR: Forum
+NAME IT: Forum
+NAME NL: Forum
+NAME PT: Forum
+NAME ES: Forum
+NAME RU: Форумы
+
+NAME:	gamble
+DESC EN: Sites offering the possibility to win money. Poker, Casino, Bingo and other chance games as well as betting sites.
+DESC DE: Glückspiel und Wett-Seiten.
+DESC FR: Sites de jeux en ligne, casino, etc.
+DESC RU: Ресурсы, предлагающие возможность выиграть деньги: покер, казино, бинго и другие азартные игры.
+NAME EN: Gambling/Casino
+NAME DE: Wetten/Glueckspiel 
+NAME FR: Jeux casino
+NAME IT: Gioco d'azzardo
+NAME NL: Gokken/Casinospelen
+NAME PT:
+NAME ES:
+NAME RU: Азартные игры
+
+NAME:	government
+DESC EN: Sites belonging to the government of a country, county or city.
+DESC DE: Behördenseiten.
+DESC FR:
+DESC RU: Сайты, принадлежащие правительству стран, округов и городов.
+NAME EN: Government
+NAME DE: Behörden
+NAME FR:
+NAME IT: Governo
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Правительство
+
+NAME:	hacking
+DESC EN: Sites with information and discussions about security weaknesses and how to exploit them. Sites offering exploits are listed as well as sites distributing programs that help to find security leaks.
+DESC DE: Informationen über Sicherheitsschwächen und wie man sie ausnutzt. Seiten, die Programme zum Ausnutzen von Sicherheitsschwächen bieten.
+DESC FR:
+DESC RU: Сайты с описанием и обсуждением использования уязвимостей компьютерных систем, программы для обнаружения и использования известных уязвимостей.
+NAME EN: Hacking
+NAME DE: Hacking
+NAME FR: Hacking
+NAME IT: Hacking
+NAME NL: Hacking
+NAME PT: Hacking
+NAME ES: Hacking
+NAME RU: Взлом информационных систем
+
+NAME:	hobby_cooking
+DESC EN: Sites concerning food and food preparation.
+DESC DE: Seiten über Nahrungsmittel und ihre Zubereitung.
+DESC FR:
+DESC RU: Сайты о еде и ее приготовлении.
+NAME EN: Hobby - Cooking
+NAME DE: Hobby - Kochen
+NAME FR:
+NAME IT: Hobby - Cucina
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Хобби/Приготовление
+
+NAME:	hobby_games-misc
+DESC EN: Sites related to games. This includes descriptions, news and general information about games. No gambling sites.
+DESC DE: Seiten über Beschreibeungen, Neuigkeiten und allgemeinen Informationen zu Spielen ohne Geldeinsatz (keine Wetten).
+DESC FR: Sites de distributions de jeux.
+DESC RU: Сайты об играх, включая описание, новости, общую информацию. Азартные игры не включены.
+NAME EN: Hobby - Games
+NAME DE: Hobby - Spiele
+NAME FR:
+NAME IT: Hobby - Giochi Generici
+NAME NL:
+NAME PT: Passatempo - Jogos
+NAME ES: Manía - Juegos
+NAME RU: Хобби - Игры-Общее
+
+NAME:	hobby_games-online
+DESC EN: Sites about online games. The games are for fun only (no gambling).
+DESC DE: Seiten, die Online-Spiele (flash u.ä.) ohne Geldeinsatz (keine Eetten) anbieten. Spiele zum reinen Spass.
+DESC FR: Sites de jeux, en ligne.
+DESC RU: Сайты с забавными онлайн играми. Азартные игры не включены.
+NAME EN: Hobby - Online-Games
+NAME DE: Hobby - Online-Spiele
+NAME FR:
+NAME IT: Hobby - Giochi Online
+NAME NL:
+NAME PT: Passatempo - Jogos-Online
+NAME ES: Manía - Juegos-Online
+NAME RU: Хобби - Игры-онлайн
+
+NAME:	hobby_gardening
+DESC EN: Sites about gardening, growing plants, fighting bugs and everything related to gardening.
+DESC DE: Seiten über das Gärtnern, wie man Pflanzenn züchtet, Ungeziefer bekämft und alle mit dem Thema Gärtnern verwandten Themen.
+DESC FR:
+DESC RU: Сайты о садоводстве, уходу за растениями, защите от насекомых и т.д.
+NAME EN: Hobby - Gardening
+NAME DE: Hobby - Gärtnern
+NAME FR:
+NAME IT: Hobby - Giardinaggio
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Хобби - Садоводство
+
+NAME:	hobby_pets
+DESC EN: All topics concerning pets: description, breed, food, looks, fairs, favorite pet stories and so on.
+DESC DE: Seiten über Haustiere, Haustierhaltung, Pflegetips, etc.
+DESC FR:
+DESC RU: Сайты о домашних животных: кормление, уход, разведение, птичьи рынки, историиии о животных и т.д.
+NAME EN: Hobby - Pets
+NAME DE: Hobby - Haustiere
+NAME FR:
+NAME IT: Hobby - Animali
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Хобби - Домашние животные
+
+NAME:	homestyle
+DESC EN: Sites about everything need to create a cozy home (interior design and accessories).
+DESC DE: Seiten bzgl. Inneneinrichtungen; alles, was ein Heim heimelig und angenehm macht.
+DESC FR:
+DESC RU: Сайты о создании домашнего интерьера, дизайна.
+NAME EN: Homestyle
+NAME DE: Schöner Wohnen
+NAME FR:
+NAME IT: Arredamenti Casa
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Домашний интерьер
+
+NAME:	hospitals
+DESC EN: Sites of hospitals and medical facilities.
+DESC DE: Seiten von Krankenhäusern und medizinischen Einrichtungen.
+DESC FR:
+DESC RU: Сайты о медицинских учереждениях и медицинском оборудовании.
+NAME EN: Hospitals
+NAME DE: Krankenhäuser
+NAME FR: Hôpitaux
+NAME IT: Ospedali
+NAME NL:
+NAME PT: Hospitais
+NAME ES: Hospitales
+NAME RU: Медицинские учереждения
+
+NAME:	imagehosting
+DESC EN: Sites specialized on hosting images, photo galleries and so on.
+DESC DE: Seiten, die insbesondere alle Arten von Bildern und Graphiken hosten, auch Photogallerien und ähnliches.
+DESC FR:
+DESC RU: Сайты для размещения фотогалерей, картинок и т.д.
+NAME EN: Imagehosting
+NAME DE: Bildergalerien
+NAME FR:
+NAME IT: Hosting Immagini
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Фотогалереи
+
+NAME:	isp
+DESC EN: Home pages of Internet Service Providers. Sites of companies offering webspace only are now being added, too
+DESC DE: Seiten von Internet Service Providern; beinhaltet auch Seiten von reinen Webspaceanbietern.
+DESC FR:
+DESC RU: Домашние сайты интернет-провайдеров. Также добавлены сайты компаний, предлагающие только услуги предоставления веб-пространства.
+NAME EN: Internet Service Provider
+NAME DE: Internet Service Provider
+NAME FR:
+NAME IT: Provider Internet
+NAME NL: Internet Service Provider
+NAME PT:
+NAME ES:
+NAME RU: Интернет-провайдеры
+
+NAME:	jobsearch
+DESC EN: Portals for job offers and job seekers as well as the career and work-for-us pages of companies.
+DESC DE: Arbeitsportale für Arbeitssuchende und Arbeitgeber. Beinhaltet auch Karriereberatungen.
+DESC FR:
+DESC RU: Ресурсы для работодателей и соискателей.
+NAME EN: Jobsearch
+NAME DE: Arbeitssuche
+NAME FR:
+NAME IT: Ricerca Lavoro
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Поиск работы
+
+NAME:	library
+DESC EN: Online libraries and sites where you can read e-books.
+DESC DE: Online Bibliotheken und Seiten zum Lesen von Büchern (e-books).
+DESC FR:
+DESC RU: Сайты онлайн-библиотек и электронных книг.
+NAME EN: Library
+NAME DE: Bibliotheken
+NAME FR:
+NAME IT: Biblioteca
+NAME NL:
+NAME PT: Biblioteca
+NAME ES: Biblioteca
+NAME RU: Онлайн-библиотеки
+
+NAME:	military
+DESC EN: Sites of military facilities or related to the armed forces.
+DESC DE: Seiten militärischer Einrichtungen bzw. jene, die mit der Armee im Zusammenhang stehen.
+DESC FR:
+DESC RU: Сайты о вооруженных силах, военных объектах.
+NAME EN: Military
+NAME DE: Militär
+NAME FR:
+NAME IT: Militari
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Вооруженные силы
+
+NAME:	models
+DESC EN: Model agency, model and supermodel fan pages and other model sites presenting model photos. No porn pictures.
+DESC DE: Modelagenturen, Modelle und Supermodels. Beinhaltet Fanseiten ebenso, wie Bilder mit Models. Keine Pornographie.
+DESC FR:
+DESC RU: Модельные агенства, страницы супермоделей и другие сайты, размещающие фотографии моделей. Без порнографии.
+NAME EN: Models
+NAME DE: Models
+NAME FR: Models
+NAME IT: Modelle
+NAME NL: Models
+NAME PT: Models
+NAME ES: Models
+NAME RU: Модели
+
+NAME:	movies
+DESC EN: Sites offering cinema programs, information about movies and actors. Sites for downloading video clips/movies (as long as it is legal) are included as well.
+DESC DE: Kinoprogramme und Informationen über Filme und Darsteller. Laden von Video Clips und Filmen (solange dies legal ist).
+DESC FR: Quelques sites orientés vers la vidéo.
+DESC RU: Сайты кинотеатров, описание фильмов и актеров. Также включена загрузка незапрещенных видеороликов, клипов.
+NAME EN: Movies and Videos
+NAME DE: Filme
+NAME FR: Vidéo
+NAME IT:
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Фильмы
+
+NAME:	music
+DESC EN: Sites that offer the download of music, information about music groups or music in general.
+DESC DE: Musik zum Download, Informationen zu Musik und Musikgruppen, Musik im allgemeinen.
+DESC FR:
+DESC RU: Сайты с информацией о музыкальных жанрах, группах, коллективах и т.д. Загрузка музыкальных файлов.
+NAME EN: Music
+NAME DE: Musik
+NAME FR: Musique
+NAME IT: Musica
+NAME NL: Muziek
+NAME PT: Música
+NAME ES: Música
+NAME RU: Музыка
+
+NAME:	news
+DESC EN: Sites presenting news. Homepages from newspapers, magazines and journals as well as some blogs.
+DESC DE: Nachrichtenmagazine, Journale und einige Blogs.
+DESC FR:
+DESC RU: Новостные ресурсы, домашние сайты газетов, журналов.
+NAME EN: News
+NAME DE: Nachrichten
+NAME FR: Nouvelles
+NAME IT: Notizie
+NAME NL: Nieuws
+NAME PT: Notícia
+NAME ES: Noticias
+NAME RU: Новости
+
+NAME:	podcasts
+DESC EN: Sites offering podcasts or podcast services, includes audio books.
+DESC DE: Seiten mit podcasts oder Podcast Angeboten; beinhaltet auch Hörbücher.
+DESC FR:
+DESC RU: Подкаст-терминалы, ресурсы для создания подкастов.
+NAME EN: Podcasts
+NAME DE: Podcasts
+NAME FR:
+NAME IT: Podcasts
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Подкаст
+
+NAME:	politics
+DESC EN: Sites of political parties, political organisations and associations; sites with political discussions.
+DESC DE: Seiten politischer Parteien und politischer Organisationen; Seiten mit politischen Diskussionen.
+DESC FR:
+DESC RU: Сайты политических партий, организаций и ассоциаций, обсуждения политических тем.
+NAME EN: Politics
+NAME DE: Politik
+NAME FR: La politique
+NAME IT: Politica
+NAME NL:
+NAME PT: Política
+NAME ES: Política
+NAME RU: Политика
+
+NAME:	porn
+DESC EN: <strong>[ Large ]</strong> Sites about all kinds of sexual content ranging from bare bosoms to hardcore porn.
+DESC DE: <strong>[ Large ]</strong> Seiten mit erotischem und pornographischem Inhalt.
+DESC FR: <strong>[ Large ]</strong> Des sites adultes allant de l'érotique à la pornographie dure.
+DESC RU: <strong>[ Large ]</strong> Сайты любого сексуального содержания, попадающие под порнографию.
+NAME EN: Porn
+NAME DE: Pornographie
+NAME FR: Adulte
+NAME IT: Siti per Adulti
+NAME NL: 18+
+NAME PT:
+NAME ES:
+NAME RU: Порнография
+
+NAME:	radiotv
+DESC EN: Domains and urls of TV and radio stations.
+DESC DE: Domänen und URLs von Radio- und Fernsehstationen.
+DESC FR:
+DESC RU: Сайты телевизионных и радиостанций.
+NAME EN: Radio and TV
+NAME DE: TV und Radio
+NAME FR:
+NAME IT: Radio e TV
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Радио-ТВ
+
+NAME:	recreation_humor
+DESC EN: Humorous pages, comic strips, funny stories, everything which makes people laugh.
+DESC DE: Alles, was zum Schmunzlen und Lachen bringt.
+DESC FR:
+DESC RU: Сайты с анекдотами, забавными историями, и т.д.
+NAME EN: Recreation - Humor
+NAME DE: Entspannung - Humor
+NAME FR:
+NAME IT: Ricreativi - Comici
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Отдых - Юмор
+
+NAME:	recreation_martialarts
+DESC EN: Sites dedicated to martial arts such as: karate, kung fu, taek won do as well as fighting sports sites like ufc.
+DESC DE: Seiten über alle Arten von Kampfsport, z.B. Kung-Fu, Taek Won Do, Karate, aber auch Kick-Boxen und ähnliches.
+DESC FR:
+DESC RU: Сайты о боевом искусстве: каратэ, кунг-фу, теквондо; спортивные единоборства.
+NAME EN: Recreation - Martialarts
+NAME DE: Entspannung - Kampfsport
+NAME FR: Récréation - Arts Martiaux
+NAME IT: Ricreativi - Arti Marziali
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Отдых - Боевое искусство
+
+NAME:	recreation_restaurants
+DESC EN: Sites of restaurants as well as restaurant descriptions and commentaries.
+DESC DE: Seiten von Restaurant, Restaurantbeschreibungen und -rezensionen.
+DESC FR:
+DESC RU: Домашние сайты ресторанов, описание и обсуждение ресторанов.
+NAME EN: Recreation - Restaurants
+NAME DE: Entspannung - Restaurants
+NAME FR:
+NAME IT: Ricreativi - Ristoranti
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Отдых - /Рестораны
+
+NAME:	recreation_sports
+DESC EN: All about sports: sports teams, sport discussions as well as information about sports people and the various sports themselves.
+DESC DE:
+DESC FR:
+DESC RU: Сайты с различной информацией о спорте, спортивных командах, соревнованиях и т.д.
+NAME EN: Recreation - Sports
+NAME DE: Entspannung - Sport
+NAME FR: Récréation - Sports
+NAME IT: Ricreativi - Sport
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Отдых - Спорт
+
+NAME:	recreation_travel
+DESC EN: Sites with information about foreign countries, travel companies, travel fares, accommodations and everything else that has to do with travel.
+DESC DE: Reiseveranstalter, Reisebeschreibungen, Hotels, Buchungen, Fluggesellschaften, Bahn und ähnliches: alles, was man zum Reisen wissen muss oder möchte.
+DESC FR:
+DESC RU: Сайты о зарубежных странах, туристических компаниях, путевках, гостиницах. Все, что связано с путешествием.
+NAME EN: Recreation - Travel
+NAME DE: Entspannung - Reisen
+NAME FR: Récréation - Voyage
+NAME IT: Ricreativi - Viaggi
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Отдых - Путешествие
+
+NAME:	recreation_wellness
+DESC EN: Sites about treatments for feeling internally and externally healthy and beautiful again.
+DESC DE: Wellness: Alles, was Körper und Seele gut tut.
+DESC FR:
+DESC RU: Сайты о здоровье, самочувствии, санитарии и т.д.
+NAME EN: Recreation - Wellness
+NAME DE: Entspannung - Wellness
+NAME FR: Récréation - Santé
+NAME IT: Ricreativi Salute
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Отдых - Здоровье
+
+NAME:	redirector
+DESC EN: Sites that actively help to bypass url filters by accepting urls via form and play a proxing and redirecting role.
+DESC DE: Seiten mit Proxydiensten, die eine aktive Umgehung des URL Filters erlauben.
+DESC FR: Quelques sites qui permettent de contourner les filtres.
+DESC RU: Ресурсы, позволяющие обходить ограничения доступа в интернет, перенаправление трафика.
+NAME EN: Proxy
+NAME DE: Proxy
+NAME FR: Proxy
+NAME IT: Proxy
+NAME NL: Proxy
+NAME PT: Proxy
+NAME ES: Proxy
+NAME RU: Прокси
+
+NAME:	religion
+DESC EN: Sites with religious content: all kind of churches, sects, religious interpretations, etc.
+DESC DE: Seiten mit religiösem Inhalt: Jegliche Art von Kirchen, Sekten, religiöse Interpretationen usw.
+DESC FR:
+DESC RU: Сайты религиозного характера: различные церкви, секты, религиозные толкования и др.
+NAME EN: Religion
+NAME DE: Religion
+NAME FR: Religion
+NAME IT: Religione
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Религия
+
+NAME:	remotecontrol
+DESC EN: Sites offering the service to remotely access computers, especially (but not limited to going) through firewalls. This does not cover traditional VPN.
+DESC DE: Seiten mit Diensten, die es ermöglichen, an entfernten Rechnern zu arbeiten (auch aber nicht nur durch Firewall durch). Normales, traditionelle VPN Zugänge werden nicht betrachtet.
+DESC FR:
+DESC RU: Ресурсы, позволяющие получить удаленное управление компьютерами, в том числе минуя брэндмауэры, не используя стандартные виды VPN-подключений.
+NAME EN: Remote Control
+NAME DE: Fernkontrolle
+NAME FR:
+NAME IT: Controllo Remoto
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Удаленное управление
+
+NAME:	ringtones
+DESC EN: Sites that offer the download of ringtones or present other information about ringtones.
+DESC DE: Informationen zu und Laden von Klingeltönen.
+DESC FR:
+DESC RU: Ресурсы, содержащие различные звуковые файлы для мобильных телефонов в качестве звонка, а также другая информация о рингтонах
+NAME EN: Ringtones
+NAME DE: Klingeltöne
+NAME FR:
+NAME IT: Suonerie
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Рингтоны
+
+NAME:	science_astronomy
+DESC EN: Sites of institutions as well as of amateurs about all topics of astronomy.
+DESC DE: Astronomie und Astrophysik sowohl aus dem Amateur- wie auch aus dem professionellen Umfeld.
+DESC FR:
+DESC RU: Научные и любительские ресурсы об астрономии.
+NAME EN: Science - Astronomy
+NAME DE: Wissenschaft - Astronomie
+NAME FR:
+NAME IT: Scienza - Astronomia
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Наука/Астрономия
+
+NAME:	science_chemistry
+DESC EN: Sites of institutions as well as of amateurs about all topics of chemistry.
+DESC DE: Rund um die Wissenschaft Chemie: Institutionen und Lehrhaftes.
+DESC FR:
+DESC RU: Научные и любительские ресурсы о химии.
+NAME EN: Science - Chemistry
+NAME DE: Wissenschaft - Chemie
+NAME FR:
+NAME IT: Scienza - Chimica
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Наука - Химия
+
+NAME:	searchengines
+DESC EN: Collection of search engines and directory sites.
+DESC DE: Suchmaschinen und Verzeichnisseiten.
+DESC FR:
+DESC RU: Сайты поисковых систем, например yandex, google и др.
+NAME EN: Searchengines
+NAME DE: Suchmaschinen
+NAME FR:
+NAME IT: Motori di Ricerca
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Поисковые системы
+
+NAME:	sex_lingerie
+DESC EN: Sites selling and presenting sexy lingerie.
+DESC DE: Seiten, auf denen Reizwäsche präsnetiert und angeboten wird.
+DESC FR: Sites de sexy dessous.
+DESC RU: Продажа сексуального женского белья.
+NAME EN: Sex - Lingerie
+NAME DE: Sex - Reizwäsche
+NAME FR: Sex - Dessous
+NAME IT: Intimo
+NAME NL:
+NAME PT:
+NAME ES: Sex - Lenceria
+NAME RU: Секс - Белье
+
+NAME:	sex_education
+DESC EN: Sites explaining the biological functions of the body concerning sexuality as well as sexual health.
+DESC DE: Seiten mit Erklärungen zur Sexualität und sexueller Gesundheit.
+DESC FR: 
+DESC RU: Описание биологических функций относительно сексуальности тела, сексуальное здоровье.
+NAME EN: Sex - Education
+NAME DE: Sex - Sexualkunde
+NAME FR:
+NAME IT: Educazione Sessuale
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Секс - Образование
+
+NAME:	shopping
+DESC EN: Sites offering online shopping and price comparisons.
+DESC DE: Seiten für Käufe via Internet und Preisvergleiche.
+DESC FR: Sites de vente et achat en ligne.
+DESC RU: Ресурсы по продаже товаров в режиме онлайн, сравнение цен, шопинг.
+NAME EN: Shopping
+NAME DE: Einkaufen
+NAME FR: Shopping
+NAME IT: Shopping
+NAME NL: Shopping
+NAME PT: Shopping
+NAME ES: Shopping
+NAME RU: Покупка товаров
+
+NAME:	socialnet
+DESC EN: Sites bringing people together (social networking) be it for friendship or for business.
+DESC DE:
+DESC FR:
+DESC RU: Сайты, объединяющие людей для дружбы или бизнеса, социальные сети.
+NAME EN: Social Networking
+NAME DE: Social Networking
+NAME FR:
+NAME IT: Social Network
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Социальные сети
+
+NAME:	spyware
+DESC EN: Sites that try to actively install software or lure the user in doing so in order to spy the surfing behaviour (or worse). The home calling sites where the collected information is sent, are listed too.
+DESC DE:
+DESC FR:
+DESC RU: Ресурсы, откуда происходит попытка установки нежелательных программ без ведома пользователей, установка вместо ожидаемых опасных программ обманным путем.
+NAME EN: Spyware
+NAME DE:
+NAME FR:
+NAME IT:
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Шпионское ПО
+
+NAME:	tracker
+DESC EN: Sites keeping an eye on where you surf and what you do in a passive manner. Covers web bugs, counters and other tracking mechanisms in web pages that do not interfere with the local computer yet collect information about the surfing person for later analysis.
+DESC DE: Passives Ausspähen des Benutzerverhaltens. Beinhaltet tracking cookies, web bugs, Zähler u.ä., die in Webseiten zur Analyse der Benutzerverhaltens untergebracht sind.
+DESC FR:
+DESC RU: Ресурсы, отслеживающие посещения сайтов и других действий в невидимом режиме. Используются уязвимости сайтов, счетчики посещений и другие механизмы, не требующие вмешательства в компьютер, для последующего анализа.
+NAME EN: Tracker
+NAME DE:
+NAME FR:
+NAME IT:
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Система слежения
+
+NAME:	updatesites
+DESC EN: List to allow necessary downloads from vendors.
+DESC DE: Herstellerseiten für Software Aktualisierungen.
+DESC FR:
+DESC RU: Разрешенные ресурсы, для обновления ПО от производителей.
+NAME EN: Update Sites
+NAME DE: Software Aktualisierungen
+NAME FR:
+NAME IT: Siti di Aggiornamento
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Обновление ПО
+
+NAME:	urlshortener
+DESC EN: Sites offering short links for URLs.
+DESC DE: Dom?nen, die das Erzeugen von Kurz-URLs aus normalen URLs erm?glichen.
+DESC FR:
+DESC RU:
+NAME EN: URL shortener
+NAME DE: Kurz-URLs
+NAME FR:
+NAME IT:
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU:
+
+NAME:	violence
+DESC EN: Sites about killing and harming people. Covers anything about brutality and beastiality.
+DESC DE: Gewalt und Gewaltverherrlichung. Beinhaltet Darstellungen des gewaltsamen Todes von Menschen, wie man anderen Schaden zufügt, Brutalität und Bestialität.
+DESC FR:
+DESC RU: Сайты об убийствах, нанесению вреда человеку. Все, что связано с жестокостью и грубостью.
+NAME EN: Violence
+NAME DE: Gewalt
+NAME FR:
+NAME IT: Violenza
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Насилие
+
+NAME:	warez
+DESC EN: Collection of sites offering programs to break licence keys, licence keys themselves, cracked software and other copyrighted material.
+DESC DE: Seiten, die geknackte Passworte und Lizenzen kopiergeschützter Programme anbieten sowie das Laden kopiergeschützten Daten und Programme.
+DESC FR: Sites de logiciels pirates.
+DESC RU: Ресурсы, содержащие программы для взлома лицензии, серийные коды к программам, взломанное программное обеспечение и другие нелицензионные данные.
+NAME EN: Warez
+NAME DE:
+NAME FR:
+NAME IT:
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Нелегальное ПО
+
+NAME:	weapons
+DESC EN: Sites offering all kinds of weapons or accessories for weapons: Firearms, knifes, swords, bows, etc. Armory shops are included as well as sites holding general information about arms (manufacturing, usage).
+DESC DE: Waffen und Zubehör. Seiten, die Funktionsweise und den Umgang mit Waffen erklären sowie Hersteller.
+DESC FR:
+DESC RU: Ресурсы, предлагающие оружие и различные аксессуары к нему: огнестрельное оружие, ножи, мечи, луки и др. Информация об оружейных магазинах, заводах, производителях и использовании оружия.
+NAME EN: Weapons
+NAME DE: Waffen
+NAME FR:
+NAME IT: Armi
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Оружие
+
+NAME:	webmail
+DESC EN: Sites that offer web-based email services.
+DESC DE: Seiten die web-basierte E-Mail Dienste anbieten.
+DESC FR: Webmail que l'on trouve sur internet (hotmail, webmail.univ-tlse1.fr, etc.)
+DESC RU: Сайты почтовых систем с доступом через браузеры.
+NAME EN: Webmail
+NAME DE: Webmail
+NAME FR: Messagerie Web
+NAME IT: Webmail
+NAME NL: Webmail
+NAME PT: Webmail
+NAME ES: Webmail
+NAME RU: Интернет-почта
+
+NAME:	webphone
+DESC EN: Sites that enable user to phone via the Internet. Any site where users can voice-chat with each other.
+DESC DE: Seiten, die Internet Telephonie, speziell, aber nicht nur http basiert, anbieten.
+DESC FR:
+DESC RU: Ресурсы, позволяющие испольозвать телефонию через интернет, а также различные сайты, где возможно голосовое общение.
+NAME EN: Web Phone
+NAME DE: Web Telephonie
+NAME FR:
+NAME IT: Telefonia su Internet
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Интернет-телефония
+
+NAME:	webradio
+DESC EN: Sites that offer listening to music and radio live streams.
+DESC DE: Seiten mit Internet Radio und Audio Live Streams.
+DESC FR: Sites de radio sur Internet
+DESC RU: Ресурсы, позволяющие в реальном времени слушать музыкальные и радиопередачи.
+NAME EN: Web Radio
+NAME DE: Web Radio
+NAME FR: Radio Internet
+NAME IT: Web Radio
+NAME NL: Web radios
+NAME PT:
+NAME ES:
+NAME RU: Интернет-радио
+
+NAME:	webtv
+DESC EN: Sites offering TV streams via Internet.
+DESC DE: Seiten, die Fernsehen per WWW anbieten.
+DESC FR:
+DESC RU: Ресурсы, позволяющие в реальном времени просматривать телевизионные передачи.
+NAME EN: Web TV
+NAME DE: Internet Fernsehen
+NAME FR:
+NAME IT: Internet TV
+NAME NL:
+NAME PT:
+NAME ES:
+NAME RU: Интернет-телевидение
