@@ -22,7 +22,7 @@ NO_MTREE=	yes
 PLIST_SUB=	PORTNAME=${PORTNAME}
 
 php56_RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/rrd.so:databases/pecl-rrd1
-php72_RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/rrd.so:databases/pecl-rrd@${PHP_FLAVOR}
+php72_RUN_DEPENDS+=	${PECL_PKGNAMEPREFIX}rrd>=2.0.0:databases/pecl-rrd@${PHP_FLAVOR}
 
 do-extract:
 	${MKDIR} ${WRKSRC}
