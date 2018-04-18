@@ -1124,7 +1124,7 @@ function pfblockerng_uc_countries() {
 }
 
 
-// Function to process Continent txt files and create Country ISO files and to Generate GUI XML files.
+// Function to process Continent txt files and create Country ISO files and to Generate GUI PHP files.
 function pfblockerng_get_countries() {
 	global $g, $pfb;
 
@@ -1136,11 +1136,11 @@ function pfblockerng_get_countries() {
 				'Oceania'		=> "{$pfb['ccdir']}/Oceania_v4.txt",
 				'South America'		=> "{$pfb['ccdir']}/South_America_v4.txt",
 				'Proxy and Satellite'	=> "{$pfb['ccdir']}/Proxy_and_Satellite_v4.txt",
-				'TOP 20'		=> "{$pfb['ccdir']}/Top_20_v4.info"
+				'Top Spammers'		=> "{$pfb['ccdir']}/Top_Spammers_v4.info"
 				);
 
-	// Collect data to generate new continent XML files.
-	$log = " Creating pfBlockerNG Continent XML files\n";
+	// Collect data to generate new continent PHP files.
+	$log = " Creating pfBlockerNG Continent PHP files\n";
 	pfb_logger("{$log}", 4);
 
 	foreach ($geoip_files as $cont => $file) {
@@ -1164,23 +1164,24 @@ function pfblockerng_get_countries() {
 				$file = str_replace('v4', 'v6', $file);
 			}
 
-			$active			= array("{$cont}" => '<active/>');
 			$lastline		= exec("{$pfb['grep']} -c ^ {$file}") ?: 0;
 			$pfb['complete']	= FALSE;
 			$linenum		= 1;
 			$total			= 0;
 
 			if (($handle = @fopen("{$file}", 'r')) !== FALSE) {
-				while (($line = @fgets($handle, 1024)) !== FALSE) {
+				while (($line = @fgets($handle)) !== FALSE) {
 
 					$line = trim($line);
 					if (substr($line, 0, 1) == '#') {
 						if ($pfb['complete']) {
 							if (file_exists("{$pfb['ccdir']}/{$isocode}_v{$type}.txt")) {
-								${'coptions' . $type}[] = "{$country} {$isocode} ({$total})</name><value>{$isocode}</value></option>";
+
+								${'coptions' . $type}[] = "{$country}|\"{$isocode}\" => \"{$country} {$isocode} ({$total})\"";
+
 								// Only collect IPv4 for Reputation Tab
 								if ($type == '4' && strpos($isocode, '_rep') === FALSE) {
-									$roptions4[] = "{$country} {$isocode} ({$total})</name><value>{$isocode}</value></option>";
+									$roptions4[] = "{$country}|\"{$isocode}\" => \"{$country} {$isocode} ({$total})\"";
 								}
 							}
 
@@ -1191,11 +1192,9 @@ function pfblockerng_get_countries() {
 
 						if (strpos($line, 'Continent IPv') !== FALSE) {
 							$continent = trim(str_replace(':', '', strstr($line, ':', FALSE)));
-							// $geoip_title[$cont]	= "{$continent}";	// Not yet implemented
 						}
 						if (strpos($line, 'Continent en:') !== FALSE) {
-							$cont_name		= trim(str_replace(':', '', strstr($line, ':', FALSE)));
-							$cont_name_lower	= strtolower($cont_name);
+							$continent_en = trim(str_replace(':', '', strstr($line, ':', FALSE)));
 						}
 						if (strpos($line, 'Country: ') !== FALSE) {
 							$country = str_replace('# Country: ', '', $line);
@@ -1204,21 +1203,20 @@ function pfblockerng_get_countries() {
 							$isocode = str_replace('# ISO Code: ', '', $line);
 
 							// Remove previous ISO file
-							if ($cont != 'TOP 20') {
+							if ($cont != 'Top Spammers') {
 								unlink_if_exists("{$pfb['ccdir']}/{$isocode}_v{$type}.txt");
 							}
 						}
 
 						// Create placeholder for null ISO Data or 'undefined ISO Represented'
-						if (strpos($line, 'Total Networks: 0') !== FALSE ||
-						    ($type == '4' && strpos($line, 'Total Networks: NA') !== FALSE)) {
+						if (strpos($line, 'Total Networks: 0') !== FALSE || strpos($line, 'Total Networks: NA') !== FALSE) {
 							$pfb['complete'] = TRUE;
 							@file_put_contents("{$pfb['ccdir']}/{$isocode}_v{$type}.txt", '', LOCK_EX);
 						}
 					}
 
 					elseif (substr($line, 0, 1) != '#') {
-						if ($cont == 'TOP 20') {
+						if ($cont == 'Top Spammers') {
 							$total = exec("{$pfb['grep']} -c ^ {$pfb['ccdir']}/{$isocode}_v{$type}.txt 2>&1");
 						} else {
 							$total++;
@@ -1232,15 +1230,15 @@ function pfblockerng_get_countries() {
 					// Save last EOF ISO IP data
 					if ($linenum == $lastline) {
 						// Create placeholder for null ISO Data or 'undefined ISO Represented'
-						if (strpos($line, 'Total Networks: 0') !== FALSE ||
-						    ($type == '4' && strpos($line, 'Total Networks: NA') !== FALSE)) {
+						if (strpos($line, 'Total Networks: 0') !== FALSE || strpos($line, 'Total Networks: NA') !== FALSE) {
 							@file_put_contents("{$pfb['ccdir']}/{$isocode}_v{$type}.txt", '', LOCK_EX);
 						}
 
 						if (file_exists("{$pfb['ccdir']}/{$isocode}_v{$type}.txt")) {
-							${'coptions' . $type}[] = "{$country} {$isocode} ({$total})</name><value>{$isocode}</value></option>";
+							${'coptions' . $type}[] = "{$country}|\"{$isocode}\" => \"{$country} {$isocode} ({$total})\"";
+
 							if ($type == '4' && strpos($isocode, '_rep') === FALSE) {
-								$roptions4[] = "{$country} {$isocode} ({$total})</name><value>{$isocode}</value></option>";
+								$roptions4[] = "{$country}|\"{$isocode}\" => \"{$country} {$isocode} ({$total})\"";
 							}
 						}
 					}
@@ -1249,9 +1247,9 @@ function pfblockerng_get_countries() {
 			}
 			@fclose($handle);
 
-			// Sort IP Countries alphabetically and build XML <option> data for Continents tab
+			// Sort IP Countries alphabetically and build PHP drop-down lists for Continent tabs
 			if (!empty(${'coptions' . $type})) {
-				if ($cont != 'TOP 20') {
+				if ($cont != 'Top Spammers') {
 					sort(${'coptions' . $type}, SORT_STRING);
 				}
 				${'ftotal' . $type} = count(${'coptions' . $type});
@@ -1259,15 +1257,19 @@ function pfblockerng_get_countries() {
 				${'options' . $type} = '';
 
 				foreach (${'coptions' . $type} as $option) {
+
+					// Remove prefixed Country string (Used to sort array)
+					$option = ltrim(strstr($option, '|', FALSE), '|');
+
 					if ($count == 1) {
-						${'options' . $type} .= "\t<option><name>{$option}\n";
+						${'options' . $type} .= "\t{$option},\n";
 						$count++;
 						continue;
 					}
 					if (${'ftotal' . $type} == $count) {
-						${'options' . $type} .= "\t\t\t\t<option><name>{$option}";
+						${'options' . $type} .= "\t\t{$option}\n\t";
 					} else {
-						${'options' . $type} .= "\t\t\t\t<option><name>{$option}\n";
+						${'options' . $type} .= "\t\t{$option},\n";
 					}
 					$count++;
 				}
@@ -1275,510 +1277,458 @@ function pfblockerng_get_countries() {
 			unset(${'coptions' . $type});
 		}
 
-$xml = <<<EOF
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
-<packagegui>
-	<copyright>
-	<![CDATA[
-/* ========================================================================== */
+$php_data = <<<EOF
+<?php
 /*
-	pfblockerng_{$cont_name}.xml
+ * pfblockerng_{$continent_en}.php
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-	pfBlockerNG
-	Copyright (C) 2015-2016 BBcan177@gmail.com
-	All rights reserved.
+require_once('guiconfig.inc');
+require_once('globals.inc');
+require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-	Based upon pfblocker for pfSense
-	Copyright (C) 2011 Marcello Coutinho
-	All rights reserved.
-*/
-/* ========================================================================== */
-/*
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
+global \$config, \$pfb;
+pfb_global();
 
-
-	1. Redistributions of source code must retain the above copyright notice,
-	   this list of conditions and the following disclaimer.
-
-	2. Redistributions in binary form must reproduce the above copyright
-	   notice, this list of conditions and the following disclaimer in the
-	   documentation and/or other materials provided with the distribution.
-
-
-	THIS SOFTWARE IS PROVIDED ``AS IS`` AND ANY EXPRESS OR IMPLIED WARRANTIES,
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
-/* ========================================================================== */
-]]>
-	</copyright>
-	<name>pfblockerng{$cont_name_lower}</name>
-	<title>Firewall/pfBlockerNG</title>
-	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
-	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
-		'Force Update'</strong>]]>
-	</savehelp>
-	<menu>
-		<name>pfBlockerNG: {$continent}</name>
-		<section>Firewall</section>
-		<url>pkg_edit.php?xml=pfblockerng_{$cont_name_lower}.xml</url>
-	</menu>
-	<tabs>
-		<tab>
-			<text>General</text>
-			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
-		</tab>
-		<tab>
-			<text>Update</text>
-			<url>/pfblockerng/pfblockerng_update.php</url>
-		</tab>
-		<tab>
-			<text>Alerts</text>
-			<url>/pfblockerng/pfblockerng_alerts.php</url>
-		</tab>
-		<tab>
-			<text>Reputation</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
-		</tab>
-		<tab>
-			<text>IPv4</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
-		</tab>
-		<tab>
-			<text>IPv6</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
-		</tab>
-		<tab>
-			<text>DNSBL</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
-		</tab>
-		<tab>
-			<text>GeoIP</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
-		</tab>
-		<tab>
-			<text>Top 20</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
-			<tab_level>2</tab_level>
-			{$active['TOP 20']}
-		</tab>
-		<tab>
-			<text>Africa</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Africa.xml</url>
-			<tab_level>2</tab_level>
-			{$active['Africa']}
-		</tab>
-		<tab>
-			<text>Antarctica</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Antarctica.xml</url>
-			<tab_level>2</tab_level>
-			{$active['Antarctica']}
-		</tab>
-		<tab>
-			<text>Asia</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Asia.xml</url>
-			<tab_level>2</tab_level>
-			{$active['Asia']}
-		</tab>
-		<tab>
-			<text>Europe</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Europe.xml</url>
-			<tab_level>2</tab_level>
-			{$active['Europe']}
-		</tab>
-		<tab>
-			<text>North America</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_North_America.xml</url>
-			<tab_level>2</tab_level>
-			{$active['North America']}
-		</tab>
-		<tab>
-			<text>Oceania</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Oceania.xml</url>
-			<tab_level>2</tab_level>
-			{$active['Oceania']}
-		</tab>
-		<tab>
-			<text>South America</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_South_America.xml</url>
-			<tab_level>2</tab_level>
-			{$active['South America']}
-		</tab>
-		<tab>
-			<text>Proxy and Satellite</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Proxy_and_Satellite.xml</url>
-			<tab_level>2</tab_level>
-			{$active['Proxy and Satellite']}
-		</tab>
-		<tab>
-			<text>Logs</text>
-			<url>/pfblockerng/pfblockerng_log.php</url>
-		</tab>
-		<tab>
-			<text>Sync</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
-		</tab>
-	</tabs>
-	<fields>
-		<field>
-			<name><![CDATA[Continent - {$continent} &emsp;(GeoIP data by MaxMind Inc. - GeoLite2)]]></name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr>NOTES</fielddescr>
-			<description><![CDATA[Click here for IMPORTANT info on:&emsp;
-				<a target="_blank" href="https://dev.maxmind.com/geoip/geoip2/whats-new-in-geoip2/">
-				<span class="text-danger"><strong>What's new in GeoIP2</strong></span></a><br /><br /> 
-
-				<span class="text-danger"><strong>Note:&emsp;</strong></span>
-				pfSense by default implicitly blocks all unsolicited inbound traffic to the WAN interface.<br />
-				Therefore adding GeoIP based firewall rules to the WAN will <strong>not</strong> provide any benefit, unless there are
-				open WAN ports.<br /><br />
-				It's also <strong>not</strong> recommended to block the 'world', instead consider rules to 'Permit' traffic from
-				selected Countries only.<br />
-				Also consider protecting just the specific open WAN ports and it's just as important to protect the outbound LAN traffic.]]>
-			</description>
-			<type>info</type>
-		</field>
-		<field>
-			<fielddescr>LINKS</fielddescr>
-			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
-			</description>
-			<type>info</type>
-		</field>
-		<field>
-			<fieldname>countries4</fieldname>
-			<fielddescr>Countries - use CTRL+CLICK to select/unselect Countries (New: Represented IPs)</fielddescr>
-			<type>select</type>
-			<options>
-			${'options4'}
-			</options>
-			<size>${'ftotal4'}</size>
-			<width>4</width>
-			<multiple/>
+\$continent	= "{$continent}";	// Continent name (Locale specific)
+\$continent_en	= "{$continent_en}";	// Continent name (English)
 
 EOF;
+$php_data .= <<<'EOF'
+$continent_display	= str_replace('_', ' ', "{$continent}");				// Continent name displayed on page
+$conf_type		= 'pfblockerng' . strtolower(str_replace('_', '', $continent_en));	// XML config location
 
-// Adjust combinefields variable if IPv6 is empty.
-if (!empty (${'options6'})) {
-	$xml .= <<<EOF
-			<description><![CDATA[<center>IPv4 Countries</center><br />]]></description>
-			<combinefields>begin</combinefields>
-		</field>
+$pfb['geoipconfig'] = &$config['installedpackages'][$conf_type]['config'][0];
+$active[$continent_display] = TRUE;
 
-EOF;
-} else {
-	$xml .= <<<EOF
-			<description><![CDATA[IPv4 Countries<br />]]></description>
-		</field>
+$pconfig = array();
+$pconfig['countries4']		= explode(',', $pfb['geoipconfig']['countries4']);
+$pconfig['countries6']		= explode(',', $pfb['geoipconfig']['countries6']);
+$pconfig['action']		= $pfb['geoipconfig']['action']				?: 'Disabled';
+$pconfig['aliaslog']		= $pfb['geoipconfig']['aliaslog']			?: 'enabled';
 
-EOF;
+$pconfig['autoaddrnot_in']	= $pfb['geoipconfig']['autoaddrnot_in'];
+$pconfig['autoports_in']	= $pfb['geoipconfig']['autoports_in'];
+$pconfig['aliasports_in']	= $pfb['geoipconfig']['aliasports_in'];
+$pconfig['autoaddr_in']		= $pfb['geoipconfig']['autoaddr_in'];
+$pconfig['autonot_in']		= $pfb['geoipconfig']['autonot_in'];
+$pconfig['aliasaddr_in']	= $pfb['geoipconfig']['aliasaddr_in'];
+$pconfig['autoproto_in']	= $pfb['geoipconfig']['autoproto_in'];
+$pconfig['agateway_in']		= $pfb['geoipconfig']['agateway_in'];
+
+$pconfig['autoaddrnot_out']	= $pfb['geoipconfig']['autoaddrnot_out'];
+$pconfig['autoports_out']	= $pfb['geoipconfig']['autoports_out'];
+$pconfig['aliasports_out']	= $pfb['geoipconfig']['aliasports_out'];
+$pconfig['autoaddr_out']	= $pfb['geoipconfig']['autoaddr_out'];
+$pconfig['autonot_out']		= $pfb['geoipconfig']['autonot_out'];
+$pconfig['aliasaddr_out']	= $pfb['geoipconfig']['aliasaddr_out'];
+$pconfig['autoproto_out']	= $pfb['geoipconfig']['autoproto_out'];
+$pconfig['agateway_out']	= $pfb['geoipconfig']['agateway_out'];
+
+// Validate input fields and save
+if ($_POST) {
+	if (isset($_POST['save'])) {
+
+		$pfb['geoipconfig']['countries4']		= implode(',', (array)$_POST['countries4'])	?: '';
+		$pfb['geoipconfig']['countries6']		= implode(',', (array)$_POST['countries6'])	?: '';
+		$pfb['geoipconfig']['action']			= $_POST['action']				?: '';
+		$pfb['geoipconfig']['aliaslog']			= $_POST['aliaslog'] 				?: '';
+
+		$pfb['geoipconfig']['autoaddrnot_in']		= $_POST['autoaddrnot_in']			?: '';
+		$pfb['geoipconfig']['autoports_in']		= $_POST['autoports_in']			?: '';
+		$pfb['geoipconfig']['aliasports_in']		= htmlspecialchars($_POST['aliasports_in'])	?: '';
+		$pfb['geoipconfig']['autoaddr_in']		= $_POST['autoaddr_in']				?: '';
+		$pfb['geoipconfig']['autonot_in']		= $_POST['autonot_in']				?: '';
+		$pfb['geoipconfig']['aliasaddr_in']		= htmlspecialchars($_POST['aliasaddr_in'])	?: '';
+		$pfb['geoipconfig']['autoproto_in']		= $_POST['autoproto_in']			?: '';
+		$pfb['geoipconfig']['agateway_in']		= $_POST['agateway_in']				?: '';
+
+		$pfb['geoipconfig']['autoaddrnot_out']		= $_POST['autoaddrnot_out']			?: '';
+		$pfb['geoipconfig']['autoports_out']		= $_POST['autoports_out']			?: '';
+		$pfb['geoipconfig']['aliasports_out']		= htmlspecialchars($_POST['aliasports_out'])	?: '';
+		$pfb['geoipconfig']['autoaddr_out']		= $_POST['autoaddr_out']			?: '';
+		$pfb['geoipconfig']['autonot_out']		= $_POST['autonot_out']				?: '';
+		$pfb['geoipconfig']['aliasaddr_out']		= htmlspecialchars($_POST['aliasaddr_out'])	?: '';
+		$pfb['geoipconfig']['autoproto_out']		= $_POST['autoproto_out']			?: '';
+		$pfb['geoipconfig']['agateway_out']		= $_POST['agateway_out']			?: '';
+
+		// Validate Adv. firewall rule 'Protocol' setting
+		if (!empty($_POST['autoports_in']) || !empty($_POST['autoaddr_in'])) {
+			if (empty($_POST['autoproto_in'])) {
+				$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Inbound firewall rule settings.";
+			}
+		}
+		if (!empty($_POST['autoports_out']) || !empty($_POST['autoaddr_out'])) {
+			if (empty($_POST['autoproto_out'])) {
+				$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Outbound firewall rule settings.";
+			}
+		}
+
+		// Validate if any Countries (v4/v6) are defined when Action is enabled.
+		if ($_POST['action'] != 'Disabled' && !isset($_POST['countries4']) && !isset($_POST['countries6'])) {
+			$input_errors[] = "No Countries defined!";
+		}
+
+		if (!$input_errors) {
+			write_config("[pfBlockerNG] save GeoIP [ {$continent_display} ] settings");
+			header("Location: /pfblockerng/pfblockerng_{$continent_en}.php");
+		}
+		else {
+			$pconfig = $_POST;	// Restore failed user-entered data
+		}
+	}
 }
 
-// Skip IPv6 when Null data found
-if (!empty (${'options6'})) {
-	$xml .= <<<EOF
-		<field>
-			<fieldname>countries6</fieldname>
-			<description><![CDATA[<center>IPv6 Countries</center><br />]]></description>
-			<type>select</type>
-			<options>
-			${'options6'}
-			</options>
-			<size>${'ftotal6'}</size>
-			<width>4</width>
-			<multiple/>
-			<combinefields>end</combinefields>
-		</field>
+$pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('IP'), gettext('GeoIP'), $continent_display);
+$pglinks = array( '', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblockerng_ip.php',
+		'/pfblockerng/pfblockerng_category.php?type=geoip', '@self');
 
-EOF;
+include_once('head.inc');
+
+// Define default Alerts Tab href link (Top row)
+$get_req = pfb_alerts_default_page();
+
+$tab_array	= array();
+$tab_array[]	= array(gettext('General'),		false,	'/pfblockerng/pfblockerng_general.php');
+$tab_array[]	= array(gettext('IP'),			true,	'/pfblockerng/pfblockerng_ip.php');
+$tab_array[]	= array(gettext('DNSBL'),		false,	'/pfblockerng/pfblockerng_dnsbl.php');
+$tab_array[]	= array(gettext('Update'),		false,	'/pfblockerng/pfblockerng_update.php');
+$tab_array[]	= array(gettext('Reports'),		false,	"/pfblockerng/pfblockerng_alerts.php{$get_req}");
+$tab_array[]	= array(gettext('Feeds'),		false,	'/pfblockerng/pfblockerng_feeds.php');
+$tab_array[]	= array(gettext('Logs'),		false,	'/pfblockerng/pfblockerng_log.php');
+$tab_array[]	= array(gettext('Sync'),		false,	'/pfblockerng/pfblockerng_sync.php');
+display_top_tabs($tab_array, true);
+
+$tab_array	= array();
+$tab_array[]	= array(gettext('GeoIP'),		false,						'/pfblockerng/pfblockerng_category.php?type=geoip');
+$tab_array[]	= array(gettext('Top Spammers'),	$active['Top Spammers']		?: false,	'/pfblockerng/pfblockerng_Top_Spammers.php');
+$tab_array[]	= array(gettext('Africa'),		$active['Africa']		?: false,	'/pfblockerng/pfblockerng_Africa.php');
+$tab_array[]	= array(gettext('Antarctica'),		$active['Antarctica']		?: false,	'/pfblockerng/pfblockerng_Antarctica.php');
+$tab_array[]	= array(gettext('Asia'),		$active['Asia']			?: false,	'/pfblockerng/pfblockerng_Asia.php');
+$tab_array[]	= array(gettext('Europe'),		$active['Europe']		?: false,	'/pfblockerng/pfblockerng_Europe.php');
+$tab_array[]	= array(gettext('North America'),	$active['North America']	?: false,	'/pfblockerng/pfblockerng_North_America.php');
+$tab_array[]	= array(gettext('Oceania'),		$active['Oceania']		?: false,	'/pfblockerng/pfblockerng_Oceania.php');
+$tab_array[]	= array(gettext('South America'),	$active['South America']	?: false,	'/pfblockerng/pfblockerng_South_America.php');
+$tab_array[]	= array(gettext('Proxy and Satellite'),	$active['Proxy and Satellite']	?: false,	'/pfblockerng/pfblockerng_Proxy_and_Satellite.php');
+display_top_tabs($tab_array, true);
+
+if (isset($input_errors)) {
+	print_input_errors($input_errors);
 }
 
-$xml .= <<<EOF
-		<field>
-			<fielddescr>List Action</fielddescr>
-			<description><![CDATA[Select the <strong>Action</strong> for Firewall Rules on lists you have selected.<br />
-				Default: <strong>Disabled</strong><div class="infoblock">
-				<strong><u>'Disabled' Rules:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
+$form = new Form('Save');
 
-				<strong><u>'Deny' Rules:</u></strong><br />
-				'Deny' rules create high priority 'block' or 'reject' rules on the stated interfaces. They don't change the 'pass' rules on other
-				interfaces. Typical uses of 'Deny' rules are:<br />
-				<ul><li><strong>Deny Both</strong> - blocks all traffic in both directions, if the source or destination IP is in the block list</li>
-				<li><strong>Deny Inbound/Deny Outbound</strong> - blocks all traffic in one direction <u>unless</u> it is part of a session started by
-				traffic sent in the other direction. Does not affect traffic in the other direction. </li>
-				<li>One way 'Deny' rules can be used to selectively block <u>unsolicited</u> incoming (new session) packets in one direction, while
-				still allowing <u>deliberate</u> outgoing sessions to be created in the other direction.</li></ul>
-				<strong><u>'Permit' Rules:</u></strong><br />
-				'Permit' rules create high priority 'pass' rules on the stated interfaces. They are the opposite of Deny rules, and don't create
-				any 'blocking' effect anywhere. They have priority over all Deny rules. Typical uses of 'Permit' rules are:<br />
-				<ul><li><strong>To ensure</strong> that traffic to/from the listed IPs will <u>always</u> be allowed in the stated directions. They
-				override <u>almost all other</u> Firewall rules on the stated interfaces.</li>
-				<li><strong>To act as a whitelist</strong> for Deny rule exceptions, for example if a large IP range or pre-created blocklist blocks a
-				few IPs that should be accessible.</li></ul>
-				<strong><u>'Match' Rules:</u></strong><br />
-				'Match' or 'Log' only the traffic on the stated interfaces. This does not Block or Reject. It just Logs the traffic.
-				<ul><li><strong>Match Both</strong> - Matches all traffic in both directions, if the source or destination IP is in the list.</li>
-				<li><strong>Match Inbound/Match Outbound</strong> - Matches all traffic in one direction only.</li></ul>
-				<strong><u>'Alias' Rules:</u></strong><br />
-				<strong>'Alias'</strong> rules create an <a href="/firewall_aliases.php">alias</a> for the list (and do nothing else).
-				This enables a pfBlockerNG list to be used by name, in any firewall rule or pfSense function, as desired.
-				<ul><li><strong>Options &emsp;- Alias Deny,&nbsp; Alias Permit,&nbsp; Alias Match,&nbsp; Alias Native</strong></li><br />
-				<li>'Alias Deny' can use De-Duplication and Reputation Processes if configured.</li><br />
-				<li>'Alias Permit' and 'Alias Match' will be saved in the Same folder as the other Permit/Match Auto-Rules</li><br />
-				<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
-				<span class="text-danger">Note: </span><ul>When manually creating 'Alias' type firewall rules;
-				<strong>Do not add</strong> (pfB_) to the start of the rule description, use (pfb_) (Lowercase prefix). Manually created
-				 'Alias' rules with 'pfB_' in the description will be auto-removed by package when 'Auto' rules are defined.</ul></div>]]>
-			</description>
-			<fieldname>action</fieldname>
-			<type>select</type>
-			<options>
-				<option><name>Disabled</name><value>Disabled</value></option>
-				<option><name>Deny Inbound</name><value>Deny_Inbound</value></option>
-				<option><name>Deny Outbound</name><value>Deny_Outbound</value></option>
-				<option><name>Deny Both</name><value>Deny_Both</value></option>
-				<option><name>Permit Inbound</name><value>Permit_Inbound</value></option>
-				<option><name>Permit Outbound</name><value>Permit_Outbound</value></option>
-				<option><name>Permit Both</name><value>Permit_Both</value></option>
-				<option><name>Match Inbound</name><value>Match_Inbound</value></option>
-				<option><name>Match Outbound</name><value>Match_Outbound</value></option>
-				<option><name>Match Both</name><value>Match_Both</value></option>
-				<option><name>Alias Deny</name><value>Alias_Deny</value></option>
-				<option><name>Alias Permit</name><value>Alias_Permit</value></option>
-				<option><name>Alias Match</name><value>Alias_Match</value></option>
-				<option><name>Alias Native</name><value>Alias_Native</value></option>
-			</options>
-		</field>
-		<field>
-			<fielddescr>Enable Logging</fielddescr>
-			<fieldname>aliaslog</fieldname>
-			<description><![CDATA[Default: <strong>Enable</strong><br />
-				Select - Logging to Status: System Logs: FIREWALL ( Log )<br />
-				This can be overriden by the 'Global Logging' Option in the General Tab.]]>
-			</description>
-			<type>select</type>
-			<options>
-				<option><name>Enable</name><value>enabled</value></option>
-				<option><name>Disable</name><value>disabled</value></option>
-			</options>
-		</field>
-		<field>
-			<name>Advanced Inbound Firewall Rule Settings</name>
-			<type>listtopic</type>
-			<collapse>closed</collapse>
-		</field>
-		<field>
-			<type>info</type>
-			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
-				<dl class="dl-horizontal">
-					<dt>Inbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
-				</dl>
-				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.]]>
-			</description>
-		</field>
-		<field>
-			<fielddescr>Invert Source</fielddescr>
-			<fieldname>autoaddrnot_in</fieldname>
-			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
-				ie - Not (!) Source Address(es)]]>
-			</sethelp>
-			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>Custom DST Port</fielddescr>
-			<fieldname>autoports_in</fieldname>
-			<type>checkbox</type>
-			<sethelp>Enable</sethelp>
-			<enablefields>aliasports_in</enablefields>
-			<combinefields>begin</combinefields>
-		</field>
-		<field>
-			<fielddescr>Custom Port</fielddescr>
-			<fieldname>aliasports_in</fieldname>
-			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
-				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
-			</description>
-			<width>6</width>
-			<type>aliases</type>
-			<typealiases>port</typealiases>
-			<combinefields>end</combinefields>
-		</field>
-		<field>
-			<fielddescr>Custom Destination</fielddescr>
-			<fieldname>autoaddr_in</fieldname>
-			<type>checkbox</type>
-			<sethelp>Enable</sethelp>
-			<enablefields>aliasaddr_in,autonot_in</enablefields>
-			<combinefields>begin</combinefields>
-		</field>
-		<field>
-			<fielddescr>Invert</fielddescr>
-			<fieldname>autonot_in</fieldname>
-			<type>checkbox</type>
-			<sethelp>Invert</sethelp>
-			<combinefields/>
-		</field>
-		<field>
-			<fieldname>aliasaddr_in</fieldname>
-			<fielddescr>Custom Destination</fielddescr>
-			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
-				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
-				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
-			</description>
-			<width>6</width>
-			<type>aliases</type>
-			<typealiases>network</typealiases>
-			<combinefields>end</combinefields>
-		</field>
-		<field>
-			<fielddescr>Custom Protocol</fielddescr>
-			<fieldname>autoproto_in</fieldname>
-			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Inbound Firewall Rule(s).<br />
-				Do not use 'any' with Adv. Inbound Rules as it will bypass these settings!]]></description>
-			<type>select</type>
-			<options>
-				<option><name>any</name><value></value></option>
-				<option><name>TCP</name><value>tcp</value></option>
-				<option><name>UDP</name><value>udp</value></option>
-				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
-			</options>
-			<default_value></default_value>
-		</field>
-		<field>
-			<fielddescr>Custom Gateway</fielddescr>
-			<fieldname>agateway_in</fieldname>
-			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
-			<type>select_source</type>
-			<source><![CDATA[pfb_get_gateways()]]></source>
-			<source_name>name</source_name>
-			<source_value>name</source_value>
-			<default_value>default</default_value>
-			<show_disable_value>default</show_disable_value>
-		</field>
-		<field>
-			<name>Advanced Outbound Firewall Rule Settings</name>
-			<type>listtopic</type>
-			<collapse>closed</collapse>
-		</field>
-		<field>
-			<type>info</type>
-			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
-				<dl class="dl-horizontal">
-					<dt>Outbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
-				</dl>
-				Configuring the Adv. Outbound Rule settings, will allow for more customization of the Outbound Auto-Rules.]]>
-			</description>
-		</field>
-		<field>
-			<fielddescr>Invert Destination</fielddescr>
-			<fieldname>autoaddrnot_out</fieldname>
-			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
-				ie - Not (!) Destination Address(es)]]>
-			</sethelp>
-			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>Custom DST Port</fielddescr>
-			<fieldname>autoports_out</fieldname>
-			<type>checkbox</type>
-			<sethelp>Enable</sethelp>
-			<enablefields>aliasports_out</enablefields>
-			<combinefields>begin</combinefields>
-		</field>
-		<field>
-			<fielddescr>Custom Port</fielddescr>
-			<fieldname>aliasports_out</fieldname>
-			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
-				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
-			</description>
-			<width>6</width>
-			<type>aliases</type>
-			<typealiases>port</typealiases>
-			<combinefields>end</combinefields>
-		</field>
-		<field>
-			<fielddescr>Custom Source</fielddescr>
-			<fieldname>autoaddr_out</fieldname>
-			<type>checkbox</type>
-			<sethelp>Enable</sethelp>
-			<enablefields>aliasaddr_out,autonot_out</enablefields>
-			<combinefields>begin</combinefields>
-		</field>
-		<field>
-			<fielddescr>Invert</fielddescr>
-			<fieldname>autonot_out</fieldname>
-			<type>checkbox</type>
-			<sethelp>Invert</sethelp>
-			<combinefields/>
-		</field>
-		<field>
-			<fieldname>aliasaddr_out</fieldname>
-			<fielddescr>Custom Source</fielddescr>
-			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
-				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
-				Select 'invert' to invert the sense of the match. ie - Not (!) Source Address(es)]]>
-			</description>
-			<width>6</width>
-			<type>aliases</type>
-			<typealiases>network</typealiases>
-			<combinefields>end</combinefields>
-		</field>
-		<field>
-			<fielddescr>Custom Protocol</fielddescr>
-			<fieldname>autoproto_out</fieldname>
-			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Outbound Firewall Rule(s).<br />
-				Do not use 'any' with Adv. Outbound Rules as it will bypass these settings!]]></description>
-			<type>select</type>
-			<options>
-				<option><name>any</name><value></value></option>
-				<option><name>TCP</name><value>tcp</value></option>
-				<option><name>UDP</name><value>udp</value></option>
-				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
-			</options>
-			<default_value></default_value>
-		</field>
-		<field>
-			<fielddescr>Custom Gateway</fielddescr>
-			<fieldname>agateway_out</fieldname>
-			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
-			<type>select_source</type>
-			<source><![CDATA[pfb_get_gateways()]]></source>
-			<source_name>name</source_name>
-			<source_value>name</source_value>
-			<default_value>default</default_value>
-			<show_disable_value>default</show_disable_value>
-		</field>
-	</fields>
-	<custom_php_validation_command>
-		pfblockerng_validate_input(\$_POST, \$input_errors);
-	</custom_php_validation_command>
-	<custom_php_resync_config_command>
-		global \$pfb;
-		\$pfb['save'] = TRUE;
-		sync_package_pfblockerng();
-	</custom_php_resync_config_command>
-</packagegui>
+$section = new Form_Section("Continent - {$continent_display}");
+$section->addInput(new Form_StaticText(
+	'Links',
+	'<small>'
+	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
+	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
+	. '<a href="/status_logs_filter.php" target="_blank">Firewall Logs</a></small>'
+));
+
+$section->addInput(new Form_StaticText(
+	'NOTES:',
+	'GeoIP data by MaxMind Inc. - GeoLite2<br />'
+	. 'Click here for IMPORTANT info&emsp;-->&emsp;'
+	. '<a target="_blank" href="https://dev.maxmind.com/geoip/geoip2/whats-new-in-geoip2/">'
+	. '<span class="text-danger"><strong>What\'s new in GeoIP2</strong></span></a>'
+
+	. '<hr style="height: 1px; border: none; background-color: #d6d6d6;"/>'
+
+	. '<div id="Txtfld" tabindex="1" class="bg-info">'
+	. 'pfSense by default implicitly blocks all unsolicited inbound traffic to the WAN interface.<br />'
+	. 'Therefore adding GeoIP based firewall rules to the WAN will <strong>not</strong> provide any benefit, unless there are open WAN ports.<br /><br />'
+	. 'It\'s also <strong>not</strong> recommended to block the \'world\', instead consider rules to \'Permit\' traffic from selected Countries only.<br />'
+	. 'Also consider protecting just the specific open WAN ports and it\'s just as important to protect the outbound LAN traffic.<br /><br />'
+
+	. 'GeoIP ISOs can also be configured in the pfBlockerNG IPv4/IPv6 Alias(es) Source Definitions (Format: GeoIP)'
+	. '</div>'
+
+	. '<hr style="height: 1px; border: none; background-color: #d6d6d6;"/>'
+
+	. '&emsp;Use &emsp;<strong>CTRL+CLICK</strong>&emsp;to&emsp;<strong>select/unselect</strong>&emsp; the IPv4/6 Countries below as required.'
+));
+
 EOF;
+$php_data .= <<<EOF
 
-		// Update each Continent XML file.
-		@file_put_contents("/usr/local/pkg/pfblockerng/pfblockerng_{$cont_name}.xml", $xml, LOCK_EX);
+\$group = new Form_Group('');
+\$group->add(new Form_Select(
+	'countries4',
+	NULL,
+	\$pconfig['countries4'],
+	array(${'options4'}),
+	TRUE
+))->setHelp('&emsp;IPv4 countries')->setAttribute('size', "${'ftotal4'}")
+  ->setAttribute('style', 'overflow: auto;');
+
+\$group->add(new Form_Select(
+	'countries6',
+	NULL,
+	\$pconfig['countries6'],
+	array(${'options6'}),
+	TRUE
+))->setHelp('&emsp;IPv6 countries')->setAttribute('size', "${'ftotal6'}")
+  ->setAttribute('style', 'overflow: auto;');
+
+EOF;
+$php_data .= <<<'EOF'
+
+$section->add($group);
+$form->add($section);
+
+$list_array = array(	'Disabled' => 'Disabled', 'Deny_Inbound' => 'Deny Inbound', 'Deny_Outbound' => 'Deny Outbound',
+			'Deny_Both' => 'Deny Both', 'Permit_Inbound' => 'Permit Inbound', 'Permit_Outbound' => 'Permit Outbound',
+			'Permit_Both' => 'Permit Both', 'Match_Inbound' => 'Match Inbound', 'Match_Outbound' => 'Match Outbound',
+			'Match_Both' => 'Match Both', 'Alias_Deny' => 'Alias Deny', 'Alias_Permit' => 'Alias Permit',
+			'Alias_Match' => 'Alias Match', 'Alias_Native' => 'Alias Native' );
+
+$action_txt = "Default: <strong>Disabled</strong>
+		<br />For Non-Alias type rules you must define the appropriate <strong>Firewall 'Auto' Rule Order</strong> option.
+		<br />Click here for more info\xe2\x80\x83-->
+		<div class=\"infoblock alert-info clearfix\">
+			Select the <strong>Action</strong> for Firewall Rules on lists you have selected.<br /><br />
+
+			<strong><u>'Disabled' Rules:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
+
+			<strong><u>'Deny' Rules:</u></strong><br />
+			'Deny' rules create high priority 'block' or 'reject' rules on the stated interfaces. They don't change the 'pass' rules on other
+			interfaces. Typical uses of 'Deny' rules are:<br />
+				<ul>
+					<li><strong>Deny Both</strong> -
+						blocks all traffic in both directions, if the source or destination IP is in the block list
+					</li>
+					<li><strong>Deny Inbound/Deny Outbound</strong> -
+						blocks all traffic in one direction <u>unless</u> it is part of a session started by
+						traffic sent in the other direction. Does not affect traffic in the other direction.
+					</li>
+					<li>One way 'Deny' rules can be used to selectively block <u>unsolicited</u> incoming
+						(new session) packets in one direction, while still allowing <u>deliberate</u> outgoing
+						sessions to be created in the other direction.
+					</li>
+				</ul>
+
+			<strong><u>'Permit' Rules:</u></strong><br />
+			'Permit' rules create high priority 'pass' rules on the stated interfaces. They are the opposite of Deny rules, and don't create
+			any 'blocking' effect anywhere. They have priority over all Deny rules. Typical uses of 'Permit' rules are:<br />
+				<ul>
+					<li><strong>To ensure</strong> that traffic to/from the listed IPs will <u>always</u> be allowed in the
+						stated directions. They override <u>almost all other</u> Firewall rules on the stated interfaces.
+					</li>
+					<li><strong>To act as a whitelist</strong> for Deny rule exceptions, for example if a large IP range
+						or pre-created blocklist blocks a few IPs that should be accessible.
+					</li>
+				</ul>
+
+			<strong><u>'Match' Rules:</u></strong><br />
+			'Match' or 'Log' only the traffic on the stated interfaces. This does not Block or Reject. It just Logs the traffic.
+			<ul>
+				<li><strong>Match Both</strong> - Matches all traffic in both directions,
+					if the source or destination IP is in the list.
+				</li>
+				<li><strong>Match Inbound/Match Outbound</strong> - Matches all traffic in one direction only.
+				</li>
+			</ul>
+
+			<strong><u>'Alias' Rules:</u></strong><br />
+			<strong>'Alias'</strong> rules create an <a href=\"/firewall_aliases.php\">alias</a> for the list (and do nothing else).
+			This enables a pfBlockerNG list to be used by name, in any firewall rule or pfSense function, as desired.
+				<ul>
+					<li><strong>Options - Alias Deny,&nbsp; Alias Permit,&nbsp; Alias Match,&nbsp; Alias Native</strong></li>
+					<li>'Alias Deny' can use De-Duplication and Reputation Processes if configured.</li>
+					<li>'Alias Permit' and 'Alias Match' will be saved in the Same folder as the other Permit/Match Auto-Rules</li>
+					<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
+
+			<span class=\"text-danger\">Note: </span><ul>
+				When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
+				start of the rule description, use (pfb_) (Lowercase prefix). Manually created 'Alias' rules with 'pfB_' in the
+				description will be auto-removed by package when 'Auto' rules are defined.</ul>
+		</div>";
+
+$section->addInput(new Form_Select(
+	'action',
+	'List Action',
+	$pconfig['action'],
+	$list_array
+))->setHelp($action_txt);
+
+$section->addInput(new Form_Select(
+	'aliaslog',
+	'Enable Logging',
+	$pconfig['aliaslog'],
+	['enabled' => 'Enabled', 'disabled' => 'Disabled']
+))->setHelp("Default: <strong>Enable</strong><br />
+	Select - Logging to Status: System Logs: FIREWALL ( Log )<br />
+	This can be overriden by the 'Global Logging' Option in the General Tab.");
+
+// Print Advanced Firewall Rule Settings (Inbound and Outbound) section
+foreach (array( 'In' => 'Source', 'Out' => 'Destination') as $adv_mode => $adv_type) {
+
+	$advmode = strtolower($adv_mode);
+
+	// Collect all pfSense 'Port' Aliases
+	$portslist = $networkslist = '';
+	if (!empty($config['aliases']['alias'])) {
+		foreach ($config['aliases']['alias'] as $alias) {
+			if ($alias['type'] == 'port') {
+				$portslist .= "{$alias['name']},";
+			} elseif ($alias['type'] == 'network') {
+				$networkslist .= "{$alias['name']},";
+			}
+		}
+	}
+	$ports_list	= trim($portslist, ',');
+	$networks_list	= trim($networkslist, ',');
+
+	$section = new Form_Section("Advanced {$adv_mode}bound Firewall Rule Settings", "adv{$advmode}boundsettings", COLLAPSIBLE|SEC_CLOSED);
+	$section->addInput(new Form_StaticText(
+		NULL,
+		"<span class=\"text-danger\">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+			<dl class=\"dl-horizontal\">
+				<dt>{$adv_mode}bound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
+			</dl>
+			Configuring the Adv. {$adv_mode}bound Rule settings, will allow for more customization of the {$adv_mode}bound Auto-Rules."));
+
+	$section->addInput(new Form_Checkbox(
+		'autoaddrnot_' . $advmode,
+		"Invert {$adv_type}",
+		NULL,
+		$pconfig['autoaddrnot_' . $advmode] === 'on' ? true:false,
+		'on'
+	))->setHelp("Option to invert the sense of the match. ie - Not (!) {$adv_type} Address(es)");
+
+	$group = new Form_Group("Custom DST Port");
+	$group->add(new Form_Checkbox(
+		'autoports_' . $advmode,
+		'Custom DST Port',
+		NULL,
+		$pconfig['autoports_' . $advmode] === 'on' ? true:false,
+		'on'
+	))->setHelp('Enable')
+	  ->setWidth(2);
+
+	$group->add(new Form_Input(
+		'aliasports_' . $advmode,
+		'Custom Port',
+		'text',
+		$pconfig["aliasports_{$advmode}"]
+	))->setHelp("<a target=\"_blank\" href=\"/firewall_aliases.php?tab=port\">Click Here to add/edit Aliases</a>
+			Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name."
+	)->setWidth(8);
+	$section->add($group);
+
+	if ($adv_type == 'Source') {
+		$custom_location = 'Destination';
+	} else {
+		$custom_location = 'Source';
+	}
+
+	$group = new Form_Group("Custom {$custom_location}");
+	$group->add(new Form_Checkbox(
+		'autoaddr_' . $advmode,
+		"Custom {$custom_location}",
+		NULL,
+		$pconfig["autoaddr_{$advmode}"] === 'on' ? true:false,
+		'on'
+	))->setHelp('Enable')->setWidth(1);
+
+	$group->add(new Form_Checkbox(
+		'autonot_' . $advmode,
+		NULL,
+		NULL,
+		$pconfig["autonot_{$advmode}"] === 'on' ? true:false,
+		'on'
+	))->setHelp('Invert')->setWidth(1);
+
+	$group->add(new Form_Input(
+		'aliasaddr_' . $advmode,
+		"Custom {$custom_location}",
+		'text',
+		$pconfig['aliasaddr_' . $advmode]
+	))->sethelp('<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>'
+		. 'Do not manually enter Addresses(es).<br />Do not use \'pfB_\' in the \'IP Network Type\' Alias name.<br />'
+		. "Select 'invert' to invert the sense of the match. ie - Not (!) {$custom_location} Address(es)"
+	)->setWidth(8);
+	$section->add($group);
+
+	$group = new Form_Group('Custom Protocol');
+	$group->add(new Form_Select(
+		'autoproto_' . $advmode,
+		NULL,
+		$pconfig['autoproto_' . $advmode],
+		['' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP']
+	))->setHelp("<strong>Default: any</strong><br />Select the Protocol used for {$adv_mode}bound Firewall Rule(s).<br />
+		<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!");
+	$section->add($group);
+
+	$group = new Form_Group('Custom Gateway');
+	$group->add(new Form_Select(
+		'agateway_' . $advmode,
+		NULL,
+		$pconfig['agateway_' . $advmode],
+		pfb_get_gateways()
+	))->setHelp("Select alternate Gateway or keep 'default' setting.");
+
+	$section->add($group);
+	$form->add($section);
+}
+
+print($form);
+print_callout('<p><strong>Setting changes are applied via CRON or \'Force Update|Reload\' only!</strong></p>');
+?>
+
+<script type="text/javascript">
+//<![CDATA[
+
+var pagetype = 'advanced';
+var disable_move = false;
+
+// Auto-Complete for Adv. In/Out Address Select boxes
+var plist = "<?=$ports_list?>";
+var portsarray = plist.split(',');
+var nlist = "<?=$networks_list?>";
+var networksarray = nlist.split(',');
+
+// Disable GeoIP/ASN Autocomplete as not required for the GeoIP Continent pages
+var geoiparray = 'disabled';
+
+events.push(function() {
+	// Scroll to top of page and set focus to "Note" text.
+	$('body').scrollTop(0);
+	$('#Txtfld').focus();
+});
+
+//]]
+</script>
+<script src="pfBlockerNG.js" type="text/javascript"></script>
+<?php include('foot.inc');?>
+
+EOF;
+		// Update each Continent PHP file.
+		@file_put_contents("/usr/local/www/pfblockerng/pfblockerng_{$continent_en}.php", $php_data, LOCK_EX);
 
 		// Unset Arrays
-		unset(${'options4'}, ${'options6'}, $xml);
+		unset(${'options4'}, ${'options6'}, $php_data);
 
-	}	// End foreach 'Six Continents and Proxy/Satellite' update XML process
+	}	// End foreach 'Six Continents and Proxy/Satellite' update PHP script builder process
 
 	// Sort Countries IPv4 alphabetically and build XML <option> data for Reputation tab (IPv6 not used by ET IQRisk)
 
@@ -1788,458 +1738,368 @@ EOF;
 	$count = 1;
 
 	foreach ($roptions4 as $option4) {
+
+		// Remove prefixed Country string (Used to sort array)
+		$option4 = ltrim(strstr($option4, '|', FALSE), '|');
+
 		if ($count == 1) {
-			$et_options .= "\t<option><name>{$option4}\n"; $count++; continue;
+			$et_options .= "\t{$option4},\n";
+			$count++;
+			continue;
 		}
 		if ($eoa == $count) {
-			$et_options .= "\t\t\t\t<option><name>{$option4}";
+			$et_options .= "\t\t{$option4}\n\t";
 		} else {
-			$et_options .= "\t\t\t\t<option><name>{$option4}\n";
+			$et_options .= "\t\t{$option4},\n";
 		}
 		$count++;
 	}
 
-// Update pfBlockerNG_Reputation.xml file with Country Code changes
+// Update pfBlockerNG_Reputation.php file with Country Code changes
 
-$xmlrep = <<<EOF
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
-<packagegui>
-	<copyright>
-	<![CDATA[
-/* ========================================================================== */
+$php_rep = <<<'EOF'
+<?php
 /*
-	pfBlockerNG_Reputation.xml
+ * pfblockerng_reputation.php
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-	pfBlockerNG
-	Copyright (C) 2015-2016 BBcan177@gmail.com
-	All rights reserved.
+require_once('guiconfig.inc');
+require_once('globals.inc');
+require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
-	Based upon pfblocker for pfSense
-	Copyright (C) 2011 Marcello Coutinho
-	All rights reserved.
+global $config, $pfb;
+pfb_global();
 
-*/
-/* ========================================================================== */
-/*
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
+$pfb['repconfig'] = &$config['installedpackages']['pfblockerngreputation']['config'][0];
 
+$pconfig = array();
+$pconfig['enable_rep']		= $pfb['repconfig']['enable_rep'];
+$pconfig['p24_max_var']		= $pfb['repconfig']['p24_max_var'];
+$pconfig['enable_pdup']		= $pfb['repconfig']['enable_pdup'];
+$pconfig['p24_pmax_var']	= $pfb['repconfig']['p24_pmax_var'];
+$pconfig['enable_dedup']	= $pfb['repconfig']['enable_dedup'];
+$pconfig['p24_dmax_var']	= $pfb['repconfig']['p24_dmax_var'];
+$pconfig['ccwhite']		= $pfb['repconfig']['ccwhite'];
+$pconfig['ccblack']		= $pfb['repconfig']['ccblack'];
+$pconfig['ccexclude']		= explode(',', $pfb['repconfig']['ccexclude']);
+$pconfig['et_header']		= $pfb['repconfig']['et_header'];
+$pconfig['etblock']		= explode(',', $pfb['repconfig']['etblock']);
+$pconfig['etmatch']		= explode(',', $pfb['repconfig']['etmatch']);
 
-	1. Redistributions of source code must retain the above copyright notice,
-	   this list of conditions and the following disclaimer.
+// Validate input fields and save
+if ($_POST) {
+	if (isset($_POST['save'])) {
 
-	2. Redistributions in binary form must reproduce the above copyright
-	   notice, this list of conditions and the following disclaimer in the
-	   documentation and/or other materials provided with the distribution.
+		$pfb['repconfig']['enable_rep']		= $_POST['enable_rep']				?: '';
+		$pfb['repconfig']['p24_max_var']	= $_POST['p24_max_var']				?: '';
+		$pfb['repconfig']['enable_pdup']	= $_POST['enable_pdup']				?: '';
+		$pfb['repconfig']['p24_pmax_var']	= $_POST['p24_pmax_var']			?: '';
+		$pfb['repconfig']['enable_dedup']	= $_POST['enable_dedup']			?: '';
+		$pfb['repconfig']['p24_dmax_var']	= $_POST['p24_dmax_var']			?: '';
+		$pfb['repconfig']['ccwhite']		= $_POST['ccwhite']				?: '';
+		$pfb['repconfig']['ccblack']		= $_POST['ccblack']				?: '';
+		$pfb['repconfig']['ccexclude']		= implode(',', (array)$_POST['ccexclude'])	?: '';
+		$pfb['repconfig']['et_header']		= htmlspecialchars($_POST['et_header'])		?: '';
+		$pfb['repconfig']['etblock']		= implode(',', (array)$_POST['etblock'])	?: '';
+		$pfb['repconfig']['etmatch']		= implode(',', (array)$_POST['etmatch'])	?: '';
 
-	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
-	]]>
-	</copyright>
-	<name>pfblockerngreputation</name>
-	<title>Firewall/pfBlockerNG</title>
-	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
-	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
-		'Force Update'</strong>]]>
-	</savehelp>
-	<menu>
-		<name>pfBlockerNG</name>
-		<section>Firewall</section>
-		<url>pkg_edit.php?xml=pfblockerng.xml</url>
-	</menu>
-	<tabs>
-		<tab>
-			<text>General</text>
-			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
-		</tab>
-		<tab>
-			<text>Update</text>
-			<url>/pfblockerng/pfblockerng_update.php</url>
-		</tab>
-		<tab>
-			<text>Alerts</text>
-			<url>/pfblockerng/pfblockerng_alerts.php</url>
-		</tab>
-		<tab>
-			<text>Reputation</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
-			<active/>
-		</tab>
-		<tab>
-			<text>IPv4</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
-		</tab>
-		<tab>
-			<text>IPv6</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
-		</tab>
-		<tab>
-			<text>DNSBL</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
-		</tab>
-		<tab>
-			<text>GeoIP</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
-		</tab>
-		<tab>
-			<text>Logs</text>
-			<url>/pfblockerng/pfblockerng_log.php</url>
-		</tab>
-		<tab>
-			<text>Sync</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
-		</tab>
-	</tabs>
-	<fields>
-		<field>
-			<name>IPv4 Reputation</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr>LINKS</fielddescr>
-			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
-			</description>
-			<type>info</type>
-		</field>
-		<field>
-			<fielddescr><![CDATA[<strong>Why Reputation Matters:</strong>]]></fielddescr>
-			<type>info</type>
-			<description><![CDATA[By Enabling '<strong>Reputation</strong>', each Blocklist will be analyzed for Repeat Offenders in each IP Range.
-				<div class="infoblock"><ul>Example: &emsp;x.x.x.1, x.x.x.2, x.x.x.3, x.x.x.4, x.x.x.5<br />
-				No. of <strong> Repeat Offending IPs </strong> [ &nbsp;<strong>5</strong>&nbsp; ], in a Blocklist within the same IP Range.</ul>
-				With '<strong>Reputation</strong> enabled, these 5 IPs will be removed and a single
-				<strong>x.x.x.0/24</strong> Block is used.<br />
-				This will completely Block/Reject this particular range from your Firewall.<br /><br />
-				Selecting Blocklists from various Threat Sources will help to highlight Repeat Offending IP Ranges,<br />
-				Its Important to select a Broad Range of Blocklists that cover different types of Malicious Activity.<br /><br />
-				You *may* experience some False Positives. Add any False Positive IPs manually to the<br />
-				<strong>pfBlockerNGSuppress Alias</strong> or use the "+" suppression Icon in the Alerts TAB<br /><br />
-				To help mitigate False Positives 'Countries' can be '<strong>Excluded</strong>' from this Process. (Refer to Country Code Settings)
-				<br /><br />Enabling <strong>De-Duplication</strong> is highly recommended before utilizing 'Reputation' processes.</div>]]>
-			</description>
-		</field>
-		<field>
-			<fielddescr><![CDATA[<strong>Individual List Reputation</strong>]]></fielddescr>
-			<type>info</type>
-		</field>
-		<field>
-			<fielddescr><![CDATA[Enable Max]]></fielddescr>
-			<fieldname>enable_rep</fieldname>
-			<type>checkbox</type>
-			<sethelp><![CDATA[Enables Search for Repeat Offenders in a /24 Range on <strong>Each Individual Blocklist</strong>]]></sethelp>
-		</field>
-		<field>
-			<fielddescr><![CDATA[&emsp;[ <strong>Max</strong> ] Setting]]></fielddescr>
-			<fieldname>p24_max_var</fieldname>
-			<description><![CDATA[Default: <strong>5</strong><br />
-				Maximum number of Repeat Offenders allowed in a Single IP Range]]></description>
-			<type>select</type>
-			<options>
-				<option><name>5</name><value>5</value></option>
-				<option><name>10</name><value>10</value></option>
-				<option><name>15</name><value>15</value></option>
-				<option><name>20</name><value>20</value></option>
-				<option><name>25</name><value>25</value></option>
-				<option><name>50</name><value>50</value></option>
-			</options>
-		</field>
-		<field>
-			<fielddescr><![CDATA[<strong>Collective List Reputation</strong>]]></fielddescr>
-			<type>info</type>
-			<description></description>
-		</field>
-		<field>
-			<type>info</type>
-			<description><![CDATA[Once all Blocklists are Downloaded, these two 'additional' processes <strong>[ pMax ] and [ dMax ]</strong><br />
-				Can be used to Further analyze for Repeat Offenders.<div class="infoblock">
-				<ul>Analyzing All Blocklists as a Whole:</ul>
-				<ul><strong>[ pMax ]</strong> will analyze for Repeat Offenders in each IP Range but will not use the Country Exclusion.<br />
-				Default is 50 IPs in any Range. Having 50 Repeat Offenders IPs in any Range will Block the entire Range.<br /><br /></ul>
-				<ul><strong>[ dMax ]</strong> will analyze for Repeat Offenders in each IP Range. Country Exclusions will be applied.<br />
-				Default is 5 IPs in any Range.</ul>
-				Note: <strong>MAX</strong> performs on individual Blocklists, while <strong>pMAX / dMAX</strong>
-				perform on all Lists together.</div>]]>
-			</description>
-		</field>
-		<field>
-			<fielddescr>Enable pMAX</fielddescr>
-			<fieldname>enable_pdup</fieldname>
-			<type>checkbox</type>
-			<sethelp><![CDATA[Enables Search for Repeat Offenders in All BlockLists, <strong>Without</strong> Country Code Exclusion]]>
-			</sethelp>
-		</field>
-		<field>
-			<fielddescr><![CDATA[&emsp;[ <strong>pMax</strong> ] Setting]]></fielddescr>
-			<fieldname>p24_pmax_var</fieldname>
-			<description><![CDATA[Default: <strong>50</strong><br />Maximum number of Repeat Offenders]]></description>
-			<type>select</type>
-			<options>
-				<option><name>50</name><value>50</value></option>
-				<option><name>25</name><value>25</value></option>
-				<option><name>20</name><value>20</value></option>
-				<option><name>15</name><value>15</value></option>
-				<option><name>10</name><value>10</value></option>
-				<option><name>5</name><value>5</value></option>
-			</options>
-		</field>
-		<field>
-			<fielddescr>Enable dMAX</fielddescr>
-			<fieldname>enable_dedup</fieldname>
-			<type>checkbox</type>
-			<sethelp><![CDATA[Enables Search for Repeat Offenders in All BlockLists <strong>Using</strong> Country Code Exclusion]]>
-			</sethelp>
-		</field>
-		<field>
-			<fielddescr><![CDATA[&emsp;[ <strong>dMax</strong> ] Setting]]></fielddescr>
-			<fieldname>p24_dmax_var</fieldname>
-			<description><![CDATA[Default: <strong>5</strong><br />
-				Maximum number of Repeat Offenders]]></description>
-			<type>select</type>
-			<options>
-				<option><name>5</name><value>5</value></option>
-				<option><name>10</name><value>10</value></option>
-				<option><name>15</name><value>15</value></option>
-				<option><name>20</name><value>20</value></option>
-				<option><name>25</name><value>25</value></option>
-				<option><name>50</name><value>50</value></option>
-			</options>
-		</field>
-		<field>
-			<name>Country Code Settings (max/dMax)</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<type>info</type>
-			<description><![CDATA[When performing Queries for Repeat Offenders, you can choose to <strong>ignore</strong> Repeat Offenders in select
-				Countries. The Original Blocklisted IPs remain intact. All other Repeat Offending Country Ranges will be processed.
-				<div class="infoblock">Define Repeat Offending Ranges [ <strong>Action</strong> ] Available settings are:<br />
-				<ul><strong>Ignore</strong>: Repeat Offenders that are in the 'ccwhite' category will be 'Ignored' (Default)</ul>
-				<ul><strong>Block:</strong> Repeat Offenders are set to Block the entire Repeat Offending Range(s)</ul>
-				<ul><strong>Match:</strong> Repeat Offenders are added to a 'Match' List which can be used in a Floating Match Rule<br />
-				Selecting 'Match' will consume more processing time, so only select this option if you enable Rules for it.</ul>
-				'<strong>ccwhite</strong>' are Countries that are Selected to be excluded from the Repeat Offenders Search.<br />
-				'<strong>ccblack</strong>' are all other Countries that are not selected.<br /><br />
-				To use '<strong>Match</strong>' Lists, Create a new 'Alias'
-				and select one of the <strong>Action 'Match'</strong> Formats and<br /> enter the 'Localfile' as:
-				<ul>/var/db/pfblockerng/match/matchdedup.txt</ul></div>]]>
-			</description>
-		</field>
-		<field>
-			<fielddescr>ccwhite Action:</fielddescr>
-			<fieldname>ccwhite</fieldname>
-			<description><![CDATA[Default: <strong>Ignore</strong><br />
-				Select the 'Action' format for ccwhite]]>
-			</description>
-			<type>select</type>
-			<options>
-				<option><name>Ignore</name><value>ignore</value></option>
-				<option><name>Match</name><value>match</value></option>
-			</options>
-		</field>
-		<field>
-			<fielddescr>ccblack Action:</fielddescr>
-			<fieldname>ccblack</fieldname>
-			<description><![CDATA[Default: <strong>Block</strong><br />
-				Select the 'Action' format for ccblack]]>
-			</description>
-			<type>select</type>
-			<options>
-				<option><name>Block</name><value>block</value></option>
-				<option><name>Match</name><value>match</value></option>
-			</options>
-		</field>
-		<field>
-			<fielddescr>IPv4 Country Exclusion</fielddescr>
-			<fieldname>ccexclude</fieldname>
-			<description>
-				<![CDATA[Select Countries you want to <strong>Exclude</strong> from the Reputation Process.<br />
-				<strong>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect countries</strong>]]>
-			</description>
-			<type>select</type>
-			<options>
-			{$et_options}
-			</options>
-			<size>20</size>
-			<multiple/>
-		</field>
-		<field>
-			<name>Proofpoint ET IQRISK IPv4 Reputation</name>
-			<type>listtopic</type>
-			<collapse>closed</collapse>
-		</field>
-		<field>
-			<fielddescr>Subscription Pro. Blocklist</fielddescr>
-			<type>info</type>
-			<description><![CDATA[<strong>Proofpoint ET IQRisk</strong> is a Subscription Professional Reputation List.<br /><br />
-					<strong>The URL must include the name 'iprepdata.txt' for the filename.</strong><br />
-					ET IQRisk Blocklist must be entered in the Lists Tab using the following example:
-					<ul>https://rules.emergingthreatspro.com/XXXXXXXXXXXXXXXX/reputation/iprepdata.txt.gz</ul>
-					Select the <strong>ET IQRisk'</strong> format. The URL should use the .gz File Type.<br />
-					Enter your "ETPRO" code in URL. Further information can be found @
-					<a target="_blank" href="https://www.proofpoint.com/us/solutions/products/threat-intelligence">Proofpoint IQRisk</a><br /><br />
-					To use <strong>'Match'</strong> Lists, Create a new 'Alias' and select one of the <strong>
-					Action 'Match'</strong> Formats and <br />
-					enter the 'Localfile' as: <ul>/var/db/pfblockerng/match/ETMatch.txt</ul>
-					ET IQRisk Individual Match Lists can be found in the following folder:<br />
-					<ul>/var/db/pfblockerng/ET</ul> ]]>
-			</description>
-		</field>
-		<field>
-			<fielddescr>ET IQRisk Header Name</fielddescr>
-			<fieldname>et_header</fieldname>
-			<type>input</type>
-			<description><![CDATA[Enter the 'Header Name' referenced in the IPv4 List TAB for ET IQRisk IPRep.<br />
-				This will be used to improve the Alerts TAB reporting for ET IPRep.]]>
-			</description>
-		</field>
-		<field>
-			<fielddescr>ET IQRISK BLOCK LISTS</fielddescr>
-			<fieldname>etblock</fieldname>
-			<description>
-				<![CDATA[Select Lists you want to BLOCK.<br />
-				<strong>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect Categories</strong>
-				<br /><br />Any Changes will take effect at the Next Scheduled CRON Task]]>
-			</description>
-			<type>select</type>
-			<options>
-				<option><name>ET CNC</name><value>ET_Cnc</value></option>
-				<option><name>ET BOT</name><value>ET_Bot</value></option>
-				<option><name>ET SPAM</name><value>ET_Spam</value></option>
-				<option><name>ET DROP</name><value>ET_Drop</value></option>
-				<option><name>ET Spyware CNC</name><value>ET_Spywarecnc</value></option>
-				<option><name>ET Online Gaming</name><value>ET_Onlinegaming</value></option>
-				<option><name>ET DrivebySRC</name><value>ET_Drivebysrc</value></option>
-				<option><name>ET Chat Server</name><value>ET_Chatserver</value></option>
-				<option><name>ET TOR Node</name><value>ET_Tornode</value></option>
-				<option><name>ET Compromised</name><value>ET_Compromised</value></option>
-				<option><name>ET P2P</name><value>ET_P2P</value></option>
-				<option><name>ET Proxy</name><value>ET_Proxy</value></option>
-				<option><name>ET IP Check</name><value>ET_Ipcheck</value></option>
-				<option><name>ET Utility</name><value>ET_Utility</value></option>
-				<option><name>ET DOS</name><value>ET_DDos</value></option>
-				<option><name>ET Scanner</name><value>ET_Scanner</value></option>
-				<option><name>ET Brute</name><value>ET_Brute</value></option>
-				<option><name>ET Fake AV</name><value>ET_Fakeav</value></option>
-				<option><name>ET DYN DNS</name><value>ET_Dyndns</value></option>
-				<option><name>ET Undersireable</name><value>ET_Undesireable</value></option>
-				<option><name>ET Abuse TLD</name><value>ET_Abusedtld</value></option>
-				<option><name>ET SelfSigned SSL</name><value>ET_Selfsignedssl</value></option>
-				<option><name>ET Blackhole</name><value>ET_Blackhole</value></option>
-				<option><name>ET RAS</name><value>ET_RAS</value></option>
-				<option><name>ET P2P CNC</name><value>ET_P2Pcnc</value></option>
-				<option><name>ET Shared Hosting</name><value>ET_Sharedhosting</value></option>
-				<option><name>ET Parking</name><value>ET_Parking</value></option>
-				<option><name>ET VPN</name><value>ET_VPN</value></option>
-				<option><name>ET EXE Source</name><value>ET_Exesource</value></option>
-				<option><name>ET Mobile CNC</name><value>ET_Mobilecnc</value></option>
-				<option><name>ET Mobile Spyware</name><value>ET_Mobilespyware</value></option>
-				<option><name>ET Skype Node</name><value>ET_Skypenode</value></option>
-				<option><name>ET Bitcoin</name><value>ET_Bitcoin</value></option>
-				<option><name>ET DOS Attack</name><value>ET_DDosattack</value></option>
-				<option><name>Unknown</name><value>ET_Unknown</value></option>
-			</options>
-			<size>35</size>
-			<multiple/>
-		</field>
-		<field>
-			<fielddescr>ET IQRISK Match LISTS</fielddescr>
-			<fieldname>etmatch</fieldname>
-			<description>
-				<![CDATA[Select Lists you want to MATCH.<br />
-				<strong>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect Categories</strong>
-				<br /><br />Any Changes will take effect at the Next Scheduled CRON Task]]>
-			</description>
-			<type>select</type>
-			<options>
-				<option><name>ET CNC</name><value>ET_Cnc</value></option>
-				<option><name>ET BOT</name><value>ET_Bot</value></option>
-				<option><name>ET SPAM</name><value>ET_Spam</value></option>
-				<option><name>ET DROP</name><value>ET_Drop</value></option>
-				<option><name>ET Spyware CNC</name><value>ET_Spywarecnc</value></option>
-				<option><name>ET Online Gaming</name><value>ET_Onlinegaming</value></option>
-				<option><name>ET DrivebySRC</name><value>ET_Drivebysrc</value></option>
-				<option><name>ET Chat Server</name><value>ET_Chatserver</value></option>
-				<option><name>ET TOR Node</name><value>ET_Tornode</value></option>
-				<option><name>ET Compromised</name><value>ET_Compromised</value></option>
-				<option><name>ET P2P</name><value>ET_P2P</value></option>
-				<option><name>ET Proxy</name><value>ET_Proxy</value></option>
-				<option><name>ET IP Check</name><value>ET_Ipcheck</value></option>
-				<option><name>ET Utility</name><value>ET_Utility</value></option>
-				<option><name>ET DOS</name><value>ET_DDos</value></option>
-				<option><name>ET Scanner</name><value>ET_Scanner</value></option>
-				<option><name>ET Brute</name><value>ET_Brute</value></option>
-				<option><name>ET Fake AV</name><value>ET_Fakeav</value></option>
-				<option><name>ET DYN DNS</name><value>ET_Dyndns</value></option>
-				<option><name>ET Undersireable</name><value>ET_Undesireable</value></option>
-				<option><name>ET Abuse TLD</name><value>ET_Abusedtld</value></option>
-				<option><name>ET SelfSigned SSL</name><value>ET_Selfsignedssl</value></option>
-				<option><name>ET Blackhole</name><value>ET_Blackhole</value></option>
-				<option><name>ET RAS</name><value>ET_RAS</value></option>
-				<option><name>ET P2P CNC</name><value>ET_P2Pcnc</value></option>
-				<option><name>ET Shared Hosting</name><value>ET_Sharedhosting</value></option>
-				<option><name>ET Parking</name><value>ET_Parking</value></option>
-				<option><name>ET VPN</name><value>ET_VPN</value></option>
-				<option><name>ET EXE Source</name><value>ET_Exesource</value></option>
-				<option><name>ET Mobile CNC</name><value>ET_Mobilecnc</value></option>
-				<option><name>ET Mobile Spyware</name><value>ET_Mobilespyware</value></option>
-				<option><name>ET Skype Node</name><value>ET_Skypenode</value></option>
-				<option><name>ET Bitcoin</name><value>ET_Bitcoin</value></option>
-				<option><name>ET DOS Attack</name><value>ET_DDosattack</value></option>
-				<option><name>Unknown</name><value>ET_Unknown</value></option>
-			</options>
-			<size>35</size>
-			<multiple/>
-		</field>
-		<field>
-			<fielddescr>Update ET Categories</fielddescr>
-			<fieldname>et_update</fieldname>
-			<description><![CDATA[Default: <strong>Disable</strong><br />
-				Select - Enable ET Update if Category Changes are Made.<br />
-				You can perform a 'Force Update' to enable these changes.<br />
-				Cron will also resync this list at the next Scheduled Update.]]>
-			</description>
-			<type>select</type>
-			<options>
-				<option><name>Disable</name><value>disabled</value></option>
-				<option><name>Enable</name><value>enabled</value></option>
-			</options>
-		</field>
-	</fields>
-	<custom_php_validation_command>
-		pfblockerng_validate_input(\$_POST, \$input_errors);
-	</custom_php_validation_command>
-	<custom_php_resync_config_command>
-		global \$pfb;
-		\$pfb['save'] = TRUE;
-		sync_package_pfblockerng();
-	</custom_php_resync_config_command>
-</packagegui>
+		// Set flag to update ET IQRisk on next Cron|Force update|Force reload
+		$pfb['repconfig']['et_update']		= 'enabled';
+
+		write_config('[pfBlockerNG] save Reputation settings');
+		header('Location: /pfblockerng/pfblockerng_reputation.php');
+	}
+}
+
+$pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('IP'), gettext('Reputation'));
+$pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblockerng_ip.php', '@self');
+include_once('head.inc');
+
+// Define default Alerts Tab href link (Top row)
+$get_req = pfb_alerts_default_page();
+
+$tab_array	= array();
+$tab_array[]	= array(gettext('General'),	false,	'/pfblockerng/pfblockerng_general.php');
+$tab_array[]	= array(gettext('IP'),		true,	'/pfblockerng/pfblockerng_ip.php');
+$tab_array[]	= array(gettext('DNSBL'),	false,	'/pfblockerng/pfblockerng_dnsbl.php');
+$tab_array[]	= array(gettext('Update'),	false,	'/pfblockerng/pfblockerng_update.php');
+$tab_array[]	= array(gettext('Reports'),	false,	"/pfblockerng/pfblockerng_alerts.php{$get_req}");
+$tab_array[]	= array(gettext('Feeds'),	false,	'/pfblockerng/pfblockerng_feeds.php');
+$tab_array[]	= array(gettext('Logs'),	false,	'/pfblockerng/pfblockerng_log.php');
+$tab_array[]	= array(gettext('Sync'),	false,	'/pfblockerng/pfblockerng_sync.php');
+display_top_tabs($tab_array, true);
+
+$tab_array	= array();
+$tab_array[]	= array(gettext('IPv4'),	false,	'/pfblockerng/pfblockerng_category.php?type=ipv4');
+$tab_array[]	= array(gettext('IPv6'),	false,	'/pfblockerng/pfblockerng_category.php?type=ipv6');
+$tab_array[]	= array(gettext('GeoIP'),       false,	'/pfblockerng/pfblockerng_category.php?type=geoip');
+$tab_array[]	= array(gettext('Reputation'),  true,	'/pfblockerng/pfblockerng_reputation.php');
+display_top_tabs($tab_array, true);
+
+if (isset($input_errors)) {
+	print_input_errors($input_errors);
+}
+
+$form = new Form('Save');
+
+$section = new Form_Section('IPv4 Reputation');
+$section->addInput(new Form_StaticText(
+	'Links',
+	'<small>'
+	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
+	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
+	. '<a href="/status_logs_filter.php" target="_blank">Firewall Logs</a></small>'
+));
+
+$section->addInput(new Form_StaticText(
+	'Why Reputation Matters',
+	'By enabling <strong>Reputation</strong>, each Blocklist will be analyzed for repeat offenders in each IP range.'
+	. '<div class="infoblock">'
+	. '<ul>Example: &emsp;x.x.x.1, x.x.x.2, x.x.x.3, x.x.x.4, x.x.x.5<br />'
+	. 'No. of <strong> repeat offending IPs </strong> [ &nbsp;<strong>5</strong>&nbsp; ], in a Blocklist within the same IP range.</ul>'
+	. 'With <strong>Reputation</strong> enabled, these 5 IPs will be removed and a single<strong>x.x.x.0/24</strong> Block is used.<br />'
+	. 'This will completely Block/Reject this particular range from your Firewall.<br /><br />'
+	. 'Selecting Blocklists from various Threat Sources will help to highlight repeat offending IP ranges,<br />'
+	. 'Its important to select a broad range of Blocklists that cover different types of malicious activity.<br /><br />'
+	. 'You *may* experience some False Positives. Add any False Positive IPs manually to the<br />'
+	. '<strong>IPv4 Suppression custom list</strong> or use the "+" suppression Icon in the Alerts TAB<br /><br />'
+	. 'To help mitigate False Positives \'Countries\' can be <strong>Excluded</strong> from this process. (Refer to Country Code settings)'
+	. '<br /><br />Enabling <strong>De-Duplication</strong> is highly recommended before utilizing <strong>Reputation</strong> processes.'
+	. '</div>'
+));
+$form->add($section);
+
+$section = new Form_Section('Individual List Reputation');
+$section->addInput(new Form_Checkbox(
+	'enable_rep',
+	'Max',
+	'Enable',
+	$pconfig['enable_rep'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enables search for repeat offenders in a /24 range on <strong>Each individual Blocklist</strong>');
+
+$section->addInput(new Form_Select(
+	'p24_max_var',
+	'Max Setting',
+	$pconfig['p24_max_var'],
+	['5' => '5', '10' => '10', '15' => '15', '20' => '20', '25' => '25', '50' => '50']
+))->setHelp('Default: <strong>5</strong><br />Maximum number of repeat offenders allowed in a single IP range');
+$form->add($section);
+
+$section = new Form_Section('Collective List Reputation');
+$section->addInput(new Form_StaticText(
+	NULL,
+	'Once all Blocklists are downloaded, these two additional processes <strong>[ pMax and dMax ]</strong><br />'
+	. 'Can be used to further analyze for repeat offenders.'
+	. '<div class="infoblock">'
+	. '<ul>Analyzing all Blocklists as a whole:</ul>'
+	. '<ul><strong>[ pMax ]</strong> will analyze for repeat offenders in each IP range but will not use the Country Exclusion.<br />'
+	. 'Default is 50 IPs in any range. Having 50 repeat offenders IPs in any range will Block the entire range.<br /><br /></ul>'
+	. '<ul><strong>[ dMax ]</strong> will analyze for repeat offenders in each IP range. Country Exclusions will be applied.<br />'
+	. 'Default is 5 IPs in any range.</ul>'
+	. 'Note: <strong>MAX</strong> performs on individual Blocklists, while <strong>pMAX / dMAX</strong>'
+	. 'perform on all Lists together.'
+	. '</div>'
+));
+	
+$section->addInput(new Form_Checkbox(
+	'enable_pdup',
+	'pMAX',
+	'Enable',
+	$pconfig['enable_pdup'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enables search for repeat offenders in All BlockLists, <strong>without</strong> Country Code Exclusion');
+
+$section->addInput(new Form_Select(
+	'p24_pmax_var',
+	'pMax Setting',
+	$pconfig['p24_pmax_var'],
+	['50' => '50', '25' => '25', '20' => '20', '15' => '15', '10' => '10', '5' => '5']
+))->setHelp('Default: <strong>50</strong><br />Maximum number of repeat offenders');
+
+$section->addInput(new Form_Checkbox(
+	'enable_dedup',
+	'dMAX',
+	'Enable',
+	$pconfig['enable_dedup'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enables search for repeat offenders in All blocklists <strong>using</strong> Country Code Exclusion');
+
+$section->addInput(new Form_Select(
+	'p24_dmax_var',
+	'dMax Setting',
+	$pconfig['p24_dmax_var'],
+	['5' => '5', '10' => '10', '15' => '15', '20' => '20', '25' => '25', '50' => '50']
+))->setHelp('Default: <strong>5</strong><br />Maximum number of repeat offenders');
+$form->add($section);
+
+$section = new Form_Section('Country Code Settings (max/dMax)');
+$section->addInput(new Form_StaticText(
+	NULL,
+	'When performing queries for repeat offenders, you can choose to <strong>ignore</strong> repeat offenders in select'
+	. 'Countries. The original blocklisted IPs remain intact. All other repeat offending Country ranges will be processed.'
+	. '<div class="infoblock">'
+	. 'Define repeat offending ranges [ <strong>Action</strong> ] Available settings are:<br />'
+	. '<ul><strong>Ignore</strong>: Repeat offenders that are in the <strong>ccwhite</strong> category will be <strong>Ignored</strong> (Default)</ul>'
+	. '<ul><strong>Block:</strong> Repeat offenders are set to Block the entire repeat offending range(s)</ul>'
+	. '<ul><strong>Match:</strong> Repeat offenders are added to a <strong>Match</strong> List which can be used in a Floating Match rule<br />'
+	. 'Selecting <strong>Match</strong> will consume more processing time, so only select this option if you enable rules for it.</ul>'
+	. '\'<strong>ccwhite</strong>\' are Countries that are selected to be excluded from the repeat offenders search.<br />'
+	. '\'<strong>ccblack</strong>\' are all other Countries that are not selected.<br /><br />'
+	. 'To use <strong>Match</strong> Lists, Create a new \'Alias\''
+	. 'and select one of the <strong>Action Match</strong> Formats and<br /> enter the <strong>Localfile</strong> as:'
+	. '<ul>/var/db/pfblockerng/match/matchdedup.txt</ul>'
+	. '</div>'
+));
+
+$section->addInput(new Form_Select(
+	'ccwhite',
+	'ccwhite Action:',
+	$pconfig['ccwhite'],
+	['ignore' => 'Ignore', 'match' => 'Match']
+))->setHelp('Default: <strong>Ignore</strong><br />Select the \'Action\' format for ccwhite');
+
+$section->addInput(new Form_Select(
+	'ccblack',
+	'ccblack Action:',
+	$pconfig['ccblack'],
+	['block' => 'Block', 'match' => 'Match']
+))->setHelp('Default: <strong>Block</strong><br />Select the \'Action\' format for ccblack');
+
 EOF;
+$php_rep .= <<<EOF
+
+\$section->addInput(new Form_Select(
+	'ccexclude',
+	'IPv4 Country Exclusion',
+	\$pconfig['ccexclude'],
+	array($et_options),
+	TRUE
+))->setHelp('Select Countries you want to <strong>Exclude</strong> from the Reputation Process.<br />
+		<strong>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect countries</strong>')
+  ->setAttribute('size', '20')
+  ->setAttribute('style', 'overflow: auto;');
+
+EOF;
+$php_rep .= <<<'EOF'
+$form->add($section);
+
+$section = new Form_Section('Proofpoint ET IQRISK IPv4 Reputation', 'Proofpointsettings', COLLAPSIBLE|SEC_CLOSED);
+$section->addInput(new Form_StaticText(
+	'Professional Subscription Blocklist',
+	'<strong>Proofpoint ET IQRisk</strong> is a subscription based professional Reputation list.<br /><br />'
+	. 'The URL must include the name <strong>iprepdata.txt</strong><br />'
+	. 'ET IQRisk Blocklist URL must be entered in the IPv4 Lists Tab using the following example:'
+	. '<ul>https://rules.emergingthreatspro.com/XXXXXXXXXXXXXXXX/reputation/iprepdata.txt.gz</ul>'
+	. 'Select the <strong>ET IQRisk</strong> format. The URL should use the .gz File type.<br />'
+	. 'Enter your "ETPRO" code in URL. Further information can be found @ '
+	. '<a target="_blank" href="https://www.proofpoint.com/us/solutions/products/threat-intelligence">Proofpoint IQRisk</a><br /><br />'
+	. 'To use <strong>Match</strong> Lists, Create a new Alias and select one of the <strong>'
+	. 'Action Match</strong> Formats and <br />'
+	. 'enter the <strong>Localfile</strong> as: <ul>/var/db/pfblockerng/match/ETMatch.txt</ul>'
+	. 'ET IQRisk Individual Match Lists can be found in the following folder:<br />'
+	. '<ul>/var/db/pfblockerng/ET</ul>'
+));
+
+$section->addInput(new Form_Input(
+	'et_header',
+	'Header/Label Name',
+	'text',
+	$pconfig['et_header'],
+	['placeholder' => 'Enter the ET IQRisk Header Name']
+))->setHelp('Enter the \'Header Name\' referenced in the IPv4 List TAB for ET IQRisk IPRep.<br />This will be used to improve the Alerts TAB reporting for ET IPRep.');
+
+$et_categories = array(	'ET_Cnc'		=> 'ET CNC',
+			'ET_Bot'		=> 'ET BOT',
+			'ET_Spam'		=> 'ET SPAM',
+			'ET_Drop'		=> 'ET DROP',
+			'ET_Spywarecnc'		=> 'ET Spyware CNC',
+			'ET_Onlinegaming'	=> 'ET Online Gaming',
+			'ET_Drivebysrc'		=> 'ET DrivebySRC',
+			'ET_Chatserver'		=> 'ET Chat Server',
+			'ET_Tornode'		=> 'ET TOR Node',
+			'ET_Compromised'	=> 'ET Compromised',
+			'ET_P2Pnode'		=> 'ET P2P Node',
+			'ET_Proxy'		=> 'ET Proxy',
+			'ET_Ipcheck'		=> 'ET IP Check',
+			'ET_Utility'		=> 'ET Utility',
+			'ET_DDostarget'		=> 'ET DDOS Target',
+			'ET_Scanner'		=> 'ET Scanner',
+			'ET_Brute'		=> 'ET Brute',
+			'ET_Fakeav'		=> 'ET Fake AV',
+			'ET_Dyndns'		=> 'ET DYN DNS',
+			'ET_Undesireable'	=> 'ET Undersireable',
+			'ET_Abusedtld'		=> 'ET Abuse TLD',
+			'ET_Selfsignedssl'	=> 'ET SelfSigned SSL',
+			'ET_Blackhole'		=> 'ET Blackhole',
+			'ET_RAS'		=> 'ET RAS',
+			'ET_P2Pcnc'		=> 'ET P2P CNC',
+			'ET_Sharedhosting'	=> 'ET Shared Hosting',
+			'ET_Parking'		=> 'ET Parking',
+			'ET_VPN'		=> 'ET VPN',
+			'ET_Exesource'		=> 'ET EXE Source',
+			'ET_Mobilecnc'		=> 'ET Mobile CNC',
+			'ET_Mobilespyware'	=> 'ET Mobile Spyware',
+			'ET_Skypenode'		=> 'ET Skype Node',
+			'ET_Bitcoin'		=> 'ET Bitcoin',
+			'ET_DDosattacker'	=> 'ET DDOS Attacker'
+			);
+
+$section->addInput(new Form_Select(
+	'etblock',
+	'Block Categories',
+	$pconfig['etblock'],
+	$et_categories,
+	TRUE
+))->setHelp('Select Lists you want to BLOCK.<br /><strong>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect Categories</strong>')
+  ->setAttribute('size', '35')
+  ->setAttribute('style', 'overflow: auto;');
+
+$section->addInput(new Form_Select(
+	'etmatch',
+	'Match Categories',
+	$pconfig['etmatch'],
+	$et_categories,
+	TRUE
+))->setHelp('Select Lists you want to MATCH.<br /><strong>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect Categories</strong>')
+  ->setAttribute('size', '35')
+  ->setAttribute('style', 'overflow: auto;');
+
+$form->add($section);
+print($form);
+print_callout('<p><strong>Setting changes are applied via CRON or \'Force Update|Reload\' only!</strong></p>');
+?>
+<?php include('foot.inc');?>
+
+EOF;
+
 	$log = " pfBlockerNG Reputation Tab\n";
 	pfb_logger("{$log}", 4);
 
-	// Save pfBlockerng_reputation.xml file
-	@file_put_contents('/usr/local/pkg/pfblockerng/pfblockerng_reputation.xml', $xmlrep, LOCK_EX);
+	// Save pfBlockerng_reputation.php file
+	@file_put_contents('/usr/local/www/pfblockerng/pfblockerng_reputation.php', $php_rep, LOCK_EX);
 
 	$log = "Country Code Update Ended [ NOW ]\n\n";
 	pfb_logger("{$log}", 4);
 
 	// Unset arrays
-	unset($roptions4, $et_options, $xmlrep);
-
-	// Save MaxMind GeoIP Language Locale to file
-	@file_put_contents("{$pfb['dbdir']}/GeoIP_Locale", "{$pfb['maxmind_locale']}\n", LOCK_EX);
+	unset($roptions4, $et_options, $php_rep);
 }
 ?>
