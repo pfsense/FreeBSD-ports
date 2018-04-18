@@ -233,6 +233,11 @@ include('head.inc');
 				<!-- Domain threat source links -->
 				<tr>
 					<td>Domain Lookups<i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.talosintelligence.com/reputation_center/lookup?search=<?=$domain;?>">
+						<?=gettext("Talos Threat Intelligence");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.alexa.com/siteinfo/<?=$domain;?>">
 						<?=gettext("Alexa");?></a></td>
 				</tr>
