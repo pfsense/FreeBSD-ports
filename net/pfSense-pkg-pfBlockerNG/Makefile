@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-pfBlockerNG
 PORTVERSION=	2.1.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,6 @@ COMMENT=	pfSense package pfBlockerNG
 
 LICENSE=	APACHE20
 
-USES=		php
 RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
 		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \
 		${LOCALBASE}/bin/aggregate:net-mgmt/aggregate \
@@ -21,6 +20,9 @@ RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd \
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/intl.so:devel/pecl-intl
 
+CONFLICTS=	pfSense-pkg-pfBlockerNG-devel
+
+USES=		php
 NO_BUILD=	yes
 NO_MTREE=	yes
 
