@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * Copyright (c) 2015-2018 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -28,6 +28,17 @@
  * limitations under the License.
  */
 
+if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' && $_REQUEST && $_REQUEST['pfb']) {
+
+	$query = htmlspecialchars($_REQUEST['pfb']);
+	$file = "/var/db/aliastables/{$query}.txt";
+	if (file_exists($file)) {
+		$return = file_get_contents($file);
+		print $return;
+	}
+	exit;
+}
+
 require_once('util.inc');
 require_once('functions.inc');
 require_once('pkg-utils.inc');
@@ -38,36 +49,90 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include fu
 
 global $config, $g, $pfb;
 
-// Extras - MaxMind/Alexa Download URLs/filenames/settings
+// Clear IP/DNSBL counters via CRON
+if (isset($argv[1])) {
+	if ($argv[1] == 'clearip') {
+		pfBlockerNG_clearip();
+		exit;
+	}
+	elseif ($argv[1] == 'cleardnsbl') {
+		pfBlockerNG_cleardnsbl('clearall');
+		exit;
+	}
+}
+
+// Extras - MaxMind/TOP1M Download URLs/filenames/settings
 $pfb['extras'][0]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz';
 $pfb['extras'][0]['file_dwn']	= 'GeoIP.dat.gz';
 $pfb['extras'][0]['file']	= 'GeoIP.dat';
 $pfb['extras'][0]['folder']	= "{$pfb['geoipshare']}";
+$pfb['extras'][0]['type']	= 'geoip';
 
 $pfb['extras'][1]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz';
 $pfb['extras'][1]['file_dwn']	= 'GeoIPv6.dat.gz';
 $pfb['extras'][1]['file']	= 'GeoIPv6.dat';
 $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
+$pfb['extras'][1]['type']	= 'geoip';
 
 $pfb['extras'][2]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip';
 $pfb['extras'][2]['file_dwn']	= 'GeoLite2-Country-CSV.zip';
 $pfb['extras'][2]['file']	= '';
 $pfb['extras'][2]['folder']	= "{$pfb['geoipshare']}";
+$pfb['extras'][2]['type']	= 'geoip';
 
-$pfb['extras'][3]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
+if ($pfb['dnsbl_alexatype'] == 'Alexa') {
+	$pfb['extras'][3]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
+} else {
+	$pfb['extras'][3]['url']	= 'https://s3-us-west-1.amazonaws.com/umbrella-static/top-1m.csv.zip';
+}
 $pfb['extras'][3]['file_dwn']	= 'top-1m.csv.zip';
 $pfb['extras'][3]['file']	= 'top-1m.csv';
 $pfb['extras'][3]['folder']	= "{$pfb['dbdir']}";
+$pfb['extras'][3]['type']	= 'top1m';
+
+
+if ($argv[1] == 'bl' || $argv[1] == 'bls') {
+
+	if (!empty($argv[2]) && $pfb['blconfig'] &&
+	    !empty($pfb['blconfig']['blacklist_selected']) &&
+	    isset($pfb['blconfig']['item'])) {
+
+		$key = 4;
+		$selected = array_flip(explode(',', $argv[2])) ?: array();
+		foreach ($pfb['blconfig']['item'] as $item) {
+			if (isset($selected[$item['xml']])) {
+				$pfb['extras'][$key]['url']		= $item['feed'];
+				$pfb['extras'][$key]['name']		= $item['title'];
+				$pfb['extras'][$key]['file_dwn']	= pathinfo($item['feed'], PATHINFO_BASENAME);
+				$pfb['extras'][$key]['file']		= pathinfo($item['feed'], PATHINFO_BASENAME);
+				$pfb['extras'][$key]['folder']		= "{$pfb['dbdir']}";
+				$pfb['extras'][$key]['type']		= 'blacklist';
+
+				if (isset($item['username']) && isset($item['password'])) {
+					$pfb['extras'][$key]['username'] = $item['username'];
+					$pfb['extras'][$key]['password'] = $item['password'];
+				}
+
+				// Patch UT1 filename
+				if ($item['feed'] == 'ftp://ftp.ut-capitole.fr/pub/reseau/cache/squidguard_contrib/blacklists.tar.gz') {
+					$pfb['extras'][$key]['file_dwn'] = $pfb['extras'][$key]['file'] = 'ut1.tar.gz';
+				}
+				$key++;
+			}
+		}
+	}
+}
 
 // Call include file and collect updated Global settings
-if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', 'bu', 'uc', 'gc', 'al', 'cron', 'ugc'))) {
+if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', 'bu', 'uc', 'gc', 'al', 'bl', 'bls', 'cron', 'ugc'))) {
 	pfb_global();
 
-	$pfb['extras_update'] = FALSE;  // Flag when Extras (MaxMind/Alexa) are updateded via cron job
+	$pfb['extras_update'] = FALSE;  // Flag when Extras (MaxMind/TOP1M) are updateded via cron job
 
 	// Script Arguments
 	switch($argv[1]) {
 		case 'cron':		// Sync 'cron'
+			syslog(LOG_NOTICE, '[pfBlockerNG] Starting cron process.');
 			pfblockerng_sync_cron();
 			break;
 		case 'updateip':	// Sync 'Force Reload IP only'
@@ -77,14 +142,14 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 		case 'update':		// Sync 'Force update'
 			sync_package_pfblockerng('cron');
 			break;
-		case 'dc':		// Update Extras - MaxMind/Alexa database files
+		case 'dc':		// Update Extras - MaxMind/TOP1M database files
 		case 'dcc':
 
 			// 'dcc' called via Cron job
 			if ($argv[1] == 'dcc') {
 
-				// Only update on first Tuesday of each month
-				if (date('D') != 'Tue') {
+				// Only update on first Tuesday of each month (Delay till Thurs to allow for MaxMind late releases)
+				if (date('D') != 'Thu') {
 					exit;
 				}
 				$pfb['extras_update'] = TRUE;
@@ -95,7 +160,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 				unset($pfb['extras'][2]);
 			}
 
-			// Skip Alexa update, if disabled
+			// Skip TOP1M update, if disabled
 			if ($pfb['dnsbl_alexa'] != 'on') {
 				unset($pfb['extras'][3]);
 			}
@@ -111,9 +176,26 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 			unset($pfb['extras'][2], $pfb['extras'][3]);
 			pfblockerng_download_extras();
 			break;
-		case 'al':		// Update Alexa database only.
+		case 'al':		// Update TOP1M database only.
 			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2]);
 			pfblockerng_download_extras();
+			break;
+		case 'bl':		// Update DNSBL Category database(s) only.
+		case 'bls':
+			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2], $pfb['extras'][3]);
+
+			if (empty($pfb['extras'][4])) {
+				break;
+			}
+
+			// 'bls' called via 'Force Update|Reload'
+			if ($argv[1] == 'bls') {
+				$pfb_return = pfblockerng_download_extras(600, 'blacklist');
+				return $pfb_return;
+			}
+			else {
+				pfblockerng_download_extras();
+			}
 			break;
 		case 'uc':		// Update MaxMind ISO files from local database files.
 			pfblockerng_uc_countries();
@@ -138,7 +220,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $format) {
 	global $config, $pfb;
 
-	$log = "[ {$header} ]\n";
+	$log = "[ {$header} ] [ NOW ]\n";
 	pfb_logger("{$log}", 1);
 	$pfb['cron_update'] = FALSE;
 
@@ -160,7 +242,7 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 		$log = "\t\t\tPrevious download failed.\tRe-attempt download\n";
 		pfb_logger("{$log}", 1);
 		$pfb['update_cron'] = TRUE;
-		unlink_if_exists("{$pfbfolder}/{$header}.txt");
+		touch("{$pfbfolder}/{$header}.update");
 		return;
 	}
 
@@ -181,7 +263,7 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 			$log = "\t\t\t\t( rsync )\t\tUpdate found\n";
 			pfb_logger("{$log}", 1);
 			$pfb['update_cron'] = TRUE;
-			unlink_if_exists("{$pfbfolder}/{$header}.txt");
+			touch("{$pfbfolder}/{$header}.update");
 			return;
 		}
 
@@ -206,37 +288,49 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 
 				// Try up to 3 times to download the file before giving up
 				for ($retries = 1; $retries <= 3; $retries++) {
+					$remote_stamp_raw = -1;
 					if (curl_exec($ch)) {
 						$remote_stamp_raw = curl_getinfo($ch, CURLINFO_FILETIME);
 						break;	// Break on success
 					}
 					sleep(3);
 				}
+
 				if ($remote_stamp_raw != -1) {
 					$remote_tds = gmdate('D, d M Y H:i:s T', $remote_stamp_raw);
 				}
-			}
-			else {
-				$remote_stamp_raw = -1;
 			}
 			curl_close($ch);
 		}
 
 		// If remote timestamp not found, Attempt md5 comparison
 		if ($remote_stamp_raw == -1) {
-			// Collect md5 checksums
-			$remote_md5	= @md5_file($list_url);
-			$local_md5	= @md5_file($local_file);
 
-			if ($remote_md5 != $local_md5) {
-				$log = "\t\t\t\t( md5 changed )\t\tUpdate found\n";
-				pfb_logger("{$log}", 1);
-				$pfb['update_cron'] = TRUE;
-				unlink_if_exists("{$pfbfolder}/{$header}.txt");
-				return;
+			// Download Feed to compare md5's. If update required, downloaded md5 file will be used instead of downloading twice
+			if (pfb_download($list_url, "{$pfborig}/{$header}.md5", $pflex, $header, '', 1, '', 300, 'md5', '', '')) {
+
+				// Collect md5 checksums
+				$remote_md5	= @md5_file("{$pfborig}/{$header}.md5.raw");
+				$local_md5	= @md5_file($local_file);
+
+				if ($remote_md5 != $local_md5) {
+					$log = "\n\t\t\t\t( md5 changed )\t\tUpdate found\n";
+					pfb_logger("{$log}", 1);
+					$pfb['update_cron'] = TRUE;
+					touch("{$pfbfolder}/{$header}.update");
+					return;
+				}
+				else {
+					$log = "\n\t\t\t\t( md5 unchanged )\tUpdate not required\n";
+					pfb_logger("{$log}", 1);
+					unlink_if_exists("{$pfborig}/{$header}.md5.raw");
+					return;
+				}
 			}
 			else {
-				$log = "\t( No remote timestamp/md5 unchanged )\t\tUpdate not required\n";
+				$log = "\n\tFailed to download Feed for md5 comparison!\tUpdate skipped\n";
+				unlink_if_exists("{$pfborig}/{$header}.md5.raw");
+				touch("{$pfbfolder}/{$header}.fail");
 				pfb_logger("{$log}", 1);
 				return;
 			}
@@ -268,37 +362,62 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 
 		$log = "Update found\n";
 		pfb_logger("{$log}", 1);
-		unlink_if_exists("{$pfbfolder}/{$header}.txt");
+		touch("{$pfbfolder}/{$header}.update");
 	}
 	return;
 }
 
 
-// Download Extras - MaxMind/Alexa feeds via cURL
-function pfblockerng_download_extras($timeout=600) {
+// Download Extras - MaxMind/TOP1M/Category feeds via cURL
+function pfblockerng_download_extras($timeout=600, $type='') {
 	global $pfb;
-	$pfberror = FALSE;
+
+	$pfb_return	= '';
+	$pfb_error	= FALSE;
 
 	pfb_logger("\nDownload Process Starting [ NOW ]\n", 3);
 	foreach ($pfb['extras'] as $feed) {
-		$file_dwn = "{$feed['folder']}/{$feed['file_dwn']}";
-		if (!pfb_download($feed['url'], $file_dwn, FALSE, "{$feed['folder']}/{$feed['file']}", '', 3, '', $timeout)) {
+
+		if (empty($feed)) {
+			continue;
+		}
+
+		$file_dwn		= "{$feed['folder']}/{$feed['file_dwn']}";
+		$feed['username']	= $feed['username'] ?: '';
+		$feed['password']	= $feed['password'] ?: '';
+
+		if (!pfb_download($feed['url'], $file_dwn, FALSE, "{$feed['folder']}/{$feed['file']}", '', 3, '', $timeout, $feed['type'], 
+		    $feed['username'], $feed['password'])) {
+
 			$log = "\nFailed to Download {$feed['file']}\n";
 			pfb_logger("{$log}", 3);
 
-			// On Extras update (MaxMind and Alexa), if error found when downloading MaxMind Country database
+			// On Extras update (MaxMind and TOP1M), if error found when downloading MaxMind Country database
 			// return error to update process
 			if ($feed['file_dwn'] == 'GeoLite2-Country-CSV.zip') {
-				$pfberror = TRUE;
+				$pfb_error = TRUE;
+			}
+
+			if ($type == 'blacklist') {
+				$pfb_return .= "\t{$feed['name']} ... Failed\n";
+			}
+		}
+		else {
+			if ($type == 'blacklist') {
+				$pfb_return .= "\t{$feed['name']} ... Completed\n";
 			}
 		}
 	}
 	pfb_logger("Download Process Ended [ NOW ]\n\n", 3);
 
-	if ($pfberror) {
-		return FALSE;
+	if ($type == 'blacklist') {
+		print "{$pfb_return}";
 	} else {
-		return TRUE;
+		if ($pfb_error) {
+			return FALSE;
+		} else {
+			return TRUE;
+		}
 	}
 }
 
@@ -317,17 +436,17 @@ function pfblockerng_sync_cron() {
 	pfb_logger("{$log}", 1);
 
 	$list_type = array('pfblockernglistsv4' => '_v4', 'pfblockernglistsv6' => '_v6', 'pfblockerngdnsbl' => '_v4', 'pfblockerngdnsbleasylist' => '_v4');
-	foreach ($list_type as $ip_type => $vtype) {
-		if (!empty($config['installedpackages'][$ip_type]['config'])) {
-			foreach ($config['installedpackages'][$ip_type]['config'] as $list) {
+	foreach ($list_type as $ltype => $vtype) {
+		if (!empty($config['installedpackages'][$ltype]['config'])) {
+			foreach ($config['installedpackages'][$ltype]['config'] as $list) {
 				if (isset($list['row']) && $list['action'] != 'Disabled' && $list['cron'] != 'Never') {
 					foreach ($list['row'] as $row) {
 						if (!empty($row['url']) && $row['state'] != 'Disabled') {
 
-							if ($vtype == '_v4') {
+							if (in_array($ltype, array('pfblockerngdnsbl', 'pfblockerngdnsbleasylist'))) {
 								$header = "{$row['header']}";
 							} else {
-								$header = "{$row['header']}_v6";
+								$header = "{$row['header']}{$vtype}";
 							}
 
 							// Determine folder location for alias (return array $pfbarr)
