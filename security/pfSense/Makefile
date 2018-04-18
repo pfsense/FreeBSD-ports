@@ -89,6 +89,8 @@ NO_MTREE=	yes
 
 CONFLICTS=	pfSense-vmware-[0-9]*
 
+php72_PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
+
 PLIST_FILES=	/etc/version.patch
 PLIST_DIRS=	/etc
 
