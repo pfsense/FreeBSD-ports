@@ -447,7 +447,7 @@ if (!isset($config['installedpackages']['pfblockerngipsettings']['config'][0]['v
 					}
 				}
 				$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'] = base64_encode($customlist) ?: '';
-				unset($config['aliases']['alias'][$key]);
+				// unset($config['aliases']['alias'][$key]);
 				break;
 			}
 		}
