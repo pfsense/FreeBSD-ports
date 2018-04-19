@@ -2492,7 +2492,7 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 			}
 			snprintf(outputbuf + strlen(outputbuf),
 			    sizeof(outputbuf) - strlen(outputbuf), "/%d", i);
-			add_next_index_string(return_value, outputbuf, 1);
+			add_next_index_string(return_value, outputbuf);
 			break;
 		case AF_INET6:
 			bzero(outputbuf, sizeof outputbuf);
@@ -2506,7 +2506,7 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 			snprintf(outputbuf + strlen(outputbuf),
 			    sizeof(outputbuf) - strlen(outputbuf), "/%d",
 			    prefix(&tmp6->sin6_addr, sizeof(struct in6_addr)));
-			add_next_index_string(return_value, outputbuf, 1);
+			add_next_index_string(return_value, outputbuf);
 			break;
 		}
 	}
@@ -2935,7 +2935,7 @@ PHP_FUNCTION(pfSense_interface_listget) {
 		ifname = mb->ifa_name;
 		ifname_len = strlen(mb->ifa_name);
 
-		add_next_index_string(return_value, mb->ifa_name, 1);
+		add_next_index_string(return_value, mb->ifa_name);
 	}
 
 	freeifaddrs(ifdata);
@@ -2945,6 +2945,7 @@ PHP_FUNCTION(pfSense_interface_create) {
 	char *ifname;
 	int ifname_len;
 	struct ifreq ifr;
+	zend_string *str;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
 		RETURN_NULL();
@@ -2955,8 +2956,10 @@ PHP_FUNCTION(pfSense_interface_create) {
 	if (ioctl(PFSENSE_G(s), SIOCIFCREATE2, &ifr) < 0) {
 		array_init(return_value);
 		add_assoc_string(return_value, "error", "Could not create interface");
-	} else
-		RETURN_STRING(ifr.ifr_name, 1)
+	} else {
+		*str = zend_string_init(ifr.ifr_name, sizeof(ifr.ifr_name)-1, 0);
+		RETURN_STR(str);
+	}
 }
 
 PHP_FUNCTION(pfSense_interface_destroy) {
@@ -4270,7 +4273,7 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				break;
 			case VICI_PARSE_LIST_ITEM:
 				value = vici_parse_value_str(res);
-				add_next_index_string(nestedarrs[level], value, 1);
+				add_next_index_string(nestedarrs[level], value);
 				break;
 			case VICI_PARSE_END:
 				done++;
