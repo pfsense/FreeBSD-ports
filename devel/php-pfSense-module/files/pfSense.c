@@ -2104,22 +2104,27 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 	members = untagged = 0;
 	if (vlan != 0 && zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
 		hash1 = Z_ARRVAL_P(zvar);
-		for (zend_hash_internal_pointer_reset_ex(hash1, &h1p);
-		    zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS;
-		    zend_hash_move_forward_ex(hash1, &h1p)) {
+
+		zend_hash_internal_pointer_reset_ex(hash1, &h1p);
+
+		while (zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS) {
 			if (zend_hash_get_current_key_ex(hash1, &key, &key_len,
 			    &index, 0, &h1p) != HASH_KEY_IS_LONG ||
 			    Z_TYPE_PP(data1) != IS_ARRAY) {
 				continue;
 			}
+
 			port = index;
+
 			if (port < 0 || port >= info.es_nports)
 				continue;
+
 			hash2 = Z_ARRVAL_PP(data1);
 			tagged = 0;
-			for (zend_hash_internal_pointer_reset_ex(hash2, &h2p);
-			    zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) == SUCCESS;
-			    zend_hash_move_forward_ex(hash2, &h2p)) {
+
+			zend_hash_internal_pointer_reset_ex(hash2, &h2p);
+
+			while (zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) == SUCCESS) {
 				if (zend_hash_get_current_key_ex(hash2, &key,
 				    &key_len, &index, 0, &h2p) != HASH_KEY_IS_STRING ||
 				    Z_TYPE_PP(data2) != IS_LONG) {
@@ -2129,10 +2134,16 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				    Z_LVAL_PP(data2) != 0) {
 					tagged = 1;
 				}
+
+				zend_hash_move_forward_ex(hash2, &h2p);
 			}
+
 			members |= (1 << port);
+
 			if (!tagged)
 				untagged |= (1 << port);
+
+			zend_hash_move_forward_ex(hash1, &h1p);
 		}
 	}
 
