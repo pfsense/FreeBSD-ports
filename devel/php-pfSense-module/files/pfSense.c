@@ -2127,7 +2127,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 					continue;
 				}
 
-				if (strlen(*skey2) == 6 && strcasecmp(*skey2, "tagged") == 0 && Z_LVAL_P(val2) != 0) {
+				if (strlen(ZSTR_VAL(*skey2)) == 6 && strcasecmp(ZSTR_VAL(*skey2), "tagged") == 0 && Z_LVAL_P(val2) != 0) {
 					tagged = 1;
 				}
 
@@ -3502,11 +3502,11 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			hash2 = Z_ARRAYVAL_P(val);
 			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
 				entries = 1;
-				if((strlen(*skey2) == 9) && (strcasecmp(*key2, "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
+				if((strlen(ZSTR_VAL(*skey2)) == 9) && (strcasecmp(ZSTR_VAL(*key2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
 					filter_if = 1;
-				} else if ((strlen(*skey2) == 6) && (strcasecmp(*skey2, "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
+				} else if ((strlen(ZSTR_VAL(*skey2)) == 6) && (strcasecmp((*skey2), "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
 					filter_rl = 1;
-				} else if ((strlen(*skey2) == 6) && (strcasecmp(*skey2, "filter") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
+				} else if ((strlen(ZSTR_VAL(*skey2)) == 6) && (strcasecmp(ZSTR_VAL(*skey2), "filter") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
 					filter = Z_STRVAL_P(val2);
 				}
 
