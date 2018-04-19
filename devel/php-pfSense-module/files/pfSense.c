@@ -3457,6 +3457,33 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	if (zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
 		hash1 = Z_ARRVAL_P(zvar);
 
+		zval *val, *val2;
+		zend_long lkey, lkey2;
+		zend_string *skey, *skey2;
+		int entries = 0;
+
+		ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
+			if (!lkey || (Z_TYPE_P(val)) != IS_ARRAY)) {
+				continue;
+			}
+
+			hash2 = Z_ARRAYVAL_P(val);
+			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
+				if((strlen(skey2) == 9) && (strcasecmp(key, "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
+					filter_if = 1;
+				} else if ((strlen(skey2) == 6) && (strcasecmp(key, "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
+					filter_rl = 1;
+				} else if ((strlen(skey2) == 6) && (strcasecmp(key, "filter") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
+					filter = Z_STRVAL_P(val2);
+				}
+
+			} ZEND_HASH_FOREACH_END();
+		} ZEND_HASH_FOREACH_END();
+
+		if (entries == 0) {
+			RETURN_NULL();
+		}
+/*
 		zend_hash_internal_pointer_reset_ex(hash1, &h1p);
 
 		while (zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS) {
@@ -3487,6 +3514,8 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 
 			zend_hash_move_forward_ex(hash1, &h1p);
 		}
+
+*/
 		if (filter_if && filter_rl)
 			RETURN_NULL();
 	}
