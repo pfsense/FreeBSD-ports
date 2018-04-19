@@ -1386,7 +1386,7 @@ table_show_entry(zval *rarray, ipfw_xtable_info *i, ipfw_obj_tentry *tent)
 		break;
 	case IPFW_TABLE_NUMBER:
 		/* numbers */
-		add_assoc_string(rarray, "type", "number", 1);
+		add_assoc_string(rarray, "type", "number");
 		add_assoc_long(rarray, "number", tent->k.key);
 		break;
 	default:
