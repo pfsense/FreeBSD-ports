@@ -3456,9 +3456,10 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		RETURN_NULL();
 	if (zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
 		hash1 = Z_ARRVAL_P(zvar);
-		for (zend_hash_internal_pointer_reset_ex(hash1, &h1p);
-		    zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS;
-		    zend_hash_move_forward_ex(hash1, &h1p)) {
+
+		zend_hash_internal_pointer_reset_ex(hash1, &h1p);
+
+		while (zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS) {
 			if (zend_hash_get_current_key_ex(hash1, &key, &key_len,
 			    &index, 0, &h1p) != HASH_KEY_IS_LONG ||
 			    Z_TYPE_PP(data1) != IS_ARRAY) {
@@ -3483,6 +3484,8 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			    Z_TYPE_PP(data2) == IS_STRING) {
 				filter = Z_STRVAL_PP(data2);
 			}
+
+			zend_hash_move_forward_ex(hash1, &h1p);
 		}
 		if (filter_if && filter_rl)
 			RETURN_NULL();
@@ -3505,9 +3508,10 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		if (filter_if || filter_rl) {
 			found = 0;
 			hash1 = Z_ARRVAL_P(zvar);
-			for (zend_hash_internal_pointer_reset_ex(hash1, &h1p);
-			    zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS;
-			    zend_hash_move_forward_ex(hash1, &h1p)) {
+
+			zend_hash_internal_pointer_reset_ex(hash1, &h1p);
+
+			while (zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS) {
 				hash2 = Z_ARRVAL_PP(data1);
 				zend_hash_internal_pointer_reset_ex(hash2, &h2p);
 				if (zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) != SUCCESS) {
@@ -3524,6 +3528,8 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 						found = 1;
 					}
 				}
+
+				zend_hash_move_forward_ex(hash1, &h1p);
 			}
 			if (!found)
 				continue;
