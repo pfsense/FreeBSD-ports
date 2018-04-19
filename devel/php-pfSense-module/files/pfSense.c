@@ -3451,6 +3451,10 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	zval *array, **data1, **data2, *zvar;
 	HashTable *hash1, *hash2;
 	HashPosition h1p, h2p;
+	zval *val, *val2;
+	zend_long lkey, lkey2;
+	zend_string *skey, *skey2;
+	int entries = 0;
 
 	filter = NULL;
 	filter_if = filter_rl = 0;
@@ -3459,11 +3463,6 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		RETURN_NULL();
 	if (zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
 		hash1 = Z_ARRVAL_P(zvar);
-
-		zval *val, *val2;
-		zend_long lkey, lkey2;
-		zend_string *skey, *skey2;
-		int entries = 0;
 
 		ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
 			if (!lkey || (Z_TYPE_P(val)) != IS_ARRAY)) {
