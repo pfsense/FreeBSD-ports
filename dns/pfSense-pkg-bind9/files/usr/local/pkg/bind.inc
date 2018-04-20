@@ -116,7 +116,7 @@ function bind_sync() {
 	// Create rndc
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
 	$rndc_port = $bind['controlport'] == "" ? "953" : $bind['controlport'];
-	$rndc_confgen_opts = "-p$rndc_port";
+	$rndc_confgen_opts = "-p " . escapeshellarg($rndc_port);
 	if (!file_exists(BIND_LOCALBASE."/etc/rndc-confgen.pfsense") && file_exists($rndc_confgen)) {
 		exec("$rndc_confgen $rndc_confgen_opts ", $rndc_conf);
 		$confgen_file = "";
@@ -235,13 +235,13 @@ EOD;
 
 	$bind_listenport = $bind['listenport'] == "" ? "53" : $bind['listenport'];
 	if (array_key_exists("ipv6allow", $config['system'])) {
-		$bind_conf .= "\tlisten-on-v6 port $bind_listenport { $bind_listenonv6 };\n";
+		$bind_conf .= "\tlisten-on-v6 port {$bind_listenport} { {$bind_listenonv6} };\n";
 	}
-	$bind_conf .= "\tlisten-on port $bind_listenport { $bind_listenon };\n";
+	$bind_conf .= "\tlisten-on port {$bind_listenport} { {$bind_listenon} };\n";
 
 	// Forwarder config
 	if ($bind_forwarder == 'on') {
-		$bind_conf .= "\tforwarders { $forwarder_ips };\n";
+		$bind_conf .= "\tforwarders { {$forwarder_ips} };\n";
 	}
 	if ($bind_notify == 'on') {
 		$bind_conf .= "\tnotify yes;\n";
