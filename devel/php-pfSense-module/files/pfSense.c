@@ -3451,7 +3451,7 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 		add_assoc_double(&array, "packets", (double)(pr.rule.packets[0] + pr.rule.packets[1]));
 		add_assoc_double(&array, "bytes", (double)(pr.rule.bytes[0] + pr.rule.bytes[1]));
 		add_assoc_double(&array, "states", (double)pr.rule.u_states_cur);
-		add_assoc_long(array, "pid", (long)pr.rule.cpid);
+		add_assoc_long(&array, "pid", (long)pr.rule.cpid);
 		add_assoc_double(&array, "state creations", (double)pr.rule.u_states_tot);
 		add_index_zval(return_value, pr.rule.nr, &array);
 	}
