@@ -4262,12 +4262,12 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				array_init(&(nestedarrs[level + 1]));
 
 				if (level == 0) {
-					add_next_index_zval(&(nestedarrs[level]),&(nestedarrs[level+1]);
+					add_next_index_zval(&(nestedarrs[level]),&(nestedarrs[level+1]));
 					add_assoc_string(&(nestedarrs[level + 1]), temp, name);
 				} else {
 					add_assoc_zval(&(nestedarrs[level]), name, &(nestedarrs[level + 1]));
 				}
-				Z_ADDREF_P(&(nestedarrs[level + 1]);
+				Z_ADDREF_P(&(nestedarrs[level + 1]));
 				level++;
 				break;
 			case VICI_PARSE_END_SECTION:
