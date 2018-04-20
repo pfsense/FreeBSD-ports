@@ -4249,7 +4249,7 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 	zval nestedarrs[32];
 	char *temp = "con-id";
 
-	nestedarrs[level] = (zval) *salist;
+	nestedarrs[level] = (zval_ptr) *salist;
 
 	while (!done) {
 		name = value = NULL;
