@@ -4280,7 +4280,7 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				break;
 			case VICI_PARSE_BEGIN_LIST:
 				name = vici_parse_name(res);
-				ALLOC_INIT_ZVAL(&(nestedarrs[level + 1]);
+
 				array_init(&(nestedarrs[level + 1]);
 				if (level == 0) {
 					add_next_index_zval(&(nestedarrs[level]),&(nestedarrs[level+1]);
