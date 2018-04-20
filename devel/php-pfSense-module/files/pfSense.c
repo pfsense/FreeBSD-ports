@@ -2000,7 +2000,7 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 	etherswitch_vlangroup_t vg;
 	int fd, i;
 	long devlen, vlangroup;
-	zval *members;
+	zval members;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
 	    &devlen, &vlangroup) == FAILURE)
@@ -2036,8 +2036,7 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 	add_assoc_long(return_value, "vlangroup", vg.es_vlangroup);
 	add_assoc_long(return_value, "vid", vg.es_vid & ETHERSWITCH_VID_MASK);
 
-	ALLOC_INIT_ZVAL(members);
-	array_init(members);
+	array_init(&members);
 	for (i = 0; i < info.es_nports; i++) {
 		if ((vg.es_member_ports & ETHERSWITCH_PORTMASK(i)) != 0) {
 			if ((vg.es_untagged_ports & ETHERSWITCH_PORTMASK(i)) != 0)
@@ -2046,10 +2045,10 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 				tag = "t";
 			memset(buf, 0, sizeof(buf));
 			snprintf(buf, sizeof(buf) - 1, "%d%s", i, tag);
-			add_assoc_long(members, buf, 1);
+			add_assoc_long(&members, buf, 1);
 		}
 	}
-	add_assoc_zval(return_value, "members", members);
+	add_assoc_zval(return_value, "members", &members);
 }
 
 PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
@@ -2105,7 +2104,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				continue;
 			}
 
-			port = skey;
+			port = *skey;
 			if (port < 0 || port >= info.es_nports) {
 				continue;
 			}
