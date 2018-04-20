@@ -1624,7 +1624,7 @@ PHP_FUNCTION(pfSense_ipfw_tables_list)
 	ipfw_obj_lheader *olh;
 	ipfw_xtable_info *info;
 	socklen_t sz;
-	zval *tinfo;
+	zval tinfo;
 
 	/* Start with reasonable default */
 	sz = sizeof(*olh) + 16 * sizeof(ipfw_xtable_info);
@@ -1650,12 +1650,11 @@ PHP_FUNCTION(pfSense_ipfw_tables_list)
 		array_init(return_value);
 		info = (ipfw_xtable_info *)(olh + 1);
 		for (i = 0; i < olh->count; i++) {
-			ALLOC_INIT_ZVAL(tinfo);
-			array_init(tinfo);
-			table_tinfo(tinfo, info);
+			array_init(&tinfo);
+			table_tinfo(&tinfo, info);
 
-			add_next_index_zval(return_value, tinfo);
-			info = (ipfw_xtable_info *)((caddr_t)info + olh->objsize);
+			add_next_index_zval(return_value, &tinfo);
+			info = (ipfw_xtable_info *)((caddr_t)(&info) + olh->objsize);
 		}
 
 		free(olh);
