@@ -3459,7 +3459,7 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 }
 
 PHP_FUNCTION(pfSense_get_pf_states) {
-	char buf[128], *filter, *key;
+	char buf[128], *filter; //, *key;
 	int count, dev, filter_if, filter_rl, found, min, sec, states;
 	struct pfioc_states ps;
 	struct pfsync_state *s, state;
@@ -3468,8 +3468,8 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	struct protoent *p;
 	uint32_t expire, creation;
 	uint64_t bytes[2], id, packets[2];
-	unsigned int key_len;
-	unsigned long index;
+	// unsigned int key_len;
+	// unsigned long index;
 	//zval *array, **data1, **data2
 	zval array, *zvar;
 	HashTable *hash1, *hash2;
