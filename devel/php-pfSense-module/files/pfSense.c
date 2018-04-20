@@ -3423,7 +3423,7 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 	int dev;
 	struct pfioc_rule pr;
 	uint32_t mnr, nr;
-	zval *array;
+	zval array;
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
@@ -3443,18 +3443,17 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 			break;
 		}
 
-		ALLOC_INIT_ZVAL(array);
-		array_init(array);
-		add_assoc_long(array, "id", (long)pr.rule.nr);
-		add_assoc_long(array, "tracker", (long)pr.rule.cuid);
-		add_assoc_string(array, "label", pr.rule.label);
-		add_assoc_double(array, "evaluations", (double)pr.rule.evaluations);
-		add_assoc_double(array, "packets", (double)(pr.rule.packets[0] + pr.rule.packets[1]));
-		add_assoc_double(array, "bytes", (double)(pr.rule.bytes[0] + pr.rule.bytes[1]));
-		add_assoc_double(array, "states", (double)pr.rule.u_states_cur);
+		array_init(&array);
+		add_assoc_long(&array, "id", (long)pr.rule.nr);
+		add_assoc_long(&array, "tracker", (long)pr.rule.cuid);
+		add_assoc_string(&array, "label", pr.rule.label);
+		add_assoc_double(&array, "evaluations", (double)pr.rule.evaluations);
+		add_assoc_double(&array, "packets", (double)(pr.rule.packets[0] + pr.rule.packets[1]));
+		add_assoc_double(&array, "bytes", (double)(pr.rule.bytes[0] + pr.rule.bytes[1]));
+		add_assoc_double(&array, "states", (double)pr.rule.u_states_cur);
 		add_assoc_long(array, "pid", (long)pr.rule.cpid);
-		add_assoc_double(array, "state creations", (double)pr.rule.u_states_tot);
-		add_index_zval(return_value, pr.rule.nr, array);
+		add_assoc_double(&array, "state creations", (double)pr.rule.u_states_tot);
+		add_index_zval(return_value, pr.rule.nr, &array);
 	}
 	close(dev);
 }
@@ -3471,9 +3470,10 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	uint64_t bytes[2], id, packets[2];
 	unsigned int key_len;
 	unsigned long index;
-	zval *array, **data1, **data2, *zvar;
+	//zval *array, **data1, **data2
+	zval array, *zvar;
 	HashTable *hash1, *hash2;
-	HashPosition h1p, h2p;
+	//HashPosition h1p, h2p;
 	zval *val, *val2;
 	zend_long lkey, lkey2;
 	zend_string *skey, *skey2;
@@ -3497,7 +3497,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				entries = 1;
 				if((strlen(ZSTR_VAL(skey2)) == 9) && (strcasecmp(ZSTR_VAL(skey2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
 					filter_if = 1;
-				} else if ((strlen(ZSTR_VAL(skey2)) == 6) && (strcasecmp((skey2), "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
+				} else if ((strlen(ZSTR_VAL(skey2)) == 6) && (strcasecmp(ZSTR_VAL(skey2), "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
 					filter_rl = 1;
 				} else if ((strlen(ZSTR_VAL(skey2)) == 6) && (strcasecmp(ZSTR_VAL(skey2), "filter") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
 					filter = Z_STRVAL_P(val2);
@@ -3634,22 +3634,22 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		}
 
 		found = 0;
-		ALLOC_INIT_ZVAL(array);
-		array_init(array);
 
-		add_assoc_string(array, "if", state.ifname);
+		array_init(&array);
+
+		add_assoc_string(&array, "if", state.ifname);
 		if ((p = getprotobynumber(state.proto)) != NULL) {
-			add_assoc_string(array, "proto", p->p_name);
+			add_assoc_string(&array, "proto", p->p_name);
 			if (filter != NULL && strstr(p->p_name, filter))
 				found = 1;
 		} else
-			add_assoc_long(array, "proto", (long)state.proto);
-		add_assoc_string(array, "direction",
+			add_assoc_long(&array, "proto", (long)state.proto);
+		add_assoc_string(&array, "direction",
 		    ((state.direction == PF_OUT) ? "out" : "in"));
 
 		memset(buf, 0, sizeof(buf));
 		pf_print_host(&nk->addr[1], nk->port[1], state.af, buf, sizeof(buf));
-		add_assoc_string(array, ((state.direction == PF_OUT) ? "src" : "dst"), buf);
+		add_assoc_string(&array, ((state.direction == PF_OUT) ? "src" : "dst"), buf);
 		if (filter != NULL && !found && strstr(buf, filter))
 			found = 1;
 
@@ -3658,7 +3658,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			memset(buf, 0, sizeof(buf));
 			pf_print_host(&sk->addr[1], sk->port[1], state.af, buf,
 			    sizeof(buf));
-			add_assoc_string(array,
+			add_assoc_string(&array,
 			    ((state.direction == PF_OUT) ? "src-orig" : "dst-orig"), buf);
 			if (filter != NULL && !found && strstr(buf, filter))
 				found = 1;
@@ -3666,7 +3666,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 
 		memset(buf, 0, sizeof(buf));
 		pf_print_host(&nk->addr[0], nk->port[0], state.af, buf, sizeof(buf));
-		add_assoc_string(array, ((state.direction == PF_OUT) ? "dst" : "src"), buf);
+		add_assoc_string(&array, ((state.direction == PF_OUT) ? "dst" : "src"), buf);
 		if (filter != NULL && !found && strstr(buf, filter))
 			found = 1;
 
@@ -3675,7 +3675,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			memset(buf, 0, sizeof(buf));
 			pf_print_host(&sk->addr[0], sk->port[0], state.af, buf,
 			    sizeof(buf));
-			add_assoc_string(array,
+			add_assoc_string(&array,
 			    ((state.direction == PF_OUT) ? "dst-orig" : "src-orig"), buf);
 			if (filter != NULL && !found && strstr(buf, filter))
 				found = 1;
@@ -3686,7 +3686,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			    dst->state <= TCPS_TIME_WAIT) {
 				snprintf(buf, sizeof(buf) - 1, "%s:%s",
 				    tcpstates[src->state], tcpstates[dst->state]);
-				add_assoc_string(array, "state", buf);
+				add_assoc_string(&array, "state", buf);
 				if (filter != NULL && !found &&
 				    (strstr(tcpstates[src->state], filter) ||
 				    strstr(tcpstates[dst->state], filter))) {
@@ -3694,15 +3694,15 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				}
 			} else if (src->state == PF_TCPS_PROXY_SRC ||
 			    dst->state == PF_TCPS_PROXY_SRC)
-				add_assoc_string(array, "state", "PROXY:SRC");
+				add_assoc_string(&array, "state", "PROXY:SRC");
 			else if (src->state == PF_TCPS_PROXY_DST ||
 			    dst->state == PF_TCPS_PROXY_DST)
-				add_assoc_string(array, "state", "PROXY:DST");
+				add_assoc_string(&array, "state", "PROXY:DST");
 			else {
 				snprintf(buf, sizeof(buf) - 1,
 				    "<BAD STATE LEVELS %u:%u>",
 				    src->state, dst->state);
-				add_assoc_string(array, "state", buf);
+				add_assoc_string(&array, "state", buf);
 			}
 		} else if (state.proto == IPPROTO_UDP && src->state < PFUDPS_NSTATES &&
 		    dst->state < PFUDPS_NSTATES) {
@@ -3710,7 +3710,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 
 			snprintf(buf, sizeof(buf) - 1, "%s:%s",
 			    states[src->state], states[dst->state]);
-			add_assoc_string(array, "state", buf);
+			add_assoc_string(&array, "state", buf);
 
 			if (filter != NULL && !found &&
 			    (strstr(states[src->state], filter) ||
@@ -3724,7 +3724,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 
 			snprintf(buf, sizeof(buf) - 1, "%s:%s",
 			    states[src->state], states[dst->state]);
-			add_assoc_string(array, "state", buf);
+			add_assoc_string(&array, "state", buf);
 
 			if (filter != NULL && !found &&
 			    (strstr(states[src->state], filter) ||
@@ -3737,7 +3737,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		}
 
 		if (filter != NULL && !found) {
-			zval_dtor(array);
+			zval_dtor(&array);
 			continue;
 		}
 
@@ -3747,41 +3747,41 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		min = creation % 60;
 		creation /= 60;
 		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", creation, min, sec);
-		add_assoc_string(array, "age", buf);
+		add_assoc_string(&array, "age", buf);
 		expire = ntohl(state.expire);
 		sec = expire % 60;
 		expire /= 60;
 		min = expire % 60;
 		expire /= 60;
 		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", expire, min, sec);
-		add_assoc_string(array, "expires in", buf);
+		add_assoc_string(&array, "expires in", buf);
 
 		bcopy(state.packets[0], &packets[0], sizeof(uint64_t));
 		bcopy(state.packets[1], &packets[1], sizeof(uint64_t));
 		bcopy(state.bytes[0], &bytes[0], sizeof(uint64_t));
 		bcopy(state.bytes[1], &bytes[1], sizeof(uint64_t));
-		add_assoc_double(array, "packets total",
+		add_assoc_double(&array, "packets total",
 		    (double)(be64toh(packets[0]) + be64toh(packets[1])));
-		add_assoc_double(array, "packets in",
+		add_assoc_double(&array, "packets in",
 		    (double)be64toh(packets[0]));
-		add_assoc_double(array, "packets out",
+		add_assoc_double(&array, "packets out",
 		    (double)be64toh(packets[1]));
-		add_assoc_double(array, "bytes total",
+		add_assoc_double(&array, "bytes total",
 		    (double)(be64toh(bytes[0]) + be64toh(bytes[1])));
-		add_assoc_double(array, "bytes in", (double)be64toh(bytes[0]));
-		add_assoc_double(array, "bytes out", (double)be64toh(bytes[1]));
+		add_assoc_double(&array, "bytes in", (double)be64toh(bytes[0]));
+		add_assoc_double(&array, "bytes out", (double)be64toh(bytes[1]));
 		if (ntohl(state.anchor) != -1)
-			add_assoc_long(array, "anchor", (long)ntohl(state.anchor));
+			add_assoc_long(&array, "anchor", (long)ntohl(state.anchor));
 		if (ntohl(state.rule) != -1)
-			add_assoc_long(array, "rule", (long)ntohl(state.rule));
+			add_assoc_long(&array, "rule", (long)ntohl(state.rule));
 
 		bcopy(&state.id, &id, sizeof(uint64_t));
 		snprintf(buf, sizeof(buf) - 1, "%016jx", (uintmax_t)be64toh(id));
-		add_assoc_string(array, "id", buf);
+		add_assoc_string(&array, "id", buf);
 		snprintf(buf, sizeof(buf) - 1, "%08x", ntohl(state.creatorid));
-		add_assoc_string(array, "creatorid", buf);
+		add_assoc_string(&array, "creatorid", buf);
 
-		add_next_index_zval(return_value, array);
+		add_next_index_zval(return_value, &array);
 		count++;
 	}
 	free(ps.ps_buf);
