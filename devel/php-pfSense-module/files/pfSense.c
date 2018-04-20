@@ -2104,7 +2104,8 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				continue;
 			}
 
-			port = *skey;
+			port = lkey;
+
 			if (port < 0 || port >= info.es_nports) {
 				continue;
 			}
