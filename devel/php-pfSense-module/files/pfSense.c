@@ -4271,7 +4271,7 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				level++;
 				break;
 			case VICI_PARSE_END_SECTION:
-				&(nestedarrs[level]) = NULL;
+//				&(nestedarrs[level]) = NULL;
 				level--;
 				break;
 			case VICI_PARSE_KEY_VALUE:
@@ -4282,7 +4282,7 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 			case VICI_PARSE_BEGIN_LIST:
 				name = vici_parse_name(res);
 
-				array_init(&(nestedarrs[level + 1]);
+				array_init(&(nestedarrs[level + 1]));
 				if (level == 0) {
 					add_next_index_zval(&(nestedarrs[level]),&(nestedarrs[level+1]));
 					add_assoc_string(&(nestedarrs[level + 1]), temp, name);
@@ -4293,7 +4293,7 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				level++;
 				break;
 			case VICI_PARSE_END_LIST:
-				&(nestedarrs[level]) = NULL;
+//				&(nestedarrs[level]) = NULL;
 				level--;
 				break;
 			case VICI_PARSE_LIST_ITEM:
