@@ -1688,7 +1688,7 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	etherswitch_info_t info;
 	int fd, i;
 	long devlen;
-	zval *caps, *pmask, *swcaps;
+	zval caps, pmask, swcaps;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dev, &devlen) == FAILURE)
 		RETURN_NULL();
@@ -1717,37 +1717,34 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	add_assoc_long(return_value, "nlaggroups", info.es_nlaggroups);
 	add_assoc_long(return_value, "nvlangroups", info.es_nvlangroups);
 
-	ALLOC_INIT_ZVAL(caps);
-	array_init(caps);
+	array_init(&caps);
 	if (info.es_vlan_caps & ETHERSWITCH_VLAN_ISL)
-		add_assoc_long(caps, "ISL", 1);
+		add_assoc_long(&caps, "ISL", 1);
 	if (info.es_vlan_caps & ETHERSWITCH_VLAN_PORT)
-		add_assoc_long(caps, "PORT", 1);
+		add_assoc_long(&caps, "PORT", 1);
 	if (info.es_vlan_caps & ETHERSWITCH_VLAN_DOT1Q)
-		add_assoc_long(caps, "DOT1Q", 1);
+		add_assoc_long(&caps, "DOT1Q", 1);
 	if (info.es_vlan_caps & ETHERSWITCH_VLAN_DOT1Q_4K)
-		add_assoc_long(caps, "DOT1Q4K", 1);
+		add_assoc_long(&caps, "DOT1Q4K", 1);
 	if (info.es_vlan_caps & ETHERSWITCH_VLAN_DOUBLE_TAG)
-		add_assoc_long(caps, "QinQ", 1);
-	add_assoc_zval(return_value, "caps", caps);
+		add_assoc_long(&caps, "QinQ", 1);
+	add_assoc_zval(return_value, "caps", &caps);
 
-	ALLOC_INIT_ZVAL(swcaps);
-	array_init(swcaps);
+	array_init(&swcaps);
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_PORTS_MASK)
-		add_assoc_long(swcaps, "PORTS_MASK", 1);
+		add_assoc_long(&swcaps, "PORTS_MASK", 1);
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_LAGG)
-		add_assoc_long(swcaps, "LAGG", 1);
+		add_assoc_long(&swcaps, "LAGG", 1);
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_PSTATE)
-		add_assoc_long(swcaps, "PSTATE", 1);
-	add_assoc_zval(return_value, "switch_caps", swcaps);
+		add_assoc_long(&swcaps, "PSTATE", 1);
+	add_assoc_zval(return_value, "switch_caps", &swcaps);
 
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_PORTS_MASK) {
-		ALLOC_INIT_ZVAL(pmask);
-		array_init(pmask);
+		array_init(&pmask);
 		for (i = 0; i < info.es_nports; i++)
 			if ((info.es_ports_mask[i / 32] & (1 << (i % 32))) != 0)
-				add_index_bool(pmask, i, 1);
-		add_assoc_zval(return_value, "ports_mask", pmask);
+				add_index_bool(&pmask, i, 1);
+		add_assoc_zval(return_value, "ports_mask", &pmask);
 	}
 
 	switch(conf.vlan_mode) {
