@@ -4246,9 +4246,11 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 
 	int done = 0;
 	int level = 0;
-	zval *nestedarrs[32];
-	nestedarrs[level] = (zval *) salist;
+	zval nestedarrs[32];
 	char *temp = "con-id";
+
+	nestedarrs[level] = (zval) *salist;
+
 	while (!done) {
 		name = value = NULL;
 		vici_parse_t pres;
@@ -4256,46 +4258,46 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 		switch (pres) {
 			case VICI_PARSE_BEGIN_SECTION:
 				name = vici_parse_name(res);
-				ALLOC_INIT_ZVAL(nestedarrs[level + 1]);
-				array_init(nestedarrs[level + 1]);
+
+				array_init(&(nestedarrs[level + 1]);
 				if (level == 0) {
-					add_next_index_zval(nestedarrs[level],nestedarrs[level+1]);
-					add_assoc_string(nestedarrs[level + 1], temp, name);
+					add_next_index_zval(&(nestedarrs[level]),&(nestedarrs[level+1]);
+					add_assoc_string(&(nestedarrs[level + 1]), temp, name);
 				} else {
-					add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+					add_assoc_zval(&(nestedarrs[level]), name, &(nestedarrs[level + 1]);
 				}
-				Z_ADDREF_P(nestedarrs[level + 1]);
+				Z_ADDREF_P(&(nestedarrs[level + 1]);
 				level++;
 				break;
 			case VICI_PARSE_END_SECTION:
-				nestedarrs[level] = NULL;
+				&(nestedarrs[level]) = NULL;
 				level--;
 				break;
 			case VICI_PARSE_KEY_VALUE:
 				name = vici_parse_name(res);
 				value = vici_parse_value_str(res);
-				add_assoc_string(nestedarrs[level], name, value);
+				add_assoc_string(&(nestedarrs[level]), name, value);
 				break;
 			case VICI_PARSE_BEGIN_LIST:
 				name = vici_parse_name(res);
-				ALLOC_INIT_ZVAL(nestedarrs[level + 1]);
-				array_init(nestedarrs[level + 1]);
+				ALLOC_INIT_ZVAL(&(nestedarrs[level + 1]);
+				array_init(&(nestedarrs[level + 1]);
 				if (level == 0) {
-					add_next_index_zval(nestedarrs[level],nestedarrs[level+1]);
-					add_assoc_string(nestedarrs[level + 1], temp, name);
+					add_next_index_zval(&(nestedarrs[level]),&(nestedarrs[level+1]);
+					add_assoc_string(&(nestedarrs[level + 1]), temp, name);
 				} else {
-					add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+					add_assoc_zval(&(nestedarrs[level]), name, &(nestedarrs[level + 1]);
 				}
-				Z_ADDREF_P(nestedarrs[level + 1]);
+				Z_ADDREF_P(&(nestedarrs[level + 1]);
 				level++;
 				break;
 			case VICI_PARSE_END_LIST:
-				nestedarrs[level] = NULL;
+				&(nestedarrs[level]) = NULL;
 				level--;
 				break;
 			case VICI_PARSE_LIST_ITEM:
 				value = vici_parse_value_str(res);
-				add_next_index_string(nestedarrs[level], value);
+				add_next_index_string(&(nestedarrs[level]), value);
 				break;
 			case VICI_PARSE_END:
 				done++;
