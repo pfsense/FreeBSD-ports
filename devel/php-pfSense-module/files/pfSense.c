@@ -1778,7 +1778,7 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 	etherswitch_port_t p;
 	int fd, ifm_ulist[IFMEDIAREQ_NULISTENTRIES];
 	long devlen, port;
-	zval *flags, *media, *state;
+	zval flags, media, state;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
 	    &devlen, &port) == FAILURE)
@@ -1813,49 +1813,46 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 	add_assoc_string(return_value, "status",
 	    (p.es_ifmr.ifm_status & IFM_ACTIVE) ? "active" : "no carrier");
 
-	ALLOC_INIT_ZVAL(state);
-	array_init(state);
+	array_init(&state);
 	if (p.es_state & ETHERSWITCH_PSTATE_DISABLED)
-		add_assoc_long(state, "DISABLED", 1);
+		add_assoc_long(&state, "DISABLED", 1);
 	if (p.es_state & ETHERSWITCH_PSTATE_BLOCKING)
-		add_assoc_long(state, "BLOCKING", 1);
+		add_assoc_long(&state, "BLOCKING", 1);
 	if (p.es_state & ETHERSWITCH_PSTATE_LEARNING)
-		add_assoc_long(state, "LEARNING", 1);
+		add_assoc_long(&state, "LEARNING", 1);
 	if (p.es_state & ETHERSWITCH_PSTATE_FORWARDING)
-		add_assoc_long(state, "FORWARDING", 1);
-	add_assoc_zval(return_value, "state", state);
+		add_assoc_long(&state, "FORWARDING", 1);
+	add_assoc_zval(return_value, "state", &state);
 
-	ALLOC_INIT_ZVAL(flags);
-	array_init(flags);
+	array_init(&flags);
 	if (p.es_flags & ETHERSWITCH_PORT_CPU)
-		add_assoc_long(flags, "HOST", 1);
+		add_assoc_long(&flags, "HOST", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_STRIPTAG)
-		add_assoc_long(flags, "STRIPTAG", 1);
+		add_assoc_long(&flags, "STRIPTAG", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_ADDTAG)
-		add_assoc_long(flags, "ADDTAG", 1);
+		add_assoc_long(&flags, "ADDTAG", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_FIRSTLOCK)
-		add_assoc_long(flags, "FIRSTLOCK", 1);
+		add_assoc_long(&flags, "FIRSTLOCK", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_DROPTAGGED)
-		add_assoc_long(flags, "DROPTAGGED", 1);
+		add_assoc_long(&flags, "DROPTAGGED", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_DROPUNTAGGED)
-		add_assoc_long(flags, "DROPUNTAGGED", 1);
+		add_assoc_long(&flags, "DROPUNTAGGED", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_DOUBLE_TAG)
-		add_assoc_long(flags, "QinQ", 1);
+		add_assoc_long(&flags, "QinQ", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_INGRESS)
-		add_assoc_long(flags, "INGRESS", 1);
-	add_assoc_zval(return_value, "flags", flags);
+		add_assoc_long(&flags, "INGRESS", 1);
+	add_assoc_zval(return_value, "flags", &flags);
 
-	ALLOC_INIT_ZVAL(media);
-	array_init(media);
+	array_init(&media);
 	memset(buf, 0, sizeof(buf));
 	print_media_word(buf, sizeof(buf), p.es_ifmr.ifm_current, 1);
-	add_assoc_string(media, "current", buf);
+	add_assoc_string(&media, "current", buf);
 	if (p.es_ifmr.ifm_active != p.es_ifmr.ifm_current) {
 		memset(buf, 0, sizeof(buf));
 		print_media_word(buf, sizeof(buf), p.es_ifmr.ifm_active, 0);
-		add_assoc_string(media, "active", buf);
+		add_assoc_string(&media, "active", buf);
 	}
-	add_assoc_zval(return_value, "media", media);
+	add_assoc_zval(return_value, "media", &media);
 }
 
 PHP_FUNCTION(pfSense_etherswitch_setport)
@@ -1946,7 +1943,7 @@ PHP_FUNCTION(pfSense_etherswitch_getlaggroup)
 	etherswitch_laggroup_t lg;
 	int fd, i;
 	long devlen, laggroup;
-	zval *members;
+	zval members;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
 	    &devlen, &laggroup) == FAILURE)
@@ -1985,16 +1982,15 @@ PHP_FUNCTION(pfSense_etherswitch_getlaggroup)
 	array_init(return_value);
 	add_assoc_long(return_value, "laggroup", lg.es_laggroup);
 
-	ALLOC_INIT_ZVAL(members);
-	array_init(members);
+	array_init(&members);
 	for (i = 0; i < info.es_nports; i++) {
 		if ((lg.es_member_ports & ETHERSWITCH_PORTMASK(i)) != 0) {
 			memset(buf, 0, sizeof(buf));
 			snprintf(buf, sizeof(buf) - 1, "%d", i);
-			add_assoc_long(members, buf, 1);
+			add_assoc_long(&members, buf, 1);
 		}
 	}
-	add_assoc_zval(return_value, "members", members);
+	add_assoc_zval(return_value, "members", &members);
 }
 
 PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
