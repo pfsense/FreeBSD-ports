@@ -1405,17 +1405,16 @@ table_show_list(zval *rarray, ipfw_obj_header *oh)
 	ipfw_obj_tentry *tent;
 	ipfw_xtable_info *i;
 	uint32_t count;
-	zval *entarray;
+	zval entarray;
 
 	i = (ipfw_xtable_info *)(oh + 1);
 	tent = (ipfw_obj_tentry *)(i + 1);
 
 	count = i->count;
 	while (count > 0) {
-		ALLOC_INIT_ZVAL(entarray);
-		array_init(entarray);
-		table_show_entry(entarray, i, tent);
-		add_next_index_zval(rarray, entarray);
+		array_init(&entarray);
+		table_show_entry(&entarray, i, tent);
+		add_next_index_zval(rarray, &entarray);
 		tent = (ipfw_obj_tentry *)((caddr_t)tent + tent->head.length);
 		count--;
 	}
@@ -3502,7 +3501,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			hash2 = Z_ARRAYVAL_P(val);
 			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
 				entries = 1;
-				if((strlen(ZSTR_VAL(skey2)) == 9) && (strcasecmp(ZSTR_VAL(key2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
+				if((strlen(ZSTR_VAL(skey2)) == 9) && (strcasecmp(ZSTR_VAL(skey2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
 					filter_if = 1;
 				} else if ((strlen(ZSTR_VAL(skey2)) == 6) && (strcasecmp((skey2), "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
 					filter_rl = 1;
