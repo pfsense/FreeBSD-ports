@@ -2110,7 +2110,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				continue;
 			}
 
-			hash2 = Z_ARRAYVAL_P(val);
+			hash2 = Z_ARRVAL_P(val);
 			tagged = 0;
 
 			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
@@ -3490,7 +3490,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				continue;
 			}
 
-			hash2 = Z_ARRAYVAL_P(val);
+			hash2 = Z_ARRVAL_P(val);
 			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
 				entries = 1;
 				if((strlen(ZSTR_VAL(skey2)) == 9) && (strcasecmp(ZSTR_VAL(skey2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
