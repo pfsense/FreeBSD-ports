@@ -3733,7 +3733,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			}
 		} else {
 			snprintf(buf, sizeof(buf) - 1, "%u:%u", src->state, dst->state);
-			add_assoc_string(array, "state", buf);
+			add_assoc_string(&array, "state", buf);
 		}
 
 		if (filter != NULL && !found) {
