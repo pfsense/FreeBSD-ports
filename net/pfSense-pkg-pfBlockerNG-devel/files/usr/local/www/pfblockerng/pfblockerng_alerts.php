@@ -197,10 +197,11 @@ if (isset($_POST) && !empty($_POST)) {
 		$pfb['aglobal']['alertrefresh']	= htmlspecialchars($_POST['alertrefresh'])			?: 'off';
 		$pfb['aglobal']['pfbextdns']	= htmlspecialchars($_POST['pfbextdns'])				?: '8.8.8.8';
 		$pfb['aglobal']['pfbpageload']	= htmlspecialchars($_POST['pfbpageload'])			?: 'default';
-		$pfb['aglobal']['pfbblockstat']	= implode(',', (array)htmlspecialchars($_POST['pfbblockstat']))	?: '';
-		$pfb['aglobal']['pfbpermitstat']= implode(',', (array)htmlspecialchars($_POST['pfbpermitstat']))?: '';
-		$pfb['aglobal']['pfbmatchstat']	= implode(',', (array)htmlspecialchars($_POST['pfbmatchstat']))	?: '';
-		$pfb['aglobal']['pfbdnsblstat']	= implode(',', (array)htmlspecialchars($_POST['pfbdnsblstat']))	?: '';
+		$pfb['aglobal']['pfbblockstat']	= htmlspecialchars(implode(',', (array)$_POST['pfbblockstat']))	?: '';
+		$pfb['aglobal']['pfbpermitstat']= htmlspecialchars(implode(',', (array)$_POST['pfbpermitstat']))?: '';
+		$pfb['aglobal']['pfbmatchstat']	= htmlspecialchars(implode(',', (array)$_POST['pfbmatchstat']))	?: '';
+		$pfb['aglobal']['pfbdnsblstat']	= htmlspecialchars(implode(',', (array)$_POST['pfbdnsblstat']))	?: '';
+
 
 		foreach ($aglobal_array as $type => $value) {
 			if (ctype_digit(htmlspecialchars($_POST[$type]))) {
