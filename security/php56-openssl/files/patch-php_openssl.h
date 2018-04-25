@@ -1,6 +1,6 @@
---- php_openssl.h.orig	2018-04-24 15:17:37 UTC
+--- php_openssl.h.orig	2015-09-03 00:02:45 UTC
 +++ php_openssl.h
-@@ -122,6 +122,11 @@ PHP_FUNCTION(openssl_csr_sign);
+@@ -95,6 +95,11 @@ PHP_FUNCTION(openssl_csr_sign);
  PHP_FUNCTION(openssl_csr_get_subject);
  PHP_FUNCTION(openssl_csr_get_public_key);
  

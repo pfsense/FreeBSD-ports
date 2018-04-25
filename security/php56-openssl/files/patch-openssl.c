@@ -1,14 +1,14 @@
---- openssl.c.orig	2018-04-24 15:17:48 UTC
+--- openssl.c.orig	2015-09-03 00:02:45 UTC
 +++ openssl.c
-@@ -18,6 +18,7 @@
+@@ -17,6 +17,7 @@
+    |          Sascha Kettler <kettler@gmx.net>                            |
     |          Pierre-Alain Joye <pierre@php.net>                          |
-    |          Marc Delling <delling@silpion.de> (PKCS12 functions)        |
-    |          Jakub Zelenka <bukka@php.net>                               |
-+   |          Moritz Bechler <mbechler@eenterphace.org> (CRL support)     |
+    |          Marc Delling <delling@silpion.de> (PKCS12 functions)        |		
++   |          Moritz Bechler <mbechler@eenterphace.org> (CRL support)     |		
     +----------------------------------------------------------------------+
   */
  
-@@ -56,6 +57,7 @@
+@@ -51,6 +52,7 @@
  #include <openssl/rand.h>
  #include <openssl/ssl.h>
  #include <openssl/pkcs12.h>
@@ -16,65 +16,70 @@
  
  /* Common */
  #include <time.h>
-@@ -131,6 +133,39 @@ PHP_FUNCTION(openssl_dh_compute_key);
+@@ -122,6 +124,39 @@ PHP_FUNCTION(openssl_dh_compute_key);
  PHP_FUNCTION(openssl_random_pseudo_bytes);
  
  /* {{{ arginfo */
 +ZEND_BEGIN_ARG_INFO_EX(arginfo_openssl_crl_export, 0, 0, 3)
-+	ZEND_ARG_INFO(0, crl)
-+	ZEND_ARG_INFO(1, data)
-+	ZEND_ARG_INFO(0, capkey)
-+	ZEND_ARG_INFO(0, crlv2)
-+	ZEND_ARG_INFO(0, notext)
-+	ZEND_ARG_INFO(0, capass)
++    ZEND_ARG_INFO(0, crl)
++    ZEND_ARG_INFO(1, data)
++    ZEND_ARG_INFO(0, capkey)
++    ZEND_ARG_INFO(0, crlv2)
++    ZEND_ARG_INFO(0, notext)
++    ZEND_ARG_INFO(0, capass)
 +ZEND_END_ARG_INFO()
 +
 +ZEND_BEGIN_ARG_INFO_EX(arginfo_openssl_crl_revoke_cert, 0, 0, 3)
-+	ZEND_ARG_INFO(0, crl)
-+	ZEND_ARG_INFO(0, certficate)
-+	ZEND_ARG_INFO(0, revokation_date)
-+	ZEND_ARG_INFO(0, reason)
-+	ZEND_ARG_INFO(0, compromise_date)
-+	ZEND_ARG_INFO(0, hold_instruction)
++    ZEND_ARG_INFO(0, crl)
++    ZEND_ARG_INFO(0, certficate)
++    ZEND_ARG_INFO(0, revokation_date)
++    ZEND_ARG_INFO(0, reason)
++    ZEND_ARG_INFO(0, compromise_date)
++    ZEND_ARG_INFO(0, hold_instruction)
 +ZEND_END_ARG_INFO()
 +
 +ZEND_BEGIN_ARG_INFO_EX(arginfo_openssl_crl_revoke_cert_by_serial, 0, 0, 3)
-+	ZEND_ARG_INFO(0, crl)
-+	ZEND_ARG_INFO(0, revoke_serial)
-+	ZEND_ARG_INFO(0, revokation_date)
-+	ZEND_ARG_INFO(0, reason)
-+	ZEND_ARG_INFO(0, compromise_date)
-+	ZEND_ARG_INFO(0, hold_instruction)
++    ZEND_ARG_INFO(0, crl)
++    ZEND_ARG_INFO(0, revoke_serial)
++    ZEND_ARG_INFO(0, revokation_date)
++    ZEND_ARG_INFO(0, reason)
++    ZEND_ARG_INFO(0, compromise_date)
++    ZEND_ARG_INFO(0, hold_instruction)
 +ZEND_END_ARG_INFO()
 +
 +ZEND_BEGIN_ARG_INFO_EX(arginfo_openssl_crl_new, 0, 0, 1)
-+	ZEND_ARG_INFO(0, cacert)
-+	ZEND_ARG_INFO(0, crlserial)
-+	ZEND_ARG_INFO(0, lifetime)
++    ZEND_ARG_INFO(0, cacert)
++    ZEND_ARG_INFO(0, crlserial)
++    ZEND_ARG_INFO(0, lifetime)
 +ZEND_END_ARG_INFO()
 +
  ZEND_BEGIN_ARG_INFO_EX(arginfo_openssl_x509_export_to_file, 0, 0, 2)
- 	ZEND_ARG_INFO(0, x509)
- 	ZEND_ARG_INFO(0, outfilename)
-@@ -496,6 +531,12 @@ const zend_function_entry openssl_functions[] = {
+     ZEND_ARG_INFO(0, x509)
+     ZEND_ARG_INFO(0, outfilename)
+@@ -467,6 +502,12 @@ const zend_function_entry openssl_functi
  	PHP_FE(openssl_pkcs12_export_to_file,	arginfo_openssl_pkcs12_export_to_file)
  	PHP_FE(openssl_pkcs12_read,				arginfo_openssl_pkcs12_read)
  
-++/* for CRL creation */
-+	PHP_FE(openssl_crl_new,						arginfo_openssl_crl_new)
-+	PHP_FE(openssl_crl_revoke_cert_by_serial,	arginfo_openssl_crl_revoke_cert_by_serial)
-+	PHP_FE(openssl_crl_revoke_cert,				arginfo_openssl_crl_revoke_cert)
-+	PHP_FE(openssl_crl_export,					arginfo_openssl_crl_export)
++/* for CRL creation */
++	PHP_FE(openssl_crl_new,			arginfo_openssl_crl_new)
++	PHP_FE(openssl_crl_revoke_cert_by_serial,       arginfo_openssl_crl_revoke_cert_by_serial)
++	PHP_FE(openssl_crl_revoke_cert,         arginfo_openssl_crl_revoke_cert)
++	PHP_FE(openssl_crl_export,              arginfo_openssl_crl_export)
 +
  /* CSR funcs */
  	PHP_FE(openssl_csr_new,				arginfo_openssl_csr_new)
  	PHP_FE(openssl_csr_export,			arginfo_openssl_csr_export)
-@@ -743,8 +784,18 @@ void php_openssl_store_errors()
+@@ -533,6 +574,7 @@ ZEND_GET_MODULE(openssl)
  static int le_key;
  static int le_x509;
  static int le_csr;
 +static int le_crl;
  static int ssl_stream_data_index;
+ 
+ int php_openssl_get_x509_list_id(void) /* {{{ */
+@@ -541,6 +583,16 @@ int php_openssl_get_x509_list_id(void) /
+ }
+ /* }}} */
  
 +/* {{{ */
 +struct php_x509_crl {
@@ -85,80 +90,81 @@
 +};
 +/* }}} */
 +
- int php_openssl_get_x509_list_id(void) /* {{{ */
++
+ /* {{{ resource destructors */
+ static void php_pkey_free(zend_rsrc_list_entry *rsrc TSRMLS_DC)
  {
- 	return le_x509;
-@@ -774,6 +825,18 @@ static void php_openssl_csr_free(zend_resource *rsrc)
+@@ -562,6 +614,21 @@ static void php_csr_free(zend_rsrc_list_
+ 	X509_REQ * csr = (X509_REQ*)rsrc->ptr;
+ 	X509_REQ_free(csr);
  }
- /* }}} */
- 
++
 +static void php_crl_free(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 +{
 +	struct php_x509_crl *res = (struct php_x509_crl*)rsrc->ptr;
 +
-+	if (res) {
-+		if (res->crl != NULL) {
++	if(res) {
++		if(res->crl != NULL) {
 +			X509_CRL_free(res->crl);
 +		}
++
 +		efree(res);
 +	}
++
 +}
 +
+ /* }}} */
+ 
  /* {{{ openssl open_basedir check */
- inline static int php_openssl_open_base_dir_chk(char *filename)
- {
-@@ -1417,6 +1480,7 @@ PHP_MINIT_FUNCTION(openssl)
- 	le_key = zend_register_list_destructors_ex(php_openssl_pkey_free, NULL, "OpenSSL key", module_number);
- 	le_x509 = zend_register_list_destructors_ex(php_openssl_x509_free, NULL, "OpenSSL X.509", module_number);
- 	le_csr = zend_register_list_destructors_ex(php_openssl_csr_free, NULL, "OpenSSL X.509 CSR", module_number);
+@@ -1122,6 +1189,7 @@ PHP_MINIT_FUNCTION(openssl)
+ 	le_key = zend_register_list_destructors_ex(php_pkey_free, NULL, "OpenSSL key", module_number);
+ 	le_x509 = zend_register_list_destructors_ex(php_x509_free, NULL, "OpenSSL X.509", module_number);
+ 	le_csr = zend_register_list_destructors_ex(php_csr_free, NULL, "OpenSSL X.509 CSR", module_number);
 +	le_crl = zend_register_list_destructors_ex(php_crl_free, NULL, "OpenSSL X.509 CRL", module_number);
  
- #if OPENSSL_VERSION_NUMBER < 0x10100000L || defined (LIBRESSL_VERSION_NUMBER)
- 	OPENSSL_config(NULL);
-@@ -1524,6 +1588,36 @@ PHP_MINIT_FUNCTION(openssl)
- 	REGISTER_LONG_CONSTANT("OPENSSL_TLSEXT_SERVER_NAME", 1, CONST_CS|CONST_PERSISTENT);
- #endif
+ 	SSL_library_init();
+ 	OpenSSL_add_all_ciphers();
+@@ -1212,6 +1280,36 @@ PHP_MINIT_FUNCTION(openssl)
+ 	REGISTER_LONG_CONSTANT("OPENSSL_RAW_DATA", OPENSSL_RAW_DATA, CONST_CS|CONST_PERSISTENT);
+ 	REGISTER_LONG_CONSTANT("OPENSSL_ZERO_PADDING", OPENSSL_ZERO_PADDING, CONST_CS|CONST_PERSISTENT);
  
-+	/* OCSP revokation states */
-+	REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_NOSTATUS", OCSP_REVOKED_STATUS_NOSTATUS, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_UNSPECIFIED", OCSP_REVOKED_STATUS_UNSPECIFIED, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_KEYCOMPROMISE", OCSP_REVOKED_STATUS_KEYCOMPROMISE, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_CACOMPROMISE", OCSP_REVOKED_STATUS_CACOMPROMISE, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_AFFILIATIONCHANGED", OCSP_REVOKED_STATUS_AFFILIATIONCHANGED, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_SUPERSEDED", OCSP_REVOKED_STATUS_SUPERSEDED, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_CESSATIONOFOPERATION", OCSP_REVOKED_STATUS_CESSATIONOFOPERATION, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_CERTIFICATEHOLD", OCSP_REVOKED_STATUS_CERTIFICATEHOLD, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_REMOVEFROMCRL", OCSP_REVOKED_STATUS_REMOVEFROMCRL, CONST_CS | CONST_PERSISTENT);
++        /* OCSP revokation states */
++        REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_NOSTATUS", OCSP_REVOKED_STATUS_NOSTATUS, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_UNSPECIFIED", OCSP_REVOKED_STATUS_UNSPECIFIED, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_KEYCOMPROMISE", OCSP_REVOKED_STATUS_KEYCOMPROMISE, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_CACOMPROMISE", OCSP_REVOKED_STATUS_CACOMPROMISE, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_AFFILIATIONCHANGED", OCSP_REVOKED_STATUS_AFFILIATIONCHANGED, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_SUPERSEDED", OCSP_REVOKED_STATUS_SUPERSEDED, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_CESSATIONOFOPERATION", OCSP_REVOKED_STATUS_CESSATIONOFOPERATION, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_CERTIFICATEHOLD", OCSP_REVOKED_STATUS_CERTIFICATEHOLD, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OCSP_REVOKED_STATUS_REMOVEFROMCRL", OCSP_REVOKED_STATUS_REMOVEFROMCRL, CONST_CS | CONST_PERSISTENT);
 +
-+	/* X509 Hold instruction NIDs */
-+	REGISTER_LONG_CONSTANT("OPENSSL_HOLDINSTRUCTION_NONE", NID_hold_instruction_none, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OPENSSL_HOLDINSTRUCTION_CALL_ISSUER", NID_hold_instruction_call_issuer, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("OPENSSL_HOLDINSTRUCTION_REJECT", NID_hold_instruction_reject, CONST_CS | CONST_PERSISTENT);
++        /* X509 Hold instruction NIDs */
++        REGISTER_LONG_CONSTANT("OPENSSL_HOLDINSTRUCTION_NONE", NID_hold_instruction_none, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OPENSSL_HOLDINSTRUCTION_CALL_ISSUER", NID_hold_instruction_call_issuer, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("OPENSSL_HOLDINSTRUCTION_REJECT", NID_hold_instruction_reject, CONST_CS | CONST_PERSISTENT);
 +
-+	/* openssl_verify flags */
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_CB_ISSUER_CHECK", X509_V_FLAG_CB_ISSUER_CHECK, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_USE_CHECK_TIME", X509_V_FLAG_USE_CHECK_TIME, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_CRL_CHECK", X509_V_FLAG_CRL_CHECK, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_CRL_CHECK_ALL", X509_V_FLAG_CRL_CHECK_ALL, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_IGNORE_CRITICAL", X509_V_FLAG_IGNORE_CRITICAL, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_X509_STRICT", X509_V_FLAG_X509_STRICT, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_ALLOW_PROXY_CERTS", X509_V_FLAG_ALLOW_PROXY_CERTS, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_POLICY_CHECK", X509_V_FLAG_POLICY_CHECK, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_EXPLICIT_POLICY", X509_V_FLAG_EXPLICIT_POLICY, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_INHIBIT_ANY", X509_V_FLAG_INHIBIT_ANY, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_INHIBIT_MAP", X509_V_FLAG_INHIBIT_MAP, CONST_CS | CONST_PERSISTENT);
-+	REGISTER_LONG_CONSTANT("X509_V_FLAG_NOTIFY_POLICY", X509_V_FLAG_NOTIFY_POLICY, CONST_CS | CONST_PERSISTENT);
++        /* openssl_verify flags */
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_CB_ISSUER_CHECK", X509_V_FLAG_CB_ISSUER_CHECK, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_USE_CHECK_TIME", X509_V_FLAG_USE_CHECK_TIME, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_CRL_CHECK", X509_V_FLAG_CRL_CHECK, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_CRL_CHECK_ALL", X509_V_FLAG_CRL_CHECK_ALL, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_IGNORE_CRITICAL", X509_V_FLAG_IGNORE_CRITICAL, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_X509_STRICT", X509_V_FLAG_X509_STRICT, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_ALLOW_PROXY_CERTS", X509_V_FLAG_ALLOW_PROXY_CERTS, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_POLICY_CHECK", X509_V_FLAG_POLICY_CHECK, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_EXPLICIT_POLICY", X509_V_FLAG_EXPLICIT_POLICY, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_INHIBIT_ANY", X509_V_FLAG_INHIBIT_ANY, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_INHIBIT_MAP", X509_V_FLAG_INHIBIT_MAP, CONST_CS | CONST_PERSISTENT);
++        REGISTER_LONG_CONSTANT("X509_V_FLAG_NOTIFY_POLICY", X509_V_FLAG_NOTIFY_POLICY, CONST_CS | CONST_PERSISTENT);
 +
- 	/* Determine default SSL configuration file */
- 	config_filename = getenv("OPENSSL_CONF");
- 	if (config_filename == NULL) {
-@@ -6203,6 +6297,423 @@ PHP_FUNCTION(openssl_open)
- 		EVP_PKEY_free(pkey);
- 	}
- 	EVP_CIPHER_CTX_free(ctx);
-+}
-+/* }}} */
-+
+ #if OPENSSL_VERSION_NUMBER >= 0x0090806fL && !defined(OPENSSL_NO_TLSEXT)
+ 	/* SNI support included in OpenSSL >= 0.9.8j */
+ 	REGISTER_LONG_CONSTANT("OPENSSL_TLSEXT_SERVER_NAME", 1, CONST_CS|CONST_PERSISTENT);
+@@ -5028,7 +5126,423 @@ PHP_FUNCTION(openssl_open)
+ }
+ /* }}} */
+ 
 +/* CRL creation functions */
 +
 +/* {{{ proto resource openssl_crl_new(mixed cacert[, int crlserial[, string int lifetime]])
@@ -327,7 +333,7 @@
 +
 +	zval *crl_res;
 +	struct php_x509_crl *res = NULL;
-+
+ 
 +	long reason_code = OCSP_REVOKED_STATUS_UNSPECIFIED;
 +	zval *serial_num;
 +	
@@ -387,6 +393,7 @@
 +			&crl_res, &zcert, &rev_timestamp, &reason_code, &comp_timestamp, &hold) == FAILURE) {
 +		RETURN_FALSE;
 +	}
++
 +
 +	ZEND_FETCH_RESOURCE(res, struct php_x509_crl*, &crl_res, -1, "OpenSSL X.509 CRL", le_crl);
 +		
@@ -573,6 +580,8 @@
 +	
 +	RETURN_TRUE;
 +	
- }
- /* }}} */
++}
++/* }}} */
  
+ static void openssl_add_method_or_alias(const OBJ_NAME *name, void *arg) /* {{{ */
+ {
