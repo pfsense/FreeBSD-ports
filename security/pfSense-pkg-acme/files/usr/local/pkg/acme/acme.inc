@@ -246,6 +246,21 @@ $acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate / R
 			'description' =>"Fill in the nsupdate key contents"
 		)
 	));
+$acme_domain_validation_method['dns_acmedns'] = array(name => "DNS-acme-dns.io",
+	'fields' => array(
+		'ACMEDNS_USERNAME' => array('name'=>"acmedns_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Fill in the acme-dns.io Username"
+		),
+		'ACMEDNS_PASSWORD' => array('name'=>"acmedns_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the acme-dns.io Password"
+		),
+		'ACMEDNS_SUBDOMAIN' => array('name'=>"acmedns_subdomain",'columnheader'=>"Subdomian",'type'=>"textbox",
+			'description' =>"Fill in the acme-dns.io subdomain"
+		),
+		'ACMEDNS_UPDATE_URL' => array('name'=>"acmedns_update_url",'columnheader'=>"Update URL",'type'=>"textbox",
+			'description' =>"Fill in a custom ACME DNS Update URL (optional)"
+		),
+	));
 $acme_domain_validation_method['dns_ali'] = array(name => "DNS-Aliyuncs",
 	'fields' => array(
 		'Ali_Key' => array('name'=>"ali_key",'columnheader'=>"Key",'type'=>"textbox",
@@ -519,6 +534,15 @@ $acme_domain_validation_method['dns_linode'] = array(name => "DNS-Linode",
 	'fields' => array(
 		'LINODE_API_KEY' => array('name'=>"linode_api_key",'columnheader'=>"Linode API Key",'type'=>"textbox",
 			'description' =>"Fill in the Linode API Key"
+		)
+	));
+$acme_domain_validation_method['dns_loopia'] = array(name => "DNS-Loopia",
+	'fields' => array(
+		'LOOPIA_User' => array('name'=>"loopia_user",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Fill in the Loopia username"
+		),
+		'LOOPIA_Password' => array('name'=>"loopia_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the Loopia Password"
 		)
 	));
 $acme_domain_validation_method['dns_luadns'] = array(name => "DNS-Luadns",
