@@ -163,9 +163,9 @@
 +PHP_FUNCTION(openssl_crl_new)
 +{
 +	struct php_x509_crl *res = NULL;
-+	long serial = 0;
++	zend_long serial = 0;
 +	ASN1_INTEGER *crl_number;
-+	long lifetime_days = 80;
++	zend_long lifetime_days = 80;
 +	
 +	zend_resource *certresource;
 +	zval zcacert;
@@ -320,16 +320,16 @@
 +PHP_FUNCTION(openssl_crl_revoke_cert_by_serial) 
 +{
 +
-+	time_t rev_timestamp;
-+	time_t comp_timestamp;
++	zend_long rev_timestamp;
++	zend_long comp_timestamp;
 +
 +	zval *crl_res;
 +	struct php_x509_crl *res = NULL;
 +
-+	long reason_code = OCSP_REVOKED_STATUS_UNSPECIFIED;
++	zend_long reason_code = OCSP_REVOKED_STATUS_UNSPECIFIED;
 +	zval *serial_num;
 +	
-+	long hold = NID_hold_instruction_reject;
++	zend_long hold = NID_hold_instruction_reject;
 +	
 +	ASN1_INTEGER *serial;
 +
@@ -368,19 +368,19 @@
 +   Adds a certificate to the revokation list using a certificate resource */
 +PHP_FUNCTION(openssl_crl_revoke_cert) 
 +{
-+	time_t rev_timestamp;
-+	time_t comp_timestamp;
++	zend_long rev_timestamp;
++	zend_long comp_timestamp;
 +
 +	zval *crl_res;
 +	struct php_x509_crl *res = NULL;
 +
-+	long reason_code = OCSP_REVOKED_STATUS_UNSPECIFIED;
++	zend_long reason_code = OCSP_REVOKED_STATUS_UNSPECIFIED;
 +	
 +	X509 *cert;
 +	zval *zcert;
 +	zend_resource *certresource;
 +	
-+	long hold = NID_hold_instruction_reject;
++	zend_long hold = NID_hold_instruction_reject;
 +	
 +	ASN1_INTEGER *serial;
 +
@@ -530,17 +530,17 @@
 +	zval *zcapkey;
 +	
 +	char *capass;
-+	long capass_len;
++	size_t capass_len;
 +
 +	int crlv2 = 1;
 +	int notext = 1;
 +	
-+	long digest_alg = OPENSSL_ALGO_SHA1;
++	zend_long digest_alg = OPENSSL_ALGO_SHA1;
 +	
 +	zval *output;
 +	
 +	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rzz|bbsl",
-+							&crl_res, &output,		
++							&crl_res, &output,
 +							&zcapkey,
 +							&crlv2, &notext,
 +							&capass, &capass_len,
