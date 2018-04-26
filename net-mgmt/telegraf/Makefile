@@ -1,5 +1,5 @@
 # Created by: Stefan Lambrev <cheffo@freebsd-bg.org>
-# $FreeBSD: head/net-mgmt/telegraf/Makefile 464589 2018-03-15 13:59:03Z girgen $
+# $FreeBSD: $
 
 PORTNAME=	telegraf
 DISTVERSION=	1.6.1

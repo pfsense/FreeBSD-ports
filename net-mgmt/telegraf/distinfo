@@ -1,4 +1,4 @@
-TIMESTAMP = 1523956423
+TIMESTAMP = 15245723493
 SHA256 (influxdata-telegraf-1.6.1_GH0.tar.gz) = 5f5af61b40fd6da742813e8e865f5a9e6545cfc92d88df904e9e2488f41104c9
 SIZE (influxdata-telegraf-1.6.1_GH0.tar.gz) = 971026
 SHA256 (go-redis-redis-877867d_GH0.tar.gz) = 118ca92e253f59dd02ca48edae2f99a092c65850d1e4ae58402a7e70d27c75f0
