@@ -11,9 +11,9 @@ namespace pfsense_pkg\acme;
 global $acme_tab_array;
 
 $acme_tab_array['acme'] = array();
-$acme_tab_array['acme']['settings'] = Array(name => "General settings", url => "acme_generalsettings.php");
-$acme_tab_array['acme']['certificates'] = Array(name => "Certificates", url => "acme_certificates.php");
-$acme_tab_array['acme']['accountkeys'] = Array(name => "Account keys", url => "acme_accountkeys.php");
+$acme_tab_array['acme']['settings'] = Array('name' => "General settings", 'url' => "acme_generalsettings.php");
+$acme_tab_array['acme']['certificates'] = Array('name' => "Certificates", 'url' => "acme_certificates.php");
+$acme_tab_array['acme']['accountkeys'] = Array('name' => "Account keys", 'url' => "acme_accountkeys.php");
 
 function display_top_tabs_active($top_tabs, $activetab) {
 	$tab_array = array();
