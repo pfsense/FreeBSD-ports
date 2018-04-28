@@ -436,13 +436,13 @@ if (isset($_POST) && !empty($_POST)) {
 				if ($wildcard) {
 					$whitelist = ".{$domain} # {$descr}";
 				} else {
-					$whitelist = "{$domain} # {$descr}\nwww.{$domain} # {$descr}";
+					$whitelist = "{$domain} # {$descr}\r\nwww.{$domain} # {$descr}";
 				}
 			} else {
 				if ($wildcard) {
 					$whitelist = ".{$domain}";
 				} else {
-					$whitelist = "{$domain}\nwww.{$domain}";
+					$whitelist = "{$domain}\r\nwww.{$domain}";
 				}
 			}
 
