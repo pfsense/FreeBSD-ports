@@ -738,6 +738,8 @@ get_meta_pkg_name() {
 	# figure out main meta package name
 	if is_pkg_installed ${product}-vmware; then
 		echo "${product}-vmware"
+	elif is_pkg_installed ${product}-php72; then
+		echo "${product}-php72"
 	elif is_pkg_installed ${product}; then
 		echo "${product}"
 	else
