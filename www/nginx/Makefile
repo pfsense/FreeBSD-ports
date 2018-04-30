@@ -188,7 +188,7 @@ STREAM_SSL_PREREAD_OFF=		--without-stream_ssl_preread_module
 # Fix build on armv6 with clang 6
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=225275
 .if ${ARCH} == "armv6"
-CFLAGS+=	-march=armv7-a -mcpu=cortex-a7
+CFLAGS+=	-march=armv7-a
 .endif
 
 .if ${PORT_OPTIONS:MDSO}
