@@ -141,10 +141,12 @@ function ntopng_sync_package() {
 	}
 	*/
 
-	/* Disable alerts */
+	// -H flag removed, alerts can be disabled via GUI - see https://github.com/ntop/ntopng/issues/1490
+	/* Disable alerts
 	if ($ntopng_config['disable_alerts'] == "on") {
 		$disable_alerts = "-H";
 	}
+	*/
 
 	if ($config['system']['webgui']['protocol'] == "https") {
 		$cert =& lookup_cert($config['system']['webgui']['ssl-certref']);
