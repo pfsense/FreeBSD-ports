@@ -676,11 +676,32 @@ $acme_newcertificateactions = array(
 #end
 
 $a_keylength = array();
-$a_keylength['2048'] = array('name' => "2048");
-$a_keylength['3072'] = array('name' => "3072");
-$a_keylength['4096'] = array('name' => "4096");
-$a_keylength['ec-256'] = array('name' => "ec-256", 'ecc' => true);
-$a_keylength['ec-384'] = array('name' => "ec-384", 'ecc' => true);
+$a_keylength['2048'] = array('name' => "2048-bit RSA");
+$a_keylength['3072'] = array('name' => "3072-bit RSA");
+$a_keylength['4096'] = array('name' => "4096-bit RSA");
+$a_keylength['ec-256'] = array('name' => "256-bit ECDSA", 'ecc' => true);
+$a_keylength['ec-384'] = array('name' => "384-bit ECDSA", 'ecc' => true);
+$a_keylength['custom'] = array('name' => "Custom...");
+
+if (!is_array($config['installedpackages']['acme'])) {
+	$config['installedpackages']['acme'] = array();
+}
+if (!is_array($config['installedpackages']['acme']['certificates'])) {
+	$config['installedpackages']['acme']['certificates'] = array();
+}
+if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
+	$config['installedpackages']['acme']['certificates']['item'] = array();
+}
+
+if (!is_array($config['installedpackages']['acme'])) {
+	$config['installedpackages']['acme'] = array();
+}
+if (!is_array($config['installedpackages']['acme']['accountkeys'])) {
+	$config['installedpackages']['acme']['accountkeys'] = array();
+}
+if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
+	$config['installedpackages']['acme']['accountkeys']['item'] = array();
+}
 
 function set_cronjob() {
 	global $config;
@@ -727,7 +748,7 @@ function get_itembyname($a_array, $name) {
 	}
 	return null;	
 }
-	
+
 function get_accountkey_id($name) {
 	global $config;
 	$a_array = &$config['installedpackages']['acme']['accountkeys']['item'];
@@ -795,19 +816,31 @@ function & get_certificate($name) {
 		$certificatename = $certificate['name'];
 		$cert = lookup_cert_by_name($certificatename);
 		if (!is_array($cert)) {
-			echo "\n getCertificatePSK creating new cert";
 			global $config;
 			$a_cert =& $config['cert'];
 			$cert = array();
 			$cert['refid'] = uniqid();
 			$cert['descr'] = $certificatename;
-			$accountkey = generateDomainKey($certificatename, $ca, $domain, $certificate['keylength']);
-			$cert['prv'] = base64_encode($accountkey);
+			// If keylength is set to 'custom', just use the user-pasted key
+			// instead of generating a new one
+			if ($certificate['keylength'] != 'custom') {
+				echo "\n getCertificatePSK creating new key";
+				$privatekey = generateDomainKey($certificatename, $ca, $domain, $certificate['keylength']);
+				$cert['prv'] = base64_encode($privatekey);
+			} else {
+				echo "\n getCertificatePSK using custom key";
+				$cert['prv'] = $certificate['keypaste']; // (already base64-encoded)
+			}
 			$a_cert[] = $cert;
 			echo "\n{$cert['prv']}";
 			$desc = "Acme: Add new certificate & key.";
 			write_config($desc);
+		} elseif (   $certificate['keylength'] == 'custom'
+				  && $cert['prv'] != $certificate['keypaste']) {
+			echo "\n getCertificatePSK updating custom key";
+			$cert['prv'] = $certificate['keypaste']; // (already base64-encoded)
 		}
+
 		return base64_decode($cert['prv']);
 	}
 	
@@ -890,7 +923,7 @@ function & get_certificate($name) {
 		
 		if ($timetorenew || $force) {
 			syslog(LOG_NOTICE, "Acme, renewing certificate: {$id}");
-			echo "Renewing certificate";
+			echo "Renewing certificate \n";
 			$domainstosign = array();
 			$method = "";
 			if (is_array($certificate['a_domainlist']['item'])) {

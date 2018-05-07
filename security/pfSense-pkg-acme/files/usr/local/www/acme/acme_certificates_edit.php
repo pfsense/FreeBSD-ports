@@ -146,18 +146,15 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 		echo $itemvalue;
 	}
 }
+
 if (isset($id) && $a_certificates[$id]) {
 	$a_domains = $a_certificates[$id]['a_domainlist']['item'];
 	$a_actions = $a_certificates[$id]['a_actionlist']['item'];
 
 	$pconfig["lastrenewal"] = $a_certificates[$id]["lastrenewal"];
+	$pconfig['keypaste'] = base64_decode($a_certificates[$id]['keypaste']);
 	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_certificates[$id][$stat];
-	}
-	
-	$a_errorfiles = &$a_certificates[$id]['errorfiles']['item'];
-	if (!is_array($a_errorfiles)) {
-		$a_errorfiles = array();
 	}
 }
 
@@ -183,6 +180,24 @@ if ($_POST) {
 		$input_errors[] = "The field 'Name' contains invalid characters.";
 	}
 	
+	// If the "Custom..." option was selected in the "Private Key" dropdown...
+	if ($_POST['keylength'] == 'custom') {
+		// ...then the "Custom Private Key" field is required.
+		$reqdfields = explode(' ', 'keypaste');
+		$reqdfieldsn = explode(',', 'Custom Private Key');
+		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
+
+		if (   isset($_POST['keypaste'])
+			&& (   strpos($_POST['keypaste'], 'BEGIN PRIVATE KEY') === false
+			    || strpos($_POST['keypaste'], 'END PRIVATE KEY') === false)) {
+			$input_errors[] = "The Custom Private Key does not appear to be valid.";
+		}
+	} else {
+		// ...otherwise, the "Custom Private Key" field will be ignored, so
+		// clear its contents to avoid triggering update_if_changed() below.
+		$_POST['keypaste'] = '';
+	}
+
 	if ($_POST['stats_enabled']) {
 		$reqdfields = explode(" ", "name stats_uri");
 		$reqdfieldsn = explode(",", "Name,Stats Uri");		
@@ -242,10 +257,12 @@ if ($_POST) {
 	$certificate['a_domainlist']['item'] = $a_domains;
 	$certificate['a_actionlist']['item'] = $a_actions;
 
+	$certificate['keypaste'] = base64_encode($_POST['keypaste']);
 	global $simplefields;
 	foreach($simplefields as $stat) {
 		update_if_changed($stat, $certificate[$stat], $_POST[$stat]);
 	}
+
 	if (isset($id) && $a_certificates[$id]) {
 		$a_certificates[$id] = $certificate;
 	} else {
@@ -342,13 +359,20 @@ $section->addInput(new \Form_Select(
 	form_name_array($a_accountkeys)
 ));
 
-$a_accountkeys = &$config['installedpackages']['acme']['accountkeys']['item'];
 $section->addInput(new \Form_Select(
 	'keylength',
-	'Key Size',
+	'Private Key',
 	$pconfig['keylength'],
-	form_name_array($a_keylength)
+	form_keyvalue_array($a_keylength)
 ));
+
+$section->addInput(new \Form_Textarea(
+	'keypaste',
+	'Custom Private Key',
+	$pconfig['keypaste']
+))->setNoWrap()
+	->setAttribute('placeholder', "-----BEGIN PRIVATE KEY-----\nBASE64-ENCODED DATA\n-----END PRIVATE KEY-----")
+	->setHelp('Paste a private key in X.509 PEM format here.');
 
 $section->addInput(new \Form_Checkbox(
 	'ocspstaple',
@@ -362,8 +386,8 @@ $section->addInput(new \Form_StaticText(
 	"List all domain names that should be included in the certificate here, and how to validate ownership by use of a webroot or dns challenge<br/>"
 	. "Examples:<br/>"
 	. "Domainname: www.example.com<br/>"
-	. "Method: Webroot ,Rootfolder: /usr/local/www/.well-known/acme-challenge/<br/>"
-	. "Method: Webroot ,Rootfolder: /tmp/haproxy_chroot/haproxywebroot/.well-known/acme-challenge/"
+	. "Method: Webroot, Rootfolder: /usr/local/www/.well-known/acme-challenge/<br/>"
+	. "Method: Webroot, Rootfolder: /tmp/haproxy_chroot/haproxywebroot/.well-known/acme-challenge/"
 	. $domainslist->Draw($a_domains)
 ));
 
@@ -373,7 +397,7 @@ $section->addInput(new \Form_Input(
 	'number',
 	$pconfig['dnssleep'],
 	['min' => '1', 'max' => '3600']
-))->setHelp('When using a DNS validation method configure how much time to wait before atempting verification after the txt records are added. Defaults to 120 seconds.');
+))->setHelp('When using a DNS validation method configure how much time to wait before attempting verification after the txt records are added. Defaults to 120 seconds.');
 
 
 $section->addInput(new \Form_StaticText(
@@ -466,6 +490,20 @@ events.push(function() {
 	*/
 	$('[id^=table_domainsmethod]').change();
 	updatevisibility();
+
+	// Update visibility of Custom Private Key field,
+	// based upon selection in Private Key drop-down
+	function keylength_change() {
+		hideInput('keypaste', $('#keylength').val() != "custom");
+	}
+
+	// Update page display state on keylength selection change
+	$('#keylength').change(function () {
+		keylength_change();
+	});
+
+	// Set initial page display state
+	keylength_change();
 });
 //]]>
 </script>
