@@ -683,6 +683,26 @@ $a_keylength['ec-256'] = array('name' => "256-bit ECDSA", 'ecc' => true);
 $a_keylength['ec-384'] = array('name' => "384-bit ECDSA", 'ecc' => true);
 $a_keylength['custom'] = array('name' => "Custom...");
 
+if (!is_array($config['installedpackages']['acme'])) {
+	$config['installedpackages']['acme'] = array();
+}
+if (!is_array($config['installedpackages']['acme']['certificates'])) {
+	$config['installedpackages']['acme']['certificates'] = array();
+}
+if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
+	$config['installedpackages']['acme']['certificates']['item'] = array();
+}
+
+if (!is_array($config['installedpackages']['acme'])) {
+	$config['installedpackages']['acme'] = array();
+}
+if (!is_array($config['installedpackages']['acme']['accountkeys'])) {
+	$config['installedpackages']['acme']['accountkeys'] = array();
+}
+if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
+	$config['installedpackages']['acme']['accountkeys']['item'] = array();
+}
+
 function set_cronjob() {
 	global $config;
 	$a_global = &$config['installedpackages']['acme'];
@@ -728,7 +748,7 @@ function get_itembyname($a_array, $name) {
 	}
 	return null;	
 }
-	
+
 function get_accountkey_id($name) {
 	global $config;
 	$a_array = &$config['installedpackages']['acme']['accountkeys']['item'];
