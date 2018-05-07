@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-sudo
 PORTVERSION=	0.3
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
