@@ -3,7 +3,7 @@
 
 PORTNAME=	eblob
 PORTVERSION=	0.18.2
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -33,8 +33,8 @@ CMAKE_ARGS+=	-DWITH_ASSERTS=OFF
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-LIB_DEPENDS+=	libboost_python.so:devel/boost-python-libs
-USES+=		python
+LIB_DEPENDS+=	${PY_BOOST}
+USES+=		python:2.7
 CMAKE_ARGS+=	-DWITH_PYTHON=ON
 PLIST_SUB+=	PYTHON="" PYTHON_VER=${PYTHON_VER}
 .else

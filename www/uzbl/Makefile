@@ -4,7 +4,7 @@
 PORTNAME=	uzbl
 PORTVERSION=	0.9.1
 DISTVERSIONPREFIX=v
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	www
 
 MAINTAINER=	aehlig@linta.de
@@ -13,16 +13,16 @@ COMMENT=	Web interface tools which adhere to the unix philosophy
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/${PYTHON_PKGNAMEPREFIX}setuptools
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 LIB_DEPENDS=	libwebkitgtk-1.0.so:www/webkit-gtk2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2  \
 		libsoup-2.4.so:devel/libsoup
 RUN_DEPENDS=	socat:net/socat \
 		dmenu:x11/dmenu \
-		${PYTHON_PKGNAMEPREFIX}configparser>0:devel/py-configparser
+		${PYTHON_PKGNAMEPREFIX}configparser>0:devel/py-configparser@${PY_FLAVOR}
 
-USES=		gmake pkgconfig python:2 desktop-file-utils gettext-runtime shebangfix
+USES=		gmake pkgconfig python:2.7 desktop-file-utils gettext-runtime shebangfix
 USE_XORG=	x11
 USE_GNOME=	gtk20 pygtk2 cairo
 USE_LDCONFIG=	yes
@@ -31,8 +31,8 @@ INSTALLS_ICONS=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	uzbl
 
-SHEBANG_FILES=	examples/data/scripts/auth.py \
-		examples/data/scripts/scheme.py \
+SHEBANG_FILES=	bin/uzbl-tabbed \
+		examples/data/scripts/*.py \
 		examples/data/scripts/uzblcat
 
 MAKE_ENV=	PYTHON=${PYTHON_VERSION} \

@@ -11,15 +11,15 @@ COMMENT=	FreeBSD Automated Release Bot
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/zconfig:devel/py-zconfig
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zconfig>=0:devel/py-zconfig@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zconfig>=0:devel/py-zconfig@${FLAVOR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	threerings
 GH_PROJECT=	farbot
 GH_TAGNAME=	c824009
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 PYDISTUTILS_PKGNAME=	farb
 PYDISTUTILS_PKGVERSION=	0.1
@@ -32,6 +32,6 @@ post-install:
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/xhtml
-	${INSTALL_MAN} ${WRKSRC}/docs/xhtml/* ${STAGEDIR}${DOCSDIR}/xhtml
+	${INSTALL_DATA} ${WRKSRC}/docs/xhtml/* ${STAGEDIR}${DOCSDIR}/xhtml
 
 .include <bsd.port.mk>

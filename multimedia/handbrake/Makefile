@@ -3,7 +3,7 @@
 
 PORTNAME=	handbrake
 PORTVERSION=	1.0.7
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	multimedia
 DIST_SUBDIR=	${PORTNAME}
 
@@ -34,8 +34,13 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libopus.so:audio/opus \
 		libjansson.so:devel/jansson
 
-BROKEN_aarch64=	Fails to build: invokes x86 asm
-BROKEN_armv6=	Fails to build: invokes x86 asm
+BROKEN_aarch64=		invokes x86 assembler
+BROKEN_armv6=		invokes x86 assembler
+BROKEN_armv7=		invokes x86 assembler
+BROKEN_mips=		invokes x86 assembler
+BROKEN_mips64=		invokes x86 assembler
+BROKEN_sparc64=		invokes x86 assembler
+BROKEN_powerpc64=	invokes x86 assembler
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	HandBrake
@@ -59,7 +64,7 @@ LIB_DEPENDS+=	libdvdcss.so:multimedia/libdvdcss
 GNU_CONFIGURE=	yes
 USE_GCC=	yes
 USES=		autoreconf:build compiler:features gmake iconv \
-		libtool:build localbase:ldflags pkgconfig python:build
+		libtool:build localbase:ldflags pkgconfig python:2.7,build
 MAKE_ENV=	V=1 ACLOCAL=${LOCALBASE}/bin/aclocal
 
 CONFIGURE_ARGS=	--force --enable-x265
@@ -118,6 +123,10 @@ post-extract: .SILENT
 .for f in ${CONTRIB_FILES}
 	${CP} ${DISTDIR}/${DIST_SUBDIR}/${f} ${WRKSRC}/download
 .endfor
+
+post-patch:
+	@${REINPLACE_CMD} 's@python2 @${PYTHON_CMD} @' \
+		${WRKSRC}/gtk/src/Makefile.am
 
 post-install-X11-on:
 	${LN} -sf ghb ${STAGEDIR}${PREFIX}/bin/HandBrake

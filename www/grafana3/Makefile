@@ -97,8 +97,6 @@ SUB_LIST+=	GRAFANA_USER=${GRAFANA_USER} \
 
 PLIST_SUB+=	GRAFANAHOMEDIR=${GRAFANAHOMEDIR}
 
-STRIP=
-
 post-extract:
 	@${MKDIR} ${WRKSRC}/src/github.com/grafana/grafana
 .for src in .bowerrc .bra.toml .editorconfig .github .gitignore .hooks \
@@ -118,7 +116,7 @@ post-extract:
 
 do-build:
 	cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/grafana; \
-		${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go run build.go build
+		${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go run build.go build
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/grafana/grafana/bin/grafana-server \

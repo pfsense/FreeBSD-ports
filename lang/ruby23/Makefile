@@ -73,6 +73,10 @@ CPE_VENDOR=	ruby-lang
 CPE_VERSION=	${RUBY_RELVERSION}
 CPE_UPDATE=	p${RUBY_PATCHLEVEL}
 
+# --- loadpath.o ---
+# loadpath.c:30:2: error: RUBY_EXEC_PREFIX must be defined
+MAKE_JOBS_UNSAFE=	yes
+
 .include <bsd.port.pre.mk>
 
 # PORTREVISION/PORTEPOCH hack
@@ -86,7 +90,7 @@ _SUF2=	,${PORTEPOCH}
 .endif
 
 .if ${OPSYS} == "FreeBSD"
-.if exists(/usr/sbin/dtrace) && (${OSVERSION} > 1100032) && (${ARCH} == "amd64" || ${ARCH} == "i386")
+.if exists(/usr/sbin/dtrace) && (${OSVERSION} > 1100032) && (${ARCH} == amd64 || ${ARCH} == i386)
 CONFIGURE_ARGS+=--enable-dtrace
 .else
 CONFIGURE_ARGS+=--disable-dtrace
@@ -94,15 +98,15 @@ CONFIGURE_ARGS+=--disable-dtrace
 .endif
 
 # keep in sync with all platforms where libunwind is available
-.if (${ARCH} == "amd64" || ${ARCH} == "i386")
+.if (${ARCH} == amd64 || ${ARCH} == i386)
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
-.if ${ARCH} == "powerpc64"
+.if ${ARCH} == powerpc64
 USE_GCC=	yes
 .endif
 
-.if ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 CONFIGURE_ARGS+=--with-setjmp-type=_setjmp
 CONFIGURE_ENV+=	ac_cv_func__setjmp=yes
 .endif
@@ -167,7 +171,7 @@ post-patch:
 post-build:
 #
 # Hack to allow modules to be installed into separate PREFIX and/or under user
-# privilegies
+# privileges
 #
 	@${RB_SET_CONF_VAR} "prefix" "ENV['PREFIX'] || \3"
 	@${RB_SET_CONF_VAR} "INSTALL" "'/usr/bin/install -c'"

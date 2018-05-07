@@ -3,7 +3,7 @@
 
 PORTNAME=	ncs
 PORTVERSION=	2.0.8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science parallel
 MASTER_SITES=	http://code-saturne.org/releases/
 
@@ -12,18 +12,21 @@ COMMENT=	Code_Saturne Kernel
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	cs_preprocess:science/ecs	\
-		pyrcc4:textproc/py-qt4-xml
-LIB_DEPENDS=	libfvm.so:science/fvm	\
+BUILD_DEPENDS=	cs_preprocess:science/ecs
+LIB_DEPENDS=	libbft.so:science/bft \
+		libcgns.so:science/cgnslib \
+		libfvm.so:science/fvm \
+		libhdf5.so:science/hdf5 \
+		libmedC.so:french/med \
 		libmei.so:science/mei
-RUN_DEPENDS=	xmgrace:math/grace	\
-		bash:shells/bash	\
-		xterm:x11/xterm	\
+RUN_DEPENDS=	xmgrace:math/grace \
+		bash:shells/bash \
+		xterm:x11/xterm \
 		cs_preprocess:science/ecs
 
-USES=		fortran gettext gmake iconv libtool pyqt:4 python shebangfix
+USES=		fortran gettext gmake iconv libtool pyqt:4 python:2.7 shebangfix
 USE_GNOME=	libxml2
-USE_PYQT=	core
+USE_PYQT=	core xml_build
 SHEBANG_FILES=	bin/runcase.in
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/libxml2
 GNU_CONFIGURE=	yes
@@ -102,6 +105,8 @@ pre-everything::
 	@${ECHO_MSG}
 
 post-install:
+	@cd ${STAGEDIR}${PREFIX}/lib && ${STRIP_CMD} libsaturne.so* libsyrcs.so* libsyrcs.so*
+	@${REINPLACE_CMD} -i '' -e 's|^#!.*|#!${PYTHON_CMD}|' ${STAGEDIR}${PREFIX}/bin/code_saturne
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:C|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}

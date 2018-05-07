@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	amule
-PORTVERSION=	10990
-PORTREVISION=	2
+PORTVERSION=	10998
 CATEGORIES=	net-p2p
 MASTER_SITES=	http://amule.sourceforge.net/tarballs/
 PKGNAMESUFFIX=	-devel
@@ -44,7 +43,7 @@ AMULEDAEMON_DESC=	Compile aMule daemon version
 AMULEGUI_DESC=		Compile aMule remote GUI
 CAS_DESC=		Compile aMule Statistics for console
 ED2K_DESC=		Compile aMule ed2k links handler
-FILEVIEW_DESC=		Compile file viewer for console (EXPERIMENTAL)
+FILEVIEW_DESC=		Compile file viewer for console
 MMAP_DESC=		Use mapped memory
 MONOLITHIC_DESC=	Compile monolithic aMule
 PLASMAMULE_DESC=	Compile aMule plasma applet and engine
@@ -101,7 +100,7 @@ UPNP_LIB_DEPENDS=	libupnp.so:devel/upnp
 UPNP_CONFIGURE_OFF=	--disable-upnp
 
 WEBSERVER_CONFIGURE_ON=	--enable-webserver
-WEBSERVER_LIB_DEPENDS=	libpng16.so:graphics/png
+WEBSERVER_LIB_DEPENDS=	libpng.so:graphics/png
 
 WXCAS_CONFIGURE_ON=	--enable-wxcas
 

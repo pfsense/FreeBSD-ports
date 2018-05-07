@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	c++-gtk-utils
-PORTVERSION=	2.2.14.1
-PORTREVISION=	2
+PORTVERSION=	2.2.15
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/cxx-gtk-utils/cxx-gtk-utils/${PORTVERSION}/
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Lightweight library for programming GTK+ programs
 
 LICENSE=	LGPL21

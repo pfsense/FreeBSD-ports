@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	19.3.6.2
+PORTVERSION=	19.3.6.7
 PORTEPOCH=	4
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
@@ -11,10 +11,12 @@ MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://www.erlang.se/doc/:erlangse			\
 		http://www.erlang.se/publications/:publications		\
 		http://www.sics.se/~joe/thesis/:joe			\
+		http://olgeni.olgeni.com/~olgeni/distfiles/:local	\
 		LOCAL/olgeni:local
 DISTNAME=	otp_src_${ERL_RELEASE}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:erlangorg	\
-		${ERLANG_MAN}:erlangorg
+		${ERLANG_MAN}:erlangorg			\
+		preloaded-${PORTVERSION}${EXTRACT_SUFX}:local
 DIST_SUBDIR=	erlang
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -22,7 +24,9 @@ PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
 		LOCAL/olgeni
 PATCHFILES=	patch-otp-19.3.1 patch-otp-19.3.2 patch-otp-19.3.3 \
 		patch-otp-19.3.4 patch-otp-19.3.5 patch-otp-19.3.6 \
-		patch-otp-19.3.6.1 patch-otp-19.3.6.2
+		patch-otp-19.3.6.1 patch-otp-19.3.6.2 patch-otp-19.3.6.3 \
+		patch-otp-19.3.6.4 patch-otp-19.3.6.5 patch-otp-19.3.6.6 \
+		patch-otp-19.3.6.7
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Functional programming language from Ericsson
@@ -56,16 +60,20 @@ WX_DESC=	Enable WX application
 NATIVE_IMPLIES=	HIPE
 
 OPTIONS_DEFAULT=HIPE KQUEUE OPENSSL SCTP SMP THREADS DTRACE
-OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
 
+OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
 OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
-OPTIONS_EXCLUDE_i386=		DTRACE
 # ld(1) fails to link probes: missing __dtrace_erlang___* symbols
 OPTIONS_EXCLUDE_aarch64=	DTRACE
+OPTIONS_EXCLUDE_armv6=		DTRACE
+OPTIONS_EXCLUDE_armv7=		DTRACE
+OPTIONS_EXCLUDE_i386=		DTRACE
+
+OPENSSL_VARS=	BROKEN_SSL=openssl-devel
 
 ERL_RELEASE=	19.3
 
@@ -75,14 +83,16 @@ USE_RC_SUBR=	epmd
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-APP_UPGRADE=	erts            8.3 8.3.5.2 \
-		lib/crypto    3.7.3   3.7.4 \
-		lib/inets     6.3.6   6.3.9 \
-		lib/ssh       4.4.1   4.4.2 \
-		lib/ssl       8.1.1   8.1.3 \
-		lib/dialyzer    3.1   3.1.1 \
-		lib/xmerl    1.3.13  1.3.14
-
+APP_UPGRADE=	erts            8.3  8.3.5.4 \
+		lib/compiler  7.0.4  7.0.4.1 \
+		lib/crypto    3.7.3    3.7.4 \
+		lib/dialyzer    3.1    3.1.1 \
+		lib/inets     6.3.6    6.3.9 \
+		lib/kernel      5.2  5.2.0.1 \
+		lib/mnesia   4.14.3 4.14.3.1 \
+		lib/ssh       4.4.1  4.4.2.2 \
+		lib/ssl       8.1.1  8.1.3.1.1 \
+		lib/xmerl    1.3.13   1.3.14
 EI_VSN=		3.9.3
 SNMP_VSN=	5.2.5
 TOOLS_VSN=	2.9.1
@@ -200,7 +210,7 @@ CONFIGURE_ARGS+=--enable-dirty-schedulers
 MAKE_ARGS+=	ARCH=x86
 .endif
 
-.if ${ARCH} == armv6
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 MAKE_ARGS+=	ARCH=arm
 .endif
 
@@ -220,6 +230,7 @@ pre-configure:
 .if ! ${PORT_OPTIONS:MWX}
 	echo "disabled by port options" > ${WRKSRC}/lib/wx/SKIP
 .endif
+	cd ${WRKSRC} && ${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/preloaded-${PORTVERSION}${EXTRACT_SUFX}
 
 post-configure:
 .if ${PORT_OPTIONS:MODBC}
@@ -280,10 +291,4 @@ post-install:
 		| ${SORT} \
 		>> ${TMPPLIST}
 
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MOPENSSL} && ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

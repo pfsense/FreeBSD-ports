@@ -3,6 +3,7 @@
 
 PORTNAME=	cacao
 PORTVERSION=	1.6.1
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	http://www.complang.tuwien.ac.at/cacaojvm/download/cacao-${PORTVERSION}/
 
@@ -10,6 +11,8 @@ MAINTAINER=	java@FreeBSD.org
 COMMENT=	JIT compiler for JAVA
 
 LICENSE=	GPLv2
+
+ONLY_FOR_ARCHS=	amd64 i386
 
 BUILD_DEPENDS=	${LOCALBASE}/share/classpath/glibj.zip:java/classpath
 RUN_DEPENDS=	${LOCALBASE}/share/classpath/glibj.zip:java/classpath
@@ -23,8 +26,6 @@ CONFIGURE_ARGS=	--disable-test-dependency-checks \
 		--with-build-java-runtime-library-classes=${LOCALBASE}/share/classpath/glibj.zip
 CONFIGURE_ENV=	JAVAC="${JAVAC}" JAR="${JAR}"
 
-ONLY_FOR_ARCHS=	amd64 i386
-
 OPTIONS_DEFINE=	JDK
 OPTIONS_DEFAULT=JDK
 JDK_DESC=	Build with native JDK
@@ -32,13 +33,10 @@ JDK_DESC=	Build with native JDK
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MJDK}
-BUILD_DEPENDS+=	${LOCALBASE}/bootstrap-openjdk/bin/javac:java/bootstrap-openjdk
-JAR=		${LOCALBASE}/bootstrap-openjdk/bin/jar
-JAVAC=		${LOCALBASE}/bootstrap-openjdk/bin/javac
+BUILD_DEPENDS+=	${LOCALBASE}/bootstrap-openjdk6/bin/javac:java/bootstrap-openjdk6
+JAR=		${LOCALBASE}/bootstrap-openjdk6/bin/jar
+JAVAC=		${LOCALBASE}/bootstrap-openjdk6/bin/javac
 .else
-.if defined(WITH_GCC)
-GCC_SUFX=	${WITH_GCC:S/.//}
-.endif
 GCC_SUFX?=	46
 BUILD_DEPENDS+=	gcj${GCC_SUFX}:lang/gcc${GCC_SUFX}
 EXTRA_PATCHES=	${FILESDIR}/gcj.patch

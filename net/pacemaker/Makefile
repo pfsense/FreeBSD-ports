@@ -3,6 +3,7 @@
 
 PORTNAME=	pacemaker
 PORTVERSION=	1.1.16
+PORTREVISION=	1
 DISTVERSIONPREFIX=	Pacemaker-
 CATEGORIES=	net
 
@@ -10,6 +11,8 @@ MAINTAINER=	dpejesh@yahoo.com
 COMMENT=	Scalable High-Availability cluster resource manager
 
 LICENSE=	GPLv2
+
+BROKEN_armv6=		fails to install: help2man: can't get '--help' info from pacemakerd
 
 BUILD_DEPENDS=	bash:shells/bash \
 		corosync:net/corosync \
@@ -25,9 +28,6 @@ RUN_DEPENDS=	bash:shells/bash \
 		getopt>=0:misc/getopt \
 		ocf-tester:net-mgmt/resource-agents
 
-BROKEN_armv6=		fails to install: help2man: can't get '--help' info from pacemakerd
-BROKEN_powerpc64=	fails to build
-
 CONFLICTS=	heartbeat-[0-9]*
 
 USERS=		hacluster
@@ -39,6 +39,7 @@ GH_ACCOUNT=	ClusterLabs
 USES=		autoreconf gmake libtool pathfix pkgconfig python shebangfix
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
+USE_PYTHON=	py3kplist
 USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-fatal-warnings \

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	jfrog-cli
-PORTVERSION=	1.6.0
+PORTVERSION=	1.14.0
 CATEGORIES=	devel
 
 MAINTAINER=	swills@FreeBSD.org
@@ -15,19 +15,14 @@ GH_PROJECT=	jfrog-cli-go
 
 PLIST_FILES=	bin/jfrog
 
-STRIP=		# stripping can break go binaries
-
 post-extract:
 	@${MV} ${WRKSRC}/vendor/ ${WRKSRC}/src
 	@${MKDIR} ${WRKSRC}/src/github.com/jfrogdev/jfrog-cli-go
-.for src in .gitignore CONTRIBUTING.md Jenkinsfile LICENSE README.md \
-	artifactory bintray getCli.sh jfrog missioncontrol testsdata utils xray
-	@${MV} ${WRKSRC}/${src} ${WRKSRC}/src/github.com/jfrogdev/jfrog-cli-go
-.endfor
+	@${MV} ${WRKSRC}/jfrog-cli ${WRKSRC}/jfrog-client ${WRKSRC}/src/github.com/jfrogdev/jfrog-cli-go
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/jfrogdev/jfrog-cli-go ; \
-		${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go install ./...
+		${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go install ./...
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/jfrog ${STAGEDIR}${PREFIX}/bin/jfrog

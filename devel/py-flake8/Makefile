@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flake8
-PORTVERSION=	3.3.0
+PORTVERSION=	3.5.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,13 +12,20 @@ COMMENT=	Code checking using pep8 and pyflakes
 
 LICENSE=	MIT
 
-BUILD_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}pytest-runner>=0:devel/py-pytest-runner
-RUN_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}mccabe>=0.5.0:devel/py-mccabe \
-		${PYTHON_PKGNAMEPREFIX}pycodestyle>=2.0.0:devel/py-pycodestyle \
-		${PYTHON_PKGNAMEPREFIX}pyflakes>=0.8.1:devel/py-pyflakes
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-runner>=0:devel/py-pytest-runner@${FLAVOR}
+RUN_DEPENDS=	${PY_ENUM34} \
+		${PYTHON_PKGNAMEPREFIX}mccabe>=0.6.0:devel/py-mccabe@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pycodestyle>=2.0.0:devel/py-pycodestyle@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyflakes>=1.5.0:devel/py-pyflakes@${FLAVOR}
 
-USES?=		python
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 3200
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}configparser>0:devel/py-configparser@${FLAVOR}
+.endif
+
+.include <bsd.port.post.mk>

@@ -3,15 +3,16 @@
 
 PORTNAME=	pdo_cassandra
 PORTVERSION=	0.2.1
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	databases
-PKGNAMEPREFIX=	php5-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	PDO driver for Apache Cassandra
 
 LICENSE=	APACHE20
 
+BROKEN=		fails to build
 BROKEN_powerpc64=	Does not build
 
 LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs
@@ -25,7 +26,7 @@ USES=		compiler:c++11-lib php:ext pkgconfig
 USE_CXXSTD=	c++11
 USE_PHP=	pdo:build
 
-IGNORE_WITH_PHP=	70 71
+IGNORE_WITH_PHP=	70 71 72
 
 .include <bsd.port.pre.mk>
 .include "${PORTSDIR}/devel/thrift/bsd.thrift.mk"

@@ -8,12 +8,12 @@ MASTER_SITES=	http://launchpadlibrarian.net/28462213/ \
 		LOCAL/vg
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Email script for conky
 
 RUN_DEPENDS=	conky:sysutils/conky
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils
 NO_BUILD=	yes
 NO_ARCH=	yes

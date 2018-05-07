@@ -12,6 +12,9 @@ COMMENT=	Simple TeX front-end program
 
 LICENSE=	GPLv2
 
+BROKEN_armv6=		fails to install: PDFDocument.cpp:1836:39: cannot initialize a parameter of type 'qreal *' with an rvalue of type 'double *'
+BROKEN_armv7=		fails to install: PDFDocument.cpp:1836:39: cannot initialize a parameter of type 'qreal *' with an rvalue of type 'double *'
+
 BUILD_DEPENDS=	hunspell:textproc/hunspell
 LIB_DEPENDS=	libpoppler-qt4.so:graphics/poppler-qt4
 
@@ -47,7 +50,7 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS LUA PYTHON
 LUA_USES=	lua:51
 LUA_PLIST_FILES=lib/texworks/libTWLuaPlugin.so
-PYTHON_USES=	python:3
+PYTHON_USES=	python:3.4+
 PYTHON_PLIST_FILES=lib/texworks/libTWPythonPlugin.so
 
 post-extract:

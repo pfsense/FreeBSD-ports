@@ -8,13 +8,16 @@ CATEGORIES=	www multimedia
 MASTER_SITES=	http://www.kplaylist.net/archive.php?file=1.8.505&tar=true/
 DISTNAME=	${PORTNAME}.${PORTVERSION}
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP based music database
+
+IGNORE_WITH_PHP=	70 71 72
 
 RUN_DEPENDS=	lame:audio/lame \
 		oggenc:audio/vorbis-tools \
 		zip:archivers/zip
 
+USES=		php
 USE_PHP=	curl mysql session iconv
 
 WRKSRC=		${WRKDIR}

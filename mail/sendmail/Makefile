@@ -2,7 +2,7 @@
 
 PORTNAME=	sendmail
 PORTVERSION=	8.15.2
-PORTREVISION=	3
+PORTREVISION=	10
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/
 PKGNAMESUFFIX?=	${TLS_SUFFIX}${SASL_SUFFIX}${LDAP_SUFFIX}${BDB_SUFFIX}${PKGNAMESUFFIX2}
@@ -21,7 +21,7 @@ CONFLICTS?=	courier-0.* postfix-1.* postfix-2.* smail-3.* zmailer-2.* opensmtpd-
 USERS=		smmsp
 GROUPS=		smmsp
 
-USES=		cpe uidfix
+USES=		cpe uidfix groff
 MAKE_ARGS=	UBINOWN=${UID} UBINGRP=${GID} \
 		SBINOWN=${UID} SBINGRP=${GID} \
 		GBINOWN=${UID} GBINGRP=${GID} \
@@ -30,7 +30,8 @@ MAKE_ARGS=	UBINOWN=${UID} UBINGRP=${GID} \
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DOCS=		KNOWNBUGS LICENSE PGPKEYS README RELEASE_NOTES \
 		sendmail/TRACEFLAGS sendmail/SECURITY sendmail/TUNING
-PLIST_SUB+=	PREFIX=${PREFIX:S=${PREFIX}/==} MANPREFIX=${MANPREFIX:S=$=/=:S=${PREFIX}==:S=^/==}
+PLIST_SUB+=	PREFIX=${PREFIX:S=${PREFIX}/==} \
+		MANPREFIX=${MANPREFIX:S=$=/=:S=${PREFIX}==:S=^/==}
 PKGMESSAGE=	${WRKSRC}/pkg-message
 
 WCONF=		${WRKSRC}/devtools/Site
@@ -44,8 +45,12 @@ SENDMAIL=	${PREFIX}/sbin/sendmail
 BASEMAIL=	/usr/libexec/sendmail/sendmail
 MILTER_SOVER?=	6
 
-OPTIONS_DEFINE?=	SHMEM SEM LA NIS IPV6 TLS SASL SASLAUTHD LDAP BDB GDBM SOCKETMAP CYRUSLOOKUP PICKY_HELO_CHECK MILTER DOCS
-OPTIONS_DEFAULT?=	SHMEM SEM LA NIS TLS SASL SASLAUTHD PICKY_HELO_CHECK MILTER BDB1
+OPTIONS_DEFINE?=	SHMEM SEM LA NIS IPV6 TLS SASL SASLAUTHD LDAP BDB \
+			GDBM SOCKETMAP CYRUSLOOKUP BLACKLISTD SMTPUTF8 \
+			PICKY_HELO_CHECK MILTER DOCS
+OPTIONS_DEFAULT?=	SHMEM SEM LA NIS TLS SASL SASLAUTHD BDB1 \
+			BLACKLISTD PICKY_HELO_CHECK MILTER
+OPTIONS_EXCLUDE_FreeBSD_10=	BLACKLISTD
 NO_OPTIONS_SORT=yes
 SHMEM_DESC=		System V shared memory support
 LA_DESC=		load averages support
@@ -54,9 +59,11 @@ SASLAUTHD_DESC=		SASLAUTHD support
 BDB_DESC=		Berkeley DB version 4+ support
 GDBM_DESC=		GNU dbm library support (option COMPAT needed)
 SOCKETMAP_DESC=		Enable socketmap feature
+BLACKLISTD_DESC=	Enable blacklistd support
 CYRUSLOOKUP_DESC=	Enable cyruslookup feature
 PICKY_HELO_CHECK_DESC=	Enable picky HELO check
 MILTER_DESC=		Enable milter support
+SMTPUTF8_DESC=		Enable unicode address support
 
 TLS_USES=	ssl
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
@@ -65,6 +72,7 @@ LDAP_USE=	OPENLDAP=yes
 BDB_USES=	bdb
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_WITH=	compat
+SMTPUTF8_LIB_DEPENDS=	libidn2.so:dns/libidn2 libicui18n.so:devel/icu
 
 .include <bsd.port.options.mk>
 .if ${PORT_OPTIONS:MSHMEM} && !defined(BUILDING_INDEX)
@@ -93,6 +101,9 @@ IGNORE=		option CYRUSLOOKUP requires option SOCKETMAP
 EXTRA_PATCHES+=	${FILESDIR}/cyruslookup.patch
 .endif
 .endif
+.if ${PORT_OPTIONS:MSMTPUTF8}
+EXTRA_PATCHES+=	${FILESDIR}/smtputf8.patch
+.endif
 .if ${PORT_OPTIONS:MTLS}
 TLS_SUFFIX?=	+tls
 CONFLICTS+=	sendmail-ldap-8.* sendmail-sasl2-8.*
@@ -120,6 +131,12 @@ SITE+=	${FILESDIR}/site.config.m4.sasl2
 .if ${PORT_OPTIONS:MLDAP}
 SITE+=	${FILESDIR}/site.config.m4.ldap
 .endif
+.if ${PORT_OPTIONS:MBLACKLISTD}
+SITE+=	${FILESDIR}/site.config.m4.blacklistd
+.endif
+.if ${PORT_OPTIONS:MSMTPUTF8}
+SITE+=	${FILESDIR}/site.config.m4.smtputf8
+.endif
 .if ${PORT_OPTIONS:MMILTER}
 SITE+=	${FILESDIR}/site.config.m4.milter
 .endif
@@ -145,6 +162,12 @@ do-configure:
 .if ${PORT_OPTIONS:MGDBM}
 	@(if [ ! -e "${LOCALBASE}/lib/libgdbm_compat.so" ] ; then \
 	  ${ECHO_MSG} "===> option COMPAT is missing in databases/gdbm."; \
+          ${FALSE}; \
+          fi)
+.endif
+.if ${PORT_OPTIONS:MBLACKLISTD}
+	@(if [ ! -e "${DESTDIR}/usr/lib/libblacklist.so" ] ; then \
+	  ${ECHO_MSG} "===> libblacklist.so not found. Please update to FreeBSD 11"; \
           ${FALSE}; \
           fi)
 .endif
@@ -192,7 +215,8 @@ do-configure:
 .endif
 
 post-build:
-	(cd ${WRKSRC}/doc/op && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} op.txt)
+	(cd ${WRKSRC}/doc/op && \
+	 ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} op.txt)
 
 pre-install:
 	${MKDIR} ${STAGEDIR}/etc/mail

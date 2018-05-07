@@ -12,7 +12,7 @@ COMMENT=	Conversion utility that allows conversion between many units
 LICENSE=	GPLv2
 
 USE_GNOME=	pygtk2
-USES=		python
+USES=		python:2.7
 NO_BUILD=	yes
 
 PORTDOCS=	CHANGELOG FAQ README THANKS
@@ -24,7 +24,7 @@ NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=	gettext
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|#!/usr/bin/python|#!/usr/bin/env python|g ; \
+	@${REINPLACE_CMD} -e 's|#!/usr/bin/python|#!${PYTHON_CMD}| ; \
 		 s|/usr/share|${PREFIX}/share|g ; \
 		 s|/\.\./pixmaps/|/pixmaps/|g' ${WRKSRC}/gonvert
 

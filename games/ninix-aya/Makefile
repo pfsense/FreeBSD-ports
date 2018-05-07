@@ -3,9 +3,9 @@
 
 PORTNAME=	ninix-aya
 PORTVERSION=	4.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
-MASTER_SITES=	SFJP/${PORTNAME}/58500
+MASTER_SITES=	OSDN/${PORTNAME}/58500
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Desktop mascot program compatible with "Ukagaka"
@@ -14,12 +14,12 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}chardet>0:textproc/py-chardet \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}chardet>0:textproc/py-chardet@${PY_FLAVOR} \
 		${PYNUMPY}
 
 NO_ARCH=	yes
 
-USES=		gmake python tar:tgz
+USES=		gmake python:2.7 tar:tgz
 USE_GNOME=	pygtk2
 USE_GSTREAMER=	python
 

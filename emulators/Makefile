@@ -49,7 +49,6 @@
     SUBDIR += gngb
     SUBDIR += gngeo
     SUBDIR += gns3
-    SUBDIR += gnuboy
     SUBDIR += gxemul
     SUBDIR += hatari
     SUBDIR += hercules
@@ -57,7 +56,6 @@
     SUBDIR += hugo
     SUBDIR += i386-wine
     SUBDIR += i386-wine-devel
-    SUBDIR += i386-wine-staging
     SUBDIR += ia64sim
     SUBDIR += ines
     SUBDIR += javatari
@@ -79,6 +77,7 @@
     SUBDIR += mastergear
     SUBDIR += mednafen
     SUBDIR += mess
+    SUBDIR += mgba
     SUBDIR += mtools
     SUBDIR += mupen64plus
     SUBDIR += mupen64plus-audio-sdl
@@ -110,17 +109,13 @@
     SUBDIR += pipelight
     SUBDIR += playonbsd
     SUBDIR += ppsspp
-    SUBDIR += ppsspp-devel
     SUBDIR += ppsspp-qt5
-    SUBDIR += ppsspp-qt5-devel
     SUBDIR += py-gns3-converter
     SUBDIR += py-nova
     SUBDIR += py-unicorn
     SUBDIR += q4wine
     SUBDIR += qemu
     SUBDIR += qemu-cheri
-    SUBDIR += qemu-cheri128
-    SUBDIR += qemu-cheri128m
     SUBDIR += qemu-devel
     SUBDIR += qemu-launcher
     SUBDIR += qemu-ppcnv
@@ -131,7 +126,6 @@
     SUBDIR += qmc2
     SUBDIR += qtemu
     SUBDIR += quasi88
-    SUBDIR += raine
     SUBDIR += riscv-fesvr
     SUBDIR += riscv-isa-sim
     SUBDIR += rpcs3
@@ -177,7 +171,6 @@
     SUBDIR += wine-gecko-devel
     SUBDIR += wine-mono
     SUBDIR += wine-mono-devel
-    SUBDIR += wine-staging
     SUBDIR += winetricks
     SUBDIR += wxmupen64plus
     SUBDIR += x48

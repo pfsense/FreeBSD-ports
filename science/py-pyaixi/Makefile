@@ -3,35 +3,32 @@
 
 PORTNAME=	pyaixi
 PORTVERSION=	1.0.4
+PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	johannes@perceivon.net
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Implementation of the MC-AIXI-CTW AI algorithm
 
 LICENSE=	CC-BY-SA-3.0
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		dos2unix python:2
-USE_PYTHON=	distutils autoplist
+NO_ARCH=	yes
+USES=		dos2unix python
+USE_PYTHON=	autoplist concurrent distutils
 
-PORTDOCS=	changelog.txt \
-		todo.txt
-
+PORTDOCS=	changelog.txt todo.txt
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
-DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} \
-		${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/doc/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${PORTEXAMPLES:S|^|${WRKSRC}/conf/|} \
-		${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/conf/ && ${INSTALL_DATA} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

@@ -6,7 +6,7 @@ PORTVERSION=	4.0.2
 PORTREVISION=	2
 CATEGORIES=	finance
 MASTER_SITES=	https://vault.trustcommerce.com/downloads/
-PKGNAMEPREFIX=	php-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-php
 
 MAINTAINER=	mbowie@buzmo.com
@@ -14,7 +14,7 @@ COMMENT=	PHP extension for TrustCommerce credit card processing
 
 USES=		php:ext ssl
 
-IGNORE_WITH_PHP=	70 71
+IGNORE_WITH_PHP=	70 71 72
 
 post-patch:
 	# avoid name conflicts with libressl

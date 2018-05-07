@@ -2,18 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	6tunnel
-DISTVERSION=	0.11rc2.20130525
+DISTVERSION=	0.12
 CATEGORIES=	net ipv6
 MASTER_SITES=	GH \
 		LOCAL/bdrewery/${PORTNAME}/
 
-MAINTAINER=	bdrewery@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	TCP proxy for applications that do not speak IPv6
 
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	autoconf
+USES=		autoreconf
 ALL_TARGET=	default
 
 USE_GITHUB=	yes

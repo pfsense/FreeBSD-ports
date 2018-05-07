@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	i2p
-PORTVERSION=	0.9.16
+DISTVERSION=	0.9.33
 CATEGORIES=	security java net-p2p
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTVERSION} \
 		http://download.i2p2.no/releases/${PORTVERSION}/ \
@@ -28,39 +28,25 @@ LIB_DEPENDS=	libiconv.so:converters/libiconv
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	i2p libwrapper.so library binary only available for i386 and amd64
 
-OPTIONS_DEFINE=	DOCS
-
 USES=		gettext tar:bzip2
 USE_RC_SUBR=	i2p
-
 USE_ANT=	yes
 USE_JAVA=	yes
+NO_ARCH=	yes
 JAVA_BUILD=	jdk
 JAVA_VERSION=	1.6+
 USE_LOCALE=	en_US.UTF-8
-
-ALL_TARGET=	\
-		updater \
-		tarball
-
-PORTDATA=	*
-
-PLIST_FILES=	\
-		sbin/i2prouter
+ALL_TARGET=	updater tarball
 
 SUB_FILES=	wrapper.sh
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
-ALL_TARGET+=	javadoc
-
+PORTDATA=	*
 PORTDOCS=	*
+PLIST_FILES=	sbin/i2prouter
 
-JAVADOC_WRKSRC=	${WRKSRC}/build/javadoc
-.endif
+OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
+DOCS_ALL_TARGET=	javadoc
 
 post-patch:
 # postinstall.sh SHOULD only do post installation house keeping
@@ -75,23 +61,13 @@ post-patch:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-# install
-	@${INSTALL_DATA} ${WRKSRC}/i2p.tar.bz2 \
-		${STAGEDIR}${DATADIR}/
-# update
-	@${INSTALL_DATA} ${WRKSRC}/i2pupdate.zip \
-		${STAGEDIR}${DATADIR}/
-# wrapper
-	@${INSTALL_SCRIPT} ${WRKDIR}/wrapper.sh \
-		${STAGEDIR}${PREFIX}/sbin/i2prouter
-# doc
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/installer/resources/readme/readme*.html ${STAGEDIR}${DOCSDIR}
-# line taken from textproc/xerces-j maintained by hq@FreeBSD.org
-	@cd ${JAVADOC_WRKSRC} && \
-		${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${DOCSDIR}/{}" \; && \
-		${FIND} * -not -type d -exec ${INSTALL_DATA} {} "${STAGEDIR}${DOCSDIR}/{}" \;
-.endif
+	${INSTALL_DATA} ${WRKSRC}/i2p.tar.bz2 ${STAGEDIR}${DATADIR}/
+	${INSTALL_DATA} ${WRKSRC}/i2pupdate.zip ${STAGEDIR}${DATADIR}/
+	${INSTALL_SCRIPT} ${WRKDIR}/wrapper.sh ${STAGEDIR}${PREFIX}/sbin/i2prouter
 
-.include <bsd.port.post.mk>
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/installer/resources/readme/readme*.html ${STAGEDIR}${DOCSDIR}
+	@cd ${WRKSRC}/build/javadoc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
+
+.include <bsd.port.mk>

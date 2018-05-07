@@ -1,4 +1,4 @@
-# Created by: José García Juanino <jjuanino@gmail.com>
+# Created by: Jose Garcia Juanino <jjuanino@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	mod_authnz_external
@@ -13,7 +13,7 @@ COMMENT=	Allows users authentication based on external mechanisms on apache 2.4
 
 LICENSE=	APACHE20
 
-USE_APACHE=	24
+USES=		apache:2.4
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 SHORTMODNAME=	authnz_external

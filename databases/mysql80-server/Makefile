@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME?=		mysql
-PORTVERSION=		8.0.0
+PORTVERSION=		8.0.2
+PORTREVISION?=		1
 DISTVERSIONSUFFIX?=	-dmr
-PORTREVISION?=		5
 CATEGORIES=		databases ipv6
 MASTER_SITES=		MYSQL/MySQL-8.0
 PKGNAMESUFFIX?=		80-server
@@ -14,6 +14,9 @@ MAINTAINER=		mmokhi@FreeBSD.org
 COMMENT?=		Multithreaded SQL database (server)
 
 LICENSE=		GPLv2
+
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	member access into incomplete type 'DH' (aka 'dh_st')
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
 
@@ -31,6 +34,7 @@ LIB_DEPENDS+=	libevent.so:devel/libevent \
 		liblz4.so:archivers/liblz4
 
 CMAKE_BUILD_TYPE=	Release
+CFLAGS+=		-fPIC
 
 CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_LDCONFIGDIR="${LOCALBASE}/libdata/ldconfig" \
@@ -132,6 +136,12 @@ PERFSCHM_SUB_LIST+=		PERFSCHEMRC=""
 PERFSCHM_SUB_LIST_OFF+=		PERFSCHEMRC="--skip-performance-schema"
 FEDERATED_SUB_LIST+=		FEDER="--federated"
 FEDERATED_SUB_LIST_OFF+=	FEDER=""
+.endif
+
+.include <bsd.port.options.mk>
+
+.if !defined(CLIENT_ONLY) && ${OPSYS} == FreeBSD && ${OSVERSION} < 1003506
+BROKEN=		no __cxa_thread_atexit() support in FreeBSD libc < 10.4
 .endif
 
 .include <bsd.port.pre.mk>

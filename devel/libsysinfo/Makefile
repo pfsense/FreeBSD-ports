@@ -1,10 +1,10 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	libsysinfo
 PORTVERSION=	0.0.3
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel
-PORTREVSION=	1
 
 MAINTAINER=	imp@bsdimp.com
 COMMENT=	GNU libc's sysinfo port for FreeBSD
@@ -13,7 +13,6 @@ LICENSE=	BSD3CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	bsdimp
-DISTVERSIONPREFIX= v
 
 USES=		uidfix
 USE_LDCONFIG=	yes

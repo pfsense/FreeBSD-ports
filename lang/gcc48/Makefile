@@ -3,7 +3,7 @@
 
 PORTNAME=	gcc
 PORTVERSION=	4.8.5
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	lang
 MASTER_SITES=	GCC/releases/gcc-${PORTVERSION}
 PKGNAMESUFFIX=	${SUFFIX}
@@ -14,6 +14,7 @@ COMMENT=	GNU Compiler Collection 4.8
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
+DEPRECATED=	Unsupported by upstream. Use GCC 6 or newer instead.
 ONLY_FOR_ARCHS=	amd64 armv6 i386 powerpc powerpc64 sparc64
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
@@ -81,6 +82,10 @@ CONFIGURE_ARGS+=--disable-bootstrap
 CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
 ALL_TARGET=	bootstrap-lean
 .endif
+INSTALL_TARGET=	install-strip
+.if ${UID} != 0
+BINMODE=	755
+.endif
 CONFIGURE_ARGS+=--disable-nls \
 		--enable-gnu-indirect-function \
 		--libdir=${TARGLIB} \
@@ -114,6 +119,11 @@ SUB_LIST+=	TARGLIB=${TARGLIB}
 
 pre-everything::
 	@${ECHO_MSG} "Making GCC ${PORTVERSION} for ${CONFIGURE_TARGET} [${LANGUAGES}]"
+
+post-patch:
+	@${FIND} ${WRKSRC} -type f -name '*.[ch]' | \
+	    ${XARGS} ${EGREP} -l '"(HOST_WIDE|PLUGIN_COND)' | \
+	    ${XARGS} ${REINPLACE_CMD} -E -e 's/"(HOST_WIDE|PLUGIN_COND)/" \1/g'
 
 pre-configure:
 	cd ${WRKSRC} ; contrib/gcc_update --touch

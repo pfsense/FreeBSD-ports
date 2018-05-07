@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libwps
-PORTVERSION=	0.4.7
-PORTREVISION=	2
+PORTVERSION=	0.4.8
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -12,7 +12,7 @@ COMMENT=	Microsoft file word processor format import filter library
 
 LICENSE=	LGPL21+ MPL20
 LICENSE_COMB=	dual
-LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LGPL
+LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LGPL
 LICENSE_FILE_MPL20=	${WRKSRC}/COPYING.MPL
 
 LIB_DEPENDS=	librevenge-0.0.so:textproc/librevenge
@@ -20,7 +20,7 @@ LIB_DEPENDS=	librevenge-0.0.so:textproc/librevenge
 CONFIGURE_ARGS=	--disable-werror --without-docs
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
-USES=		compiler:features libtool pathfix pkgconfig tar:bz2
+USES=		compiler:features libtool pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	gcc-arm-embedded
-PORTVERSION=	6.3.20170628
-PORTREVISION=	1
+PORTVERSION=	7.2.20171218
+PORTREVISION=	3
 CATEGORIES=	devel
-MASTER_SITES=	https://developer.arm.com/-/media/Files/downloads/gnu-rm/6-2017q2/
+MASTER_SITES=	https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2017q4/
 DISTNAME=	${ORIGINAL_PACKAGE_NAME}-src
 
 MAINTAINER=	lev@FreeBSD.org
@@ -15,19 +15,20 @@ LICENSE_COMB=	multi
 
 BROKEN_powerpc64=	does not build: __adjust.c: internal compiler error: Segmentation fault
 
-OPTIONS_DEFINE=	PYGDB EXAMPLES HTML PDF DOCS
-OPTIONS_DEFAULT=PYGDB
+OPTIONS_DEFINE=	PYGDB EXAMPLES HTML PDF DOCS SYMLINK
+OPTIONS_DEFAULT=PYGDB SYMLINK
 HTML_DESC=	Install HTML documentation
 PDF_DESC=	Install PDF documentation (requires TeX, it is huge)
 PYGDB_DESC=	Build and install python-enabled gdb in addition to standard one
+SYMLINK_DESC=	Make version-independed symlink ${LOCALBASE}/${PORTNAME}
 
 PDF_USE=		TEX=base:build,tex:build,dvipsk:build
 PDF_BUILD_DEPENDS=	texi2dvi:print/texinfo
-PYGDB_USES=		python:2
+PYGDB_USES=		python:2.7
 
 OPTIONS_SUB=		yes
 
-NOT_FOR_ARCHS=		aarch64 arm armeb armv6 \
+NOT_FOR_ARCHS=		arm armeb armv6 armv7 \
 			mips mips64 mips64el mipsel mipsn32
 NOT_FOR_ARCHS_REASON=	Very slow to build on emulator
 
@@ -44,8 +45,8 @@ GNU_CONFIGURE=	yes
 PATCH_WRKSRC=	${WRKDIR}/${ORIGINAL_PACKAGE_NAME}
 BUILD_WRKSRC=	${WRKDIR}
 
-GCC_VERSION=		6.3.1
-FULL_VERSION=		6-2017-q2-update
+GCC_VERSION=		7.2.1
+FULL_VERSION=		7-2017-q4-major
 TARGET=			arm-none-eabi
 ORIGINAL_PACKAGE_NAME=	gcc-${TARGET}-${FULL_VERSION}
 
@@ -84,7 +85,7 @@ VAR_TO_SUBMAKE_NOEXPAND=	CONFIGURE_ENV MAKE_ENV
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MPURE}
-IGNORE=	"PURE option is not valid anymore, no libraries are bundled"
+IGNORE=	PURE option is not valid anymore, no libraries are bundled
 .endif
 
 post-extract:
@@ -121,5 +122,8 @@ do-build:
 
 do-install:
 	@${TAR} -cf - -C ${WRKDIR}/install ${PORTNAME}-${FULL_VERSION} | ${TAR} -xf - -C ${STAGEDIR}${PREFIX}
+.if ${PORT_OPTIONS:MSYMLINK}
+	@${LN} -s ${PORTNAME}-${FULL_VERSION} ${STAGEDIR}${PREFIX}/${PORTNAME}
+.endif
 
 .include <bsd.port.post.mk>

@@ -4,9 +4,12 @@
 PORTNAME=	mapnik
 PORTVERSION=	3.0.9
 DISTVERSIONPREFIX=	v
-PORTREVISION=	14
+PORTREVISION=	17
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://mapnik.s3.amazonaws.com/dist/v${PORTVERSION}/
+
+PATCH_SITES=	https://github.com/mapnik/mapnik/commit/
+PATCHFILES=	1ddfe6c31548.patch:-p1
 
 MAINTAINER=	littlesavage@rambler.ru
 COMMENT=	Free Toolkit For Developing Mapping Applications
@@ -73,7 +76,7 @@ PROJ_LIB_DEPENDS=	libproj.so:graphics/proj
 PROJ_MAKE_ARGS_OFF=	PROJ=False
 
 CAIRO_LIB_DEPENDS=	libcairo.so:graphics/cairo
-CAIRO_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=1.8.2:graphics/py-cairo
+CAIRO_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=1.8.2:graphics/py-cairo@${PY_FLAVOR}
 CAIRO_MAKE_ARGS_OFF=	CAIRO=False
 
 .include <bsd.port.pre.mk>

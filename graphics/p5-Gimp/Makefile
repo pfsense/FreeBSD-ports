@@ -3,7 +3,7 @@
 
 PORTNAME=	Gimp
 PORTVERSION=	2.32
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -37,6 +37,5 @@ MAKE_JOBS_UNSAFE=	yes
 .if ${PERL_LEVEL} < 502502
 BUILD_DEPENDS+=	p5-ExtUtils-MakeMaker>=7.14:devel/p5-ExtUtils-MakeMaker
 .endif
-
 
 .include <bsd.port.post.mk>

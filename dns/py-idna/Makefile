@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	idna
-PORTVERSION=	2.5
+PORTVERSION=	2.6
 CATEGORIES=	dns python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,11 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	Internationalized Domain Names in Applications (IDNA)
 
-USES?=		python	# Actually, 2.6-2.7,3.3-3.6
+LICENSE=	BSD3CLAUSE PSFL
+LICENSE_COMB=	multi
+LICENSE_FILE=	${WRKSRC}/LICENSE.rst
+
+USES=		python	# Actually, 2.6-2.7,3.3-3.6
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

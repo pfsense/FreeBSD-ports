@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	editdistance
-PORTVERSION=	0.3.1
+PORTVERSION=	0.4
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Fast implementation of the edit distance (Levenshtein distance)
 
 LICENSE=	MIT
 
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist concurrent distutils
 USES=		python
 
 post-install:

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	fail2ban
-PORTVERSION=	0.9.7
+PORTVERSION=	0.10.2
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,11 +11,11 @@ COMMENT=	Scans log files and bans IP that makes too many password failures
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${FLAVOR}
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		python shebangfix
+USES=		python:patch shebangfix
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 USE_RC_SUBR=	fail2ban
@@ -33,17 +33,24 @@ PORTDOCS=	README.md DEVELOP
 
 FILES=		${WRKSRC}/bin/fail2ban-client \
 		${WRKSRC}/fail2ban/client/configreader.py \
+		${WRKSRC}/fail2ban/client/fail2bancmdline.py \
+		${WRKSRC}/fail2ban/client/fail2banregex.py \
 		${WRKSRC}/man/fail2ban-client.1 \
 		${WRKSRC}/man/fail2ban-client.h2m \
 		${WRKSRC}/setup.py
 
-MAN_FILES= 	${WRKSRC}/man/fail2ban-client.1 \
+MAN_FILES=	${WRKSRC}/man/fail2ban-client.1 \
 		${WRKSRC}/man/fail2ban-client.h2m \
 		${WRKSRC}/man/fail2ban-regex.1 \
 		${WRKSRC}/man/fail2ban-server.1 \
 		${WRKSRC}/man/fail2ban.1
 
 FAIL2BAN_DBDIR=	/var/db/${PORTNAME}
+
+PY2TO3_CMD=	${LOCALBASE}/bin/2to3-${PYTHON_VER}
+PY2TO3_ARG=	--no-diffs --write --nobackups --fix=all
+
+.include <bsd.port.pre.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc/fail2ban,${ETCDIR},g' ${FILES}
@@ -53,6 +60,10 @@ post-patch:
 		${WRKSRC}/config/fail2ban.conf
 	@${REINPLACE_CMD} -e 's,jail.conf(5),fail2ban-jail.conf(5),g' \
 		${MAN_FILES}
+
+.	if ${PYTHON_MAJOR_VER} >= 3
+		(cd ${WRKSRC}/ && ${PY2TO3_CMD} ${PY2TO3_ARG} bin/* fail2ban)
+.	endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${FAIL2BAN_DBDIR} ${STAGEDIR}/var/run/fail2ban
@@ -68,4 +79,4 @@ post-install-DOCS-on:
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

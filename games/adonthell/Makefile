@@ -4,7 +4,7 @@
 
 PORTNAME=	adonthell
 PORTVERSION=	0.3.5
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 DISTFILES=	${PORTNAME}-src-${PORTVERSION}${EXTRACT_SUFX} \
@@ -19,7 +19,7 @@ LICENSE_DISTFILES=	${DISTFILES}
 LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 		libfreetype.so:print/freetype2
 
-USES=		gettext gmake python
+USES=		gettext gmake python:2.7
 USE_SDL=	mixer ttf sdl
 USE_GCC=	any
 GNU_CONFIGURE=	yes

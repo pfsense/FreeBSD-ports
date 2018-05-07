@@ -3,6 +3,7 @@
 
 PORTNAME=	advancemame
 PORTVERSION=	1.4
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://github.com/amadvance/advancemame/releases/download/${DISTNAME}/
 
@@ -27,8 +28,6 @@ DOCSDIR=	${PREFIX}/share/doc/advance
 DATADIR=	${PREFIX}/share/advance
 
 PORTDOCS=	*
-
-BROKEN_aarch64=		Fails to compile: error in backend: Do not know how to split this operator's operand!
 
 OPTIONS_DEFINE=		DOCS FREETYPE SLANG
 OPTIONS_DEFINE_i386=	ASM

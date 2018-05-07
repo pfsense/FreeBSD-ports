@@ -3,7 +3,7 @@
 
 PORTNAME=	pyawale
 PORTVERSION=	0.4.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games python
 MASTER_SITES=	http://download.gna.org/pyawale/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python
+USES=		python:2.7
 
 SUB_FILES=	${PORTNAME}
 

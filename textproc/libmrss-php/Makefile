@@ -6,7 +6,7 @@ PORTVERSION=	0.19.2
 PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.autistici.org/bakunin/libmrss/
-PKGNAMESUFFIX=	-php
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP library for parsing, writing, and creating RSS
@@ -24,7 +24,7 @@ USES=		libtool php:ext
 USE_LDCONFIG=	yes
 
 PHP_MODNAME=	mrss
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=	70 71 72
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/phpmrss
 
 post-install:

@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=		krb5
-PORTVERSION=		1.16.${MIT_COMMIT_DATE}
+PORTVERSION=		1.17.${MIT_COMMIT_DATE}
 CATEGORIES=		security
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=		-devel
 .endif
-HASH=			0c9a4d9
-MIT_COMMIT_DATE=	2017.09.27
+HASH=			d4d902d
+MIT_COMMIT_DATE=	2018.03.19
 
 PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 PATCH_DIST_STRIP=	-p2
@@ -21,7 +21,8 @@ LICENSE=		MIT
 USE_GITHUB=		yes
 GH_TAGNAME=		${HASH}
 
-CONFLICTS=		heimdal-[0-9]* srp-[0-9]* krb5-11[34]-[0-9]* krb5-1.[0-9]*
+CONFLICTS=		heimdal-[0-9]* srp-[0-9]* krb5-11[345]-[0-9]* \
+			krb5-1.[0-9]*
 
 KERBEROSV_URL=		http://web.mit.edu/kerberos/
 USE_PERL5=		build
@@ -96,7 +97,6 @@ CONFIGURE_ARGS+=	--without-readline
 .if defined(PROGRAM_TRANSFORM_NAME) && ${PROGRAM_TRANSFORM_NAME} != ""
 CONFIGURE_ARGS+=	--program-transform-name="${PROGRAM_TRANSFORM_NAME}"
 .endif
-
 
 .include <bsd.port.pre.mk>
 

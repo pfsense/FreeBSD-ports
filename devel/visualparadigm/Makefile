@@ -1,18 +1,17 @@
-# Created by: Fernando Apesteguia <fernando.apesteguia@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	visualparadigm
-PORTVERSION=	14.1.20170802
+DISTVERSION=	14.2.20171107
 CATEGORIES=	devel java
 MASTER_SITES=	https://eu5.visual-paradigm.com/visual-paradigm/vpce${PORTVERSION:R}/${PORTVERSION:E}/
 DISTNAME=	Visual_Paradigm_CE_${PORTVERSION:C/\./_/g}_Unix_InstallFree
 
-MAINTAINER=	fernando.apesteguia@gmail.com
+MAINTAINER=	fernape@FreeBSD.org
 COMMENT=	Visual modeling tool for all kinds of UML diagrams
 
 LICENSE=	VPCEL
 LICENSE_NAME=	Visual Paradigm Community Edition License Agreement
-LICENSE_FILE=	${WRKSRC}/.install4j/i4j_extf_7_aprh35.txt
+LICENSE_FILE=	${WRKSRC}/.install4j/i4j_extf_5_aprh35.txt
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
 
 RUN_DEPENDS=	${LOCALBASE}/lib/libsqlitejdbc.so:java/sqlitejdbc

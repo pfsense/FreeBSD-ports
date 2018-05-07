@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bash-completion
-PORTVERSION=	2.7
+PORTVERSION=	2.8
 PORTEPOCH=	1
 CATEGORIES=	shells
 
@@ -12,11 +12,16 @@ COMMENT=	Programmable completion library for Bash
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	bash:shells/bash
+BROKEN_armv6=	fails to build: gmake: install-recursive: Error 1
+BROKEN_armv7=	fails to build: gmake: install-recursive: Error 1
 
 OPTIONS_DEFINE=	CMAKE_MODULES DOCS
-OPTIONS_DEFAULT=CMAKE_MODULES
+OPTIONS_SINGLE=	BASH
+OPTIONS_SINGLE_BASH=	BASH_SHARED BASH_STATIC
+OPTIONS_DEFAULT=BASH_SHARED CMAKE_MODULES
 OPTIONS_SUB=	yes
+BASH_SHARED_DESC=	Use shells/bash as backend
+BASH_STATIC_DESC=	Use shells/bash-static as backend
 CMAKE_MODULES_DESC=	Install bash-completion modules for cmake
 
 NO_ARCH=	yes
@@ -28,6 +33,9 @@ SUB_LIST=	RUNFILE=${DATADIR}/bash_completion.sh
 
 GH_ACCOUNT=	scop
 USE_GITHUB=	yes
+
+BASH_SHARED_RUN_DEPENDS=bash:shells/bash
+BASH_STATIC_RUN_DEPENDS=bash:shells/bash-static
 
 post-patch:
 	@${REINPLACE_CMD} \

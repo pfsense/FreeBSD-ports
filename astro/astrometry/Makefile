@@ -3,7 +3,7 @@
 
 PORTNAME=	astrometry
 PORTVERSION=	0.65
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	astro
 MASTER_SITES=	http://www.astrometry.net/downloads/
 DISTNAME=	${PORTNAME}.net-${PORTVERSION}
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libnetpbm.so:graphics/netpbm
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		gmake jpeg pkgconfig python shebangfix tar:bzip2
+USES=		gmake jpeg pkgconfig python:2.7 shebangfix tar:bzip2
 SHEBANG_FILES=	blind/*.py sdss/*.py util/[!c]*.py util/casjobs.py
 USE_LDCONFIG=	${PREFIX}/${PORTNAME}/lib
 ALL_TARGET=	all extra

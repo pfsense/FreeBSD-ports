@@ -5,7 +5,8 @@ PORTNAME=	vsound
 PORTVERSION=	0.6
 PORTREVISION=	6
 CATEGORIES=	audio
-MASTER_SITES=	http://www.vsound.org/
+MASTER_SITES=	http://down1.chinaunix.net/distfiles/ \
+		http://freebsd.nsu.ru/distfiles/ GENTOO
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility for capturing audio streams from programs with OSS output
@@ -18,9 +19,6 @@ RUN_DEPENDS=	sox:audio/sox
 
 USES=		alias libtool
 GNU_CONFIGURE=	yes
-
-NOT_FOR_ARCHS=		aarch64 armv6
-NOT_FOR_ARCHS_REASON=	fails to build: error: Cannot determine endian-ness of processor
 
 OPTIONS_DEFINE=	DOCS
 

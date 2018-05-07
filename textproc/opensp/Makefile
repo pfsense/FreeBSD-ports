@@ -10,14 +10,17 @@ MASTER_SITES=	SF/openjade/${PORTNAME:tl}/${PORTVERSION}
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	This package is a collection of SGML/XML tools called OpenSP
 
-USES=		gmake iconv libtool perl5
+LICENSE=	JamesClark
+LICENSE_NAME=	License of James Clark's Software
+LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+USES=		gmake iconv libtool localbase perl5
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-default-catalog=${PREFIX}/share/sgml/catalog \
 		--datadir=${PREFIX}/share/sgml/openjade \
 		--disable-doc-build
-LDFLAGS+=	-L${LOCALBASE}/lib
-CFLAGS+=	-I${LOCALBASE}/include
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes

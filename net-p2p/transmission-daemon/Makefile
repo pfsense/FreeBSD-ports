@@ -1,6 +1,5 @@
 # $FreeBSD$
 
-PORTREVISION=	3
 PKGNAMESUFFIX=	-daemon
 
 MAINTAINER=	crees@FreeBSD.org
@@ -12,6 +11,7 @@ DESCR=		${.CURDIR}/pkg-descr
 MASTERDIR=	${.CURDIR}/../transmission-cli
 PLIST=		${.CURDIR}/pkg-plist
 SLAVEPORT=	daemon
+PKGMESSAGE=	${.CURDIR}/pkg-message
 
 USE_RC_SUBR=	transmission
 USERS=		transmission

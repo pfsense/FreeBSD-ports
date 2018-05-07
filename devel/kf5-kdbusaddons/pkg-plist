@@ -1,4 +1,5 @@
 bin/kquitapp5
+etc/xdg/kdbusaddons.categories
 include/KF5/KDBusAddons/KDBusConnectionPool
 include/KF5/KDBusAddons/KDBusInterProcessLock
 include/KF5/KDBusAddons/KDBusService
@@ -13,8 +14,10 @@ include/KF5/KDBusAddons/kdeinitinterface.h
 include/KF5/kdbusaddons_version.h
 lib/cmake/KF5DBusAddons/KF5DBusAddonsConfig.cmake
 lib/cmake/KF5DBusAddons/KF5DBusAddonsConfigVersion.cmake
+lib/cmake/KF5DBusAddons/KF5DBusAddonsMacros.cmake
 lib/cmake/KF5DBusAddons/KF5DBusAddonsTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/KF5DBusAddons/KF5DBusAddonsTargets.cmake
+lib/cmake/KF5DBusAddons/KF5dbus.service.in
 lib/libKF5DBusAddons.so
 lib/libKF5DBusAddons.so.5
 lib/libKF5DBusAddons.so.%%KDE_FRAMEWORKS_VERSION%%
@@ -38,6 +41,7 @@ share/locale/gd/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/gl/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/hu/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ia/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/id/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/it/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ja/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ko/LC_MESSAGES/kdbusaddons5_qt.qm

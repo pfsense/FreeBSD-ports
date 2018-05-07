@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	ccache
-PORTVERSION=	3.3.4
-PORTREVISION=	7
+PORTVERSION=	3.3.5
+PORTREVISION=	0
 CATEGORIES=	devel
-MASTER_SITES=	http://www.samba.org/ftp/ccache/ \
+MASTER_SITES=	https://www.samba.org/ftp/ccache/ \
 		LOCAL/bdrewery
 
 MAINTAINER=	bdrewery@FreeBSD.org
@@ -82,7 +82,7 @@ GNU_COMPILERS+=		34 42 43 44 45 46 47 48 49 5 6 7 8
 CCACHE_COMPILERS+=	cc c++ CC gcc g++ ${GNU_COMPILERS:S|^|gcc|} ${GNU_COMPILERS:S|^|g++|}
 
 .if ${PORT_OPTIONS:MCLANGLINK}
-CLANG_COMPILERS+=	33 34 35 36 37 38 39 40 -devel
+CLANG_COMPILERS+=	33 34 35 36 37 38 39 40 50 -devel
 CCACHE_COMPILERS+=	clang clang++ ${CLANG_COMPILERS:S|^|clang|} ${CLANG_COMPILERS:S|^|clang++|}
 .endif
 

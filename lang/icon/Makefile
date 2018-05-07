@@ -3,7 +3,7 @@
 
 PORTNAME=	icon
 PORTVERSION=	9.5.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang
 MASTER_SITES=	http://www.cs.arizona.edu/icon/ftp/packages/unix/
 DISTNAME=	${PORTNAME}-v${PORTVERSION:S/.//g}src
@@ -27,12 +27,12 @@ OPTIONS_DEFINE=	DOCS X11
 
 .if empty(PORT_OPTIONS:MX11)
 CONFIG_CMD=	Configure
-PLIST_SUB=	WITHOUT_X11="@comment "
+PLIST_SUB+=	WITHOUT_X11="@comment "
 .else
 USE_XORG=	x11 xpm
 CFLAGS+=	-I${LOCALBASE}/include
 CONFIG_CMD=	X-Configure
-PLIST_SUB=	WITHOUT_X11=
+PLIST_SUB+=	WITHOUT_X11=
 .endif
 
 post-patch:

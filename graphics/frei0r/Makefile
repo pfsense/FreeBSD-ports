@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	frei0r
-PORTVERSION=	1.5.0
+PORTVERSION=	1.6.1
 DISTVERSIONPREFIX=	plugins-
 CATEGORIES=	graphics
 MASTER_SITES?=	https://files.dyne.org/frei0r/releases/
@@ -12,8 +12,8 @@ COMMENT?=	Minimalistic plugin API for video effects
 
 .if !defined(BUILDING_FREI0R_METAPORT)
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 USES=	cmake:outsource pkgconfig
 
@@ -22,16 +22,18 @@ IGNORE=		cannot build OpenCV and gavl plugins simultaneously
 .endif
 
 .if defined(BUILDING_FREI0R_OPENCV) || defined(BUILDING_FREI0R_GAVL)
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-frei0r-plugins
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-frei0r-plugins \
+		${PATCHDIR}/extra-patch-src_filter_facedetect_CMakeLists.txt
 
 USES+=	localbase
 .endif
 
 .if defined(BUILDING_FREI0R_OPENCV)
-PORTREVISION=	2
+PORTREVISION=	0
 COMMENT=	Frei0r OpenCV plugins
 PKGNAMESUFFIX=	-plugins-opencv
-LIB_DEPENDS+=	libopencv_legacy.so:graphics/opencv
+LIB_DEPENDS+=	libopencv_core.so:graphics/opencv-core \
+		libopencv_legacy.so:graphics/opencv
 FREI0R_PLUGINS=	facebl0r facedetect
 
 CMAKE_ARGS+=	-DWITHOUT_OPENCV:BOOL=OFF \

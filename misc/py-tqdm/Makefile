@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	tqdm
-PORTVERSION=	4.18.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	4.19.6
 CATEGORIES=	misc
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,10 +12,9 @@ COMMENT=	Fast, extensible progress bar for Python
 LICENSE=	MIT MPL20
 LICENSE_COMB=	multi
 
-USES?=		python
-USE_PYTHON=	autoplist distutils
-NO_ARCH=	yes
-
+USES=		python
 USE_GITHUB=	yes
+USE_PYTHON=	distutils autoplist concurrent
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	p4p
-PORTVERSION=	2016.1.1492381
+PORTVERSION=	2016.1.1598719
 CATEGORIES=	devel
 MASTER_SITES=	ftp://ftp.perforce.com/perforce/${P4VERSION}/bin.${PLATFORM}/ \
 		http://filehost.perforce.com/perforce/${P4VERSION}/bin.${PLATFORM}/
@@ -32,7 +32,7 @@ USE_RC_SUBR=	p4p
 
 .include <bsd.port.pre.mk>
 
-.include "${.CURDIR}/../p4/Makefile.inc"
+.include "${.CURDIR}/../p4d/Makefile.inc"
 
 USERS=	p4admin
 GROUPS=	p4admin

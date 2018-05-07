@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hhdate
-PORTVERSION=	2.2
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.4
 CATEGORIES=	devel
 
 MAINTAINER=	andreas.sommer87@googlemail.com
@@ -30,14 +29,12 @@ TEST_USES=		compiler:c++11-lib
 TEST_TEST_TARGET=	test
 USE_CXXSTD=		c++11
 
-.include <bsd.port.options.mk>
-
 post-extract-TEST-on:
 	${INSTALL_DATA} ${FILESDIR}/Makefile.in ${WRKSRC}/Makefile
 	${INSTALL_DATA} ${FILESDIR}/test-minimal.cpp ${WRKSRC}/test/test-minimal.cpp
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/hhdate
-	${INSTALL_DATA} ${WRKSRC}/date.h ${STAGEDIR}${PREFIX}/include/hhdate/
+	${INSTALL_DATA} ${WRKSRC}/include/date/date.h ${STAGEDIR}${PREFIX}/include/hhdate/
 
 .include <bsd.port.mk>

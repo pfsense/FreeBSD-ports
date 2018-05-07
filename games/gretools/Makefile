@@ -3,7 +3,7 @@
 
 PORTNAME=	gretools
 PORTVERSION=	1.2.4
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	games gnome
 MASTER_SITES=	http://randomwalker.info/gretools/${PORTVERSION:R}/
 
@@ -13,7 +13,7 @@ COMMENT=	GNOME vocabulary builder
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake pathfix pkgconfig python shebangfix
+USES=		gmake pathfix pkgconfig python:2.7 shebangfix
 SHEBANG_FILES=	gretools.in gretools.py
 USE_GNOME=	gnomeprefix pygnome2
 GNU_CONFIGURE=	yes

@@ -3,7 +3,6 @@
 
 PORTNAME=	perl
 DISTVERSION=	${PERL_VERSION}
-PORTREVISION=	0
 CATEGORIES=	lang devel perl5
 MASTER_SITES=	CPAN/../../src/5.0/
 DIST_SUBDIR=	perl
@@ -162,11 +161,9 @@ PLIST_SUB+=	PERL_VERSION=${PERL_VERSION} \
 
 _PERL5_DEFAULT_FILE=	/tmp/PERL5_DEFAULT
 
-# bsd.default-versions.mk needs to know LOCALBASE for Perl, so
-# bsd.port.options.mk is needed before including it.
+# Get the default version, and possibly, overwrite it.
 .include <bsd.port.options.mk>
 .sinclude "${_PERL5_DEFAULT_FILE}"
-.include "${.CURDIR}/../../Mk/bsd.default-versions.mk"
 
 # if this port is default due PERL5_DEFAULT
 # change PKGNAME to reflect this

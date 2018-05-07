@@ -7,8 +7,8 @@ bin/isc-config.sh
 bin/named-rrchecker
 bin/nslookup
 bin/nsupdate
-etc/mtree/BIND.chroot.dist
-etc/mtree/BIND.chroot.local.dist
+@sample etc/mtree/BIND.chroot.dist.sample
+@sample etc/mtree/BIND.chroot.local.dist.sample
 %%ETCDIR%%/bind.keys
 %%ETCDIR%%/master/empty.db
 %%ETCDIR%%/master/localhost-forward.db
@@ -159,6 +159,7 @@ include/isc/lang.h
 include/isc/lex.h
 include/isc/lfsr.h
 include/isc/lib.h
+include/isc/likely.h
 include/isc/list.h
 include/isc/log.h
 include/isc/magic.h
@@ -259,6 +260,7 @@ include/pk11/pk11.h
 include/pk11/result.h
 include/pk11/site.h
 include/pkcs11/cryptoki.h
+include/pkcs11/eddsa.h
 include/pkcs11/pkcs11.h
 include/pkcs11/pkcs11f.h
 include/pkcs11/pkcs11t.h

@@ -3,6 +3,7 @@
 
 PORTNAME=	funkload
 PORTVERSION=	1.17.1
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,12 +13,12 @@ COMMENT=	Functional and load web tester
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docutils>0:textproc/py-docutils \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docutils>0:textproc/py-docutils@${FLAVOR} \
 		${LOCALBASE}/bin/gnuplot:math/gnuplot \
-		${PYTHON_PKGNAMEPREFIX}webunit>=1.3.8:www/py-webunit \
+		${PYTHON_PKGNAMEPREFIX}webunit>=1.3.8:www/py-webunit@${FLAVOR} \
 		tcpwatch.py:net/tcpwatch
 
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

@@ -3,14 +3,12 @@
 
 PORTNAME=	luascript
 PORTVERSION=	1.8.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-p2p
 PKGNAMEPREFIX=	verlihub-plugins-
 MASTER_SITES=	SF/verlihub/VH_Lua/${DISTVERSION}
 
 MAINTAINER=	me@skylord.ru
-
-BROKEN_armv6=		fails to configure: checking for VERLIHUB - version >= 0... no (see config.log)
 
 PLUGIN_NAME=	lua
 PLUGIN_DESC=	LuaScript

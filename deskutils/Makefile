@@ -6,6 +6,7 @@
     SUBDIR += affiche
     SUBDIR += alarm-clock-applet
     SUBDIR += anamnesis
+    SUBDIR += anydesk
     SUBDIR += appwrapper
     SUBDIR += aspostit
     SUBDIR += autocutsel
@@ -22,7 +23,6 @@
     SUBDIR += calibre
     SUBDIR += cartotheque
     SUBDIR += cdcat
-    SUBDIR += charmap
     SUBDIR += charmtimetracker
     SUBDIR += clipit
     SUBDIR += conduit
@@ -40,11 +40,12 @@
     SUBDIR += drivel
     SUBDIR += easystroke
     SUBDIR += egroupware
-    SUBDIR += etask
     SUBDIR += everygui
     SUBDIR += fbreader
     SUBDIR += fet
+    SUBDIR += flameshot
     SUBDIR += freemind
+    SUBDIR += freeplane
     SUBDIR += fusenshi
     SUBDIR += gaddr
     SUBDIR += ganttproject
@@ -92,6 +93,7 @@
     SUBDIR += gnustep-wrapper
     SUBDIR += go-for-it
     SUBDIR += gourmet
+    SUBDIR += gpicker
     SUBDIR += griffith
     SUBDIR += growl-for-linux
     SUBDIR += gruler
@@ -119,15 +121,16 @@
     SUBDIR += ithought
     SUBDIR += jjclient
     SUBDIR += jlj
-    SUBDIR += kcharselect
+    SUBDIR += kcharselect-kde4
     SUBDIR += kchmviewer
     SUBDIR += kdeconnect
-    SUBDIR += kdepim4
-    SUBDIR += kdepim4-runtime
-    SUBDIR += kdepimlibs4
-    SUBDIR += kdeplasma-addons
-    SUBDIR += kruler
+    SUBDIR += kdepim-kde4
+    SUBDIR += kdepim-runtime-kde4
+    SUBDIR += kdepimlibs-kde4
+    SUBDIR += kdeplasma-addons-kde4
+    SUBDIR += kruler-kde4
     SUBDIR += ksshaskpass
+    SUBDIR += latte-dock
     SUBDIR += launchy
     SUBDIR += libopensync-plugin-vformat-devel
     SUBDIR += libstreamanalyzer
@@ -142,6 +145,7 @@
     SUBDIR += lumina-fm
     SUBDIR += lumina-mediaplayer
     SUBDIR += lumina-notify
+    SUBDIR += lumina-pdf
     SUBDIR += lumina-screenshot
     SUBDIR += lumina-textedit
     SUBDIR += lumina-xdg-entry
@@ -159,8 +163,10 @@
     SUBDIR += nautilus-actions
     SUBDIR += nautilus-sendto
     SUBDIR += nemo-extensions
+    SUBDIR += nextcloudclient
     SUBDIR += note
     SUBDIR += notecase
+    SUBDIR += noti
     SUBDIR += notification-daemon
     SUBDIR += notify-osd
     SUBDIR += orage
@@ -199,7 +205,6 @@
     SUBDIR += py-pycarddav
     SUBDIR += py-pystash
     SUBDIR += py-send2trash
-    SUBDIR += py-spice-gtk
     SUBDIR += py-taskw
     SUBDIR += py-vdirsyncer
     SUBDIR += py-vobject
@@ -217,6 +222,7 @@
     SUBDIR += rubygem-shellplay
     SUBDIR += rubygem-taskjuggler
     SUBDIR += semantik
+    SUBDIR += showdown
     SUBDIR += shutter
     SUBDIR += silence
     SUBDIR += simpleagenda
@@ -228,7 +234,7 @@
     SUBDIR += strigidaemon
     SUBDIR += strigiutils
     SUBDIR += sugarcrm
-    SUBDIR += superkaramba
+    SUBDIR += superkaramba-kde4
     SUBDIR += surrealtodo
     SUBDIR += syncthing-gtk
     SUBDIR += systempreferences

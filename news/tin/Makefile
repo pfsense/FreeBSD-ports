@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tin
-PORTVERSION=	2.4.1
+PORTVERSION=	2.4.2
 PORTREVISION?=	1 # keep for chinese/tin
 CATEGORIES+=	news ipv6
 MASTER_SITES=	ftp://ftp.tin.org/pub/news/clients/tin/v${PORTVERSION:R}/ \

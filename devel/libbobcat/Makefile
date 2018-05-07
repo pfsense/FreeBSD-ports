@@ -2,7 +2,7 @@
 
 PORTNAME=	libbobcat
 PORTVERSION=	3.25.01
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SF/bobcat/bobcat/${PORTVERSION}
 DISTNAME=	bobcat_${PORTVERSION}
@@ -12,6 +12,8 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Brokken's Own Base Classes And Templates
 
 LICENSE=	GPLv3
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	icmake:devel/icmake \
 		yodl>=3.0:textproc/yodl

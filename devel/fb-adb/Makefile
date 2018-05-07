@@ -21,14 +21,14 @@ COMMENT=	Better shell for Android devices
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	xxd:editors/vim-lite \
+BUILD_DEPENDS=	xxd:editors/vim-console \
 		${BASH_CMD}:shells/${BASH_CMD:T}
 RUN_DEPENDS=	adb:devel/android-tools-adb
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebook
 
-USES=		autoreconf gmake ncurses perl5 python:3,build
+USES=		autoreconf gmake ncurses perl5 python:3.4+,build
 USE_PERL5=	build # pod2man
 BASH_CMD?=	bash # can be zsh
 GNU_CONFIGURE=	yes

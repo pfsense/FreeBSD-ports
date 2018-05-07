@@ -1,13 +1,12 @@
-# Created by: Koichiro IWAO <meta+ports@vmeta.jp>
 # $FreeBSD$
 
 PORTNAME=	xorgxrdp
-PORTVERSION=	0.2.3
+PORTVERSION=	0.2.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11-drivers
 DIST_SUBDIR=	xrdp
 
-MAINTAINER=	meta+ports@vmeta.jp
+MAINTAINER=	meta@FreeBSD.org
 COMMENT=	X.Org driver enabling use through an RDP session with xrdp
 
 LICENSE=	MIT
@@ -23,7 +22,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	neutrinolabs
 GH_PROJECT=	xrdp:xrdp
-GH_TAGNAME=	v0.9.3:xrdp
+GH_TAGNAME=	v0.9.6:xrdp
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 

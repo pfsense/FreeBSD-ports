@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tabulate
-PORTVERSION=	0.7.7
+PORTVERSION=	0.8.2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +14,8 @@ COMMENT=	Pretty-print tabular data in Python
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES?=		python
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

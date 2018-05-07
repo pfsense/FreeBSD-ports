@@ -3,7 +3,7 @@
 
 PORTNAME=	gotoblas
 PORTVERSION=	2.${GOTOBLAS2VER}.${LAPACKVER}
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	math
 MASTER_SITES=	LOCAL/maho/gotoblas \
 		NL/lapack:lapack NL/lapack/timing:lapack_tmg
@@ -21,6 +21,7 @@ LICENSE_FILE=	${WRKSRC}/00License.txt
 
 BROKEN_aarch64=		does not build: undefined reference to get_libname
 BROKEN_armv6=		does not build: undefined reference to get_libname
+BROKEN_armv7=		does not build: undefined reference to get_libname
 BROKEN_powerpc64=	does not build: error: macro names must be identifiers
 BROKEN_i386=		does not build (terminates with SIGBUS)
 

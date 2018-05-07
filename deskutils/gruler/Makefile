@@ -3,13 +3,15 @@
 
 PORTNAME=	gruler
 PORTVERSION=	0.6
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	deskutils
 MASTER_SITES=	http://BSDforge.com/projects/source/deskutils/gruler/ \
 		#http://linuxadvocate.org/projects/gruler/downloads/
 
 MAINTAINER=	ps.ports@smyrak.com
 COMMENT=	Simple customizable GTK screen ruler
+
+BROKEN=		No public distfiles
 
 USES=		pkgconfig pathfix libtool
 GNU_CONFIGURE=	yes

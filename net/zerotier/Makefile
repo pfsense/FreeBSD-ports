@@ -3,16 +3,17 @@
 
 PORTNAME=	zerotier
 PORTVERSION=	1.2.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 
-MAINTAINER=	dch@skunkwerks.at
+MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Network virtualization everywhere
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.GPL-3
 
 BROKEN_armv6=		fails to link: Source object ext/arm32-neon-salsa2012-asm/salsa2012.o has EABI version 0, but target zerotier-one has EABI version 5
+BROKEN_armv7=		fails to link: Source object ext/arm32-neon-salsa2012-asm/salsa2012.o has EABI version 0, but target zerotier-one has EABI version 5
 BROKEN_powerpc64=	fails to compile: clang: not found
 
 USES=		gmake compiler:c11

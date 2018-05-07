@@ -3,7 +3,7 @@
 
 PORTNAME=	pypersrc
 PORTVERSION=	20120106
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://www.jimbrooks.org/software/pypersrc/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -14,12 +14,12 @@ COMMENT=	Python/Tkinter based source browser
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE_GPL2.txt
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Pmw>0:x11-toolkits/py-Pmw
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Pmw>0:x11-toolkits/py-Pmw@${PY_FLAVOR}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		gmake python:2 tar:bzip2
+USES=		gmake python:2.7 tar:bzip2
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	configure.sh
 MAKE_ENV=	CXX_FLAGS="${CXXFLAGS}"

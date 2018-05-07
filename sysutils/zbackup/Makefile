@@ -2,10 +2,10 @@
 
 PORTNAME=	zbackup
 PORTVERSION=	1.4.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Versatile deduplicating backup tool
 
 LICENSE=	GPLv2

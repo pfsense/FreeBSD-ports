@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	gsmartcontrol
-PORTVERSION=	1.1.0
+PORTVERSION=	1.1.3
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical user interface for smartmontools
 
 LICENSE=	BSD3CLAUSE BSL GPLv2 GPLv3 PD ZLIB
@@ -20,8 +20,9 @@ LICENSE_FILE_ZLIB=	${WRKSRC}/LICENSE_zlib.txt
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 RUN_DEPENDS=	bash:shells/bash \
-		gnomesu:security/libgnomesu \
-		smartctl:sysutils/smartmontools
+		pkexec:sysutils/polkit \
+		smartctl:sysutils/smartmontools \
+		xterm:x11/xterm
 
 USES=		compiler:c++11-lang libtool pkgconfig tar:bzip2
 USE_CXXSTD=	c++11

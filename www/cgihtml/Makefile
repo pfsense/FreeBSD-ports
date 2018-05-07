@@ -13,6 +13,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library that simplifies the task of writing CGI programs in C
 
 USE_LDCONFIG=	yes
+LLD_UNSAFE=	yes
 
 OPTIONS_DEFINE=	DOCS
 

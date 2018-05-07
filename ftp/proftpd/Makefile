@@ -49,7 +49,6 @@ PORTDOCS=	*
 
 MAKE_JOBS_UNSAFE=	yes
 USES+=		cpe gmake libtool
-USE_AUTOTOOLS=	autoconf
 GNU_CONFIGURE=	yes
 
 .if !defined(_BUILDING_PROFTPD_MODULE)
@@ -176,10 +175,6 @@ CONFIGURE_ARGS+=	--with-includes=${INCLUDEDIRS}
 CONFIGURE_ARGS+=	--with-libraries=${LIBDIRS}
 
 .include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
 
 .if !defined(_BUILDING_PROFTPD_MODULE)
 

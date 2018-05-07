@@ -3,10 +3,10 @@
 
 PORTNAME=	jsoncpp
 PORTVERSION=	1.8.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	JSON reader and writer library for C++
 
 LICENSE=	MIT
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USE_GITHUB=	yes
 GH_ACCOUNT=	open-source-parsers
 
-USES=		compiler:features dos2unix scons
+USES=		compiler:c++11-lang dos2unix scons
 USE_LDCONFIG=	yes
 
 PLATFORM=	linux-gcc-FreeBSD
@@ -47,9 +47,8 @@ do-install:
 	${LN} -s libjsoncpp.so.${DISTVERSION} ${STAGEDIR}${PREFIX}/lib/libjsoncpp.so
 	${CP} ${WRKSRC}/pkg-config/jsoncpp.pc.in ${STAGEDIR}${PREFIX}/libdata/pkgconfig/jsoncpp.pc
 	@${REINPLACE_CMD} -i '' \
-		-e 's|@CMAKE_INSTALL_PREFIX@|${PREFIX}|g' \
-		-e 's|@CMAKE_INSTALL_LIBDIR@|lib|g' \
-		-e 's|@CMAKE_INSTALL_INCLUDEDIR@|include/jsoncpp|g' \
+		-e 's|@CMAKE_INSTALL_FULL_LIBDIR@|${PREFIX}/lib|g' \
+		-e 's|@CMAKE_INSTALL_FULL_INCLUDEDIR@|${PREFIX}/include/jsoncpp|g' \
 		-e 's|@JSONCPP_VERSION@|${DISTVERSION}|g' \
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/jsoncpp.pc
 

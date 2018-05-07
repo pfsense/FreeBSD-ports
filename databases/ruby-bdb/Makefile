@@ -9,13 +9,14 @@ MASTER_SITES=	ftp://ftp.idaemons.org/pub/distfiles/ruby/ \
 		http://idaemons.org/distfiles/ruby/ \
 		LOCAL/knu
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
-PKGNAMESUFFIX=	${WITH_BDB_VER}
 DIST_SUBDIR=	ruby
 
 MAINTAINER=	knu@FreeBSD.org
 COMMENT=	Ruby interface to Oracle Berkeley DB revision 2 or later
 
 LICENSE=	RUBY
+
+BROKEN_RUBY25=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -55,18 +56,6 @@ SHEBANG_FILES=	examples/record.rb \
 		examples/basic.rb \
 		examples/lock.rb
 
-.include <bsd.port.pre.mk>
-
-.if ${RUBY_VER} == 2.1
-EXTRA_PATCHES+=		${FILESDIR}/extra-patch-src-common.c-21
-.endif
-
-.if ${RUBY_VER} >= 2.2
-EXTRA_PATCHES+=		${FILESDIR}/extra-patch-src-common.c-22 \
-			${FILESDIR}/extra-patch-src-recnum.c-22 \
-			${FILESDIR}/extra-patch-src-cursor.c-22
-.endif
-
 post-patch:
 	@${RM} ${WRKSRC}/docs/*.orig
 
@@ -87,4 +76,4 @@ regression-test: build
 	(cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} \
 	${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} test)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

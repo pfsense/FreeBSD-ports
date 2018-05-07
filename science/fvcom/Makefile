@@ -1,15 +1,14 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	fvcom
 PORTVERSION=	2.7.1
-PORTREVISION?=	10
+PORTREVISION?=	11
 CATEGORIES=	science
 MASTER_SITES=	http://fvcom.smast.umassd.edu/FVCOM/index.html/
 DISTNAME=	sourcecode1
 DIST_SUBDIR=	fvcom
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Unstructured Grid Finite Volume Coastal Ocean Model
 
 # Check netcdf lib for Fortran support!

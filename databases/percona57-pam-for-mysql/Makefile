@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	percona57
-PORTREVISION?=	2
+PORTREVISION?=	0
 PKGNAMESUFFIX=	-pam-for-mysql
 
 COMMENT=	PAM plugin for MySQL
 
 LICENSE=	GPLv2+
+
+BROKEN_powerpc64=	fails to configure: CMake Error at cmake/os/FreeBSD.cmake:34: Unsupported compiler!
 
 RUN_DEPENDS=# This plugin has no run dependencies. It should work with any desired mysql client/server.
 

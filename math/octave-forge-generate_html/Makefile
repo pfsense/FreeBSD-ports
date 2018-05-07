@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-generate_html
 PORTVERSION=	0.3.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -20,6 +20,8 @@ OCTSRC=		${DISTNAME}
 
 do-build:
 	@${DO_NADA}
+
+NO_ARCH=	yes
 
 post-build:
 	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure

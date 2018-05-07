@@ -1,12 +1,11 @@
 # Created by: Pedro Giffuni
 # $FreeBSD$
 
-PORTNAME=	CalculiX
-PORTVERSION=	2.12
+PORTNAME=	calculix
+PORTVERSION=	2.13
 PORTREVISION=	2
 CATEGORIES=	cad
 MASTER_SITES=	http://www.dhondt.de/
-PKGNAMEPREFIX=	CalculiX-
 DISTFILES=	${DIST_SOURCES}
 DIST_SUBDIR=	calculix
 EXTRACT_ONLY=	${DIST_SOURCES}
@@ -15,6 +14,8 @@ MAINTAINER=	pfg@FreeBSD.org
 COMMENT=	Three-Dimensional Structural Finite Element Program
 
 LICENSE=	GPLv2
+
+BROKEN_FreeBSD_10=	Does not build with clang on FreeBSD 10, causes segfaults when built with gcc
 
 RUN_DEPENDS=	ccx:cad/calculix-ccx
 
@@ -26,12 +27,14 @@ DIST_EXAMPLES=	cgx_${PORTVERSION}.exa${EXTRACT_SUFX}
 WRKSRC=		${WRKDIR}/CalculiX
 CGX_VER=	cgx_${PORTVERSION}
 
-USES=		gmake tar:bzip2
+USES=		gmake tar:bzip2 compiler:c++11-lib
 USE_XORG=	ice sm x11 xext xi xmu xt
-USE_GL= 	gl glu # uses its own glut
+USE_GL=		gl glu # uses its own glut
 
 BROWSER?=	firefox
 PSVIEWER?=	gv
+
+CXXFLAGS+=	-std=c++98
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -57,7 +60,7 @@ FFLAGS+=	-fpic
 .endif
 
 pre-build:
-	@${REINPLACE_CMD} -e 's/c++/${CXX}/g;' \
+	@${REINPLACE_CMD} -e 's!c++!${CXX}!g;' \
 		${WRKSRC}/libSNL/src/makefile
 	@${REINPLACE_CMD} -e 's+%%DOCSDIR%%+${DOCSDIR}+g; \
 	s+"firefox"+"${BROWSER}"+ ; \

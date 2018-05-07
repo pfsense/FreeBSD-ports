@@ -3,7 +3,7 @@
 
 PORTNAME=	uim
 PORTVERSION=	1.8.6
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES?=	textproc
 MASTER_SITES=	https://github.com/uim/uim/releases/download/${PORTNAME}-${PORTVERSION}/
 .if !defined(UIM_SLAVE) && defined(WITHOUT_X11)
@@ -16,7 +16,6 @@ COMMENT?=	Input method library
 BROKEN_aarch64=	Fails to build: The collector has not been ported to this machine/OS combination
 
 USE_LDCONFIG=	yes
-WANT_GNOME=	yes
 USE_GNOME+=	glib20 intltool
 USES+=		gettext gmake iconv libedit libtool pathfix pkgconfig perl5 tar:bzip2
 USE_PERL5=	build
@@ -47,7 +46,7 @@ CFLAGS+=	-I${LOCALBASE}/include
 .if !defined(UIM_SLAVE)
 DOCSDIR_JA=	${PREFIX}/share/doc/ja/uim
 DOCSDIR_SIGSCHEME=	${PREFIX}/share/doc/uim/sigscheme
-PLIST_SUB=	DOCSDIR_JA="${DOCSDIR_JA:S,^${PREFIX}/,,}" \
+PLIST_SUB+=	DOCSDIR_JA="${DOCSDIR_JA:S,^${PREFIX}/,,}" \
 		DOCSDIR_SIGSCHEME="${DOCSDIR_SIGSCHEME:S,^${PREFIX}/,,}"
 .endif
 

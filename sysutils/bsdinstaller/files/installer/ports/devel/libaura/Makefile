@@ -37,14 +37,14 @@ do-fetch:
 
 do-install:
 	${MKDIR} -p ${LOCALBASE}/include/aura
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/libaura.a ${LOCALBASE}/lib/
-	${INSTALL_PROGRAM} -o root -g wheel -m 444 ${WRKSRC}/libaura.so.3 ${LOCALBASE}/lib/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/libaura.a ${LOCALBASE}/lib/
+	${INSTALL_PROGRAM} -m 444 ${WRKSRC}/libaura.so.3 ${LOCALBASE}/lib/
 	${LN} -sf ${LOCALBASE}/lib/libaura.so.3 ${LOCALBASE}/lib/libaura.so
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/buffer.h ${LOCALBASE}/include/aura/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/dict.h ${LOCALBASE}/include/aura/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/popen.h ${LOCALBASE}/include/aura/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/fspred.h ${LOCALBASE}/include/aura/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/mem.h ${LOCALBASE}/include/aura/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/buffer.h ${LOCALBASE}/include/aura/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/dict.h ${LOCALBASE}/include/aura/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/popen.h ${LOCALBASE}/include/aura/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/fspred.h ${LOCALBASE}/include/aura/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/mem.h ${LOCALBASE}/include/aura/
 
 OSTYPE!=sysctl -n kern.ostype
 

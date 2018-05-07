@@ -21,8 +21,6 @@ USE_RC_SUBR=	syncthing-discosrv
 USERS=		syncthing
 GROUPS=		syncthing
 
-STRIP=		# stripping can break go binaries
-
 post-patch:
 	@cd ${WRKSRC} ; ${MKDIR} src/github.com/${GH_ACCOUNT}/${GH_PROJECT} ; \
 		${MV} .gitignore CONTRIBUTORS LICENSE README.md build.sh \
@@ -32,7 +30,7 @@ post-patch:
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT} ; \
-		${SETENV} GOPATH=${WRKSRC} go build
+		${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go build
 	@${MV} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/discosrv ${WRKSRC}/syncthing-discosrv
 
 do-install:

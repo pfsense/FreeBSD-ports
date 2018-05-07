@@ -2,36 +2,37 @@
 # $FreeBSD$
 
 PORTNAME=	maradns
-PORTVERSION=	2.0.13
+PORTVERSION=	2.0.14
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	http://maradns.samiam.org/download/2.0/${PORTVERSION}/\
 		SF/${PORTNAME}/MaraDNS/${PORTVERSION}/
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DNS server with focus on security and simplicity
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-DEADWOOD_VER=	3.2.09
+DEADWOOD_VER=	3.2.10
 
 REINPLACE_ARGS=	-i ""
 MAKE_ENV=	FLAGS="${CFLAGS}"
 
 HAS_CONFIGURE=	yes
 USE_RC_SUBR=	${PORTNAME} zoneserver Deadwood
-USES=		tar:bz2 shebangfix
+USES=		tar:bz2 python:2.7,run shebangfix
 USERS=		bind
 GROUPS=		bind
 INSTALL_TARGET=	install PREFIX=${STAGEDIR}${PREFIX}
-SHEBANG_FILES=	${WRKSRC}/tools/bind2csv2.py
+SHEBANG_FILES=	tools/bind2csv2.py
 
 OPTIONS_DEFINE=	IPV6 DOCS EXAMPLES CONV
 OPTIONS_SUB=	yes
 CONV_DESC=	Install bind2csv2 tool (needs python)
 
 IPV6_CONFIGURE_ON=	--ipv6
-CONV_USES=	python:run
+CONV_USES=	python:2.7,run
 
 PORTDOCS=	*
 PORTEXAMPLES=	*

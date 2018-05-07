@@ -1,13 +1,12 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	matlab-installer
 PORTVERSION=	0.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math science java
 MASTER_SITES=	http://acadix.biz/Ports/distfiles/
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Easy installation of Linux Matlab(r) on FreeBSD
 
 LICENSE=	BSD3CLAUSE
@@ -17,7 +16,7 @@ RUN_DEPENDS=	mount_cd9660_image:sysutils/diskimage-tools \
 		webbrowser:www/webbrowser \
 
 USES=		linux tar:xz
-USE_LINUX=	ncurses-base dri devtools
+USE_LINUX=	dri devtools
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 JAVA_OS=	linux

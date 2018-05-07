@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	augeas
-PORTVERSION=	1.8.1
+PORTVERSION=	1.10.1
 CATEGORIES=	textproc
 MASTER_SITES=	http://download.augeas.net/
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	puppet@FreeBSD.org
 COMMENT=	Configuration editing tool
 
 LICENSE=	LGPL21

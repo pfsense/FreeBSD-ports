@@ -3,7 +3,7 @@
 
 PORTNAME=	rss2email
 PORTVERSION=	2.71
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail python
 MASTER_SITES=	http://www.allthingsrss.com/rss2email/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,10 +14,10 @@ COMMENT=	Emails posts from subscribed RSS/Atom newsfeeds
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}feedparser>=5.0.1:textproc/py-feedparser \
-		${PYTHON_PKGNAMEPREFIX}html2text>=3.0.1:textproc/py-html2text
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}feedparser>=5.0.1:textproc/py-feedparser@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}html2text>=3.0.1:textproc/py-html2text@${PY_FLAVOR}
 
-USES=		python:2 shebangfix
+USES=		python:2.7 shebangfix
 SHEBANG_FILES=	rss2email.py
 NO_ARCH=	yes
 NO_BUILD=	yes

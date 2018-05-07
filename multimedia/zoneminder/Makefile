@@ -2,6 +2,7 @@
 
 PORTNAME=	zoneminder
 PORTVERSION=	1.30.4
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	bsd@abinet.ru
@@ -17,7 +18,7 @@ ZM_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
 		p5-Test-LWP-UserAgent>=0:www/p5-Test-LWP-UserAgent \
 		p5-Sys-Mmap>=0:devel/p5-Sys-Mmap \
 		p5-LWP-Protocol-https>=0:www/p5-LWP-Protocol-https \
-		p5-Sys-CPU>=0:devel/p5-Sys-Cpu \
+		p5-Sys-CPU>=0:devel/p5-Sys-CPU \
 		p5-Sys-MemInfo>=0:devel/p5-Sys-MemInfo \
 		p5-Data-Dump>=0:devel/p5-Data-Dump \
 		p5-SOAP-WSDL>=0:devel/p5-SOAP-WSDL \
@@ -81,9 +82,9 @@ CMAKE_ARGS+=	-DZM_PERL_MM_PARMS=INSTALLDIRS=site \
 .include <bsd.port.pre.mk>
 
 .if ${PHP_VER} >= 70
-RUN_DEPENDS+= ${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu
+RUN_DEPENDS+= ${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu@${PHP_FLAVOR}
 .else
-RUN_DEPENDS+= ${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu4
+RUN_DEPENDS+= ${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu4@${PHP_FLAVOR}
 .endif
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
@@ -108,6 +109,6 @@ post-install:
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_MAN} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

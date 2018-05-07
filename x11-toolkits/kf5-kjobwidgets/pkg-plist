@@ -1,3 +1,4 @@
+etc/xdg/kjobwidgets.categories
 include/KF5/KJobWidgets/KAbstractWidgetJobTracker
 include/KF5/KJobWidgets/KDialogJobUiDelegate
 include/KF5/KJobWidgets/KJobWidgets
@@ -43,6 +44,7 @@ share/locale/cy/LC_MESSAGES/kjobwidgets5_qt.qm
 share/locale/da/LC_MESSAGES/kjobwidgets5_qt.qm
 share/locale/de/LC_MESSAGES/kjobwidgets5_qt.qm
 share/locale/el/LC_MESSAGES/kjobwidgets5_qt.qm
+share/locale/en/LC_MESSAGES/kjobwidgets5_qt.qm
 share/locale/en_GB/LC_MESSAGES/kjobwidgets5_qt.qm
 share/locale/eo/LC_MESSAGES/kjobwidgets5_qt.qm
 share/locale/es/LC_MESSAGES/kjobwidgets5_qt.qm

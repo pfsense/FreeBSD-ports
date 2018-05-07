@@ -2,19 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	phalcon
-PORTVERSION=	3.2.2
 DISTVERSIONPREFIX=	v
+DISTVERSION=	3.3.2
 CATEGORIES=	www
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	linpct@gmail.com
 COMMENT=	Phalcon PHP Framework written in C-language
 
 LICENSE=	BSD3CLAUSE
 
+ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386
+
 USES=		php:ext
 USE_PHP=	hash:build json:build pdo:build
-
-ONLY_FOR_ARCHS=		amd64 armv6 i386
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	phalcon
@@ -25,7 +26,7 @@ CONFIGURE_ARGS=	--enable-phalcon
 
 .include <bsd.port.pre.mk>
 
-PBITS=		${ARCH:S/amd64/64/:S/armv6/32/:S/i386/32/:S/x86_64/64/}
+PBITS=		${ARCH:S/amd64/64/:C/armv.*/32/:S/i386/32/:S/x86_64/64/}
 WRKSRC_SUBDIR=	build/php${PHP_VER:C/.$//}/${PBITS}bits
 
 post-patch:

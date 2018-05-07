@@ -3,7 +3,7 @@
 
 PORTNAME=	runsnakerun
 DISTVERSION=	2.0.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 DISTNAME=	${PORTNAME:C/r/R/g:C/s/S/}-${DISTVERSION}
@@ -13,10 +13,10 @@ COMMENT=	GUI Viewer for Python profiling runs
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}SquareMap>0:x11-toolkits/py-SquareMap \
-		${PYTHON_PKGNAMEPREFIX}meliae>0:devel/py-meliae
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}SquareMap>0:x11-toolkits/py-SquareMap@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}meliae>0:devel/py-meliae@${FLAVOR}
 
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

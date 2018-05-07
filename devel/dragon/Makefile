@@ -2,16 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	dragon
-PORTVERSION=	1.4.1
+PORTVERSION=	1.4.3
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.lemke-it.com/
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Combined C++ scanner/parser generator for LR compliant grammars
 
+LICENSE=	GPLv3
+
 LIB_DEPENDS=	liblfcbase.so:devel/lfcbase
 
-LICENSE=	GPLv3
+CONFLICTS=	dragon-kde4
+
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/dragon
 

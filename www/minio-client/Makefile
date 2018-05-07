@@ -2,7 +2,6 @@
 
 PORTNAME=	minio-client
 PORTVERSION=	${GH_TAGNAME:S/RELEASE.//:S/Z//:S/T/-/:S/-/./g}
-PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	jhixson@gmail.com
@@ -28,16 +27,15 @@ MC=	${PORTNAME}
 USE_GITHUB=	yes
 GH_ACCOUNT=	minio
 GH_PROJECT=	mc
-GH_TAGNAME=	RELEASE.2017-02-06T20-16-19Z
+GH_TAGNAME=	RELEASE.2018-03-14T23-16-27Z
 GH_SUBDIR=	src/github.com/${GH_ACCOUNT}/${GH_PROJECT}
 MAKE_ENV=	GOPATH=${WRKSRC} GOROOT=${LOCALBASE}/go
 
-STRIP=		# stripping can break go binaries
 PLIST_FILES=	bin/${MC}
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}; \
-	${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -v -x \
+	${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -v -x \
 		-ldflags "-X main.GitDescribe=v${PORTVERSION}" -o bin/${MC}
 
 do-install:

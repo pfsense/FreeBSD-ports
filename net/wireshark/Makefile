@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	wireshark
-PORTVERSION=	2.4.1
+PORTVERSION=	2.4.5
 PORTREVISION?=	0
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.wireshark.org/download/src/ \
@@ -30,14 +30,17 @@ GNU_CONFIGURE=	yes
 USES=		alias cpe gettext-runtime gmake libtool pathfix perl5 \
 		pkgconfig python:build ssl tar:xz
 USE_PERL5=	build
-USE_GNOME=	glib20
+USE_GNOME=	glib20 libxml2
 CONFIGURE_ARGS+=	--program-transform-name="" \
 			--with-ssl=${OPENSSLBASE}
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 LIB_DEPENDS+=	libgpg-error.so:security/libgpg-error \
-		libgcrypt.so:security/libgcrypt
+		libgcrypt.so:security/libgcrypt \
+		liblz4.so:archivers/liblz4 \
+		libnghttp2.so:www/libnghttp2 \
+		libsnappy.so:archivers/snappy
 
 CFLAGS+=	-funit-at-a-time
 LIBS+=		-L${LOCALBASE}/lib
@@ -88,13 +91,14 @@ KRB_BASE_USES=		gssapi
 KRB_HEIMDAL_USES=	gssapi:heimdal
 KRB_MIT_USES=		gssapi:mit
 
-RTP_LIB_DEPENDS=	libportaudio.so:audio/portaudio
+RTP_LIB_DEPENDS=	libportaudio.so:audio/portaudio \
+    			libspandsp.so:comms/spandsp
 RTP_CPPFLAGS=		-I${LOCALBASE}/include
 SNMP_LIB_DEPENDS=	libsmi.so:net-mgmt/libsmi
 CARES_LIB_DEPENDS=	libcares.so:dns/c-ares
 GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 DECRYPT_LIB_DEPENDS=	libgnutls.so:security/gnutls \
-    			libgcrypt.so:security/libgcrypt
+			libgcrypt.so:security/libgcrypt
 
 IPV6_CONFIGURE_ENABLE=	ipv6
 
@@ -106,7 +110,7 @@ GTK2_CONFIGURE_ON=	--with-gtk=2 --with-qt=no
 GTK3_CONFIGURE_ON=	--with-gtk=3 --with-qt=no
 QT5_CONFIGURE_ON=	--with-qt=5 --with-gtk=no
 LUA_CONFIGURE_WITH=	lua
-RTP_CONFIGURE_WITH=	portaudio
+RTP_CONFIGURE_WITH=	portaudio spandsp
 SNMP_CONFIGURE_WITH=	libsmi
 CARES_CONFIGURE_WITH=	c-ares
 GEOIP_CONFIGURE_WITH=	geoip
@@ -125,7 +129,7 @@ QT5_PLIST_SUB=		GUI_GTK="@comment "
 GTK2_PLIST_SUB=		GUI_GTK=""
 GTK3_PLIST_SUB=		GUI_GTK=""
 
-OPTIONS_SUB=		LUA
+OPTIONS_SUB=		yes
 
 .if defined(LITE)
 CONFIGURE_ARGS+=--enable-androiddump=no
@@ -171,7 +175,7 @@ post-patch:
 		${WRKSRC}/configure
 	# XXX: Should be optional as to whether or not this flag works at runtime
 	@${REINPLACE_CMD} -e 's|-msse4.2||g' \
-	    	${WRKSRC}/configure
+		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|/usr/share/applications|${DESKTOPDIR}|g ; \
 		s|/usr/share|${LOCALBASE}/share|g ; \
 		s|{mime/packages,applications}|mime/packages| ; \

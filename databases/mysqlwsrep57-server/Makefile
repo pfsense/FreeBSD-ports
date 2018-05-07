@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	mysqlwsrep
-PORTVERSION?=	5.7.18
+PORTVERSION?=	5.7.21
 DISTVERSIONPREFIX?=	wsrep_
-DISTVERSIONSUFFIX?=	-25.12
-PORTREVISION?=	1
+DISTVERSIONSUFFIX?=	-25.14
 CATEGORIES=	databases ipv6
 MASTER_SITES+=	SF/boost/boost/1.59.0:boost
 PKGNAMESUFFIX=	57-server
@@ -46,7 +45,7 @@ GH_PROJECT?=	mysql-wsrep
 DATADIR=	${PREFIX}/share/mysql
 ETCDIR=		${PREFIX}/etc/mysql
 
-NOT_FOR_ARCHS=	aarch64 armv6 powerpc64
+NOT_FOR_ARCHS=	aarch64 armv6 armv7 powerpc64
 NOT_FOR_ARCHS_REASON=	Not supported platform
 
 CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
@@ -172,6 +171,14 @@ CMAKE_ARGS+=		-DWITH_SSL=system
 CMAKE_ARGS+=		-DWITH_SSL=${OPENSSLBASE}
 .endif
 
+# ${LOCALBASE}/include/lz4.h does not compile with Clang 6.
+# Also MySQL code itself needs -Wno-c++11-narrowing when Clang 6 is used.
+.if ${OSVERSION} >= 1200056
+CFLAGS+=	-DLZ4_DISABLE_DEPRECATE_WARNINGS
+CXXFLAGS+=	-DLZ4_DISABLE_DEPRECATE_WARNINGS -Wno-c++11-narrowing
+LDFLAGS+=	-L${LOCALBASE}/lib
+.endif
+
 post-extract:
 	${RM} -fv ${WRKSRC}/sql/sql_hints.yy.cc ${WRKSRC}/sql/sql_hints.yy.h
 
@@ -185,7 +192,7 @@ post-install:
 	${MKDIR} ${STAGEDIR}${MY_SECDIR}
 	${MKDIR} ${STAGEDIR}${MY_TMPDIR}
 
-.if ${ARCH} == "armv6"
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 EXTRA_PATCHES+=		${FILESDIR}/extra-patch-config.h.cmake
 .endif
 

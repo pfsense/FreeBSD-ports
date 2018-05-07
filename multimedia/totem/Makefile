@@ -3,7 +3,7 @@
 
 PORTNAME=	totem
 PORTVERSION=	3.18.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -13,7 +13,7 @@ COMMENT=	Gstreamer-based video player for the GNOME 3 Desktop
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
 		${LOCALBASE}/libdata/pkgconfig/gnome-icon-theme.pc:misc/gnome-icon-theme \
-		pylint${PYTHON_PKGNAMESUFFIX}>=0:devel/pylint \
+		pylint:devel/pylint \
 		appstream-glib>=0:devel/appstream-glib \
 		itstool:textproc/itstool \
 		grilo-plugins2>=0:net/grilo-plugins2
@@ -25,7 +25,7 @@ LIB_DEPENDS=	libgdata.so:devel/libgdata \
 		libtotem-plparser.so:multimedia/totem-pl-parser
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
 		${LOCALBASE}/libdata/pkgconfig/gnome-icon-theme.pc:misc/gnome-icon-theme \
-		${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py-libpeas \
+		${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py-libpeas@${PY_FLAVOR} \
 		gnome-settings-daemon>=2.91.0:sysutils/gnome-settings-daemon \
 		gnome-icon-theme-symbolic>=2.91.0:x11-themes/gnome-icon-theme-symbolic \
 		grilo-plugins2>=0:net/grilo-plugins2
@@ -33,7 +33,7 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
 PORTSCOUT=	limitw:1,even
 
 USES=		desktop-file-utils gettext gmake gnome libtool \
-		pathfix pkgconfig python:2 tar:xz
+		pathfix pkgconfig python:2.7 tar:xz
 USE_GNOME=	gtk30 intlhack introspection:build libxml2 nautilus3 \
 		pygobject3
 USE_XORG=	x11 xproto xtst ice sm

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PKGNAMESUFFIX=	-rdp
-PORTREVISION=	1
+PORTREVISION=	2
 
 COMMENT=	Remmina plugin for RDP protocol
 
@@ -12,7 +12,5 @@ USE_GNOME+=	cairo
 USE_XORG+=	ice sm x11 xext
 
 MASTERDIR=	${.CURDIR}/../remmina-plugins
-
-PLIST_SUB+=	ICONS="" SSH=""
 
 .include "${MASTERDIR}/Makefile"

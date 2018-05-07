@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	mario-redis-lock
-PORTVERSION=	1.2.0
+PORTVERSION=	1.2.1
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
@@ -10,7 +10,7 @@ COMMENT=	Ruby distributed lock using Redis, with emphasis in transparency
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-redis>=3.3.3:databases/rubygem-redis
+RUN_DEPENDS=	rubygem-redis>=3.0.5:databases/rubygem-redis
 
 USES=		gem
 USE_RUBY=	yes

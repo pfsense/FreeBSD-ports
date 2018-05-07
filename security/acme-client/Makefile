@@ -3,7 +3,7 @@
 
 PORTNAME=	acme-client
 PORTVERSION=	0.1.16
-PORTREVISION=	1
+PORTREVISION=	3
 DISTVERSIONPREFIX=	portable-
 CATEGORIES=	security
 MASTER_SITES=	https://kristaps.bsd.lv/${PORTNAME}/snapshots/ \
@@ -21,6 +21,8 @@ USES=		gmake tar:tgz ssl
 MAKEFILE=	GNUmakefile
 MAKE_ENV=	PREFIX=${STAGEDIR}/${PREFIX}
 
+CFLAGS+=	-DNOBODY_USER=\\\"${ACME_USER}\\\"
+
 WWWDIR=		${PREFIX}/www/acme
 
 SAMPLE_FILES=	acme-client.sh.sample deploy.sh.sample
@@ -29,6 +31,11 @@ SUB_LIST=	PORTNAME=${PORTNAME}
 
 PERIODIC_DIRS=	etc/periodic/weekly
 PERIODIC_FILES=	000.acme-client.sh
+
+ACME_USER?=	_acme
+
+USERS=		${ACME_USER}
+GROUPS=		${ACME_USER}
 
 post-patch:
 	${REINPLACE_CMD} -e "s|/etc/|${PREFIX}/etc/|g" \
@@ -50,16 +57,16 @@ post-install:
 .include <bsd.port.pre.mk>
 
 .if ! ${SSL_DEFAULT:Mlibressl*}
-BUILD_DEPENDS+=		${NONEXISTENT}:security/libressl:stage
-CPPFLAGS+=		-I${WRKDIR}/libressl/include
-LDFLAGS+=		-L${WRKDIR}/libressl/lib
 . ifnmake describe
 STAGEDIR_libressl!=	${MAKE} -V STAGEDIR -C ${PORTSDIR}/security/libressl
 . endif
-
-pre-configure:
-	@(cd ${STAGEDIR_libressl}${LOCALBASE} && ${COPYTREE_SHARE} \
-		. ${WRKDIR}/libressl "! -name *.so*")
+BUILD_DEPENDS+=	${NONEXISTENT}:security/libressl:stage
+CPPFLAGS+=	-I${STAGEDIR_libressl}${LOCALBASE}/include
+LDFLAGS+=	${STAGEDIR_libressl}${LOCALBASE}/lib/libtls.a \
+		${STAGEDIR_libressl}${LOCALBASE}/lib/libssl.a \
+		${STAGEDIR_libressl}${LOCALBASE}/lib/libcrypto.a
+post-configure:
+	${REINPLACE_CMD} 's/-l[a-z]*//g' ${WRKSRC}/GNUmakefile 
 .endif # SSL_DEFAULT
 
 .include <bsd.port.post.mk>

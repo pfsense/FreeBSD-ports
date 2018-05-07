@@ -20,8 +20,6 @@ GH_TUPLE=	ssh-vault:crypto:ae180e0:crypto/src/github.com/ssh-vault/crypto \
 		ssh-vault:ssh2pem:c1edc64:ssh2pem/src/github.com/ssh-vault/ssh2pem
 GH_SUBDIR=	src/github.com/${PORTNAME}/${PORTNAME}
 
-STRIP=		# stripping can break go binaries
-
 PLIST_FILES=	bin/ssh-vault
 
 post-patch:
@@ -30,7 +28,7 @@ post-patch:
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}; \
-	${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags \
+	${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags \
 	"-s -w -X main.version=${PORTVERSION}" -o ssh-vault cmd/ssh-vault/main.go;
 
 do-install:

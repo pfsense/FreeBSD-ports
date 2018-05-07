@@ -178,11 +178,12 @@ OPTIONS_FILE?=	${PORT_DBDIR}/${OPTIONS_NAME}/options
 _OPTIONS_FLAGS=	ALL_TARGET BROKEN CATEGORIES CFLAGS CONFIGURE_ENV CONFLICTS \
 		CONFLICTS_BUILD CONFLICTS_INSTALL CPPFLAGS CXXFLAGS \
 		DESKTOP_ENTRIES DISTFILES EXTRA_PATCHES EXTRACT_ONLY \
-		GH_ACCOUNT GH_PROJECT GH_SUBDIR GH_TAGNAME GH_TUPLE IGNORE \
-		INFO INSTALL_TARGET LDFLAGS LIBS MAKE_ARGS MAKE_ENV \
+		GH_ACCOUNT GH_PROJECT GH_SUBDIR GH_TAGNAME GH_TUPLE \
+		GL_ACCOUNT GL_COMMIT GL_PROJECT GL_SITE GL_SUBDIR GL_TUPLE \
+		IGNORE INFO INSTALL_TARGET LDFLAGS LIBS MAKE_ARGS MAKE_ENV \
 		MASTER_SITES PATCHFILES PATCH_SITES PLIST_DIRS PLIST_FILES \
 		PLIST_SUB PORTDOCS PORTEXAMPLES SUB_FILES SUB_LIST \
-		TEST_TARGET USES
+		TEST_TARGET USES BINARY_ALIAS
 _OPTIONS_DEPENDS=	PKG FETCH EXTRACT PATCH BUILD LIB RUN
 
 # The format here is target_family:priority:target-type
@@ -196,30 +197,7 @@ _OPTIONS_TARGETS=	fetch:300:pre fetch:500:do fetch:700:post \
 			package:300:pre package:500:do package:700:post \
 			stage:800:post
 
-# Set the default values for the global options, as defined by portmgr
-.if !defined(NOPORTDOCS)
-PORT_OPTIONS+=	DOCS
-.else
-OPTIONS_WARNINGS+=		"NOPORTDOCS"
-WITHOUT+=			DOCS
-OPTIONS_WARNINGS_UNSET+=	DOCS
-.endif
-
-.if !defined(WITHOUT_NLS)
-PORT_OPTIONS+=	NLS
-.else
-WITHOUT+=		NLS
-.endif
-
-.if !defined(NOPORTEXAMPLES)
-PORT_OPTIONS+=	EXAMPLES
-.else
-OPTIONS_WARNINGS+=		"NOPORTEXAMPLES"
-WITHOUT+=			EXAMPLES
-OPTIONS_WARNINGS_UNSET+=	EXAMPLES
-.endif
-
-PORT_OPTIONS+=	IPV6
+PORT_OPTIONS+=	DOCS NLS EXAMPLES IPV6
 
 # Add per arch options
 .for opt in ${OPTIONS_DEFINE_${ARCH}}
@@ -325,21 +303,6 @@ NEW_OPTIONS:=	${NEW_OPTIONS:N${opt}}
 .  endif
 .  sinclude "${OPTIONS_FILE}.local"
 
-### convert WITH and WITHOUT found in make.conf or reloaded from old optionsfile
-# XXX once WITH_DEBUG is not magic any more, do remove the :NDEBUG from here.
-.for opt in ${ALL_OPTIONS:NDEBUG}
-.if defined(WITH_${opt})
-OPTIONS_WARNINGS+=	"WITH_${opt}"
-OPTIONS_WARNINGS_SET+=	${opt}
-PORT_OPTIONS+=	${opt}
-.endif
-.if defined(WITHOUT_${opt})
-OPTIONS_WARNINGS+=	"WITHOUT_${opt}"
-OPTIONS_WARNINGS_UNSET+=	${opt}
-PORT_OPTIONS:=	${PORT_OPTIONS:N${opt}}
-.endif
-.endfor
-
 _OPTIONS_UNIQUENAME=	${PKGNAMEPREFIX}${PORTNAME}
 .for _k in SET UNSET SET_FORCE UNSET_FORCE
 .if defined(${_OPTIONS_UNIQUENAME}_${_k})
@@ -347,28 +310,6 @@ WARNING+=	"You are using ${_OPTIONS_UNIQUENAME}_${_k} which is not supported any
 WARNING+=	"${OPTIONS_NAME}_${_k}=	${${_OPTIONS_UNIQUENAME}_${_k}}"
 .endif
 .endfor
-
-.if defined(OPTIONS_WARNINGS)
-WARNING+=	"You are using the following deprecated options: ${OPTIONS_WARNINGS}"
-WARNING+=	"If you added them on the command line, you should replace them by"
-WARNING+=	"WITH=\"${OPTIONS_WARNINGS_SET}\" WITHOUT=\"${OPTIONS_WARNINGS_UNSET}\""
-WARNING+=	""
-WARNING+=	"If they are global options set in your make.conf, you should replace them with:"
-.if defined(OPTIONS_WARNINGS_SET)
-WARNING+=	"OPTIONS_SET=${OPTIONS_WARNINGS_SET}"
-.endif
-.if defined(OPTIONS_WARNINGS_UNSET)
-WARNING+=	"OPTIONS_UNSET=${OPTIONS_WARNINGS_UNSET}"
-.endif
-WARNING+=	""
-WARNING+=	"If they are local to this port, you should use:"
-.if defined(OPTIONS_WARNINGS_SET)
-WARNING+=	"${OPTIONS_NAME}_SET=${OPTIONS_WARNINGS_SET}"
-.endif
-.if defined(OPTIONS_WARNINGS_UNSET)
-WARNING+=	"${OPTIONS_NAME}_UNSET=${OPTIONS_WARNINGS_UNSET}"
-.endif
-.endif
 
 ## Finish by using the options set by the port config dialog, if any
 .  for opt in ${OPTIONS_FILE_SET}
@@ -471,11 +412,15 @@ PORT_OPTIONS:=	${PORT_OPTIONS:O:u}
 
 ## Now some compatibility
 .if empty(PORT_OPTIONS:MDOCS)
-NOPORTDOCS=	yes
+PLIST_SUB+=		PORTDOCS="@comment "
+.else
+PLIST_SUB+=		PORTDOCS=""
 .endif
 
 .if empty(PORT_OPTIONS:MEXAMPLES)
-NOPORTEXAMPLES=	yes
+PLIST_SUB+=	        PORTEXAMPLES="@comment "
+.else
+PLIST_SUB+=	        PORTEXAMPLES=""
 .endif
 
 .if ${PORT_OPTIONS:MDEBUG}
@@ -640,23 +585,18 @@ _OPTIONS_${_target}:=	${_OPTIONS_${_target}} ${_prio}:${_type}-${_target}-${opt}
 
 .undef (SELECTED_OPTIONS)
 .undef (DESELECTED_OPTIONS)
-.for opt in ${ALL_OPTIONS}
-.  if ${PORT_OPTIONS:M${opt}}
-SELECTED_OPTIONS:=	${opt} ${SELECTED_OPTIONS}
-.  else
-DESELECTED_OPTIONS:=	${opt} ${DESELECTED_OPTIONS}
-.  endif
-.endfor
+# Wait to expand PORT_OPTIONS until the last moment in case something modifies
+# the selected OPTIONS after bsd.port.options.mk is included.  This uses
+# bmake's :@ for loop.
+_SELECTED_OPTIONS=	${ALL_OPTIONS:@opt@${PORT_OPTIONS:M${opt}}@}
+_DESELECTED_OPTIONS=	${ALL_OPTIONS:@opt@${"${PORT_OPTIONS:M${opt}}":?:${opt}}@}
 .for otype in MULTI GROUP SINGLE RADIO
 .  for m in ${OPTIONS_${otype}}
-.    for opt in ${OPTIONS_${otype}_${m}}
-.      if ${PORT_OPTIONS:M${opt}}
-SELECTED_OPTIONS:=	${opt} ${SELECTED_OPTIONS}
-.      else
-DESELECTED_OPTIONS:=	${opt} ${DESELECTED_OPTIONS}
-.      endif
-.    endfor
+_SELECTED_OPTIONS+=	${OPTIONS_${otype}_${m}:@opt@${PORT_OPTIONS:M${opt}}@}
+_DESELECTED_OPTIONS+=	${OPTIONS_${otype}_${m}:@opt@${"${PORT_OPTIONS:M${opt}}":?:${opt}}@}
 .  endfor
 .endfor
+SELECTED_OPTIONS=	${_SELECTED_OPTIONS:O:u}
+DESELECTED_OPTIONS=	${_DESELECTED_OPTIONS:O:u}
 
 .endif

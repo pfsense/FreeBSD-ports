@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	openra
-PORTVERSION=	20170527
+PORTVERSION=	20180307
 DISTVERSIONPREFIX=	release-
 PORTREVISION=	3
 CATEGORIES=	games
@@ -31,9 +31,9 @@ NUGET_DEPENDS=	FuzzyLogicLibrary=1.2.0 \
 		Open.Nat=2.1.0 \
 		SharpFont=4.0.1 \
 		SharpZipLib=0.86.0 \
-		SmartIrc4net=0.4.5.1 \
 		StyleCop.MSBuild=4.7.49.0 \
-		StyleCopPlus.MSBuild=4.7.49.5
+		StyleCopPlus.MSBuild=4.7.49.5 \
+		rix0rrr.BeaconLib=1.0.1
 
 USE_GITHUB=	yes
 GH_PROJECT=	OpenRA
@@ -44,27 +44,18 @@ USES=		desktop-file-utils gmake lua:51,run mono:nuget openal:soft \
 USE_SDL=	sdl2
 NUGET_PACKAGEDIR=${WRKSRC}/thirdparty/download
 SHEBANG_FILES=	launch-dedicated.sh
-MAKE_ENV=	prefix="${PREFIX}" mandir="${PREFIX}/man"
+MAKE_ENV=	prefix="${PREFIX}" mandir="${PREFIX}/man" \
+		gameinstalldir="${DATADIR}"
 MAKE_ARGS=	VERSION="${GH_TAGNAME}"
 ALL_TARGET=	all
-INSTALL_TARGET=	install-all install-man-page \
+INSTALL_TARGET=	install install-man-page \
 		install-linux-mime install-linux-shortcuts
-DATADIR=	${PREFIX}/lib/${PORTNAME}
 PORTDATA=	*
-PORTDOCS=	*.html
 
-OPTIONS_DEFINE=	DOCS TEST ZENITY
-OPTIONS_DEFAULT=ZENITY
-
-DOCS_BUILD_DEPENDS=markdown:textproc/markdown
-DOCS_ALL_TARGET=docs
+OPTIONS_DEFINE=	TEST
 
 TEST_MAKE_ENV=	HOME="${WRKDIR}"
 TEST_ALL_TARGET=test
-
-ZENITY_RUN_DEPENDS=xdg-open:devel/xdg-utils \
-		zenity:x11/zenity
-ZENITY_DESC=	Use native crash dialog
 
 post-extract:
 	${CP} ${DISTFILES:C/:.*//:N*.nupkg:N*.tar*:S,^,${_DISTDIR}/,} \
@@ -75,23 +66,12 @@ post-patch:
 		-e '/echo/!s/	@/	/' \
 		-e '/^mods:/s/$$/ version/' \
 		${WRKSRC}/Makefile
-	${REINPLACE_CMD} -e '/[[:<:]]get[[:blank:]]/d' \
+	${REINPLACE_CMD} -e '/noget\.sh/d' \
 			${WRKSRC}/thirdparty/fetch-thirdparty-deps.sh
-	${FIND} ${WRKSRC}/thirdparty -name '*.config*' -exec ${REINPLACE_CMD} \
-		-i '.bak.os' -e '/linux/{ p; s//${OPSYS:tl}/; }' {} +
+	${FIND} -L ${WRKSRC}/thirdparty -name '*.config*' -exec ${REINPLACE_CMD} \
+		-i '.bak.os' -e '/${OPSYS:tl}/d; /linux/{ p; s//${OPSYS:tl}/; }' {} +
 	${SED} 's/@LIBLUA51@/liblua-${LUA_VER}.so/' \
 		${WRKSRC}/thirdparty/Eluant.dll.config.in \
 		>${WRKSRC}/Eluant.dll.config
-
-post-build-DOCS-on:
-	@${ECHO_MSG} Generating HTML documentation...
-	@for f in ${WRKSRC}/*.md; do \
-		${ECHO_MSG} markdown $$f -\> $${f%.md}.html; \
-		markdown $$f >$${f%.md}.html; \
-	done
-
-post-install-DOCS-on:
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
-		"${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

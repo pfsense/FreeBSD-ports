@@ -13,7 +13,7 @@ COMMENT=	Bug-tracking system developed in PHP
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${LOCALBASE}/share/pear/DB.php:databases/pear-DB
+RUN_DEPENDS=	${LOCALBASE}/share/pear/DB.php:databases/pear-DB@${PHP_FLAVOR}
 
 .if !defined(WITHOUT_PHP_DEPENDS)
 USE_PHP=	ctype pcre posix session tokenizer xml zlib
@@ -32,7 +32,7 @@ OPTIONS_DEFAULT=GNATS
 OPTIONS_SUB=	yes
 
 GNATS_DESC=	Install script to convert entries from GNATS
-GNATS_USES=	python:run shebangfix
+GNATS_USES=	python:2.7,run shebangfix
 
 post-extract-GNATS-off:
 	@${RM} ${WRKSRC}/contrib/gnats-to-phpbt.py

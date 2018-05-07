@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	libunwind
-PORTVERSION=	20170113	# This is the release date of libunwind 1.2
-PORTREVISION=	1
+PORTVERSION=	20170615	# This is the release date of libunwind 1.2.1
 CATEGORIES=	devel
 MASTER_SITES=	SAVANNAH
-DISTNAME=	${PORTNAME}-1.2
+DISTNAME=	${PORTNAME}-1.2.1
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Generic stack unwinding library
@@ -25,6 +24,7 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 USES=		libtool pathfix pkgconfig
+LLD_UNSAFE=	yes
 
 PLIST_SUB=	ARCH=${ARCH:S|i386|x86|:S|amd64|x86_64|}
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	firebird
-PORTREVISION=	1
+PORTREVISION=	3
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}-client
 
 COMMENT=	Firebird-2 database client

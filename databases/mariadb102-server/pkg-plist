@@ -18,6 +18,7 @@ bin/mysql_embedded
 bin/mysql_fix_extensions
 bin/mysql_install_db
 %%ROCKSDB%%bin/mysql_ldb
+%%ROCKSDB%%bin/myrocks_hotbackup
 bin/mysql_plugin
 bin/mysql_secure_installation
 bin/mysql_setpermission
@@ -44,12 +45,6 @@ bin/wsrep_sst_mysqldump
 bin/wsrep_sst_rsync
 bin/wsrep_sst_xtrabackup
 bin/wsrep_sst_xtrabackup-v2
-include/mysql/my_config.h
-include/mysql/my_global.h
-include/mysql/my_sys.h
-include/mysql/mysql_com.h
-include/mysql/mysql_version.h
-include/mysql/mysqld_error.h
 include/mysql/server/private/embedded_priv.h
 @comment lib/mysql/libmariadb.so
 @comment lib/mysql/libmariadb.so.3
@@ -147,6 +142,7 @@ man/man8/mysqld.8.gz
 %%DATADIR%%/maria_add_gis_sp_bootstrap.sql
 %%MROONGA%%%%DATADIR%%/mroonga/install.sql
 %%MROONGA%%%%DATADIR%%/mroonga/uninstall.sql
+%%MROONGA%%%%DATADIR%%/mroonga/AUTHORS
 %%DATADIR%%/my-huge.cnf
 %%DATADIR%%/my-innodb-heavy-4G.cnf
 %%DATADIR%%/my-large.cnf
@@ -162,3 +158,5 @@ man/man8/mysqld.8.gz
 %%DATADIR%%/mysqld_multi.server
 %%DATADIR%%/wsrep.cnf
 %%DATADIR%%/wsrep_notify
+%%MROONGA%%share/groonga-normalizer-mysql/README.md
+%%MROONGA%%share/groonga/README.md

@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-secs3d
 PORTVERSION=	0.0.1
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -23,6 +23,8 @@ RUN_DEPENDS+=	${TARBALLS_DIR}/bim.tar.gz:math/octave-forge-bim
 
 do-build:
 	@${DO_NADA}
+
+NO_ARCH=	yes
 
 post-build:
 	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure

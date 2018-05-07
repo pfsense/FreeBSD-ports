@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	syncthing
-PORTVERSION=	0.14.36
+PORTVERSION=	0.14.45
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -22,14 +22,14 @@ GROUPS=		syncthing
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${PORTNAME}/${PORTNAME} ; \
-		${SETENV} go run build.go -no-upgrade=true -version v${PORTVERSION}
+		${SETENV} ${MAKE_ENV} go run build.go -no-upgrade=true -version v${PORTVERSION}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${PORTNAME}/${PORTNAME}/bin/syncthing \
 		${STAGEDIR}${PREFIX}/bin/
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for x in AUTHORS CONTRIBUTING.md LICENSE README.md
-	${INSTALL_MAN} ${WRKSRC}/src/github.com/${PORTNAME}/${PORTNAME}/${x} \
+	${INSTALL_DATA} ${WRKSRC}/src/github.com/${PORTNAME}/${PORTNAME}/${x} \
 		${STAGEDIR}${DOCSDIR}
 .endfor
 

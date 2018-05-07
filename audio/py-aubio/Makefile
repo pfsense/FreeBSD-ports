@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	audio python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,12 +11,10 @@ LIB_DEPENDS=	libaubio.so:audio/aubio
 BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY}
 TEST_DEPENDS=	sox:audio/sox \
-		${PYTHON_PKGNAMEPREFIX}nose2>=0.6.5:devel/py-nose2
+		${PYTHON_PKGNAMEPREFIX}nose2>=0.6.5:devel/py-nose2@${FLAVOR}
 
 USES+=		python
 USE_PYTHON=	autoplist distutils
-
-CPPFLAGS+=	-I${PYTHON_SITELIBDIR}/numpy/core/include
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${WRKSRC}/`ls -rtd build/lib.* | head -1`
 TEST_TARGET=	test

@@ -1,22 +1,13 @@
---- texi/Makefile.in.orig	2016-01-25 20:09:17.000000000 +0900
-+++ texi/Makefile.in	2016-11-29 15:30:25.384280000 +0900
-@@ -45,8 +45,8 @@
+--- texi/Makefile.in.orig	2016-01-25 11:09:17 UTC
++++ texi/Makefile.in
+@@ -45,8 +45,8 @@ DESTDIR		=
  
  TEXI_FILES	= tramp.texi trampver.texi doclicense.texi docstyle.texi \
  		  $(if $(findstring yes, @INSTALL_CHAPTER@), trampinst.texi)
 -INFO_FILES	= $(localinfodir)/tramp
 -INSTALL_FILES	= $(DESTDIR)$(infodir)/tramp
-+INFO_FILES	= $(localinfodir)/tramp21.info
-+INSTALL_FILES	= $(DESTDIR)$(infodir)/tramp21.info
++INFO_FILES	= $(localinfodir)/tramp.info
++INSTALL_FILES	= $(DESTDIR)$(infodir)/tramp.info
  CLEAN_FILES	= @TRAMP_CLEAN_FILES@ $(wildcard $(localinfodir)/*)
  
  # To be used by maintainer only.
-@@ -59,7 +59,7 @@
- 
- tramp: $(INFO_FILES) $(localinfodir)/dir
- 
--install: tramp $(INSTALL_FILES) $(DESTDIR)$(infodir)/dir
-+install: tramp $(INSTALL_FILES)
- 
- clean:
- 	$(RM) $(CLEAN_FILES)

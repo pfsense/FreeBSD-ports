@@ -3,14 +3,12 @@
 
 PORTNAME=	floodprotect
 PORTVERSION=	1.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/verlihub/OldFiles
 DISTNAME=	${PLUGIN_NAME}
 
 MAINTAINER=	me@skylord.ru
-
-BROKEN_armv6=		fails to configure: checking for VERLIHUB - version >= 0... no (see config.log)
 
 PLUGIN_NAME=	floodprot
 PLUGIN_DESC=	Floodprotect

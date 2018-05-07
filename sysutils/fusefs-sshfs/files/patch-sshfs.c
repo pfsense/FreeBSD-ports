@@ -1,6 +1,6 @@
---- sshfs.c.orig	2017-03-17 21:07:50 UTC
+--- sshfs.c.orig	2018-01-08 21:05:08 UTC
 +++ sshfs.c
-@@ -1027,7 +1027,7 @@ static int pty_master(char **name)
+@@ -971,7 +971,7 @@ static int pty_master(char **name)
  {
  	int mfd;
  

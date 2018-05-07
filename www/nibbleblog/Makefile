@@ -11,9 +11,9 @@ DISTNAME=	nibbleblogv302
 MAINTAINER=	marekholienka@gmail.com
 COMMENT=	Lightweight blog system for general use
 
-RUN_DEPENDS=	pear:devel/pear
+RUN_DEPENDS=	pear:devel/pear@${PHP_FLAVOR}
 
-USES=		cpe zip
+USES=		cpe php zip
 NO_BUILD=	yes
 NO_ARCH=	yes
 USE_PHP=	session filter xml simplexml gd

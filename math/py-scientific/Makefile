@@ -3,7 +3,7 @@
 
 PORTNAME=	scientific
 PORTVERSION=	2.8
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	math python
 MASTER_SITES=	http://sourcesup.cru.fr/frs/download.php/2309/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libnetcdf.so:science/netcdf
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}

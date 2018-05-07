@@ -7,7 +7,8 @@ CATEGORIES=	graphics
 MAINTAINER=	bsam@FreeBSD.org
 COMMENT=	ICC profile viewer and colour visualisation
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -17,10 +18,10 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libOyranos.so:graphics/oyranos \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
-		libXcm.so:x11/libXcm 
+		libXcm.so:x11/libXcm
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     oyranos-cms
+USE_GITHUB=	yes
+GH_ACCOUNT=	oyranos-cms
 
 MAKE_JOBS_UNSAFE=	yes
 USES=		desktop-file-utils gettext iconv jpeg pkgconfig
@@ -29,6 +30,7 @@ INSTALLS_ICONS=	yes
 USE_GL=		gl glu
 USE_XORG=	x11 xcursor xext xfixes xft xinerama xpm xrandr xxf86vm
 CONFIGURE_ARGS+=--mandir=${PREFIX}/man --disable-openmp
+USE_CXXSTD=	c++98
 
 post-patch:
 	@${REINPLACE_CMD} 's:\\$$(iconv):${ICONV_LIB}:' \

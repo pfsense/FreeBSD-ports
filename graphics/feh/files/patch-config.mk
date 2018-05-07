@@ -1,6 +1,6 @@
---- config.mk.orig	2015-05-24 09:46:21 UTC
+s--- config.mk.orig	2017-12-28 18:28:35 UT2
 +++ config.mk
-@@ -6,12 +6,12 @@ PREFIX ?= /usr/local
+@@ -22,12 +22,12 @@ endif
  
  # Directories for manuals, executables, docs, data, etc.
  main_dir = ${DESTDIR}${PREFIX}
@@ -13,5 +13,5 @@
 -example_dir = ${main_dir}/share/doc/feh/examples
 +example_dir = ${main_dir}/share/examples/feh
  desktop_dir = ${main_dir}/share/applications
- 
- # default CFLAGS
+ icon_dir = ${ICON_PREFIX}/hicolor
+ 48_icon_dir = ${icon_dir}/48x48/apps

@@ -3,7 +3,7 @@
 
 PORTNAME=	siren
 PORTVERSION=	0.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://www.kariliq.nl/${PORTNAME}/dist/
 
@@ -20,7 +20,6 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libwavpack.so:audio/wavpack \
 		libopusfile.so:audio/opusfile
 
-BROKEN_armv6=		fails to configure: cannot find program /nxb-bin/usr/bin/cc
 BROKEN_mips=		fails to configure: cannot find program /nxb-bin/usr/bin/cc
 BROKEN_mips64=		fails to configure: cannot find program /nxb-bin/usr/bin/cc
 

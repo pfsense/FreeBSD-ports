@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	conky
-PORTVERSION=	1.10.6
-PORTREVISION=	3
+PORTVERSION=	1.10.8
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	madpilot@FreeBSD.org
@@ -19,7 +19,7 @@ BUILD_DEPENDS=	db2x_xsltproc:textproc/docbook2X \
 CONFLICTS?=	conky-awesome-[0-9]*
 SLAVEDIRS=	sysutils/conky-awesome
 
-USES=           cpe cmake:noninja compiler:c++11-lib gettext-runtime iconv \
+USES=		cpe cmake:noninja compiler:c++11-lib gettext-runtime iconv \
 		localbase lua:51 pkgconfig tar:bzip2
 CMAKE_ARGS+=	-DBUILD_PORT_MONITORS:BOOL=false \
 		-DBUILD_IBM:BOOL=false \

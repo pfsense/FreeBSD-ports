@@ -3,6 +3,7 @@
 
 PORTNAME=	tryton
 PORTVERSION=	2.8.12
+PORTREVISION=	1
 CATEGORIES=	finance python
 MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/2.8/
@@ -13,12 +14,12 @@ COMMENT=	Tryton Application Platform (Gtk+ Client)
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=1.5:devel/py-dateutil \
-		${PYTHON_PKGNAMEPREFIX}pytz>=2012:devel/py-pytz
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=1.5:devel/py-dateutil@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytz>=2012:devel/py-pytz@${FLAVOR}
 
 CONFLICTS=	tryton-2.[46].*
 
-USES=		desktop-file-utils gettext python:2
+USES=		desktop-file-utils gettext python:2.7
 USE_PYTHON=	distutils autoplist
 USE_GNOME=	gtk20 pygtk2
 

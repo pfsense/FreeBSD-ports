@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-mvn
 PORTVERSION=	1.1.0
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -20,6 +20,8 @@ OCTSRC=		${OCTAVE_PKGNAME}
 
 do-build:
 	@${DO_NADA}
+
+NO_ARCH=	yes
 
 post-build:
 	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure

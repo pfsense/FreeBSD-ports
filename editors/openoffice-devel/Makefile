@@ -3,7 +3,7 @@
 
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION1}.${AOOVERSION2}.${SVNREVISION}
-#PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	4
 CATEGORIES=	editors java
 MASTER_SITES=	https://dist.apache.org/repos/dist/dev/openoffice/${AOOVERSION}-${AOORC}-r${SVNREVISION}/source/ \
@@ -16,7 +16,7 @@ PKGNAMEPREFIX=		${LANG_PKGNAME}-
 PKGNAMESUFFIX=		-${LANG_SUFFIX}
 .endif
 PKGNAMESUFFIX=		-devel
-DISTFILES=	${AOOSRC}${AOODISTTAG} unowinreg.dll:unoreg ${EXTSRC}:extsrc
+DISTFILES=	${AOOSRC}${AOODISTTAG} ${EXTSRC}:extsrc
 DIST_SUBDIR=	openoffice
 EXTRACT_ONLY=	${AOOSRC}
 
@@ -25,8 +25,8 @@ MAINTAINER=	office@FreeBSD.org
 #Frequent Patch submitters should (optionally) sign the Apache iCLA
 COMMENT=	Integrated wordprocessor/dbase/spreadsheet/drawing/chart/browser (developer version)
 
-LICENSE=		APACHE20 ADOBE BSD3CLAUSE BSD4CLAUSE BSL ICU MIT MPL11 \
-			PSFL TWAIN W3C
+LICENSE=		APACHE20 ADOBE BSD3CLAUSE BSD4CLAUSE BSL ICU MIT MPL10 \
+			MPL11 PSFL TWAIN W3C
 LICENSE_COMB=		multi
 LICENSE_NAME_ADOBE=	Adobe Systems Incorporated license
 LICENSE_NAME_ICU=	ICU License
@@ -39,6 +39,7 @@ LICENSE_FILE_BSD4CLAUSE=	${WRKSRC}/LICENSE_BSD4CLAUSE
 LICENSE_FILE_BSL=	${WRKSRC}/LICENSE_BSL
 LICENSE_FILE_ICU=	${WRKSRC}/LICENSE_ICU
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE_MIT
+LICENSE_FILE_MPL10=	${WRKSRC}/LICENSE_MPL10
 LICENSE_FILE_MPL11=	${WRKSRC}/LICENSE_MPL11
 LICENSE_FILE_PSFL=	${WRKSRC}/LICENSE_PSFL
 LICENSE_FILE_TWAIN=	${WRKSRC}/LICENSE_TWAIN
@@ -97,12 +98,14 @@ RUN_DEPENDS=								\
 		${LOCALBASE}/share/fonts/Carlito/Carlito-Bold.ttf:x11-fonts/crosextrafonts-carlito-ttf \
 		${LOCALBASE}/share/fonts/ChromeOS/Arimo-Bold.ttf:x11-fonts/croscorefonts-fonts-ttf
 
+CONFLICTS_INSTALL=	apache-openoffice-4*
+
 AOOVERSION1=	4
 AOOVERSION2=	2
 AOOVERSION3=	0
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
 AOOTAG=		AOO420m1\(Build:9800\)
-SVNREVISION=	1810071
+SVNREVISION=	1822069
 #AOORC=rc3
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
@@ -128,7 +131,7 @@ XDGDIR=			${OOPATH}/share/xdg
 XDGREL=			../../${INSTALLATION_BASEDIR}/openoffice${AOOVERSION1}/share/xdg
 EXECBASE?=		openoffice-${AOOSUFFIX}
 
-USES=		autoreconf:autoconf bison compiler:c++11-lib cpe \
+USES=		autoreconf bison compiler:c++11-lib cpe \
 		desktop-file-utils \
 		gettext-runtime gmake iconv jpeg perl5 pkgconfig python \
 		shared-mime-info ssl tar:${TARTYPE}
@@ -147,21 +150,30 @@ WITHOUT_CPU_CFLAGS=	true
 CPE_PRODUCT=	${PORTNAME:S|apache-||}
 CPE_VENDOR=	apache
 
-OPTIONS_DEFINE=		CUPS GNOME GNOMEVFS MMEDIA MYSQL PDFIMPORT \
-			REPORT_BUILDER SDK WIKI_PUBLISHER CCACHE
-OPTIONS_DEFAULT=	CUPS GNOME GNOMEVFS MMEDIA PDFIMPORT WIKI_PUBLISHER
+OPTIONS_DEFINE=		CRASHDUMP CUPS DBGUTIL DEBUG GNOME GNOMEVFS MMEDIA \
+			MYSQL PDFIMPORT REPORT_BUILDER SDK WIKI_PUBLISHER
+OPTIONS_DEFAULT=	CUPS GNOME MMEDIA PDFIMPORT WIKI_PUBLISHER
+CRASHDUMP_DESC=		Enable crashdumps, sets WITH_DEBUG
+DBGUTIL_DESC=		Enable assertions, object counting. (non-production)
+DEBUG_DESC=		Compile with -O0, sets WITH_DEBUG
 GNOME_DESC=		GConf + screensaver presentation control via DBUS
-GNOMEVFS_DESC=		GNOME Virtual File System
+GNOMEVFS_DESC=		Use GNOME Virtual File System instead of gio
 MMEDIA_DESC=		Multimedia backend for impress
 MYSQL_DESCR=		Build MySQL Connector extension
 PDFIMPORT_DESC=		Build and install PDF import extension
 REPORT_BUILDER_DESC=	Build and install Report builder extension (Broken)
 SDK_DESC=		Build and install software development kit
 WIKI_PUBLISHER_DESC=	Build and install Wiki Publisher extension
-CCACHE_DESC=		Mimimize compile time of C/C++ programs
+
+CRASHDUMP_CONFIGURE_ENABLE=	crashdump
+CRASHDUMP_VARS=			WITH_DEBUG=yes
 
 CUPS_CONFIGURE_ENABLE=		cups
 CUPS_LIB_DEPENDS=		libcups.so:print/cups
+
+DBGUTIL_CONFIGURE_ENABLE=	dbgutil
+
+DEBUG_CONFIGURE_ENABLE=		debug
 
 GNOME_CONFIGURE_ENABLE=		dbus gconf lockdown
 GNOME_LIB_DEPENDS=		libdbus-1.so:devel/dbus \
@@ -183,6 +195,7 @@ MYSQL_LIB_DEPENDS=		libmysqlcppconn.so:databases/mysql-connector-c++
 MYSQL_USES=			mysql
 
 SDK_CONFIGURE_ENABLE=		odk
+SDK_DISTFILES=			unowinreg.dll:unoreg
 
 PDFIMPORT_CONFIGURE_ENABLE=	pdfimport
 PDFIMPORT_CONFIGURE_WITH=	system-poppler
@@ -208,6 +221,10 @@ WIKI_PUBLISHER_RUN_DEPENDS=	${WIKI_PUBLISHER_JAR_DEPENDS}
 TARGET_ORDER_OVERRIDE=	710:gnome-post-icons
 
 .include <bsd.port.pre.mk>
+
+.if defined(WITH_DEBUG)
+CONFIGURE_ARGS+=	--enable-symbols
+.endif
 
 .if ${PORT_OPTIONS:MREPORT_BUILDER} || ${PORT_OPTIONS:MWIKI_PUBLISHER}
 BUILD_DEPENDS+=	${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging
@@ -240,18 +257,7 @@ PACKAGE_PREFIX=		Apache_OpenOffice
 
 LOCALIZED_LANG?=	en-US
 
-.if ${PORT_OPTIONS:MCCACHE} || defined(WITH_CCACHE)
-BUILD_DEPENDS+=	ccache:devel/ccache
-CCACHE_PREFIX=	ccache
-AOOCC=		${CCACHE_PREFIX} ${CC}
-AOOCXX=		${CCACHE_PREFIX} ${CXX}
-.else
-AOOCC=		${CC}
-AOOCXX=		${CXX}
-.endif
-
-CONFIGURE_ENV+=	CC="${AOOCC}" CXX="${AOOCXX}"		\
-		PATH=${WRKSRC}/solenv/bin:$$PATH
+AOO_MAKE_ENV=	${MAKE_ENV:NCPPFLAGS=*:NCFLAGS=*:NCXXFLAGS=*}
 
 GNU_CONFIGURE=	yes
 WRKSUBDIR=	${WRKDIR}/aoo-${AOOVERSION}
@@ -263,6 +269,7 @@ SUB_LIST=	EXECBASE=${EXECBASE} AOOTAG=${AOOTAG} AOOUDIR=${AOOUDIR} \
 CONFIGURE_ARGS+=							\
 			--with-unix-wrapper=${EXECBASE}			\
 			--with-alloc=system				\
+			--with-ant-home=${LOCALBASE}/share/java/apache-ant \
 			--with-system-apache-commons=yes		\
 			--with-commons-lang-jar=${JAVALIBDIR}/commons-lang3.jar \
 			--with-system-apr				\
@@ -274,7 +281,6 @@ CONFIGURE_ARGS+=							\
 			--with-system-cairo --enable-cairo		\
 			--with-system-coinmp				\
 			--with-system-curl				\
-			--enable-crashdump				\
 			--with-system-dicts				\
 			--with-epm=${LOCALBASE}/bin/epm			\
 			--with-system-expat				\
@@ -288,6 +294,7 @@ CONFIGURE_ARGS+=							\
 			--with-external-dict-dir=${LOCALBASE}/share/hunspell \
 			--with-system-hyphen				\
 			--with-external-hyph-dir=${LOCALBASE}/share/hyphen \
+			--with-jdk-home=${JAVA_HOME}			\
 			--with-system-jpeg				\
 			--with-junit=${JAVALIBDIR}/junit.jar		\
 			--with-system-libtextcat			\
@@ -338,9 +345,11 @@ pre-everything::
 	${TOUCH} ${BUILD_COOKIE}
 .endif
 
+do-extract-SDK-on:
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/unowinreg.dll ${WRKSRC}/external/unowinreg/
+
 post-extract:
 	${TAR} -C ${WRKSUBDIR} -xzf ${DISTDIR}/${DIST_SUBDIR}/${EXTSRC}
-	${CP} ${DISTDIR}/${DIST_SUBDIR}/unowinreg.dll ${WRKSRC}/external/unowinreg/
 	${CP} ${FILESDIR}/freebsd-aoo-intro-developer.png \
 		${WRKSRC}/default_images/introabout/intro.png
 	${CP} ${FILESDIR}/freebsd-aoo-about-developer.png \
@@ -362,18 +371,20 @@ post-extract:
 		-e d  ${WRKSRC}/LICENSE > ${LICENSE_FILE_BSL}
 	${SED}  -e '\|^For main/i18npool/source/breakiterator|,/^__/p'	\
 		-e d  ${WRKSRC}/LICENSE > ${LICENSE_FILE_ICU}
-	${SED}  -e '\|^For Multi-Dimensional Data|,/^__/p'	\
+	${SED}  -e '\|^For Multi-Dimensional Data|,/^__/p'		\
 		-e '\|^For XSLT MathML Library|,/^__/p'			\
 		-e d  ${WRKSRC}/LICENSE > ${LICENSE_FILE_MIT}
-	${SED}  -e '\|^For XMLSec Library|,/^__/p'	\
+	${SED}  -e '\|^For XMLSec Library|,/^__/p'			\
 		-e d  ${WRKSRC}/LICENSE_category_b >> ${LICENSE_FILE_MIT}
-	${SED}  -e '\|^For Graphite|,$$d'	\
+	${SED}  -e '\|^For Saxon|,/^__/p'				\
+		-e d ${WRKSRC}/LICENSE_category_b > ${LICENSE_FILE_MPL10}
+	${SED}  -e '\|^For Saxon|,$$d'					\
 		      ${WRKSRC}/LICENSE_category_b > ${LICENSE_FILE_MPL11}
 	${SED}  -e '\|^For main/filter/source/config/tools/merge/pyAltFCFGMerge|,/^__/p'	\
 		-e d  ${WRKSRC}/LICENSE > ${LICENSE_FILE_PSFL}
-	${SED}  -e '\|^For main/twain|,/^__/p'	\
+	${SED}  -e '\|^For main/twain|,/^__/p'				\
 		-e d  ${WRKSRC}/LICENSE > ${LICENSE_FILE_TWAIN}
-	${SED}  -e '\|^For main/MathMLDTD|,/^__/p'	\
+	${SED}  -e '\|^For main/MathMLDTD|,/^__/p'			\
 		-e d  ${WRKSRC}/LICENSE > ${LICENSE_FILE_W3C}
 
 post-patch:
@@ -442,13 +453,16 @@ do-build:
 	 fi ;								  \
 	fi ;								  \
 	cd ${WRKSRC}/instsetoo_native ;					  \
+	export ${AOO_MAKE_ENV} ;					  \
 	. ../${FREEBSD_ENV_SET} ;					  \
 	build.pl --all -P$${numproc} -- -P$${dmproc}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PRINSTALLATION_BASEDIR} \
 		${STAGEDIR}${PREFIX}/share/mime/packages
-	@cd ${WRKSRC}/instsetoo_native/unxfbsd*.pro/Apache_OpenOffice/archive/install/${LOCALIZED_LANG}/ ; \
+	@cd ${WRKSRC} ; \
+		. ${FREEBSD_ENV_SET} ; \
+		cd instsetoo_native/$${INPATH}/Apache_OpenOffice/archive/install/${LOCALIZED_LANG}/ ; \
 		for i in *.tar.?z ; do \
 			${ECHO_CMD} "extracting $$i" ; \
 			${TAR} -s '|./[^/]*/||' -xz -f $$i \
@@ -472,7 +486,9 @@ do-install:
 	done
 	@${ECHO_CMD} "adding desktop support"
 	@${LN} -sf ${XDGREL} ${STAGEDIR}${DESKTOPDIR}/${EXECBASE}
-	@cd ${WRKSRC}/sysui/unxfbsd*.pro/misc/openoffice ;	\
+	@cd ${WRKSRC} ;						\
+	    . ${FREEBSD_ENV_SET} ;				\
+	    cd sysui/$${INPATH}/misc/openoffice ;		\
 	    DESTDIR=${STAGEDIR}					\
 		GNOMEDIR=${PREFIX}				\
 		ICON_PREFIX=openoffice${AOOVERSION1}		\

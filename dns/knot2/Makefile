@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	knot
-PORTVERSION=	2.5.3
-PORTREVISION=	3
+DISTVERSION=	2.6.5
 CATEGORIES=	dns ipv6
 MASTER_SITES=	https://secure.nic.cz/files/knot-dns/ \
-		http://dns-lab.com/downloads/knot-dns/
+		https://dns.company/downloads/knot-dns/
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	freebsd@dns-lab.com
@@ -15,23 +14,22 @@ COMMENT=	High performance authoritative-only DNS server
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libgnutls.so:security/gnutls \
+		libidn2.so:dns/libidn2 \
 		liblmdb.so:databases/lmdb \
 		libnettle.so:security/nettle \
 		liburcu.so:sysutils/liburcu
 
 CONFLICTS=	knot-1.* knot1-[0-6].*
 
-USES=		autoreconf alias compiler:c11 libedit libtool localbase pkgconfig python shebangfix tar:xz
-SHEBANG_FILES=	src/utils/pykeymgr/pykeymgr.in
-USE_LDCONFIG=	yes
+USES=		alias compiler:c11 libedit libtool localbase ncurses pkgconfig python shebangfix tar:xz
 GNU_CONFIGURE=	yes
+SHEBANG_FILES=	src/utils/pykeymgr/pykeymgr.in
 CONFIGURE_ARGS=	--with-rundir=/var/run/knot \
 		--with-storage=/var/db/knot \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--enable-recvmmsg=no
-
+USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
-
 USE_RC_SUBR=	${PORTNAME}
 SUB_FILES=	pkg-message
 
@@ -45,6 +43,7 @@ OPTIONS_DEFINE=			DNSTAP FASTPARSER IDN
 
 DNSTAP_DESC=			dnstap support (see dnstap.info)
 DNSTAP_CONFIGURE_ENABLE=	dnstap
+DNSTAP_CONFIGURE_WITH=		module-dnstap=yes
 DNSTAP_LIB_DEPENDS=		libprotobuf-c.so:devel/protobuf-c \
 				libfstrm.so:devel/fstrm
 # XXX: because `kdig_CPPFLAGS += $(DNSTAP_CFLAGS)' line is missing from
@@ -60,16 +59,6 @@ FASTPARSER_CONFIGURE_ENABLE=	fastparser
 IDN_CONFIGURE_WITH=		libidn
 IDN_LIB_DEPENDS=		libidn.so:dns/libidn
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386"
-CPUTYPE=	i686
-CFLAGS+=	-march=i686
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100000
-USE_GCC=	yes
-.endif
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} 's|$$(INSTALL) -d $$(DESTDIR)/\@run_dir\@|#$$(INSTALL) -d $$(DESTDIR)/\@run_dir\@|' \
 		${WRKSRC}/src/Makefile.in
@@ -83,4 +72,4 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}/
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -13,7 +13,7 @@ LICENSE=	GPLv2
 
 BUILD_DEPENDS=	gawk:lang/gawk
 
-CONFLICTS=	openbgpd openospfd zebra quagga-re frr
+CONFLICTS=	openbgpd openospfd zebra quagga-esr frr pimd
 
 USES=		compiler:c11 cpe gmake libtool makeinfo \
 		perl5 readline ssl

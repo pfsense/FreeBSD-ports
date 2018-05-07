@@ -3,7 +3,7 @@
 
 PORTNAME=	childsplay
 PORTVERSION=	2.6.5
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 
@@ -13,13 +13,13 @@ COMMENT=	Educative games for children
 LICENSE=	GPLv3 # only
 LICENSE_FILE=	${WRKSRC}/gpl-3.0.txt
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy10>0:databases/py-sqlalchemy10 \
-		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy10>0:databases/py-sqlalchemy10@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}
 
 NO_BUILD=	yes
 
-USES=		gettext shebangfix tar:tgz python:2
+USES=		gettext shebangfix tar:tgz python:2.7
 USE_GNOME=	pygtk2
 
 SHEBANG_FILES=	childsplay.py

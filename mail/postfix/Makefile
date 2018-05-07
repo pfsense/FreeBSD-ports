@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	postfix
-PORTVERSION=	3.2.3
-PORTREVISION?=	0
+PORTVERSION=	3.3.0
+PORTREVISION?=	1
 PORTEPOCH=	1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.porcupine.org/mirrors/postfix-release/ \
@@ -18,14 +18,13 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	ohauer@FreeBSD.org
 COMMENT=	Secure alternative to widely-used Sendmail
 
-LICENSE=	IPL10
-LICENSE_NAME=	IBM PUBLIC LICENSE VERSION 1.0
+LICENSE=	IPL10 EPL
+LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_NAME_IPL10=	IBM PUBLIC LICENSE VERSION 1.0
+LICENSE_PERMS_IPL10=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libicuuc.so:devel/icu
-
-PORTSCOUT=	limit:^3\.2\.
+PORTSCOUT=	limit:^3\.3\.
 
 CONFLICTS_INSTALL?=	courier-0.* opensmtpd-[0-9]* \
 		sendmail-8.* sendmail+*-8.* smail-3.* zmailer-2.* \
@@ -41,18 +40,20 @@ USE_SUBMAKE=	yes
 SCRIPTS_ENV+=	POSTFIX_DEFAULT_MTA="${POSTFIX_DEFAULT_MTA}"
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	BDB CDB DOCS INST_BASE LDAP LDAP_SASL LMDB MYSQL \
-		NIS PCRE PGSQL SASL SQLITE TEST TLS
+OPTIONS_DEFINE=	BDB BLACKLISTD CDB DOCS EAI INST_BASE LDAP LDAP_SASL \
+		LMDB MYSQL NIS PCRE PGSQL SASL SQLITE TEST TLS
 
 OPTIONS_RADIO=		RG1
 OPTIONS_RADIO_RG1=	SASLKRB5 SASLKMIT
-OPTIONS_DEFAULT=	PCRE TLS
+OPTIONS_DEFAULT=	EAI PCRE TLS
 
 BDB_USES=		bdb
+BLACKLISTD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
 CDB_LIB_DEPENDS=	libcdb.so:databases/tinycdb
+EAI_LIB_DEPENDS=	libicuuc.so:devel/icu
 LDAP_USE=		OPENLDAP=yes
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 PGSQL_USES=		pgsql
 SASLKMIT_LIB_DEPENDS=	libkrb5.so:security/krb5
@@ -60,7 +61,9 @@ SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SQLITE_USES=		sqlite
 TLS_USES=		ssl
 
+BLACKLISTD_DESC=	Enable blacklistd support (FreeBSD 11.0 and later only)
 CDB_DESC=	CDB maps lookups
+EAI_DESC=	Email Address Internationalization (SMTPUTF8) support
 INST_BASE_DESC=	Install into /usr and /etc/postfix
 LDAP_DESC=	LDAP maps (uses WITH_OPENLDAP_VER)
 LDAP_SASL_DESC=	LDAP client-to-server SASL auth
@@ -151,9 +154,12 @@ _REQUIRE=		LOGIN cleanvar dovecot
 POSTFIX_CCARGS+=	-DUSE_SASL_AUTH
 
 # Email Address Internationalization (EAI, RFC 6531..6533)
-# This is now mandantory!
+.if ${PORT_OPTIONS:MEAI}
 POSTFIX_CCARGS+=	-DHAS_EAI -I${LOCALBASE}/include
 POSTFIX_AUXLIBS+=	-L${LOCALBASE}/lib -licuuc
+.else
+POSTFIX_CCARGS+=	-DNO_EAI
+.endif
 
 .if ${PORT_OPTIONS:MPCRE}
 DYN_EXT+=		pcre
@@ -189,6 +195,14 @@ POSTFIX_CCARGS+=	-DNO_TLS
 .if ${PORT_OPTIONS:MBDB}
 POSTFIX_CCARGS+=	-I${BDB_INCLUDE_DIR}
 POSTFIX_AUXLIBS+=	-L${BDB_LIB_DIR} -l${BDB_LIB_NAME}
+.endif
+
+.if ${PORT_OPTIONS:MBLACKLISTD}
+. if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1100122)
+POSTFIX_AUXLIBS+=	-lblacklist
+. else
+IGNORE=	blacklistd is only supported on FreeBSD >= 11.0
+. endif
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
@@ -280,7 +294,7 @@ pre-patch:
 	fi
 .endif
 
-	@${ECHO} '<HTML><BODY>See <A HREF="header_checks.5.html">header_checks.5.html</A></BODY></HTML>' \
+	@${ECHO_CMD} '<HTML><BODY>See <A HREF="header_checks.5.html">header_checks.5.html</A></BODY></HTML>' \
 		> ${WRKSRC}/html/body_checks.5.html
 	@${REINPLACE_CMD} -E -e 's!^(#define DEF_SGID_GROUP[^"]+)"postdrop"$$!\1"maildrop"!' \
 		${WRKSRC}/src/global/mail_params.h
@@ -290,12 +304,12 @@ pre-patch:
 
 post-patch:
 .for f in ${HTML1}
-	@${ECHO} '$$html_directory/$f:f:root:-:644' \
+	@${ECHO_CMD} '$$html_directory/$f:f:root:-:644' \
 		>> ${WRKSRC}/conf/postfix-files
 .endfor
-	@${ECHO} '$$manpage_directory/man1/posttls-finger.1:f:root:-:644' \
+	@${ECHO_CMD} '$$manpage_directory/man1/posttls-finger.1:f:root:-:644' \
 		>> ${WRKSRC}/conf/postfix-files
-	@${ECHO} '$$command_directory/posttls-finger:f:root:-:755' \
+	@${ECHO_CMD} '$$command_directory/posttls-finger:f:root:-:755' \
 		>> ${WRKSRC}/conf/postfix-files
 
 do-configure:
@@ -305,7 +319,7 @@ do-configure:
 	dynamicmaps=yes \
 	${POSTFIX_DYN_AUXLIBS} \
 	AUXLIBS="${POSTFIX_AUXLIBS}" && \
-	${ECHO} "all: default" >> Makefile)
+	${ECHO_CMD} "all: default" >> Makefile)
 
 pre-install-INST_BASE-on:
 	${MKDIR} ${STAGEDIR}/etc/rc.d

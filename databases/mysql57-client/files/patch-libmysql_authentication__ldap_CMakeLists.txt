@@ -1,18 +1,11 @@
---- libmysql/authentication_ldap/CMakeLists.txt.orig	2017-07-20 22:54:16 UTC
+--- libmysql/authentication_ldap/CMakeLists.txt.orig	2018-03-04 13:40:40 UTC
 +++ libmysql/authentication_ldap/CMakeLists.txt
-@@ -52,8 +52,10 @@ ELSE ()
+@@ -54,7 +54,7 @@ ENDIF()
+ IF (CMAKE_SYSTEM_NAME MATCHES "SunOS")
+   SET(SASL_LIBRARY "sasl")
+ ELSEIF(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+-  SET(SASL_LIBRARY "-L/usr/local/lib -R/usr/local/lib -lsasl2")
++  SET(SASL_LIBRARY "-L/usr/local/lib -rpath /usr/local/lib -lsasl2")
+ ELSE()
    SET(SASL_LIBRARY "sasl2")
  ENDIF ()
- 
--MYSQL_ADD_PLUGIN(authentication_ldap_sasl_client
--                 auth_ldap_sasl_client.cc log_client.cc
--                 LINK_LIBRARIES ${SASL_LIBRARY}
--                 MODULE_ONLY
--                 MODULE_OUTPUT_NAME "authentication_ldap_sasl_client")
-+IF (WITH_AUTHENTICATION_LDAP)
-+    MYSQL_ADD_PLUGIN(authentication_ldap_sasl_client
-+                     auth_ldap_sasl_client.cc log_client.cc
-+                     LINK_LIBRARIES ${SASL_LIBRARY}
-+                     MODULE_ONLY
-+                     MODULE_OUTPUT_NAME "authentication_ldap_sasl_client")
-+ENDIF()

@@ -3,7 +3,7 @@
 
 PORTNAME=	dolphin-emu
 PORTVERSION=	5.0
-PORTREVISION=	11
+PORTREVISION=	18
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -22,14 +22,17 @@ LIB_DEPENDS=	libpulse.so:audio/pulseaudio \
 		libswscale.so:multimedia/ffmpeg \
 		libavutil.so:multimedia/ffmpeg \
 		libportaudio.so:audio/portaudio \
- 		liblzo2.so:archivers/lzo2 \
- 		libpng.so:graphics/png \
- 		libSoundTouch.so:audio/soundtouch \
- 		libsfml-system.so:devel/sfml \
+		liblzo2.so:archivers/lzo2 \
+		libpng.so:graphics/png \
+		libSoundTouch.so:audio/soundtouch \
+		libsfml-system.so:devel/sfml \
 		libminiupnpc.so:net/miniupnpc \
- 		libmbedtls.so:security/mbedtls \
+		libmbedtls.so:security/mbedtls \
 		libcurl.so:ftp/curl \
 		libgtest.so:devel/googletest
+
+LLD_UNSAFE=	yes
+USES=		cmake compiler:c++11-lib iconv openal pkgconfig
 
 USE_GITHUB=	yes
 GH_PROJECT=	dolphin
@@ -39,8 +42,6 @@ USE_GNOME=	atk cairo glib20 gdkpixbuf2 gtk20 pango
 USE_SDL=	sdl2
 USE_WX=		3.0+
 USE_XORG=	ice sm x11 xext xi xrandr
-
-USES=		cmake compiler:c++11-lib iconv openal pkgconfig
 
 CMAKE_ARGS+=	-DTRY_X11:BOOL=ON \
 		-DUSE_UPNP:BOOL=ON \

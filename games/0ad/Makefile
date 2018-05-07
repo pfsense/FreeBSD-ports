@@ -2,7 +2,7 @@
 
 PORTNAME=	0ad
 PORTVERSION=	0.0.22
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	http://releases.wildfiregames.com/ \
 		SF/zero-ad/releases
@@ -13,7 +13,6 @@ MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Real-time strategy (RTS) game of ancient warfare
 
 BUILD_DEPENDS=	zip:archivers/zip \
-		python:lang/python \
 		cmake:devel/cmake
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libicui18n.so:devel/icu \
@@ -30,14 +29,16 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-alpha
 BUILD_WRKSRC=	${WRKSRC}/build/workspaces/gcc
 MAKE_ARGS=	config=release
+CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 USES=		compiler:c++11-lib dos2unix gmake iconv jpeg openal:al \
-		pkgconfig tar:xz
+		pkgconfig python:build tar:xz
 USE_GNOME=	libxml2 gtk20
 USE_GL=		gl
 USE_SDL=	sdl2
 USE_XORG=	x11 xcursor
 BUNDLE_LIBS=	yes
 DOS2UNIX_REGEX=	.*\.([ch]p{0,2}|make)
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
 USE_WX=		2.8+
 WX_COMPS=	wx:lib
@@ -45,6 +46,7 @@ MAKE_ENV+=	JOBS=${_MAKE_JOBS}
 
 BROKEN_aarch64=		fails to compile: no member named verifyHeapAccessDisassembly
 BROKEN_armv6=		fails to link: fatal error: conftest: Unknown error: -1
+BROKEN_armv7=		fails to link: fatal error: conftest: Unknown error: -1
 BROKEN_powerpc64=	fails to compile: _psutil_bsd.c: error: 'struct xtcpcb' has no member named 'xt_tp'
 
 PORTDATA=	*

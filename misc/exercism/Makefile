@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	exercism
-PORTVERSION=	2.2.5
+PORTVERSION=	2.4.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	misc
 
@@ -13,8 +13,6 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
 
 USE_GITHUB=	yes
 GH_PROJECT=	cli
-
-STRIP=		# stripping can break go binaries
 
 PLIST_FILES=	bin/exercism
 
@@ -27,7 +25,7 @@ post-patch:
 
 do-build:
 	@(cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT} ; \
-		${SETENV} GO15VENDOREXPERIMENT=1 GOPATH=${WRKSRC} go build -o bin/exercism exercism/main.go)
+		${SETENV} ${MAKE_ENV} GO15VENDOREXPERIMENT=1 GOPATH=${WRKSRC} go build -o bin/exercism exercism/main.go)
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/bin/exercism ${STAGEDIR}${PREFIX}/bin

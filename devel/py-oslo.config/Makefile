@@ -3,6 +3,7 @@
 
 PORTNAME=	oslo.config
 PORTVERSION=	3.22.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,19 +12,20 @@ MAINTAINER=	alexander.nusov@nfvexpress.com
 COMMENT=	Oslo Configuration library
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pbr>=1.6:devel/py-pbr
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}debtcollector>=1.2.0:devel/py-debtcollector \
-		${PYTHON_PKGNAMEPREFIX}rfc3986>=0.3.1:www/py-rfc3986 \
-		${PYTHON_PKGNAMEPREFIX}netaddr>0:net/py-netaddr \
-		${PYTHON_PKGNAMEPREFIX}oslo.i18n>=2.1.0:devel/py-oslo.i18n \
-		${PYTHON_PKGNAMEPREFIX}six>=1.9.0:devel/py-six \
-		${PYTHON_PKGNAMEPREFIX}stevedore>=1.17.1:devel/py-stevedore
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pbr>=1.6:devel/py-pbr@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}debtcollector>=1.2.0:devel/py-debtcollector@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}rfc3986>=0.3.1:www/py-rfc3986@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}netaddr>0:net/py-netaddr@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}oslo.i18n>=2.1.0:devel/py-oslo.i18n@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>=1.9.0:devel/py-six@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}stevedore>=1.17.1:devel/py-stevedore@${FLAVOR}
 
 NO_ARCH=	yes
 
 USES=		python
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist distutils concurrent
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|/etc|${PREFIX}/etc|g" \

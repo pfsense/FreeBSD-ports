@@ -2,18 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	elasticsearch
-PORTVERSION=	2.4.4
+PORTVERSION=	2.4.6
 CATEGORIES=	textproc java devel
 MASTER_SITES=	http://download.elasticsearch.org/${PORTNAME}/${PORTNAME}/ \
 		http://mirrors.rit.edu/zi/
 PKGNAMESUFFIX=	2
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	elastic@FreeBSD.org
 COMMENT=	Full-text search engine for Java
 
 LICENSE=	APACHE20
 
-CONFLICTS=	elasticsearch-[0-9]* elasticsearch5-[0-9]*
+DEPRECATED=	Elastic 2.4 EoL is 2018-02-28
+EXPIRATION_DATE=2018-06-01
+
+CONFLICTS=	elasticsearch-[0-9]* elasticsearch5-[0-9]* elasticsearch6-[0-9]*
 
 USES=		cpe
 NO_ARCH=	yes
@@ -26,7 +29,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-LUCENEVER=	5.5.2
+LUCENEVER=	5.5.4
 CONFIG_FILES=	elasticsearch.yml logging.yml
 BINS=		elasticsearch.in.sh \
 		elasticsearch \
@@ -48,7 +51,7 @@ SUB_LIST=	SEARCHUSER=${SEARCHUSER} \
 		SEARCHGROUP=${SEARCHGROUP} \
 		PORTVERSION=${PORTVERSION}
 SUB_FILES=	pkg-message
-PLIST_SUB=	SEARCHUSER=${SEARCHUSER} \
+PLIST_SUB+=	SEARCHUSER=${SEARCHUSER} \
 		SEARCHGROUP=${SEARCHGROUP} \
 		LUCENEVER=${LUCENEVER} \
 		PORTVERSION=${PORTVERSION} \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	core
-PORTREVISION=	2
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	devel python
 
@@ -13,7 +13,7 @@ CONFIGURE_ARGS=		--enable QtCore
 PYQT_DIST=		yes
 
 USES=			python pyqt:4
-USE_PYTHON=		py3kplist
+USE_PYTHON=		py3kplist flavors
 USE_PYQT=		sip
 USE_QT4=		corelib qmake_build moc_build
 
@@ -24,7 +24,7 @@ OPTIONS_SUB=	yes
 API_DESC=		Install QtCore API for QScintilla2
 API_CONFIGURE_ON=	--qsci-api --qsci-api-destdir=${QSCIDIR}
 API_CONFIGURE_OFF=	--no-qsci-api
-API_LIB_DEPENDS=	libqscintilla2.so:devel/qscintilla2
+API_LIB_DEPENDS=	libqscintilla2_qt4.so:devel/qscintilla2
 DEBUG_CONFIGURE_ON=	--debug --trace
 
 .include <bsd.port.pre.mk>
@@ -43,10 +43,10 @@ post-patch:
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/Qt.py ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PyQt4
 	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
-		-f -d ${PYTHONPREFIX_SITELIBDIR} \
+		-f -d ${PYTHONPREFIX_SITELIBDIR}/PyQt4 \
 		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PyQt4
 	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
-		-f -d ${PYTHONPREFIX_SITELIBDIR} \
+		-f -d ${PYTHONPREFIX_SITELIBDIR}/PyQt4 \
 		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PyQt4
 
 .include <bsd.port.post.mk>

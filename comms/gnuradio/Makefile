@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gnuradio
-PORTVERSION=	3.7.10.1
-PORTREVISION=	8
+PORTVERSION=	3.7.11
+PORTREVISION=	1
 CATEGORIES=	comms astro hamradio
 MASTER_SITES=	http://gnuradio.org/releases/gnuradio/ \
 		LOCAL/db
@@ -12,22 +12,27 @@ COMMENT=	Amateur Radio Software defined radio
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	sdl-config:devel/sdl12 \
-		swig2.0:devel/swig20 \
-		cheetah:devel/py-cheetah \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml \
-		xdg-open:devel/xdg-utils \
-		guile:lang/guile \
-		aconnect:audio/alsa-utils \
-		git:devel/git \
+BROKEN_aarch64=		fails to compile: /usr/lib/clang/5.0.0/include/mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
+BROKEN_armv6=		fails to compile: /usr/lib/clang/5.0.0/include/mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
+BROKEN_armv7=		fails to compile: /usr/lib/clang/5.0.0/include/mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
+
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYNUMPY} \
-		${PYTHON_SITELIBDIR}/ephem/__init__.py:astro/pyephem
+		${PYTHON_SITELIBDIR}/ephem/__init__.py:astro/pyephem@${PY_FLAVOR} \
+		aconnect:audio/alsa-utils \
+		cheetah:devel/py-cheetah@${PY_FLAVOR} \
+		git:devel/git \
+		guile:lang/guile \
+		minixmlto:textproc/minixmlto \
+		sdl-config:devel/sdl12 \
+		swig3.0:devel/swig30 \
+		xdg-open:devel/xdg-utils
 LIB_DEPENDS=	libcppunit.so:devel/cppunit \
 		libcodec2.so:audio/codec2 \
 		libfftw3.so:math/fftw3 \
 		libfftw3f.so:math/fftw3-float \
 		libqwt.so:x11-toolkits/qwt5 \
-		libboost_python.so:devel/boost-python-libs \
+		${PY_BOOST} \
 		libportaudio.so:audio/portaudio \
 		libjack.so:audio/jack \
 		libasound.so:audio/alsa-lib \
@@ -41,16 +46,18 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 # volk/lib/volk_cpu.c: In function 'i_can_has_3dnow':
 # volk/lib/volk_cpu.c:62: error: can't find a register in class 'BREG' while reloading 'asm'
 # volk/lib/volk_cpu.c:62: error: 'asm' operand has impossible constraints
-USES=		cmake:outsource compiler:c11 iconv perl5 pkgconfig pyqt:4 python:2.7 shebangfix
+USES=		cmake:outsource compiler:c11 fortran iconv perl5 pkgconfig pyqt:4 python:2.7 shebangfix
 SHEBANG_FILES=	grc/scripts/freedesktop/grc_setup_freedesktop.in \
 		gnuradio-runtime/python/gnuradio/ctrlport/gr-ctrlport-monitor \
 		gnuradio-runtime/python/gnuradio/ctrlport/gr-perf-monitorx
-CMAKE_ARGS+=	-DSWIG_EXECUTABLE:STRING="${LOCALBASE}/bin/swig2.0"\
-		-DICONV_PREFIX:STRING="${ICONV_PREFIX}" \
-		-DICONV_LIB:STRING="X${ICONV_LIB}" \
+CMAKE_ARGS+=	-DCMAKE_INSTALL_RPATH:STRING="${LOCALBASE}/lib/gcc${_GCC_VER}" \
 		-DENABLE_GR_CTRLPORT="YES" \
+		-DICONV_LIB:STRING="X${ICONV_LIB}" \
+		-DICONV_PREFIX:STRING="${ICONV_PREFIX}" \
 		-DLOCALBASE:STRING="${LOCALBASE}" \
-		-DCMAKE_INSTALL_RPATH:STRING="${LOCALBASE}/lib/gcc${_GCC_VER}"
+		-DPYTHON_EXECUTABLE:STRING="${PYTHON_CMD}" \
+		-DSWIG_EXECUTABLE:STRING="${LOCALBASE}/bin/swig3.0"\
+		-DXMLTO_EXECUTABLE:STRING=minixmlto
 # for detailed debugging uncomment the next line
 #CMAKE_ARGS+=	--debug-output --trace
 MAJOR_SUB_VER=	${PORTVERSION}
@@ -80,16 +87,14 @@ TESTING_DESC=	Include testing support
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen \
-			sphinx-apidoc:textproc/py-sphinx \
+			sphinx-apidoc:textproc/py-sphinx@${PY_FLAVOR} \
 			dot:graphics/graphviz \
 			xmlto:textproc/xmlto \
 			freefont-ttf>0:x11-fonts/freefont-ttf
 DOXYGEN_CMAKE_ON=	-DENABLE_DOXYGEN:STRING="ON" \
-		-DENABLE_DOCS:STRING="ON" \
-		-DENABLE_BAD_BOOST="ON"
+		-DENABLE_DOCS:STRING="ON"
 DOXYGEN_CMAKE_OFF=	-DENABLE_DOXYGEN:STRING="OFF" \
-		-DENABLE_DOCS:STRING="OFF" \
-		-DENABLE_BAD_BOOST="ON"
+		-DENABLE_DOCS:STRING="OFF"
 HAVE_PORTDOCS=	YES
 
 UHD_CMAKE_ON=	-DENABLE_GR_UHD:STRING="ON"

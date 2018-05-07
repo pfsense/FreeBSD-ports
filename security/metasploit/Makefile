@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	metasploit
-PORTVERSION=	4.16.9
+PORTVERSION=	4.16.45
 CATEGORIES=	security
 
 MAINTAINER=	tanawts@gmail.com
@@ -26,8 +26,8 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-metasploit-credential>=0:security/rubygem-metasploit-credential \
 		rubygem-metasploit_data_models>=0:security/rubygem-metasploit_data_models \
 		rubygem-metasploit-model>=0:security/rubygem-metasploit-model \
-		rubygem-metasploit-payloads>=1.3.9:security/rubygem-metasploit-payloads \
-		rubygem-metasploit_payloads-mettle>=0.2.2:security/rubygem-metasploit_payloads-mettle \
+		rubygem-metasploit-payloads>=1.3.31:security/rubygem-metasploit-payloads \
+		rubygem-metasploit_payloads-mettle>=0.3.7:security/rubygem-metasploit_payloads-mettle \
 		rubygem-msgpack1>=0:devel/rubygem-msgpack1 \
 		rubygem-network_interface>=0:net/rubygem-network_interface \
 		rubygem-rubyntlm>=0:net/rubygem-rubyntlm \
@@ -45,7 +45,9 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-bit-struct>=0:devel/rubygem-bit-struct \
 		rubygem-windows_error>=0:devel/rubygem-windows_error \
 		rubygem-pdf-reader>=0:print/rubygem-pdf-reader \
+		rubygem-ruby-macho>=0:devel/rubygem-ruby-macho \
 		rubygem-dnsruby>=0:dns/rubygem-dnsruby \
+		rubygem-mqtt>=0:net/rubygem-mqtt \
 		rubygem-net-ssh>=0:security/rubygem-net-ssh \
 		rubygem-ruby_smb>=0:net/rubygem-ruby_smb \
 		rubygem-rex-arch>=0:security/rubygem-rex-arch \
@@ -74,7 +76,8 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-openvas-omp>=0:security/rubygem-openvas-omp \
 		rubygem-nessus_rest>=0:security/rubygem-nessus_rest \
 		rubygem-nexpose>=0:security/rubygem-nexpose \
-		rubygem-xdr>=0:converters/rubygem-xdr
+		rubygem-xdr>=0:converters/rubygem-xdr \
+		rubygem-faker>=0:devel/rubygem-faker
 
 SCRIPTS=	msfconsole msfd msfrpc msfrpcd msfvenom
 
@@ -86,20 +89,24 @@ NO_ARCH=	yes
 NO_ARCH_IGNORE=	template_x64_bsd.bin template_x86_bsd.bin CVE-2013-2171.bin
 STRIP=
 
-USES=		python shebangfix
+USES=		python:env shebangfix
 USE_RUBY=	yes
-PYTHON_NO_DEPENDS=	yes
-SHEBANG_FILES=	data/exploits/CVE-2017-7494/build.sh \
+SHEBANG_FILES=	data/exploits/CVE-2017-17562/build.sh \
+		data/exploits/CVE-2017-17562/install-deps.sh \
+		data/exploits/CVE-2017-7494/build.sh \
 		data/exploits/CVE-2017-7494/install-deps.sh \
+		docker/entrypoint.sh \
 		external/source/shellcode/windows/build.sh \
 		external/source/msfJavaToolkit/compile.sh \
 		external/source/msfJavaToolkit/testKeytool.rb \
 		external/source/msfJavaToolkit/testCompilation.rb \
 		external/source/metsvc/test.rb \
 		docker/bin/msfvenom \
-		docker/bin/msfvenom-dev \
 		docker/bin/msfconsole \
-		docker/bin/msfconsole-dev \
+		modules/auxiliary/dos/http/slowloris.py \
+		modules/auxiliary/dos/tcp/claymore_dos.py \
+		modules/auxiliary/scanner/ssl/bleichenbacher_oracle.py \
+		modules/auxiliary/scanner/wproxy/att_open_proxy.py \
 		tools/hardware/killerbee_msfrelay \
 		tools/dev/import-dev-keys.sh \
 		tools/dev/sign-dev-keys.sh

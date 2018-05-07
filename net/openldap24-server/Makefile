@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		openldap
-DISTVERSION=		2.4.45
+DISTVERSION=		2.4.46
 PORTREVISION=		${OPENLDAP_PORTREVISION}
 CATEGORIES=		net databases
 MASTER_SITES=		ftp://ftp.OpenLDAP.org/pub/OpenLDAP/%SUBDIR%/ \
@@ -65,9 +65,9 @@ BROKEN=			incompatible OpenLDAP version: ${WANT_OPENLDAP_VER}
 .endif
 
 PORTREVISION_CLIENT=	0
-PORTREVISION_SERVER=	1
+PORTREVISION_SERVER=	2
 OPENLDAP_SHLIB_MAJOR=	2
-OPENLDAP_SHLIB_MINOR=	10.8
+OPENLDAP_SHLIB_MINOR=	10.9
 OPENLDAP_MAJOR=		${DISTVERSION:R}
 
 OPTIONS_DEFINE=		DEBUG FETCH GSSAPI
@@ -85,6 +85,7 @@ OPTIONS_DEFINE+=	UNIQUE VALSORT SMBPWD SHA2 DYNAMIC_BACKENDS SASL
 OPTIONS_DEFINE+=	LMPASSWD
 OPTIONS_DEFINE+=	OUTLOOK
 OPTIONS_DEFINE+=	LASTBIND
+OPTIONS_DEFINE+=	KQUEUE
 
 OPTIONS_DEFAULT=	MDB SYNCPROV DYNAMIC_BACKENDS
 
@@ -130,6 +131,7 @@ LMPASSWD_DESC=		With LM hash password support (DEPRECATED)
 DYNAMIC_BACKENDS_DESC=	Build dynamic backends
 OUTLOOK_DESC=		Force caseIgnoreOrderingMatch on name attribute (experimental)
 LASTBIND_DESC=		With lastbind overlay
+KQUEUE_DESC=		With kqueue support (experimental)
 .endif
 
 .if defined(CLIENT_ONLY)
@@ -156,6 +158,8 @@ BROKEN=			you have USE_OPENLDAP variable defined either in environment or in mak
 .else
 USE_OPENLDAP=		yes
 WANT_OPENLDAP_VER=	24
+
+LIB_DEPENDS+=		libicudata.so:devel/icu
 
 .if ${PORT_OPTIONS:MGSSAPI} && empty(PORT_OPTIONS:MSASL)
 PORT_OPTIONS+=	SASL
@@ -196,8 +200,9 @@ CONFIGURE_ARGS=		--with-threads=posix \
 			--disable-dependency-tracking \
 			--enable-dynamic
 
-# XXX FreeBSD does not implement O_DSYNC and fdatasync at this time.
+.if ${OSVERSION} < 1101000
 CFLAGS+=		-DMDB_DSYNC=O_SYNC -Dfdatasync=fsync
+.endif
 
 .if ${PORT_OPTIONS:MSASL}
 LIB_DEPENDS+=		libsasl2.so:security/cyrus-sasl2
@@ -502,6 +507,11 @@ CONFIGURE_ARGS+=	--enable-wrappers
 EXTRA_PATCHES+=		${FILESDIR}/extrapatch-outlook-servers__slapd__schema_prep.c
 .endif
 
+.if ${PORT_OPTIONS:MKQUEUE}
+BUILD_DEPENDS+=		autoconf>0:devel/autoconf
+EXTRA_PATCHES+=		${FILESDIR}/extrapatch-ITS6300
+.endif
+
 # end of client/server specific configuration
 .endif
 
@@ -525,10 +535,6 @@ PLIST_SUB+=		SHLIB_MINOR=${OPENLDAP_SHLIB_MINOR}
 PLIST_SUB+=		OPENLDAP_MAJOR=${OPENLDAP_MAJOR}
 
 .include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
 
 .if !${PORT_OPTIONS:MFETCH}
 CONFIGURE_ARGS+=	--without-fetch
@@ -555,6 +561,9 @@ pre-configure:
 		${ECHO_CMD} "${PKGNAME}: bind installed with PORT_REPLACES_BASE_BIND causes build problems."; \
 		${FALSE}; \
 	fi
+.if ${PORT_OPTIONS:MKQUEUE}
+	@(cd ${WRKSRC} && ${LOCALBASE}/bin/autoconf)
+.endif
 
 .if !defined(CLIENT_ONLY)
 test: build

@@ -14,6 +14,7 @@ OPTIONS_DEFINE=	WAYLAND
 OPTIONS_SUB=	yes
 
 WAYLAND_DESC=		Enable support for the Wayland platform in EGL
+WAYLAND_BUILD_DEPENDS=	wayland-protocols>=1.8:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 			libwayland-server.so:graphics/wayland
 
@@ -38,7 +39,7 @@ IGNORE=	option WAYLAND is only valid on platforms with LLVM
 .endif
 .endif
 
-MESA_BUILD_WRKSRC=	src/mapi
+MESA_BUILD_WRKSRC=	src/mapi src/util
 MESA_INSTALL_WRKSRC=	src/mapi
 
 .if ${PORT_OPTIONS:MWAYLAND}

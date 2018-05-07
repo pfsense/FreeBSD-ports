@@ -10,7 +10,9 @@ MASTER_SITES=	http://www.magentocommerce.com/downloads/assets/${PORTVERSION}/
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Feature-rich eCommerce platform
 
-USES=		cpe
+IGNORE_WITH_PHP=	70 71 72
+
+USES=		cpe php
 CPE_VENDDOR=	magentocommerce
 USE_PHP=	pdo_mysql hash gd iconv curl dom soap simplexml mcrypt mysql \
 		ctype zlib json
@@ -26,7 +28,7 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 MAGENTODIR?=	www/magento
 
-OAUTH_RUN_DEPENDS=	pecl-oauth>=1.2.3:net/pecl-oauth
+OAUTH_RUN_DEPENDS=	pecl-oauth>=1.2.3:net/pecl-oauth@${PHP_FLAVOR}
 REDIS_USE=	php=redis
 
 # First need to submit the port

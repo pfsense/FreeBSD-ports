@@ -3,7 +3,7 @@
 
 PORTNAME=	ceph
 DISTVERSION=	wip.v2017-08-15-1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 PKGNAMESUFFIX=	-devel
 
@@ -13,6 +13,7 @@ COMMENT=Ceph delivers object, block, and file storage in a unified system
 LICENSE=	GPLv2 LGPL3
 LICENSE_COMB=	dual
 
+BROKEN=		fails to build with boost 1.66, see bug 224185
 # even though i386 will build, it is not really advised.
 ONLY_FOR_ARCHS=	amd64
 IGNORE_FreeBSD_10=	Doesnt build for FreeBSD 10.x
@@ -20,12 +21,11 @@ IGNORE_FreeBSD_10=	Doesnt build for FreeBSD 10.x
 BUILD_DEPENDS=	\
 	yasm:devel/yasm \
 	pkgconf:devel/pkgconf \
-	cython>=0.25.2:lang/cython \
 	sphinx-build:textproc/py-sphinx \
 	${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops \
 	gperf:devel/gperf
 LIB_DEPENDS=	\
-	libboost_python.so:devel/boost-python-libs \
+	${PY_BOOST} \
 	libboost_thread.so:devel/boost-libs \
 	libleveldb.so:databases/leveldb \
 	libldap.so:net/openldap24-client \
@@ -50,6 +50,7 @@ RUN_DEPENDS=	\
 CONFLICTS_INSTALL=	ceph
 
 USES=	gmake cmake:outsource,noninja python:2.7 fuse gettext-runtime shebangfix
+USE_PYTHON=	cython
 USE_GITHUB=	yes
 GH_ACCOUNT=	wjwithagen:DEFAULT
 GH_TUPLE+=	ceph:ceph-erasure-code-corpus:2d7d78b:ceph_erasure_code_corpus/ceph-erasure-code-corpus

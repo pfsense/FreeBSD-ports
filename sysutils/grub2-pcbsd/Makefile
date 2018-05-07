@@ -3,7 +3,7 @@
 
 PORTNAME=	grub2-pcbsd
 PORTVERSION=	2.02q
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.pcbsd.org/~kris/software/ \
 		ftp://ftp.pcbsd.org/pub/software/
@@ -22,9 +22,8 @@ WRKSRC=		${WRKDIR}/grub-2.02
 CONFLICTS=	grub-0* grub2-2*
 SSP_UNSAFE=	yes
 USE_GCC=	yes
-ACLOCAL_ARGS=	-Im4
 GNU_CONFIGURE=	yes
-USES=		autoreconf bison cpe gettext gmake makeinfo python tar:xz
+USES=		autoreconf:build bison cpe gettext gmake makeinfo python tar:xz
 ONLY_FOR_ARCHS=	i386 amd64
 INFO=		grub grub-dev
 MAKE_JOBS_UNSAFE=	yes
@@ -55,7 +54,6 @@ PLIST_SUB+=	EFIEMU=${EFIEMU}
 LIB_DEPENDS+=	libfreetype.so:print/freetype2
 BUILD_DEPENDS+=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu \
 		${LOCALBASE}/share/fonts/gnu-unifont/unifont.pcf.gz:x11-fonts/gnu-unifont
-MAN1+=		grub-mkfont.1
 CONFIGURE_ARGS+=	--enable-grub-mkfont
 .else
 CONFIGURE_ARGS+=	--disable-grub-mkfont

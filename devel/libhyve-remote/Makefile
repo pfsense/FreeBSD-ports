@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	libhyve-remote
-PORTVERSION=	0.1.2
+PORTVERSION=	0.1.4.1
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	araujo@FreeBSD.org
@@ -21,7 +22,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 PLIST_FILES=	${HEADER_FILES} \
 		${LIB_FILES}
 
-HEADER_FILES=	include/libhyverem/hyverem.h 	\
+HEADER_FILES=	include/libhyverem/hyverem.h	\
 		include/libhyverem/rfbsrv.h	\
 		include/libhyverem/libcheck.h	\
 		include/libhyverem/vncserver.h
@@ -33,7 +34,7 @@ LIB_FILES=	lib/libhyverem.so.1	\
 PLIST_DIRS=	${LOCALBASE}/include/libhyverem
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	araujobsd
+GH_ACCOUNT=	freenas
 
 USE_LDCONFIG=	yes
 

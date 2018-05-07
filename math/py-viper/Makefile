@@ -1,18 +1,18 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	viper
 PORTVERSION=	1.0.1
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	https://launchpad.net/fenics-${PORTNAME}/${MMVERSION}.x/${PORTVERSION}/+download/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Minimalistic scientific plotter and visualization module
 
 LICENSE=	LGPL3
 
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 post-patch:

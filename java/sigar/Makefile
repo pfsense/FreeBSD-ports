@@ -3,7 +3,7 @@
 
 PORTNAME=	sigar
 PORTVERSION=	1.7.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	java devel
 PKGNAMEPREFIX=	java-
 
@@ -17,6 +17,7 @@ BUILD_DEPENDS=	${ANT_CMD}:devel/apache-ant
 LIB_DEPENDS=	libsigar.so:devel/sigar
 
 BROKEN_armv6=		fails to compile: jni-build.xml: gcc failed with return code 1
+BROKEN_armv7=		fails to compile: jni-build.xml: gcc failed with return code 1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	amishHammer

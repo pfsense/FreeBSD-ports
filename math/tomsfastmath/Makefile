@@ -2,6 +2,7 @@
 
 PORTNAME=	tomsfastmath
 PORTVERSION=	0.13.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math
 
@@ -17,7 +18,6 @@ USES=		compiler:features gmake tar:bzip2
 USE_GITHUB=	yes
 GH_ACCOUNT=	libtom
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKEFILE=	makefile
 ALL_TARGET=	default
 CFLAGS+=	-fPIC

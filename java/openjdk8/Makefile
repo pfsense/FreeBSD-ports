@@ -2,6 +2,7 @@
 
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER:S/^0//}
+PORTREVISION=	2
 CATEGORIES=	java devel
 MASTER_SITES=	http://download.java.net/openjdk/jdk${JDK_MAJOR_VERSION}/promoted/b${DIST_BUILD_NUMBER}/:jdk \
 		https://adopt-openjdk.ci.cloudbees.com/job/jtreg/${JTREG_JENKINS_BUILD}/artifact/:jtreg \
@@ -29,7 +30,9 @@ PATCHFILES=	patch-8u05-b13.xz \
 		patch-8u112-b16.xz \
 		patch-8u121-b13.xz \
 		patch-8u131-b11.xz \
-		patch-8u144-b01.xz
+		patch-8u144-b01.xz \
+		patch-8u152-b16.xz \
+		patch-8u162-b12.xz
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
@@ -37,36 +40,21 @@ COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	zip:archivers/zip \
+		autoconf>0:devel/autoconf \
 		${LOCALBASE}/include/cups/cups.h:print/cups \
 		bash:shells/bash
 LIB_DEPENDS=	libfreetype.so:print/freetype2
-X11_LIB_DEPENDS= libfontconfig.so:x11-fonts/fontconfig \
-		libgif.so:graphics/giflib
 RUN_DEPENDS=	javavm:java/javavmwrapper \
 		dejavu>0:x11-fonts/dejavu
 
 USES=		compiler:features dos2unix gmake iconv pkgconfig \
 		shebangfix
-USE_AUTOTOOLS=	autoconf
-# Even when not building with X11 support, openjdk8 requires Xrender, X11,
-# Xext, and Xt headers.
-X11_BUILD_DEPENDS_OFF+=	${LOCALBASE}/libdata/pkgconfig/x11.pc:x11/libX11
-X11_BUILD_DEPENDS_OFF+=	${LOCALBASE}/libdata/pkgconfig/xext.pc:x11/libXext
-X11_BUILD_DEPENDS_OFF+=	${LOCALBASE}/libdata/pkgconfig/xrender.pc:x11/libXrender
-X11_BUILD_DEPENDS_OFF+=	${LOCALBASE}/libdata/pkgconfig/xt.pc:x11-toolkits/libXt
-# Add more X11 build deps and runtime deps when X11 is enabled
-X11_LIB_DEPENDS+=	libX11.so.6:x11/libX11
-X11_LIB_DEPENDS+=	libXext.so.6:x11/libXext
-X11_LIB_DEPENDS+=	libXi.so.6:x11/libXi
-X11_LIB_DEPENDS+=	libXrender.so.1:x11/libXrender
-X11_LIB_DEPENDS+=	libXt.so.6:x11-toolkits/libXt
-X11_LIB_DEPENDS+=	libXtst.so.6:x11/libXtst
 
 .if !exists(/usr/bin/unzip)
 BUILD_DEPENDS+=	${UNZIP_CMD}:archivers/unzip
 .endif
 
-ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386 powerpc powerpc64
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 DOS2UNIX_FILES= jdk/src/bsd/doc/man/appletviewer.1 \
@@ -201,11 +189,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 MAKE_ENV=	CLASSPATH="" JAVA_HOME="" LD_LIBRARY_PATH=""
 MAKE_ENV+=	IGNORE_OLD_CONFIG=true
 MAKE_ENV+=	COMPILER_WARNINGS_FATAL="false"
-# openjdk8 normally sets X_CFLAGS in the ./configure script, but it won't do
-# that if you say --disable-headful, even though it still needs some X headers.
-# Set it here instead.
-X11_MAKE_ENV_OFF=	MAKEFLAGS="X_CFLAGS=-I${LOCALBASE}/include" \
-			BUILD_HEADLESS_ONLY=1
 
 JDK_BUILDDIR=	${WRKSRC}/build/${JDK_OSARCH}-normal-${JDK_BUILD_JVM}-${JDK_BUILD_TYPE}
 .if !defined(BUILD_JRE)
@@ -222,13 +205,14 @@ NO_CCACHE=		yes
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	144
-JDK_BUILD_NUMBER=	01
+JDK_UPDATE_VERSION=	162
+JDK_BUILD_NUMBER=	12
 DIST_BUILD_NUMBER=	132
 JTREG_VERSION=		4.1
 JTREG_BUILD_NUMBER=	b08
 JTREG_JENKINS_BUILD=	77
 
+GNU_CONFIGURE=		yes
 CONFIGURE_ARGS=		--with-boot-jdk=${BOOTSTRAPJDKDIR}
 CONFIGURE_ARGS+=	--with-build-number="b${JDK_BUILD_NUMBER}"
 .if ${JDK_UPDATE_VERSION} > 0
@@ -247,14 +231,10 @@ CONFIGURE_ARGS+=	--disable-ccache \
 			--with-milestone=fcs \
 			--with-package-path=${LOCALBASE} \
 			--with-zlib=system
-X11_CONFIGURE_ON=	--with-giflib=system \
-			--x-libraries=${LOCALBASE}/lib \
-			--x-includes=${LOCALBASE}/include
-X11_CONFIGURE_OFF=	--disable-headful
 CONFIGURE_SCRIPT=	../../configure
 CONFIGURE_WRKSRC=	${WRKSRC}/common/autoconf
 
-OPTIONS_DEFINE=		ALSA POLICY TZUPDATE X11
+OPTIONS_DEFINE=		ALSA POLICY TZUPDATE X11 FONTCONFIG
 OPTIONS_DEFINE_armv6=	FPUHACK
 OPTIONS_DEFINE_armv7=	FPUHACK
 OPTIONS_DEFAULT=	ALSA POLICY TZUPDATE X11
@@ -270,6 +250,21 @@ ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 FPUHACK_EXTRA_PATCHES=	${PATCHDIR}/fpuhack.patch
 POLICY_CONFIGURE_ENABLE=	unlimited-crypto
 TZUPDATE_RUN_DEPENDS=	java-zoneinfo>0:java/java-zoneinfo
+X11_BUILD_DEPENDS_OFF=	${LOCALBASE}/include/X11/Xlib.h:x11/libX11 \
+			${LOCALBASE}/include/X11/extensions/Xdbe.h:x11/libXext \
+			${LOCALBASE}/include/X11/extensions/Xrender.h:x11/libXrender \
+			${LOCALBASE}/include/X11/Intrinsic.h:x11-toolkits/libXt
+X11_CONFIGURE_OFF=	--disable-headful
+X11_CONFIGURE_ON=	--with-giflib=system \
+			--x-includes=${LOCALBASE}/include \
+			--x-libraries=${LOCALBASE}/lib
+X11_LIB_DEPENDS=	libgif.so:graphics/giflib \
+			libfontconfig.so:x11-fonts/fontconfig
+X11_MAKE_ENV_OFF=	BUILD_HEADLESS_ONLY=1 \
+			MAKEFLAGS=X_CFLAGS="-I${LOCALBASE}/include"
+X11_MAKE_ENV_ON=	MAKEFLAGS=""
+X11_USE=		XORG=x11,xext,xi,xrender,xt,xtst
+FONTCONFIG_IMPLIES=	X11
 
 JAVAVMS_COMMENT=	OpenJDK${JDK_MAJOR_VERSION}
 
@@ -301,8 +296,6 @@ JAVAVMS_COMMENT+=	JRE
 JDK_BUILD_TYPE=		release
 .endif
 
-AUTOCONF_ARGS=	-I . -o generated-configure.sh generated-configure.ac
-
 # XXX configure script rejects CC/CPP/CXX with absolute paths.
 .for t in CC CPP CXX
 .if defined(${t}) && ${${t}:M/*}
@@ -314,6 +307,8 @@ TOOLS_DIR+=	${${t}:S|/${BUILD_${t}}$||}
 .if defined(TOOLS_DIR)
 CONFIGURE_ARGS+=	--with-tools-dir="${TOOLS_DIR:u:S/ /:/g}"
 .endif
+
+.include <bsd.port.pre.mk>
 
 BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk8 \
 		${LOCALBASE}/openjdk7 \
@@ -332,12 +327,16 @@ BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk8
 BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk8
 .endif
 
-.include <bsd.port.pre.mk>
-
 .if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386
 # XXX We must limit max heap size for 32-bit targets.
 CONFIGURE_ARGS+=	--with-boot-jdk-jvmargs="-Xmx768m"
 MAKE_ENV+=	JAVADOC_CMD_MEM="-Xmx768m"
+.endif
+
+.if ${ARCH} == i386
+# Fix the build for i386 when WITH_LLD_IS_LD is set
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=225741
+MAKE_ENV+=	LFLAGS="-Wl,-z,notext"
 .endif
 
 .if ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == powerpc64
@@ -386,6 +385,9 @@ post-extract:
 post-extract-TEST-on:
 	@${LN} -sf ${WRKDIR}/jtreg/linux/bin ${WRKDIR}/jtreg/
 
+do-patch-FONTCONFIG-on:
+	@${PATCH} -d ${PATCH_WRKSRC} < ${PATCHDIR}/fontconfig.patch
+
 post-patch:
 	@${FIND} ${WRKSRC} -name '*.orig' -delete
 	@${RMDIR} ${WRKSRC}/jdk/src/macosx/classes/java/net \
@@ -398,6 +400,7 @@ post-patch:
 	    -e 's|%%OBJCOPY%%|${OBJCOPY}|' \
 	    ${WRKSRC}/configure \
 	    ${WRKSRC}/common/autoconf/toolchain.m4 \
+	    ${WRKSRC}/jdk/make/lib/Awt2dLibraries.gmk \
 	    ${WRKSRC}/jdk/src/share/classes/com/sun/java/swing/plaf/gtk/Metacity.java \
 	    ${WRKSRC}/jdk/src/share/classes/sun/print/PSPrinterJob.java \
 	    ${WRKSRC}/jdk/src/solaris/classes/sun/nio/fs/BsdFileSystemProvider.java
@@ -418,11 +421,6 @@ post-patch:
 post-patch-ALSA-off:
 	@${REINPLACE_CMD} '/EXTRA_SOUND_JNI_LIBS += jsoundalsa/d' \
 		${WRKSRC}/jdk/make/lib/SoundLibraries.gmk
-
-pre-configure:
-	@cd ${CONFIGURE_WRKSRC} && \
-	${SED} -e "s|@DATE_WHEN_GENERATED@|$$(date +%s)|" configure.ac > \
-	    generated-configure.ac
 
 post-build:
 .if !defined(BUILD_JRE)

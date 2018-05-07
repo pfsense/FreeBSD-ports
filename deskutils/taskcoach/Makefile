@@ -7,16 +7,16 @@ CATEGORIES=	deskutils python
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Release-${PORTVERSION}
 DISTNAME=	TaskCoach-${PORTVERSION}
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Friendly task manager
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${FLAVOR}
 
 NO_ARCH=	yes
-USES=		python shebangfix
+USES=		python:2.7 shebangfix
 USE_PYTHON=	distutils
 PYDISTUTILS_EGGINFO=${DISTNAME}-py${PYTHON_VER}.egg-info
 USE_WX=		3.0+

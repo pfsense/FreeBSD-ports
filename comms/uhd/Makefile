@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	uhd
-PORTVERSION=	3.10.1.1
-PORTREVISION=	4
+PORTVERSION=	3.10.3.0
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://files.ettus.com/binaries/images/
 DISTFILES=	${IMAGE_FILE}
@@ -11,28 +11,31 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Ettus Research UHD driver framework
 
-LIB_DEPENDS=	libboost_python.so:devel/boost-python-libs
+LIB_DEPENDS=	${PY_BOOST} \
+		libboost_system.so:devel/boost-libs
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/tuple/tuple.hpp:devel/boost-libs \
-		cheetah-analyze:devel/py-cheetah \
+		cheetah-analyze:devel/py-cheetah@${PY_FLAVOR} \
 		rst2html:textproc/py-docutils \
 		orcc:devel/orc \
-		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako
+		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
 
 USE_GITHUB=     yes
 GH_ACCOUNT=     EttusResearch
-GH_TAGNAME=     c705922a08e32c8b0ec7ef6af6137835f87b2f42
+GH_TAGNAME=     ef1576780bc927b8611640091b15f3d051cb97ad
 
 CONFLICTS=	usrp-[0-9]*
 
 BROKEN_powerpc64=	fails to link: undefined reference to boost function
 
-USES=		compiler:c++0x cmake:outsource ncurses pkgconfig \
+USES=		compiler:c++11-lib cmake:outsource ncurses pkgconfig \
 		dos2unix python:2.7 shebangfix
 USE_LDCONFIG=		yes
 CMAKE_SOURCE_PATH=	${WRKSRC}/host
 #MAKE_JOBS_UNSAFE=	yes
-CXXFLAGS_amd64=	-msse2
-CXXFLAGS_i386=	-msse2
+#CXXFLAGS_amd64=	-msse2 -std=c++11
+#CXXFLAGS_i386=	-msse2 -std=c++11
+CXXFLAGS_amd64=	-msse2 -std=c++98
+CXXFLAGS_i386=	-msse2 -std=c++98
 
 SHEBANG_GLOB=	*.py *.py.in
 
@@ -40,7 +43,7 @@ CMAKE_ARGS+=	-DPKG_LIB_DIR:STRING="share/uhd" -DUHD_TXRX_DEBUG_PRINTS="yes"
 # for excruciating debug use this -db
 #CMAKE_ARGS+=	--debug-output --trace
 
-IMAGE_FILE=	uhd-images_003.010.001.001-release.zip
+IMAGE_FILE=	uhd-images_003.010.003.000-release.zip
 
 OPTIONS_DEFINE= DOXYGEN
 #OPTIONS_DEFAULT= DOXYGEN

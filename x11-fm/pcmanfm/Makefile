@@ -6,14 +6,14 @@ PORTVERSION=	1.2.5
 CATEGORIES=	x11-fm
 MASTER_SITES=	SF/${PORTNAME}/PCManFM%20%2B%20Libfm%20%28tarball%20release%29/PCManFM/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	PCMan File Manager
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libfm-gtk.so:x11/libfm \
-	libfontconfig.so:x11-fonts/fontconfig \
-	libfreetype.so:print/freetype2
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
 
 USES=		desktop-file-utils gettext gmake libtool localbase pkgconfig \
 		tar:xz

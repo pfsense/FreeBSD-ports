@@ -9,6 +9,7 @@
     SUBDIR += adwaita-icon-theme
     SUBDIR += adwaita-qt4
     SUBDIR += adwaita-qt5
+    SUBDIR += arc-gruvbox-theme
     SUBDIR += audacious-skins
     SUBDIR += beastie
     SUBDIR += claws-mail-themes
@@ -109,21 +110,21 @@
     SUBDIR += kde-icons-noia
     SUBDIR += kde-icons-nuovext2
     SUBDIR += kde-icons-nuvola
-    SUBDIR += kde4-base-artwork
+    SUBDIR += kde-base-artwork-kde4
+    SUBDIR += kde-wallpapers-kde4
     SUBDIR += kde4-style-bespin
     SUBDIR += kde4-style-nitrogen
     SUBDIR += kde4-style-oxygen-transparent
     SUBDIR += kde4-style-polyester
     SUBDIR += kde4-style-skulpture
-    SUBDIR += kde4-wallpapers
-    SUBDIR += kde4-wallpapers-freebsd
     SUBDIR += kde4-windeco-crystal
     SUBDIR += kde4-windeco-dekorator
-    SUBDIR += kdeartwork4
+    SUBDIR += kdeartwork-kde4
     SUBDIR += kf5-breeze-icons
     SUBDIR += kf5-kemoticons
     SUBDIR += kf5-kiconthemes
     SUBDIR += kf5-oxygen-icons5
+    SUBDIR += lumina-themes
     SUBDIR += lxappearance
     SUBDIR += lxde-icon-theme
     SUBDIR += mate-backgrounds
@@ -145,6 +146,7 @@
     SUBDIR += murrine-configurator
     SUBDIR += nimbus
     SUBDIR += numix-theme
+    SUBDIR += openbox-arc-theme
     SUBDIR += openbox-themes
     SUBDIR += plank-theme-moka
     SUBDIR += qt4-style-Kvantum
@@ -156,16 +158,21 @@
     SUBDIR += qtcurve
     SUBDIR += qtcurve-gtk2
     SUBDIR += qtcurve-kde4
+    SUBDIR += qtcurve-kf5
     SUBDIR += qtcurve-qt4
     SUBDIR += qtcurve-qt5
     SUBDIR += qtcurve-utils
     SUBDIR += rezlooks
     SUBDIR += sawfish-themes
     SUBDIR += sddm-freebsd-black-theme
+    SUBDIR += slim-freebsd-black-theme
+    SUBDIR += slim-freebsd-themes
     SUBDIR += slim-themes
     SUBDIR += thewidgetfactory
     SUBDIR += ubuntulooks
+    SUBDIR += wallpapers-freebsd-kde4
     SUBDIR += xcursor-themes
+    SUBDIR += xfce-evolution
     SUBDIR += xfce-icons-elementary
 
 .include <bsd.port.subdir.mk>

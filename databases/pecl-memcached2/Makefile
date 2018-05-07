@@ -5,7 +5,6 @@ PORTNAME=	memcached
 PORTVERSION=	2.2.0
 PORTREVISION=	5
 CATEGORIES=	databases
-PKGNAMESUFFIX=	2
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP extension for interfacing with memcached via libmemcached library
@@ -22,7 +21,7 @@ IGBINARY_DESC=	Binary serializer support
 PORTSCOUT=	limit:^2\.
 
 CONFIGURE_ARGS=	--with-libmemcached-dir=${LOCALBASE}
-IGNORE_WITH_PHP=70 71
+IGNORE_WITH_PHP=70 71 72
 USE_PHP=	json:build session:build
 USES=		php:pecl pkgconfig
 

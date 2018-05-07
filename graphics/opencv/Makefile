@@ -3,7 +3,7 @@
 
 PORTNAME?=	opencv
 PORTVERSION=	2.4.13.1
-PORTREVISION?=	7
+PORTREVISION?=	9
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org
@@ -48,6 +48,7 @@ OPTIONS_GROUP_PERFORMANCE=	EIGEN3 TBB
 OPTIONS_GROUP_SIMD=	${OPTIONS_GROUP_SIMD_${MACHINE_ARCH}}
 OPTIONS_GROUP_SIMD_amd64=	${OPTIONS_GROUP_SIMD_i386}
 OPTIONS_GROUP_SIMD_armv6=	NEON VFPV3
+#OPTIONS_GROUP_SIMD_armv7=	NEON VFPV3
 OPTIONS_GROUP_SIMD_i386=	SSE SSE2 SSE3 SSSE3 SSE41 SSE42 AVX AVX2
 OPTIONS_GROUP_VIDEO=	FFMPEG GSTREAMER GSTREAMER0 V4L XINE
 OPTIONS_RADIO=		GUI
@@ -64,7 +65,7 @@ DC1394_LIB_DEPENDS=	libdc1394.so:multimedia/libdc1394
 DC1394_CMAKE_BOOL=	WITH_1394
 
 EIGEN3_DESC=		Eigen 3 support
-EIGEN3_BUILD_DEPENDS=	${LOCALBASE}/include/eigen3/Eigen/Eigen:math/eigen3
+EIGEN3_USES=		eigen:3
 EIGEN3_CMAKE_BOOL=	WITH_EIGEN
 
 . if !defined(OCV_SLAVE)
@@ -140,7 +141,8 @@ CMAKE_ARGS+=	-DBUILD_opencv_${module}:BOOL=Off
 LIB_DEPENDS+=	libopencv_legacy.so:graphics/opencv
 BUILD_DEPENDS+=	${PYNUMPY}
 RUN_DEPENDS+=	${PYNUMPY}
-USES+=		python:2.7
+USES+=		fortran python:2.7
+USE_PYTHON=	flavors
 CMAKE_ARGS+=	-DBUILD_opencv_python:BOOL=On
 . for module in apps java stitching superres videostab
 CMAKE_ARGS+=	-DBUILD_opencv_${module}:BOOL=Off
@@ -149,7 +151,7 @@ INSTALL_WRKSRC=	${WRKSRC}/modules/python
 .elif defined(OCV_JAVA)
 BUILD_DEPENDS+=	ant:devel/apache-ant
 LIB_DEPENDS+=	libopencv_legacy.so:graphics/opencv
-USES+=		python:build
+USES+=		python:2.7,build
 USE_JAVA=	yes
 CMAKE_ARGS+=	-DBUILD_opencv_java:BOOL=On
 . for module in apps python stitching superres videostab

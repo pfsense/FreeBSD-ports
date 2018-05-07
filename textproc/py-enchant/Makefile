@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	enchant
-PORTVERSION=	1.6.11
+PORTVERSION=	2.0.0
 CATEGORIES=	textproc devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,18 +20,20 @@ OPTIONS_DEFINE=	WX
 OPTIONS_DEFAULT=WX
 WX_DESC=	Provide a wxSpellCheckerDialog
 OPTIONS_SUB=	yes
+.if ${FLAVOR:U:Mpy3*}
+OPTIONS_EXCLUDE=	WX
+.endif
 
 USES=		python
-USE_PYTHON=	distutils
+USE_PYTHON=	distutils py3kplist
+NO_ARCH=	yes
 
 WX_USE=		WX=3.0+
 WX_VARS=	WX_COMPS=python:run
 
 PLIST_SUB+=	VER=${PORTVERSION}
 
-LDFLAGS+=	-L${LOCALBASE}/lib
-
 post-install-WX-off:
-	${RM] ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/checker/wxSpellCheckerDialog*
+	${RM} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/checker/wxSpellCheckerDialog*
 
 .include <bsd.port.mk>

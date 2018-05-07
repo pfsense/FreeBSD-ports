@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	google-compute-engine
-PORTVERSION=	2.4.1
-PORTREVISION=	2
+DISTVERSION=	2.7.6
+PORTREVISION=	1
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,13 +13,15 @@ COMMENT=	Guest Environment for Google Compute Engine
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto>0:devel/py-boto \
-		${PYTHON_PKGNAMEPREFIX}netaddr>0:net/py-netaddr \
-		${PYTHON_PKGNAMEPREFIX}netifaces>0:net/py-netifaces \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto>0:devel/py-boto@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}netaddr>0:net/py-netaddr@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}netifaces>0:net/py-netifaces@${FLAVOR} \
+		google_oslogin_control:sysutils/google-compute-engine-oslogin \
 		sudo:security/sudo
 
 USES=		python
 USE_PYTHON=	autoplist concurrent distutils
+NO_ARCH=	yes
 
 USE_RC_SUBR=	google_instance_setup \
 		google_network_setup \
@@ -28,19 +30,11 @@ USE_RC_SUBR=	google_instance_setup \
 		google_ip_forwarding_daemon \
 		google_startup
 
-NO_ARCH=	yes
-
 SUB_LIST=	PYTHON_CMD="${PYTHON_CMD}"
 REINPLACE_ARGS=	-i ''
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
-		${WRKSRC}/google_compute_engine/accounts/accounts_utils.py \
-		${WRKSRC}/google_compute_engine/boto/boto_config.py \
-		${WRKSRC}/google_compute_engine/boto/compute_auth.py \
-		${WRKSRC}/google_compute_engine/config_manager.py \
-		${WRKSRC}/google_compute_engine/instance_setup/instance_config.py \
-		${WRKSRC}/google_compute_engine/metadata_scripts/script_executor.py \
-		${WRKSRC}/google_compute_engine/network_setup/network_setup.py
+post-install:
+	${INSTALL_DATA} ${FILESDIR}/instance_configs.cfg.distro.sample \
+		${STAGEDIR}${PREFIX}/etc/instance_configs.cfg.distro.sample
 
 .include <bsd.port.mk>

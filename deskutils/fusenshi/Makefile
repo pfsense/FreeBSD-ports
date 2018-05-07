@@ -3,7 +3,7 @@
 
 PORTNAME=	fusenshi
 PORTVERSION=	0.9.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	deskutils
 MASTER_SITES=	http://www.ongs.co.jp/projects/fusenshi/
 
@@ -15,6 +15,7 @@ USE_CXXSTD=	c++11
 USE_GNOME=	gtkmm24 gtksourceview libxml2
 USE_XORG=	x11
 MAKE_JOBS_UNSAFE=	yes
+CXXFLAGS+=	-D_WANT_SEMUN
 
 .ifdef WITHOUT_SSL
 MAKE_ARGS+=	WITHOUT_SSL=yes

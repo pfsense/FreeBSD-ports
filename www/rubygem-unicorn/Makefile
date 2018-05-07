@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	unicorn
-PORTVERSION=	5.3.0
+PORTVERSION=	5.4.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -17,8 +17,10 @@ LICENSE_FILE_RUBY=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	rubygem-kgio>=2.6:devel/rubygem-kgio \
 		rubygem-raindrops>=0.7:www/rubygem-raindrops
 
-USE_RUBY=	yes
+CONFLICTS_INSTALL=	rubygem-unicorn51
+
 USES=		gem shebangfix
+USE_RUBY=	yes
 
 PLIST_FILES=	bin/unicorn bin/unicorn_rails
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	scalapack
 PORTVERSION=	2.0.2
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	math
 MASTER_SITES=	NL
 DISTFILES=	scalapack-${PORTVERSION}.tgz manpages.tgz
@@ -99,6 +99,10 @@ MPICC=	${LOCALBASE}/mpi/openmpi/bin/mpicc
 MPIF77=	${LOCALBASE}/bin/mpif77
 MPICC=	${LOCALBASE}/bin/mpicc
 .endif
+
+# USES=fortran already forces FC to a supported fortran compiler;
+# assume mpicc points to a compatible compiler and force that, too.
+CC=	${MPICC}
 
 pre-configure:
 	${CP} -p ${WRKSRC}/Makefile ${WRKSRC}/Makefile.dist

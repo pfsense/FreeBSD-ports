@@ -3,7 +3,7 @@
 
 PORTNAME=	4stattack
 PORTVERSION=	2.1.4
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	SF/forcedattack/4stAttack/${PORTVERSION}/
 DISTNAME=	4stAttack-${PORTVERSION}
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/GPL
 
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python shebangfix
+USES=		python:2.7 shebangfix
 SHEBANG_FILES=	4stattack.py
 NO_ARCH=	yes
 

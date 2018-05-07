@@ -3,7 +3,7 @@
 
 PORTNAME=	socat
 PORTVERSION=	1.7.3.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.dest-unreach.org/socat/download/ \
 		LOCAL/ehaupt
@@ -33,9 +33,6 @@ READLINE_USES=			readline
 .include <bsd.port.pre.mk>
 
 .if ${SSL_DEFAULT} != base
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 .endif

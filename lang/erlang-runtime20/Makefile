@@ -2,21 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	20.1
+PORTVERSION=	20.3.2
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
-		http://www.csd.uu.se/ftp/mirror/erlang/download/:erlangorg
+		http://www.csd.uu.se/ftp/mirror/erlang/download/:erlangorg \
+		http://olgeni.olgeni.com/~olgeni/distfiles/:local	\
+		LOCAL/olgeni:local
 PKGNAMESUFFIX=	-runtime20
 DISTNAME=	otp_src_${ERL_RELEASE}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:erlangorg	\
-		${ERLANG_MAN}:erlangorg
+		${ERLANG_MAN}:erlangorg			\
+		preloaded-${PORTVERSION}${EXTRACT_SUFX}:local
 DIST_SUBDIR=	erlang
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
 		LOCAL/olgeni
-PATCHFILES=
+PATCHFILES=	patch-otp-20.3.1 patch-otp-20.3.2
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Functional programming language from Ericsson
@@ -49,25 +52,29 @@ WX_DESC=	Enable WX application
 NATIVE_IMPLIES=	HIPE
 
 OPTIONS_DEFAULT=HIPE KQUEUE OPENSSL SCTP SMP THREADS DTRACE
-OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
 
+OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
 OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
-OPTIONS_EXCLUDE_i386=		DTRACE
 # ld(1) fails to link probes: missing __dtrace_erlang___* symbols
 OPTIONS_EXCLUDE_aarch64=	DTRACE
+OPTIONS_EXCLUDE_armv6=		DTRACE
+OPTIONS_EXCLUDE_armv7=		DTRACE
+OPTIONS_EXCLUDE_i386=		DTRACE
 
-ERL_RELEASE=	20.1
+ERL_RELEASE=	20.3
 
 USES=		gmake ncurses perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-APP_UPGRADE=
+APP_UPGRADE=	lib/ssh    4.6.6 4.6.7 \
+		lib/ssl    8.2.4 8.2.5 \
+		lib/stdlib 3.4.4 3.4.5
 
 .include <bsd.port.options.mk>
 
@@ -175,7 +182,7 @@ CONFIGURE_ARGS+=--enable-dirty-schedulers
 MAKE_ARGS+=	ARCH=x86
 .endif
 
-.if ${ARCH} == armv6
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 MAKE_ARGS+=	ARCH=arm
 .endif
 
@@ -192,6 +199,7 @@ pre-configure:
 .if ! ${PORT_OPTIONS:MWX}
 	echo "disabled by port options" > ${WRKSRC}/lib/wx/SKIP
 .endif
+	cd ${WRKSRC} && ${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/preloaded-${PORTVERSION}${EXTRACT_SUFX}
 
 post-configure:
 .if ${PORT_OPTIONS:MODBC}
@@ -244,10 +252,4 @@ post-install:
 		| ${SORT} \
 		>> ${TMPPLIST}
 
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MOPENSSL} && ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

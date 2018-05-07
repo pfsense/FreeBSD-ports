@@ -3,7 +3,7 @@
 
 PORTNAME=	pysycache
 PORTVERSION=	2.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games python
 MASTER_SITES=	http://download.gna.org/py4childs/${PORTNAME}/v${PORTVERSION}/
 DIST_SUBDIR=	${PORTNAME}
@@ -14,9 +14,9 @@ COMMENT=	Educational software made in python
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pygame/__init__.py:devel/py-game
+RUN_DEPENDS=	${PYGAME}
 
-USES=		python shebangfix zip
+USES=		python:2.7 shebangfix zip
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 SUB_FILES=	pkg-message

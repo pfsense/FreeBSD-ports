@@ -3,7 +3,7 @@
 
 PORTNAME=	qemu
 DISTVERSION=	2.6.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	emulators
 MASTER_SITES=	http://wiki.qemu.org/download/
 PKGNAMESUFFIX=	-devel
@@ -14,7 +14,7 @@ COMMENT=	QEMU CPU Emulator - development version
 LICENSE=	GPLv2
 
 HAS_CONFIGURE=	yes
-USES=		cpe gmake pkgconfig bison perl5 python:2,build ssl tar:bzip2
+USES=		cpe gmake pkgconfig bison perl5 python:2.7,build ssl tar:bzip2
 USE_PERL5=	build
 USE_XORG=	pixman
 USE_GNOME+=	cairo glib20

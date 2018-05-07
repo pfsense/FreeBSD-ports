@@ -47,12 +47,11 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		nginx>=0:www/nginx \
 		ntp>=0:net/ntp \
 		openvpn23>=0:security/openvpn23 \
-		pecl-zmq>=0:net/pecl-zmq \
+		php56-pecl-zmq>=0:net/pecl-zmq \
 		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
-		php-suhosin>=0:security/php-suhosin \
-		php-xdebug>=0:devel/php-xdebug \
+		php56-suhosin>=0:security/php-suhosin \
 		php56-pfSense-module>=0:devel/php56-pfSense-module \
 		qstats>=0:sysutils/qstats \
 		radvd>=0:net/radvd \

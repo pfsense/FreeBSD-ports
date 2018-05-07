@@ -24,8 +24,10 @@ mandir = "%MANDIR%"
 # Rust release channel.
 channel = "%CHANNEL%"
 
+[llvm]
+ccache = %CCACHE%
+
 [target.%TARGET%]
-llvm-config = "%LLVM_CONFIG%"
 
 [dist]
 

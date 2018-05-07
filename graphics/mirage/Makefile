@@ -7,12 +7,12 @@ PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}iv
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast and simple image viewer
 
 LICENSE=	GPLv3
 
-USES=		desktop-file-utils gettext python tar:bzip2
+USES=		desktop-file-utils gettext python:2.7 tar:bzip2
 USE_GNOME=	gtk20 pygtk2
 USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	Mirage

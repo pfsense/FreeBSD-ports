@@ -2,8 +2,7 @@
 
 PORTNAME=	icinga2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.7.1
-PORTREVISION=	2
+DISTVERSION=	2.8.2
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	lme@FreeBSD.org
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libyajl.so:devel/yajl
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
-USES=		alias bison cmake libedit
+USES=		alias bison cmake libedit ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga
@@ -27,13 +26,13 @@ USE_LDCONFIG=	yes
 
 USE_RC_SUBR=	${PORTNAME}
 
-OPTIONS_DEFINE=		DOCS
+OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_GROUP=		BACKEND
 OPTIONS_GROUP_BACKEND=	MYSQL PGSQL
 OPTIONS_RADIO=		PLUGINS
 OPTIONS_RADIO_PLUGINS=	MONPLUGINS NAGPLUGINS
 
-OPTIONS_DEFAULT=	MYSQL PGSQL MONPLUGINS
+OPTIONS_DEFAULT=	DOCS MYSQL PGSQL MONPLUGINS
 
 MONPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/monitoring-plugins
 NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios-plugins

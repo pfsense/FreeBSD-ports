@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	doxygen
-PORTVERSION=	1.8.13
+PORTVERSION=	1.8.14
 PORTEPOCH=	2
 CATEGORIES=	devel
 MASTER_SITES=	ftp://ftp.stack.nl/pub/users/dimitri/ \
@@ -15,7 +15,7 @@ COMMENT=	Documentation system for C, C++, and other languages
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		bison cmake:outsource,noninja iconv python:2 shebangfix
+USES=		bison cmake:outsource,noninja iconv python shebangfix
 ALL_TARGET=	all
 CMAKE_ARGS+=	-DDOC_INSTALL_DIR:PATH=${DOCSDIR_REL}
 # Parallel jobs breaks when the DOCS option is on

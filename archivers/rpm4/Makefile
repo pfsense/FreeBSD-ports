@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	rpm
-PORTVERSION=	4.13.0.1
+PORTVERSION=	4.13.1
 CATEGORIES=	archivers
-MASTER_SITES=	http://ftp.rpm.org/releases/rpm-${PORTVERSION:R:R}.x/
+MASTER_SITES=	http://ftp.rpm.org/releases/rpm-${PORTVERSION:R}.x/
 PKGNAMESUFFIX=	4
 
 MAINTAINER=	rodrigo@FreeBSD.org
@@ -15,7 +15,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpopt.so:devel/popt \
 		libnss3.so:security/nss
-BUILD_DEPENDS=	${LOCALBASE}/bin/gsed:textproc/gsed
 
 USES=		alias bdb gmake libarchive libtool lua:51 pathfix pkgconfig \
 		shebangfix tar:bzip2
@@ -50,7 +49,7 @@ PLIST_SUB=	VERSION=${PORTVERSION} \
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	PYTHON PLUGINS NLS DOCS
-OPTIONS_DEFAULT=PYTHON PLUGINS
+OPTIONS_DEFAULT=PYTHON
 OPTIONS_SUB=	yes
 
 PYTHON_CONFIGURE_ENABLE=python

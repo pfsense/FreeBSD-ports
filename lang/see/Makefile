@@ -3,7 +3,7 @@
 
 PORTNAME=	see
 PORTVERSION=	3.1.1424
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang devel
 MASTER_SITES=	http://download.openpkg.org/components/cache/see/ \
 		http://lil.fr.distfiles.macports.org/see/ \
@@ -13,10 +13,16 @@ MASTER_SITES=	http://download.openpkg.org/components/cache/see/ \
 MAINTAINER=	numisemis@yahoo.com
 COMMENT=	Simple ECMAScript Engine (SEE)
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE DTOA.C
+LICENSE_COMB=	multi
+LICENSE_NAME_DTOA.C=	License of dtoa.c
+LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/COPYING
+LICENSE_FILE_DTOA.C=	${WRKSRC}/COPYING
+LICENSE_PERMS_DTOA.C=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BROKEN_aarch64=		fails to configure: floating point not detected: Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined
 BROKEN_armv6=		fails to configure: floating point not detected: Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined
+BROKEN_armv7=		fails to configure: floating point not detected: Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined
 
 OPTIONS_DEFINE=	GC DEBUG DOCS
 OPTIONS_DEFAULT=	GC
@@ -25,8 +31,8 @@ DEBUG_DESC=	Internal SEE library debugging
 
 CONFLICTS=	see-devel-[0-9]*
 
-USE_LDCONFIG=	yes
 USES=		libtool pathfix perl5
+USE_LDCONFIG=	yes
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

@@ -4,7 +4,7 @@
 
 PORTNAME=	planner
 PORTVERSION=	0.14.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -16,7 +16,6 @@ USES=		desktop-file-utils gettext gmake libtool pathfix pkgconfig \
 		shared-mime-info tar:xz
 USE_GNOME=	gnomeprefix intlhack libgnomeui libgnomeprintui \
 		libgsf
-WANT_GNOME=	yes
 INSTALLS_OMF=	yes
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip

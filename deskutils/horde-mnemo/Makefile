@@ -2,8 +2,9 @@
 
 PORTNAME=	mnemo
 PORTVERSION=	4.2.14
+PORTREVISION=	1
 CATEGORIES=	deskutils www pear
-PKGNAMEPREFIX=	horde-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde web based notes manager
@@ -16,6 +17,7 @@ USE_PHP=	gettext
 USE_HORDE_BUILD=	Horde_Role
 USE_HORDE_RUN=	Horde_Role \
 		horde \
+		content \
 		Horde_Auth \
 		Horde_Core \
 		Horde_Data \

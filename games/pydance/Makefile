@@ -3,7 +3,7 @@
 
 PORTNAME=	pydance
 PORTVERSION=	1.1.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	http://people.freebsd.org/~sylvio/pydance/ \
 		http://icculus.org/pyddr/ \
@@ -18,7 +18,7 @@ COMMENT=	Dancing simulation game similar to the kind in arcades
 BUILD_DEPENDS=	${PYGAME}
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python shebangfix
+USES=		python:2.7 shebangfix
 SHEBANG_FILES=	pydance.py utils/findbpm.py
 USE_PYTHON=	distutils noegginfo
 SUB_FILES=	pkg-message

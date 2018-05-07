@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	stunnel
-PORTVERSION=	5.42
+PORTVERSION=	5.44
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.stunnel.org/downloads/%SUBDIR%/ \
@@ -110,7 +111,7 @@ post-build:
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}/conf.d/
-	${INSTALL_DATA} ${FILESDIR}/pid.conf ${STAGEDIR}${ETCDIR}/conf.d/
+	${INSTALL_DATA} ${FILESDIR}/pid.conf ${STAGEDIR}${ETCDIR}/conf.d/00-pid.conf
 
 cert:
 	@${ECHO} ""

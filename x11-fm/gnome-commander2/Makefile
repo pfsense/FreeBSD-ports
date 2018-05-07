@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-commander
-PORTVERSION=	1.6.3
-PORTREVISION=	3
+PORTVERSION=	1.8.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	x11-fm gnome
 MASTER_SITES=	GNOME/sources/gnome-commander/${PORTVERSION:R}
@@ -13,26 +13,29 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	File manager for Gnome2
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libunique-1.0.so:x11-toolkits/unique \
 		libgnome-keyring.so:security/libgnome-keyring \
 		libpopt.so:devel/popt \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
+BUILD_DEPENDS=	itstool:textproc/itstool
 RUN_DEPENDS=	meld:textproc/meld \
 		yelp:x11/yelp
 
-USES=		compiler:c++11-lang gettext gmake libtool pathfix pkgconfig python tar:xz
+USES=		compiler:c++11-lang gettext gmake libtool localbase:ldflags pathfix \
+		pkgconfig python:2.7 tar:xz
 USE_GNOME=	cairo gdkpixbuf2 gnomedocutils gnomeprefix gnomevfs2 intltool libgnomeui
+GLIB_SCHEMAS=	org.gnome.gnome-commander.enums.xml \
+		org.gnome.gnome-commander.gschema.xml
 USE_XORG=	ice sm
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 INSTALLS_OMF=	yes
 USE_LDCONFIG=	yes
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-lintl
 
 CONFLICTS=	gnome-commander-[0-9]*
 

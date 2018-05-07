@@ -31,6 +31,8 @@
     SUBDIR += cacti-spine
     SUBDIR += cacti88
     SUBDIR += cacti88-spine
+    SUBDIR += carbon-relay-ng
+    SUBDIR += carbonzipper
     SUBDIR += ccnet-client
     SUBDIR += ccnet-server
     SUBDIR += cdpd
@@ -41,6 +43,7 @@
     SUBDIR += check_logfiles
     SUBDIR += check_multi
     SUBDIR += check_mysql_health
+    SUBDIR += check_ssl_cert
     SUBDIR += chillispot
     SUBDIR += choparp
     SUBDIR += cidr
@@ -76,6 +79,7 @@
     SUBDIR += gnu-ipcalc
     SUBDIR += grepcidr
     SUBDIR += grepip
+    SUBDIR += grok_exporter
     SUBDIR += gsnmp
     SUBDIR += guifi-snpservices
     SUBDIR += hastmon
@@ -88,8 +92,11 @@
     SUBDIR += icingaweb2-module-businessprocess
     SUBDIR += icingaweb2-module-cube
     SUBDIR += icingaweb2-module-director
+    SUBDIR += icingaweb2-module-elasticsearch
+    SUBDIR += icingaweb2-module-fileshipper
     SUBDIR += icingaweb2-module-generictts
     SUBDIR += icingaweb2-module-grafana
+    SUBDIR += icingaweb2-module-graphite
     SUBDIR += icingaweb2-module-map
     SUBDIR += icingaweb2-module-vsphere
     SUBDIR += icli
@@ -120,6 +127,8 @@
     SUBDIR += libsmi
     SUBDIR += lldpd
     SUBDIR += mbrowse
+    SUBDIR += mdata-client
+    SUBDIR += metronome
     SUBDIR += mk-livestatus
     SUBDIR += monitoring-plugins
     SUBDIR += mrtg
@@ -130,7 +139,6 @@
     SUBDIR += nagios
     SUBDIR += nagios-certexp-plugin
     SUBDIR += nagios-check_bacula
-    SUBDIR += nagios-check_bacula5
     SUBDIR += nagios-check_bacula9
     SUBDIR += nagios-check_clamav
     SUBDIR += nagios-check_cpu_usage
@@ -186,7 +194,6 @@
     SUBDIR += netmask
     SUBDIR += netspoc
     SUBDIR += netustad
-    SUBDIR += netwag
     SUBDIR += networkmgr
     SUBDIR += netwox
     SUBDIR += netxms
@@ -263,6 +270,7 @@
     SUBDIR += p5-SNMP-Simple
     SUBDIR += p5-SNMP-Trapinfo
     SUBDIR += p5-SNMP-Util
+    SUBDIR += p5-RDR-Collector
     SUBDIR += p5-SNMP_Session
     SUBDIR += p5-Telnet-Cisco
     SUBDIR += p5-Tie-NetAddr-IP
@@ -277,11 +285,13 @@
     SUBDIR += pandorafms_agent
     SUBDIR += pandorafms_console
     SUBDIR += pandorafms_server
+    SUBDIR += pdagent-integrations
     SUBDIR += percona-monitoring-plugins
     SUBDIR += pftabled
     SUBDIR += php56-snmp
     SUBDIR += php70-snmp
     SUBDIR += php71-snmp
+    SUBDIR += php72-snmp
     SUBDIR += phpip
     SUBDIR += phpipam
     SUBDIR += phpweathermap
@@ -292,15 +302,20 @@
     SUBDIR += pnp-icinga
     SUBDIR += pnp-icinga2
     SUBDIR += portmon
-    SUBDIR += prometheus
+    SUBDIR += prometheus1
+    SUBDIR += prometheus2
+    SUBDIR += prometheus-collectd-exporter
     SUBDIR += pushgateway
     SUBDIR += py-adal
+    SUBDIR += py-ciscoconfparse
+    SUBDIR += py-dnsdiag
     SUBDIR += py-ipcalc
     SUBDIR += py-ipy
     SUBDIR += py-msrest
     SUBDIR += py-msrestazure
     SUBDIR += py-pdagent
     SUBDIR += py-pyang
+    SUBDIR += py-pynsca
     SUBDIR += py-pysmi
     SUBDIR += py-pyzabbix
     SUBDIR += py-snmp4
@@ -308,7 +323,6 @@
     SUBDIR += py-snmp4-mibs
     SUBDIR += py-snmp_passpersist
     SUBDIR += py-yapsnmp
-    SUBDIR += py3-dnsdiag
     SUBDIR += qkismet
     SUBDIR += rackmonkey
     SUBDIR += rancid3
@@ -323,6 +337,7 @@
     SUBDIR += routers2-extensions
     SUBDIR += routers2-extras
     SUBDIR += rrdbot
+    SUBDIR += rtrlib
     SUBDIR += rubygem-blimpy
     SUBDIR += rubygem-oxidized
     SUBDIR += rubygem-oxidized-script
@@ -359,7 +374,9 @@
     SUBDIR += telegraf
     SUBDIR += tornova
     SUBDIR += torrus
+    SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter
+    SUBDIR += unifi-devel
     SUBDIR += unifi5
     SUBDIR += victorops-nagios
     SUBDIR += vidalia

@@ -3,7 +3,7 @@
 
 PORTNAME=	pyfa
 PORTVERSION=	1.19.1
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games python
 
@@ -13,15 +13,15 @@ COMMENT=	Fitting tool for EVE Online
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil \
-		${PYTHON_PKGNAMEPREFIX}sqlalchemy10>=0.6:databases/py-sqlalchemy10 \
-		${PYTHON_PKGNAMEPREFIX}requests>=2.3.0:www/py-requests
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlalchemy10>=0.6:databases/py-sqlalchemy10@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>=2.3.0:www/py-requests@${PY_FLAVOR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	pyfa-org
 GH_PROJECT=	Pyfa
 
-USES=		python:2 dos2unix
+USES=		python:2.7 dos2unix
 DOS2UNIX_GLOB=	*.py
 NO_ARCH=	yes
 
@@ -34,9 +34,9 @@ WX_COMPS=	wx:run python:run
 OPTIONS_DEFINE=		DPSGRAPHING
 DPSGRAPHING_DESC=	DPS graphing (requires NumPy and matplotlib)
 
-DPSGRAPHING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.0:math/py-matplotlib \
-		${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy \
-		${PYTHON_PKGNAMEPREFIX}more-itertools>0:devel/py-more-itertools
+DPSGRAPHING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.0:math/py-matplotlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}more-itertools>0:devel/py-more-itertools@${PY_FLAVOR}
 
 do-build:
 	@${PYTHON_CMD} -m compileall ${WRKSRC}

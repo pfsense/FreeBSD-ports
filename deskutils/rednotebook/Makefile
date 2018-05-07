@@ -3,6 +3,7 @@
 
 PORTNAME=	rednotebook
 PORTVERSION=	1.9.0
+PORTREVISION=	1
 CATEGORIES=	deskutils python
 MASTER_SITES=	SF/rednotebook
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,12 +13,12 @@ COMMENT=	Modern journal written in Python
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml \
-		${PYTHON_PKGNAMEPREFIX}webkitgtk>0:www/py-webkitgtk \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}webkitgtk>0:www/py-webkitgtk@${FLAVOR} \
 		${LOCALBASE}/bin/xdg-open:devel/xdg-utils \
-		${PYTHON_PKGNAMEPREFIX}chardet>0:textproc/py-chardet
+		${PYTHON_PKGNAMEPREFIX}chardet>0:textproc/py-chardet@${FLAVOR}
 
-USES=		desktop-file-utils gettext python:2
+USES=		desktop-file-utils gettext python:2.7
 
 INSTALLS_ICONS=	yes
 USE_GNOME=	pygtk2

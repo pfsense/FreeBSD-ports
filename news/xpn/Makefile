@@ -3,7 +3,7 @@
 
 PORTNAME=	xpn
 PORTVERSION=	1.2.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	news python
 MASTER_SITES=	http://xpn.altervista.org/codice/
 
@@ -12,8 +12,8 @@ COMMENT=	X Python Newsreader
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gtk2>=2.24.0:x11-toolkits/py-gtk2 \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>=2.7.9:databases/py-sqlite3
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gtk2>=2.24.0:x11-toolkits/py-gtk2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>=2.7.9:databases/py-sqlite3@${PY_FLAVOR}
 
 NO_BUILD=	yes
 
@@ -21,7 +21,7 @@ SHEBANG_FILES=	${XPN}
 SUB_FILES=	${PORTNAME}
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} XPN=${XPN}
 
-USES=		gettext python:2 shebangfix
+USES=		gettext python:2.7 shebangfix
 
 XPN=	${PORTNAME}.py
 

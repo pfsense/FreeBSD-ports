@@ -15,6 +15,7 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_armv6=		fails to link: /nxb-bin/usr/bin/ld: cannot find -ljava
+BROKEN_armv7=		fails to link: /nxb-bin/usr/bin/ld: cannot find -ljava
 
 USES=		python
 USE_PYTHON=	distutils autoplist
@@ -24,7 +25,7 @@ JAVA_VERSION=	1.6+
 JAVA_VENDOR=	openjdk
 
 JCC_INCLUDES=	'${JAVA_HOME}/include;${JAVA_HOME}/include/freebsd'
-JCC_CFLAGS=	'-fno-strict-aliasing;-pipe'
+JCC_CFLAGS=	'-fno-strict-aliasing;-pipe;-std=gnu++98'
 JCC_LFLAGS=	'-L${JAVA_HOME}/jre/lib/${ARCH};-ljava;-ljvm;-lverify;-L${JAVA_HOME}/jre/lib/${ARCH}/server;-L${JAVA_HOME}/jre/lib/${ARCH}/client;-Wl,-rpath=${JAVA_HOME}/jre/lib/${ARCH}:${JAVA_HOME}/jre/lib/${ARCH}/server:${JAVA_HOME}/jre/lib/${ARCH}/client'
 JCC_DEBUG_CFLAGS=	"-O0 -g -DDEBUG"
 

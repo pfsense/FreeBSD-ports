@@ -3,11 +3,11 @@
 
 PORTNAME=	massxpert
 PORTVERSION=	3.4.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	science
 MASTER_SITES=	http://download.tuxfamily.org/massxpert/source/
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	massXpert software for (bio)chemists
 
 LICENSE=	GPLv3

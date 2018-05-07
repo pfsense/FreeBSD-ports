@@ -5,11 +5,6 @@ PORTNAME=	zabbix3
 CATEGORIES=	net-mgmt
 PKGNAMESUFFIX=	-frontend
 
-MAINTAINER=	pg@pakhom.spb.ru
-COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/^-//}) LTS
-
-LICENSE=	GPLv2
-
 MASTERDIR=	${.CURDIR}/../zabbix3-server
 
 NO_BUILD=	yes
@@ -26,7 +21,7 @@ OPTIONS_DEFINE=		MYSQL MYSQLI PGSQL SQLITE ORACLE
 OPTIONS_DEFAULT=	MYSQLI
 MYSQLI_DESC=		MySQLI backend
 
-MYSQL_VARS=	IGNORE_WITH_PHP+=70 71
+MYSQL_VARS=	IGNORE_WITH_PHP+="70 71"
 
 .include <bsd.port.options.mk>
 

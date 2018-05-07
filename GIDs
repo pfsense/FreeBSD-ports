@@ -150,7 +150,6 @@ gnugk:*:205:
 gini:*:206:
 _mixminion:*:207:
 _dnsdist:*:208:
-gogs:*:209:
 shoutcast:*:210:
 git:*:211:
 hg:*:212:
@@ -162,16 +161,16 @@ anvil:*:217:
 zap:*:218:
 sddm:*:219:
 bs:*:220:
-# free: 221
+opensips:*:221:
 rtpproxy:*:222:
-# free: 223
+mqttwarn:*:223:
 # free: 224
 postgrey:*:225:
 sqlgrey:*:226:
 _hfm:*:227:
-# free: 228
+osrm:*:228:
 kismet:*:229:
-# free: 230
+carbon:*:230:
 # free: 231
 # free: 232
 # free: 233
@@ -416,8 +415,8 @@ vault:*:471:
 nomad:*:472:
 minio:*:473:
 gitlab-runner:*:474:
-# free: 475
-# free: 476
+traefik:*:475:
+gitlab-pages:*:476:
 # free: 477
 prometheus:*:478:
 alertmanager:*:479:
@@ -544,7 +543,7 @@ avahi-autoipd:*:588:
 _xsi:*:600:
 _tss:*:601:
 _pkcs11:*:602:
-# free: 603
+_acme:*:603:
 # free: 604
 # free: 605
 # free: 606
@@ -722,7 +721,7 @@ openxpki:*:777:
 litecoin:*:778:
 bitcoin:*:779:
 zetacoin:*:780:
-# free: 781
+monero:*:781:
 # free: 782
 # free: 783
 # free: 784
@@ -828,14 +827,14 @@ chronyd:*:849:
 # free: 884
 # free: 885
 # free: 886
-# free: 887
+pdagent:*:887:
 vuls:*:888:
-# free: 889
-# free: 890
+mattermost:*:889:
+matterircd:*:890:
 # free: 891
 # free: 892
-# free: 893
-# free: 894
+logstash:*:893:
+arangodb:*:894:
 snmptt:*:895:
 istat:*:896:
 znc:*:897:

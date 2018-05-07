@@ -2,7 +2,7 @@
 
 PORTNAME=	jokosher
 PORTVERSION=	0.11.5
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	audio
 MASTER_SITES=	http://launchpadlibrarian.net/43860543/
 
@@ -12,9 +12,9 @@ COMMENT=	Multi-track non-linear audio editing
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}
 
-USES=		desktop-file-utils python:2 shared-mime-info
+USES=		desktop-file-utils python:2.7 shared-mime-info
 USE_PYTHON=	distutils
 USE_GSTREAMER=	gnonlin good python
 INSTALLS_ICONS=	yes
@@ -23,7 +23,7 @@ NO_ARCH=	yes
 OPTIONS_DEFINE=	DBUS FLAC GCONF GNOME JACK LADSPA LAME MP3 PIDGIN PULSEAUDIO VORBIS
 OPTIONS_DEFAULT=	DBUS FLAC GCONF LADSPA VORBIS
 
-DBUS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus
+DBUS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR}
 FLAC_USE=	GSTREAMER=flac
 GCONF_USE=	GSTREAMER=gconf
 JACK_USE=	GSTREAMER=jack

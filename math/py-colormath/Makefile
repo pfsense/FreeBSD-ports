@@ -3,6 +3,7 @@
 
 PORTNAME=	colormath
 PORTVERSION=	2.1.1
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,10 +13,10 @@ COMMENT=	Module that spares the user from directly dealing with color math
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.9.2,1:math/py-numpy \
-		${PYTHON_PKGNAMEPREFIX}networkx>=1.9.1:math/py-networkx
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.9.2,1:math/py-numpy@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}networkx>=1.9.1:math/py-networkx@${FLAVOR}
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	webkit
 PORTVERSION=	2.16.6
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	http://webkitgtk.org/releases/
 PKGNAMESUFFIX=	2-gtk3
@@ -88,7 +88,7 @@ NPAPI_USE=	GNOME=gtk20
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == armv6
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 CMAKE_ARGS+=	-DENABLE_JIT:BOOL=OFF
 .endif
 

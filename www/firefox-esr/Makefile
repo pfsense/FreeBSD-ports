@@ -2,27 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	52.4.1
-DISTVERSIONSUFFIX=esr.source
+DISTVERSION=	52.8.0
+DISTVERSIONSUFFIX=esr
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}esr/source \
 		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}esr-candidates/build1/source
 PKGNAMESUFFIX=	-esr
+DISTFILES=	${DISTNAME}.source${EXTRACT_SUFX}
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
 BUILD_DEPENDS=	nspr>=4.13.1:devel/nspr \
-		nss>=3.29.5:security/nss \
+		nss>=3.28.6:security/nss \
 		libevent>=2.0.21_2:devel/libevent \
 		harfbuzz>=1.4.1:print/harfbuzz \
-		graphite2>=1.3.8:graphics/graphite2 \
-		png>=1.6.28:graphics/png \
+		graphite2>=1.3.10:graphics/graphite2 \
+		png>=1.6.25:graphics/png \
 		libvorbis>=1.3.5,3:audio/libvorbis \
 		libvpx>=1.5.0:multimedia/libvpx \
 		sqlite3>=3.17.0:databases/sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf-2.13:devel/autoconf213 \
 		yasm:devel/yasm \
@@ -33,7 +34,7 @@ LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 USE_GECKO=	gecko
 CPE_PRODUCT=	${PORTNAME}_esr
-CONFLICTS_INSTALL=	firefox-[0-9]*
+CONFLICTS_INSTALL=	firefox
 MOZ_PKGCONFIG_FILES=	# empty
 USE_MOZILLA=	-soundtouch
 MOZILLA_NAME=	Firefox
@@ -53,8 +54,6 @@ OPTIONS_SINGLE+=	TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
-
-WRKSRC:=	${WRKDIR}/${PORTNAME}-${DISTVERSION}esr
 
 post-extract:
 	@${SED} -e 's|@FIREFOX_ICON@|${FIREFOX_ICON}|' -e 's|@MOZILLA@|${MOZILLA}|' \

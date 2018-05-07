@@ -3,7 +3,7 @@
 
 PORTNAME=	gnuplot
 PORTVERSION=	1.8
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	math python
 MASTER_SITES=	SF/${PORTNAME}-py/Gnuplot-py/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	gnuplot:math/gnuplot \
 		${PYNUMPY}
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

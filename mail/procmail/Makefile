@@ -3,7 +3,7 @@
 
 PORTNAME=	procmail
 PORTVERSION=	3.22
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.ucsb.edu/pub/mirrors/procmail/ \
 		ftp://ftp.informatik.rwth-aachen.de/pub/packages/procmail/ \
@@ -18,6 +18,10 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Local mail delivery agent
 
 LICENSE=	GPLv2
+
+.if defined(QEMU_EMULATING) && "${QEMU_EMULATING}" == "1"
+BROKEN=		fails to build under qemu: killing runaway build after 21600 seconds with no output
+.endif
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

@@ -14,15 +14,15 @@ COMMENT=	Facebook Bassline
 
 LICENSE=	APACHE20
 
+BROKEN=		fails to build
+
 LIB_DEPENDS=	libthrift.so:devel/thrift-cpp
 BUILD_DEPENDS=	thrift:devel/thrift
 
-ACLOCAL_ARGS=	-I ./aclocal
-AUTOMAKE_ARGS=	-a
 CONFIGURE_ARGS=	PY_PREFIX="${PREFIX}"
-USE_AUTOTOOLS=	autoconf autoheader:env aclocal automake
 
-USES=		compiler gmake perl5 python
+GNU_CONFIGURE=	yes
+USES=		autoreconf compiler gmake perl5 python:2.7
 USE_PERL5=	run
 WRKSRC=		${WRKDIR}/${DISTNAME}/contrib/fb303
 

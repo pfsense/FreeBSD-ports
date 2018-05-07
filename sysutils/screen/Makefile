@@ -2,18 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	screen
-PORTVERSION=	4.6.1
-PORTREVISION=	2
+PORTVERSION=	4.6.2
 CATEGORIES=	sysutils
-MASTER_SITES=	http://ftp.gnu.org/gnu/screen/ \
+MASTER_SITES=	GNU \
 		ftp://ftp.gnu.org/gnu/screen/ \
 		ftp://gnu.mirror.iweb.com/screen/ \
 		http://gnu.mirror.iweb.com/screen/ \
 		http://mirror.sdunix.com/gnu/ \
 		ftp://mirrors.kernel.org/gnu/screen/ \
-		http://komquats.com/distfiles/ \
-		http://people.freebsd.org/~cy/distfiles/ \
-		GNU
+		http://cschubert.com/distfiles/ \
+		LOCAL/cy
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Multi-screen window manager
@@ -87,8 +85,8 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/dev/ptmx|/nonexistent|' ${WRKSRC}/configure
 
 # Bug 191029:	Users can choose whether to use sockets or named pipes.
-# 		Choose sockets if you don't know what the difference is.
-# 		Choose named pipes if your environment is heterogeneous,
+#		Choose sockets if you don't know what the difference is.
+#		Choose named pipes if your environment is heterogeneous,
 #		using both screen 4.0.3 and 4.2.1.
 # Bug 191017
 post-configure-NAMED_PIPES-on:

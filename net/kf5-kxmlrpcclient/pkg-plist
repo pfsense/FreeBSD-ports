@@ -1,3 +1,5 @@
+etc/xdg/kxmlrpcclient.categories
+etc/xdg/kxmlrpcclient.renamecategories
 include/KF5/KXmlRpcClient/KXmlRpcClient/Client
 include/KF5/KXmlRpcClient/kxmlrpcclient/client.h
 include/KF5/KXmlRpcClient/kxmlrpcclient/kxmlrpcclient_export.h
@@ -36,6 +38,7 @@ share/locale/hi/LC_MESSAGES/libkxmlrpcclient5.mo
 share/locale/hne/LC_MESSAGES/libkxmlrpcclient5.mo
 share/locale/hu/LC_MESSAGES/libkxmlrpcclient5.mo
 share/locale/ia/LC_MESSAGES/libkxmlrpcclient5.mo
+share/locale/id/LC_MESSAGES/libkxmlrpcclient5.mo
 share/locale/it/LC_MESSAGES/libkxmlrpcclient5.mo
 share/locale/ja/LC_MESSAGES/libkxmlrpcclient5.mo
 share/locale/kk/LC_MESSAGES/libkxmlrpcclient5.mo

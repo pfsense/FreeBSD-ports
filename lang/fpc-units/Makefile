@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	units
-PORTVERSION=	3.0.2
+PORTVERSION=	3.0.4
 CATEGORIES=	lang
 PKGNAMEPREFIX=	fpc-
 
@@ -19,11 +19,11 @@ ALL_OPTIONS=	A52 ASPELL BFD BZIP2 CAIRO CHM DBLIB DBUS DTS FASTCGI \
 		FCL_JS FCL_JSON FCL_NET FCL_PASSRC FCL_PDF FCL_REGISTRY FCL_RES \
 		FCL_SDO FCL_SOUND FCL_STL FCL_WEB FCL_XML FFTW \
 		FPINDEXER FPPKG FV GDBM GMP GOOGLEAPI GTK2 HERMES ICONVENC \
-		IMAGEMAGICK LDAP LIBCURL LIBGD LIBPNG LIBXML2 LIBVLC LUA MAD \
+		IMAGEMAGICK LDAP LIBCURL LIBGD LIBMICROHTTPD LIBPNG LIBXML2 LIBVLC LUA MAD \
 		MODPLUG NCURSES NEWT NUMLIB OGGVORBIS OPENAL OPENGL \
 		OPENSSL PASJPEG PCAP PROJ4 PXLIB RSVG REXX RTL_CONSOLE \
 		RTL_EXTRA RTL_OBJPAS RTL_UNICODE SDL SVGALIB SYMBOLIC \
-		SYSLOG TCL UNZIP USERS UTMP UUID X11 XFORMS ZLIB
+		SYSLOG UNZIP USERS UTMP UUID X11 XFORMS ZLIB
 
 # per PR 212919, the inclusion of the VLC unit will cause pkg(8) to require
 # the deinstallation of KDE, so it's not a default option until furter notice
@@ -51,7 +51,7 @@ FCL_JS_DESC=		Component Library (js)
 FCL_JSON_DESC=		Component Library (json)
 FCL_NET_DESC=		Component Library (net)
 FCL_PASSRC_DESC=	Component Library (passrc)
-FCL_PDF_DESC=        	Component Library (pdf)
+FCL_PDF_DESC=		Component Library (pdf)
 FCL_REGISTRY_DESC=	Component Library (registry)
 FCL_RES_DESC=		Component Library (res)
 FCL_SDO_DESC=		Component Library (sdo)
@@ -73,6 +73,7 @@ IMAGEMAGICK_DESC=	Interface to ImageMagick
 LDAP_DESC=		Interface to OpenLDAP
 LIBCURL_DESC=		Interface to curl library
 LIBGD_DESC=		Interface to gd library
+LIBMICROHTTPD_DESC=	Interface to libmicrohttpd library
 LIBPNG_DESC=		Interface to png library
 LIBVLC_DESC=		Unit for VLC
 LIBXML2_DESC=		Interface to libxml2 library
@@ -100,7 +101,6 @@ SDL_DESC=		Interface to SDL library
 SVGALIB_DESC=		Interface to svgalib library
 SYMBOLIC_DESC=		Simple expression parsing and evaluating
 SYSLOG_DESC=		Interface to system logger
-TCL_DESC=		Interface to tcl/tk interpreter
 UNZIP_DESC=		Routines for unzipping zip files
 USERS_DESC=		Interface to manipulate users
 UTMP_DESC=		Gather information from the utmp file

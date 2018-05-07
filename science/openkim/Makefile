@@ -1,14 +1,13 @@
-# Created by: Jason Bacon
 # $FreeBSD$
 
 PORTNAME=	openkim
 PORTVERSION=	1.1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	science
 MASTER_SITES=	http://s3.openkim.org/openkim-api/
 DISTNAME=	${PORTNAME}-api-v${PORTVERSION}
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Knowledgebase of Interatomic Models
 
 LICENSE=	CDDL
@@ -22,7 +21,7 @@ MAKE_JOBS_UNSAFE=yes
 .include <bsd.port.options.mk>
 
 # Is there a better way to detect 32-bit systems?
-.if ${ARCH} == "armv6" || ${ARCH} == "i386" || ${ARCH} == "mips" || ${ARCH} == "powerpc"
+.if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == mips || ${ARCH} == powerpc
 MAKE_ENV+=	KIM_SYSTEM32="yes"
 .endif
 

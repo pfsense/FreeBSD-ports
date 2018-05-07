@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	tikiwiki
-PORTVERSION=	16.2
+DISTVERSION=	18.1
 CATEGORIES=	www
-MASTER_SITES=	SF/${PORTNAME}/Tiki_16.x_Tabbys/${PORTVERSION}/
-DISTNAME=	tiki-${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME}/Tiki_18.x_Alcyone/${DISTVERSION}/
+DISTNAME=	tiki-${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Powerful PHP based Wiki/CMS/Groupware
 
 LICENSE=	LGPL21
@@ -20,7 +20,7 @@ USE_PHP=	calendar dom fileinfo gd gettext intl mbstring mcrypt pcre \
 NO_BUILD=	yes
 NO_MTREE=	yes
 NO_ARCH=	yes
-TIKIWIKI_DIR?=	www/${PORTNAME}-${PORTVERSION}
+TIKIWIKI_DIR?=	www/${PORTNAME}-${DISTVERSION}
 SUB_FILES=	pkg-message
 SUB_LIST+=	TIKIWIKI_DIR=${TIKIWIKI_DIR}
 

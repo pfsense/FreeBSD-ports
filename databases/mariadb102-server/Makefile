@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.2.9
+PORTVERSION=	10.2.14
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://mirrors.supportex.net/${SITESDIR}/ \
@@ -28,9 +28,9 @@ SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 SLAVEDIRS=	databases/mariadb102-client
-USES=		bison:build cmake compiler:c++11-lib cpe iconv:translit libedit ncurses shebangfix ssl
+USES=		bison:build cmake:noninja compiler:c++11-lib cpe iconv:translit libedit ncurses shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql
-SHEBANG_FILES=	scripts/*.sh
+SHEBANG_FILES=	scripts/*.sh storage/rocksdb/myrocks_hotbackup
 SITESDIR=	mariadb/mariadb-${PORTVERSION}/source
 DOCSDIR=	${PREFIX}/share/doc/mysql
 
@@ -155,6 +155,7 @@ MROONGA_IMPLIES=	LZ4
 MSGPACK_LIB_DEPENDS=	libmsgpackc.so:devel/msgpack
 OQGRAPH_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 			libJudy.so:devel/judy
+ROCKSDB_USES=		python
 SNAPPY_CMAKE_OFF=	-DWITH_INNODB_SNAPPY=OFF -DWITH_ROCKSDB_snappy=OFF
 SNAPPY_CMAKE_ON=	-DWITH_INNODB_SNAPPY=ON  -DWITH_ROCKSDB_snappy=ON
 SNAPPY_LIB_DEPENDS=	libsnappy.so:archivers/snappy
@@ -180,6 +181,13 @@ post-install:
 	${RM} -r ${STAGEDIR}/${PREFIX}/share/mysql/policy \
 		${STAGEDIR}/${PREFIX}/share/pkgconfig
 	${RM} ${STAGEDIR}${LOCALBASE}/lib/mysql/libmysqlclient*
+	${RM} ${STAGEDIR}${LOCALBASE}/share/doc/mysql/COPYING \
+		${STAGEDIR}${LOCALBASE}/share/doc/mysql/COPYING.thirdparty \
+		${STAGEDIR}${LOCALBASE}/share/groonga-normalizer-mysql/lgpl-2.0.txt \
+		${STAGEDIR}${LOCALBASE}/share/groonga/COPYING \
+		${STAGEDIR}${LOCALBASE}/storage/groonga/COPYING \
+		${STAGEDIR}${LOCALBASE}/share/mysql/mroonga/COPYING
+	${RM} ${STAGEDIR}${PREFIX}/include/mysql/*.h
 .endif # defined(CLIENT_ONLY)
 
 .if defined(WITH_OPENSSL_PORT)
@@ -201,8 +209,12 @@ post-patch:
 		${WRKSRC}/cmake/os/DragonFly.cmake
 .endif
 
-#post-configure-MROONGA-on:
-#	${REINPLACE_CMD} 's|-llz4|-L${LOCALBASE}/lib -llz4|' \
-#		${WRKSRC}/storage/mroonga/CMakeFiles/mroonga.dir/link.txt
+# Fix build failure in mbstream, see https://jira.mariadb.org/browse/MDEV-14072
+post-configure-INNOBASE-on:
+	${REINPLACE_CMD} -e 's| ${PREFIX}/lib/liblz4.so\(.* ${PREFIX}/lib/liblz4.so.*\)|\1|' \
+		-e 's| ${PREFIX}/lib/liblzo2.so\(.* ${PREFIX}/lib/liblzo2.so.*\)|\1|' \
+		-e 's| ${PREFIX}/lib/libsnappy.so\(.* ${PREFIX}/lib/libsnappy.so\)|\1|' \
+		-e 's| -llzma\(.* -llzma\)|\1|;s| -lbz2\(.* -lbz2\)|\1|;' \
+		${WRKSRC}/extra/mariabackup/CMakeFiles/mbstream.dir/link.txt
 
 .include <bsd.port.post.mk>

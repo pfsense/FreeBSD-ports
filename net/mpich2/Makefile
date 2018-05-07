@@ -3,7 +3,7 @@
 
 PORTNAME=	mpich2
 DISTVERSION=	1.5
-PORTREVISION=	8
+PORTREVISION=	9
 PORTEPOCH=	5
 CATEGORIES=	net java parallel
 MASTER_SITES=	http://www.mcs.anl.gov/research/projects/mpich2/downloads/tarballs/${DISTVERSION}/
@@ -22,7 +22,7 @@ RUN_DEPENDS=	bash:shells/bash
 
 GNU_CONFIGURE=	yes
 USES=		libtool:keepla localbase fortran perl5 \
-		pkgconfig python
+		pkgconfig python:2.7
 USE_GCC=	yes
 USE_LDCONFIG=	yes
 USE_PERL5=	build

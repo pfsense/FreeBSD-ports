@@ -55,13 +55,13 @@ OPTIONS_GROUP_DATABASE=	MYSQL PGSQL
 OPTIONS_GROUP_PLUGINS=	DCC DKIM PYZOR RAZOR RELAY_COUNTRY SPF_QUERY
 OPTIONS_SINGLE=		GPG
 OPTIONS_SINGLE_GPG=	GNUPG_NONE GNUPG GNUPG2
-OPTIONS_DEFAULT=	AS_ROOT DKIM GNUPG SSL UPDATE_AND_COMPILE SPF_QUERY
+OPTIONS_DEFAULT=	AS_ROOT DKIM GNUPG SSL SPF_QUERY
 
 AS_ROOT_DESC=		Run spamd as root (recommended)
 
 DATABASE_DESC=		Optional user-config/bayes database backends
 
-GPG_DESC=		GnuPG (for sa-update, optional)
+GPG_DESC=		GnuPG (for sa-update)
 GNUPG_NONE_DESC=	Do not use GnuPG
 GNUPG_DESC=		GnuPG 1 (security/gnupg1)
 GNUPG2_DESC=		GnuPG 2 (security/gnupg)
@@ -91,7 +91,8 @@ MYSQL_RUN_DEPENDS=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
 PGSQL_RUN_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
 PYZOR_RUN_DEPENDS=	pyzor:mail/pyzor
 RAZOR_RUN_DEPENDS=	razor-agents>=2.84:mail/razor-agents
-RELAY_COUNTRY_RUN_DEPENDS=	p5-Geo-IP>=0:net/p5-Geo-IP
+RELAY_COUNTRY_RUN_DEPENDS=	p5-Geo-IP>=0:net/p5-Geo-IP \
+			p5-IP-Country>=0:net/p5-IP-Country
 SPF_QUERY_RUN_DEPENDS=	p5-Mail-SPF>=0:mail/p5-Mail-SPF
 
 SSL_USES=		ssl

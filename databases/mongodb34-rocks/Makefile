@@ -2,8 +2,8 @@
 
 PORTNAME=	mongodb
 PORTVERSION=	3.4.6
-PORTREVISION=	3
 DISTVERSIONPREFIX=	r
+PORTREVISION=	4
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/ \
@@ -18,6 +18,10 @@ COMMENT=	Distributed document-oriented database with a RocksDB Storage Engine
 # mongodb is AGPLv3, C++ driver is APACHE20
 LICENSE=	AGPLv3 APACHE20
 LICENSE_COMB=	multi
+
+BROKEN=		fails to link
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	no member named 'SSLv2_method' in the global namespace
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	"Only supported on amd64 (i386 deprecated in v3)"

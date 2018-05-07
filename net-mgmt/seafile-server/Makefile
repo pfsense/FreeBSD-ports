@@ -22,8 +22,8 @@ LIB_DEPENDS=	libsearpc.so:devel/libsearpc \
 		libevent.so:devel/libevent \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libjansson.so:devel/jansson
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3 \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR} \
 		bash:shells/bash
 
 CONFLICTS=	seafile-[0-9]*
@@ -33,7 +33,6 @@ USES=		autoreconf iconv libarchive libtool localbase mysql \
 USE_GITHUB=	yes
 GH_ACCOUNT=	haiwen
 USE_GNOME=	glib20
-USE_LDCONFIG=	yes
 USE_RC_SUBR=	seafile
 
 SHEBANG_FILES=	scripts/*.sh scripts/upgrade/*.sh *.sh scripts/build/*.py \
@@ -73,8 +72,6 @@ post-patch:
 		${WRKSRC}/scripts/upgrade/regenerate_secret_key.sh
 	${REINPLACE_CMD} -e 's|^INSTALL.*|INSTALLPATH="${PREFIX}/${SEAFILE_SERVER}/seafile"|' \
 			${WRKSRC}/scripts/seaf-cli-wrapper.sh
-	${REINPLACE_CMD} 's/<evhtp.h>/<evhtp\/evhtp.h>/' ${WRKSRC}/server/upload-file.c \
-			${WRKSRC}/server/access-file.c ${WRKSRC}/server/http-server.c
 	${REINPLACE_CMD} -E 's/stat.+\$$/stat -f %Su $$/' ${WRKSRC}/scripts/seafile.sh
 	${REINPLACE_CMD} 's/%%SEAFILE_USER%%/${USERS:[1]}/ ; s/%%SEAFILE_GROUP%%/${GROUPS:[1]}/' \
 			${WRKSRC}/scripts/setup-seafile.sh ${WRKSRC}/scripts/setup-seafile-mysql.py

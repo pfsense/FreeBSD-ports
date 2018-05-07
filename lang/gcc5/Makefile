@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	5.4.0
-PORTREVISION=	4
+PORTVERSION=	5.5.0
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	GCC/releases/gcc-${DISTVERSION}
 PKGNAMESUFFIX=	${SUFFIX}
@@ -14,7 +14,8 @@ COMMENT=	GNU Compiler Collection 5
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 i386 powerpc powerpc64 sparc64
+DEPRECATED=	Unsupported by upstream. Use GCC 6 or newer instead.
+ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 i386 powerpc powerpc64 powerpcspe sparc64
 BROKEN_sparc64=	Does not build: bootstrap comparison failure
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
@@ -27,12 +28,11 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 BUILD_DEPENDS+=	runtest:misc/dejagnu
 .endif
 
-CONFLICTS=	gcc5-devel-5.*
 CPE_VENDOR=	gnu
 
 GCC_VERSION=	${PORTVERSION}
 SUFFIX=		${PORTVERSION:C/([0-9]+).*/\1/}
-USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
+USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:xz
 USE_BINUTILS=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
@@ -54,13 +54,8 @@ CONFIGURE_ARGS+=	--disable-multilib
 
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
-.endif
 
-.if ${ARCH} == powerpc64
-CONFIGURE_ENV+=	UNAME_m="powerpc64"
-.endif
-
-.if ${ARCH} == aarch64 || ${ARCH} == armv6
+.elif ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7
 . if ${COMPILER_TYPE} == clang
 .  if empty(PORT_OPTIONS:MBOOTSTRAP)
 MAKE_ARGS+=CXXFLAGS=-fbracket-depth=512
@@ -68,6 +63,12 @@ MAKE_ARGS+=CXXFLAGS=-fbracket-depth=512
 MAKE_ARGS+=STAGE1_CXXFLAGS=-fbracket-depth=512
 .  endif
 . endif
+
+.elif ${ARCH} == powerpc64
+CONFIGURE_ENV+=	UNAME_m="powerpc64"
+
+.elif ${ARCH} == powerpcspe
+CONFIGURE_ARGS+=	--with-cpu=8540 --enable-e500_double --without-fp
 .endif
 
 LANGUAGES:=	c,c++,objc,fortran
@@ -80,6 +81,10 @@ CONFIGURE_ARGS+=--disable-bootstrap
 .else
 CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
 ALL_TARGET=	bootstrap-lean
+.endif
+INSTALL_TARGET=	install-strip
+.if ${UID} != 0
+BINMODE=	755
 .endif
 CONFIGURE_ARGS+=--disable-nls \
 		--disable-libgcj \
@@ -115,6 +120,11 @@ CONFIGURE_ARGS+=--enable-languages=${LANGUAGES}
 
 pre-everything::
 	@${ECHO_MSG} "Making GCC ${PORTVERSION} for ${CONFIGURE_TARGET} [${LANGUAGES}]"
+
+post-patch:
+	@${FIND} ${WRKSRC} -type f \( -name '*.[ch]' -o -name '*.cc' \) | \
+	    ${XARGS} ${EGREP} -l '"(HOST_WIDE|PLUGIN_COND|PRId64)' | \
+	    ${XARGS} ${REINPLACE_CMD} -E -e 's/"(HOST_WIDE|PLUGIN_COND|PRId64)/" \1/g'
 
 pre-configure:
 	cd ${WRKSRC} ; contrib/gcc_update --touch

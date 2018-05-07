@@ -1,13 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	softether
-PORTVERSION=	4.20.9608
-PORTREVISION=	1
+PORTVERSION=	4.25.9656
 CATEGORIES=	security
-MASTER_SITES=	http://www.softether-download.com/files/softether/v4.20-9608-rtm-2016.04.17-tree/Source_Code/
-DISTNAME=	${PORTNAME}-src-v4.20-9608-rtm
+MASTER_SITES=	http://www.softether-download.com/files/softether/v4.25-9656-rtm-2018.01.15-tree/Source_Code/
+DISTNAME=	${PORTNAME}-src-v4.25-9656-rtm
 
-MAINTAINER=	net@arrishq.net
+MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Softether VPN solution
 
 LICENSE=	GPLv2
@@ -36,7 +35,17 @@ DOS2UNIX_FILES=	AUTHORS.TXT ChangeLog LICENSE README THIRD_PARTY.TXT \
 		src/Mayaqua/Table.h \
 		src/Mayaqua/Unix.c
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS UNLOCK
+
+# Use of some functions in Japan and China is restricted.
+# This option Unlocks regional lockout following functions:
+#  - RADIUS / NT Domain user authentication function
+#  - RSA certificate user authentication function
+#  - Deep-inspect packet logging function
+#  - Source IP address control list function
+#  - syslog transfer function
+UNLOCK_DESC= Unlock regional lockout (JP and CN)
+UNLOCK_EXTRA_PATCHES=	${FILESDIR}/extra-patch-unrestrict-enterprise-functions
 
 ONLY_FOR_ARCHS=	i386 amd64
 
@@ -51,7 +60,7 @@ PLIST_SUB+=	LOGDIR="${LOGDIR}"
 SUB_LIST=	LOGDIR="${LOGDIR}"
 
 # a pity the source directory has such a naming scheme, but well
-WRKSRC=		${WRKDIR}/v4.20-9608
+WRKSRC=		${WRKDIR}/v4.25-9656
 
 ALL_TARGET=	build
 

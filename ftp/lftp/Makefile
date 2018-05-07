@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lftp
-PORTVERSION=	4.8.2
+PORTVERSION=	4.8.3
 CATEGORIES=	ftp ipv6
 MASTER_SITES=	http://lftp.tech/ftp/ \
 		http://lftp.tech/ftp/old/ \
@@ -58,10 +58,6 @@ post-install-DOCS-on:
 
 .if ${ARCH} == powerpc64
 USE_GCC=	yes
-.endif
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
 .endif
 
 .include <bsd.port.post.mk>

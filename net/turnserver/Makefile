@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	turnserver
-PORTVERSION=	4.5.0.6
+PORTVERSION=	4.5.0.7
 CATEGORIES=	net
 MASTER_SITES=	http://turnserver.open-sys.org/downloads/v${PORTVERSION}/:prog \
 		http://turnserver.open-sys.org/downloads/extradocs/:xdocs \
@@ -113,7 +113,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/etc/turnserver.conf.default
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/turn
 	(cd ${WRKSRC}/include/turn && ${COPYTREE_SHARE} "client ns_turn_defs.h" \
-	       	${STAGEDIR}${PREFIX}/include/turn)
+		${STAGEDIR}${PREFIX}/include/turn)
 
 do-install-SQLITE-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/var/db
@@ -124,7 +124,7 @@ do-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/scripts/${dir}
 .endfor
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/etc
-	${INSTALL_MAN} ${WRKSRC}/examples/scripts/readme.txt \
+	${INSTALL_DATA} ${WRKSRC}/examples/scripts/readme.txt \
 		${STAGEDIR}${EXAMPLESDIR}/scripts
 	(cd ${WRKSRC}/examples/etc && ${INSTALL_DATA} ${_ETC_EXAMPLES} \
 		${STAGEDIR}${EXAMPLESDIR}/etc)

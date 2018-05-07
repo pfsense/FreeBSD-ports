@@ -10,7 +10,9 @@ MASTER_SITES=	SF
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Virtual Tunnels over TCP/IP networks with traffic shaping
 
-LICENSE=        GPLv2
+LICENSE=	GPLv2
+
+BROKEN_SSL=	openssl-devel
 
 LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 
@@ -36,8 +38,6 @@ OPTIONS_DEFINE=	DOCS
 # http://home.jp.FreeBSD.org/~simokawa/vtun-v6.html
 # are now dynamically enabled using the -e option.
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	${REINPLACE_CMD} \
 		-e 's|$$\(SSL_HDR_DIR\)|$$\1 $$\1/openssl|g' \
@@ -54,10 +54,4 @@ post-install:
 	@cd ${STAGEDIR}${PREFIX}/man/man1/ && \
 	${LN} -s vtund.8 ../man1/vtun.1
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

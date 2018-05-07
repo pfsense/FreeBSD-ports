@@ -3,7 +3,7 @@
 
 PORTNAME=	karaoke
 PORTVERSION=	0.7.5
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	audio python
 MASTER_SITES=	SF/py${PORTNAME}/py${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +21,7 @@ RUN_DEPENDS=	dejavu>0:x11-fonts/dejavu \
 		${PYGAME} \
 		${PYNUMPY}
 
-USES=		compiler:c++11-lib desktop-file-utils iconv python:2 shebangfix zip
+USES=		compiler:c++11-lib desktop-file-utils iconv python:2.7 shebangfix zip
 SHEBANG_FILES=	install/pykaraoke_mini install/pykar install/pykaraoke \
 		install/pycdg install/pympg
 USE_SDL=	sdl
@@ -39,7 +39,7 @@ PLIST_FILES=	${BIN_SCRIPTS:S,^,bin/,} \
 OPTIONS_DEFINE=		MUTAGEN
 
 MUTAGEN_DESC=		Mutagen support
-MUTAGEN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen
+MUTAGEN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${FLAVOR}
 
 BIN_SCRIPTS=	cdg2mpg pycdg pykar pykaraoke pykaraoke_mini pympg
 DATA_FONTS=	DejaVuSans.ttf DejaVuSansCondensed.ttf \

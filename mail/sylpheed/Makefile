@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	sylpheed
-PORTVERSION=	3.6.0
-PORTREVISION=	1
+PORTVERSION=	3.7.0
+PORTREVISION=	2
 CATEGORIES=	mail ipv6
 MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/  \
 		LOCAL/ehaupt
@@ -75,7 +75,7 @@ JPILOT_CONFIGURE_ENABLE=	jpilot
 LDAP_CONFIGURE_ENABLE=		ldap
 LDAP_USE=			openldap=yes
 
-ONIGURUMA_LIB_DEPENDS=		libonig.so:devel/oniguruma6
+ONIGURUMA_LIB_DEPENDS=		libonig.so:devel/oniguruma
 ONIGURUMA_CONFIGURE_ENABLE=	oniguruma
 
 SSL_CONFIGURE_ENABLE=		ssl

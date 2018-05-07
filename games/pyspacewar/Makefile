@@ -3,6 +3,7 @@
 
 PORTNAME=	pyspacewar
 PORTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	games python
 DIST_SUBDIR=	python
 
@@ -18,7 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	mgedmin
 GH_TAGNAME=	f872564
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 PORTDOCS=	*.rst

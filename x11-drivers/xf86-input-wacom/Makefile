@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	xf86-input-wacom
-PORTVERSION=	0.35.0
+PORTVERSION=	0.36.0
 CATEGORIES=	x11-drivers
-MASTER_SITES=	SF/linuxwacom/${PORTNAME}
+MASTER_SITES=	https://github.com/linuxwacom/${PORTNAME}/releases/download/${DISTNAME}/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	X.Org Wacom tablet driver
@@ -13,7 +13,7 @@ LICENSE=	GPLv2+
 BUILD_DEPENDS=	v4l_compat>=1.0.20110603:multimedia/v4l_compat
 RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
 
-USES=		pathfix
+USES=		gmake pathfix
 USE_XORG=	x11 xext xinerama xrandr
 XORG_CAT=	driver
 LDFLAGS+=	-Wl,--as-needed # Xext

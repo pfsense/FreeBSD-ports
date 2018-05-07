@@ -3,12 +3,12 @@
 PORTNAME=	horde
 PORTVERSION=	5.2.17
 CATEGORIES=	www pear
-PKGNAMEPREFIX=
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Application Framework
 
-RUN_DEPENDS=	${PEARDIR}/Net/DNS2.php:dns/pear-Net_DNS2
+RUN_DEPENDS=	${PEARDIR}/Net/DNS2.php:dns/pear-Net_DNS2@${PHP_FLAVOR}
 
 OPTIONS_DEFAULT=	ICONV
 OPTIONS_DEFINE=	FACEBOOK ICONV TWITTER WEATHER
@@ -18,7 +18,7 @@ ICONV_DESC=	Depend on PHP iconv extension
 TWITTER_DESC=	Support connections to Twitter
 WEATHER_DESC=	Support weather forecast display
 
-USES=	horde cpe
+USES=	horde cpe php
 USE_PHP=	filter gettext hash
 
 USE_HORDE_BUILD=	Horde_Role

@@ -12,7 +12,9 @@ COMMENT=	Open Source eLearning and eWorking platform
 
 LICENSE=	GPLv2
 
-USES=		cpe
+IGNORE_WITH_PHP=	70 71 72
+
+USES=		cpe php
 
 NO_BUILD=	yes
 USE_PHP=	mysql

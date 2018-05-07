@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	1password-client
-PORTVERSION=	0.1.1
+PORTVERSION=	0.3
 CATEGORIES=	security
 MASTER_SITES=	https://cache.agilebits.com/dist/1P/op/pkg/v${PORTVERSION}/
 
 MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	1Password CLI client
 
-ONLY_FOR_ARCHS=	amd64 arm i386
+ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386
 
 USES=		zip
 NO_WRKSUBDIR=	yes
@@ -23,11 +23,11 @@ do-install:
 
 .include <bsd.port.pre.mk>
 
-.if   ${ARCH} == "amd64"
+.if ${ARCH} == amd64
 DISTNAME=	op_freebsd_amd64_v${PORTVERSION}
-.elif ${ARCH} == "aarch64"
+.elif ${ARCH} == armv6 || ${ARCH} == armv7
 DISTNAME=	op_freebsd_arm_v${PORTVERSION}
-.elif ${ARCH} == "i386"
+.elif ${ARCH} == i386
 DISTNAME=	op_freebsd_386_v${PORTVERSION}
 .endif
 

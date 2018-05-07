@@ -3,7 +3,7 @@
 PORTNAME=	trean
 PORTVERSION=	1.1.9
 CATEGORIES=	www pear
-PKGNAMEPREFIX=	horde-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Bookmark Manager
@@ -11,7 +11,7 @@ COMMENT=	Horde Bookmark Manager
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=	horde cpe
+USES=	horde cpe php
 USE_PHP=	gettext json
 USE_HORDE_BUILD=	Horde_Role
 USE_HORDE_RUN=	Horde_Role \

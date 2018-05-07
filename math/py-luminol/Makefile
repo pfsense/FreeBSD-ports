@@ -2,6 +2,7 @@
 
 PORTNAME=	luminol
 PORTVERSION=	0.3.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +13,8 @@ COMMENT=	Light weight python library for time series data analysis
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy \
-	${PYTHON_PKGNAMEPREFIX}numpy>=1.6.2,1:math/py-numpy
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${FLAVOR} \
+	${PYTHON_PKGNAMEPREFIX}numpy>=1.6.2,1:math/py-numpy@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils

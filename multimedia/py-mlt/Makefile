@@ -1,19 +1,22 @@
 # Created by: Charlie Kester <corky1951@comcast.net>
 # $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-BUILD_DEPENDS=	python:lang/python
-
-USES=		python:2
+USES=		python:2.7
+USE_PYTHON=	flavors
 MASTERDIR=	${.CURDIR:H}/mlt
 SLAVEPORT=	swig Python
 
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	EXAMPLES
+
+post-patch:
+	@${REINPLACE_CMD} -e 's,which python,which ${PYTHON_VERSION},' -e 's,python -c,${PYTHON_VERSION} -c,' \
+			  -e 's,python-config,${PYTHON_VERSION}-config,' ${WRKSRC}/src/swig/python/build
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}

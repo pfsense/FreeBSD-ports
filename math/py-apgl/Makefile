@@ -3,6 +3,7 @@
 
 PORTNAME=	apgl
 PORTVERSION=	0.8.1
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +14,7 @@ COMMENT=	Fast python graph library with some machine learning features
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}scipy>0.7.0:science/py-scipy
+		${PYTHON_PKGNAMEPREFIX}scipy>0.7.0:science/py-scipy@${FLAVOR}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		python

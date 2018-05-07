@@ -3,7 +3,7 @@
 
 PORTNAME=	vamos
 PORTVERSION=	0.7.1
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -27,6 +27,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	ac_cv_lib_freeglut_glutGetModifiers=no \
 		--disable-unit-tests
 USE_LDCONFIG=	yes
+LLD_UNSAFE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib

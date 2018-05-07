@@ -3,11 +3,10 @@
 
 PORTNAME=	gnokii
 PORTVERSION=	0.6.31
-PORTREVISION=	10
+PORTREVISION=	11
 PORTEPOCH=	1
 CATEGORIES=	comms
 MASTER_SITES=	http://www.gnokii.org/download/gnokii/ \
-		ftp://ftp.gnokii.org/pub/gnokii/ \
 		http://www.gnokii.org/download/gnokii/0.6.x/
 
 MAINTAINER=	madpilot@FreeBSD.org

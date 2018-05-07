@@ -10,6 +10,11 @@ COMMENT=	Tools for MongoDB
 
 LICENSE=	APACHE20
 
+BROKEN_SSL=	openssl-devel libressl libressl-devel
+BROKEN_SSL_REASON_openssl-devel=	variable has incomplete type 'BIO_METHOD' (aka 'struct bio_method_st')
+BROKEN_SSL_REASON_libressl=		could not determine kind of name for C.EVP_sha
+BROKEN_SSL_REASON_libressl-devel=	${BROKEN_SSL_REASON_libressl}
+
 BUILD_DEPENDS=	go>0:lang/go
 
 USES=	localbase
@@ -29,8 +34,6 @@ SSL_USE=	my_tags=ssl
 
 ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	"not yet ported to anything other than i386 and amd64"
-
-STRIP=		# Stripping can break go binaries
 
 # Go is not our friend. Without below, ignores user-supplied flags.
 MAKE_CMD=	${LOCALBASE}/bin/go build

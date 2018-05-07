@@ -3,6 +3,7 @@
 
 PORTNAME=	keyczar
 PORTVERSION=	0.716
+PORTREVISION=	1
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,11 +14,11 @@ COMMENT=	Toolkit for safe and simple cryptography
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>=2.0:security/py-pycrypto \
-		${PYTHON_PKGNAMEPREFIX}pyasn1>0:devel/py-pyasn1
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>=2.0:security/py-pycrypto@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyasn1>0:devel/py-pyasn1@${FLAVOR}
 
 NO_ARCH=	yes
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

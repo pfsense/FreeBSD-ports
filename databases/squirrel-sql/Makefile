@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	squirrel-sql
-PORTVERSION=	3.7.1
+PORTVERSION=	3.8.1
 CATEGORIES=	databases java
 MASTER_SITES=	SF/${PORTNAME}/1-stable/${PORTVERSION}-plainzip
 DISTNAME=	squirrelsql-${PORTVERSION}-optional
@@ -15,7 +15,7 @@ LICENSE=	GPLv2
 NO_BUILD=	yes
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	1.8+
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
@@ -31,7 +31,8 @@ DESKTOP_ENTRIES="Squirrel-SQL Client" \
 		false
 
 post-extract:
-	cd "${WRKSRC}" && ${RM} -r Uninstaller *.bat *.sh .installationinformation
+	cd "${WRKSRC}" && ${RM} -r Uninstaller *.bat *.sh .installationinformation \
+		icons/acorn.png.bak.png
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

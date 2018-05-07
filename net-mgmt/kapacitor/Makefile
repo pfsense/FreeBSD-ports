@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	kapacitor
-PORTVERSION=	1.2.0
+PORTVERSION=	1.4.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-mgmt
 
@@ -11,9 +11,9 @@ COMMENT=	Time-series data collection
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	go>=1.6.0:lang/go
+ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386
 
-ONLY_FOR_ARCHS=	i386 amd64 armv6
+BUILD_DEPENDS=	go>=1.6.0:lang/go
 
 USE_RC_SUBR=	kapacitord
 
@@ -25,41 +25,68 @@ GH_ACCOUNT=	influxdata:DEFAULT
 #GH_SUBDIR=	src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}
 
 SUB_FILES=	kapacitord
-SUB_LIST+=	KAPACITORD_PIDDIR=${KAPACITORD_PIDDIR}
-PLIST_SUB=	KAPACITORD_PIDDIR=${KAPACITORD_PIDDIR}
+SUB_LIST+=	KAPACITORD_USER=${KAPACITORD_USER} \
+		KAPACITORD_GROUP=${KAPACITORD_GROUP} \
+		KAPACITORD_DBDIR=${KAPACITORD_DBDIR} \
+		KAPACITORD_LOGDIR=${KAPACITORD_LOGDIR}
+PLIST_SUB=	KAPACITORD_USER=${KAPACITORD_USER} \
+		KAPACITORD_GROUP=${KAPACITORD_GROUP} \
+		KAPACITORD_DBDIR=${KAPACITORD_DBDIR} \
+		KAPACITORD_LOGDIR=${KAPACITORD_LOGDIR}
 
-STRIP=		# stripping can break go binaries
+#Use influxd user as it's aleary present in ports system
+KAPACITORD_USER=	influxd
+KAPACITORD_GROUP=	influxd
+
+USERS=		${KAPACITORD_USER}
+GROUPS=		${KAPACITORD_GROUP}
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == "FreeBSD" && ((${OSVERSION} >= 1100513 && ${OSVERSION} < 1200000) || \
+	${OSVERSION} >= 1200015)
+SUB_LIST+=	KAPACITORD_LOGCMD="daemon"
+.else
+SUB_LIST+=	KAPACITORD_LOGCMD="logger"
+.endif
+
+KAPACITORD_DBDIR=	/var/db/${PORTNAME}/
+KAPACITORD_LOGDIR=	/var/log/${PORTNAME}/
 
 post-patch:
 	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
 	@cd ${WRKSRC} && ${MV} \
-	alert alert.go auth batch.go BLOB_STORE_DESIGN.md bufpool build.py \
-	build.sh CHANGELOG.md circle-test.sh circle.yml client clock cmd \
-	combine_test.go combine.go command CONTRIBUTING.md default.go delete.go \
-	derivative.go DESIGN.md doc.go Dockerfile_build_ubuntu32 \
-	Dockerfile_build_ubuntu64 Dockerfile_build_ubuntu64_git edge_test.go \
-	edge.go etc eval.go examples expr.go expvar flatten.go gobuild.sh \
-	group_by.go http_out.go influxdb influxdb_out.go influxql.gen.go \
-	influxql.gen.go.tmpl influxql.go integrations join.go k8s_autoscale.go \
-	LICENSE LICENSE_OF_DEPENDENCIES.md list-deps log.go metaclient.go \
-	models node.go noop.go output.go pipeline query_test.go query.go \
-	README.md replay.go result.go sample.go scripts server services \
-	shift.go stats.go stream.go task_master.go task.go template.go \
-	test.sh tick tickdoc.conf timer tmpldata udf udf_test.go udf.go \
-	union.go update_tick_docs.sh usr vars vendor vendor.list vendor.sh \
-	where.go window_test.go window.go \
+	BLOB_STORE_DESIGN.md CHANGELOG.md CONTRIBUTING.md DESIGN.md Gopkg.lock \
+	Gopkg.toml LICENSE_OF_DEPENDENCIES.md README.md alert alert.go auth \
+	autoscale.go barrier.go batch.go bufpool build.py build.sh circle-test.sh \
+	circle.yml client clock cmd combine.go combine_test.go command default.go \
+	delete.go derivative.go doc.go edge edge.go etc eval.go examples expr.go \
+	expvar flatten.go gobuild.sh group_by.go http_out.go http_post.go influxdb \
+	influxdb_out.go influxql.gen.go influxql.gen.go.tmpl influxql.go integrations \
+	join.go kapacitor_loopback.go keyvalue list-deps listmap log.go metaclient.go \
+	models node.go noop.go output.go pipeline query.go query_test.go replay.go \
+	result.go sample.go scripts server services shift.go sideload.go \
+	state_tracking.go stats.go stream.go task.go task_master.go template.go \
+	test.sh tick tickdoc.conf timer tlsconfig tmpldata.json udf udf.go \
+	udf_test.go union.go update_tick_docs.sh usr uuid vendor waiter where.go \
+	window.go window_test.go \
 		${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/influxdata/${PORTNAME} \
-		&& ${SETENV} GOPATH=${WRKSRC} go install -ldflags "-X main.version=${DISTVERSION}" ./cmd/${PORTNAME} \
-		&& ${SETENV} GOPATH=${WRKSRC} go install -ldflags "-X main.version=${DISTVERSION}" ./cmd/${PORTNAME}d
+		&& ${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go install -ldflags "-X main.version=${DISTVERSION}" ./cmd/${PORTNAME} \
+		&& ${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go install -ldflags "-X main.version=${DISTVERSION}" ./cmd/${PORTNAME}d
 
 do-install:
+	${MKDIR} ${STAGEDIR}${KAPACITORD_DBDIR} \
+	${STAGEDIR}${KAPACITORD_LOGDIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME}d ${STAGEDIR}${PREFIX}/bin/${PORTNAME}d
+	@${SED} -i .bak -e \
+		"s|/var/lib/kapacitor|/var/db/kapacitor|g" \
+		${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/etc/${PORTNAME}/${PORTNAME}.conf
 	${INSTALL_DATA} \
 		${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/etc/${PORTNAME}/${PORTNAME}.conf  \
 		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

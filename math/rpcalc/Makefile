@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rpcalc
-PORTVERSION=	0.7.1
+PORTVERSION=	0.8.1
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
@@ -12,8 +12,10 @@ COMMENT=	Simple RPN calculator
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 
-USES=		pyqt:4 python:3.3+
-USE_PYQT=	core gui
+USES=		pyqt:5 python:3.4+ shebangfix
+USE_PYQT=	core gui widgets sip
+
+SHEBANG_FILES=	source/rpcalc.py
 
 CONFIGURE_ARGS=	-p ${PREFIX} -d ${DOCSDIR} -i ${DATADIR}/icons -b ${STAGEDIR}
 NO_ARCH=	yes
@@ -34,11 +36,4 @@ do-install:
 		-d ${DATADIR} -f ${DATADIR_REL})
 	(cd ${STAGEDIR}${DOCSDIR} && ${RM} INSTALL LICENSE)
 
-.include <bsd.port.pre.mk>
-
-.if defined(PACKAGE_BUILDING) && !defined(PACKAGE_BUILDING_FLAVORS) && \
-    ${PYTHON_VER} != ${PYTHON_DEFAULT}
-IGNORE=	you have python ${PYTHON_DEFAULT} set as the default, and this needs ${PYTHON_VER}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

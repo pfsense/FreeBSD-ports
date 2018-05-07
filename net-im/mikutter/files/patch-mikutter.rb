@@ -1,11 +1,20 @@
---- mikutter.rb.orig	2015-05-14 01:40:33 UTC
+--- mikutter.rb.orig	2017-12-24 15:00:56 UTC
 +++ mikutter.rb
-@@ -9,7 +9,7 @@ This software is released under the MIT 
- http://opensource.org/licenses/mit-license.php
- 
+@@ -13,7 +13,7 @@ http://opensource.org/licenses/mit-licen
  =end
--mikutter_directory = File.expand_path(File.dirname(__FILE__))
-+mikutter_directory = '%%RUBY_SITELIBDIR%%/mikutter'
+ module Mikutter; end
  
- unless ENV['DISABLE_BUNDLER_SETUP']
-   begin
+-require_relative 'core/boot/option'
++require_relative '%%RUBY_SITELIBDIR%%/mikutter/core/boot/option'
+ Mopt.parse exec_command: true
+ 
+ if !ENV['DISABLE_BUNDLER_SETUP'] || ['', '0'].include?(ENV['DISABLE_BUNDLER_SETUP'].to_s)
+@@ -33,7 +33,7 @@ require 'webrick'
+ require 'thread'
+ require 'fileutils'
+ 
+-require_relative 'core/utils'
++require_relative '%%RUBY_SITELIBDIR%%/mikutter/core/utils'
+ 
+ miquire :boot, 'check_config_permission', 'mainloop', 'delayer'
+ miquire :core, 'environment'

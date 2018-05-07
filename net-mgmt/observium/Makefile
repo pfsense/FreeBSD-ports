@@ -1,82 +1,47 @@
 # Created by: rflynn@acsalaska.net
 # $FreeBSD$
+# Observium version can be found by looking at ${WRKSRC}/includes/definitions/version.inc.php
 
 PORTNAME=	observium
-PORTVERSION=	0.16.10.8128
-PORTREVISION=	5
+PORTVERSION=	0.17.9.8859
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.observium.org/
 DISTNAME=	${PORTNAME}-community-latest
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	dirkx@webweaving.org
+MAINTAINER=	feld@FreeBSD.org
 COMMENT=	Autodiscovering PHP/MySQL/SNMP based network monitoring
 
-LICENSE=        EULA
+LICENSE=	EULA
 LICENSE_NAME=	"Observium License Version 1.0"
 LICENSE_FILE=	${WRKSRC}/LICENSE.COMMUNITY
-LICENSE_PERMS=  dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		php:cli python shebangfix
+USES=		php:cli python${PY_MYSQL} shebangfix
 SHEBANG_FILES=	\
 		mibs/process.pl \
 		poller-wrapper.py \
-		scripts/add_ds_to_rrd.pl \
-		scripts/add_ds.pl \
-		scripts/agent-local/areca-hw \
-		scripts/agent-local/asterisk \
-		scripts/agent-local/bind \
-		scripts/agent-local/crashplan \
-		scripts/agent-local/edac \
-		scripts/agent-local/exim-mailqueue.sh \
-		scripts/agent-local/hdarray \
-		scripts/agent-local/ipmitool-sensor \
-		scripts/agent-local/kamailio \
-		scripts/agent-local/ksm \
-		scripts/agent-local/lighttpd \
-		scripts/agent-local/lmsensors \
-		scripts/agent-local/lvs_stats \
-		scripts/agent-local/memcached \
-		scripts/agent-local/nginx \
-		scripts/agent-local/postfix_mailgraph \
-		scripts/agent-local/postfix_qshape \
-		scripts/agent-local/postgresql.pl \
-		scripts/agent-local/proxmox-qemu \
-		scripts/agent-local/sabnzbd-qstatus \
-		scripts/agent-local/temperature \
-		scripts/agent-local/virt-what \
-		scripts/agent-local/vmwaretools \
-		scripts/agent-local/zimbra \
-		scripts/get-geshi.sh \
-		scripts/get-jpgraph.sh \
-		scripts/glue.py \
-		scripts/ifAlias \
-		scripts/ifAlias_persist \
-		scripts/logparser \
-		scripts/makecss.sh \
-		scripts/observium_agent \
-		scripts/removespikes.php \
-		scripts/removespikes.pl \
-		scripts/rename-mibs.pl \
-		scripts/rrdtoolx.py
+		poller.php \
+		scripts/
 
 USE_PHP=	ctype filter gd iconv json mcrypt mysqli openssl posix session snmp tokenizer xml zlib
-IGNORE_WITH_PHP=	71
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 RUN_DEPENDS+=	rrdtool:databases/rrdtool \
 		dot:graphics/graphviz \
 		mtr:net/mtr-nox11 \
-		${LOCALBASE}/share/pear/Net/IPv4.php:net/pear-Net_IPv4 \
-		${LOCALBASE}/share/pear/Net/IPv6.php:net/pear-Net_IPv6 \
+		${LOCALBASE}/share/pear/Net/IPv4.php:net/pear-Net_IPv4@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Net/IPv6.php:net/pear-Net_IPv6@${PHP_FLAVOR} \
 		snmpget:net-mgmt/net-snmp \
 		sudo:security/sudo
 LIB_DEPENDS+=	libpng.so:graphics/png
 
-OPTIONS_DEFINE=	APACHEMOD FPING IPMITOOL LIBVIRT MYSQLD NAGPLUGINS NMAP PYPOLLER SVN WMIC
+OPTIONS_DEFINE=	APACHEMOD DOCS EXAMPLES FPING IPMITOOL LIBVIRT MYSQLD NAGPLUGINS NMAP PYPOLLER SVN WMIC
 OPTIONS_DEFAULT=	APACHEMOD FPING IPMITOOL LIBVIRT NAGPLUGINS NMAP PYPOLLER SVN WMIC
 APACHEMOD_DESC=	Use PHP with Apache 2.2+ module
 FPING_DESC=	Enable fping support ping monitoring
@@ -91,6 +56,7 @@ LIBVIRT_RUN_DEPENDS=	virsh:devel/libvirt
 NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios-plugins
 NMAP_RUN_DEPENDS=	nmap:security/nmap
 PYPOLLER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>0:databases/py-MySQLdb
+PYPOLLER_VARS=	PY_MYSQL=:2.7
 SVN_RUN_DEPENDS=	svn:devel/subversion
 WMIC_RUN_DEPENDS=	wmic:net-mgmt/wmi-client
 
@@ -99,17 +65,18 @@ WMIC_RUN_DEPENDS=	wmic:net-mgmt/wmi-client
 SUB_FILES+=	pkg-message observium.conf.sample
 SUB_LIST+=	PHP="${PHPBASE}/bin/php" PYTHON=${PHPBASE}/bin/python
 
-ROOT_FILES=	rename_device.php snmptrap.php add_device.php \
-		snmpd.conf.example check-errors.php config_to_json.php delete_device.php \
-		syslog.php irc.php snmp.conf.example adduser.php discovery.php \
-		check-services.php poller.php config.php.default poller-wrapper.py
-ROOT_DIRS=	html scripts includes update mibs libs
+ROOT_FILES=	add_device.php adduser.php alerter.php alerts.php \
+		check-errors.php check-services.php config_to_json.php \
+		config.php.default delete_device.php discovery.php housekeeping.php \
+		irc.php poller-wrapper.py poller.php rename_device.php \
+		snmptrap.php snmptrap.php syslog.php test_alert.php
+ROOT_DIRS=	html includes libs logs mibs rrd scripts templates tests update
 
-PORTDOCS=	INSTALL README
+PORTDOCS=	INSTALL README VERSION
 PORTEXAMPLES=	snmp.conf.example snmpd.conf.example
 
 .if ${PORT_OPTIONS:MAPACHEMOD}
-USE_APACHE_RUN=	22+
+USES+=	apache:run,2.2+
 .endif
 .if !defined(PACKAGE_BUILDING)
 USES+=	php:mod
@@ -126,37 +93,43 @@ USES+=	mysql:client
 
 post-patch:
 	${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/poller-wrapper.py ${WRKSRC}/poller.php
+	${FIND} ${WRKSRC} -type d -empty -delete
+	${MKDIR} ${WRKSRC}/logs ${WRKSRC}/rrd
 
 do-install:
 	${MKDIR} ${STAGEDIR}/${WWWDIR} ${STAGEDIR}/${PREFIX}/${APACHEETCDIR}/Includes
+	${INSTALL_DATA} ${WRKDIR}/observium.conf.sample ${STAGEDIR}/${PREFIX}/${APACHEETCDIR}/Includes
 .for dir in ${ROOT_DIRS}
 	${MKDIR} ${STAGEDIR}/${WWWDIR}/${dir}
-	cd ${WRKSRC}/${dir} && ${COPYTREE_SHARE} . ${STAGEDIR}/${WWWDIR}/${dir}
+	(cd ${WRKSRC}/${dir} && ${COPYTREE_SHARE} . ${STAGEDIR}/${WWWDIR}/${dir})
 .endfor
 .for f in ${ROOT_FILES}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}/${WWWDIR}
 .endfor
-	# Create empty rrd dir and logs writable by www (the apache user)
-	${MKDIR} ${STAGEDIR}/${WWWDIR}/rrd ${STAGEDIR}/${WWWDIR}/logs
-	# Files in scripts dir should be executable
+# Files in scripts dir should be executable
 	${FIND} ${STAGEDIR}/${WWWDIR}/scripts -type f -exec ${CHMOD} +x {} \;
-	# Ensure PHP and Python scripts are executable
-	${FIND} ${STAGEDIR}/${WWWDIR} -type f -name '*.py' -or -type f -name '*.php' -exec ${CHMOD} +x {} \;
-	# Rename for @sample
-	${MV} ${STAGEDIR}/${WWWDIR}/config.php.default ${STAGEDIR}/${WWWDIR}/config.php.default.sample
+# Ensure PHP and Python scripts are executable
+	${FIND} ${STAGEDIR}/${WWWDIR} -type f -name '*.py' -or -type f -name \
+		'*.php' -exec ${CHMOD} +x {} \;
 
-.if ${PORT_OPTIONS:MDOCS}
+do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}/${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}/${DOCSDIR}
 .endfor
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
+
+do-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}
 .for f in ${PORTEXAMPLES}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}/${EXAMPLESDIR}
 .endfor
-.endif
-	${INSTALL_DATA} ${WRKDIR}/observium.conf.sample ${STAGEDIR}/${PREFIX}/${APACHEETCDIR}/Includes
+
+post-install:
+	@${ECHO}  "@sample ${APACHEETCDIR}/Includes/observium.conf.sample" >> ${TMPPLIST}
+	@${FIND} -s ${STAGEDIR}${WWWDIR} -type f '(' -name '*.orig' -or -name '*.bak' ')' -delete
+	@${FIND} -s ${STAGEDIR}${WWWDIR} -not -type d | ${SORT} | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(www,www,0775) ${WWWDIR}/logs" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(www,www,0775) ${WWWDIR}/rrd" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

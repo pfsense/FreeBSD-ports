@@ -3,7 +3,7 @@
 
 PORTNAME=	kicad
 PORTVERSION=	4.0.7
-PORTREVISION=	3
+PORTREVISION=	7
 PORTEPOCH=	2
 CATEGORIES=	cad
 
@@ -18,7 +18,6 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs	\
 		libpixman-1.so:x11/pixman		\
 		libpng.so:graphics/png			\
 		libcurl.so:ftp/curl
-RUN_DEPENDS=	xpdf:graphics/xpdf
 
 CONFLICTS=	kicad-devel-r201*
 
@@ -60,15 +59,18 @@ DOXYGEN_IMPLIES=	DOCS
 DOXYGEN_ALL_TARGET=	all doxygen-docs
 DOXYGEN_PORTDOCS=	doxygen
 
+# The CheckCXXSymbolExists module has been shipped with CMake since 3.0 times.
+# The ancient implementation that this bundled module uses, no longer works
+# because it uses CMake internals that have gone away in 3.11.
+post-extract:
+	${RM} ${WRKSRC}/CMakeModules/CheckCXXSymbolExists.cmake
+
 pre-configure:
 	${REINPLACE_CMD} -e 's|/usr/share/kicad|${DATADIR}|'		\
 		-e 's|/usr/local|${PREFIX}|'				\
-		-e 's|/usr/bin/evince|${LOCALBASE}/bin/xpdf|'		\
-		-e 's|/usr/bin/kpdf|${LOCALBASE}/bin/okular|'		\
-		-e 's|/usr/bin/xpdf|${LOCALBASE}/bin/xpdf|'		\
-		-e 's|/usr/bin/konqueror|${LOCALBASE}/bin/konqueror|'	\
-		-e 's|/usr/bin/xdg-open|${LOCALBASE}/bin/xdg-open|'	\
 		${WRKSRC}/common/gestfich.cpp
+	${REINPLACE_CMD} -e 's|/usr/bin/xdg-open|${LOCALBASE}/bin/xdg-open|' \
+		${WRKSRC}/common/pgm_base.cpp
 
 post-install-DOCS-on:
 	(cd ${WRKSRC}/Documentation && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})

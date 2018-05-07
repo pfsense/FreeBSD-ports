@@ -3,8 +3,8 @@
 
 PORTNAME=	openimageio
 PORTVERSION=	1.7.17
-PORTREVISION=	3
 DISTVERSIONPREFIX=	Release-
+PORTREVISION=	8
 CATEGORIES?=	graphics multimedia
 
 MAINTAINER?=	FreeBSD@Shaneware.biz
@@ -15,7 +15,7 @@ LICENSE=	BSD3CLAUSE
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libImath.so:graphics/ilmbase \
 		libIlmImf.so:graphics/OpenEXR \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
 		libwebp.so:graphics/webp \
 		libhdf5.so:science/hdf5
@@ -94,10 +94,10 @@ CMAKE_ARGS+=	-DUSE_PYTHON:BOOL=OFF -DUSE_PYTHON3:BOOL=OFF \
 		-DOIIO_BUILD_TOOLS:BOOL=ON
 .else
 LIB_DEPENDS+=	libOpenImageIO.so:graphics/openimageio \
-		libboost_python.so:devel/boost-python-libs
+		${PY_BOOST}
 PLIST=		${PKGDIR}/pkg-plist-pybind
 #while oiio supports py3, ports doesn't have py3 support for boost-python yet
-USES+=		python:2
+USES+=		python:2.7
 CMAKE_ARGS+=	-DUSE_PYTHON:BOOL=ON -DUSE_PYTHON3:BOOL=OFF \
 		-DOIIO_BUILD_TOOLS:BOOL=OFF -DUSE_FFMPEG:BOOL=OFF
 .endif

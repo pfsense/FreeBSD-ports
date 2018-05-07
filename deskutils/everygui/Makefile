@@ -3,7 +3,7 @@
 
 PORTNAME=	everygui
 PORTVERSION=	0.99.b
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	SF
 
@@ -13,7 +13,7 @@ COMMENT=	Dynamic GUI for an OS command
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		dos2unix python shebangfix
+USES=		dos2unix python:2.7 shebangfix
 SHEBANG_FILES=	src/*.py
 DOS2UNIX_GLOB=	*.py
 USE_PYTHON=	distutils autoplist

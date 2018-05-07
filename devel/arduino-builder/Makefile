@@ -2,6 +2,7 @@
 
 PORTNAME=	arduino-builder
 PORTVERSION=	1.3.25
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	kevans@FreeBSD.org
@@ -27,7 +28,6 @@ TOOLS_RUN_DEPENDS=	arduino-tools>=${_COMPAT_VER}:devel/arduino-tools
 TOOLS_PLIST_FILES=	arduino/arduino-builder.options
 
 GO_ENV+=	GOPATH=${WRKSRC}
-STRIP=		# stripping can break go binaries
 _COMPAT_VER=	1.6.12
 _IDE_VER=	10612
 
@@ -42,7 +42,7 @@ do-patch-TOOLS-on:
 			${WRKSRC}/arduino-builder.options
 
 do-build:
-	@( cd ${WRKSRC} ; ${SETENV} ${GO_ENV} go build arduino.cc/arduino-builder )
+	@( cd ${WRKSRC} ; ${SETENV} ${MAKE_ENV} ${GO_ENV} go build arduino.cc/arduino-builder )
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

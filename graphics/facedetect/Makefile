@@ -3,6 +3,7 @@
 
 PORTNAME=	facedetect
 PORTVERSION=	0.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/cv.py:graphics/py-opencv
 
-USES=		python:run shebangfix
+USES=		python:2.7,run shebangfix
 USE_GITHUB=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes

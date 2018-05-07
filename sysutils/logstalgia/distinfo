@@ -1,5 +1,5 @@
-TIMESTAMP = 1506846364
-SHA256 (acaudwell-Logstalgia-1.0.8-32067aa_GH0.tar.gz) = 526c5241246d393056e86e43d8f4ff9c8769d7aac71833d251c0607791cdf7fc
-SIZE (acaudwell-Logstalgia-1.0.8-32067aa_GH0.tar.gz) = 904301
-SHA256 (acaudwell-Core-683d98b_GH0.tar.gz) = c1dc0ed46c6290c1ffb7f0124df9d31d4d3ccf95db138d0fd1e38a660ea0e939
-SIZE (acaudwell-Core-683d98b_GH0.tar.gz) = 86388
+TIMESTAMP = 1518625798
+SHA256 (acaudwell-Logstalgia-logstalgia-1.1.1_GH0.tar.gz) = 6e2161b6335c0a5b54282423a410428bf844fbac7d894469976d29bd8d50a531
+SIZE (acaudwell-Logstalgia-logstalgia-1.1.1_GH0.tar.gz) = 2312396
+SHA256 (acaudwell-Core-1534074_GH0.tar.gz) = 5c874afe5838c4713c15270e6df495c980450f29a12bc7657e7352af756544c4
+SIZE (acaudwell-Core-1534074_GH0.tar.gz) = 86442

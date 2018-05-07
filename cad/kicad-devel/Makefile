@@ -3,9 +3,8 @@
 
 PORTNAME=	kicad
 DISTVERSION=	r${GIT_SRC_DATE}
-PORTREVISION=	3
+#PORTREVISION=	3
 CATEGORIES=	cad
-MASTER_SITES=	LOCAL/mr
 PKGNAMESUFFIX=	-devel
 DIST_SUBDIR=		${PORTNAME}
 
@@ -14,26 +13,29 @@ COMMENT=		Schematic and PCB editing software
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:math/glm
+BUILD_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:math/glm \
+		${LOCALBASE}/bin/swig3.0:devel/swig30
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
+		libpng.so:graphics/png \
 		libcurl.so:ftp/curl
 
 CONFLICTS=	kicad-4.*
 
-DOCVERSION=	1.1
-LIBVERSION=	1.0
+USE_GITHUB=     yes
+GH_ACCOUNT=     KiCad
+GH_PROJECT=     kicad-source-mirror
+GH_TAGNAME=	${GIT_SRC_HASH}
 
-#CXXFLAGS+=	-std=c++11
-CXXFLAGS+=	-msse
-USE_GL=		glew glu gl
+CXXFLAGS+=	--std=c++11 -I${WRKSRC}/include -I${LOCALBASE}/include -msse
+USE_GL=		gl glew glu glut
 USE_WX=		3.0
-WX_COMPS=	wx
+WX_COMPS=	wx wx:build wx:run python:build python:run
 USE_GNOME=	atk cairo	# Required by libwx_gtk2_aui-2.8.so
-USE_XORG+=	pixman
+USE_XORG+=	ice pixman x11 xext
 
 BROKEN_aarch64=		Fails to compile: use of undeclared identifier builtin_ia32_emms
 
-OPTIONS_DEFINE=	DOCS
+#OPTIONS_DEFINE=	DOCS
 
 PLIST_SUB=	OPSYS=${OPSYS}	\
 		DESKTOPDIR=${DESKTOPDIR:S|^${PREFIX}/||}
@@ -42,7 +44,8 @@ BINS=		cvpcb eeschema gerbview kicad pcbnew
 EXTRAS2RM=	linux-non_unicode linux wings3d LINUX.README	\
 		contrib_makefiles.txt running_kicad_under_W98.txt
 USES=		desktop-file-utils shared-mime-info compiler:c++11-lib tar:bzip2 cmake \
-		gettext python ssl
+		gettext python shebangfix ssl
+SHEBANG_FILES=	pcbnew/python/plugins/touch_slider_wizard.py
 
 CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_BUILD_TYPE="Debug" \
@@ -51,13 +54,14 @@ CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_INCLUDE_PATH="${LOCALBASE}/include" \
 		-DwxWidgets_CONFIG_EXECUTABLE="${WX_CONFIG}" \
 		-DwxWidgets_USE_DEBUG=ON \
-		-DKICAD_SKIP_BOOST=YES
-
-.if exists(${LOCALBASE}/bin/konqueror)
-RUN_DEPENDS+=	konqueror:x11/kde4-baseapps
-.else
-RUN_DEPENDS+=	xpdf:graphics/xpdf
-.endif
+		-DwxWidgets_USE_USE_UNICODE=ON \
+		-DwxWidgets_wxrc_EXECUTABLE=${WXRC_CMD} \
+		-DKICAD_SCRIPTING=ON \
+		-DKICAD_SCRIPTING_MODULES=ON \
+		-DKICAD_SCRIPTING_WXPYTHON=ON \
+		-DKICAD_SKIP_BOOST=YES \
+		-DKICAD_SPICE=OFF \
+		-DKICAD_USE_OCE=OFF
 
 .include "Makefile.git_rev"
 
@@ -80,18 +84,24 @@ showversions:
 tmp:
 	echo "${DATADIR} ${DATADIR:H}"
 
+# The CheckCXXSymbolExists module has been shipped with CMake since 3.0 times.
+# The ancient implementation that this bundled module uses, no longer works
+# because it uses CMake internals that have gone away in 3.11.
+post-extract:
+	${RM} ${WRKSRC}/CMakeModules/CheckCXXSymbolExists.cmake
+
 post-configure:
 	${REINPLACE_CMD} -e 's|#define HAVE_ISO646_H|//#define HAVE_ISO646_H|'     \
 		${WRKSRC}/config.h
 	for f in `${FIND} ${WRKSRC} -name \*.make -o -name link.txt` ; do				\
 		${REINPLACE_CMD}						\
-		-e 's|CC = gcc|#CC = gcc|'             				\
-		-e 's|LD = gcc|LD = ${CC}|'                     		\
-		-e 's|LD = g++|LD = ${CXX}|'                    		\
-		-e 's|wx-config|${WX_CONFIG}|'                  		\
+		-e 's|CC = gcc|#CC = gcc|'					\
+		-e 's|LD = gcc|LD = ${CC}|'					\
+		-e 's|LD = g++|LD = ${CXX}|'					\
+		-e 's|wx-config|${WX_CONFIG}|'					\
 		-e 's|CXX_FLAGS =|CXX_FLAGS = -I${LOCALBASE}/include|'		\
 		-e 's|C_FLAGS =|C_FLAGS = -I${LOCALBASE}/include|'		\
-		-e 's|LDFLAGS =|LDFLAGS += -L${LOCALBASE}/lib|' 		\
+		-e 's|LDFLAGS =|LDFLAGS += -L${LOCALBASE}/lib|'			\
 		-e 's|gcc -D|${CC} -D|'						\
 		-e 's/-pthread;-D_THREAD_SAFE/-pthread -D_THREAD_SAFE/g'	\
 		$$f ;								\
@@ -100,10 +110,10 @@ post-configure:
 pre-install:
 	@echo "${DATADIR}, ${DOCSDIR}"
 
-post-install:
-.for subdir in library modules template
-	${CP} -Rp ${WRKDIR}/kicad-library-master/${subdir} ${STAGEDIR}${DATADIR}
-.endfor
+#post-install:
+#.for subdir in library modules template
+#	${CP} -Rp ${WRKDIR}/kicad-library-master/${subdir} ${STAGEDIR}${DATADIR}
+#.endfor
 #.for subdir in internat
 #	${CP} -Rp ${WRKDIR}/kicad-doc/${subdir} ${STAGEDIR}${DOCSDIR}
 #.endfor

@@ -47,6 +47,7 @@
     SUBDIR += kicad
     SUBDIR += kicad-devel
     SUBDIR += kicad-library
+    SUBDIR += kicad-library-devel
     SUBDIR += klayout
     SUBDIR += layouteditor
     SUBDIR += ldraw
@@ -71,6 +72,7 @@
     SUBDIR += py-gdspy
     SUBDIR += py-lcapy
     SUBDIR += py-pycam
+    SUBDIR += py-pyfda
     SUBDIR += python-gdsii
     SUBDIR += pythoncad
     SUBDIR += qcad
@@ -86,6 +88,7 @@
     SUBDIR += sp2sp
     SUBDIR += spice
     SUBDIR += stepcode
+    SUBDIR += sumo
     SUBDIR += sweethome3d
     SUBDIR += tkgate
     SUBDIR += tochnog

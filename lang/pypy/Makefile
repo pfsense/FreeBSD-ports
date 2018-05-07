@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME?=	pypy
-DISTVERSION?=	5.8.0	# Also update bsd.pypy.cffi.mk
 CATEGORIES=	lang python
 MASTER_SITES=	https://bitbucket.org/pypy/pypy/downloads/ http://buildbot.pypy.org/mirror/
-DISTNAME?=	${PORTNAME}2-v${PORTVERSION}-src
+DISTNAME?=	${PORTNAME}2-v${DISTVERSION}-src
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Fast, compliant implementation of the Python language
@@ -20,10 +19,11 @@ TEST_DEPENDS=	${LOCALBASE}/${PYPY_DIR}/lib_pypy/_gdbm_cffi.${PYPY_CFFI_VER}.so:d
 		${LOCALBASE}/${PYPY_DIR}/lib_pypy/_sqlite3_cffi.${PYPY_CFFI_VER}.so:databases/pypy-sqlite3 \
 		${LOCALBASE}/${PYPY_DIR}/lib_pypy/_tkinter/tklib_cffi.${PYPY_CFFI_VER}.so:x11-toolkits/pypy-tkinter
 
-ONLY_FOR_ARCHS?=i386 amd64 armv6 powerpc64
+ONLY_FOR_ARCHS?=	amd64 armv6 armv7 i386 powerpc64
 ONLY_FOR_ARCHS_REASON?=	PyPy JIT only supported on these architectures
 
 BROKEN_armv6=		fails to package: pypy_objspace_std.c: Crash in JIT!
+BROKEN_armv7=		fails to package: pypy_objspace_std.c: Crash in JIT!
 BROKEN_powerpc64=	fails to compile: platcheck_109.c: fatal error: linux/auxvec.h: No such file or directory
 
 OPTIONS_SINGLE=	TRANS
@@ -45,10 +45,11 @@ OPTIONS_SLAVE=	PYTHON
 .endif
 
 ALL_TARGET=	${PORTNAME}-c
-BUILD_WRKSRC?=	${WRKDIR}/build/usession-release-pypy2.7-v${PORTVERSION}-0/testing_1
+BUILD_WRKSRC?=	${WRKDIR}/build/usession-release-pypy2.7-v${DISTVERSION}-0/testing_1
 MAKE_ENV+=	PYPY_LOCALBASE=${LOCALBASE} LDSHARED="${CC} -shared"
 PACKAGE_ARGS?=	--without-gdbm --without-sqlite3 --without-tk
 USE_LDCONFIG=	${PREFIX}/${PYPY_DIR}/bin
+LLD_UNSAFE=	yes
 USES=		gettext-runtime gmake shebangfix ssl tar:bzip2
 SHEBANG_FILES?=	lib-python/2.7/plat-mac/appletrunner.py \
 		lib-python/2.7/plat-mac/bundlebuilder.py \
@@ -92,8 +93,8 @@ PYPY_MINMEM_BUILD_DEPENDS=	pypy:lang/pypy
 .endif
 PYPY_VARS=	PYTHON_CMD=${LOCALBASE}/bin/pypy
 PYPY_MINMEM_VARS=	PYTHON_CMD="${SETENV} PYPY_GC_MAX_DELTA=200MB ${LOCALBASE}/bin/pypy --jit loop_longevity=300"
-PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycparser>=2.10:devel/py-pycparser
-PYTHON_USES=	python:2,build
+PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycparser>=2.10:devel/py-pycparser@${PY_FLAVOR}
+PYTHON_USES=	python:2.7,build
 
 DESCR=		${.CURDIR}/pkg-descr
 DISTINFO_FILE=	${.CURDIR}/distinfo
@@ -104,12 +105,11 @@ PLIST=		${.CURDIR}/pkg-plist
 .include "${MASTERDIR}/bsd.pypy.mk"
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "i386" || ${ARCH} == "armv6"
-PYPY_BITS=	32
-.elif ${ARCH} == "amd64" || ${ARCH} == "powerpc64"
-PYPY_BITS=	64
+.if ${OPSYS} == FreeBSD && (${OSVERSION} < 1100000 || (${ARCH} != i386 && ${ARCH} != amd64))
+PYPY_ARGS=	--withoutmod-_vmprof
+.else
+LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
-PLIST_SUB+=	PYPY_BITS="${PYPY_BITS}"
 
 post-extract:
 	${FIND} ${WRKSRC} -name '*.swn' -delete
@@ -120,7 +120,7 @@ pre-build:
 		${MKDIR} ${WRKDIR}/build; \
 		(cd ${WRKSRC}/pypy/goal; \
 			${SETENV} ${MAKE_ENV} TMPDIR=${WRKDIR}/build \
-			${PYTHON_CMD} ../../rpython/bin/rpython --source -Ojit targetpypystandalone.py); \
+			${PYTHON_CMD} ../../rpython/bin/rpython --source -Ojit targetpypystandalone.py ${PYPY_ARGS}); \
 	fi
 
 post-build:
@@ -155,7 +155,6 @@ do-test:
 pkg-plist: stage
 	${TAR} -tf ${WRKDIR}/build/${PYPY_DIR}.tar.bz2 > ${WRKDIR}/.plist-files-gen
 	${REINPLACE_CMD} -e 's|^${PYPY_DIR}|%%PYPY_DIR%%|g' \
-		-e 's|_${PYPY_BITS}_|_%%PYPY_BITS%%_|g' \
 		-e 's|${PYPY_CFFI_VER}|%%PYPY_CFFI_VER%%|g' \
 		-e 's/\(.*\/__pycache__\)\/$$/@dir \1/g' \
 		-e '/\/$$/d' \

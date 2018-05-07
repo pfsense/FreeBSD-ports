@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-base
 PORTVERSION=	1.4
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	#none
 DISTFILES=	#none
@@ -22,6 +22,7 @@ USES=		perl5
 SUB_FILES=	load-octave-pkg
 SUB_LIST=	PERL=${PERL}
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/octave/tarballs

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	flock
-PORTVERSION=	2.29
-PORTREVISION=	1
+PORTVERPREFIX=	2.30
+PORTVERSION=	${PORTVERPREFIX}.1
 CATEGORIES=	sysutils
-MASTER_SITES=	KERNEL_ORG/linux/utils/util-linux/v${PORTVERSION}/
+MASTER_SITES=	KERNEL_ORG/linux/utils/util-linux/v${PORTVERPREFIX}/
 DISTNAME=	util-linux-${PORTVERSION}
 
 MAINTAINER=	franco@opnsense.org
@@ -20,7 +20,7 @@ USES=		libtool pkgconfig
 OPTIONS_DEFINE=	NLS
 
 NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=	autoreconf:autopoint gettext
+NLS_USES=	autoreconf gettext
 
 PLIST_FILES=	bin/flock man/man1/flock.1.gz \
 		etc/bash_completion.d/flock

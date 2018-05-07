@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	ncmpcpp
-PORTVERSION=	0.8
-PORTREVISION=	5
+PORTVERSION=	0.8.1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://ncmpcpp.rybczak.net/stable/
 
@@ -24,6 +24,7 @@ BROKEN_powerpc64=	fails to compile: tags.cpp: undefined reference to TagLib::Str
 USES=		compiler:c++14-lang iconv libtool localbase ncurses:port pkgconfig readline tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
+CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 LDFLAGS+=	-lpthread
 CONFIGURE_ENV=	BOOST_LIB_SUFFIX=""
 

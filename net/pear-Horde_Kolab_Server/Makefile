@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Kolab_Server
-PORTVERSION=	2.0.1
+DISTVERSION=	2.0.5
 CATEGORIES=	net www pear
-PKGNAMEPREFIX=	pear-
+PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde library for manipulating the Kolab user database

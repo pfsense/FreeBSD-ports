@@ -2,12 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	tor
-DISTVERSION=	0.3.2.2-alpha
+DISTVERSION=	0.3.3.4
+DISTVERSIONSUFFIX=	-alpha
 CATEGORIES=	security net ipv6
 MASTER_SITES=	TOR
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Anonymizing overlay network for TCP
 
 LICENSE=	BSD3CLAUSE

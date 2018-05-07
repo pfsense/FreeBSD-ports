@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	smarty
-PORTVERSION=	2.6.30
+PORTVERSION=	2.6.31
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://www.smarty.net/files/docs/:manual
 DISTFILES=	manual-en-${PORTVERSION:R}.zip:manual
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	PHP compiling template engine
@@ -15,9 +16,10 @@ LICENSE=	LGPL21
 
 OPTIONS_DEFINE=	DOCS
 
+NO_ARCH=	yes
 NO_BUILD=	yes
+USES=		php:web,flavors
 USE_PHP=	pcre
-USES=		php:web
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
 SUB_FILES=	pkg-message

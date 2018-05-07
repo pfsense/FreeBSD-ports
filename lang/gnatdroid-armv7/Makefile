@@ -7,7 +7,7 @@ PORTREVISION?=	${ARMV7_PR}
 CATEGORIES=	lang
 MASTER_SITES=	GCC/releases/gcc-${GCC_VERSION}
 PKGNAMEPREFIX?=	gnatdroid-
-DISTFILES=	${IDENTIFICATION}.tar.bz2
+DISTFILES=	${IDENTIFICATION}.tar.xz
 
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	C/Ada cross-compiler, target: Android ARMv7

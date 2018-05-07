@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	blas
-PORTREVISION=	3
+PORTREVISION=	4
 
-MAINTAINER=	maho@FreeBSD.org
+MAINTAINER=	fortran@FreeBSD.org
 COMMENT=	Basic Linear Algebra Subroutines
 
 DESCR=	${.CURDIR}/pkg-descr

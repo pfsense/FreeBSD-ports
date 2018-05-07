@@ -14,9 +14,12 @@ MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Systems administration tool for networks
 CPE_VENDOR=	gnu
 
+DEPRECATED=	No longeer supported by cfengine.com
+EXPIRATION_DATE=	2019-03-31
+
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
-CONFLICTS=	cfengine-3* cfengine-devel-*
+CONFLICTS=	cfengine-3* cfengine-devel-* cfengine3*
 
 USE_RC_SUBR=	cfexecd cfservd
 

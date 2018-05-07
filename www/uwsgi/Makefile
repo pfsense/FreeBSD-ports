@@ -2,19 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	uwsgi
-PORTVERSION=	2.0.15
-PORTREVISION=	2
+PORTVERSION=	2.0.16
 CATEGORIES=	www python
 MASTER_SITES=	http://projects.unbit.it/downloads/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eugene@zhegan.in
 COMMENT=	Developer-friendly WSGI server which uses uwsgi protocol
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		pkgconfig python ssl
-USE_PYTHON=	distutils
+USE_PYTHON=	distutils concurrent optsuffix
 USE_RC_SUBR=	uwsgi
 
 CFLAGS+=	-I${OPENSSLINC}
@@ -29,9 +28,17 @@ USERS=		uwsgi
 GROUPS=		uwsgi
 
 PLIST_FILES=	bin/uwsgi \
-		%%PYTHON_SITELIBDIR%%/uwsgidecorators.py
+		${PYTHON_SITELIBDIR}/uwsgidecorators.py
+
+SUB_LIST=	PYTHON_VER=${PYTHON_VER}
 
 OPTIONS_DEFINE=	DEBUG JSON PCRE XML
+
+OPTIONS_GROUP=		PLG
+OPTIONS_GROUP_PLG=	PSGI
+
+PLG_DESC=	Enable plugins
+PSGI_DESC=	PSGI embedded plugin
 
 DEBUG_VARS=		PYDISTUTILS_BUILDARGS+=--debug
 
@@ -52,6 +59,9 @@ post-patch:
 .for var in JSON PCRE XML
 	@${REINPLACE_CMD} -e '/^${var:tl} =/ s|= .*|= ${BUILDCONF_${var}:Ufalse}|' ${WRKSRC}/buildconf/base.ini
 .endfor
+
+post-patch-PSGI-on:
+	@${REINPLACE_CMD} -e 's/%(main_plugin)s,/%(main_plugin)s, psgi,/' ${WRKSRC}/buildconf/base.ini
 
 do-configure:
 	@${DO_NADA}

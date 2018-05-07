@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.1.28
+PORTVERSION=	10.1.31
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
@@ -23,12 +23,14 @@ LICENSE_FILE_PerconaFT=	${WRKSRC}/storage/tokudb/PerconaFT/PATENTS
 LICENSE_PERMS_PerconaFT=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BROKEN_aarch64=		Fails to link: missing sbrk
+BROKEN_SSL=		openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	incomplete definition of type 'struct dh_st'
 
 SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 SLAVEDIRS=	databases/mariadb101-client
-USES=		bison:build cmake compiler:c++11-lib cpe libedit ncurses \
+USES=		bison:build cmake:noninja compiler:c++11-lib cpe libedit ncurses \
 		shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql
 SHEBANG_FILES=	scripts/*.sh
@@ -114,6 +116,7 @@ GSSAPI_NONE_CMAKE_ON=	-DPLUGIN_AUTH_GSSAPI_CLIENT=NO
 .else
 # MySQL-Server part
 BROKEN_powerpc64=	Does not build: fatal error: sys/platform/ppc.h: No such file or directory
+#LIB_DEPENDS=	libevent.so:devel/libevent
 USES+=		mysql:101m
 USE_GNOME=	libxml2
 USE_LDCONFIG+=	${PREFIX}/lib/mysql/plugin
@@ -126,13 +129,14 @@ CMAKE_ARGS+=	-DWITH_EMBEDDED_SERVER="ON" \
 		-DWITHOUT_EXAMPLE_STORAGE_ENGINE=1
 
 .for ENGINE in ${OPTIONS_GROUP_ENGINES}
-${ENGINE}_CMAKE_OFF=	-DPLUGIN_${ENGINE}=NO \
-			-DWITHOUT_${ENGINE}=1
+${ENGINE}_CMAKE_OFF=	-DPLUGIN_${ENGINE}=NO
+${ENGINE}_CMAKE_ON=	-DPLUGIN_${ENGINE}=DYNAMIC
 .endfor
 
 CONNECT_EXTRA_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 CONNECT_EXTRA_USE=	gnome=libxml2
 GSSAPI_NONE_CMAKE_ON=	-DPLUGIN_AUTH_GSSAPI=NO
+INNOBASE_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-MDEV-15288
 LZ4_CMAKE_OFF=		-DGRN_WITH_LZ4=OFF -DWITH_INNODB_LZ4=OFF
 LZ4_CMAKE_ON=		-DGRN_WITH_LZ4=${LOCALBASE}/lib -DWITH_INNODB_LZ4=${LOCALBASE}/lib
 LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
@@ -141,6 +145,7 @@ LZO_CMAKE_ON=		-DWITH_INNODB_LZO=${LOCALBASE}/lib
 LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 MAXKEY_EXTRA_PATCHES+=	${FILESDIR}/extra-patch-include_my__compare.h
 MROONGA_LIB_DEPENDS=	liblz4.so:archivers/liblz4
+MROONGA_VARS=		LICENSE+=LGPL20 LICENSE_COMB=multi
 MSGPACK_LIB_DEPENDS=	libmsgpackc.so:devel/msgpack
 OQGRAPH_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 			libJudy.so:devel/judy
@@ -154,7 +159,7 @@ ZMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
 
 NOT_FOR_ARCHS=		i386
 NOT_FOR_ARCHS_REASON=	currently does not compile on i386, see \
-			https://mariadb.atlassian.net/browse/MDEV-9627
+			https://jira.mariadb.org/browse/MDEV-9627
 
 post-install:
 # Remove programs to avoid conflict with mariadb101-client
@@ -164,11 +169,19 @@ post-install:
 		${STAGEDIR}${PREFIX}/bin/mysql_config \
 		${STAGEDIR}${PREFIX}/bin/mysql_find_rows \
 		${STAGEDIR}${PREFIX}/bin/mysqlaccess \
-		${STAGEDIR}${PREFIX}/lib/mysql/plugin/client_ed25519.so
+		${STAGEDIR}${PREFIX}/lib/mysql/plugin/client_ed25519.so \
+		${STAGEDIR}${PREFIX}/share/groonga-normalizer-mysql/lgpl-2.0.txt \
+		${STAGEDIR}${PREFIX}/share/groonga/COPYING \
+		${STAGEDIR}${DATADIR}/mroonga/COPYING
 	${RM} -r ${STAGEDIR}${PREFIX}/share/mysql/policy \
 		${STAGEDIR}${PREFIX}/share/pkgconfig \
 		${STAGEDIR}${PREFIX}/mysql/mysql-test \
 		${STAGEDIR}${PREFIX}/mysql/sql-bench
+
+post-install-MROONGA-on:
+	${MV} ${STAGEDIR}${PREFIX}/share/groonga-normalizer-mysql \
+		${STAGEDIR}${PREFIX}/share/groonga \
+		${STAGEDIR}${PREFIX}/share/mysql
 .endif # defined(CLIENT_ONLY)
 
 .include <bsd.port.pre.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	python-digitalocean
-PORTVERSION=	1.8
+PORTVERSION=	1.13.2
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	API to manage digitalocean.com droplets
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.0.0:www/py-requests
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.0.0:www/py-requests@${FLAVOR}
 
 USES=	python
 USE_PYTHON=	distutils autoplist

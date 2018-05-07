@@ -14,8 +14,12 @@
 #   Set to "NO" by default.
 #   Set it to "YES" to enable tomcat85
 #
-# tomcat85_catalina_base (str)
+# tomcat85_catalina_home (str)
 #   Set to "%%TOMCAT_HOME%%" by default.
+#   Set the CATALINA_HOME variable for the Tomcat process
+#
+# tomcat85_catalina_base (str)
+#   Set to "${catalina.home}" by default.
 #   Set the CATALINA_BASE variable for the Tomcat process
 #
 # tomcat85_catalina_tmpdir (str)
@@ -58,6 +62,10 @@
 #   Set to "30" by default.
 #   Set the wait time (in seconds) for Tomcat process startup
 #
+# tomcat85_umask (str):
+#   Set to "0077" by default.
+#   Sets the umask for Tomcat process.
+#
 # You may symlink this script with other names to run multiple
 # instances of tomcat85 with different configurations.
 #
@@ -83,8 +91,8 @@ load_rc_config "${name}"
 eval "${rcvar}=\${${rcvar}:-'NO'}"
 eval "_tomcat_java_home=\${${name}_java_home:-'%%JAVA_HOME%%'}"
 eval "_tomcat_catalina_user=\${${name}_catalina_user:-'%%TOMCAT_USER%%'}"
-eval "_tomcat_catalina_home='%%TOMCAT_HOME%%'"
-eval "_tomcat_catalina_base=\${${name}_catalina_base:-'%%TOMCAT_HOME%%'}"
+eval "_tomcat_catalina_home=\${${name}_catalina_home:-'%%TOMCAT_HOME%%'}"
+eval "_tomcat_catalina_base=\${${name}_catalina_base:-'${_tomcat_catalina_home}'}"
 eval "_tomcat_catalina_tmpdir=\${${name}_catalina_tmpdir:-'${_tomcat_catalina_base}/temp'}"
 eval "_tomcat_stdout=\${${name}_stdout:-'${_tomcat_catalina_base}/logs/catalina.out'}"
 eval "_tomcat_stderr=\${${name}_stderr:-'&1'}"
@@ -94,6 +102,7 @@ eval "_tomcat_logging_config=\${${name}_logging_config:-'${_tomcat_catalina_base
 eval "_tomcat_classpath=\${${name}_classpath:-''}"
 eval "_tomcat_java_opts=\${${name}_java_opts:-''}"
 eval "_tomcat_wait=\${${name}_wait:-'30'}"
+eval "_tomcat_umask=\${${name}_umask:-'0077'}"
 
 pidfile="/var/run/${name}.pid"
 
@@ -106,15 +115,16 @@ command="%%LOCALBASE%%/bin/jsvc"
 command_args="-java-home '${_tomcat_java_home}' \
 	-server \
 	-user ${_tomcat_catalina_user} \
+	-umask ${_tomcat_umask} \
 	-pidfile '${pidfile}' \
 	-wait ${_tomcat_wait} \
 	-outfile '${_tomcat_stdout}' \
 	-errfile '${_tomcat_stderr}' \
-	-classpath '%%TOMCAT_HOME%%/bin/bootstrap.jar:%%LOCALBASE%%/share/java/classes/commons-daemon.jar:%%TOMCAT_HOME%%/bin/tomcat-juli.jar${_tomcat_classpath}' \
+	-classpath '${_tomcat_catalina_home}/bin/bootstrap.jar:%%LOCALBASE%%/share/java/classes/commons-daemon.jar:${_tomcat_catalina_home}/bin/tomcat-juli.jar${_tomcat_classpath}' \
 	-Djava.util.logging.manager=${_tomcat_logging_manager} \
 	-Djava.util.logging.config.file='${_tomcat_logging_config}' \
 	${_tomcat_java_opts} \
-	-Djava.endorsed.dirs='%%TOMCAT_HOME%%/endorsed' \
+	-Djava.endorsed.dirs='${_tomcat_catalina_home}/endorsed' \
 	-Dcatalina.home='${_tomcat_catalina_home}' \
 	-Dcatalina.base='${_tomcat_catalina_base}' \
 	-Djava.io.tmpdir='${_tomcat_catalina_tmpdir}' \
@@ -127,8 +137,8 @@ tomcat_prestart()
 {
 	if [ -r "${_tomcat_catalina_base}/bin/setenv.sh" ]; then
 		. "${_tomcat_catalina_base}/bin/setenv.sh"
-	elif [ -r "%%TOMCAT_HOME%%/bin/setenv.sh" ]; then
-		. "%%TOMCAT_HOME%%/bin/setenv.sh"
+	elif [ -r "${_tomcat_catalina_home}/bin/setenv.sh" ]; then
+		. "${_tomcat_catalina_home}/bin/setenv.sh"
 	fi
 }
 

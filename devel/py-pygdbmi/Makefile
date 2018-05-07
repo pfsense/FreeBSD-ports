@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pygdbmi
-PORTVERSION=	0.7.3.3
-DISTVERSIONPREFIX=	pyPI-
+PORTVERSION=	0.8.2.0
 CATEGORIES=	devel lang python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	cs01
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

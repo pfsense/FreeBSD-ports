@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vapoursynth
-PORTVERSION=	R38
-PORTREVISION=	3
+PORTVERSION=	R43
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -22,13 +21,6 @@ DATADIR=	${PREFIX}/lib/vapoursynth
 OPTIONS_DEFINE=	DEBUG DOCS FRAME_GUARD
 OPTIONS_DEFAULT=${OPTIONS_GROUP_COMPS} ${OPTIONS_GROUP_PLUGINS}
 OPTIONS_SUB=	yes
-
-# XXX After r417413 poudriere requires textproc/py-sphinx being built
-# with the same python version as USES=python here but it's currently
-# not possible due to https://github.com/freebsd/poudriere/issues/259
-.if defined(PACKAGE_BUILDING)
-OPTIONS_EXCLUDE=DOCS
-.endif
 
 OPTIONS_DEFINE_amd64=	SIMD
 OPTIONS_DEFINE_i386=	SIMD
@@ -54,7 +46,7 @@ FRAME_GUARD_DESC=		Check integrity after each filter
 FRAME_GUARD_CONFIGURE_ENABLE=	guard-pattern
 
 # VSSCRIPT or REMOVEGRAIN
-SIMD_BUILD_DEPENDS=		yasm:devel/yasm
+SIMD_BUILD_DEPENDS=		nasm:devel/nasm
 SIMD_CONFIGURE_ENABLE=		x86-asm
 
 # COMPS group
@@ -65,8 +57,9 @@ CORE_LIB_DEPENDS=		libzimg.so:graphics/sekrit-twc-zimg
 CORE_USES=			compiler:c++11-lib
 CORE_CONFIGURE_ENABLE=		core
 
-PYTHON_USES=			python:3.3-
-PYTHON_BUILD_DEPENDS=		cython:lang/cython
+PYTHON_USES=			python:3.3+
+PYTHON_USE=			python=cython
+PYTHON_VARS=			BINARY_ALIAS=cython=cython-${PYTHON_VER}
 PYTHON_CONFIGURE_ENABLE=	python-module
 PYTHON_IMPLIES=			CORE
 
@@ -127,7 +120,7 @@ post-build-DOCS-on:
 	fi
 
 post-install-DOCS-on:
-	${INSTALL_MAN} ${WRKSRC}/doc/_build/texinfo/VapourSynth.info \
+	${INSTALL_DATA} ${WRKSRC}/doc/_build/texinfo/VapourSynth.info \
 		${STAGEDIR}${PREFIX}/${INFO_PATH}
 	(cd ${WRKSRC}/doc/_build/html && ${COPYTREE_SHARE} \
 		"${PORTDOCS}" ${STAGEDIR}${DOCSDIR})

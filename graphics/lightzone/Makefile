@@ -3,11 +3,11 @@
 
 PORTNAME=	lightzone
 PORTVERSION=	4.1.7
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics java
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Professional-level digital darkroom and photo editor
 
 LICENSE=	BSD3CLAUSE
@@ -23,6 +23,7 @@ LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 RUN_DEPENDS=	jhindexer:java/javahelp
 
 BROKEN_armv6=		fails to compile: build.xml: exec returned: 1
+BROKEN_armv7=		fails to compile: build.xml: exec returned: 1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ktgw0316

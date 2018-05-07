@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gpstk
-PORTVERSION=	2.9
-PORTREVISION=	1
+PORTVERSION=	2.10
 DISTVERSIONPREFIX=	v
 CATEGORIES=	astro devel
 
@@ -12,8 +11,7 @@ COMMENT=	Toolkit for developing GPS applications
 
 LICENSE=	LGPL3
 
-USES=		cmake:outsource python:run
-USE_GCC=	yes
+USES=		cmake:outsource
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

@@ -4,7 +4,7 @@
 PORTNAME=	wxPython
 PORTVERSION=	2.8.12.1
 DISTVERSIONPREFIX=	src-
-PORTREVISION?=	9
+PORTREVISION?=	10
 CATEGORIES=	x11-toolkits python
 MASTER_SITES=	SF/wxpython/wxPython/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,13 +13,13 @@ PKGNAMESUFFIX=	28
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python bindings for the wxWidgets/GTK GUI toolkit
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}PyOpenGL>=0:graphics/py-PyOpenGL
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}PyOpenGL>=0:graphics/py-PyOpenGL@${FLAVOR}
 
 WRKSRC_SUBDIR=	wxPython
 
 DIST_SUBDIR=	python
 USE_PYTHON=	distutils
-USES=		gettext gmake pkgconfig python shebangfix tar:bzip2
+USES=		gettext gmake pkgconfig python:2.7 shebangfix tar:bzip2
 SHEBANG_FILES=	wx/tools/Editra/Editra.pyw
 
 PYDISTUTILS_BUILDARGS=	\
@@ -76,14 +76,13 @@ PYDISTUTILS_BUILDARGS+=	\
 			INSTALL_MULTIVERSION=1
 .else
 ## These are shared
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}wxPython28-common>0:x11-toolkits/py-wxPython28-common \
-		${PYTHON_SITELIBDIR}/wxversion.py:x11-toolkits/py-wxPython-common
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}wxPython28-common>0:x11-toolkits/py-wxPython28-common@${FLAVOR} \
+		${PYTHON_SITELIBDIR}/wxversion.py:x11-toolkits/py-wxPython-common@${FLAVOR}
 
 PYDISTUTILS_BUILDARGS+=	\
 			NO_HEADERS=1 \
 			NO_SCRIPTS=1 \
 			INSTALL_MULTIVERSION=1
-
 
 PYDISTUTILS_BUILDARGS+=	\
 			UNICODE=1

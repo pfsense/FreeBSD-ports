@@ -49,6 +49,7 @@ RUN_DEPENDS=	urlview:textproc/urlview \
 
 BROKEN_aarch64=		fails to compile: conflicting types for __wcwidth
 BROKEN_armv6=		fails to compile: conflicting types for __wcwidth
+BROKEN_armv7=		fails to compile: conflicting types for __wcwidth
 
 CONFLICTS=	ja-mutt-[0-9]* mutt-[0-9]* mutt-devel-[0-9]* mutt-devel-lite-[0-9]* mutt-lite-[0-9]* zh-mutt-devel-[0-9]*
 
@@ -132,14 +133,6 @@ post-patch:
 	@${REINPLACE_CMD} -E ${CONFIGURE_SED} \
 		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}.ac
 .endif
-
-post-configure:
-	@${REINPLACE_CMD} -E "\
-		s|^(s%\@ACLOCAL\@%).+(%g)|\1${ACLOCAL}\2|; \
-		s|^(s%\@AUTOCONF\@%).+(%g)|\1${AUTOCONF}\2|; \
-		s|^(s%\@AUTOMAKE\@%).+(%g)|\1${AUTOMAKE}\2|; \
-		s|^(s%\@AUTOHEADER\@%).+(%g)|\1${AUTOHEADER}\2|" \
-		${BUILD_WRKSRC}/config.status
 
 .if ${PORT_OPTIONS:MDOCS}
 post-install:

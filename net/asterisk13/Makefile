@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	13.17.2
+PORTVERSION=	13.20.0
 CATEGORIES=	net
-MASTER_SITES=	http://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
+MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
 			asterisk/old-releases/ \
 			sounds/releases/:g729
@@ -19,8 +19,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 		libjansson.so:devel/jansson
 
-BROKEN_armv6=		fails to configure: the SPANDSP installation appears to be missing or broken
-ONLY_FOR_ARCHS=		amd64 armv6 i386 powerpc sparc64
+ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 powerpc sparc64
 
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -61,7 +60,7 @@ OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS LDAP LUA \
 				MP3PLAYER OOH323 OPTIMIZED_CFLAGS PJSIP PORTAUDIO RADIUS SNMP \
 				SPANDSP SRTP SYSINFO XMPP
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MP3PLAYER NEWT ODBC MYSQL PGSQL PJSIP \
-				PORTAUDIO RADIUS SNMP SPANDSP SPEEX SQLITE2 VORBIS
+				PORTAUDIO RADIUS SNMP SPANDSP SPEEX SRTP SQLITE2 VORBIS
 
 OPTIONS_DEFINE_i386=		DAHDI
 OPTIONS_DEFINE_amd64=		DAHDI
@@ -72,6 +71,7 @@ OPTIONS_DEFAULT_amd64=		DAHDI BASE XMPP
 OPTIONS_DEFAULT_sparc64=	DAHDI GCC XMPP
 OPTIONS_DEFAULT_powerpc=	GCC XMPP
 OPTIONS_DEFAULT_armv6=		BASE
+OPTIONS_DEFAULT_armv7=		BASE
 
 OPTIONS_GROUP=			CODECS
 OPTIONS_GROUP_CODECS=		GSM NEWG711 SPEEX VORBIS
@@ -101,7 +101,7 @@ G729_DISTFILES=			${ASTERISK_CORE_G729_SOUNDS}:g729 \
 
 ASTVERSION_DESC?= Install astversion (requires bash)
 BACKTRACE_DESC?= Stack backtrace support via (lib)execinfo
-BASE_DESC=	Use base compiler (experimental)
+BASE_DESC=	Use base compiler
 DAHDI_DESC?=	DAHDI support
 EXCHANGE_DESC?=	Exchange calendar support
 MP3PLAYER_DESC=	Install MP3 Player for Music-On-Hold (mpg123)
@@ -129,7 +129,9 @@ DAHDI_LIB_DEPENDS=	libpri.so:misc/libpri \
 			libtonezone.so:misc/dahdi
 
 EXCHANGE_CONFIGURE_OFF=	--without-neon --without-neon29
-EXCHANGE_LIB_DEPENDS=	libneon.so:www/neon
+EXCHANGE_LIB_DEPENDS=	libneon.so:www/neon \
+			libexpat.so:textproc/expat2
+EXCHANGE_USES=		gettext-runtime
 
 FREETDS_CONFIGURE_ON=	--with-tds=${LOCALBASE}
 FREETDS_CONFIGURE_OFF=	--without-tds
@@ -161,11 +163,6 @@ ODBC_CONFIGURE_ON=	--with-ltdl
 ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC \
 			libltdl.so:devel/libltdl
 
-OOH323_CPPFLAGS=	-I${LOCALBASE}/include/openh323
-OOH323_LIB_DEPENDS=     libpt_r.so:devel/pwlib \
-			libh323_r.so:net/openh323
-OOH323_MAKE_ENV=	OPENH323DIR=${LOCALBASE}/share/openh323
-
 PGSQL_CONFIGURE_WITH=	postgres
 PGSQL_USES=		pgsql
 
@@ -196,6 +193,7 @@ SQLITE2_CONFIGURE_WITH=	sqlite
 SQLITE2_LIB_DEPENDS=	libsqlite.so:databases/sqlite2
 
 SRTP_CONFIGURE_WITH=	srtp
+SRTP_LIB_DEPENDS=	libsrtp.so:net/libsrtp
 
 SYSINFO_LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo
 

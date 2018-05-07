@@ -4,26 +4,26 @@
 PORTNAME=	BitcoinArmory
 PORTVERSION=	0.93.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	finance
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Desktop bitcoin management system
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/swig3.0:devel/swig30 \
-		${LOCALBASE}/bin/pyrcc4:textproc/py-qt4-xml \
+		${LOCALBASE}/bin/pyrcc4:textproc/py-qt4-xml@${PY_FLAVOR} \
 		${LOCALBASE}/bin/rsync:net/rsync
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=14.0.0:devel/py-twisted \
-		${PYTHON_PKGNAMEPREFIX}psutil>1.2.1:sysutils/py-psutil \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=14.0.0:devel/py-twisted@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}psutil>1.2.1:sysutils/py-psutil@${PY_FLAVOR} \
 		${LOCALBASE}/bin/bitcoind:net-p2p/bitcoin-daemon
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	etotheipi
 
-USES=		compiler:c++11-lang compiler:c++11-lib gmake pyqt:4 python:2 shebangfix
+USES=		compiler:c++11-lang compiler:c++11-lib gmake pyqt:4 python:2.7 shebangfix
 USE_PYQT=	core_run gui_run
 SHEBANG_FILES=	ArmoryQt.py extras/extractKeysFromWallet.py
 CPPFLAGS+=	-I${LOCALBASE}/include

@@ -6,32 +6,39 @@
 #
 # Feature:	python
 # Usage:	USES=python or USES=python:args
-# Valid ARGS:	<version>, build, run, test
+# Valid ARGS:	<version>, patch, build, run, test
 #
 # version 	If your port requires only some set of Python versions, you
 # 		can set this to [min]-[max] or min+ or -max or as an
-# 		explicit version or as a meta port version (eg. 3.3-3.4 for
-# 		[min]-[max], 2.7+ or -3.3 for min+ and -max, 2.7 for an
-# 		explicit version or 3 for a meta port version). Example:
+#		explicit version (eg. 3.3-3.4 for [min]-[max], 2.7+ or -3.3
+#		for min+ and -max, 2.7 for an explicit version). Example:
 #
 #			USES=python:2.7		# Only use Python 2.7
 #			USES=python:3.3+	# Use Python 3.3 or newer
 #			USES=python:3.3-3.4	# Use Python 3.3 or 3.4
 #			USES=python:-3.3	# Use any Python up to 3.3
-#			USES=python:2		# Use the Python 2 meta port
 #			USES=python		# Use the set default Python
 #						# version
 #
+# patch		Indicates that Python is needed at patch time and adds
+#		it to PATCH_DEPENDS.
 # build		Indicates that Python is needed at build time and adds
 #		it to BUILD_DEPENDS.
 # run		Indicates that Python is needed at run time and adds
 #		it to RUN_DEPENDS.
 # test		Indicates that Python is needed at test time and adds
 # 		it to TEST_DEPENDS.
+# env		Indicates that the port does not require a dependency on Python
+#		itself but needs the environment set up. This is mainly used
+#		when depending on flavored python ports, or when a correct
+#		PYTHON_CMD is required.  It has the same effect than setting
+#		PYTHON_NO_DEPENDS.
 #
 # If build, run and test are omitted, Python will be added as BUILD_DEPENDS,
-# RUN_DEPENDS and TEST_DEPENDS. PYTHON_NO_DEPENDS can be set to not add any
-# dependencies.
+# RUN_DEPENDS and TEST_DEPENDS.
+# patch is independant, it does not prevent the default build/run/test
+# dependency.
+# env or PYTHON_NO_DEPENDS can be set to not add any dependencies.
 #
 # Variables, which can be set by a user:
 #
@@ -71,8 +78,26 @@
 #			  prefix-less original name, e.g.
 #			  bin/foo-2.7 --> bin/foo.
 #
+#	cython		- Depend on lang/cython at build-time.
+#
+#	cython_run	- Depend on lang/cython at run-time.
+#
+#	flavors		- Force creation of flavors for Python 2 and 3 default
+#			  versions, where applicable.
+#
+#	noflavors	- Disable automatic creation of flavors if they would
+#			  otherwise be created and they are not wanted.
+#
+#	allflavors 	- Generate flavors for all possible versions and not
+#			  simply the default ones.  Only to be used for py-*
+#			  ports that are part of the Python distribution, but
+#			  kept as separate ports.
+#
+#	optsuffix	- Set PKGNAMESUFFIX to PYTHON_PKGNAMESUFFIX if not the
+#			  default python version.
+#
 #	distutils	- Use distutils as do-configure, do-build and
-#			  do-install targets.
+#			  do-install targets. implies flavors.
 #
 #	autoplist	- Automatically generates the packaging list for a
 #			  port that uses distutils when defined.
@@ -204,15 +229,6 @@
 #	PYTHON2="" PYTHON3="@comment " for Python 2.x
 #	PYTHON2="@comment " PYTHON3="" for Python 3.x
 #
-# Deprecated variables, which exist for compatibility and will be removed
-# soon:
-#
-# PYTHON_DEFAULT_VERSION
-# PYTHON2_DEFAULT_VERSION
-# PYTHON3_DEFAULT_VERSION
-#			- Deprecated, use PYTHON[2,3]_DEFAULT instead,
-#			  see bsd.default-versions.mk
-#
 # PYTHON_PKGNAMESUFFIX
 #			- Deprecated, use PYTHON_PKGNAMEPREFIX instead
 #			  default: -py${PYTHON_SUFFIX}
@@ -235,8 +251,18 @@ _PYTHON_RELPORTDIR=		lang/python
 
 # Make each individual feature available as _PYTHON_FEATURE_<FEATURENAME>
 .for var in ${USE_PYTHON}
-_PYTHON_FEATURE_${var:tu}=	yes
+_PYTHON_FEATURE_${var:C/=.*$//:tu}=	${var:C/.*=//:S/,/ /g}
 .endfor
+
+# distutils automatically generates flavors depending on the supported
+# versions.
+.if defined(_PYTHON_FEATURE_DISTUTILS)
+_PYTHON_FEATURE_FLAVORS=	yes
+.endif
+
+.if defined(_PYTHON_FEATURE_NOFLAVORS)
+.undef _PYTHON_FEATURE_FLAVORS
+.endif
 
 # Make sure that no dependency or some other environment variable
 # pollutes the build/run dependency detection
@@ -244,6 +270,10 @@ _PYTHON_FEATURE_${var:tu}=	yes
 .undef _PYTHON_RUN_DEP
 .undef _PYTHON_TEST_DEP
 _PYTHON_ARGS=		${python_ARGS:S/,/ /g}
+.if ${_PYTHON_ARGS:Mpatch}
+_PYTHON_PATCH_DEP=	yes
+_PYTHON_ARGS:=		${_PYTHON_ARGS:Npatch}
+.endif
 .if ${_PYTHON_ARGS:Mbuild}
 _PYTHON_BUILD_DEP=	yes
 _PYTHON_ARGS:=		${_PYTHON_ARGS:Nbuild}
@@ -256,6 +286,10 @@ _PYTHON_ARGS:=		${_PYTHON_ARGS:Nrun}
 _PYTHON_TEST_DEP=	yes
 _PYTHON_ARGS:=		${_PYTHON_ARGS:Ntest}
 .endif
+.if ${_PYTHON_ARGS:Menv}
+PYTHON_NO_DEPENDS=	yes
+_PYTHON_ARGS:=		${_PYTHON_ARGS:Nenv}
+.endif
 
 # The port does not specify a build, run or test dependency, assume all are
 # required.
@@ -266,53 +300,14 @@ _PYTHON_RUN_DEP=	yes
 _PYTHON_TEST_DEP=	yes
 .endif
 
-.if defined(PYTHON_DEFAULT_VERSION)
-WARNING+=	"PYTHON_DEFAULT_VERSION is defined, consider using DEFAULT_VERSIONS=python=${PYTHON_DEFAULT_VERSION:S/^python//} instead"
-.endif
-.if defined(PYTHON2_DEFAULT_VERSION)
-WARNING+=	"PYTHON2_DEFAULT_VERSION is defined, consider using DEFAULT_VERSIONS=python2=${PYTHON2_DEFAULT_VERSION:S/^python//} instead"
-.endif
-.if defined(PYTHON3_DEFAULT_VERSION)
-WARNING+=	"PYTHON3_DEFAULT_VERSION is defined, consider using DEFAULT_VERSIONS=python3=${PYTHON3_DEFAULT_VERSION:S/^python//} instead"
-.endif
-
-.if exists(${LOCALBASE}/bin/python)
-.if !defined(_PYTHON_DEFAULT_VERSION)
-_PYTHON_DEFAULT_VERSION!=	(${LOCALBASE}/bin/python -c \
-		'import sys; print("%d.%d" % sys.version_info[:2])' 2> /dev/null \
-		|| ${ECHO_CMD} ${_PYTHON_PORTBRANCH}) | ${TAIL} -1
-.endif
-_EXPORTED_VARS+=	_PYTHON_DEFAULT_VERSION
-.if defined(PYTHON_DEFAULT) && (${PYTHON_DEFAULT} != ${_PYTHON_DEFAULT_VERSION})
-WARNING+=	"Your requested default python version ${PYTHON_DEFAULT} is different from the installed default python interpreter version ${_PYTHON_DEFAULT_VERSION}"
-.endif
-PYTHON_DEFAULT_VERSION=		python${_PYTHON_DEFAULT_VERSION}
-.else
-PYTHON_DEFAULT_VERSION=		python${PYTHON_DEFAULT}
-.endif # exists(${LOCALBASE}/bin/python)
-
-# Is only a meta-port version defined?
-.if ${PYTHON_DEFAULT_VERSION} == "python2"
-PYTHON2_DEFAULT_VERSION?=	python${PYTHON2_DEFAULT}
-.elif ${PYTHON_DEFAULT_VERSION:R} == "python2"
-PYTHON2_DEFAULT_VERSION=	${PYTHON_DEFAULT_VERSION}
-.else
-PYTHON2_DEFAULT_VERSION?=	python${PYTHON2_DEFAULT}
-.endif
-.if ${PYTHON_DEFAULT_VERSION} == "python3"
-PYTHON3_DEFAULT_VERSION?=	python${PYTHON3_DEFAULT}
-.elif ${PYTHON_DEFAULT_VERSION:R} == "python3"
- PYTHON3_DEFAULT_VERSION=	${PYTHON_DEFAULT_VERSION}
-.else
-PYTHON3_DEFAULT_VERSION?=	python${PYTHON3_DEFAULT}
+.if ${PYTHON2_DEFAULT} != ${PYTHON_DEFAULT} && ${PYTHON3_DEFAULT} != ${PYTHON_DEFAULT}
+WARNING+=	"PYTHON_DEFAULT must be a version present in PYTHON2_DEFAULT or PYTHON3_DEFAULT, if you want more Python flavors, set BUILD_ALL_PYTHON_FLAVORS in your make.conf"
 .endif
 
 .if ${_PYTHON_ARGS} == "2"
-_PYTHON_ARGS=		${PYTHON2_DEFAULT_VERSION:S/^python//}
-_WANTS_META_PORT=	2
+DEV_ERROR+=		"USES=python:2 is no longer supported, use USES=python:2.7"
 .elif ${_PYTHON_ARGS} == "3"
-_PYTHON_ARGS=		${PYTHON3_DEFAULT_VERSION:S/^python//}
-_WANTS_META_PORT=	3
+DEV_ERROR+=		"USES=python:3 is no longer supported, use USES=python:3.4+ or an appropriate version range"
 .endif  # ${_PYTHON_ARGS} == "2"
 
 .if defined(PYTHON_VERSION)
@@ -333,7 +328,7 @@ _WANTS_META_PORT=	3
 # (_PYTHON_VERSION_NONSUPPORTED).
 _PYTHON_VERSION:=	${PYTHON_VERSION:S/^python//}
 .else
-_PYTHON_VERSION:=	${PYTHON_DEFAULT_VERSION:S/^python//}
+_PYTHON_VERSION:=	${PYTHON_DEFAULT}
 .endif # defined(PYTHON_VERSION)
 
 # Validate Python version whether it meets the version restriction.
@@ -372,13 +367,73 @@ IGNORE=		needs an unsupported version of Python
 .endif
 .endif	# defined(_PYTHON_VERSION_NONSUPPORTED)
 
+# Automatically generates FLAVORS if empty
+.if empty(FLAVORS) && defined(_PYTHON_FEATURE_FLAVORS)
+.  undef _VALID_PYTHON_VERSIONS
+.  for ver in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT} ${PYTHON3_DEFAULT} ${_PYTHON_VERSIONS}
+__VER=		${ver}
+.    if !(!empty(_PYTHON_VERSION_MINIMUM) && ( \
+		${__VER} < ${_PYTHON_VERSION_MINIMUM})) && \
+	!(!empty(_PYTHON_VERSION_MAXIMUM) && ( \
+		${__VER} > ${_PYTHON_VERSION_MAXIMUM}))
+.      if empty(_VALID_PYTHON_VERSIONS:M${ver})
+_VALID_PYTHON_VERSIONS+=	${ver}
+.      endif
+.    endif
+.  endfor
+# Get all possible flavors depending on version requirements
+.  if defined(_VALID_PYTHON_VERSIONS)
+_ALL_PYTHON_FLAVORS=	${_VALID_PYTHON_VERSIONS:S/.//:S/^/py/}
+.  else
+_ALL_PYTHON_FLAVORS=	${_PYTHON_VERSIONS:S/.//:S/^/py/}
+.  endif
+# Decide how many flavors we want.  By default, only generate the default
+# versions.
+.  if defined(BUILD_ALL_PYTHON_FLAVORS) || defined(_PYTHON_FEATURE_ALLFLAVORS)
+FLAVORS=	${_ALL_PYTHON_FLAVORS}
+.  else
+.    for _v in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT} ${PYTHON3_DEFAULT}
+_f=	py${_v:S/.//}
+.      if ${_ALL_PYTHON_FLAVORS:M${_f}} && !${FLAVORS:M${_f}}
+.if !empty(FLAVORS)
+FLAVORS:=	${FLAVORS} ${_f}
+.else
+FLAVORS:=	${_f}
+.endif
+.      endif
+.    endfor
+.  endif
+.  if !empty(FLAVORS) && empty(FLAVOR)
+FLAVOR=	${FLAVORS:[1]}
+.  endif
+.endif
+
+.if ${FLAVOR:Mpy[23][0-9]}
+_PYTHON_VERSION=	${FLAVOR:S/py//:C/(.)/\1./}
+.endif
+
+.if !empty(FLAVOR) && ${_PYTHON_VERSION} != ${PYTHON_DEFAULT}
+.if defined(_PYTHON_FEATURE_OPTSUFFIX)
+DEV_WARNING+=	"USE_PYTHON=optsuffix is deprecated, consider migrating to using unconditional PKGNAMESUFFIX or PKGNAMEPREFIX"
+PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
+.endif
+.endif
+
+# To avoid having dependencies with @ and empty flavor:
+# _PYTHON_VERSION is either set by (first that matches):
+# - If using Python flavors, from the current Python flavor
+# - If using a version restriction (USES=python:3.4+), from the first
+#   acceptable default Python version.
+# - From PYTHON_DEFAULT
+PY_FLAVOR=	py${_PYTHON_VERSION:S/.//}
+
 # Pass PYTHON_VERSION down the dependency chain. This ensures that
 # port A -> B -> C all will use the same python version and do not
 # try to find a different one, if the passed version fits into
 # the supported version range.
 PYTHON_VERSION?=	python${_PYTHON_VERSION}
 .if !defined(PYTHON_NO_DEPENDS) && \
-    ${PYTHON_VERSION} != ${PYTHON_DEFAULT_VERSION}
+    ${PYTHON_VERSION} != python${PYTHON_DEFAULT}
 DEPENDS_ARGS+=		PYTHON_VERSION=${PYTHON_VERSION}
 .endif
 
@@ -460,31 +515,48 @@ PYTHON_PYOEXTENSION=	opt-1.pyc
 # - it uses USE_PYTHON=distutils
 #
 
+.if defined(_PYTHON_FEATURE_CYTHON)
+BUILD_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+.endif
+
+.if defined(_PYTHON_FEATURE_CYTHON_RUN)
+RUN_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+.endif
+
 .if defined(_PYTHON_FEATURE_CONCURRENT)
+.if !defined(_PYTHON_FEATURE_FLAVORS) && (${_PYTHON_VERSION_MINIMUM:M3*} || ${_PYTHON_VERSION_MAXIMUM:M2*})
+DEV_WARNING+=	"USE_PYTHON=concurrent when only one of Python 2 or 3 is supported AND not using flavors does not make any sense"
+.endif
 _USES_POST+=		uniquefiles:dirs
-.if ${PYTHON_VERSION} == ${PYTHON_DEFAULT_VERSION}
+.if defined(_PYTHON_FEATURE_FLAVORS) && ${FLAVOR} == ${FLAVORS:[1]}
+UNIQUE_DEFAULT_LINKS=	yes
+.elif !defined(_PYTHON_FEATURE_FLAVORS) && ${PYTHON_VERSION} == python${PYTHON_DEFAULT}
 UNIQUE_DEFAULT_LINKS=	yes
 .else
 UNIQUE_DEFAULT_LINKS=	no
 .endif
 UNIQUE_PREFIX=		${PYTHON_PKGNAMEPREFIX}
 UNIQUE_SUFFIX=		-${PYTHON_VER}
+UNIQUE_SUFFIX_TYPES+=	SUFFIX_MAN
+UNIQUE_SUFFIX_MAN_WITH_EXT=	.[1-9ln]
+UNIQUE_SUFFIX_MAN_EXTRA_EXT=	.gz
 
 .if defined(_PYTHON_FEATURE_AUTOPLIST)
-UNIQUE_FIND_SUFFIX_FILES=	\
-	${SED} -e 's|^${PREFIX}/||' ${_PYTHONPKGLIST} ${TMPPLIST} | \
-	${EGREP} -e '^bin/.*$$|^sbin/.*$$|^libexec/.*$$'
+_UNIQUE_FIND_SUFFIX_FILES=	${SED} -e 's|^${PREFIX}/||' ${_PYTHONPKGLIST} ${TMPPLIST}
 .else
-UNIQUE_FIND_SUFFIX_FILES=	\
-	${EGREP} -he '^bin/.*$$|^sbin/.*$$|^libexec/.*$$' ${TMPPLIST} 2>/dev/null
+_UNIQUE_FIND_SUFFIX_FILES=	${SED} -e 's|^${PREFIX}/||' ${TMPPLIST} 2>/dev/null
 .endif
+UNIQUE_FIND_SUFFIX_FILES+=	${_UNIQUE_FIND_SUFFIX_FILES} | \
+				${EGREP} -he '^bin/.*$$|^sbin/.*$$|^libexec/.*$$'
+UNIQUE_FIND_SUFFIX_MAN_FILES+=	${_UNIQUE_FIND_SUFFIX_FILES} | \
+				${EGREP} -he '^man/man[1-9ln]/.*$$'
 .endif # defined(_PYTHON_FEATURE_CONCURRENT)
 
 _CURRENTPORT:=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 .if defined(_PYTHON_FEATURE_DISTUTILS) && \
 	${_CURRENTPORT} != ${PYTHON_PKGNAMEPREFIX}setuptools
-BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/${PYTHON_PKGNAMEPREFIX}setuptools
-RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/${PYTHON_PKGNAMEPREFIX}setuptools
+BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
+RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 .endif
 
 # distutils support
@@ -565,29 +637,45 @@ CONFIGURE_ENV+=	PYTHON="${PYTHON_CMD}"
 CMAKE_ARGS+=	-DPython_ADDITIONAL_VERSIONS=${PYTHON_VER}
 
 # Python 3rd-party modules
-PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game
-PYNUMERIC=	${PYTHON_SITELIBDIR}/Numeric/Numeric.py:math/py-numeric
-PYNUMPY=	${PYTHON_SITELIBDIR}/numpy/core/numeric.py:math/py-numpy
+PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}
+PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR}
+
+# Common Python modules that can be needed but only for some versions of Python.
+.if ${PYTHON_REL} < 3400
+PY_ENUM34=	${PYTHON_PKGNAMEPREFIX}enum34>0:devel/py-enum34@${PY_FLAVOR}
+PY_ENUM_COMPAT=	${PYTHON_PKGNAMEPREFIX}enum-compat>0:devel/py-enum-compat@${PY_FLAVOR}
+PY_PATHLIB=	${PYTHON_PKGNAMEPREFIX}pathlib>0:devel/py-pathlib@${PY_FLAVOR}
+.else
+PY_ENUM34=
+PY_ENUM_COMPAT=
+PY_PATHLIB=	
+.endif
+
+.if ${PYTHON_REL} < 3300
+PY_IPADDRESS=	${PYTHON_PKGNAMEPREFIX}ipaddress>0:net/py-ipaddress@${PY_FLAVOR}
+.else
+PY_IPADDRESS=
+.endif
+
+.if ${PYTHON_REL} < 3200
+PY_FUTURES=	${PYTHON_PKGNAMEPREFIX}futures>0:devel/py-futures@${PY_FLAVOR}
+.else
+PY_FUTURES=
+.endif
+
+.if ${PYTHON_REL} < 3000
+PY_BOOST_LIB=	boost_python
+.else
+PY_BOOST_LIB=	boost_python3
+.endif
+PY_BOOST=	lib${PY_BOOST_LIB}.so:devel/boost-python-libs@${PY_FLAVOR}
 
 # dependencies
-.if defined(_PYTHON_BUILD_DEP)
-BUILD_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
-.if defined(_WANTS_META_PORT)
-BUILD_DEPENDS+=	python${_WANTS_META_PORT}:${_PYTHON_RELPORTDIR}${_WANTS_META_PORT}
-.endif
-.endif
-.if defined(_PYTHON_RUN_DEP)
-RUN_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
-.if defined(_WANTS_META_PORT)
-RUN_DEPENDS+=	python${_WANTS_META_PORT}:${_PYTHON_RELPORTDIR}${_WANTS_META_PORT}
-.endif
-.endif
-.if defined(_PYTHON_TEST_DEP)
-TEST_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
-.if defined(_WANTS_META_PORT)
-TEST_DEPENDS+=	python${_WANTS_META_PORT}:${_PYTHON_RELPORTDIR}${_WANTS_META_PORT}
-.endif
-.endif
+.for _stage in PATCH BUILD RUN TEST
+.  if defined(_PYTHON_${_stage}_DEP)
+${_stage}_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
+.  endif
+.endfor
 
 # set $PREFIX as Python's one
 .if defined(_PYTHON_FEATURE_PYTHONPREFIX)

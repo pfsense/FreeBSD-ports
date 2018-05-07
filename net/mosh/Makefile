@@ -3,7 +3,7 @@
 
 PORTNAME=	mosh
 PORTVERSION=	1.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://mosh.mit.edu/ \
 		ZI
@@ -23,7 +23,7 @@ CONFIGURE_ARGS=	--with-utempter --without-ncurses
 CONFIGURE_ENV+=	CRYPTO_CFLAGS="-I${OPENSSLINC}" CRYPTO_LIBS="-L${OPENSSLLIB} -lssl -lcrypto" \
 		TINFO_CFLAGS="-I/usr/include"
 INSTALL_TARGET=	install-strip
-USES=		autoreconf:autoconf ncurses perl5 pkgconfig ssl
+USES=		autoreconf ncurses perl5 pkgconfig ssl
 
 CONFLICTS_INSTALL=	mosh-0.[2-9].*
 

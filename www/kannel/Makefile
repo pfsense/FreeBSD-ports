@@ -3,7 +3,7 @@
 
 PORTNAME=	kannel
 PORTVERSION=	1.4.4
-PORTREVISION=	5
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://www.kannel.org/download/${PORTVERSION}/
@@ -18,8 +18,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
-
-BROKEN_armv6=		fails to configure: Unable to find MySQL client libraries
 
 PORTSCOUT=	skipv:1.5.0
 

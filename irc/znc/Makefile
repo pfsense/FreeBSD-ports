@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	znc
-PORTVERSION=	1.6.5
-PORTREVISION=	3
+PORTVERSION=	1.6.6
+PORTREVISION=	2
 CATEGORIES=	irc ipv6
-MASTER_SITES=	http://znc.in/releases/ \
-		http://znc.in/releases/archive/
+MASTER_SITES=	https://znc.in/releases/ \
+		https://znc.in/releases/archive/
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Advanced IRC bouncer
@@ -14,10 +14,12 @@ COMMENT=	Advanced IRC bouncer
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-GNU_CONFIGURE=	yes
-USE_RC_SUBR=	znc
-SUB_FILES=	pkg-message
 USES=		compiler:c++11-lib cpe gmake iconv pathfix pkgconfig
+
+USE_RC_SUBR=	znc
+
+GNU_CONFIGURE=	yes
+SUB_FILES=	pkg-message
 MAKE_ENV=	V=1
 
 PORTDOCS=	README.md
@@ -26,7 +28,7 @@ USERS=		znc
 GROUPS=		znc
 
 OPTIONS_DEFINE=	CHARSET CYRUS DEBUG DOCS IPV6 OPENSSL PERL PYTHON TCL
-OPTIONS_DEFAULT=	OPENSSL PERL
+OPTIONS_DEFAULT=	CHARSET OPENSSL PERL
 OPTIONS_SUB=	yes
 
 CHARSET_DESC=	Character encoding support via ICU
@@ -54,7 +56,7 @@ PERL_USES=	perl5
 PYTHON_BUILD_DEPENDS=	swig30>=3.0.0:devel/swig30
 PYTHON_CONFIGURE_ON=	--enable-python=python-${PYTHON_VER} --enable-swig
 PYTHON_USE=	perl5=build
-PYTHON_USES=	perl5 python:3
+PYTHON_USES=	perl5 python:3.4+
 TCL_CONFIGURE_ENABLE=	tcl
 TCL_CONFIGURE_ON=	--with-tcl=${TCL_LIBDIR}
 TCL_USES=	tcl

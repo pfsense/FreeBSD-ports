@@ -18,8 +18,6 @@ PLIST_FILES=	bin/spiff
 PORTDOCS=	LICENSE README.md examples/cf-aws.yml \
 		examples/multi-az-cf-aws.yml examples/tutorial.md
 
-STRIP=		# stripping can break go binaries
-
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
@@ -32,7 +30,7 @@ post-patch:
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT} ; \
-		${SETENV} GOPATH=${WRKSRC} go build spiff.go
+		${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go build spiff.go
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/${PORTNAME} \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	heimdal
-PORTVERSION=	7.4.0
+PORTVERSION=	7.5.0
 CATEGORIES=	security ipv6
 MASTER_SITES=	https://github.com/heimdal/heimdal/releases/download/${DISTNAME}/
 
@@ -80,7 +80,7 @@ SQLITE_CONFIGURE_WITH=	sqlite3
 
 LDAP_DESC=		Enable OpenLDAP KDC backend support
 LDAP_USE=		OPENLDAP=yes
-LDAP_CONFIGURE_ON= 	--with-openldap-include="${LOCALBASE}/include" \
+LDAP_CONFIGURE_ON=	--with-openldap-include="${LOCALBASE}/include" \
 			--with-openldap-lib="${LOCALBASE}/lib"
 LDAP_CONFIGURE_WITH=	openldap
 

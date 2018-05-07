@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	grafana
-PORTVERSION=	4.5.1
+PORTVERSION=	4.6.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES+=	https://s3-us-west-2.amazonaws.com/grafana-releases/release/:public
@@ -24,7 +24,7 @@ USES=	compiler
 
 USE_GITHUB=	yes
 GH_SUBDIR=	src/github.com/${PORTNAME}/${PORTNAME}
-TAG=		9341412
+TAG=		8db5f08
 
 GRAFANA_USER?=	grafana
 GRAFANA_GROUP?=	grafana
@@ -56,8 +56,8 @@ post-extract:
 	@(cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${DISTDIR}/grafana-${PORTVERSION}.linux-x64${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS} grafana-${PORTVERSION}/public)
 
 do-build:
-	@cd ${WRKSRC}/src/github.com/${PORTNAME}/${PORTNAME} ; ${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags "-w -X main.version=${PORTVERSION} -X main.commit=${TAG}" -o ./bin/grafana-server ./pkg/cmd/grafana-server
-	@cd ${WRKSRC}/src/github.com/${PORTNAME}/${PORTNAME} ; ${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags "-w -X main.version=${PORTVERSION} -X main.commit=${TAG}" -o ./bin/grafana-cli ./pkg/cmd/grafana-cli
+	@cd ${WRKSRC}/src/github.com/${PORTNAME}/${PORTNAME} ; ${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags "-w -X main.version=${PORTVERSION} -X main.commit=${TAG}" -o ./bin/grafana-server ./pkg/cmd/grafana-server
+	@cd ${WRKSRC}/src/github.com/${PORTNAME}/${PORTNAME} ; ${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags "-w -X main.version=${PORTVERSION} -X main.commit=${TAG}" -o ./bin/grafana-cli ./pkg/cmd/grafana-cli
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/grafana/grafana/bin/grafana-server \

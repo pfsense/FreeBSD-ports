@@ -2,8 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	validator
-PORTVERSION=	1.3
-PORTREVISION=	3
+DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSION=	1_3
+DISTVERSIONSUFFIX=	-release
+PORTREVISION=	4
 CATEGORIES=	www
 
 MAINTAINER=	cyberbotx@cyberbotx.com
@@ -24,6 +26,7 @@ RUN_DEPENDS=	onsgmls:textproc/opensp \
 		p5-HTML-Template>=0:www/p5-HTML-Template \
 		p5-libwww>=5.817:www/p5-libwww \
 		p5-JSON>=0:converters/p5-JSON \
+		p5-LWP-Protocol-https>=0:www/p5-LWP-Protocol-https \
 		p5-Net-IP>=0:net-mgmt/p5-Net-IP \
 		p5-SGML-Parser-OpenSP>=0:textproc/p5-SGML-Parser-OpenSP \
 		p5-URI>=0:net/p5-URI \
@@ -32,7 +35,6 @@ RUN_DEPENDS=	onsgmls:textproc/opensp \
 USE_GITHUB=	yes
 GH_ACCOUNT=	w3c
 GH_PROJECT=	markup-validator
-GH_TAGNAME=	${PORTNAME}-${PORTVERSION:S,.,_,}-release
 USES=		perl5 shebangfix
 NO_ARCH=	yes
 NO_BUILD=	yes

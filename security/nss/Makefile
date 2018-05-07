@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nss
-PORTVERSION=	3.33
-PORTREVISION=	1
+PORTVERSION=	3.36.1
 #DISTVERSIONSUFFIX=	-with-ckbi-1.98
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
@@ -42,7 +41,7 @@ DIST=		${WRKSRC:H}/dist
 
 EXTRACT_AFTER_ARGS=--exclude */lib/zlib --exclude */lib/dbm --exclude */lib/sqlite
 
-INSTALL_BINS=	certcgi certutil cmsutil crlutil derdump makepqg \
+INSTALL_BINS=	certutil cmsutil crlutil derdump makepqg \
 		mangle modutil ocspclnt oidcalc p7content p7env p7sign \
 		p7verify pk12util rsaperf shlibsign signtool signver \
 		ssltap strsclnt symkeyutil vfychain vfyserv
@@ -58,7 +57,7 @@ BINS=		${DIST}/${OPSYS}${OSREL}_OPT.OBJ
 BINS=		${DIST}/${OPSYS}${OSREL}_DBG.OBJ
 .endif
 
-.if ${OPSYS} == FreeBSD && ${ARCH} == i386
+.if ${OPSYS} == FreeBSD && ${ARCH} == i386 && ! ${MACHINE_CPU:Msse2}
 USES+=		compiler:c++14-lang # gcm.h
 .endif
 

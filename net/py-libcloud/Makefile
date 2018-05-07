@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libcloud
-PORTVERSION=	2.2.1
+PORTVERSION=	2.3.0
 CATEGORIES=	net python
 MASTER_SITES=	APACHE/${PORTNAME}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ COMMENT=	Standard client library for many popular cloud providers
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-runner>=0:devel/py-pytest-runner
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-runner>=0:devel/py-pytest-runner@${FLAVOR}
 
 NO_ARCH=	yes
 

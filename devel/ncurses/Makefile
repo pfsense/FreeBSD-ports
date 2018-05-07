@@ -3,6 +3,7 @@
 
 PORTNAME=	ncurses
 PORTVERSION=	6.0.0s${SNAPSHOT}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	ftp://ftp.invisible-island.net/${PORTNAME}/current/
 DISTNAME=	${PORTNAME}-6.0-${SNAPSHOT}
@@ -16,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_sparc64=	cannot build: coredump: illegal instruction
 
-SNAPSHOT=	20171007
+SNAPSHOT=	20171223
 GNU_CONFIGURE=	yes
 CONFIGURE_SCRIPT=../configure
 CONFIGURE_ARGS=	--datadir=${PREFIX}/share/misc --disable-overwrite \

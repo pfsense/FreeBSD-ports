@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	groupoffice
-PORTVERSION=	6.2.59
 DISTVERSIONPREFIX=	com-
+DISTVERSION=	6.2.89
 CATEGORIES=	www
 MASTER_SITES=	SF/group-office/${DISTVERSION:R}
 
@@ -61,7 +61,7 @@ post-patch:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}
-	${CP} -R ${WRKSRC}/ ${STAGEDIR}${WWWDIR}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}
 	@${TOUCH} ${STAGEDIR}${WWWDIR}/config.php.sample
 
 .include <bsd.port.mk>

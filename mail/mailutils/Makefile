@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	mailutils
-DISTVERSION=	3.2.91-29
-PORTREVISION=	1
+PORTVERSION=	3.4
 CATEGORIES=	mail
-MASTER_SITES=	GNU_ALPHA GNU
+MASTER_SITES=	GNU GNU_ALPHA
 
 MAINTAINER=	zeus@gnu.org.ua
 COMMENT=	Utilities, daemons, and filters for processing e-mail
@@ -20,13 +19,14 @@ USE_LDCONFIG=	yes
 USE_RC_SUBR=	comsatd imap4d pop3d
 INSTALL_TARGET=	install-strip
 
-PLIST_SUB+=	LIBVERSION=5.0.3
+PLIST_SUB+=	LIBVERSION=5.0.5 VERSION=${PORTVERSION}
 
 INFO=		${PORTNAME}
 PORTDOCS=	AUTHORS ChangeLog NEWS README* THANKS TODO
 
-OPTIONS_DEFINE=		DOCS EMACS GNUTLS GSSAPI GUILE MH NNTP NLS PAM PYTHON
-OPTIONS_DEFAULT=	BDB GNUTLS PAM
+OPTIONS_DEFINE=		DEBUG DOCS EMACS GNUTLS GSSAPI GUILE MH NNTP NLS \
+			PAM PYTHON
+OPTIONS_DEFAULT=	GDBM GNUTLS PAM
 OPTIONS_MULTI=		DB
 OPTIONS_MULTI_DB=	BDB GDBM KYOTOCABINET LDAP MYSQL PGSQL TOKYOCABINET
 OPTIONS_SUB=		yes
@@ -38,7 +38,9 @@ KYOTOCABINET_DESC=	Kyoto Cabinet database support
 MH_DESC=		MH (Message Handling) system support
 TOKYOCABINET_DESC=	Tokyo Cabinet database support
 
-EMACS_USE=		EMACS=yes
+DEBUG_CONFIGURE_ON=	--enable-debug
+
+EMACS_USES=		emacs:build
 EMACS_IMPLIES=		MH
 
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
@@ -60,7 +62,7 @@ NLS_CONFIGURE_ENABLE=	nls
 PAM_CONFIGURE_ENABLE=	pam
 
 PYTHON_BUILD_DEPENDS=	python-config:lang/python
-PYTHON_USES=		python
+PYTHON_USES=		python:2.7
 PYTHON_CONFIGURE_ENABLE=python
 
 BDB_USES=		bdb:48
@@ -86,12 +88,6 @@ PGSQL_CONFIGURE_WITH=	postgres
 
 TOKYOCABINET_LIB_DEPENDS=	libtokyocabinet.so:databases/tokyocabinet
 TOKYOCABINET_CONFIGURE_WITH=	tokyocabinet
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MMH} && exists(${LOCALBASE}/bin/emacs)
-USE_EMACS=	yes
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/need_charset_alias=/s|true|false|' \

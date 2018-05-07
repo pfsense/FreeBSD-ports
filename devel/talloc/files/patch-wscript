@@ -1,11 +1,18 @@
---- wscript.orig	2016-07-28 07:19:25 UTC
+--- wscript.orig	2018-01-13 09:07:51 UTC
 +++ wscript
-@@ -78,7 +78,7 @@ def build(bld):
-     bld.RECURSE('lib/replace')
+@@ -46,13 +46,14 @@ def configure(conf):
+     conf.env.TALLOC_COMPAT1 = False
+     if conf.env.standalone_talloc:
+         conf.env.TALLOC_COMPAT1 = Options.options.TALLOC_COMPAT1
+-        conf.env.PKGCONFIGDIR = '${LIBDIR}/pkgconfig'
++        conf.env.PKGCONFIGDIR = '%%PKGCONFIGDIR%%'
+         conf.env.TALLOC_VERSION = VERSION
  
-     if bld.env.standalone_talloc:
--        bld.env.PKGCONFIGDIR = '${LIBDIR}/pkgconfig'
-+        bld.env.PKGCONFIGDIR = '%%PKGCONFIGDIR%%'
-         bld.env.TALLOC_VERSION = VERSION
-         private_library = False
+     conf.CHECK_XSLTPROC_MANPAGES()
+ 
+     conf.CHECK_HEADERS('sys/auxv.h')
+     conf.CHECK_FUNCS('getauxval')
++    conf.CHECK_FUNCS('arc4random')
+ 
+     conf.SAMBA_CONFIG_H()
  

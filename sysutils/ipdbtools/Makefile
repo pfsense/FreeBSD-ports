@@ -1,22 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	ipdbtools
-PORTVERSION=	1.1.1
-PORTREVISION=	3
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.1.2
 CATEGORIES=	sysutils
-MASTER_SITES=	http://cyclaero.com/public/ipdbtools/
 
 MAINTAINER=	cyclaero@gmail.com
 COMMENT=	Tools for IP based Geo-blocking and Geo-routing
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=		fails to compile: error: invalid conversion between vector type and integer type
-BROKEN_armv6=		fails to compile: error: invalid conversion between vector type and integer type
-BROKEN_powerpc64=	fails to compile: error: unrecognized command line option -mssse3
-BROKEN_sparc64=		fails to compile: error: unrecognized command line option -mssse3
-
-USES=		tar:bzip2 compiler:c11
+USES=		compiler:c11
+USE_GITHUB=	yes
+GH_ACCOUNT=	cyclaero
+GH_PROJECT=	ipdb
 
 PLIST_FILES=	bin/ipup \
 		bin/ipdb \

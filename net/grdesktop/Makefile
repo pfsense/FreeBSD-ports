@@ -3,11 +3,11 @@
 
 PORTNAME=	grdesktop
 PORTVERSION=	0.23
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	net
 MASTER_SITES=	SAVANNAH
 
-MAINTAINER=	flz@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNOME frontend for the remote desktop client (rdesktop)
 
 RUN_DEPENDS=	rdesktop:net/rdesktop

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdrm
-PORTVERSION=	2.4.83
+PORTVERSION=	2.4.89
 PORTEPOCH=	1
 CATEGORIES=	graphics x11
 MASTER_SITES=	http://dri.freedesktop.org/libdrm/
@@ -50,7 +50,7 @@ PLIST_SUB+=	ARM_DRIVERS="@comment "
 PLIST_SUB+=	INTEL_DRIVER="@comment "
 PLIST_SUB+=	NOUVEAU_DRIVER=""
 PLIST_SUB+=	RADEON_DRIVERS=""
-.elif ${ARCH} == armv6 || ${ARCH} == aarch64
+.elif ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7
 PLIST_SUB+=	ARM_DRIVERS=""
 PLIST_SUB+=	INTEL_DRIVER="@comment "
 PLIST_SUB+=	NOUVEAU_DRIVER="@comment "

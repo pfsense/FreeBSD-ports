@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	feh
-PORTVERSION=	2.20
+PORTVERSION=	2.25.1
 CATEGORIES=	graphics
 MASTER_SITES=	http://feh.finalrewind.org/ \
 		LOCAL/uqs
@@ -15,16 +15,16 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libImlib2.so:graphics/imlib2 \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
 USE_XORG=	x11 xt xinerama
 USES=		cpe desktop-file-utils gmake perl5 shebangfix tar:bzip2
 CPE_VENDOR=	daniel_friesel
 USE_PERL5=	run
 
-CPPFLAGS+=	-I${LOCALBASE}/include -std=c99
+CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-MAKE_ENV+=	LDFLAGS="${LDFLAGS}"
+MAKE_ENV+=	LDFLAGS="${LDFLAGS}" verscmp=0
 
 OPTIONS_DEFINE=	CAM DOCS EXAMPLES EXIF
 CAM_DESC=	Install feh-cam and related tools

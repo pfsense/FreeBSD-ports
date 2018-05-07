@@ -1,9 +1,9 @@
-# Created by: Lars Köller <Lars.Koeller@Uni-Bielefeld.de>
+# Created by: Lars Koeller <Lars.Koeller@Uni-Bielefeld.de>
 # $FreeBSD$
 
 PORTNAME=	grace
 PORTVERSION=	5.1.25
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math print
 MASTER_SITES=	ftp://ftp.fu-berlin.de/unix/graphics/grace/src/stable/ \
 		ftp://ftp.ntua.gr/pub/graphics/grace/src/stable/ \
@@ -68,10 +68,9 @@ post-configure:
 		's|$$(GRACE_HOME)/bin|$$(PREFIX)/bin|'
 
 post-install:
-	(cd ${WRKSRC}/doc && ${INSTALL_MAN} [c-g]*.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1)
-	(cd ${FILESDIR} && ${INSTALL_MAN} mini-xmgr3.xpm \
-		${STAGEDIR}${PREFIX}/share/pixmaps)
+	${INSTALL_MAN} ${WRKSRC}/doc/[c-g]*.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_DATA} ${FILESDIR}/mini-xmgr3.xpm \
+		${STAGEDIR}${PREFIX}/share/pixmaps
 	${LN} -sf xmgrace ${STAGEDIR}${PREFIX}/bin/grace
 	${LN} -sf grace.1 ${STAGEDIR}${MANPREFIX}/man/man1/xmgrace.1
 	${LN} -sf ${DOCSDIR} ${STAGEDIR}${DATADIR}/doc

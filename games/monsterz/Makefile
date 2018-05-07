@@ -3,7 +3,7 @@
 
 PORTNAME=	monsterz
 PORTVERSION=	0.7.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	http://sam.zoy.org/monsterz/ \
 		SF/nemysisfreebsdp/:icons
@@ -19,7 +19,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python
+USES=		python:2.7
 MAKE_ENV=	prefix=${PREFIX}
 
 PORTDOCS=	AUTHORS README TODO

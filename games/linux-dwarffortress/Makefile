@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	dwarffortress
-DISTVERSION=	0.43.05
-PORTREVISION=	2
+DISTVERSION=	0.44.05
 CATEGORIES=	games linux
 MASTER_SITES=	http://www.bay12games.com/dwarves/
 PKGNAMEPREFIX=	linux-
 DISTNAME=	df_${DISTVERSION:S|0.||:S|.|_|}_linux32
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dwarven fortress building game with ASCII graphics (Linux version)
 
 LICENSE=	BAY12
@@ -37,7 +36,7 @@ NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/df_linux
 STRIP=		# breaks execution, changes library ABI to FreeBSD type
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64 i386
 
 PORTDOCS=	README.linux readme.txt file\ changes.txt release\ notes.txt \
 		command\ line.txt

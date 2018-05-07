@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	clamav
-PORTVERSION=	0.99.2
-PORTREVISION=	5
+PORTVERSION=	0.99.4
 CATEGORIES=	security
 MASTER_SITES=	http://www.clamav.net/downloads/production/
 
@@ -28,7 +27,7 @@ STDERR_DESC=		Print logs to stderr instead of stdout
 EXPERIMENTAL_DESC=	Build experimental code
 DMG_XAR_DESC=		Enable DMG and XAR archives support
 
-OPTIONS_DEFAULT=	ARC ARJ LHA UNZOO UNRAR DMG_XAR \
+OPTIONS_DEFAULT=	ARC ARJ UNZOO UNRAR DMG_XAR \
 			JSON PCRE
 
 ARC_RUN_DEPENDS=	arc:archivers/arc
@@ -51,9 +50,9 @@ IPV6_CONFIGURE_ENABLE=	ipv6
 DMG_XAR_CONFIGURE_ENABLE=	xml
 DMG_XAR_USE=		GNOME=libxml2
 
+USES=		cpe gmake libtool ncurses pathfix ssl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		cpe gmake libtool ncurses pathfix
 INSTALL_TARGET=	install-strip
 USE_RC_SUBR=	clamav-clamd clamav-freshclam
 
@@ -94,6 +93,7 @@ CLAMAVUSER?=	clamav
 CLAMAVGROUP?=	clamav
 
 CLAMAV_CLAMD_SOCKET?=	${RUNDIR}/clamd.sock
+CLAMAV_CLAMD_PIDFILE?=	${RUNDIR}/clamd.pid
 CLAMAV_MILTER_SOCKET?=	${RUNDIR}/clmilter.sock
 
 SUB_FILES=	pkg-deinstall
@@ -105,6 +105,7 @@ SUB_LIST+=	DBDIR=${DBDIR} \
 		CLAMAVUSER=${CLAMAVUSER} \
 		CLAMAVGROUP=${CLAMAVGROUP} \
 		CLAMAV_CLAMD_SOCKET=${CLAMAV_CLAMD_SOCKET} \
+		CLAMAV_CLAMD_PIDFILE=${CLAMAV_CLAMD_PIDFILE} \
 		CLAMAV_MILTER_SOCKET=${CLAMAV_MILTER_SOCKET}
 
 SED_CONF=	-E -e 's|^\#?(Example)$$|\#\1|' \
@@ -175,7 +176,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|0x100000000|0x100000000ULL|g' \
 		${WRKSRC}/libclamunrar/unrar.c
 
-.if ${PORT_OPTIONS:MLLVM} && ${PORT_OPTIONS:MTESTS}
+.if ${PORT_OPTIONS:MTESTS}
 pre-configure:
 	@if ! ${PYTHON_CMD} -c "import thread" >/dev/null 2>&1; then \
 		${ECHO_MSG} ""; \

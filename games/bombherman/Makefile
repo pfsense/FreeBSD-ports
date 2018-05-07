@@ -22,11 +22,11 @@ GH_ACCOUNT=	Keruspe
 GH_PROJECT=	Bomb-her-man
 GH_TAGNAME=	8f5aa22
 
-USES=		gmake pkgconfig
+USES=		autoreconf gmake pkgconfig
+USE_CXXSTD=	gnu++98
 USE_SDL=	sdl image mixer ttf
 USE_GNOME=	cairo intltool librsvg2
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	automake:env
 ALL_TARGET=	# empty
 
 CFLAGS+=	-I${LOCALBASE}/include
@@ -48,11 +48,6 @@ NLS_USES=	gettext
 
 # Wrong versioning upstream
 PORTSCOUT=	 ignore:1
-
-.include <bsd.port.options.mk>
-
-pre-configure:
-	@(cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ./autogen.sh)
 
 post-install:
 .for s in ${ICON_SIZES}

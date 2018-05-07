@@ -3,16 +3,16 @@
 
 PORTNAME=	glchess
 PORTVERSION=	1.0.6
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D OpenGL based chess game
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/gtk-2.0/gtk/gdkgl/__init__.py:x11-toolkits/py-gtkglext
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/gtk-2.0/gtk/gdkgl/__init__.py:x11-toolkits/py-gtkglext@${FLAVOR}
 
-USES=		desktop-file-utils python shared-mime-info
+USES=		desktop-file-utils python:2.7 shared-mime-info
 USE_GNOME=	gconf2
 USE_PYTHON=	distutils
 GCONF_SCHEMAS=	glchess.schemas

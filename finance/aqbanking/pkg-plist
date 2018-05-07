@@ -2,6 +2,7 @@ bin/aqbanking-cli
 bin/aqbanking-config
 %%EBICS%%bin/aqebics-tool
 bin/aqhbci-tool4
+bin/aqpaypal-tool
 bin/hbcixml3
 include/aqbanking5/aqbanking/ab_accountqueue.h
 include/aqbanking5/aqbanking/ab_accountqueuefns.h
@@ -124,6 +125,9 @@ include/aqbanking5/aqofxconnect/version.h
 %%EBICS%%include/aqebics/client/account.h
 %%EBICS%%include/aqebics/client/provider.h
 %%EBICS%%include/aqebics/client/user.h
+include/aqpaypal/aqpaypal.h
+include/aqpaypal/provider.h
+include/aqpaypal/user.h
 lib/aqbanking/plugins/%%AQB_SHLIB_VER%%/bankinfo/at.so
 lib/aqbanking/plugins/%%AQB_SHLIB_VER%%/bankinfo/at.xml
 lib/aqbanking/plugins/%%AQB_SHLIB_VER%%/bankinfo/ca.so
@@ -168,11 +172,13 @@ lib/aqbanking/plugins/%%AQB_SHLIB_VER%%/providers/aqnone.so
 lib/aqbanking/plugins/%%AQB_SHLIB_VER%%/providers/aqnone.xml
 lib/aqbanking/plugins/%%AQB_SHLIB_VER%%/providers/aqofxconnect.so
 lib/aqbanking/plugins/%%AQB_SHLIB_VER%%/providers/aqofxconnect.xml
-lib/cmake/aqbanking-5.6/aqbanking-config-version.cmake
-lib/cmake/aqbanking-5.6/aqbanking-config.cmake
+lib/aqbanking/plugins/%%AQB_SHLIB_VER%%/providers/aqpaypal.so
+lib/aqbanking/plugins/%%AQB_SHLIB_VER%%/providers/aqpaypal.xml
+lib/cmake/aqbanking-%%AQB_MAJ_MIN_VER%%/aqbanking-config-version.cmake
+lib/cmake/aqbanking-%%AQB_MAJ_MIN_VER%%/aqbanking-config.cmake
 lib/libaqbanking.so
 lib/libaqbanking.so.%%AQB_SHLIB_VER%%
-lib/libaqbanking.so.%%AQB_SHLIB_VER%%.5.12
+lib/libaqbanking.so.%%AQB_SHLIB_VER%%.6.8
 lib/libaqbankingpp.so
 lib/libaqbankingpp.so.0
 lib/libaqbankingpp.so.0.0.0
@@ -180,14 +186,17 @@ lib/libaqbankingpp.so.0.0.0
 %%EBICS%%lib/libaqebics.so.0
 %%EBICS%%lib/libaqebics.so.0.0.0
 lib/libaqhbci.so
-lib/libaqhbci.so.23
-lib/libaqhbci.so.23.0.0
+lib/libaqhbci.so.24
+lib/libaqhbci.so.24.0.1
 lib/libaqnone.so
 lib/libaqnone.so.%%AQB_SHLIB_VER%%
-lib/libaqnone.so.%%AQB_SHLIB_VER%%.5.12
+lib/libaqnone.so.%%AQB_SHLIB_VER%%.6.8
 lib/libaqofxconnect.so
 lib/libaqofxconnect.so.7
 lib/libaqofxconnect.so.7.0.2
+lib/libaqpaypal.so
+lib/libaqpaypal.so.0
+lib/libaqpaypal.so.0.0.0
 libdata/pkgconfig/aqbanking.pc
 share/aclocal/aqbanking.m4
 %%DATADIR%%/aqbanking/typemaker2/c/ab_account.tm2
@@ -212,6 +221,7 @@ share/aclocal/aqbanking.m4
 %%DATADIR%%/backends/aqhbci/dialogs/dlg_pintan.dlg
 %%DATADIR%%/backends/aqhbci/dialogs/dlg_pintan_special.dlg
 %%DATADIR%%/backends/aqhbci/dialogs/dlg_rdh_special.dlg
+%%DATADIR%%/backends/aqhbci/dialogs/dlg_zkacard.dlg
 %%DATADIR%%/backends/aqhbci/dialogs/keyfile.png
 %%DATADIR%%/backends/aqhbci/dialogs/pintan.png
 %%DATADIR%%/backends/aqhbci/hbci.xml
@@ -219,6 +229,9 @@ share/aclocal/aqbanking.m4
 %%DATADIR%%/backends/aqofxconnect/dialogs/dlg_getinst.dlg
 %%DATADIR%%/backends/aqofxconnect/dialogs/dlg_newuser.dlg
 %%DATADIR%%/backends/aqofxconnect/dialogs/dlg_ofx_special.dlg
+%%DATADIR%%/backends/aqpaypal/dialogs/dlg_editsecret.dlg
+%%DATADIR%%/backends/aqpaypal/dialogs/dlg_edituser.dlg
+%%DATADIR%%/backends/aqpaypal/dialogs/dlg_newuser.dlg
 %%DATADIR%%/bankinfo/at/banks.data
 %%DATADIR%%/bankinfo/at/bic.idx
 %%DATADIR%%/bankinfo/at/blz.idx
@@ -293,6 +306,7 @@ share/aclocal/aqbanking.m4
 %%DATADIR%%/imexporters/sepa/profiles/default.conf
 %%DATADIR%%/imexporters/swift/profiles/amro940.conf
 %%DATADIR%%/imexporters/swift/profiles/amro942.conf
+%%DATADIR%%/imexporters/swift/profiles/swiftmt535.conf
 %%DATADIR%%/imexporters/swift/profiles/swiftmt940.conf
 %%DATADIR%%/imexporters/swift/profiles/swiftmt942.conf
 %%DATADIR%%/imexporters/xmldb/profiles/default.conf
@@ -306,4 +320,5 @@ share/aclocal/aqbanking.m4
 %%DATADIR%%/typemaker2/c/ab_userqueue_list.tm2
 %%EBICS%%share/doc/aqebics/aqebics-tool/README
 share/doc/aqhbci/aqhbci-tool/README
+share/doc/aqpaypal/aqpaypal-tool/README
 share/locale/de/LC_MESSAGES/aqbanking.mo

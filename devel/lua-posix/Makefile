@@ -2,44 +2,41 @@
 # $FreeBSD$
 
 PORTNAME=	posix
-PORTVERSION=	33.4.0
-DISTVERSIONPREFIX=	release-v
+PORTVERSION=	34.0.4
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	POSIX layer for Lua
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Lua bindings for POSIX APIs
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		lua libtool perl5
-USE_PERL5=	build
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	LUA_INCLUDE="-I${LUA_INCDIR}" \
-		LUA="${LOCALBASE}/bin/lua${LUA_VER_STR}"
-MAKE_ARGS=	POSIX_EXTRA_CFLAGS="" POSIX_EXTRA_LDFLAGS=""
-INSTALL_TARGET=	install-strip
-PORTDOCS=	*
+RUN_DEPENDS=	${LUA_PKGNAMEPREFIX}stdlib-normalize>=0:devel/lua-stdlib-normalize
+
+USES=		lua shebangfix
+SHEBANG_FILES=	build-aux/luke
 
 USE_GITHUB=	yes
-GH_PROJECT=	luaposix
 GH_ACCOUNT=	luaposix
+GH_PROJECT=	luaposix
 
-DOCSDIR=	${PREFIX}/share/doc/luaposix
+do-build:
+	@cd ${WRKSRC} && build-aux/luke all \
+		CFLAGS="${CFLAGS}" \
+		LUA="${LOCALBASE}/bin/${LUA_CMD}" \
+		LUA_INCDIR="${LUA_INCDIR}" \
+		PREFIX="${PREFIX}" \
+		version="${PORTVERSION}"
 
-PLIST_FILES=	%%LUA_MODLIBDIR%%/posix.so \
-		%%LUA_MODSHAREDIR%%/posix/_argcheck.lua \
-		%%LUA_MODSHAREDIR%%/posix/compat.lua \
-		%%LUA_MODSHAREDIR%%/posix/deprecated.lua \
-		%%LUA_MODSHAREDIR%%/posix/init.lua \
-		%%LUA_MODSHAREDIR%%/posix/sys.lua \
-		%%LUA_MODSHAREDIR%%/posix/util.lua
+do-install:
+	cd ${WRKSRC} && build-aux/luke install \
+		INST_LIBDIR="${STAGEDIR}${LUA_MODLIBDIR}" \
+		INST_LUADIR="${STAGEDIR}${LUA_MODSHAREDIR}"
 
-OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's/\(darwin\*\)|\(freebsd\*\)/\1|dragonfly*|\2/' \
-		${WRKSRC}/configure
+post-install:
+	${FIND} ${STAGEDIR}${LUA_MODLIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

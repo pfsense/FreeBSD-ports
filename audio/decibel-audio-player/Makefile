@@ -3,22 +3,24 @@
 
 PORTNAME=	decibel-audio-player
 PORTVERSION=	1.08
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio multimedia gnome python
 MASTER_SITES=	http://decibel.silent-blade.org/uploads/Main/
 
 MAINTAINER=	somicide@gmail.com
 COMMENT=	Fast GTK+ audio player with an clean and user friendly interface
 
-RUN_DEPENDS=	py*-dbus>=0.80:devel/py-dbus \
-		py*-mutagen>=1.11:audio/py-mutagen
-
 LICENSE=	GPLv2
 
-USES=		python
+BROKEN_armv6=	fails to package: Unable to access file locale/ar/LC_MESSAGES/decibel-audio-player.mo:No such file or directory
+BROKEN_armv7=	fails to package: Unable to access file locale/ar/LC_MESSAGES/decibel-audio-player.mo:No such file or directory
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0.80:devel/py-dbus@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mutagen>=1.11:audio/py-mutagen@${PY_FLAVOR}
+
+USES=		gmake gettext desktop-file-utils python:2.7
 USE_GNOME=	pygnome2 pygtk2
 USE_GSTREAMER=	python good bad
-USES=		gmake gettext desktop-file-utils
 NO_BUILD=	yes
 
 #Audio gstreamer plugins
@@ -31,10 +33,10 @@ MPEG4IP_DESC=	AAC/MP4P support
 EXTRAS_DESC=	Extra dependencies for plugins
 
 AUDIOCD_RUN_DEPENDS=	cd-discid>=0.9:audio/cd-discid \
-		py*-cddb>=1.4:audio/py-cddb \
+		${PYTHON_PKGNAMEPREFIX}cddb>=1.4:audio/py-cddb@${PY_FLAVOR} \
 		gstreamer-plugins-cdio>=0.10.16:sysutils/gstreamer-plugins-cdio
-EXTRAS_RUN_DEPENDS=	py*-pillow>0:graphics/py-pillow \
-		py*-notify>=0.1.1:devel/py-notify
+EXTRAS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}notify>=0.1.1:devel/py-notify@${PY_FLAVOR}
 FLAC_USE=	GSTREAMER=flac
 MP3_USE=	GSTREAMER=mp3
 MPEG4IP_LIB_DEPENDS=	libmp4v2.so:multimedia/mp4v2

@@ -3,7 +3,7 @@
 
 PORTNAME=	libranlip
 DISTVERSION=	1.0
-PORTREVISION= 	1
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	LOCAL/bf \
 		http://www.deakin.edu.au/~gleb/
@@ -32,7 +32,7 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/docs/ranlip.ps ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/docs/ranlip.ps ${STAGEDIR}${DOCSDIR}
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

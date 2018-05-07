@@ -3,7 +3,7 @@
 
 PORTNAME=	shiboken
 PORTVERSION=	1.2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://download.qt-project.org/official_releases/pyside/
 
@@ -22,7 +22,7 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION} \
 USE_QT4=	corelib qmake_build qtestlib moc_build network \
 		uic_build rcc_build xml xmlpatterns
 
-USES=		cmake python tar:bzip2
+USES=		cmake python:2.7 tar:bzip2
 USE_LDCONFIG=	yes
 
 ALL_TARGET=	all

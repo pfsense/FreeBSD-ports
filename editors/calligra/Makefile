@@ -6,7 +6,7 @@
 #
 PORTNAME=	calligra
 PORTVERSION=	3.0.1
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	editors kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE/${PORTNAME}
@@ -14,8 +14,7 @@ DIST_SUBDIR=	KDE/${PORTNAME}
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE office suite
 
-LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
-		libImath-2_2.so:graphics/ilmbase \
+LIB_DEPENDS=	libImath-2_2.so:graphics/ilmbase \
 		libKPropertyCore3.so:x11-toolkits/kproperty \
 		libKReport3.so:textproc/kreport \
 		libboost_thread.so:devel/boost-libs \
@@ -38,11 +37,10 @@ LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
 		libwpg-0.3.so:graphics/libwpg03 \
 		libwps-0.3.so:textproc/libwps03
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/eigen3.pc:math/eigen3 \
-		pstoedit:graphics/pstoedit
+BUILD_DEPENDS=	pstoedit:graphics/pstoedit
 RUN_DEPENDS=	pstoedit:graphics/pstoedit
 
-USES=		cmake:outsource cpe compiler:c++11-lib desktop-file-utils \
+USES=		cmake:outsource cpe compiler:c++11-lib desktop-file-utils eigen:3 \
 		gettext iconv:translit jpeg kde:5 localbase:ldflags perl5 pkgconfig \
 		shared-mime-info sqlite tar:xz
 USE_KDE=	activities archive auth bookmarks codecs completion config \
@@ -57,6 +55,11 @@ USE_QT5=	buildtools_build core dbus gui network opengl \
 		quick script sql svg testlib webkit widgets x11extras xml
 USE_XORG=	ice sm x11 xext
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=	OPENEXR
+OPTIONS_DEFAULT=	OPENEXR
+
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR
 
 CMAKE_ARGS=	-DCMAKE_INCLUDE_PATH:STRING="${QT_INCDIR} ${LOCALBASE}/include" \
 		-DPRODUCTSET:STRING="DESKTOP"

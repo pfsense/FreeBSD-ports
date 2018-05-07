@@ -6,7 +6,7 @@ PORTVERSION=	0.1.00
 PORTREVISION=	7
 CATEGORIES=	graphics
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PECL extension if imlib2
 
 LICENSE=	PHP202
@@ -14,7 +14,7 @@ LICENSE=	PHP202
 LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
 USES=		php:pecl
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=	70 71 72
 
 # libImlib2 may or may not depend on X, however,
 # imlib2 extension doesn't need X related functions in libImlib2

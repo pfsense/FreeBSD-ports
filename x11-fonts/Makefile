@@ -54,6 +54,7 @@
     SUBDIR += font-adobe-utopia-type1
     SUBDIR += font-alias
     SUBDIR += font-arabic-misc
+    SUBDIR += font-awesome
     SUBDIR += font-bh-100dpi
     SUBDIR += font-bh-75dpi
     SUBDIR += font-bh-lucidatypewriter-100dpi
@@ -83,6 +84,10 @@
     SUBDIR += font-screen-cyrillic
     SUBDIR += font-sony-misc
     SUBDIR += font-sun-misc
+    SUBDIR += font-tex-gyre-bonum-math
+    SUBDIR += font-tex-gyre-pagella-math
+    SUBDIR += font-tex-gyre-schola-math
+    SUBDIR += font-tex-gyre-termes-math
     SUBDIR += font-util
     SUBDIR += font-winitzki-cyrillic
     SUBDIR += font-xfree86-type1
@@ -104,6 +109,7 @@
     SUBDIR += gnu-unifont
     SUBDIR += gnu-unifont-ttf
     SUBDIR += gohufont
+    SUBDIR += google-fonts
     SUBDIR += hack-font
     SUBDIR += hanazono-fonts-ttf
     SUBDIR += hasklig
@@ -132,6 +138,7 @@
     SUBDIR += linuxlibertine-g
     SUBDIR += lohit
     SUBDIR += manu-gothica
+    SUBDIR += meslo
     SUBDIR += mgopen
     SUBDIR += mkbold
     SUBDIR += mkbold-mkitalic
@@ -142,6 +149,7 @@
     SUBDIR += montecarlo_fonts
     SUBDIR += montserrat
     SUBDIR += moveable-type-fonts
+    SUBDIR += nerd-fonts
     SUBDIR += nexfontsel
     SUBDIR += noto
     SUBDIR += noto-lite
@@ -160,6 +168,7 @@
     SUBDIR += profont
     SUBDIR += proggy_fonts
     SUBDIR += proggy_fonts-ttf
+    SUBDIR += py-QtAwesome
     SUBDIR += py-bdflib
     SUBDIR += roboto-fonts-ttf
     SUBDIR += sgifonts

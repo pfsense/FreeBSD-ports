@@ -1,47 +1,34 @@
 # $FreeBSD$
 
 PORTNAME=	nomad
-PORTVERSION=	0.6.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.7.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	jhixson@gmail.com
 COMMENT=	Cluster manager and scheduler
 
 LICENSE=	MPL20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON=	On i386: go compiler crashes: https://github.com/golang/go/issues/23763
 
-BUILD_DEPENDS=	go>=1.8:lang/go
+BUILD_DEPENDS=	go:lang/go
 
 USES=		compiler
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	hashicorp
 GH_SUBDIR=	src/github.com/hashicorp/nomad
-GH_TUPLE=	armon:go-radix:4239b77:go_radix/src/github.com/armon/go-radix \
-		axw:gocov:c77561c:gocov/src/github.com/axw/gocov \
-		bgentry:speakeasy:675b82c:speakeasy/src/github.com/bgentry/speakeasy \
-		golang:tools:8b84dae:tools/src/golang.org/x/tools \
-		kardianos:govendor:v1.0.8:govendor/src/github.com/kardianos/govendor \
-		matm:gocov-html:v1.1:gocov_html/src/gopkg.in/matm/v1/gocov-html \
-		mattn:go-isatty:57fdcb9:go_isatty/src/github.com/mattn/go-isatty \
-		mitchellh:gox:v0.3.0:gox/src/github.com/mitchellh/gox \
-		mitchellh:cli:8d6d9ab:gox/src/github.com/mitchellh/cli \
-		sean-:seed:e2103e2:seed/src/github.com/sean-/seed \
-		ugorji:go:faddd61:go/src/github.com/ugorji/go
-
 USE_RC_SUBR=	nomad
 
 USERS=		nomad
 GROUPS=		nomad
 
-STRIP=
-
 do-build:
-	@cd ${WRKSRC}/src/github.com/hashicorp/nomad; \
-	${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -v -x \
-		-ldflags "-X main.GitDescribe=${DISTVERSIONFULL}" -o bin/nomad
+	@cd ${WRKSRC}/src/github.com/hashicorp/nomad && \
+		${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -v -x \
+			-ldflags "-X main.GitDescribe=${DISTVERSIONFULL}" -o bin/nomad
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/hashicorp/nomad/bin/nomad ${STAGEDIR}${PREFIX}/bin/nomad

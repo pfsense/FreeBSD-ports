@@ -7,12 +7,12 @@ CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	MySQL bindings for python
 
 LICENSE=	BSD2CLAUSE
 
-USES=		mysql python
+USES=		mysql python:2.7
 USE_PYTHON=	autoplist distutils
 
 post-install:

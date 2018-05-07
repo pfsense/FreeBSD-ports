@@ -3,7 +3,7 @@
 
 PORTNAME=	graphviz
 PORTVERSION=	2.40.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics tk
 MASTER_SITES=	http://www.graphviz.org/pub/graphviz/ARCHIVE/
 
@@ -20,10 +20,13 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libexpat.so:textproc/expat2 \
 		libgd.so:${GD_PORT}
 
-USES=		bison cpe gmake jpeg libtool:keepla pkgconfig pathfix shebangfix
+USES=		cpe pathfix shebangfix gmake bison groff pkgconfig libtool:keepla jpeg
 GNU_CONFIGURE=	yes
 # sincos is broken on armv6, see ports/220591
 CFLAGS_armv6=	-fno-builtin-sincos -fno-builtin-sin -fno-builtin-cos \
+		-fno-builtin-sincosf -fno-builtin-sinf -fno-builtin-cosf \
+		-fno-builtin-sincosl -fno-builtin-sinl -fno-builtin-cosl
+CFLAGS_armv7=	-fno-builtin-sincos -fno-builtin-sin -fno-builtin-cos \
 		-fno-builtin-sincosf -fno-builtin-sinf -fno-builtin-cosf \
 		-fno-builtin-sincosl -fno-builtin-sinl -fno-builtin-cosl
 LDFLAGS+=	-L${LOCALBASE}/lib

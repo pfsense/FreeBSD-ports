@@ -1,8 +1,7 @@
-# Created by: tcberner
 # $FreeBSD$
 
 PORTNAME=	baloo
-PORTVERSION=	${KDE_FRAMEWORKS_VERSION}
+DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	sysutils kde kde-frameworks
 
 MAINTAINER=	kde@FreeBSD.org
@@ -13,7 +12,7 @@ LIB_DEPENDS=	liblmdb.so:databases/lmdb \
 
 USES=		cmake:outsource compiler:c++11-lib gettext kde:5 pathfix tar:xz
 USE_KDE=	auth completion config coreaddons crash dbusaddons \
-		filemetadata5 i18n idletime jobwidgets kio service \
+		filemetadata i18n idletime jobwidgets kio service \
 		solid widgetsaddons
 USE_QT5=	buildtools_build core dbus gui network qmake_build \
 		qml quick testlib widgets

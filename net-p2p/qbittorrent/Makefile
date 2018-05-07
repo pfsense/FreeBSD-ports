@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	qbittorrent
-PORTVERSION=	3.3.15
-PORTREVISION=	3
+DISTVERSION=	3.3.16
+PORTREVISION=	1
 CATEGORIES=	net-p2p ipv6
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT?=	Bittorrent client using Qt4/5 and libtorrent-rasterbar
 
 LICENSE=	GPLv2+
@@ -21,7 +21,6 @@ GNU_CONFIGURE=	yes
 USE_QT5=	core network xml qmake_build buildtools_build linguisttools_build
 QT_NONSTANDARD=	yes
 DESTDIRNAME=	INSTALL_ROOT
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	AUTHORS Changelog README.md
 

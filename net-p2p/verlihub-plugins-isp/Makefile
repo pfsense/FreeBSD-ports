@@ -3,13 +3,11 @@
 
 PORTNAME=	isp
 PORTVERSION=	1.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/verlihub/VH_ISP/${DISTVERSION}
 
 MAINTAINER=	me@skylord.ru
-
-BROKEN_armv6=		fails to configure: checking for VERLIHUB - version >= 0... no (see config.log)
 
 PLUGIN_DESC=	ISP
 

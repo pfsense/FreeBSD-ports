@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mod_auth_openidc
-PORTVERSION=	2.3.2
+PORTVERSION=	2.3.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
@@ -18,8 +18,7 @@ LIB_DEPENDS=	libcjose.so:devel/cjose \
 		libjansson.so:devel/jansson \
 		libpcre.so:devel/pcre
 
-USES=		autoreconf:autoconf cpe gmake libtool pkgconfig ssl
-USE_APACHE=	22+
+USES=		apache:2.2+ autoreconf cpe gmake libtool pkgconfig ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	pingidentity
 CPE_VENDOR=	${GH_ACCOUNT}

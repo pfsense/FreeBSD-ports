@@ -150,21 +150,11 @@ RUBY?=			${LOCALBASE}/bin/${RUBY_NAME}
 .if defined(RUBY_VER)
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-. if ${RUBY_VER} == 2.2
-#
-# Ruby 2.2
-#
-RUBY_RELVERSION=	2.2.8
-RUBY_PORTREVISION=	0
-RUBY_PORTEPOCH=		1
-RUBY_PATCHLEVEL=	0
-RUBY22=			""	# PLIST_SUB helpers
-
-. elif ${RUBY_VER} == 2.3
+. if ${RUBY_VER} == 2.3
 #
 # Ruby 2.3
 #
-RUBY_RELVERSION=	2.3.5
+RUBY_RELVERSION=	2.3.7
 RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY_PATCHLEVEL=	0
@@ -174,11 +164,21 @@ RUBY23=			""	# PLIST_SUB helpers
 #
 # Ruby 2.4
 #
-RUBY_RELVERSION=	2.4.2
+RUBY_RELVERSION=	2.4.4
 RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY_PATCHLEVEL=	0
 RUBY24=			""	# PLIST_SUB helpers
+
+. elif ${RUBY_VER} == 2.5
+#
+# Ruby 2.5
+#
+RUBY_RELVERSION=	2.5.1
+RUBY_PORTREVISION=	0
+RUBY_PORTEPOCH=		1
+RUBY_PATCHLEVEL=	0
+RUBY25=			""	# PLIST_SUB helpers
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
@@ -186,16 +186,16 @@ RUBY24=			""	# PLIST_SUB helpers
 #
 # Other versions
 #
-IGNORE=	Only ruby 2.2, 2.3 and 2.4 are supported
+IGNORE=	Only ruby 2.3, 2.4 and 2.5 are supported
 _INVALID_RUBY_VER=	1
 . endif
 .endif # defined(RUBY_VER)
 
 .if !defined(_INVALID_RUBY_VER)
 
-RUBY22?=		"@comment "
 RUBY23?=		"@comment "
 RUBY24?=		"@comment "
+RUBY25?=		"@comment "
 
 .if defined(BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E})
 .if ${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}} == "yes"
@@ -310,9 +310,9 @@ PLIST_SUB+=		${PLIST_RUBY_DIRS:C,DIR="(${LOCALBASE}|${PREFIX})/,DIR=",} \
 			RUBY_SUFFIX="${RUBY_SUFFIX}" \
 			RUBY_NAME="${RUBY_NAME}" \
 			RUBY_DEFAULT_SUFFIX="${RUBY_DEFAULT_SUFFIX}" \
-			RUBY22=${RUBY22} \
 			RUBY23=${RUBY23} \
-			RUBY24=${RUBY24}
+			RUBY24=${RUBY24} \
+			RUBY25=${RUBY25}
 
 .if defined(USE_RUBY_RDOC)
 MAKE_ENV+=	RUBY_RDOC=${RUBY_RDOC}

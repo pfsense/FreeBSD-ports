@@ -1,6 +1,6 @@
 COMMENT=	The ${PHP_MODNAME} shared extension for php
 
-USES+=	php:ext
+USES+=	php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	56
 IGNORE_WITH_PHP=	70
@@ -544,7 +544,7 @@ CONFIGURE_ARGS+=--enable-gd-native-ttf
 CONFIGURE_ARGS+=--enable-gd-jis-conv
 .	endif
 .	if ${PORT_OPTIONS:MX11}
-USE_XORG=	xpm
+USE_XORG=	x11 xpm
 
 CONFIGURE_ARGS+=--with-xpm-dir=${LOCALBASE}
 .	endif
@@ -565,7 +565,7 @@ LIB_DEPENDS+=	libc-client4.so.9:mail/cclient
 
 .if ${PHP_MODNAME} == "mbstring"
 .	if ${PORT_OPTIONS:MREGEX}
-LIB_DEPENDS+=	libonig.so:devel/oniguruma6
+LIB_DEPENDS+=	libonig.so:devel/oniguruma
 CONFIGURE_ARGS+=--with-onig=${LOCALBASE}
 .	else
 CONFIGURE_ARGS+=--disable-mbregex

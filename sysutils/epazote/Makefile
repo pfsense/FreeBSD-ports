@@ -19,13 +19,11 @@ GH_TUPLE=	epazote:scheduler:0.1.0:scheduler/src/github.com/epazote/scheduler \
 		go-yaml:yaml:cd8b52f:yaml/src/github.com/go-yaml/yaml
 GH_SUBDIR=	src/github.com/${PORTNAME}/${PORTNAME}
 
-STRIP=		# stripping can break go binaries
-
 PLIST_FILES=	bin/epazote
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}; \
-	${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags \
+	${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags \
 	"-X main.version=${PORTVERSION}" -o epazote cmd/epazote/main.go;
 
 do-install:

@@ -2,7 +2,7 @@
 
 PORTNAME=	cyrus-imapd
 PORTVERSION=	2.5.11
-#PORTREVISION=	0
+#PORTREVISION=	1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.cyrusimap.org/cyrus-imapd/ \
 		http://cyrusimap.org/releases/
@@ -18,6 +18,7 @@ LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libpcre.so:devel/pcre
 
 BROKEN_armv6=		fails to build: ./tools/config2header: Error code 1
+BROKEN_armv7=		fails to build: ./tools/config2header: Error code 1
 
 CONFLICTS_INSTALL=	cyrus-imapd-2.[^5].* cyrus-imapd2[^5]-2.[^5].* \
 			cyrus-imapd3*
@@ -159,7 +160,6 @@ PLIST_SUB+=	CLAMAV="@comment "
 .if ${PORT_OPTIONS:MDRAC}
 IGNORE=		DRAC is not available
 # EXTRA_PATCHES+=	${FILESDIR}/extra-patch-cmulocal__sasl2.m4
-# USE_AUTOTOOLS=	autoconf autoheader
 .endif
 
 .if ${PORT_OPTIONS:MHTTP} || ${PORT_OPTIONS:MSQLITE}

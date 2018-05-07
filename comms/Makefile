@@ -40,6 +40,7 @@
     SUBDIR += efax-gtk
     SUBDIR += ems-flasher
     SUBDIR += fl_moxgen
+    SUBDIR += flcluster
     SUBDIR += fldigi
     SUBDIR += fllog
     SUBDIR += flrig
@@ -77,7 +78,7 @@
     SUBDIR += kb
     SUBDIR += kermit
     SUBDIR += klog
-    SUBDIR += kremotecontrol
+    SUBDIR += kremotecontrol-kde4
     SUBDIR += kvasd
     SUBDIR += libconcord
     SUBDIR += libfap
@@ -135,6 +136,7 @@
     SUBDIR += predict
     SUBDIR += py-bulksms
     SUBDIR += py-gammu
+    SUBDIR += py-hidapi
     SUBDIR += py-libconcord
     SUBDIR += py-libimobiledevice
     SUBDIR += py-lirc
@@ -175,6 +177,7 @@
     SUBDIR += telldus-core
     SUBDIR += thebridge
     SUBDIR += tilp2
+    SUBDIR += tio
     SUBDIR += tits
     SUBDIR += tkhylafax
     SUBDIR += tkscanfax

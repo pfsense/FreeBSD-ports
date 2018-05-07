@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	whups
-PORTVERSION=	3.0.11
+DISTVERSION=	3.0.12
 CATEGORIES=	devel www pear
-PKGNAMEPREFIX=	horde-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde bug tracking/ticketing system

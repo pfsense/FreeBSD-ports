@@ -2,7 +2,7 @@
 
 PORTNAME=	prosearch
 PORTVERSION=	0.19.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net www
 MASTER_SITES=	http://pro.setun.net/search/download/ SF/pro-search/pro-search/${PORTVERSION}
 
@@ -65,7 +65,7 @@ RUN_DEPENDS+=	rsync:net/rsync
 .endif
 
 .if ${PORT_OPTIONS:MAPACHE}
-USE_APACHE_RUN=	22+
+USES+=		apache:run,2.2+
 .endif
 
 .if ${PORT_OPTIONS:MNGINX}

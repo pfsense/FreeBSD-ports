@@ -3,7 +3,7 @@
 
 PORTNAME=	archiveopteryx
 PORTVERSION=	3.2.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	mail
 MASTER_SITES=	http://archiveopteryx.org/download/
 
@@ -12,9 +12,9 @@ COMMENT=	Advanced PostgreSQL-based IMAP/POP server
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	jam:devel/jam
+BROKEN_powerpc64=	fails to build: /bin/sh: clang: not found
 
-BROKEN_powerpc64=	Does not build: /bin/sh: clang: not found
+BUILD_DEPENDS=	jam:devel/jam
 
 USES=		perl5 ssl tar:bzip2
 USE_PERL5=	build
@@ -32,12 +32,13 @@ PLIST_SUB+=	USERS="${USERS}"
 PLIST_SUB+=	GROUPS="${GROUPS}"
 
 JAM?=		${LOCALBASE}/bin/jam
+JAMARG+=	-dx
 
 .include <bsd.port.pre.mk>
 
 # force Clang when on FreeBSD
 .if ${OPSYS} == FreeBSD
-JAMARG=	"-sCLANG=1"
+JAMARG+=	"-sCLANG=1"
 .endif
 
 post-patch:

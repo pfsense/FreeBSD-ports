@@ -1,8 +1,7 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	slurm
-DISTVERSION=	17.02.7
+DISTVERSION=	17.02.10
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.schedmd.com/download/latest/ \
 		http://www.schedmd.com/download/archive/ \
@@ -30,6 +29,7 @@ USE_PERL5=	configure
 USE_RC_SUBR=	slurmctld slurmd
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--bindir=${PREFIX}/bin
 INSTALL_TARGET=	install-strip
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 SHEBANG_FILES=	doc/html/shtml2html.py doc/man/man2html.py
@@ -103,6 +103,8 @@ post-patch:
 		-e 's|SlurmdSpoolDir=.*|SlurmdSpoolDir=/var/spool/slurmd|' \
 		-e 's|StateSaveLocation=.*|StateSaveLocation=/var/run/slurm|' \
 		${WRKSRC}/etc/slurm.conf.example
+
+post-patch-LINUX-on:
 	@${REINPLACE_CMD} -e 's|"/proc|"/compat/linux/proc|g' \
 		${WRKSRC}/src/slurmd/slurmstepd/req.c \
 		${WRKSRC}/src/slurmd/slurmstepd/pdebug.c \

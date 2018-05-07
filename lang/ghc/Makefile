@@ -3,7 +3,7 @@
 
 PORTNAME=	ghc
 PORTVERSION=	${GHC_VERSION}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang haskell
 MASTER_SITES=	http://www.haskell.org/ghc/dist/${PORTVERSION}/:source \
 		LOCAL/pgj/:boot
@@ -30,6 +30,7 @@ LIB_DEPENDS+=	libgmp.so:math/gmp
 USES=		autoreconf gmake iconv:translit localbase:ldflags ncurses perl5 tar:xz
 USE_LOCALE=	en_US.UTF-8
 USE_PERL5=	build
+NO_CCACHE=	ccache: error: Failed to create directory /nonexistent/.ccache/tmp: Permission denied
 
 # The configure process accepts,filters and canonicalises
 # the CONFIGURE_TARGET variable. You can read the files
@@ -93,13 +94,6 @@ BOOT_GHC_VERSION=	7.10.2
 DISTFILES+=		ghc-${BOOT_GHC_VERSION}-boot-${ARCH}-freebsd${EXTRACT_SUFX}:boot
 .endif # MBOOT
 
-# LLVM is still not properly supported, further it does not make sense to have
-# to depend on old llvm ports that will be removed from the ports soon.
-# So for now, stick to GCC.
-# https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/Backends/LLVM/Installing
-# We should however investigate whether base's clang is enough to build ghc&co.
-# This will likely require some modifications to compiler/main/*hs
-USE_GCC=		yes
 CONFIGURE_ARGS+=	-with-gcc=${CC}
 .if empty(PORT_OPTIONS:MBOOT)
 CONFIGURE_ARGS_BOOT+=	--with-gcc=${CC}
