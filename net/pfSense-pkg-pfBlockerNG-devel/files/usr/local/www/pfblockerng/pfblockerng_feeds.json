@@ -158,6 +158,14 @@
 					"header":	"ISC_Block"
 				},
 				{
+					"feed":		"Pulsedive",
+					"website":	"https://blog.pulsedive.com/2018/01/18/vetting-threat-intelligence/",
+					"url":		"https://pulsedive.com/premium?key=_API_KEY_&types=ip",
+					"register":	"https://pulsedive.com/products/feed.php",
+					"info":		"Subscription based feed only!",
+					"header":	"Pulsedive"
+				},
+				{
 					"feed":		"Spamhaus",
 					"website":	"https://www.spamhaus.org/drop/",
 					"contact":	"https://www.spamhaus.org/organization/contacts/",
@@ -1048,6 +1056,14 @@
 					"url":		"http://winhelp2002.mvps.org/hosts.txt",
 					"header":	"MVPS"
 				},
+				{
+					"feed":		"Pulsedive",
+					"website":	"https://blog.pulsedive.com/2018/01/18/vetting-threat-intelligence/",
+					"url":		"https://pulsedive.com/premium?key=_API_KEY_&types=domain",
+					"register":	"https://pulsedive.com/products/feed.php",
+					"info":		"Subscription based feed only!",
+					"header":	"Pulsedive_BD"
+                                },
 				{
 					"feed":		"Spam404",
 					"website":	"http://www.spam404.com/blog/category/Blacklist",
