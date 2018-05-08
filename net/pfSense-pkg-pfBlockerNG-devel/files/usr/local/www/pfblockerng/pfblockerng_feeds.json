@@ -159,9 +159,9 @@
 				},
 				{
 					"feed":		"Pulsedive",
-					"website":	"https://blog.pulsedive.com/2018/01/18/vetting-threat-intelligence/",
+					"website":	"https://pulsedive.com/products/feed.php",
 					"url":		"https://pulsedive.com/premium?key=_API_KEY_&types=ip",
-					"register":	"https://pulsedive.com/products/feed.php",
+					"register":	"https://pulsedive.com/premium/purchase.php",
 					"info":		"Subscription based feed only!",
 					"header":	"Pulsedive"
 				},
@@ -1058,9 +1058,9 @@
 				},
 				{
 					"feed":		"Pulsedive",
-					"website":	"https://blog.pulsedive.com/2018/01/18/vetting-threat-intelligence/",
+					"website":	"https://pulsedive.com/products/feed.php",
 					"url":		"https://pulsedive.com/premium?key=_API_KEY_&types=domain",
-					"register":	"https://pulsedive.com/products/feed.php",
+					"register":	"https://pulsedive.com/premium/purchase.php",
 					"info":		"Subscription based feed only!",
 					"header":	"Pulsedive_BD"
                                 },
