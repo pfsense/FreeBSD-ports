@@ -46,6 +46,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		nginx>=0:www/nginx \
 		ntp>=0:net/ntp \
 		openvpn>=0:security/openvpn \
+		${PHP_PKGNAMEPREFIX}openssl_x509_crl>=0:security/php-openssl_x509_crl@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-Auth_RADIUS>=0:net/pear-Auth_RADIUS@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-Crypt_CHAP>=0:security/pear-Crypt_CHAP@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-Mail>=0:mail/pear-Mail@${PHP_FLAVOR} \
@@ -73,8 +74,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 
 php56_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}suhosin>=0:security/php-suhosin \
 			${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/${PHP_PKGNAMEPREFIX}pfSense-module
-php72_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
-			${PHP_PKGNAMEPREFIX}openssl_x509_crl>=0:security/php-openssl_x509_crl@${PHP_FLAVOR}
+php72_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR}
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
