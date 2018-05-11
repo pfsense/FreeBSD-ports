@@ -711,7 +711,7 @@ function squid_upgrade_config() {
 
 	/* migrate reverse proxy settings */
 	squid_reverse_upgrade_config();
-	
+
 	/* unset broken antivirus settings */
 	squid_antivirus_upgrade_config();
 
@@ -789,7 +789,7 @@ function squid_validate_general($post, &$input_errors) {
 		$input_errors[] = "You can not run Squid on the same port as the pfSense WebGUI";
 	}
 	unset($port, $webgui_port);
-	
+
 	if ($post['transparent_proxy'] == 'on') {
 		if (empty($post['transparent_active_interface'])) {
 			$input_errors[] = "You must select at least one interface under 'Transparent Proxy Interface(s)' when 'Transparent HTTP Proxy' is enabled.";
@@ -846,7 +846,7 @@ function squid_validate_general($post, &$input_errors) {
 		}
 	}
 	unset($host, $hosts);
-	
+
 	foreach (array('defined_ip_proxy_off_dest') as $hosts) {
 		foreach (explode(";", $post[$hosts]) as $host) {
 			$host = trim($host);
@@ -1294,9 +1294,18 @@ function squid_resync_general() {
 	 * This avoids periods when Squid is unresponsive due to digest generation.
 	 */
 	$digest_generation = "off";
+	if (!is_array($config['installedpackages'])) {
+		$config['installedpackages'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['squidremote'])) {
+		$config['installedpackages']['squidremote'] = array();
+	}
+
 	if (!is_array($config['installedpackages']['squidremote']['config'])) {
 		$config['installedpackages']['squidremote']['config'] = array();
 	}
+
 	foreach ($config['installedpackages']['squidremote']['config'] as $settings) {
 		if ($settings['enable'] == 'on' && $settings['hierarchy'] == 'sibling') {
 			$digest_generation = "on";
@@ -1485,6 +1494,14 @@ EOD;
 function squid_resync_upstream() {
 	global $config;
 
+	if (!is_array($config['installedpackages'])) {
+		$config['installedpackages'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['squidremote'])) {
+		$config['installedpackages']['squidremote'] = array();
+	}
+
 	if (!is_array($config['installedpackages']['squidremote']['config'])) {
 		$config['installedpackages']['squidremote']['config'] = array();
 	}
@@ -1586,7 +1603,7 @@ acl step3 at_step SslBump3
 
 EOD;
 	}
-	
+
 	$allowed_subnets = preg_replace("/\s+/"," ", sq_text_area_decode($settings['allowed_subnets']));
 	if (!empty($allowed_subnets)) {
 		$conf .= "acl allowed_subnets src $allowed_subnets\n";
