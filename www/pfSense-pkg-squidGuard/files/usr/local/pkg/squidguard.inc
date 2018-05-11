@@ -326,9 +326,9 @@ function squidguard_resync() {
     //}
 
     squidguard_cron_install();
-    
+
     //Sync only with apply button to avoid multiples reloads on backup server while editing master config
-    if ($submit == APPLY_BTN) 
+    if ($submit == APPLY_BTN)
 		squidguard_sync_on_changes();
 }
 
@@ -432,7 +432,10 @@ function get_sgconf_items_list($data_group, $fieldname) {
 
     $conf = $squidguard_config[$data_group]['item'];
     if (is_array($conf))
-        foreach($conf as $cf) $res[] = $cf[$fieldname];
+        foreach($conf as $cf) {
+        $res = array();
+        	$res = $cf[$fieldname];
+        }
 
     return $res;
 }
@@ -530,11 +533,17 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
             $name = $val;
             $name = str_replace('!', '', $name);
             $name = str_replace('^', '', $name);
-            if (!empty($val)) {
+            if (!empty($val) && is_array($val)) {
                 switch($val[0]) {
-                    case '!': $acls_up[$name] = 'deny';  break;
-                    case '^': $acls_up[$name] = 'white'; break;
-                    default : $acls_up[$name] = 'allow'; break;
+					case '!':
+						$acls_up[$name] = 'deny';
+					break;
+					case '^':
+						$acls_up[$name] = 'white';
+					break;
+					default :
+						$acls_up[$name] = 'allow';
+					break;
                 }
             }
         }
@@ -554,7 +563,7 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
                 switch($val[0]) {
                     case '!': $acls_over[$name] = 'deny';  break;
                     case '^': $acls_over[$name] = 'white'; break;
-                    default : $acls_over[$name] = 'allow'; break;
+					default : $acls_over[$name] = 'allow'; break;
                 }
             }
         }
@@ -585,7 +594,8 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
     }
 
     # Default all
-    $dest_items[] = array('name'=>FLT_DEFAULT_ALL,
+    $dest_items = array();
+    $dest_items = array('name'=>FLT_DEFAULT_ALL,
                           'upt_value'=>$acls_up[FLT_DEFAULT_ALL],
                           'ovt_value'=>$acls_over[FLT_DEFAULT_ALL],
                           'description'=>'Default access');
@@ -883,7 +893,7 @@ function squidguard_install_command() {
 #        conf_mount_rw();
         $blklist_file = SQUIDGUARD_BLK_FILELISTPATH;
 
-     
+
         if (!file_exists($blklist_file)) {
         	# if blacklist not exists, then copy default db from samples
 #            $entries = array("ads", "aggressive", "audio-video", "drugs", "gambling", "hacking", "mail", "porn", "proxy", "violence", "warez");
@@ -1008,7 +1018,7 @@ function convert_pfxml_to_sgxml() {
 
     #Clean adversiting
     $sgxml[F_ADV_BLANKIMG] = $pfxml['adv_blankimg']  == 'on' ? 'on' : 'off';
-	
+
 
     # other
     $lanip = $config['interfaces']['lan']['ipaddr'];
