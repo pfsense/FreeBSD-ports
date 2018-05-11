@@ -445,9 +445,9 @@ include_once("head.inc"); ?>
 
 					if ($check_blockoffenders_info == "on")
 					{
-						$check_blockoffenders = enabled;
+						$check_blockoffenders = 'enabled';
 					} else {
-						$check_blockoffenders = disabled;
+						$check_blockoffenders = 'disabled';
 					}
 ?>
 					<?=strtoupper($check_blockoffenders)?>
@@ -620,7 +620,7 @@ include_once("head.inc"); ?>
 				}
 			}
 		}
-	}	
+	}
 
 	function suricata_iface_toggle(action, id) {
 		$('#toggle').val(action);
