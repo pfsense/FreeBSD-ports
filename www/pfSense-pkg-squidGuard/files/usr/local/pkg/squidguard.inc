@@ -556,6 +556,10 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
 
         $pss = explode(' ', $acl_overdest);
         foreach($pss as $val) {
+        	if (!is_arrar($val)) {
+        		$val = array();
+        	}
+
             $name = $val;
             $name = str_replace('!', '', $name);
             $name = str_replace('^', '', $name);
