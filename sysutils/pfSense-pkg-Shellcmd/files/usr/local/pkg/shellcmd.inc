@@ -112,7 +112,8 @@ function shellcmd_sync_package() {
 	 * See /etc/inc/xmlparse.inc and /etc/inc/xmlreader.inc
 	 */
 	$afterfilterchangeshellcmd = '';
-	$a_shellcmd_config = &$config['installedpackages']['shellcmdsettings']['config'];
+	$tmp = $config['installedpackages']['shellcmdsettings']['config'];
+	$a_shellcmd_config = &$tmp;
 	if (!is_array($a_shellcmd_config)) {
 		$a_shellcmd_config = array();
 	}
@@ -146,7 +147,7 @@ function shellcmd_sync_package() {
 	if (($config['system']['shellcmd'] != $a_shellcmd) ||
 	    ($config['system']['earlyshellcmd'] != $a_earlyshellcmd) ||
 	    ($config['system']['afterfilterchangeshellcmd'] != $afterfilterchangeshellcmd)) {
-		/* Write the new system configuration to config.xml from scratch when done 
+		/* Write the new system configuration to config.xml from scratch when done
 		   but only if something changed */
 		unset($config['system']['shellcmd']);
 		$config['system']['shellcmd'] = $a_shellcmd;
@@ -162,7 +163,8 @@ function shellcmd_sync_package() {
 function shellcmd_import_config() {
 	global $config;
 
-	$shellcmd_config = &$config['installedpackages']['shellcmdsettings']['config'];
+	$tmp = $config['installedpackages']['shellcmdsettings']['config'];
+	$shellcmd_config = &$tmp;
 	if (!is_array($shellcmd_config)) {
 		$shellcmd_config = array();
 	}
