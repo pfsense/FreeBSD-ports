@@ -654,7 +654,7 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
     $time_names = get_sgconf_items_list(F_TIMES, 'name');
     $i=0;
     foreach($pkg['fields']['field'] as $field) {
-        if (is_array($field) && && $field['fieldname'] === 'time') {
+        if (is_array($field) && $field['fieldname'] === 'time') {
             $fld = &$pkg['fields']['field'][$i];
             $fld['options']['option'][] = array('name'=>'none (time not defined)', 'value'=>'');
             if (is_array($time_names)) {
