@@ -556,7 +556,7 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
 
         $pss = explode(' ', $acl_overdest);
         foreach($pss as $val) {
-        	if (!is_arrary($val)) {
+        	if (!is_array($val)) {
         		$val = array();
         	}
 
