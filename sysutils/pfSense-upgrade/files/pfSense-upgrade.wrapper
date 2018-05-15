@@ -33,10 +33,10 @@ fi
 
 # lockf return codes, from sysexits(3)
 EX_TEMPFAIL=75	# The specified lock file was already locked by another process.
-EX_CANTCREAT=73	# The lockf utility was unable	to create the lock file, e.g.,
+EX_CANTCREAT=73	# The lockf utility was unable to create the lock file, e.g.,
 		# because of insufficient access privileges.
-EX_OSERR=71	# A system call (e.g.,	fork(2)) failed unexpectedly.
-EX_SOFTWARE=70	# The command did not exit normally, but may have been	signaled
+EX_OSERR=71	# A system call (e.g., fork(2)) failed unexpectedly.
+EX_SOFTWARE=70	# The command did not exit normally, but may have been signaled
 		# or stopped.
 
 # Special return code to detect when pfSense-upgrade was upgraded and must
