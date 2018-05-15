@@ -52,19 +52,19 @@ while true; do
 	case "$rc" in
 		${EX_TEMPFAIL})
 			echo "Another instance is already running... Aborting!"
-			exit 1
+			exit $EX_TEMPFAIL
 			;;
 		${EX_CANTCREAT})
 			echo "ERROR: Unable to create lockfile ${lockfile}"
-			exit 1
+			exit $EX_CANTCREAT
 			;;
 		${EX_OSERR})
 			echo "ERROR: An unexpected OS error happened"
-			error=1
+			error=$EX_OSERR
 			;;
 		${EX_SOFTWARE})
 			echo "ERROR: An unexpected error happened"
-			error=1
+			error=$EX_SOFTWARE
 			;;
 		${EX_UPGRADE})
 			run_again=1
@@ -75,7 +75,7 @@ while true; do
 		&& rm -f ${lockfile}
 
 	[ -n "${error}" ] \
-		&& exit 1
+		&& exit $error
 
 	[ -n "${run_again}" ] \
 		&& continue
