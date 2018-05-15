@@ -620,7 +620,7 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
 
     # Default all
     $dest_items = array();
-    $dest_items = array('name'=>FLT_DEFAULT_ALL,
+    $dest_items[] = array('name'=>FLT_DEFAULT_ALL,
                           'upt_value'=>$acls_up[FLT_DEFAULT_ALL],
                           'ovt_value'=>$acls_over[FLT_DEFAULT_ALL],
                           'description'=>'Default access');
