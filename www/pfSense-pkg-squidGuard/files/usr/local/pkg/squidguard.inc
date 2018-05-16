@@ -434,12 +434,11 @@ function get_pkgconf_items_list($pkg_gui_name, $fieldname) {
 
 function get_sgconf_items_list($data_group, $fieldname) {
     global $squidguard_config;
-    $res = '';
+    $res = array();
 
     $conf = $squidguard_config[$data_group]['item'];
     if (is_array($conf))
         foreach($conf as $cf) {
-        $res = array();
         	$res = $cf[$fieldname];
         }
 
@@ -539,8 +538,9 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
     if ($pkg['name'] !== MODULE_DEFAULT) {
          $acl_dest     = $squidguard_config[F_ACLS]['item'][$current_id][F_DESTINATIONNAME];
          $acl_overdest = $squidguard_config[F_ACLS]['item'][$current_id][F_OVERDESTINATIONNAME];
-    }
-    else $acl_dest = $squidguard_config[F_DEFAULT][F_DESTINATIONNAME];
+    } else {
+    	$acl_dest = $squidguard_config[F_DEFAULT][F_DESTINATIONNAME];
+	}
 
     # acl dest ontime
     if ($acl_dest) {
@@ -596,7 +596,10 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
     # User destinations
     if ($squidguard_config[F_DESTINATIONS]) {
         foreach($squidguard_config[F_DESTINATIONS]['item'] as $dst) {
-        	$dest_items = array();
+			if (!is_array($dest_items)) {
+				$dest_items = array();
+			}
+
             $dest_items[] = array ('name'=>$dst[F_NAME],
                                    'upt_value'=>$acls_up[$dst[F_NAME]],
                                    'ovt_value'=>$acls_over[$dst[F_NAME]],
@@ -609,7 +612,9 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
         $blk_entries = sg_entries_blacklist();
         if (!empty($blk_entries)) {
             foreach($blk_entries as $dst) {
-            	$dest_items = array();
+				if (!is_array($dest_items)) {
+					$dest_items = array();
+				}
                 $dest_items[] = array ('name'=>$dst,
                                        'upt_value'=>$acls_up[$dst],
                                        'ovt_value'=>$acls_over[$dst],
@@ -619,7 +624,10 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
     }
 
     # Default all
-    $dest_items = array();
+    if (!is_array($dest_items)) {
+    	$dest_items = array();
+    }
+
     $dest_items[] = array('name'=>FLT_DEFAULT_ALL,
                           'upt_value'=>$acls_up[FLT_DEFAULT_ALL],
                           'ovt_value'=>$acls_over[FLT_DEFAULT_ALL],
@@ -1098,6 +1106,7 @@ function convert_pfxml_to_sgxml_source($pfconfig) {
         $sgx[F_SOURCE]      = $pfx[F_SOURCE];
         $sgx[F_LOG]         = $pfx[F_ENABLELOG];
         $sgx[F_DESCRIPTION] = $pfx['description'];
+        $sgxml[F_ITEM] = array();
         $sgxml[F_ITEM][]    = $sgx;
      }
 
@@ -1125,6 +1134,7 @@ function convert_pfxml_to_sgxml_destination($pfconfig) {
         $sgx[F_REDIRECT]     = $pfx[F_REDIRECT];
         $sgx[F_DESCRIPTION]  = $pfx['description'];
         $sgx[F_LOG]          = $pfx[F_ENABLELOG];
+        $sgxml[F_ITEM] = array();
         $sgxml[F_ITEM][]     = $sgx;
     }
 
@@ -1159,7 +1169,7 @@ function convert_pfxml_to_sgxml_rewrite($pfconfig) {
                 if (strpos($pfx_row[F_MODE], 'nocase') !== false) $mode .= 'i';
                 if (strpos($pfx_row[F_MODE], 'redirect') !== false) $mode .= 'r';
                 $sgx_row[F_MODE] = $mode; # ! sys options only  - not for GUI !
-
+                $sgx[F_ITEM] = array();
                 $sgx[F_ITEM][] = $sgx_row;
              }
         }
@@ -1198,6 +1208,7 @@ function convert_pfxml_to_sgxml_time($pfconfig) {
                 $sgx_row[F_TIMEDAYS]  = $pfx_row[F_TIMEDAYS];
                 $sgx_row[F_DATERANGE] = $pfx_row[F_DATERANGE];
                 $sgx_row[F_TIMERANGE] = $pfx_row[F_TIMERANGE];
+                $sgx[F_ITEM] = array();
                 $sgx[F_ITEM][] = $sgx_row;
             }
         }
