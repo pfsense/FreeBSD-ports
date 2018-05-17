@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Page Blocked via DNSBL</title>
+</head>
+<style type="text/css">
+	body {
+		font: 14px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
+		color: #ECECEC;
+		background: #000000;
+		display: table-cell;
+		vertical-align: middle;
+		width: 50%;
+	}
+	html {
+		display: table;
+		margin: auto;
+		width: 50%;
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+		background: #DEE9FF;
+		color: #000000;
+		width: 70%;
+	}
+	th, td {
+		padding: 5px;
+		text-align: left;
+	}
+	th {
+		background-color: #FF0000;
+		color: #FFFFFF;
+	}
+	a {
+		color: #FFFFFF;
+		font-size: 75%;
+	}
+</style>
+
+<body>
+	<div style="margin: 10px; float: left;">
+		<img src=" data:image/gif;base64,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"/> </div>
+
+	<div style="float: left; width: 80%;">
+		<p>This website &nbsp;[ &emsp;<strong><?=$ptype['HTTP_HOST']?></strong>&emsp; ]&nbsp; has been blocked by the Network Administrator!</p>
+		<div>
+			<table style="margin: 10px; width: 95%;" id="dnsbl_table" border="1">
+				<thead>
+					<tr id="pfb_header">
+						<th>Referer</th>
+						<th>Client</th>
+						<th>User Agent</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><?=$ptype['HTTP_REFERER'];?></td>
+						<td><?=$ptype['REMOTE_ADDR'];?></td>
+						<td><?=$ptype['HTTP_USER_AGENT'];?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<p>Powered by: <strong>pfBlockerNG DNSBL</strong>&emsp;
+			<a target="_blank" href="http://pfblockerng.com">www.pfBlockerNG</a>
+		</p>
+	</div>
+</body>
+</html>

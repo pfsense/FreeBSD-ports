@@ -112,10 +112,13 @@ function bind_sync() {
 
 	global $config;
 	conf_mount_rw();
+	$bind = $config['installedpackages']['bind']['config'][0];
 	// Create rndc
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
+	$rndc_port = $bind['controlport'] == "" ? "953" : $bind['controlport'];
+	$rndc_confgen_opts = "-p " . escapeshellarg($rndc_port);
 	if (!file_exists(BIND_LOCALBASE."/etc/rndc-confgen.pfsense") && file_exists($rndc_confgen)) {
-		exec("$rndc_confgen ", $rndc_conf);
+		exec("$rndc_confgen $rndc_confgen_opts ", $rndc_conf);
 		$confgen_file = "";
 		foreach ($rndc_conf as $line) {
 			$confgen_file .= "{$line}\n";
@@ -128,6 +131,9 @@ function bind_sync() {
 		$rndc_conf = file(BIND_LOCALBASE . "/etc/rndc-confgen.pfsense");
 		$confgen = "rndc.conf";
 		foreach ($rndc_conf as $line) {
+			if (preg_match("/\bport \d+\b/", $line)) {
+				$line = preg_replace("/\bport \d+\b/", "port {$rndc_port}", $line);
+			}
 			if ($confgen == "rndc.conf") {
 				if (!preg_match("/^#/", $line)) {
 					$rndc_file .= $line;
@@ -144,7 +150,6 @@ function bind_sync() {
 		}
 	}
 
-	$bind = $config['installedpackages']['bind']['config'][0];
 	if (is_array($config['installedpackages']['bindzone'])) {
 		$bindzone = $config['installedpackages']['bindzone']['config'];
 	} else {
@@ -227,14 +232,16 @@ EOD;
 	$bind_listenonv6 = $bind_listenonv6 == "" ? "none;" : $bind_listenonv6;
 	$bind_listenon = $bind_listenon == "" ? "none;" : $bind_listenon;
 	// Print "<pre>$bind_listenonv6 $bind_listenon";
+
+	$bind_listenport = $bind['listenport'] == "" ? "53" : $bind['listenport'];
 	if (array_key_exists("ipv6allow", $config['system'])) {
-		$bind_conf .= "\tlisten-on-v6 { $bind_listenonv6 };\n";
+		$bind_conf .= "\tlisten-on-v6 port {$bind_listenport} { {$bind_listenonv6} };\n";
 	}
-	$bind_conf .= "\tlisten-on { $bind_listenon };\n";
+	$bind_conf .= "\tlisten-on port {$bind_listenport} { {$bind_listenon} };\n";
 
 	// Forwarder config
 	if ($bind_forwarder == 'on') {
-		$bind_conf .= "\tforwarders { $forwarder_ips };\n";
+		$bind_conf .= "\tforwarders { {$forwarder_ips} };\n";
 	}
 	if ($bind_notify == 'on') {
 		$bind_conf .= "\tnotify yes;\n";

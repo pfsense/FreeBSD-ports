@@ -87,11 +87,6 @@ if (isset($id) && $a_accountkeys[$id]) {
 	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_accountkeys[$id][$stat];
 	}
-	
-	$a_errorfiles = &$a_accountkeys[$id]['errorfiles']['item'];
-	if (!is_array($a_errorfiles)) {
-		$a_errorfiles = array();
-	}
 }
 
 if (isset($_GET['dup'])) {

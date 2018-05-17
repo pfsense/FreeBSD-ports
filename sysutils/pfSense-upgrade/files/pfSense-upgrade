@@ -905,7 +905,7 @@ pkg_delete() {
 
 # Delete every pfSense-pkg-* package
 pkg_delete_all() {
-	for _package in $(_pkg query -e '%a == 0' %n); do
+	for _package in $(pkg-static query -e '%a == 0' %n); do
 		case ${_package} in "${pkg_prefix}"* )
 			_echo "Removing ${_package}"
 			pkg_delete ${_package}

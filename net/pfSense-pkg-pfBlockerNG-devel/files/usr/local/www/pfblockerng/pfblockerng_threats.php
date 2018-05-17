@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2017 BBcan177@gmail.com
+ * Copyright (c) 2015-2018 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -20,23 +20,29 @@
  * limitations under the License.
  */
 
-$pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Alerts'), gettext('Threat Source Lookup'));
+$title = $host = $domain = $port = '';
+if (isset($_REQUEST)) {
+	if (isset($_REQUEST['host'])) {
+		$title	= 'Source IP';
+		$host	= htmlspecialchars($_REQUEST['host']);
+	} elseif (isset($_REQUEST['domain'])) {
+		$title	= 'Domain';
+		$domain	= htmlspecialchars($_REQUEST['domain']);
+	} elseif (isset($_REQUEST['port']) && ctype_digit($_REQUEST['port'])) {
+		$title	= 'Port';
+		$port	= htmlspecialchars($_REQUEST['port']);
+	}
+}
+
+$pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Alerts'), gettext("Threat {$title} Lookup"));
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblockerng_alerts.php', '@self');
 require('guiconfig.inc');
-
-if (isset($_REQUEST['host'])) {
-	$host = htmlspecialchars($_REQUEST['host']);
-}
-if (isset($_REQUEST['domain'])) {
-	$domain = htmlspecialchars($_REQUEST['domain']);
-}
-
 include('head.inc');
 ?>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h4 class="panel-title"><?=gettext("Threat:&emsp;" . $host . $domain); ?></h4>
+		<h4 class="panel-title"><?=gettext("Threat {$title}:&emsp;" . $host . $domain . $port); ?></h4>
 	</div>
 	<div>
 		<p class="text-center"><br />NOTE:&emsp;The following links are to external services, so their reliability cannot be guaranteed.
@@ -54,14 +60,14 @@ include('head.inc');
 				<?php if (isset($_REQUEST['host'])): ?>
 				<!-- IP threat source links -->
 				<tr>
-					<td><font color="blue">Threat Lookups</font><i class="fa fa-globe pull-right"></i></td>
+					<td><span style="color: blue;">Threat Lookups</span><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="http://www.ipvoid.com/scan/<?=$host;?>/">
 						<?=gettext("IPVOID");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.tcpiputils.com/browse/ip-address/<?=$host;?>/">
-						<?=gettext("TCPUtils");?></a></td>
+					<td><a target="_blank" href="https://dnslytics.com/ip/<?=$host;?>/">
+						<?=gettext("DNSlytics");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
@@ -105,13 +111,13 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.dshield.org/ipinfo.html?ip=<?=$host;?>">
-						<?=gettext("DShield Threat Lookup");?></a></td>
+					<td><a target="_blank" href="https://isc.sans.edu/ipinfo.html?ip=<?=$host;?>">
+						<?=gettext("Internet Storm Center");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://isc.sans.edu/ipinfo.html?ip=<?=$host;?>">
-						<?=gettext("Internet Storm Center");?></a></td>
+					<td><a target="_blank" href="https://isc.sans.edu/api/ip/<?=$host;?>">
+						<?=gettext("Internet Storm Center API summary");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
@@ -152,11 +158,52 @@ include('head.inc');
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="http://viewdns.info/reverseip/?host=<?=$host;?>&t=1">
 						<?=gettext("ViewDNS.info Reverse IP Lookup");?></a></td>
-                                </tr>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.webiron.com/iplookup/<?=$host;?>">
+						<?=gettext("WebIron");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://support.proofpoint.com/rbl-lookup.cgi?ip=<?=$host;?>">
+						<?=gettext("Proofpoint Dynamic Reputation - IP Lookup");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://www.reputationauthority.org/lookup.php?ip=<?=$host;?>">
+						<?=gettext("WatchGuard - Reputation Authority");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.robtex.com/ip-lookup/<?=$host;?>">
+						<?=gettext("Robtex: IP Blacklists");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.talosintelligence.com/reputation_center/lookup?search=<?=$host;?>">
+						<?=gettext("Talos Threat Intelligence");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://censys.io/ipv4/<?=$host;?>">
+						<?=gettext("Censys search engine");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://dnstrails.com/#/list/domain/<?=$host;?>/type/ip/page/1">
+						<?=gettext("DNSTrails");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://pulsedive.com/indicator/?ioc=<?=base64_encode($host);?>">
+						<?=gettext("PulseDive");?></a></td>
+				</tr>
+				<br />
 
 				<!-- Mail Server threat source links -->
 				<tr>
-					<td><font color="blue">Mail Server Lookups</font><i class="fa fa-envelope pull-right"></i></td>
+					<td><span style="color: blue;">Mail Server Lookups</span><i class="fa fa-envelope pull-right"></i></td>
 					<td><a target="_blank" href="https://senderscore.org/lookup.php?lookup=<?=$host;?>&ipLookup=Go">
 						<?=gettext("SenderScore");?></a></td>
 				</tr>
@@ -181,17 +228,22 @@ include('head.inc');
 						<?=gettext("MXToolbox");?></a></td>
 				</tr>
 
-				<?php else: ?>
+				<?php elseif ($_REQUEST['domain']): ?>
 
 				<!-- Domain threat source links -->
 				<tr>
 					<td>Domain Lookups<i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.talosintelligence.com/reputation_center/lookup?search=<?=$domain;?>">
+						<?=gettext("Talos Threat Intelligence");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.alexa.com/siteinfo/<?=$domain;?>">
 						<?=gettext("Alexa");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://safeweb.norton.com/report/show_mobile?name=<?=$domain;?>">
+					<td><a target="_blank" href="https://safeweb.norton.com/report/show?url=<?=$domain;?>">
 						<?=gettext("Norton Safe Web");?></a></td>
 				</tr>
 				<tr>
@@ -206,13 +258,18 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.tcpiputils.com/browse/domain/<?=$domain;?>">
-						<?=gettext("TCPUtils");?></a></td>
+					<td><a target="_blank" href="https://dnslytics.com/domain/<?=$domain;?>">
+						<?=gettext("DNSlytics");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.google.com/safebrowsing/diagnostic?site=<?=$domain;?>">
 						<?=gettext("Google SafeBrowsing");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.google.com/transparencyreport/safebrowsing/diagnostic/index.html#url=<?=$domain;?>">
+						<?=gettext("Google Transparency Report");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
@@ -274,6 +331,66 @@ include('head.inc');
 					<td><a target="_blank" href="http://viewdns.info/iphistory/?domain=<?=$domain;?>">
 						<?=gettext("ViewDNS.info Domain IP History Lookup");?></a></td>
 				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://www.reputationauthority.org/domain_lookup.php?ip=<?=$domain;?>">
+						<?=gettext("WatchGuard - Reputation Authority");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.robtex.com/dns-lookup/<?=$domain;?>">
+						<?=gettext("Robtex: Summary");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://www.isithacked.com/check/<?=$domain;?>">
+						<?=gettext("Is It Hacked?");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://pgl.yoyo.org/adservers/details.php?hostname=<?=$domain;?>">
+						<?=gettext("Yoyo Domain Lookup");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://censys.io/domain?q=<?=$domain;?>">
+						<?=gettext("Censys search engine");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://dnstrails.com/#/domain/domain/<?=$domain;?>">
+						<?=gettext("DNSTrails");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.google.ca/search?q=site%3A<?=$domain;?>">
+						<?=gettext("Google Site: Search");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://pulsedive.com/indicator/?ioc=<?=base64_encode($domain);?>">
+						<?=gettext("PulseDive");?></a></td>
+				</tr>
+
+			<?php else: ?>
+
+				<!-- Port threat links -->
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://isc.sans.edu/port.html?port=<?=$port;?>">
+						<?=gettext("ISC - Internet Storm Center");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.speedguide.net/port.php?port=<?=$port;?>">
+						<?=gettext("Speed Guide - Port database");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers">
+						<?=gettext("Wikipedia List of TCP/UDP Ports");?></a></td>
+				</tr>
+
 			<?php endif; ?>
 			</tbody>
 		</table>
