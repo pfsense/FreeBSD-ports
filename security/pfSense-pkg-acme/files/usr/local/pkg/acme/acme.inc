@@ -688,6 +688,7 @@ $a_keylength['custom'] = array('name' => "Custom...");
 if (!is_array($config['installedpackages']['acme'])) {
 	$config['installedpackages']['acme'] = array();
 }
+
 if (!is_array($config['installedpackages']['acme']['certificates'])) {
 	$config['installedpackages']['acme']['certificates'] = array();
 }
@@ -695,9 +696,6 @@ if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
 	$config['installedpackages']['acme']['certificates']['item'] = array();
 }
 
-if (!is_array($config['installedpackages']['acme'])) {
-	$config['installedpackages']['acme'] = array();
-}
 if (!is_array($config['installedpackages']['acme']['accountkeys'])) {
 	$config['installedpackages']['acme']['accountkeys'] = array();
 }
