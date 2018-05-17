@@ -47,6 +47,7 @@ if (!isset($pconfig['scr_traffic_interface']))               $pconfig['scr_traff
 if (!isset($pconfig['scr_top_interfaces_by_bps']))           $pconfig['scr_top_interfaces_by_bps']           = false;
 if (!isset($pconfig['scr_top_interfaces_by_total_bytes']))   $pconfig['scr_top_interfaces_by_total_bytes']   = false;
 if (!isset($pconfig['scr_top_interfaces_by_bytes_today']))   $pconfig['scr_top_interfaces_by_bytes_today']   = false;
+if (!isset($pconfig['scr_interfaces_link']))                 $pconfig['scr_interfaces_link']                 = false;
 if (!isset($pconfig['scr_traffic_by_address']))              $pconfig['scr_traffic_by_address']              = false;
 if (!isset($pconfig['scr_traffic_by_address_if']))           $pconfig['scr_traffic_by_address_if']           = '';
 if (!isset($pconfig['scr_traffic_by_address_sort']))         $pconfig['scr_traffic_by_address_sort']         = 'in';
@@ -82,6 +83,7 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_top_interfaces_by_bps']           = $pconfig['scr_top_interfaces_by_bps'];
 		$lcdproc_screens_config['scr_top_interfaces_by_total_bytes']   = $pconfig['scr_top_interfaces_by_total_bytes'];
 		$lcdproc_screens_config['scr_top_interfaces_by_bytes_today']   = $pconfig['scr_top_interfaces_by_bytes_today'];
+		$lcdproc_screens_config['scr_interfaces_link']                 = $pconfig['scr_interfaces_link'];
 		$lcdproc_screens_config['scr_traffic_by_address']              = $pconfig['scr_traffic_by_address'];
 		$lcdproc_screens_config['scr_traffic_by_address_if']           = $pconfig['scr_traffic_by_address_if'];
 		$lcdproc_screens_config['scr_traffic_by_address_sort']         = $pconfig['scr_traffic_by_address_sort'];
@@ -271,6 +273,23 @@ $section->addInput(
 		$pconfig['scr_top_interfaces_by_bytes_today'] // checkbox initial value
 	)
 )->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
+
+
+$section->addInput(
+	new Form_Checkbox(
+		'scr_interfaces_link', // checkbox name (id)
+		'Interfaces link status', // checkbox label
+		'Display the interfaces current link status', // checkbox text
+		$pconfig['scr_interfaces_link'] // checkbox initial value
+	)
+)->setHelp(
+	'This will create a seperate status screen for each inferface with four lines each:<br />' .
+	'&lt;IFNAME&gt;: &lt;link status&gt;<br />' .
+	'v4: &lt;ip v4 address&gt;<br />' .
+	'v6: &lt;ip v6 address&gt;<br />' .
+	'm: &lt;mac address&gt;<br />' .
+	'A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.'
+);
 
 
 $group = new Form_Group('Addresses by traffic');
