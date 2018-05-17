@@ -41,6 +41,7 @@ if (!isset($pconfig['offbrightness']))               $pconfig['offbrightness']  
 if (!isset($pconfig['contrast']))                    $pconfig['contrast']                    = '-1';
 if (!isset($pconfig['backlight']))                   $pconfig['backlight']                   = 'default';
 if (!isset($pconfig['outputleds']))                  $pconfig['outputleds']                  = 'no';
+if (!isset($pconfig['controlmenu']))                 $pconfig['controlmenu']                 = 'no';
 if (!isset($pconfig['mtxorb_type']))                 $pconfig['mtxorb_type']                 = 'lcd'; // specific to Matrix Orbital driver
 if (!isset($pconfig['mtxorb_adjustable_backlight'])) $pconfig['mtxorb_adjustable_backlight'] = true;  // specific to Matrix Orbital driver
 
@@ -66,6 +67,7 @@ if ($_POST) {
 		$lcdproc_config['contrast']                    = $pconfig['contrast'];
 		$lcdproc_config['backlight']                   = $pconfig['backlight'];
 		$lcdproc_config['outputleds']                  = $pconfig['outputleds'];
+		$lcdproc_config['controlmenu']                 = $pconfig['controlmenu'];
 		$lcdproc_config['mtxorb_type']                 = $pconfig['mtxorb_type'];
 		$lcdproc_config['mtxorb_adjustable_backlight'] = $pconfig['mtxorb_adjustable_backlight'];
 				
@@ -338,6 +340,17 @@ $section->addInput(
 	'LED4: Gateway status (green: ok, red: at least one gateway not responding, off: no gateway configured).'
 );
 
+$section->addInput(
+	new Form_Checkbox(
+		'controlmenu', // checkbox name (id)
+		'pfSense control menu', // checkbox label
+		'Enable the pfSense control menu next to LCDproc\'s Options menu.', // checkbox text
+		$pconfig['controlmenu'] // checkbox initial value
+	)
+)->setHelp(
+	'This will only be usefull on display with buttons.<br />' .
+	'Currently you can REBOOT and HALT the system from there.'
+);
 
 $section->addInput(
 	new Form_Select(
