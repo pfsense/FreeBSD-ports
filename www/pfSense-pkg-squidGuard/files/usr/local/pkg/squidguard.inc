@@ -1095,20 +1095,19 @@ function convert_pfxml_to_sgxml() {
 # Source IP and domain move to one field, added 'username'.
 function convert_pfxml_to_sgxml_source($pfconfig) {
     $sgxml = array();
+    $sgxml[F_ITEM] = array();
     $pfxml = $pfconfig['installedpackages'][MODULE_ACL]['config'];
-    if (!is_array($pfxml)) {
-    	$pfxml = array();
-    }
 
-    foreach($pfxml as $pfx) {
-        $sgx = array();
-        $sgx[F_NAME]        = $pfx['name'];
-        $sgx[F_SOURCE]      = $pfx[F_SOURCE];
-        $sgx[F_LOG]         = $pfx[F_ENABLELOG];
-        $sgx[F_DESCRIPTION] = $pfx['description'];
-        $sgxml[F_ITEM] = array();
-        $sgxml[F_ITEM][]    = $sgx;
-     }
+	if (is_array($pfxml)) {
+		foreach($pfxml as $pfx) {
+			$sgx = array();
+			$sgx[F_NAME]        = $pfx['name'];
+			$sgx[F_SOURCE]      = $pfx[F_SOURCE];
+			$sgx[F_LOG]         = $pfx[F_ENABLELOG];
+			$sgx[F_DESCRIPTION] = $pfx['description'];
+			$sgxml[F_ITEM][]    = $sgx;
+		}
+	}
 
     return $sgxml;
 }
@@ -1119,25 +1118,23 @@ function convert_pfxml_to_sgxml_source($pfconfig) {
 # -----------------------------------------------------------------
 function convert_pfxml_to_sgxml_destination($pfconfig) {
     $sgxml = array();
+    $sgxml[F_ITEM] = array();
     $pfxml = $pfconfig['installedpackages'][MODULE_DESTINATION]['config'];
-    if (!is_array($pfxml)) {
-    	$pfxml = array();
-    }
 
-    foreach($pfxml as $pfx) {
-        $sgx = array();
-        $sgx[F_NAME]         = $pfx['name'];
-        $sgx[F_URLS]         = $pfx['urls'];
-        $sgx[F_DOMAINS]      = $pfx[F_DOMAINS];
-        $sgx[F_EXPRESSIONS]  = $pfx['expressions'];
-        $sgx[F_RMOD]         = isset($pfx[F_RMOD]) ? $pfx[F_RMOD] : RMOD_NONE;
-        $sgx[F_REDIRECT]     = $pfx[F_REDIRECT];
-        $sgx[F_DESCRIPTION]  = $pfx['description'];
-        $sgx[F_LOG]          = $pfx[F_ENABLELOG];
-        $sgxml[F_ITEM] = array();
-        $sgxml[F_ITEM][]     = $sgx;
+    if (is_array($pfxml)) {
+        foreach($pfxml as $pfx) {
+            $sgx = array();
+            $sgx[F_NAME]         = $pfx['name'];
+            $sgx[F_URLS]         = $pfx['urls'];
+            $sgx[F_DOMAINS]      = $pfx[F_DOMAINS];
+            $sgx[F_EXPRESSIONS]  = $pfx['expressions'];
+            $sgx[F_RMOD]         = isset($pfx[F_RMOD]) ? $pfx[F_RMOD] : RMOD_NONE;
+            $sgx[F_REDIRECT]     = $pfx[F_REDIRECT];
+            $sgx[F_DESCRIPTION]  = $pfx['description'];
+            $sgx[F_LOG]          = $pfx[F_ENABLELOG];
+            $sgxml[F_ITEM][]     = $sgx;
+        }
     }
-
     return $sgxml;
 }
 
