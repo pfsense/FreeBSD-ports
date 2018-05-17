@@ -85,6 +85,11 @@ function avahi_write_config() {
 	$dns = str_replace(' ', ', ', $dns);
 	if ($dns) {
 		$publishdns = "publish-dns-servers={$dns}";
+
+		// but comment out the setting if DNS publishing is disabled
+		if (!$avahi_config['publish_resolv_conf_dns_servers']) {
+			$publishdns = "#" . $publishdns;
+		}
 	}
 
 	// Construct the avahi configuration
