@@ -1,6 +1,6 @@
 <?php
 /*
- * nrpe2.priv.inc
+ * nrpe.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
@@ -21,10 +21,10 @@
 
 global $priv_list;
 
-$priv_list['page-services-nrpe2'] = array();
-$priv_list['page-services-nrpe2']['name'] = "WebCfg - Services: nrpe2 package";
-$priv_list['page-services-nrpe2']['descr'] = "Allow access to nrpe2 package GUI";
-$priv_list['page-services-nrpe2']['match'] = array();
-$priv_list['page-services-nrpe2']['match'][] = "pkg_edit.php?xml=nrpe2.xml*";
+$priv_list['page-services-nrpe'] = array();
+$priv_list['page-services-nrpe']['name'] = "WebCfg - Services: NRPE package";
+$priv_list['page-services-nrpe']['descr'] = "Allow access to NRPE package GUI";
+$priv_list['page-services-nrpe']['match'] = array();
+$priv_list['page-services-nrpe']['match'][] = "pkg_edit.php?xml=nrpe.xml*";
 
 ?>
