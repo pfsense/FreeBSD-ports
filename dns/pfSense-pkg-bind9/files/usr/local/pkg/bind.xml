@@ -67,6 +67,7 @@
 		</tab>
 
 	</tabs>
+	<advanced_options>enabled</advanced_options>
 	<fields>
 		<field>
 			<type>listtopic</type>
@@ -303,8 +304,32 @@
 			<size>80</size>
 		</field>
 		<field>
-			<type>listtopic</type>
-			<name>Custom Options</name>
+			<fielddescr>Listen port</fielddescr>
+			<fieldname>listenport</fieldname>
+			<description>
+				<![CDATA[
+				TCP and UDP port BIND listens for queries on. Remember to create firewall rules to allow queries on this port.<br />
+				Must be changed if also running DNS Forwarder or Resolver on this Firewall.
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>53</default_value>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>Control port</fielddescr>
+			<fieldname>controlport</fieldname>
+			<description>
+				<![CDATA[
+				TCP port BIND listens for control requests on (localhost only).<br />
+				Must be changed if also running DNS Forwarder or Resolver on this Firewall.
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>953</default_value>
+			<advancedfield/>
 		</field>
 		<field>
 			<fielddescr>Custom Options</fielddescr>
@@ -319,10 +344,7 @@
 			<cols>65</cols>
 			<rows>5</rows>
 			<encoding>base64</encoding>
-		</field>
-		<field>
-			<type>listtopic</type>
-			<name>Global Settings</name>
+			<advancedfield/>
 		</field>
 		<field>
 			<fielddescr>Global Settings</fielddescr>
@@ -337,6 +359,7 @@
 			<cols>65</cols>
 			<rows>5</rows>
 			<encoding>base64</encoding>
+			<advancedfield/>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
