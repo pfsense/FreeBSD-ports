@@ -43,28 +43,30 @@ $a_frontendmode['health'] = array('name' => "health", 'shortname' => "health");
 
 global $a_acltypes;
 $a_acltypes = array();
-$a_acltypes["host_starts_with"] = array('name' => 'Host starts with:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["host_ends_with"] = array('name' => 'Host ends with:',
-				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["host_matches"] = array('name' => 'Host matches:',
-				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["host_regex"] = array('name' => 'Host regex:',
-				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["host_contains"] = array('name' => 'Host contains:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["path_starts_with"] = array('name' => 'Path starts with:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["path_ends_with"] = array('name' => 'Path ends with:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["path_matches"] = array('name' => 'Path matches:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["path_regex"] = array('name' => 'Path regex:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["path_contains"] = array('name' => 'Path contains:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["url_parameter"] = array('name' => 'Url parameter contains:',
-				'mode' => 'http', 'syntax' => 'url_param({parameter}) -i %1$s',
+$a_acltypes["host_starts_with"] = array('name' => 'Host starts with:', casesensitive => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m beg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_ends_with"] = array('name' => 'Host ends with:', casesensitive => true,
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m end{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_matches"] = array('name' => 'Host matches:', casesensitive => true,
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m str{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_regex"] = array('name' => 'Host regex:', casesensitive => true,
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m reg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_contains"] = array('name' => 'Host contains:', casesensitive => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m sub{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["path_starts_with"] = array('name' => 'Path starts with:', casesensitive => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m beg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_ends_with"] = array('name' => 'Path ends with:', casesensitive => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m end{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_matches"] = array('name' => 'Path matches:', casesensitive => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m str{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_regex"] = array('name' => 'Path regex:', casesensitive => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m reg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_contains"] = array('name' => 'Path contains:', casesensitive => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m sub{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_dir"] = array('name' => 'Path contains within slashes:', casesensitive => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m dir{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["url_parameter"] = array('name' => 'Url parameter contains:', casesensitive => true,
+				'mode' => 'http', 'syntax' => 'url_param({parameter}){casesensitive} %1$s',
 	'fields' => array(
 		array('name'=>"parameter",'columnheader'=>"Parameter name",'type'=>"textbox",'size'=>"50",'mask'=>'urlparameter')
 	));
@@ -87,16 +89,16 @@ $a_acltypes["traffic_is_http"] = array('name' => 'Traffic is http (no value need
 $a_acltypes["traffic_is_ssl"] = array('name' => 'Traffic is ssl (no value needed):', 'inspect-delay' => '5',
 				'mode' => 'tcp', 'syntax' => 'req.ssl_ver gt 0', 'advancedoptions' => "tcp-request content accept if { req.ssl_ver gt 0 }");
 // 'ssl_sni_matches' was added in HAProxy1.5dev17
-$a_acltypes["ssl_sni_matches"] = array('name' => 'Server Name Indication TLS extension matches:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_contains"] = array('name' => 'Server Name Indication TLS extension contains:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m sub -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_starts_with"] = array('name' => 'Server Name Indication TLS extension starts with:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m beg -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_ends_with"] = array('name' => 'Server Name Indication TLS extension ends with:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m end -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_regex"] = array('name' => 'Server Name Indication TLS extension regex:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m reg -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_matches"] = array('name' => 'Server Name Indication TLS extension matches:', 'inspect-delay' => '5', casesensitive => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_contains"] = array('name' => 'Server Name Indication TLS extension contains:', 'inspect-delay' => '5', casesensitive => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m sub{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_starts_with"] = array('name' => 'Server Name Indication TLS extension starts with:', 'inspect-delay' => '5', casesensitive => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m beg{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_ends_with"] = array('name' => 'Server Name Indication TLS extension ends with:', 'inspect-delay' => '5', casesensitive => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m end{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_regex"] = array('name' => 'Server Name Indication TLS extension regex:', 'inspect-delay' => '5', casesensitive => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m reg{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
 $a_acltypes["custom"] = array('name' => 'Custom acl:',
 				'mode' => '', 'syntax' => '%1$s');
 
@@ -1014,6 +1016,9 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 				}
 			}
 		}
+		$casesensitive = $aclitem['casesensitive'] == 'yes' ? "" : " -i";
+		$expr = str_replace("{casesensitive}", $casesensitive, $expr);
+		
 		$config_acls ["\tacl\t\t\t" . $aclname . "\t" .  $expr . "\n"] = 1;
 	}
 	// Write acl's first, so they may be used by advanced text options written by user.
@@ -1979,6 +1984,8 @@ function haproxy_writeconf($configpath) {
 								}
 							}
 						}
+						$casesensitive = $aclitem['casesensitive'] == 'yes' ? "" : " -i";
+						$expr = str_replace("{casesensitive}", $casesensitive, $expr);
 						$config_acls ["\tacl\t\t\t" . $aclname . "\t" .  $expr . "\n"] = 1;
 					}
 

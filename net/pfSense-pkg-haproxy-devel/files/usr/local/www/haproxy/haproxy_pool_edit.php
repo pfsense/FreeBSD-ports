@@ -225,17 +225,23 @@ $fields_aclSelectionList[1]['type']="select";
 $fields_aclSelectionList[1]['size']="10";
 $fields_aclSelectionList[1]['items']=&$a_acltypes;
 
-$fields_aclSelectionList[2]['name']="not";
-$fields_aclSelectionList[2]['columnheader']="Not";
+$fields_aclSelectionList[2]['name']="casesensitive";
+$fields_aclSelectionList[2]['columnheader']="CS";
 $fields_aclSelectionList[2]['colwidth']="5%";
 $fields_aclSelectionList[2]['type']="checkbox";
 $fields_aclSelectionList[2]['size']="5";
 
-$fields_aclSelectionList[3]['name']="value";
-$fields_aclSelectionList[3]['columnheader']="Value";
-$fields_aclSelectionList[3]['colwidth']="35%";
-$fields_aclSelectionList[3]['type']="textbox";
-$fields_aclSelectionList[3]['size']="35";
+$fields_aclSelectionList[3]['name']="not";
+$fields_aclSelectionList[3]['columnheader']="Not";
+$fields_aclSelectionList[3]['colwidth']="5%";
+$fields_aclSelectionList[3]['type']="checkbox";
+$fields_aclSelectionList[3]['size']="5";
+
+$fields_aclSelectionList[4]['name']="value";
+$fields_aclSelectionList[4]['columnheader']="Value";
+$fields_aclSelectionList[4]['colwidth']="35%";
+$fields_aclSelectionList[4]['type']="textbox";
+$fields_aclSelectionList[4]['size']="35";
 
 foreach ($a_action as $key => $value) {
 	if (!empty($value['usage']) && !stristr('backend', $value['usage'])) {
@@ -1161,7 +1167,7 @@ print $form;
 	phparray_to_javascriptarray($a_action, "showhide_actionfields",
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 	phparray_to_javascriptarray($a_acltypes, "showhide_aclfields",
-		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
+		Array('/*', '/*/casesensitive', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 
 	$serverslist->outputjavascript();
 	$errorfileslist->outputjavascript();
@@ -1172,27 +1178,33 @@ print $form;
 
 	totalrows =  <?php echo $counter; ?>;
 
+
+	function sethiddenclass(id,showitem) {
+		if (showitem) {
+			$("#"+id).removeClass("hidden");
+		} else {
+			$("#"+id).addClass("hidden");
+		}
+	}
+
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
 			fieldId = "expression";
 			field = d.getElementById(tableId+"expression"+rowNr);
 		}
 		if (fieldId === "expression") {
-			var actiontype = field.value;
-
+			var acltypeid = field.value;
+			var acltype = showhide_aclfields[acltypeid];
+			sethiddenclass('table_aclscasesensitive'+rowNr, acltype['casesensitive']);
+			sethiddenclass('table_aclscasesensitive'+rowNr+'_disp', acltype['casesensitive']);
 			var table = d.getElementById(tableId);
 
 			for(var actionkey in showhide_aclfields) {
 				var fields = showhide_aclfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
-					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
-					var element = d.getElementById(rowid);
-
-					if (actionkey === actiontype)
-						element.style.display = '';
-					else
-						element.style.display = 'none';
+					sethiddenclass("tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname, actionkey === acltypeid);
+					sethiddenclass(tableId+actionkey+fieldname+rowNr+'_disp', actionkey === acltypeid);
 				}
 			}
 		}
@@ -1248,6 +1260,9 @@ events.push(function() {
 	});
 
 	updatevisibility();
+	
+	// make sure enabled/disabled visable/hidden states of items dependant on these boxes are correct when loading the page.
+	$('[id^=table_aclsexpression]').change();
 });
 //]]>
 </script>
