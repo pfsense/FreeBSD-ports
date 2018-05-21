@@ -136,17 +136,23 @@ $fields_aclSelectionList[1]['type']="select";
 $fields_aclSelectionList[1]['size']="10";
 $fields_aclSelectionList[1]['items']=&$a_acltypes;
 
-$fields_aclSelectionList[2]['name']="not";
-$fields_aclSelectionList[2]['columnheader']="Not";
+$fields_aclSelectionList[2]['name']="casesensitive";
+$fields_aclSelectionList[2]['columnheader']="CS";
 $fields_aclSelectionList[2]['colwidth']="5%";
 $fields_aclSelectionList[2]['type']="checkbox";
 $fields_aclSelectionList[2]['size']="5";
 
-$fields_aclSelectionList[3]['name']="value";
-$fields_aclSelectionList[3]['columnheader']="Value";
-$fields_aclSelectionList[3]['colwidth']="35%";
-$fields_aclSelectionList[3]['type']="textbox";
-$fields_aclSelectionList[3]['size']="35";
+$fields_aclSelectionList[3]['name']="not";
+$fields_aclSelectionList[3]['columnheader']="Not";
+$fields_aclSelectionList[3]['colwidth']="5%";
+$fields_aclSelectionList[3]['type']="checkbox";
+$fields_aclSelectionList[3]['size']="5";
+
+$fields_aclSelectionList[4]['name']="value";
+$fields_aclSelectionList[4]['columnheader']="Value";
+$fields_aclSelectionList[4]['colwidth']="35%";
+$fields_aclSelectionList[4]['type']="textbox";
+$fields_aclSelectionList[4]['size']="35";
 
 $interfaces = haproxy_get_bindable_interfaces();
 $interfaces_custom['custom']['name']="Use custom address:";
@@ -700,11 +706,14 @@ $section->addInput(new Form_StaticText(
 	"Use these to define criteria that will be used with actions defined below to perform them only when certain conditions are met.<br/>".
 	$htmllist_acls->Draw($pconfig['a_acl'])
 ))->setHelp(<<<EOT
+	- 'CS' makes the string matches 'Case Sensitive' so www.domain.tld wil not be the same as WWW.domain.TLD<br/>
+	- 'Not' makes the match if the value given is not matched<br/>
 	Example:
 	<table border='1' style='border-collapse:collapse'>
 		<tr>
 			<td><b>Name</b></td>
 			<td><b>Expression</b></td>
+			<td><b>CI</b></td>
 			<td><b>Not</b></td>
 			<td><b>Value</b></td>
 		</tr>
@@ -712,11 +721,13 @@ $section->addInput(new Form_StaticText(
 			<td>Backend1acl</td>
 			<td>Host matches</td>
 			<td></td>
+			<td></td>
 			<td>www.yourdomain.tld</td>
 		</tr>
 		<tr>
 			<td>addHeaderAcl</td>
 			<td>SSL Client certificate valid</td>
+			<td></td>
 			<td></td>
 			<td></td>
 		</tr>
@@ -1012,7 +1023,7 @@ events.push(function() {
 	phparray_to_javascriptarray($a_action, "showhide_actionfields",
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 	phparray_to_javascriptarray($a_acltypes, "showhide_aclfields",
-		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
+		Array('/*', '/*/casesensitive', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 
 	$htmllist_extaddr->outputjavascript();
 	$htmllist_acls->outputjavascript();
@@ -1054,8 +1065,21 @@ events.push(function() {
 		updatevisibility();
 	});
 
+	d = document;
+	// make sure enabled/disabled visable/hidden states of items dependant on these boxes are correct when loading the page.
+	$('[id^=table_aclsexpression]').change();
+	$('[id^=table_extaddrextaddr]').change();
+
 	updatevisibility();
 });
+
+	function sethiddenclass(id,showitem) {
+		if (showitem) {
+			$("#"+id).removeClass("hidden");
+		} else {
+			$("#"+id).addClass("hidden");
+		}
+	}
 
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
@@ -1063,20 +1087,18 @@ events.push(function() {
 			field = d.getElementById(tableId+"expression"+rowNr);
 		}
 		if (fieldId === "expression") {
-			var actiontype = field.value;
-
+			var acltypeid = field.value;
+			var acltype = showhide_aclfields[acltypeid];
+			sethiddenclass('table_aclscasesensitive'+rowNr, acltype['casesensitive']);
+			sethiddenclass('table_aclscasesensitive'+rowNr+'_disp', acltype['casesensitive']);
 			var table = d.getElementById(tableId);
 
 			for(var actionkey in showhide_aclfields) {
 				var fields = showhide_aclfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
-					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
-					if (actionkey === actiontype) {
-						$("#"+rowid).removeClass("hidden");
-					} else {
-						$("#"+rowid).addClass("hidden");
-					}
+					sethiddenclass("tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname, actionkey === acltypeid);
+					sethiddenclass(tableId+actionkey+fieldname+rowNr+'_disp', actionkey === acltypeid);
 				}
 			}
 		}
