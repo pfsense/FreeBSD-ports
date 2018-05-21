@@ -639,7 +639,11 @@ $section = new Form_Section_class("Edit HAProxy Frontend");
 
 $activedisable = array();
 $activedisable['active'] = "Active";
-$activedisable['disable'] = "Disable";
+$activedisable['disabled'] = "Disabled";
+
+if ($pconfig['status'] == 'disable') {
+	$pconfig['status'] = 'disabled';// make checkmark in overview and editpage the same.
+}
 
 $section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']));
 $section->addInput(new Form_Input('desc', 'Description', 'text', $pconfig['desc']));
