@@ -1609,7 +1609,8 @@ function haproxy_writeconf($configpath) {
 				//ssl crt ./server.pem ca-file ./ca.crt verify optional crt-ignore-err all crl-file ./ca_crl.pem
 				if ($frontend['secondary'] != 'yes') {
 					$filename = "$configpath/{$frontend['name']}.pem";
-					$ssl_crt = " crt $filename";
+					$ssl_crt = " ssl";
+//					$ssl_crt = " crt $filename";
 //					$ssl_crt .= " crt $certfolder";
 					@mkdir($certfolder, 0755, true);
 
@@ -1721,7 +1722,7 @@ function haproxy_writeconf($configpath) {
 			if (empty($bind['ssl_info'])) {
 				$ssl_info = "";
 			} else {
-				$ssl_info = " ssl" . $bind['ssl_info'];
+				$ssl_info = "" . $bind['ssl_info'];
 				$ssl_info .=  " crt-list {$crtlistfilename}";
 				$ssl_info .= $ca_file . $crl_file . $ssl_ignoreclienterror;
 			}
