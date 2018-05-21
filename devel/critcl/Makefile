@@ -24,7 +24,7 @@ GH_ACCOUNT=	andreas-kupries
 TEST_TARGET=	test
 
 PLIST_SUB+=	VER=${PORTVERSION} \
-		ARCH=${ARCH:C/arm.*/arm/:S/i386/ix86/}
+		ARCH=${ARCH:C/arm.*/arm/:S/i386/ix86/:S/aarch64/arm/}
 PORTDOCS=	*
 
 NO_BUILD=	yes

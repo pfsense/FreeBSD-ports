@@ -3,7 +3,7 @@
 PORTNAME=	openra
 PORTVERSION=	20180307
 DISTVERSIONPREFIX=	release-
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/SDL2-CS/releases/download/20161223/:SDL2_CS \
 		https://github.com/${GH_ACCOUNT}/OpenAL-CS/releases/download/20151227/:OpenAL_CS \
@@ -68,8 +68,8 @@ post-patch:
 		${WRKSRC}/Makefile
 	${REINPLACE_CMD} -e '/noget\.sh/d' \
 			${WRKSRC}/thirdparty/fetch-thirdparty-deps.sh
-	${FIND} ${WRKSRC}/thirdparty -name '*.config*' -exec ${REINPLACE_CMD} \
-		-i '.bak.os' -e '/linux/{ p; s//${OPSYS:tl}/; }' {} +
+	${FIND} -L ${WRKSRC}/thirdparty -name '*.config*' -exec ${REINPLACE_CMD} \
+		-i '.bak.os' -e '/${OPSYS:tl}/d; /linux/{ p; s//${OPSYS:tl}/; }' {} +
 	${SED} 's/@LIBLUA51@/liblua-${LUA_VER}.so/' \
 		${WRKSRC}/thirdparty/Eluant.dll.config.in \
 		>${WRKSRC}/Eluant.dll.config

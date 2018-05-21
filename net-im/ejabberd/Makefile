@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	ejabberd
-PORTVERSION=	17.11
+PORTVERSION=	18.01
 CATEGORIES=	net-im
 MASTER_SITES=	http://www.process-one.net/downloads/${PORTNAME}/${PORTVERSION}/:p1 \
 		http://distfiles.pirateparty.in/ashish/:deps \
 		LOCAL/ashish:deps
-DISTFILES+=	${DISTNAME}.tgz:p1 ejabberd-deps-15.tar.xz:deps
+DISTFILES+=	${DISTNAME}.tgz:p1 ejabberd-deps-17.tar.xz:deps
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Free and Open Source distributed fault-tolerant Jabber server
@@ -81,8 +81,6 @@ ICONV_USES=		iconv:wchar_t
 ICONV_LDFLAGS=		${ICONV_LIB}
 DOCS_MAKE_ARGS_OFF=	NOPORTDOCS=yes
 
-.include <bsd.port.pre.mk>
-
 post-extract:
 	@${LN} -s ${WRKDIR}/deps ${WRKSRC}/
 
@@ -99,20 +97,24 @@ pre-install:
 
 post-install-GRAPHICS-on:
 	@${CHMOD} +x ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/eimp-1.0.2/priv/bin/eimp
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/eimp-1.0.2/priv/bin/eimp
 
 post-install-PAM-on:
-	@${INSTALL} -m 444 ${FILESDIR}/pam_ejabberd \
+	${INSTALL} -m 444 ${FILESDIR}/pam_ejabberd \
 		${STAGEDIR}${PREFIX}/etc/pam.d/ejabberd
-	@${INSTALL} -m 0750 ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/epam-1.0.3/priv/bin/epam \
+	${INSTALL} -m 0750 ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/epam-1.0.3/priv/bin/epam \
+		${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/priv/bin/epam
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/epam-1.0.3/priv/bin/epam \
 		${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/priv/bin/epam
 
 post-install:
 	@${FIND} ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR} -type f \
 		-name '*.so' -exec ${STRIP_CMD} {} \;
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	@${INSTALL} -m 0755 ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/priv/bin/captcha.sh \
+	${INSTALL_SCRIPT} ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/priv/bin/captcha.sh \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -r -e '/captcha_cmd:/s,"[^"]+","${DATADIR}/captcha.sh",' ${STAGEDIR}${ETCDIR}/${PORTNAME}.yml.example
-	@${CHMOD} +x ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/fs-2.12.0/priv/kqueue
+	@${CHMOD} +x ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/fs-3.4.0/priv/kqueue
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/fs-3.4.0/priv/kqueue
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

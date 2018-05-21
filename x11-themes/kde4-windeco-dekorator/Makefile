@@ -3,13 +3,13 @@
 
 PORTNAME=	dekorator
 PORTVERSION=	0.5.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	x11-themes kde
 MASTER_SITES=	http://www.kde-look.org/CONTENT/content-files/
 PKGNAMEPREFIX=	kde4-windeco-
 DISTNAME=	87921-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Transparent KDE4 window decoration
 
 LICENSE=	GPLv2

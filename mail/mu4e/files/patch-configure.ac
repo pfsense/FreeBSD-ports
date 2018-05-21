@@ -1,6 +1,6 @@
---- configure.ac.orig	2016-01-20 18:19:35 UTC
+--- configure.ac.orig	2018-02-03 12:02:45 UTC
 +++ configure.ac
-@@ -30,25 +30,25 @@ AC_SUBST(prefix)
+@@ -37,29 +37,29 @@ AC_SUBST(prefix)
  
  # AC_PROG_CXX *before* AC_PROG_CC, otherwise configure won't error out
  # when a c++ compiler is not found. Weird, huh?
@@ -15,6 +15,13 @@
  AC_PROG_INSTALL
 -AC_HEADER_STDC
 +#AC_HEADER_STDC
+ 
+-AX_CXX_COMPILE_STDCXX_14
+-m4_ifdef([AX_COMPILER_FLAGS],[AX_COMPILER_FLAGS(,,[yes])])
+-AX_VALGRIND_CHECK
++#AX_CXX_COMPILE_STDCXX_14
++#m4_ifdef([AX_COMPILER_FLAGS],[AX_COMPILER_FLAGS(,,[yes])])
++#AX_VALGRIND_CHECK
  
  # for now, use AM_PROG_LIBTOOL, as we don't want to require
  # a too new setup for autotools/libtool
@@ -34,18 +41,18 @@
  
  # check for makeinfo
  AC_CHECK_PROG(have_makeinfo,makeinfo,yes,no)
-@@ -110,36 +110,36 @@ AS_IF([test "x$PKG_CONFIG" = "xno"],[
+@@ -135,36 +135,36 @@ AS_IF([test "x$PKG_CONFIG" = "xno"],[
  
  # glib2?
- # we need 2.14 at least, because we use GRegex
--PKG_CHECK_MODULES(GLIB,glib-2.0 >= 2.24 gobject-2.0 gio-2.0)
-+#PKG_CHECK_MODULES(GLIB,glib-2.0 >= 2.24 gobject-2.0 gio-2.0)
+ # we pick some late-2012 version
+-PKG_CHECK_MODULES(GLIB,glib-2.0 >= 2.32 gobject-2.0 gio-2.0)
++#PKG_CHECK_MODULES(GLIB,glib-2.0 >= 2.32 gobject-2.0 gio-2.0)
  AC_SUBST(GLIB_CFLAGS)
  AC_SUBST(GLIB_LIBS)
 -glib_version="`$PKG_CONFIG --modversion glib-2.0`"
 +#glib_version="`$PKG_CONFIG --modversion glib-2.0`"
  
- # gmime
+ # gmime, some late-2012 version
 -PKG_CHECK_MODULES(GMIME,gmime-2.6 >= 2.6.7)
 +#PKG_CHECK_MODULES(GMIME,gmime-2.6 >= 2.6.7)
  AC_SUBST(GMIME_CFLAGS)
@@ -92,7 +99,7 @@
  
  AC_SUBST(XAPIAN_CXXFLAGS)
  AC_SUBST(XAPIAN_LIBS)
-@@ -235,37 +235,20 @@ AC_SUBST(MU_DOC_DIR, "${prefix}/share/do
+@@ -260,38 +260,20 @@ AC_SUBST(MU_DOC_DIR, "${prefix}/share/do
  
  ###############################################################################
  # check for pmccabe
@@ -118,6 +125,7 @@
 -mu/tests/Makefile
 -lib/Makefile
 -lib/doxyfile
+-lib/parser/Makefile
 -lib/tests/Makefile
  mu4e/Makefile
  mu4e/mu4e-meta.el

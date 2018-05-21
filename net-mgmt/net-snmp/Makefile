@@ -3,7 +3,7 @@
 
 PORTNAME=	snmp
 PORTVERSION=	5.7.3
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	net-mgmt ipv6
 MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION} \
 		ZI
@@ -16,7 +16,12 @@ COMMENT=	Extendable SNMP implementation
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_SSL=	openssl-devel
+
 LIB_DEPENDS=	libpkg.so:ports-mgmt/pkg
+
+NOT_FOR_ARCHS=		mips mips64
+NOT_FOR_ARCHS_REASON=	SSP is currently broken on MIPS
 
 OPTIONS_DEFINE=	IPV6 MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
 		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP \
@@ -28,7 +33,6 @@ MFD_REWRITES_DESC=	Use new MFD rewrites of mib modules
 PERL_EMBEDDED_DESC=	Build embedded perl
 DUMMY_DESC=		Enable dummy values as placeholders
 TKMIB_DESC=		Install graphical MIB browser
-#DMALLOC_DESC=		Enable dmalloc debug memory allocator
 AX_SOCKONLY_DESC=	Disable UDP/TCP transports for agentx
 AX_DISABLE_TRAP_DESC=	Disable agentx subagent code in snmptrapd
 UNPRIVILEGED_DESC=	Allow unprivileged users to execute net-snmp
@@ -56,7 +60,7 @@ CONFIGURE_ARGS+=--enable-shared --enable-internal-md5 \
 		--with-sys-location="${NET_SNMP_SYS_LOCATION}" \
 		--with-logfile="${NET_SNMP_LOGFILE}" \
 		--with-persistent-directory="${NET_SNMP_PERSISTENTDIR}" \
-		--with-gnu-ld --with-libwrap \
+		--with-gnu-ld --without-libwrap \
 		--with-ldflags="-lm -lkvm -ldevstat -L${PKG_PREFIX}/lib -L${LOCALBASE}/lib ${LCRYPTO}"
 SUB_FILES=	pkg-message
 
@@ -117,13 +121,6 @@ CONFIGURE_ARGS+=--disable-embedded-perl --without-perl-modules
 PLIST_SUB+=	WITH_PERL_EMBEDDED="@comment "
 PLIST_SUB+=	WITH_PERL="@comment "
 .endif
-
-#.if ${PORT_OPTIONS:MDMALLOC}
-#LIB_DEPENDS+=	libdmalloc.so:devel/dmalloc
-#CONFIGURE_ARGS+=--with-dmalloc=${LOCALBASE}
-#.else
-#CONFIGURE_ARGS+=--without-dmalloc
-#.endif
 
 .if ${PORT_OPTIONS:MMYSQL}
 USE_MYSQL=	yes
@@ -220,10 +217,6 @@ DOC_FILES=	AGENT.txt COPYING FAQ NEWS README \
 CONFLICTS=	ucd-snmp-4.* net-snmp-5.3.*
 
 .include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
 
 .if ${SSL_DEFAULT} != base
 LCRYPTO=	-lcrypto

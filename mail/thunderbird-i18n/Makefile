@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	thunderbird-i18n
-PORTVERSION=	52.6.0
+PORTVERSION=	52.7.0
 CATEGORIES=	mail news net-im
 MASTER_SITES=	MOZILLA/${PORTNAME:S|-i18n||}/releases/${DISTVERSION}/linux-i686/xpi \
 		MOZILLA/${PORTNAME:S|-i18n||}/candidates/${DISTVERSION}-candidates/build1/linux-i686/xpi
@@ -56,7 +56,6 @@ do-extract:
 	done
 	${CAT} ${PLISTF} | ${SORT} >> ${PLIST}
 
-
 do-install:
 	@${MKDIR} ${STAGEDIR}${XPI_LIBDIR} ${XPI_LINKFARMS:S,^,${STAGEDIR},}
 	cd ${WRKSRC}; ${PAX} -rw . ${STAGEDIR}${XPI_LIBDIR}
@@ -78,5 +77,4 @@ list-langs:
 		${AWK} 'BEGIN{ORS=" "}{print $$1}END{printf "\nNumber of languages: %d\n",NR}'
 
 .include "${.CURDIR}/../../www/xpi-adblock/Makefile.xpi"
-
 .include <bsd.port.post.mk>

@@ -25,7 +25,7 @@
     SUBDIR += baka-mplayer
     SUBDIR += bino
     SUBDIR += bitstream
-    SUBDIR += bombono
+    SUBDIR += blind
     SUBDIR += bsdbktr_tvtune
     SUBDIR += camserv
     SUBDIR += ccextractor
@@ -41,7 +41,7 @@
     SUBDIR += deforaos-player
     SUBDIR += devede
     SUBDIR += dirac
-    SUBDIR += dragon
+    SUBDIR += dragon-kde4
     SUBDIR += dtv-scan-tables
     SUBDIR += dumpmpeg
     SUBDIR += dv2jpg
@@ -74,7 +74,6 @@
     SUBDIR += gcfilms
     SUBDIR += gdialog
     SUBDIR += gdvrecv
-    SUBDIR += gmencoder
     SUBDIR += gmerlin
     SUBDIR += gmerlin-avdecoder
     SUBDIR += gmimms
@@ -157,15 +156,16 @@
     SUBDIR += gtk-youtube-viewer
     SUBDIR += gxine
     SUBDIR += handbrake
+    SUBDIR += harvid
     SUBDIR += imagination
     SUBDIR += iriverter
     SUBDIR += iso2mkv
     SUBDIR += jmref
     SUBDIR += k9copy-kde4
     SUBDIR += kaffeine
-    SUBDIR += kdemultimedia4
-    SUBDIR += kdemultimedia4-ffmpegthumbs
-    SUBDIR += kdemultimedia4-mplayerthumbs
+    SUBDIR += kdemultimedia-kde4
+    SUBDIR += kdemultimedia-ffmpegthumbs-kde4
+    SUBDIR += kdemultimedia-mplayerthumbs-kde4
     SUBDIR += kdenlive
     SUBDIR += kf5-kmediaplayer
     SUBDIR += kissdx
@@ -206,7 +206,6 @@
     SUBDIR += libquvi-scripts
     SUBDIR += libquvi-scripts09
     SUBDIR += libquvi09
-    SUBDIR += librespot
     SUBDIR += librtmp
     SUBDIR += libsmacker
     SUBDIR += libtheora
@@ -278,6 +277,7 @@
     SUBDIR += mythtv-frontend
     SUBDIR += naludump
     SUBDIR += nordlicht
+    SUBDIR += nostt
     SUBDIR += obs-studio
     SUBDIR += oggvideotools
     SUBDIR += ogmrip
@@ -311,7 +311,6 @@
     SUBDIR += playd
     SUBDIR += plexmediaserver
     SUBDIR += plexmediaserver-plexpass
-    SUBDIR += plexpy
     SUBDIR += plexwatch
     SUBDIR += podcastdl
     SUBDIR += poe
@@ -373,6 +372,7 @@
     SUBDIR += rubygem-gstreamer
     SUBDIR += rubygem-paperclip-av-transcoder
     SUBDIR += rubygem-paperclip-av-transcoder-rails50
+    SUBDIR += rubygem-streamio-ffmpeg
     SUBDIR += sabbu
     SUBDIR += schroedinger
     SUBDIR += shotcut
@@ -395,6 +395,7 @@
     SUBDIR += swfdec-gnome
     SUBDIR += syncplay
     SUBDIR += szap-s2
+    SUBDIR += tautulli
     SUBDIR += tcmplex-panteltje
     SUBDIR += tivodecode
     SUBDIR += totem

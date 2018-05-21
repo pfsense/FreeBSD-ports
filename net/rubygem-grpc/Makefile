@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	grpc
-PORTVERSION=	1.4.0
-PORTREVISION=	2
+PORTVERSION=	1.10.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -13,22 +12,29 @@ LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
 		grpc>=0:devel/grpc \
-		rubygem-google-protobuf>=3.0:devel/rubygem-google-protobuf \
-		rubygem-googleauth>=0.5.1:security/rubygem-googleauth
+		rubygem-google-protobuf>=3.1:devel/rubygem-google-protobuf \
+		rubygem-googleauth>=0.5.1:security/rubygem-googleauth \
+		rubygem-googleapis-common-protos-types>=1.0.0:devel/rubygem-googleapis-common-protos-types
 
-LIB_DEPENDS=	libcares.so:dns/c-ares
+LIB_DEPENDS=	libcares.so:dns/c-ares \
+		libunwind.so:devel/libunwind
 
 BUILD_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
 		grpc>=0:devel/grpc
 
 MAKE_JOBS_UNSAFE=yes
 
-USE_RUBY=	yes
 USES=		gem gmake pkgconfig
+USE_RUBY=	yes
 
 post-extract:
 	@${RM} -r ${WRKSRC}/include ${WRKSRC}/third_party ${WRKSRC}/src/boringssl \
 		${WRKSRC}/src/core ${WRKSRC}/Makefile ${WRKSRC}/.yardopts ${WRKSRC}/etc
-	@${CP} ${FILESDIR}/grpc.gemspec ${WRKSRC}
+
+post-patch:
+	@${REINPLACE_CMD} 's,%%LOCALBASE%%,${LOCALBASE},' ${WRKSRC}/src/ruby/lib/grpc.rb
+	@${REINPLACE_CMD} -E '/s\.files = /s;, "(Makefile|etc|include|third_party|src/boringssl|src/core)[^"]*"\.freeze;;g' \
+		${WRKSRC}/grpc.gemspec
+	@${REINPLACE_CMD} -e '/s\.files = /s;"\.yardopts"\.freeze, ;;' ${WRKSRC}/grpc.gemspec
 
 .include <bsd.port.mk>

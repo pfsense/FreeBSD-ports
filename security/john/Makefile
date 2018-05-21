@@ -7,13 +7,15 @@ PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	http://www.openwall.com/john/j/ \
 		http://mirrors.kernel.org/openwall/projects/john/${DISTVERSION:C/-.*//}/ \
-		http://distro.ibiblio.org/pub/linux/distributions/openwall/projects/john/${DISTVERSION:C/-.*//}/ \
+		http://distro.ibiblio.org/openwall/projects/john/${DISTVERSION:C/-.*//}/ \
 		http://gd.tuwien.ac.at/opsys/linux/openwall/projects/john/${DISTVERSION:C/-.*//}/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Featureful Unix password cracker
 
 LICENSE=	GPLv2
+
+BROKEN_SSL=	openssl-devel
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
@@ -69,12 +71,6 @@ post-patch:
 		${WRKSRC}/opencl_keychain_fmt_plug.c \
 		${WRKSRC}/ssh_ng_fmt_plug.c
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
 do-install:
 .for b in ${BINARIES}
 	${INSTALL_PROGRAM} ${WRKSRC}/../run/${b} ${STAGEDIR}${PREFIX}/bin
@@ -94,4 +90,4 @@ do-install-DOCS-on:
 	@${RM} ${WRKSRC}/../doc/COPYING
 	${INSTALL_DATA} ${WRKSRC}/../doc/* ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	envconsul
-PORTVERSION=	0.7.2
+PORTVERSION=	0.7.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -30,7 +30,7 @@ GO_LDFLAGS=	-ldflags="-s -w \
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/hashicorp/envconsul; \
-		${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} \
+		${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} \
 		go build ${GO_LDFLAGS}\
 		-o bin/envconsul
 

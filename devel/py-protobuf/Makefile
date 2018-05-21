@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	protobuf
-PORTVERSION=	3.5.1
+PORTVERSION=	3.5.1.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,7 +20,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.9:devel/py-six@${FLAVOR}
 DO_MAKE_TEST=	${PYTHON_CMD} ${PYDISTUTILS_SETUP}
 NO_ARCH=	yes
 TEST_TARGET=	test
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist concurrent distutils
 USES=		python
 WRKSRC_SUBDIR=	python
 

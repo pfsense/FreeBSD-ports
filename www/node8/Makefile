@@ -1,17 +1,23 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	8.9.3
+PORTVERSION=	8.11.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
 PKGNAMESUFFIX=	8
+
+PATCH_SITES=	https://github.com/nodejs/node/commit/
+PATCHFILES=	b8f47b27571f.patch:-p1
 
 MAINTAINER=	bhughes@FreeBSD.org
 COMMENT=	V8 JavaScript for client and server (8.x LTS)
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386
 
 OPTIONS_DEFINE=	BUNDLED_SSL DOCS NLS DTRACE
 OPTIONS_DEFAULT=DTRACE
@@ -26,6 +32,9 @@ OPTIONS_EXCLUDE+=	DTRACE
 
 OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 OPTIONS_EXCLUDE_aarch64=	DTRACE
+# dt_modtext:/usr/src/cddl/contrib/opensolaris/lib/libdtrace/common/dt_link.c(820): arm not implemented
+OPTIONS_EXCLUDE_armv6=		DTRACE
+OPTIONS_EXCLUDE_armv7=		DTRACE
 
 BUNDLED_SSL_DESC=		Use node.js's bundled OpenSSL implementation
 BUNDLED_SSL_USES_OFF=		ssl
@@ -37,15 +46,12 @@ NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
 
 DTRACE_CONFIGURE_ON=	--with-dtrace
 
-USES=		compiler:c++11-lib gmake python:2,build pkgconfig \
+USES=		compiler:c++11-lib gmake python:2.7,build pkgconfig \
 		localbase shebangfix
 
 HAS_CONFIGURE=	yes
-USE_LDCONFIG=	yes
 
 CONFLICTS_INSTALL=	node[456]-[0-9]* node-[0-9]*
-
-ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386
 
 CONFIGURE_ARGS=	--prefix=${PREFIX_RELDEST} \
 		--without-npm \

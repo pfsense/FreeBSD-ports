@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	meson
-PORTVERSION=	0.43.0
+PORTVERSION=	0.45.1
 CATEGORIES=	devel python
 MASTER_SITES=	https://github.com/mesonbuild/${PORTNAME}/releases/download/${PORTVERSION}/
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	ninja:devel/ninja
 
-USES=		python:3.4+
+USES=		python:3.5+
 USE_PYTHON=	autoplist distutils noflavors
 NO_ARCH=	yes
 

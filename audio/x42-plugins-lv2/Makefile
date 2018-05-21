@@ -7,8 +7,13 @@ CATEGORIES=	audio
 MASTER_SITES=	http://gareus.org/misc/x42-plugins/
 PKGNAMESUFFIX=	-lv2
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Collection of LV2 plugins (submodules)
+
+BROKEN_aarch64=		fails to compile: unknown FP unit 'sse'
+BROKEN_armv6=		fails to compile: unknown FP unit 'sse'
+BROKEN_armv7=		fails to compile: unknown FP unit 'sse'
+BROKEN_mips64=		fails to compile: unknown FP unit 'sse'
 
 BUILD_DEPENDS=	lv2>0:audio/lv2 \
 		${LOCALBASE}/include/fftw3.h:math/fftw3 \

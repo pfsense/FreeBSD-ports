@@ -12,7 +12,8 @@
 ######################################################################
 
 PORTNAME=	dovecot
-PORTVERSION=	2.2.34
+PORTVERSION=	2.2.35
+PORTREVISION=	1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	https://www.dovecot.org/releases/2.2/
 

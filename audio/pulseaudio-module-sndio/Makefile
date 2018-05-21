@@ -10,7 +10,7 @@ COMMENT=	Sndio module for PulseAudio
 
 LICENSE=	ISCL
 
-LIB_DEPENDS+=	libsndio.so:audio/sndio \
+LIB_DEPENDS=	libsndio.so:audio/sndio \
 		libpulse.so:audio/pulseaudio
 
 USES=		pkgconfig

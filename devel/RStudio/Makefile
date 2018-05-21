@@ -1,10 +1,11 @@
 # $FreeBSD$
 
-# This port opens too many files during build, more than the default setting. Its build is known to succeed with MAX_FILES=15000 in poudriere.conf
+# This port opens too many files during build, more than the default setting.
+# Its build is known to succeed with MAX_FILES_RStudio=2048 in poudriere.conf when ports-mgmt/poudriere-devel is used.
 
 PORTNAME=	RStudio
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.405
+DISTVERSION=	1.1.444
 CATEGORIES=	devel math java
 MASTER_SITES=	https://s3.amazonaws.com/rstudio-dictionaries/:dictionaries \
 		https://s3.amazonaws.com/rstudio-buildtools/:buildtools
@@ -71,8 +72,15 @@ pre-build:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/src/cpp/desktop/global-setenv.h
 
 post-install:
-	@${LN} -s ${PREFIX}/lib/rstudio/bin/rstudio ${STAGEDIR}${PREFIX}/bin/rstudio
+	@(echo "#!/bin/sh"; \
+	  echo "# workaround for the problem that RStudio passes /lib with LD_LIBRARY_PATH that causes the /lib/libgcc_s.so.1 conflict with gcc"; \
+	  echo "LD_PRELOAD=${PREFIX}/lib/gcc6/libgcc_s.so ${PREFIX}/lib/rstudio/bin/rstudio \"$@\"" \
+	) > ${STAGEDIR}${PREFIX}/bin/rstudio
+	@${CHMOD} +x ${STAGEDIR}${PREFIX}/bin/rstudio
 	@${REINPLACE_CMD} -e 's|^Exec=.*/rstudio|Exec=${PREFIX}/bin/rstudio|' ${STAGEDIR}${PREFIX}/share/applications/rstudio.desktop
+	# Some functions expect the pandoc symlink.
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/rstudio/bin/pandoc
+	@cd ${STAGEDIR}${PREFIX}/lib/rstudio/bin/pandoc && ${LN} -s ../../../../bin/pandoc
 	# There is a variability in .js file names due to the use of random numbers, so we use the automatic plist.
 	@${SETENV} ${CO_ENV} ${SH} ${SCRIPTSDIR}/check-stagedir.sh makeplist | ${GREP} -v ^\/ | ${SED} -e 's|%%WWWDIR%%|www/rstudio|' > ${TMPPLIST}
 

@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=		krb5
-PORTVERSION=		1.16.${MIT_COMMIT_DATE}
+PORTVERSION=		1.17.${MIT_COMMIT_DATE}
 CATEGORIES=		security
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=		-devel
 .endif
-HASH=			fbb687d
-MIT_COMMIT_DATE=	2017.10.29
+HASH=			d4d902d
+MIT_COMMIT_DATE=	2018.03.19
 
 PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 PATCH_DIST_STRIP=	-p2
@@ -97,7 +97,6 @@ CONFIGURE_ARGS+=	--without-readline
 .if defined(PROGRAM_TRANSFORM_NAME) && ${PROGRAM_TRANSFORM_NAME} != ""
 CONFIGURE_ARGS+=	--program-transform-name="${PROGRAM_TRANSFORM_NAME}"
 .endif
-
 
 .include <bsd.port.pre.mk>
 

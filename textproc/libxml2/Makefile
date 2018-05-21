@@ -5,15 +5,16 @@ PORTNAME=	libxml2
 PORTVERSION=	2.9.7
 PORTREVISION?=	0
 CATEGORIES?=	textproc gnome
-MASTER_SITES=	ftp://xmlsoft.org/libxml2/ \
-		http://xmlsoft.org/sources/ \
-		ftp://gd.tuwien.ac.at/pub/libxml/
+MASTER_SITES=	http://xmlsoft.org/sources/
 DIST_SUBDIR=	gnome2
 
 MAINTAINER?=	gnome@FreeBSD.org
 COMMENT?=	XML parser library for GNOME
 
 .if !defined(REFERENCE_PORT)
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 USES+=		cpe gmake iconv libtool pathfix pkgconfig shebangfix

@@ -3,6 +3,7 @@
 
 PORTNAME=	mod_dav_svn
 DISTNAME=	subversion-${PORTVERSION}
+PORTREVISION=	2
 
 CATEGORIES=	www
 
@@ -18,9 +19,9 @@ PKGDIR=		${.CURDIR}
 
 SVN_BUILD_ADDONS=	yes
 
-.include "${MASTERDIR}/Makefile.common"
+USES=		apache:2.2+
 
-USE_APACHE=	22+
+.include "${MASTERDIR}/Makefile.common"
 
 CONFIGURE_ARGS+=	--with-apxs=${APXS} \
 			--with-apache-libexecdir \

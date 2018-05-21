@@ -210,7 +210,7 @@ foreach ($backends as $be => $bedata) {
 			if ($show_clients == "YES") {
 				foreach ($clients as $cli => $clidata) {
 					if ($clidata['be'] == $bedata['pxname'] && $clidata['srv'] == $srvdata['svname']) {
-						print "<tr><td class=\"listlr\"><div class='text-success'>&nbsp;&nbsp;<i>".$clidata['src']."</i></div>&nbsp;<a href=\"diag_dns.php?host=".$clidata['srcip']."\" title=\"Reverse Resolve with DNS\">".$log."</a></td>";
+						print "<tr><td class=\"listlr\"><div class='text-success'>&nbsp;&nbsp;<i>".$clidata['src']."</i>&nbsp;<a href=\"diag_dns.php?host=".$clidata['srcip']."\" title=\"Reverse Resolve with DNS\">".$log."</a></div></td>";
 						if ($show_clients_traffic == "YES") {
 							$clientstraffic[0] = format_bytes($clidata['session_datareq']);
 							$clientstraffic[1] = format_bytes($clidata['session_datares']);

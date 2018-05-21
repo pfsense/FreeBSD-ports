@@ -1,11 +1,10 @@
-# Created by: Nikolai Lifanov <lifanov@mail.lifanov.com>
 # $FreeBSD$
 
 PKGNAMESUFFIX=	1
 PORTVERSION=	1.9.6
-PORTREVISION=	1
+PORTREVISION=	2
 
-CONFLICTS=	ansible-* ansible23-*
+CONFLICTS=	ansible-* ansible23-* ansible24-*
 
 MASTERDIR=	${.CURDIR}/../ansible
 DISTINFO_FILE=	${.CURDIR}/distinfo
@@ -15,7 +14,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}paramiko>0:security/py-paramiko@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR}
 
-USES=	cpe python:2 shebangfix
+USES=	cpe python:2.7 shebangfix
 
 PLIST_FILES=	man/man1/ansible-doc.1.gz \
 		man/man1/ansible-galaxy.1.gz \

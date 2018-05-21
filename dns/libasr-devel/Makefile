@@ -3,6 +3,7 @@
 
 PORTNAME=	libasr
 PORTVERSION=	201602131606
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	http://www.opensmtpd.org/archives/ \
 		http://distfiles.pirateparty.in/ashish/
@@ -16,10 +17,13 @@ LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
 CONFLICTS=	libasr-[0-9]*
+
+USES=		groff libtool ssl:build
 GNU_CONFIGURE=	yes
+USE_LDCONFIG=	yes
+CONFIGURE_ARGS=	--with-mantype="man"
 INSTALL_TARGET=	install-strip
 
-USES=		groff libtool
-USE_LDCONFIG=	yes
+CFLAGS+=	-I${OPENSSLINC}
 
 .include <bsd.port.mk>

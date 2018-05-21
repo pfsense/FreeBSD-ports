@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tasks
-PORTVERSION=	0.9.5
+PORTVERSION=	0.9.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PKGNAMEPREFIX:S/-//}/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
@@ -14,9 +14,11 @@ MAINTAINER=	brnrd@freebsd.org
 COMMENT=	Tasks app for Nextcloud
 
 LICENSE=	AGPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	nextcloud>=12:www/nextcloud
+RUN_DEPENDS=	nextcloud>=10:www/nextcloud
 
+USES=		php
 NO_BUILD=	yes
 NO_ARCH=	yes
 

@@ -2,27 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	h5py
-PORTVERSION=	2.7.0
+PORTVERSION=	2.7.1
+PORTREVISION=	1
 CATEGORIES=	science python
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	johannes@perceivon.net
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	General-purpose Python interface to the HDF5 library
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/licenses/license.txt
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pkgconfig>0:devel/py-pkgconfig@${FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pkgconfig>=0:devel/py-pkgconfig@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${FLAVOR}
 LIB_DEPENDS=	libhdf5.so:science/hdf5
 RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${FLAVOR}
-
-USE_GITHUB=	yes
+		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${FLAVOR}
 
 USES=		python
-USE_PYTHON=	autoplist distutils cython
+USE_PYTHON=	autoplist concurrent cython distutils
 
 PORTDOCS=	*
 PORTEXAMPLES=	multiprocessing_example.py swmr_multiprocess.py \
@@ -30,17 +30,17 @@ PORTEXAMPLES=	multiprocessing_example.py swmr_multiprocess.py \
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-post-patch:
-	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/setup_build.py
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/h5py/*.so
 
-do-install-DOCS-on:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README.rst ${STAGEDIR}${DOCSDIR}
-	${COPYTREE_SHARE} ${WRKSRC}/docs ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/docs/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
-do-install-EXAMPLES-on:
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${PORTEXAMPLES:S|^|${WRKSRC}/examples/|} ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/examples/ && ${INSTALL_DATA} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
 
 do-test:
 	cd ${WRKSRC} && ${PYTHON_CMD} ${PYSETUP} test

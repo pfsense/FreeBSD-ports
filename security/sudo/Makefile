@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	sudo
-PORTVERSION=	1.8.21p2
-PORTREVISION=	1
+PORTVERSION=	1.8.23
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SUDO
 
@@ -26,11 +26,13 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
 		--with-tty-tickets \
 		--with-env-editor \
 		--with-logincap \
-		--with-long-otp-prompt
+		--with-long-otp-prompt \
+		--with-rundir=/var/run/sudo
 
 OPTIONS_DEFINE=	LDAP INSULTS DISABLE_ROOT_SUDO DISABLE_AUTH NOARGS_SHELL \
-		AUDIT OPIE NLS SSSD DOCS
-OPTIONS_DEFAULT=	AUDIT
+		AUDIT OPIE PAM NLS SSSD DOCS EXAMPLES
+OPTIONS_RADIO=	KERBEROS
+OPTIONS_DEFAULT=	AUDIT PAM
 OPTIONS_SUB=	yes
 
 INSULTS_DESC=	Enable insults on failures
@@ -38,8 +40,12 @@ DISABLE_ROOT_SUDO_DESC=	Do not allow root to run sudo
 DISABLE_AUTH_DESC=	Do not require authentication by default
 NOARGS_SHELL_DESC=	Run a shell if no arguments are given
 AUDIT_DESC=	Enable BSM audit support
+KERBEROS_DESC=	Enable Kerberos 5 authentication (no PAM support)
 OPIE_DESC=	Enable one-time passwords (no PAM support)
 SSSD_DESC=	Enable SSSD backend support.
+
+PAM_PREVENTS=	OPIE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
+PAM_PREVENTS_MSG=	PAM cannot be combined with any other authentication plugin
 
 LOGFAC?=	authpriv
 CONFIGURE_ARGS+=	--with-logfac=${LOGFAC}
@@ -68,10 +74,24 @@ DISABLE_ROOT_SUDO_CONFIGURE_ON=	--disable-root-sudo
 DISABLE_AUTH_CONFIGURE_ON=	--disable-authentication
 NOARGS_SHELL_CONFIGURE_ENABLE=	noargs-shell
 AUDIT_CONFIGURE_WITH=	bsm-audit
+PAM_CONFIGURE_ON=	--with-pam
 OPIE_CONFIGURE_ON=	--with-opie
-OPIE_CONFIGURE_OFF=	--with-pam
 SSSD_CONFIGURE_ON=	--with-sssd
 SSSD_RUN_DEPENDS=	sssd:security/sssd
+
+OPTIONS_RADIO_KERBEROS=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
+GSSAPI_BASE_USES=	gssapi
+GSSAPI_BASE_CONFIGURE_ON=	--with-kerb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_HEIMDAL_USES=	gssapi:heimdal
+GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-kerb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_MIT_USES=	gssapi:mit
+GSSAPI_MIT_CONFIGURE_ON=	--with-kerb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+# This is intentionally not an option.
+# SUDO_KERB5_INSTANCE is an optional instance string that will be appended to kerberos
+# principals when to perform authentication. Common choices are "admin" and "sudo".
+.if defined(SUDO_KERB5_INSTANCE)
+CONFIGURE_ARGS+=	--enable-kerb5-instance="${SUDO_KERB5_INSTANCE}"
+.endif
 
 .include <bsd.port.options.mk>
 
@@ -89,6 +109,7 @@ post-patch:
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/pam.conf ${STAGEDIR}${PREFIX}/etc/pam.d/sudo.default
 	${RM} ${STAGEDIR}${PREFIX}/etc/sudoers
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/cvtsudoers
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/sudoreplay
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/visudo
 .for f in group_file.so libsudo_util.so sudoers.so system_group.so

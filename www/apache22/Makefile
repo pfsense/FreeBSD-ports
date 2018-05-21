@@ -2,7 +2,7 @@
 
 PORTNAME=	apache22
 PORTVERSION=	2.2.34
-PORTREVISION?=	1
+PORTREVISION?=	4
 CATEGORIES=	www ipv6
 MASTER_SITES=	APACHE_HTTPD
 DISTNAME=	httpd-${PORTVERSION}
@@ -13,6 +13,11 @@ COMMENT?=	Version 2.2.x of Apache web server with ${WITH_MPM} MPM
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_SSL=	openssl-devel libressl libressl-devel
+BROKEN_SSL_REASON_openssl-devel=	configure: Error... SSL/TLS libraries were missing or unusable
+BROKEN_SSL_REASON_libressl=		error: no member named 'state' in 'struct ssl_st'
+BROKEN_SSL_REASON_libressl-devel=	${BROKEN_SSL_REASON_libressl}
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libapr-1.so:devel/apr1 \
@@ -26,8 +31,7 @@ CONFLICTS_INSTALL=	caudium14-1.* \
 DEPRECATED=		Upstream propose EoL of apache 2.2.x during the next 12 months
 EXPIRATION_DATE=	2017-07-01
 
-USE_APACHE=	common22
-USES=		autoreconf bdb cpe iconv libtool perl5 tar:bzip2
+USES=		apache:server,2.2 autoreconf bdb cpe iconv libtool perl5 tar:bzip2
 
 USE_PERL5=	run
 USE_RC_SUBR=	apache22 htcacheclean

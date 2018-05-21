@@ -1,0 +1,4 @@
+PHP class that implement missing functions in openssl module to create
+Certificate Revocation List (CRL)
+
+WWW: https://github.com/ukrbublik/openssl_x509_crl

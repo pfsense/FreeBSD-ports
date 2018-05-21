@@ -3,6 +3,7 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
 DISTVERSION=	3.4.9
+PORTREVISION=	2
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/ \
@@ -17,6 +18,8 @@ COMMENT=	Distributed document-oriented "NoSQL" database
 LICENSE=	AGPLv3 APACHE20
 LICENSE_COMB=	multi
 
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	no member named 'SSLv2_method' in the global namespace
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	"Only supported on amd64 (i386 deprecated in v3)"
 

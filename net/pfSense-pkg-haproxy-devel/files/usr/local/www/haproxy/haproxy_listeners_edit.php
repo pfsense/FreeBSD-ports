@@ -39,15 +39,9 @@ if (!function_exists("cert_get_purpose")) {
 }
 /**/
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
-
+haproxy_config_init();
 $a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 $a_pools = $config['installedpackages']['haproxy']['ha_pools']['item'];
-if (!is_array($a_pools)) {
-	$a_pools = array();
-}
 uasort($a_pools, haproxy_compareByName);
 
 global $simplefields;
@@ -171,6 +165,11 @@ $fields_externalAddress[4]['colwidth']="20%";
 $fields_externalAddress[4]['type']="textbox";
 $fields_externalAddress[4]['size']="30";
 
+foreach ($a_action as $key => $value) {
+	if (!empty($value['usage']) && !stristr('frontend', $value['usage'])) {
+		unset($a_action[$key]);
+	}
+}
 $fields_actions=array();
 $fields_actions[0]['name']="action";
 $fields_actions[0]['columnheader']="Action";
@@ -233,7 +232,7 @@ foreach($a_acltypes as $key => $action) {
 			$item = $field;
 			$name = $key . $item['name'];
 			$item['name'] = $name;
-			$item['columnheader'] = $field['name'];
+			$item['columnheader'] = $field['columnheader'];
 			$item['customdrawcell'] = customdrawcell_actions;
 			$fields_acl_details[$name] = $item;
 		}
@@ -446,6 +445,9 @@ if ($_POST) {
 		
 		foreach($simplefields as $stat) {
 			update_if_changed($stat, $backend[$stat], $_POST[$stat]);
+			if (empty($backend[$stat])) {
+				unset($backend[$stat]);
+			}
 		}
 		
 		update_if_changed("advanced", $backend['advanced'], base64_encode($_POST['advanced']));
@@ -498,6 +500,8 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 </head>
 
 <script type="text/javascript">
+	<?php haproxy_js_css(); ?>
+		
 	function htmllist_get_select_options(tableId, fieldname, itemstable) {
 		if (tableId === 'table_acls' && fieldname === 'expression') {
 			var type;
@@ -519,18 +523,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 		}
 		return itemstable;
 	}
-
-	function setCSSdisplay(cssID, display) {
-		var ss = document.styleSheets;
-		for (var i=0; i<ss.length; i++) {
-			var rules = ss[i].cssRules || ss[i].rules;
-			for (var j=0; j<rules.length; j++) {
-				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = display ? "" : "none";
-				}
-			}
-		}
-	}
+		
 	function updatevisibility()	{
 		d = document;
 		ssl = false;

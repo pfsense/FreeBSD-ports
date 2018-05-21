@@ -6,7 +6,7 @@ CATEGORIES=	www security
 MASTER_SITES=	https://mod.gnutls.org/downloads/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Extension for Apache httpd using GnuTLS library to provide HTTPS
 
 LICENSE=	APACHE20
@@ -15,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libgnutls.so:security/gnutls
 
 GNU_CONFIGURE=	yes
-USES=		libtool pkgconfig tar:bzip2
-USE_APACHE=	24
+USES=		apache:2.4 libtool pkgconfig tar:bzip2
 
 DBDIR=		${PREFIX}/var/db/${PORTNAME}
 PLIST_SUB=	SED="${SED}" WWWGRP=${WWWGRP} WWWOWN=${WWWOWN}

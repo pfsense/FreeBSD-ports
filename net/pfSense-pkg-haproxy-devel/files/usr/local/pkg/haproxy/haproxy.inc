@@ -44,25 +44,25 @@ $a_frontendmode['health'] = array('name' => "health", 'shortname' => "health");
 global $a_acltypes;
 $a_acltypes = array();
 $a_acltypes["host_starts_with"] = array('name' => 'Host starts with:',
-				'mode' => 'http', 'syntax' => 'hdr_beg(host) -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["host_ends_with"] = array('name' => 'Host ends with:',
-				'mode' =>'http', 'syntax' => 'hdr_end(host) -i %1$s');
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["host_matches"] = array('name' => 'Host matches:',
-				'mode' =>'http', 'syntax' => 'hdr(host) -i %1$s');
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["host_regex"] = array('name' => 'Host regex:',
-				'mode' =>'http', 'syntax' => 'hdr_reg(host) -i %1$s');
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["host_contains"] = array('name' => 'Host contains:',
-				'mode' => 'http', 'syntax' => 'hdr_sub(host) -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
 $a_acltypes["path_starts_with"] = array('name' => 'Path starts with:',
-				'mode' => 'http', 'syntax' => 'path_beg -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["path_ends_with"] = array('name' => 'Path ends with:',
-				'mode' => 'http', 'syntax' => 'path_end -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["path_matches"] = array('name' => 'Path matches:',
-				'mode' => 'http', 'syntax' => 'path -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["path_regex"] = array('name' => 'Path regex:',
-				'mode' => 'http', 'syntax' => 'path_reg -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["path_contains"] = array('name' => 'Path contains:',
-				'mode' => 'http', 'syntax' => 'path_sub -i %1$s');
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
 $a_acltypes["url_parameter"] = array('name' => 'Url parameter contains:',
 				'mode' => 'http', 'syntax' => 'url_param({parameter}) -i %1$s',
 	'fields' => array(
@@ -252,7 +252,7 @@ $a_action["use_backend"] = array('name' => "Use Backend", 'mode' => '', 'syntax'
 	));
 $a_action["use_server"] = array('name' => "Use Server", 'mode' => '', 'syntax' => 'use-server {server}', 'usage' => 'backend',
 	'fields' => array(
-		'server' => array('name'=>"server",'columnheader'=>"Server",'type'=>"select",'size'=>"50",'mask'=>'server')
+		'server' => array('name'=>"server",'columnheader'=>"Server",'type'=>"textbox",'size'=>"50",'mask'=>'server')
 	));
 //
 $a_action["custom"] = array('name' => "Custom", 'mode' => '', 'syntax' => '{customaction}',
@@ -309,6 +309,23 @@ $a_action["http-request_replace-value"] = array('name' => "http-request header r
 		array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
 		array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
 	));
+
+$a_action["http-request_set-method"] = array('name' => "http-request set method", 'mode'=> 'http', 'syntax' => 'http-request set-method {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+$a_action["http-request_set-path"] = array('name' => "http-request set path", 'mode'=> 'http', 'syntax' => 'http-request set-path {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+$a_action["http-request_set-query"] = array('name' => "http-request set query", 'mode'=> 'http', 'syntax' => 'http-request set-query {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+$a_action["http-request_set-uri"] = array('name' => "http-request set uri", 'mode'=> 'http', 'syntax' => 'http-request set-uri {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
 //
 $a_action["http-response_allow"] = array('name' => "http-response allow", 'mode'=> 'http', 'syntax' => 'http-response allow');
 $a_action["http-response_deny"] = array('name' => "http-response deny", 'mode'=> 'http', 'syntax' => 'http-response deny');
@@ -343,6 +360,11 @@ $a_action["http-response_replace-value"] = array('name' => "http-response header
 		array('name'=>"name",'columnheader'=>"Headername",'type'=>"textbox",'size'=>"50",'mask'=>'headername'),
 		array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
 		array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
+	));
+$a_action["http-response_set-status"] = array('name' => "http-response set status", 'mode'=> 'http', 'syntax' => 'http-response set-status {status} {reason}',
+	'fields' => array(
+		array('name'=>"status",'columnheader'=>"Status",'type'=>"textbox",'size'=>"50",'mask'=>'text'),
+		array('name'=>"reason",'columnheader'=>"Reason",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'reason')
 	));
 //
 $a_action["tcp-request_connection_accept"] = array('name' => "tcp-request connection accept", 'mode'=> '', 'syntax' => 'tcp-request connection accept');
@@ -414,34 +436,58 @@ function haproxy_portoralias_to_list($port_or_alias) {
 		return $portresult;
 	}
 }
-function haproxy_addressoralias_to_list($address_or_alias) {
+
+function haproxy_expand_alias_array($address_or_alias) {
 	global $aliastable;
 	$result = array();
-	$alias_type = alias_get_type($address_or_alias);
-	if (!empty($alias_type)) {
-		$alias = $aliastable[$address_or_alias];
+	$items = explode(' ', $address_or_alias);
+	
+	$i = 0;
+	while($i < count($items)) {
+		$item = $items[$i];
+		$alias_type = alias_get_type($item);
+		$alias = $aliastable[$item];
 		if ($alias_type == "url") {
-			$result = explode(' ',$alias);
+			$items = array_merge($items, explode(' ',$alias));
 		} else
 		if ($alias_type == "network") {
-			//$result = explode(' ',$alias);
+			$items = array_merge($items, explode(' ',$alias));
 		} else
 		if ($alias_type == "host") {
-			$result = explode(' ',$alias);
+			$items = array_merge($items, explode(' ',$alias));
+		} else {
+			$result[] = $item;
 		}
-	} else {
-		$result[] = $address_or_alias;
+		$i++;
+	}
+	return $result;
+}
+
+function haproxy_filter_alias_array($list, $ip=false, $subnet=false, $hostname=false, $convertiptosubnet=false) {
+	$result = array();
+	foreach($list as $item) {
+		if ($ip && $ipv = is_ipaddr($item)) {
+			if ($convertiptosubnet) {
+				if ($ipv == 4) {
+					$item .= "/32";
+				} elseif ($ipv == 6) {
+					$item .= "/128";
+				}
+			}
+			$result[] = $item;
+		} elseif ($subnet && is_subnet($item)) {
+			$result[] = $item;
+		} elseif ($hostname && is_hostname($item)) {
+			$result[] = $item;
+		}
 	}
 	return $result;
 }
 
 function haproxy_hostoralias_to_list($host_or_alias) {
-	if (is_alias($host_or_alias)){
-		$result = filter_expand_alias_array($host_or_alias);
-	} else {
-		$result = array();
-		$result[] = $host_or_alias;
-	}
+	//used by source_ip acl
+	$items = haproxy_expand_alias_array($host_or_alias);
+	$result = haproxy_filter_alias_array($items, true, true);
 	return $result;
 }
 
@@ -842,7 +888,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	}
 	fwrite ($fd, "\ttimeout server\t\t" . $pool['server_timeout'] . "\n");
 
-	if (empty($pool['retries'])) {
+	if (!is_numeric($pool['retries'])) {
 		$pool['retries'] = 3;
 	}
 	fwrite ($fd, "\tretries\t\t\t" . $pool['retries'] . "\n");
@@ -889,6 +935,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	if (!is_array($a_acl)) {
 		$a_acl = array();
 	}
+	$advancedextra = array();
 	// ACL's
 	foreach ($a_acl as $entry) {
 		$aclitem = $entry['ref'];
@@ -908,7 +955,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$inspectdelay = $acltype['inspect-delay'];
 		}
 		if ($acltype['advancedoptions'] != '') {
-			$advancedextra[$acltype['syntax']] = $acltype['advancedoptions']."\n";
+			$advancedextra[$acltype['advancedoptions']] = $acltype['advancedoptions'];
 		}
 		if ($acltype['require_client_cert']) {
 			$needs_clientcert[$aclname] = true;
@@ -947,6 +994,9 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	foreach($config_acls as $acl => $dummy) {
 		fwrite ($fd, $acl);
 	}
+	foreach($advancedextra as $extra) {
+		fwrite ($fd, "\t".$extra."\n");
+	}
 
 	$a_actionitems = $pool['a_actionitems']['item'];
 	if (!is_array($a_actionitems)) {
@@ -975,6 +1025,9 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 						$a_pendingpl[$backendname]['ipversion'] = $ipversion;
 					}*/
 					$parameter = $backendname;
+				}
+				if (!empty($parameter) && !empty($field['prefix'])) {
+					$parameter = $field['prefix'] . " ". $parameter;
 				}
 				$action_cfg = str_replace("{{$fieldname}}", $parameter, $action_cfg);
 			}
@@ -1138,7 +1191,12 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 				if (count($servers) > 1) {
 					$servername .= "_" . $counter;
 				}
-				fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+				if (is_numeric($be['istemplate'])) {
+					$istemplate = " {$be['istemplate']}";
+					fwrite ($fd, "\tserver-template\t\t\t" . $servername . $istemplate . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+				} else {
+					fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+				}
 				$counter++;
 			}
 		}
@@ -1829,7 +1887,7 @@ function haproxy_writeconf($configpath) {
 							$inspectdelay = $acltype['inspect-delay'];
 						}
 						if ($acltype['advancedoptions'] != '') {
-							$advancedextra[$acltype['syntax']] = $acltype['advancedoptions']."\n";
+							$advancedextra[$acltype['advancedoptions']] = $acltype['advancedoptions'];
 						}
 						if ($acltype['require_client_cert']) {
 							$needs_clientcert[$aclname] = true;
@@ -1890,6 +1948,9 @@ function haproxy_writeconf($configpath) {
 									}
 									$parameter = $backendname;
 								}
+								if (!empty($parameter) && !empty($field['prefix'])) {
+									$parameter = $field['prefix'] . " ". $parameter;
+								}
 								$action_cfg = str_replace("{{$fieldname}}", $parameter, $action_cfg);
 							}
 						}
@@ -1917,7 +1978,7 @@ function haproxy_writeconf($configpath) {
 						
 						if ($actionid == "use_backend") {							
 							if (empty($condition)) {
-								$config_usedefaultbackends .= "\tdefault_backend {$parameter}{$condition}\n";
+								$config_usedefaultbackends .= "\tdefault_backend {$parameter}\n";
 							} else {
 								if (!empty($actionitem['acl'])){
 									$config_usebackends .= $action;
@@ -2459,8 +2520,8 @@ function get_frontend_bindips($frontend) {
 		if (isset($extaddr['extaddr']) && $extaddr['extaddr'] != "custom") {
 			$a_ip[] = haproxy_interface_ip($extaddr['extaddr']);
 		} else {						
-			$iporalias = $extaddr['extaddr_custom'];
-			$a_ip = haproxy_addressoralias_to_list($iporalias);
+			$items = haproxy_expand_alias_array($extaddr['extaddr_custom']);
+			$a_ip = haproxy_filter_alias_array($items, true);
 		}
 		foreach($a_ip as $ip) {
 			$portsnumeric = group_ports(haproxy_portoralias_to_list($extaddr['extaddr_port']));
@@ -2780,4 +2841,30 @@ function haproxy_find_create_certificate($certificatename) {
 	cert_import($cert, $crt, $prv);
 	$a_cert[] = $cert;
 	return $cert;
+}
+
+function haproxy_config_init(){
+	global $config;
+	if (!is_array($config['installedpackages']['haproxy'])) {
+		$config['installedpackages']['haproxy'] = array();
+	}
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	if (!is_array($haproxycfg['email_mailers']['item'])) {
+		$haproxycfg['email_mailers']['item'] = array();
+	}
+	if (!is_array($haproxycfg['dns_resolvers']['item'])) {
+		$haproxycfg['dns_resolvers']['item'] = array();
+	}
+	if (!is_array($haproxycfg['ha_backends']['item'])) {
+		$haproxycfg['ha_backends']['item'] = array();
+	}
+	if (!is_array($haproxycfg['ha_pools']['item'])) {
+		$haproxycfg['ha_pools']['item'] = array();
+	}
+	if (!is_array($haproxycfg['ha_pools']['item'])) {
+		$haproxycfg['ha_pools']['item'] = array();
+	}
+	if (!is_array($haproxycfg['files']['item'])) {
+		$haproxycfg['files']['item'] = array();
+	}
 }

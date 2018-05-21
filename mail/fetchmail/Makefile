@@ -3,7 +3,7 @@
 
 PORTNAME=	fetchmail
 PORTVERSION=	6.3.26
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	mail ipv6
 MASTER_SITES=	SF/${PORTNAME}/branch_6.3/ \
 		http://mandree.home.pages.de/${PORTNAME}/
@@ -13,6 +13,8 @@ COMMENT=	Batch mail retrieval utility for IMAP/POP3/ETRN/ODMR
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
+
+BROKEN_SSL=	openssl-devel
 
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
@@ -44,7 +46,7 @@ GSSAPI_BASE_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS
 GSSAPI_HEIMDAL_USES=	gssapi:heimdal
 GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
 GSSAPI_MIT_USES=	gssapi:mit
-GSSAPI_MIT_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_MIT_CONFIGURE_ON=	--with-kerberos5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
 GSSAPI_NONE_CONFIGURE_ON=	--without-gssapi
 
 X11_DESC=	Python/Tkinter dependencies for ``fetchmailconf''
@@ -90,10 +92,4 @@ post-install-X11-off:
 	${INSTALL_SCRIPT} ${WRKDIR}/fetchmailconf ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/fetchmailconf.py ${STAGEDIR}${PREFIX}/libexec
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

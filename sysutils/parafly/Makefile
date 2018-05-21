@@ -1,14 +1,13 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	parafly
 PORTVERSION=	2013.01.21
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/
 DISTNAME=	${PORTNAME}-r2013-01-21
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Process multiple commands in parallel on a single server
 
 LICENSE=	BSD3CLAUSE

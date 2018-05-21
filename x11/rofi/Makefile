@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	rofi
-DISTVERSION=	1.4.2
+DISTVERSION=	1.5.1
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	https://github.com/DaveDavenport/rofi/releases/download/${PORTVERSION}/
 

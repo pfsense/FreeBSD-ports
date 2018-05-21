@@ -2,15 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	bitcoin
-PORTVERSION=	0.15.1
+PORTVERSION=	0.16.0
 DISTVERSIONPREFIX=	v
-PORTREVISION?=	2
+PORTREVISION?=	1
 CATEGORIES=	net-p2p finance
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	1ec0c0a01c31.patch:-p1
-
-MAINTAINER=	robbak@robbak.com
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT?=	Virtual Peer-to-Peer Currency Client (QT)
 
 LICENSE=	MIT
@@ -39,14 +36,18 @@ TESTS_PLIST_FILES=	bin/test_bitcoin-qt \
 			bin/test_bitcoin
 .endif
 
-OPTIONS_DEFINE?=	DBUS DEBUG HARDENING QRCODES TESTS UPNP WALLET ZMQ
-OPTIONS_DEFAULT?=	DBUS HARDENING QRCODES UPNP WALLET
+OPTIONS_DEFINE?=	DBUS DEBUG HARDENING QRCODES TESTS UPNP ZMQ
+OPTIONS_RADIO?=		WALLET
+OPTIONS_RADIO_WALLET?=	WALLET_BDB48 WALLET_BDBMODERN
+OPTIONS_DEFAULT?=	DBUS HARDENING QRCODES UPNP WALLET_BDBMODERN
 OPTIONS_SUB=		yes
 
 HARDENING_DESC=	Attempt to harden binaries (PIE for ASLR, NX Stack)
 QRCODES_DESC=	Display QR Codes
 TESTS_DESC=	Build test binary and unit tests
 WALLET_DESC=	Wallet Management Support
+WALLET_BDB48_DESC=	Wallet using BDB 4.8
+WALLET_BDBMODERN_DESC=	Wallet using modern BDB 5.x or 6.x
 ZMQ_DESC=	Block and transaction broadcasting with ZeroMQ
 
 DBUS_CONFIGURE_WITH=	dbus
@@ -71,11 +72,6 @@ UPNP_LIBS=		-L${LOCALBASE}/lib
 QRCODES_CONFIGURE_WITH=	qrencode
 QRCODES_LIB_DEPENDS=	libqrencode.so:graphics/libqrencode
 
-WALLET_CONFIGURE_ENABLE=	wallet
-WALLET_CXXFLAGS=		-I${BDB_INCLUDE_DIR}
-WALLET_LIBS=			-L${BDB_LIB_DIR}
-WALLET_USES=			bdb:48
-
 ZMQ_CONFIGURE_ENABLE=	zmq
 ZMQ_BUILD_DEPENDS=	libzmq4>0:net/libzmq4
 ZMQ_RUN_DEPENDS=	libzmq4>0:net/libzmq4
@@ -95,6 +91,29 @@ MAKE_ENV+=	V=1
 PLIST_FILES?=	bin/bitcoin-qt man/man1/bitcoin-qt.1.gz \
 		share/applications/bitcoin-qt.desktop share/pixmaps/bitcoin128.png
 
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MWALLET_BDB48}
+CONFIGURE_ARGS+=	--enable-wallet
+USES+=			bdb:48
+.elif ${PORT_OPTIONS:MWALLET_BDBMODERN}
+CONFIGURE_ARGS+=	--enable-wallet --with-incompatible-bdb
+USES+=			bdb:5+
+.else
+CONFIGURE_ARGS+=	--disable-wallet
+.endif
+
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MWALLET_BDB48} || ${PORT_OPTIONS:MWALLET_BDBMODERN}
+CPPFLAGS+=	-I${BDB_INCLUDE_DIR}
+LIBS+=		-L${BDB_LIB_DIR}
+.endif
+
+.if ${OSVERSION} < 1100000
+CONFIGURE_ARGS+=--disable-asm
+.endif
+
 .if defined(SLAVE_PORT) && ${SLAVE_PORT} == "no"
 
 post-install:
@@ -113,4 +132,4 @@ regression-test: build
 
 	@cd ${WRKSRC} && ${GMAKE} check
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

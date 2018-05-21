@@ -24,6 +24,7 @@ USE_LDCONFIG=	yes
 LLD_UNSAFE=	yes	# lld lacks built-in search paths
 MAKEFILE=	Makefile.bsd
 MAKE_ARGS+=	PLIBS="${LDFLAGS:M-L*} -lncurses"
+CFLAGS+=	-D_WANT_SEMUN
 
 SUB_FILES=	regutil.1
 
@@ -36,15 +37,15 @@ PORTEXAMPLES=	*.rex
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
-		${INSTALL_LIB} ${WRKSRC}/librexxutil.so ${STAGEDIR}${PREFIX}/lib/
-		${INSTALL_MAN} ${WRKDIR}/regutil.1 ${STAGEDIR}${PREFIX}/man/man1/
+	${INSTALL_LIB} ${WRKSRC}/librexxutil.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_MAN} ${WRKDIR}/regutil.1 ${STAGEDIR}${MANPREFIX}/man/man1
 
 do-install-DOCS-on:
-		${MKDIR} ${STAGEDIR}${DOCSDIR}
-		${INSTALL_MAN} ${WRKSRC}/regutil.pdf ${STAGEDIR}${DOCSDIR}/
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/regutil.pdf ${STAGEDIR}${DOCSDIR}
 
 do-install-EXAMPLES-on:
-		${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-		${INSTALL_MAN} ${WRKSRC}/*.rex ${STAGEDIR}${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.rex ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

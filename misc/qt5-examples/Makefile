@@ -3,6 +3,7 @@
 
 PORTNAME=	examples
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	misc
 MASTER_SITES=	QT/official_releases/qt/${QT5_VERSION:R}/${QT5_VERSION}/single
 PKGNAMEPREFIX=	qt5-
@@ -19,7 +20,7 @@ USES=		tar:xz
 USE_QT5=	#
 
 DESCR=		${.CURDIR:H:H}/devel/qt5/pkg-descr
-DISTINFO_FILE=	${.CURDIR:H:H}/misc/qt5-doc/distinfo
+DISTINFO_FILE=	${.CURDIR}/distinfo
 
 EXAMPLESDIR=	${PREFIX}/share/examples/qt5
 # The destination location depends on the values given in

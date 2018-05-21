@@ -29,6 +29,7 @@ function get_coreboot_model() {
 
 	switch($specplatform['name']) {
 	case 'RCC-DFF':
+	case 'SG-2220':
 		return 'DFF2';
 		break;
 	case 'SG-2440':
@@ -106,7 +107,7 @@ function upgrade_coreboot($coreboot, &$output) {
 	    "/usr/local/sbin");
 
 	if ($coreboot['model'] == 'PLCC') {
-		$_gc = exec("/usr/local/sbin/adi_smbios_util -u " .
+		$_gc = exec("/usr/local/sbin/adi_smbios_util -w -u " .
 		    $coreboot['rom_path'] . ' 2>&1', $output, $rc);
 	} else {
 		$_gc = exec("/usr/local/sbin/adi_flash_util -u " .

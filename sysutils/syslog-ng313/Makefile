@@ -34,7 +34,7 @@ SQL_DESC=		Build with database (libdbi) support
 SPOOF_DESC=		Build with spoof source support
 SMTP_DESC=		Build with SMTP support
 JSON_DESC=		Build with JSON-C support
-GEOIP_DESC=		Build with GeoIP support (depreciated)
+GEOIP_DESC=		Build with GeoIP support (deprecated)
 GEOIP2_DESC=		Build with geoip2 (MaxMindDB) support
 REDIS_DESC=		Build with Redis support
 JAVA_DESC=		Build with Java support (no modules)
@@ -44,11 +44,10 @@ CURL_DESC=		Build with Curl HTTP support
 AMQP_DESC=		Build with AMQP support
 
 USES=		autoreconf:build gmake libtool pathfix pkgconfig ssl \
-		gettext-runtime python shebangfix
+		gettext-runtime python:2.7 shebangfix
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	syslog-ng
 SHEBANG_FILES=	lib/merge-grammar.py
-SHEBANG_LANG=	python
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 SUB_FILES=	pkg-message
@@ -69,7 +68,6 @@ SPOOF_CONFIGURE_ENABLE=		spoof-source
 SPOOF_CONFIGURE_ON=		--with-libnet=/usr/local/bin
 SPOOF_CONFIGURE_ENV=		LIBNET_CFLAGS="-I/usr/local/include" \
 				LIBNET_LIBS="-L/usr/local/lib -lnet"
-
 
 IPV6_CONFIGURE_ENABLE=		ipv6
 

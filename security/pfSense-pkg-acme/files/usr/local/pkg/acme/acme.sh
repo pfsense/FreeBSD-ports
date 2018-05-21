@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-VER=2.7.8
+VER=2.7.9
 
 PROJECT_NAME="acme.sh"
 
@@ -1808,6 +1808,7 @@ _send_signed_request() {
   MAX_REQUEST_RETRY_TIMES=5
   _request_retry_times=0
   while [ "${_request_retry_times}" -lt "$MAX_REQUEST_RETRY_TIMES" ]; do
+    _request_retry_times=$(_math "$_request_retry_times" + 1)
     _debug3 _request_retry_times "$_request_retry_times"
     if [ -z "$_CACHED_NONCE" ]; then
       _headers=""
@@ -1838,7 +1839,11 @@ _send_signed_request() {
     fi
     nonce="$_CACHED_NONCE"
     _debug2 nonce "$nonce"
-
+    if [ -z "$nonce" ]; then
+      _info "Could not get nonce, let's try again."
+      _sleep 2
+      continue
+    fi
     if [ "$ACME_VERSION" = "2" ]; then
       if [ "$url" = "$ACME_NEW_ACCOUNT" ] || [ "$url" = "$ACME_REVOKE_CERT" ]; then
         protected="$JWK_HEADERPLACE_PART1$nonce\", \"url\": \"${url}$JWK_HEADERPLACE_PART2, \"jwk\": $jwk"'}'
@@ -1907,7 +1912,6 @@ _send_signed_request() {
 
     if _contains "$_body" "JWS has invalid anti-replay nonce"; then
       _info "It seems the CA server is busy now, let's wait and retry."
-      _request_retry_times=$(_math "$_request_retry_times" + 1)
       _sleep 5
       continue
     fi
@@ -4351,20 +4355,21 @@ $_authorizations_map"
   Le_NextRenewTime=$(_math "$Le_NextRenewTime" - 86400)
   _savedomainconf "Le_NextRenewTime" "$Le_NextRenewTime"
 
-  if ! _on_issue_success "$_post_hook" "$_renew_hook"; then
-    _err "Call hook error."
-    return 1
-  fi
-
   if [ "$_real_cert$_real_key$_real_ca$_reload_cmd$_real_fullchain" ]; then
     _savedomainconf "Le_RealCertPath" "$_real_cert"
     _savedomainconf "Le_RealCACertPath" "$_real_ca"
     _savedomainconf "Le_RealKeyPath" "$_real_key"
     _savedomainconf "Le_ReloadCmd" "$_reload_cmd"
     _savedomainconf "Le_RealFullChainPath" "$_real_fullchain"
-    _installcert "$_main_domain" "$_real_cert" "$_real_key" "$_real_ca" "$_real_fullchain" "$_reload_cmd"
+    if ! _installcert "$_main_domain" "$_real_cert" "$_real_key" "$_real_ca" "$_real_fullchain" "$_reload_cmd"; then
+      return 1
+    fi
   fi
 
+  if ! _on_issue_success "$_post_hook" "$_renew_hook"; then
+    _err "Call hook error."
+    return 1
+  fi
 }
 
 #domain  [isEcc]
@@ -5578,6 +5583,7 @@ Parameters:
   --openssl-bin                     Specifies a custom openssl bin location.
   --use-wget                        Force to use wget, if you have both curl and wget installed.
   --yes-I-know-dns-manual-mode-enough-go-ahead-please  Force to use dns manual mode: $_DNS_MANUAL_WIKI
+  --branch, -b                      Only valid for '--upgrade' command, specifies the branch name to upgrade to.
   "
 }
 
@@ -6121,6 +6127,10 @@ _process() {
       --use-wget)
         _use_wget="1"
         ACME_USE_WGET="1"
+        ;;
+      --branch | -b)
+        export BRANCH="$2"
+        shift
         ;;
       *)
         _err "Unknown parameter : $1"

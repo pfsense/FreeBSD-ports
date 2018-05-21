@@ -50,13 +50,27 @@ $snortcommunityrules = $config['installedpackages']['suricata']['config'][0]['sn
 $tmpfname = "{$g['tmp_path']}/suricata_rules_up";
 
 /* Snort Rules filenames and URL */
-$snort_filename_md5 = "{$snort_filename}.md5";
-$snort_rule_url = VRT_DNLD_URL;
+if ($config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on') {
+	$snort_rule_url = trim(substr($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], 0, strrpos($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], '/') + 1));
+	$snort_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], strrpos($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], '/') + 1));
+	$snort_filename_md5 = "{$snort_filename}.md5";
+}
+else {
+	$snort_filename_md5 = "{$snort_filename}.md5";
+	$snort_rule_url = VRT_DNLD_URL;
+}
 
 /* Snort GPLv2 Community Rules filenames and URL */
-$snort_community_rules_filename = GPLV2_DNLD_FILENAME;
-$snort_community_rules_filename_md5 = GPLV2_DNLD_FILENAME . ".md5";
-$snort_community_rules_url = GPLV2_DNLD_URL;
+if ($config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] == 'on') {
+	$snort_community_rules_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], strrpos($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], '/') + 1));
+	$snort_community_rules_filename_md5 = $snort_community_rules_filename . ".md5";
+	$snort_community_rules_url = trim(substr($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], 0, strrpos($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], '/') + 1));
+}
+else {
+	$snort_community_rules_filename = GPLV2_DNLD_FILENAME;
+	$snort_community_rules_filename_md5 = GPLV2_DNLD_FILENAME . ".md5";
+	$snort_community_rules_url = GPLV2_DNLD_URL;
+}
 
 /* Mount the Suricata conf directories R/W so we can modify files there */
 if (!is_subsystem_dirty('mount')) {
@@ -66,23 +80,39 @@ if (!is_subsystem_dirty('mount')) {
 
 /* Set up Emerging Threats rules filenames and URL */
 if ($etpro == "on") {
-	$emergingthreats_filename = ETPRO_DNLD_FILENAME;
-	$emergingthreats_filename_md5 = ETPRO_DNLD_FILENAME . ".md5";
-	$emergingthreats_url = ETPRO_BASE_DNLD_URL;
-	$emergingthreats_url .= "{$etproid}/suricata-{$suri_eng_ver}/";
 	$et_name = "Emerging Threats Pro";
-	$et_md5_remove = ET_DNLD_FILENAME . ".md5";
+	if ($config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] == 'on') {
+		$emergingthreats_url = trim(substr($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], 0, strrpos($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], '/') + 1));
+		$emergingthreats_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], strrpos($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], '/') + 1));
+		$emergingthreats_filename_md5 = $emergingthreats_filename . ".md5";
+		$et_md5_remove = ET_DNLD_FILENAME . ".md5";
+	}
+	else {
+		$emergingthreats_filename = ETPRO_DNLD_FILENAME;
+		$emergingthreats_filename_md5 = ETPRO_DNLD_FILENAME . ".md5";
+		$emergingthreats_url = ETPRO_BASE_DNLD_URL;
+		$emergingthreats_url .= "{$etproid}/suricata-{$suri_eng_ver}/";
+		$et_md5_remove = ET_DNLD_FILENAME . ".md5";
+	}
 	unlink_if_exists("{$suricatadir}{$et_md5_remove}");
 }
 else {
-	$emergingthreats_filename = ET_DNLD_FILENAME;
-	$emergingthreats_filename_md5 = ET_DNLD_FILENAME . ".md5";
-	$emergingthreats_url = ET_BASE_DNLD_URL;
-	// If using Snort rules with ET, then we should use the open-nogpl ET rules
-	$emergingthreats_url .= $vrt_enabled == "on" ? "open-nogpl/" : "open/";
-	$emergingthreats_url .= "suricata-{$suri_eng_ver}/";
 	$et_name = "Emerging Threats Open";
-	$et_md5_remove = ETPRO_DNLD_FILENAME . ".md5";
+	if ($config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] == 'on') {
+		$emergingthreats_url = trim(substr($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], 0, strrpos($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], '/') + 1));
+		$emergingthreats_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], strrpos($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], '/') + 1));
+		$emergingthreats_filename_md5 = $emergingthreats_filename . ".md5";
+		$et_md5_remove = ETPRO_DNLD_FILENAME . ".md5";
+	}
+	else {
+		$emergingthreats_filename = ET_DNLD_FILENAME;
+		$emergingthreats_filename_md5 = ET_DNLD_FILENAME . ".md5";
+		$emergingthreats_url = ET_BASE_DNLD_URL;
+		// If using Snort rules with ET, then we should use the open-nogpl ET rules
+		$emergingthreats_url .= $vrt_enabled == "on" ? "open-nogpl/" : "open/";
+		$emergingthreats_url .= "suricata-{$suri_eng_ver}/";
+		$et_md5_remove = ETPRO_DNLD_FILENAME . ".md5";
+	}
 	unlink_if_exists("{$suricatadir}{$et_md5_remove}");
 }
 
@@ -257,19 +287,17 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 	/**********************************************************/
 
 	global $last_curl_error, $update_errors;
-
 	$suricatadir = SURICATADIR;
 	$filename_md5 = basename($file_dst);
 
 	suricata_update_status(gettext("Downloading {$desc} md5 file..."));
-	error_log(gettext("\tDownloading {$desc} md5 file {$filename_md5}...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+	error_log(gettext("\tDownloading {$desc} md5 file...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 	$rc = suricata_download_file_url($file_url, $file_dst);
 
 	// See if download from URL was successful
 	if ($rc === true) {
 		suricata_update_status(gettext(" done.") . "\n");
 		error_log("\tChecking {$desc} md5 file...\n", 3, SURICATA_RULES_UPD_LOGFILE);
-
 		// check md5 hash in new file against current file to see if new download is posted
 		if (file_exists("{$suricatadir}{$filename_md5}")) {
 			$md5_check_new = file_get_contents($file_dst);
@@ -376,8 +404,12 @@ safe_mkdir("{$suricatalogdir}");
 
 /* See if we need to automatically clear the Update Log based on 1024K size limit */
 if (file_exists(SURICATA_RULES_UPD_LOGFILE)) {
-	if (1048576 < filesize(SURICATA_RULES_UPD_LOGFILE))
-		unlink_if_exists("{SURICATA_RULES_UPD_LOGFILE}");
+	if (1048576 < filesize(SURICATA_RULES_UPD_LOGFILE)) {
+		file_put_contents(SURICATA_RULES_UPD_LOGFILE, "");
+	}
+}
+else {
+	file_put_contents(SURICATA_RULES_UPD_LOGFILE, "");
 }
 
 /* Log start time for this rules update */
@@ -399,15 +431,16 @@ if ($emergingthreats == 'on') {
 
 /*  Check for and download any new Snort rule sigs */
 if ($snortdownload == 'on') {
+	$snort_custom_url = config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on' ? TRUE : FALSE;
 	if (empty($snort_filename)) {
 		log_error(gettext("No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."));
 		error_log(gettext("\tWARNING-- No snortrules-snapshot filename set on GLOBAL SETTINGS tab. Snort rules cannot be updated!\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		$snortdownload = 'off';
 	}
-	elseif (suricata_check_rule_md5("{$snort_rule_url}{$snort_filename_md5}?oinkcode={$oinkid}", "{$tmpfname}/{$snort_filename_md5}", "Snort VRT rules")) {
+	elseif (suricata_check_rule_md5("{$snort_rule_url}{$snort_filename_md5}" . ($snort_custom_url ? "" : "?oinkcode={$oinkid}"), "{$tmpfname}/{$snort_filename_md5}", "Snort VRT rules")) {
 		/* download snortrules file */
 		$file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_filename_md5}"));
-		if (!suricata_fetch_new_rules("{$snort_rule_url}{$snort_filename}?oinkcode={$oinkid}", "{$tmpfname}/{$snort_filename}", $file_md5, "Snort rules"))
+		if (!suricata_fetch_new_rules("{$snort_rule_url}{$snort_filename}" . ($snort_custom_url ? "" : "?oinkcode={$oinkid}"), "{$tmpfname}/{$snort_filename}", $file_md5, "Snort rules"))
 			$snortdownload = 'off';
 	}
 	else

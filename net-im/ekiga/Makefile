@@ -4,13 +4,16 @@
 
 PORTNAME=	ekiga
 PORTVERSION=	4.0.1
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	VoIP and video conferencing application
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	v4l_compat>=0:multimedia/v4l_compat \
 		gnome-icon-theme>=3.0.0:misc/gnome-icon-theme
@@ -20,8 +23,8 @@ LIB_DEPENDS=	libboost_signals.so:devel/boost-libs \
 RUN_DEPENDS=	gnome-icon-theme>=3.0.0:misc/gnome-icon-theme
 
 GNU_CONFIGURE=	yes
-USES=		cpe gettext gmake kde:4 libtool pathfix perl5 pkgconfig \
-		tar:xz
+USES=		cpe gettext gmake kde:4 libtool localbase pathfix \
+		perl5 pkgconfig tar:xz
 USE_XORG=	xv
 USE_GNOME=	gtk20 intlhack libxml2
 INSTALLS_ICONS=	yes
@@ -39,10 +42,12 @@ GNOMEHELP_DESC=	Build Ekiga help files
 #OPTIONS_GROUP_EXP=	KDE KAB GSTREAMER XCAP LOUDMOUTH
 EXP_DESC=	Experimental features
 KDE_DESC=	KDE 4 support
-KAB_DESC=	KAddressBook support (implies KDE option)
+KAB_DESC=	KAddressBook support
 GSTREAMER_DESC=	Gstreamer support
 XCAP_DESC=	Remote contact storage via HTTP in xml format
 LOUDMOUTH_DESC=	XMPP (jabber) support
+
+KAB_IMPLIES=	KDE
 
 # Note that h.323 support is enabled when opal is build with it.
 

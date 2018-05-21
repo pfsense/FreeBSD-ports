@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	sfcgal
-PORTVERSION=	1.3.1
+PORTVERSION=	1.3.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	databases math graphics
 
 MAINTAINER=	lbartoletti@tuxfamily.org

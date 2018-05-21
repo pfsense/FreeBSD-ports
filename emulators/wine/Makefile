@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-DISTVERSION=	2.0.3
+DISTVERSION=	3.0
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
-		http://ibiblio.org/pub/linux/system/emulators/wine/
+		http://mirrors.ibiblio.org/wine/source/3.0/
 
 MAINTAINER?=	gerald@FreeBSD.org
 COMMENT?=	Microsoft Windows compatibility environment
@@ -30,11 +30,14 @@ CONFIGURE_ARGS+=--verbose --disable-tests \
 		--without-alsa --without-capi --without-dbus \
 		--without-gettext --without-gettextpo \
 		--without-gphoto --without-gsm --without-gstreamer \
+		--without-krb5 \
 		--without-opencl \
 		--without-osmesa \
 		--with-oss \
+		--without-pulse \
 		--without-sane \
-		--without-tiff
+		--without-tiff \
+		--without-udev
 CONFIGURE_ENV=	CPPBIN="${CPP}" FLEX="${LOCALBASE}/bin/flex"
 WINELIBDIR?=	${PREFIX}/lib
 USES=		bison compiler:c11 desktop-file-utils gmake shebangfix tar:xz
@@ -59,7 +62,7 @@ WINEMAKER_DESC=	Fully support winemaker (requires Perl)
 GECKO_DESC=	Bundle Gecko MSI package for Wine
 MONO_DESC=	Bundle Mono MSI package for Wine
 
-PORTSCOUT=	limit:^2\.0
+PORTSCOUT=	limit:^3\.0
 
 CUPS_CONFIGURE_WITH=	cups
 CUPS_LIB_DEPENDS=	libcups.so:print/cups
@@ -80,7 +83,7 @@ LDAP_USE=		OPENLDAP=yes
 LIBXSLT_CONFIGURE_WITH=	xslt
 LIBXSLT_LIB_DEPENDS=	libxslt.so:textproc/libxslt
 
-MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.6.4.msi:emulators/wine-mono
+MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.7.1.msi:emulators/wine-mono-devel
 
 MPG123_CONFIGURE_WITH=	mpg123
 MPG123_LIB_DEPENDS=	libmpg123.so:audio/mpg123
@@ -96,13 +99,18 @@ WINEMAKER_RUN_DEPENDS=	p5-XML-LibXML>0:textproc/p5-XML-LibXML
 
 X11_CONFIGURE_WITH=	x cms fontconfig freetype glu jpeg opengl png xinerama xinput2 xrandr xrender
 X11_USES=		jpeg
-X11_USE=		GL=glu XORG=xcomposite,xcursor,xi,xinerama,xrandr,xrender
+X11_USE=		GL=glu XORG=x11,xext,xcomposite,xcursor,xi,xinerama,xrandr,xrender
 X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2 \
 			liblcms2.so:graphics/lcms2 \
 			libpng.so:graphics/png
 
 .include <bsd.port.pre.mk>
+
+# PR224863: clang 6.0.0 crashes
+.if ${OPSYS} == FreeBSD && ${OSVERSION} == 1200056 && ${ARCH} == amd64
+USE_GCC=	yes
+.endif
 
 .if ${ARCH} == amd64
 # Wine is composed of three parts:

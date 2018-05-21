@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	feh
-PORTVERSION=	2.23
+PORTVERSION=	2.25.1
 CATEGORIES=	graphics
 MASTER_SITES=	http://feh.finalrewind.org/ \
 		LOCAL/uqs
@@ -22,9 +22,9 @@ USES=		cpe desktop-file-utils gmake perl5 shebangfix tar:bzip2
 CPE_VENDOR=	daniel_friesel
 USE_PERL5=	run
 
-CPPFLAGS+=	-I${LOCALBASE}/include
+CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-MAKE_ENV+=	LDFLAGS="${LDFLAGS}"
+MAKE_ENV+=	LDFLAGS="${LDFLAGS}" verscmp=0
 
 OPTIONS_DEFINE=	CAM DOCS EXAMPLES EXIF
 CAM_DESC=	Install feh-cam and related tools

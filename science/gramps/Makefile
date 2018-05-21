@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gramps
-PORTVERSION=	4.2.6
+PORTVERSION=	4.2.8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	science gnome python
 
@@ -23,8 +23,8 @@ GH_ACCOUNT=	gramps-project
 
 NO_ARCH=	yes
 USES=		desktop-file-utils gettext shared-mime-info python:3.2+
-USE_GNOME=	cairo gtk30 intltool librsvg2 pango py3gobject3
-USE_PYTHON=	autoplist distutils optsuffix
+USE_GNOME=	cairo gtk30 intltool librsvg2 pango pygobject3
+USE_PYTHON=	autoplist distutils noflavors
 CONFIGURE_ARGS=	--disable-mime-install
 INSTALLS_OMF=	yes
 INSTALLS_ICONS=	yes

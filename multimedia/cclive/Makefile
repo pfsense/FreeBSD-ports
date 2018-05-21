@@ -3,7 +3,7 @@
 
 PORTNAME=	cclive
 PORTVERSION=	0.7.16
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	multimedia net
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION:R}
 
@@ -12,7 +12,7 @@ COMMENT=	Lightweight command line video extraction tool
 
 LICENSE=	GPLv3
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	fails to configure: cannot find the flags to link with Boost date_time
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libcurl.so:ftp/curl \

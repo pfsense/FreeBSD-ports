@@ -3,12 +3,8 @@
 
 PORTNAME=	libvpx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.1
-PORTREVISION=	5
+DISTVERSION=	1.7.0
 CATEGORIES=	multimedia
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	bc4bc9b6223d.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	VP8/VP9 Codec SDK
@@ -82,6 +78,8 @@ THREADS_CONFIGURE_OFF=	--disable-multithread
 post-patch:
 	@${REINPLACE_CMD} 's|\(link_with_cc\)=gcc|\1=$${CC}|' \
 		${WRKSRC}/build/make/configure.sh
+	@${REINPLACE_CMD} 's|sparc-solaris-gcc|sparc-linux-gcc|' \
+		${WRKSRC}/configure
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/vpx*

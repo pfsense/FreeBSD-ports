@@ -98,6 +98,12 @@
 			<type>checkbox</type>
 		</field>
 		<field>
+			<fielddescr>Maximum Cache Size</fielddescr>
+			<fieldname>cache_max</fieldname>
+			<description>The size of the object cache. Leave blank for default, 0 to disable. Disabling the cache can help with object duplication when reflecting.</description>
+			<type>input</type>
+		</field>
+		<field>
 			<name>Wide Area</name>
 			<type>listtopic</type>
 		</field>
