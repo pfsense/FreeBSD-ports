@@ -385,13 +385,6 @@
 					"header":	"Botvrij_IP"
 				},
 				{
-					"feed":		"CleanTalk",
-					"website":	"https://cleantalk.org/",
-					"contact":	"https://cleantalk.org/my/session",
-					"url":		"https://cleantalk.org/blacklists/updated_today",
-					"header":	"CleanTalk_30"
-				},
-				{
 					"feed":		"CoinBlocker",
 					"website":	"https://github.com/ZeroDot1/CoinBlockerLists",
 					"url":		"https://raw.githubusercontent.com/ZeroDot1/CoinBlockerLists/master/MiningServerIPList.txt",
