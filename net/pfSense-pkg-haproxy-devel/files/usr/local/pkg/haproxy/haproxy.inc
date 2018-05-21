@@ -769,7 +769,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		}
 
 		if ($pool["strict_transport_security"] && is_numeric($pool["strict_transport_security"])){
-			fwrite ($fd, "\trspadd Strict-Transport-Security:\\ max-age={$pool["strict_transport_security"]};\n");
+			fwrite ($fd, "\thttp-response set-header Strict-Transport-Security max-age={$pool["strict_transport_security"]};\n");
 		}
 
 		if ($pool["cookie_attribute_secure"] == 'yes'){
