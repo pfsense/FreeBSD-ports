@@ -30,7 +30,7 @@
  */
 	]]>
 	</copyright>
-	<name>pfblockerng</name>
+	<name>pfblockerng-devel</name>
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<menu>
