@@ -52,6 +52,8 @@ global $config;
 # todo: move include string to the squid-function call string position
 if (file_exists('/usr/local/pkg/squid.inc')) {
     require_once('/usr/local/pkg/squid.inc');
+} else {
+	define('SQUID_BASE', '/usr/local');
 }
 
 # ------------------------------------------------------------------------------
@@ -234,6 +236,9 @@ define('FLT_WAREZ',      'warez');
 # ------------------------------------------------------------------------------
 # squidguard system fields
 # ------------------------------------------------------------------------------
+// This is a guess since it does not seem to be defined anywhere
+define('F_REDIRECMODE',          'redirecmode');
+
 define('F_SQUIDGUARD',          'squidGuard');
 define('F_LOGDIR',              'logdir');
 define('F_DBHOME',              'dbhome');
