@@ -541,6 +541,13 @@ function haproxy_custom_php_install_command() {
 
 . /etc/rc.subr
 
+# rc_fast=yes workaround for pfSense that calls start when it
+# means restart (for a wan-ip change for example..)
+# this way it doesnt check for a already running process 
+# and just fires of the start procedure again. which will
+# take care to restart haproxy gracefully
+rc_fast=yes
+
 name="haproxy"
 rcvar="\${name}_enable"
 command="{$haproxy_binary}"
