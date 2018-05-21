@@ -894,7 +894,7 @@ $section->addInput(new Form_Input(
 	'SNI Filter',
 	'text',
 	$pconfig['sslsnifilter']
-), "haproxy_secondary haproxy_ssloffloading_enabled"
+), "haproxy_ssloffloading_enabled"
 )->setHelp('Specify a SNI filter to apply below SSL settings to specific domain(s), see the "crt-list" option from haproxy for details. <br/>'.
 		'EXAMPLE: *.securedomain.tld !public.securedomain.tld');
 
