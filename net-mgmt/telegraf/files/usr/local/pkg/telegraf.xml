@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * telegraf.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+    <name>telegraf</name>
+    <title>Services: Telegraf</title>
+    <include_file>/usr/local/pkg/telegraf.inc</include_file>
+    <menu>
+        <name>Telegraf</name>
+        <section>Services</section>
+        <configfile>telegraf.xml</configfile>
+        <url>/pkg_edit.php?xml=telegraf.xml</url>
+    </menu>
+    <service>
+        <name>telegraf</name>
+        <rcfile>telegraf.sh</rcfile>
+        <executable>telegraf</executable>
+        <description>Telegraf daemon</description>
+    </service>
+    <fields>
+        <field>
+            <fielddescr>Enable</fielddescr>
+            <fieldname>enable</fieldname>
+            <type>checkbox</type>
+            <description>Enable Telegraf.</description>
+            <enablefields>interval,telegraf_output,influx_server,influx_db,influx_user,influx_pass,elasticsearch_server</enablefields>
+        </field>
+        <field>
+            <fielddescr>Update Interval</fielddescr>
+            <fieldname>interval</fieldname>
+            <type>input</type>
+            <description>Seconds. Default: 10 if not specified</description>
+        </field>
+        <field>
+            <fielddescr>Telegraf Output</fielddescr>
+            <fieldname>telegraf_output</fieldname>
+            <type>select</type>
+            <options>
+                <option><name>InfluxDB</name><value>influxdb</value></option>
+                <option><name>ElasticSearch</name><value>elasticsearch</value></option>
+            </options>
+            <multiple/>
+        </field>
+        <field>
+            <fielddescr>*InfluxDB Server</fielddescr>
+            <fieldname>influx_server</fieldname>
+            <type>input</type>
+            <description>Full HTTP or UDP endpoint URL for InfluxDB instance. E.g.: http://192.168.1.23:8086 for a default InfluxDB instalaltion</description>
+        </field>
+        <field>
+            <fielddescr>*InfluxDB Database</fielddescr>
+            <fieldname>influx_db</fieldname>
+            <type>input</type>
+            <description>Target database for metrics (created if does not exist)</description>
+        </field>
+        <field>
+            <fielddescr>InfluxDB Username</fielddescr>
+            <fieldname>influx_user</fieldname>
+            <type>input</type>
+            <description>Database user name if required by InfluxDB config</description>
+        </field>
+        <field>
+            <fielddescr>InfluxDB Password</fielddescr>
+            <fieldname>influx_pass</fieldname>
+            <type>password</type>
+            <description>Database password if required by InfluxDB config</description>
+			<encoding>base64</encoding>
+        </field>
+        <field>
+            <fielddescr>*ElasticSearch Servers</fielddescr>
+            <fieldname>elasticsearch_server</fieldname>
+            <type>input</type>
+            <description>Full HTTP endpoint URL for ElasticSearch instance. E.g.: http://192.168.1.23:9200</description>
+        </field>
+    </fields>
+    <custom_php_resync_config_command>
+        telegraf_resync_config();
+    </custom_php_resync_config_command>
+</packagegui>

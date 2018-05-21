@@ -1,5 +1,5 @@
 # Created by: Stefan Lambrev <cheffo@freebsd-bg.org>
-# $FreeBSD$
+# $FreeBSD: $
 
 PORTNAME=	telegraf
 DISTVERSION=	1.6.1

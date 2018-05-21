@@ -1,5 +1,5 @@
 #!/bin/sh
-# $FreeBSD$
+# $FreeBSD: head/net-mgmt/telegraf/files/telegraf.in 460975 2018-02-05 15:05:36Z girgen $
 
 # PROVIDE: telegraf
 # REQUIRE: DAEMON NETWORKING
