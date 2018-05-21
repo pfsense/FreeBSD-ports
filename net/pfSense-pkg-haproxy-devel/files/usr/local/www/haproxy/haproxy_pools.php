@@ -115,7 +115,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 			<h2 class="panel-title"><?=gettext("Backends")?></h2>
 		</div>
 		<div id="mainarea" class="table-responsive panel-body">
-			<table class="table table-hover table-striped table-condensed">
+			<table id="backendstbl" class="table table-hover table-striped table-condensed">
 				<thead>
 					<tr>
 						<th><!-- checkbox --></th>
@@ -163,6 +163,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 					<tr id="fr<?=$i;?>" <?=$display?> onClick="fr_toggle(<?=$i;?>)" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';" <?=($disabled ? ' class="disabled"' : '')?>>
 						<td >
 							<input type="checkbox" id="frc<?=$i;?>" onClick="fr_toggle(<?=$i;?>)" name="rule[]" value="<?=$i;?>"/>
+							<a class="fa fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
 						</td>
 			<!--tr class="<?=$textgray?>"-->
 			  <td>
@@ -194,7 +195,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 			  <td>
 				<?=$fe_list;?>
 			  </td>
-				<td class="action-icons">
+				<td class="action-buttons">
 					<a href="haproxy_pool_edit.php?id=<?=$i;?>">
 						<?=haproxyicon("edit", gettext("edit backend"))?>
 					</a>
@@ -232,15 +233,32 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
 <script type="text/javascript">
 //<![CDATA[
-events.push(function() {
 
-	// Make rules sortable
-	$('table tbody.user-entries').sortable({
-		cursor: 'grabbing',
-		update: function(event, ui) {
+	function moveRowUpAboveAnchor(rowId, tableId) {
+		var table = $('#'+tableId);
+		var viewcheckboxes = $('[id^=frc]input:checked', table);
+		var rowview = $("#fr" + rowId, table);
+		var moveabove = rowview;
+		//var parent = moveabove[0].parentNode;
+		
+		viewcheckboxes.each(function( index ) {
+			var moveid = this.value;
+			console.log( index + ": " + this.id );
+
+			var prevrowview = $("#fr" + moveid, table);
+			prevrowview.insertBefore(moveabove);
 			$('#order-store').removeAttr('disabled');
+		});
 		}
+
+events.push(function() {
+	$('[id^=Xmove_]').click(function (event) {
+		/*$('[id="'+event.target.id.slice(1)+'"]').click();*/
+		moveRowUpAboveAnchor(event.target.id.slice(6),"backendstbl");
+		
+		return false;
 	});
+	$('[id^=Xmove_]').css('cursor', 'pointer');
 
 	// Check all of the rule checkboxes so that their values are posted
 	$('#order-store').click(function () {
