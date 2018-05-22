@@ -326,7 +326,6 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/Memoize/Storable.pm
 %%PRIV_LIB%%/Module/CoreList.pm
 %%PRIV_LIB%%/Module/CoreList.pod
-%%PRIV_LIB%%/Module/CoreList/TieHashDelta.pm
 %%PRIV_LIB%%/Module/CoreList/Utils.pm
 %%PRIV_LIB%%/Module/Load.pm
 %%PRIV_LIB%%/Module/Load/Conditional.pm
@@ -508,6 +507,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/Test2/Event/Skip.pm
 %%PRIV_LIB%%/Test2/Event/Subtest.pm
 %%PRIV_LIB%%/Test2/Event/TAP/Version.pm
+%%PRIV_LIB%%/Test2/Event/V2.pm
 %%PRIV_LIB%%/Test2/Event/Waiting.pm
 %%PRIV_LIB%%/Test2/EventFacet.pm
 %%PRIV_LIB%%/Test2/EventFacet/About.pm
@@ -515,10 +515,12 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/Test2/EventFacet/Assert.pm
 %%PRIV_LIB%%/Test2/EventFacet/Control.pm
 %%PRIV_LIB%%/Test2/EventFacet/Error.pm
+%%PRIV_LIB%%/Test2/EventFacet/Hub.pm
 %%PRIV_LIB%%/Test2/EventFacet/Info.pm
 %%PRIV_LIB%%/Test2/EventFacet/Meta.pm
 %%PRIV_LIB%%/Test2/EventFacet/Parent.pm
 %%PRIV_LIB%%/Test2/EventFacet/Plan.pm
+%%PRIV_LIB%%/Test2/EventFacet/Render.pm
 %%PRIV_LIB%%/Test2/EventFacet/Trace.pm
 %%PRIV_LIB%%/Test2/Formatter.pm
 %%PRIV_LIB%%/Test2/Formatter/TAP.pm
@@ -867,6 +869,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%ARCH_LIB%%/Scalar/Util.pm
 %%ARCH_LIB%%/Socket.pm
 %%ARCH_LIB%%/Storable.pm
+%%ARCH_LIB%%/Storable/Limit.pm
 %%ARCH_LIB%%/Sub/Util.pm
 %%ARCH_LIB%%/Sys/Hostname.pm
 %%ARCH_LIB%%/Sys/Syslog.pm
@@ -996,6 +999,8 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%MAN1%%/perl5260delta.1.gz
 %%MAN1%%/perl5261delta.1.gz
 %%MAN1%%/perl5270delta.1.gz
+%%MAN1%%/perl52710delta.1.gz
+%%MAN1%%/perl52711delta.1.gz
 %%MAN1%%/perl5271delta.1.gz
 %%MAN1%%/perl5272delta.1.gz
 %%MAN1%%/perl5273delta.1.gz
@@ -1004,6 +1009,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%MAN1%%/perl5276delta.1.gz
 %%MAN1%%/perl5277delta.1.gz
 %%MAN1%%/perl5278delta.1.gz
+%%MAN1%%/perl5279delta.1.gz
 %%MAN1%%/perl561delta.1.gz
 %%MAN1%%/perl56delta.1.gz
 %%MAN1%%/perl581delta.1.gz
@@ -1622,6 +1628,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%MAN3%%/Test2::Event::Skip.3.gz
 %%MAN3%%/Test2::Event::Subtest.3.gz
 %%MAN3%%/Test2::Event::TAP::Version.3.gz
+%%MAN3%%/Test2::Event::V2.3.gz
 %%MAN3%%/Test2::Event::Waiting.3.gz
 %%MAN3%%/Test2::EventFacet.3.gz
 %%MAN3%%/Test2::EventFacet::About.3.gz
@@ -1629,10 +1636,12 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%MAN3%%/Test2::EventFacet::Assert.3.gz
 %%MAN3%%/Test2::EventFacet::Control.3.gz
 %%MAN3%%/Test2::EventFacet::Error.3.gz
+%%MAN3%%/Test2::EventFacet::Hub.3.gz
 %%MAN3%%/Test2::EventFacet::Info.3.gz
 %%MAN3%%/Test2::EventFacet::Meta.3.gz
 %%MAN3%%/Test2::EventFacet::Parent.3.gz
 %%MAN3%%/Test2::EventFacet::Plan.3.gz
+%%MAN3%%/Test2::EventFacet::Render.3.gz
 %%MAN3%%/Test2::EventFacet::Trace.3.gz
 %%MAN3%%/Test2::Formatter.3.gz
 %%MAN3%%/Test2::Formatter::TAP.3.gz
@@ -1647,6 +1656,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%MAN3%%/Test2::Transition.3.gz
 %%MAN3%%/Test2::Util.3.gz
 %%MAN3%%/Test2::Util::ExternalMeta.3.gz
+%%MAN3%%/Test2::Util::Facets2Legacy.3.gz
 %%MAN3%%/Test2::Util::HashBase.3.gz
 %%MAN3%%/Test2::Util::Trace.3.gz
 %%MAN3%%/Test::Builder.3.gz
@@ -1799,6 +1809,8 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/pod/perl5260delta.pod
 %%PRIV_LIB%%/pod/perl5261delta.pod
 %%PRIV_LIB%%/pod/perl5270delta.pod
+%%PRIV_LIB%%/pod/perl52710delta.pod
+%%PRIV_LIB%%/pod/perl52711delta.pod
 %%PRIV_LIB%%/pod/perl5271delta.pod
 %%PRIV_LIB%%/pod/perl5272delta.pod
 %%PRIV_LIB%%/pod/perl5273delta.pod
@@ -1807,6 +1819,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/pod/perl5276delta.pod
 %%PRIV_LIB%%/pod/perl5277delta.pod
 %%PRIV_LIB%%/pod/perl5278delta.pod
+%%PRIV_LIB%%/pod/perl5279delta.pod
 %%PRIV_LIB%%/pod/perl561delta.pod
 %%PRIV_LIB%%/pod/perl56delta.pod
 %%PRIV_LIB%%/pod/perl581delta.pod

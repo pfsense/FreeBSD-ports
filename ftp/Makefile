@@ -62,17 +62,14 @@
     SUBDIR += pavuk
     SUBDIR += pear-Net_FTP
     SUBDIR += pftpd
+    SUBDIR += php-fastdfs
     SUBDIR += php56-curl
-    SUBDIR += php56-fastdfs
     SUBDIR += php56-ftp
     SUBDIR += php70-curl
-    SUBDIR += php70-fastdfs
     SUBDIR += php70-ftp
     SUBDIR += php71-curl
-    SUBDIR += php71-fastdfs
     SUBDIR += php71-ftp
     SUBDIR += php72-curl
-    SUBDIR += php72-fastdfs
     SUBDIR += php72-ftp
     SUBDIR += phpwebftp
     SUBDIR += plasma-applet-ftpmonitor
@@ -85,6 +82,8 @@
     SUBDIR += py-ftputil
     SUBDIR += py-pycurl
     SUBDIR += py-pyftpdlib
+    SUBDIR += py-requests-ftp
+    SUBDIR += py-sftp
     SUBDIR += py-tftpy
     SUBDIR += quftp
     SUBDIR += rexx-curl

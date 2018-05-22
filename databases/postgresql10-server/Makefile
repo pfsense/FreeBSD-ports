@@ -3,7 +3,7 @@
 
 PORTNAME?=	postgresql
 DISTVERSION?=	10.3
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES?=	databases
 MASTER_SITES=	PGSQL/source/v${DISTVERSION}
 PKGNAMESUFFIX?= ${PORTVERSION:R}${COMPONENT}
@@ -218,10 +218,6 @@ CONFIGURE_ARGS+=--with-krb5
 
 # For testing files in FILESDIR
 .include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MSSL} && ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
 
 .if defined(SERVER_ONLY)
 pre-build:

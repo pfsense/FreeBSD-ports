@@ -57,7 +57,7 @@ USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20
 LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 .elif ${BUILD_MOZC_LIST:Mmozc_el} == "mozc_el"
-USE_EMACS=	yes
+USES+=		emacs
 .elif ${BUILD_MOZC_LIST:Mfcitx_mozc}
 USES+=		gettext-tools
 .endif
@@ -85,6 +85,7 @@ BUILD_MODE=	Release
 BUILD_CMD=	${SETENV} ${MAKE_ENV} PATH=/bin:/usr/bin:${PATH} ${MAKE_CMD}
 BUILD_MOZC_CMD=	cd ${BUILD_WRKSRC} && \
 		${SETENV} BUILD_COMMAND="${BUILD_WRKSRC}/mozcmake" \
+		    PATH="${PATH}" \
 		    GYP_DEFINES="${GYP_DEFINES}" \
 		    PYTHONPATH=${PYTHON_SITELIBDIR}/gyp \
 		    CC_host="${CC}" \

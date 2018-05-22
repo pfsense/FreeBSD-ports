@@ -6,14 +6,14 @@ PORTVERSION=	0.3.1
 PORTREVISION=	3
 CATEGORIES=	devel
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt-only fork of Kross, the KDE scripting framework
 
 LICENSE=	LGPL20+
 
 USES=		cmake
 USE_LDCONFIG=	yes
-USE_QT4=	designer gui network xml qmake_build uic_build moc_build \
+USE_QT4=	corelib designer gui network xml qmake_build uic_build moc_build \
 		rcc_build script testlib
 USE_GITHUB=	yes
 GH_ACCOUNT=	0xd34df00d
@@ -24,9 +24,9 @@ WRKSRC_SUBDIR=	src
 OPTIONS_DEFINE=	PYTHON
 OPTIONS_SUB=	yes
 PYTHON_DESC=		Python bindings
-PYTHON_CMAKE_ON=	-DENABLE_PYTHON:BOOL=true
-PYTHON_CMAKE_OFF=	-DENABLE_PYTHON:BOOL=false
-PYTHON_BUILD_DEPENDS=	sip:devel/py-sip
+PYTHON_CMAKE_BOOL=	ENABLE_PYTHON
+PYTHON_BUILD_DEPENDS=	${PYTHON_INCLUDEDIR}/sip.h:devel/py-sip@${PY_FLAVOR}
+PYTHON_USES=		python:2.7
 OPTIONS_DEFAULT=PYTHON
 
 post-extract:

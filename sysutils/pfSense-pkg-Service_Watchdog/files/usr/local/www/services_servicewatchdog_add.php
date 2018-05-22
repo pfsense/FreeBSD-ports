@@ -30,9 +30,14 @@ require("guiconfig.inc");
 require_once("service-utils.inc");
 require_once("servicewatchdog.inc");
 
+if (!is_array($config['installedpackages']['servicewatchdog'])) {
+	$config['installedpackages']['servicewatchdog'] = array();
+}
+
 if (!is_array($config['installedpackages']['servicewatchdog']['item'])) {
 	$config['installedpackages']['servicewatchdog']['item'] = array();
 }
+
 $a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
 
 unset($input_errors);

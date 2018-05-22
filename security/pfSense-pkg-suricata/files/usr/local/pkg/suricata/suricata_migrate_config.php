@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2017 Bill Meeks
+ * Copyright (C) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -69,6 +69,35 @@ if (empty($config['installedpackages']['suricata']['config'][0]['auto_manage_sid
 	$config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'] = "250";
 	$config['installedpackages']['suricata']['config'][0]['sid_changes_log_retention'] = "336";
 	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Migrate content of any existing SID Mgmt files in the  */
+/* /var/db/suricata/sidmods directory to Base64 encoded   */
+/* strings in SID_MGMT_LIST array in config.xml.          */
+/**********************************************************/
+if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists'])) {
+	$config['installedpackages']['suricata']['sid_mgmt_lists'] = array();
+}
+if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migration']) && count($config['installedpackages']['suricata']['sid_mgmt_lists']) < 1) {
+	if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists']['item'])) {
+		$config['installedpackages']['suricata']['sid_mgmt_lists']['item'] = array();
+	}
+	$a_list = &$config['installedpackages']['suricata']['sid_mgmt_lists']['item'];
+	$sidmodfiles = return_dir_as_array("/var/db/suricata/sidmods/");
+	foreach ($sidmodfiles as $sidfile) {
+		$data = file_get_contents("/var/db/suricata/sidmods/" . $sidfile);
+		if ($data !== FALSE) {
+			$tmp = array();
+			$tmp['name'] = basename($sidfile);
+			$tmp['modtime'] = filemtime("/var/db/suricata/sidmods/" . $sidfile);
+			$tmp['content'] = base64_encode($data);
+			$a_list[] = $tmp;
+		}
+	}
+	$config['installedpackages']['suricata']['config'][0]['sid_list_migration'] = "1";
+	$updated_cfg = true;
+	unset($a_list);
 }
 
 /**********************************************************/
@@ -550,16 +579,27 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 
+	/**********************************************************/
+	/* Set default value for new interface snaplen parameter  */
+	/* if one has not been previously configured.             */
+	/**********************************************************/
+	if (empty($pconfig['intf_snaplen'])) {
+		$pconfig['intf_snaplen'] = "1518";
+		$updated_cfg = true;
+	}
+
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;
 }
 // Release reference to final array element
 unset($r);
 
-// Write out the new configuration to disk if we changed anything
-if ($updated_cfg)
+// Log a message indicating what we did
+if ($updated_cfg) {
 	log_error("[Suricata] Settings successfully migrated to new configuration format.");
-else
+}
+else {
 	log_error("[Suricata] Configuration version is current.");
+}
 
 ?>

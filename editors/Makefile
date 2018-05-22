@@ -36,7 +36,6 @@
     SUBDIR += editorconfig-core-c
     SUBDIR += emacs
     SUBDIR += emacs-devel
-    SUBDIR += emacs-nox11
     SUBDIR += encryptpad
     SUBDIR += fileobj
     SUBDIR += flim
@@ -67,8 +66,8 @@
     SUBDIR += jove
     SUBDIR += jucipp
     SUBDIR += jupp
-    SUBDIR += kate
-    SUBDIR += kate-plugin-pate
+    SUBDIR += kate-kde4
+    SUBDIR += kate-plugin-pate-kde4
     SUBDIR += kile-kde4
     SUBDIR += klat4
     SUBDIR += komodo-edit
@@ -77,6 +76,7 @@
     SUBDIR += lazarus-lcl-gtk2
     SUBDIR += lazarus-lcl-nogui
     SUBDIR += lazarus-lcl-qt
+    SUBDIR += lazarus-lcl-qt5
     SUBDIR += lazarus-lcl-units
     SUBDIR += le
     SUBDIR += leafpad
@@ -119,6 +119,7 @@
     SUBDIR += libreoffice-gug
     SUBDIR += libreoffice-hi
     SUBDIR += libreoffice-hr
+    SUBDIR += libreoffice-hsb
     SUBDIR += libreoffice-i18n
     SUBDIR += libreoffice-id
     SUBDIR += libreoffice-is
@@ -185,6 +186,7 @@
     SUBDIR += linux-sublime3
     SUBDIR += madedit
     SUBDIR += manedit
+    SUBDIR += medit
     SUBDIR += mg
     SUBDIR += micro
     SUBDIR += mined
@@ -196,6 +198,7 @@
     SUBDIR += ne
     SUBDIR += nedit
     SUBDIR += neovim
+    SUBDIR += neovim-qt
     SUBDIR += nvi-devel
     SUBDIR += nvi-m17n
     SUBDIR += omegaT
@@ -215,6 +218,7 @@
     SUBDIR += py-editorconfig
     SUBDIR += py-room
     SUBDIR += rox-edit
+    SUBDIR += rubygem-neovim
     SUBDIR += scite
     SUBDIR += se
     SUBDIR += semi
@@ -241,7 +245,8 @@
     SUBDIR += vigor
     SUBDIR += vile
     SUBDIR += vim
-    SUBDIR += vim-lite
+    SUBDIR += vim-console
+    SUBDIR += vim-tiny
     SUBDIR += web-mode
     SUBDIR += with-editor
     SUBDIR += wordgrinder

@@ -49,6 +49,7 @@
     SUBDIR += libiconv
     SUBDIR += libticonv
     SUBDIR += libutf-8
+    SUBDIR += lua51-iconv
     SUBDIR += lua-iconv
     SUBDIR += lua-json
     SUBDIR += mimelib
@@ -59,6 +60,7 @@
     SUBDIR += ocaml-base64
     SUBDIR += ocaml-jsonm
     SUBDIR += osm2mp
+    SUBDIR += osm2pgrouting
     SUBDIR += osm2pgsql
     SUBDIR += p5-Bencode
     SUBDIR += p5-Boulder
@@ -158,6 +160,7 @@
     SUBDIR += py-iconv
     SUBDIR += py-rencode
     SUBDIR += py-unidecode
+    SUBDIR += py-webencodings
     SUBDIR += py-zfec
     SUBDIR += rcctools
     SUBDIR += recode

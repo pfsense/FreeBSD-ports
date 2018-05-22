@@ -13,6 +13,7 @@ MAINTAINER=	m.tsatsenko@gmail.com
 COMMENT=	Open Ticket Request System
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		p5-DBI>=0:databases/p5-DBI \
@@ -100,7 +101,7 @@ SSL_RUN_DEPENDS=	p5-Crypt-SSLeay>=0:security/p5-Crypt-SSLeay
 
 APACHE_RUN_DEPENDS=	${APACHE_PKGNAMEPREFIX}mod_perl2>=2.0.5:www/mod_perl2 \
 			p5-Apache-DBI>0:www/p5-Apache-DBI
-APACHE_USE=		apache_run=22+
+APACHE_USES=		apache:run,2.2+
 
 REPORTS_RUN_DEPENDS=	p5-GD>=0:graphics/p5-GD \
 			p5-GD-Graph>=0:graphics/p5-GD-Graph \
@@ -180,11 +181,5 @@ do-install:
 #	--web-group=${WWWOWN} \
 #	--otrs-user=${PORTNAME} \
 #	--admin-group=wheel  ${STAGEDIR}${OTRSDIR}
-
-x-generate-plist:
-	(${PORTSDIR}/Tools/scripts/plist -d -m ${MTREE_FILE} ${PREFIX} \
-	| ${SED} -E '\
-		s=share/doc/${PORTNAME}=%%DOCSDIR%%=; \
-	')> temp-pkg-plist
 
 .include <bsd.port.post.mk>

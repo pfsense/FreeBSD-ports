@@ -2,7 +2,7 @@
 
 PORTNAME=	povray
 DISTVERSION=	3.7.0.RC6
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.povray.org/beta/source/
 PKGNAMESUFFIX=	37
@@ -22,7 +22,7 @@ IO_DESC=	Without I/O restrictions (security risk)
 EXAMPLES_DESC=	Install example scenes
 DOCS_DESC=	Install HTML documentation
 
-USES=		gmake
+USES=		gmake localbase
 GNU_CONFIGURE=	yes
 
 VERSION_BASE=	${PORTVERSION:C/([0-9]+\.[0-9]+).*/\1/}
@@ -32,29 +32,18 @@ EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}-${VERSION_BASE}
 DATADIR=	${PREFIX}/share/${PORTNAME}-${VERSION_BASE}
 ETCDIR=		${PREFIX}/etc/${PORTNAME}/${VERSION_BASE}
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib -lboost_system
+LIBS+=		-lboost_system
 
 CONFIGURE_ARGS=	COMPILED_BY=${MAINTAINER} \
 		--program-transform-name='s/${PORTNAME}/${PORTNAME}${PKGNAMESUFFIX}/' \
 		--disable-optimiz
 
+X11_USE=		XORG=xpm,sm,ice,x11 SDL=sdl
+X11_CONFIGURE_OFF=	--without-x
+STATIC_CONFIGURE_ON=	--enable-static
+IO_CONFIGURE_ON=	--disable-io-restrictions
+
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MX11}
-USE_XORG=		xpm sm ice x11
-USE_SDL=		sdl
-.else
-CONFIGURE_ARGS+=	--without-x
-.endif
-
-.if ${PORT_OPTIONS:MSTATIC}
-CONFIGURE_ARGS+=--enable-static
-.endif
-
-.if ${PORT_OPTIONS:MIO}
-CONFIGURE_ARGS+=--disable-io-restrictions
-.endif
 
 .if ${PORT_OPTIONS:MPNG}
 .if ${PORT_OPTIONS:MSTATIC}
@@ -101,8 +90,6 @@ CONFIGURE_ARGS+=--without-openexr
 CONFIGURE_ARGS+=NON_REDISTRIBUTABLE_BUILD=yes
 .endif
 
-MAN1=		${PORTNAME}${PKGNAMESUFFIX}.1
-
 DOC_FILES=	AUTHORS ChangeLog NEWS
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -114,7 +101,7 @@ post-patch:
 		${WRKSRC}/vfe/vfepovms.cpp \
 		${WRKSRC}/vfe/unix/platformbase.cpp \
 		${WRKSRC}/vfe/vfesession.cpp
-	${FIND} ${WRKSRC}/source/*end \( -name \*.h -o -name \*.cpp \) | \
+	@${FIND} ${WRKSRC}/source/*end \( -name \*.h -o -name \*.cpp \) | \
 		${XARGS} ${GREP} -l shared_ptr | ${SED} '/shellout/d' | \
 		${XARGS} ${REINPLACE_CMD} -e 's|shared_ptr|boost::shared_ptr|g'
 
@@ -125,27 +112,27 @@ pre-build:
 .endif
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/unix/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}${PKGNAMESUFFIX}
-	@${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/${MAN1}
+	${INSTALL_PROGRAM} ${WRKSRC}/unix/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}${PKGNAMESUFFIX}
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/${PORTNAME}${PKGNAMESUFFIX}.1
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
-	@${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.conf ${STAGEDIR}${ETCDIR}
-	@${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.ini ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.conf ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.ini ${STAGEDIR}${ETCDIR}
 .for i in include ini scripts
 	${MKDIR} ${STAGEDIR}${DATADIR}/$i
 	cd ${WRKSRC}/$i && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/$i
 .endfor
-.if ${PORT_OPTIONS:MX11}
+
+do-install-X11-on:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/icons
 	cd ${WRKSRC}/icons && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/icons
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
+
+do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/scenes && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
-.endif
-.if ${PORT_OPTIONS:MDOCS}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${DOC_FILES} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

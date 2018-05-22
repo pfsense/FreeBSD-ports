@@ -13,12 +13,14 @@ dns_nsupdate_add() {
   else
     THISNSUPDATE_SERVER=`cat "${NSUPDATE_SERVER}${fulldomain}.server"`
   fi
+  [ -n "${NSUPDATE_SERVER_PORT}" ] || NSUPDATE_SERVER_PORT=53
   # save the dns server and key to the account conf file.
   _saveaccountconf NSUPDATE_SERVER "${THISNSUPDATE_SERVER}"
+  _saveaccountconf NSUPDATE_SERVER_PORT "${NSUPDATE_SERVER_PORT}"
   _saveaccountconf NSUPDATE_KEY "${THISNSUPDATE_KEY}"
   _info "adding ${fulldomain}. 60 in txt \"${txtvalue}\""
   nsupdate -k "${THISNSUPDATE_KEY}" <<EOF
-server ${THISNSUPDATE_SERVER}
+server ${THISNSUPDATE_SERVER} ${NSUPDATE_SERVER_PORT}
 update add ${fulldomain}. 60 in txt "${txtvalue}"
 send
 EOF
@@ -41,9 +43,10 @@ dns_nsupdate_rm() {
   fi
   _checkKeyFile $fulldomain || return 1
   THISNSUPDATE_KEY="${NSUPDATE_KEY}${fulldomain}.key"
+  [ -n "${NSUPDATE_SERVER_PORT}" ] || NSUPDATE_SERVER_PORT=53
   _info "removing ${fulldomain}. txt"
   nsupdate -k "${THISNSUPDATE_KEY}" <<EOF
-server ${THISNSUPDATE_SERVER}
+server ${THISNSUPDATE_SERVER} ${NSUPDATE_SERVER_PORT}
 update delete ${fulldomain}. txt
 send
 EOF

@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,8 +42,21 @@ if (isset($_POST['id']) && is_numericint($_POST['id']))
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
+// If postback is from system function print_apply_box(),
+// then we won't have our customary $_POST['id'] and
+// $_POST['openruleset'] fields set in the response,
+// but the system function will pass back a
+// $_POST['if'] field we can use instead.
 if (is_null($id)) {
-	$id = 0;
+	if (isset($_POST['if'])) {
+		// Split the posted string at the '|' delimiter
+		$response = explode('|', $_POST['if']);
+		$id = $response[0];
+		$_POST['openruleset'] = $response[1];
+	}
+	else {
+		$id = 0;
+	}
 }
 
 if (isset($id) && $a_rule[$id]) {
@@ -95,7 +108,8 @@ $categories = explode("||", $pconfig['rulesets']);
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled, and adjust the available rulesets
-// in the CATEGORY drop-down box as necessary.
+// in the CATEGORY drop-down box as necessary by removing disabled
+// categories and adding enabled ones.
 $cat_mods = suricata_sid_mgmt_auto_categories($a_rule[$id], FALSE);
 foreach ($cat_mods as $k => $v) {
 	switch ($v) {
@@ -114,6 +128,33 @@ foreach ($cat_mods as $k => $v) {
 	}
 }
 
+// Add custom Categories list items for User Forced rules
+$categories[] = "User Forced Enabled Rules";
+$categories[] = "User Forced Disabled Rules";
+
+// Only add custom ALERT or DROP Action Rules
+// option if blocking is enabled.
+if ($a_rule[$id]['blockoffenders'] == 'on') {
+	$categories[] = "User Forced ALERT Action Rules";
+
+	// Show custom DROP rules only if using Inline IPS
+	// mode or "Block Drops Only" option.
+	if ($a_rule[$id]['block_drops_only'] == 'on' || $a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+		$categories[] = "User Forced DROP Action Rules";
+	}
+}
+
+// Only add custom REJECT option if using IPS Inline Mode with blocking enabled
+if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+	$categories[] = "User Forced REJECT Action Rules";
+}
+
+// Add custom Category to view all Active Rules
+// on the interface.
+$categories[] = "Active Rules";
+
+// See if we should open a specific ruleset or
+// just default to the first one in the list.
 if ($_GET['openruleset'])
 	$currentruleset = htmlspecialchars($_GET['openruleset'], ENT_QUOTES | ENT_HTML401);
 elseif ($_POST['selectbox'])
@@ -123,6 +164,8 @@ elseif ($_POST['openruleset'])
 else
 	$currentruleset = $categories[0];
 
+// If we don't have any Category to display, then
+// default to showing the Custom Rules text control.
 if (empty($categories[0]) && ($currentruleset != "custom.rules") && ($currentruleset != "Auto-Flowbit Rules")) {
 	if (!empty($a_rule[$id]['ips_policy']))
 		$currentruleset = "IPS Policy - " . ucfirst($a_rule[$id]['ips_policy']);
@@ -138,18 +181,69 @@ if (empty($tmp))
 $ruledir = "{$suricatadir}rules";
 $rulefile = "{$ruledir}/{$currentruleset}";
 if ($currentruleset != 'custom.rules') {
-	// Read the current rules file into our rules map array.
+	// Read the currently selected rules file into our rules map array.
+	// There are a few special cases possible, so test and adjust as
+	// necessary to get the correct set of rules to display.
+
 	// If it is the auto-flowbits file, set the full path.
 	if ($currentruleset == "Auto-Flowbit Rules") {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 	}
-	// Test for the special case of an IPS Policy file.
+	// Test for the special case of an IPS Policy file
+	// and load the selected policy's rules.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
 		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
 	}
+	// Test for the special case of "Active Rules".  This
+	// displays all currently active rules for the
+	// interface.
+	elseif ($currentruleset == "Active Rules") {
+		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/");
+	}
+	// Test for the special cases of "User Forced" rules
+	// and load the required rules for display.
+	elseif ($currentruleset == "User Forced Enabled Rules") {
+		// Search and display forced enabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_on']));
+	}
+	elseif ($currentruleset == "User Forced Disabled Rules") {
+		// Search and display forced disabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_off']));
+	}
+	elseif ($currentruleset == "User Forced ALERT Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+	}
+	elseif ($currentruleset == "User Forced DROP Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+	}
+	elseif ($currentruleset == "User Forced REJECT Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_reject']));
+	}
+	// If it's not a special case, and we can't find
+	// the given rule file, then notify the user.
 	elseif (!file_exists($rulefile)) {
 		$input_errors[] = gettext("{$currentruleset} seems to be missing!!! Please verify rules files have been downloaded, then go to the Categories tab and save the rule set again.");
 	}
+	// Not a special case, and we have the matching
+	// rule file, so load it up for display.
 	else {
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
@@ -163,9 +257,10 @@ $enablesid = suricata_load_sid_mods($a_rule[$id]['rule_sid_on']);
 $disablesid = suricata_load_sid_mods($a_rule[$id]['rule_sid_off']);
 suricata_modify_sids($rules_map, $a_rule[$id]);
 
-/* Load up our alertsid and dropsid arrays with manually changed SID actions */
+/* Load up our rule action arrays with manually changed SID actions */
 $alertsid = suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']);
 $dropsid = suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']);
+$rejectsid = suricata_load_sid_mods($a_rule[$id]['rule_sid_force_reject']);
 suricata_modify_sids_action($rules_map, $a_rule[$id]);
 
 /* Process AJAX request to view content of a specific rule */
@@ -181,28 +276,54 @@ if ($_POST['action'] == 'loadRule') {
 	exit;
 }
 
-if (isset($_POST['toggle_state']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
+if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
 
 	// Get the GID:SID tags embedded in the clicked rule icon.
 	$gid = $_POST['gid'];
 	$sid = $_POST['sid'];
 
-	// See if the target SID is in our list of modified SIDs,
-	// and toggle it opposite state if present; otherwise,
-	// add it to the appropriate modified SID list.
-	if (isset($enablesid[$gid][$sid])) {
-		unset($enablesid[$gid][$sid]);
-		$disablesid[$gid][$sid] = "disablesid";
-	}
-	elseif (isset($disablesid[$gid][$sid])) {
-		unset($disablesid[$gid][$sid]);
-		$enablesid[$gid][$sid] = "enablesid";
-	}
-	else {
-		if ($rules_map[$gid][$sid]['disabled'] == 1)
+	// Get the posted rule state
+	$state = $_POST['ruleStateOptions'];
+
+	// Use the user-desired rule state to set or clear
+	// entries in the Forced Rule State arrays stored
+	// in the firewall config.xml configuration file.
+
+	switch ($state) {
+		case "state_default":
+			// Return the rule to it's default state
+			// by removing all state override entries.
+			if (isset($enablesid[$gid][$sid])) {
+				unset($enablesid[$gid][$sid]);
+			}
+			if (isset($disablesid[$gid][$sid])) {
+				unset($disablesid[$gid][$sid]);
+			}
+			// Restore the default state flag so we
+			// can display state properly on RULES
+			// page without needing to reload the
+			// entire set of rules.
+			if (isset($rules_map[$gid][$sid])) {
+				$rules_map[$gid][$sid]['disabled'] = !$rules_map[$gid][$sid]['default_state'];
+			}
+			break;
+
+		case "state_enabled":
+			if (isset($disablesid[$gid][$sid])) {
+				unset($disablesid[$gid][$sid]);
+			}
 			$enablesid[$gid][$sid] = "enablesid";
-		else
+			break;
+
+		case "state_disabled":
+			if (isset($enablesid[$gid][$sid])) {
+				unset($enablesid[$gid][$sid]);
+			}
 			$disablesid[$gid][$sid] = "disablesid";
+			break;
+
+		default:
+			$input_errors[] = gettext("WARNING - unknown rule state of '{$state}' passed in $_POST parameter.  No change made to rule state.");
 	}
 
 	// Write the updated enablesid and disablesid values to the config file.
@@ -243,67 +364,139 @@ if (isset($_POST['toggle_state']) && is_numeric($_POST['sid']) && is_numeric($_P
 	// Set a scroll-to anchor location
 	$anchor = "rule_{$gid}_{$sid}";
 }
-elseif (isset($_POST['toggle_action']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
+elseif (isset($_POST['rule_action_save']) && isset($_POST['ruleActionOptions']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
 
 	// Get the GID:SID tags embedded in the clicked rule icon.
 	$gid = $_POST['gid'];
 	$sid = $_POST['sid'];
 
-	// See if the target SID is in our list of modified SIDs,
-	// and toggle it to opposite action if present; otherwise,
-	// add it to the appropriate modified SID list.
-	if (isset($alertsid[$gid][$sid])) {
-		unset($alertsid[$gid][$sid]);
-		$dropsid[$gid][$sid] = "dropsid";
-	}
-	elseif (isset($dropsid[$gid][$sid])) {
-		unset($dropsid[$gid][$sid]);
-		$alertsid[$gid][$sid] = "alertsid";
-	}
-	else {
-		if ($rules_map[$gid][$sid]['action'] == 'drop')
+	// Get the posted rule action
+	$action = $_POST['ruleActionOptions'];
+
+	// Put the target SID in the appropriate lists of modified
+	// SID actions based on the requested action; if default
+	// action is requested, remove the SID from all SID modified
+	// action lists.
+	switch ($action) {
+		case "action_default":
+			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['default_action'];
+			if (isset($alertsid[$gid][$sid])) {
+				unset($alertsid[$gid][$sid]);
+			}
+			if (isset($dropsid[$gid][$sid])) {
+				unset($dropsid[$gid][$sid]);
+			}
+			if (isset($rejectsid[$gid][$sid])) {
+				unset($rejectsid[$gid][$sid]);
+			}
+			break;
+
+		case "action_alert":
+			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['alert'];
+			if (!is_array($alertsid[$gid])) {
+				$alertsid[$gid] = array();
+			}
+			if (!is_array($alertsid[$gid][$sid])) {
+				$alertsid[$gid][$sid] = array();
+			}
 			$alertsid[$gid][$sid] = "alertsid";
-		else
+			if (isset($dropsid[$gid][$sid])) {
+				unset($dropsid[$gid][$sid]);
+			}
+			if (isset($rejectsid[$gid][$sid])) {
+				unset($rejectsid[$gid][$sid]);
+			}
+			break;
+
+		case "action_drop":
+			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['drop'];
+			if (!is_array($dropsid[$gid])) {
+				$dropsid[$gid] = array();
+			}
+			if (!is_array($dropsid[$gid][$sid])) {
+				$dropsid[$gid][$sid] = array();
+			}
 			$dropsid[$gid][$sid] = "dropsid";
+			if (isset($alertsid[$gid][$sid])) {
+				unset($alertsid[$gid][$sid]);
+			}
+			if (isset($rejectsid[$gid][$sid])) {
+				unset($rejectsid[$gid][$sid]);
+			}
+			break;
+
+		case "action_reject":
+			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['reject'];
+			if (!is_array($rejectsid[$gid])) {
+				$rejectsid[$gid] = array();
+			}
+			if (!is_array($rejectsid[$gid][$sid])) {
+				$rejectsid[$gid][$sid] = array();
+			}
+			$rejectsid[$gid][$sid] = "rejectsid";
+			if (isset($alertsid[$gid][$sid])) {
+				unset($alertsid[$gid][$sid]);
+			}
+			if (isset($dropsid[$gid][$sid])) {
+				unset($dropsid[$gid][$sid]);
+			}
+			break;
+
+		default:
+			$input_errors[] = gettext("WARNING - unknown rule action of '{$action}' passed in $_POST parameter.  No change made to rule action.");
 	}
 
-	// Write the updated alertsid and dropsid values to the config file.
-	$tmp = "";
-	foreach (array_keys($alertsid) as $k1) {
-		foreach (array_keys($alertsid[$k1]) as $k2)
-			$tmp .= "{$k1}:{$k2}||";
+	if (!$input_errors) {
+		// Write the updated forced rule action values to the config file.
+		$tmp = "";
+		foreach (array_keys($alertsid) as $k1) {
+			foreach (array_keys($alertsid[$k1]) as $k2)
+				$tmp .= "{$k1}:{$k2}||";
+		}
+		$tmp = rtrim($tmp, "||");
+
+		if (!empty($tmp))
+			$a_rule[$id]['rule_sid_force_alert'] = $tmp;
+		else
+			unset($a_rule[$id]['rule_sid_force_alert']);
+
+		$tmp = "";
+		foreach (array_keys($dropsid) as $k1) {
+			foreach (array_keys($dropsid[$k1]) as $k2)
+				$tmp .= "{$k1}:{$k2}||";
+		}
+		$tmp = rtrim($tmp, "||");
+
+		if (!empty($tmp))
+			$a_rule[$id]['rule_sid_force_drop'] = $tmp;
+		else
+			unset($a_rule[$id]['rule_sid_force_drop']);
+
+		$tmp = "";
+		foreach (array_keys($rejectsid) as $k1) {
+			foreach (array_keys($rejectsid[$k1]) as $k2)
+				$tmp .= "{$k1}:{$k2}||";
+		}
+		$tmp = rtrim($tmp, "||");
+
+		if (!empty($tmp))
+			$a_rule[$id]['rule_sid_force_reject'] = $tmp;
+		else
+			unset($a_rule[$id]['rule_sid_force_reject']);
+
+		/* Update the config.xml file. */
+		write_config("Suricata pkg: modified action for rule {$gid}:{$sid} on {$a_rule[$id]['interface']}.");
+
+		// We changed a rule action, remind user to apply the changes
+		mark_subsystem_dirty('suricata_rules');
+
+		// Update our in-memory rules map with the changes just saved
+		// to the Suricata configuration file.
+		suricata_modify_sids_action($rules_map, $a_rule[$id]);
+
+		// Set a scroll-to anchor location
+		$anchor = "rule_{$gid}_{$sid}";
 	}
-	$tmp = rtrim($tmp, "||");
-
-	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_force_alert'] = $tmp;
-	else
-		unset($a_rule[$id]['rule_sid_force_alert']);
-
-	$tmp = "";
-	foreach (array_keys($dropsid) as $k1) {
-		foreach (array_keys($dropsid[$k1]) as $k2)
-			$tmp .= "{$k1}:{$k2}||";
-	}
-	$tmp = rtrim($tmp, "||");
-
-	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_force_drop'] = $tmp;
-	else
-		unset($a_rule[$id]['rule_sid_force_drop']);
-
-	/* Update the config.xml file. */
-	write_config("Suricata pkg: modified action for rule {$gid}:{$sid} on {$a_rule[$id]['interface']}.");
-
-	// We changed a rule action, remind user to apply the changes
-	mark_subsystem_dirty('suricata_rules');
-
-	// Update our in-memory rules map with the changes just saved
-	// to the Suricata configuration file.
-	suricata_modify_sids_action($rules_map, $a_rule[$id]);
-
-	// Set a scroll-to anchor location
-	$anchor = "rule_{$gid}_{$sid}";
 }
 elseif (isset($_POST['disable_all']) && !empty($rules_map)) {
 	// Mark all rules in the currently selected category "disabled".
@@ -406,6 +599,8 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 				unset($alertsid[$k1][$k2]);
 			if (isset($dropsid[$k1][$k2]))
 				unset($dropsid[$k1][$k2]);
+			if (isset($rejectsid[$k1][$k2]))
+				unset($rejectsid[$k1][$k2]);
 		}
 	}
 
@@ -434,7 +629,7 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	else
 		unset($a_rule[$id]['rule_sid_off']);
 
-	// Write the updated alertsid and dropsid values to the config file.
+	// Write the updated alertsid, dropsid and rejectsid values to the config file.
 	$tmp = "";
 	foreach (array_keys($alertsid) as $k1) {
 		foreach (array_keys($alertsid[$k1]) as $k2)
@@ -459,6 +654,18 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	else
 		unset($a_rule[$id]['rule_sid_force_drop']);
 
+	$tmp = "";
+	foreach (array_keys($rejectsid) as $k1) {
+		foreach (array_keys($rejectsid[$k1]) as $k2)
+			$tmp .= "{$k1}:{$k2}||";
+	}
+	$tmp = rtrim($tmp, "||");
+
+	if (!empty($tmp))
+		$a_rule[$id]['rule_sid_force_reject'] = $tmp;
+	else
+		unset($a_rule[$id]['rule_sid_force_reject']);
+
 	// We changed a rule state or action, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
 
@@ -466,13 +673,65 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 
 	// Reload the rules so we can accurately show content after
 	// resetting any user overrides.
+	// If it is the auto-flowbits file, set the full path.
 	if ($currentruleset == "Auto-Flowbit Rules") {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 	}
-	// Test for the special case of an IPS Policy file.
+	// Test for the special case of an IPS Policy file
+	// and load the selected policy's rules.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
 		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
 	}
+	// Test for the special case of "Active Rules".  This
+	// displays all currently active rules for the
+	// interface.
+	elseif ($currentruleset == "Active Rules") {
+		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/");
+	}
+	// Test for the special cases of "User Forced" rules
+	// and load the required rules for display.
+	elseif ($currentruleset == "User Forced Enabled Rules") {
+		// Search and display forced enabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_on']));
+	}
+	elseif ($currentruleset == "User Forced Disabled Rules") {
+		// Search and display forced disabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_off']));
+	}
+	elseif ($currentruleset == "User Forced ALERT Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+	}
+	elseif ($currentruleset == "User Forced DROP Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+	}
+	elseif ($currentruleset == "User Forced REJECT Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_reject']));
+	}
+	// If it's not a special case, and we can't find
+	// the given rule file, then notify the user.
+	elseif (!file_exists($rulefile)) {
+		$input_errors[] = gettext("{$currentruleset} seems to be missing!!! Please verify rules files have been downloaded, then go to the Categories tab and save the rule set again.");
+	}
+	// Not a special case, and we have the matching
+	// rule file, so load it up for display.
 	else {
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
@@ -484,6 +743,7 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 	unset($a_rule[$id]['rule_sid_off']);
 	unset($a_rule[$id]['rule_sid_force_alert']);
 	unset($a_rule[$id]['rule_sid_force_drop']);
+	unset($a_rule[$id]['rule_sid_force_reject']);
 
 	// We changed a rule state or action, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
@@ -493,13 +753,65 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 
 	// Reload the rules so we can accurately show content after
 	// resetting any user overrides.
+	// If it is the auto-flowbits file, set the full path.
 	if ($currentruleset == "Auto-Flowbit Rules") {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 	}
-	// Test for the special case of an IPS Policy file.
+	// Test for the special case of an IPS Policy file
+	// and load the selected policy's rules.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
 		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
 	}
+	// Test for the special case of "Active Rules".  This
+	// displays all currently active rules for the
+	// interface.
+	elseif ($currentruleset == "Active Rules") {
+		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/");
+	}
+	// Test for the special cases of "User Forced" rules
+	// and load the required rules for display.
+	elseif ($currentruleset == "User Forced Enabled Rules") {
+		// Search and display forced enabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rules_file[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rules_file[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_on']));
+	}
+	elseif ($currentruleset == "User Forced Disabled Rules") {
+		// Search and display forced disabled rules only from
+		// the enabled rule categories for this interface.
+		$rule_files = explode("||", $pconfig['rulesets']);
+
+		// Prepend the Suricata rules path to each entry.
+		foreach ($rule_files as $k => $v) {
+			$rule_files[$k] = $ruledir . "/" . $v;
+		}
+		$rules_file[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rules_file[] = "{$suricatacfgdir}/rules/custom.rules";
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_off']));
+	}
+	elseif ($currentruleset == "User Forced ALERT Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+	}
+	elseif ($currentruleset == "User Forced DROP Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+	}
+	elseif ($currentruleset == "User Forced REJECT Action Rules") {
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_reject']));
+	}
+	// If it's not a special case, and we can't find
+	// the given rule file, then notify the user.
+	elseif (!file_exists($rulefile)) {
+		$input_errors[] = gettext("{$currentruleset} seems to be missing!!! Please verify rules files have been downloaded, then go to the Categories tab and save the rule set again.");
+	}
+	// Not a special case, and we have the matching
+	// rule file, so load it up for display.
 	else {
 		$rules_map = suricata_load_rules_map($rulefile);
 	}
@@ -612,6 +924,7 @@ $pgtitle = array(gettext("Suricata"), gettext("Interface ") . $if_friendly, gett
 include_once("head.inc");
 
 if (is_subsystem_dirty('suricata_rules')) {
+	$_POST['if'] = $id . "|" . $currentruleset;
 	print_apply_box(gettext("A change has been made to a rule state or action.") . "<br/>" . gettext("Click APPLY when finished to send the changes to the running configuration."));
 }
 
@@ -667,7 +980,10 @@ $group->add(new Form_Select(
 	$currentruleset,
 	build_cat_list()
 ))->setHelp("Select the rule category to view and manage.");
-if ($currentruleset != 'custom.rules') {
+
+// Don't show the VIEW ALL button when displaying Custom Rules,
+// Active Rules or any of the "User Forced" special categories.
+if ($currentruleset != 'custom.rules' && $currentruleset != 'Active Rules' && strpos($currentruleset, 'User Forced ') === FALSE) {
 	$group->add(new Form_Button(
 		'',
 		'View All',
@@ -804,16 +1120,26 @@ print($section);
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle-o text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Enabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Enabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-enabled by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action/content modified by SID Mgmt');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is alert');?></small></td>
-						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action and/or content modified by SID Mgmt');?></small></td>
+				<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') : ?>
+						<td style="padding-left: 8px;"><i class="fa fa-hand-stop-o text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
+				<?php else : ?>
+						<td><td></td></td>
+				<?php endif; ?>
 					</tr>
 					<tr>
 						<td></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle-o text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Disabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
+						<td><td></td></td>
+				<?php if ($a_rule[$id]['blockoffenders'] == 'on') : ?>
 						<td style="padding-left: 8px;"><i class="fa fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
-						<td></td><td></td>
+				<?php else : ?>
+						<td><td></td></td>
+				<?php endif; ?>
+						<td><td></td></td>
 					</tr>
 				</tbody>
 			</table>
@@ -849,151 +1175,166 @@ print($section);
 			<tbody>
 				<?php
 					$counter = $enable_cnt = $disable_cnt = $user_enable_cnt = $user_disable_cnt = $managed_count = 0;
-					foreach ($rules_map as $k1 => $rulem) {
-						foreach ($rulem as $k2 => $v) {
-							$sid = $k2;
-							$gid = $k1;
-							$ruleset = $currentruleset;
-							$style = "";
-
-							// Apply rule state filters if filtering is enabled
-							if ($filterrules) {
-								if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
-									continue;
-								}
-								elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
-									continue;
-								}
+					if (is_array($rules_map) && !empty($rules_map)) {
+						foreach ($rules_map as $k1 => $rulem) {
+							if (!is_array($rulem)) {
+								$rulem = array();
 							}
+							foreach ($rulem as $k2 => $v) {
+								$sid = $k2;
+								$gid = $k1;
+								$ruleset = $currentruleset;
+								$style = "";
 
-							// Determine which icons to display in the first column for rule state.
-							// See if the rule is auto-managed by the SID MGMT tab feature
-							if ($v['managed'] == 1) {
-								if ($v['disabled'] == 1 && $v['state_toggled'] == 1) {
-									$textss = '<span class="text-muted">';
-									$textse = '</span>';
-									$iconb_class = 'class="fa fa-adn text-danger text-left"';
-									$title = gettext("Auto-disabled by settings on SID Mgmt tab");
+								// Apply rule state filters if filtering is enabled
+								if ($filterrules) {
+									if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
+										continue;
+									}
+									elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
+										continue;
+									}
 								}
-								elseif ($v['disabled'] == 0 && $v['state_toggled'] == 1) {
+
+								// Determine which icons to display in the first column for rule state.
+								// See if the rule is auto-managed by the SID MGMT tab feature
+								if ($v['managed'] == 1) {
+									if ($v['disabled'] == 1 && $v['state_toggled'] == 1) {
+										$textss = '<span class="text-muted">';
+										$textse = '</span>';
+										$iconb_class = 'class="fa fa-adn text-danger text-left"';
+										$title = gettext("Auto-disabled by settings on SID Mgmt tab");
+									}
+									elseif ($v['disabled'] == 0 && $v['state_toggled'] == 1) {
+										$textss = $textse = "";
+										$iconb_class = 'class="fa fa-adn text-success text-left"';
+										$title = gettext("Auto-enabled by settings on SID Mgmt tab");
+									}
+									$managed_count++;
+								}
+								// See if the rule is in our list of user-disabled overrides
+								if (isset($disablesid[$gid][$sid])) {
+									$textss = "<span class=\"text-muted\">";
+									$textse = "</span>";
+									$disable_cnt++;
+									$user_disable_cnt++;
+									$iconb_class = 'class="fa fa-times-circle text-danger text-left"';
+									$title = gettext("Disabled by user. Click to change rule state");
+								}
+								// See if the rule is in our list of user-enabled overrides
+								elseif (isset($enablesid[$gid][$sid])) {
 									$textss = $textse = "";
-									$iconb_class = 'class="fa fa-adn text-success text-left"';
-									$title = gettext("Auto-enabled by settings on SID Mgmt tab");
+									$enable_cnt++;
+									$user_enable_cnt++;
+									$iconb_class = 'class="fa fa-check-circle text-success text-left"';
+									$title = gettext("Enabled by user. Click to change rules state");
 								}
-								$managed_count++;
-							}
-							// See if the rule is in our list of user-disabled overrides
-							if (isset($disablesid[$gid][$sid])) {
-								$textss = "<span class=\"text-muted\">";
-								$textse = "</span>";
-								$disable_cnt++;
-								$user_disable_cnt++;
-								$iconb_class = 'class="fa fa-times-circle text-danger text-left"';
-								$title = gettext("Disabled by user. Click to toggle to enabled state");
-							}
-							// See if the rule is in our list of user-enabled overrides
-							elseif (isset($enablesid[$gid][$sid])) {
-								$textss = $textse = "";
-								$enable_cnt++;
-								$user_enable_cnt++;
-								$iconb_class = 'class="fa fa-check-circle text-success text-left"';
-								$title = gettext("Enabled by user. Click to toggle to disabled state");
-							}
 
-							// These last two checks handle normal cases of default-enabled or default disabled rules
-							// with no user overrides.
-							elseif (($v['disabled'] == 1) && ($v['state_toggled'] == 0) && (!isset($enablesid[$gid][$sid]))) {
-								$textss = "<span class=\"text-muted\">";
-								$textse = "</span>";
-								$disable_cnt++;
-								$iconb_class = 'class="fa fa-times-circle-o text-danger text-left"';
-								$title = gettext("Disabled by default. Click to toggle to enabled state");
-							}
-							elseif ($v['disabled'] == 0 && $v['state_toggled'] == 0) {
-								$textss = $textse = "";
-								$enable_cnt++;
-								$iconb_class = 'class="fa fa-check-circle-o text-success text-left"';
-								$title = gettext("Enabled by default. Click to toggle to disabled state");
-							}
+								// These last two checks handle normal cases of default-enabled or default disabled rules
+								// with no user overrides.
+								elseif (($v['disabled'] == 1) && ($v['state_toggled'] == 0) && (!isset($enablesid[$gid][$sid]))) {
+									$textss = "<span class=\"text-muted\">";
+									$textse = "</span>";
+									$disable_cnt++;
+									$iconb_class = 'class="fa fa-times-circle-o text-danger text-left"';
+									$title = gettext("Disabled by default. Click to change rule state");
+								}
+								elseif ($v['disabled'] == 0 && $v['state_toggled'] == 0) {
+									$textss = $textse = "";
+									$enable_cnt++;
+									$iconb_class = 'class="fa fa-check-circle-o text-success text-left"';
+									$title = gettext("Enabled by default.");
+								}
 
-							// Determine which icon to display in the second column for rule action
-							if ($v['action'] == 'drop') {
-								$textss = $textse = "";
-								$iconact_class = 'class="fa fa-thumbs-down text-danger text-center"';
-								$title_act = gettext("Rule will drop traffic when triggered.  Click to force alert action instead.");
-							}
-							else {
+								// Determine which icon to display in the second column for rule action.
+								// Default to ALERT icon.
 								$textss = $textse = "";
 								$iconact_class = 'class="fa fa-exclamation-triangle text-warning text-center"';
-								$title_act = gettext("Rule will alert on traffic when triggered. Click to force drop action instead.");
-							}
+								$title_act = gettext("Rule will alert on traffic when triggered.");
+								if ($v['action'] == 'drop' && $a_rule[$id]['blockoffenders'] == 'on') {
+									$iconact_class = 'class="fa fa-thumbs-down text-danger text-center"';
+									$title_act = gettext("Rule will drop traffic when triggered.");
+								}
+								elseif ($v['action'] == 'reject' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+									$iconact_class = 'class="fa fa-hand-stop-o text-warning text-center"';
+									$title_act = gettext("Rule will reject traffic when triggered.");
+								}
+								if ($a_rule[$id]['blockoffenders'] == 'on') {
+									$title_act .= gettext("  Click to change rule action.");
+								}
 
-							// Pick off the first section of the rule (prior to the start of the MSG field),
-							// and then use a REGX split to isolate the remaining fields into an array.
-							$tmp = substr($v['rule'], 0, strpos($v['rule'], "("));
-							$tmp = trim(preg_replace('/^\s*#+\s*/', '', $tmp));
-							$rule_content = preg_split('/[\s]+/', $tmp);
+								// Pick off the first section of the rule (prior to the start of the MSG field),
+								// and then use a REGX split to isolate the remaining fields into an array.
+								$tmp = substr($v['rule'], 0, strpos($v['rule'], "("));
+								$tmp = trim(preg_replace('/^\s*#+\s*/', '', $tmp));
+								$rule_content = preg_split('/[\s]+/', $tmp);
 
-							// Create custom <span> tags for the fields we truncate so we can 
-							// have a "title" attribute for tooltips to show the full string.
-							$srcspan = add_title_attribute($textss, $rule_content[2]);
-							$srcprtspan = add_title_attribute($textss, $rule_content[3]);
-							$dstspan = add_title_attribute($textss, $rule_content[5]);
-							$dstprtspan = add_title_attribute($textss, $rule_content[6]);
+								// Create custom <span> tags for the fields we truncate so we can 
+								// have a "title" attribute for tooltips to show the full string.
+								$srcspan = add_title_attribute($textss, $rule_content[2]);
+								$srcprtspan = add_title_attribute($textss, $rule_content[3]);
+								$dstspan = add_title_attribute($textss, $rule_content[5]);
+								$dstprtspan = add_title_attribute($textss, $rule_content[6]);
 
-							$protocol = $rule_content[1];         //protocol field
-							$source = $rule_content[2];           //source field
-							$source_port = $rule_content[3];      //source port field
-							$destination = $rule_content[5];      //destination field
-							$destination_port = $rule_content[6]; //destination port field
-							$message = suricata_get_msg($v['rule']); // description field
-							$sid_tooltip = gettext("View the raw text for this rule");
-				?>
-							<tr class="text-nowrap">
-								<td><?=$textss; ?>
-									<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="toggleRule('<?=$sid; ?>', '<?=$gid; ?>');" 
-									<?=$iconb_class; ?> title="<?=$title; ?>"></a><?=$textse; ?>
-				<?php if ($v['managed'] == 1 && $v['modified'] == 1) : ?>
-								<i class="fa fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
-				<?php endif; ?>
-								</td>
+								$protocol = $rule_content[1];         //protocol field
+								$source = $rule_content[2];           //source field
+								$source_port = $rule_content[3];      //source port field
+								$destination = $rule_content[5];      //destination field
+								$destination_port = $rule_content[6]; //destination port field
+								$message = suricata_get_msg($v['rule']); // description field
+								$sid_tooltip = gettext("View the raw text for this rule");
+					?>
+								<tr class="text-nowrap">
+									<td><?=$textss; ?>
+										<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="toggleState('<?=$sid; ?>', '<?=$gid; ?>');" 
+										<?=$iconb_class; ?> title="<?=$title; ?>"></a><?=$textse; ?>
+						<?php if ($v['managed'] == 1 && $v['modified'] == 1) : ?>
+										<i class="fa fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
+						<?php endif; ?>
+									</td>
 
-							       <td><?=$textss; ?><a id="rule_<?=$gid; ?>_<?=$sid; ?>_action" href="#" onClick="toggleAction('<?=$sid; ?>', '<?=$gid; ?>');" 
-									<?=$iconact_class; ?> title="<?=$title_act; ?>"></a><?=$textse; ?>
-							       </td>
+						<?php if ($a_rule[$id]['blockoffenders'] == 'on') : ?>
+								       <td><?=$textss; ?><a id="rule_<?=$gid; ?>_<?=$sid; ?>_action" href="#" onClick="toggleAction('<?=$sid; ?>', '<?=$gid; ?>');" 
+										<?=$iconact_class; ?> title="<?=$title_act; ?>"></a><?=$textse; ?>
+								       </td>
+						<?php else : ?>
+								       <td><?=$textss; ?><i <?=$iconact_class; ?> title="<?=$title_act; ?>"></i><?=$textse; ?>
+								       </td>
+						<?php endif; ?>
 
-							       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
-									<?=$textss . $gid . $textse;?>
-							       </td>
-							       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
-									<a href="javascript: void(0)" 
-									onclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');" 
-									title="<?=$sid_tooltip;?>"><?=$textss . $sid . $textse;?></a>
-							       </td>
-							       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
-									<?=$textss . $protocol . $textse;?>
-							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
-									<?=$srcspan . $source;?></span>
-							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
-									<?=$srcprtspan . $source_port;?></span>
-							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
-									<?=$dstspan . $destination;?></span>
-							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
-								       <?=$dstprtspan . $destination_port;?></span>
-							       </td>
-								<td style="word-wrap:break-word; white-space:normal" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
-									<?=$textss . $message . $textse;?>
-							       </td>
-							</tr>
+								       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+										<?=$textss . $gid . $textse;?>
+								       </td>
+								       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+										<a href="javascript: void(0)" 
+										onclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');" 
+										title="<?=$sid_tooltip;?>"><?=$textss . $sid . $textse;?></a>
+								       </td>
+								       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+										<?=$textss . $protocol . $textse;?>
+							       	       </td>
+								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+										<?=$srcspan . $source;?></span>
+								       </td>
+								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+										<?=$srcprtspan . $source_port;?></span>
+								       </td>
+								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+										<?=$dstspan . $destination;?></span>
+								       </td>
+								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+									       <?=$dstprtspan . $destination_port;?></span>
+								       </td>
+									<td style="word-wrap:break-word; white-space:normal" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+										<?=$textss . $message . $textse;?>
+								       </td>
+								</tr>
 				<?php
-							$counter++;
+								$counter++;
+							}
 						}
+						unset($rulem, $v);
 					}
-				unset($rulem, $v);
 				?>
 		    </tbody>
 		</table>
@@ -1014,6 +1355,86 @@ print($section);
 	</div>
 </div>
 <?php endif;?>
+
+<!-- Modal Rule SID action selector window -->
+<div class="modal fade" role="dialog" id="sid_action_selector">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title"><?=gettext("Rule Action Selection")?></h3>
+			</div>
+			<div class="modal-body">
+				<h4><?=gettext("Choose desired rule action from selections below: ");?></h4>
+				<label class="radio-inline">
+					<input type="radio" name="ruleActionOptions" id="action_default" value="action_default"> <span class = "label label-default">Default</span>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="ruleActionOptions" id="action_alert" value="action_alert"> <span class = "label label-warning">ALERT</span>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="ruleActionOptions" id="action_drop" value="action_drop"> <span class = "label label-danger">DROP</span>
+				</label>
+
+		<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') : ?>
+				<label class="radio-inline">
+					<input type="radio" name="ruleActionOptions" id="action_reject" value="action_reject"> <span class = "label label-warning">REJECT</span>
+				</label>
+		<?php endif; ?>
+				<br /><br />
+					<p><?=gettext("Choosing 'Default' will return the rule action to the original value specified by the rule author.  Note this is usually ALERT.");?></p>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-sm btn-primary" id="rule_action_save" name="rule_action_save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close selector");?>">
+					<i class="fa fa-save icon-embed-btn"></i>
+					<?=gettext("Save");?>
+				</button>
+				<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
+					<?=gettext("Cancel");?>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal Rule SID state selector window -->
+<div class="modal fade" role="dialog" id="sid_state_selector">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title"><?=gettext("Rule State Selection")?></h3>
+			</div>
+			<div class="modal-body">
+				<h4><?=gettext("Choose desired rule state from selections below: ");?></h4>
+				<label class="radio-inline">
+					<input type="radio" name="ruleStateOptions" id="state_default" value="state_default"> <span class = "label label-default">Default</span>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="ruleStateOptions" id="state_enabled" value="state_enabled"> <span class = "label label-success">Enabled</span>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="ruleStateOptions" id="state_disabled" value="state_disabled"> <span class = "label label-danger">Disabled</span>
+				</label>
+				<br /><br />
+					<p><?=gettext("Choosing 'Default' will return the rule state to the original state specified by the rule package author.");?></p>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-sm btn-primary" id="rule_state_save" name="rule_state_save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close selector");?>">
+					<i class="fa fa-save icon-embed-btn"></i>
+					<?=gettext("Save");?>
+				</button>
+				<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
+					<?=gettext("Cancel");?>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 </form>
 
@@ -1037,20 +1458,23 @@ print($form);
 <script language="javascript" type="text/javascript">
 //<![CDATA[
 
-function toggleRule(sid, gid) {
+function toggleState(sid, gid) {
 	$('#sid').val(sid);
 	$('#gid').val(gid);
 	$('#openruleset').val($('#selectbox').val());
-	$('<input name="toggle_state" value="1" />').appendTo($('#iform'));
-	$('#iform').submit();
+	$('#sid_state_selector').modal('show');
 }
 
 function toggleAction(sid, gid) {
-	$('#sid').val(sid);
-	$('#gid').val(gid);
-	$('#openruleset').val($('#selectbox').val());
-	$('<input name="toggle_action" value="1" />').appendTo($('#iform'));
-	$('#iform').submit();
+	if ($('#rule_'+gid+'_'+sid).hasClass('text-success')) {
+		$('#sid').val(sid);
+		$('#gid').val(gid);
+		$('#openruleset').val($('#selectbox').val());
+		$('#sid_action_selector').modal('show');
+	}
+	else {
+		alert("Rule is disabled, so changing ACTION is meaningless and thus is disabled for this rule.");
+	}
 }
 
 function wopen(url, name)
@@ -1064,6 +1488,7 @@ function wopen(url, name)
 
 function showRuleContents(gid, sid) {
 		// Show the modal dialog with rule text
+		$('#rulesviewer_text').text("...Loading...");
 		$('#rulesviewer').modal('show');
 		$('#modal_rule_category').html($('#selectbox').val());
 
@@ -1074,6 +1499,7 @@ function showRuleContents(gid, sid) {
 				data: {
 					sid:         sid,
 					gid:         gid,
+					id:	     $('#id').val(),
 					openruleset: $('#selectbox').val(),
 					action:      'loadRule'
 				},

@@ -166,6 +166,14 @@ function is_github_url($url) {
 function bootup_apply_patches() {
 	global $config;
 
+	if (!is_array($config['installedpackages'])) {
+		$config['installedpackages'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['patches'])) {
+		$config['installedpackages']['patches'] = array();
+	}
+
 	if (!isset($config['installedpackages']['patches']['item']) ||
 	    !is_array($config['installedpackages']['patches']['item'])) {
 		$config['installedpackages']['patches']['item'] = array();
@@ -177,7 +185,7 @@ function bootup_apply_patches() {
 		/* Skip if it should not be automatically applied;
 		   only attempt to apply if it can be applied;
 		   and	if it can be reverted it is presumably already applied, so skip it. */
-		if (isset($patch['autoapply']) && patch_test_apply($patch) && !patch_test_revert($patch)) {  
+		if (isset($patch['autoapply']) && patch_test_apply($patch) && !patch_test_revert($patch)) {
 			patch_apply($patch);
 		}
 	}

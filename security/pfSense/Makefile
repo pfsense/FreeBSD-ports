@@ -46,18 +46,17 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		nginx>=0:www/nginx \
 		ntp>=0:net/ntp \
 		openvpn>=0:security/openvpn \
-		pear-Auth_RADIUS>=0:net/pear-Auth_RADIUS \
-		pear-Crypt_CHAP>=0:security/pear-Crypt_CHAP \
-		pear-Mail>=0:mail/pear-Mail \
-		pear-Net_Growl>=0:net/pear-Net_Growl \
-		pear-Net_IPv6>=0:net/pear-Net_IPv6 \
-		pear-XML_RPC2>=0:net/pear-XML_RPC2 \
-		pecl-zmq>=0:net/pecl-zmq \
-		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring \
+		${PHP_PKGNAMEPREFIX}openssl_x509_crl>=0:security/php-openssl_x509_crl@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-Auth_RADIUS>=0:net/pear-Auth_RADIUS@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-Crypt_CHAP>=0:security/pear-Crypt_CHAP@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-Mail>=0:mail/pear-Mail@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-Net_Growl>=0:net/pear-Net_Growl@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-Net_IPv6>=0:net/pear-Net_IPv6@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq@${PHP_FLAVOR} \
+		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
-		php-suhosin>=0:security/php-suhosin \
-		php56-pfSense-module>=0:devel/php56-pfSense-module \
 		qstats>=0:sysutils/qstats \
 		radvd>=0:net/radvd \
 		rate>=0:net-mgmt/rate \
@@ -72,10 +71,16 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
 		xinetd>=0:security/xinetd
+
+php56_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}suhosin>=0:security/php-suhosin \
+			${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/${PHP_PKGNAMEPREFIX}pfSense-module
+php72_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR}
+
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		kmod
+USES=		kmod php:flavors
 
+IGNORE_WITH_PHP=	70 71
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext json mbstring \
 		mcrypt hash opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
@@ -85,6 +90,8 @@ NO_BUILD=	yes
 NO_MTREE=	yes
 
 CONFLICTS=	pfSense-vmware-[0-9]*
+
+php72_PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 PLIST_FILES=	/etc/version.patch
 PLIST_DIRS=	/etc

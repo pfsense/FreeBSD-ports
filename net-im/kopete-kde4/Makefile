@@ -2,7 +2,7 @@
 
 PORTNAME=	kopete
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	net-im kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
@@ -12,7 +12,7 @@ LIB_DEPENDS=	libidn.so:dns/libidn \
 		libqca.so:devel/qca \
 		libotr.so.5:security/libotr \
 		libgadu.so:polish/libgadu \
-		libkleo.so:deskutils/kdepim4 \
+		libkleo.so:deskutils/kdepim-kde4 \
 		libmeanwhile.so:net-im/meanwhile \
 		libv4l2.so:multimedia/libv4l \
 		libjasper.so:graphics/jasper
@@ -27,6 +27,7 @@ USE_QT4=	corelib gui network qt3support sql xml \
 		moc_build qmake_build rcc_build uic_build uic3_build
 USE_XORG=	x11 xdamage xext xscrnsaver xtst
 USE_LDCONFIG=	yes
+USE_CXXSTD=	gnu++98
 
 SHEBANG_FILES=	protocols/winpopup/winpopup-install \
 		protocols/winpopup/winpopup-send \

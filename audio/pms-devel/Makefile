@@ -3,6 +3,7 @@
 
 PORTNAME=	pms-devel
 PORTVERSION=	0.0.20171103
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -45,14 +46,14 @@ post-extract:
 
 do-build:
 	@cd ${WRKSRC}; \
-	${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags "-X main.buildVersion=${DISTVERSION}"
+	${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags "-X main.buildVersion=${DISTVERSION}"
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/pms-${GH_TAGNAME} ${STAGEDIR}${PREFIX}/bin/${GO_PKGNAME}
 
-do-install-DOCS-on:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${COPYTREE_SHARE} ${WRKSRC}/doc ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${GO_PKGNAME}

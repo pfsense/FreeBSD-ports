@@ -6,11 +6,12 @@ PORTVERSION=	1.1.1
 PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://diaspora.fs2downloads.com/ \
-		http://www.freespacemods.net/e107_files/downloads/:freespacemods \
+		http://sectorgame.com/fsfiles/uploads/Projects%20-%20Campaigns%20-%20TCs/Total%20Conversions/Diaspora/:sectorgame \
+		http://sectorgame.com/fsfiles/uploads/Projects%20-%20Campaigns%20-%20TCs/Total%20Conversions/Diaspora/Diaspora%20%28Linux%29.tar.lzma?dummy=/:sectorgame1 \
 		http://ftp.internat.freebsd.org/pub/FreeBSD/distfiles/:intfiles \
 		http://ftp.tw.freebsd.org/distfiles/:twfiles
-DISTFILES=	Diaspora_R1_Linux.tar.lzma:freespacemods,DEFAULT \
-		Diaspora_R1_Patch_1.1.tar.lzma:intfiles,twfiles,DEFAULT \
+DISTFILES=	Diaspora_R1_Linux.tar.lzma:sectorgame1,DEFAULT \
+		Diaspora_R1_Patch_1.1.tar.lzma:sectorgame,intfiles,twfiles,DEFAULT \
 		Diaspora_R1_Patch_1.1.1.tar.lzma
 
 MAINTAINER=	lightside@gmx.com
@@ -31,9 +32,11 @@ LIB_DEPENDS=	libjansson.so:devel/jansson \
 		libtheora.so:multimedia/libtheora
 
 USES=		autoreconf jpeg lua:51 openal pkgconfig tar:lzma
+USE_CXXSTD=	gnu++98
 USE_GL=		gl glu
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
+LLD_UNSAFE=	yes
 
 WRKDIR_DIASPORA=${WRKDIR}/Diaspora_R1_Linux/Diaspora
 WRKSRC=		${WRKDIR_DIASPORA}/fs2_open
@@ -60,7 +63,7 @@ WXLAUNCHER_DESKTOP_ENTRIES=	"Diaspora Launcher" "${COMMENT}" \
 			"${PORTNAME}" "fs2_open_${PORTNAME}_launcher" \
 			"Game;Simulation;" false
 WXLAUNCHER_PLIST_FILES=	bin/fs2_open_${PORTNAME}_launcher \
-			%%DATADIR%%/fs2_open_${PORTNAME}
+			${DATADIR}/fs2_open_${PORTNAME}
 WXLAUNCHER_RUN_DEPENDS=	wxlauncher:games/wxlauncher
 WXLAUNCHER_SUB_FILES=	fs2_open_${PORTNAME}_launcher
 WXLAUNCHER_VARS=	PORTDATA+="resources *.ini *.png *.bmp"

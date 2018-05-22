@@ -3,7 +3,7 @@
 
 PORTNAME?=	lapack
 PORTVERSION=	3.5.0
-PORTREVISION?=	3	# Never remove this line, keep PORTREVISION?=0 in case.
+PORTREVISION?=	4	# Never remove this line, keep PORTREVISION?=0 in case.
 CATEGORIES=	math
 MASTER_SITES=	NL/lapack/
 DISTFILES=	lapack-${PORTVERSION}.tgz
@@ -12,7 +12,7 @@ DISTFILES+=		manpages-${PORTVERSION}.tgz
 .endif
 DIST_SUBDIR=	lapack
 
-MAINTAINER?=	maho@FreeBSD.org
+MAINTAINER?=	fortran@FreeBSD.org
 COMMENT?=	A library of Fortran 77 subroutines for linear algebra
 
 LICENSE=	BSD3CLAUSE

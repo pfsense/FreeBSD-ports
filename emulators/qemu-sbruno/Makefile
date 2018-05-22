@@ -2,12 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	2.11.50.g20171215
-PORTREVISION=	1
+PORTVERSION=	2.11.50.g20180208
 CATEGORIES=	emulators
 MASTER_SITES=	GH
 PKGNAMESUFFIX?=	-sbruno
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
 MAINTAINER=	sbruno@FreeBSD.org
@@ -15,12 +13,11 @@ COMMENT?=	QEMU CPU Emulator - github bsd-user branch
 
 LICENSE=	GPLv2
 USE_GITHUB=	yes
-GH_TUPLE=	seanbruno:${PORTNAME}-bsd-user:8dcfea1 \
+GH_TUPLE=	seanbruno:qemu-bsd-user:2b84fbb94e9 \
 		qemu:keycodemapdb:10739aa:keycodemapdb/ui/keycodemapdb
 HAS_CONFIGURE=	yes
 USES=		gmake pkgconfig bison perl5 python:2.7,build
 USE_PERL5=	build
-PATCH_STRIP=	-p1
 MAKE_ENV+=	BSD_MAKE="${MAKE}" V=1
 
 ONLY_FOR_ARCHS=		amd64 powerpc powerpc64 # XXX someone wants to debug sparc64 hosts?
@@ -133,6 +130,8 @@ PLIST_SUB+=	STATIC=""
 
 WITHOUT_CPU_CFLAGS=yes	#to avoid problems with register allocation
 CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
+CFLAGS+=	-Wno-address-of-packed-member
+CFLAGS+=	-D_WANT_SEMUN
 CONFIGURE_ARGS+=	--prefix=${PREFIX} --cc=${CC} --enable-docs \
 	--disable-linux-user --disable-linux-aio \
 	--disable-kvm --disable-xen \
@@ -245,7 +244,7 @@ CONFIGURE_ARGS+=	--sparc_cpu=v9
 CONFIGURE_ARGS+=	--python=${PYTHON_CMD}
 
 # clang in freebsd 10 is unable to assemble linuxboot_dma.bin
-.if (${OSVERSION} < 1100000)
+.if (${OPSYS} == FreeBSD && ${OSVERSION} < 1100000)
 PLIST_SUB+=	LINUXBOOT_DMA="@comment "
 .else
 PLIST_SUB+=	LINUXBOOT_DMA=""
@@ -254,7 +253,7 @@ PLIST_SUB+=	LINUXBOOT_DMA=""
 post-patch:
 	@${REINPLACE_CMD} -e '/libs_qga=/s|glib_libs|glib_libs -lintl|' ${WRKSRC}/configure
 # clang in freebsd 10 is unable to assemble linuxboot_dma.bin
-.if (${OSVERSION} < 1100000)
+.if (${OPSYS} == FreeBSD && ${OSVERSION} < 1100000)
 	@${REINPLACE_CMD} -E \
 		-e 's|linuxboot_dma.bin||' \
 		${WRKSRC}/pc-bios/optionrom/Makefile

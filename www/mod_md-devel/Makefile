@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mod_md
-PORTVERSION=	1.1.6
+PORTVERSION=	1.1.10
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
@@ -18,9 +19,8 @@ LIB_DEPENDS=	libaprutil-1.so:devel/apr1 \
 		libcurl.so:ftp/curl \
 		libjansson.so:devel/jansson
 
-USES=		autoreconf libtool ssl
+USES=		apache:2.4+ autoreconf libtool ssl
 USE_GITHUB=	yes
-USE_APACHE=	24+
 
 INSTALL_TARGET=	install-strip
 
@@ -29,13 +29,12 @@ GH_PROJECT=	mod_md
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-openssl=${OPENSSLBASE} \
-		--with-jansson=${LOCALBASE}
+		--with-jansson=${LOCALBASE} \
+		--without-boulder
 
+SUB_FILES=	999_mod_md.conf pkg-message
 DOCSDIR=	share/doc/mod_md
 PORTDOCS=	README README.md
-PLIST_FILES=	${APACHEMODDIR}/mod_md.so.0.0.0 \
-		${APACHEMODDIR}/mod_md.so \
-		bin/a2md
 
 .include <bsd.port.pre.mk>
 
@@ -45,5 +44,12 @@ IGNORE=		port requires OpenSSL 1.0.2 or later, set DEFAULT_VERSIONS+= ssl=openss
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/share/doc/mod_md/LICENSE
+	${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d
+	${INSTALL_DATA} ${WRKDIR}/999_mod_md.conf \
+		${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d/999_mod_md.conf.sample
+	${MV} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_md.so.0.0.0 \
+		${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_manageddomain.so.0.0.0
+	${MV} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_md.so \
+		${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_manageddomain.so
 
 .include <bsd.port.post.mk>

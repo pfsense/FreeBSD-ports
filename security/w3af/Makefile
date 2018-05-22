@@ -3,7 +3,7 @@
 
 PORTNAME=	w3af
 PORTVERSION=	1.6.49
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	security python www
 
 MAINTAINER=	dbaio@FreeBSD.org
@@ -33,8 +33,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=2.1:devel/py-lxml@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}stopit>=1.1.0:devel/py-stopit@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}chardet>=2.1.1:textproc/py-chardet@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tblib>=0.2.0:devel/py-tblib@${FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pdfminer=20140328:textproc/py-pdfminer@${FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}futures>=2.1.5:devel/py-futures@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pdfminer>=20140328:textproc/py-pdfminer@${FLAVOR} \
+		${PY_FUTURES} \
 		${PYTHON_PKGNAMEPREFIX}ndg_httpsclient>=0.3.3:net/py-ndg_httpsclient@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyasn1>=0.1.3:devel/py-pyasn1@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>=0.3.2:devel/py-lxml@${FLAVOR} \
@@ -48,10 +48,11 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=2.1:devel/py-lxml@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}vulndb>=0.0.17:security/py-vulndb@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}markdown>=2.6.1:textproc/py-markdown@${FLAVOR}
 
+USES=		gettext python:2.7 shebangfix
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	andresriancho
 
-USES=		gettext python:2.7 shebangfix
 USE_PYTHON=	flavors
 SHEBANG_FILES=	tools/* w3af_console w3af_gui
 NO_BUILD=	yes
@@ -61,7 +62,7 @@ OPTIONS_SUB=	yes
 
 GUI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygraphviz>0:graphics/py-pygraphviz@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gtksourceview>=2.10.1:x11-toolkits/py-gtksourceview@${FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}xdot>=0.7:x11/py-xdot@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}xdot-06=0.6:x11/py-xdot06@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}webkitgtk>=1.1.8:www/py-webkitgtk@${FLAVOR}
 
 GUI_USE=	GNOME=pygtk2

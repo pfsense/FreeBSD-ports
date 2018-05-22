@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	earthquake
-PORTVERSION=	1.0.0
-PORTREVISION=	2
+PORTVERSION=	1.0.2
 CATEGORIES=	net-im rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	meta+ports@vmeta.jp
+MAINTAINER=	meta@FreeBSD.org
 COMMENT=	Terminal based Twitter client with Twitter streaming API
 
 LICENSE=	MIT

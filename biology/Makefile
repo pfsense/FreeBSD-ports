@@ -7,6 +7,7 @@
     SUBDIR += artemis
     SUBDIR += avida
     SUBDIR += babel
+    SUBDIR += bamtools
     SUBDIR += bcftools
     SUBDIR += bedtools
     SUBDIR += biococoa
@@ -108,6 +109,7 @@
     SUBDIR += sim4
     SUBDIR += slclust
     SUBDIR += ssaha
+    SUBDIR += stacks
     SUBDIR += tRNAscan-SE
     SUBDIR += t_coffee
     SUBDIR += tinker

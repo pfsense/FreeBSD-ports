@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sshping
-PORTVERSION=	0.1.1
+PORTVERSION=	0.1.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -14,31 +14,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libssh.so:security/libssh
 
-USES=		localbase:ldflags perl5
+USES=		cmake localbase:ldflags perl5
 USE_GITHUB=	yes
 USE_PERL5=	build
 
 GH_ACCOUNT=	spook
 
-LDFLAGS+=	-lssh
+PLIST_FILES=	bin/sshping man/man8/sshping.8.gz
 
-PLIST_FILES=	bin/sshping man/man1/sshping.1.gz
-
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} <= 1100511
-BUILD_DEPENDS=	clang40:devel/llvm40
-CXX=		clang++40
-.endif
-
-do-build:
-	${CXX} ${CXXFLAGS} ${LDFLAGS} -I ${WRKSRC}/ext \
-		${WRKSRC}/src/sshping.cxx -o ${WRKSRC}/bin/sshping
-	@pod2man ${WRKSRC}/doc/${PORTNAME}.pod ${WRKSRC}/doc/${PORTNAME}.1
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

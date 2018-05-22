@@ -1,0 +1,15 @@
+--- configure.ac.orig	2016-09-14 15:02:26 UTC
++++ configure.ac
+@@ -125,12 +125,6 @@ SNOOPY_PROG_CHECK([wc],       [WC],     
+ 
+ 
+ 
+-dnl Checks for libraries.
+-dnl FIXME: Replace `main' with a function in `-ldl':
+-AC_CHECK_LIB([dl], [dlsym], [], [
+-    AC_MSG_ERROR([A library is missing. Unable to continue.])
+-])
+-
+ dnl Checks for header files.
+ AC_CHECK_HEADERS([ \
+     ctype.h \

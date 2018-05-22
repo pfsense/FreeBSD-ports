@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Coreboot_Upgrade
-PORTVERSION=	0.17
+PORTVERSION=	0.22
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 
@@ -26,7 +26,7 @@ GH_TAGNAME=	4.7:coreboot e0b3841:vboot
 COREBOOT_DFF2_ROM=ADI_DFF2-01.00.00.17-nodebug.rom
 COREBOOT_RCC_ROM=ADI_RCC-01.00.00.18-nodebug-16m.rom
 COREBOOT_RCCVE_ROM=ADI_RCCVE-01.00.00.17-nodebug.rom
-COREBOOT_PLCCB_ROM=ADI_PLCC-01.00.00.02.bin
+COREBOOT_PLCCB_ROM=ADI_PLCC-01.00.00.06.bin
 
 PLIST_SUB=	COREBOOT_DFF2_ROM=${COREBOOT_DFF2_ROM} \
 		COREBOOT_RCC_ROM=${COREBOOT_RCC_ROM} \
@@ -51,6 +51,9 @@ pre-extract:
 	${MKDIR} ${WRKSRC}
 
 post-extract:
+	${CP} -R ${FILESDIR}/adi_smbios_util ${WRKSRC}
+	${REINPLACE_CMD} -e "s,%%COREBOOT_PLCCB_ROM%%,${COREBOOT_PLCCB_ROM},g" \
+		${WRKSRC}/adi_smbios_util/config.h
 	${LN} -sf ${WRKSRC_coreboot} ${WRKSRC}/coreboot
 
 do-build:
@@ -59,10 +62,10 @@ do-build:
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_powercycle \
 		${FILESDIR}/adi_powercycle/adi_powercycle.c
 .if ${OSVERSION} >= 1100001
-	${CC} ${CFLAGS} -o ${WRKSRC}/adi_smbios_util -luuid \
+	${CC} ${CFLAGS} -o ${WRKSRC}/adi_smbios_util/adi_smbios_util -luuid \
 		-I${LOCALBASE}/include -L${LOCALBASE}/lib \
-		-include ${FILESDIR}/adi_smbios_util/config.h \
-		${FILESDIR}/adi_smbios_util/adi_smbios_util.c
+		-include ${WRKSRC}/adi_smbios_util/config.h \
+		${WRKSRC}/adi_smbios_util/adi_smbios_util.c
 	${GMAKE} -C ${CBFSTOOL_PATH} HOSTCC=${CC} HOSTCXX=${CXX} \
 		VBOOT_SOURCE=${WRKSRC_vboot}
 .endif
@@ -97,7 +100,8 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_flash_util ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_powercycle ${STAGEDIR}${PREFIX}/sbin
 .if ${OSVERSION} >= 1100001
-	${INSTALL_PROGRAM} ${WRKSRC}/adi_smbios_util ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_PROGRAM} ${WRKSRC}/adi_smbios_util/adi_smbios_util \
+		${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${CBFSTOOL_PATH}/cbfstool ${STAGEDIR}${PREFIX}/sbin
 .endif
 

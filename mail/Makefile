@@ -112,7 +112,6 @@
     SUBDIR += esmtp
     SUBDIR += evolution
     SUBDIR += evolution-ews
-    SUBDIR += evolution-mapi
     SUBDIR += exilog
     SUBDIR += exim
     SUBDIR += exim-doc-html
@@ -146,6 +145,7 @@
     SUBDIR += gmime24-sharp
     SUBDIR += gmime26
     SUBDIR += gmime26-sharp
+    SUBDIR += gmime30
     SUBDIR += gnarwl
     SUBDIR += gnubiff
     SUBDIR += gnumail
@@ -190,7 +190,6 @@
     SUBDIR += libdomainkeys
     SUBDIR += libesmtp
     SUBDIR += libetpan
-    SUBDIR += libmapi
     SUBDIR += libmilter
     SUBDIR += libpst
     SUBDIR += librfc822
@@ -275,6 +274,8 @@
     SUBDIR += nohtml
     SUBDIR += normalizemime
     SUBDIR += notmuch
+    SUBDIR += notmuch-emacs
+    SUBDIR += notmuch-mutt
     SUBDIR += nullmailer
     SUBDIR += nullpop
     SUBDIR += offlineimap
@@ -546,8 +547,9 @@
     SUBDIR += py-premailer
     SUBDIR += py-pymailq
     SUBDIR += py-pyspf
-    SUBDIR += py-spambayes
     SUBDIR += py-pyzmail
+    SUBDIR += py-spambayes
+    SUBDIR += py-validate_email
     SUBDIR += py-zope.sendmail
     SUBDIR += pymsgauth
     SUBDIR += pysieved
@@ -626,6 +628,8 @@
     SUBDIR += rubygem-pony
     SUBDIR += rubygem-premailer
     SUBDIR += rubygem-premailer-rails
+    SUBDIR += rubygem-premailer-rails19
+    SUBDIR += rubygem-premailer-rails-rails5
     SUBDIR += rubygem-rmail
     SUBDIR += rubygem-roadie
     SUBDIR += rubygem-roadie-rails
@@ -737,7 +741,6 @@
     SUBDIR += vqadmin
     SUBDIR += vrfy
     SUBDIR += wanderlust
-    SUBDIR += wanderlust-devel
     SUBDIR += websieve
     SUBDIR += whoson
     SUBDIR += wmbiff

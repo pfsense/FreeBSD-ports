@@ -11,11 +11,19 @@ COMMENT=	Convert HTML (or live webpages) to PDF or image
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_aarch64=		fails to build: error: cast from pointer to smaller type loses information
+BROKEN_armv6=		fails to build: error: Not supported ARM architecture
+BROKEN_armv7=		fails to build: error: invalid operand for instruction
+BROKEN_mips64=		fails to link: undefined reference to __sync_add_and_fetch_4
+BROKEN_powerpc64=	fails to build: RenderObject.o: sibling call optimization to does not allow automatic multiple TOCs
+BROKEN_SSL=		openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	member access into incomplete type 'SSL_CIPHER' (aka 'ssl_cipher_st')
+
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 
-USES=		gmake iconv jpeg perl5 pkgconfig ssl:build
+USES=		compiler:env gmake iconv jpeg perl5 pkgconfig ssl:build
 USE_XORG=	x11 xext xrender
 USE_PERL5=	build
 USE_LDCONFIG=	yes
@@ -23,12 +31,6 @@ USE_GITHUB=	yes
 WKQT_TAGNAME=	c0cfa03
 GH_TUPLE=	${PORTNAME}:qt:${WKQT_TAGNAME}:qt
 HAS_CONFIGURE=	yes
-
-BROKEN_aarch64=		Does not build: error: cast from pointer to smaller type loses information
-BROKEN_armv6=		Does not build: error: Not supported ARM architecture
-BROKEN_armv7=		Does not build: error: invalid operand for instruction
-BROKEN_mips64=		Does not link: undefined reference to __sync_add_and_fetch_4
-BROKEN_powerpc64=	Does not build
 
 PATCH_WRKSRC=		${WRKSRC}/qt
 CONFIGURE_WRKSRC=	${WRKSRC}/build/qt
@@ -84,4 +86,12 @@ post-install:
 		${STAGEDIR}${PREFIX}/bin/wkhtmltopdf \
 		${STAGEDIR}${PREFIX}/lib/libwkhtmltox.so.0.12.4
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD
+.if ${COMPILER_TYPE:Mclang} && ${COMPILER_VERSION} >= 60
+BROKEN=		Does not build
+.endif
+.endif
+
+.include <bsd.port.post.mk>

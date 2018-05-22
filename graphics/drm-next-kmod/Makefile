@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	drm-next-kmod
-PORTVERSION=	g20171006
+PORTVERSION=	4.11.g20180505
 PORTREVISION=	1
-CATEGORIES=	graphics
+CATEGORIES=	graphics kld
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	DRM modules for the linuxkpi-based KMS components
@@ -15,7 +15,9 @@ LICENSE_COMB=	multi
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	the new KMS components are only supported on amd64
 
-RUN_DEPENDS=	gpu-firmware-kmod>=g20170403:graphics/gpu-firmware-kmod
+RUN_DEPENDS=	gpu-firmware-kmod>=g20180319:graphics/gpu-firmware-kmod
+
+CONFLICTS_INSTALL=	drm-stable-kmod
 
 OPTIONS_DEFINE=	DEBUG
 
@@ -24,12 +26,15 @@ USES=		kmod uidfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	FreeBSDDesktop
 GH_PROJECT=	kms-drm
-GH_TAGNAME=	63426fd
+GH_TAGNAME=	fd12167
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200045
-IGNORE=		not supported on 11.x or older, no kernel support
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1101511
+IGNORE=		not supported on 10.x or older, no kernel support
+.endif
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000 && ${OSVERSION} < 1200058
+IGNORE=		not supported on older CURRENT, no kernel support
 .endif
 .if ${OPSYS} != FreeBSD
 IGNORE=		not supported on anything but FreeBSD (missing linuxkpi functionality)

@@ -306,7 +306,7 @@ post-install:
 .include <bsd.port.pre.mk>
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
-CXXFLAGS+=	-Wno-unknown-warning-option
+CXXFLAGS+=	-Wno-unknown-warning-option -Wno-deprecated-register
 CXXFLAGS+=	-Wno-undefined-bool-conversion -Wno-tautological-undefined-compare -Wno-dynamic-class-memaccess
 .endif
 

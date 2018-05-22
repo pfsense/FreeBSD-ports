@@ -17,6 +17,7 @@ GH_PROJECT=	libbloom:libbloom
 GH_TAGNAME=	v1.4:libbloom
 
 USES=	gmake ssl sqlite:3
+LLD_UNSAFE=	yes
 
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 

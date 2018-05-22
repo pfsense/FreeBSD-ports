@@ -2,17 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	boinc-client
-PORTVERSION=	7.2.33
-PORTREVISION=	8
+PORTVERSION=	7.8.6
+DISTVERSIONPREFIX=	client_release/7.8/
+PORTREVISION=	6
 CATEGORIES=	net
-MASTER_SITES=	LOCAL/rene
 
 MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Berkeley Open Infrastructure for Network Computing client
 
-GNU_CONFIGURE=	yes
+LICENSE=	LGPL3
+
+USES=		autoreconf dos2unix gettext gmake libtool pkgconfig ssl tar:xz
 INSTALL_TARGET=	install-strip
-USES=		autoreconf dos2unix gmake libtool pkgconfig tar:xz
+GNU_CONFIGURE=	yes
+USE_GITHUB=	yes
+GH_ACCOUNT=	BOINC
+GH_PROJECT=	boinc
 USE_LDCONFIG=	yes
 DOS2UNIX_GLOB=	*.xpm
 
@@ -32,7 +37,7 @@ SUB_LIST=	BOINC_CLIENT_HOME="${BOINC_CLIENT_HOME}" \
 CONFIGURE_ARGS=	--disable-server
 CONFIGURE_ENV=	OBJCXX="${CXX}"
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-L${LOCALBASE}/lib -lexecinfo
 
 OPTIONS_DEFINE=		CLIENT MANAGER NLS X11 LINUX USER SKINS
 OPTIONS_DEFAULT=	CLIENT MANAGER X11 USER
@@ -52,14 +57,18 @@ OPTIONS_SUB=		yes
 
 MANAGER_USES=		iconv
 MANAGER_LIB_DEPENDS=	libnotify.so:devel/libnotify \
-			libsqlite3.so:databases/sqlite3
+			libfontconfig.so:x11-fonts/fontconfig \
+			libsqlite3.so:databases/sqlite3 \
+			libxcb-util.so:x11/xcb-util 
 MANAGER_CONFIGURE_ON=	--with-sqlite3-prefix=${LOCALBASE}
 MANAGER_CONFIGURE_OFF=	--with-wx-config=false --without-x
 MANAGER_CONFIGURE_ENABLE=manager
-MANAGER_USE=		XORG=x11,xext,xscrnsaver WX=2.8
+MANAGER_USE=		GNOME=cairo,gdkpixbuf2,glib20,gtk20,pango \
+			XORG=xcb,x11,xext,xscrnsaver WX=3.0
 
 CLIENT_CONFIGURE_ENABLE=client
-CLIENT_LIB_DEPENDS=	libcurl.so:ftp/curl
+CLIENT_LIB_DEPENDS=	libcurl.so:ftp/curl \
+			libfreetype.so:print/freetype2
 CLIENT_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 CLIENT_USE=		RC_SUBR=boinc-client
 
@@ -68,6 +77,7 @@ LINUX_USES=		linux
 
 X11_USES=		jpeg
 X11_USE=		GL=glut XORG=xmu,xi
+X11_USE_XORG+=		x11 xscrnsaver
 X11_CONFIGURE_OFF=	ax_cv_check_glut_libglut=no
 
 .include <bsd.port.options.mk>
@@ -77,6 +87,7 @@ WX_CONF_ARGS=	absolute
 SUB_LIST+=	OPTION_MANAGER="true"
 .else
 SUB_LIST+=	OPTION_MANAGER=""
+CONFIGURE_ARGS+=	--disable-manager
 .endif
 
 .if ${PORT_OPTIONS:MCLIENT}
@@ -90,12 +101,14 @@ SUB_LIST+=	OPTION_USER="true"
 SUB_LIST+=	OPTION_USER=""
 .endif
 
+.if ${PORT_OPTIONS:NX11}
+CONFIGURE_ARGS+=	--without-x
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|@PREFIX@|${PREFIX}|' \
 		${WRKSRC}/client/hostinfo_unix.cpp
 	@${REINPLACE_CMD} -e 's|client/scripts||' ${WRKSRC}/Makefile.am
-	@${REINPLACE_CMD} -e 's|$$$$mydir/$$$$ldir|&/LC_MESSAGES|' \
-		${WRKSRC}/locale/Makefile.am
 # avoid build conflict with archivers/libzip
 	@${MV} ${WRKSRC}/zip/unzip/zip.h ${WRKSRC}/zip/unzip/boinczip.h
 	@${MV} ${WRKSRC}/zip/zip/zip.h ${WRKSRC}/zip/zip/boinczip.h
@@ -108,17 +121,20 @@ post-patch:
 	    ${WRKSRC}/zip/zip/z_fileio.c ${WRKSRC}/zip/zip/z_globals.c \
 	    ${WRKSRC}/zip/zip/zip.c ${WRKSRC}/zip/zip/zipfile.c \
 	    ${WRKSRC}/zip/zip/zipup.c
+.if ${PORT_OPTIONS:NX11}
+	@${REINPLACE_CMD} -e 's|enable_xss="yes"|enable_xss="no"|' ${WRKSRC}/configure.ac
+.endif
 
 post-install:
 .for name in config.h project_specific_defines.h api/reduce.h \
-	lib/opencl_boinc.h lib/shmem.h lib/std_fixes.h
+	lib/opencl_boinc.h lib/shmem.h lib/std_fixes.h lib/str_replace.h
 	${INSTALL_DATA} ${WRKSRC}/${name} ${STAGEDIR}${PREFIX}/include/boinc
 .endfor
 
 post-install-MANAGER-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/boinc
 .for name in 16 32 48
-	${INSTALL_DATA} ${WRKSRC}/clientgui/res/boincmgr.${name}x${name}.png \
+	${INSTALL_DATA} ${WRKSRC}/packages/generic/sea/boincmgr.${name}x${name}.png \
 	    ${STAGEDIR}${PREFIX}/share/pixmaps
 .endfor
 .if ${PORT_OPTIONS:MSKINS}

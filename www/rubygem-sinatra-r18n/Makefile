@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sinatra-r18n
-PORTVERSION=	2.2.0
+PORTVERSION=	3.0.2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

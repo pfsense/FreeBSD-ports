@@ -1,4 +1,3 @@
-# Created by: Fernando Apesteguia <fernando.apesteguia@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	stepcode
@@ -7,7 +6,7 @@ DISTVERSIONPREFIX=	v
 PORTREVISION=	3
 CATEGORIES=	cad
 
-MAINTAINER=	fernando.apesteguia@gmail.com
+MAINTAINER=	fernape@FreeBSD.org
 COMMENT=	Generates C++ and Python from ISO10303 files
 
 LICENSE=	BSD3CLAUSE
@@ -22,6 +21,10 @@ CMAKE_ARGS+=	-DSC_INSTALL_PREFIX=${PREFIX} \
 		-DSC_BUILD_TYPE=Release
 
 MANDIRS=	${PREFIX}/man
+
+post-patch:
+	@${REINPLACE_CMD} -e 's,( JudyValue ) 0,nullptr,' \
+		${WRKSRC}/src/base/judy/src/judy*Array.h
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/schema_scanner

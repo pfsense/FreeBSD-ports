@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,7 @@
  */
 
 require_once("guiconfig.inc");
+require_once("/usr/local/pkg/suricata/suricata_defs.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
 /* Define some locally required variables from Suricata constants */
@@ -34,7 +35,6 @@ $snortdownload = $config['installedpackages']['suricata']['config'][0]['enable_v
 $emergingthreats = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'];
 $etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'];
 $snortcommunityrules = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'];
-$snort_rules_file = $config['installedpackages']['suricata']['config'][0]['snort_rules_file'];
 
 /* Get last update information if available */
 if (!empty($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time']))
@@ -46,15 +46,37 @@ if (!empty($config['installedpackages']['suricata']['config'][0]['last_rule_upd_
 else
 	$last_rule_upd_status = gettext("Unknown");
 
-$snort_community_rules_filename = GPLV2_DNLD_FILENAME;
-
-if ($etpro == "on") {
-	$emergingthreats_filename = ETPRO_DNLD_FILENAME;
-	$et_name = "Emerging Threats Pro Rules";
+// Check for any custom URLs and extract custom filenames
+// if present, else use package default values.
+if ($config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on') {
+	$snort_rules_file = trim(substr($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], strrpos($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], '/') + 1));
 }
 else {
-	$emergingthreats_filename = ET_DNLD_FILENAME;
+	$snort_rules_file = $config['installedpackages']['suricata']['config'][0]['snort_rules_file'];
+}
+if ($config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] == 'on') {
+	$snort_community_rules_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], strrpos($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], '/') + 1));
+}
+else {
+	$snort_community_rules_filename = GPLV2_DNLD_FILENAME;
+}
+if ($etpro == "on") {
+	$et_name = "Emerging Threats Pro Rules";
+	if ($config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] == 'on') {
+		$emergingthreats_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], strrpos($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], '/') + 1));
+	}
+	else {
+		$emergingthreats_filename = ETPRO_DNLD_FILENAME;
+	}
+}
+else {
 	$et_name = "Emerging Threats Open Rules";
+	if ($config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] == 'on') {
+		$emergingthreats_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], strrpos($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], '/') + 1));
+	}
+	else {
+		$emergingthreats_filename = ET_DNLD_FILENAME;
+	}
 }
 
 /* quick md5 chk of downloaded rules */
@@ -99,8 +121,9 @@ if ($snortcommunityrules == 'on' && file_exists("{$suricatadir}{$snort_community
 
 /* Check for postback to see if we should clear the update log file. */
 if ($_POST['clear']) {
-	if (file_exists("{$suricata_rules_upd_log}"))
-		unlink_if_exists("{$suricata_rules_upd_log}");
+	if (file_exists(SURICATA_RULES_UPD_LOGFILE)) {
+		file_put_contents(SURICATA_RULES_UPD_LOGFILE, "");
+	}
 }
 
 if ($_REQUEST['updatemode']) {
@@ -146,15 +169,20 @@ if ($_REQUEST['ajax'] == 'status') {
 }
 
 /* check for logfile */
-if (file_exists("{$suricata_rules_upd_log}"))
-	$suricata_rules_upd_log_chk = 'yes';
-else
+if (file_exists("{$suricata_rules_upd_log}")) {
+	if (filesize("{$suricata_rules_upd_log}") > 0) {
+		$suricata_rules_upd_log_chk = 'yes';
+	}
+}
+else {
 	$suricata_rules_upd_log_chk = 'no';
+}
 
 if ($_POST['view']&& $suricata_rules_upd_log_chk == 'yes') {
-	$contents = @file_get_contents($suricata_rules_upd_log);
-	if (empty($contents))
+	$contents = file_get_contents($suricata_rules_upd_log);
+	if ($contents === FALSE) {
 		$input_errors[] = gettext("Unable to read log file: {$suricata_rules_upd_log}");
+	}
 }
 
 if ($_POST['hide'])
@@ -213,7 +241,7 @@ include_once("head.inc");
 					<td><?=gettext($emergingt_net_sig_date);?></td>
 				</tr>
 				<tr>
-					<td><b><?=gettext("Snort VRT Rules");?></b></td>
+					<td><b><?=gettext("Snort Subscriber Rules");?></b></td>
 					<td><?=trim($snort_org_sig_chk_local);?></td>
 					<td><?=gettext($snort_org_sig_date);?></td>
 				</tr>

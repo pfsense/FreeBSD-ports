@@ -5,7 +5,7 @@ PORTVERSION=	0.61
 CATEGORIES=	devel
 MASTER_SITES=	#
 DISTFILES=	#
-PKGNAMEPREFIX=	php56-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	-module
 
 MAINTAINER=	garga@pfsense.org
@@ -20,6 +20,7 @@ IPFW_DESC=	Enable IPFW functions
 ETHERSWITCH_DESC=	Enable etherswitch functions
 
 USES=		php:ext
+IGNORE_WITH_PHP=70 71 72
 
 CFLAGS+=	-I/usr/local/include -I. -DTCPSTATES
 CFLAGS+=	-Wall -Wredundant-decls -Wnested-externs -Winline

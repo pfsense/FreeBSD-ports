@@ -1,0 +1,43 @@
+Suggested the same to the upstream: https://github.com/muflihun/easyloggingpp/issues/603
+
+--- CMakeLists.txt.orig	2018-02-14 05:35:11 UTC
++++ CMakeLists.txt
+@@ -22,7 +22,7 @@ macro(require_cpp11)
+ endmacro()
+ 
+ option(test "Build all tests" OFF)
+-option(build_static_lib "Build easyloggingpp as a static library" OFF)
++option(build_shared_lib "Build easyloggingpp as a shared library" OFF)
+ option(lib_utc_datetime "Build library with UTC date/time logging" OFF)
+ 
+ set(ELPP_MAJOR_VERSION "9")
+@@ -31,7 +31,7 @@ set(ELPP_PATCH_VERSION "0")
+ set(ELPP_VERSION_STRING "${ELPP_MAJOR_VERSION}.${ELPP_MINOR_VERSION}.${ELPP_PATCH_VERSION}")
+ 
+ set(ELPP_INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "The directory the headers are installed in")
+-set(ELPP_PKGCONFIG_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/pkgconfig" CACHE PATH "Installation directory for pkgconfig (.pc) files")
++set(ELPP_PKGCONFIG_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/libdata/pkgconfig" CACHE PATH "Installation directory for pkgconfig (.pc) files")
+ 
+ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+ 
+@@ -46,17 +46,17 @@ configure_file( ${CMAKE_CURRENT_SOURCE_D
+ 
+ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/easyloggingpp.pc DESTINATION "${ELPP_PKGCONFIG_INSTALL_DIR}")
+ 
+-if (build_static_lib)
++if (build_shared_lib)
+         if (lib_utc_datetime)
+                 add_definitions(-DELPP_UTC_DATETIME)
+         endif()
+ 
+         require_cpp11()
+-        add_library(easyloggingpp STATIC src/easylogging++.cc)
++        add_library(easyloggingpp SHARED src/easylogging++.cc)
+ 
+         install(TARGETS
+             easyloggingpp
+-            ARCHIVE DESTINATION lib)
++            DESTINATION lib)
+ endif()
+ 
+ export(PACKAGE ${PROJECT_NAME})

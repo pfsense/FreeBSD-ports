@@ -3,7 +3,7 @@
 
 PORTNAME=	molden
 PORTVERSION=	5.7
-PORTREVISION=	13
+PORTREVISION=	14
 PORTEPOCH=	1
 CATEGORIES=	biology
 MASTER_SITES=	ftp://ftp.cmbi.ru.nl/pub/molgraph/molden/
@@ -16,6 +16,8 @@ LICENSE=	Molden
 LICENSE_NAME=	Molden
 LICENSE_FILE=	${WRKSRC}/CopyRight
 LICENSE_PERMS=	auto-accept
+
+BROKEN=		checksum and size mismatch
 
 RESTRICTED=	free for academic, non profit usage; do not re-distribute source and executable.
 

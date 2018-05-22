@@ -3,7 +3,7 @@
 
 PORTNAME=	gramofile
 PORTVERSION=	1.6P
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	audio
 MASTER_SITES=	http://www.opensourcepartners.nl/~costar/gramofile/
 
@@ -22,6 +22,7 @@ USE_CSTD=	gnu89
 MAKE_ARGS=	CC="${CC}" \
 		CXX="${CXX}" \
 		PERLCOREDIR=${PERLCOREDIR}
+CFLAGS+=	-D_WANT_SEMUN
 
 PERLCOREDIR=	${LOCALBASE}/lib/perl5/${PERL_VER}/${PERL_ARCH}/CORE
 

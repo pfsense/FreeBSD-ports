@@ -1,8 +1,8 @@
-# Created by: Koichiro IWAO <meta+ports@vmeta.jp>
+# Created by: Koichiro IWAO <meta@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	delayer-deferred
-PORTVERSION=	1.1.1
+PORTVERSION=	2.0.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

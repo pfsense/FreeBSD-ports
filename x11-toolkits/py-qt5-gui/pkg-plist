@@ -1,4 +1,5 @@
 %%PYTHON_SITELIBDIR%%/PyQt5/QtGui.so
+%%PYTHON_SITELIBDIR%%/PyQt5/QtGui.pyi
 %%PYQT_SIPDIR%%/QtGui/QtGuimod.sip
 %%PYQT_SIPDIR%%/QtGui/opengl_types.sip
 %%PYQT_SIPDIR%%/QtGui/qabstracttextdocumentlayout.sip
@@ -37,6 +38,7 @@
 %%PYQT_SIPDIR%%/QtGui/qopenglpixeltransferoptions.sip
 %%PYQT_SIPDIR%%/QtGui/qopenglshaderprogram.sip
 %%PYQT_SIPDIR%%/QtGui/qopengltexture.sip
+%%PYQT_SIPDIR%%/QtGui/qopengltextureblitter.sip
 %%PYQT_SIPDIR%%/QtGui/qopengltimerquery.sip
 %%PYQT_SIPDIR%%/QtGui/qopenglversionfunctions.sip
 %%PYQT_SIPDIR%%/QtGui/qopenglvertexarrayobject.sip

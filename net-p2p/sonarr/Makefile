@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	sonarr
-PORTVERSION=	2.0.0.5085
+PORTVERSION=	2.0.0.5163
 PORTREVISION=	0
 CATEGORIES=	net-p2p
 MASTER_SITES=	http://download.sonarr.tv/v2/master/mono/
@@ -19,6 +19,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USE_RC_SUBR=	sonarr
 
+NO_ARCH=	YES
 NO_BUILD=	YES
 WRKSRC=	${WRKDIR}/NzbDrone
 
@@ -35,5 +36,9 @@ X11_LIB_DEPENDS+=libgdiplus.so:x11-toolkits/libgdiplus
 do-install:
 	${INSTALL} -d -m 755 ${STAGEDIR}/${DATADIR}
 	cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${STAGEDIR}/${DATADIR}
+
+post-install:
+	@${FIND} -s ${STAGEDIR}${DATADIR} -not -type d | ${SORT} | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
 
 .include <bsd.port.mk>

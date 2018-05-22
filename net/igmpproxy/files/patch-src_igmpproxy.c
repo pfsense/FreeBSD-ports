@@ -1,15 +1,14 @@
---- src/igmpproxy.c.orig
+--- src/igmpproxy.c.orig	2017-12-22 20:49:54 UTC
 +++ src/igmpproxy.c
-@@ -186,8 +186,10 @@ int igmpProxyInit() {
-                     }
-                 }
+@@ -37,11 +37,6 @@
+ *   February 2005 - Johnny Egeland
+ */
  
--                addVIF( Dp );
--                vifcount++;
-+                if (Dp->state != IF_STATE_DISABLED) {
-+                    addVIF( Dp );
-+                    vifcount++;
-+                }
-             }
-         }
+-/* getopt() and clock_getime() */
+-#ifndef _POSIX_C_SOURCE
+-#define _POSIX_C_SOURCE 200112L
+-#endif
+-
+ #include "igmpproxy.h"
  
+ static const char Usage[] =

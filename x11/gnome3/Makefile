@@ -3,6 +3,7 @@
 
 PORTNAME=	gnome3
 PORTVERSION=	3.18.0
+PORTREVISION=	1
 CATEGORIES?=	x11 gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -38,11 +39,9 @@ CONFLICTS?=	gnome3-lite-[0-9]*
 USES=		metaport
 
 .if ${.CURDIR:T}!="gnome3-lite"
-OPTIONS_DEFINE+=MAPI DOCS
-MAPI_DESC=	Depend on evolution-mapi (pulls in samba4)
+OPTIONS_DEFINE+=DOCS
 
 DOCS_RUN_DEPENDS=	gnome-user-docs>=0:misc/gnome-user-docs
-MAPI_RUN_DEPENDS=	evolution-mapi>=3.0.0:mail/evolution-mapi
 .endif
 
 .include <bsd.port.options.mk>

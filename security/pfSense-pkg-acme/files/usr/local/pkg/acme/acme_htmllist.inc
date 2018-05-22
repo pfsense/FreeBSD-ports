@@ -57,7 +57,7 @@ class HtmlList
 		$table_def['keyfield'] = $this->keyfield;
 		phparray_to_javascriptarray($table_def, "tabledefinition_".$this->tablename,Array('/*','/*/*'));
 		phparray_to_javascriptarray($this->fields, "fields_".$this->tablename,Array('/*','/*/name','/*/type','/*/text','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
-		if (count($this->fields_details) != 0) {
+		if (isset($this->fields_details) && is_array($this->fields_details) && count($this->fields_details) != 0) {
 			phparray_to_javascriptarray($this->fields_details,"fields_details_".$this->tablename,Array('/*','/*/name','/*/columnheader','/*/description','/*/type','/*/text','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name','/*/items/*/*/name'));
 		}
 	}

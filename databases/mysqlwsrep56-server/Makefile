@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	mysqlwsrep
-PORTVERSION?=	5.6.38
+PORTVERSION?=	5.6.39
 DISTVERSIONPREFIX?=	wsrep_
-DISTVERSIONSUFFIX?=	-25.21
+DISTVERSIONSUFFIX?=	-25.22
 CATEGORIES=	databases ipv6
 PKGNAMESUFFIX=	56-server
 
@@ -13,6 +13,9 @@ COMMENT=	MySQL database enhanced with Galera replication (server package)
 
 LICENSE=	GPLv2
 
+NOT_FOR_ARCHS=		aarch64 armv6 armv7 powerpc64
+NOT_FOR_ARCHS_REASON=	error: Unsupported platform
+
 RUN_DEPENDS=	bash:shells/bash \
 		lsof:sysutils/lsof \
 		netcat:net/netcat \
@@ -20,13 +23,11 @@ RUN_DEPENDS=	bash:shells/bash \
 		socat:net/socat
 LIB_DEPENDS=	libevent.so:devel/libevent liblz4.so:archivers/liblz4
 
-BROKEN_powerpc64=	Does not build
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	incomplete definition of type 'struct dh_st'
 
 DATADIR=	${PREFIX}/share/mysql
 ETCDIR=		${PREFIX}/etc/mysql
-
-NOT_FOR_ARCHS=	aarch64 armv6 armv7 powerpc64
-NOT_FOR_ARCHS_REASON=	error: Unsupported platform
 
 USES=		bison \
 		cmake:outsource,noninja \
