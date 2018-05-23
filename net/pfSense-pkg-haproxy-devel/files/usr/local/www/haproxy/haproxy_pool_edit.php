@@ -112,16 +112,23 @@ $fields_servers[4]['type']="textbox";
 $fields_servers[4]['size']="5";
 $fields_servers[4]['maxwidth']="50px";
 $fields_servers[5]['name']="ssl";
-$fields_servers[5]['columnheader']="SSL";
+$fields_servers[5]['columnheader']="Encrypt(SSL)";
 $fields_servers[5]['colwidth']="5%";
 $fields_servers[5]['type']="checkbox";
 $fields_servers[5]['size']="30";
-$fields_servers[6]['name']="weight";
-$fields_servers[6]['columnheader']="Weight";
-$fields_servers[6]['colwidth']="8%";
-$fields_servers[6]['type']="textbox";
-$fields_servers[6]['size']="5";
-$fields_servers[6]['maxwidth']="50px";
+$fields_servers[6]['name']="checkssl";
+$fields_servers[6]['columnheader']="SSL checks";
+$fields_servers[6]['colwidth']="5%";
+$fields_servers[6]['type']="checkbox";
+$fields_servers[6]['size']="30";
+$fields_servers[7]['name']="weight";
+$fields_servers[7]['columnheader']="Weight";
+$fields_servers[7]['colwidth']="8%";
+$fields_servers[7]['type']="textbox";
+$fields_servers[7]['size']="5";
+$fields_servers[7]['maxwidth']="50px";
+$fields_servers[8]['name']="id";
+$fields_servers[8]['type']="hidden";
 
 $listitem_none['']['name']="None";
 
@@ -489,33 +496,13 @@ if ($_POST) {
 		// name changed:
 		$oldvalue = $pool['name'];
 		$newvalue = $_POST['name'];
-
 		if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
 			$config['installedpackages']['haproxy']['ha_backends'] = array();
 		}
 		if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 			$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
 		}
-		$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
-		if (!is_array($a_backend)) {
-			$a_backend = array();
-		}
-
-		for ( $i = 0; $i < count($a_backend); $i++) {
-			$backend = &$a_backend[$i];
-			if ($a_backend[$i]['backend_serverpool'] == $oldvalue) {
-				$a_backend[$i]['backend_serverpool'] = $newvalue;
-			}
-			if (is_array($backend['a_actionitems']['item'])) {
-				foreach($backend['a_actionitems']['item'] as &$item) {
-					if ($item['action'] == "use_backend") {
-						if ($item['use_backendbackend'] == $oldvalue) {
-							$item['use_backendbackend'] = $newvalue;
-						}
-					}
-				}
-			}
-		}
+		rename_backend_references($oldvalue, $newvalue);
 	}
 
 	if($pool['name'] != "") {
@@ -541,6 +528,7 @@ if ($_POST) {
 	if (!isset($input_errors)) {
 		if ($changecount > 0) {
 			touch($d_haproxyconfdirty_path);
+			config_id();
 			write_config($changedesc);
 		}
 		header("Location: haproxy_pools.php");
@@ -668,7 +656,9 @@ $serverslist->Draw($a_servers).
 	</td></tr><tr><td class="vncell">
 	Port: </td><td class="vncell">The port of the backend.<br/>EXAMPLE: 80 or 443<br/>
 	</td></tr><tr><td class="vncell">
-	SSL: </td><td class="vncell">Is the backend using SSL (commonly with port 443)<br/>
+	SSL: </td><td class="vncell">Should haproxy encrypt the traffic to the backend with SSL (commonly used with mode http on frontend and a port 443 on backend)
+	</td></tr><tr><td class="vncell">
+	SSL&nbsp;checks: </td><td class="vncell">This can be used with for example a LDAPS health-checks where LDAPS is passed along with mode TCP <br/>
 	</td></tr><tr><td class="vncell">
 	Weight: </td><td class="vncell">A weight between 0 and 256, this setting can be used when multiple servers on different hardware need to be balanced with with a different part the traffic. A server with weight 0 wont get new traffic. Default if empty: 1
 	</td></tr><tr><td class="vncell">
@@ -1244,6 +1234,9 @@ events.push(function() {
 		updatevisibility();
 	});
 	$('#persist_cookie_enabled').on('change', function() {
+		updatevisibility();
+	});
+	$('#persist_cookie_mode').on('change', function() {
 		updatevisibility();
 	});
 	$('#persist_sticky_type').on('change', function() {
