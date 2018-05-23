@@ -36,12 +36,12 @@ function shellcmd_delete_php_command() {
 	if ($_GET['act'] == "del") {
 
 		/* System earlyshellcmd commands */
-		$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
+		$a_earlyshellcmd = $config['system']['earlyshellcmd'];
 		if (!is_array($a_earlyshellcmd)) {
 			$a_earlyshellcmd = array();
 		}
 		/* Shellcmd package commands */
-		$a_shellcmd_config = &$config['installedpackages']['shellcmdsettings']['config'];
+		$a_shellcmd_config = $config['installedpackages']['shellcmdsettings']['config'];
 		if (!is_array($a_shellcmd_config)) {
 			$a_shellcmd_config = array();
 		}
