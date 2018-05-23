@@ -705,6 +705,12 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	$a_servers = &$pool['ha_servers']['item'];
 	$frontendtype = $frontend['type'];
 
+	$idoffset = 0;
+	if ($ipversion == "ipv4")
+		$idoffset += 10000;
+	if ($ipversion == "ipv6")
+		$idoffset += 20000;
+	
 	fwrite ($fd, "backend " . $name . "\n");
 	// https is an alias for tcp for clarity purposes
 	if ($frontendtype == "https") {
@@ -713,6 +719,11 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		$backend_mode = $frontendtype;
 	}
 	fwrite ($fd, "\tmode\t\t\t" . $backend_mode . "\n");
+	$id = "";
+	if (is_numeric($pool['id'])) {
+		$id =  ($pool['id'] + $idoffset);
+		fwrite ($fd, "\tid\t\t\t{$id}\n");
+	}
 	fwrite ($fd, "\tlog\t\t\tglobal\n");
 
 	$use_haproxyresolvers = false;
@@ -1006,7 +1017,8 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 					$fieldname = $field['name'];
 					$parameter = $aclitem[$expression . $fieldname];
 					if ($fieldname == "backend") {
-						$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+						//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+						$backendname = $parameter . "_" . $ipversion;
 						$parameter = $backendname;
 					}
 					$expr = str_replace("{{$fieldname}}", $parameter, $expr);
@@ -1042,7 +1054,8 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 				$parameter = $actionitem[$actionid . $field['name']];
 
 				if ($fieldname == "backend") {
-					$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+					//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+					$backendname = $parameter . "_" . $ipversion;
 					/*
 					$backend = $parameter;
 					if (!isset($a_pendingpl[$backendname])) {
@@ -1144,8 +1157,13 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$crtfile = "";
 			$verifynone = "";
 			$verifyhost = "";
-			if ($be['ssl'] == 'yes') {
-				$ssl = $frontendtype == "http" ? ' ssl' : ' check-ssl';
+			if ($be['ssl'] == 'yes' || $be['checkssl'] == 'yes') {
+				if ($be['ssl'] == 'yes') {
+					$ssl .= ' ssl';
+				}
+				if ($be['checkssl'] == 'yes') {
+					$ssl .= ' check-ssl';
+				}
 
 				if ($be['sslserververify'] != 'yes') {
 					$verifynone = " verify none";
@@ -1216,14 +1234,19 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 					$server = $server . ":" . $be['port'];
 				}
 				$servername = $be['name'];
+				$id = "";
 				if (count($servers) > 1) {
 					$servername .= "_" . $counter;
+				} else {
+					if (is_numeric($be['id'])) {
+						 $id = " id " . ($be['id'] + $idoffset);
+					}
 				}
 				if (is_numeric($be['istemplate'])) {
 					$istemplate = " {$be['istemplate']}";
-					fwrite ($fd, "\tserver-template\t\t\t" . $servername . $istemplate . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+					fwrite ($fd, "\tserver-template\t\t\t" . $servername . $istemplate . " " . $server . "$id$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
 				} else {
-					fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+					fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$id$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
 				}
 				$counter++;
 			}
@@ -1549,6 +1572,7 @@ function haproxy_writeconf($configpath) {
 				fwrite ($fd, "\tstats refresh {$a_global['localstats_refreshtime']}\n");
 			}
 			fwrite ($fd, "\tstats admin if TRUE\n");
+			fwrite ($fd, "\tstats show-legends\n");
 			fwrite ($fd, "\tstats uri /haproxy/haproxy_stats.php?haproxystats=1\n");
 			fwrite ($fd, "\ttimeout client 5000\n");
 			fwrite ($fd, "\ttimeout connect 5000\n");
@@ -1975,7 +1999,8 @@ function haproxy_writeconf($configpath) {
 									$fieldname = $field['name'];
 									$parameter = $aclitem[$expression . $fieldname];
 									if ($fieldname == "backend") {
-										$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+										//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+										$backendname = $parameter . "_" . $ipversion;
 										$parameter = $backendname;
 									}
 									$expr = str_replace("{{$fieldname}}", $parameter, $expr);
@@ -2002,7 +2027,8 @@ function haproxy_writeconf($configpath) {
 
 								if ($fieldname == "backend") {
 									$backend = $parameter;
-									$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+									//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+									$backendname = $parameter . "_" . $ipversion;
 									if (!isset($a_pendingpl[$backendname])) {
 										$a_pendingpl[$backendname] = array();
 										$a_pendingpl[$backendname]['name'] = $backendname;
@@ -3026,4 +3052,102 @@ function haproxy_config_init(){
 	if (!is_array($haproxycfg['files']['item'])) {
 		$haproxycfg['files']['item'] = array();
 	}
+}
+
+function config_id() {
+	global $config;
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	$id = 100;
+	foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		if (!is_numeric($backend['id'])) {
+			while(find_server_by_id($id) || find_backend_by_id($id)) {
+				// find unused id..
+				$id++;
+			}
+			$backend['id'] = $id;
+		}
+		if (is_array($backend['ha_servers']['item'])) {
+			foreach($backend['ha_servers']['item'] as &$server) {
+				if (!is_numeric($server['id'])) {
+					while(find_server_by_id($id) || find_backend_by_id($id)) {
+						// find unused id..
+						$id++;
+					}
+					$server['id'] = $id;
+				}
+			}
+		}
+	}
+}
+
+function find_frontends_using_backend($backendname) {
+	global $config;
+	$a_backends = $config['installedpackages']['haproxy']['ha_backends']['item'];
+	$result = array();
+	foreach ($a_backends as $frontend) {
+		$used = false;
+		if($frontend['backend_serverpool'] == $backendname) {
+			$used = true;
+		}
+		$actions = $frontend['a_actionitems']['item'];
+		if (is_array($actions)) {
+			foreach($actions as $action) {
+				if ($action["action"] == "use_backend" && $action['use_backendbackend'] == $backendname) {
+					$used = true;
+				}
+			}
+		}
+		if ($used) {
+			$result[] = $frontend['name'];
+		}
+	}				
+	return $result;
+}
+
+function find_server_by_id($id) {
+	global $config;
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		if (is_array($backend['ha_servers']['item'])) {
+			foreach($backend['ha_servers']['item'] as &$server) {
+				if ($server['id'] == $id) {
+					return $server;
+				}
+			}
+		}
+	}
+	return null;
+}
+
+function find_backend_by_id($id) {
+	global $config;
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		if ($backend['id'] == $id) {
+			return $backend;
+		}
+	}
+	return null;
+}
+
+function rename_backend_references($oldvalue, $newvalue) {
+	global $config;
+	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+	foreach ($a_frontends as &$frontend) {
+		if ($frontend['backend_serverpool'] == $oldvalue) {
+			$frontend['backend_serverpool'] = $newvalue;
+		}
+		if (is_array($frontend['a_actionitems']['item'])) {
+			foreach($frontend['a_actionitems']['item'] as &$item) {
+				if ($item['action'] == "use_backend") {
+					if ($item['use_backendbackend'] == $oldvalue) {
+						$item['use_backendbackend'] = $newvalue;
+					}
+				}
+			}
+		}
+	}
+	unset($frontend);
+	
+	//TODO: acl's with backendservercount/backend should also be renamed..
 }

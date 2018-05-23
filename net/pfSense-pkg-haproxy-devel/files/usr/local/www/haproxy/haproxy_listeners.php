@@ -435,7 +435,7 @@ function js_callback(req) {
 					}
 					?>
 				  </td>
-				  <td class="action-icons">
+				  <td class="action-buttons">
 					<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$frontendname?>" name="move_<?=$frontendname?>" value="move_<?=$frontendname?>"></button>
 					<a href="haproxy_listeners_edit.php?id=<?=$frontendname;?>">
 						<?=haproxyicon("edit", gettext("edit frontend"))?>
