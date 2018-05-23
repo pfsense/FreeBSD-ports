@@ -168,7 +168,7 @@ pfb_filter_service();
 update_status(" done.\n");
 
 // Create DNSBL service and link required executables
-update_status(" done.\nRemove any existing and create link for DNSBL lighttpd executable...");
+update_status("Remove any existing and create link for DNSBL lighttpd executable...");
 unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
 link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_pfb');
 
