@@ -31,6 +31,10 @@ global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_v
 
 $pgtitle = array("OpenVPN", "Client Export Utility");
 
+if (!is_array($config['openvpn'])) {
+	$config['openvpn'] = array();
+}
+
 if (!is_array($config['openvpn']['openvpn-server'])) {
 	$config['openvpn']['openvpn-server'] = array();
 }
@@ -83,7 +87,7 @@ foreach ($a_server as $server) {
 				$ras_user[] = $ras_userent;
 			}
 		}
-	} elseif (($server['mode'] == "server_tls") || 
+	} elseif (($server['mode'] == "server_tls") ||
 			(($server['mode'] == "server_tls_user") && ($server['authmode'] != "Local Database"))) {
 		foreach ($a_cert as $cindex => $cert) {
 			if (($cert['caref'] != $server['caref']) || ($cert['refid'] == $server['certref'])) {
@@ -163,7 +167,7 @@ if (isset($_POST['save'])) {
 		}
 		$cfg['proxypass'] = $_POST['proxypass'];
 	}
-	
+
 	foreach ($simplefields as $value) {
 		$cfg[$value] = $_POST[$value];
 	}
@@ -225,11 +229,11 @@ if (!empty($act)) {
 	$pkcs11providers = $_GET['pkcs11providers'];
 	if ($usepkcs11 && !$pkcs11providers) {
 		$input_errors[] = "You must provide the PKCS#11 providers.";
-	}					
+	}
 	$pkcs11id = $_GET['pkcs11id'];
 	if ($usepkcs11 && !$pkcs11id) {
 		$input_errors[] = "You must provide the PKCS#11 ID.";
-	}					
+	}
 	$password = "";
 	if ($_GET['password']) {
 		if ($_GET['password'] != DMYPWD) {
@@ -685,7 +689,7 @@ servers[<?=$sindex?>][1][<?=$c?>][0] = '<?=$user['uindex']?>';
 servers[<?=$sindex?>][1][<?=$c?>][1] = '<?=$user['cindex']?>';
 servers[<?=$sindex?>][1][<?=$c?>][2] = '<?=$user['name']?>';
 servers[<?=$sindex?>][1][<?=$c?>][3] = '<?=str_replace("'", "\\'", $user['certname'])?>';
-<?php	
+<?php
 			$c++;
 		endif;
 	endforeach;
@@ -700,7 +704,7 @@ servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certna
 			$c++;
 		endif;
 	endforeach;
-endforeach; 
+endforeach;
 ?>
 
 serverdefaults = <?=json_encode($ovpnserverdefaults)?>;
@@ -849,7 +853,7 @@ function server_changed() {
 
 	var table = document.getElementById("users");
 	table = table.tBodies[0];
-	
+
 	while (table.rows.length > 0 ) {
 		table.deleteRow(0);
 	}
@@ -857,13 +861,13 @@ function server_changed() {
 	function setFieldValue(field, value) {
 		checkboxes = $("input[type=checkbox]#"+field);
 		checkboxes.prop('checked', value == 'yes').trigger("change");
-		
+
 		inputboxes = $("input[type!=checkbox]#"+field);
 		inputboxes.val(value);
-		
+
 		selectboxes = $("select#"+field);
 		selectboxes.val(value);
-		
+
 		textareaboxes = $("textarea#"+field);
 		textareaboxes.val(value);
 	}
@@ -883,8 +887,8 @@ function server_changed() {
 		setFieldValue('proxypass_confirm', fields['proxypass']);
 		break;
 	}
-	
-	
+
+
 	var users = servers[index][1];
 	var certs = servers[index][3];
 	for (i = 0; i < users.length; i++) {
