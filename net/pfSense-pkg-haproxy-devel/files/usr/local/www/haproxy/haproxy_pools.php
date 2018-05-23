@@ -131,31 +131,13 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
 <?php
 		$i = 0;
-		foreach ($a_pools as $pool){
-			$fe_list = "";
-			$sep = "";
-			foreach ($a_backends as $frontend) {
-				$used = false;
-				if($frontend['backend_serverpool'] == $pool['name']) {
-					$used = true;
-				}
-				$actions = $frontend['a_actionitems']['item'];
-				if (is_array($actions)) {
-					foreach($actions as $action) {
-						if ($action["action"] == "use_backend" && $action['use_backendbackend'] == $pool['name']) {
-							$used = true;
-						}
-					}
-				}
-				if ($used) {
-					$fe_list .= $sep . $frontend['name'];
-					$sep = ", ";
-				}
-			}
+		foreach ($a_pools as $backend){
+			$fes = find_frontends_using_backend($backend['name']);
+			$fe_list = implode(", ", $fes);
 			$disabled = $fe_list == "";
 
-			if (is_array($pool['ha_servers'])) {
-				$count = count($pool['ha_servers']['item']);
+			if (is_array($backend['ha_servers'])) {
+				$count = count($backend['ha_servers']['item']);
 			} else {
 				$count = 0;
 			}
@@ -167,15 +149,15 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 						</td>
 			<!--tr class="<?=$textgray?>"-->
 			  <td>
-			  <?
-				if ($pool['stats_enabled']=='yes') {
+			  <?php
+				if ($backend['stats_enabled']=='yes') {
 					echo haproxyicon("stats", gettext("stats enabled"));
 				}
 				$isadvset = "";
-				if ($pool['advanced']) {
+				if ($backend['advanced']) {
 					$isadvset .= "Per server pass thru\r\n";
 				}
-				if ($pool['advanced_backend']) {
+				if ($backend['advanced_backend']) {
 					$isadvset .= "Backend pass thru\r\n";
 				}
 				if ($isadvset) {
@@ -184,13 +166,13 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 			  ?>
 			  </td>
 			  <td>
-				<?=$pool['name'];?>
+				<?=$backend['name'];?>
 			  </td>
 			  <td>
 				<?=$count;?>
 			  </td>
 			  <td>
-				<?=$a_checktypes[$pool['check_type']]['name'];?>
+				<?=$a_checktypes[$backend['check_type']]['name'];?>
 			  </td>
 			  <td>
 				<?=$fe_list;?>
