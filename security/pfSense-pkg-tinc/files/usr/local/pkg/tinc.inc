@@ -185,6 +185,10 @@ function tinc_install() {
 	tinc_write_rcfile();
 	unlink_if_exists("/usr/local/etc/rc.d/tincd");
 
+	if (!is_array($config['ifgroups'])) {
+		$config['ifgroups'] = array();
+	}
+
 	/* Create Interface Group */
 	if (!is_array($config['ifgroups']['ifgroupentry'])) {
 		$config['ifgroups']['ifgroupentry'] = array();
@@ -217,6 +221,10 @@ function tinc_install() {
 function tinc_deinstall() {
 	global $g, $config;
 
+	if (!is_array($config['ifgroups'])) {
+		$config['ifgroups'] = array();
+	}
+	
 	/* Remove Interface Group */
 	if (!is_array($config['ifgroups']['ifgroupentry'])) {
 		$config['ifgroups']['ifgroupentry'] = array();
