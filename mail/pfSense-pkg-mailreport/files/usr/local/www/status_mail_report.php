@@ -29,11 +29,13 @@
 require("guiconfig.inc");
 require_once("mail_reports.inc");
 
-if (!is_array($config['mailreports']))
+if (!is_array($config['mailreports'])) {
 	$config['mailreports'] = array();
+}
 
-if (!is_array($config['mailreports']['schedule']))
+if (!is_array($config['mailreports']['schedule'])) {
 	$config['mailreports']['schedule'] = array();
+}
 
 $a_mailreports = &$config['mailreports']['schedule'];
 
