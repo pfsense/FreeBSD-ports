@@ -434,13 +434,15 @@ function get_pkgconf_items_list($pkg_gui_name, $fieldname) {
 
 function get_sgconf_items_list($data_group, $fieldname) {
     global $squidguard_config;
+
     $res = array();
 
     $conf = $squidguard_config[$data_group]['item'];
-    if (is_array($conf))
+    if (is_array($conf)) {
         foreach($conf as $cf) {
-        	$res = $cf[$fieldname];
+        	$res[] = $cf[$fieldname];
         }
+    }
 
     return $res;
 }

@@ -3281,15 +3281,6 @@ function pfb_collect_localhosts() {
 function pfb_daemon_filterlog() {
 	global $config, $pfb;
 
-	// Collect pfBlockerNG rule names and tracker ids
-	$rule_list	= pfb_filterrules();
-
-	$data		= pfb_collect_localip();
-	$pfb_local	= $data[0] ?: array();
-	$pfb_localsub	= $data[1] ?: array();
-
-	$local_hosts	= pfb_collect_localhosts();
-
 	// Application paths
 	$pathgeoip	= '/usr/local/bin/geoiplookup';
 	$pathgeoip6	= '/usr/local/bin/geoiplookup6';
@@ -3307,6 +3298,7 @@ function pfb_daemon_filterlog() {
 
 	$p_entry 	= '';
 	$line_cnt	= 0;
+	$rule_list	= array();
 
 	// Parse full filter.log on first run, otherwise only parse new filter.log events
 	if (!file_exists($pfb['ip_blocklog']) && !file_exists($pfb['ip_permitlog']) && !file_exists($pfb['ip_matchlog'])) {
@@ -3396,7 +3388,27 @@ function pfb_daemon_filterlog() {
 			$d = explode(',', $f[5]);
 
 			// Only collect pfBlockerNG Tracker IDs
-			if (!empty($d[3]) && isset($rule_list[$d[3]])) {
+			if (!empty($d[3]) && substr($d[3], 0, 4) == '1770') {
+
+				// Attemp to find the Tracker ID, if not found wait 5secs for filter_reload
+				for ($retries = 1; $retries <= 5; $retries++) {
+
+					// Collect pfBlockerNG rule names and Tracker IDs
+					if (!isset($rule_list[$d[3]])) {
+						$rule_list	= pfb_filterrules();
+						$data		= pfb_collect_localip();
+						$pfb_local	= $data[0] ?: array();
+						$pfb_localsub	= $data[1] ?: array();
+						$local_hosts    = pfb_collect_localhosts();
+					}
+					else {
+						break;
+					}
+
+					if ($retries < 5) {
+						sleep(5);
+					}
+				}
 
 				// Duplicate entry comparison: "Tracker ID/Action/SRC IP/DST IP/DST Port"
 				$dup_entry = '+';

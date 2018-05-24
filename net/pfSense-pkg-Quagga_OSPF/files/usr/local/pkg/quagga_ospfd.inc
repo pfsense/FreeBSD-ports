@@ -81,7 +81,7 @@ function quagga_ospfd_install_conf() {
 	} elseif (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['ospfd'])  ||
 	    isset($config['installedpackages']['quaggaospfdraw']['config'][0]['ospf6d']) ||
 	    isset($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd'])) {
-		log_error("Quagga: No assistant generated config for OSPF, but found raw config for one or more daemon");		
+		log_error("Quagga: No assistant generated config for OSPF, but found raw config for one or more daemon");
 	} else {
 		log_error("Quagga OSPFd: No config data found.");
 		return;
@@ -294,7 +294,7 @@ function quagga_ospfd_install_conf() {
 	    && !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
 		$bgpdconffile = str_replace("\r","",base64_decode($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd']));
-	} 
+	}
 	else {
 		$bgpdconffile = "# This file was created by the pfSense package manager.  Do not edit!\n\n";
 		if ($ospfd_conf['password']) {
@@ -324,7 +324,7 @@ function quagga_ospfd_install_conf() {
 			fwrite($fd, $bgpdaddmd5file);
 			fclose($fd);
 		}
-		
+
 		if ($bgpddelmd5file != "") {
 			$fd = fopen("{$quagga_config_base}/bgpddelmd5pw.conf", "w");
 			fwrite($fd, $bgpddelmd5file);
@@ -541,7 +541,7 @@ function write_quagga_running_config($module) {
 	conf_mount_rw();
 	// Since we need to embed this in a string, copy to a var. Can't embed constants.
 	$quagga_config_base = PKG_QUAGGA_CONFIG_BASE;
-	
+
 	$moduleRunningFile = "{$quagga_config_base}/{$module}.conf";
 
 	if ( file_exists( $moduleRunningFile ) && ( filesize( $moduleRunningFile ) > 0 ) ) {
@@ -553,10 +553,10 @@ function write_quagga_running_config($module) {
 	}
 	write_config( $write_config_only = true );
 	conf_mount_ro();
-} 
+}
 
-write_quagga_running_config(bgpd);
-write_quagga_running_config(ospfd);
-write_quagga_running_config(ospf6d);
-write_quagga_running_config(zebra);
+write_quagga_running_config('bgpd');
+write_quagga_running_config('ospfd');
+write_quagga_running_config('ospf6d');
+write_quagga_running_config('zebra');
 ?>
