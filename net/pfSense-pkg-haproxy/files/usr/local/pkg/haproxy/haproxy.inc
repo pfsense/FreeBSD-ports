@@ -1335,7 +1335,24 @@ function haproxy_writeconf($configpath) {
 
 	rmdir_recursive($configpath);
 	@mkdir($configpath, 0755, true);
-
+	if(!is_array($config['installedpackages']['haproxy'])) {
+		$config['installedpackages']['haproxy'] = array();
+	}
+	if(!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+		$config['installedpackages']['haproxy']['ha_backends'] = array();
+	}
+	if(!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+		$config['installedpackages']['haproxy']['ha_pools'] = array();
+	}
+	if(!is_array($config['installedpackages']['haproxy']['email_mailers'])) {
+		$config['installedpackages']['haproxy']['email_mailers'] = array();
+	}
+	if(!is_array($config['installedpackages']['haproxy']['dns_resolvers'])) {
+		$config['installedpackages']['haproxy']['dns_resolvers'] = array();
+	}
+	if(!is_array($config['installedpackages']['haproxy']['files'])) {
+		$config['installedpackages']['haproxy']['files'] = array();
+	}
 	$a_global = &$config['installedpackages']['haproxy'];
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
@@ -2469,7 +2486,7 @@ function get_haproxy_frontends($excludeitem = "") {
 	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
 		$config['installedpackages']['haproxy']['ha_backends'] = array();
 	}
-	
+
 	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
 	}
