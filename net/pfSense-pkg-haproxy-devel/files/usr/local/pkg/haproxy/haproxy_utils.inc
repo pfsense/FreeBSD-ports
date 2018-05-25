@@ -21,7 +21,7 @@
  */
 
 /*
-  This file contains functions which are NOT specific to HAProxy and may/could/should 
+  This file contains functions which are NOT specific to HAProxy and may/could/should
   be moved to the general pfSense php library for possible easy use by other parts of pfSense
 */
 
@@ -36,11 +36,11 @@ class haproxy_utils {
 		$recordtype = 0;
 		foreach($types as $type){
 			switch ($type) {
-				case 'A': 
-					$recordtype = DNS_A; 
+				case 'A':
+					$recordtype = DNS_A;
 					break;
-				case 'AAAA': 
-					$recordtype = DNS_AAAA; 
+				case 'AAAA':
+					$recordtype = DNS_AAAA;
 					break;
 			}
 			if ($recordtype != 0) {
@@ -54,10 +54,10 @@ class haproxy_utils {
 						$newitem["typeid"] = $item['type'];
 						switch ($item['type']) {
 							case 'A':
-								$newitem["data"] = $item['ip']; 
+								$newitem["data"] = $item['ip'];
 								break;
 							case 'AAAA':
-								$newitem["data"] = $item['ipv6']; 
+								$newitem["data"] = $item['ipv6'];
 								break;
 						}
 						$result[] = $newitem;
@@ -125,21 +125,21 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 	// $bindable[key]['description'] can be shown to user in a selection box
 
 	global $config;
-	$ipversions = split(',',$ipv);
-	$interfacetypes= split(',',$interfacetype);
+	$ipversions = explode(',',$ipv);
+	$interfacetypes= explode(',',$interfacetype);
 
 	$bindable = array();
 	if (in_array("ipv4",$ipversions)){
 		if (in_array('any',$interfacetypes)){
 			$item = array();
-			$item[ip] = '0.0.0.0';
-			$item[name] = 'any (IPv4)';
+			$item['ip'] = '0.0.0.0';
+			$item['name'] = 'any (IPv4)';
 			$bindable['any_ipv4'] = $item;
 		}
 		if (in_array('localhost',$interfacetypes)){
 			$item = array();
-			$item[ip] = '127.0.0.1';
-			$item[name] = 'localhost (IPv4)';
+			$item['ip'] = '127.0.0.1';
+			$item['name'] = 'localhost (IPv4)';
 			$bindable['localhost_ipv4'] = $item;
 		}
 		if (in_array('real',$interfacetypes)){
@@ -189,18 +189,18 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 	if (!isset($config['system']['ipv6allow'])) {
 		return $bindable;// skip adding the IPv6 addresses if those are not 'allowed'
 	}
-	
+
 	if (in_array("ipv6",$ipversions)){
 		if (in_array('any',$interfacetypes)){
 			$item = array();
-			$item[ip] = '::';
-			$item[name] = 'any (IPv6)';
+			$item['ip'] = '::';
+			$item['name'] = 'any (IPv6)';
 			$bindable['any_ipv6'] = $item;
 		}
 		if (in_array('localhost',$interfacetypes)){
 			$item = array();
-			$item[ip] = '::1';
-			$item[name] = 'localhost (IPv6)';
+			$item['ip'] = '::1';
+			$item['name'] = 'localhost (IPv6)';
 			$bindable['localhost_ipv6'] = $item;
 		}
 		if (in_array('real',$interfacetypes)){
@@ -226,7 +226,7 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 				$item['name'] = "$descr  address (IPv6)";
 				$bindable[$if.'_ipv6'] = $item;
 			}
-		}		
+		}
 		if (in_array('carp',$interfacetypes)){
 			$carplist = get_configured_vip_list('inet6', VIP_CARP);
 			foreach ($carplist as $carpif => $carpip){
@@ -279,7 +279,7 @@ function haproxy_cert_signed_by($cert, $signedbycert) {
 function haproxy_recalculate_certifcate_chain(){
 	// and set "selfsigned" for certificates that where used to sign themselves
 	// recalculate the "caref" for all certificates where it is currently unkown.
-	
+
 	$allcertificates = haproxy_get_certificates('ca,server,user',true);
 	$items_recalculated = 0;
 	foreach($allcertificates as &$cert){
@@ -299,7 +299,7 @@ function haproxy_recalculate_certifcate_chain(){
 				if(haproxy_cert_signed_by($cert, $signedbycert)){
 					if ($cert['refid'] == $signedbycert['refid']){
 						$cert['selfsigned'] = true;
-					} else {					
+					} else {
 						$cert['caref'] = $signedbycert['refid'];
 					}
 					$items_recalculated++;
@@ -346,13 +346,13 @@ function haproxy_get_certificate_descriptivename($cert) {
 	$usage = get_certificat_usage($cert['crt']);
 	foreach($usage as $use){
 		$usagestr .= " " . $use;
-	}		
+	}
 	if ($usagestr != "") {
 		$usagestr = " (".trim($usagestr).")";
 	}
 	$purpose = cert_get_purpose($cert['crt']);
 	$certserverpurpose = $purpose['server'] == 'Yes' ? " [Server cert]" : "";
-		
+
 	$caname = "";
 	$ca = lookup_ca($cert['caref']);
 	if ($ca) {
@@ -374,7 +374,7 @@ function haproxy_get_certificates($type = 'server,user', $get_includeWebCert=fal
 			$a_cert = &$config['cert'];
 			foreach ($a_cert as $cert) {
 				$purpose = cert_get_purpose($cert['crt']);
-				
+
 				$ok = false;
 				$ok |= stristr($type,',server,') && $purpose['server'] == 'Yes';
 				$ok |= stristr($type,',user,') && $purpose['server'] != 'Yes';
@@ -396,7 +396,7 @@ function haproxy_get_certificates($type = 'server,user', $get_includeWebCert=fal
 			}
 		}
 	}
-	uasort($certificates, haproxy_compareByName);
+	uasort($certificates, 'haproxy_compareByName');
 	return $certificates;
 }
 
@@ -434,7 +434,7 @@ function haproxy_get_crls() {
 			$certificates[$crl['refid']]['name'] = $crl['descr'] . $caname;
 		}
 	}
-	uasort($certificates, haproxy_compareByName);
+	uasort($certificates, 'haproxy_compareByName');
 	return $certificates;
 }
 
@@ -497,6 +497,9 @@ function haproxy_js_select_options($keyvaluelist, $selected="") {
 
 function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="", $onchangeEvent="", $style="") {
 	$result = "";
+	if (!is_array($keyvaluelist)) {
+		$keyvaluelist = array();
+	}
 	if (count($keyvaluelist) > 0) {
 		if ($onchangeEvent != "") {
 			$onchangeEvent = " onchange='$onchangeEvent'";
@@ -545,14 +548,14 @@ function haproxy_js_css() {
 		}
 		return null;
 	}
-	
+
 	function setCSSdisplay(cssID, display) {
 		rule = getCSSrule(cssID);
 		if (rule) {
 			rule.style.display = display ? "" : "none";
 		}
 	}
-	
+
 	function toggleCSSdisplay(cssID)
 	{
 		rule = getCSSrule(cssID);
@@ -560,7 +563,7 @@ function haproxy_js_css() {
 			rule.style.display = rule.style.display === "none" ? "" : "none";
 		}
 	}
-	
+
 PRE;
 
 }
