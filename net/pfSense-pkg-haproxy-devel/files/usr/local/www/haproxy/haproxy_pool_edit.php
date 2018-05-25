@@ -263,7 +263,7 @@ foreach($a_action as $key => $action) {
 			$name = $key . $item['name'];
 			$item['name'] = $name;
 			$item['columnheader'] = $field['name'];
-			$item['customdrawcell'] = customdrawcell_actions;
+			$item['customdrawcell'] = 'customdrawcell_actions';
 			$fields_actions_details[$name] = $item;
 		}
 	}
@@ -278,7 +278,7 @@ foreach($a_acltypes as $key => $action) {
 			$name = $key . $item['name'];
 			$item['name'] = $name;
 			$item['columnheader'] = $field['columnheader'];
-			$item['customdrawcell'] = customdrawcell_actions;
+			$item['customdrawcell'] = 'customdrawcell_actions';
 			$fields_acl_details[$name] = $item;
 		}
 	}
@@ -311,7 +311,7 @@ function fields_acls_details_showfieldfunction($htmltable, $itemname, $values) {
 }
 $htmllist_acls = new HaproxyHtmlList("table_acls", $fields_aclSelectionList);
 $htmllist_acls->fields_details = $fields_acl_details;
-$htmllist_acls->fields_details_showfieldfunction = fields_acls_details_showfieldfunction;
+$htmllist_acls->fields_details_showfieldfunction = 'fields_acls_details_showfieldfunction';
 $htmllist_acls->editmode = true;
 
 function fields_actions_details_showfieldfunction($htmltable, $itemname, $values) {
@@ -321,7 +321,7 @@ function fields_actions_details_showfieldfunction($htmltable, $itemname, $values
 }
 $htmllist_actions = new HaproxyHtmlList("table_actions", $fields_actions);
 $htmllist_actions->fields_details = $fields_actions_details;
-$htmllist_actions->fields_details_showfieldfunction = fields_actions_details_showfieldfunction;
+$htmllist_actions->fields_details_showfieldfunction = 'fields_actions_details_showfieldfunction';
 $htmllist_actions->keyfield = "name";
 
 
@@ -330,16 +330,16 @@ if (isset($id) && $a_pools[$id]) {
 	haproxy_check_isarray($pconfig['a_acl']);
 	$pconfig['a_actionitems'] = &$a_pools[$id]['a_actionitems']['item'];
 	haproxy_check_isarray($pconfig['a_actionitems']);
-	
+
 	$pconfig['advanced'] = base64_decode($a_pools[$id]['advanced']);
 	$pconfig['advanced_backend'] = base64_decode($a_pools[$id]['advanced_backend']);
-	
-	$a_servers = $a_pools[$id]['ha_servers']['item'];	
-	
+
+	$a_servers = $a_pools[$id]['ha_servers']['item'];
+
 	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_pools[$id][$stat];
 	}
-	
+
 	$a_errorfiles = &$a_pools[$id]['errorfiles']['item'];
 	if (!is_array($a_errorfiles)) {
 		$a_errorfiles = array();
@@ -358,23 +358,23 @@ if ($_POST) {
 
 	unset($input_errors);
 	$pconfig = $_POST;
-	
+
 	$reqdfields = explode(" ", "name");
-	$reqdfieldsn = explode(",", "Name");		
+	$reqdfieldsn = explode(",", "Name");
 
 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if ($_POST['stats_enabled']) {
 		$reqdfields = explode(" ", "name stats_uri");
-		$reqdfieldsn = explode(",", "Name,Stats Uri");		
+		$reqdfieldsn = explode(",", "Name,Stats Uri");
 		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 		if ($_POST['stats_username']) {
 			$reqdfields = explode(" ", "stats_password stats_realm");
-			$reqdfieldsn = explode(",", "Stats Password,Stats Realm");		
+			$reqdfieldsn = explode(",", "Stats Password,Stats Realm");
 			do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 		}
 	}
-	
+
 	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
 		$input_errors[] = "The field 'Name' contains invalid characters.";
 	}
@@ -441,9 +441,9 @@ if ($_POST) {
 			$input_errors[] = "The field 'Port' value is not a number.";
 		}
 	}
-	
+
 	$a_errorfiles = $errorfileslist->haproxy_htmllist_get_values();
-	
+
 	if ($_POST['strict_transport_security'] !== "" && !is_numeric($_POST['strict_transport_security'])) {
 		$input_errors[] = "The field 'Strict-Transport-Security' is not empty or a number.";
 	}
@@ -452,13 +452,13 @@ if ($_POST) {
 	if(isset($id) && $a_pools[$id]) {
 		$pool = $a_pools[$id];
 	}
-		
+
 	if (!empty($pool['name']) && ($pool['name'] != $_POST['name'])) {
 		//old $pool['name'] can be empty if a new or cloned item is saved, nothing should be renamed then
 		// name changed:
 		$oldvalue = $pool['name'];
 		$newvalue = $_POST['name'];
-		
+
 		$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 		if (!is_array($a_backend)) {
 			$a_backend = array();
@@ -545,7 +545,7 @@ foreach($simplefields as $field){
 	  }
 	  document.iform.serversSelect.selectedIndex = -1;
 	}
-	
+
 	function updatevisibility()
 	{
 		d = document;
@@ -554,42 +554,42 @@ foreach($simplefields as $field){
 		persist_cookie_enabled = d.getElementById("persist_cookie_enabled");
 		agent_check = d.getElementById("agent_check");
 		sticky_type_description = d.getElementById("sticky_type_description");
-		
+
 		setCSSdisplay(".haproxy_stats_visible", stats_enabled.checked);
 		setCSSdisplay(".haproxy_cookie_visible", persist_cookie_enabled.checked);
-		
+
 		check_type = d.getElementById("check_type").value;
 		check_type_description = d.getElementById("check_type_description");
-		check_type_description.innerHTML=checktypes[check_type]["descr"]; 
-		
+		check_type_description.innerHTML=checktypes[check_type]["descr"];
+
 		persist_cookie_mode = d.getElementById("persist_cookie_mode").value;
 		persist_cookie_mode_description = d.getElementById("persist_cookie_mode_description");
-		persist_cookie_mode_description.innerHTML=cookiemode[persist_cookie_mode]["descr"]; 
+		persist_cookie_mode_description.innerHTML=cookiemode[persist_cookie_mode]["descr"];
 		persist_cookie_mode_description.setAttribute('style','padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt; height:30px');
 		persist_cookie_mode_description.setAttribute('style','padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt; height:'+persist_cookie_mode_description.scrollHeight+'px');
-		
+
 		setCSSdisplay(".haproxy_check_enabled", check_type !== 'none');
 		setCSSdisplay(".haproxy_check_http", check_type === 'HTTP');
 		setCSSdisplay(".haproxy_check_username", check_type === 'MySQL' ||  check_type === 'PostgreSQL');
 		setCSSdisplay(".haproxy_check_smtp", check_type === 'SMTP' ||  check_type === 'ESMTP');
 		setCSSdisplay(".haproxy_check_agent", check_type === 'Agent');
-		
+
 		setCSSdisplay(".haproxy_agent_check", agent_check.checked);
 
 		transparent_clientip = d.getElementById("transparent_clientip");
 		setCSSdisplay(".haproxy_transparent_clientip", transparent_clientip.checked);
-		
-		
+
+
 		persist_sticky_type = d.getElementById("persist_sticky_type").value;
 		//hideClass('haproxytestcfg', false);
 		hideClass('haproxy_stick_tableused', persist_sticky_type === 'none');
 		hideClass('haproxy_stick_cookiename', persist_sticky_type !== 'stick_rdp_cookie' &&  persist_sticky_type !== 'stick_cookie_value');
-		
+
 		cookie_example = sticky_type[persist_sticky_type]['cookiedescr'];
 		stick_cookiename_description = d.getElementById("stick_cookiename_description");
 		stick_cookiename_description.innerHTML = cookie_example;
 		sticky_type_description.innerHTML = sticky_type[persist_sticky_type]['descr'];
-		
+
 		monitor_username = d.getElementById("monitor_username");
 		sqlcheckusername = d.getElementById("sqlcheckusername");
 		if(!browser_InnerText_support){
@@ -614,10 +614,10 @@ $section = new Form_Section('Edit HAProxy Backend server pool');
 $section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']
 ))->setHelp('');
 $section->addInput(new Form_StaticText(
-	'Server list', 
+	'Server list',
 $serverslist->Draw($a_servers).
 <<<EOT
-	Field explanations: 
+	Field explanations:
 	<table class="infoblock" style="border:1px dashed green" cellspacing="0">
 	<tr><td class="vncell">
 	Mode: </td><td class="vncell">Active: server will be used normally<br/>
@@ -1046,7 +1046,7 @@ $section->addInput(new Form_Checkbox(
 
 $form->add($section);
 
-$panel_body_state = 
+$panel_body_state =
 		!empty($pconfig['advanced']) ||
 		!empty($pconfig['advanced_backend'] ||
 		$pconfig['transparent_clientip'] == "yes")
@@ -1067,8 +1067,8 @@ $section->addInput(new Form_StaticText(
 	'Transparent ClientIP', <<<EOT
 	<div class="alert alert-warning" role="alert">
 		<p>
-			WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due 
-			to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing 
+			WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due
+			to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing
 			the (web)server on the ports configured above. Also a automatic sloppy pf rule is made to allow HAProxy to server traffic.<br/>
 			Workaround exists only by configuring a second port or IP on the destination server for direct access of the website.<br/>
 			Having this option enabled also means that a client on the same subnet as the server wont be able to connect.
@@ -1091,10 +1091,10 @@ EOT
 ))->addClass("haproxy_transparent_clientip")->setHelp("Interface that will connect to the backend server. (this will generally be your LAN or OPT1(dmz) interface)")
 .
 <<<EOT
-	
+
 	Connect transparently to the backend server's so the connection seams to come straight from the client ip address.
 	To work properly this requires the reply traffic to pass through pfSense by means of correct routing.<br/>
-	When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>				
+	When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>
 	(uses the option "source 0.0.0.0 usesrc clientip" or "source ipv6@ usesrc clientip")
 	<br/><br/>
 	Note : When this is enabled for any backend HAProxy will run as 'root' instead of chrooting to a lower privileged user, this reduces security in case a vulnerability is found.
@@ -1103,11 +1103,11 @@ EOT
 $form->add($section);
 
 print $form;
-?>	
+?>
 				<?php if (isset($id) && $a_pools[$id]): ?>
 				<input name="id" type="hidden" value="<?=$id;?>" />
 				<?php endif; ?>
-	
+
 	</form>
 <br/>
 <script type="text/javascript">
@@ -1122,16 +1122,16 @@ print $form;
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 	phparray_to_javascriptarray($a_acltypes, "showhide_aclfields",
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
-		
+
 	$serverslist->outputjavascript();
 	$errorfileslist->outputjavascript();
 	$htmllist_acls->outputjavascript();
 	$htmllist_actions->outputjavascript();
 ?>
 	browser_InnerText_support = (document.getElementsByTagName("body")[0].innerText !== undefined) ? true : false;
-	
+
 	totalrows =  <?php echo $counter; ?>;
-	
+
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
 			fieldId = "expression";
@@ -1139,16 +1139,16 @@ print $form;
 		}
 		if (fieldId === "expression") {
 			var actiontype = field.value;
-			
+
 			var table = d.getElementById(tableId);
-			
+
 			for(var actionkey in showhide_aclfields) {
 				var fields = showhide_aclfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
 					var element = d.getElementById(rowid);
-					
+
 					if (actionkey === actiontype)
 						element.style.display = '';
 					else
@@ -1157,7 +1157,7 @@ print $form;
 			}
 		}
 	}
-	
+
 	function table_actions_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
 			fieldId = "action";
@@ -1165,16 +1165,16 @@ print $form;
 		}
 		if (fieldId === "action") {
 			var actiontype = field.value;
-			
+
 			var table = d.getElementById(tableId);
-			
+
 			for(var actionkey in showhide_actionfields) {
 				var fields = showhide_actionfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
 					var element = d.getElementById(rowid);
-					
+
 					if (actionkey === actiontype)
 						element.style.display = '';
 					else
@@ -1182,7 +1182,7 @@ print $form;
 				}
 			}
 		}
-	}	
+	}
 </script>
 <script type="text/javascript">
 //<![CDATA[
@@ -1206,7 +1206,7 @@ events.push(function() {
 	$('#stats_enabled').click(function () {
 		updatevisibility();
 	});
-	
+
 	updatevisibility();
 });
 //]]>
