@@ -31,6 +31,10 @@ require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
+if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+	$config['installedpackages']['haproxy']['ha_backends'] = array();
+}
+
 if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
 }
@@ -41,14 +45,14 @@ function haproxy_add_stats_example() {
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$webcert = haproxy_find_create_certificate("HAProxy stats default");
-	
+
 	$backend = array();
 	$backend["name"] = "HAProxy_stats_ssl_backend";
 	$backend["stats_enabled"] = "yes";
 	$backend["stats_uri"] = "/";
 	$backend["stats_refresh"] = "10";
 	$a_backends[] = $backend;
-	
+
 	$frontend = array();
 	$frontend["name"] = "HAProxy_stats_ssl_frontend";
 	$frontend["status"] = "active";
@@ -59,9 +63,9 @@ function haproxy_add_stats_example() {
 	$frontend["ssloffloadcert"] = $webcert['refid'];
 	$frontend["backend_serverpool"] = $backend["name"];
 	$a_frontends[] = $frontend;
-	
+
 	$changedesc = "add new HAProxy stats example";
-	
+
 	header("Location: haproxy_listeners.php");
 	echo "touching: $d_haproxyconfdirty_path";
 	touch($d_haproxyconfdirty_path);
@@ -85,16 +89,16 @@ Cache-Control: no-cache
 Connection: close
 Content-Type: text/html
 
-<html> 
+<html>
   <head>
     <title>Sorry the webserver you are trying to contact is currently not available.</title>
-  </head> 
+  </head>
   <body style="font-family:Arial,Helvetica,sans-serif;">
-    <div style="margin: 0 auto; width: 960px;"> 
+    <div style="margin: 0 auto; width: 960px;">
           <h2>Sorry the webserver you are trying to contact is currently not available.</h2>
     </div>
 The error returned is [<i>{errorcode} {errormsg}</i>] please try again later.
-  </body> 
+  </body>
 </html>
 EOD;
 		$newfile = array();
@@ -106,7 +110,7 @@ EOD;
 	} else {
 		$savemsg = "File 'ExampleErrorfile' is already configured on the Files tab.";
 	}
-	
+
 	$changedesc = "haproxy, add template errorfile";
 	if ($changecount > 0) {
 		header("Location: haproxy_files.php");
@@ -119,9 +123,26 @@ EOD;
 
 function haproxy_template_multipledomains() {
 	global $config, $d_haproxyconfdirty_path;
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+		$config['installedpackages']['haproxy']['ha_backends'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+		$config['installedpackages']['haproxy']['ha_pools'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+	}
+	
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
-	
+
 	$backend = array();
 	$backend["name"] = "example_backend1";
 	$backend["stats_enabled"] = "yes";
@@ -130,7 +151,7 @@ function haproxy_template_multipledomains() {
 	$backend["stats_scope"] = ".";
 	$backend["stats_node"] = "NODE1";
 	$a_backends[] = $backend;
-	
+
 	$backend = array();
 	$backend["name"] = "example_backend2";
 	$backend["stats_enabled"] = "yes";
@@ -139,7 +160,7 @@ function haproxy_template_multipledomains() {
 	$backend["stats_scope"] = ".";
 	$backend["stats_node"] = "NODE2";
 	$a_backends[] = $backend;
-	
+
 	$backend = array();
 	$backend["name"] = "example_backend3";
 	$backend["stats_enabled"] = "yes";
@@ -148,7 +169,7 @@ function haproxy_template_multipledomains() {
 	$backend["stats_scope"] = ".";
 	$backend["stats_node"] = "NODE3";
 	$a_backends[] = $backend;
-	
+
 	$frontend = array();
 	$frontend["name"] = "example_multipledomains";
 	$frontend["status"] = "active";
@@ -167,7 +188,7 @@ function haproxy_template_multipledomains() {
 	$action["acl"] = "mail_acl";
 	$frontend["a_actionitems"]["item"][] = $action;
 	$a_frontends[] = $frontend;
-	
+
 	$frontend = array();
 	$frontend["name"] = "example_multipledomains_forum";
 	$frontend["status"] = "active";
@@ -184,7 +205,7 @@ function haproxy_template_multipledomains() {
 	$action["acl"] = "forum_acl";
 	$frontend["a_actionitems"]["item"][] = $action;
 	$a_frontends[] = $frontend;
-	
+
 	$changedesc = "haproxy, add multi domain example";
 	header("Location: haproxy_listeners.php");
 	echo "touching: $d_haproxyconfdirty_path";
@@ -261,7 +282,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "templates");
 				<br/>
 				After applying the changes made by the template use this link to visit the stats page: <a target="_blank" href="https://<?=get_interface_ip("lan");?>:444">https://pfSense-LAN-ip:444/</a>
 			</div>
-		</div>	
+		</div>
 		<br/>
 	</div>
 	<div class="panel panel-default">
