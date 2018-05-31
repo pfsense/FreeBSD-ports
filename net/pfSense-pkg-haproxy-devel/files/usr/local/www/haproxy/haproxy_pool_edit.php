@@ -746,7 +746,12 @@ $section->addInput(new Form_Checkbox(
 );
 
 $form->add($section);
-
+if (!is_array($pconfig['a_acl'])) {
+	$pconfig['a_acl'] = array();
+}
+if (!is_array($pconfig['a_actionitems'])) {
+	$pconfig['a_actionitems'] = array();
+}
 $panel_body_state = (count($pconfig['a_acl']) > 0 || count($pconfig['a_actionitems']) > 0)? SEC_OPEN : SEC_CLOSED;
 $section = new Form_Section('Access control lists and actions', "aclpanel", COLLAPSIBLE|$panel_body_state);
 $section->addInput(new Form_StaticText(
@@ -1002,6 +1007,10 @@ $section->addInput(new Form_Input('stats_desc', 'Stats Description', 'text', $pc
 
 $section->addInput(new Form_Input('stats_refresh', 'Stats Refresh', 'text', $pconfig['stats_refresh']
 ),"haproxy_stats_visible")->setHelp('Specify the refresh rate of the stats page in seconds, or specified time unit (us, ms, s, m, h, d).');
+
+if (!is_array($a_errorfiles)) {
+	$a_errorfiles = array();
+}
 
 $panel_body_state = count($a_errorfiles) > 0 ? SEC_OPEN : SEC_CLOSED;
 $form->add($section);
