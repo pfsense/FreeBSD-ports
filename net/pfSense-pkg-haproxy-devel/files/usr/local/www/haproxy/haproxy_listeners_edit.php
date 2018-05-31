@@ -40,6 +40,12 @@ if (!function_exists("cert_get_purpose")) {
 /**/
 
 haproxy_config_init();
+if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+	$config['installedpackages']['haproxy']['ha_backends'] = array();
+}
+if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+	$config['installedpackages']['haproxy']['ha_pools'] = array();
+}
 $a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 $a_pools = $config['installedpackages']['haproxy']['ha_pools']['item'];
 uasort($a_pools, 'haproxy_compareByName');
@@ -352,7 +358,7 @@ if ($_POST) {
 			$input_errors[] = sprintf(gettext("The value '%s' in field 'Max connections' is not a number."), htmlspecialchars($_POST['max_connections']));
 		}
 
-		$ports = split(",", $_POST['port'] . ",");
+		$ports = explode(",", $_POST['port'] . ",");
 		foreach($ports as $port) {
 			if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
 				$input_errors[] = sprintf(gettext("The value '%s' in field 'Port' is not a number or alias thereof."), htmlspecialchars($port));
