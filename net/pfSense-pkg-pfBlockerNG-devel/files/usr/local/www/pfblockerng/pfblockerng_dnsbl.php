@@ -378,10 +378,7 @@ $group->add(new Form_Checkbox(
   ->setHelp('This will create \'Floating\' Firewall permit rules to allow traffic from the Selected Interface(s) to access<br />'
 		. 'the DNSBL VIP on the DNSBL Listening interface. (ICMP and Webserver ports only). This is only required for networks with multiple LAN Segments.');
 
-// Remove Localhost from Interface options
-array_pop($interface_list);
 $int_size = count($interface_list) ?: '1';
-
 $group->add(new Form_Select(
 	'dnsbl_allow_int',
 	NULL,
@@ -899,12 +896,14 @@ $section->addInput(new Form_Textarea(
 $tld_whitelist_text = 'Enter <strong>each specific</strong> Domain and/or Sub-Domains to be Whitelisted.
 			(Used in conjunction with <strong>TLD Blacklist only</strong>)&emsp;
 			<div class="infoblock">
-				Enter one &emsp;<strong>Domain</strong>&emsp; per line, followed by &emsp;<strong>|x.x.x.x</strong>&emsp;
-				(IP Address for Domain or Sub-Domain) &emsp;<br />Examples:<br />
+				Enter one &emsp;<strong>Domain</strong>&emsp;per line<br />Examples:<br />
 				<ul>
-					<li>example.com|x.x.x.x</li>
-					<li>news.example.com|x.x.x.x &emsp;&emsp;(Replace x.x.x.x with associated Domain/Sub-Domain IP Address.</li>
+					<li>example.com</li>
+					<li>example.com|x.x.x.x&emsp;&emsp;(Replace x.x.x.x with associated Domain/Sub-Domain IP Address.</li>
 				</ul>
+				The First option above will collect the IP Address on each Cron run, 
+				while the second option will define a Static IP Address.<br /><br />
+
 				You must Whitelist every Domain or Sub-Domain individually.<br />
 				No Regex Entries and no leading/trailing \'dot\' allowed!<br />
 				You may use "<strong>#</strong>" after any Domain/Sub-Domain to add comments. IE: (example.com|x.x.x.x # TLD Whitelist)<br />

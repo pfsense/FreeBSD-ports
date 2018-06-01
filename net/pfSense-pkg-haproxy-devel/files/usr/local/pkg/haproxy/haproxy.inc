@@ -1412,7 +1412,7 @@ function haproxy_writeconf($configpath) {
 	if(!is_array($config['installedpackages']['haproxy']['files'])) {
 		$config['installedpackages']['haproxy']['files'] = array();
 	}
-	
+
 	$a_global = &$config['installedpackages']['haproxy'];
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
@@ -2699,6 +2699,12 @@ function haproxy_get_cert_acls($cert, $usealternativenames = false) {
 function get_frontend_acls($frontend) {
 	$mainfrontend = get_primaryfrontend($frontend);
 	$result = array();
+	if (!is_array($frontend['ha_acls'])) {
+		$frontend['ha_acls'] = array();
+	}
+	if (!is_array($frontend['ha_acls']['item'])) {
+		$frontend['ha_acls']['item'] = array();
+	}
 	$a_acl = &$frontend['ha_acls']['item'];
 	if (is_array($a_acl))
 	{
@@ -2880,14 +2886,20 @@ function haproxy_config_init(){
 	if (!is_array($haproxycfg['dns_resolvers']['item'])) {
 		$haproxycfg['dns_resolvers']['item'] = array();
 	}
+	if (!is_array($haproxycfg['ha_backends'])) {
+		$haproxycfg['ha_backends'] = array();
+	}
 	if (!is_array($haproxycfg['ha_backends']['item'])) {
 		$haproxycfg['ha_backends']['item'] = array();
 	}
-	if (!is_array($haproxycfg['ha_pools']['item'])) {
-		$haproxycfg['ha_pools']['item'] = array();
+	if (!is_array($haproxycfg['ha_pools'])) {
+		$haproxycfg['ha_pools'] = array();
 	}
 	if (!is_array($haproxycfg['ha_pools']['item'])) {
 		$haproxycfg['ha_pools']['item'] = array();
+	}
+	if (!is_array($haproxycfg['files'])) {
+		$haproxycfg['files'] = array();
 	}
 	if (!is_array($haproxycfg['files']['item'])) {
 		$haproxycfg['files']['item'] = array();

@@ -75,7 +75,9 @@ require_once("certs.inc");
 require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
-
+if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+	$config['installedpackages']['haproxy']['ha_backends'] = array();
+}
 if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
 }
@@ -194,6 +196,6 @@ if (isset($_GET['showstatresolvers'])){
 			<br/>
 		<? } ?>
 		</div>
-<?}?>		
+<?}?>
 	</div>
 <?php include("foot.inc");

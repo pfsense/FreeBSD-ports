@@ -168,7 +168,7 @@ pfb_filter_service();
 update_status(" done.\n");
 
 // Create DNSBL service and link required executables
-update_status(" done.\nRemove any existing and create link for DNSBL lighttpd executable...");
+update_status("Remove any existing and create link for DNSBL lighttpd executable...");
 unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
 link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_pfb');
 
@@ -423,7 +423,31 @@ if ($ufound) {
 	update_status(" no changes required ... done.\n");
 }
 
+// Move General Tab 'IP settings' to new IP tab
+update_status("Upgrading General Tab -> IP Tab settings...");
+if (!isset($config['installedpackages']['pfblockerngipsettings'])) {
+	$pfb['gconfig'] = &$config['installedpackages']['pfblockerng']['config'][0];
+	$pfb['iconfig'] = &$config['installedpackages']['pfblockerngipsettings']['config'][0];
+
+	$settings = array(	'enable_dup', 'enable_agg', 'suppression', 'enable_log', 'maxmind_locale', 'database_cc',
+				'inbound_interface', 'inbound_deny_action', 'outbound_interface', 'outbound_deny_action',
+				'enable_float', 'pass_order', 'autorule_suffix', 'killstates' );
+
+	foreach ($settings as $setting) {
+		$pfb['iconfig'][$setting] = $pfb['gconfig'][$setting] ?: '';
+		if (isset($pfb['gconfig'][$setting])) {
+			unset($pfb['gconfig'][$setting]);
+		}
+	}
+	update_status(" saving new changes ... done.\n");
+}
+else {
+	update_status(" no changes required ... done.\n");
+}
+
 // Upgrade pfBlockerNGSuppress alias to IPv4 Suppression custom list
+$ufound = FALSE;
+update_status("Upgrading pfBlockerNGSuppress Alias -> IPv4 Suppression Customlist...");
 if (!isset($config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'])) {
 
 	$customlist = '';
@@ -448,27 +472,17 @@ if (!isset($config['installedpackages']['pfblockerngipsettings']['config'][0]['v
 				}
 				$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'] = base64_encode($customlist) ?: '';
 				// unset($config['aliases']['alias'][$key]);
+				$ufound = TRUE;
 				break;
 			}
 		}
 	}
 }
 
-// Move General Tab 'IP settings' to new IP tab
-if (!isset($config['installedpackages']['pfblockerngipsettings'])) {
-	$pfb['gconfig'] = &$config['installedpackages']['pfblockerng']['config'][0];
-	$pfb['iconfig'] = &$config['installedpackages']['pfblockerngipsettings']['config'][0];
-
-	$settings = array(	'enable_dup', 'enable_agg', 'suppression', 'enable_log', 'maxmind_locale', 'database_cc',
-				'inbound_interface', 'inbound_deny_action', 'outbound_interface', 'outbound_deny_action',
-				'enable_float', 'pass_order', 'autorule_suffix', 'killstates' );
-
-	foreach ($settings as $setting) {
-		$pfb['iconfig'][$setting] = $pfb['gconfig'][$setting] ?: '';
-		if (isset($pfb['gconfig'][$setting])) {
-			unset($pfb['gconfig'][$setting]);
-		}
-	}
+if ($ufound) {
+	update_status(" saving new changes ... done.\n");
+} else {
+	update_status(" no changes required ... done.\n");
 }
 
 // Convert dnsbl_info CSV file to SQLite3 database format
