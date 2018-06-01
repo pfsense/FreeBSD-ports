@@ -2826,26 +2826,40 @@ function pfb_aliastables($mode) {
 }
 
 
-// Collect pfBlockerNG rule names and tracker ids
+// Collect pfBlockerNG rule names and Tracker IDs
 function pfb_filterrules() {
 	global $pfb;
 
-	$rule_list = array();
-	exec("{$pfb['pfctl']} -vv -sr | {$pfb['grep']} 'pfB_'", $results);
+	$rule_list		= array();
+	$rule_list['other']	= array();
+
+	exec("{$pfb['pfctl']} -vvsr 2>&1", $results);
 	if (!empty($results)) {
 		foreach ($results as $result) {
+			if (substr($result, 0, 1) == '@') {
 
-			// Find rule tracker ids
-			$id = strstr($result, '(', FALSE);
-			$id = ltrim(strstr($id, ')', TRUE), '(');
+				$r	= explode(')', $result, 2);
+				$id	= ltrim(strstr($r[0], '(', FALSE), '(');
 
-			// Find rule descriptions
-			$descr = ltrim(stristr($result, '<pfb_', FALSE), '<');
-			$descr = strstr($descr, ':', TRUE);
+				// Find rule descriptions and type for pfBlockerNG Tracker IDs
+				if (strpos($r[1], ' <pfB_') !== FALSE) {
+					$descr	= ltrim(stristr($r[1], '<pfb_', FALSE), '<');
+					$descr	= strstr($descr, ':', TRUE);
+					$type	= strstr(trim($r[1]), ' ', TRUE);
+					if ($type == 'match') {
+						$type = 'unkn(%u)';
+					}
 
-			// Create array of rule description and tracker id
-			$rule_list['id'][] = $id;
-			$rule_list[$id]['name'] = $descr;
+					$rule_list['id'][]	= $id;
+					$rule_list[$id]['name']	= $descr;
+					$rule_list[$id]['type'] = $type;
+				}
+
+				// All other non-pfBlockerNG Tracker IDs
+				else {
+					$rule_list['other'][$id] = '';
+				}
+			}
 		}
 	}
 	return $rule_list;
@@ -3298,7 +3312,7 @@ function pfb_daemon_filterlog() {
 
 	$p_entry 	= '';
 	$line_cnt	= 0;
-	$rule_list	= array();
+	$rule_list	= $rule_list['other'] = array();
 
 	// Parse full filter.log on first run, otherwise only parse new filter.log events
 	if (!file_exists($pfb['ip_blocklog']) && !file_exists($pfb['ip_permitlog']) && !file_exists($pfb['ip_matchlog'])) {
@@ -3387,27 +3401,43 @@ function pfb_daemon_filterlog() {
 			}
 			$d = explode(',', $f[5]);
 
-			// Only collect pfBlockerNG Tracker IDs
-			if (!empty($d[3]) && substr($d[3], 0, 4) == '1770') {
-
-				// Attemp to find the Tracker ID, if not found wait 5secs for filter_reload
+			// Attemp to find the Tracker ID, if not found wait 5secs for filter_reload
+			$other = FALSE;
+			if (!empty($d[3])) {
 				for ($retries = 1; $retries <= 5; $retries++) {
 
-					// Collect pfBlockerNG rule names and Tracker IDs
-					if (!isset($rule_list[$d[3]])) {
+					// Skip known non-pfBlockerNG Tracker IDs
+					if (isset($rule_list['other'][$d[3]])) {
+						$other = TRUE;
+						break;
+					}
+
+					// Break on pfBlockerNG rule Tracker ID and Rule type (block|permit|match)
+					// If the user switched a manual rule from one type to another, the Tracker ID will stay the same
+					// So this comparison will refresh the data on changes
+					if (isset($rule_list[$d[3]]) && $rule_list[$d[3]]['type'] == $d[6]) {
+						break;
+					}
+
+					// Collect updated pfctl Rule data, Host and local IP data
+					else {
 						$rule_list	= pfb_filterrules();
 						$data		= pfb_collect_localip();
 						$pfb_local	= $data[0] ?: array();
 						$pfb_localsub	= $data[1] ?: array();
+
 						$local_hosts    = pfb_collect_localhosts();
-					}
-					else {
-						break;
 					}
 
 					if ($retries < 5) {
 						sleep(5);
+					} else {
+						$other = TRUE;
 					}
+				}
+
+				if ($other) {
+					continue;
 				}
 
 				// Duplicate entry comparison: "Tracker ID/Action/SRC IP/DST IP/DST Port"
@@ -3500,6 +3530,11 @@ function pfb_daemon_filterlog() {
 					// Details:	"Direction/GeoIP/Aliasname/IP evaluated/Feed Name/Resolved Hostname/Client Hostname"
 					$details	= "{$dir},{$geoip},{$pfb_alias},{$pfb_query[1]},{$pfb_query[0]},{$resolved_host},{$hostname}";
 
+					// Reverse Match text
+					if ($d[6] == 'match') {
+						$d[6] = 'unkn(%u)';
+					}
+					
 					if ($d[8] == 4) {
 						// Previous:	"Tracker ID/Action/SRC IP/DST IP/DST Port"
 						$p_entry	= "{$d[3]}{$d[6]}{$d[18]}{$d[19]}{$d[21]}";
@@ -3555,7 +3590,6 @@ function pfb_dnsbl_parse($domain, $src_ip, $req_agent) {
 		$stmt = $db_handle->prepare($db_update);
 		$stmt->bindValue(':domain', $domain, SQLITE3_TEXT);
 		$result = $stmt->execute();
-
 		if ($result) {
 			$dnsbl_cache = $result->fetchArray(SQLITE3_ASSOC);
 		}
@@ -3987,8 +4021,10 @@ function pfb_daemon_queries() {
 		$db_handle = pfb_open_sqlite(3, 'Resolver collect queries');
 		if ($db_handle) {
 			$result = $db_handle->query("SELECT * FROM resolver WHERE row = 0;");
-			while ($stats = $result->fetchArray(SQLITE3_ASSOC)) {
-				$pfb_found = TRUE;
+			if ($result) {
+				while ($stats = $result->fetchArray(SQLITE3_ASSOC)) {
+					$pfb_found = TRUE;
+				}
 			}
 
 			// Create new row
