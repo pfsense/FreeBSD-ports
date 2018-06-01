@@ -1,0 +1,10 @@
+--- lib/host/Makefile.orig	2018-06-01 19:43:23 UTC
++++ lib/host/Makefile
+@@ -23,5 +23,5 @@ clean:
+ 	rm -f libatca_host.a $(OBJS)
+ 
+ install: all
+-	install -dm 0755 $(PREFIX)/usr/local/include/cryptoauthlib/host
+-	install -m 0644 $(INCLUDES) $(PREFIX)/usr/local/include/cryptoauthlib/host
++	install -dm 0755 $(DESTDIR)$(PREFIX)/include/cryptoauthlib/host
++	install -m 0644 $(INCLUDES) $(DESTDIR)$(PREFIX)/include/cryptoauthlib/host

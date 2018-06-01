@@ -1,0 +1,13 @@
+--- lib/crypto/Makefile.orig	2018-06-01 19:43:23 UTC
++++ lib/crypto/Makefile
+@@ -25,8 +25,8 @@ clean:
+ 	rm -f libatca_crypto.a $(OBJS)
+ 
+ install: all
+-	install -dm 0755 $(PREFIX)/usr/local/include/cryptoauthlib/crypto
+-	install -m 0644 $(INCLUDES) $(PREFIX)/usr/local/include/cryptoauthlib/crypto
++	install -dm 0755 $(DESTDIR)$(PREFIX)/include/cryptoauthlib/crypto
++	install -m 0644 $(INCLUDES) $(DESTDIR)$(PREFIX)/include/cryptoauthlib/crypto
+ 
+ SUBDIR=         hashes
+ 

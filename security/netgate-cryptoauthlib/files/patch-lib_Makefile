@@ -1,0 +1,33 @@
+--- lib/Makefile.orig	2018-04-23 12:06:25 UTC
++++ lib/Makefile
+@@ -7,7 +7,7 @@ INCLUDES+=atca_status.h cryptoauthlib.h
+ 
+ LDFLAGS=-L./atcacert -L./basic -L./crypto -L./hal -L./host -whole-archive
+ LDFLAGS+=-static -latca_cert -latca_basic -latca_crypto -latca_hal -latca_host
+-LDFLAGS+=--no-whole-archive -lcompiler_rt
++LDFLAGS+=--no-whole-archive
+ CCFLAGS=-O2 -fPIC -Wall -Wextra -Wshadow -Wcast-qual -Wcast-align
+ CCFLAGS+=-Wwrite-strings -Wredundant-decls -Wnested-externs -Winline
+ CCFLAGS+=-I.
+@@ -19,7 +19,7 @@ CCFLAGS+=-g
+ all: libcryptoauth.so
+ 
+ libcryptoauth.so: atcacert basic crypto hal host $(OBJS) $(INCLUDES)
+-	$(LD) -Bshareable --hash-style=both --enable-new-dtag \
++	$(LD) -Bshareable --hash-style=both \
+ 	    -o libcryptoauth.so $(OBJS) $(LDFLAGS)
+ 
+ .c.o: $(INCLUDES)
+@@ -29,9 +29,9 @@ clean:
+ 	rm -f libcryptoauth.so $(OBJS)
+ 
+ install: all
+-	install -m 0644 libcryptoauth.so $(PREFIX)/usr/local/lib
+-	install -dm 0755 $(PREFIX)/usr/local/include/cryptoauthlib
+-	install -m 0644 $(INCLUDES) $(PREFIX)/usr/local/include/cryptoauthlib/
++	install -m 0644 libcryptoauth.so $(DESTDIR)$(PREFIX)/lib
++	install -dm 0755 $(DESTDIR)$(PREFIX)/include/cryptoauthlib
++	install -m 0644 $(INCLUDES) $(DESTDIR)$(PREFIX)/include/cryptoauthlib/
+ 	@make -C atcacert install
+ 	@make -C basic install
+ 	@make -C crypto install

@@ -1,0 +1,10 @@
+--- lib/atcacert/Makefile.orig	2018-06-01 19:43:23 UTC
++++ lib/atcacert/Makefile
+@@ -25,5 +25,5 @@ clean:
+ 	rm -f libatca_cert.a $(OBJS)
+ 
+ install: all
+-	install -dm 0755 $(PREFIX)/usr/local/include/cryptoauthlib/atcacert
+-	install -m 0644 $(INCLUDES) $(PREFIX)/usr/local/include/cryptoauthlib/atcacert
++	install -dm 0755 $(DESTDIR)$(PREFIX)/include/cryptoauthlib/atcacert
++	install -m 0644 $(INCLUDES) $(DESTDIR)$(PREFIX)/include/cryptoauthlib/atcacert
