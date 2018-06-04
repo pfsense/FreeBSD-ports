@@ -353,7 +353,7 @@ if ($_POST) {
 			$input_errors[] = "The field 'Max connections' value is not a number.";
 		}
 
-		$ports = split(",", $_POST['port'] . ",");
+		$ports = explode(",", $_POST['port'] . ",");
 		foreach($ports as $port) {
 			if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
 				$input_errors[] = "The field 'Port' value '".htmlspecialchars($port)."' is not a number or alias thereof.";
