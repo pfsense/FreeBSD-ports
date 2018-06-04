@@ -25,7 +25,7 @@
  */
 	]]>
 	</copyright>
-	<description>Automatically backs up your pfSense configuration. All contents are encrypted before being sent to the server. Requires Gold Subscription from https://portal.pfsense.org</description>
+	<description>Automatically backs up your pfSense configuration. All contents are AES-256 encrypted before being sent to the server.
 	<requirements>pfSense Portal subscription</requirements>
 	<name>AutoConfigBackup2</name>
 	<title>Diagnostics: Auto Configuration Backup</title>
