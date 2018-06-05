@@ -1075,7 +1075,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 
 	$action_txt = "Default: <strong>Disabled</strong>
 			<br />For Non-Alias type rules you must define the appropriate <strong>Firewall 'Auto' Rule Order</strong> option.
-			<br />Click here for more infoâ€ƒ-->
+			<br />Click here for more info -->
 			<div class=\"infoblock alert-info clearfix\">
 				Select the <strong>Action</strong> for Firewall Rules on lists you have selected.<br /><br />
 
