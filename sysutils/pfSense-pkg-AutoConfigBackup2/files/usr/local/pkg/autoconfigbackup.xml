@@ -25,7 +25,7 @@
  */
 	]]>
 	</copyright>
-	<description>Automatically backs up your pfSense configuration. All contents are AES-256 encrypted before being sent to the server.
+	<description>Automatically backs up your pfSense configuration. All contents are AES-256 encrypted before being sent to the server.</description>
 	<requirements>pfSense Portal subscription</requirements>
 	<name>AutoConfigBackup2</name>
 	<title>Diagnostics: Auto Configuration Backup</title>
@@ -74,7 +74,7 @@
 			<fielddescr>Ignore Captive Portal Vouchers</fielddescr>
 			<fieldname>ignore_vouchers</fieldname>
 			<description>Don't backup captive portal voucher syncs</description>
-			<type>select</type>
+			<type>hidden</type>
 			<default_value>true</default_value>
 			<options>
 				<option><value>true</value><name>True</name></option>
@@ -84,17 +84,18 @@
 		<field>
 			<fielddescr>Subscription Username</fielddescr>
 			<fieldname>username</fieldname>
-			<description>Enter a username here ONLY if you need to access the &quot;Gold&quot; (legacy) backup system</description>
+			<description>Enter a username here &lt;strong&gt;ONLY&lt;/strong&gt; if you need to access the &quot;Gold&quot; (legacy) backup system</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Subscription Password</fielddescr>
 			<fieldname>password</fieldname>
-			<description>Enter a password here ONLY if you need to access the &quot;Gold&quot; (legacy) backup system</description>
+			<description>Enter a password here &lt;strong&gt;ONLY&lt;/strong&gt; if you need to access the &quot;Gold&quot; (legacy) backup system</description>
 			<type>password</type>
 		</field>
 		<field>
-			<fielddescr>Enter a password again here ONLY if you need to access the &quot;Gold&quot; (legacy) backup system</fielddescr>
+			<fielddescr>Password confirmation</fielddescr>
+			<description>Reenter the password &lt;strong&gt;ONLY&lt;/strong&gt; if you need to access the &quot;Gold&quot; (legacy) backup system</description>
 			<fieldname>passwordagain</fieldname>
 			<type>password</type>
 		</field>

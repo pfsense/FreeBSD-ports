@@ -71,7 +71,6 @@ $tab_array = array();
 $tab_array[] = array("Settings", false, "/pkg_edit.php?xml=autoconfigbackup.xml&amp;id=0");
 $tab_array[] = array("Restore", false, "/autoconfigbackup.php");
 $tab_array[] = array("Backup now", true, "/autoconfigbackup_backup.php");
-$tab_array[] = array("Stats", false, "/autoconfigbackup_stats.php");
 display_top_tabs($tab_array);
 
 $form = new Form("Backup");
@@ -86,6 +85,18 @@ $section->addInput(new Form_Input(
 ))->setWidth(7)->setHelp("Enter the reason for the backup");
 
 $form->add($section);
+
+$section2 = new Form_Section('Device key');
+
+$section2->addInput(new Form_Input(
+	'devkey',
+	'Device key',
+	'text',
+	$userkey
+))->setWidth(7)->setReadonly()->setHelp("ID used to identify this firewall (derived from the SSH public key.) " .
+	"Keep a record of this key in case you should ever need to recover this backup on another firewall.");
+
+$form->add($section2);
 
 print($form);
 

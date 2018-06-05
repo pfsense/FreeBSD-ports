@@ -471,8 +471,10 @@ print($form);
 		</select>
 <?php }
 	if ($legacy): ?>
+		<span class="pull-right">&nbsp;</span>
 		<button id="nolegacy" class="btn btn-xs btn-warning pull-right" data-toggle="tooltip" title="<?=gettext('Exit the legacy backup system')?>">Exit legacy repository</button>
 <?php else:  ?>
+		<span class="pull-right">&nbsp;</span>
 		<button id="legacy" class="btn btn-xs btn-success pull-right" data-toggle="tooltip" title="<?=gettext('Switch to the legacy backup system provided as part of the Gold program')?>">Use legacy "Gold" repository</button>
 <?php endif; ?>
 
@@ -537,7 +539,7 @@ if (!$legacy) {
 		'Device key',
 		'text',
 		$userkey
-	))->setWidth(7)->setHelp("ID used to identify this firewall (derived from the SSH public key. )" .
+	))->setWidth(7)->setHelp("ID used to identify this firewall (derived from the SSH public key.) " .
 		"See help below for more details.");
 
 	$group->add(new Form_Button(
@@ -549,7 +551,7 @@ if (!$legacy) {
 
 	$group->add(new Form_Button(
 		'restore',
-		'Restore',
+		'Reset',
 		null,
 		'fa-refresh'
 	))->addClass('btn-info btn-xs');
@@ -576,8 +578,8 @@ endif; ?>
 		print(gettext("<p align=\"center\"><strong>pfSense&copy; &quot;Gold&quot; configuration backup system access.</strong>
 			</p>
 			<p>The &quot;Gold&quot; backup system may be available to allow the retrieval of older backups</p>
-			<p>Note that for because these backups were stored by hostname AND username, the configured username, hostname and password will be transmitted (via HTTPS) to the server. By clicking &quot;OK&quot;
-			you are agreeing you authorize this action. The backup data is encrypted (AES-256) and the encryption key is neither transmitted, nor known outside of the firewall</p>
+			<p>Note that because these backups were stored by hostname AND username, the configured username, hostname and password will be transmitted (via HTTPS) to the server. By clicking &quot;OK&quot;
+			you agree that you authorize this action. The backup data is encrypted (AES-256) and the encryption key is neither transmitted, nor known outside of the firewall</p>
 			</div>"));
 ?>
 			<div class="modal-footer">
