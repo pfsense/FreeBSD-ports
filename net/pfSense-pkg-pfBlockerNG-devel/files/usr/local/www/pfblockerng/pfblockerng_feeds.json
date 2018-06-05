@@ -386,8 +386,8 @@
 				},
 				{
 					"feed":		"CoinBlocker",
-					"website":	"https://github.com/ZeroDot1/CoinBlockerLists",
-					"url":		"https://raw.githubusercontent.com/ZeroDot1/CoinBlockerLists/master/MiningServerIPList.txt",
+					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
+					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/MiningServerIPList.txt",
 					"header":	"CoinBlocker"
 				},
 				{
@@ -1373,19 +1373,19 @@
 			"feeds": [
 				{
 					"feed":		"CoinBlocker",
-					"website":	"https://github.com/ZeroDot1/CoinBlockerLists",
-					"url":		"https://raw.githubusercontent.com/ZeroDot1/CoinBlockerLists/master/list.txt",
+					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
+					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list.txt",
 					"header":	"CoinBlocker_All",
 					"alternate": [
 							{
-							"url":		"https://raw.githubusercontent.com/ZeroDot1/CoinBlockerLists/master/list_browser.txt",
+							"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list_browser.txt",
 							"header":	"CoinBlocker_Browser"
 							}
 						]
 				},
 				{	"feed":		"CoinBlocker",
-					"website":	"https://github.com/ZeroDot1/CoinBlockerLists",
-					"url":		"https://raw.githubusercontent.com/ZeroDot1/CoinBlockerLists/master/list_optional.txt",
+					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
+					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list_optional.txt",
 					"header":	"CoinBlocker_Opt"
 				},
 				{
