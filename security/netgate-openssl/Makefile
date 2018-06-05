@@ -2,6 +2,7 @@
 
 PORTNAME=	openssl
 DISTVERSION=	20180528
+PORTREVISION=	1
 CATEGORIES=	security
 PKGNAMEPREFIX=	netgate-
 
@@ -11,7 +12,8 @@ COMMENT=	Netgate thoth SSL libraries
 LIB_DEPENDS=	libcryptoauth.so:security/netgate-cryptoauthlib \
 		libthoth.so:security/netgate-libthoth
 
-USES=	ssl
+MAKE_ARGS=	ATCA_HAL_I2C=1
+USES=		ssl
 PREFIX=		/usr
 PLIST_FILES=	${PREFIX}/lib/engines/libateccx08.so
 USE_LDCONFIG=	yes
