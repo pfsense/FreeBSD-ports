@@ -40,13 +40,23 @@ if (!function_exists("cert_get_purpose")) {
 /**/
 
 haproxy_config_init();
+
 if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
 	$config['installedpackages']['haproxy']['ha_backends'] = array();
 }
+if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+}
+
+$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+
 if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
 	$config['installedpackages']['haproxy']['ha_pools'] = array();
 }
-$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+}
+
 $a_pools = $config['installedpackages']['haproxy']['ha_pools']['item'];
 uasort($a_pools, 'haproxy_compareByName');
 

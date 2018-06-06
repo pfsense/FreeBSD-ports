@@ -27,7 +27,21 @@ require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
+
+if (!is_array($config['installedpackages']['haproxy']['files'])) {
+	$config['installedpackages']['haproxy']['files'] = array();
+}
+if (!is_array($config['installedpackages']['haproxy']['files']['item'])) {
+	$config['installedpackages']['haproxy']['files']['item'] = array();
+}
 $a_files = &$config['installedpackages']['haproxy']['files']['item'];
+
+if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+	$config['installedpackages']['haproxy']['ha_pools'] = array();
+}
+if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+}
 $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 
 $fields_files = array();
@@ -53,7 +67,7 @@ $fileslist->keyfield = "name";
 
 if ($_POST) {
 	$pconfig = $_POST;
-	
+
 	if ($_POST['apply']) {
 		$result = haproxy_check_and_run($savemsg, true);
 		if ($result)
@@ -70,7 +84,7 @@ if ($_POST) {
 				$input_errors[] = "Duplicate names are not allowed: " . htmlspecialchars($name);
 			$filedupcheck[$name] = true;
 		}
-		
+
 		// replace references in backends to renamed 'files'
 		foreach($a_pools as &$backend) {
 			if (is_arrayset($backend,'errorfiles','item')) {
@@ -119,8 +133,8 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
 	<div class="content">
 		<div class="table-responsive panel-body content">
 			Files can be used for errorfiles and lua scripts.<br/>
-			- Errorfiles can return custom error pages in 
-			case haproxy reports a error (like no available backend). The content needs 
+			- Errorfiles can return custom error pages in
+			case haproxy reports a error (like no available backend). The content needs
 			to be less than the buffer size which is typically 8kb.
 			There are 2 possible variables to use inside the template:
 			Put these variables in the content of the errorfile templates and they will be replaced by the actual errorcode / message. (include the curly braces around the text)<br/>
