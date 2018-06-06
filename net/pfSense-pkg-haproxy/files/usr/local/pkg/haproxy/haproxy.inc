@@ -597,6 +597,12 @@ EOD;
 
 function haproxy_find_backend($backendname) {
 	global $config;
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+		$config['installedpackages']['haproxy']['ha_pools'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+	}
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	foreach ($a_backends as &$backend) {
 		if ($backend['name'] == $backendname) {
@@ -622,7 +628,20 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	$frontend = $backendsettings['frontend'];
 	$ipversion = $backendsettings['ipversion'];
 	$a_global = &$config['installedpackages']['haproxy'];
+	if (!is_array($config['installedpackages']['haproxy']['email_mailers'])) {
+		$config['installedpackages']['haproxy']['email_mailers'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['email_mailers']['item'])) {
+		$config['installedpackages']['haproxy']['email_mailers']['item'] = array();
+	}
 	$a_mailers = &$config['installedpackages']['haproxy']['email_mailers']['item'];
+
+	if (!is_array($config['installedpackages']['haproxy']['dns_resolvers'])) {
+		$config['installedpackages']['haproxy']['dns_resolvers'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['dns_resolvers']['item'])) {
+		$config['installedpackages']['haproxy']['dns_resolvers']['item'] = array();
+	}
 	$a_resolvers = $config['installedpackages']['haproxy']['dns_resolvers']['item'];
 
 	if (!is_array($pool['ha_servers']['item']) && !$pool['stats_enabled']=='yes') {
@@ -631,6 +650,9 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	global $a_checktypes, $a_cookiemode, $a_files_cache, $a_error;
 
 	$server_options = "";
+	if (!is_array($pool['ha_servers']['item'])) {
+		$pool['ha_servers']['item'] = array();
+	}
 	$a_servers = &$pool['ha_servers']['item'];
 	$frontendtype = $frontend['type'];
 
@@ -1255,6 +1277,13 @@ function haproxy_write_certificate_issuer($filename, $certid) {
 
 function haproxy_uses_ocsp() {
 	global $config;
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+		$config['installedpackages']['haproxy']['ha_backends'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+	}
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	if (!is_array($a_frontends)) {
 		return false;
@@ -1300,6 +1329,12 @@ function haproxy_updateocsp_one($socketupdate, $filename, $name) {
 
 function haproxy_updateocsp($socketupdate = true) {
 	global $config, $g;
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+		$config['installedpackages']['haproxy']['ha_backends'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+	}
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	if (!is_array($a_frontends)) {
 		return true;
@@ -1966,6 +2001,13 @@ function frontend_usetransparentbackend($frontend) {
 
 function use_transparent_clientip_proxying() {
 	global $config;
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+		$config['installedpackages']['haproxy']['ha_pools'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+	}
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	if (is_array($a_backends)) {
 		foreach ($a_backends as $backend) {
@@ -1979,6 +2021,12 @@ function use_transparent_clientip_proxying() {
 
 function haproxy_get_transparent_backends(){
 	global $config;
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+		$config['installedpackages']['haproxy']['ha_pools'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+	}
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$transparent_backends = array();
 	if (!is_array($a_backends)) {
@@ -2328,6 +2376,13 @@ function haproxy_xmlrpc_sync_configure() {
 
 function get_frontend_id($name) {
 	global $config;
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+		$config['installedpackages']['haproxy']['ha_backends'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+	}
 	$a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$i = 0;
 	foreach($a_frontend as $frontend)
@@ -2349,6 +2404,12 @@ function haproxy_is_frontendname($name) {
 
 function get_primaryfrontend($frontend) {
 	global $config;
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+		$config['installedpackages']['haproxy']['ha_backends'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+	}
 	$a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	if ($frontend['secondary'] == 'yes') {
 		$mainfrontend = $a_frontend[get_frontend_id($frontend['primary_frontend'])];
@@ -2419,6 +2480,13 @@ function get_frontend_bindips($frontend) {
 
 function haproxy_check_config() {
 	global $config;
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+		$config['installedpackages']['haproxy']['ha_backends'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+	}
 	$a_backends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$result = false;
 	$activefrontends = array();
@@ -2598,6 +2666,10 @@ function get_frontend_acls($frontend) {
 	}
 
 	if (get_frontend_uses_ssl($frontend)) {
+
+		if (!is_array($frontend['ha_acls']['item'])) {
+			$frontend['ha_acls']['item'] = array();
+		}
 		$a_acl = &$frontend['ha_acls']['item'];
 		if (!is_array($a_acl)) {
 			$a_acl = array();
@@ -2638,6 +2710,9 @@ function get_frontend_acls($frontend) {
 
 function get_backend_acls($backend, $type) {
 	$result = array();
+	if (!is_array($backend['a_acl']['item'])) {
+		$backend['a_acl']['item'] = array();
+	}
 	$a_acl = &$backend['a_acl']['item'];
 	if (is_array($a_acl))
 	{
@@ -2664,6 +2739,13 @@ function get_backend_acls($backend, $type) {
 
 function get_backend_id($name) {
 	global $config;
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+		$config['installedpackages']['haproxy']['ha_pools'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+	}
 	$a_backend = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$i = 0;
 	if (is_array($a_backend)) {
@@ -2679,6 +2761,13 @@ function get_backend_id($name) {
 
 function get_backend($name) {
 	global $config;
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+		$config['installedpackages']['haproxy']['ha_pools'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+	}
 	$a_backend = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$id = get_backend_id($name);
 	if (is_numeric($id)) {
@@ -2689,6 +2778,13 @@ function get_backend($name) {
 
 function use_frontend_as_unixsocket($name) {
 	global $config;
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+		$config['installedpackages']['haproxy']['ha_pools'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+	}
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	foreach ($a_backends as $backend) {
 		$a_servers = &$backend['ha_servers']['item'];
