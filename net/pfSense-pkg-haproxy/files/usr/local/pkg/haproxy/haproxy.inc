@@ -2643,6 +2643,12 @@ function haproxy_get_cert_acls($cert, $usealternativenames = false) {
 function get_frontend_acls($frontend) {
 	$mainfrontend = get_primaryfrontend($frontend);
 	$result = array();
+	if (!is_array($frontend['ha_acls'])) {
+		$frontend['ha_acls'] = array();
+	}
+	if (!is_array($frontend['ha_acls']['item'])) {
+		$frontend['ha_acls']['item'] = array();
+	}
 	$a_acl = &$frontend['ha_acls']['item'];
 	if (is_array($a_acl))
 	{
