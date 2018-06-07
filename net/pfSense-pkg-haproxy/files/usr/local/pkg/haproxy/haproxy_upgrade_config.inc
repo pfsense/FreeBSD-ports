@@ -35,7 +35,7 @@ function haproxy_upgrade_config() {
 
 	$static_output .= "HAProxy, from version $configversion\n";
 	update_output_window($static_output);
-	
+
 	$writeconfigupdate = false;
 	if ($configversion < "00.13") {
 		/* Do XML upgrade from haproxy 0.31 to haproxy-dev */
@@ -46,8 +46,20 @@ function haproxy_upgrade_config() {
 		/* We have an old config */
 			$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
 			$a_global = &$config['installedpackages']['haproxy'];
+			if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+				$config['installedpackages']['haproxy']['ha_backends'] = array();
+			}
+			if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+				$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+			}
 			$a_backends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 			$a_oldservers = &$config['installedpackages']['haproxy']['ha_servers']['item'];
+			if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+				$config['installedpackages']['haproxy']['ha_pools'] = array();
+			}
+			if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+				$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+			}
 			$a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 
 			foreach ($a_backends as $id => $be) {
@@ -86,12 +98,12 @@ function haproxy_upgrade_config() {
 			unset($config['installedpackages']['haproxy']['ha_servers']);
 			$writeconfigupdate = true;
 		}
-		
+
 		/* XML update to: pkg v1.3 and 'pool' changed to 'backend_serverpool' because 'pool' was added to listtags() in xmlparse.inc */
 		if (is_arrayset($config,'installedpackages','haproxy','ha_backends','item',0,'pool')) {
 			$static_output .= "HAProxy, Do XML upgrade, change to backend_serverpool from pool array\n";
 			update_output_window($static_output);
-		
+
 			foreach($config['installedpackages']['haproxy']['ha_backends']['item'] as &$frontend)
 			{
 				$backend_serverpool = $frontend['pool'][0];
@@ -100,7 +112,7 @@ function haproxy_upgrade_config() {
 			}
 			$writeconfigupdate = true;
 		}
-		//also move setting for existing 2.0 installations as only the new variable is used 
+		//also move setting for existing 2.0 installations as only the new variable is used
 		if (is_arrayset($config,'installedpackages','haproxy','ha_backends','item',0) &&
 			isset($config['installedpackages']['haproxy']['ha_backends']['item'][0]['pool'])) {
 			$static_output .= "HAProxy, Do XML upgrade, change to backend_serverpool from pool\n";
@@ -201,7 +213,7 @@ function haproxy_upgrade_config() {
 				$fe_name = $primaryfrontend['name'];
 				$frontends[$fe_name][] = &$frontend;
 			}
-			
+
 			foreach ($frontends as $primary) {
 				$acl_count = array();
 				foreach ($primary as &$frontend){
@@ -210,7 +222,7 @@ function haproxy_upgrade_config() {
 					if (!is_array($a_actions)) {
 						$a_actions = array();
 					}
-					
+
 					$primaryfrontend = get_primaryfrontend($frontend);
 					$frontendtype = $primaryfrontend['type'];
 					$is_default = true;
@@ -258,7 +270,7 @@ function haproxy_upgrade_config() {
 		}
 		$configversion = "00.32";
 	}
-	
+
 	$writeconfigupdate = $config['installedpackages']['haproxy']['configversion'] <> $configversion;
 	if ($writeconfigupdate) {
 		$config['installedpackages']['haproxy']['configversion'] = $configversion;

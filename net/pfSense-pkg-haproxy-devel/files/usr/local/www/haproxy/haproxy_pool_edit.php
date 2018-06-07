@@ -29,6 +29,13 @@ require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
+if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+	$config['installedpackages']['haproxy']['ha_pools'] = array();
+}
+if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+}
+
 $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 
 $a_files = haproxy_get_fileslist();
@@ -326,8 +333,20 @@ $htmllist_actions->keyfield = "name";
 
 
 if (isset($id) && $a_pools[$id]) {
+	if (!is_array($a_pools[$id]['a_acl'])) {
+		$a_pools[$id]['a_acl'] = array();
+	}
+	if (!is_array($a_pools[$id]['a_acl']['item'])) {
+		$a_pools[$id]['a_acl']['item'] = array();
+	}
 	$pconfig['a_acl'] = &$a_pools[$id]['a_acl']['item'];
 	haproxy_check_isarray($pconfig['a_acl']);
+	if (!is_array($a_pools[$id]['a_actionitems']['item'])) {
+		$a_pools[$id]['a_actionitems']['item'] = array();
+	}
+	if (!is_array($a_pools[$id]['a_actionitems'])) {
+		$a_pools[$id]['a_actionitems'] = array();
+	}
 	$pconfig['a_actionitems'] = &$a_pools[$id]['a_actionitems']['item'];
 	haproxy_check_isarray($pconfig['a_actionitems']);
 
@@ -340,6 +359,12 @@ if (isset($id) && $a_pools[$id]) {
 		$pconfig[$stat] = $a_pools[$id][$stat];
 	}
 
+	if (!is_array($a_pools[$id]['errorfiles'])) {
+		$a_pools[$id]['errorfiles'] = array();
+	}
+	if (!is_array($a_pools[$id]['errorfiles']['item'])) {
+		$a_pools[$id]['errorfiles']['item'] = array();
+	}
 	$a_errorfiles = &$a_pools[$id]['errorfiles']['item'];
 	if (!is_array($a_errorfiles)) {
 		$a_errorfiles = array();
@@ -459,6 +484,12 @@ if ($_POST) {
 		$oldvalue = $pool['name'];
 		$newvalue = $_POST['name'];
 
+		if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+			$config['installedpackages']['haproxy']['ha_backends'] = array();
+		}
+		if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+			$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+		}
 		$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 		if (!is_array($a_backend)) {
 			$a_backend = array();

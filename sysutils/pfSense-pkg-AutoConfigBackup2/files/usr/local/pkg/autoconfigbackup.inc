@@ -27,15 +27,21 @@ unlink_if_exists("/usr/local/pkg/parse_config/parse_config_upload.inc");
 unlink_if_exists("/usr/local/pkg/parse_config/parse_config_upload.php");
 
 // If there is no ssh key in the system to identify this firewall, generate a pair now
-if (!file_exists("/etc/ssh/ssh_host_ed25519_key.pub")) {
-	exec("/usr/bin/nice -n20 /usr/bin/ssh-keygen -t ed25519 -b 4096 -N '' -f /etc/ssh//ssh_host_ed25519_key");
+function get_device_key() {
+	if (!file_exists("/etc/ssh/ssh_host_ed25519_key.pub")) {
+		exec("/usr/bin/nice -n20 /usr/bin/ssh-keygen -t ed25519 -b 4096 -N '' -f /etc/ssh//ssh_host_ed25519_key");
+	}
+
+	// The userkey (firewall identifier) is an MD5 has of the ed25519 public key
+	return hash("sha256", file_get_contents("/etc/ssh/ssh_host_ed25519_key.pub"));
 }
 
-// The userkey (firewall identifier) is an MD5 has of the ed25519 public key
-$userkey = hash("sha256", file_get_contents("/etc/ssh/ssh_host_ed25519_key.pub"));
+$origkey = get_device_key();
 
 if (isset($_REQUEST['userkey']) && !empty($_REQUEST['userkey'])) {
 	$userkey = htmlentities($_REQUEST['userkey']);
+} else {
+	$userkey = get_device_key();
 }
 
 // Defined username. Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
@@ -208,7 +214,11 @@ function test_connection($post) {
 }
 
 function upload_config($reasonm = "") {
-	global $config, $g, $input_errors, $userkey;
+	global $config, $g, $input_errors, $userkey, $uniqueID;
+
+	if (empty($userkey)) {
+		$userkey = get_device_key();
+	}
 
 	// Do nothing when booting or when not enabled
 	if (platform_booting() || !acb_enabled()) {
