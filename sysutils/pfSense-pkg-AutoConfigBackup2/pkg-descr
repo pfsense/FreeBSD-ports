@@ -1,6 +1,4 @@
-Automatically backs up your pfSense configuration. All contents are encrypted
-before being sent to the server.<br />
-			Requires Gold Subscription from <a
-			href="https://portal.pfsense.org">pfSense Portal</a>.
+Automatically backs up your pfSense configuration. All contents are AES-256 encrypted
+before being sent to the server.
 
 WWW: https://doc.pfsense.org/index.php/AutoConfigBackup
