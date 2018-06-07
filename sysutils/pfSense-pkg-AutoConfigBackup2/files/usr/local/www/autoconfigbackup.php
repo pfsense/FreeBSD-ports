@@ -660,7 +660,7 @@ events.push(function(){
 	});
 
 	$('#restore').click(function() {
-		$('#devkey').val("<?=$userkey?>");
+		$('#devkey').val("<?=$origkey?>");
 	});
 });
 //]]>

@@ -36,6 +36,8 @@ function get_device_key() {
 	return hash("sha256", file_get_contents("/etc/ssh/ssh_host_ed25519_key.pub"));
 }
 
+$origkey = get_device_key();
+
 if (isset($_REQUEST['userkey']) && !empty($_REQUEST['userkey'])) {
 	$userkey = htmlentities($_REQUEST['userkey']);
 } else {
