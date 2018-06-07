@@ -3494,22 +3494,35 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	zvar = NULL;
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|z", &zvar) == FAILURE)
 		RETURN_NULL();
+/*
+	Check if an array was passed as an argument to this function (meaning we want to filter the states in some way) e.g.:
+	Array
+	(
+	    [0] => Array
+	        (
+	            [filter] => igb0
+	        )
+	)
+*/
 	if (zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
 		hash1 = Z_ARRVAL_P(zvar);
 
+		// Find the next (sub) array with a numeric key
 		ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
-			if (!lkey || (Z_TYPE_P(val) != IS_ARRAY)) {
+			if (skey || Z_TYPE_P(val) != IS_ARRAY) {
 				continue;
 			}
 
 			hash2 = Z_ARRVAL_P(val);
+
+			// Now search teh sub-array interfaces, rules or filters
 			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
 				entries = 1;
-				if((strlen(ZSTR_VAL(skey2)) == 9) && (strcasecmp(ZSTR_VAL(skey2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
+				if((strcasecmp(ZSTR_VAL(skey2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
 					filter_if = 1;
-				} else if ((strlen(ZSTR_VAL(skey2)) == 6) && (strcasecmp(ZSTR_VAL(skey2), "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
+				} else if ((strcasecmp(ZSTR_VAL(skey2), "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
 					filter_rl = 1;
-				} else if ((strlen(ZSTR_VAL(skey2)) == 6) && (strcasecmp(ZSTR_VAL(skey2), "filter") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
+				} else if ((strcasecmp(ZSTR_VAL(skey2), "filter") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
 					filter = Z_STRVAL_P(val2);
 				}
 
