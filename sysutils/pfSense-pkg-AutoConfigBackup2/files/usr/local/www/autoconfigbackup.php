@@ -168,7 +168,7 @@ if ($_REQUEST['newver'] != "") {
 		curl_setopt($curl_session, CURLOPT_URL, "https://acb.netgate.com/getbkp");
 		curl_setopt($curl_session, CURLOPT_POSTFIELDS, "userkey=" . $userkey .
 			"&revision=" . urlencode($_REQUEST['newver']) .
-			"&version=" . $g['product_version'],
+			"&version=" . $g['product_version'] .
 			"&uid=" . urlencode($uniqueID));
 	}
 
