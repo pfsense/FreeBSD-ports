@@ -212,7 +212,7 @@ function test_connection($post) {
 }
 
 function upload_config($reasonm = "") {
-	global $config, $g, $input_errors, $userkey;
+	global $config, $g, $input_errors, $userkey, $uniqueID;
 
 	if (empty($userkey)) {
 		$userkey = get_device_key();
