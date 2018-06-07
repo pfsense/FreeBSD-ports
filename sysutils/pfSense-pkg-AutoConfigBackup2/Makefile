@@ -1,15 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-AutoConfigBackup2
-PORTVERSION=	2.0
-PORTREVISION=	1
+PORTVERSION=	2.02
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package AutoConfigBackup
+COMMENT=	pfSense package AutoConfigBackup2
 
 LICENSE=	APACHE20
 
