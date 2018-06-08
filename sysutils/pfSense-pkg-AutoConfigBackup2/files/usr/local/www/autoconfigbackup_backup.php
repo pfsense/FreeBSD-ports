@@ -22,11 +22,6 @@ require("globals.inc");
 require("guiconfig.inc");
 require("autoconfigbackup.inc");
 
-if (!$config['installedpackages']['autoconfigbackup']['config'][0]['username']) {
-	Header("Location: /pkg_edit.php?xml=autoconfigbackup.xml&id=0&savemsg=Please+setup+Auto+Config+Backup");
-	exit;
-}
-
 if ($_POST) {
 
 	if ($_REQUEST['nooverwrite']) {
@@ -62,8 +57,7 @@ include("head.inc");
 
 if ($input_errors) {
 	print_input_errors($input_errors);
-}
-else if ($savemsg) {
+} else if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
 
