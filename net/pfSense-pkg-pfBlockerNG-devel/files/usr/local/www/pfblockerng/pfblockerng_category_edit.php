@@ -850,15 +850,15 @@ foreach ($rowdata[$rowid] as $tags) {
 
 			// EasyList language specific
 			$options[2] = array(	'ea' => 'Adservers', 'eap' => 'Adservers Popup' );
-			$options[10]= array(	'ea' => 'Czech Adservers', 'eap' => 'Slovak Adservers' );
+			$options[5]= array(	'ea' => 'Czech Adservers', 'eap' => 'Slovak Adservers' );
 
 			switch ($r_id) {
 				case '0':
 				case '1':
 					$option_list = $options[$r_id];
 					break;
-				case '10':
-					$option_list = $options[10];
+				case '5':
+					$option_list = $options[5];
 					break;
 				default:
 					$option_list = $options[2];
