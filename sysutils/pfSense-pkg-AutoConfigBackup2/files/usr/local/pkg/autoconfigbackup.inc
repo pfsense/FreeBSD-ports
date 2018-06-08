@@ -220,6 +220,10 @@ function upload_config($reasonm = "") {
 		$userkey = get_device_key();
 	}
 
+	if (empty($uniqueID)) {
+		$uniqueID = system_get_uniqueid();
+	}
+
 	// Do nothing when booting or when not enabled
 	if (platform_booting() || !acb_enabled()) {
 		return;
