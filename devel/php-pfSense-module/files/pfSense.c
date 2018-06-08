@@ -3478,12 +3478,8 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	struct protoent *p;
 	uint32_t expire, creation;
 	uint64_t bytes[2], id, packets[2];
-	// unsigned int key_len;
-	// unsigned long index;
-	//zval *array, **data1, **data2
 	zval array, *zvar;
 	HashTable *hash1, *hash2;
-	//HashPosition h1p, h2p;
 	zval *val, *val2;
 	zend_long lkey, lkey2;
 	zend_string *skey, *skey2;
@@ -3532,39 +3528,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		if (entries == 0) {
 			RETURN_NULL();
 		}
-/*
-		zend_hash_internal_pointer_reset_ex(hash1, &h1p);
 
-		while (zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS) {
-			if (zend_hash_get_current_key_ex(hash1, &key, &key_len,
-			    &index, 0, &h1p) != HASH_KEY_IS_LONG ||
-			    Z_TYPE_PP(data1) != IS_ARRAY) {
-				continue;
-			}
-			hash2 = Z_ARRVAL_PP(data1);
-			zend_hash_internal_pointer_reset_ex(hash2, &h2p);
-			if (zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) != SUCCESS)
-				RETURN_NULL();
-
-			if (zend_hash_get_current_key_ex(hash2, &key, &key_len,
-			    &index, 0, &h2p) != HASH_KEY_IS_STRING) {
-				continue;
-			}
-			if (key_len == 10 && strcasecmp(key, "interface") == 0 &&
-			    Z_TYPE_PP(data2) == IS_STRING) {
-				filter_if = 1;
-			} else if (key_len == 7 && strcasecmp(key, "ruleid") == 0 &&
-			    Z_TYPE_PP(data2) == IS_LONG) {
-				filter_rl = 1;
-			} else if (key_len == 7 && strcasecmp(key, "filter") == 0 &&
-			    Z_TYPE_PP(data2) == IS_STRING) {
-				filter = Z_STRVAL_PP(data2);
-			}
-
-			zend_hash_move_forward_ex(hash1, &h1p);
-		}
-
-*/
 		if (filter_if && filter_rl)
 			RETURN_NULL();
 	}
@@ -3612,30 +3576,6 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				}
 			} ZEND_HASH_FOREACH_END();
 
-/*
-			zend_hash_internal_pointer_reset_ex(hash1, &h1p);
-
-			while (zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS) {
-				hash2 = Z_ARRVAL_PP(data1);
-				zend_hash_internal_pointer_reset_ex(hash2, &h2p);
-				if (zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) != SUCCESS) {
-					free(ps.ps_buf);
-					close(dev);
-					RETURN_NULL();
-				}
-				if (filter_if) {
-					if (strcasecmp(state.ifname, Z_STRVAL_PP(data2)) == 0)
-						found = 1;
-				} else if (filter_rl) {
-					if (ntohl(state.rule) != -1 &&
-					    (long)ntohl(state.rule) == Z_LVAL_PP(data2)) {
-						found = 1;
-					}
-				}
-
-				zend_hash_move_forward_ex(hash1, &h1p);
-			}
-*/
 			if (!found)
 				continue;
 		}
