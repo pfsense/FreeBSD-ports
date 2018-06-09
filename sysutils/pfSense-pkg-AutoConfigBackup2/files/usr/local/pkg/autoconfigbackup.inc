@@ -116,7 +116,7 @@ function acb_custom_php_validation_command($post, &$input_errors) {
 	if ($post['testconnection']) {
 		$status = test_connection($post);
 		if ($status) {
-			$savemsg = "Connection to portal.pfsense.org was tested with no errors.";
+			$savemsg = "Connection to the ACB server was tested with no errors.";
 		}
 	}
 
@@ -266,17 +266,16 @@ function upload_config($reasonm = "") {
 		strpos($reason, 'Captive Portal Voucher database synchronized') !== false) && ignore_vouchers() ){
 		return;
 	}
-	// Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
-	$username = strtolower($config['installedpackages']['autoconfigbackup']['config'][0]['username']);
-	$password = $config['installedpackages']['autoconfigbackup']['config'][0]['password'];
+
+
 	$encryptpw = $config['installedpackages']['autoconfigbackup']['config'][0]['crypto_password'];
 
 	// Define upload_url, must be present after other variable definitions due to username, password
-	$upload_url = "https://portal.pfsense.org/pfSconfigbackups/backup.php";
+	$upload_url = "https://acb.netgate.com/save";
 
-	if (!$username or !$password or !$encryptpw) {
+	if (!$encryptpw) {
 		if (!file_exists("/cf/conf/autoconfigback.notice")) {
-			$notice_text = "Either the username, password or encryption password is not set for Automatic Configuration Backup.";
+			$notice_text = "The encryption password is not set for Automatic Configuration Backup.";
 			$notice_text .= " Please correct this in Diagnostics -> AutoConfigBackup -> Settings.";
 			//log_error($notice_text);
 			//file_notice("AutoConfigBackup", $notice_text, $notice_text, "");
@@ -291,7 +290,7 @@ function upload_config($reasonm = "") {
 			// Mount RW (if needed)
 			conf_mount_rw();
 
-			$notice_text = "Beginning https://portal.pfsense.org configuration backup.";
+			$notice_text = "Beginning configuration backup to ." . $upload_url;
 			log_error($notice_text);
 			update_filter_reload_status($notice_text);
 
@@ -299,31 +298,26 @@ function upload_config($reasonm = "") {
 			$data = file_get_contents("/cf/conf/config.xml");
 			$raw_config_sha256_hash = trim(shell_exec("/sbin/sha256 /cf/conf/config.xml | /usr/bin/awk '{ print $4 }'"));
 			$data = encrypt_data($data, $encryptpw);
+			$tmpname = "/tmp/" . $raw_config_sha256_hash . ".tmp";
 			tagfile_reformat($data, $data, "config.xml");
+			file_put_contents($tmpname, $data);
+
 			$post_fields = array(
 				'reason' => urlencode((string)$reason),
 				'uid' => urlencode($uniqueID),
-				'configxml' => urlencode($data),
+				'file' => curl_file_create($tmpname, 'image/jpg', 'config.jpg'),
 				'userkey' => $userkey,
 				'nooverwrite' => urlencode($nooverwrite),
 				'sha256_hash' => urlencode($raw_config_sha256_hash),
 				'version' => $g['product_version']
 			);
 
-			// URL-ify the data for the POST
-			foreach ($post_fields as $key=>$value) {
-				$fields_string .= $key . '=' . $value . '&';
-			}
-
-			rtrim($fields_string,'&');
-
 			// Check configuration into the ESF repo
 			$curl_session = curl_init();
 
 			curl_setopt($curl_session, CURLOPT_URL, "https://acb.netgate.com/save");
-
 			curl_setopt($curl_session, CURLOPT_POST, count($post_fields));
-			curl_setopt($curl_session, CURLOPT_POSTFIELDS, $fields_string);
+			curl_setopt($curl_session, CURLOPT_POSTFIELDS, $post_fields);
 			curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($curl_session, CURLOPT_CONNECTTIMEOUT, 55);
@@ -333,6 +327,8 @@ function upload_config($reasonm = "") {
 			curl_setopt_array($curl_session, configure_proxy());
 
 			$data = curl_exec($curl_session);
+
+			unlink($tmpname);
 
 			if (curl_errno($curl_session)) {
 				$fd = fopen("/tmp/backupdebug.txt", "w");
@@ -345,7 +341,7 @@ function upload_config($reasonm = "") {
 			}
 
 			if (strpos($data, "500") != false) {
-				$notice_text = "An error occurred while uploading your pfSense configuration to portal.pfsense.org (" . htmlspecialchars($data) . ")";
+				$notice_text = "An error occurred while uploading your pfSense configuration to " . $upload_url . " (" . htmlspecialchars($data) . ")";
 				log_error($notice_text . " - " . $data);
 				file_notice("AutoConfigBackup", $notice_text, "Backup Failure", "/pkg_edit.php?xml=autoconfigbackup.xml&id=0");
 				update_filter_reload_status($notice_text);
@@ -355,7 +351,7 @@ function upload_config($reasonm = "") {
 				$fd = fopen("/cf/conf/lastpfSbackup.txt", "w");
 				fwrite($fd, $config['revision']['time']);
 				fclose($fd);
-				$notice_text = "End of portal.pfsense.org configuration backup (success).";
+				$notice_text = "End of configuration backup to " . $upload_url " (success).";
 				log_error($notice_text);
 				update_filter_reload_status($notice_text);
 			}
