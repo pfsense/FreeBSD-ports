@@ -303,12 +303,11 @@ function upload_config($reasonm = "") {
 			file_put_contents($tmpname, $data);
 
 			$post_fields = array(
-				'reason' => urlencode((string)$reason),
-				'uid' => urlencode($uniqueID),
+				'reason' => htmlspecialchars($reason),
+				'uid' => $uniqueID,
 				'file' => curl_file_create($tmpname, 'image/jpg', 'config.jpg'),
-				'userkey' => $userkey,
-				'nooverwrite' => urlencode($nooverwrite),
-				'sha256_hash' => urlencode($raw_config_sha256_hash),
+				'userkey' => htmlspecialchars($userkey),
+				'sha256_hash' => $raw_config_sha256_hash,
 				'version' => $g['product_version']
 			);
 
@@ -351,7 +350,7 @@ function upload_config($reasonm = "") {
 				$fd = fopen("/cf/conf/lastpfSbackup.txt", "w");
 				fwrite($fd, $config['revision']['time']);
 				fclose($fd);
-				$notice_text = "End of configuration backup to " . $upload_url " (success).";
+				$notice_text = "End of configuration backup to " . $upload_url . " (success).";
 				log_error($notice_text);
 				update_filter_reload_status($notice_text);
 			}
