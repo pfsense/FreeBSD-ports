@@ -26,13 +26,13 @@ $oper_sep = "\|\|";
 $exp_sep = '||';
 
 // Encryption password
-$decrypt_password = $config['installedpackages']['autoconfigbackup']['config'][0]['crypto_password'];
+$decrypt_password = $config['installedpackages']['autoconfigbackup2']['config'][0]['crypto_password'];
 
 // Defined username. Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
-$username = strtolower($config['installedpackages']['autoconfigbackup']['config'][0]['username']);
+$username = strtolower($config['installedpackages']['autoconfigbackup2']['config'][0]['username']);
 
 // Defined password
-$password = $config['installedpackages']['autoconfigbackup']['config'][0]['password'];
+$password = $config['installedpackages']['autoconfigbackup2']['config'][0]['password'];
 
 // URL to restore.php
 $get_url = "https://portal.pfsense.org/pfSconfigbackups/restore.php";

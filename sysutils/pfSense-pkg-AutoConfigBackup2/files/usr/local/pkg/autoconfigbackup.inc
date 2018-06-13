@@ -45,10 +45,10 @@ if (isset($_REQUEST['userkey']) && !empty($_REQUEST['userkey'])) {
 }
 
 // Defined username. Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
-$username = strtolower($config['installedpackages']['autoconfigbackup']['config'][0]['username']);
+$username = strtolower($config['installedpackages']['autoconfigbackup2']['config'][0]['username']);
 
 // Defined password
-$password = $config['installedpackages']['autoconfigbackup']['config'][0]['password'];
+$password = $config['installedpackages']['autoconfigbackup2']['config'][0]['password'];
 
 $acbuser = "pfsense_acb";
 $acbpwd = "NfQ'*v<2rPCrYUE9";
@@ -60,8 +60,8 @@ function acb_enabled() {
 	global $config;
 	$acb_enabled = false;
 
-	if (is_array($config['installedpackages']['autoconfigbackup']['config'])) {
-		if ($config['installedpackages']['autoconfigbackup']['config'][0]['enable_acb'] != "disabled") {
+	if (is_array($config['installedpackages']['autoconfigbackup2']['config'])) {
+		if ($config['installedpackages']['autoconfigbackup2']['config'][0]['enable_acb'] != "disabled") {
 			$acb_enabled = true;
 		}
 	}
@@ -73,8 +73,8 @@ function ignore_vouchers() {
 	global $config;
 	$ignore_vouchers = false;
 
-	if (is_array($config['installedpackages']['autoconfigbackup']['config'])) {
-		if ($config['installedpackages']['autoconfigbackup']['config'][0]['ignore_vouchers'] != "false") {
+	if (is_array($config['installedpackages']['autoconfigbackup2']['config'])) {
+		if ($config['installedpackages']['autoconfigbackup2']['config'][0]['ignore_vouchers'] != "false") {
 			$ignore_vouchers = true;
 		}
 	}
@@ -268,7 +268,7 @@ function upload_config($reasonm = "") {
 	}
 
 
-	$encryptpw = $config['installedpackages']['autoconfigbackup']['config'][0]['crypto_password'];
+	$encryptpw = $config['installedpackages']['autoconfigbackup2']['config'][0]['crypto_password'];
 
 	// Define upload_url, must be present after other variable definitions due to username, password
 	$upload_url = "https://acb.netgate.com/save";
