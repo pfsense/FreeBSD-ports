@@ -995,8 +995,9 @@ function openvpn_client_export_find_port_forwards($targetip, $targetport, $targe
 
 	foreach ($config['nat']['rule'] as $natent) {
 		$dest = array();
-		if (!isset($natent['disabled']) && ($natent['target'] == $targetip) && ($natent['local-port'] == $targetport) && ($natent['protocol'] == $targetproto)) {
-			$dest['proto'] = $natent['protocol'];
+                $proto_short = strtolower(substr($targetproto, 0, 3));
+                if (!isset($natent['disabled']) && ($natent['target'] == $targetip) && ($natent['local-port'] == $targetport) && ($natent['protocol'] == $proto_short)) {
+ 	        	$dest['proto'] = $targetproto;
 
 			// Could be multiple ports... But we can only use one.
 			$dports = is_port($natent['destination']['port']) ? array($natent['destination']['port']) : filter_expand_alias_array($natent['destination']['port']);
