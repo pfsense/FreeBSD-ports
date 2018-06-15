@@ -53,12 +53,10 @@ if ($_REQUEST['hostname']) {
 // Hostname of local machine
 $myhostname = $config['system']['hostname'] . "." . $config['system']['domain'];
 
-/*
-if (!$username) {
-	Header("Location: /pkg_edit.php?xml=autoconfigbackup.xml&id=0&savemsg=Please+setup+Auto+Config+Backup");
+if (!$decrypt_password) {
+	Header("Location: /pkg_edit.php?xml=autoconfigbackup.xml&id=0&savemsg=Please+setup+Auto+Config+Backup. At least the Encryption password is required");
 	exit;
 }
-*/
 
 if ($_REQUEST['savemsg']) {
 	$savemsg = htmlentities($_REQUEST['savemsg']);
@@ -360,10 +358,6 @@ if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
 
-if ($hostname != $myhostname) {
-	print_info_box("Warning: Currently viewing the backup history of an alternate host (" . htmlspecialchars($hostname) . ")", 'warning');
-}
-
 $tab_array = array();
 $tab_array[0] = array("Settings", false, "/pkg_edit.php?xml=autoconfigbackup.xml&amp;id=0");
 if ($_REQUEST['download']) {
@@ -377,11 +371,7 @@ if ($_REQUEST['download']) {
 	$tab_array[] = array("Revision", true, "/autoconfigbackup.php?download={$_REQUEST['download']}");
 }
 $tab_array[] = array("Backup now", false, "/autoconfigbackup_backup.php");
-/*
-if ($legacy) {
-	$tab_array[] = array("Stats", false, "/autoconfigbackup_stats.php");
-}
-*/
+
 display_top_tabs($tab_array);
 
 $hostnames = get_hostnames();
