@@ -68,19 +68,6 @@ function acb_enabled() {
 	return $acb_enabled;
 }
 
-/* Check whether Ignore vouchers is set to true */
-function ignore_vouchers() {
-	global $config;
-	$ignore_vouchers = false;
-
-	if (is_array($config['installedpackages']['autoconfigbackup2']['config'])) {
-		if ($config['installedpackages']['autoconfigbackup2']['config'][0]['ignore_vouchers'] != "false") {
-			$ignore_vouchers = true;
-		}
-	}
-	return $ignore_vouchers;
-}
-
 // Ensures patches match
 function acb_custom_php_validation_command($post, &$input_errors) {
 	global $_POST, $savemsg, $config;
@@ -263,7 +250,7 @@ function upload_config($reasonm = "") {
 	* want to fill up our db with a lot of the same config so just ignore that case.
 	*/
 	if((strpos($reason, 'Syncing vouchers') !== false ||
-		strpos($reason, 'Captive Portal Voucher database synchronized') !== false) && ignore_vouchers() ){
+		strpos($reason, 'Captive Portal Voucher database synchronized') !== false) ) {
 		return;
 	}
 
