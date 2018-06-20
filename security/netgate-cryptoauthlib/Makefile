@@ -16,4 +16,7 @@ GH_PROJECT=	cryptoauthlib
 
 MAKE_ARGS=	ATCA_PRINTF=1 ATCA_HAL_I2C=1 __FreeBSD__=1
 
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcryptoauth.so
+
 .include <bsd.port.mk>
