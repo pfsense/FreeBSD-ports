@@ -22,7 +22,7 @@
 require_once("globals.inc");
 require_once("system.inc");
 
-define(COREBOOT_PATH, "%%DATADIR%%/roms/");
+define('COREBOOT_PATH', "%%DATADIR%%/roms/");
 
 function get_coreboot_model() {
 	$specplatform = system_identify_specific_platform();
@@ -84,7 +84,7 @@ function get_new_coreboot_details() {
 	    'DFF2' => '%%COREBOOT_DFF2_ROM%%',
 	    'PLCC' => '%%COREBOOT_PLCCB_ROM%%',
 	);
-	
+
 	$model = get_coreboot_model();
 	$details = array();
 	$path = COREBOOT_PATH . $rom_names[$model];
