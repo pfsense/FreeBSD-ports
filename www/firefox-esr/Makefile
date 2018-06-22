@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	52.8.0
+DISTVERSION=	52.9.0
 DISTVERSIONSUFFIX=esr
-PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}esr/source \
@@ -55,6 +54,9 @@ OPTIONS_SINGLE+=	TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
+
+# Inconsistent fallback order (libcubeb vs. audio_device)
+SNDIO_PREVENTS=		${OPTIONS_MULTI_AUDIO:NSNDIO}
 
 post-extract:
 	@${SED} -e 's|@FIREFOX_ICON@|${FIREFOX_ICON}|' -e 's|@MOZILLA@|${MOZILLA}|' \
