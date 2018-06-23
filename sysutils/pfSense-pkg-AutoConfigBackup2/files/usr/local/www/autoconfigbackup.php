@@ -249,7 +249,7 @@ if ($_REQUEST['download']) {
 		curl_setopt($curl_session, CURLOPT_POSTFIELDS, "action=restore" .
 			"&hostname=" . urlencode($hostname) .
 			"&revision=" . urlencode($_REQUEST['download']) .
-			"&version=" . $g['product_version'],
+			"&version=" . $g['product_version'] .
 			"&uid=" . urlencode($uniqueID));
 	} else {
 		curl_setopt($curl_session, CURLOPT_URL, "https://acb.netgate.com/getbkp");
