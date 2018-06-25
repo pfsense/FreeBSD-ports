@@ -2,7 +2,7 @@
 
 PORTNAME=	openssl
 DISTVERSION=	20180625
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 PKGNAMEPREFIX=	netgate-
 
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libcryptoauth.so:security/netgate-cryptoauthlib \
 MAKE_ARGS=	ATCA_HAL_I2C=1
 USES=		ssl
 PREFIX=		/usr
-PLIST_FILES=	${PREFIX}/lib/engines/libateccx08.so
+PLIST_FILES=	${PREFIX}/lib/engines/libateccx08.so /etc/thoth/openssl.cnf
 USE_LDCONFIG=	yes
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
