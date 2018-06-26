@@ -192,7 +192,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 		include("/usr/local/pkg/suricata/suricata_yaml_template.inc");
 
 		// Now write out the conf file using $suricata_conf_text contents
-		@file_put_contents("{$suricatacfgdir}/suricata.yaml", $suricata_conf_text); 
+		@file_put_contents("{$suricatacfgdir}/suricata.yaml", $suricata_conf_text);
 		unset($suricata_conf_text);
 
 		// create barnyard2.conf file for interface
@@ -228,13 +228,19 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 // If this is first install and "forcekeepsettings" is empty,
 // then default it to 'on'.
 if (empty($config['installedpackages']['suricata']['config'][0]['forcekeepsettings']))
+	update_status(gettext("Setting up intial configuration.") . "\n");
 	$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] = 'on';
 
 // Finished with file system mods, so remount it read-only
 conf_mount_ro();
 
 // Update Suricata package version in configuration
+update_status(gettext("Setting package version in configuration file.") . "\n");
 $config['installedpackages']['suricata']['config'][0]['suricata_config_ver'] = $config['installedpackages']['package'][get_package_id("suricata")]['version'];
+
+// Debug
+update_status($config['installedpackages']['suricata']['config'] . "\n");
+
 write_config("Suricata pkg v{$config['installedpackages']['package'][get_package_id("suricata")]['version']}: post-install configuration saved.");
 
 // Done with post-install, so clear flag
