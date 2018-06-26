@@ -13,7 +13,7 @@ COMMENT=	PfSense package AWS VPC VPN Connection Wizard
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	aws-sdk-${PHP_FLAVOR}>=3.28.4:devel/aws-sdk-php
+RUN_DEPENDS=	aws-sdk-${PHP_FLAVOR}>=3.28.4:devel/aws-sdk-php@${PHP_FLAVOR}
 
 USES=		php:flavors
 IGNORE_WITH_PHP=	70 71
