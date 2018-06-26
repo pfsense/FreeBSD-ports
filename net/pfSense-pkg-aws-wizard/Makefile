@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-aws-wizard
 PORTVERSION=	0.7
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,7 +13,12 @@ COMMENT=	PfSense package AWS VPC VPN Connection Wizard
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	aws-sdk-php>=3.28.4:devel/aws-sdk-php
+RUN_DEPENDS=	aws-sdk-${PHP_FLAVOR}>=3.28.4:devel/aws-sdk-php
+
+USES=		php:flavors
+IGNORE_WITH_PHP=	70 71
+
+php72_PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 NO_BUILD=	yes
 NO_MTREE=	yes
