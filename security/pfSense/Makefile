@@ -54,6 +54,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		${PHP_PKGNAMEPREFIX}pear-Net_IPv6>=0:net/pear-Net_IPv6@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}simplepie>=0:www/simplepie@${PHP_FLAVOR} \
 		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
