@@ -79,9 +79,22 @@ safe_mkdir(SURICATALOGDIR);
 safe_mkdir(SURICATA_SID_MODS_PATH);
 safe_mkdir(SURICATA_IPREP_PATH);
 
-// Make sure config variable is an array
-if (!is_array($config['installedpackages']['suricata']['config'][0]))
+// Make sure config variable is an array (PHP7 likes every level to be created individually )
+if (!is_array($config['installedpackages']['suricata'])) {
+	$config['installedpackages']['suricata'] = array();
+}
+
+if (!is_array($config['installedpackages']['suricata']['rule')) {
+	$config['installedpackages']['suricata']['ruleg'] = array();
+}
+
+if (!is_array($config['installedpackages']['suricata']['config')) {
+	$config['installedpackages']['suricata']['config'] = array();
+}
+
+if (!is_array($config['installedpackages']['suricata']['config'][0])) {
 	$config['installedpackages']['suricata']['config'][0] = array();
+}
 
 // Download the latest GeoIP DB updates and create cron task if the feature is not disabled
 if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] != 'off') {
@@ -228,7 +241,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 // If this is first install and "forcekeepsettings" is empty,
 // then default it to 'on'.
 if (empty($config['installedpackages']['suricata']['config'][0]['forcekeepsettings']))
-	update_status(gettext("Setting up intial configuration.") . "\n");
+	update_status(gettext("Setting up initial configuration.") . "\n");
 	$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] = 'on';
 
 // Finished with file system mods, so remount it read-only
@@ -239,7 +252,7 @@ update_status(gettext("Setting package version in configuration file.") . "\n");
 $config['installedpackages']['suricata']['config'][0]['suricata_config_ver'] = $config['installedpackages']['package'][get_package_id("suricata")]['version'];
 
 // Debug
-update_status($config['installedpackages']['suricata']['config'] . "\n");
+update_status(print_r($config['installedpackages']['suricata'] . "\n"), true);
 
 write_config("Suricata pkg v{$config['installedpackages']['package'][get_package_id("suricata")]['version']}: post-install configuration saved.");
 
