@@ -85,7 +85,7 @@ if (!is_array($config['installedpackages']['suricata'])) {
 }
 
 if (!is_array($config['installedpackages']['suricata']['rule'])) {
-	$config['installedpackages']['suricata']['ruleg'] = array();
+	$config['installedpackages']['suricata']['rule'] = array();
 }
 
 if (!is_array($config['installedpackages']['suricata']['config'])) {
@@ -252,7 +252,10 @@ update_status(gettext("Setting package version in configuration file.") . "\n");
 $config['installedpackages']['suricata']['config'][0]['suricata_config_ver'] = $config['installedpackages']['package'][get_package_id("suricata")]['version'];
 
 // Debug
-update_status(print_r($config['installedpackages']['suricata'] . "\n"), true);
+$dbgs = "New config: \n" . print_r($config['installedpackages']['suricata'], true);
+update_status($dbgs);
+print($dbgs);
+file_put_contents("/tmp/suricat.conf", $dbgs);
 
 write_config("Suricata pkg v{$config['installedpackages']['package'][get_package_id("suricata")]['version']}: post-install configuration saved.");
 
