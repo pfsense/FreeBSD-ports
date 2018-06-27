@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	netgate-cryptoauthlib
-PORTVERSION=	20180620
+PORTVERSION=	20180627
 CATEGORIES=	security
 
 MAINTAINER=	garga@FreeBSD.org
@@ -14,9 +14,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	netgate
 GH_PROJECT=	cryptoauthlib
 
-MAKE_ARGS=	ATCA_PRINTF=1 ATCA_HAL_I2C=1 __FreeBSD__=1
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcryptoauth.so
+MAKE_ARGS=	-DATCA_PRINTF -DATCA_HAL_I2C -D__FreeBSD__
 
 .include <bsd.port.mk>
