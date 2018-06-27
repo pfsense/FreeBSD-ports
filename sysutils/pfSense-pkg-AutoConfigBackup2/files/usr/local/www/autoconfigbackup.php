@@ -446,7 +446,7 @@ print($form);
 		<div class="table-responsive">
 <?php if ($legacy)	{ ?>
 		<strong>Hostname:</strong>
-		<select id="hostname" name="hostname" onchange="document.location='autoconfigbackup.php?hostname=' + this.value;">
+		<select id="hostname" name="hostname" onchange="document.location='autoconfigbackup.php?hostname=' + this.value + '&legacy=true';">
 			<?
 			$host_not_found = true;
 			foreach ($hostnames as $hn):
