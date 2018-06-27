@@ -84,11 +84,11 @@ if (!is_array($config['installedpackages']['suricata'])) {
 	$config['installedpackages']['suricata'] = array();
 }
 
-if (!is_array($config['installedpackages']['suricata']['rule')) {
+if (!is_array($config['installedpackages']['suricata']['rule'])) {
 	$config['installedpackages']['suricata']['ruleg'] = array();
 }
 
-if (!is_array($config['installedpackages']['suricata']['config')) {
+if (!is_array($config['installedpackages']['suricata']['config'])) {
 	$config['installedpackages']['suricata']['config'] = array();
 }
 
