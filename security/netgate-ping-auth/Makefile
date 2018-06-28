@@ -12,7 +12,7 @@ LIB_DEPENDS=	libcryptoauth.so:security/netgate-cryptoauthlib \
 		libthoth.so:security/netgate-libthoth \
 		libucl.so:textproc/libucl
 
-PLIST_FILES=	bin/ping-auth
+PLIST_FILES=	bin/ping-auth.sh sbin/ping-auth
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	thoth
