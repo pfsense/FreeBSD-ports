@@ -3,6 +3,7 @@
 
 PORTNAME=	Auth_RADIUS
 PORTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	net security pear
 
 MAINTAINER=	bofh@FreeBSD.org
