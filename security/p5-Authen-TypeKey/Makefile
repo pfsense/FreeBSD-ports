@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	TypeKey authentication verification
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Class-ErrorHandler>=0:devel/p5-Class-ErrorHandler \
@@ -26,6 +26,6 @@ USES=		perl5
 
 post-patch:
 	# Really old M::I code
-	${RM} -rf ${WRKSRC}/inc
+	${RM} -r ${WRKSRC}/inc
 
 .include <bsd.port.mk>

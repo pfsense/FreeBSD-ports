@@ -3,12 +3,14 @@
 
 PORTNAME=	popt
 PORTVERSION=	1.16
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://rpm5.org/files/popt/
 
 MAINTAINER=	jpaetzel@FreeBSD.org
 COMMENT=	Getopt(3) like library with a number of enhancements, from Redhat
+
+LICENSE=	MIT
 
 OPTIONS_DEFINE=	NLS
 

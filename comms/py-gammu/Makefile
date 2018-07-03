@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gammu
-PORTVERSION=	2.6
+PORTVERSION=	2.11
 CATEGORIES=	comms python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libGammu.so:comms/gammu
 
-USES=		pkgconfig python:-2.7 tar:bz2
-USE_PYTHON=	distutils autoplist
+USES=		pkgconfig python:-2.7
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

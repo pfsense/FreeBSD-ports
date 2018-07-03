@@ -2,7 +2,6 @@
 <pfsensepkgs>
 	<package>
 		<name>apcupsd</name>
-		<internalname>apcupsd</internalname>
 		<descr>Set of programs for controlling APC's UPS models.</descr>
 		<website>http://www.apcupsd.com/</website>
 		<version>%%PKGVERSION%%</version>

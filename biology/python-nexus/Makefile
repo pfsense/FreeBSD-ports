@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	python-nexus
-PORTVERSION=	1.35
+PORTVERSION=	1.53
 CATEGORIES=	biology python
 MASTER_SITES=	CHEESESHOP
+PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Generic nexus file format reader for python

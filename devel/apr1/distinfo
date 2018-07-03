@@ -1,4 +1,5 @@
-SHA256 (apr-1.5.2.tar.gz) = 1af06e1720a58851d90694a984af18355b65bb0d047be03ec7d659c746d6dbdb
-SIZE (apr-1.5.2.tar.gz) = 1031613
-SHA256 (apr-util-1.5.4.tar.gz) = 976a12a59bc286d634a21d7be0841cc74289ea9077aa1af46be19d1a6e844c19
-SIZE (apr-util-1.5.4.tar.gz) = 874044
+TIMESTAMP = 1509875572
+SHA256 (apr-1.6.3.tar.gz) = 8fdabcc0004216c3588b7dca0f23d104dfe012a47e2bb6f13827534a6ee73aa7
+SIZE (apr-1.6.3.tar.gz) = 1072661
+SHA256 (apr-util-1.6.1.tar.gz) = b65e40713da57d004123b6319828be7f1273fbc6490e145874ee1177e112c459
+SIZE (apr-util-1.6.1.tar.gz) = 554301

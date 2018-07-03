@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pillow
-PORTVERSION=	3.1.1
-PORTREVISION=	1
+PORTVERSION=	5.0.0
 CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -15,8 +14,11 @@ LICENSE_NAME=	Standard PIL License
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-OPTIONS_DEFINE=		FREETYPE JPEG LCMS PNG TIFF TKINTER WEBP
-OPTIONS_DEFAULT=	FREETYPE JPEG PNG TKINTER WEBP
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-runner>0:devel/py-pytest-runner@${FLAVOR}
+
+OPTIONS_DEFINE=		FREETYPE JPEG JPEG2000 LCMS PNG TIFF TKINTER WEBP
+OPTIONS_DEFAULT=	FREETYPE JPEG JPEG2000 PNG TKINTER WEBP
 
 LCMS_DESC=		Little Color Management System
 TKINTER_DESC=		Tkinter (Tcl/Tk) BitmapImage & PhotoImage support
@@ -28,6 +30,10 @@ FREETYPE_VARS_OFF=	PYDISTUTILS_BUILDARGS+=--disable-freetype
 JPEG_USES=		jpeg
 JPEG_VARS=		PYDISTUTILS_BUILDARGS+=--enable-jpeg
 JPEG_VARS_OFF=		PYDISTUTILS_BUILDARGS+=--disable-jpeg
+
+JPEG2000_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
+JPEG2000_VARS=		PYDISTUTILS_BUILDARGS+=--enable-jpeg2000
+JPEG2000_VARS_OFF=	PYDISTUTILS_BUILDARGS+=--disable-jpeg2000
 
 LCMS_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 LCMS_VARS=		PYDISTUTILS_BUILDARGS+=--enable-lcms
@@ -41,16 +47,16 @@ TIFF_VARS=		PYDISTUTILS_BUILDARGS+=--enable-tiff
 TIFF_VARS_OFF=		PYDISTUTILS_BUILDARGS+=--disable-tiff
 
 TKINTER_USES=		tk
-TKINTER_BUILD_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter
-TKINTER_RUN_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter
-TKINTER_VARS=		PYDISTUTILS_BUILDARGS+="--enable-tcl --enable-tk --include-dirs=${TCL_INCLUDEDIR}:${TK_INCLUDEDIR}"
-TKINTER_VARS_OFF=	PYDISTUTILS_BUILDARGS+="--disable-tcl --disable-tk"
+TKINTER_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${FLAVOR}
+TKINTER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${FLAVOR}
+TKINTER_VARS=		PYDISTUTILS_BUILDARGS+="--include-dirs=${TCL_INCLUDEDIR}:${TK_INCLUDEDIR}"
 
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
-WEBP_VARS=		PYDISTUTILS_BUILDARGS+=--enable-webp
-WEBP_VARS_OFF=		PYDISTUTILS_BUILDARGS+=--disable-webp
+WEBP_VARS=		PYDISTUTILS_BUILDARGS+="--enable-webp --enable-webpmux"
+WEBP_VARS_OFF=		PYDISTUTILS_BUILDARGS+="--disable-webp --disable-webpmux"
 
-USES?=		cpe python
+# Python 2.7,3.4+
+USES=		cpe python
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist concurrent distutils
 
@@ -68,9 +74,6 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PIL/*.so
 
 do-test:
-	@cd ${WRKSRC} && \
-	${PYTHON_CMD} ${PYSETUP} build_ext -i && \
-	${PYTHON_CMD} selftest.py && \
-	${PYTHON_CMD} -m nose -vx Tests/test_*.py
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.post.mk>

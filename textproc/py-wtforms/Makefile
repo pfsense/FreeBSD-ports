@@ -3,6 +3,7 @@
 
 PORTNAME=	wtforms
 PORTVERSION=	2.1
+PORTREVISION=	1
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,11 +15,11 @@ COMMENT=	Flexible forms validation and rendering library for python
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>0:devel/py-babel
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>0:devel/py-coverage \
-		${PYTHON_PKGNAMEPREFIX}sqlalchemy08>0:databases/py-sqlalchemy08 \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>0:devel/py-babel@${FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>0:devel/py-coverage@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlalchemy10>0:databases/py-sqlalchemy10@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pep8>0:devel/pep8 \
-		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil
+		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${FLAVOR}
 
 OPTIONS_DEFINE=		DOCS
 

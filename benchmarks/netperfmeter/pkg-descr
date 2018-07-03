@@ -5,4 +5,4 @@ and measures the resulting flow bandwidths and QoS. The
 results are written as vector and scalar files. The vector
 files can e.g. be used to create plots of the results.
 
-WWW: http://www.iem.uni-due.de/~dreibh/netperfmeter/
+WWW: https://www.uni-due.de/~be0001/netperfmeter/

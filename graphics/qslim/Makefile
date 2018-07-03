@@ -3,7 +3,7 @@
 
 PORTNAME=	qslim
 PORTVERSION=	2.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	graphics
 MASTER_SITES=	http://mgarland.org/files/dist/
 
@@ -34,7 +34,7 @@ FLTK_CONFIG=	${LOCALBASE}/bin/fltk-config
 GUI_LIBS=	$$(${FLTK_CONFIG} --use-gl --ldflags)
 
 post-extract:
-	@${RM} -rf ${WRKSRC}/libgfx/
+	@${RM} -r ${WRKSRC}/libgfx/
 
 post-patch:
 	@${REINPLACE_CMD} -e '/gfx-config/d' ${CONFIGURE_WRKSRC}/mix-config.in

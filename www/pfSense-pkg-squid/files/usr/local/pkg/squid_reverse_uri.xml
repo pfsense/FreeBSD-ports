@@ -8,7 +8,7 @@
  * squid_reverse_uri.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -90,8 +90,8 @@
 			<fieldname>name</fieldname>
 			<description>
 				<![CDATA[
-				Name to identify this URI on Squid reverse proxy configuration.<br/>
-				Example: URI1
+				Name to identify this URI on Squid reverse proxy configuration.
+				<span class="text-info">Example: URI1</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -110,8 +110,8 @@
 			<fieldname>peers</fieldname>
 			<description>
 				<![CDATA[
-				Apply these group mappings to the selected peers.<br/>
-				Use CTRL + click to select multiple peers.
+				Apply these group mappings to the selected peers.
+				<span class="text-info">Use CTRL + click to select multiple peers.</span>
 				]]>
 			</description>
 			<type>select_source</type>
@@ -122,8 +122,26 @@
 			<size>5</size>
 		</field>
 		<field>
+			<fielddescr>URI Settings</fielddescr>
+			<type>info</type>
+			<description>
+				<![CDATA[
+				Use URI row(s) below to add URL <strong>regex</strong> expression(s) to match (one per row).
+				<div class="infoblock">
+      					<span class="text-info">Examples:</span><br/>
+					.mydomain.com<br/>
+					.mydomain.com/test<br/>
+					www.mydomain.com<br/>
+					http://www.mydomain.com/<br/>
+					^http://www.mydomain.com/.*$
+					</span>
+				</div>
+				]]>
+			</description>
+		</field>
+		<field>
 			<fieldname>none</fieldname>
-			<description>URI to publish.</description>
+			<description>URI to publish</description>
 			<fielddescr>URI</fielddescr>
 			<type>rowhelper</type>
 			<rowhelper>
@@ -132,10 +150,8 @@
 					<type>input</type>
 					<fielddescr>
 						<![CDATA[
-						Enter URL <strong>regex</strong> to match.<br/><br/>
-						<strong>Examples:</strong><br/>
-						.mydomain.com .mydomain.com/test<br/>
-						www.mydomain.com http://www.mydomain.com/ ^http://www.mydomain.com/.*$
+						Enter URL <strong>regex</strong> to match.
+						<span class="text-info">Click Info above for examples.</span>
 						]]>
 					</fielddescr>
 					<size>70</size>

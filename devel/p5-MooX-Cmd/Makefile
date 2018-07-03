@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	MooX-Cmd
-PORTVERSION=	0.015
+PORTVERSION=	0.017
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Giving an easy Moo style way to make command organized CLI apps
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-IO-TieCombine>=0:devel/p5-IO-TieCombine \

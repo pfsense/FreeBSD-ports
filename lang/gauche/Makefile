@@ -14,10 +14,11 @@ COMMENT=	Scheme script interpreter with multibyte character handling
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_aarch64=	Fails to link: missing sbrk
 BROKEN_armv6=	Fails to build: unknown attribute __alloc_size__; also fails in assembler
+BROKEN_armv7=	Fails to build: unknown attribute __alloc_size__; also fails in assembler
 BROKEN_mips=	Fails to build: redefinition of GC_register_dynamic_libraries
 BROKEN_mips64=	Fails to build: redefinition of GC_register_dynamic_libraries
-BROKEN_sparc64=	Fails to build: do not know how to make sparc_mach_dep.lo
 
 USES=		iconv makeinfo tar:tgz
 GNU_CONFIGURE=	yes
@@ -29,8 +30,6 @@ MAKE_JOBS_UNSAFE=yes
 PLIST_SUB=	VERSION="${PORTVERSION}" \
 		TARGET="${CONFIGURE_TARGET}"
 
-# breaks in ext/uvecor.c on some locales
-MAKE_ENV+=	LANG=C
 # avoids a problem with with ccache's pre-processor optimization
 MAKE_ENV+=	CCACHE_CPP2=1
 
@@ -63,8 +62,9 @@ CONFIGURE_ARGS+=	--enable-multibyte=none
 .endif
 
 post-patch:
+# required for sparc64, no-op elsewhere
 	@${REINPLACE_CMD} -e \
-		's|-lpthread|-pthread|' ${WRKSRC}/configure
+		'/^VPATH = /s,$$,/src,' ${WRKSRC}/gc/Makefile.in
 
 post-install:
 	@${TOUCH} ${STAGEDIR}${PREFIX}/lib/gauche-0.9/site/${CONFIGURE_TARGET}/.keepme

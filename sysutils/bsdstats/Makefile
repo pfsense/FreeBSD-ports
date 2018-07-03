@@ -3,10 +3,11 @@
 
 PORTNAME=	bsdstats
 PORTVERSION=	6.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 DISTFILES=
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Monthly script for reporting anonymous statistics about your machine
 
 LICENSE=	BSD4CLAUSE

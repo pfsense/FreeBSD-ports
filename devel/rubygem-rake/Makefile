@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rake
-PORTVERSION=	11.2.2
+PORTVERSION=	12.3.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -14,8 +14,10 @@ LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-USES=		gem
+USES=		gem shebangfix
 
 PLIST_FILES=	bin/rake
+
+SHEBANG_FILES=	bin/console exe/rake
 
 .include <bsd.port.mk>

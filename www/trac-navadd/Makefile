@@ -2,18 +2,18 @@
 
 PORTNAME=	navadd
 PORTVERSION=	0.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www devel python
 MASTER_SITES=	LOCAL/brooks
 PKGNAMEPREFIX=	trac-
 DISTNAME=	${PORTNAME}plugin-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Plugin for adding navigation items into Trac navigation bars
 
 RUN_DEPENDS=	tracd:www/trac
 
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}plugin

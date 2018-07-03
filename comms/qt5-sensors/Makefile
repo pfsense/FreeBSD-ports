@@ -1,7 +1,8 @@
 # $FreeBSD$
 
-PORTNAME= 	sensors
+PORTNAME=	sensors
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	comms
 PKGNAMEPREFIX=	qt5-
 
@@ -10,7 +11,7 @@ COMMENT=	Qt sensors module
 
 USE_QT5=	core qml quick buildtools_build
 QT_DIST=	${PORTNAME}
-USES=		qmake
+USES=		qmake:norecursive
 
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 

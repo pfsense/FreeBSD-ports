@@ -6,17 +6,21 @@ PORTVERSION=	1.1.0
 CATEGORIES=	www
 MASTER_SITES=	ftp://ftp.lexa.ru/pub/apache-rus/contrib/
 
-MAINTAINER=	leeym@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Apache module issuing the "correct" cookies for counting the site visitors
 
-USE_APACHE=	22
+LICENSE=	APACHE20
+
+USES=		apache:2.2
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 MODULENAME=	mod_uid2
 
 PORTDOCS=	README.html
 
-post-install:
+OPTIONS_DEFINE=	DOCS
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

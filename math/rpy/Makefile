@@ -3,22 +3,21 @@
 
 PORTNAME=	rpy
 PORTVERSION=	1.0.3
-PORTREVISION=	35
+PORTREVISION=	37
 CATEGORIES=	math
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python interface to the R Programming Language
 
-LICENSE=	GPLv2 LGPL21 MPL
+LICENSE=	GPLv2 LGPL21 MPL11
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	${PYNUMPY} \
-		R:math/R
-RUN_DEPENDS=	${PYNUMPY} \
-		R:math/R
+BUILD_DEPENDS=	${PYNUMPY}
+LIB_DEPENDS=	libR.so:math/R
+RUN_DEPENDS=	${PYNUMPY}
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 LDFLAGS+=	-L${LOCALBASE}/lib/R/modules -L${LOCALBASE}/lib/R/lib
 

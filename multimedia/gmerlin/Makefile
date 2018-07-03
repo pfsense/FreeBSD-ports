@@ -3,7 +3,7 @@
 
 PORTNAME=	gmerlin
 PORTVERSION=	1.2.0
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
@@ -26,6 +26,7 @@ CONFIGURE_ENV=	ac_cv_func_inotify_init=no
 CONFIGURE_ARGS=	--disable-v4l --disable-v4l2 --disable-v4lconvert \
 		--without-doxygen --with-cpuflags=none --disable-musicbrainz
 USE_LDCONFIG=	yes
+LLD_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
 INSTALL_ICONS=	yes
 
@@ -35,7 +36,7 @@ LDFLAGS+=	-Wl,--add-needed
 
 INFO=		gmerlin
 
-OPTIONS_DEFINE= 	ALSA CDDB CDIO ESOUND JACK JPEG LIBVISUAL \
+OPTIONS_DEFINE=		ALSA CDDB CDIO ESOUND JACK JPEG LIBVISUAL \
 			OPTIMIZED_CFLAGS PNG PULSEAUDIO QUICKTIME TIFF DOCS
 OPTIONS_DEFAULT=	CDDB JACK JPEG LIBVISUAL \
 			OPTIMIZED_CFLAGS PNG PULSEAUDIO QUICKTIME TIFF
@@ -45,9 +46,9 @@ ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_CONFIGURE_OFF=	--disable-alsa --disable-alsamixer
 CDDB_LIB_DEPENDS=	libcddb.so:audio/libcddb
 CDDB_CONFIGURE_OFF=	--disable-cddb
-CDIO_LIB_DEPENDS=	libcdio.so:sysutils/libcdio
+CDIO_LIB_DEPENDS=	libcdio.so:sysutils/libcdio \
+			libcdio_cdda.so:sysutils/libcdio-paranoia
 CDIO_CONFIGURE_OFF=	--disable-libcdio
-CDIO_BROKEN=		fails to build with new libcdio
 ESOUND_USE=		gnome=esound
 ESOUND_CONFIGURE_OFF=	--disable-esd
 JACK_LIB_DEPENDS=	libjack.so:audio/jack

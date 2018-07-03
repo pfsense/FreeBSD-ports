@@ -1,8 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	turba
-PORTVERSION=	4.2.16
-PKGNAMEPREFIX=	horde-
+PORTVERSION=	4.2.21
+PORTREVISION=	1
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 CATEGORIES=	mail www pear
 
 MAINTAINER=	horde@FreeBSD.org
@@ -21,6 +22,7 @@ USE_PHP=	gettext hash json
 USE_HORDE_BUILD=	Horde_Role
 USE_HORDE_RUN=	Horde_Role \
 		horde \
+		content \
 		Horde_Auth \
 		Horde_Core \
 		Horde_Data \

@@ -19,10 +19,6 @@ OPTIONS_DEFINE=	PYSTEMMER
 OPTIONS_DEFAULT=PYSTEMMER
 PYSTEMMER_DESC=	Use PyStemmer to accelerate
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MPYSTEMMER}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pystemmer>0:textproc/py-pystemmer
-.endif
+PYSTEMMER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pystemmer>0:textproc/py-pystemmer@${FLAVOR}
 
 .include <bsd.port.mk>

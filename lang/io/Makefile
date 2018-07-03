@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	io
-PORTVERSION=	2015.11.11
+PORTVERSION=	2017.09.06
+PORTREVISION=	1
 CATEGORIES=	lang
 
 MAINTAINER=	gahr@FreeBSD.org
@@ -10,11 +11,14 @@ COMMENT=	Small prototype-based programming language
 
 LICENSE=	BSD3CLAUSE
 
+BROKEN_armv6=		fails to compile: ucontext.h: expected parameter declarator
+BROKEN_armv7=		fails to compile: Coro.c:392:2: no member named 'arm_r0' in 'mcontext_t'
+
+USES=		cmake:outsource,noninja compiler:c11 ssl
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	stevedekorte
-GH_TAGNAME=	23afbcc
 
-USES=		cmake:outsource compiler:c11
 MAKE_JOBS_UNSAFE=yes
 USE_LDCONFIG=	yes
 
@@ -44,5 +48,14 @@ post-install:
 	cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 	${MKDIR}  ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/samples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
+	${MKDIR} ${STAGEDIR}${DATADIR}/SyntaxHighlighters
+.for syn in "Emacs IntelliJ JEdit Kate Scintilla Vim"
+	cd ${WRKSRC}/extras/SyntaxHighlighters && \
+	    ${COPYTREE_SHARE} ${syn} ${STAGEDIR}${DATADIR}/SyntaxHighlighters
+.endfor
+
+do-test:
+	cd ${BUILD_WRKSRC} && \
+	    ./_build/binaries/io ${WRKSRC}/libs/iovm/tests/correctness/run.io
 
 .include <bsd.port.mk>

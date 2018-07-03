@@ -1,13 +1,16 @@
---- device-bsd44.c.orig	2012-06-05 16:12:29 UTC
+--- device-bsd44.c.orig	2017-06-29 04:32:29 UTC
 +++ device-bsd44.c
-@@ -188,6 +188,27 @@ ret:
+@@ -126,7 +126,31 @@ ret:
+ 	return -1;
+ }
  
- int setup_allrouters_membership(struct Interface *iface)
- {
+-int setup_allrouters_membership(int sock, struct Interface *iface) { return 0; }
++int setup_allrouters_membership(int sock, struct Interface *iface) 
++{
 +	struct ipv6_mreq mreq;
 +
 +	memset(&mreq, 0, sizeof(mreq));
-+	mreq.ipv6mr_interface = iface->if_index;
++	mreq.ipv6mr_interface = iface->props.if_index;
 +
 +	/* all-routers multicast address */
 +	if (inet_pton(AF_INET6, "ff02::2",
@@ -18,13 +21,15 @@
 +
 +	/* XXX: See pfSense ticket #2878 */
 +	setsockopt(sock, IPPROTO_IPV6, IPV6_LEAVE_GROUP, &mreq, sizeof(mreq));
-+			
++
 +	if (setsockopt(sock, IPPROTO_IPV6, IPV6_JOIN_GROUP,
 +			&mreq, sizeof(mreq)) < 0) {
-+		flog(LOG_ERR, "can't join ipv6-allrouters on %s", iface->Name);
++		flog(LOG_ERR, "can't join ipv6-allrouters on %s", iface->props.name);
 +		return (-1);
 +	}
 +
- 	return (0);
- }
++	return 0; 
++}
  
+ int set_interface_linkmtu(const char *iface, uint32_t mtu)
+ {

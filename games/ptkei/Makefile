@@ -3,21 +3,21 @@
 
 PORTNAME=	ptkei
 PORTVERSION=	2.00.0
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/ptkei2
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Python/Tk graphical client for Wolfpack Empire servers
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter \
-		${PYTHON_SITELIBDIR}/Pmw/__init__.py:x11-toolkits/py-Pmw
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR} \
+		${PYTHON_SITELIBDIR}/Pmw/__init__.py:x11-toolkits/py-Pmw@${PY_FLAVOR}
 
-USES=		python
+USES=		python:2.7 shebangfix
+SHEBANG_FILES=	empire.py scripts/*.py
 
 do-build:
 	@${FIND} ${WRKSRC} -name "*.pyc" -delete
-	@${FIND} ${WRKSRC} \( -type f -or -type l \) | ${XARGS} ${CHMOD} 644
-	@${FIND} ${WRKSRC} -type d | ${XARGS} ${CHMOD} 755
 	@${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py ${WRKSRC} 2>/dev/null
 
 do-install:

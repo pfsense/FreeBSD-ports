@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	libvncserver
-PORTVERSION=	0.9.10
+PORTVERSION=	0.9.11
+PORTREVISION=	2
 DISTVERSIONPREFIX=	LibVNCServer-
-PORTREVISION=	1
 CATEGORIES=	net devel
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	araujo@FreeBSD.org
 COMMENT=	Provide an easy API to a custom vnc server
 
 LICENSE=	GPLv2
@@ -18,7 +18,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	LibVNC
 
 USES=		autoreconf jpeg libtool pathfix pkgconfig
-PATHFIX_MAKEFILEIN=	Makefile.am
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -36,7 +35,7 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_WITH=	gnutls
 
 OPENSSL_CONFIGURE_WITH=	crypto ssl
-OPENSSL_USE=		OPENSSL=yes
+OPENSSL_USES=		ssl
 
 GCRYPT_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 			libgpg-error.so:security/libgpg-error

@@ -24,7 +24,9 @@ lib/mysql/libmysqld.a
 lib/mysql/plugin/adt_null.so
 lib/mysql/plugin/auth.so
 lib/mysql/plugin/auth_test_plugin.so
+lib/mysql/plugin/connection_control.so
 lib/mysql/plugin/daemon_example.ini
+lib/mysql/plugin/group_replication.so
 %%NO_EXAMPLE%%lib/mysql/plugin/ha_example.so
 lib/mysql/plugin/keyring_file.so
 lib/mysql/plugin/libdaemon_example.so
@@ -83,7 +85,6 @@ man/man1/mysqld_multi.1.gz
 man/man1/mysqld_safe.1.gz
 man/man1/mysqldumpslow.1.gz
 man/man1/mysqlman.1.gz
-man/man1/mysqltest.1.gz
 man/man1/perror.1.gz
 man/man1/replace.1.gz
 man/man1/resolve_stack_dump.1.gz
@@ -134,7 +135,6 @@ man/man8/mysqld.8.gz
 %%DATADIR%%/japanese/errmsg.sys
 %%DATADIR%%/korean/errmsg.sys
 %%DATADIR%%/magic
-%%DATADIR%%/my-default.cnf
 %%DATADIR%%/mysql-log-rotate
 %%DATADIR%%/mysql.server
 %%DATADIR%%/mysql_security_commands.sql

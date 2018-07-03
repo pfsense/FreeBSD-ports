@@ -2,6 +2,7 @@
 
 PORTNAME=	libpololu-avr
 PORTVERSION=	151002
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	jonathan@FreeBSD.org
@@ -11,6 +12,8 @@ LICENSE=	MIT
 
 BUILD_DEPENDS=	${LOCALBASE}/avr/lib/libc.a:devel/avr-libc
 RUN_DEPENDS=	${LOCALBASE}/avr/lib/libc.a:devel/avr-libc
+
+BROKEN_powerpc64=	fails to build: OrangutanAnalog.h: internal compiler error: Segmentation fault
 
 USES=		gmake
 USE_GITHUB=	yes

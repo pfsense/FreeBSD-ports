@@ -1,2 +1,3 @@
-SHA256 (libnsgif-0.1.3-src.tar.gz) = d3d2c9c008047eab41fc0a4ce7c280456c55c479d191e1968f843b005f219fa8
-SIZE (libnsgif-0.1.3-src.tar.gz) = 202160
+TIMESTAMP = 1509118870
+SHA256 (libnsgif-0.2.0-src.tar.gz) = 0a8dd99f2260c645c940f15eb6527ec8116a1524813b93c069d654222a701cde
+SIZE (libnsgif-0.2.0-src.tar.gz) = 268300

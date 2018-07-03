@@ -178,7 +178,7 @@ if ($_REQUEST['ajax']) {
 
 	// Load log
 	if ($_REQUEST['action'] == 'load') {
-		if (!$pfb_logfilename) {
+		if (!file_exists($pfb_logfilename)) {
 			print ("|3|" . gettext('Log file is empty or does not exist') . ".|");
 		} else {
 			$data = implode(array_map('pfb_htmlspecialchars', @file($pfb_logfilename)));

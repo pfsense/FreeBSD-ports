@@ -12,10 +12,10 @@ DISTNAME=	phpBB-tw-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Traditional Chinese version of phpBB
 
-RUN_DEPENDS=	${LOCALBASE}/share/pear/System.php:devel/pear
+RUN_DEPENDS=	${LOCALBASE}/share/pear/System.php:devel/pear@${PHP_FLAVOR}
 
 CONFLICTS=	phpbb-[0-9]*
-USES=		dos2unix
+USES=		dos2unix php
 
 # Get HOSTNAME
 .if exists(/sbin/sysctl)
@@ -70,7 +70,7 @@ pre-everything::
 post-patch:
 	@ ${REINPLACE_CMD} -e "s#\.\./templates#/${PHPBB_URL}/templates#" \
 	  ${WRKSRC}/docs/*.html
-	@${RM} -f `${FIND} ${WRKSRC} -name '*.orig'`
+	@${RM} `${FIND} ${WRKSRC} -name '*.orig'`
 
 do-install:
 	@ ${MKDIR} -m 0775 ${STAGEDIR}${PREFIX}/${PHPBBDIR}

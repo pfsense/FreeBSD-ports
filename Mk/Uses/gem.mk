@@ -36,7 +36,7 @@ DOC_DIR=	${GEMS_BASE_DIR}/doc
 CACHE_DIR=	${GEMS_BASE_DIR}/cache
 SPEC_DIR=	${GEMS_BASE_DIR}/specifications
 EXT_DIR=	${GEMS_BASE_DIR}/extensions
-GEM_NAME?=	${PORTNAME}-${PORTVERSION}
+GEM_NAME?=	${DISTNAME}
 GEM_LIB_DIR?=	${GEMS_DIR}/${GEM_NAME}
 GEM_DOC_DIR?=	${DOC_DIR}/${GEM_NAME}
 GEM_SPEC?=	${SPEC_DIR}/${GEM_NAME}.gemspec
@@ -44,23 +44,8 @@ GEM_CACHE?=	${CACHE_DIR}/${GEM_NAME}.gem
 GEMSPEC=	${PORTNAME}.gemspec
 GEM_ENV+=	RB_USER_INSTALL=yes
 
-.if defined(LANG) && !empty(LANG)
-GEM_ENV+=		LANG=${LANG}
-.else
-GEM_ENV+=		LANG=en_US.UTF-8
-.endif
-
-.if defined(LC_ALL) && !empty(LC_ALL)
-GEM_ENV+=		LC_ALL=${LC_ALL}
-.else
-GEM_ENV+=		LC_ALL=en_US.UTF-8
-.endif
-
-.if defined(LC_CTYPE) && !empty(LC_CTYPE)
-GEM_ENV+=		LC_CTYPE=${LC_CTYPE}
-.else
-GEM_ENV+=		LC_CTYPE=UTF-8
-.endif
+USE_LOCALE?=	en_US.UTF-8
+GEM_ENV+=	LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
 
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}" \
 		REV="${RUBY_GEM}" \
@@ -100,7 +85,7 @@ do-extract:
 	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} spec --ruby ${DISTDIR}/${DIST_SUBDIR}/${GEMFILES} > ${GEMSPEC} ; then \
 		if [ -n "${BUILD_FAIL_MESSAGE}" ] ; then \
 			${ECHO_MSG} "===> Extraction failed unexpectedly."; \
-			(${ECHO_CMD} "${BUILD_FAIL_MESSAGE}") | ${FMT} 75 79 ; \
+			(${ECHO_CMD} "${BUILD_FAIL_MESSAGE}") | ${FMT_80} ; \
 			fi; \
 		${FALSE}; \
 		fi)
@@ -111,7 +96,7 @@ do-build:
 	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} build --force ${GEMSPEC} ; then \
 		if [ -n "${BUILD_FAIL_MESSAGE}" ] ; then \
 			${ECHO_MSG} "===> Compilation failed unexpectedly."; \
-			(${ECHO_CMD} "${BUILD_FAIL_MESSAGE}") | ${FMT} 75 79 ; \
+			(${ECHO_CMD} "${BUILD_FAIL_MESSAGE}") | ${FMT_80} ; \
 			fi; \
 		${FALSE}; \
 		fi)
@@ -123,10 +108,10 @@ do-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR}/build_info/
 	${FIND} ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR} -type f -name '*.so' -exec ${STRIP_CMD} {} +
 	${FIND} ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR} -type f \( -name mkmf.log -or -name gem_make.out \) -delete
-	${RM} -rf ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/ext \
+	${RM} -r ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/ext \
 		${STAGEDIR}${PREFIX}/${CACHE_DIR} 2> /dev/null || ${TRUE}
 	${RMDIR} ${STAGEDIR}${PREFIX}/${EXT_DIR} 2> /dev/null || ${TRUE}
-.if defined(NOPORTDOCS)
+.if !${PORT_OPTIONS:MDOCS}
 	-@${RMDIR} ${STAGEDIR}${PREFIX}/${DOC_DIR}
 .endif
 .endif
@@ -135,7 +120,7 @@ do-install:
 _USES_install+=	820:gem-autoplist
 gem-autoplist:
 	@${ECHO} ${GEM_SPEC} >> ${TMPPLIST}
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${FIND} -ds ${STAGEDIR}${PREFIX}/${DOC_DIR} -type f -print | ${SED} -E -e \
 		's,^${STAGEDIR}${PREFIX}/?,,' >> ${TMPPLIST}
 .endif

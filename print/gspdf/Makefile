@@ -2,7 +2,7 @@
 
 PORTNAME=	gspdf
 PORTVERSION=	0.5
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	print gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	GSPdf-${PORTVERSION}
@@ -12,7 +12,6 @@ COMMENT=	Postscript and Pdf Viewer for GNUstep
 
 USES=		ghostscript gnustep
 USE_GNUSTEP=	back build
-
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/GNUstep/System/Applications/GSPdf.app/GSPdf

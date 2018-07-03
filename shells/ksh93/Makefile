@@ -19,7 +19,7 @@ MASTER_SITES=	http://www2.research.att.com/~astopen/download/tgz/ \
 DISTFILES=	INIT.${INITVERSION}.tgz ast-ksh.${KSHVERSION}.tgz
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	sunpoet@FreeBSD.org
+MAINTAINER=	saper@saper.info
 COMMENT=	Official AT&T release of KornShell 93
 
 LICENSE=	EPL
@@ -36,10 +36,12 @@ KSHVERSION=	2012-08-01
 
 STATIC_MAKE_ENV=	LDFLAGS+=-static
 
+BROKEN_aarch64=		Fails to compile: error: unknown type name Dllscan_t
+
 .include <bsd.port.pre.mk>
 
 post-patch:
-.if ${OSVERSION} >= 1100093
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100093
 	@${REINPLACE_CMD} -e 's|SF_FLAGS|SFIO_FLAGS|g' ${WRKSRC}/src/lib/libast/include/sfio*.h ${WRKSRC}/src/lib/libast/sfio/*.c
 .endif
 

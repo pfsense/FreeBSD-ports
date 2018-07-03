@@ -3,6 +3,7 @@
 
 PORTNAME=	apr
 PORTVERSION=	2.0.${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/ohauer
 PKGNAMESUFFIX=	2
@@ -15,7 +16,7 @@ LICENSE=	APACHE20
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-NO_PACKAGE=	Developper only package
+NO_PACKAGE=	Developer only package
 
 # r1676013
 SNAPDATE=	20150425134304
@@ -28,6 +29,7 @@ CPE_VERSION=	${PORTVERSION:S|.${SNAPDATE}||}
 USE_PERL5=		build
 USE_LDCONFIG=		yes
 GNU_CONFIGURE=		yes
+TEST_TARGET=		test
 
 OPTIONS_SUB=		yes
 OPTIONS_DEFINE=		DEVELOPER_ONLY
@@ -123,10 +125,5 @@ pre-install:
 
 post-install:
 	${FIND} ${STAGEDIR}/${PREFIX}/lib -name \*.so | ${XARGS} ${STRIP_CMD}
-
-test:	build
-	@-make test -C ${WRKSRC}
-
-#regression-test:	test
 
 .include <bsd.port.mk>

@@ -1,39 +1,43 @@
 # $FreeBSD$
 
 PORTNAME=	cask
-PORTVERSION=	0.7.0
+PORTVERSION=	0.8.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
 CATEGORIES=	devel elisp
+PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	rpaulo@FreeBSD.org
+MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Project management tool for Emacs
 
 LICENSE=	GPLv3
 
+USES=		emacs python shebangfix
 USE_GITHUB=	yes
-USE_EMACS=	yes
-USES=		python
 
+NO_ARCH=	yes
 NO_BUILD=	yes
+
+PLIST_FILES=	${EMACS_SITE_LISPDIR}/cask.el \
+		${EMACS_SITE_LISPDIR}/cask-bootstrap.el \
+		${EMACS_SITE_LISPDIR}/cask-cli.el \
+		${EMACS_SITE_LISPDIR}/package-legacy.el \
+		${EMACS_SITE_LISPDIR}/templates/init.tpl \
+		${EMACS_SITE_LISPDIR}/templates/init-dev.tpl \
+		bin/cask
+
+SHEBANG_FILES=	bin/cask
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|os.path.dirname(CASK_BIN_DIRECTORY)|"${PREFIX}/${EMACS_SITE_LISPDIR}"|' \
-		${WRKSRC}/bin/cask
+	    ${WRKSRC}/bin/cask
 
 do-install:
-	${INSTALL_DATA} ${WRKSRC}/cask.el \
-		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
-	${INSTALL_DATA} ${WRKSRC}/cask-bootstrap.el \
-		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
-	${INSTALL_DATA} ${WRKSRC}/cask-cli.el \
-		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} \
+	    ${PLIST_FILES:M*.el:T} ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR})
 	${MKDIR} ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}/templates
-	${INSTALL_DATA} ${WRKSRC}/templates/init.tpl \
-		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}/templates
-	${INSTALL_DATA} ${WRKSRC}/templates/init-dev.tpl \
-		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}/templates
+	(cd ${WRKSRC}/templates && ${INSTALL_DATA} ${PLIST_FILES:M*.tpl:T} \
+	    ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}/templates)
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/cask \
-		${STAGEDIR}${PREFIX}/bin/cask
+	    ${STAGEDIR}${PREFIX}/bin/cask
 
 .include <bsd.port.mk>

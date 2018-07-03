@@ -7,12 +7,12 @@ CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	mva@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python package for creating encapsulated PostScript figures
 
 LICENSE=	GPLv2
 
-USES=		python:3
+USES=		python:3.4+
 USE_TEX=	latex:build
 USE_PYTHON=	autoplist distutils
 

@@ -2,7 +2,7 @@
 
 PORTNAME=	api
 PORTVERSION=	0.5.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	SF/razorbacktm/API
 PKGNAMEPREFIX=	razorback-
@@ -27,15 +27,15 @@ STOMP_DEBUG_DESC=	Enable STOMP Debug
 GNU_CONFIGURE=	yes
 USES=		libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
-USE_AUTOTOOLS=	autoconf
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-
-BROKEN_sparc64=	Does not compile on sparc64
 
 DEBUG_CONFIGURE_ENABLE=		debug
 ASSERT_CONFIGURE_ENABLE=	assert
 CNC_DEBUG_CONFIGURE_ENABLE=	cnc-debug
 STOMP_DEBUG_CONFIGURE_ENABLE=	stomp-debug
+
+post-patch:
+	@${REINPLACE_CMD} -e s/json/json-c/ -e s/-Werror// ${WRKSRC}/configure
 
 .include <bsd.port.mk>

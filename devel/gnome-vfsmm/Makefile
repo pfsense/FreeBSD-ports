@@ -4,7 +4,7 @@
 
 PORTNAME=	gnome-vfsmm
 PORTVERSION=	2.26.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -14,7 +14,9 @@ COMMENT=	C++ wrapper for gnomevfs2 library
 
 BUILD_DEPENDS=	gm4:devel/m4
 
-USES=		gmake libtool:keepla pathfix pkgconfig tar:bzip2
+USES=		gmake libtool:keepla pathfix pkgconfig tar:bzip2 \
+		compiler:c++11-lang
+USE_CXXSTD=	c++11
 USE_GNOME=	glibmm gnomevfs2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

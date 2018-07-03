@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freecell-solver
-PORTVERSION=	4.4.0
+PORTVERSION=	4.18.0
 CATEGORIES=	games
 MASTER_SITES=	http://fc-solve.shlomifish.org/downloads/fc-solve/
 
@@ -11,14 +11,20 @@ COMMENT=	Open source framework for solving Freecell
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	p5-Path-Tiny>=0.076:devel/p5-Path-Tiny
+BUILD_DEPENDS=	p5-Path-Tiny>=0.076:devel/p5-Path-Tiny \
+		p5-Template-Toolkit>=2.26:www/p5-Template-Toolkit \
+		gperf:devel/gperf \
+		asciidoc:textproc/asciidoc
 
-OPTIONS_DEFINE=	TCMALLOC DOCS EXAMPLES
+OPTIONS_DEFINE=	DOCS EXAMPLES TCMALLOC
 TCMALLOC_DESC=	Use Google's TCMalloc
 
-USES=		cmake:outsource perl5 shebangfix tar:xz
+USES=		cmake:outsource compiler:c11 perl5 python:3.4+ shebangfix tar:xz
 USE_PERL5=	build
-SHEBANG_FILES=	board_gen/make_pysol_freecell_board.py
+SHEBANG_FILES=	board_gen/make_pysol_freecell_board.py \
+		board_gen/transpose-freecell-board.py \
+		board_gen/find-freecell-deal-index.py \
+		board_gen/fc_solve_find_index_s2ints.py
 CMAKE_ARGS=	-DFCS_WITH_TEST_SUITE:BOOL=OFF
 USE_LDCONFIG=	yes
 
@@ -28,9 +34,6 @@ TCMALLOC_LIB_DEPENDS=	libtcmalloc.so:devel/google-perftools
 TCMALLOC_CMAKE_OFF=	-DFCS_AVOID_TCMALLOC:BOOL=ON
 
 post-patch:
-.for f in CMakeLists.txt
-	@${REINPLACE_CMD} -e 's|"pthread"|"-pthread"|' ${WRKSRC}/${f}
-.endfor
 .for f in Shlomif_Common.cmake
 	@${REINPLACE_CMD} -e 's|share/man|man|' ${WRKSRC}/cmake/${f}
 .endfor

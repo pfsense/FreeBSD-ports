@@ -3,19 +3,19 @@
 
 PORTNAME=	wysiwyg
 DISTVERSION=	0.4.${SVN_REV}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www devel python
 MASTER_SITES=	http://www.sourcehosting.net/freebsd/distfiles/ \
 		LOCAL/brooks
 PKGNAMEPREFIX=	trac-
 DIST_SUBDIR=	trac
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	WYSIWYG editor for Trac wiki
 
 RUN_DEPENDS=	tracd:www/trac
 
-USES=		python:2 tar:bzip2
+USES=		python:2.7 tar:bzip2
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 
@@ -24,7 +24,6 @@ NO_ARCH=	yes
 .if !defined(SVN_REV)
 .if defined(BOOTSTRAP)
 SVN_URL=	http://trac-hacks.org/svn/tracwysiwygplugin/0.12/
-LANG=		"C"
 SVN_REV!=	svn info ${SVN_URL} | ${GREP} Revision | cut -d' ' -f2
 .else
 .include "Makefile.svn_rev"

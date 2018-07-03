@@ -1,27 +1,28 @@
 # $FreeBSD$
 
 PORTNAME=	irssi
-PORTVERSION=	0.8.20
-PORTREVISION?=	0
+PORTVERSION=	1.1.1
+PORTEPOCH=	1
 CATEGORIES?=	irc
 MASTER_SITES=	https://github.com/irssi/irssi/releases/download/${PORTVERSION}/
 
-MAINTAINER?=	vanilla@FreeBSD.org
-COMMENT?=	Modular IRC client with many features
+MAINTAINER=	dor.bsd@xm0.uk
+COMMENT=	Modular IRC client with many features
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libglib-2.0.so:devel/glib20
-
-CONFLICTS=	irssi-devel-[0-9]* zh-irssi-[0-9]*
-
-USES=		gettext-runtime gmake libtool ncurses pkgconfig tar:xz
+USES=		cpe gettext-runtime gmake libtool ncurses pkgconfig tar:xz
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-ncurses=${NCURSESBASE}
 INSTALL_TARGET=	install-strip
+USE_GNOME=	glib20
 
-OPTIONS_DEFINE=	PERL PROXY SOCKS IPV6 BOT DOCS TRUECOLOR
-OPTIONS_DEFAULT=	PERL
+OPTIONS_DEFINE=	PERL PROXY SOCKS BOT DOCS TRUECOLOR CAPSICUM
+OPTIONS_DEFAULT=	PERL CAPSICUM
+
+# If we're on FreeBSD 10 don't offer the Capsicum option.
+OPTIONS_EXCLUDE_FreeBSD_10=	CAPSICUM
+
 OPTIONS_SUB=	yes
 SOCKS_DESC=	Socks proxy support
 SOCKS_CONFIGURE_WITH=	socks
@@ -31,10 +32,10 @@ PERL_USES=	perl5
 PERL_CONFIGURE_ON=	--with-perl-lib=site
 PERL_CONFIGURE_OFF=	--with-perl=no
 PROXY_CONFIGURE_WITH=	proxy
-IPV6_CONFIGURE_ENABLE=	ipv6
-IPV6_CATEGORIES=	ipv6
 TRUECOLOR_DESC=	Truecolor (24bit) support
 TRUECOLOR_CONFIGURE_ENABLE=	true-color
+CAPSICUM_DESC=	Capsicum support
+CAPSICUM_CONFIGURE_WITH=	capsicum
 
 .if defined(WITHOUT_SSL)
 CONFIGURE_ARGS+=	--disable-ssl

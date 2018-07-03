@@ -3,7 +3,7 @@
 
 PORTNAME=	fs-uae
 PORTVERSION=	2.4.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	emulators
 MASTER_SITES=	http://fs-uae.net/stable/${PORTVERSION}/
 
@@ -20,6 +20,7 @@ USES=		gettext gmake pkgconfig
 USE_SDL=	sdl
 USE_GL=		gl
 USE_GNOME=	glib20
+LLD_UNSAFE=	yes
 INSTALLS_ICONS=	yes
 MAKE_ARGS+=	prefix=${PREFIX}
 

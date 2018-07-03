@@ -1,6 +1,6 @@
---- option.c.orig	Tue Jun 20 07:57:17 2006
-+++ option.c	Mon Sep 10 14:53:11 2007
-@@ -1331,9 +1331,11 @@
+--- option.c.orig	2016-10-28 03:11:42 UTC
++++ option.c
+@@ -978,9 +978,11 @@ int Option(TREE * RESTRICT tree) {
    else if (OptionMatch("help", *args)) {
      FILE *helpfile;
      char *readstat = (char *) -1;
@@ -12,4 +12,4 @@
 +          helpfile = fopen(fname, "r");
      if (!helpfile) {
        printf("ERROR.  Unable to open \"crafty.hlp\" -- help unavailable\n");
-       return (1);
+       return 1;

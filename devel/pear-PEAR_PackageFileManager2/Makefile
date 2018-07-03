@@ -5,13 +5,13 @@ PORTNAME=	PEAR_PackageFileManager2
 PORTVERSION=	1.0.4
 CATEGORIES=	devel www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PEAR class to maintain PEAR packages
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR/PackageFileManager/Plugins.php:devel/pear-PEAR_PackageFileManager_Plugins
-RUN_DEPENDS=	${PEARDIR}/PEAR/PackageFileManager/Plugins.php:devel/pear-PEAR_PackageFileManager_Plugins
+BUILD_DEPENDS=	${PEARDIR}/PEAR/PackageFileManager/Plugins.php:devel/pear-PEAR_PackageFileManager_Plugins@${PHP_FLAVOR}
+RUN_DEPENDS=	${PEARDIR}/PEAR/PackageFileManager/Plugins.php:devel/pear-PEAR_PackageFileManager_Plugins@${PHP_FLAVOR}
 
 USES=	pear
 

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	libpurple
-PORTVERSION=	2.11.0
-PORTREVISION?=	0
+PORTVERSION=	2.13.0
 CATEGORIES?=	net-im
 MASTER_SITES=	SF/pidgin/Pidgin/${PORTVERSION}
 DISTNAME=	pidgin-${PORTVERSION}
@@ -11,7 +10,7 @@ DISTNAME=	pidgin-${PORTVERSION}
 MAINTAINER?=	marcus@FreeBSD.org
 COMMENT?=	Backend library for the Pidgin multi-protocol messaging client
 
-USES=		cpe gettext gmake libtool pathfix pkgconfig tar:bzip2
+USES+=		cpe gettext gmake libtool localbase pathfix pkgconfig tar:bzip2
 USE_GNOME?=	gnomeprefix intltool glib20 libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS?=--disable-gtkui \
@@ -19,19 +18,17 @@ CONFIGURE_ARGS?=--disable-gtkui \
 		--with-dynamic-prpls=${PRPL_MODULES:S/,$//} \
 		--enable-static \
 		--disable-nm
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
 .if !defined(PIDGIN_SLAVE)
 # Pidgin slave ports that require the following functionality, must explicitly
 # set these macros themselves.
-USES+=		iconv python
+USES+=		iconv python:2.7 shebangfix
 USE_LDCONFIG=	yes
-WANT_GNOME=	yes
+SHEBANG_FILES=	libpurple/purple-remote \
+		libpurple/purple-url-handler
 
 .if defined(PACKAGE_BUILDING)
-.undef WITHOUT_GNOME
 WITH_GNOME=	yes
 .endif
 
@@ -41,13 +38,15 @@ PRPL_MODULES=
 
 CPE_VENDOR=	pidgin
 
-OPTIONS_DEFINE=	BONJOUR DBUS GNUTLS NSS SASL GSTREAMER VV IDN PERL TCLTK
+OPTIONS_DEFINE=	DBUS SASL GSTREAMER VV IDN PERL TCLTK
 OPTIONS_GROUP=		PROTOCOLS
-OPTIONS_GROUP_PROTOCOLS=GG SAMETIME SILC IRC JABBER MSN MYSPACE \
-			NOVELL OSCAR QQ SIMPLE YAHOO ZEPHYR
-OPTIONS_DEFAULT=	BONJOUR DBUS NSS GSTREAMER VV IDN GG IRC JABBER MSN \
-			MYSPACE NOVELL OSCAR QQ SIMPLE YAHOO ZEPHYR
-BONJOUR_DESC=	mDNS support
+OPTIONS_RADIO=	TLS
+OPTIONS_RADIO_TLS=	NSS GNUTLS
+OPTIONS_GROUP_PROTOCOLS=BONJOUR GG SAMETIME SILC IRC JABBER \
+			NOVELL OSCAR QQ SIMPLE ZEPHYR
+OPTIONS_DEFAULT=	BONJOUR DBUS NSS GSTREAMER VV IDN GG IRC JABBER \
+			NOVELL OSCAR QQ SIMPLE ZEPHYR
+BONJOUR_DESC=	mDNS support and Bonjour protocol
 GNUTLS_DESC=	Use GNUTLS for encryption support
 NSS_DESC=	Use Mozilla NSS for encryption support
 SASL_DESC=	Cyrus SASL support (for jabberd)
@@ -58,13 +57,10 @@ SILC_DESC=	The Secure Internet Live Conferencing protocol
 GG_DESC=	The Gadu-Gadu chat protocol
 IRC_DESC=	The Internet Relay Chat protocol
 JABBER_DESC=	The Jabber/XMPP/Google Talk protocol
-MSN_DESC=	The MSN Messenger protocol
-MYSPACE_DESC=	The MySpaceIM protocol
 NOVELL_DESC=	The Novell GroupWise chat protocol
-OSCAR_DESC=	The AIM/ICQ/Oscar protocol
+OSCAR_DESC=	The ICQ/Oscar protocol
 QQ_DESC=	The Tercent QQ chat protocol
 SIMPLE_DESC=	The SIMPLE chat protocol
-YAHOO_DESC=	The Yahoo! Messenger protocol
 ZEPHYR_DESC=	The Zephyr chat protocol
 
 .if defined(WITH_GTKUI)
@@ -122,12 +118,12 @@ PLIST_SUB+=		PERL:="@comment not installed: " \
 			PERLMAN:="@comment not installed: "
 .endif
 
-.if !defined(PIDGIN_SLAVE)
+.if defined(WITH_GTKUI) && !defined(PIDGIN_SLAVE)
 USE_GNOME+=	gconf2
 GCONF_SCHEMAS=	purple.schemas
 .endif
 
-#.if defined(WITH_GTKUI) && ${HAVE_GNOME:Mevolutiondataserver}!=""
+#.if defined(WITH_GTKUI)
 #USE_GNOME+=		evolutiondataserver
 #PLIST_SUB+=		EVO=""
 #CONFIGURE_ARGS+=	--enable-gevolution
@@ -137,14 +133,14 @@ PLIST_SUB+=		EVO="@comment not installed: "
 #.endif
 
 .if ${PORT_OPTIONS:MGSTREAMER}
-USE_GSTREAMER+=	core good
+USE_GSTREAMER1+=core good
 .else
 CONFIGURE_ARGS+=--disable-gstreamer
 .endif
 
 .if ${PORT_OPTIONS:MVV} && ${PORT_OPTIONS:MGSTREAMER}
 LIB_DEPENDS+=	libfarstream-0.2.so:net-im/farstream
-USE_GSTREAMER+=	v4l2
+USE_GSTREAMER1+=v4l2
 PLIST_SUB+=	VV=""
 .else
 CONFIGURE_ARGS+=--disable-vv
@@ -211,7 +207,7 @@ CONFIGURE_ARGS+=	--disable-gtkspell
 .if ${PORT_OPTIONS:MDBUS}
 LIB_DEPENDS+=		libdbus-glib-1.so:devel/dbus-glib
 .if !defined(PIDGIN_SLAVE)
-RUN_DEPENDS+=		${PYTHON_SITELIBDIR}/dbus/__init__.py:devel/py-dbus
+RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR}
 .endif
 CONFIGURE_ARGS+=	--enable-dbus
 PLIST_SUB+=		DBUS=""
@@ -260,20 +256,6 @@ PRPL_MODULES:=		jabber,${PRPL_MODULES}
 PLIST_SUB+=		JABBER="@comment not installed: "
 .endif
 
-.if ${PORT_OPTIONS:MMSN}
-PLIST_SUB+=		MSN=""
-PRPL_MODULES:=		msn,${PRPL_MODULES}
-.else
-PLIST_SUB+=		MSN="@comment not installed: "
-.endif
-
-.if ${PORT_OPTIONS:MMYSPACE}
-PLIST_SUB+=		MYSPACE=""
-PRPL_MODULES:=		myspace,${PRPL_MODULES}
-.else
-PLIST_SUB+=		MYSPACE="@comment not installed: "
-.endif
-
 .if ${PORT_OPTIONS:MNOVELL}
 PLIST_SUB+=		NOVELL=""
 PRPL_MODULES:=		novell,${PRPL_MODULES}
@@ -302,13 +284,6 @@ PRPL_MODULES:=		simple,${PRPL_MODULES}
 PLIST_SUB+=		SIMPLE="@comment not installed: "
 .endif
 
-.if ${PORT_OPTIONS:MYAHOO}
-PLIST_SUB+=		YAHOO=""
-PRPL_MODULES:=		yahoo,${PRPL_MODULES}
-.else
-PLIST_SUB+=		YAHOO="@comment not installed: "
-.endif
-
 .if ${PORT_OPTIONS:MZEPHYR}
 PLIST_SUB+=		ZEPHYR=""
 PRPL_MODULES:=		zephyr,${PRPL_MODULES}
@@ -333,7 +308,7 @@ post-patch:
 .endif
 
 .if !defined(PIDGIN_SLAVE) && ${PORT_OPTIONS:MPERL}
-post-stage:
+post-install:
 	@${SED} -i '' -e 's|^${STAGEDIR}||g' \
 		${STAGEDIR}${PREFIX}/lib/purple-2/perl/auto/Purple/.packlist
 .endif

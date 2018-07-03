@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	HTML-FormatText-WithLinks-AndTables
-PORTVERSION=	0.06
-PORTREVISION=	1
+PORTVERSION=	0.07
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Perl5 module to convert HTML to text with tables in tact
+COMMENT=	Perl5 module to convert HTML to text with tables intact
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-HTML-Format>=0:textproc/p5-HTML-Format \
@@ -21,5 +20,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

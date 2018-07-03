@@ -37,7 +37,6 @@ __FBSDID("$FreeBSD$");
 #include <sys/wait.h>
 #include <errno.h>
 #include <err.h>
-#include <inttypes.h>
 #include <kvm.h>
 #include <limits.h>
 #include <paths.h>
@@ -204,14 +203,15 @@ verify_remote(void)
 }
 
 static void
-add_arg(struct captured_main_args *args, char *arg)
+add_arg(struct captured_main_args *args, char const *arg)
 {
 
 	args->argc++;
-	args->argv = reallocf(args->argv, (args->argc + 1) * sizeof(char *));
+	args->argv = (char **)reallocf(args->argv, (args->argc + 1) *
+	    sizeof(char *));
 	if (args->argv == NULL)
 		err(1, "Out of memory building argument list");
-	args->argv[args->argc] = arg;
+	args->argv[args->argc] = (char *)arg;
 }
 
 int
@@ -239,16 +239,16 @@ main(int argc, char *argv[])
 			if (s[0] == '-')
 				s++;
 			if (strcmp(s, "quiet") == 0)
-				argv[a] = "-q";
+				argv[a] = (char *)"-q";
 			else if (strcmp(s, "fullname") == 0)
-				argv[a] = "-f";
+				argv[a] = (char *)"-f";
 		}
 	}
 
 	kgdb_quiet = 0;
 	memset (&args, 0, sizeof args);
 	args.interpreter_p = INTERP_CONSOLE;
-	args.argv = malloc(sizeof(char *));
+	args.argv = (char **)xmalloc(sizeof(char *));
 	args.argv[0] = argv[0];
 
 	while ((ch = getopt(argc, argv, "ab:c:d:fn:qr:vw")) != -1) {
@@ -378,6 +378,10 @@ main(int argc, char *argv[])
 	/* Set an alternate prompt. */
 	add_arg(&args, "-iex");
 	add_arg(&args, "set prompt (kgdb) ");
+
+	/* Change osabi to assume a FreeBSD kernel. */
+	add_arg(&args, "-iex");
+	add_arg(&args, "set osabi FreeBSD/kernel");
 
 	/* Open the vmcore if requested. */
 	if (vmcore != NULL) {

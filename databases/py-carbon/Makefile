@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	carbon
-PORTVERSION=	0.9.15
+PORTVERSION=	1.1.2
+PORTREVISION=	1
 CATEGORIES=	databases python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,19 +11,28 @@ MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Backend storage application for graphite
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}txamqp>=0.3:net/py-txamqp \
-		${PYTHON_PKGNAMEPREFIX}whisper>=0.9.10:databases/py-whisper \
-		${PYTHON_PKGNAMEPREFIX}django18>=1.4:www/py-django18
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cachetools>=1.1.0:devel/py-cachetools@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}service_identity>=0:security/py-service_identity@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}txamqp>=0.3:net/py-txamqp@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}urllib3>=0:net/py-urllib3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}whisper>=0.9.10:databases/py-whisper@${FLAVOR}
 
+NO_ARCH=	yes
 USE_PYTHON=	distutils
-USES=		python:2 twisted:run
+USES=		python:2.7
 USE_RC_SUBR=	carbon
 USE_GITHUB=	yes
 GH_ACCOUNT=	graphite-project
+MAKE_ENV=	GRAPHITE_NO_PREFIX=yes
 
-post-stage:
-	${RM} -rf ${STAGEDIR}${PREFIX}/examples/init.d
+post-patch:
+	@${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/setup.py
+
+post-install:
+	${RM} -r ${STAGEDIR}${PREFIX}/examples/init.d
 	${RMDIR} ${STAGEDIR}${PREFIX}/examples
 
 .include <bsd.port.mk>

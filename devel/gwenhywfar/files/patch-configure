@@ -1,6 +1,19 @@
---- configure.orig	2015-05-25 16:16:33 UTC
+Prevent SO version rollback
+Fix dectection of fox libs
+Prevent linking to unneeded Qt5 libraries
+
+--- configure.orig	2018-02-10 18:33:05 UTC
 +++ configure
-@@ -20986,7 +20986,7 @@ $as_echo_n "checking for fox libraries..
+@@ -2888,7 +2888,7 @@ GWENHYWFAR_VERSION_TAG="stable"
+ #
+ # SO version for Gwenhywfar
+ #
+-GWENHYWFAR_SO_CURRENT="78"
++GWENHYWFAR_SO_CURRENT="79"
+ GWENHYWFAR_SO_AGE="19"
+ GWENHYWFAR_SO_REVISION="0"
+ GWENHYWFAR_SO_EFFECTIVE="`echo \$(($GWENHYWFAR_SO_CURRENT-$GWENHYWFAR_SO_AGE))`"
+@@ -21093,7 +21093,7 @@ $as_echo_n "checking for fox libraries... " >&6; }
  
  # Check whether --with-fox-libs was given.
  if test "${with_fox_libs+set}" = set; then :
@@ -9,3 +22,60 @@
  else
  
        ac_ext=cpp
+@@ -22522,43 +22522,16 @@ $as_echo_n "checking for Qt... " >&6; }
+     am_have_qt_makefile=`mktemp`
+     # http://qt-project.org/doc/qt-5/qmake-variable-reference.html#qt
+     cat > $am_have_qt_pro << EOF
+-qtHaveModule(axcontainer):       QT += axcontainer
+-qtHaveModule(axserver):          QT += axserver
+-qtHaveModule(concurrent):        QT += concurrent
+ qtHaveModule(core):              QT += core
+-qtHaveModule(dbus):              QT += dbus
+-qtHaveModule(declarative):       QT += declarative
+-qtHaveModule(designer):          QT += designer
+ qtHaveModule(gui):               QT += gui
+-qtHaveModule(help):              QT += help
+-qtHaveModule(multimedia):        QT += multimedia
+-qtHaveModule(multimediawidgets): QT += multimediawidgets
+-qtHaveModule(network):           QT += network
+-qtHaveModule(opengl):            QT += opengl
+-qtHaveModule(printsupport):      QT += printsupport
+-qtHaveModule(qml):               QT += qml
+-qtHaveModule(qmltest):           QT += qmltest
+-qtHaveModule(x11extras):         QT += x11extras
+-qtHaveModule(script):            QT += script
+-qtHaveModule(scripttools):       QT += scripttools
+-qtHaveModule(sensors):           QT += sensors
+-qtHaveModule(serialport):        QT += serialport
+-qtHaveModule(sql):               QT += sql
+-qtHaveModule(svg):               QT += svg
+-qtHaveModule(testlib):           QT += testlib
+-qtHaveModule(uitools):           QT += uitools
+-qtHaveModule(webkit):            QT += webkit
+-qtHaveModule(webkitwidgets):     QT += webkitwidgets
+-qtHaveModule(xml):               QT += xml
+-qtHaveModule(xmlpatterns):       QT += xmlpatterns
+ qtHaveModule(widgets):           QT += widgets
+ percent.target = %
+ percent.commands = @echo -n "\$(\$(@))\ "
+ QMAKE_EXTRA_TARGETS += percent
+ EOF
+     $QT_QMAKE $am_have_qt_pro -o $am_have_qt_makefile
+-    QT_CXXFLAGS=`make -s -f $am_have_qt_makefile CXXFLAGS INCPATH`
+-    QT_LIBS=`make -s -f $am_have_qt_makefile LIBS`
++    QT_CXXFLAGS=`make -s -f $am_have_qt_makefile -VCXXFLAGS -VINCPATH | tr '\n' ' '`
++    QT_LIBS=`make -s -f $am_have_qt_makefile -VLIBS | tr '\n' ' '`
+     rm $am_have_qt_pro $am_have_qt_makefile
+ 
+     # Look for specific tools in $PATH
+@@ -22582,8 +22555,8 @@ else
+ fi
+ 
+ 
+-    QT_LRELEASE=`which lrelease`
+-    QT_LUPDATE=`which lupdate`
++    QT_LRELEASE=#none
++    QT_LUPDATE=#none
+ 
+     # Get Qt version from qmake
+     QT_DIR=`$QT_QMAKE --version | grep -o -E /.+`

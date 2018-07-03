@@ -2,36 +2,40 @@
 # $FreeBSD$
 
 PORTNAME=	linuxsampler
-PORTVERSION=	1.0.0
-PORTREVISION=	5
+DISTVERSION=	2.0.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://download.linuxsampler.org/packages/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modular MIDI sampler
 
-LIB_DEPENDS=	libgig.so:audio/libgig
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-RESTRICTED=	no commercial use
-
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	"not yet ported"
 
-OPTIONS_DEFINE=	JACK ALSA DSSI LV2CORE
+BUILD_DEPENDS=	lv2>0:audio/lv2
+LIB_DEPENDS=	libgig.so:audio/libgig \
+		libsndfile.so:audio/libsndfile \
+		libuuid.so:misc/e2fsprogs-libuuid
+
+OPTIONS_DEFINE=	JACK ALSA DSSI LV2
 OPTIONS_DEFAULT=	JACK
 DSSI_DESC=	Enable DSSI support
-LV2CORE_DESC=	Enable LV2 support
+LV2_DESC=	Enable LV2 support
 
-USES=		tar:bzip2 libtool gmake pathfix pkgconfig sqlite:3
+USES=		bison gmake libtool pathfix pkgconfig sqlite:3 tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	HAVE_UNIX98=1
-USE_LDCONFIG=	yes
+USE_LDCONFIG=	${PREFIX}/lib/linuxsampler
 INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-CONFIGURE_ARGS+=--disable-arts-driver
+CONFIGURE_ARGS+=	--disable-arts-driver
 
 .include <bsd.port.options.mk>
 
@@ -57,13 +61,13 @@ CONFIGURE_ENV+=	ac_cv_header_dssi_h=no
 PLIST_SUB+=	DSSI="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MLV2CORE}
-BUILD_DEPENDS+=	lv2core>=0:audio/lv2core
-RUN_DEPENDS+=	lv2core>=0:audio/lv2core
-PLIST_SUB+=	LV2CORE=""
+.if ${PORT_OPTIONS:MLV2}
+BUILD_DEPENDS+=	lv2>=1.14.0_1:audio/lv2
+RUN_DEPENDS+=	lv2>=1.14.0_1:audio/lv2
+PLIST_SUB+=	LV2=""
 .else
 CONFIGURE_ENV+=	ac_cv_header_lv2_h=no
-PLIST_SUB+=	LV2CORE="@comment "
+PLIST_SUB+=	LV2="@comment "
 .endif
 
 post-patch:

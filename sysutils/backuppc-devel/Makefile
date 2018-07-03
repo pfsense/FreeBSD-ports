@@ -2,12 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	backuppc
-DISTVERSION=	4.0.0alpha3
-PORTREVISION=	4
+DISTVERSION=	4.1.6.20180212
 CATEGORIES=	sysutils
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-beta/${DISTVERSION}
 PKGNAMESUFFIX=	-devel
-DISTNAME=	BackupPC-${DISTVERSION}
 
 MAINTAINER=	moiseev@mezonplus.ru
 COMMENT=	Multi-platform backup to disk-based storage
@@ -15,15 +12,26 @@ COMMENT=	Multi-platform backup to disk-based storage
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	p5-File-Listing>=0:sysutils/p5-File-Listing \
-		p5-BackupPC-XS>=0.30:sysutils/p5-BackupPC-XS
+EXTRACT_DEPENDS=	p5-BackupPC-XS>=0.57:sysutils/p5-BackupPC-XS
+RUN_DEPENDS=	p5-CGI>0:www/p5-CGI \
+		p5-File-Listing>=0:sysutils/p5-File-Listing \
+		p5-BackupPC-XS>=0.57:sysutils/p5-BackupPC-XS
 
-CONFLICTS=	backuppc-[0-9]*
+.if defined(QEMU_EMULATING) && "${QEMU_EMULATING}" == "1"
+BROKEN=		fails to build under qemu: uncaught target signal 11 (Segmetation fault) - core dumped
+.endif
 
-USE_RC_SUBR=	backuppc
+CONFLICTS=	backuppc backuppc4
 
 USES=		perl5
+USE_GITHUB=	yes
+GH_TAGNAME=	3990160
+USE_PERL5=	extract
 NO_BUILD=	yes
+NO_ARCH=	yes
+USE_RC_SUBR=	backuppc
+
+WRKSRC_SUBDIR=	dist/BackupPC-${PORTVERSION}
 
 USERS=		backuppc
 GROUPS=		backuppc
@@ -37,58 +45,29 @@ SUB_LIST=	CGIDIR=${CGIDIR}
 PLIST_SUB+=	CGIDIR=${CGIDIR:S,^${PREFIX}/,,} \
 		DISTVERSION=${DISTVERSION}
 
-PORTDOCS=	ChangeLog LICENSE README
+PORTDOCS=	ChangeLog LICENSE README.md
 
-OPTIONS_DEFINE=		ARCHIVE_ZIP DOCS RSYNC_BPC NMBLOOKUP \
-			RRDTOOL SMBCLIENT XML_RSS
+OPTIONS_DEFINE=		ARCHIVE_ZIP DOCS RSYNC_BPC \
+			RRDTOOL SMB XML_RSS
+
 OPTIONS_DEFAULT=	ARCHIVE_ZIP
 
-ARCHIVE_ZIP_DESC=	Perl module for Zip archive files
-RSYNC_BPC_DESC=		Modified rsync that used as part of BackupPC
-NMBLOOKUP_DESC=		NetBIOS Name lookup tool
-RRDTOOL_DESC=		Round Robin Database Tools
-SMBCLIENT_DESC=		Samba client
-XML_RSS_DESC=		Perl extension to manage RSS files
+ARCHIVE_ZIP_DESC=	Install Perl module for Zip archive files
+RSYNC_BPC_DESC=		Install modified rsync that used as part of BackupPC
+RRDTOOL_DESC=		Install Round Robin Database Tools
+SMB_DESC=		Install Samba (for "smb" transfer and NetBIOS lookup)
+XML_RSS_DESC=		Install Perl extension to manage RSS files
 
-.include <bsd.port.options.mk>
+ARCHIVE_ZIP_RUN_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip
+RSYNC_BPC_RUN_DEPENDS=		rsync-bpc>=3.0.9.6:net/rsync-bpc
+RRDTOOL_RUN_DEPENDS=		rrdtool:databases/rrdtool
+SMB_USES=			samba:run # nmblookup, smbclient
+XML_RSS_RUN_DEPENDS=		p5-XML-RSS>=0:textproc/p5-XML-RSS
 
-.if ${PORT_OPTIONS:MARCHIVE_ZIP}
-RUN_DEPENDS+=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip
-.endif
-.if ${PORT_OPTIONS:MRSYNC_BPC}
-RUN_DEPENDS+=	rsync-bpc>=3.0.9.3:net/rsync-bpc
-.endif
-.if ${PORT_OPTIONS:MNMBLOOKUP}
-RUN_DEPENDS+=	nmblookup:net/samba-nmblookup
-.endif
-.if ${PORT_OPTIONS:MRRDTOOL}
-RUN_DEPENDS+=	rrdtool:databases/rrdtool
-.endif
-.if ${PORT_OPTIONS:MSMBCLIENT}
-RUN_DEPENDS+=	smbclient:net/samba-smbclient
-.endif
-.if ${PORT_OPTIONS:MXML_RSS}
-RUN_DEPENDS+=	p5-XML-RSS>=0:textproc/p5-XML-RSS
-.endif
-
-pre-patch:
-	@${CP} ${WRKSRC}/configure.pl ${WRKSRC}/update.pl
-
-post-patch:
-	@${REINPLACE_CMD} \
-		-e 's|/etc/BackupPC\(/config.pl\)|${ETCDIR}\1|' \
-		${WRKSRC}/configure.pl ${WRKSRC}/update.pl
-	@${REINPLACE_CMD} -E \
-		-e 's|^(use lib ")\.(/lib";)$$|\1${PREFIX}\2|' \
-		${WRKSRC}/update.pl
-	@${REINPLACE_CMD} \
-		-e 's|STDERR "Please su |STDERR "Please su [-m] |' \
-		${WRKSRC}/lib/BackupPC/Lib.pm
-	@${REINPLACE_CMD} \
-		-e 's| you can use the -s| you can use the -m|' \
-		-e 's|option to su to explicitly run|option to su to run|' \
-		-e 's|su -s /bin/bash __BACKUPPCUSER__|su -m __BACKUPPCUSER__|' \
-		${WRKSRC}/doc/BackupPC.html ${WRKSRC}/doc/BackupPC.pod
+post-extract:
+	cd ${WRKDIR}/${PORTNAME}-${GH_TAGNAME} && ${PERL} makeDist \
+		--nosyntaxCheck \
+		--version ${PORTVERSION}
 
 do-install:
 	cd ${WRKSRC} && ${PERL} configure.pl	\
@@ -111,14 +90,12 @@ do-install:
 		--name=BackupPC --center="BackupPC user guide" \
 		${WRKSRC}/doc/BackupPC.pod ${WRKSRC}/${PORTNAME}.1
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
-	cd ${WRKSRC} && ${INSTALL_MAN} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 	${CP} ${WRKSRC}/doc/BackupPC.html ${STAGEDIR}${WWWDIR}
 	${RM} ${STAGEDIR}${ETCDIR}/config.pl
 	${RM} ${STAGEDIR}${ETCDIR}/hosts
-	${CP} ${WRKSRC}/conf/config.pl ${STAGEDIR}${ETCDIR}/config.pl.sample
-	${CP} ${WRKSRC}/conf/hosts ${STAGEDIR}${ETCDIR}/hosts.sample
 	${CP} ${WRKDIR}/update.sh ${STAGEDIR}${ETCDIR}/update.sh
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/backuppc
-	${CP} ${WRKSRC}/update.pl ${STAGEDIR}${PREFIX}/libexec/backuppc/update.pl
+	${CP} ${WRKSRC}/configure.pl ${STAGEDIR}${PREFIX}/libexec/backuppc/configure.pl
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freeciv
-PORTVERSION=	2.5.5
+PORTVERSION=	2.5.10
 CATEGORIES=	games
 MASTER_SITES=	SF/freeciv/Freeciv%20${PORTVERSION:R}/${PORTVERSION} \
 		http://download.gna.org/freeciv/stable/
@@ -10,15 +10,15 @@ MASTER_SITES=	SF/freeciv/Freeciv%20${PORTVERSION:R}/${PORTVERSION} \
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Free turn-based multiplayer strategy
 
+LICENSE=	GPLv2+
+
 RUN_DEPENDS=	hicolor-icon-theme>=0:misc/hicolor-icon-theme
 LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libcurl.so:ftp/curl
 
-USES=		gettext gmake iconv libtool pkgconfig tar:bzip2 python sqlite \
-		readline
+USES=		gmake iconv libtool localbase pkgconfig tar:bzip2 python \
+		sqlite readline
 GNU_CONFIGURE=	yes
-LDFLAGS+=	-L${LOCALBASE}/lib
-CPPFLAGS+=	-I${LOCALBASE}/include
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG} --program-transform-name= \
 		--enable-aimodules --enable-shared \
 		--enable-fcdb=sqlite3
@@ -26,13 +26,15 @@ CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG} --program-transform-name= \
 PORTDATA=	*
 
 OPTIONS_DEFINE?=	NLS X11 SDL MYSQL IPV6 DOCS
-OPTIONS_DEFAULT?=	NLS X11 IPV6
+OPTIONS_DEFAULT?=	X11
 OPTIONS_SUB=		yes
 SDL_CONFIGURE_ON=	--enable-client=gtk,sdl
 SDL_USE=		SDL=sdl,image,ttf,gfx
 MYSQL_CONFIGURE_ON=	--enable-fcdb=mysql --with-mysql-prefix=${LOCALBASE}
 MYSQL_USES=		mysql
 IPV6_CONFIGURE_EANBALE=	ipv6
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
 
 .include <bsd.port.options.mk>
 
@@ -43,6 +45,8 @@ IGNORE=		cannot use SDL without X11: re-run make config
 .if ${PORT_OPTIONS:MX11}
 LIB_DEPENDS+=	libtiff.so:graphics/tiff \
 		libpng.so:graphics/png \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
 		libggz.so:games/libggz \
 		libggz-gtk.so:games/ggz-gtk-client \
 		libggzcore.so:games/ggz-client-libs \
@@ -70,11 +74,11 @@ post-patch:
 		${WRKSRC}/client/Makefile.in
 
 post-install:
-.if ${PORT_OPTIONS:MX11}
-	${INSTALL_DATA} ${WRKSRC}/data/civclient.dsc ${STAGEDIR}${DATADIR}/
-	cd ${STAGEDIR}/${PREFIX}/bin && ${LN} -s freeciv-gtk2 freeciv-client
-.endif
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libfreeciv*.so
 	${RM} ${STAGEDIR}${PREFIX}/etc/ggz.modules
+
+post-install-X11-on:
+	${INSTALL_DATA} ${WRKSRC}/data/civclient.dsc ${STAGEDIR}${DATADIR}/
+	cd ${STAGEDIR}/${PREFIX}/bin && ${LN} -s freeciv-gtk2 freeciv-client
 
 .include <bsd.port.mk>

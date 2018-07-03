@@ -1,6 +1,6 @@
---- net/base/network_change_notifier.cc.orig	2016-05-11 19:02:24 UTC
+--- net/base/network_change_notifier.cc.orig	2017-06-05 19:03:09 UTC
 +++ net/base/network_change_notifier.cc
-@@ -532,7 +532,6 @@ NetworkChangeNotifier* NetworkChangeNoti
+@@ -533,7 +533,6 @@ NetworkChangeNotifier* NetworkChangeNotifier::Create()
  #elif defined(OS_MACOSX)
    return new NetworkChangeNotifierMac();
  #else

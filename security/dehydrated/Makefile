@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	dehydrated
-PORTVERSION=	0.3.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+DISTVERSION=	0.6.1-7
+DISTVERSIONSUFFIX=	-g7c40c72
 CATEGORIES=	security
 
 MAINTAINER=	sascha@root-login.org
@@ -14,9 +14,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	curl:ftp/curl
 
+USES=		shebangfix
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	lukas2511
 
+OPTIONS_DEFINE=	DOCS
 OPTIONS_SINGLE=	SHELL
 OPTIONS_SINGLE_SHELL=	BASH ZSH
 BASH_DESC=	Use the Bourne Again shell (BASH)
@@ -26,7 +29,6 @@ OPTIONS_DEFAULT=	BASH
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-USES=		shebangfix
 
 BASH_RUN_DEPENDS=	bash:shells/bash
 ZSH_RUN_DEPENDS=	zsh:shells/zsh
@@ -34,14 +36,14 @@ ZSH_RUN_DEPENDS=	zsh:shells/zsh
 PERIODIC_DIRS=	etc/periodic/weekly
 PERIODIC_FILES=	000.dehydrated
 
-PLIST_DIRS=	%%ETCDIR%%/.acme-challenges \
+PLIST_DIRS=	${ETCDIR}/.acme-challenges \
 		www/dehydrated
 PLIST_FILES=	bin/dehydrated \
-		%%ETCDIR%%/config.example \
-		%%ETCDIR%%/hook.sh.example \
-		%%ETCDIR%%/domains.txt.example \
+		${ETCDIR}/config.example \
+		${ETCDIR}/hook.sh.example \
+		${ETCDIR}/domains.txt.example \
 		${PERIODIC_DIRS}/000.dehydrated
-PORTDOCS_PLIST_FILES=	%%PORTDOCS%%%%DOCSDIR%%/README.md
+PORTDOCS_PLIST_FILES=	${PORTDOCS}${DOCSDIR}/README.md
 
 SUB_FILES=	000.dehydrated pkg-message
 SUB_LIST=	PORTNAME=${PORTNAME}
@@ -69,15 +71,14 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/docs/examples/domains.txt ${STAGEDIR}${ETCDIR}/domains.txt.example
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_SCRIPT} ${WRKDIR}/${PERIODIC_FILES} ${STAGEDIR}${PREFIX}/${PERIODIC_DIRS}/${PERIODIC_FILES}
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/dehydrated
 
+do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 .	for d in dns-verification domains_txt ecc hook_chain import-from-official-client \
 		per-certificate-config staging troubleshooting wellknown
-		${INSTALL_MAN} ${WRKSRC}/docs/${d}.md ${STAGEDIR}${DOCSDIR}
+		${INSTALL_DATA} ${WRKSRC}/docs/${d}.md ${STAGEDIR}${DOCSDIR}
 .	endfor
-
-post-stage:
-	${MKDIR} ${STAGEDIR}${PREFIX}/www/dehydrated
 
 .include <bsd.port.mk>

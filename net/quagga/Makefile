@@ -2,30 +2,33 @@
 # $FreeBSD$
 
 PORTNAME=	quagga
-PORTVERSION=	1.0.20161017
+PORTVERSION=	1.2.4
 CATEGORIES=	net ipv6
 MASTER_SITES=	SAVANNAH
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Free RIPv1, RIPv2, OSPFv2, BGP4, IS-IS route software
 
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	gawk:lang/gawk
 
-CONFLICTS=	openbgpd-[0-9]* openospfd-[0-9]* zebra-0* quagga-re-[0-9]*
+CONFLICTS=	openbgpd openospfd zebra quagga-esr frr pimd
 
+USES=		compiler:c11 cpe gmake libtool makeinfo \
+		perl5 readline ssl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-exampledir=${PREFIX}/share/examples/quagga
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool makeinfo perl5 readline compiler:c11 autoreconf cpe
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 
 INFO=		quagga
 
 OPTIONS_DEFINE=	ISISD PIMD PAM RTADV SNMP TCPSOCKETS DLMALLOC \
-		NO_BGP_ANNOUNCE OSPF_NEXTHOP IRDP ISIS_TOPOLOGY
+		NO_BGP_ANNOUNCE OSPF_NEXTHOP ISIS_TOPOLOGY
+# IRDP needs something freebsd does not seem to have:
+# configure: error: 'IRDP requires in_pktinfo at the moment!'
 OPTIONS_DEFAULT=	ISISD PIMD RTADV
 OPTIONS_SUB=	yes
 
@@ -62,7 +65,7 @@ CONFIGURE_ARGS+=--enable-vty-group=${ENABLE_VTY_GROUP}
 ISISD_CONFIGURE_ENABLE=	isisd
 ISIS_TOPOLOGY_CONFIGURE_ENABLE=	isis-topology
 PIMD_CONFIGURE_ENABLE=	pimd
-IRDP_CONFIGURE_ENABLE=	irdb
+IRDP_CONFIGURE_ENABLE=	irdp
 PAM_CONFIGURE_WITH=	libpam
 RTADV_CONFIGURE_ENABLE=	rtadv
 SNMP_CONFIGURE_ENABLE=	snmp
@@ -84,6 +87,10 @@ PLIST_SUB+=	LOCALSTATE_DIR=${LOCALSTATE_DIR} \
 		SYSCONF_DIR=${SYSCONF_DIR} \
 		ENABLE_USER=${ENABLE_USER} \
 		ENABLE_GROUP=${ENABLE_GROUP}
+
+post-patch:
+	@${REINPLACE_CMD} -e '/test.*enable_snmp.*= ""/s/""/"no"/' \
+		${WRKSRC}/configure
 
 pre-everything::
 	@${ECHO} "============================================================="

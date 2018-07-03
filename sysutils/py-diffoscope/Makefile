@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	diffoscope
-PORTVERSION=	59
+PORTVERSION=	88
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,19 +13,18 @@ COMMENT=	In-depth comparison of files, archives, and directories
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libarchive-c>=0:archivers/py3-libarchive-c \
-		${PYTHON_PKGNAMEPREFIX}python-magic>=0:devel/py3-python-magic
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libarchive-c>=0:archivers/py-libarchive-c@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-magic>=0:devel/py-python-magic@${FLAVOR} \
+		gdiff:textproc/diffutils
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${FLAVOR} \
 		zipinfo:archivers/unzip \
 		isoinfo:sysutils/cdrkit \
 		rpm2cpio:archivers/rpm2cpio
 
-USES=		python:3.4+
+USES=		python:3.5+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-
-# mount -t fdescfs fdesc /dev/fd before running tests
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test --pytest-args="-rsx -l -vv"

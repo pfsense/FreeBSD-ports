@@ -1,0 +1,4 @@
+FRR routing daemon for BGP, OSPF, and OSPF6
+
+Conflicts with Quagga OSPF and OpenBGPD.
+These packages cannot be installed at the same time.

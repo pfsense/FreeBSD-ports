@@ -26,12 +26,14 @@ post-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/LM
 	@${ECHO_MSG} "Installing language models provided in Gertjan van Noord's TextCat package"
 	(cd ${WRKSRC}/langclass/LM &&		\
-	${FIND} . -name "*.lm" -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${DATADIR}/LM/{}" \;)
+	${FIND} . -name "*.lm" -exec ${INSTALL_DATA} {} "${STAGEDIR}${DATADIR}/LM/{}" \;)
 	${INSTALL_DATA} ${WRKSRC}/langclass/conf.txt "${STAGEDIR}${DATADIR}"
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
-regression-test:
+do-test:
 	(cd ${WRKSRC}/langclass/ &&		\
 	for t in `${LS} ShortTexts/*.txt` ; do	\
 	${ECHO_MSG} "Analyzing $$t..." ;	\

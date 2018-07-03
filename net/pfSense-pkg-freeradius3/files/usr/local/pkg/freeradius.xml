@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * freeradius.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>freeradius</name>
+	<title>FreeRADIUS: Users</title>
+	<include_file>/usr/local/pkg/freeradius.inc</include_file>
+	<menu>
+		<name>FreeRADIUS</name>
+		<section>Services</section>
+		<url>/pkg.php?xml=freeradius.xml</url>
+	</menu>
+	<service>
+		<name>radiusd</name>
+		<rcfile>radiusd.sh</rcfile>
+		<executable>radiusd</executable>
+		<description>FreeRADIUS Server</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=freeradius.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>MACs</text>
+			<url>/pkg.php?xml=freeradiusauthorizedmacs.xml</url>
+		</tab>
+		<tab>
+			<text>NAS / Clients</text>
+			<url>/pkg.php?xml=freeradiusclients.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>/pkg.php?xml=freeradiusinterfaces.xml</url>
+		</tab>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>EAP</text>
+			<url>/pkg_edit.php?xml=freeradiuseapconf.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>SQL</text>
+			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>LDAP</text>
+			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View config</text>
+			<url>/freeradius_view_config.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=freeradiussync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Username</fielddescr>
+			<fieldname>varusersusername</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Use One Time Password</fielddescr>
+			<fieldname>varusersmotpenable</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Simult. Connections</fielddescr>
+			<fieldname>varuserssimultaneousconnect</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>IP Address</fielddescr>
+			<fieldname>varusersframedipaddress</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Expiration Date</fielddescr>
+			<fieldname>varusersexpiration</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Session Timeout</fielddescr>
+			<fieldname>varuserssessiontimeout</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Possible Login Times</fielddescr>
+			<fieldname>varuserslogintime</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>VLAN ID</fielddescr>
+			<fieldname>varusersvlanid</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+		<movable>on</movable>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>General Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>sortable</fielddescr>
+			<fieldname>sortable</fieldname>
+			<display_maximum_rows>0</display_maximum_rows>
+			<type>sorting</type>
+			<include_filtering_inputbox/>
+			<sortablefields>
+				<item><name>Username</name><fieldname>varusersusername</fieldname><regex>/%FILTERTEXT%/i</regex></item>
+				<item><name>One-Time-Password</name><fieldname>varusersmotpenable</fieldname><regex>/%FILTERTEXT%/i</regex></item>
+				<item><name>Simultaneous Connections</name><fieldname>varuserssimultaneousconnect</fieldname><regex>/%FILTERTEXT%/i</regex></item>
+				<item><name>IP Address</name><fieldname>varusersframedipaddress</fieldname><regex>/%FILTERTEXT%/i</regex></item>
+				<item><name>Expiration Date</name><fieldname>varusersexpiration</fieldname><regex>/%FILTERTEXT%/i</regex></item>
+				<item><name>Session Timeout</name><fieldname>varuserssessiontimeout</fieldname><regex>/%FILTERTEXT%/i</regex></item>
+				<item><name>Possible Login Times</name><fieldname>varuserslogintime</fieldname><regex>/%FILTERTEXT%/i</regex></item>
+				<item><name>VLAN ID</name><fieldname>varusersvlanid</fieldname><regex>/%FILTERTEXT%/i</regex></item>
+				<item><name>Description</name><fieldname>description</fieldname><regex>/%FILTERTEXT%/i</regex></item>
+			</sortablefields>
+		</field>
+		<field>
+			<fielddescr>Username</fielddescr>
+			<fieldname>varusersusername</fieldname>
+			<description>
+				<![CDATA[
+				Enter the username. Whitespace is allowed.<br/>
+				<span class="text-info">Note: May only contain a-z, A-Z, 0-9, underscore, period and hyphen when using OTP.</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Password</fielddescr>
+			<fieldname>varuserspassword</fieldname>
+			<description>
+				<![CDATA[
+				Enter the password for this username.
+				Leave empty if you want to use custom options (such as OTP) instead of username/password.
+				]]>
+			</description>
+			<type>password</type>
+		</field>
+		<field>
+			<fielddescr>Password Encryption</fielddescr>
+			<fieldname>varuserspasswordencryption</fieldname>
+			<description>
+				<![CDATA[
+				Select the password encryption for this user. Default: Cleartext-Password
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>Cleartext-Password</default_value>
+			<options>
+				<option><name>Cleartext-Password</name><value>Cleartext-Password</value></option>
+				<option><name>MD5-Password</name><value>MD5-Password</value></option>
+			</options>
+		</field>
+		<field>
+			<name>One-Time Password Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>One-Time Password</fielddescr>
+			<fieldname>varusersmotpenable</fieldname>
+			<description>Enable One-Time Password (OTP) for this user</description>
+			<sethelp>
+				<![CDATA[
+				This enables the possibility to authenticate with username and one-time-password.</br>
+				The client used to generate OTP can be installed on various mobile device platforms like Android, iOS and others.
+				<span class="text-info">(Default: unchecked)</span><br/>
+				<strong>
+					<span class="text-danger">IMPORTANT: </span></strong>
+					For MOTP, mOTP must be enabled at <a href="/pkg_edit.php?xml=freeradiussettings.xml">FreeRADIUS &gt; Settings</a>.<br/>
+					The RADIUS NAS / Client <strong>must</strong> use PAP, otherwise the authenticator script cannot use the authentication data.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<enablefields>varusersauthmethod,varusersmotpinitsecret,varusersmotppin,varusersmotpoffset</enablefields>
+		</field>
+		<field>
+			<fielddescr>OTP Auth Method</fielddescr>
+			<fieldname>varusersauthmethod</fieldname>
+			<description>
+				<![CDATA[
+				Select the OTP authentication method for this user. Default: mOTP
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>motp</default_value>
+			<options>
+				<option><name>mOTP</name><value>motp</value></option>
+				<option><name>Google-Authenticator</name><value>googleauth</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Init-Secret</fielddescr>
+			<fieldname>varusersmotpinitsecret</fieldname>
+			<description>
+				<![CDATA[
+				This is the generated init secret you get when you initialize the token for the first time on a client (mobile device).<br/>
+				<span class="text-info">Note: For mOTP this may only contain 0-9 and a-f. For Google Authenticator, it must be A-Z and 2-7. Must contain at least 16 characters.</span>
+				<br>
+				<script type="text/javascript">
+					function genotpsecret() {
+						if ($('#varusersauthmethod').val() == "motp") {
+							var sourcechars = "0123456789abcdef";
+						} else if ($('#varusersauthmethod').val() == "googleauth") {
+							var sourcechars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+						} else {
+							return 0;
+						}
+						var randpass = "";
+						for (i=0; i<16; i++) {
+							randpass += sourcechars[Math.floor((Math.random() * sourcechars.length))];
+						}
+						$('#varusersmotpinitsecret').val(randpass);
+						$('#varusersmotpinitsecret').attr('type', 'text');
+					}
+				</script>
+				<button type="button" class="btn btn-info btn-sm" onClick="genotpsecret();" id='btn_genotp' value="genotp">
+					<i class="fa fa-random"></i>
+					Generate OTP Secret
+				</button>
+				<button type="button" class="btn btn-info btn-sm" onClick="$('#varusersmotpinitsecret').attr('type', 'text');" id='btn_showotp' value="showotp">
+					<i class="fa fa-search"></i>
+					Show OTP Secret
+				</button>
+				]]>
+			</description>
+			<type>password</type>
+		</field>
+		<field>
+			<fielddescr>PIN</fielddescr>
+			<fieldname>varusersmotppin</fieldname>
+			<description>
+				<![CDATA[
+				This is the PIN the user has to enter on his mobile device to generate a one-time-password.<br/>
+				For Google Authenticator, the user must prepend this PIN to the one-time password generated by the authenticator when logging in (e.g. OTP code "990990", user enters "1234990990" as the password).<br/>
+				<span class="text-info">May only contain a PIN consisting of 4-8 digits. Normally 4 digits are used.</span>
+				<br/>
+				<button type="button" class="btn btn-info btn-sm" onClick="$('#varusersmotppin').attr('type', 'text');" id='btn_showotppin' value="showotppin">
+					<i class="fa fa-search"></i>
+					Show OTP PIN
+				</button>
+				]]>
+			</description>
+			<type>password</type>
+		</field>
+		<field>
+			<fielddescr>Time Offset</fielddescr>
+			<fieldname>varusersmotpoffset</fieldname>
+			<description>
+				<![CDATA[
+				If the client is not in the correct time zone or is not changing time zone automatically,
+				you have to calculate the offset and enter it here.<br/>
+				<span class="text-info">(Default: 0). Click Info for details.</span>
+				<div class="infoblock">
+				To calculate the time offset, do the following:<br/>
+				<ul>
+					<li>Check the Epoch-Time on your client with <code>date +%s</code> and write down the first 9 digits.</li>
+					<li>Check the Epoch-Time on your FreeRADIUS server with <code>date +%s</code> and write down the first 9 digits.</li>
+					<li>Subtract both values, multiply the result by 10 and enter the value in this field. Example: 30 or -180</li>
+				</ul>
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>QR Code</fielddescr>
+			<fieldname>qrcodetext</fieldname>
+			<description>
+				<![CDATA[
+				Google Authenticator supports adding entries via QR Code. Click the button below to generate a QR Code based on the
+				current settings above when Google Authenticator is active. The image can be saved and shown to a user, but treat
+				it as a secure piece of information and do not send it through an insecure channel such as e-mail.
+				<br/>
+				<button type="button" class="btn btn-info btn-sm" onClick="genOTPQR();" id='btn_makeqrcode' value="makeqrcode">
+					<i class="fa fa-qrcode"></i>
+					Generate QR Code
+				</button>
+				<div id="qrcode" style="display: none; width:200px; height:200px; margin-top:15px;"></div>
+				<script type="text/javascript" src="/freeradius/qrcode/qrcode.js"></script>
+				<script type="text/javascript">
+					var qrcode = new QRCode(document.getElementById("qrcode"), {
+						width : 200,
+						height : 200,
+					});
+					function genOTPQR() {
+						if ($('#varusersauthmethod').val() != "googleauth") {
+							return;
+						}
+						var provider = encodeURIComponent("FreeRADIUS");
+						var user = encodeURIComponent($('#varusersusername').val());
+						var key = encodeURIComponent($('#varusersmotpinitsecret').val());
+						if ((user.length == 0) || (key.length == 0)) {
+							return;
+						}
+						qrcode.makeCode("otpauth://totp/" + provider + ":" + user + "?secret=" + key + "&issuer=" + provider);
+						$("#qrcode").show();
+					}
+				</script>
+				<br/><br/>
+				This button has no effect when mOTP is selected.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<name>Miscellaneous Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Redirection URL</fielddescr>
+			<fieldname>varuserswisprredirectionurl</fieldname>
+			<description>
+				<![CDATA[
+				Enter the URL the user should be redirected to after successful login.
+				<span class="text-info">Example: http://www.google.com</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Number of Simultaneous Connections</fielddescr>
+			<fieldname>varuserssimultaneousconnect</fieldname>
+			<description>
+				<![CDATA[
+				The maximum of simultaneous connections with this username. Leave empty for no limit.<br/>
+				<span class="text-info">If using FreeRADIUS with Captive Portal you should leave this empty. Read the documentation!
+
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description>
+				<![CDATA[
+				Enter any description for this user you like.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Network Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>IP Address</fielddescr>
+			<fieldname>varusersframedipaddress</fieldname>
+			<description>
+				<![CDATA[
+				<b>Framed-IP-Address</b> must be supported by NAS. <span class="text-info">Click Info for details.</span><br/>
+				<span class="text-danger">IMPORTANT:</span> You must enter an IP address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
+				<div class="infoblock">
+				If you want this user to be assigned a specific IP address from RADIUS, enter the IP address here.<br/>
+				Continuous IP address is available with "+" suffix (e.g. 192.168.1.5+). This can be useful for simultaneous connections.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Subnet Mask</fielddescr>
+			<fieldname>varusersframedipnetmask</fieldname>
+			<description>
+				<![CDATA[
+				<b>Framed-IP-Netmask</b> must be supported by NAS. <span class="text-info">Example: 255.255.255.0</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Gateway</fielddescr>
+			<fieldname>varusersframedroute</fieldname>
+			<description>
+				<![CDATA[
+				<b>Framed-Route</b> must be supported by NAS.
+				<span class="text-info">Required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1)</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>VLAN ID</fielddescr>
+			<fieldname>varusersvlanid</fieldname>
+			<description>
+				<![CDATA[
+				Enter the VLAN ID (integer from 1-4095) or the VLAN name that this username should be assigned to.<br/>
+				Must be supported by the NAS. Click Info for details.
+				<div class="infoblock">
+				This setting can be used for a NAS that supports the following RADIUS parameters:<br/><br/>
+				<dl class="dl-horizontal responsive">
+					<dt>Tunnel-Type</dt><dd>VLAN</dd>
+					<dt>Tunnel-Medium-Type</dt><dd>IEEE-802</dd>
+					<dt>Tunnel-Private-Group-ID</dt><dd>"This is your input"</dd>
+				</dl>
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Time Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Expiration Date</fielddescr>
+			<fieldname>varusersexpiration</fieldname>
+			<description>
+				<![CDATA[
+				Enter the date when this account should expire.</br>
+				<span class="text-info">Required format: Mmm dd yyyy (e.g. Jan 01 2012)</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Session Timeout</fielddescr>
+			<fieldname>varuserssessiontimeout</fieldname>
+			<description>
+				<![CDATA[
+				Enter the time this user has until relogin (in seconds).
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Possible Login Times</fielddescr>
+			<fieldname>varuserslogintime</fieldname>
+			<description>
+				<![CDATA[
+				Enter the time when this user should have access. "Always" if no time is entered. Click Info for details.
+				<div class="infoblock">
+				Each simple time string must begin with a day definition. That can be just one day, multiple days, or a range of days separated by a hyphen.<br/>
+				A day is Mo, Tu, We, Th, Fr, Sa or Su, or <code>Wk</code> for Mo-Fr. <code>Any</code> or <code>Al</code> means all days.</br>
+				After that, a range of hours follows in hhmm-hhmm format. A time string may be a list of simple time strings separated by <code>,</code><br/><br/>
+				Example: <code>Wk0855-2305,Sa,Su2230-0230</code> - weekdays after 8:55 AM and before 11:05 PM | any time on Saturday | Sunday after 10:30 PM and before 02:30 AM.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Amount of Time</fielddescr>
+			<fieldname>varusersamountoftime</fieldname>
+			<description>
+				<![CDATA[
+				Enter the amount of time for this username (in minutes).
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Time Period</fielddescr>
+			<fieldname>varuserspointoftime</fieldname>
+			<description>
+				<![CDATA[
+				Select the time period after which the 'Amount of Time' is reset.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>daily</default_value>
+			<options>
+				<option><name>Daily</name><value>Daily</value></option>
+				<option><name>Weekly</name><value>Weekly</value></option>
+				<option><name>Monthly</name><value>Monthly</value></option>
+				<option><name>Forever</name><value>Forever</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Traffic and Bandwidth</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Amount of Download and Upload Traffic</fielddescr>
+			<fieldname>varusersmaxtotaloctets</fieldname>
+			<description>
+				<![CDATA[
+				Enter the amount of download and upload traffic (summarized) <span class="text-info">in megabytes (MB)</span> for this user.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Time Period</fielddescr>
+			<fieldname>varusersmaxtotaloctetstimerange</fieldname>
+			<description>
+				<![CDATA[
+				Select the time period for the amount of download and upload traffic. <strong><span class="text-info">This does not automatically reset the counter.</span></strong><br/>
+				You need to setup a cronjob (with cron package) which will reset the counter. Read the documentation!
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>daily</default_value>
+			<options>
+				<option><name>Daily</name><value>daily</value></option>
+				<option><name>Weekly</name><value>weekly</value></option>
+				<option><name>Monthly</name><value>monthly</value></option>
+				<option><name>Forever</name><value>forever</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Maximum Bandwidth Down</fielddescr>
+			<fieldname>varusersmaxbandwidthdown</fieldname>
+			<description>
+				<![CDATA[
+				Enter the maximum bandwidth for download <span class="text-info">in kilobits (1000 bits) per second (Kbit/s)</span>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Maximum Bandwidth Up</fielddescr>
+			<fieldname>varusersmaxbandwidthup</fieldname>
+			<description>
+				<![CDATA[
+				Enter the maximum bandwidth for upload <span class="text-info">in kilobits (1000 bits) per second (Kbit/s)</span>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Accounting Interim Interval</fielddescr>
+			<fieldname>varusersacctinteriminterval</fieldname>
+			<description>
+				<![CDATA[
+				Enter the interval <span class="text-info">in seconds</span> which should elapse between interim-updates.<br/>
+				<span class="text-info">It <strong>must</strong> be more than 60s and <strong>should not</strong> be less than 600s. (Default: 600)</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Advanced Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Additional RADIUS Attributes on the TOP of this entry</fielddescr>
+			<fieldname>varuserstopadditionaloptions</fieldname>
+			<description>
+				<![CDATA[
+				<span class="text-danger">This is for experts only and should be treated with care!</span> Click Info for details.
+				<div class="infoblock">
+				You may append custom RADIUS options to this user account. If required by syntax, you must use quotes and commas.<br/>
+				Use a vertical bar <code>|</code> to put a command on a new line.<br/><br/>
+				Example: <code>DEFAULT Auth-Type = System</code><br/><br/>
+				<span class="text-danger">IMPORTANT:</span> If you don't format this field correctly, FreeRADIUS will not start because of syntax errors.<br/>
+				Verify your changes by checking the authorized_macs file (<a href="/freeradius_view_config.php">View config</a> &gt; Users).
+				</div>
+				]]>
+			</description>
+			<type>textarea</type>
+			<rows>4</rows>
+			<cols>75</cols>
+		</field>
+		<field>
+			<fielddescr>Additional RADIUS Attributes (CHECK-ITEM)</fielddescr>
+			<fieldname>varuserscheckitemsadditionaloptions</fieldname>
+			<description>
+				<![CDATA[
+				<span class="text-danger">This is for experts only and should be treated with care!</span> Click Info for details.
+				<div class="infoblock">
+				You may append custom RADIUS options to this user account. If required by syntax, you must use quotes and commas.<br/>
+				Use a vertical bar <code>|</code> to put a command on a new line.<br/><br/>
+				Example: <code>Max-Daily-Session := 36000</code><br/><br/>
+				<span class="text-danger">IMPORTANT:</span> If you don't format this field correctly, FreeRADIUS will not start because of syntax errors.<br/>
+				Verify your changes by checking the authorized_macs file (<a href="/freeradius_view_config.php">View config</a> &gt; Users).
+				</div>
+				]]>
+			</description>
+			<type>textarea</type>
+			<rows>4</rows>
+			<cols>75</cols>
+		</field>
+		<field>
+			<fielddescr>Additional RADIUS Attributes (REPLY-ITEM)</fielddescr>
+			<fieldname>varusersreplyitemsadditionaloptions</fieldname>
+			<description>
+				<![CDATA[
+				<span class="text-danger">This is for experts only and should be treated with care!</span> Click Info for details.
+				<div class="infoblock">
+				You may append custom RADIUS options to this user account. If required by syntax, you must use quotes and commas.<br/>
+				Use a vertical bar <code>|</code> to put a command on a new line.<br/><br/>
+				Example: <code>Service-Type == Login-User,|Login-Service == Telnet,|Login-IP-Host == 192.168.1.2</code><br/><br/>
+				<span class="text-danger">IMPORTANT:</span> If you don't format this field correctly, FreeRADIUS will not start because of syntax errors.<br/>
+				Verify your changes by checking the authorized_macs file (<a href="/freeradius_view_config.php">View config</a> &gt; Users).
+				</div>
+				]]>
+			</description>
+			<type>textarea</type>
+			<rows>4</rows>
+			<cols>75</cols>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		freeradius_users_resync();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		freeradius_settings_resync(false);
+		freeradius_users_resync();
+	</custom_php_resync_config_command>
+	<custom_php_install_command>
+		freeradius_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		freeradius_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		freeradius_validate_users($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

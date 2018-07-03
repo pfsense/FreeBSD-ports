@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ttygif
-PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTVERSION=	1.4.0
 CATEGORIES=	graphics
 
 MAINTAINER=	olivier@FreeBSD.org
@@ -16,7 +15,7 @@ RUN_DEPENDS=	convert:graphics/ImageMagick
 USE_GITHUB=	yes
 GH_ACCOUNT=	icholy
 
-USES=		tar:bzip2 gmake
+USES=		gmake
 
 PLIST_FILES=	bin/${PORTNAME}
 

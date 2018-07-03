@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Git-Wrapper
-PORTVERSION=	0.045
+PORTVERSION=	0.048
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Wrap git(7) command-line interface
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	git:devel/git \
@@ -25,5 +25,6 @@ TEST_DEPENDS=	p5-Path-Class>=0.26:devel/p5-Path-Class \
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

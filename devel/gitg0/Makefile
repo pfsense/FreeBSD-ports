@@ -3,12 +3,12 @@
 
 PORTNAME=	gitg
 PORTVERSION=	0.0.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel deskutils gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	0
 
-MAINTAINER=	amdmi3@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK-based git repository viewer (gtk2 version)
 
 LICENSE=	GPLv2+

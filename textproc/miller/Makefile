@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	miller
-PORTVERSION=	3.3.2
+PORTVERSION=	5.2.2
 DISTVERSIONPREFIX=v
 CATEGORIES=	textproc
 
@@ -18,18 +18,6 @@ GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/mlr man/man1/mlr.1.gz
 
-.include <bsd.port.pre.mk>
+BROKEN_aarch64=		Fails to compile: undefined reference to .mcount
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-BUILD_DEPENDS+=	${LOCALBASE}/bin/flex:textproc/flex
-.endif
-
-post-configure:
-	${PATCH} ${PATCH_ARGS} < ${FILESDIR}/extra-patch-c_Makefile
-	${PATCH} ${PATCH_ARGS} < ${FILESDIR}/extra-patch-libtool
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-	${REINPLACE_CMD} -e 's|flex|${LOCALBASE}/bin/flex|' \
-		${WRKSRC}/c/dsls/Makefile
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

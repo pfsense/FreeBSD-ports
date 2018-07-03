@@ -3,7 +3,7 @@
 
 PORTNAME=	mod_authnz_crowd
 PORTVERSION=	2.2.2
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	www
 MASTER_SITES=	http://downloads.atlassian.com/software/crowd/downloads/cwdapache/
 DIST_SUBDIR=	apache2
@@ -13,18 +13,17 @@ COMMENT=	Apache 2.2+ module to use Atlassian Crowd for authentication
 
 LICENSE=	APACHE20
 
-BROKEN_powerpc64=	Does not build
-
 LIB_DEPENDS=	libsvn_client-1.so:devel/subversion \
 		libcurl.so:ftp/curl
 RUN_DEPENDS=	${LOCALBASE}/${APACHEMODDIR}/mod_dav_svn.so:www/mod_dav_svn
 
+BROKEN_powerpc64=	Does not build: error: curl/curl.h: No such file or directory
+
 GNU_CONFIGURE=	yes
 LIBS+=		-L${LOCALBASE}/lib
-USES=		autoreconf libtool
+USES=		apache:2.2+ autoreconf libtool
 USE_GNOME=	libxml2
 USE_GCC=	any
-USE_APACHE=	22+
 
 SUB_FILES=	pkg-message zzz_authnz_crowd.conf
 SUB_LIST+=	APACHEETCDIR=${APACHEETCDIR} \

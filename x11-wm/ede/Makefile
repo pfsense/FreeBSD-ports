@@ -3,7 +3,7 @@
 
 PORTNAME=	ede
 PORTVERSION=	2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF \
 		SF/${PORTNAME}/${PORTNAME}lib/${PORTVERSION}:edelib
@@ -23,7 +23,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libstartup-notification-1.so:x11/startup-notification \
 		libfltk.so:x11-toolkits/fltk
 
-USES=		fam gettext iconv:translit pathfix pkgconfig python:2 \
+USES=		fam gettext iconv:translit pathfix pkgconfig python:2.7 \
 		shared-mime-info shebangfix
 SHEBANG_FILES=	doc/asciidoc/asciidoc.py
 USE_XORG=	xcomposite xft xinerama xkbfile xpm xrandr
@@ -95,15 +95,15 @@ post-configure:
 
 pre-build:
 	@(cd ${EDELIB_WRKSRC} \
-		&& ${LOCALBASE}/bin/jam -j${MAKE_JOBS_NUMBER} \
-		&& ${LOCALBASE}/bin/jam ${INSTALL_TARGET})
+		&& ${LOCALBASE}/bin/jam -dx -j${MAKE_JOBS_NUMBER} \
+		&& ${LOCALBASE}/bin/jam -dx ${INSTALL_TARGET})
 
 do-build:
-	@(cd ${BUILD_WRKSRC} && ${LOCALBASE}/bin/jam -j${MAKE_JOBS_NUMBER})
+	@(cd ${BUILD_WRKSRC} && ${LOCALBASE}/bin/jam -dx -j${MAKE_JOBS_NUMBER})
 
 do-install:
 	@(cd ${INSTALL_WRKSRC} && ${SETENV} DESTDIR="${STAGEDIR}" \
-		${LOCALBASE}/bin/jam ${INSTALL_TARGET})
+		${LOCALBASE}/bin/jam -dx ${INSTALL_TARGET})
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/ede-2.1.0/manual/images
 	@(cd ${WRKSRC}/doc/manual/images && ${COPYTREE_SHARE} . \
 		${STAGEDIR}${PREFIX}/share/doc/ede-2.1.0/manual/images)

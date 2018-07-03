@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rack-contrib
-PORTVERSION=	1.4.0
+PORTVERSION=	2.0.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -10,9 +10,9 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Contributed Rack Middleware and Utilities
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	rubygem-git-version-bump>=0.15:devel/rubygem-git-version-bump \
-		rubygem-rack16>=1.4:www/rubygem-rack16
+RUN_DEPENDS=	rubygem-rack>=2.0:www/rubygem-rack
 
 NO_ARCH=	yes
 USE_RUBY=	yes

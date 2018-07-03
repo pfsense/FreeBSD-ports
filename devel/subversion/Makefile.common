@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	subversion
-PORTVERSION=	1.9.4
+PORTVERSION=	1.9.7
 PORTREVISION?=	0
 CATEGORIES+=	devel
 MASTER_SITES=	APACHE/subversion
@@ -51,6 +51,11 @@ SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
 SERF_CONFIGURE_OFF=		--without-serf
 SERF_CONFIGURE_ON=		--with-serf
 SERF_LIB_DEPENDS=		libserf-1.so:www/serf
+
+GPG_AGENT_CONFIGURE_OFF=	--without-gpg-agent
+GPG_AGENT_CONFIGURE_ON=		--with-gpg-agent
+GPG_AGENT_BUILD_DEPENDS=	gpg-agent:security/gnupg
+GPG_AGENT_RUN_DEPENDS=		gpg-agent:security/gnupg
 
 STATIC_CONFIGURE_ON=		--enable-all-static PKG_CONFIG="${LOCALBASE}/bin/pkg-config --static"
 
@@ -105,8 +110,9 @@ post-patch:
 	@${ECHO_CMD} "#define ORGANIZATION_NAME \"${ORGANIZATION}\"" > ${WRKSRC}/subversion/freebsd-organization.h
 .endif
 # shebangfix
-	@${GREP} -Rl -e '#!/bin/b' -e '#!/bin/env' -e '#!/usr/bin/p' ${WRKSRC}/tools/ \
-		| ${XARGS} ${REINPLACE_CMD} -e '1s|#\!/bin/b|#\!/usr/local/bin/b|' \
+	@${FIND} ${WRKSRC}/tools/ -type f -exec ${GREP} -l -e '#!/bin/b' -e '#!/bin/env' \
+		-e '#!/usr/bin/p' {} + | ${XARGS} ${REINPLACE_CMD} -e \
+		'1s|#\!/bin/b|#\!/usr/local/bin/b|' \
 		-e '1s|#\!/bin/env|#\!/usr/bin/env|' \
 		-e '1s|#\!/usr/bin/p|#\!/usr/local/bin/p|'
 # remove all .bak files to clean the stage

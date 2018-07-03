@@ -14,7 +14,7 @@ COMMENT=	Network visualisation tool with web editor
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${LOCALBASE}/share/pear/Console/Getopt.php:devel/pear \
+RUN_DEPENDS=	${LOCALBASE}/share/pear/Console/Getopt.php:devel/pear@${PHP_FLAVOR} \
 		rrdtool:databases/rrdtool
 
 NO_BUILD=	yes
@@ -59,8 +59,6 @@ do-install:
 
 do-install-EXAMPLES-on:
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} "random-bits" ${STAGEDIR}/${EXAMPLESDIR})
-	${FIND} ${STAGEDIR}/${EXAMPLESDIR} -type f -print0 | ${XARGS} -0 ${CHMOD} 644
-	${FIND} ${STAGEDIR}/${EXAMPLESDIR} -type d -print0 | ${XARGS} -0 ${CHMOD} 755
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}/${DOCSDIR}

@@ -14,7 +14,7 @@ COMMENT=	Python bindings for Shapelib
 
 LICENSE=	LGPL20
 
-USES=		python
+USES=		python:2.7
 USE_LDCONFIG=	yes
 USE_PYTHON=	distutils
 
@@ -30,27 +30,16 @@ SHAPELIB=	shapelib-1.3.0
 post-extract:
 	${LN} -s ${WRKDIR}/${SHAPELIB} ${WRKDIR}/shapelib
 
-.include <bsd.port.options.mk>
-
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
-	${INSTALL_MAN} ${WRKSRC}/$f ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/$f ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
-.if ${PORT_OPTIONS:MEXAMPLES}
+post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for f in ${PORTEXAMPLES}
 	${INSTALL_DATA} ${WRKSRC}/$f ${STAGEDIR}${EXAMPLESDIR}
 .endfor
-.endif
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_MAJOR_VER} != 2
-IGNORE=	does not work with ${PYTHON_VERSION}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

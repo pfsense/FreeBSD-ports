@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	XML-Twig
-PORTVERSION=	3.49
+PORTVERSION=	3.52
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Process huge XML documents by chunks via a tree interface
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-HTML-Tree>=3.13:www/p5-HTML-Tree \

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bsdgames
-PORTVERSION=	4.4.2
-PORTREVISION=	1
+PORTVERSION=	4.8.1
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	LOCAL/adamw
@@ -15,8 +14,8 @@ LICENSE=	BSD3CLAUSE
 
 CONFLICTS=	hangman-[0-9]*
 
-USES=		uidfix tar:xz
-MAKE_ENV+=	NO_WERROR=1
+USES=		ncurses tar:xz uidfix
+MAKE_ENV=	NO_WERROR=1
 MAKE_ARGS=	BINGRP=${BINGRP}
 
 # contain /usr/share/games
@@ -45,6 +44,8 @@ GAMESPATH_FILES=backgammon/backgammon/backgammon.6 \
 SGID_BINARIES=	atc battlestar canfield/canfield cribbage hack phantasia \
 		robots sail snake/snake
 
+.include <bsd.port.pre.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -e "s/NOMAN/NO_MAN/" \
 		${WRKSRC}/backgammon/teachgammon/Makefile \
@@ -64,8 +65,8 @@ post-patch:
 		${REINPLACE_CMD} -e 's/HIDEGAME/SGIDGAME/' \
 			${WRKSRC}/$${f}/Makefile; \
 	done
-	@${REINPLACE_CMD} -e "s/getline/get_line/g" ${WRKSRC}/cribbage/io.c \
-		${WRKSRC}/cribbage/crib.c ${WRKSRC}/cribbage/cribbage.h
+	@${FIND} ${WRKSRC} -type f -name Makefile \
+		| ${XARGS} ${REINPLACE_CMD} -e 's/-lprivate_ncurses/-lncurses/'
 
 pre-install:
 .for d in atc larn quiz.db
@@ -91,5 +92,8 @@ dist:
 	mv DragonFlyBSD-${PORTVERSION}/games bsdgames-${PORTVERSION}
 	tar -cvf bsdgames-${PORTVERSION}.tar bsdgames-${PORTVERSION}
 	xz -v bsdgames-${PORTVERSION}.tar
+	@echo
+	@echo 'UPLOAD THE DISTFILE BEFORE YOU FORGET'
+	@echo '====================================='
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	19.1.1
-PORTEPOCH=	3
+PORTVERSION=	19.3.6.7
+PORTEPOCH=	4
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -11,23 +11,29 @@ MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://www.erlang.se/doc/:erlangse			\
 		http://www.erlang.se/publications/:publications		\
 		http://www.sics.se/~joe/thesis/:joe			\
+		http://olgeni.olgeni.com/~olgeni/distfiles/:local	\
 		LOCAL/olgeni:local
 DISTNAME=	otp_src_${ERL_RELEASE}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:erlangorg	\
-		${ERLANG_MAN}:erlangorg
+		${ERLANG_MAN}:erlangorg			\
+		preloaded-${PORTVERSION}${EXTRACT_SUFX}:local
 DIST_SUBDIR=	erlang
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
 		LOCAL/olgeni
-PATCHFILES=	patch-otp-19.1.1
+PATCHFILES=	patch-otp-19.3.1 patch-otp-19.3.2 patch-otp-19.3.3 \
+		patch-otp-19.3.4 patch-otp-19.3.5 patch-otp-19.3.6 \
+		patch-otp-19.3.6.1 patch-otp-19.3.6.2 patch-otp-19.3.6.3 \
+		patch-otp-19.3.6.4 patch-otp-19.3.6.5 patch-otp-19.3.6.6 \
+		patch-otp-19.3.6.7
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Functional programming language from Ericsson
 
 LICENSE=	APACHE20
 
-BROKEN_sparc64=		Fails to build: error: fp_except undeclared
+BROKEN_sparc64=	Fails to build: error: fp_except undeclared
 
 WRKSRC=		${WRKDIR}/otp_src_${ERL_RELEASE}
 
@@ -53,10 +59,23 @@ WX_DESC=	Enable WX application
 
 NATIVE_IMPLIES=	HIPE
 
-OPTIONS_DEFAULT=HIPE KQUEUE OPENSSL SCTP SMP THREADS
-OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
+OPTIONS_DEFAULT=HIPE KQUEUE OPENSSL SCTP SMP THREADS DTRACE
 
-ERL_RELEASE=	19.1
+.if !exists(/usr/sbin/dtrace)
+OPTIONS_EXCLUDE+=	DTRACE
+.endif
+
+OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
+OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
+# ld(1) fails to link probes: missing __dtrace_erlang___* symbols
+OPTIONS_EXCLUDE_aarch64=	DTRACE
+OPTIONS_EXCLUDE_armv6=		DTRACE
+OPTIONS_EXCLUDE_armv7=		DTRACE
+OPTIONS_EXCLUDE_i386=		DTRACE
+
+OPENSSL_VARS=	BROKEN_SSL=openssl-devel
+
+ERL_RELEASE=	19.3
 
 USES=		gmake ncurses perl5
 USE_PERL5=	build
@@ -64,16 +83,26 @@ USE_RC_SUBR=	epmd
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-EI_VSN=		3.9.1
-SNMP_VSN=	5.2.4
-TOOLS_VSN=	2.8.6
+APP_UPGRADE=	erts            8.3  8.3.5.4 \
+		lib/compiler  7.0.4  7.0.4.1 \
+		lib/crypto    3.7.3    3.7.4 \
+		lib/dialyzer    3.1    3.1.1 \
+		lib/inets     6.3.6    6.3.9 \
+		lib/kernel      5.2  5.2.0.1 \
+		lib/mnesia   4.14.3 4.14.3.1 \
+		lib/ssh       4.4.1  4.4.2.2 \
+		lib/ssl       8.1.1  8.1.3.1.1 \
+		lib/xmerl    1.3.13   1.3.14
+EI_VSN=		3.9.3
+SNMP_VSN=	5.2.5
+TOOLS_VSN=	2.9.1
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
 DISTFILES+=	${ERLANG_DOCS}:erlangorg		\
 		${DOC_DISTFILES}
-DOC_DISTFILES=	armstrong_thesis_2003.pdf:joe		\
+DOC_DISTFILES=	armstrong_thesis_2003.pdf:local		\
 		bjarnelic.pdf:publications		\
 		erlang-book-part1.pdf:erlangorg		\
 		master_thesis_patterns.pdf:local	\
@@ -84,12 +113,6 @@ DOC_DISTFILES=	armstrong_thesis_2003.pdf:joe		\
 # If you run Erlang and get a message resembling "WARNING: number of
 # probes fixed does not match the number of defined probes (54 != 132,
 # respectively)" you probably misconfigured DTrace in some way.
-
-.if ${OSVERSION} < 1000000
-.if ${ARCH} == "amd64" && ${PORT_OPTIONS:MDTRACE}
-IGNORE=		support for DTrace on amd64 requires at least FreeBSD 10
-.endif
-.endif
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} > 1100000
 CFLAGS+=	-DMAP_NORESERVE=0
@@ -187,7 +210,7 @@ CONFIGURE_ARGS+=--enable-dirty-schedulers
 MAKE_ARGS+=	ARCH=x86
 .endif
 
-.if ${ARCH} == armv6
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 MAKE_ARGS+=	ARCH=arm
 .endif
 
@@ -204,17 +227,10 @@ post-patch:
 	@${ECHO_CMD} "MANPATH ${PREFIX}/lib/erlang/man" > ${WRKDIR}/erlang.conf
 
 pre-configure:
-.if ${PORT_OPTIONS:MDTRACE}
-	@if ! /sbin/kldstat | ${GREP} dtraceall >/dev/null 2>&1; then \
-		${ECHO_CMD}; \
-		${ECHO_CMD} "DTRACE option requires kernel module \"dtraceall\" to be loaded."; \
-		${ECHO_CMD}; \
-		exit 1; \
-	fi
-.endif
 .if ! ${PORT_OPTIONS:MWX}
 	echo "disabled by port options" > ${WRKSRC}/lib/wx/SKIP
 .endif
+	cd ${WRKSRC} && ${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/preloaded-${PORTVERSION}${EXTRACT_SUFX}
 
 post-configure:
 .if ${PORT_OPTIONS:MODBC}
@@ -234,15 +250,15 @@ post-install:
 			-C ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB} \
 			"man/man$${SECTION}/*.$${SECTION}" || ${TRUE}; \
 	done
-	${RM} -rf ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/man/cat?
+	${RM} -r ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/man/cat?
 .if ${PORT_OPTIONS:MDOCS}
 	${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_DOCS} \
 		-C ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-8.0.2/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-8.0.3
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-8.0.2
-
+.for app v1 v2 in ${APP_UPGRADE}
+	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v1}/* \
+		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v2}
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v1}
+.endfor
 	${INSTALL_DATA} ${WRKSRC}/lib/dialyzer/doc/*.txt \
 		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/dialyzer-*/doc/
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

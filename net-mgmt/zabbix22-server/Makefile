@@ -2,19 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix22
-PORTVERSION=	2.2.14
+PORTVERSION=	2.2.21
+PORTREVISION?=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
 PKGNAMESUFFIX?=	-server
 DISTNAME=	zabbix-${PORTVERSION}
 
 MAINTAINER=	pg@pakhom.spb.ru
-COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/^-//})
+COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/^-//}) LTS
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	zabbix2${PKGNAMESUFFIX}-[0-9]* zabbix24${PKGNAMESUFFIX}[0-9]* zabbix3${PKGNAMESUFFIX}-[0-9]*
 LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
+
+CONFLICTS=	zabbix[0-13-9][0-9]${PKGNAMESUFFIX} zabbix[0-9]${PKGNAMESUFFIX}
 
 ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
 
@@ -53,17 +56,12 @@ CONFIGURE_ARGS+=	--enable-${ZABBIX_BUILD} \
 			--with-iconv=${ICONV_PREFIX}
 
 .if ${ZABBIX_BUILD} != "agent"
-USES+=		execinfo
-
-CPPFLAGS+=	${EXECINFO_CPPFLAGS}
-LDFLAGS+=	${EXECINFO_LDFLAGS}
-
 SUB_FILES=	pkg-message
 
 CONFIGURE_ARGS+=	--with-net-snmp
 
 OPTIONS_DEFINE=	IPV6 FPING JABBER CURL LDAP IPMI SSH NMAP JAVAGW LIBXML2
-OPTIONS_DEFAULT=	MYSQL IPV6 FPING JABBER CURL UNIXODBC
+OPTIONS_DEFAULT=	MYSQL FPING JABBER CURL UNIXODBC
 OPTIONS_SUB=	yes
 
 CURL_DESC=	Support for web monitoring
@@ -82,13 +80,13 @@ OPTIONS_SINGLE_DB=	MYSQL PGSQL SQLITE ORACLE
 OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
 
 MYSQL_CONFIGURE_WITH=	mysql
-USES+=	mysql
+MYSQL_USES+=	mysql
 
 PGSQL_CONFIGURE_WITH=	postgresql
-USES+=	pgsql
+PGSQL_USES+=	pgsql
 
 SQLITE_CONFIGURE_WITH=	sqlite3
-USES+=	sqlite:3
+SQLITE_USES+=	sqlite:3
 
 ORACLE_CONFIGURE_WITH=	oracle
 
@@ -132,7 +130,10 @@ LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
 post-patch:
 	@${GREP} -rl "/etc/zabbix" ${WRKSRC} \
 	  | ${XARGS} ${REINPLACE_CMD} -e 's#/etc/zabbix#${ETCDIR}#g'
-	@${REINPLACE_CMD} -e 's#/usr/sbin/fping#${LOCALBASE}/sbin/fping#g' ${WRKSRC}/conf/zabbix_*.conf
+	@${REINPLACE_CMD} -e 's#/usr/sbin/fping#${LOCALBASE}/sbin/fping#g' \
+		${WRKSRC}/conf/zabbix_*.conf \
+		${WRKSRC}/src/zabbix_proxy/proxy.c \
+		${WRKSRC}/src/zabbix_server/server.c
 
 .if ${ZABBIX_BUILD} != "agent"
 .if ! ${PORT_OPTIONS:MFPING}
@@ -146,7 +147,7 @@ post-patch:
 .endif
 	@${REINPLACE_CMD} -Ee 's|(@sysconfdir@/(\$$\([A-Z]*_CONFIG\)))" ([|][|] cp "../../conf/\$$\([A-Z]*_CONFIG\)" "\$$\(DESTDIR\)@sysconfdir@)"|\1.sample" \3/\2.sample"|;' \
 		${WRKSRC}/src/zabbix_${ZABBIX_BUILD}/Makefile.in
-	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -or -name '*.orig' \) -exec ${RM} -f {} +
+	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -or -name '*.orig' \) -exec ${RM} {} +
 
 .if ${ZABBIX_BUILD} == "server"
 	@${REINPLACE_CMD} -e 's#PidFile=/tmp/zabbix_server.pid#PidFile=/var/run/zabbix/zabbix_server.pid#g' \

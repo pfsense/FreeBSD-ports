@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * net-snmptrapd.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>netsnmptrapd</name>
+	<title>NET-SNMP Trap Daemon</title>
+	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Community Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_communities.xml</url>
+		</tab>
+		<tab>
+			<text>User Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_users.xml</url>
+		</tab>
+		<tab>
+			<text>Formats</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd_formats.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Handles</text>
+			<url>/pkg.php?xml=net-snmptrapd_traphandles.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Forwards</text>
+			<url>/pkg.php?xml=net-snmptrapd_forwards.xml</url>
+		</tab>
+		<tab>
+			<text>[SNMP Daemon]</text>
+			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+		</tab>
+	</tabs>
+	<advanced_options>enabled</advanced_options>
+	<fields>
+		<field>
+			<name>SNMP Trap Daemon Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				The SNMP Trap Daemon, snmptrapd, receives SNMP Trap notifications of various types from SNMP daemons on other hosts.
+				It can also act on these traps by logging, executing a program, or forwarding the traps to another daemon.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Enable snmptrapd</fielddescr>
+			<fieldname>enable_snmptrapd</fieldname>
+			<description>Check to enable snmptrapd to receive traps.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Interface Binding</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Transport Type</fielddescr>
+					<fieldname>transport</fieldname>
+					<description><![CDATA[The protocol used by this binding.]]></description>
+					<type>select</type>
+					<default_value>udp</default_value>
+					<options>
+						<option><name>UDP</name><value>udp</value></option>
+						<option><name>UDP6</name><value>udp6</value></option>
+						<option><name>TCP</name><value>tcp</value></option>
+						<option><name>TCP6</name><value>tcp6</value></option>
+						<option><name>DTLS/UDP</name><value>dtlsudp</value></option>
+					</options>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>IP Address/Hostname</fielddescr>
+					<fieldname>ipaddress</fieldname>
+					<description><![CDATA[IP address or hostname to bind. Leave blank to bind UDP on all interfaces. For DTLS, this must be a hostname (or blank).]]></description>
+					<type>input</type>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Port</fielddescr>
+					<fieldname>snmpport</fieldname>
+					<description><![CDATA[The port used to bind (default: 161).]]></description>
+					<type>input</type>
+					<width>1</width>
+					<default_value>161</default_value>
+					<required/>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				The interface binding controls the protocols, addresses, and ports which snmptrapd will use to receive incoming traps from other hosts.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+
+		<field>
+			<fielddescr>Retain Notification Logs</fielddescr>
+			<fieldname>donotretainnotificationlogs</fieldname>
+			<description><![CDATA[Controls whether or not the daemon uses NOTIFICATION-LOG-MIB to keep a record of received traps internally.]]></description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>Retain</name><value>no</value></option>
+				<option><name>Do Not Retain</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Log Received Traps</fielddescr>
+			<fieldname>donotlogtraps</fieldname>
+			<description><![CDATA[Disables logging of traps entirely.]]></description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>Log Traps</name><value>no</value></option>
+				<option><name>Do Not Log Traps</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Ignore Auth Failure Traps</fielddescr>
+			<fieldname>ignoreauthfailure</fieldname>
+			<description><![CDATA[Disables logging of authentication traps. Trap handles will still trigger.]]></description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>Log Authentication Failures</name><value>no</value></option>
+				<option><name>Do Not Log Authentication Failures</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Use Authorization</fielddescr>
+			<fieldname>disableauthorization</fieldname>
+			<description><![CDATA[Enables or Disables Authorization Checks.]]></description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>Enable Authorization</name><value>no</value></option>
+				<option><name>Disable Authorization</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Sub-Agent</fielddescr>
+			<fieldname>snmptrapd_subagent</fieldname>
+			<description>Enable to not become a subagent.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Custom Options</fielddescr>
+			<fieldname>custom_options</fieldname>
+			<description>
+				<![CDATA[
+				Custom options to add into the snmptrapd.conf file as-is.
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>78</cols>
+			<rows>5</rows>
+			<advancedfield/>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		netsnmp_resync_snmptrapd();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		netsnmp_validate_netsnmptrapd($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

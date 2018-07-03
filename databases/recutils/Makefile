@@ -3,7 +3,7 @@
 
 PORTNAME=	recutils
 PORTVERSION=	1.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	GNU
 
@@ -14,6 +14,10 @@ LICENSE=	GPLv3
 
 USES=		charsetfix libtool makeinfo
 GNU_CONFIGURE=	yes
+.ifdef QEMU_EMULATING
+# XXX bug 224740: configure hangs
+CONFIGURE_ENV=	gl_cv_func_printf_enomem=no
+.endif
 USE_LDCONFIG=	yes
 
 INFO=		rec-mode recutils

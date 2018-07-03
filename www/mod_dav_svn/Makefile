@@ -3,11 +3,12 @@
 
 PORTNAME=	mod_dav_svn
 DISTNAME=	subversion-${PORTVERSION}
+PORTREVISION=	2
 
 CATEGORIES=	www
 
 MAINTAINER=	lev@FreeBSD.org
-COMMENT=	Apache module for subversion serving.
+COMMENT=	Apache module for subversion serving
 
 .if defined(WITH_SUBVERSION_VER) && ${WITH_SUBVERSION_VER} == 18
 MASTERDIR=	${.CURDIR}/../../devel/subversion18
@@ -18,9 +19,9 @@ PKGDIR=		${.CURDIR}
 
 SVN_BUILD_ADDONS=	yes
 
-.include "${MASTERDIR}/Makefile.common"
+USES=		apache:2.2+
 
-USE_APACHE=	22+
+.include "${MASTERDIR}/Makefile.common"
 
 CONFIGURE_ARGS+=	--with-apxs=${APXS} \
 			--with-apache-libexecdir \
@@ -35,6 +36,7 @@ INSTALL_TARGET=	install-mods-shared
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d
-	${INSTALL_DATA} ${WRKDIR}/220_subversion.conf.sample ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d
+	${INSTALL_DATA} ${WRKDIR}/220_subversion.conf.sample \
+		${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d
 
 .include <bsd.port.post.mk>

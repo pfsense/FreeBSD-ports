@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	wmweather+
-PORTVERSION=	2.15
-PORTREVISION=	4
+PORTVERSION=	2.17
+PORTREVISION=	1
 CATEGORIES=	misc windowmaker geography
 MASTER_SITES=	SF/wmweatherplus/wmweather%2B/ \
 		SF/nemysisfreebsdp/misc/:icons
@@ -11,7 +11,7 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	rhurlin@gwdg.de
 COMMENT=	Displays current conditions and forecasts with icons and text
 
 LICENSE=	GPLv2+
@@ -55,11 +55,14 @@ WM_LIB_DEPENDS=		libWMaker.so:x11-wm/windowmaker
 WM_LIB_DEPENDS_OFF=	libwraster.so:x11-wm/libwraster
 
 post-patch:
-	@${REINPLACE_CMD} -e 's| __THROW __attribute__ ((__noreturn__))|| ; \
-		s|http://www.nws.noaa.gov/tg/siteloc.shtml|http://www.nws.noaa.gov/tg/siteloc.php|' \
+	@${REINPLACE_CMD} \
+		-e 's| __THROW __attribute__ ((__noreturn__))||' \
+		-e 's|http://www.nws.noaa.gov/tg/siteloc.shtml|http://www.nws.noaa.gov/tg/siteloc.php|' \
+		-e 's|"/etc/wmweather+.conf"|"${PREFIX}/etc/wmweather+.conf"|' \
 		${WRKSRC}/${PORTNAME}.c
-	@${REINPLACE_CMD} -e \
-		's|http://www.nws.noaa.gov/tg/siteloc.shtml|http://www.nws.noaa.gov/tg/siteloc.php|' \
+	@${REINPLACE_CMD} \
+		-e 's|http://www.nws.noaa.gov/tg/siteloc.shtml|http://www.nws.noaa.gov/tg/siteloc.php|' \
+		-e 's|/etc/wmweather+.conf|${PREFIX}/etc/wmweather+.conf|' \
 		${WRKSRC}/${PORTNAME}.1.in
 
 do-install:

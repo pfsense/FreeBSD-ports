@@ -4,9 +4,12 @@
 PORTNAME=	mapnik
 PORTVERSION=	3.0.9
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	17
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://mapnik.s3.amazonaws.com/dist/v${PORTVERSION}/
+
+PATCH_SITES=	https://github.com/mapnik/mapnik/commit/
+PATCHFILES=	1ddfe6c31548.patch:-p1
 
 MAINTAINER=	littlesavage@rambler.ru
 COMMENT=	Free Toolkit For Developing Mapping Applications
@@ -19,8 +22,8 @@ LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz
 
-BROKEN_powerpc=	does not install: runs out of virtual memory
-BROKEN_FreeBSD_9=	does not build: lack of c++11 support
+BROKEN_powerpc=		fails to install: runs out of virtual memory
+BROKEN_powerpc64=	fails to link: libmapnik.so: undefined reference to boost::match_results
 
 USES=		compiler:c++11-lib pkgconfig python scons tar:bzip2
 USE_GNOME=	libxml2
@@ -73,12 +76,12 @@ PROJ_LIB_DEPENDS=	libproj.so:graphics/proj
 PROJ_MAKE_ARGS_OFF=	PROJ=False
 
 CAIRO_LIB_DEPENDS=	libcairo.so:graphics/cairo
-CAIRO_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=1.8.2:graphics/py-cairo
+CAIRO_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=1.8.2:graphics/py-cairo@${PY_FLAVOR}
 CAIRO_MAKE_ARGS_OFF=	CAIRO=False
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == gcc
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-D_GLIBCXX_USE_C99 # gcc c++11 support is broken on FreeBSD
 .endif
 

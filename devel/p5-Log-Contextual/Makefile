@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Log-Contextual
-PORTVERSION=	0.006005
+PORTVERSION=	0.007000
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -9,7 +9,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Perl extension for simple logging interface with a contextual log
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	\

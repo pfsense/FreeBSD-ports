@@ -1,21 +1,18 @@
 # $FreeBSD$
 
 PORTNAME=	yapet
-PORTVERSION=	1.0
-PORTREVISION=	1
+DISTVERSION=	1.1
 CATEGORIES=	security
-MASTER_SITES=	http://www.guengel.ch/myapps/yapet/downloads/
+MASTER_SITES=	https://yapet.guengel.ch/downloads/
 
 MAINTAINER=	rafi@guengel.ch
 COMMENT=	Curses based password manager
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake ncurses
-USE_OPENSSL=	yes
+USES=		gmake ncurses ssl
 GNU_CONFIGURE=	yes
-
-CONFIGURE_ARGS=	--enable-silent-rules
 
 OPTIONS_DEFINE=		CONVERTERS DOCS NLS
 OPTIONS_DEFAULT=	CONVERTERS
@@ -26,7 +23,5 @@ CONVERTERS_CONFIGURE_ENABLE=	converters
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
-NLS_CPPFLAGS=		-I${LOCALBASE}/include
-NLS_LDFLAGS=		-L${LOCALBASE}/lib
 
 .include <bsd.port.mk>

@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	teamspeak3-server
-PORTVERSION=	3.0.13.4
+PORTVERSION=	3.1.1
 PORTEPOCH=	1
 CATEGORIES=	audio net
 MASTER_SITES=	http://dl.4players.de/ts/releases/${PORTVERSION}/ \
 		http://teamspeak.gameserver.gamed.de/ts3/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}-${PORTVERSION}
 
-MAINTAINER=	ultima1252@gmail.com
+MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	Server side of the TeamSpeak group voice chat system
 
 LICENSE=	teamspeak
@@ -17,47 +17,58 @@ LICENSE_NAME=	TeamSpeak 3.x End User License Agreement
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
 
-BROKEN_FreeBSD_11=Will not start on 11, Bug 212493
+ONLY_FOR_ARCHS=		amd64 i386
+
+RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
 USES=		tar:bz2
-NO_BUILD=	yes
 USE_LDCONFIG=	${LIBDIR}
 USE_RC_SUBR=	teamspeak
+
+NO_BUILD=	yes
 SUB_FILES=	pkg-message
-
-# see release note
-# http://forum.teamspeak.com/threads/123250-TeamSpeak-3-Server-3-0-12-3-released
-BROKEN_FreeBSD_9=	No longer starts on 9.x
-
-RESTRICTED=	No redistribution
-ONLY_FOR_ARCHS=	amd64 i386
 
 USERS=	teamspeak
 GROUPS=	teamspeak
 
 CONFLICTS=	teamspeak_server-[0-9]*
 
-PLIST_SUB+=	DBDIR=${DBDIR} \
+PLIST_SUB=	DBDIR=${DBDIR} \
 		ETCDIR=${ETCDIR} \
 		LOGDIR=${LOGDIR} \
 		BINGRP=${BINGRP}
 
-SUB_LIST+=	DBDIR=${DBDIR} \
+SUB_LIST=	DBDIR=${DBDIR} \
 		ETCDIR=${ETCDIR} \
 		LOGDIR=${LOGDIR}
 
-OPTIONS_DEFINE=	DOCS
+PORTDOCS=	permissiondoc.txt \
+		privilegekey_guide.txt \
+		server_quickstart.txt \
+		server_upgrade.txt \
+		update_mysql_to_mariadb.txt
+
+OPTIONS_DEFINE=	DOCS MYSQL
+
+MYSQL_USES=	mysql:server
+MYSQL_VARS=	SUB_LIST+=MYSQL=mysql
+MYSQL_VARS_OFF=	SUB_LIST+=MYSQL=
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} ==	"i386"
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100000 && ${OSVERSION} < 1100507
+SUB_LIST+=	CD="cd \$$db_dir"
+.else
+SUB_LIST+=	CD=
+.endif
+
+.if ${ARCH} == "i386"
 TEAMSPEAK_ARCH=	x86
-WRKSRC=	${WRKDIR}/${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}
-.endif
-.if ${ARCH} ==	"amd64"
+.elif ${ARCH} == "amd64"
 TEAMSPEAK_ARCH=	amd64
-WRKSRC=	${WRKDIR}/${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}
 .endif
+
+WRKSRC=	${WRKDIR}/${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}
 
 DBDIR=	/var/db/teamspeak
 ETCDIR=	${PREFIX}/etc/teamspeak
@@ -65,11 +76,6 @@ LIBDIR=	${PREFIX}/lib/teamspeak/server
 LIBEXECDIR=	${PREFIX}/libexec
 LOGDIR=	/var/log/teamspeak
 SHAREDIR=	${PREFIX}/share/teamspeak/server
-PORTDOCS=	permissiondoc.txt \
-		privilegekey_guide.txt \
-		server_quickstart.txt \
-		server_upgrade.txt \
-		update_mysql_to_mariadb.txt
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${SHAREDIR}

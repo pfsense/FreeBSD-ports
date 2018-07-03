@@ -3,10 +3,9 @@
 
 PORTNAME=	sssd
 PORTVERSION=	1.11.7
-PORTREVISION=	4
+PORTREVISION=	11
 CATEGORIES=	security
-MASTER_SITES=	https://fedorahosted.org/released/${PORTNAME}/ \
-		http://mirrors.rit.edu/zi/
+MASTER_SITES=	https://releases.pagure.org/SSSD/${PORTNAME}/
 
 MAINTAINER=	lukas.slebodnik@intrak.sk
 COMMENT=	System Security Services Daemon
@@ -26,7 +25,8 @@ LIB_DEPENDS=	libpopt.so:devel/popt \
 		libunistring.so:devel/libunistring \
 		libnss3.so:security/nss \
 		libsasl2.so:security/cyrus-sasl2 \
-		libinotify.so:devel/libinotify
+		libinotify.so:devel/libinotify \
+		libplds4.so:devel/nspr
 BUILD_DEPENDS=	xmlcatalog:textproc/libxml2 \
 		docbook-xsl>=1:textproc/docbook-xsl \
 		xsltproc:textproc/libxslt \
@@ -44,7 +44,8 @@ CONFIGURE_ARGS=	--with-selinux=no --with-semanage=no \
 		--with-db-path=/var/db/sss --with-pipe-path=/var/run/sss \
 		--with-pubconf-path=/var/run/sss --with-mcache-path=/var/db/sss_mc \
 		--with-unicode-lib=libunistring --with-autofs=no \
-		--disable-cifs-idmap-plugin --disable-config-lib
+		--disable-cifs-idmap-plugin --disable-config-lib \
+		--with-krb5-conf=/etc/krb5.conf
 CFLAGS+=	-fstack-protector-all
 PLIST_SUB=	PYTHON_VER=${PYTHON_VER}
 #DEBUG_FLAGS=	-g
@@ -54,12 +55,10 @@ SUB_FILES=	pkg-message
 USE_LDCONFIG=	yes
 USE_OPENLDAP=	yes
 USES=		autoreconf cpe gettext gmake iconv libtool pathfix pkgconfig \
-		python:2 shebangfix gssapi:mit
-PATHFIX_MAKEFILEIN=	Makefile.am
+		python:2.7 shebangfix gssapi:mit
 INSTALL_TARGET=	install-strip
 CPE_VENDOR=	fedoraproject
 
-python_CMD=	${SETENV} python2
 SHEBANG_FILES=	src/tools/sss_obfuscate \
 		src/sbus/sbus_codegen
 
@@ -70,7 +69,7 @@ OPTIONS_DEFINE=	DOCS SMB
 OPTIONS_SUB=	yes
 
 SMB_DESC=		Install IPA and AD providers (requires Samba4)
-SMB_BUILD_DEPENDS=	samba42>=4.2.11:net/samba42
+SMB_USES=		samba:lib # libndr-krb5pac libndr-nbt libndr libsamba-util
 SMB_CONFIGURE_WITH=	samba
 
 post-patch:

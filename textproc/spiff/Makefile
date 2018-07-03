@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	spiff
-PORTVERSION=	1.0.6
+PORTVERSION=	1.0.8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
@@ -18,24 +18,19 @@ PLIST_FILES=	bin/spiff
 PORTDOCS=	LICENSE README.md examples/cf-aws.yml \
 		examples/multi-az-cf-aws.yml examples/tutorial.md
 
-STRIP=		# stripping can break go binaries
-
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
+	@cd ${WRKSRC} ; ${MV} ${WRKSRC}/vendor ${WRKSRC}/src
 	@cd ${WRKSRC} ; ${MKDIR} src/github.com/${GH_ACCOUNT}/${GH_PROJECT} ; \
-		${MV} .gitignore .travis.yml Godeps LICENSE Makefile README.md \
+		${MV} .gitignore LICENSE Makefile README.md \
 		compare dynaml examples flow init_test.go scripts spiff.go \
 		spiff_test.go yaml \
 		src/github.com/${GH_ACCOUNT}/${GH_PROJECT}
-	@${MV} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/Godeps/_workspace/src/github.com/${GH_ACCOUNT}/candiedyaml \
-		${WRKSRC}/src/github.com/${GH_ACCOUNT}
-	@${MV} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/Godeps/_workspace/src/github.com/codegangsta \
-		${WRKSRC}/src/github.com
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT} ; \
-		${SETENV} GOPATH=${WRKSRC} go build spiff.go
+		${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go build spiff.go
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/${PORTNAME} \

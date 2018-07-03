@@ -3,7 +3,7 @@
 
 PORTNAME=	4stattack
 PORTVERSION=	2.1.4
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	SF/forcedattack/4stAttack/${PORTVERSION}/
 DISTNAME=	4stAttack-${PORTVERSION}
@@ -12,18 +12,22 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Connect four stones in a straight line
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/GPL
 
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python
+USES=		python:2.7 shebangfix
+SHEBANG_FILES=	4stattack.py
+NO_ARCH=	yes
 
 PORTDOCS=	changelog.txt credits.txt
-OPTIONS_DEFINE=	DOCS
 
 INSTALLS_ICONS=	yes
 ICON_SIZES=	16x16 22x22 32x32 48x48 64x64
 
 SUB_FILES=	${PORTNAME} pkg-message
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 .for s in 16 22 32 48 64
@@ -56,6 +60,7 @@ do-install:
 	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

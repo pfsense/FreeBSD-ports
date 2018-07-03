@@ -7,17 +7,18 @@ PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/
 
-MAINTAINER=	edwin@mavetju.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Reimplementation of Atomic Bomber Man
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+USES=		gmake localbase
 USE_SDL=	image mixer sdl
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--target="" --disable-werror
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib -lm
+CONFIGURE_ARGS=	--disable-werror
+
+LIBS+=		-lm
 
 PORTDOCS=	AUTHORS ChangeLog README TODO
 
@@ -27,19 +28,20 @@ DESKTOP_ENTRIES="BomberMan clone" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;ArcadeGame;" ""
 
 post-extract:
-	@${FIND} ${WRKSRC} -type d -name CVS | ${XARGS} ${RM} -rf ;
+	@${FIND} ${WRKSRC} -type d -name CVS | ${XARGS} ${RM} -r ;
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|share/games/${PACKAGE}|share/${PACKAGE}|' \
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} \
-	-e 's|install-data-am: install-bomberclonedocDATA|install-data-am: |' \
+		-e 's|install-data-am: install-bomberclonedocDATA|install-data-am: |' \
 		${WRKSRC}/Makefile.in
 
 post-install:
 	${LN} -sf ${DATADIR}/pixmaps/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

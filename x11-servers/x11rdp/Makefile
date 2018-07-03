@@ -18,23 +18,26 @@ DISTNAME=	${PORTNAME}_xorg71
 DISTFILES=	${PORTNAME}_xorg71_r${X11RDPREVISION}.tar.gz:x11rdp
 DIST_SUBDIR=	xrdp
 
-MAINTAINER=	meta+ports@vmeta.jp
+MAINTAINER=	meta@FreeBSD.org
 COMMENT=	X11 server for xrdp
 
 LICENSE=	MIT
-
-BROKEN_powerpc64=	Does not build
 
 RUN_DEPENDS=	xorg-fonts>=0:x11-fonts/xorg-fonts
 
 # SVN revision of x11rdp
 X11RDPREVISION=	299
 
-USES=		gmake pkgconfig perl5
-USE_OPENSSL=	yes
+USES=		gmake pkgconfig perl5 ssl
 CONFLICTS_INSTALL=	xrdp-devel-[0-9]* x11rdp-devel-[0-9]*
 
 PLIST_FILES=	bin/X11rdp
+
+BROKEN_aarch64=		fails to compile: error: GLYPHPADBYTES must be 4
+BROKEN_armv6=		fails to compile: error: GLYPHPADBYTES must be 4
+BROKEN_armv7=		fails to compile: error: GLYPHPADBYTES must be 4
+BROKEN_mips64=		fails to compile: No PCI support available for this architecture/OS combination
+BROKEN_powerpc64=	fails to compile: error: xf86.h: No such file or directory
 
 post-extract:
 	@${MKDIR} ${WRKSRC}/build_dir

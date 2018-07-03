@@ -16,7 +16,7 @@ EXTRACT_ONLY=	${PORTNAME}${DISTVERSION}.zip
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Implementation of JavaScript written in Java
 
-LICENSE=	MPL
+LICENSE=	MPL20
 
 ALL_TARGET=	jar
 
@@ -41,7 +41,7 @@ GH_ACCOUNT=	mozilla
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLINEDIT}
-JLINEJAR=	${JAVAJARDIR}/jline.jar
+JLINEJAR=	${JAVALIBDIR}/jline.jar
 .else
 JLINEJAR=""
 .endif

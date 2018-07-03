@@ -10,7 +10,8 @@ MASTER_SITES=	ftp://ftp.sra.co.jp/pub/misc/eb/
 MAINTAINER=	yasu@utahime.org
 COMMENT=	Servers for accessing CD-ROM books via TCP/IP
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libeb.so:japanese/eb
 
@@ -40,7 +41,7 @@ post-patch:
 		-e "s/%%EBNETD_GROUP%%/${EBNETD_GROUP}/" \
 		${WRKSRC}/ebnetd.conf.sample.in
 
-post-stage:
+post-install:
 	${MKDIR} -m 0755 ${STAGEDIR}${RUNDIR}/${PORTNAME}
 
 .include <bsd.port.mk>

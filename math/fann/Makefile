@@ -10,12 +10,12 @@ DISTNAME=	FANN-2.2.0-Source
 MAINTAINER=	tzhuan@csie.org
 COMMENT=	Free open source neural network library
 
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.txt
+
 WRKSRC=		${WRKDIR}/FANN-2.2.0-Source
 
-USES=		cmake zip
+USES=		cmake pathfix zip
 USE_LDCONFIG=	yes
-
-post-patch:
-	${REINPLACE_CMD} -e 's|/lib/pkgconfig|/libdata/pkgconfig|g' ${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xscreensaver-gnome-hacks
-PORTREVISION=	2
+PORTREVISION=	3
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Screensaver modules for use with xscreensaver and gnome-screensaver
@@ -30,7 +30,7 @@ post-build:
 		Makefile ${MAKE_ARGS} xscreensaver-getimage
 
 post-install-slave:
-	${MKDIR} ${STAGEDIR}${PREFIX}/bin
+	@${MKDIR} ${STAGEDIR}${PREFIX}/bin
 .for sf in ${SS_SCRIPTS}
 	${INSTALL_SCRIPT} ${WRKSRC}/driver/${sf} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/driver/${sf}.man \

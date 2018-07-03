@@ -5,9 +5,6 @@
 
     SUBDIR += aspell
     SUBDIR += aster
-    SUBDIR += calligra-l10n
-    SUBDIR += eficas
-    SUBDIR += eric6
     SUBDIR += fortune-mod-zarathoustra
     SUBDIR += geonext
     SUBDIR += gimp-help
@@ -22,5 +19,6 @@
     SUBDIR += php_doc
     SUBDIR += trytond28_account_fr
     SUBDIR += verbiste
+    SUBDIR += wordpress
 
 .include <bsd.port.subdir.mk>

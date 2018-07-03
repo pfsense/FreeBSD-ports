@@ -1,5 +1,6 @@
 bin/s6-accessrules-cdb-from-fs
 bin/s6-accessrules-fs-from-cdb
+bin/s6-applyuidgid
 bin/s6-cleanfifodir
 bin/s6-connlimit
 bin/s6-envdir
@@ -34,8 +35,10 @@ bin/s6-ipcserver-socketbinder
 bin/s6-ipcserverd
 bin/s6-log
 bin/s6-mkfifodir
+bin/s6-notifyoncheck
 bin/s6-setlock
 bin/s6-setsid
+bin/s6-setuidgid
 bin/s6-softlimit
 bin/s6-sudo
 bin/s6-sudoc
@@ -66,16 +69,12 @@ include/s6/s6-supervise.h
 include/s6/s6.h
 include/s6/s6lock.h
 lib/libs6.so
-lib/libs6.so.2.2
-lib/libs6.so.2.2.4
-lib/libs6.so.2.2.4.3
+lib/libs6.so.2.7
+lib/libs6.so.2.7.0
+lib/libs6.so.2.7.0.0
 lib/s6/libs6.a
 libexec/s6lockd-helper
-sbin/s6-applyuidgid
-sbin/s6-setuidgid
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
-%%PORTDOCS%%%%DOCSDIR%%/COPYING
-%%PORTDOCS%%%%DOCSDIR%%/INSTALL
 %%PORTDOCS%%%%DOCSDIR%%/README
 %%PORTDOCS%%%%DOCSDIR%%/fifodir.html
 %%PORTDOCS%%%%DOCSDIR%%/ftrig.html
@@ -120,6 +119,7 @@ sbin/s6-setuidgid
 %%PORTDOCS%%%%DOCSDIR%%/s6-ipcserverd.html
 %%PORTDOCS%%%%DOCSDIR%%/s6-log.html
 %%PORTDOCS%%%%DOCSDIR%%/s6-mkfifodir.html
+%%PORTDOCS%%%%DOCSDIR%%/s6-notifyoncheck.html
 %%PORTDOCS%%%%DOCSDIR%%/s6-setlock.html
 %%PORTDOCS%%%%DOCSDIR%%/s6-setsid.html
 %%PORTDOCS%%%%DOCSDIR%%/s6-setuidgid.html

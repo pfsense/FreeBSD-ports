@@ -2,6 +2,7 @@
 
 PORTNAME=	unix-connect
 PORTVERSION=	0.95
+PORTREVISION=	2
 CATEGORIES=	german comms news mail
 MASTER_SITES=	ftp://ftp.dinoex.org/pub/unix-connect/ \
 		SF
@@ -16,7 +17,7 @@ LICENSE=	GPLv2 BSD3CLAUSE
 
 MANUAL_PACKAGE_BUILD=	needs hostname
 
-USES=		fakeroot
+USES=		fakeroot gperf
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
 GNU_CONFIGURE=	yes

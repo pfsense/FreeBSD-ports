@@ -1,7 +1,7 @@
-diff -urN ../snort-2.9.8.0_orig/src/output-plugins/Makefile.am ./src/output-plugins/Makefile.am
---- ../snort-2.9.8.0_orig/src/output-plugins/Makefile.am	2013-06-04 18:19:54.000000000 -0400
-+++ ./src/output-plugins/Makefile.am	2016-03-02 11:46:04.000000000 -0500
-@@ -13,6 +13,7 @@
+diff -urN snort-2.9.9.0.orig/src/output-plugins/Makefile.am snort-2.9.9.0/src/output-plugins/Makefile.am
+--- snort-2.9.9.0.orig/src/output-plugins/Makefile.am	2016-06-07 03:47:49.000000000 -0400
++++ ./src/output-plugins/Makefile.am	2017-08-17 00:08:13.000000000 -0400
+@@ -13,7 +13,8 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
  spo_alert_sf_socket.h spo_alert_sf_socket.c \
@@ -9,36 +9,43 @@ diff -urN ../snort-2.9.8.0_orig/src/output-plugins/Makefile.am ./src/output-plug
 +spo_alert_test.c spo_alert_test.h \
 +spo_pf.h spo_pf.c
  
- INCLUDES = @INCLUDES@
-diff -urN ../snort-2.9.8.0_orig/src/output-plugins/Makefile.in ./src/output-plugins/Makefile.in
---- ../snort-2.9.8.0_orig/src/output-plugins/Makefile.in	2015-11-20 12:11:56.000000000 -0500
-+++ ./src/output-plugins/Makefile.in	2016-03-02 11:48:27.000000000 -0500
-@@ -101,7 +101,8 @@
- 	spo_alert_unixsock.$(OBJEXT) spo_csv.$(OBJEXT) \
+ if BUILD_BUFFER_DUMP
+ libspo_a_SOURCES += \
+diff -urN snort-2.9.9.0.orig/src/output-plugins/Makefile.in ./src/output-plugins/Makefile.in
+--- snort-2.9.9.0.orig/src/output-plugins/Makefile.in	2016-11-29 01:12:26.000000000 -0500
++++ ./src/output-plugins/Makefile.in	2017-08-17 00:08:13.000000000 -0400
+@@ -106,7 +106,8 @@
+ 	spo_log_tcpdump.c spo_log_tcpdump.h spo_unified2.c \
+ 	spo_unified2.h spo_log_ascii.c spo_log_ascii.h \
+ 	spo_alert_sf_socket.h spo_alert_sf_socket.c spo_alert_test.c \
+-	spo_alert_test.h spo_log_buffer_dump.c spo_log_buffer_dump.h
++	spo_alert_test.h spo_log_buffer_dump.c spo_log_buffer_dump.h \
++	spo_pf.h spo_pf.c
+ @BUILD_BUFFER_DUMP_TRUE@am__objects_1 = spo_log_buffer_dump.$(OBJEXT)
+ am_libspo_a_OBJECTS = spo_alert_fast.$(OBJEXT) \
+ 	spo_alert_full.$(OBJEXT) spo_alert_syslog.$(OBJEXT) \
+@@ -114,6 +115,7 @@
  	spo_log_null.$(OBJEXT) spo_log_tcpdump.$(OBJEXT) \
  	spo_unified2.$(OBJEXT) spo_log_ascii.$(OBJEXT) \
--	spo_alert_sf_socket.$(OBJEXT) spo_alert_test.$(OBJEXT)
-+	spo_alert_sf_socket.$(OBJEXT) spo_alert_test.$(OBJEXT) \
-+	spo_pf.$(OBJEXT)
+ 	spo_alert_sf_socket.$(OBJEXT) spo_alert_test.$(OBJEXT) \
++	spo_pf.$(OBJEXT) \
+ 	$(am__objects_1)
  libspo_a_OBJECTS = $(am_libspo_a_OBJECTS)
  AM_V_P = $(am__v_P_@AM_V@)
- am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
-@@ -312,7 +313,8 @@
- spo_unified2.c spo_unified2.h \
- spo_log_ascii.c spo_log_ascii.h \
- spo_alert_sf_socket.h spo_alert_sf_socket.c \
--spo_alert_test.c spo_alert_test.h
-+spo_alert_test.c spo_alert_test.h \
-+spo_pf.h spo_pf.c
- 
+@@ -322,6 +324,7 @@
+ 	spo_log_tcpdump.h spo_unified2.c spo_unified2.h \
+ 	spo_log_ascii.c spo_log_ascii.h spo_alert_sf_socket.h \
+ 	spo_alert_sf_socket.c spo_alert_test.c spo_alert_test.h \
++	spo_pf.c spo_pf.h \
+ 	$(am__append_1)
  all: all-am
  
-diff -urN ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.c ./src/output-plugins/spo_pf.c
---- ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.c	2016-03-02 19:47:35.000000000 -0500
-@@ -0,0 +1,758 @@
+diff -urN snort-2.9.9.0.orig/src/output-plugins/spo_pf.c ./src/output-plugins/spo_pf.c
+--- snort-2.9.9.0.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.c	2017-08-21 18:28:36.000000000 -0400
+@@ -0,0 +1,764 @@
 +/*
-+* Copyright (c) 2016  Bill Meeks
++* Copyright (c) 2017  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
 +* Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 +* Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -122,7 +129,7 @@ diff -urN ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +
 +enum spblock { SPOINK_BLOCK_SRC, SPOINK_BLOCK_DST, SPOINK_BLOCK_BOTH };
 +
-+#define WLMAX   1024
++#define WLMAX   4096
 +#define MAX_RTMSG_SIZE 2048
 +
 +struct ipwlist {
@@ -220,6 +227,12 @@ diff -urN ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +    }
 +
 +    DEBUG_WRAP(DebugMessage(DEBUG_LOG, "spoink block'n!!\n"););
++
++	// Test for valid IP header in packet and
++	// ignore packets with no valid IP information
++	// since we need IP addresses to block.
++	if (!IsIP(p))
++		return;
 +
 +    switch (data->block) {
 +    case SPOINK_BLOCK_DST:
@@ -795,12 +808,12 @@ diff -urN ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +	}
 +}
 +
-diff -urN ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.h ./src/output-plugins/spo_pf.h
---- ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.h	2015-11-10 11:02:10.000000000 -0500
+diff -urN snort-2.9.9.0.orig/src/output-plugins/spo_pf.h ./src/output-plugins/spo_pf.h
+--- snort-2.9.9.0.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.h	2017-08-17 17:37:44.000000000 -0400
 @@ -0,0 +1,42 @@
 +/*
-+* Copyright (c) 2015  Bill Meeks
++* Copyright (c) 2017  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
 +* Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 +* Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -841,18 +854,18 @@ diff -urN ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.h ./src/output-plugins
 +void AlertPfSetup(void);
 +
 +#endif 
-diff -urN ../snort-2.9.8.0_orig/src/plugbase.c ./src/plugbase.c
---- ../snort-2.9.8.0_orig/src/plugbase.c	2015-11-18 13:59:14.000000000 -0500
-+++ ./src/plugbase.c	2016-03-02 14:30:01.000000000 -0500
-@@ -122,6 +122,7 @@
+diff -urN snort-2.9.9.0.orig/src/plugbase.c ./src/plugbase.c
+--- snort-2.9.9.0.orig/src/plugbase.c	2016-06-07 03:47:47.000000000 -0400
++++ ./src/plugbase.c	2017-08-17 00:08:13.000000000 -0400
+@@ -123,6 +123,7 @@
  #include "output-plugins/spo_csv.h"
  #include "output-plugins/spo_log_null.h"
  #include "output-plugins/spo_log_ascii.h"
 +#include "output-plugins/spo_pf.h"
  #include "output-plugins/spo_unified2.h"
  
- #ifdef LINUX
-@@ -1569,6 +1570,7 @@
+ #ifdef DUMP_BUFFER
+@@ -1585,6 +1586,7 @@
      LogTcpdumpSetup();
      AlertFastSetup();
      AlertFullSetup();

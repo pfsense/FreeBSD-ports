@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,6 +31,8 @@ global $g, $rebuild_rules;
 $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
 $rcdir = RCFILEPREFIX;
+$suri_starting = array();
+$by2_starting = array();
 
 if ($_POST['id'])
 	$id = $_POST['id'];
@@ -118,65 +120,160 @@ if (isset($_POST['del_x'])) {
 }
 
 /* start/stop Barnyard2 */
-if ($_POST['bartoggle']) {
+if ($_POST['by2toggle']) {
 	$suricatacfg = $config['installedpackages']['suricata']['rule'][$id];
 	$if_real = get_real_interface($suricatacfg['interface']);
 	$if_friendly = convert_friendly_interface_to_friendly_descr($suricatacfg['interface']);
 
 	if (!suricata_is_running($suricatacfg['uuid'], $if_real, 'barnyard2')) {
-		log_error("Toggle (barnyard starting) for {$if_friendly}({$suricatacfg['descr']})...");
+		if ($if_friendly == $suricatacfg['descr']) {
+			log_error("Toggle (barnyard starting) for {$if_friendly}...");
+		}
+		else {
+			log_error("Toggle (barnyard starting) for {$if_friendly}({$suricatacfg['descr']})...");
+		}
+		// No need to rebuild Suricata rules for Barnyard2,
+		// so flag that task as "off" to save time.
+		$rebuild_rules = false;
 		conf_mount_rw();
 		sync_suricata_package_config();
 		conf_mount_ro();
 		suricata_barnyard_start($suricatacfg, $if_real);
+		$by2_starting[$id] = 'TRUE';
 	} else {
-		log_error("Toggle (barnyard stopping) for {$if_friendly}({$suricatacfg['descr']})...");
+		if ($if_friendly == $suricatacfg['descr']) {
+			log_error("Toggle (barnyard stopping) for {$if_friendly}...");
+		}
+		else {
+			log_error("Toggle (barnyard stopping) for {$if_friendly}({$suricatacfg['descr']})...");
+		}
 		suricata_barnyard_stop($suricatacfg, $if_real);
+		unset($by2_starting[$id]);
 	}
-
-	sleep(3); // So the GUI reports correctly
-	header("Location: /suricata/suricata_interfaces.php");
-	exit;
 }
 
 /* start/stop Suricata */
 if ($_POST['toggle']) {
-	$suricatacfg = $config['installedpackages']['suricata']['rule'][$id];
+	$suricatacfg = $config['installedpackages']['suricata']['rule'][$_POST['id']];
 	$if_real = get_real_interface($suricatacfg['interface']);
 	$if_friendly = convert_friendly_interface_to_friendly_descr($suricatacfg['interface']);
+	$id = $_POST['id'];
 
-	switch($_POST['toggle']) {
-		case 'start' :
-				$rebuild_rules = true;
-				conf_mount_rw();
-				sync_suricata_package_config();
-				conf_mount_ro();
-				$rebuild_rules = false;
+	// Suricata can take several seconds to startup, so to
+	// make the GUI more responsive, startup commands are
+	// executed as a background process.  The commands
+	// are written to a PHP file in the 'tmp_path' which
+	// is executed by a PHP command line session launched
+	// as a background task.
 
+	// Create steps for the background task to start Suricata.
+	// These commands will be handed off to a CLI PHP session
+	// for background execution as a self-deleting PHP file.
+	$start_lck_file = "{$g['varrun_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_starting.lck";
+	$suricata_start_cmd = <<<EOD
+	<?php
+	require_once('/usr/local/pkg/suricata/suricata.inc');
+	require_once('service-utils.inc');
+	global \$g, \$rebuild_rules, \$config;
+	\$suricatacfg = \$config['installedpackages']['suricata']['rule'][{$id}];
+	\$rebuild_rules = true;
+	touch('{$start_lck_file}');
+	conf_mount_rw();
+	sync_suricata_package_config();
+	conf_mount_ro();
+	\$rebuild_rules = false;
+	suricata_start(\$suricatacfg, '{$if_real}');
+	unlink_if_exists('{$start_lck_file}');
+	unlink(__FILE__);
+	?>
+EOD;
+
+	switch ($_POST['toggle']) {
+		case 'start':
+			file_put_contents("{$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php", $suricata_start_cmd);
 			if (suricata_is_running($suricatacfg['uuid'], $if_real)) {
-				log_error("Toggle (suricata stopping) for {$if_friendly}({$suricatacfg['descr']})...");
+				log_error("Restarting Suricata on {$if_friendly}({$if_real}) per user request...");
 				suricata_stop($suricatacfg, $if_real);
-				suricata_start($suricatacfg, $if_real);
-			} else {
-				log_error("Toggle (suricata starting) for {$if_friendly}({$suricatacfg['descr']})...");
-				// set flag to rebuild interface rules before starting Suricata
-				suricata_start($suricatacfg, $if_real);
+				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
+			}
+			else {
+				log_error("Starting Suricata on {$if_friendly}({$if_real}) per user request...");
+				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
+			}
+			$suri_starting[$id] = 'TRUE';
+			if ($suricatacfg['barnyard_enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid")) {
+				$by2_starting[$id] = 'TRUE';
 			}
 			break;
-		case 'stop' :
-//			if (suricata_is_running($suricatacfg['uuid'], $if_real)) {
-				log_error("Toggle (suricata stopping) for {$if_friendly}({$suricatacfg['descr']})...");
+		case 'stop':
+			if (suricata_is_running($suricatacfg['uuid'], $if_real)) {
+				log_error("Stopping Suricata on {$if_friendly}({$if_real}) per user request...");
 				suricata_stop($suricatacfg, $if_real);
-//			}
-
+			}
+			unset($suri_starting[$id]);
+			unset($by2_starting[$id]);
+			unlink_if_exists($start_lck_file);
 			break;
-
 		default:
+			unset($suri_starting[$id]);
+			unset($by2_starting[$id]);
+			unlink_if_exists('{$start_lck_file}');
 	}
-
-	sleep(3); // So the GUI reports correctly
+	unset($suricata_start_cmd);
 }
 
+/* Ajax call to periodically check Suricata status */
+/* on each configured interface.                   */
+if ($_POST['status'] == 'check') {
+	$list = array();
+
+	// Iterate configured Suricata interfaces and get status of each
+	// into an associative array.  Return the array to the Ajax
+	// caller as a JSON object.
+	foreach ($a_nat as $natent) {
+		$intf_key = "suricata_" . get_real_interface($natent['interface']) . $natent['uuid'];
+		if ($natent['enable'] == "on") {
+			if (suricata_is_running($natent['uuid'], get_real_interface($natent['interface']))) {
+				$list[$intf_key] = "RUNNING";
+			}
+			elseif (file_exists("{$g['varrun_path']}/{$intf_key}_starting.lck") || file_exists("{$g['varrun_path']}/suricata_pkg_starting.lck")) {
+				$list[$intf_key] = "STARTING";
+			}
+			else {
+				$list[$intf_key] = "STOPPED";
+			}
+		}
+		else {
+			$list[$intf_key] = "DISABLED";
+		}
+	}
+
+	// Iterate configured Barnyard2 interfaces and add status of each
+	// to the JSON array object.
+	foreach ($a_nat as $natent) {
+		$intf_key = "barnyard2_" . get_real_interface($natent['interface']) . $natent['uuid'];
+		if ($natent['barnyard_enable'] == "on") {
+			if (suricata_is_running($natent['uuid'], get_real_interface($natent['interface']), 'barnyard2')) {
+				$list[$intf_key] = "RUNNING";
+			}
+			elseif (file_exists("{$g['varrun_path']}/{$intf_key}_starting.lck") || file_exists("{$g['varrun_path']}/suricata_pkg_starting.lck")) {
+				$list[$intf_key] = "STARTING";
+			}
+			else {
+				$list[$intf_key] = "STOPPED";
+			}
+		}
+		else {
+			$list[$intf_key] = "DISABLED";
+		}
+	}
+
+	// Return a JSON encoded array as the page output
+	echo json_encode($list);
+	exit;
+}
+
+// May decide to use these again for display, but for now they are not used
 $suri_bin_ver = SURICATA_BIN_VERSION;
 $suri_pkg_ver = SURICATA_PKG_VER;
 
@@ -253,26 +350,11 @@ include_once("head.inc"); ?>
 ?>
 				<tr id="fr<?=$nnats?>">
 <?php
-					$icon_suricata_msg = 'default';
 					/* convert fake interfaces to real and check if iface is up */
 					/* There has to be a smarter way to do this */
 					$if_real = get_real_interface($natent['interface']);
 					$natend_friendly= convert_friendly_interface_to_friendly_descr($natent['interface']);
 					$suricata_uuid = $natent['uuid'];
-
-					if (!suricata_is_running($suricata_uuid, $if_real)){
-						$icon_suricata_msg = 'Click to start Suricata on ' . $natend_friendly;
-					}
-					else{
-						$icon_suricata_msg = 'Click to restart Suricata on ' . $natend_friendly;
-					}
-
-					if (!suricata_is_running($suricata_uuid, $if_real, 'barnyard2')){
-						$icon_by2_msg = 'Click to start Barnyard2 on ' . $natend_friendly;
-					}
-					else{
-						$icon_by2_msg = 'Click to restart Barnyard2 on ' . $natend_friendly;
-					}
 
 					/* See if interface has any rules defined and set boolean flag */
 					$no_rules = true;
@@ -315,14 +397,23 @@ include_once("head.inc"); ?>
 ?>
 					<?php if ($check_suricata_info == "on") : ?>
 						<?php if (suricata_is_running($suricata_uuid, $if_real)) : ?>
-							<i class="fa fa-check-circle text-success icon-primary" title="<?=gettext('Suricata is running on ' . $natend_friendly);?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('suricata is running on this interface');?>"></i>
 							&nbsp;
-							<i class="fa fa-repeat icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext($icon_suricata_msg);?>"></i>
-							<i class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Click to stop Suricata on ' . $natend_friendly);?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop suricata on this interface');?>"></i>
+						<?php elseif ($suri_starting[$nnats] == 'TRUE' || file_exists("{$g['varrun_path']}/suricata_pkg_starting.lck")) : ?>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>" class="fa fa-cog fa-spin text-success icon-primary" title="<?=gettext('suricata is starting on this interface');?>"></i>
+							&nbsp;
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop suricata on this interface');?>"></i>
 						<?php else: ?>
-							<i class="fa fa-times-circle text-warning icon-primary" title="<?=gettext('Suricata is stopped on ' . $natend_friendly);?>"></i>
+							<i class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('suricata is stopped on this interface');?>"></i>
 							&nbsp;
-							<i class="fa fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext($icon_suricata_msg);?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start suricata on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop suricata on this interface');?>"></i>
 						<?php endif; ?>
 					<?php else : ?>
 						<?=gettext('DISABLED');?>&nbsp;
@@ -354,9 +445,9 @@ include_once("head.inc"); ?>
 
 					if ($check_blockoffenders_info == "on")
 					{
-						$check_blockoffenders = enabled;
+						$check_blockoffenders = 'enabled';
 					} else {
-						$check_blockoffenders = disabled;
+						$check_blockoffenders = 'disabled';
 					}
 ?>
 					<?=strtoupper($check_blockoffenders)?>
@@ -365,14 +456,23 @@ include_once("head.inc"); ?>
 					<td id="frd<?=$nnats?>" ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 						<?php if ($config['installedpackages']['suricata']['rule'][$nnats]['barnyard_enable'] == 'on') : ?>
 							<?php if (suricata_is_running($suricata_uuid, $if_real, 'barnyard2')) : ?>
-								<i class="fa fa-check-circle text-success icon-primary" title="<?=gettext('Barnyard2 is running on ' . $natend_friendly);?>"></i>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('barnyard2 is running on this interface');?>"></i>
 								&nbsp;
-								<i class="fa fa-repeat icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext($icon_by2_msg);?>"></i>
-								<i class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Click to stop Barnyard2 on ' . $natend_friendly);?>"></i>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
+							<?php elseif ($by2_starting[$nnats] == 'TRUE'  || file_exists("{$g['varrun_path']}/suricata_pkg_starting.lck")) : ?>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('barnyard2 is starting on this interface');?>"></i>
+								&nbsp;
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
 							<?php else: ?>
-								<i class="fa fa-times-circle text-warning icon-primary" title="<?=gettext('Barnyard2 is stopped on ' . $natend_friendly);?>"></i>
+								<i class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('barnyard2 is stopped on this interface');?>"></i>
 								&nbsp;
-								<i class="fa fa-play-circle icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext($icon_by2_msg);?>"></i>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
 							<?php endif; ?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>&nbsp;
@@ -393,7 +493,7 @@ include_once("head.inc"); ?>
 					</td>
 
 				</tr>
-				<?php $i++; $nnats++; endforeach; ob_end_flush(); ?>
+				<?php $i++; $nnats++; endforeach; ob_end_flush(); unset($suri_starting); unset($by2_starting); ?>
 				<tr>
 					<td></td>
 					<td colspan="7">
@@ -425,30 +525,102 @@ include_once("head.inc"); ?>
 
 <div class="infoblock">
 	<?=print_info_box('<div class="row">
-							<div class="col-md-12">
-								<p>This is where you can see an overview of all your interface settings. Please configure the parameters on the <strong>Global Settings</strong> tab before adding an interface.</p>
-								<p><strong>Warning: New settings will not take effect until interface restart</strong></p>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6">
-								<p>
-									Click on the <i class="fa fa-lg fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
-									Click on the <i class="fa fa-lg fa-trash" alt="Delete Icon"></i> icon to delete an interface and settings.<br/>
-									Click on the <i class="fa fa-lg fa-clone" alt="Clone Icon"></i> icon to clone an existing interface.
-								</p>
-							</div>
-							<div class="col-md-6">
-								<p>
-									<i class="fa fa-lg fa-check-circle" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current Suricata and barnyard2 status<br/>
-									Click the <i class="fa fa-lg fa-play-circle" alt="Start"></i> or <i class="fa fa-lg fa-repeat" alt="Restart"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/restart/stop Suricata and Barnyard2.
-								</p>
-							</div>
-						</div>', info, false)?>
+		<div class="col-md-12">
+			<p>This is where you can see an overview of all your interface settings. Please configure the parameters on the <strong>Global Settings</strong> tab before adding an interface.</p>
+			<p><strong>Warning: New settings will not take effect until interface restart</strong></p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<p>
+				Click on the <i class="fa fa-lg fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
+				Click on the <i class="fa fa-lg fa-trash" alt="Delete Icon"></i> icon to delete an interface and settings.<br/>
+				Click on the <i class="fa fa-lg fa-clone" alt="Clone Icon"></i> icon to clone an existing interface.
+			</p>
+		</div>
+		<div class="col-md-6">
+			<p>
+				<i class="fa fa-lg fa-check-circle" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current Suricata and barnyard2 status<br/>
+				Click the <i class="fa fa-lg fa-play-circle" alt="Start"></i> or <i class="fa fa-lg fa-repeat" alt="Restart"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/restart/stop Suricata and Barnyard2.
+			</p>
+		</div>
+	</div>', 'info')?>
 </div>
 
 <script type="text/javascript">
 //<![CDATA[
+	function check_status() {
+
+		// This function uses Ajax to post a query to
+		// this page requesting the status of each
+		// configured interface.  The result is returned
+		// as a JSON array object.  A timer is set upon
+		// completion to call the function again in
+		// 2 seconds.  This allows dynamic updating
+		// of interface status in the GUI.
+		$.ajax(
+			"<?=$_SERVER['SCRIPT_NAME'];?>",
+			{
+				type: 'post',
+				data: {
+					status: 'check'
+				},
+				success: showStatus,
+				complete: function() {
+					setTimeout(check_status, 2000);
+				}
+			}
+		);
+	}
+
+	function showStatus(responseData) {
+
+		// The JSON object returned by check_status() is an associative array
+		// of interface unique IDs and corresponding service status.  The
+		// "key" is the service name followed by the physical interface and a UUID.
+		// The "value" of the key is either "DISABLED, STOPPED, STARTING, or RUNNING".
+		//
+		// Example keys:  suricata_em1998 or barnyard2_em1998
+		//
+		// Within the HTML of this page, icon controls for displaying status
+		// and for starting/restarting/stopping the service are tagged with
+		// control IDs using "key" followed by the icon's function.  These
+		// control IDs are used in the code below to alter icon appearance
+		// depending on the service status.
+
+		var data = jQuery.parseJSON(responseData);
+
+		// Iterate the associative array and update interface status icons
+		for(var key in data) {
+			var service_name = key.substring(0, key.indexOf('_'));
+			if (data[key] != 'DISABLED') {
+				if (data[key] == 'STOPPED') {
+					$('#' + key).removeClass('fa-check-circle fa-cog fa-spin text-success text-info');
+					$('#' + key).addClass('fa-times-circle text-danger');
+					$('#' + key).prop('title', service_name + ' is stopped on this interface');
+					$('#' + key + '_restart').addClass('hidden');
+					$('#' + key + '_stop').addClass('hidden');
+					$('#' + key + '_start').removeClass('hidden');
+				}
+				if (data[key] == 'STARTING') {
+					$('#' + key).removeClass('fa-check-circle fa-times-circle text-info text-danger');
+					$('#' + key).addClass('fa-cog fa-spin text-success');
+					$('#' + key).prop('title', service_name + ' is starting on this interface');
+					$('#' + key + '_restart').addClass('hidden');
+					$('#' + key + '_start').addClass('hidden');
+					$('#' + key + '_stop').removeClass('hidden');
+				}
+				if (data[key] == 'RUNNING') {
+					$('#' + key).addClass('fa-check-circle text-success');
+					$('#' + key).removeClass('fa-times-circle fa-cog fa-spin text-danger text-info');
+					$('#' + key).prop('title', service_name + ' is running on this interface');
+					$('#' + key + '_restart').removeClass('hidden');
+					$('#' + key + '_stop').removeClass('hidden');
+					$('#' + key + '_start').addClass('hidden');
+				}
+			}
+		}
+	}
 
 	function suricata_iface_toggle(action, id) {
 		$('#toggle').val(action);
@@ -483,7 +655,13 @@ include_once("head.inc"); ?>
 				$('#' + event.target.id.slice(1)).click();
 			}
 		});
+
 	});
+
+	// Set a timer to call the check_status()
+	// function in two seconds.
+	setTimeout(check_status, 2000);
+
 //]]>
 </script>
 

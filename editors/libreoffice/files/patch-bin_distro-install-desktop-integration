@@ -1,14 +1,7 @@
---- bin/distro-install-desktop-integration.orig	2015-08-22 06:41:35 UTC
-+++ bin/distro-install-desktop-integration
-@@ -94,13 +94,13 @@ add_wrapper()
- }
- 
- # install desktop integration from plain packages
--sysui_temp=`mktemp -t -d distro-pack-desktop-integration-XXXXXX`
-+sysui_temp=`mktemp -d /tmp/distro-pack-desktop-integration-XXXXXX`
- cp -a workdir/CustomTarget/sysui/share/libreoffice/* "$sysui_temp"
- cp -a sysui/desktop/share/create_tree.sh "$sysui_temp"
- builddir=`pwd`
+--- bin/distro-install-desktop-integration.orig	2018-02-23 01:45:41.000000000 +0800
++++ bin/distro-install-desktop-integration	2018-03-16 09:45:26.157822000 +0800
+@@ -99,7 +99,7 @@ cp -a workdir/CustomTarget/sysui/share/libreoffice/* "
+ cp -a "${SRCDIR?}"/sysui/desktop/share/create_tree.sh "$sysui_temp"
  cd $sysui_temp
  # we want non-versioned stuff in the distro packages
 -sed -i \
@@ -16,15 +9,23 @@
      -e "s/\($INSTALLDIRNAME\)$PRODUCTVERSION_NODOT/\1/" \
      -e "s/\($INSTALLDIRNAME\)$PRODUCTVERSION/\1/" \
      -e "s/\($PRODUCTNAME\) $PRODUCTVERSION/\1/" \
-@@ -111,6 +111,7 @@ sed -i \
+@@ -109,13 +109,13 @@ sed -i \
+     export OFFICE_PREFIX=$LIBDIR
      export PREFIX=$INSTALLDIRNAME
      export ICON_PREFIX=$INSTALLDIRNAME
-     export ICON_SOURCE_DIR=$builddir/sysui/desktop/icons
-+    export APPDATA_SOURCE_DIR=$builddir/sysui/desktop/appstream-appdata
+-    export ICON_SOURCE_DIR="${SRCDIR?}"/sysui/desktop/icons
++    export ICON_SOURCE_DIR="${SRCDIR}"/sysui/desktop/icons
      export PRODUCTVERSION=
      export KDEMAINDIR=$PREFIXDIR
      export PREFIXDIR=${PREFIXDIR}
-@@ -130,7 +131,7 @@ fi
+     export GNOMEDIR=$PREFIXDIR
+     export GNOME_MIME_THEME=hicolor
+-    export APPDATA_SOURCE_DIR="${SRCDIR?}"/sysui/desktop/appstream-appdata
++    export APPDATA_SOURCE_DIR="${SRCDIR}"/sysui/desktop/appstream-appdata
+     bash ./create_tree.sh
+ )
+ cd -
+@@ -130,7 +130,7 @@ fi
  # we want non-versioned desktop files
  cd $DESTDIR/$INSTALLDIR/share/xdg
  # we want non-versioned stuff in the distro packages
@@ -33,7 +34,7 @@
      -e "s/\($INSTALLDIRNAME\)$PRODUCTVERSION_NODOT/\1/" \
      -e "s/\($INSTALLDIRNAME\)$PRODUCTVERSION/\1/" \
      -e "s/\($PRODUCTNAME\) $PRODUCTVERSION/\1/" \
-@@ -145,7 +146,7 @@ if test -f $DESTDIR/gid_Module_Root_Bran
+@@ -144,7 +144,7 @@ if test -f $DESTDIR/gid_Module_Root_Brand ; then
                 $PREFIXDIR/share/mime/packages \
                 $PREFIXDIR/share/mime-info \
                 $PREFIXDIR/share/icons ; do
@@ -42,21 +43,26 @@
      done
  fi
  
-@@ -177,12 +178,12 @@ ln -sf $INSTALLDIR/program/soffice $DEST
+@@ -172,16 +172,16 @@ test -f $DESTDIR/gid_Module_Optional_Xsltfiltersamples
+ #       you cannot include this link directly into the package
+ #       For example, the Novell package mark this symlink as %ghost
+ #	and update it in %post and %postun
+-ln -sf $INSTALLDIR/program/soffice $DESTDIR$PREFIXDIR/bin/soffice
++ln -sf ../lib/libreoffice/program/soffice $DESTDIR$PREFIXDIR/bin/soffice
  test -f $DESTDIR/gid_Module_Root_Brand && echo "$PREFIXDIR/bin/soffice" >>$DESTDIR/gid_Module_Root_Brand
  
  # create bash completion
--mkdir -p $DESTDIR/etc/bash_completion.d
--./bin/generate-bash-completion bin/bash-completion.in $DESTDIR/etc/bash_completion.d/$INSTALLDIRNAME.sh
--test -f $DESTDIR/gid_Module_Root_Brand && echo "/etc/bash_completion.d/$INSTALLDIRNAME.sh" >>$DESTDIR/gid_Module_Root_Brand
-+mkdir -p $DESTDIR$PREFIXDIR/etc/bash_completion.d
-+./bin/generate-bash-completion bin/bash-completion.in $DESTDIR$PREFIXDIR/etc/bash_completion.d/$INSTALLDIRNAME.sh
-+test -f $DESTDIR/gid_Module_Root_Brand && echo "$PREFIXDIR/etc/bash_completion.d/$INSTALLDIRNAME.sh" >>$DESTDIR/gid_Module_Root_Brand
+-mkdir -p $DESTDIR/usr/share/bash-completion/completions
+-"${SRCDIR?}"/bin/generate-bash-completion.py bin/bash-completion.in $DESTDIR/usr/share/bash-completion/completions/$INSTALLDIRNAME.sh
+-test -f $DESTDIR/gid_Module_Root_Brand && echo "/usr/share/bash-completion/completions/$INSTALLDIRNAME.sh" >>$DESTDIR/gid_Module_Root_Brand
++mkdir -p $DESTDIR/${PREFIXDIR}/share/bash-completion/completions
++"${SRCDIR?}"/bin/generate-bash-completion.py bin/bash-completion.in $DESTDIR${PREFIXDIR}/share/bash-completion/completions/$INSTALLDIRNAME.sh
++test -f $DESTDIR/gid_Module_Root_Brand && echo "${PREFIXDIR}/share/bash-completion/completions/$INSTALLDIRNAME.sh" >>$DESTDIR/gid_Module_Root_Brand
  if test "$WITH_COMPAT_OOWRAPPERS" = "TRUE" ; then
--    ./bin/generate-bash-completion --compat-oowrappers bin/bash-completion.in $DESTDIR/etc/bash_completion.d/ooffice.sh
--    test -f $DESTDIR/gid_Module_Root_Brand && echo "/etc/bash_completion.d/ooffice.sh" >>$DESTDIR/gid_Module_Root_Brand
-+    ./bin/generate-bash-completion --compat-oowrappers bin/bash-completion.in $DESTDIR$PREFIXDIR/etc/bash_completion.d/ooffice.sh
-+    test -f $DESTDIR/gid_Module_Root_Brand && echo "$PREFIXDIR/etc/bash_completion.d/ooffice.sh" >>$DESTDIR/gid_Module_Root_Brand
+-    "${SRCDIR?}"/bin/generate-bash-completion.py --compat-oowrappers bin/bash-completion.in $DESTDIR/usr/share/bash-completion/completions/ooffice.sh
+-    test -f $DESTDIR/gid_Module_Root_Brand && echo "/usr/share/bash-completion/completions/ooffice.sh" >>$DESTDIR/gid_Module_Root_Brand
++    "${SRCDIR?}"/bin/generate-bash-completion.py --compat-oowrappers bin/bash-completion.in $DESTDIR${PREFIXDIR}/share/bash-completion/completions/ooffice.sh
++    test -f $DESTDIR/gid_Module_Root_Brand && echo "${PREFIXDIR}/share/bash-completion/completions/ooffice.sh" >>$DESTDIR/gid_Module_Root_Brand
  fi
  
  echo "Install $OOINSTDIR/basis$VERSION/program/java-set-classpath";

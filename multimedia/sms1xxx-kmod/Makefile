@@ -15,6 +15,8 @@ COMMENT=	Native FreeBSD driver for Siano-based USB DVB devices
 
 LICENSE=	GPLv2
 
+ONLY_FOR_ARCHS=	amd64 i386
+
 WRKSRC=	${WRKDIR}/siano-${PORTVERSION}
 
 NO_PACKAGE=	should be recompiled for a particular FreeBSD kernel
@@ -29,8 +31,6 @@ RC5WATCH_DESC=	Build rc5watch IR utility
 DEBUG_ALL_TARGET=	debug
 STELLAR_DESC=	Build Terratec Cinergy Piranha FW
 NOVA_DESC=	Build Hauppauge WinTV MiniStick FW
-
-ONLY_FOR_ARCHS=	i386 amd64
 
 SUB_FILES=	pkg-message
 
@@ -76,9 +76,9 @@ DISTFILE_INSTRUCTIONS+=	\
 IGNORE=	requires manual fetch
 .else
 pre-fetch:
-	@${MKDIR} ${DISTDIR}/${DIST_SUBDIR}
-	@${PRINTF} "${DISTFILE_INSTRUCTIONS}"
-	@exit 1
+	@${MKDIR} ${DISTDIR}/${DIST_SUBDIR}; \
+	 ${PRINTF} "${DISTFILE_INSTRUCTIONS}"; \
+	exit 1
 .endif
 .endif
 

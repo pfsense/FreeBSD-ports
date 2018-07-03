@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cqrlog
-PORTVERSION=	2.0.1
+PORTVERSION=	2.2.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	comms hamradio
 
@@ -21,19 +21,22 @@ GH_ACCOUNT=	ok2cqr
 USES=		shebangfix
 SHEBANG_FILES=	tools/cqrlog-apparmor-fix \
 		voice_keyer/voice_keyer.sh
+  
+USE_FPC=	cairo fcl-base chm fcl-db fcl-image fcl-json fcl-net fcl-web \
+		fcl-registry rtl-extra fcl-xml mysql numlib openssl \
+		pasjpeg regexpr x11
 
-USE_FPC=	cairo fcl-base fcl-db fcl-image fcl-json fcl-net fcl-web \
-		fcl-registry rtl-extra fcl-xml mysql numlib openssl pasjpeg x11
-
-WANT_GNOME=	yes
 ALL_TARGET=	${PORTNAME}
 
-LAZARUS_VER=	1.6.0
+LAZARUS_VER=	1.8.0
 LAZARUS_DIR=	${LOCALBASE}/share/lazarus-${LAZARUS_VER}
 
 OPTIONS_SINGLE=		LCL
 OPTIONS_SINGLE_LCL=	GTK2 QT4
 OPTIONS_DEFAULT=	GTK2
+
+USE_XORG+=	x11
+USE_GNOME+=	gdkpixbuf2 cairo
 
 GTK2_USE=	fpc=gtk2 gnome=gtk20
 GTK2_BUILD_DEPENDS=	${LAZARUS_DIR}/lcl/units/${BUILDNAME}/gtk2/interfaces.ppu:editors/lazarus-lcl-gtk2
@@ -44,7 +47,7 @@ QT4_BUILD_DEPENDS=	${LAZARUS_DIR}/lcl/units/${BUILDNAME}/qt/interfaces.ppu:edito
 QT4_MAKE_ARGS=	PLATFORM=qt
 
 post-extract:
-	@${RM} -rf ${WRKSRC}/src/lnet/lib/openssl.pas
+	@${RM} -r ${WRKSRC}/src/lnet/lib/openssl.pas
 
 post-patch:
 	@${SED} -e s!%%LOCALBASE%%!${LOCALBASE}!g \
@@ -55,20 +58,17 @@ post-patch:
 	${REINPLACE_CMD} -e s!%%LOCALBASE%%!${LOCALBASE}!g \
 		${WRKSRC}/help/cwd.html ${WRKSRC}/help/h1.html \
 		${WRKSRC}/src/cqrlog.lpi ${WRKSRC}/src/dData.pas \
-		${WRKSRC}/src/dUtils.pas ${WRKSRC}/src/fLoTWExport.lrs \
+		${WRKSRC}/src/dUtils.pas \
 		${WRKSRC}/src/fLoTWExport.pas ${WRKSRC}/src/fLoTWExport.lfm \
 		${WRKSRC}/src/fPreferences.pas ${WRKSRC}/src/fRotControl.pas \
 		${WRKSRC}/src/fTRXControl.pas ${WRKSRC}/src/fGrayline.pas \
-		${WRKSRC}/src/fPreferences.lfm ${WRKSRC}/src/fPreferences.pas \
-		${WRKSRC}/src/fPreferences.lrs
+		${WRKSRC}/src/fPreferences.lfm ${WRKSRC}/src/fPreferences.pas
 	${REINPLACE_CMD} -e s!%%DATADIR%%!${DATADIR}!g \
 		${WRKSRC}/src/dData.pas ${WRKSRC}/src/fGrayline.pas
+	${REINPLACE_CMD} -e s!Linux!FreeBSD!g \
+		${WRKSRC}/src/fMain.lfm
 	${REINPLACE_CMD} -e s!%%LAZARUSDIR%%!${LAZARUS_DIR}!g \
 		${WRKSRC}/Makefile
-	${RM} -rf ${WRKSRC}/src/mysql
-	${LAZARUS_DIR}/tools/lazres ${WRKSRC}/src/fLoTWExport.lrs \
-		${WRKSRC}/src/fLoTWExport.lfm
-	${LAZARUS_DIR}/tools/lazres ${WRKSRC}/src/fPreferences.lrs \
-		${WRKSRC}/src/fPreferences.lfm
+	${RM} -r ${WRKSRC}/src/mysql
 
 .include <bsd.port.mk>

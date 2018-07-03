@@ -3,6 +3,7 @@
 
 PORTNAME=	muffin
 PORTVERSION=	2.4.4
+PORTREVISION=	1
 CATEGORIES=	x11-wm gnome
 DIST_SUBDIR=	gnome3
 
@@ -18,8 +19,8 @@ LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification \
 		libcinnamon-desktop.so:x11/cinnamon-desktop
 RUN_DEPENDS=	zenity>=3.0.0:x11/zenity
 
-USES=		autoreconf:build execinfo gettext libtool gmake \
-		pathfix pkgconfig python:2
+USES=		autoreconf:build gettext libtool gmake \
+		pathfix pkgconfig python:2.7
 USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
 USE_GNOME=	gconf2 gnomedocutils gnomeprefix gtk30 \
@@ -31,7 +32,6 @@ GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include -Wno-error=unused-function
 CFLAGS+=	-I${LOCALBASE}/include -Wno-error=unused-function
 LDFLAGS+=	-L${LOCALBASE}/lib
-PATHFIX_MAKEFILEIN=	Makefile.am
 CONFIGURE_ENV=	LIBS="-lexecinfo"
 CONFIGURE_ARGS=	--enable-compile-warnings=maximum
 MAKE_ARGS=	V=1
@@ -44,5 +44,6 @@ pre-configure:
 post-patch:
 	@${REINPLACE_CMD} -e 's|REQUIRED_AUTOMAKE_VERSION=1.10|REQUIRED_AUTOMAKE_VERSION=1.14|g' \
 		${WRKSRC}/autogen.sh
+	@${REINPLACE_CMD} -e 's|--warn-error||g' ${WRKSRC}/src/Makefile.am
 
 .include <bsd.port.mk>

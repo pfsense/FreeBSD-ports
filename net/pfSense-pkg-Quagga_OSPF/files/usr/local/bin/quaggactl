@@ -10,6 +10,10 @@ OSPF_CONFIG=${QUAGGA_CONFIG_BASE}/ospfd.conf
 OSPF_PORT=2604
 OSPF_PASSWORD=`/usr/bin/grep '^password ' ${OSPF_CONFIG} | /usr/bin/awk '{print $2};'`
 
+BGP_CONFIG=${QUAGGA_CONFIG_BASE}/bgpd.conf
+BGP_PORT=2605
+BGP_PASSWORD=`/usr/bin/grep '^password ' ${BGP_CONFIG} | /usr/bin/awk '{print $2};'`
+
 daemon_command() {
 	COMMANDS=${2}
 	COMMANDS=${COMMANDS}`echo -e "\n${3}\n"`
@@ -46,6 +50,9 @@ zebra)
 	rou*)
 		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ip route"
 		;;
+	bgpr*)
+		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ip route bgp"
+		;;
 	esac ;;
 ospf*)
 	if [ "`pgrep ospfd`" = "" ]; then
@@ -79,6 +86,34 @@ ospf*)
 		;;
 	rou*)
 		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf route"
+		;;
+	esac ;;
+bgp6*)
+        if [ "`pgrep bgpd`" = "" ]; then
+                echo "bgpd does not appear to be running"
+                exit 1
+        fi
+        case $2 in
+        rou*)
+                daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp"
+                ;;
+        esac ;;
+bgp*)
+	if [ "`pgrep bgpd`" = "" ]; then
+		echo "bgpd does not appear to be running"
+		exit 1
+	fi
+	case $2 in
+	rou*)
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp"
+		;;
+	nei*)
+		shift; shift;
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp neighbors $*"
+		;;
+	sum*)
+		shift; shift;
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp summary $*"
 		;;
 	esac ;;
 esac

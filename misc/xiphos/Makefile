@@ -2,11 +2,11 @@
 
 PORTNAME=	xiphos
 PORTVERSION=	3.1.6
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	misc gnome
 MASTER_SITES=	SF/gnomesword/Xiphos/${PORTVERSION}
 
-MAINTAINER=	tabthorpe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bible interface utilizing the sword framework
 
 LICENSE=	GPLv2
@@ -30,11 +30,5 @@ OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${RM} ${STAGEDIR}${PREFIX}/share/icons/hicolor/icon-theme.cache
-
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} < 1000000
-BROKEN=	Does not build on FreeBSD < 10.X
-.endif
 
 .include <bsd.port.mk>

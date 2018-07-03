@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	i3status
-PORTVERSION=	2.10
+PORTVERSION=	2.11
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://i3wm.org/i3status/
 
@@ -27,7 +28,8 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/i3status ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/man/i3status.1 ${STAGEDIR}${MANPREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/i3status.conf ${STAGEDIR}${PREFIX}/etc/i3status.conf.sample
+	${INSTALL_MAN} ${WRKSRC}/man/i3status.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_DATA} ${WRKSRC}/i3status.conf \
+		${STAGEDIR}${PREFIX}/etc/i3status.conf.sample
 
 .include <bsd.port.mk>

@@ -2,18 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	prips
-PORTVERSION=	1.0.0
+PORTVERSION=	1.0.2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://devel.ringlet.net/files/sys/prips/
 
-MAINTAINER=	dbaio@bsd.com.br
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Prints IP subnet ranges by list or CIDR
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL-2
-
-USE_CSTD=	c99
-MAKE_ENV=	CFLAGS_WARN="-Wall -W"
 
 OPTIONS_DEFINE=	DOCS
 

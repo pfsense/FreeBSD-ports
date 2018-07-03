@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	doit
-PORTVERSION=	0.29.0
+PORTVERSION=	0.30.3
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,23 +13,17 @@ COMMENT=	Task management & automation tool
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six \
-		${PYTHON_PKGNAMEPREFIX}cloudpickle>0:devel/py-cloudpickle
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest \
-		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cloudpickle>0:devel/py-cloudpickle@${FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${FLAVOR}
 
-USES=		python
+USES=		python:3.3+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}configparser>0:devel/py-configparser
-.endif
-
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

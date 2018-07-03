@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	seaview
-PORTVERSION=	4.6
+PORTVERSION=	4.6.3
 PORTEPOCH=	1
 CATEGORIES=	biology
 MASTER_SITES=	ftp://pbil.univ-lyon1.fr/pub/mol_phylogeny/seaview/archive/
@@ -16,6 +16,7 @@ LICENSE=	GPLv3
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libpng.so:graphics/png
 
+PORTSCOUT=	skipv:4.6.1.3
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		gmake
@@ -27,9 +28,6 @@ MAKE_ENV=	HELPFILE='-DDEFAULT_HELPFILE=\"${DATADIR}/seaview.html\"' \
 		USE_XFT='-DUSE_XFT' \
 		OPT="${CFLAGS}"
 ALL_TARGET=	${PORTNAME}
-
-PLIST_FILES=	bin/seaview man/man1/seaview.1.gz %%DATADIR%%/seaview.html \
-		share/pixmaps/seaview.xpm
 
 DESKTOP_ENTRIES="SeaView" "" "${PREFIX}/share/pixmaps/seaview.xpm" "seaview" \
 		"Biology;Science;" true

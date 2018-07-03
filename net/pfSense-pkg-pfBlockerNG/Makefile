@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-pfBlockerNG
-PORTVERSION=	2.1.1
+PORTVERSION=	2.1.2
 PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	# empty
@@ -17,13 +17,22 @@ RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
 		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \
 		${LOCALBASE}/bin/aggregate:net-mgmt/aggregate \
 		${LOCALBASE}/bin/mwhois:net/whois \
-		${LOCALBASE}/sbin/lighttpd:www/lighttpd
+		${LOCALBASE}/sbin/lighttpd:www/lighttpd \
 
+php56_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/intl.so:devel/pecl-intl
+php72_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/intl.so:devel/php72-intl
+
+CONFLICTS=	pfSense-pkg-pfBlockerNG-devel
+
+USES=		php:flavors
+IGNORE_WITH_PHP=	70 71
 NO_BUILD=	yes
 NO_MTREE=	yes
 
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
+
+php72_PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 do-extract:
 	${MKDIR} ${WRKSRC}

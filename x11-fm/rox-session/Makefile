@@ -2,7 +2,7 @@
 
 PORTNAME=	rox-session
 PORTVERSION=	0.40.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-fm
 MASTER_SITES=	SF/rox/ROX-Session/${PORTVERSION}/
 
@@ -14,12 +14,12 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
 RUN_DEPENDS=	${LOCALBASE}/bin/rox:x11-fm/rox-filer \
 		${PYTHON_PKGNAMEPREFIX}roxlib>=0:devel/py-roxlib \
-		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus
+		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR}
 
 WRKSRC=		${WRKDIR}/ROX-Session
 DATADIR=	${PREFIX}/apps/ROX-Session
 
-USES=		gettext-tools pkgconfig python
+USES=		gettext-tools pkgconfig python:2.7
 USE_GNOME=	gtk20 libxml2
 USE_XORG=	x11 xext xtst xxf86vm
 

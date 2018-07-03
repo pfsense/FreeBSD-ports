@@ -1,62 +1,27 @@
 # Created by: Jean-Sébastien Pédron <dumbbell@FreeBSD.org>
 # $FreeBSD$
 
-PORTVERSION=	1.12.0.20160717
+PORTVERSION=	1.25.0.${NIGHTLY_DATE:C,-,,g}
 PKGNAMESUFFIX=	-nightly
-DISTNAME=	#
-DISTFILES=	#
-
-MAINTAINER=	dumbbell@FreeBSD.org
-
-ONLY_FOR_ARCHS=	amd64
+DISTNAME=	rustc-nightly-src
 
 MASTERDIR=	${.CURDIR}/../rust
 PATCHDIR=	${.CURDIR}/files
 DISTINFO_FILE=	${.CURDIR}/distinfo
-PLIST=		${.CURDIR}/pkg-plist
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	rust-lang
-GH_PROJECT=	rust \
-		compiler-rt:compiler_rt \
-		hoedown:hoedown \
-		jemalloc:jemalloc \
-		libc:liblibc \
-		rust-installer:rust_installer
-GH_TAGNAME=	7ed6068 \
-		ac3d1cd:compiler_rt \
-		a3736a0:hoedown \
-		e058ca6:jemalloc \
-		b0d6253:liblibc \
-		c37d374:rust_installer
-
-BUILD_DEPENDS=		cmake:devel/cmake
 
 CONFLICTS_BUILD=	rust # see FIXME in `pre-fetch` in lang/rust/Makefile
 CONFLICTS_INSTALL=	rust
 
-RUST_BOOT_VERSION=	beta
+# Which source to pull:
+#   https://static.rust-lang.org/dist/${NIGHTLY_DATE}/rustc-nightly-src.tar.gz
+NIGHTLY_DATE=			2018-03-28
+NIGHTLY_SUBDIR=			${NIGHTLY_DATE}/
 
-PORT_LLVM_EXTRACT_ONLY_OFF=	${DISTFILE_llvm}
-PORT_LLVM_GH_PROJECT_OFF=	llvm:llvm
-PORT_LLVM_GH_TAGNAME_OFF=	7ca76af:llvm
-PORT_LLVM_VARS_OFF=		NOPRECIOUSMAKEVARS=1 # ARCH
+# See WRKSRC/src/stage0.txt for this date
+BOOTSTRAPS_DATE=		2018-03-18
+RUST_BOOTSTRAP_VERSION=		beta
+CARGO_BOOTSTRAP_VERSION=	beta
 
-post-extract:	slave-post-extract
-slave-post-extract:
-	@(${RMDIR} ${WRKSRC}/src/compiler-rt && \
-	  ${MV} ${WRKSRC_compiler_rt} ${WRKSRC}/src/compiler-rt)
-	@(${RMDIR} ${WRKSRC}/src/rt/hoedown && \
-	  ${MV} ${WRKSRC_hoedown} ${WRKSRC}/src/rt/hoedown)
-	@(${RMDIR} ${WRKSRC}/src/jemalloc && \
-	  ${MV} ${WRKSRC_jemalloc} ${WRKSRC}/src/jemalloc)
-	@(${RMDIR} ${WRKSRC}/src/liblibc && \
-	  ${MV} ${WRKSRC_liblibc} ${WRKSRC}/src/liblibc)
-	@(${RMDIR} ${WRKSRC}/src/rust-installer && \
-	  ${MV} ${WRKSRC_rust_installer} ${WRKSRC}/src/rust-installer)
-
-post-extract-PORT_LLVM-off:
-	@(${RMDIR} ${WRKSRC}/src/llvm && \
-	  ${MV} ${WRKSRC_llvm} ${WRKSRC}/src/llvm)
+ONLY_FOR_ARCHS=			amd64 i386
 
 .include "${MASTERDIR}/Makefile"

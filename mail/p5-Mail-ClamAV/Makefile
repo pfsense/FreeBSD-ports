@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for the clamav virus scanner
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Inline>=0:devel/p5-Inline \
@@ -25,6 +25,6 @@ USE_PERL5=	configure
 
 # Do not use bundled Inline::MakeMaker
 post-patch:
-	@${RM} -fr ${WRKSRC}/Inline/
+	@${RM} -r ${WRKSRC}/Inline/
 
 .include <bsd.port.mk>

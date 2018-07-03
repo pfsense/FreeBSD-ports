@@ -2,6 +2,7 @@
 
 PORTNAME=	crypto-numbers
 PORTVERSION=	0.2.7
+PORTREVISION=	2
 CATEGORIES=	security haskell
 
 MAINTAINER=	haskell@FreeBSD.org

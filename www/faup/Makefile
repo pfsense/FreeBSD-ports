@@ -11,16 +11,13 @@ MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Fast URL decoder library
 
 LICENSE=	WTFPL
-LICENSE_NAME=	Do What The [expletive] You Want To Public License, Version 2
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	stricaud
 
 USES=		cmake:outsource lua
 USE_LDCONFIG=	yes
-CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=${PREFIX}/man
 
 PORTDOCS=	*
 

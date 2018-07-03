@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stellarium
-PORTVERSION=	0.12.6
+PORTVERSION=	0.12.9
 CATEGORIES=	astro
 MASTER_SITES=	SF/${PORTNAME}/Stellarium-sources/${PORTVERSION}
 PKGNAMESUFFIX=	-qt4
@@ -14,7 +14,7 @@ COMMENT=	3D photo-realistic sky renderer (planetarium)
 
 LICENSE=	GPLv2+
 
-CONFLICTS_INSTALL=	${PORTNAME}-0.13.*
+CONFLICTS_INSTALL=	${PORTNAME}-0.17.*
 PORTSCOUT=	limit:^0\.12\.			# track only 0.12.x (legacy)
 
 USES=		cmake gettext iconv
@@ -25,6 +25,7 @@ PORTDOCS=	AUTHORS ChangeLog README
 
 OPTIONS_DEFINE=		DOCS MORE_STARS MULTIMEDIA SCRIPTING TEXTURES
 OPTIONS_DEFAULT=	MULTIMEDIA SCRIPTING TEXTURES
+
 MORE_STARS_DESC=	Install extra star catalogs (1.0GB)
 TEXTURES_DESC=		Install better quality textures
 MULTIMEDIA_DESC=	Sound and video support (via Phonon)
@@ -67,6 +68,9 @@ PLIST_SUB+=	SCRIPTS="@comment "
 .endif
 
 post-patch: .SILENT
+# Fix the build against Clang 6.0.0
+	${REINPLACE_CMD} -e 's,skyDrawer==false,skyDrawer==NULL,' \
+		${WRKSRC}/src/core/StelCore.cpp
 # Avoid picking up the wrong `fixx11h.h' (`x11/kdelibs3' port installs one
 # that does not handle FontChange)
 	${GREP} -Rl --null fixx11h\\.h ${WRKSRC}/src ${WRKSRC}/plugins | \

@@ -1,9 +1,9 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
 # $FreeBSD$
 
+PORTREVISION=	1
 PKGNAMESUFFIX=	-occ
 
-MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Automatic 3D finite element mesh generator with OpenCascade support
 
 MASTERDIR=	${.CURDIR}/../../cad/gmsh

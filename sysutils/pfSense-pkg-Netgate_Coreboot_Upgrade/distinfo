@@ -1,0 +1,5 @@
+TIMESTAMP = 1520596087
+SHA256 (coreboot-coreboot-4.7_GH0.tar.gz) = cbd71c3cee2561e8a3f2d4889334240665566c6f813f0e6e9219a2cf15df74b2
+SIZE (coreboot-coreboot-4.7_GH0.tar.gz) = 18911310
+SHA256 (coreboot-vboot-e0b3841_GH0.tar.gz) = c2fba4c2c271e86a58ee6d11a4fba889a2fdcf10749baff723543c514e73b2f7
+SIZE (coreboot-vboot-e0b3841_GH0.tar.gz) = 35819368

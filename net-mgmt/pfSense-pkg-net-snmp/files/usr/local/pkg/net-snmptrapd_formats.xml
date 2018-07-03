@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * net-snmptrapd.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>netsnmptrapdformats</name>
+	<title>NET-SNMP Trap Daemon</title>
+	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+		</tab>
+		<tab>
+			<text>Community Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_communities.xml</url>
+		</tab>
+		<tab>
+			<text>User Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_users.xml</url>
+		</tab>
+		<tab>
+			<text>Formats</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd_formats.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Trap Handles</text>
+			<url>/pkg.php?xml=net-snmptrapd_traphandles.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Forwards</text>
+			<url>/pkg.php?xml=net-snmptrapd_forwards.xml</url>
+		</tab>
+		<tab>
+			<text>[SNMP Daemon]</text>
+			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Trap Format Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				The settings on this tab control the format used with traps from various sources.
+				The format used is similar to printf, and the full list of supported characters can be found in
+				<a href="https://www.freebsd.org/cgi/man.cgi?query=snmptrapd&sektion=8&apropos=0&manpath=FreeBSD+11.0-RELEASE+and+Ports#FORMAT_SPECIFICATIONS">the snmptrapd manual page</a>.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+
+		<field>
+			<fielddescr>SNMPv1 Format</fielddescr>
+			<fieldname>format1</fieldname>
+			<description><![CDATA[Custom format to display for SNMPv1 Traps (optional)]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+		<field>
+			<fielddescr>SNMPv2c/3 Format</fielddescr>
+			<fieldname>format1</fieldname>
+			<description><![CDATA[Custom format to display for SNMPv2c and SNMPv3 Trap/Inform notifications (optional)]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				The custom format list defines formats for different destinations and SNMP versions.
+				Only one format should be defined for any one destination.
+				For a list of the default formats, consult the
+				<a href="https://www.freebsd.org/cgi/man.cgi?query=snmptrapd.conf&sektion=5&apropos=0&manpath=FreeBSD+11.0-RELEASE+and+Ports#LOGGING">the snmptrapd.conf manual page</a>.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Custom Format</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Destination</fielddescr>
+					<fieldname>destination</fieldname>
+					<description><![CDATA[Destination for this format.]]></description>
+					<type>select</type>
+					<options>
+						<option><name>Print (SNMPv1 and SNMPv2)</name><value>print</value></option>
+						<option><name>Print (SNMPv1)</name><value>print1</value></option>
+						<option><name>Print (SNMPv2)</name><value>print2</value></option>
+						<option><name>Syslog (SNMPv1 and SNMPv2)</name><value>syslog</value></option>
+						<option><name>Syslog (SNMPv1)</name><value>syslog1</value></option>
+						<option><name>Syslog (SNMPv2)</name><value>syslog2</value></option>
+						<option><name>Execute (SNMPv1 and SNMPv2)</name><value>execute</value></option>
+						<option><name>Execute (SNMPv1)</name><value>execute1</value></option>
+						<option><name>Execute (SNMPv2)</name><value>execute2</value></option>
+					</options>
+					<width>3</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Format</fielddescr>
+					<fieldname>format_custom</fieldname>
+					<description><![CDATA[Custom format for different destinations.]]></description>
+					<type>input</type>
+					<width>6</width>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		netsnmp_resync_snmptrapd();
+	</custom_php_resync_config_command>
+</packagegui>

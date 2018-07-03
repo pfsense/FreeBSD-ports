@@ -2,6 +2,7 @@
 
 PORTNAME=	rfc5051
 PORTVERSION=	0.1.0.3
+PORTREVISION=	2
 CATEGORIES=	textproc haskell
 
 MAINTAINER=	haskell@FreeBSD.org

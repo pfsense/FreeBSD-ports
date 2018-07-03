@@ -1,9 +1,9 @@
 @group www
 @owner www
 %%WWWDIR%%/CHANGELOG.txt
+%%WWWDIR%%/Dockerfile
 %%WWWDIR%%/GPLv3.txt
 %%WWWDIR%%/LICENSE.txt
-%%WWWDIR%%/Dockerfile
 %%WWWDIR%%/README.md
 @sample %%ETCDIR%%/config.php.sample
 %%WWWDIR%%/css/jquery-ui.css
@@ -19,6 +19,7 @@
 %%WWWDIR%%/endpoints/lib/auth/ActiveDirectory.php
 %%WWWDIR%%/endpoints/lib/auth/Builtin.php
 %%WWWDIR%%/endpoints/lib/auth/LDAP.php
+%%WWWDIR%%/endpoints/lib/auth/MySQL.php
 %%WWWDIR%%/endpoints/lib/auth/OpenMediaVault.php
 %%WWWDIR%%/endpoints/lib/auth/WebAuth.php
 %%WWWDIR%%/endpoints/lib/auth/index.html
@@ -29,8 +30,8 @@
 %%WWWDIR%%/endpoints/lib/utils.php
 %%WWWDIR%%/endpoints/lib/vboxServiceWrappers.php
 %%WWWDIR%%/endpoints/lib/vboxconnector.php
-%%WWWDIR%%/endpoints/lib/vboxweb-5.0.wsdl
-%%WWWDIR%%/endpoints/lib/vboxwebService-5.0.wsdl
+%%WWWDIR%%/endpoints/lib/vboxweb-5.2.wsdl
+%%WWWDIR%%/endpoints/lib/vboxwebService-5.2.wsdl
 %%WWWDIR%%/endpoints/rdp.php
 %%WWWDIR%%/endpoints/screen.php
 %%WWWDIR%%/images/30white.png
@@ -488,6 +489,7 @@
 %%WWWDIR%%/js/jquery.tipped-2.1b.min.js
 %%WWWDIR%%/js/phpvirtualbox.js
 %%WWWDIR%%/js/utils.js
+%%WWWDIR%%/languages/cs.xml
 %%WWWDIR%%/languages/de.xml
 %%WWWDIR%%/languages/en.xml
 %%WWWDIR%%/languages/es.xml
@@ -500,6 +502,7 @@
 %%WWWDIR%%/languages/pt_br.xml
 %%WWWDIR%%/languages/ro.xml
 %%WWWDIR%%/languages/ru.xml
+%%WWWDIR%%/languages/source/cs.dat
 %%WWWDIR%%/languages/source/de.dat
 %%WWWDIR%%/languages/source/en.dat
 %%WWWDIR%%/languages/source/es.dat
@@ -563,6 +566,7 @@
 %%WWWDIR%%/panes/wizardNewHDAdvanced.html
 %%WWWDIR%%/panes/wizardNewVM.html
 %%WWWDIR%%/panes/wizardNewVMAdvanced.html
+%%WWWDIR%%/phpvirtualbox.conf
 %%WWWDIR%%/rdpweb/RDPClientUI.swf
 %%WWWDIR%%/rdpweb/license_3rd.txt
 %%WWWDIR%%/rdpweb/swfobject.js

@@ -1,8 +1,8 @@
---- libs.mk.orig
+--- libs.mk.orig	2017-01-12 20:27:27 UTC
 +++ libs.mk
-@@ -232,8 +232,8 @@
- 	$(qexec)echo 'Libs: -L$${libdir} -lvpx' >> $@
- 	$(qexec)echo 'Libs.private: -lm -pthread' >> $@
+@@ -339,8 +339,8 @@ else
+ 	$(qexec)echo 'Libs.private: -lm' >> $@
+ endif
  	$(qexec)echo 'Cflags: -I$${includedir}' >> $@
 -INSTALL-LIBS-yes += $(LIBSUBDIR)/pkgconfig/vpx.pc
 -INSTALL_MAPS += $(LIBSUBDIR)/pkgconfig/%.pc %.pc

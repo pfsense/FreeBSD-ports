@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gio
-PORTVERSION=	0.13.1.0
+PORTVERSION=	0.13.3.1
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

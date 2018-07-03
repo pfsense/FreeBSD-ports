@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-financial
-PORTVERSION=	0.5.0
+PORTVERSION=	0.5.1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -22,8 +23,10 @@ RUN_DEPENDS+=	${TARBALLS_DIR}/io.tar.gz:math/octave-forge-io
 do-build:
 	@${DO_NADA}
 
+NO_ARCH=	yes
+
 post-build:
-	${RM} -f ${WRKSRC}/Makefile ${WRKSRC}/configure
+	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
 	cd ${WRKDIR} && ${TAR} cfz ${DISTNAME}.tar.gz ${OCTSRC}
 
 .include <bsd.port.mk>

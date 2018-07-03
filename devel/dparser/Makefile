@@ -3,6 +3,7 @@
 
 PORTNAME=	dparser
 PORTVERSION=	1.30
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/
 DISTNAME=	d-${PORTVERSION}-src
@@ -12,8 +13,6 @@ COMMENT=	Simple but powerful tool for parsing
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
-
-BROKEN_ia64=	does not build on ia64
 
 WRKSRC=		${WRKDIR}/d
 

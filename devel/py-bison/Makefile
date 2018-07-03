@@ -3,7 +3,7 @@
 
 PORTNAME=	bison
 PORTVERSION=	0.1.8
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel python
 MASTER_SITES=	http://freenet.mcnabhosting.com/python/pybison/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,11 +15,11 @@ COMMENT=	Python-based parsing at the speed of C
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	pyrex>=0.9.6.2:devel/pyrex
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyrex>=0.9.6.2:devel/pyrex@${FLAVOR}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USES=		bison:both python
+USES=		bison:both python:2.7
 USE_PYTHON=	distutils autoplist
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
@@ -28,19 +28,13 @@ EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "ia64"
-BROKEN=		Does not compile on ia64
-.endif
-
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/bison_.so
-ports-install-DOCS-on:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
-ports-install-EXAMPLES-on:
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

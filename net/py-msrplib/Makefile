@@ -2,26 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	msrplib
-PORTVERSION=	0.14.4
-PORTREVISION=	1
+PORTVERSION=	0.19.0
 CATEGORIES=	net python
-MASTER_SITES=	http://download.ag-projects.com/SipClient/ \
-		http://www.grosbein.net/python/
+MASTER_SITES=	http://download.ag-projects.com/MSRP/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	python-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@grosbein.net
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python MSRP client library
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	LGPL20+
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gnutls>=1.1.6:security/py-gnutls \
-		${PYTHON_PKGNAMEPREFIX}eventlet>=0.9.15:net/py-eventlet \
-		${PYTHON_PKGNAMEPREFIX}application>=1.1.0:devel/py-application
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}application>=1.2.8:devel/py-application@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}eventlib>=0:devel/py-eventlib@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}gnutls>=3.0.0:security/py-gnutls@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}zope.interface>=0:devel/py-zope.interface@${FLAVOR}
 
-USES=		python twisted:names
-USE_PYTHON=	distutils autoplist
+NO_ARCH=	yes
+USES=		python
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

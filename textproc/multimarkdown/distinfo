@@ -1,8 +1,7 @@
-SHA256 (multimarkdown/fletcher-MultiMarkdown-4-4.7_GH0.tar.gz) = 6ee0ac92c5e9eff924e3f9713f145cabd561ce62ef55fb9dacd69fa145d0fbfc
-SIZE (multimarkdown/fletcher-MultiMarkdown-4-4.7_GH0.tar.gz) = 120573
-SHA256 (multimarkdown/nddrylliog-greg-98ecf13_GH0.tar.gz) = 47fe156a4d6fb2a6009f49c3037c6460e56c4f70f6836fb4fa73749644ed68d9
-SIZE (multimarkdown/nddrylliog-greg-98ecf13_GH0.tar.gz) = 34254
-SHA256 (multimarkdown/fletcher-human-markdown-reference-199dae8_GH0.tar.gz) = afab54673253f5b4d6f1be96bd7ec0383b07328f8ff26512e9edd0724b099783
-SIZE (multimarkdown/fletcher-human-markdown-reference-199dae8_GH0.tar.gz) = 53809
+TIMESTAMP = 1522327671
+SHA256 (multimarkdown/fletcher-MultiMarkdown-6-6.3.2_GH0.tar.gz) = 2b02c2b42a216128ee1596c93840c6e097155aa1c854578535dcf4a0c09b2ff9
+SIZE (multimarkdown/fletcher-MultiMarkdown-6-6.3.2_GH0.tar.gz) = 3144768
+SHA256 (multimarkdown/fletcher-MultiMarkdown-6-Syntax-Guide-3b268b4_GH0.tar.gz) = cc8e5c49d81dc65212b3366719a13fb62ab2b21f54d997ec943a439118158401
+SIZE (multimarkdown/fletcher-MultiMarkdown-6-Syntax-Guide-3b268b4_GH0.tar.gz) = 48364
 SHA256 (multimarkdown/fletcher-MMD-Support-685c95c_GH0.tar.gz) = 3544d81579a0a3d8b1649437ef418f5a4862c5cf080309fd817f617a2f958e69
 SIZE (multimarkdown/fletcher-MMD-Support-685c95c_GH0.tar.gz) = 16865

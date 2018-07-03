@@ -3,11 +3,12 @@
 
 PORTNAME=	alog
 PORTVERSION=	0.5.2
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.codelabs.ch/download/
 DISTNAME=	libalog-${PORTVERSION}
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Stackable logging framework for Ada
 
 LICENSE=	LGPL21

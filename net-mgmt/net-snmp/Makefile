@@ -3,9 +3,10 @@
 
 PORTNAME=	snmp
 PORTVERSION=	5.7.3
-PORTREVISION=	11
+PORTREVISION=	18
 CATEGORIES=	net-mgmt ipv6
-MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION} \
+		ZI
 PKGNAMEPREFIX=	net-
 DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
@@ -15,15 +16,23 @@ COMMENT=	Extendable SNMP implementation
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	IPV6 MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
-		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP
-OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX
+BROKEN_SSL=	openssl-devel
 
-MFD_REWRITES_DESC=	Build with 64-bit Interface Counters
+LIB_DEPENDS=	libpkg.so:ports-mgmt/pkg
+
+NOT_FOR_ARCHS=		mips mips64
+NOT_FOR_ARCHS_REASON=	SSP is currently broken on MIPS
+
+OPTIONS_DEFINE=	IPV6 MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
+		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP \
+		TLS
+OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX
+OPTIONS_SUB=	yes
+
+MFD_REWRITES_DESC=	Use new MFD rewrites of mib modules
 PERL_EMBEDDED_DESC=	Build embedded perl
 DUMMY_DESC=		Enable dummy values as placeholders
 TKMIB_DESC=		Install graphical MIB browser
-#DMALLOC_DESC=		Enable dmalloc debug memory allocator
 AX_SOCKONLY_DESC=	Disable UDP/TCP transports for agentx
 AX_DISABLE_TRAP_DESC=	Disable agentx subagent code in snmptrapd
 UNPRIVILEGED_DESC=	Allow unprivileged users to execute net-snmp
@@ -36,9 +45,8 @@ PORTSCOUT=	skipv:5.7.2.1
 
 GNU_CONFIGURE=	yes
 USE_RC_SUBR=	snmpd snmptrapd
-USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
-USES=		cpe libtool perl5
+USES=		cpe libtool perl5 ssl
 CPE_VENDOR=	net-snmp
 USE_PERL5=	build run
 USE_CSTD=	c99
@@ -52,7 +60,7 @@ CONFIGURE_ARGS+=--enable-shared --enable-internal-md5 \
 		--with-sys-location="${NET_SNMP_SYS_LOCATION}" \
 		--with-logfile="${NET_SNMP_LOGFILE}" \
 		--with-persistent-directory="${NET_SNMP_PERSISTENTDIR}" \
-		--with-gnu-ld --with-libwrap \
+		--with-gnu-ld --without-libwrap \
 		--with-ldflags="-lm -lkvm -ldevstat -L${PKG_PREFIX}/lib -L${LOCALBASE}/lib ${LCRYPTO}"
 SUB_FILES=	pkg-message
 
@@ -64,14 +72,16 @@ CONFIGURE_ARGS+=--with-libs="-lssp_nonshared"
 CONFIGURE_ARGS+=--with-defaults
 .endif
 
+TLS_CONFIGURE_ON=	--with-security-modules=tsm --with-transports=TLSTCP,DTLSUDP
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
 PYDISTUTILS_PKGNAME?=		netsnmp-python
 PYDISTUTILS_PKGVERSION?=	1.0a1
-USES+=		python
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:devel/py-setuptools${PYTHON_SUFFIX}
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:devel/py-setuptools${PYTHON_SUFFIX}
+USES+=		python:2.7
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 CONFIGURE_ARGS+=--with-python-modules
 CONFIGURE_ENV+=	PYTHONPROG="${PYTHON_CMD}"
 MAKE_ENV+=	PYDISTUTILS_INSTALLARGS="${PYDISTUTILS_INSTALLARGS}" STAGEDIR="${STAGEDIR}"
@@ -81,7 +91,7 @@ PLIST_SUB+=	PYDISTUTILS_PKGVERSION=${PYDISTUTILS_PKGVERSION}
 PLIST_SUB+=	WITH_PYTHON="@comment "
 .endif
 
-CONFIGURE_ARGS+=--with-openssl="${OPENSSLBASE}"
+CONFIGURE_ARGS+=--with-openssl="/usr"
 
 .if ${PORT_OPTIONS:MDUMMY}
 CONFIGURE_ARGS+=--with-dummy-values
@@ -111,13 +121,6 @@ CONFIGURE_ARGS+=--disable-embedded-perl --without-perl-modules
 PLIST_SUB+=	WITH_PERL_EMBEDDED="@comment "
 PLIST_SUB+=	WITH_PERL="@comment "
 .endif
-
-#.if ${PORT_OPTIONS:MDMALLOC}
-#LIB_DEPENDS+=	libdmalloc.so:devel/dmalloc
-#CONFIGURE_ARGS+=--with-dmalloc=${LOCALBASE}
-#.else
-#CONFIGURE_ARGS+=--without-dmalloc
-#.endif
 
 .if ${PORT_OPTIONS:MMYSQL}
 USE_MYSQL=	yes
@@ -157,11 +160,11 @@ NET_SNMP_LOGFILE?=	/var/log/snmpd.log
 NET_SNMP_PERSISTENTDIR?=/var/net-snmp
 NET_SNMP_WITH_MIB_MODULE_LIST+=	host disman/event-mib mibII/mta_sendmail mibII/tcpTable ucd-snmp/diskio sctp-mib
 
-.if ${OSVERSION} >= 1000000 && ${OSVERSION} < 1100062
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100062
 CFLAGS+=	-D_WANT_IFADDR
 .endif
 
-.if ${OSVERSION} >= 1100062
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100062
 NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	mibII/ipv6
 .endif
 

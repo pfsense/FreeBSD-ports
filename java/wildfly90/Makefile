@@ -3,6 +3,7 @@
 
 PORTNAME=	wildfly90
 PORTVERSION=	9.0.2
+PORTREVISION=	1
 CATEGORIES=	java www
 MASTER_SITES=	http://download.jboss.org/wildfly/${WILDFLY_VERSION}/
 DISTNAME=	wildfly-${WILDFLY_VERSION}
@@ -59,8 +60,8 @@ post-patch:
 do-build:
 	${RM} ${WRKSRC}/bin/*.bat
 	${RM} ${WRKSRC}/bin/*.ps1
-	${RM} -rf ${WRKSRC}/bin/service
-	${RM} -rf ${WRKSRC}/bin/init.d
+	${RM} -r ${WRKSRC}/bin/service
+	${RM} -r ${WRKSRC}/bin/init.d
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/wildfly-${PORTVERSION}

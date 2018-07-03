@@ -3,7 +3,7 @@
 
 PORTNAME=	monetdb
 PORTVERSION=	11.15.19
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	http://www.monetdb.org/downloads/sources/Feb2013-SP6/
 DISTNAME=	MonetDB-${PORTVERSION}
@@ -177,7 +177,7 @@ PLIST_SUB+=	PYTHON="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON2}
-USES+=		python:2
+USES+=		python:2.7
 PLIST_SUB+=	PYTHON_VER=${PYTHON_VER}
 CONFIGURE_ARGS+=	--with-python2=${PYTHON_CMD} \
 			--without-python3
@@ -186,7 +186,7 @@ CONFIGURE_ARGS+=	--without-python2
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON3}
-USES+=		python:3
+USES+=		python:3.4+
 USE_PYTHON=	py3kplist
 PLIST_SUB+=	PYTHON_VER=${PYTHON_VER}
 CONFIGURE_ARGS+=	--with-python3=${PYTHON_CMD} \
@@ -211,13 +211,6 @@ CONFIGURE_ARGS+=	-with-password-backend=SHA384
 CONFIGURE_ARGS+=	-with-password-backend=SHA512
 .endif
 
-# Compile chokes with  version of flex on FreeBSD 8 and 9
-# with "unknown flag '-'"
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-BUILD_DEPENDS+=	${LOCALBASE}/bin/flex:textproc/flex
-CONFIGURE_ENV+=	LEX=${LOCALBASE}/bin/flex
-.endif
-
 pre-install:
 	${INSTALL_DATA} ${WRKSRC}/clients/mapilib/monetdb-mapi.pc \
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig
@@ -233,7 +226,6 @@ pre-install:
 	${INSTALL_DATA} ${WRKSRC}/sql/dump-restore.* ${STAGEDIR}${DOCSDIR}
 
 post-install:
-	${RM} -r ${STAGEDIR}${PREFIX}/lib/pkgconfig
 	${RM} -r ${STAGEDIR}${PREFIX}/share/doc/MonetDB-SQL-11.15.19
 	${RM} -r ${STAGEDIR}${PREFIX}/etc/tmpfiles.d
 	${MV} ${STAGEDIR}${PREFIX}/var/*  ${STAGEDIR}${PREFIX}

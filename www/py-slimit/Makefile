@@ -2,6 +2,7 @@
 
 PORTNAME=	slimit
 PORTVERSION=	0.8.1
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,10 +12,10 @@ COMMENT=	JavaScript minifier written in Python
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=3.4:devel/py-ply
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=3.4:devel/py-ply
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=3.4:devel/py-ply@${FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=3.4:devel/py-ply@${FLAVOR}
 
-USES=		python:2 zip
+USES=		python:2.7 zip
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 
@@ -22,7 +23,7 @@ NO_ARCH=	yes
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_REL} >= 3000
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${FLAVOR}
 pre-build:
 	@cd ${WRKSRC} && 2to3-${PYTHON_VER} -w src
 .endif

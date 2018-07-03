@@ -2,6 +2,7 @@
 
 PORTNAME=	recaptcha
 PORTVERSION=	0.1.0.3
+PORTREVISION=	2
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org

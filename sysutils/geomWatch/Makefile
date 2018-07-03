@@ -17,6 +17,11 @@ COMMENT=	Watches for and e-mails admins about GEOM/ZFS state changes
 
 LIB_DEPENDS=	libesmtp.so:mail/libesmtp
 
+BROKEN_aarch64=		fails to compile: ISA not supported
+BROKEN_armv6=		fails to compile: call to 'atomic_add_64' is ambiguous
+BROKEN_armv7=		fails to compile: call to 'atomic_add_64' is ambiguous
+IGNORE_DragonFly=	requires geom(4) support
+
 USES=		tar:tbz
 
 SUB_FILES=	pkg-message
@@ -24,18 +29,5 @@ SUB_FILES=	pkg-message
 USE_RC_SUBR=	${PORTNAME}
 
 MAKE_ARGS=	WITH_ZFS=28
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == DragonFly
-IGNORE=		requires geom(4) support
-.endif
-
-post-extract:
-# base r279437 renamed libnvpair symbols
-.if ${OSVERSION} > 1100062 && ${OSVERSION} < 1100077
-	${CP} ${_DISTDIR}/${DISTFILES:M*\:nvpair:C/:.*//} \
-		${WRKSRC}/zfs/v28/sys/cddl/compat/opensolaris/sys/nvpair.h
-.endif
 
 .include <bsd.port.mk>

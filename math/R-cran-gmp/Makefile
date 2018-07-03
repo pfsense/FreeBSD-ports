@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gmp
-DISTVERSION=	0.5-12
+DISTVERSION=	0.5-13.1
+PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -13,6 +14,6 @@ LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-USES=	cran:auto-plist
+USES=	cran:auto-plist,compiles
 
 .include <bsd.port.mk>

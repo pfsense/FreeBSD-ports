@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-PORTVERSION=	1.8.4
-PORTREVISION=	1
+PORTVERSION=	3.0
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	LOCAL/dbn/repos/wine/${DIST_SUBDIR}/
@@ -13,7 +12,7 @@ EXTRACT_SUFX=	.txz
 DIST_SUBDIR=	freebsd:${OSREL:C/\..*//}:x86:64
 
 MAINTAINER=	dbn@FreeBSD.org
-COMMENT?=	32bit Microsoft Windows compatibility environment for 64bit FreeBSD
+COMMENT?=	32-bit Microsoft Windows compatibility environment for 64-bit FreeBSD
 
 LICENSE=        LGPL21 LGPL3
 LICENSE_COMB=   dual
@@ -42,15 +41,15 @@ USE_LDCONFIG32=	${PREFIX}/lib32 ${PREFIX}/lib32/wine
 USES=		tar:xz
 BUNDLE_LIBS=	yes
 
-GECKO_RUN_DEPENDS=	${DATADIR}/gecko/wine_gecko-2.40-x86.msi:emulators/wine-gecko
-MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.5.6.msi:emulators/wine-mono
+GECKO_RUN_DEPENDS=	${DATADIR}/gecko/wine_gecko-2.47-x86.msi:emulators/wine-gecko-devel
+MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.7.1.msi:emulators/wine-mono-devel
 
 PORTSCOUT=	limitw:1,even
 
 # Included for OPSYS and OSVERSION
 .include <bsd.port.pre.mk>
 
-.for osrel in 9 10 11 12
+.for osrel in 10 11 12
 .if ${OSREL:C/\..*//} == ${osrel}
 PLIST_SUB+=	OSREL${osrel}=""
 .else
@@ -58,13 +57,13 @@ PLIST_SUB+=	OSREL${osrel}="@comment "
 .endif
 .endfor
 
-.if ${OPSYS} != FreeBSD || (!(${OSVERSION} < 1000000) && !(${OSVERSION} >= 1001000 && ${OSVERSION} < 1100000) && !(${OSVERSION} >= 1100121 && ${OSVERSION} < 1200000) && !(${OSVERSION} >= 1200004 && ${OSVERSION} < 1300000))
-IGNORE=		binaries compiled for FreeBSD 9.3+, 10.1+, 11.0+ and -current only
+.if ${OPSYS} != FreeBSD || (!(${OSVERSION} < 1000000) && !(${OSVERSION} >= 1003000 && ${OSVERSION} < 1100000) && !(${OSVERSION} >= 1101000 && ${OSVERSION} < 1200000) && !(${OSVERSION} >= 1200056 && ${OSVERSION} < 1300000))
+IGNORE=		binaries compiled for FreeBSD 10.3+, 11.0+ and -current only
 DISTFILES=
 .endif
 
 do-extract:
-	@${RM} -rf ${WRKDIR}
+	@${RM} -r ${WRKDIR}
 	@${MKDIR} ${WRKDIR}
 	${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${EXTRACT_ONLY} -C ${WRKDIR} --include '/usr/local/share/licenses/${DISTNAME}/LICENSE' -s '|/usr/local/share/licenses/${DISTNAME}/||g'
 
@@ -75,13 +74,13 @@ ${PLIST}: fetch
 	${TAR} -tf ${_DISTDIR}/${EXTRACT_ONLY} ${EXTRACT_AFTER_ARGS} | ${GREP} -v '/$$\|ldconfig32' | ${SED} 's|/usr/local/||g' | sort > ${PLIST}
 
 port-update:
-	${RM} -f ${SLAVEDIR}/distinfo ${SLAVEDIR}/distinfo~ ${SLAVEDIR}/pkg-plist.*
-.for osrel in 9 10 11 12
-	${MAKE} fetch OSREL=${osrel} OSVERSION=${osrel}99999 UNAME_r=${osrel}
-	${MAKE} makesum OSREL=${osrel} OSVERSION=${osrel}99999 UNAME_r=${osrel}
+	${RM} ${SLAVEDIR}/distinfo ${SLAVEDIR}/distinfo~ ${SLAVEDIR}/pkg-plist.*
+.for osrel in 10 11 12
+	${MAKE} fetch OSREL=${osrel} OSVERSION=${osrel}99999 _OSRELEASE=${osrel}
+	${MAKE} makesum OSREL=${osrel} OSVERSION=${osrel}99999 _OSRELEASE=${osrel}
 	${CAT} ${SLAVEDIR}/distinfo >> ${SLAVEDIR}/distinfo~
 	${RM} ${SLAVEDIR}/distinfo
-	${MAKE} pkg-plist.${osrel}${suffix:tu} PLIST=pkg-plist.${osrel}${suffix:tu} OSREL=${osrel} OSVERSION=${osrel}99999 UNAME_r=${osrel} PKGNAMESUFFIX=${suffix}
+	${MAKE} pkg-plist.${osrel}${suffix:tu} PLIST=pkg-plist.${osrel}${suffix:tu} OSREL=${osrel} OSVERSION=${osrel}99999 _OSRELEASE=${osrel} PKGNAMESUFFIX=${suffix}
 .endfor
 	${SED} -e '2,$${' -e '/^TIMESTAMP/d' -e '}' distinfo~ > ${SLAVEDIR}/distinfo
 	python ${FILESDIR}/mergeplist.py ${SLAVEDIR}/pkg-plist.* > ${PLIST}

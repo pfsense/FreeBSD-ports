@@ -10,6 +10,9 @@ MASTER_SITES=	XCONTRIB/games
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X Window Asteroids style game with full color pixmaps
 
+NOT_FOR_ARCHS=		mips64
+NOT_FOR_ARCHS_REASON=	unknown architecture
+
 USES=		imake
 USE_XORG=	xpm
 

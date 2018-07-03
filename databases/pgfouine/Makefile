@@ -19,7 +19,7 @@ pre-configure:
 	${REINPLACE_CMD} -e 's,/usr/bin/php,${LOCALBASE}/bin/php,g;' \
 		-e 's,!!PREFIX!!,${PREFIX},g' \
 		${WRKSRC}/pgfouine.php ${WRKSRC}/pgfouine_vacuum.php
-	${FIND} -d ${WRKSRC} -type d -name 'CVS' -exec ${RM} -rf {} \;
+	${FIND} -d ${WRKSRC} -type d -name 'CVS' -exec ${RM} -r {} \;
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/pgfouine.php ${STAGEDIR}${PREFIX}/bin/pgfouine
@@ -29,8 +29,8 @@ do-install:
 	@cd ${WRKSRC}/include && ${COPYTREE_SHARE} \* ${STAGEDIR}${DATADIR}/include/
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/AUTHORS	${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/ChangeLog 	${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/THANKS 	${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/ChangeLog	${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/THANKS	${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/rpm-specific/sources/pgfouine-tutorial.txt ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

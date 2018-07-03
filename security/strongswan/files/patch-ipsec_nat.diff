@@ -1,6 +1,6 @@
---- src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c.orig	2016-06-20 08:49:09 UTC
+--- src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c.orig	2018-01-09 09:39:07 UTC
 +++ src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c
-@@ -520,8 +520,8 @@ static policy_entry_t *create_policy_ent
+@@ -530,8 +530,8 @@ static policy_entry_t *create_policy_entry(traffic_sel
  	uint16_t port;
  	uint8_t proto;
  
@@ -11,29 +11,26 @@
  
  	/* src or dest proto may be "any" (0), use more restrictive one */
  	proto = max(src_ts->get_protocol(src_ts), dst_ts->get_protocol(dst_ts));
---- src/libcharon/plugins/stroke/stroke_config.c.orig	2016-04-22 20:01:35 UTC
+--- src/libcharon/plugins/stroke/stroke_config.c.orig	2018-02-15 14:10:14 UTC
 +++ src/libcharon/plugins/stroke/stroke_config.c
-@@ -982,6 +982,7 @@ static void add_ts(private_stroke_config
- 				   stroke_end_t *end, child_cfg_t *child_cfg, bool local)
+@@ -978,6 +978,7 @@ static void add_ts(private_stroke_config_t *this,
  {
  	traffic_selector_t *ts;
+ 	bool ts_added = FALSE;
 +	char *subnet, *pos;
  
- 	if (end->tohost)
+ 	if (end->subnets)
  	{
-@@ -995,12 +996,27 @@ static void add_ts(private_stroke_config
- 		{
- 			host_t *net;
- 
-+			pos = strchr(end->address, '|');
-+			if (pos)
-+				*(pos++) = '\0';
- 			net = host_create_from_string(end->address, 0);
- 			if (net)
+@@ -1011,8 +1012,23 @@ static void add_ts(private_stroke_config_t *this,
+ 			}
+ 			else
  			{
- 				ts = traffic_selector_create_from_subnet(net, 0, end->protocol,
- 												end->from_port, end->to_port);
--				child_cfg->add_traffic_selector(child_cfg, local, ts);
++				pos = strchr(subnet, '|');
++				if (pos)
++					*(pos++) = '\0';
++
+ 				ts = traffic_selector_create_from_cidr(subnet, proto,
+ 													   from_port, to_port);
 +
 +				/* Deal with a specified NAT address as part of config as address|NATaddress */
 +				if (pos) {
@@ -43,40 +40,42 @@
 +					if (tmpts == NULL) {
 +						DBG1(DBG_CFG, "invalid NAT subnet: %s, skipped", pos);
 +						ts->destroy(ts);
-+					} else
-+						child_cfg->add_traffic_selector(child_cfg, local, ts);
-+				} else
-+					child_cfg->add_traffic_selector(child_cfg, local, ts);
- 			}
- 		}
- 		else
-@@ -1035,8 +1051,22 @@ static void add_ts(private_stroke_config
- 				}
- 				else
- 				{
-+					pos = strchr(subnet, '|');
-+					if (pos)
-+						*(pos++) = '\0';
- 					ts = traffic_selector_create_from_cidr(subnet, proto,
- 														   from_port, to_port);
-+
-+					/* Deal with a specified NAT address as part of config as address|NATaddress */
-+					if (pos) {
-+						traffic_selector_t *tmpts;
-+
-+						tmpts = traffic_selector_add_nat_from_subnet(ts, pos);
-+						if (tmpts == NULL) {
-+							DBG1(DBG_CFG, "invalid NAT subnet: %s, skipped", pos);
-+							ts->destroy(ts);
-+						}
 +					}
- 				}
- 				if (ts)
- 				{
---- src/libstrongswan/selectors/traffic_selector.c.orig	2016-04-22 20:01:35 UTC
++				}
+ 			}
+ 			if (ts)
+ 			{
+@@ -1028,9 +1044,25 @@ static void add_ts(private_stroke_config_t *this,
+ 	}
+ 	if (!ts_added)
+ 	{
++		pos = strchr(end->address, '|');
++		if (pos)
++			*(pos++) = '\0';
++
+ 		ts = traffic_selector_create_dynamic(end->protocol,
+ 											 end->from_port, end->to_port);
+-		child_cfg->add_traffic_selector(child_cfg, local, ts);
++
++		/* Deal with a specified NAT address as part of config as address|NATaddress */
++		if (pos) {
++			traffic_selector_t *tmpts;
++
++			tmpts = traffic_selector_add_nat_from_subnet(ts, pos);
++			if (tmpts == NULL) {
++				DBG1(DBG_CFG, "invalid NAT subnet: %s, skipped", pos);
++				ts->destroy(ts);
++			} else
++				child_cfg->add_traffic_selector(child_cfg, local, ts);
++		} else
++			child_cfg->add_traffic_selector(child_cfg, local, ts);
+ 	}
+ }
+ 
+--- src/libstrongswan/selectors/traffic_selector.c.orig	2017-08-27 17:45:53 UTC
 +++ src/libstrongswan/selectors/traffic_selector.c
-@@ -90,6 +90,34 @@ struct private_traffic_selector_t {
- 	};
+@@ -80,6 +80,21 @@ struct private_traffic_selector_t {
+ 	char to[IPV6_LEN];
  
  	/**
 +	 * subnet size in CIDR notation, 255 means a non-subnet address range
@@ -86,31 +85,18 @@
 +	/**
 +	 * begin of address range, network order
 +	 */
-+	union {
-+		/** dummy char for common address manipulation */
-+		char natfrom[0];
-+		/** IPv4 address */
-+		uint32_t natfrom4[1];
-+		/** IPv6 address */
-+		uint32_t natfrom6[4];
-+	};
++	char natfrom[IPV6_LEN];
 +
 +	/**
 +	 * end of address range, network order
 +	 */
-+	union {
-+		/** dummy char for common address manipulation */
-+		char natto[0];
-+		/** IPv4 address */
-+		uint32_t natto4[1];
-+		/** IPv6 address */
-+		uint32_t natto6[4];
-+	};
++	char natto[IPV6_LEN];
++
 +	/**
  	 * begin of port range
  	 */
  	uint16_t from_port;
-@@ -103,6 +131,29 @@ struct private_traffic_selector_t {
+@@ -93,6 +108,29 @@ struct private_traffic_selector_t {
  /**
   * calculate the "to"-address for the "from" address and a subnet size
   */
@@ -122,7 +108,7 @@
 +
 +	this->natnetbits = netbits;
 +
-+	len   = (this->type == TS_IPV4_ADDR_RANGE) ? 4 : 16;
++	len   = TS_IP_LEN(this);
 +	bytes = (netbits + 7)/8;
 +	bits  = (bytes * 8) - netbits;
 +	mask  = bits ? (1 << bits) - 1 : 0;
@@ -140,7 +126,7 @@
  static void calc_range(private_traffic_selector_t *this, uint8_t netbits)
  {
  	size_t len;
-@@ -126,6 +177,53 @@ static void calc_range(private_traffic_s
+@@ -116,6 +154,53 @@ static void calc_range(private_traffic_selector_t *thi
  /**
   * calculate the subnet size from the "to" and "from" addresses
   */
@@ -148,7 +134,7 @@
 +{
 +	int byte, bit;
 +	uint8_t netbits;
-+	size_t size = (this->type == TS_IPV4_ADDR_RANGE) ? 4 : 16;
++	size_t size = TS_IP_LEN(this);
 +	bool prefix = TRUE;
 +
 +	/* a perfect match results in a single address with a /32 or /128 netmask */
@@ -194,7 +180,7 @@
  static uint8_t calc_netbits(private_traffic_selector_t *this)
  {
  	int byte, bit;
-@@ -217,8 +315,8 @@ int traffic_selector_printf_hook(printf_
+@@ -207,8 +292,8 @@ int traffic_selector_printf_hook(printf_hook_data_t *d
  	private_traffic_selector_t *this = *((private_traffic_selector_t**)(args[0]));
  	linked_list_t *list = *((linked_list_t**)(args[0]));
  	enumerator_t *enumerator;
@@ -204,33 +190,33 @@
 +	char to_str[INET6_ADDRSTRLEN] = "", natto_str[INET6_ADDRSTRLEN] = "";
  	char *serv_proto = NULL, *sep = "";
  	bool has_proto, has_ports;
- 	size_t written = 0;
-@@ -254,26 +352,34 @@ int traffic_selector_printf_hook(printf_
+ 	size_t written = 0, len;
+@@ -244,26 +329,34 @@ int traffic_selector_printf_hook(printf_hook_data_t *d
  		if (this->type == TS_IPV4_ADDR_RANGE)
  		{
- 			inet_ntop(AF_INET, &this->from4, from_str, sizeof(from_str));
+ 			inet_ntop(AF_INET, &this->from, from_str, sizeof(from_str));
 +			if (this->natnetbits)
-+				inet_ntop(AF_INET, &this->natfrom4, natfrom_str, sizeof(natfrom_str));
++				inet_ntop(AF_INET, &this->natfrom, natfrom_str, sizeof(natfrom_str));
  		}
  		else
  		{
- 			inet_ntop(AF_INET6, &this->from6, from_str, sizeof(from_str));
+ 			inet_ntop(AF_INET6, &this->from, from_str, sizeof(from_str));
 +			if (this->natnetbits)
-+				inet_ntop(AF_INET6, &this->natfrom6, natfrom_str, sizeof(natfrom_str));
++				inet_ntop(AF_INET6, &this->natfrom, natfrom_str, sizeof(natfrom_str));
  		}
  		if (this->netbits == NON_SUBNET_ADDRESS_RANGE)
  		{
  			if (this->type == TS_IPV4_ADDR_RANGE)
  			{
- 				inet_ntop(AF_INET, &this->to4, to_str, sizeof(to_str));
+ 				inet_ntop(AF_INET, &this->to, to_str, sizeof(to_str));
 +				if (this->natnetbits)
-+					inet_ntop(AF_INET, &this->natto4, natto_str, sizeof(natto_str));
++					inet_ntop(AF_INET, &this->natto, natto_str, sizeof(natto_str));
  			}
  			else
  			{
- 				inet_ntop(AF_INET6, &this->to6, to_str, sizeof(to_str));
+ 				inet_ntop(AF_INET6, &this->to, to_str, sizeof(to_str));
 +				if (this->natnetbits)
-+					inet_ntop(AF_INET6, &this->natto6, natto_str, sizeof(natto_str));
++					inet_ntop(AF_INET6, &this->natto, natto_str, sizeof(natto_str));
  			}
 -			written += print_in_hook(data, "%s..%s", from_str, to_str);
 +			written += print_in_hook(data, "%s|%s..%s|%s", from_str, natfrom_str, to_str, natto_str);
@@ -242,7 +228,7 @@
  		}
  	}
  
-@@ -443,6 +549,12 @@ METHOD(traffic_selector_t, get_subset, t
+@@ -423,6 +516,12 @@ METHOD(traffic_selector_t, get_subset, traffic_selecto
  	memcpy(subset->from, from, size);
  	memcpy(subset->to, to, size);
  	calc_netbits(subset);
@@ -255,7 +241,7 @@
  
  	return &subset->public;
  }
-@@ -658,6 +770,58 @@ METHOD(traffic_selector_t, to_subnet, bo
+@@ -619,6 +718,58 @@ METHOD(traffic_selector_t, to_subnet, bool,
  	return this->netbits != NON_SUBNET_ADDRESS_RANGE;
  }
  
@@ -278,11 +264,11 @@
 +		{
 +			case TS_IPV4_ADDR_RANGE:
 +				family = AF_INET;
-+				net_chunk.len = sizeof(this->natfrom4);
++				net_chunk.len = IPV4_LEN;
 +				break;
 +			case TS_IPV6_ADDR_RANGE:
 +				family = AF_INET6;
-+				net_chunk.len = sizeof(this->natfrom6);
++				net_chunk.len = IPV6_LEN;
 +				break;
 +			default:
 +				/* unreachable */
@@ -314,31 +300,22 @@
  METHOD(traffic_selector_t, clone_, traffic_selector_t*,
  	private_traffic_selector_t *this)
  {
-@@ -666,6 +830,7 @@ METHOD(traffic_selector_t, clone_, traff
+@@ -628,10 +779,13 @@ METHOD(traffic_selector_t, clone_, traffic_selector_t*
  	clone = traffic_selector_create(this->protocol, this->type,
  									this->from_port, this->to_port);
  	clone->netbits = this->netbits;
 +	clone->natnetbits = this->natnetbits;
  	clone->dynamic = this->dynamic;
  
- 	switch (clone->type)
-@@ -673,10 +838,14 @@ METHOD(traffic_selector_t, clone_, traff
- 		case TS_IPV4_ADDR_RANGE:
- 			memcpy(clone->from4, this->from4, sizeof(this->from4));
- 			memcpy(clone->to4, this->to4, sizeof(this->to4));
-+			memcpy(clone->natfrom4, this->natfrom4, sizeof(this->natfrom4));
-+			memcpy(clone->natto4, this->natto4, sizeof(this->natto4));
- 			return &clone->public;
- 		case TS_IPV6_ADDR_RANGE:
- 			memcpy(clone->from6, this->from6, sizeof(this->from6));
- 			memcpy(clone->to6, this->to6, sizeof(this->to6));
-+			memcpy(clone->natfrom6, this->natfrom6, sizeof(this->natfrom6));
-+			memcpy(clone->natto6, this->natto6, sizeof(this->natto6));
- 			return &clone->public;
- 		default:
- 			/* unreachable */
-@@ -813,6 +982,54 @@ traffic_selector_t *traffic_selector_cre
- 	return (&this->public);
+ 	memcpy(clone->from, this->from, len);
+ 	memcpy(clone->to, this->to, len);
++	memcpy(clone->natfrom, this->natfrom, len);
++	memcpy(clone->natto, this->natto, len);
+ 	return &clone->public;
+ }
+ 
+@@ -801,6 +955,54 @@ traffic_selector_t *traffic_selector_create_from_subne
+ 	return &this->public;
  }
  
 +
@@ -392,7 +369,7 @@
  /*
   * see header
   */
-@@ -982,6 +1199,7 @@ static private_traffic_selector_t *traff
+@@ -902,6 +1104,7 @@ static private_traffic_selector_t *traffic_selector_cr
  			.includes = _includes,
  			.set_address = _set_address,
  			.to_subnet = _to_subnet,
@@ -400,9 +377,9 @@
  			.clone = _clone_,
  			.hash = _hash,
  			.destroy = _destroy,
---- src/libstrongswan/selectors/traffic_selector.h.orig	2016-04-22 20:01:35 UTC
+--- src/libstrongswan/selectors/traffic_selector.h.orig	2017-03-19 18:27:23 UTC
 +++ src/libstrongswan/selectors/traffic_selector.h
-@@ -28,6 +28,7 @@ typedef struct traffic_selector_t traffi
+@@ -28,6 +28,7 @@ typedef struct traffic_selector_t traffic_selector_t;
  
  #include <library.h>
  #include <networking/host.h>
@@ -410,20 +387,20 @@
  
  /**
   * Traffic selector types.
-@@ -219,6 +220,7 @@ struct traffic_selector_t {
+@@ -229,6 +230,7 @@ struct traffic_selector_t {
  	 * @return			TRUE if traffic selector matches exactly to the subnet
  	 */
- 	bool (*to_subnet) (traffic_selector_t *this, host_t **net, uint8_t *mask);
+ 	bool (*to_subnet)(traffic_selector_t *this, host_t **net, uint8_t *mask);
 +	bool (*to_subnetnat) (traffic_selector_t *this, host_t **net, uint8_t *mask, policy_dir_t dir);
  
  	/**
  	 * Create a hash value for the traffic selector.
-@@ -373,6 +375,8 @@ traffic_selector_t *traffic_selector_cre
+@@ -382,6 +384,8 @@ traffic_selector_t *traffic_selector_create_from_rfc37
+ traffic_selector_t *traffic_selector_create_from_subnet(
  							host_t *net, uint8_t netbits, uint8_t protocol,
  							uint16_t from_port, uint16_t to_port);
- 
-+traffic_selector_t *traffic_selector_add_nat_from_subnet(traffic_selector_t *, char *);
 +
++traffic_selector_t *traffic_selector_add_nat_from_subnet(traffic_selector_t *, char *);
+ 
  /**
   * Create a traffic selector for host-to-host cases.
-  *

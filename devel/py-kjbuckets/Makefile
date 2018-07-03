@@ -10,7 +10,7 @@ MASTER_SITES=	SF/gadfly/gadfly/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	gadfly-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Graph and set datatypes for Python (C extension)
 
 LICENSE=	MIT
@@ -18,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/../COPYRIGHT.txt
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 WRKSRC=		${WRKDIR}/${DISTNAME}/kjbuckets
 

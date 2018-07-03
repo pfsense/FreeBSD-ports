@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_ospf_interfaces.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_ospfd_interfaces</name>
+	<title>Services/FRR/OSPF</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_ospf_interfaces.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>OSPF Settings</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>OSPF Interfaces</text>
+			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>interface</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Metric</fielddescr>
+			<fieldname>metric</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>interface</fieldname>
+			<description>Enter the desired participating interface here.</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_interfaces(false, false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>30</size>
+			<type>input</type>
+		</field>
+ 		<field>
+			<fielddescr>Network Type</fielddescr>
+			<fieldname>networktype</fieldname>
+			<description>Select OSPF Network Type of the interface.</description>
+			<type>select</type>
+			<default_value></default_value>
+			<options>
+				<option><value></value><name>Not specified (default)</name></option>
+				<option><value>broadcast</value><name>Broadcast</name></option>
+				<option><value>non-broadcast</value><name>Non-Broadcast</name></option>
+				<option><value>point-to-multipoint</value><name>Point-to-Multipoint</name></option>
+				<option><value>point-to-point</value><name>Point-to-Point</name></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Metric</fielddescr>
+			<fieldname>metric</fieldname>
+			<description>Metric (cost) for this OSPF interface (leave blank for default).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Area</fielddescr>
+			<fieldname>interfacearea</fieldname>
+			<description>The area for this interface (leave blank for default).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Interface is Passive</fielddescr>
+			<fieldname>passive</fieldname>
+			<description>Prevent transmission and reception of OSPF packets on this interface. The specified interface will be announced as a stub network.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Accept Filter</fielddescr>
+			<fieldname>acceptfilter</fieldname>
+			<description>Do not add routes for this interface subnet or IP address from OSPF into the routing table. (Suggested for Multi-WAN environments).</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable MD5 password for this FRR ospfd interface (default no)</fielddescr>
+			<fieldname>md5password</fieldname>
+			<description>Enables the use of an MD5 password to on this instance</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Password</fielddescr>
+			<fieldname>password</fieldname>
+			<description>Password for this OSPF interface.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Router Priority</fielddescr>
+			<fieldname>routerpriorityelections</fieldname>
+			<description>
+				<![CDATA[
+				Router priority when participating in elections for DR (Default 1)<br />
+				Valid range is 0-255. 0 will cause the router to not participate in election.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Hello Interval</fielddescr>
+			<fieldname>hellointervalinseconds</fieldname>
+			<description>Hello Interval this OSPF interface in seconds (Default 10).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Retransmit Interval</fielddescr>
+			<fieldname>retransmitinterval</fieldname>
+			<description>Retransmit Interval this OSPF interface in seconds (Default 5).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Dead Timer</fielddescr>
+			<fieldname>deadtimer</fieldname>
+			<description>Dead Timer for this OSPF interface in seconds (Default 40).</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_ospf_interfaces_validate_input();
+	</custom_php_validation_command>
+</packagegui>

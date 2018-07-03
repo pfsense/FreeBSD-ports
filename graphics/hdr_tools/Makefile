@@ -3,6 +3,7 @@
 
 PORTNAME=	hdr_tools
 PORTVERSION=	0.0.2010.11.23	# unspecified by the author, so use the date
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	http://ttic.uchicago.edu/~cotter/projects/hdr_tools/archives/ \
 		http://freebsd.nsu.ru/distfiles/
@@ -34,11 +35,6 @@ CXXFLAGS+=	-msse2 -mfpmath=sse
 
 .if ${COMPILER_FEATURES:Mopenmp}
 CXXFLAGS+=	-fopenmp
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000034
-LIB_DEPENDS+=	libml.so:math/ldouble
-LDFLAGS+=	-lml
 .endif
 
 post-patch:

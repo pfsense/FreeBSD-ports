@@ -10,9 +10,15 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Converts plain ASCII text into PNG bitmap images
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 LIB_DEPENDS=	libgd.so:graphics/gd
 
-USES=	tar:bzip2
+BROKEN_armv6 =		fails to build: parse.c:(.text+0x174): undefined reference to 'fgettok'
+BROKEN_armv7 =		fails to build: parse.c:(.text+0x174): undefined reference to 'fgettok'
+
+USES=		tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-gd
 CFLAGS+=	-DDEFAULT_FONTPATH='\"${FONTROOTDIR}/TTF:${FONTROOTDIR}/Type1:${FONTROOTDIR}\"'

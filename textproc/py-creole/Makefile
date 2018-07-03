@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	creole
-PORTVERSION=	1.0.1
-PORTREVISION=	2
+PORTVERSION=	1.3.1
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +13,7 @@ COMMENT=	Markup converter in pure Python
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/docutils/__init__.py:textproc/py-docutils
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/docutils/__init__.py:textproc/py-docutils@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

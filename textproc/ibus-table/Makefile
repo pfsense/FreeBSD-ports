@@ -2,42 +2,37 @@
 # $FreeBSD$
 
 PORTNAME=	ibus-table
-PORTVERSION=	1.5.0
-PORTREVISION=	1
+DISTVERSION=	1.9.18
 CATEGORIES=	textproc
-MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	nikola.lecic@anthesphoria.net
-COMMENT=	Table based input method framework for IBus
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Table-based input method framework for IBus
 
-BROKEN=		Unfetchable (google code has gone away)
+LICENSE=	LGPL20
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
+		docbook2man:textproc/docbook-utils \
+		docbook-sgml>0:textproc/docbook-sgml
 LIB_DEPENDS=	libibus-1.0.so:textproc/ibus
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USE_GNOME=	pygtk2
-USES=		gmake pkgconfig python
-
+USES=		autoreconf gmake pkgconfig python:3.4+
 GNU_CONFIGURE=	yes
-
-PROJECTHOST=	ibus
+USE_GITHUB=	yes
+GH_ACCOUNT=	kaio
+USE_GNOME=	pygtk2
 
 OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=	--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|$$(libdir)/pkgconfig|${PREFIX}/libdata/pkgconfig|' \
-		${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e "s|/usr/|${PREFIX}/|g" ${WRKSRC}/engine/*.py
+
+post-install:
+	@${RM} -r ${STAGEDIR}${DATADIR}/*/__pycache__
 
 .include <bsd.port.mk>

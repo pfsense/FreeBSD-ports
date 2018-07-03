@@ -3,7 +3,7 @@
 
 PORTNAME=	pure
 PORTVERSION=	0.64
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	lang
 MASTER_SITES=	https://bitbucket.org/purelang/pure-lang/downloads/
 EXTRACT_ONLY=	${DISTNAME}.tar.gz
@@ -75,7 +75,7 @@ DISTFILES+=	${EXTRACT_ONLY} ${PORTNAME}-docs-${PORTVERSION}.tar.gz
 .endif
 
 .if ${PORT_OPTIONS:MEMACS}
-USE_EMACS=	yes
+USES+=			emacs:build
 MAKE_ARGS+=	emacs_prefix=${PREFIX}
 .endif
 
@@ -95,7 +95,7 @@ post-install:
 		${STAGEDIR}${PREFIX}/lib/libpure.so.*.*
 .if ${PORT_OPTIONS:METC}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/etc/
-	@(cd ${WRKSRC} && ${RM} -f etc/*.in && ${COPYTREE_SHARE} etc/ ${STAGEDIR}${DATADIR})
+	@(cd ${WRKSRC} && ${RM} etc/*.in && ${COPYTREE_SHARE} etc/ ${STAGEDIR}${DATADIR})
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}

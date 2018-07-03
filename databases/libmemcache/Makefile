@@ -8,7 +8,10 @@ CATEGORIES=	databases
 MASTER_SITES=	http://people.FreeBSD.org/~seanc/libmemcache/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	The C library for accessing a memcache cluster
+COMMENT=	C library for accessing a memcache cluster
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		libtool tar:bzip2
 USE_LDCONFIG=	yes
@@ -17,10 +20,6 @@ INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DEBUG
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDEBUG}
-CONFIGURE_ARGS+=--enable-debug
-.endif
+DEBUG_CONFIGURE_ENABLE=	debug
 
 .include <bsd.port.mk>

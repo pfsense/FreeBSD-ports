@@ -7,13 +7,13 @@ CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP/source/C/Cycler
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Composable style cycles
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils

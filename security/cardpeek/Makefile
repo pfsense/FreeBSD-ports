@@ -15,10 +15,9 @@ LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite \
 		libcurl.so:ftp/curl
 RUN_DEPENDS=	pcscd:devel/pcsc-lite
 
-USES=		execinfo iconv localbase lua pkgconfig
+USES=		iconv localbase lua pkgconfig
 USE_GNOME=	gtk30
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules
 INSTALLS_ICONS=	yes
 
 PLIST_FILES=	bin/cardpeek man/man1/cardpeek.1.gz \

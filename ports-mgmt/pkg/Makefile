@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pkg
-DISTVERSION=	1.8.8
+DISTVERSION=	1.10.5
+PORTREVISION=	1
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	\
@@ -19,6 +20,8 @@ USES=		libtool tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-maintainer-mode
 INSTALL_TARGET=	install-strip
+PORTDOCS=	NEWS
+PORTSCOUT=	ignore:1
 
 # Use a submake as 'deinstall install' needs to reevaluate PKG_CMD
 # so that pkg-static is used from the wrkdir
@@ -31,7 +34,7 @@ EXTRA_PATCHES=	${FILESDIR}/extra-patch-docs_pkg.8
 
 .include <bsd.port.pre.mk>
 
-.if defined(WITH_DEBUG) && !defined(WITHOUT_DEBUG)
+.if defined(WITH_DEBUG)
 MAKE_ARGS+=	DEBUG_FLAGS="${DEBUG_FLAGS}"
 .endif
 
@@ -68,9 +71,16 @@ pre-everything::
 #define PKG_DEPENDS to nothing to avoid infinite loop looking for pkg :)
 PKG_DEPENDS=
 .undef INSTALLS_DEPENDS
+
+# Use the internal pkg instead, generally, unless this is a cross-build,
+# in which case that won't work. Hope for the best then.
+.if !defined(CROSS_TOOLCHAIN)
 PKG_BIN=	${WRKSRC}/src/pkg-static
+.endif
 
 post-install:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/NEWS ${STAGEDIR}${DOCSDIR}/NEWS
 	@${MV} ${STAGEDIR}${PREFIX}/lib/libpkg_static.a \
 		${STAGEDIR}${PREFIX}/lib/libpkg.a
 

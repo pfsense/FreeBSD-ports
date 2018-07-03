@@ -2,15 +2,16 @@
 
 PORTNAME=	qtpaths
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Command line client to QStandardPaths
 
+USES=		qmake:outsource
 USE_QT5=	core
 QT_DIST=	tools
-USES=		qmake
 
 PLIST_FILES=	${QT_BINDIR}/qtpaths
 
@@ -19,6 +20,7 @@ PLIST_FILES=	${QT_BINDIR}/qtpaths
 # will look for a lot more dependencies for other tools such as lupdate, which
 # we do not really have to depend on.
 WRKSRC_SUBDIR=	src/${PORTNAME}
+
 post-patch:
 	${CP} ${WRKSRC}/../../.qmake.conf ${WRKSRC}
 

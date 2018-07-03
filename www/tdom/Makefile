@@ -2,46 +2,43 @@
 # $FreeBSD$
 
 PORTNAME=	tDOM
-PORTVERSION=	0.8.3
+PORTVERSION=	0.9.0
 CATEGORIES=	www
-MASTER_SITES=	GHC http://mirrors.rit.edu/zi/
+MASTER_SITES=	http://tdom.org/downloads/
+DISTNAME=	${PORTNAME:tl}-${PORTVERSION}
+EXTRACT_SUFX=	-src.tgz
 
 MAINTAINER=	mi@aldan.algebra.com
-COMMENT=	High performance XML data processing with Tcl (ARGS for OpenACS)
+COMMENT=	High performance processing of XML and HTML data with Tcl
 
-TDOMBASE=	${PREFIX}/lib/tdom${PORTVERSION}
+LICENSE=	MPL11
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-OPTIONS_DEFINE=	DOCS
+USES=		tcl:tea
+CONFIGURE_ARGS=	--enable-threads --disable-tdomalloc
+CONFIGURE_ARGS+=--with-expat=/usr
+EXTRACT_AFTER_ARGS=--exclude 'expat*/*.c' --exclude 'expat*/[a-mo-z]*.h' \
+		--exclude 'domalloc*'
 
-USES=		gmake tar:tgz tcl:tea
-USE_GITHUB=	yes
+TEST_TARGET=	test
 
-pre-configure:
-	${RM} -f ${WRKSRC}/generic/domalloc.?
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
-PLIST_SUB+=	PORTVERSION=${PORTVERSION}
+DOCS=		CHANGES README
 
-DOCS=		CHANGES LICENSE README README.AOL
-HTMLDOCS=	category-index.html dom.html domDoc.html domNode.html \
-		expat.html expatapi.html index.html keyword-index.html \
-		tdomcmd.html tnc.html
+OPTIONS_DEFINE=	DOCS HTML5
+OPTIONS_DEFAULT=${OPTIONS_DEFINE}
 
-post-build test:
-	${SETENV} LANG=C ${MAKE} -C ${WRKSRC} test
-
-CONFIGURE_ARGS+=--enable-threads --disable-tdomalloc
-
-post-install:
-	${CHMOD} 755 ${STAGEDIR}${TDOMBASE}
-	${CHMOD} 644 ${STAGEDIR}${TDOMBASE}/*
+HTML5_DESC=	Enable parsing of HTML5 (requires gumbo)
+HTML5_LIB_DEPENDS=libgumbo.so:devel/gumbo
+HTML5_CONFIGURE_ENABLE=html5
+HTML5_CFLAGS=	-I${LOCALBASE}/include
+HTML5_USES=	pkgconfig
+MAKE_ARGS+=	RANLIB_STUB=:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html
-.for FILE in ${DOCS}
-	${INSTALL_DATA} ${WRKSRC}/${FILE} ${STAGEDIR}${DOCSDIR}/${FILE}
-.endfor
-.for FILE in ${HTMLDOCS}
-	${INSTALL_DATA} ${WRKSRC}/doc/${FILE} ${STAGEDIR}${DOCSDIR}/html/${FILE}
-.endfor
+	${INSTALL_DATA} ${DOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_DATA} ${WRKSRC}/doc/*.html ${STAGEDIR}${DOCSDIR}/html/
 
 .include <bsd.port.mk>

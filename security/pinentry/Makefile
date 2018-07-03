@@ -2,13 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	pinentry
-PORTVERSION=	0.9.7
-PORTREVISION?=	1
+PORTVERSION=	1.1.0
+PORTREVISION?=	0
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/pinentry
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	jhale@FreeBSD.org
 COMMENT?=	Collection of simple PIN or passphrase entry dialogs
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		tar:bzip2
 
@@ -19,7 +22,7 @@ NO_BUILD=	yes
 PLIST_FILES=	bin/pinentry
 
 OPTIONS_SINGLE=	FRONTEND
-OPTIONS_SINGLE_FRONTEND=	TTY NCURSES GTK2 QT4 QT5 GNOME3
+OPTIONS_SINGLE_FRONTEND=	TTY NCURSES FLTK GTK2 QT4 QT5 GNOME3
 OPTIONS_DEFAULT=	TTY
 
 FRONTEND_DESC=	Default frontend
@@ -32,6 +35,10 @@ NCURSES_DESC=	Curses frontend
 PINENTRY_NCURSES=	pinentry-curses
 NCURSES_RUN_DEPENDS=	${PINENTRY_NCURSES}:security/pinentry-curses
 
+FLTK_DESC=	FLTK frontend
+PINENTRY_FLTK=	pinentry-fltk
+FLTK_RUN_DEPENDS=	${PINENTRY_FLTK}:security/pinentry-fltk
+
 GTK2_DESC=	Gtk+ 2 frontend
 PINENTRY_GTK2=	pinentry-gtk-2
 GTK2_RUN_DEPENDS=	${PINENTRY_GTK2}:security/pinentry-gtk2
@@ -42,7 +49,7 @@ QT4_RUN_DEPENDS=	${PINENTRY_QT4}:security/pinentry-qt4
 
 QT5_DESC=	Qt 5 frontend
 PINENTRY_QT5=	pinentry-qt5
-QT5_RUN_DEPENDS=	${PINENTRY_QT5}:security/pinentry-qt5 
+QT5_RUN_DEPENDS=	${PINENTRY_QT5}:security/pinentry-qt5
 
 GNOME3_DESC=	GNOME 3 frontend
 PINENTRY_GNOME3=	pinentry-gnome3
@@ -63,21 +70,19 @@ do-install:
 .else # !defined(PINENTRY_GUI)
 PKGNAMESUFFIX=	-${PINENTRY_GUI}
 LIB_DEPENDS=	libassuan.so:security/libassuan \
-		libgcrypt.so:security/libgcrypt \
-		libksba.so:security/libksba
+		libgpg-error.so:security/libgpg-error
 
-USES+=		iconv gmake pkgconfig
+USES+=		gmake iconv localbase ncurses pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-pinentry-emacs
-
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-Wl,--as-needed
 
 OPTIONS_DEFINE=	LIBSECRET
 
 LIBSECRET_DESC=	Saving the passphrase with libsecret
 LIBSECRET_CONFIGURE_ENABLE=	libsecret
 LIBSECRET_LIB_DEPENDS=	libsecret-1.so:security/libsecret
+LIBSECRET_USE=		GNOME=glib20
 
 .if ${PINENTRY_GUI} == "gnome3"
 OPTIONS_SLAVE=	LIBSECRET
@@ -90,7 +95,7 @@ CONFIGURE_ARGS+=--disable-pinentry-gnome3
 
 .if ${PINENTRY_GUI} == "qt4"
 USES+=		compiler:c++11-lib
-USE_QT4=	gui moc_build
+USE_QT4=	corelib gui moc_build
 PLIST_FILES=	bin/pinentry-qt4
 CONFIGURE_ARGS+=--disable-pinentry-qt5 \
 		--program-suffix=4
@@ -111,8 +116,15 @@ PLIST_FILES=	bin/pinentry-gtk-2
 CONFIGURE_ARGS+=--disable-pinentry-gtk2
 .endif
 
+.if ${PINENTRY_GUI} == "fltk"
+USES+=		compiler:c++11-lib
+LIB_DEPENDS+=	libfltk.so:x11-toolkits/fltk
+PLIST_FILES=	bin/pinentry-fltk
+.else
+CONFIGURE_ARGS+=--disable-pinentry-fltk
+.endif
+
 .if ${PINENTRY_GUI} == "curses"
-USES+=		ncurses
 PLIST_FILES=	bin/pinentry-curses
 .else
 CONFIGURE_ARGS+=--disable-pinentry-curses

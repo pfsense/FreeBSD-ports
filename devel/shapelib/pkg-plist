@@ -23,7 +23,9 @@ bin/shputils
 include/shapefil.h
 lib/libshp.a
 lib/libshp.so
-lib/libshp.so.1
+lib/libshp.so.2
+lib/libshp.so.2.0.2
+libdata/pkgconfig/shapelib.pc
 %%PORTDOCS%%%%DOCSDIR%%/codepage.html
 %%PORTDOCS%%%%DOCSDIR%%/dbf_api.html
 %%PORTDOCS%%%%DOCSDIR%%/index.html

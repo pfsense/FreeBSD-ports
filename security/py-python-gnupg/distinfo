@@ -1,2 +1,3 @@
-SHA256 (python-gnupg-0.3.8.tar.gz) = 3872ced77d69203f31817107b324b0dd33d4437a330dc58eca140c8758d26b5a
-SIZE (python-gnupg-0.3.8.tar.gz) = 38993
+TIMESTAMP = 1520272614
+SHA256 (python-gnupg-0.4.1.tar.gz) = ef47b02eaf41dee3cf4b02ddf83130827318de9fe3eae89d01a3f05859e20e1a
+SIZE (python-gnupg-0.4.1.tar.gz) = 44534

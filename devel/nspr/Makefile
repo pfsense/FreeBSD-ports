@@ -2,12 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	nspr
-DISTVERSION=	4.13.1
+DISTVERSION=	4.19
 CATEGORIES=	devel
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/v${PORTVERSION}/src
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Platform-neutral API for system level and libc like functions
+
+LICENSE=	MPL20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe gmake pathfix
 CPE_VENDOR=	mozilla
@@ -31,11 +34,7 @@ post-build-TEST-on:
 	@${LN} -fs libmy.so.1 ${BUILD_WRKSRC}/pr/tests/dll/libmy.so
 
 post-install:
-	@for file in ${STAGEDIR}${PREFIX}/lib/*.so*; do \
-		${STRIP_CMD} $$file; \
-		${CHMOD} ${LIBMODE} $$file; \
-		${LN} -fs $${file##*/} $${file%.*}; \
-	done
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
 do-test-TEST-on:
 	${TEST_WRKSRC}/lib/tests/string

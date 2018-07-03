@@ -3,24 +3,25 @@
 
 PORTNAME=	bamf
 PORTVERSION=	0.5.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://launchpadlibrarian.net/280921055/ \
 	https://launchpad.net/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}/+download/
 
-MAINTAINER=	olivierd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BAMF Application Matching Framework
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING.LGPL
 
 BUILD_DEPENDS=	vapigen:lang/vala \
-	${PYTHON_PKGNAMEPREFIX}libxml2>=2.8.0:textproc/py-libxml2 \
-	${PYTHON_PKGNAMEPREFIX}libxslt>=1.1.28:textproc/py-libxslt
+	${PYTHON_PKGNAMEPREFIX}libxml2>=2.8.0:textproc/py-libxml2@${PY_FLAVOR} \
+	${PYTHON_PKGNAMEPREFIX}libxslt>=1.1.28:textproc/py-libxslt@${PY_FLAVOR}
 LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop \
 	libdbus-glib-1.so:devel/dbus-glib \
 	libstartup-notification-1.so:x11/startup-notification
 
-USES=		gettext-runtime gmake libtool pathfix pkgconfig python:2
+USES=		gettext-runtime gmake libtool pathfix pkgconfig python:2.7
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk30 glib20 introspection:build libwnck3 cairo gdkpixbuf2
 USE_XORG=	x11

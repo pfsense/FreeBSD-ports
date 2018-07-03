@@ -2,8 +2,11 @@
 <pfsensepkgs>
 	<package>
 		<name>squidGuard</name>
-		<descr><![CDATA[High performance web proxy URL filter.&lt;br/&gt;
-			&lt;strong&gt;Works with both Squid (2.7 legacy branch) and Squid3 (3.4 branch) packages.&lt;/strong&gt;]]></descr>
+		<descr><![CDATA[High performance web proxy URL filter.
+			&lt;br /&gt;
+			Works with both Squid (2.7 legacy branch) and Squid3 (3.4 branch) packages.
+			&lt;br /&gt;
+			&lt;strong&gt;Ensure Squid is installed before installing this package.&lt;/strong&gt;]]></descr>
 		<website>http://www.squidGuard.org/</website>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>squidguard.xml</configurationfile>

@@ -3,12 +3,14 @@
 
 PORTNAME=	filelight
 PORTVERSION=	${KDE4_VERSION}
-CATEGORIES=	sysutils kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	2
+CATEGORIES=	sysutils kde kde-kde4
+PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Map of concentric segmented-rings representing file system
+
+CONFLICTS_INSTALL=      ${PORTNAME}
 
 USES=		cmake:outsource kde:4 tar:xz
 USE_KDE=	kdelibs automoc4

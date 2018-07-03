@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ns3
-PORTVERSION=	3.25
+PORTVERSION=	3.27
 CATEGORIES=	net
 MASTER_SITES=	https://www.nsnam.org/release/
 DISTNAME=	ns-allinone-${PORTVERSION}
@@ -11,7 +11,7 @@ COMMENT=	Network simulator for Internet systems
 
 LICENSE=	GPLv2
 
-USES=		gettext pkgconfig python sqlite tar:bzip2 waf
+USES=		compiler:c++11-lib gettext pkgconfig python sqlite tar:bzip2 waf
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 WRKSRC_SUBDIR=	ns-${DISTVERSION}

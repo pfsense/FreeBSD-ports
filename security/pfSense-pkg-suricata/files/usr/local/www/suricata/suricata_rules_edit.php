@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,6 +111,9 @@ $pgtitle = array(gettext("Suricata"), gettext("Rules File Viewer"));
 
 include("head.inc");
 
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 if ($savemsg)
 	print_info_box($savemsg);
 
@@ -133,7 +136,7 @@ $section->addInput(new Form_Textarea(
 	'textareaitem',
 	'Rule file',
 	$contents
- ))->setRows(40)->setNoWrap()->setCols(90)->removeClass("form-control");
+ ))->setRows(40)->setNoWrap()->removeClass("form-control")->addClass("col-lg-12");
 
 $form->add($section);
 

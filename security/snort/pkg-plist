@@ -1,4 +1,5 @@
 %%FILEINSPECT%%bin/file_server
+%%APPID%%bin/appid_detector_builder.sh
 bin/snort
 bin/u2boat
 bin/u2spewfoo
@@ -14,6 +15,7 @@ bin/u2spewfoo
 @sample etc/snort/threshold.conf-sample etc/snort/threshold.conf
 @sample etc/snort/unicode.map-sample etc/snort/unicode.map
 @sample etc/snort/file_magic.conf-sample etc/snort/file_magic.conf
+@sample etc/snort/attribute_table.dtd-sample etc/snort/attribute_table.dtd
 include/snort/dynamic_output/bitop.h
 include/snort/dynamic_output/ipv6_port.h
 include/snort/dynamic_output/obfuscation.h
@@ -31,17 +33,15 @@ include/snort/dynamic_output/sfrt_dir.h
 include/snort/dynamic_output/sfrt_trie.h
 include/snort/dynamic_output/snort_debug.h
 include/snort/dynamic_output/stream_api.h
-%%APPID%%include/snort/dynamic_preproc/md5.h
-%%APPID%%include/snort/dynamic_preproc/sfghash.h
-%%APPID%%include/snort/dynamic_preproc/sfhashfcn.h
-%%APPID%%include/snort/dynamic_preproc/sflsq.h
-%%APPID%%include/snort/dynamic_preproc/sfmemcap.h
-%%APPID%%include/snort/dynamic_preproc/sfprimetable.h
-%%APPID%%include/snort/dynamic_preproc/sfxhash.h
+%%APPID%%include/snort/dynamic_preproc/appId.h
+%%APPID%%include/snort/dynamic_preproc/appIdApi.h
+%%APPID%%include/snort/dynamic_preproc/dns_defs.h
+%%APPID%%include/snort/dynamic_preproc/thirdparty_appid_api.h
+%%APPID%%include/snort/dynamic_preproc/thirdparty_appid_types.h
+include/snort/dynamic_preproc/appdata_adjuster.h
 include/snort/dynamic_preproc/bitop.h
 include/snort/dynamic_preproc/cpuclock.h
 include/snort/dynamic_preproc/file_api.h
-include/snort/dynamic_preproc/file_mail_common.h
 include/snort/dynamic_preproc/idle_processing.h
 include/snort/dynamic_preproc/ipv6_port.h
 include/snort/dynamic_preproc/mempool.h
@@ -51,6 +51,8 @@ include/snort/dynamic_preproc/packet_time.h
 include/snort/dynamic_preproc/perf_indicators.h
 include/snort/dynamic_preproc/preprocids.h
 include/snort/dynamic_preproc/profiler.h
+include/snort/dynamic_preproc/reg_test.h
+include/snort/dynamic_preproc/reload_api.h
 include/snort/dynamic_preproc/segment_mem.h
 include/snort/dynamic_preproc/session_api.h
 include/snort/dynamic_preproc/sfPolicy.h
@@ -71,14 +73,12 @@ include/snort/dynamic_preproc/sf_snort_packet.h
 include/snort/dynamic_preproc/sf_snort_plugin_api.h
 include/snort/dynamic_preproc/sfcommon.h
 include/snort/dynamic_preproc/sfcontrol.h
-include/snort/dynamic_preproc/sfdebug.h
 include/snort/dynamic_preproc/sfrt.h
 include/snort/dynamic_preproc/sfrt_dir.h
 include/snort/dynamic_preproc/sfrt_flat.h
 include/snort/dynamic_preproc/sfrt_flat_dir.h
 include/snort/dynamic_preproc/sfrt_trie.h
 include/snort/dynamic_preproc/sidechannel_define.h
-include/snort/dynamic_preproc/sip_common.h
 include/snort/dynamic_preproc/snort_bounds.h
 include/snort/dynamic_preproc/snort_debug.h
 include/snort/dynamic_preproc/ssl.h
@@ -91,6 +91,7 @@ include/snort/dynamic_preproc/str_search.h
 include/snort/dynamic_preproc/stream_api.h
 lib/snort/dynamic_output/libsf_dynamic_output.a
 lib/snort/dynamic_preproc/libsf_dynamic_preproc.a
+%%APPID%%lib/snort/dynamic_preproc/libsf_dynamic_utils.a
 lib/snort_dynamicengine/libsf_engine.a
 lib/snort_dynamicengine/libsf_engine.so
 lib/snort_dynamicengine/libsf_engine.so.0
@@ -228,12 +229,17 @@ man/man8/snort.8.gz
 %%PORTDOCS%%%%DOCSDIR%%/WISHLIST
 %%PORTDOCS%%%%DOCSDIR%%/generators
 %%PORTDOCS%%%%DOCSDIR%%/snort_manual.pdf
+src/snort_dynamicsrc/appdata_adjuster.c
+src/snort_dynamicsrc/appdata_adjuster.h
 %%APPID%%src/snort_dynamicsrc/md5.h
 %%APPID%%src/snort_dynamicsrc/sfmemcap.h
 %%APPID%%src/snort_dynamicsrc/sfprimetable.h
 %%APPID%%src/snort_dynamicsrc/sfxhash.h
 src/snort_dynamicsrc/Unified2_common.h
+%%APPID%%src/snort_dynamicsrc/appId.h
+%%APPID%%src/snort_dynamicsrc/appIdApi.h
 src/snort_dynamicsrc/bitop.h
+%%APPID%%src/snort_dynamicsrc/dns_defs.h
 src/snort_dynamicsrc/event.h
 src/snort_dynamicsrc/file_api.h
 src/snort_dynamicsrc/file_mail_common.h
@@ -245,8 +251,15 @@ src/snort_dynamicsrc/perf_indicators.h
 src/snort_dynamicsrc/plugin_enum.h
 src/snort_dynamicsrc/preprocids.h
 src/snort_dynamicsrc/profiler.h
+src/snort_dynamicsrc/reg_test.c
+src/snort_dynamicsrc/reg_test.h
+src/snort_dynamicsrc/reload_api.h
 src/snort_dynamicsrc/rule_option_types.h
 src/snort_dynamicsrc/session_api.h
+src/snort_dynamicsrc/sfhashfcn.c
+src/snort_dynamicsrc/sfmemcap.c
+src/snort_dynamicsrc/sfprimetable.c
+src/snort_dynamicsrc/sfxhash.c
 src/snort_dynamicsrc/sfPolicyUserData.c
 src/snort_dynamicsrc/sfPolicyUserData.h
 src/snort_dynamicsrc/sf_base64decode.c
@@ -290,6 +303,8 @@ src/snort_dynamicsrc/ssl_inspect.h
 src/snort_dynamicsrc/ssl_session.h
 src/snort_dynamicsrc/str_search.h
 src/snort_dynamicsrc/stream_api.h
+%%APPID%%src/snort_dynamicsrc/thirdparty_appid_api.h
+%%APPID%%src/snort_dynamicsrc/thirdparty_appid_types.h
 src/snort_dynamicsrc/treenodes.h
 src/snort_dynamicsrc/util_unfold.c
 src/snort_dynamicsrc/util_unfold.h

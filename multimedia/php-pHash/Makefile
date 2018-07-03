@@ -3,11 +3,11 @@
 
 PORTNAME=	pHash
 PORTVERSION=	0.9.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia devel
 MASTER_SITES=	http://phash.org/releases/ \
 		http://www.cyberbotx.com/pHash/
-PKGNAMEPREFIX=	php-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	PHP extension for the pHash perceptual hash library

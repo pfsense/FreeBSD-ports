@@ -21,6 +21,7 @@ bin/morbo
 %%SITE_PERL%%/Mojo/Date.pm
 %%SITE_PERL%%/Mojo/EventEmitter.pm
 %%SITE_PERL%%/Mojo/Exception.pm
+%%SITE_PERL%%/Mojo/File.pm
 %%SITE_PERL%%/Mojo/Headers.pm
 %%SITE_PERL%%/Mojo/HelloWorld.pm
 %%SITE_PERL%%/Mojo/Home.pm
@@ -30,6 +31,7 @@ bin/morbo
 %%SITE_PERL%%/Mojo/IOLoop/Server.pm
 %%SITE_PERL%%/Mojo/IOLoop/Stream.pm
 %%SITE_PERL%%/Mojo/IOLoop/Subprocess.pm
+%%SITE_PERL%%/Mojo/IOLoop/TLS.pm
 %%SITE_PERL%%/Mojo/IOLoop/resources/server.crt
 %%SITE_PERL%%/Mojo/IOLoop/resources/server.key
 %%SITE_PERL%%/Mojo/JSON.pm
@@ -41,6 +43,7 @@ bin/morbo
 %%SITE_PERL%%/Mojo/Message/Response.pm
 %%SITE_PERL%%/Mojo/Parameters.pm
 %%SITE_PERL%%/Mojo/Path.pm
+%%SITE_PERL%%/Mojo/Promise.pm
 %%SITE_PERL%%/Mojo/Reactor.pm
 %%SITE_PERL%%/Mojo/Reactor/EV.pm
 %%SITE_PERL%%/Mojo/Reactor/Poll.pm
@@ -49,6 +52,8 @@ bin/morbo
 %%SITE_PERL%%/Mojo/Server/Daemon.pm
 %%SITE_PERL%%/Mojo/Server/Hypnotoad.pm
 %%SITE_PERL%%/Mojo/Server/Morbo.pm
+%%SITE_PERL%%/Mojo/Server/Morbo/Backend.pm
+%%SITE_PERL%%/Mojo/Server/Morbo/Backend/Poll.pm
 %%SITE_PERL%%/Mojo/Server/PSGI.pm
 %%SITE_PERL%%/Mojo/Server/Prefork.pm
 %%SITE_PERL%%/Mojo/Template.pm
@@ -91,6 +96,7 @@ bin/morbo
 %%SITE_PERL%%/Mojolicious/Guides/Growing.pod
 %%SITE_PERL%%/Mojolicious/Guides/Rendering.pod
 %%SITE_PERL%%/Mojolicious/Guides/Routing.pod
+%%SITE_PERL%%/Mojolicious/Guides/Testing.pod
 %%SITE_PERL%%/Mojolicious/Guides/Tutorial.pod
 %%SITE_PERL%%/Mojolicious/Lite.pm
 %%SITE_PERL%%/Mojolicious/Plugin.pm
@@ -117,7 +123,9 @@ bin/morbo
 %%SITE_PERL%%/Mojolicious/resources/public/favicon.ico
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/failraptor.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/jquery/jquery.js
+%%SITE_PERL%%/Mojolicious/resources/public/mojo/logo-black-2x.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/logo-black.png
+%%SITE_PERL%%/Mojolicious/resources/public/mojo/logo-white-2x.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/logo-white.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/noraptor.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/notfound.png
@@ -126,7 +134,6 @@ bin/morbo
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/prettify/prettify-mojo-dark.css
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/prettify/prettify-mojo-light.css
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/prettify/run_prettify.js
-%%SITE_PERL%%/Mojolicious/resources/public/mojo/stripes.png
 %%SITE_PERL%%/Mojolicious/resources/templates/mojo/debug.html.ep
 %%SITE_PERL%%/Mojolicious/resources/templates/mojo/exception.html.ep
 %%SITE_PERL%%/Mojolicious/resources/templates/mojo/menubar.html.ep
@@ -157,6 +164,7 @@ bin/morbo
 %%PERL5_MAN3%%/Mojo::Date.3.gz
 %%PERL5_MAN3%%/Mojo::EventEmitter.3.gz
 %%PERL5_MAN3%%/Mojo::Exception.3.gz
+%%PERL5_MAN3%%/Mojo::File.3.gz
 %%PERL5_MAN3%%/Mojo::Headers.3.gz
 %%PERL5_MAN3%%/Mojo::HelloWorld.3.gz
 %%PERL5_MAN3%%/Mojo::Home.3.gz
@@ -166,6 +174,7 @@ bin/morbo
 %%PERL5_MAN3%%/Mojo::IOLoop::Server.3.gz
 %%PERL5_MAN3%%/Mojo::IOLoop::Stream.3.gz
 %%PERL5_MAN3%%/Mojo::IOLoop::Subprocess.3.gz
+%%PERL5_MAN3%%/Mojo::IOLoop::TLS.3.gz
 %%PERL5_MAN3%%/Mojo::JSON.3.gz
 %%PERL5_MAN3%%/Mojo::JSON::Pointer.3.gz
 %%PERL5_MAN3%%/Mojo::Loader.3.gz
@@ -175,6 +184,7 @@ bin/morbo
 %%PERL5_MAN3%%/Mojo::Message::Response.3.gz
 %%PERL5_MAN3%%/Mojo::Parameters.3.gz
 %%PERL5_MAN3%%/Mojo::Path.3.gz
+%%PERL5_MAN3%%/Mojo::Promise.3.gz
 %%PERL5_MAN3%%/Mojo::Reactor.3.gz
 %%PERL5_MAN3%%/Mojo::Reactor::EV.3.gz
 %%PERL5_MAN3%%/Mojo::Reactor::Poll.3.gz
@@ -183,6 +193,8 @@ bin/morbo
 %%PERL5_MAN3%%/Mojo::Server::Daemon.3.gz
 %%PERL5_MAN3%%/Mojo::Server::Hypnotoad.3.gz
 %%PERL5_MAN3%%/Mojo::Server::Morbo.3.gz
+%%PERL5_MAN3%%/Mojo::Server::Morbo::Backend.3.gz
+%%PERL5_MAN3%%/Mojo::Server::Morbo::Backend::Poll.3.gz
 %%PERL5_MAN3%%/Mojo::Server::PSGI.3.gz
 %%PERL5_MAN3%%/Mojo::Server::Prefork.3.gz
 %%PERL5_MAN3%%/Mojo::Template.3.gz
@@ -225,6 +237,7 @@ bin/morbo
 %%PERL5_MAN3%%/Mojolicious::Guides::Growing.3.gz
 %%PERL5_MAN3%%/Mojolicious::Guides::Rendering.3.gz
 %%PERL5_MAN3%%/Mojolicious::Guides::Routing.3.gz
+%%PERL5_MAN3%%/Mojolicious::Guides::Testing.3.gz
 %%PERL5_MAN3%%/Mojolicious::Guides::Tutorial.3.gz
 %%PERL5_MAN3%%/Mojolicious::Lite.3.gz
 %%PERL5_MAN3%%/Mojolicious::Plugin.3.gz

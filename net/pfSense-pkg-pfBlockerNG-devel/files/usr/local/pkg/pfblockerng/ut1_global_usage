@@ -1,0 +1,744 @@
+# ut1_global_usage
+# pfBlockerNG - Blacklist configuration
+#
+# part of pfSense (https://www.pfsense.org)
+# Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2015-2018 BBcan177@gmail.com
+# All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Based upon layout by Franck Bourdonnec (IPCop)
+#
+#	Blacklist - pfSense settings
+#
+#	XML:		Name of pfSense XML configuration name (single lowercase word, no whitespace/special characters)
+#	TITLE:		Name of Blacklist
+#	DESCR:		Description of Blacklist
+#	FEED:		URL of Feed source
+#	SIZE:		Approx. MB size of archive
+#	WEBSITE:	Website URL
+#	LICENSE:	License URL
+#
+#	Blacklist - Format of Categories
+#
+#	NAME:		Category filename
+#	NAME xx:	Category Name (per Language)
+#	DESC xx:	Category Description (per language)
+#
+XML:	ut1
+TITLE:	UT1
+DESCR:	Universit&#xE9; Toulouse 1 Capitole - UT1
+FEED:	ftp://ftp.ut-capitole.fr/pub/reseau/cache/squidguard_contrib/blacklists.tar.gz
+SIZE:	8.5
+WEBSITE:https://dsi.ut-capitole.fr/blacklists/index_en.php
+LICENSE:https://creativecommons.org/licenses/by-sa/4.0/
+
+NAME:	adult
+DESC EN: <strong>[ Large ]</strong> Adult site from erotic to hard pornography.
+DESC FR: <strong>[ Large ]</strong> Des sites adultes allant de l'érotique à la pornographie dure.
+DESC RU: <strong>[ Large ]</strong>  Некоторые взрослые сайты от эротики до жесткой порнографии.
+DESC ES: <strong>[ Large ]</strong> Sitios para adultos, desde erotísmo a pornografía dura.
+NAME EN: Adult (XXX)
+NAME FR: Adulte (XXX)
+NAME IT: Siti per adulti (XXX)
+NAME NL: 18+ (XXX)
+NAME RU: Эротика
+NAME DE: Porno (XXX)
+NAME ES: Porno (XXX)
+
+NAME:	publicite
+DESC EN: Advertisement
+DESC FR: Publicité
+DESC RU: Объявления
+DESC ES: Publicidad
+NAME EN: Advertisement
+NAME FR: Publicité
+NAME IT: Pubblicità
+NAME NL: Reclame
+NAME RU: Реклама
+NAME DE: Anzeigen
+NAME ES: Publicidad
+
+NAME:	agressif
+DESC EN: Aggressive sites.
+DESC FR: Quelques sites racistes, antisémites, incitant à la haine.
+DESC RU: Некоторые агрессивные веб-сайты расистского, антисемитского, разжигания ненависти.
+DESC ES: Sitios agresivos, racistas, que incitan a la violencia.
+NAME EN: Aggressive (english)
+NAME FR: Agréssif (anglais)
+NAME IT: Aggressività in inglese)
+NAME NL: Aggressief (engels)
+NAME RU: Агрессия (английский)
+NAME DE: Aggressiver (englisch)
+NAME ES: Agresivo
+
+NAME:	arjel
+DESC EN: ARJEL which is a french certification authority for gambling sites
+DESC FR: Sites de pari en ligne certifiés par l ARJEL
+DESC RU: Сайты, сертификацированные французским центром ARJEL для сайтов азартных игр.
+DESC ES: Arjel, que es una certificación francesa para sitios de apuestas en línea.
+NAME RU: Arjel
+NAME EN: Arjel
+NAME FR: Arjel
+NAME IT: Arjel
+NAME NL: Arjel
+NAME DE: Arjel
+NAME ES: Arjel
+
+NAME:	astrology
+DESC EN: Astrology
+DESC FR: Astrologie
+DESC RU: Астрология.
+DESC ES: Astrología
+NAME RU: Астрология.
+NAME EN: Astrology
+NAME FR: Astrology
+NAME IT: Astrology
+NAME NL: Astrology
+NAME DE: Astrology
+NAME ES: Astrología
+
+NAME:	audio-video
+DESC EN: Audio and Video sites.
+DESC FR: Quelques sites orientés vers l'audio et la vidéo.
+DESC RU: Некоторые сайты, ориентированные на аудио и видео.
+DESC ES: Sitios de audio y vídeo.
+NAME EN: Audio / Video
+NAME FR: Audio / Vidéo
+NAME IT: Audio / Video
+NAME NL: Audio / Video
+NAME RU: Звук / Видео
+NAME DE: Audio / Video
+NAME ES: Audio / Video
+
+NAME:	bank
+DESC EN: Online bank
+DESC FR: Banque en ligne
+DESC RU: Онлайн банки.
+DESC ES: Banca en línea
+NAME RU: Банки.
+NAME EN: Bank
+NAME FR: Banques
+NAME IT: Bank
+NAME NL: Bank
+NAME DE: Bank
+NAME ES: Banca
+
+NAME:	bitcoin
+DESC EN: Sites for bitcoin mining
+DESC FR: Sites de bitcoin
+DESC ES: Sitios de bitcoin
+NAME RU: Bitcoin
+NAME EN: Bitcoin
+NAME FR: Bitcoin
+NAME IT: Bitcoin
+NAME NL: Bitcoin
+NAME DE: Bitcoin
+NAME ES: Bitcoin
+
+NAME:	blog
+DESC EN: Blogs sites.
+DESC FR: Quelques sites hébergeant des blogs.
+DESC RU: Некоторые сайты-блоги.
+DESC ES: Sitios de Blogs
+NAME EN: Blogs
+NAME FR: Blogs
+NAME IT: Blogs
+NAME NL: Blogs
+NAME DE: Blogs
+NAME RU: Блоги.
+NAME ES: Blogs
+
+NAME:	celebrity
+DESC EN: Famous people, actors, and magazine which talk about them
+DESC FR: Tout ce qui concerne l actualité dite people
+DESC RU: Известные люди, актеры и журналы, которые говорят о них.
+DESC ES: Personajes famosos, actores y sitios relacionados con ellos
+NAME RU: Знаменитости.
+NAME EN: Celebrity
+NAME FR: Celebrite
+NAME IT: Celebrity
+NAME NL: Celebrity
+NAME DE: Celebrity
+NAME ES: Celebridades (Celebrity)
+
+NAME:	chat
+DESC EN: Chat site
+DESC FR: Site de dialogue et conversation en ligne.
+DESC RU: Сайты-чаты, диалоги.
+DESC ES: Sitios de conversación en línea.
+NAME RU: Чаты.
+NAME EN: Chat
+NAME FR: Tchat
+NAME IT: Chat
+NAME NL: Chat
+NAME DE: Chat
+NAME ES: Chat
+
+NAME:	tricheur
+DESC EN: Sites which are designed to explains cheating on exams.
+DESC FR: Sites qui expliquent comme tricher aux examens.
+DESC RU: Сайты, которые предназначены для объяснения как смошенничать на экзамене.
+DESC ES: Sitios que explican cómo hacer trampas en los exámenes.
+NAME EN: Cheater
+NAME FR: Tricheur
+NAME IT: Baro
+NAME NL: Cheats
+NAME RU: Мошенник
+NAME DE: Schummler
+NAME ES: Tramposos
+
+NAME:	child
+DESC EN: Any website allowed to child (less than 10 years old)
+DESC FR: Tout ce qui est autorisé pour des enfants
+DESC RU: Любой веб-сайт, разрешенный ребенку (до 10 лет).
+DESC ES: Sitos autorizados para niños (menosres de 10 años)
+NAME RU: Ребенок
+NAME EN: Child
+NAME FR: Enfant
+NAME IT: Bambino
+NAME NL: Child
+NAME DE: Child
+NAME ES: Niños
+
+NAME:	cleaning
+DESC EN: Sites to disinfect, update and protect computers.
+DESC FR: Sites pour désinfecter et mettre à jour des ordinateurs.
+DESC RU: Сайты для лечения, обновления и защиты компьютеров.
+DESC ES: Sitios para desinfectar, actualizar y proteger ordenadores.
+NAME EN: Cleanup, Antivirus etc
+NAME FR: Nettoyage, Antivirus, etc
+NAME IT: Sicurezza (Antispyware, Antivirus ecc)
+NAME NL: Cleanup, Antivirus etc
+NAME DE: Antivirustools etc
+NAME RU: Очистка, антивирусы и т. д.
+NAME ES: Antivirus, limpieza, etc.
+
+NAME:	cooking
+DESC EN: Sites for cooking
+DESC FR: Sites de cuisine
+DESC RU: Сайты для приготовления пищи.
+DESC ES: Sitios de cocina
+NAME RU: Приготовление пищи.
+NAME EN: Cooking
+NAME FR: Cuisine
+NAME IT: Cooking
+NAME NL: Cooking
+NAME DE: Cooking
+NAME ES: Cocina (Cooking)
+
+NAME:	dangerous_material
+DESC EN: Sites which describe how to make bomb and some dangerous material.
+DESC FR: Sites décrivant des moyens de créer du matériel dangereux (explosif, poison, etc.).
+DESC RU: Сайты, описывающие способы создания опасных материалов(взрывчатые вещества, яды, и т. д.).
+DESC ES: Sitios que describen como hacer bombas y otros materiales peligrosos.
+NAME EN: Dangerous kits
+NAME FR: Assemblages dangereux
+NAME IT: Materiali Pericolosi
+NAME NL: Dangerous kits
+NAME DE: Gef&auml;hrliches Material
+NAME RU: Опасные наборы.
+NAME ES: Materiales peligrosos.
+
+NAME:	dating
+DESC EN: Dating, matching site for single person
+DESC FR: Sites de rencontres
+DESC RU: Сайты знакомств.
+DESC ES: Sitios de citas.
+NAME RU: Знакомства.
+NAME EN: Dating
+NAME FR: Rencontre
+NAME IT: Dating
+NAME NL: Dating
+NAME DE: Dating
+NAME ES: Citas
+
+NAME:	ddos
+DESC EN: DDos sites
+DESC FR: Sites de déni de services
+DESC ES: Sitios de Deny of services (ddos)
+NAME RU: DDos
+NAME EN: DDos
+NAME FR: DDos
+NAME IT: DDos
+NAME NL: DDos
+NAME DE: DDos
+NAME ES: DDos
+
+NAME:	dialer
+DESC EN: Dialer Sites
+DESC FR: Sites de dialer
+DESC ES: Sitios de marcadores (dialer)
+NAME RU: Dialer
+NAME EN: Dialer
+NAME FR: Dialer
+NAME IT: Dialer
+NAME NL: Dialer
+NAME DE: Dialer
+NAME ES: Marcadores (Dialer)
+
+NAME:	drogue
+DESC EN: Sites relative to drugs.
+DESC FR: Drogue.
+DESC RU: Сайты, имеющие отношение к наркотикам.
+DESC ES: Sitios relacionados con las drogas.
+NAME EN: Drug
+NAME FR: Drogue
+NAME IT: Droghe
+NAME NL: Verdovende middelen
+NAME RU: Наркотики
+NAME DE: Drogen
+NAME ES: Drogas
+
+NAME:	educational_games
+DESC EN: educational games sites (flash and online games )
+DESC FR: Sites de jeux éducatifs
+DESC RU: Развивающие игры
+DESC ES: Sitios de juegos educativos
+NAME RU: Развивающие игры
+NAME EN: Educational Games
+NAME FR: Jeux éducatifs
+NAME IT: giochi educativi
+NAME NL: educatieve spellen
+NAME DE: Lernspiele
+NAME ES: Juegos educativos
+
+NAME:	filehosting
+DESC EN: Websites which host files (pictures, video, ...)
+DESC FR: Sites qui hébergent des contenus (vidéos, images, sons)
+DESC RU: Веб-сайты, которые хостят файлы (картинки, видео, ...).
+DESC ES: Sitios que almacenan ficheros (imagenes, videos, audio...)
+NAME RU: Хостинг файлов.
+NAME EN: File Hosting
+NAME FR: Hebergement Fichiers
+NAME IT: File Hosting
+NAME NL: File Hosting
+NAME DE: File Hosting
+NAME ES: Almacenamiento de Ficheros
+
+NAME:	financial
+DESC EN: Sites relative financial information.
+DESC FR: Informations financières, bourses.
+DESC RU: Сайты, связанные с финансовой информацией.
+NAME ES: Sitios relacionados con información financiera, bolsas.
+NAME EN: Financial
+NAME FR: Finance
+NAME IT: Financial
+NAME NL: Financial
+NAME RU: Финансы.
+NAME DE: Financial
+NAME ES: Finanzas
+
+NAME:	forums
+DESC EN: Forums site.
+DESC FR: Forums.
+DESC RU: Сайты-форумы.
+DESC ES: Foros
+NAME EN: Forums
+NAME FR: Forums
+NAME IT: Forum
+NAME NL: Forums
+NAME RU: Форумы
+NAME DE: Foren
+NAME ES: Foros
+
+NAME:	gambling
+DESC EN: Gambling and games sites, casino, etc.
+DESC FR: Sites de jeux en ligne, casino, etc.
+DESC RU: Азартные игры и игровые сайты, казино.
+DESC ES: Sitios de juego en línea, apuestas, casinos, etc.
+NAME EN: Gambling / Casino
+NAME FR: Jeux casino
+NAME IT: Gioco d\azzardo/Casino
+NAME NL: Gokken/Casinospelen
+NAME RU: Азартные игры и казино
+NAME DE: Glueckspiel
+NAME ES: Apuestas/Casino
+
+NAME:	games
+DESC EN: games sites (flash and online games )
+DESC FR: Sites de jeux, en ligne, ou de distributions de jeux.
+DESC RU: Игровые сайты (флеш и онлайн игры).
+DESC ES: Sitios de juegos, en línea, o de distribuciones de juegos.
+NAME RU: Игры.
+NAME EN: Games
+NAME FR: Jeux
+NAME IT: Games
+NAME NL: Games
+NAME DE: Spiele
+NAME ES: Juegos
+
+NAME:	hacking
+DESC EN: Hacking sites.
+DESC FR: Sites de piratage et d'agressions informatiques.
+DESC RU: Сайты о взломе и о компьютерных атаках.
+DESC ES: Sitos de pirateo informático, hackers
+NAME EN: Hacking
+NAME FR: Hacking
+NAME IT: Hacking
+NAME NL: Hacken
+NAME RU: Хакерство
+NAME DE: Hacking
+NAME ES: Hacking
+
+NAME:	radio
+DESC EN: Internet radio sites
+DESC FR: Sites de radio sur Internet
+DESC RU: Сайты Интернет радио.
+DESC ES: Sitios de Radio por Internet.
+NAME EN: Internet Radio
+NAME FR: Radio internet
+NAME IT: Internet Radio
+NAME NL: Internet Radio
+NAME RU: Радио Интернета
+NAME DE: Internet Radio
+NAME ES: Radio Internet
+
+NAME:	jobsearch
+DESC EN: Site to looking for job
+DESC FR: Site pour trouver un emploi
+DESC RU: Сайты о поиске работы.
+DESC ES: Sitios de búsqueda de empleo
+NAME RU: Поиск работы.
+NAME EN: Job Search
+NAME FR: Emploi
+NAME IT: Job Sarch
+NAME NL: Job Search
+NAME DE: Job Search
+NAME ES: búsqueda de empleo
+
+NAME:	lingerie
+DESC EN: Sites for lingerie
+DESC FR: Sites de lingerie
+DESC RU: Сайты дамского белья.
+DESC ES: Sitios de lencería
+NAME RU: Дамское белье.
+NAME EN: Lingerie
+NAME FR: Lingerie
+NAME IT: Lingerie
+NAME NL: Lingerie
+NAME DE: Lingerie
+NAME ES: Lencería
+
+NAME:	malware
+DESC EN: Any website which deliver malware
+DESC FR: Tout site qui injecte des malwares
+DESC RU: Любой сайт, который внедряет вредоносные программы.
+DESC ES: Sitios que inyectan programas dañinos (malware)
+NAME RU: Вредоносные программы.
+NAME EN: Malware
+NAME FR: Malware
+NAME IT: Malware
+NAME NL: Malware
+NAME DE: Malware
+NAME ES: Malware
+
+NAME:	manga
+DESC EN: Any website related to manga, and cartoons
+DESC FR: Tout ce qui est lié à l'univers des mangas et de la bande dessinée
+DESC RU: Любой веб-сайт, связанный с аниме, комиксами и мультфильмами.
+DESC ES: Sitios relacionados con el manga.
+NAME RU: Аниме.
+NAME EN: Manga
+NAME FR: Manga
+NAME IT: Manga
+NAME NL: Manga
+NAME DE: Manga
+NAME ES: Manga
+
+NAME:	marketingware
+DESC EN: Very special marketing sites
+DESC FR: Sites de marketing très spéciaux
+DESC RU: Очень специальные маркетинговые сайты.
+DESC ES: Sitios de marketing muy especiales
+NAME RU: Маркетинг
+NAME EN: Marketingware
+NAME FR: Marketingware
+NAME IT: Marketingware
+NAME NL: Marketingware
+NAME DE: Marketingware
+NAME ES: Marketingware
+
+NAME:	mixed_adult
+DESC EN: Websites which contains adult sections unstructured
+DESC FR: Sites qui contiennent des portions adultes non structurés
+DESC RU: Сайты, которые содержат неструктурированные разделы для взрослых.
+DESC ES: Sitios que contienen secciones para adultos no estructuradas.
+NAME RU: Смесь для взрослых.
+NAME EN: Mixed Adult
+NAME FR: Varies Adultes
+NAME IT: Mixed Adult
+NAME NL: Mixed Adult
+NAME DE: Mixed Adult
+NAME ES: Varios Adultos
+
+NAME:	mobile-phone
+DESC EN: Sites for mobile phone (rings, etc).
+DESC FR: Sites pour les mobiles (sonneries, etc.).
+DESC RU: Сайты для мобильных телефонов (рингтоны и т. д.).
+DESC ES: Sitios para teléfonos móviles (tonos, etc.)
+NAME EN: Mobile Phone
+NAME FR: Téléphonie mobile
+NAME IT: Cellulari
+NAME NL: Mobiele telefonie
+NAME RU: Мобильный телефон
+NAME DE: Handy
+NAME ES: Telefonía móvil
+
+NAME:	phishing
+DESC EN: Phishing sites
+DESC FR: Sites de phishing, de pièges bancaires, ou autres.
+DESC RU: Фишинг-сайты, банковские ловушки или другое.
+DESC ES: Sitios relacionados con phishing (suplantación de identidad)
+NAME RU: Фишинг.
+NAME EN: Phishing
+NAME FR: Phishing
+NAME IT: Phishing
+NAME NL: Phishing
+NAME DE: Phishing
+NAME ES: Phishing (suplantación de identidad)
+
+NAME:	press
+DESC EN: Any press (informational) site
+DESC FR: Tout site de presse d'information
+DESC RU: Любая пресса (информационные сайты).
+DESC ES: Sitios de prensa (información)
+NAME RU: Пресса.
+NAME EN: Press
+NAME FR: Presse
+NAME IT: Press
+NAME NL: Press
+NAME DE: Press
+NAME ES: Prensa
+
+NAME:	redirector
+DESC EN: Redirector sites, which are used to circumvent filtering.
+DESC FR: Quelques sites qui permettent de contourner les filtres.
+DESC RU: Некоторые перенаправляющие сайты, которые используются для обхода фильтрации.
+DESC ES: Sitios de redirección de contenidos, usados para eludir el filtrado.
+NAME EN: Proxy
+NAME FR: Proxy
+NAME IT: Proxy
+NAME NL: Proxy
+NAME RU: Прокси
+NAME DE: Proxy
+NAME ES: Proxy
+
+NAME:	reaffected
+DESC EN: Websites which have been reaffected
+DESC FR: Sites qui ont changé de propriétaire et donc de contenu
+DESC RU: Сайты, которые изменили владельца и, поэтому, содержимое.
+DESC ES: Sitios que han cambiado propietario y por tanto el contenido
+NAME RU: Пострадавшие.
+NAME EN: Reaffected
+NAME FR: Reaffected
+NAME IT: Reaffected
+NAME NL: Reaffected
+NAME DE: Reaffected
+NAME ES: Sitios Reutilizados (Reaffected)
+
+NAME:	associations_religieuses
+DESC EN: Religeous Associations
+DESC FR: Sites d'associations religieuses
+NAME RU: религиозное_объединение
+NAME EN: Religious Association
+NAME FR: Associations Religieuses
+NAME IT: Associazione Religiosa
+NAME NL: Religieuze Vereniging
+NAME DE: Teligionsgemeinschaft
+NAME ES: Asociación Religiosa
+
+NAME:	remote-control
+DESC EN: site which allow remote control of user s dekstop
+DESC FR: Site permettant la prise de contrôle à distance
+DESC RU: Cайты, которые делают возможным удаленное (дистанционное) управление рабочим столом пользователя.
+DESC ES: Sitios que permiten el control remoto del escritorio del usuario.
+NAME RU: Удаленное управление.
+NAME EN: Remote Control
+NAME FR: Prise de Controle
+NAME IT: Remote Control
+NAME NL: Remote Control
+NAME DE: Remote Control
+NAME ES: Control Remoto
+
+NAME:	liste_bu
+DESC EN: A french list for educational sites. VERY locally oriented. may help libraries.
+DESC FR: Une liste très "univ-tlse1.fr" de sites éducatifs pour notre bibliothèque.
+DESC RU: Французский список образовательных сайтов. ОЧЕНЬ местно ориентированный. Может помочь библиотекам.
+DESC ES: Una lista francesa de sitios educativos. Muy orientada a sitios franceses.
+NAME EN: Schools / Academics (French)
+NAME FR: Bibliothèques universitaires
+NAME IT: Scuola/Università in francese)
+NAME NL: Scholen/Academisch (frans)
+NAME RU: Школы/Академия (французкий)
+NAME DE: Universitaetsbibliothek (frankreich)
+NAME ES: Bibliotecas universitarias (Francesas)
+
+NAME:	sect
+DESC EN: Sect
+DESC FR: Secte
+DESC RU: Секты.
+DESC ES: Sectas
+NAME RU: Секты.
+NAME EN: Sect
+NAME FR: Secte
+NAME IT: Secte
+NAME NL: Secte
+NAME DE: Secte
+NAME ES: Sectas
+
+NAME:	sexual_education
+DESC EN: Website which talk about sexual education, and can be misdetected as porn
+DESC FR: Sites qui parlent d éducation sexuelle et qui peuvent être détectés comme pornographiques
+DESC RU: Сайты, которые рассказывают о половом воспитании и могут быть ошибочно определены как порно.
+DESC ES: Sitios con contenidos acerca de la educación sexsual, y podrían ser catalogados por error como porno.
+NAME RU: Сексуальное образование.
+NAME EN: SexuaL Education
+NAME FR: Education Sexuelle
+NAME IT: Sexual Education
+NAME NL: Sexual Education
+NAME DE: Sexual Education
+NAME ES: Educación Sexual
+
+NAME:	shopping
+DESC EN: Any shopping, selling center
+DESC FR: Sites de vente et achat en ligne
+DESC RU: Сайты "купи-продай".
+DESC ES: Sitios de tiendas, compras en línea.
+NAME RU: Шоппинг.
+NAME EN: Shopping
+NAME FR: Shopping
+NAME IT: Shopping
+NAME NL: Shopping
+NAME DE: Shopping
+NAME ES: Compras (Shopping)
+
+NAME:	social_networks
+DESC EN: All social networks sites
+DESC FR: Tous les sites de réseaux sociaux
+DESC RU: Все сайты социальных сетей.
+DESC ES: Sitios de relaciones sociales
+NAME RU: Социальные сети.
+NAME EN: Social Networks
+NAME FR: Reseaux Sociaux
+NAME IT: Social Networks
+NAME NL: Social Networks
+NAME DE: Social Networks
+NAME ES: Relaciones Sociales
+
+NAME:	download
+DESC EN: Sites which propose to download software
+DESC FR: Sites qui permettent de télécharger des logiciels
+NAME EN: Software Download
+NAME FR: Telechargement de logiciels
+
+NAME:	sports
+DESC EN: Sports
+DESC FR: Sports
+DESC RU: Спортивные сайты.
+DESC ES: Sitios de deportes
+NAME RU: Спорт.
+NAME EN: Sports
+NAME FR: sports
+NAME IT: Sports
+NAME NL: Sports
+NAME DE: Sports
+NAME ES: Deportes
+
+NAME:	strict_redirector
+DESC EN: Same as redirector, but with google, yahoo, and other cache/images search robots.
+DESC FR: Comme redirector, mais avec les moteurs de recherche classiques.
+DESC RU: Тоже, что и redirector, но с google, yahoo и другими поисковыми системами кэшей/изображений.
+DESC ES: Como redirector, pero con google, yahoo y otros motores de búsqueda clásicos.
+NAME EN: Strict Proxy
+NAME FR: Proxy strict
+NAME IT: Strict Proxy
+NAME NL: Strikte Proxy
+NAME RU: Строгое Прокси
+NAME DE: Strickt Proxy
+NAME ES: Proxy estricto
+
+NAME:	strong_redirector
+DESC EN: Same as strict_redirector, but, for google, yahoo, we are only blocking some terms.
+DESC FR: Comme strict_redirector, mais, pour google et autres, on ne bloque que certains termes.
+DESC RU: Тоже, что и strict_redirector, но для google, yahoo блокируются только некоторые условия.
+DESC ES: Como strict_redirector, pero para google, yahoo y otros sólo bloquean algunos términos.
+NAME EN: Strong Proxy
+NAME FR: Proxy fort
+NAME IT: Strong Proxy
+NAME NL: Strakke Proxy
+NAME RU: Крепкое Прокси
+NAME DE: Stark Proxy
+NAME ES: Proxy fuerte
+
+NAME:	shortener
+DESC FR: Raccoursisseur d'URL
+DESC EN: URLs Shortening Sites
+NAME RU:
+NAME EN: URL Shortening Sites
+NAME FR:
+NAME IT:
+NAME NL:
+NAME DE:
+NAME ES:
+
+NAME:	translation
+DESC EN: Sites for translation
+DESC FR: Sites de traduction
+DESC RU: Сайты для перевода.
+DESC ES: Sitios para traducir.
+NAME RU: Перевод.
+NAME EN: translation
+NAME FR: traduction
+NAME IT: translation
+NAME NL: translation
+NAME DE: translation
+NAME ES: traducción
+
+NAME:	update
+DESC EN: Update Sites
+DESC FR: Sites d'Update
+NAME RU: Update
+NAME EN: Update
+NAME FR: Update
+NAME IT: Update
+NAME NL: Update
+NAME DE: Update
+NAME ES: Update
+
+NAME:	warez
+DESC EN: Warez sites.
+DESC FR: Sites distribuant, entre autres, des logiciels ou vidéos pirates.
+DESC RU: Пиратские сайты программного обеспечения.
+DESC ES: Sitios de programas piratas.
+NAME FR: Warez Downloads
+NAME EN: Warez Downloads
+NAME IT: Warez Downloads
+NAME NL: Warez Downloads
+NAME RU: Нелегальное программное обеспечение
+NAME DE: Warez
+NAME ES: Programas piratas (Warez)
+
+NAME:	webmail
+DESC EN: Webmail sites (hotmail like...)
+DESC FR: Webmail que l'on trouve sur internet (hotmail, webmail.univ-tlse1.fr, etc.)
+DESC RU: Почтовые сайты (hotmail, webmail.univ-tlse1.fr и т. д.).
+DESC ES: Sitios de correo electrónico web. (hotmail, gmail, etc.)
+NAME EN: Webmail
+NAME FR: Messagerie Web
+NAME IT: Webmail
+NAME NL: Webmail
+NAME RU: Почта
+NAME DE: Webmail
+NAME ES: Mensajería web (webmail)

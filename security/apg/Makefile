@@ -5,7 +5,7 @@ PORTNAME=	apg
 PORTVERSION=	2.3.0b
 PORTREVISION=	5
 CATEGORIES=	security
-MASTER_SITES=	http://www.adel.nursat.kz/apg/download/
+MASTER_SITES=	LOCAL/matthew
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Automated password generator
@@ -19,10 +19,6 @@ OPTIONS_DEFINE=	CRACKLIB DOCS
 CRACKLIB_DESC=	CrackLib support for password quality
 CRACKLIB_LIB_DEPENDS=	libcrack.so:security/cracklib
 CRACKLIB_MAKE_ARGS=	-DWITH_CRACKLIB
-
-post-extract:
-	@${FIND} ${WRKSRC} -type d | ${XARGS} ${CHMOD} u+wx
-	@${FIND} ${WRKSRC} -type f | ${XARGS} ${CHMOD} u+w
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/apg ${STAGEDIR}${PREFIX}/bin

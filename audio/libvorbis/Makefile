@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	libvorbis
-PORTVERSION=	1.3.5
+PORTVERSION=	1.3.6
 PORTEPOCH=	3
 CATEGORIES=	audio
-MASTER_SITES=	http://downloads.xiph.org/releases/vorbis/
+MASTER_SITES=	https://downloads.xiph.org/releases/vorbis/ \
+		https://download.videolan.org/videolan/testing/contrib/vorbis/
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Audio compression codec library
@@ -22,9 +23,7 @@ TEST_TARGET=	check
 
 OPTIONS_DEFINE=	DOCS
 
-post-stage:
+post-install:
 	cd ${STAGEDIR}${PREFIX}/share/doc && ${MV} ${DISTNAME} libvorbis
-	${LN} -s libvorbis.so.0 ${STAGEDIR}${PREFIX}/lib/libvorbis.so.4
-	${LN} -s libvorbisfile.so.3 ${STAGEDIR}${PREFIX}/lib/libvorbisfile.so.6
 
 .include <bsd.port.mk>

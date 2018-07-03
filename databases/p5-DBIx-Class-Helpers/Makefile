@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	DBIx-Class-Helpers
-PORTVERSION=	2.032000
-PORTREVISION=	1
+PORTVERSION=	2.033003
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -11,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	tj@FreeBSD.org
 COMMENT=	Simplify the common case stuff for DBIx::Class
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	p5-Carp-Clan>=0:devel/p5-Carp-Clan \

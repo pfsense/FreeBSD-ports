@@ -11,7 +11,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple Groupware is an open source enterprise application
 
 NO_BUILD=	yes
-USE_APACHE_RUN=	22
+USES=		apache:run,2.2+
 USE_MYSQL=	yes
 USE_PHP=	mysql
 
@@ -20,11 +20,17 @@ SUB_FILES=	pkg-message
 SHAREOWN=	${WWWOWN}
 SHAREGRP=	${WWWGRP}
 
-post-extract:
-	@${FIND} ${WRKSRC} -type d -exec ${CHMOD} 755 {} \;
-
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100077
+# chmod -R bug.
+# Do not use "-exec ... +", because of the same bug, it will not work.
+post-extract:
+	@${FIND} ${WRKSRC} -type d -exec ${CHMOD} 755 {} \;
+.endif
+
+.include <bsd.port.post.mk>

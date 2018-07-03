@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	logstash
-PORTVERSION=	2.3.2
+PORTVERSION=	2.4.1
 CATEGORIES=	sysutils java
 MASTER_SITES=	http://download.elastic.co/logstash/logstash/
 
@@ -12,6 +12,8 @@ COMMENT=	Tool for managing events and logs
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
+
+CONFLICTS=	logstash5-[0-9]*
 
 USES=		cpe
 CPE_VENDOR=	elasticsearch

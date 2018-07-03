@@ -1,2 +1,3 @@
-SHA256 (glyptodon-guacamole-server-0.9.9_GH0.tar.gz) = 53d26e2e7e028b0d9fbc502b94acd02e2d04e3a491c8be4a3e16290c2ec58321
-SIZE (glyptodon-guacamole-server-0.9.9_GH0.tar.gz) = 265031
+TIMESTAMP = 1516318156
+SHA256 (apache-guacamole-server-0.9.14_GH0.tar.gz) = 3a4e3f856ebf3daacaf08b93b45a013f919530a11d86cc5c41f858b3bc2984b6
+SIZE (apache-guacamole-server-0.9.14_GH0.tar.gz) = 412667

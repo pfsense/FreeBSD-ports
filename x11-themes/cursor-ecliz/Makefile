@@ -3,12 +3,13 @@
 
 PORTNAME=	ecliz
 PORTVERSION=	0.1
+PORTREVISION=	1
 CATEGORIES=	x11-themes
 MASTER_SITES=	http://kde-look.org/CONTENT/content-files/
 PKGNAMEPREFIX=	cursor-
 DISTNAME=	76605-Ecliz_Port
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ecliz X cursor theme
 
 NO_BUILD=	yes
@@ -16,10 +17,10 @@ NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/Ecliz
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/X11/icons/${PORTNAME}
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/${PORTNAME}
 	cd ${WRKSRC} && ${COPYTREE_SHARE} cursors \
-		${STAGEDIR}${PREFIX}/lib/X11/icons/${PORTNAME}
+		${STAGEDIR}${PREFIX}/share/icons/${PORTNAME}
 	${INSTALL_DATA} ${WRKSRC}/index.theme \
-		${STAGEDIR}${PREFIX}/lib/X11/icons/${PORTNAME}
+		${STAGEDIR}${PREFIX}/share/icons/${PORTNAME}
 
 .include <bsd.port.mk>

@@ -13,10 +13,11 @@ MAINTAINER=	kiwi@oav.net
 COMMENT=	Apache module to try to protect the HTTP Server from DoS/DDoS attacks
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USE_APACHE=	22+
+USES=		apache:2.2+
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 MODULENAME=	${PORTNAME}20
@@ -29,12 +30,12 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|/bin/mail|/usr/bin/mail|g" \
 		${WRKSRC}/mod_evasive.c ${WRKSRC}/mod_evasive20.c \
 		${WRKSRC}/mod_evasiveNSAPI.c
-.if ${APACHE_VERSION:M24}
-	${REINPLACE_CMD} -e 's/remote_ip/client_ip/g' ${WRKSRC}/mod_evasive20.c
+.if ${APACHE_VERSION:M2.4}
+	@${REINPLACE_CMD} -e 's/remote_ip/client_ip/g' ${WRKSRC}/mod_evasive20.c
 .endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

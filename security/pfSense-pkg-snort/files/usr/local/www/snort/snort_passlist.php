@@ -160,8 +160,13 @@ display_top_tabs($tab_array, true);
 			<tr>
 				<td><input type="checkbox" id="frc<?=$i?>" name="del[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['name']);?></td>
+		<?php if (strlen($list['address']) > 0) : ?>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';" title="<?=filter_expand_alias($list['address']);?>">
 					<?=gettext($list['address']);?></td>
+		<?php else : ?>
+				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';">
+				</td>
+		<?php endif; ?>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['descr']);?>&nbsp;</td>
 				<td style="cursor: pointer;"><a href="snort_passlist_edit.php?id=<?=$i;?>" class="fa fa-pencil" title="<?=gettext('Edit Pass List');?>"></a>
 				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete Pass List'); ?>"></a>

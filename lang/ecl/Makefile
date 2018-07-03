@@ -3,7 +3,7 @@
 
 PORTNAME=	ecl
 PORTVERSION=	15.3.7
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	lang lisp
 MASTER_SITES=	SF/${PORTNAME}s/${PORTNAME}s/15.3/
 
@@ -12,9 +12,10 @@ COMMENT=	ANSI Common Lisp implementation
 
 LICENSE=	LGPL20
 
-BROKEN_powerpc64=	Does not build
-
 LIB_DEPENDS=	libgmp.so:math/gmp
+
+BROKEN_aarch64=		Does not compile: error: unknown type name AO_TS_t
+BROKEN_powerpc64=	Does not link: undefined reference to fmodl
 
 MAKE_JOBS_UNSAFE=	yes
 USES=		gmake perl5 tar:tgz
@@ -35,9 +36,6 @@ DFFI_DESC=	Dynamic foreign-function support
 
 OPTIONS_SUB=	yes
 PLIST_SUB=	VERSION="${PORTVERSION}"
-
-BROKEN_ia64=	does not compile
-BROKEN_sparc64=	does not compile
 
 ASDF_CONFIGURE_ON=	--with-asdf=yes
 ASDF_CONFIGURE_OFF=	--with-asdf=no

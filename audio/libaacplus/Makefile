@@ -28,12 +28,9 @@ CONFLICTS=	aacplusenc-0*
 USE_CSTD=	gnu89
 USES=		autoreconf pathfix pkgconfig libtool
 USE_LDCONFIG=	yes
-PATHFIX_MAKEFILEIN=	Makefile.am
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
-
-AUTOMAKE_ARGS=	--add-missing
 
 OPTIONS_DEFINE=	FFTW3
 OPTIONS_DEFAULT=FFTW3

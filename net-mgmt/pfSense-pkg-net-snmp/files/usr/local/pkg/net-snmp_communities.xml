@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * net-snmp_communities.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>netsnmp_communities</name>
+	<title>NET-SNMP</title>
+	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+		</tab>
+		<tab>
+			<text>Host Information</text>
+			<url>/pkg_edit.php?xml=net-snmp_hostinfo.xml</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=net-snmp_users.xml</url>
+		</tab>
+		<tab>
+			<text>Communities</text>
+			<url>/pkg.php?xml=net-snmp_communities.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Trap Generation</text>
+			<url>/pkg_edit.php?xml=net-snmp_trapgen.xml</url>
+		</tab>
+		<tab>
+			<text>[SNMP Trap Daemon]</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+		</tab>
+	</tabs>
+	<delete_string>SNMP user deleted</delete_string>
+	<addedit_string>SNMP user created/modified</addedit_string>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Community Name</fielddescr>
+			<fieldname>community</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>RO/RW</fielddescr>
+			<fieldname>rorwcommunity</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Address Family</fielddescr>
+			<fieldname>commtype</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>SNMPv1/SNMPv2c Communities</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Communities are used in SNMPv1 and SNMPv2c to control access to SNMP data.
+				Due to the nature of SNMP, this mechanism is insecure as it is only a single
+				password-like string and all information is transmitted in plain text.
+				<br/><br/>
+				When SNMPv1 or SNMPv2c are in use, ensure that the daemon is secured by firewall rules
+				and that any transmission of data happens over a local or encrypted connection.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Community Name</fielddescr>
+			<fieldname>community</fieldname>
+			<description><![CDATA[SNMPv1/v2c community name.]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Read/Write Access</fielddescr>
+			<fieldname>rorwcommunity</fieldname>
+			<description><![CDATA[Select the type of access this community will have.]]></description>
+			<type>select</type>
+			<default_value>rouser</default_value>
+			<options>
+				<option><name>Read Only (GET, GETNEXT)</name><value>rocommunity</value></option>
+				<option><name>Read/Write (GET, GETNEXT, SET)</name><value>rwcommunity</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Address Family</fielddescr>
+			<fieldname>commtype</fieldname>
+			<description><![CDATA[The IP address family for this community.]]></description>
+			<type>select</type>
+			<default_value>IPv4</default_value>
+			<options>
+				<option><name>IPv4</name><value>IPv4</value></option>
+				<option><name>IPv6</name><value>IPv6</value></option>
+				<option><name>IPv4 and IPv6</name><value>both</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Source Restriction</fielddescr>
+			<fieldname>source</fieldname>
+			<description><![CDATA[Restrict access to a specified address or subnet which must match the Address Family above.
+				Leave blank to allow full access.
+				<br/>Enter "default" to set a base OID without specifying a network source.]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Base OID</fielddescr>
+			<fieldname>baseoid</fieldname>
+			<description><![CDATA[Restrict the community to part of the tree rooted at this OID. Leave blank to allow full access.]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+
+	</fields>
+	<custom_php_resync_config_command>
+		netsnmp_resync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		netsnmp_validate_netsnmpcommunities($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

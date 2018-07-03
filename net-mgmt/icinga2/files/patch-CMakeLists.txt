@@ -1,4 +1,4 @@
---- CMakeLists.txt.orig	2016-08-17 14:19:24 UTC
+--- CMakeLists.txt.orig	2018-03-22 10:26:19 UTC
 +++ CMakeLists.txt
 @@ -28,8 +28,8 @@ if(NOT CMAKE_BUILD_TYPE)
        FORCE)

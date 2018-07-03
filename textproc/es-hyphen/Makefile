@@ -13,8 +13,15 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Spanish hyphenation rules
 
-LICENSE=	GPLv3 LGPL3 MPL
+LICENSE=	GPLv3 LGPL3 MPL11
 LICENSE_COMB=	dual
+LICENSE_FILE_GPLv3=	${WRKSRC}/GPLv3.txt
+LICENSE_FILE_LGPL3=	${WRKSRC}/LGPLv3.txt
+LICENSE_FILE_MPL11=	${WRKSRC}/MPL-1.1.txt
+
+BROKEN_armv6=	fails to package: tar: Pathname cannot be converted from UTF-8 to current locale
+BROKEN_armv7=	fails to package: tar: Pathname cannot be converted from UTF-8 to current locale
+BROKEN_mips=	fails to package: tar: Pathname cannot be converted from UTF-8 to current locale
 
 NO_ARCH=	yes
 NO_BUILD=	yes

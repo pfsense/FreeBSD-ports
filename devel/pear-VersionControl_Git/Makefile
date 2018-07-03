@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	VersionControl_Git
-PORTVERSION=	0.4.4
+PORTVERSION=	0.5.0
 CATEGORIES=	devel pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	OO interface to handle Git repository
 
-USES=	pear
+LICSENSE=	APACHE20
+
+USES=		pear
 
 .include <bsd.port.mk>

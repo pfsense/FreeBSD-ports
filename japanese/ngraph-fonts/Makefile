@@ -6,12 +6,12 @@ PORTVERSION=	1.0
 PORTREVISION=	3
 CATEGORIES=	japanese math x11-fonts
 
-MAINTAINER=	sanpei@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Japanese Font Setup for math/ngraph
 
 RUN_DEPENDS= \
-	${LOCALBASE}/share/kanji/kanji18.pcf.gz:japanese/font-kanji18 \
-	${LOCALBASE}/share/kanji/kanji26.pcf.gz:japanese/font-kanji26
+	${LOCALBASE}/share/fonts/kanji/kanji18.pcf.gz:japanese/font-kanji18 \
+	${LOCALBASE}/share/fonts/kanji/kanji26.pcf.gz:japanese/font-kanji26
 
 USES=		metaport
 

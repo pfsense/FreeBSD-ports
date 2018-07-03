@@ -175,7 +175,8 @@ chroot_autoupdate()
 make_symlinks()
 {
 	checkyesno named_symlink_enable &&
-	    ln -fs "${named_chrootdir}${pidfile}" ${pidfile}
+	    ln -fs "${named_chrootdir}${pidfile}" ${pidfile} &&
+	    ln -fs "${named_chrootdir}${sessionkeyfile}" ${sessionkeyfile}
 }
 
 named_poststart()
@@ -194,7 +195,7 @@ named_reload()
 {
 	# This is a one line function, but ${named_program} is not defined early
 	# enough to be there when the reload_cmd variable is defined up there.
-	${_named_program_root}/sbin/rndc ${rndc_flags} reload
+	rndc reload
 }
 
 find_pidfile()
@@ -203,6 +204,15 @@ find_pidfile()
 		pidfile="${_pidfile_from_conf}"
 	else
 		pidfile="/var/run/named/pid"
+	fi
+}
+
+find_sessionkeyfile()
+{
+	if get_pidfile_from_conf session-keyfile ${named_conf}; then
+		sessionkeyfile="${_pidfile_from_conf}"
+	else
+		sessionkeyfile="/var/run/named/session.key"
 	fi
 }
 
@@ -220,7 +230,7 @@ named_stop()
 		return 1
 	fi
 	echo 'Stopping named.'
-	if ${_named_program_root}/sbin/rndc ${rndc_flags} stop 2>/dev/null; then
+	if rndc stop; then
 		wait_for_pids ${rc_pid}
 	else
 		echo -n 'rndc failed, trying kill: '
@@ -255,12 +265,32 @@ create_file()
 	install -o root -g wheel -m 0644 /dev/null $1
 }
 
+rndc()
+{
+	if [ -z "${rndc_flags}" ]; then
+		if [ -s "${rndc_conf}" ] ; then
+			rndc_flags="-c ${rndc_conf}"
+		elif [ -s "${rndc_key}" ] ; then
+			rndc_flags="-k ${rndc_key}"
+		else
+			rndc_flags=""
+		fi
+	fi
+
+	${_named_program_root}/sbin/rndc ${rndc_flags} "$@"
+}
+
 named_prestart()
 {
 	find_pidfile
+	find_sessionkeyfile
 
 	if [ -n "${named_pidfile}" ]; then
 		warn 'named_pidfile: now determined from the conf file'
+	fi
+
+	if [ -n "${named_sessionkeyfile}" ]; then
+		warn 'named_sessionkeyfile: now determined from the conf file'
 	fi
 
 	piddir=`/usr/bin/dirname ${pidfile}`
@@ -268,17 +298,12 @@ named_prestart()
 		install -d -o ${named_uid} -g ${named_uid} ${piddir}
 	fi
 
-	command_args="-u ${named_uid:=root} -c ${named_conf} ${command_args}"
-
-	if [ -z "${rndc_flags}" ]; then
-		if [ -s ${rndc_conf} ] ; then
-			rndc_flags="-c ${rndc_conf}"
-		elif [ -s ${rndc_key} ] ; then
-			rndc_flags="-k ${rndc_key}"
-		else
-			rndc_flags=""
-		fi
+	sessionkeydir=`/usr/bin/dirname ${sessionkeyfile}`
+	if [ ! -d ${sessionkeydir} ]; then
+		install -d -o ${named_uid} -g ${named_uid} ${sessionkeydir}
 	fi
+
+	command_args="-u ${named_uid:=root} -c ${named_conf} ${command_args}"
 
 %%NATIVE_PKCS11%%	if [ -z "${named_pkcs11_engine}"]; then
 %%NATIVE_PKCS11%%		err 3 "named_pkcs11_engine has to be set to the PKCS#11 engine's library you want to use"
@@ -297,6 +322,15 @@ named_prestart()
 	if [ -n "${named_chrootdir}" ]; then
 		rc_flags="${rc_flags} -t ${named_chrootdir}"
 		checkyesno named_chroot_autoupdate && chroot_autoupdate
+
+		case "${altlog_proglist}" in
+		  *named*)
+		    ;;
+		  *)
+		    warn 'Using chroot without setting altlog_proglist, logging may not'
+		    warn 'work correctly.  Run sysrc altlog_proglist+=named'
+		    ;;
+		esac
 	else
 		named_symlink_enable=NO
 	fi

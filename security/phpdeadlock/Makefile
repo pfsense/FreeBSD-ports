@@ -19,13 +19,12 @@ DLURL?=		${PORTNAME}
 DLDIR=		www/${DLURL}
 PORTDOCS=	CHANGES.txt COPYING.txt UPGRADE.txt
 
-USES=		dos2unix
-USE_APACHE_RUN=	22+
+USES=		apache:run,2.2+ dos2unix
 USE_PHP=	mysql session ctype pcre
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=	70 71
 
 SUB_FILES=	pkg-message
 SUB_LIST=	DLURL=${DLURL} DLDIR=${DLDIR}

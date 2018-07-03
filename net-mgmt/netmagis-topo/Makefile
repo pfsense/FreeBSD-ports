@@ -6,8 +6,10 @@ PKGNAMESUFFIX=	-topo
 
 COMMENT=	Netmagis topology module
 
+LICENSE=	CECILL-B
+
 RUN_DEPENDS=	netmagis-config:net-mgmt/netmagis-common \
-		rancid-run:net-mgmt/rancid \
+		rancid-run:net-mgmt/rancid3 \
 		fping:net/fping
 
 NO_ARCH=	# no
@@ -22,7 +24,7 @@ PLIST=		${.CURDIR}/pkg-plist
 
 ALL_TARGET=build${PKGNAMESUFFIX?=}
 
-post-stage:
+post-install:
 	@${MKDIR} ${STAGEDIR}/var/netmagis/eqgen ${STAGEDIR}/var/netmagis/eqvirt
 
 .include "${MASTERDIR}/Makefile"

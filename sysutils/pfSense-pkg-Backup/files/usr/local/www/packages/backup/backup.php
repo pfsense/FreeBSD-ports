@@ -23,6 +23,15 @@ require_once("guiconfig.inc");
 require_once("/usr/local/pkg/backup.inc");
 
 global $config, $backup_dir, $backup_filename, $backup_path;
+
+if (!is_array($config['installedpackages']['backup'])) {
+	$config['installedpackages']['backup'] = array();
+}
+
+if (!is_array($config['installedpackages']['backup']['config'])) {
+	$config['installedpackages']['backup']['config'] = array();
+}
+
 $a_backup = &$config['installedpackages']['backup']['config'];
 $backup_dir = "/root/backup";
 $backup_filename = "pfsense.bak.tgz";

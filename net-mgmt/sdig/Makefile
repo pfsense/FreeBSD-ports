@@ -5,7 +5,8 @@ PORTNAME=	sdig
 PORTVERSION=	0.45
 PORTREVISION=	1
 CATEGORIES=	net-mgmt
-MASTER_SITES=	SF
+MASTER_SITES=	SF \
+		ZI
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Translate IP/DNS/WINS/MAC address into port description
@@ -14,6 +15,7 @@ LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+CFLAGS+=	-D_WANT_SEMUN
 
 PLIST_FILES=	bin/sdig etc/sdig.conf etc/mactable man/man5/sdig.conf.5.gz \
 		man/man8/sdig.8.gz

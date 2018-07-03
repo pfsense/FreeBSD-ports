@@ -5,38 +5,35 @@ PORTNAME=	august
 PORTVERSION=	0.63b
 PORTREVISION=	5
 CATEGORIES=	www editors
-MASTER_SITES=	http://fossies.org/unix/www/old/ \
-		http://www.sourcefiles.org/Editors/HTML/ \
-		http://www.erjobe.info/mainwiki/pmwiki/uploads/Main/August/
+MASTER_SITES=	http://www.erjobe.info/mainwiki/pmwiki/uploads/Main/August/
 DISTNAME=	${PORTNAME}${PORTVERSION}.src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	HTML editor for the experienced Web author
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/license.txt
 
-OPTIONS_DEFINE=	DOCS
-
-USES+=		tk
 RUN_DEPENDS=	identify:graphics/ImageMagick \
 		weblint:www/weblint
 
+USES=		tk
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 PORTDOCS=	specchars.txt
 PLIST_FILES=	bin/august
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${REINPLACE_CMD} -e \
-		's|/usr/bin/wish|${WISH}|g' ${WRKSRC}/august
+	@${REINPLACE_CMD} -e 's|/usr/bin/wish|${WISH}|g' ${WRKSRC}/august
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/august ${STAGEDIR}${PREFIX}/bin
-.if ${PORT_OPTIONS:MDOCS}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/specchars.txt ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

@@ -1,0 +1,25 @@
+www/status_frr.php
+pkg/frr.xml
+pkg/frr.inc
+pkg/frr/frr_global_acls.xml
+pkg/frr/frr_bgp_aspaths.xml
+pkg/frr/frr_bgp_neighbors.xml
+pkg/frr/frr_ospf_interfaces.xml
+pkg/frr/frr_global_routemaps.xml
+pkg/frr/frr_bgp_communities.xml
+pkg/frr/inc/frr_ospf6.inc
+pkg/frr/inc/frr_ospf.inc
+pkg/frr/inc/frr_bgp.inc
+pkg/frr/inc/frr_validation.inc
+pkg/frr/inc/frr_zebra.inc
+pkg/frr/frr_global_raw.xml
+pkg/frr/frr_ospf6.xml
+pkg/frr/frr_ospf6_interfaces.xml
+pkg/frr/frr_ospf.xml
+pkg/frr/frr_bgp_advanced.xml
+pkg/frr/frr_global_prefixes.xml
+pkg/frr/frr_bgp.xml
+bin/frrctl
+%%DATADIR%%/info.xml
+/etc/inc/priv/frr.priv.inc
+@dir /etc/inc/priv

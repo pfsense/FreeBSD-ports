@@ -19,10 +19,8 @@ PORTSCOUT=	skipv:1.5.0~rc0,1.5.0~rc1
 LIBVERSION=	1
 PLIST_SUB+=	LIBVERSION="${LIBVERSION}"
 
-BUILD_DEPENDS+=		gm4:devel/m4
 CFLAGS+=		-Ds6_addr16=__u6_addr.__u6_addr16
 CFLAGS+=		-Ds6_addr32=__u6_addr.__u6_addr32
-MAKE_FLAGS+=		M4=gm4
 
 DOCS=		COPYING GPL-vs-LGPL INSTALL README \
 		README.html TODO changelog
@@ -39,7 +37,7 @@ post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
 
-post-stage:
+post-install:
 .for f in ${TOSTRIP}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${f}
 .endfor

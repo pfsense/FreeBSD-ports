@@ -6,7 +6,6 @@ PORTNAME=	distcc
 PORTVERSION=	3.1
 PORTREVISION=	6
 CATEGORIES=	devel
-MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distribute compilation of C(++) code acrosss machines on a network
@@ -14,19 +13,19 @@ COMMENT=	Distribute compilation of C(++) code acrosss machines on a network
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN=		Unfetchable (google code has gone away)
-
 LIB_DEPENDS=	libpopt.so:devel/popt
 
 GNU_CONFIGURE=	yes
-USES=		alias gmake tar:bzip2
-WANT_GNOME=	yes
+USES=		autoreconf alias gmake libtool pkgconfig
+USE_GITHUB=	yes
+GH_ACCOUNT=     distcc
+GH_TAGNAME=	9a09372
 
 GROUPS=		distcc
 USERS=		distcc
 
 CCLINKDIR?=	libexec/distcc
-CONFIGURE_ARGS=	--disable-Werror
+CONFIGURE_ARGS=	--disable-Werror CC=${CC} PTHREAD_CC=${CC}
 CONFIGURE_ENV=	PYTHON="${NONEXISTENT}"
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -72,7 +71,7 @@ DISTCC_COMPILERS=	CC c++ cc
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLANGLINK}
-CLANG_COMPILERS=	-devel 31 32 33 34 35
+CLANG_COMPILERS=	-devel 31 32 33 34 35 36 37 38 39
 DISTCC_COMPILERS+=	clang++ clang
 DISTCC_COMPILERS+=	${CLANG_COMPILERS:S|^|clang++|}
 DISTCC_COMPILERS+=	${CLANG_COMPILERS:S|^|clang|}
@@ -122,14 +121,14 @@ do-install:
 	cd ${WRKSRC}/gnome && ${INSTALL_DATA} distccmon-gnome-icon.png \
 	    ${STAGEDIR}${PREFIX}/share/pixmaps
 .endif
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/man && ${INSTALL_MAN} ${MAN_FILES} \
+	    ${STAGEDIR}${MANPREFIX}/man/man1
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${README_FILES} \
 	    ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && ${INSTALL_DATA} ${DOC_FILES} \
 	    ${STAGEDIR}${DOCSDIR}
-.endif
-	cd ${WRKSRC}/man && ${INSTALL_MAN} ${MAN_FILES} \
-	    ${STAGEDIR}${MANPREFIX}/man/man1
 
 .include <bsd.port.mk>

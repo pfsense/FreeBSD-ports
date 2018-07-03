@@ -3,7 +3,7 @@
 
 PORTNAME=	ezstream
 PORTVERSION=	0.5.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.xiph.org/releases/ezstream/ \
 		http://svn.xiph.org/releases/ezstream/
@@ -40,7 +40,6 @@ TAGLIB_LIB_DEPENDS=		libtag.so:audio/taglib
 TAGLIB_CONFIGURE_ON=	--with-taglib=${LOCALBASE}
 
 .include <bsd.port.options.mk>
-
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^SUBDIRS =/s|examples||g ; \

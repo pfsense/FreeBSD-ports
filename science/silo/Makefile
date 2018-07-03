@@ -4,20 +4,22 @@
 PORTNAME=	silo
 PORTVERSION=	4.10.2
 DISTVERSIONSUFFIX=	-bsd
+PORTREVISION=	6
 CATEGORIES=	science
 MASTER_SITES=	http://wci.llnl.gov/content/assets/docs/simulation/computer-codes/${PORTNAME}/silo-${PORTVERSION}/
 
-MAINTAINER=	dbaio@bsd.com.br
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Mesh and field I/O library and scientific database
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
+USES=		gmake libtool readline
+USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared --disable-static
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool readline
-USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=			FORTRAN HDF5 PYTHON QT4
 OPTIONS_DEFAULT=		HDF5
@@ -32,19 +34,16 @@ HDF5_PLIST_SUB=			SUFX_HDF5="h5"
 HDF5_PLIST_SUB_OFF=		SUFX_HDF5=""
 
 PYTHON_CONFIGURE_ENABLE=	pythonmodule
-PYTHON_USES=			python:2
+PYTHON_USES=			python:2.7
 
 QT4_USE=			XORG=ice,sm,x11,xext,xi,xmu,xt \
 				QT4=corelib,gui,linguisttools_build,moc_build,uic_build
-QT4_CONFIGURE_ON=		--with-Qt-dir=${QT_PREFIX} \
+QT4_CONFIGURE_ON=		--with-Qt-dir=${PREFIX} \
 				--with-Qt-lib="QtGui -lQtCore"
 QT4_CONFIGURE_ENABLE=		silex
 QT4_VARS=			QT_NONSTANDARD=yes
 QT4_DESKTOP_ENTRIES=		"Silex" "Silex browser for Silo files" \
 				"" "silex" "" true
-
-post-extract:
-	@${CHMOD} -R a+rX ${WRKSRC}
 
 post-patch:
 	@${REINPLACE_CMD} -e \

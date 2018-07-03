@@ -3,6 +3,7 @@
 
 PORTNAME=	digikam
 PORTVERSION=	${DIGIKAM_VER}
+PORTREVISION=	12
 PORTEPOCH=	2
 CATEGORIES=	graphics kde
 
@@ -11,7 +12,6 @@ COMMENT=	KDE4 digital photo management application
 
 .include "${.CURDIR}/Makefile.common"
 
-BUILD_DEPENDS=	${LOCALBASE}/include/eigen3/Eigen/Eigen:math/eigen3
 LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		liblcms.so:graphics/lcms \
 		libpng.so:graphics/png \
@@ -20,10 +20,10 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		liblqr-1.so:graphics/liblqr-1 \
 		libkface.so:graphics/libkface \
 		libpgf.so:graphics/libpgf \
-		libkgeomap.so:astro/libkgeomap \
+		libkgeomap.so:astro/libkgeomap-kde4 \
 		libboost_graph.so:devel/boost-libs
 
-USES+=		pkgconfig shebangfix
+USES+=		eigen:3 pkgconfig shebangfix
 USE_KDE+=	libkdcraw libkexiv2 libkipi runtime_run
 USE_QT4+=	sql-sqlite3_run
 USE_LDCONFIG=	yes

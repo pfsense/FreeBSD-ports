@@ -2,16 +2,16 @@
 
 PORTNAME=	electrix
 PORTVERSION=	0.2.0
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	graphics print
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTVERSION}
 
-MAINTAINER=	olivierd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Application to view PDF files
 
 LICENSE=	GPLv2
 
-USES=		desktop-file-utils pkgconfig python:2 tar:bzip2 waf
+USES=		desktop-file-utils pkgconfig python:2.7 tar:bzip2 waf
 USE_GNOME=	gtk20 glib20 intltool intlhack
 
 MAKE_ENV=	DESTDIR="${STAGEDIR}" \

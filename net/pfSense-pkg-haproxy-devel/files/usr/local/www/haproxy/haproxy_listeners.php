@@ -31,6 +31,14 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $changedesc = "Services: HAProxy: Frontends";
 
+if (!is_array($config['installedpackages']['haproxy'])) {
+	$config['installedpackages']['haproxy'] = array();
+}
+
+if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+	$config['installedpackages']['haproxy']['ha_backends'] = array();
+}
+
 if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
 }
@@ -38,7 +46,7 @@ $a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
-	
+
 	$a_new = array();
 	/* copy all entries < $before and not selected */
 	for ($i = 0; $i < $before; $i++) {
@@ -83,7 +91,7 @@ if($_GET['action'] == "toggle") {
 			echo "1|";
 		}
 		$changedesc .= " set frontend '$id' status to: {$frontent['status']}";
-		
+
 		touch($d_haproxyconfdirty_path);
 		write_config($changedesc);
 	}
@@ -120,7 +128,7 @@ if ($_POST) {
 			header("Location: haproxy_listeners.php");
 			exit;
 		}
-	} else {	
+	} else {
 
 		// from '\src\usr\local\www\vpn_ipsec.php'
 		/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
@@ -133,7 +141,7 @@ if ($_POST) {
 			}
 		}
 		//
-		
+
 		/* move selected p1 entries before this */
 		if (isset($movebtn) && is_array($_POST['rule']) && count($_POST['rule'])) {
 			$moveto = get_frontend_id($movebtn);
@@ -142,9 +150,9 @@ if ($_POST) {
 				$selected[] = get_frontend_id($selection);
 			}
 			array_moveitemsbefore($a_frontend, $moveto, $selected);
-		
+
 			touch($d_haproxyconfdirty_path);
-			write_config($changedesc);			
+			write_config($changedesc);
 		}
 	}
 } else {
@@ -192,7 +200,7 @@ function haproxy_userlist_backend_servers($backendname) {
 	return $backend_servers;
 }
 
-$pgtitle = array("Services", "HAProxy", "Frontends");
+$pgtitle = array("Services", "HAProxy", "Frontend");
 include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -210,18 +218,25 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
 
 ?>
 <form action="haproxy_listeners.php" method="post">
-<script type="text/javascript" src="/haproxy/haproxy_geturl.js"></script>
 <script type="text/javascript">
 function set_content(elementid, image) {
 	var item = document.getElementById(elementid);
 	item.innerHTML = image;
 }
-
+function toggleFrontend(frontendname) {
+	$.ajax({
+		url: "",
+		data: {id: frontendname, action:"toggle"},
+		success: function(data){
+			js_callback(data);
+		}
+	})
+}
 function js_callback(req) {
 	showapplysettings.style.display = 'block';
-	
-	if(req.content !== '') {
-		var itemsplit = req.content.split("|");
+
+	if(req !== '') {
+		var itemsplit = req.split("|");
 		buttonid = itemsplit[0];
 		enabled = itemsplit[1];
 		if (enabled === "1"){
@@ -234,7 +249,7 @@ function js_callback(req) {
 }
 </script>
 <?php
-	
+
 	function sort_sharedfrontends(&$a, &$b) {
 		// make sure the 'primary frontend' is the first in the array, after that sort by name.
 		if ($a['secondary'] != $b['secondary']) {
@@ -245,7 +260,7 @@ function js_callback(req) {
 		}
 		return 0;
 	}
-	
+
 	$a_frontend_grouped = array();
 	foreach($a_frontend as &$frontend2) {
 		$mainfrontend = get_primaryfrontend($frontend2);
@@ -280,13 +295,13 @@ function js_callback(req) {
 				<tbody class="user-entries">
 <?php
 		$textgray = "";
-		$first = true;		
+		$first = true;
 		$last_frontend_shared = false;
 		$i = 0;
 		foreach ($a_frontend_grouped as $a_frontend) {
 			//usort($a_frontend, 'sort_sharedfrontends');
 			if ((count($a_frontend) > 1 || $last_frontend_shared) && !$first) {
-				?> <tr class="<?=$textgray?>"><td colspan="10">&nbsp;</td></tr> <?	
+				?> <tr class="<?=$textgray?>"><td colspan="10">&nbsp;</td></tr> <?
 			}
 			$first = false;
 			$last_frontend_shared = count($a_frontend) > 1;
@@ -314,7 +329,7 @@ function js_callback(req) {
 						} else {
 							$iconfn = "enabled";
 						}?>
-					<a id="btn_<?=$frontendname;?>" href='javascript:getURL("?id=<?=$frontendname;?>&amp;action=toggle&amp;", js_callback);'>
+					<a id="btn_<?=$frontendname;?>" href='javascript:toggleFrontend("<?=$frontendname;?>");'>
 						<?=haproxyicon($iconfn, gettext("click to toggle enable/disable this frontend"))?>
 					</a>
 				  </td>
@@ -328,7 +343,7 @@ function js_callback(req) {
 					if ($isaclset) {
 						echo haproxyicon("acl", gettext("acl's used") . ": {$isaclset}");
 					}
-					
+
 					if (get_frontend_uses_ssl($frontend)) {
 						$cert = lookup_cert($frontend['ssloffloadcert']);
 						$descr = htmlspecialchars($cert['descr']);
@@ -343,7 +358,7 @@ function js_callback(req) {
 						}
 						echo haproxyicon("cert", "SSL offloading cert: {$descr}");
 					}
-					
+
 					$isadvset = "";
 					if ($frontend['advanced_bind']) {
 						$isadvset .= "Advanced bind: ".htmlspecialchars($frontend['advanced_bind'])."\r\n";
@@ -425,7 +440,7 @@ function js_callback(req) {
 					<a href="haproxy_listeners_edit.php?id=<?=$frontendname;?>">
 						<?=haproxyicon("edit", gettext("edit frontend"))?>
 					</a>
-					<a href="haproxy_listeners.php?act=del&amp;id=<?=$frontendname;?>" onclick="return confirm('Do you really want to delete this entry?')">
+					<a href="haproxy_listeners.php?act=del&amp;id=<?=$frontendname;?>">
 						<?=haproxyicon("delete", gettext("delete frontend"))?>
 					</a>
 					<a href="haproxy_listeners_edit.php?dup=<?=$frontendname;?>">
@@ -435,22 +450,22 @@ function js_callback(req) {
 				</tr><?php
 			}
 		}
-?>				
+?>
 				</tbody>
 			</table>
 		</div>
 	</div>
 	<nav class="action-buttons">
-		<a href="haproxy_listeners_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
+		<a href="haproxy_listeners_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add frontend to the end of the list')?>">
 			<i class="fa fa-level-down icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
-		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
-			<i class="fa fa-trash icon-embed-btn no-confirm"></i>
+		<button name="del_x" type="submit" class="btn btn-danger btn-sm no-confirm" value="<?=gettext("Delete selected frontends"); ?>" title="<?=gettext('Delete selected frontends')?>">
+			<i class="fa fa-trash icon-embed-btn"></i>
 			<?=gettext("Delete"); ?>
 		</button>
-		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
-			<i class="fa fa-save icon-embed-btn no-confirm"></i>
+		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary no-confirm" value="store changes" disabled title="<?=gettext('Save backend order')?>">
+			<i class="fa fa-save icon-embed-btn"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>

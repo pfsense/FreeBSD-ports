@@ -2,7 +2,7 @@
 
 PORTNAME=	wspr
 DISTVERSION=	${VERSION}.r${SVN_REV}
-PORTREVISION=	5
+PORTREVISION=	10
 CATEGORIES=	comms hamradio
 MASTER_SITES=	LOCAL/db
 DISTNAME=	wspr-r${SVN_REV}
@@ -13,16 +13,16 @@ COMMENT=	Weak signal for HF ham radio communication package
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	${PYNUMPY}
-RUN_DEPENDS=	${PYTHON_LIBDIR}/tkinter:x11-toolkits/py-tkinter \
-		${PYTHON_SITELIBDIR}/PIL:graphics/py-pillow \
-		${PYTHON_SITELIBDIR}/scipy:science/py-scipy
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR}
 LIB_DEPENDS=	libhamlib.so:comms/hamlib \
 		libfftw3f.so:math/fftw3-float \
 		libsamplerate.so:audio/libsamplerate \
 		libportaudio.so:audio/portaudio
 
 MAKE_JOBS_UNSAFE=	yes
-USES=		autoreconf dos2unix fortran gmake libtool python:3.3 tar:bzip2
+USES=		autoreconf dos2unix fortran gmake libtool python:3.3+ tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-gfortran=${FC} \
 		--with-f2py=f2py-${PYTHON_VER} \
@@ -61,10 +61,6 @@ do-fetch:
 	scp ${DISTDIR}/${DISTNAME}.tar.bz2 \
 		freefall.freebsd.org:public_distfiles/
 .endif
-.endif
-
-.if defined(PACKAGE_BUILDING) && ${PYTHON_VER} != ${PYTHON_DEFAULT}
-IGNORE=	you have python ${PYTHON_DEFAULT} set as the default, and this needs ${PYTHON_VER}
 .endif
 
 .include <bsd.port.post.mk>

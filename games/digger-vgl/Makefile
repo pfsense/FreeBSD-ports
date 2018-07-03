@@ -10,7 +10,7 @@ MASTER_SITES=	http://www.digger.org/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeBSD graphics console (VGL) version of the famous Digger game
 
-ONLY_FOR_ARCHS=	i386 amd64	# Alphas don't have libvgl yet...
+ONLY_FOR_ARCHS=	amd64 i386
 
 MAKEFILE=	Makefile.fbsd
 
@@ -30,7 +30,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/digger ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}/var/games/digger
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/digger.txt ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/digger.txt ${STAGEDIR}${DOCSDIR}
 .if ${PORT_OPTIONS:MSOUND}
 	@${ECHO_MSG}
 	@${ECHO_MSG} "Use \"digger /A\" command to run Digger with sound enabled."

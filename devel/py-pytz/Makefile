@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pytz
-PORTVERSION=	2016.6.1
+PORTVERSION=	2018.3
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
@@ -12,9 +12,12 @@ MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	World Timezone Definitions for Python
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python tar:bzip2
+USES=		python
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|=True|=False|' ${WRKSRC}/${PYSETUP}

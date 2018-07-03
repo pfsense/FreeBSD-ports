@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	click
-PORTVERSION=	6.6
+PORTVERSION=	6.7
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Python package for creating command line interfaces
 
 LICENSE=	BSD3CLAUSE
 
-USES?=		python
+USES=		python
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

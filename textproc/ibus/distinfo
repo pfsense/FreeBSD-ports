@@ -1,2 +1,5 @@
-SHA256 (ibus-1.5.11.tar.gz) = 49995a298a39a137e65c6ee77811b030850ff344b875f29d4ed088f623a546bc
-SIZE (ibus-1.5.11.tar.gz) = 2177026
+TIMESTAMP = 1510188391
+SHA256 (ibus-1.5.17.tar.gz) = 0347a8055977ca458e8add750af5f9b76e1a524844cc3b0e2fad70ce153dd219
+SIZE (ibus-1.5.17.tar.gz) = 2522960
+SHA256 (emoji.json) = 3e4792d6dc13f95b8e72b4cc5eb7d6088f64fc625682add33a6bbcc08bf76c4b
+SIZE (emoji.json) = 448953

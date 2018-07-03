@@ -1,25 +1,30 @@
-# Created by: Dave Cottlehuber <dch@skunkwerks.at>
+# Created by: Dave Cottlehuber <dch@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	h2o
-PORTVERSION=	2.0.4
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.2.4
 CATEGORIES=	www
 
-MAINTAINER=	dch@skunkwerks.at
-COMMENT=	Optimized HTTP2 server with support for HTTP/1.x
+MAINTAINER=	dch@FreeBSD.org
+COMMENT=	Optimized HTTP/2 server including support for TLS 1.3 and HTTP/1.x
 
-LICENSE=	MIT
+LICENSE=	MIT BSD2CLAUSE
+LICENSE_COMB=	multi
 
+BROKEN_armv6=		fails to compile: asm_arm.inc:139:36: '.syntax divided' arm assembly not supported
+BROKEN_armv7=		fails to compile: asm_arm.inc:139:36: '.syntax divided' arm assembly not supported
+
+USES=		cmake:noninja compiler:c11 cpe perl5 shebangfix ssl pkgconfig
+CPE_VENDOR=	h2o_project
 USE_GITHUB=	yes
-
-USES=		cmake compiler:c11 perl5 shebangfix
 USE_PERL5=	run
+
 SHEBANG_FILES=	share/h2o/start_server
 
 PORTDOCS=	README.md
 
-SUB_FILES=	${PORTNAME}
+SUB_FILES=	${PORTNAME} ${PORTNAME}.conf.sample
 SUB_LIST+=	H2O_USER=${H2O_USER} \
 		H2O_GROUP=${H2O_GROUP} \
 		H2O_LOGDIR=${H2O_LOGDIR}
@@ -35,36 +40,37 @@ H2O_LOGDIR=	/var/log/${PORTNAME}/
 
 USE_RC_SUBR=	${PORTNAME}
 
-OPTIONS_DEFINE=	LIBRESSL
-LIBRESSL_DESC=	Build with bundled LibreSSL instead of OpenSSL
-OPTIONS_DEFAULT=	LIBRESSL
+OPTIONS_DEFINE=		MRUBY DOCS
+OPTIONS_DEFAULT=	MRUBY
+OPTIONS_SUB=		yes
+MRUBY_DESC=		Build with embedded mruby handler support
 
-CMAKE_ARGS+=	-DEXTRA_LIBRARIES=OFF -DWITHOUT_LIBS=ON
+CMAKE_ARGS+=		-DEXTRA_LIBRARIES=OFF -DWITHOUT_LIBS=ON -DWITH_BUNDLED_SSL=OFF
+CMAKE_VERBOSE=		yes
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MLIBRESSL}
-CMAKE_ARGS+=	-DWITH_BUNDLED_SSL=ON
-WITH_OPENSSL_PORT=	no
-.else
-CMAKE_ARGS+=	-DWITH_BUNDLED_SSL=OFF
-WITH_OPENSSL_PORT=	yes
-.endif
+MRUBY_CMAKE_BOOL=	WITH_MRUBY
+MRUBY_USES=		bison
+MRUBY_USE=		ruby=yes
+MRUBY_VARS=		RUBY_NO_RUN_DEPENDS=yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|exec perl|exec ${LOCALBASE}/bin/perl|' \
-			${WRKSRC}/share/h2o/annotate-backtrace-symbols \
-			${WRKSRC}/share/h2o/fetch-ocsp-response \
-			${WRKSRC}/share/h2o/kill-on-close \
-			${WRKSRC}/share/h2o/start_server
+		${WRKSRC}/share/h2o/annotate-backtrace-symbols \
+		${WRKSRC}/share/h2o/fastcgi-cgi \
+		${WRKSRC}/share/h2o/fetch-ocsp-response \
+		${WRKSRC}/share/h2o/kill-on-close \
+		${WRKSRC}/share/h2o/setuidgid \
+		${WRKSRC}/share/h2o/start_server
 
 post-install:
-	${MKDIR} ${STAGEDIR}${DOCSDIR} \
-		${STAGEDIR}${ETCDIR} \
+	${MKDIR} ${STAGEDIR}${ETCDIR} \
 		${STAGEDIR}${H2O_LOGDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} \
-		${FILESDIR}/${PORTNAME}.conf.sample \
+		${WRKDIR}/${PORTNAME}.conf.sample \
 		${STAGEDIR}${ETCDIR}/${PORTNAME}.conf.sample
+
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -1,4 +1,3 @@
-# Created by: Jason W. Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 ############################################################################
@@ -11,25 +10,30 @@
 
 PORTNAME=	afni
 PORTVERSION=	2015.11.13
+PORTREVISION=	6
 CATEGORIES=	science biology graphics
 MASTER_SITES=	http://www.acadix.biz/Ports/distfiles/
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Advanced Functional Neuro Imaging
 
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	gm4:devel/m4
-LIB_DEPENDS=	libXm.so:x11-toolkits/open-motif \
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+		libf2c.so:lang/f2c \
 		libR.so:math/R \
 		libgsl.so:math/gsl \
 		libnetcdff.so:science/netcdf-fortran \
 		libxml2.so:textproc/libxml2 \
-		libf2c.so:lang/f2c
-RUN_DEPENDS=	mpeg_encode:multimedia/mpeg_encode \
+		libXm.so:x11-toolkits/open-motif
+RUN_DEPENDS=	endian:sysutils/endian \
+		mpeg_encode:multimedia/mpeg_encode \
 		ppmtogif:graphics/netpbm \
-		endian:sysutils/endian \
 		qhull:math/qhull5
+
+BROKEN_aarch64=		fails to compile: suma_utils.c:3043:10: statement requires expression of scalar type
+BROKEN_sparc64=		fails to compile: undefined reference to '_mcount'
 
 CONFLICTS=	im-[0-9]* \
 		nifticlib-[0-9]* \
@@ -38,17 +42,16 @@ CONFLICTS=	im-[0-9]* \
 USES=		gettext gmake iconv jpeg:run motif perl5 python shebangfix tar:xz
 SHEBANG_FILES=	suma_change_spec \
 		3dPAR2AFNI.pl \
-		python_scripts/afni_restproc.py \
-		python_scripts/lib_fat_Rfactor.py \
-		pkundu/meica.libs/siemens_me2nii.py
+		python_scripts/*.py \
+		pkundu/meica.py \
+		pkundu/meica.libs/*.py \
+		pkundu/meica.libs/mdp/test/run_tests.py
 USE_GNOME=	glib20
 
 .include <bsd.port.options.mk>
 
-BROKEN_sparc64=	Does not compile: "undefined reference to '_mcount'"
-
-USE_GL=		glw glu
-USE_XORG=	xi
+USE_GL=		gl glu glw
+USE_XORG=	x11 xext xi xmu xp xt
 MAKE_ENV=	CC="${CC}" R_SHARE_DIR=${LOCALBASE}/lib/R/share
 MAKE_JOBS_UNSAFE=yes
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gtk-gnutella
-PORTVERSION=	1.1.10
+PORTVERSION=	1.1.13
 CATEGORIES=	net-p2p ipv6
 MASTER_SITES=	SF
 
@@ -10,8 +10,9 @@ MAINTAINER=	woodsb02@FreeBSD.org
 COMMENT=	GTK based Gnutella client
 
 LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		iconv localbase:ldflags pkgconfig tar:bzip2
+USES=		iconv localbase:ldflags pkgconfig tar:xz
 USE_GNOME=	glib20 libxml2
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	Configure
@@ -55,9 +56,6 @@ TLS_CONFIGURE_OFF=	-Ud_gnutls
 .if !defined(INTERACTIVE_CONFIGURE)
 CONFIGURE_ARGS+=	-ders
 .endif
-
-post-extract:
-	@${CHMOD} -R a+rX ${WRKSRC}
 
 post-patch:
 	@${FIND} ${WRKSRC} -name "Makefile.SH" | ${XARGS} ${REINPLACE_CMD} -e \

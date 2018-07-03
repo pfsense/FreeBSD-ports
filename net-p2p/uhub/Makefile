@@ -13,6 +13,8 @@ COMMENT=	High performance peer-to-peer hub for the ADC network
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_aarch64=	fails to compile: CPUINFO not defined
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USES=		cmake perl5 sqlite

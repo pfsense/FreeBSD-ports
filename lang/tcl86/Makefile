@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tcl
-PORTVERSION=	8.6.6
+PORTVERSION=	8.6.8
 PORTREVISION=	0
 CATEGORIES=	lang
 MASTER_SITES=	SF/tcl/Tcl/${PORTVERSION} \
@@ -18,18 +18,25 @@ LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-OPTIONS_DEFINE=	TCLMAN TZDATA MODULES THREADS DEBUG
-OPTIONS_DEFAULT=MODULES THREADS
+OPTIONS_DEFINE=	TCLMAN TZDATA THREADS DEBUG
+OPTIONS_DEFINE_amd64=	DTRACE
+OPTIONS_DEFAULT=THREADS
+OPTIONS_DEFAULT_amd64=	DTRACE
 TCLMAN_DESC=	Install Tcl function manpages
 TZDATA_DESC=	Install Tcl timezone data
-MODULES_DESC=	Install Tcl common modules
 OPTIONS_SUB=	yes
+
+.if !exists(/usr/sbin/dtrace)
+OPTIONS_EXCLUDE+=	DTRACE
+.endif
+
+OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 
 PATCH_WRKSRC=	${WRKDIR}/${PORTNAME}${PORTVERSION}
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}/unix
 
 ALL_TARGET=	all
-INSTALL_TARGET=	install-strip install-libraries
+INSTALL_TARGET=	install-strip install-libraries install-modules
 TEST_TARGET=	test-tcl
 
 USE_LDCONFIG=	yes
@@ -44,19 +51,24 @@ SHORT_TCL_VER=	${TCL_VER:S/.//}
 MAN_SUFFIX=	${PKGBASE}
 
 MAKE_ENV=	SHORT_TCL_VER=${SHORT_TCL_VER} \
-		MAN_SUFFIX=.${MAN_SUFFIX} \
-		LANG=C LC_ALL=C	# LANG=C is required for some of UTF-using tests
+		MAN_SUFFIX=.${MAN_SUFFIX}
 
 PLIST_SUB=	TCL_VER=${TCL_VER} \
 		SHORT_TCL_VER=${SHORT_TCL_VER}
 
 TCLMAN_INSTALL_TARGET=	install-doc
 TZDATA_INSTALL_TARGET=	install-tzdata
-MODULES_INSTALL_TARGET=	install-modules
 THREADS_CONFIGURE_ENABLE=	threads
 DEBUG_CONFIGURE_ENABLE=	symbols
+DTRACE_CONFIGURE_ENABLE=	dtrace
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MDTRACE}
+PLIST_SUB+=	DTRACE=""
+.else
+PLIST_SUB+=	DTRACE="@comment "
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e \
@@ -65,12 +77,6 @@ post-patch:
 	     s|@TCL_BUILD_STUB_LIB_PATH@|@TCL_STUB_LIB_PATH@|; \
 	     s|@TCL_SRC_DIR@|${PREFIX}/include/tcl${TCL_VER}|' \
 	     ${PATCH_WRKSRC}/unix/tclConfig.sh.in
-# On FreeBSD 9, pkg-config --cflags tcl can't find zlib.
-.if ${OSVERSION} < 1000000
-	${REINPLACE_CMD} -e \
-	    's|Requires.private: zlib >= 1.2.3||' \
-	    ${PATCH_WRKSRC}/unix/tcl.pc.in
-.endif
 
 post-patch-TCLMAN-off:
 	@${FIND} ${PATCH_WRKSRC}/pkgs -name Makefile.in | ${XARGS} ${REINPLACE_CMD} \

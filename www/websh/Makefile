@@ -15,7 +15,7 @@ MAKE_JOBS_UNSAFE=	yes
 
 TCL_DVER=	${TCL_VER:S/.//}
 
-USES=		autoreconf gmake tcl:tea
+USES=		apache:2.2+ autoreconf gmake tcl:tea
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src/unix
 USE_LDCONFIG=	yes
 SUB_FILES=	httpd.conf pkgIndex.tcl pkg-message
@@ -27,7 +27,6 @@ PLIST_SUB+=	NOMINORVERSION=${TCL_VER:C/8.[345]//:C/^..*/"@comment "/}
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-USE_APACHE=	22+
 CONFIGURE_ARGS+=--with-httpdinclude=`apxs -q includedir`
 
 CPPFLAGS+=	-I ${LOCALBASE}/include/apr-1
@@ -53,7 +52,7 @@ post-configure:
 		-e 's,-DPACKAGE_[^=]*=."[^"]*",,g' ${WRKSRC}/Makefile
 
 post-build test:
-	${SETENV} LANG=C HOME=${WRKDIR} ${MAKE_CMD} -C ${WRKSRC} test | ${AWK} '\
+	${SETENV} HOME=${WRKDIR} ${MAKE_CMD} -C ${WRKSRC} test | ${AWK} '\
 		/Failed/ && $$NF {failed=1}	\
 		END {exit failed}	\
 		{print}'

@@ -2,17 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	gmm
-DISTVERSION=	1.5-2
+DISTVERSION=	1.6-2
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Generalized Method of Moments and Generalized Empirical Likelihood
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv2+
 
-RUN_DEPENDS=	R-cran-sandwich>0:math/R-cran-sandwich
+CRAN_DEPENDS=	R-cran-sandwich>0:math/R-cran-sandwich
+BUILD_DEPENDS=	${CRAN_DEPENDS}
+RUN_DEPENDS=	${CRAN_DEPENDS}
 
 USES=	cran:auto-plist
 

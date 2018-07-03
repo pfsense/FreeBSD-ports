@@ -4,7 +4,7 @@
 
 PORTNAME=	glade
 PORTVERSION=	2.12.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
@@ -13,15 +13,16 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	User interface builder for GTK+
 
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 LIB_DEPENDS=	librarian.so:textproc/rarian
 
 INSTALLS_OMF=	yes
 GNU_CONFIGURE=	yes
 USES=		pathfix gettext gmake pkgconfig desktop-file-utils \
-		tar:bzip2
+		localbase:ldflags tar:bzip2
 USE_GNOME=	gnomeprefix intlhack gtk20
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 CONFIGURE_ARGS+=	--disable-gnome-db --disable-nome
 

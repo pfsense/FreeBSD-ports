@@ -11,19 +11,20 @@ PKGNAMEPREFIX=	fusefs-
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Encrypted filesystem for FUSE
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
-		libglib-2.0.so:devel/glib20
+LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
 GNU_CONFIGURE=	yes
 USES=		fuse pkgconfig
+USE_GNOME=	glib20
 DOCS=		README cryptofs.conf
 
 OPTIONS_DEFINE=	DOCS
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

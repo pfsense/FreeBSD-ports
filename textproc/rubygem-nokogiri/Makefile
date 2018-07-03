@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	nokogiri
-PORTVERSION=	1.6.8
+PORTVERSION=	1.8.2
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -9,13 +9,16 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	HTML, XML, SAX, and Reader parser
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	rubygem-pkg-config>=1.1.7:devel/rubygem-pkg-config
+BUILD_DEPENDS=	rubygem-pkg-config>=1.1.7:devel/rubygem-pkg-config
+RUN_DEPENDS:=	${BUILD_DEPENDS}
+LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
-USE_RUBY=	yes
-USES=		gem pkgconfig
-USE_GNOME=	libxml2 libxslt
 CONFIGURE_ARGS=	--use-system-libraries
+USE_GNOME=	libxml2 libxslt
+USE_RUBY=	yes
+USES=		gem gnome pkgconfig
 
 PLIST_FILES=	bin/nokogiri
 

@@ -2,6 +2,7 @@
 
 PORTNAME=	levigo
 PORTVERSION=	20150216
+PORTREVISION=	3
 CATEGORIES=	databases
 
 MAINTAINER=	cheffo@freebsd-bg.org

@@ -3,6 +3,7 @@
 
 PORTNAME=	Mcstas-Tools
 PORTVERSION=	2.2a
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	http://download.mcstas.org/mcstas-${PORTVERSION}/unix/McStas-${PORTVERSION}-UNIX-src/
 PKGNAMEPREFIX=	p5-
@@ -18,9 +19,8 @@ RUN_DEPENDS=	p5-Tk>0:x11-toolkits/p5-Tk \
 		PDL>0:math/PDL \
 		mcstas:science/mcstas
 
-USES=		cmake gmake perl5 shebangfix
+USES=		cmake perl5 shebangfix
 CMAKE_ARGS=	-Denable_mcstas=1
-GNU_CONFIGURE=	yes
 SHEBANG_FILES=	${EXECS:S/$/.pl/}
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}

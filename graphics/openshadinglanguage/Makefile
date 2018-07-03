@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	openshadinglanguage
-PORTVERSION=	1.7.2
+PORTVERSION=	1.8.10
 DISTVERSIONPREFIX=	Release-
+PORTREVISION=	6
 CATEGORIES=	graphics devel
 
 MAINTAINER=	FreeBSD@Shaneware.biz
@@ -11,33 +12,21 @@ COMMENT=	Advanced shading language for production GI renderers
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	llvm-config34:devel/llvm34 \
-		clang34>=3.4_1:lang/clang34
+BUILD_DEPENDS=	llvm-config40:devel/llvm40
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libIlmImf.so:graphics/OpenEXR \
+		libImath.so:graphics/ilmbase \
 		libOpenImageIO.so:graphics/openimageio
-RUN_DEPENDS=	llvm-config34:devel/llvm34
+RUN_DEPENDS=	llvm-config40:devel/llvm40
 
+USES=		bison cmake:outsource compiler:c++11-lang ncurses
 USE_GITHUB=	yes
 GH_ACCOUNT=	imageworks
 GH_PROJECT=	OpenShadingLanguage
 
-CMAKE_ARGS=	-DLLVM_CONFIG:STRING="${LOCALBASE}/bin/llvm-config34" \
-		-DENABLERTTI:BOOL=ON
+CMAKE_ARGS=	-DLLVM_CONFIG:STRING="${LOCALBASE}/bin/llvm-config40" \
+		-DENABLERTTI:BOOL=ON -DUSE_BOOST_WAVE:BOOL=OFF
 USE_LDCONFIG=	yes
-USES=		bison cmake:outsource compiler:c11
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc
-USE_GCC=	yes
-.endif
-
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	flex>=2.5.37:textproc/flex
-CMAKE_ARGS+=	-DFLEX_EXECUTABLE:STRING=${LOCALBASE}/bin/flex
-CXXFLAGS+=	-I${LOCALBASE}/include/flex
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/bin/bash,/bin/sh,' \

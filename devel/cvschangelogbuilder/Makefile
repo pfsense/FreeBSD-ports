@@ -22,9 +22,13 @@ NO_ARCH=	yes
 PLIST_FILES=	bin/cvschangelogbuilder
 PORTDOCS=	*
 
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100077
+# chmod -R bug.
 post-extract:
-	@${FIND} ${WRKSRC} -type d -exec ${CHMOD} 755 {} \;
-	@${FIND} ${WRKSRC} -type f -exec ${CHMOD} 644 {} \;
+	@${CHMOD} 755 ${WRKSRC}/docs/images
+.endif
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME}.pl \
@@ -35,4 +39,4 @@ do-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/docs/*.* ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/docs/images/* ${STAGEDIR}${DOCSDIR}/images
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

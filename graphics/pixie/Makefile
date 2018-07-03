@@ -3,7 +3,7 @@
 
 PORTNAME=	pixie
 PORTVERSION=	2.2.6
-PORTREVISION=	12
+PORTREVISION=	16
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Pixie%20${PORTVERSION}
 DISTNAME=	Pixie-src-${PORTVERSION}
@@ -17,6 +17,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
 		libtiff.so:graphics/tiff \
 		libfltk_gl.so:x11-toolkits/fltk
+
+BROKEN_aarch64=		fails to compile: use of undeclared identifier CRenderer
+BROKEN_armv6=		fails to compile: use of undeclared identifier CRenderer
+BROKEN_armv7=		fails to compile: use of undeclared identifier CRenderer
+BROKEN_sparc64=		fails to compile
 
 USE_GL=		glu
 USES=		bison compiler:c++0x libtool pathfix tar:tgz
@@ -41,16 +46,7 @@ CFLAGS+=	-fPIC
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-BROKEN_sparc64=	Does not compile on sparc64
-
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	${LOCALBASE}/bin/flex:textproc/flex
-CONFIGURE_ENV+=	ac_cv_path_FLEX="${LOCALBASE}/bin/flex"
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/test/s|==|=|g ; \
@@ -62,7 +58,7 @@ post-patch:
 		${WRKSRC}/src/ri/Makefile.in \
 		${WRKSRC}/src/sdr/Makefile.in
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} AUTHORS ChangeLog DEVNOTES NEWS \
 		README ${STAGEDIR}${DOCSDIR})

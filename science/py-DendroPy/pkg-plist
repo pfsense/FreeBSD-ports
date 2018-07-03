@@ -1,3 +1,4 @@
+bin/sumlabels.py
 bin/sumtrees.py
 %%PYTHON_SITELIBDIR%%/dendropy/__init__.py
 %%PYTHON_SITELIBDIR%%/dendropy/__init__.pyc
@@ -23,6 +24,9 @@ bin/sumtrees.py
 %%PYTHON_SITELIBDIR%%/dendropy/calculate/probability.py
 %%PYTHON_SITELIBDIR%%/dendropy/calculate/probability.pyc
 %%PYTHON_SITELIBDIR%%/dendropy/calculate/probability.pyo
+%%PYTHON_SITELIBDIR%%/dendropy/calculate/profiledistance.py
+%%PYTHON_SITELIBDIR%%/dendropy/calculate/profiledistance.pyc
+%%PYTHON_SITELIBDIR%%/dendropy/calculate/profiledistance.pyo
 %%PYTHON_SITELIBDIR%%/dendropy/calculate/statistics.py
 %%PYTHON_SITELIBDIR%%/dendropy/calculate/statistics.pyc
 %%PYTHON_SITELIBDIR%%/dendropy/calculate/statistics.pyo
@@ -149,6 +153,9 @@ bin/sumtrees.py
 %%PYTHON_SITELIBDIR%%/dendropy/interop/raxml.py
 %%PYTHON_SITELIBDIR%%/dendropy/interop/raxml.pyc
 %%PYTHON_SITELIBDIR%%/dendropy/interop/raxml.pyo
+%%PYTHON_SITELIBDIR%%/dendropy/interop/rspr.py
+%%PYTHON_SITELIBDIR%%/dendropy/interop/rspr.pyc
+%%PYTHON_SITELIBDIR%%/dendropy/interop/rspr.pyo
 %%PYTHON_SITELIBDIR%%/dendropy/interop/rstats.py
 %%PYTHON_SITELIBDIR%%/dendropy/interop/rstats.pyc
 %%PYTHON_SITELIBDIR%%/dendropy/interop/rstats.pyo
@@ -224,6 +231,9 @@ bin/sumtrees.py
 %%PYTHON_SITELIBDIR%%/dendropy/model/discrete.py
 %%PYTHON_SITELIBDIR%%/dendropy/model/discrete.pyc
 %%PYTHON_SITELIBDIR%%/dendropy/model/discrete.pyo
+%%PYTHON_SITELIBDIR%%/dendropy/model/multispeciescoalescent.py
+%%PYTHON_SITELIBDIR%%/dendropy/model/multispeciescoalescent.pyc
+%%PYTHON_SITELIBDIR%%/dendropy/model/multispeciescoalescent.pyo
 %%PYTHON_SITELIBDIR%%/dendropy/model/parsimony.py
 %%PYTHON_SITELIBDIR%%/dendropy/model/parsimony.pyc
 %%PYTHON_SITELIBDIR%%/dendropy/model/parsimony.pyo
@@ -374,6 +384,7 @@ bin/sumtrees.py
 %%PYTHON_SITELIBDIR%%/dendropy/test/data/other/hiv1.node-to-node-dists.csv
 %%PYTHON_SITELIBDIR%%/dendropy/test/data/other/hiv1.unweighted.node-to-node-dists.csv
 %%PYTHON_SITELIBDIR%%/dendropy/test/data/other/laurasiatherian.distances.ml.csv
+%%PYTHON_SITELIBDIR%%/dendropy/test/data/other/multispecies_coalescent_test_data.json
 %%PYTHON_SITELIBDIR%%/dendropy/test/data/other/pythonidae.mle.node-to-node-dists.csv
 %%PYTHON_SITELIBDIR%%/dendropy/test/data/other/pythonidae.mle.unweighted.node-to-node-dists.csv
 %%PYTHON_SITELIBDIR%%/dendropy/test/data/other/pythonidae.mle.unweighted.pdm.csv
@@ -930,6 +941,9 @@ bin/sumtrees.py
 %%PYTHON_SITELIBDIR%%/dendropy/test/test_fitch.py
 %%PYTHON_SITELIBDIR%%/dendropy/test/test_fitch.pyc
 %%PYTHON_SITELIBDIR%%/dendropy/test/test_fitch.pyo
+%%PYTHON_SITELIBDIR%%/dendropy/test/test_multispeciescoalescent.py
+%%PYTHON_SITELIBDIR%%/dendropy/test/test_multispeciescoalescent.pyc
+%%PYTHON_SITELIBDIR%%/dendropy/test/test_multispeciescoalescent.pyo
 %%PYTHON_SITELIBDIR%%/dendropy/test/test_parsimony_scoring.py
 %%PYTHON_SITELIBDIR%%/dendropy/test/test_parsimony_scoring.pyc
 %%PYTHON_SITELIBDIR%%/dendropy/test/test_parsimony_scoring.pyo

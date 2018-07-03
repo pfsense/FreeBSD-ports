@@ -41,6 +41,7 @@ include/gwenhywfar4/gwenhywfar/debug.h
 include/gwenhywfar4/gwenhywfar/dialog.h
 include/gwenhywfar4/gwenhywfar/dialog_be.h
 include/gwenhywfar4/gwenhywfar/directory.h
+include/gwenhywfar4/gwenhywfar/endianfns.h
 include/gwenhywfar4/gwenhywfar/error.h
 include/gwenhywfar4/gwenhywfar/fastbuffer.h
 include/gwenhywfar4/gwenhywfar/fslock.h
@@ -125,8 +126,10 @@ include/gwenhywfar4/gwenhywfar/widget_be.h
 include/gwenhywfar4/gwenhywfar/xml.h
 include/gwenhywfar4/gwenhywfar/xmlctx.h
 include/gwenhywfar4/gwenhywfar/xsdnode.h
-lib/cmake/gwenhywfar-4.14/gwenhywfar-config-version.cmake
-lib/cmake/gwenhywfar-4.14/gwenhywfar-config.cmake
+lib/cmake/gwengui-cpp-%%GWEN_MAJ_MIN_VER%%/gwengui-cpp-config-version.cmake
+lib/cmake/gwengui-cpp-%%GWEN_MAJ_MIN_VER%%/gwengui-cpp-config.cmake
+lib/cmake/gwenhywfar-%%GWEN_MAJ_MIN_VER%%/gwenhywfar-config-version.cmake
+lib/cmake/gwenhywfar-%%GWEN_MAJ_MIN_VER%%/gwenhywfar-config.cmake
 lib/gwenhywfar/plugins/%%GWEN_SHLIB_VER%%/configmgr/dir.so
 lib/gwenhywfar/plugins/%%GWEN_SHLIB_VER%%/configmgr/dir.xml
 lib/gwenhywfar/plugins/%%GWEN_SHLIB_VER%%/ct/ohbci.so
@@ -148,7 +151,7 @@ lib/libgwengui-cpp.so.0
 lib/libgwengui-cpp.so.0.0.0
 lib/libgwenhywfar.so
 lib/libgwenhywfar.so.%%GWEN_SHLIB_VER%%
-lib/libgwenhywfar.so.%%GWEN_SHLIB_VER%%.14.0
+lib/libgwenhywfar.so.%%GWEN_SHLIB_VER%%.19.0
 libdata/pkgconfig/gwenhywfar.pc
 share/aclocal/gwenhywfar.m4
 %%DATADIR%%/ca-bundle.crt

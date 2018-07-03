@@ -27,27 +27,22 @@
 #include <sys/cdefs.h>
 __FBSDID("$FreeBSD$");
 
-#include <sys/param.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <libgen.h>
-
-#include <defs.h>
-#include <command.h>
-#include <completer.h>
-#include <environ.h>
-#include <exec.h>
-#include <frame-unwind.h>
-#include <inferior.h>
-#include <objfiles.h>
-#include <gdbcore.h>
-#include <language.h>
+#include "defs.h"
+#include "command.h"
+#include "completer.h"
+#include "environ.h"
+#include "exec.h"
+#include "frame-unwind.h"
+#include "inferior.h"
+#include "objfiles.h"
+#include "gdbcore.h"
+#include "language.h"
 #include "solib.h"
-#include <solist.h>
+#include "solist.h"
 
 #include "kgdb.h"
 
-struct lm_info {
+struct lm_info_kld : public lm_info_base {
 	CORE_ADDR base_address;
 };
 
@@ -69,7 +64,7 @@ static const struct program_space_data *kld_pspace_data;
 static void
 kld_pspace_data_cleanup (struct program_space *pspace, void *arg)
 {
-  struct kld_info *info = arg;
+  struct kld_info *info = (struct kld_info *)arg;
 
   xfree (info);
 }
@@ -82,7 +77,8 @@ get_kld_info (void)
 {
   struct kld_info *info;
 
-  info = program_space_data (current_program_space, kld_pspace_data);
+  info = (struct kld_info *)
+    program_space_data (current_program_space, kld_pspace_data);
   if (info != NULL)
     return info;
 
@@ -139,19 +135,19 @@ check_kld_path (char *path, size_t path_size)
  * in the various paths in the module path.
  */
 static int
-find_kld_path (char *filename, char *path, size_t path_size)
+find_kld_path (const char *filename, char *path, size_t path_size)
 {
 	struct kld_info *info;
 	struct cleanup *cleanup;
 	char *module_path;
-	char *kernel_dir, *module_dir, *cp;
+	char *module_dir, *cp;
 	int error;
 
 	info = get_kld_info();
 	if (exec_bfd) {
-		kernel_dir = dirname(bfd_get_filename(exec_bfd));
-		if (kernel_dir != NULL) {
-			snprintf(path, path_size, "%s/%s", kernel_dir,
+		std::string kernel_dir = ldirname(bfd_get_filename(exec_bfd));
+		if (!kernel_dir.empty()) {
+			snprintf(path, path_size, "%s/%s", kernel_dir.c_str(),
 			    filename);
 			if (check_kld_path(path, path_size))
 				return (1);
@@ -200,12 +196,12 @@ read_pointer (CORE_ADDR address)
  * Try to find this kld in the kernel linker's list of linker files.
  */
 static int
-find_kld_address (char *arg, CORE_ADDR *address)
+find_kld_address (const char *arg, CORE_ADDR *address)
 {
 	struct kld_info *info;
 	CORE_ADDR kld;
 	char *kld_filename;
-	char *filename;
+	const char *filename;
 	int error;
 
 	info = get_kld_info();
@@ -213,7 +209,7 @@ find_kld_address (char *arg, CORE_ADDR *address)
 	    info->off_filename == 0 || info->off_next == 0)
 		return (0);
 
-	filename = basename(arg);
+	filename = lbasename(arg);
 	for (kld = read_pointer(info->linker_files_addr); kld != 0;
 	     kld = read_pointer(kld + info->off_next)) {
 		/* Try to read this linker file's filename. */
@@ -266,28 +262,28 @@ load_kld (char *path, CORE_ADDR base_addr, int from_tty)
 	struct section_addr_info *sap;
 	struct target_section *sections = NULL, *sections_end = NULL, *s;
 	struct cleanup *cleanup;
-	bfd *bfd;
+	gdb_bfd_ref_ptr bfd;
 	CORE_ADDR curr_addr;
-	int add_flags, i;
+	symfile_add_flags add_flags;
+	int i;
 
 	/* Open the kld. */
-	bfd = bfd_openr(path, gnutarget);
+	bfd = gdb_bfd_openr(path, gnutarget);
 	if (bfd == NULL)
 		error("\"%s\": can't open: %s", path,
 		    bfd_errmsg(bfd_get_error()));
-	cleanup = make_cleanup_bfd_unref(bfd);
 
-	if (!bfd_check_format(bfd, bfd_object))
+	if (!bfd_check_format(bfd.get(), bfd_object))
 		error("\%s\": not an object file", path);
 
 	/* Make sure we have a .text section. */
-	if (bfd_get_section_by_name (bfd, ".text") == NULL)
+	if (bfd_get_section_by_name (bfd.get(), ".text") == NULL)
 		error("\"%s\": can't find text section", path);
 
 	/* Build a section table from the bfd and relocate the sections. */
-	if (build_section_table (bfd, &sections, &sections_end))
+	if (build_section_table (bfd.get(), &sections, &sections_end))
 		error("\"%s\": can't find file sections", path);
-	make_cleanup(xfree, sections);
+	cleanup = make_cleanup(xfree, sections);
 	curr_addr = base_addr;
 	for (s = sections; s < sections_end; s++)
 		adjust_section_address(s, &curr_addr);
@@ -308,13 +304,14 @@ load_kld (char *path, CORE_ADDR base_addr, int from_tty)
 	add_flags = 0;
 	if (from_tty)
 		add_flags |= SYMFILE_VERBOSE;
-	symbol_file_add(path, add_flags, sap, OBJF_USERLOADED);
+	symbol_file_add_from_bfd(bfd.get(), path, add_flags, sap,
+	    OBJF_USERLOADED, NULL);
 
 	do_cleanups(cleanup);
 }
 
 static void
-kgdb_add_kld_cmd (char *arg, int from_tty)
+kgdb_add_kld_cmd (const char *arg, int from_tty)
 {
 	char path[PATH_MAX];
 	CORE_ADDR base_addr;
@@ -349,26 +346,30 @@ kgdb_add_kld_cmd (char *arg, int from_tty)
 static void
 kld_relocate_section_addresses (struct so_list *so, struct target_section *sec)
 {
-	static CORE_ADDR curr_addr;
+  lm_info_kld *li = (lm_info_kld *) so->lm_info;
+  static CORE_ADDR curr_addr;
 
-	if (sec == so->sections)
-		curr_addr = so->lm_info->base_address;
+  if (sec == so->sections)
+    curr_addr = li->base_address;
 
-	adjust_section_address(sec, &curr_addr);
+  adjust_section_address(sec, &curr_addr);
 }
 
 static void
 kld_free_so (struct so_list *so)
 {
+  lm_info_kld *li = (lm_info_kld *) so->lm_info;
 
-	xfree(so->lm_info);
+  delete li;
 }
 
 static void
 kld_clear_so (struct so_list *so)
 {
-	if (so->lm_info != NULL)
-		so->lm_info->base_address = 0;
+  lm_info_kld *li = (lm_info_kld *) so->lm_info;
+
+  if (li != NULL)
+    li->base_address = 0;
 }
 
 static void
@@ -426,18 +427,13 @@ kld_solib_create_inferior_hook (int from_tty)
 	}
 	END_CATCH
 
-	solib_add(NULL, 1, &current_target, auto_solib_add);
-}
-
-static void
-kld_special_symbol_handling (void)
-{
+	solib_add(NULL, from_tty, auto_solib_add);
 }
 
 static struct so_list *
 kld_current_sos (void)
 {
-	struct so_list *head, **prev, *new;
+	struct so_list *head, **prev, *newobj;
 	struct kld_info *info;
 	CORE_ADDR kld, kernel;
 	char *path;
@@ -463,73 +459,73 @@ kld_current_sos (void)
 		if (kld == kernel)
 			continue;
 
-		new = xmalloc(sizeof(*new));
-		memset(new, 0, sizeof(*new));
+		newobj = XCNEW (struct so_list);
 
-		new->lm_info = xmalloc(sizeof(*new->lm_info));
-		new->lm_info->base_address = 0;
+		lm_info_kld *li = new lm_info_kld;
+		li->base_address = 0;
+
+		newobj->lm_info = li;
 
 		/* Read the base filename and store it in so_original_name. */
 		target_read_string(read_pointer(kld + info->off_filename),
-		    &path, sizeof(new->so_original_name), &error);
+		    &path, sizeof(newobj->so_original_name), &error);
 		if (error != 0) {
 			warning("kld_current_sos: Can't read filename: %s\n",
 			    safe_strerror(error));
-			free_so(new);
+			free_so(newobj);
 			continue;
 		}
-		strlcpy(new->so_original_name, path,
-		    sizeof(new->so_original_name));
+		strlcpy(newobj->so_original_name, path,
+		    sizeof(newobj->so_original_name));
 		xfree(path);
 
 		/*
 		 * Try to read the pathname (if it exists) and store
 		 * it in so_name.
 		 */
-		if (find_kld_path(new->so_original_name, new->so_name,
-		    sizeof(new->so_name))) {
+		if (find_kld_path(newobj->so_original_name, newobj->so_name,
+		    sizeof(newobj->so_name))) {
 			/* we found the kld */;
 		} else if (info->off_pathname != 0) {
 			target_read_string(read_pointer(kld +
 			    info->off_pathname),
-			    &path, sizeof(new->so_name), &error);
+			    &path, sizeof(newobj->so_name), &error);
 			if (error != 0) {
 				warning(
 		    "kld_current_sos: Can't read pathname for \"%s\": %s\n",
-				    new->so_original_name,
+				    newobj->so_original_name,
 				    safe_strerror(error));
-				strlcpy(new->so_name, new->so_original_name,
-				    sizeof(new->so_name));
+				strlcpy(newobj->so_name, newobj->so_original_name,
+				    sizeof(newobj->so_name));
 			} else {
-				strlcpy(new->so_name, path,
-				    sizeof(new->so_name));
+				strlcpy(newobj->so_name, path,
+				    sizeof(newobj->so_name));
 				xfree(path);
 			}
 		} else
-			strlcpy(new->so_name, new->so_original_name,
-			    sizeof(new->so_name));
+			strlcpy(newobj->so_name, newobj->so_original_name,
+			    sizeof(newobj->so_name));
 
 		/* Read this kld's base address. */
-		new->lm_info->base_address = read_pointer(kld +
-		    info->off_address);
-		if (new->lm_info->base_address == 0) {
+		li->base_address = read_pointer(kld + info->off_address);
+		if (li->base_address == 0) {
 			warning(
 			    "kld_current_sos: Invalid address for kld \"%s\"",
-			    new->so_original_name);
-			free_so(new);
+			    newobj->so_original_name);
+			free_so(newobj);
 			continue;
 		}
 
 		/* Append to the list. */
-		*prev = new;
-		prev = &new->next;
+		*prev = newobj;
+		prev = &newobj->next;
 	}
 
 	return (head);
 }
 
 static int
-kld_open_symbol_file_object (void *from_ttyp)
+kld_open_symbol_file_object (int from_tty)
 {
 
 	return (0);
@@ -543,7 +539,8 @@ kld_in_dynsym_resolve_code (CORE_ADDR pc)
 }
 
 static int
-kld_find_and_open_solib (char *solib, unsigned o_flags, char **temp_pathname)
+kld_find_and_open_solib (const char *solib, unsigned o_flags,
+    char **temp_pathname)
 {
 	char path[PATH_MAX];
 	int fd;
@@ -559,8 +556,6 @@ kld_find_and_open_solib (char *solib, unsigned o_flags, char **temp_pathname)
 	return (fd);
 }
 
-void _initialize_kld_target(void);
-
 void
 _initialize_kld_target(void)
 {
@@ -571,7 +566,6 @@ _initialize_kld_target(void)
 	kld_so_ops.clear_so = kld_clear_so;
 	kld_so_ops.clear_solib = kld_clear_solib;
 	kld_so_ops.solib_create_inferior_hook = kld_solib_create_inferior_hook;
-	kld_so_ops.special_symbol_handling = kld_special_symbol_handling;
 	kld_so_ops.current_sos = kld_current_sos;
 	kld_so_ops.open_symbol_file_object = kld_open_symbol_file_object;
 	kld_so_ops.in_dynsym_resolve_code = kld_in_dynsym_resolve_code;

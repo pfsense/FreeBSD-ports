@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * freeradiusclients.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
+ * All rights reserved.
+ *
+ * Originally based on m0n0wall (http://m0n0.ch/wall)
+ * Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+]]>	</copyright>
+	<name>freeradiusclients</name>
+	<title>FreeRADIUS: Clients</title>
+	<include_file>/usr/local/pkg/freeradius.inc</include_file>
+	<tabs>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=freeradius.xml</url>
+		</tab>
+		<tab>
+			<text>MACs</text>
+			<url>/pkg.php?xml=freeradiusauthorizedmacs.xml</url>
+		</tab>
+		<tab>
+			<text>NAS / Clients</text>
+			<url>/pkg.php?xml=freeradiusclients.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>/pkg.php?xml=freeradiusinterfaces.xml</url>
+		</tab>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>EAP</text>
+			<url>/pkg_edit.php?xml=freeradiuseapconf.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>SQL</text>
+			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>LDAP</text>
+			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View config</text>
+			<url>/freeradius_view_config.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=freeradiussync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Client IP Address</fielddescr>
+			<fieldname>varclientip</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Client IP Version</fielddescr>
+			<fieldname>varclientipversion</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Client Shortname</fielddescr>
+			<fieldname>varclientshortname</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Client Protocol</fielddescr>
+			<fieldname>varclientproto</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Client Type</fielddescr>
+			<fieldname>varclientnastype</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Require Message Authenticator</fielddescr>
+			<fieldname>varrequiremessageauthenticator</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Max Connections</fielddescr>
+			<fieldname>varclientmaxconnections</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+		<movable>text</movable>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>General Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Client IP Address</fielddescr>
+			<fieldname>varclientip</fieldname>
+			<description>
+				<![CDATA[
+				Enter the IP address of the RADIUS client. This is the IP of the NAS (switch, access point, firewall, router, etc.).
+				]]>
+			</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Client IP Version</fielddescr>
+			<fieldname>varclientipversion</fieldname>
+			<type>select</type>
+			<default_value>ipaddr</default_value>
+			<options>
+				<option><name>IPv4</name><value>ipaddr</value></option>
+				<option><name>IPv6</name><value>ipv6addr</value></option>
+			</options>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Client Shortname</fielddescr>
+			<fieldname>varclientshortname</fieldname>
+			<description>
+				<![CDATA[
+				Enter a short name for the client. This is generally the hostname of the NAS.
+				]]>
+			</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Client Shared Secret</fielddescr>
+			<fieldname>varclientsharedsecret</fieldname>
+			<description>
+				<![CDATA[
+				Enter the shared secret of the RADIUS client here. This is the shared secret (password)
+				which the NAS (switch, accesspoint, etc.) needs to communicate with the RADIUS server.
+				<span class="text-info">FreeRADIUS is limited to 31 characters for the shared secret.</span><br/>
+				<span class="text-danger">Warning: </span>Single quotes in shared secret must be escaped with a backslash (<code>\'</code>).
+				Backslash must be escaped by using two backslashes (<code>\\</code>).
+				]]>
+			</description>
+			<type>password</type>
+			<required/>
+		</field>
+		<field>
+			<name>Miscellaneous Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Client Protocol</fielddescr>
+			<fieldname>varclientproto</fieldname>
+			<description>
+				<![CDATA[
+				Enter the protocol the client uses.
+				<span class="text-info">(Default: UDP)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>udp</default_value>
+			<options>
+				<option><name>UDP</name><value>udp</value></option>
+				<option><name>TCP</name><value>tcp</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Client Type</fielddescr>
+			<fieldname>varclientnastype</fieldname>
+			<description>
+				<![CDATA[
+				Enter the NAS type of the client. This is used by checkrad.pl for simultaneous use checks.
+				<span class="text-info">(Default: other)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>other</default_value>
+			<options>
+				<option><name>CISCO Systems</name><value>cisco</value></option>
+				<option><name>Computone PowerRack</name><value>computone</value></option>
+				<option><name>Livingston PortMaster</name><value>livingston</value></option>
+				<option><name>Ascend Max 4000 family</name><value>max40xx</value></option>
+				<option><name>Multitech CommPlete Server</name><value>multitech</value></option>
+				<option><name>3Com/USR NetServer</name><value>netserver</value></option>
+				<option><name>Cyclades PathRAS</name><value>pathras</value></option>
+				<option><name>Patton 2800 family</name><value>patton</value></option>
+				<option><name>Cistron PortSlave</name><value>portslave</value></option>
+				<option><name>3Com/USR TotalControl</name><value>tc</value></option>
+				<option><name>3Com/USR Hiper Arc Total Control</name><value>usrhiper</value></option>
+				<option><name>other</name><value>other</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Require Message Authenticator</fielddescr>
+			<fieldname>varrequiremessageauthenticator</fieldname>
+			<description>
+				<![CDATA[
+				RFC5080 requires Message-Authenticator in Access-Request.
+				But older NAS (switches or accesspoints) do not include that.<br/>
+				<span class="text-info">(Default: no)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Yes</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Max Connections</fielddescr>
+			<fieldname>varclientmaxconnections</fieldname>
+			<description>
+				<![CDATA[
+				Takes only effect if you use TCP as protocol.
+				Limits the number of simultaneous TCP connections from a client.<br/>
+				<span class="text-info">(Default 16)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>16</default_value>
+		</field>
+		<field>
+			<fielddescr>NAS Login</fielddescr>
+			<fieldname>varclientlogininput</fieldname>
+			<description>
+				<![CDATA[
+				If supported by your NAS, you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting.<br/>
+				Leave empty to choose (s)radutmp. <span class="text-info">(Default: empty)</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>NAS Password</fielddescr>
+			<fieldname>varclientpasswordinput</fieldname>
+			<description>
+				<![CDATA[
+				If supported by your NAS, you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting.<br/>
+				Leave empty to choose (s)radutmp. <span class="text-info">(Default: empty)</span>
+				]]>
+			</description>
+			<type>password</type>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description>
+				<![CDATA[
+				Enter any description you like for this client.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		freeradius_clients_resync();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		freeradius_clients_resync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		freeradius_validate_clients($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

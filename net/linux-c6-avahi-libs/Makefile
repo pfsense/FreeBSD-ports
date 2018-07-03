@@ -1,20 +1,21 @@
 # Created by: lme
 # $FreeBSD$
 
-PORTNAME=	avahi-libs
+PORTNAME=	avahi
 PORTVERSION=	0.6.25
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	net linux
+PKGNAMESUFFIX=	-libs
+LIB_DISTNAMES=	${LINUXNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Libraries for Avahi (Linux CentOS ${LINUX_DIST_VER})
 
+DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
+LINUXNAME=	${PORTNAME}${PKGNAMESUFFIX}
+RPMVERSION=	17.el6
 USES=		linux:c6
-USE_LINUX_RPM=	yes
-
-RPMVERSION=	15.el6_8.1
 USE_LDCONFIG=	yes
-SRC_DISTFILES=	${PORTNAME:S/-libs//}-${PORTVERSION}-${RPMVERSION}${SRC_SUFX}:SOURCE
-DESCR=		${.CURDIR}/../avahi/pkg-descr
+USE_LINUX_RPM=	yes
 
 .include <bsd.port.mk>

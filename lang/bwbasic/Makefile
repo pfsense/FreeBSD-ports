@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	bwbasic
-PORTVERSION=	3.00
+PORTVERSION=	3.20
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/version%20${PORTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Bywater Basic interpreter
 
 LICENSE=	GPLv2
@@ -16,25 +16,20 @@ NO_WRKSUBDIR=	yes
 
 USES=		dos2unix zip
 GNU_CONFIGURE=	yes
-MAKE_ARGS=	CFLAGS="${CFLAGS} -ansi -DHAVE_ISNAN=1"
-ALL_TARGET=	${PORTNAME}
+MAKE_ARGS=	CFLAGS="${CFLAGS} -Wall -ansi"
 
 PORTDOCS=	*
-PORTEXAMPLES=	*
-PLIST_FILES=	bin/${PORTNAME}
+
+PLIST_FILES=	bin/${PORTNAME} \
+		bin/renum
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${CHMOD} a+x ${WRKSRC}/${CONFIGURE_SCRIPT}
-	@${REINPLACE_CMD} 's|bindir)|DESTDIR)$$(&|' ${WRKSRC}/Makefile.in
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.doc ${STAGEDIR}${DOCSDIR}
-
-post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	(cd ${WRKSRC}/bwbtest; ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 
 .include <bsd.port.mk>

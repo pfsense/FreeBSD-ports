@@ -3,7 +3,7 @@
 
 PORTNAME=	kobodeluxe
 PORTVERSION=	0.5.1
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	http://olofson.net/kobodl/download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -45,7 +45,7 @@ post-patch:
 		${WRKSRC}/enemy.cpp
 
 post-install:
-	@${RM} -rf ${STAGEDIR}/var
+	@${RM} -r ${STAGEDIR}/var
 	${INSTALL_DATA} ${WRKSRC}/icons/Ubuntu/kobodeluxe.desktop \
 		${STAGEDIR}${PREFIX}/share/applications/
 	${INSTALL_DATA} ${WRKSRC}/icons/Ubuntu/kobo-icon.xpm \

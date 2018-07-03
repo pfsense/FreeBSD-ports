@@ -6,10 +6,11 @@ CATEGORIES=	graphics
 MASTER_SITES=	#
 DISTFILES=	#
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Meta port for all povray ports
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 PLIST_FILES=	bin/povray
 
 POV_VERSIONS_ALL=	31 36 37
@@ -40,7 +41,9 @@ DEFAULT${ver}_DESC=	Create link bin/povray -> bin/povray${ver}
 
 .for ver in ${POV_VERSIONS_ALL}
 . if ${PORT_OPTIONS:MDEFAULT${ver}}
+.  if !${PORT_OPTIONS:MPOVRAY${ver}}
 PORT_OPTIONS+=	POVRAY${ver}
+.  endif
 POV_VERSION=	${ver}
 . endif
 . if ${PORT_OPTIONS:MPOVRAY${ver}}

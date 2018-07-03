@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	sword
-PORTVERSION=	1.7.4
-PORTREVISION=	4
+PORTVERSION=	1.8.0
+PORTREVISION=	1
 CATEGORIES=	misc
 MASTER_SITES=	ftp://ftp.crosswire.org/pub/sword/source/v${PORTVERSION:R}/ \
 		http://crosswire.org/ftpmirror/pub/sword/source/v${PORTVERSION:R}/
 
-MAINTAINER=	tabthorpe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework for manipulating Bible texts
 
 LICENSE=	GPLv2
@@ -17,6 +17,7 @@ BUILD_DEPENDS=	cppunit-config:devel/cppunit
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-conf --with-zlib
+CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 INSTALL_TARGET=	install-strip
 USES=		gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
@@ -38,6 +39,8 @@ CONFIGURE_ARGS+=	--without-curl
 .endif
 
 .if ${PORT_OPTIONS:MCLUCENE}
+USES+=		compiler:c++11-lib
+USE_CXXSTD=	gnu++11
 LIB_DEPENDS+=	libclucene-core.so:textproc/clucene \
 		libicudata.so:devel/icu
 CONFIGURE_ARGS+=	--with-clucene=${LOCALBASE} --with-icu

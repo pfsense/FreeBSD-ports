@@ -43,7 +43,7 @@ I18N_DESC=Enable I18N support
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
-EMACS_USE=		EMACS=yes
+EMACS_USES=		emacs:build
 EMACS_CONFIGURE_ON=	--with-lispdir=${LOCALBASE}/${EMACS_SITE_LISPDIR}
 
 .include <bsd.port.options.mk>
@@ -86,6 +86,6 @@ post-install:
 .endif
 	cd ${WRKSRC}/doc && \
 		${SETENV} ${MAKE_ENV} ${MAKE} ${.MAKEFLAGS} ${MAKE_ARGS} ${INSTALL_TARGET}
-	${RM} -f ${STAGEDIR}${PREFIX}/lib/liba2ps.la
+	${RM} ${STAGEDIR}${PREFIX}/lib/liba2ps.la
 
 .include <bsd.port.mk>

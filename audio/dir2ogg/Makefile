@@ -3,6 +3,7 @@
 
 PORTNAME=	dir2ogg
 PORTVERSION=	0.12
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://jak-linux.org/projects/dir2ogg/${PORTVERSION}/
 
@@ -13,11 +14,11 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	faad:audio/faad \
-		mutagen-inspect:audio/py-mutagen \
+		${PYTHON_PKGNAMEPREFIX}mutagen>=0:audio/py-mutagen@${PY_FLAVOR} \
 		mplayer:multimedia/mplayer \
 		oggenc:audio/vorbis-tools
 
-USES=		python:2,run shebangfix
+USES=		python:2.7,run shebangfix
 
 SHEBANG_FILES=	${PORTNAME}
 NO_BUILD=	yes

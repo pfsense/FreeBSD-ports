@@ -177,8 +177,14 @@ $snort_ports = array(
 /* Check for defined Aliases that may override default port settings as we build the portvars array */
 $portvardef = "";
 foreach ($snort_ports as $alias => $avalue) {
-	if (!empty($snortcfg["def_{$alias}"]) && is_alias($snortcfg["def_{$alias}"]))
-		$snort_ports[$alias] = trim(filter_expand_alias($snortcfg["def_{$alias}"]));
+	if (!empty($snortcfg["def_{$alias}"]) && is_alias($snortcfg["def_{$alias}"])) {
+		if (strlen(trim(filter_expand_alias($snortcfg["def_{$alias}"]))) > 0) {
+			$snort_ports[$alias] = trim(filter_expand_alias($snortcfg["def_{$alias}"]));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias specified for PORTS variable " . strtoupper($alias) . " ... using default value '{$avalue}' instead.");
+		}
+	}
 	$snort_ports[$alias] = preg_replace('/\s+/', ',', trim($snort_ports[$alias]));
 	$portvardef .= "portvar " . strtoupper($alias) . " [" . $snort_ports[$alias] . "]\n";
 }
@@ -628,8 +634,13 @@ if (!empty($snortcfg['pscan_sense_level']))
 $sf_pscan_ignore_scanners = "\$HOME_NET";
 if (!empty($snortcfg['pscan_ignore_scanners'])) {
 	if (is_alias($snortcfg['pscan_ignore_scanners'])) {
-		$sf_pscan_ignore_scanners = trim(filter_expand_alias($snortcfg['pscan_ignore_scanners']));
-		$sf_pscan_ignore_scanners = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanners));
+		if (strlen(trim(filter_expand_alias($snortcfg['pscan_ignore_scanners']))) > 0) {
+			$sf_pscan_ignore_scanners = trim(filter_expand_alias($snortcfg['pscan_ignore_scanners']));
+			$sf_pscan_ignore_scanners = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanners));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias {$snortcfg['pscan_ignore_scanners']} for PSCAN_IGNORE_SCANNERS ... reverting to default value of HOME_NET.");
+		}
 	} else {
         	$sf_pscan_ignore_scanners = $snortcfg['pscan_ignore_scanners'];
         }
@@ -637,8 +648,13 @@ if (!empty($snortcfg['pscan_ignore_scanners'])) {
 $sf_pscan_ignore_scanned = "";
 if (!empty($snortcfg['pscan_ignore_scanned'])) {
 	if (is_alias($snortcfg['pscan_ignore_scanned'])) {
-		$sf_pscan_ignore_scanned = trim(filter_expand_alias($snortcfg['pscan_ignore_scanned']));
-		$sf_pscan_ignore_scanned = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanned));
+		if (strlen(trim(filter_expand_alias($snortcfg['pscan_ignore_scanned']))) > 0) {
+			$sf_pscan_ignore_scanned = trim(filter_expand_alias($snortcfg['pscan_ignore_scanned']));
+			$sf_pscan_ignore_scanned = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanned));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias {$snortcfg['pscan_ignore_scanned']} for PSCAN_IGNORE_SCANNED ... reverting to default value of null.");
+		}
 	} else {
           	$sf_pscan_ignore_scanned = $snortcfg['pscan_ignore_scanned'];
         }
@@ -928,6 +944,21 @@ preprocessor appid: \
 
 EOD;
 
+/* def ARP Spoof preprocessor */
+$arpspoof_preproc = "# ARP Spoof preprocessor #\n";
+if ($snortcfg['arp_unicast_detection'] == 'on') {
+	$arpspoof_preproc .= "preprocessor arpspoof: -unicast\n";
+}
+else {
+	$arpspoof_preproc .= "preprocessor arpspoof\n";
+}
+if (is_array($snortcfg['arp_spoof_engine']['item']) && count($snortcfg['arp_spoof_engine']['item']) > 0) {
+	foreach ($snortcfg['arp_spoof_engine']['item'] as $f => $v) {
+		$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
+		$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
+	}
+}
+
 /***************************************/
 /* end of preprocessor string var code */
 /***************************************/
@@ -949,12 +980,19 @@ $snort_servers = array (
 $ipvardef = "";
 foreach ($snort_servers as $alias => $avalue) {
 	if (!empty($snortcfg["def_{$alias}"]) && is_alias($snortcfg["def_{$alias}"])) {
-		$avalue = trim(filter_expand_alias($snortcfg["def_{$alias}"]));
-		$avalue = preg_replace('/\s+/', ',', trim($avalue));
+		if (strlen(trim(filter_expand_alias($snortcfg["def_{$alias}"]))) > 0) {
+			$avalue = trim(filter_expand_alias($snortcfg["def_{$alias}"]));
+			$avalue = preg_replace('/\s+/', ',', trim($avalue));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias specified for SERVERS variable " . strtoupper($alias) . " ... using default value '{$avalue}' instead.");
+		}
 	}
 	$ipvardef .= "ipvar " . strtoupper($alias) . " [{$avalue}]\n";
 }
 
+// Rebuild dynamic preprocessor directory library files based on enabled 
+// preprocessors for this interface.
 $snort_preproc_libs = array(
 	"dce_rpc_2" => "dce2_preproc", "dns_preprocessor" => "dns_preproc", "ftp_preprocessor" => "ftptelnet_preproc", "imap_preproc" => "imap_preproc",
 	"pop_preproc" => "pop_preproc", "reputation_preproc" => "reputation_preproc", "sensitive_data" => "sdf_preproc", 
@@ -963,11 +1001,24 @@ $snort_preproc_libs = array(
 );
 $snort_preproc = array (
 	"perform_stat", "other_preprocs", "ftp_preprocessor", "smtp_preprocessor", "ssl_preproc", "sip_preproc", "gtp_preproc", "ssh_preproc", "sf_portscan", 
-	"dce_rpc_2", "dns_preprocessor", "sensitive_data", "pop_preproc", "imap_preproc", "dnp3_preproc", "modbus_preproc", "reputation_preproc", "appid_preproc"
+	"dce_rpc_2", "dns_preprocessor", "sensitive_data", "pop_preproc", "imap_preproc", "dnp3_preproc", "modbus_preproc", "reputation_preproc", "appid_preproc", "arpspoof_preproc"
 );
 $default_disabled_preprocs = array(
-	"sf_portscan", "gtp_preproc", "sensitive_data", "dnp3_preproc", "modbus_preproc", "reputation_preproc", "perform_stat", "appid_preproc"
+	"sf_portscan", "gtp_preproc", "sensitive_data", "dnp3_preproc", "modbus_preproc", "reputation_preproc", "perform_stat", "appid_preproc", "arpspoof_preproc"
 );
+
+/***************************************/
+/* Begin preprocessor lib file copies  */
+/***************************************/
+
+// Start by removing all existing preproc libraries in the
+// snort_dynamicpreprocessors directory for the interface.
+mwexec("/bin/rm -rf {$snort_dirs['dynamicpreprocessor']}/*.so");
+
+// Build the string variable we use to actually populate the snort.conf
+// file's preprocessors config section by walking the list of enabled
+// preprocessors and copying the required library files from the master
+// directory to the subdirectory for this Snort interface.
 $snort_preprocessors = "";
 foreach ($snort_preproc as $preproc) {
 	if ($snortcfg[$preproc] == 'on' || empty($snortcfg[$preproc]) ) {
@@ -978,10 +1029,10 @@ foreach ($snort_preproc as $preproc) {
 
 		/* NOTE: The $$ is not a bug. It is an advanced feature of php */
 		if (!empty($snort_preproc_libs[$preproc])) {
-			$preproclib = "libsf_" . $snort_preproc_libs[$preproc];
-			if (!file_exists($snort_dirs['dynamicpreprocessor'] . "{$preproclib}.so")) {
-				if (file_exists("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}.so")) {
-					@copy("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}.so", "{$snort_dirs['dynamicpreprocessor']}/{$preproclib}.so");
+			$preproclib = "libsf_" . $snort_preproc_libs[$preproc] . ".so";
+			if (!file_exists($snort_dirs['dynamicpreprocessor'] . "{$preproclib}")) {
+				if (file_exists("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}")) {
+					@copy("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}", "{$snort_dirs['dynamicpreprocessor']}/{$preproclib}");
 					$snort_preprocessors .= $$preproc;
 					$snort_preprocessors .= "\n";
 				} else
@@ -998,6 +1049,10 @@ foreach ($snort_preproc as $preproc) {
 }
 // Remove final trailing newline
 $snort_preprocessors = rtrim($snort_preprocessors);
+
+/***************************************/
+/* end of preprocessor lib file copy   */
+/***************************************/
 
 $snort_misc_include_rules = "";
 if (file_exists("{$snortcfgdir}/reference.config"))

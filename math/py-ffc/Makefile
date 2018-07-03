@@ -1,18 +1,18 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	ffc
 PORTVERSION=	${MMVERSION}.0
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	https://launchpad.net/${PORTNAME}/${MMVERSION}.x/${PORTVERSION}/+download/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	C++ code generator for multilinear forms
 
 LICENSE=	LGPL3
 
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	FFC
 

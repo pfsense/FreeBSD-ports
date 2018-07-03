@@ -224,7 +224,7 @@ $section->addInput(new Form_Input(
 	'number',
 	$pconfig['host_memcap'],
 	['min' => '1048576']
-))->setHelp('Host table memory cap in bytes. Default is 16777216 (16 MB). Min value is 1048576 (1 MB)');
+))->setHelp('Host table memory cap in bytes. Default is 33554432 (32 MB). Min value is 1048576 (1 MB)');
 
 $section->addInput(new Form_Input(
 	'host_hash_size',

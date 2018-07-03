@@ -6,11 +6,15 @@ set -e
 
 . ${dp_SCRIPTSDIR}/functions.sh
 
+flavors=0
 recursive=0
 missing=0
 requires_wrkdir=0
-while getopts "mrw" FLAG; do
+while getopts "fmrw" FLAG; do
 	case "${FLAG}" in
+		f)
+			flavors=1
+			;;
 		m)
 			missing=1
 			recursive=1
@@ -21,6 +25,8 @@ while getopts "mrw" FLAG; do
 		w)
 			# Only list dependencies that have a WRKDIR.  Used for
 			# 'make clean-depends'.
+			# Without -r recurse when WRKDIR exists; with -r
+			# always recurse.
 			requires_wrkdir=1
 			;;
 		*)
@@ -51,23 +57,37 @@ check_dep() {
 	local _dep wrkdir show_dep
 
 	for _dep ; do
+		unset FLAVOR
 		myifs=${IFS}
 		IFS=:
 		set -- ${_dep}
 		IFS=${myifs}
 
 		case "${2}" in
-			/*) d=${2} ;;
-			*) d=${PORTSDIR}/${2} ;;
+		/*) d=${2} ;;
+		*) d=${PORTSDIR}/${2} ;;
 		esac
+
+		case "${d}" in
+		*@*/*) ;; # Ignore @ in the path which would not be a flavor
+		*@*)
+			export FLAVOR=${d##*@}
+			d=${d%@*}
+			;;
+		esac
+		if [ ${flavors} -eq 1 -a -n "${FLAVOR:-}" ]; then
+			port_display="${d}@${FLAVOR}"
+		else
+			port_display="${d}"
+		fi
 
 		case " ${checked} " in
 			*\ ${d}\ *) continue ;; # Already checked
 		esac
 		checked="${checked} ${d}"
 		# Check if the dependency actually exists or skip otherwise.
-		if [ ! -d ${d} ]; then
-			echo "${dp_PKGNAME}: \"${d}\" non-existent -- dependency list incomplete" >&2
+		if [ ! -d "${d}" ]; then
+			echo "${dp_PKGNAME}: \"${port_display}\" non-existent -- dependency list incomplete" >&2
 			continue
 		fi
 
@@ -80,13 +100,10 @@ check_dep() {
 
 		# Grab any needed vars from the port.
 
-		if [ ${requires_wrkdir} -eq 1 -a ${recursive} -eq 1 ]; then
+		if [ ${requires_wrkdir} -eq 1 ]; then
 			set -- $(${dp_MAKE} -C ${d} -VWRKDIR -V_UNIFIED_DEPENDS)
 			wrkdir="$1"
 			shift
-		elif [ ${requires_wrkdir} -eq 1 -a ${recursive} -eq 0 ]; then
-			set -- "$(${dp_MAKE} -C ${d} -VWRKDIR)"
-			wrkdir="$1"
 		elif [ ${recursive} -eq 1 ]; then
 			set -- $(${dp_MAKE} -C ${d} -V_UNIFIED_DEPENDS)
 		fi
@@ -96,8 +113,8 @@ check_dep() {
 		if [ ${requires_wrkdir} -eq 1 ] && ! [ -d "${wrkdir}" ]; then
 			show_dep=0
 		fi
-		[ ${show_dep} -eq 1 ] && echo ${d}
-		if [ ${recursive} -eq 1 ]; then
+		[ ${show_dep} -eq 1 ] && echo "${port_display}"
+		if [ ${recursive} -eq 1 -o ${requires_wrkdir} -eq 1 -a ${show_dep} -eq 1 ]; then
 			check_dep $@
 		fi
 	done

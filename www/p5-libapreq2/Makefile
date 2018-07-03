@@ -13,16 +13,13 @@ COMMENT=	Perl binding for the Generic Apache2 Request Library
 
 LICENSE=	APACHE20
 
-USES=		gmake libtool perl5
-USE_APACHE=	22+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-apache2-apxs=${APXS} \
+		--with-expat=${LOCALBASE} \
+		--enable-perl-glue --with-perl=${PERL}
+USES=		apache:2.2+ libtool perl5
 USE_PERL5=	run
 USE_LDCONFIG=	yes
-USE_AUTOTOOLS=	autoconf
-CONFIGURE_ARGS+=	--with-apache2-apxs=${APXS} \
-			--with-expat=${LOCALBASE} \
-			--enable-perl-glue --with-perl=${PERL}
-
-MAKE_ENV+=     MAKE=${GMAKE} ## MakeMaker blows it without this
 
 BUILD_DEPENDS=	libapreq2>0:www/libapreq2 \
 		${APACHE_PKGNAMEPREFIX}mod_perl2>=0:www/mod_perl2 \
@@ -36,10 +33,10 @@ RUN_DEPENDS=	libapreq2>0:www/libapreq2 \
 post-patch:
 	@${REINPLACE_CMD} -i '' -e "s!%%APACHEINCLUDEDIR%%!${APACHEINCLUDEDIR}!" \
 		${WRKSRC}/glue/perl/Makefile.PL
-post-stage:
+post-install:
 	# remove all the non-perl stuff
 	${RM} ${STAGEDIR}${PREFIX}/bin/apreq2-config
-	${RM} -rf ${STAGEDIR}${PREFIX}/include/apreq2
+	${RM} -r ${STAGEDIR}${PREFIX}/include/apreq2
 	${RM} ${STAGEDIR}${PREFIX}/${APACHEINCLUDEDIR}/apreq2/apreq_module_apache2.h
 	${RM} ${STAGEDIR}${PREFIX}/lib/libapreq2*
 	${RM} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_apreq2*

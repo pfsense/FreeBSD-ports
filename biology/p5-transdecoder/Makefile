@@ -1,13 +1,13 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	transdecoder
 PORTVERSION=	2.1.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=v
 CATEGORIES=	biology perl5
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Identify candidate coding regions within transcript sequences
 
 LICENSE=	BSD3CLAUSE
@@ -25,8 +25,6 @@ SHEBANG_FILES=	sample_data/cufflinks_example/runMe.sh \
 
 USE_GITHUB=	yes
 GH_PROJECT=	TransDecoder
-
-WRKSRC=		${WRKDIR}/${GH_PROJECT}-${PORTVERSION}
 
 PERL_MOD_DIR=	${PREFIX}/${SITE_PERL_REL}/${PORTNAME}
 PERL_UTIL_DIR=	${PREFIX}/libexec/${PORTNAME}

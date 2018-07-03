@@ -3,7 +3,7 @@
 
 PORTNAME=	kaa-base
 PORTVERSION=	0.6.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	multimedia python
 MASTER_SITES=	SF/freevo/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,12 +11,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	fbsd@opal.com
 COMMENT=	Kaa Media Repository
 
-LIB_DEPENDS=	libglib-2.0.so:devel/glib20
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2.py:textproc/py-libxml2 \
-		${PYTHON_SITELIBDIR}/pygame/__init__.py:devel/py-game
+BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2.py:textproc/py-libxml2@${FLAVOR} \
+		${PYTHON_SITELIBDIR}/pygame/__init__.py:devel/py-game@${FLAVOR}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		python
+USES=		python:2.7
+USE_GNOME=	glib20
 USE_PYTHON=	distutils autoplist
+CFLAGS+=	-D_WANT_SEMUN
 
 .include <bsd.port.mk>

@@ -3,11 +3,11 @@
 
 PORTNAME=	matreshka
 PORTVERSION=	0.7.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://forge.ada-ru.org/matreshka/downloads/
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ada framework for information systems development
 
 LICENSE=	BSD3CLAUSE

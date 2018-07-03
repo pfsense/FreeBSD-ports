@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=		mapserver
-PORTVERSION=		7.0.2
+PORTVERSION=		7.0.7
+PORTREVISION=	1
 CATEGORIES=		graphics www geography
 MASTER_SITES=		http://download.osgeo.org/mapserver/
 
@@ -15,7 +16,9 @@ LIB_DEPENDS=		libgd.so:graphics/gd \
 			libproj.so:graphics/proj \
 			libpng.so:graphics/png \
 			libgif.so:graphics/giflib \
-			libharfbuzz.so:print/harfbuzz
+			libharfbuzz.so:print/harfbuzz \
+			libsvg.so:graphics/libsvg \
+			libfreetype.so:print/freetype2
 
 USES=			cpe cmake:outsource jpeg
 CPE_VENDOR=		umn
@@ -41,8 +44,9 @@ WCS_DESC=		WCS Server support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USES+=			python:2
-BUILD_DEPENDS+=		swig2.0:devel/swig20
+USES+=			python:2.7
+BUILD_DEPENDS+=		swig3.0:devel/swig30
+BINARY_ALIAS=		swig=swig3.0
 CMAKE_ARGS+=		-DWITH_PYTHON=yes
 PLIST_SUB+=		PYTHON=""
 MAP_EGG=		MapScript-${PORTVERSION}-${PYTHON_VERSION:S/thon//}
@@ -125,7 +129,7 @@ CMAKE_ARGS+=		-DWITH_POSTGIS=0
 
 .if ${PORT_OPTIONS:MPHP}
 USES+=			php:build
-IGNORE_WITH_PHP=	55 70
+IGNORE_WITH_PHP=	70
 CMAKE_ARGS+=		-DWITH_PHP=1
 PLIST_SUB+=		PHP=""
 .else
@@ -135,9 +139,10 @@ PLIST_SUB+=		PHP="@comment "
 
 .if ${PORT_OPTIONS:MPERL}
 USES+=		perl5
-BUILD_DEPENDS=	${LOCALBASE}/bin/swig2.0:devel/swig20
+BUILD_DEPENDS=	swig3.0:devel/swig30
 CMAKE_ARGS+=	-DWITH_PERL=1
 PLIST_SUB+=	PERL=""
+BINARY_ALIAS=	swig=swig3.0
 .else
 CMAKE_ARGS+=	-DWITH_PERL=0
 PLIST_SUB+=	PERL="@comment "
@@ -185,8 +190,8 @@ do-install:
 .endfor
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/libmapserver.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib
 
-	@${LN} -s ${PREFIX}/lib/libmapserver.so.7.0.2 ${STAGEDIR}${PREFIX}/lib/libmapserver.so.2
-	@${LN} -s ${PREFIX}/lib/libmapserver.so.2 ${STAGEDIR}${PREFIX}/lib/libmapserver.so
+	@${LN} -sf libmapserver.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libmapserver.so.2
+	@${LN} -sf libmapserver.so.2 ${STAGEDIR}${PREFIX}/lib/libmapserver.so
 
 do-install-PHP-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/php/${PHP_EXT_DIR}
@@ -195,10 +200,8 @@ do-install-PHP-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/php
 	@${ECHO_CMD} "extension=php_mapscript.so" > ${STAGEDIR}${PREFIX}/etc/php/ext-20-php_mapscript.ini
 
-
 do-install-PYTHON-on:
 	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/
 	(cd ${BUILD_WRKSRC}/mapscript/python && ${CP} mapscript.py _mapscript.so ${STAGEDIR}${PYTHON_SITELIBDIR}/)
-
 
 .include <bsd.port.mk>

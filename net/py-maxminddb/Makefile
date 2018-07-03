@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	maxminddb
-PORTVERSION=	1.2.1
+PORTVERSION=	1.3.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net python geography
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,7 +25,7 @@ USE_PYTHON=	autoplist distutils
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_REL} < 3300
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ipaddr>=0:devel/py-ipaddr
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ipaddr>=0:devel/py-ipaddr@${FLAVOR}
 .endif
 
 post-install:

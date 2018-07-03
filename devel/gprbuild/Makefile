@@ -3,9 +3,10 @@
 
 PORTNAME=	gprbuild
 PORTVERSION=	${SNAPSHOT}
+PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Adacore multi-language software build tool
 
 LICENSE=	GPLv3

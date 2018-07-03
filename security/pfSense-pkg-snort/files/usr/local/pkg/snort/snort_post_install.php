@@ -77,7 +77,7 @@ conf_mount_rw();
 @rename("{$snortdir}/generators-sample", "{$snortdir}/generators");
 @rename("{$snortdir}/reference.config-sample", "{$snortdir}/reference.config");
 @rename("{$snortdir}/gen-msg.map-sample", "{$snortdir}/gen-msg.map");
-//@rename("{$snortdir}/attribute_table.dtd-sample", "{$snortdir}/attribute_table.dtd");
+@rename("{$snortdir}/attribute_table.dtd-sample", "{$snortdir}/attribute_table.dtd");
 
 /* fix up the preprocessor rules filenames from a PBI package install */
 $preproc_rules = array("decoder.rules", "preprocessor.rules", "sensitive-data.rules");

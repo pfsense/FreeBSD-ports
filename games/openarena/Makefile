@@ -3,20 +3,20 @@
 
 PORTNAME=	openarena
 PORTVERSION=	${GAMEVERSION}.s${SVNREVISION}
-PORTREVISION=	2
-PORTEPOCH=	1
+PORTEPOCH=	2
 MASTER_SITES=	SF/oarena/src \
 		http://files.poulsander.com/~poul19/public_files/oa/dev088/
 DISTNAME=	${PORTNAME}-engine-source-${GAMEVERSION}
-# Master port defines EXTRACT_SUFX unless already defined
-EXTRACT_SUFX=	.tar.bz2
+EXTRACT_SUFX=	.tar.bz2 # override master port
 
-MAINTAINER=	kami@freebsd.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake3 total conversion based on the ioquake3 engine
 
 LICENSE?=	GPLv2
 
-RUN_DEPENDS=	${DATADIR}/${Q3BASE}/pak0.pk3:games/openarena-data
+RUN_DEPENDS=	${LOCALBASE}/${DATADIR_REL}/${Q3BASE}/pak0.pk3:games/openarena-data
+
+USES=		tar:bzip2
 
 MASTERDIR=	${.CURDIR}/../ioquake3
 DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
@@ -26,6 +26,7 @@ PKGMESSAGE=	${.CURDIR}/../${PORTNAME}/pkg-message
 
 IOQ3?=		CLIENT
 IOQ3ARCH?=	${ARCH}
+IOQ3SDL=	sdl
 # OpenArena doc is too messy to bother
 OPTIONS_EXCLUDE=	DOCS
 

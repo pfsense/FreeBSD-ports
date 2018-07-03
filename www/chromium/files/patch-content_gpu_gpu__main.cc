@@ -1,45 +1,47 @@
---- content/gpu/gpu_main.cc.orig	2016-07-22 00:06:54.000000000 -0400
-+++ content/gpu/gpu_main.cc	2016-08-03 12:37:05.590978000 -0400
-@@ -102,7 +102,7 @@
-                                const base::CommandLine& command_line);
- bool WarmUpSandbox(const base::CommandLine& command_line);
- 
--#if !defined(OS_MACOSX)
-+#if !defined(OS_MACOSX) && !defined(OS_FREEBSD) //XXX(rene) added !FreeBSD
- bool CollectGraphicsInfo(gpu::GPUInfo& gpu_info);
+--- content/gpu/gpu_main.cc.orig	2018-02-24 16:25:14.000000000 +0100
++++ content/gpu/gpu_main.cc	2018-03-04 01:23:12.209864000 +0100
+@@ -76,7 +76,7 @@
+ #include "ui/gfx/x/x11_switches.h"  // nogncheck
  #endif
  
-@@ -192,13 +192,13 @@
-   // Use a UI message loop because ANGLE and the desktop GL platform can
-   // create child windows to render to.
-   base::MessageLoop main_message_loop(base::MessageLoop::TYPE_UI);
--#elif defined(OS_LINUX) && defined(USE_X11)
-+#elif (defined(OS_LINUX) || defined(OS_BSD)) && defined(USE_X11)
-   // We need a UI loop so that we can grab the Expose events. See GLSurfaceGLX
-   // and https://crbug.com/326995.
-   base::MessageLoop main_message_loop(base::MessageLoop::TYPE_UI);
-   std::unique_ptr<ui::PlatformEventSource> event_source =
-       ui::PlatformEventSource::CreateDefault();
--#elif defined(OS_LINUX)
-+#elif (defined(OS_LINUX) || defined(OS_BSD))
-   base::MessageLoop main_message_loop(base::MessageLoop::TYPE_DEFAULT);
- #elif defined(OS_MACOSX)
-   // This is necessary for CoreAnimation layers hosted in the GPU process to be
-@@ -309,7 +309,7 @@
-       // and we already registered them through SetGpuInfo() above.
-       base::TimeTicks before_collect_context_graphics_info =
-           base::TimeTicks::Now();
--#if !defined(OS_MACOSX)
-+#if !defined(OS_MACOSX) && !defined(OS_FREEBSD) //XXX(rene) added !FreeBSD
-       if (!CollectGraphicsInfo(gpu_info))
-         dead_on_arrival = true;
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) || defined(OS_BSD)
+ #include "content/common/font_config_ipc_linux.h"
+ #include "content/gpu/gpu_sandbox_hook_linux.h"
+ #include "content/public/common/common_sandbox_support_linux.h"
+@@ -102,7 +102,7 @@
  
-@@ -491,7 +491,7 @@
-   return true;
+ namespace {
+ 
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) && !defined(OS_BSD)
+ bool StartSandboxLinux(gpu::GpuWatchdogThread*,
+                        const gpu::GPUInfo*,
+                        const gpu::GpuPreferences&);
+@@ -163,7 +163,7 @@
+   bool EnsureSandboxInitialized(gpu::GpuWatchdogThread* watchdog_thread,
+                                 const gpu::GPUInfo* gpu_info,
+                                 const gpu::GpuPreferences& gpu_prefs) override {
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) && !defined(OS_BSD)
+     return StartSandboxLinux(watchdog_thread, gpu_info, gpu_prefs);
+ #elif defined(OS_WIN)
+     return StartSandboxWindows(sandbox_info_);
+@@ -340,7 +340,7 @@
+ 
+ namespace {
+ 
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) && !defined(OS_BSD)
+ bool StartSandboxLinux(gpu::GpuWatchdogThread* watchdog_thread,
+                        const gpu::GPUInfo* gpu_info,
+                        const gpu::GpuPreferences& gpu_prefs) {
+@@ -378,7 +378,7 @@
+ 
+   return res;
  }
+-#endif  // defined(OS_LINUX)
++#endif  // defined(OS_LINUX) && !defined(OS_BSD)
  
--#if !defined(OS_MACOSX)
-+#if !defined(OS_MACOSX) && !defined(OS_FREEBSD)//XXX(rene) added !FreeBSD
- bool CollectGraphicsInfo(gpu::GPUInfo& gpu_info) {
-   TRACE_EVENT0("gpu,startup", "Collect Graphics Info");
- 
+ #if defined(OS_WIN)
+ bool StartSandboxWindows(const sandbox::SandboxInterfaceInfo* sandbox_info) {

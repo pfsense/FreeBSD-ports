@@ -8,31 +8,25 @@ PKGNAMESUFFIX=	-libss
 MAINTAINER=	kaduk-fbsd@mit.edu
 COMMENT=	Command-line interface parsing library from e2fsprogs
 
+LICENSE=	MIT
+LICENSE_FILE=	${INSTALL_WRKSRC}/ss.h
+
 CONFLICTS=	heimdal-[0-9]*
 CONFLICTS+=	krb4-[0-9]*
-
-BROKEN_mips=		Does not build: expected declaration specifiers before size_t
-BROKEN_mips64=		Does not build: expected declaration specifiers before size_t
-BROKEN_powerpc64=	Does not build
-BROKEN_sparc64=		Does not build: expected declaration specifiers before size_t
 
 OPTIONS_EXCLUDE=	DOCS EXAMPLES IPV6 NLS
 CONFIGURE_ARGS=	--enable-elf-shlibs
 MASTERDIR=	${.CURDIR}/../../sysutils/e2fsprogs
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-ALL_TARGET=	subs
+BUILD_WRKSRC=	${WRKSRC}/lib/ss
 INSTALL_WRKSRC=	${WRKSRC}/lib/ss
 FILESDIR=	${.CURDIR}/files
 
 PKGDIR=		${.CURDIR}
 
 pre-build:
-	@(cd ${WRKSRC}/lib/ss && compile_et ss_err.et && \
+	(cd ${WRKSRC}/lib/ss && compile_et ss_err.et && \
 	${REINPLACE_CMD} -f ${FILESDIR}/fix-ss_err.h.sed ss_err.h)
-
-post-build:
-	@(cd ${WRKSRC}/lib/ss && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
-	${_MAKE_JOBS} ${MAKE_ARGS} all)
 
 .include "${MASTERDIR}/Makefile"

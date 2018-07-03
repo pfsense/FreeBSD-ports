@@ -3,17 +3,14 @@
 
 PORTNAME=	pam
 PORTVERSION=	1.0.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security pear
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PECL classes for PAM integration
 
-LICENSE= 	PHP202
+LICENSE=	PHP202
 
-USES=		php:ext tar:tgz
-IGNORE_WITH_PHP=	70
+USES=		php:pecl dos2unix
 
 .include <bsd.port.mk>

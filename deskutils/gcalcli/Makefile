@@ -4,7 +4,7 @@
 PORTNAME=	gcalcli
 PORTVERSION=	3.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	deskutils python
 
 MAINTAINER=	ports@thelanman.net
@@ -12,14 +12,15 @@ COMMENT=	Google Calendar Command Line Interface
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil \
-		${PYTHON_SITELIBDIR}/gdata/__init__.py:devel/py-gdata \
-		${PYTHON_SITELIBDIR}/gflags.py:devel/py-gflags \
-		${PYTHON_SITELIBDIR}/apiclient/__init__.py:www/py-google-api-python-client \
-		${PYTHON_SITELIBDIR}/httplib2/__init__.py:www/py-httplib2
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}gdata>=0:devel/py-gdata@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}google-api-python-client>=0:www/py-google-api-python-client@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}httplib2>=0:www/py-httplib2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-gflags>=0:devel/py-python-gflags@${PY_FLAVOR}
 
-USES=		python:-2.7
+USES=		python:-2.7 shebangfix
 USE_GITHUB=	yes
+SHEBANG_FILES=	gcalcli
 
 GH_ACCOUNT=	insanum
 
@@ -30,9 +31,9 @@ ICS_VCAL_DESC=		Enable importing of ics/vcal files
 SIMPLEJSON_DESC=	Use simplejson for url shortening
 FUZZYDATES_DESC=	Use parsedatetime for fuzzy date parsing
 
-ICS_VCAL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}vobject>=0.4.8:deskutils/py-vobject
-SIMPLEJSON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}simplejson>=0:devel/py-simplejson
-FUZZYDATES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}parsedatetime>=0:devel/py-parsedatetime
+ICS_VCAL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}vobject>=0.4.8:deskutils/py-vobject@${PY_FLAVOR}
+SIMPLEJSON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}simplejson>=0:devel/py-simplejson@${PY_FLAVOR}
+FUZZYDATES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}parsedatetime>=0:devel/py-parsedatetime@${PY_FLAVOR}
 
 NO_BUILD=	yes
 NO_ARCH=	yes

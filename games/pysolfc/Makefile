@@ -2,24 +2,26 @@
 
 PORTNAME=	pysolfc
 PORTVERSION=	2.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games python
 MASTER_SITES=	SF/${PORTNAME}/PySolFC/PySolFC-${PORTVERSION} \
 		SF/${PORTNAME}/PySolFC-Cardsets/PySolFC-Cardsets-${PORTVERSION}:cardsets
 DISTFILES=	PySolFC-${DISTVERSION}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	mva@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Solitaire game, written in Python and the successor of PySol
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${FLAVOR}
 
-USES=		python tar:bzip2
+USES=		python:2.7 shebangfix tar:bzip2
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
+SHEBANG_FILES=	data/themes/clearlooks/create_imgs.py
 
 PLIST_FILES=	share/pixmaps/pysolfc.png
 DATADIR=	${PREFIX}/share/PySolFC
@@ -45,7 +47,7 @@ post-patch:
 		-e 's|^Exec.*|Exec=${PORTNAME}|' \
 		${WRKSRC}/data/pysol.desktop
 	@${FIND} ${WRKDIR} -name .thumbnails -or -name .xvpics | \
-		${XARGS} ${RM} -rf
+		${XARGS} ${RM} -r
 	@${FIND} ${WRKSRC} -name "*.bak" -delete
 
 post-patch-NLS-off:
@@ -58,7 +60,7 @@ post-install:
 
 post-install-CARDSETS-on:
 .for cdir in ${CARDSET_DUPS}
-	@${RM} -rf ${WRKDIR}/PySolFC-Cardsets-${PORTVERSION}/cardset-${cdir}
+	@${RM} -r ${WRKDIR}/PySolFC-Cardsets-${PORTVERSION}/cardset-${cdir}
 .endfor
 	@cd ${WRKDIR}/PySolFC-Cardsets-${PORTVERSION} && \
 		${COPYTREE_SHARE} \* ${STAGEDIR}${DATADIR}
@@ -66,7 +68,7 @@ post-install-CARDSETS-on:
 		${FIND} . -type f | ${SED} -e 's|^./|${DATADIR_REL}/|' >> ${TMPPLIST}
 
 post-install-DOCS-on:
-	@${INSTALL} -d ${STAGEDIR}${DOCSDIR}/
-	@cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}/
+	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

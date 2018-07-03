@@ -1,0 +1,6 @@
+Please visit Services > FreeRADIUS menu to configure the package.
+
+EAP certificate configuration is required before using the package.
+Visit System > Cert. Manager and create a CA and a server certificate.
+After that, visit Services > FreeRADIUS > EAP tab and complete
+the 'Certificates for TLS' section (and, optionally, also the 'EAP-TLS' section.)

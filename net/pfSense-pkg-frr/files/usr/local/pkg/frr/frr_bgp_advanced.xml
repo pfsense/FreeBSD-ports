@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_bgp_advanced.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_bgpadvanced</name>
+	<title>Services/FRR/BGP</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg_edit.php?xml=frr/frr_bgp_advanced.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>BGP</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>Advanced</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp_advanced.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Neighbors</text>
+			<url>pkg.php?xml=frr/frr_bgp_neighbors.xml</url>
+		</tab>
+		<tab>
+			<text>AS Paths</text>
+			<url>pkg.php?xml=frr/frr_bgp_aspaths.xml</url>
+		</tab>
+		<tab>
+			<text>Communities</text>
+			<url>pkg.php?xml=frr/frr_bgp_communities.xml</url>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Advanced Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Default Local Preference</fielddescr>
+			<fieldname>default_localpref</fieldname>
+			<description>Configure default Local Preference value (0-4294967295, higher=more preferred)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Table Map</fielddescr>
+			<fieldname>tablemap</fieldname>
+			<description>BGP table to RIB route download filter</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+
+		<field>
+			<name>Advanced Timers</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Coalesce Timer</fielddescr>
+			<fieldname>timers_coalesce</fieldname>
+			<description>Subgroup Coalesce Timer (1-4294967295, ms)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Route Map Delay</fielddescr>
+			<fieldname>timers_routemapdelay</fieldname>
+			<description>Time to wait before processing route-map changes (0-600, seconds). 0 disables the timer (No route updates happen when route-maps change)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Dampening</fielddescr>
+			<fieldname>dampening_halflife</fieldname>
+			<description>Time Penalty Half Life (1-45)</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Reuse Route</fielddescr>
+			<fieldname>dampening_reuse</fieldname>
+			<description>When to Reuse a Route (1-20000)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Suppress Route</fielddescr>
+			<fieldname>dampening_suppress</fieldname>
+			<description>Start Suppressing Route (1-20000)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Suppress Duration</fielddescr>
+			<fieldname>dampening_suppressduration</fieldname>
+			<description>Max Time to Suppress (1-255)</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
+		</field>
+
+		<field>
+			<name>Advanced Routing Behavior</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Disable Fast External Failover</fielddescr>
+			<fieldname>fastexternalfailover</fieldname>
+			<description>Do not immediately reset session if a link to a directly connected external peer goes down</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Network Import Check</fielddescr>
+			<fieldname>networkimportcheck</fieldname>
+			<description>Check if the BGP network route exists in IGP</description>
+			<type>checkbox</type>
+		</field>
+
+		<field>
+			<name>Route Reflecting</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Route Reflector Outbound</fielddescr>
+			<fieldname>routereflectorallowoutboundpolicy</fieldname>
+			<description>Allow modifications made by outbound route-map on ibgp neighbors</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Cluster ID</fielddescr>
+			<fieldname>routereflectorclusterid</fieldname>
+			<description>Route Reflector Cluster ID (1-4294967295 or IP address)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Disable Client-To-Client</fielddescr>
+			<fieldname>routereflectorclienttoclient</fieldname>
+			<description>Do not allow client-to-client route reflection</description>
+			<type>checkbox</type>
+		</field>
+<!-- May need moved to address-family -->
+		<field>
+			<name>Aggregate Behavior</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Aggregate Addresses</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Aggregate Address</fielddescr>
+					<fieldname>aggregateaddr</fieldname>
+					<description>IPv4 or IPv6 Prefix</description>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Generate AS Set</fielddescr>
+					<fieldname>aggregateasset</fieldname>
+					<description>Generate AS Set</description>
+					<type>checkbox</type>
+					<size>20</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Summary Only</fielddescr>
+					<fieldname>aggregatesummaryonly</fieldname>
+					<description>Summary Only</description>
+					<type>checkbox</type>
+					<size>20</size>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<name>Multi-Exit Discriminator</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Deterministic MED</fielddescr>
+			<fieldname>meddeterministic</fieldname>
+			<description>Pick the best-MED path among paths advertised from the neighboring AS</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Always Compare MED</fielddescr>
+			<fieldname>medalwayscompare</fieldname>
+			<description>Allow comparing MED from different neighbors</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Max MED</fielddescr>
+			<fieldname>maxmedadmin</fieldname>
+			<description>Administratively applied Max MED (indefinite)</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Definite Max MED</fielddescr>
+			<fieldname>maxmedadminvalue</fieldname>
+			<description>Definite Admin Max MED value to be used (0-4294967294)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Startup Max MED Time</fielddescr>
+			<fieldname>maxmedstartup</fieldname>
+			<description>Time period for Max MED on startup (5-86400)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Startup Max Med Value</fielddescr>
+			<fieldname>maxmedstartupvalue</fieldname>
+			<description>Max MED value to be used during startup (0-4294967294)</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<name>Confederation</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>AS Confederation</fielddescr>
+			<fieldname>confedas</fieldname>
+			<description>Routing domain confederation AS (1-4294967295)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Confederation Peers</fielddescr>
+			<fieldname>confedpeers</fieldname>
+			<description>Peer AS list in BGP confederation (space separated)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Distance</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Administrative Distance</fielddescr>
+			<fieldname>distanceadmin</fieldname>
+			<description>Define an administrative distance (1-255)</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>IP Source Prefix</fielddescr>
+			<fieldname>distanceadminprefix</fieldname>
+			<description>IP Source Prefix for Admin Distance (x.x.x.x/yy)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Admin Distance ACL</fielddescr>
+			<fieldname>distanceadminacl</fieldname>
+			<description>Access List for Admin Distance</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>BGP Distance</fielddescr>
+			<fieldname>bgpdistanceext</fieldname>
+			<description>Distance for AS external routes (1-255)</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Internal BGP Distance</fielddescr>
+			<fieldname>bgpdistanceint</fieldname>
+			<description>Distance for AS internal routes (1-255)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Local BGP Distance</fielddescr>
+			<fieldname>bgpdistancelocal</fieldname>
+			<description>Distance for local routes (1-255)</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<name>Best Path Selection</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Compare Path with Confederation</fielddescr>
+			<fieldname>bgpbestpathasconfed</fieldname>
+			<description>Compare path lengths including confederation sets and sequences in selecting a route</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Ignore AS Path</fielddescr>
+			<fieldname>bgpbestpathasignore</fieldname>
+			<description>Ignore AS path length in selecting a route</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Multipath Relax</fielddescr>
+			<fieldname>bgpbestpathasmulti</fieldname>
+			<description>Allow load sharing across routes that have different AS paths (but same length)</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Generate an AS_SET</fielddescr>
+			<fieldname>bgpbestpathasmultigenasset</fieldname>
+			<description>Generate an AS_SET</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Compare Router ID</fielddescr>
+			<fieldname>bgpbestpathcomparerouterid</fieldname>
+			<description>Compare Router ID for identical EBGP paths</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>MED Confederation</fielddescr>
+			<fieldname>bgpbestpathmedconfed</fieldname>
+			<description>Compare MED among confederation paths</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Missing MED</fielddescr>
+			<fieldname>bgpbestpathmedmissing</fieldname>
+			<description>Treat missing MED as the least preferred path</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<name>EBGP</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>EBGP Nexthop Connected</fielddescr>
+			<fieldname>disableebgpconnectedroutecheck</fieldname>
+			<description>Disable checking if nexthop is connected on ebgp sessions</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enforce First AS</fielddescr>
+			<fieldname>enforcefirstas</fieldname>
+			<description>Enforce the first AS for EBGP routes</description>
+			<type>checkbox</type>
+		</field>
+
+		<field>
+			<name>Networking Behavior</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Subgroup Packet Queue</fielddescr>
+			<fieldname>subgrouppktqueuemax</fieldname>
+			<description>Default Subgroup Packet Queue Maximum (20-100)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Write Quanta</fielddescr>
+			<fieldname>writequanta</fieldname>
+			<description>Number of packets to write to peer socket per run (1-10000)</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_bgp_validate_input();
+	</custom_php_validation_command>
+</packagegui>

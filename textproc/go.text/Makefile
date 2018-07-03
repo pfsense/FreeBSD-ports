@@ -2,6 +2,7 @@
 
 PORTNAME=	go.text
 PORTVERSION=	20160702
+PORTREVISION=	1
 CATEGORIES=	textproc devel
 
 MAINTAINER=	jlaffaye@FreeBSD.org
@@ -12,7 +13,7 @@ LICENSE=	BSD3CLAUSE
 USE_GITHUB=	yes
 GH_ACCOUNT=	golang
 GH_PROJECT=	text
-GH_TAGNAME=	ce78b075c2fbd48520f4995b173eb9fe18b56ef3
+GH_TAGNAME=	ce78b07
 USES=		go
 GO_PKGNAME=	golang.org/x/text
 GO_TARGET=	${GO_PKGNAME}/cases				\
@@ -25,6 +26,7 @@ GO_TARGET=	${GO_PKGNAME}/cases				\
 		${GO_PKGNAME}/encoding/htmlindex		\
 		${GO_PKGNAME}/encoding/ianaindex		\
 		${GO_PKGNAME}/encoding/internal			\
+		${GO_PKGNAME}/encoding/internal/identifier	\
 		${GO_PKGNAME}/encoding/japanese			\
 		${GO_PKGNAME}/encoding/korean			\
 		${GO_PKGNAME}/encoding/simplifiedchinese	\

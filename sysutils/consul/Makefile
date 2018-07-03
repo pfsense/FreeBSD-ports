@@ -1,17 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	consul
-PORTVERSION=	0.6.4
-PORTREVISION=	1
+PORTVERSION=	1.0.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
-MASTER_SITES=	https://releases.hashicorp.com/consul/${PORTVERSION}/:web_ui
-DISTFILES=	consul_${PORTVERSION}_web_ui.zip:web_ui
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Service discovery and configuration made easy
 
-LICENSE=	MPL
+LICENSE=	MPL20
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
 
@@ -23,24 +20,25 @@ GH_SUBDIR=	src/github.com/${GH_ACCOUNT}/${PORTNAME}
 
 USE_RC_SUBR=	consul
 
+PLIST_FILES=	bin/consul
+
 USERS=		consul
 GROUPS=		consul
-
-STRIP=		# stripping can break go binaries
 
 post-extract:
 	@${MV} ${WRKSRC}/vendor/ ${WRKSRC}/src/
 
 do-build:
-	@cd ${WRKSRC}/src/github.com/hashicorp/consul; ${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build \
-		-ldflags "-X main.GitDescribe=v${PORTVERSION}" -o bin/consul
+	@cd ${WRKSRC}/src/github.com/hashicorp/consul; ${SETENV} ${MAKE_ENV} CGO_ENABLED=0 ${BUILD_ENV} GOPATH=${WRKSRC} go build \
+		-ldflags "\
+		-X github.com/hashicorp/consul/version.Version=${PORTVERSION}  \
+		-X github.com/hashicorp/consul/version.VersionPrerelease=  \
+		-X github.com/hashicorp/consul/version.GitDescribe=v${PORTVERSION} \
+		" \
+		-o bin/consul
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/hashicorp/consul/bin/consul ${STAGEDIR}${PREFIX}/bin/consul
-	${MKDIR} ${STAGEDIR}${DATADIR}
-	${MKDIR} ${WRKDIR}/dist
-	${MV} ${WRKDIR}/index.html ${WRKDIR}/static ${WRKDIR}/dist
-	cd ${WRKDIR}/dist && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.pre.mk>
 

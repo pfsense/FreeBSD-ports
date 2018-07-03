@@ -13,7 +13,7 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python to C and C++ bindings generator
 
 USES=		python pyqt:sip
-USE_PYTHON=	concurrent py3kplist
+USE_PYTHON=	concurrent py3kplist flavors
 USE_PYQT=	#
 
 CONFIGURE_ARGS=	-b ${PREFIX}/bin -d ${PYTHONPREFIX_SITELIBDIR} \
@@ -29,6 +29,8 @@ DEBUG_CONFIGURE_ON=	--debug
 
 do-configure:
 	cd ${WRKSRC} && ${PYTHON_CMD} configure.py ${CONFIGURE_ARGS}
+	${REINPLACE_CMD} -e '/sip_bin.:/s|'\'',$$|-${PYTHON_VER}'\'',|' \
+		${WRKSRC}/sipconfig.py
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR} && cd ${WRKSRC}/doc/html && \
@@ -39,5 +41,7 @@ post-install:
 	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
 		-f -d ${PYTHONPREFIX_SITELIBDIR} \
 		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/sip 
+	${STRIP_CMD} ${STAGEDIR}/${PYTHON_SITELIBDIR}/sip.so
 
 .include <bsd.port.mk>

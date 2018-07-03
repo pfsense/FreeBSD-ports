@@ -6,7 +6,7 @@ PORTVERSION=	20121205
 PORTREVISION=	3
 CATEGORIES=	www
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High-performance HTTP/HTTPS/SPDY proxy
 
 LICENSE=	UNBIT
@@ -18,8 +18,7 @@ LIB_DEPENDS=	libev.so:devel/libev \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libzmq.so:net/libzmq2
 
-USES=		gmake
-USE_OPENSSL=	yes
+USES=		gmake ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	zloidemon
 GH_TAGNAME=	cdac9a9

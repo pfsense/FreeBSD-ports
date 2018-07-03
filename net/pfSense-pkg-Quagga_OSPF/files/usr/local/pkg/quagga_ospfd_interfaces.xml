@@ -71,6 +71,16 @@
 		<executable>ospfd</executable>
 	</service>
 	<service>
+		<name>Quagga OSPF6d</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>ospf6d</executable>
+	</service>
+	<service>
+		<name>Quagga BGPd</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>bgpd</executable>
+	</service>
+	<service>
 		<name>Quagga Zebra</name>
 		<rcfile>quagga.sh</rcfile>
 		<executable>zebra</executable>

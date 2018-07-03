@@ -3,11 +3,11 @@
 
 PORTNAME=	audiopreview
 PORTVERSION=	0.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	http://audiopreview.codealpha.net/files/
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line tool to play previews of audio and video files
 
 USES=		gettext gmake pkgconfig

@@ -3,6 +3,7 @@
 
 PORTNAME=	luxrender
 DISTVERSION?=	1.6
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/luxrender/lux/get/ \
 		https://bitbucket.org/luxrender/luxrays/get/:lr
@@ -15,7 +16,7 @@ COMMENT=	Physically based and unbiased rendering system
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libboost_python.so:devel/boost-python-libs \
+LIB_DEPENDS=	${PY_BOOST} \
 		libfftw3.so:math/fftw3 \
 		libOpenImageIO.so:graphics/openimageio
 .if ${DISTVERSION} != 1.4
@@ -27,7 +28,7 @@ CONFLICTS_INSTALL?=	${PORTNAME}14-1.4*
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	uses SSE instructions
 
-USES+=		bison cmake python:build tar:bzip2
+USES+=		bison cmake:noninja python:build tar:bzip2
 USE_GL=		glu
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-lux-${LUX_REV}

@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_bgp_neighbors.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_bgp_neighbors</name>
+	<title>Services/FRR/BGP</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_bgp_neighbors.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>BGP</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>Advanced</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp_advanced.xml</url>
+		</tab>
+		<tab>
+			<text>Neighbors</text>
+			<url>pkg.php?xml=frr/frr_bgp_neighbors.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>AS Paths</text>
+			<url>pkg.php?xml=frr/frr_bgp_aspaths.xml</url>
+		</tab>
+		<tab>
+			<text>Communities</text>
+			<url>pkg.php?xml=frr/frr_bgp_communities.xml</url>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Neighbor Name/Addr</fielddescr>
+			<fieldname>peer</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Remote AS</fielddescr>
+			<fieldname>asnum</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Name/Address</fielddescr>
+			<fieldname>peer</fieldname>
+			<description>
+				<![CDATA[
+				The name of a peer group, or IP address of a neighbor.
+				<br/><br/>
+				Enter a text name to define a Peer Group. Enter an IP Address to define a Peer.
+				]]>
+			</description>
+			<type>input</type>
+			<size>20</size>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>50</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Peer Group</fielddescr>
+			<fieldname>peergroup</fieldname>
+			<description>
+				<![CDATA[
+				When defining a Neighbor by IP address, select a group to which it belongs, if any.
+				]]>
+			</description>
+			<default_value>none</default_value>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_bgp_neighbor_list(true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Password</fielddescr>
+			<fieldname>password</fieldname>
+			<description>Password for this BGP Neighbor</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Password Type</fielddescr>
+			<fieldname>password_type</fieldname>
+			<description>Type of Password</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do not use a Password)</name><value>none</value></option>
+				<option><name>FRR and setkey Outbound</name><value>both</value></option>
+				<option><name>FRR and setkey Bidirectional</name><value>both-bidir</value></option>
+				<option><name>FRR Only</name><value>frr</value></option>
+				<option><name>setkey Only Outbound</name><value>setkey</value></option>
+				<option><name>setkey Only Bidirectional</name><value>setkey-bidir</value></option>
+			</options>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<name>Basic Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Remote AS</fielddescr>
+			<fieldname>asnum</fieldname>
+			<description>
+				<![CDATA[
+				Autonomous System (AS) Number for this neighbor. May be an integer from 1-4294967295, "external", or "internal".
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Update Source</fielddescr>
+			<fieldname>updatesource_type</fieldname>
+			<description>IP type for BGP Updates</description>
+			<type>select</type>
+			<default_value>ipv4</default_value>
+			<options>
+				<option><name>IPv4</name><value>ipv4</value></option>
+				<option><name>IPv6</name><value>ipv6</value></option>
+			</options>
+			<required/>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Update Source</fielddescr>
+			<fieldname>updatesource</fieldname>
+			<description>Local source of BGP Updates</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_interfaces()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<required/>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Default Originate</fielddescr>
+			<fieldname>defaultoriginate</fieldname>
+			<description>Originate default route to this neighbor. Choose a Route Map to restrict origination.</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Send Community</fielddescr>
+			<fieldname>sendcommunity</fieldname>
+			<description>Send Community attribute to this neighbor</description>
+			<type>select</type>
+			<default_value>disabled</default_value>
+			<options>
+				<option><name>Disabled</name><value>disabled</value></option>
+				<option><name>Enabled</name><value>enabled</value></option>
+				<option><name>Standard</name><value>standard</value></option>
+				<option><name>Extended</name><value>extended</value></option>
+				<option><name>Standard and Extended</name><value>both</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Next Hop Self</fielddescr>
+			<fieldname>nexthopself</fieldname>
+			<description>Disable the next hop calculation for this neighbor</description>
+			<type>select</type>
+			<default_value>disabled</default_value>
+			<options>
+				<option><name>Disabled</name><value>disabled</value></option>
+				<option><name>Enabled</name><value>enabled</value></option>
+				<option><name>Force</name><value>force</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Inbound Soft Reconfiguration</fielddescr>
+			<fieldname>softreconfigurationinbound</fieldname>
+			<description>Per-neighbor Inbound Soft Reconfiguration</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Timers</fielddescr>
+			<fieldname>timers_keepalive</fieldname>
+			<description>Keep Alive Interval (0-65535)</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Hold Time</fielddescr>
+			<fieldname>timers_holdtime</fieldname>
+			<description>Hold Time (1-65535)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Connect Timer</fielddescr>
+			<fieldname>timers_connect</fieldname>
+			<description>Connect Timer (1-65535)</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
+		</field>
+
+		<field>
+			<name>Peer Filtering</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Distribute List Filter</fielddescr>
+			<fieldname>distribute_in</fieldname>
+			<description>
+				<![CDATA[
+				Inbound Distribution ACL Filter
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Distribute List Filter</fielddescr>
+			<fieldname>distribute_out</fieldname>
+			<description>
+				<![CDATA[
+				Outbound Distribution ACL Filter
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Prefix List Filter</fielddescr>
+			<fieldname>prefixfilter_in</fieldname>
+			<description>
+				<![CDATA[
+				Inbound Prefix List Filter
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_prefixlist_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Prefix List Filter</fielddescr>
+			<fieldname>prefixfilter_out</fieldname>
+			<description>
+				<![CDATA[
+				Outbound Prefix List Filter
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_prefixlist_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>AS Path Filter</fielddescr>
+			<fieldname>aspathfilter_in</fieldname>
+			<description>
+				<![CDATA[
+				Inbound AS Path Filter
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_bgp_aspath_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>AS Path Filter</fielddescr>
+			<fieldname>aspathfilter_out</fieldname>
+			<description>
+				<![CDATA[
+				Outbound AS Path Filter
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_bgp_aspath_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Route Map Filters</fielddescr>
+			<fieldname>routemap_in</fieldname>
+			<description>
+				<![CDATA[
+				Inbound Route Map Filter
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Route Map Filters</fielddescr>
+			<fieldname>routemap_out</fieldname>
+			<description>
+				<![CDATA[
+				Outbound Route Map Filter
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Unsuppress Route Map</fielddescr>
+			<fieldname>unsuppressmap</fieldname>
+			<description>
+				<![CDATA[
+				Route Map to selectively unsuppress suppressed routes
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+
+		<field>
+			<name>Advanced Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Weight</fielddescr>
+			<fieldname>weight</fieldname>
+			<description>
+				<![CDATA[
+				Default weight for routes from this neighbor, 0-65535
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Passive</fielddescr>
+			<fieldname>passive</fieldname>
+			<description>Do not send open messages to this neighbor</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Path Advertise</fielddescr>
+			<fieldname>addpathtxallpaths</fieldname>
+			<description>All Paths to Neighbor</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Path Transmit</fielddescr>
+			<fieldname>addpathtxbestpathperas</fieldname>
+			<description>Best Path per each neighboring AS</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Advertisement Interval</fielddescr>
+			<fieldname>advertisementinterval</fieldname>
+			<description>
+				<![CDATA[
+				Minimum interval, in seconds, between sending BGP routing updates. (0-600)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Allow AS Inbound</fielddescr>
+			<fieldname>allowasin</fieldname>
+			<description>
+				<![CDATA[
+				Accept as-path with this local router's own AS present in it.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>disabled</default_value>
+			<options>
+				<option><name>Disabled</name><value>disabled</value></option>
+				<option><name>Enabled</name><value>enabled</value></option>
+				<option><name>Only if Origin</name><value>origin</value></option>
+				<option><name>Allow 1x</name><value>1</value></option>
+				<option><name>Allow 2x</name><value>2</value></option>
+				<option><name>Allow 3x</name><value>3</value></option>
+				<option><name>Allow 4x</name><value>4</value></option>
+				<option><name>Allow 5x</name><value>5</value></option>
+				<option><name>Allow 6x</name><value>6</value></option>
+				<option><name>Allow 7x</name><value>7</value></option>
+				<option><name>Allow 8x</name><value>8</value></option>
+				<option><name>Allow 9x</name><value>9</value></option>
+				<option><name>Allow 10x</name><value>10</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>AS Override</fielddescr>
+			<fieldname>asoverride</fieldname>
+			<description>Override ASNs in outbound updates if the AS Path is the same as the Remote AS</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Attribute Unchanged</fielddescr>
+			<fieldname>attributeunchanged</fieldname>
+			<description>Propagate BGP Attribute Unchanged</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>AS Path</fielddescr>
+			<fieldname>attributeunchanged_aspath</fieldname>
+			<description>AS Path Attribute</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Med</fielddescr>
+			<fieldname>attributeunchanged_med</fieldname>
+			<description>Med Attribute</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Next Hop</fielddescr>
+			<fieldname>attributeunchanged_nexthop</fieldname>
+			<description>Next Hop Attribute</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>BFD Support</fielddescr>
+			<fieldname>bfd_multiplier</fieldname>
+			<description>Detect Multiplier (2-255)</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Min Receive Interval</fielddescr>
+			<fieldname>bfd_minrx</fieldname>
+			<description>Required Minimum Receive Interval (50-60000)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Min Transmit Interval</fielddescr>
+			<fieldname>bfd_mintx</fieldname>
+			<description>Desired Minimum Transmit Interval (50-60000)</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Advertise Capability</fielddescr>
+			<fieldname>capability</fieldname>
+			<description>
+				<![CDATA[
+				Advertise capabilities to the neighbor
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>disabled</default_value>
+			<options>
+				<option><name>Disabled</name><value>disabled</value></option>
+				<option><name>Dynamic</name><value>dynamic</value></option>
+				<option><name>Extended Next-Hop</name><value>extended-nexthop</value></option>
+				<option><name>ORF</name><value>orf</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Disable Capability Negotiation</fielddescr>
+			<fieldname>dontcapabilitynegotiate</fieldname>
+			<description>Do not perform capability negotiation with the neighbor</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Override Capability Negotiation</fielddescr>
+			<fieldname>overridecapability</fieldname>
+			<description>Override capability negotiation result</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>TTL Security Hops</fielddescr>
+			<fieldname>ttlsecurityhops</fieldname>
+			<description>
+				<![CDATA[
+				The maximum hop count to allow for BGP neighbors (1-254)
+				<br/><br/>
+				Leave blank to disable
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Disable Connected Check</fielddescr>
+			<fieldname>disableconnectedcheck</fieldname>
+			<description>One-hop away EBGP peer using loopback address</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>EBGP Multi-Hop</fielddescr>
+			<fieldname>ebgpmultihop</fieldname>
+			<description>
+				<![CDATA[
+				The maximum hop count to allow for EBGP neighbors not on directly connected networks (1-255)
+				<br/><br/>
+				Leave blank to disable
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Enforce EBGP Multi-Hop</fielddescr>
+			<fieldname>enforcemultihop</fieldname>
+			<description>Enforce EBGP neighbors perform multihop</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Local AS</fielddescr>
+			<fieldname>localas_num</fieldname>
+			<description>Local AS Number</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>No Prepend</fielddescr>
+			<fieldname>localas_noprepend</fieldname>
+			<description>Do not prepend Local AS to updates from EBGP peers</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Replace AS</fielddescr>
+			<fieldname>localas_replaceas</fieldname>
+			<description>Do not prepend Local AS to updates from IBGP peers</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Maximum Prefix</fielddescr>
+			<fieldname>maximumprefix_num</fieldname>
+			<description>Maximum Prefix to Accept (1-4294967295)</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Warning Threshold</fielddescr>
+			<fieldname>maximumprefix_threshold</fieldname>
+			<description>% at which to warn (1-100)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Warn Only</fielddescr>
+			<fieldname>maximumprefix_warnonly</fieldname>
+			<description>Warn Only (No Restart)</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Restart Interval</fielddescr>
+			<fieldname>maximumprefix_restart</fieldname>
+			<description>Restart BGP after X warned minutes (1-65535)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Remove Private AS</fielddescr>
+			<fieldname>removeprivateas</fieldname>
+			<description>Remove private ASNs in outbound updates</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Apply to All</fielddescr>
+			<fieldname>removeprivateas_all</fieldname>
+			<description>Apply to all AS Numbers</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Replace AS</fielddescr>
+			<fieldname>removeprivateas_replace</fieldname>
+			<description>Replace Private with Local AS</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+
+		<field>
+			<fielddescr>Route Client</fielddescr>
+			<fieldname>routeclient_reflector</fieldname>
+			<description>Neighbor is Route Reflector Client</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Route Client</fielddescr>
+			<fieldname>routeclient_server</fieldname>
+			<description>Neighbor is Route Server Client</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Solo Peer</fielddescr>
+			<fieldname>solo</fieldname>
+			<description>Neighbor is part of its own update group</description>
+			<type>checkbox</type>
+		</field>
+
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_bgp_neighbors_validate_input();
+	</custom_php_validation_command>
+</packagegui>

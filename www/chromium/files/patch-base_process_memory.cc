@@ -1,39 +1,20 @@
---- base/process/memory.cc.orig	2016-03-25 13:04:44 UTC
-+++ base/process/memory.cc
-@@ -46,4 +46,36 @@ bool UncheckedCalloc(size_t num_items, s
+--- base/process/memory.cc.orig	2017-12-15 02:04:05.000000000 +0100
++++ base/process/memory.cc	2017-12-31 09:49:46.308931000 +0100
+@@ -10,7 +10,7 @@
+ namespace base {
  
+ // Defined in memory_win.cc for Windows.
+-#if !defined(OS_WIN)
++#if !defined(OS_WIN) && !defined(OS_BSD)
+ 
+ namespace {
+ 
+@@ -31,7 +31,7 @@
  #endif
  
-+#if defined(OS_FREEBSD)
-+
-+#if defined(USE_TCMALLOC)
-+// Used by UncheckedMalloc. If tcmalloc is linked to the executable
-+// this will be replaced by a strong symbol that actually implement
-+// the semantics and don't call new handler in case the allocation fails.
-+extern "C" {
-+      
-+__attribute__((weak, visibility("default")))
-+void* tc_malloc_skip_new_handler_weak(size_t size);
-+
-+void* tc_malloc_skip_new_handler_weak(size_t size) {
-+  return malloc(size);
-+}
-+
-+}
-+#endif
-+
-+bool UncheckedMalloc(size_t size, void** result) {
-+#if defined(MEMORY_TOOL_REPLACES_ALLOCATOR) || \ 
-+    (!defined(LIBC_GLIBC) && !defined(USE_TCMALLOC))
-+  *result = malloc(size);
-+#elif defined(LIBC_GLIBC) && !defined(USE_TCMALLOC)
-+  *result = __libc_malloc(size);
-+#elif defined(USE_TCMALLOC)
-+  *result = tc_malloc_skip_new_handler_weak(size);
-+#endif
-+  return *result != NULL;
-+}
-+
-+#endif // defined(OS_FREEBSD)
-+
- }  // namespace base
+ // Defined in memory_mac.mm for Mac.
+-#if !defined(OS_MACOSX)
++#if !defined(OS_MACOSX) && !defined(OS_BSD)
+ 
+ bool UncheckedCalloc(size_t num_items, size_t size, void** result) {
+   const size_t alloc_size = num_items * size;

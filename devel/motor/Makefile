@@ -3,7 +3,7 @@
 
 PORTNAME=	motor
 PORTVERSION=	3.4.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://thekonst.net/download/
 
@@ -23,10 +23,10 @@ CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG}
 .if ${PORT_OPTIONS:MNLS}
 USES+=		gettext
 CONFIGURE_ARGS+=--with-libintl-prefix=${LOCALBASE}
-PLIST_SUB=	NLS=""
+PLIST_SUB+=	NLS=""
 .else
 CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB=	NLS="@comment "
+PLIST_SUB+=	NLS="@comment "
 .endif
 
 post-patch:

@@ -3,6 +3,7 @@
 
 PORTNAME=	ibus-libpinyin
 PORTVERSION=	1.7.2
+PORTREVISION=	2
 CATEGORIES=	chinese
 MASTER_SITES=	SF/libpinyin/${PORTNAME}
 
@@ -17,6 +18,7 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
 
 USES=		compiler:c++11-lib gmake python pkgconfig gettext
 USE_GNOME=	glib20
+USE_PYTHON=	py3kplist
 
 WRKSRC=	${WRKDIR}/${DISTNAME}
 

@@ -41,7 +41,4 @@
 			<url>/vpn_openvpn_export_shared.php</url>
 		</tab>
 	</tabs>
-	<custom_php_deinstall_command>
-		openvpn_client_export_deinstall();
-	</custom_php_deinstall_command>
 </packagegui>

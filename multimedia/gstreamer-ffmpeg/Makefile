@@ -16,6 +16,9 @@ COMMENT=	GStreamer plug-in for manipulating MPEG video streams
 
 LICENSE=	GPLv2
 
+NOT_FOR_ARCHS=		aarch64
+NOT_FOR_ARCHS_REASON=	invokes x86 asm
+
 LIB_DEPENDS=	liborc-0.4.so:devel/orc
 
 PORTSCOUT=	limit:0\.10\..*
@@ -33,6 +36,7 @@ FFMPEG_DESC?=	Use system ffmpeg instead of internal libav
 
 FFMPEG_LIB_DEPENDS=libavcodec0.so:multimedia/ffmpeg0
 FFMPEG_CONFIGURE_WITH=system-ffmpeg
+FFMPEG_VARS_OFF=NOPRECIOUSMAKEVARS=yes # ARCH
 
 FFMPEG_DISTFILES_OFF=libav-${LIBAV_VERSION}.tar.xz:libav
 FFMPEG_BUILD_DEPENDS_OFF=yasm:devel/yasm
@@ -62,20 +66,7 @@ FFMPEG_CFLAGS_OFF+=-msse
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == armv6
-CONFIGURE_ENV+=	ASFLAGS=-no-integrated-as
-CFLAGS=	-no-integrated-as
-BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
-CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
-MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
-.endif
-
 .if ! ${PORT_OPTIONS:MFFMPEG}
-.if ${ARCH} == ia64
-BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
-CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
-MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
-.endif
 
 .if ${ARCH} == powerpc64
 FFMPEG_CONFIG+=	--arch=ppc64
@@ -96,11 +87,5 @@ post-patch:
 	@${REINPLACE_CMD} -Ee '/sleep 15/d; /PKG_CONFIG/\
 		s/lib(av(format|codec|util)|postproc|swscale)/&0/g' \
 		${WRKSRC}/configure
-	@${REINPLACE_CMD} 's/[[:<:]]ARCH[[:>:]]/LIBAV_ARCH/' \
-		${WRKSRC}/gst-libs/ext/libav/Makefile \
-		${WRKSRC}/gst-libs/ext/libav/common.mak \
-		${WRKSRC}/gst-libs/ext/libav/configure \
-		${WRKSRC}/gst-libs/ext/libav/libavcodec/Makefile \
-		${WRKSRC}/gst-libs/ext/libav/libavfilter/Makefile
 
 .include <bsd.port.post.mk>

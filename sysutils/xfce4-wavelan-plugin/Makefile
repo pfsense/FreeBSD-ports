@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-wavelan-plugin
-PORTVERSION=	0.5.12
+PORTVERSION=	0.6.0
 PORTREVISION=	1
 CATEGORIES=	sysutils xfce
 MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
@@ -14,8 +14,9 @@ COMMENT=	Displays various information about a WaveLAN device
 LICENSE=	BSD3CLAUSE
 
 GNU_CONFIGURE=	yes
-USES=		gettext pkgconfig gmake libtool xfce tar:bzip2
-USE_GNOME=	gtk20 glib20 intltool intlhack
+USES=		gettext gmake libtool pkgconfig tar:bzip2 xfce:gtk3
+USE_GNOME=	gtk30 glib20 intltool cairo gdkpixbuf2
 USE_XFCE=	panel
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

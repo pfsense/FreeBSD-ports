@@ -9,9 +9,9 @@ CATEGORIES=	misc devel
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Advanced delta creator, patcher, and library
 
-LICENSE=	MPL
+LICENSE=	MPL20
 
-WRKSRC=		${WRKDIR}/BDelta-${PORTVERSION}/src
+WRKSRC_SUBDIR=	src
 
 USES=		gmake
 USE_LDCONFIG=	yes

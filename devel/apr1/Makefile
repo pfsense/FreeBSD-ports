@@ -20,21 +20,23 @@ USES=		iconv pathfix libtool cpe
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 
-APR_VERSION=	1.5.2
-APU_VERSION=	1.5.4
+APR_VERSION=	1.6.3
+APU_VERSION=	1.6.1
 
 CPE_VENDOR=	apache
 CPE_PRODUCT=	apr-util
 CPE_VERSION=	${APU_VERSION}
 
 OPTIONS_SUB=		yes
-OPTIONS_GROUP=		APR APU
-OPTIONS_GROUP_APR=	IPV6 DEVRANDOM
-OPTIONS_GROUP_APU=	BDB GDBM LDAP MYSQL NDBM PGSQL SQLITE FREETDS
+OPTIONS_GROUP=		APU
+OPTIONS_DEFINE=		IPV6
+OPTIONS_GROUP_APU=	BDB GDBM LDAP MYSQL NDBM ODBC PGSQL SQLITE
 OPTIONS_RADIO=		CRYPTO
 OPTIONS_RADIO_CRYPTO=	SSL NSS
 OPTIONS_DEFAULT=	DEVRANDOM BDB GDBM SSL
 
+APU_DESC=		Database support
+CRYPTO_DESC=		Cryptography provider
 DEVRANDOM_DESC=		Use /dev/random or compatible
 NDBM_DESC=		NDBM support
 NSS_DESC=		NSS crypto driver
@@ -42,11 +44,11 @@ SSL_DESC=		OpenSSL crypto driver
 
 # APR-Util Options
 BDB_USES=		bdb:5+
-FREETDS_LIB_DEPENDS=	libsybdb.so:databases/freetds
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 LDAP_USE=		OPENLDAP=yes
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 NSS_LIB_DEPENDS=	libnss3.so:security/nss
+ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 PGSQL_USES=		pgsql
 SQLITE_USES=		sqlite
 SSL_USES=		ssl
@@ -65,114 +67,62 @@ PLIST_SUB+=	SHLIB_APR_MAJOR="${SHLIB_APR_MAJOR}" \
 
 APR_CONF_ARGS=	--with-installbuilddir=${DATADIR}/build-1 \
 		--enable-threads \
-		--enable-posix-shm
+		--enable-posix-shm \
+		--with-devrandom
 
 APU_CONF_ARGS=	--with-apr=${APR_WRKDIR} \
-		--with-expat=${LOCALBASE} \
-		--with-iconv=${ICONV_PREFIX}
-
-.include <bsd.port.options.mk>
+		--with-expat=${LOCALBASE}
 
 ########## APR Options
-.if ${PORT_OPTIONS:MIPV6}
-APR_CONF_ARGS+=	--enable-ipv6
-.else
-APR_CONF_ARGS+=	--disable-ipv6
-.endif
-
-.if ${PORT_OPTIONS:MDEVRANDOM}
-APR_CONF_ARGS+=	--with-devrandom
-.else
-APR_CONF_ARGS+=	--without-devrandom
-.endif
+IPV6_VARS=		APR_CONF_ARGS+=--enable-ipv6
+IPV6_VARS_OFF=		APR_CONF_ARGS+=--disable-ipv6
 
 ######### APR-Util Options
 # make sure 1st include is "${APR_WRKDIR}/include"
 # to avoid failures if previous apr_version.h is present
 APU_CPPFLAGS=	-I${APR_WRKDIR}/include
 
-.if ${PORT_OPTIONS:MGDBM}
-APU_CONF_ARGS+=	--with-gdbm=${LOCALBASE}
-.else
-APU_CONF_ARGS+=	--without-gdbm
-.endif
+BDB_VARS=	APU_CONF_ARGS+=--with-berkeley-db=${BDB_INCLUDE_DIR}:${BDB_LIB_DIR}
+BDB_VARS_OFF=	APU_CONF_ARGS+=--without-berkeley-db
+GDBM_VARS=	APU_CONF_ARGS+=--with-gdbm=${LOCALBASE}
+LDAP_VARS=	APU_CONF_ARGS+="--with-ldap-include=${LOCALBASE}/include \
+			--with-ldap-lib=${LOCALBASE}/lib --with-ldap=ldap"
+MYSQL_VARS=	APU_CONF_ARGS+=--with-mysql=${LOCALBASE} \
+		APU_CPPFLAGS+="-I${LOCALBASE}/include -I${LOCALBASE}/include/mysql -DHAVE_MYSQL_H" \
+		LIBS+=-L${LOCALBASE}/lib/mysql
+NDBM_VARS=	APU_CONF_ARGS+=--with-ndbm=/usr
+NSS_VARS=	APU_CONF_ARGS+=--with-nss=${LOCALBASE} \
+		APU_CPPFLAGS+=-I${LOCALBASE}/include/nss \
+		LDFLAGS+=-L${LOCALBASE}/lib/nss
+ODBC_VARS=	APU_CONF_ARGS+=--with-odbc=${LOCALBASE}
+SSL_VARS=	APU_CONF_ARGS+=--with-openssl=${OPENSSLBASE} \
+		APU_CPPFLAGS+=-I${OPENSSLINC} \
+		LDFLAGS+=-L${OPENSSLLIB}
+SSL_VARS_OFF=	APU_CONF_ARGS+=--without-openssl
+PGSQL_VARS=	APU_CONF_ARGS+=--with-pgsql=${LOCALBASE} \
+		APU_CONF_ENV+=ac_cv_path_PGSQL_CONFIG=""
+SQLITE_VARS=		APU_CONF_ARGS+=--with-sqlite3=${LOCALBASE}
+SQLITE_VARS_OFF=	APU_CONF_ARGS+=--without-sqlite3
 
-.if ${PORT_OPTIONS:MBDB}
-APU_CONF_ARGS+=	--with-berkeley-db=${BDB_INCLUDE_DIR}:${BDB_LIB_DIR}
-.else
-APU_CONF_ARGS+=	--without-berkeley-db
-.endif
+.for db in GDBM NDBM LDAP ODBC MYSQL NSS PGSQL
+${db}_VARS_OFF=	APU_CONF_ARGS+=--without-${db:tl}
+.endfor
 
-.if ${PORT_OPTIONS:MNDBM}
-APU_CONF_ARGS+=	--with-ndbm=/usr
-.else
-APU_CONF_ARGS+=	--without-ndbm
-.endif
+APR_CONF_ENV+=	${CONFIGURE_ENV:O:u} CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}"
+# include apu specific CPPFLAGS 1st!
+APU_CONF_ENV+=	${CONFIGURE_ENV:O:u} CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${APU_CPPFLAGS} ${CPPFLAGS}"
 
-.if ${PORT_OPTIONS:MLDAP}
-APU_CONF_ARGS+=	--with-ldap-include=${LOCALBASE}/include \
-		--with-ldap-lib=${LOCALBASE}/lib --with-ldap=ldap
-.else
-APU_CONF_ARGS+=	--without-ldap
-.endif
+.include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MFREETDS}
-APU_CONF_ARGS+=	--with-freetds=${LOCALBASE}
-.else
-APU_CONF_ARGS+=	--without-freetds
-.endif
-
-.if ${PORT_OPTIONS:MMYSQL}
-APU_CONF_ARGS+=	--with-mysql=${LOCALBASE}
-APU_CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/mysql -DHAVE_MYSQL_H
-LIBS+=		-L${LOCALBASE}/lib/mysql
-.else
-APU_CONF_ARGS+=	--without-mysql
-.endif
-
-.if ${PORT_OPTIONS:MPGSQL}
-APU_CONF_ARGS+=	--with-pgsql=${LOCALBASE}
-APU_CONF_ENV+=	ac_cv_path_PGSQL_CONFIG=""
-.else
-APU_CONF_ARGS+=	--without-pgsql
-.endif
-
-.if ${PORT_OPTIONS:MSQLITE}
-APU_CONF_ARGS+=	--with-sqlite3=${LOCALBASE}
-.else
-APU_CONF_ARGS+=	--without-sqlite3
-.endif
-
-# crypto (apache24)
 .if ${PORT_OPTIONS:MSSL} || ${PORT_OPTIONS:MNSS}
 APU_CONF_ARGS+=	--with-crypto
 .else
 APU_CONF_ARGS+=	--without-crypto
 .endif
 
-.if ${PORT_OPTIONS:MSSL}
-APU_CPPFLAGS+=	-I${OPENSSLINC}
-LDFLAGS+=	-L${OPENSSLLIB}
-APU_CONF_ARGS+=	--with-openssl=${OPENSSLBASE}
-.else
-APU_CONF_ARGS+=	--without-openssl
-.endif
-
-.if ${PORT_OPTIONS:MNSS}
-APU_CPPFLAGS+=	-I${LOCALBASE}/include/nss
-LDFLAGS+=	-L${LOCALBASE}/lib/nss
-APU_CONF_ARGS+=	--with-nss=${LOCALBASE}
-.else
-APU_CONF_ARGS+=	--without-nss
-.endif
-
-APR_CONF_ENV+=	${CONFIGURE_ENV:O:u} CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}"
-# include apu specific CPPFLAGS 1st!
-APU_CONF_ENV+=	${CONFIGURE_ENV:O:u} CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${APU_CPPFLAGS} ${CPPFLAGS}"
-
 post-extract:
 # cleanup files not used on this platform
-	@${FIND} ${WRKSRC} -type f \( -name 'NWGNU*' -o -name '*.ds?' -o -name '*.dep' -o -name '*.mak' -o -name '*.win' \) -delete
+	@${FIND} ${WRKDIR} -type f \( -name 'NWGNU*' -o -name '*.ds?' -o -name '*.dep' -o -name '*.mak' -o -name '*.win' \) -delete
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/OSVERSION/${OSVERSION}/g' \
@@ -207,7 +157,7 @@ do-install:
 
 	-${FIND} ${STAGEDIR}${PREFIX}/lib/ -name \*.so | ${XARGS} ${STRIP_CMD}
 
-test: build
+do-test:
 	@${ECHO_MSG} "# ===> ${.TARGET} apr-${APR_VERSION}"
 	-(cd ${APR_WRKDIR} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} test)
 	@${ECHO_MSG} "# ===> ${.TARGET} apr-util-${APU_VERSION}"
@@ -216,7 +166,7 @@ test: build
 #regression-test: test
 
 rpfl: configure
-# maintainer only: strip PID from logs (better compair)
+# maintainer only: strip PID from logs (better compare)
 	${SED} -i '' -E 's|^configure:[0-9]+:|configure:_pid_:|g' ${APR_WRKDIR}/config.log
 	${SED} -i '' -E 's|^configure:[0-9]+:|configure:_pid_:|g' ${APU_WRKDIR}/config.log
 

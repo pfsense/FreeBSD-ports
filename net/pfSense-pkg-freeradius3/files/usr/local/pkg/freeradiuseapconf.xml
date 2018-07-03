@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * freeradiuseapconf.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
+ * Copyright (c) 2013 Marcello Coutinho (revocation list code)
+ * All rights reserved.
+ *
+ * Originally based on m0n0wall (http://m0n0.ch/wall)
+ * Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+]]>	</copyright>
+	<name>freeradiuseapconf</name>
+	<title>FreeRADIUS: EAP</title>
+	<aftersaveredirect>pkg_edit.php?xml=freeradiuseapconf.xml&amp;id=0</aftersaveredirect>
+	<include_file>/usr/local/pkg/freeradius.inc</include_file>
+	<tabs>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=freeradius.xml</url>
+		</tab>
+		<tab>
+			<text>MACs</text>
+			<url>/pkg.php?xml=freeradiusauthorizedmacs.xml</url>
+		</tab>
+		<tab>
+			<text>NAS / Clients</text>
+			<url>/pkg.php?xml=freeradiusclients.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>/pkg.php?xml=freeradiusinterfaces.xml</url>
+		</tab>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>EAP</text>
+			<url>/pkg_edit.php?xml=freeradiuseapconf.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>SQL</text>
+			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>LDAP</text>
+			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View config</text>
+			<url>/freeradius_view_config.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=freeradiussync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>EAP</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Disable Weak EAP Types</fielddescr>
+			<fieldname>vareapconfdisableweakeaptypes</fieldname>
+			<description>Disables weak EAP types: MD5, GTC and LEAP</description>
+			<sethelp>
+				<![CDATA[
+				When enabled, only stronger EAP types like TLS, TTLS, PEAP, and MSCHAPv2 are allowed.<br/>
+				<span class="text-info">This option does not affect tunneled EAP sessions.</span>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Default EAP Type</fielddescr>
+			<fieldname>vareapconfdefaulteaptype</fieldname>
+			<description>
+				<![CDATA[
+				Invoke the default supported EAP type when EAP-Identity response is received.</br>
+				<span class="text-info"><strong>Important: </strong>Do not select the weak types if 'Disable Weak EAP Types' is checked above; try PEAP instead.
+				(Default: md5)
+				</span>
+			]]></description>
+			<type>select</type>
+			<default_value>md5</default_value>
+			<options>
+				<option><name>MD5 (weak)</name><value>md5</value></option>
+				<option><name>GTC (weak)</name><value>gtc</value></option>
+				<option><name>LEAP (weak)</name><value>leap</value></option>
+				<option><name>TLS</name><value>tls</value></option>
+				<option><name>TTLS</name><value>ttls</value></option>
+				<option><name>PEAP</name><value>peap</value></option>
+				<option><name>MSCHAPv2</name><value>mschapv2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Expiration of EAP-Response / EAP-Request List</fielddescr>
+			<fieldname>vareapconftimerexpire</fieldname>
+			<description>
+				<![CDATA[
+				A list is maintained to correlate EAP-Response packets with EAP-Request packets. Define the expire time of the list here.
+				<span class="text-info">(Default: 60)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>60</default_value>
+		</field>
+		<field>
+			<fielddescr>Ignore Unknown EAP Types</fielddescr>
+			<fieldname>vareapconfignoreunknowneaptypes</fieldname>
+			<description>
+				<![CDATA[
+				If the RADIUS server does not know the EAP type, it rejects it.
+				If set to "yes", a module <b>must</b> be configured to proxy the request to another RADIUS server.
+				<span class="text-info">(Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Yes</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>CISCO Accounting Username Bug</fielddescr>
+			<fieldname>vareapconfciscoaccountingusernamebug</fieldname>
+			<description>
+				<![CDATA[
+				CISCO AP1230B firmware 12.2(13)JA1 has a bug which can be workaround by setting this to "yes".
+				<span class="text-info">(Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Yes</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Maximum Sessions Tracking Per Server</fielddescr>
+			<fieldname>vareapconfmaxsessions</fieldname>
+			<description>
+				<![CDATA[
+				Help to prevent DoS attacks by limiting the number of sessions that the server is tracking.
+				<span class="text-info">(Default: 4096)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>4096</default_value>
+		</field>
+		<field>
+			<name>Certificates for TLS</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>SSL CA Certificate</fielddescr>
+			<fieldname>ssl_ca_cert</fieldname>
+			<description>
+				<![CDATA[
+				Choose the SSL CA Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
+				<span class="text-danger">IMPORTANT:</span> Configuring a valid CA certificate here is required!
+				</span>
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[freeradius_get_ca_certs()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>SSL Revocation List</fielddescr>
+			<fieldname>ssl_ca_crl</fieldname>
+			<description>
+				<![CDATA[
+				Choose the SSL CA Certficate revocation list here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
+				<strong><span class="text-danger">Important: </span></strong>
+				You need to restart FreeRADIUS service after adding a certificate to the CRL.<br/>
+				<span class="text-info">
+				Choose 'none' if you do not use any CRL.
+				(Default: none)
+				</span>
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[freeradius_get_ca_crl()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+
+		<field>
+			<fielddescr>SSL Server Certificate</fielddescr>
+			<fieldname>ssl_server_cert</fieldname>
+			<description>
+				<![CDATA[
+				Choose the SSL Server Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
+				<span class="text-danger">IMPORTANT:</span> Configuring a valid server certificate here is required!
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[freeradius_get_server_certs()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<name>EAP-TLS</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Include Length</fielddescr>
+			<fieldname>vareapconfincludelength</fieldname>
+			<description>
+				<![CDATA[
+				If set to 'Yes', Total Length of the message is included in <strong>every</strong> packet we send.<br/>
+				If set to 'No' Total Length of the message is included <strong>only</strong> in the first packet of a fragment series.
+				<span class="text-info">(Default: Yes)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>yes</default_value>
+			<options>
+				<option><name>Yes</name><value>yes</value></option>
+				<option><name>No</name><value>no</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Fragment Size</fielddescr>
+			<fieldname>vareapconffragmentsize</fieldname>
+			<description>
+				<![CDATA[
+				'Fragment Size' can never exceed the size of a RADIUS packet (4096 bytes), and is preferably half of that,
+				to accomodate other attributes in RADIUS packet.
+				On most APs, the max. packet length is configured between 1500 - 1600. In these cases, fragment size should be 1024 or less.<br/>
+				<span class="text-info">(Default: 1024)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>1024</default_value>
+		</field>
+		<field>
+			<fielddescr>Check Cert Issuer</fielddescr>
+			<fieldname>vareapconfenablecheckcertissuer</fieldname>
+			<description>Validate the certificate against the CA</description>
+			<sethelp>
+				<![CDATA[
+				When enabled, the server/client certificate must match the CA issuer.
+				<span class="text-info">(Default: Unchecked)</span>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<enablefields>vareapconfcountry,vareapconfstate,vareapconfcity,vareapconforganization,vareapconfemail,vareapconfcommonname</enablefields>
+		</field>
+		<field>
+			<fielddescr>Country</fielddescr>
+			<fieldname>vareapconfcountry</fieldname>
+			<description>
+				<![CDATA[
+				Enter the country of your CA. <span class="text-info">(Example: US)</span></br>
+				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>State or Province</fielddescr>
+			<fieldname>vareapconfstate</fieldname>
+			<description>
+				<![CDATA[
+				Enter the state or province of your CA. <span class="text-info">(Example: Texas)</span><br/>
+				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>City</fielddescr>
+			<fieldname>vareapconfcity</fieldname>
+			<description>
+				<![CDATA[
+				Enter the city of your CA. <span class="text-info">(Example: Austin)</span><br/>
+				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Organization</fielddescr>
+			<fieldname>vareapconforganization</fieldname>
+			<description>
+				<![CDATA[
+				Enter the organization of your CA. <span class="text-info">(Example: My Company Ltd)</span><br/>
+				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>E-Mail Address</fielddescr>
+			<fieldname>vareapconfemail</fieldname>
+			<description>
+				<![CDATA[
+				Enter the e-mail address of your CA. <span class="text-info">(Example: admin@company.example.com)</span><br/>
+				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Common Name</fielddescr>
+			<fieldname>vareapconfcommonname</fieldname>
+			<description>
+				<![CDATA[
+				Enter the common name of your CA. <span class="text-info">(Example: My Company Ltd Internal CA)</span><br/>
+				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Check Client Certificate CN</fielddescr>
+			<fieldname>vareapconfenablecheckcertcn</fieldname>
+			<description>Validate the Client Certificate Common Name</description>
+			<sethelp>
+				<![CDATA[
+				When enabled, the Common Name of the client certificate must match the username set in
+				<a href="/pkg.php?xml=freeradius.xml">'FreeRADIUS &gt; Users'</a>.
+				<span class="text-info">(Default: Unchecked)</span>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>EAP-TLS Cache</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable cache</fielddescr>
+			<fieldname>vareapconfcacheenablecache</fieldname>
+			<description>
+				<![CDATA[
+				Session resumption / fast reauthentication cache.
+				<span class="text-info">Click Info for details. (Default: Disable)</span>
+				<div class="infoblock">
+				The cache contains the following information:<br/><br/>
+				<dl class="dl-horizontal responsive">
+				<dt>Session Id</dt><dd>Unique identifier, managed by SSL</dd>
+				<dt>User-Name</dt><dd>From the Access-Accept</dd>
+				<dt>Stripped-User-Name</dt><dd>From the Access-Request</dd>
+				<dt>Cached-Session-Policy</dt><dd>From the Access-Accept</dd>
+				</dl>
+				The "Cached-Session-Policy" is the name of a policy which should be applied to the cached session.
+				This policy can be used to assign VLANs, IP addresses, etc.
+				It serves as a useful way to re-apply the policy from the original Access-Accept to the subsequent Access-Accept
+				for the cached session.<br/><br/>
+				On session resumption, these attributes are copied from the cache, and placed into the reply list.
+				You probably also want <code>use_tunneled_reply = yes</code> when using fast session resumption.
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>Enable</name><value>yes</value></option>
+				<option><name>Disable</name><value>no</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Lifetime</fielddescr>
+			<fieldname>vareapconfcachelifetime</fieldname>
+			<description>
+				<![CDATA[
+				Lifetime of the cached entries, in hours.
+				The sessions will be deleted after this time.
+				<span class="text-info">(Default: 24)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>24</default_value>
+		</field>
+		<field>
+			<fielddescr>Max Entries</fielddescr>
+			<fieldname>vareapconfcachemaxentries</fieldname>
+			<description>
+				<![CDATA[
+				The maximum number of entries in the cache. Set to "0" for "infinite."
+				<span class="text-info">(Default: 255)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>255</default_value>
+		</field>
+		<field>
+			<name>EAP-TLS with OCSP support</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable OCSP</fielddescr>
+			<fieldname>vareapconfocspenable</fieldname>
+			<description>
+				<![CDATA[
+				Choose whether you like to enable or disable OCSP support.
+				<span class="text-info">(Default: Disable)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Override OCSP Responder URL</fielddescr>
+			<fieldname>vareapconfocspoverridecerturl</fieldname>
+			<description>
+				<![CDATA[
+				The OCSP responder URL is extracted from the certificate. You can override it below.
+				<span class="text-info">(Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Yes</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>OCSP Responder</fielddescr>
+			<fieldname>vareapconfocspurl</fieldname>
+			<description>
+				<![CDATA[
+				Enter the URL of the OCSP responder. OCSP <b>must</b> be enabled for this to work.
+				<span class="text-info">(Default: http://127.0.0.1/ocsp/)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>http://127.0.0.1/ocsp/</default_value>
+		</field>
+		<field>
+			<name>EAP-TTLS</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Default EAP Type</fielddescr>
+			<fieldname>vareapconfttlsdefaulteaptype</fieldname>
+			<description>
+				<![CDATA[
+				The tunneled EAP session needs a default EAP type which is separate from the one for the non-tunneled EAP module.
+				Inside of the TTLS tunnel, using EAP-MD5 is recommended.
+				If the request does not contain an EAP conversation, then this configuration entry is ignored.
+				<span class="text-info">(Default: MD5)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>md5</default_value>
+			<options>
+				<option><name>MD5</name><value>md5</value></option>
+				<option><name>GTC</name><value>gtc</value></option>
+				<option><name>OTP</name><value>otp</value></option>
+				<option><name>TLS</name><value>tls</value></option>
+				<option><name>MSCHAPv2</name><value>mschapv2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Copy Request to Tunnel</fielddescr>
+			<fieldname>vareapconfttlscopyrequesttotunnel</fieldname>
+			<description>
+				<![CDATA[
+				The tunneled authentication request does not usually contain useful attributes like 'Calling-Station-Id', etc.
+				These attributes are outside of the tunnel, and normally unavailable to the tunneled authentication request.
+				By setting this configuration entry to 'Yes', any attribute which is <em>not</em> available in the tunneled authentication request,
+				but which <em>is</em> available outside of the tunnel, is copied to the tunneled request.
+				<span class="text-info">(Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Yes</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Use Tunneled Reply</fielddescr>
+			<fieldname>vareapconfttlsusetunneledreply</fieldname>
+			<description>
+				<![CDATA[
+				The reply attributes sent to the NAS are usually based on the name of the user 'outside' of the tunnel (usually 'anonymous').<br/>
+				If you want to send the reply attributes based on the user name inside of the tunnel, then set 'Use Tunneled Reply' to 'Yes';
+				the reply to the NAS will be taken from the reply to the tunneled request.
+				<span class="text-info">(Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Yes</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Include Length</fielddescr>
+			<fieldname>vareapconfttlsincludelength</fieldname>
+			<description>
+				<![CDATA[
+				If set to 'Yes', Total Length of the message is included in <strong>every</strong> packet we send.<br/>
+				If set to 'No', Total Length of the message is included <strong>only</strong> in the first packet of a fragment series.
+				<span class="text-info">(Default: Yes)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>yes</default_value>
+			<options>
+				<option><name>Yes</name><value>yes</value></option>
+				<option><name>No</name><value>no</value></option>
+			</options>
+		</field>
+		<field>
+			<name>EAP-PEAP</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Default EAP Type</fielddescr>
+			<fieldname>vareapconfpeapdefaulteaptype</fieldname>
+			<description>
+				<![CDATA[
+				The tunneled EAP session needs a default EAP type which is separate from the one for the non-tunneled EAP module.
+				Inside of the PEAP tunnel, using MS-CHAPv2 is recommended, as that is the default type supported by Windows clients.
+				<span class="text-info">(Default: MSCHAPv2)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>mschapv2</default_value>
+			<options>
+				<option><name>MD5</name><value>md5</value></option>
+				<option><name>GTC</name><value>gtc</value></option>
+				<option><name>OTP</name><value>otp</value></option>
+				<option><name>TLS</name><value>tls</value></option>
+				<option><name>MSCHAPv2</name><value>mschapv2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Copy Request to Tunnel</fielddescr>
+			<fieldname>vareapconfpeapcopyrequesttotunnel</fieldname>
+			<description>
+				<![CDATA[
+				The tunneled authentication request does not usually contain useful attributes like 'Calling-Station-Id', etc.
+				These attributes are outside of the tunnel, and normally unavailable to the tunneled authentication request.
+				By setting this configuration entry to 'Yes', any attribute which is <em>not</em> available in the tunneled authentication request,
+				but which <em>is</em> available outside of the tunnel, is copied to the tunneled request.
+				<span class="text-info">(Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Yes</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Use Tunneled Reply</fielddescr>
+			<fieldname>vareapconfpeapusetunneledreply</fieldname>
+			<description>
+				<![CDATA[
+				The reply attributes sent to the NAS are usually based on the name of the user 'outside' of the tunnel (usually 'anonymous').
+				If you want to send the reply attributes based on the user name inside of the tunnel, then set this configuration entry to 'Yes';
+				the reply to the NAS will be taken from the reply to the tunneled request.
+				<span class="text-info">(Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Yes</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Microsoft Statement of Health (SoH) Support</fielddescr>
+			<fieldname>vareapconfpeapsohenable</fieldname>
+			<description>
+				<![CDATA[
+				You can accept/reject clients based on Microsoft's Statement of Health, e.g. if they are missing Windows Updates,
+				don't have a firewall enabled, antivirus is not in line with policy, etc.
+				You need to change <code>/usr/local/etc/raddb/sites-available/soh</code> for your needs.
+				It cannot be changed from GUI and will be deleted after package reinstallation.
+				<span class="text-info">(Default: Disable)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>Disable</default_value>
+			<options>
+				<option><name>Disable</name><value>Disable</value></option>
+				<option><name>Enable</name><value>Enable</value></option>
+			</options>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		freeradius_eapconf_resync();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		freeradius_eapconf_resync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		freeradius_validate_eap($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

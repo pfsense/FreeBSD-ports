@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Radiator
-PORTVERSION=	4.14
+PORTVERSION=	4.19
 CATEGORIES=	net
 MASTER_SITES=	# fetch manually
 DIST_SUBDIR=	${PORTNAME}
@@ -10,12 +10,18 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	lyngbol@wheel.dk
 COMMENT=	Radiator Radius Server by Open System Consultants
 
+LICENSE=	radiator
+LICENSE_NAME=	Radiator
+LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
+
 OPTIONS_DEFINE=	MYSQL
 MYSQL_DESC=	MySQL support
 
-USES=		perl5 tar:tgz
+USES=		perl5 shebangfix tar:tgz
 USE_PERL5=	configure
 USE_RC_SUBR=	radiator
+SHEBANG_FILES=	radhostname.pl
 
 RESTRICTED=	Commercial software
 
@@ -44,7 +50,8 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/radius.cfg
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/radiator
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/radiator
+	${RM} ${STAGEDIR}${PREFIX}/lib/perl5/site_perl/radhostname.pl
 	${INSTALL_DATA} ${WRKSRC}/radius.cfg ${STAGEDIR}${PREFIX}/etc/radiator/radius.cfg.sample
 	${INSTALL_DATA} ${WRKSRC}/dictionary ${STAGEDIR}${PREFIX}/etc/radiator
 	${INSTALL_DATA} ${WRKSRC}/dictionary.ascend ${STAGEDIR}${PREFIX}/etc/radiator

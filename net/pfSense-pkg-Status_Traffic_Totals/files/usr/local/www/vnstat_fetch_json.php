@@ -25,6 +25,8 @@
 
 header('Content-Type: application/json');
 
+require_once('auth_check.inc');
+
 $json_string = '';
 $fd = popen("vnstat --json", "r");
 

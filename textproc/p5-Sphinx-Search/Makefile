@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Sphinx-Search
-PORTVERSION=	0.29
+PORTVERSION=	0.31
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JJSCHUTZ
@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Sphinx search engine API Perl client
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \
@@ -21,6 +21,7 @@ BUILD_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \
 		p5-Path-Class>=0:devel/p5-Path-Class
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
+NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 

@@ -12,6 +12,8 @@ COMMENT=	Simple IRC proxy with SSL support
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_SSL=	openssl-devel
+
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib -L${OPENSSLLIB}
 CFLAGS+=	-Wno-sign-compare -Wno-error -I${OPENSSLINC}
@@ -37,7 +39,6 @@ post-install-DOCS-on:
 .for docs in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${docs} ${STAGEDIR}${DOCSDIR}
 .endfor
-
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

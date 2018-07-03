@@ -1,6 +1,6 @@
---- gpu/config/gpu_test_config.cc.orig	2016-05-11 19:02:23 UTC
-+++ gpu/config/gpu_test_config.cc
-@@ -26,7 +26,7 @@ namespace {
+--- gpu/config/gpu_test_config.cc.orig	2018-03-20 23:05:26.000000000 +0100
++++ gpu/config/gpu_test_config.cc	2018-03-26 13:47:37.264475000 +0200
+@@ -24,7 +24,7 @@
  GPUTestConfig::OS GetCurrentOS() {
  #if defined(OS_CHROMEOS)
    return GPUTestConfig::kOsChromeOS;
@@ -9,22 +9,3 @@
    return GPUTestConfig::kOsLinux;
  #elif defined(OS_WIN)
    int32_t major_version = 0;
-@@ -252,6 +252,10 @@ bool GPUTestBotConfig::LoadCurrentConfig
-   bool rt;
-   if (gpu_info == NULL) {
-     GPUInfo my_gpu_info;
-+#if defined(OS_FREEBSD)
-+    rt = false;
-+    LOG(WARNING) << "CollectGpuID not present on FreeBSD";
-+#else
-     CollectInfoResult result = CollectGpuID(
-         &my_gpu_info.gpu.vendor_id, &my_gpu_info.gpu.device_id);
-     if (result != kCollectInfoSuccess) {
-@@ -261,6 +265,7 @@ bool GPUTestBotConfig::LoadCurrentConfig
-     } else {
-       rt = SetGPUInfo(my_gpu_info);
-     }
-+#endif
-   } else {
-     rt = SetGPUInfo(*gpu_info);
-   }

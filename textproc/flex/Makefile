@@ -16,7 +16,7 @@ USES=		bison gmake libtool makeinfo tar:xz
 GNU_CONFIGURE=	yes
 # install flex header to its own dir to avoid conflict with system flex.
 CONFIGURE_ARGS=	--includedir=${PREFIX}/include/flex --disable-shared
-CONFIGURE_ENV=	M4=${LOCALBASE}/bin/gm4 MAKEINFO="makeinfo --no-split"
+CONFIGURE_ENV=	M4=${LOCALBASE}/bin/gm4 MAKEINFO="${MAKEINFO} --no-split"
 INSTALL_TARGET=	install-strip
 
 INFO=		flex
@@ -34,7 +34,7 @@ post-patch:	.SILENT
 	${REINPLACE_CMD} -Ee 's/tests//' \
 		-e '/mode=compile ..CC/s/\\$$/-fPIC -DPIC &/' \
 		${WRKSRC}/Makefile.in
-	${RM} -f ${WRKSRC}/doc/*.info*
+	${RM} ${WRKSRC}/doc/*.info*
 
 post-install:
 .if ${PORT_OPTIONS:MEXAMPLES}

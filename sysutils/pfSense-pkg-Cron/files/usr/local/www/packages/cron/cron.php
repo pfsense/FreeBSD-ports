@@ -28,7 +28,7 @@ if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'php') {
 		if ($a_cron[$_GET['id']]) {
 			unset($a_cron[$_GET['id']]);
-			write_config();
+			write_config(gettext("Crontab item deleted via cron package"));
 			header("Location: cron.php");
 			exit;
 		}
@@ -53,7 +53,7 @@ display_top_tabs($tab_array);
 			<form action="cron.php" method="post" name="iform" id="iform">
 			<?php
 			if ($config_change == 1) {
-				write_config();
+				write_config(gettext("Crontab edited via cron package"));
 				$config_change = 0;
 			}
 			?>

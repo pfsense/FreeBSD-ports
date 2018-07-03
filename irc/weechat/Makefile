@@ -2,98 +2,81 @@
 # $FreeBSD$
 
 PORTNAME=	weechat
-PORTVERSION=	1.4
-PORTREVISION=	1
+PORTVERSION=	2.1
 CATEGORIES=	irc
-MASTER_SITES=	http://weechat.org/files/src/
+MASTER_SITES=	https://weechat.org/files/src/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Lightweight and user friendly ncurses based IRC client
 
 LICENSE=	GPLv3
-
-CONFLICTS=	weechat-devel-[0-9]*
-
-USE_LDCONFIG=	yes
-USES=		cmake iconv localbase ncurses tar:bzip2
-CMAKE_ARGS+=	-DENABLE_GUILE=no \
-		-DICONV_INCLUDE_PATH=${ICONV_INCLUDE_PATH}
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS+=	libcurl.so:ftp/curl \
-		libgcrypt.so:security/libgcrypt
+		libgcrypt.so:security/libgcrypt \
+		libgpg-error.so:security/libgpg-error
 
-OPTIONS_DEFINE=	RUBY PYTHON PERL TCL LUA JAVASCRIPT CHARSET BACKTRACE ASPELL \
-		GNUTLS CA_BUNDLE NLS ICON MANPAGES DOCS
-OPTIONS_DEFAULT=RUBY PYTHON PERL TCL LUA CHARSET BACKTRACE ASPELL \
-		GNUTLS CA_BUNDLE ICON MANPAGES
+USES=		cmake:outsource,noninja ncurses libtool tar:xz
+USE_LDCONFIG=	yes
 
-OPTIONS_SUB=	yes
+CMAKE_ARGS+=	-DENABLE_GUILE=no \
+		-DLIBDATADIR=${LOCALBASE}/libdata
 
-BACKTRACE_DESC=	Provide crash backtraces
-CA_BUNDLE_DESC=	Include CA bundle for certificate verification
-CHARSET_DESC=	Charset conversion support
-ICON_DESC=	Desktop icon
-JAVASCRIPT_DESC=Javascript support
-PYTHON_DESC=	Python scripting language support
-RUBY_DESC=	Ruby scripting language support
+OPTIONS_DEFINE=		BACKTRACE DOCS CA_BUNDLE GNUTLS HEADLESS ICON ICONV \
+			MANPAGES NLS
+OPTIONS_DEFAULT=	ASPELL BACKTRACE CA_BUNDLE CHARSET GNUTLS HEADLESS \
+			ICON LUA MANPAGES PERL PYTHON RUBY TCL
+OPTIONS_SUB=		yes
 
-ASPELL_CMAKE_OFF=	-DENABLE_ASPELL=no
+# BROKEN: ruby.h: error: wrong number of arguments specified for 'deprecated' attribute
+OPTIONS_EXCLUDE_powerpc64=	RUBY
+
+OPTIONS_GROUP=		PLUGINS
+OPTIONS_GROUP_PLUGINS=	ASPELL CHARSET JAVASCRIPT LUA PERL PYTHON PHP RUBY TCL
+
+BACKTRACE_DESC=		Provide crash backtraces
+CA_BUNDLE_DESC=		Include CA bundle for certificate verification
+CHARSET_DESC=		Charset plugin (implies ICONV)
+ICON_DESC=		Desktop icon
+HEADLESS_DESC=		Build headless weechat as well
+JAVASCRIPT_DESC=	Javascript script support
+PLUGINS_DESC=		Weechat Plugins
+PYTHON_DESC=		Python script support
+RUBY_DESC=		Ruby script support
+
+.for _opt in ASPELL CHARSET ICONV JAVASCRIPT GNUTLS LUA NLS PERL PHP PYTHON RUBY TCL
+${_opt}_CMAKE_BOOL=	ENABLE_${_opt}
+.endfor
+
 ASPELL_LIB_DEPENDS=	libaspell.so:textproc/aspell
-
-BACKTRACE_USES=		execinfo
-
+BACKTRACE_CMAKE_BOOL=	ENABLE_BACKTRACE
 CA_BUNDLE_CMAKE_ON=	-DCA_FILE=${LOCALBASE}/share/certs/ca-root-nss.crt
 CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
-
-CHARSET_CMAKE_OFF=	-DENABLE_CHARSET=no
-
-DOCS_CMAKE_ON=		-DENABLE_DOC=yes
-
-JAVASCRIPT_CMAKE_OFF=	-DENABLE_JAVASCRIPT=no
-JAVASCRIPT_CMAKE_ON=	-DENABLE_JAVASCRIPT=yes
+CHARSET_IMPLIES=	ICONV
+DOCS_CMAKE_BOOL=	ENABLE_DOC
+DOCS_BUILD_DEPENDS=	${LOCALBASE}/bin/asciidoctor:textproc/rubygem-asciidoctor
+HEADLESS_CMAKE_BOOL=	ENABLE_HEADLESS
+ICONV_USES=		iconv
 JAVASCRIPT_LIB_DEPENDS=	libv8.so:lang/v8
-
-GNUTLS_CMAKE_OFF=	-DENABLE_GNUTLS=no
-GNUTLS_USES=		pkgconfig
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
-
-LUA_CMAKE_OFF=		-DENABLE_LUA=no
-LUA_CMAKE_ON=		-DBSD_LUA_LIBDIR=${LUA_LIBDIR} \
-			-DBSD_LUA_INCDIR=${LUA_INCDIR} \
-			-DBSD_LUA_VER=${LUA_VER}
-LUA_USES=		lua:51
-
-MANPAGES_CMAKE_ON=	-DENABLE_MAN=yes -DMANDIR=${MANPREFIX}/man
-
-NLS_CMAKE_OFF=		-DENABLE_NLS=no
+GNUTLS_USES=		pkgconfig
+LUA_USES=		lua pkgconfig
+MANPAGES_CMAKE_BOOL=	ENABLE_MAN
+MANPAGES_CMAKE_ON=	-DMANDIR=${MANPREFIX}/man
+MANPAGES_BUILD_DEPENDS=	${LOCALBASE}/bin/asciidoctor:textproc/rubygem-asciidoctor
 NLS_USES=		gettext
-
-PERL_CMAKE_OFF=		-DENABLE_PERL=no
 PERL_USES=		perl5
-
-PYTHON_CMAKE_OFF=	-DENABLE_PYTHON=no
-PYTHON_CMAKE_ON=	-DBSD_PYTHON_CMD=${PYTHON_CMD} \
-			-DBSD_PYTHON_VER=${PYTHON_VERSION}
+PHP_USES=		php:embed
 PYTHON_USES=		python
-
-RUBY_CMAKE_OFF=		-DENABLE_RUBY=no
-RUBY_CMAKE_ON=		-DBSD_RUBY_CMD=${RUBY} \
-			-DBSD_RUBY_VER=${RUBY_NAME}
 RUBY_USE=		ruby=yes
-
-TCL_CMAKE_OFF=		-DENABLE_TCL=no
-TCL_CMAKE_ON=		-DBSD_TCL_VER=${TCL_VER} \
-			-DBSD_TCL_LIBDIR=${LOCALBASE}/lib \
-			-DBSD_TCL_INCDIR=${TCL_INCLUDEDIR}
 TCL_USES=		tcl:85+
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MDOCS} || ${PORT_OPTIONS:MMANPAGES}
-BUILD_DEPENDS+=	xsltproc:textproc/libxslt \
-		docbook-xsl>=0:textproc/docbook-xsl \
-		asciidoc:textproc/asciidoc \
-		source-highlight>=3.1.5:textproc/source-highlight
+.if !empty(PORT_OPTIONS:MPYTHON) && ${PYTHON_MAJOR_VER} >= 3
+WARNING=	"Using Python 3.x is NOT recommended because many \"official\" scripts won\'t work"
+CMAKE_ARGS+=	-DENABLE_PYTHON3:BOOL=true \
+		-DPYTHON_LIBRARY:FILEPATH=${LOCALBASE}/lib/libpython${PYTHON_VER}m.so
 .endif
 
 post-patch:
@@ -103,16 +86,11 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
 		${WRKSRC}/${f}
 .endfor
-.if empty(PORT_OPTIONS:MBACKTRACE)
-	@${REINPLACE_CMD} -e '/IF.*FreeBSD/,/ENDIF.*FreeBSD/d' \
-		${WRKSRC}/src/core/CMakeLists.txt
-.endif
-.if empty(PORT_OPTIONS:MICON)
-	@${REINPLACE_CMD} -e '/^# icon$$/,/^$$/d' \
-		${WRKSRC}/CMakeLists.txt
-.endif
+
+post-patch-ICON-off:
+	@${REINPLACE_CMD} -e '/^# icon$$/,/^$$/d' ${WRKSRC}/CMakeLists.txt
 
 post-install:
-	${LN} -sf ${PREFIX}/bin/weechat ${STAGEDIR}${PREFIX}/bin/weechat-curses
+	${LN} -sf weechat ${STAGEDIR}${PREFIX}/bin/weechat-curses
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

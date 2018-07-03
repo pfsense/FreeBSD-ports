@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix2
-PORTVERSION=	2.0.18
-PORTREVISION?=	0
+PORTVERSION=	2.0.20
+PORTREVISION?=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
 PKGNAMESUFFIX?=	-server
@@ -14,17 +14,10 @@ COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
+LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp \
+		libpkg.so:ports-mgmt/pkg
 
-LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
-
-LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
-
-CONFLICTS=	${PKGBASE}-1.[0-8]*
-
-.if ${PKGNAMESUFFIX} != "-agent"
-CONFLICTS+=	${PORTNAME}-1.[0-8]*
-.endif
+CONFLICTS=	zabbix[0-9][0-9]${PKGNAMESUFFIX} zabbix[0-13-9]${PKGNAMESUFFIX}
 
 ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
 
@@ -35,7 +28,7 @@ USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}
 USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}d
 .endif
 
-USES=		pkgconfig iconv
+USES=		pkgconfig iconv ssl
 
 USERS=		zabbix
 GROUPS=		zabbix
@@ -62,11 +55,6 @@ CONFIGURE_ARGS+=	--enable-${ZABBIX_BUILD} \
 			--datadir=${ETCDIR}
 
 .if ${ZABBIX_BUILD} != "agent"
-USES+=		execinfo
-
-CPPFLAGS+=	${EXECINFO_CPPFLAGS}
-LDFLAGS+=	${EXECINFO_LDFLAGS}
-
 SUB_FILES=	pkg-message
 
 CONFIGURE_ARGS+=	--with-net-snmp
@@ -90,7 +78,7 @@ OPTIONS_SINGLE_DB=	MYSQL PGSQL SQLITE ORACLE
 OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
 
 MYSQL_CONFIGURE_WITH=	mysql
-MYSQL_USE=	MYSQL=yes
+MYSQL_USES=	mysql
 
 PGSQL_CONFIGURE_WITH=	postgresql
 PGSQL_USES=	pgsql
@@ -137,7 +125,11 @@ JAVAGW_USE=	JAVA=yes
 post-patch:
 	@${GREP} -rl "/etc/zabbix" ${WRKSRC} \
 	  | ${XARGS} ${REINPLACE_CMD} -e 's#/etc/zabbix#${ETCDIR}#g'
-	@${REINPLACE_CMD} -e 's#/usr/sbin/fping#${LOCALBASE}/sbin/fping#g' ${WRKSRC}/conf/zabbix_*.conf
+	@${REINPLACE_CMD} -e 's#/usr/sbin/fping#${LOCALBASE}/sbin/fping#g' \
+		${WRKSRC}/conf/zabbix_*.conf \
+		${WRKSRC}/src/zabbix_proxy/proxy.c \
+		${WRKSRC}/src/zabbix_server/server.c
+
 
 .if ${ZABBIX_BUILD} != "agent"
 .for d in mysql oracle postgresql sqlite3
@@ -149,7 +141,7 @@ post-patch:
 .endif
 	@${REINPLACE_CMD} -Ee 's|(@sysconfdir@/(\$$\([A-Z]*_CONFIG\)))" ([|][|] cp "../../conf/\$$\([A-Z]*_CONFIG\)" "\$$\(DESTDIR\)@sysconfdir@)"|\1.sample" \3/\2.sample"|;' \
 		${WRKSRC}/src/zabbix_${ZABBIX_BUILD}/Makefile.in
-	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -or -name '*.orig' \) -exec ${RM} -f {} +
+	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -or -name '*.orig' \) -exec ${RM} {} +
 
 post-install:
 .if ${PORT_OPTIONS:MJAVAGW}

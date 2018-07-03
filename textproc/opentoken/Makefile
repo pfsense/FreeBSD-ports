@@ -3,11 +3,11 @@
 
 PORTNAME=	opentoken
 PORTVERSION=	6.0b
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
 MASTER_SITES=	http://stephe-leake.org/ada/
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lexical analyser and parser for the Ada language
 
 LICENSE=	GPLv3 GPLv3RLE

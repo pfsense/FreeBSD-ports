@@ -2,21 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	moinmoin
-PORTVERSION=	1.9.8
+PORTVERSION=	1.9.9
 CATEGORIES=	www python
 MASTER_SITES=	http://static.moinmo.in/files/
 DISTNAME=	moin-${PORTVERSION}
 
-MAINTAINER=	linimon@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python clone of WikiWiki
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/licenses/COPYING
 
-USES=		cpe python
+USES=		cpe python:2.7 shebangfix
 CPE_VENDOR=	moinmo
 USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	moin
+SHEBANG_FILES=	wiki/server/moin*
 
 PLIST_SUB+=	PYTHON_SITELIB=${PYTHON_SITELIBDIR:S|^${LOCALBASE}/||} \
 		DATADIR=share/moin
@@ -43,7 +44,7 @@ MOINSCRIPT=	${MOINDIR}/server/moin.cgi
 .elif ${MOINTYPE} == "WSGI"
 MOINSCRIPT=	${MOINDIR}/server/moin.wsgi
 .else
-BROKEN=		MOINTYPE must be a STANDALONE, FCGI, WSGI, MOD_PYTHON or CGI.
+BROKEN=		MOINTYPE must be a STANDALONE, FCGI, WSGI, MOD_PYTHON, or CGI
 .endif
 
 pre-everything::

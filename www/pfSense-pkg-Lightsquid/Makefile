@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Lightsquid
-PORTVERSION=	3.0.4
+PORTVERSION=	3.0.6
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty

@@ -9,7 +9,7 @@ CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP/source/p/${PORTNAME}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	coder@tuxfamily.org
+MAINTAINER=	lbartoletti@tuxfamily.org
 COMMENT=	DB-API 2.0 interface for SQLite 3.x with Spatialite
 
 LICENSE=	ZLIB
@@ -22,7 +22,7 @@ LIB_DEPENDS=	libspatialite.so:databases/spatialite \
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		iconv python
+USES=		iconv python:2.7
 USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.pre.mk>

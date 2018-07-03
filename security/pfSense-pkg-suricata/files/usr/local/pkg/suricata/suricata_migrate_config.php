@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2016 Bill Meeks
+ * Copyright (C) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,7 @@ $rule = &$config['installedpackages']['suricata']['rule'];
 $updated_cfg = false;
 log_error("[Suricata] Checking configuration settings version...");
 
-// Check the configuration version to see if XMLRPC Sync should
+// Check the configuration version to see if XMLRPC Sync should be
 // auto-disabled as part of the upgrade due to config format changes.
 if ($config['installedpackages']['suricata']['config'][0]['suricata_config_ver'] < 2 && 
     ($config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] == 'auto' ||
@@ -69,6 +69,35 @@ if (empty($config['installedpackages']['suricata']['config'][0]['auto_manage_sid
 	$config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'] = "250";
 	$config['installedpackages']['suricata']['config'][0]['sid_changes_log_retention'] = "336";
 	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Migrate content of any existing SID Mgmt files in the  */
+/* /var/db/suricata/sidmods directory to Base64 encoded   */
+/* strings in SID_MGMT_LIST array in config.xml.          */
+/**********************************************************/
+if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists'])) {
+	$config['installedpackages']['suricata']['sid_mgmt_lists'] = array();
+}
+if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migration']) && count($config['installedpackages']['suricata']['sid_mgmt_lists']) < 1) {
+	if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists']['item'])) {
+		$config['installedpackages']['suricata']['sid_mgmt_lists']['item'] = array();
+	}
+	$a_list = &$config['installedpackages']['suricata']['sid_mgmt_lists']['item'];
+	$sidmodfiles = return_dir_as_array("/var/db/suricata/sidmods/");
+	foreach ($sidmodfiles as $sidfile) {
+		$data = file_get_contents("/var/db/suricata/sidmods/" . $sidfile);
+		if ($data !== FALSE) {
+			$tmp = array();
+			$tmp['name'] = basename($sidfile);
+			$tmp['modtime'] = filemtime("/var/db/suricata/sidmods/" . $sidfile);
+			$tmp['content'] = base64_encode($data);
+			$a_list[] = $tmp;
+		}
+	}
+	$config['installedpackages']['suricata']['config'][0]['sid_list_migration'] = "1";
+	$updated_cfg = true;
+	unset($a_list);
 }
 
 /**********************************************************/
@@ -283,6 +312,36 @@ foreach ($rule as &$r) {
 	}
 	if (!isset($pconfig['eve_log_ssh'])) {
 		$pconfig['eve_log_ssh'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_smtp'])) {
+		$pconfig['eve_log_smtp'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_flow'])) {
+		$pconfig['eve_log_flow'] = "off";
+		$updated_cfg = true;
+	}    
+	if (!isset($pconfig['eve_log_drop'])) {
+		$pconfig['eve_log_drop'] = "on";
+		$updated_cfg = true;
+	}
+
+	/******************************************************************/
+	/* SHA1 and SHA256 were added as additional hashing options in    */
+	/* Suricata 3.x, so the old binary on/off MD5 hashing parameter   */
+	/* is now one of three string values: NONE, MD5, SHA1 or SHA256.  */
+	/* It has been moved to a new parameter name and the old one is   */
+	/* now deprecated and removed from the config.                    */
+	/******************************************************************/
+	if (!isset($pconfig['tracked_files_hash'])) {
+		if ($pconfig['enabled_tracked_files_md5'] == "on") {
+			$pconfig['tracked_files_hash'] = "md5";
+		}
+		else {
+			$pconfig['tracked_files_hash'] = "none";
+		}
+		unset($pconfig['enabled_tracked_files_md5']);
 		$updated_cfg = true;
 	}
 
@@ -500,16 +559,47 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 
+	/**********************************************************/
+	/* Create new interface block DROPs only mode setting if  */
+	/* not already configured.  Default to "off".             */
+	/**********************************************************/
+	if (empty($pconfig['block_drops_only'])) {
+		$pconfig['block_drops_only'] = "no";
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
+	/* Suricata 3.2.1 introduced support for hyperscan as an  */
+	/* option for the multi pattern matcher (MPM) algorithm.  */
+	/* Several older MPM algorithms were also deprecated.     */
+	/**********************************************************/
+	$old_mpm_algos = array('ac-gfbs', 'b2g', 'b2gc', 'b2gm', 'b3g', 'wumanber');
+	if (in_array($pconfig['mpm_algo'], $old_mpm_algos)) {
+		$pconfig['mpm_algo'] = "auto";
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
+	/* Set default value for new interface snaplen parameter  */
+	/* if one has not been previously configured.             */
+	/**********************************************************/
+	if (empty($pconfig['intf_snaplen'])) {
+		$pconfig['intf_snaplen'] = "1518";
+		$updated_cfg = true;
+	}
+
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;
 }
 // Release reference to final array element
 unset($r);
 
-// Write out the new configuration to disk if we changed anything
-if ($updated_cfg)
+// Log a message indicating what we did
+if ($updated_cfg) {
 	log_error("[Suricata] Settings successfully migrated to new configuration format.");
-else
+}
+else {
 	log_error("[Suricata] Configuration version is current.");
+}
 
 ?>

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	django-markdownx
-PORTVERSION=	1.6
-DISTVERSIONPREFIX=	v.
+PORTVERSION=	2.0.21
+DISTVERSIONPREFIX=	v
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,12 +12,12 @@ COMMENT=	Django Markdown editor with image uploads and live preview
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:www/py-django18 \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:www/py-django18@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${FLAVOR}
 
 USE_GITHUB=	yes
 
-GH_ACCOUNT=	adi-
+GH_ACCOUNT=	neutronX
 USES=		python
 USE_PYTHON=	autoplist distutils
 

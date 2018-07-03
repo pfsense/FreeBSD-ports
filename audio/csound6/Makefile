@@ -3,7 +3,7 @@
 
 PORTNAME=	csound
 PORTVERSION=	6.06
-PORTREVISION=	1
+PORTREVISION=	14
 CATEGORIES=	audio lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}6/${PORTNAME:S/c/C/}${PORTVERSION}
 PKGNAMESUFFIX=	6
@@ -17,13 +17,14 @@ LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
-		swig>2:devel/swig20 \
-		eigen>0:math/eigen3 \
+		swig3.0:devel/swig30 \
 		gmm++>0:math/gmm++
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
 		libsndfile.so:audio/libsndfile
 
-USES=		bison cmake:outsource localbase python:2
+USES=		alias bison cmake:outsource,noninja eigen:3 localbase python:2.7
+# math/gmm++ requires c++11
+USE_CXXSTD=	c++11
 CMAKE_ARGS=	-DBUILD_CSOUNDVST:BOOL=OFF \
 		-DBUILD_JAVA_INTERFACE:BOOL=OFF \
 		-DBUILD_P5GLOVE_OPCODES:BOOL=OFF \
@@ -34,6 +35,7 @@ CMAKE_ARGS=	-DBUILD_CSOUNDVST:BOOL=OFF \
 		-DPYTHON_MODULE_INSTALL_DIR:PATH="${PYTHONPREFIX_SITELIBDIR}"
 USE_LDCONFIG=	yes
 SSP_UNSAFE=	yes
+BINARY_ALIAS=	swig=swig3.0
 
 SUB_FILES=	pkg-message
 
@@ -99,13 +101,6 @@ PORTAUDIO_CMAKE_OFF=	-DUSE_PORTAUDIO:BOOL=OFF
 PULSEAUDIO_DESC=	Build PulseAudio I/O module
 PULSEAUDIO_LIB_DEPENDS=	libpulse-simple.so:audio/pulseaudio
 PULSEAUDIO_CMAKE_OFF=	-DUSE_PULSEAUDIO:BOOL=OFF
-
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	${LOCALBASE}/bin/flex:textproc/flex
-CMAKE_ARGS+=	-DFLEX_EXECUTABLE:STRING="${LOCALBASE}/bin/flex"
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \

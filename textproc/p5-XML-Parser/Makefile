@@ -9,7 +9,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Perl extension interface to James Clark's XML parser, expat
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
@@ -60,8 +60,7 @@ pre-build:
 XE=	${.CURDIR}/../p5-XML-Encoding
 extract-encodings:
 	@cd ${XE}; \
-	${MAKE} patch; \
-	${CHMOD} og+rX `make -VWRKSRC`
+	${MAKE} patch
 
 build-encodings:
 .for e in 1 6 10 11 13 14 15

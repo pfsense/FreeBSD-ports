@@ -2,13 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	bmake
-PORTVERSION=	20160818
+PORTVERSION=	20180222
 CATEGORIES=	devel
-MASTER_SITES=	ftp://ftp.netbsd.org/pub/NetBSD/misc/sjg/ \
-		http://www.gtlib.cc.gatech.edu/pub/NetBSD/misc/sjg/ \
-		ftp://ftp.uk.netbsd.org/pub/NetBSD/misc/sjg/ \
-		ftp://ftp.de.netbsd.org/pub/NetBSD/misc/sjg/
-DISTFILES=	bmake-${PORTVERSION}.tar.gz mk-20151111.tar.gz
+MASTER_SITES=	ftp://ftp.netbsd.org/pub/NetBSD/misc/sjg/
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Portable version of NetBSD 'make' utility
@@ -18,6 +14,8 @@ LICENSE=	BSD3CLAUSE
 PORTSCOUT=	skipv:200910007
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
+
+MAKE_ENV+=	CONFIG_SITE=${CONFIG_SITE}
 
 post-patch:	.SILENT
 	${REINPLACE_CMD} 's/^\.Nx/NetBSD/' ${WRKDIR}/bmake/bmake.1
@@ -30,7 +28,8 @@ do-build:
 do-install:
 	${INSTALL_PROGRAM} ${WRKDIR}/obj/bmake ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKDIR}/bmake/bmake.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-	${SH} ${WRKDIR}/mk/install-mk ${STAGEDIR}${PREFIX}/share/mk
+	${SH} ${WRKSRC}/mk/install-mk -v ${STAGEDIR}${PREFIX}/share/mk
+	${CHMOD} -x ${STAGEDIR}${PREFIX}/share/mk/meta2deps.py
 	cd ${STAGEDIR}${PREFIX} ;					\
 	    ${FIND} share/mk -type f -o -type l				\
 		| ${SORT}						\

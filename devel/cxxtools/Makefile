@@ -13,7 +13,10 @@ COMMENT=	Collection of general-purpose C++ classes
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_sparc64=	does not configure
+BROKEN_aarch64=		does not configure: error: check for atomictype failed
+BROKEN_mips=		does not configure: in section .data.rel.ro of csvdeserializer-test.o: defined in discarded section
+BROKEN_mips64=		does not configure: in section .data.rel.ro of csvdeserializer-test.o: defined in discarded section
+BROKEN_sparc64=		does not configure
 
 USES=		cpe iconv libtool localbase pathfix
 CPE_VENDOR=	tntnet
@@ -24,37 +27,37 @@ USE_LDCONFIG=	yes
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "amd64"
+.if ${ARCH} == amd64
 PLIST_SUB+=	X86_64_ONLY=""
 .else
 PLIST_SUB+=	X86_64_ONLY="@comment "
 .endif
 
-.if ${ARCH} == "i386"
+.if ${ARCH} == i386
 PLIST_SUB+=	I386_ONLY=""
 .else
 PLIST_SUB+=	I386_ONLY="@comment "
 .endif
 
-.if (${ARCH} == "amd64") || (${ARCH} == "i386")
+.if (${ARCH} == amd64) || (${ARCH} == i386)
 PLIST_SUB+=	X86_ONLY=""
 .else
 PLIST_SUB+=	X86_ONLY="@comment "
 .endif
 
-.if ${ARCH} == "arm" || ${ARCH} == "armv6"
+.if ${ARCH} == arm || ${ARCH} == armv6 || ${ARCH} == armv7
 PLIST_SUB+=	ARM_ONLY=""
 .else
 PLIST_SUB+=	ARM_ONLY="@comment "
 .endif
 
-.if ${ARCH} == "mips" || ${ARCH} == "mips64"
+.if ${ARCH} == mips || ${ARCH} == mips64
 PLIST_SUB+=	MIPS_ONLY=""
 .else
 PLIST_SUB+=	MIPS_ONLY="@comment "
 .endif
 
-.if ${ARCH} == "powerpc" || ${ARCH} == "powerpc64"
+.if ${ARCH} == powerpc || ${ARCH} == powerpc64
 PLIST_SUB+=	PPC_ONLY=""
 .else
 PLIST_SUB+=	PPC_ONLY="@comment "

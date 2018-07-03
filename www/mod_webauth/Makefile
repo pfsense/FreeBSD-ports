@@ -13,8 +13,7 @@ COMMENT=	Apache module for authenticating users with Kerberos v5
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libsasl2.so:security/cyrus-sasl2
 
-USES=		libtool pkgconfig ssl
-USE_APACHE=	22+
+USES=		apache:2.2+ libtool pathfix pkgconfig ssl
 USE_OPENLDAP=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -25,8 +24,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|libdir)/pkgconfig|prefix)/libdata/pkgconfig|' \
-		${WRKSRC}/Makefile.in ${WRKSRC}/Makefile.am
 	@${REINPLACE_CMD} -e '/typedef int sig_atomic_t/d' \
 		${WRKSRC}/portable/system.h
 

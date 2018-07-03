@@ -3,16 +3,19 @@
 
 PORTNAME=	outerspace
 PORTVERSION=	0.2.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	SF/ospace/OSLauncher/${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	On-line strategy game
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pygame/__init__.py:devel/py-game
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python
+RUN_DEPENDS=	${PYGAME}
+
+USES=		python:2.7
 NO_BUILD=	yes
 NO_ARCH=	yes
 
@@ -28,5 +31,6 @@ do-install:
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} res ${STAGEDIR}${PREFIX}/lib/${PORTNAME})
 	${INSTALL_DATA} ${WRKSRC}/outerspace ${STAGEDIR}${PREFIX}/lib/${PORTNAME}
 	${INSTALL_SCRIPT} ${WRKDIR}/outerspace ${STAGEDIR}${PREFIX}/bin
+	@${REINPLACE_CMD} -i '' -e 's|/usr/bin/env python|${PYTHON_CMD}|' ${STAGEDIR}${PREFIX}/bin/outerspace
 
 .include <bsd.port.mk>

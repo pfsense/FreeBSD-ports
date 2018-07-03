@@ -3,10 +3,10 @@
 
 PORTNAME=	gcc
 PORTVERSION=	4.7.4
-PORTREVISION=	3
+PORTREVISION=	8
 PORTEPOCH=	1
-CATEGORIES=	lang java
-MASTER_SITES=	GCC/releases/gcc-${DISTVERSION}
+CATEGORIES=	lang
+MASTER_SITES=	GCC/releases/gcc-${PORTVERSION}
 PKGNAMESUFFIX=	${SUFFIX}
 
 MAINTAINER=	gerald@FreeBSD.org
@@ -14,6 +14,9 @@ COMMENT=	GNU Compiler Collection 4.7
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
+
+DEPRECATED=	Unsupported by upstream. Use GCC 6 or newer instead.
+ONLY_FOR_ARCHS=	amd64 i386 powerpc sparc64
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
@@ -27,28 +30,19 @@ BUILD_DEPENDS+=	runtest:misc/dejagnu
 
 CPE_VENDOR=	gnu
 
-# DISTVERSION relates to downloads, GCC_VERSION and SUFFIX to names
-# of executables and directories once installed.
-DISTVERSION=	${PORTVERSION}
-GCC_VERSION=	${PORTVERSION:C/(.+)\.[0-9]{8}/\1/}
+GCC_VERSION=	${PORTVERSION}
 SUFFIX=		${PORTVERSION:C/([0-9]+).([0-9]+).*/\1\2/}
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 sparc64
 USES=		cpe gmake iconv libtool makeinfo perl5 tar:bzip2
 USE_BINUTILS=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
 
 OPTIONS_DEFINE=		BOOTSTRAP
-OPTIONS_DEFINE_i386=	JAVA
-OPTIONS_DEFINE_amd64=	JAVA
-OPTIONS_DEFAULT_i386=	JAVA
-OPTIONS_DEFAULT_amd64=	JAVA
-OPTIONS_EXCLUDE_DragonFly=	JAVA
 BOOTSTRAP_DESC=		Build using a full bootstrap
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "amd64"
+.if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 .endif
 
@@ -67,6 +61,10 @@ CONFIGURE_ARGS+=--disable-bootstrap
 CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
 ALL_TARGET=	bootstrap-lean
 .endif
+INSTALL_TARGET=	install-strip
+.if ${UID} != 0
+BINMODE=	755
+.endif
 CONFIGURE_ARGS+=--disable-nls \
 		--enable-gnu-indirect-function \
 		--libdir=${TARGLIB} \
@@ -78,7 +76,9 @@ CONFIGURE_ARGS+=--disable-nls \
 		--with-ld=${LOCALBASE}/bin/ld \
 		${ICONV_CONFIGURE_ARG} \
 		--with-pkgversion="FreeBSD Ports Collection" \
-		--with-system-zlib
+		--with-system-zlib \
+		--disable-libgcj \
+		--enable-languages=${LANGUAGES}
 MAKE_ARGS+=	MAKEINFOFLAGS="--no-split"
 USE_LDCONFIG=	${TARGLIB}
 PLIST_SUB=	GCC_VERSION=${GCC_VERSION} \
@@ -90,38 +90,18 @@ INFO=		gcc${SUFFIX}/cpp \
 		gcc${SUFFIX}/gccinstall \
 		gcc${SUFFIX}/gccint \
 		gcc${SUFFIX}/gfortran \
-		gcc${SUFFIX}/libgomp
-# Release tarballs (as opposed to snapshots) always carry this.
-#.if ${ARCH} == "i386" || ${ARCH} == "amd64"
-INFO+=		gcc${SUFFIX}/libquadmath \
-		gcc${SUFFIX}/libitm
-#.endif
+		gcc${SUFFIX}/libgomp \
+		gcc${SUFFIX}/libitm \
+		gcc${SUFFIX}/libquadmath
 SUB_FILES=	pkg-message
 SUB_LIST+=	TARGLIB=${TARGLIB}
-
-.if ${PORT_OPTIONS:MJAVA}
-ECJ_JAR=	${LOCALBASE}/share/java/ecj-4.5.jar
-BUILD_DEPENDS+=	${ECJ_JAR}:lang/gcc-ecj45 \
-		zip:archivers/zip
-RUN_DEPENDS+=	${ECJ_JAR}:lang/gcc-ecj45
-EXTRA_PATCHES+=	${FILESDIR}/java-patch-hier
-CONFIGURE_ARGS+=--with-ecj-jar=${ECJ_JAR}
-LANGUAGES:=	${LANGUAGES},java
-INFO+=		gcc${SUFFIX}/cp-tools \
-		gcc${SUFFIX}/gcj
-PLIST_SUB+=	JAVA=""
-.else
-CONFIGURE_ARGS+=--disable-libgcj
-PLIST_SUB+=	JAVA="@comment "
-.endif
-CONFIGURE_ARGS+=--enable-languages=${LANGUAGES}
 
 pre-everything::
 	@${ECHO_MSG} "Making GCC ${PORTVERSION} for ${CONFIGURE_TARGET} [${LANGUAGES}]"
 
 pre-configure:
 	cd ${WRKSRC} ; contrib/gcc_update --touch
-	@${RM} -f ${WRKSRC}/gcc/*/*.info*
+	@${RM} ${WRKSRC}/gcc/*/*.info*
 
 .if defined(MAINTAINER_MODE)
 full-regression-test: build
@@ -130,12 +110,11 @@ full-regression-test: build
 .endif
 
 post-stage:
-	${RM} -f ${STAGEDIR}${PREFIX}/man/man7/*
-	${RM} -f ${STAGEDIR}${PREFIX}/bin/rebuild-gcj-db${SUFFIX} \
-	         ${STAGEDIR}${PREFIX}/man/man1/rebuild-gcj-db${SUFFIX}.1
+	${RM} ${STAGEDIR}${PREFIX}/man/man7/*
+	${RM} -r ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/include-fixed/
 	# Add target libraries and include files to packaging list.
-	${RM} -f ${WRKDIR}/PLIST.lib
-.for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///} include/gcj include/gnu include/java include/javax
+	${RM} ${WRKDIR}/PLIST.lib
+.for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///}
 	cd ${STAGEDIR}${PREFIX} ; if [ -d $d ]; then \
 	    ${FIND} $d -type f -o -type l >>${WRKDIR}/PLIST.lib ;\
 	fi

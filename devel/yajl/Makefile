@@ -4,7 +4,7 @@ PORTNAME=	yajl
 PORTVERSION=	2.1.0
 CATEGORIES=	devel
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	gregf@hugops.pw
 COMMENT=	Portable JSON parsing and serialization library in ANSI C
 
 LICENSE=	ISCL
@@ -20,7 +20,6 @@ USES=		cmake:outsource
 PLIST_SUB=	VERSION=${PORTVERSION}
 
 TEST_TARGET=	test test-api
-TEST_WRKSRC=	${BUILD_WRKSRC}
 
 post-patch:
 	@${REINPLACE_CMD} -e "s,share/pkgconfig,libdata/pkgconfig,g" \

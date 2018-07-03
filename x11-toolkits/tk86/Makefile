@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tk
-PORTVERSION=	8.6.6
+PORTVERSION=	8.6.8
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/tcl/Tcl/${PORTVERSION} TCLTK/tcl8_6
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
@@ -16,6 +17,9 @@ LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
+
 OPTIONS_DEFINE=	TKMAN DEMOS THREADS
 OPTIONS_DEFAULT=THREADS
 OPTIONS_SUB=	yes
@@ -28,9 +32,9 @@ WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}/unix
 ALL_TARGET=	all
 INSTALL_TARGET=	install-strip
 
-USE_LDCONFIG=	yes
 USES+=		tcl:${SHORT_TK_VER},tea
-USE_XORG=	x11 xft xscrnsaver
+USE_LDCONFIG=	yes
+USE_XORG=	x11 xext xft xrender xscrnsaver
 CONFIGURE_ARGS=	--enable-xss \
 		--enable-xft \
 		--enable-man-suffix=.${MAN_SUFFIX} \
@@ -61,6 +65,8 @@ post-patch:
 	     s|@TK_BUILD_STUB_LIB_PATH@|@TK_STUB_LIB_PATH@|; \
 	     s|@TK_SRC_DIR@|${PREFIX}/include/tk${TK_VER}|' \
 	     ${WRKSRC}/tkConfig.sh.in
+	${REINPLACE_CMD} -e '/^Requires/s|tcl|tcl${SHORT_TK_VER}|' \
+	    ${WRKSRC}/tk.pc.in
 
 regression-test:	build
 	cd ${WRKSRC}; ${MAKE} test

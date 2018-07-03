@@ -8,7 +8,7 @@ MASTER_SITES=	ftp://ftp.figlet.org/pub/figlet/fonts/
 DISTFILES=	contributed.tar.gz international.tar.gz
 DIST_SUBDIR=	figlet
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ptudor@ptudor.net
 COMMENT=	Assorted fonts for the figlet(6) program
 
 RUN_DEPENDS=	figlet:misc/figlet
@@ -24,19 +24,19 @@ post-extract:
 		${TAR} xf Obanner-canon.tgz -C ${WRKSRC}/contributed/ && \
 		${MV} ./Obanner-canon/* ${WRKSRC}/contributed/ && \
 		${RMDIR} ./Obanner-canon && \
-		${RM} -f Obanner-canon.tgz && \
+		${RM} Obanner-canon.tgz && \
 		${TAR} xf Obanner.tgz -C ${WRKSRC}/contributed/ && \
 		${MV} ./Obanner/* ${WRKSRC}/contributed/ && \
 		${RMDIR} ./Obanner && \
-		${RM} -f Obanner.tgz && \
+		${RM} Obanner.tgz && \
 		${MV} ./C64-fonts/* ${WRKSRC}/contributed/ && \
 		${RMDIR} ./C64-fonts && \
 		${MV} ./bdffonts/* ${WRKSRC}/contributed/ && \
 		${RMDIR} ./bdffonts
 	@cd ${WRKSRC}/international && \
 		${TAR} xf cjkfonts.tar.gz -C ${WRKSRC}/international/ && \
-		${RM} -f cjkfonts.tar.gz
-	@${RM} -f ${WRKSRC}/contributed/banner.flf
+		${RM} cjkfonts.tar.gz
+	@${RM} ${WRKSRC}/contributed/banner.flf
 
 do-install:
 .for f in contributed international

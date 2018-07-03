@@ -1,3 +1,4 @@
+
 # Created by: Vincent Tantardini <vinc@FreeBSD-fr.org>
 # $FreeBSD$
 
@@ -10,6 +11,8 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Server-side RSS aggregator written in PHP with MySQL
 
+IGNORE_WITH_PHP=	70 71 72
+
 NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
@@ -18,9 +21,10 @@ OPTIONS_DEFINE=	GD MYSQLSERVER DOCS
 OPTIONS_DEFAULT=	GD
 MYSQLSERVER_DESC=	Use MySQL-Server on localhost
 
-.include <bsd.port.options.mk>
-
+USES=		php
 USE_PHP=	mysql mbstring pcre xml iconv
+
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGD}
 USE_PHP+=	gd

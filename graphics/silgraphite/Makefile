@@ -24,6 +24,7 @@ OPTIONS_SUB=	yes
 CONFIGURE_ARGS=	--without-xft --without-pangographite
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+USE_CXXSTD=	c++98
 USE_LDCONFIG=	yes
 USES=		libtool pathfix pkgconfig
 

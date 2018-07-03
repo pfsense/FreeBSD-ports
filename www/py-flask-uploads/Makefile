@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Flask-Uploads
-PORTVERSION=	0.2.0
+PORTVERSION=	0.2.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +12,10 @@ COMMENT=	Flexible and efficient upload handling for Flask
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=0.10:www/py-flask
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=0.10:www/py-flask@${FLAVOR}
 
-USES=	python
+NO_ARCH=	yes
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

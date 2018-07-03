@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tcl-lmdb
-PORTVERSION=	0.3.5
+PORTVERSION=	0.3.6
 CATEGORIES=	databases
 
 MAINTAINER=	gahr@FreeBSD.org
@@ -31,4 +31,3 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${TCL_PKG}/lib${TCL_PKG}.so
 
 .include <bsd.port.mk>
-

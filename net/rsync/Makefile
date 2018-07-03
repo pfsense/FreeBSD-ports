@@ -2,23 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	rsync
-PORTVERSION=	3.1.2
+DISTVERSION=	3.1.3
 CATEGORIES=	net ipv6
-PORTREVISION=	5
 MASTER_SITES=	http://rsync.samba.org/ftp/rsync/ \
-		ftp://ftp.samba.org/pub/rsync/ \
-		ftp://ftp.sunet.se/pub/unix/admin/rsync/  \
+		https://rsync.samba.org/ftp/rsync/ \
 		ftp://ftp.fu-berlin.de/pub/unix/network/rsync/ \
 		http://www.mirrorservice.org/sites/rsync.samba.org/ \
-		LOCAL/ehaupt/rsync
+		https://www.mirrorservice.org/sites/rsync.samba.org/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	ehaupt@FreeBSD.org
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Network file distribution/synchronization utility
 
 LICENSE=	GPLv3
 
-USES=		cpe
+USES=		cpe shebangfix
+SHEBANG_FILES=	support/rrsync
 
 CPE_VENDOR=	samba
 CPE_PRODUCT=	rsync
@@ -29,6 +28,7 @@ USE_RC_SUBR=	rsyncd
 SUB_LIST=	NAME=rsyncd
 
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
 CONFIGURE_ARGS=	--disable-debug --enable-ipv6 \
 		--with-rsyncd-conf=${ETCDIR}/rsyncd.conf
@@ -54,7 +54,7 @@ ATIMES_DESC=	Preserve access times, adds --atimes (BROKEN)
 ACL_DESC=	Add backward-compatibility for the --acls option
 
 # define default options
-OPTIONS_DEFAULT=SSH FLAGS
+OPTIONS_DEFAULT=FLAGS ICONV SSH
 
 ZLIB_BASE_CONFIGURE_ON=	--with-included-zlib=no
 TIMELIMIT_EXTRA_PATCHES=	${WRKSRC}/patches/time-limit.diff
@@ -79,9 +79,14 @@ POPT_PORT_CONFIGURE_OFF=	--with-included-popt
 SSH_CONFIGURE_ON=	--with-rsh=ssh
 SSH_CONFIGURE_OFF=	--with-rsh=rsh
 
-.include <bsd.port.options.mk>
+ACL_DISTFILES=		${PORTNAME}-patches-${PORTVERSION}${EXTRACT_SUFX}
+ATIMES_DISTFILES=	${PORTNAME}-patches-${PORTVERSION}${EXTRACT_SUFX}
+FLAGS_DISTFILES=	${PORTNAME}-patches-${PORTVERSION}${EXTRACT_SUFX}
+ICONV_DISTFILES=	${PORTNAME}-patches-${PORTVERSION}${EXTRACT_SUFX}
+RENAMED_DISTFILES=	${PORTNAME}-patches-${PORTVERSION}${EXTRACT_SUFX}
+TIMELIMIT_DISTFILES=	${PORTNAME}-patches-${PORTVERSION}${EXTRACT_SUFX}
 
-.if ${PORT_OPTIONS:MICONV} || ${PORT_OPTIONS:MFLAGS} || ${PORT_OPTIONS:MACL} || make(makesum) || ${PORT_OPTIONS:MTIMELIMIT} || ${PORT_OPTIONS:MATIMES} || ${PORT_OPTIONS:MRENAMED}
+.if make(makesum)
 DISTFILES+=	${PORTNAME}-patches-${PORTVERSION}${EXTRACT_SUFX}
 .endif
 
@@ -95,14 +100,13 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|perl.*|${DO_NADA}|' ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e 's:/etc/:${ETCDIR}/:g'  \
 		${WRKSRC}/rsync.h ${WRKSRC}/rsync.1 ${WRKSRC}/rsyncd.conf.5
+	@${REINPLACE_CMD} -e 's|/usr/bin/rsync|${PREFIX}/bin/rsync|g' ${WRKSRC}/support/rrsync
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${FILESDIR}/rsyncd.conf.sample ${STAGEDIR}${ETCDIR}/
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
-
-test: build
-	@(cd ${WRKSRC} && ${MAKE_CMD} check)
+	${INSTALL_SCRIPT} ${WRKSRC}/support/rrsync ${STAGEDIR}${PREFIX}/sbin
 
 .include <bsd.port.post.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	proxyper
 PORTVERSION=	347
+PORTREVISION=	1
 CATEGORIES=	misc
 MASTER_SITES=	http://http.distributed.net/pub/dcti/proxyper/ \
 		ftp://ftp.distributed.net/pub/dcti/proxyper/
@@ -27,8 +28,8 @@ DISTNAME=	proxyper${PORTVERSION}-freebsd7-x86
 do-install:
 	${MKDIR} ${STAGEDIR}${BINDIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/proxyper ${STAGEDIR}${BINDIR}
-	${INSTALL_MAN} ${WRKSRC}/ChangeLog.txt ${STAGEDIR}${BINDIR}
-	${INSTALL_MAN} ${WRKSRC}/manual.html ${STAGEDIR}${BINDIR}
+	${INSTALL_DATA} ${WRKSRC}/ChangeLog.txt ${STAGEDIR}${BINDIR}
+	${INSTALL_DATA} ${WRKSRC}/manual.html ${STAGEDIR}${BINDIR}
 	${INSTALL} -c -m 644 ${WRKSRC}/proxyper.ini ${STAGEDIR}${BINDIR}/proxyper.ini.sample
 
 .include <bsd.port.post.mk>

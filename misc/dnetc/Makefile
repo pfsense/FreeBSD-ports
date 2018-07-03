@@ -18,7 +18,7 @@ COMMENT=	Distributed.net distributed computing project client
 WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd-${ARCH:S/i386/x86/}-elf
 DISTINFO_FILE=	${MASTERDIR}/distinfo.${ARCH}
 
-ONLY_FOR_ARCHS=	i386 sparc64 amd64 powerpc
+ONLY_FOR_ARCHS=	amd64 i386 powerpc sparc64
 
 USE_RC_SUBR=	dnetc
 NO_BUILD=	yes
@@ -36,32 +36,14 @@ SUB_LIST=	BINDIR="${BINDIR}"
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == i386
-.if ${OSVERSION} >= 900044
 VERSION=	2.9112.521
 DISTNAME=	dnetc${PORTVERSION:E}-freebsd9-${ARCH:S/i386/x86/}
 WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd9-${ARCH:S/i386/x86/}
-.else
-VERSION=	2.9110.519
-REVISION=	1
-DISTNAME=	dnetc${PORTVERSION:E}-freebsd8-${ARCH:S/i386/x86/}
-WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd8-${ARCH:S/i386/x86/}
-.endif
 
 .elif ${ARCH} == amd64
-.if ${OSVERSION} >= 1000100
 VERSION=	2.9112.521
 DISTNAME=	dnetc${PORTVERSION:E}-freebsd10-${ARCH}
 WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd10-${ARCH}
-.elif ${OSVERSION} >= 900044
-VERSION=	2.9112.521
-DISTNAME=	dnetc${PORTVERSION:E}-freebsd9-${ARCH}
-WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd9-${ARCH}
-.else
-VERSION=	2.9110.519
-REVISION=	1
-DISTNAME=	dnetc${PORTVERSION:E}-freebsd8-${ARCH}
-WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd8-${ARCH}
-.endif
 
 .elif ${ARCH} == sparc64
 VERSION=	2.9109.518
@@ -74,12 +56,16 @@ VERSION=	2.9109.518
 REVISION=	1
 DISTNAME=	dnetc${PORTVERSION:E}-freebsd8-${ARCH}
 WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd8-${ARCH}
+
+.else
+# create a backstop for PORTVERSION for unimplemented arches to get a sane PKGNAME
+VERSION=	0
 .endif
 
 do-install:
-	${MKDIR} ${STAGEDIR}${BINDIR}
+	@${MKDIR} ${STAGEDIR}${BINDIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/dnetc ${STAGEDIR}${BINDIR}
 	${INSTALL_MAN} ${WRKSRC}/dnetc.1 ${STAGEDIR}${PREFIX}/man/man1
-	${INSTALL} -c -m 644 ${FILESDIR}/dnetc.ini ${STAGEDIR}${BINDIR}/dnetc.ini.sample
+	${INSTALL_DATA} ${FILESDIR}/dnetc.ini ${STAGEDIR}${BINDIR}/dnetc.ini.sample
 
 .include <bsd.port.post.mk>

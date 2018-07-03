@@ -4,10 +4,6 @@
 PORTNAME=	cfengine
 PORTVERSION=	3.6.6
 PORTREVISION=	4
-.if !defined(MASTERDIR)
-PKGNAMESUFFIX=	36
-PORTEPOCH?=	2
-.endif
 CATEGORIES=	sysutils
 MASTER_SITES=	https://cfengine-package-repos.s3.amazonaws.com/tarballs/
 DISTFILES=	${PORTNAME}-${PORTVERSION}-2.tar.gz
@@ -17,24 +13,29 @@ MAINTAINER=	cy@FreeBSD.org
 #		skreuzer@FreeBSD.org is also committer for this port
 COMMENT=	Systems administration tool for networks
 
+CONFLICTS=	cfengine-2* cfengine3[0-57-9]-* cfengine31[0-9]-*
+.if !defined(MASTERDIR)
+PKGNAMESUFFIX=	36
+PORTEPOCH?=	2
+CONFLICTS+=	cfengine-3.*
+.endif
+
 LICENSE=	GPLv3
 
 CPE_VENDOR=	gnu
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
-CONFLICTS=	cfengine-[2-57-9]*
+CONFLICTS=	cfengine-[12-57-9]*
 
 USE_RC_SUBR=	cf-execd cf-serverd cf-monitord
 
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USES=		autoreconf cpe gmake libtool shebangfix ssl
+USES=		autoreconf cpe gmake libtool localbase shebangfix ssl
 SHEBANG_FILES=	examples/remake_outputs.pl
 CFLAGS+=	-Wno-return-type
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 # EXAMPLESDIR=	${PREFIX}/share/examples/cfengine3
 DOCSDIR=	${PREFIX}/share/doc/cfengine
 CONFIGURE_ARGS=	--docdir=${DOCSDIR} \
@@ -57,6 +58,7 @@ PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	--with-postgresql=${LOCALBASE}
 
 MYSQL_USES=		mysql
+MYSQL_BROKEN=		configure: error: MySQL client library exports symbols (EVP_CIPHER_CTX_init) clashing with OpenSSL.
 MYSQL_CONFIGURE_WITH=	--with-mysql=${LOCALBASE}
 MYSQL_LIB_DEPENDS=	libmysqlclient.so:${_MYSQL_CLIENT}
 MYSQL_LDFLAGS=		-L${LOCALBASE}/lib/mysql

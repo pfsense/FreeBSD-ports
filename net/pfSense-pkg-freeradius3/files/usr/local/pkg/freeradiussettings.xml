@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * freeradiussettings.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2014-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
+ * All rights reserved.
+ *
+ * Originally based on m0n0wall (http://m0n0.ch/wall)
+ * Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+]]>	</copyright>
+	<name>freeradiussettings</name>
+	<title>FreeRADIUS: Settings</title>
+	<aftersaveredirect>pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</aftersaveredirect>
+	<include_file>/usr/local/pkg/freeradius.inc</include_file>
+	<tabs>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=freeradius.xml</url>
+		</tab>
+		<tab>
+			<text>MACs</text>
+			<url>/pkg.php?xml=freeradiusauthorizedmacs.xml</url>
+		</tab>
+		<tab>
+			<text>NAS / Clients</text>
+			<url>/pkg.php?xml=freeradiusclients.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>/pkg.php?xml=freeradiusinterfaces.xml</url>
+		</tab>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>EAP</text>
+			<url>/pkg_edit.php?xml=freeradiuseapconf.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>SQL</text>
+			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>LDAP</text>
+			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View config</text>
+			<url>/freeradius_view_config.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=freeradiussync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>General Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Maximum Requests Tracked</fielddescr>
+			<fieldname>varsettingsmaxrequests</fieldname>
+			<description>
+				<![CDATA[
+				The maximum number of requests which the server keeps track of until 'Cleanup Delay' deletes them.<br/>
+				If set too low, it will make FreeRADIUS server busy. A higher value is better (but means increased RAM usage).<br/>
+				<span class="text-info">Useful range: (256 * &lt; number of NAS &gt;). Shouldn't be higher than (1000 * &lt; number of NAS &gt;).
+				(Default: 1024)
+				</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>1024</default_value>
+		</field>
+		<field>
+			<fielddescr>Maximum Request Timeout</fielddescr>
+			<fieldname>varsettingsmaxrequesttime</fieldname>
+			<description>
+				<![CDATA[
+				The maximum time to handle a request (in seconds).
+				<span class="text-info">(Default: 30)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>30</default_value>
+		</field>
+		<field>
+			<fielddescr>Cleanup Delay</fielddescr>
+			<fieldname>varsettingscleanupdelay</fieldname>
+			<description>
+				<![CDATA[
+				The time to wait before cleaning up a reply which was sent to the NAS (in seconds).
+				<span class="text-info">(Default: 5)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>5</default_value>
+		</field>
+		<field>
+			<fielddescr>Allow Core Dumps</fielddescr>
+			<fieldname>varsettingsallowcoredumps</fieldname>
+			<description>
+				<![CDATA[
+				Only enable if you need to debug the RADIUS server!
+				<span class="text-info">(Default: Disable)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Regular Expressions</fielddescr>
+			<fieldname>varsettingsregularexpressions</fieldname>
+			<description>
+				<![CDATA[
+				Allows to use regular expressions.
+				<span class="text-info">(Default: Enable)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>yes</default_value>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Extended Expressions</fielddescr>
+			<fieldname>varsettingsextendedexpressions</fieldname>
+			<description>
+				<![CDATA[
+				Allows to use extended expressions.
+				<span class="text-info">(Default: Enable)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>yes</default_value>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Logging Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>RADIUS Logging Destination</fielddescr>
+			<fieldname>varsettingslogdir</fieldname>
+			<description>
+				<![CDATA[
+				Choose the destination for FreeRADIUS logs.
+				This will log general service information, but no authentication information.<br/>
+				<span class="text-info">(Default: System Logs)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>syslog</default_value>
+			<options>
+				<option><name>/var/log/radius.log</name><value>files</value></option>
+				<option><name>System Logs</name><value>syslog</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>RADIUS Logging</fielddescr>
+			<fieldname>varsettingsauth</fieldname>
+			<description>
+				<![CDATA[
+				This enables logging of accepted or rejected authentication.
+				<span class="text-info">(Default: Disable)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>yes</default_value>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Log Password on Authentication Failure</fielddescr>
+			<fieldname>varsettingsauthbadpass</fieldname>
+			<description>
+				<![CDATA[
+				Log the <b>password</b> of failed authentication attempts to syslog.
+				Not recommended for security reasons.</br>
+				<span class="text-info">'RADIUS Logging' must be enabled. (Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Log</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Additional Information for Bad Attempts</fielddescr>
+			<fieldname>varsettingsauthbadpassmessage</fieldname>
+			<description>
+				<![CDATA[
+				You can add additional information to the syslog output if a user connects. Click Info for details.
+				<div class="infoblock">
+				You can use variables for any attributes.<br/><br/>
+				<code>%{User-Name}</code> - Logs the username.</br>
+				<code>%{reply:Acct-Output-Octets}</code> - Logs the remaining output octets.</br>
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>80</size>
+		</field>
+		<field>
+			<fielddescr>Log Password on Authentication Success</fielddescr>
+			<fieldname>varsettingsauthgoodpass</fieldname>
+			<description>
+				<![CDATA[
+				Log the <b>password</b> of successful authentication attempts to syslog.
+				Not recommended for security reasons.</br>
+				<span class="text-info">'RADIUS Logging' must be enabled. (Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Log</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Additional Information for Good Attempts</fielddescr>
+			<fieldname>varsettingsauthgoodpassmessage</fieldname>
+			<description>
+				<![CDATA[
+				You can add additional information to the syslog output if a user is rejected. Click Info for details.
+				<div class="infoblock">
+				You can use variables for any attributes.<br/><br/>
+				<code>%{User-Name}</code> - Logs the username.</br>
+				<code>%{reply:Acct-Output-Octets}</code> - Logs the remaining output octets.</br>
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>80</size>
+		</field>
+		<field>
+			<fielddescr>Log Stripped Names</fielddescr>
+			<fieldname>varsettingsstrippednames</fieldname>
+			<description>
+				<![CDATA[
+				Choose this if you want to log the full User-Name attribute as it was found in the request.<br/>
+				<span class="text-info">'RADIUS Logging' must be enabled. (Default: No)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Log</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>NAS Hostname Lookup</fielddescr>
+			<fieldname>varsettingshostnamelookups</fieldname>
+			<description>
+				<![CDATA[
+				Log the names of NAS instead of IP addresses.<br/>
+				<span class="text-danger">Warning:</span> Turning this on can result in lock-ups of the RADIUS server.
+				<span class="text-info">(Default: Disable)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>no</default_value>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Security Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Maximum Number of Attributes</fielddescr>
+			<fieldname>varsettingsmaxattributes</fieldname>
+			<description>
+				<![CDATA[
+				The maximum number of attributes permitted in a RADIUS packet.
+				Packets which have more than this number of attributes in them will be dropped.<br/>
+				<span class="text-info">(Default: 200)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>200</default_value>
+		</field>
+		<field>
+			<fielddescr>Access-Reject Delay</fielddescr>
+			<fieldname>varsettingsrejectdelay</fieldname>
+			<description>
+				<![CDATA[
+				When sending an Access-Reject it can be delayed for a few seconds.<br/>
+				This may help to slow down a DoS attack. It also helps to slow down people trying to brute-force crack a user's password.<br/>
+				<span class="text-info">To send Access-Reject immediately, set to '0'. (Default: 1)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>1</default_value>
+		</field>
+		<field>
+			<name>Thread Pool Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Number of Threads After Start</fielddescr>
+			<fieldname>varsettingsstartservers</fieldname>
+			<description>
+				<![CDATA[
+				The thread pool is a long-lived group of threads which take turns (round-robin) handling any incoming requests.
+				<span class="text-info">(Default: 5)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>5</default_value>
+		</field>
+		<field>
+			<fielddescr>Maximum Number of Threads</fielddescr>
+			<fieldname>varsettingsmaxservers</fieldname>
+			<description>
+				<![CDATA[
+				If this limit is ever reached, clients will be locked out; it should not be set too low.
+				<span class="text-info">(Default: 32)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>32</default_value>
+		</field>
+		<field>
+			<fielddescr>Minimum Spare Servers</fielddescr>
+			<fieldname>varsettingsminspareservers</fieldname>
+			<description>
+				<![CDATA[
+				This dynamically adjusts the 'Number of Threads After Start'. If the RADIUS server has to handle <strong>many</strong> requests
+				and <strong>less</strong> than 'Minimum Spare Servers' are left, the RADIUS server will <strong>increase</strong> the number of running threads.<br/>
+				<span class="text-info">(Default: 3)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>3</default_value>
+		</field>
+		<field>
+			<fielddescr>Maximum Spare Servers</fielddescr>
+			<fieldname>varsettingsmaxspareservers</fieldname>
+			<description>
+				<![CDATA[
+				This dynamically adjusts the 'Number of Threads After Start'. If the RADIUS server has to handle <strong>few</strong> requests
+				and <strong>more</strong> than 'Maximum Spare Servers' are left, the RADIUS server will <strong>decrease</strong> the number of running threads.<br/>
+				<span class="text-info">(Default: 10)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>10</default_value>
+		</field>
+		<field>
+			<fielddescr>Server Packet Queue Size</fielddescr>
+			<fieldname>varsettingsmaxqueuesize</fieldname>
+			<description>
+				<![CDATA[
+				This is the queue size where the server stores packets before processing them.
+				<span class="text-info">(Default: 65536)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>65536</default_value>
+		</field>
+		<field>
+			<fielddescr>Maximum Requests Per Server</fielddescr>
+			<fieldname>varsettingsmaxrequestsperserver</fieldname>
+			<description>
+				<![CDATA[
+				You should only change this if you encounter memory leaks while running RADIUS.
+				<span class="text-info">(Default: 0)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<name>Mobile-One-Time-Password Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Mobile-One-Time-Password</fielddescr>
+			<fieldname>varsettingsmotpenable</fieldname>
+			<description>Enable Mobile-One-Time-Password Support</description>
+			<sethelp>
+				<![CDATA[
+				This enables the possibility to authenticate with username and one-time-password.</br>
+				The client used to generate OTP can be installed on various mobile device platforms like Android, iOS and others.<br/>
+				<span class="text-info">(Default: Disabled)</span>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<enablefields>varsettingsmotptimespan,varsettingsmotppasswordattempts,varsettingsmotpchecksumtype,varsettingsmotptokenlength</enablefields>
+		</field>
+		<field>
+			<fielddescr>OTP Lifetime</fielddescr>
+			<fieldname>varsettingsmotptimespan</fieldname>
+			<description>
+				<![CDATA[
+				The resulting lifetime (in seconds) is the value entered here multiplied by 10 (i.e., 1 ~ 10s, 2 ~ 20s, 3 ~30s).<br/>
+				<span class="text-info">Values higher than 12 are not allowed for security reasons. (Default: 2)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>2</default_value>
+		</field>
+		<field>
+			<fielddescr>Number of Invalid Password Attempts</fielddescr>
+			<fieldname>varsettingsmotppasswordattempts</fieldname>
+			<description>
+				<![CDATA[
+				After this many failed attempts, the user will be locked out until an admin unlocks the user.<br/>
+				<span class="text-info">Values higher than 20 are not allowed for security reasons. (Default: 5)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>5</default_value>
+		</field>
+		<field>
+			<fielddescr>Hash Algorithm</fielddescr>
+			<fieldname>varsettingsmotpchecksumtype</fieldname>
+			<description>
+				<![CDATA[
+				We build a hash of <code>EPOCHTIME+INIT-SECRET+PIN</code> and then use the digits as password.<br/>
+				If some other (hardware) tokens use other hash types, you can adjust the calculation here.<br/>
+				<span class="text-info">Note: This <strong>must</strong> be equal on both sides!(Default: md5)</span>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>md5</default_value>
+			<options>
+				<option><name>MD5</name><value>md5</value></option>
+				<option><name>SHA1</name><value>sha1</value></option>
+				<option><name>SHA256</name><value>sha256</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Token Password Length</fielddescr>
+			<fieldname>varsettingsmotptokenlength</fieldname>
+			<description>
+				<![CDATA[
+				We build a hash of <code>EPOCHTIME+INIT-SECRET+PIN</code> and then use the first 6 digits as password.<br/>
+				If some other (hardware) tokens use other digits, you can adjust the used digits here.<br/>
+				<span class="text-info">Note: This <strong>must</strong> be equal on both sides! (Default: 1-6)	</span>
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>1-6</default_value>
+		</field>
+		<field>
+			<name>Miscellaneous Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Plain MAC Auth</fielddescr>
+			<fieldname>varsettingsenablemacauth</fieldname>
+			<description>Enable Plain MAC Authentication</description>
+			<sethelp>
+				<![CDATA[
+				The Calling-Station-Id in an Access-Request is first checked against the authorized_macs list, before all other authorization methods.
+				If the NAS is not able to convert the MAC address to the 802.1X format, this field can be enabled.<br/>
+				<span class="text-info">Leave this disabled (unchecked) unless absolutely necessary. (Default: Disabled)</span>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Disable Acct_Unique</fielddescr>
+			<fieldname>varsettingsenableacctunique</fieldname>
+			<description>Disable the "rlm_acct_unique" module in FreeRADIUS "preacct" section.</description>
+			<sethelp>
+				<![CDATA[
+				If you encounter problems with some counters when using 'Amount of Download/Upload/Time', you can check this to disable the module.
+				<span class="text-info">(Default: Enabled)</span>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		freeradius_settings_resync();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		freeradius_eapconf_resync(false);
+		freeradius_settings_resync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		freeradius_validate_settings($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

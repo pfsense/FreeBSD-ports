@@ -26,7 +26,12 @@ require_once("guiconfig.inc");
 require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_gui.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
-
+if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+	$config['installedpackages']['haproxy']['ha_pools'] = array();
+}
+if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+	$config['installedpackages']['haproxy']['ha_backends'] = array();
+}
 if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
 	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
 }
@@ -89,7 +94,7 @@ if ($_POST['apply']) {
 	exit;
 }
 
-$pgtitle = array("Services", "HAProxy", "Backend server pools");
+$pgtitle = array("Services", "HAProxy", "Backend");
 include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -148,13 +153,13 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 				}
 			}
 			$disabled = $fe_list == "";
-			
+
 			if (is_array($pool['ha_servers'])) {
 				$count = count($pool['ha_servers']['item']);
 			} else {
 				$count = 0;
 			}
-?>														
+?>
 					<tr id="fr<?=$i;?>" <?=$display?> onClick="fr_toggle(<?=$i;?>)" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';" <?=($disabled ? ' class="disabled"' : '')?>>
 						<td >
 							<input type="checkbox" id="frc<?=$i;?>" onClick="fr_toggle(<?=$i;?>)" name="rule[]" value="<?=$i;?>"/>
@@ -193,7 +198,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 					<a href="haproxy_pool_edit.php?id=<?=$i;?>">
 						<?=haproxyicon("edit", gettext("edit backend"))?>
 					</a>
-					<a href="haproxy_pools.php?act=del&amp;id=<?=$i;?>" onclick="return confirm('Do you really want to delete this entry?')">
+					<a href="haproxy_pools.php?act=del&amp;id=<?=$i;?>">
 						<?=haproxyicon("delete", gettext("delete backend"))?>
 					</a>
 					<a href="haproxy_pool_edit.php?dup=<?=$i;?>">
@@ -202,7 +207,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 			  	</td>
 			</tr>
 <?php
-			$i++; 
+			$i++;
 		}
 ?>
 				</tbody>

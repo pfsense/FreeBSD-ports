@@ -3,10 +3,11 @@
 
 PORTNAME=	gqlplus
 PORTVERSION=	1.16
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	SF
 
-MAINTAINER=	leeym@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SQL*PLUS with commandline editing, history, and name completion
 
 LICENSE=	GPLv2

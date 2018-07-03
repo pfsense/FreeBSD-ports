@@ -2,7 +2,7 @@
 
 PORTNAME=	clang
 DISTVERSION=	3.3
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	lang devel
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
@@ -33,7 +33,8 @@ PYTHONLIBDIR=	${LLVM_PREFIX}/lib/python
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${LLVM_PREFIX}
-USES=		gmake perl5 python
+USES=		gmake groff perl5 python:2.7 shebangfix
+SHEBANG_FILES=	tools/clang/tools/scan-view/scan-view
 USE_LDCONFIG=	yes
 
 MAKE_ARGS=	CLANG_TBLGEN=${WRKSRC}/${RELTYPE}/bin/clang-tblgen \
@@ -86,10 +87,6 @@ RELTYPE=		Release
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64
-.endif
-
 .if ${PORT_OPTIONS:MASSERTS}
 pre-fetch:
 	@if [ "`llvm-config${LLVM_SUFFIX} --build-mode`" != ${RELTYPE} ]; then \
@@ -102,7 +99,7 @@ pre-fetch:
 .endif
 
 post-extract:
-	${RM} -f ${BUILD_WRKSRC}
+	${RM} ${BUILD_WRKSRC}
 	${MV} ${WRKDIR}/${CLANG_NAME} ${BUILD_WRKSRC}
 
 post-patch:
@@ -179,7 +176,7 @@ PLIST_DIR_LIST=		include/clang \
 			lib/python
 
 build-plist:
-	${RM} -f ${PLIST}
+	${RM} ${PLIST}
 .for command in ${COMMANDS}
 	${ECHO_CMD} bin/${command}${LLVM_SUFFIX} >> ${PLIST}
 .endfor

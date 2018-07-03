@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	volatility
-PORTVERSION=	2.5
+PORTVERSION=	2.6
+PORTREVISION=	2
 CATEGORIES=	security python
 MASTER_SITES=	http://downloads.volatilityfoundation.org/releases/${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,15 +14,17 @@ COMMENT=	Advanced memory forensics framework
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}distorm>=0:devel/py-distorm \
-		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow \
-		${PYTHON_PKGNAMEPREFIX}pycrypto>=0:security/py-pycrypto \
-		${PYTHON_PKGNAMEPREFIX}yara>=0:security/py-yara \
-		${PYTHON_PKGNAMEPREFIX}openpyxl>=0:textproc/py-openpyxl
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}distorm>=0:devel/py-distorm@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pycrypto>=0:security/py-pycrypto@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yara>=0:security/py-yara@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}openpyxl>=0:textproc/py-openpyxl@${FLAVOR}
 
-USES=		python:2 zip
+NO_ARCH=	yes
+USES=		python:2.7 shebangfix zip
 USE_PYTHON=	distutils autoplist
+SHEBANG_FILES=	tools/*.py tools/mac/*.py
 
 OPTIONS_DEFINE=	DOCS
 
@@ -34,7 +37,7 @@ DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 
 PYDISTUTILS_INSTALLARGS+=--install-data ${DATADIR}
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

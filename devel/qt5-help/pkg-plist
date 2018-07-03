@@ -1,15 +1,11 @@
-%%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qclucenefieldnames_p.h
 %%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpcollectionhandler_p.h
 %%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpdatainterface_p.h
 %%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpdbreader_p.h
 %%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpengine_p.h
 %%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpgenerator_p.h
 %%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpprojectdata_p.h
-%%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpsearchindex_default_p.h
-%%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpsearchindexreader_clucene_p.h
 %%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpsearchindexreader_default_p.h
 %%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpsearchindexreader_p.h
-%%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpsearchindexwriter_clucene_p.h
 %%QT_INCDIR%%/QtHelp/%%FULLVER%%/QtHelp/private/qhelpsearchindexwriter_default_p.h
 %%QT_INCDIR%%/QtHelp/QHelpContentItem
 %%QT_INCDIR%%/QtHelp/QHelpContentModel
@@ -22,6 +18,7 @@
 %%QT_INCDIR%%/QtHelp/QHelpSearchEngine
 %%QT_INCDIR%%/QtHelp/QHelpSearchQuery
 %%QT_INCDIR%%/QtHelp/QHelpSearchQueryWidget
+%%QT_INCDIR%%/QtHelp/QHelpSearchResult
 %%QT_INCDIR%%/QtHelp/QHelpSearchResultWidget
 %%QT_INCDIR%%/QtHelp/QtHelp
 %%QT_INCDIR%%/QtHelp/QtHelpDepends
@@ -35,9 +32,9 @@
 %%QT_INCDIR%%/QtHelp/qhelpsearchquerywidget.h
 %%QT_INCDIR%%/QtHelp/qhelpsearchresultwidget.h
 %%QT_INCDIR%%/QtHelp/qthelpversion.h
-%%QT_LIBDIR%%/cmake/Qt5Help/Qt5HelpConfig.cmake
-%%QT_LIBDIR%%/cmake/Qt5Help/Qt5HelpConfigExtras.cmake
-%%QT_LIBDIR%%/cmake/Qt5Help/Qt5HelpConfigVersion.cmake
+%%QT_CMAKEDIR%%/Qt5Help/Qt5HelpConfig.cmake
+%%QT_CMAKEDIR%%/Qt5Help/Qt5HelpConfigExtras.cmake
+%%QT_CMAKEDIR%%/Qt5Help/Qt5HelpConfigVersion.cmake
 %%QT_LIBDIR%%/libQt5Help.prl
 %%QT_LIBDIR%%/libQt5Help.so
 %%QT_LIBDIR%%/libQt5Help.so.5

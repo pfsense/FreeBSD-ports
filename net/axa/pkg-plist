@@ -10,13 +10,13 @@ include/axa/axa.h
 include/axa/axa_endian.h
 include/axa/bits.h
 include/axa/client.h
+include/axa/client_config.h
 include/axa/dns_walk.h
 include/axa/fields.h
 include/axa/json.h
 include/axa/strbuf.h
 include/axa/open_nmsg_out.h
 include/axa/protocol.h
-include/axa/rad_mod.h
 include/axa/socket.h
 include/axa/trie.h
 include/axa/wire.h

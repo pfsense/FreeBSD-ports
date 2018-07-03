@@ -85,10 +85,6 @@ USE_MFS_TMPVAR="$(/usr/bin/grep -c use_mfs_tmpvar /cf/conf/config.xml)"
 DISK_NAME="$(/bin/df /var/db/rrd | /usr/bin/tail -1 | /usr/bin/awk '{print $1;}')"
 DISK_TYPE="$(/usr/bin/basename ${DISK_NAME} | /usr/bin/cut -c1-2)"
 
-if [ "${PLATFORM}" != 'pfSense' ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = 'md' ]; then
-	/etc/rc.conf_mount_rw > /dev/null 2>&1
-fi
-
 if [ ! -d "${pfbdb}" ]; then mkdir "${pfbdb}"; fi
 if [ ! -d "${pfsensealias}" ]; then mkdir "${pfsensealias}"; fi
 if [ ! -d "${pfbmatch}" ]; then mkdir "${pfbmatch}"; fi
@@ -99,13 +95,8 @@ if [ ! -f "${masterfile}" ]; then touch "${masterfile}"; fi
 if [ ! -f "${mastercat}" ]; then touch "${mastercat}"; fi
 
 
-# Exit function to set mount RO if required before exiting.
+# Remove temp files before exiting.
 exitnow() {
-	if [ "${PLATFORM}" != 'pfSense' ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = 'md' ]; then
-		/etc/rc.conf_mount_ro > /dev/null 2>&1
-	fi
-
-	# Remove temp files
 	rm -f /tmp/pfbtemp?_"${rvar}"
 	exit
 }

@@ -182,6 +182,7 @@ include/postgresql/server/catalog/pg_ts_template.h
 include/postgresql/server/catalog/pg_type.h
 include/postgresql/server/catalog/pg_type_fn.h
 include/postgresql/server/catalog/pg_user_mapping.h
+include/postgresql/server/catalog/schemapg.h
 include/postgresql/server/catalog/storage.h
 include/postgresql/server/catalog/storage_xlog.h
 include/postgresql/server/catalog/toasting.h
@@ -221,6 +222,7 @@ include/postgresql/server/commands/view.h
 include/postgresql/server/common/config_info.h
 include/postgresql/server/common/controldata_utils.h
 include/postgresql/server/common/fe_memutils.h
+include/postgresql/server/common/int128.h
 include/postgresql/server/common/keywords.h
 include/postgresql/server/common/pg_lzcompress.h
 include/postgresql/server/common/relpath.h
@@ -277,6 +279,7 @@ include/postgresql/server/executor/spi_priv.h
 include/postgresql/server/executor/tqueue.h
 include/postgresql/server/executor/tstoreReceiver.h
 include/postgresql/server/executor/tuptable.h
+include/postgresql/server/fe_utils/connect.h
 include/postgresql/server/fe_utils/mbprint.h
 include/postgresql/server/fe_utils/print.h
 include/postgresql/server/fe_utils/psqlscan.h
@@ -670,6 +673,7 @@ lib/postgresql/pgxs/src/Makefile.port
 lib/postgresql/pgxs/src/Makefile.shlib
 lib/postgresql/pgxs/src/makefiles/pgxs.mk
 lib/postgresql/pgxs/src/nls-global.mk
+lib/postgresql/pgxs/src/test/regress/pg_regress
 libdata/pkgconfig/libecpg.pc
 libdata/pkgconfig/libecpg_compat.pc
 libdata/pkgconfig/libpgtypes.pc
@@ -990,6 +994,7 @@ man/man7/WITH.7.gz
 %%NLS%%share/locale/ko/LC_MESSAGES/pg_config-9.6.mo
 %%NLS%%share/locale/ko/LC_MESSAGES/pg_dump-9.6.mo
 %%NLS%%share/locale/ko/LC_MESSAGES/pgscripts-9.6.mo
+%%NLS%%share/locale/ko/LC_MESSAGES/psql-9.6.mo
 %%NLS%%share/locale/nb/LC_MESSAGES/pg_config-9.6.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/ecpg-9.6.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/ecpglib6-9.6.mo
@@ -1015,6 +1020,7 @@ man/man7/WITH.7.gz
 %%NLS%%share/locale/ru/LC_MESSAGES/psql-9.6.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/pg_config-9.6.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/pgscripts-9.6.mo
+%%NLS%%share/locale/sv/LC_MESSAGES/psql-9.6.mo
 %%NLS%%share/locale/ta/LC_MESSAGES/pg_config-9.6.mo
 %%NLS%%share/locale/tr/LC_MESSAGES/ecpg-9.6.mo
 %%NLS%%share/locale/tr/LC_MESSAGES/ecpglib6-9.6.mo

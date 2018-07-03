@@ -28,6 +28,9 @@ require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
+if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+	$config['installedpackages']['haproxy']['ha_pools'] = array();
+}
 if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
 	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
 }
@@ -36,17 +39,20 @@ $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 
 $a_files = haproxy_get_fileslist();
 
-if (isset($_POST['id']))
+if (isset($_POST['id'])) {
 	$id = $_POST['id'];
-else
+} else {
 	$id = $_GET['id'];
+}
 
 $tmp = get_backend_id($id);
-if (is_numeric($tmp))
+if (is_numeric($tmp)) {
 	$id = $tmp;
+}
 
-if (isset($_GET['dup']))
+if (isset($_GET['dup'])) {
 	$id = $_GET['dup'];
+}
 
 global $simplefields;
 $simplefields = array(
@@ -92,6 +98,7 @@ $fields_servers[2]['colwidth']="15%";
 $fields_servers[2]['type']="select";
 $fields_servers[2]['size']="100px";
 $fields_servers[2]['items']=&$primaryfrontends;
+$fields_servers[2]['maxwidth']="100px";
 $fields_servers[3]['name']="address";
 $fields_servers[3]['columnheader']="Address";
 $fields_servers[3]['colwidth']="10%";
@@ -102,6 +109,7 @@ $fields_servers[4]['columnheader']="Port";
 $fields_servers[4]['colwidth']="5%";
 $fields_servers[4]['type']="textbox";
 $fields_servers[4]['size']="5";
+$fields_servers[4]['maxwidth']="50px";
 $fields_servers[5]['name']="ssl";
 $fields_servers[5]['columnheader']="SSL";
 $fields_servers[5]['colwidth']="5%";
@@ -112,6 +120,7 @@ $fields_servers[6]['columnheader']="Weight";
 $fields_servers[6]['colwidth']="8%";
 $fields_servers[6]['type']="textbox";
 $fields_servers[6]['size']="5";
+$fields_servers[6]['maxwidth']="50px";
 
 $listitem_none['']['name']="None";
 
@@ -249,7 +258,7 @@ foreach($a_action as $key => $action) {
 			$name = $key . $item['name'];
 			$item['name'] = $name;
 			$item['columnheader'] = $field['name'];
-			$item['customdrawcell'] = customdrawcell_actions;
+			$item['customdrawcell'] = 'customdrawcell_actions';
 			$fields_actions_details[$name] = $item;
 		}
 	}
@@ -264,7 +273,7 @@ foreach($a_acltypes as $key => $action) {
 			$name = $key . $item['name'];
 			$item['name'] = $name;
 			$item['columnheader'] = $field['name'];
-			$item['customdrawcell'] = customdrawcell_actions;
+			$item['customdrawcell'] = 'customdrawcell_actions';
 			$fields_acl_details[$name] = $item;
 		}
 	}
@@ -297,7 +306,7 @@ function fields_acls_details_showfieldfunction($htmltable, $itemname, $values) {
 }
 $htmllist_acls = new HaproxyHtmlList("table_acls", $fields_aclSelectionList);
 $htmllist_acls->fields_details = $fields_acl_details;
-$htmllist_acls->fields_details_showfieldfunction = fields_acls_details_showfieldfunction;
+$htmllist_acls->fields_details_showfieldfunction = 'fields_acls_details_showfieldfunction';
 $htmllist_acls->editmode = true;
 
 function fields_actions_details_showfieldfunction($htmltable, $itemname, $values) {
@@ -307,29 +316,43 @@ function fields_actions_details_showfieldfunction($htmltable, $itemname, $values
 }
 $htmllist_actions = new HaproxyHtmlList("table_actions", $fields_actions);
 $htmllist_actions->fields_details = $fields_actions_details;
-$htmllist_actions->fields_details_showfieldfunction = fields_actions_details_showfieldfunction;
+$htmllist_actions->fields_details_showfieldfunction = 'fields_actions_details_showfieldfunction';
 $htmllist_actions->keyfield = "name";
 
 
 if (isset($id) && $a_pools[$id]) {
+	if (!is_array($a_pools[$id]['a_acl'])) {
+		$a_pools[$id]['a_acl'] = array();
+	}
+	if (!is_array($a_pools[$id]['a_acl']['item'])) {
+		$a_pools[$id]['a_acl']['item'] = array();
+	}
 	$pconfig['a_acl'] = &$a_pools[$id]['a_acl']['item'];
-	if (!is_array($pconfig['a_acl'])) {
-		$pconfig['a_acl'] = array();
+	haproxy_check_isarray($pconfig['a_acl']);
+	if (!is_array($a_pools[$id]['a_actionitems'])) {
+		$a_pools[$id]['a_actionitems'] = array();
+	}
+	if (!is_array($a_pools[$id]['a_actionitems']['item'])) {
+		$a_pools[$id]['a_actionitems']['item'] = array();
 	}
 	$pconfig['a_actionitems'] = &$a_pools[$id]['a_actionitems']['item'];
-	if (!is_array($pconfig['a_actionitems'])) {
-		$pconfig['a_actionitems'] = array();
-	}
+	haproxy_check_isarray($pconfig['a_actionitems']);
+
 	$pconfig['advanced'] = base64_decode($a_pools[$id]['advanced']);
 	$pconfig['advanced_backend'] = base64_decode($a_pools[$id]['advanced_backend']);
-	
-	
-	$a_servers = &$a_pools[$id]['ha_servers']['item'];	
-	
-	foreach($simplefields as $stat)
+
+	$a_servers = $a_pools[$id]['ha_servers']['item'];
+
+	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_pools[$id][$stat];
-		
-	
+	}
+	if (!is_array($a_pools[$id]['errorfiles'])){
+		$a_pools[$id]['errorfiles'] = array();
+	}
+	if (!is_array($a_pools[$id]['errorfiles']['item'])){
+		$a_pools[$id]['errorfiles']['item'] = array();
+	}
+
 	$a_errorfiles = &$a_pools[$id]['errorfiles']['item'];
 	if (!is_array($a_errorfiles)) {
 		$a_errorfiles = array();
@@ -348,53 +371,55 @@ if ($_POST) {
 
 	unset($input_errors);
 	$pconfig = $_POST;
-	
+
 	$reqdfields = explode(" ", "name");
-	$reqdfieldsn = explode(",", "Name");		
+	$reqdfieldsn = explode(",", "Name");
 
 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if ($_POST['stats_enabled']) {
 		$reqdfields = explode(" ", "name stats_uri");
-		$reqdfieldsn = explode(",", "Name,Stats Uri");		
+		$reqdfieldsn = explode(",", "Name,Stats Uri");
 		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 		if ($_POST['stats_username']) {
 			$reqdfields = explode(" ", "stats_password stats_realm");
-			$reqdfieldsn = explode(",", "Stats Password,Stats Realm");		
+			$reqdfieldsn = explode(",", "Stats Password,Stats Realm");
 			do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 		}
 	}
-	
-	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name']))
+
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
 		$input_errors[] = "The field 'Name' contains invalid characters.";
-	
-	if ($_POST['checkinter'] !== "" && !is_numeric($_POST['checkinter']))
+	}
+	if ($_POST['checkinter'] !== "" && !is_numeric($_POST['checkinter'])) {
 		$input_errors[] = "The field 'Check frequency' value is not a number.";
-	
-	if ($_POST['connection_timeout'] !== "" && !is_numeric($_POST['connection_timeout']))
+	}
+	if ($_POST['connection_timeout'] !== "" && !is_numeric($_POST['connection_timeout'])) {
 		$input_errors[] = "The field 'Connection timeout' value is not a number.";
-
-	if ($_POST['server_timeout'] !== "" && !is_numeric($_POST['server_timeout']))
+	}
+	if ($_POST['server_timeout'] !== "" && !is_numeric($_POST['server_timeout'])) {
 		$input_errors[] = "The field 'Server timeout' value is not a number.";
-
-	if ($_POST['retries'] !== "" && !is_numeric($_POST['retries']))
+	}
+	if ($_POST['retries'] !== "" && !is_numeric($_POST['retries'])) {
 		$input_errors[] = "The field 'Retries' value is not a number.";
-
+	}
 	// the colon ":" is invalid in the username, other than that pretty much any character can be used.
-	if (preg_match("/[^a-zA-Z0-9!-\/;-~ ]/", $_POST['stats_username']))
+	if (preg_match("/[^a-zA-Z0-9!-\/;-~ ]/", $_POST['stats_username'])) {
 		$input_errors[] = "The field 'Stats Username' contains invalid characters.";
-
+	}
 	// the colon ":" can also be used in the password
-	if (preg_match("/[^a-zA-Z0-9!-~ ]/", $_POST['stats_password']))
+	if (preg_match("/[^a-zA-Z0-9!-~ ]/", $_POST['stats_password'])) {
 		$input_errors[] = "The field 'Stats Password' contains invalid characters.";
-
-	if (preg_match("/[^a-zA-Z0-9\-_]/", $_POST['stats_node']))
+	}
+	if (preg_match("/[^a-zA-Z0-9\-_]/", $_POST['stats_node'])) {
 		$input_errors[] = "The field 'Stats Node' contains invalid characters. Should be a string with digits(0-9), letters(A-Z, a-z), hyphen(-) or underscode(_)";
-		
+	}
 	/* Ensure that our pool names are unique */
-	for ($i=0; isset($config['installedpackages']['haproxy']['ha_pools']['item'][$i]); $i++)
-		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_pools']['item'][$i]['name']) && ($i != $id))
+	for ($i=0; isset($config['installedpackages']['haproxy']['ha_pools']['item'][$i]); $i++) {
+		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_pools']['item'][$i]['name']) && ($i != $id)) {
 			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";
+		}
+	}
 
 	$pconfig['a_acl'] = $htmllist_acls->haproxy_htmllist_get_values();
 	$pconfig['a_actionitems'] = $htmllist_actions->haproxy_htmllist_get_values();
@@ -405,43 +430,53 @@ if ($_POST) {
 		$server_port    = $server['port'];
 		$server_weight  = $server['weight'];
 
-		if (preg_match("/[^a-zA-Z0-9\.\-_]/", $server_name))
+		if (preg_match("/[^a-zA-Z0-9\.\-_]/", $server_name)) {
 			$input_errors[] = "The field 'Name' contains invalid characters.";
+		}
 
 		if (!isset($server['forwardto']) || $server['forwardto'] == "") {
-			if (!is_ipaddr($server_address) && !is_hostname($server_address) && !haproxy_is_frontendname($server_address))
+			if (!is_ipaddr($server_address) && !is_hostname($server_address) && !haproxy_is_frontendname($server_address)) {
 				$input_errors[] = "The field 'Address' for server $server_name is not a valid ip address or hostname." . $server_address;
+			}
 		} else {
-			if ( ($server_address && $server_address != "") || ($server_port && !is_numeric($server_port))) {
+			if ((!empty($server_address)) || ($server_port && !is_numeric($server_port))) {
 				$input_errors[] = "'Address' and 'port' should be empty when a 'Forwardto' frontend is chosen other than 'Address+Port'.";
 			}
 		}
 
-		if (!preg_match("/.{2,}/", $server_name))
+		if (!preg_match("/.{2,}/", $server_name)) {
 			$input_errors[] = "The field 'Name' is required (and must be at least 2 characters).";
-
-		if ($server_weight && !is_numeric($server_weight))
+		}
+		if ($server_weight && !is_numeric($server_weight)) {
 			$input_errors[] = "The field 'Weight' value is not a number.";
-
-		if ($server_port && !is_numeric($server_port))
+		}
+		if ($server_port && !is_numeric($server_port)) {
 			$input_errors[] = "The field 'Port' value is not a number.";
+		}
 	}
-	
+
 	$a_errorfiles = $errorfileslist->haproxy_htmllist_get_values();
-	
-	if ($_POST['strict_transport_security'] !== "" && !is_numeric($_POST['strict_transport_security']))
+
+	if ($_POST['strict_transport_security'] !== "" && !is_numeric($_POST['strict_transport_security'])) {
 		$input_errors[] = "The field 'Strict-Transport-Security' is not empty or a number.";
+	}
 
 	$pool = array();
-	if(isset($id) && $a_pools[$id])
+	if(isset($id) && $a_pools[$id]) {
 		$pool = $a_pools[$id];
-		
+	}
+
 	if (!empty($pool['name']) && ($pool['name'] != $_POST['name'])) {
 		//old $pool['name'] can be empty if a new or cloned item is saved, nothing should be renamed then
 		// name changed:
 		$oldvalue = $pool['name'];
 		$newvalue = $_POST['name'];
-		
+		if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+			$config['installedpackages']['haproxy']['ha_backends'] = array();
+		}
+		if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+			$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+		}
 		$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 		if (!is_array($a_backend)) {
 			$a_backend = array();
@@ -464,8 +499,9 @@ if ($_POST) {
 		}
 	}
 
-	if($pool['name'] != "")
+	if($pool['name'] != "") {
 		$changedesc .= " modified pool: '{$pool['name']}'";
+	}
 	$pool['ha_servers']['item'] = $a_servers;
 	$pool['a_acl']['item'] = $pconfig['a_acl'];
 	$pool['a_actionitems']['item'] = $pconfig['a_actionitems'];
@@ -474,8 +510,9 @@ if ($_POST) {
 	update_if_changed("advanced_backend", $pool['advanced_backend'], base64_encode($_POST['advanced_backend']));
 
 	global $simplefields;
-	foreach($simplefields as $stat)
+	foreach($simplefields as $stat) {
 		update_if_changed($stat, $pool[$stat], $_POST[$stat]);
+	}
 
 	if (isset($id) && $a_pools[$id]) {
 		$a_pools[$id] = $pool;
@@ -493,7 +530,8 @@ if ($_POST) {
 }
 
 $closehead = false;
-$pgtitle = array("Services", "HAProxy", "Backend server pool: Edit");
+$pgtitle = array("Services", "HAProxy", "Backend", "Edit");
+$pglinks = array("", "", "/haproxy/haproxy_pools.php", "@self");
 include("head.inc");
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
@@ -543,12 +581,12 @@ foreach($simplefields as $field){
 			var rules = ss[i].cssRules || ss[i].rules;
 			for (var j=0; j<rules.length; j++) {
 				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = rules[j].style.display == "none" ? "" : "none";
+					rules[j].style.display = rules[j].style.display === "none" ? "" : "none";
 				}
 			}
 		}
 	}
-	
+
 	function updatevisibility()
 	{
 		d = document;
@@ -557,42 +595,42 @@ foreach($simplefields as $field){
 		persist_cookie_enabled = d.getElementById("persist_cookie_enabled");
 		agent_check = d.getElementById("agent_check");
 		sticky_type_description = d.getElementById("sticky_type_description");
-		
+
 		setCSSdisplay(".haproxy_stats_visible", stats_enabled.checked);
 		setCSSdisplay(".haproxy_cookie_visible", persist_cookie_enabled.checked);
-		
+
 		check_type = d.getElementById("check_type").value;
 		check_type_description = d.getElementById("check_type_description");
-		check_type_description.innerHTML=checktypes[check_type]["descr"]; 
-		
+		check_type_description.innerHTML=checktypes[check_type]["descr"];
+
 		persist_cookie_mode = d.getElementById("persist_cookie_mode").value;
 		persist_cookie_mode_description = d.getElementById("persist_cookie_mode_description");
-		persist_cookie_mode_description.innerHTML=cookiemode[persist_cookie_mode]["descr"]; 
+		persist_cookie_mode_description.innerHTML=cookiemode[persist_cookie_mode]["descr"];
 		persist_cookie_mode_description.setAttribute('style','padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt; height:30px');
 		persist_cookie_mode_description.setAttribute('style','padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt; height:'+persist_cookie_mode_description.scrollHeight+'px');
-		
-		setCSSdisplay(".haproxy_check_enabled", check_type != 'none');
-		setCSSdisplay(".haproxy_check_http", check_type == 'HTTP');
-		setCSSdisplay(".haproxy_check_username", check_type == 'MySQL' ||  check_type == 'PostgreSQL');
-		setCSSdisplay(".haproxy_check_smtp", check_type == 'SMTP' ||  check_type == 'ESMTP');
-		setCSSdisplay(".haproxy_check_agent", check_type == 'Agent');
-		
+
+		setCSSdisplay(".haproxy_check_enabled", check_type !== 'none');
+		setCSSdisplay(".haproxy_check_http", check_type === 'HTTP');
+		setCSSdisplay(".haproxy_check_username", check_type === 'MySQL' ||  check_type === 'PostgreSQL');
+		setCSSdisplay(".haproxy_check_smtp", check_type === 'SMTP' ||  check_type === 'ESMTP');
+		setCSSdisplay(".haproxy_check_agent", check_type === 'Agent');
+
 		setCSSdisplay(".haproxy_agent_check", agent_check.checked);
 
 		transparent_clientip = d.getElementById("transparent_clientip");
 		setCSSdisplay(".haproxy_transparent_clientip", transparent_clientip.checked);
-		
-		
+
+
 		persist_sticky_type = d.getElementById("persist_sticky_type").value;
 		//hideClass('haproxytestcfg', false);
-		hideClass('haproxy_stick_tableused', persist_sticky_type == 'none');
-		hideClass('haproxy_stick_cookiename', persist_sticky_type != 'stick_rdp_cookie' &&  persist_sticky_type != 'stick_cookie_value');
-		
+		hideClass('haproxy_stick_tableused', persist_sticky_type === 'none');
+		hideClass('haproxy_stick_cookiename', persist_sticky_type !== 'stick_rdp_cookie' &&  persist_sticky_type !== 'stick_cookie_value');
+
 		cookie_example = sticky_type[persist_sticky_type]['cookiedescr'];
 		stick_cookiename_description = d.getElementById("stick_cookiename_description");
 		stick_cookiename_description.innerHTML = cookie_example;
 		sticky_type_description.innerHTML = sticky_type[persist_sticky_type]['descr'];
-		
+
 		monitor_username = d.getElementById("monitor_username");
 		sqlcheckusername = d.getElementById("sqlcheckusername");
 		if(!browser_InnerText_support){
@@ -602,7 +640,10 @@ foreach($simplefields as $field){
 		}
 	}
 </script>
-<?php if (isset($input_errors)) print_input_errors($input_errors);
+<?php
+if (isset($input_errors)) {
+	print_input_errors($input_errors);
+}
 
 $counter=0;
 
@@ -614,10 +655,10 @@ $section = new Form_Section('Edit HAProxy Backend server pool');
 $section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']
 ))->setHelp('');
 $section->addInput(new Form_StaticText(
-	'Server list', 
+	'Server list',
 $serverslist->Draw($a_servers).
 <<<EOT
-	Field explanations: 
+	Field explanations:
 	<table class="infoblock" style="border:1px dashed green" cellspacing="0">
 	<tr><td class="vncell">
 	Mode: </td><td class="vncell">Active: server will be used normally<br/>
@@ -642,6 +683,9 @@ $serverslist->Draw($a_servers).
 	</table>
 EOT
 ));
+
+$form->add($section);
+$section = new Form_Section('Loadbalancing options (when multiple servers are defined)',"balance", COLLAPSIBLE|SEC_CLOSED);
 
 $mode = $pconfig['balance'];
 $section->addInput(new Form_Checkbox(
@@ -742,19 +786,15 @@ $section->addInput(new Form_Checkbox(
 	Allow using whole URI including url parameters behind a question mark.'
 );
 
-$section->addInput(new Form_Input('advanced', 'Per server pass thru', 'text', $pconfig['advanced']
-))->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to each "server" line.');
-
-$textrowcount = max(substr_count($pconfig['advanced_backend'],"\n"), 2) + 2;
-$section->addInput(new Form_Textarea (
-	'advanced_backend',
-	'Backend pass thru',
-	$pconfig['advanced_backend']
-))->setRows($textrowcount)->setNoWrap()->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to the backend section.');
-
 $form->add($section);
-
-$section = new Form_Section('Access control lists and actions');
+if (!is_array($pconfig['a_acl'])) {
+	$pconfig['a_acl'] = array();
+}
+if (!is_array($pconfig['a_actionitems'])) {
+	$pconfig['a_actionitems'] = array();
+}
+$panel_body_state = (count($pconfig['a_acl']) > 0 || count($pconfig['a_actionitems']) > 0)? SEC_OPEN : SEC_CLOSED;
+$section = new Form_Section('Access control lists and actions', "aclpanel", COLLAPSIBLE|$panel_body_state);
 $section->addInput(new Form_StaticText(
 	'Access Control lists',
 	$htmllist_acls->Draw($pconfig['a_acl']).
@@ -782,7 +822,7 @@ $section->addInput(new Form_StaticText(
 					</tr>
 				</table>
 			<br/>
-			For more information about ACL's please see <a href='http://haproxy.1wt.eu/download/1.5/doc/configuration.txt' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/>			Actions should be added below to use the result of the acl as a conditional parameter.
+			For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/>			Actions should be added below to use the result of the acl as a conditional parameter.
 			</div>
 EOT
 ));
@@ -813,6 +853,21 @@ $section->addInput(new Form_StaticText(
 	</div>
 EOT
 ));
+$form->add($section);
+
+$section = new Form_Section_class('Timeout / retry settings');
+$section->addInput(new Form_Input('connection_timeout', 'Connection timeout', 'text', $pconfig['connection_timeout']
+))->setHelp('The time (in milliseconds) we give up if the connection does not complete within (default 30000).');
+$section->addInput(new Form_Input('server_timeout', 'Server timeout', 'text', $pconfig['server_timeout']
+))->setHelp('The time (in milliseconds) we accept to wait for data from the server, or for the server to accept data (default 30000).');
+$section->addInput(new Form_Input('retries', 'Retries', 'text', $pconfig['retries']
+))->setHelp(<<<EOT
+	After a connection failure to a server, it is possible to retry, potentially
+	on another server. This is useful if health-checks are too rare and you don't
+	want the clients to see the failures. The number of attempts to reconnect is
+	set by the "retries" parameter.
+EOT
+);
 $form->add($section);
 
 $section = new Form_Section_class('Health checking');
@@ -873,64 +928,12 @@ $section->addInput(new Form_Checkbox(
 	'Agent checks',
 	'Use agent checks',
 	$pconfig['agent_check']
-))->setHelp("Use a TCP connection to read an ASCII string of the form 100%,75%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#agent-check' target='_blank'>haproxy manual</a>)");
+))->setHelp("Use a TCP connection to read an ASCII string of the form 100%,75%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#5.2-agent-check' target='_blank'>haproxy manual</a>)");
 $section->addInput(new Form_Input('agent_port', 'Agent port', 'number', $pconfig['agent_port']
 ),"haproxy_agent_check")->setHelp('Fill in the TCP portnumber the healthcheck should be performed on.');
 $section->addInput(new Form_Input('agent_inter', 'Agent interval', 'text', $pconfig['agent_inter']
 ),"haproxy_agent_check")->setHelp('Interval between two agent checks, defaults to 2000 ms.');
 
-$form->add($section);
-
-$section = new Form_Section('Advanced settings');
-$section->addInput(new Form_Input('connection_timeout', 'Connection timeout', 'text', $pconfig['connection_timeout']
-))->setHelp('The time (in milliseconds) we give up if the connection does not complete within (default 30000).');
-$section->addInput(new Form_Input('server_timeout', 'Server timeout', 'text', $pconfig['server_timeout']
-))->setHelp('The time (in milliseconds) we accept to wait for data from the server, or for the server to accept data (default 30000).');
-$section->addInput(new Form_Input('retries', 'Retries', 'text', $pconfig['retries']
-))->setHelp(<<<EOT
-	After a connection failure to a server, it is possible to retry, potentially
-	on another server. This is useful if health-checks are too rare and you don't
-	want the clients to see the failures. The number of attempts to reconnect is
-	set by the "retries" parameter.
-EOT
-);
-$interfaces = get_configured_interface_with_descr();
-$section->addInput(new Form_StaticText(
-	'Transparent ClientIP', <<<EOT
-	<div class="alert alert-warning" role="alert">
-		<p>
-			WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due 
-			to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing 
-			the (web)server on the ports configured above. Also a automatic sloppy pf rule is made to allow HAProxy to server traffic.<br/>
-			Workaround exists only by configuring a second port or IP on the destination server for direct access of the website.
-		</p>
-	</div>
-EOT
-.(new Form_Checkbox(
-	'transparent_clientip',
-	'',
-	"Use Client-IP to connect to backend servers.",
-	$pconfig['transparent_clientip']
-))->setHelp("By default, failed health check are logged if server is UP and successful health checks are logged if server is DOWN, so the amount of additional information is limited."
-)
-.
-(new Form_Select(
-	'transparent_interface',
-	'',
-	$pconfig['transparent_interface']?$pconfig['transparent_interface']:"lan",
-	$interfaces
-))->addClass("haproxy_transparent_clientip")->setHelp("Interface that will connect to the backend server. (this will generally be your LAN or OPT1(dmz) interface)")
-.
-<<<EOT
-	
-	Connect transparently to the backend server's so the connection seams to come straight from the client ip address.
-	To work properly this requires the reply traffic to pass through pfSense by means of correct routing.<br/>
-	When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>				
-	(uses the option "source 0.0.0.0 usesrc clientip" or "source ipv6@ usesrc clientip")
-	<br/><br/>
-	Note : When this is enabled for any backend HAProxy will run as 'root' instead of chrooting to a lower privileged user, this reduces security in case a vulnerability is found.
-EOT
-));
 $form->add($section);
 
 $section = new Form_Section_class('Cookie persistence');
@@ -1046,9 +1049,13 @@ $section->addInput(new Form_Input('stats_desc', 'Stats Description', 'text', $pc
 $section->addInput(new Form_Input('stats_refresh', 'Stats Refresh', 'text', $pconfig['stats_refresh']
 ),"haproxy_stats_visible")->setHelp('Specify the refresh rate of the stats page in seconds, or specified time unit (us, ms, s, m, h, d).');
 
+if (!is_array($a_errorfiles)) {
+	$a_errorfiles = array();
+}
 
+$panel_body_state = count($a_errorfiles) > 0 ? SEC_OPEN : SEC_CLOSED;
 $form->add($section);
-$section = new Form_Section('Error files');
+$section = new Form_Section('Error files', "errorfiles", COLLAPSIBLE|$panel_body_state);
 $section->addInput(new Form_StaticText(
 	'Error files',
 	"Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
@@ -1057,7 +1064,8 @@ $section->addInput(new Form_StaticText(
 ));
 $form->add($section);
 
-$section = new Form_Section('Advanced');
+$panel_body_state = (!empty($pconfig['strict_transport_security']) || $pconfig['cookie_attribute_secure'] == "yes") ? SEC_OPEN : SEC_CLOSED;
+$section = new Form_Section('HSTS / Cookie protection', "", COLLAPSIBLE|$panel_body_state);
 $field = (new Form_Input(
 	'strict_transport_security',
 	'',
@@ -1088,12 +1096,68 @@ $section->addInput(new Form_Checkbox(
 
 $form->add($section);
 
+$panel_body_state =
+		!empty($pconfig['advanced']) ||
+		!empty($pconfig['advanced_backend'] ||
+		$pconfig['transparent_clientip'] == "yes")
+		? SEC_OPEN : SEC_CLOSED;
+$section = new Form_Section('Advanced settings', "advanced_panel", COLLAPSIBLE|$panel_body_state);
+$section->addInput(new Form_Input('advanced', 'Per server pass thru', 'text', $pconfig['advanced']
+))->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to each "server" line.');
+
+$textrowcount = max(substr_count($pconfig['advanced_backend'],"\n"), 2) + 2;
+$section->addInput(new Form_Textarea (
+	'advanced_backend',
+	'Backend pass thru',
+	$pconfig['advanced_backend']
+))->setRows($textrowcount)->setNoWrap()->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to the backend section.');
+
+$interfaces = get_configured_interface_with_descr();
+$section->addInput(new Form_StaticText(
+	'Transparent ClientIP', <<<EOT
+	<div class="alert alert-warning" role="alert">
+		<p>
+			WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due
+			to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing
+			the (web)server on the ports configured above. Also a automatic sloppy pf rule is made to allow HAProxy to server traffic.<br/>
+			Workaround exists only by configuring a second port or IP on the destination server for direct access of the website.<br/>
+			Having this option enabled also means that a client on the same subnet as the server wont be able to connect.
+		</p>
+	</div>
+EOT
+.(new Form_Checkbox(
+	'transparent_clientip',
+	'',
+	"Use Client-IP to connect to backend servers.",
+	$pconfig['transparent_clientip']
+))->setHelp("By default, failed health check are logged if server is UP and successful health checks are logged if server is DOWN, so the amount of additional information is limited."
+)
+.
+(new Form_Select(
+	'transparent_interface',
+	'',
+	$pconfig['transparent_interface']?$pconfig['transparent_interface']:"lan",
+	$interfaces
+))->addClass("haproxy_transparent_clientip")->setHelp("Interface that will connect to the backend server. (this will generally be your LAN or OPT1(dmz) interface)")
+.
+<<<EOT
+
+	Connect transparently to the backend server's so the connection seams to come straight from the client ip address.
+	To work properly this requires the reply traffic to pass through pfSense by means of correct routing.<br/>
+	When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>
+	(uses the option "source 0.0.0.0 usesrc clientip" or "source ipv6@ usesrc clientip")
+	<br/><br/>
+	Note : When this is enabled for any backend HAProxy will run as 'root' instead of chrooting to a lower privileged user, this reduces security in case a vulnerability is found.
+EOT
+));
+$form->add($section);
+
 print $form;
-?>	
+?>
 				<?php if (isset($id) && $a_pools[$id]): ?>
 				<input name="id" type="hidden" value="<?=$id;?>" />
 				<?php endif; ?>
-	
+
 	</form>
 <br/>
 <script type="text/javascript">
@@ -1108,16 +1172,16 @@ print $form;
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 	phparray_to_javascriptarray($a_acltypes, "showhide_aclfields",
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
-		
+
 	$serverslist->outputjavascript();
 	$errorfileslist->outputjavascript();
 	$htmllist_acls->outputjavascript();
 	$htmllist_actions->outputjavascript();
 ?>
 	browser_InnerText_support = (document.getElementsByTagName("body")[0].innerText !== undefined) ? true : false;
-	
+
 	totalrows =  <?php echo $counter; ?>;
-	
+
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
 			fieldId = "expression";
@@ -1125,16 +1189,16 @@ print $form;
 		}
 		if (fieldId === "expression") {
 			var actiontype = field.value;
-			
+
 			var table = d.getElementById(tableId);
-			
+
 			for(var actionkey in showhide_aclfields) {
 				var fields = showhide_aclfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
 					var element = d.getElementById(rowid);
-					
+
 					if (actionkey === actiontype)
 						element.style.display = '';
 					else
@@ -1143,7 +1207,7 @@ print $form;
 			}
 		}
 	}
-	
+
 	function table_actions_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
 			fieldId = "action";
@@ -1151,16 +1215,16 @@ print $form;
 		}
 		if (fieldId === "action") {
 			var actiontype = field.value;
-			
+
 			var table = d.getElementById(tableId);
-			
+
 			for(var actionkey in showhide_actionfields) {
 				var fields = showhide_actionfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
 					var element = d.getElementById(rowid);
-					
+
 					if (actionkey === actiontype)
 						element.style.display = '';
 					else
@@ -1168,7 +1232,7 @@ print $form;
 				}
 			}
 		}
-	}	
+	}
 </script>
 <script type="text/javascript">
 //<![CDATA[
@@ -1192,7 +1256,7 @@ events.push(function() {
 	$('#stats_enabled').click(function () {
 		updatevisibility();
 	});
-	
+
 	updatevisibility();
 });
 //]]>

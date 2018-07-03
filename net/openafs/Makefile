@@ -21,10 +21,10 @@ LICENSE_NAME=	IBM Public License Version 1.0
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_FreeBSD_11=	does not build
-BROKEN_FreeBSD_12=	does not build
+BROKEN_FreeBSD_12=	does not build (use of undeclared identifier 'ROOTINO')
+ONLY_FOR_ARCHS=	i386 amd64
 
-AFS_DISTVERSION=	1.6.18
+AFS_DISTVERSION=	1.6.22
 DBVERSION=	2016-01-01
 
 USES=		cpe kmod tar:bzip2
@@ -45,12 +45,11 @@ CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		${CONFIGURE_TARGET}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${AFS_DISTVERSION}
 MAKE_ENV=	COMPILER_TYPE=${COMPILER_TYPE}
-USE_RC_SUBR=	afsd afsserver
+USE_RC_SUBR=	afsserver
 
 CPE_VERSION=	${AFS_DISTVERSION}
 
 CONFLICTS=	coda-server-6.[0-9]* heimdal-[0-9]*
-ONLY_FOR_ARCHS=	i386 amd64
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -79,6 +78,15 @@ FUSE_CONFIGURE_OFF=	--disable-fuse-client
 .if ${COMPILER_TYPE} == clang
 CFLAGS+=	-mstackrealign
 .endif
+
+.if ${OSREL} == "11.0" || ${OSREL} == "11.1" || ${OSREL} == "12.0"
+# Upstream does not support the client on 11 and newer
+CONFIGURE_ARGS += --disable-kernel-module
+PLIST_SUB+=	KMOD="@comment "
+.else
+CONFIGURE_ARGS += --enable-kernel-module
+PLIST_SUB+=	KMOD=
+USE_RC_SUBR+= afsd
 
 KERNCONF?=	GENERIC
 KERNCONFDIR?=	${SRC_BASE}/sys/${ARCH}/conf
@@ -114,5 +122,6 @@ post-install: create-sample-files
 	@${RMDIR} ${STAGEDIR}${PREFIX}/lib/openafs
 	@${MKDIR} ${STAGEDIR}${AFSMNTDIR} \
 	    ${STAGEDIR}${AFSSTATEDIR} ${STAGEDIR}${AFSCACHEDIR}
+.endif # ${OSREL} blacklist
 
 .include <bsd.port.post.mk>

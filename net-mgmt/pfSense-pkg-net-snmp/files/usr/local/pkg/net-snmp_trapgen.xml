@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * net-snmp_trapgen.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>netsnmp_trapgen</name>
+	<title>NET-SNMP</title>
+	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+		</tab>
+		<tab>
+			<text>Host Information</text>
+			<url>/pkg_edit.php?xml=net-snmp_hostinfo.xml</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=net-snmp_users.xml</url>
+		</tab>
+		<tab>
+			<text>Communities</text>
+			<url>/pkg.php?xml=net-snmp_communities.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Generation</text>
+			<url>/pkg_edit.php?xml=net-snmp_trapgen.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>[SNMP Trap Daemon]</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>SNMP Trap Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				SNMP Traps are conditions that, when met, trigger a notification response.
+				The type of response varies depending on the SNMP version and monitored conditions.
+				<br/><br/>
+				This section controls how this SNMP daemon triggers and sends traps to another
+				host acting as a trap receiver or "sink", such as snmptrapd. The trap sink can then
+				act on the trap in various ways (e.g. logging, executing a program, or forwarding the trap)
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Trap Community Name</fielddescr>
+			<fieldname>trapcommunity</fieldname>
+			<description><![CDATA[SNMPv1/v2c Trap community name send inside the trap, as a means of identification.]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Authentication Traps</fielddescr>
+			<fieldname>authtrapenable</fieldname>
+			<description><![CDATA[Controls whether or not traps are generated for authentication failures.]]></description>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Enabled</name><value>1</value></option>
+				<option><name>Disabled</name><value>2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Link Up/Down Traps</fielddescr>
+			<fieldname>linkupdownnotifications</fieldname>
+			<description><![CDATA[Controls whether or not traps are generated for interface link events.]]></description>
+			<type>select</type>
+			<default_value>yes</default_value>
+			<options>
+				<option><name>Enabled</name><value>yes</value></option>
+				<option><name>Disabled</name><value>no</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Default Monitors</fielddescr>
+			<fieldname>defaultmonitors</fieldname>
+			<description>
+				<![CDATA[
+				Use a basic set of default monitors for generating notifications.
+				<div class="infoblock">
+					The default set of monitors watches the process table, memory usage,
+					disk error, interface link error, and file error tables.
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>yes</default_value>
+			<options>
+				<option><name>Enabled</name><value>yes</value></option>
+				<option><name>Disabled</name><value>no</value></option>
+			</options>
+		</field>
+
+		<field>
+			<fielddescr>Internal Query User</fielddescr>
+			<fieldname>iquerysecname</fieldname>
+			<description><![CDATA[Choose the username used internally for querying information for evaluating expressions or building notification payloads.
+				<br/>Create a user on the Users tab before selecting a value in this field.]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_usernames()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<name>SNMPv1 Traps</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description><![CDATA[These entries define remote hosts that will receive SNMPv1 Trap notifications sent from this firewall. ]]></description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>SNMPv1 Local Trap Agent Address</fielddescr>
+			<fieldname>v1trapaddress</fieldname>
+			<description><![CDATA[A local IP address to place in SNMPv1 Traps.]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>SNMPv1 Trap Sink #1</fielddescr>
+			<fieldname>trapsink1_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Community</fielddescr>
+			<fieldname>trapsink1_community</fieldname>
+			<description><![CDATA[SNMP Community]]></description>
+			<type>input</type>
+			<size>2</size>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>trapsink1_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>SNMPv1 Trap Sink #2</fielddescr>
+			<fieldname>trapsink2_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Community</fielddescr>
+			<fieldname>trapsink2_community</fieldname>
+			<description><![CDATA[SNMP Community]]></description>
+			<type>input</type>
+			<size>2</size>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>trapsink2_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>SNMPv1 Trap Sink #3</fielddescr>
+			<fieldname>trapsink3_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Community</fielddescr>
+			<fieldname>trapsink3_community</fieldname>
+			<description><![CDATA[SNMP Community]]></description>
+			<type>input</type>
+			<size>2</size>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>trapsink3_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+
+		<field>
+			<name>SNMPv2 Traps</name>
+			<type>listtopic</type>
+		</field>
+
+		<field>
+			<fielddescr></fielddescr>
+			<description><![CDATA[These entries define remote hosts that will receive SNMPv2c Trap notifications sent from this firewall. ]]></description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>SNMPv2c Trap Sink #1</fielddescr>
+			<fieldname>trap2sink1_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Community</fielddescr>
+			<fieldname>trap2sink1_community</fieldname>
+			<description><![CDATA[SNMP Community]]></description>
+			<type>input</type>
+			<size>2</size>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>trap2sink1_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>SNMPv2c Trap Sink #2</fielddescr>
+			<fieldname>trap2sink2_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Community</fielddescr>
+			<fieldname>trap2sink2_community</fieldname>
+			<description><![CDATA[SNMP Community]]></description>
+			<type>input</type>
+			<size>2</size>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>trap2sink2_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>SNMPv2c Trap Sink #3</fielddescr>
+			<fieldname>trap2sink3_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Community</fielddescr>
+			<fieldname>trap2sink3_community</fieldname>
+			<description><![CDATA[SNMP Community]]></description>
+			<type>input</type>
+			<size>2</size>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>trap2sink3_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+
+		<field>
+			<fielddescr></fielddescr>
+			<description><![CDATA[These entries define remote hosts that will receive SNMPv2c inform notifications sent from this firewall. ]]></description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Inform Sink #1</fielddescr>
+			<fieldname>informsink1_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Community</fielddescr>
+			<fieldname>informsink1_community</fieldname>
+			<description><![CDATA[SNMP Community]]></description>
+			<type>input</type>
+			<size>2</size>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>informsink1_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Inform Sink #2</fielddescr>
+			<fieldname>informsink2_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Community</fielddescr>
+			<fieldname>informsink2_community</fieldname>
+			<description><![CDATA[SNMP Community]]></description>
+			<type>input</type>
+			<size>2</size>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>informsink2_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Inform Sink #3</fielddescr>
+			<fieldname>informsink3_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Community</fielddescr>
+			<fieldname>informsink3_community</fieldname>
+			<description><![CDATA[SNMP Community]]></description>
+			<type>input</type>
+			<size>2</size>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>informsink3_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+
+		<field>
+			<name>Monitors</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Monitors define MIB conditions to check which can generate a trap.
+				If a defined expression evaluates to a true result, then the corresponding
+				event is triggered.
+				<br/><br/>
+				Monitors are very advanced and have many possible combinations, thus are not validated by this GUI.
+				Ensure the syntax is proper before saving.
+				<br/><br/>
+				For more information on these fields, consult the
+				<a href="https://www.freebsd.org/cgi/man.cgi?query=snmpd.conf&apropos=0&sektion=5&manpath=FreeBSD+11.0-RELEASE+and+Ports&arch=default&format=html#ACTIVE_MONITORING">snmpd.conf manual page</a>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Monitors</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Options</fielddescr>
+					<fieldname>monitor_options</fieldname>
+					<description><![CDATA[Optional extra options to control the monitor.]]></description>
+					<type>input</type>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Name</fielddescr>
+					<fieldname>monitor_name</fieldname>
+					<description><![CDATA[The name of this entry, used for indexing.]]></description>
+					<type>input</type>
+					<width>1</width>
+					<required/>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Expression</fielddescr>
+					<fieldname>monitor_expression</fieldname>
+					<description><![CDATA[The expression to monitor for existence, boolean and threshold tests.]]></description>
+					<type>input</type>
+					<width>2</width>
+					<required/>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Notification Event</fielddescr>
+					<fieldname>monitor_notificationevent</fieldname>
+					<description><![CDATA[Notification Event Details: NOTIFICATION [-m] [-i OID | -o OID ]*. (notificationEvent)]]></description>
+					<type>input</type>
+					<width>2</width>
+					<required/>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Event</fielddescr>
+					<fieldname>monitor_setevent</fieldname>
+					<description><![CDATA[Enter an "OID = Value" expression to set when the event triggers (setEvent).]]></description>
+					<type>input</type>
+					<width>2</width>
+					<required/>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		netsnmp_resync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		netsnmp_validate_netsnmptrapgen($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

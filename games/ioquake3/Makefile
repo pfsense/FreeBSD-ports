@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME?=	ioquake3
-DISTVERSION?=	1.36
-PORTREVISION?=	15
+PORTVERSION?=	${IOQUAKE3VER}
+PORTREVISION?=	16
 CATEGORIES=	games
 MASTER_SITES?=	http://ioquake3.org/files/${DISTVERSION}/
 # Using zip this way enables slaves to override it.
 EXTRACT_SUFX?=	.zip
 
-MAINTAINER?=	kami@freebsd.org
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Cleaned-up and enhanced version of Quake 3
 
 LICENSE?=	GPLv2
@@ -18,7 +18,7 @@ LICENSE_FILE?=	${WRKSRC}/COPYING.txt
 USES=		pkgconfig gmake
 
 # Port configuration flags:
-# 	CLIENT SERVER TOOLS DLRENDERER GAMELIBS OPUS OPENGL2
+#	CLIENT SERVER TOOLS DLRENDERER GAMELIBS OPUS OPENGL2
 IOQ3?=		CLIENT TOOLS GAMELIBS
 IOQ3ARCH?=	${ARCH}
 IOQ3SDL?=	sdl
@@ -33,6 +33,7 @@ OPTIONS_DEFINE=	SERVER CURL OPENAL MUMBLE VORBIS DEBUG
 OPTIONS_DEFAULT=	SERVER CURL OPENAL MUMBLE VORBIS
 SERVER_DESC=	Install dedicated server
 MUMBLE_DESC=	Enable Mumble support (no dependencies)
+USE_GL+=	gl
 .endif
 IOQ3_OPTIONS=	${IOQ3:MTOOLS} ${IOQ3:MDLRENDERER} ${IOQ3:MGAMELIBS} \
 		${IOQ3:MOPUS}
@@ -40,7 +41,7 @@ OPTIONS_DEFINE+=	${IOQ3_OPTIONS} DOCS
 OPTIONS_DEFAULT+=	${IOQ3_OPTIONS}
 
 TOOLS_DESC=	Enable modding tools
-DLRENDERER_DESC=	Build dynamically loaded renderer
+DLRENDERER_DESC=Build dynamically loaded renderer
 GAMELIBS_DESC=	Build game libraries
 
 MAKE_ARGS+=	DEFAULT_BASEDIR="${Q3DIR}" \
@@ -51,6 +52,7 @@ MAKE_ARGS+=	DEFAULT_BASEDIR="${Q3DIR}" \
 		TOOLS_CC="${CC}" \
 		USE_LOCAL_HEADERS=0
 ALL_TARGET=	release
+LLD_UNSAFE=	yes
 
 LIBDIR=		lib/${PORTNAME}${PKGNAMESUFFIX}
 DOCSDIR=	share/doc/${PORTNAME}${PKGNAMESUFFIX}
@@ -74,12 +76,15 @@ Q3GAMELIBS?=	cgame \
 		ui
 Q3ICON?=	${PREFIX}/share/pixmaps/quake3.xpm
 .if ${IOQ3:MOPENGL2}
-Q3RENDERER?=	renderer_opengl1_${IOQ3ARCH} renderer_opengl2_${IOQ3ARCH}
+Q3RENDERER?=	opengl1 opengl2
 .else
-Q3RENDERER?=	renderer_opengl1_${IOQ3ARCH}
+Q3RENDERER?=	opengl1
 .endif
+Q3RENDPREFIX?=	renderer_
+Q3RENDSUFFIX?=	_${IOQ3ARCH}
 Q3INSTALL?=
 Q3ENGINEVER?=	${DISTVERSION}
+IOQUAKE3VER=	1.36
 
 ONLY_FOR_ARCHS=	amd64 i386
 
@@ -155,7 +160,11 @@ IOQ3_INST+=	PROGRAM;tools/${bin};bin/${bin}${BINSUFFIX}
 .endif
 .if ${PORT_OPTIONS:MDLRENDERER}
 . for renderer in ${Q3RENDERER}
-IOQ3_INST+=	LIB;${renderer}.so;${LIBDIR}/${renderer}.so
+IOQ3_INST+=	LIB;${Q3RENDPREFIX}${renderer}${Q3RENDSUFFIX}.so;${LIBDIR}/${Q3RENDPREFIX}${renderer}${Q3RENDSUFFIX}.so
+. endfor
+.else
+. for renderer in ${Q3RENDERER:Nopengl1}
+IOQ3_INST+=	PROGRAM;${Q3CLIENT}_${renderer}.${IOQ3ARCH};bin/${Q3CLIENT}_${renderer}${BINSUFFIX}
 . endfor
 .endif
 .if ${PORT_OPTIONS:MGAMELIBS}

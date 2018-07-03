@@ -1,0 +1,169 @@
+diff --git chipset_enable.c chipset_enable.c
+index a3b7f8d..65a4bce 100644
+--- chipset_enable.c
++++ chipset_enable.c
+@@ -35,6 +35,7 @@
+ #include <unistd.h>
+ #include <inttypes.h>
+ #include <errno.h>
++#include <sys/param.h>
+ #include "flash.h"
+ #include "programmer.h"
+ #include "hwaccess.h"
+@@ -850,7 +851,11 @@ static int enable_flash_pch100_or_c620(struct pci_dev *const dev, const char *co
+ 		msg_perr("Can't allocate PCI accessor.\n");
+ 		return ret;
+ 	}
++#ifdef __FreeBSD__
++	pci_acc->method = PCI_ACCESS_FBSD_DEVICE;
++#else
+ 	pci_acc->method = PCI_ACCESS_I386_TYPE1;
++#endif
+ 	pci_init(pci_acc);
+ 	register_shutdown(enable_flash_pch100_shutdown, pci_acc);
+ 
+@@ -1927,6 +1932,7 @@ const struct penable chipset_enables[] = {
+ 	{0x8086, 0xa153, NT,  "Intel", "QM175",				enable_flash_pch100},
+ 	{0x8086, 0xa154, NT,  "Intel", "CM238",				enable_flash_pch100},
+ 	{0x8086, 0xa155, NT,  "Intel", "QMU185",			enable_flash_pch100},
++	{0x8086, 0x19e0, NT,  "Intel", "Denverton SoC",			enable_flash_c620},
+ 	{0x8086, 0xa1c1, NT,  "Intel", "C621 Series Chipset (QS/PRQ)",	enable_flash_c620},
+ 	{0x8086, 0xa1c2, NT,  "Intel", "C622 Series Chipset (QS/PRQ)",	enable_flash_c620},
+ 	{0x8086, 0xa1c3, NT,  "Intel", "C624 Series Chipset (QS/PRQ)",	enable_flash_c620},
+diff --git flashchips.h flashchips.h
+index 28a155d..11e357f 100644
+--- flashchips.h
++++ flashchips.h
+@@ -907,6 +907,7 @@
+ #define WINBOND_NEX_W25Q32_W	0x6016	/* W25Q32DW; W25Q32FV in QPI mode */
+ #define WINBOND_NEX_W25Q64_W	0x6017	/* W25Q64DW; W25Q64FV in QPI mode */
+ #define WINBOND_NEX_W25Q128_W	0x6018	/* W25Q128FW; W25Q128FV in QPI mode */
++#define WINBOND_NEX_W25Q256_W	0x6019	/* W25Q256FW; Not supported W25Q256FV in QPI mode */
+ 
+ #define WINBOND_ID		0xDA	/* Winbond */
+ #define WINBOND_W19B160BB	0x49
+diff --git flashrom.c flashrom.c
+index c600efc..ec59ac8 100644
+--- flashrom.c
++++ flashrom.c
+@@ -1117,7 +1117,22 @@ void unmap_flash(struct flashctx *flash)
+ 	}
+ 
+ 	if (flash->virtual_memory != (chipaddr)ERROR_PTR) {
+-		programmer_unmap_flash_region((void *)flash->virtual_memory, flash->chip->total_size * 1024);
++
++		chipsize_t size = flash->chip->total_size;
++
++		if (flash->chip->bustype == BUS_PROG) {
++			// INTEL platform C3000 has HW specific devices (APIC) mapped in the upper 32 Meg at address 0xFEE0_0000 to FEEF_FFFF
++			// Since HW sequencing does not need mapping for 32 Meg part restrict it to 16 Meg to operate HW sequencing path(i.e. only unmap 16 Meg)
++			if (flash->chip->total_size > 0x4000)
++				size = 0x4000;
++			msg_pdbg2("%s - using HW seq - unmap flash chip %s with total size %x change to %x\n",__func__, flash->chip->name, flash->chip->total_size, size);
++		}
++
++		size = size * 1024;
++
++		msg_pdbg2("%s - unmap flash chip %s at total size %x\n",__func__, flash->chip->name, size);
++
++		programmer_unmap_flash_region((void *)flash->virtual_memory, size);
+ 		flash->physical_memory = 0;
+ 		flash->virtual_memory = (chipaddr)ERROR_PTR;
+ 	}
+@@ -1135,8 +1150,21 @@ int map_flash(struct flashctx *flash)
+ 	if (flash->chip->total_size == 0)
+ 		return 0;
+ 
+-	const chipsize_t size = flash->chip->total_size * 1024;
++	chipsize_t size = flash->chip->total_size;
++
++	if (flash->chip->bustype == BUS_PROG) {
++		// INTEL platform C3000 has HW specific devices (APIC) mapped in the upper 32 Meg at address 0xFEE0_0000 to FEEF_FFFF
++		// Since HW sequencing does not need mapping for 32 Meg part restrict it to 16 Meg to operate HW sequencing path.
++		if (flash->chip->total_size > 0x4000)
++			size = 0x4000;
++		msg_pdbg2("%s - using HW seq - map flash chip %s with total size %x change to %x\n",__func__, flash->chip->name, flash->chip->total_size, size);
++	}
++
++	size = size * 1024;
+ 	uintptr_t base = flashbase ? flashbase : (0xffffffff - size + 1);
++
++	msg_pdbg2("%s - map flash chip %s at total size %x\n",__func__, flash->chip->name, size);
++
+ 	void *addr = programmer_map_flash_region(flash->chip->name, base, size);
+ 	if (addr == ERROR_PTR) {
+ 		msg_perr("Could not map flash chip %s at 0x%0*" PRIxPTR ".\n",
+@@ -1223,9 +1251,12 @@ int probe_flash(struct registered_master *mst, int startchip, struct flashctx *f
+ 		memcpy(flash->chip, chip, sizeof(struct flashchip));
+ 		flash->mst = mst;
+ 
+-		if (map_flash(flash) != 0)
++		if (map_flash(flash) != 0) {
++			msg_gerr("Unable to map flash!\n");
++			free(flash->chip);
++			flash->chip = NULL;
+ 			return -1;
+-
++		}
+ 		/* We handle a forced match like a real match, we just avoid probing. Note that probe_flash()
+ 		 * is only called with force=1 after normal probing failed.
+ 		 */
+diff --git ichspi.c ichspi.c
+index 9d6b62b..2119fc0 100644
+--- ichspi.c
++++ ichspi.c
+@@ -165,6 +165,7 @@
+ #define SSFC_SCF		(0x7 << SSFC_SCF_OFF)
+ #define SSFC_SCF_20MHZ		0x00000000
+ #define SSFC_SCF_33MHZ		0x01000000
++#define SSFC_SCF_48MHZ		0x02000000
+ 						/* 19-23: reserved */
+ #define SSFC_RESERVED_MASK	0xf8008100
+ 
+@@ -832,7 +833,7 @@ static int ich7_run_opcode(OPCODE op, uint32_t offset,
+ 		programmer_delay(10);
+ 	}
+ 	if (!timeout) {
+-		msg_perr("Error: SCIP never cleared!\n");
++		msg_perr("%s - Error: SCIP never cleared!\n", __func__);
+ 		return 1;
+ 	}
+ 
+@@ -949,7 +950,7 @@ static int ich9_run_opcode(OPCODE op, uint32_t offset,
+ 		programmer_delay(10);
+ 	}
+ 	if (!timeout) {
+-		msg_perr("Error: SCIP never cleared!\n");
++		msg_perr("%s - Error: SCIP never cleared!\n", __func__);
+ 		return 1;
+ 	}
+ 
+@@ -970,8 +971,13 @@ static int ich9_run_opcode(OPCODE op, uint32_t offset,
+ 	temp32 |= (SSFS_FDONE | SSFS_FCERR);
+ 	REGWRITE32(swseq_data.reg_ssfsc, temp32);
+ 
+-	/* Use 20 MHz */
+-	temp32 |= SSFC_SCF_20MHZ;
++	/* Denverton use 48MHZ for now all others use 20 MHZ */
++	if (ich_generation == CHIPSET_C620_SERIES_LEWISBURG) {
++		temp32 |= SSFC_SCF_48MHZ;
++	}
++	else {
++		temp32 |= SSFC_SCF_20MHZ;
++	}
+ 
+ 	/* Set data byte count (DBC) and data cycle bit (DS) */
+ 	if (datalength != 0) {
+diff --git programmer.h programmer.h
+index a98b713..9e706da 100644
+--- programmer.h
++++ programmer.h
+@@ -656,7 +656,7 @@ enum ich_chipset {
+ 	CHIPSET_9_SERIES_WILDCAT_POINT,
+ 	CHIPSET_9_SERIES_WILDCAT_POINT_LP,
+ 	CHIPSET_100_SERIES_SUNRISE_POINT, /* also 6th/7th gen Core i/o (LP) variants */
+-	CHIPSET_C620_SERIES_LEWISBURG,
++	CHIPSET_C620_SERIES_LEWISBURG,  /* Denverton */
+ };
+ 
+ /* ichspi.c */

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	AnyEvent-Filesys-Notify
-PORTVERSION=	1.19
+PORTVERSION=	1.21
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MGRIMES
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Perl extension for AnyEvent compat to monitor file/dir changes
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	\

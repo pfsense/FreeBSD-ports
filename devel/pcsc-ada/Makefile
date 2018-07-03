@@ -3,11 +3,12 @@
 
 PORTNAME=	pcsc-ada
 PORTVERSION=	0.7.3
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.codelabs.ch/download/
 DISTNAME=	libpcscada-${PORTVERSION}
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ada binding to PC/SC middleware (Smart card interface)
 
 LICENSE=	LGPL21

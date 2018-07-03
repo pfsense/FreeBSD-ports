@@ -5,7 +5,7 @@ PORTNAME=	bsdconv
 PORTVERSION=	11.3.0
 PORTREVISION=	1
 CATEGORIES=	converters
-PKGNAMEPREFIX=	php5-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	buganini@gmail.com
 COMMENT=	PHP wrapper for bsdconv
@@ -19,7 +19,7 @@ GH_ACCOUNT=	buganini
 GH_PROJECT=	php-${PORTNAME}
 
 USES=		php:ext
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=	70 71 72
 CONFIGURE_ARGS=	--with-bsdconv=${LOCALBASE}
 
 .include <bsd.port.mk>

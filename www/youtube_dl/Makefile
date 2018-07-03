@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	youtube_dl
-PORTVERSION=	2016.08.31
+PORTVERSION=	2018.03.10
 CATEGORIES=	www
 MASTER_SITES=	https://yt-dl.org/downloads/${PORTVERSION}/
 DISTNAME=	youtube-dl-${PORTVERSION}
@@ -10,15 +10,13 @@ MAINTAINER=	araujo@FreeBSD.org
 COMMENT=	Program for downloading videos from YouTube.com
 
 LICENSE=	UNLICENSE
-LICENSE_NAME=	The Unlicense
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	zip:archivers/zip
 
 ALL_TARGET=	youtube-dl
 MAKE_ARGS=	PYTHON=${PYTHON_CMD}
-USES=		python
+USES=		gmake python
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/youtube-dl
 
@@ -39,7 +37,7 @@ RTMPDUMP_RUN_DEPENDS=	${LOCALBASE}/bin/rtmpdump:multimedia/rtmpdump
 
 post-extract:
 	@# remove tarball provided version, build our own
-	@${RM} -f ${WRKSRC}/youtube-dl
+	@${RM} ${WRKSRC}/youtube-dl
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|python devscripts/|${PYTHON_CMD} devscripts/|' ${WRKSRC}/Makefile

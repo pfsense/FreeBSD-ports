@@ -2,7 +2,7 @@
 
 PORTNAME=	usrp
 PORTVERSION=	3.4.3
-PORTREVISION=	6
+PORTREVISION=	16
 CATEGORIES=	comms hamradio
 MASTER_SITES=	LOCAL/adrian
 DISTNAME=	Ettus-USRP-3.4.3
@@ -10,28 +10,34 @@ DISTNAME=	Ettus-USRP-3.4.3
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Ettus Research USRP driver framework
 
-LIB_DEPENDS=	libboost_python.so:devel/boost-python-libs
+BROKEN=		fails to build with boost 1.66, see bug 224088
+
+LIB_DEPENDS=	${PY_BOOST}
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/tuple/tuple.hpp:devel/boost-libs \
 		cheetah-analyze:devel/py-cheetah \
 		rst2html:textproc/py-docutils \
 		orcc:devel/orc \
 		sdcc:lang/sdcc
 
-USES=			compiler:c++0x cmake:outsource gmake pkgconfig dos2unix
+USES=			compiler:c++0x cmake:outsource,noninja gmake pkgconfig python:run \
+			dos2unix shebangfix
 COMPILER_FEATURES=	libc++
 USE_LDCONFIG=		yes
 CMAKE_SOURCE_PATH=	${WRKSRC}/host
 MAKE_JOBS_UNSAFE=	yes
+
+SHEBANG_GLOB=	*.py
 
 # for excruciating debug use this -db
 #CMAKE_ARGS+=	--debug-output --trace
 DOCSDIR=	share/doc/uhd
 WRKSRC=		${WRKDIR}/EttusResearch-UHD-Mirror-6047010
 
-OPTIONS_DEFINE=		USRP1 USRP2 DOCS
+OPTIONS_DEFINE=		USRP1 USRP2 DOCS DOXYGEN
 OPTIONS_DEFAULT=	USRP1 USRP2
 USRP1_DESC=	Build Ettus USRP1 firmware
 USRP2_DESC=	Build Ettus USRP2 firmware
+OPTIONS_SUB=	yes
 
 .include <bsd.port.pre.mk>
 
@@ -39,7 +45,7 @@ USRP2_DESC=	Build Ettus USRP2 firmware
 BROKEN_i386=	does not build on i386 FreeBSD 11.x and later
 .endif
 
-.if ${PORT_OPTIONS:MDOCS}
+.if ${PORT_OPTIONS:MDOXYGEN}
 BUILD_DEPENDS+=	doxygen:devel/doxygen
 CMAKE_ARGS+=	-DENABLE_DOXYGEN:STRING="ON"
 HAVEDOCS=	YES
@@ -48,18 +54,12 @@ HAVEDOCS=	YES
 .if ${PORT_OPTIONS:MUSRP1}
 BUILD_DEPENDS+=	sdcc:lang/sdcc
 USRP1=	YES
-PLIST_SUB+=	PUSRP1=""
-.else
-PLIST_SUB+=	PUSRP1="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MUSRP2}
 BUILD_DEPENDS+=	${LOCALBASE}/zpu/bin/zpu-elf-gcc:devel/zpu-gcc \
 		${LOCALBASE}/zpu/bin/zpu-elf-as:devel/zpu-binutils
 USRP2=	YES
-PLIST_SUB+=	PUSRP2=""
-.else
-PLIST_SUB+=	PUSRP2="@comment "
 .endif
 
 CONFIGURE_WRKSRC=	${WRKSRC}/host

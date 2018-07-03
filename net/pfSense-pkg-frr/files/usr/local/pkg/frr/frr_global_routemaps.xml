@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_global_routemaps.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_global_routemaps</name>
+	<title>Services/FRR/Global Settings</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_global_routemaps.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>Global Settings</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>Access Lists</text>
+			<url>pkg.php?xml=frr/frr_global_acls.xml</url>
+		</tab>
+		<tab>
+			<text>Prefix Lists</text>
+			<url>pkg.php?xml=frr/frr_global_prefixes.xml</url>
+		</tab>
+		<tab>
+			<text>Route Maps</text>
+			<url>pkg.php?xml=frr/frr_global_routemaps.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Raw Config</text>
+			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Name</fielddescr>
+			<fieldname>name</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Permit/Deny</fielddescr>
+			<fieldname>action</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Sequence</fielddescr>
+			<fieldname>seq</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Name</fielddescr>
+			<fieldname>name</fieldname>
+			<description>
+				<![CDATA[
+				The name of this Route Map entry.
+				]]>
+			</description>
+			<type>input</type>
+			<size>20</size>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>50</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Route maps can match or set various values for use by routing daemons, especially BGP.
+				<br/><br/>
+				Order is important. Use the sequence field to reorder entries after saving.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Action</fielddescr>
+			<fieldname>action</fieldname>
+			<description>Permit or deny access</description>
+			<type>select</type>
+			<default_value>Deny</default_value>
+			<options>
+				<option><name>Deny</name><value>deny</value></option>
+				<option><name>Permit</name><value>permit</value></option>
+			</options>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Sequence</fielddescr>
+			<fieldname>seq</fieldname>
+			<type>input</type>
+			<size>5</size>
+			<required/>
+		</field>
+		<field>
+			<name>Logic Control</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Call Route Map</fielddescr>
+			<fieldname>call</fieldname>
+			<description>
+				<![CDATA[
+				Used to stop processing and call another route-map, then return.<br />
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Exit Action</fielddescr>
+			<fieldname>exitaction</fieldname>
+			<description>
+				<![CDATA[
+				Used to control what happens after processing this route-map.<br />
+				]]>
+			</description>
+			<default_value>none</default_value>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list(true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<name>Access Lists</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Match ACL</fielddescr>
+			<fieldname>acl_match</fieldname>
+			<description>
+				<![CDATA[
+				Match a specific access list.<br />
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<name>Prefix Lists</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Match Prefix List</fielddescr>
+			<fieldname>prefix_match</fieldname>
+			<description>
+				<![CDATA[
+				Match a specific Prefix List.<br />
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_prefixlist_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<name>Next Hop</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Next Hop Action</fielddescr>
+			<fieldname>nexthop_action</fieldname>
+			<description>Set or Match</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do Nothing)</name><value>none</value></option>
+				<option><name>Match Peer</name><value>match-peer</value></option>
+				<option><name>Match ACL</name><value>match-acl</value></option>
+				<option><name>Match Prefix-List</name><value>match-pl</value></option>
+				<option><name>Set (Peer Only)</name><value>set</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Peer</fielddescr>
+			<fieldname>nexthop_peer</fieldname>
+			<description>
+				<![CDATA[
+				The peer to match or set
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_nexthop_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>ACL</fielddescr>
+			<fieldname>nexthop_acl</fieldname>
+			<description>
+				<![CDATA[
+				The ACL to match
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Prefix List</fielddescr>
+			<fieldname>nexthop_pl</fieldname>
+			<description>
+				<![CDATA[
+				The Prefix List to match
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_prefixlist_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<name>Metric</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Metric Action</fielddescr>
+			<fieldname>metric_action</fieldname>
+			<description>Set or Match Metric</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do Nothing)</name><value>none</value></option>
+				<option><name>Match</name><value>match</value></option>
+				<option><name>Set</name><value>set</value></option>
+				<option><name>Set OSPF6 External Type 1 Metric</name><value>settype1</value></option>
+				<option><name>Set OSPF6 External Type 2 Metric</name><value>settype2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Metric Value</fielddescr>
+			<fieldname>metric_value</fieldname>
+			<type>input</type>
+			<size>5</size>
+			<description>
+				The metric value to match or apply. When setting a metric, the value may also be +rtt, -rtt, + or - value offset, or a specific metric.
+			</description>
+		</field>
+		<field>
+			<name>Weight</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Weight</fielddescr>
+			<fieldname>weight</fieldname>
+			<type>input</type>
+			<size>5</size>
+			<description>
+				A specific weight to set. Leave blank for default.
+			</description>
+		</field>
+		<field>
+			<name>Local Preference</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Local Pref Action</fielddescr>
+			<fieldname>localpref_action</fieldname>
+			<description>Set or Match Local Preference</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do Nothing)</name><value>none</value></option>
+				<option><name>Match</name><value>match</value></option>
+				<option><name>Set</name><value>set</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Local Preference</fielddescr>
+			<fieldname>localpref_value</fieldname>
+			<type>input</type>
+			<size>5</size>
+			<description>
+				The Local Preference value to match or apply.
+			</description>
+		</field>
+		<field>
+			<name>BGP AS Paths</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>AS Path Action</fielddescr>
+			<fieldname>aspath_action</fieldname>
+			<description>Set or Match</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do Nothing)</name><value>none</value></option>
+				<option><name>Match AS Path</name><value>match</value></option>
+				<option><name>Set</name><value>set</value></option>
+				<option><name>Set Exclude</name><value>setexclude</value></option>
+				<option><name>Set Prepend</name><value>setprepend</value></option>
+				<option><name>Set Prepend Last-AS</name><value>setprependlast</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Match AS Path</fielddescr>
+			<fieldname>aspath_match</fieldname>
+			<description>
+				<![CDATA[
+				The AS Path list to match, when Match AS Path is the Action.<br />
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_bgp_aspath_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				When setting the AS, the following is a space-separated list of AS numbers used for exclude or prepend.
+				For Last-AS, the peer's AS is prepended and only a single number is allowed from 1-10 which specifies the number of times to prepend the peer's AS number.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Set AS List</fielddescr>
+			<fieldname>aspath_value</fieldname>
+			<type>input</type>
+			<size>5</size>
+		</field>
+		<field>
+			<name>BGP Communities</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Community Action</fielddescr>
+			<fieldname>community_action</fieldname>
+			<description>Set or Match</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do Nothing)</name><value>none</value></option>
+				<option><name>Match</name><value>match</value></option>
+				<option><name>Match Exact</name><value>matchexact</value></option>
+				<option><name>Set</name><value>set</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Match Community</fielddescr>
+			<fieldname>community_match</fieldname>
+			<description>
+				<![CDATA[
+				The existing community list to match.<br />
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_bgp_community_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Set Community</fielddescr>
+			<fieldname>community_set</fieldname>
+			<description>
+				<![CDATA[
+				When setting a community, this is a space-separated list of communities in AS:VAL format, or a well-known community:
+				internet, no-export, no-advertise, or local-as.
+				]]>
+			</description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Additive</fielddescr>
+			<fieldname>community_additive</fieldname>
+			<description>Indicates that when setting a community, it will be appended to any existing communities rather than replacing them.</description>
+			<type>checkbox</type>
+			<size>1</size>
+		</field>
+		<field>
+			<name>Origin</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Origin Action</fielddescr>
+			<fieldname>origin_action</fieldname>
+			<description>Set or Match</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do Nothing)</name><value>none</value></option>
+				<option><name>Match</name><value>match</value></option>
+				<option><name>Set</name><value>set</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Origin Name</fielddescr>
+			<fieldname>origin_value</fieldname>
+			<description>Origin value to match or set</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None</name><value>none</value></option>
+				<option><name>Remote EGP</name><value>egp</value></option>
+				<option><name>Local IGP</name><value>igp</value></option>
+				<option><name>Unknown Heritage (Incomplete)</name><value>incomplete</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Source Protocol</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Match Source Protocol</fielddescr>
+			<fieldname>source_proto</fieldname>
+			<description>Source Protocol to match or set</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do not match)</name><value>none</value></option>
+				<option><name>BGP</name><value>bgp</value></option>
+				<option><name>OSPF</name><value>ospf</value></option>
+				<option><name>OSPF6</name><value>ospf6</value></option>
+				<option><name>Connected</name><value>connected</value></option>
+				<option><name>Kernel</name><value>kernel</value></option>
+				<option><name>Static</name><value>static</value></option>
+				<option><name>System</name><value>system</value></option>
+				<option><name>RIP</name><value>rip</value></option>
+				<option><name>RIPng</name><value>ripng</value></option>
+				<option><name>IS-IS</name><value>isis</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Tags</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Tag Action</fielddescr>
+			<fieldname>tag_action</fieldname>
+			<description>Set or Match Tag Value</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do Nothing)</name><value>none</value></option>
+				<option><name>Match</name><value>match</value></option>
+				<option><name>Set</name><value>set</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Tag Value</fielddescr>
+			<fieldname>tag_value</fieldname>
+			<type>input</type>
+			<size>5</size>
+			<description>
+				The tag number to set or match, an integer 1-4294967295.
+			</description>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_global_routemaps_validate_input();
+	</custom_php_validation_command>
+</packagegui>

@@ -1,40 +1,21 @@
 # Created by: Boris Samorodov <bsam@FreeBSD.org>
 # $FreeBSD$
 #
-# This is a set of Makefile macros which allow to build the core and
+# This is a set of Makefile macros which allow to build the
 # localized language packages for devel/eric6:
-# french/eric6, german/eric6, russian/eric6
+# german/eric6, russian/eric6, devel/es-eric6
 
-PORTNAME=	eric6
-PORTVERSION=	6.1.9
-MASTER_SITES=	SF/eric-ide/${PORTNAME}/stable/${PORTVERSION}
-DISTNAME?=	${PORTNAME}-i18n-${I18N_LANG}-${PORTVERSION}
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+.include "${.CURDIR}/../../devel/eric6/bsd.eric6.mk"
 
-MAINTAINER?=	dbn@FreeBSD.org
-COMMENT=	Full featured Python and Ruby editor and IDE based on Qt
+PKGNAMEPREFIX=	${I18N_LANG}-
+DISTNAME=	${PORTNAME}-i18n-${I18N_LANG}-${PORTVERSION}
 
-LICENSE=	GPLv3
-
-RUN_DEPENDS?=	${PREFIX}/bin/eric6:devel/eric6
-
-I18N_LANG?=	ru
-INSTALL_CMD?=	install-i18n.py -p ${STAGEDIR}
-MAKE_ENV+=	"HOME=${WRKDIR}"
-
-USES+=		python:2
-NO_BUILD=	yes
-PLIST_FILES?=	%%DATADIR%%/i18n/${PORTNAME}_${I18N_LANG}.qm
-EXTRA_PATCHES?=	${.CURDIR}/../../devel/eric6/files/extra-patch-install-i18n.py
-
-.if ! defined(MASTERPORT)
+INSTALL_CMD=	install-i18n.py -p ${STAGEDIR}
 NO_ARCH=	yes
-.endif
+PLIST_FILES=	${DATADIR}/i18n/${PORTNAME}_${I18N_LANG}.qm
 
 do-install:
-	@(cd ${WRKSRC}; \
-	${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${INSTALL_CMD})
-
-DESCR=		${.CURDIR}/../../devel/eric6/pkg-descr
+	${MKDIR} ${STAGEDIR}${DATADIR}/i18n
+	${INSTALL_DATA} ${WRKSRC}/eric/i18n/${PORTNAME}_${I18N_LANG}.qm ${STAGEDIR}${DATADIR}/i18n/
 
 .include <bsd.port.mk>

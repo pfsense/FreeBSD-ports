@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-haproxy-devel
-PORTVERSION=	0.51
+PORTVERSION=	0.58
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -29,14 +30,13 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/haproxy
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/haproxy
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/haproxy.xml \
-		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/haproxy_rules.inc \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/haproxy/haproxy.inc \
 		${STAGEDIR}${PREFIX}/pkg/haproxy
@@ -74,8 +74,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/www/haproxy
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/haproxy/haproxy_templates.php \
 		${STAGEDIR}${PREFIX}/www/haproxy
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/haproxy/haproxy_geturl.js \
-		${STAGEDIR}${PREFIX}/www/haproxy
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/widget-haproxy.inc \
+		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/haproxy.widget.php \
 		${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/shortcuts/pkg_haproxy.inc \

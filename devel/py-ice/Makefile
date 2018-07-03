@@ -12,6 +12,8 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	mcpp:devel/mcpp
 LIB_DEPENDS=	libIce.so.${LIB_VRS}:devel/ice
 
+BROKEN_powerpc64=	fails to compile: gmake: Ice_BuiltinSequences_ice.py: Segmentation fault (core dumped)
+
 USES=		python shebangfix
 USE_PYTHON=	py3kplist
 SLAVE_PORT=	yes
@@ -37,8 +39,5 @@ post-install:
 		-exec ${CHMOD} u+w {} \;
 	@${PYTHON_CMD} -m compileall -d ${PYSITEDIR}/Ice ${STAGEDIR}${PYSITEDIR}/Ice
 	@${PYTHON_CMD} -O -m compileall -d ${PYSITEDIR}/Ice ${STAGEDIR}${PYSITEDIR}/Ice
-	${INSTALL_MAN} ${WRKSRC}/man/man1/slice2py.1 ${STAGEDIR}${PREFIX}/man/man1
-	${INSTALL_SCRIPT} ${BUILD_WRKSRC}/config/s2py.py \
-		${STAGEDIR}${PREFIX}/bin/slice2py
 
 .include "${MASTERDIR}/Makefile"

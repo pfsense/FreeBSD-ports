@@ -5,14 +5,19 @@
 
 PORTNAME=	x49gp
 PORTVERSION=	20100425
+PORTREVISION=	4
 CATEGORIES=	emulators math
 MASTER_SITES=	LOCAL/shaun
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} sdcard64.tar.gz
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	shaun@FreeBSD.org
 COMMENT=	HP 49g+/50g graphics calculator emulator
 
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
+BROKEN_i386=		does not build on i386 (error: frame pointer required, but reserved)
+BROKEN_powerpc64=	fails to build: qemu/qemu-git/arm-softmmu/i386-dis.o: No such file or directory
+NOT_FOR_ARCHS=		aarch64 armv6 armv7
+NOT_FOR_ARCHS_REASON=	unsupported CPU = unknown
 
 WRKSRC=		${WRKDIR}/x49gp/x49gp-code
 HAVE_CONFIGURE=	yes
@@ -89,7 +94,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/x49gp ${STAGEDIR}${PREFIX}/bin/x49gp-bin
 
 	${INSTALL_SCRIPT} ${WRKDIR}/hp50g.sh ${STAGEDIR}${PREFIX}/bin/hp50g
-	${RM} -f ${STAGEDIR}${PREFIX}/bin/hp49g+
+	${RM} ${STAGEDIR}${PREFIX}/bin/hp49g+
 	${LN} ${STAGEDIR}${PREFIX}/bin/hp50g ${STAGEDIR}${PREFIX}/bin/hp49g+
 
 	${INSTALL_DATA} ${DISTDIR}/sdcard64.tar.gz ${STAGEDIR}${DATADIR}/

@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	rosegarden
-PORTVERSION=	16.02
+PORTVERSION=	17.04
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	General purpose music editor and sequencer suite
 
 LICENSE=	GPLv2+
@@ -23,11 +24,8 @@ RUN_DEPENDS=	dssi_osc_update:audio/dssi \
 		xdg-open:devel/xdg-utils \
 		lilypond:print/lilypond
 
-USES=		cmake:outsource desktop-file-utils pkgconfig shared-mime-info \
-		tar:bzip2
-
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+USES=		alias cmake:outsource desktop-file-utils localbase:ldflags \
+		pkgconfig shared-mime-info tar:bzip2
 
 OPTIONS_DEFINE=		LIRC
 OPTIONS_SINGLE=		TOOLKIT

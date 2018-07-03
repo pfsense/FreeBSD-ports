@@ -1,19 +1,19 @@
---- Makefile.orig	2010-03-30 17:06:21.000000000 +0200
-+++ Makefile	2010-03-30 17:06:57.000000000 +0200
-@@ -81,11 +81,11 @@
- 	
- freebsd:
- 	$(MAKE) target=FreeBSD \
--		CC=gcc CXX='$(CC)' \
--		CFLAGS='-fomit-frame-pointer -m486 -O3 -Wall' \
--		CXFLAGS='-fomit-frame-pointer -m486 -O3 -Wall' \
--		LDFLAGS=$(LDFLAGS) \
--		opt='$(opt) -DINLINE32' \
-+		CC='$(CC)' CXX='$(CC)' \
-+		CFLAGS='$(CFLAGS) -fomit-frame-pointer -O3 -Wall' \
-+		CXFLAGS='$(CXXFLAGS) -fomit-frame-pointer -O3 -Wall' \
+--- Makefile.orig	2016-10-03 20:11:34 UTC
++++ Makefile
+@@ -83,11 +83,11 @@ quick:
+ 
+ unix-gcc:
+ 	$(MAKE) -j target=UNIX \
+-		CC=gcc \
+-		opt='-DSYZYGY -DTEST -DCPUS=4' \
+-		CFLAGS='-Wall -Wno-array-bounds -pipe -O3 -fprofile-use \
+-		-mpopcnt -fprofile-correction -pthread' \
+-		LDFLAGS='$(LDFLAGS) -fprofile-use -pthread -lstdc++' \
++		CC=$(CC) \
++		opt='$(opt) -DSYZYGY -DTEST -DCPUS=4' \
++		CFLAGS='$(CFLAGS) -Wall -Wno-array-bounds -pipe -O3 \
++		-mpopcnt -pthread' \
 +		LDFLAGS='$(LDFLAGS) -pthread -lstdc++' \
-+		opt='$(opt)' \
  		crafty-make
  
- freebsd-pgcc:
+ unix-gcc-profile:

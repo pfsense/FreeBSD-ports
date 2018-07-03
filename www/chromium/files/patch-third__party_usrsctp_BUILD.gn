@@ -1,0 +1,20 @@
+--- third_party/usrsctp/BUILD.gn.orig	2017-12-15 02:04:50.000000000 +0100
++++ third_party/usrsctp/BUILD.gn	2018-01-03 13:28:10.295173000 +0100
+@@ -109,11 +109,16 @@
+     "-UINET6",
+   ]
+ 
+-  if (is_linux || is_android) {
++  if ((is_linux && !is_bsd) || is_android ) {
+     defines += [
+       "__Userspace_os_Linux",
+       "_GNU_SOURCE",
+     ]
++  } else if (is_bsd) {
++    defines += [
++      "__Userspace_os_FreeBSD",
++    ]
++    cflags += [ "-U__FreeBSD__" ]
+   } else if (is_mac || is_ios) {
+     defines += [
+       "HAVE_SA_LEN",

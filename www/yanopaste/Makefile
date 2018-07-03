@@ -11,11 +11,12 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Yet Another Nopaste
 
 NO_BUILD=	yes
+USES+=		php
 USE_PHP=	xsl session xmlwriter xmlreader
 SUB_FILES=	pkg-message
 
 post-patch:
-	${FIND} ${WRKSRC} -name .svn -type d | ${XARGS} ${RM} -rf
+	${FIND} ${WRKSRC} -name .svn -type d | ${XARGS} ${RM} -r
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}

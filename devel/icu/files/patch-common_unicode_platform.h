@@ -1,6 +1,6 @@
---- common/unicode/platform.h.orig	2016-03-23 20:49:58 UTC
+--- common/unicode/platform.h.orig	2017-03-22 19:06:26 UTC
 +++ common/unicode/platform.h
-@@ -379,8 +379,8 @@
+@@ -382,8 +382,8 @@
   */
  #ifdef U_IS_BIG_ENDIAN
      /* Use the predefined value. */

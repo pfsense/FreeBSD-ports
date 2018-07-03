@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdvbpsi
-PORTVERSION=	1.2.0
+PORTVERSION=	1.3.0
 CATEGORIES=	multimedia
 MASTER_SITES=	http://download.videolan.org/pub/libdvbpsi/${PORTVERSION}/
 
@@ -14,7 +14,7 @@ LICENSE=	LGPL21
 OPTIONS_DEFINE=	DEBUG
 INSTALL_TARGET=	install-strip
 
-USES=	libtool pathfix tar:bzip2
+USES=		libtool pathfix tar:bzip2
 #CFLAGS=	-Wno-tautological-constant-out-of-range-compare
 
 GNU_CONFIGURE=	yes
@@ -25,7 +25,7 @@ USE_LDCONFIG=	yes
 post-patch:
 	@${REINPLACE_CMD} 's/-Werror //' ${WRKSRC}/configure
 
-regression-test:
+do-test:
 	@(cd ${WRKSRC}/misc && ./test_dr)
 
 .include <bsd.port.mk>

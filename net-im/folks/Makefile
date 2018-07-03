@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	folks
-PORTVERSION=	0.11.1
+PORTVERSION=	0.11.4
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	library to aggregates people from multiple sources
 
-BUILD_DEPENDS=	vapigen:lang/vala
+BUILD_DEPENDS=	vapigen:lang/vala \
+		${LOCALBASE}/bin/egrep:textproc/gnugrep
 LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 		libgcr-3.so:security/gcr \
 		libzeitgeist-2.0.so:sysutils/zeitgeist \
@@ -18,17 +19,16 @@ LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 CONFLICTS=	folks-0.4.[0-9]*
 
 USE_LDCONFIG=	yes
-USES=		gettext libtool gmake pathfix pkgconfig tar:xz
+USES=		gettext gmake libtool localbase pathfix pkgconfig tar:xz
 USE_GNOME=	evolutiondataserver3 intlhack introspection:build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-bluez-backend
-CPPFLAGS+=	-I${LOCALBASE}/include -Wno-error=deprecated-declarations
-LIBS+=		-L${LOCALBASE}/lib
+CONFIGURE_ENV+=	ac_cv_path_EGREP=${LOCALBASE}/bin/egrep
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.freedesktop.folks.gschema.xml
 
-PLIST_SUB=	LIBVER=25 VERSION=43 LIBVERLONG=25.18.1
+PLIST_SUB=	LIBVER=25 VERSION=43 LIBVERLONG=25.18.4
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	SOCIALWEB TRACKER

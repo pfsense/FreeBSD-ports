@@ -3,9 +3,10 @@
 
 PORTNAME=	libquvi
 PORTVERSION=	0.9.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia devel
-MASTER_SITES=	SF/quvi/${PORTVERSION:R}/${PORTNAME}/
+MASTER_SITES=	SF/quvi/${PORTVERSION:R}/${PORTNAME}/ \
+		LOCAL/sunpoet
 PKGNAMESUFFIX=	09
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -26,7 +27,7 @@ CONFIGURE_ARGS=	--program-suffix=${PKGNAMESUFFIX}
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_GNOME=	glib20
-USES=		iconv libtool lua pathfix pkgconfig tar:xz
+USES=		gnome iconv libtool lua pathfix pkgconfig tar:xz
 
 PLIST_SUB=	PKGNAMESUFFIX=${PKGNAMESUFFIX} PORTVERSION=${PORTVERSION} QUVIVERSION=${PORTVERSION:R}
 

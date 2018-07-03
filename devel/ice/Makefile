@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		Ice
-PORTVERSION=		3.6.2
-PORTREVISION=		1
+PORTVERSION=		3.6.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=		devel
 
@@ -13,6 +12,8 @@ COMMENT=		Modern alternative to object middleware such as CORBA/COM/DCOM/COM+
 LICENSE=		GPLv2
 
 SLAVE_PORT?=		no
+
+MAKE_JOBS_UNSAFE=	yes
 
 .if ${SLAVE_PORT} == "no"
 LIB_DEPENDS=		libexpat.so:textproc/expat2 \
@@ -35,8 +36,6 @@ USES+=			python:build
 BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}passlib>0:security/py-passlib
 .endif
 
-WRKSRC=			${WRKDIR}/ice-${PORTVERSION}
-
 USES+=			bdb:5
 INVALID_BDB_VER=	48 6
 USE_LDCONFIG=		yes
@@ -44,16 +43,13 @@ BUILD_WRKSRC?=		${WRKSRC}/cpp
 INSTALL_WRKSRC?=	${WRKSRC}/cpp
 USE_GITHUB=		yes
 GH_ACCOUNT=		zeroc-ice
-
+GH_PROJECT=		ice
 
 CFLAGS+=		-ftemplate-depth-128 -fPIC -DPIC -Wall -D_REENTRANT -I${LOCALBASE}/include
 
 .if !${PORT_OPTIONS:MDEBUG}
 CFLAGS+=		-DNDEBUG
 .endif
-
-BROKEN_ia64=		Does not compile on ${ARCH}
-BROKEN_sparc64=		Does not compile on ${ARCH}
 
 .if ((${ARCH} != i386) && (${ARCH} != powerpc))
 MAKE_ENV+=		LP64=yes

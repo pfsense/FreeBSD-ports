@@ -1,2 +1,3 @@
-SHA256 (galera-25.3.5-src.tar.gz) = 9e6d718bac9608c69cbfc0662963b29c13659c576aaa8469b6a325d75603f7a3
-SIZE (galera-25.3.5-src.tar.gz) = 3820268
+TIMESTAMP = 1518015635
+SHA256 (codership-galera-release_25.3.23_GH0.tar.gz) = 2710bf0addaa0f6a2d0ca9a0d71f46ecd2341908af99a36b3094c71e38e27307
+SIZE (codership-galera-release_25.3.23_GH0.tar.gz) = 3286275

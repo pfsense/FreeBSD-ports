@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	polygraph
-PORTVERSION=	4.9.0
+PORTVERSION=	4.11.0
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	benchmarks www
 MASTER_SITES=	http://www.web-polygraph.org/downloads/srcs/
@@ -13,12 +14,18 @@ COMMENT=	Benchmarking tool for Web proxies
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	configure: error: OpenSSL libraries and/or directories were not found in /usr/local
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USES=		gmake ncurses shebangfix tar:tgz
 SHEBANG_FILES=	tools/*.pl
 USE_GCC=	any
 GNU_CONFIGURE=	yes
+
+# The port does not build with C++11 or later (bug 219275).
+USE_CXXSTD=	gnu++03
 
 CONFLICTS=	ltrace-0*
 

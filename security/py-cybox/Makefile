@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	cybox
-PORTVERSION=	2.1.0.12
+PORTVERSION=	2.1.0.17
+DISTVERSIONPREFIX=	v
 CATEGORIES=	security python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	antoine@FreeBSD.org
@@ -13,21 +13,33 @@ COMMENT=	Python library for parsing, manipulating, and generating CybOX content
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil \
-		${PYTHON_PKGNAMEPREFIX}lxml>=3.1:devel/py-lxml
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml>=2.2.3:devel/py-lxml@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mixbox>=1.0.2:security/py-mixbox@${FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${FLAVOR}
 
-USES=		python:2
-USE_PYTHON=	distutils autoplist
+USE_GITHUB=	yes
+GH_ACCOUNT=	CybOXProject
+GH_PROJECT=	python-${PORTNAME}
+
+NO_ARCH=	yes
+USES=		python
+USE_PYTHON=	concurrent distutils autoplist
 
 PORTDOCS=	README.rst
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-post-install:
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+
+do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
+
+do-test:
+	@(cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} nosetests-${PYTHON_VER})
 
 .include <bsd.port.mk>

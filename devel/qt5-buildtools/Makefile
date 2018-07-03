@@ -2,6 +2,7 @@
 
 PORTNAME=	buildtools
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -22,9 +23,9 @@ MORE_WRKSRCS=	src/tools/moc \
 		src/tools/rcc
 
 post-configure:
-.for d in ${MORE_WRKSRCS}
-	@cd ${WRKSRC}/${d} && \
-		${SETENV} ${QMAKE_ENV} ${WRKSRC}/bin/qmake ${QMAKE_ARGS}
+.for d in src/tools/bootstrap ${MORE_WRKSRCS}
+	${MKDIR} ${WRKSRC}/${d}
+	cd ${WRKSRC}/${d} && ${SETENV} ${QMAKE_ENV} ${_QMAKE} ${QMAKE_ARGS} ${WRKSRC}/${d}
 .endfor
 
 post-build:

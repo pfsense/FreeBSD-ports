@@ -3,15 +3,15 @@
 
 PORTNAME=	cdcat
 PORTVERSION=	2.3.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt based tool for offline CD/DVD/disk catalogs
 
-LICENSE=	GPLv2 MPL
-LICENSE_COMB=	multi
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	cryptopp>0:security/cryptopp
 LIB_DEPENDS=	libtar.so:devel/libtar \

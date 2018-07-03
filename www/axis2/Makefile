@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	axis2
-PORTVERSION=	1.7.4
+PORTVERSION=	1.7.7
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/axis/${PORTNAME}/java/core/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
-MAINTAINER=	dbaio@bsd.com.br
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Provides a Web Services,SOAP and WSDL engine from Apache
 
 LICENSE=	APACHE20
@@ -19,7 +19,7 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 
 OPTIONS_SINGLE=	AS
-OPTIONS_SINGLE_AS=	TOMCAT6 TOMCAT7
+OPTIONS_SINGLE_AS=	TOMCAT6 TOMCAT7 TOMCAT85
 OPTIONS_DEFAULT=	TOMCAT6
 
 OPTIONS_DEFINE=	EXAMPLES
@@ -29,6 +29,9 @@ TOMCAT6_RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat6
 
 TOMCAT7_VARS=	APPHOME=${LOCALBASE}/apache-tomcat-7.0
 TOMCAT7_RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat7
+
+TOMCAT85_VARS=	APPHOME=${LOCALBASE}/apache-tomcat-8.5
+TOMCAT85_RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat85
 
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
@@ -43,6 +46,7 @@ do-install:
 	( cd ${WRKSRC}/lib && ${COPYTREE_SHARE} \* ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/lib )
 	( ${MKDIR} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/axis2-web && cd ${WRKSRC}/webapp/axis2-web && ${COPYTREE_SHARE} \* ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/axis2-web )
 	( cd ${WRKSRC}/repository && ${COPYTREE_SHARE} \* ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF )
+	${MKDIR} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/conf
 .for f in axis2.policy axis2.xml commons-logging.properties log4j.properties
 	${INSTALL_DATA} ${WRKSRC}/conf/${f} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/conf/${f}.sample
 .endfor

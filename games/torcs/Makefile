@@ -2,31 +2,32 @@
 # $FreeBSD$
 
 PORTNAME=	torcs
-DISTVERSION=	1.3.6
-PORTREVISION=	3
+DISTVERSION=	1.3.7
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/all-in-one/${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	The Open Racing Car Simulator
+MAINTAINER=	monwarez@mailoo.org
+COMMENT=	Free  open source racing car simulator
 
 LICENSE=	GPLv2
-
-MAKE_JOBS_UNSAFE=	yes
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libvorbis.so:audio/libvorbis
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cpe gmake openal:al,alut shebangfix tar:bzip2
+MAKE_JOBS_UNSAFE=	yes
+
+USES=		compiler:c++11-lang cpe gmake openal:al,alut shebangfix tar:bzip2
 CPE_VENDOR=	bernhard_wymann
 SHEBANG_FILES=	src/tools/accc/accc.in src/tools/nfsperf/nfsperf.in \
 		src/tools/texmapper/texmapper.in src/tools/nfs2ac/nfs2ac.in \
 		src/tools/trackgen/trackgen.in \
 		src/modules/telemetry/telemetry.sh robotgen
-USE_XORG=	xrender xmu ice xext x11 xxf86vm xrandr
-USE_GL=		glut
+USE_CXXSTD=	c++11
+USE_XORG=	xrender xmu ice xext x11 xxf86vm xrandr xi xt sm
+USE_GL=		glut glu gl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -96,6 +97,9 @@ pre-install:
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/faq/|} ${STAGEDIR}${DOCSDIR}
+	# strip simuv2.so as reported by Q/A tests
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/torcs/modules/simu/simuv2.so
+
 .for ed in ${EMPTYDIR}
 	${TOUCH} ${STAGEDIR}${INSTDIR}/results/${ed}/.keep_me
 .endfor

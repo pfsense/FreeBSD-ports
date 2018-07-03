@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	collectd
-PORTVERSION=	5.6.0
-PORTREVISION=	2
+PORTVERSION=	5.8.0
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
-MASTER_SITES=	https://collectd.org/files/ \
-		http://collectd.org/files/
+MASTER_SITES=	https://storage.googleapis.com/collectd-tarballs/
 PKGNAMESUFFIX=	5
 
 MAINTAINER=	ports@bsdserwis.com
@@ -15,14 +14,10 @@ COMMENT=	Systems & network statistics collection daemon
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-# Only autoreconf stage and sigrok plugin need GLIB:
-BUILD_DEPENDS=	${LOCALBASE}/share/aclocal/glib-2.0.m4:devel/glib20
-LIB_DEPENDS=	libltdl.so:devel/libltdl
-
 USES=		autoreconf gmake libtool pkgconfig shebangfix tar:bzip2
 GNU_CONFIGURE=	yes
 
-OPTIONS_DEFINE=		CGI DEBUG GCRYPT LOGSTASH VIRT
+OPTIONS_DEFINE=		CGI JAVA LOGGING GCRYPT LOGSTASH VIRT
 OPTIONS_GROUP=		INPUT OUTPUT
 OPTIONS_GROUP_OUTPUT=	KAFKA MONGODB NOTIFYDESKTOP NOTIFYEMAIL RIEMANN RRDTOOL \
 			TSDB
@@ -32,17 +27,19 @@ OPTIONS_GROUP_INPUT=	CHRONY CURL CURL_JSON CURL_XML DBI IPMI JSON \
 			SIGROK SNMP STATSD TOKYOTYRANT VARNISH XML \
 			XMMS ZOOKEEPER
 
+OPTIONS_DEFAULT=	LOGGING GCRYPT PING
+
 CGI_DESC=		Install collection.cgi (requires rrdtool)
 CHRONY_DESC=		Enable chronyd plugin
 CURL_DESC=		Enable curl-based plugins (apache, nginx, etc)
 CURL_JSON_DESC=		Enable curl_json plugin (implies curl and json)
 CURL_XML_DESC=		Enable ascent, bind, curl_xml plugins (implies curl and xml)
 DBI_DESC=		Enable dbi plugin
-DEBUG_DESC=		Enable debugging
 GCRYPT_DESC=		Build with libgcrypt
 IPMI_DESC=		Enable OpenIPMI plugin
 JSON_DESC=		Enable JSON plugins
 KAFKA_DESC=		Enable write_kafka plugin
+LOGGING_DESC=		Enable debug logging
 LOGSTASH_DESC=		Enable log_logstash plugin (requires json)
 MEMCACHEC_DESC=		Enable memcachec plugin
 MODBUS_DESC=		Enable modbus plugin
@@ -93,11 +90,9 @@ CONFIGURE_ARGS=	--localstatedir=/var \
 		--disable-ceph \
 		--disable-cgroups \
 		--disable-fhcount \
-		--without-java \
 		--without-libaquaero5 \
 		--without-libganglia \
 		--without-libiptc \
-		--without-libjvm \
 		--without-liblvm2app \
 		--without-libkstat \
 		--without-libldap \
@@ -110,11 +105,11 @@ CONFIGURE_ARGS=	--localstatedir=/var \
 		--without-lvm \
 		--without-mic \
 		--without-oracle \
-		--disable-turbostat
+		--disable-turbostat \
+		--enable-disk
 
 CGI_RUN_DEPENDS=		p5-URI>=0:net/p5-URI \
 				p5-CGI>=0:www/p5-CGI \
-				p5-Data-Dumper>=0:devel/p5-Data-Dumper \
 				p5-HTML-Parser>=0:www/p5-HTML-Parser
 CGI_IMPLIES=			RRDTOOL
 
@@ -130,14 +125,17 @@ CURL_JSON_CONFIGURE_ENABLE=	curl_json
 CURL_XML_IMPLIES=		CURL XML
 CURL_XML_CONFIGURE_ENABLE=	ascent bind curl_xml
 
-DEBUG_CONFIGURE_ENABLE=		debug
+JAVA_USE=			java
+JAVA_CONFIGURE_ENABLE=		java
+JAVA_CONFIGURE_WITH=		java=${LOCALBASE} libjvm
 
 DBI_LIB_DEPENDS=		libdbi.so:databases/libdbi
 DBI_CONFIGURE_WITH=		libdbi=${LOCALBASE}
 DBI_CONFIGURE_ENABLE=		dbi
 DBI_CFLAGS=			-Wno-deprecated-declarations
 
-GCRYPT_LIB_DEPENDS=		libgcrypt.so:security/libgcrypt
+GCRYPT_LIB_DEPENDS=		libgcrypt.so:security/libgcrypt \
+				libgpg-error.so:security/libgpg-error
 GCRYPT_CONFIGURE_WITH=		-with-libgcrypt=${LOCALBASE}
 GCRYPT_LIBS=			-lgcrypt
 
@@ -149,6 +147,8 @@ JSON_CONFIGURE_WITH=		libyajl=${LOCALBASE}
 
 KAFKA_LIB_DEPENDS=		librdkafka.so:net/librdkafka
 KAFKA_CONFIGURE_ENABLE=		write_kafka
+
+LOGGING_CONFIGURE_ENABLE=	debug
 
 LOGSTASH_CONFIGURE_ENABLE=	log_logstash
 LOGSTASH_IMPLIES=		JSON
@@ -171,13 +171,15 @@ MQTT_LIB_DEPENDS=		libmosquitto.so:net/mosquitto
 MQTT_CONFIGURE_ENABLE=		mqtt
 MQTT_CONFIGURE_WITH=		libmosquitto=${LOCALBASE}
 
-MYSQL_USE=			mysql=yes
+MYSQL_USES=			mysql ssl
 MYSQL_CONFIGURE_ENABLE=		mysql
 MYSQL_CONFIGURE_WITH=		libmysql=${LOCALBASE}
 
 NOTIFYDESKTOP_LIB_DEPENDS=	libnotify.so:devel/libnotify
 NOTIFYDESKTOP_CONFIGURE_ENABLE=	notify_desktop
 NOTIFYDESKTOP_CONFIGURE_WITH=	libnotify=${LOCALBASE}
+NOTIFYDESKTOP_USE=		GNOME=gdkpixbuf2
+NOTIFYDESKTOP_USES=		gettext-runtime
 
 NOTIFYEMAIL_LIB_DEPENDS=	libesmtp.so:mail/libesmtp
 NOTIFYEMAIL_CONFIGURE_ENABLE=	notify_email
@@ -199,7 +201,8 @@ OPENLDAP_CONFIGURE_WITH=	libldap=${LOCALBASE}
 
 PERL_USES=			perl5
 PERL_CONFIGURE_ENABLE=		perl
-PERL_CONFIGURE_WITH=		perl=${PERL} perl-bindings
+PERL_CONFIGURE_DISABLE=		perl
+PERL_CONFIGURE_WITH=		perl=${PERL} perl-bindings libperl
 
 PGSQL_USES=			pgsql
 PGSQL_CONFIGURE_ENABLE=		postgresql
@@ -212,9 +215,10 @@ PING_LIB_DEPENDS=		liboping.so:net/liboping
 PING_CONFIGURE_ENABLE=		ping
 PING_CONFIGURE_WITH=		liboping=${LOCALBASE}
 
-PYTHON_USES=			python:2
+PYTHON_USES=			python
 PYTHON_CONFIGURE_ENABLE=	python
 PYTHON_CONFIGURE_WITH=		python=${PYTHON_CMD}
+PYTHON_CONFIGURE_ENV=		PYTHON_CONFIG=${PYTHON_CMD}-config
 
 RABBITMQ_LIB_DEPENDS=		librabbitmq.so:net/rabbitmq-c
 RABBITMQ_CONFIGURE_ENABLE=	rabbitmq
@@ -224,10 +228,13 @@ REDIS_LIB_DEPENDS=		libhiredis.so:databases/hiredis
 REDIS_CONFIGURE_ENABLE=		redis write_redis
 REDIS_CONFIGURE_WITH=		libhiredis=${LOCALBASE}
 
-RIEMANN_LIB_DEPENDS=		libriemann-client.so:net-mgmt/riemann-c-client
+RIEMANN_LIB_DEPENDS=		libriemann-client.so:net-mgmt/riemann-c-client \
+				libltdl.so:devel/libltdl
 RIEMANN_CONFIGURE_ENABLE=	write_riemann
 
-ROUTEROS_LIB_DEPENDS=		librouteros.so:net/librouteros
+ROUTEROS_LIB_DEPENDS=		librouteros.so:net/librouteros \
+				libgcrypt.so:security/libgcrypt \
+				libgpg-error.so:security/libgpg-error
 ROUTEROS_CONFIGURE_ENABLE=	routeros
 ROUTEROS_CONFIGURE_WITH=	librouteros=${LOCALBASE}
 
@@ -240,6 +247,7 @@ SIGROK_CFLAGS=			`pkg-config --cflags glib-2.0`
 SIGROK_LIB_DEPENDS=		libsigrok.so:devel/libsigrok
 SIGROK_CONFIGURE_ENABLE=	sigrok
 SIGROK_CONFIGURE_WITH=		libsigrok
+SIGROK_USES=			gettext-runtime
 
 SNMP_LIB_DEPENDS=		libnetsnmp.so:net-mgmt/net-snmp
 SNMP_CONFIGURE_ENABLE=		snmp
@@ -247,7 +255,8 @@ SNMP_CONFIGURE_WITH=		libnetsnmp
 
 STATSD_CONFIGURE_ENABLE=	statsd
 
-TOKYOTYRANT_LIB_DEPENDS=	libtokyotyrant.so:databases/tokyotyrant
+TOKYOTYRANT_LIB_DEPENDS=	libtokyotyrant.so:databases/tokyotyrant \
+				libtokyocabinet.so:databases/tokyocabinet
 TOKYOTYRANT_CONFIGURE_ENABLE=	tokyotyrant
 TOKYOTYRANT_CONFIGURE_WITH=	libtokyotyrant=${LOCALBASE}
 
@@ -255,10 +264,11 @@ TSDB_CONFIGURE_ENABLE=		write_tsdb
 
 VARNISH_LIB_DEPENDS=		libvarnishapi.so:www/varnish4
 VARNISH_CONFIGURE_ENABLE=	varnish
-VARNISH_CONFIGURE_WITH=		libvarnish=${LOCALBASE}
 
 VIRT_IMPLIES=			XML
-VIRT_LIB_DEPENDS=		libvirt.so:devel/libvirt
+VIRT_LIB_DEPENDS=		libvirt.so:devel/libvirt \
+				libgcrypt.so:security/libgcrypt \
+				libgpg-error.so:security/libgpg-error
 VIRT_CONFIGURE_ENABLE=		virt
 VIRT_CONFIGURE_WITH=		virt=${LOCALBASE}
 
@@ -269,6 +279,7 @@ XMMS_CFLAGS=			`xmms-config --cflags`
 XMMS_LIB_DEPENDS=		libxmms.so:multimedia/xmms
 XMMS_CONFIGURE_ENABLE=		xmms
 XMMS_CONFIGURE_WITH=		libxmms=${LOCALBASE}
+XMMS_USE=			XORG=x11,xext,xi
 
 ZOOKEEPER_LIB_DEPENDS=		libzookeeper_mt.so:devel/libzookeeper
 ZOOKEEPER_CONFIGURE_ENABLE=	zookeeper
@@ -325,28 +336,19 @@ CONFIGURE_ARGS+=--enable-aggregation \
 		--enable-write_log \
 		--enable-zfs_arc \
 
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-PLIST_SUB+=	DISK="@comment "
-.else
-CONFIGURE_ARGS+=--enable-disk
-PLIST_SUB+=	DISK=""
-.endif
-
 INSTALL_TARGET=	install-strip
 SHEBANG_FILES=	contrib/collection.cgi
 
 post-patch:
 	@${REINPLACE_CMD} 's/-Werror//' \
-		${WRKSRC}/configure.ac ${WRKSRC}/src/Makefile.am \
-		${WRKSRC}/src/libcollectdclient/Makefile.am
+		${WRKSRC}/configure.ac 
 	@${REINPLACE_CMD} \
 		-e 's;@prefix@/var/;/var/;' \
 		-e 's;/var/lib/;/var/db/;' \
 		-e 's;@localstatedir@/lib/;/var/db/;' \
 		${WRKSRC}/src/collectd.conf.in \
-		${WRKSRC}/src/collectd.conf.5
+		${WRKSRC}/src/collectd.conf.5 \
+		${WRKSRC}/src/collectd.conf.pod
 	@${REINPLACE_CMD} \
 		-e 's;/etc/collection\.conf;${WWWDIR}/collection.conf;' \
 		${WRKSRC}/contrib/collection.cgi

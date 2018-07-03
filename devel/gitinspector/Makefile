@@ -1,21 +1,28 @@
 # $FreeBSD$
 
 PORTNAME=	gitinspector
-PORTVERSION=	0.3.2
+PORTVERSION=	0.4.4
+DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	devel python
-MASTER_SITES=	GOOGLE_CODE
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 
-MAINTAINER=	rpaulo@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Statistical analysis tool for git repositories
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN=		Unfetchable (google code has gone away)
+RUN_DEPENDS=	git:devel/git
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+NO_ARCH=	yes
+USE_PYTHON=	autoplist concurrent distutils
+USES=		python
 
-USES=		zip python
-USE_PYTHON=	autoplist distutils
+GH_ACCOUNT=	ejwa
+USE_GITHUB=	yes
+
+post-patch:
+	@${REINPLACE_CMD} -e '/data_files/d' ${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	plutocracy
 PORTVERSION=	0.0.20081229
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		python tar:bzip2
+USES=		python:2.7 tar:bzip2
 USE_SDL=	sdl pango
 USE_GL=		gl glu
 USE_PYTHON=	distutils

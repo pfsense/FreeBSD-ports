@@ -3,6 +3,7 @@
 
 PORTNAME=	mod_proctitle
 PORTVERSION=	0.4.1
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	ftp://ftp.springdaemons.com/soft/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
@@ -12,9 +13,8 @@ COMMENT=	Set httpd process titles to reflect currently processed request
 
 LICENSE=	BSD2CLAUSE
 
-USE_APACHE=	22+
 GNU_CONFIGURE=	yes
-USES=		tar:bzip2
+USES=		apache:2.2+ tar:bzip2
 
 CFLAGS+=	-I${LOCALBASE}/include \
 		-I${LOCALBASE}/include/apr-1

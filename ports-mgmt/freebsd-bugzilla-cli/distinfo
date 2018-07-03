@@ -1,2 +1,3 @@
-SHA256 (pgollucci-freebsd-bugzilla-cli-0.14.0_GH0.tar.gz) = 416280f46b62f97418821e4d92d94dff9c70e0092dba1f6f98c8ad80dac81fc7
-SIZE (pgollucci-freebsd-bugzilla-cli-0.14.0_GH0.tar.gz) = 16000
+TIMESTAMP = 1504867792
+SHA256 (pgollucci-freebsd-bugzilla-cli-0.15.1_GH0.tar.gz) = e23dbfd11d9ff7013d411cb8ce8ba6dd0cee4715d2e57ee250fd6e177f1b848d
+SIZE (pgollucci-freebsd-bugzilla-cli-0.15.1_GH0.tar.gz) = 16429

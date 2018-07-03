@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	percona
-DISTVERSION=	5.5.51-38.1
+DISTVERSION=	5.5.59-38.11
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.5/Percona-Server-${DISTVERSION}/source/tarball/
@@ -11,8 +11,11 @@ DISTNAME=	percona-server-${DISTVERSION}
 MAINTAINER=	flo@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 SLAVEDIRS=	databases/percona55-client
-USES=		bison cmake readline shebangfix
+USES=		bison cmake:noninja readline shebangfix
 
 CXXFLAGS+=	${CPPFLAGS}
 
@@ -48,7 +51,8 @@ SHEBANG_FILES=	scripts/*.pl* scripts/*.sh
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MOPENSSL}
-CMAKE_ARGS+=	-DWITH_SSL=bundled
+CMAKE_ARGS+=	-DWITH_SSL=system
+OPENSSL_USES=	ssl
 .endif
 .if ${PORT_OPTIONS:MFASTMTX}
 CMAKE_ARGS+=	-DWITH_FAST_MUTEXES=1
@@ -59,6 +63,7 @@ CMAKE_ARGS+=	-DWITH_FAST_MUTEXES=1
 USES+=mysql:55p
 
 CONFLICTS_INSTALL=	mysql*-server-* \
+			mysqlwsrep* \
 			mariadb*-server-* \
 			percona5[0-46-9]-server-*
 

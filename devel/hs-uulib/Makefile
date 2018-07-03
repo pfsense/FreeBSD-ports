@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	uulib
-PORTVERSION=	0.9.20
+PORTVERSION=	0.9.22
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

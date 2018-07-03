@@ -5,9 +5,13 @@ PORTNAME=	dbus-c++
 PORTVERSION=	0.9.1
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	pw
+PORTREVISION=	2
 CATEGORIES=	devel gnome
 
-MAINTAINER=	yuri@rawbw.com
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	7fca13b03d1d4af585714293358cf1f76664f41d.patch:-p1
+
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ API for D-BUS
 
 LICENSE=	LGPL21+
@@ -16,11 +20,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libdbus-1.so:devel/dbus
 
+USES=		autoreconf compiler:c++11-lib gettext gmake libtool localbase pathfix pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	andreas-volz
 GH_PROJECT=	dbus-cplusplus
-
-USES=		autoreconf compiler:c++11-lib gettext gmake libtool localbase pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
@@ -31,9 +34,6 @@ CONFIGURE_ARGS=	--prefix=${LOCALBASE} \
 		--disable-tests \
 		--disable-examples \
 		--disable-doxygen-docs
-
-post-patch:
-	@${REINPLACE_CMD} 's|^pkgconfigdir = .*|pkgconfigdir=$${prefix}/libdata/pkgconfig|' ${WRKSRC}/Makefile.am
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libdbus-c++-1.so

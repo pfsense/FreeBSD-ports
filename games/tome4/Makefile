@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	tome4
-PORTVERSION=	1.4.8
+PORTVERSION=	1.5.5
 CATEGORIES=	games
-MASTER_SITES=	http://te4.org/dl/t-engine/ \
+MASTER_SITES=	https://te4.org/dl/t-engine/ \
 		SF/lifanov-ports-distfiles/${PORTNAME}/:icons
 DISTFILES=	t-engine4-src-${PORTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=	t-engine4-src-${PORTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	lifanov@mail.lifanov.com
+MAINTAINER=	lifanov@FreeBSD.org
 COMMENT=	Epic tactical turn-based roguelike adventure
 
 LICENSE=	GPLv3+
@@ -18,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	premake4:devel/premake4
 LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
 DESKTOP_ENTRIES="ToME 4" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;RolePlaying;" ""
@@ -31,9 +31,7 @@ USE_SDL=	image2 sdl2 ttf2
 USE_GL=		gl glu
 USE_CSTD=	gnu89
 SUB_FILES=	tome4
-MAKE_JOBS_UNSAFE=yes
-
-LUA_TYPE=
+LLD_UNSAFE=	yes
 
 .include <bsd.port.pre.mk>
 
@@ -43,6 +41,8 @@ pre-build:
 	(cd ${WRKSRC} && premake4 --lua=default gmake)
 .else
 	(cd ${WRKSRC} && premake4 gmake)
+	@${ECHO} '.NOTPARALLEL:' >> ${WRKSRC}/build/buildvm.make
+	@${ECHO} '.NOTPARALLEL:' >> ${WRKSRC}/build/luajit2.make
 .endif
 	@${REINPLACE_CMD} 's|-lpthread|-pthread|' ${WRKSRC}/build/TEngine.make
 

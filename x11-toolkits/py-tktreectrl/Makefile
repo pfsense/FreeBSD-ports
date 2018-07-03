@@ -2,22 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	tktreectrl
-PORTVERSION=	2.0.1
+DISTVERSION=	2.0.2
 CATEGORIES=	x11-toolkits tk python
 MASTER_SITES=	SF/tkintertreectrl/TkinterTreectrl-${PORTVERSION:R}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	TkinterTreectrl-${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	TkTreectrl Python bindings
 
-LIB_DEPENDS=	libtreectrl.so.1:x11-toolkits/tktreectrl
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter \
-		${PYTHON_SITELIBDIR}/Pmw/__init__.py:x11-toolkits/py-Pmw
+LICENSE=	PD
 
-USES=		python tk:run zip
-USE_PYTHON=	distutils
-PYDISTUTILS_PKGNAME=	TkinterTreectrl
-PYDISTUTILS_PKGVERSION=	${PORTVERSION:R}
+LIB_DEPENDS=	libtreectrl.so.1:x11-toolkits/tktreectrl # no libtreectrl.so is provided by x11-toolkits/tktreectrl
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Pmw>=0:x11-toolkits/py-Pmw@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tkinter>=0:x11-toolkits/py-tkinter@${FLAVOR}
+
+# Restrict python to 2.7 because x11-toolkits/py-Pmw is not ready for python 3 yet
+USES=		python:2.7 tk:run zip
+USE_PYTHON=	autoplist distutils
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

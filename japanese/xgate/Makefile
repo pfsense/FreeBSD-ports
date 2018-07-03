@@ -3,13 +3,15 @@
 
 PORTNAME=	xgate
 PORTVERSION=	3.7pl6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	japanese mail www java
 MASTER_SITES=	http://www.orangesoft.co.jp/index.php/download_file/-/192/
 DISTNAME=	${PORTNAME}pkg${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Webmail system xGate implemented by Servlet over IMAP4/POP3
+
+BROKEN=		unfetchable
 
 RUN_DEPENDS=	${APP_HOME}/bin/bootstrap.jar:www/tomcat6
 
@@ -46,7 +48,7 @@ RESTRICTED=	Commercial license
 
 .include <bsd.port.options.mk>
 
-APP_HOME!=	${MAKE} -C ${PORTSDIR}/www/tomcat6 -VAPP_HOME
+APP_HOME!=	${MAKE} -C ${PORTSDIR}/www/tomcat6 -VAPP_HOME PREFIX=${LOCALBASE}
 
 CNFLSTS=	account/admin.ndt	\
 		account/license.dat	\

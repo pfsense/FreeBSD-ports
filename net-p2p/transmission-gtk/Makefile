@@ -1,6 +1,5 @@
 # $FreeBSD$
 
-PORTREVISION=	0
 PKGNAMESUFFIX=	-gtk
 
 MAINTAINER=	crees@FreeBSD.org
@@ -18,7 +17,7 @@ MASTERDIR=	${.CURDIR}/../transmission-cli
 PLIST=		${.CURDIR}/pkg-plist
 SLAVEPORT=	gtk
 
-USE_GNOME=	gtk30 intlhack
+USE_GNOME=	cairo gtk30 intlhack
 USES=		gettext pathfix desktop-file-utils
 INSTALLS_ICONS=	yes
 

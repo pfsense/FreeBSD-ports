@@ -3,6 +3,7 @@
 
 PORTNAME=	cjc
 PORTVERSION=	1.2.1
+PORTREVISION=	1
 CATEGORIES=	net-im python
 MASTER_SITES=	GHC
 
@@ -12,14 +13,17 @@ COMMENT=	Console Jabber Client
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyxmpp>=0:net-im/py-pyxmpp
+DEPRECATED=	Depends on expired net-im/py-xmpp
+EXPIRATION_DATE=2018-04-01
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyxmpp>=0:net-im/py-pyxmpp@${PY_FLAVOR}
+
+USES=		python:2.7 shebangfix
+SHEBANG_FILES=	cjc.in cjc.py cjc/main.py
+NO_ARCH=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Jajcus
-
-USES=		python:2 shebangfix
-SHEBANG_FILES=	cjc.in cjc.py cjc/main.py
-NO_ARCH=	yes
 
 PORTDOCS=	*
 

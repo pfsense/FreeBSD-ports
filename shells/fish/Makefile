@@ -2,17 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	fish
-PORTVERSION=	2.3.1
-PORTREVISION=	1
+PORTVERSION=	2.7.0
 CATEGORIES=	shells
 MASTER_SITES=	http://fishshell.com/files/${PORTVERSION}/
 
-MAINTAINER=	freebsd.users@gmail.com
+MAINTAINER=	asomers@FreeBSD.org
 COMMENT=	User friendly command line shell
 
 LICENSE=	GPLv2
 
-USES=		autoreconf cpe gmake libtool ncurses pkgconfig pathfix python:3 localbase
+LIB_DEPENDS+=	libpcre2-32.so:devel/pcre2
+
+USES=		autoreconf cpe gmake libtool ncurses pkgconfig pathfix python:3.4+ \
+		localbase compiler:c++11-lang shebangfix
+SHEBANG_FILES=	share/tools/*.py share/tools/web_config/webconfig.py
+
+CONFLICTS_INSTALL=	comms/mlan3
 
 GNU_CONFIGURE=	yes
 
@@ -27,8 +32,6 @@ OPTIONS_SUB=	yes
 NLS_USES=		gettext
 NLS_CONFIGURE_ENV=	ac_cv_func_gettext=yes
 NLS_CONFIGURE_OFF=	--without-gettext
-
-DOCS_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-Makefile.in
 
 post-patch:
 	@${REINPLACE_CMD} -e \

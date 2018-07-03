@@ -6,7 +6,7 @@
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2014-2016 Bill Meeks
+ * Copyright (c) 2014-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,6 +74,8 @@ if (isset($id) && $a_nat[$id]) {
 		$pconfig['barnyard_syslog_proto'] = "udp";
 	if (empty($a_nat[$id]['barnyard_syslog_opmode']))
 		$pconfig['barnyard_syslog_opmode'] = "default";
+	if (empty($a_nat[$id]['barnyard_syslog_payload_encoding']))
+		$pconfig['barnyard_syslog_payload_encoding'] = "hex";
 	if (empty($a_nat[$id]['barnyard_syslog_facility']))
 		$pconfig['barnyard_syslog_facility'] = "LOG_USER";
 	if (empty($a_nat[$id]['barnyard_syslog_priority']))
@@ -170,6 +172,7 @@ if ($_POST['save']) {
 		$natent['barnyard_bro_ids_enable'] = $_POST['barnyard_bro_ids_enable'] ? 'on' : 'off';
 		$natent['barnyard_disable_sig_ref_tbl'] = $_POST['barnyard_disable_sig_ref_tbl'] ? 'on' : 'off';
 		$natent['barnyard_syslog_opmode'] = $_POST['barnyard_syslog_opmode'];
+		$natent['barnyard_syslog_payload_encoding'] = $_POST['barnyard_syslog_payload_encoding'];
 		$natent['barnyard_syslog_proto'] = $_POST['barnyard_syslog_proto'];
 
 		if ($_POST['unified2_log_limit']) $natent['unified2_log_limit'] = $_POST['unified2_log_limit']; else unset($natent['unified2_log_limit']);
@@ -178,7 +181,12 @@ if ($_POST['save']) {
 		if ($_POST['barnyard_dbhost']) $natent['barnyard_dbhost'] = $_POST['barnyard_dbhost']; else unset($natent['barnyard_dbhost']);
 		if ($_POST['barnyard_dbname']) $natent['barnyard_dbname'] = $_POST['barnyard_dbname']; else unset($natent['barnyard_dbname']);
 		if ($_POST['barnyard_dbuser']) $natent['barnyard_dbuser'] = $_POST['barnyard_dbuser']; else unset($natent['barnyard_dbuser']);
-		if ($_POST['barnyard_dbpwd']) $natent['barnyard_dbpwd'] = base64_encode($_POST['barnyard_dbpwd']); else unset($natent['barnyard_dbpwd']);
+
+		// The password field will return '********' if no changes are made and needs to be escaped.
+		// Because of the base64 encoding/decoding, in the case of a valid value that hasn't changed, it will need to be re-encoded to base64.
+		if ($_POST['barnyard_dbpwd'] && ($_POST['barnyard_dbpwd'] != DMYPWD)) $natent['barnyard_dbpwd'] = base64_encode($_POST['barnyard_dbpwd']); else 
+			if ($_POST['barnyard_dbpwd'] != DMYPWD) unset($natent['barnyard_dbpwd']); else $natent['barnyard_dbpwd'] = base64_encode($natent['barnyard_dbpwd']); 
+		
 		if ($_POST['barnyard_syslog_rhost']) $natent['barnyard_syslog_rhost'] = $_POST['barnyard_syslog_rhost']; else unset($natent['barnyard_syslog_rhost']);
 		if ($_POST['barnyard_syslog_dport']) $natent['barnyard_syslog_dport'] = $_POST['barnyard_syslog_dport']; else $natent['barnyard_syslog_dport'] = '514';
 		if ($_POST['barnyard_syslog_facility']) $natent['barnyard_syslog_facility'] = $_POST['barnyard_syslog_facility']; else $natent['barnyard_syslog_facility'] = 'LOG_USER';
@@ -221,7 +229,9 @@ if ($_POST['save']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Barnyard2 Settings"), gettext("{$if_friendly}"));
+if (empty($if_friendly)) {
+	$if_friendly = "None";
+}$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Barnyard2 Settings"), gettext("{$if_friendly}"));
 include_once("head.inc");
 
 /* Display Alert message */
@@ -382,20 +392,25 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['barnyard_syslog_enable'] == 'on' ? true:false,
 	'on'
 ));
-
+$section->addInput(new Form_Checkbox(
+	'barnyard_syslog_local',
+	'Local Only',
+	'Enable logging of alerts to the local system only. This will send alert data (without payload) to the local system using the facility and priority values selected below.',
+	$pconfig['barnyard_syslog_local'] == 'on' ? true:false,
+	'on'
+));
 $section->addInput(new Form_Select(
 	'barnyard_syslog_opmode',
 	'Operation Mode',
 	$pconfig['barnyard_syslog_opmode'],
 	array( "default" => "DEFAULT", "complete" => "COMPLETE" )
-))->setHelp('Select the level of detail to include when reporting. DEFAULT mode is compatible with the standard Snort syslog format. COMPLETE mode includes additional information such as the raw packet data (displayed in hex format).');
-$section->addInput(new Form_Checkbox(
-	'barnyard_syslog_local',
-	'Local Only',
-	'Enable logging of alerts to the local system only. This will send alert data to the local system only and overrides the host, port and protocol values below.',
-	$pconfig['barnyard_syslog_local'] == 'on' ? true:false,
-	'on'
-));
+))->setHelp('Select the level of detail to include when reporting. DEFAULT mode is compatible with the standard Snort syslog format. COMPLETE mode includes additional information such as the raw packet data.');
+$section->addInput(new Form_Select(
+	'barnyard_syslog_payload_encoding',
+	'Payload Encoding',
+	$pconfig['barnyard_syslog_payload_encoding'],
+	array( "hex" => "Hex", "ascii" => "ASCII", "base64" => "Base64" )
+))->setHelp('Select the encoding method to use for logging raw packet data.');
 $section->addInput(new Form_Input(
 	'barnyard_syslog_rhost',
 	'Remote Host',
@@ -419,13 +434,13 @@ $section->addInput(new Form_Select(
 	'Log Facility',
 	$pconfig['barnyard_syslog_facility'],
 	array(  "LOG_AUTH" => "LOG_AUTH", "LOG_AUTHPRIV" => "LOG_AUTHPRIV", "LOG_DAEMON" => "LOG_DAEMON", "LOG_KERN" => "LOG_KERN", "LOG_SYSLOG" => "LOG_SYSLOG", "LOG_USER" => "LOG_USER", "LOG_LOCAL0" => "LOG_LOCAL0", "LOG_LOCAL1" => "LOG_LOCAL1", "LOG_LOCAL2" => "LOG_LOCAL2", "LOG_LOCAL3" => "LOG_LOCAL3", "LOG_LOCAL4" => "LOG_LOCAL4", "LOG_LOCAL5" => "LOG_LOCAL5", "LOG_LOCAL6" => "LOG_LOCAL6", "LOG_LOCAL7" => "LOG_LOCAL7" )
-))->setHelp('Select Syslog Facility to use for remote reporting. Default is LOG_LOCAL1.');
+))->setHelp('Select Syslog Facility to use for reporting. Default is LOG_LOCAL1.');
 $section->addInput(new Form_Select(
 	'barnyard_syslog_priority',
 	'Log Priority',
 	$pconfig['barnyard_syslog_priority'],
 	array( "LOG_EMERG" => "LOG_EMERG", "LOG_CRIT" => "LOG_CRIT", "LOG_ALERT" => "LOG_ALERT", "LOG_ERR" => "LOG_ERR", "LOG_WARNING" => "LOG_WARNING", "LOG_NOTICE" => "LOG_NOTICE", "LOG_INFO" => "LOG_INFO" )
-))->setHelp('Select Syslog Priority (Level) to use for remote reporting. Default is LOG_INFO.');
+))->setHelp('Select Syslog Priority (Level) to use for reporting. Default is LOG_INFO.');
 $form->add($section);
 
 $section = new Form_Section('Bro-IDS Output Settings');
@@ -477,20 +492,31 @@ events.push(function(){
 
 	function toggle_syslog() {
 		var hide = ! $('#barnyard_syslog_enable').prop('checked');
-		hideSelect('barnyard_syslog_opmode', hide);
-		hideCheckbox('barnyard_syslog_local', hide);
-		hideInput('barnyard_syslog_rhost', hide);
-		hideInput('barnyard_syslog_dport', hide);
-		hideSelect('barnyard_syslog_proto', hide);
-		hideSelect('barnyard_syslog_facility', hide);
-		hideSelect('barnyard_syslog_priority', hide);
+		if (hide) {
+			hideCheckbox('barnyard_syslog_local', hide);
+			hideSelect('barnyard_syslog_opmode', hide);
+			hideSelect('barnyard_syslog_payload_encoding', hide);
+			hideInput('barnyard_syslog_rhost', hide);
+			hideInput('barnyard_syslog_dport', hide);
+			hideSelect('barnyard_syslog_proto', hide);
+			hideSelect('barnyard_syslog_facility', hide);
+			hideSelect('barnyard_syslog_priority', hide);
+		}
+		else {
+			hideCheckbox('barnyard_syslog_local', hide);
+			hideSelect('barnyard_syslog_facility', hide);
+			hideSelect('barnyard_syslog_priority', hide);
+			toggle_local_syslog();
+		}
 	}
 
 	function toggle_local_syslog() {
 		var hide = $('#barnyard_syslog_local').prop('checked');
-		disableInput('barnyard_syslog_rhost', hide);
-		disableInput('barnyard_syslog_dport', hide);
-		disableInput('barnyard_syslog_proto', hide);
+		hideSelect('barnyard_syslog_opmode', hide);
+		hideSelect('barnyard_syslog_payload_encoding', hide);
+		hideInput('barnyard_syslog_rhost', hide);
+		hideInput('barnyard_syslog_dport', hide);
+		hideSelect('barnyard_syslog_proto', hide);
 	}
 
 	function toggle_bro_ids() {
@@ -507,6 +533,8 @@ events.push(function(){
 		disableInput('barnyard_obfuscate_ip', hide);
 		disableInput('barnyard_sensor_id', hide);
 		disableInput('barnyard_sensor_name', hide);
+		disableInput('barnyard_log_vlan_events', hide);
+		disableInput('barnyard_log_mpls_events', hide);
 		disableInput('barnyard_mysql_enable', hide);
 		disableInput('barnyard_dbhost', hide);
 		disableInput('barnyard_dbname', hide);
@@ -514,13 +542,9 @@ events.push(function(){
 		disableInput('barnyard_dbpwd', hide);
 		disableInput('barnyard_disable_sig_ref_tbl', hide);
 		disableInput('barnyard_syslog_enable', hide);
-		disableInput('barnyard_syslog_opmode', hide);
 		disableInput('barnyard_syslog_local', hide);
 		disableInput('barnyard_syslog_rhost', hide);
 		disableInput('barnyard_syslog_dport', hide);
-		disableInput('barnyard_syslog_proto', hide);
-		disableInput('barnyard_syslog_facility', hide);
-		disableInput('barnyard_syslog_priority', hide);
 		disableInput('barnyard_bro_ids_enable', hide);
 		disableInput('barnyard_bro_ids_rhost', hide);
 		disableInput('barnyard_bro_ids_dport', hide);
@@ -556,7 +580,6 @@ events.push(function(){
 	
 	toggle_mySQL();
 	toggle_syslog();
-	toggle_local_syslog();
 	toggle_bro_ids();
 	
 });

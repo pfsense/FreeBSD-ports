@@ -6,15 +6,15 @@ PORTVERSION=	0.2.3
 PORTREVISION=	3
 CATEGORIES=	devel pear
 
-MAINTAINER=	gasol.wu@gmail.com
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Gearman client libraray for PHP
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	${LOCALBASE}/share/pear/PEAR.php:devel/pear
-RUN_DEPENDS=	${LOCALBASE}/share/pear/PEAR.php:devel/pear
+BUILD_DEPENDS=	${LOCALBASE}/share/pear/PEAR.php:devel/pear@${PHP_FLAVOR}
+RUN_DEPENDS=	${LOCALBASE}/share/pear/PEAR.php:devel/pear@${PHP_FLAVOR}
 
 USE_PHP=	json mbstring sockets
-USES=		pear
+USES=		pear php
 
 .include <bsd.port.mk>

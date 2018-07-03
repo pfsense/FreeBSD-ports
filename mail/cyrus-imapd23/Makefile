@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	cyrus-imapd
-PORTVERSION=	2.3.19
-PORTREVISION=	2
+PORTVERSION=	2.3.20
+#PORTREVISION=	0
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.cyrusimap.org/cyrus-imapd/
 PKGNAMESUFFIX=	23
@@ -16,12 +16,12 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libpcre.so:devel/pcre
 
-CONFLICTS=	cyrus-1.* cyrus-imapd-2.[^3].* cyrus-imapd2[^3]-2.[^3].*
+CONFLICTS_INSTALL=	cyrus-imapd-2.[^3].* cyrus-imapd2[^3]-2.[^3].* \
+			cyrus-imapd3*
 
 USE_RC_SUBR=	imapd
 
-USES=		cpe perl5
-USE_OPENSSL=	yes
+USES=		cpe perl5 ssl
 GNU_CONFIGURE=	yes
 CYRUS_PREFIX=	${PREFIX}/cyrus
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
@@ -54,6 +54,7 @@ BDB_CONFIGURE_ON=	--with-bdb-incdir=${BDB_INCLUDE_DIR} \
 DRAC_DESC=		Enable DRAC support
 DRAC_CONFIGURE_ON=	--with-drac=${LOCALBASE}
 DRAC_BUILD_DEPENDS=	${LOCALBASE}/lib/libdrac.a:mail/drac
+DRAC_USES=		autoreconf
 IDLED_DESC=		Enable IMAP idled support
 IDLED_CONFIGURE_ENABLE=	idled
 LDAP_PTLOADER_DESC=	Enable LDAP ptloader
@@ -101,7 +102,6 @@ DRAC_EXTRA_PATCHES=	${WRKSRC}/contrib/drac_auth.patch \
 			${FILESDIR}/extra-patch-configure.in \
 			${FILESDIR}/extra-patch-cmulocal_ucdsnmp.m4 \
 			${FILESDIR}/extra-patch-cmulocal_sasl2.m4
-DRAC_USE=	AUTOTOOLS=autoconf,autoheader
 
 MANDIRS=	${CYRUS_PREFIX}/man
 
@@ -155,7 +155,7 @@ post-patch:
 		${WRKSRC}/tools/masssievec
 
 post-patch-DRAC-on:
-	@${RM} -rf ${WRKSRC}/autom4te.cache
+	@${RM} -r ${WRKSRC}/autom4te.cache
 
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

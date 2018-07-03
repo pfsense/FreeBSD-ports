@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	dcraw
-PORTVERSION=	9.26
+PORTVERSION=	9.27
 CATEGORIES=	graphics
 MASTER_SITES=	LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Decoder for RAW files from digital cameras
+
+LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libjasper.so:graphics/jasper \
 		liblcms2.so:graphics/lcms2

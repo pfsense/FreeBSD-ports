@@ -3,6 +3,7 @@
 
 PORTNAME=	tegaki
 PORTVERSION=	0.3.1.2
+PORTREVISION=	1
 CATEGORIES=	japanese python
 MASTER_SITES=	http://www.tegaki.org/releases/${PORTVERSION:.2=}/
 PKGNAMESUFFIX=	-recognize
@@ -14,11 +15,11 @@ COMMENT=	Open-Source Chinese and Japanese Handwriting Recognition
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libzinnia.so:japanese/zinnia
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/tegakigtk/recognizer.py:japanese/py-tegaki-gtk
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/tegakigtk/recognizer.py:japanese/py-tegaki-gtk@${FLAVOR}
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	${PORTNAME}_recognize
 

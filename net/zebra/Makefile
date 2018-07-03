@@ -3,7 +3,7 @@
 
 PORTNAME=	zebra
 PORTVERSION=	0.95a
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net ipv6
 MASTER_SITES=	ftp://ftp.pop-pr.rnp.br/pub/GNU/ftp.zebra.org/zebra/ \
 		ftp://ftp.ripe.net/mirrors/sites/ftp.zebra.org/pub/zebra/ \
@@ -82,7 +82,7 @@ IGNORE=		RIPNGD requires IPV6 option
 .endif
 
 post-install:
-	@( cd ${WRKSRC}/doc; ${RM} -f zebra*info*; \
+	@( cd ${WRKSRC}/doc; ${RM} zebra*info*; \
 	   ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} zebra.info install )
 	@${ECHO_MSG} "===>     installing zebra startup file..."
 	${INSTALL_SCRIPT} ${WRKDIR}/zebractl ${STAGEDIR}${PREFIX}/sbin/zebractl

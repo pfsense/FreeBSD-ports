@@ -1,22 +1,21 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	libsysinfo
-PORTVERSION=	0.0.2
+PORTVERSION=	0.0.3
+DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	imp@bsdimp.com
 COMMENT=	GNU libc's sysinfo port for FreeBSD
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN=		Unfetchable (google code has gone away)
+USE_GITHUB=	yes
+GH_ACCOUNT=	bsdimp
 
 USES=		uidfix
 USE_LDCONFIG=	yes
-PROJECTHOST=	sysinfo-bsd
 
 LDFLAGS+=	-lkvm
 

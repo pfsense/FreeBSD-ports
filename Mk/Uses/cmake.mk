@@ -4,9 +4,18 @@
 #
 # Feature:		cmake
 # Usage:		USES=cmake or USES=cmake:ARGS
-# Valid ARGS:		outsource
+# Valid ARGS:		outsource, run, noninja
 # ARGS description:
 # outsource		perform an out-of-source build
+# noninja		don't use ninja instead of make
+#			Setting this should be an exception, and hints to an issue
+#			inside the ports build system.
+#			A few corner cases never use ninja, and are handled, to reduce
+#			the usage of 'noninja'.:
+#				1) fortran ports
+#				2) ports that set BUILD_- or INSTALL_WRKSRC to
+#				   something different than CONFIGURE_WRKSRC
+# run			add a runtime dependency on cmake
 #
 #
 # Additional variables that affect cmake behaviour:
@@ -14,9 +23,10 @@
 # User defined variables:
 # CMAKE_NOCOLOR		- Disable colour build output
 #			Default: not set, unless BATCH or PACKAGE_BUILDING is defined
-# CMAKE_NINJA		- Use ninja instead of make(1)
 #
 # Variables for ports:
+# CMAKE_ON		Appends -D<var>:bool=ON  to the CMAKE_ARGS,
+# CMAKE_OFF		Appends -D<var>:bool=OFF to the CMAKE_ARGS.
 # CMAKE_ARGS		- Arguments passed to cmake
 #			Default: see below
 # CMAKE_BUILD_TYPE	- Type of build (cmake predefined build types).
@@ -36,7 +46,7 @@
 .if !defined(_INCLUDE_USES_CMAKE_MK)
 _INCLUDE_USES_CMAKE_MK=	yes
 
-_valid_ARGS=		outsource run
+_valid_ARGS=		outsource run noninja
 
 # Sanity check
 .for arg in ${cmake_ARGS}
@@ -81,6 +91,13 @@ CMAKE_ARGS+=		-DCMAKE_C_COMPILER:STRING="${CC}" \
 			-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=YES \
 			-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 
+# Handle the option-like CMAKE_ON and CMAKE_OFF lists.
+.for _bool_kind in ON OFF
+.  if defined(CMAKE_${_bool_kind})
+CMAKE_ARGS+=		${CMAKE_${_bool_kind}:C/.*/-D&:BOOL=${_bool_kind}/}
+.  endif
+.endfor
+
 CMAKE_INSTALL_PREFIX?=	${PREFIX}
 
 .if defined(BATCH) || defined(PACKAGE_BUILDING)
@@ -91,10 +108,6 @@ CMAKE_NOCOLOR=		yes
 CMAKE_ARGS+=		-DCMAKE_COLOR_MAKEFILE:BOOL=OFF
 .endif
 
-.if defined(CMAKE_NINJA)
-.include "${USESDIR}/ninja.mk"
-.endif
-
 _CMAKE_MSG=		"===>  Performing in-source build"
 CMAKE_SOURCE_PATH?=	${WRKSRC}
 
@@ -103,6 +116,21 @@ _CMAKE_MSG=		"===>  Performing out-of-source build"
 CONFIGURE_WRKSRC=	${WRKDIR}/.build
 BUILD_WRKSRC?=		${CONFIGURE_WRKSRC}
 INSTALL_WRKSRC?=	${CONFIGURE_WRKSRC}
+TEST_WRKSRC?=		${CONFIGURE_WRKSRC}
+.endif
+
+# By default we use the ninja generator.
+#  Except, if cmake:run is set (cmake not wanted as generator)
+#             fortran is used, as the ninja-generator does not handle it.
+#             or if CONFIGURE_WRKSRC does not match  BUILD_WRKSRC or INSTALL_WRKSRC
+#             as the build.ninja file won't be where ninja expects it.
+.if empty(cmake_ARGS:Mnoninja) && empty(cmake_ARGS:Mrun) && empty(USES:Mfortran)
+.  if "${CONFIGURE_WRKSRC}" == "${BUILD_WRKSRC}" && "${CONFIGURE_WRKSRC}" == "${INSTALL_WRKSRC}"
+.    if ! empty(USES:Mgmake)
+BROKEN=		USES=gmake is incompatible with cmake's ninja-generator
+.    endif
+.      include "${USESDIR}/ninja.mk"
+.  endif
 .endif
 
 .if !target(do-configure)

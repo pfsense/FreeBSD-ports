@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	libvmime
-PORTVERSION=	0.9.2.s20140721
-PORTREVISION=	3
+PORTVERSION=	0.9.2
+DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	mail
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	All-in-one Internet mail library
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgnutls.so:security/gnutls \
@@ -18,9 +19,8 @@ LIB_DEPENDS=	libgnutls.so:security/gnutls \
 USE_GITHUB=	yes
 GH_ACCOUNT=	kisli
 GH_PROJECT=	vmime
-GH_TAGNAME=	03a0e36
 
-USES=		cmake:outsource compiler:c++11-lib iconv pkgconfig
+USES=		cmake:outsource,noninja compiler:c++11-lib iconv pkgconfig
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DLIB_SUFFIX:STRING="" \

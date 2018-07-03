@@ -7,7 +7,7 @@
 
 PORTNAME=	dspam
 PORTVERSION=	3.10.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -32,7 +32,7 @@ OPTIONS_MULTI_DB=	HASH MYSQL MYSQL_COMPRESS MYSQL_LOCAL \
 			PGSQL PGSQL_LOCAL SQLITE2 SQLITE3
 
 OPTIONS_RADIO=		LDA
-OPTIONS_RADIO_LDA=	CYRUS23 CYRUS24 DOVECOT1 \
+OPTIONS_RADIO_LDA=	CYRUS23 CYRUS24 \
 			DOVECOT2 EXIM MAILDROP PROCMAIL SAFECAT SENDMAIL
 
 OPTIONS_DEFAULT=	SYSLOG DEBUG DAEMON CLAMAV CLAMAV_LOCAL \
@@ -61,7 +61,6 @@ LARGE_SCALE_DESC=	File structure for large scale
 DOMAIN_SCALE_DESC=	File structure for multiple domains
 CYRUS23_DESC=		Cyrus's 2.3 deliver as LDA
 CYRUS24_DESC=		Cyrus's 2.4 deliver as LDA
-DOVECOT1_DESC=		Dovecot 1.2 deliver as LDA
 DOVECOT2_DESC=		Dovecot 2.2 dovecot-lda as LDA
 EXIM_DESC=		Exim as local delivery agent
 MAILDROP_DESC=		Maildrop as local delivery agent
@@ -76,7 +75,7 @@ LIGHTTPD_DESC=		RUN_DEPEND on Lighttpd instead of Apache
 SETUID_DESC=		Run as root:mail with setuid (insecure)
 
 MAKE_JOBS_UNSAFE=	yes
-USES=		perl5 libtool shebangfix
+USES=		perl5 libtool pathfix shebangfix
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -340,13 +339,8 @@ RUN_DEPENDS+=	${LOCALBASE}/cyrus/bin/deliver:mail/cyrus-imapd24
 CONFIGURE_ARGS+=	--with-delivery-agent='${LOCALBASE}/cyrus/bin/deliver'
 .endif
 
-.if ${PORT_OPTIONS:MDOVECOT1}
-RUN_DEPENDS+=	${LOCALBASE}/libexec/dovecot/deliver:mail/dovecot
-CONFIGURE_ARGS+=	--with-delivery-agent='${LOCALBASE}/libexec/dovecot/deliver'
-.endif
-
 .if ${PORT_OPTIONS:MDOVECOT2}
-RUN_DEPENDS+=	${LOCALBASE}/libexec/dovecot/dovecot-lda:mail/dovecot2
+RUN_DEPENDS+=	${LOCALBASE}/libexec/dovecot/dovecot-lda:mail/dovecot
 CONFIGURE_ARGS+=	--with-delivery-agent='${LOCALBASE}/libexec/dovecot/dovecot-lda'
 .endif
 
@@ -403,7 +397,7 @@ CONFIGURE_ARGS+=	--with-dspam-mode=${DSPAM_MODE}
 .	if ${PORT_OPTIONS:MLIGHTTPD}
 RUN_DEPENDS+=	${LOCALBASE}/sbin/lighttpd:www/lighttpd
 .	else
-USE_APACHE_RUN=	22+
+USES+=		apache:2.2+
 .	endif
 LIB_DEPENDS+=	libgd.so:graphics/gd
 RUN_DEPENDS+=	p5-GD>=0:graphics/p5-GD
@@ -512,13 +506,6 @@ pre-configure:
 .endif
 
 post-install:
-########
-# stupid hack until I figure out where/how to patch
-	@${MKDIR} ${STAGEDIR}${PREFIX}/libdata/pkgconfig
-	${MV} ${STAGEDIR}${PREFIX}/lib/pkgconfig/dspam.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig/dspam.pc
-	${TEST} `ls -1 ${STAGEDIR}${PREFIX}/lib/pkgconfig | wc -l` -eq 0 && \
-		${RM} -R ${STAGEDIR}${PREFIX}/lib/pkgconfig || true
-
 .if ${PORT_OPTIONS:MEXAMPLES}
 .if ${PORT_OPTIONS:MMYSQL}
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/mysql

@@ -3,10 +3,10 @@
 
 PORTNAME=	mailman
 PORTVERSION=	2.1.14.j7
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	japanese mail
-MASTER_SITES=	http://www.python.jp/doc/contrib/mailman/_static/ \
+MASTER_SITES=	https://docs.python.jp/contrib/mailman/_static/ \
 		LOCAL/tota/${PORTNAME}
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/.j/+j/}
 DIST_SUBDIR=	mailman
@@ -21,10 +21,10 @@ CONFLICTS=	mailman-2.1.*
 
 PORTSCOUT=	limit:.*\.j\d+$$
 
-USE_AUTOTOOLS=	autoconf
-USES=		gettext python:2 tar:tgz
+USES=		autoreconf gettext python:2.7 shebangfix tar:tgz
 USE_RC_SUBR=	mailman
 
+GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${MAILMANDIR}
 CONFIGURE_ARGS+=--with-python=${PYTHON_CMD} \
 		--with-username=${MM_USERNAME} \
@@ -52,6 +52,10 @@ MAILMANDIR=	${PREFIX}/${MM_DIR}
 PLIST_SUB=	MMDIR=${MM_DIR} IMGDIR=${IMGDIR}
 SUB_FILES=	pkg-message pkg-install pkg-deinstall
 SUB_LIST=	MAILMANDIR=${MAILMANDIR} USER=${MM_USERNAME} GROUP=${MM_GROUPNAME}
+
+SHEBANG_FILES=	bin/msgfmt.py \
+		tests/onebounce.py \
+		tests/fblast.py
 
 IMGFILES=	PythonPowered.png mailman.jpg mm-icon.png
 
@@ -147,10 +151,10 @@ post-install:
 	    && ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
 	    -f -d ${MAILMANDIR}/${dir} ${dir})
 .endfor
-	@${RM} -f ${STAGEDIR}${MAILMANDIR}/pythonlib/*.egg-info
+	@${RM} ${STAGEDIR}${MAILMANDIR}/pythonlib/*.egg-info
 	# mm_cfg.py is handled by pkg-plist:
-	@${RM} -f ${STAGEDIR}${MAILMANDIR}/Mailman/mm_cfg.py
-	@${RM} -f ${STAGEDIR}${MAILMANDIR}/Mailman/mm_cfg.pyc
+	@${RM} ${STAGEDIR}${MAILMANDIR}/Mailman/mm_cfg.py
+	@${RM} ${STAGEDIR}${MAILMANDIR}/Mailman/mm_cfg.pyc
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${IMGDIR}
 .for imgfile in ${IMGFILES}
 	${CP} ${STAGEDIR}${MAILMANDIR}/icons/${imgfile} ${STAGEDIR}${PREFIX}/${IMGDIR}

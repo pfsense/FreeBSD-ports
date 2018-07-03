@@ -20,7 +20,7 @@ LICENSE_PERMS=	auto-accept no-dist-sell no-pkg-sell
 RESTRICTED=	No resale, contact author for commercial usage
 
 USE_XORG=	x11
-USES=		gmake tar:tgz
+USES=		gmake
 ALL_TARGET=	${PORTNAME}
 
 .if defined(LANG) && ${LANG:Mfr*} != ""
@@ -44,6 +44,6 @@ do-install:
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@(cd ${DISTDIR} && ${INSTALL_MAN} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
+	@(cd ${DISTDIR} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

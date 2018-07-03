@@ -4,11 +4,15 @@ if [ "${2}" != "POST-INSTALL" ]; then
 	exit 0
 fi
 
-DEFAULT_REPO=%%DATADIR%%/pkg/repos/%%PRODUCT_NAME%%-repo.conf
+# Do not configure pkg repo on poudriere
+if [ -f /etc/make.conf ] && grep -q 'POUDRIERE_PORTS_NAME=' /etc/make.conf; then
+	exit 0
+fi
+
 REPO_PATH=/usr/local/etc/pkg/repos
 REPO_CONF=${REPO_PATH}/%%PRODUCT_NAME%%.conf
 
-if [ ! -f "${DEFAULT_REPO}" ]; then
+if [ ! -f "%%DEFAULT_REPO%%" ]; then
 	echo "===> ERROR: Default repo conf not found!"
 	exit 1
 fi
@@ -18,7 +22,7 @@ if [ ! -L "${REPO_CONF}" ]; then
 		rm -f ${REPO_CONF}
 	fi
 	mkdir -p ${REPO_PATH}
-	ln -sf ${DEFAULT_REPO} ${REPO_CONF}
+	ln -sf %%DEFAULT_REPO%% ${REPO_CONF}
 fi
 
 PKG_CONF="/usr/local/etc/pkg.conf"
@@ -29,5 +33,11 @@ ALTABI=$(cat ${REAL_CONF%%.conf}.altabi)
 
 echo "ABI=${ABI}" > ${PKG_CONF}
 echo "ALTABI=${ALTABI}" >> ${PKG_CONF}
+
+# Help users to fix fstab before risk moving to FreeBSD 11
+if /usr/bin/grep -q -E '/dev/ad[[:digit:]]' /etc/fstab; then
+	echo "===> Fixing bad /etc/fstab"
+	/usr/local/sbin/ufslabels.sh commit
+fi
 
 exit 0

@@ -3,7 +3,7 @@
 
 PORTNAME=	pipsecd
 PORTVERSION=	19991014
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net security
 MASTER_SITES=	http://perso.telecom-paristech.fr/~beyssac/pipsec/ \
 		http://www.komquats.com/distfiles/
@@ -12,7 +12,7 @@ DISTNAME=	pipsec-19991014
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Simple IPSEC tunnel tool from Pierre Beyssac
 
-USE_OPENSSL=	YES
+USES+=		ssl
 
 ALL_TARGET=	pipsecd
 
@@ -25,8 +25,8 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/ipsec
 	${INSTALL_DATA} ${WRKSRC}/pipsecd.conf.sample ${STAGEDIR}${PREFIX}/etc/ipsec
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/pipsecd
-	${INSTALL_MAN} ${WRKSRC}/README ${STAGEDIR}${PREFIX}/share/doc/pipsecd
-	${INSTALL_MAN} ${WRKSRC}/COPYRIGHT ${STAGEDIR}${PREFIX}/share/doc/pipsecd
-	${INSTALL_MAN} ${WRKSRC}/README.port ${STAGEDIR}${PREFIX}/share/doc/pipsecd
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${PREFIX}/share/doc/pipsecd
+	${INSTALL_DATA} ${WRKSRC}/COPYRIGHT ${STAGEDIR}${PREFIX}/share/doc/pipsecd
+	${INSTALL_DATA} ${WRKSRC}/README.port ${STAGEDIR}${PREFIX}/share/doc/pipsecd
 
 .include <bsd.port.mk>

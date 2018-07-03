@@ -8,9 +8,6 @@ COMMENT=	Python module for libdnet
 
 LIB_DEPENDS=	libdnet.so:net/libdnet
 
-NOT_FOR_ARCHS=	ia64
-NOT_FOR_ARCHS_REASON_ia64=	fails to build with internal compiler error
-
 MASTERDIR=	${.CURDIR}/../libdnet
 INSTALL_WRKSRC=	${WRKSRC}/python
 DESCR=		${.CURDIR}/pkg-descr
@@ -20,7 +17,8 @@ PLIST_FILES=	%%PYTHON_SITELIBDIR%%/dnet.so \
 
 LIBDNET_SLAVE=	yes
 
-USES=		python
+USES=		python:2.7
+USE_PYTHON=	flavors
 CONFIGURE_ARGS=	--with-python=${PYTHON_CMD}
 
 .if defined(MAINTAINER_MODE)

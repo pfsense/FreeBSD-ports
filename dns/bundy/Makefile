@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	bundy
-PORTVERSION=	0.20160125
-PORTREVISION=	6
+PORTVERSION=	0.20170618
+PORTREVISION=	9
 CATEGORIES=	dns
 MASTER_SITES=	LOCAL/mat/bundy SF/boost/boost/1.55.0:boost
 DISTFILES+=	boost_1_55_0.tar.bz2:boost
@@ -19,24 +19,24 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	${LOCALBASE}/include/log4cplus/logger.h:devel/log4cplus \
 		sqlite3>=3.3.9:databases/sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/${PYTHON_PKGNAMEPREFIX}sqlite3
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 LIB_DEPENDS=	libbotan-1.10.so:security/botan110 \
 		liblog4cplus.so:devel/log4cplus \
-		libicuuc.so:devel/icu \
 		libgmp.so:math/gmp \
 		libsqlite3.so:databases/sqlite3
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/${PYTHON_PKGNAMEPREFIX}sqlite3
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
+
+BROKEN_armv6 =		fails to build: Child process terminated abnormally: Segmentation fault
+BROKEN_armv7 =		fails to build: Child process terminated abnormally: Segmentation fault
+BROKEN_powerpc64=	fails to configure: checking for botan/botan.h... no
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	bundy-dns
-GH_TAGNAME=	d310c5d
+GH_TAGNAME=	e640032
 
-USE_OPENSSL=	yes
-
-USES=	compiler:c++11-lang pathfix pkgconfig libtool python:3 autoreconf
+USES=	compiler:c++11-lang pathfix pkgconfig libtool python:3.4+ autoreconf ssl
 
 USE_LDCONFIG=	yes
-PATHFIX_MAKEFILEIN=	Makefile.am
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var	\
 		--without-werror \
@@ -47,20 +47,8 @@ CPPFLAGS+=	-I${WRKDIR}/boost_1_55_0
 
 OPTIONS_DEFINE=	DOCS
 
-PLIST_SUB=	PYTHON_SUFFIX=cpython-${PYTHON_SUFFIX}
-
 post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/cmdctl-certfile.pem ${STAGEDIR}${ETCDIR}/cmdctl-certfile.pem.sample
 	${MV} ${STAGEDIR}${ETCDIR}/cmdctl-keyfile.pem ${STAGEDIR}${ETCDIR}/cmdctl-keyfile.pem.sample
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3500
-PYOEXTENSION=	pyo
-.else
-PYOEXTENSION=	opt-1.pyc
-.endif
-
-PLIST_SUB+=	PYOEXTENSION=${PYOEXTENSION}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

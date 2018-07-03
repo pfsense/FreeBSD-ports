@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	virtuoso
-PORTVERSION=	7.1.0
-PORTREVISION=	5
+PORTVERSION=	7.2.4.2
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-opensource-${PORTVERSION}
@@ -14,20 +14,20 @@ COMMENT=	Universal SQL/Application Server
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	Does not build
-
 BUILD_DEPENDS=	gawk:lang/gawk\
 		htmldoc:textproc/htmldoc\
 		flex>2.5.4:textproc/flex\
 		gperf>=3.0.3:devel/gperf
 LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
-USES=		gmake libtool readline uidfix
-USE_AUTOTOOLS=	autoheader aclocal
-USE_OPENSSL=	yes
+BROKEN_aarch64=		Fails to link: missing sbrk
+BROKEN_powerpc64=	Does not compile: error: DV_INT_TAG_WORD undeclared
+BROKEN_sparc64=		Does not compile: error: DV_INT_TAG_WORD undeclared
 
-NOT_FOR_ARCHS=	arm armv6 i386 mips powerpc
+NOT_FOR_ARCHS=	arm armv6 armv7 i386 mips powerpc
 NOT_FOR_ARCHS_REASON=	can only be built on 64bit platforms
+
+USES=		gmake libtool readline uidfix ssl
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-readline\
@@ -40,8 +40,8 @@ CONFIGURE_ARGS=	--with-readline\
 		--with-layout=freebsd\
 		--datadir="${PREFIX}"\
 		--localstatedir="${PREFIX}"
-CPPFLAGS+=	-std=gnu89 ${IODBC_CPPFLAGS} -I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+CPPFLAGS+=	-std=gnu89 ${IODBC_CPPFLAGS}
+LDFLAGS+=	-lexecinfo
 MAKE_ENV=	PATH=${LOCALBASE}/bin:${PATH}\
 		ISQL=isql-vt
 USE_RC_SUBR=	virtuoso
@@ -54,7 +54,7 @@ CHECK_PORT=	nc -z localhost $$\1 2>\&1
 OPTIONS_DEFINE=		IMAGEMAGICK KERBEROS LDAP IODBC
 
 post-patch:
-	${REINPLACE_CMD} -e 's,-lruby,-lruby${RUBY_VER:S,.,,},g'\
+	${REINPLACE_CMD} -e 's,-lruby,-lruby${RUBY_SUFFIX},g'\
 			${WRKSRC}/configure
 	${FIND} ${WRKSRC} -name '*.sh' | ${XARGS} ${GREP} -l 'netstat -an.*grep LISTEN' |\
 	    ${XARGS} ${REINPLACE_CMD}\
@@ -102,8 +102,5 @@ CONFIGURE_ARGS+=--disable-openldap
 post-install:
 	${FIND} ${STAGEDIR} -name "*.ini" -exec ${MV} {} {}.sample \; -print
 	${RMDIR} ${STAGEDIR}${PREFIX}/virtuoso/doc/html
-.if ! ${PORT_OPTIONS:MIMAGEMAGICK}
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/virtuoso/hosting
-.endif
 
 .include <bsd.port.mk>

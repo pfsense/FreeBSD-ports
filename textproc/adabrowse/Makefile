@@ -3,12 +3,12 @@
 
 PORTNAME=	adabrowse
 PORTVERSION=	4.0.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	http://home.datacomm.ch/t_wolf/tw/ada95/adabrowse/
 DISTNAME=	${PORTNAME}_${PORTVERSION}_src
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	HTML generator for Ada 95 library unit specifications
 
 LICENSE=	GPLv2

@@ -1,0 +1,15 @@
+--- chrome/browser/extensions/BUILD.gn.orig	2017-12-15 02:04:08.000000000 +0100
++++ chrome/browser/extensions/BUILD.gn	2017-12-30 01:58:47.411895000 +0100
+@@ -1117,6 +1117,12 @@
+     defines += [ "ENABLE_HOTWORDING" ]
+   }
+ 
++  if (is_bsd) {
++    sources -= [
++      "api/image_writer_private/removable_storage_provider_linux.cc",
++    ]
++  }
++
+   if (enable_service_discovery) {
+     sources += [
+       "api/mdns/mdns_api.cc",

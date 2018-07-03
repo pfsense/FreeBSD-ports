@@ -1,4 +1,4 @@
---- post/src/elmerpost.h.orig	2016-07-15 11:02:59 UTC
+--- post/src/elmerpost.h.orig	2017-05-19 12:19:26 UTC
 +++ post/src/elmerpost.h
 @@ -62,6 +62,7 @@
  

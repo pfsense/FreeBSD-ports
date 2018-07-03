@@ -42,10 +42,10 @@
 		<url>/haproxy/haproxy_stats.php?haproxystats=1</url>
 	</menu>
 	<service>
-		<name>HAProxy</name>
+		<name>haproxy</name>
 		<rcfile>haproxy.sh</rcfile>
 		<executable>haproxy</executable>
-		<description>The Reliable, High Performance TCP/HTTP Load Balancer</description>
+		<description>TCP/HTTP(S) Load Balancer</description>
 	</service>	
 	<plugins>
 		<item>
@@ -62,4 +62,7 @@
 	<custom_php_deinstall_command>
 		haproxy_custom_php_deinstall_command();
 	</custom_php_deinstall_command>
+	<filter_rules_needed>
+		haproxy_generate_rules
+	</filter_rules_needed>
 </packagegui>

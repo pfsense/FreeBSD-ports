@@ -3,7 +3,7 @@
 
 PORTNAME=	xvattr
 PORTVERSION=	1.3
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	x11
 MASTER_SITES=	http://xvattr.sourcearchive.com/downloads/1.3/
 DISTFILES=	xvattr_1.3.orig.tar.gz
@@ -12,7 +12,6 @@ MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Getting and setting Xv attributes
 
 USE_XORG=	x11 xv
-WANT_GNOME=	yes
 USES=		pkgconfig
 
 PLIST_FILES=	bin/${PORTNAME} bin/g${PORTNAME} \
@@ -28,7 +27,7 @@ GTK1_USE_OFF=	GNOME=gtk20
 GTK1_VARS_OFF=	GTK_PC=gtk+-2.0
 
 post-extract:
-	@${RM} -f ${WRKSRC}/getopt.h
+	@${RM} ${WRKSRC}/getopt.h
 
 do-build:
 	cd ${WRKSRC} && ${CC} ${CFLAGS} ${PORTNAME}.c -o ${PORTNAME} \

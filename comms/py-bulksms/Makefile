@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	craig001@lerwick.hopto.org
 COMMENT=	Python client for the BulkSMS.co.uk HTTP API
 
-USES=			python
+USES=			python:2.7
 USE_PYTHON=		distutils
 PYDISTUTILS_PKGNAME=	BulkSMS
 PYDISTUTILS_PKGVERSION=	1.0
@@ -21,6 +21,6 @@ OPTIONS_DEFINE=	DOCS
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_MAN} ${WRKSRC}/README.html ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.html ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

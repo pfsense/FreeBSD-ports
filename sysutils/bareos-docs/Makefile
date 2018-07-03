@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bareos
-PORTVERSION=	15.2.2
-PORTREVISION=	1
+PORTVERSION=	16.2.7
 CATEGORIES=	sysutils
 MASTER_SITES=	http://doc.bareos.org/master/
 PKGNAMESUFFIX=	-docs

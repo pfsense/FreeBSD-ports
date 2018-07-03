@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * stunnel.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>stunnel</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Services: Secure Tunnel</title>
+	<menu>
+		<name>STunnel</name>
+		<section>Services</section>
+		<configfile>stunnel.xml</configfile>
+	</menu>
+	<include_file>/usr/local/pkg/stunnel.inc</include_file>	
+	<tabs>
+		<tab>
+			<text>Tunnels</text>
+			<url>/pkg.php?xml=stunnel.xml</url>
+			<active/>
+		</tab>
+	</tabs>
+	<service>
+		<name>stunnel</name>
+		<rcfile>stunnel.sh</rcfile>
+		<executable>stunnel</executable>
+	</service>	
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Listen on IP</fielddescr>
+			<fieldname>localip</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Listen on Port</fielddescr>
+			<fieldname>localport</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Certificate</fielddescr>
+			<fieldname>certificatelink</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Redirects to IP</fielddescr>
+			<fieldname>redirectip</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Redirects to Port</fielddescr>
+			<fieldname>redirectport</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description>Enter a description for this redirection.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Client Mode</fielddescr>
+			<fieldname>client</fieldname>
+			<description>Use client mode for this tunnel (i.e. connect to an SSL server, do not act as an SSL server).</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Listen on IP</fielddescr>
+			<fieldname>localip</fieldname>
+			<description>Enter the local IP address to bind this redirection to.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Listen on Port</fielddescr>
+			<fieldname>localport</fieldname>
+			<description>Enter the local port to bind this redirection to.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Certificate</fielddescr>
+			<fieldname>certificate</fieldname>
+			<description>Select server certificate to use for this tunnel.</description>
+			<type>select_source</type>
+			<source><![CDATA[$config['cert']]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>default</show_disable_value>
+			<default_value>default</default_value>
+		</field>
+		<field>
+			<fielddescr>Redirects to IP</fielddescr>
+			<fieldname>redirectip</fieldname>
+			<description>Enter the IP address to redirect this to.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Redirects to Port</fielddescr>
+			<fieldname>redirectport</fieldname>
+			<description>Enter the port to redirect to.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Outgoing Source IP</fielddescr>
+			<fieldname>sourceip</fieldname>
+			<description>Enter the source IP address for outgoing connections.</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_add_php_command_late>
+		stunnel_save();
+	</custom_add_php_command_late>
+	<custom_delete_php_command>
+		stunnel_save();
+	</custom_delete_php_command>
+	<custom_php_install_command>
+		stunnel_install();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		stunnel_deinstall();
+	</custom_php_deinstall_command>
+	<custom_php_resync_config_command>
+		stunnel_save();
+	</custom_php_resync_config_command>
+</packagegui>

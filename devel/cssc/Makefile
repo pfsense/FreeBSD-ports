@@ -3,6 +3,7 @@
 
 PORTNAME=	cssc
 PORTVERSION=	1.4.0
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 DISTNAME=	CSSC-${PORTVERSION}
@@ -12,8 +13,7 @@ COMMENT=	Workalike for the source code control system SCCS
 
 LICENSE=	GPLv3
 
-BROKEN_powerpc64=	Does not build
-BROKEN_FreeBSD_9=	does not build on FreeBSD 9.x
+BROKEN_powerpc64=	does not build: undefined reference to fmax
 
 GNU_CONFIGURE=	yes
 INFO=		cssc

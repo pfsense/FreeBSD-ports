@@ -11,7 +11,7 @@ DISTNAME=	${RUBY_DISTNAME}
 DIST_SUBDIR=	ruby
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT?=	Object-oriented interpreted scripting language
+COMMENT=	Object-oriented interpreted scripting language
 
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
@@ -23,6 +23,9 @@ BUILD_DEPENDS=	libffi>=0:devel/libffi
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
 RUN_DEPENDS=	libffi>=0:devel/libffi
 
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=does not detect and buid the openssl*.rb bits	
+
 CONFIGURE_ARGS=	${RUBY_CONFIGURE_ARGS} \
 		--disable-rpath \
 		--enable-pthread \
@@ -30,24 +33,19 @@ CONFIGURE_ARGS=	${RUBY_CONFIGURE_ARGS} \
 		--with-ruby-version=minor \
 		--with-sitedir="${PREFIX}/lib/ruby/site_ruby" \
 		--with-vendordir="${PREFIX}/lib/ruby/vendor_ruby"
-CONFIGURE_ENV=	LC_ALL=C debugflags=
+CONFIGURE_ENV=	debugflags=
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
 # Keep this, else ruby will fail to load libraries dependent of libpthread.
 LIBS+=		-lpthread -L${LOCALBASE}/lib
-MAKE_ENV=	LC_ALL=C
 USE_LDCONFIG=	yes
-USE_OPENSSL=	yes
-USES=		autoreconf cpe execinfo tar:xz
+USES=		autoreconf cpe ssl tar:xz
 WRKSRC=		${RUBY_WRKSRC}
 
 RUBY_VER=		2.3
 USE_RUBY=		yes
 RUBY_NO_BUILD_DEPENDS=	yes
 RUBY_NO_RUN_DEPENDS=	yes
-
-NOT_FOR_ARCHS=	ia64
-NOT_FOR_ARCHS_REASON_ia64=	does not build
 
 OPTIONS_DEFINE=		CAPIDOCS DEBUG DOCS EXAMPLES GMP RDOC
 OPTIONS_DEFAULT=	RDOC LIBEDIT
@@ -60,7 +58,7 @@ RDOC_DESC=		Build and install Rdoc indexes
 EDIT_DESC=		Which line editing lib to use
 LIBEDIT_DESC=		Use libedit
 READLINE_DESC=		Use libreadline
-CAPIDOCS_BUILD_DEPENDS=	doxygen>0:devel/doxygen \
+CAPIDOCS_BUILD_DEPENDS=	doxygen>=1.8.13,2:devel/doxygen \
 			dot:graphics/graphviz
 CAPIDOCS_CONFIGURE_ENABLE=	install-capi
 GMP_CONFIGURE_WITH=	gmp
@@ -68,13 +66,16 @@ GMP_LIB_DEPENDS=	libgmp.so:math/gmp
 LIBEDIT_CONFIGURE_ON=	--enable-libedit --with-libedit-dir=${LOCALBASE}
 LIBEDIT_USES=		libedit
 RDOC_CONFIGURE_ENABLE=	install-rdoc
-READLINE_BUILD_DEPENDS=	readline>=0:devel/readline
 READLINE_CONFIGURE_ON=	--disable-libedit --with-readline-dir=${LOCALBASE}
-READLINE_RUN_DEPENDS=	readline>=0:devel/readline
+READLINE_USES=		readline:port
 
 CPE_VENDOR=	ruby-lang
 CPE_VERSION=	${RUBY_RELVERSION}
 CPE_UPDATE=	p${RUBY_PATCHLEVEL}
+
+# --- loadpath.o ---
+# loadpath.c:30:2: error: RUBY_EXEC_PREFIX must be defined
+MAKE_JOBS_UNSAFE=	yes
 
 .include <bsd.port.pre.mk>
 
@@ -89,18 +90,23 @@ _SUF2=	,${PORTEPOCH}
 .endif
 
 .if ${OPSYS} == "FreeBSD"
-.if exists(/usr/sbin/dtrace) && (${OSVERSION} > 1100032) && (${ARCH} == "amd64" || ${ARCH} == "i386")
+.if exists(/usr/sbin/dtrace) && (${OSVERSION} > 1100032) && (${ARCH} == amd64 || ${ARCH} == i386)
 CONFIGURE_ARGS+=--enable-dtrace
 .else
 CONFIGURE_ARGS+=--disable-dtrace
 .endif
 .endif
 
-.if (${ARCH} == "powerpc64" || ${ARCH} == "powerpc")
-USE_GCC=	4.9+
+# keep in sync with all platforms where libunwind is available
+.if (${ARCH} == amd64 || ${ARCH} == i386)
+LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
-.if ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
+.if ${ARCH} == powerpc64
+USE_GCC=	yes
+.endif
+
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 CONFIGURE_ARGS+=--with-setjmp-type=_setjmp
 CONFIGURE_ENV+=	ac_cv_func__setjmp=yes
 .endif
@@ -146,11 +152,11 @@ post-patch:
 # Remove modules we don't want
 #
 .for d in win32ole
-	@${RM} -rf ${BUILD_WRKSRC}/ext/${d}
+	@${RM} -r ${BUILD_WRKSRC}/ext/${d}
 .endfor
 # We get rake from ports.
 .for d in bin/rake doc/rake lib/rake test/rake man/rake.1 lib/rake.rb
-	@${RM} -rf ${BUILD_WRKSRC}/${d}
+	@${RM} -r ${BUILD_WRKSRC}/${d}
 .endfor
 # We get the gem executable from ports.
 	@${RM} ${BUILD_WRKSRC}/bin/gem
@@ -165,7 +171,7 @@ post-patch:
 post-build:
 #
 # Hack to allow modules to be installed into separate PREFIX and/or under user
-# privilegies
+# privileges
 #
 	@${RB_SET_CONF_VAR} "prefix" "ENV['PREFIX'] || \3"
 	@${RB_SET_CONF_VAR} "INSTALL" "'/usr/bin/install -c'"

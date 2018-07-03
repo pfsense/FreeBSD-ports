@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	0ad
-PORTVERSION=	0.0.20
-PORTREVISION=	2
+PORTVERSION=	0.0.22
+PORTREVISION=	7
 CATEGORIES=	games
-MASTER_SITES=	SF/zero-ad/releases \
-		http://releases.wildfiregames.com/
+MASTER_SITES=	http://releases.wildfiregames.com/ \
+		SF/zero-ad/releases
 DISTFILES=	${PORTNAME}-${PORTVERSION}-alpha-unix-build.tar.xz \
 		${PORTNAME}-${PORTVERSION}-alpha-unix-data.tar.xz
 
@@ -15,6 +15,7 @@ COMMENT=	Real-time strategy (RTS) game of ancient warfare
 BUILD_DEPENDS=	zip:archivers/zip \
 		cmake:devel/cmake
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
+		libicui18n.so:devel/icu \
 		libpng.so:graphics/png \
 		libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis \
@@ -22,30 +23,35 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libgloox.so:net-im/gloox \
 		libminiupnpc.so:net/miniupnpc \
 		libnspr4.so:devel/nspr \
-		libenet.so:net/enet
+		libenet.so:net/enet \
+		libtiff.so:graphics/tiff
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-alpha
 BUILD_WRKSRC=	${WRKSRC}/build/workspaces/gcc
 MAKE_ARGS=	config=release
-USES=		compiler:c++11-lib dos2unix execinfo gmake iconv openal:al \
-		pkgconfig tar:xz
+CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
+USES=		compiler:c++11-lib dos2unix gmake iconv jpeg openal:al \
+		pkgconfig python:build tar:xz
 USE_GNOME=	libxml2 gtk20
 USE_GL=		gl
 USE_SDL=	sdl2
+USE_XORG=	x11 xcursor
 BUNDLE_LIBS=	yes
 DOS2UNIX_REGEX=	.*\.([ch]p{0,2}|make)
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
 USE_WX=		2.8+
 WX_COMPS=	wx:lib
 MAKE_ENV+=	JOBS=${_MAKE_JOBS}
 
+BROKEN_aarch64=		fails to compile: no member named verifyHeapAccessDisassembly
+BROKEN_armv6=		fails to link: fatal error: conftest: Unknown error: -1
+BROKEN_armv7=		fails to link: fatal error: conftest: Unknown error: -1
+BROKEN_powerpc64=	fails to compile: _psutil_bsd.c: error: 'struct xtcpcb' has no member named 'xt_tp'
+
 PORTDATA=	*
 
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000024
-BROKEN=		segfaults during build
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
@@ -60,6 +66,7 @@ post-patch:
 		${WRKSRC}/build/resources/0ad.desktop
 	@${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|' \
 		${WRKSRC}/build/resources/0ad.sh
+	@${CP} ${FILESDIR}/psutil.diff ${WRKSRC}/libraries/source/spidermonkey/
 
 pre-build:
 	(cd ${WRKSRC}/build/workspaces && ${SETENV} ${MAKE_ENV} ./update-workspaces.sh ${0ADSDLARG} --bindir=${PREFIX}/bin --datadir=${DATADIR} --libdir=${PREFIX}/lib/${PORTNAME})
@@ -70,7 +77,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/binaries/system/ActorEditor ${STAGEDIR}${PREFIX}/bin
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}
 	(cd ${WRKSRC}/binaries/system && ${INSTALL_LIB} libAtlasUI.so libCollada.so libnvcore.so libnvimage.so libnvmath.so libnvtt.so ${STAGEDIR}${PREFIX}/lib/${PORTNAME})
-	(cd ${WRKSRC}/binaries/system && ${INSTALL_LIB} libmozjs31-ps-release.so ${STAGEDIR}${PREFIX}/lib/${PORTNAME})
+	(cd ${WRKSRC}/binaries/system && ${INSTALL_LIB} libmozjs38-ps-release.so ${STAGEDIR}${PREFIX}/lib/${PORTNAME})
 	${INSTALL_DATA} ${WRKSRC}/build/resources/0ad.desktop ${STAGEDIR}${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/build/resources/0ad.png ${STAGEDIR}${PREFIX}/share/pixmaps
 	${MKDIR} ${STAGEDIR}${DATADIR}

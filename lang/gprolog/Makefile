@@ -3,6 +3,7 @@
 
 PORTNAME=	gprolog
 PORTVERSION=	1.4.4
+PORTREVISION=	6
 CATEGORIES=	lang
 MASTER_SITES=	http://www.gprolog.org/
 
@@ -13,48 +14,36 @@ LICENSE=	GPLv2
 
 ONLY_FOR_ARCHS=	i386 amd64
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
-
 USES=		gmake
 USE_GCC=	any
-USE_AUTOTOOLS=	autoconf
-CONFIGURE_ARGS=	--with-c-flags="${CFLAGS}"
-CONFIGURE_TARGET=	${ARCH:S/amd64/x86_64/}-portbld-freebsd${OSREL}
+CFLAGS+=	-O3 # gcc5/gcc6 + -O2 = pl2wam hangs
+PLIST_SUB=	GPROLOG_VER=${PORTVERSION}
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-c-flags="${CFLAGS}" \
+		--with-doc-dir="${DOCSDIR}" \
+		--with-examples-dir="${EXAMPLESDIR}"
+CONFIGURE_TARGET=	${ARCH:S/amd64/x86_64/}-portbld-${OPSYS:tl}${OSREL}
 MAKE_JOBS_UNSAFE=	yes
+WRKSRC_SUBDIR=	src
 
-PLIST_SUB+=	GPROLOG_VER=${PORTVERSION}
+OPTIONS_DEFINE=		FD DOCS EXAMPLES
+OPTIONS_DEFAULT=	FD
+OPTIONS_SUB=		yes
 
-OPTIONS_DEFINE=	FD DOCS EXAMPLES
-OPTIONS_DEFAULT=FD
-FD_DESC=	Enable finite domain constraint solver
+FD_DESC=		Enable finite domain constraint solver
+FD_CONFIGURE_OFF=	--disable-fd-solver
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MDOCS}
-PORTDOCS=	*
-CONFIGURE_ARGS+=--with-doc-dir="${DOCSDIR}"
-.else
-CONFIGURE_ARGS+=--with-doc-dir="${WRKDIR}/docs"
+# Disable registers on i386. This fixes build with gcc6.
+# See: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=852008
+.if ${ARCH} == i386
+CONFIGURE_ARGS+=		--disable-regs
 .endif
 
-.if ${PORT_OPTIONS:MEXAMPLES}
-PORTEXAMPLES=	*
-CONFIGURE_ARGS+=--with-examples-dir="${EXAMPLESDIR}"
-.else
-CONFIGURE_ARGS+=--with-examples-dir="${WRKDIR}/examples"
-.endif
-
-.if empty(PORT_OPTIONS:MFD)
-CONFIGURE_ARGS+=--disable-fd-solver
-PLIST_SUB+=	FD="@comment "
-PKGNAMESUFFIX=	-nofd
-.else
-PLIST_SUB+=	FD=""
-.endif
-
-post-configure:
-	${REINPLACE_CMD} -E 's|^(INSTALL_PROGRAM *= *install +-s +-m) 555|\1 755|g' ${WRKSRC}/Makefile
-	${REINPLACE_CMD} -E 's|^(INSTALL_DATA *= *install +-m) 444|\1 644|g' ${WRKSRC}/Makefile
-	${REINPLACE_CMD} 's|$$(LN_S) $$(INSTALL_DIR)/bin|$$(LN_S) ../${PORTNAME}-${PORTVERSION}/bin|g' ${WRKSRC}/Makefile
+post-patch:
+	@${REINPLACE_CMD} \
+		'/LINKS_DIR/s|$$(INSTALL_DIR)|../${PORTNAME}-${PORTVERSION}|' \
+		${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

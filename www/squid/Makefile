@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	squid
-PORTVERSION=	3.5.20
+PORTVERSION=	3.5.27
+PORTREVISION=	3
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://www.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
 		http://www2.us.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
@@ -17,7 +18,6 @@ PATCH_SITES=	http://www.squid-cache.org/%SUBDIR%/ \
 		http://www1.jp.squid-cache.org/%SUBDIR%/ \
 		http://master.squid-cache.org/~amosjeffries/patches/:nosid
 PATCH_SITE_SUBDIR=	Versions/v3/${PORTVERSION:R}/changesets
-#PATCHFILES=
 
 MAINTAINER=	timp87@gmail.com
 COMMENT=	HTTP Caching Proxy
@@ -27,7 +27,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	squid*-4.*
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	Does not build: error: unrecognizable insn
 
 USES=		compiler cpe perl5 shebangfix tar:xz
 CPE_VENDOR=	squid-cache
@@ -46,21 +46,21 @@ SUB_FILES+=	pkg-install pkg-message
 
 OPTIONS_SUB=	yes
 OPTIONS_GROUP=	AUTH
-OPTIONS_RADIO=	SMB FW
-OPTIONS_GROUP_AUTH=AUTH_LDAP AUTH_NIS AUTH_SASL AUTH_SQL
-OPTIONS_RADIO_SMB=AUTH_SMB3 AUTH_SMB4
+OPTIONS_RADIO=	FW
+OPTIONS_GROUP_AUTH=AUTH_LDAP AUTH_NIS AUTH_SASL AUTH_SMB AUTH_SQL
 OPTIONS_RADIO_FW=TP_IPF TP_IPFW TP_PF
-OPTIONS_DEFINE=	ARP_ACL CACHE_DIGESTS DEBUG DELAY_POOLS ECAP ESI \
+OPTIONS_DEFINE=	ARP_ACL CACHE_DIGESTS DEBUG DELAY_POOLS DOCS ECAP ESI EXAMPLES \
 		FOLLOW_XFF FS_AUFS FS_DISKD FS_ROCK HTCP ICAP ICMP IDENT IPV6 \
-		KQUEUE LARGEFILE NETTLE SNMP SSL SSL_CRTD STACKTRACES LAX_HTTP \
-		VIA_DB WCCP WCCPV2 DOCS EXAMPLES
+		KQUEUE LARGEFILE LAX_HTTP NETTLE PCRE SNMP SSL SSL_CRTD \
+		STACKTRACES VIA_DB WCCP WCCPV2
 
 OPTIONS_SINGLE=	GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_NONE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
 
-OPTIONS_DEFAULT=ARP_ACL AUTH_NIS CACHE_DIGESTS DELAY_POOLS FOLLOW_XFF \
-		FS_AUFS FS_DISKD FS_ROCK HTCP ICAP ICMP IDENT KQUEUE LARGEFILE \
-		LAX_HTTP SNMP SSL SSL_CRTD TP_IPFW VIA_DB WCCP WCCPV2 GSSAPI_BASE
+OPTIONS_DEFAULT=ARP_ACL AUTH_NIS CACHE_DIGESTS DELAY_POOLS FOLLOW_XFF FS_AUFS \
+		FS_DISKD FS_ROCK GSSAPI_BASE HTCP ICAP ICMP IDENT KQUEUE \
+		LARGEFILE LAX_HTTP PCRE SNMP SSL SSL_CRTD TP_IPFW VIA_DB WCCP \
+		WCCPV2
 
 ARP_ACL_CONFIGURE_ENABLE=	eui
 AUTH_LDAP_CFLAGS=		-I${LOCALBASE}/include
@@ -72,12 +72,8 @@ AUTH_SASL_CPPFLAGS=		-I${LOCALBASE}/include
 AUTH_SASL_LDFLAGS=		-L${LOCALBASE}/lib
 AUTH_SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
 AUTH_SASL_VARS=			BASIC_AUTH+=SASL
-AUTH_SMB3_RUN_DEPENDS=		smbclient:net/samba36
-AUTH_SMB3_VARS=			BASIC_AUTH+=SMB EXTERNAL_ACL+=wbinfo_group
-AUTH_SMB3_PLIST_SUB=		AUTH_SMB=""
-AUTH_SMB4_RUN_DEPENDS=		smbclient:net/samba42
-AUTH_SMB4_VARS=			BASIC_AUTH+=SMB EXTERNAL_ACL+=wbinfo_group
-AUTH_SMB4_PLIST_SUB=		AUTH_SMB=""
+AUTH_SMB_USES=			samba:run
+AUTH_SMB_VARS=			BASIC_AUTH+=SMB EXTERNAL_ACL+=wbinfo_group
 AUTH_SQL_RUN_DEPENDS=		p5-DBI>=1.08:databases/p5-DBI
 AUTH_SQL_VARS=			EXTERNAL_ACL+=SQL_session
 CACHE_DIGESTS_CONFIGURE_ENABLE=	cache-digests
@@ -108,12 +104,16 @@ FS_DISKD_VARS=			STORAGE_SCHEMES+=diskd DISKIO_MODULES+=DiskDaemon
 FS_ROCK_VARS=			STORAGE_SCHEMES+=rock
 NETTLE_LIB_DEPENDS=		libnettle.so:security/nettle
 NETTLE_CONFIGURE_OFF=		--without-nettle
+PCRE_LIB_DEPENDS=		libpcre.so:devel/pcre
+PCRE_CPPFLAGS=			-I${LOCALBASE}/include
+PCRE_LDFLAGS=			-L${LOCALBASE}/lib -lpcreposix -lpcre
 SNMP_CONFIGURE_ENABLE=		snmp
 SSL_CONFIGURE_ENABLE=		ssl
 SSL_CONFIGURE_ON=		--with-openssl=${OPENSSLBASE} \
 				LIBOPENSSL_CFLAGS=-I${OPENSSLINC} \
 				LIBOPENSSL_LIBS="-lcrypto -lssl"
 SSL_USES=			ssl
+SSL_VARS=			BROKEN_SSL=openssl-devel
 SSL_CRTD_CONFIGURE_ENABLE=	ssl-crtd
 SSL_CRTD_IMPLIES=		SSL
 STACKTRACES_CONFIGURE_ENABLE=	stacktraces
@@ -138,8 +138,6 @@ GSSAPI_NONE_CONFIGURE_ON=	--without-heimdal-krb5 \
 GSSAPI_BASE_USES=		gssapi
 GSSAPI_BASE_CONFIGURE_ON=	--with-heimdal-krb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
 GSSAPI_BASE_PLIST_SUB=		AUTH_KERB=""
-# Make it build on FreeBSD < 10
-GSSAPI_BASE_EXTRA_PATCHES=	${FILESDIR}/extra-patch-build-8-9
 
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal
 GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-heimdal-krb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
@@ -157,8 +155,7 @@ AUTH_DESC=		Authentication helpers
 AUTH_LDAP_DESC=		Install LDAP authentication helpers
 AUTH_NIS_DESC=		Install NIS/YP authentication helpers
 AUTH_SASL_DESC=		Install SASL authentication helpers
-AUTH_SMB3_DESC=		Install SMB3 auth. helpers (req. net/samba36)
-AUTH_SMB4_DESC=		Install SMB4 auth. helpers (req. net/samba42)
+AUTH_SMB_DESC=		Samba authentication helpers
 AUTH_SQL_DESC=		Install SQL based auth
 CACHE_DIGESTS_DESC=	Use cache digests
 DEBUG_DESC=		Build with extended debugging support
@@ -176,7 +173,6 @@ IDENT_DESC=		Ident lookups (RFC 931)
 KQUEUE_DESC=		Kqueue(2) support
 LARGEFILE_DESC=		Support large (>2GB) cache and log files
 NETTLE_DESC=		Nettle MD5 algorithm support
-SMB_DESC=		Samba authentication helpers
 SNMP_DESC=		SNMP support
 SSL_CRTD_DESC=		Use ssl_crtd to handle SSL cert requests
 SSL_DESC=		SSL gatewaying support
@@ -222,6 +218,7 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 		--with-swapdir=/var/squid/cache \
 		--without-gnutls \
 		--enable-auth \
+		--enable-zph-qos \
 		--enable-build-info \
 		--enable-loadable-modules \
 		--enable-removal-policies="lru heap" \
@@ -237,10 +234,6 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 
 BASIC_AUTH+=	DB SMB_LM MSNT-multi-domain NCSA PAM POP3 RADIUS fake getpwnam
 EXTERNAL_ACL+=	file_userip time_quota unix_group
-
-.if !defined(AUTH_SMB)
-PLIST_SUB+=	AUTH_SMB="@comment "
-.endif
 
 # POLA: allow the old global make.conf(5) (pre src.conf(5)) defines, too:
 .if ${PORT_OPTIONS:MAUTH_NIS} && !defined(NO_NIS) && !defined(WITHOUT_NIS)
@@ -294,7 +287,7 @@ post-patch:
 		${change_files})
 	@(cd ${WRKSRC} && ${MV} src/mime.conf.default src/mime.conf.sample)
 
-.if !${PORT_OPTIONS:MIPV6}
+post-patch-IPV6-off:
 	@${REINPLACE_CMD} -e's/ ::1//' -e's/ fc00::\/7//' \
 		-e's/ fe80::\/10//' -e's/ 2001:DB8::2//' \
 		-e's/ 2001:DB8::a:0\/64//' \
@@ -302,7 +295,6 @@ post-patch:
 		-e'/tcp_outgoing_address 2001:db8::beef normal_service_net/d' \
 		-e'/tcp_outgoing_address 2001:db8::1/d' \
 		${WRKSRC}/src/cf.data.pre
-.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
@@ -313,11 +305,9 @@ post-install:
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang
-#CXXFLAGS+=	-Wno-unused-private-field
-.if ${COMPILER_VERSION} >= 35
+.if ${CHOSEN_COMPILER_TYPE} == clang
+CXXFLAGS+=	-Wno-unknown-warning-option -Wno-deprecated-register
 CXXFLAGS+=	-Wno-undefined-bool-conversion -Wno-tautological-undefined-compare -Wno-dynamic-class-memaccess
-.endif
 .endif
 
 .include <bsd.port.post.mk>

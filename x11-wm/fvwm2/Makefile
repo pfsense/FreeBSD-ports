@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	fvwm
-PORTVERSION=	2.6.6
+PORTVERSION=	2.6.7
+PORTREVISION=	3
 CATEGORIES=	x11-wm
-MASTER_SITES=	https://github.com/fvwmorg/fvwm/releases/download/version-2_6_6/ \
+MASTER_SITES=	https://github.com/fvwmorg/fvwm/releases/download/2.6.7/ \
 		http://www.fvwm.org/generated/icon_download/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
@@ -18,11 +19,12 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
 # Other ports this port cannot coexist with
-CONFLICTS?=	fvwm-1.* fvwm-2.[457].*
+CONFLICTS?=	fvwm1-1.* fvwm-2.[457].*
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-mandoc --without-gnome --disable-gtk
-USES=		gmake perl5 pkgconfig gettext readline
+CONFIGURE_ENV=	PYTHON=${PYTHON_CMD}
+USES=		gmake perl5 pkgconfig python:run gettext readline
 USE_XORG=	xcursor xft xinerama xpm xrender x11 ice xext
 USE_GNOME=	cairo
 
@@ -45,6 +47,9 @@ DISTFILES+=	${FVWM_ICONS}.tar.bz2
 .endif
 
 .if ${PORT_OPTIONS:MICONV}
+CONFIGURE_ARGS+=	--with-iconv-library=${LOCALBASE}/lib \
+			--with-iconv-includes=${LOCALBASE}/include \
+			--enable-iconv
 USES+=			iconv
 .else
 CONFIGURE_ARGS+=	--disable-iconv
@@ -103,13 +108,6 @@ CONFIGURE_ARGS+=	--disable-nls
 
 .include <bsd.port.pre.mk>
 
-.if empty(ICONV_LIB)
-CONFIGURE_ARGS+=--without-iconv-library
-.else
-CONFIGURE_ARGS+=--with-iconv-library=${ICONV_PREFIX}/lib \
-		--with-iconv-includes=${ICONV_PREFIX}/include
-.endif
-
 .if ${PORT_OPTIONS:MICONS}
 post-extract:
 	@${MKDIR} ${WRKDIR}/icons
@@ -119,9 +117,11 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e 's,%%LOCALBASE%%,${LOCALBASE},' \
 		${WRKSRC}/modules/FvwmM4/FvwmM4.c
+	@${REINPLACE_CMD} -e 's,/etc/,${LOCALBASE}/etc/,g' \
+		${WRKSRC}/bin/fvwm-menu-desktop.in
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/sample.fvwmrc/system.fvwm2rc \
+	${INSTALL_DATA} ${FILESDIR}/system.fvwm2rc \
 		${STAGEDIR}${PREFIX}/etc/system.fvwm2rc.dist
 .if ${PORT_OPTIONS:MICONS}
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/fvwm/pixmaps

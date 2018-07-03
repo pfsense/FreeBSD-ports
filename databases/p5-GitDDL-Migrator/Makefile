@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	GitDDL-Migrator
-PORTVERSION=	0.07
+PORTVERSION=	0.08
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SONGMU
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Perl extension to extended p5-GitDDL
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	\
@@ -20,7 +20,7 @@ RUN_DEPENDS=	\
 BUILD_DEPENDS=	${RUN_DEPENDS}
 
 USES=		perl5
-USE_PERL5=	modbuild
+USE_PERL5=	modbuildtiny
 NO_ARCH=	YES
 
 .include <bsd.port.mk>

@@ -5,16 +5,15 @@ PORTNAME=	fXSL
 PORTVERSION=	1.1.0
 CATEGORIES=	devel pear
 MASTER_SITES=	http://pear.netpirates.net/get/
-PKGNAMEPREFIX=	pear-TheSeer_
+PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}TheSeer_
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	gasol.wu@gmail.com
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	XSL wrapper / extension to the PHP 5.x XSLTProcessor
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${PEARDIR}/.channels/pear.netpirates.net.reg:devel/pear-channel-theseer
-RUN_DEPENDS=	${PEARDIR}/.channels/pear.netpirates.net.reg:devel/pear-channel-theseer
+BROKEN_powerpc64=	fails to package: Signal 11
 
 USE_PHP=	dom xml xsl
 PEAR_CHANNEL=	theseer

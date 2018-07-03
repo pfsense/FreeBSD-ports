@@ -3,13 +3,16 @@
 
 PORTNAME=	avahi
 PORTVERSION=	0.6.31
-PORTREVISION?=	5
+PORTREVISION?=	6
 CATEGORIES?=	net dns
 MASTER_SITES=	http://www.avahi.org/download/
 PKGNAMESUFFIX?=	-app
 
 MAINTAINER?=	gnome@FreeBSD.org
 COMMENT?=	Service discovery on a local network
+
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 AVAHI_SLAVE?=	no
 
@@ -93,7 +96,7 @@ post-patch: avahi-post-patch
 avahi-post-patch:
 	@${REINPLACE_CMD} -e 's|/etc|${PREFIX}/etc|' \
 		${WRKSRC}/man/*.*
-	@${RM} -f ${WRKSRC}/man/*.bak
+	@${RM} ${WRKSRC}/man/*.bak
 	@${REINPLACE_CMD} -e 's|-ldl||g ; s|netdev|network|g' \
 		${WRKSRC}/configure \
 		${WRKSRC}/avahi-client/Makefile.in \

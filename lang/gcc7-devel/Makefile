@@ -2,16 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	7.0.0.s20161002
-CATEGORIES=	lang java
-MASTER_SITES=	GCC/snapshots/${DISTVERSION}
+PORTVERSION=	7.3.1.s20180329
+CATEGORIES=	lang
+MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
+DISTNAME=	gcc-${DIST_VERSION}
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	GNU Compiler Collection 7
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
+
+ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 armv7 i386 powerpc powerpc64 powerpcspe sparc64
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
@@ -23,28 +26,25 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 BUILD_DEPENDS+=	runtest:misc/dejagnu
 .endif
 
+CONFLICTS=	gcc7-7.*
+
 CPE_VENDOR=	gnu
 CPE_VERSION=	${GCC_VERSION}
 
-# DISTVERSION relates to downloads, GCC_VERSION and SUFFIX to names
+# DIST_VERSION relates to downloads, GCC_VERSION and SUFFIX to names
 # of executables and directories once installed.  A PORTVERSION of
 # Y.2.1.s20140817 results in values of Y-20140817, Y.2.1, and Y
 # for these three.
-DISTVERSION=	${PORTVERSION:C/([0-9]+).*\.s([0-9]+)/\1-\2/}
+DIST_VERSION=	${PORTVERSION:C/([0-9]+).*\.s([0-9]+)/\1-\2/}
 GCC_VERSION=	${PORTVERSION:C/(.+)\.s[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).*/\1/}
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 sparc64 arm armv6 armv6hf
-USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
+USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:xz
 USE_BINUTILS=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
 
 OPTIONS_DEFINE=		BOOTSTRAP GRAPHITE
-OPTIONS_DEFINE_i386=	JAVA
-OPTIONS_DEFINE_amd64=	JAVA
-OPTIONS_DEFINE_powerpc64=	JAVA
 OPTIONS_DEFAULT=	BOOTSTRAP
-OPTIONS_EXCLUDE_DragonFly=	JAVA
 BOOTSTRAP_DESC=		Build using a full bootstrap
 GRAPHITE_DESC=		Support for Graphite loop optimizations
 
@@ -59,23 +59,15 @@ CONFIGURE_ARGS+=	--disable-multilib
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "amd64"
+.if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
-.endif
 
-.if ${ARCH} == powerpc64
+.elif ${ARCH} == powerpc64
 CONFIGURE_ENV+=	UNAME_m="powerpc64"
-USE_GCC=	4.9+
-.endif
+USE_GCC=	yes
 
-.if ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
-. if ${COMPILER_TYPE} == clang
-.  if empty(PORT_OPTIONS:MBOOTSTRAP)
-MAKE_ARGS+=CXXFLAGS=-fbracket-depth=512
-.  else
-MAKE_ARGS+=STAGE1_CXXFLAGS=-fbracket-depth=512
-.  endif
-. endif
+.elif ${ARCH} == powerpcspe
+CONFIGURE_ARGS+=	--with-cpu=8540 --enable-e500_double --without-fp
 .endif
 
 LANGUAGES:=	c,c++,objc,fortran
@@ -88,6 +80,10 @@ CONFIGURE_ARGS+=--disable-bootstrap
 .else
 CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
 ALL_TARGET=	bootstrap-lean
+.endif
+INSTALL_TARGET=	install-strip
+.if ${UID} != 0
+BINMODE=	755
 .endif
 CONFIGURE_ARGS+=--disable-nls \
 		--enable-gnu-indirect-function \
@@ -113,7 +109,7 @@ INFO=		gcc${SUFFIX}/cpp \
 		gcc${SUFFIX}/gccint \
 		gcc${SUFFIX}/gfortran \
 		gcc${SUFFIX}/libgomp
-.if ${ARCH} == "i386" || ${ARCH} == "amd64"
+.if ${ARCH} == amd64 || ${ARCH} == i386
 INFO+=		gcc${SUFFIX}/libquadmath \
 		gcc${SUFFIX}/libitm
 .endif
@@ -125,21 +121,6 @@ LIB_DEPENDS+=	libisl.so:devel/isl
 CONFIGURE_ARGS+=--with-isl=${LOCALBASE}
 .endif
 
-.if ${PORT_OPTIONS:MJAVA}
-ECJ_JAR=	${LOCALBASE}/share/java/ecj-4.5.jar
-BUILD_DEPENDS+=	${ECJ_JAR}:lang/gcc-ecj45 \
-		zip:archivers/zip
-RUN_DEPENDS+=	${ECJ_JAR}:lang/gcc-ecj45
-EXTRA_PATCHES+=	${FILESDIR}/java-patch-hier
-CONFIGURE_ARGS+=--with-ecj-jar=${ECJ_JAR}
-LANGUAGES:=	${LANGUAGES},java
-INFO+=		gcc${SUFFIX}/cp-tools \
-		gcc${SUFFIX}/gcj
-PLIST_SUB+=	JAVA=""
-.else
-CONFIGURE_ARGS+=--disable-libgcj
-PLIST_SUB+=	JAVA="@comment "
-.endif
 CONFIGURE_ARGS+=--enable-languages=${LANGUAGES}
 
 pre-everything::
@@ -147,7 +128,7 @@ pre-everything::
 
 pre-configure:
 	cd ${WRKSRC} ; contrib/gcc_update --touch
-	@${RM} -f ${WRKSRC}/gcc/*/*.info*
+	@${RM} ${WRKSRC}/gcc/*/*.info*
 
 .if defined(MAINTAINER_MODE)
 full-regression-test: build
@@ -156,12 +137,11 @@ full-regression-test: build
 .endif
 
 post-stage:
-	${RM} -f ${STAGEDIR}${PREFIX}/man/man7/*
-	${RM} -f ${STAGEDIR}${PREFIX}/bin/rebuild-gcj-db${SUFFIX} \
-	         ${STAGEDIR}${PREFIX}/man/man1/rebuild-gcj-db${SUFFIX}.1
+	${RM} ${STAGEDIR}${PREFIX}/man/man7/*
+	${RM} -r ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/include-fixed/
 	# Add target libraries and include files to packaging list.
-	${RM} -f ${WRKDIR}/PLIST.lib
-.for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///} include/gcj include/gnu include/java include/javax
+	${RM} ${WRKDIR}/PLIST.lib
+.for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///}
 	cd ${STAGEDIR}${PREFIX} ; if [ -d $d ]; then \
 	    ${FIND} $d -type f -o -type l >>${WRKDIR}/PLIST.lib ;\
 	fi

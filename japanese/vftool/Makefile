@@ -15,7 +15,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Virtual font kit (n2a,a2n,a2bk,p2pn)
 
-BUILD_DEPENDS=	${AFMDIR}/GothicBBB-Medium-H:japanese/japaneseAFM
+BUILD_DEPENDS=	${LOCALBASE}/share/fonts/afm/GothicBBB-Medium-H:japanese/japaneseAFM
 
 ALL_TARGET=	n2a a2n a2bk p2pn
 SCRIPTS_ENV=	MV=${MV} SED=${SED} AFMDIR=${AFMDIR} JFMDIR=${JFMDIR}
@@ -25,8 +25,6 @@ AFMDIR=		${PREFIX}/share/fonts/afm
 FONTSDIR=	${PREFIX}/share/fonts
 JFMDIR=		${WRKDIR}/share/texmf/fonts/tfm/ptex
 TARGETDIRS=	vf-n2a vf-a2n vf-a2bk vf-p2pn
-
-BROKEN_ia64=	Coredump during build on ia64
 
 OPTIONS_DEFINE=	DOCS
 

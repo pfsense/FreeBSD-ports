@@ -2,19 +2,19 @@
 
 PORTNAME=	hunspell
 PORTVERSION=	0.5.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	korean textproc
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	Korean hunspell dictionaries
 
-LICENSE=	GPLv2+ LGPL21+ MPL
+LICENSE=	GPLv2+ LGPL21+ MPL11
 LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/LICENSE.GPL
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/LICENSE.LGPL
-LICENSE_FILE_MPL=	${WRKSRC}/LICENSE.MPL
+LICENSE_FILE_MPL11=	${WRKSRC}/LICENSE.MPL
 
-BUILD_DEPENDS=	py${PYTHON_SUFFIX}-lxml>=0:devel/py-lxml
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR}
 TEST_DEPENDS=	hunspell:textproc/hunspell
 
 GH_ACCOUNT=	changwoo
@@ -22,7 +22,7 @@ GH_PROJECT=	${PORTNAME}-dict-ko
 USE_GITHUB=	yes
 
 NO_ARCH=	yes
-USES=		python:build,test
+USES=		python:2.7,build,test
 
 PLIST_FILES=	%%DATADIR%%/ko_KR.aff \
 		%%DATADIR%%/ko_KR.dic

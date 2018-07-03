@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Tk
-PORTVERSION=	804.033
-PORTREVISION=	1
+PORTVERSION=	804.034
 CATEGORIES=	x11-toolkits tk perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -11,8 +10,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Re-port of a perl5 interface to Tk8.4
 
+LICENSE=	ARTPERL10
+
 LIB_DEPENDS=	libpng.so:graphics/png \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
 
 OPTIONS_DEFINE=	XFT
 OPTIONS_DEFAULT=	XFT
@@ -49,7 +51,7 @@ post-configure:
 		-e '/^FULL_AR = / s|.*|FULL_AR = ${AR}|' \
 		`${FIND} ${WRKSRC} -name Makefile`
 
-post-stage:
+post-install:
 	@${RM} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Tk/pTk/extralibs.ld
 	@${RMDIR} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Tk/pTk
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Tk/Tk.so

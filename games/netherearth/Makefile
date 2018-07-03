@@ -3,11 +3,11 @@
 
 PORTNAME=	netherearth
 PORTVERSION=	0.51
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	http://move.kirishi.ru/soft/netherearth/
 
-MAINTAINER=	olevole@olevole.ru
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Remake of the first real time strategy game on the SPECTRUM
 
 GNU_CONFIGURE=	yes

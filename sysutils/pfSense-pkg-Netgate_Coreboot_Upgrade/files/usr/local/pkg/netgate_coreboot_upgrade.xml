@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * netgate_coreboot_upgrade.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<description>Provide a mechanism to upgrade Coreboot of Netgate hardware models</description>
+	<name>Netgate Coreboot Upgrade</name>
+	<title>System: Netgate Coreboot Upgrade</title>
+	<include_file>/usr/local/pkg/netgate_coreboot_upgrade.inc</include_file>
+	<menu>
+		<name>Netgate Coreboot Upgrade</name>
+		<tooltiptext>Upgrade Coreboot of Netgate hardware models.</tooltiptext>
+		<section>System</section>
+		<url>/netgate_coreboot_upgrade.php</url>
+	</menu>
+	<custom_php_validation_command>
+		
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		
+	</custom_php_resync_config_command>
+</packagegui>

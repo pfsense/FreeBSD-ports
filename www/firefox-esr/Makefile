@@ -2,40 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	45.5.0
-DISTVERSIONSUFFIX=esr.source
+DISTVERSION=	52.9.0
+DISTVERSIONSUFFIX=esr
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}esr/source \
-		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}esr-candidates/build1/source
+		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}esr-candidates/build2/source
 PKGNAMESUFFIX=	-esr
+DISTFILES=	${DISTNAME}.source${EXTRACT_SUFX}
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
-BUILD_DEPENDS=	nspr>=4.12:devel/nspr \
-		nss>=3.21.1:security/nss \
-		libevent2>=2.0.21_2:devel/libevent2 \
-		soundtouch>=1.9.0:audio/soundtouch \
-		harfbuzz>=1.1.0:print/harfbuzz \
-		graphite2>=1.3.6:graphics/graphite2 \
-		png>=1.6.19:graphics/png \
+BUILD_DEPENDS=	nspr>=4.13.1:devel/nspr \
+		nss>=3.28.6:security/nss \
+		libevent>=2.0.21_2:devel/libevent \
+		harfbuzz>=1.4.1:print/harfbuzz \
+		graphite2>=1.3.10:graphics/graphite2 \
+		png>=1.6.25:graphics/png \
 		libvorbis>=1.3.5,3:audio/libvorbis \
 		libvpx>=1.5.0:multimedia/libvpx \
-		sqlite3>=3.9.1:databases/sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
+		sqlite3>=3.17.0:databases/sqlite3 \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf-2.13:devel/autoconf213 \
 		yasm:devel/yasm \
 		zip:archivers/zip
+#		soundtouch>=1.9.0:audio/soundtouch \
 
 LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 USE_GECKO=	gecko
 CPE_PRODUCT=	${PORTNAME}_esr
-CONFLICTS_INSTALL=	firefox-[0-9]*
+CONFLICTS_INSTALL=	firefox
 MOZ_PKGCONFIG_FILES=	# empty
-USE_MOZILLA=	# empty
+USE_MOZILLA=	-soundtouch
 MOZILLA_NAME=	Firefox
 
 USE_GL=		gl
@@ -43,8 +45,7 @@ USES=		tar:xz
 
 FIREFOX_ICON=		${MOZILLA}.png
 FIREFOX_ICON_SRC=	${PREFIX}/lib/${MOZILLA}/browser/chrome/icons/default/default48.png
-MOZ_OPTIONS=	--program-transform-name='s/firefox/${MOZILLA}/' \
-		--enable-application=browser \
+MOZ_OPTIONS=	--enable-application=browser \
 		--enable-official-branding
 
 OPTIONS_DEFINE=		RUST
@@ -55,7 +56,8 @@ OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
 
-WRKSRC:=	${WRKDIR}/${PORTNAME}-${DISTVERSION}esr
+# Inconsistent fallback order (libcubeb vs. audio_device)
+SNDIO_PREVENTS=		${OPTIONS_MULTI_AUDIO:NSNDIO}
 
 post-extract:
 	@${SED} -e 's|@FIREFOX_ICON@|${FIREFOX_ICON}|' -e 's|@MOZILLA@|${MOZILLA}|' \

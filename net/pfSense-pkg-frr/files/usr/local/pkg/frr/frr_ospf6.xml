@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_ospf6.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_ospf6d</name>
+	<title>Services/FRR/OSPF6</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg_edit.php?xml=frr/frr_ospf6.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>OSPF6 Settings</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>OSPF6 Interfaces</text>
+			<url>pkg.php?xml=frr/frr_ospf6_interfaces.xml</url>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php?protocol=ospf6</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Enable OSPF6 Routing</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Log Adjacency Changes</fielddescr>
+			<fieldname>adjacencylog</fieldname>
+			<description>If set to yes, adjacency changes will be written via syslog.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Router ID</fielddescr>
+			<fieldname>routerid</fieldname>
+			<description>
+				<![CDATA[
+				Specify the Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
+				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Area</fielddescr>
+			<fieldname>area</fieldname>
+			<description>
+				<![CDATA[
+				OSPF6d area for this instance of OSPF.<br />
+				For more information on Areas see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First#Area_types'>wikipedia</a>.
+				]]>
+			</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Disable FIB updates (Routing table)</fielddescr>
+			<fieldname>updatefib</fieldname>
+			<description>Disables the updating of the host routing table (turns into stub router).</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (FIB updates enabled) (default)</name><value>none</value></option>
+				<option><name>Stub Area (stub)</name><value>stub</value></option>
+				<option><name>Totally Stub (no-summary)</name><value>nosum</value></option>
+				<option><name>Not so Stub Area (nssa)</name><value>nssa</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Redistribute connected subnets</fielddescr>
+			<fieldname>redistributeconnectedsubnets</fieldname>
+			<description>Enables the redistribution of connected networks (Default no)</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Redistribute static</fielddescr>
+			<fieldname>redistributestatic</fieldname>
+			<description>Enables the redistribution of static routes (only works if you are using frr static routes)</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Redistribute Kernel</fielddescr>
+			<fieldname>redistributekernel</fieldname>
+			<description>Enables the redistribution of kernel routing table (this is required if using pfsense static routes)</description>
+			<type>checkbox</type>
+		</field>
+			
+		<field>
+			<fielddescr>SPF Hold Time</fielddescr>
+			<fieldname>spfholdtime</fieldname>
+			<description>
+				<![CDATA[
+				Set the SPF holdtime in <strong>milli</strong>seconds. The minimum time between two consecutive shortest path first calculations.<br />
+				The default value is 5 seconds; the valid range is 1-5 seconds.
+				]]>
+				</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>SPF Delay</fielddescr>
+			<fieldname>spfdelay</fieldname>
+			<description>
+				<![CDATA[
+				Set SPF delay in <strong>milli</strong>seconds. The delay between receiving an update to the link state database and starting the shortest path first calculation.<br />
+				The default value is 1; valid range is 1-10 seconds.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>These rules take precedence over any redistribute options specified above.</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Subnet to Route</fielddescr>
+					<fieldname>routevalue</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Area ID</fielddescr>
+					<fieldname>routearea</fieldname>
+					<type>input</type>
+					<size>10</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>cost</fielddescr>
+					<fieldname>routecost</fieldname>
+					<type>input</type>
+					<size>10</size>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_ospf6_validate_input();
+	</custom_php_validation_command>
+</packagegui>

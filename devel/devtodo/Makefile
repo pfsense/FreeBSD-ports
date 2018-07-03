@@ -3,17 +3,17 @@
 
 PORTNAME=	devtodo
 PORTVERSION=	0.1.20
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://swapoff.org/files/devtodo/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to effectively maintain todo lists aimed at developers
 
-CONFLICTS=	tdl-[0-9]* todo-[0-9]*
+CONFLICTS_INSTALL=	deforaos-todo tdl todo
 
 GNU_CONFIGURE=	yes
-USES=		readline
+USES=		ncurses readline
 
 OPTIONS_DEFINE=	EXAMPLES
 

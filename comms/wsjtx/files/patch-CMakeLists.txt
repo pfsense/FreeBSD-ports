@@ -1,68 +1,57 @@
---- CMakeLists.txt.orig	2015-12-11 00:00:13 UTC
+--- CMakeLists.txt.orig	2017-10-19 22:13:49 UTC
 +++ CMakeLists.txt
-@@ -93,6 +93,13 @@ if (CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][B
+@@ -1,5 +1,4 @@
+ cmake_minimum_required (VERSION 2.8.10 FATAL_ERROR)
+-
+ if (APPLE)
+   #
+   # The following variables define the portability and compatability attributes of the Mac OS X build
+@@ -132,6 +131,12 @@ if (CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][B
    set (is_debug_build 1)
  endif ()
  
 +if (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
-+ set (FREEBSD 1)
++  set (FREEBSD TRUE)
++  link_directories("/usr/lib" "${LOCALBASE}/lib")
++  include_directories("/usr/include" "${LOCALBASE}/include")
 +endif()
 +
-+if (FREEBSD)
-+       set (WSJT_INCLUDE_KVASD Off)
-+endif ()
  
  #
  # Options & features
-@@ -153,7 +160,14 @@ set (LIB_DESTINATION lib)
- set (SHARE_DESTINATION share)
- set (DOC_DESTINATION doc/${CMAKE_PROJECT_NAME})
- set (DATA_DESTINATION ${CMAKE_PROJECT_NAME})
--set (MANPAGE_DESTINATION ${SHARE_DESTINATION})
-+if (NOT FREEBSD)
-+  message (STATUS "NOT FREEBSD")
-+  set (MANPAGE_DESTINATION share)
-+else()
-+  message (STATUS "FREEBSD")
-+  set (MANPAGE_DESTINATION "${CMAKE_INSTALL_PREFIX}" )
-+endif()
-+message (STATUS MANPAGE_DESTINATION ${MANPAGE_DESTINATION})
- set (PLUGIN_DESTINATION lib/plugins)
- set (QT_CONF_DESTINATION bin)
- 
-@@ -937,7 +951,13 @@ set_target_properties (wsjtx PROPERTIES
-   MACOSX_BUNDLE_GUI_IDENTIFIER "org.k1jt.wsjtx"
-   )
- 
--target_link_libraries (wsjtx wsjt_fort wsjt_cxx wsjt_qt ${hamlib_LIBRARIES} ${FFTW3_LIBRARIES} Qt5::Multimedia)
-+if(FREEBSD)
-+  set (extraLIBS "ltdl" "usb")
-+else()
-+  set (extraLIBS "")
-+endif()
+@@ -838,7 +843,20 @@ endif ()
+ #
+ # OpenMP
+ #
+-find_package (OpenMP)
++message (status "ZZZ About to find_package (OpenMP)")
++#    OpenMP_C_FLAGS - flags to add to the C compiler for OpenMP support
++#    OpenMP_CXX_FLAGS - flags to add to the CXX compiler for OpenMP support
++#    OpenMP_Fortran_FLAGS - flags to add to the Fortran compiler for OpenMP support
++#    OPENMP_FOUND - true if openmp is detected
 +
-+target_link_libraries (wsjtx wsjt_fort wsjt_cxx wsjt_qt ${hamlib_LIBRARIES} ${extraLIBS} ${FFTW3_LIBRARIES} Qt5::Multimedia)
- qt5_use_modules (wsjtx SerialPort) # not sure why the interface link library syntax above doesn't work
++if (FREEBSD)
++  set (OpenMP_C_FLAGS "-openmp")
++  set (OpenMP_CXX_FLAGS "-openmp")
++  set (OpenMP_Fortran_FLAGS "-openmp")
++  set (OPENMP_FOUND TRUE)
++else()
++  find_package (OpenMP)
++endif()
  
- add_resources (message_aggregator_RESOURCES /qss ${message_aggregator_STYLESHEETS})
-@@ -1011,20 +1031,6 @@ else (WSJT_INCLUDE_KVASD)
-   endif (APPLE)
- endif (WSJT_INCLUDE_KVASD)
+ #
+ # fftw3 single precision library
+@@ -1282,6 +1300,13 @@ else (${OPENMP_FOUND} OR APPLE)
+   target_link_libraries (jt9 wsjt_fort wsjt_cxx Qt5::Core)
+ endif (${OPENMP_FOUND} OR APPLE)
  
--install (PROGRAMS
--  ${RIGCTL_EXE}
--  DESTINATION ${WSJT_BIN_DESTINATION}
--  #COMPONENT runtime
--  RENAME rigctl-wsjtx${CMAKE_EXECUTABLE_SUFFIX}
--  )
--
--install (PROGRAMS
--  ${RIGCTLD_EXE}
--  DESTINATION ${WSJT_BIN_DESTINATION}
--  #COMPONENT runtime
--  RENAME rigctld-wsjtx${CMAKE_EXECUTABLE_SUFFIX}
--  )
--
- install (FILES
-   README
-   COPYING
++if(FREEBSD)
++   set (extraLIBS "ltdl" "usb")
++ else()
++   set (extraLIBS "")
++endif()
++  
++
+ # build the main application
+ add_executable (wsjtx MACOSX_BUNDLE
+   ${wsjtx_CXXSRCS}

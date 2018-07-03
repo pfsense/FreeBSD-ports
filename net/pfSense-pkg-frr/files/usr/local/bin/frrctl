@@ -1,0 +1,203 @@
+#!/bin/sh
+#
+# frrctl
+#
+# part of pfSense (https://www.pfsense.org)
+# Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
+# All rights reserved.
+#
+# originally based on m0n0wall (http://neon1.net/m0n0wall)
+# Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
+# All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+RC_SCRIPT=/usr/local/etc/rc.d/frr.sh
+FRR_CONFIG_BASE=/var/etc/frr
+
+ZEBRA_CONFIG=${FRR_CONFIG_BASE}/zebra.conf
+ZEBRA_PORT=2601
+if [ -f ${ZEBRA_CONFIG} ]; then
+	ZEBRA_PASSWORD=`/usr/bin/grep '^password ' ${ZEBRA_CONFIG} | /usr/bin/awk '{print $2};'`
+fi
+
+OSPF_CONFIG=${FRR_CONFIG_BASE}/ospfd.conf
+OSPF_PORT=2604
+if [ -f ${OSPF_CONFIG} ]; then
+	OSPF_PASSWORD=`/usr/bin/grep '^password ' ${OSPF_CONFIG} | /usr/bin/awk '{print $2};'`
+fi
+
+OSPF6_CONFIG=${FRR_CONFIG_BASE}/ospf6d.conf
+OSPF6_PORT=2606
+if [ -f ${OSPF6_CONFIG} ]; then
+	OSPF6_PASSWORD=`/usr/bin/grep '^password ' ${OSPF6_CONFIG} | /usr/bin/awk '{print $2};'`
+fi
+
+BGP_CONFIG=${FRR_CONFIG_BASE}/bgpd.conf
+BGP_PORT=2605
+if [ -f ${BGP_CONFIG} ]; then
+	BGP_PASSWORD=`/usr/bin/grep '^password ' ${BGP_CONFIG} | /usr/bin/awk '{print $2};'`
+fi
+
+daemon_command() {
+	COMMANDS=${2}
+	COMMANDS=${COMMANDS}`echo -e "\n${3}\n"`
+	COMMANDS=${COMMANDS}`echo -e "\nexit\n"`
+	echo "$COMMANDS" | /usr/bin/nc localhost ${1} | /usr/bin/tail -n +10 | sed '$d'
+}
+
+case $1 in
+stop)
+	$RC_SCRIPT stop
+	;;
+start)
+	$RC_SCRIPT start
+	;;
+restart)
+	$RC_SCRIPT restart
+	;;
+zebra)
+	if [ "`pgrep zebra`" = "" ]; then
+		echo "zebra does not appear to be running"
+		exit 1
+	fi
+	case $2 in
+	cpu*)
+		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show thread cpu"
+		;;
+	mem*)
+		shift; shift;
+		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show memory $*"
+		;;
+	int*)
+		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show interface $3"
+		;;
+	route6)
+		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ipv6 route"
+		;;
+	route)
+		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ip route"
+		;;
+	bgpr*)
+		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ip route bgp"
+		;;
+	esac ;;
+ospf6)
+	if [ "`pgrep ospf6d`" = "" ]; then
+		echo "ospf6d does not appear to be running"
+		exit 1
+	fi
+	case $2 in
+	cpu*)
+		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show thread cpu"
+		;;
+	mem*)
+		shift; shift;
+		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show memory $*"
+		;;
+	gen*)
+		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6"
+		;;
+	nei*)
+		shift; shift;
+		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 neighbor $*"
+		;;
+	dat*)
+		shift; shift;
+		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 database $*"
+		;;
+	int*)
+		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 interface $3"
+		;;
+	bor*)
+		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 border-routers"
+		;;
+	rou*)
+		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 route"
+		;;
+	esac ;;
+ospf)
+	if [ "`pgrep ospfd`" = "" ]; then
+		echo "ospfd does not appear to be running"
+		exit 1
+	fi
+	case $2 in
+	cpu*)
+		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show thread cpu"
+		;;
+	mem*)
+		shift; shift;
+		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show memory $*"
+		;;
+	gen*)
+		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf"
+		;;
+	nei*)
+		shift; shift;
+		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf neighbor $*"
+		;;
+	dat*)
+		shift; shift;
+		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf database $*"
+		;;
+	int*)
+		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf interface $3"
+		;;
+	bor*)
+		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf border-routers"
+		;;
+	rou*)
+		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf route"
+		;;
+	esac ;;
+bgp6*)
+	if [ "`pgrep bgpd`" = "" ]; then
+		echo "bgpd does not appear to be running"
+		exit 1
+	fi
+	case $2 in
+	rou*)
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp"
+		;;
+	esac ;;
+bgp*)
+	if [ "`pgrep bgpd`" = "" ]; then
+		echo "bgpd does not appear to be running"
+		exit 1
+	fi
+	case $2 in
+	rou*)
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp"
+		;;
+	nei*)
+		shift; shift;
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp neighbors $*"
+		;;
+	peer*)
+		shift; shift;
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp peer-group $*"
+		;;
+	sum*)
+		shift; shift;
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp summary $*"
+		;;
+	nexth*)
+		shift; shift;
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp nexthop detail $*"
+		;;
+	mem*)
+		shift; shift;
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp memory $*"
+		;;
+	esac ;;
+esac

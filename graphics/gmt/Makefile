@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gmt
-PORTVERSION=	4.5.14
+DISTVERSION=	4.5.17
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.soest.hawaii.edu/%SUBDIR%/ \
@@ -17,7 +17,7 @@ MASTER_SITE_SUBDIR=	${PORTNAME} ${PORTNAME}/legacy
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${GSHHG_DISTNAME}.tar.gz:gshhg
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	lbartoletti@tuxfamily.org
 COMMENT=	Generic Mapping Tools - data processing and display software package
 
 LICENSE=	GPLv2 LGPL3
@@ -82,23 +82,23 @@ STRIP_BINS=	blockmean blockmedian blockmode filter1d fitcircle \
 STRIP_LIBS=	libgmt.so.4 libgmtps.so.4 libpsl.so.4
 
 # http://www.soest.hawaii.edu/pwessel/gshhg/
-GSHHG_DISTNAME=	gshhg-gmt-2.3.4
+GSHHG_DISTNAME=	gshhg-gmt-2.3.7
 
 pre-configure:
-	@(cd ${CONFIGURE_WRKSRC} && ${SETENV} AUTOHEADER="${TRUE}" \
-		${AUTORECONF} -f -i)
+	@cd ${CONFIGURE_WRKSRC} && ${SETENV} AUTOHEADER="${TRUE}" \
+		${AUTORECONF} -f -i
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/coast
-	(cd ${WRKDIR}/${GSHHG_DISTNAME} && ${INSTALL_DATA} README.TXT *.nc \
-		${STAGEDIR}${DATADIR}/coast)
+	cd ${WRKDIR}/${GSHHG_DISTNAME} && ${INSTALL_DATA} README.TXT *.nc \
+		${STAGEDIR}${DATADIR}/coast
 .for i in ${STRIP_BINS}
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${i}
 .endfor
 
 post-install-X11-on:
-	(cd ${WRKSRC}/src/xgrid && ${INSTALL_PROGRAM} xgridedit \
-		${STAGEDIR}${PREFIX}/bin)
+	cd ${WRKSRC}/src/xgrid && ${INSTALL_PROGRAM} xgridedit \
+		${STAGEDIR}${PREFIX}/bin
 
 post-install-SHARED-on:
 .for i in ${STRIP_LIBS}

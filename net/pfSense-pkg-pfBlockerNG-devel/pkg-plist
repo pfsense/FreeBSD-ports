@@ -1,0 +1,33 @@
+/etc/inc/priv/pfblockerng.priv.inc
+pkg/pfblockerng.xml
+pkg/pfblockerng/dnsbl_tld
+pkg/pfblockerng/pfblockerng.inc
+pkg/pfblockerng/pfblockerng.sh
+pkg/pfblockerng/pfblockerng_extra.inc
+pkg/pfblockerng/pfblockerng_install.inc
+pkg/pfblockerng/shallalist_global_usage
+pkg/pfblockerng/ut1_global_usage
+www/pfblockerng/pfBlockerNG.js
+www/pfblockerng/pfblockerng.php
+www/pfblockerng/pfblockerng_asn.txt
+www/pfblockerng/pfblockerng_alerts.php
+www/pfblockerng/pfblockerng_blacklist.php
+www/pfblockerng/pfblockerng_category.php
+www/pfblockerng/pfblockerng_category_edit.php
+www/pfblockerng/pfblockerng_dnsbl.php
+www/pfblockerng/pfblockerng_feeds.json
+www/pfblockerng/pfblockerng_feeds.php
+www/pfblockerng/pfblockerng_general.php
+www/pfblockerng/pfblockerng_ip.php
+www/pfblockerng/pfblockerng_log.php
+www/pfblockerng/pfblockerng_sync.php
+www/pfblockerng/pfblockerng_threats.php
+www/pfblockerng/pfblockerng_update.php
+www/pfblockerng/www/dnsbl_default.php
+www/pfblockerng/www/index.php
+www/widgets/include/widget-pfblockerng.inc
+www/widgets/javascript/pfblockerng.js
+www/widgets/widgets/pfblockerng.widget.php
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir /etc/inc

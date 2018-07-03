@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	veditor
-PORTVERSION=	0.7.1
-PORTREVISION=	3
+PORTVERSION=	1.2.2
+PORTREVISION=	1
 CATEGORIES=	java cad
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20runtime/VEditor%20${PORTVERSION}
 DISTNAME=	net.sourceforge.${PORTNAME}_${PORTVERSION}
 EXTRACT_SUFX=	.jar
 EXTRACT_ONLY=
 
-MAINTAINER=	kamikaze@bsdforen.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Verilog and VHDL editor plugin for eclipse
 
 RUN_DEPENDS=	eclipse:java/eclipse

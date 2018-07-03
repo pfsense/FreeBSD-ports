@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	commons-daemon
-PORTVERSION=	1.0.15
+PORTVERSION=	1.1.0
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE_COMMONS_SOURCE:src \
 		APACHE_COMMONS_BINARIES:bin
@@ -14,6 +14,10 @@ MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Wrapper code to start/stop a Java application as a daemon
 
 LICENSE=	APACHE20
+
+BROKEN_aarch64=		fails to compile: 'jni_md.h' file not found
+BROKEN_armv6=		fails to compile: 'jni_md.h' file not found
+BROKEN_armv7=		fails to compile: 'jni_md.h' file not found
 
 OPTIONS_DEFINE=	DOCS
 

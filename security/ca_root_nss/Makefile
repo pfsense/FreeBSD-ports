@@ -9,7 +9,7 @@ DISTNAME=	nss-${VERSION_NSS}${NSS_SUFFIX}
 MAINTAINER=	ports-secteam@FreeBSD.org
 COMMENT=	Root certificate bundle from the Mozilla Project
 
-LICENSE=	MPL
+LICENSE=	MPL20
 
 OPTIONS_DEFINE=		ETCSYMLINK
 OPTIONS_DEFAULT=	ETCSYMLINK
@@ -32,7 +32,7 @@ PLIST_SUB+=	CERTDIR=${CERTDIR}
 # !!!  Please DO NOT submit patches for new version until it has !!!
 # !!!  been committed there first.                               !!!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-VERSION_NSS=	3.27.1
+VERSION_NSS=	3.38
 #NSS_SUFFIX=	-with-ckbi-1.98
 CERTDATA_TXT_PATH=	nss-${VERSION_NSS}/nss/lib/ckfw/builtins/certdata.txt
 BUNDLE_PROCESSOR=	MAca-bundle.pl
@@ -47,7 +47,7 @@ do-extract:
 	@${TAR} -C ${WRKDIR} -xf ${DISTDIR}/nss-${VERSION_NSS}${NSS_SUFFIX}${EXTRACT_SUFX} \
 	    ${CERTDATA_TXT_PATH}
 	@${CP} ${WRKDIR}/${CERTDATA_TXT_PATH} ${WRKDIR}
-	@${RM} -rf ${WRKDIR}/nss-${VERSION_NSS}
+	@${RM} -r ${WRKDIR}/nss-${VERSION_NSS}
 
 do-build:	apply-slist
 	@${SETENV} PATH=${LOCALBASE}/bin:$${PATH} \

@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	csmith
-PORTVERSION=	2.2.0
+PORTVERSION=	2.3.0
 CATEGORIES=	devel
-MASTER_SITES=	http://embed.cs.utah.edu/csmith/ \
-		http://www.skysmurf.nl/comp/FreeBSD/distfiles/
+MASTER_SITES=	http://embed.cs.utah.edu/csmith/
 
-MAINTAINER=	freebsd@skysmurf.nl
+MAINTAINER=	mmokhi@FreeBSD.org
 COMMENT=	Generates random C programs that conform to the C99 standard
 
 LICENSE=	BSD2CLAUSE
@@ -18,7 +17,7 @@ LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 USES=		gmake libtool perl5 shebangfix
 USE_PERL5=	run
-SHEBANG_FILES=	scripts/compiler_test.pl scripts/launchn.pl scripts/test_csmith.pl
+SHEBANG_FILES=	scripts/compiler_test.pl scripts/launchn.pl
 USE_LDCONFIG=	yes
 
 ONLY_FOR_ARCHS=	i386 amd64

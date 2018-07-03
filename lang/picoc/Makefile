@@ -2,21 +2,23 @@
 
 PORTNAME=	picoc
 PORTVERSION=	2.1
+PORTREVISION=	1
 CATEGORIES=	lang devel
-MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Very small C interpreter for scripting
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN=		Unfetchable (google code has gone away)
+BROKEN_aarch64=		fails to link: missing sbrk
 
-USES=		gmake readline tar:bzip2
+USE_GITHUB=	yes
+GH_ACCOUNT=	zsaleeba
+GH_TAGNAME= 4555e84
+
+USES=		gmake readline
 
 PLIST_FILES=	bin/picoc
-
-WRKSRC=		${WRKDIR}/${PORTNAME}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/picoc ${STAGEDIR}${PREFIX}/bin/picoc

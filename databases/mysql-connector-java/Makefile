@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mysql-connector-java
-PORTVERSION=	5.1.39
+PORTVERSION=	5.1.46
 CATEGORIES=	databases java
 MASTER_SITES=	MYSQL/Connector-J
 
@@ -28,7 +28,7 @@ APIDOCSDIR=	${STAGEDIR}${DOCSDIR}/javadoc
 SRCDIR=		${WRKDIR}/${DISTNAME}/src
 JAVADOCDIR=	${WRKDIR}/${DISTNAME}/javadoc
 DESTJARFILE=	${PORTNAME}.jar
-EXTRADOCS=	CHANGES docs/connector-j.html docs/connector-j.pdf
+EXTRADOCS=	CHANGES
 JARFILE=	${DISTNAME}-bin.jar
 JDCLASSPATH=	${SRCDIR}:${CLASSPATH}
 
@@ -53,7 +53,6 @@ do-build-DOCS-on:
 	    com.mysql.jdbc org.gjt.mm.mysql)
 .endif
 
-# Don't build the javadoc using JDK 1.8+ as it generates many errors
 do-install:
 	@${ECHO_MSG} -n ">> Installing .jar files..."
 	${INSTALL_DATA} ${BUILDDIR}/${JARFILE} ${STAGEDIR}${JAVAJARDIR}/${DESTJARFILE}

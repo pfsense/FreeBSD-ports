@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_global_raw.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_global_raw</name>
+	<title>Services/FRR/Global Settings</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg_edit.php?xml=frr/frr_global_raw.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>Global Settings</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>Access Lists</text>
+			<url>pkg.php?xml=frr/frr_global_acls.xml</url>
+		</tab>
+		<tab>
+			<text>Prefix Lists</text>
+			<url>pkg.php?xml=frr/frr_global_prefixes.xml</url>
+		</tab>
+		<tab>
+			<text>Route Maps</text>
+			<url>pkg.php?xml=frr/frr_global_routemaps.xml</url>
+		</tab>
+		<tab>
+			<text>Raw Config</text>
+			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Manual TCP MD5 Peers</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Set source and destination IP addresses for manual TCP MD5 peering (e.g. BGP) and specify an MD5 password.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>TCP MD5 Peers</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Local Source Address</fielddescr>
+					<fieldname>tcpsigsrc</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Remote Peer Address</fielddescr>
+					<fieldname>tcpsigdst</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>MD5 Password</fielddescr>
+					<fieldname>tcpsigpw</fieldname>
+					<type>input</type>
+					<size>64</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Bidirectional SA</fielddescr>
+					<fieldname>tcpsigbidir</fieldname>
+					<type>checkbox</type>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<name>RAW Configuration Files</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				The boxes on this page will override the GUI configuration with a completely custom configuration passed through
+				directly to FRR. Using this feature, experienced users can utilize more complicated configurations than are possible
+				using the GUI while allowing the firewall to manage the processes and retaining the configuration in a way that survives
+				between reboots and upgrades.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>zebra.conf</fielddescr>
+			<fieldname>zebra</fieldname>
+			<description>
+				<![CDATA[
+				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
+				To get back the GUI configuration save this form below once with empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>bgpd.conf</fielddescr>
+			<fieldname>bgpd</fieldname>
+			<description>
+				<![CDATA[
+				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
+				To get back the GUI configuration save this form below once with empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>ospfd.conf</fielddescr>
+			<fieldname>ospfd</fieldname>
+			<description>
+				<![CDATA[
+				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
+				To get back the GUI configuration save this form below once with empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>ospf6d.conf</fielddescr>
+			<fieldname>ospf6d</fieldname>
+			<description>
+				<![CDATA[
+				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
+				To get back the GUI configuration save this form below once with empty input fields.
+				]]>
+			</description>		
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_global_raw_validate_input();
+	</custom_php_validation_command>
+</packagegui>

@@ -1,0 +1,13 @@
+--- lib/hx509/Makefile.in.orig	2017-06-10 19:27:47 UTC
++++ lib/hx509/Makefile.in
+@@ -860,7 +860,9 @@ hxtool_LDADD = \
+ 	libhx509.la \
+ 	$(top_builddir)/lib/asn1/libasn1.la \
+ 	$(LIB_hcrypto) \
+-	$(LIB_roken) \
++	$(top_builddir)/lib/base/libheimbase.la \
++	$(top_builddir)/lib/vers/libvers.la \
++	$(LIBADD_roken) \
+ 	$(top_builddir)/lib/sl/libsl.la
+ 
+ CLEANFILES = $(BUILT_SOURCES) sel-gram.c sel-lex.c \

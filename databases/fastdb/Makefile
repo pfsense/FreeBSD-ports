@@ -3,6 +3,7 @@
 
 PORTNAME=	fastdb
 PORTVERSION=	3.75
+PORTREVISION=	4
 CATEGORIES=	databases
 MASTER_SITES=	SF
 
@@ -21,8 +22,12 @@ MAKE_ENV=	OSTYPE="${OPSYS}"
 MAKEFILE=	makefile
 USE_LDCONFIG=	yes
 DOS2UNIX_FILES=	${MAKEFILE}
+CXXFLAGS+=	-D_WANT_SEMUN
 
 PORTDOCS=	FastDB.htm
+
+# The port does not build with C++11 or later (bug 219275).
+USE_CXXSTD=	gnu++03
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

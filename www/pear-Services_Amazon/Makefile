@@ -5,14 +5,14 @@ PORTNAME=	Services_Amazon
 PORTVERSION=	0.9.0
 CATEGORIES=	www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PHP interface to Amazon Product Advertising API
 
-BUILD_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request \
-		${PEARDIR}/XML/Serializer.php:devel/pear-XML_Serializer
-RUN_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request \
-		${PEARDIR}/XML/Serializer.php:devel/pear-XML_Serializer
+BUILD_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR} \
+		${PEARDIR}/XML/Serializer.php:devel/pear-XML_Serializer@${PHP_FLAVOR}
+RUN_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR} \
+		${PEARDIR}/XML/Serializer.php:devel/pear-XML_Serializer@${PHP_FLAVOR}
 
-USES=	pear
+USES=		pear
 
 .include <bsd.port.mk>

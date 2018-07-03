@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gqrx
-PORTVERSION=	2.5.3
+PORTVERSION=	2.11.2
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	comms hamradio
@@ -18,25 +18,32 @@ LIB_DEPENDS=	libgnuradio-runtime.so:comms/gnuradio \
 		libgnuradio-blocks.so:comms/gnuradio \
 		libgnuradio-filter.so:comms/gnuradio \
 		libgnuradio-fft.so:comms/gnuradio \
-		libgnuradio-audio.so:comms/gnuradio \
 		libgnuradio-digital.so:comms/gnuradio \
 		libgnuradio-pmt.so:comms/gnuradio \
 		libgnuradio-osmosdr.so:comms/gr-osmosdr \
-		libpulse.so:audio/pulseaudio \
-		libpulse-simple.so:audio/pulseaudio
+		libboost_system.so:devel/boost-libs \
+		libboost_program_options.so:devel/boost-libs
+
+USES=		pkgconfig qmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	csete
 
-USES=		pkgconfig qmake
+USE_GL=		gl
+USE_QT5=	buildtools_build core gui svg network widgets
 
-OPTIONS_SINGLE=	GUI
-OPTIONS_SINGLE_GUI=	QT4 QT5
-
-QT4_USE=	QT4=corelib,gui,network
-QT5_USE=	QT5=buildtools_build,core,gui,svg,network,widgets
-
-OPTIONS_DEFAULT=	QT5
+OPTIONS_RADIO=	AUDIO
+AUDIO_DESC=	Audio backend
+OPTIONS_RADIO_AUDIO=	PULSEAUDIO PORTAUDIO GRAUDIO
+OPTIONS_DEFAULT=	AUDIO PULSEAUDIO
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio \
+			libpulse-simple.so:audio/pulseaudio
+PULSEAUDIO_QMAKE_ON=	AUDIO_BACKEND=pulseaudio
+PORTAUDIO_LIB_DEPENDS=	libportaudio.so:audio/portaudio
+PORTAUDIO_QMAKE_ON=	AUDIO_BACKEND=portaudio
+GRAUDIO_LIB_DEPENDS=	libgnuradio-audio.so:comms/gnuradio
+GRAUDIO_QMAKE_ON=	AUDIO_BACKEND=gr-audio
+GRAUDIO_DESC=	GNU Radio audio library support
 
 PLIST_FILES=	bin/gqrx share/applications/gqrx.desktop
 
@@ -45,11 +52,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/gqrx.desktop \
 		${STAGEDIR}${PREFIX}/share/applications
 
-.include <bsd.port.pre.mk>
-
-# Chase comms/gnuradio compiler choice
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-USE_GCC=	yes
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

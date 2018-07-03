@@ -1,0 +1,19 @@
+--- third_party/angle/BUILD.gn.orig	2017-09-05 21:06:47.000000000 +0200
++++ third_party/angle/BUILD.gn	2017-09-10 02:30:29.868194000 +0200
+@@ -239,6 +239,7 @@
+         "X11",
+         "Xi",
+         "Xext",
++        "GL",
+       ]
+     }
+   }
+@@ -677,7 +678,7 @@
+       sources += rebase_path(util_gypi.util_win32_sources, ".", "util")
+     }
+ 
+-    if (is_linux) {
++    if (is_linux && !is_bsd) {
+       sources += rebase_path(util_gypi.util_linux_sources, ".", "util")
+       libs = [
+         "rt",

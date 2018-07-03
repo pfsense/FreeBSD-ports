@@ -3,7 +3,7 @@
 
 PORTNAME=	opensurge
 PORTVERSION=	0.1.r${SVN_REV}
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://www.ime.usp.br/~alemart/opensurge_nightly/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/${PORTNAME}/
@@ -21,7 +21,8 @@ LICENSE_FILE_CC-BY-SA-3.0=	${WRKSRC}/licenses/CC-BY-SA-3.0.txt
 BUILD_DEPENDS=	${LOCALBASE}/lib/libaldmb.a:audio/dumb-allegro \
 		${LOCALBASE}/include/alfont.h:x11-fonts/alfont \
 		alureplay:audio/alure
-LIB_DEPENDS=	liballeg.so:devel/allegro \
+LIB_DEPENDS=	libalfont.so:x11-fonts/alfont \
+		liballeg.so:devel/allegro \
 		libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis
 RUN_DEPENDS=	${LOCALBASE}/lib/libaldmb.a:audio/dumb-allegro
@@ -69,7 +70,7 @@ post-install:
 
 .for s in ${ICON_SIZES}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps/
-	@${INSTALL_DATA} ${WRKSRC}/src/misc/${PORTNAME}_${s}.png \
+	${INSTALL_DATA} ${WRKSRC}/src/misc/${PORTNAME}_${s}.png \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps/${PORTNAME}.png
 .endfor
 	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \

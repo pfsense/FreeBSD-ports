@@ -6,7 +6,7 @@ DISTVERSION=	0.5.0.pre5
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	meta+ports@vmeta.jp
+MAINTAINER=	meta@FreeBSD.org
 COMMENT=	Fork of Twitter OAuth REST API client library for Ruby
 
 LICENSE=	MIT
@@ -18,7 +18,6 @@ RUN_DEPENDS=	rubygem-json>=1.1.9:devel/rubygem-json \
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-GEM_NAME=	${PORTNAME}-${DISTVERSION}
 USES=		gem
 
 .include <bsd.port.mk>

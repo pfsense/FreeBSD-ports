@@ -15,14 +15,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${LOCALBASE}/bin/rsync:net/rsync
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/README* ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

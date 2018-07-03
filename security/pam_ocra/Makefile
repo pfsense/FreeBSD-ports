@@ -2,13 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	pam_ocra
-PORTVERSION=	1.2
+DISTVERSION=	1.4
 CATEGORIES=	security
 
 MAINTAINER=	sg2342@googlemail.com
 COMMENT=	RFC6287 (OCRA) PAM module
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		ssl uidfix
 USE_GITHUB=	yes
@@ -23,10 +24,4 @@ PLIST_FILES=	lib/pam_ocra.so \
 		man/man8/pam_ocra.8.gz \
 		man/man8/ocra_tool.8.gz
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-BROKEN_FreeBSD_9=	does not build with 9.x base OpenSSL
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

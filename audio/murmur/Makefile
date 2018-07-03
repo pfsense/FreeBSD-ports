@@ -2,24 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	murmur
-PORTVERSION=	1.2.10
-PORTREVISION=	1
+PORTVERSION=	1.2.19
+PORTREVISION=	10
 CATEGORIES=	audio net
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	Murmur is the server component of Mumble
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/function.hpp:devel/boost-libs
 LIB_DEPENDS=	libprotobuf.so:devel/protobuf
 
 USERS=		murmur
 GROUPS=		murmur
-USES=		compiler:c++11-lang qmake pkgconfig
-USE_QT4=	moc_build corelib network xml sql sql-sqlite3_run
-
-USE_OPENSSL=	YES
+USES=		compiler:c++11-lang qmake pkgconfig ssl
+USE_QT4=	moc_build corelib network sql xml
 
 USE_GITHUB=	YES
 GH_ACCOUNT=	mumble-voip
@@ -31,8 +30,10 @@ QMAKE_ARGS=	"CONFIG+=${CONFIG}"
 USE_RC_SUBR=	murmur
 SUB_LIST+=	USERS="${USERS}" GROUPS="${GROUPS}"
 
-OPTIONS_DEFINE=	ICE DBUS BONJOUR DOCS
-OPTIONS_DEFAULT=	BONJOUR
+OPTIONS_DEFINE=	BONJOUR DBUS DOCS ICE
+OPTIONS_DEFAULT=	BONJOUR DOCS MYSQL SQLITE
+OPTIONS_MULTI=	SQL
+OPTIONS_MULTI_SQL=	MYSQL SQLITE
 ICE_DESC=	Ice Support
 BONJOUR_DESC=	Bonjour Support
 
@@ -56,14 +57,22 @@ LIB_DEPENDS+=	libdns_sd.so:net/mDNSResponder
 CONFIG+=	no-bonjour
 .endif
 
-.include <bsd.port.pre.mk>
-# PCH is broken on GCC
-.if ${COMPILER_TYPE} == gcc
-CONFIG+=	no-pch
+.if ${PORT_OPTIONS:MMYSQL}
+USE_QT4+=	sql-mysql
+.else
+CONFIG+=	no-sql-mysql
 .endif
 
-.if ${OSVERSION} < 1000510
-EXTRA_PATCHES=	${FILESDIR}/FreeBSD9-patch-src_SSL.cpp
+.if ${PORT_OPTIONS:MSQLITE}
+USE_QT4+=	sql-sqlite3_run
+.else
+CONFIG+=	no-sqlite3_run
+.endif
+
+.include <bsd.port.pre.mk>
+# PCH is broken on GCC
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+CONFIG+=	no-pch
 .endif
 
 post-patch:
@@ -80,11 +89,11 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/scripts/murmur.ini ${STAGEDIR}${PREFIX}/etc/murmur.ini.sample
 	${MKDIR} ${STAGEDIR}${MAN1PREFIX}/man/man1
 	${CP} ${WRKSRC}/man/murmurd.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for f in CHANGES INSTALL LICENSE README README.Linux
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for f in CHANGES INSTALL README README.Linux
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.post.mk>

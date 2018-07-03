@@ -5,7 +5,7 @@ PORTNAME=	cosmosmash
 DISTVERSION=	1.4.7
 PORTREVISION=	4
 CATEGORIES=	games
-MASTER_SITES=	http://perso.b2b2c.ca/sarrazip/dev/ \
+MASTER_SITES=	http://perso.b2b2c.ca/~sarrazip/dev/ \
 		LOCAL/martymac
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -18,9 +18,10 @@ LIB_DEPENDS=	libflatzebra-0.1.so:devel/flatzebra \
 		libmikmod.so:audio/libmikmod \
 		libaudiofile.so:audio/libaudiofile
 
+USES=		iconv pkgconfig desktop-file-utils
+USE_CXXSTD=	gnu++98
 USE_SDL=	sdl image mixer
 USE_XORG=	x11 xau xdmcp
-USES=		iconv pkgconfig desktop-file-utils
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include `${SDL_CONFIG} --cflags`
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib `${SDL_CONFIG} --libs`

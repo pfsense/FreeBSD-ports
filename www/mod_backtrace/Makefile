@@ -3,7 +3,7 @@
 
 PORTNAME=	mod_backtrace
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	http://people.apache.org/~trawick/ \
 		http://dl.moov.de/freebsd/${PORTNAME}/
@@ -18,8 +18,7 @@ LICENSE=	APACHE20
 
 MANUAL_PACKAGE_BUILD=	requires apache WITH_EXCEPTION_HOOK=yes
 
-USES=		execinfo
-USE_APACHE=	22+
+USES=		apache:2.2+
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 AP_EXTRAS+=	-lexecinfo

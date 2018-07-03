@@ -3,6 +3,7 @@
 
 PORTNAME=	mod_mono
 PORTVERSION=	3.12
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://download.mono-project.com/sources/${PORTNAME}/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
@@ -20,16 +21,11 @@ RUN_DEPENDS=	mono:lang/mono \
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --man=${PREFIX}/man
 INSTALL_TARGET=	install
-USES=		libtool mono pkgconfig
-USE_APACHE=	22+
+USES=		apache:2.2+ libtool mono pkgconfig
 
 .include <bsd.port.pre.mk>
 
-.if ${APACHE_VERSION} == 13
-MOD_MONOCONFDIR=${APACHEETCDIR}
-.else
 MOD_MONOCONFDIR=${APACHEETCDIR}/Includes
-.endif
 
 PLIST_SUB+=	MOD_MONOCONFDIR=${MOD_MONOCONFDIR}
 

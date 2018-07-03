@@ -2,7 +2,7 @@
 
 PORTNAME=	llvm
 PORTVERSION=	3.3
-PORTREVISION=	11
+PORTREVISION=	14
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -11,17 +11,18 @@ PKGNAMESUFFIX=	${LLVM_SUFFIX}
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	Low Level Virtual Machine
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	Does not build: c++: Internal error: Killed (program cc1plus)
 
 LLVM_SUFFIX=	${PORTVERSION:S/.//g}
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
 
-USES=		execinfo gmake perl5
+USES=		gmake perl5 shebangfix
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${LLVM_PREFIX}
 USE_LDCONFIG=	${LLVM_PREFIX}/lib
+SHEBANG_FILES=	utils/lit/lit.py utils/llvm-lit/llvm-lit.in
 
 SUB_FILES=	llvm-wrapper.sh
 SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
@@ -114,10 +115,10 @@ CONFIGURE_ARGS+=	--disable-docs
 
 .if ${PORT_OPTIONS:MLIT}
 MAN1SRCS+=		lit.1
-USES+=			python:-2.9
+USES+=			python:2.7
 LIT_COMMANDS=		lit llvm-lit FileCheck
 .else
-USES+=			python:-2.9,build
+USES+=			python:2.7,build
 .endif
 
 .if ${PORT_OPTIONS:MLTOPLUGIN}
@@ -135,16 +136,12 @@ MAN1SRCS+=	bugpoint.1 llc.1 lli.1 llvm-ar.1 llvm-as.1 \
 PLIST_FILES+=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 .endif
 
-NOT_FOR_ARCH=	ia64
-
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "aarch64"
 BROKEN=		Does not compile on aarch64
 .elif ${ARCH} == "arm"
 BROKEN=		Does not compile on arm
-.elif ${ARCH} == "sparc64"
-BROKEN=		does not compile on sparc64
 .endif
 
 .if ${ARCH} == "amd64"
@@ -166,6 +163,8 @@ post-patch:
 	    -e 's|from lit|from lit${LLVM_SUFFIX}|' \
 	    -e 's|lit\.|lit${LLVM_SUFFIX}.|' \
 	    ${WRKSRC}/utils/lit/lit.py ${WRKSRC}/utils/lit/lit/*.py
+	${REINPLACE_CMD} -e 's,/usr/local/,${LOCALBASE}/,' \
+	    ${WRKSRC}/CMakeLists.txt
 
 .if ${PORT_OPTIONS:MCMAKE}
 post-configure:
@@ -241,7 +240,7 @@ regression-test: ${BUILD_COOKIE}
 	fi
 
 build-plist:
-	${RM} -f ${PLIST}
+	${RM} ${PLIST}
 .for command in ${COMMANDS}
 	${ECHO_CMD} bin/${command}${LLVM_SUFFIX} >> ${PLIST}
 .endfor

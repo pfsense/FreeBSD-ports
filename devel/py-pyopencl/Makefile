@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pyopencl
-PORTVERSION=	2015.1
+PORTVERSION=	2018.1.1
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
@@ -11,30 +11,35 @@ MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python wrapper for OpenCL
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/CL/cl.h:devel/opencl \
-		${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy
-LIB_DEPENDS=	libboost_python.so:devel/boost-python-libs \
+		${PYTHON_PKGNAMEPREFIX}cffi>=1.1.0:devel/py-cffi@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}numpy>=0:math/py-numpy@${FLAVOR}
+LIB_DEPENDS=	${PY_BOOST} \
 		libOpenCL.so:devel/ocl-icd
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytools>0:devel/py-pytools \
-		${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy \
-		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}appdirs>=1.4.0:devel/py-appdirs@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cffi>=1.1.0:devel/py-cffi@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}decorator>=3.2.0:devel/py-decorator@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mako>=0.3.6:textproc/py-mako@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}numpy>=0:math/py-numpy@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest>=2:devel/py-pytest@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytools>=2017.6:devel/py-pytools@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>=1.9.0:devel/py-six@${FLAVOR}
 
+CONFIGURE_ARGS=	BOOST_INC_DIR="${LOCALBASE}/include" \
+		BOOST_LIB_DIR="${LOCALBASE}/lib" \
+		BOOST_PYTHON_LIBNAME=${PY_BOOST_LIB} \
+		CL_INC_DIR="${LOCALBASE}/include" \
+		CL_LIB_DIR="${LOCALBASE}/lib" \
+		USE_SHIPPED_BOOST=False
 USE_PYTHON=	autoplist distutils
-USES=		python
-
-CONFIGURE_ARGS=	--boost-inc-dir="${LOCALBASE}/include" \
-		--boost-lib-dir="${LOCALBASE}/lib" \
-		--boost-python-libname=boost_python \
-		--cl-inc-dir="${LOCALBASE}/include" \
-		--cl-lib-dir="${LOCALBASE}/lib" \
-		--no-use-shipped-boost
+USES=		localbase python
 
 do-configure:
 	@cd ${WRKSRC} && ${PYTHON_CMD} configure.py ${CONFIGURE_ARGS}
 
 post-install:
-	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME} -name '*.so' \
-	    -exec ${STRIP_CMD} {} \;
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/ -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

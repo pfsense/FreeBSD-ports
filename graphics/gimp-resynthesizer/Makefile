@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	resynthesizer
-PORTVERSION=	2.0.1
+PORTVERSION=	2.0.3
+DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	gimp-
 
@@ -19,7 +20,8 @@ LIB_DEPENDS=	libgimp-2.0.so:graphics/gimp-app
 USE_GITHUB=	yes
 GH_ACCOUNT=	bootchk
 
-USES=		autoreconf compiler:nestedfct gettext gmake localbase pkgconfig
+USES=		autoreconf gettext gmake localbase pkgconfig python:2.7,run shebangfix
+SHEBANG_FILES=	PluginScripts/*.py
 GNU_CONFIGURE=	yes
 
 PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins

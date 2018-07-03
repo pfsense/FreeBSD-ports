@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr</name>
+	<title>Services/FRR</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg_edit.php?xml=frr.xml</aftersaveredirect>
+	<menu>
+		<name>FRR Global/Zebra</name>
+		<section>Services</section>
+		<configfile>frr.xml</configfile>
+		<url>/pkg_edit.php?xml=frr.xml</url>
+	</menu>
+	<menu>
+		<name>FRR BGP</name>
+		<section>Services</section>
+		<configfile>frr.xml</configfile>
+		<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+	</menu>
+	<menu>
+		<name>FRR OSPF</name>
+		<section>Services</section>
+		<configfile>frr.xml</configfile>
+		<url>/pkg_edit.php?xml=frr/frr_ospf.xml</url>
+	</menu>
+	<menu>
+		<name>FRR OSPF6</name>
+		<section>Services</section>
+		<configfile>frr.xml</configfile>
+		<url>/pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+	</menu>
+	<menu>
+		<name>FRR</name>
+		<section>Status</section>
+		<configfile>frr.xml</configfile>
+		<url>/status_frr.php</url>
+	</menu>
+	<tabs>
+		<tab>
+			<text>Global Settings</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Access Lists</text>
+			<url>pkg.php?xml=frr/frr_global_acls.xml</url>
+		</tab>
+		<tab>
+			<text>Prefix Lists</text>
+			<url>pkg.php?xml=frr/frr_global_prefixes.xml</url>
+		</tab>
+		<tab>
+			<text>Route Maps</text>
+			<url>pkg.php?xml=frr/frr_global_routemaps.xml</url>
+		</tab>
+		<tab>
+			<text>Raw Config</text>
+			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php</url>
+		</tab>
+	</tabs>
+	<service>
+		<name>FRR zebra</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>zebra</executable>
+		<description>FRR core/abstraction daemon</description>
+	</service>
+	<service>
+		<name>FRR bgpd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>bgpd</executable>
+		<description>FRR BGP routing daemon</description>
+	</service>
+	<service>
+		<name>FRR ospfd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>ospfd</executable>
+		<description>FRR OSPF routing daemon</description>
+	</service>
+	<service>
+		<name>FRR ospf6d</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>ospf6d</executable>
+		<description>FRR OSPF6 routing daemon</description>
+	</service>
+	<plugins>
+		<item>
+			<type>plugin_carp</type>
+		</item>
+	</plugins>
+	<fields>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Enable FRR</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Master Password</fielddescr>
+			<fieldname>password</fieldname>
+			<description>Password to access the management daemons. Required.</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>CARP Status IP</fielddescr>
+			<fieldname>carpstatusvid</fieldname>
+			<description>
+				<![CDATA[
+				Used to determine the CARP status. When the CARP vhid is in BACKUP status, frr will not be started.<br />
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_carp_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Logging</fielddescr>
+			<fieldname>logging</fieldname>
+			<description>If set to yes, Logs will be written via syslog.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Router ID</fielddescr>
+			<fieldname>routerid</fieldname>
+			<description>
+				<![CDATA[
+				Specify the default Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
+				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Route Handling</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Networks marked <b>Do Not Accept</b> will be prevented from having exact-matching routes accepted from routing protocols
+				<br/><br/>
+				Networks marked <b>Null Route</b> will never be routed, and traffic destined for these networks will be dropped.
+				<br/><br/>
+				Networks with a selected <b>Static Route Target</b> will have a route entered into the FRR/Zebra static route table, which
+				can be used by other protocols for route redistribution. The <b>Null Route</b> option takes precedence and will cause this
+				option to be ignored. These routes are also added to the operating system routing table.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Routes</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Do Not Accept</fielddescr>
+					<fieldname>acceptfilter</fieldname>
+					<description>Accept Filter</description>
+					<type>checkbox</type>
+					<size>20</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Null Route</fielddescr>
+					<fieldname>nullroute</fieldname>
+					<description>Redistribute rules.</description>
+					<type>checkbox</type>
+					<size>20</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Subnet</fielddescr>
+					<fieldname>routevalue</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Static Route Target</fielddescr>
+					<fieldname>routetarget</fieldname>
+					<description>Target for an FRR static route</description>
+					<type>select_source</type>
+					<source><![CDATA[frr_get_route_destinations()]]></source>
+					<source_name>name</source_name>
+					<source_value>value</source_value>
+				</rowhelperfield>
+
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_global_validate_input();
+	</custom_php_validation_command>
+</packagegui>

@@ -52,6 +52,8 @@ global $config;
 # todo: move include string to the squid-function call string position
 if (file_exists('/usr/local/pkg/squid.inc')) {
     require_once('/usr/local/pkg/squid.inc');
+} else {
+	define('SQUID_BASE', '/usr/local');
 }
 
 # ------------------------------------------------------------------------------
@@ -234,6 +236,9 @@ define('FLT_WAREZ',      'warez');
 # ------------------------------------------------------------------------------
 # squidguard system fields
 # ------------------------------------------------------------------------------
+// This is a guess since it does not seem to be defined anywhere
+define('F_REDIRECMODE',          'redirecmode');
+
 define('F_SQUIDGUARD',          'squidGuard');
 define('F_LOGDIR',              'logdir');
 define('F_DBHOME',              'dbhome');
@@ -282,7 +287,7 @@ define('F_OVERREWRITE',         'overrewrite');
 define('F_OVERREWRITENAME',     'overrewritename');
 define('F_TIMETYPE',            'timetype');
 define('F_TIMEDAYS',            'timedays');
-define('F_DATRANGE',            'daterange');
+define('F_DATERANGE',            'daterange');
 define('F_TIMERANGE',           'sg_timerange');
 define('F_RMOD',                'redirect_mode');                     # [redirect_mode] = rmod_int <base- use sgerror.php>; rmod_301; rmod_302;
 define('F_NOTALLOWINGIP',       'notallowingip');                     # not allowing ip in URL
@@ -331,7 +336,7 @@ function sg_init($init = '')
         $squidguard_config[F_BINPATH]         = SQUIDGUARD_BINPATH;
         $squidguard_config[F_SQUIDCONFIGFILE] = SQUID_CONFIGFILE;
         $squidguard_config[F_PROCCESSCOUNT]   = REDIRECTOR_PROCESS_COUNT;
-        
+
     } else {
         # copy config from $init
         foreach($init as $key => $in)
@@ -436,6 +441,7 @@ function squid_reconfigure($remove_only = '')
         $redirector_path = $squidguard_config[F_BINPATH] . '/squidGuard';
         $redirector_conf = $squidguard_config[F_WORKDIR] . SQUIDGUARD_CONFIGFILE;
 
+        $conf = array();
         $conf[] = REDIRECTOR_PROGRAM_OPT . " $redirector_path -c $redirector_conf";
         $conf[] = REDIRECT_BYPASS_OPT    . " off";
         $conf[] = REDIRECT_CHILDREN_OPT  . " " . REDIRECTOR_PROCESS_COUNT;
@@ -959,7 +965,7 @@ function sg_create_config()
 		  $ads_pos = strpos($ent, '_ads');
 		  if ( ($ads_pos > 0 || $adv_pos > 0) && $squidguard_config[F_ADV_BLANKIMG] == 'on')
 			     $sg_tag->items[] = "redirect " . sg_redirector_base_url($dst[F_REDIRECT], RMOD_INT_BLANKIMG);
-			
+
                 if ($squidguard_config[F_ENABLELOG] == 'on' ) {
                     $sg_tag->items[] = "log ". SQUIDGUARD_LOGFILE;
                 }
@@ -1835,15 +1841,15 @@ function check_date($date)
 {
     $err = '';
     $val = trim($date);
-    $dtfmt = "/^([0-9]{4})\.([0-9]{2})\.([0-9]{2})/i";
+    $dtfmt = "/^([0-9]{4})\.([0-9]{2})\.([0-9]{2})\-([0-9]{4})\.([0-9]{2})\.([0-9]{2})$/i";
 
     # check date range
-    if (preg_match("{$dtfmt}-{$dtfmt}$", $val)) {
+    if (preg_match("{$dtfmt}", $val)) {
         $val = explode("-", str_replace(".", '', $val));
         if (intval($val[0]) >= intval($val[1]))
             $err .= "Invalid date range, begin range must be less than the end. {$val[0]} - {$val[1]}";
     }
-    elseif (!preg_match("/^(([0-9]{4})|[*])\.(([0-9]{2})|[*])\.(([0-9]{2})|[*])$/i", $val)) {
+    elseif (!preg_match("/^(([0-9]{4})|[*])\.(([0-9]{2})|[*])\.(([0-9]{2})|[*])$|^([0-9]{4})\.([0-9]{2})\.([0-9]{2})\-([0-9]{4})\.([0-9]{2})\.([0-9]{2})$/i", $val)) {
         $err .= "Bad date format.";
     }
 
@@ -1915,7 +1921,7 @@ function acl_remove_blacklist_items(&$items)
 function sg_script_logrotate()
 {
 	$lines = SQUIDGUARD_LOGROTATE_MAXCOUNT;
-	
+
 	global $squidguard_config;
 
 	$sglogname = $squidguard_config[F_LOGDIR] . "/" . SQUIDGUARD_LOGFILE;

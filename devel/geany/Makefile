@@ -2,22 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	geany
-PORTVERSION=	1.28
+PORTVERSION=	1.33
 CATEGORIES=	devel editors
 MASTER_SITES=	http://download.geany.org/ SF
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Fast and lightweight GTK+ IDE
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
 
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
-USE_GNOME=	gtk20 intltool
-USES=		desktop-file-utils gettext-tools \
-		gmake libtool pathfix pkgconfig tar:bzip2
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+USE_GNOME=	cairo gtk20 intltool
+USES=		desktop-file-utils gettext-tools gmake libtool \
+		localbase pathfix pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

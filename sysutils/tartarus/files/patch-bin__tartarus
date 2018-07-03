@@ -1,5 +1,5 @@
---- ./bin/tartarus.orig	2014-06-28 01:35:27.535761589 +0200
-+++ ./bin/tartarus	2014-06-28 01:38:03.361776923 +0200
+--- bin/tartarus.orig	2018-03-30 17:57:10.233266000 +0100
++++ bin/tartarus	2018-03-30 17:57:45.818667000 +0100
 @@ -41,6 +41,8 @@
  set -f
  shopt -s nocasematch
@@ -78,7 +78,7 @@
              local EXITCODE=$?
              # exit code 1 means that some files have changed while backing them
              # up, we think that is OK for now
-@@ -678,17 +711,24 @@
+@@ -678,21 +711,28 @@
          # define storage procedure
          storage() {
              # stay silent, but print error messages if aborting
@@ -94,7 +94,7 @@
 -            if isEnabled "$STORAGE_FTP_USE_SFTP"; then
 -                PROTO="sftp"
 -            fi
-+	    [ "$SFTP_AUTH_METHOD" != "pubkey" && "$STORAGE_FTP_PASSWORD" != "" ] && OPTS="${OPTS}${STORAGE_FTP_PASSWORD}"
++	    [ "$SFTP_AUTH_METHOD" != "pubkey" -a "$STORAGE_FTP_PASSWORD" != "" ] && OPTS="${OPTS}${STORAGE_FTP_PASSWORD}"
 +	    if isEnabled "$STORAGE_FTP_USE_SFTP"; then
 +	       PROTO="sftp"
 +	       if isEnabled "$STORAGE_FTP_SSL_INSECURE"; then
@@ -113,3 +113,8 @@
              local FILE=$(constructFilename)
              local URL="$PROTO://$STORAGE_FTP_SERVER/$STORAGE_FTP_DIR/$FILE"
              debug "Uploading backup to $URL..."
+-            curl $OPTS --upload-file - "$URL"
++            curl $OPTS --ftp-create-dirs --upload-file - "$URL"
+         }
+     ;;
+     FILE)

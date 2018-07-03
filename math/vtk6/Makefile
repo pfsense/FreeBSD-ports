@@ -3,7 +3,7 @@
 
 PORTNAME=	vtk
 PORTVERSION=	6.2.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	6
@@ -130,6 +130,7 @@ USE_QT4=	gui_build gui_run network_build network_run sql_build sql_run \
 		moc_build uic_build qmake_build rcc_build opengl webkit_build \
 		webkit_run
 CMAKE_ARGS+=	-DVTK_QT_VERSION:STRING="4"
+PLIST_SUB+=	QTV="qt4"
 .endif
 
 .if ${PORT_OPTIONS:MQT5}
@@ -137,6 +138,7 @@ USE_QT5=	gui_build gui_run network_build network_run sql_build sql_run \
 		qmake_build opengl webkit_build buildtools webkit_run
 CMAKE_ARGS+=	-DVTK_QT_VERSION:STRING="5" \
 		-DCMAKE_PREFIX_PATH:STRING=${LOCALBASE}/lib/qt5
+PLIST_SUB+=	QTV="qt5"
 .endif
 
 .if ${PORT_OPTIONS:MQT4} || ${PORT_OPTIONS:MQT5}
@@ -178,13 +180,13 @@ PLIST_SUB+=	JAVA="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USES+=		python
+USES+=		python:2.7
 CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=ON \
 		-DVTK_INSTALL_PYTHON_MODULE_DIR:STRING=${PYTHONPREFIX_SITELIBDIR} \
 		-DModule_vtkRenderingMatplotlib:BOOL=ON \
 		-DModule_vtkPythonInterpreter:BOOL=ON
 PLIST_SUB+=	PYTHON=""
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib
+RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR}
 .else
 CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=OFF
 PLIST_SUB+=	PYTHON="@comment "
@@ -216,9 +218,5 @@ BUILD_DEPENDS+=	doxygen:devel/doxygen
 .else
 CMAKE_ARGS+=	-DBUILD_DOCUMENTATION:BOOL=OFF
 .endif
-
-post-install:
-# So that this port doesn't clash with science/paraview:
-	${RM} ${STAGEDIR}${PREFIX}/share/cmake/hdf5/libhdf5.settings
 
 .include <bsd.port.mk>

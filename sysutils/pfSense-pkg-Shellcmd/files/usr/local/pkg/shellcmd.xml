@@ -8,7 +8,7 @@
  * shellcmd.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -58,7 +58,6 @@
 	<fields>
 		<field>
 			<type>listtopic</type>
-			<fieldname>none</fieldname>
 			<name>Shellcmd Configuration</name>
 		</field>
 		<field>
@@ -74,33 +73,25 @@
 			<fieldname>cmdtype</fieldname>
 			<type>select</type>
 				<options>
-					<option>
-						<name>shellcmd</name>
-						<value>shellcmd</value>
-					</option>
-					<option>
-						<name>earlyshellcmd</name>
-						<value>earlyshellcmd</value>
-					</option>
-					<option>
-						<name>afterfilterchangeshellcmd</name>
-						<value>afterfilterchangeshellcmd</value>
-					</option>
-					<option>
-						<name>disabled</name>
-						<value>disabled</value>
-					</option>
+					<option><name>shellcmd</name><value>shellcmd</value></option>
+					<option><name>earlyshellcmd</name><value>earlyshellcmd</value></option>
+					<option><name>afterfilterchangeshellcmd</name><value>afterfilterchangeshellcmd</value></option>
+					<option><name>disabled</name><value>disabled</value></option>
 				</options>
 			<description>
 				<![CDATA[
-				Choose the shellcmd type.<br /><br />
-				<strong>shellcmd</strong> will run the command specified towards the end of the boot process.<br />
-				<strong>earlyshellcmd</strong> will run the command specified at the beginning of the boot process.<br />
-				<strong>afterfilterchangeshellcmd</strong> will run after each filter_configure() call. 
-				See /etc/inc/filter.inc source code for "documentation".
-				<span class="errmsg">N.B.: Only one entry of this type can be configured!</span><br />
-				<strong>disabled</strong> will save the command in package configuration but it will NOT run on boot.<br /><br />
+				Choose the shellcmd type. Click Info for details.
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+					<dt>shellcmd</dt><dd>Will run the command specified towards the end of the boot process.</dd>
+					<dt>earlyshellcmd</dt><dd>Will run the command specified at the beginning of the boot process.</dd>
+					<dt>afterfilterchangeshellcmd</dt><dd>Will run after each <code>filter_configure()</code> call.
+					See <code>/etc/inc/filter.inc</code> source code for "documentation".<br/>
+					<span class="text-danger">Note:</span> Only one entry of this type can be configured!</dd>
+					<dt>disabled</dt><dd>Will save the command in package configuration but it will NOT run on boot.</dd>
+				</dl>
 				See <a href="https://doc.pfsense.org/index.php/Executing_commands_at_boot_time">Executing commands at boot time</a> for detailed explanation.
+				</div>
 				]]>
 			</description>
 			<required/>
@@ -108,9 +99,8 @@
 		<field>
 			<fielddescr>Description</fielddescr>
 			<fieldname>description</fieldname>
-			<description>Enter a description for this command.</description>
+			<description>Enter a description for this command. (This is for your reference only.)</description>
 			<type>input</type>
-			<typehint>(This is for your reference only.)</typehint>
 			<size>60</size>
 		</field>
 	</fields>

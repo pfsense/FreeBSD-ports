@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fltk
-PORTVERSION=	1.3.3
-PORTREVISION=	2
+PORTVERSION=	1.3.4
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://fltk.org/pub/${PORTNAME}/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
@@ -12,20 +11,19 @@ MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Cross-platform C++ graphical user interface toolkit
 
 LICENSE=	LGPL20
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		jpeg pkgconfig
-USE_XORG=	xft
+USES=		jpeg localbase pkgconfig
+USE_XORG=	x11 xcursor xext xfixes xft xinerama
 USE_GL=		glu
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared
+CONFIGURE_ENV=	NROFF=echo
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTEXAMPLES=	*
 
@@ -42,9 +40,11 @@ post-patch: .SILENT
 	${REINPLACE_CMD} -E \
 		's,(.*)LDFLAGS(.*)LINKSHARED(.*),\1LINKSHARED\2LDFLAGS\3,' \
 			${WRKSRC}/fluid/Makefile
-	${REINPLACE_CMD} -e '/Fl_XFont_On_Demand/s,class,& FL_EXPORT,' \
-		${WRKSRC}/FL/x.H
-	${REINPLACE_CMD} -e 's,result = 0;,fl_open_display(); &,' \
-		${WRKSRC}/src/Fl_x.cxx
+
+post-install:
+.for x in fltk fltk_forms fltk_gl fltk_images
+	${LN} -sf lib${x}.so.${PORTVERSION:R} \
+		${STAGEDIR}${PREFIX}/lib/lib${x}.so.1
+.endfor
 
 .include <bsd.port.mk>

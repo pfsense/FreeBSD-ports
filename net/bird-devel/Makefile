@@ -2,40 +2,57 @@
 # $FreeBSD$
 
 PORTNAME=	bird
-PORTVERSION=	20130301
+DISTVERSION=	2.0.2
+PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES=	http://bird.mpls.in/distfiles/bird/
+MASTER_SITES=	ftp://bird.network.cz/pub/bird/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	melifaro@ipfw.ru
+MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Dynamic IP routing daemon (devel version)
 
+LICENSE=	GPLv2
+
+LIB_DEPENDS=	libssh.so:security/libssh
+
 CONFLICTS=	bird-[0-9]*
+CONFLICTS+=	bird6-[0-9]*
 
-USES=		bison gmake readline
+USES=		bison gmake ncurses readline
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--localstatedir=/var --enable-mpls
-USE_CSTD=	gnu89
-
-OPTIONS_DEFINE=	KMPLS
-KMPLS_DESC=	kernel MPLS support
+CONFIGURE_ARGS=	--localstatedir=/var
+USE_RC_SUBR=	bird
+SUB_FILES=	pkg-message
 
 MAKE_JOBS_UNSAFE=	yes
 
-USE_RC_SUBR=	bird
+OPTIONS_MULTI=	RP
+RP_DESC=	Routing Protocols
+OPTIONS_MULTI_RP=	BFD BABEL BGP OSPF PIPE RADV RIP STATIC
+OPTIONS_DEFAULT=	${OPTIONS_MULTI_RP}
 
-KMPLS_CONFIGURE_ON=	--enable-kmpls
+BFD_DESC=	Bidirectional Forwarding Detection
+BABEL_DESC=	Babel routing protocol
+BGP_DESC=	Border Gateway Protocol
+OSPF_DESC=	Open Short Path First
+PIPE_DESC=	PIPE routing
+RADV_DESC=	Router Advertisement
+RIP_DESC=	Routing Information Protocol
+STATIC_DESC=	Static routing
 
-post-install:
-	@${ECHO_MSG}
-	@${ECHO_MSG} =====================================================================
-	@${ECHO_MSG}
-	@${ECHO_MSG} "        WARNING: Please take a look on kern/134931"
-	@${ECHO_MSG} "        WARNING: before using multiple fibs!"
-	@${ECHO_MSG} "        8.2-STABLE kernel patch available here:"
-	@${ECHO_MSG} "        http://static.ipfw.ru/patches/rtsock_82S-20110725.diff"
-	@${ECHO_MSG}
-	@${ECHO_MSG} =====================================================================
-	@${ECHO_MSG}
+BFD_VARS=	rt_prot+=bfd
+BABEL_VARS=	rt_prot+=babel
+BGP_VARS=	rt_prot+=bgp
+OSPF_VARS=	rt_prot+=ospf
+PIPE_VARS=	rt_prot+=pipe
+RADV_VARS=	rt_prot+=radv
+RIP_VARS=	rt_prot+=rip
+STATIC_VARS=	rt_prot+=static
+
+CONFIGURE_ARGS+=--with-protocols="${RT_PROT}"
+
+post-patch:
+	${REINPLACE_CMD} -e 's|\.example|\.sample|g' ${WRKSRC}/Makefile.in
+	${MV} ${WRKSRC}/doc/bird.conf.example ${WRKSRC}/doc/bird.conf.sample
 
 .include <bsd.port.mk>

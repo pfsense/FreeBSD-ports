@@ -29,13 +29,13 @@
 global $haproxy_tab_array;
 
 $haproxy_tab_array['haproxy'] = array();
-$haproxy_tab_array['haproxy']['settings'] = Array(name => "Settings", url => "/haproxy/haproxy_global.php");
-$haproxy_tab_array['haproxy']['frontend'] = Array(name => "Frontend", url => "/haproxy/haproxy_listeners.php");
-$haproxy_tab_array['haproxy']['backend'] = Array(name => "Backend", url => "/haproxy/haproxy_pools.php");
-$haproxy_tab_array['haproxy']['files'] = Array(name => "Files", url => "/haproxy/haproxy_files.php");
-$haproxy_tab_array['haproxy']['stats'] = Array(name => "Stats", url => "/haproxy/haproxy_stats.php");
-$haproxy_tab_array['haproxy']['statsfs'] = Array(name => "Stats FS", url => "/haproxy/haproxy_stats.php?haproxystats=1");
-$haproxy_tab_array['haproxy']['templates'] = Array(name => "Templates", url => "/haproxy/haproxy_templates.php");
+$haproxy_tab_array['haproxy']['settings'] = Array('name' => "Settings", 'url' => "/haproxy/haproxy_global.php");
+$haproxy_tab_array['haproxy']['frontend'] = Array('name' => "Frontend", 'url' => "/haproxy/haproxy_listeners.php");
+$haproxy_tab_array['haproxy']['backend'] = Array('name' => "Backend", 'url' => "/haproxy/haproxy_pools.php");
+$haproxy_tab_array['haproxy']['files'] = Array('name' => "Files", 'url' => "/haproxy/haproxy_files.php");
+$haproxy_tab_array['haproxy']['stats'] = Array('name' => "Stats", 'url' => "/haproxy/haproxy_stats.php");
+$haproxy_tab_array['haproxy']['statsfs'] = Array('name' => "Stats FS", 'url' => "/haproxy/haproxy_stats.php?haproxystats=1");
+$haproxy_tab_array['haproxy']['templates'] = Array('name' => "Templates", 'url' => "/haproxy/haproxy_templates.php");
 
 function haproxy_display_top_tabs_active($top_tabs, $activetab) {
 	$tab_array = array();

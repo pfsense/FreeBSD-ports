@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	opencc
-PORTVERSION=	1.0.4
+PORTVERSION=	1.0.5
 DISTVERSIONPREFIX=	ver.
 CATEGORIES=	chinese converters
-MASTER_SITES=	GITHUB
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Open Chinese Convert library and utilities

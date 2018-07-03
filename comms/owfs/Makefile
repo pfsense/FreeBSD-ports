@@ -3,6 +3,7 @@
 
 PORTNAME=	owfs
 PORTVERSION=	3.1p1
+PORTREVISION=	1
 CATEGORIES=	comms
 MASTER_SITES=	SF/owfs/owfs/${PORTVERSION}
 
@@ -56,7 +57,7 @@ OWPERL_USE=			perl5=build,run
 OWPHP_CONFIGURE_ENABLE=		owphp
 
 OWPYTHON_CONFIGURE_ENABLE=	owpython
-OWPYTHON_USES=			python
+OWPYTHON_USES=			python:2.7
 
 # Additional CONFIGURE_ARGS is done below
 OWTCL_CONFIGURE_ENABLE=		owtcl
@@ -71,7 +72,6 @@ OWFS_USES=			fuse
 
 ZERO_CONFIGURE_ENABLE=		zero
 USB_CONFIGURE_ENABLE=		usb
-USB_LDFLAGS=			-lusb
 
 .include <bsd.port.options.mk>
 
@@ -100,8 +100,8 @@ PLIST_SUB+=			OWNETPYTHON="@comment "
 
 # If Perl, Python or PHP is requested, enable SWIG
 .if ${PORT_OPTIONS:MOWPERL} || ${PORT_OPTIONS:MOWPYTHON} || ${PORT_OPTIONS:MOWPHP}
-BUILD_DEPENDS+=			${LOCALBASE}/bin/swig2.0:devel/swig20
-CONFIGURE_ARGS+=		--enable-swig SWIG=${LOCALBASE}/bin/swig2.0
+BUILD_DEPENDS+=			swig3.0:devel/swig30
+CONFIGURE_ARGS+=		--enable-swig SWIG=${LOCALBASE}/bin/swig3.0
 .else
 CONFIGURE_ARGS+=		--disable-swig
 .endif

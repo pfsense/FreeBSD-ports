@@ -2,6 +2,7 @@
 
 PORTNAME=	gnome-builder
 PORTVERSION=	3.16.2
+PORTREVISION=	1
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -21,15 +22,14 @@ LIB_DEPENDS=	libgit2-glib-1.0.so:devel/libgit2-glib \
 		libgjs.so:lang/gjs \
 		libpcre.so:devel/pcre
 
-BROKEN_FreeBSD_9=	Does not builds
-
 PORTSCOUT=	limitw:1,even
 PORTDOCS=	*
 
-USES=		cpe gettext gmake libtool pathfix pkgconfig tar:xz
-USE_GNOME=	glib20 gtk30 gtksourceview3 gtk-update-icon-cache py3gobject3
+USES=		cpe gettext gmake libtool pathfix python:3.4+ pkgconfig tar:xz
+USE_GNOME=	glib20 gtk30 gtksourceview3 gtk-update-icon-cache pygobject3
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--disable-debug
+CONFIGURE_ARGS+=--disable-debug \
+		ac_cv_path_PYTHON3_CONFIG=${PYTHON_CMD}-config
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

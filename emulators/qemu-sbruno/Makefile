@@ -2,29 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	2.6.90.g20160728
+PORTVERSION=	2.11.50.g20180208
 CATEGORIES=	emulators
-MASTER_SITES=	GH \
-		LOCAL/nox:dtc \
-		http://people.freebsd.org/~nox/tmp/distfiles/:dtc
+MASTER_SITES=	GH
 PKGNAMESUFFIX?=	-sbruno
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
-		dtc-v1.4.0${EXTRACT_SUFX}:dtc
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
 MAINTAINER=	sbruno@FreeBSD.org
 COMMENT?=	QEMU CPU Emulator - github bsd-user branch
 
+LICENSE=	GPLv2
 USE_GITHUB=	yes
-GH_ACCOUNT=	seanbruno
-GH_PROJECT=	${PORTNAME}-bsd-user
-GH_TAGNAME=	c47c4e2
+GH_TUPLE=	seanbruno:qemu-bsd-user:2b84fbb94e9 \
+		qemu:keycodemapdb:10739aa:keycodemapdb/ui/keycodemapdb
 HAS_CONFIGURE=	yes
-USES=		gmake pkgconfig bison perl5 python:2,build
+USES=		gmake pkgconfig bison perl5 python:2.7,build
 USE_PERL5=	build
-PATCH_STRIP=	-p1
-MAKE_ENV+=	BSD_MAKE="${MAKE}"
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 # XXX someone wants to debug sparc64 hosts?
+MAKE_ENV+=	BSD_MAKE="${MAKE}" V=1
+
+ONLY_FOR_ARCHS=		amd64 powerpc powerpc64 # XXX someone wants to debug sparc64 hosts?
+BROKEN_i386=		aarch64 system target is currently broken for i386 hosts, disable for now while dealing with upstream
+BROKEN_powerpc64=	fails to build: async.c: internal compiler error: Segmentation fault
 
 OPTIONS_DEFINE=	SAMBA X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CURL \
 		CDROM_DMA PCAP USBREDIR X86_TARGETS BSD_USER \
@@ -52,6 +50,9 @@ USE_RC_SUBR=	qemu_user_static
 SUB_LIST=	NAME=qemu_user_static
 CONFIGURE_ARGS+=	--disable-tools
 .endif
+.else
+# qemu-system-* targets require pixman to build, add an explicit dependency.
+USE_XORG=	pixman
 .endif
 
 # When static linking we have a build dependency on libglib-2.0.a, otherwise
@@ -60,14 +61,16 @@ CONFIGURE_ARGS+=	--disable-tools
 BUILD_DEPENDS+=	${LOCALBASE}/lib/libglib-2.0.a:devel/glib20
 .else
 USE_GNOME+=	glib20
+BUILD_DEPENDS+=	${LOCALBASE}/lib/libfdt.so:sysutils/dtc
 .endif
 
 .include <bsd.port.options.mk>
 
 CONFIGURE_ARGS+=	--localstatedir=/var
-CONFIGURE_ARGS+=	--extra-ldflags=-L\"${LOCALBASE}/lib\"
+CONFIGURE_ARGS+=	--extra-ldflags=-L${LOCALBASE}/lib
+CONFIGURE_ARGS+=	--extra-cflags=-I${LOCALBASE}/include
 CONFIGURE_ARGS+=	--disable-libssh2
-PORTDOCS=	docs qemu-doc.html qemu-tech.html qmp-commands.txt
+PORTDOCS=	docs qemu-doc.html
 
 .if defined(QEMU_USER_STATIC)
 .if ${ARCH} != "amd64"
@@ -127,6 +130,8 @@ PLIST_SUB+=	STATIC=""
 
 WITHOUT_CPU_CFLAGS=yes	#to avoid problems with register allocation
 CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
+CFLAGS+=	-Wno-address-of-packed-member
+CFLAGS+=	-D_WANT_SEMUN
 CONFIGURE_ARGS+=	--prefix=${PREFIX} --cc=${CC} --enable-docs \
 	--disable-linux-user --disable-linux-aio \
 	--disable-kvm --disable-xen \
@@ -140,7 +145,6 @@ CONFIGURE_ARGS+=	--disable-sdl
 .else
 CONFIGURE_ARGS+=	--enable-sdl
 USE_SDL=	sdl
-USE_XORG=	pixman
 .endif
 
 .if empty(PORT_OPTIONS:MGTK2)
@@ -207,7 +211,7 @@ CONFIGURE_ARGS+=	--static
 .endif
 
 .if ${PORT_OPTIONS:MSAMBA}
-RUN_DEPENDS+=	${LOCALBASE}/sbin/smbd:net/samba36
+USES+=		samba:run # smbd
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
@@ -239,16 +243,25 @@ CONFIGURE_ARGS+=	--sparc_cpu=v9
 
 CONFIGURE_ARGS+=	--python=${PYTHON_CMD}
 
-# -lprocstat actually only _needs_ -lelf after r249666 or r250870 (MFC)
-# but it shouldn't matter much
+# clang in freebsd 10 is unable to assemble linuxboot_dma.bin
+.if (${OPSYS} == FreeBSD && ${OSVERSION} < 1100000)
+PLIST_SUB+=	LINUXBOOT_DMA="@comment "
+.else
+PLIST_SUB+=	LINUXBOOT_DMA=""
+.endif
+
 post-patch:
-	@${MV} ${WRKDIR}/dtc ${WRKSRC}
-	@${REINPLACE_CMD} -e '/LIBS/s|-lprocstat|-lprocstat -lelf|' \
-		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e '/libs_qga=/s|glib_libs|glib_libs -lintl|' ${WRKSRC}/configure
-#.if ${PORT_OPTIONS:MPCAP}
-#	@cd ${WRKSRC} && ${PATCH} --quiet < ${FILESDIR}/pcap-patch
-#.endif
+# clang in freebsd 10 is unable to assemble linuxboot_dma.bin
+.if (${OPSYS} == FreeBSD && ${OSVERSION} < 1100000)
+	@${REINPLACE_CMD} -E \
+		-e 's|linuxboot_dma.bin||' \
+		${WRKSRC}/pc-bios/optionrom/Makefile
+	@${REINPLACE_CMD} -E \
+		-e 's|linuxboot_dma.bin||' \
+		${WRKSRC}/Makefile
+.endif
+
 .if empty(PORT_OPTIONS:MCDROM_DMA)
 	@cd ${WRKSRC} && ${PATCH} --quiet < ${FILESDIR}/cdrom-dma-patch
 .endif
@@ -282,7 +295,6 @@ post-install:
 	${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifup.sample ${STAGEDIR}${PREFIX}/etc
 	${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifdown.sample ${STAGEDIR}${PREFIX}/etc
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/qemu-*
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ivshmem-*
 .endif
 
 .include <bsd.port.mk>

@@ -2,18 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	nginx
-PORTVERSION=	1.11.4
-PORTREVISION=	1
+PORTVERSION=	1.13.10
 CATEGORIES=	www
 MASTER_SITES=	http://nginx.org/download/
 MASTER_SITES+=	LOCAL/osa
-PKGNAMESUFFIX=	-devel
+PKGNAMESUFFIX?=	-devel
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	osa@FreeBSD.org
-COMMENT=	Robust and small WWW server
+MAINTAINER?=	osa@FreeBSD.org
+COMMENT?=	Robust and small WWW server
 
 LICENSE=	BSD2CLAUSE
+
+CONFLICTS_INSTALL=	nginx
+
+PORTSCOUT=	limit:^1\.13\.[0-9]*
 
 USES+=		cpe
 
@@ -59,6 +62,7 @@ OPTIONS_DEFINE=	\
 	NJS \
 	STREAM \
 	STREAM_SSL \
+	STREAM_SSL_PREREAD \
 	THREADS \
 	WWW \
 	AJP \
@@ -67,9 +71,9 @@ OPTIONS_DEFINE=	\
 	CLOJURE \
 	CT \
 	ECHO \
+	FASTDFS \
 	HEADERS_MORE \
 	HTTP_ACCEPT_LANGUAGE \
-	HTTP_ACCESSKEY \
 	HTTP_AUTH_DIGEST \
 	HTTP_AUTH_KRB5 \
 	HTTP_AUTH_LDAP \
@@ -78,6 +82,7 @@ OPTIONS_DEFINE=	\
 	HTTP_EVAL \
 	HTTP_FANCYINDEX \
 	HTTP_FOOTER \
+	HTTP_GEOIP2 \
 	HTTP_JSON_STATUS \
 	HTTP_MOGILEFS \
 	HTTP_MP4_H264 \
@@ -107,6 +112,7 @@ OPTIONS_DEFINE=	\
 	LUA \
 	MEMC \
 	MODSECURITY \
+	MODSECURITY3 \
 	NAXSI \
 	PASSENGER \
 	POSTGRES \
@@ -120,21 +126,23 @@ OPTIONS_DEFINE=	\
 	SLOWFS_CACHE \
 	SMALL_LIGHT \
 	SRCACHE \
-	STATSD \
-	UDPLOG \
-	XRID_HEADER \
+	VOD \
+	VTS \
+	X11 \
 	XSS
 
-OPTIONS_DEFAULT=DSO FILE_AIO HTTP HTTP_ADDITION HTTP_AUTH_REQ HTTP_CACHE \
+OPTIONS_DEFAULT?=DSO FILE_AIO HTTP HTTP_ADDITION HTTP_AUTH_REQ HTTP_CACHE \
 		HTTP_DAV HTTP_FLV HTTP_GZIP_STATIC HTTP_GUNZIP_FILTER \
 		HTTP_MP4 HTTP_RANDOM_INDEX HTTP_REALIP HTTP_SECURE_LINK \
 		HTTP_SLICE HTTP_REWRITE HTTP_SSL HTTP_STATUS HTTP_SUB \
-		HTTPV2 MAIL MAIL_SSL STREAM STREAM_SSL THREADS WWW
+		HTTPV2 MAIL MAIL_SSL STREAM STREAM_SSL STREAM_SSL_PREREAD \
+		THREADS WWW
 
 DSO_DESC=			Enable dynamic modules support
 DEBUG_DESC=			Build with debugging support
 DEBUGLOG_DESC=			Enable debug log (--with-debug)
 FILE_AIO_DESC=			Enable file aio
+IPV6_DESC=			Enable IPv6 support
 GOOGLE_PERFTOOLS_DESC=		Enable google perftools module
 HTTP_DESC=			Enable HTTP module
 HTTP_ADDITION_DESC=		Enable http_addition module
@@ -166,6 +174,7 @@ HTTPV2_DESC=			Enable HTTP/2 protocol support (SSL req.)
 NJS_DESC=			Enable http_javascript module
 STREAM_DESC=			Enable stream module
 STREAM_SSL_DESC=		Enable stream_ssl module (SSL req.)
+STREAM_SSL_PREREAD_DESC=	Enable stream_ssl_preread module (SSL req.)
 THREADS_DESC=			Enable threads support
 WWW_DESC=			Enable html sample files
 AJP_DESC=			3rd party ajp module
@@ -174,9 +183,9 @@ CACHE_PURGE_DESC=		3rd party cache_purge module
 CLOJURE_DESC=			3rd party clojure module
 CT_DESC=			3rd party cert_transparency module (SSL req.)
 ECHO_DESC=			3rd party echo module
+FASTDFS_DESC=			3rd party fastdfs module
 HEADERS_MORE_DESC=		3rd party headers_more module
 HTTP_ACCEPT_LANGUAGE_DESC=	3rd party accept_language module
-HTTP_ACCESSKEY_DESC=		3rd party http_accesskey module
 HTTP_AUTH_DIGEST_DESC=		3rd party http_authdigest module
 HTTP_AUTH_KRB5_DESC=		3rd party http_auth_gss module
 HTTP_AUTH_LDAP_DESC=		3rd party http_auth_ldap module
@@ -185,6 +194,7 @@ HTTP_DAV_EXT_DESC=		3rd party webdav_ext module
 HTTP_EVAL_DESC=			3rd party eval module
 HTTP_FANCYINDEX_DESC=		3rd party http_fancyindex module
 HTTP_FOOTER_DESC=		3rd party http_footer module
+HTTP_GEOIP2_DESC=		3rd party geoip2 module
 HTTP_JSON_STATUS_DESC=		3rd party http_json_status module
 HTTP_MOGILEFS_DESC=		3rd party mogilefs module
 HTTP_MP4_H264_DESC=		3rd party mp4/h264 module
@@ -214,6 +224,7 @@ LET_DESC=			3rd party let module
 LUA_DESC=			3rd party lua module
 MEMC_DESC=			3rd party memc (memcached) module
 MODSECURITY_DESC=		3rd party mod_security module
+MODSECURITY3_DESC=		3rd party mod_security v3 module
 NAXSI_DESC=			3rd party naxsi module
 PASSENGER_DESC=			3rd party passenger module
 POSTGRES_DESC=			3rd party postgres module
@@ -227,15 +238,19 @@ SHIBBOLETH_DESC=		3rd party shibboleth module
 SLOWFS_CACHE_DESC=		3rd party slowfs_cache module
 SMALL_LIGHT_DESC=		3rd party small_light module
 SRCACHE_DESC=			3rd party srcache module
-STATSD_DESC=			3rd party statsd module
-UDPLOG_DESC=			3rd party udplog (syslog) module
-XRID_HEADER_DESC=		3rd party x-rid header module
+VOD_DESC=			3rd party vod module
+VTS_DESC=			3rd party vts module
+X11_DESC=			graphics/ImageMagick[-nox11] dependency
 XSS_DESC=			3rd party xss module
 VIDEO_DESC=			Video module support
 
-WANT_GNOME=	yes
-
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MX11}
+IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick
+.else
+IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick-nox11
+.endif
 
 .if ${PORT_OPTIONS:MPASSENGER}
 CATEGORIES+=	ruby
@@ -253,7 +268,10 @@ HTTP_PORT?=	80
 NGINX_ACCESSLOG?=	${NGINX_LOGDIR}/access.log
 NGINX_ERRORLOG?=	${NGINX_LOGDIR}/error.log
 
-CONFLICTS?=	nginx-1.*
+CONFLICTS?=	nginx-1.* \
+			nginx-full-1.* \
+			nginx-lite-1.* \
+			nginx-naxsi-1.*
 USE_RC_SUBR=	nginx
 SUB_FILES=	pkg-message
 SUB_LIST+=	WWWOWN=${WWWOWN} \
@@ -272,7 +290,7 @@ CONFIGURE_ARGS+=--prefix=${ETCDIR} \
 		--error-log-path=${NGINX_ERRORLOG} \
 		--user=${WWWOWN} --group=${WWWGRP}
 
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 MODULESDIR=	${PREFIX}/libexec/${PORTNAME}
 CONFIGURE_ARGS+=--modules-path=${MODULESDIR}
 .endif
@@ -295,8 +313,9 @@ CONFIGURE_ARGS+=--with-debug
 CONFIGURE_ARGS+=--with-file-aio
 .endif
 
-.if ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=--with-ipv6
+.if empty(PORT_OPTIONS:MIPV6)
+CONFIGURE_ARGS+=--with-cc-opt="-DNGX_HAVE_INET6=0 -I ${LOCALBASE}/include"
+.else
 CATEGORIES+=	ipv6
 .endif
 
@@ -321,44 +340,42 @@ GH_TAGNAME+=	${GIT_ACCEPT_LANGUAGE_VERSION}:accept_language
 CONFIGURE_ARGS+=--add-module=${WRKSRC_accept_language}
 .endif
 
-.if ${PORT_OPTIONS:MHTTP_ACCESSKEY}
-NGINX_ACCESSKEY_VERSION=	2.0.3
-MASTER_SITES+=	LOCAL/osa:accesskey
-DISTFILES+=	nginx-accesskey-${NGINX_ACCESSKEY_VERSION}.tar.gz:accesskey
-CONFIGURE_ARGS+=--add-module=${WRKDIR}/nginx-accesskey-${NGINX_ACCESSKEY_VERSION}
-IGNORE=	ACCESSKEY: a patch requires
-.endif
-
 .if ${PORT_OPTIONS:MHTTP_ADDITION}
 CONFIGURE_ARGS+=--with-http_addition_module
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_AUTH_DIGEST}
-GIT_AUTH_DIGEST_VERSION=	cc61b4a
+GIT_AUTH_DIGEST_VERSION=	274490c
 GH_ACCOUNT+=	atomx:auth_digest
 GH_PROJECT+=	nginx-http-auth-digest:auth_digest
 GH_TAGNAME+=	${GIT_AUTH_DIGEST_VERSION}:auth_digest
+.if ${PORT_OPTIONS:MDSO}
+CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_auth_digest}
+.else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_auth_digest}
+.endif
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_AUTH_KRB5}
-GIT_HTTP_AUTH_KRB5_VERSION=	c85a38c
+GIT_HTTP_AUTH_KRB5_VERSION=	7e028a5
 GH_ACCOUNT+=	stnoonan:auth_krb5
 GH_PROJECT+=	spnego-http-auth-nginx-module:auth_krb5
 GH_TAGNAME+=	${GIT_HTTP_AUTH_KRB5_VERSION}:auth_krb5
 CONFIGURE_ARGS+=--add-module=${WRKSRC_auth_krb5}
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-spnego-http-auth-nginx-module-config
-# TODO: Provide optional dependence on Kerberos implementations from ports
-USES+=	gssapi:base,flags
+#EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-spnego-http-auth-nginx-module-config
+#OPTIONS_RADIO+=		GSSAPI
+#OPTIONS_RADIO_GSSAPI+=	GSSAPI_HEIMDAL GSSAPI_MIT
+#GSSAPI_HEIMDAL_USES=	gssapi:heimdal,flags
+#GSSAPI_MIT_USES=	gssapi:mit
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_AUTH_LDAP}
 # WWW: https://github.com/kvspb/nginx-auth-ldap
-GIT_HTTP_AUTH_LDAP_VERSION=	dbcef31
+GIT_HTTP_AUTH_LDAP_VERSION=	42d195d
 GH_ACCOUNT+=	kvspb:http_auth_ldap
 GH_PROJECT+=	nginx-auth-ldap:http_auth_ldap
 GH_TAGNAME+=	${GIT_HTTP_AUTH_LDAP_VERSION}:http_auth_ldap
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_http_auth_ldap}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_http_auth_ldap}
@@ -367,10 +384,15 @@ USE_OPENLDAP=	yes
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_AUTH_PAM}
-NGINX_AUTH_PAM_VERSION=	1.2
-MASTER_SITES+=	http://web.iti.upv.es/~sto/nginx/:auth_pam
-DISTFILES+=	ngx_http_auth_pam_module-${NGINX_AUTH_PAM_VERSION}.tar.gz:auth_pam
-CONFIGURE_ARGS+=--add-module=${WRKDIR}/ngx_http_auth_pam_module-${NGINX_AUTH_PAM_VERSION}
+GIT_HTTP_AUTH_PAM_VERSION=	1.5.1
+GH_ACCOUNT+=	sto:auth_pam
+GH_PROJECT+=	ngx_http_auth_pam_module:auth_pam
+GH_TAGNAME+=	v${GIT_HTTP_AUTH_PAM_VERSION}:auth_pam
+.if ${PORT_OPTIONS:MDSO}
+CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_auth_pam}
+.else
+CONFIGURE_ARGS+=--add-module=${WRKSRC_auth_pam}
+.endif
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_AUTH_REQ}
@@ -412,47 +434,64 @@ JAVA_VERSION=	1.8
 JAVA_VENDOR=	openjdk
 JAVA_BUILD=	yes
 JAVA_RUN=	yes
-NGINX_CLOJURE_VERSION=	0.4.4
+NGINX_CLOJURE_VERSION=	0.4.5
 GH_ACCOUNT+=	nginx-clojure:clojure
 GH_PROJECT+=	nginx-clojure:clojure
 GH_TAGNAME+=	v${NGINX_CLOJURE_VERSION}:clojure
 CONFIGURE_ENV+=	"JNI_INCS=-I${LOCALBASE}/openjdk8/include -I${LOCALBASE}/openjdk8/include/freebsd"
 CONFIGURE_ARGS+=--add-module=${WRKSRC_clojure}/src/c
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-c-ngx_http_clojure_socket.c
 .endif
 
 .if ${PORT_OPTIONS:MCT}
-GIT_CT_VERSION=	f3cad5e
+GIT_CT_VERSION=	1.3.2
 GH_ACCOUNT+=	grahamedgecombe:ct
 GH_PROJECT+=	nginx-ct:ct
-GH_TAGNAME+=	${GIT_CT_VERSION}:ct
-.if !empty(PORT_OPTIONS:MDSO)
+GH_TAGNAME+=	v${GIT_CT_VERSION}:ct
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_ct}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_ct}
 .endif
 NGINX_OPENSSL=	yes
 USE_HTTP_SSL=	yes
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100085 && ${SSL_DEFAULT} == base
+IGNORE=		CT option requires OpenSSL 1.0.2, add DEFAULT_VERSIONS+=ssl=openssl to /etc/make.conf
+.endif
 .endif
 
 .if ${PORT_OPTIONS:MECHO}
-NGINX_ECHO_VERSION=	46334b3
+NGINX_ECHO_VERSION=	c65f5c6
 GH_ACCOUNT+=	openresty:echo
 GH_PROJECT+=	echo-nginx-module:echo
 GH_TAGNAME+=	${NGINX_ECHO_VERSION}:echo
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_echo}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_echo}
 .endif
 .endif
 
+.if ${PORT_OPTIONS:MFASTDFS}
+NGINX_FASTDFS_VERSION=	85347be
+GH_ACCOUNT+=	happyfish100:fastdfs
+GH_PROJECT+=	fastdfs-nginx-module:fastdfs
+GH_TAGNAME+=	${NGINX_FASTDFS_VERSION}:fastdfs
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-fastdfs-src-config
+BUILD_DEPENDS+=	${LOCALBASE}/include/fastcommon/logger.h:devel/libfastcommon \
+		${LOCALBASE}/include/fastdfs/fdfs_client.h:ftp/fastdfs
+LIB_DEPENDS+=	libfastcommon.so:devel/libfastcommon \
+		libfdfsclient.so:ftp/fastdfs
+CONFIGURE_ARGS+=--add-module=${WRKSRC_fastdfs}/src \
+		--with-cc-opt="-I ${LOCALBASE}/include/fastdfs \
+		-I ${LOCALBASE}/include/fastcommon"
+.endif
+
 .if ${PORT_OPTIONS:MHEADERS_MORE}
-NGINX_HEADERS_MORE_VERSION=	f5559ec
+NGINX_HEADERS_MORE_VERSION=	55fbdab
 GH_ACCOUNT+=	openresty:headers_more
 GH_PROJECT+=	headers-more-nginx-module:headers_more
 GH_TAGNAME+=	${NGINX_HEADERS_MORE_VERSION}:headers_more
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_headers_more}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_headers_more}
@@ -466,7 +505,7 @@ CONFIGURE_ARGS+=--with-http_dav_module
 .if ${PORT_OPTIONS:MHTTP_DAV_EXT}
 USE_HTTP_DAV=	yes
 LIB_DEPENDS+=	libexpat.so:textproc/expat2
-NGINX_DAV_EXT_VERSION=	0.0.3
+NGINX_DAV_EXT_VERSION=	0.1.0
 GH_ACCOUNT+=	arut:dav_ext
 GH_PROJECT+=	nginx-dav-ext-module:dav_ext
 GH_TAGNAME+=	v${NGINX_DAV_EXT_VERSION}:dav_ext
@@ -474,11 +513,11 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_dav_ext}
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_EVAL}
-NGINX_EVAL_VERSION=	342c812
+NGINX_EVAL_VERSION=	582bd25
 GH_ACCOUNT+=	openresty:eval
 GH_PROJECT+=	nginx-eval-module:eval
 GH_TAGNAME+=	${NGINX_EVAL_VERSION}:eval
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_eval}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_eval}
@@ -486,11 +525,15 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_eval}
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_FANCYINDEX}
-NGINX_FANCYINDEX_VERSION=	0.3.6
+NGINX_FANCYINDEX_VERSION=	0.4.2
 GH_ACCOUNT+=	aperezdc:fancyindex
 GH_PROJECT+=	ngx-fancyindex:fancyindex
 GH_TAGNAME+=	v${NGINX_FANCYINDEX_VERSION}:fancyindex
+.if ${PORT_OPTIONS:MDSO}
+CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_fancyindex}
+.else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_fancyindex}
+.endif
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_FOOTER}
@@ -499,6 +542,21 @@ GH_ACCOUNT+=	alibaba:footer
 GH_PROJECT+=	nginx-http-footer-filter:footer
 GH_TAGNAME+=	${NGINX_FOOTER_VERSION}:footer
 CONFIGURE_ARGS+=--add-module=${WRKSRC_footer}
+.endif
+
+.if ${PORT_OPTIONS:MHTTP_GEOIP2}
+# WWW: https://github.com/leev/ngx_http_geoip2_module
+NGINX_HTTP_GEOIP2_VERSION=	2.0
+GH_ACCOUNT+=	leev:geoip2
+GH_PROJECT+=	ngx_http_geoip2_module:geoip2
+GH_TAGNAME+=	${NGINX_HTTP_GEOIP2_VERSION}:geoip2
+CFLAGS+=	"-I${LOCALBASE}/include"
+.if ${PORT_OPTIONS:MDSO}
+CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_geoip2}
+.else
+CONFIGURE_ARGS+=--add-module=${WRKSRC_geoip2}
+.endif
+LIB_DEPENDS+=	libmaxminddb.so:net/libmaxminddb
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_FLV}
@@ -514,7 +572,7 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_json_status}
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_GEOIP}
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--with-http_geoip_module=dynamic
 .else
 CONFIGURE_ARGS+=--with-http_geoip_module
@@ -532,7 +590,7 @@ CONFIGURE_ARGS+=--with-http_gunzip_module
 
 .if ${PORT_OPTIONS:MHTTP_IMAGE_FILTER}
 LIB_DEPENDS+=	libgd.so:graphics/gd
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--with-http_image_filter_module=dynamic
 .else
 CONFIGURE_ARGS+=--with-http_image_filter_module
@@ -570,7 +628,7 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_http_notice_module.c
 
 .if ${PORT_OPTIONS:MHTTP_PERL}
 CATEGORIES+=	perl5
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--with-http_perl_module=dynamic
 .else
 CONFIGURE_ARGS+=--with-http_perl_module
@@ -579,7 +637,7 @@ USES+=		perl5
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_PUSH}
-GIT_PUSH_VERSION=	0.99.16
+GIT_PUSH_VERSION=	1.1.14
 GH_ACCOUNT+=	slact:push
 GH_PROJECT+=	nchan:push
 GH_TAGNAME+=	v${GIT_PUSH_VERSION}:push
@@ -587,7 +645,7 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_push}
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_PUSH_STREAM}
-NGINX_PUSH_STREAM_VERSION=	0.5.1
+NGINX_PUSH_STREAM_VERSION=	0.5.4
 GH_ACCOUNT+=	wandenberg:pushstream
 GH_PROJECT+=	nginx-push-stream-module:pushstream
 GH_TAGNAME+=	${NGINX_PUSH_STREAM_VERSION}:pushstream
@@ -606,7 +664,7 @@ CONFIGURE_ARGS+=--with-http_realip_module
 NGINX_REDIS_VERSION=	0.3.8
 MASTER_SITES+=	LOCAL/osa:redis
 DISTFILES+=	ngx_http_redis-${NGINX_REDIS_VERSION}.tar.gz:redis
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKDIR}/ngx_http_redis-${NGINX_REDIS_VERSION}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKDIR}/ngx_http_redis-${NGINX_REDIS_VERSION}
@@ -633,8 +691,8 @@ LIB_DEPENDS+=	libmsgpuck.so:devel/msgpuck \
 		libyajl.so:devel/yajl
 GH_ACCOUNT+=	tarantool:nginx_tarantool
 GH_PROJECT+=	nginx_upstream_module:nginx_tarantool
-GH_TAGNAME+=	1278ee5:nginx_tarantool
-.if !empty(PORT_OPTIONS:MDSO)
+GH_TAGNAME+=	4ca8684:nginx_tarantool
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_nginx_tarantool}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_nginx_tarantool}
@@ -659,25 +717,24 @@ CONFIGURE_ARGS+=--with-http_sub_module
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_UPLOAD}
-GIT_UPLOAD_VERSION=	aba1e3f34c
-GH_ACCOUNT+=	vkholodkov:upload
+GIT_UPLOAD_VERSION=	72ec037
+GH_ACCOUNT+=	Austinb:upload
 GH_PROJECT+=	nginx-upload-module:upload
 GH_TAGNAME+=	${GIT_UPLOAD_VERSION}:upload
 CONFIGURE_ARGS+=--add-module=${WRKSRC_upload}
-IGNORE=	HTTP_UPLOAD: a patch requires
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_UPLOAD_PROGRESS}
-NGINX_UPLOADPROGRESS_VERSION=	0.9.0
+NGINX_UPLOADPROGRESS_VERSION=	afb2d31
 GH_ACCOUNT+=	masterzen:uploadprogress
 GH_PROJECT+=	nginx-upload-progress-module:uploadprogress
-GH_TAGNAME+=	v${NGINX_UPLOADPROGRESS_VERSION}:uploadprogress
+GH_TAGNAME+=	${NGINX_UPLOADPROGRESS_VERSION}:uploadprogress
 CONFIGURE_ARGS+=--add-module=${WRKSRC_uploadprogress}
 .endif
 
-.if !empty(PORT_OPTIONS:MHTTP_UPSTREAM_CHECK)
+.if ${PORT_OPTIONS:MHTTP_UPSTREAM_CHECK}
 # WWW: https://github.com/yaoweibin/nginx_upstream_check_module
-NGINX_UPSTREAM_CHECK_VERSION=	10782ea
+NGINX_UPSTREAM_CHECK_VERSION=	9aecf15
 GH_ACCOUNT+=	yaoweibin:upstreamcheck
 GH_PROJECT+=	nginx_upstream_check_module:upstreamcheck
 GH_TAGNAME+=	${NGINX_UPSTREAM_CHECK_VERSION}:upstreamcheck
@@ -689,43 +746,42 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-http-modules-ngx_http_upstream_hash_
 		${PATCHDIR}/extra-patch-src-http-ngx_http_upstream_round_robin.h
 .endif
 
-.if !empty(PORT_OPTIONS:MHTTP_UPSTREAM_FAIR)
-NGINX_UPSTREAM_FAIR_VERSION=	20090923
-MASTER_SITES+=	LOCAL/osa:upstreamfair
-DISTFILES+=	nginx_upstream_fair-${NGINX_UPSTREAM_FAIR_VERSION}.tar.gz:upstreamfair
-CONFIGURE_ARGS+=--add-module=${WRKDIR}/nginx_upstream_fair-${NGINX_UPSTREAM_FAIR_VERSION}
-.if !empty(PORT_OPTIONS:MHTTP_UPSTREAM_CHECK)
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_http_upstream_fair_module.c
-.endif
+.if ${PORT_OPTIONS:MHTTP_UPSTREAM_FAIR}
+NGINX_UPSTREAM_FAIR_VERSION=	b5be36f
+GH_ACCOUNT+=	cryptofuture:upstreamfair
+GH_PROJECT+=	nginx-upstream-fair:upstreamfair
+GH_TAGNAME+=	${NGINX_UPSTREAM_FAIR_VERSION}:upstreamfair
+CONFIGURE_ARGS+=--add-module=${WRKSRC_upstreamfair}
+#.if ${PORT_OPTIONS:MHTTP_UPSTREAM_CHECK}
+#EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_http_upstream_fair_module.c
+#.endif
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_UPSTREAM_STICKY}
 USE_HTTP_SSL=	yes
-NGINX_UPSTREAM_STICKY_VERSION=	1.2.4
+NGINX_UPSTREAM_STICKY_VERSION=	08a395c66e42
 MASTER_SITES+=	https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/:upstreamsticky
 DISTFILES+=	${NGINX_UPSTREAM_STICKY_VERSION}.tar.gz:upstreamsticky
-CONFIGURE_ARGS+=--add-module=${WRKDIR}/nginx-goodies-nginx-sticky-module-ng-c825ea7c5c91/
+CONFIGURE_ARGS+=--add-module=${WRKDIR}/nginx-goodies-nginx-sticky-module-ng-${NGINX_UPSTREAM_STICKY_VERSION}/
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_http_sticky_misc.c
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_VIDEO_THUMBEXTRACTOR}
-NGINX_VIDEO_THUMBEXTRACTOR_VERSION=	0.7.0
-LIB_DEPENDS+= 	libjpeg.so:graphics/jpeg \
-		libavformat.so:multimedia/ffmpeg \
+NGINX_VIDEO_THUMBEXTRACTOR_VERSION=	0.9.0
+LIB_DEPENDS+=	libavformat.so:multimedia/ffmpeg \
 		libavcodec.so:multimedia/ffmpeg \
 		libavutil.so:multimedia/ffmpeg \
-		libswscale.so:multimedia/ffmpeg \
-		libMagickWand-6.so:graphics/ImageMagick
+		libswscale.so:multimedia/ffmpeg
+USES+=		jpeg
 GH_ACCOUNT+=	wandenberg:vte
 GH_PROJECT+=	nginx-video-thumbextractor-module:vte
 GH_TAGNAME+=	${NGINX_VIDEO_THUMBEXTRACTOR_VERSION}:vte
-CONFIGURE_ARGS+=--add-module=${WRKSRC_vte} --with-cc-opt="-I ${LOCALBASE}/include \
-		-I ${LOCALBASE}/include/ImageMagick"
+CONFIGURE_ARGS+=--add-module=${WRKSRC_vte}
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_XSLT}
 USE_GNOME+=	libxml2 libxslt
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--with-http_xslt_module=dynamic
 .else
 CONFIGURE_ARGS+=--with-http_xslt_module
@@ -733,8 +789,8 @@ CONFIGURE_ARGS+=--with-http_xslt_module
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_ZIP}
-NGINX_ZIP_VERSION=	ca0b345
-GH_ACCOUNT+=	evanmiller:mod_zip
+NGINX_ZIP_VERSION=	74ef235
+GH_ACCOUNT+=	anthonyryan1:mod_zip
 GH_PROJECT+=	mod_zip:mod_zip
 GH_TAGNAME+=	${NGINX_ZIP_VERSION}:mod_zip
 CONFIGURE_ARGS+=--add-module=${WRKDIR}/mod_zip-${NGINX_ZIP_VERSION}
@@ -742,7 +798,9 @@ CONFIGURE_ARGS+=--add-module=${WRKDIR}/mod_zip-${NGINX_ZIP_VERSION}
 
 .if ${PORT_OPTIONS:MDRIZZLE}
 LIB_DEPENDS+=	libdrizzle.so:databases/libdrizzle
-NGINX_DRIZZLE_VERSION=	0.1.9
+CONFIGURE_ENV+=	"LIBDRIZZLE_INC=${LOCALBASE}/include"
+CONFIGURE_ENV+=	"LIBDRIZZLE_LIB=${LOCALBASE}/lib"
+NGINX_DRIZZLE_VERSION=	0.1.10
 GH_ACCOUNT+=	openresty:drizzle
 GH_PROJECT+=	drizzle-nginx-module:drizzle
 GH_TAGNAME+=	v${NGINX_DRIZZLE_VERSION}:drizzle
@@ -751,16 +809,15 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-openresty-drizzle-nginx-module-config
 .endif
 
 .if ${PORT_OPTIONS:MDYNAMIC_UPSTREAM}
-NGINX_DYNAMIC_UPSTREAM_VERSION=	0.1.3
+NGINX_DYNAMIC_UPSTREAM_VERSION=	0.1.6
 GH_ACCOUNT+=	cubicdaiya:dyn_upstream
 GH_PROJECT+=	ngx_dynamic_upstream:dyn_upstream
 GH_TAGNAME+=	v${NGINX_DYNAMIC_UPSTREAM_VERSION}:dyn_upstream
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_dyn_upstream}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_dyn_upstream}
 .endif
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_inet_slab.c
 .endif
 
 .if ${PORT_OPTIONS:MARRAYVAR} || ${PORT_OPTIONS:MENCRYPTSESSION} || ${PORT_OPTIONS:MFORMINPUT} || ${PORT_OPTIONS:MICONV} || ${PORT_OPTIONS:MLUA} || ${PORT_OPTIONS:MSET_MISC}
@@ -772,7 +829,7 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_devel_kit}
 .endif
 
 .if ${PORT_OPTIONS:MENCRYPTSESSION}
-NGINX_ENCRYPTSESSION_VERSION=	0.05
+NGINX_ENCRYPTSESSION_VERSION=	0.07
 GH_ACCOUNT+=	openresty:encryptsession
 GH_PROJECT+=	encrypted-session-nginx-module:encryptsession
 GH_TAGNAME+=	v${NGINX_ENCRYPTSESSION_VERSION}:encryptsession
@@ -800,11 +857,11 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_let}
 LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
 CONFIGURE_ENV+=	"LUAJIT_INC=${LOCALBASE}/include/luajit-2.0"
 CONFIGURE_ENV+=	"LUAJIT_LIB=${LOCALBASE}/lib"
-NGINX_LUA_VERSION=	0.10.6rc1
+NGINX_LUA_VERSION=	0.10.11
 GH_ACCOUNT+=	openresty:lua
 GH_PROJECT+=	lua-nginx-module:lua
 GH_TAGNAME+=	v${NGINX_LUA_VERSION}:lua
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_lua}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_lua}
@@ -812,30 +869,40 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_lua}
 .endif
 
 .if ${PORT_OPTIONS:MMEMC}
-NGINX_MEMC_VERSION=	0.16
+NGINX_MEMC_VERSION=	0.18
 GH_ACCOUNT+=	openresty:memc
 GH_PROJECT+=	memc-nginx-module:memc
 GH_TAGNAME+=	v${NGINX_MEMC_VERSION}:memc
+.if ${PORT_OPTIONS:MDSO}
+CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_memc}
+.else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_memc}
+.endif
 .endif
 
 .if ${PORT_OPTIONS:MMODSECURITY}
-NGINX_MODSECURITY_VERSION=	2.9.1
+NGINX_MODSECURITY_VERSION=	2.9.2
 LIB_DEPENDS+=	libapr-1.so:devel/apr1 \
 		libcurl.so:ftp/curl \
 		libluajit-5.1.so:lang/luajit \
 		libpcre.so:devel/pcre \
 		libyajl.so:devel/yajl
-USE_APACHE=	22+
 USE_GNOME+=	libxml2
+USES+=		apache:2.2+ pkgconfig shebangfix
 MASTER_SITES+=	http://www.modsecurity.org/tarball/${NGINX_MODSECURITY_VERSION:S/RC/rc/}/:modsecurity
 DISTFILES+=	modsecurity-${NGINX_MODSECURITY_VERSION}.tar.gz:modsecurity
 CONFIGURE_ARGS+=--add-module=${WRKDIR}/modsecurity-${NGINX_MODSECURITY_VERSION}/nginx/modsecurity
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-nginx-modsecurity-configure
 .endif
 
+.if ${PORT_OPTIONS:MMODSECURITY3}
+LIB_DEPENDS+=	libmodsecurity.so:www/mod_security3
+GH_TUPLE+=	SpiderLabs:ModSecurity-nginx:c0ae166:modsec
+CONFIGURE_ARGS+=--add-module=${WRKSRC_modsec}
+.endif
+
 .if ${PORT_OPTIONS:MNAXSI}
-NGINX_NAXSI_VERSION=	0.54
+NGINX_NAXSI_VERSION=	0.55.3
 GH_ACCOUNT+=	nbs-system:naxsi
 GH_PROJECT+=	naxsi:naxsi
 GH_TAGNAME+=	${NGINX_NAXSI_VERSION}:naxsi
@@ -852,10 +919,10 @@ CONFIGURE_ARGS+=--without-http_rewrite_module \
 .endif
 
 .if ${PORT_OPTIONS:MPASSENGER}
-PASSENGER_VERSION=	5.0.30
+PASSENGER_VERSION=	5.2.1
 MASTER_SITES+=	http://s3.amazonaws.com/phusion-passenger/releases/:passenger
 DISTFILES+=	passenger-${PASSENGER_VERSION}.tar.gz:passenger
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKDIR}/passenger-${PASSENGER_VERSION}/src/nginx_module
 .else
 CONFIGURE_ARGS+=--add-module=${WRKDIR}/passenger-${PASSENGER_VERSION}/src/nginx_module
@@ -874,11 +941,12 @@ GH_ACCOUNT+=	FRiCKLE:postgres
 GH_PROJECT+=	ngx_postgres:postgres
 GH_TAGNAME+=	${NGINX_POSTGRES_VERSION}:postgres
 CONFIGURE_ARGS+=--add-module=${WRKSRC_postgres}
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_postgres-config
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_postgres-config \
+		${PATCHDIR}/extra-patch-ngx_postgres_module.c
 .endif
 
 .if ${PORT_OPTIONS:MRDS_CSV}
-NGINX_RDS_CSV_VERSION=	0.07
+NGINX_RDS_CSV_VERSION=	0.08
 GH_ACCOUNT+=	openresty:rdscsv
 GH_PROJECT+=	rds-csv-nginx-module:rdscsv
 GH_TAGNAME+=	v${NGINX_RDS_CSV_VERSION}:rdscsv
@@ -894,7 +962,7 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_rdsjson}
 .endif
 
 .if ${PORT_OPTIONS:MREDIS2}
-NGINX_REDIS2_VERSION=	0.12
+NGINX_REDIS2_VERSION=	0.14
 GH_ACCOUNT+=	openresty:redis2
 GH_PROJECT+=	redis2-nginx-module:redis2
 GH_TAGNAME+=	v${NGINX_REDIS2_VERSION}:redis2
@@ -902,7 +970,7 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_redis2}
 .endif
 
 .if ${PORT_OPTIONS:MRTMP}
-NGINX_RTMP_VERSION=	1.1.8
+NGINX_RTMP_VERSION=	1.2.1
 GH_ACCOUNT+=	arut:rtmp
 GH_PROJECT+=	nginx-rtmp-module:rtmp
 GH_TAGNAME+=	v${NGINX_RTMP_VERSION}:rtmp
@@ -910,11 +978,11 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_rtmp}
 .endif
 
 .if ${PORT_OPTIONS:MSET_MISC}
-NGINX_SET_MISC_VERSION=	f808ef4
+NGINX_SET_MISC_VERSION=	cda7e50
 GH_ACCOUNT+=	openresty:setmisc
 GH_PROJECT+=	set-misc-nginx-module:setmisc
 GH_TAGNAME+=	${NGINX_SET_MISC_VERSION}:setmisc
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_setmisc}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_setmisc}
@@ -932,7 +1000,7 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_http_sflow_config.c \
 .endif
 
 .if ${PORT_OPTIONS:MSHIBBOLETH}
-GIT_SHIBBOLETH_VERSION=	4f1119b
+GIT_SHIBBOLETH_VERSION=	f07bf3c
 GH_ACCOUNT+=	nginx-shib:shib
 GH_PROJECT+=	nginx-http-shibboleth:shib
 GH_TAGNAME+=	${GIT_SHIBBOLETH_VERSION}:shib
@@ -947,14 +1015,13 @@ CONFIGURE_ARGS+=--add-module=${WRKDIR}/ngx_slowfs_cache-${NGINX_SLOWFS_CACHE_VER
 .endif
 
 .if ${PORT_OPTIONS:MSMALL_LIGHT}
-NGINX_SMALL_LIGHT_VERSION=	0.8.0
-LIB_DEPENDS+=	libMagickCore-6.so:graphics/ImageMagick \
-		libMagickWand-6.so:graphics/ImageMagick \
+NGINX_SMALL_LIGHT_VERSION=	0.9.2
+LIB_DEPENDS+=	${IMAGEMAGICK_LIB_DEPENDS} \
 		libpcre.so:devel/pcre
 GH_ACCOUNT+=	cubicdaiya:small_light
 GH_PROJECT+=	ngx_small_light:small_light
 GH_TAGNAME+=	v${NGINX_SMALL_LIGHT_VERSION}:small_light
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_small_light}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_small_light}
@@ -962,35 +1029,31 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_small_light}
 .endif
 
 .if ${PORT_OPTIONS:MSRCACHE}
-NGINX_SRCACHE_VERSION=	0.30
+NGINX_SRCACHE_VERSION=	0.31
 GH_ACCOUNT+=	openresty:srcache
 GH_PROJECT+=	srcache-nginx-module:srcache
 GH_TAGNAME+=	v${NGINX_SRCACHE_VERSION}:srcache
 CONFIGURE_ARGS+=--add-module=${WRKSRC_srcache}
 .endif
 
-.if ${PORT_OPTIONS:MSTATSD}
-NGINX_STATSD_VERSION=	b756a12
-GH_ACCOUNT+=	zebrafishlabs:statsd
-GH_PROJECT+=	nginx-statsd:statsd
-GH_TAGNAME+=	${NGINX_STATSD_VERSION}:statsd
-CONFIGURE_ARGS+=--add-module=${WRKSRC_statsd}
+.if ${PORT_OPTIONS:MVOD}
+NGINX_VOD_VERSION=	1.22
+GH_ACCOUNT+=	kaltura:vod
+GH_PROJECT+=	nginx-vod-module:vod
+GH_TAGNAME+=	${NGINX_VOD_VERSION}:vod
+.if ${PORT_OPTIONS:MDSO}
+CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_vod}
+.else
+CONFIGURE_ARGS+=--add-module=${WRKSRC_vod}
+.endif
 .endif
 
-.if ${PORT_OPTIONS:MUDPLOG}
-NGINX_UDPLOG_VERSION=	1.0.0
-MASTER_SITES+=	http://www.grid.net.ru/nginx/download/:udplog
-DISTFILES+=	nginx_udplog_module-${NGINX_UDPLOG_VERSION}.tar.gz:udplog
-CONFIGURE_ARGS+=--add-module=${WRKDIR}/nginx_udplog_module-${NGINX_UDPLOG_VERSION}
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_http_udplog_module.c
-.endif
-
-.if ${PORT_OPTIONS:MXRID_HEADER}
-GIT_XRID_VERSION=	0daa3cc
-GH_ACCOUNT+=	gabor:xrid
-GH_PROJECT+=	nginx-x-rid-header:xrid
-GH_TAGNAME+=	${GIT_XRID_VERSION}:xrid
-CONFIGURE_ARGS+=--add-module=${WRKSRC_xrid}
+.if ${PORT_OPTIONS:MVTS}
+NGINX_VTS_VERSION=	0.1.15
+GH_ACCOUNT+=	vozlt:vts
+GH_PROJECT+=	nginx-module-vts:vts
+GH_TAGNAME+=	v${NGINX_VTS_VERSION}:vts
+CONFIGURE_ARGS+=--add-module=${WRKSRC_vts}
 .endif
 
 .if ${PORT_OPTIONS:MXSS}
@@ -1010,8 +1073,8 @@ CONFIGURE_ARGS+=--with-http_v2_module
 .if ${PORT_OPTIONS:MNJS}
 GH_ACCOUNT+=	nginx:njs
 GH_PROJECT+=	njs:njs
-GH_TAGNAME+=	0f11ace:njs
-.if !empty(PORT_OPTIONS:MDSO)
+GH_TAGNAME+=	3995aba:njs
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_njs}/nginx
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_njs}/nginx
@@ -1019,7 +1082,7 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_njs}/nginx
 .endif
 
 .if ${PORT_OPTIONS:MSTREAM}
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--with-stream=dynamic
 .else
 CONFIGURE_ARGS+=--with-stream
@@ -1028,6 +1091,9 @@ CONFIGURE_ARGS+=--with-stream
 NGINX_OPENSSL=	yes
 USE_HTTP_SSL=	yes
 CONFIGURE_ARGS+=--with-stream_ssl_module
+.if ${PORT_OPTIONS:MSTREAM_SSL_PREREAD}
+CONFIGURE_ARGS+=--with-stream_ssl_preread_module
+.endif
 .endif
 .endif
 
@@ -1047,7 +1113,7 @@ PLIST_SUB+=	WWWDATA="@comment "
 .endif		# WITH_HTTP
 
 .if ${PORT_OPTIONS:MMAIL}
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--with-mail=dynamic
 .else
 CONFIGURE_ARGS+=--with-mail
@@ -1081,13 +1147,12 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_arrayvar}
 .endif
 
 .if ${PORT_OPTIONS:MBROTLI}
-NGINX_BROTLI_VERSION=	ada972b
-LIB_DEPENDS+=	libbrotlidec.so:devel/libbrotli \
-		libbrotlienc.so:devel/libbrotli
-GH_ACCOUNT+=	google:brotli
+NGINX_BROTLI_VERSION=	6a11744
+LIB_DEPENDS+=	libbrotlicommon.so:archivers/brotli
+GH_ACCOUNT+=	eustas:brotli
 GH_PROJECT+=	ngx_brotli:brotli
 GH_TAGNAME+=	${NGINX_BROTLI_VERSION}:brotli
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 CONFIGURE_ARGS+=--add-dynamic-module=${WRKSRC_brotli}
 .else
 CONFIGURE_ARGS+=--add-module=${WRKSRC_brotli}
@@ -1118,10 +1183,7 @@ USERS?=	${WWWOWN}
 GROUPS?=${WWWGRP}
 
 .if defined(NGINX_OPENSSL)
-USE_OPENSSL=	yes
-.if ${OSVERSION} < 1100000
-WITH_OPENSSL_PORT=yes
-.endif
+USES+=		ssl
 .endif
 
 pre-everything::
@@ -1145,20 +1207,10 @@ post-patch:
 		s!%%PREFIX%%!${PREFIX}!; \
 		s!%%NGINX_ERRORLOG%%!${NGINX_ERRORLOG}!' \
 		${WRKSRC}/conf/nginx.conf
-.if ${PORT_OPTIONS:MHTTP_ACCESSKEY}
-	@${REINPLACE_CMD} \
-		'128s!NGX_OK!NGX_DECLINED!' \
-		${WRKDIR}/nginx-accesskey-${NGINX_ACCESSKEY_VERSION}/ngx_http_accesskey_module.c
-.endif
 .if ${PORT_OPTIONS:MHTTP_AUTH_KRB5}
 	@${REINPLACE_CMD} \
 		's!%%GSSAPILIBS%%!${GSSAPILIBS}!' \
 		${WRKSRC_auth_krb5}/config
-.endif
-.if ${PORT_OPTIONS:MHTTP_ACCESSKEY}
-	@${REINPLACE_CMD} \
-		's!$$HTTP_ACCESSKEY_MODULE!ngx_http_accesskey_module!' \
-		${WRKDIR}/nginx-accesskey-${NGINX_ACCESSKEY_VERSION}/config
 .endif
 # linker error acquire if --std=c99 defined, add "static" to inline function
 .if ${PORT_OPTIONS:MHTTP_ZIP}
@@ -1170,6 +1222,12 @@ post-patch:
 	@${REINPLACE_CMD} \
 		's!%%PREFIX%%!${LOCALBASE}!g' \
 		${WRKSRC_drizzle}/config
+.endif
+.if ${PORT_OPTIONS:MFASTDFS}
+	@${REINPLACE_CMD} \
+		's!%%PREFIX%%!${PREFIX}!g; \
+		s!%%LOCALBASE%%!${LOCALBASE}!g' \
+		${WRKSRC_fastdfs}/src/config
 .endif
 # Respect CFLAGS by remove needless --std=c99 flag
 .if ${PORT_OPTIONS:MGRIDFS}
@@ -1200,20 +1258,6 @@ post-patch:
 		's!%%PREFIX%%!${LOCALBASE}!g' \
 		${WRKDIR}/nginx-sflow-module-${NGINX_SFLOW_VERSION}/ngx_http_sflow_config.h
 .endif
-.if ${PORT_OPTIONS:MSTATSD}
-	@${REINPLACE_CMD} \
-		's!ngx_udp_connection_t!ngx_resolver_connection_t!g; \
-		s!uc->connection!uc->udp!g; \
-		s!e->udp_connection->connection!e->udp_connection->udp!g' \
-		${WRKSRC_statsd}/ngx_http_statsd.c
-.endif
-.if ${PORT_OPTIONS:MUDPLOG}
-	@${REINPLACE_CMD} \
-		's!ngx_udp_connection_t!ngx_resolver_connection_t!g; \
-		s!uc->connection!uc->udp!g; \
-		s!e->udp_connection->connection!e->udp_connection->udp!g' \
-		${WRKDIR}/nginx_udplog_module-${NGINX_UDPLOG_VERSION}/ngx_http_udplog_module.c
-.endif
 .if ${PORT_OPTIONS:MICONV}
 	@${REINPLACE_CMD} \
 		's!%%PREFIX%%!${LOCALBASE}!g' \
@@ -1229,11 +1273,18 @@ post-patch:
 		's!%%PREFIX%%!${LOCALBASE}!g' \
 		${WRKSRC_nginx_tarantool}/config
 .endif
+.if ${PORT_OPTIONS:MBROTLI}
+	@${REINPLACE_CMD} \
+		'62s|\/usr\/local|${LOCALBASE}|' \
+		${WRKSRC_brotli}/config
+.endif
 
 pre-configure:
 .if ${PORT_OPTIONS:MMODSECURITY}
 	( cd ${WRKDIR}/modsecurity-${NGINX_MODSECURITY_VERSION} && \
-		CC="${CC}" ${CONFIGURE_CMD} --enable-standalone-module && \
+		CC="${CC}" ${CONFIGURE_CMD} --enable-standalone-module \
+		--with-pcre=${LOCALBASE} --with-yajl=${LOCALBASE} \
+		--with-curl=${LOCALBASE} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} )
 .endif
 .if ${PORT_OPTIONS:MSMALL_LIGHT}
@@ -1245,7 +1296,7 @@ do-build:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 	${MKDIR} ${STAGEDIR}${MODULESDIR}
 .endif
 	${MKDIR} ${STAGEDIR}${NGINX_TMPDIR}
@@ -1257,7 +1308,7 @@ do-install:
 .for i in fastcgi_params mime.types scgi_params uwsgi_params
 	${INSTALL_DATA} ${WRKSRC}/conf/${i} ${STAGEDIR}${ETCDIR}/${i}-dist
 .endfor
-.if !empty(PORT_OPTIONS:MHTTP) && !empty(PORT_OPTIONS:MWWW)
+.if ${PORT_OPTIONS:MHTTP} && ${PORT_OPTIONS:MWWW}
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/nginx-dist
 .for i in index.html 50x.html
 	${INSTALL_DATA} ${WRKSRC}/html/${i} ${STAGEDIR}${PREFIX}/www/nginx-dist
@@ -1265,7 +1316,7 @@ do-install:
 	${ECHO_CMD} "" >>${STAGEDIR}${PREFIX}/www/nginx-dist/EXAMPLE_DIRECTORY-DONT_ADD_OR_TOUCH_ANYTHING
 .endif
 
-.if !empty(PORT_OPTIONS:MHTTP) && !empty(PORT_OPTIONS:MHTTP_PERL)
+.if ${PORT_OPTIONS:MHTTP} && ${PORT_OPTIONS:MHTTP_PERL}
 	${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/nginx
 	${INSTALL_PROGRAM} ${WRKSRC}/objs/src/http/modules/perl/blib/arch/auto/nginx/nginx.so \
 		${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/nginx
@@ -1273,10 +1324,15 @@ do-install:
 		${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/
 .endif
 
+.if ${PORT_OPTIONS:MFASTDFS}
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/fdfs
+	${INSTALL_DATA} ${WRKSRC_fastdfs}/src/mod_fastdfs.conf ${STAGEDIR}${PREFIX}/etc/fdfs/mod_fastdfs.conf.sample
+.endif
+
 # Install dynamic modules
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 	(cd ${WRKSRC}/objs/ && ${FIND} . -name '*.so' -maxdepth 1 -type f \
-		-exec ${INSTALL_PROGRAM} "{}" ${STAGEDIR}${MODULESDIR} \;)
+		-exec ${INSTALL_PROGRAM} {} ${STAGEDIR}${MODULESDIR} \;)
 .endif
 
 .if ${PORT_OPTIONS:MNAXSI}
@@ -1286,7 +1342,7 @@ do-install:
 .endif
 
 post-install:
-.if !empty(PORT_OPTIONS:MHTTP) && !empty(PORT_OPTIONS:MHTTP_PERL)
+.if ${PORT_OPTIONS:MHTTP} && ${PORT_OPTIONS:MHTTP_PERL}
 	${ECHO_CMD} ${SITE_ARCH_REL}/auto/nginx/nginx.so >> ${TMPPLIST}
 	${ECHO_CMD} ${SITE_ARCH_REL}/nginx.pm >> ${TMPPLIST}
 .endif
@@ -1296,15 +1352,14 @@ post-install:
 	${ECHO_CMD} etc/nginx/naxsi_core.rules >> ${TMPPLIST}
 .endif
 
+.if ${PORT_OPTIONS:MFASTDFS}
+	${ECHO_CMD} @sample etc/fdfs/mod_fastdfs.conf.sample >> ${TMPPLIST}
+.endif
+
 # Add dynamic modules to the plist
-.if !empty(PORT_OPTIONS:MDSO)
+.if ${PORT_OPTIONS:MDSO}
 	(cd ${STAGEDIR}${PREFIX} && ${FIND} ${MODULESDIR:S|${PREFIX}/||} \
 		! -type d >>${TMPPLIST})
-# Update nginx.conf-dist with a list of staged dynamic modules
-	(cd ${STAGEDIR} && \
-		${FIND} ${MODULESDIR:S|^/||} -type f -name '*.so' \
-			-exec ${ECHO_CMD} "load_module /{};" \; \
-			>>${STAGEDIR}${ETCDIR}/nginx.conf-dist)
 .endif
 	${CAT} ${WRKSRC}/conf/nginx.conf \
 		>>${STAGEDIR}${ETCDIR}/nginx.conf-dist

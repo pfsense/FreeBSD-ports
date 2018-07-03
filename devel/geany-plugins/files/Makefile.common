@@ -7,18 +7,19 @@ DISTNAME=	geany-plugins-${PORTVERSION}
 DISTINFO_FILE=	${.CURDIR}/../../devel/geany-plugins/distinfo
 
 BUILD_DEPENDS+=	${LOCALBASE}/bin/geany:devel/geany
+LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
 RUN_DEPENDS+=	${LOCALBASE}/bin/geany:devel/geany
 
 GNU_CONFIGURE=	yes
 USES+=		gettext-tools gmake libtool pkgconfig tar:bzip2
-USE_GNOME+=	gtk20 intltool
+USE_GNOME+=	cairo gdkpixbuf2 gtk20 intltool
 
 # geany-plugins-l10n is not a plugin, thus special treatment
 .if ${PORTNAME} == "geany-plugins-l10n"
 GEANY_PLUGIN=	po
 po_SWITCH=	--enable-nls
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+USES+=		localbase
 .else
 INSTALL_TARGET=	install-strip
 .endif
@@ -29,15 +30,21 @@ ${GEANY_PLUGIN}_SWITCH?=	--enable-${${GEANY_PLUGIN}_DIR}
 
 CONFIGURE_ARGS+=	${${GEANY_PLUGIN}_SWITCH}
 
-.if defined(VERBOSE_BUILD) || defined(PACKAGE_BUILDING)
-CONFIGURE_ARGS+=	--disable-silent-rules
-.endif
-
 BUILD_WRKSRC=	${WRKSRC}/${${GEANY_PLUGIN}_DIR}
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
 
 DATADIR=	share/geany-plugins
 DOCSDIR=	share/doc/geany-plugins
+
+.if ${GEANY_UTIL:M${GEANY_PLUGIN}}
+
+LIB_DEPENDS+=	libgeanypluginutils.so:devel/geany-plugin-utilslib
+CONFIGURE_ARGS+=--enable-utilslib
+
+pre-build:
+	(cd ${WRKSRC}/utils; ${DO_MAKE_BUILD} ${ALL_TARGET})
+
+.endif
 
 post-configure:
 	${FIND} ${BUILD_WRKSRC} -name Makefile | ${XARGS} \

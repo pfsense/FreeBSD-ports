@@ -2,7 +2,7 @@
 
 PORTNAME=	abstract-deque
 PORTVERSION=	0.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

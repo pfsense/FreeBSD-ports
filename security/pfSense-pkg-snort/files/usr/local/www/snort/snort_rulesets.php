@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,10 +62,12 @@ $snortdownload = $config['installedpackages']['snortglobal']['snortdownload'] ==
 $emergingdownload = $config['installedpackages']['snortglobal']['emergingthreats'] == 'on' ? 'on' : 'off';
 $etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'on' ? 'on' : 'off';
 $snortcommunitydownload = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
+$openappid_rulesdownload = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'on' ? 'on' : 'off';
 
 $no_emerging_files = false;
 $no_snort_files = false;
 $no_community_files = false;
+$no_openappid_files = false;
 
 /* Test rule categories currently downloaded to $SNORTDIR/rules and set appropriate flags */
 if (($etpro == 'off' || empty($etpro)) && $emergingdownload == 'on') {
@@ -81,14 +83,17 @@ if (empty($test))
 $test = glob("{$snortdir}/rules/" . VRT_FILE_PREFIX . "*.rules");
 if (empty($test))
 	$no_snort_files = true;
+$test = glob("{$snortdir}/rules/" . OPENAPPID_FILE_PREFIX . "*.rules");
+if (empty($test))
+	$no_openappid_files = true;
 if (!file_exists("{$snortdir}/rules/" . GPL_FILE_PREFIX . "community.rules"))
 	$no_community_files = true;
 
 if (($snortdownload == 'off') || ($a_nat[$id]['ips_policy_enable'] != 'on'))
 	$policy_select_disable = "disabled";
 
-// If a Snort VRT policy is enabled and selected, remove all Snort VRT
-// rules from the configured rule sets to allow automatic selection.
+// If a Snort Subscriber Rules policy is enabled and selected, remove all Snort
+// Subscriber rules from the configured rule sets to allow automatic selection.
 if ($a_nat[$id]['ips_policy_enable'] == 'on') {
 	if (isset($a_nat[$id]['ips_policy'])) {
 		$disable_vrt_rules = "disabled";
@@ -216,8 +221,13 @@ if (isset($_POST['selectall'])) {
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
 	}
+	if ($openappid_rulesdownload == 'on') {
+		$files = glob("{$snortdir}/rules/" . OPENAPPID_FILE_PREFIX . "*.rules");
+		foreach ($files as $file)
+			$enabled_rulesets_array[] = basename($file);
+	}
 
-	/* Include the Snort VRT rules only if enabled and no IPS policy is set */
+	/* Include the Snort Subscriber rules only if enabled and no IPS policy is set */
 	if ($snortdownload == 'on' && $a_nat[$id]['ips_policy_enable'] == 'off') {
 		$files = glob("{$snortdir}/rules/" . VRT_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
@@ -241,6 +251,9 @@ if ($a_nat[$id]['autoflowbitrules'] == 'on') {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
+if (empty($if_friendly)) {
+	$if_friendly = "None";
+}
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Categories"), gettext("{$if_friendly}"));
 include_once("head.inc");
 
@@ -338,17 +351,17 @@ if ($btn_view_flowb_rules == TRUE) {
 print($section);
 
 if ($snortdownload == "on") {
-	$section = new Form_Section('Snort VRT IPS Policy Selection');
+	$section = new Form_Section('Snort Subscriber IPS Policy Selection');
 	$section->addInput(new Form_Checkbox(
 		'ips_policy_enable',
 		'Use IPS Policy',
-		'If checked, Snort will use rules from one of three pre-defined IPS policies in the Snort VRT rules. Default is Not Checked.',
+		'If checked, Snort will use rules from one of three pre-defined IPS policies in the Snort Subscriber rules. Default is Not Checked.',
 		$pconfig['ips_policy_enable'] == 'on' ? true:false,
 		'on'
 	));
 	$section->addInput(new Form_StaticText(
 	null,
-	'<span class="help-block">Selecting this option disables manual selection of Snort VRT categories in the list below, ' . 
+	'<span class="help-block">Selecting this option disables manual selection of Snort Subscriber categories in the list below, ' . 
 		'although Emerging Threats categories may still be selected if enabled on the Global Settings tab.  These ' . 
 		'will be added to the pre-defined Snort IPS policy rules from the Snort VRT.</span>'
 	));
@@ -356,15 +369,17 @@ if ($snortdownload == "on") {
 		'ips_policy',
 		'IPS Policy Selection',
 		$pconfig['ips_policy'],
-		array('connectivity' => 'Connectivity', 'balanced' => 'Balanced', 'security' => 'Security')
-	))->setHelp('Snort IPS policies are:  Connectivity, Balanced or Security.');
+		array('connectivity' => 'Connectivity', 'balanced' => 'Balanced', 'security' => 'Security', 'max-detect' => 'Max-Detect')
+	))->setHelp('Snort IPS policies are:  Connectivity, Balanced, Security or Max-Detect.');
 
 	$section->addInput(new Form_StaticText(
 		'',
 		'<span class="help-block">Connectivity blocks most major threats with few or no false positives. ' . 
 		'Balanced is a good starter policy. It is speedy, has good base coverage level, and covers ' . 
 		'most threats of the day.  It includes all rules in Connectivity. Security is a stringent ' . 
-		'policy.  It contains everything in the first two plus policy-type rules such as a Flash object in an Excel file.</span>'
+		'policy.  It contains everything in the first two plus policy-type rules such as a Flash object ' . 
+		'in an Excel file.  Max-Detect is a policy created for testing network traffic through your ' . 
+		'device.  This policy should be used with caution on production systems!</span>'
 	));
 	print($section);
 }
@@ -395,7 +410,7 @@ if ($snortdownload == "on") {
 			<?php if ($no_community_files)
 				$msg_community = gettext("NOTE: Snort Community Rules have not been downloaded.  Perform a Rules Update to enable them.");
 			      else
-				$msg_community = gettext("Snort GPLv2 Community Rules (VRT certified)");
+				$msg_community = gettext("Snort GPLv2 Community Rules (Talos certified)");
 			      $community_rules_file = gettext(GPL_FILE_PREFIX . "community.rules");
 			?>
 
@@ -467,6 +482,10 @@ if ($snortdownload == "on") {
 				  $msg_snort = "have not been downloaded.";
 			      else
 				  $msg_snort = "are not enabled.";
+			      if ($no_openappid_files && $openappid_rulesdownload == 'on')
+				  $msg_snort = "have not been downloaded.";	
+			      else
+				  $msg_snort = "are not enabled.";
 			?>
 <!-- End of rules file state -->
 
@@ -490,7 +509,13 @@ if ($snortdownload == "on") {
 						<th><?=gettext("Enabled"); ?></th>
 						<th><?=gettext('Ruleset: Snort SO Rules');?></th>
 					<?php else: ?>
-						<th colspan="4"><?=gettext("Snort VRT rules {$msg_snort}"); ?></th>
+						<th colspan="4"><?=gettext("Snort Subscriber rules {$msg_snort}"); ?></th>
+					<?php endif; ?>
+					<?php if ($openappid_rulesdownload == 'on' && !$no_openappid_files): ?>
+						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext('Ruleset: Snort OPENAPPI Rules');?></th>
+						<?php else: ?>
+						<th colspan="4"><?=gettext("Snort OPENAPPID rules {$msg_snort}"); ?></th>
 					<?php endif; ?>
 					</tr>
 				</thead>
@@ -500,6 +525,7 @@ if ($snortdownload == "on") {
 				$emergingrules = array();
 				$snortsorules = array();
 				$snortrules = array();
+				$openappidrules = array();
 				if (empty($isrulesfolderempty))
 					$dh  = opendir("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/");
 				else
@@ -518,13 +544,15 @@ if ($snortdownload == "on") {
 						else
 							$snortrules[] = $filename;
 					}
+					else if (strstr($filename, OPENAPPID_FILE_PREFIX) && $openappid_rulesdownload == 'on')
+						$openappidrules[] = $filename;
 				}
 
 				// Sort the rules file names alphabetically
 				sort($emergingrules);
 				sort($snortsorules);
 				sort($snortrules);
-
+				sort($openappidrules);
 				// Now find the provider rules group with the most files 
 				// and use that as the max interator value.
 				$i = count($emergingrules);
@@ -532,7 +560,8 @@ if ($snortdownload == "on") {
 					$i = count($snortsorules);
 				if ($i < count($snortrules))
 					$i = count($snortrules);
-
+				if ($i < count($openappidrules))
+					$i = count($openappidrules);
 				// Walk the rules file names arrays and output the
 				// the file names and associated form controls in 
 				// an HTML table.
@@ -649,7 +678,42 @@ if ($snortdownload == "on") {
 						echo "</td>\n";
 					} else
 						echo "<td colspan='2'><br/></td>\n";
-					echo "</tr>\n";
+					if (!empty($openappidrules[$j])) {
+						$file = $openappidrules[$j];
+						echo "<td>";
+						if(is_array($enabled_rulesets_array)) {
+							if(in_array($file, $enabled_rulesets_array) && !isset($cat_mods[$file]))
+								$CHECKED = " checked=\"checked\"";
+							else
+								$CHECKED = "";
+						} else
+							$CHECKED = "";
+					if (isset($cat_mods[$file])) {
+						if (in_array($file, $enabled_rulesets_array))
+							echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
+					if ($cat_mods[$file] == 'enabled') {
+							$CHECKED = "enabled";
+						echo "  \n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt
+tab') . "></i>\n";
+					}
+					else {
+					echo "  \n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt
+tab') . "></i>\n";
+					}
+				}
+				else {
+					echo "  \n<input type=\"checkbox\" name=\"toenable[]\" value=\"{$file}\" {$CHECKED} />\n";
+				}
+				echo "</td>\n";
+				echo "<td>\n";
+				if (empty($CHECKED))
+					echo $file;
+				else
+					echo "<a href='snort_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
+				echo "</td>\n";
+			} else
+				echo "<td colspan='2'><br/></td>\n";
+			echo "</tr>\n";
 				}
 			?>
 				</tbody>

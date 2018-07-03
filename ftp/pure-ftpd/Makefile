@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	pure-ftpd
-PORTVERSION=	1.0.42
-PORTREVISION=	3
+PORTVERSION=	1.0.47
 CATEGORIES=	ftp ipv6
-MASTER_SITES=	http://download.pureftpd.org/pub/pure-ftpd/releases/ \
-		ftp://ftp.pureftpd.org/pub/pure-ftpd/releases/ \
-		SF/pureftpd/Pure-FTPd/${PORTVERSION}
+MASTER_SITES=	https://github.com/jedisct1/${PORTNAME}/releases/download/${PORTVERSION}/ \
+		https://download.pureftpd.org/pub/pure-ftpd/releases/ \
+		ftp://ftp.pureftpd.org/pub/pure-ftpd/releases/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Small, easy to set up, fast, and secure FTP server
@@ -39,29 +38,25 @@ VIRTUALCHROOT_DESC=	Follow symlinks outside a chroot jail
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
 		--with-altlog --with-cookie --with-diraliases \
 		--with-everything --with-extauth --with-ftpwho \
-		--with-language=${LANG} --with-paranoidmsg --with-puredb \
+		--with-language=${LANGUAGE} --with-paranoidmsg --with-puredb \
 		--with-quotas --with-ratios
 GNU_CONFIGURE=	yes
 USE_PERL5=	run
 USE_RC_SUBR=	pure-ftpd
-USES=		cpe perl5 shebangfix tar:bzip2
+USES=		cpe perl5 tar:bzip2
 
 CPE_VENDOR=	pureftpd
 
 PORTDOCS=	AUTHORS CONTACT COPYING HISTORY NEWS README \
 		README.Authentication-Modules README.Configuration-File \
-		README.Contrib README.LDAP README.MySQL README.PGSQL \
-		README.TLS README.Virtual-Users THANKS pure-ftpd.png \
-		pureftpd.schema
+		README.LDAP README.MySQL README.PGSQL README.TLS \
+		README.Virtual-Users THANKS pure-ftpd.png pureftpd.schema
 PORTEXAMPLES=	*
 SUB_FILES=	pkg-message
 SUB_LIST=	PAM_DIR=${PAM_DIR} PAM_TARGET=${PAM_TARGET}
 
-SHEBANG_FILES=	contrib/pure-stat.pl contrib/pure-vpopauth.pl
-
-CONTRIB=	pure-stat.pl pure-vpopauth.pl xml_python_processors.txt
-LANG?=		english
-PAM_DIR?=	${EXAMPLESDIR}/pam
+LANGUAGE?=	english
+PAM_DIR?=	pam
 PAM_TARGET?=	pure-ftpd
 PAM_TEMPL?=	${FILESDIR}/pam.conf.5
 
@@ -72,7 +67,7 @@ LARGEFILE_CONFIGURE_ENABLE=	largefile
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=		OPENLDAP=yes
 MYSQL_CONFIGURE_WITH=	mysql
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 PAM_CONFIGURE_WITH=	pam
 PERUSERLIMITS_CONFIGURE_WITH=	peruserlimits
 PGSQL_CONFIGURE_WITH=	pgsql
@@ -84,7 +79,7 @@ THROTTLING_CONFIGURE_WITH=	throttling
 TLS_CONFIGURE_WITH=	tls
 TLS_CPPFLAGS=		-I${OPENSSLINC}
 TLS_LDFLAGS=		-L${OPENSSLLIB}
-TLS_USE=		OPENSSL=yes
+TLS_USES=		ssl
 UPLOADSCRIPT_CONFIGURE_WITH=	uploadscript
 UTF8_CONFIGURE_WITH=	rfc2640
 UTF8_USES=		iconv
@@ -100,7 +95,7 @@ CONFIGURE_ARGS+=ac_cv_lib_iconv_iconv_open=no \
 pre-fetch:
 	@${ECHO_MSG} "You can use the following additional options:"
 	@${ECHO_MSG} ""
-	@${ECHO_MSG} "LANG=lang (default: english)"
+	@${ECHO_MSG} "LANGUAGE=lang (default: english)"
 	@${ECHO_MSG} "- Enable compilation of one language support"
 	@${ECHO_MSG} "  available lang: brazilian-portuguese, catalan, czech, danish, dutch,"
 	@${ECHO_MSG} "  english, french, french-funny, german, hungarian, italian, korean,"
@@ -108,21 +103,19 @@ pre-fetch:
 	@${ECHO_MSG} "  spanish, swedish, traditional-chinese, turkish"
 	@${ECHO_MSG} ""
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|@PERL@|${PERL}|; s|$${exec_prefix}|${PREFIX}|g' ${WRKSRC}/configuration-file/pure-config.pl.in
-
 post-install:
+	${MV} ${STAGEDIR}${PREFIX}/etc/pure-ftpd.conf ${STAGEDIR}${PREFIX}/etc/pure-ftpd.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/pureftpd-ldap.conf ${STAGEDIR}${PREFIX}/etc/pureftpd-ldap.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/pureftpd-mysql.conf ${STAGEDIR}${PREFIX}/etc/pureftpd-mysql.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/pureftpd-pgsql.conf ${STAGEDIR}${PREFIX}/etc/pureftpd-pgsql.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/configuration-file/pure-ftpd.conf ${STAGEDIR}${PREFIX}/etc/pure-ftpd.conf.sample
-	${INSTALL_SCRIPT} ${WRKSRC}/configuration-file/pure-config.pl ${STAGEDIR}${PREFIX}/sbin/
 	${INSTALL_SCRIPT} ${FILESDIR}/pure-alwaysfail ${STAGEDIR}${PREFIX}/sbin/
+
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
-	cd ${WRKSRC}/contrib/ && ${INSTALL_SCRIPT} ${CONTRIB} ${STAGEDIR}${EXAMPLESDIR}/
-	${MKDIR} ${STAGEDIR}${PAM_DIR}/
-	${INSTALL_DATA} ${PAM_TEMPL} ${STAGEDIR}${PAM_DIR}/${PAM_TARGET}
+
+post-install-EXAMPLES-on:
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/${PAM_DIR}/
+	${INSTALL_DATA} ${PAM_TEMPL} ${STAGEDIR}${EXAMPLESDIR}/${PAM_DIR}/${PAM_TARGET}
 
 .include <bsd.port.post.mk>

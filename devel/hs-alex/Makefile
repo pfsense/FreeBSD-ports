@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	alex
-PORTVERSION=	3.1.4
+PORTVERSION=	3.2.1
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -13,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 USE_CABAL=	QuickCheck>=2
 
 XMLDOCS=	doc/alex:html
-USE_AUTOTOOLS=	autoconf:env
+XMLDOCS_CONF=	yes
 
 STANDALONE=	yes
 EXECUTABLE=	alex

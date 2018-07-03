@@ -4,7 +4,9 @@
 PORTNAME=	exim
 PORTVERSION?=	${EXIM_VERSION}
 CATEGORIES=	mail ipv6
-MASTER_SITES=	EXIM/exim4/:exim
+MASTER_SITES=	EXIM:exim
+MASTER_SITE_SUBDIR=	/exim4/:exim \
+			/exim4/old/:exim
 DISTNAME=	${PORTNAME}-${EXIM_VERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:exim
 DIST_SUBDIR=	exim
@@ -48,6 +50,7 @@ EXIMON_USE=	xorg=x11,xaw,xt
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 ICONV_USES=	iconv:lib,build
 INTERNATIONAL_LIB_DEPENDS=	libidn.so:dns/libidn
+LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
 MYSQL_USE=	mysql=yes
 OPENLDAP_USE=	openldap=yes
 PGSQL_USES=	pgsql
@@ -80,12 +83,6 @@ IGNORE=	you cannot enable DMARC without SPF and DKIM support
 .if ! ${PORT_OPTIONS:MDNSSEC} || ! ${PORT_OPTIONS:MTLS}
 IGNORE=	you cannot enable DANE without DNSSEC support or without TLS support
 .endif
-# Use Openssl from the ports
-.if ${OSVERSION} < 1000000
-. if ! ${PORT_OPTIONS:MGNUTLS}
-WITH_OPENSSL_PORT=	yes
-. endif
-.endif
 .endif
 
 .if ${PORT_OPTIONS:MSA_EXIM} || defined(FETCH_ALL)
@@ -94,7 +91,7 @@ MASTER_SITES+=	http://marc.merlins.org/linux/exim/files/:sa_exim \
 DISTFILES+=	sa-exim-${SA_EXIM_VERSION}.tar.gz:sa_exim
 .endif
 
-EXIM_VERSION=	4.87
+EXIM_VERSION=	4.90.1
 SA_EXIM_VERSION=4.2
 EXIM_INSTALL_ARG+=	"-no_chown" "-no_symlink"
 
@@ -315,8 +312,19 @@ SEDLIST+=	-e 's,^(DBMLIB=),\# \1,'
 SEDLIST+=	-e 's,XX_DB_LIBS_XX,${DB_LIBS:S/,/\\,/g},' \
 		-e 's,XX_DB_INCLUDES_XX,${DB_INCLUDES:S/,/\\,/g},'
 
+.if ${PORT_OPTIONS:MLMDB}
+LMDB_LIBS=	-L${LOCALBASE}/lib -llmdb
+LMDB_INCLUDES=	-I${LOCALBASE}/include
+SEDLIST+=	-e 's,^\# (EXPERIMENTAL_LMDB=),\1,'
+.else
+LMDB_LIBS=
+LMDB_INCLUDES=
+.endif
+SEDLIST+=	-e 's,XX_LMDB_LIBS_XX,${LMDB_LIBS:S/,/\\,/g},' \
+		-e 's,XX_LMDB_INCLUDES_XX,${LMDB_INCLUDES:S/,/\\,/g},'
+
 .if ${PORT_OPTIONS:MMYSQL}
-SEDLIST+=	-e 's,XX_MYSQL_LIBS_XX,-L${LOCALBASE:S/,/\\,/g}/lib/mysql -lmysqlclient,' \
+SEDLIST+=	-e 's,XX_MYSQL_LIBS_XX,-L${LOCALBASE:S/,/\\,/g}/lib/mysql -l${_MYSQL_SHLIB:S/lib//},' \
 		-e 's,XX_MYSQL_INCLUDE_XX,-I${LOCALBASE:S/,/\\,/g}/include/mysql,' \
 		-e 's,^\# (LOOKUP_MYSQL=),\1,'
 .else
@@ -475,10 +483,6 @@ SEDLIST+=	-e 's,^\# (USE_READLINE=),\1,'
 SEDLIST+=	-e 's,^\# (WITH_CONTENT_SCAN=),\1,'
 .endif
 
-.if ${PORT_OPTIONS:MOLD_DEMIME}
-SEDLIST+=	-e 's,^\# (WITH_OLD_DEMIME=),\1,'
-.endif
-
 .if !defined(EXIMON_ONLY) && ${PORT_OPTIONS:MDAEMON}
 USE_RC_SUBR=	exim
 PLIST_SUB+=	EXIMDAEMON=""
@@ -501,6 +505,10 @@ SEDLIST+=	-e 's,^\# (WHITELIST_D_MACROS=).*$$,\1${WHITELIST_D_MACROS:S/,/\\,/g},
 
 .if defined(TRUSTED_CONFIG_LIST)
 SEDLIST+=	-e 's,^\# (TRUSTED_CONFIG_LIST=).*$$,\1${TRUSTED_CONFIG_LIST:S/,/\\,/g},'
+.endif
+
+.if ${PORT_OPTIONS:MQUEUEFILE}
+SEDLIST+=	-e 's,^\# (EXPERIMENTAL_QUEUEFILE=),\1,'
 .endif
 
 MAKE_ENV+=	INSTALL_ARG="${EXIM_INSTALL_ARG}"

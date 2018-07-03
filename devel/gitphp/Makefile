@@ -19,12 +19,12 @@ NO_BUILD=	yes
 PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 SUB_FILES=	pkg-message
 
-RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/xdiff.so:textproc/pecl-xdiff
+RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/xdiff.so:textproc/pecl-xdiff@${PHP_FLAVOR}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}
 	(cd ${WRKSRC} \
 		 && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
-	${FIND} ${STAGEDIR}${WWWDIR} -type f -exec ${CHMOD} 644 '{}' +
+	${FIND} ${STAGEDIR}${WWWDIR} -type f -exec ${CHMOD} 644 {} +
 
 .include <bsd.port.mk>

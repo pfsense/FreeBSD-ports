@@ -9,7 +9,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Perl extension for higher level interface to Devel-Declare
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	\
@@ -17,7 +17,6 @@ RUN_DEPENDS=	\
 	p5-B-Hooks-EndOfScope>=0.08:devel/p5-B-Hooks-EndOfScope \
 	p5-Devel-Declare>=0.006:devel/p5-Devel-Declare
 BUILD_DEPENDS:=	${RUN_DEPENDS}
-TEST_DEPENDS=	p5-Test-Exception-LessClever>=0:devel/p5-Test-Exception-LessClever
 
 USES=		perl5
 USE_PERL5=	modbuild

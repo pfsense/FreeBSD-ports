@@ -1,4 +1,3 @@
-SHA256 (mc-4.8.17.tar.xz) = 0447bdddc0baa81866e66f50f9a545d29d6eebb68b0ab46c98d8fddd2bf4e44d
-SIZE (mc-4.8.17.tar.xz) = 2457156
-SHA256 (mc.png) = 6bd935ea11c45da5c11e60542e30b4a05396d75b81401f28b3a68a82cafbf8fe
-SIZE (mc.png) = 6466
+TIMESTAMP = 1513286098
+SHA256 (mc-4.8.20.tar.xz) = 017ee7f4f8ae420a04f4d6fcebaabe5b494661075c75442c76e9c8b1923d501c
+SIZE (mc-4.8.20.tar.xz) = 2529580

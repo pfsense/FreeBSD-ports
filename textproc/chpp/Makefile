@@ -3,7 +3,7 @@
 
 PORTNAME=	chpp
 PORTVERSION=	0.3.5
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.complang.tuwien.ac.at/schani/chpp/files/ \
 		http://freebsd.nsu.ru/distfiles/
@@ -29,7 +29,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} != "i386" && ${ARCH} != "amd64"
+.if ${ARCH} != "i386" && ${ARCH} != "amd64" && ${ARCH} != "powerpc64"
 BROKEN=		Does not compile
 .endif
 

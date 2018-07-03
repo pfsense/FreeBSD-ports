@@ -2,6 +2,7 @@
 # $FreeBSD$
 
 PKGNAMEPREFIX=	ruby-
+PORTREVISION=	2
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Ruby bindings for version control system
@@ -12,6 +13,8 @@ MASTERDIR=	${.CURDIR}/../../devel/subversion18
 MASTERDIR=	${.CURDIR}/../../devel/subversion
 .endif
 PKGDIR=		${.CURDIR}
+
+BROKEN_powerpc64=	fails to compile: swigutil_rb.c: 'ruby_errinfo' undeclared
 
 USE_RUBY=	yes
 

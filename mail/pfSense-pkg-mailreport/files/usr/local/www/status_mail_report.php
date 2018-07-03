@@ -29,8 +29,13 @@
 require("guiconfig.inc");
 require_once("mail_reports.inc");
 
-if (!is_array($config['mailreports']['schedule']))
+if (!is_array($config['mailreports'])) {
+	$config['mailreports'] = array();
+}
+
+if (!is_array($config['mailreports']['schedule'])) {
 	$config['mailreports']['schedule'] = array();
+}
 
 $a_mailreports = &$config['mailreports']['schedule'];
 
@@ -92,7 +97,13 @@ include("head.inc");
 				</thead>
 				<tbody class="services">
 
-		<?php $i = 0; foreach ($a_mailreports as $mailreport): ?>
+<?php
+		$i = 0;
+		foreach ($a_mailreports as $mailreport):
+			if (!is_array($mailreport)) {
+				$mailreport = array();
+			}
+?>
 		<tr>
 			<td><input type="checkbox" id="frc<?=$i?>" name="reports[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
@@ -102,10 +113,10 @@ include("head.inc");
 				<?=$mailreport['schedule_friendly']; ?>
 			</td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
-				<?=count($mailreport['cmd']['row']); ?>
+				<?=(is_array($mailreport['cmd']['row']) ? count($mailreport['cmd']['row']) : 0); ?>
 			</td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
-				<?=count($mailreport['log']['row']); ?>
+				<?=(is_array($mailreport['log']['row']) ? count($mailreport['log']['row']) : 0); ?>
 			</td>
 			<td style="cursor: pointer;">
 				<a class="fa fa-pencil" href="status_mail_report_edit.php?id=<?=$i?>" title="<?=gettext("Edit Report"); ?>"></a>
@@ -113,7 +124,10 @@ include("head.inc");
 				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="del_<?=$i?>" name="del_<?=$i?>" value="del_<?=$i?>" title="<?=gettext('Delete Report'); ?>">Delete</button>
 			</td>
 		</tr>
-		<?php $i++; endforeach; ?>
+<?php
+		$i++;
+		endforeach;
+?>
 
 				</tbody>
 			</table>

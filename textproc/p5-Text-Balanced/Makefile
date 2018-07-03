@@ -10,9 +10,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extract delimited text sequences from strings
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE_ART10=	${WRKSRC}/LICENSE
 
+NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 

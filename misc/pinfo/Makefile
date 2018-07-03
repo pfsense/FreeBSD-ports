@@ -3,7 +3,7 @@
 
 PORTNAME=	pinfo
 PORTVERSION=	0.6.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
 MASTER_SITES=	GENTOO \
 		http://alioth.debian.org/frs/download.php/file/3351/
@@ -13,6 +13,8 @@ COMMENT=	Ncurses based, lynx style info documentation browser
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_aarch64=	Fails to link: missing sbrk
 
 USES=		autoreconf gettext-tools libtool makeinfo ncurses tar:bzip2
 GNU_CONFIGURE=	yes

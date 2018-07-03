@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	iec16022
-PORTVERSION=	0.2.7
+PORTVERSION=	0.3.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
@@ -19,8 +19,6 @@ GH_ACCOUNT=	rdoeffinger
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USES=		autoreconf gmake libtool pathfix pkgconfig
-
-PATHFIX_MAKEFILEIN=	Makefile.am
 
 CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib -fPIC
 

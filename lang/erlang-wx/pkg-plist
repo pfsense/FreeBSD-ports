@@ -242,6 +242,7 @@
 %%PORTDOCS%%lib/erlang/lib/wx-%%APP_VERSION%%/doc/src/ref_man.xml.src
 %%PORTDOCS%%lib/erlang/lib/wx-%%APP_VERSION%%/info
 lib/erlang/lib/wx-%%APP_VERSION%%/doc/html/wxAuiSimpleTabArt.html
+lib/erlang/lib/wx-%%APP_VERSION%%/doc/html/wxDropFilesEvent.html
 lib/erlang/lib/wx-%%APP_VERSION%%/doc/html/wxMouseCaptureLostEvent.html
 lib/erlang/lib/wx-%%APP_VERSION%%/doc/src/specs.xml
 lib/erlang/lib/wx-%%APP_VERSION%%/ebin/gl.beam
@@ -301,6 +302,7 @@ lib/erlang/lib/wx-%%APP_VERSION%%/ebin/wxDialog.beam
 lib/erlang/lib/wx-%%APP_VERSION%%/ebin/wxDirDialog.beam
 lib/erlang/lib/wx-%%APP_VERSION%%/ebin/wxDirPickerCtrl.beam
 lib/erlang/lib/wx-%%APP_VERSION%%/ebin/wxDisplayChangedEvent.beam
+lib/erlang/lib/wx-%%APP_VERSION%%/ebin/wxDropFilesEvent.beam
 lib/erlang/lib/wx-%%APP_VERSION%%/ebin/wxEraseEvent.beam
 lib/erlang/lib/wx-%%APP_VERSION%%/ebin/wxEvent.beam
 lib/erlang/lib/wx-%%APP_VERSION%%/ebin/wxEvtHandler.beam
@@ -481,11 +483,11 @@ lib/erlang/lib/wx-%%APP_VERSION%%/ebin/wxe_util.beam
 lib/erlang/lib/wx-%%APP_VERSION%%/include/gl.hrl
 lib/erlang/lib/wx-%%APP_VERSION%%/include/glu.hrl
 lib/erlang/lib/wx-%%APP_VERSION%%/include/wx.hrl
-lib/erlang/lib/wx-%%APP_VERSION%%/priv/%%CONFIGURE_TARGET%%/erl_gl.so
-lib/erlang/lib/wx-%%APP_VERSION%%/priv/%%CONFIGURE_TARGET%%/wxe_driver.so
+lib/erlang/lib/wx-%%APP_VERSION%%/priv/erl_gl.so
 lib/erlang/lib/wx-%%APP_VERSION%%/priv/erlang-logo128.png
 lib/erlang/lib/wx-%%APP_VERSION%%/priv/erlang-logo32.png
 lib/erlang/lib/wx-%%APP_VERSION%%/priv/erlang-logo64.png
+lib/erlang/lib/wx-%%APP_VERSION%%/priv/wxe_driver.so
 lib/erlang/lib/wx-%%APP_VERSION%%/src/Makefile
 lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/gl.erl
 lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/glu.erl
@@ -541,6 +543,7 @@ lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/wxDialog.erl
 lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/wxDirDialog.erl
 lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/wxDirPickerCtrl.erl
 lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/wxDisplayChangedEvent.erl
+lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/wxDropFilesEvent.erl
 lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/wxEraseEvent.erl
 lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/wxEvent.erl
 lib/erlang/lib/wx-%%APP_VERSION%%/src/gen/wxEvtHandler.erl

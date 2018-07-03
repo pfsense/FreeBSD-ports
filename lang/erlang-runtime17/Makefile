@@ -3,7 +3,7 @@
 
 PORTNAME=	erlang
 PORTVERSION=	17.5.6.9
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -56,6 +56,18 @@ USE_PERL5=	build
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+APP_UPGRADE=	erts                 6.4  6.4.1.6 \
+		lib/common_test     1.10   1.10.1 \
+		lib/debugger       4.0.3  4.0.3.1 \
+		lib/diameter         1.9  1.9.2.4 \
+		lib/inets         5.10.6   5.10.9 \
+		lib/kernel           3.2  3.2.0.1 \
+		lib/runtime_tools 1.8.16 1.8.16.1 \
+		lib/snmp           5.1.1    5.1.2 \
+		lib/ssh              3.2    3.2.4 \
+		lib/ssl              6.0  6.0.1.2 \
+		lib/test_server      3.8    3.8.1
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
@@ -69,12 +81,6 @@ DISTFILES+=	${ERLANG_DOCS}:erlangorg
 # If you run Erlang and get a message resembling "WARNING: number of
 # probes fixed does not match the number of defined probes (54 != 132,
 # respectively)" you probably misconfigured DTrace in some way.
-
-.if ${OSVERSION} < 1000000
-.if ${ARCH} == "amd64" && ${PORT_OPTIONS:MDTRACE} && ! ${PORT_OPTIONS:MGCC}
-IGNORE=		support for DTrace on amd64 requires GCC option
-.endif
-.endif
 
 .if ${PORT_OPTIONS:MGCC}
 USE_GCC?=	yes
@@ -163,7 +169,7 @@ CONFIGURE_ARGS+=--enable-dirty-schedulers
 MAKE_ARGS+=	ARCH=x86
 .endif
 
-.if ${ARCH} == armv6
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 MAKE_ARGS+=	ARCH=arm
 .endif
 
@@ -200,55 +206,15 @@ post-install:
 			-C ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB} \
 			"man/man$${SECTION}/*.$${SECTION}" || ${TRUE}; \
 	done
-	${RM} -rf ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/man/cat?
+	${RM} -r ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/man/cat?
 .if ${PORT_OPTIONS:MDOCS}
 	${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_DOCS} \
 		-C ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-6.4/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-6.4.1.6
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-6.4
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-5.10.6/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-5.10.9
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-5.10.6
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssh-3.2/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssh-3.2.4
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssh-3.2
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/common_test-1.10/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/common_test-1.10.1
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/common_test-1.10
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/diameter-1.9/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/diameter-1.9.2.4
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/diameter-1.9
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/debugger-4.0.3/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/debugger-4.0.3.1
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/debugger-4.0.3
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/snmp-5.1.1/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/snmp-5.1.2
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/snmp-5.1.1
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/test_server-3.8/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/test_server-3.8.1
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/test_server-3.8
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-6.0/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-6.0.1.2
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-6.0
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/runtime_tools-1.8.16/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/runtime_tools-1.8.16.1
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/runtime_tools-1.8.16
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/kernel-3.2/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/kernel-3.2.0.1
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/kernel-3.2
-
+.for app v1 v2 in ${APP_UPGRADE}
+	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v1}/* \
+		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v2}
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v1}
+.endfor
 	${INSTALL_DATA} ${WRKSRC}/lib/dialyzer/doc/*.txt \
 		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/dialyzer-*/doc/
 .endif

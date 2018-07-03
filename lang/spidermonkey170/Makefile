@@ -3,7 +3,7 @@
 
 PORTNAME=		spidermonkey170
 PORTVERSION=		17.0.0
-PORTREVISION=		1
+PORTREVISION=		8
 CATEGORIES=		lang
 MASTER_SITES=		MOZILLA/js
 DISTNAME=		mozjs${PORTVERSION}
@@ -17,7 +17,7 @@ LIB_DEPENDS=		libnspr4.so:devel/nspr
 CONFLICTS=		njs-[0-9]*
 
 GNU_CONFIGURE=		yes
-USES=			gmake pathfix perl5 python:2,build
+USES=			gmake pathfix perl5 python:2.7,build
 USE_PERL5=		build
 USE_LDCONFIG=		yes
 
@@ -29,9 +29,13 @@ CONFIGURE_ARGS=		--with-pthreads \
 OPTIONS_DEFINE=		DEBUG DTRACE GCZEAL JEMALLOC METHODJIT OPTIMIZE READLINE \
 			THREADSAFE TRACEJIT UTF8
 OPTIONS_DEFAULT=	METHODJIT OPTIMIZE READLINE THREADSAFE TRACEJIT
+# ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
+OPTIONS_EXCLUDE_aarch64=	DTRACE
+# dt_modtext:opensolaris/lib/libdtrace/common/dt_link.c: arm not implemented
+OPTIONS_EXCLUDE_armv6=	DTRACE
+OPTIONS_EXCLUDE_armv7=	DTRACE
 OPTIONS_SUB=		yes
 
-DEBUG_DESC=		Enable Debug build
 DEBUG_CONFIGURE_ENABLE=	debug debug-symbols
 DEBUG_CONFIGURE_DISABLE=debug
 DTRACE_DESC=		Build with DTrace probes # move to bsd.options.desc.mk
@@ -60,15 +64,7 @@ UTF8_CFLAGS=		-DJS_C_STRINGS_ARE_UTF8
 CONFIGURE_TARGET=	${ARCH:S/amd64/x86_64/}-portbld-${OPSYS:tl}${OSREL}
 
 .if ${PORT_OPTIONS:MDTRACE}
-. if ${OSVERSION} < 1000510
-BROKEN=			dtrace -G crashes with C++ object files
-. endif
 STRIP_CMD=	${TRUE}
-.endif
-
-# ARM needs GCC until https://llvm.org/bugs/show_bug.cgi?id=23244 is fixed
-.if ${ARCH} == "armv6"
-USE_GCC=	yes
 .endif
 
 regression-test: build

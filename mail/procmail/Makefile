@@ -3,7 +3,7 @@
 
 PORTNAME=	procmail
 PORTVERSION=	3.22
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.ucsb.edu/pub/mirrors/procmail/ \
 		ftp://ftp.informatik.rwth-aachen.de/pub/packages/procmail/ \
@@ -19,6 +19,10 @@ COMMENT=	Local mail delivery agent
 
 LICENSE=	GPLv2
 
+.if defined(QEMU_EMULATING) && "${QEMU_EMULATING}" == "1"
+BROKEN=		fails to build under qemu: killing runaway build after 21600 seconds with no output
+.endif
+
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 INSTALL_TARGET=	install.bin install.man
@@ -30,7 +34,7 @@ PORTEXAMPLES=	1procmailrc 1rmail 2procmailrc 2rmail 3procmailrc 3rmail \
 		advanced dirname forward local_procmail_lmtp.m4 mailstat
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/config.h
+	@${REINPLACE_CMD} -e 's|/usr/local|${PREFIX}|g' ${WRKSRC}/config.h ${WRKSRC}/src/autoconf
 # Allow parallel builds (-jX) to work
 	@${FIND} ${WRKSRC} -name 'Makefile*' | ${XARGS} ${REINPLACE_CMD} -E 's|cd (.+); (\$$\(MAKE\))|\2 -C \1|'
 

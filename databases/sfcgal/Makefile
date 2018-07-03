@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	sfcgal
-PORTVERSION=	1.3.0
+PORTVERSION=	1.3.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	databases math graphics
 
-MAINTAINER=	coder@tuxfamily.org
+MAINTAINER=	lbartoletti@tuxfamily.org
 COMMENT=	Wrapper library around CGAL for PostGIS
 
 LICENSE=	GPLv2

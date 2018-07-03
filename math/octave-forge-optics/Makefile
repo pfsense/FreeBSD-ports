@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-optics
 PORTVERSION=	0.1.3
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -22,8 +22,10 @@ WRKSRC=		${WRKDIR}/${OCTSRC}/src
 do-build:
 	@${DO_NADA}
 
+NO_ARCH=	yes
+
 post-build:
-	${RM} -f ${WRKSRC}/Makefile ${WRKSRC}/configure
+	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
 	cd ${WRKDIR} && ${TAR} cfz ${DISTNAME}.tar.gz ${OCTSRC}
 
 .include <bsd.port.mk>

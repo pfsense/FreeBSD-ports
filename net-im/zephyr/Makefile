@@ -3,7 +3,7 @@
 
 PORTNAME=	zephyr
 DISTVERSION=	3.0.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-im
 MASTER_SITES=	http://zephyr.1ts.org/export/2642/distribution/
 
@@ -11,6 +11,8 @@ MAINTAINER=	kaduk-fbsd@mit.edu
 COMMENT=	Enterprise-scale distributed messaging system
 
 LICENSE=	MIT
+
+BROKEN_aarch64=	Fails to link: missing sbrk
 
 GNU_CONFIGURE=	yes
 # it is an upstream bug that --with-krb5 needs a path

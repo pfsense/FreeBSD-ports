@@ -3,6 +3,7 @@
 
 PORTNAME=	regina
 PORTVERSION=	3.9.1
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}-rexx/${PORTNAME}-rexx/${PORTVERSION}:source \
 		SF/${PORTNAME}-rexx/${PORTNAME}-documentation/${PORTVERSION}:docs
@@ -16,12 +17,6 @@ MAINTAINER=	bob@eager.cx
 COMMENT=	Rexx interpreter
 
 LICENSE=	LGPL21+
-
-BROKEN_armv6=		Does not build: error: expected expression
-BROKEN_mips=		Does not build: error: expected expression
-BROKEN_mips64=		Does not build: error: expected expression
-BROKEN_powerpc64=	Does not build
-BROKEN_sparc64=		Does not build: error: expected expression
 
 USES=		gmake iconv ncurses
 USE_RC_SUBR=	rxstack
@@ -41,27 +36,22 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 DOCS_DISTFILES=	regina.pdf:docs \
 		regutil.pdf:docs
 
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == i386 || ${ARCH} == powerpc
-CONFIGURE_ARGS+=	--enable-32bit
-.endif
-
 post-extract-DOCS-on:
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/regina.pdf ${WRKDIR}
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/regutil.pdf ${WRKDIR}
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		'/$${CFLAGS}/s|^|#| ; \
-		 s|"-lpthread"|"-pthread"|' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e \
 		'/^examplesdir/s|=.*|= $$(datadir)/examples/$$(PACKAGE)| ; \
 		 /$$(sysconfdir)/s|^|#|' ${WRKSRC}/Makefile.in
 
+post-stage:
+	@${LN} -f ${STAGEDIR}/${PREFIX}/man/man1/regina.1.gz \
+		${STAGEDIR}/${PREFIX}/man/man1/rexx.1.gz
+
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKDIR}/regina.pdf ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKDIR}/regutil.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKDIR}/regina.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKDIR}/regutil.pdf ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

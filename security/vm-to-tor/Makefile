@@ -5,7 +5,7 @@ PORTNAME=	vm-to-tor
 PORTVERSION=	0.150519
 CATEGORIES=	security net
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Connect virtual machines to the tor network
 
 LICENSE=	BSD4CLAUSE
@@ -25,12 +25,6 @@ PLIST_FILES+=	etc/rc.d/${PORTNAME} bin/vm-ctrl
 PLIST_FILES+=	"@sample etc/${PORTNAME}.rc.conf.simple.sample"
 PLIST_FILES+=	"@sample etc/${PORTNAME}.rc.conf.complex.sample"
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-BROKEN=		Does not work on FreeBSD versions earlier than 10
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} 's|"/usr/local"|"${LOCALBASE}"|' \
 		${WRKSRC}/${PORTNAME}
@@ -46,4 +40,4 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/rc.conf.complex.sample \
 		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.rc.conf.complex.sample
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

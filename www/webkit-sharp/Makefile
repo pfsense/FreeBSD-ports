@@ -2,7 +2,7 @@
 
 PORTNAME=	webkit-sharp
 PORTVERSION=	0.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 
 MAINTAINER=	mono@FreeBSD.org
@@ -19,6 +19,5 @@ PLIST_SUB+=	ASSEMBLY_VERSION=1.1.15
 GNU_CONFIGURE=	yes
 USES=		autoreconf gmake mono pathfix pkgconfig
 USE_GNOME=	gtksharp20
-PATHFIX_MAKEFILEIN=	Makefile.am
 
 .include <bsd.port.mk>

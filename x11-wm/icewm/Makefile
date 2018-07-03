@@ -3,11 +3,11 @@
 
 PORTNAME=	icewm
 PORTVERSION=	1.3.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}/${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Window Manager designed for speed, usability and consistency
 
 LICENSE=	GPLv2

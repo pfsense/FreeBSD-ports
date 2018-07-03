@@ -3,10 +3,10 @@
 
 PORTNAME=	fftw
 PORTVERSION=	2.1.5
-PORTREVISION?=	12
+PORTREVISION?=	16
 CATEGORIES=	math
-MASTER_SITES=	ftp://ftp.fftw.org/pub/fftw/ 		\
-		ftp://ftp.fftw.org/pub/fftw/old/ 	\
+MASTER_SITES=	ftp://ftp.fftw.org/pub/fftw/		\
+		ftp://ftp.fftw.org/pub/fftw/old/	\
 		ftp://theory.lcs.mit.edu/pub/fftw/	\
 		ftp://pm.cse.rmit.edu.au/pub/dsp/fftw/
 
@@ -25,8 +25,6 @@ USES=		fortran gmake libtool:keepla
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
-
-BROKEN_sparc64=	does not build
 
 PLIST_SUB=	FFTW_SUFX="${FFTW_SUFX}"
 

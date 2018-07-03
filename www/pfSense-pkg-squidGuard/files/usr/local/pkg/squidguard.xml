@@ -76,14 +76,14 @@
 		</tab>
 	</tabs>
 	<service>
-            <name>squidGuard</name>
-            <description><![CDATA[Proxy server filter Service]]></description>
-            <executable>squidGuard</executable>
+		<name>squidGuard</name>
+		<description><![CDATA[Proxy server filter Service]]></description>
+		<executable>squidGuard</executable>
 	</service>
 	<fields>
-                <field>
-                        <fielddescr>Enable</fielddescr>
-                        <fieldname>squidguard_enable</fieldname>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>squidguard_enable</fieldname>
 			<description>Check this option to enable squidGuard.</description>
 			<sethelp>
 				<![CDATA[
@@ -92,100 +92,100 @@
 				]]>
 			</sethelp>
 			<type>checkbox</type>
-                </field>
-                <field>
-                        <name>LDAP Options</name>
-                        <type>listtopic</type>
-                </field>
-                <field>
-                        <fielddescr>Enable LDAP Filter</fielddescr>
-                        <fieldname>ldap_enable</fieldname>
-                        <description><![CDATA[Enable options for setup ldap connection to create filters with ldap search]]></description>
-                        <type>checkbox</type>
-                        <enablefields>ldapbinddn,ldapbindpass,stripntdomain,striprealm,ldapversion</enablefields>
-                </field>
-                <field>
-                        <fielddescr>LDAP DN</fielddescr>
-                        <fieldname>ldapbinddn</fieldname>
-                        <description><![CDATA[Configure your LDAP DN (ex: cn=Administrator,cn=Users,dc=domain)]]></description>
-                        <type>input</type>
-                        <size>60</size>
-                </field>
-                <field>
-                        <fielddescr>LDAP DN Password</fielddescr>
-                        <fieldname>ldapbindpass</fieldname>
-                        <description><![CDATA[Password must be initialize with letters (Ex: Change123), valid format: [a-zA-Z\/][a-zA-Z0-9/_\-\.\/\:\%\+\?=&]]]></description>
-                        <type>password</type>
-                </field>
-                <field>
-                        <fielddescr>Strip NT domain name</fielddescr>
-                        <fieldname>stripntdomain</fieldname>
-                        <description><![CDATA[Strip NT domain name component from user names (/ or \ separated).]]></description>
-                        <type>checkbox</type>
-                        <default_value>on</default_value>
-                </field>
-                <field>
-                        <fielddescr>Strip Kerberos Realm</fielddescr>
-                        <fieldname>striprealm</fieldname>
-                        <description><![CDATA[Strip Kerberos Realm component from user names (@ separated).]]></description>
-                        <type>checkbox</type>
-                        <default_value>on</default_value>
-                </field>
-                <field>
-                        <fielddescr>LDAP Version</fielddescr>
-                        <fieldname>ldapversion</fieldname>
-                        <type>select</type>
-                        <default_value>3</default_value>
-                        <options>
-                                <option>
-                                        <name>Version 2</name>
-                                        <value>2</value>
-                                </option>
-                                <option>
-                                        <name>Version 3</name>
-                                        <value>3</value>
-                                </option>
-                        </options>
-                </field>
-                <field>
-                        <name>Logging options</name>
-                        <type>listtopic</type>
-                </field>
-                <field>
-                        <fielddescr>Enable GUI log</fielddescr>
-                        <fieldname>enable_guilog</fieldname>
-                        <description><![CDATA[Check this option to log the access to the Proxy Filter GUI.]]></description>
-                        <type>checkbox</type>
-                </field>
-                <field>
-                        <fielddescr>Enable log</fielddescr>
-                        <fieldname>enable_log</fieldname>
-                        <description><![CDATA[Check this option to log the proxy filter settings like blocked websites in Common ACL, Group ACL and Target Categories. This option is usually used to check the filter settings.]]></description>
-                        <type>checkbox</type>
-                </field>
-                <field>
-                        <fielddescr>Enable log rotation</fielddescr>
-                        <fieldname>log_rotation</fieldname>
-                        <description><![CDATA[Check this option to rotate the logs every day. This is recommended if you enable any kind of logging to limit file size and do not run out of disk space.]]></description>
-                        <type>checkbox</type>
-                </field>
+		</field>
 		<field>
-                        <name>Miscellaneous</name>
-                        <type>listtopic</type>
-                </field>
-                <field>
-                        <fielddescr>Clean Advertising</fielddescr>
-                        <fieldname>adv_blankimg</fieldname>
-                        <description><![CDATA[Check this option to display a blank gif image instead of the default block page. With this option the user gets a cleaner webpage.]]></description>
-                        <type>checkbox</type>
-                </field>
-                <field>
-                        <name>Blacklist options</name>
-                        <type>listtopic</type>
-                </field>
-                <field>
-                        <fielddescr>Blacklist</fielddescr>
-                        <fieldname>blacklist</fieldname>
+			<name>LDAP Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable LDAP Filter</fielddescr>
+			<fieldname>ldap_enable</fieldname>
+			<description><![CDATA[Enable options for setup ldap connection to create filters with ldap search]]></description>
+			<type>checkbox</type>
+			<enablefields>ldapbinddn,ldapbindpass,stripntdomain,striprealm,ldapversion</enablefields>
+		</field>
+		<field>
+			<fielddescr>LDAP DN</fielddescr>
+			<fieldname>ldapbinddn</fieldname>
+			<description><![CDATA[Configure your LDAP DN (ex: cn=Administrator,cn=Users,dc=domain)]]></description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>LDAP DN Password</fielddescr>
+			<fieldname>ldapbindpass</fieldname>
+			<description><![CDATA[Password must be initialize with letters (Ex: Change123), valid format: [a-zA-Z\/][a-zA-Z0-9/_\-\.\/\:\%\+\?=&]]]></description>
+			<type>password</type>
+		</field>
+		<field>
+			<fielddescr>Strip NT domain name</fielddescr>
+			<fieldname>stripntdomain</fieldname>
+			<description><![CDATA[Strip NT domain name component from user names (/ or \ separated).]]></description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Strip Kerberos Realm</fielddescr>
+			<fieldname>striprealm</fieldname>
+			<description><![CDATA[Strip Kerberos Realm component from user names (@ separated).]]></description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>LDAP Version</fielddescr>
+			<fieldname>ldapversion</fieldname>
+			<type>select</type>
+			<default_value>3</default_value>
+			<options>
+				<option>
+					<name>Version 2</name>
+					<value>2</value>
+				</option>
+				<option>
+					<name>Version 3</name>
+					<value>3</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<name>Logging options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable GUI log</fielddescr>
+			<fieldname>enable_guilog</fieldname>
+			<description><![CDATA[Check this option to log the access to the Proxy Filter GUI.]]></description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable log</fielddescr>
+			<fieldname>enable_log</fieldname>
+			<description><![CDATA[Check this option to log the proxy filter settings like blocked websites in Common ACL, Group ACL and Target Categories. This option is usually used to check the filter settings.]]></description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable log rotation</fielddescr>
+			<fieldname>log_rotation</fieldname>
+			<description><![CDATA[Check this option to rotate the logs every day. This is recommended if you enable any kind of logging to limit file size and do not run out of disk space.]]></description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Miscellaneous</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Clean Advertising</fielddescr>
+			<fieldname>adv_blankimg</fieldname>
+			<description><![CDATA[Check this option to display a blank gif image instead of the default block page. With this option the user gets a cleaner webpage.]]></description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Blacklist options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Blacklist</fielddescr>
+			<fieldname>blacklist</fieldname>
 			<description>Check this option to enable blacklist</description>
 			<sethelp>
 				<![CDATA[
@@ -193,33 +193,37 @@
 				]]>
 			</sethelp>
 			<type>checkbox</type>
-                        <enablefields>blacklist_proxy,blacklist_url</enablefields>
-                </field>
-                <field>
-                        <fielddescr>Blacklist proxy</fielddescr>
-                        <fieldname>blacklist_proxy</fieldname>
-                        <description><![CDATA[<br>
-                                Blacklist upload proxy - enter here, or leave blank.<br>
-                                Format: host:[port login:pass] . Default proxy port 1080.<br>
-                                Example: '192.168.0.1:8080 user:pass'
-                        ]]></description>
-                        <type>input</type>
-                        <size>100</size>
-                </field>
-                <field>
-                        <fielddescr>Blacklist URL</fielddescr>
-                        <fieldname>blacklist_url</fieldname>
-                        <description><![CDATA[Enter the path to the blacklist (blacklist.tar.gz) here. You can use FTP, HTTP or LOCAL URL blacklist archive or leave blank. The LOCAL path could be your pfsense (/tmp/blacklist.tar.gz).]]></description>
-                        <type>input</type>
-                        <size>100</size>
-                </field>
+			<enablefields>blacklist_proxy,blacklist_url</enablefields>
+		</field>
+		<field>
+			<fielddescr>Blacklist proxy</fielddescr>
+			<fieldname>blacklist_proxy</fieldname>
+			<description>
+				<![CDATA[<br>
+				Blacklist upload proxy - enter here, or leave blank.<br>
+				Format: host:[port login:pass] . Default proxy port 1080.<br>
+				Example: '192.168.0.1:8080 user:pass'
+				]]>
+			</description>
+			<type>input</type>
+			<size>100</size>
+		</field>
+		<field>
+			<fielddescr>Blacklist URL</fielddescr>
+			<fieldname>blacklist_url</fieldname>
+			<description>
+				<![CDATA[Enter the path to the blacklist (blacklist.tar.gz) here. You can use FTP, HTTP or LOCAL URL blacklist archive or leave blank. The LOCAL path could be your pfsense (/tmp/blacklist.tar.gz).]]>
+			</description>
+			<type>input</type>
+			<size>100</size>
+		</field>
 	</fields>
 	<custom_add_php_command/>
 	<custom_php_validation_command>
-                squidguard_validate($_POST, $input_errors);
+		squidguard_validate($_POST, $input_errors);
 	</custom_php_validation_command>
 	<custom_php_command_before_form>
-                squidguard_before_form($pkg);
+		squidguard_before_form($pkg);
 	</custom_php_command_before_form>
 	<custom_php_after_form_command>
 		squidGuard_print_javascript();

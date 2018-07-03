@@ -3,7 +3,7 @@
 
 PORTNAME=	wax
 PORTVERSION=	0.3.33
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	x11-toolkits devel python
 MASTER_SITES=	SF/${PORTNAME}gui/${PORTNAME}gui/${PORTNAME}-${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +12,8 @@ MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	User-friendly layer on top of wxPython
 
 NO_BUILD=	yes
-USES=		python
+USES=		python:2.7
 USE_WX=		2.8
-WX_UNICODE=	yes
 WX_COMPS=	python:run
 
 DATADIR=	${PYTHON_SITELIBDIR}

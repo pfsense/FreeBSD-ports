@@ -7,7 +7,6 @@
 %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qglgradientcache_p.h
 %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qglpaintdevice_p.h
 %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qglpixelbuffer_p.h
-%%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qglshadercache_meego_p.h
 %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qglshadercache_p.h
 %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qgraphicsshadereffect_p.h
 %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qpaintengineex_opengl2_p.h
@@ -37,8 +36,8 @@
 %%QT_INCDIR%%/QtOpenGL/qglshaderprogram.h
 %%QT_INCDIR%%/QtOpenGL/qtopenglglobal.h
 %%QT_INCDIR%%/QtOpenGL/qtopenglversion.h
-%%QT_LIBDIR%%/cmake/Qt5OpenGL/Qt5OpenGLConfig.cmake
-%%QT_LIBDIR%%/cmake/Qt5OpenGL/Qt5OpenGLConfigVersion.cmake
+%%QT_CMAKEDIR%%/Qt5OpenGL/Qt5OpenGLConfig.cmake
+%%QT_CMAKEDIR%%/Qt5OpenGL/Qt5OpenGLConfigVersion.cmake
 %%QT_LIBDIR%%/libQt5OpenGL.prl
 %%QT_LIBDIR%%/libQt5OpenGL.so
 %%QT_LIBDIR%%/libQt5OpenGL.so.5

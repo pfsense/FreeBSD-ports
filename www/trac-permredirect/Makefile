@@ -10,14 +10,14 @@ MASTER_SITES=	http://trac-hacks.org/changeset/${REV}/${PORTNAME}plugin/tags/${PO
 PKGNAMEPREFIX=	trac-
 DIST_SUBDIR=	trac
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Redirect users to the login screen on PermissionError
 
 RUN_DEPENDS=	tracd:www/trac
 
 FETCH_BEFORE_ARGS=	-o ${DISTFILES}
 REV=			13353
-USES=			python zip:infozip
+USES=			python:2.7 zip:infozip
 USE_PYTHON=		distutils autoplist
 WRKSRC=			${WRKDIR}/${PORTNAME}plugin/tags/${PORTVERSION}
 NO_ARCH=		yes

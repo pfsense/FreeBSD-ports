@@ -3,6 +3,7 @@
 
 PORTNAME=	arirang
 PORTVERSION=	2.03
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security www
 MASTER_SITES=	http://monkey.org/~pilot/arirang/
@@ -12,10 +13,13 @@ COMMENT=	Powerful webserver security scanner for network
 
 LICENSE=	BSD3CLAUSE
 
+LIB_DEPENDS=	lib${RUBY_NAME}.so:${RUBY_PORT}
+
+BROKEN_powerpc64=	fails to compile: ruby.h: wrong number of arguments specified for 'deprecated' attribute
+
 USES=		ssl
 USE_RUBY=	yes
 USE_RUBY_EXTCONF=	yes
-USE_LIBRUBY=	yes
 
 CFLAGS+=	-I${LOCALBASE}/include/ruby-${RUBY_VER} -I${LOCALBASE}/include/ruby-${RUBY_VER}/${RUBY_ARCH}
 CFLAGS+=	-DRUBY_19
@@ -24,8 +28,7 @@ LDFLAGS+=	-L${OPENSSLLIB}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/arirang ${STAGEDIR}${PREFIX}/sbin
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/arirang
-	${CHMOD} 755 ${STAGEDIR}${PREFIX}/share/arirang
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/arirang
 	${INSTALL_DATA} ${WRKSRC}/scanrule/*.uxe ${STAGEDIR}${PREFIX}/share/arirang
 	${INSTALL_DATA} ${WRKSRC}/script/*.rb ${STAGEDIR}${PREFIX}/share/arirang
 

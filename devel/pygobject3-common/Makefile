@@ -36,7 +36,7 @@ MAKE_ARGS=	PYTHON_VERSION=${PYTHON_VER}
 .if ${SLAVE_PORT} == no
 PORTSCOUT?=	limitw:1,even
 
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:graphics/py-cairo
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR}
 USES+=		gnome python:build
 USE_GNOME=	glib20:build introspection:build
 NO_BUILD=	yes
@@ -55,32 +55,19 @@ USE_GNOME+=	glib20 introspection
 LIB_DEPENDS+=	libffi.so:devel/libffi
 RUN_DEPENDS+=	pygobject3-common>=0:devel/pygobject3-common
 
-.if ${SLAVE_PORT} == python2
-USES+=		python:2
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:graphics/py-cairo
-RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:graphics/py-cairo
-.endif
-
-.if ${SLAVE_PORT} == python3
-USES+=		python:3
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/py3cairo.pc:graphics/py3-cairo
-RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/py3cairo.pc:graphics/py3-cairo
-PLIST_SUB+=	PYTVER=${PYTHON_VER:S/.//}
+.if ${SLAVE_PORT} == python
+USES+=		python
+USE_PYTHON=	flavors
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${FLAVOR}
 .endif
 
 post-install:
-	@${RM} -rf ${STAGEDIR}${PREFIX}/include/pygobject-3.0 \
+	@${RM} -r ${STAGEDIR}${PREFIX}/include/pygobject-3.0 \
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/pygobject-3.0.pc
 .endif
 
 .include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3500
-PYOEXTENSION=	pyo
-.else
-PYOEXTENSION=	opt-1.pyc
-.endif
-PLIST_SUB+=	PYOEXTENSION=${PYOEXTENSION}
 
 UNAME_R!=	${UNAME} -r
 UNAME_M!=	${UNAME} -m

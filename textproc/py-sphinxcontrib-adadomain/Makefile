@@ -9,12 +9,12 @@ MASTER_SITES=	https://pypi.python.org/packages/source/s/${PORTNAME}/ \
 		LOCAL/marino
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	araujo@FreeBSD.org
 COMMENT=	Sphinx Adadomain Extension
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PKGNAMEPREFIX}sphinx>=1.1.3:textproc/py-sphinx
+RUN_DEPENDS=	${PKGNAMEPREFIX}sphinx>=1.1.3:textproc/py-sphinx@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

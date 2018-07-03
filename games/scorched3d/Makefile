@@ -3,7 +3,7 @@
 
 PORTNAME=	scorched3d
 PORTVERSION=	0.${SCORCH_VERSION}${SCORCH_REVISION}
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Version%20${SCORCH_VERSION}
 DISTNAME=	Scorched3D-${SCORCH_VERSION}-src
@@ -48,7 +48,7 @@ PLIST_FILES=	bin/scorched3d \
 PORTDATA=	*
 
 post-extract:
-	@${RM} -f ${WRKSRC}/src/client/GLEXT/[a-z]*
+	@${RM} ${WRKSRC}/src/client/GLEXT/[a-z]*
 
 post-patch:
 	@${REINPLACE_CMD} -e \

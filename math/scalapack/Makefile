@@ -3,7 +3,7 @@
 
 PORTNAME=	scalapack
 PORTVERSION=	2.0.2
-PORTREVISION=	8
+PORTREVISION=	13
 CATEGORIES=	math
 MASTER_SITES=	NL
 DISTFILES=	scalapack-${PORTVERSION}.tgz manpages.tgz
@@ -19,7 +19,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 CONFLICTS=	elmer-mathlibs-1*
 
 USE_LDCONFIG=	yes
-USES=		cmake fortran
+USES=		cmake fortran pathfix
 CMAKE_ARGS_ST=	-DBUILD_STATIC_LIBS:BOOL=ON
 CMAKE_ARGS_SH=	-DBUILD_SHARED_LIBS:BOOL=ON
 CMAKE_ARGS=	${CMAKE_ARGS_ST}
@@ -100,6 +100,10 @@ MPIF77=	${LOCALBASE}/bin/mpif77
 MPICC=	${LOCALBASE}/bin/mpicc
 .endif
 
+# USES=fortran already forces FC to a supported fortran compiler;
+# assume mpicc points to a compatible compiler and force that, too.
+CC=	${MPICC}
+
 pre-configure:
 	${CP} -p ${WRKSRC}/Makefile ${WRKSRC}/Makefile.dist
 	${CP} ${WRKSRC}/SLmake.inc.example ${WRKSRC}/SLmake.inc
@@ -109,7 +113,7 @@ pre-configure:
 .endfor
 
 post-build:
-	${RM} -rf ${WRKSRC}/CMakeFiles ${WRKSRC}/CMakeCache.txt
+	${RM} -r ${WRKSRC}/CMakeFiles ${WRKSRC}/CMakeCache.txt
 	${CP} -p ${WRKSRC}/Makefile.dist ${WRKSRC}/Makefile
 	(cd ${WRKSRC} &&	\
 	${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS:C|BUILD_STATIC_LIBS|BUILD_SHARED_LIBS|} ${CMAKE_SOURCE_PATH})

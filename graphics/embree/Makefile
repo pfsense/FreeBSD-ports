@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	embree
+PORTVERSION=	2.17.3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.10.0
-PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -15,49 +14,44 @@ LICENSE=	APACHE20
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	heavy use of SSE instructions
 
-BROKEN_FreeBSD_9=	does not build (insufficient C++11 support)
-
 USE_GITHUB=	yes
 
-USES=		cmake
-USE_GL=		glut
-USE_XORG=	xmu
+USES=		cmake compiler:env
+USE_GL=		gl glu glut
+USE_XORG=	xi xmu
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DRTCORE_TASKING_SYSTEM:STRING=INTERNAL \
-		-DENABLE_ISPC_SUPPORT:BOOL=OFF
-
-CXXFLAGS+=	-msse2					# required on i386
+CMAKE_ARGS=	-DEMBREE_TASKING_SYSTEM:STRING=INTERNAL
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}2
 PLIST_SUB+=	VERSION=${DISTVERSION}
 
-OPTIONS_DEFINE=	IMAGE_MAGICK JPEG OPENEXR PNG
-IMAGE_MAGICK_DESC=	BMP, GIF, PNG, TGA, TIFF image formats support
+OPTIONS_DEFINE=	IMAGEMAGICK ISPC JPEG PNG
+OPTIONS_DEFAULT=	ISPC
+OPTIONS_SUB=	yes
 
-IMAGE_MAGICK_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick
-IMAGE_MAGICK_CMAKE_ON=	-DUSE_IMAGE_MAGICK:BOOL=ON
+IMAGEMAGICK_DESC=	BMP, GIF, PNG, TGA, TIFF image formats support
+IMAGEMAGICK_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick
+IMAGEMAGICK_CMAKE_ON=	-DEMBREE_TUTORIALS_IMAGE_MAGICK:BOOL=ON
+
+ISPC_DESC=		ISPC applications support
+ISPC_BUILD_DEPENDS=	ispc:devel/ispc
+ISPC_CMAKE_OFF=		-DEMBREE_ISPC_SUPPORT:BOOL=OFF
 
 JPEG_USES=		jpeg
-JPEG_CMAKE_OFF=		-DUSE_LIBJPEG:BOOL=OFF
-
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR
-OPENEXR_CMAKE_OFF=	-DUSE_OPENEXR:BOOL=OFF
+JPEG_CMAKE_OFF=		-DEMBREE_TUTORIALS_LIBJPEG:BOOL=OFF
 
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
-PNG_CMAKE_OFF=		-DUSE_LIBPNG:BOOL=OFF
+PNG_CMAKE_OFF=		-DEMBREE_TUTORIALS_LIBPNG:BOOL=OFF
+
+.include <bsd.port.pre.mk>
 
 post-patch:
-	@${REINPLACE_CMD} -e 's,MAP_HUGETLB,MAP_ALIGNED_SUPER,' \
+	@${REINPLACE_CMD} -e 's,#else,#elif defined(MAP_HUGETLB),' \
 		${WRKSRC}/common/sys/alloc.cpp
-	@${REINPLACE_CMD} -e '/__aligned/s,^,//,' \
-		${WRKSRC}/common/sys/platform.h
-	@${REINPLACE_CMD} -e 's,MAP_POPULATE,MAP_PREFAULT_READ,' \
-		${WRKSRC}/tests/benchmark.cpp
-	@${REINPLACE_CMD} -e '/encodeRGB8_to_JPEG/s,size_t \*,unsigned \
-		long *,' ${WRKSRC}/tutorials/common/image/image.h \
-		${WRKSRC}/tutorials/common/image/jpeg.cpp
-	@${REINPLACE_CMD} -e 's,__forceinline,inline __attribute__((always_inline)),' \
-		${WRKSRC}/include/embree2/rtcore_ray.h
+# Old versions of Clang (e.g. on FreeBSD 10.x) do not support `-z' options
+.if ${COMPILER_VERSION} < 35
+	@${REINPLACE_CMD} -e '/ -z /d' ${WRKSRC}/common/cmake/clang.cmake
+.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

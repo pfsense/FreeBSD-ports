@@ -3,7 +3,7 @@
 
 PORTNAME=	spideroak
 PORTVERSION=	6.0
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://nivit.altervista.org/FreeBSD/ports/distfiles/${PORTNAME}/ \
 		https://spideroak.com/getbuild?platform=slackware&arch=i386&dummy=/
@@ -32,10 +32,8 @@ PLIST_SUB=	DESKTOPDIR=${DESKTOPDIR:S,${PREFIX}/,,} \
 SUB_LIST=	LINUXBASE=${LINUXBASE}
 SUB_FILES=	pkg-message
 
-USES=		desktop-file-utils linux python:2 tar:tgz
+USES=		desktop-file-utils linux python:2.7 tar:tgz
 USE_LINUX=	xorglibs
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	${REINPLACE_CMD} -e 's,%%PREFIX%%,${PREFIX},1' \
@@ -55,11 +53,13 @@ do-install:
 	${LOCALBASE}/bin/desktop-file-install \
 		--mode=${SHAREMODE} --dir=${STAGEDIR}${DESKTOPDIR} \
 		${WRKSRC}/usr/share/applications/SpiderOakONE.desktop
+	${INSTALL_DATA} ${WRKSRC}/usr/share/pixmaps/*.png ${STAGEDIR}${PREFIX}/share/pixmaps/
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/usr/share/doc/SpiderOakONE/Getting\ Started\ Guide.pdf ${STAGEDIR}${DOCSDIR}
-.if ${PORT_OPTIONS:MMANPAGES}
+
+do-install-MANPAGES-on:
 	${INSTALL_MAN} ${WRKSRC}/usr/share/man/man1/SpiderOakONE.1.gz ${STAGEDIR}${MANPREFIX}/man/man1/
-.endif
-	${INSTALL_DATA} ${WRKSRC}/usr/share/pixmaps/*.png ${STAGEDIR}${PREFIX}/share/pixmaps/
 
 .include <bsd.port.mk>

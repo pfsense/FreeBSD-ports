@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libmowgli2
-PORTVERSION=	2.1.0
+PORTVERSION=	2.1.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -14,9 +14,8 @@ GH_ACCOUNT=	atheme
 GH_PROJECT=	libmowgli-2
 
 GNU_CONFIGURE=	yes
-USES=		gmake pathfix
+USES=		gmake pathfix ssl
 PATHFIX_MAKEFILEIN=	Makefile
 USE_LDCONFIG=	yes
-USE_OPENSSL=	yes
 
 .include <bsd.port.mk>

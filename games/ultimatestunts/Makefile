@@ -3,13 +3,12 @@
 
 PORTNAME=	ultimatestunts
 PORTVERSION=	0.7.7.1
-DISTVERSIONPREFIX=	srcdata-
-DISTVERSION=	${PORTVERSION:S/.//g}
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/sourcecode \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
-DISTFILES=	${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}${EXTRACT_SUFX} \
+DISTNAME=	${PORTNAME}-srcdata-${PORTVERSION:S/.//g}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PORTNAME}_icons${EXTRACT_SUFX}:icons
 
 MAINTAINER=	nemysis@FreeBSD.org
@@ -43,7 +42,7 @@ DESKTOP_ENTRIES="Ultimate Stunts" "" "${PORTNAME}" \
 .include <bsd.port.options.mk>
 
 post-extract:
-	@${FIND} ${WRKSRC} -name .svn -print0 | ${XARGS} -0 ${RM} -fr
+	@${FIND} ${WRKSRC} -name .svn -print0 | ${XARGS} -0 ${RM} -r
 	@(cd ${WRKSRC} && ${CP} ${PORTNAME}.conf.in ${PORTNAME}.conf)
 
 post-patch:

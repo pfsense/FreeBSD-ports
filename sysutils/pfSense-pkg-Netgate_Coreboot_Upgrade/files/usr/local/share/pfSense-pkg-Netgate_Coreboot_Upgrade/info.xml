@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Netgate Coreboot Upgrade</name>
+		<internal_name>Netgate_Coreboot_Upgrade</internal_name>
+		<descr><![CDATA[Provide a mechanism to upgrade Coreboot for Netgate hardware models.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>netgate_coreboot_upgrade.xml</configurationfile>
+	</package>
+</pfsensepkgs>

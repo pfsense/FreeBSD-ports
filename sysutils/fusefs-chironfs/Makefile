@@ -3,20 +3,19 @@
 
 PORTNAME=	chironfs
 PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	http://BSDforge.com/projects/source/sysutils/chironfs/
 PKGNAMEPREFIX=	fusefs-
 
-MAINTAINER=	leeym@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	FUSE based filesystem with replication at the filesystem level
 
-BROKEN=		Unfetchable (google code has gone away)
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/doc/copyright
 
+USES=		fuse localbase:ldflags
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-USES=		fuse
 
 PLIST_FILES=	bin/chironfs bin/chirctl man/man8/chironfs.8.gz
 PORTDOCS=	*

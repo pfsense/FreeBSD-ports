@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hamlit
-PORTVERSION=	2.6.0
+PORTVERSION=	2.8.7
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -12,14 +12,15 @@ COMMENT=	High Performance Haml Implementation
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-temple>=0.7.6:devel/rubygem-temple \
+RUN_DEPENDS=	rubygem-temple>=0.8.0:devel/rubygem-temple \
 		rubygem-thor>=0:devel/rubygem-thor \
 		rubygem-tilt>=0:devel/rubygem-tilt
 
-NO_ARCH=	yes
+CONFLICTS_INSTALL=	rubygem-hamlit26
 
+USES=		gem shebangfix
 USE_RUBY=	yes
-USES=		gem
+SHEBANG_FILES=	bin/setup bin/test bin/ruby
 
 PLIST_FILES=	bin/hamlit
 

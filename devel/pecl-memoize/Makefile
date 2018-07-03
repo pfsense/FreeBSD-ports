@@ -5,18 +5,15 @@ PORTNAME=	memoize
 PORTVERSION=	0.2.0
 PORTREVISION=	2
 CATEGORIES=	devel
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	PHP extension which transparently caches PHP functions
 
 LICENSE=	PHP301
 
-USES=		php:ext tar:tgz
+USES=		php:pecl
 CONFIGURE_ARGS=	--enable-memoize
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=	70 71 72
 
 OPTIONS_DEFINE=	MEMCACHED MEMORY
 OPTIONS_DEFAULT=MEMORY

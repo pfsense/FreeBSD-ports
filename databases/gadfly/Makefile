@@ -3,16 +3,16 @@
 
 PORTNAME=	gadfly
 PORTVERSION=	1.0.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	databases
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SQL database written in Python
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/kjbuckets.so:devel/py-kjbuckets
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/kjbuckets.so:devel/py-kjbuckets@${FLAVOR}
 
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

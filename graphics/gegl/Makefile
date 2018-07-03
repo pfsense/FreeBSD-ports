@@ -3,7 +3,7 @@
 
 PORTNAME=	gegl
 PORTVERSION=	0.2.0
-PORTREVISION=	16
+PORTREVISION=	21
 CATEGORIES=	graphics
 MASTER_SITES=	GIMP
 
@@ -16,6 +16,8 @@ LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING.LESSER
 
 LIB_DEPENDS=	libbabl-0.1.so:x11/babl
+
+BROKEN_aarch64=		fails to build: gmake index.html: Segmentation fault in docs/gallery/
 
 # ignore new versions until we can replace this version with gegl 3.x
 PORTSCOUT=	ignore:1
@@ -216,7 +218,7 @@ post-patch:
 	${REINPLACE_CMD} -e 's|tools examples|tools|g' \
 		${WRKSRC}/Makefile.in
 .endif
-	${REINPLACE_CMD} -e 's|\(lua\)\(5\.1\)|\1-\2|g ; s|x86_64|amd64|g' \
+	${REINPLACE_CMD} -e 's|\(lua\)\(5\.1\)|\1-\2|g ; s|x86_64|amd64|g ; s|libopenraw-1.0|libopenraw-0.1|g' \
 		${WRKSRC}/configure
 
 .if ${PORT_OPTIONS:MDOCS}

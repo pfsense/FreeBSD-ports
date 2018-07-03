@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	lcdproc
-PORTVERSION=	0.5.7
-PORTREVISION=	2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.5.9
 CATEGORIES=	sysutils
-MASTER_SITES=	SF
 
-MAINTAINER=	bsdfan@nurfuerspam.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client/server suite for LCD devices
 
 LICENSE=	GPLv2
@@ -15,9 +14,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=	i386 amd64
 
+USES=		autoreconf pkgconfig
 GNU_CONFIGURE=	yes
 USE_RC_SUBR=	LCDd lcdproc lcdexec
-USES=		autoreconf pkgconfig
+USE_GITHUB=	yes
 
 CONFIGURE_ARGS=	--enable-drivers="${LCDPROC_DRIVERS}" \
 		--disable-dependency-tracking \
@@ -49,9 +49,6 @@ SERDISP_CPPFLAGS=	-I${LOCALBASE}/include
 
 X11_USE=		xorg=x11
 X11_CONFIGURE_ENABLE=	libX11
-
-# Empty args to aclocal required!
-ACLOCAL_ARGS=
 
 LCDPROC_DRIVERS=bayrad \
 		CFontz \
@@ -90,7 +87,7 @@ LCDPROC_DRIVERS=bayrad \
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MUSB}
-CONFIGURE_ARGS+=	--with-libusb=/usr
+CONFIGURE_ARGS+=	--enable-libusb
 PLIST_SUB+=		USB=""
 LCDPROC_DRIVERS+=IOWarrior \
 		picolcd \
@@ -117,7 +114,7 @@ PLIST_SUB+=		HID="@comment "
 . endif
 
 .else
-CONFIGURE_ARGS+=	--without-libusb --disable-libftdi --disable-libhid
+CONFIGURE_ARGS+=	--disable-libusb --disable-libftdi --disable-libhid
 PLIST_SUB+=		USB="@comment " FTDI="@comment " HID="@comment "
 .endif
 

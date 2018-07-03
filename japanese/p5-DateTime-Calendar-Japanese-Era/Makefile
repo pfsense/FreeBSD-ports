@@ -10,7 +10,7 @@ MASTER_SITES=	CPAN
 MAINTAINER=	markun@onohara.to
 COMMENT=	DateTime Extension for Japanese Eras
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \
@@ -27,7 +27,7 @@ USES=		perl5
 USE_PERL5=	configure
 
 post-patch:
-	@${RM} -rf ${WRKSRC}/inc
+	@${RM} -r ${WRKSRC}/inc
 
 .include <bsd.port.pre.mk>
 

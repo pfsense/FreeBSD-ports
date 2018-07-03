@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	anet
-PORTVERSION=	0.3.3
+PORTVERSION=	0.3.4
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://www.codelabs.ch/download/
 DISTNAME=	libanet-${PORTVERSION}
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Networking library for Ada
 
 LICENSE=	GPLv2 GMGPL
@@ -21,7 +21,7 @@ MAKE_ARGS+=	NUM_CPUS=${MAKE_JOBS_NUMBER} \
 		OS=bsd
 
 OPTIONS_DEFINE=	TEST DOCS
-TEST_DESC=	Run unit test suite before installation
+TEST_DESC=		Run unit test suite before installation
 TEST_ALL_TARGET=	tests
 TEST_BUILD_DEPENDS=	${LOCALBASE}/lib/gnat/ahven.gpr:devel/ahven
 DOCS_USES=		gmake
@@ -36,12 +36,12 @@ post-patch:
 		${WRKSRC}/doc/Makefile
 
 do-build:
-	${MKDIR} ${WRKSRC}/doc/html
+	@${MKDIR} ${WRKSRC}/doc/html
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
 		${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/gnat \
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/gnat \
 		${STAGEDIR}${PREFIX}/lib/anet \
 		${STAGEDIR}${PREFIX}/include/anet
 	${INSTALL_DATA} ${WRKSRC}/src/*.ad[bs] ${WRKSRC}/src/bsd/*.ad[bs] \
@@ -52,7 +52,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/gnat/anet.gpr ${STAGEDIR}${PREFIX}/lib/gnat
 
 do-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} html ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

@@ -3,14 +3,14 @@
 
 PORTNAME=	mboxcheck-applet
 PORTVERSION=	0.3
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	mail
 MASTER_SITES=	http://perso.orange.fr/seb128/fichiers/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mailbox checking applet for GNOME 2
 
-USES=		python
+USES=		python:2.7
 USE_GNOME=	pygnome2:run
 NO_BUILD=	yes
 

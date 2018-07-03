@@ -13,8 +13,11 @@ COMMENT=	Modern implementation of DBM
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_armv6=		dumps core: Assertion failed: (!NodePtr->isKnownSentinel()), function operator*, file ilist_iterator.h
+BROKEN_armv7=		fails to build: cc: error: unable to execute command: Abort trap (core dumped)
+
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		pathfix gmake
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*
@@ -23,7 +26,6 @@ OPTIONS_DEFINE=	DEBUG DEVEL FASTEST LZMA LZO PTHREAD PROFILE SHARED SWAB UYIELD 
 OPTIONS_DEFAULT=	PTHREAD SHARED
 OPTIONS_SUB=	yes
 
-DEBUG_DESC=	Debugging support
 DEVEL_DESC=	Development build
 FASTEST_DESC=	Fastest run
 LZMA_DESC=	LZMA codec
@@ -66,11 +68,8 @@ SHLIB_VER_MAJ=	9
 
 PLIST_SUB+=	SHLIB_VER=${SHLIB_VER} SHLIB_VER_MAJ=${SHLIB_VER_MAJ}
 
-# Because gnomehack will search "(libdir)" and it doesn't work, we need
-# to patch it manually.
 post-patch:
-	${REINPLACE_CMD} -e 's|@libdir@/pkgconfig|@prefix@/libdata/pkgconfig|' \
-		-e 's|@datarootdir@|@datarootdir@/doc|' \
+	${REINPLACE_CMD} -e 's|@datarootdir@|@datarootdir@/doc|' \
 		${WRKSRC}/Makefile.in
 
 post-patch-FASTEST-on:

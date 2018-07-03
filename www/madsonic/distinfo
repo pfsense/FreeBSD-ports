@@ -1,4 +1,5 @@
-SHA256 (20150813_madsonic-5.1.5250-war-tomcat.zip) = ebb510acce52b627a497f01ccf79434eb8dabbe86b41ca7c11b515d15e3cd506
-SIZE (20150813_madsonic-5.1.5250-war-tomcat.zip) = 48651412
-SHA256 (20150813_madsonic-5.1.5250-war-jspc.zip) = e18b8abb048fc065df5db207a08954200130c307aea2400c4151795f2496b624
-SIZE (20150813_madsonic-5.1.5250-war-jspc.zip) = 48653768
+TIMESTAMP = 1475617922
+SHA256 (20161208_madsonic-6.2.9040-war-tomcat.zip) = 1309d147155e5d6966ef510a74861edc09d2fabc0ca066576d3c4dbc619d3024
+SIZE (20161208_madsonic-6.2.9040-war-tomcat.zip) = 80707015
+SHA256 (20161208_madsonic-6.2.9040-war-jspc.zip) = 55300906f036f24e21f6cd718219ff308d8c1f945a309df262248a03b72fcca9
+SIZE (20161208_madsonic-6.2.9040-war-jspc.zip) = 80678832

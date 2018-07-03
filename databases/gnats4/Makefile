@@ -3,7 +3,7 @@
 
 PORTNAME=	gnats
 PORTVERSION=	4.1.0
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	databases devel
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	4
@@ -11,7 +11,7 @@ PKGNAMESUFFIX=	4
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	GNATS, the GNU Problem Report Management System
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	Does not build: error: conflicting types for yy_scan_string
 
 GNU_CONFIGURE=	yes
 USES=		cpe gmake makeinfo
@@ -55,8 +55,9 @@ PORTDOCS=	NEWS UPGRADING
 OPTIONS_DEFINE=	DOCS EMACS SERVER
 OPTIONS_DEFAULT=SERVER
 OPTIONS_SUB=	yes
-EMACS_USE=	EMACS=yes
-EMACS_DESC=	Add support for default version of EMACS
+EMACS_USES=	emacs
+EMACS_DESC=	Install Emacs Lisp support file
+EMACS_VARS=	EMACS_NO_DEPENDS=yes
 SERVER_DESC=	Install the gnats server too
 
 .include <bsd.port.options.mk>

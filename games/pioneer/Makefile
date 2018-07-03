@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pioneer
-PORTVERSION=	0.0.${GH_TAGNAME}
+DISTVERSION=	0.0.${GH_TAGNAME}
 CATEGORIES=	games
 
 MAINTAINER=	lightside@gmx.com
@@ -27,18 +27,16 @@ LICENSE_PERMS_IUP=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_SIL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	${LOCALBASE}/include/GL/glu.h:graphics/libGLU
-LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libsigc-2.0.so:devel/libsigc++20 \
+LIB_DEPENDS=	libsigc-2.0.so:devel/libsigc++20 \
 		libfreetype.so:print/freetype2 \
 		libvorbisfile.so:audio/libvorbis \
 		libpng.so:graphics/png \
 		libassimp.so:multimedia/assimp
 
+USES=		autoreconf compiler:c++11-lib gmake pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	pioneerspacesim
-GH_TAGNAME=	20160610
-
-USES=		autoreconf gmake pkgconfig
+GH_TAGNAME=	20180203
 USE_GL=		gl
 USE_SDL=	image2 sdl2
 
@@ -58,47 +56,46 @@ DESKTOP_ENTRIES="Pioneer" "${COMMENT}" \
 		"Game;Simulation;" false
 
 SUB_FILES=	pkg-message
-SUB_LIST=	QUICKSTART_PATH="${QUICKSTART_PATH}"
 
-OPTIONS_DEFINE=		DOCS MODELCOMPILER PROFILER
+OPTIONS_DEFINE=		DOCS MODELCOMPILER NOGPUJOBS PROFILER SERVERAGENT
 OPTIONS_DEFAULT=	MODELCOMPILER
+DOCS_SUB_LIST=		QUICKSTART_PATH="${DOCSDIR}"
+DOCS_SUB_LIST_OFF=	QUICKSTART_PATH="https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${GH_TAGNAME}"
 MODELCOMPILER_DESC=	Build/install modelcompiler tool
 MODELCOMPILER_PLIST_FILES=	bin/${PORTNAME}-modelcompiler
+NOGPUJOBS_DESC=		Disable EnableGPUJobs for config.ini by default
 PROFILER_DESC=		Build with internal profiler
 PROFILER_CONFIGURE_ON=	--enable-profiler
+SERVERAGENT_DESC=	Build with server agent
+SERVERAGENT_CONFIGURE_WITH=	server-agent
+SERVERAGENT_LIB_DEPENDS=	libcurl.so:ftp/curl
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000054
-USE_GCC=	yes
-.else
-USES+=		compiler:c++11-lang
-CPPFLAGS+=	-I${LOCALBASE}/include
-.endif
-
-.if ${PORT_OPTIONS:MDOCS}
-QUICKSTART_PATH=	${DOCSDIR}
-.else
-QUICKSTART_PATH=	\
-	https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${GH_TAGNAME}
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+# Unhide std::to_string() for GCC (ports/193528)
+CXXFLAGS+=	-D_GLIBCXX_USE_C99
 .endif
 
 post-patch: .SILENT
 	${REINPLACE_CMD} -e '/^OPTIMISE=/d' \
 		${WRKSRC}/configure.ac
-	${REINPLACE_CMD} -e 's/std:://g' \
-		${WRKSRC}/src/Orbit.cpp
-	${REINPLACE_CMD} -e 's/std::to_string/to_string/g' \
-		${WRKSRC}/src/graphics/opengl/RendererGL.cpp
 
 post-patch-MODELCOMPILER-off: .SILENT
 	${REINPLACE_CMD} -e 's/pioneer modelcompiler/pioneer/' \
 		${WRKSRC}/src/Makefile.am
 
+post-patch-NOGPUJOBS-on: .SILENT
+# Revert 41272a856d9072404efbfdb10f0e3c9e4f96bb4d commit, in case of
+# GL_OUT_OF_MEMORY OpenGL error, when turning to gas giant planet
+	${REINPLACE_CMD} -e '/EnableGPUJobs/s|1|0|' \
+		 ${WRKSRC}/src/GameConfig.cpp
+
 post-patch-PROFILER-off: .SILENT
 	${REINPLACE_CMD} -e '/^SUBDIRS/s/ profiler//' \
 		${WRKSRC}/contrib/Makefile.am
-	${REINPLACE_CMD} -i '.p.bak' -e '/libjson.a/s| \\|| ; /libprofiler.a/d' \
+	${REINPLACE_CMD} -i '.p.bak' -e \
+		'/libprofiler.a/d; $$!N; /libprofiler.a$$/s| \\||; P; D' \
 		${WRKSRC}/src/Makefile.am
 	${REINPLACE_CMD} -i '.p.bak' -e '/contrib\/profiler/d' \
 		${WRKSRC}/configure.ac
@@ -114,4 +111,4 @@ post-install-MODELCOMPILER-on:
 	${MV} ${STAGEDIR}${PREFIX}/bin/modelcompiler \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}-modelcompiler
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

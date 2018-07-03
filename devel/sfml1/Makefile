@@ -3,7 +3,7 @@
 
 PORTNAME=	sfml
 PORTVERSION=	1.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SF
 DISTNAME=	SFML-${PORTVERSION}-sdk-linux-32
@@ -36,7 +36,7 @@ PORTSCOUT=	limit:[^c]$$
 OPTIONS_DEFINE=	DOCS
 
 post-extract:
-	@${RM} -f ${WRKSRC}/lib/*
+	@${RM} ${WRKSRC}/lib/*
 	@${FIND} ${WRKSRC}/samples/bin/ -type f -maxdepth 1 -delete
 
 post-install:

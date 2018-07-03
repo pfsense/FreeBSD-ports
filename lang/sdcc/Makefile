@@ -3,6 +3,7 @@
 PORTNAME=	sdcc
 PORTVERSION=	3.6.0
 DISTVERSIONPREFIX=	src-
+PORTREVISION=	8
 CATEGORIES=	lang
 MASTER_SITES=	SF
 
@@ -15,7 +16,8 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/graph/adjacency_list.hpp:devel/boost-l
 
 CONFLICTS_INSTALL=	sdcc-[0-9]* sdcc-devel-[0-9]*
 GNU_CONFIGURE=	yes
-USES=		gmake readline:port tar:bzip2
+USES=		gmake readline:port python:2.7,run shebangfix tar:bzip2
+SHEBANG_FILES=	support/scripts/as2gbmap.py
 
 OPTIONS_DEFINE=		DEVLIB DOCS UCSIM
 OPTIONS_MULTI=		TARGETS
@@ -51,6 +53,8 @@ Z80_CONFIGURE_OFF=	--disable-z80 --disable-z80-port		\
 			--disable-r2k-port --disable-r3ka-port		\
 			--disable-tlcs90-port
 
+BROKEN_aarch64=		Fails to configure: BFD does not support target aarch64-portbld-freebsd11.0
+
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == "amd64"
@@ -84,11 +88,11 @@ post-patch:
 		${WRKSRC}/device/non-free/lib/pic16/Makefile.in \
 		${WRKSRC}/device/non-free/lib/pic16/configure \
 		${WRKSRC}/device/non-free/lib/pic16/libdev/Makefile.in
-.if ! ${PORT_OPTIONS:MDOCS}
+
+post-patch-DOCS-off:
 	@${REINPLACE_CMD} 's, [a-z-]*doc,,' \
 		${WRKSRC}/Makefile.in \
 		${WRKSRC}/sim/ucsim/packages_in.mk
-.endif
 
 post-install:
 	${FIND} -d ${STAGEDIR}${DATADIR} -type d -empty -delete

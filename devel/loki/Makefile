@@ -27,16 +27,10 @@ post-patch:
 		-e 's/\$${PREFIX}/$${DESTDIR}$${PREFIX}/g' \
 		${WRKSRC}/Makefile.common
 
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${DOCS}
-	${INSTALL_MAN} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64: TLS not supported
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

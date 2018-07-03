@@ -3,6 +3,7 @@
 
 PORTNAME=	gpsbabel
 PORTVERSION=	1.4.4
+PORTREVISION=	1
 CATEGORIES=	astro geography
 MASTER_SITES=	https://secure.ohos.nl/downloads/ \
 		LOCAL/beech
@@ -16,10 +17,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USE_AUTOTOOLS=	autoconf
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-expathdr=${LOCALBASE}/include \
 		--with-libexpat=${LOCALBASE}/lib
+USES=		autoreconf
 
 PLIST_FILES=	bin/gpsbabel
 

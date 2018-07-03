@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	emby-server
-PORTVERSION=	3.0.7300
+PORTVERSION=	3.3.0.0
 CATEGORIES=	multimedia
 
 MAINTAINER=	woodsb02@FreeBSD.org
@@ -11,6 +11,7 @@ COMMENT=	Home media server built using mono and other open source technologies
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
+BUILD_DEPENDS=	referenceassemblies-pcl>=0:lang/referenceassemblies-pcl
 LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg
 
 CONFLICTS_INSTALL=	mediabrowser
@@ -36,13 +37,13 @@ X11_LIB_DEPENDS_OFF=	libMagickWand-6.so:graphics/ImageMagick-nox11
 do-build:
 	(cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ${LOCALBASE}/bin/xbuild /t:build /p:Configuration="Release Mono" \
-			/p:Platform="Any CPU" MediaBrowser.Mono.sln)
+			/p:Platform="Any CPU" MediaBrowser.sln)
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/emby-server
-	(cd ${WRKSRC}/MediaBrowser.Server.Mono/bin/Release\ Mono && \
+	(cd ${WRKSRC}/MediaBrowser.Server.Mono/bin/Release && \
 		${ECHO_MSG} "Deleting the following non-FreeBSD library files:" && \
-		${FIND} -E . -iregex '(.*\.dylib|.*libwebp.*|.*sqlite3.*|.*.dylib.*|MediaInfo\.dll)' -print -delete && \
+		${FIND} -E . -iregex '(.*\.dylib)' -print -delete && \
 		${FIND} . -type d -empty -print -delete && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib/emby-server)
 

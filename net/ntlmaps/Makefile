@@ -7,10 +7,10 @@ PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Proxy that authenticates the user using the NTLM protocol
 
-USES=		dos2unix python
+USES=		dos2unix python:2.7
 
 DOCS=		COPYING Install.txt changelog.txt readme.txt research.txt
 
@@ -19,7 +19,7 @@ OPTIONS_DEFINE=	DOCS
 post-patch:
 	@${REINPLACE_CMD} -e \
 	    's,^#! /usr/bin/python,#!${PYTHON_CMD},' ${WRKSRC}/main.py
-	@${RM} -rf ${WRKSRC}/main.py.bak
+	@${RM} -r ${WRKSRC}/main.py.bak
 
 do-build:
 	@${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py ${WRKSRC}

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	exactor
-PORTVERSION=	2.2.2
+PORTVERSION=	2.2.4
 CATEGORIES=	devel
 PKGNAMEPREFIX=	elixir-
 

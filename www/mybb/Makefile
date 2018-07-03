@@ -2,21 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	mybb
-PORTVERSION=	1.8.7
+DISTVERSION=	1.8.15
 CATEGORIES=	www
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PHP-based bulletin board / discussion forum system
 
 LICENSE=	GPLv3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	${PORTNAME}_1807
+GH_TAGNAME=	${PORTNAME}_1815
 
-USES=		cpe mysql php
+USES=		cpe mysql php:web
 NO_BUILD=	yes
 NO_ARCH=	yes
-USE_PHP=	xsl mysql iconv gd xml
+USE_PHP=	xsl mysqli iconv gd xml
 SUB_FILES=	pkg-message
 WWWDIR?=	${PREFIX}/www/${PORTNAME}
 PLIST_SUB=	WWWOWN=${WWWOWN}

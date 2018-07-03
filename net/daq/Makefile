@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	daq
-PORTVERSION=	2.0.6
-PORTREVISION=	1
+PORTVERSION=	2.2.2
+PORTREVISION=	0
 CATEGORIES=	net
-MASTER_SITES=	https://snort.org/downloads/snort/ \
-		http://mirrors.rit.edu/zi/
+MASTER_SITES=	https://snort.org/downloads/snortplus/ \
+		ZI
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Data Acquisition abstraction library for snort 2.9+

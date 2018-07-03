@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * bandwidthd.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (C) 2012-2013 Phil Davis
+ * Copyright (C) 2009 Bill Marquette
+ * Copyright (C) 2006 Scott Ullrich
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>bandwidthd</name>
+	<title>Diagnostics: Bandwidthd</title>
+	<include_file>/usr/local/pkg/bandwidthd.inc</include_file>
+	<aftersaveredirect>/pkg_edit.php?xml=bandwidthd.xml</aftersaveredirect>
+	<menu>
+		<name>BandwidthD</name>
+		<section>Diagnostics</section>
+		<url>/diag_bandwidthd.php</url>
+	</menu>
+	<menu>
+		<name>BandwidthD Settings</name>
+		<section>Diagnostics</section>
+		<url>/pkg_edit.php?xml=bandwidthd.xml</url>
+	</menu>
+	<service>
+		<name>bandwidthd</name>
+		<rcfile>bandwidthd.sh</rcfile>
+		<executable>bandwidthd</executable>
+		<description>BandwidthD bandwidth monitoring daemon</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Access BandwidthD</text>
+			<url>/diag_bandwidthd.php</url>
+		</tab>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=bandwidthd.xml</url>
+			<active/>
+		</tab>
+	</tabs>
+	<advanced_options>enabled</advanced_options>
+	<fields>
+		<field>
+			<name>General Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable BandwidthD</fielddescr>
+			<fieldname>enable</fieldname>
+			<type>checkbox</type>
+			<description></description>
+		</field>
+		<field>
+			<fielddescr>BandwidthD Interface</fielddescr>
+			<fieldname>active_interface</fieldname>
+			<description>The interface where bandwidthd will listen for traffic.</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>(loopback)</hideinterfaceregex>
+			<required/>
+			<default_value>lan</default_value>
+		</field>
+		<field>
+			<fielddescr>Subnet(s) for Statistics Collection</fielddescr>
+			<fieldname>interface_array</fieldname>
+			<description>
+				<![CDATA[
+				The subnet(s) on which BandwidthD will collect statistics. Traffic that matches none of these subnets will be ignored.<br />
+				<strong>Note: PPPoE interfaces are NOT supported!</strong>
+				]]>
+			</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>loopback</hideinterfaceregex>
+			<size>3</size>
+			<multiple>true</multiple>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Extra Subnet(s) for Statistics Collection</fielddescr>
+			<fieldname>subnets_extra</fieldname>
+			<description>
+				<![CDATA[
+				Specify additional IPv4 subnet(s) in CIDR notation for statistics collection (or leave empty if none).
+				For multiple subnets, separate entries with ';'<br />
+				(Example: 192.168.1.0/24;10.0.0.0/24)<br />
+				<strong>Note: Do NOT specify any local subnets already selected in 'Subnet(s) for Statistics Collection' above!</strong>
+				]]>
+			</description>
+			<type>input</type>
+			<size>50</size>
+		</field>
+		<field>
+			<fielddescr>Promiscuous</fielddescr>
+			<fieldname>promiscuous</fieldname>
+			<description>
+				<![CDATA[
+				Put interface in promiscuous mode to see traffic that may not be routing through the host machine.
+				]]>
+			</description>
+			<sethelp>
+				<![CDATA[
+				Note: If the interface is connected to a switch then the interface will only see the traffic on its port.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Sensor ID</fielddescr>
+			<fieldname>sensorid</fieldname>
+			<description>
+				<![CDATA[
+				Arbitrary sensor name.<br />
+				(Using the sensor's fully qualified domain name is recommended.)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Graph Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Draw Graphs</fielddescr>
+			<fieldname>drawgraphs</fieldname>
+			<description>
+				<![CDATA[
+				Graph the traffic that BandwidthD is recording. Enabled by default.
+				]]>
+			</description>
+			<sethelp>
+				<![CDATA[
+				Uncheck this to only generate CDF output or when using the database output option.<br />
+				BandwidthD will use very little RAM and CPU when this option is disabled.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+			<enablefields>meta_refresh,skipintervals,graphcutoff</enablefields>
+		</field>
+		<field>
+			<fielddescr>Meta Refresh</fielddescr>
+			<fieldname>meta_refresh</fieldname>
+			<description>
+				<![CDATA[
+				Sets the interval, in seconds, at which the browser will refresh the graph display.<br/>
+				Default value is 150 seconds. A value of 0 will disable the refresh.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Skip Intervals</fielddescr>
+			<fieldname>skipintervals</fieldname>
+			<description>
+				<![CDATA[
+				Number of intervals to skip between graphing.<br />
+				Default 0. (Each interval is 200 seconds = 3 min 20 sec.)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Graph Cutoff</fielddescr>
+			<fieldname>graphcutoff</fieldname>
+			<description>
+				<![CDATA[
+				Graph cutoff means how many KB must be transferred by an IP before it is graphed.<br />
+				Default 1024.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Output to CDF</fielddescr>
+			<fieldname>outputcdf</fieldname>
+			<description>Log data to CDF files log*.cdf</description>
+			<type>checkbox</type>
+			<enablefields>recovercdf</enablefields>
+		</field>
+		<field>
+			<fielddescr>Recover CDF</fielddescr>
+			<fieldname>recovercdf</fieldname>
+			<description>Read back the CDF files on startup.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Graph and Log Info</fielddescr>
+			<fieldname>graph_log_info</fieldname>
+			<description>
+			<![CDATA[
+				If "Draw Graphs" is on, then the daily report and graph html data is regenerated every (skip intervals + 1) * 200 seconds.&nbsp;
+				The data volumes in the report are for the same period as the span of the graph.<br />
+				If "Output to CDF" is on, then a cron job is added to rotate the log files at 00:01 each day. 6 log files are kept for each log frequency (daily, weekly, monthly, yearly).&nbsp;
+				At the respective rotation intervals, the oldest log is deleted, the others are shuffled back and a new log is created.<br /><br />
+				<table cellpadding="1" cellspacing="0" style="text-align: left"><tbody>
+				<tr><th></th><th>Data Interval</th><th>Graph Span</th><th>Log Rotation</th><th>Log File Name</th></tr>
+				<tr><th>Daily</th><td>200 seconds</td><td>2 days</td><td>1 day</td><td>log.1.[0-5].cdf</td></tr>
+				<tr><th>Weekly</th><td>10 minutes</td><td>7 days</td><td>7 days</td><td>log.2.[0-5].cdf</td></tr>
+				<tr><th>Monthly</th><td>1 hour</td><td>35 days</td><td>35 days</td><td>log.3.[0-5].cdf</td></tr>
+				<tr><th>Yearly</th><td>12 hours</td><td>412.5 days</td><td>412.5 days </td><td>log.4.[0-5].cdf</td></tr>
+				</tbody></table>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<name>PostgreSQL Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Output to PostgreSQL</fielddescr>
+			<fieldname>outputpostgresql</fieldname>
+			<description>
+				<![CDATA[
+				Log data to a PostgreSQL database
+				]]>
+			</description>
+			<sethelp>
+				<![CDATA[
+				Get the PostgreSQL schema and PHP files to display the results from <a href="https://github.com/individual-it/bandwidthd-pSQL-frontend">https://github.com/individual-it/bandwidthd-pSQL-frontend</a>
+				]]>
+			</sethelp>
+			<enablefields>postgresqlhost,postgresqldatabase,postgresqlusername,postgresqlpasswordenc</enablefields>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Database Host</fielddescr>
+			<fieldname>postgresqlhost</fieldname>
+			<description>Hostname of the PostgreSQL database server.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Database Name</fielddescr>
+			<fieldname>postgresqldatabase</fieldname>
+			<description>Database on the PostgreSQL database server.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Database Username</fielddescr>
+			<fieldname>postgresqlusername</fieldname>
+			<description>Username of the PostgreSQL database server.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Database Password</fielddescr>
+			<fieldname>postgresqlpasswordenc</fieldname>
+			<description>Password of the PostgreSQL database server.</description>
+			<type>password</type>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Advanced Filter</fielddescr>
+			<fieldname>advfilter</fieldname>
+			<description>
+				<![CDATA[
+				Libpcap format filter string used to control what traffic is counted.&nbsp;
+				Please, refer to <a href="https://www.freebsd.org/cgi/man.cgi?query=pcap-filter&amp;sektion=7&amp;apropos=0&amp;manpath=FreeBSD+10.1-RELEASE+and+Ports">pcap-filter(7)</a> for documentation.
+				<br />
+				NOTE: You should always specify "ip" in the filter to avoid strange results.<br /><br />
+				Example: We only want to account for a certain IP.<br />
+				Filter expression: <em>ip and host 192.0.2.1</em><br /><br />
+				<strong>WARNING: You are completely on your own with this! If misconfigured, BandwidthD will malfunction or even not start at all.</strong>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>65</cols>
+			<rows>5</rows>
+			<advancedfield/>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		bandwidthd_install_config();
+	</custom_php_resync_config_command>
+	<custom_php_install_command>
+		bandwidthd_upgrade_config();
+		bandwidthd_install_config();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		bandwidthd_install_deinstall();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		bandwidthd_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

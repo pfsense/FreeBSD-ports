@@ -6,13 +6,13 @@ PORTVERSION=	0.1.15
 PORTREVISION=	1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PEAR beautifier for PHP
 
-BUILD_DEPENDS=	${PEARDIR}/Log.php:sysutils/pear-Log
-RUN_DEPENDS=	${PEARDIR}/Log.php:sysutils/pear-Log
+BUILD_DEPENDS=	${PEARDIR}/Log.php:sysutils/pear-Log@${PHP_FLAVOR}
+RUN_DEPENDS=	${PEARDIR}/Log.php:sysutils/pear-Log@${PHP_FLAVOR}
 
-USES=	pear
+USES=		pear php
 USE_PHP=	tokenizer bz2
 
 .include <bsd.port.mk>

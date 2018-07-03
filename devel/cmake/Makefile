@@ -2,18 +2,26 @@
 # $FreeBSD$
 
 PORTNAME=	cmake
-PORTVERSION=	3.6.2
-PORTREVISION?=	0
+# Remember to update devel/cmake-doc and devel/cmake-gui as well.
+DISTVERSION=	3.10.2
 CATEGORIES=	devel
 MASTER_SITES=	https://www.cmake.org/files/v${PORTVERSION:R}/
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT?=	Cross-platform Makefile generator
+COMMENT=	Cross-platform Makefile generator
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/Copyright.txt
 
-USES=		kde:4 # Just pull in env for KDE_PREFIX
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libexpat.so:textproc/expat2 \
+		libjsoncpp.so:devel/jsoncpp \
+		libuv.so:devel/libuv \
+		librhash.so:security/rhash
+
+USES=		compiler:c++11-lang libarchive ncurses
+
+HAS_CONFIGURE=	yes
 CONFIGURE_ENV=	MAKE=make
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--datadir="/${DATADIR_REL}" \
@@ -22,21 +30,15 @@ CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--parallel=${MAKE_JOBS_NUMBER} \
 		--init="${PATCHDIR}/InitialCache.cmake"
 
-.if !defined(CMAKE_MODULES)
 OPTIONS_DEFINE=	DOCS MANPAGES
 OPTIONS_DEFAULT=MANPAGES
 OPTIONS_SUB=	yes
-USES+=		execinfo libarchive ncurses
-HAS_CONFIGURE=	yes
 
-LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libexpat.so:textproc/expat2 \
-		libjsoncpp.so:devel/jsoncpp
-RUN_DEPENDS=	${LOCALBASE}/share/cmake/Modules/CMake.cmake:devel/cmake-modules
-
-MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
+MANPAGES_USES=		python:env
+MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx@${PY_FLAVOR}
 MANPAGES_CONFIGURE_ON=	--sphinx-man
-.endif
+
+CONFLICTS_INSTALL=	cmake-modules-*
 
 .include <bsd.port.pre.mk>
 
@@ -53,7 +55,7 @@ post-patch:
 		${WRKSRC}/Source/cmLocalGenerator.cxx \
 		${WRKSRC}/Source/CPack/cmCPackGenerator.cxx \
 		${WRKSRC}/bootstrap
-	@${REINPLACE_CMD} -e 's,/opt/kde4,${KDE_PREFIX},g' \
+	@${REINPLACE_CMD} -e 's,/opt/kde4,${PREFIX},g' \
 		${WRKSRC}/Modules/FindKDE4.cmake
 	@${REINPLACE_CMD} -e 's,/usr/include,${LOCALBASE}/include,' \
 		${WRKSRC}/Modules/FindDCMTK.cmake
@@ -63,9 +65,10 @@ post-patch:
 # prevent it from being built/installed by devel/cmake.
 	${RM} ${WRKSRC}/Help/manual/cmake-gui.1.rst
 
-.if !defined(CMAKE_MODULES)
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/Auxiliary/cmake-mode.el ${STAGEDIR}${PREFIX}/share/emacs/site-lisp
-.endif
+	# The .NoDartCoverage is supposed to suppress testing in the
+	# source directories, but gets accidentally installed.
+	@${FIND} ${STAGEDIR}${PREFIX} -name ".NoDartCoverage" -delete
 
 .include <bsd.port.post.mk>

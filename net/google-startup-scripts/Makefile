@@ -8,6 +8,9 @@ CATEGORIES=	net
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Startup scripts that interact with Google Compute Engine VMs
 
+DEPRECATED=	Please use sysutils/py-google-compute-engine instead
+EXPIRATION_DATE=2018-04-24
+
 BUILD_DEPENDS=	python:lang/python
 RUN_DEPENDS=	python:lang/python \
 		curl:ftp/curl \
@@ -19,7 +22,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	GoogleCloudPlatform
 GH_PROJECT=	compute-image-packages
 USE_RC_SUBR=	google-startup
-WRKSRC=		${WRKDIR}/${GH_PROJECT}-${PORTVERSION}/${PORTNAME}
+WRKSRC_SUBDIR=	${PORTNAME}
 
 SHEBANG_FILES= usr/share/google/fetch_script \
 		usr/share/google/first-boot \

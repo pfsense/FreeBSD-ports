@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dogpile.cache
-PORTVERSION=	0.6.1
+PORTVERSION=	0.6.2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Caching front-end based on the Dogpile lock
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gdbm>0:databases/py-gdbm
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gdbm>0:databases/py-gdbm@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

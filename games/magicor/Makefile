@@ -3,7 +3,7 @@
 
 PORTNAME=	magicor
 PORTVERSION=	1.1
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTFILES=	${PORTNAME}-source-${PORTVERSION}${EXTRACT_SUFX} \
@@ -15,9 +15,10 @@ COMMENT=	Old-school, puzzle game similar to Solomon's Key
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pygame/__init__.py:devel/py-game
+RUN_DEPENDS=	${PYGAME}
 
-USES=		python
+USES=		python:2.7 shebangfix
+SHEBANG_FILES=	*.py
 NO_BUILD=	yes
 NO_ARCH=	yes
 
@@ -36,7 +37,7 @@ OPTIONS_DEFAULT=EDITOR
 OPTIONS_SUB=	yes
 
 EDITOR_DESC=	Enable editor
-EDITOR_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/gtk-2.0/gtk/__init__.py:x11-toolkits/py-gtk2
+EDITOR_USE=	gnome=pygtk2
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|###CONFIG_PATH###|${PREFIX}/etc/magicor/magicor.conf|' \
@@ -49,9 +50,9 @@ post-patch:
 	@${FIND} ${WRKSRC}/magicor -name "*.pyc" -delete
 
 do-install:
-	cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/
-	cd ${WRKSRC}/magicor && ${COPYTREE_SHARE} . ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/magicor/
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/magicor
+	@cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/
+	@cd ${WRKSRC}/magicor && ${COPYTREE_SHARE} . ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/magicor/
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/magicor
 	${INSTALL_SCRIPT} ${WRKSRC}/Magicor.py ${STAGEDIR}${PREFIX}/bin/magicor
 	${INSTALL_DATA} ${WRKSRC}/etc/magicor.conf \
 		${STAGEDIR}${PREFIX}/etc/magicor/magicor.conf.sample
@@ -62,7 +63,7 @@ do-install-EDITOR-on:
 		${STAGEDIR}${PREFIX}/etc/magicor/magicor-editor.conf.sample
 
 do-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

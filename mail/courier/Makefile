@@ -10,8 +10,12 @@ MASTER_SITES=	SF
 MAINTAINER=	bsd@dino.sk
 COMMENT=	Courier SMTP IMAP POP3 HTTP mail server suite
 
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING.GPL
+
 BUILD_DEPENDS=	courierauthconfig:security/courier-authlib-base
-LIB_DEPENDS=	libpcre.so:devel/pcre
+LIB_DEPENDS=	libidn.so:dns/libidn \
+		libpcre.so:devel/pcre
 RUN_DEPENDS=	courierauthconfig:security/courier-authlib-base \
 		${LOCALBASE}/share/sysconftool/sysconftool:devel/sysconftool \
 		${LOCALBASE}/etc/mime.types:misc/mime-support \
@@ -56,8 +60,7 @@ CALENDIR=	/var/spool/calendar
 MIMETYPES=	${LOCALBASE}/etc/mime.types
 WITH_TRANSPORT=	local esmtp dsn
 
-USES=		fam gettext gmake libtool perl5 pkgconfig tar:bzip2
-USE_OPENSSL=	yes
+USES=		fam gettext gmake libtool perl5 pkgconfig tar:bzip2 ssl
 USE_SUBMAKE=	yes
 USE_RC_SUBR=	courier
 
@@ -265,6 +268,11 @@ pre-patch:
 	@${CP} ${TEMPLATES}/config.guess ${TEMPLATES}/config.sub ${WRKSRC}
 
 post-patch:
+	@${REINPLACE_CMD} -i '' -e 's|#! perl|#!${PERL}|g' \
+		${WRKSRC}/webadmin/*.pl \
+		${WRKSRC}/webadmin/*.pl.in \
+		${WRKSRC}/courier/webadmin/*.pl \
+		${WRKSRC}/courier/webadmin/*.pl.in
 	@${REINPLACE_CMD} -e 's|^PROG=\./|PROG=exec ./|g' \
 		${WRKSRC}/courier/module.*/courier.config
 	@${REINPLACE_CMD} -e 's|@mydatadir@|@sysconfdir@|g' \
@@ -329,7 +337,7 @@ post-install:
 .endfor
 	@${INSTALL_DATA} ${STAGEDIR}${DATADIR}/htmldoc/* ${STAGEDIR}${DOCSDIR}/html
 .endif
-	@${RM} -rf ${STAGEDIR}${DATADIR}/htmldoc
+	@${RM} -r ${STAGEDIR}${DATADIR}/htmldoc
 	@-${CHOWN} -Rh ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${DATADIR}
 	@${CHMOD} -R a+r ${STAGEDIR}${DATADIR}/courierwebadmin
 	@${CHMOD} -R a-w ${STAGEDIR}${DATADIR} ${STAGEDIR}${LIBEXECDIR}/courier

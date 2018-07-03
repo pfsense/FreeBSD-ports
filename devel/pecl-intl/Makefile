@@ -3,11 +3,8 @@
 
 PORTNAME=	intl
 PORTVERSION=	3.0.0
-PORTREVISION=	6
+PORTREVISION=	13
 CATEGORIES=	devel pear
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PECL extension to support Internationalization(ICU)
@@ -16,7 +13,10 @@ LICENSE=	PHP301
 
 LIB_DEPENDS=	libicui18n.so:devel/icu
 
-USES=		php:ext tar:tgz
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=70 71 72
+USES=		compiler:c++11-lib php:pecl
+USE_CXXSTD=	gnu++11
+
+CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 
 .include <bsd.port.mk>

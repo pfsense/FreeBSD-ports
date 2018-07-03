@@ -3,13 +3,14 @@
 
 PORTNAME=	milter
 PORTVERSION=	1.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	mail python
 MASTER_SITES=	SF/${PYPORTNAME}/${PYPORTNAME}/${DISTNAME}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	${PYPORTNAME}-${PORTVERSION}
+DIST_SUBDIR=	python
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	estartu@augusta.de
 COMMENT=	Python interface to Sendmail milter API
 
 LICENSE=	GPLv2+
@@ -22,8 +23,7 @@ CFLAGS+=	-I${LOCALBASE}/include
 
 PYPORTNAME=	${PKGNAMEPREFIX:C/[0-9]+-//}${PORTNAME}
 
-DIST_SUBDIR=	python
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 post-install:

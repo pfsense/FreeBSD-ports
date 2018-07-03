@@ -34,10 +34,9 @@ PLIST_SUB+=	NLS="@comment "
 .endif
 
 .ifndef WITHOUT_SSL
-USE_OPENSSL=	yes
+USES+=	ssl
 CONFIGURE_ARGS+=	--with-ssl
 .endif
-
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|;;|;|g' \

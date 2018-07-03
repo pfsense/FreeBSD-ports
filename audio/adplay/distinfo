@@ -1,4 +1,5 @@
-SHA256 (adplay-1.7.tar.gz) = 524c02456acee0b1a934a02cd4bfc5c6461813aa7bcf88a68422d8132232c7ad
-SIZE (adplay-1.7.tar.gz) = 360854
-SHA256 (adplugdb-2006-07-07.tar.gz) = 3e931150d0e290a7243fe4247376cc910b10cb88932b452fc73c8becedcce8b8
-SIZE (adplugdb-2006-07-07.tar.gz) = 4245
+TIMESTAMP = 1511100939
+SHA256 (adplug-adplay-unix-v1.8_GH0.tar.gz) = dcb4dbf886b6087900012d00034a85fbaa29d7488d54d923122af625d8b918aa
+SIZE (adplug-adplay-unix-v1.8_GH0.tar.gz) = 42111
+SHA256 (adplug-database-v1.0_GH0.tar.gz) = 1c2cfd08bbaba19209893d5a6ef18287251aa34c82c2704570255e19a2535a99
+SIZE (adplug-database-v1.0_GH0.tar.gz) = 4462

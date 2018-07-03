@@ -5,12 +5,12 @@ PORTNAME=	Services_Compete
 PORTVERSION=	0.1.0
 CATEGORIES=	www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PHP interface to Compete SnapShop API
 
-BUILD_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request
-RUN_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request
+BUILD_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR}
+RUN_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR}
 
-USES=	pear
+USES=		pear
 
 .include <bsd.port.mk>

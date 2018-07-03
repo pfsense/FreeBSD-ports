@@ -1,0 +1,13 @@
+--- meson.build.orig	2017-10-25 18:32:34 UTC
++++ meson.build
+@@ -63,10 +63,5 @@ else
+     message('rst2man not found, not building manual page.')
+ endif
+ 
+-meson.add_install_script('utils/install_helper.sh',
+-                         get_option('sbindir'),
+-                         get_option('bindir'))
+-
+-
+ subdir('test')
+ 

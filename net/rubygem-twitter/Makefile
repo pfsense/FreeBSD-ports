@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	twitter
-PORTVERSION=	5.16.0
-PORTREVISION=	1
+PORTVERSION=	6.2.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -15,12 +14,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	rubygem-addressable>=2.3:www/rubygem-addressable \
 		rubygem-buftok>=0.2.0:devel/rubygem-buftok \
-		rubygem-equalizer>=0.0.10:devel/rubygem-equalizer \
-		rubygem-faraday>=0.9.0:www/rubygem-faraday \
-		rubygem-http>=1.0:www/rubygem-http \
+		rubygem-equalizer>=0.0.11:devel/rubygem-equalizer \
+		rubygem-http>=3.0:www/rubygem-http \
+		rubygem-http-form_data>=2.0:www/rubygem-http-form_data \
 		rubygem-http_parser.rb>=0.6.0:net/rubygem-http_parser.rb \
-		rubygem-json>=1.8:devel/rubygem-json \
 		rubygem-memoizable>=0.4.0:devel/rubygem-memoizable \
+		rubygem-multipart-post>=2.0:www/rubygem-multipart-post \
 		rubygem-naught>=1.0:devel/rubygem-naught \
 		rubygem-simple_oauth>=0.3.0:net/rubygem-simple_oauth
 

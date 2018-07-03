@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	openmw
-PORTVERSION=	0.40.0
 DISTVERSIONPREFIX=	openmw-
+DISTVERSION=	0.43.0
+PORTREVISION=	2
 CATEGORIES=	games
 
-MAINTAINER=	t@tobik.me
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Unofficial open source engine reimplementation of the game Morrowind
 
 LICENSE=	GPLv3
@@ -19,12 +20,10 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libosg.so:graphics/osg \
 		libunshield.so:archivers/unshield
 
-BROKEN_FreeBSD_9=	does not build
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenMW
 
-USES=		cmake:outsource compiler:c++14-lang ninja openal pkgconfig
+USES=		cmake:outsource compiler:c++14-lang openal pkgconfig
 USE_GL=		gl
 USE_QT5=	qmake_build buildtools_build core gui network opengl \
 		printsupport widgets

@@ -25,7 +25,7 @@ RUN_DEPENDS=	${RUBY_SITELIBDIR}/romkan.rb:japanese/ruby-romkan \
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-rubydir=${RUBY_SITELIBDIR}
-USES=		autoreconf
+USES+=		autoreconf
 USE_RUBY=	yes
 
 .if !defined(SLAVE_PORT)
@@ -52,8 +52,6 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-Makefile.am.ruby19 \
 		${PATCHDIR}/extra-patch-migemo-server \
 		${PATCHDIR}/extra-patch-migemo.rb.in \
 		${PATCHDIR}/extra-patch-tests_Makefile.am
-
-BROKEN_ia64=	Does not compile
 
 .include <bsd.port.options.mk>
 

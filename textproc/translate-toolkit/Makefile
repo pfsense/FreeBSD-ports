@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	translate-toolkit
-PORTVERSION=	2.0.0b3
+PORTVERSION=	2.2.4
 CATEGORIES=	textproc
 MASTER_SITES=	CHEESESHOP
 
@@ -11,21 +11,21 @@ COMMENT=	Converts between many translation formats
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six \
-		${PYTHON_PKGNAMEPREFIX}vobject>=0:deskutils/py-vobject \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}vobject>=0:deskutils/py-vobject@${FLAVOR} \
 		msghack:devel/gettext-msghack \
-		${PYTHON_PKGNAMEPREFIX}iniparse>=0:devel/py-iniparse \
-		${PYTHON_PKGNAMEPREFIX}levenshtein>=0:devel/py-levenshtein \
-		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml \
+		${PYTHON_PKGNAMEPREFIX}iniparse>=0:devel/py-iniparse@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}levenshtein>=0:devel/py-levenshtein@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${FLAVOR} \
 		iso-codes>=1.3:misc/iso-codes \
 		bash:shells/bash \
-		${PYTHON_PKGNAMEPREFIX}utidy>=0:www/py-utidy
+		${PYTHON_PKGNAMEPREFIX}utidylib>=0:www/py-utidylib@${FLAVOR}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 # Can use psyco (on i386)
 
 NO_ARCH=	yes
-USES=		gettext python tar:bzip2
+USES=		gettext python:2.7
 USE_PYTHON=	autoplist distutils
 
 # list of manual pages to generate

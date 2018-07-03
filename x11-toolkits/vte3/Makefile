@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vte
-PORTVERSION=	0.42.4
+PORTVERSION=	0.48.3
 PORTREVISION=	1
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
@@ -12,45 +12,25 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Terminal widget with improved accessibility and I18N support
 
-BUILD_DEPENDS+= vapigen:lang/vala \
+LICENSE=	LGPL21
+
+BUILD_DEPENDS=	vapigen:lang/vala \
 		bash:shells/bash
-LIB_DEPENDS=	libgnutls.so:security/gnutls
+LIB_DEPENDS=	libgnutls.so:security/gnutls \
+		libpcre2-8.so:devel/pcre2
 
 PORTSCOUT=	limitw:1,even
 
-USES=		bison compiler:c++0x gettext gmake gnome libtool pathfix \
-		pkgconfig tar:xz
+USES=		compiler:c++0x gettext gmake gnome gperf libtool localbase \
+		pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USE_GNOME?=	gtk30 intltool referencehack introspection:build
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool referencehack \
+		introspection:build
 CONFIGURE_ARGS=	--enable-introspection \
-		--disable-static \
-		--disable-Bsymbolic
+		--disable-static
 INSTALL_TARGET=	install-strip
 
 PLIST_SUB=	VERSION=2.91
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000 || ${OPSYS} == DragonFly
-LIBS+=	-lz
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-Wno-unused-but-set-variable||g' \
-		${WRKSRC}/src/Makefile.in
-# zlib.pc only is available on 10.1-R and newer.
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000 || ${OPSYS} == DragonFly
-	@${REINPLACE_CMD} -e 's|gio-unix-2.0 zlib|gio-unix-2.0|g' \
-		${WRKSRC}/configure
-.endif
-# borrowed osversion from bsd.ssp.mk
-.if ${OSVERSION} < 1000036 && ${ARCH} == i386
-	@${REINPLACE_CMD} -e 's|-fstack-protector-strong||g; \
-		s|-fstack-protector||g' \
-		${WRKSRC}/configure
-.endif
 
 .include <bsd.port.mk>

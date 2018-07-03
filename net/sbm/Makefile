@@ -6,7 +6,7 @@ PORTVERSION=	0.8
 CATEGORIES=	net
 MASTER_SITES=	http://dl.2f30.org/releases/
 
-MAINTAINER=	t@tobik.me
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Simple bandwidth monitor
 
 LICENSE=	ISCL
@@ -18,6 +18,8 @@ PLIST_FILES=	bin/sbm \
 		bin/sbm-plot \
 		bin/sbm-rt-plot \
 		man/man1/sbm.1.gz
+
+PORTSCOUT=	skipv:0.9 # only Linux related changes
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/sbm ${STAGEDIR}${PREFIX}/bin/

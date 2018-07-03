@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	clrng
-DISTVERSION=	1.0.0-beta
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0.0-beta
 CATEGORIES=	math
 
 MAINTAINER=	dieterich@ogolem.org
@@ -16,7 +16,9 @@ BUILD_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 RUN_DEPENDS=	opencl>=0:devel/opencl
 
-BROKEN_FreeBSD_9=	clRNG is only supported on FreeBSD 10.1 and newer
+ONLY_FOR_ARCHS=		amd64 i386 powerpc powerpc64
+ONLY_FOR_ARCHS_REASON=	this code has only been tested on x86 and powerpc platforms
+BROKEN_powerpc64=	fails to compile: cc1: error: unrecognized command line option -std=c11
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	clMathLibraries

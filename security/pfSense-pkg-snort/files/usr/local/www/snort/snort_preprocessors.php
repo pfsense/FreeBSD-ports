@@ -6,7 +6,7 @@
  * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,6 +54,8 @@ if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_serv
 	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item'] = array();
 if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item']))
 	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'] = array();
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item']))
+	$config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item'] = array();
 
 $a_nat = &$config['installedpackages']['snortglobal']['rule'];
 
@@ -65,6 +67,7 @@ $stream5_tcp_engine_next_id = count($a_nat[$id]['stream5_tcp_engine']['item']);
 $http_inspect_engine_next_id = count($a_nat[$id]['http_inspect_engine']['item']);
 $ftp_server_engine_next_id = count($a_nat[$id]['ftp_server_engine']['item']);
 $ftp_client_engine_next_id = count($a_nat[$id]['ftp_client_engine']['item']);
+$arp_spoof_engine_next_id = count($a_nat[$id]['arp_spoof_engine']['item']);
 
 $pconfig = array();
 if (isset($id) && isset($a_nat[$id])) {
@@ -81,6 +84,8 @@ if (isset($id) && isset($a_nat[$id])) {
 		$pconfig['ftp_server_engine']['item'] = array();
 	if (!is_array($pconfig['ftp_client_engine']['item']))
 		$pconfig['ftp_client_engine']['item'] = array();
+	if (!is_array($pconfig['arp_spoof_engine']['item']))
+		$pconfig['arp_spoof_engine']['item'] = array();
 
 	/************************************************************/
 	/* To keep new users from shooting themselves in the foot   */
@@ -263,7 +268,38 @@ if ($_GET['act'] == "import" && isset($_GET['varname']) && !empty($_GET['varvalu
 	$pconfig[$_GET['varname']] = htmlspecialchars($_GET['varvalue']);
 }
 
-// Handle deleting of any of the multiple configuration engines
+// Handle saving of ARP Spoofing MAC-to-IP address pairs
+if ($_POST['arp_spoof_save']) {
+
+	// Validate IP and MAC address values first
+	if (filter_var($_POST['arp_spoof_ip_addr'], FILTER_VALIDATE_IP) && 
+	   filter_var($_POST['arp_spoof_mac_addr'], FILTER_VALIDATE_MAC)) {
+		// Set new or updated ARP Spoof engine values
+		$engine = array();
+		$engine['ip_addr'] = $_POST['arp_spoof_ip_addr'];
+		$engine['mac_addr'] = $_POST['arp_spoof_mac_addr'];
+
+		// See if editing an existing entry or adding a new one
+		if (isset($_POST['eng_id']) && isset($a_nat[$id]['arp_spoof_engine']['item'][$_POST['eng_id']])) {
+			$a_nat[$id]['arp_spoof_engine']['item'][$_POST['eng_id']] = $engine;
+		}
+		else {
+			$a_nat[$id]['arp_spoof_engine']['item'][] = $engine;
+		}
+
+		// Save the updates to the Snort configuration
+		write_config("Snort pkg: Updated ARP Spoofing engine address pairs for {$a_nat[$id]['interface']}.");
+		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
+		exit;
+	}
+	else {
+		$input_errors[] = gettext("The IP address or MAC address failed to validate!  Change was discarded.");
+	}
+}
+
+// Handle deleting of any of the multiple configuration engines.
+// jQuery code is called dynamically from the page to set flags
+// to indicate which multiple configuration engine to delete.
 if ($_POST['del_http_inspect']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['http_inspect_engine']['item'][$_POST['eng_id']]);
@@ -301,6 +337,14 @@ elseif ($_POST['del_ftp_server']) {
 		unset($a_nat[$id]['ftp_server_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted ftp_server engine for {$a_nat[$id]['interface']}.");
 		header("Location: snort_preprocessors.php?id=$id#ftp_telnet_row");
+		exit;
+	}
+}
+elseif ($_POST['del_arp_spoof_engine']) {
+	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
+		unset($a_nat[$id]['arp_spoof_engine']['item'][$_POST['eng_id']]);
+		write_config("Snort pkg: deleted ARP spoof host address pair for {$a_nat[$id]['interface']}.");
+		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
 		exit;
 	}
 }
@@ -538,7 +582,6 @@ if ($_POST['save']) {
 		$natent['smtp_log_rcpt_to'] = $_POST['smtp_log_rcpt_to'] ? 'on' : 'off';
 		$natent['smtp_log_filename'] = $_POST['smtp_log_filename'] ? 'on' : 'off';
 		$natent['smtp_log_email_hdrs'] = $_POST['smtp_log_email_hdrs'] ? 'on' : 'off';
-
 		$natent['sf_portscan'] = $_POST['sf_portscan'] ? 'on' : 'off';
 		$natent['dce_rpc_2'] = $_POST['dce_rpc_2'] ? 'on' : 'off';
 		$natent['dns_preprocessor'] = $_POST['dns_preprocessor'] ? 'on' : 'off';
@@ -563,6 +606,8 @@ if ($_POST['save']) {
 		$natent['stream5_track_icmp'] = $_POST['stream5_track_icmp'] ? 'on' : 'off';
 		$natent['appid_preproc'] = $_POST['appid_preproc'] ? 'on' : 'off';
 		$natent['sf_appid_statslog'] = $_POST['sf_appid_statslog'] ? 'on' : 'off';
+		$natent['arpspoof_preproc'] = $_POST['arpspoof_preproc'] ? 'on' : 'off';
+		$natent['arp_unicast_detection'] = $_POST['arp_unicast_detection'] ? 'on' : 'off';
 
 		if (isset($id) && isset($a_nat[$id])) {
 			$a_nat[$id] = $natent;
@@ -654,6 +699,9 @@ if ($_POST['btn_edit_hat']) {
 if ($pconfig['host_attribute_table'] == 'on' && empty($pconfig['host_attribute_data']))
 	$input_errors[] = gettext("The Host Attribute Table option is enabled, but no Host Attribute data has been loaded.  Data may be entered manually or imported from a suitable file.");
 
+if (empty($if_friendly)) {
+	$if_friendly = "None";
+}
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Preprocessors and Flow"), gettext("{$if_friendly}"));
 include("head.inc");
 
@@ -721,8 +769,8 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'Enable this only if you maintain customized preprocessor text rules files for this interface. Default is Not Checked.',
 		$pconfig['protect_preproc_rules'] == 'on' ? true:false,
 		'on'
-	))->setHelp('Enable this only if you use customized preprocessor text rules files and you do not want them overwritten by automatic Snort VRT rule updates.  ' . 
-		    'This option is disabled when Snort VRT rules download is not enabled on the Global Settings tab.  Most users should leave this option unchecked.');
+	))->setHelp('Enable this only if you use customized preprocessor text rules files and you do not want them overwritten by automatic Snort Subscriber Rules updates.  ' . 
+		    'This option is disabled when Snort Subscriber Rules download is not enabled on the Global Settings tab.  Most users should leave this option unchecked.');
 	$section->add($group);
 	$group = new Form_Group('Auto Rule Disable');
 	$group->add(new Form_Checkbox(
@@ -1344,7 +1392,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	//----- END Portscan settings -----
 
 	//----- START FTP/Telnet Global setttings -----
-	if ($pconfig['ftp_preprocessor']=="on") {
+	if ($pconfig['ftp_preprocessor'] == "on") {
 		$section = new Form_Section('FTP and Telnet Global Options', 'preproc_ftpglobal', COLLAPSIBLE|SEC_OPEN);
 	} else {
 		$section = new Form_Section('FTP and Telnet Global Options', 'preproc_ftpglobal', COLLAPSIBLE|SEC_CLOSED);
@@ -1380,7 +1428,12 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	//----- END FTP/Telnet Global settings -----
 
 	//----- START Telnet Protocol setttings -----
-	$section = new Form_Section('Telnet Protocol Options', 'preproc_telnet', COLLAPSIBLE|SEC_OPEN);
+	if ($pconfig['ftp_preprocessor'] == "on" && $pconfig['ftp_telnet_normalize'] == "on") {
+		$section = new Form_Section('Telnet Protocol Options', 'preproc_telnet', COLLAPSIBLE|SEC_OPEN);
+	}
+	else {
+		$section = new Form_Section('Telnet Protocol Options', 'preproc_telnet', COLLAPSIBLE|SEC_CLOSED);
+	}
 	$section->addInput(new Form_Checkbox(
 		'ftp_telnet_normalize',
 		'Normalization',
@@ -1510,14 +1563,14 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'sensitive_data',
 		'Enable',
 		'Sensitive data searches for credit card numbers, Social Security numbers and e-mail addresses in data.  Default is Not Checked.' . 
-		'To enable this preprocessor, you must enable the Snort VRT rules on the GLOBAL SETTINGS tab.',
+		'To enable this preprocessor, you must enable the Snort Subscriber Rules on the GLOBAL SETTINGS tab.',
 		$pconfig['sensitive_data'] == 'on' ? true:false,
 		'on'
 	));
 	$section->addInput(new Form_Select(
 		'sdf_alert_data_type',
 		'Inspect For',
-		explode(',', $pconfig['sdf_alert_data_type']),
+		explode(',', (string)$pconfig['sdf_alert_data_type']),
 		array( 'Credit Card' => 'Credit Card', 'Email Addresses' => 'Email Addresses', 'U.S. Phone Numbers' => 'U.S. Phone Numbers', 'U.S. Social Security Numbers' => 'U.S. Social Security Numbers' ),
 		true
 	))->setHelp('Choose which types of sensitive data to detect.  Use CTRL + Click for multiple selections.');
@@ -1528,17 +1581,85 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'number',
 		$pconfig['sdf_alert_threshold']
 	))->setAttribute('min', '0')->setHelp('Personally Identifiable Information (PII) combination alert threshold.  Default is 25.');
-	$group->setHelp('This value sets the number of PII combinations required to trigger an alert.  This should be set higher than the highest individual count in your <em>sd_pattern</em> rules.');
+	$group->setHelp('This value sets the number of PII combinations required to trigger an alert.  This should be set higher than the highest individual count in any of your sd_pattern rules.');
 	$section->add($group);
 	$section->addInput(new Form_Checkbox(
 		'sdf_mask_output',
 		'Mask Output',
-		'Replace all but last 4 digits of PII with <em>X</em> on credit card and Social Security Numbers.  Default is Not Checked.',
+		'Replace all but last 4 digits of credit card and Social Security Numbers with X.  Default is Not Checked.',
 		$pconfig['sdf_mask_output'] == 'on' ? true:false,
 		'on'
 	));
 	print($section);
 	//----- END Sensitive Data settings -----
+
+	//----- START ARP Spoof Detection settings -----
+?>
+	<div class="panel panel-default" id="preproc_arp_spoof_row">
+		<div class="panel-heading">
+			<h2 class="panel-title">ARP Spoof Detection<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_arp_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
+		</div>
+		<div id="preproc_arp_panel-body" class="panel-body collapse in">
+<?php
+			$group = new Form_Group('Enable ARP Spoof Detection');
+			$group->add(new Form_Checkbox(
+				'arpspoof_preproc',
+				'Enable ARP Spoof Detection',
+				'Detects ARP attacks and inconsistent Ethernet to IP mapping.  Default is Not Checked.',
+				$pconfig['arpspoof_preproc'] == 'on' ? true:false,
+				'on'
+			));
+			print($group);
+			$group = new Form_Group('Enable Unicast ARP Checks');
+			$group->add(new Form_Checkbox(
+				'arp_unicast_detection',
+				'Enable Unicast ARP Checks',
+				'Checks for unicast ARP requests.  Default is Not Checked.',
+				$pconfig['arp_unicast_detection'] == 'on' ? true:false,
+				'on'
+			));
+			print($group);
+?>
+			<!--  Populate MAC-to-IP Address pairs table  -->
+			<div class="form-group">
+				<label class="col-sm-2 control-label">
+					<?=gettext("MAC-to-IP Address Pairings"); ?>
+				</label>
+				<div class="col-sm-10">
+					<div class="table-responsive">
+						<table class="table table-striped table-hover table-condensed">
+							<thead>
+								<tr>
+									<th style="width:35%;"><?=gettext("MAC Address")?></th>
+									<th style="width:35%;"><?=gettext("IP Address")?></th>
+									<th>
+										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$arp_spoof_engine_next_id;?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new address pair entry")?>">
+											<i class="fa fa-plus icon-embed-btn"></i>
+											<?=gettext(' Add');?>
+										</a>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php foreach ($a_nat[$id]['arp_spoof_engine']['item'] as $f => $v): ?>
+								<tr>
+									<td><?=gettext($v['mac_addr'])?></td>
+									<td><?=gettext($v['ip_addr'])?></td>
+									<td>
+										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$f;?>" data-arp_spoof_mac="<?=$v['mac_addr'];?>" data-arp_spoof_ip="<?=$v['ip_addr'];?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this address pair entry")?>"></a>
+										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_arp_spoof_engine', '<?=$f;?>');" title="<?=gettext("Delete this adress pair entry")?>"></a>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php
+	//----- END ARP Spoof Detection settings -----
 
 	//----- START POP3 Decoder settings -----
 	if ($pconfig['pop_preproc']=="on") {
@@ -1898,6 +2019,44 @@ $modal->addInput(new Form_StaticText(
 		gettext('all of the rules shown have been auto-disabled because they require one or more of the preprocessors that have been disabled.') . '</span>'
 ));
 print($modal);
+
+
+// Add ARP Spoofing MAC-IP address entry modal pop-up
+$modal = new Modal('Add/Edit MAC-to-IP Address Pair', 'arp_spoof_addr_pair', true);
+$modal->addInput(new Form_Input(
+	'arp_spoof_mac_addr',
+	'MAC Address',
+	''
+))->setHelp('Enter MAC address of host.');
+$modal->addInput(new Form_IpAddress(
+	'arp_spoof_ip_addr',
+	'IP Address',
+	'',
+	BOTH
+))->setHelp('Enter IP address of host.');
+$btnsave = new Form_Button(
+	'arp_spoof_save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btncancel = new Form_Button(
+	'arp_spoof_cancel',
+	'Cancel'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default')->setAttribute('title', 'Save changes and return to Preprocessors tab');
+$btncancel->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning');
+$btncancel->setAttribute('data-dismiss', 'modal');
+$btncancel->setAttribute('title', 'Cancel changes and return to Preprocessors tab');
+
+$modal->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btncancel
+));
+
+
+
+print($modal);
 ?>
 
 </form>
@@ -2010,9 +2169,19 @@ print_callout('<p>' . gettext("Remember to save your changes before you exit thi
 	function ftp_telnet_enable_change() {
 		// Hide FTP-Telnet sections if FTP preprocessor is disabled
 		if (!($('#ftp_preprocessor').prop('checked'))) {
-			$('#preproc_ftpglobal_panel-body').collapse('toggle');
-			$('#preproc_telnet_panel-body').collapse('toggle');
-			$('#preproc_ftp_panel-body').collapse('toggle');
+			$('#preproc_telnet_panel-body').collapse('hide');
+			$('#preproc_ftp_panel-body').collapse('hide');
+			$('#preproc_ftpglobal_panel-body').collapse('hide');
+		}
+		else {
+			$('#preproc_ftpglobal_panel-body').collapse('show');
+			$('#preproc_ftp_panel-body').collapse('show');
+			if ($('#ftp_telnet_normalize').prop('checked')) {
+				$('#preproc_telnet_panel-body').collapse('show');
+			}
+			else {
+				$('#preproc_telnet_panel-body').collapse('hide');
+			}
 		}
 	}
 
@@ -2020,6 +2189,13 @@ print_callout('<p>' . gettext("Remember to save your changes before you exit thi
 		// Hide Sensitive Date section if SDF preprocessor is disabled
 		if (!($('#sensitive_data').prop('checked'))) {
 			$('#preproc_sdf_panel-body').collapse('toggle');
+		}
+	}
+
+	function arp_spoof_enable_change() {
+		// Hide ARP Spoofing Detection section if preprocessor is disabled
+		if (!($('#arpspoof_preproc').prop('checked'))) {
+			$('#preproc_arp_panel-body').collapse('toggle');
 		}
 	}
 
@@ -2061,6 +2237,7 @@ print_callout('<p>' . gettext("Remember to save your changes before you exit thi
 		}
 
 		ftp_telnet_enable_change();
+		arp_spoof_enable_change();
 	}
 
 	function selectAlias(targetVar) {
@@ -2088,7 +2265,7 @@ print_callout('<p>' . gettext("Remember to save your changes before you exit thi
 	function del_eng(eng, engid) {
 		$('#eng_id').val(engid);
 		if (confirm('Are you sure you want to delete this entry?')) {
-			$('#iform').append('<input type="hidden" name=eng value="1">').submit();
+			$('#iform').append('<input type="hidden" id="' + eng + '" name="' + eng + '" value="1">').submit();
 		}
 	}
 
@@ -2112,9 +2289,11 @@ print_callout('<p>' . gettext("Remember to save your changes before you exit thi
 		});
 	}
 
+
+
 events.push(function(){
 
-	// ---------- Autocomplete --------------------------------------------------------------------
+	// ---------- Autocomplete --------------------------------------------
 
 	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
 
@@ -2126,7 +2305,7 @@ events.push(function(){
 		source: addressarray
 	});
 
-	// ---------- Click handlers -------------------------------------------------------
+	// ---------- Click handlers ------------------------------------------
 
 	$('#host_attribute_table').click(function() {
 		host_attribute_table_enable_change();
@@ -2160,8 +2339,16 @@ events.push(function(){
 		ftp_telnet_enable_change();
 	});
 
+	$('#ftp_telnet_normalize').click(function() {
+		ftp_telnet_enable_change();
+	});
+
 	$('#sensitive_data').click(function() {
 		sensitive_data_enable_change();
+	});
+
+	$('#arpspoof_preproc').click(function() {
+		arp_spoof_enable_change();
 	});
 
 	$('#pop_preproc').click(function() {
@@ -2178,6 +2365,13 @@ events.push(function(){
 
 	$('#rulesviewer').on('shown.bs.modal', function() {
 		getFileContents();
+	});
+
+	// Open ARP Spoofing address pairs Modal and init its data fields
+	$('#arp_spoof_addr_pair').on('show.bs.modal', function(e) {
+		$('#eng_id').val($(e.relatedTarget).data('eng_id'));
+		$('#arp_spoof_ip_addr').val($(e.relatedTarget).data('arp_spoof_ip'));
+		$('#arp_spoof_mac_addr').val($(e.relatedTarget).data('arp_spoof_mac'));
 	});
 
 	// Set initial state of form controls

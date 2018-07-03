@@ -8,12 +8,12 @@ CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	john@ixsystems.com
+MAINTAINER=	jhixson@gmail.com
 COMMENT=	Common API for running Django on non-relational/NoSQL databases
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django18>0:www/py-django18
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django18>0:www/py-django18@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

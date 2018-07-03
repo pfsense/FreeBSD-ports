@@ -1,0 +1,11 @@
+--- src/CMakeLists.txt.orig	2017-06-10 02:18:06 UTC
++++ src/CMakeLists.txt
+@@ -62,7 +62,7 @@ endif()
+ 
+ 
+ # Detects reswrap version
+-find_program(RESWRAP NAMES reswrap-1.7 reswrap fox-reswrap)
++find_program(RESWRAP NAMES reswrap-1.7 reswrap fox-reswrap PATH_SUFFIXES fox-1.7)
+ if(RESWRAP)
+   message(STATUS "Found reswrap: ${RESWRAP}")
+   execute_process(COMMAND ${RESWRAP} -v OUTPUT_VARIABLE RESWRAP_OUTPUT)

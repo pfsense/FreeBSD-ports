@@ -13,7 +13,8 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast, small graphical Web browser built upon fltk
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 RUN_DEPENDS=	wget:ftp/wget
@@ -23,6 +24,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--libdir=${PREFIX}/libexec
 CONFLICTS=	dillo-i18n-[0-9]* \
 		dillo-0*
+PORTDOCS=	*
 
 OPTIONS_DEFINE=		COOKIES HYPHENATION IPV6 SSL THREADS DOCS
 OPTIONS_DEFAULT=	COOKIES HYPHENATION SSL THREADS
@@ -31,26 +33,18 @@ COOKIES_DESC=		Cookie support
 HYPHENATION_DESC=	Hyphenation file(s) for HYPHENATION_LANGS
 SSL_DESC=		Experimental HTTPS support
 
-.include <bsd.port.options.mk>
+SSL_USES=			ssl
+COOKIES_CONFIGURE_ENABLE=	cookies
+IPV6_CONFIGURE_ENABLE=		ipv6
+SSL_CONFIGURE_ENABLE=		ssl
+THREADS_CONFIGURE_ENABLE=	threaded-dns
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-WITH_OPENSSL_PORT=	yes
-.endif
-
-.if ${PORT_OPTIONS:MCOOKIES}
-CONFIGURE_ARGS+=	--enable-cookies
-.else
-CONFIGURE_ARGS+=	--disable-cookies
-.endif
+.include <bsd.port.pre.mk>
 
 .ifdef(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-gprof --enable-rtfl
 .else
 CONFIGURE_ARGS+=	--disable-gprof --disable-rtfl
-.endif
-
-.if ${PORT_OPTIONS:MDOCS}
-PORTDOCS=	*
 .endif
 
 .if ${PORT_OPTIONS:MHYPHENATION}
@@ -75,25 +69,6 @@ PLIST_FILES+=	libexec/dillo/hyphenation/${_l:C/-.*\$//}.pat
 .endfor
 .endif
 
-.if ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=	--enable-ipv6
-.else
-CONFIGURE_ARGS+=	--disable-ipv6
-.endif
-
-.if ${PORT_OPTIONS:MSSL}
-CONFIGURE_ARGS+=	--enable-ssl
-USE_OPENSSL=	yes
-.else
-CONFIGURE_ARGS+=	--disable-ssl
-.endif
-
-.if ${PORT_OPTIONS:MTHREADS}
-CONFIGURE_ARGS+=	--enable-threaded-dns
-.else
-CONFIGURE_ARGS+=	--disable-threaded-dns
-.endif
-
 post-patch:
 	@${MV} ${WRKSRC}/dillorc ${WRKSRC}/dillorc.sample
 	@${MV} ${WRKSRC}/dpid/dpidrc.in ${WRKSRC}/dpid/dpidrc.sample.in
@@ -107,22 +82,22 @@ post-patch:
 		${WRKSRC}/dillo-install-hyphenation \
 		${WRKSRC}/doc/dillo.1.in \
 		${WRKSRC}/dpid/dpid.c
-.if ${PORT_OPTIONS:MDOCS}
+
+post-patch-DOCS-on:
 	@${REINPLACE_CMD} -e "\|install-data-am:|s|install-dist_docDATA||" \
 		${WRKSRC}/doc/Makefile.in
-.endif
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
-.endif
 	@${MKDIR} ${STAGEDIR}${PREFIX}/libexec/dillo/hyphenation
-.if ${PORT_OPTIONS:MHYPHENATION}
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
+
+post-install-HYPHENATION-on:
 .for _l in ${HYPHENATION_LANGS}
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/hyph-${_l}.pat.txt \
 	${STAGEDIR}${PREFIX}/libexec/dillo/hyphenation/${_l:C/-.*\$//}.pat
 .endfor
-.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

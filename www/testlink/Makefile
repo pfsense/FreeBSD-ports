@@ -12,10 +12,11 @@ COMMENT=	Web based test management and test execution system
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe
+IGNORE_WITH_PHP=	70 71 72
+
+USES=		cpe php:web
 CPE_VENDOR=	teamst
 USE_PHP=	gd iconv mbstring session xml
-WANT_PHP_WEB=	yes
 NO_BUILD=	yes
 PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 REINPLACE_ARGS=	-i ''
@@ -61,7 +62,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/var/testlink|${WWWDIR}|' ${WRKSRC}/config.inc.php
 	@${FIND} ${WRKSRC} -name "\.*" -delete
 	@${FIND} ${WRKSRC} -name "*.orig" -delete
-	@${RM} -rf ${WRKSRC}/.idea
+	@${RM} -r ${WRKSRC}/.idea
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}

@@ -3,10 +3,11 @@
 
 PORTNAME=	quackle
 PORTVERSION=	1.0.3
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scrabble-like word game utilizing Qt4
 
 LICENSE=	GPLv3

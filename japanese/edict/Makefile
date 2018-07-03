@@ -47,8 +47,6 @@ DOCSDIR=	${PREFIX}/share/doc/xjdic
 
 NO_WRKSUBDIR=	yes
 
-BROKEN_sparc64=	Fails on sparc64 during installation with error 2
-
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
@@ -72,7 +70,7 @@ do-install:
 	(cd ${STAGEDIR}${DATADIR} && ${CHMOD} ${SHAREMODE} \
 		${dict:R} ${dict:R}.xjdx)
 .endfor
-	${RM} -f ${STAGEDIR}${PREFIX}/bin/xjdic
+	${RM} ${STAGEDIR}${PREFIX}/bin/xjdic
 	${LN} -s ${PREFIX}/bin/xjdic_sa ${STAGEDIR}${PREFIX}/bin/xjdic
 	(cd ${WRKSRC} && ${INSTALL_DATA} radicals.tm radkfile kanjstroke \
 		romkana.cnv vconj ${STAGEDIR}${DATADIR})

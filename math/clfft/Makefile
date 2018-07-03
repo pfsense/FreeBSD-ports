@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	clfft
-PORTVERSION=	2.12.0
+PORTVERSION=	2.12.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	math
 
-MAINTAINER=	dieterich@ogolem.org
+MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Software library containing FFT functions written in OpenCL
 
 LICENSE=	APACHE20
@@ -16,16 +17,16 @@ BUILD_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 RUN_DEPENDS=	opencl>=0:devel/opencl
 
-BROKEN_FreeBSD_9=	clFFT is only supported on FreeBSD 10.1 and newer
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON_amd64=	only builds and is supported on amd64
+
+USES=		cmake
+USE_LDCONFIG=	yes
+USE_CXXSTD=	gnu++98
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	clMathLibraries
 GH_PROJECT=	clFFT
-
-USE_LDCONFIG=	yes
-USES=		cmake
 
 CMAKE_ARGS+=	-DBUILD_CLIENT=OFF \
 		-DBUILD_TEST=OFF \

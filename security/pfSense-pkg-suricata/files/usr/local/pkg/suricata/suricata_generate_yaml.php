@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2016 Bill Meeks
+ * Copyright (C) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,10 +59,18 @@ else {
 	$external_net = trim($external_net, ', ') . "]";
 }
 
-// Set the PASS LIST and write its contents to disk
-$plist = suricata_build_list($suricatacfg, $suricatacfg['passlistname'], true);
-@file_put_contents("{$suricatacfgdir}/passlist", implode("\n", $plist));
+// Set the PASS LIST and write its contents to disk,
+// but only if using Legacy Mode blocking. Otherwise,
+// just create an empty placeholder file.
+unlink_if_exists("{$suricatacfgdir}/rules/passlist.rules");
 $suri_passlist = "{$suricatacfgdir}/passlist";
+if ($suricatacfg['ips_mode'] == 'ips_mode_legacy' && $suricatacfg['blockoffenders'] == 'on' && $suricatacfg['passlistname'] != 'none') {
+	$plist = suricata_build_list($suricatacfg, $suricatacfg['passlistname'], true);
+	@file_put_contents("{$suricatacfgdir}/passlist", implode("\n", $plist));
+}
+else {
+	file_put_contents("{$suricatacfgdir}/passlist", '');
+}
 
 // Set default and user-defined variables for SERVER_VARS and PORT_VARS
 $suricata_servers = array (
@@ -70,7 +78,8 @@ $suricata_servers = array (
 	"sql_servers" => "\$HOME_NET", "telnet_servers" => "\$HOME_NET", "dnp3_server" => "\$HOME_NET",
 	"dnp3_client" => "\$HOME_NET", "modbus_server" => "\$HOME_NET", "modbus_client" => "\$HOME_NET",
 	"enip_server" => "\$HOME_NET", "enip_client" => "\$HOME_NET", "ftp_servers" => "\$HOME_NET", "ssh_servers" => "\$HOME_NET", 
-	"aim_servers" => "64.12.24.0/23,64.12.28.0/23,64.12.161.0/24,64.12.163.0/24,64.12.200.0/24,205.188.3.0/24,205.188.5.0/24,205.188.7.0/24,205.188.9.0/24,205.188.153.0/24,205.188.179.0/24,205.188.248.0/24"
+	"aim_servers" => "64.12.24.0/23,64.12.28.0/23,64.12.161.0/24,64.12.163.0/24,64.12.200.0/24,205.188.3.0/24,205.188.5.0/24,205.188.7.0/24,205.188.9.0/24,205.188.153.0/24,205.188.179.0/24,205.188.248.0/24", 
+	"sip_servers" => "\$HOME_NET"
 );
 $addr_vars = "";
 	foreach ($suricata_servers as $alias => $avalue) {
@@ -131,7 +140,7 @@ else
 if (!empty($suricatacfg['mpm_algo']))
 	$mpm_algo = $suricatacfg['mpm_algo'];
 else
-	$mpm_algo = "ac";
+	$mpm_algo = "auto";
 
 if (!empty($suricatacfg['inspect_recursion_limit']) || $suricatacfg['inspect_recursion_limit'] == '0')
 	$inspection_recursion_limit = $suricatacfg['inspect_recursion_limit'];
@@ -148,6 +157,13 @@ if ($suricatacfg['intf_promisc_mode'] == 'on')
 else
 	$intf_promisc_mode = "no";
 
+if (!empty($suricatacfg['intf_snaplen'])) {
+	$intf_snaplen = $suricatacfg['intf_snaplen'];
+}
+else {
+	$intf_snaplen = "1518";
+}
+
 // Add interface-specific blocking settings
 if ($suricatacfg['blockoffenders'] == 'on' && $suricatacfg['ips_mode'] == 'ips_mode_legacy')
 	$suri_blockoffenders = "yes";
@@ -158,6 +174,11 @@ if ($suricatacfg['blockoffenderskill'] == 'on')
 	$suri_killstates = "yes";
 else
 	$suri_killstates = "no";
+
+if ($suricatacfg['block_drops_only'] == 'on')
+	$suri_blockdrops = "yes";
+else
+	$suri_blockdrops = "no";
 
 if ($suricatacfg['blockoffendersip'] == 'src')
 	$suri_blockip = 'SRC';
@@ -229,6 +250,11 @@ if ($suricatacfg['enable_tls_log'] == 'on')
 else
 	$tls_log_enabled = "no";
 
+if ($suricatacfg['enable_tls_store'] == 'on')
+	$tls_store_enabled = "yes";
+else
+	$tls_store_enabled = "no";
+
 if ($suricatacfg['tls_log_extended'] == 'on')
 	$tls_log_extended = "yes";
 else
@@ -249,18 +275,21 @@ if ($suricatacfg['enable_tracked_files_magic'] == 'on')
 else
 	$json_log_magic = "no";
 
-if ($suricatacfg['enable_tracked_files_md5'] == 'on')
-	$json_log_md5 = "yes";
+if ($suricatacfg['tracked_files_hash'] != 'none')
+	$json_log_hash = "force-hash: [{$suricatacfg['tracked_files_hash']}]";
 else
-	$json_log_md5 = "no";
+	$json_log_hash = "#force-hash: [md5]";
 	
 if ($suricatacfg['enable_file_store'] == 'on') {
 	$file_store_enabled = "yes";
 	if (!file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo"))
 		@file_put_contents("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo", "");
+	$file_store_waldo = "waldo: file.waldo";
 }
-else
+else {
 	$file_store_enabled = "no";
+	$file_store_waldo = "#waldo: file.waldo";
+}
 
 if ($suricatacfg['enable_pcap_log'] == 'on')
 	$pcap_log_enabled = "yes";
@@ -321,8 +350,8 @@ if ($suricatacfg['enable_eve_log'] == 'on')
 else
 	$enable_eve_log = "no";
 
-if ($suricatacfg['eve_output_type'] == 'syslog')
-	$eve_output_type = "syslog";
+if (!empty($suricatacfg['eve_output_type']))
+	$eve_output_type = $suricatacfg['eve_output_type'];
 else
 	$eve_output_type = "file";
 
@@ -336,25 +365,68 @@ if (!empty($suricatacfg['eve_systemlog_priority']))
 else
 	$eve_systemlog_priority = "info";
 
+// EVE REDIS output settings
+if (!empty($suricatacfg['eve_redis_server']))
+	$eve_redis_output = "\n        server: ". $suricatacfg['eve_redis_server'];
+else
+	$eve_redis_output = "\n        server: 127.0.0.1";
+
+if (!empty($suricatacfg['eve_redis_port']))
+	$eve_redis_output .= "\n        port: " . $suricatacfg['eve_redis_port'];
+
+if (!empty($suricatacfg['eve_redis_mode']))
+	$eve_redis_output .= "\n        mode: " . $suricatacfg['eve_redis_mode'];
+
+if (!empty($suricatacfg['eve_redis_key']))
+	$eve_redis_output .= "\n        key: \"" . $suricatacfg['eve_redis_key'] ."\"";
+
+
+
 // EVE log output included information
 $eve_out_types = "";
-if ($suricatacfg['eve_log_alerts'] == 'on')
-	$eve_out_types .= "\n        - alert";
+
+if (($suricatacfg['eve_log_alerts'] == 'on')) {
+	$eve_out_types .= "\n        - alert:";
+	$eve_out_types .= "\n            payload: ".($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-base64' ?'yes':'no')."           # enable dumping payload in Base64";
+	$eve_out_types .= "\n            payload-printable: ".($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-printable' ?'yes':'no')." # enable dumping payload in printable (lossy) format";
+	$eve_out_types .= "\n            packet: ".($suricatacfg['eve_log_alerts_packet'] == 'on'?'yes':'no')."            # enable dumping of packet (without stream segments)";
+	$eve_out_types .= "\n            http: ".($suricatacfg['eve_log_alerts_http'] == 'on'?'yes':'no')."              # enable dumping of http fields";
+	$eve_out_types .= "\n            tls: ".($suricatacfg['eve_log_alerts_tls'] == 'on'?'yes':'no')."               # enable dumping of tls fields";
+	$eve_out_types .= "\n            ssh: ".($suricatacfg['eve_log_alerts_ssh'] == 'on'?'yes':'no')."               # enable dumping of ssh fields";
+	$eve_out_types .= "\n            smtp: ".($suricatacfg['eve_log_alerts_smtp'] == 'on'?'yes':'no')."              # enable dumping of smtp fields";
+	$eve_out_types .= "\n            dnp3: ".($suricatacfg['eve_log_alerts_dnp3'] == 'on'?'yes':'no')."              # enable dumping of DNP3 fields";
+	$eve_out_types .= "\n            tagged-packets: yes    # enable logging of tagged packets";
+}
+
+if ($suricatacfg['eve_log_alerts_xff'] == 'on'){
+	$eve_out_types .= "\n            xff:";
+	$eve_out_types .= "\n              enables: yes";
+	$eve_out_types .= "\n              mode: ".$suricatacfg['eve_log_alerts_xff_mode'];
+	$eve_out_types .= "\n              depoyment: ".$suricatacfg['eve_log_alerts_xff_deployment'];
+	$eve_out_types .= "\n              header: ".$suricatacfg['eve_log_alerts_xff_header'];
+}
+
 
 if ($suricatacfg['eve_log_http'] == 'on') {
 	$eve_out_types .= "\n        - http:";
-	if ($suricatacfg['http_log_extended'] == 'on')
+	if ($suricatacfg['eve_log_http_extended'] == 'on') {
 		$eve_out_types .= "\n            extended: yes";
-	else
-		$eve_out_types .= "\n            extended: no";
+		if ($suricatacfg['eve_log_http_extended_headers'] != "")
+			$eve_out_types .= "\n            custom: [".$suricatacfg['eve_log_http_extended_headers']."]";
+         } else {
+                $eve_out_types .= "\n            extended: no";
+         }
 }
 
-if ($suricatacfg['eve_log_dns'] == 'on')
-	$eve_out_types .= "\n        - dns";
+if ($suricatacfg['eve_log_dns'] == 'on') {
+	$eve_out_types .= "\n        - dns:";
+	$eve_out_types .= "\n            query: yes";
+	$eve_out_types .= "\n            answer: yes";
+}
 
 if ($suricatacfg['eve_log_tls'] == 'on') {
 	$eve_out_types .= "\n        - tls:";
-	if ($suricatacfg['tls_log_extended'] == 'on')
+	if ($suricatacfg['eve_log_tls_extended'] == 'on')
 		$eve_out_types .= "\n            extended: yes";
 	else
 		$eve_out_types .= "\n            extended: no";
@@ -362,18 +434,49 @@ if ($suricatacfg['eve_log_tls'] == 'on') {
 
 if ($suricatacfg['eve_log_files'] == 'on') {
 	$eve_out_types .= "\n        - files:";
-	if ($suricatacfg['enable_tracked_files_magic'] == 'on')
+	if ($suricatacfg['eve_log_files_magic'] == 'on')
 		$eve_out_types .= "\n            force-magic: yes";
 	else
 		$eve_out_types .= "\n            force-magic: no";
-	if ($suricatacfg['enable_tracked_files_md5'] == 'on')
-		$eve_out_types .= "\n            force-md5: yes";
-	else
-		$eve_out_types .= "\n            force-md5: no";
+	if ($suricatacfg['eve_log_files_hash'] != 'none') {
+		$eve_out_types .= "\n            force-hash: [{$suricatacfg['eve_log_files_hash']}]";
+	}
 }
 
-if ($suricatacfg['eve_log_ssh'] == 'on')
+if ($suricatacfg['eve_log_ssh'] == 'on') {
 	$eve_out_types .= "\n        - ssh";
+}
+
+if ($suricatacfg['eve_log_smtp'] == 'on') {
+	$eve_out_types .= "\n        - smtp:";
+	if ($suricatacfg['eve_log_smtp_extended'] == 'on')
+		$eve_out_types .= "\n            extended: yes";
+	else
+		$eve_out_types .= "\n            extended: no";
+	if($suricatacfg['eve_log_smtp_extended_fields'] != "")
+		$eve_out_types .= "\n            custom: [".$suricatacfg['eve_log_smtp_extended_fields']."]";
+
+	$eve_out_types .= "\n            md5: [subject]";
+}
+
+if ($suricatacfg['eve_log_drop'] == 'on' && $suricatacfg['ips_mode'] == "ips_mode_inline") {
+	$eve_out_types .= "\n        - drop:";
+	$eve_out_types .= "\n            alerts: yes";
+	$eve_out_types .= "\n            flows: all";
+}
+
+if ($suricatacfg['eve_log_stats'] == 'on'){
+	$eve_out_types .= "\n        - stats:";
+	$eve_out_types .= "\n            totals: ".($suricatacfg['eve_log_stats_totals'] == 'on'?'yes':'no');
+	$eve_out_types .= "\n            deltas: ".($suricatacfg['eve_log_stats_deltas'] == 'on'?'yes':'no');
+	$eve_out_types .= "\n            threads: ".($suricatacfg['eve_log_stats_threads'] == 'on'?'yes':'no');
+}
+
+if ($suricatacfg['eve_log_flow'] == 'on') {
+	$eve_out_types .= "\n        - flow";
+}
+
+
 
 // Add interface-specific IP defrag settings
 if (!empty($suricatacfg['frag_memcap']))
@@ -732,7 +835,7 @@ if ($suricatacfg['enable_iprep'] == "on") {
 if (!empty($suricatacfg['host_memcap']))
 	$host_memcap = $suricatacfg['host_memcap'];
 else
-	$host_memcap = "16777216";
+	$host_memcap = "33554432";
 if (!empty($suricatacfg['host_hash_size']))
 	$host_hash_size = $suricatacfg['host_hash_size'];
 else
@@ -791,7 +894,10 @@ pcap:
   - interface: {$if_real}
     checksum-checks: auto
     promisc: {$intf_promisc_mode}
+    snaplen: {$intf_snaplen}
 EOD;
 }
+
+$suricata_config_pass_thru = base64_decode($suricatacfg['configpassthru']);
 
 ?>

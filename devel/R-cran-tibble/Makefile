@@ -2,18 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	tibble
-PORTVERSION=	1.2
+PORTVERSION=	1.4.2
 CATEGORIES=	devel
-DISTNAME=	${PORTNAME}_${DISTVERSION}
+DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Simple Data Frames
 
 LICENSE=	MIT
 
-CRAN_DEPENDS=	R-cran-assertthat>0:math/R-cran-assertthat \
-		R-cran-lazyeval>0.1.10:math/R-cran-lazyeval \
-		R-cran-Rcpp>0:devel/R-cran-Rcpp
+CRAN_DEPENDS=	R-cran-cli>0:devel/R-cran-cli \
+		R-cran-crayon>0:devel/R-cran-crayon \
+		R-cran-pillar>=1.1.0:devel/R-cran-pillar \
+		R-cran-rlang>0:devel/R-cran-rlang
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 

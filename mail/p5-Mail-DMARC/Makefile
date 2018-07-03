@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Mail-DMARC
-PORTVERSION=	1.20150908
+PORTVERSION=	1.20160612
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -9,7 +9,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Perl5 module to process and/or create DKIM email
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Crypt-OpenSSL-RSA>=0:security/p5-Crypt-OpenSSL-RSA \

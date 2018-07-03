@@ -2,26 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	pypcap
-PORTVERSION=	1.1
-PORTREVISION=	5
+DISTVERSION=	1.2.0
 CATEGORIES=	net python
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wxs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simplified object-oriented Python extension module for libpcap
 
-BROKEN=		Unfetchable (google code has gone away)
-
-BUILD_DEPENDS=	pyrexc:devel/pyrex
+LICENSE=	BSD3CLAUSE
 
 USES=		python
-USE_PYTHON=	distutils autoplist
-
-post-patch:
-	@${RM} ${WRKDIR}/${PORTNAME}-${PORTVERSION}/pcap.c
+USE_PYTHON=	distutils cython autoplist
 
 pre-build:
-	(cd ${WRKSRC}; pyrexc pcap.pyx)
+	@cd ${WRKSRC} && cython-${PYTHON_VER} pcap.pyx
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pcap.so
 
 .include <bsd.port.mk>

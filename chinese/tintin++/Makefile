@@ -3,13 +3,12 @@
 
 CATEGORIES=	chinese
 
-MAINTAINER=	sunpoet@FreeBSD.org
-
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/../COPYING
-
-MASTERDIR=	${.CURDIR}/../../net/tintin++
+CONFLICTS_INSTALL=	tintin++
 
 OPTIONS_SLAVE=	BIG5
+
+PORTSCOUT=	ignore:1
+
+MASTERDIR=	${.CURDIR}/../../net/tintin++
 
 .include "${MASTERDIR}/Makefile"

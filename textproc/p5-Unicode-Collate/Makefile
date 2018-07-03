@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Unicode-Collate
-PORTVERSION=	1.14
+PORTVERSION=	1.25
 CATEGORIES=	textproc converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Unicode Collation Algorithm
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 USE_PERL5=	configure

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	zimg
-PORTVERSION=	2.2.1
+PORTVERSION=	2.7.4
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	${GH_ACCOUNT}-
@@ -9,10 +9,8 @@ PKGNAMEPREFIX=	${GH_ACCOUNT}-
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Scaling, colorspace conversion, and dithering library
 
-LICENSE=	WTFPL2
-LICENSE_NAME=	Do What The Fuck You Want To Public License version 2
+LICENSE=	WTFPL
 LICENSE_FILE=	${WRKSRC}/COPYING
-LICENSE_PERMS=	${_LICENSE_PERMS_DEFAULT}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sekrit-twc
@@ -21,7 +19,8 @@ CONFLICTS_INSTALL=	zimg-[0-9]* # include/zimg.h
 
 USES=		autoreconf compiler:c++11-lib gmake libtool pathfix
 EXTRACT_AFTER_ARGS=	--exclude test/extra
-PATHFIX_MAKEFILEIN=	Makefile.am
+EXTRA_PATCHES+=	${EXTRA_PATCHES_${OPSYS}_${OSREL}}
+EXTRA_PATCHES_FreeBSD_10.3=	${PATCHDIR}/extra-patch-src_zimg_api_zimg.cpp
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
 		-D_DECLARE_C99_LDBL_MATH # XXX ports/193528
@@ -40,6 +39,7 @@ OPTIONS_DEFAULT_i386=	SIMD # runtime detection
 
 EXAMPLES_CONFIGURE_ENABLE=	example
 EXAMPLES_MAKE_ARGS=	exampledir="${EXAMPLESDIR}"
+EXAMPLES_MAKE_ARGS_OFF=	dist_example_DATA= dist_examplemisc_DATA=
 
 SIMD_CONFIGURE_ENABLE=	x86simd
 

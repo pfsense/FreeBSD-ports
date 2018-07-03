@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ldapscripts
-PORTVERSION=	2.0.7
+PORTVERSION=	2.0.8
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		http://contribs.martymac.org/ldapscripts/
@@ -19,12 +19,13 @@ RUN_DEPENDS=	ldapadd:net/openldap${OPENLDAP_VER}${OPENLDAP_FLAVOUR}-client \
 		ldapmodrdn:net/openldap${OPENLDAP_VER}${OPENLDAP_FLAVOUR}-client \
 		ldappasswd:net/openldap${OPENLDAP_VER}${OPENLDAP_FLAVOUR}-client
 
+NO_ARCH=	yes
+
 OPTIONS_DEFINE=	SASL
 SASL_VARS=	OPENLDAP_FLAVOUR=-sasl WANT_OPENLDAP_SASL=yes
 
-NO_ARCH=	yes
-USE_OPENLDAP=	yes
 USES=		iconv tar:tgz
+USE_OPENLDAP=	yes
 LIBDIR=	${PREFIX}/lib/${PORTNAME}
 MAKE_ENV+=	MANDIR=${MANPREFIX}/man \
 		ETCDIR=${ETCDIR}

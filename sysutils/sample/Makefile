@@ -10,25 +10,24 @@ COMMENT=	Examine periodic stack traces of all running processes
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN_i386=		Does not build: don't know how to make sample_support_i386.c
-BROKEN_powerpc64=	Does not build
-BROKEN_sparc64=		Does not build: don't know how to make sample_support_sparc64.c
+ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON=	device driver part of the program only supports amd64
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libbfd.a:devel/libbfd \
 		${LOCALBASE}/lib/libiberty.a:devel/gnulibiberty \
-		${LOCALBASE}/lib/libxo.a:devel/libxo \
-		${LOCALBASE}/bin/cython:lang/cython \
-		${LOCALBASE}/bin/python:lang/python
+		${LOCALBASE}/lib/libxo.a:devel/libxo
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freenas
 GH_TAGNAME=	45e2b86
 
+BINARY_ALIAS=	python=${PYTHON_CMD}
 USES=		python:build kmod
+USE_PYTHON=	cython
 
 MAKE_ENV=	SYSDIR=${SRC_BASE}/sys
 
-SSP_UNSAFE=	YES
+SSP_UNSAFE=	yes
 
 do-install:
 	${INSTALL_KLD} ${WRKSRC}/driver/sample_driver.ko ${STAGEDIR}${KMODDIR}

@@ -1,18 +1,19 @@
 # $FreeBSD$
 
 PORTNAME=	stopit
-PORTVERSION=	1.1.1
+PORTVERSION=	1.1.2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@bsd.com.br
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Timeout control decorator and context managers in Python
 
-LICENSE=	GPLv3
+LICENSE=	MIT
+
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USES=		python
-USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

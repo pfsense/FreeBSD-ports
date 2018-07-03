@@ -4,6 +4,7 @@
 PORTNAME=	stepmania
 PORTVERSION=	5.0.11
 DISTVERSIONPREFIX=	v
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	games
 PKGNAMESUFFIX=	-devel
@@ -16,6 +17,8 @@ LICENSE_FILE=	${WRKSRC}/Docs/Licenses.txt
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libpng.so:graphics/png
+
+BROKEN_powerpc64=	fails to compile: cc1plus: unrecognized command line option "-msse2"
 
 USE_GITHUB=	yes
 
@@ -61,7 +64,7 @@ pre-build:
 		>> ${WRKDIR}/wrappers/stepmania
 	@${ECHO_CMD} 'cd ${PREFIX}/lib/stepmania' \
 		>> ${WRKDIR}/wrappers/stepmania
-	@${ECHO_CMD} 'exec ./stepmania $$@' \
+	@${ECHO_CMD} 'exec ./stepmania "$$@"' \
 		>> ${WRKDIR}/wrappers/stepmania
 
 do-install:

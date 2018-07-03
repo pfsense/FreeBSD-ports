@@ -5,6 +5,7 @@ PORTNAME=	aster
 DISTVERSION=	${ASTER_DISTVERSION}
 PORTREVISION=	2
 CATEGORIES=	french cad
+CATEGORIES=	french cad
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Code_Aster finite element method solver
@@ -32,20 +33,28 @@ LICENSE=	GPLv2
 #-----------------------------------------------------------------------
 
 BUILD_DEPENDS+=	astk-serveur>0:cad/astk-serveur	\
-		${SHELL_INSTALL_ASTER}:shells/${SHIADEP}		\
+		${SHELL_INSTALL_ASTER}:shells/${SHIADEP}	\
 		${LOCALBASE}/lib/libscotch.a:cad/scotch		\
-		python:lang/python					\
+		${LOCALBASE}/lib/libGKlib.a:math/metis-edf	\
+		pylupdate4:textproc/py-qt4-xml			\
+		gnproc:sysutils/coreutils			\
+		bash:shells/bash				\
 		${PYNUMPY}
-LIB_DEPENDS+=	libhdf5.so:science/hdf5				\
-		libmed.so:french/med				\
-		libmetis.so.0:math/metis-edf
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}gnuplot>0:math/py-gnuplot	\
-		${LOCALBASE}/bin/onmetis:math/metis-edf		\
-		${SHELL_INSTALL_ASTER}:shells/${SHIADEP}		\
+LIB_DEPENDS+=	libhdf5-18.so:science/hdf5-18			\
+		libmetis.so.2:math/metis-edf			\
+		libomp.so:devel/openmp				\
+		libmed.so:french/med
+#		libAsterInterface.so:science/mfront
+#		libAsterInterface.so:science/tfel
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}gnuplot>0:math/py-gnuplot@${PY_FLAVOR} \
+		${SHELL_INSTALL_ASTER}:shells/${SHIADEP}	\
 		astk-serveur>0:cad/astk-serveur
 
-USES=		bison fortran tk python:2
+BROKEN_FreeBSD_12=	does not build (sed: ${STAGEDIR}${inst_dir}/${VE}/aster.conf: No such file or directory)
+
+USES=		bison fortran gettext python:2.7 tk
 USE_BINUTILS=	yes
+USE_QT4=	linguisttools_build
 
 .if defined(WITH_ATLAS)
 USES+=		blaslapack:atlas
@@ -54,8 +63,13 @@ USES+=		blaslapack:netlib
 .endif
 
 HAS_CONFIGURE=	yes
-MAKE_ENV=	INCLUDES="${LOCALBASE}/include ${LOCALBASE}/include/metis"
+MAKE_ENV=	INCLUDES="${LOCALBASE}/include/hdf5-18 ${LOCALBASE}/include"	\
+		INCLUDEDIR="${LOCALBASE}/include/hdf5-18 ${LOCALBASE}/include"	\
+		LD_PRELOAD="${LOCALBASE}/lib/gcc${_GCC_VER}/libgcc_s.so.1"	\
+		LINKFLAGS="${LDFLAGS}" LD_LIBRARY_PATH="${LOCALBASE}/lib/gcc${_GCC_VER}"
 REINPLACE_ARGS=	-i ""
+
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
 VER=		${PORTVERSION:R}
 VE=		${VER:R}
@@ -86,12 +100,6 @@ PLIST_SUB+=	ASTK_CLIENT=""  ASTKDIR=${ASTKDIR}
 .else
 PLIST_SUB+=	ASTK_CLIENT="@comment " ASTKDIR=""
 .endif
-.if !defined(WITHOUT_EFICAS)
-RUN_DEPENDS+=	fr-eficas>0:french/eficas
-PLIST_SUB+=	EFICAS=""
-.else
-PLIST_SUB+=	EFICAS="@comment "
-.endif
 .if !defined(WITHOUT_GMSH)
 RUN_DEPENDS+=	${LOCALBASE}/bin/gmsh:cad/gmsh
 PLIST_SUB+=	GMSH=""
@@ -109,14 +117,15 @@ RUN_DEPENDS+=	${PYNUMPY}
 .endif
 
 .if !defined(WITH_MPI)
-MUMPS_PORT=	mumps
+MPISEQ=		-lmpiseq
+MUMPSLIB=	-L${LOCALBASE}/lib -ldmumps -lzmumps -lsmumps -lcmumps -lmumps_common -lpord ${MPISEQ}
+LIB_DEPENDS+=	libmpiseq.so.5:math/mumps-edf
 .else
 BUILD_DEPENDS+=	${LOCALBASE}/lib/libblacs.a:math/blacs	\
 		${LOCALBASE}/lib/libscalapack.a:math/scalapack
-MUMPS_PORT=	mumps-mpich
-MUMPSLIB=	-L${LOCALBASE}/lib -ldmumps -lzmumps -lmumps_common -lpord -lscalapack -lblacs -lblacsc -lblacs -L${LOCALBASE}/lib -lmpich -lmpl
+MUMPSLIB=	-L${LOCALBASE}/lib -ldmumps -lzmumps -lsmumps -lcmumps -lmumps_common -lpord -lscalapack -lblacs -lblacsc -lblacs -L${LOCALBASE}/lib -lmpich -lmpl
+LIB_DEPENDS+=	libcmumps.so.5:math/mumps-edf
 .endif
-BUILD_DEPENDS+=	${LOCALBASE}/lib/libcmumps.a:math/${MUMPS_PORT}
 
 .if defined(WITH_MPI)
 LIB_DEPENDS+=	libmpich.so:net/mpich2
@@ -163,18 +172,14 @@ WITH_ED=	vi
 
 INST_DAT=	elements
 INST_SH=	as_run parallel_cp
-PFX2FIX=	bin/as_run ${VE}/include/aster/asterc_config.h ${VE}/config.txt	\
-		${VE}/include/aster/asterf_config.h ${VE}/profile.sh		\
-		${VE}/lib/aster/aster_pkginfo.py
-V_HOMARD=	V11_2
-V_HOMARD0=	V10_6
-V_H2FIX=	${VE}/lib/aster/Cata/cata.py ${VE}/tests/zzzz121a.comm
+PFX2FIX=	bin/as_run ${VE}/include/aster/asterc_config.h			\
+		${VE}/include/aster/asterf_config.h ${VE}/share/aster/profile.sh\
+		etc/codeaster/profile.sh etc/codeaster/aster			\
+		${VE}/lib/aster/aster_pkginfo.py ${VE}/aster.conf		\
+		${VE}/share/aster/CTestTestfile.cmake ${VE}/share/aster/config.txt
 inst_dir=	${PREFIX}/${PORTNAME}
 tools_dir=	${PREFIX}/${PORTNAME}/outils
-tools=		kmetis onmetis pmetis gnuplot
-.if !defined(WITHOUT_EFICAS)
-tools+=		eficas eficasQt
-.endif
+tools=		cmpfillin gpmetis graphchk m2gmetis mpmetis ndmetis gnuplot
 .if !defined(WITHOUT_GMSH)
 tools+=		gmsh
 .endif
@@ -206,7 +211,7 @@ pre-configure:
 		${WRKSRC}/products.py
 	${REINPLACE_CMD} -e "s|'gfortran'|'${FC}'|g;s|'gcc'|'${CC}'|g"	\
 		-e "s|'g++'|'${CXX}'|g" ${WRKSRC}/check_compilers.py
-	${REINPLACE_CMD} -e 's|%%FILESDIR%%|${FILESDIR}|' ${WRKSRC}/as_setup.py
+	${REINPLACE_CMD} -e "s|%%LOCALBASE%%|${LOCALBASE}|" ${WRKSRC}/as_setup.py
 .for sh in ${BASH2RC}
 	${REINPLACE_CMD} -e 's|/bin/bash|${SHELL_INSTALL_ASTER}|' ${WRKSRC}/${sh}
 .endfor
@@ -230,6 +235,7 @@ pre-configure:
 	${ECHO_CMD} "_install_astk = False"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "_install_astk_serv = False"		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "_install_metis = False"			>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "_install_mfront = False"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "_install_mumps = False"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "_install_omniORB = False"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "_install_omniORBpy = False"		>> ${WRKSRC}/setup.cfg
@@ -240,12 +246,18 @@ pre-configure:
 	${ECHO_CMD} "OPT_ENV = 'verbose=True'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_SCOTCH = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_METIS = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "INCLUDEDIR = ['${LOCALBASE}/include', '${LOCALBASE}/include/metis', ]"\
+	${ECHO_CMD} "HOME_GMSH = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "HOME_GIBI = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "HOME_HOMARD = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "INCLUDEDIR = ['${LOCALBASE}/include/hdf5-18', '${LOCALBASE}/include', '${LOCALBASE}/include/metis', ]"\
 			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_MUMPS = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
-.if ${MUMPS_PORT} == "mumps-mpich"
+# Disable MFront at the moment (compilation error)
+#	${ECHO_CMD} "HOME_MFRONT = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
+#	${ECHO_CMD} "TFELHOME = '${LOCALBASE}'"			>> ${WRKSRC}/setup.cfg
+	${REINPLACE_CMD} -e "s|waf configure|waf configure --disable-mfront|"	\
+		${WRKSRC}/products.py
 	${ECHO_CMD} "MUMPSLIB = '${MUMPSLIB}'"			>> ${WRKSRC}/setup.cfg
-.endif
 	${ECHO_CMD} "CC='${CC}'"				>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "gcc='${CC}'"				>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "CXX='${CXX}'"				>> ${WRKSRC}/setup.cfg
@@ -253,7 +265,7 @@ pre-configure:
 	${ECHO_CMD} "F90='${FC}'"				>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "MATHLIB='${lib_math} ${LDFLAGS} -lgfortran -lm -lkvm'"		\
 		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "OTHERLIB='-Xlinker -export-dynamic -lutil -lpthread -lz'"	\
+	${ECHO_CMD} "OTHERLIB='-Xlinker -export-dynamic ${MPISEQ} -lexecinfo -lutil -lpthread -lz'"	\
 		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "SYSLIB='-lpthread -lz'"			>> ${WRKSRC}/setup.cfg
 .if defined(WITH_MPI)
@@ -276,7 +288,7 @@ pre-configure:
 	${ECHO_CMD} "SHELL_EXECUTION='${SHELL_INSTALL_ASTER}'"	>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "TERMINAL='xterm'"				>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "EDITOR='${WITH_ED}'"			>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "LDFLAGS='-v ${LDFLAGS}'"			>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "LDFLAGS='${LDFLAGS}'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "FFLAGS='-c ${FFLAGS} -fno-tree-dse ${FLAGARCH}'"	\
 		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "FFLAGS_DBG='-c -g ${FFLAGS:C|O2|O0|} -fno-tree-dse ${FLAGARCH}'"	\
@@ -309,8 +321,8 @@ pre-configure:
 
 do-configure:
 	(cd ${CONFIGURE_WRKSRC}	\
-	&& TMPDIR=${WRKDIR} ${PYTHON_CMD} setup.pyo ${DEBUG_FLAGS} test	\
-		--prefix=${STAGEDIR}${inst_dir}	| tee ${CONFIGURE_LOG})
+	&& TMPDIR=${WRKDIR} ${MAKE_ENV} ${PYTHON_CMD} setup.pyo ${DEBUG_FLAGS}	\
+		--prefix=${STAGEDIR}${inst_dir} test | tee ${CONFIGURE_LOG})
 	@${ECHO_MSG} "---------------- Debug ------------------"
 	${CAT} ${CONFIGURE_WRKSRC}/setup.log
 	@${ECHO_MSG} "------------ Fin debug ------------------"
@@ -325,6 +337,8 @@ post-configure:
 		${STAGEDIR}${inst_dir}
 	${REINPLACE_CMD} -e 's|${LOCALBASE}/aster|${STAGEDIR}${inst_dir}|'	\
 		${STAGEDIR}${inst_dir}/bin/as_run
+	${MV} ${STAGEDIR}${inst_dir}/etc/codeaster/profile_astk.sh	\
+		${STAGEDIR}${inst_dir}/etc/codeaster/profile.sh
 .for sf in etc/codeaster/profile.sh asrun/installation.py
 	${REINPLACE_CMD} -e 's|${LOCALBASE}/aster/ASTK/ASTK_SERV|${STAGEDIR}${inst_dir}|g'	\
 		-e 's|${LOCALBASE}/aster|${STAGEDIR}${inst_dir}|g'	\
@@ -341,15 +355,6 @@ do-install:
 	@${DO_NADA}
 
 post-install:
-	${RM} -rf ${STAGEDIR}${inst_dir}/etc	# Installed by cad/astk-serveur
-	${MV} ${STAGEDIR}${inst_dir}/${VE}/share/aster/tests	\
-		${STAGEDIR}${inst_dir}/${VE}/
-	${MV} ${STAGEDIR}${inst_dir}/${VE}/share/aster/*	\
-		${STAGEDIR}${inst_dir}/${VE}/
-	${RM} -rf ${STAGEDIR}${inst_dir}/${VE}/share
-.for f in ${V_H2FIX}
-	${REINPLACE_CMD} -e 's|${V_HOMARD0}|${V_HOMARD}|' ${STAGEDIR}${inst_dir}/${f}
-.endfor
 .for f in ${PFX2FIX}
 	${REINPLACE_CMD} -e 's|${STAGEDIR}||g' ${STAGEDIR}${inst_dir}/${f}
 .endfor
@@ -364,6 +369,11 @@ post-install:
 		> ${STAGEDIR}${inst_dir}/${VE}/astout.export
 	(cd ${STAGEDIR}${inst_dir} &&	\
 		${LN} -fs ${VE} ${STAGEDIR}${inst_dir}/STA${VE})
+.for conf in config.txt profile.sh
+	(cd ${STAGEDIR} && ${LN} -fs ${inst_dir}/${VE}/share/aster/${conf}	\
+		${STAGEDIR}${inst_dir}/STA${VE}/${conf})
+.endfor
+	${MKDIR} ${STAGEDIR}${tools_dir}
 .for outil in ${tools}
 	${LN} -fs ${LOCALBASE}/bin/${outil} ${STAGEDIR}${tools_dir}/${outil}
 .endfor
@@ -375,16 +385,24 @@ post-install:
 	${LN} -fs ${ASTKDIR}/bin/${outil} ${STAGEDIR}${tools_dir}/${outil}
 . endfor
 .endif
+	${MKDIR} ${WRKDIR}/AvoidConflictWithASTK
+.for f in aster.install_${VE} profile.sh
+	${MV} ${STAGEDIR}${inst_dir}/etc/codeaster/${f} ${WRKDIR}/AvoidConflictWithASTK/
+.endfor
+	${RM} -r ${STAGEDIR}${inst_dir}/etc/codeaster/*
+.for f in aster.install_${VE} profile.sh
+	${MV} ${WRKDIR}/AvoidConflictWithASTK/${f} ${STAGEDIR}${inst_dir}/etc/codeaster/
+.endfor
 
 .if defined(MAINTAINER_MODE)
 regression-test:	install
 	@${ECHO_MSG} "Note: homard must be installed to run some steps succesfully."
 	${CP} ${inst_dir}/${VE}/astout.export /tmp/
 	(cd ${inst_dir}/${VE} &&	\
-	${LOCALBASE}/aster/ASTK/ASTK_SERV/bin/as_run --list --all --vers=${VE}	\
+	${LOCALBASE}/aster/bin/as_run --list --all --vers=${VE}	\
 		--filter='"I" not in testlist' -o /tmp/list_seq )
 	(cd /tmp &&	\
-	${LOCALBASE}/aster/ASTK/ASTK_SERV/bin/as_run astout.export) || ${TRUE}
+	${LOCALBASE}/aster/bin/as_run astout.export) || ${TRUE}
 	@${ECHO_MSG} "Check /tmp/resu_test/NOOK"
 .endif
 

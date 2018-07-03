@@ -3,7 +3,7 @@
 
 PORTNAME=	marsnomercy
 PORTVERSION=	0.2.1
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF/mars/mars/${PORTVERSION}
 DISTNAME=	mars-${PORTVERSION}-src
@@ -50,6 +50,6 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/mars-nomercy ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_PROGRAM} ${WRKSRC}/mars ${STAGEDIR}${PREFIX}/libexec/mars
 	cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
-	@${RM} -f ${STAGEDIR}${DATADIR}/SConscript
+	@${RM} ${STAGEDIR}${DATADIR}/SConscript
 
 .include <bsd.port.mk>

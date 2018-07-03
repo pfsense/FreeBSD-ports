@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	fluentd
-PORTVERSION=	0.12.14
+PORTVERSION=	0.12.42
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -17,7 +17,8 @@ RUN_DEPENDS=	\
 	rubygem-cool.io>=1.2.2:devel/rubygem-cool.io \
 	rubygem-http_parser.rb>=0.5.1:net/rubygem-http_parser.rb \
 	rubygem-sigdump>=0.2.2:devel/rubygem-sigdump \
-	rubygem-tzinfo>=1.0.0:devel/rubygem-tzinfo
+	rubygem-tzinfo>=1.0.0:devel/rubygem-tzinfo \
+	rubygem-tzinfo-data>=1.0.0:devel/rubygem-tzinfo-data
 
 USE_RUBY=	yes
 PLIST_FILES=	bin/fluent-cat bin/fluent-debug bin/fluent-gem bin/fluentd \
@@ -31,14 +32,8 @@ SUB_LIST+=	USER=${USERS} GROUP=${GROUPS} RUBY=${RUBY}
 NO_ARCH=	YES
 NO_LATEST_LINK=	YES
 
-.include <bsd.port.pre.mk>
-
-.if ${RUBY_VER} == 2.0
-RUN_DEPENDS+=	rubygem-string-scrub>=0.0.3:textproc/rubygem-string-scrub
-.endif
-
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/fluentd/plugin
 	${CP} ${WRKSRC}/fluent.conf.sample ${STAGEDIR}${PREFIX}/etc/fluentd/
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

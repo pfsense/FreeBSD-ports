@@ -3,27 +3,17 @@
 
 PORTNAME=	qb
 PORTVERSION=	2.4.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	PHP Accelerator designed mainly for graphic work
 
 LICENSE=	PHP301
 
-USES=		php:ext tar:tgz
-USE_GCC=	any
-IGNORE_WITH_PHP=	70
+BROKEN_powerpc64=	fails to build: Killing runaway build after 7200 seconds with no output
 
-.include <bsd.port.pre.mk>
+USES=		php:pecl
+IGNORE_WITH_PHP=	70 71 72
 
-.if ${OSVERSION} < 1000034
-LIB_DEPENDS+=	libmissing.so:math/libmissing
-CONFIGURE_ARGS=	--with-libmissing=${LOCALBASE}
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-libmissing
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

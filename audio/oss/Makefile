@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	oss
-DISTVERSION=	4.2-build2011
+DISTVERSION=	4.2-build2017
 CATEGORIES=	audio
 MASTER_SITES=	http://www.opensound.com/developer/sources/stable/bsd/
 DISTNAME=	${PORTNAME}-v${DISTVERSION}-src-bsd
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Open Sound System
+COMMENT=	Open Sound System from 4Front Technologies
 
 LICENSE=	BSD2CLAUSE
 
@@ -23,6 +23,7 @@ USE_GNOME=	gtk20
 USE_RC_SUBR=	oss
 SUB_FILES=	pkg-install pkg-deinstall
 ONLY_FOR_ARCHS=	amd64 i386
+LLD_UNSAFE=	yes
 
 KMODDIR=	${PREFIX}/lib/oss/modules
 

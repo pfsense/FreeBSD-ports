@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nano
-PORTVERSION=	2.7.0
+PORTVERSION=	2.9.5
 CATEGORIES=	editors
 MASTER_SITES=	http://www.nano-editor.org/dist/v${PORTVERSION:R}/ GNU
 
@@ -13,7 +13,7 @@ LICENSE=	GPLv3
 
 CONFLICTS=	nano-devel-2*
 
-USES=		ncurses
+USES=		charsetfix ncurses
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--docdir=${DOCSDIR} --enable-utf8
@@ -23,6 +23,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	DOCS EXAMPLES NLS
 OPTIONS_SUB=	yes
+
+DOCS_USES=	groff
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
@@ -35,15 +37,13 @@ post-configure:
 	${REINPLACE_CMD} -e 's/update_revision//g' ${WRKSRC}/src/Makefile
 
 post-build:
-	cd ${WRKSRC}/doc/man; ${REINPLACE_CMD} \
+	cd ${WRKSRC}/doc; ${REINPLACE_CMD} \
 		-e 's:SYSCONFDIR:${PREFIX}/etc:g' \
 		-e 's:EXAMPLESDIR:${EXAMPLESDIR}:g' \
-		nano.1 rnano.1 nanorc.5 ${WRKSRC}/doc/texinfo/${INFO:=.info}
-	${REINPLACE_CMD} -e 's/\\</[[:<:]]/g' -e 's/\\>/[[:>:]]/g' \
-		${WRKSRC}/doc/syntax/*.nanorc
+		nano.1 rnano.1 nanorc.5 ${WRKSRC}/doc/${INFO:=.info}
 
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/nanorc.sample ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/sample.nanorc ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

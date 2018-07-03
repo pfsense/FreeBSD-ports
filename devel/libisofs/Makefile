@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	libisofs
-PORTVERSION=	1.4.6
+PORTVERSION=	1.4.8
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://files.libburnia-project.org/releases/
 
-MAINTAINER=	olivierd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Libburnia ISO9660 filesystem creation library
 
 LICENSE=	GPLv2
@@ -14,8 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libburn.so:devel/libburn
 
-GNU_CONFIGURE=	yes
 USES=		iconv libtool
+GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	agate-dbf
-PORTVERSION=	0.1.0
+PORTVERSION=	0.2.0
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,8 +11,8 @@ COMMENT=	Support reading dbf files for agate
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}agate>=1.2.2:textproc/py-agate \
-		${PYTHON_PKGNAMEPREFIX}dbfread>=2.0.5:textproc/py-dbfread
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}agate>=1.5.0:textproc/py-agate@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dbfread>=2.0.5:textproc/py-dbfread@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils

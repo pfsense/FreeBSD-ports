@@ -2,19 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	ansifilter
-PORTVERSION=	1.7
+PORTVERSION=	2.9
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.andre-simon.de/zip/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Customizable ANSI Code Converter
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
-
-USES=		gmake tar:bzip2
+USES=		compiler:c++11-lib gmake tar:bzip2
 MAKEFILE=	makefile
 
 PORTDOCS=	ChangeLog README
@@ -47,7 +45,7 @@ post-patch:
 		 s|$$(CFLAGS)|$$(CXXFLAGS)|' ${WRKSRC}/src/${MAKEFILE}
 
 pre-build:
-	@${RM} -f ${WRKSRC}/src/qt-gui/moc_*.cpp
+	@${RM} ${WRKSRC}/src/qt-gui/moc_*.cpp
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} \

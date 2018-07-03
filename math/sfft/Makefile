@@ -3,7 +3,7 @@
 
 PORTNAME=	sfft
 PORTVERSION=	0.1.0
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	math
 MASTER_SITES=	http://spiral.net/software/sfft/ LOCAL/bf
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -13,6 +13,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Optimized Sparse Fast Fourier Transform
 
 LICENSE=	GPLv2
+
+ONLY_FOR_ARCHS=		amd64 i386
+ONLY_FOR_ARCHS_REASON=	requires SSE instructions, which are x86-specific
 
 LIB_DEPENDS=	libfftw3.so:math/fftw3
 
@@ -48,10 +51,6 @@ appropriately
 .endif
 
 LIBM=	-lm
-.if ${OSVERSION} < 1000034
-LIB_DEPENDS+=	libmissing.so:math/libmissing
-LIBM+=		-lmissing
-.endif
 
 .if ${PORT_OPTIONS:MDOCS} || make(makesum)
 DISTFILES+=	sfft-doc.pdf
@@ -83,11 +82,6 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e 's/string\.h/cstring/' \
 		${WRKSRC}/src/utils.cc
-.if ${OSVERSION} < 1000034
-	@${REINPLACE_CMD} -e '\|<complex.h>|{x; \
-	s|^.*$$|#include "missing_complex.h"|; H; x;}' \
-		${WRKSRC}/src/fft.h
-.endif
 	@${REINPLACE_CMD} -E -e '/<complex\.h>/ \
 	{s/<complex\.h>/ "sfftcomplex.h"/; x ; \
 	s|^.*$$|#endif|; G; x; \
@@ -102,7 +96,7 @@ post-patch:
 
 CORELIMIT?=	/usr/bin/limits -Sc 0
 
-check regression-test test: build
+do-test:
 	@cd ${BUILD_WRKSRC}; \
 	${CXX} ${CXXFLAGS} -o sfft-verification verification.cc \
 	${LDFLAGS} libsfft.a -lfftw3 ${LIBM} ; \
@@ -115,9 +109,9 @@ check regression-test test: build
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${HDIR}
 	@cd ${BUILD_WRKSRC}; ${INSTALL_DATA} ${HEADERS} ${STAGEDIR}${PREFIX}/${HDIR}
-.if ${PORT_OPTIONS:MDOCS}
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${_DISTDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
-.endif
+	${INSTALL_DATA} ${_DISTDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

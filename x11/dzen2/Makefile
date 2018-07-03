@@ -6,7 +6,7 @@ PORTVERSION=	0.9.5
 CATEGORIES=	x11
 PKGNAMESUFFIX=	2
 
-MAINTAINER=	udvzsolt@gmail.com
+MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	General purpose messaging, notification and menuing program for X11
 
 LICENSE=	MIT
@@ -43,8 +43,8 @@ MAKE_ARGS+=	LDFLAGS="${LDFLAGS} \$${LIBS}" \
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_MAN} ${WRKSRC}/README.dzen ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/gadgets/README.* ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/gadgets/*.sh ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.dzen ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/gadgets/README.* ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/gadgets/*.sh ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

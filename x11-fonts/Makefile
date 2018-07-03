@@ -13,6 +13,7 @@
     SUBDIR += artwiz-aleczapka-de
     SUBDIR += artwiz-aleczapka-se
     SUBDIR += artwiz-fonts
+    SUBDIR += averiagwf
     SUBDIR += bdfresize
     SUBDIR += bdftopcf
     SUBDIR += bitstream-vera
@@ -37,6 +38,7 @@
     SUBDIR += doulos-compact
     SUBDIR += droid-fonts-ttf
     SUBDIR += ecofont
+    SUBDIR += emojione-color-font-ttf
     SUBDIR += encodings
     SUBDIR += exo
     SUBDIR += fantasque-sans-mono
@@ -52,6 +54,7 @@
     SUBDIR += font-adobe-utopia-type1
     SUBDIR += font-alias
     SUBDIR += font-arabic-misc
+    SUBDIR += font-awesome
     SUBDIR += font-bh-100dpi
     SUBDIR += font-bh-75dpi
     SUBDIR += font-bh-lucidatypewriter-100dpi
@@ -81,6 +84,10 @@
     SUBDIR += font-screen-cyrillic
     SUBDIR += font-sony-misc
     SUBDIR += font-sun-misc
+    SUBDIR += font-tex-gyre-bonum-math
+    SUBDIR += font-tex-gyre-pagella-math
+    SUBDIR += font-tex-gyre-schola-math
+    SUBDIR += font-tex-gyre-termes-math
     SUBDIR += font-util
     SUBDIR += font-winitzki-cyrillic
     SUBDIR += font-xfree86-type1
@@ -102,6 +109,7 @@
     SUBDIR += gnu-unifont
     SUBDIR += gnu-unifont-ttf
     SUBDIR += gohufont
+    SUBDIR += google-fonts
     SUBDIR += hack-font
     SUBDIR += hanazono-fonts-ttf
     SUBDIR += hasklig
@@ -125,11 +133,12 @@
     SUBDIR += liberation-fonts-ttf
     SUBDIR += libfontenc
     SUBDIR += linux-c6-fontconfig
-    SUBDIR += linux-f10-fontconfig
+    SUBDIR += linux-c7-fontconfig
     SUBDIR += linuxlibertine
     SUBDIR += linuxlibertine-g
     SUBDIR += lohit
     SUBDIR += manu-gothica
+    SUBDIR += meslo
     SUBDIR += mgopen
     SUBDIR += mkbold
     SUBDIR += mkbold-mkitalic
@@ -140,10 +149,12 @@
     SUBDIR += montecarlo_fonts
     SUBDIR += montserrat
     SUBDIR += moveable-type-fonts
+    SUBDIR += nerd-fonts
     SUBDIR += nexfontsel
     SUBDIR += noto
     SUBDIR += noto-lite
     SUBDIR += nucleus
+    SUBDIR += ohsnap
     SUBDIR += oldschool-pc-fonts
     SUBDIR += p5-Font-AFM
     SUBDIR += p5-Font-TTF
@@ -157,6 +168,7 @@
     SUBDIR += profont
     SUBDIR += proggy_fonts
     SUBDIR += proggy_fonts-ttf
+    SUBDIR += py-QtAwesome
     SUBDIR += py-bdflib
     SUBDIR += roboto-fonts-ttf
     SUBDIR += sgifonts
@@ -164,6 +176,7 @@
     SUBDIR += showfont
     SUBDIR += sourcecodepro-ttf
     SUBDIR += sourcesanspro-ttf
+    SUBDIR += sourceserifpro-ttf
     SUBDIR += stix-fonts
     SUBDIR += suxus
     SUBDIR += symbola

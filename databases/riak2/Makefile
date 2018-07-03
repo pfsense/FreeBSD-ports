@@ -2,7 +2,7 @@
 
 PORTNAME=	riak2
 PORTVERSION=	2.1.1
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	databases
 MASTER_SITES=	http://s3.amazonaws.com/downloads.basho.com/riak/${PORTVERSION:R}/${PORTVERSION}/ \
 	http://downloads.basho.com.s3.amazonaws.com/riak/${PORTVERSION:R}/${PORTVERSION}/ \
@@ -20,7 +20,7 @@ COMMENT=	Riak is an open source, distributed, noSQL database
 
 LICENSE=	APACHE20
 
-BROKEN_powerpc64=	Does not build
+BROKEN=		No public distfiles
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/riak-erlang/bin/erlc:lang/erlang-riak
 
@@ -30,7 +30,10 @@ SHEBANG_FILES=	deps/eper/priv/bin/* \
 USE_RC_SUBR=	riak
 USE_GCC=	yes
 
-BROKEN_i386=	does not build
+BROKEN_i386=		does not build
+BROKEN_sparc64=		does not build: Please implement AtomicPointer for this platform
+NOT_FOR_ARCHS=		aarch64 powerpc64
+NOT_FOR_ARCHS_REASON=	does not build: error: Unknown CPU architecture
 
 USERS=		riak
 GROUPS=		riak

@@ -2,40 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	seqan-apps
-PORTVERSION=	2.2.0
 DISTVERSIONPREFIX=	seqan-v
+DISTVERSION=	2.4.0
 CATEGORIES=	biology
 
 MAINTAINER=	h2+fbsdports@fsfe.org
-COMMENT=	Official Bioinformatic applications based on the SeqAn library
+COMMENT=	Official bioinformatic applications based on the SeqAn library
 
 LICENSE=	BSD3CLAUSE LGPL3 GPLv3
 LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
 
+USES=		cmake:outsource compiler:openmp # once #199603 is resolved, add c++14-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	seqan
 GH_PROJECT=	seqan
-
-# once #199603 is resolved, do the following instead of USE_GCC
-# USES=		cmake:outsource compiler:openmp,c++14-lang
-USES=		cmake:outsource
 CMAKE_ARGS=	-DSEQAN_BUILD_SYSTEM="SEQAN_RELEASE_APPS"
 
-USE_GCC=	4.9+
+OPTIONS_RADIO=		ARCH
+OPTIONS_RADIO_ARCH=	SSE4 AVX2 NATIVE
+SSE4_DESC=		Use SSE4 and POPCNT instructions
+SSE4_CMAKE_ON=		-DSEQAN_ARCH_SSE4:BOOL=TRUE
+AVX2_DESC=		Use SSE4, AVX2 and POPCNT instructions
+AVX2_CMAKE_ON=		-DSEQAN_ARCH_AVX2:BOOL=TRUE
+NATIVE_DESC=		Use all available instruction sets (-march=native)
+NATIVE_CMAKE_ON=	-DSEQAN_ARCH_NATIVE:BOOL=TRUE
 
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000000
-post-patch:
-	# missing C99 functions in FreeBSD's math.h, use C++ instead
-	@${REINPLACE_CMD} -e 's|expl(|std::exp(|g' ${WRKSRC}/apps/snp_store/snp_store.h
-	@${REINPLACE_CMD} -e 's|logl(|std::log(|g' ${WRKSRC}/apps/snp_store/snp_store.h
-	# the other way around (use math.h instead of cmath)
-	@${REINPLACE_CMD} -e 's|std::round|round|g' ${WRKSRC}/apps/yara/mapper_writer.h
-	@${REINPLACE_CMD} -e 's|std::erfc|erfc|g' ${WRKSRC}/apps/yara/bits_matches.h
-.endif
 
 .if ${ARCH} == "i386"
 PLIST_SUB+=	RM_I386="@comment "

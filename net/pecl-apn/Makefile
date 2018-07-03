@@ -5,9 +5,6 @@ PORTNAME=	apn
 PORTVERSION=	1.0.3
 PORTREVISION=	2
 CATEGORIES=	net pear
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	Extension to interact with Apple Push Notification Service
@@ -16,9 +13,9 @@ LICENSE=	PHP301
 
 LIB_DEPENDS=	libcapn.so:net/libcapn
 
-USES=		php:ext ssl:build,run tar:tgz
+USES=		php:pecl ssl:build,run
 CONFIGURE_ARGS=	--with-apn=${LOCALBASE}
 CFLAGS+=	-I${OPENSSLINC}
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=	70 71 72
 
 .include <bsd.port.mk>

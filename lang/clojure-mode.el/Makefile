@@ -2,28 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	clojure-mode.el
-PORTVERSION=	2.1.1
+PORTVERSION=	5.6.1
 PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	lang elisp
+PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	harrigan-s@outlook.com
 COMMENT=	Emacs lisp module for the Clojure language
 
 LICENSE=	GPLv3
 
+USES=		emacs
 USE_GITHUB=	yes
 GH_ACCOUNT=	clojure-emacs
 GH_PROJECT=	clojure-mode
 
-USE_EMACS=	yes
-
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/clojure-mode.el \
 		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
-	${INSTALL_DATA} ${WRKSRC}/clojure-test-mode.el \
+	${INSTALL_DATA} ${WRKSRC}/clojure-mode-extra-font-locking.el \
+		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
+	${INSTALL_DATA} ${WRKSRC}/test.clj \
 		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
 
 .include <bsd.port.mk>

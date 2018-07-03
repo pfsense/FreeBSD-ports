@@ -2,46 +2,60 @@
 # $FreeBSD$
 
 PORTNAME=	bash-completion
-PORTVERSION=	2.1
-PORTREVISION=	6
+PORTVERSION=	2.8
 PORTEPOCH=	1
 CATEGORIES=	shells
-MASTER_SITES=	http://bash-completion.alioth.debian.org/files/
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Programmable completion library for Bash
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	bash:shells/bash
+BROKEN_armv6=	fails to build: gmake: install-recursive: Error 1
+BROKEN_armv7=	fails to build: gmake: install-recursive: Error 1
 
-USE_AUTOTOOLS=	aclocal automake
+OPTIONS_DEFINE=	CMAKE_MODULES DOCS
+OPTIONS_SINGLE=	BASH
+OPTIONS_SINGLE_BASH=	BASH_SHARED BASH_STATIC
+OPTIONS_DEFAULT=BASH_SHARED CMAKE_MODULES
+OPTIONS_SUB=	yes
+BASH_SHARED_DESC=	Use shells/bash as backend
+BASH_STATIC_DESC=	Use shells/bash-static as backend
+CMAKE_MODULES_DESC=	Install bash-completion modules for cmake
+
+NO_ARCH=	yes
 GNU_CONFIGURE=	yes
-USES=		gmake tar:bzip2
+USES=		autoreconf gmake pathfix
 
 SUB_FILES=	pkg-message
-SUB_LIST+=	RUNFILE=${DATADIR}/bash_completion.sh
+SUB_LIST=	RUNFILE=${DATADIR}/bash_completion.sh
 
-OPTIONS_DEFINE=	DOCS
+GH_ACCOUNT=	scop
+USE_GITHUB=	yes
+
+BASH_SHARED_RUN_DEPENDS=bash:shells/bash
+BASH_STATIC_RUN_DEPENDS=bash:shells/bash-static
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|FLAC|&\|flv\|FLV|;' ${WRKSRC}/bash_completion
+	@${REINPLACE_CMD} \
+		-e '/^profiledir =/ s|(sysconfdir)/profile.d|(prefix)/share/bash-completion|' \
+		-e 's|\((datadir)/cmake\)|\1/Modules|' \
+			${WRKSRC}/Makefile.am
 
 post-configure:
-	@${REINPLACE_CMD} -e 's|/usr/local|${PREFIX}|g; \
-		s|/etc/bash_completion|${PREFIX}&|g; \
-		s|/usr\(/sbin/postconf\)|${PREFIX}\1|g; \
-		s|/usr\(/lib/rpm/macros\)|${PREFIX}\1|g; \
-		s|/usr/share\(/ssl/openssl.cnf\)|/etc\1|g; \
-		s|/usr/ports|${PORTSDIR}|g; \
-		s|/usr/lib\(/aspell\)|${PREFIX}/share\1|g; \
-		s|/usr/share/info|&:${PREFIX}/info|g;' \
-		${WRKSRC}/completions/*
+	@${REINPLACE_CMD} \
+		-e 's|/etc/ssl/openssl.cnf|${PREFIX}& &|g' \
+		-e 's|/usr/lib\(/aspell\)|${PREFIX}/share\1|g' \
+		-e 's|/usr/local|${PREFIX}|g' \
+		-e 's|/usr/ports|${PORTSDIR}|g' \
+		-e 's|/usr\(/sbin/postconf\)|${PREFIX}\1|g' \
+		-e 's|/usr/share/info|&:${PREFIX}/info|g' \
+		-e 's|/var\(/lib/rpm/macros\)|${PREFIX}\1|g' \
+			${WRKSRC}/completions/*
 
-post-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for i in README doc/bash_completion.txt doc/bashrc doc/inputrc
-		${INSTALL_DATA} ${WRKSRC}/$i ${STAGEDIR}${DOCSDIR}
-.endfor
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/
+	cd ${WRKSRC}/ && ${INSTALL_DATA} CHANGES README.md doc/bash_completion.txt doc/bashrc doc/inputrc ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

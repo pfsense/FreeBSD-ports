@@ -13,15 +13,19 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Freely enjoy childlike KISS, French-KISS!
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	lha:archivers/lha
+
+BROKEN_aarch64=		fails to compile: passing char * to parameter of incompatible type __builtin_va_list
+BROKEN_armv6=		fails to compile: passing char * to parameter of incompatible type __builtin_va_list
+BROKEN_armv7=		fails to compile: passing char * to parameter of incompatible type __builtin_va_list
 
 EXTRA_PATCHES=	${WRKDIR}/${PORTNAME}-${PORTVERSION}.diff
 
 USES=		gmake
 USE_XORG=	x11 xproto
-WANT_GNOME=	yes
 GNU_CONFIGURE=	yes
 MAKE_ARGS=	ACLOCAL="${TRUE}" AUTOCONF="${TRUE}" AUTOHEADER="${TRUE}" \
 		AUTOMAKE="${TRUE}"

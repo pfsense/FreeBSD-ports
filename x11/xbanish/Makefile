@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	xbanish
-PORTVERSION=	1.4
+PORTVERSION=	1.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11
 
-MAINTAINER=	t@tobik.me
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Banish the mouse cursor when typing
 
 LICENSE=	BSD3CLAUSE
@@ -16,7 +16,7 @@ GH_ACCOUNT=	jcs
 
 USE_XORG=	x11 xfixes xi xt
 
-MAKE_ARGS=	X11BASE="${PREFIX}"
+MAKE_ARGS=	X11BASE="${LOCALBASE}"
 
 PLIST_FILES=	bin/xbanish \
 		man/man1/xbanish.1.gz

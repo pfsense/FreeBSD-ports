@@ -3,7 +3,7 @@
 
 PORTNAME=	smalltalk
 PORTVERSION=	3.2.5
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	lang
 MASTER_SITES=	GNU
 
@@ -15,15 +15,13 @@ BUILD_DEPENDS=	zip:archivers/zip \
 LIB_DEPENDS=	libgdbm.so:databases/gdbm \
 		libcairo.so:graphics/cairo
 
-OPTIONS_DEFINE=	TK PGSQL SDL
-OPTIONS_DEFAULT=TK PGSQL SDL
+OPTIONS_DEFINE=	PGSQL SDL
+OPTIONS_DEFAULT=PGSQL SDL
 OPTIONS_SUB=	yes
-TK_USES=	tk:84
-TK_CONFIGURE_WITH=tcl=${LOCALBASE}/lib/tcl8.4 tk=${LOCALBASE}/lib/tk8.4
 PGSQL_USES=	pgsql
 SDL_USE=	SDL=image,mixer,sdl,sound,ttf
 
-USES=		execinfo gmake iconv libtool localbase makeinfo pkgconfig \
+USES=		gmake iconv libtool localbase makeinfo pathfix pkgconfig \
 		shebangfix sqlite tar:xz
 USE_GNOME=	pango
 USE_XORG=	ice xi xmu
@@ -46,6 +44,7 @@ PORTDATA=	*
 
 INFO=		gst gst-base gst-libs
 
+BROKEN_aarch64=	Fails to link: undefined reference to sbrk
 BROKEN_sparc64=	Fails to install on sparc64
 
 post-patch:
@@ -56,8 +55,6 @@ post-patch:
 		${WRKSRC}/libgst/prims.inl
 	@${REINPLACE_CMD} -e '/^ac_include/s/\\$$/#include <wctype.h> \\/' \
 		${WRKSRC}/snprintfv/configure
-	@${REINPLACE_CMD} -e 's|$$(libdir)/pkgconfig|$$(prefix)/libdata/pkgconfig|' \
-		${WRKSRC}/Makefile.am ${WRKSRC}/Makefile.in
 
 post-build:
 	@${SED} -e 's|@bindir@|${PREFIX}/bin|g' \
@@ -67,7 +64,7 @@ post-install:
 	@${LN} -sf gst-load.1 ${STAGEDIR}${MANPREFIX}/man/man1/gst-reload.1
 	@${MKDIR} ${STAGEDIR}${DATADIR}/gtk
 	${INSTALL_DATA} ${WRKSRC}/*.el ${STAGEDIR}${PREFIX}/share/emacs/site-lisp
-	@${LS} -1 ${STAGEDIR}${PREFIX}/bin/gst* |grep -v config|xargs ${STRIP_CMD}
+	@${LS} -1 ${STAGEDIR}${PREFIX}/bin/gst* |grep -v config|${XARGS} ${STRIP_CMD}
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/smalltalk/*.so
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgst.so
 

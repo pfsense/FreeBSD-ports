@@ -6,9 +6,10 @@ PORTVERSION=	1.3.0
 PORTREVSION=	1
 CATEGORIES=	devel pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PEAR simple HTML form package
 
-USES=	pear
+NO_ARCH=	yes
+USES=		pear
 
 .include <bsd.port.mk>

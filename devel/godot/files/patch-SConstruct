@@ -1,35 +1,37 @@
---- SConstruct.orig	2016-08-09 07:52:15 UTC
+--- SConstruct.orig	2017-12-28 05:14:45 UTC
 +++ SConstruct
-@@ -63,7 +63,7 @@ elif (os.name=="nt"):
- 	if (os.getenv("VSINSTALLDIR")==None or platform_arg=="android"):
- 		custom_tools=['mingw']
+@@ -68,7 +68,7 @@ elif (os.name == "nt"):
+     if (os.getenv("VCINSTALLDIR") == None or platform_arg == "android" or platform_arg == "javascript"):
+         custom_tools = ['mingw']
  
--env_base=Environment(tools=custom_tools);
-+env_base=Environment(tools=custom_tools, ENV = os.environ);
+-env_base = Environment(tools=custom_tools)
++env_base = Environment(tools=custom_tools, ENV = os.environ)
+ if 'TERM' in os.environ:
+     env_base['ENV']['TERM'] = os.environ['TERM']
  env_base.AppendENVPath('PATH', os.getenv('PATH'))
- env_base.AppendENVPath('PKG_CONFIG_PATH', os.getenv('PKG_CONFIG_PATH'))
- env_base.global_defaults=global_defaults
-@@ -231,15 +231,17 @@ if selected_platform in platform_list:
- 	if env["extra_suffix"] != '' :
- 		env.extra_suffix += '.'+env["extra_suffix"]
+@@ -297,17 +297,20 @@ if selected_platform in platform_list:
+     if env["extra_suffix"] != '':
+         env.extra_suffix += '.' + env["extra_suffix"]
  
--	CCFLAGS = env.get('CCFLAGS', '')
--	env['CCFLAGS'] = ''
-+	env['CC'] = os.environ['CC']
-+	env['CXX'] = os.environ['CXX']
-+	
-+	CFLAGS = os.environ['CFLAGS']
-+	env['CFLAGS'] = []
-+	env.Append(CFLAGS=string.split(str(CFLAGS)))
+-    CCFLAGS = env.get('CCFLAGS', '')
+-    env['CCFLAGS'] = ''
++    env['CC'] = os.environ['CC']
++    env['CXX'] = os.environ['CXX']
++
++    CCFLAGS = os.environ['CXXFLAGS']
++    env['CCFLAGS'] = []
  
-+	CCFLAGS = os.environ['CXXFLAGS']
-+	env['CCFLAGS'] = []
- 	env.Append(CCFLAGS=string.split(str(CCFLAGS)))
+     env.Append(CCFLAGS=str(CCFLAGS).split())
  
--	CFLAGS = env.get('CFLAGS', '')
--	env['CFLAGS'] = ''
--
--	env.Append(CFLAGS=string.split(str(CFLAGS)))
+-    CFLAGS = env.get('CFLAGS', '')
+-    env['CFLAGS'] = ''
++    CFLAGS = os.environ['CFLAGS']
++    env['CFLAGS'] = []
  
- 	LINKFLAGS = env.get('LINKFLAGS', '')
- 	env['LINKFLAGS'] = ''
+     env.Append(CFLAGS=str(CFLAGS).split())
+ 
+-    LINKFLAGS = env.get('LINKFLAGS', '')
++    LINKFLAGS = os.environ['LDFLAGS']
+     env['LINKFLAGS'] = ''
+ 
+     env.Append(LINKFLAGS=str(LINKFLAGS).split())

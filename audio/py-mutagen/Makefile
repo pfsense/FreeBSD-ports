@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mutagen
-PORTVERSION=	1.34.1
-PORTREVISION=	2
+PORTVERSION=	1.40.0
 CATEGORIES=	audio python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,14 +10,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python-based audio metadata tag reader and writer
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 NO_ARCH=	yes
-USES?=		python:2.7+ shebangfix
+USES=		python shebangfix
 USE_PYTHON=	autoplist concurrent distutils
-SHEBANG_FILES=	tools/mid3cp tools/mid3iconv tools/mid3v2 \
-		tools/moggsplit tools/mutagen-inspect tools/mutagen-pony
+SHEBANG_FILES=	tools/*
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|share/man/man1|man/man1|g' ${WRKSRC}/setup.py

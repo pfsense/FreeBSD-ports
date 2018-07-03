@@ -373,7 +373,7 @@ if ($_POST['clear']) {
 if ($_POST['download']) {
 	$save_date = date("Y-m-d-H-i-s");
 	$file_name = "snort_logs_{$save_date}_{$if_real}.tar.gz";
-	exec("cd {$snortlogdir}/snort_{$if_real}{$snort_uuid} && /usr/bin/tar -czf {$g['tmp_path']}/{$file_name} *");
+	exec("cd {$snortlogdir}/snort_{$if_real}{$snort_uuid} && /usr/bin/tar -czf {$g['tmp_path']}/{$file_name} alert*");
 
 	if (file_exists("{$g['tmp_path']}/{$file_name}")) {
 		ob_start(); //important or other posts will fail
@@ -386,7 +386,7 @@ if ($_POST['download']) {
 		}
 		header("Content-Type: application/octet-stream");
 		header("Content-length: " . filesize("{$g['tmp_path']}/{$file_name}"));
-		header("Content-disposition: attachment; filename = {$file_name}");
+		header("Content-disposition: attachment; filename=" . $file_name);
 		ob_end_clean(); //important or other post will fail
 		readfile("{$g['tmp_path']}/{$file_name}");
 
@@ -694,53 +694,64 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			$alert_priority = $fields[12];
 			/* Protocol */
 			$alert_proto = $fields[5];
+
 			/* IP SRC */
 			$alert_ip_src = $fields[6];
+			if (!empty($alert_ip_src)) {
+				/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
+				$alert_ip_src = str_replace(":", ":&#8203;", $alert_ip_src);
 
-			/* Add Reverse DNS lookup icons */
-			$alert_ip_src .= '<br/>';
-			$alert_ip_src .= '<i class="fa fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[6] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
+				/* Add Reverse DNS lookup icons */
+				$alert_ip_src .= '<br/>';
+				$alert_ip_src .= '<i class="fa fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[6] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
 
-			/* Add icons for auto-adding to Suppress List if appropriate */
-			if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2]) && 
-			    !isset($supplist[$fields[1]][$fields[2]]['by_src'][$fields[6]])) {
+				/* Add icons for auto-adding to Suppress List if appropriate */
+				if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2]) && 
+				    !isset($supplist[$fields[1]][$fields[2]]['by_src'][$fields[6]])) {
 
-				$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" title=\"" . gettext('Add this alert to the Suppress List and track by_src IP') . '"';
-				$alert_ip_src .= " onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[6]}','{$alert_descr}');$('#mode').val('addsuppress_srcip');$('#formalert').submit();\"></i>";
+					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" title=\"" . gettext('Add this alert to the Suppress List and track by_src IP') . '"';
+					$alert_ip_src .= " onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[6]}','{$alert_descr}');$('#mode').val('addsuppress_srcip');$('#formalert').submit();\"></i>";
+				}
+				elseif (isset($supplist[$fields[1]][$fields[2]]['by_src'][$fields[6]])) {
+					$alert_ip_src .= '&nbsp;&nbsp;<i class="fa fa-info-circle"';
+					$alert_ip_src .= ' title="' . gettext("This alert track by_src IP is already in the Suppress List") . '"></i>';	
+				}
+				/* Add icon for auto-removing from Blocked Table if required */
+				if (isset($tmpblocked[$fields[6]])) {
+					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[6]}');$('#mode').val('todelete');$('#formalert').submit();\"";
+					$alert_ip_src .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
+				}
 			}
-			elseif (isset($supplist[$fields[1]][$fields[2]]['by_src'][$fields[6]])) {
-				$alert_ip_src .= '&nbsp;&nbsp;<i class="fa fa-info-circle"';
-				$alert_ip_src .= ' title="' . gettext("This alert track by_src IP is already in the Suppress List") . '"></i>';	
-			}
-			/* Add icon for auto-removing from Blocked Table if required */
-			if (isset($tmpblocked[$fields[6]])) {
-				$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[6]}');$('#mode').val('todelete');$('#formalert').submit();\"";
-				$alert_ip_src .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
-			}
+
 			/* IP SRC Port */
 			$alert_src_p = $fields[7];
 
 			/* IP Destination */
 			$alert_ip_dst = $fields[8];
 
-			/* Add Reverse DNS lookup icons */
-			$alert_ip_dst .= "<br/>";
-			$alert_ip_dst .= '<i class="fa fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[8] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
+			if (!empty($alert_ip_dst)) {
+				/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
+				$alert_ip_dst = str_replace(":", ":&#8203;", $alert_ip_dst);
 
-			/* Add icons for auto-adding to Suppress List if appropriate */
-			if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2]) && 
-			    !isset($supplist[$fields[1]][$fields[2]]['by_dst'][$fields[8]])) {
-				$alert_ip_dst .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[8]}','{$alert_descr}');$('#mode').val('addsuppress_dstip');$('#formalert').submit();\"";
-				$alert_ip_dst .= ' title="' . gettext("Add this alert to the Suppress List and track by_dst IP") . '"></i>';	
-			}
-			elseif (isset($supplist[$fields[1]][$fields[2]]['by_dst'][$fields[8]])) {
-				$alert_ip_dst .= '&nbsp;&nbsp;<i class="fa fa-info-circle"';
-				$alert_ip_dst .= ' title="' . gettext("This alert track by_dst IP is already in the Suppress List") . '"></i>';	
-			}
-			/* Add icon for auto-removing from Blocked Table if required */
-			if (isset($tmpblocked[$fields[8]])) {
-				$alert_ip_dst .= "&nbsp;&nbsp;<i name=\"todelete[]\" class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[8]}');$('#mode').val('todelete');$('#formalert').submit();\" ";
-				$alert_ip_dst .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
+				/* Add Reverse DNS lookup icons */
+				$alert_ip_dst .= "<br/>";
+				$alert_ip_dst .= '<i class="fa fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[8] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
+
+				/* Add icons for auto-adding to Suppress List if appropriate */
+				if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2]) && 
+				    !isset($supplist[$fields[1]][$fields[2]]['by_dst'][$fields[8]])) {
+					$alert_ip_dst .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[8]}','{$alert_descr}');$('#mode').val('addsuppress_dstip');$('#formalert').submit();\"";
+					$alert_ip_dst .= ' title="' . gettext("Add this alert to the Suppress List and track by_dst IP") . '"></i>';	
+				}
+				elseif (isset($supplist[$fields[1]][$fields[2]]['by_dst'][$fields[8]])) {
+					$alert_ip_dst .= '&nbsp;&nbsp;<i class="fa fa-info-circle"';
+					$alert_ip_dst .= ' title="' . gettext("This alert track by_dst IP is already in the Suppress List") . '"></i>';	
+				}
+				/* Add icon for auto-removing from Blocked Table if required */
+				if (isset($tmpblocked[$fields[8]])) {
+					$alert_ip_dst .= "&nbsp;&nbsp;<i name=\"todelete[]\" class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[8]}');$('#mode').val('todelete');$('#formalert').submit();\" ";
+					$alert_ip_dst .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
+				}
 			}
 
 			/* IP DST Port */

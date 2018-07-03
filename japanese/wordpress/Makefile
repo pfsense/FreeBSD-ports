@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	wordpress
-PORTVERSION=	4.6.1
+DISTVERSION=	4.9.5
 DISTVERSIONSUFFIX=	-ja
 CATEGORIES=	japanese www
 MASTER_SITES=	http://ja.wordpress.org/
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	State-of-the-art semantic personal publishing platform
 
 LICENSE=	GPLv2 GPLv3
@@ -23,8 +23,8 @@ USE_PHP=	curl gd mysqli pcre tokenizer xml zip zlib ftp
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 CPE_LANG=	ja
-.if ${PORTVERSION:N*.*.*}
-CPE_VERSION=	${PORTVERSION}.0
+.if ${DISTVERSION:N*.*.*}
+CPE_VERSION=	${DISTVERSION}.0
 .endif
 
 SUB_FILES=	pkg-message
@@ -50,7 +50,7 @@ pre-install:
 do-install:
 	${INSTALL} -d -m 755 ${STAGEDIR}${WWWDIR}/
 	${CP} -R ${WRKSRC}/ ${STAGEDIR}${WWWDIR}/
-	${FIND} ${STAGEDIR}${WWWDIR}/ -type d -exec ${CHMOD} g+w '{}' \;
+	${FIND} ${STAGEDIR}${WWWDIR}/ -type d -exec ${CHMOD} g+w {} \;
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/

@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	PDL
-PORTVERSION=	2.015
+PORTVERSION=	2.018
 PORTREVISION=	1
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=	CPAN:CHM
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl Data Language
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Astro-FITS-Header>=0:astro/p5-Astro-FITS-Header \
@@ -19,6 +18,7 @@ BUILD_DEPENDS=	p5-Astro-FITS-Header>=0:astro/p5-Astro-FITS-Header \
 		p5-File-Map>=0.57:devel/p5-File-Map \
 		p5-Inline>=0.68:devel/p5-Inline \
 		p5-Inline-C>=0.62:devel/p5-Inline-C \
+		p5-List-MoreUtils>=0:lang/p5-List-MoreUtils \
 		p5-Module-Compile>=0.23:devel/p5-Module-Compile
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 BUILD_DEPENDS+=	p5-Devel-CheckLib>=1.01:devel/p5-Devel-CheckLib
@@ -79,8 +79,11 @@ post-patch:
 	@${REINPLACE_CMD} -e "/POSIX_THREADS_LIBS/ s|undef|'-lpthread'|" \
 		${WRKSRC}/perldl.conf
 
-# autogen plist
 post-install:
+	${FIND} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/PDL -name '*.so' \
+		| ${XARGS} ${STRIP_CMD}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pdl
+# autogen plist
 	@(cd ${WRKSRC}; ${PERL} -Iblib/lib -Iblib/arch Doc/scantree.pl)
 	@(cd ${WRKSRC}/blib/man3 ; \
 	  ${FIND} *.3 | ${SED} "s,^,${MAN3PREFIX}/man/man3/,;s/3$$/3.gz/" \

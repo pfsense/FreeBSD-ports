@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	racktables
-DISTVERSION=	0.20.11
+DISTVERSION=	0.21.1
 CATEGORIES?=	sysutils www
 MASTER_SITES=	SF/${PORTNAME}/
 DISTNAME=	RackTables-${DISTVERSION}
 
-MAINTAINER=	zi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Server room asset management suite
 
 LICENSE=	GPLv2
@@ -15,49 +15,27 @@ LICENSE=	GPLv2
 NO_BUILD=	yes
 RACKHOME?=	www/racktables
 
-PORTEXAMPLES=	init-sample-racks.sql syncdomain.php
+PORTEXAMPLES=	cleanup_ldap_cache.php init-sample-racks.sql syncdomain.php
 
-USES=		shebangfix perl5 python:run
+USES=		shebangfix php:web perl5 python:run
+NO_ARCH=	yes
 USE_PERL5=	run
 SHEBANG_FILES=	gateways/*
 
-WANT_PHP_WEB=	yes
-USE_PHP=	bcmath gd json mbstring mysql pdo_mysql session
+USE_PHP=	bcmath gd json mbstring mysqli pdo_mysql session
 SUB_FILES=	pkg-message
 PLIST_SUB=	WWWDIR_REL=${WWWDIR_REL} WWWDIR=${WWWDIR}
 WWWUSER?=	www
 WWWGRP?=	www
 
-OPTIONS_DEFINE=	LDAP SNMP CURL LANG PCNTL PCRE
+OPTIONS_DEFINE=	LDAP SNMP CURL PCNTL PCRE
 PCRE_DESC=	Regular Expression Support
 PCNTL_DESC=	pcntl Support
-LANG_DESC=	Additional Language Support
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MLDAP}
-USE_PHP+=	ldap
-.endif
-
-.if ${PORT_OPTIONS:MSNMP}
-USE_PHP+=	snmp
-.endif
-
-.if ${PORT_OPTIONS:MCURL}
-USE_PHP+=	curl
-.endif
-
-.if ${PORT_OPTIONS:MLANG}
-USE_PHP+=	lang
-.endif
-
-.if ${PORT_OPTIONS:MPCNTL}
-USE_PHP+=	pcntl
-.endif
-
-.if ${PORT_OPTIONS:MPCRE}
-USE_PHP+=	pcre
-.endif
+LDAP_USE=	PHP=ldap
+SNMP_USE=	PHP=snmp
+CURL_USE=	PHP=curl
+PCNTL_USE=	PHP=pcntl
+PCRE_USE=	PHP=pcre
 
 post-patch:
 	@${FIND} ${WRKSRC} -name \*.orig -type f -delete

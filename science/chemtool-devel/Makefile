@@ -3,13 +3,13 @@
 
 PORTNAME=	chemtool
 PORTVERSION=	1.7.20050716
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	science
 MASTER_SITES=	http://ruby.chemie.uni-freiburg.de/~martin/chemtool/
 
 DISTNAME=	ct17a15
 
-MAINTAINER=	maho@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drawing organic molecules easily and store them (developer version)
 
 LIB_DEPENDS=	libEMF.so:graphics/libemf

@@ -8,7 +8,7 @@ CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python STUN client for getting NAT type and external IP
 
 LICENSE=	MIT
@@ -18,6 +18,6 @@ USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 
 post-extract:
-	@${RM} -rf ${WRKSRC}/tests
+	@${RM} -r ${WRKSRC}/tests
 
 .include <bsd.port.mk>

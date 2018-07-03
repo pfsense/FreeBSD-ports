@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	httpasyncclient
-DISTVERSION=	4.0.2
+DISTVERSION=	4.1.3
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/httpcomponents/${PORTNAME}/binary
 DISTNAME=	httpcomponents-asyncclient-${DISTVERSION}-bin
@@ -13,7 +13,7 @@ COMMENT=	Java components implementing an asynchronous HTTP client
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${JAVAJARDIR}/httpclient.jar:www/httpclient
+RUN_DEPENDS=	${JAVALIBDIR}/httpclient.jar:www/httpclient
 
 USES=		cpe
 CPE_VENDOR=	apache
@@ -21,6 +21,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 NO_BUILD=	yes
+NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/httpcomponents-asyncclient-${DISTVERSION}
 
 PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar \

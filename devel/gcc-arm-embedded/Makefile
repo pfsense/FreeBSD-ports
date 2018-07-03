@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	gcc-arm-embedded
-PORTVERSION=	5.4.20160622
-PORTREVISION=	0
+PORTVERSION=	7.2.20171218
+PORTREVISION=	3
 CATEGORIES=	devel
-MASTER_SITES=	http://launchpad.net/gcc-arm-embedded/5.0/5-2016-q2-update/+download/
+MASTER_SITES=	https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2017q4/
 DISTNAME=	${ORIGINAL_PACKAGE_NAME}-src
 
 MAINTAINER=	lev@FreeBSD.org
@@ -13,43 +13,40 @@ COMMENT=	Complete gcc-based toolcahin for embedded ARM development
 LICENSE=	GPLv2 LGPL20 LGPL21 GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	does not build: __adjust.c: internal compiler error: Segmentation fault
 
-OPTIONS_DEFINE=	PURE PYGDB EXAMPLES HTML PDF DOCS
-OPTIONS_DEFAULT=PYGDB
-PURE_DESC=	Use all libraries from bundle, do not depend on anything
+OPTIONS_DEFINE=	PYGDB EXAMPLES HTML PDF DOCS SYMLINK
+OPTIONS_DEFAULT=PYGDB SYMLINK
 HTML_DESC=	Install HTML documentation
 PDF_DESC=	Install PDF documentation (requires TeX, it is huge)
-PYGDB_DESC=	Build and install pyhon-enabled gdb in addition to standard one
-
-PURE_LIB_DEPENDS_OFF=	\
-			libexpat.so:textproc/expat2 \
-			libgmp.so:math/gmp \
-			libmpfr.so:math/mpfr \
-			libmpc.so:math/mpc \
-			libisl.so:devel/isl \
-			libcloog-isl.so:math/cloog \
-			libelf.so:devel/libelf
+PYGDB_DESC=	Build and install python-enabled gdb in addition to standard one
+SYMLINK_DESC=	Make version-independed symlink ${LOCALBASE}/${PORTNAME}
 
 PDF_USE=		TEX=base:build,tex:build,dvipsk:build
 PDF_BUILD_DEPENDS=	texi2dvi:print/texinfo
-PYGDB_USES=		python:2
+PYGDB_USES=		python:2.7
 
 OPTIONS_SUB=		yes
 
-NOT_FOR_ARCHS=		aarch64 arm armeb armv6 armv6hf \
+NOT_FOR_ARCHS=		arm armeb armv6 armv7 \
 			mips mips64 mips64el mipsel mipsn32
 NOT_FOR_ARCHS_REASON=	Very slow to build on emulator
 
-USES=			bison compiler cpe gmake iconv makeinfo tar:bzip2
+LIB_DEPENDS=		libexpat.so:textproc/expat2 \
+			libgmp.so:math/gmp \
+			libmpfr.so:math/mpfr \
+			libmpc.so:math/mpc \
+			libisl.so:devel/isl
+
+USES=			bison compiler cpe gmake gettext-runtime iconv makeinfo tar:bzip2
 
 GNU_CONFIGURE=	yes
 
 PATCH_WRKSRC=	${WRKDIR}/${ORIGINAL_PACKAGE_NAME}
 BUILD_WRKSRC=	${WRKDIR}
 
-GCC_VERSION=		5.4.1
-FULL_VERSION=		5_4-2016q2-20160622
+GCC_VERSION=		7.2.1
+FULL_VERSION=		7-2017-q4-major
 TARGET=			arm-none-eabi
 ORIGINAL_PACKAGE_NAME=	gcc-${TARGET}-${FULL_VERSION}
 
@@ -74,17 +71,6 @@ BUILD_DIR=	${WRKDIR}/build
 INTERIM_WORLD=	${WRKDIR}/install
 INTERIM_PREFIX=	${INTERIM_WORLD}/${PORTNAME}-${FULL_VERSION}
 
-BUNDLED_LIBS=			EXPAT:gz ZLIB:gz LIBELF:gz \
-				GMP:bz2 MPFR:bz2 MPC:gz ISL:bz2 CLOOG:gz
-BUNDLED_VERSION_EXPAT=		2.0.1
-BUNDLED_VERSION_ZLIB=		1.2.8
-BUNDLED_VERSION_LIBELF=		0.8.13
-BUNDLED_VERSION_GMP=		4.3.2
-BUNDLED_VERSION_MPFR=		2.4.2
-BUNDLED_VERSION_MPC=		0.8.1
-BUNDLED_VERSION_ISL=		0.12.2
-BUNDLED_VERSION_CLOOG=		0.18.1
-
 VAR_TO_SUBMAKE=	BUILD_DIR CC CFLAGS CHOSEN_COMPILER_TYPE CONFIG_SITE \
 		CONFIGURE_MAX_CMD_LEN CONFIGURE_SHELL CP CPP CPPFLAGS CXX \
 		CXXFLAGS DOCS_SUFFIX ECHO_MSG EXAMPLESDIR FILE FIND GMAKE \
@@ -98,13 +84,11 @@ VAR_TO_SUBMAKE_NOEXPAND=	CONFIGURE_ENV MAKE_ENV
 
 .include <bsd.port.pre.mk>
 
-post-extract:
 .if ${PORT_OPTIONS:MPURE}
-.for L in ${BUNDLED_LIBS}
-	@${ECHO_MSG} "====>  Extracting bundled ${L:C/[:].+//:tl}"
-	@${TAR} -xf ${SRC_DIR}/${L:C/[:].+//:tl}-${BUNDLED_VERSION_${L:C/[:].+//}}.tar.${L:C/.+[:]//} -C ${SRC_DIR}
-.endfor
+IGNORE=	PURE option is not valid anymore, no libraries are bundled
 .endif
+
+post-extract:
 	@${ECHO_MSG} "====>  Extracting bundled binutils"
 	@${TAR} -xf ${SRC_DIR}/binutils.tar.bz2 -C ${SRC_DIR}
 	@${ECHO_MSG} "====>  Extracting bundled gcc"
@@ -115,12 +99,12 @@ post-extract:
 	@${TAR} -xf ${SRC_DIR}/newlib.tar.bz2 -C ${SRC_DIR}
 
 do-configure:
-	@${RM} -rf ${BUILD_DIR}
+	@${RM} -r ${BUILD_DIR}
 	@${MKDIR} ${BUILD_DIR}
-	@${RM} -rf ${INTERIM_PREFIX}
+	@${RM} -r ${INTERIM_PREFIX}
 	@${MKDIR} ${INTERIM_PREFIX}
 	@${CP} ${FILESDIR}/Makefile ${WRKDIR}
-	@${RM} -f ${WRKDIR}/Makefile.inc
+	@${RM} ${WRKDIR}/Makefile.inc
 .for VAR in ${VAR_TO_SUBMAKE}
 	@${ECHO} '${VAR}=${${VAR}}' >> ${WRKDIR}/Makefile.inc
 .endfor
@@ -138,5 +122,8 @@ do-build:
 
 do-install:
 	@${TAR} -cf - -C ${WRKDIR}/install ${PORTNAME}-${FULL_VERSION} | ${TAR} -xf - -C ${STAGEDIR}${PREFIX}
+.if ${PORT_OPTIONS:MSYMLINK}
+	@${LN} -s ${PORTNAME}-${FULL_VERSION} ${STAGEDIR}${PREFIX}/${PORTNAME}
+.endif
 
 .include <bsd.port.post.mk>

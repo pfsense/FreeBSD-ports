@@ -5,14 +5,14 @@ PORTNAME=	MDB_QueryTool
 PORTVERSION=	1.2.3
 CATEGORIES=	databases www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PEAR OO-interface for easily retrieving and modifying data in a DB
 
-BUILD_DEPENDS=	${PEARDIR}/MDB.php:databases/pear-MDB \
-		${PEARDIR}/Log/null.php:sysutils/pear-Log
-RUN_DEPENDS:=	${PEARDIR}/MDB.php:databases/pear-MDB \
-		${PEARDIR}/Log/null.php:sysutils/pear-Log
+BUILD_DEPENDS=	${PEARDIR}/MDB.php:databases/pear-MDB@${PHP_FLAVOR} \
+		${PEARDIR}/Log/null.php:sysutils/pear-Log@${PHP_FLAVOR}
+RUN_DEPENDS:=	${PEARDIR}/MDB.php:databases/pear-MDB@${PHP_FLAVOR} \
+		${PEARDIR}/Log/null.php:sysutils/pear-Log@${PHP_FLAVOR}
 
-USES=	pear
+USES=		pear
 
 .include <bsd.port.mk>

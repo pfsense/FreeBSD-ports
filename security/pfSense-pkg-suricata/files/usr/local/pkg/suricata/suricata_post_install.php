@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,27 +36,6 @@ require_once("/usr/local/pkg/suricata/suricata.inc");
 require("/usr/local/pkg/suricata/suricata_defs.inc");
 
 global $config, $g, $rebuild_rules, $pkg_interface, $suricata_gui_include;
-
-/****************************************
- * Define any new constants here that   *
- * may not be yet defined in the old    *
- * "suricata_defs.inc" include file     *
- * that might be cached and used by     *
- * the package manager installation     *
- * code.                                *
- *                                      *
- * This is a hack to work around the    *
- * fact the old version of the inc file *
- * is cached and used instead of the    *
- * updated version included with the    *
- * updated GUI package.                 *
- ****************************************/
-if (!defined('SURICATA_PBI_BASEDIR'))
-	define('SURICATA_PBI_BASEDIR', '/usr/pbi/suricata-' . php_uname("m"));
-
-/****************************************
- * End of PHP caching workaround        *
- ****************************************/
 
 // Initialize some common values from defined constants
 $suricatadir = SURICATADIR;
@@ -100,10 +79,6 @@ safe_mkdir(SURICATALOGDIR);
 safe_mkdir(SURICATA_SID_MODS_PATH);
 safe_mkdir(SURICATA_IPREP_PATH);
 
-// Make sure config variable is an array
-if (!is_array($config['installedpackages']['suricata']['config'][0]))
-	$config['installedpackages']['suricata']['config'][0] = array();
-
 // Download the latest GeoIP DB updates and create cron task if the feature is not disabled
 if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] != 'off') {
 	log_error(gettext("[Suricata] Installing free GeoIP country database files..."));
@@ -130,16 +105,36 @@ if ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] ==
 /*********************************************************/
 $cron_count = 0;
 $suri_pf_table = SURICATA_PF_TABLE;
+
 while (suricata_cron_job_exists($suri_pf_table, FALSE)) {
 	install_cron_job($suri_pf_table, false);
 	$cron_count++;
 }
-if ($cron_count > 0)
+
+if ($cron_count > 0) {
 	log_error(gettext("[Suricata] Removed {$cron_count} duplicate 'remove_blocked_hosts' cron task(s)."));
+}
 
 /*********************************************************/
 /* END OF BUG FIX CODE                                   */
 /*********************************************************/
+
+// Make sure config variable is an array (PHP7 likes every level to be created individually )
+if (!is_array($config['installedpackages']['suricata'])) {
+	$config['installedpackages']['suricata'] = array();
+}
+
+if (!is_array($config['installedpackages']['suricata']['rule'])) {
+	$config['installedpackages']['suricata']['rule'] = array();
+}
+
+if (!is_array($config['installedpackages']['suricata']['config'])) {
+	$config['installedpackages']['suricata']['config'] = array();
+}
+
+if (!is_array($config['installedpackages']['suricata']['config'][0])) {
+	$config['installedpackages']['suricata']['config'][0] = array();
+}
 
 // remake saved settings if previously flagged
 if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on') {
@@ -152,6 +147,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	/* UUID for the cloned interface.  Also fix any duplicate       */
 	/* entries in ['rulesets'] for "dns-events.rules".              */
 	/****************************************************************/
+
 	if (count($config['installedpackages']['suricata']['rule']) > 0) {
 		$uuids = array();
 		$suriconf = &$config['installedpackages']['suricata']['rule'];
@@ -185,7 +181,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	/****************************************************************/
 
 	/* Do one-time settings migration for new version configuration */
-	update_status(gettext("Migrating settings to new configuration...") . "\n");
+	update_status(gettext("Migrating settings to new configuration..."));
 	include('/usr/local/pkg/suricata/suricata_migrate_config.php');
 	update_status(gettext(" done.") . "\n");
 	log_error(gettext("[Suricata] Downloading and updating configured rule types."));
@@ -194,8 +190,26 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	$rebuild_rules = true;
 	conf_mount_rw();
 
+	// Make sure config variable is an array (PHP7 likes every level to be created individually )
+	if (!is_array($config['installedpackages']['suricata'])) {
+		$config['installedpackages']['suricata'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['suricata']['rule'])) {
+		$config['installedpackages']['suricata']['rule'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['suricata']['config'])) {
+		$config['installedpackages']['suricata']['config'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['suricata']['config'][0])) {
+		$config['installedpackages']['suricata']['config'][0] = array();
+	}
+
 	// Create the suricata.yaml files for each enabled interface
 	$suriconf = $config['installedpackages']['suricata']['rule'];
+
 	foreach ($suriconf as $suricatacfg) {
 		$if_real = get_real_interface($suricatacfg['interface']);
 		$suricata_uuid = $suricatacfg['uuid'];
@@ -213,7 +227,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 		include("/usr/local/pkg/suricata/suricata_yaml_template.inc");
 
 		// Now write out the conf file using $suricata_conf_text contents
-		@file_put_contents("{$suricatacfgdir}/suricata.yaml", $suricata_conf_text); 
+		@file_put_contents("{$suricatacfgdir}/suricata.yaml", $suricata_conf_text);
 		unset($suricata_conf_text);
 
 		// create barnyard2.conf file for interface
@@ -248,14 +262,18 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 
 // If this is first install and "forcekeepsettings" is empty,
 // then default it to 'on'.
-if (empty($config['installedpackages']['suricata']['config'][0]['forcekeepsettings']))
+if (empty($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'])) {
+	update_status("   " . gettext("\n  Setting up initial configuration.") . "\n");
 	$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] = 'on';
+}
 
 // Finished with file system mods, so remount it read-only
 conf_mount_ro();
 
 // Update Suricata package version in configuration
+update_status(gettext("  " . "Setting package version in configuration file.") . "\n");
 $config['installedpackages']['suricata']['config'][0]['suricata_config_ver'] = $config['installedpackages']['package'][get_package_id("suricata")]['version'];
+
 write_config("Suricata pkg v{$config['installedpackages']['package'][get_package_id("suricata")]['version']}: post-install configuration saved.");
 
 // Done with post-install, so clear flag

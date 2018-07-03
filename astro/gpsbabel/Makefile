@@ -25,7 +25,7 @@ CONFIGURE_ARGS=	--with-zlib=system
 USES=		localbase
 
 OPTIONS_DEFINE=	GUI
-OPTIONS_SUB=	GUI
+OPTIONS_SUB=	yes
 
 GUI_ALL_TARGET=	gui
 GUI_USE=	QT4=gui,xml,network,webkit
@@ -36,7 +36,7 @@ post-patch:
 	@${REINPLACE_CMD} '/langPath_ = / \
 		s|QApplication::applicationDirPath()|"${DATADIR}"|' \
 			${WRKSRC}/gui/mainwindow.cc
-	@${RM} -rf ${WRKSRC}/zlib/contrib/minizip
+	@${RM} -r ${WRKSRC}/zlib/contrib/minizip
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gpsbabel ${STAGEDIR}${PREFIX}/bin/

@@ -2,13 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	dejavu
-PORTVERSION=	2.35
+PORTVERSION=	2.37
 DISTVERSIONPREFIX=	fonts-ttf-
 CATEGORIES=	x11-fonts
 MASTER_SITES=	SF
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Bitstream Vera Fonts clone with a wider range of characters
+
+LICENSE=	AMS AREV BITSTREAM
+LICENSE_COMB=	multi
+LICENSE_NAME_AMS=	AMSFonts Copyright version 2.2
+LICENSE_NAME_AREV=	Arev Fonts Copyright
+LICENSE_NAME_BITSTREAM=	Bitstream Vera Fonts Copyright
+LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS_AMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_AREV=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_BITSTREAM=dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE=	DOCS LINKS
 OPTIONS_DEFAULT=LINKS
@@ -20,7 +30,7 @@ NO_BUILD=	yes
 USES=		fonts tar:bzip2
 
 PLIST_SUB=	FCDIR=${FCDIR} FCDIR_LINKS=${FCDIR_LINKS}
-PORTDOCS=	README langcover.txt status.txt unicover.txt
+PORTDOCS=	README.md langcover.txt status.txt unicover.txt
 SUB_FILES=	pkg-message
 
 FCDIR?=		etc/fonts/conf.avail

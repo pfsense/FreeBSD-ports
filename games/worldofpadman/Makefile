@@ -3,7 +3,7 @@
 
 PORTNAME=	worldofpadman
 PORTVERSION=	1.2.20080621
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.snt.utwente.nl/pub/games/worldofpadman/linux/:full,update \
 		LOCAL/alepulver/:source
@@ -154,6 +154,6 @@ generate-distfile:
 	fi
 	svn export https://wop-engine.svn.sourceforge.net/svnroot/wop-engine/trunk ${SRC_FILE}
 	tar cjf ${DISTDIR}/${SRC_FILE}.tar.bz2 ${SRC_FILE}
-	${RM} -rf ${SRC_FILE}
+	${RM} -r ${SRC_FILE}
 
 .include <bsd.port.mk>

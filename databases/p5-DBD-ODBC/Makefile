@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	DBD-ODBC
-PORTVERSION=	1.52
+PORTVERSION=	1.58
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	DBD module interfacing the ODBC databases
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-DBI>=1.609:databases/p5-DBI
@@ -34,8 +34,10 @@ post-configure:
 	@${REINPLACE_CMD} -e 's|-lodbc|& -pthread|g' ${WRKSRC}/Makefile
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/DBD/ODBC/ODBC.so
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

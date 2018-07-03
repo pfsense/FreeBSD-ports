@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	quantum
-PORTVERSION=	1.8.0
+PORTVERSION=	2.2.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	elixir-
@@ -17,7 +17,11 @@ GH_ACCOUNT=	c-rack
 GH_PROJECT=	quantum-elixir
 
 ELIXIR_APP_NAME=quantum
-MIX_BUILD_DEPS=	devel/elixir-timex
+MIX_BUILD_DEPS=	devel/elixir-calendar \
+		devel/elixir-crontab \
+		devel/elixir-gen_stage \
+		devel/elixir-timex \
+		devel/elixir-tzdata
 MIX_RUN_DEPS:=	${MIX_BUILD_DEPS}
 MIX_REWRITE=	yes
 

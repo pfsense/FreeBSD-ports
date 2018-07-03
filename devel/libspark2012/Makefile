@@ -3,11 +3,11 @@
 
 PORTNAME=	libspark2012
 PORTVERSION=	2012
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://downloads.dragonlace.net/src/
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SPARK 2012 Spark.Ada library
 
 LICENSE=	GPLv3

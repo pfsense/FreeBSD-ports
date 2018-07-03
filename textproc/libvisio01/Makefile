@@ -1,17 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	libvisio
-PORTVERSION=	0.1.5
+PORTVERSION=	0.1.6
 PORTREVISION=	3
 CATEGORIES=	textproc devel
-MASTER_SITES=	http://dev-www.libreoffice.org/src/${PORTNAME}/
+MASTER_SITES=	LODEV/${PORTNAME}
 PKGNAMESUFFIX=	01
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Library and tools for parsing the visio file format structure
 
-LICENSE=	LGPL21 MPL GPLv2
-LICENSE_COMB=	dual
+LICENSE=	MPL20
+LICENSE_FILE=	${WRKSRC}/COPYING.MPL
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/spirit/include/classic_core.hpp:devel/boost-libs
 LIB_DEPENDS=	libicui18n.so:devel/icu \
@@ -20,13 +20,11 @@ LIB_DEPENDS=	libicui18n.so:devel/icu \
 CONFIGURE_ARGS=	--disable-tests --disable-werror --without-docs
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
+USES=		compiler:c++11-lib gmake gperf libtool pathfix perl5 \
+		pkgconfig tar:xz
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 USE_GNOME=	libxml2
-USES=		compiler:c++0x gmake gperf libtool pathfix perl5 pkgconfig tar:xz
 INSTALL_TARGET=	install-strip
-
-post-patch:
-	@${REINPLACE_CMD} -e "s,zlib,,g" ${WRKSRC}/libvisio.pc.in
 
 .include <bsd.port.mk>

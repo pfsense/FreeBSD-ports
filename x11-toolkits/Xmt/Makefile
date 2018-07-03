@@ -2,6 +2,7 @@
 
 PORTNAME=	Xmt
 PORTVERSION=	4.0.0
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/motiftools/Xmt/Xmt400
 DISTNAME=	xmt400
@@ -16,9 +17,11 @@ WRKSRC=		${WRKDIR}/xmt400
 
 USES=		motif imake tar:tgz
 USE_LDCONFIG=	yes
-MAKE_ENV=	LANG=C
 
 post-patch:
 	${TOUCH} ${WRKSRC}/clients/mockup.man
+
+pre-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/X11/config
 
 .include <bsd.port.mk>

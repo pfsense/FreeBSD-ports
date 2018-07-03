@@ -20,8 +20,9 @@ RUN_DEPENDS=	gedit>=0:editors/gedit
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake gnome libtool pathfix pkgconfig \
-		python:3 tar:xz
+USES=		compiler:c11 gettext gmake gnome libtool pathfix pkgconfig \
+		python:3.4+ tar:xz
+USE_CSTD=	c11
 USE_GNOME=	gtk30 gtksourceview3 intlhack
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -33,10 +34,10 @@ GLIB_SCHEMAS=	org.gnome.gedit.plugins.drawspaces.gschema.xml \
 		org.gnome.gedit.plugins.wordcompletion.gschema.xml
 
 USES+=		python
-BUILD_DEPENDS+=	py3?-dbus>=0:devel/py3-dbus
+BUILD_DEPENDS+=	py3?-dbus>=0:devel/py-dbus@${PY_FLAVOR}
 LIB_DEPENDS+=	libgucharmap_2_90.so:deskutils/gucharmap
-RUN_DEPENDS+=	py3?-dbus>=0:devel/py3-dbus \
-		${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py3-libpeas
+RUN_DEPENDS+=	py3?-dbus>=0:devel/py-dbus@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py-libpeas@${PY_FLAVOR}
 USE_GNOME+=	vte3
 CONFIGURE_ARGS+=--enable-python
 GLIB_SCHEMAS+=	org.gnome.gedit.plugins.terminal.gschema.xml
@@ -45,15 +46,4 @@ post-patch:
 	@${REINPLACE_CMD} -e 's| \\t\\r\\n\\f|[:space:]|g' \
 		${WRKSRC}/configure
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3500
-PYOEXTENSION=	pyo
-.else
-PYOEXTENSION=	opt-1.pyc
-.endif
-
-PLIST_SUB+=	PYOEXTENSION=${PYOEXTENSION} \
-		PYVER=${PYTHON_VER:S/.//}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

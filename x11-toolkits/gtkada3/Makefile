@@ -3,10 +3,11 @@
 
 PORTNAME=	gtkada
 PORTVERSION=	3.14.2
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits
 PKGNAMESUFFIX=	3
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ada graphical toolkit based on Gtk3 components
 
 LICENSE=	GPLv3
@@ -16,10 +17,9 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libharfbuzz.so:print/harfbuzz \
 		libdrm.so:graphics/libdrm \
-		libglapi.so:graphics/libglapi \
 		libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libepoxy.so:graphics/libepoxy \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libffi.so:devel/libffi \
 		libpcre.so:devel/pcre \
 		libexpat.so:textproc/expat2 \

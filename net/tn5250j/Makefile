@@ -11,16 +11,16 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 MAINTAINER=	saper@saper.info
 COMMENT=	5250 terminal emulator for the AS/400 written in Java
 
-BUILD_DEPENDS=	${JAVAJARDIR}/mail.jar:java/javamail \
+BUILD_DEPENDS=	${JAVALIBDIR}/mail.jar:java/javamail \
 		${JYTHON_JAR}:lang/jython \
-		${JAVAJARDIR}/jt400.jar:sysutils/jtopen \
-		${JAVAJARDIR}/itext.jar:devel/itext \
-		${JAVAJARDIR}/log4j.jar:devel/log4j
-RUN_DEPENDS=	${JAVAJARDIR}/mail.jar:java/javamail \
+		${JAVALIBDIR}/jt400.jar:sysutils/jtopen \
+		${JAVALIBDIR}/itext.jar:devel/itext \
+		${JAVALIBDIR}/log4j.jar:devel/log4j
+RUN_DEPENDS=	${JAVALIBDIR}/mail.jar:java/javamail \
 		${JYTHON_JAR}:lang/jython \
-		${JAVAJARDIR}/jt400.jar:sysutils/jtopen \
-		${JAVAJARDIR}/itext.jar:devel/itext \
-		${JAVAJARDIR}/log4j.jar:devel/log4j
+		${JAVALIBDIR}/jt400.jar:sysutils/jtopen \
+		${JAVALIBDIR}/itext.jar:devel/itext \
+		${JAVALIBDIR}/log4j.jar:devel/log4j
 
 USES=		dos2unix zip
 USE_ANT=	yes
@@ -53,7 +53,7 @@ do-install:
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for d in ${DOC_FILES}
-	${INSTALL_MAN} ${WRKSRC}/src/${d} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/src/${d} ${STAGEDIR}${DOCSDIR}
 .endfor
 
 .include <bsd.port.post.mk>

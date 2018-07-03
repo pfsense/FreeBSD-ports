@@ -5,7 +5,7 @@ PORTNAME=	eschalot
 PORTVERSION=	1.2.0
 CATEGORIES=	security
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Vanity onion address generator for Tor
 
 LICENSE=	PD
@@ -15,8 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	ReclaimYourPrivacy
 GH_TAGNAME=	e9e085e
 
-USES=		gmake
-USE_OPENSSL=	yes
+USES=		gmake ssl
 MAKE_ENV=	INSTALL="${INSTALL_PROGRAM}"
 MAKE_ARGS=	PREFIX="${STAGEDIR}${PREFIX}"
 TEST_TARGET=	test

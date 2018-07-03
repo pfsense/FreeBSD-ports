@@ -4,9 +4,10 @@
 PORTNAME=	RetroArch
 PORTVERSION=	1.3.6
 DISTVERSIONPREFIX=	v
+PORTREVISION=	9
 CATEGORIES=	games
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Cross-platform entertainment system based on libretro API
 
 LICENSE=	GPLv3
@@ -15,6 +16,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon \
 		libdrm.so:graphics/libdrm \
 		libass.so:multimedia/libass
+
+BROKEN_powerpc64=	fails to compile: features_cpu.c: undefined reference to __mftb
 
 OPTIONS_DEFINE=	FFMPEG OSS JACK PULSEAUDIO ALSA SDL OPENGL OPENAL NETPLAY PYTHON V4L FREETYPE FBO
 OPTIONS_DEFAULT=FFMPEG OSS PULSEAUDIO SDL OPENGL OPENAL NETPLAY PYTHON V4L FREETYPE FBO
@@ -41,7 +44,7 @@ OPENAL_USES=		openal:soft
 OPENAL_CONFIGURE_ENABLE=al
 NETPLAY_CONFIGURE_ENABLE=	netplay
 PYTHON_CONFIGURE_ENABLE=python
-PYTHON_USES=		python:3
+PYTHON_USES=		python:3.4+
 V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 V4L_BUILD_DEPENDS=	v4l_compat>0:multimedia/v4l_compat
 V4L_CONFIGURE_ENABLE=	v4l2
@@ -54,16 +57,15 @@ LDFLAGS+=	-pthread
 CONFIGURE_ARGS+=--enable-threads
 CONFIGURE_ENV+=	MAN_DIR=${MANPREFIX}/man
 
-BROKEN_FreeBSD_9=	does not build on FreeBSD 9.x
-
+USES=		compiler:c++11-lib gmake pkgconfig shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
-
 SUB_FILES=	pkg-message
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--global-config-dir=${LOCALBASE}/etc
-USES=		compiler:c++11-lib gmake pkgconfig
 USE_XORG=	x11 xcb xext xinerama xv xxf86vm
+LLD_UNSAFE=	yes
+SHEBANG_FILES=	libretro-common/glsym/glgen.py libretro-common/glsym/rglgen.py tools/cg2glsl.py tools/vulkan_loader_generator.py
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|<malloc.h>|<stdlib.h>|' \
@@ -77,6 +79,10 @@ post-patch:
 		add_include_dirs ${LOCALBASE}/include;\
 		add_library_dirs ${LOCALBASE}/lib| ; \
 		/^check_lib OSS_LIB/d' \
+		${WRKSRC}/qb/config.libs.sh
+
+post-patch-PYTHON-on:
+	@${REINPLACE_CMD} -e '/check_pkgconf PYTHON/s/python3/python-${PYTHON_VER}/' \
 		${WRKSRC}/qb/config.libs.sh
 
 post-install:

@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	ykpers
-PORTVERSION=	1.17.1
+PORTVERSION=	1.18.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://opensource.yubico.com/yubikey-personalization/releases/
 
@@ -9,12 +10,16 @@ MAINTAINER=	matt@mjslabs.com
 COMMENT=	Library and tool for personalization of Yubico's YubiKey
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libyubikey.so:security/libyubikey
+LIB_DEPENDS=	libjson-c.so:devel/json-c \
+		libyubikey.so:security/libyubikey
 
+USES=		gmake libtool localbase pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		libtool pkgconfig
+
+INSTALL_TARGET=	install-strip
 
 PLIST_FILES=	bin/ykchalresp \
 		bin/ykinfo \
@@ -37,14 +42,6 @@ OPTIONS_DEFINE=	STATIC
 
 STATIC_CONFIGURE_ENABLE=	static
 STATIC_PLIST_FILES=		lib/libykpers-1.a
-
-MAKE_JOBS_UNSAFE=	yes
-
-LDFLAGS+=	-L/usr/lib
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|^pkgconfigdir = .*|pkgconfigdir = /usr/local/libdata/pkgconfig|g' \
-		${WRKSRC}/Makefile.in
 
 regression-test: build
 	@(cd ${WRKSRC}; ${MAKE} check)

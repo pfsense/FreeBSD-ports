@@ -3,14 +3,14 @@
 
 PORTNAME=	heartbeat
 PORTVERSION=	2.1.4
-PORTREVISION=	28
+PORTREVISION=	29
 CATEGORIES=	sysutils
 #MASTER_SITES=	http://hg.linux-ha.org/lha-2.1/archive/STABLE-2.1.4.tar.bz2
 MASTER_SITES=	LOCAL/kuriyama/heartbeat
 DISTNAME=	STABLE-${PORTVERSION}
 DIST_SUBDIR=	heartbeat
 
-MAINTAINER=	ports@encarnate.com
+MAINTAINER=	grembo@FreeBSD.org
 COMMENT=	Subsystem for High-Availability Clustering
 
 LICENSE=	GPLv2 LGPL21
@@ -23,7 +23,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libxml2.so:textproc/libxml2
 BUILD_DEPENDS=	bison:devel/bison
 
-USES=		autoreconf cpe gettext gmake libtool perl5 pkgconfig python tar:bzip2 \
+USES=		autoreconf cpe gettext gmake libtool perl5 pkgconfig python:2.7 tar:bzip2 \
 		shebangfix
 SHEBANG_FILES=	ldirectord/ldirectord.in \
 		lib/plugins/stonith/external/ibmrsa-telnet \
@@ -54,7 +54,7 @@ CONFIGURE_ARGS=	--localstatedir=/var \
 		--disable-dopd \
 		--disable-fatal-warnings
 
-SUB_FILES=	pkg-install pkg-message
+SUB_FILES=	pkg-message
 
 PKGDEINSTALL=	${PKGINSTALL}
 
@@ -72,8 +72,9 @@ DRAC3_LIB_DEPENDS=	libcurl.so:ftp/curl
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMGMT}
-BUILD_DEPENDS+=		swig:devel/swig13
+BUILD_DEPENDS+=		swig3.0:devel/swig30
 RUN_DEPENDS+=		${LOCALBASE}/libdata/pkgconfig/pygtk-2.0.pc:x11-toolkits/py-gtk2
+BINARY_ALIAS=		swig=swig3.0
 PLIST_SUB+=		MGMT=""
 .else
 CONFIGURE_ARGS+=	--disable-mgmt

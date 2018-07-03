@@ -5,10 +5,13 @@
   ### Add the AcceptPathInfo directive only for Apache 2.0.30 or later.
   Alias /joomla %%WWWDIR%%/
   AcceptPathInfo On
+
   <Directory %%WWWDIR%%>
       AllowOverride None
       Order Allow,Deny
       Allow from all
+      # For Apache 2.4 add:
+      Require all granted
   </Directory>
 
  2) Visit your Joomla site with a browser (i.e. http://your.server.com/joomla/),
@@ -19,5 +22,9 @@
 
  3) As of 2.5.5, php5-mysqli and php5-zip are installed. Use of mysqli for mysql
     is recommended over mysql.
+
+ 4) As of 3.6.4, php7 is also supported, and the php*-mysql extension is NOT 
+    asked for.  Also, the php*-pgsql extension is asked for as Joomla supports
+    PostgreSQL as well.
 
 ================================================================================

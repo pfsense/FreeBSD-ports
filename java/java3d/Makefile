@@ -3,7 +3,7 @@
 
 PORTNAME=	java3d
 PORTVERSION=	1.5.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	java graphics games devel
 MASTER_SITES=	https://sites.google.com/site/daemonwizard/
 
@@ -13,6 +13,9 @@ COMMENT=	Provides API for creating and manipulation of 3D geometry
 LICENSE=	BSD2CLAUSE GPLv2
 LICENSE_COMB=	multi
 
+BROKEN_armv6=		fails to compile: build.xml: Compile failed; see the compiler error output for details
+BROKEN_armv7=		fails to compile: build.xml: Compile failed; see the compiler error output for details
+
 USES=		tar:bzip2
 USE_JAVA=	yes
 USE_GL=		gl
@@ -20,6 +23,7 @@ USE_XORG=	xt
 JAVA_VERSION=	1.6+
 JAVA_VENDOR=	openjdk
 USE_ANT=	yes
+LLD_UNSAFE=	yes
 
 PLIST_SUB+=	JAVA_HOME=${JAVA_HOME:S/^${PREFIX}\///} ARCH=${ARCH}
 

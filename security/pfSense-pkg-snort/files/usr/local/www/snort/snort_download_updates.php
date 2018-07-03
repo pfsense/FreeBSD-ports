@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,12 +31,14 @@ $snortbinver = str_replace(".", "", $snortbinver);
 $snort_rules_file = "snortrules-snapshot-{$snortbinver}.tar.gz";
 $snort_community_rules_filename = SNORT_GPLV2_DNLD_FILENAME;
 $snort_openappid_filename = SNORT_OPENAPPID_DNLD_FILENAME;
+$snort_openappid_rules_filename = SNORT_OPENAPPID_RULES_FILENAME;
 
 $snortdownload = $config['installedpackages']['snortglobal']['snortdownload'];
 $emergingthreats = $config['installedpackages']['snortglobal']['emergingthreats'];
 $etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'];
 $snortcommunityrules = $config['installedpackages']['snortglobal']['snortcommunityrules'];
 $openappid_detectors = $config['installedpackages']['snortglobal']['openappid_detectors'];
+$openappid_rules_detectors = $config['installedpackages']['snortglobal']['openappid_rules_detectors'];
 
 /* Get last update information if available */
 if (!empty($config['installedpackages']['snortglobal']['last_rule_upd_time']))
@@ -105,11 +107,24 @@ else {
 	$openappid_detectors_sig_chk_local = gettext("Not Enabled");
 	$openappid_detectors_sig_date = gettext("Not Enabled");
 }
+if ($openappid_rules_detectors == 'on') {
+        $openappid_detectors_rules_sig_chk_local = gettext("Not Downloaded");
+        $openappid_detectors_rules_sig_date = gettext("Not Downloaded");
+}
+else {
+        $openappid_detectors_rules_sig_chk_local = gettext("Not Enabled");
+        $openappid_detectors_rules_sig_date = gettext("Not Enabled");
+}
+
 if (file_exists("{$snortdir}/{$snort_openappid_filename}.md5") && $openappid_detectors == 'on') {
 	$openappid_detectors_sig_chk_local = file_get_contents("{$snortdir}/{$snort_openappid_filename}.md5");
 	$openappid_detectors_sig_date = date(DATE_RFC850, filemtime("{$snortdir}/{$snort_openappid_filename}.md5"));
 }
 
+if (file_exists("{$snortdir}/{$snort_openappid_rules_filename}.md5") && $openappid_rules_detectors == 'on') {
+        $openappid_detectors_rules_sig_chk_local = file_get_contents("{$snortdir}/{$snort_openappid_rules_filename}.md5");
+        $openappid_detectors_rules_sig_date = date(DATE_RFC850, filemtime("{$snortdir}/{$snort_openappid_rules_filename}.md5"));
+}
 // Check status of the background rules update process (when launched)
 if ($_REQUEST['ajax'] == 'status') {
 	if (is_numeric($_REQUEST['pid'])) {
@@ -208,7 +223,7 @@ display_top_tabs($tab_array, true);
 				</thead>
 				<tbody>
 				<tr>
-					<td><?=gettext("Snort VRT Rules");?></td>
+					<td><?=gettext("Snort Subscriber Ruleset");?></td>
 					<td><?=trim($snort_org_sig_chk_local);?></td>
 					<td><?=gettext($snort_org_sig_date);?></td>
 				</tr>
@@ -227,6 +242,11 @@ display_top_tabs($tab_array, true);
 					<td><?=trim($openappid_detectors_sig_chk_local);?></td>
 					<td><?=gettext($openappid_detectors_sig_date);?></td>
 				</tr>
+				<tr>
+                                        <td><?=gettext("Snort OpenAppID RULES Detectors");?></td>
+                                        <td><?=trim($openappid_detectors_rules_sig_chk_local);?></td>
+                                        <td><?=gettext($openappid_detectors_rules_sig_date);?></td>
+                                </tr>
 				</tbody>
 			</table>
 		</div>

@@ -1,7 +1,8 @@
 # $FreeBSD$
 
-PORTNAME=  	connectivity
+PORTNAME=	connectivity
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	comms
 PKGNAMEPREFIX=	qt5-
 

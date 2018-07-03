@@ -15,16 +15,16 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/amavisd:security/amavisd-new \
-		${PEARDIR}/DB.php:databases/pear-DB \
-		${PEARDIR}/Mail/mime.php:mail/pear-Mail_Mime \
-		${PEARDIR}/Net/Socket.php:net/pear-Net_Socket \
-		${PEARDIR}/Mail/mimeDecode.php:mail/pear-Mail_mimeDecode
+		${PEARDIR}/DB.php:databases/pear-DB@${PHP_FLAVOR} \
+		${PEARDIR}/Mail/mime.php:mail/pear-Mail_Mime@${PHP_FLAVOR} \
+		${PEARDIR}/Net/Socket.php:net/pear-Net_Socket@${PHP_FLAVOR} \
+		${PEARDIR}/Mail/mimeDecode.php:mail/pear-Mail_mimeDecode@${PHP_FLAVOR}
 
 PEARDIR?=	${LOCALBASE}/share/pear
 PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
-SUB_LIST+=	PKGNAME=${PKGNAME}
 SUB_FILES=	pkg-message
 NO_BUILD=	yes
+NO_ARCH=	yes
 USE_PHP=	sockets
 WANT_PHP_WEB=	yes
 
@@ -51,9 +51,11 @@ do-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} "config contrib img lang lib templates" \
 		${STAGEDIR}${WWWDIR} "! -name *.orig")
 	(cd ${WRKSRC} && ${COPYTREE_BIN} scripts ${STAGEDIR}${WWWDIR})
+	${CHMOD} 644 ${STAGEDIR}${WWWDIR}/config/config.php.sample
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/CHANGELOG ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/docs/* ${STAGEDIR}${DOCSDIR}
-	${CHMOD} 644 ${STAGEDIR}${WWWDIR}/config/config.php.sample
 
 .include <bsd.port.mk>

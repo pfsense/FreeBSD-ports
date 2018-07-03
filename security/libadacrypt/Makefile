@@ -3,10 +3,10 @@
 
 PORTNAME=	libadacrypt
 PORTVERSION=	20151019
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Crypto library for Ada with a nice API
 
 LICENSE=	GMGPL

@@ -7,7 +7,7 @@ DISTVERSIONPREFIX=	v
 PORTREVISION=	6
 CATEGORIES=	devel
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source lightweight messaging layer
 
 LICENSE=	GPLv3
@@ -17,8 +17,6 @@ USES=		autoreconf compiler:features pathfix pkgconfig libtool
 USE_GITHUB=	yes
 GH_ACCOUNT=	crossroads-io
 USE_LDCONFIG=	yes
-
-PATHFIX_MAKEFILEIN=	Makefile.am
 
 OPTIONS_DEFINE=	DEBUG DOCS PLUGINS ZMQ
 EXTERNAL_DESC=	PGM extension from ports

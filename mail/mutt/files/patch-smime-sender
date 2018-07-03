@@ -1,6 +1,6 @@
---- commands.c.orig	Thu Mar 20 20:37:21 2003
-+++ commands.c	Thu Mar 20 20:40:29 2003
-@@ -178,7 +178,7 @@
+--- commands.c.orig	2017-09-08 22:18:16 UTC
++++ commands.c
+@@ -185,7 +185,7 @@ int mutt_display_message (HEADER *cur)
      {
        if (cur->security & GOODSIGN)
        {
@@ -9,11 +9,11 @@
  	  mutt_message ( _("S/MIME signature successfully verified."));
  	else
  	  mutt_error ( _("S/MIME certificate owner does not match sender."));
---- init.h.orig2	Fri May 31 10:14:05 2002
-+++ init.h	Fri May 31 10:54:55 2002
-@@ -1435,6 +1435,15 @@
-   ** This flag controls wether you want to be asked to enter a label for a certificate
-   ** about to be added to the database or not. It is set by default.
+--- init.h.orig	2017-09-08 22:18:16 UTC
++++ init.h
+@@ -3099,6 +3099,15 @@ struct option_t MuttVars[] = {
+   ** to determine the key to use. It will ask you to supply a key, if it can't find one.
+   ** (S/MIME only)
    */
 +  { "smime_dont_check_sender",	DT_BOOL, R_NONE, OPTSMIMENOSENDER, 0 },
 +  /*
@@ -24,30 +24,16 @@
 +  ** longer needs email-addresses as part of the certificates.
 +  ** It is not set by default.
 +  */
-   { "smime_decrypt_use_default_key",	DT_BOOL, R_NONE, OPTSDEFAULTDECRYPTKEY, 1 },
+   { "smime_sign_as",			DT_SYN,  R_NONE, UL "smime_default_key", 0 },
+   { "smime_default_key",		DT_STR,	 R_NONE, UL &SmimeDefaultKey, 0 },
    /*
-   ** .pp
---- mutt.h.orig2	Fri May 31 10:14:06 2002
-+++ mutt.h	Fri May 31 10:24:03 2002
-@@ -453,6 +453,7 @@
- #ifdef HAVE_SMIME
+--- mutt.h.orig	2017-09-08 22:18:16 UTC
++++ mutt.h
+@@ -521,6 +521,7 @@ enum
    OPTSMIMEISDEFAULT,
+   OPTSMIMESELFENCRYPT,
    OPTASKCERTLABEL,
 +  OPTSMIMENOSENDER,
    OPTSDEFAULTDECRYPTKEY,
- #endif
- #ifdef HAVE_PGP
---- contrib/smime.rc.orig	2015-09-10 09:16:17.000000000 +0200
-+++ contrib/smime.rc	2015-09-10 09:18:18.000000000 +0200
-@@ -8,7 +8,10 @@
- 
- # Uncomment this if you don't want to set labels for certificates you add.
- # unset smime_ask_cert_label
--
-+ 
-+# Uncomment this if you don't want to check for sender's email address
-+# set smime_dont_check_sender = yes
-+  
- # Passphrase expiration
- set smime_timeout=300
- 
+   OPTPGPIGNORESUB,
+   OPTPGPCHECKEXIT,

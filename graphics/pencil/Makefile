@@ -3,7 +3,7 @@
 
 PORTNAME=	pencil
 PORTVERSION=	0.4.4b
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}-planner/Pencil/${PORTVERSION}eta
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -12,6 +12,9 @@ MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Pencil - a traditional 2D animation software
 
 LICENSE=	GPLv2
+
+BROKEN_armv6=		fails to compile: no matching function for call to 'qMax'
+BROKEN_armv7=		fails to compile: no matching function for call to 'qMax'
 
 LIB_DEPENDS=	libming.so:graphics/ming \
 		libpng.so:graphics/png

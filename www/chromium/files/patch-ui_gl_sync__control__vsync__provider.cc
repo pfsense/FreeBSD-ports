@@ -1,5 +1,5 @@
---- ui/gl/sync_control_vsync_provider.cc.orig	2016-07-22 00:07:12.000000000 -0400
-+++ ui/gl/sync_control_vsync_provider.cc	2016-08-04 11:26:39.590057000 -0400
+--- ui/gl/sync_control_vsync_provider.cc.orig	2018-03-20 23:05:56.000000000 +0100
++++ ui/gl/sync_control_vsync_provider.cc	2018-03-24 19:15:24.360217000 +0100
 @@ -11,7 +11,7 @@
  #include "base/trace_event/trace_event.h"
  #include "build/build_config.h"
@@ -10,29 +10,29 @@
  // Calculating refreshes out of this range will be considered a fatal error.
  const int64_t kMinVsyncIntervalUs = base::Time::kMicrosecondsPerSecond / 400;
 @@ -26,7 +26,7 @@
- namespace gfx {
+ namespace gl {
  
- SyncControlVSyncProvider::SyncControlVSyncProvider() : VSyncProvider() {
+ SyncControlVSyncProvider::SyncControlVSyncProvider() : gfx::VSyncProvider() {
 -#if defined(OS_LINUX)
 +#if defined(OS_LINUX) || defined(OS_BSD)
    // On platforms where we can't get an accurate reading on the refresh
    // rate we fall back to the assumption that we're displaying 60 frames
    // per second.
-@@ -39,7 +39,7 @@
- void SyncControlVSyncProvider::GetVSyncParameters(
-     const UpdateVSyncCallback& callback) {
+@@ -48,7 +48,7 @@
+     base::TimeTicks* timebase_out,
+     base::TimeDelta* interval_out) {
    TRACE_EVENT0("gpu", "SyncControlVSyncProvider::GetVSyncParameters");
 -#if defined(OS_LINUX)
 +#if defined(OS_LINUX) || defined(OS_BSD)
-   base::TimeTicks timebase;
- 
    // The actual clock used for the system time returned by glXGetSyncValuesOML
-@@ -155,7 +155,7 @@
-   last_timebase_ = timebase;
-   last_media_stream_counter_ = media_stream_counter;
-   callback.Run(timebase, last_good_interval_);
+   // is unspecified. In practice, the clock used is likely to be either
+   // CLOCK_REALTIME or CLOCK_MONOTONIC, so we compare the returned time to the
+@@ -161,7 +161,7 @@
+   return true;
+ #else
+   return false;
 -#endif  // defined(OS_LINUX)
 +#endif  // defined(OS_LINUX) || defined(OS_BSD)
  }
  
- }  // namespace gfx
+ bool SyncControlVSyncProvider::SupportGetVSyncParametersIfAvailable() {

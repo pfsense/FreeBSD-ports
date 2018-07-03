@@ -3,7 +3,7 @@
 
 PORTNAME=	crawl
 PORTVERSION=	0.4
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	www
 MASTER_SITES=	http://www.monkey.org/~provos/
 
@@ -12,7 +12,7 @@ COMMENT=	Small, efficient web crawler with advanced features
 
 LICENSE=	BSD4CLAUSE
 
-LIB_DEPENDS=	libevent.so:devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent
 
 USES=		bdb pkgconfig
 
@@ -26,7 +26,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/include/db2,${BDB_INCLUDE_DIR},g' \
 		-e 's,db2,${BDB_LIB_NAME},g' ${WRKSRC}/configure.in
 
-post-install:
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/crawl.conf ${STAGEDIR}${EXAMPLESDIR}
 

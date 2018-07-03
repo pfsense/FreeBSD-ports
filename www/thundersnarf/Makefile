@@ -19,6 +19,8 @@ PGSQL_DESC=	Install PostgreSQL (report data storing)
 
 USES=		tar:bzip2
 
+PHP_USES=	php
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
@@ -27,7 +29,7 @@ PLIST_SUB=	OWNER=${WWWOWN} GROUP=${WWWGRP}
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MAPACHE}
-USE_APACHE_RUN=	22+
+USES+=		apache:run,2.2+
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
@@ -48,7 +50,7 @@ SUB_FILES=	pkg-message
 
 post-extract:
 	# Present on FreeBSD 8 and 9 after extraction
-	@${RM} -f ${WRKSRC}/protected/data/bin/._thundersnarf
+	@${RM} ${WRKSRC}/protected/data/bin/._thundersnarf
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}

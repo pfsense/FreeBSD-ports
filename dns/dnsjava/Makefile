@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dnsjava
-PORTVERSION=	2.1.7
+PORTVERSION=	2.1.8
 CATEGORIES=	dns java
 MASTER_SITES=	http://www.dnsjava.org/download/
 
@@ -24,9 +24,9 @@ DOCS_ALL_TARGET=	docs
 .include <bsd.port.pre.mk>
 
 .if ${JAVA_PORT_VERSION} == "1.6.0"
-PLIST_SUB=	JDK6=""
+PLIST_SUB+=	JDK6=""
 .else
-PLIST_SUB=	JDK6="@comment "
+PLIST_SUB+=	JDK6="@comment "
 .endif
 .if ${JAVA_PORT_VERSION} == "1.8.0"
 PLIST_SUB+=	JDK8=""

@@ -26,5 +26,6 @@ $priv_list['page-diagnostics-darkstat']['name'] = "WebCfg - Diagnostics: Darksta
 $priv_list['page-diagnostics-darkstat']['descr'] = "Allow access to Darkstat package GUI";
 $priv_list['page-diagnostics-darkstat']['match'] = array();
 $priv_list['page-diagnostics-darkstat']['match'][] = "pkg_edit.php?xml=darkstat.xml*";
+$priv_list['page-diagnostics-darkstat']['match'][] = "darkstat_redirect.php*";
 
 ?>

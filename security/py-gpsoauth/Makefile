@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gpsoauth
-PORTVERSION=	0.1.0
+PORTVERSION=	0.4.1
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,11 +12,11 @@ COMMENT=	Python client library for Google Play Services OAuth
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>=2.6.1:security/py-pycrypto \
-		${PYTHON_PKGNAMEPREFIX}requests>=2.7.0:www/py-requests \
-		${PYTHON_PKGNAMEPREFIX}ndg_httpsclient>0:net/py-ndg_httpsclient \
-		${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl \
-		${PYTHON_PKGNAMEPREFIX}pyasn1>0:devel/py-pyasn1
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.9.1:www/py-requests@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}ndg_httpsclient>0:net/py-ndg_httpsclient@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pycryptodome>=3.4:security/py-pycryptodome@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyasn1>0:devel/py-pyasn1@${FLAVOR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	simon-weber

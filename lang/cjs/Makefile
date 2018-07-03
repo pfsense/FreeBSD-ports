@@ -3,6 +3,7 @@
 
 PORTNAME=	cjs
 PORTVERSION=	2.4.1
+PORTREVISION=	3
 CATEGORIES=	lang gnome
 DIST_SUBDIR=	gnome3
 
@@ -21,13 +22,11 @@ USE_GNOME=	cairo glib20 gnomeprefix introspection:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
 USE_LDCONFIG=	yes
-PATHFIX_MAKEFILEIN=	Makefile.am
 GNU_CONFIGURE=	yes
 CFLAGS+=	-I${LOCALBASE}/include
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS+=--enable-compile-warnings=no
-
 
 .include <bsd.port.mk>

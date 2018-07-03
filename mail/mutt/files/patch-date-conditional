@@ -1,86 +1,10 @@
---- PATCHES~	never
-+++ PATCHES	Thu Jun 13 16:25:05 CDT 2002
-@@ -0,0 +1 @@
-+dgc.deepif.1
-diff -Pur mutt-1.5.1-base/muttlib.c mutt-1.5.1/muttlib.c
---- muttlib.c	Tue Mar 26 16:47:06 2002
-+++ muttlib.c	Thu Jun 13 15:28:20 2002
-@@ -978,6 +978,12 @@
- 	count = 0;
-         while (count < sizeof (ifstring) && *src && *src != '?' && *src != '&')
- 	{
-+	  if (*src == '\\')
-+	  {
-+	    src++;
-+	    if (!*src)
-+	      break;
-+	  }
-           *cp++ = *src++;
- 	  count++;
- 	}
-@@ -990,7 +996,13 @@
- 	count = 0;
- 	while (count < sizeof (elsestring) && *src && *src != '?')
- 	{
--	  *cp++ = *src++;
-+	  if (*src == '\\')
-+	  {
-+	    src++;
-+	    if (!*src)
-+	      break;
-+	  }
-+          *cp++ = *src++;
- 	  count++;
- 	}
- 	*cp = 0;
-Index: PATCHES
-===================================================================
---- PATCHES	(revision 22)
-+++ PATCHES	(revision 22)
+--- PATCHES.orig	2017-12-03 03:10:17 UTC
++++ PATCHES
 @@ -0,0 +1 @@
 +patch-1.5.0.ats.date_conditional.1
-Index: muttlib.c
-===================================================================
---- muttlib.c	(revision 22)
-+++ muttlib.c	(revision 22)
-@@ -944,7 +944,16 @@
-       if (*src == '?')
-       {
- 	flags |= M_FORMAT_OPTIONAL;
--	src++;
-+	ch = *(++src); /* save the character to switch on */
-+	cp = prefix;
-+	++src;
-+	count = 0;
-+	while (count < sizeof (prefix) && *src != '?')
-+	{
-+	  *cp++ = *src++;
-+	  count++;
-+	}
-+	*cp = 0;
-       }
-       else
-       {
-@@ -960,12 +969,12 @@
- 	  count++;
- 	}
- 	*cp = 0;
--      }
- 
--      if (!*src)
--	break; /* bad format */
-+	if (!*src)
-+	  break; /* bad format */
- 
--      ch = *src++; /* save the character to switch on */
-+	ch = *src++; /* save the character to switch on */
-+      }
- 
-       if (flags & M_FORMAT_OPTIONAL)
-       {
---- hdrline.c.orig	Tue Jun 29 15:01:28 2004
-+++ hdrline.c	Tue Jun 29 15:02:59 2004
-@@ -316,6 +316,64 @@
+--- hdrline.c.orig	2017-12-03 03:10:17 UTC
++++ hdrline.c
+@@ -428,6 +428,53 @@ hdr_format_str (char *dest,
  	const char *cp;
  	struct tm *tm; 
  	time_t T;
@@ -88,10 +12,7 @@ Index: muttlib.c
 +
 +	if (optional && (op == '[' || op == '(')) {
 +	  char *is;
-+          int d;
 +	  T = time(NULL);
-+	  tm = localtime(&T);
-+	  d = (T + tm->tm_gmtoff) % 86400;
 +	  T -= (op == '(') ? hdr->received : hdr->date_sent;
 +
 +	  is = (char *)prefix;
@@ -117,14 +38,6 @@ Index: muttlib.c
 +	      case 'd':
 +		t *= 24 * 60 * 60;
 +		break;
-+	      case 't':
-+		if (t > 1) {
-+		  t = (t-1) * 24 * 60 * 60;
-+		} else {
-+		  t = 0;
-+		}
-+		t += d;
-+		break;
 +	      case 'h':
 +		t *= 60 * 60;
 +		break;
@@ -145,3 +58,40 @@ Index: muttlib.c
  
  	p = dest;
  
+--- muttlib.c.orig	2017-12-03 03:10:17 UTC
++++ muttlib.c
+@@ -1335,7 +1335,16 @@ void mutt_FormatString (char *dest,		/* 
+       if (*src == '?')
+       {
+ 	flags |= MUTT_FORMAT_OPTIONAL;
+-	src++;
++	ch = *(++src); /* save the character to switch on */
++	cp = prefix;
++	++src;
++	count = 0;
++	while (count < sizeof (prefix) && *src != '?')
++	{
++	  *cp++ = *src++;
++	  count++;
++	}
++	*cp = 0;
+       }
+       else
+       {
+@@ -1351,12 +1360,12 @@ void mutt_FormatString (char *dest,		/* 
+ 	  count++;
+ 	}
+ 	*cp = 0;
+-      }
+ 
+-      if (!*src)
+-	break; /* bad format */
++	if (!*src)
++	  break; /* bad format */
+ 
+-      ch = *src++; /* save the character to switch on */
++	ch = *src++; /* save the character to switch on */
++      }
+ 
+       if (flags & MUTT_FORMAT_OPTIONAL)
+       {

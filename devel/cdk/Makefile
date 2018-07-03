@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cdk
-DISTVERSION=	5.0-20160131
+DISTVERSION=	5.0-20161210
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	ftp://invisible-island.net/cdk/
@@ -13,7 +13,7 @@ COMMENT=	Curses Development Kit for speedy development of full screen programs
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		ncurses gmake tar:tgz
+USES=		gmake ncurses tar:tgz
 GNU_CONFIGURE=	yes
 PORTDOCS=	EXPANDING INSTALL NOTES README TODO
 MAKE_JOBS_UNSAFE=	yes

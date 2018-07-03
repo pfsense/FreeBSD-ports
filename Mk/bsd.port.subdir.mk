@@ -47,6 +47,11 @@ README=			${TEMPLATES}/README.category
 MOVEDDIR?=		${PORTSDIR}
 MOVEDFILE?=		MOVED
 
+# Ensure .CURDIR contains an absolute path without a trailing slash.  Failed
+# builds can occur when PORTSDIR is a symbolic link, or with something like
+# make -C /usr/ports/category/port/.
+.CURDIR:=		${.CURDIR:tA}
+
 .include "${PORTSDIR}/Mk/bsd.commands.mk"
 
 .MAIN: all
@@ -303,7 +308,7 @@ readmes: readme
 
 .if !target(readme)
 readme:
-	@${RM} -f README.html
+	@${RM} README.html
 	@${MAKE} README.html
 .endif
 
@@ -345,7 +350,7 @@ README.html:
 			-e '/%%SUBDIR%%/r$@.tmp2' \
 			-e '/%%SUBDIR%%/d' \
 		> $@
-	@${RM} -f $@.tmp $@.tmp2 $@.tmp3 $@.tmp4
+	@${RM} $@.tmp $@.tmp2 $@.tmp3 $@.tmp4
 
 # Pass in the cached invariant variables to child makes.
 .if !defined(NOPRECIOUSMAKEVARS)

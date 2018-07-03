@@ -3,7 +3,7 @@
 
 PORTNAME=	openct
 PORTVERSION=	0.6.20
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF/opensc/${PORTNAME}
 
@@ -24,9 +24,7 @@ USE_RC_SUBR=	openct
 SUB_FILES=	etoken.conf
 
 CONFIGURE_ENV=	LTLIB_CFLAGS="-I${LOCALBASE}/include" \
-		LTLIB_LIBS="-L${LOCALBASE}/lib -lltdl" \
-		LIBUSB_CFLAGS="-I/usr/include" \
-		LIBUSB_LIBS="-lusb"
+		LTLIB_LIBS="-L${LOCALBASE}/lib -lltdl"
 
 CONFIGURE_ARGS=	--localstatedir=/var --enable-usb
 
@@ -48,7 +46,8 @@ CONFIGURE_ARGS+=--enable-doc
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} 's|(libdir)/pkgconfig|(prefix)/libdata/pkgconfig|' \
+	@${REINPLACE_CMD} -e '/PKG_CONFIG/s/libusb/&-0.1/' \
+		-e 's|(libdir)/pkgconfig|(prefix)/libdata/pkgconfig|' \
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} 's|install-data-am: install-dist_apidocDATA install-dist_docDATA|install-data-am: install-dist_docDATA|' \
 		${WRKSRC}/doc/Makefile.in

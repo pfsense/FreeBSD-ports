@@ -3,7 +3,7 @@
 
 PORTNAME=	bubbros
 PORTVERSION=	1.6.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SF/bub-n-bros/bub-n-bros/${PORTVERSION}
 DIST_SUBDIR=	python
@@ -17,7 +17,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 RUN_DEPENDS=	${PYGAME}
 BUILD_DEPENDS=	${PYGAME}
 
-USES=		python
+USES=		python:2.7 shebangfix
+SHEBANG_FILES=	BubBob.py
+USE_XORG=	x11 xext
 
 PORTDOCS=	*.html
 
@@ -33,7 +35,7 @@ post-patch:
 		${WRKSRC}/display/setup.py
 	@${FIND} ${WRKSRC} -name "*.bak" -delete -or -name "*.orig" -delete \
 		-or -name "*.cvsignore" -delete
-	@${FIND} ${WRKSRC} -name CVS -print0 | ${XARGS} -0 ${RM} -fr
+	@${FIND} ${WRKSRC} -name CVS -print0 | ${XARGS} -0 ${RM} -r
 
 do-build:
 	# Compile the statesaver extension module
@@ -41,12 +43,10 @@ do-build:
 	# Compile the X-window client extension module
 	cd ${WRKSRC}/display; ${PYTHON_CMD} setup.py build_ext -i
 .for d in bubbob display
-	@(cd ${WRKSRC}/${d} && ${RM} -fr build)
+	@(cd ${WRKSRC}/${d} && ${RM} -r build)
 .endfor
 
 do-install:
-	@${REINPLACE_CMD} -e 's|%%PYTHON_CMD%%|${PYTHON_CMD}|' \
-		${WRKDIR}/${PORTNAME}
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 .for d in bubbob common display http2 java metaserver
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} ${d} ${STAGEDIR}${DATADIR})

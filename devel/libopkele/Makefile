@@ -3,7 +3,7 @@
 
 PORTNAME=	libopkele
 PORTVERSION=	2.0.4
-PORTREVISION=	3
+PORTREVISION=	11
 CATEGORIES=	devel
 MASTER_SITES=	http://kin.klever.net/dist/
 
@@ -18,8 +18,12 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libtidy.so:www/tidy-lib \
 		libxslt.so:textproc/libxslt
 
+BROKEN_powerpc64=	fails to compile: iterator.h: error: invalid abstract return type
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	member access into incomplete type 'DH' (aka 'dh_st')
+
 USE_LDCONFIG=	yes
-USES=		libtool gmake pkgconfig compiler:c++11-lang ssl
+USES=		libtool gmake pathfix pkgconfig compiler:c++11-lang ssl
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	"OPENSSL_CFLAGS=${CFLAGS} -l${OPENSSLINC}" \
 		OPENSSL_LIBS=-L${OPENSSLLIB}
@@ -33,10 +37,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 # by design, we need to remove the openssl dependency
 # in pkgconfig/libopkele.pc.
 
-post-patch:
-	@ ${REINPLACE_CMD} -e "s|pkgconfigdir =.*|pkgconfigdir = ${PREFIX}/libdata/pkgconfig|g" \
-	    ${WRKSRC}/Makefile.in
 .if ${SSL_DEFAULT} == base
+post-patch:
 	@ ${REINPLACE_CMD} -e "s|Requires: openssl|Requires:|" ${WRKSRC}/libopkele.pc.in
 .endif
 

@@ -27,26 +27,24 @@
 #include <sys/cdefs.h>
 __FBSDID("$FreeBSD$");
 
-#include <sys/param.h>
-#include <sys/proc.h>
+#include "defs.h"
+#include "frame-unwind.h"
+#include "gdbcore.h"
+#include "inferior.h"
+#include "osabi.h"
+#include "regcache.h"
+#include "progspace.h"
+#include "solib.h"
+#include "trad-frame.h"
+#include "i386-tdep.h"
+
 #ifdef __i386__
+#include <sys/proc.h>
 #include <machine/pcb.h>
 #include <machine/frame.h>
 #include <machine/segments.h>
 #include <machine/tss.h>
 #endif
-#include <string.h>
-
-#include <defs.h>
-#include <frame-unwind.h>
-#include "gdbcore.h"
-#include <inferior.h>
-#include "osabi.h"
-#include <regcache.h>
-#include "progspace.h"
-#include "solib.h"
-#include "trad-frame.h"
-#include <i386-tdep.h>
 
 #include "kgdb.h"
 
@@ -60,7 +58,7 @@ static const struct program_space_data *i386fbsd_pspace_data;
 static void
 i386fbsd_pspace_data_cleanup (struct program_space *pspace, void *arg)
 {
-  struct i386fbsd_info *info = arg;
+  struct i386fbsd_info *info = (struct i386fbsd_info *)arg;
 
   xfree (info);
 }
@@ -73,7 +71,8 @@ get_i386fbsd_info (void)
 {
   struct i386fbsd_info *info;
 
-  info = program_space_data (current_program_space, i386fbsd_pspace_data);
+  info = (struct i386fbsd_info *)
+    program_space_data (current_program_space, i386fbsd_pspace_data);
   if (info != NULL)
     return info;
 
@@ -134,14 +133,14 @@ i386fbsd_supply_pcb(struct regcache *regcache, CORE_ADDR pcb_addr)
       if (target_read_memory(pcb_addr + i386fbsd_pcb_offset[i], buf, sizeof buf)
 	  != 0)
 	continue;
-      regcache_raw_supply(regcache, i, buf);
+      regcache->raw_supply(i, buf);
     }
-  regcache_raw_supply_unsigned(regcache, I386_CS_REGNUM, CODE_SEL);
-  regcache_raw_supply_unsigned(regcache, I386_DS_REGNUM, DATA_SEL);
-  regcache_raw_supply_unsigned(regcache, I386_ES_REGNUM, DATA_SEL);
-  regcache_raw_supply_unsigned(regcache, I386_FS_REGNUM, PRIV_SEL);
-  regcache_raw_supply_unsigned(regcache, I386_GS_REGNUM, DATA_SEL);
-  regcache_raw_supply_unsigned(regcache, I386_SS_REGNUM, DATA_SEL);
+  regcache->raw_supply_unsigned(I386_CS_REGNUM, CODE_SEL);
+  regcache->raw_supply_unsigned(I386_DS_REGNUM, DATA_SEL);
+  regcache->raw_supply_unsigned(I386_ES_REGNUM, DATA_SEL);
+  regcache->raw_supply_unsigned(I386_FS_REGNUM, PRIV_SEL);
+  regcache->raw_supply_unsigned(I386_GS_REGNUM, DATA_SEL);
+  regcache->raw_supply_unsigned(I386_SS_REGNUM, DATA_SEL);
 }
 
 #ifdef __i386__
@@ -188,7 +187,7 @@ i386fbsd_fetch_tss(void)
 	if (addr == 0)
 		return (0);
 	addr += (kt->cpu * NGDT + GPROC0_SEL) * sizeof(sd);
-	if (target_read_memory(addr, (void *)&sd, sizeof(sd)) != 0)
+	if (target_read_memory(addr, (gdb_byte *)&sd, sizeof(sd)) != 0)
 		return (0);
 	if (sd.sd_type != SDT_SYS386BSY) {
 		warning ("descriptor is not a busy TSS");
@@ -225,7 +224,7 @@ i386fbsd_dblfault_cache (struct frame_info *this_frame, void **this_cache)
   int i;
 
   if (*this_cache != NULL)
-    return (*this_cache);
+    return (struct trad_frame_cache *)(*this_cache);
 
   cache = trad_frame_cache_zalloc (this_frame);
   *this_cache = cache;
@@ -319,7 +318,7 @@ i386fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
   int i;
 
   if (*this_cache != NULL)
-    return (*this_cache);
+    return ((struct trad_frame_cache *)*this_cache);
 
   info = get_i386fbsd_info();
   cache = trad_frame_cache_zalloc (this_frame);
@@ -461,8 +460,6 @@ i386fbsd_kernel_init_abi(struct gdbarch_info info, struct gdbarch *gdbarch)
 	fbsd_vmcore_set_cpu_pcb_addr(gdbarch, kgdb_trgt_stop_pcb);
 }
 
-void _initialize_i386_kgdb_tdep(void);
-
 void
 _initialize_i386_kgdb_tdep(void)
 {
@@ -472,7 +469,7 @@ _initialize_i386_kgdb_tdep(void)
 				       bfd_target_elf_flavour,
 				       fbsd_kernel_osabi_sniffer);
 	gdbarch_register_osabi (bfd_arch_i386, 0,
-	    GDB_OSABI_FREEBSD_ELF_KERNEL, i386fbsd_kernel_init_abi);
+	    GDB_OSABI_FREEBSD_KERNEL, i386fbsd_kernel_init_abi);
 
 	i386fbsd_pspace_data = register_program_space_data_with_cleanup (NULL,
 	    i386fbsd_pspace_data_cleanup);

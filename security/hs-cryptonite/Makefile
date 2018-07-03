@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	cryptonite
-PORTVERSION=	0.6
+PORTVERSION=	0.24
+PORTREVISION=	1
 CATEGORIES=	security haskell
 
 MAINTAINER=	haskell@FreeBSD.org

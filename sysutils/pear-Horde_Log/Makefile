@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Log
-PORTVERSION=	2.2.0
+PORTVERSION=	2.3.0
 CATEGORIES=	sysutils www pear
-PKGNAMEPREFIX=	pear-
+PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Logging library

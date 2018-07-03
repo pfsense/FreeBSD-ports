@@ -2,13 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	getdns
-PORTVERSION=	0.9.0
-PORTREVISION=	2
+PORTVERSION=	1.4.1
 CATEGORIES=	dns ipv6
 MASTER_SITES=	https://getdnsapi.net/dist/ \
-		https://mirrors.rit.edu/zi/ \
-		http://getdnsapi.net/dist/ \
-		http://mirrors.rit.edu/zi/
+		ZI \
+		http://getdnsapi.net/dist/
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Modern asynchronous DNS API
@@ -21,47 +19,48 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libldns.so:dns/ldns \
 		libunbound.so:dns/unbound
 
-USES=		libtool
+USES=		libtool pathfix ssl
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libidn=${LOCALBASE} --docdir=${DOCSDIR} \
 		--with-trust-anchor=${LOCALBASE}/etc/unbound/root.key
+SOMAJVER=	10
+SOVERSION=	${SOMAJVER}.0.${PORTVERSION:C/[0-9].[0-9].([0-9])/\1/1}
+MAKE_JOBS_UNSAFE=yes
 
-PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
+PLIST_SUB+=	SOVERSION="${SOVERSION}" SOMAJVER="${SOMAJVER}"
 SUB_FILES+=	pkg-message
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	EXAMPLES DOCS LIBEV LIBUV LIBEVENT
+OPTIONS_DEFINE=	DOCS LIBEV LIBEVENT LIBUV STUBBY
 
 LIBEV_DESC=	Build with libev extension
-LIBUV_DESC=	Build with libuv extension
 LIBEVENT_DESC=	Build with libevent extension
+LIBUV_DESC=	Build with libuv extension
+STUBBY_DESC=	Build with Stubby DNS/TLS resolver
 
 LIBEV_LIB_DEPENDS=	libev.so:devel/libev
 LIBEV_CONFIGURE_WITH=	libev
+LIBEVENT_LIB_DEPENDS=	libevent_core.so:devel/libevent
+LIBEVENT_CONFIGURE_WITH=libevent
 LIBUV_LIB_DEPENDS=	libuv.so:devel/libuv
 LIBUV_CONFIGURE_WITH=	libuv
-LIBEVENT_LIB_DEPENDS=	libevent.so:devel/libevent2
-LIBEVENT_CONFIGURE_WITH=libevent
-
-.include <bsd.port.options.mk>
-
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} <= 1000000
-CONFIGURE_ARGS+=	--disable-gost
-.endif
+STUBBY_LIB_DEPENDS=	libyaml.so:textproc/libyaml
+STUBBY_CONFIGURE_WITH=	stubby
 
 post-patch:
-	${REINPLACE_CMD} -e 's|libdir)/pkgconfig|prefix)/libdata/pkgconfig|' \
-		${WRKSRC}/Makefile.in
 	${REINPLACE_CMD} -Ee 's,^(sharedoc = ).*,\1${WRKDIR}/doc,' \
 		-e '/echo .\*\*\*/d' ${WRKSRC}/Makefile.in
 
 post-install:
-.if ${PORT_OPTIONS:MEXAMPLES}
-	(cd ${WRKSRC}/spec/example && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/)
-.endif
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgetdns.so.*
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgetdns*.so.*
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/getdns_*
 
-.include <bsd.port.post.mk>
+post-stage-STUBBY-on:
+	${MV} ${STAGEDIR}${PREFIX}/etc/stubby/stubby.yml \
+		${STAGEDIR}${PREFIX}/etc/stubby/stubby.yml.sample
+
+post-install-STUBBY-on:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/stubby
+
+.include <bsd.port.mk>

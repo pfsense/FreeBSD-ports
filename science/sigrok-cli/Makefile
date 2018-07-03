@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	sigrok-cli
-PORTVERSION=	0.5.0
-PORTREVISION=	1
+PORTVERSION=	0.7.0
 CATEGORIES=	science cad
 MASTER_SITES=	http://sigrok.org/download/source/sigrok-cli/
 
-MAINTAINER=	uffe@uffe.org
+MAINTAINER=	bsam@FreeBSD.org
 COMMENT=	Framework for hardware logic analyzers, CLI client
 
 LICENSE=	GPLv3

@@ -1,6 +1,6 @@
---- Makefile.orig	2016-02-11 17:20:57 UTC
+--- Makefile.orig	2017-10-05 16:45:18 UTC
 +++ Makefile
-@@ -21,8 +21,8 @@
+@@ -21,10 +21,11 @@
  # Makefile for bowtie, bowtie2-build, bowtie2-inspect
  #
  
@@ -9,9 +9,21 @@
 +PREFIX ?= /usr/local
 +bindir = $(PREFIX)/bin
  
- INC =
+ INC = $(if $(RELEASE_BUILD),-I$(CURDIR)/.include)
++INC += -I${LOCALBASE}/include
+ LIBS = $(LDFLAGS) $(if $(RELEASE_BUILD),-L$(CURDIR)/.lib) -lz
  GCC_PREFIX = $(shell dirname `which gcc`)
-@@ -169,7 +169,7 @@ SSE_FLAG=-msse2 
+ GCC_SUFFIX =
+@@ -98,7 +99,7 @@ endif
+ 
+ #default is to use Intel TBB
+ ifneq (1,$(NO_TBB))
+-	LIBS += $(PTHREAD_LIB) -ltbb -ltbbmalloc$(if $(RELEASE_BUILD),,_proxy)
++	LIBS += $(PTHREAD_LIB) -L${LOCALBASE}/lib -ltbb -ltbbmalloc
+ 	override EXTRA_FLAGS += -DWITH_TBB
+ else
+ 	LIBS += $(PTHREAD_LIB)
+@@ -189,7 +190,7 @@ SSE_FLAG=-msse2
  
  DEBUG_FLAGS    = -O0 -g3 -m64 $(SSE_FLAG)
  DEBUG_DEFS     = -DCOMPILER_OPTIONS="\"$(DEBUG_FLAGS) $(EXTRA_FLAGS)\""

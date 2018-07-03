@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	quimup
-PORTVERSION=	1.4.1
+PORTVERSION=	1.4.3
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}
 DISTNAME=	${PORTNAME}_${PORTVERSION}_source
@@ -16,11 +16,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient \
 		libtag.so:audio/taglib
 
-WRKSRC=		${WRKDIR}/${PORTNAME}\ ${PORTVERSION}
+WRKSRC=		${WRKDIR}/Quimup_${PORTVERSION}
 
-USES=		pkgconfig qmake
+USES=		pkgconfig qmake compiler:c++11-lang
 USE_QT5=	core gui network widgets buildtools_build
 USE_GL=		gl
+
+CXXFLAGS+=	-std=c++11
 
 PLIST_FILES=	bin/quimup \
 		share/pixmaps/quimup.png

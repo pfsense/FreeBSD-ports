@@ -16,13 +16,13 @@ LICENSE_FILE=	${WRKDIR}/${DISTNAME}/LICENSE.txt
 SCGI_DIR=	apache2
 WRKSRC=		${WRKDIR}/${DISTNAME}/${SCGI_DIR}
 
-USE_APACHE=	22+
+USES=		apache:2.2+
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 
 .include <bsd.port.pre.mk>
 
-.if ${APACHE_VERSION} == 24
+.if ${APACHE_VERSION} == 2.4
 EXTRA_PATCHES=	${FILESDIR}/apache24-compat-mod__scgi.c
 .endif
 

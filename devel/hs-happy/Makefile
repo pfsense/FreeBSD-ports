@@ -3,6 +3,7 @@
 
 PORTNAME=	happy
 PORTVERSION=	1.19.5
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -13,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 USE_CABAL=	mtl>=1.0
 
 XMLDOCS=	doc/happy:html
-USE_AUTOTOOLS=	autoconf:env
+XMLDOCS_CONF=	yes
 
 STANDALONE=	yes
 EXECUTABLE=	happy

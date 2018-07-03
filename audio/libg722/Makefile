@@ -1,10 +1,11 @@
 # Created by: sobomax
 # $FreeBSD$
 
-PORTNAME=     	libg722
-PORTVERSION=	1.0.2
-#PORTREVISION= 	1
-CATEGORIES= 	audio
+PORTNAME=	libg722
+DISTVERSIONPREFIX=	v_
+DISTVERSION=	1_0_2
+#PORTREVISION=	1
+CATEGORIES=	audio
 
 MAINTAINER=	ports@sippysoft.com
 COMMENT=	Software G.722 decoding/encoding library
@@ -16,7 +17,6 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sippy
-GH_TAGNAME=	v_${PORTVERSION:S/./_/g}
 
 USE_LDCONFIG=	yes
 

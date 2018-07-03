@@ -3,7 +3,7 @@
 
 PORTNAME=	legesmotus
 PORTVERSION=	0.4.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -11,7 +11,8 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Team-based, networked, 2D shooter set in zero-gravity
 
 LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE_COMB=	dual  # not GPLv2+
+LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix="${PREFIX}" \

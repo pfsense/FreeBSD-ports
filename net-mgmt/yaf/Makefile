@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	yaf
-PORTVERSION=	2.8.4
-PORTREVISION=	1
+PORTVERSION=	2.9.3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://tools.netsa.cert.org/releases/
 
@@ -15,7 +14,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfixbuf.so:net/libfixbuf \
 		libltdl.so:devel/libltdl \
-		libpcap.so.1:net/libpcap \
 		libpcre.so:devel/pcre
 
 GNU_CONFIGURE=	yes
@@ -71,6 +69,9 @@ P0FPRINT_LIB_DEPENDS=	libp0f.so:net/libp0f
 
 .if defined(WITH_DAG)
 CONFIGURE_ARGS+=	--with-dag=${LOCALBASE}
+LIB_DEPENDS+=	libpcap.so.1:net/libpcap
+.elif exists(${LOCALBASE}/lib/libpcap.so)
+LIB_DEPENDS+=	libpcap.so.1:net/libpcap
 .endif
 
 post-install:

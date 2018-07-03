@@ -2,11 +2,12 @@
 
 PORTNAME=	kde-thumbnailer-fb2
 PORTVERSION=	0.2
+PORTREVISION=	2
 CATEGORIES=	misc kde
 MASTER_SITES=	http://kde-apps.org/CONTENT/content-files/
 DISTNAME=	160180-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	KDE thumbnail generator for fb2 files
 
 USES=		cmake:outsource kde:4

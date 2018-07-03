@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	squid
-PORTVERSION=	4.0.14
+PORTVERSION=	4.0.23
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://www.squid-cache.org/Versions/v4/ \
 		http://www2.us.squid-cache.org/Versions/v4/ \
@@ -18,7 +18,6 @@ PATCH_SITES=	http://www.squid-cache.org/%SUBDIR%/ \
 		http://www1.jp.squid-cache.org/%SUBDIR%/ \
 		http://master.squid-cache.org/~amosjeffries/patches/:nosid
 PATCH_SITE_SUBDIR=	Versions/v4/changesets
-#PATCHFILES=
 
 MAINTAINER=	timp87@gmail.com
 COMMENT=	HTTP Caching Proxy
@@ -26,13 +25,17 @@ COMMENT=	HTTP Caching Proxy
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_powerpc64=	fails to link: ext_time_quota_acl.cc: undefined reference to std::ctype
+
 CONFLICTS=	squid*-3.*
 
-USES=		compiler:c++11-lib cpe perl5 shebangfix tar:xz
+USES=		compiler:c++11-lib cpe perl5 shebangfix tar:xz bdb
 CPE_VENDOR=	squid-cache
 SHEBANG_FILES=	scripts/*.pl contrib/*.pl tools/*.pl
 GNU_CONFIGURE=	yes
 USE_RC_SUBR=	squid
+CPPFLAGS+=	-I${BDB_INCLUDE_DIR}
+LDFLAGS+=	-L${BDB_LIB_DIR}
 
 USERS=		squid
 GROUPS=		squid
@@ -47,17 +50,18 @@ OPTIONS_GROUP=	AUTH
 OPTIONS_RADIO=	FW
 OPTIONS_GROUP_AUTH=AUTH_LDAP AUTH_NIS AUTH_SASL AUTH_SMB AUTH_SQL
 OPTIONS_RADIO_FW=TP_IPF TP_IPFW TP_PF
-OPTIONS_DEFINE=	ARP_ACL CACHE_DIGESTS DEBUG DELAY_POOLS ECAP ESI \
+OPTIONS_DEFINE=	ARP_ACL CACHE_DIGESTS DEBUG DELAY_POOLS DOCS ECAP ESI EXAMPLES \
 		FOLLOW_XFF FS_AUFS FS_DISKD FS_ROCK HTCP ICAP ICMP IDENT IPV6 \
-		KQUEUE LARGEFILE NETTLE SNMP SSL SSL_CRTD STACKTRACES LAX_HTTP \
-		VIA_DB WCCP WCCPV2 DOCS EXAMPLES
+		KQUEUE LARGEFILE LAX_HTTP NETTLE PCRE SNMP SSL SSL_CRTD \
+		STACKTRACES VIA_DB WCCP WCCPV2
 
 OPTIONS_SINGLE=	GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_NONE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
 
-OPTIONS_DEFAULT=ARP_ACL AUTH_NIS CACHE_DIGESTS DELAY_POOLS FOLLOW_XFF \
-		FS_AUFS FS_DISKD FS_ROCK HTCP ICAP ICMP IDENT KQUEUE LARGEFILE \
-		LAX_HTTP SNMP SSL SSL_CRTD TP_IPFW VIA_DB WCCP WCCPV2 GSSAPI_BASE
+OPTIONS_DEFAULT=ARP_ACL AUTH_NIS CACHE_DIGESTS DELAY_POOLS FOLLOW_XFF FS_AUFS \
+		FS_DISKD FS_ROCK GSSAPI_BASE HTCP ICAP ICMP IDENT KQUEUE \
+		LARGEFILE LAX_HTTP PCRE SNMP SSL SSL_CRTD TP_IPFW VIA_DB WCCP \
+		WCCPV2
 
 ARP_ACL_CONFIGURE_ENABLE=	eui
 AUTH_LDAP_CFLAGS=		-I${LOCALBASE}/include
@@ -69,7 +73,7 @@ AUTH_SASL_CPPFLAGS=		-I${LOCALBASE}/include
 AUTH_SASL_LDFLAGS=		-L${LOCALBASE}/lib
 AUTH_SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
 AUTH_SASL_VARS=			BASIC_AUTH+=SASL
-AUTH_SMB_RUN_DEPENDS=		smbclient:net/samba43
+AUTH_SMB_USES=			samba:run
 AUTH_SMB_VARS=			BASIC_AUTH+=SMB EXTERNAL_ACL+=wbinfo_group
 AUTH_SQL_RUN_DEPENDS=		p5-DBI>=1.08:databases/p5-DBI
 AUTH_SQL_VARS=			EXTERNAL_ACL+=SQL_session
@@ -103,6 +107,9 @@ FS_DISKD_VARS=			STORAGE_SCHEMES+=diskd DISKIO_MODULES+=DiskDaemon
 FS_ROCK_VARS=			STORAGE_SCHEMES+=rock
 NETTLE_LIB_DEPENDS=		libnettle.so:security/nettle
 NETTLE_CONFIGURE_OFF=		--without-nettle
+PCRE_LIB_DEPENDS=		libpcre.so:devel/pcre
+PCRE_CPPFLAGS=			-I${LOCALBASE}/include
+PCRE_LDFLAGS=			-L${LOCALBASE}/lib -lpcreposix -lpcre
 SNMP_CONFIGURE_ENABLE=		snmp
 SSL_CONFIGURE_ENABLE=		ssl
 SSL_CONFIGURE_ON=		--with-openssl=${OPENSSLBASE} \
@@ -216,6 +223,7 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 		--with-swapdir=/var/squid/cache \
 		--without-gnutls \
 		--enable-auth \
+		--enable-zph-qos \
 		--enable-build-info \
 		--enable-loadable-modules \
 		--enable-removal-policies="lru heap" \
@@ -226,10 +234,6 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 		--disable-arch-native
 
 .include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-IGNORE=		doesn't build, messes C++ headers and libs
-.endif
 
 # Authentication methods and modules:
 
@@ -288,7 +292,7 @@ post-patch:
 		${change_files})
 	@(cd ${WRKSRC} && ${MV} src/mime.conf.default src/mime.conf.sample)
 
-.if !${PORT_OPTIONS:MIPV6}
+post-patch-IPV6-off:
 	@${REINPLACE_CMD} -e's/ ::1//' -e's/ fc00::\/7//' \
 		-e's/ fe80::\/10//' -e's/ 2001:DB8::2//' \
 		-e's/ 2001:DB8::a:0\/64//' \
@@ -296,7 +300,6 @@ post-patch:
 		-e'/tcp_outgoing_address 2001:db8::beef normal_service_net/d' \
 		-e'/tcp_outgoing_address 2001:db8::1/d' \
 		${WRKSRC}/src/cf.data.pre
-.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
@@ -305,13 +308,4 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${MYDOCS} ${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.pre.mk>
-
-.if ${COMPILER_TYPE} == clang
-#CXXFLAGS+=	-Wno-unused-private-field
-.if ${COMPILER_VERSION} >= 35
-CXXFLAGS+=	-Wno-undefined-bool-conversion -Wno-tautological-undefined-compare -Wno-dynamic-class-memaccess
-.endif
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

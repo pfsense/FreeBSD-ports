@@ -3,6 +3,7 @@
 
 PORTNAME=	network
 DISTVERSION=	${QT4_VERSION}
+PORTREVISION=	3
 CATEGORIES=	net ipv6
 PKGNAMEPREFIX=	qt4-
 
@@ -12,13 +13,16 @@ COMMENT=	Qt network module
 LICENSE=	GPLv3 LGPL21 LGPL3 GFDL
 LICENSE_COMB=	dual
 
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	error: member access into incomplete type 'RSA' (aka 'rsa_st')
+
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
+USES=		ssl
 USE_QT4=	qmake_build moc_build rcc_build corelib
 QT_DIST=	yes
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
-USE_OPENSSL=	yes
 
 ALL_TARGET=	first
 CONFIGURE_ENV?=	QTDIR=${WRKSRC} PATH=${WRKSRC}/bin:$$PATH
@@ -54,7 +58,8 @@ post-configure:
 			-E -e 's|(.*location=).*uic|\1${PREFIX}/${QT_BINDIR_REL}/${UIC:T}|g' \
 		${WRKSRC}/lib/pkgconfig/QtNetwork.pc
 	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
-		${WRKSRC}/src/network/ssl/qsslsocket_openssl.cpp \
+		${WRKSRC}/src/network/ssl/qsslsocket_openssl.cpp
+	${REINPLACE_CMD} -e 's|%%OPENSSLLIB%%|${OPENSSLLIB}|g' \
 		${WRKSRC}/src/network/ssl/qsslsocket_openssl_symbols.cpp
 
 .include <bsd.port.mk>

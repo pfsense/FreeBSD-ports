@@ -1,2 +1,3 @@
-SHA256 (rubygem/ruby_parser-3.6.6.gem) = d3a3ff8e472f85d769e848caa94938e5c4a7b5d9df75384056431bade8bd2cf5
-SIZE (rubygem/ruby_parser-3.6.6.gem) = 250880
+TIMESTAMP = 1502304251
+SHA256 (rubygem/ruby_parser-3.10.1.gem) = 454806d4e1b2c606f36f7f4cc9cfd981c8bf6c7485b4e1963850ccdee6e20b38
+SIZE (rubygem/ruby_parser-3.10.1.gem) = 414208

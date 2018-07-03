@@ -1,21 +1,22 @@
 # $FreeBSD$
 
 PORTNAME=	vault
-PORTVERSION=	0.5.3
+PORTVERSION=	0.9.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Tool for securely accessing secrets
 
-LICENSE=	MPL
+LICENSE=	MPL20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
+BUILD_DEPENDS=	go>=1.9:lang/go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hashicorp
-
-STRIP=		# stripping can break go binaries
+GH_SUBDIR=	src/github.com/${GH_ACCOUNT}/${PORTNAME}
+COMMIT_ID=	7e1fbde40afee241f81ef08700e7987d86fc7242
 
 USE_RC_SUBR=	vault
 
@@ -24,21 +25,18 @@ GROUPS=		vault
 
 PLIST_FILES=	bin/${PORTNAME}
 
-post-patch:
-	@${MV} ${WRKSRC}/vendor ${WRKSRC}/src
-	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
-	@cd ${WRKSRC} ; \
-	${MV} .gitignore .travis.yml CHANGELOG.md CONTRIBUTING.md Godeps \
-	LICENSE Makefile README.md api audit builtin cli command helper http \
-	logical main.go main_test.go make.bat physical scripts shamir terraform \
-	vault version website \
-	src/github.com/${GH_ACCOUNT}/${PORTNAME}
-
 do-build:
-	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}; \
-		${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -o bin/${PORTNAME}
+	@cd ${WRKSRC}; \
+		${SETENV} ${MAKE_ENV} ${BUILD_ENV} CGO_ENABLED=0 GOPATH=${WRKSRC} \
+		go build \
+		-ldflags "\
+		-X github.com/hashicorp/vault/version.Version=${PORTVERSION} \
+		-X github.com/hashicorp/vault/version.VersionPrerelease= \
+		-X github.com/hashicorp/vault/version.VersionMetadata= \
+		-X github.com/hashicorp/vault/version.GitCommit='${COMMIT_ID}'" \
+		-o bin/${PORTNAME}
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

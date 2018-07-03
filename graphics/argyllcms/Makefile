@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	argyllcms
-PORTVERSION=	1.7.0
-PORTREVISION=	1
+PORTVERSION=	1.9.2
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.argyllcms.com/
 DISTNAME=	Argyll_V${PORTVERSION}_src
@@ -13,27 +13,26 @@ COMMENT=	ICC compatible color management system
 
 LICENSE=	AGPLv3
 
-BROKEN_powerpc64=	Does not build
-
 BUILD_DEPENDS=	jam:devel/jam
-LIB_DEPENDS=	libtiff.so:graphics/tiff
+LIB_DEPENDS=	libtiff.so:graphics/tiff \
+		libpng.so:graphics/png
 
 WRKSRC=		${WRKDIR}/Argyll_V${PORTVERSION}
 
-USES=		compiler:c11 cpe jpeg zip
+USES=		compiler:c11 cpe jpeg ssl zip
 USE_XORG=	x11 xau xdmcp xext xinerama xrandr xscrnsaver xxf86vm
 
 post-patch:
 	@${REINPLACE_CMD} 's:711:755:g' ${WRKSRC}/Jambase
 
 do-build:
-	@cd ${WRKSRC} && ${MAKE_ENV} jam -q -fJambase -j${MAKE_JOBS_NUMBER}
+	@cd ${WRKSRC} && ${MAKE_ENV} jam -dx -q -fJambase -j${MAKE_JOBS_NUMBER}
 
 do-install:
-	@cd ${WRKSRC} && ${SETENV} DESTDIR=${STAGEDIR} PREFIX=${PREFIX} \
+	@cd ${WRKSRC} && ${SETENV} DESTDIR=${STAGEDIR} ${MAKE_ENV} \
 		REFSUBDIR=share/argyll/ref \
-		jam -q -fJambase -j${MAKE_JOBS_NUMBER} install
-	@${MV} ${STAGEDIR}${PREFIX}/bin/License.txt \
+		jam -dx -q -fJambase -j${MAKE_JOBS_NUMBER} install
+	${MV} ${STAGEDIR}${PREFIX}/bin/License.txt \
 		${STAGEDIR}${PREFIX}/share/argyll/
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
 

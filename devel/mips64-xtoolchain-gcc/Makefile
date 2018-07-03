@@ -1,7 +1,7 @@
 # $FreeBSD$
 
+PORTREVISION=	1
 PKGNAMEPREFIX=	mips64-
-PLIST=	${.CURDIR}/pkg-plist
 
 MASTERDIR=	${.CURDIR}/../powerpc64-xtoolchain-gcc
 

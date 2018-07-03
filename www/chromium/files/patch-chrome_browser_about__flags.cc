@@ -1,20 +1,35 @@
---- chrome/browser/about_flags.cc.orig	2016-05-11 19:02:13 UTC
-+++ chrome/browser/about_flags.cc
-@@ -673,7 +673,7 @@ const FeatureEntry kFeatureEntries[] = {
-      kOsLinux | kOsCrOS | kOsWin | kOsAndroid,
-      ENABLE_DISABLE_VALUE_TYPE(switches::kEnableSmoothScrolling,
-                                switches::kDisableSmoothScrolling)},
--#if defined(USE_AURA) || defined(OS_LINUX)
-+#if defined(USE_AURA) || defined(OS_LINUX) || defined(OS_BSD)
-     {"overlay-scrollbars", IDS_FLAGS_OVERLAY_SCROLLBARS_NAME,
-      IDS_FLAGS_OVERLAY_SCROLLBARS_DESCRIPTION,
-      // Uses the system preference on Mac (a different implementation).
-@@ -1729,7 +1729,7 @@ const FeatureEntry kFeatureEntries[] = {
-      IDS_FLAGS_ENABLE_MATERIAL_DESIGN_EXTENSIONS_DESCRIPTION, kOsDesktop,
-      SINGLE_VALUE_TYPE(switches::kEnableMaterialDesignExtensions)},
- #endif
+--- chrome/browser/about_flags.cc.orig	2018-03-20 23:05:16.000000000 +0100
++++ chrome/browser/about_flags.cc	2018-03-24 13:04:35.001279000 +0100
+@@ -2429,12 +2429,12 @@
+      flag_descriptions::kEnableMaterialDesignExtensionsDescription, kOsDesktop,
+      FEATURE_VALUE_TYPE(features::kMaterialDesignExtensions)},
+ #endif  // ENABLE_EXTENSIONS
 -#if defined(OS_WIN) || defined(OS_LINUX)
 +#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
-     {"enable-input-ime-api", IDS_FLAGS_ENABLE_INPUT_IME_API_NAME,
-      IDS_FLAGS_ENABLE_INPUT_IME_API_DESCRIPTION, kOsWin | kOsLinux,
+     {"enable-input-ime-api", flag_descriptions::kEnableInputImeApiName,
+      flag_descriptions::kEnableInputImeApiDescription, kOsWin | kOsLinux,
       ENABLE_DISABLE_VALUE_TYPE(switches::kEnableInputImeAPI,
+                                switches::kDisableInputImeAPI)},
+-#endif  // OS_WIN || OS_LINUX
++#endif  // OS_WIN || OS_LINUX || OS_BSD
+     {"enable-origin-trials", flag_descriptions::kOriginTrialsName,
+      flag_descriptions::kOriginTrialsDescription, kOsAll,
+      FEATURE_VALUE_TYPE(features::kOriginTrials)},
+@@ -3047,7 +3047,7 @@
+      flag_descriptions::kLeftToRightUrlsDescription, kOsDesktop,
+      FEATURE_VALUE_TYPE(features::kLeftToRightUrls)},
+ 
+-#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
++#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_BSD)
+     {"omnibox-entity-suggestions",
+      flag_descriptions::kOmniboxEntitySuggestionsName,
+      flag_descriptions::kOmniboxEntitySuggestionsDescription, kOsDesktop,
+@@ -3066,7 +3066,7 @@
+     {"enable-new-app-menu-icon", flag_descriptions::kEnableNewAppMenuIconName,
+      flag_descriptions::kEnableNewAppMenuIconDescription, kOsDesktop,
+      FEATURE_VALUE_TYPE(features::kAnimatedAppMenuIcon)},
+-#endif  // defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
++#endif  // defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_BSD)
+ 
+ #if defined(OS_ANDROID)
+     {"enable-custom-feedback-ui",

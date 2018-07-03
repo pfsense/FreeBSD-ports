@@ -3,7 +3,7 @@
 
 PORTNAME=	pykawari
 PORTVERSION=	8.2.8
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/kawari/kawari/${PORTVERSION}
 DISTNAME=	kawari-${PORTVERSION:S/.//g}
@@ -18,7 +18,7 @@ RUN_DEPENDS=	ninix:games/ninix-aya
 
 BUILD_WRKSRC=	${WRKSRC}/build/src
 
-USES=		gmake python zip
+USES=		gmake python:2.7 zip
 MAKEFILE=	gcc.mak
 MAKE_ARGS=	CXX="${CXX}" CFLAGS="${CXXFLAGS}" \
 		PYTHONBASE="${PYTHONBASE}" PYTHON_VERSION="${PYTHON_VERSION}"

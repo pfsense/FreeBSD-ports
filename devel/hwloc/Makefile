@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	hwloc
-PORTVERSION=	1.11.1
+PORTVERSION=	1.11.7
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.open-mpi.org/software/hwloc/v${PORTVERSION:R}/downloads/ \
 		http://icl.cs.utk.edu/open-mpi/software/hwloc/v${PORTVERSION:R}/downloads/
@@ -27,7 +28,7 @@ USE_GNOME=	libxml2
 
 PORTDOCS=	*
 
-ONLY_FOR_ARCHS=		i386 amd64 armv6
+ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386
 ONLY_FOR_ARCHS_REASON=	has not been ported to this architecture
 
 OPTIONS_DEFINE=	CAIRO DOCS
@@ -38,8 +39,8 @@ CAIRO_CONFIGURE_ON=	--enable-cairo --with-x
 CAIRO_LIB_DEPENDS=	libcairo.so:graphics/cairo
 CAIRO_USE=		XORG=x11
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html
-	${INSTALL_DATA} ${WRKSRC}/doc/doxygen-doc/html/* ${STAGEDIR}${DOCSDIR}/html/.
+	${INSTALL_DATA} ${WRKSRC}/doc/doxygen-doc/html/* ${STAGEDIR}${DOCSDIR}/html/
 
 .include <bsd.port.mk>

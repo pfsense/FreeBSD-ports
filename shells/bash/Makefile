@@ -2,21 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=		bash
-PORTVERSION=		4.4
+PATCHLEVEL=		19
+PORTVERSION=		4.4.${PATCHLEVEL:S/^0//g}
 PORTREVISION?=		0
 CATEGORIES=		shells
-MASTER_SITES=		GNU/${PORTNAME}
+MASTER_SITES=		GNU
+DISTNAME=		${PORTNAME}-${PORTVERSION:R}
 DIST_SUBDIR=		${PORTNAME}
 EXTRACT_ONLY=		${DISTNAME}${EXTRACT_SUFX}
+
+PATCH_SITES=		GNU/${PORTNAME}/${DISTNAME}-patches/
+PATCHFILES!=		/usr/bin/jot -s " " -w \
+			${PORTNAME}${PORTVERSION:R:S/.//g}-%03d \
+			${PATCHLEVEL} 1 ${PATCHLEVEL}
 
 MAINTAINER=		ehaupt@FreeBSD.org
 COMMENT=		GNU Project's Bourne Again SHell
 
-LICENSE=		GPLv3
+LICENSE=		GPLv3+
+LICENSE_FILE=		${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=		COLONBREAKSWORDS HELP NLS STATIC SYSLOG DOCS
+OPTIONS_DEFINE=		COLONBREAKSWORDS FDESCFS HELP NLS STATIC SYSBASHRC SYSLOG DOCS
 COLONBREAKSWORDS_DESC=	Colons break words
+FDESCFS_DESC=		Enable use of /dev/fd
 HELP_DESC=		Enable builtin help
+SYSBASHRC_DESC=		Enable system-wide rc files
 
 OPTIONS_DEFAULT=	COLONBREAKSWORDS HELP
 
@@ -26,6 +36,9 @@ OPTIONS_SUB=		yes
 CPE_VENDOR=		gnu
 
 COLONBREAKSWORDS_EXTRA_PATCHES=	${PATCHDIR}/extrapatch-colonbreakswords
+
+FDESCFS_CONFIGURE_ENV_OFF=	bash_cv_dev_fd=absent
+FDESCFS_SUB_FILES=	pkg-message
 
 HELP_CONFIGURE_ENABLE=	help-builtin
 NLS_CONFIGURE_ENABLE=	nls
@@ -51,12 +64,16 @@ CONFLICTS+=		bash-[0-9]*
 
 .if ${PORT_OPTIONS:MSTATIC} || defined(NO_DYNAMICROOT) || (defined(NOSHARED) && ${NOSHARED:tl} != "no")
 CONFIGURE_ARGS+=	--enable-static-link
+LLD_UNSAFE=		yes
 .else
 CONFIGURE_ARGS+=	--disable-static-link
 # Bash symbols must be exported in order to link runtime plugins, i.e.,
 # "enable -f". (Plugins are not supported for bash-static.)
 CFLAGS+=		-Wl,-export-dynamic
 .endif
+STANDARD_PATH=		/sbin:/bin:/usr/sbin:/usr/bin
+CPPFLAGS+=		-DDEFAULT_PATH_VALUE='\"${STANDARD_PATH}:${LOCALBASE}/sbin:${LOCALBASE}/bin\"' \
+			-DSTANDARD_UTILS_PATH='\"${STANDARD_PATH}\"'
 
 post-patch:
 # Ensure y.tab.c is regenerated
@@ -68,6 +85,11 @@ post-patch:
 	    -e "s|/\*.*#define SYSLOG_HISTORY .*\*/|#define SYSLOG_HISTORY|g" \
 	    ${WRKSRC}/config-top.h
 .endif
+
+post-patch-SYSBASHRC-on:
+	@${REINPLACE_CMD} \
+		-e "s|.*\(#define SYS_BASH.*\)\(/etc/.*\"\).*|\1${PREFIX}\2|" \
+		${WRKSRC}/config-top.h
 
 post-configure:
 	@${FIND} ${WRKSRC} -name Makefile -print0 | ${XARGS} -0 \
@@ -96,7 +118,7 @@ cklatest:
 	@${ECHO} -n "Currently at: "
 	@${MAKE} -V PATCHLEVEL
 	-ncftpls \
-		ftp://ftp.gnu.org/gnu/${PORTNAME}/${PORTNAME}-${PORTVERSION}-patches/ \
+		${PATCH_SITES:Mftp*:Ox:[1]} \
 		| fgrep -v .sig | ${TAIL}
 
 .include <bsd.port.mk>

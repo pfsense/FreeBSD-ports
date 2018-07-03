@@ -13,6 +13,8 @@ COMMENT=	Verifier performing validation in the DNS notify/transfer-chain
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_SSL=	openssl-devel
+
 USE_RC_SUBR=	credns
 
 USERS?=		bind
@@ -33,7 +35,7 @@ PLIST_SUB=	CREDNSUSER=${USERS} \
 		CREDNSDBDIR=${CREDNSDBDIR} \
 		CREDNSRUNDIR=${CREDNSRUNDIR}
 
-USE_OPENSSL=	yes
+USES=		ssl
 
 PORTDOCS=	*
 

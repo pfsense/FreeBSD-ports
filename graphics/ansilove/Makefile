@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ansilove
-PORTVERSION=	3.0.4
+PORTVERSION=	3.0.8
 CATEGORIES=	graphics textproc
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -16,7 +16,6 @@ LIB_DEPENDS=	libgd.so:graphics/gd
 USE_GITHUB=	yes
 
 USES=		cmake
-CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=man
 
 PORTDOCS=	AUTHORS ChangeLog README.md THANKS TODO
 PORTEXAMPLES=	*
@@ -35,5 +34,11 @@ post-install-DOCS-on:
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}/
+
+do-test:
+	@cd ${WRKSRC}/examples/ && for f in *; do \
+		${WRKSRC}/${PORTNAME} -o "${WRKSRC}/$$f.png" "$$f"; \
+		${FILE} "${WRKSRC}/$$f.png" | ${GREP} -q 'PNG'; \
+	done
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vile
-PORTVERSION=	9.8q
+PORTVERSION=	9.8s
 CATEGORIES=	editors
 MASTER_SITES=	ftp://dickey.his.com/vile/current/ \
 		ftp://invisible-island.net/vile/current/ \
@@ -11,7 +11,7 @@ MASTER_SITES=	ftp://dickey.his.com/vile/current/ \
 PATCH_SITES=	${MASTER_SITES:S,vile/current/,vile/patches/,g}
 #PATCHFILES=
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	dickey@invisible-island.net
 COMMENT=	VI Like Emacs -- console version
 
 LICENSE=	GPLv2

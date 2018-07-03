@@ -3,7 +3,7 @@
 
 PORTNAME=	duckmaze
 DISTVERSION=	0.3r34
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games python
 MASTER_SITES=	SF/nemysisfreebsdp/games/${PORTNAME}/
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
@@ -21,16 +21,18 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/trunk
 
-USES=		python shebangfix
+USES=		python:2.7 shebangfix
 SHEBANG_FILES=	*.py mopelib/mopelib.py
+NO_ARCH=	yes
 
 PORTDOCS=	index.html style.css
-OPTIONS_DEFINE= DOCS
 
 SUB_FILES=	${PORTNAME}.sh
 
 DESKTOP_ENTRIES="duckmaze" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;ArcadeGame;" ""
+
+OPTIONS_DEFINE= DOCS
 
 post-extract:
 	${MV} ${WRKSRC}/doc/*.png ${WRKSRC}/images/
@@ -56,6 +58,7 @@ do-install:
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${DOCSDIR}
 

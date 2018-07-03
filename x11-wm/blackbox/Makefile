@@ -3,7 +3,7 @@
 
 PORTNAME=	blackbox
 PORTVERSION=	0.70.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF/${PORTNAME}wm/${PORTNAME}wm/Blackbox%20${PORTVERSION}
 
@@ -24,7 +24,7 @@ TOOLS_ONLY_DESC=	Do not install window manager, only tools
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src_Toolbar.cc
 .endif
 

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gb
-PORTVERSION=	0.4.1
+PORTVERSION=	0.4.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -10,17 +10,15 @@ COMMENT=	Project based build tool for Go
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
-
 USES=		go
 USE_GITHUB=	yes
 GH_ACCOUNT=	constabulary
+GH_TUPLE=	pkg:errors:645ef00:errors/../src/github.com/pkg/errors
 
 PLIST_FILES=	bin/gb bin/gb-vendor
 
 PORTDOCS=	README.md
 
-STRIP=		# stripping can break go binaries
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
 GO_TARGET=	./...
 

@@ -33,12 +33,12 @@ CONFIGURE_ARGS=	--with-x=no
 .endif
 
 post-extract:
-	@${RM} -f ${WRKSRC}/doc/aalib.info*
+	@${RM} ${WRKSRC}/doc/aalib.info*
 
 post-patch:
-	@${RM} -f ${WRKSRC}/config.cache
+	@${RM} ${WRKSRC}/config.cache
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g; \
-		s|MAKEINFO=makeinfo|MAKEINFO="makeinfo --no-split"|g' \
+		s|MAKEINFO=makeinfo|MAKEINFO="${MAKEINFO} --no-split"|g' \
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} \
 		-e 's|AC_DEFUN(AM_PATH_AALIB|AC_DEFUN([AM_PATH_AALIB]|g' \

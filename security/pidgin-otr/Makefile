@@ -2,6 +2,7 @@
 
 PORTNAME=	otr
 PORTVERSION=	4.0.2
+PORTREVISION=	1
 CATEGORIES=	security net-im net
 MASTER_SITES=	http://www.cypherpunks.ca/otr/
 PKGNAMEPREFIX=	pidgin-
@@ -36,11 +37,5 @@ OPTIONS_SUB=	yes
 
 NLS_USES=	gettext
 NLS_USES_OFF=	gettext-tools
-
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} < 1000036 && ${ARCH} == i386
-LDFLAGS+=	-lssp_nonshared
-.endif
 
 .include <bsd.port.mk>

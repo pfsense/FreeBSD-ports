@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	groupware
-PORTVERSION=	5.2.16
+PORTVERSION=	5.2.22
 CATEGORIES=	deskutils www pear
-PKGNAMEPREFIX=	horde-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Groupware

@@ -66,10 +66,6 @@ Gecko_Pre_Include=	bsd.gecko.mk
 # MOZ_TOOLKIT			A variable for the --enable-default-toolkit= in
 # 						CONFIGURE_ARGS. The default is cairo-gtk2.
 #
-# MOZ_EXTENSIONS		A list of extensions to build
-#
-# MOZ_PROTOCOLS			A list of protocols to build (http, ftp, etc.)
-#
 # PORT_MOZCONFIG		Defaults to ${FILESDIR}/mozconfig.in, but can be
 # 						set to a generic mozconfig included with the port
 #
@@ -85,11 +81,13 @@ MOZILLA_VER?=	${PORTVERSION}
 MOZILLA_BIN?=	${PORTNAME}-bin
 MOZILLA_EXEC_NAME?=${MOZILLA}
 MOZ_RPATH?=	${MOZILLA}
-USES+=		cpe gmake iconv perl5 pkgconfig \
+USES+=		cpe gmake iconv localbase perl5 pkgconfig \
 			python:2.7,build desktop-file-utils
 CPE_VENDOR?=mozilla
 USE_PERL5=	build
 USE_XORG=	x11 xcomposite xdamage xext xfixes xrender xt
+HAS_CONFIGURE=	yes
+CONFIGURE_OUTSOURCE=	yes
 
 .if ${MOZILLA} != "libxul"
 BUNDLE_LIBS=	yes
@@ -97,26 +95,39 @@ BUNDLE_LIBS=	yes
 
 .if ${MOZILLA_VER:R:R} >= 49
 USES+=		compiler:c++14-lang
-FAVORITE_COMPILER=	${COMPILER_TYPE} # c++14-lib
 CPPFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
 			-D_DECLARE_C99_LDBL_MATH # XXX ports/193528
 .else
 USES+=		compiler:c++11-lang
 .endif
 
+.if ${MOZILLA_VER:R:R} >= 50
+USE_XORG+=	xcb
+.endif
+
+.if ${MOZILLA_VER:R:R} >= 56
+MESA_LLVM_VER?=	50
+BUILD_DEPENDS+=	llvm${MESA_LLVM_VER}>0:devel/llvm${MESA_LLVM_VER}
+MOZ_EXPORT+=	LLVM_CONFIG=llvm-config${MESA_LLVM_VER}
+.endif
+
+.if ${MOZILLA_VER:R:R} >= 61
+BUILD_DEPENDS+=	${LOCALBASE}/bin/python${PYTHON3_DEFAULT}:lang/python${PYTHON3_DEFAULT:S/.//g}
+MOZ_EXPORT+=	PYTHON3="${LOCALBASE}/bin/python${PYTHON3_DEFAULT}"
+.endif
+
+.if ${OPSYS} == FreeBSD && ${OSREL} == 11.1
+LLD_UNSAFE=	yes
+.endif
+
 MOZILLA_SUFX?=	none
 MOZSRC?=	${WRKSRC}
-WRKSRC?=	${WRKDIR}/mozilla
 PLISTF?=	${WRKDIR}/plist_files
-
-MOZ_OBJDIR?=	${WRKSRC}/obj-${ARCH:C/amd64/x86_64/}-unknown-${OPSYS:tl}${OSREL}
 
 MOZ_PIS_DIR?=		lib/${MOZILLA}/init.d
 
 PORT_MOZCONFIG?=	${FILESDIR}/mozconfig.in
 MOZCONFIG?=		${WRKSRC}/.mozconfig
-# XXX Not ?= because fmake uses MAKEFILE internally
-MAKEFILE=		${WRKSRC}/client.mk
 MOZILLA_PLIST_DIRS?=	bin lib share/pixmaps share/applications
 PKGINSTALL?=	${WRKDIR}/pkg-install
 PKGDEINSTALL?=	${WRKDIR}/pkg-deinstall
@@ -126,28 +137,30 @@ PKGDEINSTALL_INC?=	${.CURDIR}/../../www/firefox/files/pkg-deinstall.in
 MOZ_PKGCONFIG_FILES?=	${MOZILLA}-gtkmozembed ${MOZILLA}-js \
 			${MOZILLA}-xpcom ${MOZILLA}-plugin
 
-ALL_TARGET?=	build
-
 MOZ_EXPORT+=	${CONFIGURE_ENV} \
+				RUSTFLAGS="${RUSTFLAGS}" \
 				PERL="${PERL}"
 MOZ_OPTIONS+=	--prefix="${PREFIX}"
-MOZ_MK_OPTIONS+=MOZ_OBJDIR="${MOZ_OBJDIR}"
+MOZ_MK_OPTIONS+=MOZ_OBJDIR="${BUILD_WRKSRC}"
 
-CPPFLAGS+=		-isystem${LOCALBASE}/include
-LDFLAGS+=		-L${LOCALBASE}/lib \
-			-Wl,-rpath,${PREFIX}/lib/${MOZILLA} -Wl,--as-needed
+LDFLAGS+=		-Wl,--as-needed
 
-.if ${OPSYS} != DragonFly # XXX xpcshell crash during install
-# use jemalloc 3.0.0 (4.0 for firefox 43+) API for stats/tuning
-MOZ_EXPORT+=	MOZ_JEMALLOC3=1 MOZ_JEMALLOC4=1
-.if ${OPSYS} != FreeBSD || ${OSVERSION} < 1000012 || ${MOZILLA_VER:R:R} >= 37
-. if ${MOZILLA_VER:R:R} >= 48
-MOZ_OPTIONS+=	--enable-jemalloc=4
+# Adjust -C target-cpu if -march/-mcpu is set by bsd.cpu.mk
+.if ${ARCH} == amd64 || ${ARCH} == i386
+RUSTFLAGS+=	${CFLAGS:M-march=*:S/-march=/-C target-cpu=/}
 .else
-MOZ_OPTIONS+=	--enable-jemalloc
-. endif
+RUSTFLAGS+=	${CFLAGS:M-mcpu=*:S/-mcpu=/-C target-cpu=/}
 .endif
-.endif # !DragonFly
+
+.if ${MOZILLA_VER:R:R} < 55 && ${OPSYS} == FreeBSD && ${OSVERSION} < 1200032
+# use jemalloc 3.0.0 (4.0 for firefox 43+) API for stats/tuning
+MOZ_EXPORT+=	MOZ_JEMALLOC4=1
+.if ${MOZILLA_VER:R:R} >= 48
+MOZ_OPTIONS+=	--enable-jemalloc=4
+.elif ${OSVERSION} < 1100079
+MOZ_OPTIONS+=	--enable-jemalloc
+.endif # Mozilla >= 48
+.endif # Mozilla < 55
 
 # Standard depends
 _ALL_DEPENDS=	cairo event ffi graphite harfbuzz hunspell icu jpeg nspr nss png pixman soundtouch sqlite vpx
@@ -165,7 +178,7 @@ cairo_LIB_DEPENDS=	libcairo.so:graphics/cairo
 cairo_MOZ_OPTIONS=	--enable-system-cairo
 .endif
 
-event_LIB_DEPENDS=	libevent.so:devel/libevent2
+event_LIB_DEPENDS=	libevent.so:devel/libevent
 event_MOZ_OPTIONS=	--with-system-libevent
 
 ffi_LIB_DEPENDS=	libffi.so:devel/libffi
@@ -179,7 +192,7 @@ harfbuzz_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 harfbuzz_MOZ_OPTIONS=	--with-system-harfbuzz
 .endif
 
-hunspell_LIB_DEPENDS=	libhunspell-1.3.so:textproc/hunspell
+hunspell_LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell
 hunspell_MOZ_OPTIONS=	--enable-system-hunspell
 
 icu_LIB_DEPENDS=		libicui18n.so:devel/icu
@@ -247,23 +260,15 @@ BUILD_DEPENDS+=	${-${dep}_BUILD_DEPENDS}
 
 # Standard options
 MOZ_CHROME?=	omni
-MOZ_TOOLKIT?=	cairo-gtk2
+MOZ_TOOLKIT?=	cairo-gtk3
+MOZ_CHANNEL?=	${PKGNAMESUFFIX:Urelease:S/^-//}
 MOZ_OPTIONS+=	\
 		--enable-chrome-format=${MOZ_CHROME} \
 		--enable-default-toolkit=${MOZ_TOOLKIT} \
+		--enable-update-channel=${MOZ_CHANNEL} \
+		--disable-updater \
 		--enable-pie \
 		--with-pthreads
-# Configure options for install
-.if !defined(MOZ_EXTENSIONS)
-MOZ_OPTIONS+=	--enable-extensions=default
-.else
-MOZ_OPTIONS+=	--enable-extensions=${MOZ_EXTENSIONS}
-.endif
-.if !defined(MOZ_PROTOCOLS)
-MOZ_OPTIONS+=	--enable-necko-protocols=default
-.else
-MOZ_OPTIONS+=	--enable-necko-protocols=${MOZ_PROTOCOLS}
-.endif
 # others
 MOZ_OPTIONS+=	--with-system-zlib		\
 		--with-system-bz2
@@ -272,12 +277,10 @@ MOZ_OPTIONS+=	--with-system-zlib		\
 # http://www.chromium.org/developers/how-tos/api-keys
 # Note: these are for FreeBSD use ONLY. For your own distribution,
 # please get your own set of keys.
-MOZ_EXPORT+=	MOZ_GOOGLE_API_KEY=AIzaSyBsp9n41JLW8jCokwn7vhoaMejDFRd1mp8 \
-				MOZ_GOOGLE_OAUTH_API_CLIENTID=996322985003.apps.googleusercontent.com \
-				MOZ_GOOGLE_OAUTH_API_KEY=IR1za9-1VK0zZ0f_O8MVFicn
+MOZ_EXPORT+=	MOZ_GOOGLE_API_KEY=AIzaSyBsp9n41JLW8jCokwn7vhoaMejDFRd1mp8
 
-.if ${PORT_OPTIONS:MGTK3}
-MOZ_TOOLKIT=	cairo-gtk3
+.if ${PORT_OPTIONS:MGTK2}
+MOZ_TOOLKIT=	cairo-gtk2
 .endif
 
 .if ${MOZ_TOOLKIT:Mcairo-gtk3}
@@ -293,6 +296,13 @@ MOZ_EXPORT+=	MOZ_OPTIMIZE_FLAGS="${CFLAGS:M-O*}"
 MOZ_OPTIONS+=	--enable-optimize
 .else
 MOZ_OPTIONS+=	--disable-optimize
+. if ${MOZILLA_VER:R:R} >= 56
+.  if ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
+# ld 2.17 barfs on Stylo built with -C opt-level=0
+USE_BINUTILS=	yes
+LDFLAGS+=		-B${LOCALBASE}/bin
+.  endif
+. endif
 .endif
 
 .if ${PORT_OPTIONS:MCANBERRA}
@@ -319,19 +329,10 @@ MOZ_OPTIONS+=	--disable-gstreamer
 .endif
 
 .if ${PORT_OPTIONS:MGCONF}
-BUILD_DEPENDS+=	${gconf2_DETECT}:${gconf2_LIB_DEPENDS:C/.*://}
-USE_GNOME+=		gconf2:build
+USE_GNOME+=		gconf2
 MOZ_OPTIONS+=	--enable-gconf
 .else
 MOZ_OPTIONS+=	--disable-gconf
-.endif
-
-.if ${PORT_OPTIONS:MGNOMEUI}
-BUILD_DEPENDS+=	${libgnomeui_DETECT}:${libgnomeui_LIB_DEPENDS:C/.*://}
-USE_GNOME+=		libgnomeui:build
-MOZ_OPTIONS+=	--enable-gnomeui
-.else
-MOZ_OPTIONS+=	--disable-gnomeui
 .endif
 
 .if ${PORT_OPTIONS:MLIBPROXY}
@@ -341,14 +342,6 @@ MOZ_OPTIONS+=	--enable-libproxy
 MOZ_OPTIONS+=	--disable-libproxy
 .endif
 
-.if ${PORT_OPTIONS:MPGO}
-USES:=		compiler:gcc-c++11-lib ${USES:Ncompiler*c++11*}
-USE_DISPLAY=yes
-
-ALL_TARGET=	profiledbuild
-MOZ_EXPORT+=MOZ_OPTIMIZE_FLAGS="-Os" MOZ_PGO_OPTIMIZE_FLAGS="${CFLAGS:M-O*}"
-.endif
-
 .if ${PORT_OPTIONS:MALSA}
 LIB_DEPENDS+=	libasound.so:audio/alsa-lib
 RUN_DEPENDS+=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins
@@ -356,22 +349,46 @@ RUN_DEPENDS+=	alsa-lib>=1.1.1_1:audio/alsa-lib
 MOZ_OPTIONS+=	--enable-alsa
 .endif
 
+.if ${PORT_OPTIONS:MJACK}
+BUILD_DEPENDS+=	${LOCALBASE}/include/jack/jack.h:audio/jack
+MOZ_OPTIONS+=	--enable-jack
+.endif
+
 .if ${PORT_OPTIONS:MPULSEAUDIO}
-. if ${PORT_OPTIONS:MALSA}
-BUILD_DEPENDS+=	pulseaudio>0:audio/pulseaudio
-. else
-# pull pulse package if we cannot fallback to another backend
-LIB_DEPENDS+=	libpulse.so:audio/pulseaudio
-. endif
+BUILD_DEPENDS+=	${LOCALBASE}/include/pulse/pulseaudio.h:audio/pulseaudio
 MOZ_OPTIONS+=	--enable-pulseaudio
 .else
 MOZ_OPTIONS+=	--disable-pulseaudio
 .endif
 
-.if ${PORT_OPTIONS:MRUST}
-BUILD_DEPENDS+=	rustc:${RUST_PORT}
+.if ${PORT_OPTIONS:MSNDIO}
+LIB_DEPENDS+=	libsndio.so:audio/sndio
+post-patch-SNDIO-on:
+	@${REINPLACE_CMD} -e 's|OpenBSD|${OPSYS}|g' \
+		${MOZSRC}/media/libcubeb/src/moz.build \
+		${MOZSRC}/toolkit/library/moz.build
+. for tests in tests gtest
+	@if [ -f "${MOZSRC}/media/libcubeb/${tests}/moz.build" ]; then \
+		${REINPLACE_CMD} -e 's|OpenBSD|${OPSYS}|g' \
+			 ${MOZSRC}/media/libcubeb/${tests}/moz.build; \
+	fi
+. endfor
+	@if [ -f "${MOZSRC}/media/webrtc/trunk/webrtc/build/common.gypi" ]; then \
+		${REINPLACE_CMD} -e 's|OS==\"openbsd\"|OS==\"${OPSYS:tl}\"|g' \
+			${MOZSRC}/media/webrtc/trunk/webrtc/build/common.gypi; \
+	fi
+	@if [ -f "${MOZSRC}/media/webrtc/signaling/test/common.build" ]; then \
+		${ECHO_CMD} "OS_LIBS += ['sndio']" >> \
+			${MOZSRC}/media/webrtc/signaling/test/common.build; \
+	fi
+.endif
+
+.if ${PORT_OPTIONS:MRUST} || ${MOZILLA_VER:R:R} >= 54
+BUILD_DEPENDS+=	${RUST_PORT:T}>=1.24:${RUST_PORT}
 RUST_PORT?=		lang/rust
+. if ${MOZILLA_VER:R:R} < 54
 MOZ_OPTIONS+=	--enable-rust
+. endif
 .else
 MOZ_OPTIONS+=	--disable-rust
 .endif
@@ -381,6 +398,9 @@ MOZ_OPTIONS+=	--enable-debug --disable-release
 STRIP=	# ports/184285
 .else
 MOZ_OPTIONS+=	--disable-debug --disable-debug-symbols --enable-release
+. if ${MOZILLA_VER:R:R} >= 56 && (${ARCH:Maarch64} || ${MACHINE_CPU:Msse2})
+MOZ_OPTIONS+=	--enable-rust-simd
+. endif
 .endif
 
 .if ${PORT_OPTIONS:MDTRACE}
@@ -453,7 +473,6 @@ CFLAGS+=	-B${LOCALBASE}/bin
 LDFLAGS+=	-B${LOCALBASE}/bin
 . endif
 .elif ${ARCH:Mpowerpc*}
-USES:=		compiler:gcc-c++11-lib ${USES:Ncompiler*c++11*}
 . if ${ARCH} == "powerpc64"
 MOZ_EXPORT+=	UNAME_m="${ARCH}"
 CFLAGS+=	-mminimal-toc
@@ -465,22 +484,6 @@ MOZ_OPTIONS+=	--disable-v1-string-abi
 
 .else # bsd.port.post.mk
 
-pre-extract: gecko-pre-extract
-
-gecko-pre-extract:
-.if ${PORT_OPTIONS:MPGO}
-	@${ECHO} "*****************************************************************"
-	@${ECHO} "**************************** attention **************************"
-	@${ECHO} "*****************************************************************"
-	@${ECHO} "To build ${MOZILLA} with PGO support you need a running X server and"
-	@${ECHO} "   build this port with an user who could access the X server!   "
-	@${ECHO} ""
-	@${ECHO} "During the build a ${MOZILLA} instance will start and run some test."
-	@${ECHO} "      Do not interrupt or close ${MOZILLA} during this tests!       "
-	@${ECHO} "*****************************************************************"
-	@sleep 10
-.endif
-
 post-patch: gecko-post-patch gecko-moz-pis-patch
 
 gecko-post-patch:
@@ -490,7 +493,7 @@ gecko-post-patch:
 .if exists(${PKGDEINSTALL_INC})
 	@${MOZCONFIG_SED} < ${PKGDEINSTALL_INC} > ${PKGDEINSTALL}
 .endif
-	@${RM} -f ${MOZCONFIG}
+	@${RM} ${MOZCONFIG}
 .if !defined(NOMOZCONFIG)
 	@if [ -e ${PORT_MOZCONFIG} ] ; then \
 		${MOZCONFIG_SED} < ${PORT_MOZCONFIG} >> ${MOZCONFIG} ; \
@@ -567,21 +570,12 @@ gecko-moz-pis-patch:
 	@${MOZCONFIG_SED} < ${FILESDIR}/${moz} > ${WRKDIR}/${moz}
 .endfor
 
-do-configure: gecko-do-configure
-
-gecko-do-configure:
-		@(if ! ${CONFIGURE_ENV} ${DO_MAKE_BUILD} configure; then \
-			 ${ECHO_MSG} "===>  Script \"${CONFIGURE_SCRIPT}\" failed unexpectedly."; \
-			 (${ECHO_CMD} ${CONFIGURE_FAIL_MESSAGE}) | ${FMT} 75 79 ; \
-			 ${FALSE}; \
-		fi)
-
 pre-install: gecko-moz-pis-pre-install
 post-install-script: gecko-create-plist
 
 gecko-create-plist:
 # Create the plist
-	${RM} -f ${PLISTF}
+	${RM} ${PLISTF}
 .for dir in ${MOZILLA_PLIST_DIRS}
 	@cd ${STAGEDIR}${PREFIX}/${dir} && ${FIND} -H -s * ! -type d | \
 		${SED} -e 's|^|${dir}/|' >> ${PLISTF}

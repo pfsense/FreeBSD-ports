@@ -6,6 +6,9 @@
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/imagelib/callouts/1.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/imagelib/callouts/2.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/imagelib/callouts/3.png
+%%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/imagelib/callouts/4.png
+%%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/imagelib/callouts/5.png
+%%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/imagelib/callouts/6.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributing/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributors/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/cups/docbook.css
@@ -13,6 +16,7 @@
 %%DOCSDIR%%/%%DOCLANG%%/articles/filtering-bridges/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/fonts/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/freebsd-questions/docbook.css
+%%DOCSDIR%%/%%DOCLANG%%/articles/freebsd-releng/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/freebsd-update-server/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/freebsd-update-server/imagelib/callouts/1.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/freebsd-update-server/imagelib/callouts/2.png
@@ -36,7 +40,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/articles/nanobsd/imagelib/callouts/3.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/nanobsd/imagelib/callouts/4.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/new-users/docbook.css
-%%DOCSDIR%%/%%DOCLANG%%/articles/p4-primer/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/pam/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/pgpkeys/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/port-mentor-guidelines/docbook.css
@@ -57,7 +60,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/articles/rc-scripting/imagelib/callouts/7.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/rc-scripting/imagelib/callouts/8.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/rc-scripting/imagelib/callouts/9.png
-%%DOCSDIR%%/%%DOCLANG%%/articles/relaydelay/docbook.css
 %%DOCSDIR%%/%%DOCLANG%%/articles/releng/branches-head.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/releng/branches-releng3.png
 %%DOCSDIR%%/%%DOCLANG%%/articles/releng/branches-releng4.png
@@ -113,7 +115,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/dev-model/orghierarchy2.png
 %%DOCSDIR%%/%%DOCLANG%%/books/dev-model/portsstatus.png
 %%DOCSDIR%%/%%DOCLANG%%/books/dev-model/proc-add-committer.png
-%%DOCSDIR%%/%%DOCLANG%%/books/dev-model/proc-add-cvsup.png
 %%DOCSDIR%%/%%DOCLANG%%/books/dev-model/proc-commit.png
 %%DOCSDIR%%/%%DOCLANG%%/books/dev-model/proc-contrib.png
 %%DOCSDIR%%/%%DOCLANG%%/books/dev-model/proc-elections.png
@@ -137,6 +138,10 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/imagelib/callouts/3.png
 %%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/imagelib/callouts/4.png
 %%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/imagelib/callouts/5.png
+%%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/imagelib/callouts/6.png
+%%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/imagelib/callouts/7.png
+%%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/imagelib/callouts/8.png
+%%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/imagelib/callouts/9.png
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/advanced-networking/isdn-bus.png
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/advanced-networking/isdn-twisted-pair.png
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/advanced-networking/natd.png

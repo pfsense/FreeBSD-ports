@@ -4,7 +4,7 @@
 PORTNAME=	graphy
 PORTVERSION=	1.0
 CATEGORIES=	graphics python
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/graphy/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -14,13 +14,13 @@ COMMENT=	Simple chart library for Python
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN=		Unfetchable (google code has gone away)
-
 USES=		python:run tar:bzip2
+USE_PYTHON=	flavors
 
 PORTDOCS=	README
 PORTEXAMPLES=	*
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
@@ -30,7 +30,7 @@ post-patch:
 		${WRKSRC}/examples/*.py \
 		${WRKSRC}/${PORTNAME}/*.py
 	@${FIND} ${WRKSRC} -name '.svn' -or -name '*.bak' | \
-		${XARGS} ${RM} -rf
+		${XARGS} ${RM} -r
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}

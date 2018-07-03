@@ -4,6 +4,7 @@
 PORTNAME=	libint
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	1-1-6
+PORTREVISION=	7
 CATEGORIES=	science
 
 MAINTAINER=	ports@FreeBSD.org
@@ -16,21 +17,27 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	evaleev
 
 # USE_GCC=yes is required because libint is used with mpqc which is built
-# by gfortran48 (from `lang/gcc') and these two libraries each try to pull
-# in a different version of libgcc_s.so which fails.  Forcing this port to
-# build with lang/gcc as well resolves the conflict that manifests in
-# `science/libghemical' port.
-USES=		autoreconf gmake libtool perl5
+# by gfortran (via USES=fortran) and these two libraries each try to pull
+# in libgcc_s.so which fails if it's different versions.  Forcing this port
+# to build with the default version of GCC as well resolves the conflict
+# that manifests in the science/libghemical port.
+USES=		autoreconf:build gmake libtool perl5
 USE_GCC=	yes
 USE_LDCONFIG=	yes
 ALL_TARGET=	default
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-shared
+CONFIGURE_ARGS=	--enable-shared --with-cc-optflags="${CFLAGS}" \
+		--with-cxx-optflags="${CXXFLAGS}"
 
 post-patch:
 	@${REINPLACE_CMD} -e 's| -rpath|${LDFLAGS} -rpath|g' \
 		${WRKSRC}/src/lib/MakeVars.in
+
+pre-configure:
+# Cannot run autoheader so cannot use autoreconf.
+	@(cd ${WRKSRC} && ${LOCALBASE}/bin/libtoolize -c -f \
+		&& ${LOCALBASE}/bin/aclocal && ${LOCALBASE}/bin/autoconf)
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so

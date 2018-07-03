@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	snow
-DISTVERSION=	0.4-1
+DISTVERSION=	0.4-2
+PORTREVISION=	1
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Support for simple parallel computing in R
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv2+
 
 USES=	cran:auto-plist
 

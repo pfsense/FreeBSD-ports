@@ -11,6 +11,7 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tool for backing up MySQL databases
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/ReadMe/license_english.txt
 
 RUN_DEPENDS=	p5-DBI>=1.48:databases/p5-DBI
 
@@ -19,12 +20,11 @@ OPTIONS_DEFAULT=APACHE
 
 PORTSCOUT=	limit:^[0-9\.]*$$
 
+IGNORE_WITH_PHP=70 71 72
 NO_ARCH=	yes
 NO_BUILD=	yes
-USE_MYSQL=	yes
 USE_PHP=	ftp mysql session zlib
-USES=		cpe perl5 zip
-IGNORE_WITH_PHP=	70
+USES=		cpe mysql perl5 php zip
 
 PLIST_SUB=	WWWGRP=${WWWGRP} WWWOWN=${WWWOWN}
 WRKSRC=		${WRKDIR}/msd${PORTVERSION}

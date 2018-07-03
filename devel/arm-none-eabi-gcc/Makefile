@@ -1,5 +1,6 @@
 # $FreeBSD$
 
+PORTREVISION=	1
 PKGNAMEPREFIX=	arm-none-eabi-
 COMMENT=	GNU Compiler Collection for bare metal arm cross-development
 GCC_TARGET=	arm-none-eabi
@@ -12,6 +13,10 @@ INSTALL_TARGET=	install-gcc install-target-libgcc
 # libstdcxx won't build, but we don't need it or multiple float-abi libs.
 CONFIGURE_ARGS=	--disable-libstdcxx \
 		--disable-multilib
+
+BROKEN_aarch64=		fails to package
+BROKEN_mips=		configure: error: cannot compute suffix of object files: cannot compile
+BROKEN_mips64=		configure: error: cannot compute suffix of object files: cannot compile
 
 MASTERDIR=	${.CURDIR}/../powerpc64-gcc
 

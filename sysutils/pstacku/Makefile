@@ -7,7 +7,7 @@ CATEGORIES=	sysutils
 MASTER_SITES=	https://kib.kiev.ua/kib/${PORTNAME}/ \
 		http://kib.kiev.ua/kib/${PORTNAME}/
 
-MAINTAINER=	luca.pizzamiglio@gmail.com
+MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	Retrieve process stack traces
 
 LICENSE=	BSD2CLAUSE
@@ -16,6 +16,7 @@ LIB_DEPENDS=	libunwind.so:devel/libunwind
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-libunwind=${LOCALBASE}
+LLD_UNSAFE=	yes
 ONLY_FOR_ARCHS=	amd64 i386
 CONFLICTS=	pstack-[0-9]*
 

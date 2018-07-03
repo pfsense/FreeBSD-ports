@@ -3,7 +3,7 @@
 
 PORTNAME=	rxp
 PORTVERSION=	0.9
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc python
 MASTER_SITES=	http://www.reportlab.com/ftp/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,9 +15,8 @@ COMMENT=	Fast validating XML parser for Python
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 NO_WRKSUBDIR=	yes
-USES=		python tar:tgz
+USES=		python:2.7 tar:tgz
 USE_PYTHON=	distutils autoplist
-NO_ARCH=	yes
 
 DOCSDIR=	${PREFIX}/share/doc/py-rxp
 EXAMPLESDIR=	${PREFIX}/share/examples/py-rxp

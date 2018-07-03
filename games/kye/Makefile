@@ -3,7 +3,7 @@
 
 PORTNAME=	kye
 PORTVERSION=	1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games python
 MASTER_SITES=	http://games.moria.org.uk/kye/download/ \
 		SF/nemysisfreebsdp/games/${PORTNAME}/:levels
@@ -22,21 +22,22 @@ COMMENT=	Puzzle game with arcade game elements
 RESTRICTED=	kye-data_nuke_levels is charityware
 RESTRICTED_FILES=	 kye-data_nuke_levels.20121101.tar.gz
 
-BROKEN=		unfetchable
-
 USE_GNOME=	pygtk2 librsvg2
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils
 
 PORTDOCS=	NEWS README
-OPTIONS_DEFINE=	DOCS
 
 SUB_FILES=	pkg-message
 
-DESKTOP_ENTRIES="Python Kye" "" "Kye" \
-		"Kye" "Game;LogicGame;" ""
+DESKTOP_ENTRIES="Python Kye" \
+		"" \
+		"Kye" \
+		"Kye" \
+		"Game;LogicGame;" \
+		""
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|share/kye|${DATADIR_REL}|' ${WRKSRC}/setup.py
@@ -57,6 +58,7 @@ post-install:
 		${STAGEDIR}${PREFIX}/share/pixmaps/Kye-edit.png
 	@cd ${WRKDIR}/${PORTNAME} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
 
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

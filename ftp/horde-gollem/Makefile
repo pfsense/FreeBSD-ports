@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	gollem
-PORTVERSION=	3.0.9
+PORTVERSION=	3.0.12
 CATEGORIES=	ftp www pear
-PKGNAMEPREFIX=	horde-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Web-based File Manager

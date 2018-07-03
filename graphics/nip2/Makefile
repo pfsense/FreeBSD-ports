@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	nip2
-PORTVERSION=	8.4.0
+PORTVERSION=	8.6.0
+PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://www.vips.ecs.soton.ac.uk/supported/${PORTVERSION:R}/
+MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME}/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Graphical user interface for VIPS
@@ -24,6 +25,8 @@ USE_GNOME=	cairo gdkpixbuf2 gnomemimedata gtk20 libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-update-desktop
 LDFLAGS+=	-lm
+
+GH_ACCOUNT=	jcupitt
 
 SUB_FILES=	run-nip2.sh
 

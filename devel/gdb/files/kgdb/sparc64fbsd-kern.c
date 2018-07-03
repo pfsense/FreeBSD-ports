@@ -27,25 +27,22 @@
 #include <sys/cdefs.h>
 __FBSDID("$FreeBSD$");
 
-#include <sys/types.h>
+#include "defs.h"
+#include "gdbcore.h"
+#include "osabi.h"
+#include "regcache.h"
+#include "target.h"
+#include "frame-unwind.h"
+#include "solib.h"
+#include "trad-frame.h"
+#include "sparc-tdep.h"
+#include "sparc64-tdep.h"
+
 #ifdef __sparc64__
 #include <machine/asm.h>
 #include <machine/pcb.h>
 #include <machine/frame.h>
 #endif
-#include <string.h>
-
-#include <defs.h>
-#include "gdbcore.h"
-#include "osabi.h"
-#include "regcache.h"
-#include <target.h>
-#include <frame-unwind.h>
-#include "solib.h"
-#include "trad-frame.h"
-
-#include <sparc-tdep.h>
-#include <sparc64-tdep.h>
 
 #include "kgdb.h"
 
@@ -91,7 +88,7 @@ sparc64fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
   int regnum;
 
   if (*this_cache)
-    return *this_cache;
+    return (struct sparc_frame_cache *)*this_cache;
 
   cache = sparc_frame_cache (this_frame, this_cache);
   gdb_assert (cache == *this_cache);
@@ -305,8 +302,6 @@ sparc64fbsd_kernel_init_abi(struct gdbarch_info info, struct gdbarch *gdbarch)
 #endif
 }
 
-void _initialize_sparc64_kgdb_tdep(void);
-
 void
 _initialize_sparc64_kgdb_tdep(void)
 {
@@ -314,6 +309,6 @@ _initialize_sparc64_kgdb_tdep(void)
 				       bfd_target_elf_flavour,
 				       fbsd_kernel_osabi_sniffer);
 	gdbarch_register_osabi (bfd_arch_sparc, bfd_mach_sparc_v9,
-	    GDB_OSABI_FREEBSD_ELF_KERNEL, sparc64fbsd_kernel_init_abi);
+	    GDB_OSABI_FREEBSD_KERNEL, sparc64fbsd_kernel_init_abi);
 }
 

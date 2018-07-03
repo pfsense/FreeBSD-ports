@@ -2,20 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	pygopherd
-PORTVERSION=	2.0.16
-PORTREVISION=	2
+PORTVERSION=	2.0.18.4
 CATEGORIES=	net python
-MASTER_SITES=	http://gopher.quux.org:70/devel/gopher/Downloads/pygopherd/ \
-		http://gopher.quux.org:70/devel/gopher/Downloads/pygopherd/old/
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTVERSIONPREFIX=	debian/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	neel@neelc.org
 COMMENT=	Multiprotocol Information Server
 
-USES=		python
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		python:2.7
 USE_PYTHON=	distutils
-PYDISTUTILS_PKGVERSION=	2.0.15
-WRKSRC=		${WRKDIR}/${PORTNAME}
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	jgoerzen
+
+NO_ARCH=	yes
 
 post-patch:
 .for f in setup.py bin/pygopherd conf/pygopherd.conf doc/pygopherd.8

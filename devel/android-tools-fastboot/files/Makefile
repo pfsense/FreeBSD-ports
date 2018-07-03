@@ -3,8 +3,9 @@
 PROG_CXX=fastboot
 BINDIR?=/usr/bin
 FILESDIR?=${DOCDIR}/${PROG}
+VERSION?=0.0.0-0
 
-FILES=	*.[Tt][Xx][Tt]
+FILES=	*.md
 
 SRCS+=	bootimg_utils.cpp
 SRCS+=	engine.cpp
@@ -18,7 +19,6 @@ SRCS+=	util.cpp
 
 .PATH: ${EXTRADIR}
 SRCS+=	usb_freebsd.cpp
-SRCS+=	util_freebsd.cpp
 
 # required by fastboot
 .PATH: ${.CURDIR}/../adb
@@ -28,6 +28,7 @@ SRCS+=	diagnose_usb.cpp
 .PATH: ${.CURDIR}/../base
 SRCS+=	errors_unix.cpp
 SRCS+=	file.cpp
+SRCS+=	logging.cpp
 SRCS+=	parsenetaddress.cpp
 SRCS+=	stringprintf.cpp
 SRCS+=	strings.cpp
@@ -48,6 +49,7 @@ SRCS+=	wipe.c
 
 # required by fastboot
 .PATH: ${.CURDIR}/../libcutils
+SRCS+=	android_get_control_file.cpp
 SRCS+=	../libcutils/sockets.cpp
 SRCS+=	socket_inaddr_any_server_unix.c
 SRCS+=	socket_network_client_unix.c
@@ -56,13 +58,17 @@ CPPFLAGS.sockets.cpp+=	-o ${.TARGET} # XXX pre-r279980
 
 # required by base and libutils
 .PATH:	${.CURDIR}/../liblog
+SRCS+=	config_read.c
 SRCS+=	config_write.c
 SRCS+=	fake_log_device.c
 SRCS+=	fake_writer.c
+SRCS+=	local_logger.c
 SRCS+=	logger_lock.c
 SRCS+=	logger_name.c
 SRCS+=	logger_write.c
-CPPFLAGS.config_write.c+=	-DFAKE_LOG_DEVICE=1
+SRCS+=	logprint.c
+SRCS+=	stderr_write.c
+SRCS+=	test_utils.cpp
 
 # required by ext4_utils
 .PATH:	${.CURDIR}/../libselinux/src
@@ -83,7 +89,7 @@ SRCS+=	output_file.c
 SRCS+=	sparse.c
 SRCS+=	sparse_crc32.c
 SRCS+=	sparse_err.c
-SRCS+=	sparse_read.c
+SRCS+=	sparse_read.cpp
 
 # required by libziparchive
 .PATH: ${.CURDIR}/../libutils
@@ -93,23 +99,23 @@ SRCS+=	FileMap.cpp
 .PATH:	${.CURDIR}/../libziparchive
 SRCS+=	zip_archive.cc
 
-REVISION?=	$$(${GIT} rev-parse --short=12 HEAD 2>/dev/null || echo unknown)
-
-CPPFLAGS+=	-DFASTBOOT_REVISION="\"${REVISION}-android\""
+CPPFLAGS+=	-DFASTBOOT_VERSION="\"${VERSION}\""
 CPPFLAGS+=	-Doff64_t=off_t
 CPPFLAGS+=	-Dftruncate64=ftruncate
 CPPFLAGS+=	-Dlseek64=lseek
 CPPFLAGS+=	-Dmmap64=mmap
 CPPFLAGS+=	-Dpread64=pread
+CPPFLAGS+=	-DFAKE_LOG_DEVICE=1
 CPPFLAGS+=	-I${.CURDIR}
 CPPFLAGS+=	-I${.CURDIR}/../include
 CPPFLAGS+=	-I${.CURDIR}/../adb
 CPPFLAGS+=	-I${.CURDIR}/../mkbootimg
 CPPFLAGS+=	-I${.CURDIR}/../base/include
-CPPFLAGS+=	-I${.CURDIR}/../ext4_utils
+CPPFLAGS+=	-I${.CURDIR}/../ext4_utils/include
 CPPFLAGS+=	-I${.CURDIR}/../f2fs_utils
 CPPFLAGS+=	-I${.CURDIR}/../libselinux/include
 CPPFLAGS+=	-I${.CURDIR}/../libsparse/include
+CPPFLAGS+=	-I${.CURDIR}/../libziparchive/include
 CPPFLAGS+=	${CPPFLAGS.${.IMPSRC:T}}
 CPPFLAGS+=	$$(${PKG_CONFIG} libpcre --cflags 2>/dev/null)
 CPPFLAGS+=	$$(${PKG_CONFIG} libusb-1.0 --cflags 2>/dev/null)
@@ -123,10 +129,9 @@ CXXFLAGS+=	${CPPFLAGS}
 
 LDADD+=	$$(${PKG_CONFIG} libpcre --libs 2>/dev/null || echo -lpcre)
 LDADD+=	$$(${PKG_CONFIG} libusb-1.0 --libs 2>/dev/null || echo -lusb)
-LDADD+=	-lz
-DPADD+=	${LIBPCRE} ${LIBUSB} ${LIBZ}
+LDADD+=	-lz \-lpthread
+DPADD+=	${LIBPCRE} ${LIBPTHREAD} ${LIBUSB} ${LIBZ}
 
-GIT?=		git
 PKG_CONFIG?=	pkg-config
 
 beforeinstall:

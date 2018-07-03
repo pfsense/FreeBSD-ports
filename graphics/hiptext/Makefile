@@ -3,10 +3,13 @@
 
 PORTNAME=	hiptext
 PORTVERSION=	0.0.s20160621
+PORTREVISION=	6
 CATEGORIES=	graphics
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Tool for rendering images and videos inside terminals
+
+LICENSE=	NONE
 
 BUILD_DEPENDS=	ragel:devel/ragel
 LIB_DEPENDS=	libgflags.so:devel/gflags \
@@ -24,7 +27,8 @@ GH_TAGNAME=	f89b44f
 USES=		compiler:c++11-lib gmake jpeg localbase
 CPPFLAGS+=	-D_GLIBCXX_USE_C99 # XXX ports/193528
 CPPFLAGS+=	-I${LOCALBASE}/include/freetype2
-MAKE_ENV=	GTEST_DIR="${LOCALBASE}"
+MAKE_ENV=	GTEST_DIR="${LOCALBASE}" \
+		TARGET_ARCH=""
 TEST_TARGET=	check
 
 PLIST_FILES=	bin/hiptext

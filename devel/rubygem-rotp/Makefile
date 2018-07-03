@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rotp
-PORTVERSION=	2.1.2
+PORTVERSION=	3.3.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

@@ -19,6 +19,12 @@
 # limitations under the License.
 #
 
+SQUID_ENABLED=$(/usr/local/sbin/read_xml_tag.sh string installedpackages/squid/config/enable_squid)
+if [ "${SQUID_ENABLED}" != "on" ]; then
+	echo "Squid is disabled, exiting." | /usr/bin/logger -p daemon.info -i -t Squid_Alarm
+	exit 0
+fi
+
 if [ `/bin/pgrep -f "sqpmon.sh" | /usr/bin/wc -l` -ge 1 ]; then
 	exit 0
 fi

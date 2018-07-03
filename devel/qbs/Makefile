@@ -1,24 +1,25 @@
 # $FreeBSD$
 
 PORTNAME=	qbs
-PORTVERSION=	1.6.0
 DISTVERSIONPREFIX=	src-
-PORTREVISION=	1
+DISTVERSION=	1.10.1
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE/Qt/qbs
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	Qt Build Suite
+COMMENT=	Qbs Build Suite
 
 LICENSE=	GPLv3 LGPL21
 LICENSE_COMB=	dual
 
-USES=		compiler:c++11-lib qmake:outsource
+USES=		compiler:c++11-lib python:run qmake:outsource shebangfix
 USE_GL=		gl
 USE_LDCONFIG=	yes
 USE_QT5=	buildtools_build core concurrent gui network script testlib \
 		widgets xml
+
+SHEBANG_FILES=	src/3rdparty/python/bin/dmgbuild
 
 QMAKE_SOURCE_PATH=	${WRKSRC}/qbs.pro
 
@@ -32,6 +33,8 @@ INSTALL_TARGET=		install
 DOCS_ALL_TARGET=	docs
 DOCS_INSTALL_TARGET=	install_docs
 
+PLIST_SUB=		SHLIB_VERSION="${PORTVERSION}"
+
 pre-configure:
 # We piggyback on QMAKE_LIBDIR_FLAGS to make sure -L${WRKSRC}/lib is passed to
 # the linker before -L/usr/local/lib. By default, the opposite happens, which
@@ -41,6 +44,11 @@ pre-configure:
 # latter to get the linker path order right. qmake is smart enough to strip
 # occurrences of ${WRKSRC}/lib from .pc and .prl files when installing them.
 # See QTBUG-40825 and ports bugs 194088, 195105 and 198720.
-	${ECHO_CMD} 'QMAKE_LIBDIR_FLAGS = -L${WRKSRC}/lib' >> ${WRKSRC}/.qmake.cache
+	${MKDIR} ${CONFIGURE_WRKSRC}
+	${ECHO_CMD} 'QMAKE_LIBDIR_FLAGS = -L${CONFIGURE_WRKSRC}/lib' >> ${CONFIGURE_WRKSRC}/.qmake.cache
+
+# The file in question is not used on FreeBSD. To silence stage-qa, remove it from stage-dir.
+post-install:
+	${RM} ${STAGEDIR}${DATADIR}/modules/bundle/update-specs.sh
 
 .include <bsd.port.mk>

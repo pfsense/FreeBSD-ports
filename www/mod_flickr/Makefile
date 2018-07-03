@@ -3,7 +3,7 @@
 
 PORTNAME=	mod_flickr
 PORTVERSION=	1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	http://www.vshank.com/modcode/
 
@@ -24,7 +24,7 @@ XTRA_FLAGS+=	-DDEBUG
 AP_EXTRAS=	${XTRA_FLAGS}
 USE_LDCONFIG=	yes
 
-USE_APACHE=	22+
+USES=		apache:2.2+
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 

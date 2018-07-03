@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	glib
-PORTVERSION=	0.13.1.1
+PORTVERSION=	0.13.4.1
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

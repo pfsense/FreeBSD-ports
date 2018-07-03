@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	acsccid
-PORTVERSION=	1.1.2
+PORTVERSION=	1.1.5
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	mp39590@gmail.com
 COMMENT=	PC/SC driver for CS CCID smart card readers
 
-LICENSE=	GPLv2
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 
@@ -20,15 +21,7 @@ PLIST_FILES=	lib/pcsc/drivers/ifd-acsccid.bundle/Contents/${OPSYS}/libacsccid.so
 
 GNU_CONFIGURE=	yes
 
-.include <bsd.port.pre.mk>
-
-# Old versions don't have pkgconfig files for libusb
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000024
-CONFIGURE_ENV+=	LIBUSB_CFLAGS="-I${LOCALBASE}/include" \
-		LIBUSB_LIBS="-L${LOCALBASE}/lib -lusb"
-.endif
-
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pcsc/drivers/ifd-acsccid.bundle/Contents/${OPSYS}/libacsccid.so
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

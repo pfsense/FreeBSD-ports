@@ -1,21 +1,23 @@
---- dcraw.cc.orig	2015-06-16 03:58:38 UTC
+--- dcraw.cc.orig	2018-04-03 22:16:35 UTC
 +++ dcraw.cc
-@@ -9240,13 +9240,13 @@ canon_a5:
-       filters = 0x16161616;
-     }
-     if (make[0] == 'O') {
--      i = find_green (12, 32, 1188864, 3576832);
--      c = find_green (12, 32, 2383920, 2387016);
--      if (abs(i) < abs(c)) {
--	SWAP(i,c);
-+      float g1 = find_green (12, 32, 1188864, 3576832);
-+      float g2 = find_green (12, 32, 2383920, 2387016);
-+      if (fabsf(g1) < fabsf(g2)) {
-+	SWAP(g1,g2);
- 	load_flags = 24;
-       }
--      if ((int) i < 0) filters = 0x61616161;
-+      if (g1 < 0) filters = 0x61616161;
-     }
-   } else if (fsize == 5869568) {
-     if (!timestamp && minolta_z2()) {
+@@ -2287,7 +2287,7 @@ void CLASS quicktake_100_load_raw()
+ 
+ void CLASS kodak_radc_load_raw()
+ {
+-  static const char src[] = {
++  static const signed char src[] = {
+     1,1, 2,3, 3,4, 4,2, 5,7, 6,5, 7,6, 7,8,
+     1,0, 2,1, 3,3, 4,4, 5,2, 6,7, 7,6, 8,5, 8,8,
+     2,1, 2,3, 3,0, 3,2, 3,4, 4,6, 5,5, 6,7, 6,8,
+@@ -3017,7 +3017,10 @@ void CLASS smal_decode_segment (unsigned
+       diff = diff ? -diff : 0x80;
+     if (ftell(ifp) + 12 >= (int) seg[1][1])
+       diff = 0;
+-    raw_image[pix] = pred[pix & 1] += diff;
++    if(pix>=raw_width*raw_height)
++      derror();
++    else
++      raw_image[pix] = pred[pix & 1] += diff;
+     if (!(pix & 1) && HOLE(pix / raw_width)) pix += 2;
+   }
+   maximum = 0xff;

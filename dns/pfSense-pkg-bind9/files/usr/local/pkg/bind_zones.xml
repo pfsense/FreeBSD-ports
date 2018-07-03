@@ -122,11 +122,10 @@
 			<type>select</type>
 			<options>
 				<option><name>Master</name><value>master</value><enablefields>description</enablefields></option>
-				<option><name>Slave</name><value>slave</value><enablefields>ttl</enablefields></option>
+				<option><name>Slave</name><value>slave</value><enablefields>tll</enablefields></option>
 				<option><name>Forward</name><value>forward</value><enablefields>forward</enablefields></option>
 				<option><name>Redirect</name><value>redirect</value><enablefields>redirect</enablefields></option>
 			</options>
-			<onchange>on_type_zone_changed()</onchange>
 			<required/>
 		</field>
 		<field>
@@ -151,6 +150,12 @@
 			<fielddescr>IPv6 Reverse Zone</fielddescr>
 			<fieldname>reversv6o</fieldname>
 			<description>Check if this is an IPv6 reverse zone. Reverse Zone must also be enabled.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Response Policy Zone</fielddescr>
+			<fieldname>rpz</fieldname>
+			<description>Check if this zone is used in a response policy.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -228,7 +233,7 @@
 			<fieldname>temp03</fieldname>
 		</field>
 		<field>
-			<fielddescr>TLL</fielddescr>
+			<fielddescr>TTL</fielddescr>
 			<fieldname>tll</fieldname>
 			<description>Default expiration time of all resource records without their own TTL value.</description>
 			<type>input</type>
@@ -473,9 +478,6 @@
 			<usecolspan2/>
 		</field>
 	</fields>
-	<custom_php_after_form_command>
-		bind_print_javascript_type_zone2();
-	</custom_php_after_form_command>
 	<custom_php_after_head_command>
 		bind_print_javascript_type_zone();
 	</custom_php_after_head_command>

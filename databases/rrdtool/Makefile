@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rrdtool
-PORTVERSION=	1.6.0
-PORTREVISION=	1
+PORTVERSION=	1.7.0
+PORTREVISION=	2
 CATEGORIES=	databases graphics
 MASTER_SITES=	http://oss.oetiker.ch/rrdtool/pub/
 
@@ -21,12 +21,10 @@ USE_RC_SUBR=	rrdcached
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 USES=		gmake libtool pathfix pkgconfig shebangfix
-SHEBANG_FILES=	examples/rrdcached/rrdcached-size.pl
 USE_GNOME=	glib20 libxml2
 INSTALL_TARGET=	install-strip
 
-PORTEXAMPLES=	4charts.pl bigtops.pl cgi-demo.cgi minmax.pl perftest.pl \
-		piped-demo.pl shared-demo.pl stripes.pl
+PORTEXAMPLES=	cgi-demo.cgi
 
 OPTIONS_DEFINE=	DEJAVU GRAPH MMAP NLS PERL PYTHON \
 		RUBY EXAMPLES DOCS
@@ -40,6 +38,10 @@ PYTHON_DESC=	Build PYTHON bindings
 RUBY_DESC=	Build RUBY bindings
 
 DEJAVU_RUN_DEPENDS=	dejavu>0:x11-fonts/dejavu
+
+DOCS_CONFIGURE_ENABLE=	docs
+DOCS_USES=		groff
+
 GRAPH_CONFIGURE_OFF=	--disable-rrdcgi --disable-rrd_graph
 GRAPH_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 			libpng.so:graphics/png
@@ -54,8 +56,22 @@ PERL_CONFIGURE_ON=	--enable-perl --enable-perl-site-install
 PERL_USES=		perl5
 PYTHON_CONFIGURE_ENABLE=python
 PYTHON_USES=		python
+PYTHON_USE=		python=flavors,optsuffix
 RUBY_CONFIGURE_ENABLE=	ruby
 RUBY_USE=		RUBY=yes
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MPERL}
+SHEBANG_FILES=	examples/rrdcached/rrdcached-size.pl
+PORTEXAMPLES+=	4charts.pl bigtops.pl minmax.pl perftest.pl \
+		piped-demo.pl shared-demo.pl stripes.pl \
+		rrdcached/RRDCached.pm rrdcached/rrdcached-size.pl
+.endif
+.if ${PORT_OPTIONS:MPYTHON}
+SHEBANG_FILES+=	examples/stripes.py
+PORTEXAMPLES+=	stripes.py
+.endif
 
 post-extract:
 	@${REINPLACE_CMD} -E 's|(^rrdcached_LDADD = librrd_th.la)|\1 $$\(ALL_LIBS\)|' \
@@ -63,10 +79,6 @@ post-extract:
 
 	@${REINPLACE_CMD} -E 's|(^rrdtool_LDADD = librrd.la)|\1 $$\(ALL_LIBS\)|' \
 		${WRKSRC}/src/Makefile.in
-
-post-extract-DOCS-off:
-	@${REINPLACE_CMD} -e '/^SUBDIRS = /s| doc | |' \
-		${WRKSRC}/Makefile.in
 
 post-extract-EXAMPLES-off:
 	@${REINPLACE_CMD} -e '/^SUBDIRS = /s| examples | |' \
@@ -83,8 +95,15 @@ post-install-EXAMPLES-on:
 post-install-PERL-on:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/RRDs/RRDs.so
 
+post-install-PERL-off:
+	${RM} ${STAGEDIR}${EXAMPLESDIR}/*.pl
+	${RM} -r ${STAGEDIR}${EXAMPLESDIR}/rrdcached
+
 post-install-PYTHON-on:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/rrdtool.so
+
+post-install-PYTHON-off:
+	${RM} ${STAGEDIR}${EXAMPLESDIR}/stripes.py
 
 post-install-RUBY-on:
 	${STRIP_CMD} ${STAGEDIR}${RUBY_SITEARCHLIBDIR}/RRD.so

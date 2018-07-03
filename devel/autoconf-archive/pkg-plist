@@ -4,6 +4,7 @@
 %%MACRODIR%%/ax_add_am_macro.m4
 %%MACRODIR%%/ax_add_am_macro_static.m4
 %%MACRODIR%%/ax_add_am_trilinos_makefile_export.m4
+%%MACRODIR%%/ax_add_fortify_source.m4
 %%MACRODIR%%/ax_add_recursive_am_macro.m4
 %%MACRODIR%%/ax_add_recursive_am_macro_static.m4
 %%MACRODIR%%/ax_afs.m4
@@ -45,10 +46,10 @@
 %%MACRODIR%%/ax_boost_unit_test_framework.m4
 %%MACRODIR%%/ax_boost_wave.m4
 %%MACRODIR%%/ax_boost_wserialization.m4
+%%MACRODIR%%/ax_build_date_epoch.m4
 %%MACRODIR%%/ax_c99_inline.m4
 %%MACRODIR%%/ax_c___attribute__.m4
 %%MACRODIR%%/ax_c_arithmetic_rshift.m4
-%%MACRODIR%%/ax_c_bigendian_cross.m4
 %%MACRODIR%%/ax_c_compile_value.m4
 %%MACRODIR%%/ax_c_declare_block.m4
 %%MACRODIR%%/ax_c_float_words_bigendian.m4
@@ -171,6 +172,7 @@
 %%MACRODIR%%/ax_check_uname_syscall.m4
 %%MACRODIR%%/ax_check_user.m4
 %%MACRODIR%%/ax_check_vscript.m4
+%%MACRODIR%%/ax_check_x86_features.m4
 %%MACRODIR%%/ax_check_zlib.m4
 %%MACRODIR%%/ax_code_coverage.m4
 %%MACRODIR%%/ax_compare_version.m4
@@ -200,7 +202,7 @@
 %%MACRODIR%%/ax_cxx_compile_stdcxx_0x.m4
 %%MACRODIR%%/ax_cxx_compile_stdcxx_11.m4
 %%MACRODIR%%/ax_cxx_compile_stdcxx_14.m4
-%%MACRODIR%%/ax_cxx_compiler_vendor.m4
+%%MACRODIR%%/ax_cxx_compile_stdcxx_17.m4
 %%MACRODIR%%/ax_cxx_complex_math_in_namespace_std.m4
 %%MACRODIR%%/ax_cxx_const_cast.m4
 %%MACRODIR%%/ax_cxx_cppflags_std_lang.m4
@@ -298,12 +300,14 @@
 %%MACRODIR%%/ax_dist_msi.m4
 %%MACRODIR%%/ax_dist_rpm.m4
 %%MACRODIR%%/ax_dll_string.m4
+%%MACRODIR%%/ax_elisp.m4
 %%MACRODIR%%/ax_enable_builddir.m4
 %%MACRODIR%%/ax_execinfo.m4
 %%MACRODIR%%/ax_expand_prefix.m4
 %%MACRODIR%%/ax_ext.m4
 %%MACRODIR%%/ax_ext_check_header.m4
 %%MACRODIR%%/ax_ext_have_lib.m4
+%%MACRODIR%%/ax_extend_srcdir.m4
 %%MACRODIR%%/ax_extra_dist.m4
 %%MACRODIR%%/ax_f77_cmain_fflags.m4
 %%MACRODIR%%/ax_f90_header.m4
@@ -333,19 +337,17 @@
 %%MACRODIR%%/ax_gcc_func_attribute.m4
 %%MACRODIR%%/ax_gcc_lib.m4
 %%MACRODIR%%/ax_gcc_libgcc_eh.m4
-%%MACRODIR%%/ax_gcc_libraries_dir.m4
 %%MACRODIR%%/ax_gcc_libsupcxx.m4
 %%MACRODIR%%/ax_gcc_malloc_call.m4
 %%MACRODIR%%/ax_gcc_var_attribute.m4
-%%MACRODIR%%/ax_gcc_version.m4
 %%MACRODIR%%/ax_gcc_warn_unused_result.m4
 %%MACRODIR%%/ax_gcc_x86_avx_xgetbv.m4
+%%MACRODIR%%/ax_gcc_x86_cpu_supports.m4
 %%MACRODIR%%/ax_gcc_x86_cpuid.m4
 %%MACRODIR%%/ax_generate_changelog.m4
 %%MACRODIR%%/ax_gnu_autotest.m4
 %%MACRODIR%%/ax_have_adns.m4
 %%MACRODIR%%/ax_have_epoll.m4
-%%MACRODIR%%/ax_have_opengl.m4
 %%MACRODIR%%/ax_have_poll.m4
 %%MACRODIR%%/ax_have_qt.m4
 %%MACRODIR%%/ax_have_select.m4
@@ -394,6 +396,7 @@
 %%MACRODIR%%/ax_libtoolize_cflags.m4
 %%MACRODIR%%/ax_llvm.m4
 %%MACRODIR%%/ax_lua.m4
+%%MACRODIR%%/ax_luarocks_rock.m4
 %%MACRODIR%%/ax_maintainer_mode_auto_silent.m4
 %%MACRODIR%%/ax_missing_prog.m4
 %%MACRODIR%%/ax_mpi.m4
@@ -402,6 +405,9 @@
 %%MACRODIR%%/ax_normalize_path.m4
 %%MACRODIR%%/ax_not_enable_frame_pointer.m4
 %%MACRODIR%%/ax_numeric_namedlevel.m4
+%%MACRODIR%%/ax_open62541_check_h.m4
+%%MACRODIR%%/ax_open62541_check_lib.m4
+%%MACRODIR%%/ax_open62541_path.m4
 %%MACRODIR%%/ax_openmp.m4
 %%MACRODIR%%/ax_patch_libtool_changing_cmds_ifs.m4
 %%MACRODIR%%/ax_path_bdb.m4
@@ -429,7 +435,9 @@
 %%MACRODIR%%/ax_prog_crontab.m4
 %%MACRODIR%%/ax_prog_cxx_for_build.m4
 %%MACRODIR%%/ax_prog_cxx_mpi.m4
+%%MACRODIR%%/ax_prog_dotnetcore_version.m4
 %%MACRODIR%%/ax_prog_doxygen.m4
+%%MACRODIR%%/ax_prog_emacs.m4
 %%MACRODIR%%/ax_prog_f77_mpi.m4
 %%MACRODIR%%/ax_prog_fasm.m4
 %%MACRODIR%%/ax_prog_fasm_opt.m4
@@ -440,6 +448,7 @@
 %%MACRODIR%%/ax_prog_gjs.m4
 %%MACRODIR%%/ax_prog_guile_version.m4
 %%MACRODIR%%/ax_prog_haxe_version.m4
+%%MACRODIR%%/ax_prog_help2man.m4
 %%MACRODIR%%/ax_prog_hla.m4
 %%MACRODIR%%/ax_prog_hla_opt.m4
 %%MACRODIR%%/ax_prog_httpd.m4
@@ -489,6 +498,7 @@
 %%MACRODIR%%/ax_python_embed.m4
 %%MACRODIR%%/ax_python_module.m4
 %%MACRODIR%%/ax_python_module_version.m4
+%%MACRODIR%%/ax_recursive_eval.m4
 %%MACRODIR%%/ax_require_defined.m4
 %%MACRODIR%%/ax_require_one_func.m4
 %%MACRODIR%%/ax_restore_flags.m4
@@ -509,6 +519,7 @@
 %%MACRODIR%%/ax_strings_strcasecmp.m4
 %%MACRODIR%%/ax_struct_semun.m4
 %%MACRODIR%%/ax_subdir_files.m4
+%%MACRODIR%%/ax_subdirs_configure.m4
 %%MACRODIR%%/ax_subst_with.m4
 %%MACRODIR%%/ax_swig_enable_cxx.m4
 %%MACRODIR%%/ax_swig_multi_module_support.m4

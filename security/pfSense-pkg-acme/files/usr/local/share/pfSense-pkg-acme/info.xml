@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>acme</name>
+		<pkginfolink>https://doc.pfsense.org/index.php/pfsense-pkg-acme</pkginfolink>
+		<descr><![CDATA[Automated Certificate Management Environment, for automated use of LetsEncrypt certificates.]]></descr>
+		<website>https://letsencrypt.org/</website>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>acme.xml</configurationfile>
+	</package>
+</pfsensepkgs>

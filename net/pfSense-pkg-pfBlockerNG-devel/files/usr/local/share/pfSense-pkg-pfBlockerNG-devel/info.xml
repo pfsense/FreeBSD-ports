@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>pfBlockerNG-devel</name>
+		<descr><![CDATA[pfBlockerNG is the Next Generation of pfBlocker.&lt;br /&gt;
+			Manage IPv4/v6 List Sources into 'Deny, Permit or Match' formats.&lt;br /&gt;
+			GeoIP database by MaxMind Inc. (GeoLite2 Free version).&lt;br /&gt;
+			De-Duplication, Suppression, and Reputation enhancements.&lt;br /&gt;
+			Provision to download from diverse List formats.&lt;br /&gt;
+			Advanced Integration for Proofpoint ET IQRisk IP Reputation Threat Sources.&lt;br /&gt;
+			Domain Name (DNSBL) blocking via Unbound DNS Resolver.]]></descr>
+		<pkginfolink>https://forum.pfsense.org/index.php?topic=102470.0</pkginfolink>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>pfblockerng.xml</configurationfile>
+	</package>
+</pfsensepkgs>

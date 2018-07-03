@@ -3,7 +3,7 @@
 
 PORTNAME=	waon
 PORTVERSION=	0.10
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -17,7 +17,9 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libsndfile.so:audio/libsndfile \
 		libsamplerate.so:audio/libsamplerate
 
-USES=		pkgconfig
+CONFLICTS=	pv-[0-9]*
+
+USES=		ncurses pkgconfig
 USE_GNOME=	gtk20
 
 PLIST_FILES=	bin/waon bin/pv bin/gwaon \

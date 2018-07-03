@@ -16,7 +16,7 @@ COMMENT=	Library to create PDF documents using the Python language
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist
@@ -42,10 +42,6 @@ CJK_RUN_DEPENDS=	${LOCALBASE}/share/fonts/adobe-cmaps/ac15/cid2code.txt:print/ad
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 .include <bsd.port.options.mk>
-
-.if ${ARCH} == "sparc64"
-BROKEN=	Does not install on sparc64
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%DISTDIR%%|${DISTDIR}|' \

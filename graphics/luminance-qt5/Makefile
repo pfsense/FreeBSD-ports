@@ -3,7 +3,7 @@
 
 PORTNAME=	luminance-hdr
 DISTVERSION=	2.4.0
-PORTREVISION=	8
+PORTREVISION=	20
 CATEGORIES=	graphics
 MASTER_SITES=	SF/qtpfsgui/luminance/${DISTVERSION}
 PKGNAMESUFFIX=	-qt5
@@ -23,7 +23,7 @@ LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 		libboost_system.so:devel/boost-libs
 
 USES=		cmake:outsource jpeg pkgconfig tar:bzip2
-USE_QT5=	concurrent declarative gui printsupport sql webkit xml \
+USE_QT5=	concurrent gui printsupport sql webkit xml \
 		buildtools_build linguist_build qmake_build \
 		imageformats_run
 INSTALLS_ICONS=	yes
@@ -34,13 +34,12 @@ CONFLICTS_INSTALL=	luminance-hdr-[0-9]*
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000024
-USE_GCC=	yes
-.endif
-
 post-patch:
+# Remove the non-required dependency on Qt5 Declarative. This can be dropped
+# once www/qt5-webengine lands in the portstree and this port can be updated to
+# a version >= 2.5.0.
+	@${REINPLACE_CMD} -e '/Qt5Declarative/d' \
+		${WRKSRC}/CMakeLists.txt
 # Do not install yet another copy of GPL (we use license framework instead)
 # and fix installation path for docs (but not for internal help files)
 	@${REINPLACE_CMD} -e '/LICENSE/d ; \
@@ -60,4 +59,4 @@ post-patch:
 pre-install:
 	QT_BINDIR_REL=bin
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

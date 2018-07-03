@@ -3,7 +3,7 @@
 
 PORTNAME=	whichwayisup
 PORTVERSION=	0.7.9
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games python
 MASTER_SITES=	http://www.oletus.fi/static/whichwayisup/ \
 		SF/nemysisfreebsdp/games/${PORTNAME}/:icons
@@ -22,6 +22,7 @@ RUN_DEPENDS=	${PYGAME}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		dos2unix python zip
+USE_PYTHON=	py3kplist
 DOS2UNIX_REGEX=	.*.[^pt][^nt][^gf]
 INSTALLS_ICONS=	yes
 

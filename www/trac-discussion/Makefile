@@ -2,18 +2,18 @@
 
 PORTNAME=	discussion
 PORTVERSION=	0.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www devel python
 MASTER_SITES=	LOCAL/brooks
 PKGNAMEPREFIX=	trac-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Discussion forum plugin for Trac
 
 RUN_DEPENDS=	tracd:www/trac \
 		trac-TracSpamFilter>=0.2.1:www/trac-spam-filter
 
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

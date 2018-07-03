@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	capybara
-PORTVERSION=	2.7.1
+PORTVERSION=	2.18.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -13,9 +13,9 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/License.txt
 
 RUN_DEPENDS=	rubygem-addressable>=0:www/rubygem-addressable \
-		rubygem-mime-types>=1.16:misc/rubygem-mime-types \
+		rubygem-mini_mime>=0.1.3:mail/rubygem-mini_mime \
 		rubygem-nokogiri>=1.3.3:textproc/rubygem-nokogiri \
-		rubygem-rack16>=1.0.0:www/rubygem-rack16 \
+		rubygem-rack>=1.0.0:www/rubygem-rack \
 		rubygem-rack-test>=0.5.4:www/rubygem-rack-test \
 		rubygem-xpath>=2.0:devel/rubygem-xpath
 

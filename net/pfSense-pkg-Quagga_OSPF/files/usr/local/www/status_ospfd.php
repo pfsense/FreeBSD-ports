@@ -74,7 +74,12 @@ defCmdT("Quagga Zebra Routes", "{$control_script} zebra route");
 defCmdT("Quagga OSPF Interfaces", "{$control_script} ospf interfaces");
 defCmdT("Quagga OSPF CPU Usage", "{$control_script} ospf cpu");
 defCmdT("Quagga OSPF Memory", "{$control_script} ospf mem");
+defCmdT("Quagga BGP Routes", "{$control_script} bgp route");
+defCmdT("Quagga BGP IPv6 Routes", "{$control_script} bgp6 route");
+defCmdT("Quagga BGP Neighbors", "{$control_script} bgp neighbor");
+defCmdT("Quagga BGP Summary", "{$control_script} bgp sum");
 defCmdT("Quagga ospfd.conf", "/bin/cat {$pkg_homedir}/ospfd.conf");
+defCmdT("Quagga bgpd.conf", "/bin/cat {$pkg_homedir}/bgpd.conf");
 defCmdT("Quagga zebra.conf", "/bin/cat {$pkg_homedir}/zebra.conf");
 
 $tab_array = array();

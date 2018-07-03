@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fwknop
-PORTVERSION=	2.6.8
+PORTVERSION=	2.6.9
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://www.cipherdyne.org/fwknop/download/
 
@@ -11,6 +12,10 @@ COMMENT=	SPA implementation for Linux and FreeBSD
 
 LICENSE=	GPLv2
 
+BUILD_DEPENDS= wget:ftp/wget
+RUN_DEPENDS=   wget:ftp/wget
+LIB_DEPENDS+=  libassuan.so:security/libassuan
+CONFLICTS_BUILD=	fwknop-2.6.8_*
 CPE_VENDOR=	cipherdyne
 
 OPTIONS_DEFINE=	GPGME
@@ -39,9 +44,10 @@ IPFW_CONFIGURE_WITH=	ipfw=/sbin/ipfw
 PF_CONFIGURE_WITH=	pf=/sbin/pfctl
 
 GPGME_LIB_DEPENDS=	libgpgme.so:security/gpgme
+GPGME_LIB_DEPENDS+=	libgpg-error.so:security/libgpg-error
 GPGME_CONFIGURE_WITH=	gpgme
 
-post-stage:
+post-install:
 	(cd ${STAGEDIR}${PREFIX}/etc/fwknop && ${MV} access.conf access.conf.sample)
 	(cd ${STAGEDIR}${PREFIX}/etc/fwknop && ${MV} fwknopd.conf fwknopd.conf.sample)
 

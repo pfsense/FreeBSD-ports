@@ -3,7 +3,7 @@
 
 PORTNAME=	goldendict
 PORTVERSION=	1.0.1
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:C|(.*)\.[0-9]*$|\1|}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -13,15 +13,16 @@ COMMENT=	Feature-rich Qt4 based dictionary lookup program
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libhunspell-1.3.so:textproc/hunspell \
+LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell \
 		libvorbis.so:audio/libvorbis
 
 NO_WRKSUBDIR=	yes
-USES=		dos2unix execinfo iconv pkgconfig qmake tar:bzip2
+USES=		dos2unix iconv:wchar_t pkgconfig qmake tar:bzip2
 DOS2UNIX_FILES=	processwrapper.cc
 USE_XORG=	xtst
 USE_QT4=	corelib gui webkit phonon \
 		linguist_build moc_build rcc_build script_build uic_build
+LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 INSTALLS_ICONS=	yes
 
 post-patch:

@@ -3,4 +3,4 @@ Bus). It does not include real tables except two demo layouts, "Compose"
 (which mimics Compose Key input) and "LaTeX" (which allows you to use LaTeX
 commands as keyboard sequences to input various symbols).
 
-WWW: http://code.google.com/p/ibus
+WWW: https://github.com/kaio/ibus-table

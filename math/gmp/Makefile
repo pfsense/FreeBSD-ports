@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gmp
-PORTVERSION=	5.1.3
-PORTREVISION=	3
+PORTVERSION=	6.1.2
 CATEGORIES=	math devel
 MASTER_SITES=	GNU
 
@@ -16,15 +15,19 @@ OPTIONS_DEFINE=	CPU_OPTS
 CPU_OPTS_DESC=	Enable assembly optimizations for your CPU
 
 USES=		libtool makeinfo tar:xz
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	MAKEINFO="makeinfo --no-split"
+HAS_CONFIGURE=	yes
+CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split"
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--infodir=${PREFIX}/info \
 		--mandir=${PREFIX}/man \
 		--enable-cxx
+MAKE_JOBS_UNSAFE=yes
 USE_LDCONFIG=	yes
 
 INFO=		gmp
+
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
 .include <bsd.port.pre.mk>
 
@@ -41,13 +44,6 @@ CONFIGURE_ENV+=	ABI="32"
 .endif
 
 post-extract:
-	@${RM} -f ${WRKSRC}/doc/gmp.info*
-
-post-patch:
-	@${REINPLACE_CMD} "s/\(athlon64\-\*\-\*\)/amd64-*-* | \1/;s/\(x86_64)\)/amd64 | \1/" \
-		${WRKSRC}/configure
-
-regression-test check: build
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} check
+	@${RM} ${WRKSRC}/doc/gmp.info*
 
 .include <bsd.port.post.mk>

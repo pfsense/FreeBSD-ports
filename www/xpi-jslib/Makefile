@@ -10,7 +10,7 @@ DISTNAME=	jslib_${PORTVERSION}_lite
 MAINTAINER=	lapo@lapo.it
 COMMENT=	Library of common useful routines for XPI developers
 
-LICENSE=	MPL
+LICENSE=	MPL11
 
 XPI_ID=		{DF8E5247-8E0A-4de6-B393-0735A39DFD80}
 XPI_FILES=	application.ini chrome/jslib.jar chrome/jsliblive/contents.rdf chrome/jsliblive/jsliblive.xul chrome.manifest \
@@ -20,7 +20,7 @@ XPI_DIRS=	chrome/jsliblive chrome components defaults/preferences defaults
 
 post-patch:
 		${REINPLACE_CMD} -Ee '/Suite/,/Flock/s/>2[.]0[.][*]</>2.4.*</' ${WRKSRC}/install.rdf
-		${RM} -f ${WRKSRC}/install.rdf.bak
+		${RM} ${WRKSRC}/install.rdf.bak
 
 .include "${.CURDIR}/../xpi-adblock/Makefile.xpi"
 .include <bsd.port.mk>

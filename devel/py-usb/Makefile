@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	usb
-PORTVERSION=	1.0.0b1
-PORTREVISION=	1
+PORTVERSION=	1.0.2
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -15,8 +14,9 @@ USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	walac
+GH_ACCOUNT=	pyusb
 GH_PROJECT=	py${PORTNAME}
+GH_TAGNAME=	47ca9c3
 
 PORTDOCS=	*.rst
 
@@ -27,7 +27,7 @@ do-install-DOCS-on:
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/docs/,} ${STAGEDIR}${DOCSDIR}
 
-regression-test: extract
+test: extract
 	@(cd ${WRKSRC}/tests && ${PYTHON_CMD} testall.py)
 
 .include <bsd.port.mk>

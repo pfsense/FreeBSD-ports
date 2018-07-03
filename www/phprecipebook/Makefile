@@ -15,9 +15,8 @@ LICENSE_FILE=	${WRKSRC}/docs/LICENSE.TXT
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
 NO_ARCH=	yes
-USES=		tar:tgz
+USES=		php:web tar:tgz
 USE_PHP=	xml
-WANT_PHP_WEB=	yes
 SUB_FILES=	pkg-message
 PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 
@@ -27,12 +26,9 @@ OPTIONS_DEFAULT=	MYSQL
 
 MYSQL_USE=	PHP=mysql
 MYSQL_USES=	mysql
-MYSQL_VARS=	IGNORE_WITH_PHP+=70
+MYSQL_VARS=	IGNORE_WITH_PHP+="70 71"
 PGSQL_USE=	PHP=pgsql
 PGSQL_USES=	pgsql
-
-post-extract:
-	@${CHMOD} -R u+w ${WRKSRC}
 
 do-install:
 	${MV} ${WRKSRC}/custom_inc.php ${WRKSRC}/custom_inc.php.sample

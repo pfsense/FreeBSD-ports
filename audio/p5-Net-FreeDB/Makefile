@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Get the CDID of an audio CD and query the FreeDB servers
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-CDDB-File>=0:audio/p5-CDDB-File  \
@@ -21,7 +21,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		alias perl5
 USE_PERL5=	configure
 
-post-stage:
+post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Net/FreeDB/FreeDB.so
 
 .include <bsd.port.mk>

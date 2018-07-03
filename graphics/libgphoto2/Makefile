@@ -2,19 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	libgphoto2
-PORTVERSION=	2.5.10
-PORTREVISION=	1
+PORTVERSION=	2.5.16
 CATEGORIES=	graphics
 MASTER_SITES=	SF/gphoto/libgphoto/${PORTVERSION}
 
 MAINTAINER=	woodsb02@FreeBSD.org
 COMMENT=	Universal digital camera control library
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		gmake iconv libtool pkgconfig tar:bzip2
+USES=		gmake iconv libtool localbase pathfix pkgconfig tar:bzip2
 USE_CSTD=	gnu89
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	LTDLINCL="-I${LOCALBASE}/include" \
@@ -25,9 +25,10 @@ CONFIGURE_ENV=	LTDLINCL="-I${LOCALBASE}/include" \
 		udevscriptdir=${WRKDIR}
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+PATHFIX_MAKEFILEIN=	Makefile.in \
+			configure \
+			libgphoto2_port/Makefile.in \
+			libgphoto2_port/configure
 
 PLIST_SUB=	VERSION="${PORTVERSION}" VERSION_PORT=0.12.0
 
@@ -46,26 +47,16 @@ NLS_CONFIGURE_ENABLE=	nls
 XML_USE=		GNOME=libxml2
 XML_CONFIGURE_OFF=	--with-libxml-2.0=no
 
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000040
-CONFIGURE_ENV+=	LIBUSB1_CFLAGS=" " LIBUSB1_LIBS="-lusb"
-.endif
-
 post-patch:
 .for i in configure libgphoto2_port/configure
 	@${REINPLACE_CMD} -e \
 		'/FLAGS/s|-g|| ; \
-		 /grep -i linux/s|; fi ; then|; else false; fi ; then| ; \
-		 /pkgconfig/s|$${libdir}|$${prefix}/libdata|' \
+		 /grep -i linux/s|; fi ; then|; else false; fi ; then|' \
 		${WRKSRC}/${i}
 .endfor
 	@${REINPLACE_CMD} -e \
 		'/^doc_DATA/s|COPYING||' \
 		${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e \
-		's|-lusb-1.0|-lusb|' \
-		${WRKSRC}/libgphoto2_port/configure
 	@${REINPLACE_CMD} -e \
 		'/^SUBDIRS/s|linux-hotplug||' \
 		${WRKSRC}/packaging/Makefile.in

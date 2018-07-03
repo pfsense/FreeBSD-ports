@@ -6,7 +6,7 @@ CATEGORIES=	www
 MASTER_SITES=	SF
 DISTNAME=	iTop-${PORTVERSION}-2832
 
-MAINTAINER=	olevole@olevole.ru
+MAINTAINER=	neel@neelc.org
 COMMENT=	Simple, web based IT Service Management tool
 
 LICENSE=	AGPLv3

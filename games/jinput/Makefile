@@ -12,6 +12,9 @@ COMMENT=	Java Game Controller API
 BUILD_DEPENDS=	${JAVALIBDIR}/jutils/jutils.jar:games/jutils
 RUN_DEPENDS=	${JAVALIBDIR}/jutils/jutils.jar:games/jutils
 
+BROKEN_armv6=		fails to compile: build.xml: compilation failed
+BROKEN_armv7=		fails to compile: build.xml: compilation failed
+
 USES=		tar:bzip2
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+

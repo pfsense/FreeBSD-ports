@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-darkstat
-PORTVERSION=	3.1.2
-PORTREVISION=	1
+PORTVERSION=	3.1.3
+PORTREVISION=	4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -26,10 +26,15 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/darkstat.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/darkstat.xml \
 		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/darkstat.inc \
+		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/darkstat_redirect.php \
+		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/darkstat.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \

@@ -19,10 +19,10 @@
 
 PORTNAME=	x264
 PORTVERSION=	0.${X264_BUILD}.${X264_REV}
-PORTREVISION?=	0
+PORTREVISION?=	1 # 0 in libx264
 CATEGORIES=	multimedia
-MASTER_SITES=	ftp://ftp.videolan.org/pub/videolan/x264/snapshots/ \
-		http://samples.mplayerhq.hu/yuv4mpeg2/:pgo
+MASTER_SITES=	https://downloads.videolan.org/pub/videolan/x264/snapshots/ \
+		https://samples.mplayerhq.hu/yuv4mpeg2/:pgo
 DISTNAME=	${PORTNAME}-snapshot-${X264_SNAPSHOT}-2245-stable
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	x264
@@ -34,15 +34,14 @@ COMMENT?=	H.264/MPEG-4 AVC Video Encoding (Front End CLI)
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	yasm>=1.2.0:devel/yasm \
-		bash:shells/bash
+BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS?=	libx264.so:multimedia/libx264
 
-X264_BUILD=	148
-X264_REV=	2708
-X264_COMMIT=	86b71982e131eaa70125f8d0e725fcade9c4c677
+X264_BUILD=	152
+X264_REV=	2854
+X264_COMMIT=	e9a5903edf8ca59ef20e6f4894c196f135af735e
 X264_GITVER=	${X264_COMMIT:C/^(.......).*$/\1/g}
-X264_SNAPSHOT=	20160921
+X264_SNAPSHOT=	20171225
 
 USES?=		pkgconfig
 USES+=		gmake localbase shebangfix tar:bzip2
@@ -51,10 +50,10 @@ HAS_CONFIGURE=	yes
 SHEBANG_FILES=	configure
 PLIST_FILES?=	bin/x264
 
-OPTIONS_DEFINE+=	ASM DEBUG FFMS GCC LAVF PGO SWSCALE
+OPTIONS_DEFINE+=	DEBUG FFMS GCC LAVF PGO SWSCALE
 OPTIONS_RADIO+=		MP4
 OPTIONS_RADIO_MP4+=	GPAC LSMASH
-OPTIONS_DEFAULT+=	ASM LSMASH
+OPTIONS_DEFAULT+=	FFMS LAVF LSMASH SWSCALE
 
 FFMS_DESC=		FFmpeg Source input support
 GPAC_DESC=		GPAC library support
@@ -62,8 +61,6 @@ LAVF_DESC=		libav* format input support (requires FFmpeg)
 LSMASH_DESC=		L-SMASH library support
 MP4_DESC=		MPEG-4 output
 SWSCALE_DESC=		Resize video filter
-
-ASM_CONFIGURE_ENABLE=	asm
 
 DEBUG_CONFIGURE_ENABLE=	debug
 DEBUG_CONFIGURE_OFF=	--enable-strip

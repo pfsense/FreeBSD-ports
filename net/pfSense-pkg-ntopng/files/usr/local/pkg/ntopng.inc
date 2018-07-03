@@ -3,7 +3,7 @@
  * ntopng.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,10 +31,6 @@ global $redis_path;
 $redis_path = "/usr/local/bin";
 
 function ntopng_php_install_command() {
-	$fonts_path = "/usr/local/lib/X11/fonts";
-	/* Fix broken GUI fonts */
-	mwexec("/bin/cp -Rp {$fonts_path}/webfonts/ {$fonts_path}/TTF/");
-
 	/* Create dirs for Redis DB, data and graphs */
 	ntopng_create_datadir();
 }
@@ -76,7 +72,7 @@ function ntopng_sync_package() {
 	if ($_POST['Submit'] == "Update GeoIP Data") {
 		return;
 	}
-	if ($_POST['Delete'] == "Delete (Historical) Data") {
+	if ($_POST['Delete'] == "Delete Data") {
 		return;
 	}
 
@@ -121,16 +117,29 @@ function ntopng_sync_package() {
 				$local_networks = "--local-networks " . escapeshellarg(gen_subnet(get_interface_ip('lan'), get_interface_subnet('lan')) . '/' . get_interface_subnet('lan'));
 			}
 			break;
+		case "custom":
+			$nets = array();
+			foreach ($ntopng_config['row'] as $net) {
+				if (is_subnet($net['cidr'])) {
+					$nets[] = trim($net['cidr']);
+				}
+			}
+			if (!empty($nets)) {
+				$local_networks = "--local-networks " . escapeshellarg(implode(",", $nets));
+			}
+			break;
 		case "rfc1918":
 		default:
 			$local_networks = "--local-networks '192.168.0.0/16,172.16.0.0/12,10.0.0.0/8'";
 			break;
 	}
 
-	/* Historical Data Storage, Dump expired flows */
+	// Pending rework - see https://redmine.pfsense.org/issues/7000
+	/* Historical Data Storage, Dump expired flows
 	if ($ntopng_config['dump_flows'] == "on") {
 		$dump_flows = "-F";
 	}
+	*/
 
 	/* Disable alerts */
 	if ($ntopng_config['disable_alerts'] == "on") {
@@ -147,15 +156,21 @@ function ntopng_sync_package() {
 	}
 
 	/* Create rc script */
-	$start = "";
-	$stop = "";
-	$start .= "\t{$redis_path}/redis-server --dir /var/db/ntopng/ --dbfilename ntopng.rdb &\n";
+	$stop = <<<EOD
+# Kill ntopng and redis
+	/usr/bin/killall ntopng redis-cli redis-server
+EOD;
+
+	$start = <<<EOD
+# Create DB dir before starting, in case it was removed. Otherwise redis will fail.
+	/bin/mkdir -p /var/db/ntopng
+	{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb &
+	/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &
+EOD;
 	// TODO:
 	// Add support for --data-dir /somewhere, --httpdocs-dir /somewhereelse,
 	// --dump-timeline (on/off) --http-port, --https-port
 
-	$start .= "\t/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &\n";
-	$stop .= "/usr/bin/killall ntopng redis-cli redis-server\n";
 	write_rcfile(array("file" => "ntopng.sh", "start" => $start, "stop" => $stop));
 
 	/* Set up admin password */
@@ -186,7 +201,7 @@ function ntopng_redis_started() {
 	$redis_started = false;
 
 	if (!is_process_running("redis-server")) {
-		mwexec_bg("{$redis_path}/redis-server --dir /var/db/ntopng/ --dbfilename ntopng.rdb");
+		mwexec_bg("{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb");
 		for ($i = 0; $i <= 10; $i++) {
 			if (is_process_running("redis-server")) {
 				$redis_started = true;
@@ -208,6 +223,8 @@ function ntopng_set_redis_password() {
 		$password = md5($ntopng_config['redis_password']);
 		if (ntopng_redis_started()) {
 			mwexec("{$redis_path}/redis-cli SET ntopng.user.admin.password " . escapeshellarg($password));
+			// Make sure the preferences menu is accessible (Bug #6999)
+			mwexec("{$redis_path}/redis-cli SET ntopng.user.admin.group administrator");
 			mwexec("{$redis_path}/redis-cli save");
 		} else {
 			log_error(gettext("[ntopng] Cannot set admin password - redis-server is not running."));
@@ -285,7 +302,7 @@ function ntopng_flush_historical_data() {
 		ntopng_services_stop();
 		if (is_dir("/var/db/ntopng/")) {
 			mwexec("rm -rf /var/db/ntopng/");
-			log_error(gettext("[ntopng] Deleted ntopng historical traffic data and graphs."));
+			log_error(gettext("[ntopng] Deleted ntopng traffic data and graphs."));
 		} else {
 			log_error(gettext("[ntopng] Nothing to delete; /var/db/ntopng/ directory not found."));
 		}
@@ -297,9 +314,9 @@ function ntopng_flush_historical_data() {
 		ntopng_sync_package();
 		log_error(gettext("[ntopng] Resynced ntopng settings."));
 	} else {
-		$error = "Cannot delete historical data - redis-server is not running.";
+		$error = "Cannot delete data - redis-server is not running.";
 		log_error(gettext("[ntopng] {$error}"));
-		file_notice("ntopng", $error, "ntopng Delete Historical Data", "");
+		file_notice("ntopng", $error, "ntopng Delete Data", "");
 	}
 }
 
@@ -313,10 +330,19 @@ function ntopng_validate_input($post, &$input_errors) {
 	if ($post['redis_password'] != $post['redis_passwordagain']) {
 		$input_errors[] = "The provided passwords did not match.";
 	}
+	if($_POST["local_networks"] == "custom") {
+		$idx = 0;
+		while (isset($_POST["cidr{$idx}"])) {
+			$cidr = $_POST["cidr" . $idx++];
+			if (!is_subnet($cidr)) {
+				$input_errors[] = "Invalid CIDR in custom local networks list at position {$idx}.";
+			}
+		}
+	}
 	if ($post['Submit'] == "Update GeoIP Data") {
 		ntopng_update_geoip();
 	}
-	if ($post['Delete'] == "Delete (Historical) Data") {
+	if ($post['Delete'] == "Delete Data") {
 		ntopng_flush_historical_data();
 	}
 }

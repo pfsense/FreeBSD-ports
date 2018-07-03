@@ -2,26 +2,37 @@
 # $FreeBSD$
 
 PORTNAME=	zstd
-PORTVERSION=	1.1.0
+PORTVERSION=	1.3.3
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	archivers
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Zstandard - Fast real-time compression algorithm
 
-LICENSE=	BSD2CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	BSD3CLAUSE GPLv2
+LICENSE_COMB=	dual
+LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/LICENSE
+LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
-USES=		gmake
-USE_GITHUB=	yes
-GH_ACCOUNT=	facebook
+OPTIONS_DEFINE=	LZ4
+OPTIONS_DEFAULT=LZ4
 
-PLIST_SUB=	LIBVER=${PORTVERSION}
 ALL_TARGET=	default
-MAKE_ARGS=	MANDIR="${PREFIX}/man/man1" \
-		LIBDIR="${PREFIX}/lib" \
-		INCLUDEDIR="${PREFIX}/include"
+MAKE_ARGS=	LIBDIR="${PREFIX}/lib"
+TEST_TARGET=	test
+USE_LDCONFIG=	yes
+USES=		gmake
 
-BROKEN_FreeBSD_9=	missing builtin bswap32 and bswap64
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+GH_ACCOUNT=	facebook
+USE_GITHUB=	yes
+
+LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
+LZ4_USES=		localbase:ldflags
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|INSTALL_|BSD_&|' ${WRKSRC}/lib/Makefile ${WRKSRC}/programs/Makefile
 
 .include <bsd.port.mk>

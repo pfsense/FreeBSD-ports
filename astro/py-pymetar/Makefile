@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pymetar
-PORTVERSION=	0.20
+PORTVERSION=	0.21
+PORTREVISION=	1
 CATEGORIES=	astro python geography
-MASTER_SITES=	http://www.schwarzvogel.de/pkgs/ \
-		LOCAL/sunpoet
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 NO_ARCH=	yes
 USE_PYTHON=	autoplist distutils
-USES=		python:2 shebangfix
+USES=		python:2.7 shebangfix
 
 SHEBANG_FILES=	bin/${PORTNAME}
 

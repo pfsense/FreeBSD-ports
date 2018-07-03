@@ -36,13 +36,14 @@ GH_TAGNAME=	6c8ec3a
 USE_GNOME=	gconf2 gnomeprefix gnomedocutils gtksourceview3 intlhack \
 		introspection:build libxml2 pygtk2
 USES=		autoreconf:build gettext gmake libtool pathfix pkgconfig \
-		shebangfix
+		python shebangfix
 SHEBANG_FILES=	nemo-dropbox/dropbox.in
 INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
 NON_AUTO_EXTENSIONS=	nemo-dropbox nemo-fileroller nemo-preview
 AUTO_EXTENSIONS=	nemo-share
@@ -56,13 +57,13 @@ post-patch:
 
 do-configure:
 .for i in ${NON_AUTO_EXTENSIONS}
-	cd ${WRKSRC}/${i} && NOCONFIGURE=yes ${SH} autogen.sh && ./configure --prefix=${PREFIX} \
+	cd ${WRKSRC}/${i} && NOCONFIGURE=yes ${SH} autogen.sh && ${SETENV} ${CONFIGURE_ENV} ./configure --prefix=${PREFIX} \
 		--with-nemo-extension-dir=${PREFIX}/lib/nemo/extensions-3.0 \
 		--mandir=${PREFIX}/man
 .endfor
 
 .for i in ${AUTO_EXTENSIONS}
-	cd ${WRKSRC}/${i} && ./configure --prefix=${PREFIX} \
+	cd ${WRKSRC}/${i} && ${SETENV} ${CONFIGURE_ENV} ./configure --prefix=${PREFIX} \
 		--with-nemo-extension-dir=${PREFIX}/lib/nemo/extensions-3.0 \
 		--mandir=${PREFIX}/man
 .endfor

@@ -2,14 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	public_suffix_list
-PORTVERSION=	0.0.0.20160510
+PORTVERSION=	20180125
 CATEGORIES=	dns
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Public Suffix List by Mozilla
 
-LICENSE=	MPL
+LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+SLAVEDIRS=	dns/p5-Mozilla-PublicSuffix dns/rubygem-public_suffix dns/rubygem-public_suffix_service
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -19,12 +21,11 @@ PLIST_FILES=	%%DATADIR%%/public_suffix_list.dat \
 
 GH_ACCOUNT=	publicsuffix
 GH_PROJECT=	list
-GH_TAGNAME=	2226f9c
+GH_TAGNAME=	0f3b07d
 USE_GITHUB=	yes
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/
-	${INSTALL_DATA} ${WRKSRC}/public_suffix_list.dat ${STAGEDIR}${DATADIR}/
-	${INSTALL_DATA} ${WRKSRC}/tests/test_psl.txt ${STAGEDIR}${DATADIR}/
+	${INSTALL_DATA} ${WRKSRC}/public_suffix_list.dat ${WRKSRC}/tests/test_psl.txt ${STAGEDIR}${DATADIR}/
 
 .include <bsd.port.mk>

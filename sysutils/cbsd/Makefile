@@ -1,44 +1,44 @@
 # $FreeBSD$
 
 PORTNAME=	cbsd
-PORTVERSION=	11.0.1
+DISTVERSION=	11.1.16
 CATEGORIES=	sysutils
 
 MAINTAINER=	olevole@olevole.ru
 COMMENT=	Yet another FreeBSD Jail and Bhyve Management Utility
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rsync:net/rsync \
 		sudo:security/sudo \
-		sqlite3:databases/sqlite3
+		sqlite3:databases/sqlite3 \
+		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 LIB_DEPENDS=	libssh2.so:security/libssh2 \
 		libsqlite3.so:databases/sqlite3
 
+USES=		libedit pkgconfig
 USE_GITHUB=	yes
-GH_ACCOUNT=	olevole
-
-USES=	libedit
 USE_RC_SUBR=	cbsdd cbsdrsyncd
 
-SUB_FILES=	pkg-message
-PLIST_FILES+=	man/man8/cbsd.8.gz
+SUB_FILES=	pkg-message pkg-deinstall
 
 CBSD_HOME?=	${PREFIX}/cbsd
-
-.include <bsd.port.pre.mk>
 
 USERS=	${PORTNAME}
 GROUPS=	${PORTNAME}
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-IGNORE=	does not support FreeBSD versions < 10.0
-.endif
+BIN_FILES=	\
+		bin/cbsdsh/mknodes \
+		bin/cbsdsh/mksyntax
 
 do-install:
 	@${ECHO} "Installing in ${CBSD_HOME}"
 	${MKDIR} ${STAGEDIR}${CBSD_HOME}
 	${CP} -a ${WRKSRC}/ ${STAGEDIR}${CBSD_HOME}
+.for i in ${BIN_FILES}
+	${STRIP_CMD} ${STAGEDIR}${CBSD_HOME}/${i}
+.endfor
 	${INSTALL_MAN} ${WRKSRC}/man/cbsd.8 ${STAGEDIR}${PREFIX}/man/man8/cbsd.8
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/cbsdsh/cbsd ${STAGEDIR}${PREFIX}/bin
 
@@ -49,4 +49,4 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/libexec/bsdconfig
 	@${LN} -sf ${CBSD_HOME}/share/bsdconfig/cbsd ${STAGEDIR}${PREFIX}/libexec/bsdconfig/cbsd
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

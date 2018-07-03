@@ -3,7 +3,7 @@
 
 PORTNAME=	gjiten
 PORTVERSION=	2.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	japanese gnome
 MASTER_SITES=	http://gjiten.sourceforge.net/
 

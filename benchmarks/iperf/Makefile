@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	iperf
-PORTVERSION=	2.0.5
+PORTVERSION=	2.0.10
+PORTREVISION=	1
 CATEGORIES=	benchmarks
-MASTER_SITES=	SF/${PORTNAME}
+MASTER_SITES=	SF/${PORTNAME}2
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tool to measure maximum TCP and UDP bandwidth

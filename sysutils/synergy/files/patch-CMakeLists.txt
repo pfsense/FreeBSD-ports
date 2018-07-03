@@ -1,13 +1,11 @@
---- CMakeLists.txt.orig	2016-01-11 08:43:40.989031000 -0800
-+++ CMakeLists.txt	2016-01-11 08:44:16.000036000 -0800
-@@ -75,10 +75,6 @@
- # Depending on the platform, pass in the required defines.
- if (UNIX)
- 
--	# warnings as errors:
--	# we have a problem with people checking in code with warnings.
--	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wno-unused-local-typedef")
--
- 	if (NOT APPLE)
- 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
- 	endif()
+--- CMakeLists.txt.orig	2018-02-25 02:25:11 UTC
++++ CMakeLists.txt
+@@ -299,7 +299,7 @@ elseif (${CMAKE_SYSTEM_NAME} MATCHES "Da
+         ${OPENSSL_ROOT}/lib/libssl.a
+         ${OPENSSL_ROOT}/lib/libcrypto.a
+     )
+-elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
++elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux|.*BSD")
+     set (OPENSSL_LIBS ssl crypto)
+ else()
+     message (FATAL_ERROR "Couldn't find OpenSSL")

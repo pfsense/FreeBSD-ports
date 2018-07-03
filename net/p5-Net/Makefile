@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Net
-PORTVERSION=	3.08
+PORTVERSION=	3.11
 PORTEPOCH=	1
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
@@ -12,14 +12,13 @@ DISTNAME=	libnet-${PORTVERSION}
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 modules to access and use network protocols
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE_ART10=	${WRKSRC}/Artistic
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
 
-BUILD_DEPENDS=	p5-Socket>=2.016:net/p5-Socket
-RUN_DEPENDS:=	${BUILD_DEPENDS}
-
-OPTIONS_DEFINE=	IPV6 SASL SSL
-OPTIONS_DEFAULT=SASL
+OPTIONS_DEFINE=	SASL SSL
+OPTIONS_DEFAULT=SASL SSL
 SASL_DESC=	SASL auth for POP3 and SMTP support
 
 SASL_BUILD_DEPENDS=	p5-Authen-SASL>=0:security/p5-Authen-SASL
@@ -32,11 +31,4 @@ NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MIPV6} && ${PERL_LEVEL} < 502000
-BUILD_DEPENDS+=	p5-IO-Socket-IP>=0.20:net/p5-IO-Socket-IP
-RUN_DEPENDS+=	p5-IO-Socket-IP>=0.20:net/p5-IO-Socket-IP
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

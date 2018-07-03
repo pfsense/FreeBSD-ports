@@ -18,7 +18,7 @@ BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		cppunit-config:devel/cppunit \
 		dmake:devel/dmake \
 		${LOCALBASE}/bin/gperf:devel/gperf \
-		${LOCALBASE}/include/mdds/global.hpp:devel/mdds0 \
+		${LOCALBASE}/include/mdds-1.2/mdds/global.hpp:devel/mdds \
 		gpatch:devel/patch \
 		ucpp:devel/ucpp \
 		${LOCALBASE}/include/sane/sane.h:graphics/sane-backends \
@@ -30,94 +30,111 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libboost_date_time.so:devel/boost-libs \
 		libicutu.so:devel/icu \
 		liblangtag.so:devel/liblangtag \
-		liborcus-0.10.so:devel/liborcus \
+		libltdl.so:devel/libltdl \
+		liborcus-0.13.so:devel/liborcus \
+		libplds4.so:devel/nspr \
 		libcurl.so:ftp/curl \
 		libcairo.so:graphics/cairo \
 		libgraphite2.so:graphics/graphite2 \
 		liblcms2.so:graphics/lcms2 \
 		libcdr-0.1.so:graphics/libcdr01 \
+		libepoxy.so:graphics/libepoxy \
 		libetonyek-0.1.so:graphics/libetonyek01 \
 		libfreehand-0.1.so:graphics/libfreehand \
 		libgltf-0.0.so:graphics/libgltf \
 		libwpg-0.3.so:graphics/libwpg03 \
+		libzmf-0.0.so:graphics/libzmf \
 		libGeneratedSaxParser.so:graphics/opencollada \
 		libpng.so:graphics/png \
 		libpoppler.so:graphics/poppler \
 		libCoinMP.so:math/coinmp \
 		liblpsolve55.so:math/lp_solve \
 		libcmis-0.5.so:net/libcmis \
+		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
+		libharfbuzz-icu.so:print/harfbuzz-icu \
 		libmspub-0.1.so:print/libmspub01 \
 		libpagemaker-0.0.so:print/libpagemaker \
 		libnss3.so:security/nss \
+		libxmlsec1-nss.so:security/xmlsec1 \
 		libclucene-core.so:textproc/clucene \
 		libexpat.so:textproc/expat2 \
-		libhunspell-1.3.so:textproc/hunspell \
+		libhunspell-1.6.so:textproc/hunspell \
 		libhyphen.so:textproc/hyphen \
 		libabw-0.1.so:textproc/libabw \
 		libe-book-0.1.so:textproc/libe-book \
+		libepubgen-0.1.so:textproc/libepubgen \
 		libexttextcat-2.0.so:textproc/libexttextcat \
 		libmwaw-0.3.so:textproc/libmwaw03 \
 		libodfgen-0.1.so:textproc/libodfgen01 \
+		libqxp-0.0.so:textproc/libqxp \
 		librevenge-0.0.so:textproc/librevenge \
+		libstaroffice-0.0.so:textproc/libstaroffice \
 		libvisio-0.1.so:textproc/libvisio01 \
 		libwpd-0.10.so:textproc/libwpd010 \
 		libwps-0.4.so:textproc/libwps \
 		libxml2.so:textproc/libxml2 \
 		libxslt.so:textproc/libxslt \
 		libmythes-1.2.so:textproc/mythes \
+		libraptor2.so:textproc/raptor2 \
 		librdf.so:textproc/redland \
+		libfontconfig.so:x11-fonts/fontconfig \
 		libserf-1.so:www/serf
-RUN_DEPENDS=	${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
+RUN_DEPENDS=	xdg-open:devel/xdg-utils \
+		${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
 		${LOCALBASE}/share/fonts/Carlito/Carlito-Bold.ttf:x11-fonts/crosextrafonts-carlito-ttf \
 		${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu \
+		${LOCALBASE}/share/fonts/emojione-color-font-ttf/EmojiOneColor-SVGinOT.ttf:x11-fonts/emojione-color-font-ttf \
 		${LOCALBASE}/share/fonts/GentiumBasic/GenBasI.ttf:x11-fonts/gentium-basic \
 		${LOCALBASE}/share/fonts/Liberation/LiberationMono-Bold.ttf:x11-fonts/liberation-fonts-ttf \
 		${LOCALBASE}/share/fonts/LinLibertineG/LinLibertine_DR_G.ttf:x11-fonts/linuxlibertine-g
 
-DISTFILES+=	1f24ab1d39f4a51faf22244c94a6203f-xmlsec1-1.2.14.tar.gz:src \
-		4b87018f7fff1d054939d19920b751a0-collada2gltf-master-cb1d97788a.tar.bz2:src
+DISTFILES+=	4b87018f7fff1d054939d19920b751a0-collada2gltf-master-cb1d97788a.tar.bz2:src
+
+NOT_FOR_ARCHS=		aarch64 armv6 armv7
+NOT_FOR_ARCHS_REASON=	Unsupported host_cpu
 
 .if defined(PRERELEASE)
 MASTER_SITES+=	http://dev-builds.libreoffice.org/pre-releases/src/
 .endif
 
-CONFLICTS_INSTALL=	libreoffice4-4.*
-
 INSTALL_TARGET=	distro-pack-install
 WRKSRC=		${WRKDIR}/${PORTNAME}-${LOVERSION}
 
+SHEBANG_GLOB=	*.py
+
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	autoconf aclocal
 USE_GL=		gl glew glu
 USE_OPENLDAP=	yes
 USE_PERL5=	build
 USE_QT4=	# empty but required
-USE_XORG=	xaw xrandr
-USES=		bison compiler:c++11-lib cpe firebird gmake jpeg perl5 pkgconfig \
-		python shared-mime-info tar:xz
-WANT_GNOME=	yes
+USE_XORG=	ice sm x11 xaw xext xinerama xrandr xrender
+USES=		autoreconf:build bison compiler:c++14-lang cpe gmake jpeg \
+		perl5 pkgconfig python shebangfix shared-mime-info ssl tar:xz
 
-OPTIONS_DEFINE=	CUPS GNOME GTK2 GTK3 JAVA KDE4 MMEDIA PGSQL SDK SYSTRAY \
-		TEST VERBOSE WEBDAV
-OPTIONS_DEFAULT=	CUPS GTK2
+OPTIONS_DEFINE=	CUPS DOCS GNOME GTK2 GTK3 JAVA KDE4 MMEDIA PGSQL SDK SYSTRAY \
+		TEST WEBDAV
+OPTIONS_DEFAULT=	CUPS GTK2 MMEDIA
 
-JAVA_DESC=	Add Java support (XML filters, macros)
-MMEDIA_DESC=	Enable multimedia backend for impress
+GTK2_DESC=	GTK+ 2 GUI toolkit support
+GTK3_DESC=	GTK+ 3 GUI toolkit support (experimental)
+JAVA_DESC=	Add Java support (XML filters, macros, DB connections)
+MMEDIA_DESC=	Enable multimedia backend for Impress
 PGSQL_DESC=	Build with PostgreSQL-SDBC driver
 SDK_DESC=	Build with SDK
 SYSTRAY_DESC=	Enable systemtray quickstarter
 TEST_DESC=	Run all regression tests
-VERBOSE_DESC=	Increase build verbosity
-WEBDAV_DESC=	Enable webdav protocol
+WEBDAV_DESC=	Enable WebDAV protocol
 
 CUPS_CONFIGURE_ENABLE=	cups
 CUPS_LIB_DEPENDS=	libcups.so:print/cups
 
-GNOME_CONFIGURE_ENABLE=	dbus gconf lockdown
+DOCS_CONFIGURE_WITH=	help
+
+GNOME_CONFIGURE_ENABLE=	dbus dconf
 GNOME_IMPLIES=	GTK2
 GNOME_LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
-GNOME_USE=	GNOME=gconf2
+GNOME_USE=	GNOME=dconf
 
 GTK_USE_GNOME=	gtk-update-icon-cache
 GTK_USES=	desktop-file-utils
@@ -160,8 +177,10 @@ JAVA_DISTFILES=	17410483b5b5f267aa18b7e00b65e6e0-hsqldb_1_8_0.zip:src \
 		39bb3fcea1514f1369fcfc87542390fd-sacjava-1.3.zip:src \
 		3bdf40c0d199af31923e900d082ca2dd-libfonts-1.1.6.zip:src \
 		798b2ffdc8bcfe7bca2cf92b62caf685-rhino1_5R5.zip:src \
+		8249374c274932a21846fa7629c2aa9b-officeotron-0.7.4-master.jar:ext \
 		8ce2fcd72becf06c41f7201d15373ed9-librepository-1.1.6.zip:src \
 		97b2d4dba862397f446b217e2b623e71-libloader-1.1.6.zip:src \
+		a084cd548b586552cb7d3ee51f1af969-odfvalidator-1.1.8-incubating-SNAPSHOT-jar-with-dependencies.jar:ext \
 		ace6ab49184e329db254e454a010f56d-libxml-1.1.7.zip:src \
 		ba2930200c9f019c2d93a8c88c651a0f-flow-engine-0.9.4.zip:src \
 		d8bd5eed178db6e2b18eeed243f85aa8-flute-1.1.6.zip:src \
@@ -173,7 +192,7 @@ JAVA_VARS=	JAVA_BUILD=yes
 
 KDE4_CONFIGURE_ENABLE=	kde4
 KDE4_CONFIGURE_ENV=	KDE4DIR="${KDE_PREFIX}" \
-			QT4DIR="${QT_PREFIX}" \
+			QT4DIR="${PREFIX}" \
 			QT4INC="${QT_INCDIR}" \
 			QT4LIB="${QT_LIBDIR}"
 KDE4_USES=	kde:4
@@ -194,14 +213,12 @@ SDK_DISTFILES=	185d60944ea767075d27247c3162b3bc-unowinreg.dll:ext
 
 SYSTRAY_CONFIGURE_ENABLE=	systray
 
+TEST_ALL_TARGET_OFF=	build-nocheck
 TEST_CONFIGURE_ENABLE=	cve-tests
-
-VERBOSE_CONFIGURE_ON=	--enable-verbose
 
 WEBDAV_CONFIGURE_ENABLE=	neon
 WEBDAV_LIB_DEPENDS=	libneon.so:www/neon
 
-ACLOCAL_ARGS=	-I "${WRKSRC}/m4"
 CPPFLAGS+=	-isystem ${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
@@ -214,16 +231,13 @@ COLLADA_LIBS=	-L${LOCALBASE}/lib/opencollada \
 CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--disable-epm \
 		--disable-fetch-external \
-		--disable-gnome-vfs \
-		--disable-kde \
-		--disable-kdeab \
+		--disable-firebird-sdbc \
 		--disable-mergelibs \
 		--disable-online-update \
-		--disable-packagekit \
 		--enable-cairo-canvas \
-		--enable-graphite \
 		--enable-python=system \
 		--enable-release-build \
+		--disable-pdfium \
 		--exec-prefix=${PREFIX} \
 		--with-alloc=system \
 		--with-boost=${LOCALBASE} \
@@ -235,6 +249,7 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-gnu-patch=${LOCALBASE}/bin/gpatch \
 		--with-os-version=${OSVERSION} \
 		--with-parallelism=${MAKE_JOBS_NUMBER} \
+		--with-system-cppunit \
 		--with-system-curl \
 		--with-system-dicts \
 		--with-system-libs \
@@ -244,45 +259,50 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-system-zlib \
 		--with-vendor="FreeBSD ports" \
 		--without-fonts \
-		--without-myspell-dicts \
-		--without-system-npapi-headers
+		--without-myspell-dicts
 
 CONFIGURE_ENV=	DMAKE=${LOCALBASE}/bin/dmake \
-		FIREBIRD_CFLAGS="-isystem ${LOCALBASE}/include" \
-		FIREBIRD_LIBS="-L${LOCALBASE}/lib -lfbembed" \
 		GNUTAR="${TAR}" \
 		GPERF=${LOCALBASE}/bin/gperf \
+		ICU_CFLAGS="`icu-config --cflags`" \
+		ICU_LIBS="`icu-config --ldflags`" \
 		OPENCOLLADA_CFLAGS="${COLLADA_CFLAGS}" \
 		OPENCOLLADA_LIBS="${COLLADA_LIBS}" \
 		PYTHON_CFLAGS="`${PYTHON_VERSION}-config --cflags`" \
 		PYTHON_LIBS="`${PYTHON_VERSION}-config --libs`"
 
+MAKE_ARGS+=	TMPDIR=${WRKDIR}
 MAKE_ENV+=	CXXFLAGS_WARN="${CXXFLAGS_WARN}"
 MAKE_ENV+=	GNUSED=${LOCALBASE}/bin/gsed
-MAKE_ENV+=	DISPLAY= LANG=C LC_ALL=C
-
-_MAKE_JOBS=	#
+MAKE_ENV+=	DISPLAY=
+MAKE_ENV+=	verbose=1
 
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD
-.if ${COMPILER_FEATURES:Mlibstdc++}
-BROKEN=		Build with system libstdc++ is unsupported
-.endif
-
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	${LOCALBASE}/bin/flex:textproc/flex
-CONFIGURE_ENV+=	FLEX=${LOCALBASE}/bin/flex
+.if (${OSVERSION} >= 1200000 && ${OSVERSION} < 1200003) || \
+    (${OSVERSION} >= 1100500 && ${OSVERSION} < 1100501) || \
+    (${OSVERSION} >= 1100000 && ${OSVERSION} < 1100122) || \
+    ${OSVERSION} < 1003506
+EXTRA_PATCHES=	${PATCHDIR}/extrapatch-vcl_inc_unx_gtk_gtkinst.hxx \
+		${PATCHDIR}/extrapatch-vcl_unx_gtk_gtkinst.cxx
 .endif
 .endif # FreeBSD
 
 .if ${COMPILER_TYPE} == "clang"
 CXXFLAGS_WARN=	-Woverloaded-virtual -Wno-unused-parameter
-.if${COMPILER_VERSION} >= 36
+.if ${COMPILER_VERSION} >= 36
 CXXFLAGS_WARN+=	-Wno-unused-local-typedefs
 .endif
 .else
 CXXFLAGS_WARN=	-Wshadow -Woverloaded-virtual
+.endif
+
+post-patch:
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
+	    ${WRKSRC}/shell/source/unix/exec/shellexec.cxx
+.if ${COMPILER_FEATURES:Mlibstdc++}
+	${REINPLACE_CMD} -e 's/gb_CC/gb_CXX/' ${WRKSRC}/solenv/gbuild/platform/unxgcc.mk
 .endif
 
 pre-configure:
@@ -296,8 +316,8 @@ post-install:
 	${FIND} -s lib/libreoffice -type d -empty \
 	    -exec ${ECHO_CMD} "@dir {}" \; >> ${TMPPLIST}
 	@cd ${STAGEDIR}${PREFIX} && \
-	${FIND} -s bin etc lib man -not -type d >> ${TMPPLIST}
-.for subdir in application-registry applications icons mime mime-info mimelnk
+	${FIND} -s bin lib man -not -type d >> ${TMPPLIST}
+.for subdir in appdata application-registry applications bash-completion icons mime mime-info
 	@cd ${STAGEDIR}${PREFIX} && \
 	${FIND} -s share/${subdir} -not -type d >> ${TMPPLIST}
 .endfor
@@ -311,8 +331,8 @@ post-install-SDK-on:
 add-plist-gnome:
 .for subdir in gnome hicolor locolor
 	@${ECHO_CMD} "@rmtry share/icons/${subdir}/icon-theme.cache" >> ${TMPPLIST}
-	@${ECHO_CMD} "@exec ${LOCALBASE}/bin/gtk-update-icon-cache -q -f %D/share/icons/${subdir} 2>/dev/null || ${TRUE}" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec ${LOCALBASE}/bin/gtk-update-icon-cache -q -f %D/share/icons/${subdir} 2>/dev/null || ${TRUE}" >> ${TMPPLIST}
+	@${ECHO_CMD} "@postexec ${LOCALBASE}/bin/gtk-update-icon-cache -q -f %D/share/icons/${subdir} 2>/dev/null || ${TRUE}" >> ${TMPPLIST}
+	@${ECHO_CMD} "@postunexec ${LOCALBASE}/bin/gtk-update-icon-cache -q -f %D/share/icons/${subdir} 2>/dev/null || ${TRUE}" >> ${TMPPLIST}
 .endfor
 
 .include <bsd.port.post.mk>

@@ -2,104 +2,84 @@
 # $FreeBSD$
 
 PORTNAME=	plan9port
-PORTVERSION=	20140306
-PORTREVISION=	5
+PORTVERSION=	20180205
 CATEGORIES=	devel plan9
-MASTER_SITES=	https://plan9port.googlecode.com/files/
+DIST_SUBDIR=	plan9port
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Port of many Plan 9 programs to Unix-like operating systems
+MAINTAINER=	tobik@FreeBSD.org
+COMMENT=	Plan 9 from User Space
 
 LICENSE=	LUCENT
 LICENSE_NAME=	Lucent Public License Version 1.02
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN=		Unfetchable (google code has gone away)
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
 
-BROKEN_ia64=	does not install: cleanname not found
-BROKEN_sparc64=	does not install: cleanname not found
-
-RUN_DEPENDS=	rc:shells/rc
-
-USES=		perl5 shebangfix tar:tgz
-SHEBANG_LANG=	rc
-rc_OLD_CMD=	/bin/rc
-rc_CMD=		${LOCALBASE}/bin/rc
-SHEBANG_FILES=	acid/transcript \
-		acid/window \
-		mac/9term.app/Contents/MacOS/9term \
-		mac/Plumb.app/Contents/MacOS/plumb \
-		src/cmd/9660/mk9660.rc \
-		src/cmd/dict/egfix \
-		src/cmd/dict/egfix2 \
-		src/cmd/dict/gefix \
-		src/cmd/dict/getneeds \
-		src/cmd/lp/lpsend.rc \
-		src/cmd/map/map.rc \
-		src/cmd/map/mapdemo.rc \
-		src/cmd/spell/spell.rc \
-		src/cmd/upas/filterkit/pipefrom.sample \
-		unix/man/fixurls
+USES=		localbase:ldflags perl5 shebangfix
+USE_GITHUB=	yes
+GH_ACCOUNT=	9fans
+GH_TAGNAME=	4798a8a5560552480efde5fe8b1f7963a25a96d3
 USE_PERL5=	build
-USE_XORG=	x11 xt xi xaw
-WRKSRC=		${WRKDIR}/plan9
-PLIST=		${WRKDIR}/.PLIST
+USE_XORG=	x11 xt xext
+
+SHEBANG_GLOB=	*
+SHEBANG_LANG=	rc
+rc_OLD_CMD=	/bin/rc /usr/local/plan9/bin/rc
+rc_CMD=		${PREFIX}/plan9/bin/rc
+
 SUB_FILES=	pkg-message
-REINPLACE_ARGS=	-i ""		# necessary since installs via recursive copy
+SUB_LIST=	OPSYS=${OPSYS}
 
-PLAN9=		${PREFIX}/plan9
+OPTIONS_DEFINE=	DATA
+OPTIONS_DEFAULT=	DATA
+OPTIONS_SUB=	yes
 
-EMPTY_DIRS=	plan9/mail/queue \
-		plan9/log \
-		plan9/dist/debian \
-		plan9/dist/pkg \
-		plan9/dist/troff \
-		plan9/bin/lpbin
+DATA_DESC=	Install dictionary, thesaurus, and other data files
 
-post-extract:
-	${MV} ${WRKDIR}/plan9port ${WRKDIR}/plan9
+DATA_MASTER_SITES=	https://9fans.github.io/plan9port/dist/
+DATA_DISTFILES=		pgw.tar.bz2 roget.tar.bz2 scat.tgz
+
+post-extract-DATA-on:
+	@cd ${WRKSRC}/dict && ${TAR} -xf ${DISTDIR}/${DIST_SUBDIR}/pgw.tar.bz2
+	@cd ${WRKSRC}/dict && ${TAR} -xf ${DISTDIR}/${DIST_SUBDIR}/roget.tar.bz2
+	@cd ${WRKSRC}/sky && ${TAR} -xf ${DISTDIR}/${DIST_SUBDIR}/scat.tgz
 
 post-patch:
-	@${FIND} ${WRKSRC}/man -type f -regex ".*\.[0-9?]$\" \
-		| ${XARGS} ${REINPLACE_CMD} -e 's|\\\*9|${PLAN9}|'
-	@${REINPLACE_CMD} -e 's|X11=/usr/X11R6|X11=${LOCALBASE}|' \
-		${WRKSRC}/bin/9l ${WRKSRC}/src/cmd/devdraw/mkwsysrules.sh
 	@${REINPLACE_CMD} -e 's|\[5-9\]\.||' ${WRKSRC}/bin/9l
-	@${REINPLACE_CMD} -e 's|/lib/font/bit|${PLAN9}/font|' \
+	@${REINPLACE_CMD} -e 's|/lib/font/bit|${PREFIX}/plan9/font|' \
 		${WRKSRC}/src/cmd/acme/acme.c
+	@${REINPLACE_CMD} -e 's|#!/bin/rc|#!${PREFIX}/plan9/bin/rc|' \
+		${WRKSRC}/src/cmd/upas/ml/mlmgr.c \
+		${WRKSRC}/src/cmd/tcs/font/mkfile
+	@${REINPLACE_CMD} -e 's|ulong|u64int|' ${WRKSRC}/src/libmach/FreeBSD.c
+# Fix 9term: no ptys
 	@${SED} -e 's|util\.h|lib&|' ${WRKSRC}/src/cmd/9term/OpenBSD.c \
 		> ${WRKSRC}/src/cmd/9term/${OPSYS}.c
-	@${REINPLACE_CMD} -e 's|, swizz(void)|&, swizz8(void)|' \
-		${WRKSRC}/src/cmd/xd.c
-	@${REINPLACE_CMD} -e '/^cd $$PLAN9/d' ${WRKSRC}/lib/moveplan9.sh
+
+do-configure:
+	@${ECHO_CMD} 'CFLAGS="${CFLAGS}"' > ${WRKSRC}/LOCAL.config
+	@${ECHO_CMD} 'LDFLAGS="${LDFLAGS}"' >> ${WRKSRC}/LOCAL.config
 
 do-build:
-	cd ${WRKSRC} && CC9="${CC}" ./INSTALL
-
-# Dynamic PLIST sucks, but it's over 8K lines, which sucks even more :(
-post-build:
-	${RM} -rf `${FIND} ${WRKSRC}/dist -type f ! -regex ".*\.png"`
-	${RM} -rf `${FIND} ${WRKSRC} -name .hg -o -name .hgignore \
-		-o -name .hgtags -o -name .cvsignore`
-	@( cd ${WRKDIR} ; \
-	  ${FIND} plan9 -type f; \
-	  ${ECHO_CMD} "@dir(,,1777) plan9/news"; \
-	  for D in ${EMPTY_DIRS}; do \
-	    ${ECHO_CMD} "@dir $${D}"; \
-	  done; \
-	 ) | sed -e '/plan9\/bin\/auxstats/s|^|\@\(,kmem,2755\) |' > ${PLIST}
+	@cd ${WRKSRC} && ${SETENV} CC9=${CC} ./INSTALL -b
 
 do-install:
-	${CP} -a ${WRKSRC} ${STAGEDIR}${PREFIX}
+.for l in .cvsignore .hg .hgignore .hgtags .gitignore .gitkeep *.bak *.orig *.beforesubst .travis.yml
+	@${FIND} ${WRKSRC} -name "${l}" -delete
+.endfor
+	@cd ${WRKSRC} && ${SED} -i '' 's#/usr/local#${PREFIX}#' \
+		`${CAT} lib/moveplan9.files`
+	@${MKDIR} ${STAGEDIR}${PREFIX}/plan9
+	@cd ${WRKSRC} && ${PAX} -rw . ${STAGEDIR}${PREFIX}/plan9
+	@${RLN} ${STAGEDIR}${PREFIX}/plan9/bin/9 ${STAGEDIR}${PREFIX}/bin/9
 
 post-install:
-	cd ${STAGEDIR}${PLAN9} && ${SETENV} PLAN9=${PLAN9} \
-		PATH=${PATH}:${STAGEDIR}${PLAN9}/bin \
-			${SH} lib/moveplan9.sh ${WRKSRC}
-
-install-user:
-	@${MKDIR} ${HOME}/lib
-	${INSTALL_DATA} ${PLAN9}/plumb/initial.plumbing ${HOME}/lib/plumbing
+	@cd ${STAGEDIR}${PREFIX}/plan9 && \
+		for f in bin/* bin/disk/* bin/fossil/* bin/fs/* bin/venti/* src/cmd/devdraw/o.devdraw; do \
+			${STRIP_CMD} $$f > /dev/null 2>&1 || ${TRUE}; \
+		done
 
 .include <bsd.port.mk>

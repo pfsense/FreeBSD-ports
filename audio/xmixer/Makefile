@@ -12,7 +12,6 @@ COMMENT=	Audio mixer (gtk and Xlib) for X11R6
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-WANT_GNOME=	yes
 GNU_CONFIGURE=	yes
 ALL_TARGET=	${PROGRAMS}
 
@@ -26,7 +25,6 @@ OPTIONS_DEFINE=	GTK1
 .if ${PORT_OPTIONS:MGTK1}
 USE_GNOME+=	gtk12
 PROGRAMS=	xmixer xgmixer
-MLINKS+=	xmixer.1 xgmixer.1
 PLIST_FILES+=	bin/xgmixer
 .else
 USE_XORG=	x11 xt ice xaw

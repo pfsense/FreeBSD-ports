@@ -27,8 +27,6 @@ require_once('pfsense-utils.inc');
 require_once('globals.inc');
 require_once('services.inc');
 require_once('service-utils.inc');
-require_once('xmlrpc.inc');
-require_once('xmlrpc_client.inc');
 if (file_exists('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc')) {
 	require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include functions' not yet merged into pfSense
 }
@@ -201,13 +199,13 @@ function pfb_global() {
 
 	// cURL - system proxy server setttings, if configured
 	if (!empty($config['system']['proxyurl'])) {
-		$pfb['curl_defaults']['CURLOPT_PROXY']			= $config['system']['proxyurl'];
+		$pfb['curl_defaults'][CURLOPT_PROXY]			= $config['system']['proxyurl'];
 		if (!empty($config['system']['proxyport'])) {
-			$pfb['curl_defaults']['CURLOPT_PROXYPORT']	= $config['system']['proxyport'];
+			$pfb['curl_defaults'][CURLOPT_PROXYPORT]	= $config['system']['proxyport'];
 		}
 		if (!empty($config['system']['proxyuser']) && !empty($config['system']['proxypass'])) {
-			$pfb['curl_defaults']['CURLOPT_PROXYAUTH']	= 'CURLAUTH_ANY | CURLAUTH_ANYSAFE';
-			$pfb['curl_defaults']['CURLOPT_PROXYUSERPWD']	= "{$config['system']['proxyuser']}:{$config['system']['proxypass']}";
+			$pfb['curl_defaults'][CURLOPT_PROXYAUTH]	= 'CURLAUTH_ANY | CURLAUTH_ANYSAFE';
+			$pfb['curl_defaults'][CURLOPT_PROXYUSERPWD]	= "{$config['system']['proxyuser']}:{$config['system']['proxypass']}";
 		}
 	}
 
@@ -792,7 +790,7 @@ function pfb_create_dnsbl($mode) {
 								'local-port'		=> "{$port}",
 								'interface'		=> "{$pfb['dnsbl_iface']}",
 								'descr'			=> 'pfB DNSBL - DO NOT EDIT',
-								'associated-rule-id'	=> '',
+								'associated-rule-id'	=> 'pass',
 								'natreflection'		=> 'purenat'
 								);
 			}
@@ -934,9 +932,25 @@ EOF;
 
 		// Create DNSBL SSL certificate
 		if (!file_exists ("{$pfb['dnsbl_cert']}")) {
-			$log = "New DNSBL Cert Created.\n";
+			$log = "\nNew DNSBL cert created";
 			pfb_logger("{$log}", 1);
-			exec("/usr/bin/openssl req -new -x509 -keyout {$pfb['dnsbl_cert']} -out {$pfb['dnsbl_cert']} -days 3650 -nodes");
+
+			$dn = array (	'countryName'		=> 'CA',
+					'stateOrProvinceName'	=> 'ST_DNSBL',
+					'localityName'		=> 'LN_DNSBL',
+					'organizationName'	=> 'ON_DNSBL',
+					'organizationalUnitName'=> 'OU_DNSBL',
+					'commonName'		=> 'CN_DNSBL',
+					'emailAddress'		=> 'dnsbl@example.com'
+					);
+
+			$pkey	= openssl_pkey_new();
+			$csr	= openssl_csr_new($dn, $pkey);
+			$cert	= openssl_csr_sign($csr, NULL, $pkey, 3650);
+
+			openssl_pkey_export($pkey, $privatekey);
+			openssl_x509_export($cert, $publickey);
+			@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
 		}
 
 		if ($pfbupdate || !is_service_running('dnsbl')) {
@@ -968,7 +982,7 @@ function pfb_unbound_dnsbl($mode) {
 	$config = parse_config(true);
 
 	$pfbupdate = FALSE;
-	$unbound_include = "server:include: {$pfb['dnsbl_file']}.conf";
+	$unbound_include = "server:include: {$pfb['dnsbl_file']}.*conf";
 
 	// Collect Unbound custom option pfSense conf line
 	$pfb['unboundconfig']	= &$config['unbound']['custom_options'];
@@ -981,7 +995,7 @@ function pfb_unbound_dnsbl($mode) {
 	// Determine if DNSBL include line exists
 	if (!empty($unbound_custom)) {
 		// Append DNSBL Unbound pfSense conf integration
-		if (!strstr($unbound_custom, 'pfb_dnsbl.conf')) {
+		if (!strstr($unbound_custom, 'pfb_dnsbl.*conf')) {
 			if ($mode == 'enabled') {
 				$pfbupdate = TRUE;
 				$unbound_custom .= "\n{$unbound_include}";
@@ -993,7 +1007,7 @@ function pfb_unbound_dnsbl($mode) {
 			if ($mode == 'disabled') {
 				$custom = explode ("\n", $unbound_custom);
 				foreach ($custom as $key => $line) {
-					if (strpos($line, 'pfb_dnsbl.conf') !== FALSE) {
+					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
 						$pfbupdate = TRUE;
 						$log = "\nDNSBL - Removing DNSBL Unbound custom options\n";
 						unset($custom[$key]);
@@ -1011,6 +1025,17 @@ function pfb_unbound_dnsbl($mode) {
 			$log = "\nDNSBL - Adding Unbound custom 'include' option\n";
 		}
 	}
+
+	// Remove the old include line, see Bug #6603
+	$custom = explode ("\n", $unbound_custom);
+	foreach ($custom as $key => $line) {
+		if (strpos($line, 'pfb_dnsbl.conf') !== FALSE) {
+			$pfbupdate = TRUE;
+			$log .= "\nDNSBL - Removing previous Unbound custom option\n";
+			unset($custom[$key]);
+		}
+	}
+	$unbound_custom = implode("\n", $custom);
 
 	// Update config.xml, if changes required
 	if ($pfbupdate) {
@@ -1812,6 +1837,11 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 		}
 	}
 
+	// '304 not modified' - Utilize previously downloaded file if available
+	if ($http_status == '304' && file_exists("{$file_dwn}.orig")) {
+		return TRUE;
+	}
+	
 	if ($http_status == '200 OK') {
 		// Collect file mime-type
 		$file_type = exec("/usr/bin/file -b --mime-type {$file_dwn}.raw");
@@ -2311,7 +2341,6 @@ function pfb_aliastables($mode) {
 
 	// Only execute function if platform is NanoBSD or Ramdisks are used.
 	if (($g['platform'] != 'pfSense') || isset($config['system']['use_mfs_tmpvar'])) {
-		conf_mount_rw();
 		if ($mode == 'update') {
 			// Archive aliastable folder
 			pfb_logger("\n\nArchiving Aliastable folder\n", 1);
@@ -2350,14 +2379,11 @@ function pfb_aliastables($mode) {
 				$msg = "\n** Adding earlyshellcmd **\n";
 			}
 		}
-		conf_mount_ro();
 	}
 	else {
 		if (file_exists("{$pfb['aliasarchive']}")) {
 			// Remove aliastables archive if found.
-			conf_mount_rw();
 			@unlink_if_exists("{$pfb['aliasarchive']}");
-			conf_mount_ro();
 		}
 		// Remove earlyshellcmd if found.
 		if (isset($config['system']['earlyshellcmd'])) {
@@ -2453,11 +2479,12 @@ function pfb_livetail($logfile, $mode) {
 			else {
 				// DNSBL Lighttpd 'dnsbl_error.log' conditional log parser
 				while (($pfb_buffer = @fgets($f, 1024)) !== FALSE) {
-					if (strpos($pfb_buffer, 'HTTPhost') !== FALSE) {
+					if (strpos($pfb_buffer, 'SERVERsocket') !== FALSE) {
 						$checkpos = 0;
 					}
 
-					if ($checkpos == 3 && strpos($pfb_buffer, 'HTTP["host"]') !== FALSE) {
+					if ($checkpos == 2 && strpos($pfb_buffer, 'HTTP["host"]') !== FALSE) {
+
 						$line = strstr($pfb_buffer, ' ) compare', TRUE);
 						$line = ltrim(strstr($line, '] ( ', FALSE), '] ( ');
 						if (!empty($line)) {
@@ -2469,24 +2496,32 @@ function pfb_livetail($logfile, $mode) {
 							exec("/usr/bin/grep -l ' \"{$query} 60 IN A' {$pfb['dnsalias']}/*", $match);
 							$pfb_query = strstr($match[0], 'DNSBL', FALSE);
 
+							// Increment DNSBL Alias counter
 							if (!empty($pfb_query)) {
-								// Increment DNSBL Alias counter
-								if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
-									@flock($handle, LOCK_EX);
-									$pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w');
-									@flock($pfb_output, LOCK_EX);
+								$pfb_found = FALSE;
 
-									// Find line with corresponding DNSBL Aliasname
-									while (($line = @fgetcsv($handle)) !== FALSE) {
-										if ($line[0] == $pfb_query) {
-											$line[3] += 1;
+								$lock_handle = @try_lock("dnsbl_info", 5);
+								if ($lock_handle) {
+									if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
+										if (($pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w')) !== FALSE) {
+											$pfb_found = TRUE;
+
+											// Find line with corresponding DNSBL Aliasname
+											while (($line = @fgetcsv($handle)) !== FALSE) {
+												if ($line[0] == $pfb_query) {
+														$line[3] += 1;
+												}
+												@fputcsv($pfb_output, $line);
+											}
+											@fclose($pfb_output);
 										}
-										@fputcsv($pfb_output, $line);
+										@fclose($handle);
 									}
 
-									@fclose($pfb_output);
-									@fclose($handle);
-									@rename ("{$pfb['dnsbl_info']}.bk", "{$pfb['dnsbl_info']}");
+									if ($pfb_found) {
+										@rename ("{$pfb['dnsbl_info']}.bk", "{$pfb['dnsbl_info']}");
+									}
+									@unlock($lock_handle);
 								}
 							}
 						}
@@ -3336,8 +3371,8 @@ function sync_package_pfblockerng($cron='') {
 
 										// On 'category match', parse EasyList feed 
 										if (isset($easylist)) {
-											if (substr($line, 24, 19) == 'easylist_adservers.' ||
-											    substr($line, 91, 28) == 'easyprivacy_trackingservers.') {
+											if (strpos($line, 'easylist_adservers.') !== FALSE ||
+											    strpos($line, 'easyprivacy_trackingservers.') !== FALSE) {
 												$e_found = TRUE;
 											}
 										}
@@ -3466,38 +3501,37 @@ function sync_package_pfblockerng($cron='') {
 										$line = trim($line);
 
 										// Parser for EasyList, enable collect of selected EasyList categories
-										if (isset($easylist) && (strpos($line, '! *** easylist:') !== FALSE) ||
-										    strpos($line, '! *** Fetched from:') !== FALSE) {
+										if (isset($easylist) && strpos($line, '! ***') !== FALSE) {
 											// Skip all previous Easylist entries
 
 											// Collect EasyList feed
-											if (substr($line, 24, 19) == 'easylist_adservers.') {
+											if (strpos($line, 'easylist_adservers.') !== FALSE) {
 												if (in_array('ea', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 24, 25) == 'easylist_adservers_popup.') {
+											elseif (strpos($line, 'easylist_adservers_popup.') !== FALSE) {
 												if (in_array('eap', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 30, 16) == 'adult_adservers.') {
+											elseif (strpos($line, 'adult_adservers.') !== FALSE) {
 												if (in_array('aa', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 30, 22) == 'adult_adservers_popup.') {
+											elseif (strpos($line, 'adult_adservers_popup.') !== FALSE) {
 												if (in_array('aap', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
 
 											// Collect EasyPrivacy feed
-											elseif (substr($line, 91, 28) == 'easyprivacy_trackingservers.') {
+											elseif (strpos($line, 'easyprivacy_trackingservers.') !== FALSE) {
 												if (in_array('epts', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 91, 42) == 'easyprivacy_trackingservers_international.') {
+											elseif (strpos($line, 'easyprivacy_trackingservers_international.') !== FALSE) {
 												if (in_array('epti', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
 
 											// End of useable EasyList feed
-											elseif (substr($line, 24, 20) == 'easylist_thirdparty.') {
+											elseif (strpos($line, 'easylist_thirdparty.') !== FALSE) {
 												break;
 											}
 											// End of useable EasyPrivacy feed
-											elseif (substr($line, 91, 23) == 'easyprivacy_thirdparty.') {
+											elseif (strpos($line, 'easyprivacy_thirdparty.') !== FALSE) {
 												break;
 											}
 										}
@@ -3801,13 +3835,13 @@ function sync_package_pfblockerng($cron='') {
 		}
 
 		// Add 'include:' line in Unbound conf file if not found
-		if (isset($conf) && !strstr(implode($conf), 'pfb_dnsbl.conf')) {
+		if (isset($conf) && !strstr(implode($conf), 'pfb_dnsbl.*conf')) {
 			if (file_exists("{$pfb['dnsbl_file']}.conf")) {
 				$log = "\nAdding Unbound Server:Include line...";
 				pfb_logger("{$log}", 1);
 
 				$pfbupdate = TRUE;
-				$conf[] = "# Unbound custom options\n\nserver:include: {$pfb['dnsbl_file']}.conf\n";
+				$conf[] = "# Unbound custom options\n\nserver:include: {$pfb['dnsbl_file']}.*conf\n";
 				@file_put_contents("{$pfb['dnsbldir']}/unbound.tmp", $conf, LOCK_EX);
 			}
 		}
@@ -3824,10 +3858,10 @@ function sync_package_pfblockerng($cron='') {
 		// When DNSBL is disabled and not during an installation.
 		if ($pfb['dnsbl'] == '' && !$pfb['install']) {
 			// Remove 'Unbound' conf integration
-			if (isset($conf) && stripos(implode($conf), 'pfb_dnsbl.conf') !== FALSE) {
+			if (isset($conf) && stripos(implode($conf), 'pfb_dnsbl.*conf') !== FALSE) {
 				$pfbupdate = FALSE;
 				foreach ($conf as $key => $line) {
-					if (strpos($line, 'pfb_dnsbl.conf') !== FALSE) {
+					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
 						$pfbupdate = TRUE;
 						unset ($conf[$key]);
 					}
@@ -4023,7 +4057,7 @@ function sync_package_pfblockerng($cron='') {
 
 	// IPv4 REGEX Definitions
 	$pfb['range']	= '/((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))-((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))/';
-	$pfb['ipv4']	= '/(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\/(3[012]|[12]?[0-9]))?/';
+	$pfb['ipv4']	= '/(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)((\/(3[012]|[12]?[0-9]))?(?![-0-9a-zA-Z]))/';
 
 	// IPv6 REGEX Definitions - Reference: http://labs.spritelink.net/regex
 	$pfb['ipv6'] = '/((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?(\/[0-9][0-9]?|1([01][0-9]|2[0-8]))?/';
@@ -4693,7 +4727,7 @@ function sync_package_pfblockerng($cron='') {
 								// Floating rules 'off'. Collect 'floating other', pass, balance to 'other'
 								if ($rule['floating'] == 'yes') {
 									$fother_rules[] = $rule;
-								} elseif ($rule['type'] == 'pass') {
+								} elseif ($rule['type'] == 'pass' || isset($rule['associated-rule-id'])) {
 									if ($pfb['order'] == 'order_0') {
 										$other_rules[] = $rule;
 									} else {
@@ -5053,10 +5087,14 @@ function sync_package_pfblockerng($cron='') {
 		pfb_logger("{$log}", 1);
 
 		$tablesin = $tablesout = array();
-		// Collect all 'pfB_' Rules that are 'Block/Reject' and do not have bypass states enabled
+		// Collect all 'pfB_' and 'pfb_' rules that are 'Block/Reject' and do not have bypass states enabled
 		if (isset($config['aliases']['alias'])) {
 			foreach ($config['aliases']['alias'] as $alias) {
-				if ($alias['type'] == 'urltable' && strpos($alias['name'], 'pfB_') !== FALSE && strpos($alias['descr'], '[s]') === FALSE) {
+				
+                                if ($alias['type'] == 'urltable' &&
+                                    (strpos($alias['name'], 'pfB_') !== FALSE || strpos($alias['name'], 'pfb_') !== FALSE) &&
+                                    strpos($alias['descr'], '[s]') === FALSE) {
+					
 					if (isset($config['filter']['rule'])) {
 						foreach ($config['filter']['rule'] as $rule) {
 							if ($alias['name'] === $rule['source']['address'] || $alias['name'] === $rule['destination']['address']) {
@@ -5492,11 +5530,12 @@ function pfblockerng_sync_on_changes() {
 		if ($pfb_sync['varsynconchanges'] == 'disabled' || empty($pfb_sync['varsynconchanges'])) {
 			return;
 		}
-		$synctimeout = $pfb_sync['varsynctimeout'] ?: '150';
+		$synctimeout = $pfb_sync['varsynctimeout'] ?: 150;
 	} else {
 		return;
 	}
 
+	pfb_logger("\n===[  XMLRPC Sync ]===================================================\n", 1);
 	syslog(LOG_NOTICE, '[pfBlockerNG] XMLRPC sync is starting.');
 
 	if (isset($config['installedpackages']['pfblockerngsync']['config'])) {
@@ -5568,17 +5607,24 @@ function pfblockerng_sync_on_changes() {
 					}
 
 					if ($validate) {
-						pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
+						pfb_logger("\n Sync with [ {$protocol}://{$sync_to_ip}:{$port} ] ...", 1);
+						$success = pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
+
 						if ($success) {
+							pfb_logger(" done.\n", 1);
 							syslog(LOG_NOTICE, "[pfBlockerNG] XMLRPC sync to [ {$sync_to_ip}:{port} ] completed successfully.");
+						} else {
+							pfb_logger(" Failed!\n", 1);
 						}
 					} else {
+						pfb_logger(" terminated due to the following error(s): {$error}", 1);
 						log_error("[pfBlockerNG] XMLRPC sync to [ {$sync_to_ip}:{port} ] terminated due to the following error(s): {$error}");
 					}
 				}
 			}
 		}
 	}
+	pfb_logger("\n======================================================================\n", 1);
 }
 
 
@@ -5590,18 +5636,19 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 	// Take care of IPv6 literal address
 	if (is_ipaddrv6($sync_to_ip)) {
 		$sync_to_ip = "[{$sync_to_ip}]";
- 	}
-
-	$url = "{$protocol}://{$sync_to_ip}";
+	}
 
 	/* xml will hold the sections to sync */
 	$xml = array();
+
 	// If User Disabled, remove 'General Tab Customizations' from Sync
-	if (!isset($config['installedpackages']['pfblockerngsync']['config'][0]['syncinterfaces'])) {
-		if (isset($config['installedpackages']['pfblockerng']))
+	if ($config['installedpackages']['pfblockerngsync']['config'][0]['syncinterfaces'] != 'on') {
+		if (isset($config['installedpackages']['pfblockerng'])) {
 			$xml['pfblockerng']		= $config['installedpackages']['pfblockerng'];
-		if (isset($config['installedpackages']['pfblockerngdnsblsettings']))
+		}
+		if (isset($config['installedpackages']['pfblockerngdnsblsettings'])) {
 			$xml['pfblockerngdnsblsettings']= $config['installedpackages']['pfblockerngdnsblsettings'];
+		}
 	}
 
 	if (isset($config['installedpackages']['pfblockerngreputation']))
@@ -5633,32 +5680,62 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 	if (isset($config['installedpackages']['pfblockerngdnsbl']))
 		$xml['pfblockerngdnsbl']		= $config['installedpackages']['pfblockerngdnsbl'];
 
-	/* assemble xmlrpc payload */
-	$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
+	// Execute applicable XMLRPC code as per pfSense version
+	if (substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.4') {
 
-	/* set a few variables needed for sync code borrowed from filter.inc */
-	$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	if ($g['debug']) {
-		$cli->setDebug(1);
-	}
+		require_once('xmlrpc.inc');
+		require_once('xmlrpc_client.inc');
 
-	/* send our XMLRPC message and timeout after defined sync timeout value */
-	$resp = $cli->send($msg, $synctimeout);
+		$url = "{$protocol}://{$sync_to_ip}";
 
-	if (!$resp) {
-		log_error("[pfBlockerNG] XMLRPC communications error occurred while attempting sync with {$url}:{$port}.");
-		file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
-		$success = FALSE;
-	} elseif ($resp->faultCode()) {
-		$cli->setDebug(1);
+		/* assemble xmlrpc payload */
+		$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
+
+		/* set a few variables needed for sync code borrowed from filter.inc */
+		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
+		$msg = new XML_RPC_Message($method, $params);
+		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+		$cli->setCredentials($username, $password);
+		if ($g['debug']) {
+			$cli->setDebug(1);
+		}
+
+		/* send our XMLRPC message and timeout after defined sync timeout value */
 		$resp = $cli->send($msg, $synctimeout);
-		log_error("[pfBlockerNG] XMLRPC Error received while attempting sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString());
-		file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
-		$success = FALSE;
+
+		if (!$resp) {
+			log_error("[pfBlockerNG] XMLRPC communications error occurred while attempting sync with {$url}:{$port}.");
+			file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
+			$success = FALSE;
+		} elseif ($resp->faultCode()) {
+			$cli->setDebug(1);
+			$resp = $cli->send($msg, $synctimeout);
+			log_error("[pfBlockerNG] XMLRPC errors syncing with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString());
+			file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
+			$success = FALSE;
+		}
+		return $success;
 	}
-	return $success;
+	else {
+		require_once('xmlrpc_client.inc');
+
+		// xmlrpc cannot encode NULL objects/arrays
+		foreach ($xml as $xmlkey => $xmlvalue) {
+			if (gettype($xmlvalue) == 'NULL') {
+				$xml[$xmlkey] = array();
+			}
+		}
+
+		$synctimeout = intval($synctimeout);
+		$rpc_client = new pfsense_xmlrpc_client();
+		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+
+		if (!isset($resp)) {
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
 }
 ?>

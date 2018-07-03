@@ -3,10 +3,11 @@
 
 PORTNAME=	papi
 PORTVERSION=	5.4.3
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	http://icl.cs.utk.edu/projects/papi/downloads/
 
-MAINTAINER=	luca.pizzamiglio@gmail.com
+MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	API to access the performance counter hw in the microprocessor
 
 LICENSE=	BSD3CLAUSE
@@ -21,8 +22,9 @@ NO_PACKAGE=	Needs to be compiled for specific CPU
 
 STRIP=		# empty
 USE_LDCONFIG=	yes
-BUILD_DEPENDS+=	mpicc:net/mpich2
-USES=		fortran gmake pkgconfig
+LIB_DEPENDS+=	libopa.so:net/mpich2
+USES=		fortran gmake pathfix pkgconfig
+PATHFIX_MAKEFILEIN=	Makefile.inc
 GNU_CONFIGURE=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
 WRKMAN=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/man

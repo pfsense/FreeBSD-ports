@@ -12,7 +12,7 @@ LICENSE_FILE=	${PANDORA_LICENSE_FILE}
 
 RUN_DEPENDS=	${LOCALBASE}/bin/twopi:graphics/graphviz
 
-USES=		shebangfix
+USES=		apache:run,2.2+ shebangfix
 SHEBANG_FILES=	include/languages/extract_newlines.sh \
 		include/languages/util-all \
 		include/languages/util-bzr-update \
@@ -30,7 +30,6 @@ PGSQL_DESC=	Use PostgreSQL backend (experimental)
 USE_PHP=	curl filter gd gettext hash json ldap mbstring mysql \
 		snmp session xml zip zlib
 WANT_PHP_WEB=	yes
-USE_APACHE_RUN=	22+
 
 SUB_FILES+=	pandora_console.conf pkg-message newsyslog.conf
 SUB_LIST+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
@@ -56,7 +55,7 @@ post-patch:
 
 post-install:
 	@cd ${STAGEDIR}${WWWDIR} \
-		&& ${RM} -rf pandora_console_[il]* DEBIAN/ *.spec \
+		&& ${RM} -r pandora_console_[il]* DEBIAN/ *.spec \
 			attachment/downloads/.gitignore ${PORTDOCS} \
 			Dockerfile docker_entrypoint.sh \
 			*.sql.bak extras/check_other_languages.sh.bak

@@ -2,6 +2,7 @@
 
 PORTNAME=	xmlpatterns
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	textproc
 PKGNAMEPREFIX=	qt5-
 
@@ -12,7 +13,7 @@ BROKEN_powerpc64=	Does not build
 
 USE_QT5=	core network buildtools_build
 QT_DIST=	${PORTNAME}
-USES=		qmake
+USES=		qmake:norecursive
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.mk>

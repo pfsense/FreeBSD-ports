@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	ngircd
-PORTVERSION=	23
-PORTREVISION=	1
+PORTVERSION=	24
 PORTEPOCH=	1
 CATEGORIES=	irc ipv6
 MASTER_SITES=	http://arthur.barton.de/pub/${PORTNAME}/ \
 		http://ngircd.mirror.3rz.org/pub/${PORTNAME}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fgsch@lodoss.net
 COMMENT=	Free open source daemon for Internet Relay Chat (IRC)
 
 LICENSE=	GPLv2
@@ -49,7 +48,7 @@ IPV6_CONFIGURE_ENABLE=		ipv6
 IRCPLUS_DESC=			IRC+ protocol
 IRCPLUS_CONFIGURE_ENABLE=	ircplus
 LIBWRAP_CONFIGURE_WITH=		tcp-wrappers
-OPENSSL_USE=			openssl=yes
+OPENSSL_USES=			ssl
 OPENSSL_CONFIGURE_WITH=		openssl
 SNIFFER_DESC=			IRC traffic sniffer
 SNIFFER_CONFIGURE_ENABLE=	sniffer

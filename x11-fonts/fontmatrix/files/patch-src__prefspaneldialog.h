@@ -1,5 +1,5 @@
---- ./src/prefspaneldialog.h.orig	2008-04-06 13:47:45.000000000 +0400
-+++ ./src/prefspaneldialog.h	2008-04-07 01:12:12.000000000 +0400
+--- src/prefspaneldialog.h.orig	2009-07-03 15:17:39 UTC
++++ src/prefspaneldialog.h
 @@ -12,7 +12,7 @@
  #ifndef PREFSPANELDIALOG_H
  #define PREFSPANELDIALOG_H
@@ -8,4 +8,4 @@
 +#include <QDialog>
  #include <ui_prefs_panel.h>
  
- 
+ class QStandardItemModel;

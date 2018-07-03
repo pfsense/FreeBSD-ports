@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	wings
-PORTVERSION=	1.4.1
-PORTREVISION=	6
+PORTVERSION=	1.5.4
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 DIST_SUBDIR=	erlang
@@ -17,12 +17,14 @@ LICENSE_FILE=	${WRKSRC}/license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	erl:lang/erlang \
-		erlang-esdl>0:devel/erlang-esdl
+		erlang-esdl>0:devel/erlang-esdl \
+		erlang-cl>0:devel/erlang-cl
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 MAKE_ENV=	ESDL_PATH=${LOCALBASE}/lib/erlang/lib/esdl
 PLIST_SUB=	VERSION="${PORTVERSION}"
 MAKE_JOBS_UNSAFE=yes
+USE_GL=		gl glu
 
 SUB_FILES=	${PORTNAME}.sh
 
@@ -40,7 +42,12 @@ DESKTOP_ENTRIES="Wings" \
 post-patch:
 	@${REINPLACE_CMD} -e 's|$$(GCC)|${CC} -I${LOCALBASE}/include -L${LOCALBASE}/lib|g' \
 		${WRKSRC}/plugins_src/accel/Makefile
-	@${FIND} ${WRKSRC} -name "*.orig" -delete
+	@${REINPLACE_CMD} -e 's|random:|rand:|' \
+		${WRKSRC}/src/wings_deform.erl \
+		${WRKSRC}/src/wings_sel_cmd.erl \
+		${WRKSRC}/e3d/e3d_util.erl \
+		${WRKSRC}/plugins_src/autouv/auv_mapping.erl
+#	@${FIND} ${WRKSRC} -name "*.orig" -delete
 
 do-install:
 	cd ${WRKSRC} && ${COPYTREE_SHARE} "src ebin fonts plugins textures shaders patches" \

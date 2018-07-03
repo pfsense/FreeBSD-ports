@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	sumbur
-PORTVERSION=	0.1.2
+PORTVERSION=	0.1.2.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Consistent spreading for server balancing
+
+LICENSE=	MIT
 
 USE_RUBY=	yes
 USES=		gem

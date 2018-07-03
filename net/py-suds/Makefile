@@ -3,7 +3,7 @@
 
 PORTNAME=	suds
 PORTVERSION=	0.4
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,9 @@ COMMENT=	SOAP implementation
 
 LICENSE=	LGPL3
 
-USES=		python:2
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}suds-jurko-*
+
+USES=		python:2.7
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

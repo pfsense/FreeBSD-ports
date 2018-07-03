@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=		dojo
-PORTVERSION=		1.11.1
+PORTVERSION=		1.12.2
 CATEGORIES=		www
 MASTER_SITES=		http://download.dojotoolkit.org/release-${PORTVERSION}/
 DISTNAME=		dojo-release-${PORTVERSION}
@@ -19,7 +19,7 @@ OPTIONS_SUB=		yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MAPACHE}
-USE_APACHE_RUN=		22+
+USES=			apache:run,2.2+
 CONFDIR=		${PREFIX}/${CONFDIR_REL}
 CONFDIR_REL=		${APACHEETCDIR}/Includes
 PLIST_SUB+=		CONFDIR=${CONFDIR_REL}

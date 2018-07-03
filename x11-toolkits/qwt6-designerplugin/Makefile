@@ -1,13 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	qwt
-PORTVERSION=	6.1.0
-PORTREVISION=	1
+PORTVERSION=	6.1.3
 CATEGORIES=	x11-toolkits devel
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	6-designerplugin
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt Designer plugin for Qwt
 
 LIB_DEPENDS=	libqwt6.so:x11-toolkits/qwt6

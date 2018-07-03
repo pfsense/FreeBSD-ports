@@ -2,19 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	jsond
-PORTVERSION=	1.3.0
-PORTREVISION=	1
+DISTVERSION=	1.4.0
 CATEGORIES=	devel
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	JavaScript Object Notation in PHP
 
 LICENSE=	PHP301
 
-USES=		php:ext tar:tgz
-IGNORE_WITH_PHP=	70
+USES=		php:pecl
 
 .include <bsd.port.mk>

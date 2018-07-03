@@ -3,18 +3,18 @@
 
 PORTNAME=	tags
 DISTVERSION=	0.7.r${SVN_REV}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www devel python
 MASTER_SITES=	LOCAL/brooks
 PKGNAMEPREFIX=	trac-
 DIST_SUBDIR=	trac
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Generic tags frontend for trac
 
 RUN_DEPENDS=	tracd:www/trac
 
-USES=		python:2 tar:bzip2
+USES=		python:2.7 tar:bzip2
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 
@@ -22,7 +22,6 @@ NO_ARCH=	yes
 
 .if !defined(SVN_REV)
 .if defined(BOOTSTRAP)
-LANG=		"C"
 SVN_REV!=	svn info http://trac-hacks.org/svn/tagsplugin/trunk/ | ${GREP} Revision | cut -d' ' -f2
 .else
 .include "Makefile.svn_rev"

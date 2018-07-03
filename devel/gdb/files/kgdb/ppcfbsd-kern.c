@@ -27,24 +27,21 @@
 #include <sys/cdefs.h>
 __FBSDID("$FreeBSD$");
 
-#include <sys/types.h>
-#ifdef __powerpc__
-#include <machine/pcb.h>
-#include <machine/frame.h>
-#endif
-#include <string.h>
-
-#include <defs.h>
-#include <frame-unwind.h>
+#include "defs.h"
+#include "frame-unwind.h"
 #include "gdbcore.h"
 #include "osabi.h"
 #include "regcache.h"
 #include "solib.h"
 #include "symtab.h"
 #include "trad-frame.h"
-
-#include <ppc-tdep.h>
+#include "ppc-tdep.h"
 #include "ppc64-tdep.h"
+
+#ifdef __powerpc__
+#include <machine/pcb.h>
+#include <machine/frame.h>
+#endif
 
 #include "kgdb.h"
 
@@ -56,29 +53,29 @@ ppcfbsd_supply_pcb(struct regcache *regcache, CORE_ADDR pcb_addr)
 	struct gdbarch_tdep *tdep;
 	int i;
 
-	tdep = gdbarch_tdep (target_gdbarch());
+	tdep = gdbarch_tdep (regcache->arch ());
 
-	if (target_read_memory(pcb_addr, &pcb, sizeof(pcb)) != 0)
+	if (target_read_memory(pcb_addr, (gdb_byte *)&pcb, sizeof(pcb)) != 0)
 		memset(&pcb, 0, sizeof(pcb));
 
 	/*
 	 * r14-r31 are saved in the pcb
 	 */
 	for (i = 14; i <= 31; i++) {
-		regcache_raw_supply(regcache, tdep->ppc_gp0_regnum + i,
+		regcache->raw_supply(tdep->ppc_gp0_regnum + i,
 		    (char *)&pcb.pcb_context[i]);
 	}
 
 	/* r1 is saved in the sp field */
-	regcache_raw_supply(regcache, tdep->ppc_gp0_regnum + 1,
+	regcache->raw_supply(tdep->ppc_gp0_regnum + 1,
 			    (char *)&pcb.pcb_sp);
 	if (tdep->wordsize == 8)
 	  /* r2 is saved in the toc field */
-	  regcache_raw_supply(regcache, tdep->ppc_gp0_regnum + 2,
+	  regcache->raw_supply(tdep->ppc_gp0_regnum + 2,
 			      (char *)&pcb.pcb_toc);
 
-	regcache_raw_supply(regcache, tdep->ppc_lr_regnum, (char *)&pcb.pcb_lr);
-	regcache_raw_supply(regcache, tdep->ppc_cr_regnum, (char *)&pcb.pcb_cr);
+	regcache->raw_supply(tdep->ppc_lr_regnum, (char *)&pcb.pcb_lr);
+	regcache->raw_supply(tdep->ppc_cr_regnum, (char *)&pcb.pcb_cr);
 }
 #endif
 
@@ -118,7 +115,7 @@ ppcfbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
   int i, regnum;
 
   if (*this_cache)
-    return *this_cache;
+    return (struct trad_frame_cache *)*this_cache;
 
   cache = trad_frame_cache_zalloc (this_frame);
   *this_cache = cache;
@@ -232,8 +229,6 @@ ppcfbsd_kernel_init_abi(struct gdbarch_info info, struct gdbarch *gdbarch)
     }
 }
 
-void _initialize_ppc_kgdb_tdep(void);
-
 void
 _initialize_ppc_kgdb_tdep(void)
 {
@@ -241,14 +236,14 @@ _initialize_ppc_kgdb_tdep(void)
 				       bfd_target_elf_flavour,
 				       fbsd_kernel_osabi_sniffer);
 	gdbarch_register_osabi (bfd_arch_powerpc, bfd_mach_ppc,
-	    GDB_OSABI_FREEBSD_ELF_KERNEL, ppcfbsd_kernel_init_abi);
+	    GDB_OSABI_FREEBSD_KERNEL, ppcfbsd_kernel_init_abi);
 	gdbarch_register_osabi (bfd_arch_powerpc, bfd_mach_ppc64,
-	    GDB_OSABI_FREEBSD_ELF_KERNEL, ppcfbsd_kernel_init_abi);
+	    GDB_OSABI_FREEBSD_KERNEL, ppcfbsd_kernel_init_abi);
 
 	/* Not sure about this one. */
 	gdbarch_register_osabi_sniffer(bfd_arch_rs6000,
 				       bfd_target_elf_flavour,
 				       fbsd_kernel_osabi_sniffer);
 	gdbarch_register_osabi (bfd_arch_rs6000, 0,
-	    GDB_OSABI_FREEBSD_ELF_KERNEL, ppcfbsd_kernel_init_abi);
+	    GDB_OSABI_FREEBSD_KERNEL, ppcfbsd_kernel_init_abi);
 }

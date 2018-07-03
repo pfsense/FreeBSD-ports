@@ -5,7 +5,7 @@ PORTNAME=	libtabe
 PORTVERSION=	0.2.6
 PORTREVISION=	8
 CATEGORIES=	chinese
-MASTER_SITES=	DEBIAN/pool/main/libt/libtabe/
+MASTER_SITES=	http://old-releases.ubuntu.com/ubuntu/pool/universe/libt/libtabe/
 DISTNAME=	libtabe_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
@@ -29,22 +29,11 @@ WRKSRC=		${WRKDIR}/${DISTNAME:S|_|-|}
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=		DOCS X11
-OPTIONS_SUB=		X11
+OPTIONS_SUB=		yes
 X11_USE=		XORG=x11
 X11_CONFIGURE_WITH=	x
 
 .include <bsd.port.options.mk>
-
-pre-everything::
-.if defined(WITH_BDB_VER)
-pre-everything::
-	@${ECHO_CMD} ""
-	@${ECHO_CMD} "WARNING:"
-	@${ECHO_CMD} "	You have defined WITH_BDB_VER. Make sure you use the same"
-	@${ECHO_CMD} "	db version for all ports that use libtabe, such as xcin."
-	@${ECHO_CMD} "	Otherwise, ports that use libtabe may not work correctly."
-	@${ECHO_CMD} ""
-.endif
 
 post-patch-X11-off:
 	${REINPLACE_CMD} -e '/all:/s/ bims//; /bims/d' \

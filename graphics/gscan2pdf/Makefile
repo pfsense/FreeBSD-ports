@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gscan2pdf
-PORTVERSION=	1.5.2
+PORTVERSION=	1.8.11
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	p5-Config-General>=2.40:devel/p5-Config-General \
 		p5-Log-Log4perl>0:devel/p5-Log-Log4perl \
 		p5-Readonly>0:devel/p5-Readonly \
 		ImageMagick>0:graphics/ImageMagick \
-		p5-Sane>=0.05:graphics/p5-Sane \
+		p5-Image-Sane>=0.14:graphics/p5-Image-Sane \
 		p5-Set-IntSpan>=1.10:math/p5-Set-IntSpan \
 		p5-List-MoreUtils>0:lang/p5-List-MoreUtils \
 		p5-Try-Tiny>0:lang/p5-Try-Tiny \
@@ -27,8 +27,7 @@ BUILD_DEPENDS=	p5-Config-General>=2.40:devel/p5-Config-General \
 		p5-Gtk2>=1.090:x11-toolkits/p5-Gtk2 \
 		p5-Gtk2-Ex-Simple-List>0:x11-toolkits/p5-Gtk2-Ex-Simple-List \
 		p5-Gtk2-ImageView>0:x11-toolkits/p5-Gtk2-ImageView
-RUN_DEPENDS:=	p5-Archive-Tar>0:archivers/p5-Archive-Tar \
-		p5-Proc-ProcessTable>0:devel/p5-Proc-ProcessTable \
+RUN_DEPENDS:=	p5-Proc-ProcessTable>0:devel/p5-Proc-ProcessTable \
 		xdg-open:devel/xdg-utils \
 		cjb2:graphics/djvulibre \
 		scanimage:graphics/sane-backends \
@@ -38,6 +37,7 @@ RUN_DEPENDS:=	p5-Archive-Tar>0:archivers/p5-Archive-Tar \
 		p5-Gtk2-Ex-PodViewer>0.17:x11-toolkits/p5-Gtk2-Ex-PodViewer \
 		p5-Filesys-Df>0.92:sysutils/p5-Filesys-Df \
 		p5-Data-UUID>=1.220:devel/p5-Data-UUID \
+		p5-Date-Calc>=6.4:devel/p5-Date-Calc \
 		${BUILD_DEPENDS}
 
 NO_ARCH=	yes
@@ -47,7 +47,7 @@ USE_GNOME=	gtk20 librsvg2
 USE_PERL5=	configure
 
 OPTIONS_MULTI=		OCR
-OPTIONS_MULTI_OCR=	CUNEIFORM GOCR OCROPUS TESSERACT
+OPTIONS_MULTI_OCR=	CUNEIFORM GOCR TESSERACT
 OPTIONS_DEFAULT=	GOCR
 
 CUNEIFORM_DESC=		Multi-language OCR system
@@ -55,8 +55,6 @@ CUNEIFORM_RUN_DEPENDS=	cuneiform:graphics/cuneiform
 GOCR_DESC=		OCR program developed under GPL
 GOCR_RUN_DEPENDS=	gocr:graphics/gocr
 OCR_DESC=		Optical Character Recognition
-OCROPUS_DESC=		Document analysis and OCR system
-OCROPUS_RUN_DEPENDS=	ocropus:graphics/ocropus
 TESSERACT_DESC=		OCR engine developed at Google
 TESSERACT_RUN_DEPENDS=	tesseract:graphics/tesseract
 

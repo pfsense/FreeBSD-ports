@@ -2,75 +2,76 @@
 # $FreeBSD$
 
 PORTNAME=	cppcheck
-PORTVERSION=	1.75
+PORTVERSION=	1.82
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	Static analysis of C/C++ code
+COMMENT?=	Static analysis of C/C++ code
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libtinyxml2.so:textproc/tinyxml2
+USES=			compiler:c++11-lib cmake tar:bzip2
 
-USES=		compiler:c++11-lib execinfo gmake tar:bzip2
-USE_CXXSTD=	c++11
+.if defined(GUI_ONLY)
+COMMENT=		Static analysis of C/C++ code (GUI)
 
-ALL_TARGET=	cppcheck
-TEST_TARGET=	test
-LDFLAGS+=	-L${LOCALBASE}/lib -lexecinfo
-MAKE_ENV=	TINYXML=-ltinyxml2 CFGDIR="${DATADIR}/cfg"
+RUN_DEPENDS=		cppcheck:devel/cppcheck
 
-PLIST_FILES=	bin/cppcheck bin/cppcheck-htmlreport
-PORTDATA=	*
+CMAKE_ARGS=		-DBUILD_GUI=TRUE
+USE_QT5=		core gui widgets printsupport qmake_build buildtools_build linguisttools_build
 
-OPTIONS_DEFINE=		MATCHCOMPILER RULES MANPAGES
-OPTIONS_DEFAULT=	MATCHCOMPILER RULES MANPAGES
+BUILD_WRKSRC=		${WRKSRC}/gui
+INSTALL_WRKSRC=		${WRKSRC}/gui
 
-MATCHCOMPILER_DESC=	Build-time optimizations via Python
+PLIST=			${PKGDIR}/pkg-plist-gui
+
+PKGNAMESUFFIX=		-gui
+.else
+USES+=			shebangfix
+SHEBANG_FILES=		htmlreport/cppcheck-htmlreport
+
+OPTIONS_DEFINE=		RULES HTMLREPORT MANPAGES MATCHCOMPILER TEST
+OPTIONS_DEFAULT=	RULES HTMLREPORT MANPAGES MATCHCOMPILER
+OPTIONS_SUB=		yes
+
 RULES_DESC=		User-defined rule support (requires PCRE)
+RULES_CMAKE_BOOL=	HAVE_RULES
+RULES_LIB_DEPENDS=	libpcre.so:devel/pcre
+RULES_USES=		localbase:ldflags
 
-MANPAGES_ALL_TARGET=	man
+TEST_CMAKE_BOOL=	BUILD_TESTS
+
+HTMLREPORT_DESC=	Install cppcheck-htmlreport
+HTMLREPORT_USES=	python:${PYUSE:C/ /,/W}
+HTMLREPORT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygments>0:textproc/py-pygments@${PY_FLAVOR}
+HTMLREPORT_PLIST_FILES=	bin/cppcheck-htmlreport
+HTMLREPORT_VARS=	PYUSE+=run
+
 MANPAGES_BUILD_DEPENDS=	xsltproc:textproc/libxslt \
 			${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl
-MANPAGES_MAKE_ENV=	DB2MAN="${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl"
-MANPAGES_PLIST_FILES=	man/man1/cppcheck.1.gz
 
-MATCHCOMPILER_MAKE_ENV=	SRCDIR=build
-MATCHCOMPILER_USES=	python:2,build
-
-RULES_LIB_DEPENDS=	libpcre.so:devel/pcre
-RULES_MAKE_ENV=		HAVE_RULES=yes
+MATCHCOMPILER_DESC=	Build-time optimizations via Python
+MATCHCOMPILER_CMAKE_BOOL=	USE_MATCHCOMPILER
+MATCHCOMPILER_USES=	python:${PYUSE:C/ /,/W}
+MATCHCOMPILER_VARS=	PYUSE+=build
 
 post-patch:
-	@${REINPLACE_CMD} \
-	-e 's|-Iexternals/tinyxml|-I${LOCALBASE}/include|' \
-		${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e '/find_package(Qt5/ d' ${WRKSRC}/cmake/findDependencies.cmake
 
-post-patch-MANPAGES-on:
-	@${REINPLACE_CMD} -e '\|DB2MAN=|d' \
-		${WRKSRC}/Makefile
-
-post-patch-MATCHCOMPILER-on:
-	@${REINPLACE_CMD} -e 's|python|${PYTHON_CMD}|' \
-		${WRKSRC}/Makefile
-
-post-patch-RULES-on:
-	@${REINPLACE_CMD} \
-		-e '\|CXXFLAGS +=| \
-			s| -DTIXML_USE_STL $$(shell pcre-config --cflags)||' \
-		-e '\|$$(SRCDIR)/cppcheck.cpp| \
-			s|$${INCLUDE_FOR_LIB}|& $$(shell pcre-config --cflags)|' \
-		${WRKSRC}/Makefile
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/cppcheck ${STAGEDIR}${PREFIX}/bin
+post-install-HTMLREPORT-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/htmlreport/cppcheck-htmlreport ${STAGEDIR}${PREFIX}/bin
-	@${MKDIR} ${STAGEDIR}${DATADIR}/cfg
-	@cd ${WRKSRC}/cfg; ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/cfg/
 
-do-install-MANPAGES-on:
-	${INSTALL_MAN} ${WRKSRC}/cppcheck.1 ${STAGEDIR}${PREFIX}/man/man1
+post-build-MANPAGES-on:
+	cd ${WRKSRC}/man && ${LOCALBASE}/bin/xsltproc --nonet --param man.charmap.use.subset "0" \
+		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl cppcheck.1.xml
+
+post-install-MANPAGES-on:
+	${INSTALL_MAN} ${WRKSRC}/man/cppcheck.1 ${STAGEDIR}${PREFIX}/man/man1
+
+do-test-TEST-on:
+	cd ${WRKSRC} && ctest
+.endif
 
 .include <bsd.port.mk>

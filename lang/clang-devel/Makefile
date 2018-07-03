@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	clang
-PORTVERSION=	3.8.d20150720
-PORTREVISION=	1
+PORTVERSION=	${LLVM_MAJOR}.d${SNAPDATE}
+PORTREVISION=	0
 CATEGORIES=	lang devel
 PKGNAMESUFFIX=	-devel
 
@@ -15,5 +15,7 @@ RUN_DEPENDS+=	clang${LLVM_SUFFIX}:devel/llvm-devel
 LLVM_SUFFIX=	-devel
 
 USES=		metaport
+
+.include "${.CURDIR}/../../devel/llvm-devel/Makefile.snapshot"
 
 .include <bsd.port.mk>

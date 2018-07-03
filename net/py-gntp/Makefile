@@ -3,7 +3,7 @@
 PORTNAME=	gntp
 PORTVERSION=	0.8
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	net
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -17,13 +17,13 @@ GH_ACCOUNT=	kfdm
 OPTIONS_DEFINE=	DOCS
 
 USE_GITHUB=	yes
-USES=		python:2
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
-BUILD_DEPENDS+=	sphinx-build:textproc/py-sphinx
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${FLAVOR}
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 PYDISTUTILS_BUILD_TARGET+=	build_sphinx
 

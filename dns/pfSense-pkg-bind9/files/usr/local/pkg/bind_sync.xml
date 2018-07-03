@@ -29,7 +29,6 @@
 	]]>
 	</copyright>
 	<name>bindsync</name>
-	<version>0.4.0</version>
 	<title>BIND: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<tabs>
@@ -63,7 +62,17 @@
 		<field>
 			<fielddescr>Automatically Sync BIND Configuration Changes</fielddescr>
 			<fieldname>synconchanges</fieldname>
-			<description>Select a sync method for BIND.</description>
+			<description>
+				<![CDATA[
+				Select a sync method for BIND.<br/>
+				<strong><span class="text-danger">Do not forget to:</span></strong><br />
+				<ul>
+					<li>Create firewall rules to allow zone transfer between master and slave servers.</li>
+					<li>Create ACLs with these slave servers.</li>
+					<li>Include created ACLs on <code>allow-transfer</code> option in zone configuration.</li>
+				</ul>
+				]]>
+			</description>
 			<type>select</type>
 			<required/>
 			<default_value>disabled</default_value>
@@ -76,16 +85,16 @@
 		<field>
 			<fielddescr>Sync Timeout</fielddescr>
 			<fieldname>synctimeout</fieldname>
-			<description>Select sync max wait time</description>
+			<description>XMLRPC timeout in seconds.</description>
 			<type>select</type>
 			<required/>
-			<default_value>25</default_value>
+			<default_value>30</default_value>
 			<options>
-				<option><name>30 seconds(Default)</name><value>30</value></option>
+				<option><name>30 seconds (Default)</name><value>30</value></option>
 				<option><name>60 seconds</name><value>60</value></option>
 				<option><name>90 seconds</name><value>90</value></option>
-				<option><name>250 seconds</name><value>250</value></option>
 				<option><name>120 seconds</name><value>120</value></option>
+				<option><name>250 seconds</name><value>250</value></option>
 			</options>
 		</field>
 		<field>
@@ -93,8 +102,8 @@
 			<fieldname>masterip</fieldname>
 			<description>
 				<![CDATA[
-				Set master zone ip you want to use to sync backup server zones with master.<br />
-				<strong>Note: All master zones will be configured as backup on slave servers.</strong>
+				Set master zone IP you want to use to sync backup server zones with master.<br />
+				<span class="text-info"><strong>Note: All master zones will be configured as backup on slave servers.</strong></span>
 				]]>
 			</description>
 			<type>input</type>
@@ -105,27 +114,46 @@
 			<fielddescr>Remote Server</fielddescr>
 			<fieldname>none</fieldname>
 			<type>rowhelper</type>
-			<description><![CDATA[
-				<strong>Do not forget to:</strong><br />
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create firewall rules to allow zone transfer between master and slave servers.<br />
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create ACLs with these slave servers.<br />
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Include created ACLs on allow-transfer option on zone config.
-				]]>
-			</description>
 			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Enable</fielddescr>
+					<fieldname>syncdestinenable</fieldname>
+					<type>checkbox</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Protocol</fielddescr>
+					<fieldname>syncprotocol</fieldname>
+					<type>select</type>
+					<default_value>HTTP</default_value>
+					<options>
+						<option><name>HTTP</name><value>http</value></option>
+						<option><name>HTTPS</name><value>https</value></option>
+					</options>
+					<width>1</width>
+				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>IP Address</fielddescr>
 					<fieldname>ipaddress</fieldname>
-					<description>IP Address of remote server.</description>
 					<type>input</type>
-					<size>20</size>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Port</fielddescr>
+					<fieldname>syncport</fieldname>
+					<type>input</type>
+					<width>1</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Username</fielddescr>
+					<fieldname>username</fieldname>
+					<type>input</type>
+					<width>2</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Password</fielddescr>
 					<fieldname>password</fieldname>
-					<description>Password for remote server.</description>
 					<type>password</type>
-					<size>20</size>
+					<width>2</width>
 				</rowhelperfield>
 			</rowhelper>
 		</field>

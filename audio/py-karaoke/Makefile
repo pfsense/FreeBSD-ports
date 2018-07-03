@@ -3,7 +3,7 @@
 
 PORTNAME=	karaoke
 PORTVERSION=	0.7.5
-PORTREVISION=	9
+PORTREVISION=	15
 CATEGORIES=	audio python
 MASTER_SITES=	SF/py${PORTNAME}/py${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,14 +14,16 @@ COMMENT=	Python karaoke application (Plays CD+G, MP3+G, OGG+G files)
 
 LICENSE=	LGPL21+
 
-BUILD_DEPENDS=	${PYGAME}
-LIB_DEPENDS=	libpthread-stubs.so:devel/libpthread-stubs \
-		libaa.so:graphics/aalib
+BUILD_DEPENDS=	${PYGAME} \
+		${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
+LIB_DEPENDS=	libaa.so:graphics/aalib
 RUN_DEPENDS=	dejavu>0:x11-fonts/dejavu \
 		${PYGAME} \
 		${PYNUMPY}
 
-USES=		compiler:c++11-lib desktop-file-utils iconv python:2 zip
+USES=		compiler:c++11-lib desktop-file-utils iconv python:2.7 shebangfix zip
+SHEBANG_FILES=	install/pykaraoke_mini install/pykar install/pykaraoke \
+		install/pycdg install/pympg
 USE_SDL=	sdl
 USE_XORG=	x11 xau xcb xdmcp
 USE_WX=		3.0+
@@ -37,7 +39,7 @@ PLIST_FILES=	${BIN_SCRIPTS:S,^,bin/,} \
 OPTIONS_DEFINE=		MUTAGEN
 
 MUTAGEN_DESC=		Mutagen support
-MUTAGEN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen
+MUTAGEN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${FLAVOR}
 
 BIN_SCRIPTS=	cdg2mpg pycdg pykar pykaraoke pykaraoke_mini pympg
 DATA_FONTS=	DejaVuSans.ttf DejaVuSansCondensed.ttf \

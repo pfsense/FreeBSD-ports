@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	manuel
-PORTVERSION=	1.8.0
+PORTVERSION=	1.9.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +13,9 @@ COMMENT=	Lets you build tested documentation
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.rst
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${FLAVOR}
 
+NO_ARCH=	yes
 USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 

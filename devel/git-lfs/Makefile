@@ -1,33 +1,30 @@
 # $FreeBSD$
 
 PORTNAME=	git-lfs
-PORTVERSION=	1.4.4
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.4.0
 CATEGORIES=	devel
-MASTER_SITES=	GH GHC
-PKGNAMEPREFIX=	go-
 
 MAINTAINER=	kenji@k2r.org
 COMMENT=	Git extension for versioning large files
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 BUILD_DEPENDS=	bash:shells/bash
-RUN_DEPENDS=	bash:shells/bash
 
 USES=		go
 USE_GITHUB=	yes
-GH_ACCOUNT=	github
 PLIST_FILES=	bin/git-lfs
 
-GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
+GO_PKGNAME=	github.com/${PORTNAME}/${PORTNAME}
 
-# see https://github.com/github/git-lfs/wiki/Installation
+# see https://github.com/git-lfs/git-lfs/wiki/Installation
 
 do-build:
-	cd ${WRKSRC} && ${MKDIR} ${WRKSRC}/.tmp && TMPDIR=${WRKSRC}/.tmp script/bootstrap
+	@cd ${WRKSRC} && ${MKDIR} ${WRKSRC}/.tmp && ${SETENV} ${MAKE_ENV} ${GO_ENV} TMPDIR=${WRKSRC}/.tmp script/bootstrap
 
-pre-install:
+do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/git-lfs ${STAGEDIR}${PREFIX}/bin/git-lfs
 
 .include <bsd.port.mk>

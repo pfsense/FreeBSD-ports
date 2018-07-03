@@ -8,8 +8,8 @@ appropriately.
 The port is set up to use autovacuum for new databases, but you might
 also want to vacuum and perhaps backup your database regularly. There
 is a periodic script, %%PREFIX%%/etc/periodic/daily/502.pgsql, that
-you may find useful. You can use it to backup and perfom vacuum on all
-databases nightly. Per default, it perfoms `vacuum analyze'. See the
+you may find useful. You can use it to backup and perform vacuum on all
+databases nightly. Per default, it performs `vacuum analyze'. See the
 script for instructions. For autovacuum settings, please review
 ~pgsql/data/postgresql.conf.
 
@@ -49,6 +49,13 @@ For postmaster settings, see ~pgsql/data/postgresql.conf
 
 NB. FreeBSD's PostgreSQL port logs to syslog by default
     See ~pgsql/data/postgresql.conf for more info
+
+NB. If you're not using a checksumming filesystem like ZFS, you might
+    wish to enable data checksumming. It can only be enabled during
+    the initdb phase, by adding the "--data-checksums" flag to
+    the postgres_initdb_flags rcvar.  Check the initdb(1) manpage
+    for more info and make sure you understand the performance
+    implications.
 
 ======================================================================
 

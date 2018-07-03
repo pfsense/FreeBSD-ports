@@ -3,13 +3,16 @@
 
 PORTNAME=	gnome-settings-daemon
 PORTVERSION=	3.18.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME 3 settings daemon
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gnome-session>=0:x11/gnome-session \
 		geoclue>=0:net/geoclue \
@@ -34,7 +37,7 @@ PORTSCOUT=	limitw:1,even
 
 USE_XORG=	xxf86misc
 USE_GNOME=	gnomedesktop3 intltool libxslt
-USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool localbase:ldflags pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 CONFIGURE_ARGS=	--disable-gudev \
@@ -42,9 +45,6 @@ CONFIGURE_ARGS=	--disable-gudev \
 		--disable-wayland \
 		--disable-rfkill \
 		--disable-network-manager
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
 OPTIONS_SUB=	yes

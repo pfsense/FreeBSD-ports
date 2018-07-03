@@ -3,7 +3,7 @@
 
 PORTNAME=	vtk
 PORTVERSION=	5.10.1
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${PORTVERSION:R}/
 PKGNAMESUFFIX=	5
@@ -72,7 +72,6 @@ TCLTK_CMAKE_BOOL=	VTK_WRAP_TCL
 DBGLEAKS_CMAKE_BOOL=	VTK_DEBUG_LEAKS
 LEGACY_CMAKE_BOOL_OFF=	VTK_LEGACY_REMOVE
 
-
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSHARED}
@@ -138,7 +137,7 @@ IGNORE=		python wrapping requires shared libraries.\
 		Run make config again and enable the SHARED option
 .endif
 USES+=		python
-USE_PYTHON=	distutils
+USE_PYTHON=	distutils noflavors
 PYDISTUTILS_PKGNAME=	VTK
 # INSTALLS_EGGINFO support has been removed
 # INSTALLS_EGGINFO=	yes
@@ -246,7 +245,7 @@ post-install:
 	done
 	@cd ${STAGEDIR}${LIBDIR}; \
 	for lib in *.so; do \
-	    ${RM} -f $$lib; \
+	    ${RM} $$lib; \
 	    ${LN} -sf $$lib.${PORTVERSION} $$lib.${PORTVERSION:R}; \
 	    ${LN} -sf $$lib.${PORTVERSION:R} $$lib.${PORTVERSION:R:R}; \
 	    ${LN} -sf $$lib.${PORTVERSION:R:R} $$lib; \
@@ -254,7 +253,7 @@ post-install:
 .if ${PORT_OPTIONS:MQT4}
 	@cd ${STAGEDIR}${LIBDIR}; \
 	for lib in libQVTK*.so; do \
-	    ${RM} -f $$lib; \
+	    ${RM} $$lib; \
 	    ${LN} -sf $$lib.${PORTVERSION} $$lib; \
 	    ${LN} -sf $$lib.${PORTVERSION} $$lib.${PORTVERSION:R:R}; \
 	done

@@ -29,6 +29,8 @@ TESSERACT_LANGS?=afr amh ara asm aze aze_cyrl bel ben bod bos bul cat ceb ces \
 
 PORTDATA=	${TESSERACT_LANGS:O:u:S|$|.traineddata|}
 
+BROKEN_sparc64=		Fails to install: runaway process
+
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 .for l in ${PORTDATA}

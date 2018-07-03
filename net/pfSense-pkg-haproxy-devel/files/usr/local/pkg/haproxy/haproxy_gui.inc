@@ -25,106 +25,52 @@ require_once("classes/autoload.inc.php");
 
 $haproxy_icons = array(
 	'moveup' => array(
-		"faicon" => "fa-arrow-up",
-		"icon" => "icon_up.gif",
-		"iconsize" => 17),
+		"faicon" => "fa-arrow-up"),
 	'movedown' => array(
-		"faicon" => "fa-arrow-down",
-		"icon" => "icon_down.gif",
-		"iconsize" => 17),
+		"faicon" => "fa-arrow-down"),
 	'add' => array(
-		"faicon" => "fa-level-down",
-		"icon" => "icon_plus.gif",
-		"iconsize" => 17),
+		"faicon" => "fa-level-down"),
 	'delete' => array(
-		"faicon" => "fa-trash",
-		"icon" => "icon_x.gif",
-		"iconsize" => 17),
+		"faicon" => "fa-trash"),
 	'edit' => array(
-		"faicon" => "fa-pencil",
-		"icon" => "icon_e.gif",
-		"iconsize" => 17),
+		"faicon" => "fa-pencil"),
 	'clone' => array(
-		"faicon" => "fa-clone",
-		"icon" => "icon_plus.gif"),
+		"faicon" => "fa-clone"),
 	'acl' => array(
-		"faicon" => "fa-random",
-		"icon" => "icon_ts_rule.gif",
-		"iconsize" => 11),
+		"faicon" => "fa-random"),
 	'cert' => array(
-		"faicon" => "fa-lock",
-		"icon" => "icon_frmfld_cert.png",
-		"iconsize" => 11),
+		"faicon" => "fa-lock"),
 	'advanced' => array(
-		"faicon" => "fa-cog",
-		"icon" => "icon_advanced.gif",
-		"iconsize" => 11),
+		"faicon" => "fa-cog"),
 	'enabled' => array(
-		"faicon" => "fa-check",
-		"icon" => "icon_pass.gif",
-		"iconsize" => 11),
+		"faicon" => "fa-check"),
 	'disabled' => array(
-		"faicon" => "fa-ban",
-		"icon" => "icon_reject.gif",
-		"iconsize" => 11),
+		"faicon" => "fa-ban"),
 	'stats' => array(
-		"faicon" => "fa-tasks",
-		"icon" => "icon_log_s.gif",
-		"iconsize" => 11),
+		"faicon" => "fa-tasks"),
 	'stop' => array(
-		"faicon" => "fa-stop-circle-o",
-		"icon" => "icon_service_stop.gif",
-		"iconsize" => 17),
+		"faicon" => "fa-stop-circle-o"),
 	'start' => array(
-		"faicon" => "fa-play-circle",
-		"icon" => "icon_service_start.gif",
-		"iconsize" => 17),
+		"faicon" => "fa-play-circle"),
 	'up' => array(
-		"faicon" => "fa-check-circle",
-		"icon" => "icon_interface_up.gif",
-		"iconsize" => 11),
+		"faicon" => "fa-check-circle"),
 	'down' => array(
-		"faicon" => "fa-times-circle",
-		"icon" => "icon_interface_down.gif",
-		"iconsize" => 11),
+		"faicon" => "fa-times-circle"),
 	'resolvedns' => array(
-		"faicon" => "fa-info",
-		"icon" => "icon_log.gif",
-		"iconsize" => 11),
+		"faicon" => "fa-info"),
 	'help' => array(
-		"faicon" => "fa-info-circle",
-		"icon" => "icon_help.gif",
-		"iconsize" => 11),
+		"faicon" => "fa-info-circle"),
 	'expand' => array(
-		"faicon" => "fa-plus-square-o",
-		"icon" => "plus.gif",
-		"iconsize" => 11)
-
+		"faicon" => "fa-plus-square-o")
 );
 
-global $pf_version;
-$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-
-if(!function_exists('pf_version')) {
-	function pf_version() {
-		global $pf_version;
-		return $pf_version;
-	}
-}
-
 function haproxyicon($iconname, $title) {
-	global $g, $haproxy_icons;
+	global $haproxy_icons;
 	$title = htmlspecialchars($title);
 	$title = str_replace("'", "&#39;", $title);
 	
 	$faicon = $haproxy_icons[$iconname]["faicon"];
-	if (pf_version() < "2.3") {
-		$icon = $haproxy_icons[$iconname]["icon"];
-		$iconsize = $haproxy_icons[$iconname]["iconsize"];
-		return "<img src='/themes/{$g['theme']}/images/icons/$icon' title='$title' width='$iconsize' height='$iconsize' border='0' />";	
-	} else {
-		return "<i class='fa $faicon' title='$title'></i>";
-	}
+	return "<i class='fa $faicon' title='$title'></i>";
 }
 
 class Form_Section_class extends Form_Section {

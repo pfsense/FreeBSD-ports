@@ -3,11 +3,11 @@
 
 PORTNAME=	groupoffice
 DISTVERSIONPREFIX=	com-
-PORTVERSION=	6.2.15
+DISTVERSION=	6.2.89
 CATEGORIES=	www
 MASTER_SITES=	SF/group-office/${DISTVERSION:R}
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Modular web application framework for office
 
 LICENSE=	AGPLv3
@@ -17,15 +17,21 @@ RESTRICTED=	Free for personal use only
 
 NO_ARCH=	yes
 NO_BUILD=	yes
+USES=		mysql shebangfix php:web python
 USE_PHP=	mysqli session mbstring pcre xml
-USES=		mysql shebangfix php:web
 SHEBANG_FILES=	go/vendor/tcpdf/tools/tcpdf_addfont.php \
 		groupoffice \
 		groupofficecli.php \
 		install/autoinstall.php \
 		modules/postfixadmin/scripts/vacation.pl \
 		modules/sync/z-push/install.sh \
-		vendor/fkooman/php-oauth-client/bin/php-oauth-client-create-tables
+		modules/sync/z-push/z-push-admin.php \
+		modules/sync/z-push/z-push-top.php \
+		vendor/fkooman/php-oauth-client/bin/php-oauth-client-create-tables \
+		vendor/sabre/dav/bin/naturalselection \
+		vendor/sabre/dav/bin/googlecode_upload.py \
+		vendor/bin/../sabre/dav/bin/naturalselection \
+		vendor/swiftmailer/swiftmailer/lib/swiftmailer_generate_mimes_config.php
 
 WWWDIR?=	${PREFIX}/www/${PORTNAME}${DISTVERSION:R:R}
 
@@ -55,7 +61,7 @@ post-patch:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}
-	${CP} -R ${WRKSRC}/ ${STAGEDIR}${WWWDIR}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}
 	@${TOUCH} ${STAGEDIR}${WWWDIR}/config.php.sample
 
 .include <bsd.port.mk>

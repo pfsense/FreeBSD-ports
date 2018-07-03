@@ -1,0 +1,27 @@
+--- Makefile.orig	2018-01-02 13:25:24 UTC
++++ Makefile
+@@ -8,20 +8,18 @@ WARNFLAGS = -Wall -Wextra -std=gnu99 -pe
+ DEBUGFLAGS = -g
+ CFLAGS += $(OPTFLAGS) $(WARNFLAGS) $(DEBUGFLAGS)
+ OS := $(shell uname)
+-ifneq ($(OS), Darwin)
+-	LDFLAGS += -Wl,-z,relro
+-endif
++LDFLAGS += -Wl,-z,relro
+ 
+ 
+ 
+ all: pcap pcapng
+-	gcc $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) pcapfix.c pcap.o pcapng.o -o pcapfix
++	${CC} $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) pcapfix.c pcap.o pcapng.o -o pcapfix
+ 
+ pcap: pcap.c
+-	gcc $(CPPFLAGS) $(CFLAGS) -c pcap.c -o pcap.o
++	${CC} $(CPPFLAGS) $(CFLAGS) -c pcap.c -o pcap.o
+ 
+ pcapng: pcapng.c
+-	gcc $(CPPFLAGS) $(CFLAGS) -c pcapng.c -o pcapng.o
++	${CC} $(CPPFLAGS) $(CFLAGS) -c pcapng.c -o pcapng.o
+ 
+ install:
+ 	install -pDm755 pcapfix $(DESTDIR)$(BINDIR)/pcapfix

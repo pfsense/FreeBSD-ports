@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	lazyeval
-DISTVERSION=	0.2.0
+DISTVERSION=	0.2.1
+PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -11,6 +12,6 @@ COMMENT=	Disciplined approach to non-standard evaluation
 
 LICENSE=	GPLv3
 
-USES=	cran:auto-plist
+USES=		cran:auto-plist,compiles
 
 .include <bsd.port.mk>

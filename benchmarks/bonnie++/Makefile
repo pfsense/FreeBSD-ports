@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	bonnie++
-PORTVERSION=	1.97
-PORTREVISION=	3
+PORTVERSION=	1.97.3
 CATEGORIES=	benchmarks
-MASTER_SITES=	http://www.coker.com.au/bonnie++/experimental/
+MASTER_SITES=	https://www.coker.com.au/bonnie++/
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Performance Test of Filesystem I/O
@@ -16,8 +15,6 @@ GNU_CONFIGURE=	yes
 
 USES=	shebangfix tar:tgz
 SHEBANG_FILES=	bon_csv2txt.in
-
-WRKSRC=	${WRKDIR}/${PORTNAME}-1.97.1
 
 PORTDOCS=	readme.html
 

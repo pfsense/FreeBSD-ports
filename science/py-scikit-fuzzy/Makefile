@@ -2,21 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	scikit-fuzzy
-PORTVERSION=	0.2
+PORTVERSION=	0.3.1
+PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fuzzy logic toolkit for SciPy
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_SITELIBDIR}/scipy/version.py:science/py-scipy
+		${PYTHON_PKGNAMEPREFIX}networkx>=1.9.0:math/py-networkx@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scipy>=0.9.0:science/py-scipy@${FLAVOR}
 BUILD_DEPENDS=	${RUN_DEPENDS}
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

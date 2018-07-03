@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,6 +52,7 @@ if (isset($id) && $a_nat[$id]) {
 	$pconfig['autoflowbits'] = $a_nat[$id]['autoflowbitrules'];
 	$pconfig['ips_policy_enable'] = $a_nat[$id]['ips_policy_enable'];
 	$pconfig['ips_policy'] = $a_nat[$id]['ips_policy'];
+	$pconfig['ips_policy_mode'] = $a_nat[$id]['ips_policy_mode'];
 }
 
 $if_real = get_real_interface($a_nat[$id]['interface']);
@@ -88,7 +89,7 @@ if (empty($test))
 if (!file_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "community.rules"))
 	$no_community_files = true;
 
-// If a Snort VRT policy is enabled and selected, remove all Snort VRT
+// If a Snort rules policy is enabled and selected, remove all Snort 
 // rules from the configured rule sets to allow automatic selection.
 if ($a_nat[$id]['ips_policy_enable'] == 'on') {
 	if (isset($a_nat[$id]['ips_policy'])) {
@@ -109,10 +110,12 @@ if (isset($_POST["save"])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	// Always start with the default events and files rules
@@ -126,7 +129,6 @@ if (isset($_POST["save"])) {
 
 	if ($_POST['autoflowbits'] == "on") {
 		$a_nat[$id]['autoflowbitrules'] = 'on';
-		print("Autoflowbits is on");
 	}
 	else {
 		$a_nat[$id]['autoflowbitrules'] = 'off';
@@ -159,15 +161,18 @@ if (isset($_POST["save"])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
+	$pconfig['ips_policy_mode'] = $_POST['ips_policy_mode'];
 
 	// Remove all but the default events and files rules
 	$enabled_rulesets_array = array();
@@ -182,15 +187,18 @@ if (isset($_POST["save"])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
+	$pconfig['ips_policy_mode'] = $_POST['ips_policy_mode'];
 
 	// Start with the required default events and files rules
 	$enabled_rulesets_array = $default_rules;
@@ -212,7 +220,7 @@ if (isset($_POST["save"])) {
 			$enabled_rulesets_array[] = basename($file);
 	}
 
-	/* Include the Snort VRT rules only if enabled and no IPS policy is set */
+	/* Include the Snort rules only if enabled and no IPS policy is set */
 	if ($snortdownload == 'on' && empty($_POST['ips_policy_enable'])) {
 		$files = glob("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
@@ -301,7 +309,7 @@ else:
 		'fa-file-text-o'
 	);
 
-	$viewbtn->removeClass('btn-primary')->addClass('btn-success')
+	$viewbtn->removeClass('btn-primary')->addClass('btn-success btn-sm')
 	  ->setHelp('Click to view auto-enabled rules required to satisfy flowbit dependencies' . '<br /><br />' .
 	  			'<span class="text-danger"><strong>' . gettext('Note:  ') . '</strong></span>' .
 	  			gettext('Auto-enabled rules generating unwanted alerts should have their GID:SID added to the Suppression List for the interface.'));
@@ -327,10 +335,9 @@ else:
 
 	print($section);
 
-	if (true || $snortdownload == 'on') {
+	if ($snortdownload == 'on') {
 
 		$section = new Form_Section("Snort IPS Policy selection");
-
 		$chkips = new Form_Checkbox(
 			'ips_policy_enable',
 			'Use IPS Policy',
@@ -338,30 +345,32 @@ else:
 			($a_nat[$id]['ips_policy_enable'] == "on"),
 			'on'
 		);
-
-		$chkips->setHelp('<span class="text-danger"><strong>' . gettext("Note:  ") . '</strong></span>' . gettext('You must be using the Snort VRT rules to use this option.' . '<br />' .
-					'Selecting this option disables manual selection of Snort VRT categories in the list below, ' .
+		$chkips->setHelp('<span class="text-danger"><strong>' . gettext("Note:  ") . '</strong></span>' . gettext('You must be using the Snort rules to use this option.' . '<br />' .
+					'Selecting this option disables manual selection of Snort rules categories in the list below, ' .
 						'although Emerging Threats categories may still be selected if enabled on the Global Settings tab.  ' .
-						'These will be added to the pre-defined Snort IPS policy rules from the Snort VRT.'));
-
-
-		if (($snortdownload != 'on') || ($a_nat[$id]['ips_policy_enable'] != 'on')) {
-			// $chkips->setDisabled();
-		}
-
+						'These will be added to the pre-defined Snort IPS policy rules from the Snort rules set.'));
 		$section->addInput($chkips);
-
 		$section->addInput(new Form_Select(
 			'ips_policy',
 			'IPS Policy Selection',
 			$pconfig['ips_policy'],
-			array(
-				'connected' => 'Conected',
+			array(	'connectivity' => 'Connectivity',
 				'balanced'  => 'Balanced',
-				'security'  => 'Security')
+				'security'  => 'Security',
+				'max-detect' => 'Maximum Detection')
 			))->setHelp('Connectivity blocks most major threats with few or no false positives. Balanced is a good starter policy. ' .
 						'It is speedy, has good base coverage level, and covers most threats of the day. It includes all rules in Connectivity. Security is a stringent policy. ' .
-						'It contains everything in the first two plus policy-type rules such as Flash in an Excel file.');
+						'It contains everything in the first two plus policy-type rules such as Flash in an Excel file.  Maximum Detection encompasses vulnerabilities from 2005 ' . 
+						'or later with a CVSS score of at least 7.5 along with critical malware and exploit kit rules.  The Maximum Detection policy favors detection over rated ' .
+						'throughput. In some situations this policy can and will cause significant throughput reductions.');
+		$section->addInput(new Form_Select(
+			'ips_policy_mode',
+			'IPS Policy Mode',
+			$pconfig['ips_policy_mode'],
+			array(  'alert' => 'Alert',
+				'policy'  => 'Policy')
+			))->setHelp('When Policy is selected, this will automatically change the action for rules in the selected IPS Policy from their default action of alert to the action specified ' . 
+					'in the policy metadata (typically drop, but may be alert for some policy rules).');
 
 		print($section);
 	}
@@ -392,7 +401,7 @@ else:
 			<?php if ($no_community_files)
 				$msg_community = gettext("NOTE: Snort Community Rules have not been downloaded.  Perform a Rules Update to enable them.");
 			      else
-				$msg_community = gettext("Snort GPLv2 Community Rules (VRT certified)");
+				$msg_community = gettext("Snort GPLv2 Community Rules (Talos-certified)");
 			      $community_rules_file = gettext(GPL_FILE_PREFIX . "community.rules");
 			?>
 
@@ -405,8 +414,6 @@ else:
 						<th><?=gettext('Ruleset: Snort GPLv2 Community Rules'); ?></th>
 						<th></th>
 						<th></th>
-						<th></th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -414,19 +421,27 @@ else:
 				<?php if ($cat_mods[$community_rules_file] == 'enabled') : ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-success" title="<?=gettext('Auto-disabled by settings on SID Mgmt tab'); ?>"></i>
+							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
-						<td colspan="5">
+						<td colspan="4">
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
 							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=gettext('{$msg_community}');?></a>
+						<?php endif; ?>
 						</td>
 					</tr>
 				<?php else: ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-enabled by settings on SID Mgmt tab");?>"><i>
+							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
 						</td>
-						<td colspan="5">
-							<?=gettext("{$msg_community}"); ?>
+						<td colspan="4">
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+						<?php endif; ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -435,8 +450,12 @@ else:
 					<td>
 						<input type="checkbox" name="toenable[]" value="<?=$community_rules_file;?>" checked="checked"/>
 					</td>
-					<td colspan="5">
-						<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
+					<td colspan="4">
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
+							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php else: ?>
@@ -444,8 +463,12 @@ else:
 					<td>
 						<input type="checkbox" name="toenable[]" value="<?=$community_rules_file; ?>" />
 					</td>
-					<td colspan="5">
-						<?=gettext("{$msg_community}"); ?>
+					<td colspan="4">
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php endif; ?>
@@ -486,10 +509,8 @@ else:
 					<?php if ($snortdownload == 'on' && !$no_snort_files): ?>
 						<th><?=gettext("Enabled"); ?></th>
 						<th><?=gettext('Ruleset: Snort Text Rules');?></th>
-						<th><?=gettext("Enabled"); ?></th>
-						<th><?=gettext('Ruleset: Snort SO Rules');?></th>
 					<?php else: ?>
-						<th colspan="4"><?=gettext("Snort VRT rules {$msg_snort}"); ?></th>
+						<th colspan="2"><?=gettext("Snort Rules {$msg_snort}"); ?></th>
 					<?php endif; ?>
 					</tr>
 				</thead>
@@ -564,7 +585,7 @@ else:
 						echo "</td>\n";
 						echo "<td>\n";
 						if (empty($CHECKED))
-							echo $file;
+							echo "<a href='suricata_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
 						else
 							echo "<a href='suricata_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
 						echo "</td>\n";
@@ -595,12 +616,17 @@ else:
 							}
 						}
 						else {
-							echo "	\n<input type='checkbox' name='toenable[]' value='{$file}' {$CHECKED} />\n";
+							if ($CHECKED == "disabled") {
+								echo "	\n<input type='checkbox' name='toenable[]' value='{$file}' {$CHECKED} title='" . gettext('Disabled because an IPS Policy is selected') . "' />\n";
+							}
+							else {
+								echo "	\n<input type='checkbox' name='toenable[]' value='{$file}' {$CHECKED} />\n";
+							}
 						}
 						echo "</td>\n";
 						echo "<td>\n";
 						if (empty($CHECKED) || $CHECKED == "disabled")
-							echo $file;
+							echo "<a href='suricata_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
 						else
 							echo "<a href='suricata_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
 						echo "</td>\n";
@@ -635,12 +661,19 @@ events.push(function() {
 		var endis = !($('#ips_policy_enable').prop('checked'));
 
 		hideInput('ips_policy', endis);
+		hideInput('ips_policy_mode', endis);
 
 		$('input[type="checkbox"]').each(function() {
 			var str = $(this).val();
 
 			if (str.substr(0,6) == "snort_") {
 				$(this).attr('disabled', !endis);
+				if (!endis) {
+					$(this).prop('title', 'Disabled because an IPS Policy is selected');
+				}
+				else {
+					$(this).prop('title', '');
+				}
 			}
 		});
 	}

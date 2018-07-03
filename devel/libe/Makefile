@@ -3,10 +3,11 @@
 
 PORTNAME=	libe
 PORTVERSION=	0.7.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://hyperdex.org/src/
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High-performance datastructures and utilities for C++
 
 LICENSE=	BSD3CLAUSE

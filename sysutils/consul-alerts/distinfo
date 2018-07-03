@@ -1,3 +1,9 @@
-TIMESTAMP = 1468785601
-SHA256 (AcalephStorage-consul-alerts-v0.3.3_GH0.tar.gz) = a71acd454fadd193900d484e76437f68b96d91d6331c7ddee40dc3a6f8e52706
-SIZE (AcalephStorage-consul-alerts-v0.3.3_GH0.tar.gz) = 206900
+TIMESTAMP = 1495844279
+SHA256 (AcalephStorage-consul-alerts-v0.5.0_GH0.tar.gz) = 2f6b8e1c0c58a1b84ff0b24655f86da1325f4124eaa24fd45bc1b4cc324ef360
+SIZE (AcalephStorage-consul-alerts-v0.5.0_GH0.tar.gz) = 242042
+SHA256 (aws-aws-sdk-go-v1.8.30_GH0.tar.gz) = 8467f39202e19299738eae2c0ec1e5475798b2bd02110d64efe824abe912210e
+SIZE (aws-aws-sdk-go-v1.8.30_GH0.tar.gz) = 6784740
+SHA256 (imdario-mergo-0.2.2_GH0.tar.gz) = 06ff82ceeea1a2d5e5064867a8e3c581ad9c1fc8e243afc673b7b8c94f28d4cf
+SIZE (imdario-mergo-0.2.2_GH0.tar.gz) = 9415
+SHA256 (mitchellh-hashstructure-9204ce5_GH0.tar.gz) = c3e9599761f944c6bcc7c6e7d92df40e32f247c471a02b02a079817d4ccf2afc
+SIZE (mitchellh-hashstructure-9204ce5_GH0.tar.gz) = 6460

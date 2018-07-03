@@ -11,7 +11,7 @@ COMMENT=	Portable, high-performance ANSI-C pseudorandom number generators
 
 LICENSE=	GPLv2
 
-CFLAGS+=	-fgnu89-inline
+USE_CSTD=	gnu89
 GNU_CONFIGURE=	yes
 INFO=		prng
 PLIST_FILES=	include/prng.h lib/libprng.a
@@ -20,21 +20,14 @@ PORTEXAMPLES=	Makefile pairs.c tuples.c
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-.include <bsd.port.options.mk>
-
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for _d in ${PORTDOCS}
-	${INSTALL_MAN} ${WRKSRC}/doc/${_d} ${STAGEDIR}${DOCSDIR}
-.endfor
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/doc/,} ${STAGEDIR}${DOCSDIR}
+
+post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-.for _e in ${PORTEXAMPLES}
-	${INSTALL_DATA} ${WRKSRC}/examples/${_e} ${STAGEDIR}${EXAMPLESDIR}
-.endfor
-.endif
+	${INSTALL_DATA} ${PORTEXAMPLES:S,^,${WRKSRC}/examples/,} \
+		${STAGEDIR}${EXAMPLESDIR}
 
 check regression-test test: build
 	@(cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \

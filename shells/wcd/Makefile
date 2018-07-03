@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	wcd
-PORTVERSION=	5.3.2
+PORTVERSION=	6.0.1
 CATEGORIES=	shells
 MASTER_SITES=	SF
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line program to change directory fast
 
 LICENSE=	GPLv2
@@ -15,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/doc/copying.txt
 USES=		gmake ncurses
 MAKE_ARGS=	EXT= PREFIX=${PREFIX} docsubdir=${PORTNAME} \
 		mandir=${PREFIX}/man
+CFLAGS+=	-I${NCURSESINC}
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes

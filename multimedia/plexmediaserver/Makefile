@@ -2,19 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	plexmediaserver
-PORTVERSION?=	1.1.4.2757
+PORTVERSION?=	1.12.1.4885
+DISTVERSIONSUFFIX?=1046ba85f
 PORTREVISION?=	0
 CATEGORIES=	multimedia
-MASTER_SITES=	https://downloads.plexapp.com/plex-media-server/${PORTVERSION}-${PLEX_BUILD}/
-DISTNAME=	PlexMediaServer-${PORTVERSION}-${PLEX_BUILD}-freebsd-${ARCH}
+MASTER_SITES=	https://downloads.plex.tv/plex-media-server/${DISTVERSION}-${DISTVERSIONSUFFIX}/
+DISTNAME=	PlexMediaServer-${DISTVERSION}-${DISTVERSIONSUFFIX}-freebsd-${ARCH}
 
 MAINTAINER?=	feld@FreeBSD.org
 COMMENT=	Plex Media Server component
 
 USES=		cpe tar:bzip2
-PLEX_BUILD?=	24ffd60
 NO_BUILD=	yes
-WRKSRC=	${WRKDIR}/PlexMediaServer-${PORTVERSION}-${PLEX_BUILD}
+WRKSRC=	${WRKDIR}/PlexMediaServer-${PORTVERSION}-${DISTVERSIONSUFFIX}
 
 CPE_VENDOR=	plex
 CPE_PRODUCT=	plex_media_server
@@ -24,7 +24,6 @@ USE_RC_SUBR?=	${PORTNAME}
 
 SUB_FILES=	pkg-message
 SUB_LIST?=	PORTNAME=${PORTNAME} DATADIR=${DATADIR} USERS=${USERS} GROUPS=${GROUPS}
-PLIST_SUB+=	PLEX_BUILD=${PLEX_BUILD}
 
 USERS=	plex
 GROUPS=	${USERS}
@@ -32,6 +31,13 @@ BUNDLE_LIBS=	yes
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	binary-only program, source code not available
+
+OPTIONS_DEFINE=	RELAY
+OPTIONS_DEFAULT=	RELAY
+OPTIONS_SUB=	yes
+RELAY_DESC=	Install Plex Relay daemon
+
+.include <bsd.port.options.mk>
 
 .include <bsd.port.pre.mk>
 
@@ -44,16 +50,24 @@ post-patch:
 	${FIND} ${WRKSRC}/Resources -name '*.so' -exec ${STRIP_CMD} {} \+
 	${FIND} ${WRKSRC} ${WRKSRC}/Resources -name 'Plex*' -depth 1 -exec ${STRIP_CMD} {} \+
 	${FIND} ${WRKSRC} -depth 1 -name 'lib*' -exec ${STRIP_CMD} {} \+
-	${RM} ${WRKSRC}/start.sh
+	${RM} ${WRKSRC}/start.sh ${WRKSRC}/Resources/start.sh
 	# Older verisons of Plex we have to create a symlink
 	# Newer versions of Plex ship a duplicate file; we'll just symlink
 	${RM} ${WRKSRC}/libpython2.7.so
+.if ! ${PORT_OPTIONS:MRELAY}
+	${RM} ${WRKSRC}/Plex\ Relay
+.endif
 
 do-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${STAGEDIR}/${DATADIR})
 	# Python fix for older releases of Plex
-	@${LN} -s ${DATADIR}/libpython2.7.so.1 ${STAGEDIR}/${DATADIR}/libpython2.7.so
+	${INSTALL} -lrs ${STAGEDIR}/${DATADIR}/libpython2.7.so.1 ${STAGEDIR}/${DATADIR}/libpython2.7.so
 	# Workaround for space in binary name
-	@${LN} -s ${DATADIR}/Plex\ Media\ Server ${STAGEDIR}${DATADIR}/Plex_Media_Server
+	${INSTALL} -lrs ${STAGEDIR}/${DATADIR}/Plex\ Media\ Server ${STAGEDIR}/${DATADIR}/Plex_Media_Server
+
+post-install:
+	@${CHMOD} 555 ${STAGEDIR}/${DATADIR}/CrashUploader ${STAGEDIR}/${DATADIR}/Plex*
+	@${FIND} -s ${STAGEDIR}${DATADIR} -not -type d | ${SORT} | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
 
 .include <bsd.port.post.mk>

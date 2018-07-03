@@ -1,18 +1,24 @@
 # $FreeBSD$
 
 PORTNAME=	deheader
-PORTVERSION=	1.0
+PORTVERSION=	1.6
 CATEGORIES=	devel
-MASTER_SITES=	http://www.catb.org/esr/deheader/
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Tool to find unnecessary includes in C/C++ files
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-NO_BUILD=	yes
-USES=		python
+BUILD_DEPENDS=	xmlto:textproc/xmlto
+
+USES=		python shebangfix tar:bz2
+SHEBANG_FILES=	${PORTNAME}
+NO_ARCH=	yes
+
+USE_GITLAB=	yes
+GL_ACCOUNT=	esr
+GL_COMMIT=	b408c9013f4e1d917cc12f06edda4e1782e64888
 
 PLIST_FILES=	bin/deheader man/man1/deheader.1.gz
 

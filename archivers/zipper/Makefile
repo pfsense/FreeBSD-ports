@@ -3,7 +3,7 @@
 
 PORTNAME=	zipper
 PORTVERSION=	1.5
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	archivers gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	Zipper-${PORTVERSION}
@@ -15,6 +15,6 @@ USES=		gnustep
 USE_GNUSTEP=	back build
 
 post-patch:
-	cd ${WRKSRC} && ${FIND} . -name "*#*" -exec ${RM} -f -v "{}" ";"
+	cd ${WRKSRC} && ${FIND} . -name "*#*" -exec ${RM} -v {} ";"
 
 .include <bsd.port.mk>

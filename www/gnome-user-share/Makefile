@@ -4,7 +4,7 @@
 
 PORTNAME=	gnome-user-share
 PORTVERSION=	3.14.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -18,10 +18,9 @@ LIB_DEPENDS=	libavahi-client.so:net/avahi-app \
 		libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 		libunique-1.0.so:x11-toolkits/unique
 RUN_DEPENDS=	ap*-mod_dnssd>=0:www/mod_dnssd \
-		console-kit-daemon:sysutils/consolekit
+		console-kit-daemon:sysutils/consolekit2
 
-USES=		gettext gmake libtool pkgconfig tar:xz
-USE_APACHE=	22+
+USES=		apache:2.2+ gettext gmake libtool pkgconfig tar:xz
 USE_XORG=	sm
 USE_GNOME=	gnomeprefix gtk30 intlhack nautilus3
 GNU_CONFIGURE=	yes

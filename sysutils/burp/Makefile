@@ -6,14 +6,14 @@ PORTVERSION=	1.4.40
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	loic-freebsd@loicp.eu
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network backup and restore program
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:devel/uthash
-LIB_DEPENDS=	librsync.so:net/librsync1
+LIB_DEPENDS=	librsync.so:net/librsync2
 
 OPTIONS_DEFINE=		IPV6
 
@@ -22,7 +22,7 @@ GH_ACCOUNT=	grke
 
 USE_RC_SUBR=	burp
 GNU_CONFIGURE=	yes
-USES=		gmake localbase ncurses ssl
+USES=		compiler:c++11-lib gmake localbase ncurses ssl
 
 PORTSCOUT=	limit:^1\.4\.
 
@@ -46,4 +46,10 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/vss_strip
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/burp
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} >= 1200039 && ${CC:T} == "clang"
+BROKEN=		fails to compile due to clang 4.0 regression: util/bdthreads.cc:132:10: ordered comparison between pointer and zero
+.endif
+
+.include <bsd.port.post.mk>

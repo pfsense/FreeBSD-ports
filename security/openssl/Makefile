@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	openssl
-PORTVERSION=	1.0.2j
-PORTREVISION=	1
+PORTVERSION=	1.0.2o
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	security devel
 MASTER_SITES=	http://www.openssl.org/source/ \
 		ftp://ftp.cert.dfn.de/pub/tools/net/openssl/source/
-DIST_SUBDIR=	${DISTNAME}
+DIST_SUBDIR=	${PORTNAME}-${DISTVERSION:C/[a-z]$//}
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	SSL and crypto library
@@ -21,18 +21,16 @@ CONFLICTS_INSTALL=	libressl-[0-9]* \
 			openssl-devel-[0-9]*
 
 OPTIONS_DEFINE=		DOCS MAN3 PADLOCK RFC3779 SHARED THREADS ZLIB
-OPTIONS_DEFAULT=	SHARED THREADS SSE2 SCTP SSL2 SSL3 MD2 MAN3
+OPTIONS_DEFAULT=	ASM MD2 MAN3 SCTP SHARED SSE2 SSL2 SSL3 THREADS
 OPTIONS_DEFINE_amd64=	EC
 OPTIONS_DEFAULT_amd64=	EC
-OPTIONS_DEFINE_ia64=	EC
-OPTIONS_DEFAULT_ia64=	EC
 TARGET_ARCH?=	${MACHINE_ARCH}
 .if ${TARGET_ARCH} == "mips64el"
 OPTIONS_DEFINE_mips=	EC
 OPTIONS_DEFAULT_mips=	EC
 .endif
 OPTIONS_GROUP=	CIPHERS HASHES OPTIMIZE PROTOCOLS
-OPTIONS_GROUP_CIPHERS=	EXPCIPHERS RC5 
+OPTIONS_GROUP_CIPHERS=	RC5
 OPTIONS_GROUP_HASHES=	MD2
 OPTIONS_GROUP_OPTIMIZE=	ASM SSE2
 OPTIONS_GROUP_PROTOCOLS=	SCTP SSL2 SSL3
@@ -43,7 +41,6 @@ OPTIONS_SUB=	yes
 ASM_DESC=	Optimized Assembler code
 CIPHERS_DESC=	Cipher Suite support
 EC_DESC=	Optimize NIST elliptic curves
-EXPCIPHERS_DESC=	Include experimental ciphers
 HASHES_DESC=	Hash Function Support
 I386_DESC=	Optimize for i386 (instead of i486+)
 MAN3_DESC=	Install API manpages (section 3)
@@ -60,11 +57,13 @@ SSL2_DESC=	SSLv2 protocol support
 SSL3_DESC=	SSLv3 protocol support
 ZLIB_DESC=	zlib compression support
 
-USES=		cpe perl5
+USES=		compiler cpe perl5
 USE_PERL5=	build
 MAKE_ARGS+=	WHOLE_ARCHIVE_FLAG=--whole-archive
 MAKE_ENV+=	LIBRPATH="${PREFIX}/lib" GREP_OPTIONS=
 SUB_FILES=	pkg-message
+
+MAKE_JOBS_UNSAFE=	yes
 
 ASM_CONFIGURE_OFF=	no-asm
 EC_CONFIGURE_ON=	enable-ec_nistp_64_gcc_128
@@ -72,6 +71,8 @@ EC_CONFIGURE_OFF=	no-ec_nistp_64_gcc_128
 I386_CONFIGURE_ON=	386
 MD2_CONFIGURE_ON=	enable-md2
 MD2_CONFIGURE_OFF=	no-md2
+PADLOCK_CFLAGS=		-Wno-unused-function
+PADLOCK_CONFIGURE_OFF=	no-padlock
 PADLOCK_PATCH_SITES=	http://git.alpinelinux.org/cgit/aports/plain/main/openssl/:padlock
 PADLOCK_PATCHFILES=	1001-crypto-hmac-support-EVP_MD_CTX_FLAG_ONESHOT-and-set-.patch:padlock \
 			1002-backport-changes-from-upstream-padlock-module.patch:padlock \
@@ -87,18 +88,27 @@ SCTP_CONFIGURE_OFF=	no-sctp
 SHARED_CONFIGURE_ON=	shared
 SHARED_MAKE_ENV=	SHLIBVER=${OPENSSL_SHLIBVER}
 SHARED_PLIST_SUB=	SHLIBVER=${OPENSSL_SHLIBVER}
-SHARED_USE=		ldconfig
+SHARED_USE=		ldconfig=yes
 SSE2_CONFIGURE_OFF=	no-sse2
 SSL2_CONFIGURE_ON=	enable-ssl2
 SSL2_CONFIGURE_OFF=	no-ssl2
 SSL3_CONFIGURE_ON=	enable-ssl3
 SSL3_CONFIGURE_OFF=	no-ssl3 no-ssl3-method
+SSL3_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-test_testssl
 THREADS_CONFIGURE_ON=	threads
 THREADS_CONFIGURE_OFF=	no-threads
 ZLIB_CONFIGURE_ON=	zlib zlib-dynamic
 ZLIB_CONFIGURE_OFF=	no-zlib no-zlib-dynamic
 
+CONFIGURE_ARGS=		no-gmp
+
+.include "version.mk"
+
 .include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} != gcc && ${COMPILER_VERSION} != 42
+CFLAGS+= -Werror -Qunused-arguments
+.endif
 
 .if ${PREFIX} == /usr
 IGNORE=	the OpenSSL port can not be installed over the base version
@@ -107,34 +117,22 @@ IGNORE=	the OpenSSL port can not be installed over the base version
 OPENSSLDIR?=	${PREFIX}/openssl
 PLIST_SUB+=	OPENSSLDIR=${OPENSSLDIR:S=^${PREFIX}/==}
 
-.include "version.mk"
-
 .if ${PORT_OPTIONS:MASM}
 BROKEN_sparc64=		option ASM generates illegal instructions
 .endif
-
-CONFIGURE_ARGS+=	no-gmp
 
 post-patch:
 	${REINPLACE_CMD} -e 's|m4 -B 8192|m4|g' \
 		${WRKSRC}/crypto/des/Makefile
 	${REINPLACE_CMD} -e 's|SHLIB_VERSION_NUMBER "1.0.0"|SHLIB_VERSION_NUMBER "${OPENSSL_SHLIBVER}"|' \
 		${WRKSRC}/crypto/opensslv.h
-	${REINPLACE_CMD} -e 's|ERR_R_MALLOC_ERROR|ERR_R_MALLOC_FAILURE|' \
-		${WRKSRC}/crypto/bio/bss_dgram.c
-.if ${PORT_OPTIONS:MEXPCIPHERS}
-	${REINPLACE_CMD} -e 's|TLS1_ALLOW_EXPERIMENTAL_CIPHERSUITES	0|TLS1_ALLOW_EXPERIMENTAL_CIPHERSUITES	1|' \
-		${WRKSRC}/ssl/tls1.h
-.endif
 
 post-patch-MAN3-off:
 	${GREP} -L openssl_manual_section ${WRKSRC}/doc/crypto/*.pod | ${XARGS} ${RM}
-	${RM} -rf ${WRKSRC}/doc/ssl/*.pod
 	${REINPLACE_CMD} -e 's|pod doc/ssl/\*\.pod|pod|' ${WRKSRC}/Makefile.org
 
 do-configure:
-	${REINPLACE_CMD} -e "s|options 386|options|" \
-		${WRKSRC}/config
+	${REINPLACE_CMD} -e "s|options 386|options|" ${WRKSRC}/config
 	cd ${WRKSRC} \
 	&& ${SETENV} CC="${CC}" FREEBSDCC="${CC}" CFLAGS="${CFLAGS}" PERL="${PERL}" \
 	./config --prefix=${PREFIX} --openssldir=${OPENSSLDIR} \
@@ -149,10 +147,9 @@ post-configure:
 		${WRKSRC}/Makefile
 
 post-install-SHARED-on:
-.for i in libcrypto libssl
-	${INSTALL_DATA} ${WRKSRC}/$i.so.${OPENSSL_SHLIBVER} ${STAGEDIR}${PREFIX}/lib
-	${LN} -sf $i.so.${OPENSSL_SHLIBVER} ${STAGEDIR}${PREFIX}/lib/$i.so
-.endfor
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/openssl \
+	${STAGEDIR}${PREFIX}/lib/lib*.so.${OPENSSL_SHLIBVER} \
+	${STAGEDIR}${PREFIX}/lib/engines/lib*.so
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

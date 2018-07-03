@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	htslib
-PORTVERSION=	1.3.1
+PORTVERSION=	1.6
 CATEGORIES=	biology devel
 
 MAINTAINER=	cartwright@asu.edu
@@ -17,10 +17,11 @@ TEST_DEPENDS=	bash:shells/bash
 USE_GITHUB=	yes
 GH_ACCOUNT=	samtools
 
-USES=		autoreconf gmake perl5 shebangfix
+USES=		autoreconf gmake pathfix perl5 shebangfix
 USE_PERL5=	test
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+PATHFIX_MAKEFILEIN=	Makefile
 SHEBANG_FILES=	test/compare_sam.pl test/test.pl
 
 OPTIONS_DEFINE=		CURL
@@ -33,16 +34,8 @@ CURL_CONFIGURE_ENABLE=	libcurl
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-MAKE_ENV=	INSTALL_LIB="${INSTALL_LIB}" \
-		INSTALL_DATA="${INSTALL_DATA}" \
-		INSTALL_PROGRAM="${INSTALL_PROGRAM}" \
-		INSTALL_DIR="${MKDIR}"
-
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 
 TEST_TARGET=	test
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|@PORTVERSION@|${PORTVERSION}|g' ${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

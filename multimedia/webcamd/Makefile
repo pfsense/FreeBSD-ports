@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	webcamd
-PORTVERSION=	4.8.0.4
+PORTVERSION=	4.12.0.1
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.selasky.org/hans_petter/distfiles/ \
 		http://home.selasky.org:8192/distfiles/
@@ -44,7 +44,6 @@ HAL_MAKE_ARGS=		HAVE_HAL="YES"
 HAL_SUB_LIST=		LIBHAL="${LOCALBASE}/lib/libhal.so:${LOCALBASE}/lib/libdbus-1.so:"
 HAL_SUB_LIST_OFF=	LIBHAL=""
 
-DEBUG_DESC=	Build with debugging support
 DEBUG_MAKE_ARGS=	HAVE_DEBUG="YES"
 
 VT_CLIENT_DESC=	Build with vTuner client support

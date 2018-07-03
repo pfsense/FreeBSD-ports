@@ -3,7 +3,7 @@
 
 PORTNAME=	cfengine
 PORTVERSION=	3.3.8
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	sysutils
 MASTER_SITES=	https://s3.amazonaws.com/cfengine.package-repos/tarballs/
 PKGNAMESUFFIX=	33
@@ -16,7 +16,8 @@ CPE_VENDOR=	gnu
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
-CONFLICTS=	cfengine-2* cfengine-3.[24-9]* cfengine-devel-*
+CONFLICTS=	cfengine-2* cfengine-3.[124-9]* cfengine-devel-* \
+		cfengine3[0124-9]-* cfengine31[0-9]-*
 
 USE_RC_SUBR=	cf-execd cf-serverd
 
@@ -68,6 +69,7 @@ CONFIGURE_ARGS+=	--with-postgresql=${LOCALBASE}
 
 .if ${PORT_OPTIONS:MMYSQL}
 USES+=			mysql
+BROKEN=			configure: error: MySQL client library exports symbols (EVP_CIPHER_CTX_init) clashing with OpenSSL.
 CONFIGURE_ARGS+=	--with-mysql=${LOCALBASE}
 LIB_DEPENDS+=		libmysqlclient.so:${_MYSQL_CLIENT}
 LDFLAGS+=		-L${LOCALBASE}/lib/mysql

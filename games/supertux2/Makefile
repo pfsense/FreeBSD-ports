@@ -2,11 +2,12 @@
 
 PORTNAME=	supertux
 PORTVERSION=	0.4.0
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/SuperTux/supertux/releases/download/v${PORTVERSION}/
 PKGNAMESUFFIX=	2
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Side-scroller game similar to Super Mario Brothers
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/smart_ptr.hpp:devel/boost-libs
@@ -24,7 +25,8 @@ USES=		cmake:outsource compiler:c++11-lib dos2unix iconv \
 CFLAGS+=	-D_GLIBCXX_USE_C99
 CMAKE_ARGS=	-DINSTALL_SUBDIR_BIN=bin \
 		-DBUILD_SHARED_LIBS=off
-DOS2UNIX_FILES=	external/squirrel/CMakeLists.txt
+DOS2UNIX_FILES=	external/squirrel/CMakeLists.txt \
+		external/squirrel/squirrel/sqvm.cpp
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 
 OPTIONS_DEFINE=	DOCS

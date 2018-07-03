@@ -13,10 +13,10 @@ COMMENT=	Suite of programs for setting up large POP3 server systems
 BUILD_DEPENDS=	p5-XML-DOM>=0:textproc/p5-XML-DOM
 
 CONFLICTS=	pserv-[0-9]* synce-librapi2-[0-9]*
+CONFLICTS_INSTALL=	ports-tools # bin/pcheck
 
-USES=		libtool perl5 gmake tar:bzip2
+USES=		libtool perl5 gmake tar:bzip2 ssl
 GNU_CONFIGURE=	yes
-USE_OPENSSL=	yes
 PDM_MODULES=	any master
 CONFIGURE_ARGS=	--without-bdb --disable-docbook --with-confdir=${PREFIX}/etc/popular \
 		--enable-ssl --with-pdm="${PDM_MODULES}"

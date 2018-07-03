@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	tinymce
-PORTVERSION=	4.3.3
+PORTVERSION=	4.7.9
 CATEGORIES=	www
-MASTER_SITES=	http://download.moxiecode.com/${PORTNAME}/ \
+MASTER_SITES=	http://download.ephox.com/${PORTNAME}/community/ \
 		LOCAL/sunpoet
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -13,8 +13,6 @@ COMMENT=	Open source JavaScript HTML WYSIWYG editor for web sites
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
-
-CONFLICTS_INSTALL=	tinymce-[0-35-9]* tinymce3-[0-9]*
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -32,11 +30,11 @@ do-install:
 MS_PLIST=	${WRKDIR}/.ms-pkg-plist
 
 genplist: do-clean extract
-	${ECHO} "@owner www" > ${MS_PLIST}
-	${ECHO} "@group www" >> ${MS_PLIST}
-	cd ${WRKSRC}/ && ${FIND} -s * -type f | ${SED} 's|^|%%WWWDIR%%/|' >> ${MS_PLIST}
-	${ECHO} "@owner" >> ${MS_PLIST}
-	${ECHO} "@group" >> ${MS_PLIST}
-	${INSTALL} -m 600 ${MS_PLIST} ${PLIST}
+	@${ECHO} "@owner www" > ${MS_PLIST}
+	@${ECHO} "@group www" >> ${MS_PLIST}
+	@cd ${WRKSRC}/ && ${FIND} -s * -type f | ${SED} 's|^|%%WWWDIR%%/|' >> ${MS_PLIST}
+	@${ECHO} "@owner" >> ${MS_PLIST}
+	@${ECHO} "@group" >> ${MS_PLIST}
+	@${INSTALL} -m 600 ${MS_PLIST} ${PLIST}
 
 .include <bsd.port.mk>

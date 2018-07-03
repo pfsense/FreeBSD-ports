@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	regex-applicative
-PORTVERSION=	0.3.2.1
+PORTVERSION=	0.3.3
+PORTREVISION=	1
 CATEGORIES=	textproc haskell
 
 MAINTAINER=	haskell@FreeBSD.org

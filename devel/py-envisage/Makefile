@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	envisage
-PORTVERSION=	4.5.1
+PORTVERSION=	4.6.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE=	BSD3CLAUSE PSFL LGPL20
 LICENSE_COMB=	multi
 # See image_LICENSE.txt files for per file license information
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}traits>=4.5.0:devel/py-traits
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}traits>=4.5.0:devel/py-traits@${FLAVOR}
 
 USES=		python:-2.7
 USE_PYTHON=	autoplist distutils

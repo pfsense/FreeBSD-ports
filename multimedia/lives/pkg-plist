@@ -125,7 +125,6 @@ lib/lives/plugins/effects/realtime/weed/softlight.so
 lib/lives/plugins/effects/realtime/weed/targeted_zoom.so
 lib/lives/plugins/effects/realtime/weed/textfun.so
 lib/lives/plugins/effects/realtime/weed/tone_gen.so
-lib/lives/plugins/effects/realtime/weed/toonz.so
 lib/lives/plugins/effects/realtime/weed/tvpic.so
 lib/lives/plugins/effects/realtime/weed/vector_visualiser.so
 lib/lives/plugins/effects/realtime/weed/vertigo.so
@@ -203,6 +202,7 @@ lib/lives/plugins/playback/video/SDL.so
 lib/lives/plugins/playback/video/icecast_output.so
 lib/lives/plugins/playback/video/lives2lives_stream.so
 lib/lives/plugins/playback/video/oggstream.so
+lib/lives/plugins/playback/video/openGL.so
 lib/lives/plugins/playback/video/vloopback.so
 lib/lives/plugins/playback/video/vloopback2.so
 lib/lives/plugins/playback/video/yuv4mpeg_stream.so

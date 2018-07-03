@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Regexp-Compare
-PORTVERSION=	0.24
+PORTVERSION=	0.28
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Partial ordering for regular expressions
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 USE_PERL5=	configure
@@ -21,8 +21,8 @@ post-install:
 
 .include <bsd.port.pre.mk>
 
-.if ${PERL_LEVEL} >= 502300
-BROKEN=		Unsupported
+.if ${PERL_LEVEL} >= 502700
+BROKEN=		does not support 5.27+
 .endif
 
 .include <bsd.port.post.mk>

@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	lifted-base
-PORTVERSION=	0.2.3.6
+PORTVERSION=	0.2.3.11
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

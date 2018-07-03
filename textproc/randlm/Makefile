@@ -3,18 +3,20 @@
 
 PORTNAME=	randlm
 PORTVERSION=	0.2.5
-PORTREVISION=	1
+PORTREVISION=	10
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	A toolkit for building randomized language models
 
-BROKEN_powerpc64=	Does not build
-
 BUILD_DEPENDS=	${LOCALBASE}/include/google/sparse_hash_map:devel/sparsehash
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 RUN_DEPENDS=	${LOCALBASE}/include/google/sparse_hash_map:devel/sparsehash
+
+BROKEN_aarch64=		fails to compile: invalid output constraint =a in assembler
+BROKEN_armv6=		fails to compile: invalid output constraint =a in assembler
+BROKEN_powerpc64=	fails to compile: 'itr' does not name a type
 
 GNU_CONFIGURE=	yes
 USE_PERL5=	run

@@ -1,25 +1,26 @@
 # $FreeBSD$
 
 PORTNAME=	epl.el
-PORTVERSION=	0.7
+PORTVERSION=	0.8
 PORTREVISION=	2
 CATEGORIES=	devel elisp
+PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	rpaulo@FreeBSD.org
+MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Emacs Package Library
 
 LICENSE=	GPLv3
 
+USES=		emacs
 USE_GITHUB=	yes
 GH_ACCOUNT=	cask
 GH_PROJECT=	epl
 
-USE_EMACS=	yes
-
 NO_BUILD=	yes
+PLIST_FILES=	${EMACS_SITE_LISPDIR}/epl.el
 
 do-install:
-	${INSTALL_DATA} ${WRKSRC}/epl.el \
-		${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${PLIST_FILES:M*.el:T} \
+	    ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR})
 
 .include <bsd.port.mk>

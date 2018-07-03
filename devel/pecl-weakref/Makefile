@@ -5,19 +5,18 @@ PORTNAME=	weakref
 PORTVERSION=	0.2.6
 PORTREVISION=	1
 CATEGORIES=	devel pear
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
 DISTNAME=	Weakref-${PORTVERSION}
-DIST_SUBDIR=	PECL
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PECL Weakref extension
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		php:ext tar:tgz
-IGNORE_WITH_PHP=	70
+PORTSCOUT=	limit:^0\.2\.[0-9]*
+
+USES=		php:pecl
+IGNORE_WITH_PHP=	70 71 72
 
 CFLAGS+=	-I${LOCALBASE}/include
 

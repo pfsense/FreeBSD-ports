@@ -1,6 +1,12 @@
 bin/munindoc
 @sample %%ETCDIR%%/munin-node.conf.sample
-@sample %%ETCDIR%%/plugin-conf.d/plugins.conf.sample
+@dir %%ETCDIR%%/plugin-conf.d
+@sample %%ETCDIR%%/plugins.conf.sample %%ETCDIR%%/plugin-conf.d/plugins.conf
+@comment the directory exists in STAGEDIR because it is present in
+@comment BSD.local.dist but if not registered here, it will not exist in PREFIX
+@comment when the package is installed.
+@dir etc/newsyslog.conf.d
+@sample %%ETCDIR%%/munin-node.newsyslog etc/newsyslog.conf.d/munin-node
 %%SITE_PERL%%/Munin/Node/Config.pm
 %%SITE_PERL%%/Munin/Node/Configure/Debug.pm
 %%SITE_PERL%%/Munin/Node/Configure/History.pm
@@ -109,7 +115,7 @@ sbin/munin-sched
 %%DATADIR%%/plugins/iostat
 %%DATADIR%%/plugins/ipac-ng
 %%DATADIR%%/plugins/ipmi_
-%%DATADIR%%/plugins/ipmi_sensor_
+%%PYTHON%%%%DATADIR%%/plugins/ipmi_sensor_
 %%DATADIR%%/plugins/ircu
 %%JAVA%%%%DATADIR%%/plugins/jmx_
 %%JAVA%%%%DATADIR%%/plugins/jmx_tomcat_dbpools
@@ -194,7 +200,7 @@ sbin/munin-sched
 %%DATADIR%%/plugins/slapd_
 %%DATADIR%%/plugins/slapd_bdb_cache_
 %%PERL%%%%DATADIR%%/plugins/slony_lag_
-%%DATADIR%%/plugins/smart_
+%%PYTHON%%%%DATADIR%%/plugins/smart_
 %%SNMP%%%%DATADIR%%/plugins/snmp__cpuload
 %%SNMP%%%%DATADIR%%/plugins/snmp__df
 %%SNMP%%%%DATADIR%%/plugins/snmp__df_ram
@@ -250,6 +256,7 @@ sbin/munin-sched
 %%DATADIR%%/plugins/users
 %%PERL%%%%DATADIR%%/plugins/varnish_
 %%DATADIR%%/plugins/vmstat
+%%DATADIR%%/plugins/zfs_arc_compression
 %%DATADIR%%/plugins/zfs_compress
 %%DATADIR%%/plugins/zimbra_
 %%DATADIR%%/plugins/zpool_chksum

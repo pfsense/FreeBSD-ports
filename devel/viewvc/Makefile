@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	viewvc
-PORTVERSION=	1.1.25
+DISTVERSION=	1.1.26
 CATEGORIES=	devel python
-MASTER_SITES=	http://www.viewvc.org/ \
-		LOCAL/ohauer
 
 MAINTAINER=	ohauer@FreeBSD.org
 COMMENT=	Web-based Version Control Repository Browsing
 
 LICENSE=	BSD2CLAUSE
+
+USE_GITHUB=	yes
 
 NO_OPTIONS_SORT=	yes
 OPTIONS_DEFINE=		WEBSRV APMOD SVN MYSQL
@@ -21,7 +21,7 @@ OPTIONS_SINGLE_WEBSRV=	APACHE LIGHTTPD
 OPTIONS_SINGLE_APMOD=	MODPYTHON33 MODPYTHON35 MODWSGI
 
 WEBSRV_DESC=		Enable web server support
-APMOD_DESC=		depend on optional Apache module
+APMOD_DESC=		depend on Apache module
 
 MODWSGI_DESC=		Add mod_wsgi to the list of package dependencies
 MODPYTHON33_DESC=	Add mod_python33 to the list of package dependencies
@@ -32,9 +32,9 @@ APACHE_USE=		APACHE_RUN=22+
 LIGHTTPD_RUN_DEPENDS=	lighttpd:www/lighttpd
 MODPYTHON33_RUN_DEPENDS=${APACHE_PKGNAMEPREFIX}mod_python33>=3.3:www/mod_python33
 MODPYTHON35_RUN_DEPENDS=${APACHE_PKGNAMEPREFIX}mod_python35>=3.5:www/mod_python35
-MODWSGI_RUN_DEPENDS=	${APACHE_PKGNAMEPREFIX}mod_wsgi4>=4.4.13:www/mod_wsgi4
-SVN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}subversion>=0:devel/py-subversion
-MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=0:databases/py-MySQLdb
+MODWSGI_RUN_DEPENDS=	${APACHE_PKGNAMEPREFIX}${PYTHON_PKGNAMEPREFIX}mod_wsgi4>=4.4.13:www/mod_wsgi4@${PY_FLAVOR}
+SVN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}subversion>=0:devel/py-subversion@${PY_FLAVOR}
+MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=0:databases/py-MySQLdb@${PY_FLAVOR}
 
 .include <bsd.port.options.mk>
 
@@ -46,7 +46,7 @@ SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} \
 		ECHO=${ECHO} EGREP=${EGREP} TOUCH=${TOUCH} \
 		CHOWN=${CHOWN} RM=${RM:Q}
 
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pygments>=1.6:textproc/py-pygments
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pygments>=1.6:textproc/py-pygments@${PY_FLAVOR}
 
 pre-everything::
 .if ${PORT_OPTIONS:MAPMOD} && !${PORT_OPTIONS:MAPACHE}

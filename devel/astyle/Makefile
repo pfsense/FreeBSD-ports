@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	astyle
-PORTVERSION=	2.05.1
+PORTVERSION=	3.1
 CATEGORIES=	devel textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 DISTNAME=	${PORTNAME}_${PORTVERSION}_linux
@@ -10,27 +10,22 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}_linux
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	Source code indenter and formatter for C, C++, C\#, and Java
 
-LICENSE=	LGPL3
+LICENSE=	MIT
+LICENSE_FILE=	${WRKDIR}/astyle/LICENSE.md
+
+USES=		compiler dos2unix gmake
 
 ALL_TARGET=	astyle
-CFLAGS+=	-W -Wall -fno-rtti -fno-exceptions
-LDFLAGS+=	-s
-MAKE_ARGS+=	CFLAGS="${CFLAGS}"
-USES=		compiler gmake iconv
+DOS2UNIX_GLOB=	*.ini
+WRKSRC=		${WRKDIR}/astyle/build/${COMPILER_TYPE}
 
-WRKSRC=		${WRKDIR}/astyle/build/gcc
-
-OPTIONS_DEFINE=	DOCS
-
-pre-patch:
-	@${REINPLACE_CMD} -e 's,^CFLAGS,#CFLAGS,; s,g++,${CXX},; \
-		s,\(CFLAGSr.*=.*\),\1 -I${LOCALBASE}/include,' \
-		${WRKSRC}/Makefile
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
-	${STRIP_CMD} ${WRKSRC}/bin/astyle
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/astyle ${STAGEDIR}${PREFIX}/bin
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKDIR}/astyle/doc/* ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKDIR}/astyle/file/* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

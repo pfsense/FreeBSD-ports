@@ -3,7 +3,7 @@
 
 PORTNAME=	sybase
 PORTVERSION=	0.37
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	databases python
 MASTER_SITES=	http://object-craft.com.au/projects/sybase/download/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +16,7 @@ LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libct.so:databases/freetds
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils
 
 OPTIONS_DEFINE=	DOCS THREADS EXAMPLES

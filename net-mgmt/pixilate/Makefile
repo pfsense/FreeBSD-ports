@@ -26,10 +26,10 @@ PLIST_FILES=	bin/pixilate man/man1/pixilate.1.gz
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@cd ${WRKSRC} && ${RM} -f INSTALL install-sh missing mkinstalldirs
+	@cd ${WRKSRC} && ${RM} INSTALL install-sh missing mkinstalldirs
 
-post-install:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

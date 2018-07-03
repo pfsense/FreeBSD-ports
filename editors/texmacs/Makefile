@@ -3,7 +3,7 @@
 
 PORTNAME=	texmacs
 PORTVERSION=	1.99.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	editors print
 MASTER_SITES=	http://www.texmacs.org/Download/ftp/tmftp/source/
 DISTNAME=	TeXmacs-${PORTVERSION}-src
@@ -19,6 +19,9 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libgmp.so:math/gmp
 RUN_DEPENDS=	fig2dev:print/transfig
 
+BROKEN_armv6=		fails to compile: call to min is ambiguous
+BROKEN_armv7=		fails to compile: call to min is ambiguous
+
 USES=		cpe desktop-file-utils gmake iconv localbase pkgconfig python \
 		shared-mime-info shebangfix
 USE_TEX=	tex:run dvipsk:run
@@ -30,7 +33,9 @@ ALL_TARGET=	${PORTNAME:tu}
 SHEBANG_FILES=	plugins/asymptote/bin/* plugins/dratex/bin/* \
 		plugins/eukleides/bin/* plugins/feynmf/bin/* \
 		plugins/mupad/bin/* plugins/texgraph/bin/* \
-		plugins/xypic/bin/*
+		plugins/xypic/bin/* \
+		plugins/python/bin/tm_python plugins/sage/bin/tm_sage \
+		plugins/mathematica/bin/realpath.py
 
 DATADIR=	${PREFIX}/share/TeXmacs
 
@@ -54,7 +59,7 @@ PDF_IMPLIES=		FREETYPE GHOSTSCRIPT
 QT4_USE=		qt4=accessible,corelib,gui,imageformats \
 			qt4=moc_build,qmake_build,rcc_build,uic_build
 QT4_USE_OFF=		xorg=xext
-QT4_CONFIGURE_ON=	--with-qt=${QT_PREFIX} --enable-qtpipes
+QT4_CONFIGURE_ON=	--with-qt=${PREFIX} --enable-qtpipes
 QT4_CONFIGURE_OFF=	--disable-qt
 QT4_VARS=		QT_PLUGINS_LIST="accessible imageformats"
 QT4_VARS_OFF=		QT_PLUGINS_LIST=""

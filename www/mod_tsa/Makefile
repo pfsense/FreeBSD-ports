@@ -3,17 +3,16 @@
 
 PORTNAME=	mod_tsa
 PORTVERSION=	1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	http://am.nesiac.org/static/ \
 		http://ubique.spb.ru/src/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Time stamping authority (RFC 3161) module for apache
 
 OPTIONS_DEFINE=	MYSQL PGSQL FIREBIRD DEBUG DEBUG_MEMORY
 DEBUG_MEMORY_DESC=	Memory debug
-
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-openssl-incdir=${OPENSSLINC} \
@@ -21,9 +20,7 @@ CONFIGURE_ARGS=	--with-openssl-incdir=${OPENSSLINC} \
 				--with-apxs=${APXS}
 MAKE_ARGS+=	APXS=${APXS}
 
-USE_OPENSSL=	yes
-WITH_OPENSSL_PORT=	yes
-USE_APACHE=	22+
+USES=		apache:2.2+ ssl
 AP_EXTRAS+=	-DMOD_TSA_VERSION=\\\"mod_tsa/${PORTVERSION}\\\"
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
@@ -51,7 +48,7 @@ AP_LIB+=	-lpq
 .endif
 
 .if ${PORT_OPTIONS:MFIREBIRD}
-USE+=			firebird
+USES+=			firebird
 CONFIGURE_ARGS+=	--enable-firebird=yes
 SRC_FILE+=	db_firebird.c
 AP_LIB+=	-lgds

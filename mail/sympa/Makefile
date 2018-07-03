@@ -2,10 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	sympa
-PORTVERSION=	6.2.16
+DISTVERSION=	6.2.32
 CATEGORIES=	mail
-MASTER_SITES=	http://www.sympa.org/distribution/ \
-		http://www.sympa.org/distribution/old/
 
 MAINTAINER=	dgeo@centrale-marseille.fr
 COMMENT=	Sympa is an electronic mailing list manager
@@ -44,7 +42,6 @@ RUN_DEPENDS=	\
 	p5-MIME-Charset>=0:mail/p5-MIME-Charset	\
 	p5-Net-CIDR>=0:net-mgmt/p5-Net-CIDR	\
 	p5-Proc-ProcessTable>=0:devel/p5-Proc-ProcessTable	\
-	p5-Time-HiRes>=0:devel/p5-Time-HiRes	\
 	p5-Crypt-SMIME>=0:security/p5-Crypt-SMIME	\
 	p5-CGI>=0:www/p5-CGI \
 	p5-Data-Password>=0:security/p5-Data-Password
@@ -52,17 +49,23 @@ RUN_DEPENDS=	\
 # Ignore alpha/beta versions
 PORTSCOUT=	limit:^[0-9]+(\.[0-9]+)*$$
 
-PORTDOCS=	NEWS
+PORTDOCS=	NEWS.md
 
 USERS=		sympa
 GROUPS=		sympa
 # Shebang is corrected by configure script
-USES=		cpe fakeroot perl5
+USES=		autoreconf cpe fakeroot perl5 shebangfix gettext
+
+SHEBANG_FILES=	po/sympa/xgettext.pl \
+		po/sympa/add-lang.pl \
+
 GNU_CONFIGURE=	yes
 ICONSDIR?=	www/icons
-CONFIGURE_ARGS+=--bindir=${PREFIX}/bin \
+CONFIGURE_ARGS+=--enable-fhs	\
+		--bindir=${PREFIX}/bin	\
 		--libexecdir=${PREFIX}/libexec/${PORTNAME} \
 		--localedir=${PREFIX}/share/locale	\
+		--localstatedir=/var/${PORTNAME}	\
 		--sbindir=${PREFIX}/libexec/${PORTNAME}	\
 		--datadir=${DATADIR}	\
 		--sysconfdir=${ETCDIR}			\
@@ -73,26 +76,33 @@ CONFIGURE_ARGS+=--bindir=${PREFIX}/bin \
 		--without-initdir	\
 		--with-lockdir=/var/spool/lock		\
 		--with-modulesdir=${PREFIX}/libexec/${PORTNAME} \
+		--with-staticdir=${DATADIR}/static \
+		--with-cssdir=${DATADIR}/static/css \
+		--with-picturesdir=${DATADIR}/static/pictures \
 		--with-piddir=/var/run/${PORTNAME} \
 		--with-scriptdir=${PREFIX}/libexec/${PORTNAME} \
 		--with-spooldir=/var/spool/${PORTNAME} \
 		--with-cgidir=${PREFIX}/libexec/${PORTNAME}	\
 		--without-smrshdir
 
-CONFIGURE_ENV+=	lt_cv_sys_max_cmd_len=${CONFIGURE_MAX_CMD_LEN}
+CONFIGURE_ENV+=	lt_cv_sys_max_cmd_len=${CONFIGURE_MAX_CMD_LEN} \
+		ac_cv_path_POSTALIAS=${LOCALBASE}/sbin/postalias
 MAKE_ENV?=	PERL_EXTUTILS_AUTOINSTALL=--skip
 SUB_FILES=	pkg-install pkg-message apache.sample nginx.sample fcgi.sample
 SUB_LIST=	DB_TYPE=${DB_TYPE} PERL=${PERL} WRKSRC=${WRKSRC} BINDIR=${STAGEDIR}${PREFIX}
 PORTEXAMPLES=	*
 
+USE_GITHUB=	YES
+GH_TUPLE=	sympa-community:sympa:${PORTVERSION}
+
 USE_RC_SUBR=	sympa
 
 CONFLICTS=	sympa-5*
 
-OPTIONS_DEFINE=	FASTCGI APACHE NLS
+OPTIONS_DEFINE=	FASTCGI APACHE
 OPTIONS_DEFAULT=APACHE
 OPTIONS_RADIO=	DATABASE
-OPTIONS_RADIO_DATABASE=	ORACLE PGSQL SYBASE MYSQL
+OPTIONS_RADIO_DATABASE=	PGSQL SYBASE MYSQL
 OPTIONS_SUB=	yes
 
 SYBASE_DESC=	Sybase database
@@ -101,21 +111,17 @@ SYBASE_DESC=	Sybase database
 DB_TYPE:=	${DB_TYPE:tu}
 .  for option in ${OPTIONS_RADIO_DATABASE}
 .    if ${DB_TYPE} == ${option:S,PGSQL,PG,}
-OPTIONS_SET+=	${option}
+OPTIONS_DEFAULT+=	${option}
 .warning You need to replace your DB_TYPE variable in make.conf with mail_sympa_SET+=${option}
 .    endif
 .  endfor
 .endif
 
-NLS_USES=		gettext
-NLS_CONFIGURE_ENABLE=	nls
 FASTCGI_RUN_DEPENDS=	p5-FCGI>=0:www/p5-FCGI
 APACHE_IMPLIES=	FASTCGI
-APACHE_USE=	APACHE_RUN=22+
+APACHE_USES+=	apache:run
 APACHE_RUN_DEPENDS=	${LOCALBASE}/${APACHEMODDIR}/mod_fastcgi.so:www/mod_fastcgi
 
-ORACLE_RUN_DEPENDS=	p5-DBD-Oracle>=0:databases/p5-DBD-Oracle
-ORACLE_VARS=	DB_TYPE=oracle
 PGSQL_SUB_LIST=	REQ_PGSQL=postgresql
 PGSQL_SUB_LIST_OFF=	REQ_PGSQL=""
 PGSQL_RUN_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
@@ -131,16 +137,14 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|^\( *staticdir=\).*$$|\1${DATADIR}|'	\
 	    -e 's|^\( *arcdir=\).*$$|\1${DATADIR}/arc|'			\
 	    -e 's|^\( *bouncedir=\).*$$|\1${DATADIR}/bounce|'		\
-	    -e 's|^\( *defaultdir=\).*$$|\1${DATADIR}/defaults|'		\
-	    -e 's|^\( *execcgidir=\).*$$|\1${PREFIX}/libexec/${PORTNAME}|' \
-		${WRKSRC}/configure
+		${WRKSRC}/configure.ac
 
 post-install:
 	for link in sympa.pl sympa_wizard.pl upgrade_bulk_spool.pl upgrade_send_spool.pl; do \
 		(cd ${STAGEDIR}${PREFIX}/bin && ${LN} -f -s ../libexec/sympa/$$link) \
 	done
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/NEWS ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/NEWS.md ${STAGEDIR}${DOCSDIR}
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKDIR}/apache.sample ${WRKDIR}/nginx.sample \
 		${WRKDIR}/fcgi.sample ${STAGEDIR}${EXAMPLESDIR}

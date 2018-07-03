@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	nagstamon
-PORTVERSION=	1.0
+PORTVERSION=	1.0.1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt python
-MASTER_SITES=	https://nagstamon.ifw-dresden.de/files-nagstamon/stable/ \
+MASTER_SITES=	https://nagstamon.ifw-dresden.de/files/very_stable/ \
 		LOCAL/ehaupt
 DISTNAME=	Nagstamon-${PORTVERSION}
 
@@ -13,9 +14,10 @@ COMMENT=	Nagios status monitor for your desktop
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	sox:audio/sox
+RUN_DEPENDS=	sox:audio/sox \
+		${PYTHON_PKGNAMEPREFIX}keyring>=1.3:security/py-keyring@${FLAVOR}
 
-USES=		cpe python:2
+USES=		cpe python:2.7
 CPE_VENDOR=	henri_wahl
 USE_PYTHON=	distutils
 USE_GNOME=	pygtk2 librsvg2

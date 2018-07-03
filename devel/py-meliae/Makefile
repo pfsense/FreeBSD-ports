@@ -2,7 +2,7 @@
 
 PORTNAME=	meliae
 PORTVERSION=	0.4.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	http://launchpadlibrarian.net/74803944/ \
 		LOCAL/sbz
@@ -13,10 +13,8 @@ COMMENT=	Python Memory Usage Analyzer
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	cython>0:lang/cython
-
-USES=		python:2
-USE_PYTHON=	distutils autoplist
+USES=		python:2.7
+USE_PYTHON=	distutils autoplist cython
 
 regression-test: extract
 	(cd ${WRKSRC}; ${MAKE} check)

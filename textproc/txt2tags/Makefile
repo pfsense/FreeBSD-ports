@@ -3,22 +3,20 @@
 
 PORTNAME=	txt2tags
 PORTVERSION=	2.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	textproc
-MASTER_SITES=	https://launchpad.net/ubuntu/+archive/primary/+files/
-DISTNAME=	txt2tags_${PORTVERSION}.orig
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	lbartoletti@tuxfamily.org
 COMMENT=	Convert simply formatted text into markup (e.g., HTML)
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:2 shebangfix
+USES=		python:2.7 shebangfix
 SHEBANG_FILES=	extras/html-update.sh txt2tags
+USE_GITHUB=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
-WRKSRC=		${WRKDIR}/txt2tags-${PORTVERSION}
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	*
@@ -36,6 +34,6 @@ do-install-EXAMPLES-on:
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/userguide.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/*/*.pdf ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

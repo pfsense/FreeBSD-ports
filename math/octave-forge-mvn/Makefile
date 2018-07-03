@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-mvn
 PORTVERSION=	1.1.0
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -21,8 +21,10 @@ OCTSRC=		${OCTAVE_PKGNAME}
 do-build:
 	@${DO_NADA}
 
+NO_ARCH=	yes
+
 post-build:
-	${RM} -f ${WRKSRC}/Makefile ${WRKSRC}/configure
+	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
 	cd ${WRKDIR} && ${TAR} cfz ${DISTNAME}.tar.gz ${OCTSRC}
 
 .include <bsd.port.mk>

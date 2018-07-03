@@ -3,33 +3,24 @@
 
 PORTNAME=	catch
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.4
+DISTVERSION=	2.2.1
 CATEGORIES=	devel
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Header-only test framework for C++
 
 LICENSE=	BSL
-LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-TEST_DEPENDS=	cmake:devel/cmake
-TEST_TARGET=	do-test
-
+USES=		compiler:c++14-lang cmake pathfix
 USE_GITHUB=	yes
-GH_ACCOUNT=	philsquared
-GH_PROJECT=	Catch
+GH_ACCOUNT=	catchorg
+GH_PROJECT=	Catch2
 
-NO_BUILD=	yes
-NO_ARCH=	yes
-
-PLIST_FILES=	include/catch.hpp
-
-do-install:
-	${INSTALL_DATA} ${WRKSRC}/single_include/catch.hpp \
-	    ${STAGEDIR}${PREFIX}/include
+CMAKE_ARGS=	-DCMAKE_INSTALL_DOCDIR=${DOCSDIR}
+PORTDOCS=	*
 
 do-test:
-	cd ${WRKSRC}/projects/CMake && \
-	    ${LOCALBASE}/bin/cmake . && ${MAKE_CMD} && ./SelfTest
+	${WRKSRC}/SelfTest
 
 .include <bsd.port.mk>

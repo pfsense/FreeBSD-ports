@@ -2,6 +2,7 @@
 
 PORTNAME=	trustedqsl
 PORTVERSION=	2.2.1
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.arrl.org/files/file/LoTW%20Instructions/ \
 		LOCAL/shurd
@@ -14,6 +15,9 @@ LICENSE=	ARRL
 LICENSE_NAME=	American Radio Relay League, Inc. All rights reserved.
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
+
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	member access into incomplete type 'EVP_PKEY' (aka 'evp_pkey_st')
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2
@@ -38,13 +42,13 @@ CONVERTER_CMAKE_ON=	-DBUILD_CONVERTER=ON
 
 OPTIONS_SUB=	yes
 
-post-stage-GEN_CRQ-on:
+post-install-GEN_CRQ-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/gen_crq ${STAGEDIR}${PREFIX}/bin
-post-stage-LOAD_CERT-on:
+post-install-LOAD_CERT-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/load_cert ${STAGEDIR}${PREFIX}/bin
-post-stage-STATION_LOC-on:
+post-install-STATION_LOC-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/station_loc ${STAGEDIR}${PREFIX}/bin
-post-stage-CONVERTER-on:
+post-install-CONVERTER-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/converter ${STAGEDIR}${PREFIX}/bin
 
 post-patch:

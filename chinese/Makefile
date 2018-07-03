@@ -19,8 +19,6 @@
     SUBDIR += bsdconv-opencc
     SUBDIR += bug5
     SUBDIR += c2t
-    SUBDIR += calligra-l10n-zh_CN
-    SUBDIR += calligra-l10n-zh_TW
     SUBDIR += cconv
     SUBDIR += celvis
     SUBDIR += chiconv
@@ -29,13 +27,12 @@
     SUBDIR += dictd-database
     SUBDIR += docproj
     SUBDIR += enscript
-    SUBDIR += eric6
     SUBDIR += eterm
+    SUBDIR += fandol
     SUBDIR += fcitx
     SUBDIR += fcitx-chewing
     SUBDIR += fcitx-cloudpinyin
     SUBDIR += fcitx-configtool
-    SUBDIR += fcitx-googlepinyin
     SUBDIR += fcitx-libpinyin
     SUBDIR += fcitx-rime
     SUBDIR += fcitx-sunpinyin
@@ -43,26 +40,27 @@
     SUBDIR += fcitx-ui-light
     SUBDIR += fireflyttf
     SUBDIR += font-std
-    SUBDIR += fortune
     SUBDIR += fortunetw
-    SUBDIR += fqterm
     SUBDIR += gb2jis
     SUBDIR += gb2ps
     SUBDIR += gcin
+    SUBDIR += gcin-gtk3
+    SUBDIR += gcin-qt4
+    SUBDIR += gcin-qt5
     SUBDIR += gimp-help-zh_CN
     SUBDIR += gydict
     SUBDIR += hc
+    SUBDIR += ibus-array
+    SUBDIR += ibus-cangjie
     SUBDIR += ibus-chewing
     SUBDIR += ibus-libpinyin
     SUBDIR += ibus-pinyin
-    SUBDIR += ibus-table-chinese
-    SUBDIR += irssi
     SUBDIR += jis2gb
     SUBDIR += kcfonts
     SUBDIR += kde4-l10n-zh_CN
     SUBDIR += kde4-l10n-zh_TW
+    SUBDIR += libcangjie
     SUBDIR += libchewing
-    SUBDIR += libgooglepinyin
     SUBDIR += libpinyin
     SUBDIR += libreoffice-zh_CN
     SUBDIR += libreoffice-zh_TW
@@ -71,7 +69,6 @@
     SUBDIR += lunar
     SUBDIR += moettf
     SUBDIR += muni
-    SUBDIR += mutt
     SUBDIR += oicq
     SUBDIR += opencc
     SUBDIR += opendesktop-fonts
@@ -92,12 +89,11 @@
     SUBDIR += p5-Lingua-ZH-WordSegmenter
     SUBDIR += p5-Lingua-ZH-Wrap
     SUBDIR += p5-Text-Greeking-zh_TW
-    SUBDIR += p5-cconv
     SUBDIR += pcmanx
-    SUBDIR += php-cconv
+    SUBDIR += php-opencc
     SUBDIR += phpbb-tw
     SUBDIR += phpbb3-tw
-    SUBDIR += py-cconv
+    SUBDIR += pycangjie
     SUBDIR += pyzy
     SUBDIR += qe
     SUBDIR += qt4-codecs-cn
@@ -120,6 +116,5 @@
     SUBDIR += wordpress-zh_CN
     SUBDIR += wordpress-zh_TW
     SUBDIR += xpdf
-    SUBDIR += ydict
 
 .include <bsd.port.subdir.mk>

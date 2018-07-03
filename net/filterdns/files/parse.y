@@ -37,13 +37,13 @@
 #include "filterdns.h"
 
 struct file {
-	FILE			*stream;
-	char			*name;
-	int			 lineno;
-	int			 error;
+	FILE	*stream;
+	char	*name;
+	int	 lineno;
+	int	 error;
 };
 
-static struct file *file;
+static struct	 file *file;
 int		 yyparse(void);
 int		 yylex(void);
 int		 yyerror(const char *, ...);
@@ -59,8 +59,8 @@ static int errors = 0;
 
 typedef struct {
 	union {
-		int			number;
-		char			*string;
+		int	 number;
+		char	*string;
 	} v;
 	int lineno;
 } YYSTYPE;
@@ -119,9 +119,9 @@ dnsrule		: ftype STRING STRING pipe command {
 				if ($5) {
 					thr->cmd = strdup($5);
 					free($5);
-				} 
-				TAILQ_INIT(&thr->rnh); 
-				TAILQ_INIT(&thr->static_rnh); 
+				}
+				TAILQ_INIT(&thr->rnh);
+				TAILQ_INIT(&thr->static_rnh);
 				TAILQ_INSERT_TAIL(&thread_list, thr, next);
 			}
 		}
@@ -144,8 +144,8 @@ dnsrule		: ftype STRING STRING pipe command {
 			free($3);
 			thr->tablename = NULL;
 
-			TAILQ_INIT(&thr->rnh); 
-			TAILQ_INIT(&thr->static_rnh); 
+			TAILQ_INIT(&thr->rnh);
+			TAILQ_INIT(&thr->static_rnh);
                         TAILQ_INSERT_TAIL(&thread_list, thr, next);
 		}
 		;
@@ -247,17 +247,6 @@ lgetc(int quotec __unused)
 	if (pushback_index)
 		return (pushback_buffer[--pushback_index]);
 
-#if 0
-	if (quotec) {
-		if ((c = getc(file->stream)) == EOF) {
-			yyerror("reached end of file while parsing "
-			    "quoted string");
-			return (EOF);
-		}
-		return (c);
-	}
-#endif
-
 	while ((c = getc(file->stream)) == '\\') {
 		next = getc(file->stream);
 		if (next != '\n') {
@@ -268,14 +257,14 @@ lgetc(int quotec __unused)
 		file->lineno++;
 	}
 
-	if (c == '\t' || c == ' ') {
-                /* Compress blanks to a single space. */
-                do {
-                        c = getc(file->stream);
-                } while (c == '\t' || c == ' ');
-                ungetc(c, file->stream);
-                c = ' ';
-        }
+if (c == '\t' || c == ' ') {
+		/* Compress blanks to a single space. */
+		do {
+			c = getc(file->stream);
+		} while (c == '\t' || c == ' ');
+		ungetc(c, file->stream);
+		c = ' ';
+	}
 
 	return (c);
 }
@@ -306,12 +295,7 @@ findeol(void)
 
 	/* skip to either EOF or the first real EOL */
 	while (1) {
-#if 0
-		if (pushback_index)
-			c = pushback_buffer[--pushback_index];
-		else
-#endif
-			c = lgetc(0);
+		c = lgetc(0);
 		if (c == '\n') {
 			file->lineno++;
 			break;

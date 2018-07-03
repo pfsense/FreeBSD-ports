@@ -8,13 +8,13 @@ CATEGORIES=	www devel python
 MASTER_SITES=	http://people.freebsd.org/~mm/trac/
 PKGNAMEPREFIX=	trac-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Table of contents macro
 
 RUN_DEPENDS=	tracd:www/trac
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

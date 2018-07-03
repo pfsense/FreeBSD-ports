@@ -3,15 +3,17 @@
 
 PORTNAME=	apachetop
 PORTVERSION=	0.12.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
-MASTER_SITES=	http://lukasz.wasikowski.net/files/
+MASTER_SITES=	https://www.freebsd.systems/files/
 
 MAINTAINER=	lukasz@wasikowski.net
-COMMENT=	Apache RealTime log stats
+COMMENT=	Apache realtime log stats
+
+LICENSE=	BSD3CLAUSE
 
 GNU_CONFIGURE=	yes
-USES=		readline
+USES=		ncurses readline
 
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 

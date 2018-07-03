@@ -2,18 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	trayer
-PORTVERSION=	1.1.6
+PORTVERSION=	1.1.8
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	x11
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Lightweight GTK2-based systray for UNIX desktop
 
-USE_GNOME=	gtk20 glib20 pango atk
-USE_GITHUB=	yes
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
+
 USES=		iconv gmake pkgconfig
-USE_XORG=	xmu
-MAKE_ARGS=	"PREFIX=${PREFIX}"
+USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 pango
+USE_GITHUB=	yes
+USE_XORG=	x11 xmu
+HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--prefix="${PREFIX}"
 
 GH_ACCOUNT=	sargon
 GH_PROJECT=	${PORTNAME}-srg
@@ -21,9 +25,6 @@ GH_PROJECT=	${PORTNAME}-srg
 PORTDOCS=	README CREDITS CHANGELOG
 
 PLIST_FILES=	bin/trayer man/man1/trayer.1.gz
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|$$(PREFIX)/|$$(DESTDIR)&|' ${WRKSRC}/Makefile
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1

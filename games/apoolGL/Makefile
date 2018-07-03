@@ -3,7 +3,7 @@
 
 PORTNAME=	apoolGL
 PORTVERSION=	0.99.22
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	http://www.planetjahn.de/files/
 DISTNAME=	${PORTNAME}-099-pre22
@@ -15,13 +15,14 @@ LICENSE=	GPLv2+
 
 USE_SDL=	sdl
 USE_GL=		gl
-
-OPTIONS_DEFINE=	DOCS
+USES=		dos2unix
+DOS2UNIX_FILES=	ApoolGL.txt
 
 PORTDOCS=	ApoolGL.txt CHANGELOG OpenGL-Features
 
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
-	@${REINPLACE_CMD} -e "s|`${PRINTF} '\r'`$$||" ${WRKSRC}/ApoolGL.txt
 	@${REINPLACE_CMD} -e 's|SDL/||' ${WRKSRC}/*.c
 
 do-build:
@@ -37,6 +38,8 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/textures-${i}/*.bmp ${STAGEDIR}${DATADIR}/textures-${i}
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/*.dat ${STAGEDIR}${DATADIR}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

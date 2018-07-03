@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	glm
-PORTVERSION=	0.9.7.3
+PORTVERSION=	0.9.8.5
 PORTEPOCH=	1
 CATEGORIES=	math graphics
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	C++ mathematics library for software based on the OpenGL GLSL
 
 LICENSE=	MIT
@@ -16,9 +16,11 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	g-truc
 
 NO_ARCH=	yes
-NO_BUILD=	yes
 
-CMAKE_ARGS=	-DGLM_TEST_ENABLE:BOOL=OFF
-USES=		cmake:outsource
+USES=		cmake:outsource pkgconfig
+
+OPTIONS_DEFINE=	TEST
+TEST_CMAKE_BOOL=	GLM_TEST_ENABLE
+TEST_TEST_TARGET=	test
 
 .include <bsd.port.mk>

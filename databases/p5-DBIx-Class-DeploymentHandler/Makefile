@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	DBIx-Class-DeploymentHandler
-PORTVERSION=	0.002216
+PORTVERSION=	0.002218
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -9,7 +9,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Perl extension for extensible DBIx::Class deployment
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	\

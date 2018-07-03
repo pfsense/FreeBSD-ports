@@ -1,16 +1,18 @@
 # $FreeBSD$
 
 PORTNAME=	homebank
-PORTVERSION=	5.0.9
+PORTVERSION=	5.1.8
 CATEGORIES=	finance
 MASTER_SITES=	http://homebank.free.fr/public/
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free, easy, personal accounting for everyone
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libosp.so:textproc/opensp
+LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
+		libosp.so:textproc/opensp
 
 GNU_CONFIGURE=	yes
 USES=		desktop-file-utils gettext gmake localbase pkgconfig \

@@ -2,29 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	flowgrind
-PORTVERSION=	0.7.5
-PORTREVISION=	1
+PORTVERSION=	0.8.0
 DISTVERSIONPREFIX=	${PORTNAME}-
+PORTREVISION=	2
 CATEGORIES=	benchmarks
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Measure throughput and other metrics for TCP
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgsl.so:math/gsl \
-		libxmlrpc.so:net/xmlrpc-c
+		libxmlrpc.so:net/xmlrpc-c \
+		libcurl.so:ftp/curl \
+		libwwwxml.so:www/libwww \
+		libuuid.so:misc/e2fsprogs-libuuid
+
+USES=		autoreconf ssl
 
 USE_GITHUB=	yes
 
-USES=		autoreconf
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-pcap --enable-gsl
-CONFIGURE_ENV=  LIBS="${LIBS} -lpcap"
-
-post-patch:
-	@${RM} -rf ${WRKSRC}/build-aux
-	@${REINPLACE_CMD} -e 's|AC_LIB_RPATH||g' ${WRKSRC}/configure.ac
+CONFIGURE_ENV=	LIBS="${LIBS} -lpcap"
 
 .include <bsd.port.mk>

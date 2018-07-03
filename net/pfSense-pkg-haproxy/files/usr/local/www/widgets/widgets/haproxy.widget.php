@@ -43,27 +43,42 @@ if (!is_array($config["widgets"]["haproxy"])) {
 $a_config = &$config["widgets"]["haproxy"];
 
 $getupdatestatus=false;
-if(!empty($_GET['getupdatestatus'])) {
+if(!empty($_REQUEST['getupdatestatus'])) {
 	$getupdatestatus=true;
+	header("Content-Type: application/octet-stream");
 }
 
 #Backends/Servers Actions if asked
 if(!empty($_GET['act']) and !empty($_GET['be']) and !empty($_GET['srv'])) {
+	if (!session_id()) {
+		session_start();
+	}
+	$user = getUserEntry($_SESSION['Username']);
+	if (!(userHasPrivilege($user, "page-service-haproxy") || userHasPrivilege($user, "page-all"))) {
+		echo "Privilege Denied";
+		return;
+	}
 	$backend = $_GET['be'];
 	$server =  $_GET['srv'];
 	$enable = $_GET['act'] == 'start' ? true : false;
 	haproxy_set_server_enabled($backend, $server, $enable);
+	return;
 }
 
 $simplefields = array("haproxy_widget_timer","haproxy_widget_showfrontends","haproxy_widget_showclients","haproxy_widget_showclienttraffic");
-if ($_POST) {
-	foreach($simplefields as $fieldname)
+if ($_POST['submit']) {
+	foreach($simplefields as $fieldname) {
 		$a_config[$fieldname] = $_POST[$fieldname];
-			
+	}
 	write_config("Services: HAProxy: Widget: Updated settings via dashboard.");
 	header("Location: /");
 	exit(0);
 }
+
+if (!session_id()) {
+	session_start();
+}
+$user = getUserEntry($_SESSION['Username']);
 
 // Set default values
 if (!$a_config['haproxy_widget_timer']) {
@@ -129,14 +144,14 @@ if ($show_frontends == "YES") {
 print "<tr><td class=\"widgetsubheader\" colspan=\"4\"><strong>Backend(s)/Server(s)</strong></td></tr>";
 print "<tr><td class=\"listlr\"><strong>Backend(s)</strong><br>&nbsp;Server(s)";
 if ($show_clients == "YES") {
-	print "<br>&nbsp;&nbsp;<font color=\"blue\"><i>Client(s) addr:port</i></font>";
+	print "<br><div class='text-success'>&nbsp;&nbsp;<i>Client(s) addr:port</i></div>";
 }
 print "</td>";
 print "<td class=\"listlr\"><strong>Sessions</strong><br>(cur/max)<br>";
 if ($show_clients == "YES" and $show_clients_traffic != "YES") {
-	print "<font color=\"blue\">age/id</font>";
+	print "<div class='text-success'>age/id</div>";
 } elseif ($show_clients == "YES" and $show_clients_traffic == "YES") {
-	print "<font color=\"blue\">age/traffic i/o</font>";
+	print "<div class='text-success'>age/traffic i/o</div>";
 }
 print "</td>";
 print "<td class=\"listlr\" colspan=\"2\"><strong><center>Status<br>/<br>Actions</center></strong></td>";
@@ -148,8 +163,8 @@ foreach ($backends as $be => $bedata) {
 		$bename = $bedata['pxname'];
 	} else {
 		$statusicon = $out;
-		$besess = "<strong><font color=\"red\">".$bedata['status']."</font></strong>";
-		$bename = "<font color=\"red\">".$bedata['pxname']."</font>";
+		$besess = "<strong><div class='text-danger'>".$bedata['status']."</div></strong>";
+		$bename = "<div class='text-danger'>".$bedata['pxname']."</div>";
 	}
 	$icondetails = " onmouseover=\"this.title='".$bedata['status']."'\"";
 	print "<tr height=\"4\"><td bgcolor=\"#B1B1B1\" colspan=\"4\"></td></tr>";
@@ -170,36 +185,38 @@ foreach ($backends as $be => $bedata) {
 				$statusicon = $in;
 				$acticon = $stop;
 				$srvname = $srvdata['svname'];
-				$srvdata['scur'] = "<font color=\"blue\">no check</font>";
+				$srvdata['scur'] = "<div class='text-success'>no check</div>";
 			} elseif ($srvdata['status'] == "MAINT") {
 				$nextaction = "start";
 				$statusicon = $out;
 				$acticon = $start;
-				$srvname = "<font color=\"blue\">".$srvdata['svname']."</font>";
-				$srvdata['scur'] = "<font color=\"blue\">".$srvdata['status']."</font>";
+				$srvname = "<div class='text-success'>".$srvdata['svname']."</div>";
+				$srvdata['scur'] = "<div class='text-success'>".$srvdata['status']."</div>";
 			} else {
 				$nextaction = "stop";
 				$statusicon = $out;
 				$acticon = $stop;
-				$srvname = "<font color=\"red\">".$srvdata['svname']."</font>";
-				$srvdata['scur'] = "<font color=\"red\">".$srvdata['status']."</font>";
+				$srvname = "<div class='text-danger'>".$srvdata['svname']."</div>";
+				$srvdata['scur'] = "<div class='text-danger'>".$srvdata['status']."</div>";
 			}
 			$icondetails = " onmouseover=\"this.title='".$srvdata['status']."'\"";
-			print "<tr><td class=\"listlr\">&nbsp;".$srvname."</td>";
+			print "<tr><td class=\"listlr \" style='padding-left:10px;'>".$srvname."</td>";
 			print "<td class=\"listlr\">".$srvdata['scur']."</td>";
 			print "<td class=\"listlr\"$icondetails><center>".$statusicon."</center></td>";
-			print "<td class=\"listlr\"><center><a  onclick=\"control_haproxy('".$nextaction."','".$bedata['pxname']."','".$srvdata['svname']."');\">".$acticon."</a></center></td></tr>";
-
+			
+			if ((userHasPrivilege($user, "page-service-haproxy") || userHasPrivilege($user, "page-all"))) {
+				print "<td class=\"listlr\"><center><a  onclick=\"control_haproxy('".$nextaction."','".$bedata['pxname']."','".$srvdata['svname']."');\">".$acticon."</a></center></td></tr>";
+			}
 			if ($show_clients == "YES") {
 				foreach ($clients as $cli => $clidata) {
 					if ($clidata['be'] == $bedata['pxname'] && $clidata['srv'] == $srvdata['svname']) {
-						print "<tr><td class=\"listlr\">&nbsp;&nbsp;<font color=\"blue\"><i>".$clidata['src']."</i></font>&nbsp;<a href=\"diag_dns.php?host=".$clidata['srcip']."\" title=\"Reverse Resolve with DNS\">".$log."</a></td>";
+						print "<tr><td class=\"listlr\"><div class='text-success'>&nbsp;&nbsp;<i>".$clidata['src']."</i></div>&nbsp;<a href=\"diag_dns.php?host=".$clidata['srcip']."\" title=\"Reverse Resolve with DNS\">".$log."</a></td>";
 						if ($show_clients_traffic == "YES") {
 							$clientstraffic[0] = format_bytes($clidata['session_datareq']);
 							$clientstraffic[1] = format_bytes($clidata['session_datares']);
-							print "<td class=\"listlr\" colspan=\"3\"><font color=\"blue\">".$clidata['age']." / ".$clientstraffic[0]." / ".$clientstraffic[1]."</font></td></tr>";
+							print "<td class=\"listlr\" colspan=\"3\"><div class='text-success'>".$clidata['age']." / ".$clientstraffic[0]." / ".$clientstraffic[1]."</div></td></tr>";
 						} else {
-							print "<td class=\"listlr\" colspan=\"3\"><font color=\"blue\">".$clidata['age']." / ".$clidata['sessid']."</font></td></tr>";
+							print "<td class=\"listlr\" colspan=\"3\"><div class='text-success'>".$clidata['age']." / ".$clidata['sessid']."</div></td></tr>";
 						}
 					}
 				}
@@ -220,18 +237,17 @@ if ($getupdatestatus) {
 ?>
 </div>
 
-<script type="text/javascript" src="/haproxy/haproxy_geturl.js"></script>
-<script type="text/javascript">
-	d = document;
-	selectIntLink = "haproxy-configure";
-	textlink = d.getElementById(selectIntLink);
-	textlink.style.display = "inline";
-</script>
 <script type="text/javascript">
 	function getstatusgetupdate() {
-		var url = "/widgets/widgets/haproxy.widget.php";
-		var pars = 'getupdatestatus=yes';
-		getURL(url+"?"+pars, activitycallback_haproxy);
+		$.ajax({
+			url: "/widgets/widgets/haproxy.widget.php",
+			data: { 
+				getupdatestatus: "yes"
+			},
+			success: function(data, textStatus, response){
+				activitycallback_haproxy(response);
+			}
+		})
 	}
 	function getstatus_haproxy() {
 		setTimeout(getstatus_haproxy, <?= $refresh_rate ?>);
@@ -239,27 +255,28 @@ if ($getupdatestatus) {
 
 	}
 	function activitycallback_haproxy(transport) {
+		if (transport.getResponseHeader("content-type") != "application/octet-stream") {
+			transport.responseText = "Stats not available";
+		} 
 		if ($('haproxy_content').innerHTML) {
-			$('haproxy_content').innerHTML = transport.content;
+			$('haproxy_content').innerHTML = transport.responseText;
 		} else {
-			$('#haproxy_content').html(transport.content);
+			$('#haproxy_content').html(transport.responseText);
 		}
 	}
 	setTimeout(getstatus_haproxy, <?= $refresh_rate ?>);
 	
-	function control_haproxy(act,be,srv) {
-			var url = "/widgets/widgets/haproxy.widget.php";
-			var pars = 'act='+act+'&be='+be+'&srv='+srv;
-			getURL(url+"?"+pars, getstatusgetupdate);
+	function control_haproxy(act, be, srv) {
+			$.ajax({
+				url: "/widgets/widgets/haproxy.widget.php",
+				data: { 'act': act, 'be': be, 'srv': srv },
+				success: function(){
+					getstatusgetupdate();
+				}
+			})
 	}
 </script>
-<?
-if (pf_version() < "2.3") {
-	echo '<div id="haproxy-settings" class="widgetconfigdiv" style="display:none;">';
-} else {
-	echo '<div id="widget-haproxy_panel-footer" class="panel-footer collapse">';
-}
-?>
+<div id="widget-<?=$widgetname?>_panel-footer" class="panel-footer collapse">
 <form action="/widgets/widgets/haproxy.widget.php" method="post" name="iform" id="iform">
 	<table>
 	<tr><td>

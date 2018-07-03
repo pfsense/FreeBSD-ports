@@ -1,16 +1,11 @@
---- base/process/launch.cc.orig	2016-04-08 16:02:06 UTC
+--- base/process/launch.cc.orig	2017-06-05 19:03:00 UTC
 +++ base/process/launch.cc
-@@ -25,11 +25,11 @@ LaunchOptions::LaunchOptions()
-       fds_to_remap(NULL),
-       maximize_rlimits(NULL),
-       new_process_group(false)
+@@ -15,7 +15,7 @@ LaunchOptions::~LaunchOptions() = default;
+ 
+ LaunchOptions LaunchOptionsForTest() {
+   LaunchOptions options;
 -#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_FREEBSD)
-       , clone_flags(0)
-       , allow_new_privs(false)
-       , kill_on_parent_death(false)
--#endif  // OS_LINUX
-+#endif  // OS_LINUX || OS_FREEBSD
- #if defined(OS_POSIX)
-       , pre_exec_delegate(NULL)
- #endif  // OS_POSIX
++#if defined(OS_LINUX) || defined(OS_BSD)
+   // To prevent accidental privilege sharing to an untrusted child, processes
+   // are started with PR_SET_NO_NEW_PRIVS. Do not set that here, since this
+   // new child will be used for testing only.

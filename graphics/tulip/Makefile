@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tulip
-PORTVERSION=	4.9.0
+PORTVERSION=	4.10.0
+PORTREVISION=	4
 DISTVERSIONSUFFIX=	_src
 CATEGORIES=	graphics
 MASTER_SITES=	SF/auber/${PORTNAME}/${PORTNAME}-${PORTVERSION}
@@ -12,14 +13,16 @@ COMMENT=	System dedicated to the visualization of huge graphs
 
 LICENSE=	LGPL3
 
-LIB_DEPENDS=	libquazip.so:archivers/quazip \
+LIB_DEPENDS=	libquazip.so:archivers/quazip@qt4 \
 		libpng.so:graphics/png \
 		libOGDF.so:math/ogdf \
 		libfreetype.so:print/freetype2
 
+BROKEN_powerpc64=	fails to link: libOGDF.so: undefined reference to CoinPackedVector::CoinPackedVector
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		cmake:outsource compiler:c++11-lib dos2unix execinfo jpeg python \
+USES=		cmake:outsource,noninja compiler:c++11-lib dos2unix jpeg python \
 		shebangfix
 SHEBANG_FILES=	tulip-config.in
 DOS2UNIX_FILES=	software/tulip/src/main.cpp
@@ -47,11 +50,10 @@ OPTIONS_DEFAULT=	QT4
 QT4_USE=		qt4=corelib,gui,network,opengl,webkit \
 			qt4=xml,xmlpatterns \
 			qt4=moc_build,qmake_build,rcc_build,uic_build
-QT4_CMAKE_ON=		-DUSE_QT5_IF_INSTALLED:BOOL=OFF
 QT5_USE=		qt5=core,gui,network,opengl,webkit,widgets \
 			qt5=xml,xmlpatterns \
 			qt5=buildtools_build,qmake_build
-QT5_CMAKE_ON=		-DUSE_QT5_IF_INSTALLED:BOOL=ON
+QT5_CMAKE_BOOL=		USE_QT5_IF_INSTALLED
 
 post-build:
 	@${LN} -sf logo32x32.png \

@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	cgal
-PORTVERSION=	4.8.1
+PORTVERSION=	4.10.1
+PORTREVISION=	1
 CATEGORIES=	math
-MASTER_SITES=	https://github.com/CGAL/cgal/releases/download/releases%2FCGAL-4.8.1/
-DISTNAME=	CGAL-${PORTVERSION}
+MASTER_SITES=	https://github.com/${PORTNAME:tu}/${PORTNAME}/releases/download/releases/${DISTNAME}/
+DISTNAME=	${PORTNAME:tu}-${PORTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Computational geometry library
@@ -13,32 +14,36 @@ COMMENT=	Computational geometry library
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	${LOCALBASE}/include/boost/tuple/tuple.hpp:devel/boost-libs
-RUN_DEPENDS=	${LOCALBASE}/include/boost/tuple/tuple.hpp:devel/boost-libs
-LIB_DEPENDS=	libmpfr.so:math/mpfr \
+BROKEN_sparc64=	does not build: fails to compile all_files.cpp
+
+BUILD_DEPENDS=	${LOCALBASE}/lib/libntl.a:math/ntl
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+		libmpfr.so:math/mpfr \
 		libgmp.so:math/gmp
 
-BROKEN_sparc64:	Does not build: fails to compile all_files.cpp
+#TODO math/mpfi, math/rs, graphics/qglviewer
+#Not yet in ports
 
-USE_LDCONFIG=		yes
-USES=			cmake shebangfix tar:xz
-USE_QT5=		buildtools_build core qmake_build widgets
-SHEBANG_FILES=		scripts/cgal_create_CMakeLists \
-			scripts/cgal_create_cmake_script
-HAS_CONFIGURE=		yes
+USES=		cmake eigen:3 shebangfix tar:xz
+USE_LDCONFIG=	yes
+SHEBANG_FILES=	scripts/cgal_create_CMakeLists \
+		scripts/cgal_create_cmake_script
 
-OPTIONS_DEFINE=		GUI
-OPTIONS_DEFAULT=	GUI
+OPTIONS_DEFINE=		VISUALIZATION QT5
+VISUALIZATION_IMPLIES=	QT5
 OPTIONS_SUB=		yes
 
-GUI_DESC=		Build libCGAL_ImageIO and libCGAL_Qt4
-GUI_USE=		GL=glu,gl QT5=gui,opengl
-GUI_CMAKE_OFF=		-DWITH_CGAL_Qt4=OFF -DWITH_CGAL_ImageIO=OFF
+VISUALIZATION_DESC=		Visualization Required for most demos (Qt5 Geomview)
+VISUALIZATION_LIB_DEPENDS=	libgeomview.so:graphics/geomview
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == i386 && ${OSVERSION} >= 1100000
-USE_GCC=	yes
+.if ${PORT_OPTIONS:MQT5}
+CMAKE_ARGS+=	-DWITH_CGAL_Qt5=ON
+USE_QT5+=	core gui opengl widgets svg buildtools_build qmake_build
+USE_GL+=	gl glu
+.else
+CMAKE_ARGS+=	-DWITH_CGAL_Qt5=OFF
 .endif
 
 .include <bsd.port.mk>

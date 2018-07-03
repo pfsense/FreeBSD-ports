@@ -13,7 +13,11 @@ DISTNAME=	kwiki-trunk-20070327
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Kwiki Wiki Building Framework
 
-LICENSE=	ART10 GPLv1
+EXPIRATION_DATE=	2018-05-07
+DEPRECATED=	All www files wrongly belongs to www user.
+FORBIDDEN=	All www files wrongly belongs to www user.
+
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 USES=		shebangfix

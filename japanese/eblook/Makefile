@@ -3,7 +3,7 @@
 
 PORTNAME=	eblook
 PORTVERSION=	1.6.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	japanese textproc
 MASTER_SITES=	http://openlab.ring.gr.jp/edict/eblook/dist/
 DIST_SUBDIR=	eb
@@ -11,7 +11,8 @@ DIST_SUBDIR=	eb
 MAINTAINER=	yasu@utahime.org
 COMMENT=	Command to lookup words in EB format dictionaries
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libeb.so:japanese/eb
 
@@ -33,7 +34,7 @@ OPTIONS_DEFINE=	DOCS
 CONFIGURE_ARGS+=ac_cv_func_iconv=yes
 .endif
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

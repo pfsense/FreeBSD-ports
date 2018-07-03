@@ -1,39 +1,39 @@
 # $FreeBSD$
 
 PORTNAME=	restic
-PORTVERSION=	0.1.0
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.8.3
 CATEGORIES=	sysutils
 
-MAINTAINER=	wg@FreeBSD.org
-COMMENT=	Restic backup program
+MAINTAINER=	gregf@hugops.pw
+COMMENT=	Fast, secure, efficient backup program
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		go
 USE_GITHUB=	yes
-GH_ACCOUNT=	restic:DEFAULT,chunker juju:errors golang:crypto
-GH_PROJECT=	chunker:chunker errors:errors crypto:crypto
-GH_TAGNAME=	16a28ff:chunker 1b5e39b:errors 74f810a:crypto
 
-STRIP=		# stripping can break go binaries
+GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
+GO_TARGET=	${GO_PKGNAME}/cmd/${PORTNAME}
 
-post-extract:
-	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
-.for src in CONTRIBUTING.md Godeps LICENSE Makefile README.md VERSION Vagrantfile appveyor.yml archiver.go archiver_int_test.go archiver_test.go backend build.go cache.go cache_test.go checker cmd crypto debug doc doc.go filter fuse lock.go lock_test.go lock_unix.go lock_windows.go node.go node_darwin.go node_freebsd.go node_linux.go node_openbsd.go node_test.go node_unix.go node_windows.go pack pipe progress.go repository restorer.go run_integration_tests.go run_tests.go snapshot.go snapshot_test.go test tree.go tree_test.go walk.go walk_test.go
-	@${MV} ${WRKSRC}/${src} \
-		${WRKSRC}/src/github.com/restic/${PORTNAME}
-.endfor
-	@${MKDIR} ${WRKSRC}/src/github.com/juju
-	@${MKDIR} ${WRKSRC}/src/golang.org/x
-	@${MV} ${WRKSRC_chunker} ${WRKSRC}/src/github.com/restic/chunker
-	@${MV} ${WRKSRC_errors} ${WRKSRC}/src/github.com/juju/errors
-	@${MV} ${WRKSRC_crypto} ${WRKSRC}/src/golang.org/x/crypto
+OPTIONS_SUB=	yes
+PLIST_SUB=	PORTNAME=${PORTNAME}
 
-do-build:
-	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}; ${SETENV} GOPATH=${WRKSRC} go run build.go
+OPTIONS_DEFINE=		BASH ZSH
+OPTIONS_DEFAULT=	BASH ZSH
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+post-install:
+	${INSTALL_MAN} ${WRKSRC}/doc/man/* ${STAGEDIR}${MANPREFIX}/man/man1
+
+post-install-BASH-on:
+	${INSTALL} -d ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
+	${INSTALL_SCRIPT} ${WRKSRC}/doc/bash-completion.sh \
+		${STAGEDIR}${PREFIX}/etc/bash_completion.d/${PORTNAME}.sh
+
+post-install-ZSH-on:
+	${INSTALL} -d ${STAGEDIR}${PREFIX}/share/zsh/site-functions/
+	${INSTALL_DATA} ${WRKSRC}/doc/zsh-completion.zsh \
+		${STAGEDIR}${PREFIX}/share/zsh/site-functions/_${PORTNAME}
 
 .include <bsd.port.mk>

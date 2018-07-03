@@ -16,25 +16,25 @@ LICENSE=	GPLv3
 
 CPE_VENDOR=	gnu
 
+CONFLICTS=	cfengine-2* cfengine3[0-79]-* cfengine31[0-9]-*
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	38
+CONFLICTS+=	cfengine-3.*
 .endif
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
-CONFLICTS=	cfengine-[2-79]*
+CONFLICTS=	cfengine-[12-79]*
 
 USE_RC_SUBR=	cf-execd cf-serverd cf-monitord
 
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USES=		autoreconf cpe gmake libtool shebangfix ssl
+USES=		autoreconf cpe gmake libtool localbase shebangfix ssl
 USE_GNOME=	libxml2
 SHEBANG_FILES=	examples/remake_outputs.pl
 CFLAGS+=	-Wno-return-type
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 # EXAMPLESDIR=	${PREFIX}/share/examples/cfengine3
 DOCSDIR=	${PREFIX}/share/doc/cfengine
 CONFIGURE_ARGS=	--docdir=${DOCSDIR} \
@@ -59,6 +59,7 @@ PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	--with-postgresql=${LOCALBASE}
 
 MYSQL_USE=		MYSQL=yes
+MYSQL_BROKEN=		configure: error: MySQL client library exports symbols (EVP_CIPHER_CTX_init) clashing with OpenSSL.
 MYSQL_CONFIGURE_WITH=	--with-mysql=${LOCALBASE}
 MYSQL_LIB_DEPENDS=	libmysqlclient.so:${_MYSQL_CLIENT}
 MYSQL_LDFLAGS=		-L${LOCALBASE}/lib/mysql

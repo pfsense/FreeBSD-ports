@@ -23,11 +23,10 @@ OPTIONS_DEFINE=	MYSQL PHPDOM DOCS EXAMPLES
 MYSQL_DESC=	Use MySQL instead of flat files
 PHPDOM_DESC=	Use PHP:DOM instead of SimpleXML
 
-.include <bsd.port.options.mk>
-
-WANT_PHP_WEB=	yes
+USES+=		cpe php:web tar:tgz
 USE_PHP=	session gettext xml tokenizer gd pcre
-USES+=		cpe tar:tgz
+
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPHPDOM}
 USE_PHP+=	dom
@@ -54,10 +53,6 @@ WWWDIR=		${PREFIX}/${BLOGDIR}
 SUB_FILES=	pkg-message
 SUB_LIST=	BLOGURL=${BLOGURL}
 
-# http://book.pivotx.net/page/1-2#anchor-setting-the-file-rights
-WRITABLEDIRS=		images pivotx/templates pivotx/db
-USEREDITABLEDIRS=	pivotx/templates
-
 post-extract:
 	@if ${TEST} -e '${TEMP_WRKSRC}'; then ${RM} -r '${TEMP_WRKSRC}'; fi
 	@${MKDIR} '${TEMP_WRKSRC}'
@@ -71,7 +66,7 @@ post-extract:
 post-patch:
 .for FILES in ${PORTEXAMPLES}
 	@${SED} -e 's#%%BLOGURL%%#${BLOGURL}#g' '${WRKSRC}/${FILES}' >'${TEMP_WRKSRC}/${FILES}'
-	@${RM} -f '${WRKSRC}/${FILES}'
+	@${RM} '${WRKSRC}/${FILES}'
 .endfor
 	@cd '${WRKSRC}' && ${FIND} . -type f -name '*.orig' -delete
 
@@ -86,9 +81,5 @@ do-install:
 .endfor
 	@${MKDIR} '${STAGEDIR}${WWWDIR}'
 	@cd '${WRKSRC}' && ${COPYTREE_SHARE} . '${STAGEDIR}${WWWDIR}'
-.for DIR in ${WRITABLEDIRS}
-	@${FIND} '${STAGEDIR}${WWWDIR}/${DIR}' -type d -print0 | ${XARGS} -0 ${CHMOD} u=rwx,go=rx
-	@${FIND} '${STAGEDIR}${WWWDIR}/${DIR}' -type f -print0 | ${XARGS} -0 ${CHMOD} u=rw,go=r
-.endfor
 
 .include <bsd.port.mk>

@@ -3,11 +3,11 @@
 
 PORTNAME=	pyside
 PORTVERSION=	1.2.2
-PORTREVISION=	1
+DISTVERSIONPREFIX=	qt4.8+
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://download.qt-project.org/official_releases/pyside/
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
-DISTNAME=	pyside-qt4.8+${PORTVERSION}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python bindings for the Qt applications and UI framework
@@ -29,7 +29,8 @@ USE_QT4=	declarative designer gui help qmake_build \
 PLIST_SUB=	PORTVERSION=${PORTVERSION} \
 		PYTHON_VERSION=${PYTHON_VERSION}
 
-USES=		cmake python:2 tar:bzip2
+USES=		cmake python:2.7 tar:bzip2
+USE_PYTHON=	flavors
 USE_LDCONFIG=	yes
 
 .include <bsd.port.pre.mk>

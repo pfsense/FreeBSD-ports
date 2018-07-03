@@ -3,7 +3,7 @@
 
 PORTNAME=	ufoai
 PORTVERSION=	2.5
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/UFO_AI%202.x/${PORTVERSION}
 DISTNAME=	${PORTNAME:S/$/-/}${PORTVERSION}-source
@@ -21,16 +21,15 @@ LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 BUILD_DEPENDS=	zip:archivers/zip
 RUN_DEPENDS=	${LOCALBASE}/share/${PORTNAME}/base/default.cfg:games/ufoai-data
 
+ALL_TARGET=	all lang
 USE_GL=		yes
 USE_SDL=	sdl image mixer ttf
 USE_CXXSTD=	c++11
-USES=		compiler:c++11-lang execinfo gettext gmake jpeg openal:soft pkgconfig \
+USES=		compiler:c++11-lang gettext gmake jpeg openal:soft pkgconfig \
 		python:build tar:bzip2
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-release --target-os=freebsd
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-lpthread -L${LOCALBASE}/lib -lexecinfo
-CFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-lpthread -lexecinfo
 
 DATADIR=	share/${PORTNAME}
 SUB_FILES=	pkg-message
@@ -66,6 +65,7 @@ PLIST_SUB+=	UFO2MAP="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MUFORADIANT}
+ALL_TARGET+=	uforadiant
 CONFIGURE_ARGS+=--enable-uforadiant
 USE_GNOME+=	gtk20 glib20 gtksourceview2 libxml2
 LIB_DEPENDS+=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
@@ -75,10 +75,6 @@ PLIST_SUB+=	UFORADIANT=""
 .else
 CONFIGURE_ARGS+=--disable-uforadiant
 PLIST_SUB+=	UFORADIANT="@comment "
-.endif
-
-.if ${OSVERSION} < 1000024
-FAVORITE_COMPILER=	gcc
 .endif
 
 .include <bsd.port.pre.mk>
@@ -93,12 +89,6 @@ post-extract:
 	${REINPLACE_CMD} \
 		-e 's|-falign-loops=2 -falign-jumps=2 -falign-functions=2||' \
 		${WRKSRC}/build/modes/release.mk
-.endif
-
-post-build:
-	@cd ${WRKSRC} && ${MAKE_CMD} lang
-.if ${PORT_OPTIONS:MUFORADIANT}
-	@cd ${WRKSRC} && ${MAKE_CMD} uforadiant
 .endif
 
 do-install:
@@ -131,13 +121,13 @@ do-install:
 	${MKDIR} ${STAGEDIR}${UFO_DIR}/radiant/${DIRE}
 	cd ${WRKSRC}/radiant/${DIRE} && \
 		${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${UFO_DIR}/radiant/${DIRE}/{}" \; && \
-		${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${UFO_DIR}/radiant/${DIRE}/{}" \;
+		${FIND} * -type f -exec ${INSTALL_DATA} {} "${STAGEDIR}${UFO_DIR}/radiant/${DIRE}/{}" \;
 .endfor
 .endif
 
 	cd ${WRKSRC}/base/i18n && \
 		${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${PREFIX}/${DATADIR}/base/i18n/{}" \; && \
-			${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${PREFIX}/${DATADIR}/base/i18n/{}" \;
+			${FIND} * -type f -exec ${INSTALL_DATA} {} "${STAGEDIR}${PREFIX}/${DATADIR}/base/i18n/{}" \;
 	${LN} -s ${PREFIX}/${DATADIR}/base ${STAGEDIR}${UFO_DIR}/base
 
 .include <bsd.port.post.mk>

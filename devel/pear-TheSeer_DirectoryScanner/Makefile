@@ -2,21 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	DirectoryScanner
-PORTVERSION=	1.2.0
+PORTVERSION=	1.3.2
 CATEGORIES=	devel pear
-MASTER_SITES=	http://pear.netpirates.net/get/
-PKGNAMEPREFIX=	pear-TheSeer_
+PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}TheSeer_
 
-MAINTAINER=	gasol.wu@gmail.com
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Recursive directory scanner and filter
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PEARDIR}/.channels/pear.netpirates.net.reg:devel/pear-channel-theseer
-RUN_DEPENDS=	${PEARDIR}/.channels/pear.netpirates.net.reg:devel/pear-channel-theseer
+USES=	php:flavors pear:env
+USE_GITHUB=	yes
+GH_ACCOUNT=	theseer
+GH_PROJECT=	DirectoryScanner
 
 USE_PHP=	fileinfo
 PEAR_CHANNEL=	theseer
-USES=	pear
+PEAR_CHANNEL_VER=	>=20120501
+
+NO_BUILD=	yes
+
+PHP_DIR=	share/PHP
+
+PLIST_FILES=	${PHP_DIR}/${PORTNAME}/directoryscanner.php
+
+do-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/${PHP_DIR}/${PORTNAME}
+	${INSTALL_SCRIPT} ${WRKSRC}/src/directoryscanner.php \
+		${STAGEDIR}${PREFIX}/${PHP_DIR}/${PORTNAME}
 
 .include <bsd.port.mk>

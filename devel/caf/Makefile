@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	caf
-PORTVERSION=	0.14.5
+PORTVERSION=	0.15.3
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	vallentin@icir.org
@@ -11,14 +12,11 @@ COMMENT=	C++ actor framework
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_powerpc64=	Does not build
-
 CXXFLAGS+=	-std=c++11 -Wextra -Wall -pedantic
 LDFLAGS+=	-pthread
 USES=		cmake:outsource compiler:c++11-lang
 USE_LDCONFIG=	yes
 TEST_TARGET=	test
-TEST_WRKSRC=	${BUILD_WRKSRC}
 USE_GITHUB=	yes
 GH_ACCOUNT=	actor-framework
 GH_PROJECT=	${GH_ACCOUNT}
@@ -51,16 +49,5 @@ LOG_LEVEL_WARN_CMAKE_ON=	-DCAF_LOG_LEVEL:STRING=1
 LOG_LEVEL_INFO_CMAKE_ON=	-DCAF_LOG_LEVEL:STRING=2
 LOG_LEVEL_DEBUG_CMAKE_ON=	-DCAF_LOG_LEVEL:STRING=3
 LOG_LEVEL_TRACE_CMAKE_ON=	-DCAF_LOG_LEVEL:STRING=4
-
-.include <bsd.port.options.mk>
-
-regression-test: test
-
-.if ${OSVERSION} < 1001000
-# require clang & libc++
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang34:lang/clang34 \
-		${LOCALBASE}/lib/c++/libstdc++.so:devel/libc++
-CXXFLAGS+=	-stdlib=libc++ -I${LOCALBASE}/include/c++/v1 -L${LOCALBASE}/lib
-.endif
 
 .include <bsd.port.mk>

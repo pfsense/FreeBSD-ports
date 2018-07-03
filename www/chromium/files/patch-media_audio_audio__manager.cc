@@ -1,29 +1,29 @@
---- media/audio/audio_manager.cc.orig	2016-07-22 00:06:55.000000000 -0400
-+++ media/audio/audio_manager.cc	2016-08-03 15:25:47.683860000 -0400
-@@ -92,7 +92,7 @@
+--- media/audio/audio_manager.cc.orig	2017-12-15 02:04:21.000000000 +0100
++++ media/audio/audio_manager.cc	2017-12-24 17:10:24.736979000 +0100
+@@ -94,7 +94,7 @@
    }
  #endif
  
 -#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_FREEBSD)
++#if defined(OS_LINUX) || defined(OS_BSD)
    void set_app_name(const std::string& app_name) { app_name_ = app_name; }
    const std::string& app_name() const { return app_name_; }
  #endif
-@@ -250,7 +250,7 @@
+@@ -229,7 +229,7 @@
    std::unique_ptr<base::win::ScopedCOMInitializer> com_initializer_for_testing_;
  #endif
  
 -#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_FREEBSD)
++#if defined(OS_LINUX) || defined(OS_BSD)
    std::string app_name_;
  #endif
  
-@@ -359,7 +359,7 @@
-   g_helper.Pointer()->enable_crash_key_logging();
+@@ -313,7 +313,7 @@
+   GetHelper()->StartHangTimer(std::move(task_runner));
  }
  
 -#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_FREEBSD)
++#if defined(OS_LINUX) || defined(OS_BSD)
  // static
  void AudioManager::SetGlobalAppName(const std::string& app_name) {
-   g_helper.Pointer()->set_app_name(app_name);
+   GetHelper()->set_app_name(app_name);

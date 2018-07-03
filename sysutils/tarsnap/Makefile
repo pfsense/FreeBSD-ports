@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tarsnap
-PORTVERSION=	1.0.37
-PORTREVISION=	1
+PORTVERSION=	1.0.39
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.tarsnap.com/download-http/
 DISTNAME=	${PORTNAME}-autoconf-${PORTVERSION}
@@ -15,8 +14,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	CFLAGS="-I${OPENSSLINC} ${CFLAGS}" \
 		LDFLAGS="-L${OPENSSLLIB} ${LDFLAGS}"
 
-USES=		gmake tar:tgz
-USE_OPENSSL=	yes
+USES=		gmake tar:tgz ssl
 
 .include <bsd.port.pre.mk>
 

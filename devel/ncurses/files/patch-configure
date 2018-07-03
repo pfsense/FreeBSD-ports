@@ -1,24 +1,14 @@
-# Based on upstream 6.0 patch 20160220:
-#
-#  + modify configure macro for shared-library rules to use -Wl,-rpath
-#    rather than -rpath to work around a bug in scons (FreeBSD #178732,
-#  cf: 20061021).
-#
-# See Also:
-#
-#  http://lists.gnu.org/archive/html/bug-ncurses/2016-02/msg00009.html
-#  http://lists.gnu.org/archive/html/bug-ncurses/2016-02/msg00006.html
-#
-# TODO: Remove patch on 6.1 update
-
---- configure.orig	2015-08-05 09:20:32 UTC
+--- configure.orig	2017-08-12 12:15:04 UTC
 +++ configure
-@@ -5863,7 +5863,7 @@ case $cf_cv_system_name in
- 	LD_RPATH_OPT="-Wl,-rpath,"
+@@ -8053,7 +8053,10 @@ case $host_os in
+ 	cf_xopen_source="-D_DARWIN_C_SOURCE"
+ 	cf_XOPEN_SOURCE=
  	;;
- (dragonfly*|freebsd*)
--	LD_RPATH_OPT="-rpath "
-+	LD_RPATH_OPT="-Wl,-rpath,"
- 	;;
- (netbsd*)
- 	LD_RPATH_OPT="-Wl,-rpath,"
+-(freebsd*|dragonfly*)
++(freebsd*)
++	cf_XOPEN_SOURCE=
++	;;
++(dragonfly*)
+ 	# 5.x headers associate
+ 	#	_XOPEN_SOURCE=600 with _POSIX_C_SOURCE=200112L
+ 	#	_XOPEN_SOURCE=500 with _POSIX_C_SOURCE=199506L

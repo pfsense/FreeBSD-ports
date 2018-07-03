@@ -204,7 +204,7 @@ $section->addInput(new Form_Checkbox(
 	'Checking this box enables auto-download of IQRisk List updates with a valid subscription code.',
 	$pconfig['et_iqrisk_enable'] == 'on' ? true:false,
 	'on'
-))->setHelp('IQRisk IP lists will auto-update nightly at midnight. Visit <a href="http://emergingthreats.net/products/iqrisk-rep-list/" target="_blank">http://emergingthreats.net/products/iqrisk-rep-list/</a> for more information or to purchase a subscription.');
+))->setHelp('IQRisk IP lists will auto-update nightly at midnight. Visit <a href="https://www.proofpoint.com/us/products/et-intelligence" target="_blank">https://www.proofpoint.com/us/products/et-intelligence</a> for more information or to purchase a subscription.');
 $section->addInput(new Form_Input(
 	'iqrisk_code',
 	'IQRisk Subscription Configuration Code',

@@ -2,6 +2,7 @@
 
 PORTNAME=	gsasl
 PORTVERSION=	0.3.6
+PORTREVISION=	2
 CATEGORIES=	net haskell
 
 MAINTAINER=	haskell@FreeBSD.org

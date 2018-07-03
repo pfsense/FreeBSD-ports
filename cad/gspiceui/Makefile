@@ -3,6 +3,7 @@
 
 PORTNAME=	gspiceui
 PORTVERSION=	1.1.00
+PORTREVISION=	2
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/gSpiceUI/${PORTNAME}-v${PORTVERSION}
 DISTNAME=	${PORTNAME}-v${PORTVERSION}
@@ -15,7 +16,6 @@ LICENSE=	GPLv3
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 USE_WX=		2.8 3.0
-WX_UNICODE=	yes
 USES=		compiler:c++11-lib gmake pkgconfig
 
 CXXFLAGS+=	-std=c++11
@@ -28,6 +28,12 @@ PORTDOCS=	*
 PORTEXAMPLES=	*
 PLIST_FILES=	bin/gspiceui share/pixmaps/gspiceui-48x48.xpm \
 		man/man1/gspiceui.1.gz
+
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+CFLAGS:=	${CFLAGS:C/-O[2-9]/-O1/g}
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|share/gspiceui|${DOCSDIR}|g' \
@@ -47,4 +53,4 @@ do-install:
 		"! -name Makefile")
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

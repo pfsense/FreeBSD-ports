@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	syncplay
-PORTVERSION=	1.3.4
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.5.2
 CATEGORIES=	multimedia
 
 MAINTAINER=	heckendorfc@gmail.com
@@ -9,13 +10,14 @@ COMMENT=	Synchronize video playback over networks
 
 LICENSE=	APACHE20
 
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${PY_FLAVOR}
+
+USES=		desktop-file-utils gmake python:2.7 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	Syncplay
-
-USES=		desktop-file-utils gmake python:2 twisted
-USE_TWISTED=	run
-
-INSTALLS_ICONS=	yes
+SHEBANG_FILES=	syncplayClient.py \
+		syncplayServer.py
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	GUI VLC
 OPTIONS_DEFAULT=	GUI VLC CLIENT SERVER
@@ -23,6 +25,8 @@ OPTIONS_SUB=	yes
 OPTIONS_MULTI=	MODES
 OPTIONS_MULTI_MODES=	CLIENT SERVER
 
+CLIENT_DESC=	Client mode
+SERVER_DESC=	Server mode
 VLC_DESC=	Support for VLC media player
 
 MAKEFILE=	GNUmakefile

@@ -39,6 +39,7 @@
 		<name>syslog-ng</name>
 		<rcfile>syslog-ng.sh</rcfile>
 		<executable>syslog-ng</executable>
+		<description>Syslog-ng Syslog Server</description>
 	</service>
 	<tabs>
 		<tab>
@@ -48,7 +49,7 @@
 		</tab>
 		<tab>
 			<text>Advanced</text>
-			<url>/pkg_edit.php?xml=syslog-ng_advanced.xml</url>
+			<url>/pkg.php?xml=syslog-ng_advanced.xml</url>
 		</tab>
 		<tab>
 			<text>Log Viewer</text>

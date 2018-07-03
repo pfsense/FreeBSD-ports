@@ -4,7 +4,7 @@
 PORTNAME=	openxcom
 PORTVERSION=	1.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,11 +15,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libyaml-cpp.so:devel/yaml-cpp
 
+BROKEN_powerpc64=	fails to compile: XcomResourcePack.cpp: undefined reference to YAML::LoadFile
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	SupSuper
 GH_PROJECT=	OpenXcom
 
 USES=		compiler:c++11-lang gmake pkgconfig
+USE_CXXSTD=	c++11
 USE_SDL=	sdl mixer image gfx
 USE_GL=		gl
 

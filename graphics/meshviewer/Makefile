@@ -3,7 +3,7 @@
 
 PORTNAME=	meshviewer
 PORTVERSION=	0.3.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics
 MASTER_SITES=	SF/mview/mview/${PORTVERSION}
 DISTNAME=	mview-src-${PORTVERSION}
@@ -22,7 +22,7 @@ USE_QT4=	corelib gui opengl moc_build
 CXXFLAGS+=	-I. -Imesh -Imathvector \
 		`pkg-config --cflags QtOpenGL glu`
 LDFLAGS+=	-lpthread `pkg-config --libs QtOpenGL glu`
-MAKE_ARGS=	QTDIR="${QT_PREFIX}" CC="${CXX}" MOC="${MOC}" \
+MAKE_ARGS=	QTDIR="${PREFIX}" CC="${CXX}" MOC="${MOC}" \
 		CXXFLAGS="${CXXFLAGS}" \
 		LIBPATH="" LIBS_QT4="${LDFLAGS}"
 

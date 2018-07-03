@@ -3,20 +3,24 @@
 
 PORTNAME=	navi2ch
 PORTVERSION=	2.0.0.d
-PORTREVISION=	2
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	japanese www elisp
-MASTER_SITES=	http://people.allbsd.org/~hrs/FreeBSD/ LOCAL/hrs
-DISTNAME=	navi2ch-git-75ceac8e93d8d7cc02cc8fa44f14cd44ce0b9d0a
-PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
+PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	2ch.net and 2ch-like BBS navigator for Emacsen
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		zip
-USE_EMACS=	yes
+RUN_DEPENDS=	${LOCALBASE}/sbin/2chproxy.pl:japanese/p5-2chproxy
+
+USES=		emacs
+USE_GITHUB=	yes
+GH_ACCOUNT=	naota
+GH_TAGNAME=	faebfd1
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	EMACS="${EMACS_CMD}"
 CONFIGURE_ARGS=	--with-lispdir=${PREFIX}/${LISPDIR}/${PORTNAME}
@@ -31,9 +35,9 @@ LISPDIR=	${EMACS_VERSION_SITE_LISPDIR}
 
 OPTIONS_DEFINE=	DOCS X11
 OPTIONS_DEFAULT=X11
-X11_RUN_DEPENDS=${LOCALBASE}/share/mona/monak12.pcf.gz:japanese/font-mona
+X11_RUN_DEPENDS=${LOCALBASE}/share/fonts/mona/monak12.pcf.gz:japanese/font-mona
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && \
 	    ${INSTALL_DATA} ${PORTDOC_FILES} ${STAGEDIR}${DOCSDIR}

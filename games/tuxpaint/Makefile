@@ -34,6 +34,8 @@ MAKE_ARGS=	CPPFLAGS="-I${LOCALBASE}/include" \
 		SHARED_FLAGS="-shared -fPIC" \
 		GPERF="${GPERF}"
 
+MAKE_JOBS_UNSAFE=	yes
+
 INSTALL_TARGET=	install-gettext install-im install-magic-plugins \
 		install-magic-plugin-dev install-default-config \
 		install-example-stamps install-example-starters \
@@ -46,8 +48,7 @@ PORTDATA=	*
 OPTIONS_DEFINE=	DOCS
 
 post-extract:
-	@${CHMOD} -R a+rX ${WRKSRC}
-	@${RM} -rf ${WRKSRC}/fonts/locale/vi_docs
+	@${RM} -r ${WRKSRC}/fonts/locale/vi_docs
 
 post-patch:
 .for file in src/tuxpaint-import.sh src/tp_magic_api.h.in src/tuxpaint.conf \

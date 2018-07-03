@@ -3,12 +3,12 @@
 
 PORTNAME=	gphotofs
 PORTVERSION=	0.5
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics sysutils
 MASTER_SITES=	SF/gphoto/${PORTNAME}/${PORTVERSION}.0
 PKGNAMEPREFIX=	fusefs-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	woodsb02@FreeBSD.org
 COMMENT=	Mount PTP camera as a file system
 
 LICENSE=	GPLv2

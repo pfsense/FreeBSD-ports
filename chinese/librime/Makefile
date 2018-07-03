@@ -4,6 +4,7 @@
 PORTNAME=	librime
 PORTVERSION=	1.2.9
 DISTVERSIONPREFIX=	rime-
+PORTREVISION=	8
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	lichray@gmail.com
@@ -19,7 +20,7 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libopencc.so:chinese/opencc \
 		libyaml-cpp.so:devel/yaml-cpp
 
-USES=		cmake compiler:c++11-lib pkgconfig gettext perl5
+USES=		cmake compiler:c++11-lib pathfix pkgconfig gettext perl5
 USE_PERL5=	build patch
 USE_LDCONFIG=	yes
 USE_XORG=	xproto
@@ -29,12 +30,12 @@ GH_ACCOUNT=	rime
 
 PLIST_SUB=	VER=${PORTVERSION}
 
-BROKEN_powerpc64=	Does not build on powerpc64
+BROKEN_powerpc64=	Does not link: undefined reference to YAML::detail::node_data::empty_scalar[abi:cxx11]
 
 .include <bsd.port.options.mk>
 
 post-patch:     .SILENT
 	${FIND} ${WRKSRC} \( -name '*.cc' -or -name '*.h' \) \
-		-exec ${PERL} -i -pe '$$. == 1 && s/^\xef\xbb\xbf//;' '{}' \;
+		-exec ${PERL} -i -pe '$$. == 1 && s/^\xef\xbb\xbf//;' {} \;
 
 .include <bsd.port.mk>

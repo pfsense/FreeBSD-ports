@@ -42,6 +42,7 @@ FILE?=			/usr/bin/file
 FIND?=			/usr/bin/find
 FLEX?=			/usr/bin/flex
 FMT?=			/usr/bin/fmt
+FMT_80?=		${FMT} 75 79
 GMAKE?=			gmake
 GREP?=			/usr/bin/grep
 GUNZIP_CMD?=		/usr/bin/gunzip -f
@@ -74,6 +75,7 @@ PS_CMD?=		/bin/ps
 PW?=			/usr/sbin/pw
 READELF?=		/usr/bin/readelf
 REALPATH?=		/bin/realpath
+RLN?=			${INSTALL} -l rs
 RM?=			/bin/rm -f
 RMDIR?=			/bin/rmdir
 SED?=			/usr/bin/sed
@@ -88,7 +90,7 @@ SU_CMD?=		/usr/bin/su root -c
 SYSCTL?=		/sbin/sysctl
 TAIL?=			/usr/bin/tail
 TEST?=			test	# Shell builtin
-TR?=			LANG=C /usr/bin/tr
+TR?=			/usr/bin/tr
 TRUE?=			true	# Shell builtin
 UMOUNT?=		/sbin/umount
 UNAME?=			/usr/bin/uname
@@ -106,11 +108,7 @@ XZ_CMD?=		/usr/bin/xz ${XZ}
 
 MD5?=			/sbin/md5
 SHA256?=		/sbin/sha256
-.if exists(/usr/bin/soeliminate)
-SOELIM?=		/usr/bin/soeliminate
-.else
 SOELIM?=		/usr/bin/soelim
-.endif
 
 # ECHO is defined in /usr/share/mk/sys.mk, which can either be "echo",
 # or "true" if the make flag -s is given.  Use ECHO_CMD where you mean
@@ -123,7 +121,7 @@ ECHO_MSG?=		${ECHO_CMD}
 .elif !defined(_PKGTOOLSDEFINED)
 _PKGTOOLSDEFINED=	yes
 PKG_BIN?=		${LOCALBASE}/sbin/pkg-static
-PKG_CMD?=		${PKG_BIN} register
+PKG_REGISTER?=		${PKG_BIN} register
 PKG_DELETE?=		${PKG_BIN} delete -y
 PKG_INFO?=		${PKG_BIN} info -g
 PKG_VERSION?=		${PKG_BIN} version

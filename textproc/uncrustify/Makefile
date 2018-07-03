@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	uncrustify
-PORTVERSION=	0.63
+PORTVERSION=	0.66.1
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -12,15 +12,22 @@ COMMENT=	Highly configurable source code beautifier
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-GNU_CONFIGURE=	yes
-USES=		gmake
-TEST_TARGET=	check
+BROKEN_mips=		fails to compile: cc1plus: error: unrecognized command line option "-std=gnu++0x"
+BROKEN_mips64=		fails to compile: cc1plus: error: unrecognized command line option "-std=gnu++0x"
+BROKEN_powerpc64=	fails to compile: cc1plus: error: unrecognized command line option "-std=gnu++0x"
 
-PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
-PORTDATA=	*
+NO_WRKSUBDIR=	yes
+USES=		cmake:outsource
+CMAKE_ARGS=	-DNoGitVersionString:BOOL=TRUE
+TEST_TARGET=	test
+
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${WRKSRC}/etc/*.cfg ${STAGEDIR}${ETCDIR}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

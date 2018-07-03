@@ -4,7 +4,7 @@
 
 PORTNAME=	gtkmm
 PORTVERSION=	2.24.4
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	24
@@ -22,7 +22,9 @@ PORTSCOUT=	ignore:1
 BUILD_DEPENDS=	gm4:devel/m4
 
 GNU_CONFIGURE=	yes
-USES+=		gettext gmake libtool:keepla pathfix pkgconfig
+USES+=		gettext gmake libtool:keepla pathfix pkgconfig \
+		compiler:c++11-lang
+USE_CXXSTD=	gnu++11
 USE_LDCONFIG=	yes
 USE_GNOME=	atkmm gtk20 pangomm
 CPPFLAGS+=	-I${LOCALBASE}/include

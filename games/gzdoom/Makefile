@@ -1,0 +1,63 @@
+# $FreeBSD$
+
+PORTNAME=	gzdoom
+PORTVERSION=	3.3.2
+DISTVERSIONPREFIX=	g
+CATEGORIES=	games
+
+MAINTAINER=	kevans@FreeBSD.org
+COMMENT=	GL-enhanced source port for Doom-engine games
+
+LICENSE=	BSD3CLAUSE GPLv3 LGPL3
+LICENSE_COMB=	multi
+LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/docs/licenses/bsd.txt
+LICENSE_FILE_GPLv3=	${WRKSRC}/docs/licenses/gpl.txt
+LICENSE_FILE_LGPL3=	${WRKSRC}/docs/licenses/lgpl.txt
+
+BUILD_DEPENDS=	zip:archivers/zip
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libsndfile.so:audio/libsndfile \
+		libfluidsynth.so:audio/fluidsynth \
+		libgme.so:audio/libgme
+
+DATADIR=	${DMDIR}/${PORTNAME}
+
+USES=		cmake:outsource	gettext jpeg openal pkgconfig
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	coelckers
+
+USE_GNOME=	atk cairo gdkpixbuf2 gtk20 pango
+USE_SDL=	sdl2
+USE_GL=		gl glu
+CXXFLAGS+=	-DSHARE_DIR=\\\"${DATADIR}\\\"
+LDFLAGS+=	-Wl,--as-needed
+
+DESKTOP_ENTRIES=	"GZDoom" "" "${PORTNAME}" "${PORTNAME}" "Game;Shooter;" ""
+
+PLIST_FILES=	bin/${PORTNAME} \
+		${DATADIR}/${PORTNAME}.pk3 \
+		share/pixmaps/${PORTNAME}.xpm
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} < 1004000
+BROKEN=		Fails to link due to lack of thread_local
+.endif
+
+.include "${.CURDIR}/../doom-data/Makefile.include"
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} < 1100000 && ${MACHINE_ARCH} == "i386"
+STRIP=	# 10.4/i386 strip(1) is incapable of stripping the gzdoom binary
+.endif
+
+do-install:
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_DATA} ${CONFIGURE_WRKSRC}/${PORTNAME}.pk3 ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.xpm ${STAGEDIR}${PREFIX}/share/pixmaps
+
+.include <bsd.port.post.mk>

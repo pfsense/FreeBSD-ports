@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	mod_security
-PORTVERSION=	2.9.1
+PORTVERSION=	2.9.2
+PORTREVISION=	2
 CATEGORIES=	www security
 MASTER_SITES=	http://www.modsecurity.org/tarball/${PORTVERSION}/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
@@ -15,12 +16,13 @@ LICENSE=	APACHE20
 LIB_DEPENDS+=	libpcre.so:devel/pcre \
 		libapr-1.so:devel/apr1 \
 		libyajl.so:devel/yajl \
-		libcurl.so:ftp/curl
+		libcurl.so:ftp/curl \
+		libgdbm.so:databases/gdbm \
+		libexpat.so:textproc/expat2
 
-USE_APACHE=	22+
+USES=		apache:2.2+ perl5 pkgconfig shebangfix bdb
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
-USES=		perl5 pkgconfig shebangfix
 SHEBANG_FILES=	tools/rules-updater.pl.in mlogc/mlogc-batch-load.pl.in
 perl_OLD_CMD=	@PERL@
 

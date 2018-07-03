@@ -8,9 +8,9 @@ r226103 | des | 2011-10-07 08:10:16 -0500 (Fri, 07 Oct 2011) | 5 lines
 Add a -x option that causes ssh-agent(1) to exit when all clients have
 disconnected.
 
---- ssh-agent.c.orig	2015-05-29 03:27:21.000000000 -0500
-+++ ssh-agent.c	2015-06-02 09:46:54.719580000 -0500
-@@ -157,15 +157,34 @@ static long lifetime = 0;
+--- ssh-agent.c.orig	2017-10-02 12:34:26.000000000 -0700
++++ ssh-agent.c	2017-10-12 11:31:40.908737000 -0700
+@@ -162,15 +162,34 @@ static long lifetime = 0;
  
  static int fingerprint_hash = SSH_FP_HASH_DEFAULT;
  
@@ -45,7 +45,7 @@ disconnected.
  }
  
  static void
-@@ -939,6 +958,10 @@ new_socket(sock_type type, int fd)
+@@ -745,6 +764,10 @@ new_socket(sock_type type, int fd)
  {
  	u_int i, old_alloc, new_alloc;
  
@@ -56,39 +56,39 @@ disconnected.
  	set_nonblock(fd);
  
  	if (fd > max_fd)
-@@ -1166,7 +1189,7 @@ static void
+@@ -1007,7 +1030,7 @@ static void
  usage(void)
  {
  	fprintf(stderr,
 -	    "usage: ssh-agent [-c | -s] [-Dd] [-a bind_address] [-E fingerprint_hash]\n"
 +	    "usage: ssh-agent [-c | -s] [-Ddx] [-a bind_address] [-E fingerprint_hash]\n"
- 	    "                 [-t life] [command [arg ...]]\n"
+ 	    "                 [-P pkcs11_whitelist] [-t life] [command [arg ...]]\n"
  	    "       ssh-agent [-c | -s] -k\n");
  	exit(1);
-@@ -1197,6 +1220,7 @@ main(int ac, char **av)
+@@ -1039,6 +1062,7 @@ main(int ac, char **av)
  	/* drop */
  	setegid(getgid());
  	setgid(getgid());
 +	setuid(geteuid());
  
- #if defined(HAVE_PRCTL) && defined(PR_SET_DUMPABLE)
- 	/* Disable ptrace on Linux without sgid bit */
-@@ -1210,7 +1234,7 @@ main(int ac, char **av)
+ 	platform_disable_tracing(0);	/* strict=no */
+ 
+@@ -1049,7 +1073,7 @@ main(int ac, char **av)
  	__progname = ssh_get_progname(av[0]);
  	seed_rng();
  
--	while ((ch = getopt(ac, av, "cDdksE:a:t:")) != -1) {
-+	while ((ch = getopt(ac, av, "cDdksE:a:t:x")) != -1) {
+-	while ((ch = getopt(ac, av, "cDdksE:a:P:t:")) != -1) {
++	while ((ch = getopt(ac, av, "cDdksE:a:P:t:x")) != -1) {
  		switch (ch) {
  		case 'E':
  			fingerprint_hash = ssh_digest_alg_by_name(optarg);
-@@ -1249,6 +1273,9 @@ main(int ac, char **av)
+@@ -1092,6 +1116,9 @@ main(int ac, char **av)
+ 				fprintf(stderr, "Invalid lifetime\n");
  				usage();
  			}
- 			break;
++			break;
 +		case 'x':
 +			xcount = 0;
-+			break;
+ 			break;
  		default:
  			usage();
- 		}

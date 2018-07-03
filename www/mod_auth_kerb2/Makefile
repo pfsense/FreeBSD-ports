@@ -19,7 +19,7 @@ LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/LICENSE
 
 PORTSCOUT=	limit:^5.4
 
-USE_APACHE=	22+
+USES=		apache:2.2+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	-with-krb5=${GSSAPIBASEDIR} --without-krb4
 
@@ -33,13 +33,5 @@ GSSAPI_DESC=		Use Base version of GSS API
 GSSAPI_BASE_USES=	gssapi
 GSSAPI_HEIMDAL_USES=	gssapi:heimdal
 GSSAPI_MIT_USES=	gssapi:mit
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MGSSAPI_BASE} && ${OSVERSION} < 903504
-post-patch:
-	${REINPLACE_CMD} -e 's|@KRB5_LDFLAGS@|@KRB5_LDFLAGS@ -lgssapi_krb5|' \
-		${WRKSRC}/Makefile.in
-.endif
 
 .include <bsd.port.mk>

@@ -29,7 +29,6 @@
 	]]>
 	</copyright>
 	<name>bind</name>
-	<version>0.4.3</version>
 	<title>BIND: DNS Settings</title>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<menu>
@@ -68,47 +67,11 @@
 		</tab>
 
 	</tabs>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind_views.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind_zones.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind_acls.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind_sync.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/shortcuts/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/pkg_bind.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/widgets/widgets/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind.widget.php</item>
-	</additional_files_needed>
+	<advanced_options>enabled</advanced_options>
 	<fields>
 		<field>
 			<type>listtopic</type>
 			<name>Daemon Settings</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Enable BIND</fielddescr>
@@ -167,7 +130,6 @@
 		<field>
 			<type>listtopic</type>
 			<name>Logging Options</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Enable Logging</fielddescr>
@@ -287,7 +249,6 @@
 		<field>
 			<type>listtopic</type>
 			<name>Response Rate Limit</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Rate Limit</fielddescr>
@@ -321,7 +282,6 @@
 		<field>
 			<type>listtopic</type>
 			<name>Forwarder Configuration</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Enable Forwarding</fielddescr>
@@ -344,9 +304,32 @@
 			<size>80</size>
 		</field>
 		<field>
-			<type>listtopic</type>
-			<name>Custom Options</name>
-			<fieldname>temp01</fieldname>
+			<fielddescr>Listen port</fielddescr>
+			<fieldname>listenport</fieldname>
+			<description>
+				<![CDATA[
+				TCP and UDP port BIND listens for queries on. Remember to create firewall rules to allow queries on this port.<br />
+				Must be changed if also running DNS Forwarder or Resolver on this Firewall.
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>53</default_value>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>Control port</fielddescr>
+			<fieldname>controlport</fieldname>
+			<description>
+				<![CDATA[
+				TCP port BIND listens for control requests on (localhost only).<br />
+				Must be changed if also running DNS Forwarder or Resolver on this Firewall.
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>953</default_value>
+			<advancedfield/>
 		</field>
 		<field>
 			<fielddescr>Custom Options</fielddescr>
@@ -361,11 +344,7 @@
 			<cols>65</cols>
 			<rows>5</rows>
 			<encoding>base64</encoding>
-		</field>
-		<field>
-			<type>listtopic</type>
-			<name>Global Settings</name>
-			<fieldname>temp01</fieldname>
+			<advancedfield/>
 		</field>
 		<field>
 			<fielddescr>Global Settings</fielddescr>
@@ -380,6 +359,7 @@
 			<cols>65</cols>
 			<rows>5</rows>
 			<encoding>base64</encoding>
+			<advancedfield/>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>

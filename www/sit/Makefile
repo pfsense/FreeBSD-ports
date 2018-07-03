@@ -13,8 +13,10 @@ COMMENT=	PHP incident tracking system / Helpdesk
 
 LICENSE=	GPLv2
 
+IGNORE_WITH_PHP=	70 71 72
+
+USES=		php:web
 USE_PHP=	pcre mysql session zlib mbstring
-WANT_PHP_WEB=	yes
 
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/sit-${PORTVERSION}

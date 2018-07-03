@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ocrad
-PORTVERSION=	0.25
+PORTVERSION=	0.26
 CATEGORIES=	graphics
 MASTER_SITES=	GNU
 EXTRACT_SUFX=	.tar.lz
@@ -21,15 +21,6 @@ PORTEXAMPLES=	*
 PLIST_FILES=	bin/${PORTNAME} man/man1/ocrad.1.gz
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} < 1000024
-EXTRACT_DEPENDS=	lzip:archivers/lzip
-EXTRACT_CMD=		${LOCALBASE}/bin/lzip
-EXTRACT_BEFORE_ARGS=	-cd
-EXTRACT_AFTER_ARGS=	| ${TAR} -xf -
-.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

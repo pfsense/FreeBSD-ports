@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	Plack
-PORTVERSION=	1.0036
+PORTVERSION=	1.0039
+PORTREVISION=	1
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MIYAGAWA
@@ -10,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Perl extension of PSGI reference implementation and utilities
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	\
@@ -21,8 +22,7 @@ RUN_DEPENDS=	\
 	p5-File-ShareDir>=1.00:devel/p5-File-ShareDir \
 	p5-Filesys-Notify-Simple>0:devel/p5-Filesys-Notify-Simple \
 	p5-HTTP-Body>=1.06:www/p5-HTTP-Body \
-	p5-HTTP-Headers-Fast>=0.17:www/p5-HTTP-Headers-Fast \
-	p5-HTTP-Tiny>=0.034:www/p5-HTTP-Tiny \
+	p5-HTTP-Headers-Fast>=0.18:www/p5-HTTP-Headers-Fast \
 	p5-Hash-MultiValue>=0.05:devel/p5-Hash-MultiValue \
 	p5-Path-Class>0:devel/p5-Path-Class \
 	p5-Stream-Buffered>=0.02:devel/p5-Stream-Buffered \
@@ -30,7 +30,7 @@ RUN_DEPENDS=	\
 	p5-URI>=1.59:net/p5-URI
 BUILD_DEPENDS:=	${RUN_DEPENDS} \
 	p5-File-ShareDir-Install>=0.03:devel/p5-File-ShareDir-Install
-TEST_DEPENDS=  \
+TEST_DEPENDS=	\
 	p5-Authen-Simple-Passwd>0:security/p5-Authen-Simple-Passwd \
 	p5-CGI-Compile>0:www/p5-CGI-Compile \
 	p5-CGI-Emulate-PSGI>0:www/p5-CGI-Emulate-PSGI \

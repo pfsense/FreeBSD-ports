@@ -4,7 +4,7 @@
 PORTNAME=	exaddos
 PORTVERSION=	0.4.0
 CATEGORIES=	net
-MASTER_SITES=	http://mirrors.rit.edu/zi/
+MASTER_SITES=	ZI
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Monitor your network for DDoS
@@ -12,16 +12,17 @@ COMMENT=	Monitor your network for DDoS
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}snmp4-mibs>=0.1.4:net-mgmt/py-snmp4-mibs \
-		${PYTHON_PKGNAMEPREFIX}snmp4>=4.2.3:net-mgmt/py-snmp4
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}snmp4-mibs>=0.1.4:net-mgmt/py-snmp4-mibs@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}snmp4>=4.2.3:net-mgmt/py-snmp4@${PY_FLAVOR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Exa-Networks
-USES=		python tar:tgz
+USES=		python:2.7
 SUB_FILES=	pkg-message exaddos.sh exaddos.conf.sample
 SUB_LIST=	PYTHON_LIBDIR=${PYTHON_LIBDIR} PYTHON_CMD=${PYTHON_CMD} \
 		PYTHON_SITELIBDIR=${PYTHON_SITELIBDIR}
 USE_RC_SUBR=	${PORTNAME}
+NO_ARCH=	yes
 
 USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}

@@ -1,25 +1,30 @@
 # $FreeBSD$
 
 PORTNAME=	direnv
-PORTVERSION=	2.8.1
+PORTVERSION=	2.15.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Environment variable manager for your shell
 
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
 BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	zimbatm
+GH_ACCOUNT=	direnv
+GH_SUBDIR=	src/github.com/direnv/direnv
+MAKE_ENV=	GOPATH=${WRKSRC}
 
 USES=		gmake
 
 PLIST_FILES=	bin/direnv man/man1/direnv.1.gz man/man1/direnv-stdlib.1.gz
 
-STRIP=		# stripping can break go binaries
-
-.include <bsd.port.options.mk>
+post-patch:
+	${MV} ${WRKSRC}/vendor/github.com/direnv/go-dotenv ${WRKSRC}/src/github.com/direnv
+	${MV} ${WRKSRC}/vendor/github.com/BurntSushi ${WRKSRC}/src/github.com/
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/direnv \

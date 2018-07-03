@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	RCurl
-DISTVERSION=	1.95-4.8
+DISTVERSION=	1.95-4.10
 CATEGORIES=	ftp
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -11,10 +11,12 @@ COMMENT=	General network client interface for R
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	curl-config:ftp/curl
-RUN_DEPENDS=	R-cran-bitops>0:devel/R-cran-bitops
+CRAN_DEPENDS=	R-cran-bitops>0:devel/R-cran-bitops
+BUILD_DEPENDS=	curl-config:ftp/curl \
+		${CRAN_DEPENDS}
+RUN_DEPENDS=	${CRAN_DEPENDS}
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=	cran:auto-plist
+USES=		cran:auto-plist,compiles
 
 .include <bsd.port.mk>

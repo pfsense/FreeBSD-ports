@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	nag
-PORTVERSION=	4.2.11
+PORTVERSION=	4.2.17
 CATEGORIES=	deskutils www pear
-PKGNAMEPREFIX=	horde-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde web based task list manager

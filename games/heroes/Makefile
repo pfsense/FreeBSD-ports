@@ -33,7 +33,7 @@ MUSICSRC=	${WRKDIR}/${MUSICDISTNAME}
 USE_SDL=	mixer sdl
 USES=		gettext gmake iconv makeinfo
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	MAKEINFO="makeinfo --no-split"
+CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split"
 CONFIGURE_ARGS=	--with-sdl_mixer=${LOCALBASE} --without-gii --without-ggi
 
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS
@@ -49,8 +49,8 @@ post-patch:
 	@for dir in ${DATASRC} ${SOUNDSRC} ${MUSICSRC}; do \
 		${FIND} $${dir} -name "Makefile*" -delete; \
 	done
-	@${RM} -f ${WRKSRC}/lib/getopt.h
-	@${RM} -f ${WRKSRC}/doc/*.info*
+	@${RM} ${WRKSRC}/lib/getopt.h
+	@${RM} ${WRKSRC}/doc/*.info*
 
 post-install:
 .for dir in levels pics tilesets

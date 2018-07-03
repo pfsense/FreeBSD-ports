@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix3
-PORTVERSION=	3.0.4
+PORTVERSION=	3.0.14
 PORTREVISION?=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
@@ -12,13 +12,11 @@ DISTNAME=	zabbix-${PORTVERSION}
 MAINTAINER=	pg@pakhom.spb.ru
 COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/^-//}) LTS
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
+CONFLICTS=	zabbix[0-9][0-9]${PKGNAMESUFFIX} zabbix[0-24-9]${PKGNAMESUFFIX}
 
-CONFLICTS=	zabbix2${PKGNAMESUFFIX}-[0-9]* zabbix22${PKGNAMESUFFIX}[0-9]* zabbix24${PKGNAMESUFFIX}-[0-9]*
-
-IGNORE_WITH_PHP=	52
 IGNORE_WITH_MYSQL=	41
 
 ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
@@ -58,7 +56,7 @@ CONFIGURE_ARGS+=	--enable-${ZABBIX_BUILD} \
 			--with-iconv=${ICONV_PREFIX}
 
 .if ${ZABBIX_BUILD} != "agent"
-USES+=		execinfo
+LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 
@@ -69,7 +67,7 @@ CONFIGURE_ARGS+=	--with-net-snmp
 OPTIONS_DEFINE=		IPV6 FPING JABBER CURL LDAP IPMI SSH NMAP JAVAGW \
 			LIBXML2
 
-OPTIONS_DEFAULT=	IPV6 FPING CURL UNIXODBC MYSQL OPENSSL
+OPTIONS_DEFAULT=	FPING CURL UNIXODBC MYSQL OPENSSL
 OPTIONS_SUB=		yes
 
 CURL_DESC=		Support for web monitoring
@@ -89,13 +87,13 @@ OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
 OPTIONS_SINGLE_SSL=	OPENSSL GNUTLS POLARSSL
 
 MYSQL_CONFIGURE_WITH=	mysql
-MYSQL_USES+=	mysql
+MYSQL_USES+=		mysql
 
 PGSQL_CONFIGURE_WITH=	postgresql
-PGSQL_USES+=	pgsql
+PGSQL_USES+=		pgsql
 
 SQLITE_CONFIGURE_WITH=	sqlite3
-SQLITE_USES+=	sqlite:3
+SQLITE_USES+=		sqlite:3
 
 ORACLE_CONFIGURE_WITH=	oracle
 
@@ -139,6 +137,8 @@ LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
 OPENSSL_CONFIGURE_WITH=	openssl
 OPENSSL_USES=		ssl
+OPENSSL_VARS=		BROKEN_SSL="libressl libressl-devel" \
+			BROKEN_SSL_REASON="PSK is not provided by LibreSSL"
 
 GNUTLS_CONFIGURE_WITH=	gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
@@ -148,32 +148,32 @@ POLARSSL_LIB_DEPENDS=	libmbedtls.so:security/polarssl13
 
 .include <bsd.port.pre.mk>
 
-.if ${SSL_DEFAULT} == base
-IGNORE_FreeBSD_9=	Requires newer OpenSSL (set DEFAULT_VERSIONS+=ssl=openssl)
-.endif
-
-.if ${SSL_DEFAULT:Mlibressl*}
-IGNORE=	requires PSK which is unsupported by the selected LibreSSL
-.endif
-
 post-patch:
 	@${GREP} -rl "/etc/zabbix" ${WRKSRC} \
 	  | ${XARGS} ${REINPLACE_CMD} -e 's#/etc/zabbix#${ETCDIR}#g'
 	@${REINPLACE_CMD} -e 's#/usr/sbin/fping#${LOCALBASE}/sbin/fping#g' \
-		${WRKSRC}/conf/zabbix_*.conf
+		${WRKSRC}/conf/zabbix_*.conf \
+		${WRKSRC}/src/zabbix_proxy/proxy.c \
+		${WRKSRC}/src/zabbix_server/server.c
 
 .if ${ZABBIX_BUILD} == "server"
 	@${REINPLACE_CMD} -e 's#PidFile=/tmp/zabbix_server.pid#PidFile=/var/run/zabbix/zabbix_server.pid#g' \
+		${WRKSRC}/conf/zabbix_server*.conf
+	@${REINPLACE_CMD} -e 's#Include=/usr/local/usr/local/etc/zabbix3#Include=/usr/local/etc/zabbix3/zabbix#g' \
 		${WRKSRC}/conf/zabbix_server*.conf
 .endif
 
 .if ${ZABBIX_BUILD} == "proxy"
 	@${REINPLACE_CMD} -e 's#PidFile=/tmp/zabbix_proxy.pid#PidFile=/var/run/zabbix/zabbix_proxy.pid#g' \
 		${WRKSRC}/conf/zabbix_proxy*.conf
+	@${REINPLACE_CMD} -e 's#Include=/usr/local/usr/local/etc/zabbix3#Include=/usr/local/etc/zabbix3/zabbix#g' \
+		${WRKSRC}/conf/zabbix_proxy*.conf
 .endif
 
 .if ${ZABBIX_BUILD} == "agent"
 	@${REINPLACE_CMD} -e 's#PidFile=/tmp/zabbix_agentd.pid#PidFile=/var/run/zabbix/zabbix_agentd.pid#g' \
+		${WRKSRC}/conf/zabbix_agentd*.conf
+	@${REINPLACE_CMD} -e 's#Include=/usr/local/usr/local/etc/zabbix3#Include=/usr/local/etc/zabbix3/zabbix#g' \
 		${WRKSRC}/conf/zabbix_agentd*.conf
 .endif
 
@@ -190,7 +190,7 @@ post-patch:
 		-Ee 's|(@sysconfdir@/(\$$\([A-Z]*_CONFIG\)))" ([|][|] cp "../../conf/\$$\([A-Z]*_CONFIG\)" "\$$\(DESTDIR\)@sysconfdir@)"|\1.sample" \3/\2.sample"|;' \
 		${WRKSRC}/src/zabbix_${ZABBIX_BUILD}/Makefile.in
 	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -or -name '*.orig' \) \
-		-exec ${RM} -f {} +
+		-exec ${RM} {} +
 
 post-install:
 

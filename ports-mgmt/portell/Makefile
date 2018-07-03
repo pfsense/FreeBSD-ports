@@ -3,16 +3,17 @@
 
 PORTNAME=	portell
 PORTVERSION=	0.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	http://www.freebsdcluster.org/~mich/software/
 
 MAINTAINER=	mich@FreeBSD.org
 COMMENT=	Quick display of FreeBSD port descriptions
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bsddb>0:databases/py-bsddb
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bsddb>0:databases/py-bsddb@${PY_FLAVOR}
 
-USES=		python zip
+USES=		python:-2.7 shebangfix zip
+SHEBANG_FILES=	*.py
 NO_BUILD=	yes
 
 PLIST_FILES=	bin/portell

@@ -1,24 +1,23 @@
 # $FreeBSD$
 
 PORTNAME=	diamond
-PORTVERSION=	0.8.22
-DISTVERSIONPREFIX=v
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.9.19
 CATEGORIES=	biology
 
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	BLAST-compatible local sequence aligner
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	AGPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 i386
 
-USES=		cmake:outsource compiler:c++11-lang
-
-CFLAGS+=	-DNDEBUG
-
+USES=		cmake:outsource
 USE_GITHUB=	yes
 GH_ACCOUNT=	bbuchfink
 
+CFLAGS+=	-DNDEBUG
 PLIST_FILES=	bin/diamond
 
 .if ! defined(PACKAGE_BUILDING)

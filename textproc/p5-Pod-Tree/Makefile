@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Create a static syntax tree for a POD
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	p5-HTML-Stream>=1.49:www/p5-HTML-Stream \
@@ -30,10 +30,4 @@ post-patch:
 	@${REINPLACE_CMD} -e '/pod2html/d' ${WRKSRC}/MANIFEST
 	@${RM} ${WRKSRC}/t/pod2html.t
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502000
-TEST_DEPENDS+=	p5-Test-Simple>=1.001002:devel/p5-Test-Simple
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

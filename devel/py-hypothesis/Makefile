@@ -10,9 +10,9 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	brendan+freebsd@bbqsrc.net
 COMMENT=	Library for property based testing
 
-LICENSE=	MPL
+LICENSE=	MPL20
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils

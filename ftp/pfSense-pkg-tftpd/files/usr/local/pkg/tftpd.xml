@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * tftpd.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016 Stefan Seidel
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>tftpd</name>
+	<title>TFTP server</title>
+	<include_file>/usr/local/pkg/tftpd.inc</include_file>
+	<aftersaveredirect>/pkg_edit.php?xml=tftpd.xml</aftersaveredirect>
+	<menu>
+		<name>TFTP Server</name>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=tftpd.xml</url>
+	</menu>
+	<service>
+		<name>tftpd</name>
+		<rcfile>tftpd.sh</rcfile>
+		<executable>in.tftpd</executable>
+		<description>TFTP daemon</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=tftpd.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Files</text>
+			<url>/tftp_files.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<fielddescr>Enable TFTP service</fielddescr>
+			<fieldname>tftpd_enable</fieldname>
+			<description>Check to enable the TFTP service.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>TFTP Server Bind IP</fielddescr>
+			<fieldname>tftpd_ip</fieldname>
+			<description>
+				<![CDATA[
+				By default, TFTP server will listen on all local addresses. If this is not desired,
+				you can restrict this to a specific local address.<br/>
+				<span class="text-danger">This must be a valid, locally configured IP address.</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>IPv4 Only</fielddescr>
+			<fieldname>tftpd_ipv4only</fieldname>
+			<description>Check to allow clients to connect with IPv4 only.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Max Block Size</fielddescr>
+			<fieldname>tftpd_blocksize</fieldname>
+			<description>
+				<![CDATA[
+				Specifies the maximum permitted block size. <span class="text-info">The permitted range is from 512 to 65464.</span>
+				<div class="infoblock">
+				Some embedded clients request large block sizes	and yet	do not handle fragmented packets
+				correctly; for these clients, it is recommended to set this value to the smallest MTU
+				on your network minus 32 bytes (20 bytes for IP, 8 for UDP, and 4 for TFTP; less if you
+				use IP options on your network.)<br/>
+				For example, on a standard Ethernet (MTU 1500) a value of 1468 is reasonable.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		install_package_tftpd();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		deinstall_package_tftpd();
+	</custom_php_deinstall_command>
+	<custom_php_resync_config_command>
+		sync_package_tftpd();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		validate_form_tftpd($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

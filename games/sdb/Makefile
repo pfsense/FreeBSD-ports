@@ -3,17 +3,18 @@
 
 PORTNAME=	sdb
 PORTVERSION=	1.0.2
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	games
 MASTER_SITES=	http://stage.gamecreation.org/shotgund/ \
-		http://mirror.amdmi3.ru/distfiles/
+		https://mirror.amdmi3.ru/distfiles/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Futuristic overhead shooter
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gmake
 USE_SDL=	mixer image sdl
@@ -30,7 +31,7 @@ PORTDOCS=	*
 PORTDATA=	*
 
 DESKTOP_ENTRIES="Shotgun Debugger" \
-		"${COMMENT}" \
+		"" \
 		"" \
 		"${PORTNAME}" \
 		"Game;ActionGame;" \
@@ -51,7 +52,7 @@ PLIST_SUB+=	MODEL_SUFFIX="md2b"
 post-extract:
 	${RM} ${WRKSRC}/models/*
 	@cd ${WRKSRC}/models && \
-		${RM} -f * && \
+		${RM} * && \
 		${UNZIP_CMD} -qj ${DISTDIR}/shotgun-debugger-1.0.mac-ppc.zip \
 			'sdb-1.0-macosx/models/*.md2b'
 .endif
@@ -63,7 +64,9 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/sdb ${STAGEDIR}${PREFIX}/bin
 	cd ${WRKSRC} && ${COPYTREE_SHARE} "levels models snd sprites" ${STAGEDIR}${DATADIR}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

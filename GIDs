@@ -57,7 +57,7 @@ dcc:*:112:
 amavis:*:113:
 dhis:*:114:
 _symon:*:115:
-# free: 116
+u2f:*:116:
 smokeping:*:117:
 ircproxyd:*:118:
 mythtv:*:119:
@@ -82,7 +82,7 @@ mpd:*:137:
 wolfpack:*:138:
 shellinabox:*:139:
 amanda:*:140:
-# free: 141
+synapse:*:141:
 ladvd:*:142:
 dovecot:*:143:
 dovenull:*:144:
@@ -93,7 +93,7 @@ ipv6mon:*:148:
 avenger:*:149:
 cbsd:*:150:
 # free: 151
-# free: 152
+frrvty:*:152:frr
 rbldns:*:153:
 trircd:*:154:
 xorp:*:155:
@@ -103,14 +103,14 @@ pootle:*:158:
 nocat:*:159:
 _ypldap:*:160:
 solr:*:161:
-# free: 162
-# free: 163
-# free: 164
-# free: 165
-# free: 166
-# free: 167
-# free: 168
-# free: 169
+octoprint:*:162:
+_iked:*:163:
+lightdm:*:164:
+uwsgi:*:165:
+yule:*:166:
+ceph:*:167:
+frr:*:168:
+acme:*:169:
 tile38:*:170:
 sfs:*:171:
 agk:*:172:
@@ -118,7 +118,7 @@ polipo:*:173:
 flowtools:*:174:
 twms:*:175:
 mlvpn:*:176:
-# free: 177
+_mdnsd:*:177:
 otpw:*:178:
 gdnsd:*:179:
 rt:*:180:
@@ -131,51 +131,50 @@ dnslog:*:186:
 swift:*:187:
 netxms:*:188:
 leofs:*:189:
-# free: 190
-# free: 191
+keystone:*:190:
+glance:*:191:
 moinmoin:*:192:
 cups:*:193:
 saned:*:194:
 radns:*:195:
-# free: 196
-# free: 197
-# free: 198
+nova:*:196:
+dq:*:197:
+horizon:*:198:
 mcserver:*:199:
 sympa:*:200:
 privoxy:*:201:
 dspam:*:202:
-# free: 203
+cinder:*:203:
 yate:*:204:
 gnugk:*:205:
 gini:*:206:
 _mixminion:*:207:
 _dnsdist:*:208:
-gogs:*:209:
 shoutcast:*:210:
 git:*:211:
 hg:*:212:
 drizzle:*:213:
-# free: 214
+kyototycoon:*:214:
 opendnssec:*:215:
 nsd:*:216:
-# free: 217
-# free: 218
-# free: 219
+anvil:*:217:
+zap:*:218:
+sddm:*:219:
 bs:*:220:
-# free: 221
+opensips:*:221:
 rtpproxy:*:222:
-# free: 223
+mqttwarn:*:223:
 # free: 224
 postgrey:*:225:
 sqlgrey:*:226:
 _hfm:*:227:
-# free: 228
+osrm:*:228:
 kismet:*:229:
-# free: 230
+carbon:*:230:
 # free: 231
 # free: 232
 # free: 233
-# free: 234
+kafka:*:234:
 # free: 235
 # free: 236
 # free: 237
@@ -185,7 +184,7 @@ aprsd:*:240:
 tnc:*:241:
 prosody:*:242:
 # free: 243
-# free: 244
+mastodon:*:244:
 # free: 245
 # free: 246
 fcron:*:247:
@@ -196,7 +195,7 @@ fcron:*:247:
 # free: 252
 _adsuck:*:253:
 # free: 254
-# free: 255
+_i2pd:*:255:
 _tor:*:256:
 _smtpd:*:257:
 _smtpq:*:258:
@@ -219,7 +218,7 @@ meta1:*:264:
 haclient:*:275:
 frontbase:*:276:
 # free: 277
-# free: 278
+rtg:*:278:
 mrtg:*:279:
 xymon:*:280:
 prelude:*:281:
@@ -243,7 +242,7 @@ ntopng:*:288:
 # free: 299
 backuppc:*:300:
 # free: 301
-# free: 302
+netdata:*:302:
 # free: 303
 # free: 304
 # free: 305
@@ -254,7 +253,7 @@ backuppc:*:300:
 # free: 310
 # free: 311
 _sphinx:*:312:
-# free: 313
+_fastdfs:*:313:
 # free: 314
 # free: 315
 # free: 316
@@ -292,10 +291,10 @@ openfire:*:342:
 # free: 348
 # free: 349
 _sabnzbd:*:350:
-# free: 351
-# free: 352
+sonarr:*:351:
+radarr:*:352:
 _iodined:*:353:
-# free: 354
+jackett:*:354:
 # free: 355
 # free: 356
 # free: 357
@@ -361,7 +360,7 @@ uhub:*:411:
 # free: 417
 # free: 418
 # free: 419
-# free: 420
+oxidized:*:420:
 # free: 421
 # free: 422
 # free: 423
@@ -414,13 +413,13 @@ consul:*:469:
 serf:*:470:
 vault:*:471:
 nomad:*:472:
-# free: 473
-# free: 474
-# free: 475
-# free: 476
+minio:*:473:
+gitlab-runner:*:474:
+traefik:*:475:
+gitlab-pages:*:476:
 # free: 477
-# free: 478
-# free: 479
+prometheus:*:478:
+alertmanager:*:479:
 # free: 480
 # free: 481
 # free: 482
@@ -516,7 +515,7 @@ polkitd:*:565:
 # free: 572
 # free: 573
 # free: 574
-# free: 575
+nexus:*:575:
 # free: 576
 # free: 577
 # free: 578
@@ -544,7 +543,7 @@ avahi-autoipd:*:588:
 _xsi:*:600:
 _tss:*:601:
 _pkcs11:*:602:
-# free: 603
+_acme:*:603:
 # free: 604
 # free: 605
 # free: 606
@@ -712,17 +711,17 @@ bopm:*:717:
 # free: 768
 # free: 769
 postgres:*:770:
-# free: 771
+cockroach:*:771:
 # free: 772
 # free: 773
 # free: 774
 # free: 775
 # free: 776
 openxpki:*:777:
-# free: 778
-# free: 779
+litecoin:*:778:
+bitcoin:*:779:
 zetacoin:*:780:
-# free: 781
+monero:*:781:
 # free: 782
 # free: 783
 # free: 784
@@ -741,7 +740,7 @@ zetacoin:*:780:
 # free: 797
 # free: 798
 # free: 799
-# free: 800
+clickhouse:*:800:
 # free: 801
 # free: 802
 # free: 803
@@ -765,7 +764,7 @@ openacs:*:820:
 dotlrn:*:821:
 # free: 822
 # free: 823
-# free: 824
+selenium:*:824:
 polw:*:825:
 statsd:*:826:
 # free: 827
@@ -790,7 +789,7 @@ subsonic:*:844:
 sogod:*:846:
 domoticz:*:847:
 graylog:*:848:
-# free: 849
+chronyd:*:849:
 # free: 850
 # free: 851
 # free: 852
@@ -828,17 +827,17 @@ graylog:*:848:
 # free: 884
 # free: 885
 # free: 886
-# free: 887
-# free: 888
-# free: 889
-# free: 890
+pdagent:*:887:
+vuls:*:888:
+mattermost:*:889:
+matterircd:*:890:
 # free: 891
 # free: 892
-# free: 893
-# free: 894
-# free: 895
-# free: 896
-# free: 897
+logstash:*:893:
+arangodb:*:894:
+snmptt:*:895:
+istat:*:896:
+znc:*:897:
 ufdb:*:898:
 guacamole:*:899:
 seafile:*:900:
@@ -895,7 +894,7 @@ conquest:*:950:
 openerpd:*:951:
 bitten-slave:*:952:
 _neubot:*:953:
-# free: 954
+couchpotato:*:954:
 hadoop:*:955:
 pandora:*:956:
 razorback:*:957:
@@ -919,7 +918,7 @@ radicale:*:974:
 unifi:*:975:
 minetest:*:976:
 # free: 977
-# free: 978
+_dnscrypt-proxy:*:978:
 ums:*:979:
 hbase:*:980:
 uvncrep:*:981:

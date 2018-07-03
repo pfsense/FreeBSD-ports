@@ -47,7 +47,7 @@ GERONIMO_USER?=	www
 GERONIMO_GROUP?=www
 GERONIMO_OUT=	${LOG_DIR}/geronimo.out
 PID_FILE=	/var/run/${APP_SHORTNAME}.pid
-WRKDIR?=	${WRKDIRPREFIX}${.CURDIR}/work
+WRKDIR?=	${WRKDIRPREFIX}${.CURDIR}/${_WRKDIR}
 WRKSRC=		${WRKDIR}/${DISTNAME:S/-bin//}
 JAR_FILE=	bin/server.jar
 PLIST_FILES=	"@(${GERONIMO_USER},${GERONIMO_GROUP},) ${GERONIMO_OUT:S,^${PREFIX}/,,}"
@@ -76,7 +76,7 @@ pre-patch:
 
 post-patch:
 	@${ECHO_MSG} -n ">> Removing unneeded files..."
-	@${RM} -f `${FIND} ${WRKSRC} -name '*.bat'` `${FIND} ${WRKSRC} -name '*.orig'` `${FIND} ${WRKSRC} -name '*.exe'`
+	@${RM} `${FIND} ${WRKSRC} -name '*.bat'` `${FIND} ${WRKSRC} -name '*.orig'` `${FIND} ${WRKSRC} -name '*.exe'`
 	@${ECHO_MSG} " [ DONE ]"
 	@${REINPLACE_CMD} -e '/^activemq.data/s|= |= ${APP_HOME}/|' ${WRKSRC}/var/config/config-substitutions.properties
 

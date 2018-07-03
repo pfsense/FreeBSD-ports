@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	contextlib2
-PORTVERSION=	0.5.4
+PORTVERSION=	0.5.5
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Backports and enhancements for the contextlib module
 
 LICENSE=	BSD2CLAUSE

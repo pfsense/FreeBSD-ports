@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2015 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * Copyright (c) 2008-2009 Robert Zelaya
  * All rights reserved.
  *
@@ -47,6 +47,7 @@ else {
 	$pconfig['clearblocks'] = $config['installedpackages']['snortglobal']['clearblocks'] == "on" ? 'on' : 'off';
 	$pconfig['verbose_logging'] = $config['installedpackages']['snortglobal']['verbose_logging'] == "on" ? 'on' : 'off';
 	$pconfig['openappid_detectors'] = $config['installedpackages']['snortglobal']['openappid_detectors'] == "on" ? 'on' : 'off';
+	$pconfig['openappid_rules_detectors'] = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == "on" ? 'on' : 'off';
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on" ? 'on' : 'off';
 	$pconfig['curl_no_verify_ssl_peer'] = $config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] == "on" ? 'on' : 'off';
 }
@@ -75,7 +76,7 @@ if ($_POST['rule_update_starttime']) {
 }
 
 if ($_POST['snortdownload'] == "on" && empty($_POST['oinkmastercode']))
-		$input_errors[] = "You must supply an Oinkmaster code in the box provided in order to enable Snort VRT rules!";
+		$input_errors[] = "You must supply an Oinkmaster code in the box provided in order to enable Snort Subscriber rules!";
 
 if ($_POST['emergingthreats_pro'] == "on" && empty($_POST['etpro_code']))
 		$input_errors[] = "You must supply a subscription code in the box provided in order to enable Emerging Threats Pro rules!";
@@ -91,6 +92,7 @@ if (!$input_errors) {
 		$config['installedpackages']['snortglobal']['clearblocks'] = $_POST['clearblocks'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['verbose_logging'] = $_POST['verbose_logging'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['openappid_detectors'] = $_POST['openappid_detectors'] ? 'on' : 'off';
+		$config['installedpackages']['snortglobal']['openappid_rules_detectors'] = $_POST['openappid_rules_detectors'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['hide_deprecated_rules'] = $_POST['hide_deprecated_rules'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] = $_POST['curl_no_verify_ssl_peer'] ? 'on' : 'off';
 
@@ -109,12 +111,14 @@ if (!$input_errors) {
 			$disabled_rules[] = ET_OPEN_FILE_PREFIX;
 		if ($config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'off')
 			$disabled_rules[] = ET_PRO_FILE_PREFIX;
+		if ($config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'off')
+			$disabled_rules[] = OPENAPPID_FILE_PREFIX;
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
 		if (is_array($config['installedpackages']['snortglobal']['rule'])) {
 			foreach ($config['installedpackages']['snortglobal']['rule'] as &$iface) {
-				// Disable Snort IPS policy if VRT rules are disabled
+				// Disable Snort IPS policy if Snort Subscriber rules are disabled
 				if ($disable_ips_policy) {
 					$iface['ips_policy_enable'] = 'off';
 					unset($iface['ips_policy']);
@@ -188,17 +192,17 @@ $form = new Form(new Form_Button(
 	'Save'
 ));
 
-$section = new Form_Section('Snort Vulnerability Research Team (VRT) Rules');
+$section = new Form_Section('Snort Subscriber Rules');
 $section->addInput(new Form_Checkbox(
 	'snortdownload',
 	'Enable Snort VRT',
-	'Click to enable download of Snort VRT free Registered User or paid Subscriber rules',
+	'Click to enable download of Snort free Registered User or paid Subscriber rules',
 	$pconfig['snortdownload'] == 'on' ? true:false,
 	'on'
 ));
 $section->addInput(new Form_StaticText(
 	null,
-	'<a href="https://www.snort.org/users/sign_up" target="_blank">' . 'Sign Up for a free Registered User Rule Account' . '</a><br/><a href="https://www.snort.org/products" target="_blank">' . 'Sign Up for paid Sourcefire VRT Certified Subscriber Rules' . '</a>'
+	'<a href="https://www.snort.org/users/sign_up" target="_blank">' . 'Sign Up for a free Registered User Rules Account' . '</a><br/><a href="https://www.snort.org/products" target="_blank">' . 'Sign Up for paid Snort Subscriber Rule Set (by Talos)' . '</a>'
 ));
 $section->addInput(new Form_Input(
 	'oinkmastercode',
@@ -219,7 +223,7 @@ $section->addInput(new Form_Checkbox(
 ));
 $section->addInput(new Form_StaticText(
 	null,
-	'The Snort Community Ruleset is a GPLv2 VRT certified ruleset that is distributed free of charge without any VRT License restrictions.  This ruleset is updated daily and is a subset of the subscriber ruleset.'
+	'The Snort Community Ruleset is a GPLv2 Talos certified ruleset that is distributed free of charge without any Snort Subscriber License restrictions.  This ruleset is updated daily and is a subset of the subscriber ruleset.'
 ));
 
 $form->add($section);
@@ -274,7 +278,18 @@ $section->addInput(new Form_StaticText(
 	'OpenAppID Version',
 	$openappid_ver
 ));
-
+$group = new Form_Group('Enable RULES OpenAppID');
+$group->add(new Form_Checkbox(
+        'openappid_rules_detectors',
+        'Enable RULES OpenAppID',
+        'Click to enable download of APPID Open rules',
+        $pconfig['openappid_rules_detectors'] == 'on' ? true:false,
+        'on'
+));
+$group->setHelp('Note - the AppID Open Rules file is maintained by a volunteer contributor and hosted by the pfSense team.  ' . 
+'The URL for the file ' . 'is <a href="' . SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '" target="_blank">' . 
+SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '</a>.');
+$section->add($group);
 $form->add($section);
 
 $section = new Form_Section('Rules Update Settings');

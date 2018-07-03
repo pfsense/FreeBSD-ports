@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-terminal
-PORTVERSION=	0.6.3
-PORTREVISION=	2
+PORTVERSION=	0.8.7.3
 CATEGORIES=	x11 xfce
-MASTER_SITES=	XFCE/src/apps/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/src/apps/${PORTNAME}/${PORTVERSION:R:R}
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -16,25 +15,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
 
+USES=		gettext gmake pkgconfig tar:bzip2 xfce:gtk3
 GNU_CONFIGURE=	yes
-USE_GNOME=	gtk20 glib20 intltool intlhack vte libxml2
+USE_GNOME=	gtk30 glib20 cairo gdkpixbuf2 intltool vte3 libxml2
 USE_XFCE=	libmenu
 USE_XORG=	x11
-USES=		pkgconfig gmake gettext-tools xfce tar:bzip2
+INSTALL_TARGET=	install-strip
+SUB_FILES=	pkg-message
 
 CONFIGURE_ARGS=	--without-gnome-default-appsdir
 
-OPTIONS_DEFINE=	NLS
-NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=	gettext-runtime
-OPTIONS_SUB=	yes
-
-.include <bsd.port.pre.mk>
-
-post-patch:
-.if ! ${PORT_OPTIONS:MNLS}
-	@${REINPLACE_CMD} -e 's|	terminal||; \
-		s|po \\|terminal|' ${WRKSRC}/Makefile.in
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

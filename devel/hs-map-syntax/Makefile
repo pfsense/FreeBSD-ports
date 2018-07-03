@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	map-syntax
-PORTVERSION=	0.2
+PORTVERSION=	0.2.0.2
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

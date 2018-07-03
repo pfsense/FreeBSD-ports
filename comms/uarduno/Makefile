@@ -10,18 +10,16 @@ MASTER_SITES=	http://mrp3.com/
 MAINTAINER=	bobf@mrp3.com
 COMMENT=	FreeBSD Kernel Driver for the Arduino Uno USB interface
 
-# no license required
-LICENSE=		BSD2CLAUSE
+LICENSE=	BSD4CLAUSE
 
-NO_LICENSES_INSTALL=	yes
-NO_LICENSES_DIALOGS=	yes
+BROKEN_powerpc64=	fails to compile: pcpu.h: error: size of array '__assert_0' is negative
 
 USES=		kmod uidfix
 
 # some test targets need a predictable source directory
 WRKSRC=		${WRKDIR}/uarduno
 
-PLIST_FILES=	"${KMODDIR}/uarduno.ko"
+PLIST_FILES=	${KMODDIR}/uarduno.ko
 
 #
 # make sure I correctly identify the OS version
@@ -37,10 +35,10 @@ post-patch:
 #
 # building a source tarball and related files
 uarduno-src-tarball:
-	${MAKE} patch
-	${MAKE} -C ${WRKSRC} my-clean
-	tar -c -f ${PORTSDIR}/distfiles/${DISTNAME}${EXTRACT_SUFX} -C ${WRKDIR} uarduno
-	${MAKE} makesum
+	${MAKE_CMD} patch
+	${MAKE_CMD} -C ${WRKSRC} my-clean
+	${TAR} -c -f ${DISTDIR}/${DISTNAME}${EXTRACT_SUFX} -C ${WRKDIR} uarduno
+	${MAKE_CMD} makesum
 
 # partial clean for incremental build and test
 uarduno-part-clean:
@@ -48,7 +46,7 @@ uarduno-part-clean:
 	-${RM} ${WRKDIR}/.configure_done.uarduno._boot_kernel
 	-${RM} ${WRKDIR}/.build_done.uarduno._boot_kernel
 	-${RM} ${WRKDIR}/.install_done.uarduno._boot_kernel
-	${MAKE} -C ${WRKSRC} my-clean
-	${MAKE} patch
+	${MAKE_CMD} -C ${WRKSRC} my-clean
+	${MAKE_CMD} patch
 
 .include <bsd.port.mk>

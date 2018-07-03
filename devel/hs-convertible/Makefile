@@ -3,6 +3,7 @@
 
 PORTNAME=	convertible
 PORTVERSION=	1.1.1.0
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

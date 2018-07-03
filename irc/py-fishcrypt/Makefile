@@ -3,6 +3,7 @@
 
 PORTNAME=	fishcrypt
 DISTVERSION=	5.31
+PORTREVISION=	1
 CATEGORIES=	irc security
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DIST_SUBDIR=	python
@@ -10,15 +11,17 @@ DIST_SUBDIR=	python
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	FiSH/Mircryption-compatible encryption for XChat/HexChat
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>=0:security/py-pycrypto \
-		${PYTHON_PKGNAMEPREFIX}pysocks>=0:net/py-pysocks
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>=0:security/py-pycrypto@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pysocks>=0:net/py-pysocks@${FLAVOR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	fladd
 GH_PROJECT=	py-${PORTNAME}
 GH_TAGNAME=	43554b1a
 
-USES=		dos2unix python:run
+USES=		dos2unix python:run shebangfix
+USE_PYTHON=	flavors
+SHEBANG_FILES=	fishcrypt.py
 NO_BUILD=	yes
 
 SUB_FILES=	pkg-message

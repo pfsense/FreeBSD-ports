@@ -3,7 +3,7 @@
 
 PORTNAME=	lightsquid
 PORTVERSION=	1.8
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www
 MASTER_SITES=	SF
 
@@ -12,6 +12,8 @@ COMMENT=	Light and fast web based squid proxy traffic analyser
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/gnugpl.txt
+
+RUN_DEPENDS=	p5-CGI>0:www/p5-CGI
 
 USES=		perl5 shebangfix tar:tgz
 SHEBANG_FILES=	*.cgi *.pl tools/SiteAggregator/*.pl lang/*.pl tools/*.pl \
@@ -53,11 +55,11 @@ do-install:
 	${MKDIR} ${STAGEDIR}/${DATADIR}/lang
 	cd ${WRKSRC}/lang && \
 	${FIND} . -type f -regex '.*\.lng' -exec \
-		${INSTALL_DATA} "{}" "${STAGEDIR}/${DATADIR}/lang/{}" \;
+		${INSTALL_DATA} {} "${STAGEDIR}/${DATADIR}/lang/{}" \;
 	${MKDIR} ${STAGEDIR}/${PREFIX}/libexec/${PORTNAME}
 	cd ${WRKSRC}/ip2name && \
 	${FIND} . -type f -exec \
-		${INSTALL_DATA} "{}" "${STAGEDIR}/${PREFIX}/libexec/${PORTNAME}/{}" \;
+		${INSTALL_DATA} {} "${STAGEDIR}/${PREFIX}/libexec/${PORTNAME}/{}" \;
 	${MKDIR} ${STAGEDIR}/${ETCDIR}
 .for i in ${CONFIGS}
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}/${ETCDIR}/${i}.sample
@@ -68,10 +70,10 @@ do-install:
 	${FIND} . -type d ! -empty -exec \
 		${MKDIR} "${STAGEDIR}/${WWWDIR}/tpl/{}" \; && \
 	${FIND} . -type f -exec \
-		${INSTALL_DATA} "{}" "${STAGEDIR}/${WWWDIR}/tpl/{}" \;
+		${INSTALL_DATA} {} "${STAGEDIR}/${WWWDIR}/tpl/{}" \;
 	cd ${WRKSRC} && \
 	${FIND} -E . -maxdepth 1 -regex '.*\.(cgi|pl)' -exec \
-		${INSTALL_SCRIPT} "{}" "${STAGEDIR}/${WWWDIR}/{}" \; && \
+		${INSTALL_SCRIPT} {} "${STAGEDIR}/${WWWDIR}/{}" \; && \
 		${INSTALL_DATA} .htaccess ${STAGEDIR}/${WWWDIR}/
 
 do-install-DOCS-on:

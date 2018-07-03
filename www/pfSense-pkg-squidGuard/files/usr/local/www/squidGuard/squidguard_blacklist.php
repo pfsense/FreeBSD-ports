@@ -151,7 +151,7 @@ $selfpath	= "./squidguard_blacklist.php";
 $blacklist_url	= '';
 
 # get squidGuard config
-if (function_exists(sg_init)) {
+if (function_exists('sg_init')) {
 	sg_init(convert_pfxml_to_sgxml());
 	$blacklist_url = $squidguard_config[F_BLACKLISTURL];
 }

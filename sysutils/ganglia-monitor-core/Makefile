@@ -2,6 +2,7 @@
 
 PORTNAME=	monitor-core
 PORTVERSION=	3.7.1
+PORTREVISION=	2
 CATEGORIES=	sysutils net
 MASTER_SITES=	SF/ganglia/ganglia%20monitoring%20core/${PORTVERSION}
 PKGNAMEPREFIX=	ganglia-
@@ -10,7 +11,7 @@ PKGNAMESUFFIX=	-${CLUSTER}
 .endif
 DISTNAME=	ganglia-${PORTVERSION}
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Ganglia cluster monitor, monitoring daemon
 
 LICENSE=	BSD3CLAUSE
@@ -25,7 +26,7 @@ OPTIONS_DEFINE=	GMETAD
 OPTIONS_DEFAULT=	GMETAD
 GMETAD_DESC=	include gmetad
 
-USES=		libtool pkgconfig python
+USES=		libtool pkgconfig python:2.7
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-setuid=ganglia --enable-setgid=ganglia \

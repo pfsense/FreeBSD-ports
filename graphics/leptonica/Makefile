@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	leptonica
-PORTVERSION=	1.72
-PORTREVISION=	2
+PORTVERSION=	1.74.1
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.leptonica.com/source/
 
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 
 CONFLICTS=	leptonlib-[0-9]*
 
-USES=		jpeg libtool
+USES=		jpeg libtool pathfix
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

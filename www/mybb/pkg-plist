@@ -1,7 +1,4 @@
-@owner www
-@group www
-%%WWWDIR%%/CONTRIBUTING.md
-%%WWWDIR%%/announcements.php
+%%WWWDIR%%/admin/backups/.htaccess
 %%WWWDIR%%/admin/backups/index.html
 %%WWWDIR%%/admin/inc/class_form.php
 %%WWWDIR%%/admin/inc/class_page.php
@@ -28,6 +25,7 @@
 %%WWWDIR%%/admin/jscripts/codemirror/addon/fold/xml-fold.js
 %%WWWDIR%%/admin/jscripts/codemirror/addon/index.html
 %%WWWDIR%%/admin/jscripts/codemirror/addon/search/index.html
+%%WWWDIR%%/admin/jscripts/codemirror/addon/search/jump-to-line.js
 %%WWWDIR%%/admin/jscripts/codemirror/addon/search/match-highlighter.js
 %%WWWDIR%%/admin/jscripts/codemirror/addon/search/matchesonscrollbar.css
 %%WWWDIR%%/admin/jscripts/codemirror/addon/search/matchesonscrollbar.js
@@ -38,6 +36,8 @@
 %%WWWDIR%%/admin/jscripts/codemirror/lib/codemirror.js
 %%WWWDIR%%/admin/jscripts/codemirror/lib/index.html
 %%WWWDIR%%/admin/jscripts/codemirror/mode/css/css.js
+%%WWWDIR%%/admin/jscripts/codemirror/mode/css/gss.html
+%%WWWDIR%%/admin/jscripts/codemirror/mode/css/gss_test.js
 %%WWWDIR%%/admin/jscripts/codemirror/mode/css/index.html
 %%WWWDIR%%/admin/jscripts/codemirror/mode/css/less.html
 %%WWWDIR%%/admin/jscripts/codemirror/mode/css/less_test.js
@@ -57,9 +57,6 @@
 %%WWWDIR%%/admin/jscripts/codemirror/theme/index.html
 %%WWWDIR%%/admin/jscripts/codemirror/theme/mybb.css
 %%WWWDIR%%/admin/jscripts/index.html
-%%WWWDIR%%/admin/jscripts/jqueryui/css/redmond/images/animated-overlay.gif
-%%WWWDIR%%/admin/jscripts/jqueryui/css/redmond/images/ui-bg_flat_0_aaaaaa_40x100.png
-%%WWWDIR%%/admin/jscripts/jqueryui/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png
 %%WWWDIR%%/admin/jscripts/jqueryui/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png
 %%WWWDIR%%/admin/jscripts/jqueryui/css/redmond/images/ui-bg_glass_85_dfeffc_1x400.png
 %%WWWDIR%%/admin/jscripts/jqueryui/css/redmond/images/ui-bg_glass_95_fef1ec_1x400.png
@@ -100,6 +97,7 @@
 %%WWWDIR%%/admin/modules/config/post_icons.php
 %%WWWDIR%%/admin/modules/config/profile_fields.php
 %%WWWDIR%%/admin/modules/config/questions.php
+%%WWWDIR%%/admin/modules/config/report_reasons.php
 %%WWWDIR%%/admin/modules/config/settings.php
 %%WWWDIR%%/admin/modules/config/smilies.php
 %%WWWDIR%%/admin/modules/config/spiders.php
@@ -139,6 +137,7 @@
 %%WWWDIR%%/admin/modules/tools/tasks.php
 %%WWWDIR%%/admin/modules/tools/warninglog.php
 %%WWWDIR%%/admin/modules/user/admin_permissions.php
+%%WWWDIR%%/admin/modules/user/awaiting_activation.php
 %%WWWDIR%%/admin/modules/user/banning.php
 %%WWWDIR%%/admin/modules/user/group_promotions.php
 %%WWWDIR%%/admin/modules/user/groups.php
@@ -151,8 +150,6 @@
 %%WWWDIR%%/admin/styles/default/forum.css
 %%WWWDIR%%/admin/styles/default/home.css
 %%WWWDIR%%/admin/styles/default/images/close.png
-%%WWWDIR%%/admin/styles/default/images/spinner.gif
-%%WWWDIR%%/admin/styles/default/images/spinner_big.gif
 %%WWWDIR%%/admin/styles/default/images/icons/bullet_off.png
 %%WWWDIR%%/admin/styles/default/images/icons/bullet_on.png
 %%WWWDIR%%/admin/styles/default/images/icons/cross.png
@@ -182,6 +179,8 @@
 %%WWWDIR%%/admin/styles/default/images/index.html
 %%WWWDIR%%/admin/styles/default/images/login_logo.png
 %%WWWDIR%%/admin/styles/default/images/logo.png
+%%WWWDIR%%/admin/styles/default/images/spinner.gif
+%%WWWDIR%%/admin/styles/default/images/spinner_big.gif
 %%WWWDIR%%/admin/styles/default/images/submit_bg.png
 %%WWWDIR%%/admin/styles/default/images/tcat.png
 %%WWWDIR%%/admin/styles/default/images/thead.png
@@ -194,6 +193,7 @@
 %%WWWDIR%%/admin/styles/default/style.php
 %%WWWDIR%%/admin/styles/default/user.css
 %%WWWDIR%%/admin/styles/index.html
+%%WWWDIR%%/announcements.php
 %%WWWDIR%%/archive/global.php
 %%WWWDIR%%/archive/index.php
 %%WWWDIR%%/archive/print.css
@@ -208,8 +208,6 @@
 %%WWWDIR%%/editpost.php
 %%WWWDIR%%/forumdisplay.php
 %%WWWDIR%%/global.php
-%%WWWDIR%%/htaccess-nginx.txt
-%%WWWDIR%%/htaccess.txt
 %%WWWDIR%%/images/arrow_down.png
 %%WWWDIR%%/images/attachtypes/blank.png
 %%WWWDIR%%/images/attachtypes/css.png
@@ -375,6 +373,7 @@
 %%WWWDIR%%/inc/3rdparty/diff/Diff/Renderer/Context.php
 %%WWWDIR%%/inc/3rdparty/diff/Diff/Renderer/Inline.php
 %%WWWDIR%%/inc/3rdparty/diff/Diff/Renderer/Unified.php
+%%WWWDIR%%/inc/3rdparty/diff/Diff/Renderer/Unified/Colored.php
 %%WWWDIR%%/inc/3rdparty/diff/Diff/Renderer/index.html
 %%WWWDIR%%/inc/3rdparty/diff/Diff/String.php
 %%WWWDIR%%/inc/3rdparty/diff/Diff/ThreeWay.php
@@ -470,6 +469,7 @@
 %%WWWDIR%%/inc/languages/english/admin/config_post_icons.lang.php
 %%WWWDIR%%/inc/languages/english/admin/config_profile_fields.lang.php
 %%WWWDIR%%/inc/languages/english/admin/config_questions.lang.php
+%%WWWDIR%%/inc/languages/english/admin/config_report_reasons.lang.php
 %%WWWDIR%%/inc/languages/english/admin/config_settings.lang.php
 %%WWWDIR%%/inc/languages/english/admin/config_smilies.lang.php
 %%WWWDIR%%/inc/languages/english/admin/config_spiders.lang.php
@@ -507,6 +507,7 @@
 %%WWWDIR%%/inc/languages/english/admin/tools_tasks.lang.php
 %%WWWDIR%%/inc/languages/english/admin/tools_warninglog.lang.php
 %%WWWDIR%%/inc/languages/english/admin/user_admin_permissions.lang.php
+%%WWWDIR%%/inc/languages/english/admin/user_awaiting_activation.lang.php
 %%WWWDIR%%/inc/languages/english/admin/user_banning.lang.php
 %%WWWDIR%%/inc/languages/english/admin/user_group_promotions.lang.php
 %%WWWDIR%%/inc/languages/english/admin/user_groups.lang.php
@@ -635,7 +636,14 @@
 %%WWWDIR%%/install/resources/upgrade33.php
 %%WWWDIR%%/install/resources/upgrade34.php
 %%WWWDIR%%/install/resources/upgrade35.php
+%%WWWDIR%%/install/resources/upgrade36.php
+%%WWWDIR%%/install/resources/upgrade37.php
+%%WWWDIR%%/install/resources/upgrade38.php
+%%WWWDIR%%/install/resources/upgrade39.php
 %%WWWDIR%%/install/resources/upgrade4.php
+%%WWWDIR%%/install/resources/upgrade40.php
+%%WWWDIR%%/install/resources/upgrade41.php
+%%WWWDIR%%/install/resources/upgrade42.php
 %%WWWDIR%%/install/resources/upgrade5.php
 %%WWWDIR%%/install/resources/upgrade6.php
 %%WWWDIR%%/install/resources/upgrade7.php
@@ -650,6 +658,7 @@
 %%WWWDIR%%/jscripts/index.html
 %%WWWDIR%%/jscripts/inline_edit.js
 %%WWWDIR%%/jscripts/inline_moderation.js
+%%WWWDIR%%/jscripts/inline_reports.js
 %%WWWDIR%%/jscripts/jeditable/jeditable.min.js
 %%WWWDIR%%/jscripts/jquery.js
 %%WWWDIR%%/jscripts/jquery.plugins.js

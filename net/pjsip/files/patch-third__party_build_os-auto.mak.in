@@ -1,0 +1,12 @@
+--- third_party/build/os-auto.mak.in.orig	2017-09-22 02:42:22 UTC
++++ third_party/build/os-auto.mak.in
+@@ -112,8 +112,7 @@ else ifneq ($(findstring mips,@ac_webrtc_instset@),)
+ else # Generic fixed point
+     WEBRTC_SRC = \
+ 	      modules/audio_processing/aecm/aecm_core_c.o                \
+-	      modules/audio_processing/ns/nsx_core_c.o                   \
+-	      common_audio/signal_processing/complex_fft.o
++	      modules/audio_processing/ns/nsx_core_c.o
+ endif
+ endif
+ endif

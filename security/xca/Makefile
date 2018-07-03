@@ -18,7 +18,7 @@ USES=		desktop-file-utils gmake localbase pkgconfig \
 		shared-mime-info ssl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-openssl=${OPENSSLDIR} \
-		--with-qt=${QT_PREFIX}
+		--with-qt=${PREFIX}
 MAKE_ARGS=	DOCTOOL="${TRUE}"
 DESTDIRNAME=	destdir
 
@@ -29,7 +29,8 @@ OPTIONS_DEFAULT=	QT4
 
 QT4_USE=		qt4=gui,linguist_build,moc_build,qmake_build \
 			qt4=rcc_build,uic_build
-QT5_USE=		qt5=widgets,buildtools_build,linguist_build
+QT5_USE=		qt5=widgets,buildtools_build,linguist_build \
+			CXXSTD=c++11
 TOOLKIT_DESC=		Qt toolkit
 
 post-patch:

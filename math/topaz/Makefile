@@ -3,6 +3,7 @@
 
 PORTNAME=	topaz
 DISTVERSION=	3_41
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://hp.vector.co.jp/authors/VA007663/topaz/bin/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-src
@@ -14,7 +15,7 @@ LICENSE=	GPLv2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		readline
+USES=		ncurses readline
 USE_XORG=	x11
 MAKEFILE=	Makefile.freebsd
 

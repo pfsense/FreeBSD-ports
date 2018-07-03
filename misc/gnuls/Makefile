@@ -3,6 +3,7 @@
 
 PORTNAME=	gnuls
 PORTVERSION=	8.22
+PORTREVISION=	1
 CATEGORIES=	misc
 MASTER_SITES=	GNU/coreutils
 DISTNAME=	coreutils-${PORTVERSION}
@@ -16,6 +17,10 @@ NLS_USES=		gettext
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	FORCE_UNSAFE_CONFIGURE=1
+.ifdef QEMU_EMULATING
+# XXX bug 224740: configure hangs
+CONFIGURE_ENV+=	gl_cv_func_printf_enomem=no
+.endif
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 

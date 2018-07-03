@@ -3,10 +3,11 @@
 
 PORTNAME=	adabase
 PORTVERSION=	3.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Thick database bindings for Ada
 
 LICENSE=	ISCL
@@ -18,6 +19,8 @@ USES=		ada
 USE_GITHUB=	yes
 GH_ACCOUNT=	jrmarino
 GH_PROJECT=	AdaBase
+
+BROKEN_aarch64=		fails to install: digits value out of range, maximum is 15
 
 OPTIONS_DEFINE=		DEBUG
 OPTIONS_MULTI=		DBASE

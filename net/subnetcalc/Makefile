@@ -2,11 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	subnetcalc
-PORTVERSION=	2.2.0
-PORTREVISION=	1
+DISTVERSION=	2.4.8
 CATEGORIES=	net
-MASTER_SITES=	http://www.iem.uni-due.de/~dreibh/subnetcalc/download/ \
-		http://www.exp-math.uni-essen.de/~dreibh/subnetcalc/download/
+MASTER_SITES=	https://www.uni-due.de/~be0001/subnetcalc/download/
 
 MAINTAINER=	dreibh@iem.uni-due.de
 COMMENT=	IPv4/IPv6 Subnet Calculator

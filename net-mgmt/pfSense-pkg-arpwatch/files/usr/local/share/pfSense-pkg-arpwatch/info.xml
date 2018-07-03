@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>arpwatch</name>
+		<website>http://ee.lbl.gov/</website>
+		<descr><![CDATA[
+			This package contains tools that monitors ethernet activity and
+			maintains a database of ethernet/ip address pairings. It also reports
+			certain changes via email.
+			]]>
+		</descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>arpwatch.xml</configurationfile>
+	</package>
+</pfsensepkgs>

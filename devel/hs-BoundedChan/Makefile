@@ -3,7 +3,7 @@
 
 PORTNAME=	BoundedChan
 PORTVERSION=	1.0.3.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

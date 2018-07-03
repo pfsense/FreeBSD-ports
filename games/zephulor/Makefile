@@ -3,7 +3,7 @@
 
 PORTNAME=	zephulor
 PORTVERSION=	1
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	SF/apz/apz/stable/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -18,11 +18,11 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 RUN_DEPENDS=	${PYGAME} \
-		${PYTHON_PKGNAMEPREFIX}tkinter>=0:x11-toolkits/py-tkinter
+		${PYTHON_PKGNAMEPREFIX}tkinter>=0:x11-toolkits/py-tkinter@${PY_FLAVOR}
 
 WRKSRC=		${WRKDIR}/zephulor-source
 
-USES=		python:2
+USES=		python:2.7
 NO_BUILD=	yes
 
 PORTDOCS=	*

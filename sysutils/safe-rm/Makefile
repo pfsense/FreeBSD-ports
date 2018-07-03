@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	safe-rm
-PORTVERSION=	0.10
+PORTVERSION=	0.12
 CATEGORIES=	sysutils
-MASTER_SITES=	http://launchpad.net/safe-rm/trunk/0.10/+download/
+MASTER_SITES=	http://launchpad.net/safe-rm/trunk/${PORTVERSION}/+download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Wrapper around the rm command to prevent accidental deletions
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		perl5 shebangfix
@@ -28,6 +28,6 @@ do-install:
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

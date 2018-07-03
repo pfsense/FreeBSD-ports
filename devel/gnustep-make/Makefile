@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gnustep-make
-PORTVERSION=	2.6.7
-PORTREVISION=	2
+PORTVERSION=	2.7.0
+PORTREVISION=	1
 CATEGORIES=	devel gnustep
 MASTER_SITES=	GNUSTEP/core
 
@@ -22,6 +22,7 @@ CONFIGURE_ARGS+=	--with-thread-lib=-pthread
 CONFIGURE_ARGS+=	--with-config-file=${GNUSTEP_PREFIX}/GNUstep.conf
 CONFIGURE_ARGS+=	--with-layout=gnustep
 CONFIGURE_ARGS+=	--enable-objc-nonfragile-abi --enable-native-objc-exceptions
+CONFIGURE_ARGS+=	--with-library-combo=ng-gnu-gnu
 GNU_CONFIGURE_PREFIX=	${GNUSTEP_PREFIX}
 
 post-install:

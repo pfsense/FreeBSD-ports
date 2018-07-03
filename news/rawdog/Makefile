@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rawdog
-PORTVERSION=	2.21
+PORTVERSION=	2.22
 CATEGORIES=	news python
 MASTER_SITES=	http://offog.org/files/ \
 		http://ftp.i-scream.org/pub/offog.org/files/
@@ -12,9 +12,9 @@ COMMENT=	Simple RSS aggregator
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/feedparser.py:textproc/py-feedparser
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/feedparser.py:textproc/py-feedparser@${FLAVOR}
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils
 NO_ARCH=	yes
 

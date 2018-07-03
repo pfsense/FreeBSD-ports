@@ -3,7 +3,7 @@
 
 PORTNAME=	freevo
 PORTVERSION=	1.9.0
-PORTREVISION=	13
+PORTREVISION=	18
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/Freevo%20releases/${PORTVERSION}
 
@@ -16,14 +16,15 @@ RUN_DEPENDS=	mplayer:multimedia/mplayer \
 		mencoder:multimedia/mencoder \
 		aumix:audio/aumix \
 		tv_cat:textproc/p5-xmltv \
-		${PYTHON_PKGNAMEPREFIX}zope.interface>=3.3.0_1:devel/py-zope.interface \
-		${PYTHON_SITELIBDIR}/kaa/__init__.py:multimedia/py-kaa-base \
-		${PYTHON_SITELIBDIR}/kaa/imlib2/__init__.py:multimedia/py-kaa-imlib2 \
-		${PYTHON_SITELIBDIR}/kaa/metadata/__init__.py:multimedia/py-kaa-metadata \
-		${PYTHON_SITELIBDIR}/BeautifulSoup.py:www/py-beautifulsoup32 \
-		${PYTHON_SITELIBDIR}/pygame/__init__.py:devel/py-game \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow \
-		${PYTHON_SITELIBDIR}/Numeric/Numeric_headers/__init__.py:math/py-numeric
+		${PYTHON_PKGNAMEPREFIX}zope.interface>=3.3.0_1:devel/py-zope.interface@${FLAVOR} \
+		${PYTHON_SITELIBDIR}/kaa/__init__.py:multimedia/py-kaa-base@${FLAVOR} \
+		${PYTHON_SITELIBDIR}/kaa/imlib2/__init__.py:multimedia/py-kaa-imlib2@${FLAVOR} \
+		${PYTHON_SITELIBDIR}/kaa/metadata/__init__.py:multimedia/py-kaa-metadata@${FLAVOR} \
+		${PYTHON_SITELIBDIR}/BeautifulSoup.py:www/py-beautifulsoup32@${FLAVOR} \
+		${PYTHON_SITELIBDIR}/pygame/__init__.py:devel/py-game@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${FLAVOR} \
+		${PYTHON_SITELIBDIR}/Numeric/Numeric_headers/__init__.py:math/py-numeric@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${FLAVOR}
 
 FREEVO_USER=	freevo
 FREEVO_GROUP=	${FREEVO_USER}
@@ -32,16 +33,17 @@ FREEVO_HOME=	/var/db/${FREEVO_USER}
 USERS=		${FREEVO_USER}
 GROUPS=		${FREEVO_GROUP}
 
-SUB_LIST+=	PYTHON_VERSION=${PYTHON_DEFAULT_VERSION} \
+SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD} \
 		PORTVERSION=${PORTVERSION} \
 		FREEVO_HOME=${FREEVO_HOME}
 SUB_FILES=	pkg-message pkg-deinstall
 
 NO_ARCH=	yes
-USES=		python:2 twisted:web
+USES=		python:2.7 shebangfix
 USE_PYTHON=	distutils noegginfo
 PYDISTUTILS_INSTALLNOSINGLE=	yes
 PYDISTUTILS_SETUP=	${PYSETUP}
+SHEBANG_FILES=	src/www/htdocs/downloadurl
 
 PLIST_SUB=	PYDISTUTILS_EGGINFO=${PYDISTUTILS_EGGINFO}
 

@@ -2,9 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	vcalendar
-PORTREVISION=	0
+PORTREVISION=	1
 
 COMMENT=	vCalendar plugin for Claws Mail
+
+LIB_DEPENDS=	libical.so:devel/libical
 
 CLAWS_PLUGINS_BUILD=	vcalendar
 

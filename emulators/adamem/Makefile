@@ -11,6 +11,10 @@ DISTNAME=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ADAMEm is a portable Coleco ADAM and ColecoVision emulator
 
+BROKEN_aarch64=		fails to build: regparm is not valid on this platform
+BROKEN_armv6=		fails to build: regparm is not valid on this platform
+BROKEN_armv7=		fails to build: regparm is not valid on this platform
+
 NO_WRKSUBDIR=	yes
 USE_XORG=	sm x11 xau xext xfixes xi xrandr
 

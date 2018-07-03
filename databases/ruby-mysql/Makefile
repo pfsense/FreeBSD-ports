@@ -16,7 +16,8 @@ COMMENT=	Ruby module for accessing MySQL databases with a C API like interface
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
 
-BROKEN_RUBY22=	yes
+BROKEN=		Invalid checksum
+
 BROKEN_RUBY23=	yes
 
 OPTIONS_DEFINE=	DOCS

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<packagegui>
-	<menu>
-		<name>Traffic Totals</name>
-		<section>Status</section>
-		<url>/status_traffic_totals.php</url>
-	</menu>
-</packagegui>

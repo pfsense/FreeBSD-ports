@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	openjpeg
-PORTVERSION=	2.1.1
-PORTREVISION=	1
+PORTVERSION=	2.3.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -20,11 +20,9 @@ LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 USE_LDCONFIG=	yes
 USES=		cmake cpe pkgconfig
 
-PLIST_SUB=	VER=${PORTVERSION:R}
+PLIST_SUB=	PORTVERSION=${PORTVERSION} VER=${PORTVERSION:R}
 
 GH_ACCOUNT=	uclouvain
-#GH_TAGNAME=	version.${PORTVERSION:R}
-GH_TAGNAME=	9c911c0
 USE_GITHUB=	yes
 
 post-patch:

@@ -2,12 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	tbku
-PORTVERSION=	1.117
+PORTVERSION=	1.120
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.tundraware.com/Software/tbku/
 
 MAINTAINER=	tbku@tundraware.com
 COMMENT=	Tool For Incremental And Imaging Backups
+
+LICENSE=	TundraWare
+LICENSE_NAME=	TundraWare license
+LICENSE_FILE=	${WRKSRC}/tbku-license.txt
+LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell no-auto-accept
 
 NO_ARCH=	yes
 

@@ -2,30 +2,33 @@
 # $FreeBSD$
 
 PORTNAME=	tigervnc
-PORTVERSION=	1.7.0
+PORTVERSION=	1.8.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net x11-servers
 
-MAINTAINER=	meta+ports@vmeta.jp
+MAINTAINER=	meta@FreeBSD.org
 COMMENT=	High-performance, platform-neutral implementation of VNC
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENCE.TXT
 
 PATCH_DEPENDS=	${NONEXISTENT}:x11-servers/xorg-server:patch
-BUILD_DEPENDS=	${LOCALBASE}/include/GL/internal/dri_interface.h:graphics/dri \
+BUILD_DEPENDS=	${LOCALBASE}/include/GL/internal/dri_interface.h:graphics/mesa-dri \
 		${LOCALBASE}/libdata/pkgconfig/fontutil.pc:x11-fonts/font-util \
+		${LOCALBASE}/include/FL/Fl.H:x11-toolkits/fltk \
 		bash:shells/bash
+LIB_DEPENDS=	libunwind.so:devel/libunwind \
+		libxshmfence.so:x11/libxshmfence \
+		libfontconfig.so:x11-fonts/fontconfig
 # almost equivalent to x11-servers/xorg-server's
 RUN_DEPENDS=	${LOCALBASE}/share/X11/xkb/rules/base:x11/xkeyboard-config \
 		xkbcomp:x11/xkbcomp
 
 CONFLICTS=	tigervnc-devel-[0-9]* \
 		tightvnc-[0-9]* \
-		tridiavnc-[0-9]* \
-		vnc-[0-9]*
+		tridiavnc-[0-9]*
 
-USES=		autoreconf:build cmake cpe gmake iconv jpeg libtool pkgconfig \
+USES=		autoreconf:build cmake:noninja cpe iconv jpeg libtool pkgconfig \
 		python ssl
 USE_GL=		gl
 USE_LDCONFIG=	yes
@@ -37,10 +40,6 @@ USE_XORG+=	bigreqsproto compositeproto damageproto fixesproto fontsproto glproto
 		resourceproto scrnsaverproto sm videoproto x11 xau xcmiscproto xdamage \
 		xdmcp xext xextproto xfont xkbfile xorg-macros xproto xrandr xrender \
 		xtrans xtst
-
-LIB_DEPENDS=	libunwind.so:devel/libunwind \
-		libxshmfence.so:x11/libxshmfence \
-		libfontconfig.so:x11-fonts/fontconfig
 
 CFLAGS+=	-fPIC
 
@@ -113,7 +112,7 @@ CONFIGURE_ARGS+=	\
 
 .include <bsd.port.pre.mk>
 
-TIGERVNC_XORG_PATCH_VER=	117
+TIGERVNC_XORG_PATCH_VER=	118
 
 # import from x11-server/xorg-server/Makefile
 .if ${SSL_DEFAULT} == base
@@ -141,5 +140,6 @@ post-build:
 
 post-install:
 	@cd ${WRKSRC}/unix/xserver/hw/vnc/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/Xvnc ${STAGEDIR}${PREFIX}/lib/xorg/modules/extensions/libvnc.so
 
 .include <bsd.port.post.mk>

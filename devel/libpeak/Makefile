@@ -12,18 +12,20 @@ COMMENT=	Parallel Events and Asynchronous tasKing Library
 
 LICENSE=	BSD2CLAUSE
 
-ONLY_FOR_ARCHS=	i386 amd64 sparc64
+ONLY_FOR_ARCHS=		amd64 i386 sparc64
 
-USES=		gmake libtool
+USES=		gmake libtool perl5 shebangfix
+USE_PERL5=	test
+SHEBANG_FILES=	tests/test-suite.pl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
-regression-test: build
+do-test:
 	( \
 	    cd ${WRKSRC}/tests; \
-	    alltests=`ls *.c | sed -e 's|\.c||g'`; \
-	    ${MAKE} $$alltests && ./test-suite.pl $$alltests \
+	    alltests=`ls *.c | ${SED} -e 's|\.c||g'`; \
+	    ${MAKE} $$alltests && ${SETENV} PERL5LIB=. ./test-suite.pl $$alltests \
 	)
 
 .include <bsd.port.mk>

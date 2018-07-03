@@ -3,19 +3,21 @@
 
 PORTNAME=		krb5-appl
 PORTVERSION=		1.0.3
-PORTREVISION=		2
+PORTREVISION=		4
 CATEGORIES=		security
 MASTER_SITES=		http://web.mit.edu/kerberos/dist/${PORTNAME}/${PORTVERSION:C/^[0-9]*\.[0-9]*/&X/:C/X\.[0-9]*$//:C/X//}/
-PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 DISTNAME=		${PORTNAME}-${PORTVERSION}-signed
 EXTRACT_SUFX=		.tar
 
+PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
+
 MAINTAINER=		cy@FreeBSD.org
-COMMENT=		Authentication system developed at MIT, successor to Kerberos IV
+COMMENT=		MIT implementation of RFC 4120 network authentication clients
 
 BUILD_DEPENDS=		krb5-config:security/krb5
 
-CONFLICTS=		krb4-[0-9]* krb5-1.[0-7].* heimdal-[0-9]* srp-[0-9]*
+CONFLICTS=		krb4-[0-9]* krb5-1.[0-7].* heimdal-[0-9]* srp-[0-9]* \
+			bsdftpd-ssl-*
 
 KERBEROSV_URL=		http://web.mit.edu/kerberos/
 USES=			autoreconf gmake ncurses perl5 gssapi:mit ssl
@@ -29,30 +31,26 @@ MAKE_ARGS=		INSTALL="${INSTALL}"
 PATCH_DIST_STRIP=	-p1
 
 OPTIONS_DEFINE=	KRB5_RENAME_FTP KRB5_RENAME_TELNET KRB5_RENAME_RLOGIN KRB5_RENAME_RSH KRB5_RENAME_RCP
-OPTIONS_DEFAULT=	KRB5_PORT
+OPTIONS_DEFAULT=	KRB5_PORT KRB5_RENAME_FTP KRB5_RENAME_TELNET \
+			KRB5_RENAME_RLOGIN KRB5_RENAME_RSH KRB5_RENAME_RCP
 OPTIONS_SINGLE=		KRB5_VERSION
-OPTIONS_SINGLE_KRB5_VERSION=	KRB5_PORT KRB5_112_PORT KRB5_113_PORT \
-			KRB5_114_PORT
+OPTIONS_SINGLE_KRB5_VERSION=	KRB5_PORT \
+			KRB5_114_PORT KRB5_115_PORT
 KRB5_RENAME_FTP_DESC=		Rename ftp to kftp
 KRB5_RENAME_TELNET_DESC=	Rename telnet to ktelnet
 KRB5_RENAME_RLOGIN_DESC=	Rename rlogin to krlogin
 KRB5_RENAME_RSH_DESC=		Rename rsh to krsh
 KRB5_RENAME_RCP_DESC=		Rename rcp to krcp
 KRB5_PORT_DESC=			Depend on security/krb5
-KRB5_112_PORT_DESC=		Depend on security/krb5-112
-KRB5_113_PORT_DESC=		Depend on security/krb5-113
 KRB5_114_PORT_DESC=		Depend on security/krb5-114
+KRB5_115_PORT_DESC=		Depend on security/krb5-115
 
 .include <bsd.port.pre.mk>
 
 KRB5_PORT_LIB_DEPENDS=		libkrb5support.so:security/krb5
 KRB5_PORT_RUN_DEPENDS=		kinit:security/krb5
-KRB5_112_PORT_LIB_DEPENDS=		libkrb5support.so:security/krb5-112
-KRB5_112_PORT_RUN_DEPENDS=		kinit:security/krb5-112
-KRB5_113_PORT_LIB_DEPENDS=		libkrb5support.so:security/krb5-113
-KRB5_113_PORT_RUN_DEPENDS=		kinit:security/krb5-113
 KRB5_114_PORT_LIB_DEPENDS=		libkrb5support.so:security/krb5-114
-KRB5_114_PORT_RUN_DEPENDS=		kinit:security/krb5-113
+KRB5_114_PORT_RUN_DEPENDS=		kinit:security/krb5-114
 
 KRB5_DOC_BUILD_DEPENDS+=	texi2dvi:print/texinfo \
 			dvips:print/dvipsk-tetex
@@ -101,6 +99,12 @@ PROGRAM_TRANSFORM_NAME+=	s/^rcp/krcp/;
 PLIST_SUB+=		RCP_PROG="krcp"
 .else
 PLIST_SUB+=		RCP_PROG="rcp"
+.endif
+
+.if ! ( ${PORT_OPTIONS:MKRB5_RENAME_RLOGIN} && \
+	${PORT_OPTIONS:MKRB5_RENAME_RSH} && \
+	${PORT_OPTIONS:MKRB5_RENAME_RCP} )
+CONFLICTS+=	bsdrcmds-*
 .endif
 
 .if defined(PROGRAM_TRANSFORM_NAME) && ${PROGRAM_TRANSFORM_NAME} != ""

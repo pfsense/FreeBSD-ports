@@ -3,7 +3,7 @@
 	<package>
 		<name>RRD Summary</name>
 		<internal_name>RRD_Summary</internal_name>
-		<descr><![CDATA[RRD Summary Page, which will give a total amount of traffic passed In/Out during this and the previous month.]]></descr>
+		<descr><![CDATA[RRD Summary Page, which will give estimated month-over-month traffic passed In/Out during the specified period.]]></descr>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>rrd-summary.xml</configurationfile>
 	</package>

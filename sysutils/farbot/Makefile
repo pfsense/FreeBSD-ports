@@ -2,24 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	farbot
-PORTVERSION=	1.0.b2
-PORTREVISION=	1
+PORTVERSION=	1.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
-MASTER_SITES=	GOOGLE_CODE
-DISTNAME=	farbot-1.0-beta2
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	FreeBSD Automated Release Bot
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/zconfig:devel/py-zconfig
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+LICENSE=	BSD3CLAUSE
 
-BROKEN=		Unfetchable (google code has gone away)
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zconfig>=0:devel/py-zconfig@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zconfig>=0:devel/py-zconfig@${FLAVOR}
 
-WRKSRC=		${WRKDIR}/${DISTNAME}
+USE_GITHUB=	yes
+GH_ACCOUNT=	threerings
+GH_PROJECT=	farbot
+GH_TAGNAME=	c824009
 
-USES=		python
-USE_PYTHON=	distutils
+USES=		python:2.7
+USE_PYTHON=	distutils autoplist
 PYDISTUTILS_PKGNAME=	farb
 PYDISTUTILS_PKGVERSION=	0.1
 NO_ARCH=	yes
@@ -31,6 +32,6 @@ post-install:
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/xhtml
-	${INSTALL_MAN} ${WRKSRC}/docs/xhtml/* ${STAGEDIR}${DOCSDIR}/xhtml
+	${INSTALL_DATA} ${WRKSRC}/docs/xhtml/* ${STAGEDIR}${DOCSDIR}/xhtml
 
 .include <bsd.port.mk>

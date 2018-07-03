@@ -3,7 +3,7 @@
 
 PORTNAME=	xine
 PORTVERSION=	1.2.6
-PORTREVISION=	7
+PORTREVISION=	16
 CATEGORIES=	multimedia ipv6
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-lib/${PORTVERSION}
 PKGNAMEPREFIX=	lib
@@ -40,7 +40,7 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 LIB_DEPENDS+=	libdvdcss.so.2:multimedia/libdvdcss
 .endif
 
-USES=		compiler cpe execinfo gmake iconv libtool:keepla \
+USES=		compiler cpe gmake iconv libtool:keepla \
 		localbase pathfix perl5 pkgconfig tar:xz
 CPE_PRODUCT=	xine-lib
 CPE_VENDOR=	xine
@@ -62,12 +62,16 @@ CONFIGURE_ARGS=	--with-w32-path=${LOCALBASE}/lib/win32 \
 		--without-alsa \
 		--disable-musepack \
 		--enable-dvb
+MAKE_ENV=	V=1
+LLD_UNSAFE=	yes
 
 DOCSDIR=	${PREFIX}/share/doc/xine-lib
 # Please sync with XINE_PLUGINSDIR in multimedia/xine
 # and multimedia/vdr-plugin-xineliboutput
 PLUGINSDIR=	lib/xine/plugins/2.5
 PLIST_SUB=	PLUGINSDIR="${PLUGINSDIR}"
+
+BROKEN_aarch64=		Fails to configure: error: no acceptable as found in $PATH
 
 OPTIONS_DEFINE=	NLS CACA ESOUND JACK GNOMEVFS2 PULSEAUDIO XVMC SMB AALIB \
 		IMAGEMAGICK PIXBUF WAVPACK VAAPI LIBBLURAY
@@ -94,9 +98,9 @@ XVMC_CONFIGURE_ON=	--with-xvmc-lib=XvMCW
 XVMC_LIB_DEPENDS=	libXvMC.so:x11/libXvMC
 .endif
 XVMC_CONFIGURE_OFF=	--disable-xvmc
-SMB_LIB_DEPENDS=	libsmbclient.so:net/samba-libsmbclient
-SMB_CONFIGURE_ENV=	LIBSMBCLIENT_LIBS="-L${LOCALBASE}/lib -lsmbclient" \
-			LIBSMBCLIENT_CFLAGS="-I${LOCALBASE}/include"
+SMB_USES=		samba:lib
+SMB_CONFIGURE_ENV=	LIBSMBCLIENT_LIBS="-L${SAMBALIBS} -lsmbclient" \
+			LIBSMBCLIENT_CFLAGS="-I${SAMBAINCLUDES}"
 SMB_CONFIGURE_ENABLE=	samba
 AALIB_LIB_DEPENDS=	libaa.so:graphics/aalib
 AALIB_CONFIGURE_OFF=	--disable-aalib --disable-aalibtest

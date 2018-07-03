@@ -1,19 +1,22 @@
 # Created by: Masaki TAGAWA <masaki@club.kyutech.ac.jp>
 # $FreeBSD$
 
-PORTNAME=	sourcecodepro-ttf
-PORTVERSION=	2.010
-DISTVERSIONSUFFIX=	R-ro/1.030R-it
+PORTNAME=	sourcecodepro
+PORTVERSION=	2.030
+DISTVERSIONSUFFIX=	R-ro/1.050R-it
 CATEGORIES=	x11-fonts
+PKGNAMESUFFIX=	-ttf
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Set of fonts by Adobe designed for coders
 
 LICENSE=	OFL11
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+PORTSCOUT=	skipv:variable-fonts
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-USE_XORG=	x11
 USES=		fonts
 
 FONTNAME=	SourceCodePro

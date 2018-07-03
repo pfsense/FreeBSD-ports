@@ -1,10 +1,32 @@
---- base/sys_info_freebsd.cc.orig	2016-03-25 13:04:44 UTC
-+++ base/sys_info_freebsd.cc
-@@ -12,12 +12,34 @@
- 
+--- base/sys_info_freebsd.cc.orig	2017-12-15 02:04:05.000000000 +0100
++++ base/sys_info_freebsd.cc	2017-12-23 21:51:22.626194000 +0100
+@@ -13,26 +13,58 @@
  namespace base {
  
-+int64_t SysInfo::AmountOfAvailablePhysicalMemory() {
+ int64_t SysInfo::AmountOfPhysicalMemoryImpl() {
+-  int pages, page_size;
++  int pages, page_size, r = 0;
+   size_t size = sizeof(pages);
+-  sysctlbyname("vm.stats.vm.v_page_count", &pages, &size, NULL, 0);
+-  sysctlbyname("vm.stats.vm.v_page_size", &page_size, &size, NULL, 0);
+-  if (pages == -1 || page_size == -1) {
++  if(r == 0)
++    r = sysctlbyname("vm.stats.vm.v_page_count", &pages, &size, NULL, 0);
++  if(r == 0)
++    r =sysctlbyname("vm.stats.vm.v_page_size", &page_size, &size, NULL, 0);
++  if(r == -1) {
+     NOTREACHED();
+     return 0;
+   }
+   return static_cast<int64_t>(pages) * page_size;
+ }
+ 
+-// static
+-uint64_t SysInfo::MaxSharedMemorySize() {
+-  size_t limit;
+-  size_t size = sizeof(limit);
+-  if (sysctlbyname("kern.ipc.shmmax", &limit, &size, NULL, 0) < 0) {
++int64_t SysInfo::AmountOfAvailablePhysicalMemoryImpl() {
 +  int page_size, r = 0;
 +  unsigned pgfree, pginact, pgcache;
 +  size_t size = sizeof(page_size);
@@ -17,32 +39,14 @@
 +    r = sysctlbyname("vm.stats.vm.v_inactive_count", &pginact, &szpg, NULL, 0);
 +  if(r == 0)
 +    r = sysctlbyname("vm.stats.vm.v_cache_count", &pgcache, &szpg, NULL, 0);
-+  if (r == -1) {
-+    NOTREACHED();
-+    return 0;
-+  }
-+  return static_cast<int64_t>((pgfree + pginact + pgcache) * page_size);
-+}
-+
- int64_t SysInfo::AmountOfPhysicalMemory() {
--  int pages, page_size;
-+  int pages, page_size, r = 0;
-   size_t size = sizeof(pages);
--  sysctlbyname("vm.stats.vm.v_page_count", &pages, &size, NULL, 0);
--  sysctlbyname("vm.stats.vm.v_page_size", &page_size, &size, NULL, 0);
--  if (pages == -1 || page_size == -1) {
-+  if(r == 0)
-+    r = sysctlbyname("vm.stats.vm.v_page_count", &pages, &size, NULL, 0);
-+  if(r == 0)
-+    r = sysctlbyname("vm.stats.vm.v_page_size", &page_size, &size, NULL, 0);
-+  if (r == -1) {
++  if(r == -1) {
      NOTREACHED();
      return 0;
    }
-@@ -35,4 +57,25 @@ uint64_t SysInfo::MaxSharedMemorySize() 
-   return static_cast<uint64_t>(limit);
- }
- 
+-  return static_cast<uint64_t>(limit);
++  return static_cast<int64_t>((pgfree + pginact + pgcache) * page_size);
++}
++
 +// static
 +std::string SysInfo::CPUModelName() {
 +  int mib[] = { CTL_HW, HW_MODEL };
@@ -62,6 +66,6 @@
 +    return 1;
 +  }
 +  return ncpu;
-+}
-+
+ }
+ 
  }  // namespace base

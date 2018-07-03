@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	kdbg
-PORTVERSION=	2.5.5
+PORTVERSION=	2.5.6
+PORTREVISION=	2
 CATEGORIES=	devel kde
 MASTER_SITES=	SF/${PORTNAME}/Source%20Code/${PORTVERSION}
 
@@ -13,7 +14,7 @@ LICENSE=	GPLv2
 
 USES=		cmake kde:4
 USE_KDE=	kdelibs automoc4
-USE_QT4=	moc_build qmake_build rcc_build uic_build
+USE_QT4=	moc_build qmake_build rcc_build uic_build network xml dbus corelib gui svg
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	NLS

@@ -3,6 +3,7 @@
 
 PORTNAME=	copperspice
 PORTVERSION=	1.3.2
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	http://download.copperspice.com/copperspice/source/
 
@@ -16,7 +17,6 @@ LIB_DEPENDS=	libaudio.so:audio/nas \
 		libexpat.so:textproc/expat2 \
 		libffi.so:devel/libffi \
 		libfreetype.so:print/freetype2 \
-		libglapi.so:graphics/libglapi \
 		libgstbase-0.10.so:multimedia/gstreamer \
 		libgstreamer-0.10.so:multimedia/gstreamer \
 		libpcre.so:devel/pcre \
@@ -45,17 +45,18 @@ CONFIGURE_ARGS=	${OVERRIDE_INS}
 MAKE_ARGS=	${OVERRIDE_INS}
 PLIST_SUB=	LONG_VER=1.3
 
-BROKEN_FreeBSD_9=	PR 193528 (c++11 support is broken)
 BROKEN_i386=		qx11embed_x11.cpp:470:20: non-constant-expression\
 			cannot be narrowed from type 'unsigned int' to 'long'\
 			in initializer list [-Wc++11-narrowing]
+NOT_FOR_ARCHS=		aarch64 armv6 armv7 powerpc64
+NOT_FOR_ARCHS_REASON=	fails to build: Unable to detect architecture, please update
 
 post-patch:
 	# fix something wrong with v1.3.2 generatior
-	${REINPLACE_CMD} -e '/config.status:/ s/:.*/:/' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e '/config.status:/ s/:.*/:/' ${WRKSRC}/Makefile.in
 
 post-configure:
-	${REINPLACE_CMD} -e '/^hardcode_libdir_flag/ \
+	@${REINPLACE_CMD} -e '/^hardcode_libdir_flag/ \
 		s|spec=.*|spec="-Wl,-rpath,${LOCALBASE}/lib"|' \
 		${WRKSRC}/libtool
 

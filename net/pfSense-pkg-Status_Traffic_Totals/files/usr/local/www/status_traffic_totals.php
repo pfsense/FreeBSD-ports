@@ -105,6 +105,12 @@ function vnstat_delete_nic_dbs($portlist) {
 
 	}
 
+	// clean-up remnants of possible old interface db's no longer present in pfSense interface list..
+	$dbfiles = glob('/var/db/vnstat/*');
+	foreach($dbfiles as $db) {
+		$dbfile = basename($db);
+		exec('/usr/local/bin/vnstat -i ' . escapeshellarg($dbfile) . ' --delete --force');
+	}
 }
 
 /*
@@ -374,7 +380,7 @@ display_top_tabs($tab_array);
 		<div class="alert alert-info" id="loading-msg">Loading Graph...</div>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
 		<div id="traffic-totals-chart" class="d3-chart">
-			<svg></svg>
+			<svg id="traffic-totals-svg"></svg>
 		</div>
 	</div>
 </div>
@@ -861,9 +867,9 @@ events.push(function() {
 			$("#traffic-totals-chart").show();
 			$("#loading-msg").hide();
 
-			d3.select("svg").remove(); //delete previous svg so it can be drawn from scratch
+			d3.select("#traffic-totals-svg").remove(); //delete previous svg so it can be drawn from scratch
 			d3.select("div[id^=nvtooltip-]").remove(); //delete previous tooltip in case it gets hung
-			d3.select('#traffic-totals-chart').append('svg'); //re-add blank svg so it and be drawn on
+			d3.select('#traffic-totals-chart').append('svg').attr('id', 'traffic-totals-svg'); //re-add blank svg so it and be drawn on
 
 			var data = json;
 			var offset = 0;

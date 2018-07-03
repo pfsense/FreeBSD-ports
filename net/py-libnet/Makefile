@@ -13,11 +13,15 @@ COMMENT=	Python module for the libnet packet construction library
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	Does not build
-
 LIB_DEPENDS=	libnet.so:net/libnet
 
-USES=		python
+BROKEN_aarch64=		fails to package: lib.freebsd-11.0-RELEASE-p1-aarch64-2.7/libnet.so: No such file or directory
+BROKEN_armv6=		fails to package: lib.freebsd-11.0-RELEASE-p1-armv6-2.7/libnet.so: No such file or directory
+BROKEN_armv7=		fails to package: lib.freebsd-11.0-RELEASE-p1-armv7-2.7/libnet.so: No such file or directory
+BROKEN_mips64=		fails to package: lib.freebsd-11.0-RELEASE-p1-mips64-2.7/libnet.so: No such file or directory
+BROKEN_powerpc64=	fails to package: lib.freebsd-11.0-RELEASE-p1-powerpc64-2.7/libnet.so: No such file or directory
+
+USES=		python:-2.7
 USE_PYTHON=	distutils pythonprefix
 
 USE_GITHUB=	yes

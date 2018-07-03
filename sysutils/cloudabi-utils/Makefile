@@ -2,34 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	cloudabi-utils
-PORTVERSION=	0.18
-DISTVERSIONPREFIX=v
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.38
 CATEGORIES=	sysutils
 
 MAINTAINER=	ed@FreeBSD.org
 COMMENT=	Utilities for running CloudABI programs
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/include/cloudabi_types.h:devel/cloudabi
-LIB_DEPENDS=	libyaml.so:textproc/libyaml
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386
+ONLY_FOR_ARCHS_REASON=	CloudABI has not yet been ported to other architectures
 
+IGNORE_FreeBSD_10=	requires various C++17 features
+
+BUILD_DEPENDS=	${LOCALBASE}/include/cloudabi_types.h:devel/cloudabi \
+		${LOCALBASE}/include/flower/protocol/switchboard.ad.h:net/flower \
+		${LOCALBASE}/include/yaml2argdata/yaml_builder.h:devel/yaml2argdata
+LIB_DEPENDS=	libargdata.so:devel/argdata \
+		libarpc.so:devel/arpc \
+		libyaml-cpp.so:devel/yaml-cpp
+
+USES=		cmake localbase:ldflags pkgconfig
+USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	NuxiNL
 
-ONLY_FOR_ARCHS=	aarch64 amd64 armv6 i386
-ONLY_FOR_ARCHS_REASON=	CloudABI has not yet been ported to other architectures
-
-USES=		cmake compiler:c11 pkgconfig tar:xz
-USE_LDCONFIG=	yes
-
-CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=man
-CFLAGS+=	-I${LOCALBASE}/include
-
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1001511
-IGNORE=		requires a recent implementation of Capsicum
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	extlib
-PORTVERSION=	1.7.0
+PORTVERSION=	1.7.1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
@@ -10,6 +10,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Complete - yet small - standard library for OCaml
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 BUILD_DEPENDS=	cppo:devel/ocaml-cppo
 

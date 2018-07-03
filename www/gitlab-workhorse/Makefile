@@ -1,30 +1,30 @@
-# Created by: Torsten Zuehlsdorff <ports@toco-domains.de
+# Created by: Torsten Zuehlsdorff <tz@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	gitlab-workhorse
-PORTVERSION=	0.7.5
-DISTVERSIONPREFIX=	v
+PORTVERSION=	4.1.0
 CATEGORIES=	www
-MASTER_SITES=	https://gitlab.com/gitlab-org/${PORTNAME}/repository/archive.tar.gz?ref=${DISTVERSIONPREFIX}${PORTVERSION}&dummy=/
 
-MAINTAINER=	tz@FreeBSD.org
+MAINTAINER=	idefix@fechner.net
 COMMENT=	Smart reverse proxy for GitLab
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go>=1.5.3:lang/go
+BUILD_DEPENDS=	go>=1.5.3:lang/go \
+		git>=2.16.2:devel/git
 
 MAKE_JOBS_UNSAFE=yes
 USES=	gmake
+USE_GITLAB=	yes
+GL_ACCOUNT=	gitlab-org
+# Find the commit hash here: https://gitlab.com/gitlab-org/gitlab-workhorse/tags
+GL_COMMIT=	31b10f9eb762869b767408fa0b26ab25aefba047
 
 PLIST_FILES=	bin/gitlab-workhorse \
 		bin/gitlab-zip-cat \
 		bin/gitlab-zip-metadata
-PLIST_DIRS=	%%WWWDIR%%
-
-post-extract:
-	@${MV} ${WRKDIR}/${DISTNAME}-* ${WRKDIR}/${DISTNAME}
+PLIST_DIRS=	${WWWDIR}
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/${PORTNAME}

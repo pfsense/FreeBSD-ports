@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	freeipmi
-PORTVERSION=	1.5.2
+PORTVERSION=	1.5.7
 CATEGORIES=	sysutils
-MASTER_SITES=	GNU/${PORTNAME} \
+MASTER_SITES=	GNU \
 		http://ftp.gluster.com/pub/${PORTNAME}/${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -13,11 +13,16 @@ COMMENT=	Library and tools to support IPMI-capable hardware
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_aarch64=		invokes x86 assembler
+BROKEN_armv6=		invokes x86 assembler
+BROKEN_armv7=		invokes x86 assembler
+BROKEN_mips=		invokes x86 assembler
+BROKEN_mips64=		invokes x86 assembler
+BROKEN_sparc64=		invokes x86 assembler
+BROKEN_powerpc64=	invokes x86 assembler
+
 LIB_DEPENDS=	libargp.so:devel/argp-standalone \
 		libgcrypt.so:security/libgcrypt
-
-ONLY_FOR_ARCHS=	i386 amd64
-ONLY_FOR_ARCHS_REASON=	invokes i386 asm
 
 OPTIONS_DEFINE=	DEBUG DOCS IOPERM
 IOPERM_DESC=	Use i386_set_ioperm
@@ -31,6 +36,7 @@ CONFIGURE_ENV=	PTHREAD_LIBS=-lpthread ac_cv_path_CPP=${CPP}
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USES=		gmake libtool localbase shebangfix
+CFLAGS+=	-D_WANT_SEMUN
 
 INFO=		freeipmi-faq
 PLIST_SUB=	CACHE_DIR=${CACHE_DIR}
@@ -54,6 +60,7 @@ post-patch:
 		-e '/^FREEIPMI_SYSCONFDIR/ s|/freeipmi/$$||' \
 		-e '/FREEIPMI_CONFIG_FILE_DEFAULT_TMP1=/ s|freeipmi.conf|&.sample|' \
 			${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|\($$(LN_S) -f \)$$(sbindir)/|\1|' ${WRKSRC}/*/Makefile.in
 
 post-install:
 	${MKDIR} -m 0700 -p ${STAGEDIR}${CACHE_DIR}/ipmimonitoringsdrcache/ ${STAGEDIR}${CACHE_DIR}/ipmiseld/ ${STAGEDIR}/var/lib/freeipmi/ ${STAGEDIR}/var/run/freeipmi/

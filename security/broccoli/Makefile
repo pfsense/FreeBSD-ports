@@ -1,27 +1,27 @@
-# Created by: Craig Leres <leres@ee.lbl.gov>
+# Created by: Craig Leres <leres@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	broccoli
 PORTVERSION=	1.97
 PORTEPOCH=	1
 CATEGORIES=	security
-MASTER_SITES=	http://www.bro.org/downloads/release/
+MASTER_SITES=	https://www.bro.org/downloads/release/
 DISTNAME=	bro-2.4.1
 
-MAINTAINER=	leres@ee.lbl.gov
+MAINTAINER=	leres@FreeBSD.org
 COMMENT=	Bro Client Communications Library
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/bison:devel/bison \
-		${LOCALBASE}/bin/swig:devel/swig13
+BUILD_DEPENDS=	swig3.0:devel/swig30
 LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 EXTRACT_AFTER_ARGS=	${DISTNAME}/aux/broccoli
 
-USES=		cmake:outsource ssl
+USES=		cmake:outsource ssl bison
 USE_LDCONFIG=	yes
 CMAKE_SOURCE_PATH=	${WRKSRC}/aux/broccoli
+BINARY_ALIAS=	swig=swig3.0
 
 .if defined(BRO_PREFIX)
 PREFIX=		${BRO_PREFIX}
@@ -39,12 +39,11 @@ OPTIONS_SUB=
 
 OPTIONS_DEFAULT=	PYTHON
 
-DEBUG_DESC=	Compile in debugging mode
 PYTHON_DESC=	Build python bindings for broccoli
 RUBY_DESC=	Build ruby bindings for broccoli
 
 DEBUG_CMAKE_ON=	-D ENABLE_DEBUG:BOOL=true
-PYTHON_USES=	python
+PYTHON_USES=	python:2.7
 PYTHON_CMAKE_ON=	-D PY_MOD_INSTALL_DIR:PATH=${PYTHON_SITELIBDIR}
 PYTHON_CMAKE_OFF=	-D DISABLE_PYTHON_BINDINGS:BOOL=true
 RUBY_USE=	ruby=yes

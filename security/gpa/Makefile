@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gpa
-PORTVERSION=	0.9.9
+PORTVERSION=	0.9.10
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/gpa
 
@@ -13,17 +13,17 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libassuan.so:security/libassuan \
-		libgpgme.so:security/gpgme
+		libgpgme.so:security/gpgme \
+		libgpg-error.so:security/libgpg-error
 BUILD_DEPENDS=	gpgv2:security/gnupg
 RUN_DEPENDS=	gpgv2:security/gnupg
 
-USES=		gmake pkgconfig tar:bzip2
-USE_GNOME=	gtk20
+USES=		gmake localbase pkgconfig tar:bzip2
+USE_GNOME=	gdkpixbuf2 gtk20
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	GPGKEYS_LDAP="${LOCALBASE}/libexec/gpg2keys_ldap"
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-Wl,--as-needed
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

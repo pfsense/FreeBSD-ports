@@ -5,20 +5,20 @@ PORTNAME=	isoqlog
 PORTVERSION=	2.2.1
 PORTREVISION=	1
 CATEGORIES=	mail
-MASTER_SITES=	http://www.enderunix.org/isoqlog/ \
-		http://www.trunix.org/projeler/isoqlog/ \
-		http://www.acikkod.org/softwares/
+MASTER_SITES=	http://www.enderunix.org/isoqlog/
 
-MAINTAINER=	dbaio@bsd.com.br
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Qmail, postfix, sendmail, exim MTA log analysis program
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		gmake
 GNU_CONFIGURE=	yes
-USES=	gmake
-
-OPTIONS_DEFINE=	DOCS
 
 SUB_FILES=	pkg-message
+
+PORTDOCS=	*
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

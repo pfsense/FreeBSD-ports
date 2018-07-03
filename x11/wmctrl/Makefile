@@ -3,11 +3,11 @@
 
 PORTNAME=	wmctrl
 PORTVERSION=	1.07
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11
 MASTER_SITES=	http://sweb.cz/tripie/utils/wmctrl/dist/
 
-MAINTAINER=	flz@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command line tool to interact with an EWMH/NetWM compatible X managers
 
 LICENSE=	GPLv2

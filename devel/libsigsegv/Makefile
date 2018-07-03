@@ -2,28 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	libsigsegv
-PORTVERSION=	2.10
-PORTREVISION=	1
+PORTVERSION=	2.11
 CATEGORIES=	devel
 MASTER_SITES=	GNU/libsigsegv
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Handling page faults in user mode
 
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	AWK="${AWK}" --enable-shared
 INSTALL_TARGET=	install-strip
-USES=		libtool
+TEST_TARGET=	check
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	include/sigsegv.h \
 		lib/libsigsegv.a \
 		lib/libsigsegv.so \
 		lib/libsigsegv.so.2 \
-		lib/libsigsegv.so.2.0.3
-
-regression-test: build
-	@(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
-		${MAKEFILE} ${MAKE_ARGS} check)
+		lib/libsigsegv.so.2.0.4
 
 .include <bsd.port.mk>

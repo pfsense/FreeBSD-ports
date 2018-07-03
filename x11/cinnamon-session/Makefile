@@ -3,7 +3,7 @@
 
 PORTNAME=	cinnamon-session
 PORTVERSION=	2.4.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	x11 gnome
 DIST_SUBDIR=	gnome3
 
@@ -15,10 +15,10 @@ LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 		libjson-glib-1.0.so:devel/json-glib \
 		libupower-glib.so:sysutils/upower \
 		libcanberra.so:audio/libcanberra
-RUN_DEPENDS=	console-kit-daemon:sysutils/consolekit \
+RUN_DEPENDS=	console-kit-daemon:sysutils/consolekit2 \
 		xdpyinfo:x11/xdpyinfo
 
-USES=		autoreconf:build execinfo gettext gmake libtool \
+USES=		autoreconf:build gettext gmake libtool \
 		pathfix pkgconfig tar:xz
 USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
@@ -27,7 +27,6 @@ USE_XORG=	ice sm xau xext xtst xrender xtrans xcomposite
 USE_GL=		gl
 INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
-PATHFIX_MAKEFILEIN=	Makefile.am
 CONFIGURE_ARGS=	--disable-docbook-docs
 CPPFLAGS+=	-I${LOCALBASE}/include -Wno-error=format-nonliteral -Wno-error=implicit-function-declaration
 CFLAGS+=	-I${LOCALBASE}/include -Wno-error=format-nonliteral -Wno-error=implicit-function-declaration

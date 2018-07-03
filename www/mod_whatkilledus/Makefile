@@ -3,6 +3,7 @@
 
 PORTNAME=	mod_whatkilledus
 PORTVERSION=	2.0
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://people.apache.org/~trawick/ \
 		http://dl.moov.de/freebsd/${PORTNAME}/
@@ -16,7 +17,7 @@ LICENSE=	APACHE20
 
 MANUAL_PACKAGE_BUILD=	requires apache WITH_EXCEPTION_HOOK=yes
 
-USE_APACHE=	22
+USES=		apache:2.2
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 SHORTMODNAME=	whatkilledus

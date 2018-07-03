@@ -30,7 +30,12 @@ PATCHFILES=	patch-7u45-b30.xz \
 		patch-7u91-b02.xz \
 		patch-7u95-b00.xz \
 		patch-7u101-b00.xz \
-		patch-7u111-b01.xz
+		patch-7u111-b01.xz \
+		patch-7u121-b00.xz \
+		patch-7u131-b00.xz \
+		patch-7u141-b02.xz \
+		patch-7u151-b01.xz \
+		patch-7u161-b01.xz
 
 MAINTAINER?=	glewis@FreeBSD.org
 COMMENT?=	Java Development Kit 7
@@ -40,11 +45,25 @@ LICENSE=	GPLv2
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		compiler dos2unix iconv gmake zip
-USE_XORG+=	x11 xext xi xrender xt xtst
+# Even when not building with X11 support, openjdk7 requires Xrender, X11, and
+# Xt headers.
+X11_BUILD_DEPENDS_OFF+=	${LOCALBASE}/libdata/pkgconfig/x11.pc:x11/libX11
+X11_BUILD_DEPENDS_OFF+=	${LOCALBASE}/libdata/pkgconfig/xext.pc:x11/libXext
+X11_BUILD_DEPENDS_OFF+=	${LOCALBASE}/libdata/pkgconfig/xrender.pc:x11/libXrender
+X11_BUILD_DEPENDS_OFF+=	${LOCALBASE}/libdata/pkgconfig/xt.pc:x11-toolkits/libXt
+# Add more X11 build deps and runtime deps when X11 is enabled
+X11_LIB_DEPENDS+=	libX11.so.6:x11/libX11
+X11_LIB_DEPENDS+=	libXext.so.6:x11/libXext
+X11_LIB_DEPENDS+=	libXi.so.6:x11/libXi
+X11_LIB_DEPENDS+=	libXrender.so.1:x11/libXrender
+X11_LIB_DEPENDS+=	libXt.so.6:x11-toolkits/libXt
+X11_LIB_DEPENDS+=	libXtst.so.6:x11/libXtst
+X11_MAKE_ENV_OFF=	BUILD_HEADLESS_ONLY=1
+
 MAKE_ARGS=	CC=${CC:Q} CXX=${CXX:Q} HOST_CC=${CC:Q}
 
-OPTIONS_DEFINE=		POLICY TZUPDATE
-OPTIONS_DEFAULT=	POLICY TZUPDATE
+OPTIONS_DEFINE=		POLICY TZUPDATE X11
+OPTIONS_DEFAULT=	POLICY TZUPDATE X11
 DEBUG_DESC=		Enable extra debugging info
 POLICY_DESC=		Install the Unlimited Strength Policy Files
 TZUPDATE_DESC=		Update the time zone data
@@ -59,7 +78,7 @@ JAVAVMS_COMMENT+=	JRE
 INSTALLDIR=	${PREFIX}/${PORTNAME}${JDK_MAJOR_VERSION}-jre
 .endif
 
-PORT_MINOR_VERSION=	111
+PORT_MINOR_VERSION=	161
 PORT_BUILD_NUMBER=	01
 JDK_MAJOR_VERSION=	7
 JDK_MINOR_VERSION=	40
@@ -89,9 +108,7 @@ NOPRECIOUSMAKEVARS=	yes
 ONLY_FOR_ARCHS=	i386 amd64
 
 _MAKE_JOBS=	#
-MAKE_ENV+=	LANG="C" \
-		LC_ALL="C" \
-		JAVA_HOME="" \
+MAKE_ENV+=	JAVA_HOME="" \
 		CLASSPATH="" \
 		LD_LIBRARY_PATH="" \
 		MAKEFLAGS="" \
@@ -122,7 +139,7 @@ MAKE_ENV+=	HOTSPOT_BUILD_JOBS=${MAKE_JOBS_NUMBER}
 
 BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk7 \
 		${LOCALBASE}/openjdk6 \
-		${LOCALBASE}/bootstrap-openjdk
+		${LOCALBASE}/bootstrap-openjdk6
 
 DEBUG_MAKE_ENV=	ALT_OBJCOPY=${NONEXISTENT}
 POLICY_MAKE_ENV=	UNLIMITED_CRYPTO=1
@@ -139,11 +156,17 @@ BOOTSTRAPJDKDIR=	${BJDK}
 
 # if no valid jdk found, set dependency
 .if !defined(BOOTSTRAPJDKDIR)
-BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk
-BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk
+BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk6
+BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk6
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${ARCH} == i386
+# Fix the build for i386 when WITH_LLD_IS_LD is set
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=225741
+MAKE_ENV+=	LFLAGS="-Wl,-z,notext"
+.endif
 
 # GCC is broken with PCH: https://lists.freebsd.org/pipermail/svn-src-all/2015-March/101722.html
 .if ${COMPILER_TYPE} == gcc
@@ -170,11 +193,11 @@ post-patch:
 pre-install:
 	@# Update time zones
 .if !defined(BUILD_JRE)
-	@${RM} -rf ${WRKSRC}/build/${OPENJDK_OSARCH}/j2sdk-image/jre/lib/zi
+	@${RM} -r ${WRKSRC}/build/${OPENJDK_OSARCH}/j2sdk-image/jre/lib/zi
 	@${LN} -s -f ${LOCALBASE}/share/java/zi \
 	    ${WRKSRC}/build/${OPENJDK_OSARCH}/j2sdk-image/jre/lib
 .else
-	@${RM} -rf ${WRKSRC}/build/${OPENJDK_OSARCH}/j2re-image/lib/zi
+	@${RM} -r ${WRKSRC}/build/${OPENJDK_OSARCH}/j2re-image/lib/zi
 	@${LN} -s -f ${LOCALBASE}/share/java/zi \
 	    ${WRKSRC}/build/${OPENJDK_OSARCH}/j2re-image/lib
 .endif

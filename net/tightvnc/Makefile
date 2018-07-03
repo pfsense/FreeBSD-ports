@@ -8,7 +8,7 @@ CATEGORIES=	net java
 MASTER_SITES=	SF/vnc-tight/TightVNC-unix/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}_unixsrc
 
-MAINTAINER=	meta+ports@vmeta.jp
+MAINTAINER=	meta@FreeBSD.org
 COMMENT=	Enhanced version of VNC
 
 LICENSE=	GPLv2
@@ -17,6 +17,8 @@ LICENSE_FILE=	${WRKSRC}/LICENCE.TXT
 RUN_DEPENDS=	showrgb:x11/rgb \
 		xauth:x11/xauth \
 		xorg-fonts>=7.2:x11-fonts/xorg-fonts
+
+BROKEN_aarch64=	Fails to build: invokes x86 asm
 
 MAKE_JOBS_UNSAFE=	yes
 CONFLICTS=	tridiavnc-[0-9]* vnc-[0-9]* tigervnc-*

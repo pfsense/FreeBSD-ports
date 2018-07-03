@@ -6,10 +6,11 @@
 
 PORTNAME=	aucatctl
 PORTVERSION=	0.1
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.sndio.org/
 
-MAINTAINER=	t@tobik.me
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Control sndiod and/or aucat volumes
 
 LICENSE=	ISCL

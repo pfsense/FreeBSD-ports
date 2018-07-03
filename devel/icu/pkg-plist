@@ -1,3 +1,4 @@
+sbin/escapesrc
 sbin/icupkg
 sbin/gensprep
 sbin/gennorm2
@@ -15,14 +16,6 @@ lib/libicuio.a
 lib/libicuio.so
 lib/libicuio.so.%%ICUMAJOR%%
 lib/libicuio.so.%%ICUVER%%
-lib/libicule.a
-lib/libicule.so
-lib/libicule.so.%%ICUMAJOR%%
-lib/libicule.so.%%ICUVER%%
-lib/libiculx.a
-lib/libiculx.so
-lib/libiculx.so.%%ICUMAJOR%%
-lib/libiculx.so.%%ICUVER%%
 lib/libicutest.a
 lib/libicutest.so
 lib/libicutest.so.%%ICUMAJOR%%
@@ -41,25 +34,8 @@ lib/icu/Makefile.inc
 lib/icu/%%ICUVER%%/pkgdata.inc
 lib/icu/%%ICUVER%%/Makefile.inc
 libdata/pkgconfig/icu-io.pc
-libdata/pkgconfig/icu-le.pc
 libdata/pkgconfig/icu-i18n.pc
-libdata/pkgconfig/icu-lx.pc
 libdata/pkgconfig/icu-uc.pc
-include/layout/LEFontInstance.h
-include/layout/LEGlyphFilter.h
-include/layout/LEGlyphStorage.h
-include/layout/LEInsertionList.h
-include/layout/LELanguages.h
-include/layout/LEScripts.h
-include/layout/LESwaps.h
-include/layout/LETableReference.h
-include/layout/LETypes.h
-include/layout/LayoutEngine.h
-include/layout/ParagraphLayout.h
-include/layout/RunArrays.h
-include/layout/loengine.h
-include/layout/playout.h
-include/layout/plruns.h
 include/unicode/alphaindex.h
 include/unicode/appendable.h
 include/unicode/basictz.h
@@ -69,6 +45,8 @@ include/unicode/bytestrie.h
 include/unicode/bytestriebuilder.h
 include/unicode/calendar.h
 include/unicode/caniter.h
+include/unicode/casemap.h
+include/unicode/char16ptr.h
 include/unicode/chariter.h
 include/unicode/choicfmt.h
 include/unicode/coleitr.h
@@ -88,6 +66,7 @@ include/unicode/dtitvfmt.h
 include/unicode/dtitvinf.h
 include/unicode/dtptngen.h
 include/unicode/dtrule.h
+include/unicode/edits.h
 include/unicode/enumset.h
 include/unicode/errorcode.h
 include/unicode/fieldpos.h
@@ -111,6 +90,8 @@ include/unicode/messagepattern.h
 include/unicode/msgfmt.h
 include/unicode/normalizer2.h
 include/unicode/normlzr.h
+include/unicode/nounit.h
+include/unicode/numberformatter.h
 include/unicode/numfmt.h
 include/unicode/numsys.h
 include/unicode/parseerr.h
@@ -138,6 +119,7 @@ include/unicode/smpdtfmt.h
 include/unicode/sortkey.h
 include/unicode/std_string.h
 include/unicode/strenum.h
+include/unicode/stringoptions.h
 include/unicode/stringpiece.h
 include/unicode/stringtriebuilder.h
 include/unicode/stsearch.h
@@ -153,6 +135,7 @@ include/unicode/tznames.h
 include/unicode/tzrule.h
 include/unicode/tztrans.h
 include/unicode/ubidi.h
+include/unicode/ubiditransform.h
 include/unicode/ubrk.h
 include/unicode/ucal.h
 include/unicode/ucasemap.h

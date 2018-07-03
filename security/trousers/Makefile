@@ -2,24 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	trousers
-PORTVERSION=	0.3.13
-PORTREVISION=	1
+PORTVERSION=	0.3.14
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Open-source TCG Software Stack
 
-LICENSE=	CPL
-LICENSE_NAME=	Common Public License
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	tpm-emulator>=0.7.4_1:emulators/tpm-emulator
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		dos2unix alias autoreconf gmake iconv libtool pkgconfig ssl
 DOS2UNIX_GLOB=	*.h *.c
+NO_WRKSUBDIR=	yes
 USE_LDCONFIG=	YES
 USE_RC_SUBR=	tcsd
 INSTALL_TARGET=	install-strip

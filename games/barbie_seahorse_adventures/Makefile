@@ -3,7 +3,7 @@
 
 PORTNAME=	barbie_seahorse_adventures
 PORTVERSION=	1.1
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games python
 MASTER_SITES=	http://www.imitationpickles.org/barbie/files/
 DISTNAME=	barbie-${DISTVERSION}
@@ -19,9 +19,11 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/barbie-${DISTVERSION}
 
-USES=		dos2unix python:2 tar:tgz
-DOS2UNIX_GLOB= 	*.py
+USES=		dos2unix python:2.7 shebangfix tar:tgz
+SHEBANG_FILES=	run_game.py create-upload.py
+DOS2UNIX_GLOB=	*.py
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 PORTDOCS=	CHANGES.txt LEVELS.txt NOTES.txt README.txt
 OPTIONS_DEFINE=	DOCS
@@ -35,7 +37,7 @@ DESKTOP_ENTRIES="Barbie Seahorse Adventures" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;ArcadeGame;" ""
 
 post-extract:
-	@cd ${WRKSRC} && ${RM} -f data/REMOVE_ME.txt data/sample.txt \
+	@cd ${WRKSRC} && ${RM} data/REMOVE_ME.txt data/sample.txt \
 		lib/pgu/LICENSE.txt
 
 post-patch:

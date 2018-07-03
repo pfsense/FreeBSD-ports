@@ -3,6 +3,7 @@
 
 PORTNAME=	chromium-bsu
 PORTVERSION=	0.9.16.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Chromium%20B.S.U.%20source%20code/
 
@@ -12,7 +13,7 @@ COMMENT=	Arcade-style, top-scrolling space shooter
 LIB_DEPENDS=	libGLC.so:graphics/quesoglc
 
 GNU_CONFIGURE=	yes
-USES=		gmake localbase pkgconfig
+USES=		gmake gettext-tools localbase pkgconfig
 USE_SDL=	sdl2 image2
 USE_GL=		gl glu
 CONFIGURE_ARGS=	--disable-sdl \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nokogumbo
-PORTVERSION=	1.4.7
+PORTVERSION=	1.5.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -14,7 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	rubygem-nokogiri>=0:textproc/rubygem-nokogiri
 
+USE_GNOME=	libxml2
 USE_RUBY=	yes
-USES=		gem pkgconfig
+USES=		gem gnome pkgconfig
 
 .include <bsd.port.mk>

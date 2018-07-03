@@ -1,29 +1,67 @@
---- latex2html.pin.orig	2015-04-20 16:01:37 UTC
+--- latex2html.pin.orig	2016-04-19 16:52:35 UTC
 +++ latex2html.pin
-@@ -532,7 +532,7 @@ $CHARSET = $charset || 'iso-8859-1';
- #
- # If possible, use icons of the same type as generated images
- #
--if ($IMAGE_TYPE && defined %{"icons_$IMAGE_TYPE"}) {
-+if ($IMAGE_TYPE && %{"icons_$IMAGE_TYPE"}) {
-     %icons = %{"icons_$IMAGE_TYPE"};
- }
+@@ -1207,7 +1207,7 @@ sub process_ext_file {
+ 	&slurp_input($file);
+ 	if ($ext =~ /bbl/) {
+ 	    # remove the \newcommand{\etalchar}{...} since not needed
+-	    s/^\\newcommand{\\etalchar}[^\n\r]*[\n\r]+//s;
++	    s/^\\newcommand\{\\etalchar}[^\n\r]*[\n\r]+//s;
+ 	}
+ 	&pre_process;
+ 	&substitute_meta_cmds if (%new_command || %new_environment);
+@@ -1465,7 +1465,7 @@ sub pre_process {
+ 	    push(@processedV,$before);
+ 	    print "'";$before = '';
+ 	}
+- 	if ($after =~ /\s*\\end{$env[*]?}/) { # Must NOT use the s///o option!!!
++ 	if ($after =~ /\s*\\end\{$env[*]?}/) { # Must NOT use the s///o option!!!
+ 	    ($contents, $after) = ($`, $');
+  	    $contents =~ s/^\n+/\n/s;
+ # 	    $contents =~ s/\n+$//s;
+@@ -1898,8 +1898,8 @@ sub mark_string {
+     # local (*_) = @_; # Modifies $_ in the caller;
+     # -> MRO: changed to $_[0] (same effect)
+     # MRO: removed deprecated $*, replaced by option /m
+-    $_[0] =~ s/(^|[^\\])\\{/$1tex2html_escaped_opening_bracket/gom;
+-    $_[0] =~ s/(^|[^\\])\\{/$1tex2html_escaped_opening_bracket/gom; # repeat this
++    $_[0] =~ s/(^|[^\\])\\\{/$1tex2html_escaped_opening_bracket/gom;
++    $_[0] =~ s/(^|[^\\])\\\{/$1tex2html_escaped_opening_bracket/gom; # repeat this
+     $_[0] =~ s/(^|[^\\])\\}/$1tex2html_escaped_closing_bracket/gom;
+     $_[0] =~ s/(^|[^\\])\\}/$1tex2html_escaped_closing_bracket/gom; # repeat this
+     my $id = $global{'max_id'};
+@@ -1907,7 +1907,7 @@ sub mark_string {
+     # mark all balanced braces
+     # MRO: This should in fact mark all of them as the hierarchy is
+     # processed inside-out.
+-    1 while($_[0] =~ s/{([^{}]*)}/join("",$O,++$id,$C,$1,$O,$id,$C)/geo);
++    1 while($_[0] =~ s/\{([^{}]*)}/join("",$O,++$id,$C,$1,$O,$id,$C)/geo);
+     # What follows seems esoteric...
+     my @processedB = ();
+     # Take one opening brace at a time
+@@ -2780,7 +2780,7 @@ sub translate_environments {
+ 	    $open_tags_R = [ @save_open_tags ];
+ 	    # check for color
+ 	    local($color_test) = join(',',@$open_tags_R);
+-	    if ($color_test =~ /(color{[^}]*})/g ) {
++	    if ($color_test =~ /(color\{[^}]*})/g ) {
+ 		$color_env = $1;
+ 	    } # else { $color_env = '' }
  
-@@ -2112,7 +2112,7 @@ sub convert_iso_latin_chars {
- 		"\nCould not find translation function for $default_language.\n\n")
- 	    }
- 	);
--	if ($USE_UTF ||(!$NO_UTF &&(defined %unicode_table)&&length(%unicode_table)>2)) {
-+	if ($USE_UTF ||(!$NO_UTF &&(%unicode_table)&&length(%unicode_table)>2)) {
- 	    &convert_to_unicode($_)};
-     }
-     $_ = join('', @case_processed, $_); undef(@case_processed);
-@@ -9117,7 +9117,7 @@ sub real_replace_strange_accents {
-     my ($charset) = "${CHARSET}_character_map_inv";
-     $charset =~ s/-/_/g;
-     # convert upper 8-bit characters
--    if (defined %$charset &&($CHARSET =~ /8859[_\-]1$/)) {
-+    if ((%$charset) &&($CHARSET =~ /8859[_\-]1$/)) {
- 	s/([\200-\377])/
- 	    $tmp = $$charset{'&#'.ord($1).';'};
- 	    &mark_string($tmp) if ($tmp =~ m!\{!);
+@@ -2791,7 +2791,7 @@ sub translate_environments {
+ 		$open_tags_R = [ @save_open_tags ];
+ 		if ($color_env) {
+ 		    $color_test = join(',',@saved_tags);
+-		    if ($color_test =~ /(color{[^}]*})/g ) {
++		    if ($color_test =~ /(color\{[^}]*})/g ) {
+ 		        $color_env = $1;
+ 		    }
+ 		}
+@@ -6507,7 +6507,7 @@ sub parse_keyvalues {
+     print "\nATTRIBS: $saved\n" if ($VERBOSITY > 6);
+ 
+     $saved =~ s/$percent_mark/%/g;
+-    $saved =~ s/((^|[\s,=])')\\\W{(\w)}/$1$3/g
++    $saved =~ s/((^|[\s,=])')\\\W\{(\w)}/$1$3/g
+ 	if $is_german;  #unwanted accents, from active "
+     if (@tags) {
+ 	foreach $tag (@tags) {

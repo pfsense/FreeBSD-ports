@@ -27,8 +27,10 @@ lib/mysql/libmysqld.a
 lib/mysql/plugin/adt_null.so
 lib/mysql/plugin/auth.so
 lib/mysql/plugin/auth_test_plugin.so
+lib/mysql/plugin/connection_control.so
 lib/mysql/plugin/daemon_example.ini
 lib/mysql/plugin/libdaemon_example.so
+%%EXAMPLE%%lib/mysql/plugin/ha_example.so
 lib/mysql/plugin/mypluglib.so
 lib/mysql/plugin/mysql_no_login.so
 lib/mysql/plugin/qa_auth_client.so
@@ -60,7 +62,6 @@ man/man1/mysqld_safe.1.gz
 man/man1/mysqldumpslow.1.gz
 man/man1/mysqlhotcopy.1.gz
 man/man1/mysqlman.1.gz
-man/man1/mysqltest.1.gz
 man/man1/perror.1.gz
 man/man1/replace.1.gz
 man/man1/resolve_stack_dump.1.gz
@@ -130,3 +131,7 @@ man/man8/mysqld.8.gz
 %%DATADIR%%/spanish/errmsg.sys
 %%DATADIR%%/swedish/errmsg.sys
 %%DATADIR%%/ukrainian/errmsg.sys
+%%ETCDIR%%/my.cnf.sample
+@dir(mysql,mysql,0750) %%ETCDIR%%/keyring
+@dir(mysql,mysql,0750) %%MY_SECDIR%%
+@dir(mysql,mysql,0750) %%MY_TMPDIR%%

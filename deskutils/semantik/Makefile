@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	semantik
-PORTVERSION=	0.9.4
+DISTVERSION=	0.9.5
+PORTREVISION=	4
 CATEGORIES=	deskutils kde
 MASTER_SITES=	http://ftp.waf.io/pub/release/ \
 		http://www.freehackers.org/~tnagy/release/
@@ -11,8 +12,8 @@ COMMENT=	KDE mind mapping tool
 
 LICENSE=	GPLv3
 
-USES=		kde:4 pkgconfig python:2 shebangfix tar:bzip2 waf \
-		shared-mime-info
+USES=		kde:4 pkgconfig python:2.7 shebangfix tar:bzip2 waf \
+		gettext shared-mime-info
 USE_KDE=	kdelibs
 USE_OCAML=	yes
 NO_OCAML_RUNDEPENDS=	yes
@@ -28,14 +29,13 @@ MAKE_ENV=	DESTDIR="${STAGEDIR}"
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	${WRKSRC}/src/templates/beamer/wscript \
-		${WRKSRC}/src/templates/pdflatex/wscript
+		${WRKSRC}/src/templates/pdflatex/wscript \
+		waf
 
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
-
-NLS_USES=	gettext
 
 .include <bsd.port.options.mk>
 
@@ -51,5 +51,6 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}-d \
 		${STAGEDIR}${PREFIX}/lib/lib${PORTNAME}.so.${PORTVERSION}
+	${INSTALL_MAN} ${WRKSRC}/src/data/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1/${PORTNAME}.1
 
 .include <bsd.port.mk>

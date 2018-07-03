@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	DBICx-Sugar
-PORTVERSION=	0.0001
+PORTVERSION=	0.0200
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:IRONCAMEL
@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Just some syntax sugar for DBIx::Class
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-DBIx-Class>=0:databases/p5-DBIx-Class \
@@ -26,5 +26,6 @@ TEST_DEPENDS=	p5-Test-Modern>=0:devel/p5-Test-Modern \
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

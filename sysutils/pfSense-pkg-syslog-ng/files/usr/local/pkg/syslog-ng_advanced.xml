@@ -43,7 +43,7 @@
 		</tab>
 		<tab>
 			<text>Advanced</text>
-			<url>/pkg_edit.php?xml=syslog-ng_advanced.xml</url>
+			<url>/pkg.php?xml=syslog-ng_advanced.xml</url>
 			<active/>
 		</tab>
 		<tab>

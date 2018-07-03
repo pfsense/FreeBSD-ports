@@ -2,17 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	gap
-PORTVERSION=	4.8.4.${GAP_DISTDATE}
+PORTVERSION=	4.8.10.${GAP_DISTDATE}
 CATEGORIES=	math
-MASTER_SITES=	ftp://ftp.gap-system.org/pub/gap/gap48/tar.bz2/ \
+MASTER_SITES=	http://www.gap-system.org/pub/gap/gap48/tar.bz2/ \
 		ftp://ftp.stack.nl/pub/users/johans/gap/ \
 		ftp://ftp.gap-system.org/pub/gap/gap48/old/
 DISTNAME=	${GAP_VERSION}p${PORTVERSION:R:E}_${GAP_DISTTIME}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	GAP is a system for computational discrete algebra
 
+LICENSE=	GPLv2+
+
 LIB_DEPENDS=	libgmp.so:math/gmp
+
+BROKEN_aarch64=		fails to link: undefined reference to SyAllocBags
+BROKEN_powerpc64=	fails to package: 2_manifolds_54.scb: No such file or directory
 
 USES=		gmake shebangfix tar:bzip2
 SHEBANG_FILES=	configure \
@@ -22,24 +27,34 @@ SHEBANG_FILES=	configure \
 		pkg/*/doc/convert.pl \
 		pkg/anupq-*/tst/make_anupqeg \
 		pkg/crime/gap/print.pl \
-		pkg/fr-*/cnf/config.status \
+		pkg/io-*/tst/sleep.sh \
 		pkg/pargap/mpinu/thwap
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-gmp=${LOCALBASE}
 ALL_TARGET=	default
+INSTALL_TARGET=	install-strip
 
 MAKE_JOBS_UNSAFE=yes
 
 GAP_VERSION=	${PORTNAME}${PORTVERSION:R:R:S/./r/}	# gap4r5
-GAP_DISTTIME=	2016_06_04-12_41
+GAP_DISTTIME=	2018_01_15-13_02
 GAP_DISTDATE=	${GAP_DISTTIME:C/-.*//:S/_//g}
 GAP_LIBDIR=	${PREFIX}/lib/${GAP_VERSION}
 WRKSRC=		${WRKDIR}/${GAP_VERSION}
 PLIST_FILES=	bin/gap
 
 post-patch:
-	@${REINPLACE_CMD} -i '' -e '1s|/usr/bin/sh|/bin/sh|' ${WRKSRC}/pkg/happrime/make_tarball
+	@${REINPLACE_CMD} -i '' -e '1s|/usr/bin/sh|/bin/sh|' \
+	    ${WRKSRC}/pkg/happrime/make_tarball
+
+post-build:
+	cd ${WRKSRC}/pkg/simpcomp && \
+	    ${SETENV} ${CONFIGURE_ENV} ${SH} configure \
+		${CONFIGURE_ARGS:N--with-*} && \
+	    ${MAKE} ${MAKEFLAGS} && \
+	    ${MAKE} ${MAKEFLAGS} install-strip && \
+	    ${RM} bistellar
 
 do-install:
 	${SED} -e "s:GAP_DIR=.*:GAP_DIR=${GAP_LIBDIR}:g" \
@@ -56,6 +71,7 @@ do-install:
 
 post-install:
 	@${FIND} ${STAGEDIR}${GAP_LIBDIR} -type d -empty -delete
+	@${FIND} ${STAGEDIR}${GAP_LIBDIR} -name \*.py -delete
 	@${FIND} ${STAGEDIR}${GAP_LIBDIR} ! -type d | \
 		${SED} 's,${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
 

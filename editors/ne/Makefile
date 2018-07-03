@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	ne
-PORTVERSION=	3.0.1
+PORTVERSION=	3.1.1
 CATEGORIES=	editors
 MASTER_SITES=	http://ne.di.unimi.it/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nice and powerful editor
 
-LICENSE=	GPLv3+
-#LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_WRKSRC=	${WRKSRC}/src
 
@@ -59,6 +59,8 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/syntax
 	(cd ${WRKSRC}/syntax && ${INSTALL_DATA} *.jsf \
 		${STAGEDIR}${DATADIR}/syntax)
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} CHANGES NEWS README.md \
 		${STAGEDIR}${DOCSDIR})

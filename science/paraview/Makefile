@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	paraview
-PORTVERSION=	4.3.1
-PORTREVISION=	2
+DISTVERSION=	5.2.0
+PORTREVISION=	4
 CATEGORIES=	science graphics
 MASTER_SITES=	http://www.paraview.org/files/v${VERMAJORMINOR}/
-DISTNAME=	ParaView-v${PORTVERSION}-source
+DISTNAME=	ParaView-v${PORTVERSION}
 
 MAINTAINER=	devel@stasyan.com
 COMMENT=	Powerful scientific data visualization application
@@ -16,7 +16,7 @@ LICENSE_NAME=	ParaView_License
 LICENSE_FILE=	${PATCH_WRKSRC}/License_v1.2.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:math/py-matplotlib
+BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:math/py-matplotlib@${PY_FLAVOR}
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
@@ -29,20 +29,21 @@ LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		libdrm.so:graphics/libdrm \
 		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=	bash:shells/bash	\
-		${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:math/py-matplotlib
+		${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:math/py-matplotlib@${PY_FLAVOR}
 
 CONFLICTS_BUILD=	protobuf*
 
+USES=		alias desktop-file-utils cmake:outsource jpeg python:2.7 shebangfix
 USE_QT4=	qmake_build moc_build rcc_build uic_build \
 		linguisttools_build assistant_run qt3support \
-		dbus designer gui help-tools network script \
+		corelib dbus designer gui help-tools network script \
 		sql svg xml webkit assistantclient clucene \
 		xmlpatterns xmlpatterns-tool help
-USE_GL=		yes
-USE_XORG=	x11 xt xext ice xdmcp xau xcb xfixes xdamage xxf86vm xrender sm
+USE_GL=		gl glu
+USE_XORG=	x11 xt xext ice xdmcp xau xcb xfixes xdamage xxf86vm xrender sm dri3proto
 USE_LDCONFIG=	yes
 USE_GSTREAMER=	yes
-USES=		alias desktop-file-utils cmake:outsource execinfo gmake jpeg python shebangfix
+
 INSTALLS_ICONS=	yes
 
 CMAKE_ARGS+=	-DBUILD_SHARED_LIBS="ON" \
@@ -63,7 +64,6 @@ MAKE_ENV=	XDG_CONFIG_HOME=${WRKDIR}
 
 SHEBANG_FILES=	Catalyst/catalyze.py VTK/Examples/SearchScript.sh \
 		VTK/Utilities/Maintenance/*.sh	\
-		Web/Applications/Parallel/server/launcher.sh \
 		Plugins/SciberQuestToolKit/eigen-3.0.3/eigen-eigen-3.0.3/bench/basicbench.cxxlist	\
 		Plugins/SciberQuestToolKit/eigen-3.0.3/eigen-eigen-3.0.3/bench/*.sh	\
 		Plugins/SciberQuestToolKit/eigen-3.0.3/eigen-eigen-3.0.3/bench/bench_unrolling	\
@@ -81,7 +81,6 @@ GL2PS_DESC=	Install support conversion OpenGL to PostScript
 #		VTKMPEG2	"Install patented MPEG2 encoder module" Off \
 
 VERMAJORMINOR=	${PORTVERSION:R}
-WRKSRC=		${WRKDIR}/ParaView-v${PORTVERSION}-source
 
 .include <bsd.port.options.mk>
 
@@ -106,9 +105,9 @@ CMAKE2INST=	ParaViewConfig.cmake \
 LIB_INSTDIR=	${PREFIX}/lib/${PORTNAME}-${VERMAJORMINOR}
 
 pre-configure:
-	${REINPLACE_CMD} -e 's|png_set_gray_1_2_4_to_8|png_set_expand_gray_1_2_4_to_8|' \
+	@${REINPLACE_CMD} -e 's|png_set_gray_1_2_4_to_8|png_set_expand_gray_1_2_4_to_8|' \
 		${PATCH_WRKSRC}/VTK/IO/Image/vtkPNGReader.cxx
-	${REINPLACE_CMD} -e 's|/bin/bash|${LOCALBASE}/bin/bash|'	\
+	@${REINPLACE_CMD} -e 's|/bin/bash|${LOCALBASE}/bin/bash|'	\
 		${PATCH_WRKSRC}/VTK/Utilities/Maintenance/vtk_site_history.py
 
 post-install:

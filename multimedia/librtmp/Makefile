@@ -11,9 +11,11 @@ COMMENT=	RTMP stream library
 
 LICENSE=	GPLv2
 
-USES=		pkgconfig tar:bz2
+BROKEN_SSL=	openssl-devel
+BROKEN_SSL_REASON_openssl-devel=	error: incomplete definition of type 'struct dh_st'
+
+USES=		pkgconfig tar:bz2 ssl
 USE_LDCONFIG=	yes
-USE_OPENSSL=	yes
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 WRKSRC=		${WRKDIR}/${DISTNAME}/librtmp

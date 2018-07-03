@@ -4,9 +4,9 @@
 
 PORTNAME=	poedit
 PORTVERSION=	1.8.4
-PORTREVISION=	2
+PORTREVISION=	15
 CATEGORIES=	editors
-MASTER_SITES=	http://github.com/vslavik/${PORTNAME}/releases/download/v${PORTVERSION}-oss/
+MASTER_SITES=	https://github.com/vslavik/${PORTNAME}/releases/download/v${PORTVERSION}-oss/
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Gettext catalogs (.po files) editor
@@ -16,12 +16,12 @@ LICENSE=	BSD2CLAUSE
 BUILD_DEPENDS=	zip:archivers/zip
 LIB_DEPENDS=	libgtkspell.so:textproc/gtkspell \
 		libboost_thread.so:devel/boost-libs \
+		libicui18n.so:devel/icu \
 		liblucene++.so:textproc/luceneplusplus
 
 USES=		bdb compiler:c++11-lib desktop-file-utils gettext gmake pkgconfig
 USE_WX=		3.0
 WX_CONF_ARGS=	absolute
-WX_UNICODE=	yes
 WITH_BDB_HIGHEST=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	WXRC="${WXRC_CMD}"

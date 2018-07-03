@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	kamailio
-PORTVERSION=	4.4.2
+PORTVERSION=	5.1.3
+
 CATEGORIES=	net
 MASTER_SITES=	http://www.kamailio.org/pub/kamailio/${PORTVERSION}/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}_src
@@ -18,9 +19,9 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libcurl.so:ftp/curl
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	Does not build: /bin/sh: clang: not found
 
-USES=		gmake ncurses readline shebangfix
+USES=		gmake ncurses python readline shebangfix
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	utils/kamctl/dbtextdb/dbtextdb.py \
 		utils/kamctl/kamctl utils/kamctl/kamdbctl
@@ -33,11 +34,12 @@ USE_RC_SUBR=	kamailio
 USERS=		kamailio
 GROUPS=		kamailio
 
-OPTIONS_DEFINE=	DOCS MYSQL PGSQL PERL RADIUS JITSI JABBER SCTP TLS \
-		UNIXODBC PRESENCE WEBSOCKET
-OPTIONS_DEFAULT=MYSQL RADIUS JABBER TLS PRESENCE
+OPTIONS_DEFINE=	DOCS MYSQL PGSQL PERL RADIUS JITSI SCTP TLS \
+		UNIXODBC PRESENCE WEBSOCKET DIALPLAN
+OPTIONS_DEFAULT=MYSQL RADIUS TLS PRESENCE
 OPTIONS_SUB=	YES
 
+DIALPLAN_DESC=	Dialplan support
 JITSI_DESC=	VoIP Frontend GUI via Jitsi
 SCTP_DESC=	SCTP support
 PRESENCE_DESC=	Presence support
@@ -83,12 +85,13 @@ MAKE_ENV+=	PERLLDOPTS=`perl -MExtUtils::Embed -e ldopts` \
 EXTRA_MODULES+=	db_unixodbc
 .endif
 
-.if ${PORT_OPTIONS:MRADIUS}
-EXTRA_GROUPS+=	radius
+.if ${PORT_OPTIONS:MDIALPLAN}
+LIB_DEPENDS+=	libpcre.so:devel/pcre
+EXTRA_MODULES+=	dialplan
 .endif
 
-.if ${PORT_OPTIONS:MJABBER}
-EXTRA_MODULES+=	jabber
+.if ${PORT_OPTIONS:MRADIUS}
+EXTRA_GROUPS+=	radius
 .endif
 
 .if ${PORT_OPTIONS:MSCTP}
@@ -130,7 +133,12 @@ pre-build:
 do-build:
 	cd ${WRKSRC} && ${GMAKE} ${ALL_TARGET}
 
-post-stage:
+do-install:
+	cd ${WRKSRC} && ${GMAKE} ${INSTALL_TARGET}
+.if ! ${PORT_OPTIONS:MMYSQL} && ! ${PORT_OPTIONS:MPGSQL}
+	${RMDIR} ${STAGEDIR}${PREFIX}/share/${PORTNAME}
+.endif
+
 # Strip modules in lib/kamailio/modules
 	@${ECHO_CMD} "Stripping modules in ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/modules/"
 
@@ -162,7 +170,8 @@ post-stage:
 	pua_dialoginfo pua_mi pua_reginfo pua_usrloc rls \
 	acc_radius misc_radius peering pua pua_xmpp xcap_client xcap_server \
 	tcpops auth_xkeys statsd dmq_usrloc rtjson websocket sctp \
-	app_perl cfgt smsops log_custom topos statsc
+	app_perl cfgt smsops log_custom topos statsc dialplan \
+	ss7ops app_jsdt jsonrpcs pua_rpc
 	@if [ -e ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/modules/${i}.so ]; then \
 		${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/modules/${i}.so; \
 	fi
@@ -188,11 +197,5 @@ post-stage:
 .for k in kamailio kamcmd
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/${k}
 .endfor
-
-do-install:
-	cd ${WRKSRC} && ${GMAKE} ${INSTALL_TARGET}
-.if ! ${PORT_OPTIONS:MMYSQL} && ! ${PORT_OPTIONS:MPGSQL}
-	${RMDIR} ${STAGEDIR}${PREFIX}/share/${PORTNAME}
-.endif
 
 .include <bsd.port.mk>

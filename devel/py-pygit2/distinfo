@@ -1,2 +1,3 @@
-SHA256 (pygit2-0.24.0.tar.gz) = ba76d97e90713584c8cb9d33c81cf9156aa69d6914cd3cdbddb740a069298105
-SIZE (pygit2-0.24.0.tar.gz) = 468391
+TIMESTAMP = 1528010741
+SHA256 (pygit2-0.27.1.tar.gz) = 1aa5ba1d59370bda158950ba4849bb6e59f13ac7e6fca5e392bfd873bd2c1cf9
+SIZE (pygit2-0.27.1.tar.gz) = 477820

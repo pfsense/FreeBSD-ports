@@ -2,10 +2,9 @@
 
 PORTNAME=	nasu
 PORTVERSION=	20141215
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	japanese x11-fonts
-MASTER_SITES=	SOURCEFORGE_JP
-MASTER_SITE_SUBDIR=users/7/7587
+MASTER_SITES=	OSDN/users/7/7587
 PKGNAMEPREFIX=	ja-font-
 DISTNAME=	NasuFont-${PORTVERSION}
 
@@ -42,9 +41,6 @@ do-install:
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} \
-		"! ( -name Nasu-Bold-20141215.ttf \
-		-o -name Nasu-Regular-20141215.ttf \
-		-o -name NasuM-Bold-20141215.ttf \
-		-o -name NasuM-Regular-20141215.ttf )"
+		"! -name *\.ttf"
 
 .include <bsd.port.mk>

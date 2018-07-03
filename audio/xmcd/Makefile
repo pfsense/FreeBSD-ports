@@ -3,11 +3,11 @@
 
 PORTNAME=	xmcd
 PORTVERSION=	3.3.2
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	audio
 MASTER_SITES=	http://www.ibiblio.org/tkan/download/xmcd/3.3.2/src/
 
-MAINTAINER=	eischen@vigrid.com
+MAINTAINER=	deischen@FreeBSD.org
 COMMENT=	Motif CD player
 
 LIB_DEPENDS+=	libvorbis.so:audio/libvorbis \
@@ -20,12 +20,15 @@ PLIST_SUB+=	RELEASE=${OSREL:R:R} ARCH=${ARCH} OPSYS=${OPSYS}
 SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
+CFLAGS+=	-D_WANT_SEMUN
+
 LIBBINDIR=	${STAGEDIR}${PREFIX}/lib/X11/xmcd/bin-${OPSYS}_${OSREL:R:R}-${ARCH}
 
-BROKEN_powerpc64=	Does not build on powerpc64
-
-post-extract:
-	@${CHMOD} -R u+w ${WRKSRC}
+BROKEN_aarch64=		Fails to compile: many undefined symbols in xorg.cf
+BROKEN_armv6=		Fails to install: strip: xmcd/bin-FreeBSD_12-armv6/cda failed: No such file or directory
+BROKEN_armv7=		Fails to install: strip: xmcd/bin-FreeBSD_12-armv7/cda failed: No such file or directory
+BROKEN_mips64=		Fails to compile: many undefined symbols in xorg.cf
+BROKEN_powerpc64=	Fails to compile: many undefined symbols in xorg.cf
 
 pre-patch:
 	@${CP} ${WRKSRC}/xmcd_d/XMcd.ad ${WRKSRC}/xmcd_d/XMcd.ad.in

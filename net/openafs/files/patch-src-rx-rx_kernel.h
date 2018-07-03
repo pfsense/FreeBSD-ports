@@ -1,6 +1,6 @@
---- src/rx/rx_kernel.h.orig	2014-09-24 10:17:09.000000000 -0400
-+++ src/rx/rx_kernel.h	2014-09-28 20:37:20.000000000 -0400
-@@ -54,12 +54,20 @@
+--- src/rx/rx_kernel.h.orig	2017-12-05 14:52:48 UTC
++++ src/rx/rx_kernel.h
+@@ -58,12 +58,20 @@ extern int osi_utoa(char *buf, size_t len, unsigned lo
  #endif
  #define rx_ifnet_mtu(x) (x)->if_mtu
  #define rx_ifnet_flags(x) (x?(x)->if_flags:0)

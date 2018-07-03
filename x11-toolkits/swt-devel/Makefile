@@ -3,7 +3,7 @@
 
 PORTNAME=	swt
 DISTVERSION=	3.7.1
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	x11-toolkits devel java
 MASTER_SITES=	ECLIPSE/R-${DISTVERSION}-201109091335
@@ -80,7 +80,7 @@ DIST_EXT=	gtk-linux-x86
 
 post-extract:
 	@(cd ${WRKSRC} && ${UNZIP_NATIVE_CMD} -qo *.zip)
-	@${RM} -f ${WRKSRC}/*.o ${WRKSRC}/*.so ${WRKSRC}/*.jar
+	@${RM} ${WRKSRC}/*.o ${WRKSRC}/*.so ${WRKSRC}/*.jar
 
 post-patch:
 	@${SED} -E -e 's|%%ARCH%%|${ARCH}|' \

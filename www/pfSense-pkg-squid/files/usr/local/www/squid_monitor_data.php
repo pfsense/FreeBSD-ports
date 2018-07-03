@@ -32,7 +32,7 @@ if ($_POST) {
 	switch ($program) {
 		case 'squid':
 			// Define log file
-			$log = '/var/squid/logs/access.log';
+			$log = $config['installedpackages']['squid']['config'][0]['log_dir'].'/access.log';
 			// Show table headers
 			show_tds(array("Date", "IP", "Status", "Address", "User", "Destination"));
 			// Fetch lines
@@ -67,7 +67,7 @@ if ($_POST) {
 			break;
 		case 'squid_cache';
 			// Define log file
-			$log = '/var/squid/logs/cache.log';
+			$log = $config['installedpackages']['squid']['config'][0]['log_dir'].'/cache.log';
 			// Show table headers
 			show_tds(array("Date-Time", "Message"));
 			// Fetch lines

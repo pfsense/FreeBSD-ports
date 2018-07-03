@@ -1,0 +1,11 @@
+--- third_party/webrtc/system_wrappers/BUILD.gn.orig	2017-12-15 02:05:40.000000000 +0100
++++ third_party/webrtc/system_wrappers/BUILD.gn	2017-12-24 19:38:19.942270000 +0100
+@@ -72,8 +72,6 @@
+     if (!build_with_chromium) {
+       deps += [ ":cpu_features_linux" ]
+     }
+-
+-    libs += [ "rt" ]
+   }
+ 
+   if (is_linux || is_android) {

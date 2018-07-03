@@ -2,12 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	clpeak
-PORTVERSION=	1.0
-PORTREVISION=	1
-DISTVERSIONPREFIX=	v
+PORTVERSION=	1.0g20170524
 CATEGORIES=	benchmarks
 
-MAINTAINER=	dieterich@ogolem.org
+MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Benchmarking tool to measure peak capabilities of opencl devices
 
 LICENSE=	PD
@@ -17,13 +15,12 @@ BUILD_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 RUN_DEPENDS=	opencl>=0:devel/opencl
 
-BROKEN_FreeBSD_9=	clpeak is only supported on FreeBSD 10.1 and newer
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON_amd64=	only builds and is supported on amd64
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	krrishnarraj
-GH_PROJECT=	clpeak
+GH_TAGNAME=	75c8746
 
 USE_LDCONFIG=	yes
 USE_GL=		gl

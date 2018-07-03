@@ -37,6 +37,9 @@ compiler_ARGS=	env
 
 VALID_ARGS=	c++11-lib c++11-lang c++14-lang c11 features openmp env nestedfct c++0x gcc-c++11-lib
 
+_CC_hash:=	${CC:hash}
+_CXX_hash:=	${CXX:hash}
+
 .if ${compiler_ARGS} == gcc-c++11-lib
 _COMPILER_ARGS+=	features gcc-c++11-lib
 .elif ${compiler_ARGS} == c++11-lib
@@ -66,12 +69,14 @@ _COMPILER_ARGS=	#
 _COMPILER_ARGS+=	features
 .endif
 
-_CCVERSION!=	${CC} --version
-.if defined(.PARSEDIR)
-COMPILER_VERSION=	${_CCVERSION:M[0-9].[0-9]*:tW:C/([0-9]).([0-9]).*/\1\2/g}
+.if defined(_CCVERSION_${_CC_hash})
+_CCVERSION=	${_CCVERSION_${_CC_hash}}
 .else
-COMPILER_VERSION=	${_CCVERSION:M[0-9].[0-9]*:C/([0-9]).([0-9]).*/\1\2/g:u}
+_CCVERSION!=	${CC} --version
+_CCVERSION_${_CC_hash}=	${_CCVERSION}
+PORTS_ENV_VARS+=	_CCVERSION_${_CC_hash}
 .endif
+COMPILER_VERSION=	${_CCVERSION:M[0-9].[0-9]*:tW:C/([0-9]).([0-9]).*/\1\2/g}
 .if ${_CCVERSION:Mclang}
 COMPILER_TYPE=	clang
 .else
@@ -80,7 +85,10 @@ COMPILER_TYPE=	gcc
 
 ALT_COMPILER_VERSION=	0
 ALT_COMPILER_TYPE=	none
-_ALTCCVERSION=	
+_ALTCCVERSION=		none
+.if defined(_ALTCCVERSION_${_CC_hash})
+_ALTCCVERSION=	${_ALTCCVERSION_${_CC_hash}}
+.else
 .if ${COMPILER_TYPE} == gcc && exists(/usr/bin/clang)
 .if ${ARCH} == amd64 || ${ARCH} == i386 # clang often non-default for a reason
 _ALTCCVERSION!=	/usr/bin/clang --version
@@ -88,15 +96,14 @@ _ALTCCVERSION!=	/usr/bin/clang --version
 .elif ${COMPILER_TYPE} == clang && exists(/usr/bin/gcc)
 _ALTCCVERSION!=	/usr/bin/gcc --version
 .endif
-
-.if defined(.PARSEDIR)
-ALT_COMPILER_VERSION=	${_ALTCCVERSION:M[0-9].[0-9]*:tW:C/([0-9]).([0-9]).*/\1\2/g}
-.else
-ALT_COMPILER_VERSION=	${_ALTCCVERSION:M[0-9].[0-9]*:C/([0-9]).([0-9]).*/\1\2/g:u}
+_ALTCCVERSION_${_CC_hash}=	${_ALTCCVERSION}
+PORTS_ENV_VARS+=		_ALTCCVERSION_${_CC_hash}
 .endif
+
+ALT_COMPILER_VERSION=	${_ALTCCVERSION:M[0-9].[0-9]*:tW:C/([0-9]).([0-9]).*/\1\2/g}
 .if ${_ALTCCVERSION:Mclang}
 ALT_COMPILER_TYPE=	clang
-.elif !empty(_ALTCCVERSION)
+.elif ${_ALTCCVERSION} != none
 ALT_COMPILER_TYPE=	gcc
 .endif
 
@@ -117,7 +124,13 @@ CHOSEN_COMPILER_TYPE=	gcc
 .endif
 
 .if ${_COMPILER_ARGS:Mfeatures}
+.if defined(_CXXINTERNAL_${_CXX_hash})
+_CXXINTERNAL=	${_CXXINTERNAL_${_CXX_hash}}
+.else
 _CXXINTERNAL!=	${CXX} -\#\#\# /dev/null 2>&1
+_CXXINTERNAL_${_CXX_hash}=	${_CXXINTERNAL}
+PORTS_ENV_VARS+=	_CXXINTERNAL_${_CXX_hash}
+.endif
 .if ${_CXXINTERNAL:M\"-lc++\"}
 COMPILER_FEATURES=	libc++
 .else
@@ -132,7 +145,13 @@ _LANG=c
 .if ${CXXSTD:M${std}}
 _LANG=c++
 .endif
-OUTPUT_${std}!=	echo | ${CC} -std=${std} -c -x ${_LANG} /dev/null -o /dev/null 2>&1; echo
+.if defined(CC_OUTPUT_${_CC_hash}_${std:hash})
+OUTPUT_${std}=	${CC_OUTPUT_${_CC_hash}_${std:hash}}
+.else
+OUTPUT_${std}!=	if ${CC} -std=${std} -c -x ${_LANG} /dev/null -o /dev/null 2>&1; then echo yes; fi; echo
+CC_OUTPUT_${_CC_hash}_${std:hash}=	${OUTPUT_${std}}
+PORTS_ENV_VARS+=			CC_OUTPUT_${_CC_hash}_${std:hash}
+.endif
 .if !${OUTPUT_${std}:M*error*}
 COMPILER_FEATURES+=	${std}
 .endif
@@ -152,7 +171,7 @@ CHOSEN_COMPILER_TYPE=	gcc
 .if ${_COMPILER_ARGS:Mc++14-lang}
 .if !${COMPILER_FEATURES:Mc++14}
 .if (defined(FAVORITE_COMPILER) && ${FAVORITE_COMPILER} == gcc) || (${ARCH} != amd64 && ${ARCH} != i386) # clang not always supported on Tier-2
-USE_GCC=	5+
+USE_GCC=	yes
 CHOSEN_COMPILER_TYPE=	gcc
 .elif (${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 35) || ${COMPILER_TYPE} == gcc
 .if ${ALT_COMPILER_TYPE} == clang && ${ALT_COMPILER_VERSION} >= 35
@@ -161,10 +180,10 @@ CC=	clang
 CXX=	clang++
 CHOSEN_COMPILER_TYPE=	clang
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang36:lang/clang36
-CPP=	${LOCALBASE}/bin/clang-cpp36
-CC=	${LOCALBASE}/bin/clang36
-CXX=	${LOCALBASE}/bin/clang++36
+BUILD_DEPENDS+=	${LOCALBASE}/bin/clang50:devel/llvm50
+CPP=	${LOCALBASE}/bin/clang-cpp50
+CC=	${LOCALBASE}/bin/clang50
+CXX=	${LOCALBASE}/bin/clang++50
 CHOSEN_COMPILER_TYPE=	clang
 .endif
 .endif
@@ -176,17 +195,17 @@ CHOSEN_COMPILER_TYPE=	clang
 .if (defined(FAVORITE_COMPILER) && ${FAVORITE_COMPILER} == gcc) || (${ARCH} != amd64 && ${ARCH} != i386) # clang not always supported on Tier-2
 USE_GCC=	yes
 CHOSEN_COMPILER_TYPE=	gcc
-.elif (${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 34) || ${COMPILER_TYPE} == gcc
-.if ${ALT_COMPILER_TYPE} == clang && ${ALT_COMPILER_VERSION} >= 34
+.elif ${COMPILER_TYPE} == gcc
+.if ${ALT_COMPILER_TYPE} == clang
 CPP=	clang-cpp
 CC=	clang
 CXX=	clang++
 CHOSEN_COMPILER_TYPE=	clang
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang34:lang/clang34
-CPP=	${LOCALBASE}/bin/clang-cpp34
-CC=	${LOCALBASE}/bin/clang34
-CXX=	${LOCALBASE}/bin/clang++34
+BUILD_DEPENDS+=	${LOCALBASE}/bin/clang50:devel/llvm50
+CPP=	${LOCALBASE}/bin/clang-cpp50
+CC=	${LOCALBASE}/bin/clang50
+CXX=	${LOCALBASE}/bin/clang++50
 CHOSEN_COMPILER_TYPE=	clang
 .endif
 .endif
@@ -198,18 +217,18 @@ CHOSEN_COMPILER_TYPE=	clang
 .if (defined(FAVORITE_COMPILER) && ${FAVORITE_COMPILER} == gcc) || (${ARCH} != amd64 && ${ARCH} != i386) # clang not always supported on Tier-2
 USE_GCC=	yes
 CHOSEN_COMPILER_TYPE=	gcc
-.elif (${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 34) || ${COMPILER_TYPE} == gcc
-.if ${ALT_COMPILER_TYPE} == clang && ${ALT_COMPILER_VERSION} >= 34
+.elif ${COMPILER_TYPE} == gcc
+.if ${ALT_COMPILER_TYPE} == clang
 CPP=	clang-cpp
 CC=	clang
 CXX=	clang++
 CHOSEN_COMPILER_TYPE=	clang
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang34:lang/clang34
+BUILD_DEPENDS+=	${LOCALBASE}/bin/clang50:devel/llvm50
 CHOSEN_COMPILER_TYPE=	clang
-CPP=	${LOCALBASE}/bin/clang-cpp34
-CC=	${LOCALBASE}/bin/clang34
-CXX=	${LOCALBASE}/bin/clang++34
+CPP=	${LOCALBASE}/bin/clang-cpp50
+CC=	${LOCALBASE}/bin/clang50
+CXX=	${LOCALBASE}/bin/clang++50
 .endif
 .endif
 .endif
@@ -220,18 +239,18 @@ CXX=	${LOCALBASE}/bin/clang++34
 .if (defined(FAVORITE_COMPILER) && ${FAVORITE_COMPILER} == gcc) || (${ARCH} != amd64 && ${ARCH} != i386) # clang not always supported on Tier-2
 USE_GCC=	yes
 CHOSEN_COMPILER_TYPE=	gcc
-.elif (${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 34) || ${COMPILER_TYPE} == gcc
-.if ${ALT_COMPILER_TYPE} == clang && ${ALT_COMPILER_VERSION} >= 34
+.elif ${COMPILER_TYPE} == gcc
+.if ${ALT_COMPILER_TYPE} == clang
 CPP=	clang-cpp
 CC=	clang
 CXX=	clang++
 CHOSEN_COMPILER_TYPE=	clang
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang34:lang/clang34
+BUILD_DEPENDS+=	${LOCALBASE}/bin/clang50:devel/llvm50
 CHOSEN_COMPILER_TYPE=	clang
-CPP=	${LOCALBASE}/bin/clang-cpp34
-CC=	${LOCALBASE}/bin/clang34
-CXX=	${LOCALBASE}/bin/clang++34
+CPP=	${LOCALBASE}/bin/clang-cpp50
+CC=	${LOCALBASE}/bin/clang50
+CXX=	${LOCALBASE}/bin/clang++50
 .endif
 .endif
 .endif
@@ -241,9 +260,12 @@ CXX=	${LOCALBASE}/bin/clang++34
 USE_GCC=	yes
 CHOSEN_COMPILER_TYPE=	gcc
 .if ${COMPILER_FEATURES:Mlibc++}
-LDFLAGS+=	-L${LOCALBASE}/lib/c++
-CXXFLAGS+=	-nostdinc++ -isystem ${LOCALBASE}/include/c++/v1
-BUILD_DEPENDS+=	${LOCALBASE}/lib/c++/libstdc++.so:devel/libc++
+CXXFLAGS+=	-nostdinc++ -isystem /usr/include/c++/v1
+LDFLAGS+=	-L${WRKDIR}
+
+_USES_configure+=	200:gcc-libc++-configure
+gcc-libc++-configure:
+	@${LN} -fs /usr/lib/libc++.so ${WRKDIR}/libstdc++.so
 .endif
 .endif
 

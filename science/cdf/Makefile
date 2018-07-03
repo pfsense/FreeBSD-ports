@@ -3,7 +3,7 @@
 
 PORTNAME=	cdf3
 PORTVERSION=	3.3.0
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	science
 MASTER_SITES=	LOCAL/thierry/${PORTNAME} \
 		ftp://cdaweb.gsfc.nasa.gov/pub/cdf/dist/cdf${VER}/unix/
@@ -17,6 +17,10 @@ LICENSE=	NASA-G
 LICENSE_NAME=	NASA/Goddard Space Flight Center
 LICENSE_FILE=	${WRKSRC}/CDF_copyright.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BROKEN_aarch64=		fails to compile: error: use of undeclared identifier FP1ZEROsingle; did you mean FP1zeroSingle?
+BROKEN_armv6=		fails to compile: error: use of undeclared identifier FP1ZEROsingle; did you mean FP1zeroSingle?
+BROKEN_armv7=		fails to compile: error: use of undeclared identifier FP1ZEROsingle; did you mean FP1zeroSingle?
 
 USES=		fortran ncurses
 USE_LDCONFIG=	yes

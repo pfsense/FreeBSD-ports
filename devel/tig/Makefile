@@ -2,29 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	tig
-PORTVERSION=	2.1.1
+PORTVERSION=	2.3.0
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://jonas.nitro.dk/tig/releases/
+MASTER_SITES=	https://github.com/jonas/tig/releases/download/${DISTNAME}/
 
-MAINTAINER=	darcsis@gmail.com
+MAINTAINER=	dharrigan@gmail.com
 COMMENT=	Text-mode interface for git
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	git:devel/git
-
+USES=		iconv gmake ncurses readline:port
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_BASE}
-USES=		iconv gmake ncurses readline:port
+MAKE_ARGS=	V=1
 
 ALL_TARGET=	all strip
 INSTALL_TARGET=	install
 
 PLIST_FILES=	bin/tig etc/tigrc
 
-OPTIONS_DEFINE=	MANPAGES
+OPTIONS_DEFINE=	GIT MANPAGES
 OPTIONS_DEFAULT=MANPAGES
+
+GIT_DESC=	Install devel/git as runtime dependency
+
+GIT_RUN_DEPENDS=	git:devel/git
+GIT_VARS_OFF=	PKGMESSAGE="${.CURDIR}/pkg-message-git"
 
 MANPAGES_BUILD_DEPENDS=	asciidoc:textproc/asciidoc \
 			xmlto:textproc/xmlto

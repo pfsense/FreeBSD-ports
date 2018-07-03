@@ -1,10 +1,11 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
 # $FreeBSD$
 
-PORTNAME=	python34
+PORTNAME=	python
 PORTVERSION=	${PYTHON_PORTVERSION}
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON/ftp/python/${PORTVERSION}
+PKGNAMESUFFIX=	${PYTHON_SUFFIX}
 DISTNAME=	Python-${PORTVERSION}
 DIST_SUBDIR=	python
 
@@ -13,12 +14,19 @@ COMMENT=	Interpreted object-oriented programming language
 
 LICENSE=	PSFL
 
-USES=		cpe ncurses pkgconfig readline ssl tar:xz
+BROKEN_SSL=	openssl-devel
+
+USES=		cpe ncurses pathfix pkgconfig readline:port shebangfix ssl tar:xz
+PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+python_CMD=	${PREFIX}/bin/python${PORTVERSION:R}
+SHEBANG_FILES=	Lib/*.py Lib/*/*.py Lib/*/*/*.py Lib/*/*/*/*.py
 
-CPE_VENDOR=	python
-CPE_PRODUCT=	${CPE_VENDOR}
+# Duplicate python.mk variables. TODO: Let lang/python?? ports use python.mk bits.
+PYTHON_VER=		${PYTHON_PORTVERSION:R}
+PYTHON_VERSION=		python${PYTHON_VER}
+PYTHON_SUFFIX=		${PYTHON_VER:S/.//g}
 
 DISABLED_EXTENSIONS=	_sqlite3 _tkinter _gdbm
 CONFIGURE_ARGS+=	--enable-shared --without-ensurepip
@@ -30,14 +38,16 @@ TEST_TARGET=		buildbottest
 TEST_ARGS=		TESTOPTS=-j${MAKE_JOBS_NUMBER}
 
 MAKE_ARGS+=		INSTALL_SHARED="${INSTALL_LIB}"				# Strip shared library
-MAKE_ARGS+=		LIBPC="${PREFIX}/libdata/pkgconfig"			# Until pathfix gets support for files other than Makefile.in
 MAKE_JOBS_UNSAFE=	yes							# Parser/pgen build bug. See Issue: 200622, 201974
 
 SUB_FILES=		pkg-message
-SUB_LIST=		PYTHON_SUFFIX=${PORTVERSION:R:S/.//g}
+SUB_LIST=		PYTHON_SUFFIX=${PYTHON_SUFFIX}
 
 PLIST_SUB=		ABI=${ABIFLAGS} \
-			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. http://bugs.python.org/issue19554
+			XY=${PYTHON_SUFFIX} \
+			XYDOT=${PYTHON_VER} \
+			XYZDOT=${PORTVERSION} \
+			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. https://bugs.python.org/issue19554
 
 OPTIONS_DEFINE=		DEBUG IPV6 LIBFFI NLS PYMALLOC THREADS TSC
 OPTIONS_DEFAULT=	LIBFFI PYMALLOC THREADS
@@ -65,8 +75,7 @@ LIBFFI_LIB_DEPENDS=	libffi.so:devel/libffi
 
 # Use CPPFLAGS over CFLAGS due to -I ordering, causing elementtree and pyexpat
 # to break in Python 2.7, or preprocessor complaints in Python >= 3.3
-# Upstream Issue: http://bugs.python.org/issue6299
-
+# Upstream Issue: https://bugs.python.org/issue6299
 NLS_USES=		gettext
 NLS_CPPFLAGS=		-I${LOCALBASE}/include
 NLS_LIBS=		-L${LOCALBASE}/lib -lintl
@@ -91,22 +100,22 @@ ABIFLAGS:=	d${ABIFLAGS}
 .endif
 
 .if !empty(ABIFLAGS)
-PLIST_FILES+=	bin/python3.4%%ABI%%
-PLIST_FILES+=	bin/python3.4%%ABI%%-config
-PLIST_FILES+=	libdata/pkgconfig/python-3.4%%ABI%%.pc
+PLIST_FILES+=	bin/python${PYTHON_VER}${ABIFLAGS} \
+		bin/python${PYTHON_VER}${ABIFLAGS}-config \
+		libdata/pkgconfig/python-${PYTHON_VER}${ABIFLAGS}.pc
 .endif
 
-# http://bugs.python.org/issue22521
-# http://bugs.python.org/issue23042
+# https://bugs.python.org/issue22521
+# https://bugs.python.org/issue23042
 .if ${ARCH} == i386 && !${PORT_OPTIONS:MLIBFFI}
-BROKEN=	You must use libffi from ports on i386. Enable the LIBFFI option
+BROKEN=		You must use libffi from ports on i386. Enable the LIBFFI option
 .endif
 
 .if ${ARCH} == sparc64
 CFLAGS+=	-DPYTHON_DEFAULT_RECURSION_LIMIT=900
 .endif
 
-# See http://bugs.freebsd.org/115940 and http://bugs.freebsd.org/193650
+# See https://bugs.freebsd.org/115940 and https://bugs.freebsd.org/193650
 .if !exists(/usr/bin/ypcat) || defined(WITHOUT_NIS)
 PLIST_SUB+=	NO_NIS="@comment "
 DISABLED_EXTENSIONS+=	nis
@@ -114,11 +123,33 @@ DISABLED_EXTENSIONS+=	nis
 PLIST_SUB+=	NO_NIS=""
 .endif
 
+post-patch:
+# readline shared library is present on base before FreeBSD 11 - r268461
+# force setup.py ignore base and use readline from ports
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
+	@${REINPLACE_CMD} -e \
+		"s|lib_dirs,\ \'readline\'|[\'${LOCALBASE}/lib\',\ \'.\'],\ \'readline\'|" \
+		${WRKSRC}/setup.py
+.endif
+
 post-install:
 .if ! ${PORT_OPTIONS:MDEBUG}
-	${RM} ${STAGEDIR}${PREFIX}/lib/libpython3.so						# Upstream Issue: http://bugs.python.org/issue17975
+	${RM} ${STAGEDIR}${PREFIX}/lib/libpython3.so						# Upstream Issue: https://bugs.python.org/issue17975
 .endif
-	for i in ${STAGEDIR}${PREFIX}/lib/python3.4/lib-dynload/*.so; do \
+# This code block exists for the qemu-user enabled cross build environment.
+# When using this environment in poudriere, CC is not set to the default
+# of /usr/bin/cc and a cross-compile toolchain is used.  We need to hand
+# edit this so that the run time configuration for python matches what the
+# FreeBSD base system provides.  sbruno 02Aug2017
+.if ${CC} == /nxb-bin/usr/bin/cc
+	@${REINPLACE_CMD} -e 's=/nxb-bin==' \
+		${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/_sysconfigdata.py
+	@${REINPLACE_CMD} -e 's=/nxb-bin==' \
+		${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/config-${PYTHON_VER}m/Makefile
+.endif
+	for i in ${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/lib-dynload/*.so; do \
 		${STRIP_CMD} $$i; done								# Strip shared extensions
+	${INSTALL_DATA} ${WRKSRC}/Tools/gdb/libpython.py \
+		${STAGEDIR}${PREFIX}/lib/libpython${PYTHON_VER}${ABIFLAGS}.so.1-gdb.py
 
 .include <bsd.port.mk>

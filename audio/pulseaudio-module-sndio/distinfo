@@ -1,3 +1,3 @@
-TIMESTAMP = 1470670520
-SHA256 (t6-pulseaudio-module-sndio-8.0_GH0.tar.gz) = eae7dce7220af6a508a42fcfe22d365c495e9dd2ab4d2eb1dae4c0bef0f9581a
-SIZE (t6-pulseaudio-module-sndio-8.0_GH0.tar.gz) = 92204
+TIMESTAMP = 1504721015
+SHA256 (t6-pulseaudio-module-sndio-10.99.1_GH0.tar.gz) = b4756d9ddc183fa785f9b96b77b20f076f466cbc9c8506c7af95621e755e52f4
+SIZE (t6-pulseaudio-module-sndio-10.99.1_GH0.tar.gz) = 93067

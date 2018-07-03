@@ -36,13 +36,13 @@ post-patch:
 		-e 's,@ITCL_VERSION@,3.3,g' ${WRKSRC}/Makefile.in
 
 post-install:
-	${RM} -f ${STAGEDIR}${PREFIX}/lib/iwidgets
+	${RM} ${STAGEDIR}${PREFIX}/lib/iwidgets
 	${LN} -s ${DISTNAME} ${STAGEDIR}${PREFIX}/lib/iwidgets
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/doc/iwidgets.ps ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/iwidgets.ps ${STAGEDIR}${DOCSDIR}
 .for f in CHANGES ChangeLog README
-	${INSTALL_MAN} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
 .endif
 

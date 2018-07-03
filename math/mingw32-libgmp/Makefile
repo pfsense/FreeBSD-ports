@@ -3,7 +3,7 @@
 
 PORTNAME=	libgmp
 PORTVERSION=	6.0.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math devel
 MASTER_SITES=	GNU/gmp
 PKGNAMEPREFIX=	mingw32-
@@ -23,7 +23,7 @@ GNU_CONFIGURE=	yes
 CC=		${PKGNAMEPREFIX}gcc
 CXX=		${PKGNAMEPREFIX}c++
 CFLAGS+=	-I/usr/include
-CONFIGURE_ENV=	MAKEINFO="makeinfo --no-split" \
+CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split" \
 		PREFIX="${PREFIX}/${GMP_TARG}" \
 		M4="/usr/bin/m4"
 CONFIGURE_ARGS=	--enable-cxx --host=${GMP_TARG} \
@@ -37,6 +37,6 @@ INFO=		gmp
 INFO_PATH=	${GMP_TARG}/info
 
 post-extract:
-	@${RM} -f ${WRKSRC}/doc/gmp.info*
+	@${RM} ${WRKSRC}/doc/gmp.info*
 
 .include <bsd.port.mk>

@@ -2,12 +2,12 @@
 
 PORTNAME=	sivp
 DISTVERSION=	1.0.0.r286
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	math graphics multimedia
 MASTER_SITES=	LOCAL/makc
 PKGNAMEPREFIX=	scilab-toolbox-
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scilab Image and Video Processing Toolbox
 
 BUILD_DEPENDS=	${SCILAB_CMD}:math/scilab
@@ -21,7 +21,7 @@ DOS2UNIX_FILES=	etc/SIVP.start \
 
 SCILAB_CMD=	${LOCALBASE}/bin/scilab-adv-cli
 SCILAB_ARGS=	-noatomsautoload -nb -nouserstartup
-MAKE_ENV=	LC_ALL="C" SCI_JAVA_ENABLE_HEADLESS=1 SCI_DISABLE_TK=1
+MAKE_ENV=	SCI_JAVA_ENABLE_HEADLESS=1 SCI_DISABLE_TK=1
 
 CONTRIBDIR?=	share/scilab/contrib
 TOOLBOXDIR_REL?=	${CONTRIBDIR}/${PORTNAME}

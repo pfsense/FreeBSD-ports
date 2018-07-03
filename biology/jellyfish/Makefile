@@ -1,12 +1,12 @@
-# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	jellyfish
-PORTVERSION=	2.2.4
+PORTVERSION=	2.2.6
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	biology
 
-MAINTAINER=	bacon4000@gmail.com
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Fast, memory-efficient counting of k-mers in DNA
 
 LICENSE=	GPLv3+
@@ -16,8 +16,7 @@ BUILD_DEPENDS=	yaggo:devel/yaggo
 
 GNU_CONFIGURE=	yes
 
-USES=		autoreconf compiler:c++11-lib gmake \
-		libtool pkgconfig
+USES=		autoreconf compiler:c++11-lib gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -26,7 +25,9 @@ GH_PROJECT=	Jellyfish
 
 INSTALL_TARGET=	install-strip
 
-BROKEN_FreeBSD_9_i386=	multiple code issues on i386 < 10.0-RELEASE
+PLIST_SUB=	VER=${PORTVERSION}
+
+BROKEN_aarch64=		Fails to compile: error: variable res is uninitialized
 
 .include <bsd.port.pre.mk>
 
@@ -34,11 +35,5 @@ BROKEN_FreeBSD_9_i386=	multiple code issues on i386 < 10.0-RELEASE
 .if ${ARCH} != "amd64"
 CONFIGURE_ARGS+=--without-sse
 .endif
-
-# configure does not support --with-pkgconfigdir
-post-patch:
-	@${REINPLACE_CMD} \
-		-e 's|$$(libdir)/pkgconfig|${PREFIX}/libdata/pkgconfig|g' \
-		${WRKSRC}/Makefile.am
 
 .include <bsd.port.post.mk>

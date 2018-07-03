@@ -5,7 +5,7 @@ PORTNAME=	burgerspace
 PORTVERSION=	1.9.2
 PORTREVISION=	2
 CATEGORIES=	games
-MASTER_SITES=	http://perso.b2b2c.ca/sarrazip/dev/ \
+MASTER_SITES=	http://perso.b2b2c.ca/~sarrazip/dev/ \
 		LOCAL/martymac
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -16,6 +16,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libflatzebra-0.1.so:devel/flatzebra
 
 USES=		pkgconfig
+USE_CXXSTD=	gnu++98
 USE_SDL=	mixer sdl
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

@@ -5,12 +5,12 @@ PORTNAME=	HTTP_WebDAV_Client
 PORTVERSION=	1.0.2
 CATEGORIES=	www devel pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	WebDAV Stream Wrapper Class
 
-BUILD_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request
-RUN_DEPENDS:=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request
+BUILD_DEPENDS=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR}
+RUN_DEPENDS:=	${PEARDIR}/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR}
 
-USES=	pear
+USES=		pear
 
 .include <bsd.port.mk>

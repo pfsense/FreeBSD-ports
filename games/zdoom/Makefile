@@ -1,12 +1,12 @@
-# Created by: Kyle Evans <bsdports@kyle-evans.net>
+# Created by: Kyle Evans <kevans@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	zdoom
 PORTVERSION=	2.8.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 
-MAINTAINER=	bsdports@kyle-evans.net
+MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Source port for Doom-engine games
 
 LICENSE=	DOOM
@@ -18,6 +18,9 @@ BUILD_DEPENDS=	zip:archivers/zip
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libsndfile.so:audio/libsndfile
+
+NOT_FOR_ARCHS=		powerpc64
+NOT_FOR_ARCHS_REASON=	fails to compile: invokes x86 assembly
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rheit
@@ -32,8 +35,11 @@ USE_SDL=	sdl2
 CMAKE_ARGS=	-DNO_FMOD:BOOL=ON
 CXXFLAGS+=	-DSHARE_DIR=\\\"${DATADIR}\\\"
 
+DESKTOP_ENTRIES=	"ZDoom" "" "${PORTNAME}" "${PORTNAME}" "Game;Shooter;" ""
+
 PLIST_FILES=	bin/${PORTNAME} \
-		${DATADIR}/${PORTNAME}.pk3
+		${DATADIR}/${PORTNAME}.pk3 \
+		share/pixmaps/${PORTNAME}.xpm
 
 OPTIONS_DEFINE=	FLUIDSYNTH
 OPTIONS_DEFAULT=FLUIDSYNTH
@@ -48,5 +54,6 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${CONFIGURE_WRKSRC}/${PORTNAME}.pk3 ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.xpm ${STAGEDIR}${PREFIX}/share/pixmaps
 
 .include <bsd.port.mk>

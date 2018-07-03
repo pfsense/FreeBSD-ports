@@ -3,13 +3,17 @@
 
 PORTNAME=	clamfs
 PORTVERSION=	1.0.1
+PORTREVISION=	6
 CATEGORIES=	security
 MASTER_SITES=	SF
 
-MAINTAINER=	anastmag@gmail.com
+MAINTAINER=	anastasios@mageirias.com
 COMMENT=	User-space fs with on-access antivirus scanning
 
 LICENSE=	GPLv2
+
+BROKEN_armv6=		fails to compile: ./config.hxx:52:17: expected namespace name
+BROKEN_armv7=		fails to compile: ./config.hxx:52:17: expected namespace name
 
 LIB_DEPENDS=	libccgnu2.so:devel/commoncpp \
 		libPocoNet.so:devel/poco-ssl \
@@ -19,9 +23,7 @@ RUN_DEPENDS=	clamd:security/clamav
 
 GNU_CONFIGURE=	yes
 
-USES=		fuse
-
-CPPFLAGS+=	-I${LOCALBASE}/include/boost/tr1
+USES=		compiler:c++11-lib fuse
 
 PLIST_FILES=	bin/clamfs \
 		man/man1/clamfs.1.gz

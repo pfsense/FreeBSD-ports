@@ -2,13 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	dhcp
-PORTVERSION=	4.3.5
+ISCVERSION=	4.3.6-P1
+PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
 PORTREVISION=	${DHCP_PORTREVISION}
 CATEGORIES=	net
-MASTER_SITES=	ISC/${PORTNAME}/${PORTVERSION:S/P/-P/g}
+MASTER_SITES=	ISC/${PORTNAME}/${PORTVERSION:S/P/-P/g} \
+		ZI
 PKGNAMEPREFIX=	isc-
 PKGNAMESUFFIX=	43-${SUBSYS}
-DISTNAME=	${PORTNAME}-${PORTVERSION:S/P/-P/g}
+DISTNAME=	${PORTNAME}-${ISCVERSION}
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT?=	ISC Dynamic Host Configuration Protocol server
@@ -36,13 +38,13 @@ BIND_SYMBOLS_DESC=	Enable BIND internal symbol table
 
 # PORTREVISION and CONFLICTS handling
 .if ${SUBSYS} == client
-CONFLICTS=	isc-dhcp3?-client-[0-9]* isc-dhcp4[12]-client-[0-9]*
+CONFLICTS=	isc-dhcp3?-client-[0-9]* isc-dhcp4[124]-client-[0-9]*
 DHCP_PORTREVISION=	${PORTREVISION_CLIENT}
 .elif ${SUBSYS} == relay
-CONFLICTS=	isc-dhcp3?-relay-[0-9]* isc-dhcp4[12]-relay-[0-9]*
+CONFLICTS=	isc-dhcp3?-relay-[0-9]* isc-dhcp4[124]-relay-[0-9]*
 DHCP_PORTREVISION=	${PORTREVISION_RELAY}
 .else
-CONFLICTS=	isc-dhcp3?-server-[0-9]* isc-dhcp4[12]-server-[0-9]*
+CONFLICTS=	isc-dhcp3?-server-[0-9]* isc-dhcp4[124]-server-[0-9]*
 DHCP_PORTREVISION=	${PORTREVISION_SERVER}
 .endif
 MAKE_JOBS_UNSAFE=	yes
@@ -164,7 +166,7 @@ do-install:
 .endif
 .if ${PORT_OPTIONS:MLDAP}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${LDAP_README} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${LDAP_README} ${STAGEDIR}${DOCSDIR}
 .endif
 .endif
 .if ${SUBSYS} == client

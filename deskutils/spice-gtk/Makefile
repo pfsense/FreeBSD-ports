@@ -2,65 +2,64 @@
 # $FreeBSD$
 
 PORTNAME=	spice-gtk
-PORTVERSION=	0.30
-PORTREVISION=	1
+PORTVERSION=	0.34
 CATEGORIES?=	deskutils gnome
 MASTER_SITES=	http://www.spice-space.org/download/gtk/
 
-MAINTAINER=	olevole@olevole.ru
-COMMENT?=	Gtk client and libraries for SPICE remote desktop servers
+MAINTAINER=	xxjack12xx@gmail.com
+COMMENT=	Gtk client and libraries for SPICE remote desktop servers
 
 LICENSE=	GPLv2
 
-USE_XORG=	pixman
-USE_GNOME=	gnomeprefix gtk20 gtk30 intltool introspection:build
-USES=		cpe gmake jpeg libtool pkgconfig tar:bzip2 pathfix python
-CPE_VENDOR=	redhat
-
+LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
+		libopus.so:audio/opus
 BUILD_DEPENDS=	spice-protocol>=0.12.10:devel/spice-protocol \
-		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.0.1:devel/py-pyparsing
+		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.0.1:devel/py-pyparsing@${PY_FLAVOR}
 RUN_DEPENDS=	spice-protocol>=0.12.10:devel/spice-protocol
 
-.if defined(SPICE_SLAVE)
-PORTREVISION=	1
-CATEGORIES+=	python
-PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}gtk2>=0:x11-toolkits/py-gtk2
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}gtk2>=0:x11-toolkits/py-gtk2
-CONFIGURE_ARGS+=	--with-python
-PLIST_FILES+=	%%PYTHON_SITELIBDIR%%/SpiceClientGtk.so
-.endif
+USES=		autoreconf cpe gettext-tools gmake jpeg libtool pkgconfig tar:bzip2 \
+		python ssl localbase:ldflags
+USE_XORG=	x11 pixman
+USE_GNOME=	cairo gdkpixbuf2 gnomeprefix gtk30 intltool introspection:build
+CPE_VENDOR=	redhat
 
-CONFIGURE_ENV+=	SSL_CFLAGS=-I${OPENSSLINC} \
-		SSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"
+SPICE_SSL_CFLAGS=	-I${OPENSSLINC}
+SPICE_SSL_LIBS=	-L${OPENSSLLIB} -lcrypto -lssl
+CONFIGURE_ENV+=	SSL_CFLAGS="${SPICE_SSL_CFLAGS}" SSL_LIBS="${SPICE_SSL_LIBS}" \
+		OPENSSL_CFLAGS="${SPICE_SSL_CFLAGS}" OPENSSL_LIBS="${SPICE_SSL_LIBS}"
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USE_OPENSSL=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+# we can't use pathfix with USES=autoreconf
+MAKE_ARGS=	pkgconfigdir="${PREFIX}/libdata/pkgconfig"
 
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	NLS DOCS SASL
-OPTIONS_DEFAULT=	GSTREAMER SASL
+OPTIONS_DEFINE=	LZ4 NLS DOCS SASL
+OPTIONS_DEFAULT=	GSTREAMER LZ4 PULSEAUDIO SASL
+
+OPTIONS_GROUP=		AUDIO
+OPTIONS_GROUP_AUDIO=	GSTREAMER PULSEAUDIO
+
 OPTIONS_SUB=	yes
+
+LZ4_CONFIGURE_ENABLE=	lz4
+LZ4_LIB_DEPENDS+=	liblz4.so:archivers/liblz4
 
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 
-OPTIONS_SINGLE=		AUDIO
-OPTIONS_SINGLE_AUDIO=	GSTREAMER PULSEAUDIO NOAUDIO
-
 NOAUDIO_DESC=		Disable audio backend
 
-GSTREAMER_CONFIGURE_ON=	--with-audio=gstreamer
-GSTREAMER_USE=	GSTREAMER1=yes
-PULSEAUDIO_CONFIGURE_ON=	--with-audio=pulse
+GSTREAMER_CONFIGURE_ENABLE=	gstaudio
+GSTREAMER_USE=			GSTREAMER1=yes
+GSTREAMER_CONFIGURE_ON=		--enable-gstvideo=yes
+GSTREAMER_CONFIGURE_OFF=	--enable-gstvideo=no
+
 PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_ENABLE=	pulse
-NOAUDIO_CONFIGURE_ON=		--with-audio=no
+
 SASL_CONFIGURE_WITH=		sasl=yes
 SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
 

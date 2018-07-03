@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	oeis
-PORTVERSION=	0.3.6
+PORTVERSION=	0.3.9
+PORTREVISION=	1
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netif
-PORTVERSION=	1.0
+PORTVERSION=	1.0.20171226
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,24 +11,15 @@ COMMENT=	Python network configuration library for FreeBSD
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	cython>0:lang/cython
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bsd>0:devel/py-bsd@${FLAVOR} \
+		${PY_ENUM34}
 
 USE_GITHUB=     yes
 GH_ACCOUNT=	freenas
 GH_PROJECT=	py-netif
-GH_TAGNAME=	4432c12
+GH_TAGNAME=	52675e6
 
 USES=		python
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist distutils cython
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3400
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}enum34>0:devel/py-enum34
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100036
-IGNORE=	This module requires at least FreeBSD 11
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

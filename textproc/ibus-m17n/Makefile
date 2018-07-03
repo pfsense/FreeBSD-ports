@@ -2,27 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	ibus-m17n
-PORTVERSION=	1.3.3
-PORTREVISION=	5
+DISTVERSION=	1.3.4-16
+DISTVERSIONSUFFIX=	-g791efdd
 CATEGORIES=	textproc
-MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	nikola.lecic@anthesphoria.net
-COMMENT=	The m17n IMEngine for IBus framework
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	m17n IM engine for IBus framework
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN=		Unfetchable (google code has gone away)
-
 LIB_DEPENDS=	libibus-1.0.so:textproc/ibus \
-		libm17n.so:devel/m17n-lib
+		libm17n.so:devel/m17n-lib \
+		libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=	ibus-daemon:textproc/ibus
 
-PROJECTHOST=	ibus
-
-USES=		gmake pkgconfig
+USES=		autoreconf gmake libtool pkgconfig
 GNU_CONFIGURE=	yes
+USE_GITHUB=	yes
+GH_ACCOUNT=	ibus
+USE_GNOME=	glib20 gtk20 atk gdkpixbuf2 cairo pango intltool
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

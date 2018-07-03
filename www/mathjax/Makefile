@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	MathJax
-PORTVERSION=	2.6.1
+DISTVERSION=	2.7.2
 CATEGORIES=	www
 
 MAINTAINER=	marko.cupac@mimar.rs

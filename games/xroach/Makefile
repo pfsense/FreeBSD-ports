@@ -5,19 +5,28 @@ PORTNAME=	xroach
 PORTVERSION=	4.4
 PORTREVISION=	2
 CATEGORIES=	games
-MASTER_SITES=	http://www.skysmurf.nl/comp/FreeBSD/distfiles/
+MASTER_SITES=	https://cyber.dabamos.de/pub/distfiles/
 DISTNAME=	${PORTNAME}
 
-MAINTAINER=	freebsd@skysmurf.nl
+MAINTAINER=	kidon@posteo.de
 COMMENT=	Cockroaches hide under your windows
 
-USE_XORG=	x11
-PLIST_FILES=	bin/xroach man/man6/xroach.6.gz
+DPADD+=		${LOCALBASE}/lib/libX11.a ${LIBM}
+CFLAGS+=	-I${LOCALBASE}/include
+LDADD+=		-L${LOCALBASE}/lib -lX11 -lm
 
-WRKSRC=		${WRKDIR}/pub/bsd-sources/4.4BSD-Lite/usr/src/games/xroach
+MANDIR=		${LOCALBASE}/man/man
+
+BINOWN=		bin
+BINDIR=		${LOCALBASE}/bin
+BINMODE=	755
+
+USES=		imake
+USE_XORG=	x11 xext
+PLIST_FILES=	bin/xroach man/man6/xroach.6.gz
 
 do-install:
 	${INSTALL_PROGRAM} -s ${WRKSRC}/xroach ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/xroach.6 ${STAGEDIR}${MAN6PREFIX}/man/man6
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.man ${STAGEDIR}${MAN6PREFIX}/man/man6/${PORTNAME}.6
 
 .include <bsd.port.mk>

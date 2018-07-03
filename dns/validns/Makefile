@@ -3,6 +3,7 @@
 
 PORTNAME=	validns
 PORTVERSION=	0.8
+PORTREVISION=	1
 CATEGORIES=	dns security
 MASTER_SITES=	http://www.validns.net/download/
 
@@ -11,10 +12,11 @@ COMMENT=	High performance DNS/DNSSEC zone validator
 
 LICENSE=	BSD2CLAUSE
 
+BROKEN_SSL=	openssl-devel
+
 LIB_DEPENDS=	libJudy.so:devel/judy
 
-USE_OPENSSL=	yes
-WITH_OPENSSL_PORT=yes
+USES=		ssl
 
 ALL_TARGET=
 
@@ -28,8 +30,6 @@ MAKE_ARGS+=	INCPATH=-I${LOCALBASE}/include
 MAKE_ARGS+=	EXTRALPATH=-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

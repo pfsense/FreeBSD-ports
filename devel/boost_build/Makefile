@@ -3,7 +3,7 @@
 
 PORTNAME=	boost_build
 PORTVERSION=	2.0.m12
-PORTREVISION=	1
+PORTREVISION=	7
 CATEGORIES=	devel
 MASTER_SITES=	SF/boost/boost-build/2.0-m12
 DISTNAME=	${PORTNAME:S/_/-/g}-${PORTVERSION:S/.m/-m/}
@@ -36,9 +36,8 @@ do-install:
 	(cd ${WRKSRC} && ${INSTALL_DATA} boost-build.jam bootstrap.jam \
 		build-system.jam site-config.jam user-config.jam \
 		${STAGEDIR}${DATADIR})
-	${INSTALL_MAN} ${WRKSRC}/boost.png \
-		${STAGEDIR}${PREFIX}/share/doc/boost.png
-	(cd ${WRKSRC}/doc && ${RM} -rf Jamfile.v2 project-root.jam \
+	${INSTALL_DATA} ${WRKSRC}/boost.png ${STAGEDIR}${PREFIX}/share/doc
+	(cd ${WRKSRC}/doc && ${RM} -r Jamfile.v2 project-root.jam \
 		html/userman_HTML.manifest src)
 
 do-install-DOCS-on:

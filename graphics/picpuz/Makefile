@@ -3,7 +3,7 @@
 
 PORTNAME=	picpuz
 PORTVERSION=	2.1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics games
 MASTER_SITES=	http://kornelix.squarespace.com/storage/downloads/ \
 		http://www.stasyan.com/devel/distfiles/
@@ -11,7 +11,10 @@ MASTER_SITES=	http://kornelix.squarespace.com/storage/downloads/ \
 MAINTAINER=	devel@stasyan.com
 COMMENT=	Jigsaw puzzle program
 
-USES=		dos2unix execinfo gmake pkgconfig
+BROKEN_armv6=		fails to compile: use of undeclared identifier __NR_SYSCALL_BASE
+BROKEN_armv7=		fails to compile: use of undeclared identifier __NR_SYSCALL_BASE
+
+USES=		dos2unix gmake pkgconfig
 DOS2UNIX_GLOB=	*.h
 USE_GNOME=	gtk20
 

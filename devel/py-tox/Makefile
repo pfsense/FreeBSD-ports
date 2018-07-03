@@ -13,13 +13,12 @@ COMMENT=	Virtualenv-based automation of test activities
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}virtualenv>=1.11.2:devel/py-virtualenv \
-		${PYTHON_PKGNAMEPREFIX}py>=1.4.17:devel/py-py \
-		${PYTHON_PKGNAMEPREFIX}pluggy>0:devel/py-pluggy
-
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox \
-		${PYTHON_PKGNAMEPREFIX}pytest>=2.3.5:devel/py-pytest \
-		${PYTHON_PKGNAMEPREFIX}pytest-timeout>0:devel/py-pytest-timeout
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}virtualenv>=1.11.2:devel/py-virtualenv@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}py>=1.4.17:devel/py-py@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pluggy>0:devel/py-pluggy@${FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest>=2.3.5:devel/py-pytest@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-timeout>0:devel/py-pytest-timeout@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist concurrent distutils
@@ -27,10 +26,6 @@ USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
-
-.if ${PYTHON_VER} != 2.7 && ${PYTHON_VER} < 3.2
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}argparse>0:devel/py-argparse
-.endif
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test

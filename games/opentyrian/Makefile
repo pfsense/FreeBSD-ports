@@ -5,7 +5,7 @@ PORTNAME=	opentyrian
 PORTVERSION=	2.1.20130907
 CATEGORIES=	games
 MASTER_SITES=	https://bitbucket.org/opentyrian/opentyrian/get/ \
-		http://mirror.amdmi3.ru/distfiles/
+		http://mirror.amdmi3.ru/distfiles/${DIST_SUBDIR}/
 DISTNAME=	${PORTVERSION}
 DIST_SUBDIR=	opentyrian
 
@@ -22,6 +22,8 @@ MAKE_ENV=	ALL_CFLAGS="${CFLAGS}"
 USE_SDL=	sdl
 SUB_FILES=	pkg-message
 DATADIR=	${PREFIX}/share/tyrian
+
+PORTSCOUT=	skipv:11402-phase-0.8
 
 PORTDOCS=	CREDITS NEWS README
 

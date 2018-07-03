@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Symbolic link PerlIO layers
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Module-Install>0:devel/p5-Module-Install
@@ -21,6 +21,6 @@ USE_PERL5=	configure
 
 post-patch:
 	# Really old M::I code
-	${RM} -rf ${WRKSRC}/inc
+	${RM} -r ${WRKSRC}/inc
 
 .include <bsd.port.mk>

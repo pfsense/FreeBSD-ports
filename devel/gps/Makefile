@@ -3,16 +3,18 @@
 
 PORTNAME=	gps
 PORTVERSION=	2016
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://downloads.dragonlace.net/src/
-DISTNAME=	gps-gpl-${PORTVERSION}-src
 PKGNAMESUFFIX=	-ide
+DISTNAME=	gps-gpl-${PORTVERSION}-src
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNAT Programming Studio - IDE for Ada and many other languages
 
 LICENSE=	GPLv3
+
+BROKEN_aarch64=		fails to compile: No rule to make target 'default'
 
 BUILD_DEPENDS=	gprbuild:devel/gprbuild \
 		xmlada>=4.4:textproc/xmlada \
@@ -109,7 +111,7 @@ do-build:
 	${PYTHON_CMD} ${PYCOMPILE} ${WRKSRC}/share/support
 
 post-install:
-	${RM} -rf ${STAGEDIR}${PREFIX}/share/doc/gps/html/*/_sources
+	${RM} -r ${STAGEDIR}${PREFIX}/share/doc/gps/html/*/_sources
 	${INSTALL_SCRIPT} ${WRKDIR}/gps ${STAGEDIR}${PREFIX}/bin
 	echo "This is the GPS GPL Edition for the ${OPSYS} Ports Collection." \
 		> ${STAGEDIR}${PREFIX}/share/gps/about.txt

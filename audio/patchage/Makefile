@@ -3,7 +3,7 @@
 
 PORTNAME=	patchage
 PORTVERSION=	0.5.0
-PORTREVISION=	4
+PORTREVISION=	11
 CATEGORIES=	audio
 MASTER_SITES=	http://download.drobilla.net/ \
 		http://frugalware.mirrors.tds.net/pub/linux/frugalware/frugalware-current/source/xmultimedia-extra/patchage/
@@ -22,17 +22,14 @@ LIB_DEPENDS=	libjack.so:audio/jack \
 		libglademm-2.4.so:devel/libglademm24 \
 		libflowcanvas.so:x11-toolkits/flowcanvas
 
-USES=		pkgconfig tar:bzip2 waf
+USES=		compiler:c++11-lang pkgconfig tar:bzip2 waf
+USE_CXXSTD=	c++11
 INSTALLS_ICONS=	yes
 CONFIGURE_ARGS+=	--mandir=${MANPREFIX}/man \
 			--no-alsa \
 			--no-lash
 
 CFLAGS+=	-I${LOCALBASE}/include
-
-.if defined(BATCH) || defined(PACKAGE_BUILDING)
-MAKE_ARGS=	--verbose
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \

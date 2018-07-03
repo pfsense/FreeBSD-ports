@@ -3,7 +3,7 @@
 
 PORTNAME=	kudu
 PORTVERSION=	0.1.2
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -14,12 +14,11 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
 
-USES=		tar:bzip2 pkgconfig python
+USES=		localbase tar:bzip2 pkgconfig python:2.7
 GNU_CONFIGURE=	yes
 USE_GL=		gl
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib -lcompat -lm
+LIBS+=		-lcompat -lm
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	*

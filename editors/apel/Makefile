@@ -3,43 +3,26 @@
 
 PORTNAME=	apel
 PORTVERSION=	${APEL_VER}
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	editors elisp
 MASTER_SITES=	http://git.chise.org/elisp/dist/apel/
-PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
+PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER?=	nobutaka@FreeBSD.org
-COMMENT?=	Portable Emacs Library
+MAINTAINER=	nobutaka@FreeBSD.org
+COMMENT=	Portable Emacs Library
 
 LICENSE=	GPLv2
 
-# distfile version
+USES=		emacs
+
+NO_ARCH=	yes
+
 APEL_VER=	10.8
-# apel lispdir
-APEL_LISPDIR?=			${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}
-APEL_VERSION_SPECIFIC_LISPDIR?=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}
-
-# emacs port setup
-USE_EMACS=	yes
-
-DESCR=		${PKGDIR}/pkg-descr
-
-# target name for make build
-ALL_TARGET?=	elc
-# environments
-MAKE_ARGS+=	PREFIX="${STAGEDIR}${LOCALBASE}" \
-		LISPDIR="${STAGEDIR}${APEL_LISPDIR}" \
-		VERSION_SPECIFIC_LISPDIR="${STAGEDIR}${APEL_VERSION_SPECIFIC_LISPDIR}"
+ALL_TARGET=	elc
+MAKE_ARGS+=	PREFIX="${STAGEDIR}${PREFIX}" \
+		LISPDIR="${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}"
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.pre.mk>
-
-.if ${EMACS_VER:C/\..*//} >= 23
-PLIST_SUB+=	EMACS23="" NOEMACS23="@comment "
-.else
-PLIST_SUB+=	EMACS23="@comment " NOEMACS23=""
-.endif
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -48,4 +31,4 @@ post-install-DOCS-on:
 	    ${INSTALL_DATA} $${i} ${STAGEDIR}${DOCSDIR} ; \
 	done)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

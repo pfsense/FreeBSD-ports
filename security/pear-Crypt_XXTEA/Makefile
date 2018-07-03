@@ -5,9 +5,9 @@ PORTNAME=	Crypt_XXTEA
 PORTVERSION=	0.9.0
 CATEGORIES=	security www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PEAR XXTEA encryption algorithm
 
-USES=	pear
+USES=		pear
 
 .include <bsd.port.mk>

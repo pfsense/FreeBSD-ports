@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Devel-OverloadInfo
-PORTVERSION=	0.004
+PORTVERSION=	0.005
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Introspect overloaded operators
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-MRO-Compat>=0:devel/p5-MRO-Compat \

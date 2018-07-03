@@ -10,12 +10,14 @@ MASTER_SITES=	SF
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Virtual Tunnels over TCP/IP networks with traffic shaping
 
-LICENSE=        GPLv2
+LICENSE=	GPLv2
+
+BROKEN_SSL=	openssl-devel
 
 LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 
-CFLAGS+=	-ansi -Wno-pointer-sign -I${LOCALBASE}/include
-USES=		ssl autoreconf
+CFLAGS+=	-ansi -Wno-pointer-sign
+USES=		autoreconf localbase ssl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var \
 		--with-ssl-headers=${OPENSSLINC} \
@@ -35,8 +37,6 @@ OPTIONS_DEFINE=	DOCS
 # Extended mode patches, obtained from
 # http://home.jp.FreeBSD.org/~simokawa/vtun-v6.html
 # are now dynamically enabled using the -e option.
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	${REINPLACE_CMD} \

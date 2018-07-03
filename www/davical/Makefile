@@ -2,48 +2,46 @@
 # $FreeBSD$
 
 PORTNAME=	davical
-PORTVERSION=	1.1.2
 DISTVERSIONPREFIX=	r
-PORTREVISION=	1
+DISTVERSION=	1.1.7
 CATEGORIES?=	www
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	lebarondemerde@privacychain.ch
 COMMENT=	Simple CalDAV server using a postgres backend
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
+RUN_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg \
+		p5-DBI>=0:databases/p5-DBI \
 		p5-YAML>=0:textproc/p5-YAML \
-		p5-DBD-Pg>=0:databases/p5-DBD-Pg \
-		${LOCALBASE}/bin/pwgen:sysutils/pwgen \
-		php-libawl>=0.54:devel/php-libawl
+		php-libawl>=0.54:devel/php-libawl \
+		pwgen:sysutils/pwgen
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	DAViCal
-
-NO_BUILD=	yes
-USE_PHP=	gettext iconv pcre pdo pdo_pgsql pgsql xml calendar
-USES=		shebangfix pgsql
+USES=		pgsql php shebangfix
+USE_GITLAB=	yes
+GL_ACCOUNT=	davical-project
+GL_COMMIT=	05397d635c3f218b850775223aa5dd705da9f91c
+USE_PHP=	calendar curl gettext iconv pcre pdo pdo_pgsql pgsql xml
 SHEBANG_FILES=	scripts/sync-remote-caldav.php
 SUB_FILES=	pkg-message httpd-davical.conf
-PORTDOCS=	api website \
-		README INSTALL davical_en_user_guide.odt translation.rst
+PORTDOCS=	README INSTALL davical_en_user_guide.odt phpdoc.ini \
+		translation.rst
 PORTEXAMPLES=	config
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-extract:
-	@${FIND} ${WRKSRC} -name .gitignore -delete
+	${FIND} ${WRKSRC} -name .gitignore -delete
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}/htdocs \
 		${STAGEDIR}${WWWDIR}/inc \
 		${STAGEDIR}${WWWDIR}/config \
-		${STAGEDIR}${EXAMPLESDIR} \
-		${STAGEDIR}${DATADIR} \
-		${STAGEDIR}${DOCSDIR}
+		${STAGEDIR}${DATADIR}
 	# WWWDIR
 	(cd ${WRKSRC}/htdocs && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}/htdocs)
@@ -58,12 +56,16 @@ do-install:
 	${INSTALL_DATA} ${WRKDIR}/httpd-davical.conf ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/dba/update-davical-database \
 		${STAGEDIR}${DATADIR}/dba
-	# DOCSDIR
+
+do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/docs && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/INSTALL ${STAGEDIR}${DOCSDIR}
-	# EXAMPLESDIR
+
+do-install-EXAMPLES-on:
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC} && \
 		${COPYTREE_SHARE} config ${STAGEDIR}${EXAMPLESDIR})
 

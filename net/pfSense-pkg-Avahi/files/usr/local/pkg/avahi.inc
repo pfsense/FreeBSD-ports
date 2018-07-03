@@ -44,6 +44,11 @@ function avahi_write_config() {
 	$useipv4 = ($avahi_config['enable_ipv4']) ? "yes" : "no";
 	$useipv6 = ($avahi_config['enable_ipv6']) ? "yes" : "no";
 	$usedbus = ($avahi_config['disable_dbus']) ? "no" : "yes";
+
+	if (is_numeric($avahi_config['cache_max'])) {
+		$cachemax = "cache-entries-max={$avahi_config['cache_max']}";
+	}
+
 	// Wide Area
 	$widearea = ($avahi_config['enable_wide_area']) ? "yes" : "no";
 	// Publishing Options
@@ -80,6 +85,11 @@ function avahi_write_config() {
 	$dns = str_replace(' ', ', ', $dns);
 	if ($dns) {
 		$publishdns = "publish-dns-servers={$dns}";
+
+		// but comment out the setting if DNS publishing is disabled
+		if (!$avahi_config['publish_resolv_conf_dns_servers']) {
+			$publishdns = "#" . $publishdns;
+		}
 	}
 
 	// Construct the avahi configuration
@@ -101,6 +111,7 @@ enable-dbus={$usedbus}
 #use-iff-running=no
 #disallow-other-stacks=no
 allow-point-to-point=yes
+{$cachemax}
 
 [wide-area]
 enable-wide-area={$widearea}
@@ -254,6 +265,10 @@ function avahi_validate_input($post, &$input_errors) {
 	if (($post['enable_ipv6'] != "on" ) && ($post['publish_a_on_ipv6'] == "on" )) {
 		$input_errors[] = gettext("'Publish A records on IPv6' makes no sense with IPv6 disabled.");
 	}
+	if (!empty($post['cache_max']) && !is_numericint($post['cache_max'])) {
+		$input_errors[] = gettext("Maximum Cache Size must be blank, 0, or a positive numeric integer.");
+	}
+
 }
 
 ?>

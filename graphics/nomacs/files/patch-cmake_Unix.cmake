@@ -1,63 +1,47 @@
---- cmake/Unix.cmake
+Sent upstream: https://github.com/nomacs/nomacs/pull/187
+
+From 6617595f409f13f035895f6494a4d8e14047334e Mon Sep 17 00:00:00 2001
+From: Raphael Kubo da Costa <rakuco@FreeBSD.org>
+Date: Mon, 29 Jan 2018 12:01:50 +0100
+Subject: [PATCH] cmake: Stop calling QT5_WRAP_CPP() when building quazip and
+ libqpsd.
+
+cmake/Utils.cmake already sets CMAKE_AUTOMOC to on.
+
+Calling QT5_WRAP_CPP() used to be just redundant, as QUAZIP_MOC_SRC and
+LIBQPSD_MOC_SRC were never actually added as source dependencies in
+MacBuildTarget.cmake and UnixBuildTarget.cmake. In other words, CMake's own
+automoc infrastructure was actually being used and the moc invocations from
+QT5_WRAP_CPP() were not being made at all.
+
+Starting with Qt 5.9.4, calling QT5_WRAP_CPP() disables the AUTOMOC property
+on the macro's input files, which means neither CMake's automoc
+infrastructure not QT5_WRAP_CPP()'s code were being used and we ended up
+with several 'undefined reference to vtable' errors when linking.
+--- cmake/Unix.cmake.orig	2017-03-24 14:47:13 UTC
 +++ cmake/Unix.cmake
-@@ -34,17 +34,15 @@
- endif(NOT EXIV2_FOUND)
+@@ -97,7 +97,6 @@ unset(QUAZIP_LIBRARIES CACHE)
  
- # search for opencv
--unset(OpenCV_FOUND CACHE)
-+unset(OPENCVCORE_FOUND CACHE)
- if(ENABLE_OPENCV)
--	find_package(OpenCV 2.1.0 REQUIRED core imgproc)
--	if (NOT OpenCV_LIBRARIES) # OpenCV_FOUND can not be used since it is set in Ubuntu 12.04 (without finding opencv)
--		# Older OpenCV versions only supplied pkg-config files
--		if(PKG_CONFIG_FOUND)
--			pkg_check_modules(OpenCV opencv>=2.1.0)
--		endif()
-+	find_package(OpenCVCore COMPONENTS core imgproc REQUIRED)
-+
-+	if (NOT OPENCV_CORE_LIBRARY)
-+		message(FATAL_ERROR "OpenCV libraries not found, but requested.")
- 	endif()
+ unset(QUAZIP_HEADERS CACHE)
+ unset(QUAZIP_SOURCES CACHE)
+-unset(QUAZIP_MOCS CACHE)
+ unset(QT_ROOT CACHE)
  
--	if(NOT OpenCV_FOUND)
-+	if (NOT OPENCVCORE_FOUND)
- 		message(FATAL_ERROR "OpenCV not found, but requested.")
- 	endif()
+ if(ENABLE_QUAZIP)
+@@ -116,9 +115,7 @@ if(ENABLE_QUAZIP)
  
-@@ -56,7 +54,7 @@
+     file(GLOB QUAZIP_SOURCES "3rdparty/quazip-0.7/quazip/*.c" "3rdparty/quazip-0.7/quazip/*.cpp")
+     file(GLOB QUAZIP_HEADERS "3rdparty/quazip-0.7/quazip/*.h")
+-    file(GLOB QUAZIP_MOCS "3rdparty/quazip-0.7/quazip/*.h")
  
- # search for libraw
- if(ENABLE_RAW)
--	if(NOT OpenCV_FOUND)
-+	if(NOT OPENCVCORE_FOUND)
- 		message(FATAL_ERROR "OpenCV is mandotory when enabling RAW. You have to enable ENABLE_OPENCV")
- 	endif()
- 
-@@ -72,7 +70,7 @@
- unset(TIFF_INCLUDE_DIR CACHE)
- unset(TIFF_LIBRARY CACHE)
- if(ENABLE_TIFF)
--	if(NOT OpenCV_FOUND)
-+	if(NOT OPENCVCORE_FOUND)
- 		message(FATAL_ERROR "OpenCV is mandotory when enabling TIFF. You have to enable ENABLE_OPENCV")
- 	endif()
- 	find_package(TIFF)
-@@ -84,6 +82,9 @@
- 	endif()
- endif(ENABLE_TIFF)
- 
-+# sysinfo library
-+FIND_LIBRARY(SYSINFO_LIBRARY NAMES sysinfo)
-+
- #search for quazip
- unset(QUAZIP_SOURCE_DIRECTORY CACHE)
- unset(QUAZIP_INCLUDE_DIRECTORY CACHE)
-@@ -128,6 +129,8 @@
- SET(WEBP_INCLUDE_DIR "")
- SET(WEBP_SOURCE "")
- if(ENABLE_WEBP)
-+	find_package(Threads REQUIRED)
-+
- 	add_definitions(-DNDEBUG -DWEBP_USE_THREAD)
- 
- 	file(GLOB WEBP_DEC_SRCS
+-    QT5_WRAP_CPP(QUAZIP_MOC_SRC ${QUAZIP_MOCS})
+     add_definitions(-DWITH_QUAZIP)
+   endif(USE_SYSTEM_QUAZIP)
+ endif(ENABLE_QUAZIP)
+@@ -132,6 +129,4 @@ IF(USE_SYSTEM_LIBQPSD)
+ ELSE()
+ 	file(GLOB LIBQPSD_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libqpsd/*.cpp")
+ 	file(GLOB LIBQPSD_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libqpsd/*.h")
+-	file(GLOB LIBQPSD_MOCS "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libqpsd/*.h")
+-	QT5_WRAP_CPP(LIBQPSD_MOC_SRC ${LIBQPSD_MOCS})
+ ENDIF(USE_SYSTEM_LIBQPSD)

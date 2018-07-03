@@ -3,6 +3,7 @@
 
 PORTNAME=	papercut
 PORTVERSION=	0.9.13
+PORTREVISION=	1
 CATEGORIES=	news python
 MASTER_SITES=	http://pessoal.org/papercut/
 
@@ -12,11 +13,12 @@ COMMENT=	Papercut is a news server written in Python, using a MySQL backend
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb@${PY_FLAVOR}
 
-USES=		python
+USES=		python:2.7 shebangfix
 NO_BUILD=	yes
 NO_ARCH=	yes
+SHEBANG_FILES=	*.py auth/*.py storage/*.py
 
 do-configure:
 	${CP} ${FILESDIR}/papercut-wrapper ${WRKDIR}/papercut-wrapper

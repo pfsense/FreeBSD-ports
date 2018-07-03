@@ -1,8 +1,8 @@
---- config/initializers/1_settings.rb.orig	2016-07-11 19:38:44 UTC
+--- config/initializers/1_settings.rb.orig	2018-02-22 10:46:29 UTC
 +++ config/initializers/1_settings.rb
-@@ -191,12 +191,8 @@ Settings.gitlab['email_reply_to'] ||= EN
- Settings.gitlab['base_url']   ||= Settings.send(:build_base_gitlab_url)
- Settings.gitlab['url']        ||= Settings.send(:build_gitlab_url)
+@@ -252,12 +252,8 @@ Settings.gitlab['email_subject_suffix'] 
+ Settings.gitlab['base_url']   ||= Settings.__send__(:build_base_gitlab_url)
+ Settings.gitlab['url']        ||= Settings.__send__(:build_gitlab_url)
  Settings.gitlab['user']       ||= 'git'
 -Settings.gitlab['user_home']  ||= begin
 -  Etc.getpwnam(Settings.gitlab['user']).dir
@@ -14,4 +14,4 @@
 +Settings.gitlab['time_zone']  ||= nil
  Settings.gitlab['signup_enabled'] ||= true if Settings.gitlab['signup_enabled'].nil?
  Settings.gitlab['signin_enabled'] ||= true if Settings.gitlab['signin_enabled'].nil?
- Settings.gitlab['restricted_visibility_levels'] = Settings.send(:verify_constant_array, Gitlab::VisibilityLevel, Settings.gitlab['restricted_visibility_levels'], [])
+ Settings.gitlab['restricted_visibility_levels'] = Settings.__send__(:verify_constant_array, Gitlab::VisibilityLevel, Settings.gitlab['restricted_visibility_levels'], [])

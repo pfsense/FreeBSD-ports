@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	msmtp
-PORTVERSION=	1.6.5
+PORTVERSION=	1.6.6
+PORTREVISION=	1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	SF
 
@@ -34,12 +35,13 @@ IDN_LIB_DEPENDS=	libidn.so:dns/libidn
 LIBSECRET_CONFIGURE_WITH=	libsecret
 LIBSECRET_LIB_DEPENDS=	libsecret-1.so:security/libsecret
 MSMTPQ_PORTDOCS=	README.msmtpq
+MSMTPQ_RUN_DEPENDS=	bash:shells/bash
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
 GNUTLS_CONFIGURE_ON=	--with-ssl=gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
-OPENSSL_VARS=		USE_OPENSSL=yes
+OPENSSL_USES=		ssl
 OPENSSL_CONFIGURE_ON=	--with-ssl=openssl
 OPENSSL_CONFIGURE_ENV=	libssl_CFLAGS="-I${OPENSSLINC}" \
 			libssl_LIBS="-L${OPENSSLLIB} -lssl -lcrypto"
@@ -58,7 +60,7 @@ post-extract:
 		${WRKSRC}/doc/msmtp.1
 
 .if ${PORT_OPTIONS:MMSMTPQ}
-post-stage:
+post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/scripts/msmtpq/msmtp-queue ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/scripts/msmtpq/msmtpq ${STAGEDIR}${PREFIX}/bin
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

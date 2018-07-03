@@ -2,24 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-sharp
-PORTVERSION=	2.24.2
-PORTREVISION=	4
+PORTVERSION=	2.24.4
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits
-MASTER_SITES=	GNOME
 
 MAINTAINER=	mono@FreeBSD.org
 COMMENT=	GNOME interfaces for the .NET runtime
 
-GNU_CONFIGURE=	yes
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+LIB_DEPENDS=	libpopt.so:devel/popt \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
+
+USES=		autoreconf gmake libtool mono pathfix perl5 pkgconfig shebangfix tar:bzip2
 USE_LDCONFIG=	yes
-USES=		gmake libtool mono pathfix perl5 pkgconfig tar:bzip2
+USE_GITHUB=	yes
+USE_GNOME=	cairo gnomevfs2 gtksharp20 librsvg2 vte libgnomeprintui libgnomeui
 USE_PERL5=	run
-USE_GNOME=	gnomevfs2 gtksharp20 librsvg2 vte libgnomeprintui libgnomeui
-MAKE_JOBS_UNSAFE=	yes
+USE_XORG=	ice sm
+SHEBANG_GLOB=	*.pl
+
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
-post-patch:
-	@${FIND} ${WRKSRC} -name '*.pl' | ${XARGS} ${REINPLACE_CMD} -e \
-		's|^#!/usr/bin/perl|#!${PERL}|'
+GH_ACCOUNT=	mono
+
+pre-configure:
+	(cd ${WRKSRC}; ./bootstrap-2.24)
 
 .include <bsd.port.mk>

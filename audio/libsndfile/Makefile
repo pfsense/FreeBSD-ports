@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libsndfile
-PORTVERSION=	1.0.26
+PORTVERSION=	1.0.28
 PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.mega-nerd.com/libsndfile/files/
@@ -10,9 +10,11 @@ MASTER_SITES=	http://www.mega-nerd.com/libsndfile/files/
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Reading and writing files containing sampled sound (like WAV or AIFF)
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake libtool localbase pkgconfig
+USES=		cpe gmake libtool localbase pkgconfig
+CPE_VENDOR=	${CPE_PRODUCT}_project
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-gcc-pipe \
 		--disable-sqlite \

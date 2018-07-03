@@ -2,12 +2,12 @@
 
 PORTNAME=	qwtplot3d
 PORTVERSION=	0.2.7
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	-qt4
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D plotting widgets for scientific data and math expressions
 
 USES=		dos2unix qmake tar:tgz

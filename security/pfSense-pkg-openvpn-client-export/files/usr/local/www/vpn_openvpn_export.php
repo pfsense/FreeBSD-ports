@@ -20,15 +20,20 @@
  * limitations under the License.
  */
 
-require("globals.inc");
-require("guiconfig.inc");
-require("openvpn-client-export.inc");
-require("pkg-utils.inc");
-require('classes/Form.class.php');
+require_once("globals.inc");
+require_once("guiconfig.inc");
+require_once("openvpn-client-export.inc");
+require_once("pfsense-utils.inc");
+require_once("pkg-utils.inc");
+require_once("classes/Form.class.php");
 
-global $current_openvpn_version, $current_openvpn_version_rev;
+global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
 
 $pgtitle = array("OpenVPN", "Client Export Utility");
+
+if (!is_array($config['openvpn'])) {
+	$config['openvpn'] = array();
+}
 
 if (!is_array($config['openvpn']['openvpn-server'])) {
 	$config['openvpn']['openvpn-server'] = array();
@@ -78,10 +83,11 @@ foreach ($a_server as $server) {
 				$ras_userent['cindex'] = $cindex;
 				$ras_userent['name'] = $user['name'];
 				$ras_userent['certname'] = $cert['descr'];
+				$ras_userent['cert'] = $cert;
 				$ras_user[] = $ras_userent;
 			}
 		}
-	} elseif (($server['mode'] == "server_tls") || 
+	} elseif (($server['mode'] == "server_tls") ||
 			(($server['mode'] == "server_tls_user") && ($server['authmode'] != "Local Database"))) {
 		foreach ($a_cert as $cindex => $cert) {
 			if (($cert['caref'] != $server['caref']) || ($cert['refid'] == $server['certref'])) {
@@ -107,6 +113,7 @@ foreach ($a_server as $server) {
 	$ras_serverent['users'] = $ras_user;
 	$ras_serverent['certs'] = $ras_certs;
 	$ras_serverent['mode'] = $server['mode'];
+	$ras_serverent['crlref'] = $server['crlref'];
 	$ras_serverent['authmode'] = $server['authmode'] != "Local Database" ? 'other' : 'local';
 	$ras_server[$vpnid] = $ras_serverent;
 }
@@ -122,10 +129,10 @@ if (isset($_POST['act'])) {
 }
 
 global $simplefields;
-$simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','randomlocalport',
+$simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','legacy','randomlocalport',
+	'usepkcs11','pkcs11providers',
 	'usetoken','usepass',
-	'useproxy','useproxytype','proxyaddr','proxyport','useproxypass','proxyuser',
-	'openvpnmanager');
+	'useproxy','useproxytype','proxyaddr','proxyport','useproxypass','proxyuser');
 	//'pass','proxypass','advancedoptions'
 
 $openvpnexportcfg = &$config['installedpackages']['vpn_openvpn_export'];
@@ -160,7 +167,7 @@ if (isset($_POST['save'])) {
 		}
 		$cfg['proxypass'] = $_POST['proxypass'];
 	}
-	
+
 	foreach ($simplefields as $value) {
 		$cfg[$value] = $_POST[$value];
 	}
@@ -206,10 +213,10 @@ if (!empty($act)) {
 	}
 
 	$advancedoptions = $_GET['advancedoptions'];
-	$openvpnmanager = $_GET['openvpnmanager'];
 
 	$verifyservercn = $_GET['verifyservercn'];
 	$blockoutsidedns = $_GET['blockoutsidedns'];
+	$legacy = $_GET['legacy'];
 	$randomlocalport = $_GET['randomlocalport'];
 	$usetoken = $_GET['usetoken'];
 	if ($usetoken && (substr($act, 0, 10) == "confinline")) {
@@ -217,6 +224,15 @@ if (!empty($act)) {
 	}
 	if ($usetoken && (($act == "conf_yealink_t28") || ($act == "conf_yealink_t38g") || ($act == "conf_yealink_t38g2") || ($act == "conf_snom"))) {
 		$input_errors[] = "Microsoft Certificate Storage cannot be used with a Yealink or SNOM configuration.";
+	}
+	$usepkcs11 = $_GET['usepkcs11'];
+	$pkcs11providers = $_GET['pkcs11providers'];
+	if ($usepkcs11 && !$pkcs11providers) {
+		$input_errors[] = "You must provide the PKCS#11 providers.";
+	}
+	$pkcs11id = $_GET['pkcs11id'];
+	if ($usepkcs11 && !$pkcs11id) {
+		$input_errors[] = "You must provide the PKCS#11 ID.";
 	}
 	$password = "";
 	if ($_GET['password']) {
@@ -304,17 +320,37 @@ if (!empty($act)) {
 				$exp_name = urlencode($exp_name . "-config.ovpn");
 				$expformat = "baseconf";
 		}
-		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $openvpnmanager, $advancedoptions);
+		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if ($act == "visc") {
 		$exp_name = urlencode($exp_name . "-Viscosity.visc.zip");
-		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions);
+		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if (substr($act, 0, 4) == "inst") {
-		$exp_name = urlencode($exp_name."-install.exe");
-		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions, substr($act, 5));
+		$openvpn_version = substr($act, 5);
+		$exp_name = "openvpn-{$exp_name}-install-";
+		switch ($openvpn_version) {
+			case "x86-xp":
+				$exp_name .= "{$legacy_openvpn_version}-I0{$legacy_openvpn_version_rev}-i686.exe";
+				break;
+			case "x64-xp":
+				$exp_name .= "{$legacy_openvpn_version}-I0{$legacy_openvpn_version_rev}-x86_64.exe";
+				break;
+			case "x86-win6":
+				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-i686.exe";
+				break;
+			case "x64-win6":
+				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-x86_64.exe";
+				break;
+			case "24":
+			default:
+				$exp_name .= "{$current_openvpn_version}-I6{$current_openvpn_version_rev}.exe";
+		}
+
+		$exp_name = urlencode($exp_name);
+		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if (!$exp_path) {
@@ -438,6 +474,13 @@ $section->addInput(new Form_Checkbox(
 ))->setHelp("Requires Windows 10 and OpenVPN 2.3.9 or later. Only Windows 10 is prone to DNS leakage in this way, other clients will ignore the option as they are not affected.");
 
 $section->addInput(new Form_Checkbox(
+	'legacy',
+	'Legacy Client',
+	'Do not include OpenVPN 2.4 settings in the client configuration.',
+	$cfg['legacy']
+))->setHelp("When using an older client (OpenVPN 2.3.x or earlier), check this option to prevent the exporter from placing known-incompatible settings such as Negotiable Cryptographic Parameters (NCP) into the client configuration.");
+
+$section->addInput(new Form_Checkbox(
 	'randomlocalport',
 	'Use Random Local Port',
 	'Use a random local source port (lport) for traffic from the client. Without this set, two clients may not run concurrently.',
@@ -447,6 +490,26 @@ $section->addInput(new Form_Checkbox(
 $form->add($section);
 
 $section = new Form_Section('Certificate Export Options');
+
+$section->addInput(new Form_Checkbox(
+	'usepkcs11',
+	'PKCS#11 Certificate Storage',
+	'Use PKCS#11 storage device (cryptographic token, HSM, smart card) instead of local files.',
+	$cfg['usepkcs11']
+));
+
+$section->addInput(new Form_Input(
+	'pkcs11providers',
+	'PKCS#11 Providers',
+	'text',
+	$cfg['pkcs11providers']
+))->setHelp('Enter the client local path to the PKCS#11 provider(s) (DLL, module), multiple separated by a space character.');
+
+$section->addInput(new Form_Input(
+	'pkcs11id',
+	'PKCS#11 ID',
+	'text'
+))->setHelp('Enter the object\'s ID on the PKCS#11 device.');
 
 $section->addInput(new Form_Checkbox(
 	'usetoken',
@@ -528,20 +591,6 @@ $section->addPassword(new Form_Input(
 ))->setHelp('Password for authentication to proxy server.');
 $form->add($section);
 
-$section = new Form_Section('Management Interface');
-
-$section->addInput(new Form_Checkbox(
-	'openvpnmanager',
-	'Management Interface',
-	'Use the OpenVPNManager Management Interface.',
-	$cfg['openvpnmanager']
-))->setHelp("This will activate management interface in the generated .ovpn configuration and ".
-	"include the OpenVPNManager program in the Windows Installers. With this management interface, OpenVPN can be used by non-administrator users.".
-	"This is also useful for Windows Vista/7/8/10 systems where elevated permissions are needed to add routes to the OS.".
-	"<br/><br/>NOTE: This is not currently compatible with the 64-bit OpenVPN installer. It will work with the 32-bit installer on a 64-bit system.");
-
-$form->add($section);
-
 $section = new Form_Section('Advanced');
 
 	$section->addInput(new Form_Textarea(
@@ -583,6 +632,9 @@ print($form);
 	</div>
 </div>
 
+<?= print_info_box(gettext("Servers configured with features that require OpenVPN 2.4 will not work with OpenVPN 2.3.x or older clients. " .
+"These features include: AEAD encryption such as AES-GCM, TLS Encryption+Authentication, ECDH, LZ4 Compression and other non-legacy compression choices, IPv6 DNS servers, and more."), 'warning', false); ?>
+
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("OpenVPN Clients")?></h2></div>
 	<div class="panel-body">
@@ -603,8 +655,14 @@ print($form);
 </div>
 <br />
 <br />
-<?= print_info_box(gettext("The &quot;XP&quot; Windows installers work on Windows XP and later versions. The &quot;win6&quot; Windows installers include a new tap-windows6 driver that works only on Windows Vista and later. " .
-"If a client is missing from the list it is usually due to a CA mismatch between the OpenVPN server instance and the client certificate found in the User Manager."), 'info'); ?>
+<?= print_info_box(gettext("If a client is missing from the list it is likely due to a CA mismatch between the OpenVPN server instance and the client certificate, the client certificate does not exist on this firewall, or a user certificate is not associated with a user when local database authentication is enabled." .
+"<br />" .
+"<br />" .
+"OpenVPN 2.4 requires Windows Vista or later" .
+"<br />" .
+"The &quot;win6&quot; Windows installers include the tap-windows6 driver which requires Windows Vista or later. " .
+"<br />" .
+"The &quot;XP&quot; Windows installers work on Windows XP and later versions. "), 'info', false); ?>
 
 Links to OpenVPN clients for various platforms:<br />
 <br />
@@ -614,6 +672,7 @@ Links to OpenVPN clients for various platforms:<br />
 <br/><?= gettext("OpenVPN Connect") ?>: <a href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn"><?=gettext("Android (Google Play)")?></a> or <a href="https://itunes.apple.com/us/app/openvpn-connect/id590379981"><?=gettext("iOS (App Store)")?></a> - <?= gettext("Recommended client for iOS") ?>
 <br/><a href="https://www.sparklabs.com/viscosity/"><?= gettext("Viscosity") ?></a> - <?= gettext("Recommended commercial client for Mac OS X and Windows") ?>
 <br/><a href="https://tunnelblick.net"><?= gettext("Tunnelblick") ?></a> - <?= gettext("Free client for OS X") ?>
+<br/><a href="https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos"><?= gettext("Using the Latest OpenVPN on Linux Distros") ?></a> - <?= gettext("Install OpenVPN using the OpenVPN apt repositories to get the latest version, rather than one included with distributions.") ?>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -629,23 +688,30 @@ servers[<?=$sindex?>][2] = '<?=$server['mode']?>';
 servers[<?=$sindex?>][3] = new Array();
 servers[<?=$sindex?>][4] = '<?=$server['authmode']?>';
 <?php
+	$c=0;
 	foreach ($server['users'] as $uindex => $user): ?>
-servers[<?=$sindex?>][1][<?=$uindex?>] = new Array();
-servers[<?=$sindex?>][1][<?=$uindex?>][0] = '<?=$user['uindex']?>';
-servers[<?=$sindex?>][1][<?=$uindex?>][1] = '<?=$user['cindex']?>';
-servers[<?=$sindex?>][1][<?=$uindex?>][2] = '<?=$user['name']?>';
-servers[<?=$sindex?>][1][<?=$uindex?>][3] = '<?=str_replace("'", "\\'", $user['certname'])?>';
-<?php	
+<?php		if (!$server['crlref'] || !is_cert_revoked($user['cert'], $server['crlref'])): ?>
+servers[<?=$sindex?>][1][<?=$c?>] = new Array();
+servers[<?=$sindex?>][1][<?=$c?>][0] = '<?=$user['uindex']?>';
+servers[<?=$sindex?>][1][<?=$c?>][1] = '<?=$user['cindex']?>';
+servers[<?=$sindex?>][1][<?=$c?>][2] = '<?=$user['name']?>';
+servers[<?=$sindex?>][1][<?=$c?>][3] = '<?=str_replace("'", "\\'", $user['certname'])?>';
+<?php
+			$c++;
+		endif;
 	endforeach;
 	$c=0;
 	foreach ($server['certs'] as $cert): ?>
+<?php
+		if (!$server['crlref'] || !is_cert_revoked($config['cert'][$cert['cindex']], $server['crlref'])): ?>
 servers[<?=$sindex?>][3][<?=$c?>] = new Array();
 servers[<?=$sindex?>][3][<?=$c?>][0] = '<?=$cert['cindex']?>';
 servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certname'])?>';
 <?php
-		$c++;
+			$c++;
+		endif;
 	endforeach;
-endforeach; 
+endforeach;
 ?>
 
 serverdefaults = <?=json_encode($ovpnserverdefaults)?>;
@@ -678,6 +744,10 @@ function download_begin(act, i, j) {
 	if (document.getElementById("blockoutsidedns").checked) {
 		blockoutsidedns = 1;
 	}
+	var legacy = 0;
+	if (document.getElementById("legacy").checked) {
+		legacy = 1;
+	}
 	var randomlocalport = 0;
 	if (document.getElementById("randomlocalport").checked) {
 		randomlocalport = 1;
@@ -686,13 +756,15 @@ function download_begin(act, i, j) {
 	if (document.getElementById("usetoken").checked) {
 		usetoken = 1;
 	}
+	var usepkcs11 = 0;
+	if (document.getElementById("usepkcs11").checked) {
+		usepkcs11 = 1;
+	}
+	var pkcs11providers = document.getElementById("pkcs11providers").value;
+	var pkcs11id = document.getElementById("pkcs11id").value;
 	var usepass = 0;
 	if (document.getElementById("usepass").checked) {
 		usepass = 1;
-	}
-	var openvpnmanager = 0;
-	if (document.getElementById("openvpnmanager").checked) {
-		openvpnmanager = 1;
 	}
 
 	var pass = document.getElementById("pass").value;
@@ -762,9 +834,12 @@ function download_begin(act, i, j) {
 	dlurl += "&useaddr=" + encodeURIComponent(useaddr);
 	dlurl += "&verifyservercn=" + encodeURIComponent(verifyservercn);
 	dlurl += "&blockoutsidedns=" + encodeURIComponent(blockoutsidedns);
+	dlurl += "&legacy=" + encodeURIComponent(legacy);
 	dlurl += "&randomlocalport=" + encodeURIComponent(randomlocalport);
-	dlurl += "&openvpnmanager=" + encodeURIComponent(openvpnmanager);
 	dlurl += "&usetoken=" + encodeURIComponent(usetoken);
+	dlurl += "&usepkcs11=" + escape(usepkcs11);
+	dlurl += "&pkcs11providers=" + escape(pkcs11providers);
+	dlurl += "&pkcs11id=" + escape(pkcs11id);
 	if (usepass) {
 		dlurl += "&password=" + encodeURIComponent(pass);
 	}
@@ -788,7 +863,7 @@ function server_changed() {
 
 	var table = document.getElementById("users");
 	table = table.tBodies[0];
-	
+
 	while (table.rows.length > 0 ) {
 		table.deleteRow(0);
 	}
@@ -796,13 +871,13 @@ function server_changed() {
 	function setFieldValue(field, value) {
 		checkboxes = $("input[type=checkbox]#"+field);
 		checkboxes.prop('checked', value == 'yes').trigger("change");
-		
+
 		inputboxes = $("input[type!=checkbox]#"+field);
 		inputboxes.val(value);
-		
+
 		selectboxes = $("select#"+field);
 		selectboxes.val(value);
-		
+
 		textareaboxes = $("textarea#"+field);
 		textareaboxes.val(value);
 	}
@@ -822,8 +897,8 @@ function server_changed() {
 		setFieldValue('proxypass_confirm', fields['proxypass']);
 		break;
 	}
-	
-	
+
+
 	var users = servers[index][1];
 	var certs = servers[index][3];
 	for (i = 0; i < users.length; i++) {
@@ -836,19 +911,23 @@ function server_changed() {
 		cell1.className = "listr";
 		cell1.innerHTML = users[i][3];
 		cell2.className = "listr";
-		cell2.innerHTML = "- Standard Configurations:<br\/>";
+		cell2.innerHTML = "- Inline Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config Only<\/a>";
-		cell2.innerHTML += "<br\/>- Inline Configurations:<br\/>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
+		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Others<\/a>";
-		cell2.innerHTML += "<br\/>- Windows Installers (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
+		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-24\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Windows Vista and Later<\/a>";
+/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
+		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-xp<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -877,19 +956,23 @@ function server_changed() {
 		cell1.className = "listr";
 		cell1.innerHTML = certs[j][1];
 		cell2.className = "listr";
-		cell2.innerHTML = "- Standard Configurations:<br\/>";
+		cell2.innerHTML = "- Inline Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> File Only<\/a>";
-		cell2.innerHTML += "<br\/>- Inline Configurations:<br\/>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
+		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Others<\/a>";
-		cell2.innerHTML += "<br\/>- Windows Installers (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
+		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-24\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Windows Vista and Later<\/a>";
+/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
+		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-xp<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -925,19 +1008,23 @@ function server_changed() {
 		cell1.className = "listr";
 		cell1.innerHTML = "none";
 		cell2.className = "listr";
-		cell2.innerHTML = "- Standard Configurations:<br\/>";
+		cell2.innerHTML = "- Inline Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> File Only<\/a>";
-		cell2.innerHTML += "<br\/>- Inline Configurations:<br\/>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
+		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Others<\/a>";
-		cell2.innerHTML += "<br\/>- Windows Installers (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
+		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-24\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Windows Vista and Later<\/a>";
+/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
+		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-xp<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -959,6 +1046,16 @@ function useaddr_changed() {
 		hideInput('useaddr_hostname', false);
 	} else {
 		hideInput('useaddr_hostname', true);
+	}
+}
+
+function usepkcs11_changed() {
+	if ($('#usepkcs11').prop('checked')) {
+		hideInput('pkcs11id', false);
+		hideInput('pkcs11providers', false);
+	} else {
+		hideInput('pkcs11id', true);
+		hideInput('pkcs11providers', true);
 	}
 }
 
@@ -1006,6 +1103,9 @@ events.push(function(){
 	});
 	$('#useaddr').on('change', function() {
 		useaddr_changed();
+	});
+	$('#usepkcs11').on('change', function() {
+		usepkcs11_changed();
 	});
 	$('#usepass').on('change', function() {
 		usepass_changed();
@@ -1066,6 +1166,7 @@ events.push(function(){
 
 	server_changed();
 	useaddr_changed();
+	usepkcs11_changed();
 	usepass_changed();
 	useproxy_changed();
 });

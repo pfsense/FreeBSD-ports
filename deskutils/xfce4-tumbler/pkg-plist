@@ -22,6 +22,7 @@ lib/libtumbler-1.so.0.0.0
 lib/tumbler-1/plugins/cache/tumbler-cache-plugin.so
 lib/tumbler-1/plugins/cache/tumbler-xdg-cache.so
 %%COVER%%lib/tumbler-1/plugins/tumbler-cover-thumbnailer.so
+lib/tumbler-1/plugins/tumbler-desktop-thumbnailer.so
 %%FFMPEG%%lib/tumbler-1/plugins/tumbler-ffmpeg-thumbnailer.so
 %%FONTS%%lib/tumbler-1/plugins/tumbler-font-thumbnailer.so
 %%JPEG%%lib/tumbler-1/plugins/tumbler-jpeg-thumbnailer.so
@@ -36,6 +37,7 @@ share/dbus-1/services/org.xfce.Tumbler.Manager1.service
 share/dbus-1/services/org.xfce.Tumbler.Thumbnailer1.service
 %%NLS%%share/locale/ar/LC_MESSAGES/tumbler.mo
 %%NLS%%share/locale/ast/LC_MESSAGES/tumbler.mo
+%%NLS%%share/locale/be/LC_MESSAGES/tumbler.mo
 %%NLS%%share/locale/bg/LC_MESSAGES/tumbler.mo
 %%NLS%%share/locale/bn/LC_MESSAGES/tumbler.mo
 %%NLS%%share/locale/ca/LC_MESSAGES/tumbler.mo
@@ -74,6 +76,7 @@ share/dbus-1/services/org.xfce.Tumbler.Thumbnailer1.service
 %%NLS%%share/locale/ru/LC_MESSAGES/tumbler.mo
 %%NLS%%share/locale/si/LC_MESSAGES/tumbler.mo
 %%NLS%%share/locale/sk/LC_MESSAGES/tumbler.mo
+%%NLS%%share/locale/sq/LC_MESSAGES/tumbler.mo
 %%NLS%%share/locale/sr/LC_MESSAGES/tumbler.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/tumbler.mo
 %%NLS%%share/locale/te/LC_MESSAGES/tumbler.mo

@@ -8,10 +8,10 @@ MASTER_SITES=	SF/${PORTNAME}py/${PORTNAME}py%20libs/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	jabberpy-${PORTVERSION}-0
 
-MAINTAINER=	flz@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python Jabber library
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 PLIST_FILES=	${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;}/jabber.pth
 

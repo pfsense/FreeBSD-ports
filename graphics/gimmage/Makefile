@@ -3,18 +3,32 @@
 
 PORTNAME=	gimmage
 PORTVERSION=	0.2.3
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	graphics
 MASTER_SITES=	BERLIOS
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Simple image viewer
 
-LIB_DEPENDS=	libcurl.so:ftp/curl
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		desktop-file-utils gettext pkgconfig
-USE_GNOME=	gtkmm24
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
+
+USES=		compiler:c++11-lang desktop-file-utils gettext pkgconfig
+USE_GNOME=	gtkmm24 gdkpixbuf2
 GNU_CONFIGURE=	yes
+USE_CXXSTD=	c++11
+
+OPTIONS_DEFINE=		NLS
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	gettext
+
+CXXFLAGS+=	-stdlib=libc++ -Wc++11-extensions -Wc++11-long-long \
+		-Wunused-command-line-argument -Wreturn-type \
+		-Wwritable-strings -Wlogical-op-parentheses
 CONFIGURE_ARGS=	--with-libintl-prefix=${LOCALBASE}
 
 .include <bsd.port.mk>

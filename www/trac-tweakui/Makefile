@@ -10,12 +10,12 @@ MASTER_SITES=	http://www.sourcehosting.net/freebsd/distfiles/ \
 PKGNAMEPREFIX=	trac-
 DISTNAME=	${PORTNAME}plugin-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Easily tweak Trac pages with JavaScript expressions
 
 RUN_DEPENDS=	tracd:www/trac
 
-USES=		dos2unix python zip
+USES=		dos2unix python:2.7 zip
 DOS2UNIX_REGEX=	.*\.(css|html|js|py|txt)$
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes

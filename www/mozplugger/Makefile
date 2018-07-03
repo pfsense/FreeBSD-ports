@@ -13,8 +13,9 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USE_XORG=	x11 xt
 USES=		desthack gmake webplugin:native
+USE_XORG=	x11 xt
+LLD_UNSAFE=	yes
 
 WEBPLUGIN_FILES=mozplugger.so
 MAKE_ENV=	WEBPLUGINS_DIR="${WEBPLUGIN_DIR}"

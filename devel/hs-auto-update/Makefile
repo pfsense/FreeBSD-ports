@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	auto-update
-PORTVERSION=	0.1.2.2
+PORTVERSION=	0.1.4
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

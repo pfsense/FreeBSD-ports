@@ -2,21 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	Chameleon
-PORTVERSION=	2.25
+PORTVERSION=	3.2
 CATEGORIES=	textproc www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Fast HTML/XML Template Compiler
 
 LICENSE=	BSD4CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+NO_ARCH=	yes
 USES=		python
-USE_PYTHON=	autoplist distutils
-
-post-extract:
-	@${CHMOD} -R a+rX ${WRKSRC}
+USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.mk>

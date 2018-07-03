@@ -1,6 +1,6 @@
---- ui/gfx/font_render_params.h.orig	2016-05-27 10:24:30.925944000 -0400
-+++ ui/gfx/font_render_params.h	2016-05-27 10:24:56.069225000 -0400
-@@ -102,13 +102,13 @@
+--- ui/gfx/font_render_params.h.orig	2017-12-15 02:04:51.000000000 +0100
++++ ui/gfx/font_render_params.h	2017-12-24 20:14:06.436950000 +0100
+@@ -107,13 +107,13 @@
      const FontRenderParamsQuery& query,
      std::string* family_out);
  
@@ -11,8 +11,8 @@
  GFX_EXPORT void ClearFontRenderParamsCacheForTest();
  #endif
  
--#if defined(OS_CHROMEOS) || defined(OS_LINUX)
-+#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_BSD)
+-#if defined(OS_LINUX) || (defined(OS_ANDROID) && BUILDFLAG(ENABLE_VR))
++#if defined(OS_LINUX) || defined(OS_BSD) || (defined(OS_ANDROID) && BUILDFLAG(ENABLE_VR))
  // Gets the device scale factor to query the FontRenderParams.
  GFX_EXPORT float GetFontRenderParamsDeviceScaleFactor();
  

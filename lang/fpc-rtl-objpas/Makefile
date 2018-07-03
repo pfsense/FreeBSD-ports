@@ -2,8 +2,8 @@
 
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-rtl-objpas
+PORTREVISION=	1
 
-MAINTAINER=	freebsd-fpc@FreeBSD.org
 COMMENT=	Free Pascal compatibility unit with Delphi
 
 USE_FPC=	yes

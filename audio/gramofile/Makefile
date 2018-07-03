@@ -3,7 +3,7 @@
 
 PORTNAME=	gramofile
 PORTVERSION=	1.6P
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	audio
 MASTER_SITES=	http://www.opensourcepartners.nl/~costar/gramofile/
 
@@ -17,11 +17,12 @@ COMMENT=	Audio recording and tick/scratch reduction for e.g. vinyl records
 LIB_DEPENDS=	libfftw.so:math/fftw
 
 ALL_TARGET=	gramofile
-USES=		gmake perl5
+USES=		alias gmake ncurses perl5
 USE_CSTD=	gnu89
 MAKE_ARGS=	CC="${CC}" \
 		CXX="${CXX}" \
 		PERLCOREDIR=${PERLCOREDIR}
+CFLAGS+=	-D_WANT_SEMUN
 
 PERLCOREDIR=	${LOCALBASE}/lib/perl5/${PERL_VER}/${PERL_ARCH}/CORE
 
@@ -35,11 +36,12 @@ post-patch:
 	for i in `${LS} ${FILESDIR}/post-patch-* |${SED} /.orig$$/d`; do \
 		${PATCH} -d ${WRKSRC} --forward --quiet <$$i ;\
 	done
-.for file in bplay.c sndfunc.c
-	@${SED} -e 's,machine/soundcard.h,sys/soundcard.h,' < \
-		${WRKSRC}/bplaysrc/${file} > ${WRKSRC}/bplaysrc/${file}.new
-	@${MV} ${WRKSRC}/bplaysrc/${file}.new ${WRKSRC}/bplaysrc/${file}
-.endfor
+	${REINPLACE_CMD} -e "s@-lncurses@-L${LOCALBASE}/lib -lncurses@g" \
+		-e "s|CFLAGS =|CFLAGS +=|" \
+		${WRKSRC}/bplaysrc/Makefile
+	${REINPLACE_CMD} -e 's,machine/soundcard.h,sys/soundcard.h,' \
+		${WRKSRC}/bplaysrc/bplay.c \
+		${WRKSRC}/bplaysrc/sndfunc.c
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gramofile ${WRKSRC}/bplay_gramo \

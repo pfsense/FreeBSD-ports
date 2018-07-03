@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-nrpe
-PORTVERSION=	2.3.1
-PORTREVISION=	1
+PORTVERSION=	3.0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +12,7 @@ COMMENT=	pfSense package nrpe
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/nrpe2:net-mgmt/nrpe-ssl
+RUN_DEPENDS=	${LOCALBASE}/sbin/nrpe3:net-mgmt/nrpe3
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -30,9 +29,9 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/nrpe.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nrpe2.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nrpe.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/nrpe2.priv.inc \
+	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/nrpe.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

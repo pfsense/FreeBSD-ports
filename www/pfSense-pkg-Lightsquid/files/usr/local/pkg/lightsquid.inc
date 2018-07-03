@@ -3,7 +3,7 @@
  * lightsquid.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2012 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -20,72 +20,51 @@
  * limitations under the License.
  */
 
-require_once('globals.inc');
+require_once('certs.inc');
 require_once('config.inc');
-require_once('util.inc');
+require_once('filter.inc');
+require_once('globals.inc');
 require_once('pfsense-utils.inc');
 require_once('pkg-utils.inc');
-require_once('filter.inc');
 require_once('service-utils.inc');
-require_once('certs.inc');
+require_once('util.inc');
+
 
 if (file_exists('/usr/local/pkg/squid.inc')) {
 	require_once('/usr/local/pkg/squid.inc');
 } else {
-	echo "No squid.inc found. You must have Squid/Squid3 package installed to use LightSquid.";
+	echo "No squid.inc found. You must have Squid package installed to use LightSquid.";
 }
 
 define('LIGHTSQUID_BASE', '/usr/local');
 
-// configuration settings !-- CHECK THIS --!
-define('LS_CONFIGPATH',			LIGHTSQUID_BASE . '/etc/lightsquid');
-define('LS_CONFIGFILE',			'lightsquid.cfg');
-define('LS_CONFIGFILE_DIST',		'lightsquid.cfg.sample');
-define('LS_WWWPATH',			LIGHTSQUID_BASE . '/www/lightsquid');
-define('LS_TEMPLATEPATH',		LS_WWWPATH . '/tpl');
-define('LS_LANGPATH',			LIGHTSQUID_BASE . '/share/lightsquid/lang');
-define('LS_REPORTPATH',			'/var/lightsquid/report');
+// configuration settings
+define('LS_CONFIGPATH', LIGHTSQUID_BASE . '/etc/lightsquid');
+define('LS_CONFIGFILE', 'lightsquid.cfg');
+define('LS_CONFIGFILE_DIST', 'lightsquid.cfg.sample');
+define('LS_WWWPATH', LIGHTSQUID_BASE . '/www/lightsquid');
+define('LS_TEMPLATEPATH', LS_WWWPATH . '/tpl');
+define('LS_LANGPATH', LIGHTSQUID_BASE . '/share/lightsquid/lang');
+define('LS_REPORTPATH', '/var/lightsquid/report');
 
 global $config;
 if (is_array($config['installedpackages']['squid']['config'][0]) && $config['installedpackages']['squid']['config'][0]['log_dir'] != "") {
-	define('LS_SQUIDLOGPATH',	$config['installedpackages']['squid']['config'][0]['log_dir']);
+	define('LS_SQUIDLOGPATH', $config['installedpackages']['squid']['config'][0]['log_dir']);
 } else {
-	define('LS_SQUIDLOGPATH',	'/var/squid/logs');
+	define('LS_SQUIDLOGPATH', '/var/squid/logs');
 }
-		
-define('LS_SQUIDLOG',			'access.log');
-define('LS_IP2NAMEPATH',		LIGHTSQUID_BASE . '/libexec/lightsquid');
-define('CRONTAB_LS_TEMPLATE',		'/usr/local/bin/perl ' . LIGHTSQUID_BASE . '/www/lightsquid/lightparser.pl');
+
+define('LS_SQUIDLOG', 'access.log');
+define('LS_IP2NAMEPATH', LIGHTSQUID_BASE . '/libexec/lightsquid');
+define('CRONTAB_LS_TEMPLATE', '/usr/local/bin/perl ' . LIGHTSQUID_BASE . '/www/lightsquid/lightparser.pl');
 
 // default values
-define('LS_DEF_IP2NAME',		'dns');
-define('LS_DEF_SQUIDLOGTYPE',		'0');
-define('LS_DEF_SKIPURL',		'zzz\.zzz');
-define('LS_DEF_LANG',			'eng');
-define('LS_DEF_TEMPLATE',		'base');
-define('LS_DEF_BARCOLOR',		'orange');
-
-// variable names
-define('LS_VAR_CFGPATH',		'cfgpath');
-define('LS_VAR_LOGPATH',		'logpath');
-define('LS_VAR_TPLPATH',		'tplpath');
-define('LS_VAR_LANGPATH',		'langpath');
-define('LS_VAR_LANG',			'lang');
-define('LS_VAR_REPORTPATH',		'reportpath');
-define('LS_VAR_SQUIDLOGTYPE',		'squidlogtype');
-define('LS_VAR_SKIPURL',		'skipurl');
-define('LS_VAR_IP2NAMEPATH',		'ip2namepath');
-define('LS_VAR_IP2NAME',		'ip2name');
-define('LS_VAR_TEMPLATE',		'templatename');
-define('LS_VAR_BARCOLOR',		'barcolor');
-
-// XML GUI variables
-define('LS_XML_LANG',			'lightsquid_lang');
-define('LS_XML_SKIPURL',		'lightsquid_skipurl');
-define('LS_XML_IP2NAME',		'lightsquid_ip2name');
-define('LS_XML_TEMPLATE',		'lightsquid_template');
-define('LS_XML_BARCOLOR',		'lightsquid_barcolor');
-define('LS_XML_SHEDULERTIME',		'lightsquid_refreshsheduler_time');
+define('LS_DEF_IP2NAME', 'dns');
+define('LS_DEF_SQUIDLOGTYPE', '0');
+define('LS_DEF_SKIPURL', 'zzz\.zzz');
+define('LS_DEF_LANG', 'eng');
+define('LS_DEF_TEMPLATE', 'base');
+define('LS_DEF_BARCOLOR', 'orange');
 
 /*
  * Package install/uninstall
@@ -100,13 +79,10 @@ function lightsquid_install() {
 
 	// template symlinks
 	foreach (array('novopf', 'novosea') as $tpl) {
-		if (is_dir(LS_TEMPLATEPATH . '/' . $tpl)) {
-			$_gc = exec('rm -rf ' . LS_TEMPLATEPATH . '/' . $tpl);
-		}
-		symlink('/usr/local/share/lightsquid/tpl/' . $tpl, LS_TEMPLATEPATH . '/' . $tpl);
+		@symlink('/usr/local/share/lightsquid/tpl/' . $tpl, LS_TEMPLATEPATH . '/' . $tpl);
 	}
 
-	update_status("\nRemove any existing and create link for lightsquid lighttpd executable...");
+	update_status("\nRemove any existing and create new hardlink for lightsquid lighttpd executable...");
 	unlink_if_exists('/usr/local/sbin/lighttpd_ls');
 	link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_ls');
 
@@ -127,13 +103,7 @@ function lightsquid_install() {
 function lightsquid_deinstall() {
 	// remove cronjobs
 	lightsquid_setup_cron(false);
-	if (is_dir("/usr/local/www/sqstat/")) {
-		mwexec("/bin/rm -rf /usr/local/www/sqstat/");
-	}
-	if (is_dir("/var/etc/lightsquid/")) {
-		mwexec("/bin/rm -rf /var/etc/lightsquid/");
-	}
-	unlink_if_exists('/usr/local/sbin/lighttpd_ls');
+	rmdir_recursive("/var/etc/lightsquid/");
 }
 
 function lightsquid_write_rcfile() {
@@ -180,14 +150,38 @@ function lightsquid_write_webconfig() {
 
 	touch($lighttpd_ls_auth_path);
 	chmod($lighttpd_ls_auth_path, 0600);
+	// Remove any existing and create new hardlink for lightsquid lighttpd executable
+	// This is required to avoid undefined symbol errors when lighttpd port is upgraded
+	unlink_if_exists('/usr/local/sbin/lighttpd_ls');
+	link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_ls');
 	file_put_contents($lighttpd_ls_auth_path, "{$lightsquid_config['lighttpd_ls_user']}:{$lightsquid_config['lighttpd_ls_password']}");
 
 	$lighttpd_ls_conf = <<<EOF
 #
 # Lightsquid lighttpd configuration file
 #
+
+EOF;
+
+	// Add this only if SSL is disabled, things break otherwise
+	if ($lightsquid_config['lighttpd_ls_ssl'] != "on") {
+		$lighttpd_ls_conf .= <<<EOF
 server.bind			= "0.0.0.0"
 server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
+\$SERVER["socket"]		== "[::]:{$lightsquid_config['lighttpd_ls_port']}" {  }
+
+EOF;
+	} else {
+		/*
+		 * We ALWAYS need to put server.port there; otherwise
+		 * lighttpd thing binds to 80/HTTP no matter what
+		 */
+		$lighttpd_ls_conf .= <<<EOF
+server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
+
+EOF;
+	}
+	$lighttpd_ls_conf .= <<<EOF
 server.event-handler		= "freebsd-kqueue"
 server.network-backend		= "freebsd-sendfile"
 server.dir-listing		= "disable"
@@ -270,52 +264,68 @@ auth.require = ( "/" =>
 )
 EOF;
 
-if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
-	// Write out cert
-	$lscert =& lookup_cert($config['system']['webgui']['ssl-certref']);
-	if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv']) {
-		$lscert = system_webgui_create_certificate();
-	}
-	$cert = base64_decode($lscert['crt']);
-	$key = base64_decode($lscert['prv']);
-	$ca = ca_chain($lscert);
-	$cert = str_replace("\r", "", $cert);
-	$key = str_replace("\r", "", $key);
-	$cert = str_replace("\n\n", "\n", $cert);
-	$key = str_replace("\n\n", "\n", $key);
-	if (!empty($cert) && !empty($key)) {
-		$fd = fopen($lighttpd_ls_cert_path, "w");
-		if (!$fd) {
-			printf(gettext("Error: cannot open certificate file in lightsquid_write_webconfig().%s"), "\n");
-			return 1;
+	// SSL is enabled
+	if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
+		// Write out cert
+		$lscert =& lookup_cert($config['system']['webgui']['ssl-certref']);
+		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv']) {
+			$lscert = system_webgui_create_certificate();
 		}
-		chmod($lighttpd_ls_cert_path, 0600);
-		if (!empty($ca)) {
-			$cert_chain = $cert . "\n" . $ca;
-		} else {
-			$cert_chain = $cert;
+		$cert = base64_decode($lscert['crt']);
+		$key = base64_decode($lscert['prv']);
+		$ca = ca_chain($lscert);
+		$cert = str_replace("\r", "", $cert);
+		$key = str_replace("\r", "", $key);
+		$cert = str_replace("\n\n", "\n", $cert);
+		$key = str_replace("\n\n", "\n", $key);
+		if (!empty($cert) && !empty($key)) {
+			$fd = fopen($lighttpd_ls_cert_path, "w");
+			if (!$fd) {
+				printf(gettext("Error: cannot open certificate file in lightsquid_write_webconfig().%s"), "\n");
+				return 1;
+			}
+			chmod($lighttpd_ls_cert_path, 0600);
+			if (!empty($ca)) {
+				$cert_chain = $cert . "\n" . $ca;
+			} else {
+				$cert_chain = $cert;
+			}
+			fwrite($fd, $cert_chain);
+			fwrite($fd, $key);
+			fclose($fd);
 		}
-		fwrite($fd, $cert_chain);
-		fwrite($fd, $key);
-		fclose($fd);
-	}
 
-	// Add SSL config
-	$lighttpd_ls_conf .= <<<EOF
-
+		// Add SSL config
+		// Common SSL config snippet for use below
+		$lighttpd_ls_conf_sslcommon = <<<EOF
 ssl.engine		= "enable"
 ssl.pemfile		= "{$lighttpd_ls_cert_path}"
 ssl.use-sslv2		= "disable"
 ssl.use-sslv3		= "disable"
 ssl.honor-cipher-order	= "enable"
 ssl.cipher-list		= "AES128+EECDH:AES256+EECDH:AES128+EDH:AES256+EDH:AES128-SHA:AES256-SHA:!aNULL:!eNULL:!DSS"
-
 EOF;
+
+		/*
+		 * IPv4 HTTPS bind must NOT be a socket; otherwise lighttpd
+		 * yet again binds to 80/HTTP no matter what. You enable
+		 * SSL-only IPv4 by not configuring bind for IPv4 at all.
+		 * IPv6 SSL must be configured as a socket
+		 */
+		$lighttpd_ls_conf .= <<<EOF
+
+{$lighttpd_ls_conf_sslcommon}
+
+
+\$SERVER["socket"]	== "[::]:{$lightsquid_config['lighttpd_ls_port']}" {
+{$lighttpd_ls_conf_sslcommon}
 }
+EOF;
 
-	@file_put_contents('/var/etc/lightsquid/lighttpd_ls.conf', $lighttpd_ls_conf, LOCK_EX);
+	} // endif - SSL is enabled
+
+	file_put_contents('/var/etc/lightsquid/lighttpd_ls.conf', $lighttpd_ls_conf, LOCK_EX);
 	unset($lighttpd_ls_conf);
-
 }
 
 /*
@@ -330,47 +340,47 @@ function lightsquid_resync() {
 
 	// Set up variables for configuration update
 	$lsconf_var = array();
-	$lsconf_var[LS_VAR_CFGPATH]	= "\"" . LS_CONFIGPATH . "\"";
-	$lsconf_var[LS_VAR_LOGPATH]	= "\"" . LS_SQUIDLOGPATH . "\"";
+	$lsconf_var['cfgpath'] = "\"" . LS_CONFIGPATH . "\"";
+	$lsconf_var['logpath'] = "\"" . LS_SQUIDLOGPATH . "\"";
 
-	$lsconf_var[LS_VAR_TPLPATH]	= "\"" . LS_TEMPLATEPATH . "\"";
-	$lsconf_var[LS_VAR_LANGPATH]	= "\"" . LS_LANGPATH . "\"";
-	$lsconf_var[LS_VAR_REPORTPATH]	= "\"" . LS_REPORTPATH . "\"";
-	$lsconf_var[LS_VAR_IP2NAMEPATH]	= "\"" . LS_IP2NAMEPATH . "\"";
+	$lsconf_var['tplpath'] = "\"" . LS_TEMPLATEPATH . "\"";
+	$lsconf_var['langpath'] = "\"" . LS_LANGPATH . "\"";
+	$lsconf_var['reportpath'] = "\"" . LS_REPORTPATH . "\"";
+	$lsconf_var['ip2namepath'] = "\"" . LS_IP2NAMEPATH . "\"";
 
-	$lsconf_var[LS_VAR_LANG]	= "\"" . LS_DEF_LANG . "\"";
-	$lsconf_var[LS_VAR_TEMPLATE]	= "\"" . LS_DEF_TEMPLATE . "\"";
-	$lsconf_var[LS_VAR_IP2NAME]	= "\"" . LS_DEF_IP2NAME . "\"";
-	$lsconf_var[LS_VAR_SKIPURL]	= "'" . LS_DEF_SKIPURL . "'";
-	$lsconf_var[LS_VAR_SQUIDLOGTYPE]= LS_DEF_SQUIDLOGTYPE;
+	$lsconf_var['lang'] = "\"" . LS_DEF_LANG . "\"";
+	$lsconf_var['templatename'] = "\"" . LS_DEF_TEMPLATE . "\"";
+	$lsconf_var['ip2name'] = "\"" . LS_DEF_IP2NAME . "\"";
+	$lsconf_var['skipurl'] = "'" . LS_DEF_SKIPURL . "'";
+	$lsconf_var['squidlogtype'] = LS_DEF_SQUIDLOGTYPE;
 
 	// Update variables from package GUI config
 	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
 		$lightsquid_config = $config['installedpackages']['lightsquid']['config'][0];
 
-		if (isset($lightsquid_config[LS_XML_LANG]) and !empty($lightsquid_config[LS_XML_LANG])) {
-			$lsconf_var[LS_VAR_LANG] = "\"" . $lightsquid_config[LS_XML_LANG] . "\"";
+		if (isset($lightsquid_config['lightsquid_lang']) and !empty($lightsquid_config['lightsquid_lang'])) {
+			$lsconf_var['lang'] = "\"" . $lightsquid_config['lightsquid_lang'] . "\"";
 		}
 
-		if (isset($lightsquid_config[LS_XML_SKIPURL]) and !empty($lightsquid_config[LS_XML_SKIPURL])) {
-			$lsconf_var[LS_VAR_SKIPURL] = "'" . str_replace(".", "\\.", $lightsquid_config[LS_XML_SKIPURL]) . "'";
+		if (isset($lightsquid_config['lightsquid_skipurl']) and !empty($lightsquid_config['lightsquid_skipurl'])) {
+			$lsconf_var['skipurl'] = "'" . str_replace(".", "\\.", $lightsquid_config['lightsquid_skipurl']) . "'";
 		}
 
-		if (isset($lightsquid_config[LS_XML_IP2NAME]) and !empty($lightsquid_config[LS_XML_IP2NAME] )) {
-			$lsconf_var[LS_VAR_IP2NAME] = "\"" . $lightsquid_config[LS_XML_IP2NAME] . "\"";
+		if (isset($lightsquid_config['lightsquid_ip2name']) and !empty($lightsquid_config['lightsquid_ip2name'] )) {
+			$lsconf_var['ip2name'] = "\"" . $lightsquid_config['lightsquid_ip2name'] . "\"";
 		}
 
-		if (isset($lightsquid_config[LS_XML_TEMPLATE]) and !empty($lightsquid_config[LS_XML_TEMPLATE])) {
-			$tpl_val = $lightsquid_config[LS_XML_TEMPLATE];
+		if (isset($lightsquid_config['lightsquid_template']) and !empty($lightsquid_config['lightsquid_template'])) {
+			$tpl_val = $lightsquid_config['lightsquid_template'];
 			// check template path
 			if (!file_exists(LS_TEMPLATEPATH."/$tpl_val")) {
 				$tpl_val = 'base';
 			}
-			$lsconf_var[LS_VAR_TEMPLATE] = "\"" . $tpl_val . "\"";
+			$lsconf_var['templatename'] = "\"" . $tpl_val . "\"";
 		}
 
-		if (isset($lightsquid_config[LS_XML_BARCOLOR]) and !empty($lightsquid_config[LS_XML_BARCOLOR])) {
-			$lsconf_var[LS_VAR_BARCOLOR] = "\"" . $lightsquid_config[LS_XML_BARCOLOR] . "\"";
+		if (isset($lightsquid_config['lightsquid_barcolor']) and !empty($lightsquid_config['lightsquid_barcolor'])) {
+			$lsconf_var['barcolor'] = "\"" . $lightsquid_config['lightsquid_barcolor'] . "\"";
 		}
 	}
 
@@ -423,7 +433,7 @@ function lightsquid_resync() {
 function lightsquid_setup_cron($active=false) {
 	global $config;
 	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
-		$cron_schedule = $config['installedpackages']['lightsquid']['config'][0][LS_XML_SHEDULERTIME];
+		$cron_schedule = $config['installedpackages']['lightsquid']['config'][0]['lightsquid_refreshsheduler_time'];
 	} else {
 		$cron_schedule = '';
 	}
@@ -593,7 +603,7 @@ function lightsquid_validate_input($post, &$input_errors) {
 			$input_errors[] = "Please, configure Squid - General - Proxy Interface(s) to include 'loopback' interface.";
 		}
 	}
-	
+
 	/* 'Skip URL(s)' validation */
 	if ($post['lightsquid_skipurl'] != "") {
 		$hosts = explode("|", $post['lightsquid_skipurl']);

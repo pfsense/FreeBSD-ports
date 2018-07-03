@@ -8,13 +8,13 @@ MASTER_SITES=	http://code.fluffytapeworm.com/projects/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	python-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	matthew@reztek.cz
+MAINTAINER=	rezny@FreeBSD.org
 COMMENT=	Python module to find the checksum of files
 
 LICENSE=	GPLv2
 
 PLIST_FILES=	%%PYTHON_SITELIBDIR%%/fchksum.so
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	python-fchksum
 

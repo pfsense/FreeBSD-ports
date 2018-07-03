@@ -9,15 +9,10 @@ MASTER_SITES=	SF/modntlm/modntlm2/${PORTNAME}-${PORTVERSION}
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	NTLM authentication module for the Apache2 webserver
 
-BUILD_DEPENDS=	smbclient:${SAMBA_PORT}
-
-SAMBA_PORT?=	net/samba36
-
-
-USE_APACHE=	22
+USES=		apache:2.2 samba:build
 MAKE_ENV=	APXS=${APXS}
 
 do-install:

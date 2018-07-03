@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	metasploit_data_models
-PORTVERSION=	2.0.0
+PORTVERSION=	2.0.16
 PORTEPOCH=	2
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
@@ -27,6 +27,7 @@ USE_RUBY=	yes
 USES=		gem
 PLIST_FILES=	bin/mdm_console
 
-PORTSCOUT=	ignore:1
+post-patch:
+	${REINPLACE_CMD} "/pg/s|= 0.20.0|>= 0.20.0|" ${WRKSRC}/metasploit_data_models.gemspec
 
 .include <bsd.port.mk>

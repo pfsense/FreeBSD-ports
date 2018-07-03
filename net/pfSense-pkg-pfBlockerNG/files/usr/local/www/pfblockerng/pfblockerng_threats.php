@@ -4,23 +4,24 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * Copyright (c) 2015-2017 BBcan177@gmail.com
  * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the \"License\");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an \"AS IS\" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
-$pgtitle = array(gettext('pfBlockerNG'), gettext('Threat Source Lookup'));
+$pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Alerts'), gettext('Threat Source Lookup'));
+$pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblockerng_alerts.php', '@self');
 require('guiconfig.inc');
 
 if (isset($_REQUEST['host'])) {
@@ -38,7 +39,7 @@ include('head.inc');
 		<h4 class="panel-title"><?=gettext("Threat:&emsp;" . $host . $domain); ?></h4>
 	</div>
 	<div>
-		<p class="text-center"><br />NOTE:&emsp;The following links are to external services, so their reliability cannot be guaranteed
+		<p class="text-center"><br />NOTE:&emsp;The following links are to external services, so their reliability cannot be guaranteed.
 			It is also recommended to open these links in a different Browser</p>
 	</div>
 	<div>
@@ -59,7 +60,7 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="http://www.tcpiputils.com/browse/ip-address/<?=$host;?>/">
+					<td><a target="_blank" href="https://www.tcpiputils.com/browse/ip-address/<?=$host;?>/">
 						<?=gettext("TCPUtils");?></a></td>
 				</tr>
 				<tr>
@@ -79,7 +80,7 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.fortiguard.com/ip_rep/index.php?data=/<?=$host;?>?">
+					<td><a target="_blank" href="https://www.fortiguard.com/ip_rep/index.php?data=<?=$host;?>?">
 						<?=gettext("FortiGuard");?></a></td>
 				</tr>
 				<tr>
@@ -142,6 +143,16 @@ include('head.inc');
 					<td><a target="_blank" href="https://ransomwaretracker.abuse.ch/ip/<?=$host;?>">
 						<?=gettext("Ransomware Tracker");?></a></td>
 				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.shodan.io/host/<?=$host;?>">
+						<?=gettext("Shodan");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://viewdns.info/reverseip/?host=<?=$host;?>&t=1">
+						<?=gettext("ViewDNS.info Reverse IP Lookup");?></a></td>
+                                </tr>
 
 				<!-- Mail Server threat source links -->
 				<tr>
@@ -175,13 +186,8 @@ include('head.inc');
 				<!-- Domain threat source links -->
 				<tr>
 					<td>Domain Lookups<i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="http://www.alexa.com/siteinfo/<?=$domain;?>">
+					<td><a target="_blank" href="https://www.alexa.com/siteinfo/<?=$domain;?>">
 						<?=gettext("Alexa");?></a></td>
-				</tr>
-				<tr>
-					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.c-sirt.org/en/incidents-on-domain/<?=$domain;?>">
-						<?=gettext("C-SIRT");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
@@ -200,7 +206,7 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="http://www.tcpiputils.com/browse/domain/<?=$domain;?>">
+					<td><a target="_blank" href="https://www.tcpiputils.com/browse/domain/<?=$domain;?>">
 						<?=gettext("TCPUtils");?></a></td>
 				</tr>
 				<tr>
@@ -210,7 +216,7 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="http://toolbar.netcraft.com/site_report?url=<?=$domain;?>">
+					<td><a target="_blank" href="https://toolbar.netcraft.com/site_report?url=<?=$domain;?>">
 						<?=gettext("Netcraft Site Report");?></a></td>
 				</tr>
 				<tr>
@@ -220,7 +226,7 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="http://hosts-file.net/?s=<?=$domain;?>">
+					<td><a target="_blank" href="https://hosts-file.net/?s=<?=$domain;?>">
 						<?=gettext("hpHosts");?></a></td>
 				</tr>
 				<tr>
@@ -242,6 +248,31 @@ include('head.inc');
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://passivedns.mnemonic.no/search/?query=<?=$domain;?>&method=exact">
 						<?=gettext("mnemonic passiveDNS");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://urlscan.io/">
+						<?=gettext("URL Scan");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.virustotal.com/en/domain/<?=$domain;?>/information/">
+						<?=gettext("Virus Total");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://otx.alienvault.com/browse/pulses/?q=<?=$domain;?>&sort=-modified">
+						<?=gettext("OTX Alienvault");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://viewdns.info/reverseip/?host=<?=$domain;?>&t=1">
+						<?=gettext("ViewDNS.info Reverse Domain Lookup");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://viewdns.info/iphistory/?domain=<?=$domain;?>">
+						<?=gettext("ViewDNS.info Domain IP History Lookup");?></a></td>
 				</tr>
 			<?php endif; ?>
 			</tbody>

@@ -32,8 +32,6 @@ define('SIPROXD', '/usr/local');
 
 function install_package_siproxd() {
 	siproxd_create_chroot();
-	/* remove rc script distributed with the package */
-	unlink_if_exists(SIPROXD . '/etc/rc.d/siproxd');
 }
 
 function deinstall_package_siproxd() {
@@ -154,17 +152,35 @@ function sync_package_siproxd() {
 	}
 
 	if ($siproxd_conf['if_inbound'] != "") {
-		fwrite($fout, "if_inbound = " . convert_friendly_interface_to_real_interface_name($siproxd_conf['if_inbound']) . "\n");
+		if (is_ipaddr($siproxd_conf['if_inbound'])) {
+			fwrite($fout, "if_inbound = {$siproxd_conf['if_inbound']}\n");
+		} else {
+			fwrite($fout, "if_inbound = " . convert_friendly_interface_to_real_interface_name($siproxd_conf['if_inbound']) . "\n");
+		}
 	}
 
 	if ($siproxd_conf['if_outbound'] != "") {
-		fwrite($fout, "if_outbound = " . convert_friendly_interface_to_real_interface_name($siproxd_conf['if_outbound']) . "\n");
+		if (is_ipaddr($siproxd_conf['if_inbound'])) {
+			fwrite($fout, "if_outbound = {$siproxd_conf['if_outbound']}\n");
+		} else {
+			fwrite($fout, "if_outbound = " . convert_friendly_interface_to_real_interface_name($siproxd_conf['if_outbound']) . "\n");
+		}
 	}
 
 	if ($siproxd_conf['port'] != "") {
 		fwrite($fout, "sip_listen_port = " . $siproxd_conf['port'] . "\n");
 	} else {
 		fwrite($fout, "sip_listen_port = 5060\n");
+	}
+
+	if ($siproxd_conf['hosts_allow_reg'] != "") {
+		fwrite($fout, "hosts_allow_reg = " . $siproxd_conf['hosts_allow_reg'] . "\n");
+	}
+	if ($siproxd_conf['hosts_allow_sip'] != "") {
+		fwrite($fout, "hosts_allow_sip = " . $siproxd_conf['hosts_allow_sip'] . "\n");
+	}
+	if ($siproxd_conf['hosts_deny_sip'] != "") {
+		fwrite($fout, "hosts_deny_sip = " . $siproxd_conf['hosts_deny_sip'] . "\n");
 	}
 
 	fwrite($fout, "daemonize = 1\n");
@@ -245,6 +261,12 @@ function sync_package_siproxd() {
 	if ($siproxd_conf['tcp_keepalive'] != "") {
 		fwrite($fout, "tcp_keepalive = " . $siproxd_conf['tcp_keepalive'] . "\n");
 	}
+	if ($siproxd_conf['ua_string'] != "") {
+		fwrite($fout, "ua_string = " . $siproxd_conf['ua_string'] . "\n");
+	}
+	if ($siproxd_conf['use_rport'] != "") {
+		fwrite($fout, "use_rport = " . $siproxd_conf['use_rport'] . "\n");
+	}
 
 	fwrite($fout, "plugindir={$plugindir}\n");
 	fwrite($fout, "load_plugin=plugin_logcall.la\n");
@@ -278,6 +300,47 @@ function sync_package_siproxd() {
 	if (($siproxd_conf['plugin_stun'] != "") && ($siproxd_conf['plugin_stun_period'] != "")) {
 		fwrite($fout, "plugin_stun_period = " . $siproxd_conf['plugin_stun_period'] . "\n");
 	}
+
+	if ($siproxd_conf['plugin_fix_dtag'] != "") {
+		fwrite($fout, "load_plugin=plugin_fix_DTAG.la\n");
+		if ($siproxd_conf['plugin_fix_dtag_networks'] != "") {
+			fwrite($fout, "plugin_fix_DTAG_networks = ". $siproxd_conf['plugin_fix_dtag_networks'] . "\n");
+		}
+	}
+
+	if ($siproxd_conf['plugin_stripheader'] != "") {
+		fwrite($fout, "load_plugin=plugin_stripheader.la\n");
+		if ($siproxd_conf['plugin_stripheader_remove1'] != "") {
+			fwrite($fout, "plugin_stripheader_remove = " . $siproxd_conf['plugin_stripheader_remove1'] . "\n");
+		}
+		if ($siproxd_conf['plugin_stripheader_remove2'] != "") {
+			fwrite($fout, "plugin_stripheader_remove = " . $siproxd_conf['plugin_stripheader_remove2'] . "\n");
+		}
+		if ($siproxd_conf['plugin_stripheader_remove3'] != "") {
+			fwrite($fout, "plugin_stripheader_remove = " . $siproxd_conf['plugin_stripheader_remove3'] . "\n");
+		}
+	}
+
+	if ($siproxd_conf['plugin_codecfilter'] != "") {
+		fwrite($fout, "load_plugin=plugin_codecfilter.la\n");
+		if ($siproxd_conf['plugin_codecfilter_blacklist1'] != "") {
+			fwrite($fout, "plugin_codecfilter_blacklist = " . $siproxd_conf['plugin_codecfilter_blacklist1'] . "\n");
+		}
+		if ($siproxd_conf['plugin_codecfilter_blacklist2'] != "") {
+			fwrite($fout, "plugin_codecfilter_blacklist = " . $siproxd_conf['plugin_codecfilter_blacklist2'] . "\n");
+		}
+		if ($siproxd_conf['plugin_codecfilter_blacklist3'] != "") {
+			fwrite($fout, "plugin_codecfilter_blacklist = " . $siproxd_conf['plugin_codecfilter_blacklist3'] . "\n");
+		}
+	}
+
+	if ($siproxd_conf['plugin_fix_fbox_anoncall'] != "") {
+		fwrite($fout, "load_plugin=plugin_fix_fbox_anoncall.la\n");
+		if ($siproxd_conf['plugin_fix_fbox_anoncall_networks'] != "") {
+			fwrite($fout, "plugin_fix_fbox_anoncall_networks = " . $siproxd_conf['plugin_fix_fbox_anoncall_networks'] . "\n");
+		}
+	}
+
 
 	fclose($fout);
 

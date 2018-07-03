@@ -15,8 +15,7 @@ COMMENT=	Allows you to limit the number of simultaneous connexions
 
 LICENSE=	APACHE20
 
-USE_APACHE=	22+
-USES=		tar:bzip2
+USES=		apache:2.2+ tar:bzip2
 
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
@@ -25,6 +24,6 @@ PORTDOCS=	ChangeLog INSTALL README
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

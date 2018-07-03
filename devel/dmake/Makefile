@@ -9,12 +9,13 @@ MAINTAINER=	office@FreeBSD.org
 COMMENT=	Another hyper make utility
 
 LICENSE=	GPLv1
+LICENSE_FILE=	${WRKSRC}/readme/license.txt
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mohawk2
 GH_TAGNAME=	e5588b0
 
-USES=		autoreconf:autoconf
+USES=		autoreconf
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--datarootdir=${DATADIR}
 

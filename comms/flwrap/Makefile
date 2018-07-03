@@ -3,10 +3,9 @@
 
 PORTNAME=	flwrap
 PORTVERSION=	1.3.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
-MASTER_SITES=	http://www.w1hkj.com/downloads/flwrap/ \
-		LOCAL/db
+MASTER_SITES=	SF/fldigi/${PORTNAME}
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Flwrap is a companion utility for fldigi

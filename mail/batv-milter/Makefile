@@ -14,11 +14,11 @@ COMMENT=	Milter for BATV (Bounce Address Tag Validation)
 BUILD_DEPENDS+=	${LOCALBASE}/include/libmilter/mfapi.h:mail/libmilter
 .endif
 
-USES=		uidfix
+USES=		uidfix ssl
 USE_RC_SUBR=	milter-batv
-USE_OPENSSL=	TRUE
 
 MAKE_ARGS=	UBINOWN=${UID} UBINGRP=${GID}
+CFLAGS+=	-D_WANT_SEMUN
 
 WCONF=		${WRKSRC}/devtools/Site
 PLIST_FILES=	bin/batv-filter man/man8/batv-filter.8.gz
@@ -53,7 +53,7 @@ post-install:
 .if !defined(WITH_DEBUG)
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/batv-filter
 .endif
-	@${RM} -f ${MANPREFIX}/man/cat8/batv-filter.8 ${MANPREFIX}/man/cat8/batv-filter.8.gz
+	@${RM} ${MANPREFIX}/man/cat8/batv-filter.8 ${MANPREFIX}/man/cat8/batv-filter.8.gz
 	${INSTALL_MAN} ${WRKSRC}/*/batv-filter.8 ${STAGEDIR}${MANPREFIX}/man/man8/
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}

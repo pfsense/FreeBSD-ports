@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	openbox-themes
-PORTVERSION=	1.0.1
-PORTREVISION=	5
+PORTVERSION=	1.0.2
 CATEGORIES=	x11-themes
-MASTER_SITES=	LOCAL/novel
+MASTER_SITES=	DEBIAN
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	novel@FreeBSD.org
@@ -20,7 +19,7 @@ NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 post-extract:
-	@${RM} -rf ${WRKSRC}/debian
+	@${RM} -r ${WRKSRC}/debian
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/themes

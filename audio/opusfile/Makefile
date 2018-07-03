@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	opusfile
-PORTVERSION=	0.8
+PORTVERSION=	0.10
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.xiph.org/releases/opus/ \
 		MOZILLA/opus
@@ -21,7 +21,7 @@ GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 PATHFIX_MAKEFILEIN=	Makefile.am
 
-PORTDOCS=	AUTHORS README.txt
+PORTDOCS=	AUTHORS README.md
 
 OPTIONS_DEFINE=	DOXYGEN DOCS
 OPTIONS_DEFAULT=	# empty
@@ -50,7 +50,7 @@ post-patch:
 	@${CP} ${FILESDIR}/ftime.c ${WRKSRC}/src/
 
 post-install-DOXYGEN-on:
-	@${RM} -f ${WRKDIR}/PLIST.doc ; \
+	@${RM} ${WRKDIR}/PLIST.doc ; \
 	${FIND} ${STAGEDIR}${DOCSDIR}/html -type f | \
 		${SED} 's|${STAGEDIR}${PREFIX}/||' \
 		>> ${WRKDIR}/PLIST.doc ; \

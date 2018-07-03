@@ -3,6 +3,7 @@
 
 PORTNAME=	libaccounts-glib
 PORTVERSION=	1.21
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	https://gitlab.com/${GL_ACCOUNT}/${GL_PROJECT}/repository/archive${EXTRACT_SUFX}?ref=VERSION_${GL_TAGNAME}&num;/ \
 		LOCAL/rakuco
@@ -23,7 +24,7 @@ INSTALL_TARGET=	install-strip
 
 USES=		autoreconf gmake libtool pathfix pkgconfig python sqlite:3
 USE_GNOME=	pygobject3 introspection libxml2
-PATHFIX_MAKEFILEIN=Makefile.am
+USE_PYTHON=	py3kplist
 
 # GitLab variables.
 GL_ACCOUNT=	accounts-sso

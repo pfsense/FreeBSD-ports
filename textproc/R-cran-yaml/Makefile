@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	yaml
-PORTVERSION=	2.1.13
+PORTVERSION=	2.1.14
+PORTREVISION=	1
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -11,6 +12,6 @@ COMMENT=	Methods to convert R data to YAML and back
 
 LICENSE=	BSD3CLAUSE
 
-USES=	cran:auto-plist
+USES=	cran:auto-plist,compiles
 
 .include <bsd.port.mk>

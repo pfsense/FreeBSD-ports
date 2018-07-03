@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	netty
-PORTVERSION=	3.9.2
+PORTVERSION=	3.10.6
 DISTVERSIONSUFFIX=	.Final-dist
 CATEGORIES=	java devel
 MASTER_SITES=	http://dl.bintray.com/netty/downloads/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	amutu@amutu.com
 COMMENT=	Java NIO client server framework
 
 LICENSE=	APACHE20

@@ -1,18 +1,22 @@
 # $FreeBSD$
 
 MASTERDIR=	${.CURDIR}/../bitcoin
-PORTREVISION=	0
 PKGNAMESUFFIX=	-daemon
 
 COMMENT=	Virtual Peer-to-Peer Currency (Daemon)
 
 SLAVE_PORT=	yes
 
-ONLY_FOR_ARCHS=	amd64 i386 ia64
-ONLY_FOR_ARCHS_REASON=	does not support big-endian architectures
+NOT_FOR_ARCHS=		powerpc powerpc64 sparc64
+NOT_FOR_ARCHS_REASON=	does not support big-endian architectures
 
-OPTIONS_DEFINE=		DEBUG HARDENING TESTS UPNP WALLET ZMQ
-OPTIONS_DEFAULT=	HARDENING UPNP WALLET
+OPTIONS_DEFINE=		DEBUG HARDENING TESTS UPNP ZMQ
+# WALLET_BDBMODERN is a choice for WALLET, introduced via OPTIONS_RADIO=WALLET
+# from ${MASTERDIR}/Makefile
+OPTIONS_DEFAULT=	HARDENING UPNP WALLET_BDBMODERN
+
+USERS=		bitcoin
+GROUPS=		bitcoin
 
 CONFIGURE_ARGS=	--with-daemon \
 		--without-gui \
@@ -20,8 +24,13 @@ CONFIGURE_ARGS=	--with-daemon \
 		--without-qrencode \
 		--without-utils
 
-PLIST_FILES=	bin/bitcoind
+PLIST_FILES=	bin/bitcoind \
+		man/man1/bitcoind.1.gz \
+		%%ETCDIR%%.conf.sample
 
 USE_RC_SUBR=	bitcoind
+
+post-install:
+	${INSTALL_DATA} ${WRKSRC}/contrib/debian/examples/bitcoin.conf ${STAGEDIR}${PREFIX}/etc/bitcoin.conf.sample
 
 .include "${MASTERDIR}/Makefile"

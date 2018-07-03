@@ -2,12 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	memcached
-PORTVERSION=	2.2.0
-PORTREVISION=	4
+PORTVERSION=	3.0.4
 CATEGORIES=	databases
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP extension for interfacing with memcached via libmemcached library
@@ -15,15 +11,17 @@ COMMENT=	PHP extension for interfacing with memcached via libmemcached library
 LICENSE=	PHP30
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	libmemcached>=1.0.18:databases/libmemcached
 LIB_DEPENDS=	libmemcached.so:databases/libmemcached
 
 OPTIONS_DEFINE=	IGBINARY SASL
+OPTIONS_DEFAULT=SASL
 IGBINARY_DESC=	Binary serializer support
 
 CONFIGURE_ARGS=	--with-libmemcached-dir=${LOCALBASE}
-IGNORE_WITH_PHP=70
+IGNORE_WITH_PHP=56
 USE_PHP=	json:build session:build
-USES=		php:ext pkgconfig tar:tgz
+USES=		php:pecl pkgconfig
 
 IGBINARY_CONFIGURE_ENABLE=	memcached-igbinary
 IGBINARY_USE=		PHP=igbinary:build

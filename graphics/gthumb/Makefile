@@ -3,38 +3,45 @@
 #   $MCom: ports/trunk/graphics/gthumb/Makefile 19823 2014-08-20 09:28:14Z gusi $
 
 PORTNAME=	gthumb
-PORTVERSION=	3.4.3
-PORTREVISION=	1
+PORTVERSION=	3.6.1
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Image viewer and browser for the GNOME 3 environment
 
 LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas \
 		itstool:textproc/itstool
+LIB_DEPENDS=	libclutter-1.0.so:graphics/clutter \
+		libcogl.so:graphics/cogl \
+		libgstreamer-1.0.so:multimedia/gstreamer1 \
+		libjson-glib-1.0.so:devel/json-glib \
+		liblcms2.so:graphics/lcms2 \
+		liboauth.so:net/liboauth \
+		libomp.so:devel/openmp \
+		libpng.so:graphics/png \
+		libsoup-2.4.so:devel/libsoup \
+		libtiff.so:graphics/tiff
 RUN_DEPENDS=	gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas
 
 USES=		bison compiler:c++11-lib desktop-file-utils gettext gmake \
-		libtool pathfix pkgconfig tar:xz
-USE_GNOME=	gtk30 intltool librsvg2
+		jpeg libtool localbase pathfix pkgconfig tar:xz
+USE_GL=		egl
+USE_GNOME=	cairo gtk30 intltool librsvg2
+USE_XORG=	x11 xcomposite xdamage xext xfixes xrandr xi
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_lib_jpeg_jpeg_destroy_decompress=yes \
 		ac_cv_lib_tiff_TIFFWriteScanline=yes
 CONFIGURE_ARGS=	--disable-libchamplain \
-		--enable-compile-warnings=minimum \
 		--enable-librsvg
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-
-PLIST_SUB=	GTHUMB_VER="3.4"
+PLIST_SUB=	GTHUMB_VER="3.6"
 
 GLIB_SCHEMAS=	org.gnome.gthumb.change-date.gschema.xml \
 		org.gnome.gthumb.comments.gschema.xml \
@@ -94,8 +101,6 @@ YELP_DESC=		Viewer for built-in help system
 YELP_RUN_DEPENDS=	yelp:x11/yelp
 
 post-patch:
-	@${REINPLACE_CMD} -e \
-		's|-Wl,--as-needed|| ; \
-		 /^[[:blank:]]zlib/d' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|-Wl,--as-needed||' ${WRKSRC}/configure
 
 .include <bsd.port.mk>

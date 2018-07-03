@@ -26,24 +26,23 @@
  */
 	]]>
 	</copyright>
-	<name>nrpe2</name>
-	<version>2.3</version>
-	<title>Services: NRPEv2</title>
+	<name>nrpe</name>
+	<version>3.0</version>
+	<title>Services: NRPE</title>
 	<aftersaveredirect>/pkg_edit.php?xml=nrpe.xml&amp;id=0</aftersaveredirect>
-	<include_file>/usr/local/pkg/nrpe2.inc</include_file>
+	<include_file>/usr/local/pkg/nrpe.inc</include_file>
 	<menu>
-		<name>NRPEv2</name>
+		<name>NRPE</name>
 		<tooltiptext></tooltiptext>
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=nrpe.xml&amp;id=0</url>
 	</menu>
 	<service>
-		<name>nrpe2</name>
-		<rcfile>nrpe2.sh</rcfile>
-		<executable>nrpe2</executable>
-		<description>Nagios NRPEv2 Daemon</description>
+		<name>nrpe</name>
+		<rcfile>nrpe3.sh</rcfile>
+		<executable>nrpe3</executable>
+		<description>Nagios NRPE Daemon</description>
 	</service>
-	<configpath>installedpackages->package->nrpe2</configpath>
 	<fields>
 		<field>
 			<type>listtopic</type>
@@ -114,7 +113,7 @@
 					<fielddescr>Command</fielddescr>
 					<fieldname>command</fieldname>
 					<type>select_source</type>
-					<source><![CDATA[nrpe2_get_commands()]]></source>
+					<source><![CDATA[nrpe_get_commands()]]></source>
 					<source_name>command</source_name>
 					<source_value>command</source_value>
 				</rowhelperfield>
@@ -145,21 +144,24 @@
 		</field>
 	</fields>
 	<custom_php_install_command>
-		nrpe2_custom_php_install_command();
+		nrpe_custom_php_install_command();
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
-		nrpe2_custom_php_deinstall_command();
+		nrpe_custom_php_deinstall_command();
 	</custom_php_deinstall_command>
+	<custom_php_global_functions>
+		nrpe_upgrade_config();
+	</custom_php_global_functions>
 	<custom_add_php_command>
-		nrpe2_resync_package();
+		nrpe_resync_package();
 	</custom_add_php_command>
 	<custom_delete_php_command>
-		nrpe2_resync_package();
+		nrpe_resync_package();
 	</custom_delete_php_command>
 	<custom_php_resync_config_command>
-		nrpe2_resync_package();
+		nrpe_resync_package();
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>
-		nrpe2_custom_php_validation_command($_POST, $input_errors);
+		nrpe_custom_php_validation_command($_POST, $input_errors);
 	</custom_php_validation_command>
 </packagegui>

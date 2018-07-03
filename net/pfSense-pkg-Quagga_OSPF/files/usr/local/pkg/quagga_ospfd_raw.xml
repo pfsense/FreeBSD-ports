@@ -61,13 +61,54 @@
 		<executable>ospfd</executable>
 	</service>
 	<service>
+		<name>Quagga OSPF6d</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>ospf6d</executable>
+	</service>
+	<service>
+		<name>Quagga BGPd</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>bgpd</executable>
+	</service>
+	<service>
 		<name>Quagga Zebra</name>
 		<rcfile>quagga.sh</rcfile>
 		<executable>zebra</executable>
 	</service>
 	<fields>
+		<!--
+		/* Displays BGPd, OSPFd, OSPF6d, and Zebra configurations saved in pfSense config.xml file as well as their respectively running configurations.
+		 * Compares configurations and allows easy copying from running to saved configuration if changes have been made 
+		 * from the Quagga console. If fields match, backgrounds are green. If mismatched, backgrounds are orange.
+		 */
+		-->
 		<field>
-			<fielddescr>ospfd.conf</fielddescr>
+			<fielddescr>Set source (HW and CARP adddress) and destination for each BGP peering and specify md5 password.</fielddescr>
+			<fieldname>bgpdpeers</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Source address (this FW)</fielddescr>
+					<fieldname>bgpdsourceaddr</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Peer address</fielddescr>
+					<fieldname>bgpdpeeraddr</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>MD5 password</fielddescr>
+					<fieldname>bgpdmd5pw</fieldname>
+					<type>input</type>
+					<size>64</size>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<fielddescr>SAVED ospfd.conf</fielddescr>
 			<fieldname>ospfd</fieldname>
 			<description>
 				<![CDATA[
@@ -81,12 +122,161 @@
 			<cols>65</cols>
 		</field>
 		<field>
-			<fielddescr>zebra.conf</fielddescr>
+			<fielddescr>RUNNING ospfd.conf</fielddescr>
+			<fieldname>ospfdrunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var ospfd = document.getElementById('ospfd');
+				var ospfdrunning = document.getElementById('ospfdrunning'); 
+								function onCopyClick(elem1, elem2) {
+					elem1.value = elem2.value;
+					configCheck(elem1, elem2);
+				}
+				function configCheck(elem1,elem2) {
+					if (elem1.value == elem2.value ) {
+						elem1.style.backgroundColor = elem2.style.backgroundColor = 'limegreen';
+					}
+					else {
+						elem1.style.backgroundColor = elem2.style.backgroundColor = 'darkorange';
+					}
+				}
+				window.onload = configCheck(ospfd, ospfdrunning);
+				ospfd.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning)});
+				ospfdrunning.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/quagga/ospfd.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(ospfd, ospfdrunning); return false'>Copy OSPFd Running to Saved</button>
+				</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>SAVED ospf6d.conf</fielddescr>
+			<fieldname>ospf6d</fieldname>
+			<description>
+				<![CDATA[
+				Note: Once you click "Save" below, the assistant (in the "Global Settings" and "Interface Settings" tabs above) will be overridden with whatever you type here.<br />
+				To get back the assisted config save this form below once with both empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>RUNNING ospf6d.conf</fielddescr>
+			<fieldname>ospf6drunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var ospf6d = document.getElementById('ospf6d');
+				var ospf6drunning = document.getElementById('ospf6drunning'); 
+				window.onload = configCheck(ospf6d, ospf6drunning);
+				ospf6d.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning)});
+				ospf6drunning.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/quagga/ospf6d.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(ospf6d, ospf6drunning); return false'>Copy OSPF6d Running to Saved</button>
+				</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>SAVED bgpd.conf</fielddescr>
+			<fieldname>bgpd</fieldname>
+			<description>
+				<![CDATA[
+				<p>Note: Once you click "Save" below, the configuration will be overridden with whatever you type here.<br />
+				<b>Changes made via "vtysh" and contained in "/var/etc/quagga/bgpd.conf" are displayed in the "RUNNING" section below.</b><br />
+				To disable BGP, clear both BGP fields and click "Save".</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>RUNNING bgpd.conf</fielddescr>
+			<fieldname>bgpdrunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var bgpd = document.getElementById('bgpd');
+				var bgpdrunning = document.getElementById('bgpdrunning'); 
+				window.onload = configCheck(bgpd, bgpdrunning);
+				bgpd.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning)});
+				bgpdrunning.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/quagga/bgpd.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(bgpd, bgpdrunning); return false'>Copy BGPd Running to Saved</button>
+				</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>SAVED zebra.conf</fielddescr>
 			<fieldname>zebra</fieldname>
 			<description>
 				<![CDATA[
 				Note: Once you click "Save" below, the assistant (in the "Global Settings" and "Interface Settings" tabs above) will be overridden with whatever you type here.<br />
 				To get back the assisted config save this form below once with both empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>RUNNING zebra.conf</fielddescr>
+			<fieldname>zebrarunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var zebra = document.getElementById('zebra');
+				var zebrarunning = document.getElementById('zebrarunning'); 
+				window.onload = configCheck(zebra, zebrarunning);
+				zebra.addEventListener('keyup', function() { configCheck(zebra, zebrarunning)});
+				zebrarunning.addEventListener('keyup', function() { configCheck(zebra, zebrarunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/quagga/zebra.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(zebra, zebrarunning); return false'>Copy Zebra Running to Saved</button>
+				</p>
 				]]>
 			</description>
 			<type>textarea</type>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gifsicle
-PORTVERSION=	1.88
+PORTVERSION=	1.91
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.lcdf.org/gifsicle/
 
@@ -14,12 +14,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 
-PORTDOCS=	NEWS README.md
+PORTDOCS=	NEWS.md README.md
 PLIST_FILES=	bin/gifdiff bin/gifsicle \
 		man/man1/gifdiff.1.gz man/man1/gifsicle.1.gz
 
 OPTIONS_DEFINE=		DOCS X11
-OPTIONS_DEFAULT=	X11
+OPTIONS_DEFAULT=
 
 X11_USE=		xorg=x11
 X11_CONFIGURE_ENABLE=	gifview

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	antimicro
-PORTVERSION=	2.22
+PORTVERSION=	2.23
+PORTREVISION=	1
 CATEGORIES=	x11
 
 MAINTAINER=	ports@FreeBSD.org
@@ -21,6 +22,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 USE_XORG=	x11 xi xtst
 USE_QT5=	core gui linguisttools_build qmake_build buildtools_build widgets network
 USE_SDL=	sdl2
-USES=		cmake pkgconfig desktop-file-utils shared-mime-info
+USES=		cmake:outsource pkgconfig desktop-file-utils shared-mime-info
 
 .include <bsd.port.mk>

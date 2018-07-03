@@ -3,20 +3,21 @@
 
 PORTNAME=	PEAR_Info
 PORTVERSION=	1.9.2
+PORTREVISION=	1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Show Information about your PEAR install and its packages
 
-BUILD_DEPENDS=	${PEARDIR}/Console/Getargs.php:devel/pear-Console_Getargs
-RUN_DEPENDS=	${PEARDIR}/Console/Getargs.php:devel/pear-Console_Getargs
+BUILD_DEPENDS=	${PEARDIR}/Console/Getargs.php:devel/pear-Console_Getargs@${PHP_FLAVOR}
+RUN_DEPENDS=	${PEARDIR}/Console/Getargs.php:devel/pear-Console_Getargs@${PHP_FLAVOR}
 
-OPTIONS_DEFINE=	PEAR_PHPUNIT3
-OPTIONS_DEFAULT=	PEAR_PHPUNIT3
-PEAR_PHPUNIT3_DESC=	PEAR::PHPUnit3 support
+OPTIONS_DEFINE=	PHPUNIT
+OPTIONS_DEFAULT=PHPUNIT
+PHPUNIT_DESC=	PEAR::PHPUnit support
 
-USES=	pear
+USES=		pear
 
-PEAR_PHPUNIT3_RUN_DEPENDS=	${PEARDIR}/PHPUnit/Autoload.php:devel/pear-PHPUnit3
+PHPUNIT_RUN_DEPENDS=	phpunit:devel/phpunit@${PHP_FLAVOR}
 
 .include <bsd.port.mk>

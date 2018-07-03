@@ -1,0 +1,13 @@
+--- configure.orig	2017-11-14 13:26:30 UTC
++++ configure
+@@ -799,6 +799,10 @@ if [ '!' -f "$outpath/bin/qmake" ] ; then 
+             fi
+         fi
+ 
++    if [ -z "${BUILD_QMAKE}" ]; then
++        exit 0
++    fi
++
+     if [ "$OPT_VERBOSE" = yes ]; then
+         # Show the output of make
+         (cd "$outpath/qmake"; "$MAKE") || exit 2

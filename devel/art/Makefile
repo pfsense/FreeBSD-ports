@@ -3,6 +3,7 @@
 
 PORTNAME=	art
 PORTVERSION=	0.9.01
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://skylark.tsu.ru/art/0.9/download/src/ \
 		SF/art-project/src/
@@ -14,17 +15,26 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libxml++-2.6.so:textproc/libxml++26
 
-USES=	gmake pkgconfig
+USES=		compiler:c++11-lang gmake pkgconfig
+USE_CXXSTD=	c++11
 
 OPTIONS_DEFINE=	DOCS
 
+post-patch:
+	@${FIND} ${WRKSRC} -type f -name Makefile | ${XARGS} \
+		${REINPLACE_CMD} -e '/$$(CXX)/s,CFLAGS,CXXFLAGS,' \
+		-e 's,^CFLAGS+=,CXXFLAGS+=,'
+
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/artlibgen/src/artlibgen ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_PROGRAM} ${WRKSRC}/artrepgen/artrepgen ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/artlibgen/src/artlibgen \
+		${WRKSRC}/artrepgen/artrepgen ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for docs in posix-gcc-mt-file-lint.xml posix-gcc-mt-netw-lint.xml \
  posix-gcc-mt-file-special.xml
-	@${INSTALL_DATA} ${WRKSRC}/artlibgen/templates/${docs} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/artlibgen/templates/${docs} \
+		${STAGEDIR}${DOCSDIR}
 .endfor
 
 .if defined(MAINTAINER_MODE)

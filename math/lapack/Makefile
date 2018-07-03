@@ -3,6 +3,7 @@
 
 PORTNAME?=	lapack
 PORTVERSION=	3.5.0
+PORTREVISION?=	4	# Never remove this line, keep PORTREVISION?=0 in case.
 CATEGORIES=	math
 MASTER_SITES=	NL/lapack/
 DISTFILES=	lapack-${PORTVERSION}.tgz
@@ -11,7 +12,7 @@ DISTFILES+=		manpages-${PORTVERSION}.tgz
 .endif
 DIST_SUBDIR=	lapack
 
-MAINTAINER?=	maho@FreeBSD.org
+MAINTAINER?=	fortran@FreeBSD.org
 COMMENT?=	A library of Fortran 77 subroutines for linear algebra
 
 LICENSE=	BSD3CLAUSE
@@ -213,7 +214,7 @@ post-install:
 
 .if defined(MAINTAINER_MODE)
 package-manpages: build-manpages
-	@${RM} -f ${WRKDIR}/lapack-manpages-${PORTVERSION}.tar.gz ; \
+	@${RM} ${WRKDIR}/lapack-manpages-${PORTVERSION}.tar.gz ; \
 	cd ${WRKSRC}/DOCS/man; \
 	${TAR} -czvf ${WRKDIR}/lapack-manpages-${PORTVERSION}.tar.gz \
 	${MAN3L:S|^|man3/|}

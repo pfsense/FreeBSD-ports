@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	HTML_Template_IT
-PORTVERSION=	1.3.0
+DISTVERSION=	1.3.1
 PORTEPOCH=	1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PEAR Integrated template API
 
-USES=	pear
+USES=		pear
 
 .include <bsd.port.mk>

@@ -5,11 +5,11 @@ PORTNAME=	Net_Whois
 PORTVERSION=	1.0.5
 CATEGORIES=	net pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Tool to query internet domain name services
 
-USES=	pear
+USES=		pear
 
-RUN_DEPENDS=	${PEARDIR}/Net/Socket.php:net/pear-Net_Socket
+RUN_DEPENDS=	${PEARDIR}/Net/Socket.php:net/pear-Net_Socket@${PHP_FLAVOR}
 
 .include <bsd.port.mk>

@@ -2,6 +2,7 @@
 
 PORTNAME=	PyOpenGL
 PORTVERSION=	3.1.0
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,11 +14,10 @@ COMMENT=	OpenGL acceleration code for PyOpenGL
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	cython:lang/cython \
-		${PYNUMPY}
+BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY}
 
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist distutils cython
 USES=		python
 
 .include <bsd.port.mk>

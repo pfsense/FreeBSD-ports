@@ -17,10 +17,14 @@ validate_env dp_DEVELOPER dp_DISABLE_SIZE dp_DISTDIR dp_DISTINFO_FILE \
 
 set -u
 
-if [ ! -d "${dp_DISTDIR}" ]; then
-	mkdir -p "${dp_DISTDIR}"
-fi
-cd "${dp_DISTDIR}"
+case ${dp_TARGET} in
+	do-fetch|makesum)
+		if [ ! -d "${dp_DISTDIR}" ]; then
+			mkdir -p "${dp_DISTDIR}"
+		fi
+		cd "${dp_DISTDIR}"
+		;;
+esac
 
 for _file in "${@}"; do
 	file=${_file%%:*}
@@ -44,11 +48,11 @@ for _file in "${@}"; do
 			fi
 		done
 	fi
-	if [ '(' -f "${file}" -o -f "$filebasename" ')' -a "$force_fetch" != "true" ]; then
+	if [ -f "${file}" -a "$force_fetch" != "true" ]; then
 		continue
 	fi
 	full_file="${dp_DIST_SUBDIR:+${dp_DIST_SUBDIR}/}${file}"
-	if [ -L "$file" -o -L "$filebasename" ]; then
+	if [ -L "$file" ]; then
 		${dp_ECHO_MSG} "=> ${dp_DISTDIR}/$file is a broken symlink."
 		${dp_ECHO_MSG} "=> Perhaps a filesystem (most likely a CD) isn't mounted?"
 		${dp_ECHO_MSG} "=> Please correct this problem and try again."
@@ -108,7 +112,11 @@ for _file in "${@}"; do
 			;;
 	esac
 	sites_remaining=0
-	sites="$(${SORTED_MASTER_SITES_CMD_TMP} ${dp_RANDOMIZE_SITES})"
+	if [ -n "${dp_RANDOMIZE_SITES}" ]; then
+		sites="$(${SORTED_MASTER_SITES_CMD_TMP} | ${dp_RANDOMIZE_SITES})"
+	else
+		sites="$(${SORTED_MASTER_SITES_CMD_TMP})"
+	fi
 	for site in ${sites}; do
 		sites_remaining=$((sites_remaining + 1))
 	done

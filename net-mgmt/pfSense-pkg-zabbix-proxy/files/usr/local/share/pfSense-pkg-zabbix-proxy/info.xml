@@ -1,15 +1,20 @@
 <?xml version="1.0"?>
 <pfsensepkgs>
 	<package>
-		<name>Zabbix Proxy LTS</name>
-		<internal_name>zabbix-proxy</internal_name>
-		<descr><![CDATA[LTS (Long Term Support) release of Zabbix agent proxy. Zabbix LTS releases are supported for 
+		<name>%%ZABBIXTITLE%%</name>
+		<internal_name>%%ZABBIXINTERNALNAME%%</internal_name>
+		<descr><![CDATA[LTS (Long Term Support) release. Zabbix LTS releases are supported for 
 			Zabbix customers during five (5) years i.e. 3 years of Full Support (general, critical and security issues) 
 			and 2 additional years of Limited Support (critical and security issues only). Zabbix LTS version release 
 			will result in change of the first version number.&lt;br /&gt;
+			Standard release. Standard Zabbix releases are supported for Zabbix customers during
+			six (6) months of Full Support (general, critical and security issues) until the next
+			Zabbix stable release, plus one (1) additional month of Limited Support (critical and
+			security issues only). Zabbix Standard version release will result in change of the
+			second version number.&lt;br /&gt;
 			More info in &lt;a href=&quot;http://www.zabbix.com/life_cycle_and_release_policy.php&quot;&gt;Zabbix Life Cycle and Release Policy&lt;/a&gt;.]]></descr>
 		<website>http://www.zabbix.com/product.php</website>
 		<version>%%PKGVERSION%%</version>
-		<configurationfile>zabbix-proxy-lts.xml</configurationfile>
+		<configurationfile>zabbix-proxy.xml</configurationfile>
 	</package>
 </pfsensepkgs>

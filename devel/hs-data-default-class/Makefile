@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	data-default-class
-PORTVERSION=	0.0.1
-PORTREVISION=	7
+PORTVERSION=	0.1.2.0
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

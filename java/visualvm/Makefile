@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	visualvm
-PORTVERSION=	1.3.8
+PORTVERSION=	1.4
 CATEGORIES=	java devel
-MASTER_SITES=	https://java.net/downloads/visualvm/release${PORTVERSION:S/.//g}/
-DISTNAME=	visualvm_${PORTVERSION:S/.//g}-ml
+MASTER_SITES=	https://github.com/visualvm/visualvm.src/releases/download/${PORTVERSION}/
+DISTNAME=	visualvm_${PORTVERSION:S/.//g}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	GUI tool combining CLI JDK tools and profiling capabilities
@@ -18,14 +18,14 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 USES=		zip:infozip
 NO_BUILD=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	1.8+
 WRKSRC=		${WRKDIR}/visualvm_${PORTVERSION:S/.//g}
 SUB_FILES=	visualvm.desktop
 
 post-extract:
 	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -or -name '*.dll' -or -name '*.exe' \) -delete
-	@${RM} -rf ${WRKSRC}/profiler/lib/deployed
-	@${RM} -rf ${WRKSRC}/profiler/lib/jfluid-server-15.jar
+	@${RM} -r ${WRKSRC}/profiler/lib/deployed
+	@${RM} -r ${WRKSRC}/profiler/lib/jfluid-server-15.jar
 
 post-patch:
 	@${REINPLACE_CMD} 's|%%JAVA_HOME%%|${JAVA_HOME}|' ${WRKSRC}/bin/visualvm

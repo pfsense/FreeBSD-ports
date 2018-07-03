@@ -3,12 +3,12 @@
 
 PORTNAME=	ironsides
 PORTVERSION=	${SNAPSHOT:S/_//g}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	dns
 MASTER_SITES=	http://ironsides.martincarlisle.com/
 DISTNAME=	ironsides_authoritative-${SNAPSHOT}
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Authoritative DNS server formally verified by SPARK/Ada
 
 LICENSE=	Ironsides

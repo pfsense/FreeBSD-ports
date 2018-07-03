@@ -13,14 +13,16 @@ COMMENT=	dd tool suitable for rescuing data from a medium with errors
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+GNU_CONFIGURE=	yes
+USES=		autoreconf gmake
 USE_CSTD=	gnu89
-USE_AUTOTOOLS=	autoconf autoheader
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 ALL_TARGET=	default
 
 OPTIONS_DEFINE=	DOCS
+
+BROKEN_aarch64=		Fails to link: undefined reference to find_nonzero_arm8
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/dd_rescue ${STAGEDIR}${PREFIX}/bin

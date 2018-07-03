@@ -3,7 +3,7 @@
  * autoconfigbackup.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2016 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,9 +26,43 @@ require_once("notices.inc");
 unlink_if_exists("/usr/local/pkg/parse_config/parse_config_upload.inc");
 unlink_if_exists("/usr/local/pkg/parse_config/parse_config_upload.php");
 
+/* Check whether ACB is enabled */
+function acb_enabled() {
+	global $config;
+	$acb_enabled = false;
+
+	if (is_array($config['installedpackages']['autoconfigbackup']['config'])) {
+		if ($config['installedpackages']['autoconfigbackup']['config'][0]['enable_acb'] != "disabled") {
+			$acb_enabled = true;
+		}
+	}
+	return $acb_enabled;
+}
+
+/* Check whether Ignore vouchers is set to true */
+function ignore_vouchers() {
+	global $config;
+	$ignore_vouchers = false;
+
+	if (is_array($config['installedpackages']['autoconfigbackup']['config'])) {
+		if ($config['installedpackages']['autoconfigbackup']['config'][0]['ignore_vouchers'] != "false") {
+			$ignore_vouchers = true;
+		}
+	}
+	return $ignore_vouchers;
+}
+
 // Ensures patches match
 function acb_custom_php_validation_command($post, &$input_errors) {
 	global $_POST, $savemsg, $config;
+
+	// Do nothing when ACB is disabled in configuration
+	// This also makes it possible to delete the credentials from config.xml
+	if (!acb_enabled()) {
+		// We do not need to store this value.
+		unset($_POST['testconnection']);
+		return;
+	}
 
 	if (!$post['username']) {
 		$input_errors[] = "Username is required.";
@@ -62,6 +96,11 @@ function acb_custom_php_validation_command($post, &$input_errors) {
 }
 
 function acb_custom_php_resync_config_command() {
+	// Do nothing when ACB is disabled in configuration
+	if (!acb_enabled()) {
+		return;
+	}
+
 	if (is_file("/cf/conf/lastpfSbackup.txt")) {
 		conf_mount_rw();
 		unlink("/cf/conf/lastpfSbackup.txt");
@@ -96,12 +135,8 @@ function configure_proxy() {
 function test_connection($post) {
 	global $savemsg, $config, $g;
 
-	// Do nothing when booting
-	if (function_exists("platform_booting")) {
-		if (platform_booting()) {
-			return;
-		}
-	} elseif ($g['booting']) {
+	// Do nothing when booting or when not enabled
+	if (platform_booting() || !acb_enabled()) {
 		return;
 	}
 
@@ -111,8 +146,8 @@ function test_connection($post) {
 	// Encryption password
 	$decrypt_password = $post['crypto_password'];
 
-	// Defined username
-	$username = $post['username'];
+	// Defined username. Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
+	$username = strtolower($post['username']);
 
 	// Defined password
 	$password = $post['password'];
@@ -150,12 +185,8 @@ function test_connection($post) {
 function upload_config($reasonm = "") {
 	global $config, $g, $input_errors;
 
-	// Do nothing when booting
-	if (function_exists("platform_booting")) {
-		if (platform_booting()) {
-			return;
-		}
-	} elseif ($g['booting']) {
+	// Do nothing when booting or when not enabled
+	if (platform_booting() || !acb_enabled()) {
 		return;
 	}
 
@@ -187,7 +218,17 @@ function upload_config($reasonm = "") {
 	} else {
 		$reason	= $config['revision']['description'];
 	}
-	$username = $config['installedpackages']['autoconfigbackup']['config'][0]['username'];
+
+	/*
+	* Syncing vouchers happens every minute and sometimes multiple times. We don't
+	* want to fill up our db with a lot of the same config so just ignore that case.
+	*/
+	if((strpos($reason, 'Syncing vouchers') !== false ||
+		strpos($reason, 'Captive Portal Voucher database synchronized') !== false) && ignore_vouchers() ){
+		return;
+	}
+	// Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
+	$username = strtolower($config['installedpackages']['autoconfigbackup']['config'][0]['username']);
 	$password = $config['installedpackages']['autoconfigbackup']['config'][0]['password'];
 	$encryptpw = $config['installedpackages']['autoconfigbackup']['config'][0]['crypto_password'];
 
@@ -220,10 +261,11 @@ function upload_config($reasonm = "") {
 			$raw_config_sha256_hash = trim(shell_exec("/sbin/sha256 /cf/conf/config.xml | /usr/bin/awk '{ print $4 }'"));
 			$data = encrypt_data($data, $encryptpw);
 			tagfile_reformat($data, $data, "config.xml");
-
+			$uniqueID = system_get_uniqueid();
 			$post_fields = array(
 				'reason' => urlencode((string)$reason),
 				'hostname' => urlencode($hostname),
+				'uid' => urlencode($uniqueID),
 				'configxml' => urlencode($data),
 				'nooverwrite' => urlencode($nooverwrite),
 				'raw_config_sha256_hash' => urlencode($raw_config_sha256_hash)
@@ -265,6 +307,7 @@ function upload_config($reasonm = "") {
 				log_error($notice_text . " - " . $data);
 				file_notice("AutoConfigBackup", $notice_text, "Backup Failure", "/pkg_edit.php?xml=autoconfigbackup.xml&id=0");
 				update_filter_reload_status($notice_text);
+				$input_errors["acb_upload"] = $notice_text;
 			} else {
 				// Update last pfS backup time
 				$fd = fopen("/cf/conf/lastpfSbackup.txt", "w");
@@ -284,4 +327,3 @@ function upload_config($reasonm = "") {
 		}
 	}
 }
-

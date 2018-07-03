@@ -1,0 +1,32 @@
+# Created by: Johannes Dieterich <jmd@FreeBSD.org>
+# $FreeBSD$
+
+PORTNAME=	iboview
+PORTVERSION=	20150427
+PORTREVISION=	8
+CATEGORIES=	science
+MASTER_SITES=	http://www.iboview.org/bin/
+DISTNAME=	ibo-view.20150427
+
+MAINTAINER=	jmd@FreeBSD.org
+COMMENT=	Program for analyzing molecular electronic structure
+
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
+RUN_DEPENDS=	boost-libs>=0:devel/boost-libs
+
+ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON_amd64=	only builds and is supported on amd64
+
+USES=		fortran blaslapack:openblas qmake:outsource tar:bz2
+USE_GL=		gl glu
+USE_QT5=	buildtools_build core gui widgets opengl script svg
+
+PLIST_FILES=	bin/iboview
+
+do-install:
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/iboview ${STAGEDIR}${PREFIX}/bin
+
+.include <bsd.port.mk>

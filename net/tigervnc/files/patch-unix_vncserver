@@ -1,6 +1,6 @@
---- unix/vncserver.orig	2012-05-27 21:16:41.000000000 +0900
-+++ unix/vncserver	2012-05-27 21:17:13.000000000 +0900
-@@ -422,7 +422,7 @@
+--- unix/vncserver.orig	2017-05-16 13:53:28 UTC
++++ unix/vncserver
+@@ -532,7 +532,7 @@ sub CheckDisplayNumber
  
      socket(S, $AF_INET, $SOCK_STREAM, 0) || die "$prog: socket failed: $!\n";
      eval 'setsockopt(S, &SOL_SOCKET, &SO_REUSEADDR, pack("l", 1))';
@@ -9,7 +9,7 @@
  	close(S);
  	return 0;
      }
-@@ -430,7 +430,7 @@
+@@ -540,7 +540,7 @@ sub CheckDisplayNumber
  
      socket(S, $AF_INET, $SOCK_STREAM, 0) || die "$prog: socket failed: $!\n";
      eval 'setsockopt(S, &SOL_SOCKET, &SO_REUSEADDR, pack("l", 1))';

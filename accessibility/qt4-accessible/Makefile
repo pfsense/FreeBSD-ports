@@ -3,6 +3,7 @@
 
 PORTNAME=	accessible
 DISTVERSION=	${QT4_VERSION}
+PORTREVISION=	3
 CATEGORIES=	accessibility
 PKGNAMEPREFIX=	qt4-
 
@@ -11,6 +12,7 @@ COMMENT=	Qt accessibility widgets
 
 USE_QT4=	qmake_build moc_build qt3support corelib gui network sql xml
 QT_DIST=	yes
+USE_CXXSTD=	gnu++98
 
 HAS_CONFIGURE=	yes
 

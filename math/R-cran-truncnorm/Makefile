@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	truncnorm
-DISTVERSION=	1.0-7
+PORTREVISION=	2
+DISTVERSION=	1.0-8
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -11,6 +12,6 @@ COMMENT=	Truncated normal distribution
 
 LICENSE=	GPLv2
 
-USES=		cran:auto-plist
+USES=		cran:auto-plist,compiles
 
 .include <bsd.port.mk>

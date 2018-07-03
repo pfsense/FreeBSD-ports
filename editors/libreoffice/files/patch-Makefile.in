@@ -1,6 +1,15 @@
---- Makefile.in.orig	2015-08-22 06:41:35 UTC
-+++ Makefile.in
-@@ -321,7 +321,7 @@ else
+--- Makefile.in.orig	2018-02-21 20:11:59.625836000 -0500
++++ Makefile.in	2018-02-21 20:12:33.042717000 -0500
+@@ -254,7 +254,7 @@
+ #
+ # Bootstrap
+ #
+-bootstrap: check-if-root compilerplugins
++bootstrap: compilerplugins
+ 
+ #
+ # Build
+@@ -388,7 +388,7 @@
  	@exit 1
  endif
  

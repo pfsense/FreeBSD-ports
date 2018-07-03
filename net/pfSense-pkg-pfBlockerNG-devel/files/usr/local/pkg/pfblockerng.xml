@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * pfblockerng.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * All rights reserved.
+ *
+ * Originally based upon pfBlocker by
+ * Copyright (c) 2011 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>pfblockerng-devel</name>
+	<title>Firewall/pfBlockerNG</title>
+	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
+	<menu>
+		<name>pfBlockerNG</name>
+		<section>Firewall</section>
+		<url>/pfblockerng/pfblockerng_general.php</url>
+	</menu>
+	<service>
+		<name>pfb_dnsbl</name>
+		<rcfile>pfb_dnsbl.sh</rcfile>
+		<executable>lighttpd_pfb</executable>
+		<description>pfBlockerNG DNSBL service</description>
+	</service>
+	<service>
+		<name>pfb_filter</name>
+		<rcfile>pfb_filter.sh</rcfile>
+		<executable>php_pfb</executable>
+		<description>pfBlockerNG firewall filter service</description>
+	</service>
+	<tabs>
+	</tabs>
+	<fields>
+	</fields>
+	<custom_php_install_command>
+		<![CDATA[
+		include_once('/usr/local/pkg/pfblockerng/pfblockerng_install.inc');
+		]]>
+	</custom_php_install_command>
+	<custom_php_pre_deinstall_command>
+		<![CDATA[
+		pfblockerng_php_pre_deinstall_command();
+		]]>
+	</custom_php_pre_deinstall_command>
+	<custom_php_resync_config_command>
+		<![CDATA[
+		global $pfb;
+		$pfb['save'] = TRUE;
+		sync_package_pfblockerng();
+		]]>
+	</custom_php_resync_config_command>
+</packagegui>

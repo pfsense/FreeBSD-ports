@@ -1,10 +1,12 @@
 %%PYTHON_SITELIBDIR%%/PyQt5/QtSql.so
+%%PYTHON_SITELIBDIR%%/PyQt5/QtSql.pyi
 %%PYQT_SIPDIR%%/QtSql/QtSqlmod.sip
 %%PYQT_SIPDIR%%/QtSql/qsql.sip
 %%PYQT_SIPDIR%%/QtSql/qsqldatabase.sip
 %%PYQT_SIPDIR%%/QtSql/qsqldriver.sip
 %%PYQT_SIPDIR%%/QtSql/qsqlerror.sip
 %%PYQT_SIPDIR%%/QtSql/qsqlfield.sip
+%%PYQT_SIPDIR%%/QtSql/qtsqlglobal.sip
 %%PYQT_SIPDIR%%/QtSql/qsqlindex.sip
 %%PYQT_SIPDIR%%/QtSql/qsqlquery.sip
 %%PYQT_SIPDIR%%/QtSql/qsqlquerymodel.sip

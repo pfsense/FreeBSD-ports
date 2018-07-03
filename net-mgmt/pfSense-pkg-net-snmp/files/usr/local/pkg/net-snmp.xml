@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * net-snmp.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>netsnmp</name>
+	<title>NET-SNMP</title>
+	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
+	<menu>
+		<name>SNMP (NET-SNMP)</name>
+		<tooltiptext>Modify the NET-SNMP Daemon Settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=net-snmp.xml</url>
+	</menu>
+	<menu>
+		<name>SNMP Trap Daemon (NET-SNMP)</name>
+		<tooltiptext>Modify the NET-SNMP Daemon Settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+	</menu>
+	<service>
+		<name>net-snmpd</name>
+		<rcfile>net-snmpd.sh</rcfile>
+		<executable>snmpd</executable>
+		<description><![CDATA[NET-SNMP Daemon]]></description>
+	</service>
+	<service>
+		<name>net-snmptrapd</name>
+		<rcfile>net-snmptrapd.sh</rcfile>
+		<executable>snmptrapd</executable>
+		<description><![CDATA[NET-SNMP Trap Listening Daemon]]></description>
+	</service>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Host Information</text>
+			<url>/pkg_edit.php?xml=net-snmp_hostinfo.xml</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=net-snmp_users.xml</url>
+		</tab>
+		<tab>
+			<text>Communities</text>
+			<url>/pkg.php?xml=net-snmp_communities.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Generation</text>
+			<url>/pkg_edit.php?xml=net-snmp_trapgen.xml</url>
+		</tab>
+		<tab>
+			<text>[SNMP Trap Daemon]</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+		</tab>
+	</tabs>
+	<advanced_options>enabled</advanced_options>
+	<fields>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				The NET-SNMP Daemon responds to Simple Network Management Protocol (SNMP) requests from SNMP clients.
+				This daemon supports SNMPv1, SNMPv2c, and SNMPv3 with user authorization and transport security.
+				<br/><br/>
+				To get started, configure the settings on this tab and the Host Information tab. By default, the
+				package creates a "manager" user with a pseudo-random password to make internal queries. Change
+				the password for this default user on the Users as soon as possible.
+				<div class="infoblock">
+				SNMP information is organized hierarchically in a tree, with each node being an Object Identifier (OID).
+				Management Information Base (MIB) files define groups of information and named mappings for OIDs.
+				Clients query a specific OID and can get a single result or they can "walk" the tree for multiple
+				nested results.
+				<br/><br/>
+				To use traditional plain text SNMPv1 or SNMPv2c with basic community-name security, create entries
+				the Communities tab.
+				<br/><br/>
+				To use SNMPv3 user authentication with passwords and optional encryption, create entries on the User tab.
+				<br/><br/>
+				To use TLS transport security, create a certificate structure (Certificate Authority, Server Certificate,
+				User Certificates). Select the CA and Server certificate on the General tab and then create certificate
+				mappings on the Users tab.
+				</div>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Enable snmpd</fielddescr>
+			<fieldname>enable_snmpd</fieldname>
+			<description>Check to enable snmpd.</description>
+			<type>checkbox</type>
+		</field>
+
+		<field>
+			<fielddescr>Interface Binding</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Transport</fielddescr>
+					<fieldname>transport</fieldname>
+					<description><![CDATA[The protocol used by this binding.]]></description>
+					<type>select</type>
+					<default_value>udp</default_value>
+					<options>
+						<option><name>UDP</name><value>udp</value></option>
+						<option><name>UDP6</name><value>udp6</value></option>
+						<option><name>TCP</name><value>tcp</value></option>
+						<option><name>TCP6</name><value>tcp6</value></option>
+						<option><name>DTLS/UDP</name><value>dtlsudp</value></option>
+						<option><name>TLS/TCP</name><value>tlstcp</value></option>
+					</options>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>IP Address/Hostname</fielddescr>
+					<fieldname>ipaddress</fieldname>
+					<description><![CDATA[IP address or hostname to bind. Leave blank to bind UDP on all interfaces. For DTLS, this must be a hostname.]]></description>
+					<type>input</type>
+					<width>3</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Port</fielddescr>
+					<fieldname>snmpport</fieldname>
+					<description><![CDATA[The port used to bind (default: 161).]]></description>
+					<type>input</type>
+					<width>1</width>
+					<default_value>161</default_value>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				The Interface Binding controls define transports, addresses, and ports used to listen for SNMP client requests.
+				Leave the IP Address/Hostname field blank to bind to all addresses with the chosen transport and port.
+				The port number defaults to 161 when left blank.
+				<div class="infoblock">
+					UDP and TCP can accept either a hostname or IPv4 address.
+					UDP6 and TCP6 can accept either a hostname or IPv6 address.
+					An address entry for DTLS or TLS must be a hostname, not an IP address.
+				</div>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+
+		<field>
+			<name>Identification</name>
+			<type>listtopic</type>
+		</field>
+
+		<field>
+			<fielddescr>Engine ID Type</fielddescr>
+			<fieldname>engineidtype</fieldname>
+			<description><![CDATA[The method used by snmpd to build the Engine ID for this firewall.]]></description>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>String (Enter value below)</name><value>string</value></option>
+				<option><name>Firewall IPv4 Address</name><value>1</value></option>
+				<option><name>Firewall IPv6 Address</name><value>2</value></option>
+				<option><name>Firewall MAC Address</name><value>3</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Engine ID</fielddescr>
+			<fieldname>engineid</fieldname>
+			<description><![CDATA[SNMP Engine ID string to use when Engine ID Type is set to String (optional)]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>CA Certificate</fielddescr>
+			<fieldname>ca_cert</fieldname>
+			<description><![CDATA[The SSL Certficate Authority for use with DTLS.<br>
+					Choose "Self-Signed Certificate" when using a self-signed server certificate.
+					Choose "None" if DTLS will not be used. (Default: none)]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_ca_certs()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>Server Certificate</fielddescr>
+			<fieldname>server_cert</fieldname>
+			<description><![CDATA[The SSL Server Certficate for use with DTLS.<br>
+					Choose "None" if DTLS will not be used. (Default: none)]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_certs()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>Use Transport Prefix</fielddescr>
+			<fieldname>usetransportprefix</fieldname>
+			<description>Use Transport Prefix with TSM (Default: unchecked)</description>
+			<sethelp>
+				<![CDATA[
+				When set, the transport type is added to the start of the username, e.g. dtls:myuser
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+
+		<field>
+			<name>Rate Limits</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Max Get Bulk Repeats</fielddescr>
+			<fieldname>maxgetbulkrepeats</fieldname>
+			<description><![CDATA[Maximum number of responses allowed for a single variable in a getbulk request. Enter -1 for unlimited, or 0 for the system default. (optional, default: unlimited)]]></description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Max Get Bulk Responses</fielddescr>
+			<fieldname>maxgetbulkresponses</fieldname>
+			<description><![CDATA[Maximum number of responses allowed for a getbulk request. Enter -1 for unlimited, or 0 for the system default. (optional, default: 100)]]></description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+
+		<field>
+			<fielddescr>Custom Options</fielddescr>
+			<fieldname>custom_options</fieldname>
+			<description>
+				<![CDATA[
+				Custom options to add into the snmpd.conf file as-is.
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>78</cols>
+			<rows>5</rows>
+			<advancedfield/>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		netsnmp_install_command();
+	</custom_php_install_command>
+	<custom_php_resync_config_command>
+		netsnmp_resync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		netsnmp_validate_general($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

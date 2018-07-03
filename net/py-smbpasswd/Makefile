@@ -7,17 +7,15 @@ PORTREVISION=	1
 CATEGORIES=	net python
 MASTER_SITES=	http://barryp.org/static/media/software/download/py-${PORTNAME}/${PORTVERSION}/ \
 		CHEESESHOP
-PROJECTHOST=	py-smbpasswd
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	wxs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SMB/CIFS password generation utility for Python
 
 LICENSE=	GPLv2
 
 # Python3 ready
-USES=		python
-USE_PYTHON=	distutils autoplist
+USES=		python tar:tgz
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

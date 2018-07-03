@@ -3,7 +3,7 @@
 
 PORTNAME=	ugene
 DISTVERSION=	1.22.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	biology science
 MASTER_SITES=	http://ugene.unipro.ru/downloads/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} QueryDesigner_UserManual.pdf \
@@ -18,7 +18,9 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		desktop-file-utils execinfo qmake
+BROKEN_aarch64=	Fails to build: invokes x86 asm
+
+USES=		desktop-file-utils qmake
 USE_GL=		glu
 USE_QT5=	buildtools_build linguisttools_build scripttools_build \
 		gui network printsupport script sql svg webkit widgets xml \
@@ -29,17 +31,15 @@ QMAKE_ARGS=	INSTALL_PREFIX="${PREFIX}" UGENE_INSTALL_DATA="${DATADIR}" \
 		LUPDATE="${LUPDATE}"
 ALL_TARGET=	release
 
+# Required for Google Test code
+CXXFLAGS+=	-std=c++11
+
 DOCSDIR=	${DATADIR}/manuals
 
 OPTIONS_DEFINE=	DOCS
 DOCS_DESC=	Install official UGENE documentation (PDF)
 
 .include <bsd.port.pre.mk>
-
-# Required for Google Test code
-.if ${OSVERSION} > 1000054
-CXXFLAGS+=	-std=c++11
-.endif
 
 .if ${ARCH} == amd64
 # XXX: need to manually tell the build we are on x64

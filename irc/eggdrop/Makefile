@@ -21,6 +21,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-tcllib=${LOCALBASE}/lib/libtcl${TCL_SHLIB_VER}.so \
 		--with-tclinc=${LOCALBASE}/include/tcl${TCL_VER}/tcl.h
 MAKE_JOBS_UNSAFE=	yes
+LLD_UNSAFE=	yes
 
 SUB_FILES=	pkg-message
 PORTDOCS=	*
@@ -72,7 +73,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/language
 	${INSTALL_DATA} ${WRKSRC}/language/core.*.lang ${STAGEDIR}${DATADIR}/language
 	@cd ${WRKSRC}/src/mod \
-		&& ${FIND} . -name "*.lang" -exec ${INSTALL_DATA} "{}" \
+		&& ${FIND} . -name "*.lang" -exec ${INSTALL_DATA} {} \
 			${STAGEDIR}${DATADIR}/language ";"
 	@${MKDIR} ${STAGEDIR}${DATADIR}/scripts
 .for f in CONTENTS action.fix.tcl autobotchk alltools.tcl botchk \

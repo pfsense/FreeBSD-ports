@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	libxslt
-PORTVERSION=	1.1.29
+PORTVERSION=	1.1.32
 PORTREVISION?=	0
 CATEGORIES?=	textproc gnome
-MASTER_SITES=	ftp://xmlsoft.org/libxml2/ \
-		http://xmlsoft.org/sources/ \
-		ftp://gd.tuwien.ac.at/pub/libxml/
+MASTER_SITES=	http://xmlsoft.org/sources/ \
+		https://mirror.umd.edu/xbmc/build-deps/sources/
 DIST_SUBDIR=	gnome2
 
 MAINTAINER?=	gnome@FreeBSD.org
@@ -15,7 +14,7 @@ COMMENT?=	The XSLT C library for GNOME
 
 .if !defined(REFERENCE_PORT)
 
-USES+=		cpe gmake libtool pathfix
+USES+=		cpe gmake localbase libtool pathfix
 CPE_VENDOR=	xmlsoft
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -23,8 +22,6 @@ USE_LDCONFIG=	yes
 USE_GNOME?=	libxml2
 CONFIGURE_ARGS?=--with-html-dir=${PREFIX}/share/doc \
 		--without-python
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 LICENSE=	MIT
 
@@ -48,12 +45,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|[$$](bindir)/xsltproc|../xsltproc/xsltproc|g ; \
 		s|[$$](bindir)/xmllint|../xmllint/xmllint|g' \
 		${WRKSRC}/doc/Makefile.in
-
-.if !defined(MASTERDIR)
-post-stage:
-	${LN} -s libxslt.so.1 ${STAGEDIR}${PREFIX}/lib/libxslt.so.2
-	${LN} -s libexslt.so.0 ${STAGEDIR}${PREFIX}/lib/libexslt.so.8
-.endif
 
 .include <bsd.port.mk>
 

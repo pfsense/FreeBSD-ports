@@ -3,7 +3,7 @@
 
 PORTNAME=	drpython
 PORTVERSION=	3.11.4
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	devel python
 MASTER_SITES=	SF/${PORTNAME}/DrPython%20%283.x%29/${PORTVERSION}
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
@@ -17,16 +17,17 @@ LICENSE=	GPLv2
 # fails to build in presence if installed self
 CONFLICTS_BUILD=	${PORTNAME}${PYTHON_PKGNAMESUFFIX}-[0-9]*
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${FLAVOR}
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		compiler:c++11-lib python zip
+USES=		compiler:c++11-lib python:2.7 zip
 USE_PYTHON=	autoplist distutils
 USE_WX=		3.0+
 WX_COMPS=	python:lib
+MAKE_ARGS=	SPHINXBUILD=sphinx-build-${PYTHON_VER}
 
 PLIST_FILES=	bin/drpython
 
@@ -49,7 +50,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|%%PYTHON%%|${PYTHON_CMD}|' ${WRKSRC}/drpython.lin
 
 pre-build:
-	@(cd ${WRKSRC}/docsrc && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} html)
+	@(cd ${WRKSRC}/docsrc && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} html)
 	@(cd ${WRKSRC}/docsrc/_build/html && ${CP} -f *.html *.js \
 		${WRKSRC}/documentation)
 

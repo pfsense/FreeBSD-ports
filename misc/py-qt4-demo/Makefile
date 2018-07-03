@@ -16,6 +16,7 @@ DISTINFO_FILE=	${PYQT4_DISTINFO_FILE}
 
 NO_BUILD=	yes
 USES=		python pyqt:4
+USE_PYTHON=	py3kplist flavors
 
 EXAMPLESDIR=	${PREFIX}/share/examples/py-qt4
 
@@ -26,7 +27,7 @@ USE_PYQT=	assistant_run core_run dbus_run dbussupport_run declarative_run \
 		xmlpatterns_run sip_run qscintilla2_run
 
 do-install:
-	${RM} -f ${WRKSRC}/examples/designer/plugins/plugins.py.orig
+	${RM} ${WRKSRC}/examples/designer/plugins/plugins.py.orig
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}
 	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \

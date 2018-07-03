@@ -3,6 +3,7 @@
 
 PORTNAME=	conkeror
 PORTVERSION=	20150730
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://distfiles.pirateparty.in/ashish/ \
 		LOCAL/ashish
@@ -10,7 +11,7 @@ MASTER_SITES=	http://distfiles.pirateparty.in/ashish/ \
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Keyboard-oriented, customizable web browser based on Mozilla XULRunner
 
-LICENSE=	GPLv1 GPLv2 MPL
+LICENSE=	GPLv1 GPLv2 MPL11
 LICENSE_COMB=	multi
 
 OPTIONS_SINGLE+=	XULRUNNER
@@ -31,8 +32,8 @@ post-patch:
 		cd ${WRKSRC} && \
 			${MV} contrib/conkeror.desktop . && \
 			${MV} contrib/man/conkeror.1 . && \
-			${RM} -rf contrib/debian contrib/dist contrib/man debian tests && \
-			${RM} -f contrib/build.sh contrib/install.sh contrib/mketags.sh \
+			${RM} -r contrib/debian contrib/dist contrib/man debian tests && \
+			${RM} contrib/build.sh contrib/install.sh contrib/mketags.sh \
 			contrib/testrun.sh contrib/run-conkeror && \
 			${MKDIR} share  && \
 			${MV} branding chrome components content \

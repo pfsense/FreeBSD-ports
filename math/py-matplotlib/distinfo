@@ -1,2 +1,5 @@
-SHA256 (matplotlib-1.5.0.tar.gz) = 67b08b1650a00a6317d94b76a30a47320087e5244920604c5462188cba0c2646
-SIZE (matplotlib-1.5.0.tar.gz) = 53962448
+TIMESTAMP = 1520663268
+SHA256 (matplotlib-matplotlib-v2.1.2_GH0.tar.gz) = 613d79282a0a8ba88cfc52dbcf1b08ab070dae395c3d313d141ccc3f87e3c9fa
+SIZE (matplotlib-matplotlib-v2.1.2_GH0.tar.gz) = 35181192
+SHA256 (5b7a21e53e11a7064b2171c0d91afda67f30c4e7.patch) = f332f13cd365cdc3903bed12bdb483366e0212d9481f0949474334db96cc3257
+SIZE (5b7a21e53e11a7064b2171c0d91afda67f30c4e7.patch) = 1736

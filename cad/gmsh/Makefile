@@ -2,17 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	gmsh
-PORTVERSION=	2.13.2
+DISTVERSION=	3.0.6
+PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://gmsh.info/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 DIST_SUBDIR=	gmsh
 
-MAINTAINER?=	jrm@FreeBSD.org
+MAINTAINER=	jrm@FreeBSD.org
 COMMENT?=	Automatic 3D finite element mesh generator
 
 LICENSE=	AGPLv3+ APACHE20 GPLv3+ GPLv2+ LGPL21
 LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2+=	${WRKSRC}/LICENSE.txt
+
+BROKEN_FreeBSD_12_i386=	fails to build on FreeBSD 12 i386 due to a clang bug: https://llvm.org/bugs/show_bug.cgi?id=21903
+BROKEN_powerpc64=	fails to build: .rodata._Z7pow_intRKdRKi referenced in section .got of CMakeFiles/gmsh.dir/Numeric/bezierBasis.cpp.o: defined in discarded section
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -22,21 +27,18 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libsz.so:science/szip
 RUN_DEPENDS=	getdp:science/getdp
 
-BROKEN_powerpc64=Does not build on powerpc64
-BROKEN_FreeBSD_12_i386=Does not build on FreeBSD 12 i386 due to a clang bug: https://llvm.org/bugs/show_bug.cgi?id=21903
+USES=		blaslapack cmake fortran jpeg tar:tgz
+USE_GL=		gl glu
+USE_XORG=	x11 xcursor xext xinerama xfixes xft xrender
 
 SLAVEDIRS=	cad/gmsh-occ
 
-USES=		blaslapack cmake fortran gmake jpeg tar:tgz
-USE_GL=		gl glu
-USE_XORG=	x11 xext xfixes xft
-
-MAKE_JOBS_UNSAFE=yes
+MAKE_JOBS_UNSAFE=	yes
 
 CMAKE_ARGS=	-DCMAKE_SKIP_RPATH:BOOL=YES
 
-OPTIONS_DEFINE=	CGNS MED OCC SHARED STATIC
-OPTIONS_DEFAULT=MED
+OPTIONS_DEFINE=		CGNS MED OCC SHARED STATIC
+OPTIONS_DEFAULT=	MED
 
 CGNS_DESC=	Enable experimental CGNS mesh support
 MED_DESC=	Enable MED mesh and post file formats
@@ -60,9 +62,10 @@ MED_LIB_DEPENDS=	libmed.so:french/med
 OCC_CFLAGS=		-DHAVE_CONFIG_H -DHAVE_WOK_CONFIG_H -DFREEBSD
 OCC_CMAKE_BOOL=		ENABLE_OCC
 OCC_CMAKE_ON=		-DOCC_INC=${LOCALBASE}/include/OpenCASCADE
-OCC_CONFLICTS=		gmsh-2.*
-OCC_CONFLICTS_OFF=	gmsh-occ-2.*
-OCC_LIB_DEPENDS=	libTKernel.so:cad/opencascade
+OCC_CONFLICTS=		gmsh-[23].*
+OCC_CONFLICTS_OFF=	gmsh-occ-[23].*
+OCC_LIB_DEPENDS=	libopenblas.so:math/openblas libTKernel.so:cad/opencascade
+OCC_USE=		gnome=cairo
 SHARED_ALL_TARGET=	shared
 SHARED_CMAKE_BOOL=	ENABLE_BUILD_SHARED
 SHARED_VARS=		USE_LDCONFIG=yes

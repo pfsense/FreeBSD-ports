@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Traffic Totals</name>
+                <internal_name>Status_Traffic_Totals</internal_name>
+		<descr><![CDATA[Traffic Totals page under the Status menu, which will give a total amount of traffic passed In/Out over the period of hours, days, and months. Uses vnStat for data collection.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>Status_Traffic_Totals.xml</configurationfile>
+	</package>
+</pfsensepkgs>

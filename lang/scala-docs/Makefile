@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	scala-docs
-PORTVERSION=	2.11.7
+PORTVERSION=	2.12.4
 CATEGORIES=	lang java
 MASTER_SITES=	http://www.scala-lang.org/files/archive/
 
@@ -11,10 +11,15 @@ COMMENT=	Documentation for the Scala libraries & compiler
 
 USES=		tar:txz
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
+
+WRKSRC=		${WRKDIR}/scala-${PORTVERSION}
+
+PORTSCOUT=	limit:^2\.12\.
 
 .include <bsd.port.options.mk>
 

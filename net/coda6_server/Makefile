@@ -3,7 +3,7 @@
 
 PORTNAME=	coda
 PORTVERSION=	6.9.4
-PORTREVISION?=	4
+PORTREVISION?=	7
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.coda.cs.cmu.edu/pub/coda/src/ \
 		ftp://ftp.planetmirror.com/pub/coda/src/ \
@@ -13,6 +13,8 @@ PKGNAMESUFFIX=	-${CODA_SUITE}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Server programs for a replicated high-performance network file system
+
+BROKEN=		fails to build
 
 LIB_DEPENDS=	liblwp.so:devel/lwp \
 		librpc2.so:devel/rpc2 \

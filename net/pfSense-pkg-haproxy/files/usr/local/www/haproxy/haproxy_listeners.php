@@ -3,9 +3,9 @@
  * haproxy_listeners.php
  *
  * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * Copyright (c) 2009 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2015 PiBa-NL
- * Copyright (C) 2008 Remco Hoef <remcoverhoef@pfsense.com>
+ * Copyright (c) 2013-2016 PiBa-NL
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,6 +30,17 @@ require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $changedesc = "Services: HAProxy: Frontends";
+if (!is_array($config['installedpackages'])) {
+	$config['installedpackages'] = array();
+}
+
+if (!is_array($config['installedpackages']['haproxy'])) {
+	$config['installedpackages']['haproxy'] = array();
+}
+
+if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+	$config['installedpackages']['haproxy']['ha_backends'] = array();
+}
 
 if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
@@ -38,7 +49,7 @@ $a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
-	
+
 	$a_new = array();
 	/* copy all entries < $before and not selected */
 	for ($i = 0; $i < $before; $i++) {
@@ -83,7 +94,7 @@ if($_GET['action'] == "toggle") {
 			echo "1|";
 		}
 		$changedesc .= " set frontend '$id' status to: {$frontent['status']}";
-		
+
 		touch($d_haproxyconfdirty_path);
 		write_config($changedesc);
 	}
@@ -120,7 +131,7 @@ if ($_POST) {
 			header("Location: haproxy_listeners.php");
 			exit;
 		}
-	} else {	
+	} else {
 
 		// from '\src\usr\local\www\vpn_ipsec.php'
 		/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
@@ -133,7 +144,7 @@ if ($_POST) {
 			}
 		}
 		//
-		
+
 		/* move selected p1 entries before this */
 		if (isset($movebtn) && is_array($_POST['rule']) && count($_POST['rule'])) {
 			$moveto = get_frontend_id($movebtn);
@@ -142,15 +153,16 @@ if ($_POST) {
 				$selected[] = get_frontend_id($selection);
 			}
 			array_moveitemsbefore($a_frontend, $moveto, $selected);
-		
+
 			touch($d_haproxyconfdirty_path);
-			write_config($changedesc);			
+			write_config($changedesc);
 		}
 	}
 } else {
 	$result = haproxy_check_config($retval);
-	if ($result)
+	if ($result) {
 		$savemsg = gettext($result);
+	}
 }
 
 if ($_GET['act'] == "del") {
@@ -180,17 +192,18 @@ function haproxy_userlist_backend_servers($backendname) {
 			foreach($servers as $server){
 				$srvstatus = $server['status'];
 				$status = $a_servermodes[$srvstatus]['sign'];
-				if (isset($server['forwardto']) && $server['forwardto'] != "")
+				if (isset($server['forwardto']) && $server['forwardto'] != "") {
 					$backend_servers .= "\n{$status}[{$server['forwardto']}]";
-				else								
+				} else {
 					$backend_servers .= "\n{$status}{$server['address']}:{$server['port']}";
+				}
 			}
 		}
 	}
 	return $backend_servers;
 }
 
-$pgtitle = array("Services", "HAProxy", "Frontends");
+$pgtitle = array("Services", "HAProxy", "Frontend");
 include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -208,21 +221,28 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
 
 ?>
 <form action="haproxy_listeners.php" method="post">
-<script type="text/javascript" src="/haproxy/haproxy_geturl.js"></script>
 <script type="text/javascript">
 function set_content(elementid, image) {
 	var item = document.getElementById(elementid);
 	item.innerHTML = image;
 }
-
+function toggleFrontend(frontendname) {
+	$.ajax({
+		url: "",
+		data: {id: frontendname, action:"toggle"},
+		success: function(data){
+			js_callback(data);
+		}
+	})
+}
 function js_callback(req) {
 	showapplysettings.style.display = 'block';
-	
-	if(req.content != '') {
-		var itemsplit = req.content.split("|");
+
+	if(req !== '') {
+		var itemsplit = req.split("|");
 		buttonid = itemsplit[0];
 		enabled = itemsplit[1];
-		if (enabled == 1){
+		if (enabled === "1"){
 			img = "<?=haproxyicon("enabled", gettext("click to toggle enable/disable this frontend"))?>";
 		} else {
 			img = "<?=haproxyicon("disabled", gettext("click to toggle enable/disable this frontend"))?>";
@@ -232,16 +252,18 @@ function js_callback(req) {
 }
 </script>
 <?php
-	
+
 	function sort_sharedfrontends(&$a, &$b) {
 		// make sure the 'primary frontend' is the first in the array, after that sort by name.
-		if ($a['secondary'] != $b['secondary'])
+		if ($a['secondary'] != $b['secondary']) {
 			return $a['secondary'] > $b['secondary'] ? 1 : -1;
-		if ($a['name'] != $b['name'])
+		}
+		if ($a['name'] != $b['name']) {
 			return $a['name'] > $b['name'] ? 1 : -1;
+		}
 		return 0;
 	}
-	
+
 	$a_frontend_grouped = array();
 	foreach($a_frontend as &$frontend2) {
 		$mainfrontend = get_primaryfrontend($frontend2);
@@ -276,13 +298,13 @@ function js_callback(req) {
 				<tbody class="user-entries">
 <?php
 		$textgray = "";
-		$first = true;		
+		$first = true;
 		$last_frontend_shared = false;
 		$i = 0;
 		foreach ($a_frontend_grouped as $a_frontend) {
 			//usort($a_frontend, 'sort_sharedfrontends');
 			if ((count($a_frontend) > 1 || $last_frontend_shared) && !$first) {
-				?> <tr class="<?=$textgray?>"><td colspan="10">&nbsp;</td></tr> <?	
+				?> <tr class="<?=$textgray?>"><td colspan="10">&nbsp;</td></tr> <?
 			}
 			$first = false;
 			$last_frontend_shared = count($a_frontend) > 1;
@@ -310,7 +332,7 @@ function js_callback(req) {
 						} else {
 							$iconfn = "enabled";
 						}?>
-					<a id="btn_<?=$frontendname;?>" href='javascript:getURL("?id=<?=$frontendname;?>&amp;action=toggle&amp;", js_callback);'>
+					<a id="btn_<?=$frontendname;?>" href='javascript:toggleFrontend("<?=$frontendname;?>");'>
 						<?=haproxyicon($iconfn, gettext("click to toggle enable/disable this frontend"))?>
 					</a>
 				  </td>
@@ -324,7 +346,7 @@ function js_callback(req) {
 					if ($isaclset) {
 						echo haproxyicon("acl", gettext("acl's used") . ": {$isaclset}");
 					}
-					
+
 					if (get_frontend_uses_ssl($frontend)) {
 						$cert = lookup_cert($frontend['ssloffloadcert']);
 						$descr = htmlspecialchars($cert['descr']);
@@ -339,10 +361,14 @@ function js_callback(req) {
 						}
 						echo haproxyicon("cert", "SSL offloading cert: {$descr}");
 					}
-					
+
 					$isadvset = "";
-					if ($frontend['advanced_bind']) $isadvset .= "Advanced bind: ".htmlspecialchars($frontend['advanced_bind'])."\r\n";
-					if ($frontend['advanced']) $isadvset .= "Advanced pass thru setting used\r\n";
+					if ($frontend['advanced_bind']) {
+						$isadvset .= "Advanced bind: ".htmlspecialchars($frontend['advanced_bind'])."\r\n";
+					}
+					if ($frontend['advanced']) {
+						$isadvset .= "Advanced pass thru setting used\r\n";
+					}
 					if ($isadvset) {
 						echo haproxyicon("advanced", gettext("Advanced settings set") . ": {$isadvset}");
 					}
@@ -376,13 +402,15 @@ function js_callback(req) {
 						$mainfrontend = get_primaryfrontend($frontend);
 						$sslused = get_frontend_uses_ssl($mainfrontend);
 						$httpused = !get_frontend_uses_ssl_only($frontend);
-						if ($httpused)
+						if ($httpused) {
 							echo "http";
+						}
 						if ($sslused) {
 							echo ($httpused ? "/" : "") . "https";
 						}
-					} else
+					} else {
 						echo $a_frontendmode[$frontend['type']]['shortname'];
+					}
 				  ?>
 				  </td>
 				  <td>
@@ -425,7 +453,7 @@ function js_callback(req) {
 				</tr><?php
 			}
 		}
-?>				
+?>
 				</tbody>
 			</table>
 		</div>

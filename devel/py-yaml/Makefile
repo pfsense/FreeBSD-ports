@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	yaml
-PORTVERSION=	3.11
-PORTREVISION=	1
+PORTVERSION=	3.12
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,10 +17,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 OPTIONS_DEFINE=	LIBYAML EXAMPLES
 LIBYAML_DESC=	Use textproc/libyaml for faster parsing
 
-USES?=		python
+USES=		python
 USE_PYTHON=	distutils autoplist
 
-EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
+EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
 
 .include <bsd.port.pre.mk>
 

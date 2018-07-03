@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	File-Random
-PORTVERSION=	0.17
-PORTREVISION=	2
+PORTVERSION=	0.18
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -11,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Perl module for random selecting of a file
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Set-Scalar>0:devel/p5-Set-Scalar \
@@ -25,5 +24,6 @@ TEST_DEPENDS=	p5-Test-Class>=0.03:devel/p5-Test-Class \
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

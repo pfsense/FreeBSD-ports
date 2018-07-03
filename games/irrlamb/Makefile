@@ -3,7 +3,7 @@
 
 PORTNAME=	irrlamb
 PORTVERSION=	0.2.1
-PORTREVISION=	1
+PORTREVISION=	5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -24,6 +24,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	jazztickets
 
 USES=		cmake compiler:c++11-lib lua:53 openal
+LLD_UNSAFE=	yes
 
 PORTDOCS=	*
 PORTDATA=	*

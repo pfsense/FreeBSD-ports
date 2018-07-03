@@ -2,11 +2,11 @@
 
 PORTNAME=	recordmydesktop
 DISTVERSION=	0.3.8.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Record desktop sessions to an Ogg-Theora-Vorbis file
 
 LIB_DEPENDS=	libtheora.so:multimedia/libtheora \

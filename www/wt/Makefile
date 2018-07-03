@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	wt
-PORTVERSION=	3.3.6
+PORTVERSION=	3.3.7
+PORTREVISION=	7
 CATEGORIES=	www
 
 MAINTAINER=	info@babaei.net
@@ -14,6 +15,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS+=	libpng.so:graphics/png \
 		libboost_system.so:devel/boost-libs \
 		libGraphicsMagick.so:graphics/GraphicsMagick
+
+BROKEN=		fails to build with boost 1.66, see bug 224183
+BROKEN_powerpc64=	fails to link: libwthttp.so. undefined reference to boost::program_options::abstract_variables_map::operator
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kdeforche
@@ -33,7 +37,7 @@ CMAKE_ARGS+=	-DCONFIGDIR:STRING=${LOCALBASE}/etc/wt \
 
 NO_OPTIONS_SORT=	yes
 OPTIONS_DEFINE=	\
-	DOCS \
+	DOXYGEN \
 	EXAMPLES \
 	TESTS \
 	RESOURCES \
@@ -89,8 +93,8 @@ EXAMPLES_IMPLIES=	SQLITE3 WTHTTP
 
 CMAKE_MODULE_CMAKE_ON=	-DINSTALL_FINDWT_CMAKE_FILE:BOOL=ON
 CMAKE_MODULE_CMAKE_OFF=	-DINSTALL_FINDWT_CMAKE_FILE:BOOL=OFF
-DOCS_CMAKE_ON=		-DBUILD_DOCS:BOOL=ON
-DOCS_CMAKE_OFF=		-DBUILD_DOCS:BOOL=OFF
+DOXYGEN_CMAKE_ON=		-DBUILD_DOCS:BOOL=ON
+DOXYGEN_CMAKE_OFF=		-DBUILD_DOCS:BOOL=OFF
 FCGI_CMAKE_ON=		-DCONNECTOR_FCGI:BOOL=ON
 FCGI_CMAKE_OFF=		-DCONNECTOR_FCGI:BOOL=OFF
 FIREBIRD_CMAKE_ON=	-DENABLE_FIREBIRD:BOOL=ON
@@ -126,7 +130,7 @@ WTHTTP_CMAKE_OFF=	-DCONNECTOR_HTTP:BOOL=OFF
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MDOCS}
+.if ${PORT_OPTIONS:MDOXYGEN}
 BUILD_DEPENDS+=	asciidoc:textproc/asciidoc \
 		doxygen:devel/doxygen
 .endif
@@ -219,8 +223,8 @@ USE_MYSQL=	yes
 CMAKE_ARGS+=	-DMYSQL_PREFIX:STRING=${LOCALBASE}
 .endif
 
-post-stage:
-	@${RM} -f ${STAGEDIR}${ETCDIR}/wt_config.xml
+post-install:
+	@${RM} ${STAGEDIR}${ETCDIR}/wt_config.xml
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	@${CP} -p ${BUILD_WRKSRC}/wt_config.xml \
 		${STAGEDIR}${ETCDIR}/wt_config.xml.sample

@@ -3,6 +3,7 @@
 
 PORTNAME=	luaexpat
 PORTVERSION=	1.3.0
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://matthewwild.co.uk/projects/luaexpat/ \
 				http://redundancy.redundancy.org/mirror/
@@ -13,9 +14,10 @@ COMMENT=	LuaExpat is a SAX XML parser based on the Expat library
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		gmake lua:51
+USES?=		lua
+USES+=		gmake
 ALL_TARGET=	lib
-CFLAGS+=	-DLUA_INT_LONG
+CFLAGS+=	-DLUA_32BITS
 
 CFLAGS+=	-fPIC
 LDFLAGS+=	-L${LOCALBASE}/lib

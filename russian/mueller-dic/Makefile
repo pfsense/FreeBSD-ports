@@ -3,7 +3,7 @@
 
 PORTNAME=	mueller-dic
 PORTVERSION=	1.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	russian
 MASTER_SITES=	http://www.dindin.ru/download/ \
 		http://mueller-dic.chat.ru/
@@ -38,8 +38,11 @@ do-install:
 	# install program with different name (it conflicts with teTeX)
 	${INSTALL_PROGRAM} ${WRKSRC}/mf ${STAGEDIR}${PREFIX}/bin/muellerfind
 	${INSTALL_SCRIPT} ${WRKDIR}/mueller ${STAGEDIR}${PREFIX}/bin
-	@${MKDIR} ${STAGEDIR}${DATADIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC_DIC}/Mueller7accentGPL.ru_RU.* ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${WRKSRC_DOC}/Mueller7.txt ${STAGEDIR}${DOCSDIR}/Mueller7.txt
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC_DIC}/Mueller7accentGPL.ru_RU.* ${STAGEDIR}${DATADIR}/
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC_DOC}/Mueller7.txt ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

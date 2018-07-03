@@ -4,7 +4,7 @@
 PORTNAME=	openspades
 PORTVERSION=	0.0.12
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://yvt.jp/files/programs/osppaks/:data
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} DevPaks27.zip:data
@@ -18,7 +18,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	convert:graphics/ImageMagick # for building icons
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-BROKEN_FreeBSD_9=	does not build on FreeBSD 9.x
+NOT_FOR_ARCHS=		aarch64 powerpc64
+NOT_FOR_ARCHS_REASON=	fails to compile: uses x86 assembly
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	yvt

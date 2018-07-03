@@ -2,13 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	pam_ssh_agent_auth
-PORTVERSION=	0.10.2
-PORTREVISION=	1
+PORTVERSION=	0.10.3
 CATEGORIES=	security
 MASTER_SITES=	SF/pamsshagentauth/${PORTNAME}/v${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PAM module which permits authentication via ssh-agent
+
+BROKEN_SSL=	openssl-devel
+BROKEN_powerpc64=	fails to build: ed25519-donna-portable.h: warning: ALIGN redefined
 
 USES=		perl5 ssl tar:bzip2
 GNU_CONFIGURE=	yes

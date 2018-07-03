@@ -65,8 +65,8 @@ getcvs:
 	CVSROOT=${CVSROOT} CVS_PASSFILE=${CVS_PASSFILE} cvs -z3 co -P tidy
 
 tarball:
-	${RM} -rf ${WRKDIR}/cvs/tidy/CVSROOT
-	${FIND} ${WRKDIR}/cvs -name CVS | ${XARGS} ${RM} -rf
+	${RM} -r ${WRKDIR}/cvs/tidy/CVSROOT
+	${FIND} ${WRKDIR}/cvs -name CVS | ${XARGS} ${RM} -r
 	cd ${WRKDIR}/cvs &&	\
 	${TAR} cfj ${_DISTDIR}${DISTFILES} tidy
 
@@ -88,14 +88,14 @@ post-install:
 .for pgm in ${BIN2STRIP}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${pgm}
 .endfor
-.if ${PORT_OPTIONS:MDOCS}
+
+post-install-DOCS-on:
 	@${ECHO_MSG} "===>   Installing documentation for ${PKGNAME}"
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCFILES:S|^|${WRKSRC}/htmldoc/|} ${STAGEDIR}${DOCSDIR}
 	@${ECHO_MSG} "===>   Documentation installed in ${DOCSDIR}."
-.endif
 
-regression-test:
+do-test:
 .for t in testaccess.sh testall.sh testxml.sh
 	cd ${WRKSRC}/test && ./${t}
 .endfor

@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,12 +111,14 @@ if (empty($pconfig['blockoffenderskill']))
 	$pconfig['blockoffenderskill'] = "on";
 if (empty($pconfig['ips_mode']))
 	$pconfig['ips_mode'] = 'ips_mode_legacy';
+if (empty($pconfig['block_drops_only']))
+	$pconfig['block_drops_only'] = "off";
 if (empty($pconfig['max_pending_packets']))
 	$pconfig['max_pending_packets'] = "1024";
 if (empty($pconfig['detect_eng_profile']))
 	$pconfig['detect_eng_profile'] = "medium";
 if (empty($pconfig['mpm_algo']))
-	$pconfig['mpm_algo'] = "ac";
+	$pconfig['mpm_algo'] = "auto";
 if (empty($pconfig['sgh_mpm_context']))
 	$pconfig['sgh_mpm_context'] = "auto";
 if (empty($pconfig['enable_http_log']))
@@ -149,6 +151,28 @@ if (empty($pconfig['eve_systemlog_priority']))
 	$pconfig['eve_systemlog_priority'] = "notice";
 if (empty($pconfig['eve_log_alerts']))
 	$pconfig['eve_log_alerts'] = "on";
+if (empty($pconfig['eve_log_alerts_payload']))
+	$pconfig['eve_log_alerts_payload'] = "on";
+if (empty($pconfig['eve_log_alerts_packet']))
+	$pconfig['eve_log_alerts_packet'] = "on";
+if (empty($pconfig['eve_log_alerts_http']))
+	$pconfig['eve_log_alerts_http'] = "on";
+if (empty($pconfig['eve_log_alerts_tls']))
+	$pconfig['eve_log_alerts_tls'] = "on";
+if (empty($pconfig['eve_log_alerts_ssh']))
+	$pconfig['eve_log_alerts_ssh'] = "on";
+if (empty($pconfig['eve_log_alerts_smtp']))
+	$pconfig['eve_log_alerts_smtp'] = "on";
+if (empty($pconfig['eve_log_alerts_dnp3']))
+	$pconfig['eve_log_alerts_dnp3'] = "on";
+if (empty($pconfig['eve_log_alerts_xff']))
+	$pconfig['eve_log_alerts_xff'] = "off";
+if (empty($pconfig['eve_log_alerts_xff_mode']))
+	$pconfig['eve_log_alerts_xff_mode'] = "extra-data";
+if (empty($pconfig['eve_log_alerts_xff_deployment']))
+	$pconfig['eve_log_alerts_xff_deployment'] = "reverse";
+if (empty($pconfig['eve_log_alerts_xff_header']))
+	$pconfig['eve_log_alerts_xff_header'] = "X-Forwarded-For";
 if (empty($pconfig['eve_log_http']))
 	$pconfig['eve_log_http'] = "on";
 if (empty($pconfig['eve_log_dns']))
@@ -159,8 +183,55 @@ if (empty($pconfig['eve_log_files']))
 	$pconfig['eve_log_files'] = "on";
 if (empty($pconfig['eve_log_ssh']))
 	$pconfig['eve_log_ssh'] = "on";
+if (empty($pconfig['eve_log_smtp']))
+	$pconfig['eve_log_smtp'] = "on";
+if (empty($pconfig['eve_log_flow']))
+	$pconfig['eve_log_flow'] = "off";
+if (empty($pconfig['eve_log_stats']))
+	$pconfig['eve_log_stats'] = "off";
+if (empty($pconfig['eve_log_stats_totals']))
+	$pconfig['eve_log_stats_totals'] = "on";
+if (empty($pconfig['eve_log_stats_deltas']))
+	$pconfig['eve_log_stats_deltas'] = "off";
+if (empty($pconfig['eve_log_stats_threads']))
+	$pconfig['eve_log_stats_threads'] = "off";
+if (empty($pconfig['eve_log_drop'])) {
+	$pconfig['eve_log_drop'] = "on";
+}
+
+if (empty($pconfig['eve_log_http_extended']))
+	$pconfig['eve_log_http_extended'] = $pconfig['http_log_extended'];
+if (empty($pconfig['eve_log_tls_extended']))
+	$pconfig['eve_log_tls_extended'] = $pconfig['tls_log_extended'];
+if (empty($pconfig['eve_log_smtp_extended']))
+	$pconfig['eve_log_smtp_extended'] = $pconfig['smtp_log_extended'];
+
+if (empty($pconfig['eve_log_http_extended_headers']))
+	$pconfig['eve_log_http_extended_headers'] = "accept, accept-charset, accept-datetime, accept-encoding, accept-language, accept-range, age, allow, authorization, cache-control, connection, content-encoding, content-language, content-length, content-location, content-md5, content-range, content-type, cookie, date, dnt, etags, from, last-modified, link, location, max-forwards, origin, pragma, proxy-authenticate, proxy-authorization, range, referrer, refresh, retry-after, server, set-cookie, te, trailer, transfer-encoding, upgrade, vary, via, warning, www-authenticate, x-authenticated-user, x-flash-version, x-forwarded-proto, x-requested-with";
+
+if (empty($pconfig['eve_log_smtp_extended_fields']))
+	$pconfig['eve_log_smtp_extended_fields'] = "received, x-mailer, x-originating-ip, relays, reply-to, bcc";
+
+if (empty($pconfig['eve_log_files_magic']))
+	$pconfig['eve_log_files_magic'] = "off";
+if (empty($pconfig['eve_log_files_hash']))
+	$pconfig['eve_log_files_hash'] = "none";
+
+if (empty($pconfig['eve_redis_server']))
+	$pconfig['eve_redis_server'] = "127.0.0.1";
+if (empty($pconfig['eve_redis_port']))
+	$pconfig['eve_redis_port'] = "6379";
+if (empty($pconfig['eve_redis_mode']))
+	$pconfig['eve_redis_mode'] = "list";
+if (empty($pconfig['eve_redis_key']))
+	$pconfig['eve_redis_key'] = "suricata";
+
+
+
 if (empty($pconfig['intf_promisc_mode']))
 	$pconfig['intf_promisc_mode'] = "on";
+if (empty($pconfig['intf_snaplen']))
+	$pconfig['intf_snaplen'] = "1518";
 
 // See if creating a new interface by duplicating an existing one
 if (strcasecmp($action, 'dup') == 0) {
@@ -247,6 +318,18 @@ if (isset($_POST["save"]) && !$input_errors) {
 	if (!empty($_POST['inspect_recursion_limit']) && !is_numeric($_POST['inspect_recursion_limit']))
 		$input_errors[] = gettext("The value for Inspect Recursion Limit can either be blank or contain only digits evaluating to an integer greater than or equal to 0.");
 
+	if ($_POST['intf_snaplen'] < 1 || !is_numeric($_POST['intf_snaplen']))
+		$input_errors[] = gettext("The value for Interface Snaplen must contain only digits evaluating to an integer value greater than or equal to 1.");
+
+	if (!empty($_POST['eve_redis_server']) && !is_ipaddr($_POST['eve_redis_server']))
+		$input_errors[] = gettext("The value for 'EVE REDIS Server' must be an IP address.");
+
+	if (!empty($_POST['eve_redis_port']) && !is_port($_POST['eve_redis_port']))
+		$input_errors[] = gettext("The value for 'EVE REDIS Server' must have a valid TCP port.");
+
+	if (!empty($_POST['eve_redis_key']) && !preg_match('/^[A-Za-z0-9]+$/',$_POST['eve_redis_key']))
+		$input_errors[] = gettext("The value for 'EVE REDIS Key' must be alphanumeric.");
+
 	// if no errors write to suricata.yaml
 	if (!$input_errors) {
 		$natent = $a_rule[$id];
@@ -263,23 +346,26 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['enable_http_log'] == "on") { $natent['enable_http_log'] = 'on'; }else{ $natent['enable_http_log'] = 'off'; }
 		if ($_POST['append_http_log'] == "on") { $natent['append_http_log'] = 'on'; }else{ $natent['append_http_log'] = 'off'; }
 		if ($_POST['enable_tls_log'] == "on") { $natent['enable_tls_log'] = 'on'; }else{ $natent['enable_tls_log'] = 'off'; }
+		if ($_POST['enable_tls_store'] == "on") { $natent['enable_tls_store'] = 'on'; }else{ $natent['enable_tls_store'] = 'off'; }
 		if ($_POST['http_log_extended'] == "on") { $natent['http_log_extended'] = 'on'; }else{ $natent['http_log_extended'] = 'off'; }
 		if ($_POST['tls_log_extended'] == "on") { $natent['tls_log_extended'] = 'on'; }else{ $natent['tls_log_extended'] = 'off'; }
 		if ($_POST['enable_pcap_log'] == "on") { $natent['enable_pcap_log'] = 'on'; }else{ $natent['enable_pcap_log'] = 'off'; }
 		if ($_POST['enable_json_file_log'] == "on") { $natent['enable_json_file_log'] = 'on'; }else{ $natent['enable_json_file_log'] = 'off'; }
 		if ($_POST['append_json_file_log'] == "on") { $natent['append_json_file_log'] = 'on'; }else{ $natent['append_json_file_log'] = 'off'; }
 		if ($_POST['enable_tracked_files_magic'] == "on") { $natent['enable_tracked_files_magic'] = 'on'; }else{ $natent['enable_tracked_files_magic'] = 'off'; }
-		if ($_POST['enable_tracked_files_md5'] == "on") { $natent['enable_tracked_files_md5'] = 'on'; }else{ $natent['enable_tracked_files_md5'] = 'off'; }
+		if ($_POST['tracked_files_hash']) $natent['tracked_files_hash'] = $_POST['tracked_files_hash'];
 		if ($_POST['enable_file_store'] == "on") { $natent['enable_file_store'] = 'on'; }else{ $natent['enable_file_store'] = 'off'; }
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
 		if ($_POST['max_pending_packets']) $natent['max_pending_packets'] = $_POST['max_pending_packets']; else unset($natent['max_pending_packets']);
 		if ($_POST['inspect_recursion_limit'] >= '0') $natent['inspect_recursion_limit'] = $_POST['inspect_recursion_limit']; else unset($natent['inspect_recursion_limit']);
+		if ($_POST['intf_snaplen'] > '0') $natent['intf_snaplen'] = $_POST['intf_snaplen']; else $natent['inspect_recursion_limit'] = "1518";
 		if ($_POST['detect_eng_profile']) $natent['detect_eng_profile'] = $_POST['detect_eng_profile']; else unset($natent['detect_eng_profile']);
 		if ($_POST['mpm_algo']) $natent['mpm_algo'] = $_POST['mpm_algo']; else unset($natent['mpm_algo']);
 		if ($_POST['sgh_mpm_context']) $natent['sgh_mpm_context'] = $_POST['sgh_mpm_context']; else unset($natent['sgh_mpm_context']);
 		if ($_POST['blockoffenders'] == "on") $natent['blockoffenders'] = 'on'; else $natent['blockoffenders'] = 'off';
 		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
+		if ($_POST['block_drops_only'] == "on") $natent['block_drops_only'] = 'on'; else $natent['block_drops_only'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
 		if ($_POST['passlistname']) $natent['passlistname'] =  $_POST['passlistname']; else unset($natent['passlistname']);
 		if ($_POST['homelistname']) $natent['homelistname'] =  $_POST['homelistname']; else unset($natent['homelistname']);
@@ -295,19 +381,57 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_systemlog_facility']) $natent['eve_systemlog_facility'] = $_POST['eve_systemlog_facility'];
 		if ($_POST['eve_systemlog_priority']) $natent['eve_systemlog_priority'] = $_POST['eve_systemlog_priority'];
 		if ($_POST['eve_log_alerts'] == "on") { $natent['eve_log_alerts'] = 'on'; }else{ $natent['eve_log_alerts'] = 'off'; }
+		if ($_POST['eve_log_alerts_payload']) { $natent['eve_log_alerts_payload'] = $_POST['eve_log_alerts_payload']; }else{ $natent['eve_log_alerts_payload'] = 'off'; }
+		if ($_POST['eve_log_alerts_packet'] == "on") { $natent['eve_log_alerts_packet'] = 'on'; }else{ $natent['eve_log_alerts_packet'] = 'off'; }
+		if ($_POST['eve_log_alerts_http'] == "on") { $natent['eve_log_alerts_http'] = 'on'; }else{ $natent['eve_log_alerts_http'] = 'off'; }
+		if ($_POST['eve_log_alerts_tls'] == "on") { $natent['eve_log_alerts_tls'] = 'on'; }else{ $natent['eve_log_alerts_tls'] = 'off'; }
+		if ($_POST['eve_log_alerts_ssh'] == "on") { $natent['eve_log_alerts_ssh'] = 'on'; }else{ $natent['eve_log_alerts_ssh'] = 'off'; }
+		if ($_POST['eve_log_alerts_smtp'] == "on") { $natent['eve_log_alerts_smtp'] = 'on'; }else{ $natent['eve_log_alerts_smtp'] = 'off'; }
+		if ($_POST['eve_log_alerts_dnp3'] == "on") { $natent['eve_log_alerts_dnp3'] = 'on'; }else{ $natent['eve_log_alerts_dnp3'] = 'off'; }
+		if ($_POST['eve_log_alerts_xff'] == "on") { $natent['eve_log_alerts_xff'] = 'on'; }else{ $natent['eve_log_alerts_xff'] = 'off'; }
+		if ($_POST['eve_log_alerts_xff_mode']) { $natent['eve_log_alerts_xff_mode'] = $_POST['eve_log_alerts_xff_mode']; }else{ $natent['eve_log_alert_xff_mode'] = 'extra-data'; }
+		if ($_POST['eve_log_alerts_xff_deployment']) { $natent['eve_log_alerts_xff_deployment'] = $_POST['eve_log_alerts_xff_deployment']; }else{ $natent['eve_log_alert_xff_deployment'] = 'reverse'; }
+		if ($_POST['eve_log_alerts_xff_header']) { $natent['eve_log_alerts_xff_header'] = $_POST['eve_log_alerts_xff_header']; }else{ $natent['eve_log_alert_xff_mode'] = 'X-Forwarded-For'; }
 		if ($_POST['eve_log_http'] == "on") { $natent['eve_log_http'] = 'on'; }else{ $natent['eve_log_http'] = 'off'; }
 		if ($_POST['eve_log_dns'] == "on") { $natent['eve_log_dns'] = 'on'; }else{ $natent['eve_log_dns'] = 'off'; }
 		if ($_POST['eve_log_tls'] == "on") { $natent['eve_log_tls'] = 'on'; }else{ $natent['eve_log_tls'] = 'off'; }
 		if ($_POST['eve_log_files'] == "on") { $natent['eve_log_files'] = 'on'; }else{ $natent['eve_log_files'] = 'off'; }
 		if ($_POST['eve_log_ssh'] == "on") { $natent['eve_log_ssh'] = 'on'; }else{ $natent['eve_log_ssh'] = 'off'; }
+		if ($_POST['eve_log_smtp'] == "on") { $natent['eve_log_smtp'] = 'on'; }else{ $natent['eve_log_smtp'] = 'off'; }
+		if ($_POST['eve_log_stats'] == "on") { $natent['eve_log_stats'] = 'on'; }else{ $natent['eve_log_stats'] = 'off'; }
+		if ($_POST['eve_log_flow'] == "on") { $natent['eve_log_flow'] = 'on'; }else{ $natent['eve_log_flow'] = 'off'; }
+		if ($_POST['eve_log_stats_totals'] == "on") { $natent['eve_log_stats_totals'] = 'on'; }else{ $natent['eve_log_stats_totals'] = 'off'; }
+		if ($_POST['eve_log_stats_deltas'] == "on") { $natent['eve_log_stats_deltas'] = 'on'; }else{ $natent['eve_log_stats_deltas'] = 'off'; }
+		if ($_POST['eve_log_stats_threads'] == "on") { $natent['eve_log_stats_threads'] = 'on'; }else{ $natent['eve_log_stats_threads'] = 'off'; }
+		if ($_POST['eve_log_http_extended'] == "on") { $natent['eve_log_http_extended'] = 'on'; }else{ $natent['eve_log_http_extended'] = 'off'; }
+		if ($_POST['eve_log_tls_extended'] == "on") { $natent['eve_log_tls_extended'] = 'on'; }else{ $natent['eve_log_tls_extended'] = 'off'; }
+		if ($_POST['eve_log_smtp_extended'] == "on") { $natent['eve_log_smtp_extended'] = 'on'; }else{ $natent['eve_log_smtp_extended'] = 'off'; }
+
+		if ($_POST['eve_log_http_extended_headers']) { $natent['eve_log_http_extended_headers'] = implode(", ",$_POST['eve_log_http_extended_headers']); }else{ $natent['eve_log_http_extended_headers'] = ""; }
+		if ($_POST['eve_log_smtp_extended_fields']) { $natent['eve_log_smtp_extended_fields'] = implode(", ",$_POST['eve_log_smtp_extended_fields']); }else{ $natent['eve_log_smtp_extended_fields'] = ""; }
+
+		if ($_POST['eve_log_files_magic'] == "on") { $natent['eve_log_files_magic'] = 'on'; }else{ $natent['eve_log_files_magic'] = 'off'; }
+		if ($_POST['eve_log_files_hash']) { $natent['eve_log_files_hash'] = $_POST['eve_log_files_hash']; }else{ $natent['eve_log_files_hash'] = 'none'; }
+		if ($_POST['eve_log_drop'] == "on") { $natent['eve_log_drop'] = 'on'; }else{ $natent['eve_log_drop'] = 'off'; }
 		if ($_POST['delayed_detect'] == "on") { $natent['delayed_detect'] = 'on'; }else{ $natent['delayed_detect'] = 'off'; }
 		if ($_POST['intf_promisc_mode'] == "on") { $natent['intf_promisc_mode'] = 'on'; }else{ $natent['intf_promisc_mode'] = 'off'; }
 		if ($_POST['configpassthru']) $natent['configpassthru'] = base64_encode(str_replace("\r\n", "\n", $_POST['configpassthru'])); else unset($natent['configpassthru']);
 
+		if ($_POST['eve_redis_server']) $natent['eve_redis_server'] = $_POST['eve_redis_server'];
+		if ($_POST['eve_redis_port']) $natent['eve_redis_port'] = $_POST['eve_redis_port'];
+		if ($_POST['eve_redis_mode']) $natent['eve_redis_mode'] = $_POST['eve_redis_mode'];
+		if ($_POST['eve_redis_key']) $natent['eve_redis_key'] = $_POST['eve_redis_key'];
+
 		// Check if EVE OUTPUT TYPE is 'syslog' and auto-enable Suricata syslog output if true.
 		if ($natent['eve_output_type'] == "syslog" && $natent['alertsystemlog'] == "off") {
 			$natent['alertsystemlog'] = "on";
-			$savemsg = gettext("EVE Output to syslog requires Suricata alerts to be copied to the system log, so 'Send Alerts to System Log' has been auto-enabled.");
+			$savemsg1 = gettext("EVE Output to syslog requires Suricata alerts to be copied to the system log, so 'Send Alerts to System Log' has been auto-enabled.");
+		}
+
+		// Check if Inline IPS mode is enabled and display a message about potential
+		// incompatibilities with Netmap and some NIC hardware drivers.
+		if ($natent['ips_mode'] == "ips_mode_inline") {
+			$savemsg2 = gettext("Inline IPS Mode is selected.  Not all hardware NIC drivers support Netmap operation which is required for Inline IPS Mode.  If problems are experienced, switch to Legacy Mode instead.");
 		}
 
 		$if_real = get_real_interface($natent['interface']);
@@ -380,6 +504,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['enable_async_sessions'] = 'off';
 			$natent['delayed_detect'] = 'off';
 			$natent['intf_promisc_mode'] = 'on';
+			$natent['intf_snaplen'] = '1518';
 
 			$natent['asn1_max_frames'] = '256';
 			$natent['dns_global_memcap'] = "16777216";
@@ -399,7 +524,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['msn_parser'] = "detection-only";
 
 			$natent['enable_iprep'] = "off";
-			$natent['host_memcap'] = "16777216";
+			$natent['host_memcap'] = "33554432";
 			$natent['host_hash_size'] = "4096";
 			$natent['host_prealloc'] = "1000";
 
@@ -469,8 +594,11 @@ include_once("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
-if ($savemsg) {
-	print_info_box($savemsg);
+if ($savemsg1) {
+	print_info_box($savemsg1);
+}
+if ($savemsg2) {
+	print_info_box($savemsg2);
 }
 
 if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
@@ -627,6 +755,13 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_tls_log'] == 'on' ? true:false,
 	'on'
 ));
+$section->addInput(new Form_Checkbox(
+	'enable_tls_store',
+	'Enable TLS Store',
+	'Suricata will log and store TLS certificates for the interface. Default is Not Checked.',
+	$pconfig['enable_tls_store'] == 'on' ? true:false,
+	'on'
+));
 
 $section->addInput(new Form_Checkbox(
 	'tls_log_extended',
@@ -659,13 +794,12 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_tracked_files_magic'] == 'on' ? true:false,
 	'on'
 ));
-$section->addInput(new Form_Checkbox(
-	'enable_tracked_files_md5',
-	'Enable MD5 for Tracked-Files',
-	'Suricata will generate MD5 checksums for all logged Tracked Files. Default is Not Checked.',
-	$pconfig['enable_tracked_files_md5'] == 'on' ? true:false,
-	'on'
-));
+$section->addInput(new Form_Select(
+	'tracked_files_hash',
+	'Tracked-Files Checksum',
+	$pconfig['tracked_files_hash'],
+	array("none" => "None", "md5" => "MD5", "sha1" => "SHA1", "sha256" => "SHA256")
+))->setHelp('Suricata will generate checksums for all logged Tracked Files using the chosen algorithm. Default is None.');
 $section->addInput(new Form_Checkbox(
 	'enable_file_store',
 	'Enable File-Store',
@@ -696,6 +830,10 @@ $section->addInput(new Form_Input(
 	$pconfig['max_pcap_log_files']
 ))->setHelp('Enter maximum number of packet log files to maintain. Default is 1000. When the number of packet log files reaches the set limit, the oldest file will be overwritten.');
 
+$form->add($section);
+
+$section = new Form_Section('EVE Output Settings');
+
 $section->addInput(new Form_Checkbox(
 	'enable_eve_log',
 	'EVE JSON Log',
@@ -708,18 +846,147 @@ $section->addInput(new Form_Select(
 	'eve_output_type',
 	'EVE Output Type',
 	$pconfig['eve_output_type'],
-	array("file" => "FILE", "syslog" => "SYSLOG")
+	array("file" => "FILE", "syslog" => "SYSLOG","redis"=>"REDIS")
 ))->setHelp('Select EVE log output destination. Choosing FILE is suggested, and is the default value.');
+
+
+$group = new Form_Group('EVE REDIS Server');
+
+$group->add(new Form_Input(
+	'eve_redis_server',
+	'Redis Server',
+	'text',
+	$pconfig['eve_redis_server']
+))->setHelp('Enter the Redis server IP');
+
+$group->add(new Form_Input(
+	'eve_redis_port',
+	'Port',
+	'text',
+	$pconfig['eve_redis_port']
+))->setHelp('Enter the Redis server port');
+
+$section->add($group)->addClass('eve_redis_connection');
+
+$section->addInput(new Form_Select(
+	'eve_redis_mode',
+	'EVE REDIS Mode',
+	$pconfig['eve_redis_mode'],
+	array("list"=>"List (LPUSH)","rpush"=>"List (RPUSH)","channel"=>"Channel(PUBLISH)")
+))->setHelp('Select the REDIS output mode');
+
+$section->addInput(new Form_Input(
+	'eve_redis_key',
+	'EVE REDIS Key',
+	'text',
+	$pconfig['eve_redis_key']
+))->setHelp('Enter the REDIS Key');
 
 $group = new Form_Group('EVE Logged Info');
 
-$group->add(new Form_Checkbox(
+
+
+$section->addInput(new Form_Checkbox(
 	'eve_log_alerts',
-	'Alerts',
-	'Alerts',
+	'EVE Log Alerts',
+	'Suricata will output Alerts via EVE',
 	$pconfig['eve_log_alerts'] == 'on' ? true:false,
 	'on'
 ));
+
+
+$section->addInput(new Form_Select(
+	'eve_log_alerts_payload',
+	'EVE Log Alert Payload',
+	$pconfig['eve_log_alerts_payload'],
+	array("off"=>"NO","only-base64"=>"BASE64","only-printable"=>"PRINTABLE","on"=>"BOTH")
+))->setHelp('Suricata will log the payload with alerts. Only printable data or base64 encoded binary data. See suricata docu.');
+
+
+$group = new Form_Group('EVE Log Alert details');
+
+$group->add(new Form_Checkbox(
+	'eve_log_alerts_packet',
+	'Alert Payloads',
+	'Suricata will log a packet dump with alerts.',
+	$pconfig['eve_log_alerts_packet'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_alerts_http',
+	'Alert Payloads',
+	'Suricata will log additional http data with alerts.',
+	$pconfig['eve_log_alerts_http'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_alerts_tls',
+	'Alert Payloads',
+	'Suricata will log additional tls data with alerts.',
+	$pconfig['eve_log_alerts_tls'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_alerts_ssh',
+	'Alert Payloads',
+	'Suricata will log additional ssh handshake data with alerts.',
+	$pconfig['eve_log_alerts_ssh'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_alerts_smtp',
+	'Alert Payloads',
+	'Suricata will log additional smtp data with alerts.',
+	$pconfig['eve_log_alerts_smtp'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_alerts_dnp3',
+	'Alert Payloads',
+	'Suricata will log additional dnp3 data with alerts.',
+	$pconfig['eve_log_alerts_dnp3'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_alerts_xff',
+	'Alert Payloads',
+	'Suricata will log X-Forwarded-For IP addresses with alerts.',
+	$pconfig['eve_log_alerts_xff'] == 'on' ? true:false,
+	'on'
+));
+$group->setHelp('Select with which details suricata will enrich alerts.');
+
+$section->add($group)->addClass('eve_log_alerts_details');
+
+$section->addInput(new Form_Select(
+	'eve_log_alerts_xff_mode',
+	'EVE Log Alert X-Forwarded-For Mode',
+	$pconfig['eve_log_alerts_xff_mode'],
+	array( "extra-data" => "extra-data", "overwrite" => "overwrite" )
+))->setHelp('Select HTTP X-Forwarded-For Operation Mode. Default is extra-data.');
+
+$section->addInput(new Form_Select(
+	'eve_log_alerts_xff_deployment',
+	'EVE Log Alert X-Forwarded-For Deployment',
+	$pconfig['eve_log_alerts_xff_deployment'],
+	array( "reverse" => "reverse", "forward" => "forward" )
+))->setHelp('Select HTTP X-Forwarded-For Deployment. Default is reverse.');
+
+$section->addInput(new Form_Input(
+	'eve_log_alerts_xff_header',
+	'EVE Log Alert X-Forwarded-For Header',
+	'text',
+	$pconfig['eve_log_alerts_xff_header']
+))->setHelp('Enter header where actual IP address is reported. Default is X-Forwarded-For. If more than one IP address is present, the last one will be used.');
+
+
+$group = new Form_Group('EVE Logged Info');
 
 $group->add(new Form_Checkbox(
 	'eve_log_http',
@@ -761,9 +1028,136 @@ $group->add(new Form_Checkbox(
 	'on'
 ));
 
-$group->setHelp('Choose the information to log via EVE JSON output. Default is All Checked.');
+$group->add(new Form_Checkbox(
+	'eve_log_smtp',
+	'SMTP Traffic',
+	'SMTP Traffic',
+	$pconfig['eve_log_smtp'] == 'on' ? true:false,
+	'on'
+));
 
+$group->add(new Form_Checkbox(
+	'eve_log_stats',
+	'Suricata Stats',
+	'Suricata Stats',
+	$pconfig['eve_log_stats'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_flow',
+	'Traffic flows ',
+	'Traffic flows',
+	$pconfig['eve_log_flow'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_drop',
+	'Dropped Traffic',
+	'Dropped Traffic',
+	$pconfig['eve_log_drop'] == 'on' ? true:false,
+	'on'
+));
+
+$group->setHelp('Choose the information to log via EVE JSON output.');
 $section->add($group)->addClass('eve_log_info');
+
+
+$group = new Form_Group('EVE Logged extended');
+
+$group->add(new Form_Checkbox(
+	'eve_log_http_extended',
+	'Extended HTTP Info',
+	'Extended HTTP Info',
+	$pconfig['eve_log_http_extended'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_tls_extended',
+	'Extended TLS Info',
+	'Extended TLS Info',
+	$pconfig['eve_log_tls_extended'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_smtp_extended',
+	'Extended SMTP Info',
+	'Extended SMTP Info',
+	$pconfig['eve_log_tls_extended'] == 'on' ? true:false,
+	'on'
+));
+
+
+
+$group->setHelp('Select which logs should have extended info.');
+$section->add($group)->addClass('eve_log_info');
+
+$section->addInput(new Form_Select(
+	'eve_log_http_extended_headers',
+	'Extended HTTP Headers',
+	explode(", ",$pconfig['eve_log_http_extended_headers']),
+	array("accept"=>"accept","accept-charset"=>"accept-charset","accept-datetime"=>"accept-datetime","accept-encoding"=>"accept-encoding","accept-language"=>"accept-language","accept-range"=>"accept-range","age"=>"age","allow"=>"allow","authorization"=>"authorization","cache-control"=>"cache-control","connection"=>"connection","content-encoding"=>"content-encoding","content-language"=>"content-language","content-length"=>"content-length","content-location"=>"content-location","content-md5"=>"content-md5","content-range"=>"content-range","content-type"=>"content-type","cookie"=>"cookie","date"=>"date","dnt"=>"dnt","etags"=>"etags","from"=>"from","last-modified"=>"last-modified","link"=>"link","location"=>"location","max-forwards"=>"max-forwards","origin"=>"origin","pragma"=>"pragma","proxy-authenticate"=>"proxy-authenticate","proxy-authorization"=>"proxy-authorization","range"=>"range","referrer"=>"referrer","refresh"=>"refresh","retry-after"=>"retry-after","server"=>"server","set-cookie"=>"set-cookie","te"=>"te","trailer"=>"trailer","transfer-encoding"=>"transfer-encoding","upgrade"=>"upgrade","vary"=>"vary","via"=>"via","warning"=>"warning","www-authenticate"=>"www-authenticate","x-authenticated-user"=>"x-authenticated-user","x-flash-version"=>"x-flash-version","x-forwarded-proto"=>"x-forwarded-proto","x-requested-with"=>"x-requested-with"),
+	true
+))->setHelp('Select HTTP headers for logging.  Use CTRL + click for multiple selections.');
+
+
+$section->addInput(new Form_Select(
+	'eve_log_smtp_extended_fields',
+	'Extended SMTP Fields',
+	explode(", ",$pconfig['eve_log_smtp_extended_fields']),
+	array("bcc"=>"bcc","content-md5"=>"content-md5","date"=>"date","importance"=>"importance","in-reply-to"=>"in-reply-to","message-id"=>"message-id","organization"=>"organization","priority"=>"priority","received"=>"received","references"=>"references","reply-to"=>"reply-to","sensitivity"=>"sensitivity","subject"=>"subject","user-agent"=>"user-agent","x-mailer"=>"x-mailer","x-originating-ip"=>"x-originating-ip"),
+	true
+))->setHelp('Select SMTP fields for logging.  Use CTRL + click for multiple selections.');
+
+
+
+
+$section->addInput(new Form_Checkbox(
+	'eve_log_files_magic',
+	'Enable Logging Magic for Tracked-Files',
+	'Suricata will force logging magic on all logged Tracked Files. Default is Not Checked.',
+	$pconfig['eve_log_files_magic'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Select(
+	'eve_log_files_hash',
+	'Tracked-Files Checksum',
+	$pconfig['eve_log_files_hash'],
+	array("none" => "None", "md5" => "MD5", "sha1" => "SHA1", "sha256" => "SHA256")
+))->setHelp('Suricata will generate checksums for all logged Tracked Files using the chosen algorithm. Default is None.');
+
+
+$group = new Form_Group('EVE Logged Stats');
+
+$group->add(new Form_Checkbox(
+	'eve_log_stats_totals',
+	'Stats total',
+	'Log Totals',
+	$pconfig['eve_log_stats_totals'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_stats_deltas',
+	'Stats deltas',
+	'Log deltas',
+	$pconfig['eve_log_stats_deltas'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_stats_threads',
+	'Stats per thread',
+	'Log per thread',
+	$pconfig['eve_log_stats_threads'] == 'on' ? true:false,
+	'on'
+));
+
+$section->add($group)->addClass('eve_log_stats_details');
+
 
 $form->add($section);
 
@@ -788,7 +1182,8 @@ $group->add(new Form_Select(
 $group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets for inspection as they traverse the interface.  Some "leakage" of packets will occur before ' . 
 		'Suricata can determine if the traffic matches a rule and should be blocked.  Inline mode instead intercepts and inspects packets before they are handed ' . 
 		'off to the host network stack for further processing.  Packets matching DROP rules are simply discarded (dropped) and not passed to the host ' . 
-		'network stack.  No leakage of packets occurs with Inline Mode.  Note that Inline Mode only works with NIC drivers which support Netmap.');
+		'network stack.  No leakage of packets occurs with Inline Mode.  WARNING:  Inline Mode only works with NIC drivers which properly support Netmap!  If the ' . 
+		'hardware NIC driver does not support Netmap, using Inline Mode can result in a firewall system crash!  If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
 $section->add($group);
 
 $section->addInput(new Form_Checkbox(
@@ -806,7 +1201,37 @@ $section->addInput(new Form_Select(
 	array( 'src' => 'SRC', 'dst' => 'DST', 'both' => 'BOTH' )
 ))->setHelp('Select which IP extracted from the packet you wish to block. Choosing BOTH is suggested, and it is the default value.');
 
+$section->addInput(new Form_Checkbox(
+	'block_drops_only',
+	'Block On DROP Only',
+	'Checking this option will insert blocks only when rule signatures having the DROP action are triggered.  When not checked, any rule action (ALERT or DROP) will generate a block of the offending host.  Default is Not Checked.',
+	$pconfig['block_drops_only'] == 'on' ? true:false,
+	'on'
+));
+
 $form->add($section);
+
+// Add Inline IPS rule edit warning modal pop-up
+$modal = new Modal('Important Information About IPS Inline Mode Blocking', 'ips_warn_dlg', 'large', 'Close');
+
+$modal->addInput(new Form_StaticText (
+	null,
+	'<span class="help-block">' . 
+	gettext('When using Inline IPS Mode blocking, you must manually change the rule action ') . 
+	gettext('from ALERT to DROP for every rule which you wish to block traffic when triggered.') . 
+	'<br/><br/>' . 
+	gettext('The default action for rules is ALERT.  This will produce alerts but will not ') . 
+	gettext('block traffic when using Inline IPS Mode for blocking. ') . 
+	'<br/><br/>' . 
+	gettext('Use the "dropsid.conf" feature on the SID MGMT tab to select rules whose action ') . 
+	gettext('should be changed from ALERT to DROP.  If you run the Snort rules and have ') . 
+	gettext('an IPS policy selected on the CATEGORIES tab, then rules defined as DROP by the ') . 
+	gettext('selected IPS policy will have their action automatically changed to DROP when the ') . 
+	gettext('"IPS Policy Mode" selector is configured for "Policy".') . 
+	'</span>'
+));
+
+$form->add($modal);
 
 $section = new Form_Section('Detection Engine Settings');
 $section->addInput(new Form_Input(
@@ -830,8 +1255,8 @@ $section->addInput(new Form_Select(
 	'mpm_algo',
 	'Pattern Matcher Algorithm',
 	$pconfig['mpm_algo'],
-	array('ac' => 'AC', 'ac-gfbs' => 'AC-GFBS', 'b2g' => 'B2G', 'b2gc' => 'B2GC', 'b2gm' => 'B2GM', 'b3g' => 'B3G', 'wumanber' => 'WUMANBER')
-))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. AC is the default, and is the best choice for almost all systems.	');
+	array('auto' => 'Auto', 'ac' => 'AC', 'ac-bs' => 'AC-BS', 'ac-ks' => 'AC-KS', 'hs' => 'Hyperscan')
+))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. Auto is the default, and is the best choice for almost all systems.  Auto will use hyperscan if available.');
 
 $section->addInput(new Form_Select(
 	'sgh_mpm_context',
@@ -863,6 +1288,13 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['intf_promisc_mode'] == 'on' ? true:false,
 	'on'
 ));
+
+$section->addInput(new Form_Input(
+	'intf_snaplen',
+	'Interface PCAP Snaplen',
+	'text',
+	$pconfig['intf_snaplen']
+))->setHelp('Enter value in bytes for the interface PCAP snaplen. Default is 1518.  This parameter is only valid when IDS or Legacy Mode IPS is enabled.<br />This value may need to be increased if the physical interface is passing VLAN traffic and expected alerts are not being received.');
 
 $form->add($section);
 
@@ -913,13 +1345,14 @@ $section->add($group);
 $group = new Form_Group('Pass List');
 
 $group->addClass('passlist');
-
+$list = suricata_get_config_lists('passlist');
+$list['none'] = 'none';
 $group->add(new Form_Select(
 	'passlistname',
 	'Pass List',
 	$pconfig['passlistname'],
-	suricata_get_config_lists('passlist')
-))->setHelp('Choose the Pass List you want this interface to use. Addresses in a Pass List are never blocked. ');
+	$list
+))->setHelp('Choose the Pass List you want this interface to use. Addresses in a Pass List are never blocked. Select "none" to prevent use of a Pass List.');
 
 $group->add(new Form_Button(
 	'btnPasslist',
@@ -928,8 +1361,8 @@ $group->add(new Form_Button(
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#passlist')->setAttribute('data-toggle', 'modal');
 
-$group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . '<br />' .
-				'This option will only be used when block offenders is on.');
+$group->setHelp('The default Pass List adds Gateways, DNS servers, locally-attached networks, the WAN IP, VPNs and VIPs.  Create a Pass List with an alias to customize whitelisted IP addresses.  ' . 
+		'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation.');
 
 $section->add($group);
 
@@ -1011,7 +1444,7 @@ $section = new Form_Section('Arguments here will be automatically inserted into 
 $section->addInput(new Form_Textarea (
 	'configpassthru',
 	'Advanced Configuration Pass-Through',
-	$pconfig['configpassthru']
+	($_POST['configpassthru']?$_POST['configpassthru']:$pconfig['configpassthru'])
 ))->setHelp('Enter any additional configuration parameters to add to the Suricata configuration here, separated by a newline');
 
 $form->add($section);
@@ -1046,13 +1479,26 @@ events.push(function(){
 	function enable_blockoffenders() {
 		var hide = ! $('#blockoffenders').prop('checked');
 		hideCheckbox('blockoffenderskill', hide);
+		hideCheckbox('block_drops_only', hide);
 		hideSelect('blockoffendersip', hide);
 		hideSelect('ips_mode', hide);
 		hideClass('passlist', hide);
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
+			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
 			hideClass('passlist', true);
+			hideInput('intf_snaplen', true);
+			if (hide) {
+				$('#eve_log_drop').parent().hide();
+			}
+			else {
+				$('#eve_log_drop').parent().show();
+			}
+		}
+		else {
+			$('#eve_log_drop').parent().hide();
+			hideInput('intf_snaplen', false);
 		}
 	}
 
@@ -1071,6 +1517,9 @@ events.push(function(){
 		var hide = ! $('#enable_stats_log').prop('checked');
 		hideInput('stats_upd_interval', hide);
 		hideCheckbox('append_stats_log', hide);
+		disableInput('eve_log_stats',hide);
+		var hide_stats_eve = ! ($('#enable_stats_log').prop('checked') && $('#eve_log_stats').prop('checked'));
+		hideClass('eve_log_stats_details',hide_stats_eve);
 	}
 
 	function toggle_http_log() {
@@ -1081,6 +1530,7 @@ events.push(function(){
 
 	function toggle_tls_log() {
 		var hide = ! $('#enable_tls_log').prop('checked');
+		hideCheckbox('enable_tls_store', hide);
 		hideCheckbox('tls_log_extended', hide);
 	}
 
@@ -1088,7 +1538,7 @@ events.push(function(){
 		var hide = ! $('#enable_json_file_log').prop('checked');
 		hideCheckbox('append_json_file_log', hide);
 		hideCheckbox('enable_tracked_files_magic', hide);
-		hideCheckbox('enable_tracked_files_md5', hide);
+		hideSelect('tracked_files_hash', hide);
 	}
 
 	function toggle_pcap_log() {
@@ -1100,8 +1550,68 @@ events.push(function(){
 	function toggle_eve_log() {
 		var hide = ! $('#enable_eve_log').prop('checked');
 		hideSelect('eve_output_type', hide);
-		hideClass('eve_log_info',hide);
+		hideCheckbox('eve_log_alerts',hide);
+		hideClass('eve_log_info', hide);
+		toggle_eve_log_files();
 	}
+	function toggle_eve_redis() {
+		var hide = ! ($('#enable_eve_log').prop('checked') && $('#eve_output_type').val() == "redis");
+		hideClass('eve_redis_connection',hide);
+		hideSelect('eve_redis_mode',hide);
+		hideInput('eve_redis_key',hide);
+	}
+	function toggle_eve_log_alerts() {
+		var hide = ! ($('#eve_log_alerts').prop('checked') && $('#enable_eve_log').prop('checked'));
+		hideSelect('eve_log_alerts_payload',hide);
+		hideClass('eve_log_alerts_details',hide);
+	}
+
+	function toggle_eve_log_alerts_xff() {
+		var hide = ! ($('#eve_log_alerts_xff').prop('checked') && $('#eve_log_alerts').prop('checked') && $('#enable_eve_log').prop('checked'));
+		hideSelect('eve_log_alerts_xff_mode',hide);
+		hideSelect('eve_log_alerts_xff_deployment',hide);
+		hideInput('eve_log_alerts_xff_header', hide);
+	}
+
+	function toggle_eve_log_stats() {
+		var hide = ! ($('#eve_log_stats').prop('checked') && $('#enable_eve_log').prop('checked') && $('#enable_stats_log').prop('checked'));
+		hideClass('eve_log_stats_details',hide);
+	}
+
+	function toggle_eve_log_http() {
+		var disable = ! $('#eve_log_http').prop('checked');
+		disableInput('eve_log_http_extended',disable);
+		toggle_eve_log_http_extended();
+	}
+
+	function toggle_eve_log_tls() {
+		var disable = ! $('#eve_log_tls').prop('checked');
+		disableInput('eve_log_tls_extended',disable);
+	}
+
+	function toggle_eve_log_smtp() {
+		var disable = ! $('#eve_log_smtp').prop('checked');
+		disableInput('eve_log_smtp_extended',disable);
+		toggle_eve_log_smtp_extended();
+	}
+
+	function toggle_eve_log_files() {
+		var hide = ! ($('#eve_log_files').prop('checked') && $('#enable_eve_log').prop('checked'));
+		hideCheckbox('eve_log_files_magic',hide);
+		hideSelect('eve_log_files_hash',hide);
+	}
+
+	function toggle_eve_log_http_extended() {
+		var hide = ! ($('#eve_log_http_extended').prop('checked') && $('#enable_eve_log').prop('checked') && $('#eve_log_http').prop('checked'));
+		hideSelect('eve_log_http_extended_headers\\[\\]',hide);
+	}
+
+	function toggle_eve_log_smtp_extended() {
+		var hide = ! ($('#eve_log_smtp_extended').prop('checked') && $('#enable_eve_log').prop('checked') && $('#eve_log_smtp').prop('checked'));
+		hideSelect('eve_log_smtp_extended_fields\\[\\]',hide);
+	}
+
+
 
 	function enable_change() {
 		var disable = ! $('#enable').prop('checked');
@@ -1112,6 +1622,7 @@ events.push(function(){
 		disableInput('blockoffenders', disable);
 		disableInput('ips_mode', disable);
 		disableInput('blockoffenderskill', disable);
+		disableInput('block_drops_only', disable);
 		disableInput('blockoffendersip', disable);
 		disableInput('performance', disable);
 		disableInput('max_pending_packets', disable);
@@ -1121,6 +1632,7 @@ events.push(function(){
 		disableInput('sgh_mpm_context', disable);
 		disableInput('delayed_detect', disable);
 		disableInput('intf_promisc_mode', disable);
+		disableInput('intf_snaplen', disable);
 		disableInput('fpm_split_any_any', disable);
 		disableInput('fpm_search_optimize', disable);
 		disableInput('fpm_no_stream_inserts', disable);
@@ -1143,11 +1655,12 @@ events.push(function(){
 		disableInput('append_http_log', disable);
 		disableInput('http_log_extended', disable);
 		disableInput('enable_tls_log', disable);
+		disableInput('enable_tls_store', disable);
 		disableInput('tls_log_extended', disable);
 		disableInput('enable_json_file_log', disable);
 		disableInput('append_json_file_log', disable);
 		disableInput('enable_tracked_files_magic', disable);
-		disableInput('enable_tracked_files_md5', disable);
+		disableInput('tracked_files_hash', disable);
 		disableInput('enable_file_store', disable);
 		disableInput('enable_pcap_log', disable);
 		disableInput('max_pcap_log_size', disable);
@@ -1156,11 +1669,48 @@ events.push(function(){
 		disableInput('eve_output_type', disable);
 		disableInput('eve_log_info', disable);
 		disableInput('eve_log_alerts', disable);
+		disableInput('eve_log_alerts_payload', disable);
 		disableInput('eve_log_http', disable);
 		disableInput('eve_log_dns', disable);
 		disableInput('eve_log_tls', disable);
 		disableInput('eve_log_files', disable);
 		disableInput('eve_log_ssh', disable);
+		disableInput('eve_log_smtp', disable);
+		disableInput('eve_log_flow', disable);
+		disableInput('eve_log_drop', disable);
+		disableInput('eve_log_alerts_payload',disable);
+		disableInput('eve_log_alerts_http',disable);
+		disableInput('eve_log_alerts_tls',disable);
+		disableInput('eve_log_alerts_ssh',disable);
+		disableInput('eve_log_alerts_smtp',disable);
+		disableInput('eve_log_alerts_dnp3',disable);
+		disableInput('eve_log_alerts_xff',disable);
+		disableInput('eve_log_alerts_xff_mode',disable);
+		disableInput('eve_log_alerts_xff_deployment',disable);
+		disableInput('eve_log_alerts_xff_header',disable);
+		disableInput('eve_log_files_magic',disable);
+		disableInput('eve_log_files_hash',disable);
+
+		var disable_http = ! $('#eve_log_http').prop('checked');
+		disableInput('eve_log_http_extended',disable||disable_http);
+
+		var disable_tls = ! $('#eve_log_tls').prop('checked');
+		disableInput('eve_log_tls_extended',disable||disable_tls);
+
+		var disable_smtp = ! $('#eve_log_smtp').prop('checked');
+		disableInput('eve_log_smtp_extended',disable||disable_smtp);
+
+		var disable_stats = ! $('#enable_stats_log').prop('checked');
+		disableInput('eve_log_stats',disable||disable_stats);
+
+		disableInput('eve_log_stats_totals',disable);
+		disableInput('eve_log_stats_deltas',disable);
+		disableInput('eve_log_stats_threads',disable);
+
+		disableInput('eve_log_http_extended_headers\\[\\]',disable);
+		disableInput('eve_log_smtp_extended_fields\\[\\]',disable);
+
+
 	}
 
 	// Call the list viewing page and write what it returns to the modal text area
@@ -1240,22 +1790,77 @@ events.push(function(){
 
 	$('#enable_eve_log').click(function() {
 		toggle_eve_log();
+		toggle_eve_redis();
+		toggle_eve_log_alerts();
+		toggle_eve_log_alerts_xff();
+		toggle_eve_log_stats();
+		toggle_eve_log_http_extended();
+		toggle_eve_log_smtp_extended();
+	});
+
+	$('#eve_output_type').change(function() {
+		toggle_eve_redis();
+	});
+
+	$('#eve_log_alerts').click(function() {
+		toggle_eve_log_alerts();
+		toggle_eve_log_alerts_xff();
+	});
+
+	$('#eve_log_alerts_xff').click(function() {
+		toggle_eve_log_alerts_xff();
+	});
+
+	$('#eve_log_stats').click(function() {
+		toggle_eve_log_stats();
+	});
+
+	$('#eve_log_http').click(function() {
+		toggle_eve_log_http();
+	});
+
+	$('#eve_log_tls').click(function() {
+		toggle_eve_log_tls();
+	});
+
+	$('#eve_log_smtp').click(function() {
+		toggle_eve_log_smtp();
+	});
+
+	$('#eve_log_files').click(function() {
+		toggle_eve_log_files();
 	});
 
 	$('#blockoffenders').click(function() {
 		enable_blockoffenders();
 	});
 
+	$('#eve_log_http_extended').click(function(){
+		toggle_eve_log_http_extended();
+	});
+
+	$('#eve_log_smtp_extended').click(function(){
+		toggle_eve_log_smtp_extended();
+	});
+
 	$('#ips_mode').on('change', function() {
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
+			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
 			hideClass('passlist', true);
+			hideInput('intf_snaplen', true);
+			$('#eve_log_drop').parent().show();
+			$('#ips_warn_dlg').modal('show');
 		}
 		else {
 			hideCheckbox('blockoffenderskill', false);
+			hideCheckbox('block_drops_only', false);
 			hideSelect('blockoffendersip', false);
+			hideInput('intf_snaplen', false);
 			hideClass('passlist', false);
+			$('#eve_log_drop').parent().hide();
+			$('#ips_warn_dlg').modal('hide');
 		}
 	});
 
@@ -1270,6 +1875,14 @@ events.push(function(){
 	toggle_json_file_log();
 	toggle_pcap_log();
 	toggle_eve_log();
+	toggle_eve_redis();
+	toggle_eve_log_alerts();
+	toggle_eve_log_alerts_xff();
+	toggle_eve_log_stats();
+	toggle_eve_log_http();
+	toggle_eve_log_smtp();
+	toggle_eve_log_tls();
+	toggle_eve_log_files();
 
 });
 //]]>

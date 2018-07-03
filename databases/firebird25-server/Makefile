@@ -3,7 +3,7 @@
 
 PORTNAME=	firebird
 PORTVERSION=	2.5.6
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES?=	databases
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:S/.0//}-Release/
 PKGNAMESUFFIX?=	${PORTVERSION:R:S/.//}-server
@@ -25,6 +25,7 @@ LICENSE_PERMS_IPL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LIB_DEPENDS=	libicuuc.so:devel/icu
 
 USES=		cpe gmake pkgconfig tar:bzip2
+USE_CXXSTD=	gnu++98
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 
@@ -58,8 +59,8 @@ LD=	${CC}
 STRIP=
 
 ONLY_FOR_ARCHS=	i386 amd64
-CONFLICTS+=	firebird-client-2.0* firebird-server-2.0* \
-		firebird-client-2.1* firebird-server-2.1*
+# sparc64 fails due to lack of valid AtomicCounter implementation in
+# src/common/classes/fb_atomic.h; presumably other tier-2s would as well
 
 INSTALL_FB=	${INSTALL} ${COPY}
 IPCRM_CMD=	/usr/bin/ipcrm

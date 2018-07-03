@@ -14,7 +14,11 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	marius@FreeBSD.org
 COMMENT=	Allows formatting/partitioning/analysis/repairing of SCSI disks
 
-BROKEN_powerpc64=	Does not build
+BROKEN_aarch64=		does not build: No rule to make target RULES/arm64-freebsd-cc.rul
+BROKEN_armv6=		does not build: No rule to make target RULES/arm-freebsd-cc.rul
+BROKEN_armv7=		does not build: No rule to make target RULES/arm-freebsd-cc.rul
+BROKEN_mips64=		does not build: No rule to make target RULES/mips-freebsd-cc.rul
+BROKEN_powerpc64=	does not install: powerpc-freebsd-cc/sformat: No such file or directory
 
 LIBSCHILY=	libschily-2.01.01a07.tar.gz
 USES=		gmake
@@ -22,7 +26,7 @@ USES=		gmake
 .include <bsd.port.pre.mk>
 
 CCOM!=		${BASENAME} ${CC}
-MAKE_ENV=	CCOM=${CCOM} LANG=C
+MAKE_ENV=	CCOM=${CCOM}
 SFMTTARGET=	${ARCH:S/powerpc64/powerpc/}-freebsd-${CCOM}
 
 post-extract:
@@ -52,7 +56,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|^getline|get_line|g' ${WRKSRC}/libschily/stdio/fgetline.c
 	@${REINPLACE_CMD} -e 's|)getline|)get_line|g' ${WRKSRC}/sformat/diskfmt.c \
 		${WRKSRC}/sformat/makelabel.c
-
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/sformat/OBJ/${SFMTTARGET}/sformat \

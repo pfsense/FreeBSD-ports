@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Sereal-Encoder
-PORTVERSION=	3.015
+PORTVERSION=	4.005
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:YVES
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Perl module for fast, powerful binary serialization (encoder)
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 TEST_DEPENDS=	p5-Test-Deep>0:devel/p5-Test-Deep \
@@ -19,6 +19,7 @@ TEST_DEPENDS=	p5-Test-Deep>0:devel/p5-Test-Deep \
 
 USES=		perl5
 USE_PERL5=	configure
+MAKE_JOBS_UNSAFE=	yes
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Sereal/Encoder/Encoder.so

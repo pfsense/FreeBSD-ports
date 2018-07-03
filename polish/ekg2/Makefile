@@ -3,12 +3,12 @@
 
 PORTNAME=	ekg2
 PORTVERSION=	0.3.1
-PORTREVISION=	8
+PORTREVISION=	10
 PORTEPOCH=	1
 CATEGORIES=	polish net-im
 MASTER_SITES=	http://pl.ekg2.org/
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text-mode Gadu-Gadu, Jabber, and IRC client
 
 LIB_DEPENDS=	libgadu.so:polish/libgadu \
@@ -70,7 +70,7 @@ PERL_CONFIGURE_WITH=	perl
 PERL_USES=		perl5
 
 PYTHON_CONFIGURE_WITH=	python
-PYTHON_USES=		python shebangfix
+PYTHON_USES=		python:2.7 shebangfix
 SHEBANG_FILES=		contrib/python/notify-bubble.py
 
 SQLITE_CONFIGURE_WITH=	sqlite3

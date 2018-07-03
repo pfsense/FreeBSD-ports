@@ -10,7 +10,8 @@ DISTNAME=	${PORTNAME}-v${PORTVERSION:S/./_/g}
 MAINTAINER=	koue@chaosophia.net
 COMMENT=	H323 Video Conferencing library
 
-LICENSE=	MPL
+LICENSE=	MPL10 MPL11
+LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libpt.so:devel/ptlib
 
@@ -27,7 +28,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 MAKE_JOBS_UNSAFE=yes
 
-post-stage:
+post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libh323.so.1.26.5
 
 .include <bsd.port.mk>

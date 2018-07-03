@@ -24,7 +24,8 @@ Database_Include_MAINTAINER=		ports@FreeBSD.org
 # WANT_OPENLDAP_VER
 #				- Maintainer can set an arbitrary version of OpenLDAP by using it.
 # WANT_OPENLDAP_SASL
-#				- If set, this port depends on SASL enabled OpenLDAP client.
+#				- User-defined variable to depend upon SASL-enabled OpenLDAP
+#				  client. Must NOT be set in a port Makefile.
 # IGNORE_OPENLDAP_OPENLDAP
 #				- This variable can be defined if the ports doesn't support
 #				  one or more version of OpenLDAP.
@@ -36,7 +37,6 @@ Database_Include_MAINTAINER=		ports@FreeBSD.org
 .if defined(USE_OPENLDAP)
 DEFAULT_OPENLDAP_VER?=	24
 # OpenLDAP client versions currently supported
-OPENLDAP23_LIB=		libldap-2.3.so.2
 OPENLDAP24_LIB=		libldap-2.4.so.2
 
 .if exists(${LOCALBASE}/bin/ldapwhoami)

@@ -874,7 +874,6 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/de-refcard.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/dired-ref.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/emacsver.tex
-%%DATADIR%%/%%EMACS_VER%%/etc/refcards/emacsver.tex.in
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/fr-dired-ref.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/fr-refcard.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/fr-survival.tex
@@ -883,12 +882,18 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/gnus-refcard.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/orgcard.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/pdflayout.sty
+%%DATADIR%%/%%EMACS_VER%%/etc/refcards/pl-refcard.pdf
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/pl-refcard.tex
+%%DATADIR%%/%%EMACS_VER%%/etc/refcards/pt-br-refcard.pdf
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/pt-br-refcard.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/refcard.tex
+%%DATADIR%%/%%EMACS_VER%%/etc/refcards/ru-refcard.pdf
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/ru-refcard.tex
+%%DATADIR%%/%%EMACS_VER%%/etc/refcards/sk-dired-ref.pdf
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/sk-dired-ref.tex
+%%DATADIR%%/%%EMACS_VER%%/etc/refcards/sk-refcard.pdf
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/sk-refcard.tex
+%%DATADIR%%/%%EMACS_VER%%/etc/refcards/sk-survival.pdf
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/sk-survival.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/survival.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/vipcard.tex
@@ -1196,8 +1201,6 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/calendar/timeclock.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/calendar/todo-mode.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/calendar/todo-mode.elc
-%%CANNA%%%%DATADIR%%/%%EMACS_VER%%/lisp/canna.el.gz
-%%CANNA%%%%DATADIR%%/%%EMACS_VER%%/lisp/canna.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/case-table.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/case-table.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/cdl.el.gz
@@ -2387,8 +2390,6 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/isearch.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/isearchb.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/isearchb.elc
-%%CANNA%%%%DATADIR%%/%%EMACS_VER%%/lisp/isearch-ext.el.gz
-%%CANNA%%%%DATADIR%%/%%EMACS_VER%%/lisp/isearch-ext.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/jit-lock.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/jit-lock.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/jka-cmpr-hook.el.gz
@@ -3975,7 +3976,6 @@ share/applications/emacs.desktop
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/bytecode.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/callint.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/callproc.c
-%%CANNA%%%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/canna.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/casefiddle.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/casetab.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/category.c

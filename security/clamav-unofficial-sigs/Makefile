@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	clamav-unofficial-sigs
-PORTVERSION=	5.3.2
+PORTVERSION=	5.6.2
 CATEGORIES=	security
 
 MAINTAINER=	sf@maxempire.com
@@ -19,10 +19,9 @@ COMMON_DEPENDS=	clamscan:security/clamav \
 BUILD_DEPENDS=	${COMMON_DEPENDS}
 RUN_DEPENDS=	${COMMON_DEPENDS}
 
+USES=		perl5 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	extremeshok
-
-USES=		perl5 shebangfix
 SHEBANG_FILES=	clamav-unofficial-sigs.sh
 USE_PERL5=	run
 
