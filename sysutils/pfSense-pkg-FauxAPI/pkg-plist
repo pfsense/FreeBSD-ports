@@ -6,6 +6,7 @@
 
 @dir /etc/fauxapi
 /etc/fauxapi/credentials.ini
+/etc/fauxapi/pfsense_function_calls.txt
 
 @dir /usr/local/www/fauxapi
 @dir /usr/local/www/fauxapi/v1

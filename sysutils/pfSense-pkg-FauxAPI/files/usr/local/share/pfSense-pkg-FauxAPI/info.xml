@@ -5,11 +5,11 @@
 		<internal_name>fauxapi</internal_name>
 		<descr><![CDATA[A REST API interface for pfSense to facilitate dev-ops.]]></descr>
 		<website>https://github.com/ndejong/pfsense_fauxapi</website>
-                <category>System</category>
+		<category>System</category>
 		<version>%%PKGVERSION%%</version>
 		<status>beta</status>
-                <required_version>2.3</required_version>
+        <required_version>2.3.x, 2.4.x</required_version>
 		<configurationfile>fauxapi.xml</configurationfile>
-                <maintainer>contact@nicholasdejong.com</maintainer>
+        <maintainer>contact@nicholasdejong.com</maintainer>
 	</package>
 </pfsensepkgs>

@@ -37,9 +37,25 @@ function fauxapi_load_credentials_ini($filename) {
     $credentials = array();
     foreach($ini_credentials as $ini_section => $ini_section_items) {
         if(isset($ini_section_items['secret'])) {
+            if(!isset($ini_section_items['permit'])) {
+                $ini_section_items['permit'] = '&lt;none&gt;';
+            }
+            
+            if(array_key_exists('comment', $ini_section_items)) {
+                $comment = $ini_section_items['comment'];
+            }
+            elseif(array_key_exists('owner', $ini_section_items)) {
+                // legacy 
+                $comment = $ini_section_items['owner'];
+            }
+            else {
+                $comment = '-';
+            }
+            
             $credentials[] = array(
                 'apikey' => $ini_section,
-                'apiowner' => array_key_exists('owner', $ini_section_items) ? $ini_section_items['owner'] : '-'
+                'permits' => explode(',',str_replace(' ', '', $ini_section_items['permit'])),
+                'comment' => $comment
             );
         }
     }
@@ -59,16 +75,22 @@ function fauxapi_load_credentials_ini($filename) {
                     <tr>
                         <th>key</th>
                         <th>secret</th>
-                        <th>owner</th>
+                        <th>permits</th>
+                        <th>comment</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     foreach(fauxapi_load_credentials_ini($fauxapi_credentials_ini_file) as $credential) {
                         print '<tr>';
-                        print '<td>'.$credential['apikey'].'</td>';
-                        print '<td><div style="font-family:monospace;"> ['.$fauxapi_credentials_ini_file.'] </div></td>';
-                        print '<td>'.$credential['apiowner'].'</td>';
+                        print '<td><div style="font-family:monospace;">'.$credential['apikey'].'</div></td>';
+                        print '<td><div style="font-family:monospace;">[hidden]</div></td>';
+                        print '<td><div style="font-family:monospace;">';
+                        foreach($credential['permits'] as $permit){
+                            print $permit.'<br />';
+                        } 
+                        print '</div></td>';
+                        print '<td><div style="font-family:monospace;">'.$credential['comment'].'</div></td>';
                         print '</tr>';
                     }
                     ?>

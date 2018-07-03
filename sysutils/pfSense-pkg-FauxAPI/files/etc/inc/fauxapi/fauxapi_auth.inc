@@ -23,6 +23,7 @@ if (!defined('FAUXAPI_CALLID')) { echo 'FAUXAPI_CALLID missing'; exit; };
 
 class fauxApiAuth {
 
+    private $credentials = array();
     private $api_credentials_file = '/etc/fauxapi/credentials.ini';
     private $api_timestamp_delta_max = 60;
     private $api_demo_credentials = array(
@@ -31,11 +32,11 @@ class fauxApiAuth {
     );
 
     /**
-     * is_auth()
+     * is_authenticated()
      * 
      * @return boolean
      */
-    public function is_auth() {
+    public function is_authenticated() {
         fauxApiLogger::debug(__METHOD__);
 
         if (!isset($_SERVER['HTTP_FAUXAPI_AUTH'])) {
@@ -43,6 +44,7 @@ class fauxApiAuth {
             return FALSE;
         }
 
+        // make sure the AUTH is well formed and has expected input
         $elements = split(':', fauxApiUtils::sanitize($_SERVER['HTTP_FAUXAPI_AUTH'], array(':')));
         if (4 !== count($elements)) {
             fauxApiLogger::error('unexpected number of FAUXAPI_AUTH elements supplied', array(
@@ -58,23 +60,14 @@ class fauxApiAuth {
             'hash' => $elements[3],
         );
         
-        $api_credentials = $this->load_credentials($this->api_credentials_file);
-        if(!$api_credentials) {
-            return FALSE;
-        }
-
-        // confirm the presented apikey is a known credential
-        if (!array_key_exists($auth['apikey'], $api_credentials)) {
-            fauxApiLogger::error('apikey provided is unknown', array(
-                'apikey' => $auth['apikey']
-            ));
+        if(!$this->load_credentials($this->api_credentials_file, $auth['apikey'])) {
             return FALSE;
         }
         
         // make sure demo credentials are not in use
         foreach($this->api_demo_credentials as $apidemo_key => $apidemo_secret) {
-            if($apidemo_key === $auth['apikey'] || $apidemo_secret === $api_credentials[$auth['apikey']]) {
-                fauxApiLogger::error('demo api credential value in use, these must be changed!');
+            if($apidemo_key === $auth['apikey'] || $apidemo_secret === $this->credentials[FAUXAPI_CALLID]['secret']) {
+                fauxApiLogger::error('demo api credential value in use, these MUST be changed!');
                 return FALSE;
             }
         }
@@ -112,13 +105,13 @@ class fauxApiAuth {
             fauxApiLogger::error('apikey is out-of-bounds, refer to documentation');
             return FALSE;
         }
-        if(strlen($api_credentials[$auth['apikey']]) < 40 || strlen($api_credentials[$auth['apikey']]) > 128) {
+        if(strlen($this->credentials[FAUXAPI_CALLID]['secret']) < 40 || strlen($this->credentials[FAUXAPI_CALLID]['secret']) > 128) {
             fauxApiLogger::error('apisecret is out-of-bounds, refer to documentation');
             return FALSE;
         }
 
         // confirm the hash is valid
-        $auth_hash_input = $api_credentials[$auth['apikey']] . $auth['timestamp'] . $auth['nonce'];
+        $auth_hash_input = $this->credentials[FAUXAPI_CALLID]['secret'] . $auth['timestamp'] . $auth['nonce'];
         if (hash('sha256', $auth_hash_input) !== $auth['hash']) {
             fauxApiLogger::error('invalid hash value provided');
             return FALSE;
@@ -134,12 +127,44 @@ class fauxApiAuth {
     }
     
     /**
+     * is_authorized()
+     * 
+     * @param string $action
+     * @return bool
+     */
+    public function is_authorized($action) {
+        fauxApiLogger::debug(__METHOD__);
+        
+        if (!array_key_exists(FAUXAPI_CALLID, $this->credentials)) {
+            fauxApiLogger::error('credentials for this action have not been established');
+            return FALSE;
+        }
+        
+        $permits = explode(',',str_replace(' ', '', $this->credentials[FAUXAPI_CALLID]['permit']));
+        foreach($permits as $permit){
+            if(fnmatch($permit, $action)) {
+                fauxApiLogger::debug('permit allows action', array(
+                    'action' => $action,
+                    'permit' => $permit,
+                    'permits' => $permits,
+                ));
+                return TRUE;
+            }
+        }
+        fauxApiLogger::debug('permits do NOT allow action!', array(
+            'action' => $action,
+            'permits' => $permits,
+        ));
+        return FALSE;
+    }
+    
+    /**
      * load_credentials()
      * 
      * @param string $filename
      * @return mixed
      */
-    private function load_credentials($filename) {
+    private function load_credentials($filename, $apikey) {
         fauxApiLogger::debug(__METHOD__);
         
         if(!is_file($filename)) {
@@ -152,13 +177,25 @@ class fauxApiAuth {
         $ini_credentials = parse_ini_file($filename, TRUE);
         
         $credentials = array();
-        foreach($ini_credentials as $api_key => $api_secret) {
-            if(isset($api_secret['secret']) &&!array_key_exists($api_key, $this->api_demo_credentials)) {
-                $credentials[$api_key] = $api_secret['secret'];
+        foreach($ini_credentials as $key => $ini) {
+            if(isset($ini['secret']) && !array_key_exists($key, $this->api_demo_credentials)) {
+                $credentials[$key] = array(
+                    'secret' => $ini['secret'],
+                    'permit' => array_key_exists('permit', $ini) ? $ini['permit'] : ''
+                );
             }
         }
         
-        return $credentials;
+        if (array_key_exists($apikey, $credentials)) {
+            $this->credentials[FAUXAPI_CALLID] = $credentials[$apikey];
+            return TRUE;
+        }
+        
+        fauxApiLogger::error('apikey not defined in credential file', array(
+            'apikey' => $apikey,
+            'filename' => $filename
+        ));
+        return FALSE;
     }
 
 }

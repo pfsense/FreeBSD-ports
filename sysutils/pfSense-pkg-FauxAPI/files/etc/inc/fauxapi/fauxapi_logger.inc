@@ -73,10 +73,15 @@ class fauxApiLogger {
         return $logs;
     }
     
-    private static function write_syslog($level, $log) {
+    private static function write_syslog($level, $log, $inject_source=TRUE) {
+        
         #openlog(fauxApiLogger::$syslog_filename, LOG_PID | LOG_LOCAL0);
-        syslog($level, json_encode($log));
         #closelog();
+        
+        if($inject_source) {
+            $log['source'] = 'fauxapi';
+        }
+        syslog($level, json_encode($log));
     }
     
     private static function append_fauxapi_logs_entry($type, $message, $data) {

@@ -127,8 +127,8 @@ class fauxApi {
             'data' => NULL
         );
         
-        // confirm request is authenticated before we get too invloved with it
-        if (TRUE !== $this->Auth->is_auth()) {
+        // confirm request is authenticated before we get too involved with it
+        if (TRUE !== $this->Auth->is_authenticated()) {
             $checked->http_code = 401;
             $checked->message = 'authentication failed';
             fauxApiLogger::error($checked->message);
@@ -153,7 +153,17 @@ class fauxApi {
             $checked->http_code = 404;
             $checked->message = 'api action is not defined';
             fauxApiLogger::error($checked->message, array(
-                'checked_action' => $checked->action
+                'action' => $checked->action
+            ));
+            return $checked;
+        }
+        
+        // check the request is authorized to be performed
+        if (TRUE !== $this->Auth->is_authorized($checked->action)) {
+            $checked->http_code = 401;
+            $checked->message = 'action authorization failed';
+            fauxApiLogger::error($checked->message, array(
+                'action' => $checked->action
             ));
             return $checked;
         }
@@ -161,10 +171,13 @@ class fauxApi {
         // confirm any user_data provided is valid JSON
         if(!empty($user_data)) {
             $checked->data = @json_decode($user_data, TRUE);
-            if(NULL === $checked->data && json_last_error() !== JSON_ERROR_NONE) {
+            $json_last_error = json_last_error();
+            if(NULL === $checked->data && $json_last_error !== JSON_ERROR_NONE) {
                 $checked->http_code = 400;
                 $checked->message = 'user action data is not valid JSON';
-                fauxApiLogger::error($checked->message);
+                fauxApiLogger::error($checked->message, array(
+                    'json_last_error' => $json_last_error
+                ));
                 return $checked;
             }
         }
@@ -185,7 +198,7 @@ class fauxApi {
                 if('true'=== strtolower($arg_value)) {
                     $arg_value = TRUE;
                 }
-                elseif('false' === strtolower($arg_value)) {
+                if('false' === strtolower($arg_value)) {
                     $arg_value = FALSE;
                 }
                 if('__debug' === $arg_key) {
