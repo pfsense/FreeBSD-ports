@@ -3,6 +3,7 @@
 
 PORTNAME=	gecode
 PORTVERSION=	5.1.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.gecode.org/download/
 
@@ -12,13 +13,13 @@ COMMENT=	Generic Constraint Development Environment
 LICENSE=	BSL MIT
 LICENSE_COMB=	multi
 
-LIB_DEPENDS=	libmpfr.so:math/mpfr \
-		libgmp.so:math/gmp
-
 NOT_FOR_ARCHS=		aarch64 armv6 armv7 mips mips64
 NOT_FOR_ARCHS_REASON=	needs code written to specify rounding control mechanism in Boost.Numeric.Interval
 
-USES=		bison gmake perl5
+LIB_DEPENDS=	libmpfr.so:math/mpfr \
+		libgmp.so:math/gmp
+
+USES=		bison compiler:c++11-lang gmake perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static \
@@ -45,7 +46,8 @@ OPTIONS_DEFINE=	GIST
 OPTIONS_SUB=	yes
 
 GIST_DESC=	Interactive Search Tool (requires Qt)
-GIST_USE=	QT4=corelib,gui,moc_build,qmake_build
+GIST_USES=	qt:4
+GIST_USE=	QT=corelib,gui,moc_build,qmake_build
 GIST_CONFIGURE_ON=	--enable-gist --enable-qt
 GIST_CONFIGURE_OFF=	--disable-gist --disable-qt
 

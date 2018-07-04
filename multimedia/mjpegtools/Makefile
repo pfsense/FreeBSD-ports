@@ -11,19 +11,18 @@ MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Set of tools to record/playback/edit videos in MPEG format
 
 LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	v4l_compat>0:multimedia/v4l_compat
 
 CONFLICTS=	mplex-[0-9]*
 
-USES=		gmake jpeg libtool pathfix pkgconfig
+USES=		gmake jpeg libtool pathfix pkgconfig localbase
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-dga --without-x
 CONFIGURE_TARGET=	${ARCH:S/amd64/x86_64/}-portbld-${OPSYS:tl}${OSREL}
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 
 INFO=		mjpeg-howto
 
@@ -53,7 +52,7 @@ post-patch:
 		-e 's| \*-\*-linux\*)| *-*-*)|' \
 		-e '/ARCHFLAGS=/d' ${WRKSRC}/configure
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in AUTHORS BUGS CHANGES ChangeLog HINTS NEWS PLANS README README.DV \
 	README.avilib README.glav README.AltiVec README.lavpipe \

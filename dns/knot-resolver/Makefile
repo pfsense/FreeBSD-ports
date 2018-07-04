@@ -1,13 +1,14 @@
-# Created by: Leo Vandewoestijne <freebsd@dns-lab.com>
+# Created by: Leo Vandewoestijne <freebsd@dns.company>
 # $FreeBSD$
 
 PORTNAME=	knot-resolver
 DISTVERSION=	2.3.0
+PORTREVISION=	2
 CATEGORIES=	dns ipv6
 MASTER_SITES=	https://secure.nic.cz/files/knot-resolver/ \
 		https://dns.company/downloads/knot-resolver/
 
-MAINTAINER=	freebsd@dns-lab.com
+MAINTAINER=	freebsd@dns.company
 COMMENT=	Caching full resolver implementation
 
 LICENSE=	GPLv3

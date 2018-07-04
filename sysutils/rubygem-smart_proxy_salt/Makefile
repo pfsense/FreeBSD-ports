@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	smart_proxy_salt
-PORTVERSION=	2.1.8
+PORTVERSION=	2.1.9
 CATEGORIES=	sysutils ruby
 MASTER_SITES=	RG
 
@@ -12,7 +12,7 @@ COMMENT=	SaltStack Plug-In for Foreman's Smart Proxy
 LICENSE=	GPLv3
 
 RUN_DEPENDS=	foreman-proxy>=1.8.0:net/foreman-proxy \
-		${PYTHON_PKGNAMEPREFIX}salt>0:sysutils/py-salt
+		${PYTHON_PKGNAMEPREFIX}salt>0:sysutils/py-salt@${PY_FLAVOR}
 
 NO_ARCH=	yes
 

@@ -11,14 +11,16 @@ COMMENT=	Process Count Monitor (PCM) for Intel processors
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake
+ONLY_FOR_ARCHS=	amd64 i386
 
-ONLY_FOR_ARCHS=	i386 amd64
+USES=		gmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	opcm
 GH_PROJECT=	pcm
 GH_TAGNAME=	201710
+
+CONFLICTS_INSTALL=	intel-pcm-devel
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/*.x ${STAGEDIR}${PREFIX}/sbin

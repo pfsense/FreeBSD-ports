@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	nagcon
-PORTVERSION=	0.0.31
+PORTVERSION=	0.0.32
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.vanheusden.com/nagcon/
 
-MAINTAINER=	rand@meridian-enviro.com
+MAINTAINER=	rand@iteris.com
 COMMENT=	Nagios console monitor
 
 LIB_DEPENDS=	libstrfunc.so:devel/libstrfunc

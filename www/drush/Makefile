@@ -3,12 +3,14 @@
 
 PORTNAME=	drush
 DISTVERSION=	8.1.16
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/drush-ops/drush/releases/download/${DISTVERSION}/
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTNAME=	drush
 EXTRACT_SUFX=	.phar
 
-MAINTAINER=	idefix@fechner.net
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Drupal command line and scripting interface
 
 LICENSE=	GPLv2+
@@ -17,7 +19,7 @@ NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 NO_ARCH=	yes
 
-USES=		php:cli
+USES=		php:cli,flavors
 # set php requirements same as drupal itself
 USE_PHP=	gd pcre session mbstring ctype json hash simplexml dom pdo filter phar
 

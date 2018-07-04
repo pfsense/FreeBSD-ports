@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	liferea
-DISTVERSION=	1.12-rc3
+PORTVERSION=	1.12.3
 CATEGORIES=	net gnome
 MASTER_SITES=	https://github.com/lwindolf/liferea/releases/download/v${PORTVERSION:S/.r/-rc/}/
 
@@ -10,6 +10,8 @@ MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Simple RSS/RDF feed reader
 
 LICENSE=	GPLv2
+
+BROKEN_powerpc64=	fails to compile: WebKitWebEditor.h:40: redefinition of typedef 'WebKitWebEditor'
 
 BUILD_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \

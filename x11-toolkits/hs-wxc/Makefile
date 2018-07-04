@@ -2,7 +2,7 @@
 
 PORTNAME=	wxc
 PORTVERSION=	0.92.3.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -15,6 +15,8 @@ USE_WX=		3.0
 WX_COMPS=	wx
 
 IGNORE_DOCS=	yes
+
+IGNORE=		Doesn't build with recent GHC version
 
 post-patch::
 	@${REINPLACE_CMD} 's|"wx-config"|"wxgtk2u-3.0-config"| ; \

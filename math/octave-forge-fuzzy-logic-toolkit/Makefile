@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-fuzzy-logic-toolkit
 PORTVERSION=	0.4.5
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -15,6 +15,8 @@ LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
 OCTSRC=		${OCTAVE_PKGNAME}
+
+WRKSRC=		${WRKDIR}/${OCTSRC}	# Only required so that patch will apply.
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

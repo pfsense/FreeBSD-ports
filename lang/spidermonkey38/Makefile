@@ -3,7 +3,7 @@
 
 PORTNAME=	spidermonkey38
 PORTVERSION=	38.8.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${PORTVERSION}esr/source
 DISTNAME=	firefox-${PORTVERSION}esr.source
@@ -82,7 +82,7 @@ post-patch:
 		${WRKSRC}/tests/Intl/DateTimeFormat/format.js \
 		${WRKSRC}/tests/ecma_6/String/normalize-generateddata-part1-not-listed.js
 
-regression-test: build
+do-test:
 	@${ECHO_MSG} -n "===> Running jstests.py: "
 	@cd ${WRKSRC} && ${SETENV} TZ=PST8PDT ${PYTHON_CMD} tests/jstests.py \
 	-d -s --no-progress ./js/src/shell/js

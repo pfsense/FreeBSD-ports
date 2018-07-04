@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tfel
-PORTVERSION=	3.1.1
+PORTVERSION=	3.1.2
 CATEGORIES=	science
 MASTER_SITES=	SF/${PORTNAME}/
 PKGNAMESUFFIX=	-mfront
@@ -15,7 +15,7 @@ LICENSE=	GPLv3
 BUILD_DEPENDS=	gnuplot:math/gnuplot
 RUN_DEPENDS=	gnuplot:math/gnuplot
 
-USES=		cmake tar:bzip2
+USES=		cmake compiler:c++0x tar:bzip2
 
 OPTIONS_DEFINE=		DOCS PYTHON
 OPTIONS_DEFAULT=	PYTHON

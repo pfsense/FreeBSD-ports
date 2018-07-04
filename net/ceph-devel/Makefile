@@ -3,12 +3,12 @@
 
 PORTNAME=	ceph
 DISTVERSION=	wip.v2017-08-15-1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	wjw@digiware.nl
-COMMENT=Ceph delivers object, block, and file storage in a unified system
+COMMENT=	Ceph delivers object, block, and file storage in a unified system
 
 LICENSE=	GPLv2 LGPL3
 LICENSE_COMB=	dual

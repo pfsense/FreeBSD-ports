@@ -3,7 +3,7 @@
 
 PORTNAME=	gitea
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.0
+DISTVERSION=	1.4.3
 CATEGORIES=	www
 
 MAINTAINER=	stb@lassitu.de
@@ -12,8 +12,7 @@ COMMENT=	Compact self-hosted Git service
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	bash:shells/bash \
-		git:devel/git
+RUN_DEPENDS=	git:devel/git
 
 USES=		go
 USE_GITHUB=	yes
@@ -42,7 +41,7 @@ SQLITE_VARS=	GO_TAGS+=sqlite
 .include <bsd.port.options.mk>
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100513
-DAEMONARGS=	-S -l \$${gitea_facility} -s \$${gitea_priority} -t \$${name}
+DAEMONARGS=	-S -l \$${gitea_facility} -s \$${gitea_priority} -T \$${name}
 .else
 DAEMONARGS=	-f
 .endif

@@ -6,11 +6,14 @@ CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	10
 
-MAINTAINER=	mfechner@freebsd.org
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Allows nested hashes to be treated in a recursive fashion
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+DEPRECATED=	Obsoleted by update of www/rubygem-kubeclient. Please use devel/rubygem-recursive-open-struct instead
+EXPIRATION_DATE=2018-06-30
 
 NO_ARCH=	yes
 USES=		gem

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hedis
-PORTVERSION=	0.9.8
-PORTREVISION=	1
+PORTVERSION=	0.10.1
+PORTREVISION=	2
 CATEGORIES=	databases haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -11,8 +11,8 @@ COMMENT=	Client library for the Redis datastore
 
 LICENSE=	BSD3CLAUSE
 
-USE_CABAL=	async bytestring-lexing mtl network resource-pool scanner stm \
-		text unordered-containers vector
+USE_CABAL=	async bytestring-lexing errors HTTP mtl network network-uri \
+		resource-pool scanner unordered-containers vector
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

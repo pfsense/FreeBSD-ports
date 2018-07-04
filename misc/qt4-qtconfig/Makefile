@@ -3,17 +3,16 @@
 
 PORTNAME=	qtconfig
 DISTVERSION=	${QT4_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
 PKGNAMEPREFIX=	qt4-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 4 graphical configuration utility
 
-USES=		pkgconfig
-USE_QT4=	qmake_build moc_build rcc_build uic_build \
+USES=		pkgconfig qmake:no_env qt-dist:4
+USE_QT=		moc_build rcc_build uic_build \
 		corelib dbus gui xml
-QT_DIST=	yes
 
 HAS_CONFIGURE=	yes
 
@@ -42,7 +41,8 @@ OPTIONS_DEFINE=	PHONON
 OPTIONS_DEFAULT=PHONON
 
 PHONON_DESC=	Phonon multimedia framework support (implies GStreamer)
-PHONON_USE=	GSTREAMER=yes QT4=phonon,phonon-gst
+PHONON_USES=	qt-dist:4
+PHONON_USE=	GSTREAMER=yes QT=phonon,phonon-gst
 PHONON_CONFIGURE_ON=	-phonon -gstreamer
 PHONON_CONFIGURE_OFF=	-no-phonon -no-gstreamer
 

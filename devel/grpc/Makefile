@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	grpc
-PORTVERSION=	1.10.0
+PORTVERSION=	1.13.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	0
 CATEGORIES=	devel
 
 MAINTAINER=	vanilla@FreeBSD.org
@@ -23,7 +24,7 @@ LIB_DEPENDS=	libgflags.so:devel/gflags \
 
 USES=		cmake localbase:ldflags perl5 pkgconfig ssl
 USE_GITHUB=	yes
-GH_TUPLE=	google:benchmark:v1.3.0:benchmark/third_party/benchmark
+GH_TUPLE=	google:benchmark:v1.4.1:benchmark/third_party/benchmark
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 PLIST_SUB+=	SOVERSION=${PORTVERSION}
@@ -36,6 +37,7 @@ CMAKE_ARGS=	-DgRPC_ZLIB_PROVIDER:STRING="package" \
 		-DgRPC_CARES_PROVIDER:STRING="package" \
 		-DgRPC_BENCHMARK_PROVIDER:STRING="module" \
 		-DBENCHMARK_USE_LIBCXX=ON \
+		-DBENCHMARK_ENABLE_TESTING=OFF \
 		-DBUILD_SHARED_LIBS=ON
 
 .include <bsd.port.mk>

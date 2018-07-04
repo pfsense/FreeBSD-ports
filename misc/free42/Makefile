@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	free42
-DISTVERSION=	2.0.20
+DISTVERSION=	2.0.21
 CATEGORIES=	misc
 MASTER_SITES=	http://thomasokken.com/free42/upstream/
 DISTNAME=	${PORTNAME}-nologo-${DISTVERSION}
@@ -15,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BROKEN_aarch64=		fails to link: c++: error: no such file or directory: 'gcc111libbid.a'
 BROKEN_armv6=		fails to link: c++: error: no such file or directory: 'gcc111libbid.a'
 BROKEN_mips64=		fails to link: c++: error: no such file or directory: 'gcc111libbid.a'
+BROKEN_powerpc64=	fails to compile: unrecognized command line option "-Wno-c++11-narrowing"
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2

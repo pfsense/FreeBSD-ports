@@ -3,7 +3,7 @@
 
 PORTNAME=	dinotrace
 PORTVERSION=	9.4c
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	cad
 MASTER_SITES=	http://www.veripool.org/ftp/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -27,7 +27,7 @@ OPTIONS_DEFAULT=	EMACS
 EMACS_DESC=	Install Emacs supplimentary files
 
 EMACS_USES=	emacs:run
-EMACS_RUN_DEPENDS=	verilog-mode.el${EMACS_PKGNAMESUFFIX}>0:cad/verilog-mode.el@${FLAVOR}
+EMACS_RUN_DEPENDS=	verilog-mode.el${EMACS_PKGNAMESUFFIX}>0:cad/verilog-mode.el@${EMACS_FLAVOR}
 EMACS_PLIST_FILES=	${EMACS_SITE_LISPDIR}/dinotrace.el ${EMACS_SITE_LISPDIR}/sim-log.el
 
 post-patch:

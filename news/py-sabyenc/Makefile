@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	sabyenc
-PORTVERSION=	3.3.2
+PORTVERSION=	3.3.5
 CATEGORIES=	news python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	tremere@cainites.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python yEnc package optimized for use within SABnzbd
 
 LICENSE=	LGPL3

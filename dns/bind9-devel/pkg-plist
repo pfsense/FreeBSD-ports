@@ -120,6 +120,7 @@ include/dns/view.h
 include/dns/xfrin.h
 include/dns/zone.h
 include/dns/zonekey.h
+include/dns/zoneverify.h
 include/dns/zt.h
 include/dst/dst.h
 include/dst/gssapi.h
@@ -149,7 +150,6 @@ include/isc/counter.h
 include/isc/crc64.h
 include/isc/deprecated.h
 include/isc/dir.h
-include/isc/entropy.h
 include/isc/errno.h
 include/isc/error.h
 include/isc/event.h
@@ -189,6 +189,7 @@ include/isc/net.h
 include/isc/netaddr.h
 include/isc/netdb.h
 include/isc/netscope.h
+include/isc/nonce.h
 include/isc/offset.h
 include/isc/once.h
 include/isc/os.h
@@ -311,7 +312,6 @@ man/man8/dnssec-revoke.8.gz
 man/man8/dnssec-settime.8.gz
 man/man8/dnssec-signzone.8.gz
 man/man8/dnssec-verify.8.gz
-man/man8/genrandom.8.gz
 man/man8/named-checkconf.8.gz
 man/man8/named-checkzone.8.gz
 man/man8/named-compilezone.8.gz
@@ -339,7 +339,6 @@ sbin/dnssec-revoke
 sbin/dnssec-settime
 sbin/dnssec-signzone
 sbin/dnssec-verify
-sbin/genrandom
 sbin/named
 sbin/named-checkconf
 sbin/named-checkzone

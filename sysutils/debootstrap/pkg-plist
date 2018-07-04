@@ -5,12 +5,15 @@ man/man8/debootstrap.8.gz
 %%DATADIR%%/scripts/artful
 %%DATADIR%%/scripts/bartholomea
 %%DATADIR%%/scripts/bionic
+%%DATADIR%%/scripts/bookworm
 %%DATADIR%%/scripts/breezy
 %%DATADIR%%/scripts/bullseye
 %%DATADIR%%/scripts/buster
 %%DATADIR%%/scripts/chromodoris
+%%DATADIR%%/scripts/cosmic
 %%DATADIR%%/scripts/dapper
 %%DATADIR%%/scripts/dasyatis
+%%DATADIR%%/scripts/debian-common
 %%DATADIR%%/scripts/edgy
 %%DATADIR%%/scripts/etch
 %%DATADIR%%/scripts/etch-m68k
@@ -23,6 +26,10 @@ man/man8/debootstrap.8.gz
 %%DATADIR%%/scripts/jaunty
 %%DATADIR%%/scripts/jessie
 %%DATADIR%%/scripts/jessie-kfreebsd
+%%DATADIR%%/scripts/kali
+%%DATADIR%%/scripts/kali-dev
+%%DATADIR%%/scripts/kali-last-snapshot
+%%DATADIR%%/scripts/kali-rolling
 %%DATADIR%%/scripts/karmic
 %%DATADIR%%/scripts/lenny
 %%DATADIR%%/scripts/lucid

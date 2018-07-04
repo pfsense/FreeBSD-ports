@@ -3,7 +3,7 @@
 
 PORTNAME=	violetland
 PORTVERSION=	0.5
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -25,6 +25,8 @@ USE_SDL=	sdl mixer image ttf
 USE_GL=		gl glu
 CMAKE_ARGS=	-DDATA_INSTALL_DIR="${DATADIR}" \
 		-DLOCALE_INSTALL_DIR="${PREFIX}/share/locale"
+
+CXXFLAGS+=	-Wno-c++11-narrowing
 
 PORTDOCS=	*
 PORTDATA=	*

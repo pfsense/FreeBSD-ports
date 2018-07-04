@@ -1,11 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	cf
-PORTVERSION=	0.2.2
+PORTVERSION=	0.3.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 
-MAINTAINER=	olgeni@FreeBSD.org
+MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Colored output for io and io_lib
 
 LICENSE=	BSD3CLAUSE

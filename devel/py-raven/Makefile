@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	raven
-PORTVERSION=	6.5.0
+PORTVERSION=	6.8.0
 CATEGORIES=	devel python
 #MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +21,7 @@ USE_PYTHON=	autoplist concurrent distutils
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_REL} < 3200
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}contextlib2>0:devel/py-contextlib2@${FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}contextlib2>0:devel/py-contextlib2@${PY_FLAVOR}
 .endif
 
 .include <bsd.port.post.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	aqsis
 PORTVERSION=	1.8.2
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/${PORTVERSION}
 
@@ -22,16 +22,17 @@ RUN_DEPENDS=	bash:shells/bash
 
 BROKEN_sparc64=	Fails to build: cannot link with boost
 
+LDFLAGS+=	-lpthread # Boost.Thread 1.67+
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 USE_LDCONFIG=	yes
 USES=		cmake:outsource compiler:c++11-lib desktop-file-utils \
-		shared-mime-info shebangfix
+		qt:4 shared-mime-info shebangfix
 USE_CXXSTD=	gnu++11
 SHEBANG_FILES=	examples/*/*/*.sh \
 		tools/neqsus/houdini/post.sh \
 		distribution/linux/*.sh
-USE_QT4=	opengl qmake_build moc_build rcc_build uic_build
+USE_QT=		opengl qmake_build moc_build rcc_build uic_build
 PLIST_SUB+=	LIBVERS=${PORTVERSION:R}
 
 INSTALLS_ICONS=	yes

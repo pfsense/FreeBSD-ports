@@ -2,7 +2,8 @@
 
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	3.6.3
+DISTVERSION=	3.6.5
+PORTREVSION=	1
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/ \
@@ -44,8 +45,6 @@ MAKE_ARGS=	--prefix=${STAGEDIR}${PREFIX} \
 		--disable-warnings-as-errors \
 		VERBOSE=on
 
-WITH_DEBUG=	yes
-
 USERS=		mongodb
 GROUPS=		mongodb
 
@@ -57,6 +56,14 @@ SASL_MAKE_ARGS=		--use-sasl-client
 
 SSL_USES=	ssl
 SSL_MAKE_ARGS=	--ssl
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
+SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
+.else
+SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
+.endif
 
 ALL_TARGET=	core
 

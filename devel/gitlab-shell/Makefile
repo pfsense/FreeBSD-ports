@@ -5,7 +5,7 @@ PORTNAME=	gitlab-shell
 PORTVERSION=	7.1.2
 CATEGORIES=	devel
 
-MAINTAINER=	idefix@fechner.net
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	GitLab Shell handles git commands for GitLab
 
 LICENSE=	MIT

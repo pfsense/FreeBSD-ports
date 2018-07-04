@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	aiohttp-wsgi
-PORTVERSION=	0.7.0
+PORTVERSION=	0.8.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ COMMENT=	WSGI adapter for aiohttp
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>0:www/py-aiohttp@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>0:www/py-aiohttp@${PY_FLAVOR}
 
 USES=		python:3.4+
 USE_PYTHON=	autoplist distutils

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rt
-DISTVERSION=	4.2.14
+DISTVERSION=	4.2.15
 CATEGORIES=	www
 MASTER_SITES=	http://download.bestpractical.com/pub/rt/release/
 PKGNAMESUFFIX=	42
@@ -138,7 +138,6 @@ CONFIGURE_ARGS+=	--enable-layout=${RT_LAYOUT} \
 
 CONFIGURE_ENV+=	PERL=${LOCALBASE}/bin/perl
 
-PKGMESSAGE=	${WRKDIR}/pkg-message
 SUB_FILES=	pkg-message
 SUB_LIST=	RT_ETC_PATH=${RT_ETC_PATH}
 PLIST_SUB=	RT_ETC_DIR=${RT_ETC_DIR}

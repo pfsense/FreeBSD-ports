@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	IBMQuantumExperience
-DISTVERSION=	1.9.0
+DISTVERSION=	1.9.6
 CATEGORIES=	devel
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,8 +11,8 @@ COMMENT=	Python library for the Quantum Experience API
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}requests_ntlm>=0:www/py-requests_ntlm@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests_ntlm>=0:www/py-requests_ntlm@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils

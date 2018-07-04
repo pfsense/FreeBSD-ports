@@ -3,7 +3,7 @@
 
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION1}.${AOOVERSION2}.${SVNREVISION}
-PORTREVISION=	2
+#PORTREVISION=	1
 PORTEPOCH=	4
 CATEGORIES=	editors java
 MASTER_SITES=	https://dist.apache.org/repos/dist/dev/openoffice/${AOOVERSION}-${AOORC}-r${SVNREVISION}/source/ \
@@ -105,7 +105,7 @@ AOOVERSION2=	2
 AOOVERSION3=	0
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
 AOOTAG=		AOO420m1\(Build:9800\)
-SVNREVISION=	1822069
+SVNREVISION=	1833124
 #AOORC=rc3
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
@@ -186,8 +186,7 @@ GNOMEVFS_CONFIGURE_ON=		--disable-gio
 GNOMEVFS_USE=			GNOME=gnomevfs2
 
 MMEDIA_CONFIGURE_ENABLE=	gstreamer
-MMEDIA_LIB_DEPENDS=		libgstreamer-0.10.so:multimedia/gstreamer
-MMEDIA_USE=			GSTREAMER=yes
+MMEDIA_USE=			GSTREAMER1=yes
 
 MYSQL_CONFIGURE_ENABLE=		mysql-connector
 MYSQL_CONFIGURE_WITH=		system-mysql
@@ -238,9 +237,6 @@ CONFIGURE_ARGS+=	--without-commons-logging
 
 .if ${COMPILER_TYPE} == clang
 CPPFLAGS+=		-I${LOCALBASE}/include
-. if ${COMPILER_VERSION} >= 40 && ${ARCH} == amd64
-EXTRA_PATCHES+=		${FILESDIR}/extra-patch-align16
-. endif
 .endif
 
 .if ${ARCH} == amd64
@@ -393,28 +389,6 @@ post-patch:
 	${REINPLACE_CMD} -e "s|%%JAVA_HOME%%|${JAVA_HOME}|" \
 		${WRKSRC}/desktop/scripts/soffice.sh
 	${REINPLACE_CMD} -e '/^mkdir -p/,$$d' ${CREATE_TREE}
-.if ${COMPILER_TYPE} == gcc
-	# g++49 -Os sometimes leaves inline class methods undefined,
-	# affects fmgridif.cxx and ColumnControl.cxx
-	# See: <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=65009>
-	if [ ${CXX} = g++49  ]; then \
-		${REINPLACE_CMD} -e "s/ := -Os/ := -Os -fno-devirtualize -fno-devirtualize-speculatively/" ${WRKSRC}/solenv/gbuild/platform/freebsd.mk; \
-		${REINPLACE_CMD} -e "s/=-Os /=-Os -fno-devirtualize -fno-devirtualize-speculatively /" ${WRKSRC}/solenv/inc/unxfbsdi.mk; \
-	fi
-.elif ${ARCH} == i386 && ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 36
-	# autodoc and uno (bridgetest) core dump when built with with -Os
-	# on i386, affects file.cxx and bridgetest.cxx (at least).
-	# Using -O2 optimiztion works, and -Os is essentially -O2 with out
-	# loop unrolling.
-	# Changing optimization in just unxfbsdi.mk is sufficient to get
-	# a successful build, but change it in both places to avoid the
-	# possibility of obscure runtime problems, which is likely
-	# since this seems to be a generic bug in code generation for
-	# exception handling.
-	# See: <https://llvm.org/bugs/show_bug.cgi?id=24792>
-	${REINPLACE_CMD} -e "s/=-Os /=-O2 -fno-unroll-loops /" ${WRKSRC}/solenv/inc/unxfbsdi.mk
-	${REINPLACE_CMD} -e "s/ := -Os/ := -O2 -fno-unroll-loops/" ${WRKSRC}/solenv/gbuild/platform/freebsd.mk
-.endif
 
 do-build:
 	${PRINTF} "[repositories]\nmain=active\nextras=active\n" > ${WRKSUBDIR}/source_config
@@ -485,7 +459,6 @@ do-install:
 			${LN} -f ${EXECBASE} ${EXECBASE}-$${i} ; \
 	done
 	@${ECHO_CMD} "adding desktop support"
-	@${LN} -sf ${XDGREL} ${STAGEDIR}${DESKTOPDIR}/${EXECBASE}
 	@cd ${WRKSRC} ;						\
 	    . ${FREEBSD_ENV_SET} ;				\
 	    cd sysui/$${INPATH}/misc/openoffice ;		\
@@ -499,6 +472,10 @@ do-install:
 		${SH} ${CREATE_TREE} ;				\
 	    ${INSTALL_DATA} apacheopenoffice.xml		\
 		${STAGEDIR}/${PREFIX}/share/mime/packages
+	@cd ${STAGEDIR}${DESKTOPDIR}; for i in base calc draw impress \
+		javafilter math printeradmin qstart startcenter writer ; do \
+			${LN} -sf ${XDGREL}/$${i}.desktop ${EXECBASE}-$${i}.desktop ; \
+	done
 
 do-install-SDK-on:
 	${TAR} -s '|./[^/]*/||' -xz -C ${STAGEDIR}${PRINSTALLATION_BASEDIR} \

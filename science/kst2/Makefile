@@ -2,33 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	kst
-DISTVERSION=	2.0.8
-PORTREVISION=	3
+DISTVERSION=	${KST_VERSION}.${KST_DATE}
+PORTREVISION=	1
 CATEGORIES=	science kde
-MASTER_SITES=	SF/${PORTNAME}/Kst%20${DISTVERSION:C/-r.*//}/
-DISTNAME=	Kst-${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Data viewing and plotting tool
 
-LIB_DEPENDS=	libgsl.so:math/gsl
+LIB_DEPENDS=	libgsl.so:math/gsl \
+		libtiff.so:graphics/tiff
 
-USES=		cmake:outsource pkgconfig
-_USE_QT4=	gui xml designer svg linguisttools_build \
+KST_VERSION=	2.0.8
+KST_DATE=	20180405
+
+USES=		cmake:outsource desktop-file-utils pkgconfig \
+		shared-mime-info
+_USE_QT4=	corelib gui xml designer network svg linguisttools_build \
 		qmake_build moc_build rcc_build uic_build
-_USE_QT5=	concurrent network printsupport widgets xml \
+_USE_QT5=	concurrent core gui network printsupport svg widgets xml \
 		buildtools_build linguisttools_build qmake_build
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS+=	-Dkst_install_prefix=${PREFIX} \
-		-Dkst_pch=off
+USE_GITHUB=	yes
+GH_ACCOUNT=	Kst-plot
+GH_TAGNAME=	6afa76a
 
-PLIST_SUB=	SHLIB_VER=${PORTVERSION}
+CMAKE_ARGS+=	-Dkst_install_prefix=${PREFIX} \
+		-Dkst_pch=off \
+		-Dkst_version_string=${KST_VERSION} \
+		-Dkst_revision=${KST_DATE}
+
+PLIST_SUB=	SHLIB_VER=${KST_VERSION}
 
 OPTIONS_DEFINE=	FITS MATLAB NETCDF
 OPTIONS_SINGLE=	TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	QT4 QT5
-OPTIONS_DEFAULT=	QT4
+OPTIONS_DEFAULT=	QT5
 OPTIONS_SUB=	yes
 
 FITS_DESC=	Support for data in FITS format
@@ -42,13 +51,15 @@ NETCDF_LIB_DEPENDS=	libnetcdf.so:science/netcdf
 NETCDF_IGNORE=	does not support NetCDF 4
 
 TOOLKIT_DESC=	Qt toolkit
-QT4_USE=	${_USE_QT4:S/^/QT4=/}
-QT5_USE=	${_USE_QT5:S/^/QT5=/}
+QT4_USES=	qt:4
+QT4_USE=	${_USE_QT4:S/^/QT=/}
+QT5_USES=	qt:5
+QT5_USE=	${_USE_QT5:S/^/QT=/}
 QT5_CMAKE_ON=	-Dkst_qt5=on
 
 post-patch:
-	${REINPLACE_CMD} -e '/^Exec=kst2/s,\(kst2\).*,\1 %f,' \
-		${WRKSRC}/src/kst/kst2.desktop
+	${REINPLACE_CMD} -e '/find_package(Getdata)/d' \
+		${CMAKE_SOURCE_PATH}/CMakeLists.txt
 
 post-patch-FITS-off:
 	${REINPLACE_CMD} -e '/find_package(CFITSIO)/d' \

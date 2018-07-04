@@ -2,18 +2,18 @@
 
 PORTNAME=	libkonq
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11 kde kde-kde4
 DISTNAME=	kde-baseapps-${PORTVERSION}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Core library for Konqueror
 
-LIB_DEPENDS=	libphonon.so:multimedia/phonon
+LIB_DEPENDS=	libphonon.so:multimedia/phonon@qt4
 
-USES=		cmake:outsource kde:4 tar:xz
+USES=		cmake:outsource kde:4 qt:4 tar:xz
 USE_KDE=	kdelibs automoc4 soprano
-USE_QT4=	corelib dbus gui network svg xml \
+USE_QT=		corelib dbus gui network svg xml \
 		moc_build qmake_build rcc_build uic_build
 USE_LDCONFIG=	yes
 USE_XORG=	x11

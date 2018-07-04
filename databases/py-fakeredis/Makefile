@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	fakeredis
-PORTVERSION=	0.10.2
+PORTVERSION=	0.11.0
 CATEGORIES=	databases
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Fake version of databases/py-redis for unit testing
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}redis>=0:databases/py-redis@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}redis>=0:databases/py-redis@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

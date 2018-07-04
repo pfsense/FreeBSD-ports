@@ -3,7 +3,7 @@
 
 PORTNAME=	xml-lite.el
 PORTVERSION=	1.1
-PORTREVISION=	10
+PORTREVISION=	11
 PORTEPOCH=	1
 CATEGORIES=	textproc elisp
 MASTER_SITES=	http://dogbiscuit.org/mdub/software/
@@ -13,6 +13,8 @@ EXTRACT_SUFX=	# empty
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple XML-editing for GNU Emacs
+
+LICENSE=	GPLv2+
 
 USES=		emacs
 

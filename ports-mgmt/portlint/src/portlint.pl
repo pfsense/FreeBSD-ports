@@ -15,7 +15,7 @@
 # was removed.
 #
 # $FreeBSD$
-# $MCom: portlint/portlint.pl,v 1.449 2018/02/18 21:02:27 jclarke Exp $
+# $MCom: portlint/portlint.pl,v 1.467 2018/06/24 16:07:04 jclarke Exp $
 #
 
 use strict;
@@ -49,8 +49,8 @@ $portdir = '.';
 
 # version variables
 my $major = 2;
-my $minor = 17;
-my $micro = 16;
+my $minor = 18;
+my $micro = 3;
 
 # default setting - for FreeBSD
 my $portsdir = '/usr/ports';
@@ -159,7 +159,8 @@ my @varlist =  qw(
 	OPTIONS_GROUP OPTIONS_SUB INSTALLS_OMF USE_RC_SUBR USES DIST_SUBDIR
 	ALLFILES CHECKSUM_ALGORITHMS INSTALLS_ICONS GNU_CONFIGURE
 	CONFIGURE_ARGS MASTER_SITE_SUBDIR LICENSE LICENSE_COMB NO_STAGE
-	DEVELOPER SUB_FILES SHEBANG_LANG MASTER_SITES_SUBDIRS
+	DEVELOPER SUB_FILES SHEBANG_LANG MASTER_SITES_SUBDIRS FLAVORS
+	USE_PYTHON
 );
 
 my %makevar;
@@ -466,8 +467,13 @@ sub checkdescr {
 	my($file) = @_;
 	my(%maxchars) = ($makevar{DESCR}, 80);
 	my(%maxlines) = ($makevar{DESCR}, 24);
-	my(%errmsg) = ($makevar{DESCR},	"exceeds $maxlines{$makevar{DESCR}} ".
+	my(%minlines) = ($makevar{DESCR}, 3);
+	my(%toolongerrmsg) = ($makevar{DESCR},
+					"exceeds $maxlines{$makevar{DESCR}} ".
 					"lines, make it shorter if possible.");
+	my(%tooshorterrmsg) = ($makevar{DESCR},
+					"contains less than $minlines{$makevar{DESCR}} ".
+					"lines, make it longer if possible.");
 	my($longlines, $linecnt, $tmp) = (0, 0, "");
 
 	open(IN, "< $file") || return 0;
@@ -499,8 +505,11 @@ sub checkdescr {
 		$longlines++ if ($maxchars{$file} < length);
 	}
 	if ($linecnt > $maxlines{$file}) {
-		&perror("WARN", $file, -1, "$errmsg{$file}".
+		&perror("WARN", $file, -1, "$toolongerrmsg{$file}".
 			"(currently $linecnt lines)");
+	} elsif ($linecnt < $minlines{$file}) {
+		&perror("WARN", $file, -1, "$tooshorterrmsg{$file}".
+			"(currently $linecnt ".($linecnt > 1 ? "lines" : "line").")");
 	} else {
 		print "OK: $file: has $linecnt lines.\n" if ($verbose);
 	}
@@ -834,7 +843,7 @@ sub checkplist {
 					"DOCSDIR-safe (that is, a user can override DOCSDIR ".
 					"when building this port and the port will still work ".
 					"correctly) consider using DOCSDIR macro; if you are ".
-					"unsure if this this port is DOCSDIR-safe, then ignore ".
+					"unsure if this port is DOCSDIR-safe, then ignore ".
 					"this warning");
 			$sharedocused++;
 		} elsif ($_ =~ /^(\%\%PORTDOCS\%\%)?\%\%DOCSDIR\%\%/) {
@@ -1028,16 +1037,17 @@ sub checkpatch {
 
 	open(IN, "< $file") || return 0;
 	$whole = '';
+	my $checked_header = 0;
 	while (<IN>) {
 		$whole .= $_;
-		if (/^--- /) {
+		if (/^--- / && !$checked_header) {
+			$checked_header = 1;
 			if ($_ !~ /UTC\s*$/) {
 				&perror("WARN", $file, -1, "patch was not generated using ".
 					"``make makepatch''.  It is recommended to use ".
 					"``make makepatch'' when you need to [re-]generate a ".
 					"patch to ensure proper patch format.");
 			}
-			last;
 		}
 	}
 
@@ -1053,6 +1063,11 @@ sub checkpatch {
 		&perror("WARN", $file, $lineno, "patch contains ^M characters. ".
 			"Consider defining USES=dos2unix to remove DOS line endings ".
 			"from source files.");
+	}
+
+	if ($whole !~ /\n$/s) {
+		&perror("FATAL", $file, -1, "patch does not end with a newline, and the commit check ".
+			"hook will fail.");
 	}
 
 	close(IN);
@@ -1079,13 +1094,17 @@ sub check_depends_syntax {
 			next;
 		}
 		print "OK: checking ports listed in $j.\n" if ($verbose);
-		foreach my $k (split(/\s+/, $i)) {
+		my @ks = split(/\s+/, $i);
+		while (@ks) {
+			my $k = shift @ks;
 			if ($k =~ /^#/) {
 				last;
 			}
 			my $ok = $k;
 			if ($k =~ /^\$\{(\w+)\}$/) {
 				$k = get_makevar($1);
+				push @ks, split(/\s+/, $k);
+				next;
 			}
 			if ($k eq '') {
 				next;
@@ -1109,7 +1128,9 @@ sub check_depends_syntax {
 			}
 			my %m = ();
 			$m{'dep'} = $l[0];
-			$m{'dir'} = (split(/\@/, $l[1]))[0];
+			my ($di, $fl) = split(/\@/, $l[1]);
+			$m{'dir'} = $di;
+			$m{'fla'} = $fl // '';
 			$m{'tgt'} = $l[2] // '';
 			my %depmvars = ();
 			foreach my $dv ($m{'dep'}, $m{'dir'}, $m{'tgt'}) {
@@ -1122,6 +1143,15 @@ sub check_depends_syntax {
 					} else {
 						$depmvars{$mv} = &get_makevar($mv);
 					}
+				}
+			}
+
+			# check Python flavor
+			my $bdir = basename($m{'dir'});
+			if ($bdir =~ /^py-/) {
+				if ($m{'fla'} ne '${PY_FLAVOR}') {
+					&perror("WARN", $file, -1, "you may want directory for ".
+						"dependency $m{'dep'} to be $m{'dir'}\@\${PY_FLAVOR}");
 				}
 			}
 
@@ -1995,7 +2025,7 @@ xargs xmkmf
 	$cmdnames{'env'} = '${SETENV}';
 	$cmdnames{'gunzip'} = '${GUNZIP_CMD}';
 	$cmdnames{'gzip'} = '${GZIP_CMD}';
-	$cmdnames{'install'} = '${INSTALL_foobaa}';
+	$cmdnames{'install'} = '${INSTALL_foobar}';
 	$cmdnames{'python'} = '${PYTHON_CMD}';
 	$cmdnames{'sdl-config'} = '${SDL_CONFIG}';
 	$cmdnames{'strip'} = '${STRIP_CMD}';
@@ -2227,10 +2257,10 @@ xargs xmkmf
 	# whole file: USE_KDE check
 	#
 	if ($whole =~ /^USE_KDE[?:]?=\s*(.*)$/m) {
-		if ($makevar{USES} !~ /\bkde:5/) {
+		if ($makevar{USES} !~ /\bkde:[45]/) {
 			my $lineno = &linenumber($`);
 			&perror("WARN", $file, $lineno, "USE_KDE is defined without ".
-				"defining USES=kde:5");
+				"defining USES=kde:[45]");
 		}
 	}
 
@@ -2341,10 +2371,17 @@ xargs xmkmf
 	#
 	# whole file: check for redundant SHEBANG_LANGs
 	#
-	if ($whole =~ /\nSHEBANG_LANG[?+]?=\s*([^\s#]*).*\n/) {
-		my @shebang_langs = split(/\s+/, $1 // '');
+	if ($whole =~ /^SHEBANG_LANG[?+]?=\s*(.*)$/m) {
+		my $sh_lang = $1;
+		my @shebang_langs = split(/\s+/, $makevar{SHEBANG_LANG} // '');
+		my %sh_seen = ();
 		foreach my $shebang_lang (@shebang_langs) {
-			if ($makevar{SHEBANG_LANG} =~ /\b$shebang_lang\b/) {
+			if ($sh_seen{$shebang_lang}) {
+				$sh_seen{$shebang_lang}++;
+			} else {
+				$sh_seen{$shebang_lang} = 1;
+			}
+			if ($sh_seen{$shebang_lang} > 1 && $sh_lang =~ /\b$shebang_lang\b/) {
 				&perror("WARN", $file, -1, "$shebang_lang is already included in ".
 					"SHEBANG_LANG.  You should remove this from $file.");
 			}
@@ -2721,9 +2758,14 @@ DIST_SUBDIR EXTRACT_ONLY
 				foreach my $mss (split(/\s+/, $makevar{MASTER_SITES_SUBDIRS})) {
 					my ($ms, $sd) = split(/:/, $mss);
 					if ($i =~ /^$ms/ && $i ne $ms) {
-						&perror("WARN", $file, -1, "typically when you specify magic site $ms ".
-							"you do not need anything else as $sd is assumed");
-						$good_ms = 0;
+						my $ip = $i;
+						$ip =~ s/^$ms\///;
+						my $exp_sd = get_makevar($ip);
+						if ($exp_sd eq $sd) {
+							&perror("WARN", $file, -1, "typically when you specify magic site $ms ".
+								"you do not need anything else as $sd is assumed");
+							$good_ms = 0;
+						}
 					}
 				}
 				if ($good_ms) {
@@ -3123,8 +3165,16 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 		check_depends_syntax($tmp, $file);
 
 		foreach my $i (@linestocheck) {
+			foreach my $flavor (split(/\s+/, $makevar{FLAVORS} // '')) {
+				$tmp =~ s/${flavor}_$i[?+:]?=[^\n]+\n//g;
+			}
 			$tmp =~ s/$i[?+:]?=[^\n]+\n//g;
 		}
+
+		# Remove any other *_DEPENDS lines as people may
+		# use a macro for common depends as described in
+		# section 5.9.2 of the Porter's Handbook.
+		$tmp =~ s/.+_DEPENDS[?+:]?=[^\n]+\n//g;
 
 		&checkextra($tmp, '*_DEPENDS', $file);
 
@@ -3573,7 +3623,7 @@ EOF
 sub get_makevar {
 	my($cmd, $result);
 
-	$cmd = join(' -V ', "make $makeenv MASTER_SITE_BACKUP=''", @_);
+	$cmd = join(' -V ', "make $makeenv MASTER_SITE_BACKUP=''", map { "'$_'" } @_);
 	$result = `$cmd`;
 	chomp $result;
 
@@ -3588,7 +3638,7 @@ sub get_makevar {
 sub get_makevar_raw {
 	my($cmd, $result);
 
-	$cmd = join(' -XV ', "make $makeenv MASTER_SITE_BACKUP=''", @_);
+	$cmd = join(' -XV ', "make $makeenv MASTER_SITE_BACKUP=''", map { "'$_'" } @_);
 	$result = `$cmd`;
 	chomp $result;
 

@@ -4,6 +4,7 @@
     COMMENT = Communication utilities
 
     SUBDIR += acfax
+    SUBDIR += airspy
     SUBDIR += aldo
     SUBDIR += amtterm
     SUBDIR += anyremote
@@ -70,11 +71,9 @@
     SUBDIR += hidapi
     SUBDIR += hylafax
     SUBDIR += ibp
-    SUBDIR += java-commapi
-    SUBDIR += java-commapi-freebsd
+    SUBDIR += inspectrum
     SUBDIR += java-simple-serial-connector
     SUBDIR += jerm
-    SUBDIR += jsdr
     SUBDIR += kb
     SUBDIR += kermit
     SUBDIR += klog
@@ -94,6 +93,7 @@
     SUBDIR += libusbmuxd
     SUBDIR += linpsk
     SUBDIR += linrad
+    SUBDIR += liquid-dsp
     SUBDIR += lirc
     SUBDIR += locator
     SUBDIR += lrzsz
@@ -166,7 +166,6 @@
     SUBDIR += seyon
     SUBDIR += sms_client
     SUBDIR += smstools3
-    SUBDIR += soundmodem
     SUBDIR += spandsp
     SUBDIR += splat
     SUBDIR += sredird

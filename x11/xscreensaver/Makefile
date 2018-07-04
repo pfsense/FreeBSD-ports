@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	xscreensaver
-PORTVERSION=	5.38
+PORTVERSION=	5.39
+PORTREVISION=	3
 CATEGORIES=	x11
 MASTER_SITES=	http://www.jwz.org/xscreensaver/
 
@@ -19,7 +20,7 @@ LIB_DEPENDS=	libgle.so:graphics/gle \
 
 CONFLICTS=	xscreensaver-gnome-[0-9]* xscreensaver-gnome-hacks-[0-9]*
 
-USES=		autoreconf gettext gmake jpeg perl5 pkgconfig
+USES=		autoreconf gettext gmake jpeg localbase:ldflags perl5 pkgconfig
 USE_GL=		gl glu
 USE_GNOME=	cairo gdkpixbuf2 gtk20 intltool libglade2 libxml2
 USE_PERL5=	run
@@ -38,10 +39,8 @@ CONFIGURE_ARGS=	--with-gtk --with-gl --with-gle --with-pixbuf --with-xpm \
 		--with-xf86gamma-ext --with-randr-ext --without-kerberos \
 		--without-setuid-hacks --enable-locking
 MAKE_ARGS+=	install_prefix=${STAGEDIR}
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	PAM SETUID_HACKS FIREF NLS XAOS1 XDALI XEARTH \
+OPTIONS_DEFINE=	PAM SETUID_HACKS FIREF NLS NSFW XAOS1 XDALI XEARTH \
 		XFT XMOUN XPLANET XSNOW
 OPTIONS_DEFAULT=XFT
 OPTIONS_SUB=	yes
@@ -55,6 +54,8 @@ FIREF_RUN_DEPENDS=		${LOCALBASE}/bin/xscreensaver-hacks/fireflies:x11/fireflies
 
 NLS_USES=			gettext-runtime
 NLS_CONFIGURE_ENABLE=		nls
+
+NSFW_DESC=			Include material that is Not Safe For Work
 
 XAOS1_DESC=			Add extra port graphics/xaos
 XAOS1_RUN_DEPENDS=		xaos:graphics/xaos
@@ -89,6 +90,10 @@ post-patch:
 		${WRKSRC}/driver/xscreensaver.man
 	${CP} ${FILESDIR}/xscreensaver.pam \
 		${WRKSRC}/driver/xscreensaver.pam.in
+
+post-patch-NSFW-off:
+	${REINPLACE_CMD} -e 's|Dick Pix|Stuff|' ${WRKSRC}/hacks/bsod.c
+	${REINPLACE_CMD} -e 's|dick pics|data, etc.|' ${WRKSRC}/hacks/bsod.c
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/x*.xml ${STAGEDIR}${DATADIR}/config/

@@ -5,6 +5,302 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20180701:
+  AFFECTS: users of devel/bats
+  AUTHOR: lifanov@FreeBSD.org
+
+  The devel/bats port has been renamed to devel/bats-core to match the
+  new upstream project.
+
+20180630:
+  AFFECTS: users of net-im/ejabberd
+  AUTHOR: ashish@FreeBSD.org
+
+  In version 18.06, upstream has removed support for IRC transport.
+
+20180625:
+  AFFECTS: users of PHP based applications like drush
+  AUTHOR: mfechner@FreeBSD.org
+
+  Flavors are being added to PHP applications. If you use PHP 5.6 you need:
+
+  # pkg set -n drush:drush-php56
+
+  For more details see 20180611.
+
+20180612:
+  AFFECTS: users of the nox flavor of editors/emacs-devel
+  AUTHOR: jrm@FreeBSD.org
+
+  The package name for the nox flavor of editors/emacs-devel changed from
+  emacs-devel_nox to emacs-devel-nox.  To install the new package, run
+
+  # pkg install emacs-devel-nox
+
+  pkg should remove the old and install the new package.
+
+20180612:
+  AFFECTS: users of packages that depend on Emacs
+  AUTHOR: jrm@FreeBSD.org
+
+  With the release of Emacs version 26.1, the major version of editors/emacs
+  changed from 25 to 26, so the names of packages that depend on Emacs have also
+  changed.  For example, pdf-tools-emacs25-0.80.79_1 is now called
+  pdf-tools-emacs26-0.80.79_1.  The name change means simply running `pkg
+  upgrade` will not upgrade foo-emacs25-x to foo-emacs26-x.
+
+  To list the packages to upgrade, use
+
+  # pkg info \*emacs25\*
+
+  then install the new version for each with
+
+  # pkg install foo-emacs26
+
+  pkg should remove the old and install the new packages.
+
+20180611:
+  AFFECTS: users of PHP based applications
+  AUTHOR: mat@FreeBSD.org
+
+  Flavors are being added to PHP applications.  When a port is flavorized, pkg
+  needs to be told about the name change, for example, if PHP 5.6 is the one
+  you need:
+
+  # pkg set -n squirrelmail:squirrelmail-php56
+
+  Most port will have packages for all PHP versions present in the ports tree,
+  but some may not be compatible with a specific version.
+
+  To get the available flavors, pkg rquery can be used:
+
+  # pkg rquery %n mail/squirrelmail
+  squirrelmail-php56
+  squirrelmail-php70
+  squirrelmail-php71
+  squirrelmail-php72
+
+20180602:
+  AFFECTS: users of net/frr
+  AUTHOR: olivier@FreeBSD.org
+
+  Due to regression detected in FRR version 4.0, port was renamed to frr4
+  to prepare re-introduction of frr3 port version.
+
+  To rename the installed package to match the new naming scheme, run:
+  # pkg set -n frr:frr4
+
+20180529:
+  AFFECTS: users of textproc/ibus-typing-booster
+  AUTHOR: thierry@FreeBSD.org
+
+  Attention, this release merges all engines into one. Therefore, the
+  engine names had to change. The old engine names like "German - DE
+  (Typing Booster)", "Hindi - HI (Typing Booster)" don't exist anymore!
+  If one has entries for them in the Gnome Control Center or in
+  ibus-setup, one needs to remove these old entries and add the new
+  engine name "Other (Typing Booster)".
+
+20180518:
+  AFFECTS: users of sysutils/ansible*
+  AUTHOR: lifanov@FreeBSD.org
+
+  Ansible ports are now flavored. Package names for Ansible changed
+  to include python version. Poudriere and package users don't need
+  to do anything.
+
+  To rename an installed package to match the new naming scheme,
+  for example, for ansible24, run:
+
+   # pkg set -n ansible24:py27-ansible24
+
+20180514:
+  AFFECTS: users of www/gitlab
+  AUTHOR: mfechner@FreeBSD.org
+
+  Gitlab-pages support was removed as new version does not compile.
+  If you require gitlab-pages do not update to version 10.7.3 till it is
+  fixed upstream.
+  You can find the bug report here:
+  https://gitlab.com/gitlab-org/gitlab-pages/issues/143
+
+20180513:
+  AFFECTS: users of net/xrdp
+  AUTHOR: meta@FreeBSD.org
+
+  net/xrdp has been updated from 0.6.2 to 0.9.6. There are significant
+  changes between these versions. You should consider backing up your
+  configuration files such as xrdp.ini and sesman.ini, and then migrate
+  configuration files by hand.
+
+  Regarding km-*.ini, don't use the old files. They can be safely replaced
+  with new ones.
+
+20180507:
+  AFFECTS: users of math/suitesparse who build it locally
+  AUTHOR: yuri@FreeBSD.org
+
+  The suitesparse needs to be uninstalled before math/suitesparse can be
+  correctly built. This is true for the version 5.2.0 and prior versions.
+
+20180505:
+  AFFECTS: users of www/gitea
+  AUTHOR: stb@lassitu.de
+
+  The www/gitea port no longer requires shell/bash.  If you want to
+  stop using bash and deinstall the package, make sure to set the
+  configuration in etc/gitea/conf/app.ini, section [repository],
+  SCRIPT_TYPE to "sh".  See app.ini.sample for an example.
+
+20180501:
+  AFFECTS: users of www/node
+  AUTHOR: bhughes@FreeBSD.org
+
+  The www/node port has been udpated to Node.js v10.0.0, the latest
+  upstream release. This is a major release, including many significant
+  changes. Users are encouraged to read the release announcements before
+  upgrading:
+
+  https://nodejs.org/en/blog/release/v10.0.0/
+
+  In particular, Node.js now depends on OpenSSL 1.1.0h, so the
+  BUNDLED_SSL option is enabled by default. Users can disable this
+  option when using security/openssl-devel as their default SSL library.
+
+20180430:
+  AFFECTS: users of news/nntp
+  AUTHOR: dinoex@FreeBSD.org
+
+  The option INETD was removed. If you used inetd, please change the path
+  in /etc/inetd.conf from /usr/local/sbin/nntpd to /usr/local/libexec/nntpd.
+
+20180428:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 2.7 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies. Poudriere and pkg handle this correctly,
+  portmaster and portupgrade users can use the following to rebuild all
+  dependent ports.
+
+  Portmaster users:
+      portmaster -r libressl
+  Portupgrade users:
+      portupgrade -fr security/libressl
+
+20180427:
+  AFFECTS: users of sysutils/zrepl
+  AUTHOR: woodsb02@FreeBSD.org
+
+  The zrepl update to 0.0.3 includes the following breaking changes:
+  - Snapshots are automatically bookmarked and pruning of bookmarks must
+    be configured by adding the keep_bookmarks parameter to the prune
+    policy section of the zrepl configuration file (source side only).
+    Be sure to understand the meaning bookmarks have for maximum
+    allowable replication downtime.
+  - The ssh+stdinserver transport protocol has changed, requiring zrepl
+    to be updates on both the sending and receiving side, and the daemon
+    restarted on both sides.
+  - The first outlet in the global.logging section of the configuration
+    file is now used for logging meta-errors (e.g. problems encountered
+    when writing to other logging outlets).
+
+20180425:
+  AFFECTS: users of databases/pecl-redis
+  AUTHOR: daniel@blodan.se
+
+  pecl-redis 4.0.0 breaks backwards compatibility, users 
+  not aware if you are using the changed functionality or not
+  should swap to databases/pecl-redis3
+
+20180417:
+  AFFECTS: users of dns/dnscrypt-proxy2
+  AUTHOR: egypcio@googlemail.com
+
+  DNSCrypt-Proxy 2 has been updated to 2.0.10 and the configuration file
+  has changed from ${PREFIX}/etc/dnscrypt-proxy.toml to
+  ${PREFIX}/etc/dnscrypt-proxy/dnscrypt-proxy.toml.
+
+20180416:
+  AFFECTS: users of mail/postgrey
+  AUTHOR: ports.maintainer@evilphi.com
+
+  If you use any of the optional make.conf variables to specify the
+  postgrey user, group, db dir, or run dir when building the port, you will
+  need to change the prefix from PG_ to POSTGREY_*.  The variables were
+  renamed to solve a namespace collision with the PostgreSQL ports.
+
+20180412:
+  AFFECTS: users of devel/php-composer
+  AUTHOT: madpilot@FreeBSD.org
+
+  Flavors have been added to the composer port with the update to
+  1.6.3. Due to the change in PKGNAME pkg(and other tools) will not
+  notice the update. It is required to tell pkg about the name
+  change, for example:
+
+  # pkg set -n php-composer:php56-composer
+
+20180410:
+  AFFECTS: users of KDE SC4
+  AUTHOR: kde@FreeBSD.org
+
+  Most of KDE Applications 17.12.3 have now landed in the ports tree.
+  There are still some missing pieces, that will follow soon.
+
+  As mentioned in the commit messages, users of KDE SC4 should stick with the
+  <foo>-kde4 named package.
+
+  As the MOVED entries for ports like databases/akonadi-kde4 have been removed
+  in the process of updating (as there now is again a databases/akonad), there
+  might be issues for people that update from a too old installed package list
+  with portmaster.
+
+  These should be fixable by issuing a command à la
+  # pkg set --change-origin databases/akonadi:databases/akonadi-kde4 akonadi
+
+20180409:
+  AFFECTS: users of net-im/matterircd
+  AUTHOR: norrland@nullbyte.se
+
+  Matterircd has been updated to 0.17.0 and mattermost configuration settings
+  need to be migrated to [mattermost] section. See matterircd.toml.sample.
+
+20180404:
+  AFFECTS: users of www/nextcloud
+  AUTHOR: brnrd@FreeBSD.org
+
+  With the 13.0.1 update the path for Apps bundled with the package has
+  changed from "apps" to "apps-pkg". You must add an entry to the
+  "apps_paths" array in config/config.php of your nextcloud installation,
+  a patch for the default installation can be applied with:
+
+  # cd /usr/local/www/nextcloud
+  # su -m www -c "php ./occ config:import < /usr/local/share/nextcloud/fix-apps_paths.json"
+
+20180401:
+  AFFECTS: users of mail/dovecot and mail/dovecot-pigeonhole
+  AUTHOR: adamw@FreeBSD.org
+
+  Dovecot has been upgraded to 2.3.1, and pigeonhole to 0.5.1. Most
+  existing dovecot installations MUST be modified for 2.3, but for
+  most users the modifications are simple.
+
+  Modify your Dovecot conf.d/ files before spinning up 2.3.1. The
+  upgrading instructions are detailed here:
+
+  	https://wiki2.dovecot.org/Upgrading/2.3
+
 20180330:
   AFFECTS: users of lang/perl5*
   AUTHOR: mat@FreeBSD.org
@@ -91,12 +387,18 @@ you update your ports collection, before attempting any port upgrades.
 
   PHP extensions and modules have been flavored.
 
-  People using Poudriere 3.2+ and binary packages do not have to do anything.
+  People using Poudriere 3.2+ and binary packages do not have to do anything if
+  they are using PHP applications.
 
   PHP modules and extensions may have change their names from php5- or php7- to
   fully versionned phpXY-.
   PECL extensions and PEAR modules package names have changed from pecl- and
   pear- to phpXX-pecl and phpXX-pear-.
+
+  To rename an installed package to match the new naming scheme, for example,
+  for the imagick pecl extension, run:
+
+    # pkg set -n pecl-imagick:php56-pecl-imagick
 
   For other people, to build the PHP 7.2 version of, for example,
   databases/php-memcached, you need to run:
@@ -224,7 +526,7 @@ you update your ports collection, before attempting any port upgrades.
      # pkg install emacs-canna
      # pkg install emacs-nox
      # pkg install emacs-devel
-     # pkg install emacs-devel_nox
+     # pkg install emacs-devel-nox
 
   For those building their own packages, a flavor other than the default must be
   specified.  For example, to build the nox flavor of editors/emacs, or to build
@@ -261,7 +563,7 @@ you update your ports collection, before attempting any port upgrades.
   of the packages. 
   It is recommended to first remove the package kf5-kirigami2.
 
-20180115
+20180115:
   AFFECTS: users of net-p2p/transmission-daemon
   AUTHOR: woodsb02@FreeBSD.org
 
@@ -285,7 +587,7 @@ you update your ports collection, before attempting any port upgrades.
       stopped). Note that this value is NOT a list of allowed CLIENTS,
       but instead a list of allowed SERVER hostnames.
 
-20180111
+20180111:
   AFFECTS: users of editors/vim-lite
   AUTHOR: adamw@FreeBSD.org
 
@@ -299,7 +601,7 @@ you update your ports collection, before attempting any port upgrades.
   If the switch doesn't happen automatically for you, just delete the
   vim-lite package and install vim-console.
 
-20180109
+20180109:
   AFFECTS: users of www/qt5-webengine
   AUTHOR: kde@FreeBSD.org
 
@@ -307,7 +609,7 @@ you update your ports collection, before attempting any port upgrades.
   of it is installed. It is recommended to either build the port in a
   builder like poudriere, or to deinstall and then doing an install.
 
-20180107
+20180107:
   AFFECTS: users of security/gnupg and mail/mutt and mail/neomutt
   AUTHOR: adamw@FreeBSD.org
 
@@ -599,7 +901,7 @@ you update your ports collection, before attempting any port upgrades.
   Portupgrade users:
       portupgrade -fr security/libressl
 
-20171105
+20171105:
   AFFECTS: users of www/mod_auth_cas
   AUTHOR: brnrd@FreeBSD.org
 
@@ -745,7 +1047,7 @@ you update your ports collection, before attempting any port upgrades.
  
   All ports have been updated to depend only on CMake.
 
-20170904
+20170904:
   AFFECTS: users of net-mgmt/seafile-server
   AUTHOR: ultima@FreeBSD.org
 
@@ -753,7 +1055,7 @@ you update your ports collection, before attempting any port upgrades.
   are utf8_unicode_ci. Upstream has set collation type to be implicit
   and will cause all libraries to disappear if set to incorrect collation.
 
-20170828
+20170828:
   AFFECTS: users of security/gnupg
   AUTHOR: adamw@FreeBSD.org
 

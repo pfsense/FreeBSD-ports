@@ -2,7 +2,7 @@
 
 PORTNAME=	transmission
 PORTVERSION=	2.93
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES?=	net-p2p
 MASTER_SITES=	https://github.com/transmission/transmission-releases/raw/master/ \
 		http://transmission.cachefly.net/
@@ -62,7 +62,7 @@ EXTRA_PATCHES=	${PATCHDIR}/disable-web
 OPTIONS_DEFINE+=	DOCS LITE
 OPTIONS_DEFAULT+=	OPENSSL
 OPTIONS_SINGLE+=	SSL
-OPTIONS_SINGLE_SSL+=	OPENSSL POLARSSL WOLFSSL
+OPTIONS_SINGLE_SSL+=	OPENSSL WOLFSSL
 
 LITE_CONFIGURE_ENABLE=	lightweight
 
@@ -70,9 +70,6 @@ OPENSSL_USES=		ssl
 OPENSSL_CONFIGURE_ENV=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 			OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto"
 OPENSSL_CONFIGURE_ON=	--with-crypto=openssl
-
-POLARSSL_LIB_DEPENDS=	libpolarssl.so:security/polarssl13
-POLARSSL_CONFIGURE_ON=	--with-crypto=polarssl
 
 WOLFSSL_LIB_DEPENDS=	libwolfssl.so:security/wolfssl
 WOLFSSL_CONFIGURE_ON=	--with-crypto=cyassl

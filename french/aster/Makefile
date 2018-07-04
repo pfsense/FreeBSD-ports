@@ -3,7 +3,7 @@
 
 PORTNAME=	aster
 DISTVERSION=	${ASTER_DISTVERSION}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	french cad
 CATEGORIES=	french cad
 
@@ -11,6 +11,8 @@ MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Code_Aster finite element method solver
 
 LICENSE=	GPLv2
+
+BROKEN_FreeBSD_12=	does not build (sed: ${STAGEDIR}${inst_dir}/${VE}/aster.conf: No such file or directory)
 
 #-----------------------------------------------------------------------
 # You may define these options:
@@ -35,13 +37,12 @@ LICENSE=	GPLv2
 BUILD_DEPENDS+=	astk-serveur>0:cad/astk-serveur	\
 		${SHELL_INSTALL_ASTER}:shells/${SHIADEP}	\
 		${LOCALBASE}/lib/libscotch.a:cad/scotch		\
-		${LOCALBASE}/lib/libGKlib.a:math/metis-edf	\
 		pylupdate4:textproc/py-qt4-xml			\
 		gnproc:sysutils/coreutils			\
 		bash:shells/bash				\
 		${PYNUMPY}
 LIB_DEPENDS+=	libhdf5-18.so:science/hdf5-18			\
-		libmetis.so.2:math/metis-edf			\
+		libmetis.so:math/metis			\
 		libomp.so:devel/openmp				\
 		libmed.so:french/med
 #		libAsterInterface.so:science/mfront
@@ -50,11 +51,9 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}gnuplot>0:math/py-gnuplot@${PY_FLAVOR} \
 		${SHELL_INSTALL_ASTER}:shells/${SHIADEP}	\
 		astk-serveur>0:cad/astk-serveur
 
-BROKEN_FreeBSD_12=	does not build (sed: ${STAGEDIR}${inst_dir}/${VE}/aster.conf: No such file or directory)
-
-USES=		bison fortran gettext python:2.7 tk
+USES=		bison fortran gettext python:2.7 qt:4 tk
 USE_BINUTILS=	yes
-USE_QT4=	linguisttools_build
+USE_QT=		linguisttools_build
 
 .if defined(WITH_ATLAS)
 USES+=		blaslapack:atlas

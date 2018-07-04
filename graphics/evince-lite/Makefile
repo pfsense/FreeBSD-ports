@@ -12,4 +12,7 @@ SLAVEPORT=	lite
 DESCR=		${.CURDIR}/pkg-descr
 PLIST=		${.CURDIR}/pkg-plist
 
+post-install:
+	${RM} -r ${STAGEDIR}${PREFIX}/lib/systemd
+
 .include "${MASTERDIR}/Makefile"

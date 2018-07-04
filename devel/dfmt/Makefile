@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dfmt
-PORTVERSION=	0.5.3
+PORTVERSION=	0.7.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -13,11 +13,11 @@ LICENSE=	BSL
 
 BUILD_DEPENDS=	ldmd2:lang/ldc \
 		dub:devel/dub \
-		${LOCALBASE}/lib/d/libdparse.a:devel/libdparse
+		${LOCALBASE}/lib/d/libdparse.a:devel/libdparse \
+		${LOCALBASE}/lib/d/libstdx-allocator.a:devel/stdx-allocator
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dlang-community
-GH_TAGNAME=	v${PORTVERSION}
 
 PLIST_FILES=	bin/${PORTNAME}
 DUB_CMD=	${LOCALBASE}/bin/dub build --build=release
@@ -29,6 +29,6 @@ do-build:
 	@cd ${WRKSRC} && ${DUB_CMD}
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.mk>

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ipxe
-PORTVERSION=	20180220
-PORTREVISION=	1
+PORTVERSION=	20180514
 CATEGORIES=	net
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -26,10 +25,10 @@ USE_GITHUB=	yes
 #   A: iPXE uses a rolling release model, in which every commit is intended
 #      to be production-ready.  You should always use the latest code.
 #
-GH_TAGNAME=	47849be3a900c546cf92066849be0806f4e611d9
+GH_TAGNAME=	e7f67d5a4c6e9f06aa7a9db1b4245f5e16f00bb2
 USE_PERL5=	build
 
-ALL_TARGET=	bin/ipxe.dsk bin/ipxe.lkrn bin/ipxe.pxe bin/ipxe.usb
+ALL_TARGET=	bin/ipxe.dsk bin/ipxe.lkrn bin/ipxe.pxe bin/ipxe.usb bin/undionly.kpxe
 MAKE_ARGS=	HOST_CC=${CC} \
 		PERL=${PERL} \
 		CC=${CC} \
@@ -64,10 +63,16 @@ _IPXE_BUILDCFG=	branding:PRODUCT_NAME="${PKGNAME} (${OPSYS} ${OSREL}/${ARCH})" \
 		general:PING_CMD \
 		general:POWEROFF_CMD
 
-OPTIONS_DEFAULT=	ISO
-OPTIONS_DEFINE=		ISO
+OPTIONS_DEFAULT=	ISO EFI
+OPTIONS_DEFINE=		ISO EFI
 
+EFI_DESC=	Create EFI image
 ISO_DESC=	Create bootable CD image
+
+EFI_ARCHS=	i386 ${ARCH:Mamd64:S/amd64/x86_64/}
+.for _arch in ${EFI_ARCHS}
+EFI_PLIST_FILES+=	${DATADIR}/ipxe.efi-${_arch}
+.endfor
 
 ISO_ALL_TARGET=	bin/ipxe.iso
 ISO_BUILD_DEPENDS=	bash:shells/bash \
@@ -82,6 +87,14 @@ ISO_MAKE_ARGS=	ISOLINUX_BIN="${WRKSRC}/isolinux.bin" \
 # been processed as they might want to overwrite some settings.
 _IPXE_BUILDCFG+=	${IPXE_BUILDCFG}
 
+# XXX: iPXE uses csplit when embedding certificates and assumes
+# it's GNU csplit, so give it what it wants as a workaround if
+# CERT=... is in {IPXE_,}MAKE_ARGS.
+.if ${MAKE_ARGS:MCERT=*}
+BUILD_DEPENDS+=	gcsplit:sysutils/coreutils
+MAKE_ARGS+=	CSPLIT=gcsplit
+.endif
+
 do-configure:
 .for _cat _opt in ${_IPXE_BUILDCFG:C/\:/ /}
 	@${ECHO_CMD} '#undef ${_opt:S/^!//:C/(.*)=(.*)/\1/}' >> ${WRKSRC}/config/local/${_cat}.h
@@ -94,9 +107,19 @@ pre-build-ISO-on:
 # ISO creation fails if isolinux.bin is read only
 	${INSTALL} -m 644 ${LOCALBASE}/share/syslinux/bios/core/isolinux.bin ${WRKSRC}/isolinux.bin
 
+do-build-EFI-on:
+.for _arch in ${EFI_ARCHS}
+	${DO_MAKE_BUILD} ARCH=${_arch} -C ${WRKSRC} bin-${_arch}-efi/ipxe.efi
+.endfor
+
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${ALL_TARGET} ${STAGEDIR}${DATADIR}
+
+do-install-EFI-on:
+.for _arch in ${EFI_ARCHS}
+	${INSTALL_DATA} ${WRKSRC}/bin-${_arch}-efi/ipxe.efi ${STAGEDIR}${DATADIR}/ipxe.efi-${_arch}
+.endfor
 
 .include <bsd.port.post.mk>
 

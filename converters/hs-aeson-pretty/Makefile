@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	aeson-pretty
-PORTVERSION=	0.8.5
+PORTVERSION=	0.8.7
 PORTREVISION=	1
 CATEGORIES=	converters haskell
 
@@ -10,7 +10,7 @@ COMMENT=	JSON pretty-printing library and command-line tool
 
 LICENSE=	BSD3CLAUSE
 
-USE_CABAL=	aeson attoparsec base-compat cmdargs scientific text \
+USE_CABAL=	aeson attoparsec base-compat cmdargs scientific \
 		unordered-containers vector
 
 FLAGS_DISABLE=	lib-only

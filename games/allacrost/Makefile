@@ -3,7 +3,7 @@
 
 PORTNAME=	allacrost
 PORTVERSION=	1.0.2
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-demo/${PORTVERSION}
 DISTNAME=	${PORTNAME}_demo_source_${PORTVERSION}
@@ -22,12 +22,14 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 GNU_CONFIGURE=	yes
 USES=		gettext gmake iconv jpeg lua:51 openal:al
 USE_SDL=	sdl ttf net
-USE_GL=		yes
-QT_NONSTANDARD=	yes # used when EDITOR enabled
+USE_GL=		gl glu
+USE_XORG=	x11
 
 CONFIGURE_ARGS=	--datadir=${DATADIR}
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LUA_INCDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib -L${LUA_LIBDIR}
+CXXFLAGS+=	-Wno-c++11-narrowing
+LLD_UNSAFE=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
@@ -39,7 +41,8 @@ OPTIONS_SUB=	yes
 
 EDITOR_DESC=		Enable editor
 
-EDITOR_USE=		QT4=corelib,gui,moc_build,opengl,qt3support
+EDITOR_USES=		qmake:no_env qt:4
+EDITOR_USE=		QT=corelib,gui,moc_build,opengl,qt3support
 EDITOR_CONFIGURE_ON=	--enable-editor=yes
 EDITOR_CONFIGURE_OFF=	--enable-editor=no
 

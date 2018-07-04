@@ -12,11 +12,12 @@ man/man1/mroonga.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/comment-close.png
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/comment.png
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/doctools.js
+%%PORTDOCS%%%%DOCSDIR%%/en/html/_static/documentation_options.js
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/down-pressed.png
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/down.png
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/favicon.ico
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/file.png
-%%PORTDOCS%%%%DOCSDIR%%/en/html/_static/jquery-3.1.0.js
+%%PORTDOCS%%%%DOCSDIR%%/en/html/_static/jquery-3.2.1.js
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/jquery.js
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/logo.png
 %%PORTDOCS%%%%DOCSDIR%%/en/html/_static/minus.png
@@ -47,7 +48,7 @@ man/man1/mroonga.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/en/html/install/centos.html
 %%PORTDOCS%%%%DOCSDIR%%/en/html/install/debian.html
 %%PORTDOCS%%%%DOCSDIR%%/en/html/install/fedora.html
-%%PORTDOCS%%%%DOCSDIR%%/en/html/install/os_x.html
+%%PORTDOCS%%%%DOCSDIR%%/en/html/install/macos.html
 %%PORTDOCS%%%%DOCSDIR%%/en/html/install/others.html
 %%PORTDOCS%%%%DOCSDIR%%/en/html/install/ubuntu.html
 %%PORTDOCS%%%%DOCSDIR%%/en/html/install/windows.html
@@ -93,11 +94,12 @@ man/man1/mroonga.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/comment-close.png
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/comment.png
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/doctools.js
+%%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/documentation_options.js
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/down-pressed.png
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/down.png
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/favicon.ico
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/file.png
-%%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/jquery-3.1.0.js
+%%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/jquery-3.2.1.js
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/jquery.js
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/logo.png
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/_static/minus.png
@@ -128,7 +130,7 @@ man/man1/mroonga.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/install/centos.html
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/install/debian.html
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/install/fedora.html
-%%PORTDOCS%%%%DOCSDIR%%/ja/html/install/os_x.html
+%%PORTDOCS%%%%DOCSDIR%%/ja/html/install/macos.html
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/install/others.html
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/install/ubuntu.html
 %%PORTDOCS%%%%DOCSDIR%%/ja/html/install/windows.html
@@ -190,7 +192,7 @@ man/man1/mroonga.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/source/install/centos.rst
 %%PORTDOCS%%%%DOCSDIR%%/source/install/debian.rst
 %%PORTDOCS%%%%DOCSDIR%%/source/install/fedora.rst
-%%PORTDOCS%%%%DOCSDIR%%/source/install/os_x.rst
+%%PORTDOCS%%%%DOCSDIR%%/source/install/macos.rst
 %%PORTDOCS%%%%DOCSDIR%%/source/install/others.rst
 %%PORTDOCS%%%%DOCSDIR%%/source/install/ubuntu.rst
 %%PORTDOCS%%%%DOCSDIR%%/source/install/windows.rst
