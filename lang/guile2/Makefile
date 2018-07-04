@@ -3,7 +3,7 @@
 
 PORTNAME=	guile
 PORTVERSION=	2.0.14
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang scheme
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	2
@@ -12,6 +12,8 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	GNU Ubiquitous Intelligent Language for Extension
 
 LICENSE=	LGPL21
+
+BROKEN_mips64=		fails to build: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libltdl.so:devel/libltdl \

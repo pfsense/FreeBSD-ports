@@ -3,6 +3,7 @@
 
 PORTNAME=	sqwebmail
 PORTVERSION=	5.9.0
+PORTREVISION=	1
 CATEGORIES=	mail www
 MASTER_SITES=	SF/courier/webmail/${PORTVERSION}
 
@@ -57,7 +58,7 @@ MAILGRP?=	courier
 #
 # End of user variables
 
-USES=		gettext gmake iconv perl5 tar:bzip2
+USES=		compiler:c++11-lang gettext gmake iconv perl5 tar:bzip2
 USE_RC_SUBR=	sqwebmail-sqwebmaild
 GNU_CONFIGURE=	yes
 

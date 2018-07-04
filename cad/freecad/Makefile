@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	FreeCAD
-DISTVERSION=	0.17.12018
-PORTREVISION=	2
+DISTVERSION=	0.17.13509
 CATEGORIES=	cad
 
 MAINTAINER=	ports@FreeBSD.org
@@ -32,10 +31,10 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 RUN_DEPENDS=	pivy>0:graphics/py-pivy@${PY_FLAVOR}
 
 USES=		dos2unix compiler:c++11-lib cmake:outsource eigen:3 fortran jpeg \
-		python:2.7 localbase
+		python:2.7 localbase qt:4
 USE_XORG=	ice sm x11 xext xt
 USE_GL=		gl glu
-USE_QT4=	qmake_build corelib gui moc_build network opengl rcc_build \
+USE_QT=		qmake_build corelib gui moc_build network opengl rcc_build \
 		uic_build svg xml webkit
 USE_LDCONFIG=	yes
 DOS2UNIX_GLOB=	*.txt *.h *.cpp *.py *.qss *.csv *.pov *.stp *.ui *.wrl *.WRL
@@ -53,7 +52,7 @@ CFLAGS+=	-I${LOCALBASE}/include/hdf5-18
 CMAKE_INSTALL_PREFIX=	${PREFIX}/${PORTNAME}
 
 USE_GITHUB=	yes
-GH_TAGNAME=	f27617e
+GH_TAGNAME=	0.17
 
 OPTIONS_DEFINE=	COLLADA
 
@@ -68,8 +67,6 @@ post-patch:
 		${WRKSRC}/src/Gui/CMakeLists.txt
 
 pre-configure:
-	@${CP} ${FILESDIR}/version.h \
-		${WRKSRC}/src/Build/Version.h
 	# To be removed when french/med will be built against science/hdf5
 	@${REINPLACE_CMD} -e 's|find_package(HDF5 REQUIRED)|#find_package(HDF5 REQUIRED)|' \
 		${WRKSRC}/CMakeLists.txt

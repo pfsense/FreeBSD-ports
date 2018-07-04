@@ -3,7 +3,7 @@
 
 PORTNAME=	kdepim-runtime
 PORTVERSION=	${KDE4_KDEPIM_VERSION}
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	deskutils kde
 MASTER_SITES=	KDE/${KDE4_APPLICATIONS_BRANCH}/applications/${KDE4_APPLICATIONS_VERSION}/src
 DIST_SUBDIR=	KDE/${PORTVERSION}
@@ -13,19 +13,19 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE PIM tools and services
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
-		libkgapi2.so:devel/libkgapi \
+		libkgapi2.so:devel/libkgapi-kde4 \
 		libkolab.so:devel/libkolab \
 		libkolabxml.so:textproc/libkolabxml \
 		libkfbapi.so:net/libkfbapi \
-		libqjson.so:devel/qjson
+		libqjson.so:devel/qjson@qt4
 
 CONFLICTS_INSTALL=	kdepim-runtime44-4.*
 
-USES=		cmake:outsource kde:4 shared-mime-info tar:xz
+USES=		cmake:outsource kde:4 qt:4 shared-mime-info tar:xz
 USE_GNOME=	libxml2 libxslt:build
 USE_KDE=	kdelibs pimlibs \
 		akonadi automoc4
-USE_QT4=	corelib dbus declarative designer_build gui network qtestlib \
+USE_QT=		corelib dbus declarative designer_build gui network qtestlib \
 		script xml xmlpatterns \
 		qmake_build moc_build rcc_build uic_build
 USE_LDCONFIG=	yes

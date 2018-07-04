@@ -12,9 +12,9 @@ COMMENT=	Main Memory Relational Database Management System
 
 LICENSE=	MIT
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
-
-OPTIONS_DEFINE=	DOCS
+BROKEN_mips=		fails to compile: unrecognized command line option "-std=gnu++03"
+BROKEN_mips64=		fails to compile: unrecognized command line option "-std=gnu++03"
+BROKEN_powerpc64=	fails to compile: unrecognized command line option "-std=gnu++03"
 
 USES=		gmake dos2unix
 USE_GCC=	any
@@ -23,6 +23,10 @@ MAKEFILE=	makefile
 USE_LDCONFIG=	yes
 DOS2UNIX_FILES=	${MAKEFILE}
 CXXFLAGS+=	-D_WANT_SEMUN
+
+WRKSRC=		${WRKDIR}/${PORTNAME}
+
+OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	FastDB.htm
 

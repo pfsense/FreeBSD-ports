@@ -2,8 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	clementine
-PORTVERSION=	1.3.1
-PORTREVISION=	17
+DISTVERSIONPREFIX=	v
+DISTVERSION=		1.3.1-441
+DISTVERSIONSUFFIX=	-gc01b7bc
+PORTREVISION=	2
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-player
 
@@ -17,8 +19,8 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 LIB_DEPENDS=	libtag.so:audio/taglib \
 		libchromaprint.so:audio/chromaprint \
 		libprotobuf.so:devel/protobuf \
-		libqca.so:devel/qca \
-		libqjson.so:devel/qjson \
+		libqca.so:devel/qca@qt4 \
+		libqjson.so:devel/qjson@qt4 \
 		libfftw3.so:math/fftw3 \
 		libechonest.so:audio/libechonest \
 		libcryptopp.so:security/cryptopp
@@ -34,12 +36,13 @@ USES=		cmake \
 		desktop-file-utils \
 		gettext-tools \
 		pkgconfig \
-		sqlite
+		qt:4 sqlite
 
-USE_GL=		glew
+USE_GL=		gl glew glu
+USE_XORG=	x11
 
 CONFLICTS_BUILD=	qt-3.*
-USE_QT4=	corelib \
+USE_QT=		corelib \
 		dbus \
 		gui \
 		imageformats \
@@ -170,7 +173,8 @@ GOOGLE_DRIVE_CMAKE_OFF=	-DENABLE_GOOGLE_DRIVE=OFF
 
 GPOD_LIB_DEPENDS=	libgpod.so:audio/libgpod \
 			libplist.so:devel/libplist \
-			libusbmuxd.so:comms/libusbmuxd
+			libusbmuxd.so:comms/libusbmuxd \
+			libimobiledevice.so:comms/libimobiledevice
 GPOD_CMAKE_ON=		-DENABLE_LIBGPOD=ON
 GPOD_CMAKE_OFF=		-DENABLE_LIBGPOD=OFF
 

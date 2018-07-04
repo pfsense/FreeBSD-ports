@@ -20,6 +20,8 @@
     SUBDIR += R-cran-tseries
     SUBDIR += R-cran-urca
     SUBDIR += R-cran-vars
+    SUBDIR += alkimia
+    SUBDIR += alkimia-qt4
     SUBDIR += aqbanking
     SUBDIR += aqmoney
     SUBDIR += beanie
@@ -34,12 +36,12 @@
     SUBDIR += grisbi
     SUBDIR += homebank
     SUBDIR += jgnash
+    SUBDIR += kmymoney
     SUBDIR += kmymoney-kde4
     SUBDIR += ktoblzcheck
     SUBDIR += ledger
     SUBDIR += ledgersmb
     SUBDIR += ledgersmb12
-    SUBDIR += libalkimia
     SUBDIR += libofx
     SUBDIR += libstocks
     SUBDIR += moneymanagerex

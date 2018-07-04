@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	sakura
-PORTVERSION=	3.5.0
+PORTVERSION=	3.6.0
 CATEGORIES=	x11 gnome
-MASTER_SITES=	http://launchpadlibrarian.net/336915548/
+MASTER_SITES=	http://launchpadlibrarian.net/368320954/
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Terminal emulator based on GTK and VTE

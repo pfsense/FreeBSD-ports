@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vollkorn-ttf
-PORTVERSION=	3.005
+PORTVERSION=	4.105
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://vollkorn-typeface.com/download/
 DISTNAME=	vollkorn-${PORTVERSION:S|.|-|}
@@ -11,6 +11,7 @@ COMMENT=	Free and healthy typeface for bread and butter use
 
 LICENSE=	OFL11
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 USES=		fonts zip

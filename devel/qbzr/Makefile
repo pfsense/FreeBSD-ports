@@ -14,16 +14,16 @@ COMMENT=	Qt interface for bzr
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	bzr:devel/bzr \
-		${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}enchant>=0:textproc/py-enchant@${FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}enchant>=0:textproc/py-enchant@${PY_FLAVOR}
 RUN_DEPENDS=	bzr:devel/bzr
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		gettext pyqt:4 python:2.7
+USES=		gettext pyqt:4 python:2.7 qt:4
 USE_PYQT=	core
 USE_PYTHON=	distutils autoplist
-USE_QT4=	# empty
+USE_QT=		# empty
 INSTALLS_ICONS=	yes
 
 .include <bsd.port.mk>

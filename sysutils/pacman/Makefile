@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pacman
-PORTVERSION=	4.2.0
-PORTREVISION=	3
+PORTVERSION=	5.1.0
 CATEGORIES=	sysutils
-MASTER_SITES=	ftp://ftp.archlinux.org/other/pacman/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://sources.archlinux.org/other/${PORTNAME}/ \
+		https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Package manager from ArchLinux
@@ -20,11 +19,13 @@ BUILD_DEPENDS=	asciidoc:textproc/asciidoc \
 RUN_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libarchive.so.13:archivers/libarchive
 
-USES=		gmake libtool localbase:ldflags pathfix perl5 pkgconfig shebangfix
-SHEBANG_FILES=	${WRKSRC}/scripts/makepkg-template.pl.in
+USES=		gmake libtool localbase:ldflags pathfix perl5 pkgconfig shebangfix ssl
+SHEBANG_FILES=	${WRKSRC}/scripts/makepkg-template.pl.in \
+		${WRKSRC}/scripts/libmakepkg/lint_config.sh.in
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-root-dir="${PACMAN_ROOT}" \
 		--localstatedir=/var
+CONFIGURE_ENV=	LIBSSL_CFLAGS="-I${OPENSSLINC}" LIBSSL_LIBS="-L${OPENSSLLIB}"
 USE_LDCONFIG=	yes
 
 SUB_FILES=	pkg-message pkg-deinstall

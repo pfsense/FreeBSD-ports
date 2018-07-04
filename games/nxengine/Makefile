@@ -1,8 +1,7 @@
-# Created by: Nikolai Lifanov <lifanov@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	nxengine
-PORTVERSION=	2.6.2
+PORTVERSION=	2.6.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 MASTER_SITES+=	https://www.cavestory.org/downloads/:data \
@@ -23,7 +22,11 @@ LICENSE_PERMS_FREEWARE=	dist-mirror pkg-mirror auto-accept
 LICENSE_DISTFILES_GPLv3=	${DISTFILES:[3]}
 LICENSE_DISTFILES_FREEWARE=	${DISTFILES:[2]:S/:data//}
 
-LIB_DEPENDS=	libpng16.so:graphics/png
+BROKEN_aarch64=		fails to compile: player.cpp:763:50: constant expression evaluates to -1 which cannot be narrowed to type 'char' [-Wc++11-narrowing]
+BROKEN_armv6=		fails to compile: player.cpp:763:50: constant expression evaluates to -1 which cannot be narrowed to type 'char' [-Wc++11-narrowing]
+BROKEN_armv7=		fails to compile: player.cpp:763:50: constant expression evaluates to -1 which cannot be narrowed to type 'char' [-Wc++11-narrowing]
+
+LIB_DEPENDS=	libpng.so:graphics/png
 
 DESKTOP_ENTRIES="NXEngine" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;AdventureGame;" ""

@@ -13,15 +13,15 @@ LF=$(printf '\nX')
 LF=${LF%X}
 
 notice() {
-	echo "Notice: $@" >&2
+	echo "Notice: $*" >&2
 }
 
 warn() {
-	echo "Warning: $@" >&2
+	echo "Warning: $*" >&2
 }
 
 err() {
-	echo "Error: $@" >&2
+	echo "Error: $*" >&2
 }
 
 list_stagedir_elfs() {
@@ -31,7 +31,7 @@ list_stagedir_elfs() {
 shebangonefile() {
 	local f interp interparg badinterp rc
 
-	f="$@"
+	f="$*"
 	rc=0
 
 	# whitelist some files
@@ -95,7 +95,7 @@ shebang() {
 
 	rc=0
 
-	while read f; do
+	while read -r f; do
 		# No results presents a blank line from heredoc.
 		[ -z "${f}" ] && continue
 		shebangonefile "${f}" || rc=1
@@ -113,7 +113,7 @@ baselibs() {
 	local found_openssl
 	local file
 	[ "${PKGBASE}" = "pkg" -o "${PKGBASE}" = "pkg-devel" ] && return
-	while read f; do
+	while read -r f; do
 		case ${f} in
 		File:\ .*)
 			file=${f#File: .}
@@ -148,10 +148,10 @@ symlinks() {
 
 	# Split stat(1) result into 2 lines and read each line separately to
 	# retain spaces in filenames.
-	while read l; do
+	while read -r l; do
 		# No results presents a blank line from heredoc.
 		[ -z "${l}" ] && continue
-		read link
+		read -r link
 		case "${link}" in
 			${STAGEDIR}*)
 				err "Bad symlink '${l#${STAGEDIR}${PREFIX}/}' pointing inside the stage directory"
@@ -181,7 +181,7 @@ paths() {
 
 	rc=0
 
-	while read f; do
+	while read -r f; do
 		# No results presents a blank line from heredoc.
 		[ -z "${f}" ] && continue
 		# Ignore false-positive/harmless files
@@ -208,10 +208,10 @@ stripped() {
 	# files with spaces are kept intact.
 	# Using readelf -h ... /ELF Header:/ will match on all ELF files.
 	find ${STAGEDIR} -type f ! -name '*.a' ! -name '*.o' \
-	    -exec readelf -S {} + 2>/dev/null | awk '\
-	    /File:/ {sub(/File: /, "", $0); file=$0} \
+	    -exec readelf -S {} + 2>/dev/null | awk '
+	    /File:/ {sub(/File: /, "", $0); file=$0}
 	    /[[:space:]]\.debug_info[[:space:]]*PROGBITS/ {print file}' |
-	    while read f; do
+	    while read -r f; do
 		warn "'${f#${STAGEDIR}${PREFIX}/}' is not stripped consider trying INSTALL_TARGET=install-strip or using \${STRIP_CMD}"
 	done
 }
@@ -248,9 +248,9 @@ sharedmimeinfo() {
 suidfiles() {
 	local filelist
 
-	filelist=`find ${STAGEDIR} -type f \
+	filelist=$(find ${STAGEDIR} -type f \
 		\( -perm -u+x -or -perm -g+x -or -perm -o+x \) \
-		\( -perm -u+s -or -perm -g+s \)`
+		\( -perm -u+s -or -perm -g+s \))
 	if [ -n "${filelist}" ]; then
 		warn "setuid files in the stage directory (are these necessary?):"
 		ls -liTd ${filelist}
@@ -260,10 +260,11 @@ suidfiles() {
 
 libtool() {
 	if [ -z "${USESLIBTOOL}" ]; then
-		find ${STAGEDIR} -name '*.la' | while read f; do
-			grep -q 'libtool library' "${f}" &&
-				err ".la libraries found, port needs USES=libtool" &&
-				return 1 || true
+		find ${STAGEDIR} -name '*.la' | while read -r f; do
+			if grep -q 'libtool library' "${f}"; then
+				err ".la libraries found, port needs USES=libtool"
+				return 1
+			fi
 		done
 		# The return above continues here.
 	fi
@@ -274,16 +275,16 @@ libperl() {
 	if [ -n "${SITE_ARCH_REL}" -a -d "${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}" ]; then
 		has_some_libperl_so=0
 		files=0
-		while read f; do
+		while read -r f; do
 			# No results presents a blank line from heredoc.
 			[ -z "${f}" ] && continue
 			files=$((files+1))
-			found=`readelf -d ${f} | awk "BEGIN {libperl=1; rpath=10; runpath=100}
+			found=$(readelf -d ${f} | awk "BEGIN {libperl=1; rpath=10; runpath=100}
 				/NEEDED.*${LIBPERL}/  { libperl = 0 }
 				/RPATH.*perl.*CORE/   { rpath   = 0 }
 				/RUNPATH.*perl.*CORE/ { runpath = 0 }
 				END {print libperl+rpath+runpath}
-				"`
+				")
 			case "${found}" in
 				*1)
 					warn "${f} is not linked with ${LIBPERL}, not respecting lddlflags?"
@@ -550,12 +551,10 @@ proxydeps_suggest_uses() {
 		warn "you need USE_XORG+=pixman"
 	# Qt4
 	elif expr ${pkg} : '.*/qt4-.*' > /dev/null; then
-		warn "you need USE_QT4+=$(echo ${pkg} | sed -E 's|.*/qt4-||')"
-	elif expr ${pkg} : '.*/.*-qt4' > /dev/null; then
-		warn "you need USE_QT4+=$(echo ${pkg} | sed -E 's|.*/(.*)-qt4|\1|')"
+		warn "you need USES=qt:4 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt4-||')"
 	# Qt5
 	elif expr ${pkg} : '.*/qt5-.*' > /dev/null; then
-		warn "you need USE_QT5+=$(echo ${pkg} | sed -E 's|.*/qt5-||')"
+		warn "you need USES=qt:5 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt5-||')"
 	# MySQL
 	elif expr ${lib_file} : "${LOCALBASE}/lib/mysql/[^/]*$" > /dev/null; then
 		warn "you need USES+=mysql"
@@ -647,17 +646,17 @@ proxydeps() {
 
 	# Check all dynamicaly linked ELF files
 	# Some .so are not executable, but we want to check them too.
-	while read file; do
+	while read -r file; do
 		# No results presents a blank line from heredoc.
 		[ -z "${file}" ] && continue
-		while read dep_file; do
+		while read -r dep_file; do
 			# No results presents a blank line from heredoc.
 			[ -z "${dep_file}" ] && continue
 			# Skip files we already checked.
 			if listcontains ${dep_file} "${already}"; then
 				continue
 			fi
-			if $(pkg which -q ${dep_file} > /dev/null 2>&1); then
+			if pkg which -q ${dep_file} > /dev/null 2>&1; then
 				dep_file_pkg=$(pkg which -qo ${dep_file})
 
 				# Check that the .so we need has a SONAME
@@ -687,9 +686,9 @@ proxydeps() {
 			already="${already} ${dep_file}"
 		done <<-EOT
 		$(env LD_LIBMAP_DISABLE=1 ldd -a "${STAGEDIR}${file}" | \
-			awk '\
-			BEGIN {section=0}\
-			/^\// {section++}\
+			awk '
+			BEGIN {section=0}
+			/^\// {section++}
 			!/^\// && section<=1 && ($3 ~ "^'${PREFIX}'" || $3 ~ "^'${LOCALBASE}'") {print $3}')
 		EOT
 	done <<-EOT
@@ -707,7 +706,7 @@ proxydeps() {
 
 sonames() {
 	[ ! -d ${STAGEDIR}${PREFIX}/lib -o -n "${BUNDLE_LIBS}" ] && return 0
-	while read f; do
+	while read -r f; do
 		# No results presents a blank line from heredoc.
 		[ -z "${f}" ] && continue
 		# Ignore symlinks
@@ -755,7 +754,7 @@ perlcore() {
 			module=$(perlcore_port_module_mapping "${portname}")
 			version=$(expr "${dep}" : ".*>=*\([^:<]*\)")
 
-			while read l; do
+			while read -r l; do
 				case "${l}" in
 					*was\ not\ in\ CORE*)
 						# This never was with Perl
@@ -792,7 +791,7 @@ perlcore() {
 no_arch() {
 	[ -z "$NO_ARCH" ] && return
 	rc=0
-	while read f; do
+	while read -r f; do
 		[ -z "$f" ] && continue
 		if [ -n "$NO_ARCH_IGNORE" ]; then
 			skip=
@@ -818,6 +817,9 @@ gemdeps()
 {
 	rc=0
 	if [ "${PKGBASE%%-*}" = "rubygem" ]; then
+		# shellcheck disable=SC2153
+		# In the heredoc, ${PORTNAME} comes from the environment, not
+		# to be confused with ${portname}
 		while read -r l; do
 			if [ -n "${l}" ]; then
 				name=${l%% *}
@@ -917,7 +919,7 @@ checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
 checks="$checks proxydeps sonames perlcore no_arch gemdeps gemfiledeps flavors"
 
 ret=0
-cd ${STAGEDIR}
+cd ${STAGEDIR} || exit 1
 for check in ${checks}; do
 	${check} || ret=1
 done

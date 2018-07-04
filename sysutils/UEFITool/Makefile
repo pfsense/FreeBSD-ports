@@ -2,30 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	UEFITool
-PORTVERSION=	45
 DISTVERSIONPREFIX=	A
+DISTVERSION=	51
 CATEGORIES=	sysutils
 
 MAINTAINER=	pkubaj@anongoth.pl
 COMMENT=	UEFI images parser
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/../LICENSE.md
 
+USES=		qmake:outsource qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	LongSoft
+USE_GL=		gl
+USE_QT=		core gui widgets buildtools_build qmake_build
 
-WRKSRC_SUBDIR=		${PORTNAME}
+WRKSRC_SUBDIR=	${PORTNAME}
 
 PLIST_FILES=	bin/${PORTNAME}
 
-USES=		qmake:outsource
-USE_GL=		gl
-USE_QT5=	buildtools_build core gui widgets qmake_build
-
-pre-install:
-	${STRIP_CMD} ${WRKDIR}/.build/${PORTNAME}
-
 do-install:
-	${INSTALL_PROGRAM} ${WRKDIR}/.build/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

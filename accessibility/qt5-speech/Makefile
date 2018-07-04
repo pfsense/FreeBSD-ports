@@ -2,7 +2,6 @@
 
 PORTNAME=	speech
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	accessibility
 PKGNAMEPREFIX=	qt5-
 
@@ -11,8 +10,7 @@ COMMENT=	Accessibilty features for Qt5
 
 LIB_DEPENDS=	libspeechd.so:accessibility/speech-dispatcher
 
-USES=		pkgconfig qmake:outsource
-USE_QT5=	core gui buildtools_build qmake_build
-QT_DIST=	${PORTNAME}
+USES=		pkgconfig qmake:outsource qt-dist:5,speech
+USE_QT=		core gui buildtools_build qmake_build
 
 .include <bsd.port.mk>

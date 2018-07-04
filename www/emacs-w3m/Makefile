@@ -3,6 +3,7 @@
 
 PORTNAME=	emacs-w3m
 PORTVERSION=	1.4.620.b.${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	www elisp
 MASTER_SITES=	LOCAL/nobutaka
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -18,7 +19,6 @@ BUILD_DEPENDS=	w3m:www/w3m
 RUN_DEPENDS=	w3m:www/w3m
 
 USES=		autoreconf emacs tar:bzip2
-EMACS_FLAVORS_EXCLUDE=	devel_full devel_nox # fail during configure
 
 ALL_TARGET=	default
 INSTALL_TARGET=	install install-icons
@@ -29,7 +29,7 @@ MAKE_JOBS_UNSAFE=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-emacs=${EMACS_CMD} \
-		--with-lispdir=${PREFIX}/${EMACS_SITE_LISPDIR}/w3m \
+		--with-lispdir=${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/w3m \
 		--with-icondir=${PREFIX}/${EMACS_LIBDIR}/etc/w3m/icons \
 		--without-compress-install
 

@@ -25,6 +25,14 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 USES=		charsetfix iconv libtool localbase readline shebangfix
 GNU_CONFIGURE=	yes
 
+# XXX Fix readline detection with a non-standard LOCALBASE
+# To remove when m4/lftp_lib_readline.m4 is fixed upstream
+.if !exists(/usr/lib/libreadline.so)
+CONFIGURE_ARGS+=	--with-readline=${LOCALBASE}
+.else
+CONFIGURE_ARGS+=	--with-readline=/usr
+.endif
+
 PORTDOCS=	AUTHORS BUGS ChangeLog FAQ FEATURES INSTALL \
 		MIRRORS NEWS README README.debug-levels README.modules \
 		THANKS TODO

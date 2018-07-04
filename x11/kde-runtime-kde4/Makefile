@@ -2,12 +2,14 @@
 
 PORTNAME=	kde-runtime
 PORTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	x11 kde kde-applications
 PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Runtime components for KDE Plasma Desktop
+
+CONFLICTS_INSTALL=	plasma5-kde-cli-tools
 
 LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 		libwebp.so:graphics/webp \
@@ -24,11 +26,11 @@ LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 BUILD_DEPENDS=	${LOCALBASE}/lib/libssh.so:security/libssh
 RUN_DEPENDS=	cagibid:net/cagibi
 
-USES=		cmake:outsource gettext jpeg kde:4 samba:lib shared-mime-info \
+USES=		cmake:outsource gettext jpeg kde:4 qt:4 samba:lib shared-mime-info \
 		shebangfix tar:xz
 USE_KDE=	kactivities kdelibs oxygen-icons5 \
 		attica automoc4 pimlibs soprano strigi nepomuk-core
-USE_QT4=	corelib dbus declarative designer_build gui phonon \
+USE_QT=		corelib dbus declarative designer_build gui phonon \
 		network qtestlib script svg webkit xml \
 		moc_build qmake_build rcc_build uic_build
 USE_XORG=	ice sm x11 xau xcursor xext xft xdmcp xpm

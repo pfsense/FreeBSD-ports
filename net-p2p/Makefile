@@ -12,7 +12,6 @@
     SUBDIR += bitmessage
     SUBDIR += bnbt
     SUBDIR += btpd
-    SUBDIR += btsync
     SUBDIR += couchpotato
     SUBDIR += cpuminer
     SUBDIR += createtorrent
@@ -40,9 +39,11 @@
     SUBDIR += jackett
     SUBDIR += jigdo
     SUBDIR += ktorrent
+    SUBDIR += ktorrent-kde4
     SUBDIR += libbt
     SUBDIR += liberator
     SUBDIR += libktorrent
+    SUBDIR += libktorrent-kde4
     SUBDIR += libpdtp
     SUBDIR += libswift
     SUBDIR += libtorrent
@@ -76,10 +77,10 @@
     SUBDIR += py-tremc
     SUBDIR += py-vertex
     SUBDIR += qbittorrent
-    SUBDIR += qbittorrent-nox11
     SUBDIR += qtum
     SUBDIR += radarr
     SUBDIR += retroshare
+    SUBDIR += rslsync
     SUBDIR += rtorrent
     SUBDIR += shx
     SUBDIR += sonarr

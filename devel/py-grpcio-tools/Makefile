@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	grpcio-tools
-PORTVERSION=	1.10.0
-PORTREVISION=	1
+PORTVERSION=	1.13.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +12,7 @@ COMMENT=	Protobuf code generator for gRPC
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}grpcio>1:devel/py-grpcio@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}grpcio>1:devel/py-grpcio@${PY_FLAVOR}
 LIB_DEPENDS=	libcares.so:dns/c-ares
 
 USES=		localbase:ldflags python

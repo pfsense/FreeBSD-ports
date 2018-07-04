@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	webmachine
-PORTVERSION=	1.10.8
+PORTVERSION=	1.10.9
 CATEGORIES=	www devel
 PKGNAMEPREFIX=	erlang-
 
-MAINTAINER=	olgeni@FreeBSD.org
+MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	HTTP semantic awareness on top mochiweb
 
 LICENSE=	APACHE20
@@ -16,9 +16,5 @@ GH_ACCOUNT=     webmachine
 
 ERL_BUILD_DEPS=	www/erlang-mochiweb-basho
 ERL_RUN_DEPS:=	${ERL_BUILD_DEPS}
-
-post-install:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/demo && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

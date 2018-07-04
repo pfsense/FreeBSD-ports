@@ -156,7 +156,7 @@ gini:*:206:206::0:0:& streaming server:/var/log/gini:/usr/sbin/nologin
 _mixminion:*:207:207::0:0:Mixminion server:/nonexistent:/usr/sbin/nologin
 _dnsdist:*:208:208::0:0:dnsdist user:/nonexistent:/usr/sbin/nologin
 shoutcast:*:210:210::0:0:Shoutcast sandbox:/nonexistent:/bin/sh
-git:*:211:211::0:0:gitosis user:/usr/local/git:/bin/sh
+git:*:211:211::0:0:git user:/usr/local/git:/bin/sh
 hg:*:212:212::0:0:mercurial-server user:/usr/local/hg:/bin/sh
 drizzle:*:213:213::0:0:Drizzle daemon:/var/db/drizzle:/usr/sbin/nologin
 kyototycoon:*:214:214::0:0:kyototycoon user:/var/empty:/usr/sbin/nologin
@@ -169,18 +169,18 @@ bs:*:220:220::0:0:Big Sister:/usr/local/bigsister:/bin/sh
 opensips:*:221:221::0:0:OpenSIPS user:/nonexistent:/usr/sbin/nologin
 rtpproxy:*:222:222::0:0:& user:/nonexistent:/sbin/nologin
 mqttwarn:*:223:223::0:0:mqttwarn:/nonexistent:/sbin/nologin
-# free: 224
+payara:*:224:224::0:0:Payara Application Server user:/nonexistent:/usr/sbin/nologin
 postgrey:*:225:225::0:0:Postgrey Owner:/nonexistent:/usr/sbin/nologin
 sqlgrey:*:226:226::0:0:SQLgrey Owner:/nonexistent:/usr/sbin/nologin
 _hfm:*:227:227::0:0:hfm daemon:/nonexistent:/usr/sbin/nologin
 osrm:*:228:228::0:0:osrm:/nonexistent:/usr/sbin/nologin
 # free: 229
 carbon:*:230:230::0:0:osrm:/nonexistent:/usr/sbin/nologin
-# free: 231
+foundationdb:*:231:231::0:0:foundationdb:/nonexistent:/usr/sbin/nologin
 # free: 232
 # free: 233
 kafka:*:234:234::0:0:Apache Kafka user:/nonexistent:/usr/sbin/nologin
-# free: 235
+openhab:*:235:235::0:0:openHAB user:/var/db/openhab2/home:/usr/sbin/nologin
 # free: 236
 # free: 237
 # free: 238
@@ -763,7 +763,7 @@ foreman_proxy:*:812:812::0:0:Foreman Smart Proxy:/usr/local/share/foreman-proxy:
 puppet:*:814:814::0:0:Puppet Daemon:/nonexistent:/usr/sbin/nologin
 uchiwa:*:815:815::0:0:Uchiwa Dashboard:/nonexistent:/usr/sbin/nologin
 # free: 816
-btsync:*:817:817::0:0:BitTorrent Sync Daemon:/nonexistent:/usr/sbin/nologin
+rslsync:*:817:817::0:0:Resilio Sync Daemon:/nonexistent:/usr/sbin/nologin
 jenkins:*:818:818::0:0:Jenkins CI:/usr/local/jenkins:/bin/sh
 rundeck:*:819:819::0:0:Rundeck:/usr/local/rundeck:/bin/sh
 openacs:*:820:820::0:0:OpenACS Daemon User:/nonexistent:/usr/sbin/nologin
@@ -799,7 +799,7 @@ chronyd:*:849:849::0:0:chronyd user:/nonexistent:/usr/sbin/nologin
 # free: 850
 # free: 851
 # free: 852
-# free: 853
+_geodns:*:853:853::0:0:GeoDNS User:/var/empty:/usr/sbin/nologin
 # free: 854
 # free: 855
 # free: 856
@@ -831,14 +831,14 @@ archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
 # free: 882
 # free: 883
 # free: 884
-# free: 885
-# free: 886
+tcpdump:*:885:885::0:0:tcpdump user:/nonexistent:/usr/sbin/nologin
+miniflux:*:886:886::0:0:Miniflux:/nonexistent:/usr/sbin/nologin
 pdagent:*:887:887::0:0:PagerDuty Agent:/nonexistent:/usr/sbin/nologin
 vuls:*:888:888::0:0:VULnerability Scanner:/var/db/vuls:/usr/sbin/nologin
 mattermost:*:889:889::0:0:Mattermost:/usr/local/www/mattermost:/usr/sbin/nologin
 matterircd:*:890:890::0:0:Matterircd User:/nonexistent:/usr/sbin/nologin
-# free: 891
-# free: 892
+urbackup:*:891:891::0:0:UrBackup Server:/var/urbackup:/usr/sbin/nologin
+tautulli:*:892:892::0:0:Tautulli user:/nonexistent:/usr/sbin/nologin
 logstash:*:893:893::0:0:Logstash user:/nonexistent:/usr/sbin/nologin
 arangodb:*:894:894::0:0:ArangoDB pseudo-user:/var/db/arangodb:/usr/sbin/nologin
 snmptt:*:895:895::0:0:SNMPTT User:/var/spool/snmptt:/usr/sbin/nologin

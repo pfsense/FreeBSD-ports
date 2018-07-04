@@ -4,11 +4,13 @@
     COMMENT = Multimedia software
 
     SUBDIR += 2mandvd
+    SUBDIR += Bento4
     SUBDIR += QtAV
     SUBDIR += ab25
     SUBDIR += abby
     SUBDIR += acidrip
     SUBDIR += aegisub
+    SUBDIR += aravis
     SUBDIR += asdcplib
     SUBDIR += assimp
     SUBDIR += atomicparsley
@@ -40,7 +42,9 @@
     SUBDIR += cx88
     SUBDIR += deforaos-player
     SUBDIR += devede
+    SUBDIR += din
     SUBDIR += dirac
+    SUBDIR += dragon
     SUBDIR += dragon-kde4
     SUBDIR += dtv-scan-tables
     SUBDIR += dumpmpeg
@@ -146,8 +150,7 @@
     SUBDIR += gstreamer1-plugins-vpx
     SUBDIR += gstreamer1-plugins-x264
     SUBDIR += gstreamer1-plugins-x265
-    SUBDIR += gstreamer1-qt4
-    SUBDIR += gstreamer1-qt5
+    SUBDIR += gstreamer1-qt
     SUBDIR += gstreamer1-rtsp-server
     SUBDIR += gstreamer1-vaapi
     SUBDIR += gstreamer1-validate
@@ -163,14 +166,20 @@
     SUBDIR += jmref
     SUBDIR += k9copy-kde4
     SUBDIR += kaffeine
+    SUBDIR += kamoso
+    SUBDIR += kdemultimedia
+    SUBDIR += kdemultimedia-ffmpegthumbs
     SUBDIR += kdemultimedia-kde4
     SUBDIR += kdemultimedia-ffmpegthumbs-kde4
     SUBDIR += kdemultimedia-mplayerthumbs-kde4
     SUBDIR += kdenlive
+    SUBDIR += kdenlive-kde4
     SUBDIR += kf5-kmediaplayer
     SUBDIR += kissdx
     SUBDIR += kmplayer-kde4
     SUBDIR += kodi
+    SUBDIR += kodi-addon-pvr-hts
+    SUBDIR += kodi-addon-pvr-iptvsimple
     SUBDIR += kodi-devel
     SUBDIR += kplayer-kde4
     SUBDIR += kvazaar
@@ -335,6 +344,7 @@
     SUBDIR += py-openlp
     SUBDIR += py-periscope
     SUBDIR += py-pretty_midi
+    SUBDIR += py-PySceneDetect
     SUBDIR += py-qt4-multimedia
     SUBDIR += py-qt4-phonon
     SUBDIR += py-qt5-multimedia
@@ -352,10 +362,6 @@
     SUBDIR += qt4-mobility
     SUBDIR += qt4-multimedia
     SUBDIR += qt5-multimedia
-    SUBDIR += qt5-phonon4
-    SUBDIR += qt5-phonon4-designerplugin
-    SUBDIR += qt5-phonon4-gstreamer
-    SUBDIR += qt5-phonon4-vlc
     SUBDIR += quark
     SUBDIR += quodlibet
     SUBDIR += quvi

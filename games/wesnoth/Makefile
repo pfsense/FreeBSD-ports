@@ -2,14 +2,14 @@
 
 PORTNAME=	wesnoth
 PORTVERSION=	1.12.6
-PORTREVISION=	10
+PORTREVISION=	11
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}/${PORTNAME}-${PORTVERSION} \
 		http://files.wesnoth.org/ \
 		http://ports.toco-domains.de/
 
-MAINTAINER=	tz@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fantasy turn-based strategy game
 
 LICENSE=	GPLv2 GPLv3

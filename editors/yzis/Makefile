@@ -14,10 +14,12 @@ COMMENT=	Vi-like editor
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
+LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LGPL
 
-USES=		tar:bzip2 cmake gettext perl5 lua:51
+USES=		qt:4 tar:bzip2 cmake gettext perl5 lua:51
 USE_XORG=	x11 xext ice
-USE_QT4=	qtestlib qmake_build rcc_build uic_build moc_build gui xml
+USE_QT=		corelib qtestlib qmake_build rcc_build uic_build moc_build gui xml
 CMAKE_ARGS+=	-DLOCALBASE:STRING="${LOCALBASE}" \
 		-DLUA_INCDIR:STRING="${LUA_INCDIR}" \
 		-DLUA_LIBDIR:STRING="${LUA_LIBDIR}" \
@@ -32,8 +34,8 @@ USE_LDCONFIG=	yes
 OPTIONS_DEFINE=	KYZIS NYZIS DOXYGEN
 OPTIONS_SUB=	yes
 KYZIS_DESC=	Build kyzis and Yzis kpart
-KYZIS_USES=	kde:4
-KYZIS_USE=	KDE=kdeprefix,kdelibs,automoc4 QT4=phonon
+KYZIS_USES=	kde:4 qt:4
+KYZIS_USE=	KDE=kdeprefix,kdelibs,automoc4 QT=phonon
 KYZIS_CMAKE_ON=	-DENABLE_KYZIS:BOOL=ON -DENABLE_KPART_YZIS:BOOL=ON
 KYZIS_CMAKE_OFF=	-DENABLE_KYZIS:BOOL=OFF -DENABLE_KPART_YZIS:BOOL=OFF
 NYZIS_DESC=	Build nyzis (ncurses frontend)
@@ -41,7 +43,7 @@ NYZIS_CPPFLAGS=	-D_XOPEN_SOURCE_EXTENDED
 NYZIS_CMAKE_ON=	-DENABLE_NYZIS:BOOL=ON
 NYZIS_CMAKE_OFF=	-DENABLE_NYZIS:BOOL=OFF
 DOXYGEN_BUILD_DEPENDS=	dot:graphics/graphviz \
-		doxygen:devel/doxygen
+			doxygen:devel/doxygen
 DOXYGEN_CMAKE_ON=	-DENABLE_DOCUMENTATION:BOOL=ON
 DOXYGEN_CMAKE_OFF=	-DENABLE_DOCUMENTATION:BOOL=OFF
 

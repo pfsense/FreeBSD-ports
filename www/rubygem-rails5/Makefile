@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rails
-PORTVERSION=	5.1.5
+PORTVERSION=	5.1.6
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	5
@@ -48,6 +48,8 @@ RUN_DEPENDS=	rubygem-actioncable5>=${PORTVERSION}:www/rubygem-actioncable5 \
 		rubygem-turbolinks-rails5>=5.0.1:www/rubygem-turbolinks-rails5 \
 		rubygem-uglifier>=3.2.0:www/rubygem-uglifier \
 		rubygem-web-console>=3.5.0:devel/rubygem-web-console
+
+PORTSCOUT=	limit:^5\.1\.
 
 NO_ARCH=	yes
 

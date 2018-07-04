@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	smppex
-PORTVERSION=	2.2.4
+PORTVERSION=	2.2.7
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	elixir-
 
-MAINTAINER=	olgeni@FreeBSD.org
+MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	SMPP 3.4 library for Elixir
 
 LICENSE=	MIT

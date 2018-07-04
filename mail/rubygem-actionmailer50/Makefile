@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	actionmailer
-PORTVERSION=	5.0.6
+PORTVERSION=	5.0.7
 CATEGORIES=	mail rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	50
@@ -21,8 +21,8 @@ RUN_DEPENDS=	rubygem-actionpack50>=${PORTVERSION}:www/rubygem-actionpack50 \
 
 PORTSCOUT=	limit:^5\.0\.
 
+USES=		gem
 NO_ARCH=	yes
 USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

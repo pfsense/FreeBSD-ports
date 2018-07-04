@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	dovecot-pigeonhole
-PORTVERSION=	0.4.23
+PORTVERSION=	0.5.2
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	http://pigeonhole.dovecot.org/releases/${DOVECOTVERSION}/
 DISTNAME=	${PORTNAME:C/-/-${DOVECOTVERSION}-/}-${PORTVERSION}
@@ -12,10 +13,10 @@ COMMENT=	Sieve plugin for the Dovecot 'deliver' LDA and LMTP
 
 LICENSE=	LGPL21
 
-BUILD_DEPENDS=	dovecot>=2.2.31:mail/dovecot
-RUN_DEPENDS=	dovecot>=2.2.31:mail/dovecot
+BUILD_DEPENDS=	dovecot>=2.3.2:mail/dovecot
+RUN_DEPENDS=	dovecot>=2.3.2:mail/dovecot
 
-DOVECOTVERSION=	2.2
+DOVECOTVERSION=	2.3
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--exec-prefix=${PREFIX} \
@@ -26,6 +27,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 USES=		compiler:c11 libtool ssl
 USE_LDCONFIG=	${PREFIX}/lib/dovecot
+
+CONFLICTS_INSTALL=	dovecot-pigeonhole04
 
 OPTIONS_DEFINE=	DOCS LDAP MANAGESIEVE
 OPTIONS_DEFAULT=MANAGESIEVE GSSAPI_NONE

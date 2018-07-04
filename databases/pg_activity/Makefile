@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pg_activity
-PORTVERSION=	1.3.1
+PORTVERSION=	1.4.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases python
 
@@ -11,15 +11,15 @@ COMMENT=	Htop like application for PostgreSQL server activity monitoring
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>=0:databases/py-psycopg2@${FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}psutil>=0:sysutils/py-psutil@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>=0:databases/py-psycopg2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}psutil>=0:sysutils/py-psutil@${PY_FLAVOR}
 
 OPTIONS_DEFINE=	DOCS
 
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	julmon
 
-USES=		python
 USE_PYTHON=	autoplist distutils noegginfo concurrent optsuffix
 PYDISTUTILS_INSTALLARGS=	--with-man
 

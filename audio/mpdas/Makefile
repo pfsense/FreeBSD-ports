@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mpdas
-PORTVERSION=	0.4.4
+PORTVERSION=	0.4.5
 CATEGORIES=	audio
 MASTER_SITES=	http://50hz.ws/mpdas/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libmpdclient.so:audio/libmpdclient
 
-USES=		pkgconfig
+USES=		compiler:c++11-lang pkgconfig
 
 USE_RC_SUBR=	mpdas
 

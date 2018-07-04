@@ -89,9 +89,7 @@ USE_XORG=	x11 xcomposite xdamage xext xfixes xrender xt
 HAS_CONFIGURE=	yes
 CONFIGURE_OUTSOURCE=	yes
 
-.if ${MOZILLA} != "libxul"
 BUNDLE_LIBS=	yes
-.endif
 
 .if ${MOZILLA_VER:R:R} >= 49
 USES+=		compiler:c++14-lang
@@ -106,7 +104,7 @@ USE_XORG+=	xcb
 .endif
 
 .if ${MOZILLA_VER:R:R} >= 56
-MESA_LLVM_VER?=	50
+MESA_LLVM_VER?=	60
 BUILD_DEPENDS+=	llvm${MESA_LLVM_VER}>0:devel/llvm${MESA_LLVM_VER}
 MOZ_EXPORT+=	LLVM_CONFIG=llvm-config${MESA_LLVM_VER}
 .endif

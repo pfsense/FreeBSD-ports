@@ -3,8 +3,12 @@
 
 PORTNAME=	qTox
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.14.1
+DISTVERSION=	1.15.0
+PORTREVISION=	1
 CATEGORIES=	net-im net-p2p
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	441931765ffe.patch:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Qt 5 based Tox client
@@ -24,10 +28,10 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libtoxcore.so:net-im/tox \
 		libvpx.so:multimedia/libvpx
 
-USES=		cmake compiler:c++11-lib desktop-file-utils gettext openal:soft pkgconfig
+USES=		cmake compiler:c++11-lib desktop-file-utils gettext openal:soft pkgconfig qt:5
 USE_GITHUB=	yes
 USE_GNOME=	gtk20 gdkpixbuf2 cairo
-USE_QT5=	core gui network xml opengl sql sql-sqlite3_run widgets svg \
+USE_QT=		core gui network xml opengl sql sql-sqlite3_run widgets svg \
 		concurrent_build buildtools_build linguisttools_build qmake_build testlib_build
 CMAKE_ARGS=	-DGIT_DESCRIBE:STRING=${FULLVERSION}
 CMAKE_OFF=	USE_CCACHE

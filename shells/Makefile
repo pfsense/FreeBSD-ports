@@ -8,6 +8,7 @@
     SUBDIR += bash-completion
     SUBDIR += bash-static
     SUBDIR += bashc
+    SUBDIR += bicon
     SUBDIR += ch
     SUBDIR += dash
     SUBDIR += envy
@@ -48,6 +49,7 @@
     SUBDIR += wcd
     SUBDIR += xonsh
     SUBDIR += zsh
+    SUBDIR += zsh-antigen
     SUBDIR += zsh-navigation-tools
 
 .include <bsd.port.subdir.mk>

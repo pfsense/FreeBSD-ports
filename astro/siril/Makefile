@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	siril
-DISTVERSION=	0.9.8
+DISTVERSION=	0.9.9
 PORTREVISION=	1
 CATEGORIES=	astro graphics
 MASTER_SITES=	https://free-astro.org/download/
@@ -17,6 +17,7 @@ BROKEN_i386=	undefined reference to `__atomic_load' and `__atomic_compare_exchan
 LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 		libcfitsio.so:astro/cfitsio \
 		libconfig.so:devel/libconfig \
+		libcurl.so:ftp/curl \
 		libffms2.so:multimedia/ffms2 \
 		libfftw3.so:math/fftw3 \
 		libgsl.so:math/gsl \

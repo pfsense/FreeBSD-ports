@@ -19,11 +19,13 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		liblo.so:audio/liblo \
 		libjack.so:audio/jack
 
+PORTSCOUT=	limit:^qmidiarp
+
 USES=		autoreconf compiler:c++11-lib desktop-file-utils \
-		gmake localbase libtool pkgconfig
+		gmake localbase libtool pkgconfig qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	emuse
-USE_QT5=	core gui network widgets buildtools_build \
+USE_QT=		core gui network widgets buildtools_build \
 		linguisttools_build
 USE_CXXSTD=	c++11
 GNU_CONFIGURE=	yes

@@ -4,7 +4,7 @@
 PORTNAME=	usbtop
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	0.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
-USES=		cmake:outsource
+USES=		cmake:outsource compiler:c++11-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	aguinet
 

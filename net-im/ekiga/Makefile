@@ -4,7 +4,7 @@
 
 PORTNAME=	ekiga
 PORTVERSION=	4.0.1
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -23,8 +23,8 @@ LIB_DEPENDS=	libboost_signals.so:devel/boost-libs \
 RUN_DEPENDS=	gnome-icon-theme>=3.0.0:misc/gnome-icon-theme
 
 GNU_CONFIGURE=	yes
-USES=		cpe gettext gmake kde:4 libtool localbase pathfix \
-		perl5 pkgconfig tar:xz
+USES=		compiler:c++11-lang cpe gettext gmake kde:4 libtool localbase \
+		pathfix perl5 pkgconfig tar:xz
 USE_XORG=	xv
 USE_GNOME=	gtk20 intlhack libxml2
 INSTALLS_ICONS=	yes
@@ -56,8 +56,9 @@ KAB_IMPLIES=	KDE
 PLIST_SUB+=	VERSION=${PORTVERSION}
 
 .if ${PORT_OPTIONS:MKDE} || ${PORT_OPTIONS:MKAB}
+USES+=		qt:4
 USE_KDE=	kdelibs
-USE_QT4=	corelib
+USE_QT=		corelib
 CONFIGURE_ARGS+=--enable-kde
 #CONFIGURE_ENV+=KDE_CFLAGS="-I${KDE_PREFIX}/include -I${QT_INCDIR} \
 #	-I${LOCALBASE}/include" KDE_LIBS="-L${KDE_PREFIX}/lib"

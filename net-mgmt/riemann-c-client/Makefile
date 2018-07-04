@@ -13,6 +13,8 @@ COMMENT=	C library and command-line tool for Riemann
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_aarch64=		fails to build: FAIL: tests/check_symver
+
 BUILD_DEPENDS=	check>0:devel/check
 LIB_DEPENDS=	libprotobuf-c.so:devel/protobuf-c \
 		libgnutls.so:security/gnutls \
@@ -27,8 +29,6 @@ TEST_TARGET=	check
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	algernon
-
-MAKE_JOBS_UNSAFE=	yes
 
 post-patch:
 	@${REINPLACE_CMD} 's/-ldl//' ${WRKSRC}/Makefile.am

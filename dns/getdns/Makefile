@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	getdns
-PORTVERSION=	1.4.1
+PORTVERSION=	1.4.2
 CATEGORIES=	dns ipv6
 MASTER_SITES=	https://getdnsapi.net/dist/ \
 		ZI \
@@ -47,6 +47,7 @@ LIBUV_LIB_DEPENDS=	libuv.so:devel/libuv
 LIBUV_CONFIGURE_WITH=	libuv
 STUBBY_LIB_DEPENDS=	libyaml.so:textproc/libyaml
 STUBBY_CONFIGURE_WITH=	stubby
+STUBBY_VARS=		USE_RC_SUBR="stubby"
 
 post-patch:
 	${REINPLACE_CMD} -Ee 's,^(sharedoc = ).*,\1${WRKDIR}/doc,' \

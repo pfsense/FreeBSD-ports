@@ -2,7 +2,7 @@
 
 PORTNAME=	hasktags
 PORTVERSION=	0.69.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

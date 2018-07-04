@@ -2,8 +2,8 @@
 
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.5-546
-DISTVERSIONSUFFIX=	-g3b8eab87d
+DISTVERSION=	0.0.5-562
+DISTVERSIONSUFFIX=	-g3d8223fcc
 CATEGORIES=	emulators
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -30,18 +30,16 @@ GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-25-gca39ce8:hidapi/3rdparty/hidapi \
 		Cyan4973:xxHash:v0.6.5:xxHash/3rdparty/xxHash \
 		jbeder:yaml-cpp:yaml-cpp-0.6.2-4-g4fb1c4b:yamlcpp/3rdparty/yaml-cpp \
 		kobalicek:asmjit:673dcef:asmjit/asmjit \
-		KhronosGroup:glslang:3.0-1794-ge22e3473:glslang/Vulkan/glslang \
+		KhronosGroup:glslang:5.1-184-gc99304c5:glslang/Vulkan/glslang \
 		Microsoft:GSL:fc5fce4:GSL/3rdparty/GSL \
 		USCiLab:cereal:v1.2.0:cereal/3rdparty/cereal \
 		zeux:pugixml:v1.9:pugixml/3rdparty/pugixml
 
 USES=		cmake:outsource compiler:c++14-lang iconv:wchar_t localbase:ldflags \
-		openal:soft pkgconfig
+		openal:soft pkgconfig qt:5
 USE_GL=		gl glew
-USE_QT5=	qmake_build buildtools_build core dbus gui network widgets qml
+USE_QT=		qmake_build buildtools_build core dbus gui network widgets qml
 USE_XORG=	x11
-EXTRA_PATCHES+=	${EXTRA_PATCHES_${OPSYS}_${OSREL}}
-EXTRA_PATCHES_FreeBSD_10.3=	${PATCHDIR}/extra-patch-no-thread_local
 CMAKE_ON=	CMAKE_SKIP_RPATH USE_SYSTEM_FFMPEG USE_SYSTEM_LIBPNG
 CMAKE_OFF=	USE_NATIVE_INSTRUCTIONS
 CXXFLAGS+=	-D_GLIBCXX_USE_C99 # XXX ports/193528

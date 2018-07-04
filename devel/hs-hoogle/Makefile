@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hoogle
-PORTVERSION=	5.0.12
+PORTVERSION=	5.0.17.3
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 
@@ -14,8 +14,8 @@ LICENSE=	BSD3CLAUSE
 USE_CABAL=	aeson cmdargs conduit conduit-extra connection extra \
 		haskell-src-exts http-conduit http-types js-flot js-jquery \
 		mmap network network-uri old-locale process-extras QuickCheck \
-		resourcet tar text uniplate utf8-string vector wai wai-logger \
-		warp warp-tls zlib
+		resourcet storable-tuple tar uniplate utf8-string vector wai \
+		wai-logger warp warp-tls zlib
 
 EXECUTABLE=	hoogle
 

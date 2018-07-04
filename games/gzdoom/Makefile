@@ -2,6 +2,7 @@
 
 PORTNAME=	gzdoom
 PORTVERSION=	3.3.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	g
 CATEGORIES=	games
 
@@ -39,12 +40,6 @@ DESKTOP_ENTRIES=	"GZDoom" "" "${PORTNAME}" "${PORTNAME}" "Game;Shooter;" ""
 PLIST_FILES=	bin/${PORTNAME} \
 		${DATADIR}/${PORTNAME}.pk3 \
 		share/pixmaps/${PORTNAME}.xpm
-
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == "FreeBSD" && ${OSVERSION} < 1004000
-BROKEN=		Fails to link due to lack of thread_local
-.endif
 
 .include "${.CURDIR}/../doom-data/Makefile.include"
 

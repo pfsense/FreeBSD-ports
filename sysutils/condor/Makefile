@@ -6,6 +6,7 @@
 
 PORTNAME=	condor
 DISTVERSION=	8.4.12
+PORTREVISION=	1
 CATEGORIES=	sysutils net
 MASTER_SITES=	http://www.acadix.biz/Ports/distfiles/
 DISTNAME=	condor_src-${PORTVERSION}-all-all
@@ -16,7 +17,7 @@ COMMENT=	High-throughput computing on distributively owned resources
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE-2.0.txt
 
-BROKEN_powerpc64=	fails to build
+BROKEN_powerpc64=	fails to link: test_unit.hpp:249: undefined reference to boost::unit_test::ut_detail::normalize_test_case_name
 
 LIB_DEPENDS=	libkrb5support.so:security/krb5 \
 		libpcre.so:devel/pcre \
@@ -41,6 +42,7 @@ CXXFLAGS+=	-I${LOCALBASE}/include -fPIC
 LDFLAGS+=	-Wl,-rpath=${_GCC_RUNTIME}:${LOCALBASE}/lib:/usr/lib:/lib -fPIC
 CMAKE_ARGS=	-DCMAKE_CXX_FLAGS:STRING=${CXXFLAGS} \
 		-DCMAKE_EXE_LINKER_FLAGS:STRING=${LDFLAGS} \
+		-DPYTHON_BOOST_LIB:STRING=${PY_BOOST_LIB} \
 		-DPYTHON_INCLUDE_DIR:PATH=${LOCALBASE}/include/${PYTHON_VERSION} \
 		-DPYTHON_LIBRARY:FILEPATH=${LOCALBASE}/lib/lib${PYTHON_VERSION}.so
 

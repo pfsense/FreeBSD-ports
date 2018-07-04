@@ -3,7 +3,7 @@
 
 PORTNAME=	tellico
 PORTVERSION=	2.3.12
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	misc kde
 MASTER_SITES=	http://tellico-project.org/files/
 
@@ -16,16 +16,16 @@ LIB_DEPENDS=	libexempi.so:textproc/exempi \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error \
 		libpoppler-qt4.so:graphics/poppler-qt4 \
-		libqjson.so:devel/qjson \
+		libqjson.so:devel/qjson@qt4 \
 		libtag.so:audio/taglib \
 		libyaz.so:net/yaz
 
 USES=		cmake gettext kde:4 pkgconfig python:run \
-		shared-mime-info shebangfix tar:bzip2
+		qt:4 shared-mime-info shebangfix tar:bzip2
 USE_GNOME=	libxml2 libxslt
 USE_KDE=	kdelibs libksane pimlibs soprano \
 		automoc4 qimageblitz libkcddb libkcompactdisc
-USE_QT4=	corelib dbus gui network phonon svg xml \
+USE_QT=		corelib dbus gui network phonon svg xml \
 		qmake_build moc_build uic_build rcc_build
 
 SHEBANG_FILES=	src/fetch/scripts/bedetheque.py \

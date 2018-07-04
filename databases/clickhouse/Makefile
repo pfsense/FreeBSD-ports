@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	clickhouse
-PORTVERSION=	1.1.54362
+PORTVERSION=	1.1.54381
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-stable
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	proler@gmail.com
-COMMENT=	ClickHouse is an column-oriented database management system
+COMMENT=	ClickHouse is a column-oriented database management system
 
 LICENSE=	APACHE20
 
@@ -59,6 +59,14 @@ GROUPS=		clickhouse
 
 SOVERSION=	${PORTVERSION}
 PLIST_SUB=	SOVERSION=${SOVERSION}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
+SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
+.else
+SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
+.endif
 
 .include <bsd.port.pre.mk>
 

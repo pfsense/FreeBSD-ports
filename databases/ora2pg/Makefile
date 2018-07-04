@@ -6,7 +6,7 @@ PORTVERSION=	18.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Oracle to PostgreSQL database schema converter
 
 LICENSE=	GPLv3

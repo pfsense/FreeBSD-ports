@@ -2,7 +2,7 @@
 
 PORTNAME=	baloo
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	sysutils kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
@@ -12,12 +12,12 @@ CONFLICTS_INSTALL=	kde-runtime-4.12.* \
 			kf5-baloo-5.*
 
 LIB_DEPENDS=	libxapian.so:databases/xapian-core \
-		libqjson.so:devel/qjson
+		libqjson.so:devel/qjson@qt4
 
-USES=		cmake:outsource kde:4 tar:xz
+USES=		cmake:outsource kde:4 qt:4 tar:xz
 USE_KDE=	akonadi automoc4 kdelibs kfilemetadata \
 		pimlibs
-USE_QT4=	corelib qmake_build moc_build rcc_build uic_build
+USE_QT=		corelib qmake_build moc_build rcc_build uic_build
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

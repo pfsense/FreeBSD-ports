@@ -6,11 +6,14 @@ CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	016
 
-MAINTAINER=	idefix@fechner.net
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Fast profiler for Ruby
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Obsoleted by update of www/gitlab. Please use devel/rubygem-ruby-prof instead.
+EXPIRATION_DATE=	2018-06-30
 
 PORTSCOUNT=	limit:^0\.16
 CONFLICTS_INSTALL=	rubygem-ruby-prof

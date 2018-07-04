@@ -7,13 +7,15 @@ Some features available on other platforms are not implemented:
 - Reduced memory usage (requires mozjemalloc)
 - Performance profiling (requires GeckoProfiler)
 - Gamepad API (requires libusbhid backend)
+- WebVR (requires open source runtime)
+- TCP fast open
 
 ======================================================================
 
 To select non-default audio backend open about:config page and create
 media.cubeb.backend preference. Supported values are: alsa, jack,
-pulse, oss, sndio. Currently used backend can be inspected on
-about:support page.
+pulse, pulse-rust, oss, sndio. Currently used backend can be inspected
+on about:support page.
 
 ======================================================================
 

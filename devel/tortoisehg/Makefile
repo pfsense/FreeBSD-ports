@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	tortoisehg
-PORTVERSION=	4.5.2
+DISTVERSION=	4.6
 CATEGORIES=	devel
 MASTER_SITES=	https://bitbucket.org/tortoisehg/targz/downloads/
 
@@ -12,8 +12,8 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 RUN_DEPENDS=	hg:devel/mercurial \
-		${PYTHON_PKGNAMEPREFIX}iniparse>=0.4:devel/py-iniparse@${FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}iniparse>=0.4:devel/py-iniparse@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR}
 
 OPTIONS_DEFINE=	NAUTILUS NLS
 NAUTILUS_DESC=	Install TortoiseHG Nautilus extension

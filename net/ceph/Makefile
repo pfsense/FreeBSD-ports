@@ -4,10 +4,11 @@
 PORTNAME=	ceph
 DISTVERSIONPREFIX=	v
 DISTVERSION=	12.2.4
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	wjw@digiware.nl
-COMMENT=Ceph delivers object, block, and file storage in a unified system
+COMMENT=	Ceph delivers object, block, and file storage in a unified system
 
 LICENSE=	GPLv2 LGPL3
 LICENSE_COMB=	dual

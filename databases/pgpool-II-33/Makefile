@@ -2,6 +2,7 @@
 
 PORTNAME=	pgpool-II
 PORTVERSION=	3.3.20
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.pgpool.net/mediawiki/images/
 PKGNAMESUFFIX=	33
@@ -18,6 +19,7 @@ EXPIRATION_DATE=	2018-07-31
 RUN_DEPENDS=	rsync:net/rsync
 
 USES=		gmake libtool perl5 pgsql
+LLD_UNSAFE=	yes
 WANT_PGSQL=	client
 USE_PERL5=	run
 GNU_CONFIGURE=	yes

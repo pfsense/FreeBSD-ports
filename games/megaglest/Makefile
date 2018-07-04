@@ -3,7 +3,7 @@
 
 PORTNAME=	megaglest
 PORTVERSION=	3.13.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 
 MAINTAINER=	monwarez@mailoo.org
@@ -35,6 +35,7 @@ USE_GL=		glew gl glu
 USE_SDL=	sdl2
 USE_XORG=	sm ice x11 xext
 USE_CXXSTD=	c++11
+LLD_UNSAFE=	yes
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -lssl -lcrypto

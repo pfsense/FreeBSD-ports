@@ -1,2 +1,3 @@
-SHA256 (pacman-4.2.0.tar.gz) = 941aca897db3218f0cb4036de13422d74212afbcdbf4a7cd7074a7128e196a22
-SIZE (pacman-4.2.0.tar.gz) = 2934713
+TIMESTAMP = 1528119790
+SHA256 (pacman-5.1.0.tar.gz) = 9f5993fc8923530713742f15df284677f297b3eca15ed7a24758c98ac7399bd3
+SIZE (pacman-5.1.0.tar.gz) = 3334829

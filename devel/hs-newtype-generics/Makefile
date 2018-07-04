@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	newtype-generics
-PORTVERSION=	0.5
+PORTVERSION=	0.5.3
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 

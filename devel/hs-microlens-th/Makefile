@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	microlens-th
-PORTVERSION=	0.4.1.1
+PORTVERSION=	0.4.2.1
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 
@@ -10,7 +10,7 @@ COMMENT=	This package lets you automatically generate lenses for data types
 
 LICENSE=	BSD3CLAUSE
 
-USE_CABAL=	microlens
+USE_CABAL=	microlens th-abstraction
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

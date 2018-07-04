@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	m2crypto
-PORTVERSION=	0.29.0
+PORTVERSION=	0.30.1
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -32,7 +32,7 @@ post-install:
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_REL} < 3500
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing>=0:devel/py-typing@${FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing>=0:devel/py-typing@${PY_FLAVOR}
 .endif
 
 .include <bsd.port.post.mk>

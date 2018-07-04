@@ -6,7 +6,7 @@ PORTVERSION=	2.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PostgreSQL SQL syntax beautifier
 
 LICENSE=	PostgreSQL

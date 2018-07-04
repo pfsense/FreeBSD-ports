@@ -1,6 +1,5 @@
 # $FreeBSD$
 
-PORTREVISION=	1
 PKGNAMEPREFIX=	arm-none-eabi-
 COMMENT=	GNU Compiler Collection for bare metal arm cross-development
 GCC_TARGET=	arm-none-eabi
@@ -17,6 +16,7 @@ CONFIGURE_ARGS=	--disable-libstdcxx \
 BROKEN_aarch64=		fails to package
 BROKEN_mips=		configure: error: cannot compute suffix of object files: cannot compile
 BROKEN_mips64=		configure: error: cannot compute suffix of object files: cannot compile
+BROKEN_powerpc64=	fails to compile: include/longlong.h:286:52: internal compiler error: Segmentation fault
 
 MASTERDIR=	${.CURDIR}/../powerpc64-gcc
 

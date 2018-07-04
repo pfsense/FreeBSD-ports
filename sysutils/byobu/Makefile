@@ -3,11 +3,12 @@
 
 PORTNAME=	byobu
 PORTVERSION=	5.119
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://launchpad.net/${PORTNAME}/trunk/${PORTVERSION}/+download/
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Profile and configuration utilities for GNU Screen
 
 LICENSE=	GPLv3

@@ -5,26 +5,18 @@ diff --git browser/app/profile/firefox.js browser/app/profile/firefox.js
 index 75c2c5e435e35..4d8c09c02759b 100644
 --- browser/app/profile/firefox.js
 +++ browser/app/profile/firefox.js
-@@ -42,12 +42,12 @@ pref("xpinstall.customConfirmationUI", true);
- // Preferences for AMO integration
+@@ -45,8 +45,8 @@ pref("extensions.webextOptionalPermissionPrompts", tru
  pref("extensions.getAddons.cache.enabled", true);
- pref("extensions.getAddons.maxResults", 15);
--pref("extensions.getAddons.get.url", "https://services.addons.mozilla.org/%LOCALE%/firefox/api/%API_VERSION%/search/guid:%IDS%?src=firefox&appOS=%OS%&appVersion=%VERSION%");
--pref("extensions.getAddons.getWithPerformance.url", "https://services.addons.mozilla.org/%LOCALE%/firefox/api/%API_VERSION%/search/guid:%IDS%?src=firefox&appOS=%OS%&appVersion=%VERSION%&tMain=%TIME_MAIN%&tFirstPaint=%TIME_FIRST_PAINT%&tSessionRestored=%TIME_SESSION_RESTORED%");
+ pref("extensions.getAddons.get.url", "https://services.addons.mozilla.org/api/v3/addons/search/?guid=%IDS%&lang=%LOCALE%");
+ pref("extensions.getAddons.compatOverides.url", "https://services.addons.mozilla.org/api/v3/addons/compat-override/?guid=%IDS%&lang=%LOCALE%");
 -pref("extensions.getAddons.search.browseURL", "https://addons.mozilla.org/%LOCALE%/firefox/search?q=%TERMS%&platform=%OS%&appver=%VERSION%");
--pref("extensions.getAddons.search.url", "https://services.addons.mozilla.org/%LOCALE%/firefox/api/%API_VERSION%/search/%TERMS%/all/%MAX_RESULTS%/%OS%/%VERSION%/%COMPATIBILITY_MODE%?src=firefox");
 -pref("extensions.webservice.discoverURL", "https://discovery.addons.mozilla.org/%LOCALE%/firefox/discovery/pane/%VERSION%/%OS%/%COMPATIBILITY_MODE%");
--pref("extensions.getAddons.recommended.url", "https://services.addons.mozilla.org/%LOCALE%/%APP%/api/%API_VERSION%/list/recommended/all/%MAX_RESULTS%/%OS%/%VERSION%?src=firefox");
-+pref("extensions.getAddons.get.url", "https://services.addons.mozilla.org/%LOCALE%/firefox/api/%API_VERSION%/search/guid:%IDS%?src=firefox&appOS=Linux&appVersion=%VERSION%");
-+pref("extensions.getAddons.getWithPerformance.url", "https://services.addons.mozilla.org/%LOCALE%/firefox/api/%API_VERSION%/search/guid:%IDS%?src=firefox&appOS=Linux&appVersion=%VERSION%&tMain=%TIME_MAIN%&tFirstPaint=%TIME_FIRST_PAINT%&tSessionRestored=%TIME_SESSION_RESTORED%");
 +pref("extensions.getAddons.search.browseURL", "https://addons.mozilla.org/%LOCALE%/firefox/search?q=%TERMS%&platform=Linux&appver=%VERSION%");
-+pref("extensions.getAddons.search.url", "https://services.addons.mozilla.org/%LOCALE%/firefox/api/%API_VERSION%/search/%TERMS%/all/%MAX_RESULTS%/Linux/%VERSION%/%COMPATIBILITY_MODE%?src=firefox");
 +pref("extensions.webservice.discoverURL", "https://discovery.addons.mozilla.org/%LOCALE%/firefox/discovery/pane/%VERSION%/Linux/%COMPATIBILITY_MODE%");
-+pref("extensions.getAddons.recommended.url", "https://services.addons.mozilla.org/%LOCALE%/%APP%/api/%API_VERSION%/list/recommended/all/%MAX_RESULTS%/Linux/%VERSION%?src=firefox");
  pref("extensions.getAddons.link.url", "https://addons.mozilla.org/%LOCALE%/firefox/");
+ pref("extensions.getAddons.themes.browseURL", "https://addons.mozilla.org/%LOCALE%/firefox/themes/?src=firefox");
  
- pref("extensions.update.autoUpdateDefault", true);
-@@ -156,8 +156,8 @@ pref("app.update.service.enabled", true);
+@@ -186,8 +186,8 @@ pref("app.update.service.enabled", true);
  //  .. etc ..
  //
  pref("extensions.update.enabled", true);
@@ -39,29 +31,20 @@ diff --git toolkit/mozapps/extensions/internal/AddonRepository.jsm toolkit/mozap
 index f70fd8d7e3bd8..81e8cd7764fdf 100644
 --- toolkit/mozapps/extensions/internal/AddonRepository.jsm
 +++ toolkit/mozapps/extensions/internal/AddonRepository.jsm
-@@ -1179,7 +1179,7 @@ this.AddonRepository = {
-           let nodes = node.getElementsByTagName("os");
-           addon.isPlatformCompatible = Array.some(nodes, function(aNode) {
-             let text = aNode.textContent.toLowerCase().trim();
--            return text == "all" || text == Services.appinfo.OS.toLowerCase();
-+            return text == "all" || text == "linux" || text == Services.appinfo.OS.toLowerCase();
-           });
-           break;
-         case "install":
-@@ -1187,7 +1187,7 @@ this.AddonRepository = {
-           if (node.hasAttribute("os")) {
-             let os = node.getAttribute("os").trim().toLowerCase();
-             // If the os is not ALL and not the current OS then ignore this xpi
--            if (os != "all" && os != Services.appinfo.OS.toLowerCase())
-+            if (os != "all" && os != "linux" && os != Services.appinfo.OS.toLowerCase())
-               break;
-           }
- 
+@@ -588,7 +588,7 @@ var AddonRepository = {
+       addon.version = String(aEntry.current_version.version);
+       if (Array.isArray(aEntry.current_version.files)) {
+         for (let file of aEntry.current_version.files) {
+-          if (file.platform == "all" || file.platform == Services.appinfo.OS.toLowerCase()) {
++          if (file.platform == "all" || file.platform == "linux" || file.platform == Services.appinfo.OS.toLowerCase()) {
+             if (file.url) {
+               addon.sourceURI = NetUtil.newURI(file.url);
+             }
 diff --git toolkit/mozapps/extensions/internal/XPIProvider.jsm toolkit/mozapps/extensions/internal/XPIProvider.jsm 
 index f70fd8d7e3bd8..81e8cd7764fdf 100644
 --- toolkit/mozapps/extensions/internal/XPIProvider.jsm
 +++ toolkit/mozapps/extensions/internal/XPIProvider.jsm
-@@ -7186,7 +7186,7 @@ AddonInternal.prototype = {
+@@ -4974,7 +4974,7 @@ AddonInternal.prototype = {
      // Something is causing errors in here
      try {
        for (let platform of this.targetPlatforms) {

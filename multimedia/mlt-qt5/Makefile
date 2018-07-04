@@ -1,11 +1,13 @@
 # $FreeBSD$
 
-PORTREVISION=	2
+PORTREVISION=	0
 
 CONFLICTS_INSTALL=	${PORTNAME}-qt4-*
 
+USES=	qt:5
 USE_CXXSTD=	c++11
-USE_QT5=	core gui svg widgets xml
+USE_QT=		core gui svg widgets xml
+USE_XORG=	x11
 MASTERDIR=	${.CURDIR:H}/mlt
 SLAVEPORT=	qt5
 

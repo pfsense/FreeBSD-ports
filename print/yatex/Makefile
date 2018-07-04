@@ -3,7 +3,7 @@
 
 PORTNAME=	yatex
 PORTVERSION=	1.77
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES?=	print elisp
 MASTER_SITES=	http://www.yatex.org/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -16,7 +16,6 @@ USES=		dos2unix emacs
 EMACS_NO_DEPENDS=	yes
 
 NO_BUILD=	yes
-PKGMESSAGE=	${WRKDIR}/pkg-message
 SUB_FILES=	pkg-message yatex-startup.el
 SUB_LIST=	EMACS_SITE_LISPDIR="${EMACS_SITE_LISPDIR}"
 

@@ -13,11 +13,15 @@ COMMENT=	GTK interactive geometry software
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_powerpc64=	fails to compile: ./geo/libgeo.a: multiple definition of drgeoDialogData
+
 LIB_DEPENDS=	libguile.so:lang/guile
 
-GNU_CONFIGURE=	yes
 USES=		gettext gmake localbase:ldflags pkgconfig pathfix
+GNU_CONFIGURE=	yes
 USE_GNOME=	gnomeprefix intlhack libglade2
+
+CXXFLAGS+=	-Wno-reserved-user-defined-literal
 
 PORTDATA=	*
 

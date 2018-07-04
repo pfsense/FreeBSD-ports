@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	zstandard
-DISTVERSION=	0.8.2
+DISTVERSION=	0.9.1
 CATEGORIES=	archivers python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,11 +11,12 @@ COMMENT=	Zstandard bindings for Python, a full-featured version
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.8.0:devel/py-cffi@${FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.8.0:devel/py-cffi@${PY_FLAVOR}
+LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-USES=		python
+USES=		localbase python
 USE_PYTHON=	distutils autoplist
-#PYDISTUTILS_BUILDARGS=	--system-zstd  # The next release is going to allow to unbind zstd
+PYDISTUTILS_BUILDARGS=	--system-zstd
 
 post-install:
 	@cd ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} && ${STRIP_CMD} zstd.so _zstd_cffi.so

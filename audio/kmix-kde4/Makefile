@@ -3,7 +3,7 @@
 
 PORTNAME=	kmix
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,9 +11,9 @@ COMMENT=	Sound mixer for KDE
 
 LICENSE=	GPLv2
 
-USES=		cmake:outsource kde:4 tar:xz
+USES=		cmake:outsource kde:4 qt:4 tar:xz
 USE_KDE=	automoc4 kdelibs
-USE_QT4=	gui phonon xml \
+USE_QT=		gui phonon xml \
 		moc_build qmake_build rcc_build uic_build
 
 OPTIONS_DEFINE=	ALSA PULSEAUDIO

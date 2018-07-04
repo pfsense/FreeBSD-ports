@@ -101,7 +101,7 @@ MASTER_SITE_BERLIOS+= \
 .if !defined(IGNORE_MASTER_SITE_CHEESESHOP)
 MASTER_SITE_CHEESESHOP+= \
 	https://files.pythonhosted.org/packages/%SUBDIR%/ \
-	https://pypi.python.org/packages/%SUBDIR%/
+	https://pypi.org/packages/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_COMP_SOURCES)
@@ -341,6 +341,11 @@ MASTER_SITE_GENTOO+= \
 	ftp://linux.rz.ruhr-uni-bochum.de/gentoo-mirror/%SUBDIR%/ \
 	ftp://ftp.uni-erlangen.de/pub/mirrors/gentoo/%SUBDIR%/ \
 	ftp://gentoo.inode.at/source/%SUBDIR%/
+.endif
+
+# Keep this before USE_GITHUB
+.if !empty(MASTER_SITES:M*/github.com/*/archive/*)
+DEV_WARNING+=	"MASTER_SITES contains ${MASTER_SITES:M*/github.com/*/archive/*}, please use USE_GITHUB instead."
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_GITHUB)
@@ -840,20 +845,6 @@ MASTER_SITE_MOZILLA_ADDONS+= \
 	http://kyoto-mz-dl.sinet.ad.jp/pub/mozilla.org/%SUBDIR%/
 .endif
 
-.if !defined(IGNORE_MASTER_SITE_MPLAYERHQ)
-MASTER_SITE_MPLAYERHQ+= \
-	http://www.mplayerhq.hu/MPlayer/%SUBDIR%/ \
-	https://www1.mplayerhq.hu/MPlayer/%SUBDIR%/ \
-	http://www2.mplayerhq.hu/MPlayer/%SUBDIR%/ \
-	http://www3.mplayerhq.hu/MPlayer/%SUBDIR%/ \
-	http://www4.mplayerhq.hu/MPlayer/%SUBDIR%/ \
-	http://www5.mplayerhq.hu/MPlayer/%SUBDIR%/ \
-	ftp://ftp.mplayerhq.hu/MPlayer/%SUBDIR%/ \
-	ftp://ftp1.mplayerhq.hu/MPlayer/%SUBDIR%/ \
-	ftp://ftp4.mplayerhq.hu/MPlayer/%SUBDIR%/ \
-	ftp://ftp5.mplayerhq.hu/MPlayer/%SUBDIR%/
-.endif
-
 .if !defined(IGNORE_MASTER_SITE_MYSQL)
 MASTER_SITE_MYSQL+= \
 	ftp://ftp.fi.muni.cz/pub/mysql/Downloads/%SUBDIR%/ \
@@ -1026,8 +1017,6 @@ MASTER_SITE_REDHAT_LINUX+= \
 .if !defined(IGNORE_MASTER_SITE_RUBY)
 MASTER_SITE_RUBY+= \
 	https://cache.ruby-lang.org/pub/ruby/%SUBDIR%/ \
-	https://ftp.ruby-lang.org/pub/ruby/%SUBDIR%/ \
-	ftp://ftp.ruby-lang.org/pub/ruby/%SUBDIR%/ \
 	ftp://ftp.fu-berlin.de/unix/languages/ruby/%SUBDIR%/ \
 	ftp://ftp.kr.FreeBSD.org/pub/ruby/%SUBDIR%/ \
 	ftp://ftp.iDaemons.org/pub/mirror/ftp.ruby-lang.org/ruby/%SUBDIR%/

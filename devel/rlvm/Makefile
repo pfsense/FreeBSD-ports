@@ -4,7 +4,7 @@ PORTNAME=	rlvm
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	0.14-67
 DISTVERSIONSUFFIX=	-g9350209
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	devel games
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -12,6 +12,8 @@ COMMENT=	RealLive virtual machine clone
 
 LICENSE=	GPLv2 GPLv3 MIT
 LICENSE_COMB=	multi
+
+BROKEN_powerpc64=	fails to link: gcn_platform.cc: undefined reference to gcn::Exception::Exception
 
 BUILD_DEPENDS=	${LOCALBASE}/include/utf8.h:devel/utf8cpp
 LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis \

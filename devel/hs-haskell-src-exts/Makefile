@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	haskell-src-exts
-PORTVERSION=	1.19.1
+PORTVERSION=	1.20.2
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 

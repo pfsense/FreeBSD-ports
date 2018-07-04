@@ -8,6 +8,7 @@
     SUBDIR += amigadepacker
     SUBDIR += arc
     SUBDIR += arj
+    SUBDIR += ark
     SUBDIR += ark-kde4
     SUBDIR += atool
     SUBDIR += bicom
@@ -116,6 +117,7 @@
     SUBDIR += p5-Compress-Raw-Lzma
     SUBDIR += p5-Compress-Raw-Zlib
     SUBDIR += p5-Compress-Snappy
+    SUBDIR += p5-Gzip-Faster
     SUBDIR += p5-IO-Compress
     SUBDIR += p5-IO-Compress-Lzf
     SUBDIR += p5-IO-Compress-Lzma
@@ -177,6 +179,7 @@
     SUBDIR += py-backports.lzma
     SUBDIR += py-borgbackup
     SUBDIR += py-brotli
+    SUBDIR += py-bup
     SUBDIR += py-bz2file
     SUBDIR += py-czipfile
     SUBDIR += py-libarchive-c
@@ -244,6 +247,8 @@
     SUBDIR += unzip
     SUBDIR += unzoo
     SUBDIR += upx
+    SUBDIR += urbackup-client
+    SUBDIR += urbackup-server
     SUBDIR += xar
     SUBDIR += xarchive
     SUBDIR += xarchiver

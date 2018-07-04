@@ -1,0 +1,24 @@
+--- Makefile.orig	2018-04-09 18:07:38 UTC
++++ Makefile
+@@ -0,0 +1,21 @@
++.PHONY: all
++all: make-${ARCH}
++
++.PHONY: make-amd64
++make-amd64: build-j64
++
++.PHONY: make-i386
++make-i386: build-j32
++
++.PHONY: init
++init:
++	make/install.sh
++
++build-%: init
++	make/build_jconsole.sh $*
++	make/build_libj.sh $*
++	make/build_tsdll.sh $*
++
++.PHONY: clean
++clean:
++	rm -rf ${jbld}

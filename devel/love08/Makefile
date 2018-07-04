@@ -3,7 +3,7 @@
 
 PORTNAME=	love
 PORTVERSION=	0.8.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	devel games
 MASTER_SITES=	http://cdn.bitbucket.org/rude/love/downloads/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -30,6 +30,7 @@ GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/freetype2 \
 		-I${LUA_INCDIR} `${SDL_CONFIG} --cflags`
 LDFLAGS+=	-L${LOCALBASE}/lib -L${LUA_LIBDIR}
+LLD_UNSAFE=	yes
 CONFIGURE_ARGS=	--bindir=${PREFIX}/bin --libdir=${PREFIX}/lib \
 		--program-suffix=08
 WRKSRC=		${WRKDIR}/love-${PORTVERSION}

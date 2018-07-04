@@ -2,7 +2,6 @@
 
 PORTNAME=	qscintilla2
 PORTVERSION=	${QSCI2_VERSION}
-PORTREVISION=	4
 CATEGORIES=	devel python
 MASTER_SITES=	${MASTER_SITES_QSCI2}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}qt5-
@@ -17,13 +16,12 @@ DISTINFO_FILE=	${.CURDIR:H}/qscintilla2-qt5/distinfo
 DESTDIRNAME=	INSTALL_ROOT
 
 HAS_CONFIGURE=	yes
-QT_NONSTANDARD=	yes  # Do not add unknown arguments to CONFIGURE_ARGS.
 
-USES=		python pyqt:5
+USES=		python pyqt:5 qmake:no_env qt:5
 USE_GL=		gl
 USE_PYQT=	sip core gui printsupport widgets
 USE_PYTHON=	flavors
-USE_QT5=	core gui printsupport widgets buildtools_build qmake_build
+USE_QT=		core gui printsupport widgets buildtools_build qmake_build
 
 OPTIONS_DEFINE=		DEBUG
 DEBUG_CONFIGURE_ON=	--debug --trace

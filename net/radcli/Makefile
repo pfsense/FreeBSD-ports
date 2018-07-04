@@ -5,7 +5,7 @@ PORTNAME=	radcli
 PORTVERSION=	1.2.8
 CATEGORIES=	net
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple RADIUS client library
 
 LICENSE=	BSD2CLAUSE

@@ -3,7 +3,7 @@
 
 PORTNAME=	scantailor
 PORTVERSION=	0.9.11.1
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -12,15 +12,16 @@ COMMENT=	Interactive post-processing tool for scanned pages
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libtiff.so:graphics/tiff \
-		libjbig.so:graphics/jbigkit \
-		libpng.so:graphics/png \
+BROKEN_powerpc64=	fails to compile: core.hpp:69: boost::lambda::<unnamed>::_1 causes a section type conflict
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
+LIB_DEPENDS=	libtiff.so:graphics/tiff \
+		libjbig.so:graphics/jbigkit \
+		libpng.so:graphics/png
 
 #MAKE_JOBS_UNSAFE=	yes
-USES=		cmake gettext jpeg
-USE_QT4=	corelib gui xml qmake_build uic_build moc_build rcc_build \
+USES=		cmake gettext jpeg qt:4
+USE_QT=		corelib gui xml qmake_build uic_build moc_build rcc_build \
 		linguist_build
 USE_XORG+=	xrender
 
