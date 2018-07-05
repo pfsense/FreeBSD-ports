@@ -63,14 +63,14 @@
          $req = radius_send_request($this->res);
          if (!$req) {
 -            throw new Auth_RADIUS_Exception('Error sending request: ' . $this->getError());
-+            return $this->raiseError(gettext('Error sending request:') . ' ' . $this->getError());
++            return PEAR::raiseError(gettext('Error sending request:') . ' ' . $this->getError());
          }
  
          switch($req) {
          case RADIUS_ACCESS_ACCEPT:
              if (is_subclass_of($this, 'auth_radius_acct')) {
 -                throw new Auth_RADIUS_Exception('RADIUS_ACCESS_ACCEPT is unexpected for accounting');
-+                return $this->raiseError(gettext('RADIUS_ACCESS_ACCEPT is unexpected for accounting'));
++                return PEAR::raiseError(gettext('RADIUS_ACCESS_ACCEPT is unexpected for accounting'));
              }
              return true;
  
@@ -79,13 +79,13 @@
          case RADIUS_ACCOUNTING_RESPONSE:
              if (is_subclass_of($this, 'auth_radius_pap')) {
 -                throw new Auth_RADIUS_Exception('RADIUS_ACCOUNTING_RESPONSE is unexpected for authentication');
-+                return $this->raiseError(gettext('RADIUS_ACCOUNTING_RESPONSE is unexpected for authentication'));
++                return PEAR::raiseError(gettext('RADIUS_ACCOUNTING_RESPONSE is unexpected for authentication'));
              }
              return true;
  
          default:
 -            throw new Auth_RADIUS_Exception("Unexpected return value: $req");
-+            return $this->raiseError(sprintf(gettext("Unexpected return value: %s"),$req));
++            return PEAR::raiseError(sprintf(gettext("Unexpected return value: %s"),$req));
          }    
          
      }
