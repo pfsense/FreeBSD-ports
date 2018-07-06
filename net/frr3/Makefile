@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	gawk:lang/gawk
 LIB_DEPENDS=	libjson-c.so:devel/json-c
 
-CONFLICTS=	openbgpd openospfd zebra quagga frr4
+CONFLICTS=	openbgpd openospfd zebra quagga frr4 frr5
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	FRRouting

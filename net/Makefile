@@ -160,6 +160,7 @@
     SUBDIR += freevrrpd
     SUBDIR += frr3
     SUBDIR += frr4
+    SUBDIR += frr5
     SUBDIR += fspclient
     SUBDIR += fspd
     SUBDIR += fsplib
