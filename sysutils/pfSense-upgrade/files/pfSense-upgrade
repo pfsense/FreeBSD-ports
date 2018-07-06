@@ -289,6 +289,18 @@ abi_setup() {
 	echo "ABI=${ABI}" > /usr/local/etc/pkg.conf
 	echo "ALTABI=${ALTABI}" >> /usr/local/etc/pkg.conf
 
+	# XXX Replace it by a function that detect thoth hardware
+	if [ "${_arch}" = "aarch64" ]; then
+		cat << EOF >> /usr/local/etc/pkg.conf
+PKG_ENV {
+	OPENSSL_CONF=/etc/thoth/openssl.cnf
+	SSL_CA_CERT_FILE=/etc/thoth/ca.pem
+	SSL_CLIENT_CERT_FILE=/etc/thoth/device.pem
+	SSL_CLIENT_KEY_FILE=/etc/thoth/key.pem
+}
+EOF
+	fi
+
 	local _pkg_abi=$(_pkg query %q pkg)
 	if [ "${CUR_ABI}" != "${_pkg_abi}" -a "${_pkg_abi}" != "${ABI}" ]; then
 		reinstall_pkg=1
