@@ -1,0 +1,18 @@
+--- configure.orig	2018-07-06 13:20:43 UTC
++++ configure
+@@ -667,6 +667,7 @@ OS_STATIC
+ OS_LIBS
+ OS_LDFLAGS
+ OS_CFLAGS
++OS_MAJOR
+ HAVE_LD_VERSION_SCRIPT_FALSE
+ HAVE_LD_VERSION_SCRIPT_TRUE
+ FILEMAP
+@@ -13069,6 +13070,7 @@ case $host_os in
+         OS_LDFLAGS=
+         OS_LIBS=
+         OS_STATIC="true"
++        OS_MAJOR=$(/usr/bin/uname -r | /usr/bin/cut -d\. -f1)
+         ;;
+ esac
+ 
