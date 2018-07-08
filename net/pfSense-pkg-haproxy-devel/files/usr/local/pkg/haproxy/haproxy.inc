@@ -782,7 +782,38 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$cookiesyntax = $a_cookiemode[$cookie_mode]["syntax"];
 			$cookie = str_replace("<cookie name>", $pool["persist_cookie_name"], $cookiesyntax);
 			$cookie .= $cookie_cachable == "yes" ? "" : " nocache";
-			fwrite ($fd, "\t" . $cookie . "\n");
+			$cookie_parameters = "";
+			if ($pool["persist_cookie_postonly"] == "yes") {
+				$cookie_parameters .= " postonly";
+			}
+			if ($pool["persist_cookie_httponly"] == "yes") {
+				$cookie_parameters .= " httponly";
+			}
+			if ($pool["persist_cookie_secure"] == "yes") {
+				$cookie_parameters .= " secure";
+			}
+			if (!empty($pool["haproxy_cookie_maxidle"])) {
+				$cookie_parameters .= " maxidle ".$pool["haproxy_cookie_maxidle"];
+			}
+			if (!empty($pool["haproxy_cookie_maxlife"])) {
+				$cookie_parameters .= " maxlife ".$pool["haproxy_cookie_maxlife"];
+			}
+			if (!empty($pool["haproxy_cookie_dynamic_cookie_key"])) {
+				$cookie_parameters .= " dynamic";
+			}
+			$cookiedomains = explode(" ",$pool["haproxy_cookie_domains"]);
+			foreach($cookiedomains as $cookiedomain) {
+				$cookiedomain = trim($cookiedomain);
+				if (!empty($cookiedomain)) {
+					$cookie_parameters .= " domain " . $cookiedomain;
+				}
+			}
+			fwrite ($fd, "\t" . $cookie . $cookie_parameters . "\n");
+			
+			
+			if (!empty($pool["haproxy_cookie_dynamic_cookie_key"])) {
+				fwrite ($fd, "\tdynamic-cookie-key " . $pool["haproxy_cookie_dynamic_cookie_key"] . "\n");
+			}
 		}
 
 		if ($pool["strict_transport_security"] && is_numeric($pool["strict_transport_security"])){
