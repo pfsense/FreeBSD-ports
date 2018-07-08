@@ -231,7 +231,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 			prevrowview.insertBefore(moveabove);
 			$('#order-store').removeAttr('disabled');
 		});
-		}
+	}
 
 events.push(function() {
 	$('[id^=Xmove_]').click(function (event) {
