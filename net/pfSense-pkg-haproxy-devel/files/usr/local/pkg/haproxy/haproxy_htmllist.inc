@@ -273,12 +273,6 @@ class HaproxyHtmlList
 			<a onclick='deleteRow({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('delete','delete entry')."</a>
 			<a onclick='dupRow({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('clone','duplicate entry')."</a>
 			";
-			if (empty($this->noindex)) {
-				$result .= "
-				<a onclick='moveRowUp({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('moveup','move row up')."</a>
-				<a onclick='moveRowDown({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('movedown','move row down')."</a>
-				";
-			}
 			$result .= "
 		</td>";
 				$result .= "</tr>";
