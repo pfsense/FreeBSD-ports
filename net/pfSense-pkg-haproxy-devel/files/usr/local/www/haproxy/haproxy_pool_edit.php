@@ -66,6 +66,7 @@ $simplefields = array(
 "stats_enabled","stats_username","stats_password","stats_uri","stats_scope","stats_realm","stats_admin","stats_node","stats_desc","stats_refresh",
 "persist_stick_expire","persist_stick_tablesize","persist_stick_length","persist_stick_cookiename","persist_sticky_type",
 "persist_cookie_enabled","persist_cookie_name","persist_cookie_mode","persist_cookie_cachable",
+"persist_cookie_postonly","persist_cookie_httponly","persist_cookie_secure","haproxy_cookie_maxidle","haproxy_cookie_maxlife","haproxy_cookie_domains","haproxy_cookie_dynamic_cookie_key",
 "strict_transport_security", "cookie_attribute_secure",
 "email_level", "email_to"
 );
@@ -953,6 +954,43 @@ $section->addInput(new Form_Checkbox(
 	'Allows shared caches to cache the server response.',
 	$pconfig['persist_cookie_cachable']
 ),"haproxy_cookie_visible");
+
+$group = new Form_Group('Cookie Options');
+$group->add(new Form_Checkbox(
+	'persist_cookie_postonly',
+	'postonly',
+	'Only insert cookie on post requests.',
+	$pconfig['persist_cookie_postonly']
+),"haproxy_cookie_visible");
+$group->add(new Form_Checkbox(
+	'persist_cookie_httponly',
+	'httponly',
+	'Prevent usage of cookie with non-HTTP components.',
+	$pconfig['persist_cookie_httponly']
+),"haproxy_cookie_visible");
+$group->add(new Form_Checkbox(
+	'persist_cookie_secure',
+	'secure',
+	'Prevent usage of cookie over non-sercure channels.',
+	$pconfig['persist_cookie_secure']
+),"haproxy_cookie_visible");
+$group->addClass("haproxy_cookie_visible");
+$section->add($group);
+
+$group = new Form_Group('Cookie Options');
+$group->add(new Form_Input('haproxy_cookie_maxidle', 'MaxIdle', 'text', $pconfig['haproxy_cookie_maxidle']
+),"haproxy_cookie_visible")->setHelp('Max idle time It only works with insert-mode cookies.');
+$group->add(new Form_Input('haproxy_cookie_maxlife', 'MaxLife', 'text', $pconfig['haproxy_cookie_maxlife']
+),"haproxy_cookie_visible")->setHelp('Max life time It only works with insert-mode cookies.');
+
+$group->addClass("haproxy_cookie_visible");
+$section->add($group);
+
+$section->addInput(new Form_Input('haproxy_cookie_domains', 'Cookie domains', 'text', $pconfig['haproxy_cookie_domains']
+),"haproxy_cookie_visible")->setHelp('Domains to set the cookie for, seperate multiple domains with a space.');
+
+$section->addInput(new Form_Input('haproxy_cookie_dynamic_cookie_key', 'Cookie dynamic key', 'text', $pconfig['haproxy_cookie_dynamic_cookie_key']
+),"haproxy_cookie_visible")->setHelp('Set the dynamic cookie secret key for a backend. This is will be used to generate a dynamic cookie with.');
 
 $form->add($section);
 
