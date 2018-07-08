@@ -263,8 +263,14 @@ $a_action["custom"] = array('name' => "Custom", 'mode' => '', 'syntax' => '{cust
 	));
 //
 $a_action["http-request_allow"] = array('name' => "http-request allow", 'mode'=> 'http', 'syntax' => 'http-request allow');
-$a_action["http-request_deny"] = array('name' => "http-request deny", 'mode'=> 'http', 'syntax' => 'http-request deny');
-$a_action["http-request_tarpit"] = array('name' => "http-request tarpit", 'mode'=> 'http', 'syntax' => 'http-request tarpit');
+$a_action["http-request_deny"] = array('name' => "http-request deny", 'mode'=> 'http', 'syntax' => 'http-request deny {deny_status}',
+	'fields' => array(
+		array('name'=>"deny_status",'columnheader'=>"Status code",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'deny_status')
+	));
+$a_action["http-request_tarpit"] = array('name' => "http-request tarpit", 'mode'=> 'http', 'syntax' => 'http-request tarpit {deny_status}',
+	'fields' => array(
+		array('name'=>"deny_status",'columnheader'=>"Status code",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'deny_status')
+	));
 $a_action["http-request_auth"] = array('name' => "http-request auth", 'mode'=> 'http', 'syntax' => 'http-request auth {realm}',
 	'fields' => array(
 		array('name'=>"realm",'columnheader'=>"Realm",'type'=>"textbox",'size'=>"50",'mask'=>'freetext')
