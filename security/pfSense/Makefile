@@ -55,6 +55,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}simplepie>=0:www/simplepie@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
 		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
@@ -74,15 +75,11 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		wpa_supplicant>=0:security/wpa_supplicant \
 		xinetd>=0:security/xinetd
 
-php56_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}suhosin>=0:security/php-suhosin \
-			${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/${PHP_PKGNAMEPREFIX}pfSense-module
-php72_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR}
-
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 USES=		kmod php:flavors
 
-IGNORE_WITH_PHP=	70 71
+IGNORE_WITH_PHP=	56 70 71
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext json mbstring \
 		mcrypt hash opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
@@ -92,8 +89,6 @@ NO_BUILD=	yes
 NO_MTREE=	yes
 
 CONFLICTS=	pfSense-vmware-[0-9]*
-
-php72_PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 PLIST_FILES=	/etc/version.patch
 PLIST_DIRS=	/etc
