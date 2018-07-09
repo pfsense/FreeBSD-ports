@@ -409,6 +409,9 @@ pkg_upgrade() {
 	export kernel_pkg=$(_pkg query %n $(_pkg info \
 	    ${product}-kernel-\* | grep -v -- -debug-))
 
+	# figure out which PHP major version is running
+	local _cur_php_pkg=$(_pkg query %o $(_pkg info -x '^php[0-9]{2}-[0-9]'))
+
 	# Detect if has u-boot package installed
 	unset uboot_bin
 	unset uboot_pkg
@@ -447,6 +450,7 @@ pkg_upgrade() {
 
 	export next_stage=$(_pkg annotate -q -S ${kernel_pkg} next_stage)
 	export is_pkg_locked=$(_pkg annotate -q -S ${kernel_pkg} new_major)
+	export new_major_php=$(_pkg annotate -q -S ${kernel_pkg} new_major_php)
 
 	if [ -n "${next_stage}" -a -n "${booting}" -a -n "${boot_stage}" ]; then
 		if [ ${boot_stage} != ${next_stage} ]; then
@@ -606,6 +610,12 @@ pkg_upgrade() {
 		_pkg annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
+		local _new_php_pkg=$(_pkg rquery -Ue "%o ~ ${_cur_php_pkg}" %o)
+
+		if [ "${_cur_php_pkg}" != "${_new_php_pkg}" ]; then
+			_pkg annotate -q -M ${kernel_pkg} new_major_php 1
+		fi
+
 		do_reboot
 		_exit 0
 	fi
@@ -691,6 +701,13 @@ pkg_upgrade() {
 				_exec "pkg-static set -A 1 ${_package}" \
 				    "Scheduling package ${_package} for removal"
 			done
+		fi
+
+		if [ -n "${new_major_php}" ]; then
+			_pkg annotate -q -D ${kernel_pkg} new_major_php
+			# Cleanup a possible crash report created by moving
+			# to a new major PHP version
+			rm -f /tmp/PHP_errors.log
 		fi
 
 		_pkg annotate -q -D ${kernel_pkg} next_stage
