@@ -19,20 +19,16 @@ RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
 		${LOCALBASE}/bin/mwhois:net/whois \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd \
 
-php56_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/intl.so:devel/pecl-intl
-php72_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/intl.so:devel/php72-intl
-
 CONFLICTS=	pfSense-pkg-pfBlockerNG-devel
 
 USES=		php:flavors
-IGNORE_WITH_PHP=	70 71
+USE_PHP=	intl
+IGNORE_WITH_PHP=	56 70 71
 NO_BUILD=	yes
 NO_MTREE=	yes
 
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
-
-php72_PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 do-extract:
 	${MKDIR} ${WRKSRC}

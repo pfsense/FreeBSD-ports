@@ -13,12 +13,11 @@ COMMENT=	ACME package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/socat:net/socat
-php56_RUN_DEPENDS=	php56-pecl-ssh2>=0.13:security/pecl-ssh2-0
-php72_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}pecl-ssh2>=0:security/pecl-ssh2@${PHP_FLAVOR} \
+RUN_DEPENDS=	${LOCALBASE}/bin/socat:net/socat \
+		${PHP_PKGNAMEPREFIX}pecl-ssh2>=0:security/pecl-ssh2@${PHP_FLAVOR}
 
 USES=		php:flavors
-IGNORE_WITH_PHP=	70 71
+IGNORE_WITH_PHP=	56 70 71
 USE_PHP=	ftp
 
 NO_BUILD=	yes
@@ -26,8 +25,6 @@ NO_MTREE=	yes
 
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
-
-php72_PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 do-extract:
 	${MKDIR} ${WRKSRC}
