@@ -77,7 +77,8 @@ php56_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}suhosin>=0:security/php-suhosin \
 			${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/${PHP_PKGNAMEPREFIX}pfSense-module
 php72_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR}
 
-LIB_DEPENDS=	libltdl.so:devel/libltdl
+LIB_DEPENDS=	libltdl.so:devel/libltdl \
+		openvpn-plugin-auth-script.so:security/openvpn-auth-script
 
 USES=		kmod php:flavors
 
