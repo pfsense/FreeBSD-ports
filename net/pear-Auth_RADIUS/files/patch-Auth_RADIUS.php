@@ -12,53 +12,20 @@
      /**
       * Puts standard attributes.
       */ 
-@@ -300,6 +305,45 @@ class Auth_RADIUS {
-         $this->putAttribute(RADIUS_SERVICE_TYPE, RADIUS_FRAMED);
-         $this->putAttribute(RADIUS_FRAMED_PROTOCOL, RADIUS_PPP);
-         $this->putAttribute(RADIUS_CALLING_STATION_ID, isset($var['REMOTE_HOST']) ? $var['REMOTE_HOST'] : '127.0.0.1');
-+
-+		if (!function_exists("getNasIp")) {
-+			$ipaddr = "0.0.0.0";
-+		} else {
-+			$ipaddr = getNasIP();
-+		}
-+
-+		/*
-+		 * Add support for sending NAS-IP-Address, set this explicitly
-+		 * as an ip_addr
-+		 */
-+		$this->putAttribute(RADIUS_NAS_IP_ADDRESS, $ipaddr, "addr");
-+
-+		/* Add support for sending NAS-Identifier */
-+		if (function_exists("getNasID")) {
-+			$nasId = getNasID();
-+		} else if (!empty($cpzone) &&
-+		    empty($config["captiveportal"][$cpzone]["radiusnasid"])) {
-+			$nasId = php_uname("n");
-+		} else {
-+			$nasId =
-+			    $config["captiveportal"][$cpzone]["radiusnasid"];
-+		}
-+		$this->putAttribute(RADIUS_NAS_IDENTIFIER, $nasId);
-+
-+		if (function_exists("getNasPortType")) {
-+			$this->putAttribute(RADIUS_NAS_PORT_TYPE,
-+			    getNasPortType());
-+		}
-+
-+		if (function_exists("getNasPort")) {
-+			$this->putAttribute(RADIUS_NAS_PORT, getNasPort(),
-+			    'integer');
-+		}
-+
-+		if (function_exists("getCalledStationId")) {
-+			$this->putAttribute(RADIUS_CALLED_STATION_ID,
-+			    getCalledStationId());
-+		}
+@@ -295,11 +300,7 @@ class Auth_RADIUS {
+             $var = $GLOBALS['HTTP_SERVER_VARS'];
+         }
+                 
+-        $this->putAttribute(RADIUS_NAS_IDENTIFIER, isset($var['HTTP_HOST']) ? $var['HTTP_HOST'] : 'localhost');
+-        $this->putAttribute(RADIUS_NAS_PORT_TYPE, RADIUS_VIRTUAL);
+-        $this->putAttribute(RADIUS_SERVICE_TYPE, RADIUS_FRAMED);
+-        $this->putAttribute(RADIUS_FRAMED_PROTOCOL, RADIUS_PPP);
+-        $this->putAttribute(RADIUS_CALLING_STATION_ID, isset($var['REMOTE_HOST']) ? $var['REMOTE_HOST'] : '127.0.0.1');
++        $this->putAttribute(RADIUS_SERVICE_TYPE, RADIUS_LOGIN);
      }
      
      /**
-@@ -384,13 +428,13 @@ class Auth_RADIUS {
+@@ -384,13 +385,13 @@ class Auth_RADIUS {
      {
          $req = radius_send_request($this->res);
          if (!$req) {
@@ -74,7 +41,7 @@
              }
              return true;
  
-@@ -399,12 +443,12 @@ class Auth_RADIUS {
+@@ -399,12 +400,12 @@ class Auth_RADIUS {
              
          case RADIUS_ACCOUNTING_RESPONSE:
              if (is_subclass_of($this, 'auth_radius_pap')) {
@@ -89,7 +56,7 @@
          }    
          
      }
-@@ -464,7 +508,10 @@ class Auth_RADIUS {
+@@ -464,7 +465,10 @@ class Auth_RADIUS {
                  break;
  
              case RADIUS_CLASS:
@@ -101,7 +68,7 @@
                  break;
  
              case RADIUS_FRAMED_PROTOCOL:
-@@ -536,9 +583,179 @@ class Auth_RADIUS {
+@@ -536,9 +540,179 @@ class Auth_RADIUS {
                          $this->attributes['ms_primary_dns_server'] = radius_cvt_string($datav);
                          break;
                      }
@@ -282,7 +249,7 @@
              }
          }    
  
-@@ -935,14 +1152,21 @@ class Auth_RADIUS_Acct extends Auth_RADIUS 
+@@ -935,14 +1109,21 @@ class Auth_RADIUS_Acct extends Auth_RADIUS 
       */ 
      function putAuthAttributes()
      {
@@ -306,7 +273,7 @@
          
      }    
      
-@@ -1003,4 +1227,22 @@ class Auth_RADIUS_Acct_Update extends Auth_RADIUS_Acct
+@@ -1003,4 +1184,22 @@ class Auth_RADIUS_Acct_Update extends Auth_RADIUS_Acct
      var $status_type = RADIUS_UPDATE;
  }
  
