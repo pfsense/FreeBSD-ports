@@ -10,4 +10,5 @@ include/libthoth/pubkey.h
 include/libthoth/settings.h
 include/libthoth/thoth.h
 include/libthoth/util.h
+lib/libthoth.a
 lib/libthoth.so
