@@ -26,4 +26,5 @@ include/cryptoauthlib/hal/atca_start_config.h
 include/cryptoauthlib/hal/atca_start_iface.h
 include/cryptoauthlib/hal/hal_freebsd_i2c.h
 include/cryptoauthlib/host/atca_host.h
+lib/libcryptoauth.a
 lib/libcryptoauth.so
