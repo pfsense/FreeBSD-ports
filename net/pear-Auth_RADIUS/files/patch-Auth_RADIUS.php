@@ -249,7 +249,7 @@
              }
          }    
  
-@@ -935,14 +1109,21 @@ class Auth_RADIUS_Acct extends Auth_RADIUS 
+@@ -935,11 +1109,16 @@ class Auth_RADIUS_Acct extends Auth_RADIUS
       */ 
      function putAuthAttributes()
      {
@@ -268,12 +268,7 @@
          if (isset($this->authentic)) {
              $this->putAttribute(RADIUS_ACCT_AUTHENTIC, $this->authentic);
          }
-+
-+        $this->putStandardAttributes();
-         
-     }    
-     
-@@ -1003,4 +1184,22 @@ class Auth_RADIUS_Acct_Update extends Auth_RADIUS_Acct
+@@ -1003,4 +1182,22 @@ class Auth_RADIUS_Acct_Update extends Auth_RADIUS_Acct
      var $status_type = RADIUS_UPDATE;
  }
  
