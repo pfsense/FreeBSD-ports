@@ -31,17 +31,8 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $changedesc = "Services: HAProxy: Frontends";
 
-if (!is_array($config['installedpackages']['haproxy'])) {
-	$config['installedpackages']['haproxy'] = array();
-}
+haproxy_config_init();
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
-
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
 $a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 
 function array_moveitemsbefore(&$items, $before, $selected) {

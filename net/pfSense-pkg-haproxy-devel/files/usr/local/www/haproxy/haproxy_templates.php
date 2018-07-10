@@ -31,12 +31,8 @@ require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
+haproxy_config_init();
+
 $a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 
 function haproxy_add_stats_example() {
