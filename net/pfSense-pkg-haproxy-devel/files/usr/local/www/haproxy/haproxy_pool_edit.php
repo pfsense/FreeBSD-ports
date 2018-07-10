@@ -29,12 +29,6 @@ require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
-if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-	$config['installedpackages']['haproxy']['ha_pools'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-}
 
 $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 
@@ -347,41 +341,16 @@ $htmllist_actions->keyfield = "name";
 
 
 if (isset($id) && $a_pools[$id]) {
-	if (!is_array($a_pools[$id]['a_acl'])) {
-		$a_pools[$id]['a_acl'] = array();
-	}
-	if (!is_array($a_pools[$id]['a_acl']['item'])) {
-		$a_pools[$id]['a_acl']['item'] = array();
-	}
-	$pconfig['a_acl'] = &$a_pools[$id]['a_acl']['item'];
-	haproxy_check_isarray($pconfig['a_acl']);
-	if (!is_array($a_pools[$id]['a_actionitems']['item'])) {
-		$a_pools[$id]['a_actionitems']['item'] = array();
-	}
-	if (!is_array($a_pools[$id]['a_actionitems'])) {
-		$a_pools[$id]['a_actionitems'] = array();
-	}
-	$pconfig['a_actionitems'] = &$a_pools[$id]['a_actionitems']['item'];
-	haproxy_check_isarray($pconfig['a_actionitems']);
+	$pconfig['a_acl'] = getarraybyref($a_pools[$id],'a_acl','item');
+	$pconfig['a_actionitems'] = getarraybyref($a_pools[$id],'a_actionitems','item');
+	$a_errorfiles = getarraybyref($a_pools[$id],'errorfiles','item');
+	$a_servers = getarraybyref($a_pools[$id],'ha_servers','item');
 
 	$pconfig['advanced'] = base64_decode($a_pools[$id]['advanced']);
 	$pconfig['advanced_backend'] = base64_decode($a_pools[$id]['advanced_backend']);
 
-	$a_servers = $a_pools[$id]['ha_servers']['item'];
-
 	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_pools[$id][$stat];
-	}
-
-	if (!is_array($a_pools[$id]['errorfiles'])) {
-		$a_pools[$id]['errorfiles'] = array();
-	}
-	if (!is_array($a_pools[$id]['errorfiles']['item'])) {
-		$a_pools[$id]['errorfiles']['item'] = array();
-	}
-	$a_errorfiles = &$a_pools[$id]['errorfiles']['item'];
-	if (!is_array($a_errorfiles)) {
-		$a_errorfiles = array();
 	}
 }
 

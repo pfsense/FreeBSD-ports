@@ -41,22 +41,7 @@ if (!function_exists("cert_get_purpose")) {
 
 haproxy_config_init();
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
-
 $a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
-
-if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-	$config['installedpackages']['haproxy']['ha_pools'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-}
-
 $a_pools = $config['installedpackages']['haproxy']['ha_pools']['item'];
 uasort($a_pools, 'haproxy_compareByName');
 
@@ -310,20 +295,13 @@ $errorfileslist = new HaproxyHtmlList("table_errorfile", $fields_errorfile);
 $errorfileslist->keyfield = "errorcode";
 
 if (isset($id) && $a_backend[$id]) {
-	$pconfig['a_acl']=&$a_backend[$id]['ha_acls']['item'];
-	haproxy_check_isarray($pconfig['a_acl']);
-	$pconfig['a_certificates']=&$a_backend[$id]['ha_certificates']['item'];
-	haproxy_check_isarray($pconfig['a_certificates']);
-	$pconfig['clientcert_ca']=&$a_backend[$id]['clientcert_ca']['item'];
-	haproxy_check_isarray($pconfig['clientcert_ca']);
-	$pconfig['clientcert_crl']=&$a_backend[$id]['clientcert_crl']['item'];
-	haproxy_check_isarray($pconfig['clientcert_crl']);
-	$pconfig['a_extaddr']=&$a_backend[$id]['a_extaddr']['item'];
-	haproxy_check_isarray($pconfig['a_extaddr']);
-	$pconfig['a_actionitems']=&$a_backend[$id]['a_actionitems']['item'];
-	haproxy_check_isarray($pconfig['a_actionitems']);
-	$pconfig['a_errorfiles']=&$a_backend[$id]['a_errorfiles']['item'];
-	haproxy_check_isarray($pconfig['a_errorfiles']);
+	$pconfig['a_acl'] = getarraybyref($a_backend[$id],'ha_acls','item');
+	$pconfig['a_certificates'] = getarraybyref($a_backend[$id],'ha_certificates','item');
+	$pconfig['clientcert_ca'] = getarraybyref($a_backend[$id],'clientcert_ca','item');
+	$pconfig['clientcert_crl'] = getarraybyref($a_backend[$id],'clientcert_crl','item');
+	$pconfig['a_extaddr'] = getarraybyref($a_backend[$id],'a_extaddr','item');
+	$pconfig['a_actionitems'] = getarraybyref($a_backend[$id],'a_actionitems','item');
+	$pconfig['a_errorfiles'] = getarraybyref($a_backend[$id],'a_errorfiles','item');
 
 	$pconfig['advanced'] = base64_decode($a_backend[$id]['advanced']);
 	foreach($simplefields as $stat) {
@@ -473,13 +451,13 @@ if ($_POST) {
 		}
 
 		update_if_changed("advanced", $backend['advanced'], base64_encode($_POST['advanced']));
-		$backend['ha_acls']['item'] = $a_acl;
-		$backend['ha_certificates']['item'] = $a_certificates;
-		$backend['clientcert_ca']['item'] = $a_clientcert_ca;
-		$backend['clientcert_crl']['item'] = $a_clientcert_crl;
-		$backend['a_extaddr']['item'] = $a_extaddr;
-		$backend['a_actionitems']['item'] = $a_actionitems;
-		$backend['a_errorfiles']['item'] = $a_errorfiles;
+		getarraybyref($backend,'ha_acls')['item'] = $a_acl;
+		getarraybyref($backend,'ha_certificates')['item'] = $a_certificates;
+		getarraybyref($backend,'clientcert_ca')['item'] = $a_clientcert_ca;
+		getarraybyref($backend,'clientcert_crl')['item'] = $a_clientcert_crl;
+		getarraybyref($backend,'a_extaddr')['item'] = $a_extaddr;
+		getarraybyref($backend,'a_actionitems')['item'] = $a_actionitems;
+		getarraybyref($backend,'a_errorfiles')['item'] = $a_errorfiles;
 
 		if (isset($id) && $a_backend[$id]) {
 			$a_backend[$id] = $backend;
