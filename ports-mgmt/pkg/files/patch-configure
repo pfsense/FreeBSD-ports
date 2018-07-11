@@ -1,14 +1,23 @@
---- configure.orig	2018-07-06 13:20:43 UTC
+--- configure.orig	2018-02-14 23:08:00 UTC
 +++ configure
-@@ -667,6 +667,7 @@ OS_STATIC
+@@ -644,6 +644,8 @@ REPOS
+ TESTS
+ LIBBSD_LIB
+ LIBJAIL_LIB
++HAVE_STATIC_ENGINE_FALSE
++HAVE_STATIC_ENGINE_TRUE
+ LIBELF_BUNDLED_FALSE
+ LIBELF_BUNDLED_TRUE
+ HAVE_ELF_ABI_FALSE
+@@ -663,6 +665,7 @@ PKG_CONFIG_PATH
+ PKG_CONFIG
+ BUILD_STATIC_FALSE
+ BUILD_STATIC_TRUE
++OS_MAJOR
+ OS_STATIC
  OS_LIBS
  OS_LDFLAGS
- OS_CFLAGS
-+OS_MAJOR
- HAVE_LD_VERSION_SCRIPT_FALSE
- HAVE_LD_VERSION_SCRIPT_TRUE
- FILEMAP
-@@ -13069,6 +13070,7 @@ case $host_os in
+@@ -13069,6 +13072,7 @@ case $host_os in
          OS_LDFLAGS=
          OS_LIBS=
          OS_STATIC="true"
@@ -16,3 +25,37 @@
          ;;
  esac
  
+@@ -13076,6 +13080,7 @@ esac
+ 
+ 
+ 
++
+  if test x$OS_STATIC = xtrue; then
+   BUILD_STATIC_TRUE=
+   BUILD_STATIC_FALSE='#'
+@@ -14988,6 +14993,14 @@ else
+   LIBELF_BUNDLED_FALSE=
+ fi
+ 
++ if test $(uname -p) = "aarch64"; then
++  HAVE_STATIC_ENGINE_TRUE=
++  HAVE_STATIC_ENGINE_FALSE='#'
++else
++  HAVE_STATIC_ENGINE_TRUE='#'
++  HAVE_STATIC_ENGINE_FALSE=
++fi
++
+ 
+ 
+ 
+@@ -15196,6 +15209,10 @@ if test -z "${LIBELF_BUNDLED_TRUE}" && t
+   as_fn_error $? "conditional \"LIBELF_BUNDLED\" was never defined.
+ Usually this means the macro was only invoked conditionally." "$LINENO" 5
+ fi
++if test -z "${HAVE_STATIC_ENGINE_TRUE}" && test -z "${HAVE_STATIC_ENGINE_FALSE}"; then
++  as_fn_error $? "conditional \"HAVE_STATIC_ENGINE\" was never defined.
++Usually this means the macro was only invoked conditionally." "$LINENO" 5
++fi
+ 
+ : "${CONFIG_STATUS=./config.status}"
+ ac_write_fail=0

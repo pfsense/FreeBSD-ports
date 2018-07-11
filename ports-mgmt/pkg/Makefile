@@ -23,6 +23,12 @@ INSTALL_TARGET=	install-strip
 PORTDOCS=	NEWS
 PORTSCOUT=	ignore:1
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "aarch64"
+BUILD_DEPENDS=	${LOCALBASE}/lib/libateccx08.a:security/netgate-openssl-static
+.endif
+
 # Use a submake as 'deinstall install' needs to reevaluate PKG_CMD
 # so that pkg-static is used from the wrkdir
 USE_SUBMAKE=	yes

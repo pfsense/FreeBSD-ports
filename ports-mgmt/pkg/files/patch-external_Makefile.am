@@ -1,0 +1,12 @@
+--- external/Makefile.am.orig	2017-08-17 03:56:56 UTC
++++ external/Makefile.am
+@@ -258,6 +258,9 @@ libfetch_la_SOURCES=	libfetch/common.c \
+ 			libfetch/ftp.c \
+ 			libfetch/http.c
+ libfetch_static_la_CFLAGS=	$(libfetch_common_cflags) -static
++if HAVE_STATIC_ENGINE
++libfetch_static_la_CFLAGS+=	-DWITH_STATIC_ENGINE
++endif
+ libfetch_static_la_SOURCES=	${libfetch_la_SOURCES}
+ 
+ if HAVE_ELF_ABI

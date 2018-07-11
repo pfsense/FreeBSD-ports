@@ -1,8 +1,23 @@
---- external/libfetch/common.c.orig	2018-06-28 23:06:13 UTC
+--- external/libfetch/common.c.orig	2017-08-17 03:56:56 UTC
 +++ external/libfetch/common.c
-@@ -843,6 +843,7 @@ fetch_ssl(conn_t *conn, const struct url
+@@ -60,6 +60,10 @@
+ #define INFTIM (-1)
+ #endif
+ 
++#ifdef WITH_STATIC_ENGINE
++void ENGINE_load_ateccx08(void);
++#endif
++
+ /*** Local data **************************************************************/
+ 
+ /*
+@@ -842,7 +846,11 @@ fetch_ssl(conn_t *conn, const struct url
+ 		return (-1);
  	}
  
++#ifdef WITH_STATIC_ENGINE
++	ENGINE_load_ateccx08();
++#endif
  	SSL_load_error_strings();
 +	OPENSSL_config(NULL);
  

@@ -1,4 +1,4 @@
---- configure.ac.orig	2018-07-06 13:20:38 UTC
+--- configure.ac.orig	2018-02-14 22:07:09 UTC
 +++ configure.ac
 @@ -92,6 +92,7 @@ case $host_os in
          OS_LDFLAGS=
@@ -16,3 +16,11 @@
  AM_CONDITIONAL([BUILD_STATIC], [test x$OS_STATIC = xtrue])
  
  CFLAGS="$CFLAGS $OS_CFLAGS"
+@@ -457,6 +459,7 @@ AS_CASE(
+ AM_CONDITIONAL(HAVE_MACHO_ABI, test "$ac_cv_binary_abi" = "macho")
+ AM_CONDITIONAL(HAVE_ELF_ABI, test "$ac_cv_binary_abi" = "elf")
+ AM_CONDITIONAL(LIBELF_BUNDLED, test "$ac_cv_binary_abi" = "elf" -a "$libelf_bundled" != "no")
++AM_CONDITIONAL(HAVE_STATIC_ENGINE, test $(uname -p) = "aarch64")
+ 
+ AC_SUBST([LIBJAIL_LIB])
+ AC_SUBST([LIBBSD_LIB])
