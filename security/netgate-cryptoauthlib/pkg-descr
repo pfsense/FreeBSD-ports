@@ -1,9 +1,0 @@
-This code base implements an object-oriented C library which supports
-Microchip CryptoAuth devices. The family of devices supported currently are:
-
-* ATSHA204A
-* ATECC108A
-* ATECC508A
-* ATECC608A
-
-WWW: https://github.com/Netgate/cryptoauthlib

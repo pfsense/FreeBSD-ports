@@ -1,16 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	ping-auth
-DISTVERSION=	20180710
+DISTVERSION=	20180712
 CATEGORIES=	security
 PKGNAMEPREFIX=	netgate-
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Netgate thoth authentication
 
-LIB_DEPENDS=	libcryptoauth.so:security/netgate-cryptoauthlib \
-		libthoth.so:security/netgate-libthoth \
-		libucl.so:textproc/libucl
+LIB_DEPENDS=	libucl.so:textproc/libucl
 
 RUN_DEPENDS=	/etc/thoth/ca.pem:security/netgate-ca
 
@@ -19,7 +17,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	thoth
 GL_PROJECT=	thoth
-GL_COMMIT=	0d33b9008319341a4c6122b6bf0f6a1c68a83045
+GL_COMMIT=	451f3b49bc3835ac688a9bd592a2e979d7a72928
 FETCH_BEFORE_ARGS=	--no-verify-peer
 BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}
 INSTALL_WRKSRC=	${WRKSRC}/${PORTNAME}
