@@ -43,28 +43,30 @@ $a_frontendmode['health'] = array('name' => "health", 'shortname' => "health");
 
 global $a_acltypes;
 $a_acltypes = array();
-$a_acltypes["host_starts_with"] = array('name' => 'Host starts with:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["host_ends_with"] = array('name' => 'Host ends with:',
-				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["host_matches"] = array('name' => 'Host matches:',
-				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["host_regex"] = array('name' => 'Host regex:',
-				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["host_contains"] = array('name' => 'Host contains:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
-$a_acltypes["path_starts_with"] = array('name' => 'Path starts with:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m beg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["path_ends_with"] = array('name' => 'Path ends with:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m end -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["path_matches"] = array('name' => 'Path matches:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m str -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["path_regex"] = array('name' => 'Path regex:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m reg -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["path_contains"] = array('name' => 'Path contains:',
-				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m sub -i %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
-$a_acltypes["url_parameter"] = array('name' => 'Url parameter contains:',
-				'mode' => 'http', 'syntax' => 'url_param({parameter}) -i %1$s',
+$a_acltypes["host_starts_with"] = array('name' => 'Host starts with:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m beg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_ends_with"] = array('name' => 'Host ends with:', 'casesensitive' => true,
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m end{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_matches"] = array('name' => 'Host matches:', 'casesensitive' => true,
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m str{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_regex"] = array('name' => 'Host regex:', 'casesensitive' => true,
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m reg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_contains"] = array('name' => 'Host contains:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m sub{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["path_starts_with"] = array('name' => 'Path starts with:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m beg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_ends_with"] = array('name' => 'Path ends with:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m end{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_matches"] = array('name' => 'Path matches:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m str{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_regex"] = array('name' => 'Path regex:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m reg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_contains"] = array('name' => 'Path contains:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m sub{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_dir"] = array('name' => 'Path contains within slashes:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m dir{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["url_parameter"] = array('name' => 'Url parameter contains:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'url_param({parameter}){casesensitive} %1$s',
 	'fields' => array(
 		array('name'=>"parameter",'columnheader'=>"Parameter name",'type'=>"textbox",'size'=>"50",'mask'=>'urlparameter')
 	));
@@ -87,16 +89,16 @@ $a_acltypes["traffic_is_http"] = array('name' => 'Traffic is http (no value need
 $a_acltypes["traffic_is_ssl"] = array('name' => 'Traffic is ssl (no value needed):', 'inspect-delay' => '5',
 				'mode' => 'tcp', 'syntax' => 'req.ssl_ver gt 0', 'advancedoptions' => "tcp-request content accept if { req.ssl_ver gt 0 }");
 // 'ssl_sni_matches' was added in HAProxy1.5dev17
-$a_acltypes["ssl_sni_matches"] = array('name' => 'Server Name Indication TLS extension matches:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_contains"] = array('name' => 'Server Name Indication TLS extension contains:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m sub -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_starts_with"] = array('name' => 'Server Name Indication TLS extension starts with:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m beg -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_ends_with"] = array('name' => 'Server Name Indication TLS extension ends with:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m end -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_regex"] = array('name' => 'Server Name Indication TLS extension regex:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m reg -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_matches"] = array('name' => 'Server Name Indication TLS extension matches:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_contains"] = array('name' => 'Server Name Indication TLS extension contains:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m sub{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_starts_with"] = array('name' => 'Server Name Indication TLS extension starts with:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m beg{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_ends_with"] = array('name' => 'Server Name Indication TLS extension ends with:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m end{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_regex"] = array('name' => 'Server Name Indication TLS extension regex:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m reg{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
 $a_acltypes["custom"] = array('name' => 'Custom acl:',
 				'mode' => '', 'syntax' => '%1$s');
 
@@ -261,8 +263,14 @@ $a_action["custom"] = array('name' => "Custom", 'mode' => '', 'syntax' => '{cust
 	));
 //
 $a_action["http-request_allow"] = array('name' => "http-request allow", 'mode'=> 'http', 'syntax' => 'http-request allow');
-$a_action["http-request_deny"] = array('name' => "http-request deny", 'mode'=> 'http', 'syntax' => 'http-request deny');
-$a_action["http-request_tarpit"] = array('name' => "http-request tarpit", 'mode'=> 'http', 'syntax' => 'http-request tarpit');
+$a_action["http-request_deny"] = array('name' => "http-request deny", 'mode'=> 'http', 'syntax' => 'http-request deny {deny_status}',
+	'fields' => array(
+		array('name'=>"deny_status",'columnheader'=>"Status code",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'deny_status')
+	));
+$a_action["http-request_tarpit"] = array('name' => "http-request tarpit", 'mode'=> 'http', 'syntax' => 'http-request tarpit {deny_status}',
+	'fields' => array(
+		array('name'=>"deny_status",'columnheader'=>"Status code",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'deny_status')
+	));
 $a_action["http-request_auth"] = array('name' => "http-request auth", 'mode'=> 'http', 'syntax' => 'http-request auth {realm}',
 	'fields' => array(
 		array('name'=>"realm",'columnheader'=>"Realm",'type'=>"textbox",'size'=>"50",'mask'=>'freetext')
@@ -541,6 +549,13 @@ function haproxy_custom_php_install_command() {
 
 . /etc/rc.subr
 
+# rc_fast=yes workaround for pfSense that calls start when it
+# means restart (for a wan-ip change for example..)
+# this way it doesnt check for a already running process 
+# and just fires of the start procedure again. which will
+# take care to restart haproxy gracefully
+rc_fast=yes
+
 name="haproxy"
 rcvar="\${name}_enable"
 command="{$haproxy_binary}"
@@ -686,9 +701,6 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 
 	$a_resolvers = $config['installedpackages']['haproxy']['dns_resolvers']['item'];
 
-	if (!is_array($pool['ha_servers']['item']) && !$pool['stats_enabled']=='yes') {
-		return;
-	}
 	global $a_checktypes, $a_cookiemode, $a_files_cache, $a_error;
 
 	$server_options = "";
@@ -699,6 +711,12 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	$a_servers = &$pool['ha_servers']['item'];
 	$frontendtype = $frontend['type'];
 
+	$idoffset = 0;
+	if ($ipversion == "ipv4")
+		$idoffset += 10000;
+	if ($ipversion == "ipv6")
+		$idoffset += 20000;
+	
 	fwrite ($fd, "backend " . $name . "\n");
 	// https is an alias for tcp for clarity purposes
 	if ($frontendtype == "https") {
@@ -707,6 +725,11 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		$backend_mode = $frontendtype;
 	}
 	fwrite ($fd, "\tmode\t\t\t" . $backend_mode . "\n");
+	$id = "";
+	if (is_numeric($pool['id'])) {
+		$id =  ($pool['id'] + $idoffset);
+		fwrite ($fd, "\tid\t\t\t{$id}\n");
+	}
 	fwrite ($fd, "\tlog\t\t\tglobal\n");
 
 	$use_haproxyresolvers = false;
@@ -759,11 +782,42 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$cookiesyntax = $a_cookiemode[$cookie_mode]["syntax"];
 			$cookie = str_replace("<cookie name>", $pool["persist_cookie_name"], $cookiesyntax);
 			$cookie .= $cookie_cachable == "yes" ? "" : " nocache";
-			fwrite ($fd, "\t" . $cookie . "\n");
+			$cookie_parameters = "";
+			if ($pool["persist_cookie_postonly"] == "yes") {
+				$cookie_parameters .= " postonly";
+			}
+			if ($pool["persist_cookie_httponly"] == "yes") {
+				$cookie_parameters .= " httponly";
+			}
+			if ($pool["persist_cookie_secure"] == "yes") {
+				$cookie_parameters .= " secure";
+			}
+			if (!empty($pool["haproxy_cookie_maxidle"])) {
+				$cookie_parameters .= " maxidle ".$pool["haproxy_cookie_maxidle"];
+			}
+			if (!empty($pool["haproxy_cookie_maxlife"])) {
+				$cookie_parameters .= " maxlife ".$pool["haproxy_cookie_maxlife"];
+			}
+			if (!empty($pool["haproxy_cookie_dynamic_cookie_key"])) {
+				$cookie_parameters .= " dynamic";
+			}
+			$cookiedomains = explode(" ",$pool["haproxy_cookie_domains"]);
+			foreach($cookiedomains as $cookiedomain) {
+				$cookiedomain = trim($cookiedomain);
+				if (!empty($cookiedomain)) {
+					$cookie_parameters .= " domain " . $cookiedomain;
+				}
+			}
+			fwrite ($fd, "\t" . $cookie . $cookie_parameters . "\n");
+			
+			
+			if (!empty($pool["haproxy_cookie_dynamic_cookie_key"])) {
+				fwrite ($fd, "\tdynamic-cookie-key " . $pool["haproxy_cookie_dynamic_cookie_key"] . "\n");
+			}
 		}
 
 		if ($pool["strict_transport_security"] && is_numeric($pool["strict_transport_security"])){
-			fwrite ($fd, "\trspadd Strict-Transport-Security:\\ max-age={$pool["strict_transport_security"]};\n");
+			fwrite ($fd, "\thttp-response set-header Strict-Transport-Security max-age={$pool["strict_transport_security"]};\n");
 		}
 
 		if ($pool["cookie_attribute_secure"] == 'yes'){
@@ -1000,13 +1054,17 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 					$fieldname = $field['name'];
 					$parameter = $aclitem[$expression . $fieldname];
 					if ($fieldname == "backend") {
-						$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+						//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+						$backendname = $parameter . "_" . $ipversion;
 						$parameter = $backendname;
 					}
 					$expr = str_replace("{{$fieldname}}", $parameter, $expr);
 				}
 			}
 		}
+		$casesensitive = $aclitem['casesensitive'] == 'yes' ? "" : " -i";
+		$expr = str_replace("{casesensitive}", $casesensitive, $expr);
+		
 		$config_acls ["\tacl\t\t\t" . $aclname . "\t" .  $expr . "\n"] = 1;
 	}
 	// Write acl's first, so they may be used by advanced text options written by user.
@@ -1033,7 +1091,8 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 				$parameter = $actionitem[$actionid . $field['name']];
 
 				if ($fieldname == "backend") {
-					$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+					//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+					$backendname = $parameter . "_" . $ipversion;
 					/*
 					$backend = $parameter;
 					if (!isset($a_pendingpl[$backendname])) {
@@ -1135,8 +1194,13 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$crtfile = "";
 			$verifynone = "";
 			$verifyhost = "";
-			if ($be['ssl'] == 'yes') {
-				$ssl = $frontendtype == "http" ? ' ssl' : ' check-ssl';
+			if ($be['ssl'] == 'yes' || $be['checkssl'] == 'yes') {
+				if ($be['ssl'] == 'yes') {
+					$ssl .= ' ssl';
+				}
+				if ($be['checkssl'] == 'yes') {
+					$ssl .= ' check-ssl';
+				}
 
 				if ($be['sslserververify'] != 'yes') {
 					$verifynone = " verify none";
@@ -1207,14 +1271,19 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 					$server = $server . ":" . $be['port'];
 				}
 				$servername = $be['name'];
+				$id = "";
 				if (count($servers) > 1) {
 					$servername .= "_" . $counter;
+				} else {
+					if (is_numeric($be['id'])) {
+						 $id = " id " . ($be['id'] + $idoffset);
+					}
 				}
 				if (is_numeric($be['istemplate'])) {
 					$istemplate = " {$be['istemplate']}";
-					fwrite ($fd, "\tserver-template\t\t\t" . $servername . $istemplate . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+					fwrite ($fd, "\tserver-template\t\t\t" . $servername . $istemplate . " " . $server . "$id$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
 				} else {
-					fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+					fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$id$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
 				}
 				$counter++;
 			}
@@ -1540,6 +1609,7 @@ function haproxy_writeconf($configpath) {
 				fwrite ($fd, "\tstats refresh {$a_global['localstats_refreshtime']}\n");
 			}
 			fwrite ($fd, "\tstats admin if TRUE\n");
+			fwrite ($fd, "\tstats show-legends\n");
 			fwrite ($fd, "\tstats uri /haproxy/haproxy_stats.php?haproxystats=1\n");
 			fwrite ($fd, "\ttimeout client 5000\n");
 			fwrite ($fd, "\ttimeout connect 5000\n");
@@ -1594,13 +1664,14 @@ function haproxy_writeconf($configpath) {
 			$crtfiles = array();
 			if ($ssl) {
 				$certfolder = "$configpath/{$primary_fename}";
-				$certs = $frontend['ha_certificates']['item'];
+				$certs = getarraybyref($frontend,'ha_certificates','item');
 				$ssl_crt = "";
 
 				//ssl crt ./server.pem ca-file ./ca.crt verify optional crt-ignore-err all crl-file ./ca_crl.pem
 				if ($frontend['secondary'] != 'yes') {
 					$filename = "$configpath/{$frontend['name']}.pem";
-					$ssl_crt = " crt $filename";
+					$ssl_crt = " ssl";
+//					$ssl_crt = " crt $filename";
 //					$ssl_crt .= " crt $certfolder";
 					@mkdir($certfolder, 0755, true);
 
@@ -1712,7 +1783,7 @@ function haproxy_writeconf($configpath) {
 			if (empty($bind['ssl_info'])) {
 				$ssl_info = "";
 			} else {
-				$ssl_info = " ssl" . $bind['ssl_info'];
+				$ssl_info = "" . $bind['ssl_info'];
 				$ssl_info .=  " crt-list {$crtlistfilename}";
 				$ssl_info .= $ca_file . $crl_file . $ssl_ignoreclienterror;
 			}
@@ -1965,13 +2036,16 @@ function haproxy_writeconf($configpath) {
 									$fieldname = $field['name'];
 									$parameter = $aclitem[$expression . $fieldname];
 									if ($fieldname == "backend") {
-										$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+										//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+										$backendname = $parameter . "_" . $ipversion;
 										$parameter = $backendname;
 									}
 									$expr = str_replace("{{$fieldname}}", $parameter, $expr);
 								}
 							}
 						}
+						$casesensitive = $aclitem['casesensitive'] == 'yes' ? "" : " -i";
+						$expr = str_replace("{casesensitive}", $casesensitive, $expr);
 						$config_acls ["\tacl\t\t\t" . $aclname . "\t" .  $expr . "\n"] = 1;
 					}
 
@@ -1990,7 +2064,8 @@ function haproxy_writeconf($configpath) {
 
 								if ($fieldname == "backend") {
 									$backend = $parameter;
-									$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+									//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+									$backendname = $parameter . "_" . $ipversion;
 									if (!isset($a_pendingpl[$backendname])) {
 										$a_pendingpl[$backendname] = array();
 										$a_pendingpl[$backendname]['name'] = $backendname;
@@ -2931,7 +3006,7 @@ function use_frontend_as_unixsocket($name) {
 
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	foreach ($a_backends as $backend) {
-		$a_servers = &$backend['ha_servers']['item'];
+		$a_servers = getarraybyref($backend,'ha_servers','item');
 		if (is_array($a_servers)) {
 			foreach($a_servers as $server) {
 				if ($server['forwardto'] && $server['forwardto'] == $name) {
@@ -3014,4 +3089,102 @@ function haproxy_config_init(){
 	if (!is_array($haproxycfg['files']['item'])) {
 		$haproxycfg['files']['item'] = array();
 	}
+}
+
+function config_id() {
+	global $config;
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	$id = 100;
+	foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		if (!is_numeric($backend['id'])) {
+			while(find_server_by_id($id) || find_backend_by_id($id)) {
+				// find unused id..
+				$id++;
+			}
+			$backend['id'] = $id;
+		}
+		if (is_array($backend['ha_servers']['item'])) {
+			foreach($backend['ha_servers']['item'] as &$server) {
+				if (!is_numeric($server['id'])) {
+					while(find_server_by_id($id) || find_backend_by_id($id)) {
+						// find unused id..
+						$id++;
+					}
+					$server['id'] = $id;
+				}
+			}
+		}
+	}
+}
+
+function find_frontends_using_backend($backendname) {
+	global $config;
+	$a_backends = $config['installedpackages']['haproxy']['ha_backends']['item'];
+	$result = array();
+	foreach ($a_backends as $frontend) {
+		$used = false;
+		if($frontend['backend_serverpool'] == $backendname) {
+			$used = true;
+		}
+		$actions = $frontend['a_actionitems']['item'];
+		if (is_array($actions)) {
+			foreach($actions as $action) {
+				if ($action["action"] == "use_backend" && $action['use_backendbackend'] == $backendname) {
+					$used = true;
+				}
+			}
+		}
+		if ($used) {
+			$result[] = $frontend['name'];
+		}
+	}				
+	return $result;
+}
+
+function find_server_by_id($id) {
+	global $config;
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		if (is_array($backend['ha_servers']['item'])) {
+			foreach($backend['ha_servers']['item'] as &$server) {
+				if ($server['id'] == $id) {
+					return $server;
+				}
+			}
+		}
+	}
+	return null;
+}
+
+function find_backend_by_id($id) {
+	global $config;
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		if ($backend['id'] == $id) {
+			return $backend;
+		}
+	}
+	return null;
+}
+
+function rename_backend_references($oldvalue, $newvalue) {
+	global $config;
+	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+	foreach ($a_frontends as &$frontend) {
+		if ($frontend['backend_serverpool'] == $oldvalue) {
+			$frontend['backend_serverpool'] = $newvalue;
+		}
+		if (is_array($frontend['a_actionitems']['item'])) {
+			foreach($frontend['a_actionitems']['item'] as &$item) {
+				if ($item['action'] == "use_backend") {
+					if ($item['use_backendbackend'] == $oldvalue) {
+						$item['use_backendbackend'] = $newvalue;
+					}
+				}
+			}
+		}
+	}
+	unset($frontend);
+	
+	//TODO: acl's with backendservercount/backend should also be renamed..
 }

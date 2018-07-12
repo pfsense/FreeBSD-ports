@@ -41,22 +41,7 @@ if (!function_exists("cert_get_purpose")) {
 
 haproxy_config_init();
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
-
 $a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
-
-if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-	$config['installedpackages']['haproxy']['ha_pools'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-}
-
 $a_pools = $config['installedpackages']['haproxy']['ha_pools']['item'];
 uasort($a_pools, 'haproxy_compareByName');
 
@@ -136,17 +121,23 @@ $fields_aclSelectionList[1]['type']="select";
 $fields_aclSelectionList[1]['size']="10";
 $fields_aclSelectionList[1]['items']=&$a_acltypes;
 
-$fields_aclSelectionList[2]['name']="not";
-$fields_aclSelectionList[2]['columnheader']="Not";
+$fields_aclSelectionList[2]['name']="casesensitive";
+$fields_aclSelectionList[2]['columnheader']="CS";
 $fields_aclSelectionList[2]['colwidth']="5%";
 $fields_aclSelectionList[2]['type']="checkbox";
 $fields_aclSelectionList[2]['size']="5";
 
-$fields_aclSelectionList[3]['name']="value";
-$fields_aclSelectionList[3]['columnheader']="Value";
-$fields_aclSelectionList[3]['colwidth']="35%";
-$fields_aclSelectionList[3]['type']="textbox";
-$fields_aclSelectionList[3]['size']="35";
+$fields_aclSelectionList[3]['name']="not";
+$fields_aclSelectionList[3]['columnheader']="Not";
+$fields_aclSelectionList[3]['colwidth']="5%";
+$fields_aclSelectionList[3]['type']="checkbox";
+$fields_aclSelectionList[3]['size']="5";
+
+$fields_aclSelectionList[4]['name']="value";
+$fields_aclSelectionList[4]['columnheader']="Value";
+$fields_aclSelectionList[4]['colwidth']="35%";
+$fields_aclSelectionList[4]['type']="textbox";
+$fields_aclSelectionList[4]['size']="35";
 
 $interfaces = haproxy_get_bindable_interfaces();
 $interfaces_custom['custom']['name']="Use custom address:";
@@ -304,20 +295,13 @@ $errorfileslist = new HaproxyHtmlList("table_errorfile", $fields_errorfile);
 $errorfileslist->keyfield = "errorcode";
 
 if (isset($id) && $a_backend[$id]) {
-	$pconfig['a_acl']=&$a_backend[$id]['ha_acls']['item'];
-	haproxy_check_isarray($pconfig['a_acl']);
-	$pconfig['a_certificates']=&$a_backend[$id]['ha_certificates']['item'];
-	haproxy_check_isarray($pconfig['a_certificates']);
-	$pconfig['clientcert_ca']=&$a_backend[$id]['clientcert_ca']['item'];
-	haproxy_check_isarray($pconfig['clientcert_ca']);
-	$pconfig['clientcert_crl']=&$a_backend[$id]['clientcert_crl']['item'];
-	haproxy_check_isarray($pconfig['clientcert_crl']);
-	$pconfig['a_extaddr']=&$a_backend[$id]['a_extaddr']['item'];
-	haproxy_check_isarray($pconfig['a_extaddr']);
-	$pconfig['a_actionitems']=&$a_backend[$id]['a_actionitems']['item'];
-	haproxy_check_isarray($pconfig['a_actionitems']);
-	$pconfig['a_errorfiles']=&$a_backend[$id]['a_errorfiles']['item'];
-	haproxy_check_isarray($pconfig['a_errorfiles']);
+	$pconfig['a_acl'] = getarraybyref($a_backend[$id],'ha_acls','item');
+	$pconfig['a_certificates'] = getarraybyref($a_backend[$id],'ha_certificates','item');
+	$pconfig['clientcert_ca'] = getarraybyref($a_backend[$id],'clientcert_ca','item');
+	$pconfig['clientcert_crl'] = getarraybyref($a_backend[$id],'clientcert_crl','item');
+	$pconfig['a_extaddr'] = getarraybyref($a_backend[$id],'a_extaddr','item');
+	$pconfig['a_actionitems'] = getarraybyref($a_backend[$id],'a_actionitems','item');
+	$pconfig['a_errorfiles'] = getarraybyref($a_backend[$id],'a_errorfiles','item');
 
 	$pconfig['advanced'] = base64_decode($a_backend[$id]['advanced']);
 	foreach($simplefields as $stat) {
@@ -467,13 +451,13 @@ if ($_POST) {
 		}
 
 		update_if_changed("advanced", $backend['advanced'], base64_encode($_POST['advanced']));
-		$backend['ha_acls']['item'] = $a_acl;
-		$backend['ha_certificates']['item'] = $a_certificates;
-		$backend['clientcert_ca']['item'] = $a_clientcert_ca;
-		$backend['clientcert_crl']['item'] = $a_clientcert_crl;
-		$backend['a_extaddr']['item'] = $a_extaddr;
-		$backend['a_actionitems']['item'] = $a_actionitems;
-		$backend['a_errorfiles']['item'] = $a_errorfiles;
+		getarraybyref($backend,'ha_acls')['item'] = $a_acl;
+		getarraybyref($backend,'ha_certificates')['item'] = $a_certificates;
+		getarraybyref($backend,'clientcert_ca')['item'] = $a_clientcert_ca;
+		getarraybyref($backend,'clientcert_crl')['item'] = $a_clientcert_crl;
+		getarraybyref($backend,'a_extaddr')['item'] = $a_extaddr;
+		getarraybyref($backend,'a_actionitems')['item'] = $a_actionitems;
+		getarraybyref($backend,'a_errorfiles')['item'] = $a_errorfiles;
 
 		if (isset($id) && $a_backend[$id]) {
 			$a_backend[$id] = $backend;
@@ -633,7 +617,11 @@ $section = new Form_Section_class("Edit HAProxy Frontend");
 
 $activedisable = array();
 $activedisable['active'] = "Active";
-$activedisable['disable'] = "Disable";
+$activedisable['disabled'] = "Disabled";
+
+if ($pconfig['status'] == 'disable') {
+	$pconfig['status'] = 'disabled';// make checkmark in overview and editpage the same.
+}
 
 $section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']));
 $section->addInput(new Form_Input('desc', 'Description', 'text', $pconfig['desc']));
@@ -700,11 +688,14 @@ $section->addInput(new Form_StaticText(
 	"Use these to define criteria that will be used with actions defined below to perform them only when certain conditions are met.<br/>".
 	$htmllist_acls->Draw($pconfig['a_acl'])
 ))->setHelp(<<<EOT
+	- 'CS' makes the string matches 'Case Sensitive' so www.domain.tld wil not be the same as WWW.domain.TLD<br/>
+	- 'Not' makes the match if the value given is not matched<br/>
 	Example:
 	<table border='1' style='border-collapse:collapse'>
 		<tr>
 			<td><b>Name</b></td>
 			<td><b>Expression</b></td>
+			<td><b>CI</b></td>
 			<td><b>Not</b></td>
 			<td><b>Value</b></td>
 		</tr>
@@ -712,11 +703,13 @@ $section->addInput(new Form_StaticText(
 			<td>Backend1acl</td>
 			<td>Host matches</td>
 			<td></td>
+			<td></td>
 			<td>www.yourdomain.tld</td>
 		</tr>
 		<tr>
 			<td>addHeaderAcl</td>
 			<td>SSL Client certificate valid</td>
+			<td></td>
 			<td></td>
 			<td></td>
 		</tr>
@@ -883,7 +876,7 @@ $section->addInput(new Form_Input(
 	'SNI Filter',
 	'text',
 	$pconfig['sslsnifilter']
-), "haproxy_secondary haproxy_ssloffloading_enabled"
+), "haproxy_ssloffloading_enabled"
 )->setHelp('Specify a SNI filter to apply below SSL settings to specific domain(s), see the "crt-list" option from haproxy for details. <br/>'.
 		'EXAMPLE: *.securedomain.tld !public.securedomain.tld');
 
@@ -1012,7 +1005,7 @@ events.push(function() {
 	phparray_to_javascriptarray($a_action, "showhide_actionfields",
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 	phparray_to_javascriptarray($a_acltypes, "showhide_aclfields",
-		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
+		Array('/*', '/*/casesensitive', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 
 	$htmllist_extaddr->outputjavascript();
 	$htmllist_acls->outputjavascript();
@@ -1054,8 +1047,21 @@ events.push(function() {
 		updatevisibility();
 	});
 
+	d = document;
+	// make sure enabled/disabled visable/hidden states of items dependant on these boxes are correct when loading the page.
+	$('[id^=table_aclsexpression]').change();
+	$('[id^=table_extaddrextaddr]').change();
+
 	updatevisibility();
 });
+
+	function sethiddenclass(id,showitem) {
+		if (showitem) {
+			$("#"+id).removeClass("hidden");
+		} else {
+			$("#"+id).addClass("hidden");
+		}
+	}
 
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
@@ -1063,20 +1069,18 @@ events.push(function() {
 			field = d.getElementById(tableId+"expression"+rowNr);
 		}
 		if (fieldId === "expression") {
-			var actiontype = field.value;
-
+			var acltypeid = field.value;
+			var acltype = showhide_aclfields[acltypeid];
+			sethiddenclass('table_aclscasesensitive'+rowNr, acltype['casesensitive']);
+			sethiddenclass('table_aclscasesensitive'+rowNr+'_disp', acltype['casesensitive']);
 			var table = d.getElementById(tableId);
 
 			for(var actionkey in showhide_aclfields) {
 				var fields = showhide_aclfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
-					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
-					if (actionkey === actiontype) {
-						$("#"+rowid).removeClass("hidden");
-					} else {
-						$("#"+rowid).addClass("hidden");
-					}
+					sethiddenclass("tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname, actionkey === acltypeid);
+					sethiddenclass(tableId+actionkey+fieldname+rowNr+'_disp', actionkey === acltypeid);
 				}
 			}
 		}
