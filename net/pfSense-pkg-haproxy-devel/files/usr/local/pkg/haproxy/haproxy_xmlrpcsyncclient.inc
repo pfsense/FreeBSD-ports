@@ -49,6 +49,12 @@ function xmlrpc_sync_execute($syncinfo) {
 }
 
 function xmlrpc_sync_execute_24($sync_logname, $xml, $sync_include,$sync_function) {
+	global $config;
+	if (!is_array($config['hasync']) || empty($config['hasync']['synchronizetoip'])) {
+		syslog(LOG_NOTICE, "haproxy: cannot sync configuration (no ip/host configured to sync to on this machine), disable sync to avoid this message.");
+		return;
+	}
+	
 	require_once("xmlrpc_client.inc");
 	
 	$rpc_client = new pfsense_xmlrpc_client();

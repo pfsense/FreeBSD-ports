@@ -31,17 +31,8 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $changedesc = "Services: HAProxy: Frontends";
 
-if (!is_array($config['installedpackages']['haproxy'])) {
-	$config['installedpackages']['haproxy'] = array();
-}
+haproxy_config_init();
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
-
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
 $a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 
 function array_moveitemsbefore(&$items, $before, $selected) {
@@ -435,7 +426,7 @@ function js_callback(req) {
 					}
 					?>
 				  </td>
-				  <td class="action-icons">
+				  <td class="action-buttons">
 					<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$frontendname?>" name="move_<?=$frontendname?>" value="move_<?=$frontendname?>"></button>
 					<a href="haproxy_listeners_edit.php?id=<?=$frontendname;?>">
 						<?=haproxyicon("edit", gettext("edit frontend"))?>

@@ -16,7 +16,6 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		bind-tools>=0:dns/bind-tools \
 		bsnmp-regex>=0:net-mgmt/bsnmp-regex \
 		bsnmp-ucd>=0:net-mgmt/bsnmp-ucd \
-		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
 		ca_root_nss>=0:security/ca_root_nss \
 		check_reload_status>=0:sysutils/check_reload_status \
 		choparp>=0:net-mgmt/choparp \
@@ -99,6 +98,7 @@ PLIST_DIRS=	/etc
 RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
 		${LOCALBASE}/sbin/wrapresetbtn:sysutils/wrapalixresetbutton \
 		${LOCALBASE}/bin/beep:audio/beep \
+		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
 		devcpu-data>=0:sysutils/devcpu-data
 .endif
 

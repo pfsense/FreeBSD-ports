@@ -26,18 +26,8 @@ require_once("guiconfig.inc");
 require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_gui.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
-if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-	$config['installedpackages']['haproxy']['ha_pools'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
+
+haproxy_config_init();
 
 $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 $a_backends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
@@ -115,7 +105,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 			<h2 class="panel-title"><?=gettext("Backends")?></h2>
 		</div>
 		<div id="mainarea" class="table-responsive panel-body">
-			<table class="table table-hover table-striped table-condensed">
+			<table id="backendstbl" class="table table-hover table-striped table-condensed">
 				<thead>
 					<tr>
 						<th><!-- checkbox --></th>
@@ -131,31 +121,13 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
 <?php
 		$i = 0;
-		foreach ($a_pools as $pool){
-			$fe_list = "";
-			$sep = "";
-			foreach ($a_backends as $frontend) {
-				$used = false;
-				if($frontend['backend_serverpool'] == $pool['name']) {
-					$used = true;
-				}
-				$actions = $frontend['a_actionitems']['item'];
-				if (is_array($actions)) {
-					foreach($actions as $action) {
-						if ($action["action"] == "use_backend" && $action['use_backendbackend'] == $pool['name']) {
-							$used = true;
-						}
-					}
-				}
-				if ($used) {
-					$fe_list .= $sep . $frontend['name'];
-					$sep = ", ";
-				}
-			}
+		foreach ($a_pools as $backend){
+			$fes = find_frontends_using_backend($backend['name']);
+			$fe_list = implode(", ", $fes);
 			$disabled = $fe_list == "";
 
-			if (is_array($pool['ha_servers'])) {
-				$count = count($pool['ha_servers']['item']);
+			if (is_array($backend['ha_servers'])) {
+				$count = count($backend['ha_servers']['item']);
 			} else {
 				$count = 0;
 			}
@@ -163,18 +135,19 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 					<tr id="fr<?=$i;?>" <?=$display?> onClick="fr_toggle(<?=$i;?>)" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';" <?=($disabled ? ' class="disabled"' : '')?>>
 						<td >
 							<input type="checkbox" id="frc<?=$i;?>" onClick="fr_toggle(<?=$i;?>)" name="rule[]" value="<?=$i;?>"/>
+							<a class="fa fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
 						</td>
 			<!--tr class="<?=$textgray?>"-->
 			  <td>
-			  <?
-				if ($pool['stats_enabled']=='yes') {
+			  <?php
+				if ($backend['stats_enabled']=='yes') {
 					echo haproxyicon("stats", gettext("stats enabled"));
 				}
 				$isadvset = "";
-				if ($pool['advanced']) {
+				if ($backend['advanced']) {
 					$isadvset .= "Per server pass thru\r\n";
 				}
-				if ($pool['advanced_backend']) {
+				if ($backend['advanced_backend']) {
 					$isadvset .= "Backend pass thru\r\n";
 				}
 				if ($isadvset) {
@@ -183,18 +156,18 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 			  ?>
 			  </td>
 			  <td>
-				<?=$pool['name'];?>
+				<?=$backend['name'];?>
 			  </td>
 			  <td>
 				<?=$count;?>
 			  </td>
 			  <td>
-				<?=$a_checktypes[$pool['check_type']]['name'];?>
+				<?=$a_checktypes[$backend['check_type']]['name'];?>
 			  </td>
 			  <td>
 				<?=$fe_list;?>
 			  </td>
-				<td class="action-icons">
+				<td class="action-buttons">
 					<a href="haproxy_pool_edit.php?id=<?=$i;?>">
 						<?=haproxyicon("edit", gettext("edit backend"))?>
 					</a>
@@ -232,15 +205,32 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
 <script type="text/javascript">
 //<![CDATA[
-events.push(function() {
 
-	// Make rules sortable
-	$('table tbody.user-entries').sortable({
-		cursor: 'grabbing',
-		update: function(event, ui) {
+	function moveRowUpAboveAnchor(rowId, tableId) {
+		var table = $('#'+tableId);
+		var viewcheckboxes = $('[id^=frc]input:checked', table);
+		var rowview = $("#fr" + rowId, table);
+		var moveabove = rowview;
+		//var parent = moveabove[0].parentNode;
+		
+		viewcheckboxes.each(function( index ) {
+			var moveid = this.value;
+			console.log( index + ": " + this.id );
+
+			var prevrowview = $("#fr" + moveid, table);
+			prevrowview.insertBefore(moveabove);
 			$('#order-store').removeAttr('disabled');
-		}
+		});
+	}
+
+events.push(function() {
+	$('[id^=Xmove_]').click(function (event) {
+		/*$('[id="'+event.target.id.slice(1)+'"]').click();*/
+		moveRowUpAboveAnchor(event.target.id.slice(6),"backendstbl");
+		
+		return false;
 	});
+	$('[id^=Xmove_]').css('cursor', 'pointer');
 
 	// Check all of the rule checkboxes so that their values are posted
 	$('#order-store').click(function () {

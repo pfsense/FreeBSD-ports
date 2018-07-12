@@ -102,6 +102,22 @@ if(!function_exists('is_arrayset')){
 	}
 }
 
+function &getarraybyref(&$array) {
+	if (!isset($array)) {
+		return false;
+	}
+	$item = &$array;
+	$arg = func_get_args();
+	for($i = 1; $i < count($arg); $i++) {
+		$itemindex = $arg[$i];
+		if (!is_array($item[$itemindex])) {
+			$item[$itemindex] = array();
+		}
+		$item = &$item[$itemindex];
+	}
+	return $item;
+}
+
 function haproxy_compareByName($a, $b) {
 	return strcasecmp($a['name'], $b['name']);
 }
