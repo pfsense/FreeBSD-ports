@@ -2248,7 +2248,7 @@ function haproxy_get_transparent_backends(){
 			continue;
 		}
 		$real_if = get_real_interface($backend["transparent_interface"]);
-		if (!is_array($backend['ha_serveres'])) {
+		if (!is_array($backend['ha_servers'])) {
 			$backend['ha_servers'] = array();
 		}
 		$a_servers = &$backend['ha_servers']['item'];
