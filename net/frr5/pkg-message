@@ -4,5 +4,4 @@ messages like:
 To prevent such message kern.ipc.maxsockbuf can be increased:
 sysctl kern.ipc.maxsockbuf=16777216
 
-Error messages like "if_ioctl(SIOCGIFMEDIA) failed: Invalid argument" are
-under investigation.
+Error message "ifam_read() doesn't read all socket data" is under investigation
