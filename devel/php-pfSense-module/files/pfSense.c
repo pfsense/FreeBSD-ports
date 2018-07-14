@@ -2123,7 +2123,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 			tagged = 0;
 
 			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
-				if (!skey2 || Z_TYPE_P(val2) != IS_ARRAY) {
+				if (!skey2 || Z_TYPE_P(val2) != IS_LONG) {
 					continue;
 				}
 
@@ -2132,6 +2132,12 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				}
 
 			} ZEND_HASH_FOREACH_END();
+
+			members |= (1 << port);
+
+			if (!tagged)
+				untagged |= (1 << port);
+
 		} ZEND_HASH_FOREACH_END();
 /*
 		zend_hash_internal_pointer_reset_ex(hash1, &h1p);
