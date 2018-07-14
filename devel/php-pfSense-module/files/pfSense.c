@@ -2109,7 +2109,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 		hash1 = Z_ARRVAL_P(zvar);
 
 		ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
-			if (!lkey || (Z_TYPE_P(val) != IS_ARRAY)) {
+			if (skey != NULL || (Z_TYPE_P(val) != IS_ARRAY)) {
 				continue;
 			}
 
