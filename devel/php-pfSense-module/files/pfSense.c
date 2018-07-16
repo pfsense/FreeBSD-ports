@@ -2060,7 +2060,7 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 
 PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 {
-	char *dev; //, *key;
+	char *dev;
 	etherswitch_info_t info;
 	etherswitch_vlangroup_t vg;
 	int fd, i, members, port, tagged, untagged;
