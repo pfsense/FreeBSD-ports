@@ -3,11 +3,11 @@
  * snort_select_alias.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -75,8 +75,12 @@ if (is_null($type) || is_null($varname)) {
 $selectablealias = false;
 
 // Initialize required array variables as necessary
-if (!is_array($config['aliases']['alias']))
+if (!is_array($config['aliases'])) {
+	$config['aliases'] = array();
+}
+if (!is_array($config['aliases']['alias'])) {
 	$config['aliases']['alias'] = array();
+}
 $a_aliases = $config['aliases']['alias'];
 
 // Create an array consisting of the Alias types the

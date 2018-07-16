@@ -11,7 +11,6 @@ www/snort/snort_alerts.php
 www/snort/snort_barnyard.php
 www/snort/snort_blocked.php
 www/snort/snort_define_servers.php
-www/snort/snort_download_rules.php
 www/snort/snort_download_updates.php
 pkg/snort/snort_check_for_rule_updates.php
 pkg/snort/snort_defs.inc

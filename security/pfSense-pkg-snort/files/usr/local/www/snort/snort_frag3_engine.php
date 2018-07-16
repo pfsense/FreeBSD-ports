@@ -3,8 +3,8 @@
  * snort_frag3_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,10 +43,18 @@ if (is_null($id)) {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'] = array();
+}
 $a_nat = &$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'];
 
 $pconfig = array();

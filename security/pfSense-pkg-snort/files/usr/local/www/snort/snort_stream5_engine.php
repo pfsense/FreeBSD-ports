@@ -3,8 +3,8 @@
  * snort_stream5_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,10 +52,18 @@ if (is_null($id)) {
 }
 
 /* Initialize pointer into requisite section of [config] array */
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'] = array();
+}
 $a_nat = &$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'];
 
 $pconfig = array();

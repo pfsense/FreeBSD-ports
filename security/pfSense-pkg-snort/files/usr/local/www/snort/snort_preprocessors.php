@@ -3,7 +3,7 @@
  * snort_preprocessors.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
  * Copyright (c) 2013-2018 Bill Meeks
@@ -38,24 +38,64 @@ if (is_null($id)) {
         exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']))
-	$config['installedpackages']['snortglobal'] = array();
 if (!is_array($config['installedpackages']['snortglobal']['rule']))
 	$config['installedpackages']['snortglobal']['rule'] = array();
 
 // Initialize multiple config engine arrays for supported preprocessors if necessary
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item'] = array();
+}
 
 $a_nat = &$config['installedpackages']['snortglobal']['rule'];
 
@@ -74,18 +114,42 @@ if (isset($id) && isset($a_nat[$id])) {
 	$pconfig = $a_nat[$id];
 
 	// Initialize multiple config engine arrays for supported preprocessors if necessary
-	if (!is_array($pconfig['frag3_engine']['item']))
+	if (!is_array($pconfig['frag3_engine'])) {
+		$pconfig['frag3_engine'] = array();
+	}
+	if (!is_array($pconfig['frag3_engine']['item'])) {
 		$pconfig['frag3_engine']['item'] = array();
-	if (!is_array($pconfig['stream5_tcp_engine']['item']))
+	}
+	if (!is_array($pconfig['stream5_tcp_engine'])) {
+		$pconfig['stream5_tcp_engine'] = array();
+	}
+	if (!is_array($pconfig['stream5_tcp_engine']['item'])) {
 		$pconfig['stream5_tcp_engine']['item'] = array();
-	if (!is_array($pconfig['http_inspect_engine']['item']))
+	}
+	if (!is_array($pconfig['http_inspect_engine'])) {
+		$pconfig['http_inspect_engine'] = array();
+	}
+	if (!is_array($pconfig['http_inspect_engine']['item'])) {
 		$pconfig['http_inspect_engine']['item'] = array();
-	if (!is_array($pconfig['ftp_server_engine']['item']))
+	}
+	if (!is_array($pconfig['ftp_server_engine'])) {
+		$pconfig['ftp_server_engine'] = array();
+	}
+	if (!is_array($pconfig['ftp_server_engine']['item'])) {
 		$pconfig['ftp_server_engine']['item'] = array();
-	if (!is_array($pconfig['ftp_client_engine']['item']))
+	}
+	if (!is_array($pconfig['ftp_client_engine'])) {
+		$pconfig['ftp_client_engine'] = array();
+	}
+	if (!is_array($pconfig['ftp_client_engine']['item'])) {
 		$pconfig['ftp_client_engine']['item'] = array();
-	if (!is_array($pconfig['arp_spoof_engine']['item']))
+	}
+	if (!is_array($pconfig['arp_spoof_engine'])) {
+		$pconfig['arp_spoof_engine'] = array();
+	}
+	if (!is_array($pconfig['arp_spoof_engine']['item'])) {
 		$pconfig['arp_spoof_engine']['item'] = array();
+	}
 
 	/************************************************************/
 	/* To keep new users from shooting themselves in the foot   */
@@ -2032,7 +2096,7 @@ $modal->addInput(new Form_IpAddress(
 	'arp_spoof_ip_addr',
 	'IP Address',
 	'',
-	BOTH
+	'BOTH'
 ))->setHelp('Enter IP address of host.');
 $btnsave = new Form_Button(
 	'arp_spoof_save',

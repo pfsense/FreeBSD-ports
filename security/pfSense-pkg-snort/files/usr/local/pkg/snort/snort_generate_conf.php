@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2014 Bill Meeks
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -301,8 +301,10 @@ $ftp_default_client_engine = array( "name" => "default", "bind_to" => "all", "ma
 				    "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				    "bounce" => "yes", "bounce_to_net" => "", "bounce_to_port" => "" );
 
-if (!is_array($snortcfg['ftp_client_engine']['item']))
+if (!is_array($snortcfg['ftp_client_engine']['item'])) {
+	$snortcfg['ftp_client_engine'] = array();
 	$snortcfg['ftp_client_engine']['item'] = array();
+}
 
 // If no FTP client engine is configured, use the default
 // to keep from breaking Snort.
@@ -379,8 +381,10 @@ $ftp_default_server_engine = array( "name" => "default", "bind_to" => "all", "po
 				    "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				    "ignore_data_chan" => "no", "def_max_param_len" => 100 );
 
-if (!is_array($snortcfg['ftp_server_engine']['item']))
+if (!is_array($snortcfg['ftp_server_engine']['item'])) {
+	$snortcfg['ftp_server_engine'] = array();
 	$snortcfg['ftp_server_engine']['item'] = array();
+}
 
 // If no FTP server engine is configured, use the default
 // to keep from breaking Snort.
@@ -1108,8 +1112,10 @@ $frag3_engine = "";
 
 // Now iterate configured Frag3 engines and write them to a string if enabled
 if ($snortcfg['frag3_detection'] == "on") {
-	if (!is_array($snortcfg['frag3_engine']['item']))
+	if (!is_array($snortcfg['frag3_engine']['item'])) {
+		$snortcfg['frag3_engine'] = array();
 		$snortcfg['frag3_engine']['item'] = array();
+}
 
 	// If no frag3 tcp engine is configured, use the default
 	if (empty($snortcfg['frag3_engine']['item']))
@@ -1205,8 +1211,10 @@ $stream5_tcp_engine = "";
 
 // Now iterate configured Stream5 TCP engines and write them to a string if enabled
 if ($snortcfg['stream5_reassembly'] == "on") {
-	if (!is_array($snortcfg['stream5_tcp_engine']['item']))
+	if (!is_array($snortcfg['stream5_tcp_engine']['item'])) {
+		$snortcfg['stream5_tcp_engine'] = array();
 		$snortcfg['stream5_tcp_engine']['item'] = array();
+}
 
 	// If no stream5 tcp engine is configured, use the default
 	if (empty($snortcfg['stream5_tcp_engine']['item']))
@@ -1371,8 +1379,10 @@ $http_inspect_servers = "";
 
 // Iterate configured HTTP_INSPECT servers and write them to string if HTTP_INSPECT enabled
 if ($snortcfg['http_inspect'] <> "off") {
-	if (!is_array($snortcfg['http_inspect_engine']['item']))
+	if (!is_array($snortcfg['http_inspect_engine']['item'])) {
+		$snortcfg['http_inspect_engine'] = array();
 		$snortcfg['http_inspect_engine']['item'] = array();
+}
 
 	// If no http_inspect_engine is configured, use the default
 	if (empty($snortcfg['http_inspect_engine']['item']))

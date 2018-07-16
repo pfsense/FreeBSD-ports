@@ -3,9 +3,9 @@
  * snort_interfaces_suppress_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -28,8 +28,6 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-if (!is_array($config['installedpackages']['snortglobal']))
-	$config['installedpackages']['snortglobal'] = array();
 $snortglob = $config['installedpackages']['snortglobal'];
 
 if (!is_array($config['installedpackages']['snortglobal']['suppress']))
