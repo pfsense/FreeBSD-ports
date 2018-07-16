@@ -177,6 +177,7 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_etherswitch_setport_state, NULL)
     PHP_FE(pfSense_etherswitch_getlaggroup, NULL)
     PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
+    PHP_FE(pfSense_etherswitch_setlaggroup, NULL)
     PHP_FE(pfSense_etherswitch_setvlangroup, NULL)
 #endif
     PHP_FE(pfSense_ipsec_list_sa, NULL)
@@ -2056,6 +2057,91 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 		}
 	}
 	add_assoc_zval(return_value, "members", &members);
+}
+
+PHP_FUNCTION(pfSense_etherswitch_setlaggroup)
+{
+	char *dev;
+	etherswitch_info_t info;
+	etherswitch_laggroup_t lag;
+	int fd, members, port, tagged, untagged;
+	size_t devlen;
+	zval *zvar;
+	zend_long laggroup;
+	HashTable *hash1, *hash2;
+	zval *val, *val2;
+	zend_long lkey, lkey2;
+	zend_string *skey, *skey2;
+
+	zvar = NULL;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl|z", &dev,
+	    &devlen, &laggroup, &zvar) == FAILURE)
+		RETURN_LONG(-1);
+	if (laggroup < 0)
+		RETURN_LONG(-1);
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_LONG(-1);
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_LONG(-1);
+	memset(&info, 0, sizeof(info));
+	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+	if (laggroup >= info.es_nvlangroups) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+
+	members = untagged = 0;
+	if (zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
+		hash1 = Z_ARRVAL_P(zvar);
+
+		ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
+			if (skey != NULL || (Z_TYPE_P(val) != IS_ARRAY)) {
+				continue;
+			}
+
+			port = lkey;
+			if (port < 0 || port >= info.es_nports) {
+				continue;
+			}
+
+			hash2 = Z_ARRVAL_P(val);
+			tagged = 0;
+			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
+				if (!skey2 || Z_TYPE_P(val2) != IS_LONG) {
+					continue;
+				}
+				if (strlen(ZSTR_VAL(skey2)) == 6 && strcasecmp(ZSTR_VAL(skey2), "tagged") == 0 && Z_LVAL_P(val2) != 0) {
+					tagged = 1;
+				}
+			} ZEND_HASH_FOREACH_END();
+
+			members |= (1 << port);
+			if (!tagged)
+				untagged |= (1 << port);
+
+		} ZEND_HASH_FOREACH_END();
+	}
+
+	memset(&lag, 0, sizeof(lag));
+	lag.es_laggroup = laggroup;
+	if (ioctl(fd, IOETHERSWITCHGETLAGGROUP, &lag) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+	lag.es_member_ports = members;
+	lag.es_untagged_ports = untagged;
+	if (ioctl(fd, IOETHERSWITCHSETLAGGROUP, &lag) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+	close(fd);
+	RETURN_LONG(0);
 }
 
 PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
