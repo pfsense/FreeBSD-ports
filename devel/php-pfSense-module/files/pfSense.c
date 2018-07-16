@@ -179,6 +179,7 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
     PHP_FE(pfSense_etherswitch_setlaggroup, NULL)
     PHP_FE(pfSense_etherswitch_setvlangroup, NULL)
+    PHP_FE(pfSense_etherswitch_setmode, NULL)
 #endif
     PHP_FE(pfSense_ipsec_list_sa, NULL)
     {NULL, NULL, NULL}
@@ -2260,6 +2261,55 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 	}
 	close(fd);
 	RETURN_LONG(vlangroup);
+}
+
+PHP_FUNCTION(pfSense_etherswitch_setmode)
+{
+	char *dev, *mode;
+	etherswitch_conf_t conf;
+	etherswitch_info_t info;
+	int fd;
+	size_t devlen, modelen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &dev,
+	    &devlen, &mode, &modelen) == FAILURE)
+		RETURN_LONG(-1);
+	if (modelen == 0)
+		RETURN_LONG(-1);
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_LONG(-1);
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_LONG(-1);
+	/* Just to check the Switch. */
+	memset(&info, 0, sizeof(info));
+	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+
+	bzero(&conf, sizeof(conf));
+	conf.cmd = ETHERSWITCH_CONF_VLAN_MODE;
+	if (strcasecmp(mode, "isl") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_ISL;
+	else if (strcasecmp(mode, "port") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_PORT;
+	else if (strcasecmp(mode, "dot1q") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_DOT1Q;
+	else if (strcasecmp(mode, "dot1q4k") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_DOT1Q_4K;
+	else if (strcasecmp(mode, "qinq") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_DOUBLE_TAG;
+	else
+		conf.vlan_mode = 0;
+	if (ioctl(fd, IOETHERSWITCHSETCONF, &conf) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+	close(fd);
+	RETURN_LONG(0);
 }
 #endif
 
