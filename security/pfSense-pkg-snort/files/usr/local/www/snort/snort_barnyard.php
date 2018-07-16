@@ -3,7 +3,7 @@
  * snort_barnyard.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2008-2009 Robert Zelaya
  * Copyright (c) 2014-2018 Bill Meeks
@@ -37,8 +37,9 @@ if (is_null($id)) {
         exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 $a_nat = &$config['installedpackages']['snortglobal']['rule'];
 
 $pconfig = array();

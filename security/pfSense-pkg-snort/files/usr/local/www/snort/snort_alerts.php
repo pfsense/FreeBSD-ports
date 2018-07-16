@@ -3,10 +3,10 @@
  * snort_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2015 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
  * All rights reserved.
  *
@@ -26,7 +26,6 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-$snortalertlogt = $config['installedpackages']['snortglobal']['snortalertlogtype'];
 $supplist = array();
 $snortlogdir = SNORTLOGDIR;
 $filterlogentries = FALSE;
@@ -159,8 +158,9 @@ elseif (isset($_POST['id']))
 if (empty($instanceid) || !is_numericint($instanceid))
 	$instanceid = 0;
 
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 $a_instance = &$config['installedpackages']['snortglobal']['rule'];
 $snort_uuid = $a_instance[$instanceid]['uuid'];
 $if_real = get_real_interface($a_instance[$instanceid]['interface']);

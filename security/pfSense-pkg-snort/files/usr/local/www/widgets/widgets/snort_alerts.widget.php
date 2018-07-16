@@ -3,8 +3,8 @@
  * snort_alerts.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2009-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,8 +28,11 @@ require_once("/usr/local/www/widgets/include/widget-snort.inc");
 global $config, $g;
 
 /* retrieve snort variables */
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
+	$config['installedpackages'] = array();
+	$config['installedpackages']['snortglobal'] = array();
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 $a_instance = &$config['installedpackages']['snortglobal']['rule'];
 
 // Set some CSS class variables

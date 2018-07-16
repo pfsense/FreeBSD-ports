@@ -34,10 +34,15 @@ require_once("functions.inc");
 
 global $config;
 
-if (!is_array($config['installedpackages']['snortglobal']))
+if (!is_array($config['installedpackages'])) {
+	$config['installedpackages'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal'])) {
 	$config['installedpackages']['snortglobal'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 
 // Just exit if this is a clean install with no saved settings
 if (empty($config['installedpackages']['snortglobal']['rule']))
@@ -127,16 +132,36 @@ if (empty($config['installedpackages']['snortglobal']['hide_deprecated_rules']))
 /**********************************************************/
 foreach ($rule as &$r) {
 	// Initialize arrays for supported preprocessors if necessary
-	if (!is_array($r['frag3_engine']['item']))
+	if (!is_array($r['frag3_engine'])) {
+		$r['frag3_engine'] = array();
+	}
+	if (!is_array($r['frag3_engine']['item'])) {
 		$r['frag3_engine']['item'] = array();
-	if (!is_array($r['stream5_tcp_engine']['item']))
+	}
+	if (!is_array($r['stream5_tcp_engine'])) {
+		$r['stream5_tcp_engine'] = array();
+	}
+	if (!is_array($r['stream5_tcp_engine']['item'])) {
 		$r['stream5_tcp_engine']['item'] = array();
-	if (!is_array($r['http_inspect_engine']['item']))
+	}
+	if (!is_array($r['http_inspect_engine'])) {
+		$r['http_inspect_engine'] = array();
+	}
+	if (!is_array($r['http_inspect_engine']['item'])) {
 		$r['http_inspect_engine']['item'] = array();
-	if (!is_array($r['ftp_client_engine']['item']))
+	}
+	if (!is_array($r['ftp_client_engine'])) {
+		$r['ftp_client_engine'] = array();
+	}
+	if (!is_array($r['ftp_client_engine']['item'])) {
 		$r['ftp_client_engine']['item'] = array();
-	if (!is_array($r['ftp_server_engine']['item']))
+	}
+	if (!is_array($r['ftp_server_engine'])) {
+		$r['ftp_server_engine'] = array();
+	}
+	if (!is_array($r['ftp_server_engine']['item'])) {
 		$r['ftp_server_engine']['item'] = array();
+	}
 
 	$pconfig = array();
 	$pconfig = $r;
