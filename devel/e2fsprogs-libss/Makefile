@@ -11,9 +11,6 @@ COMMENT=	Command-line interface parsing library from e2fsprogs
 LICENSE=	MIT
 LICENSE_FILE=	${INSTALL_WRKSRC}/ss.h
 
-CONFLICTS=	heimdal-[0-9]*
-CONFLICTS+=	krb4-[0-9]*
-
 OPTIONS_EXCLUDE=	DOCS EXAMPLES IPV6 NLS
 CONFIGURE_ARGS=	--enable-elf-shlibs
 MASTERDIR=	${.CURDIR}/../../sysutils/e2fsprogs
