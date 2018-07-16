@@ -3,11 +3,11 @@
  * snort_log_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

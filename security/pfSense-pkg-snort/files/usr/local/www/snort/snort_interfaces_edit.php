@@ -3,7 +3,7 @@
  * snort_interfaces_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
  * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
@@ -29,11 +29,9 @@ global $g, $config, $rebuild_rules;
 $snortdir = SNORTDIR;
 $snortlogdir = SNORTLOGDIR;
 
-if (!is_array($config['installedpackages']['snortglobal']))
-	$config['installedpackages']['snortglobal'] = array();
-
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 $a_rule = &$config['installedpackages']['snortglobal']['rule'];
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))

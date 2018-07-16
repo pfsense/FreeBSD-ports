@@ -3,8 +3,8 @@
  * snort_import_aliases.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,17 +49,29 @@ if (is_null($id) || is_null($eng)) {
 $selectablealias = false;
 
 // Initialize required array variables as necessary
-if (!is_array($config['aliases']['alias']))
+if (!is_array($config['aliases'])) {
+	$config['aliases'] = array();
+}
+if (!is_array($config['aliases']['alias'])) {
 	$config['aliases']['alias'] = array();
+}
 $a_aliases = $config['aliases']['alias'];
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 
 // The $eng variable points to the specific Snort config section
 // engine we are importing values into.  Initialize the config.xml
 // array if necessary.
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id][$eng]['item']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id][$eng])) {
+	$config['installedpackages']['snortglobal']['rule'][$id][$eng] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id][$eng]['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id][$eng]['item'] = array();
+}
 
 // Initialize a pointer to the Snort config section engine we are
 // importing values into.
