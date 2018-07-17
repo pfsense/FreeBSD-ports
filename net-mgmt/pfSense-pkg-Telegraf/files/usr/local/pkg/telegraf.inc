@@ -80,6 +80,7 @@ function telegraf_resync_config() {
 
 [[inputs.system]]
 
+[[inputs.pf]]
 
 EOD;
 

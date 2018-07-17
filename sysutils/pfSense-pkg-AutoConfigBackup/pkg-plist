@@ -1,9 +1,0 @@
-pkg/autoconfigbackup.xml
-pkg/write_config/parse_config_upload.inc
-www/autoconfigbackup.php
-pkg/autoconfigbackup.inc
-www/autoconfigbackup_backup.php
-pkg/write_config/parse_config_upload.php
-www/autoconfigbackup_stats.php
-%%DATADIR%%/info.xml
-@dir /etc/inc
