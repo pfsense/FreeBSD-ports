@@ -261,6 +261,8 @@ abi_setup() {
 
 	if [ "${_arch}" = "armv6" ]; then
 		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:hardfp"
+	elif [ "${_arch}" = "aarch64" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${_arch}:64"
 	elif [ "${_arch}" = "i386" ]; then
 		CUR_ALTABI="${CUR_ALTABI}:x86:32"
 	else
