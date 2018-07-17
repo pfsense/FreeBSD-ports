@@ -71,10 +71,10 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		voucher>=0:sysutils/voucher \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
-		xinetd>=0:security/xinetd
+		xinetd>=0:security/xinetd \
+		openvpn-auth-script>=0:security/openvpn-auth-script
 
-LIB_DEPENDS=	libltdl.so:devel/libltdl \
-		openvpn-plugin-auth-script.so:security/openvpn-auth-script
+LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 USES=		kmod php:flavors
 
