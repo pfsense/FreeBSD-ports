@@ -412,6 +412,8 @@ pkg_upgrade() {
 	# figure out which PHP major version is running
 	local _cur_php_pkg=$(_pkg query %o $(_pkg info -x '^php[0-9]{2}-[0-9]'))
 
+	local _arch=$(uname -p)
+
 	# Detect if has u-boot package installed
 	unset uboot_bin
 	unset uboot_pkg
@@ -594,8 +596,24 @@ pkg_upgrade() {
 				[ -f /tmp/loader.rc.local ] \
 				    && cp /tmp/loader.rc.local /boot 2>/dev/null
 			fi
+			# Save a copy of loader.conf and restore after kernel
+			# upgrade if it is removed. There was a bug that added
+			# a static copy of loader.conf on amd64 kernel package
+			# for a period of time in 2.4.4-devel that lead users
+			# to have no loader.conf after upgrade, we want to
+			# workaround it
+			rm -f /tmp/loader.conf.backup
+			if [ "${_arch}" = "amd64" ] && \
+			    [ -s /boot/loader.conf ]; then
+				cp -fp /boot/loader.conf /tmp/loader.conf.backup
+			fi
 			_exec "pkg-static upgrade -U ${kernel_pkg}" \
 			    "Upgrading ${product} kernel"
+			if [ "${_arch}" = "amd64" ] && \
+			    [ -s /tmp/loader.conf.backup ] && \
+			    [ ! -s /boot/loader.conf ]; then
+				cp -fp /tmp/loader.conf.backup /boot/loader.conf
+			fi
 		fi
 
 		if [ -n "${uboot_pkg}" ] && upgrade_available ${uboot_pkg}; then
