@@ -22,6 +22,13 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/backup.inc");
 
+if (!is_array($config['installedpackages']['backup'])) {
+	$config['installedpackages']['backup'] = array();
+}
+
+if (!is_array($config['installedpackages']['backup']['config'])) {
+	$config['installedpackages']['backup']['config'] = array();
+}
 
 $a_backup = &$config['installedpackages']['backup']['config'];
 

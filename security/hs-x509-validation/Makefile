@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	x509-validation
-PORTVERSION=	1.6.5
+PORTVERSION=	1.6.10
 PORTREVISION=	1
 CATEGORIES=	security haskell
 

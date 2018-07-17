@@ -2,17 +2,15 @@
 
 PORTNAME=	datavis3d
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 5 3D data visualization module
 
-USE_QT5=	core network gui widgets qml quick designer buildtools_build
-QT_DIST=	${PORTNAME}
+USE_QT=		core network gui widgets qml quick designer buildtools_build
 
-USES=		qmake
+USES=		qmake qt-dist:5,datavis3d
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.mk>

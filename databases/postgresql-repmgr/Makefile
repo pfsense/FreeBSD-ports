@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	postgresql-repmgr
-PORTVERSION=	4.0.1
+PORTVERSION=	4.0.4
 CATEGORIES=	databases
 MASTER_SITES=	http://www.repmgr.org/download/
 DISTNAME=	repmgr-${PORTVERSION}
@@ -16,6 +16,7 @@ RUN_DEPENDS=	rsync:net/rsync
 
 GNU_CONFIGURE=	yes
 USES+=		gettext gmake pgsql:9.3+
+LLD_UNSAFE=	yes
 USE_RC_SUBR=	repmgrd
 WANT_PGSQL=	server
 MAKE_ENV=	USE_PGXS=1

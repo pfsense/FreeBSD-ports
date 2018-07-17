@@ -1,8 +1,7 @@
-# Created by: Alonso CArdenas <acm@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	bareos
-PORTVERSION=	16.2.7
+PORTVERSION=	17.2.5
 CATEGORIES=	sysutils
 MASTER_SITES=	http://doc.bareos.org/master/
 PKGNAMESUFFIX=	-docs

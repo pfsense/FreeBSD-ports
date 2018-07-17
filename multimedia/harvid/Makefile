@@ -3,6 +3,7 @@
 PORTNAME=	harvid
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.8.2
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	marcelbonnet@gmail.com
@@ -12,7 +13,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
 USES=		gmake jpeg localbase pkgconfig
 USE_GITHUB=	yes

@@ -4,6 +4,7 @@
 PORTNAME=	seqan-apps
 DISTVERSIONPREFIX=	seqan-v
 DISTVERSION=	2.4.0
+PORTREVISION=	1
 CATEGORIES=	biology
 
 MAINTAINER=	h2+fbsdports@fsfe.org
@@ -11,6 +12,8 @@ COMMENT=	Official bioinformatic applications based on the SeqAn library
 
 LICENSE=	BSD3CLAUSE LGPL3 GPLv3
 LICENSE_COMB=	multi
+
+BROKEN_powerpc64=	fails to build: requires 'c++14-lang' in USES (cf.)
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
 

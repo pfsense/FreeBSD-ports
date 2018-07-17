@@ -6,11 +6,14 @@ CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	22
 
-MAINTAINER=	idefix@fechner.net
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Client for Kubernetes REST API
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+DEPRECATED=	Obsoleted by update of www/gitlab. Please use www/rubygem-kubeclient instead.
+EXPIRATION_DATE=	2018-06-30
 
 RUN_DEPENDS=	rubygem-http>=0.9.8:www/rubygem-http \
 		rubygem-recursive-open-struct100=1.0.0:devel/rubygem-recursive-open-struct100 \

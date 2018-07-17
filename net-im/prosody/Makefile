@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	prosody
-PORTVERSION=	0.10.0
-PORTREVISION=	1
+PORTVERSION=	0.10.2
 CATEGORIES=	net-im
 MASTER_SITES=	http://prosody.im/downloads/source/ \
 		http://redundancy.redundancy.org/mirror/
@@ -13,6 +12,8 @@ COMMENT=	Simple extensible XMPP server written in Lua
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_powerpc64=	fails to compile: table.c:14: 'for' loop initial declaration used outside C99 mode
 
 RUN_DEPENDS=	${LUA_MODLIBDIR}/socket/core.so:net/luasocket-51 \
 		${LUA_MODLIBDIR}/ssl.so:security/luasec-51 \

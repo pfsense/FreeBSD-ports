@@ -164,18 +164,18 @@ bs:*:220:
 opensips:*:221:
 rtpproxy:*:222:
 mqttwarn:*:223:
-# free: 224
+payara:*:224:
 postgrey:*:225:
 sqlgrey:*:226:
 _hfm:*:227:
 osrm:*:228:
 kismet:*:229:
 carbon:*:230:
-# free: 231
+foundationdb:*:231:
 # free: 232
 # free: 233
 kafka:*:234:
-# free: 235
+openhab:*:235:
 # free: 236
 # free: 237
 # free: 238
@@ -757,7 +757,7 @@ foreman_proxy:*:812:
 puppet:*:814:
 uchiwa:*:815:
 # free: 816
-btsync:*:817:
+rslsync:*:817:
 jenkins:*:818:
 rundeck:*:819:
 openacs:*:820:
@@ -793,7 +793,7 @@ chronyd:*:849:
 # free: 850
 # free: 851
 # free: 852
-# free: 853
+_geodns:*:853:
 # free: 854
 # free: 855
 # free: 856
@@ -825,14 +825,14 @@ chronyd:*:849:
 # free: 882
 # free: 883
 # free: 884
-# free: 885
-# free: 886
+tcpdump:*:885:
+miniflux:*:886:
 pdagent:*:887:
 vuls:*:888:
 mattermost:*:889:
 matterircd:*:890:
-# free: 891
-# free: 892
+urbackup:*:891:
+tautulli:*:892:
 logstash:*:893:
 arangodb:*:894:
 snmptt:*:895:

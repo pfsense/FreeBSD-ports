@@ -2,9 +2,10 @@
 
 PORTNAME=	samplicator
 DISTVERSION=	1.3.8rc1
+PORTREVISION=	1
 CATEGORIES=	net
 
-MAINTAINER=	me@falz.net
+MAINTAINER=	ath@heybey.org
 COMMENT=	Receives UDP datagrams and redistributes them to a set of receivers
 
 LICENSE=	GPLv2

@@ -2,13 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	milter
-PORTVERSION=	1.0
-PORTREVISION=	4
+PORTVERSION=	1.0.2
+PORTREVISION=	1
+DISTVERSIONPREFIX=	${GH_PROJECT}-
 CATEGORIES=	mail python
-MASTER_SITES=	SF/${PYPORTNAME}/${PYPORTNAME}/${DISTNAME}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	${PYPORTNAME}-${PORTVERSION}
-DIST_SUBDIR=	python
 
 MAINTAINER=	estartu@augusta.de
 COMMENT=	Python interface to Sendmail milter API
@@ -21,12 +19,20 @@ LIB_DEPENDS=	libmilter.so:mail/libmilter
 CFLAGS+=	-I${LOCALBASE}/include
 .endif
 
-PYPORTNAME=	${PKGNAMEPREFIX:C/[0-9]+-//}${PORTNAME}
+USES=	python
 
-USES=		python:2.7
-USE_PYTHON=	distutils autoplist
+USE_GITHUB=	yes
+GH_ACCOUNT=	sdgathman
+GH_PROJECT=	py${PORTNAME}
+USE_PYTHON=	distutils autoplist flavors
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/milter.so
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${FLAVOR:Upy27:Mpy3*}
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-miltermodule.c
+.endif
+
+.include <bsd.port.post.mk>

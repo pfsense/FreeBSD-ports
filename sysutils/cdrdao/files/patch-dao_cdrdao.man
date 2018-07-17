@@ -1,0 +1,24 @@
+--- dao/cdrdao.man.orig	2018-05-16 10:46:39 UTC
++++ dao/cdrdao.man
+@@ -798,13 +798,9 @@ following locations. The files will be r
+ .I cdrdao
+ in that order:
+ 
+-1. /etc/cdrdao.conf
+-
+-2. /etc/defaults/cdrdao
+-
+-3. /etc/default/cdrdao
++1. %%PREFIX%%/etc/cdrdao.conf
+ 
+-4. $HOME/.cdrdao
++2. $HOME/.cdrdao
+ 
+ 
+ Command line options will overwrite the loaded settings.
+@@ -886,4 +882,4 @@ resources may not be released. Use ipcs(
+ .ft R
+ .fi
+ .SH SEE ALSO
+-.BR gcdmaster "(1), "cdrecord "(1), "cdda2wav "(1), "cdparanoia "(1), " sox "(1), "ipcs "(8), " ipcrm (8) 
++.BR gcdmaster "(1), "cdrecord "(1), "cdda2wav "(1), "cdparanoia "(1), " sox "(1), "ipcs "(1), " ipcrm (1) 

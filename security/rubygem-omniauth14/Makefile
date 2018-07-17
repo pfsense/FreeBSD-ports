@@ -6,11 +6,14 @@ CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	14
 
-MAINTAINER=	idefix@fechner.net
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Generalized Rack framework for multiple-provider authentication
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+DEPRECATED=	Obsoleted by update of www/gitlab. Please use security/rubygem-omniauth instead.
+EXPIRATION_DATE=	2018-06-30
 
 RUN_DEPENDS=	rubygem-hashie>=3.4.6:devel/rubygem-hashie \
 		rubygem-rack>=1.6.2:www/rubygem-rack

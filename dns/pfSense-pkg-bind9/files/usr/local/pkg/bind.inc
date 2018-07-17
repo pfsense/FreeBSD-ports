@@ -573,8 +573,7 @@ EOD;
 										}
 									} else {
 										$parts = array_reverse(explode('.', $domain));
-										$diff = array_diff_assoc($parts, $zoneparts);
-										if (count($diff) == 0) {
+										if ($parts === $zoneparts) {
 											$zone_conf .= "{$host['hostname']}\tIN A\t{$host['ipaddr']}\n";
 										}
 									}

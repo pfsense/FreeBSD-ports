@@ -2,9 +2,10 @@
 
 .include "${.CURDIR}/Makefile.common"
 
-MASTER_SITES=	http://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
-		http://dev-www.libreoffice.org/src/:src \
-		http://dev-www.libreoffice.org/extern/:ext
+PORTREVISION=	1
+MASTER_SITES=	https://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
+		https://dev-www.libreoffice.org/src/:src \
+		https://dev-www.libreoffice.org/extern/:ext
 DISTFILES=	${PORTNAME}-${LOVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}-help-${LOVERSION}${EXTRACT_SUFX}
 DIST_SUBDIR=	libreoffice
@@ -107,7 +108,6 @@ GNU_CONFIGURE=	yes
 USE_GL=		gl glew glu
 USE_OPENLDAP=	yes
 USE_PERL5=	build
-USE_QT4=	# empty but required
 USE_XORG=	ice sm x11 xaw xext xinerama xrandr xrender
 USES=		autoreconf:build bison compiler:c++14-lang cpe gmake jpeg \
 		perl5 pkgconfig python shebangfix shared-mime-info ssl tar:xz
@@ -195,8 +195,8 @@ KDE4_CONFIGURE_ENV=	KDE4DIR="${KDE_PREFIX}" \
 			QT4DIR="${PREFIX}" \
 			QT4INC="${QT_INCDIR}" \
 			QT4LIB="${QT_LIBDIR}"
-KDE4_USES=	kde:4
-KDE4_USE=	KDE=kdelibs QT4=moc_build,qmake_build
+KDE4_USES=	kde:4 qt:4
+KDE4_USE=	KDE=kdelibs QT=moc_build,qmake_build
 
 MMEDIA_CONFIGURE_ENABLE=	gstreamer-1-0
 MMEDIA_USE=	GSTREAMER1=yes
@@ -278,16 +278,6 @@ MAKE_ENV+=	DISPLAY=
 MAKE_ENV+=	verbose=1
 
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD
-.if (${OSVERSION} >= 1200000 && ${OSVERSION} < 1200003) || \
-    (${OSVERSION} >= 1100500 && ${OSVERSION} < 1100501) || \
-    (${OSVERSION} >= 1100000 && ${OSVERSION} < 1100122) || \
-    ${OSVERSION} < 1003506
-EXTRA_PATCHES=	${PATCHDIR}/extrapatch-vcl_inc_unx_gtk_gtkinst.hxx \
-		${PATCHDIR}/extrapatch-vcl_unx_gtk_gtkinst.cxx
-.endif
-.endif # FreeBSD
 
 .if ${COMPILER_TYPE} == "clang"
 CXXFLAGS_WARN=	-Woverloaded-virtual -Wno-unused-parameter

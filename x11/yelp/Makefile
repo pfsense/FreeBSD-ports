@@ -3,6 +3,7 @@
 
 PORTNAME=	yelp
 PORTVERSION=	3.22.0
+PORTREVISION=	1
 CATEGORIES=	x11 gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -23,8 +24,8 @@ RUN_DEPENDS=	yelp-xsl>=0:textproc/yelp-xsl
 
 PORTSCOUT=	limitw:1,even
 
-USES=		desktop-file-utils gettext gmake gnome libtool pathfix \
-		pkgconfig sqlite tar:xz
+USES=		compiler:c11 desktop-file-utils gettext gmake gnome \
+		libtool pathfix pkgconfig sqlite tar:xz
 USE_XORG=	x11 ice
 USE_GNOME=	cairo gtk30 intlhack libxml2 libxslt
 GNU_CONFIGURE=	yes

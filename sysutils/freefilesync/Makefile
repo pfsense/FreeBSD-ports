@@ -3,6 +3,7 @@
 
 PORTNAME=	freefilesync
 DISTVERSION=	9.8
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://www.freefilesync.org/download/ \
 		https://www.freefilesync.org/archive/
@@ -37,11 +38,5 @@ post-patch:
 		${WRKDIR}/zen/file_access.cpp
 	@${REINPLACE_CMD} -e 's|WEXITSTATUS||' ${WRKDIR}/zen/shell_execute.h
 	@${REINPLACE_CMD} -e 's| noexcept;|;|' ${WRKDIR}/zen/scope_guard.h
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1003506
-BROKEN=		no __cxa_thread_atexit() support in FreeBSD libc < 10.4
-.endif
 
 .include <bsd.port.mk>

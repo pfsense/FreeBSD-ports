@@ -3,7 +3,7 @@
 
 PORTNAME=	kicad
 PORTVERSION=	4.0.7
-PORTREVISION=	7
+PORTREVISION=	8
 PORTEPOCH=	2
 CATEGORIES=	cad
 
@@ -26,7 +26,7 @@ GH_ACCOUNT=	KiCad
 GH_PROJECT=	kicad-source-mirror
 
 USES=		cmake:noninja compiler:c++11-lib desktop-file-utils	\
-		pkgconfig python shared-mime-info shebangfix ssl tar:xz
+		pkgconfig python:2.7 shared-mime-info shebangfix ssl tar:xz
 SHEBANG_FILES=	pcbnew/scripting/plugins/touch_slider_wizard.py
 
 USE_XORG=	ice x11 xext

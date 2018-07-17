@@ -4,7 +4,7 @@
 MASTERDIR=	${.CURDIR}/../bazel
 PKGNAMESUFFIX=	-clang38
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 
 OPTIONS_SLAVE=	CLANG38
 

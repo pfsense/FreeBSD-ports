@@ -10,7 +10,7 @@ MASTER_SITES=	http://crd-legacy.lbl.gov/~xiaoye/SuperLU/ \
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	robert.ayrapetyan@gmail.com
 COMMENT=	Library of routines for performing sparse factorization
 
 LICENSE=	BSD3CLAUSE
@@ -22,12 +22,12 @@ USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/SuperLU_${PORTVERSION}
 PLIST_SUB=	P_VERSION="${PORTVERSION}" P_VER="${PORTVERSION:R:R}"
 
-CMAKE_ARGS=	-DUSE_XSDK_DEFAULTS:BOOL=ON \
-		-Denable_examples:BOOL=OFF
+CMAKE_ON=	USE_XSDK_DEFAULTS
+CMAKE_OFF=	enable_tests enable_examples
 
 PORTDOCS=	*
 
-OPTIONS_DEFINE=		DOCS TEST
+OPTIONS_DEFINE=		DOCS
 OPTIONS_SINGLE=		BLAS
 OPTIONS_SINGLE_BLAS=	ATLAS GOTOBLAS OPENBLAS REFERENCE
 OPTIONS_DEFAULT=	REFERENCE
@@ -46,7 +46,6 @@ OPENBLAS_CMAKE_ARGS=	-DBLA_VENDOR:STRING="OpenBLAS"
 REFERENCE_DESC=		Reference blas implementation
 REFERENCE_USES=		blaslapack
 REFERENCE_CMAKE_ARGS=	-DBLA_VENDOR:STRING="Generic"
-TEST_CMAKE_ARGS=	-Denable_tests:BOOL=ON
 
 SLU_DOCS=	SLU_general.ps.gz simax-29176.pdf
 
@@ -62,5 +61,11 @@ post-install-DOCS-on:
 		${STAGEDIR}${DOCSDIR})
 	(cd ${WRKSRC}/DOC && ${COPYTREE_SHARE} "html ug.pdf" \
 		${STAGEDIR}${DOCSDIR})
+
+do-test:
+	@cd ${BUILD_WRKSRC} && \
+		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -Denable_tests:BOOL=ON ${CMAKE_SOURCE_PATH} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} test
 
 .include <bsd.port.mk>

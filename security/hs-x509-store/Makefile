@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	x509-store
-PORTVERSION=	1.6.2
+PORTVERSION=	1.6.6
 PORTREVISION=	1
 CATEGORIES=	security haskell
 

@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	libphutil
-PORTVERSION=	20170630
+PORTVERSION=	20180420
 CATEGORIES=	devel
-PKGNAMEPREFIX=	php-
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	grembo@FreeBSD.org
 COMMENT=	Collection of PHP utility classes
@@ -12,13 +12,13 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 PHP_DESTDIR=	lib/php/libphutil
-USES=		php
+USES=		php:flavors
 USE_PHP=	xml
 USE_GITHUB=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 GH_ACCOUNT=	phacility
-GH_TAGNAME=	0a4487d
+GH_TAGNAME=	20eff1c
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}

@@ -2,7 +2,7 @@
 
 PORTNAME=	prettyclass
 PORTVERSION=	1.0.0.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

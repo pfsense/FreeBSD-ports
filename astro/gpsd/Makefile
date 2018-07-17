@@ -131,16 +131,17 @@ TIMING_MAKE_ARGS_OFF=	timing=no
 # Client-side options
 NCURSES_MAKE_ARGS_OFF=	ncurses=no
 NCURSES_USES=		ncurses
-QTBIND_USE=		QT4=network,corelib
+QTBIND_USES=		qt:4
+QTBIND_USE=		QT=network,corelib
 QTBIND_MAKE_ARGS=	qt=yes
 QTBIND_MAKE_ARGS_OFF=	qt=no
 QTBIND_PLIST_SUB=	QTBIND=""
 QTBIND_PLIST_SUB_OFF=	QTBIND="@comment "
 RECONFIGURE_MAKE_ARGS_OFF=	reconfigure=no
 CPPBIND_MAKE_ARGS_OFF=	libgpsmm=no
-X11_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${FLAVOR} \
-	${PYTHON_PKGNAMEPREFIX}gobject3>=0:devel/py-gobject3@${FLAVOR}
-#X11_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${FLAVOR}
+X11_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR} \
+	${PYTHON_PKGNAMEPREFIX}gobject3>=0:devel/py-gobject3@${PY_FLAVOR}
+#X11_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR}
 X11_USE=	GNOME=gtk30
 
 # Build control

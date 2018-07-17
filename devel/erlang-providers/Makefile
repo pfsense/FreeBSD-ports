@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	providers
-PORTVERSION=	1.6.0
+PORTVERSION=	1.7.0
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 
-MAINTAINER=	olgeni@FreeBSD.org
+MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Erlang providers library used by relx
 
 LICENSE=	LGPL3

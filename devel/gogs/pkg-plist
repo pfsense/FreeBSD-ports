@@ -5,6 +5,10 @@ bin/gogs-rm-data
 @sample(%%GOGS_USER%%,%%GOGS_GROUP%%,640) %%ETCDIR%%/conf/app.ini.sample
 etc/rc.d/gogs
 libexec/gogs/conf/app.ini
+libexec/gogs/conf/auth.d/ldap_bind_dn.conf.example
+libexec/gogs/conf/auth.d/ldap_simple_auth.conf.example
+libexec/gogs/conf/auth.d/pam.conf.example
+libexec/gogs/conf/auth.d/smtp.conf.example
 libexec/gogs/conf/gitignore/Actionscript
 libexec/gogs/conf/gitignore/Ada
 libexec/gogs/conf/gitignore/Agda
@@ -112,6 +116,7 @@ libexec/gogs/conf/gitignore/OracleForms
 libexec/gogs/conf/gitignore/Packer
 libexec/gogs/conf/gitignore/Perl
 libexec/gogs/conf/gitignore/Phalcon
+libexec/gogs/conf/gitignore/PhpStorm
 libexec/gogs/conf/gitignore/PlayFramework
 libexec/gogs/conf/gitignore/Plone
 libexec/gogs/conf/gitignore/Prestashop
@@ -161,6 +166,7 @@ libexec/gogs/conf/gitignore/VisualStudioCode
 libexec/gogs/conf/gitignore/VVVV
 libexec/gogs/conf/gitignore/Waf
 libexec/gogs/conf/gitignore/WebMethods
+libexec/gogs/conf/gitignore/WebStorm
 libexec/gogs/conf/gitignore/Windows
 libexec/gogs/conf/gitignore/WordPress
 libexec/gogs/conf/gitignore/Xcode
@@ -211,10 +217,12 @@ libexec/gogs/conf/locale/locale_de-DE.ini
 libexec/gogs/conf/locale/locale_en-GB.ini
 libexec/gogs/conf/locale/locale_en-US.ini
 libexec/gogs/conf/locale/locale_es-ES.ini
+libexec/gogs/conf/locale/locale_fa-IR.ini
 libexec/gogs/conf/locale/locale_fi-FI.ini
 libexec/gogs/conf/locale/locale_fr-FR.ini
 libexec/gogs/conf/locale/locale_gl-ES.ini
 libexec/gogs/conf/locale/locale_hu-HU.ini
+libexec/gogs/conf/locale/locale_id-ID.ini
 libexec/gogs/conf/locale/locale_it-IT.ini
 libexec/gogs/conf/locale/locale_ja-JP.ini
 libexec/gogs/conf/locale/locale_ko-KR.ini
@@ -228,6 +236,7 @@ libexec/gogs/conf/locale/locale_sr-SP.ini
 libexec/gogs/conf/locale/locale_sv-SE.ini
 libexec/gogs/conf/locale/locale_tr-TR.ini
 libexec/gogs/conf/locale/locale_uk-UA.ini
+libexec/gogs/conf/locale/locale_vi-VN.ini
 libexec/gogs/conf/locale/locale_zh-CN.ini
 libexec/gogs/conf/locale/locale_zh-HK.ini
 libexec/gogs/conf/locale/locale_zh-TW.ini
@@ -255,17 +264,23 @@ libexec/gogs/public/assets/octicons-4.3.0/octicons.woff2
 libexec/gogs/public/config.codekit
 libexec/gogs/public/css/github.min.css
 libexec/gogs/public/css/gogs.css
-libexec/gogs/public/css/semantic-2.2.13.min.css
-libexec/gogs/public/css/themes/basic/assets/fonts/icons.eot
-libexec/gogs/public/css/themes/basic/assets/fonts/icons.svg
-libexec/gogs/public/css/themes/basic/assets/fonts/icons.ttf
-libexec/gogs/public/css/themes/basic/assets/fonts/icons.woff
+libexec/gogs/public/css/semantic-2.3.1.min.css
+libexec/gogs/public/css/themes/default/assets/fonts/brand-icons.eot
+libexec/gogs/public/css/themes/default/assets/fonts/brand-icons.svg
+libexec/gogs/public/css/themes/default/assets/fonts/brand-icons.ttf
+libexec/gogs/public/css/themes/default/assets/fonts/brand-icons.woff
+libexec/gogs/public/css/themes/default/assets/fonts/brand-icons.woff2
 libexec/gogs/public/css/themes/default/assets/fonts/icons.eot
 libexec/gogs/public/css/themes/default/assets/fonts/icons.otf
 libexec/gogs/public/css/themes/default/assets/fonts/icons.svg
 libexec/gogs/public/css/themes/default/assets/fonts/icons.ttf
 libexec/gogs/public/css/themes/default/assets/fonts/icons.woff
 libexec/gogs/public/css/themes/default/assets/fonts/icons.woff2
+libexec/gogs/public/css/themes/default/assets/fonts/outline-icons.eot
+libexec/gogs/public/css/themes/default/assets/fonts/outline-icons.svg
+libexec/gogs/public/css/themes/default/assets/fonts/outline-icons.ttf
+libexec/gogs/public/css/themes/default/assets/fonts/outline-icons.woff
+libexec/gogs/public/css/themes/default/assets/fonts/outline-icons.woff2
 libexec/gogs/public/css/themes/default/assets/images/flags.png
 libexec/gogs/public/img/404.png
 libexec/gogs/public/img/500.png
@@ -1164,7 +1179,7 @@ libexec/gogs/public/js/jquery-1.11.3.min.js
 libexec/gogs/public/js/libs/clipboard-1.5.9.min.js
 libexec/gogs/public/js/libs/emojify-1.1.0.min.js
 libexec/gogs/public/js/libs/jquery.are-you-sure.js
-libexec/gogs/public/js/semantic-2.2.13.min.js
+libexec/gogs/public/js/semantic-2.3.1.min.js
 libexec/gogs/public/less/_admin.less
 libexec/gogs/public/less/_base.less
 libexec/gogs/public/less/_dashboard.less
@@ -1476,7 +1491,7 @@ libexec/gogs/public/plugins/jquery.minicolors-2.2.3/jquery.minicolors.css
 libexec/gogs/public/plugins/jquery.minicolors-2.2.3/jquery.minicolors.min.js
 libexec/gogs/public/plugins/jquery.minicolors-2.2.3/jquery.minicolors.png
 libexec/gogs/public/plugins/marked-0.3.6/marked.min.js
-libexec/gogs/public/plugins/notebookjs-0.2.6/notebook.min.js
+libexec/gogs/public/plugins/notebookjs-0.3.0/notebook.min.js
 libexec/gogs/public/plugins/pdfjs-1.4.20/build/pdf.js
 libexec/gogs/public/plugins/pdfjs-1.4.20/build/pdf.worker.js
 libexec/gogs/public/plugins/pdfjs-1.4.20/LICENSE
@@ -1580,7 +1595,6 @@ libexec/gogs/templates/admin/base/search.tmpl
 libexec/gogs/templates/admin/config.tmpl
 libexec/gogs/templates/admin/dashboard.tmpl
 libexec/gogs/templates/admin/monitor.tmpl
-libexec/gogs/templates/admin/nav.tmpl
 libexec/gogs/templates/admin/navbar.tmpl
 libexec/gogs/templates/admin/notice.tmpl
 libexec/gogs/templates/admin/org/list.tmpl
@@ -1669,7 +1683,6 @@ libexec/gogs/templates/repo/settings/collaboration.tmpl
 libexec/gogs/templates/repo/settings/deploy_keys.tmpl
 libexec/gogs/templates/repo/settings/githook_edit.tmpl
 libexec/gogs/templates/repo/settings/githooks.tmpl
-libexec/gogs/templates/repo/settings/nav.tmpl
 libexec/gogs/templates/repo/settings/navbar.tmpl
 libexec/gogs/templates/repo/settings/options.tmpl
 libexec/gogs/templates/repo/settings/protected_branch.tmpl
@@ -1722,7 +1735,7 @@ libexec/gogs/templates/user/settings/security.tmpl
 libexec/gogs/templates/user/settings/sshkeys.tmpl
 libexec/gogs/templates/user/settings/two_factor_enable.tmpl
 libexec/gogs/templates/user/settings/two_factor_recovery_codes.tmpl
+@dir(%%GOGS_USER%%,%%GOGS_GROUP%%,750) %%GOGS_DBDIR%%
 @dir(%%GOGS_USER%%,%%GOGS_GROUP%%,750) %%GOGS_DBDIR%%/data
 @dir(%%GOGS_USER%%,%%GOGS_GROUP%%,750) %%GOGS_DBDIR%%/repositories
-@dir(%%GOGS_USER%%,%%GOGS_GROUP%%,750) %%GOGS_DBDIR%%
 @dir(%%GOGS_USER%%,%%GOGS_GROUP%%,750) %%GOGS_LOGDIR%%

@@ -2,7 +2,7 @@
 
 PORTNAME=	wsjt
 DISTVERSION=	${VERSION}.r${SVN_REV}
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	comms hamradio
 MASTER_SITES=	LOCAL/db
 DISTNAME=	wsjt-r${SVN_REV}
@@ -11,6 +11,9 @@ MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Weak signal ham radio communication package
 
 LICENSE=	GPLv3
+
+DEPRECATED=	replace with wsjtx upstream no longer maintained
+EXPIRATION_DATE=2018-10-01
 
 RUN_DEPENDS=	${LOCALBASE}/bin/kvasd:comms/kvasd \
 		${WSJT_DEPENDS}

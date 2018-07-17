@@ -3,7 +3,7 @@
 PORTNAME=	openra
 PORTVERSION=	20180307
 DISTVERSIONPREFIX=	release-
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/SDL2-CS/releases/download/20161223/:SDL2_CS \
 		https://github.com/${GH_ACCOUNT}/OpenAL-CS/releases/download/20151227/:OpenAL_CS \
@@ -14,8 +14,8 @@ DISTFILES=	SDL2-CS.dll:SDL2_CS \
 		OpenAL-CS.dll:OpenAL_CS \
 		OpenAL-CS.dll.config:OpenAL_CS \
 		Eluant.dll:Eluant \
-		GeoLite2-Country.mmdb.gz:GeoLite2
-EXTRACT_ONLY=	${DISTFILES:C/:.*//:N*.config:N*.dll:N*.mmdb*:N*.nupkg}
+		GeoLite2-Country_20180605${EXTRACT_SUFX}:GeoLite2
+EXTRACT_ONLY=	${DISTFILES:C/:.*//:N*.config:N*.dll:N*.nupkg}
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Multiplayer re-envisioning of early RTS games by Westwood Studios
@@ -28,7 +28,7 @@ NUGET_DEPENDS=	FuzzyLogicLibrary=1.2.0 \
 		MaxMind.Db=2.0.0 \
 		NUnit=3.0.1 \
 		NUnit.Console=3.0.1 \
-		Open.Nat=2.1.0 \
+		Open.NAT=2.1.0 \
 		SharpFont=4.0.1 \
 		SharpZipLib=0.86.0 \
 		StyleCop.MSBuild=4.7.49.0 \
@@ -42,6 +42,7 @@ NO_ARCH=	yes
 USES=		desktop-file-utils gmake lua:51,run mono:nuget openal:soft \
 		shared-mime-info shebangfix
 USE_SDL=	sdl2
+NUGET_LAYOUT=	flat
 NUGET_PACKAGEDIR=${WRKSRC}/thirdparty/download
 SHEBANG_FILES=	launch-dedicated.sh
 MAKE_ENV=	prefix="${PREFIX}" mandir="${PREFIX}/man" \
@@ -59,7 +60,9 @@ TEST_ALL_TARGET=test
 
 post-extract:
 	${CP} ${DISTFILES:C/:.*//:N*.nupkg:N*.tar*:S,^,${_DISTDIR}/,} \
+		${WRKDIR}/GeoLite2-*/*.mmdb \
 		${NUGET_PACKAGEDIR}
+	${GZIP_CMD} ${NUGET_PACKAGEDIR}/*.mmdb
 
 post-patch:
 	${REINPLACE_CMD} \

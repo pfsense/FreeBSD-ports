@@ -97,6 +97,7 @@
     SUBDIR += hyperlatex
     SUBDIR += indexinfo
     SUBDIR += jabref
+    SUBDIR += print-manager
     SUBDIR += print-manager-kde4
     SUBDIR += kde_poster
     SUBDIR += kover
@@ -196,6 +197,7 @@
     SUBDIR += py-pdf2
     SUBDIR += py-pollyreports
     SUBDIR += py-preppy
+    SUBDIR += py-psautohint
     SUBDIR += py-pycups
     SUBDIR += py-pyscript
     SUBDIR += py-python-ly
@@ -209,6 +211,7 @@
     SUBDIR += qpdf
     SUBDIR += qpdfview
     SUBDIR += qt5-printsupport
+    SUBDIR += R-cran-tinytex
     SUBDIR += rlpr
     SUBDIR += rprint
     SUBDIR += rtf2latex2e

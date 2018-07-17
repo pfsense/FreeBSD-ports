@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	xml-conduit
-PORTVERSION=	1.5.1
+PORTVERSION=	1.8.0
 PORTREVISION=	1
 CATEGORIES=	textproc haskell
 
@@ -13,7 +13,7 @@ LICENSE=	MIT
 USE_CABAL=	attoparsec>=0.10 blaze-builder>=0.2 blaze-html>=0.5 \
 		blaze-markup>=0.5 conduit>=1.0 conduit-extra>=1.1 \
 		data-default monad-control>=0.3 resourcet>=0.3 \
-		text>=0.7 xml-types>=0.3.4
+		xml-types>=0.3.4
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

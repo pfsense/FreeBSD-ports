@@ -3794,15 +3794,6 @@ function freeradius_validate_users($post, &$input_errors) {
 		}
 	}
 
-	// VLAN ID
-	if ($post['varusersvlanid'] != '') {
-		if (!is_numericint($post['varusersvlanid'])) {
-			$input_errors[] = "The 'VLAN ID' field must contain an integer value.";
-		} elseif ($post['varusersvlanid'] < 1 || $post['varusersvlanid'] > 4095) {
-			$input_errors[] = "The 'VLAN ID' must be in the 1-4095 range.";
-		}
-	}
-
 	// Expiration Date
 	if ($post['varusersexpiration'] != '') {
 		$expires = date_parse_from_format("M d Y", $post['varusersexpiration']);

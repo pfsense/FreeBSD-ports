@@ -3,7 +3,7 @@
 
 PORTNAME=	boost_build
 PORTVERSION=	2.0.m12
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	SF/boost/boost-build/2.0-m12
 DISTNAME=	${PORTNAME:S/_/-/g}-${PORTVERSION:S/.m/-m/}
@@ -20,7 +20,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME:S/_/-/g}
 NO_BUILD=	defined
 
 SUB_FILES=	pkg-message
-PKGMESSAGE=	${WRKDIR}/pkg-message
 
 PLIST_FILES=	share/doc/boost.png
 PORTDATA=	*

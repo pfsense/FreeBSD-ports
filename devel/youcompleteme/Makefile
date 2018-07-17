@@ -2,8 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	YouCompleteMe
-DISTVERSION=	g20180210
+DISTVERSION=	g20180417
+PORTREVISION=	1
 CATEGORIES=	devel
+PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	Code-completion engine for Vim
@@ -24,14 +26,18 @@ RUN_DEPENDS=	vim:editors/vim \
 		${PYTHON_PKGNAMEPREFIX}requests-futures>0:www/py-requests-futures@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}waitress>0:www/py-waitress@${PY_FLAVOR}
 
-USES=		cmake python:2.7
+USES=		cmake python
+USE_PYTHON=	flavors
 USE_GITHUB=	yes
 GH_ACCOUNT=	Valloric
-GH_TAGNAME=	c2a7b3c
-GH_TUPLE=	Valloric:ycmd:aa04988:ycm/third_party/ycmd \
+GH_TAGNAME=	6975efd
+GH_TUPLE=	Valloric:ycmd:2f87e12:ycm/third_party/ycmd \
 		vheon:JediHTTP:d283a73:ycmd5/third_party/ycmd/third_party/JediHTTP
 
 CMAKE_SOURCE_PATH+=	${WRKSRC}/third_party/ycmd/cpp
+
+PLIST_SUB=		VIMFILESDIR=share/vim/vimfiles \
+			YCMDDIR=share/vim/vimfiles/third_party/ycmd
 
 SUB_FILES=		pkg-message pkg-install pkg-deinstall
 SUB_LIST=		VIMFILESDIR="${VIMFILESDIR}"
@@ -45,8 +51,8 @@ GO_DESC=		Go Semantic Completion Support
 MONO_DESC=		C\# Semantic Completion Support
 RUST_DESC=		Rust Semantic Completion Support
 
-C_CMAKE_ON=		-DPATH_TO_LLVM_ROOT=${LOCALBASE}/llvm40
-C_LIB_DEPENDS=		libclang.so:devel/llvm40
+C_CMAKE_ON=		-DPATH_TO_LLVM_ROOT=${LOCALBASE}/llvm60
+C_LIB_DEPENDS=		libclang.so:devel/llvm60
 
 GO_RUN_DEPENDS=		gocode:devel/go-gocode \
 			godef:devel/go-godef
@@ -57,6 +63,9 @@ MONO_VARS=		MONOFILESDIR=${VIMFILESDIR}/third_party/ycmd/third_party/OmniSharpSe
 RUST_RUN_DEPENDS=	racerd:devel/racerd
 
 VIMFILESDIR=		${PREFIX}/share/vim/vimfiles
+
+CMAKE_ARGS_PY3=		-DUSE_PYTHON2:BOOL=OFF
+CMAKE_ARGS=		${CMAKE_ARGS_PY${PYTHON_MAJOR_VER}}
 
 do-install:
 		${MKDIR} ${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/third_party

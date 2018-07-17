@@ -3,7 +3,7 @@
 
 PORTNAME=	mediadownloader
 PORTVERSION=	1.5.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	multimedia www
 MASTER_SITES=	SF/googleimagedown/project/${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}-src
@@ -13,11 +13,11 @@ COMMENT=	Search, watch, and download from Google Image and YouTube
 
 LICENSE=	GPLv3
 
-USES=		qmake
+USES=		qmake qt:4
 USE_GL=		gl glu
 USE_XORG=	xtst
 USE_GSTREAMER=	ffmpeg
-USE_QT4=	dbus gui network moc_build opengl phonon phonon-gst \
+USE_QT=		dbus gui network moc_build opengl phonon phonon-gst \
 		rcc_build uic_build webkit xml xmlpatterns
 QMAKEPRO=	${PORTNAME}.pro
 PLIST_FILES=	bin/${PORTNAME}

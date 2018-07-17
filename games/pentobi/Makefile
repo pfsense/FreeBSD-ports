@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pentobi
-PORTVERSION=	14.1
+PORTVERSION=	15.0
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
@@ -12,13 +12,15 @@ COMMENT=	Computer opponent for the board game Blokus
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake desktop-file-utils shared-mime-info tar:xz
-USE_QT5=	core gui widgets svg concurrent \
+USES=		cmake desktop-file-utils qt:5 shared-mime-info tar:xz
+USE_QT=		core gui widgets svg concurrent \
 		qmake_build buildtools_build linguisttools_build
 
 PORTDOCS=	NEWS
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS TEST
+TEST_CMAKE_BOOL=	PENTOBI_BUILD_TESTS
+TEST_TEST_TARGET=	test
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

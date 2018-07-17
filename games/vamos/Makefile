@@ -3,7 +3,7 @@
 
 PORTNAME=	vamos
 PORTVERSION=	0.7.1
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -18,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libpng.so:graphics/png
-
+USE_CXXSTD=	c++98
 USES=		libtool openal:al,alut pkgconfig
 USE_XORG=	sm ice x11 xi xext xmu
 USE_GL=		glut

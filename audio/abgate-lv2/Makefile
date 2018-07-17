@@ -3,6 +3,7 @@
 PORTNAME=	abGate
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.9
+PORTREVISION=	1
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -12,13 +13,16 @@ COMMENT=	Noise gate LV2 plugin
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_powerpc64=	fails to build: cc1plus: unrecognized command line option -std=c++11
+
 BUILD_DEPENDS=	lv2>0:audio/lv2
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	antanasbruzas
 USE_CXXSTD=	c++11
-USE_QT4=	corelib gui moc_build rcc_build qmake_build uic_build
+USE_QT=		core gui widgets buildtools_build qmake_build
+USE_GL=		gl
 USE_GNOME=	atkmm gtk20 gtkmm24 libsigc++20
 USE_LDCONFIG=	yes
 
@@ -28,7 +32,7 @@ post-patch:
 		s|g++|$$(CXX)|; \
 		s|CPPFLAGS|CXXFLAGS|; \
 		s| -g -O3||; \
-		s|cd abGateQt; qmake; make|cd abGateQt; qmake \&\& $$(MAKE)|' \
+		s|cd abGateQt; qmake; make|cd abGateQt; $(QMAKE) \&\& $$(MAKE)|' \
 		${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -E ' \
 		s|^QMAKE_CXXFLAGS (.*)|QMAKE_CXXFLAGS = ${CXXFLAGS}|; \

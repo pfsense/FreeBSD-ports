@@ -2,6 +2,7 @@
 
 PORTNAME=	mathgl
 DISTVERSION=	2.4.2.1
+PORTREVISION=	1
 CATEGORIES=	math graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION:R}
 
@@ -16,7 +17,7 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libhdf5.so:science/hdf5 \
 		libhpdf.so:print/libharu \
 		libltdl.so:devel/libltdl \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libsz.so:science/szip
 
 USES=		cmake:outsource jpeg gettext-runtime python:2.7
@@ -53,8 +54,8 @@ MPI_CMAKE_BOOL=		enable-mpi
 MPI_LIB_DEPENDS=	libmpi.so:net/openmpi
 
 QT5_CMAKE_BOOL=		enable-qt5
-QT5_USE=		QT5=core,gui,opengl,printsupport,widgets,buildtools_build,qmake_build
-QT5_USES=		desktop-file-utils shared-mime-info
+QT5_USE=		QT=core,gui,opengl,printsupport,widgets,buildtools_build,qmake_build
+QT5_USES=		desktop-file-utils qt:5 shared-mime-info
 FLTK_CMAKE_BOOL=	enable-fltk
 FLTK_LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 FLTK_USE=		XORG=ice,sm,x11,xext

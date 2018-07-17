@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	matrix-angular-sdk
-PORTVERSION=	0.6.6
+PORTVERSION=	0.6.8
 CATEGORIES=	devel www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	brendan+freebsd@bbqsrc.net
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	Matrix Angular SDK
 
 LICENSE=	APACHE20

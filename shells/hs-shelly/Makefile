@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	shelly
-PORTVERSION=	1.6.8.3
+PORTVERSION=	1.7.2
 PORTREVISION=	1
 CATEGORIES=	shells haskell
 
@@ -12,7 +12,7 @@ LICENSE=	BSD3CLAUSE
 
 USE_CABAL=	async enclosed-exceptions exceptions>=0.6 lifted-async \
 		lifted-base monad-control>=0.3.2 mtl>=2 system-fileio \
-		system-filepath>=0.4.7 text transformers-base unix-compat
+		system-filepath>=0.4.7 transformers-base unix-compat
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

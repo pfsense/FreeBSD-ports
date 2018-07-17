@@ -6,10 +6,13 @@ CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	12
 
-MAINTAINER=	idefix@fechner.net
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	OmniAuth strategy for Twitter
 
 LICENSE=	MIT
+
+DEPRECATED=	Obsoleted by update of www/gitlab. Please use net/rubygem-omniauth-twitter instead.
+EXPIRATION_DATE=	2018-06-30
 
 RUN_DEPENDS=	rubygem-json1>=1.3:devel/rubygem-json1 \
 		rubygem-omniauth-oauth>=1.1:net/rubygem-omniauth-oauth \

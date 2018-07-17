@@ -3,7 +3,7 @@
 
 PORTNAME=	libqalculate
 PORTVERSION=	2.2.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/Qalculate/${PORTNAME}/releases/download/v${PORTVERSION}/
 
@@ -12,6 +12,8 @@ COMMENT=	Multi-purpose desktop calculator (backend library)
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_powerpc64=	fails to compile: umachine.h:347: 'char16_t' does not name a type
 
 LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libcurl.so:ftp/curl \

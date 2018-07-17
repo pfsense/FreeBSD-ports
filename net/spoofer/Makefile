@@ -3,7 +3,7 @@
 
 PORTNAME=	spoofer
 PORTVERSION=	1.2.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	net
 MASTER_SITES=	http://www.caida.org/projects/spoofer/downloads/
 
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libprotobuf-lite.so:devel/protobuf
 
 PORTDOCS=	README
 
-USES=		compiler:c++11-lib
+USES=		compiler:c++11-lib qt:5
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--disable-development
 
@@ -29,7 +29,7 @@ OPTIONS_SUB=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGUI}
-USE_QT5=	buildtools_build qmake_build core network gui widgets
+USE_QT=		buildtools_build qmake_build core network gui widgets
 USE_GL+=	gl
 USE_RC_SUBR=	${PORTNAME}
 INSTALLS_ICONS=	yes

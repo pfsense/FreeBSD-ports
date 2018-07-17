@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	grpcio
-PORTVERSION=	1.10.0
-PORTREVISION=	1
+PORTVERSION=	1.13.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,16 +12,18 @@ COMMENT=	HTTP/2-based RPC framework
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>1:devel/py-six@${FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>1:devel/py-six@${PY_FLAVOR} \
 		${PY_ENUM34} \
 		${PY_FUTURES} \
-		${PYTHON_PKGNAMEPREFIX}protobuf>=3:devel/py-protobuf@${FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}protobuf>=3:devel/py-protobuf@${PY_FLAVOR}
 LIB_DEPENDS=	libcares.so:dns/c-ares
 
 BROKEN_powerpc64=	fails to compile: cpu-ppc64le.c: 'AT_HWCAP2' undeclared
 
 USES=		compiler:gcc-c++11-lib localbase:ldflags python
 USE_PYTHON=	autoplist distutils
+MAKE_ENV+=	GRPC_PYTHON_BUILD_SYSTEM_ZLIB=true \
+		GRPC_PYTHON_BUILD_SYSTEM_CARES=true
 CFLAGS+=	-Ithird_party/boringssl/include
 LDFLAGS+=	-lcares
 

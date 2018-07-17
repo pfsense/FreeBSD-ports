@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	licensee
-PORTVERSION=	8.7.0
+PORTVERSION=	8.9.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	8
 
-MAINTAINER=	idefix@fechner.net
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Detects under what license a project is distributed
 
 LICENSE=	MIT

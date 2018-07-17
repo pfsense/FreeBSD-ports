@@ -2,16 +2,14 @@
 
 PORTNAME=	uitools
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt Designer UI forms support module
 
-USE_QT5=	core gui uiplugin widgets buildtools_build
-QT_DIST=	tools
-USES=		qmake
+USE_QT=		core gui uiplugin widgets buildtools_build
+USES=		qmake qt-dist:5,tools
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 BUILD_WRKSRC=	${WRKSRC}/src/designer/src/${PORTNAME}

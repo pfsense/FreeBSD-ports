@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mpfr
-PORTVERSION=	3.1.6
+PORTVERSION=	4.0.1
 CATEGORIES=	math devel
 MASTER_SITES=	http://www.mpfr.org/mpfr-current/ \
 		GNU
@@ -14,7 +14,8 @@ PATCH_DIST_STRIP=	-p1
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Library for multiple-precision floating-point computations
 
-LICENSE=	LGPL3
+LICENSE=	LGPL3+
+LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
 #PATCH_DEPENDS=	gpatch:devel/patch
 LIB_DEPENDS=	libgmp.so:math/gmp
@@ -33,8 +34,5 @@ USE_LDCONFIG=	yes
 INFO=		mpfr
 
 PORTDOCS=	*
-
-regression-test: build
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} check
 
 .include <bsd.port.mk>

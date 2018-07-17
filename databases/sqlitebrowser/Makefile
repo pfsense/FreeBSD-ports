@@ -3,6 +3,7 @@
 
 PORTNAME=	sqlitebrowser
 PORTVERSION=	3.10.1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -14,10 +15,11 @@ LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libantlr.a:devel/antlr
+LIB_DEPENDS=	libqscintilla2_qt5.so:devel/qscintilla2-qt5
 
-USES=		cmake desktop-file-utils sqlite
-CMAKE_ARGS+=	-DUSE_QT5:BOOL=TRUE
-USE_QT5=	core gui network printsupport testlib widgets \
+USES=		cmake desktop-file-utils qt:5 sqlite
+CMAKE_ARGS+=	-DQT_INCLUDE_DIR=${QT_INCDIR} -DQT_LIBRARY_DIR=${QT_LIBDIR}
+USE_QT=		core gui network printsupport testlib widgets \
 		buildtools_build linguisttools_build qmake_build
 USE_GITHUB=	yes
 

@@ -2,19 +2,21 @@
 
 PORTNAME=	qtruby
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel kde kde-kde4 ruby
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Ruby bindings for Qt
 
+BROKEN_powerpc64=	fails to compile: ruby.h:1381: wrong number of arguments specified for '__deprecated__' attribute
+
 LIB_DEPENDS=	libqwt.so:x11-toolkits/qwt5 \
 		libqscintilla2_qt4.so:devel/qscintilla2
 
-USES=		cmake:outsource kde:4 tar:xz
+USES=		cmake:outsource kde:4 qt:4 tar:xz
 USE_KDE=	smokeqt
-USE_QT4=	corelib dbus declarative gui network phonon script webkit xml \
+USE_QT=		corelib dbus declarative gui network phonon script webkit xml \
 		qmake_build moc_build uic_build rcc_build
 USE_RUBY=	yes
 USE_LDCONFIG=	yes

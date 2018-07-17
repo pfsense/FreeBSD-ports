@@ -3,10 +3,10 @@
 
 PORTNAME=	pantheon-terminal
 PORTVERSION=	0.4.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11
 
-MAINTAINER=	amdmi3@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight, beautiful, and simple terminal from Elementary OS
 
 LICENSE=	GPLv3

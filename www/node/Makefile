@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	9.10.1
+PORTVERSION=	10.5.0
 DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	www
@@ -13,14 +13,12 @@ COMMENT=	V8 JavaScript for client and server
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_powerpc64=	fails to build: KeyError: 'action'
 ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386 powerpc64
 
-OPTIONS_DEFINE=	BUNDLED_SSL DOCS NLS DTRACE
-OPTIONS_DEFAULT=DTRACE
-OPTIONS_SUB=	yes
-
-OPTIONS_DEFAULT_FreeBSD_10=	BUNDLED_SSL
-OPTIONS_DEFAULT+=		${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
+OPTIONS_DEFINE=		BUNDLED_SSL DOCS NLS DTRACE
+OPTIONS_DEFAULT=	BUNDLED_SSL DTRACE
+OPTIONS_SUB=		yes
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
@@ -68,8 +66,8 @@ LIB_DEPENDS+=	libcares.so:dns/c-ares\
 
 .if empty(PORT_OPTIONS:MBUNDLED_SSL)
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100085 && ${SSL_DEFAULT} == base
-IGNORE=		node.js requires openssl 1.0.2, add DEFAULT_VERSIONS+=ssl=openssl to /etc/make.conf or enable BUNDLED_SSL option
+.if ${OPSYS} == FreeBSD && ${SSL_DEFAULT} != openssl-devel
+IGNORE=		node.js requires openssl 1.1.0, add DEFAULT_VERSIONS+=ssl=openssl-devel to /etc/make.conf or enable BUNDLED_SSL option
 .endif
 
 .if !empty(SSL_DEFAULT:Mlibressl*)
@@ -80,7 +78,7 @@ IGNORE=		cannot build node.js with LibreSSL. You must enable BUNDLED_SSL
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == armv6 || ${ARCH} == armv7
+.if ${ARCH} != amd64 && ${ARCH} != i386
 CONFIGURE_ARGS+=--openssl-no-asm
 .endif
 
@@ -91,7 +89,7 @@ CXXFLAGS+=	-D_GLIBCXX_USE_C99
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
-		${WRKSRC}/deps/v8/src/v8.gyp
+		${WRKSRC}/deps/v8/gypfiles/v8.gyp
 
 post-configure:
 	# Post-process Makefile and *.mk files created by node-gyp and remove

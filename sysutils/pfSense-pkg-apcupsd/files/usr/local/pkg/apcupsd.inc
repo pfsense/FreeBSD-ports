@@ -27,7 +27,7 @@ require_once("globals.inc");
 
 function php_install_apcupsd() {
 	sync_package_apcupsd();
-	apccontrol_scripts_install();
+	apccontrol_scripts_install("","");
 }
 
 function php_deinstall_apcupsd() {

@@ -85,6 +85,9 @@
     SUBDIR += p5-Cstools
     SUBDIR += p5-Data-AMF
     SUBDIR += p5-Encode
+    SUBDIR += p5-Encode-Base32-Crockford
+    SUBDIR += p5-Encode-Base32-GMP
+    SUBDIR += p5-Encode-Base58-GMP
     SUBDIR += p5-Encode-Detect
     SUBDIR += p5-Encode-Detect-CJK
     SUBDIR += p5-Encode-DoubleEncodedUTF8
@@ -134,11 +137,10 @@
     SUBDIR += p5-XML-WBXML
     SUBDIR += p5-bsdconv
     SUBDIR += p5-plutil
-    SUBDIR += pdf2djvu
     SUBDIR += pear-Services_JSON
     SUBDIR += pecl-fribidi
     SUBDIR += pecl-igbinary
-    SUBDIR += php5-bsdconv
+    SUBDIR += php-bsdconv
     SUBDIR += php56-iconv
     SUBDIR += php56-mbstring
     SUBDIR += php56-recode
@@ -158,6 +160,7 @@
     SUBDIR += py-better-bencode
     SUBDIR += py-bsdconv
     SUBDIR += py-iconv
+    SUBDIR += py-pint
     SUBDIR += py-rencode
     SUBDIR += py-unidecode
     SUBDIR += py-webencodings
@@ -165,10 +168,10 @@
     SUBDIR += rcctools
     SUBDIR += recode
     SUBDIR += rubygem-base32
-    SUBDIR += rubygem-bsdconv
     SUBDIR += rubygem-json-ld
     SUBDIR += rubygem-json-ld-preloaded
     SUBDIR += rubygem-po_to_json
+    SUBDIR += rubygem-ruby-bsdconv
     SUBDIR += rubygem-url_safe_base64
     SUBDIR += rubygem-xdr
     SUBDIR += shftool

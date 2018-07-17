@@ -546,9 +546,11 @@ function pfBlockerNG_get_header($mode='') {
 				if ($db_handle) {
 
 					$result = $db_handle->query("SELECT * FROM resolver WHERE row = 0;");
-					while ($qstats = $result->fetchArray(SQLITE3_ASSOC)) {
-						$pfb_found	= TRUE;
-						$resolver[]	= $qstats;
+					if ($result) {
+						while ($qstats = $result->fetchArray(SQLITE3_ASSOC)) {
+							$pfb_found	= TRUE;
+							$resolver[]	= $qstats;
+						}
 					}
 
 					// Create new row

@@ -1,0 +1,18 @@
+--- configure.ac.orig	2018-07-06 13:20:38 UTC
++++ configure.ac
+@@ -92,6 +92,7 @@ case $host_os in
+         OS_LDFLAGS=
+         OS_LIBS=
+         OS_STATIC="true"
++        OS_MAJOR=$(/usr/bin/uname -r | /usr/bin/cut -d\. -f1)
+         ;;
+ esac
+ 
+@@ -99,6 +100,7 @@ AC_SUBST(OS_CFLAGS)
+ AC_SUBST(OS_LDFLAGS)
+ AC_SUBST(OS_LIBS)
+ AC_SUBST(OS_STATIC)
++AC_SUBST(OS_MAJOR)
+ AM_CONDITIONAL([BUILD_STATIC], [test x$OS_STATIC = xtrue])
+ 
+ CFLAGS="$CFLAGS $OS_CFLAGS"

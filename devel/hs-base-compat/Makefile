@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	base-compat
-PORTVERSION=	0.9.3
+PORTVERSION=	0.10.1
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	kan-extensions
-PORTVERSION=	5.0.2
+PORTVERSION=	5.1
 PORTREVISION=	1
 CATEGORIES=	math haskell
 

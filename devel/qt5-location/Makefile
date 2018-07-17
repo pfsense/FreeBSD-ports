@@ -2,16 +2,14 @@
 
 PORTNAME=	location
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt location module
 
-USE_QT5=	concurrent core dbus gui network qml quick buildtools_build
-QT_DIST=	${PORTNAME}
-USES=		qmake:norecursive
+USE_QT=		concurrent core dbus gui network qml quick buildtools_build
+USES=		qmake:norecursive qt-dist:5,location
 
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 

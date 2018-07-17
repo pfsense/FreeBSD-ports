@@ -3,7 +3,7 @@
 
 PORTNAME=	mitsuba
 PORTVERSION=	0.5.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.mitsuba-renderer.org/repos/mitsuba/archive/${HG_REVISION}${EXTRACT_SUFX}?dummy=
 DISTNAME=	${PORTNAME}-${HG_REVISION}
@@ -26,9 +26,9 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	uses SSE instructions
 
-USES=		cmake eigen:3 jpeg tar:bzip2
+USES=		cmake eigen:3 jpeg qt:4 tar:bzip2
 USE_GL=		glew
-USE_QT4=	moc_build qmake_build rcc_build uic_build \
+USE_QT=		moc_build qmake_build rcc_build uic_build \
 		gui opengl network xml xmlpatterns
 
 CMAKE_ARGS=	-DMTS_SIMPLE_PATHS:BOOL=OFF -DBUILD_PYTHON:BOOL=OFF \

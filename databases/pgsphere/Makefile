@@ -2,34 +2,32 @@
 # $FreeBSD$
 
 PORTNAME=	pgsphere
-PORTVERSION=	1.1.1
-PORTREVISION=	3
+PORTVERSION=	1.1.5
 CATEGORIES=	databases geography
-MASTER_SITES=	http://pgfoundry.org/frs/download.php/2558/ \
-		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Spherical data types, functions, and operators for PostgreSQL
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT.pg_sphere
 
 OPTIONS_DEFINE=	DOCS
 
+USES=		gmake pgsql
+LLD_UNSAFE=	yes
+USE_LDCONFIG=	yes
 MAKE_ARGS=	PG_CONFIG=${LOCALBASE}/bin/pg_config USE_PGXS=1 \
 		docdir=${DOCSDIR} \
 		install_bin=/usr/bin/install
 TEST_TARGET=	installcheck
-USE_LDCONFIG=	yes
-USES=		gmake pgsql
 
 DATADIR=	${PREFIX}/share/postgresql
 DOCSDIR?=	${PREFIX}/share/doc/postgresql
-PLIST_FILES=	lib/postgresql/pg_sphere.so \
-		%%DATADIR%%/contrib/pg_sphere.sql
+
+GH_TAGNAME=	f36ffd6
+USE_GITHUB=	yes
 
 DOCS_MAKE_ARGS_OFF=	DOCS=""
-DOCS_PLIST_FILES=	%%DOCSDIR%%/contrib/README.pg_sphere \
-			%%DOCSDIR%%/contrib/COPYRIGHT.pg_sphere
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|int4|int32|g' ${WRKSRC}/line.c ${WRKSRC}/line.h

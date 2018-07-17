@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	spice-protocol
-PORTVERSION=	0.12.13
+PORTVERSION=	0.12.14
 CATEGORIES=	devel
 MASTER_SITES=	http://www.spice-space.org/download/releases/
 
@@ -11,7 +11,7 @@ COMMENT=	Simple Protocol for Independent Computing Environments
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
 GNU_CONFIGURE=	yes
 USES=		gmake pathfix pkgconfig python tar:bzip2

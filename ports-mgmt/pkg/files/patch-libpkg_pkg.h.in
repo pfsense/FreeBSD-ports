@@ -1,0 +1,11 @@
+--- libpkg/pkg.h.in.orig	2018-07-06 13:21:24 UTC
++++ libpkg/pkg.h.in
+@@ -64,7 +64,7 @@ extern "C" {
+ 
+ /* The OS major version at the time of compilation */
+ #ifdef __FreeBSD__
+-#define OSMAJOR	__FreeBSD__
++#define OSMAJOR @OS_MAJOR@
+ #endif
+ 
+ /* Not supported under DragonFly */

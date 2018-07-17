@@ -3,7 +3,7 @@
 
 PORTNAME=	amarok
 PORTVERSION=	2.8.0
-PORTREVISION=	13
+PORTREVISION=	16
 CATEGORIES=	audio kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
 
@@ -16,19 +16,19 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libtag.so:audio/taglib \
 		libtag-extras.so:audio/taglib-extras \
 		liblastfm.so:audio/liblastfm \
-		libqjson.so:devel/qjson \
-		libqca.so:devel/qca \
+		libqjson.so:devel/qjson@qt4 \
+		libqca.so:devel/qca@qt4 \
 		libdbus-1.so:devel/dbus
 BUILD_DEPENDS=	${LOCALBASE}/lib/qt4/plugins/script/libqtscript_core.so.1.0.0:devel/qtscriptgenerator
 RUN_DEPENDS=	${LOCALBASE}/lib/qt4/plugins/script/libqtscript_core.so.1.0.0:devel/qtscriptgenerator \
 		${KDE_PREFIX}/lib/kde4/kio_upnp_ms.so:net/kio-upnp-ms
 
 USES=		cmake:outsource kde:4 mysql:client,embedded pkgconfig \
-		shared-mime-info shebangfix ssl tar:bzip2
+		qt:4 shared-mime-info shebangfix ssl tar:bzip2
 USE_GL=		gl
 USE_KDE=	automoc4 kdelibs libkcddb libkcompactdisc \
 		nepomuk-core runtime soprano strigi
-USE_QT4=	corelib dbus designer gui network opengl \
+USE_QT=		corelib dbus designer gui network opengl \
 		phonon script sql svg webkit xml \
 		qmake_build moc_build rcc_build uic_build
 USE_XORG=	ice sm x11 xau xdmcp xext xft xpm

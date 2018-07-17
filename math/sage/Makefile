@@ -3,7 +3,7 @@
 
 PORTNAME=	sage
 PORTVERSION=	6.7
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	http://boxen.math.washington.edu/home/sagemath/sage-mirror/src/ \
 		http://mirrors.xmission.com/sage/src/ \
@@ -33,7 +33,9 @@ pre-extract:
 	@${ECHO_MSG} extra time and space, you can instead type \"make build\".  Then you can move
 	@${ECHO_MSG} work/${PORTNAME}-${PORTVERSION} to wherever you like, and run sage from there.
 	@${ECHO_MSG} However, there is no guarantee that this alternative will always work.
+.  if !(defined(PACKAGE_BUILDING) || defined(BATCH))
 	@sleep 10
+.  endif
 
 PLIST_FILES=	bin/sage
 USE_TEX=	latex:build

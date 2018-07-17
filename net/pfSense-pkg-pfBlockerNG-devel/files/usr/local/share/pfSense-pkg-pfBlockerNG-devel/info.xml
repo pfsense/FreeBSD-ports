@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <pfsensepkgs>
 	<package>
-		<name>pfBlockerNG</name>
+		<name>pfBlockerNG-devel</name>
 		<descr><![CDATA[pfBlockerNG is the Next Generation of pfBlocker.&lt;br /&gt;
 			Manage IPv4/v6 List Sources into 'Deny, Permit or Match' formats.&lt;br /&gt;
 			GeoIP database by MaxMind Inc. (GeoLite2 Free version).&lt;br /&gt;

@@ -2,8 +2,11 @@
 
 PORTNAME=	mgba
 DISTVERSION=	0.6.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	emulators
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	a7a51a11373f.patch:-p1
 
 MAINTAINER=	greg@unrelenting.technology
 COMMENT=	Game Boy Advance (GBA) emulator/debugger
@@ -59,8 +62,8 @@ MAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick \
 			libMagickCore-6.so:graphics/ImageMagick
 
 QT5_CMAKE_BOOL=	BUILD_QT
-QT5_USE=	qt5=qmake_build,buildtools_build,core,gui,widgets,network,opengl,multimedia
-QT5_USES=	desktop-file-utils
+QT5_USE=	qt=qmake_build,buildtools_build,core,gui,widgets,network,opengl,multimedia
+QT5_USES=	desktop-file-utils qt:5
 QT5_VARS=	installs_icons=yes
 
 .include <bsd.port.mk>

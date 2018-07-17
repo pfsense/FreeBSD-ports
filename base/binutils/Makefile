@@ -8,7 +8,7 @@ VALID_CATEGORIES=	base
 COMMENT=	GNU binary tools for base
 
 MASTERDIR=	${.CURDIR}/../../devel/binutils
-PLIST=		${.CURDIR}/pkg-plist.${TARGET_ARCH}
+PLIST=		${.CURDIR}/pkg-plist
 
 .if !defined(CROSS_TOOLCHAIN)
 .error Please define CROSS_TOOLCHAIN before building
@@ -18,10 +18,31 @@ PLIST=		${.CURDIR}/pkg-plist.${TARGET_ARCH}
 .error Please define CROSS_SYSROOT before building
 .endif
 
-TARGET_ARCH=	${CROSS_TOOLCHAIN:C,-.*$,,}
-BUTARGET=	${TARGET_ARCH}-unknown-${OPSYS:tl}${OSREL}
+BUTARGET=	${ARCH}-unknown-${OPSYS:tl}${OSREL}
 
 CONFIGURE_ARGS+=	--disable-host-shared
 PREFIX=	/usr
 
 .include "${MASTERDIR}/Makefile"
+
+.if ${OSVERSION} >= 1100100
+PLIST_SUB+=	OBJCOPY="@comment "
+.else
+PLIST_SUB+=	OBJCOPY=""
+.endif
+
+.if ${ARCH:Mmips*}
+PLIST_SUB+=	MIPS=""
+.else
+PLIST_SUB+=	MIPS="@comment "
+.endif
+.if ${ARCH:Mpowerpc*}
+PLIST_SUB+=	POWERPC=""
+.else
+PLIST_SUB+=	POWERPC="@comment "
+.endif
+.if ${ARCH:Msparc*}
+PLIST_SUB+=	SPARC=""
+.else
+PLIST_SUB+=	SPARC="@comment "
+.endif

@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	gpb
-PORTVERSION=	4.1.3
+PORTVERSION=	4.1.9
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 
-MAINTAINER=	olgeni@FreeBSD.org
+MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Google Protobuf implementation for Erlang
 
 LICENSE=	LGPL21

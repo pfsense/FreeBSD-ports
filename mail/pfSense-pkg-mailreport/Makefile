@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-mailreport
-PORTVERSION=	3.1
+PORTVERSION=	3.3
 CATEGORIES=	mail
 MASTER_SITES=	# empty
 DISTFILES=	# empty

@@ -5,6 +5,7 @@
 
     SUBDIR += R-cran-DBI
     SUBDIR += R-cran-RMySQL
+    SUBDIR += R-cran-RPostgreSQL
     SUBDIR += R-cran-RSQLite
     SUBDIR += R-cran-RSQLite.extfuns
     SUBDIR += R-cran-sqldf
@@ -13,9 +14,8 @@
     SUBDIR += adminer
     SUBDIR += adodb
     SUBDIR += adodb5
+    SUBDIR += akonadi
     SUBDIR += akonadi-kde4
-    SUBDIR += animenfo-client
-    SUBDIR += animenfo-client-gtk
     SUBDIR += apq
     SUBDIR += apq-mysql
     SUBDIR += apq-odbc
@@ -30,6 +30,7 @@
     SUBDIR += c3p0
     SUBDIR += cassandra-cpp-driver
     SUBDIR += casstcl
+    SUBDIR += cayley
     SUBDIR += cdb
     SUBDIR += cego
     SUBDIR += cegobridge
@@ -74,6 +75,7 @@
     SUBDIR += firebird25-server
     SUBDIR += flamerobin
     SUBDIR += fortytwo-bdb
+    SUBDIR += foundationdb
     SUBDIR += fpc-dblib
     SUBDIR += fpc-fpindexer
     SUBDIR += fpc-gdbm
@@ -113,6 +115,7 @@
     SUBDIR += hsqldb
     SUBDIR += influxdb
     SUBDIR += innotop
+    SUBDIR += iowow
     SUBDIR += ip4r
     SUBDIR += ipa_sdb
     SUBDIR += iplike
@@ -185,6 +188,8 @@
     SUBDIR += mariadb101-server
     SUBDIR += mariadb102-client
     SUBDIR += mariadb102-server
+    SUBDIR += mariadb103-client
+    SUBDIR += mariadb103-server
     SUBDIR += mariadb55-client
     SUBDIR += mariadb55-server
     SUBDIR += mdbtools
@@ -268,6 +273,8 @@
     SUBDIR += p5-CDB_File
     SUBDIR += p5-CDB_File-Generator
     SUBDIR += p5-CGI-Session-Driver-memcached
+    SUBDIR += p5-CHI-Driver-Memcached
+    SUBDIR += p5-CHI-Driver-Redis
     SUBDIR += p5-Cache-BDB
     SUBDIR += p5-Cache-Memcached
     SUBDIR += p5-Cache-Memcached-Fast
@@ -467,6 +474,7 @@
     SUBDIR += p5-Protocol-CassandraCQL
     SUBDIR += p5-RRD-Simple
     SUBDIR += p5-Redis
+    SUBDIR += p5-Redis-Fast
     SUBDIR += p5-Redis-hiredis
     SUBDIR += p5-RedisDB
     SUBDIR += p5-RedisDB-Parser
@@ -487,6 +495,7 @@
     SUBDIR += p5-SQL-Statement
     SUBDIR += p5-SQL-Translator
     SUBDIR += p5-SQLite-Work
+    SUBDIR += p5-Scope-Container-DBI
     SUBDIR += p5-Search-InvertedIndex
     SUBDIR += p5-Search-Namazu
     SUBDIR += p5-Search-Xapian10
@@ -559,6 +568,7 @@
     SUBDIR += pecl-mongodb
     SUBDIR += pecl-pdo_user
     SUBDIR += pecl-redis
+    SUBDIR += pecl-redis3
     SUBDIR += pecl-rrd
     SUBDIR += pecl-rrd1
     SUBDIR += pecl-tokyo_tyrant
@@ -598,6 +608,7 @@
     SUBDIR += pgpool-II-33
     SUBDIR += pgpool-II-35
     SUBDIR += pgpool-II-36
+    SUBDIR += pgpool-II-37
     SUBDIR += pgreplay
     SUBDIR += pgroonga
     SUBDIR += pgrouting
@@ -765,6 +776,7 @@
     SUBDIR += py-agate-sql
     SUBDIR += py-alembic
     SUBDIR += py-apsw
+    SUBDIR += py-asyncpg
     SUBDIR += py-bsddb
     SUBDIR += py-bsddb3
     SUBDIR += py-carbon
@@ -786,6 +798,7 @@
     SUBDIR += py-htsql
     SUBDIR += py-htsql-mysql
     SUBDIR += py-htsql-pgsql
+    SUBDIR += py-influxdb
     SUBDIR += py-kyotocabinet
     SUBDIR += py-leveldb
     SUBDIR += py-lmdb
@@ -879,15 +892,13 @@
     SUBDIR += qt5-sqldrivers-sqlite3
     SUBDIR += qt5-sqldrivers-tds
     SUBDIR += radix.v2
-    SUBDIR += rdb
-    SUBDIR += rdfdb
     SUBDIR += recutils
     SUBDIR += redigo
     SUBDIR += redis
     SUBDIR += redis-devel
+    SUBDIR += redis_exporter
+    SUBDIR += redisdesktopmanager
     SUBDIR += retcl
-    SUBDIR += riak
-    SUBDIR += riak2
     SUBDIR += rocksdb
     SUBDIR += rocksdb-lite
     SUBDIR += rrdman
@@ -896,7 +907,6 @@
     SUBDIR += rrdtool12
     SUBDIR += ruby-bdb
     SUBDIR += ruby-gdbm
-    SUBDIR += ruby-mysql
     SUBDIR += ruby-odbc
     SUBDIR += ruby-qdbm
     SUBDIR += ruby-tokyocabinet
@@ -931,6 +941,7 @@
     SUBDIR += rubygem-dbd-odbc
     SUBDIR += rubygem-dbd-pg
     SUBDIR += rubygem-dbd-sqlite3
+    SUBDIR += rubygem-dbf
     SUBDIR += rubygem-dbi
     SUBDIR += rubygem-dm-aggregates
     SUBDIR += rubygem-dm-chunked_query
@@ -955,6 +966,7 @@
     SUBDIR += rubygem-familia
     SUBDIR += rubygem-flipper-active_record
     SUBDIR += rubygem-flipper-active_record011
+    SUBDIR += rubygem-flipper-active_record013
     SUBDIR += rubygem-globalid
     SUBDIR += rubygem-globalid-rails5
     SUBDIR += rubygem-globalid-rails50
@@ -988,7 +1000,6 @@
     SUBDIR += rubygem-redis-namespace15
     SUBDIR += rubygem-redis3
     SUBDIR += rubygem-seed-fu
-    SUBDIR += rubygem-seed-fu236
     SUBDIR += rubygem-sqlite3
     SUBDIR += rubygem-sqlite3-ruby
     SUBDIR += rubygem-state_machines-activemodel

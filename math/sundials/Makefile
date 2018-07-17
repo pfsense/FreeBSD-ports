@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	sundials
-DISTVERSION=	3.1.0
-PORTREVISION=	1
+DISTVERSION=	3.1.1
 CATEGORIES=	math
 MASTER_SITES=	https://computation.llnl.gov/projects/sundials/download/
 
@@ -18,7 +17,7 @@ USE_LDCONFIG=	yes
 CMAKE_ARGS=	-DPTHREAD_ENABLE:BOOL=ON \
 		-DBUILD_STATIC_LIBS:BOOL=OFF
 
-PLIST_SUB=	SHL3=${DISTVERSION} SHL1=${DISTVERSION:R:R} SHLX3=1.1.0 SHLX1=1 SHLY3=2.1.0 SHLY1=2
+PLIST_SUB=	SHL3=${DISTVERSION} SHL1=${DISTVERSION:R:R} SHLX3=1.1.1 SHLX1=1
 
 OPTIONS_DEFINE=		BLAS EXAMPLES LAPACK MPI SUPERLUMT # OPENMP detection is broken in cmake: https://gitlab.kitware.com/cmake/cmake/issues/17474
 OPTIONS_GROUP=		VECTORS
@@ -69,7 +68,7 @@ SUPERLUMT_PREVENTS=	LAPACK  # LAPACK requires SUNDIALS_INDEX_TYPE=int32, and SUP
 PORTEXAMPLES=	*
 
 post-patch:
-	@${FIND} ${WRKSRC}/examples -name "*.c" -o -name "*.cpp" | ${XARGS} ${REINPLACE_CMD} -e 's|"ESYM"|" ESYM "|g'
+	@${FIND} ${WRKSRC}/examples -name "*.c" -o -name "*.cpp" | ${XARGS} ${REINPLACE_CMD} -E 's/"(ESYM|FSYM)"/" \1 "/g'
 
 post-install:
 	@${RM} ${STAGEDIR}${PREFIX}/LICENSE

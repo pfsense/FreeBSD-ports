@@ -3,7 +3,7 @@
 
 PORTNAME=	leechcraft
 PORTVERSION=	0.6.70
-PORTREVISION=	28
+PORTREVISION=	33
 CATEGORIES=	x11
 MASTER_SITES=	http://dist.leechcraft.org/LeechCraft/0.6.70/
 
@@ -13,15 +13,15 @@ COMMENT=	Cross-platform modular live environment
 LICENSE=	BSL
 LICENSE_FILE=	${WRKDIR}/${DISTNAME}/LICENSE
 
-LIB_DEPENDS=	libqwt6.so:x11-toolkits/qwt6 \
+LIB_DEPENDS=	libqwt6.so:x11-toolkits/qwt6@qt4 \
 		libpcre.so:devel/pcre \
 		libboost_program_options.so:devel/boost-libs
 
 #LC_REV=		1526-g7fdb92a
 INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
-USES=		cmake pkgconfig tar:xz
-USE_QT4=	corelib declarative gui network script sql sql-sqlite3_run \
+USES=		cmake pkgconfig qt:4 tar:xz
+USE_QT=		corelib declarative gui network script sql sql-sqlite3_run \
 		webkit xml qmake_build moc_build rcc_build uic_build \
 		linguisttools_build
 USE_XORG=	x11
@@ -370,12 +370,12 @@ OPTIONS_DEFAULT=AGGREGATOR ANHERO ANOTIFI AUSCRIE AZOTH BLASQ BLOGIQUE CERTMGR \
     ${PORT_OPTIONS:MLAUGHTY} || ${PORT_OPTIONS:MLIZNOO} || \
     ${PORT_OPTIONS:MLMP}     || ${PORT_OPTIONS:MSYSNOTIFY} || \
     ${PORT_OPTIONS:MVROOBY}  || ${PORT_OPTIONS:MXTAZY}
-USE_QT4+=	dbus
+USE_QT+=	dbus
 .endif
 
 .if ${PORT_OPTIONS:MBLASQ} || ${PORT_OPTIONS:MBLOGIQUE} || \
     ${PORT_OPTIONS:MLACKMAN}
-USE_QT4+=	xmlpatterns
+USE_QT+=	xmlpatterns
 .endif
 
 .if ${PORT_OPTIONS:MAZOTH} || ${PORT_OPTIONS:MBLASQ} || \
@@ -383,7 +383,7 @@ USE_QT4+=	xmlpatterns
     ${PORT_OPTIONS:MNETSTOREMANAGER} || ${PORT_OPTIONS:MPOSHUKU} || \
     ${PORT_OPTIONS:MQROSP} || ${PORT_OPTIONS:MSB2} || \
     ${PORT_OPTIONS:MTOUCHSTREAMS}
-LIB_DEPENDS+=	libqjson.so:devel/qjson
+LIB_DEPENDS+=	libqjson.so:devel/qjson@qt4
 .endif
 
 .if ${PORT_OPTIONS:MELEEMINATOR}
@@ -406,6 +406,10 @@ BROKEN=		Lemon has not supported yet because depended by libnl
 BROKEN=		Otlozhu has not supported yet (not ported liblaretz)
 .endif
 
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%QT_INCDIR%%|${QT_INCDIR}|g' \
+                        -e 's|%%QT_LIBDIR%%|${QT_LIBDIR}|g' \
+                        ${WRKSRC}/cmake/FindQwt.cmake
 post-install:
 	@${FIND} -d ${STAGEDIR}${PREFIX}/include/leechcraft \
 		-type d -empty -exec ${RMDIR} {} \;

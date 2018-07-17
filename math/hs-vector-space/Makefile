@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vector-space
-PORTVERSION=	0.10.4
+PORTVERSION=	0.13
 PORTREVISION=	1
 CATEGORIES=	math haskell
 

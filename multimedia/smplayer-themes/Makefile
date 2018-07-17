@@ -7,11 +7,11 @@ PORTEPOCH=	1
 CATEGORIES=	multimedia audio kde
 MASTER_SITES=	SF/smplayer/SMPlayer-themes/${PORTVERSION}/
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Themes for SMPlayer
 
-USES=		tar:bzip2
-USE_QT4=	rcc_build
+USES=		qt:4 tar:bzip2
+USE_QT=		rcc_build
 NO_ARCH=	yes
 
 DATADIR=	${PREFIX}/share/smplayer

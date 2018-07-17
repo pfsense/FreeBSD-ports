@@ -2,7 +2,6 @@
 
 PORTNAME=	dbus
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -11,8 +10,8 @@ COMMENT=	Qt D-Bus inter-process communication module
 
 LIB_DEPENDS=	libdbus-1.so:devel/dbus
 
-USE_QT5=	core qmake_build buildtools_build
-QT_DIST=	base
+USES=		qmake:no_env qt-dist:5,base
+USE_QT=		core qmake_build buildtools_build
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-gui -no-xcb
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}

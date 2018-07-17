@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	yesod-auth
-PORTVERSION=	1.4.17.2
+PORTVERSION=	1.6.3
 PORTREVISION=	1
 CATEGORIES=	www haskell
 
@@ -17,7 +17,7 @@ USE_CABAL=	aeson>=0.7 authenticate>=1.3 base16-bytestring \
 		http-conduit>=1.5 http-types lifted-base>=0.1 mime-mail>=0.3 \
 		network>=2.6 network-uri>=2.6 nonce>=1.0.2 persistent>=2.1 \
 		persistent-template>=2.1 random>=1.0.0.2 resourcet safe \
-		shakespeare text>=0.7 unordered-containers wai>=1.4 \
+		shakespeare unordered-containers wai>=1.4 \
 		yesod-core>=1.4 yesod-form>=1.4 yesod-persistent>=1.4
 
 FLAGS_ENABLE=	network-uri

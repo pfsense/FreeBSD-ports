@@ -98,11 +98,11 @@ if ($_POST) {
 				$mask = strstr($host[0], '/', FALSE);
 
 				if ($mask != '/32' && $mask != '/24') {
-					$input_errors[] = "Invalid mask [ {$host[0]} ]. Mask must be defined as /32 or /24 only.";
+					$input_errors[] = "IPv4 Suppression: Invalid mask [ {$host[0]} ]. Mask must be defined as /32 or /24 only.";
 				}
 
 				if (!is_subnetv4($host[0])) {
-					$input_errors[] = "Invalid IPv4 subnet address defined [ {$host[0]} ]";
+					$input_errors[] = "IPv4 Suppression: Invalid IPv4 subnet address defined [ {$host[0]} ]";
 				}
 			}
 		}

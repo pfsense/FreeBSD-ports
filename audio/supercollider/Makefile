@@ -2,7 +2,7 @@
 
 PORTNAME=	supercollider
 PORTVERSION=	3.8.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/supercollider/supercollider/releases/download/Version-${PORTVERSION}/
 DISTNAME=	SuperCollider-${PORTVERSION}-Source-linux
@@ -20,16 +20,15 @@ LIB_DEPENDS=	libavahi-client.so:net/avahi-app \
 		libsndfile.so:audio/libsndfile \
 		libfftw3f.so:math/fftw3-float
 
-USES=		cmake:outsource iconv localbase pkgconfig readline \
+USES=		cmake:outsource iconv localbase pkgconfig qt:5 readline \
 		shared-mime-info tar:bzip2
-USE_QT5=	buildtools_build concurrent core gui linguisttools location \
+USE_QT=		buildtools_build concurrent core gui linguisttools location \
 		network opengl printsupport qmake_build qml quick sensors \
 		sql webkit widgets
 USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/SuperCollider-Source
 
-CMAKE_ENV=	PKG_CONFIG_PATH=${LOCALBASE}/libdata/pkgconfig
 CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE}/lib/qt5 \
 		-DLIBUSB_1_INCLUDE_DIR=/usr/include \
 		-DLIBUSB_1_LIBRARY=/usr/lib/libusb.so \

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	scribus
-PORTVERSION=	1.4.6
-PORTREVISION=	10
+PORTVERSION=	1.4.7
 CATEGORIES=	print editors
 MASTER_SITES=	SF \
 		http://www.scribus.net/downloads/${PORTVERSION}/
@@ -31,8 +30,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVO
 		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR}
 
 USES=		cmake:outsource desktop-file-utils ghostscript:run jpeg \
-		pkgconfig python:2.7 shared-mime-info tar:xz
-USE_QT4=	corelib gui linguist_build moc_build qmake_build rcc_build uic_build xml network
+		pkgconfig python:2.7 qt:4 shared-mime-info tar:xz
+USE_QT=		corelib gui linguist_build moc_build qmake_build rcc_build uic_build xml network
 USE_GNOME=	libartlgpl2 libxml2
 USE_LDCONFIG=	yes
 

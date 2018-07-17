@@ -2,16 +2,14 @@
 
 PORTNAME=	qdoc
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	devel textproc
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt documentation generator
 
-USE_QT5=	core qml buildtools_build qdoc-data_run
-QT_DIST=	tools
-USES=		qmake
+USE_QT=		core qml buildtools_build qdoc-data_run
+USES=		qmake qt-dist:5,tools
 
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}
 INSTALL_WRKSRC=	${BUILD_WRKSRC}

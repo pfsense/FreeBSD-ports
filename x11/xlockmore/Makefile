@@ -3,6 +3,7 @@
 
 PORTNAME=	xlockmore
 PORTVERSION=	5.54
+PORTREVISION=	2
 CATEGORIES?=	x11
 MASTER_SITES=	http://www.sillycycle.com/xlock/ \
 		LOCAL/jgh/x11/${PORTNAME}/
@@ -67,10 +68,11 @@ KRB5LIB=	-L${KRB5_HOME}/lib
 .if ${PORT_OPTIONS:MMESAGL}
 CONFIGURE_ARGS+=	--with-mesa
 MESALIB=	-lpthread
-USE_GL=	yes
+USE_GL=		yes
+LIB_DEPENDS+=	libftgl.so:graphics/ftgl
 CFLAGS+=	-I${LOCALBASE}/include/FTGL -I${LOCALBASE}/include/freetype2
 .else
-CONFIGURE_ARGS+=	--without-mesa --without-opengl
+CONFIGURE_ARGS+=	--without-mesa --without-opengl --without-ftgl
 .endif
 
 .if ${PORT_OPTIONS:MNICE_ONLY}
@@ -159,11 +161,11 @@ pre-extract:
 
 post-patch:
 	@${REINPLACE_CMD} -e '/xglockrc/ s|PROGRAM|DATA|' ${WRKSRC}/xglock/Makefile.in
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1003500
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100000
 	@${REINPLACE_CMD} -e 's|/usr/games/fortune|/usr/bin/fortune|' ${WRKSRC}/modes/Makefile.in
 .endif
 
 post-configure:
-	${REINPLACE_CMD} -e 's/-lXdpms//g' ${WRKSRC}/modes/Makefile
+	@${REINPLACE_CMD} -e 's/-lXdpms//g' ${WRKSRC}/modes/Makefile
 
 .include <bsd.port.mk>

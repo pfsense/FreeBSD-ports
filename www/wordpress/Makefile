@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wordpress
-DISTVERSION=	4.9.5
+DISTVERSION=	4.9.7
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://wordpress.org/
@@ -33,7 +33,9 @@ OPTIONS_DEFINE=	DOCS
 pre-everything::
 	@${ECHO_CMD} "If you want to upgrade, you must read upgrade document."
 	@${ECHO_CMD} ""
+.  if !(defined(PACKAGE_BUILDING) || defined(BATCH))
 	@sleep 1
+.  endif
 
 pre-install:
 	${ECHO_CMD} '@owner www' > ${PLIST}

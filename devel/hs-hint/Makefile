@@ -3,7 +3,7 @@
 
 PORTNAME=	hint
 PORTVERSION=	0.7.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -13,6 +13,8 @@ LICENSE=	BSD3CLAUSE
 
 USE_CABAL=	exceptions extensible-exceptions ghc-mtl>=1.2.1 ghc-paths \
 		mtl random utf8-string
+
+IGNORE=		Doesn't build with recent GHC version
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

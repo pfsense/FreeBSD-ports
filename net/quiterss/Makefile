@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	quiterss
-PORTVERSION=	0.18.9
+PORTVERSION=	0.18.11
 CATEGORIES=	net
 MASTER_SITES=	http://quiterss.org/files/${PORTVERSION}/
 DISTNAME=	QuiteRSS-${PORTVERSION}-src
@@ -16,18 +16,19 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 NO_WRKSUBDIR=	yes
 
 USES=		desktop-file-utils pkgconfig qmake:outsource sqlite
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=		DEBUG
 OPTIONS_SINGLE=		GUI
 OPTIONS_SINGLE_GUI=	QT4 QT5
 OPTIONS_DEFAULT=	QT5
 
-QT4_USE=	QT4=moc_build,rcc_build,uic_build,linguisttools_build
-QT4_USE+=	QT4=corelib,gui,network,xml,webkit,phonon,sql,sql-sqlite3_run
+QT4_USES=	qt:4 qt:4
+QT4_USE=	QT=moc_build,rcc_build,uic_build,linguisttools_build
+QT4_USE+=	QT=corelib,gui,network,xml,webkit,phonon,sql,sql-sqlite3_run
 
-QT5_USE=	QT5=buildtools_build,linguisttools_build,core,xml,gui,widgets
-QT5_USE+=	QT5=network,multimedia,printsupport,webkit,sql,sql-sqlite3_run
+QT5_USES=	qt:5 qt:5
+QT5_USE=	QT=buildtools_build,linguisttools_build,core,xml,gui,widgets
+QT5_USE+=	QT=network,multimedia,printsupport,webkit,sql,sql-sqlite3_run
 
 post-patch-DEBUG-on:
 	@${REINPLACE_CMD} 's|debug_and_release|debug|' \

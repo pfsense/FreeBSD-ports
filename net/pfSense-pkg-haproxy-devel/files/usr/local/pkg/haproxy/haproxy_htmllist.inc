@@ -21,7 +21,7 @@
  */
 
 /*
-  This file contains functions which are NOT specific to HAProxy and may/could/should 
+  This file contains functions which are NOT specific to HAProxy and may/could/should
   be moved to the general pfSense php library for possible easy use by other parts of pfSense
 */
 
@@ -42,21 +42,24 @@ class HaproxyHtmlList
 	public $editmode = false;
 	public $fields_details = null;
 	public $keyfield = "";
-	
+
 	public function HaproxyHtmlList($tablename, $fields) {
 		$this->tablename = $tablename;
 		$this->fields = $fields;
 	}
-	
+
 	public function Draw($data) {
 		return $this->haproxy_htmllist($data, $this->fields, $this->editmode, $this->fields_details);
 	}
-	
+
 	public function outputjavascript() {
 		$table_def = array();
 		$table_def['keyfield'] = $this->keyfield;
 		phparray_to_javascriptarray($table_def, "tabledefinition_".$this->tablename,Array('/*','/*/*'));
 		phparray_to_javascriptarray($this->fields, "fields_".$this->tablename,Array('/*','/*/name','/*/type','/*/text','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
+		if (!is_array($this->fields_details)) {
+			$this->fields_details = array();
+		}
 		if (count($this->fields_details) != 0) {
 			phparray_to_javascriptarray($this->fields_details,"fields_details_".$this->tablename,Array('/*','/*/name','/*/columnheader','/*/description','/*/type','/*/text','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name','/*/items/*/*/name'));
 		}
@@ -109,7 +112,7 @@ class HaproxyHtmlList
 		}
 		return $values;
 	}
-	
+
 	function haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter) {
 		$result = "";
 		$itemnamenr = $this->tablename . $itemname . $counter;
@@ -154,6 +157,7 @@ class HaproxyHtmlList
 			} else {
 				$result .= htmlspecialchars($itemvalue);
 			}
+			$result = "<div id='".$itemnamenr."_disp'>".$result."</div>";
 		}
 		return $result;
 	}
@@ -173,6 +177,9 @@ class HaproxyHtmlList
 					<tr>
 						<th><!-- checkbox --></th>";
 		foreach($items as $item){
+			if ($item['type'] == 'hidden') {
+				continue;
+			}
 			$result .= "<th>{$item['columnheader']}</th>";
 		}
 		$result .= "<th>Actions</th>
@@ -191,7 +198,7 @@ class HaproxyHtmlList
 				} else {
 					$key = "";
 				}
-				
+
 				if (!$editstate) {
 					$result .= "<tr id='tr_view_$counter' ondblclick='editRow($counter); return false;' >
 						<td>
@@ -202,9 +209,12 @@ class HaproxyHtmlList
 
 					$leftitem = true;
 					foreach($items as $item) {
-						$result .= "<td>";
 						$itemname = $item['name'];
 						$itemvalue = $value[$itemname];
+						if ($item['type'] == 'hidden') {
+							continue;
+						}
+						$result .= "<td>";
 						if (isset($item['customdrawcell'])) {
 							$result .= $item['customdrawcell']($this, $item, $itemvalue, false, $itemname, $counter);
 						} else {
@@ -212,20 +222,22 @@ class HaproxyHtmlList
 						}
 						$result .= "</td>";
 						$leftitem = false;
-						
+
 					}
 					$result .= "
-					<td class='action-icons'>
+					<td class='action-buttons'>
 					<a onclick='editRow({$counter}); return false;'>".haproxyicon('edit','edit entry')."</a>
 					<a onclick='deleteRow({$counter}, \"{$tablename}\"); return false;'>".haproxyicon('delete','delete entry')."</a>
 					<a onclick='dupRow({$counter}, \"{$tablename}\"); return false;'>".haproxyicon('clone','duplicate entry')."</a>
 					";
-					if (empty($this->noindex)) {
+/* // shouldnt need this anymore.. the checkbox+anchor is implemented everywhere..
+ * 					if (empty($this->noindex)) {
 						$result .= "
 						<a onclick='moveRowUp({$counter}, \"{$tablename}\"); return false;'>".haproxyicon('moveup','move row up')."</a>
 						<a onclick='moveRowDown({$counter}, \"{$tablename}\"); return false;'>".haproxyicon('movedown','move row down')."</a>
 						";
 					}
+*/
 					$result .= "
 					</td>";
 					$result .= "</tr>";
@@ -236,9 +248,15 @@ class HaproxyHtmlList
 							<input type='checkbox' id='frec{$counter}' onClick='fr_toggle_two({$counter},this)' name='{$tablename}_row[]' value='{$counter}'/>
 							<a class='fa fa-anchor' id='Xmove_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")'  title='".gettext("Move checked entries to here")."'></a>
 						</td>";
+				$hiddenitems = "";
 				foreach($items as $item){
 					$itemname = $item['name'];
-					$itemvalue = $value[$itemname];					
+					$itemvalue = $value[$itemname];
+					if ($item['type'] == 'hidden') {
+						$rowitemname = $this->tablename . $itemname . $counter;
+						$hiddenitems .= "<input name='{$rowitemname}' type='hidden' value='{$itemvalue}' />";
+						continue;
+					}		
 					$result .= "<td>".$key;
 					if (isset($item['customdrawcell'])) {
 						$result .= $item['customdrawcell']($this, $item, $itemvalue, true, $itemname, $counter);
@@ -249,17 +267,12 @@ class HaproxyHtmlList
 					$key = "";
 				}
 				$result .= "
-		<td class='action-icons'>
+		<td class='action-buttons'>
+			{$hiddenitems}
 			<input name='{$tablename}_rowindex[]' id='{$tablename}_rowindex{$counter}' class='hidden' value='{$counter}' />
 			<a onclick='deleteRow({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('delete','delete entry')."</a>
 			<a onclick='dupRow({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('clone','duplicate entry')."</a>
 			";
-			if (empty($this->noindex)) {
-				$result .= "
-				<a onclick='moveRowUp({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('moveup','move row up')."</a>
-				<a onclick='moveRowDown({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('movedown','move row down')."</a>
-				";
-			}
 			$result .= "
 		</td>";
 				$result .= "</tr>";
@@ -279,6 +292,7 @@ EOT
 						$leftitem = true;
 						foreach($itemdetails as $item) {
 							$itemname = $item['name'];
+							$itemid = "{$tablename}{$itemname}{$counter}";
 							$itemvalue = $value[$itemname];
 							if ($this->fields_details_showfieldfunction != null) {
 								// filter context un-related items through customizable function.
@@ -290,7 +304,7 @@ EOT
 							if (empty($itemvalue)) {
 								continue;
 							}
-							$result .= "<div style='float: left;padding-right: 2px;'>";
+							$result .= "<div style='float: left;padding-right: 2px;' id='".$itemid."_disp'>";
 							$tdclass = "";
 							if (!$leftitem) {
 								$result .= ", ";
@@ -316,7 +330,7 @@ EOT
 							$result .= "</td>";
 							$result .= "<td style='border-left:0'>";
 							$itemvalue = $value[$itemname];
-							
+
 							if (!empty($item['description'])) {
 								$result .= "{$item['description']}<br/>";
 							}
@@ -370,7 +384,7 @@ function haproxy_htmllist_js(){
 	global $g;
 ?><script type="text/javascript">
 	var theme = "<?=$g['theme']?>";
-	
+
 	function html_listitem_change(tableId, fieldId, rowNr, field) {
 		javascript_event = tableId + "_listitem_change";
 		var fn = window[javascript_event];
@@ -378,7 +392,7 @@ function haproxy_htmllist_js(){
 			fn(tableId, fieldId, rowNr, field);
 		}
 	}
-	
+
 	function htmllist_get_select_items(prefix, tableId) {
 		var items;
 		var items_name = prefix+"_"+tableId;
@@ -408,8 +422,8 @@ function haproxy_htmllist_js(){
 				var fieldvalue = fielditems[fieldvalueid]
 				seltext += "<option value='"+fieldvalueid+"'>"+fieldvalue['name']+"<\/option>";
 			}
-			
-			result="<select name='" + tableId + field['name'] + rowId + 
+
+			result="<select name='" + tableId + field['name'] + rowId +
 			"' id='" + tableId + field['name'] + rowId + "' "+
 			"onchange='html_listitem_change(\""+tableId+"\",\""+field['name']+"\",\""+rowId+"\",this);' " +
 			">" + seltext + "<\/select> ";
@@ -423,14 +437,14 @@ function haproxy_htmllist_js(){
 		}
 		return result;
 	}
-	
+
 	var addRowTo = (function() {
 	return (function (tableId) {
 		var d, tbody, tr, td, bgc, i, ii, j, type, seltext, items;
 		var btable, btbody, btr, btd;
 		var fieldcount;
 		d = document;
-		
+
 		tbody = d.getElementById(tableId).getElementsByTagName("tbody").item(0);
 		totalrows++;
 
@@ -448,6 +462,9 @@ function haproxy_htmllist_js(){
 		tr.appendChild(td);
 
 		for (var i in items) {
+			if (items[i]['type']=='hidden') {
+				continue;//dont copy hidden fields.. like a id field that should stay unique
+			}
 			fieldhtml = createFieldHtml(tableId, items[i], totalrows);
 			td = d.createElement("td");
 			td.innerHTML = fieldhtml;
@@ -455,14 +472,14 @@ function haproxy_htmllist_js(){
 			fieldcount += 1;
 		}
 		td = d.createElement("td");
-		td.setAttribute("class","action-icons");
-		
+		td.setAttribute("class","action-buttons");
+
 		// Recreate the action icons.
 		var actions = "";
 		actions += '<input name="'+tableId+'_rowindex[]" id="'+tableId+'_rowindex'+totalrows+'" class="hidden" value="'+totalrows+'" />' +
 			'<a onclick="deleteRow(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('delete','delete entry')?></a>";
 		actions += '<a onclick=\"dupRow(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('clone','duplicate entry')?></a>";
-		
+
 		var tabledefinition = htmllist_get_select_items("tabledefinition", tableId);
 		if (tabledefinition && tabledefinition['keyfield'] == "") {
 			actions += '<a onclick=\"moveRowUp(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('moveup','move row up')?></a>";
@@ -471,7 +488,7 @@ function haproxy_htmllist_js(){
 		td.innerHTML = actions;
 		tr.appendChild(td);
 		tbody.appendChild(tr); // add the edit row to the table
-		
+
 		// create viewdetail row
 		detailitems = htmllist_get_select_items('fields_details',tableId);
 		if (detailitems) {
@@ -513,7 +530,7 @@ function haproxy_htmllist_js(){
 		if (typeof fn === 'function'){
 			fn(tableId, "toggle_details", totalrows, null);
 		}
-		
+
 		javascript_row_added = tableId + "_row_added";
 		var fn = window[javascript_row_added];
 		if (typeof fn === 'function'){
@@ -588,7 +605,7 @@ function haproxy_htmllist_js(){
 		var rowview = document.getElementById("tr_view_" + rowId);
 		var rowedit = document.getElementById("tr_edit_" + rowId);
 		var rowviewdetail = document.getElementById("tr_viewdetail_" + rowId);
-		
+
 		var parent = rowedit.parentNode;
 		var swapid;
 		var swaprowedit;
@@ -651,14 +668,14 @@ function haproxy_htmllist_js(){
 				parent.insertBefore(prevrowviewdetail, firstrow);
 			}
 		}
-		
+
 		//var id_a = document.getElementById(tableId+'_rowindex' + swapid);
 		//var id_b = document.getElementById(tableId+'_rowindex' + rowId);
 		//temp = id_a.value;
 		//id_a.value = id_b.value;
 		//id_b.value = temp;
 	}
-	
+
 	function htmltable_toggle_details(tableId, rowNr, table_row_detail_id) {
 		tredit = document.getElementById(table_row_detail_id+'_off');
 		treditdetail = document.getElementById(table_row_detail_id+'_edit');
@@ -710,7 +727,7 @@ function haproxy_htmllist_js(){
 			moveabove = rowedit;
 		}
 		//var parent = moveabove[0].parentNode;
-		
+
 		editcheckboxes.each(function( index ) {
 			var moveid = this.value;
 			console.log( index + ": " + this.id );

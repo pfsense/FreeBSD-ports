@@ -3,7 +3,7 @@
 
 PORTNAME=	k9copy
 PORTVERSION=	2.3.4
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	multimedia kde
 MASTER_SITES=	LOCAL/rakuco
 DISTNAME=	${PORTNAME}-${PORTVERSION}-Source
@@ -17,9 +17,9 @@ LIB_DEPENDS=	libxine.so:multimedia/libxine \
 		libmpeg2.so:multimedia/libmpeg2 \
 		libavcodec0.so:multimedia/ffmpeg0
 
-USES=		cmake gettext kde:4 localbase
+USES=		cmake gettext kde:4 localbase qt:4
 USE_KDE=	kdelibs automoc4
-USE_QT4=	moc_build qmake_build rcc_build uic_build
+USE_QT=		moc_build qmake_build rcc_build uic_build
 LLD_UNSAFE=	yes
 
 OPTIONS_DEFINE=	MENCODER MPLAYER DVDAUTHOR

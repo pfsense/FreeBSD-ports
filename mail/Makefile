@@ -98,6 +98,8 @@
     SUBDIR += dot-forward
     SUBDIR += dovecot
     SUBDIR += dovecot-pigeonhole
+    SUBDIR += dovecot-pigeonhole04
+    SUBDIR += dovecot22
     SUBDIR += drac
     SUBDIR += dracmail
     SUBDIR += dspam
@@ -450,6 +452,7 @@
     SUBDIR += p5-SES
     SUBDIR += p5-Sendmail-AccessDB
     SUBDIR += p5-Sendmail-Milter
+    SUBDIR += p5-Sisimai
     SUBDIR += p5-Test-Email
     SUBDIR += p5-URI-imap
     SUBDIR += p5-URI-imaps
@@ -493,6 +496,7 @@
     SUBDIR += php72-imap
     SUBDIR += phplist
     SUBDIR += phpmailer
+    SUBDIR += phpmailer6
     SUBDIR += pine-pgp-filters
     SUBDIR += pm-lib
     SUBDIR += policyd2
@@ -518,8 +522,6 @@
     SUBDIR += postfix-policyd-weight
     SUBDIR += postfix-postfwd
     SUBDIR += postfix-sasl
-    SUBDIR += postfix211
-    SUBDIR += postfix211-sasl
     SUBDIR += postfixadmin
     SUBDIR += postgrey
     SUBDIR += postsrsd
@@ -538,6 +540,7 @@
     SUBDIR += py-cyruslib
     SUBDIR += py-dkimpy
     SUBDIR += py-email-reply-parser
+    SUBDIR += py-flask-mail
     SUBDIR += py-flufl.bounce
     SUBDIR += py-fuglu
     SUBDIR += py-libgmail
@@ -584,6 +587,7 @@
     SUBDIR += queue-repair
     SUBDIR += rainloop
     SUBDIR += rainloop-community
+    SUBDIR += ratelimit-policyd
     SUBDIR += raysfilter
     SUBDIR += razor-agents
     SUBDIR += rbl-milter

@@ -2,7 +2,6 @@
 
 PORTNAME=	quick
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	qt5-
 
@@ -10,10 +9,9 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt declarative framework for dynamic user interfaces
 
 USE_GL=		gl
-USE_QT5=	core gui network qml sql testlib \
+USE_QT=		core gui network qml sql testlib \
 		widgets xmlpatterns buildtools_build
-QT_DIST=	declarative
-USES=		python:build qmake:norecursive
+USES=		python:build qmake:norecursive qt-dist:5,declarative
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 CONFLICTS=	qt5-declarative-render2d-*

@@ -7,7 +7,7 @@ DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PostgreSQL extension for full-text search of Chinese
 
 LICENSE=	PostgreSQL
@@ -15,6 +15,7 @@ LICENSE=	PostgreSQL
 LIB_DEPENDS=	libscws.so:textproc/scws
 
 USES=		gmake pgsql:9.2+
+LLD_UNSAFE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	amutu
 

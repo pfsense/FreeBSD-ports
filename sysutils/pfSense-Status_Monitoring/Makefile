@@ -13,16 +13,15 @@ COMMENT=	pfSense Status Monitoring
 
 LICENSE=	APACHE20
 
-IGNORE_WITH_PHP=	70 71
+RUN_DEPENDS+=	${PECL_PKGNAMEPREFIX}rrd>=2.0.0:databases/pecl-rrd@${PHP_FLAVOR}
+
+IGNORE_WITH_PHP=	56 70 71
 USES=		php:flavors
 
 NO_BUILD=	yes
 NO_MTREE=	yes
 
 PLIST_SUB=	PORTNAME=${PORTNAME}
-
-php56_RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/rrd.so:databases/pecl-rrd1
-php72_RUN_DEPENDS+=	${PECL_PKGNAMEPREFIX}rrd>=2.0.0:databases/pecl-rrd@${PHP_FLAVOR}
 
 do-extract:
 	${MKDIR} ${WRKSRC}

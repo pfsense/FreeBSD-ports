@@ -2,7 +2,7 @@
 
 PORTNAME=	webvfx
 DISTVERSION=	0.4.4-20160823
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 PKGNAMESUFFIX=	-qt5
 
@@ -18,8 +18,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	mltframework
 GH_TAGNAME=	e918ce4
 
-USES=		pkgconfig qmake
-USE_QT5=	3d buildtools_build opengl qml quick webkit
+USES=		pkgconfig qmake qt:5
+USE_QT=		3d buildtools_build opengl qml quick webkit
 USE_LDCONFIG=	yes
 
 PORTEXAMPLES=	*

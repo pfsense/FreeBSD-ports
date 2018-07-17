@@ -2,12 +2,15 @@
 
 PORTNAME=	showdown
 DISTVERSION=	0.6
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
 MAINTAINER=	dg@syrec.org
 COMMENT=	Simple markdown viewer, written in Vala and GTK 3
 
 LICENSE=	GPLv3
+
+BROKEN_powerpc64=	fails to compile: unrecognized command line option "-Wno-incompatible-pointer-types"
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libmarkdown.a:textproc/discount \
 		valac:lang/vala

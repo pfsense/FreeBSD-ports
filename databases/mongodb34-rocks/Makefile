@@ -3,7 +3,7 @@
 PORTNAME=	mongodb
 PORTVERSION=	3.4.6
 DISTVERSIONPREFIX=	r
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/ \
@@ -20,6 +20,8 @@ LICENSE=	AGPLv3 APACHE20
 LICENSE_COMB=	multi
 
 BROKEN=		fails to link
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2018-06-06
 BROKEN_SSL=	openssl-devel
 BROKEN_SSL_REASON_openssl-devel=	no member named 'SSLv2_method' in the global namespace
 
@@ -31,8 +33,8 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libboost_system.so:devel/boost-libs \
 		librocksdb.so:databases/rocksdb \
 		liblz4.so:archivers/liblz4
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml \
-		${PYTHON_PKGNAMEPREFIX}pymongo>=3.0:databases/pymongo
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pymongo>=3.0:databases/pymongo@${PY_FLAVOR}
 
 USES=		compiler:c++14-lang cpe python:build scons
 USE_RC_SUBR=	mongod \
@@ -49,7 +51,6 @@ CONFLICTS_INSTALL=	mongodb \
 			mongodb32 \
 			mongodb34
 
-WITH_DEBUG=yes
 MAKE_ARGS=	--prefix=${STAGEDIR}${PREFIX} \
 		--use-system-pcre --use-system-snappy \
 		--use-system-boost --use-system-zlib \

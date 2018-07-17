@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	openssh
-DISTVERSION=	7.6p1
-PORTREVISION=	3
+DISTVERSION=	7.7p1
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	security ipv6
 MASTER_SITES=	OPENBSD/OpenSSH/portable
@@ -29,10 +29,18 @@ ETCOLD=			${PREFIX}/etc
 BROKEN_SSL=	openssl-devel
 BROKEN_SSL_REASON_openssl-devel=	error: OpenSSL >= 1.1.0 is not yet supported
 
+FLAVORS=			default hpn
+default_CONFLICTS_INSTALL=	openssl-portable-hpn
+hpn_CONFLICTS_INSTALL=		openssh-portable
+hpn_PKGNAMESUFFIX=		-portable-hpn
+
 OPTIONS_DEFINE=		PAM TCP_WRAPPERS LIBEDIT BSM \
 			HPN X509 KERB_GSSAPI \
-			SCTP LDNS NONECIPHER
+			LDNS NONECIPHER XMSS
 OPTIONS_DEFAULT=	LIBEDIT PAM TCP_WRAPPERS LDNS
+.if ${FLAVOR:U} == hpn
+OPTIONS_DEFAULT+=	HPN NONECIPHER
+.endif
 OPTIONS_RADIO=		KERBEROS
 OPTIONS_RADIO_KERBEROS=	MIT HEIMDAL HEIMDAL_BASE
 TCP_WRAPPERS_DESC=	tcp_wrappers support
@@ -41,11 +49,11 @@ KERB_GSSAPI_DESC=	Kerberos/GSSAPI patch (req: GSSAPI)
 HPN_DESC=		HPN-SSH patch
 LDNS_DESC=		SSHFP/LDNS support
 X509_DESC=		x509 certificate patch
-SCTP_DESC=		SCTP support
 HEIMDAL_DESC=		Heimdal Kerberos (security/heimdal)
 HEIMDAL_BASE_DESC=	Heimdal Kerberos (base)
 MIT_DESC=		MIT Kerberos (security/krb5)
 NONECIPHER_DESC=	NONE Cipher support
+XMSS_DESC=		XMSS key support (experimental)
 
 OPTIONS_SUB=		yes
 
@@ -57,22 +65,14 @@ LDNS_EXTRA_PATCHES=	${FILESDIR}/extra-patch-ldns
 LDNS_CFLAGS=		-I${LOCALBASE}/include
 LDNS_CONFIGURE_ON=	--with-ldflags='-L${LOCALBASE}/lib'
 
-# http://www.psc.edu/index.php/hpn-ssh
 HPN_CONFIGURE_WITH=		hpn
 NONECIPHER_CONFIGURE_WITH=	nonecipher
 
 # See http://www.roumenpetrov.info/openssh/
-X509_VERSION=		11.0
+X509_VERSION=		11.3.2
 X509_PATCH_SITES=	http://www.roumenpetrov.info/openssh/x509-${X509_VERSION}/:x509
 X509_EXTRA_PATCHES+=	${FILESDIR}/extra-patch-x509-glue
-X509_PATCHFILES=	${PORTNAME}-7.6p1+x509-${X509_VERSION}.diff.gz:-p1:x509
-
-# See https://bugzilla.mindrot.org/show_bug.cgi?id=2016
-# and https://bugzilla.mindrot.org/show_bug.cgi?id=1604
-#SCTP_PATCHFILES=	${PORTNAME}-7.2_p1-sctp.patch.gz:-p1
-SCTP_BROKEN=		Does not apply to 7.6+
-SCTP_CONFIGURE_WITH=	sctp
-SCTP_EXTRA_PATCHES+=	${FILESDIR}/extra-patch-sctp:-p1
+X509_PATCHFILES=	${PORTNAME}-7.7p1+x509-${X509_VERSION}.diff.gz:-p1:x509
 
 MIT_LIB_DEPENDS=		libkrb5.so.3:security/krb5
 HEIMDAL_LIB_DEPENDS=		libkrb5.so.26:security/heimdal
@@ -97,9 +97,9 @@ EXTRA_PATCHES:=		${EXTRA_PATCHES:N${TCP_WRAPPERS_EXTRA_PATCHES}}
 
 # Must add this patch before HPN due to conflicts
 .if ${PORT_OPTIONS:MKERB_GSSAPI}
-BROKEN=	No patch for 7.6 yet.
+#BROKEN=	KERB_GSSAPI No patch for ${DISTVERSION} yet.
 # Patch from:
-# http://sources.debian.net/data/main/o/openssh/1:7.4p1-5/debian/patches/gssapi.patch
+# https://sources.debian.org/data/main/o/openssh/1:7.7p1-2/debian/patches/gssapi.patch
 # which was originally based on 5.7 patch from
 # http://www.sxw.org.uk/computing/patches/
 # It is mirrored simply to apply gzip -9.
@@ -107,15 +107,15 @@ BROKEN=	No patch for 7.6 yet.
 # Needed glue for applying HPN patch without conflict
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-hpn-gss-glue
 .  endif
-PATCHFILES+=	openssh-7.4p1-gsskex-all-20141021-debian-rh-20161228.patch.gz:-p1:gsskex
+PATCHFILES+=	openssh-7.7p1-gsskex-all-20141021-debian-rh-20171004.patch.gz:-p1:gsskex
 .endif
 
-# http://www.psc.edu/index.php/hpn-ssh https://github.com/rapier1/hpn-ssh https://github.com/rapier1/openssh-portable
+# https://www.psc.edu/hpn-ssh https://github.com/rapier1/openssh-portable/tree/hpn-openssl1.1-7_7_P1
 .if ${PORT_OPTIONS:MHPN} || ${PORT_OPTIONS:MNONECIPHER}
-BROKEN=			Not yet updated for 7.6+ and disabled in base
+#BROKEN=			HPN: Not yet updated for ${DISTVERSION} and disabled in base
 PORTDOCS+=		HPN-README
-HPN_VERSION=		14v5
-HPN_DISTVERSION=	6.7p1
+HPN_VERSION=		14v15
+HPN_DISTVERSION=	7.7p1
 #PATCH_SITES+=		SOURCEFORGE/hpnssh/HPN-SSH%20${HPN_VERSION}%20${HPN_DISTVERSION}/:hpn
 #PATCHFILES+=		${PORTNAME}-${HPN_DISTVERSION}-hpnssh${HPN_VERSION}.diff.gz:-p1:hpn
 EXTRA_PATCHES+=		${FILESDIR}/extra-patch-hpn:-p2
@@ -134,10 +134,6 @@ EXTRA_PATCHES+=		${FILESDIR}/extra-patch-version-addendum
 .if ${PORT_OPTIONS:MX509}
 .  if ${PORT_OPTIONS:MHPN} || ${PORT_OPTIONS:MNONECIPHER}
 BROKEN=		X509 patch and HPN patch do not apply cleanly together
-.  endif
-
-.  if ${PORT_OPTIONS:MSCTP}
-BROKEN=		X509 patch and SCTP patch do not apply cleanly together
 .  endif
 
 .  if ${PORT_OPTIONS:MKERB_GSSAPI}
@@ -206,6 +202,9 @@ post-patch:
 	@${ECHO_CMD} '#define SSH_VERSION_FREEBSD_PORT	"${VERSION_ADDENDUM_DEFAULT}"' >> \
 		${WRKSRC}/version.h
 
+post-configure-XMSS-on:
+	@${ECHO_CMD} "#define WITH_XMSS 1" >> ${WRKSRC}/config.h
+
 post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/ssh_config \
 	    ${STAGEDIR}${ETCDIR}//ssh_config.sample
@@ -222,6 +221,7 @@ test: build
 		TEST_SHELL=${SH} \
 		SUDO="${SUDO}" \
 		LOGNAME="${LOGNAME}" \
+		TEST_SSH_TRACE=yes \
 		PATH=${WRKSRC}:${PREFIX}/bin:${PREFIX}/sbin:${PATH} \
 		${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} tests
 

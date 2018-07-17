@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	llvm
-PORTVERSION=	${LLVM_MAJOR}.d${SNAPDATE}
-PORTREVISION=	0
+PORTVERSION=	${LLVM_MAJOR}.0.d${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-devel
 
@@ -49,10 +49,10 @@ GH_TAGNAME=	${LLVM_COMMIT}
 
 OPTIONS_DEFINE=	CLANG DOCS EXTRAS LIT LLD LLDB
 OPTIONS_DEFINE_amd64=	COMPILER_RT GOLD OPENMP
-OPTIONS_DEFINE_i386=	COMPILER_RT
+OPTIONS_DEFINE_i386=	COMPILER_RT OPENMP
 OPTIONS_DEFAULT=	CLANG EXTRAS LIT LLD LLDB
 OPTIONS_DEFAULT_amd64=	COMPILER_RT GOLD OPENMP
-OPTIONS_DEFAULT_i386=	COMPILER_RT
+OPTIONS_DEFAULT_i386=	COMPILER_RT OPENMP
 OPTIONS_EXCLUDE_FreeBSD_10=	LLDB OPENMP
 OPTIONS_SUB=	yes
 
@@ -109,8 +109,7 @@ OPTIONS_SUB=	yes
 
 DOCS_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
 
-PLIST_SUB+=	LLVM_LIB_VER=${LLVM_MAJOR:C/\..*//} \
-		LLVM_MAJOR=${LLVM_MAJOR} \
+PLIST_SUB+=	LLVM_MAJOR=${LLVM_MAJOR} \
 		LLVM_RELEASE=${LLVM_RELEASE}
 
 COMMANDS=	bugpoint \
@@ -130,10 +129,10 @@ COMMANDS=	bugpoint \
 		llvm-dlltool \
 		llvm-dwarfdump \
 		llvm-dwp \
+		llvm-exegesis \
 		llvm-extract \
 		llvm-link \
 		llvm-mc \
-		llvm-mcmarkup \
 		llvm-modextract \
 		llvm-mt \
 		llvm-nm \
@@ -151,6 +150,7 @@ COMMANDS=	bugpoint \
 		llvm-split \
 		llvm-stress \
 		llvm-strings \
+		llvm-strip \
 		llvm-symbolizer \
 		llvm-tblgen \
 		macho-dump \
@@ -218,9 +218,11 @@ COMMANDS+=	c-index-test \
 		clang-import-test \
 		clang-offload-bundler \
 		clangd \
+		diagtool \
 		scan-build \
 		scan-view
 MAN1SRCS+=	clang.1 \
+		diagtool.1 \
 		scan-build.1
 CLANG_PATTERN=	(c-index-test|clang|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|-analyzer)
 .endif
@@ -268,18 +270,13 @@ PLIST_SUB+=	OPENMP="@comment "
 
 MAN1SRCS+=	bugpoint.1 dsymutil.1 llc.1 lli.1 llvm-ar.1 llvm-as.1 \
 		llvm-bcanalyzer.1 llvm-build.1 llvm-config.1 llvm-cov.1 \
-		llvm-diff.1 llvm-dis.1 llvm-dwarfdump.1 \
+		llvm-diff.1 llvm-dis.1 llvm-dwarfdump.1 llvm-exegesis.1 \
 		llvm-extract.1 llvm-lib.1 llvm-link.1 llvm-mca.1 llvm-nm.1 \
 		llvm-pdbutil.1 \
 		llvm-profdata.1 llvm-readobj.1 llvm-stress.1 llvm-symbolizer.1 \
 		opt.1 tblgen.1
 
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSREL} == 10.3
-CFLAGS+=	-D_LIBCPP_TRIVIAL_PAIR_COPY_CTOR=1
-BROKEN=	Missing __cxa_thread_atexit
-.endif
 
 .if defined(WITH_DEBUG)
 CMAKE_BUILD_TYPE=	RelWithDebInfo
@@ -309,6 +306,9 @@ _COMPILER_RT_LIBS= \
 	libclang_rt.msan-x86_64.a.syms \
 	libclang_rt.msan_cxx-x86_64.a \
 	libclang_rt.msan_cxx-x86_64.a.syms \
+	libclang_rt.xray-basic-x86_64.a \
+	libclang_rt.xray-fdr-x86_64.a \
+	libclang_rt.xray-profiler-x86_64.a \
 	libclang_rt.xray-x86_64.a \
 	libclang_rt.profile-x86_64.a \
 	libclang_rt.safestack-x86_64.a \
@@ -444,7 +444,7 @@ post-install-LIT-on:
 	    ${STAGEDIR}${PREFIX}/bin/FileCheck${LLVM_SUFFIX}
 
 TEST_CMD=	'(cd ${WRKSRC}/test; ${SETENV} ${MAKE_ENV} LD_LIBRARY_PATH=${WRKSRC}/Release/lib ${MAKE_CMD} check-local-lit)'
-regression-test: ${BUILD_COOKIE}
+do-test:
 	if [ `${ID} -u` = 0 ]; then \
 		${CHOWN} -R nobody ${WRKSRC}/test; \
 		su -m nobody -c ${TEST_CMD}; \
@@ -472,7 +472,6 @@ build-plist:
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \
 	    -e 's|${LLVM_MAJOR:C/\./\\./}|%%LLVM_MAJOR%%|' \
-	    -e 's|\.${LLVM_MAJOR:C/\..*//}|.%%LLVM_LIB_VER%%|' \
 	    | ${SORT} >> ${PLIST}.tmp
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' \

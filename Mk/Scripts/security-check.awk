@@ -1,9 +1,5 @@
 BEGIN {
 	file = "";
-	if (audit != "")
-		stupid_functions_regexp="^(gets|mktemp|tempnam|tmpnam|strcpy|strcat|sprintf)$";
-	else
-		stupid_functions_regexp="^(gets|mktemp|tempnam|tmpnam)$";
 	split("", stupid_binaries);
 	split("", network_binaries);
 	split("", setuid_binaries);
@@ -15,18 +11,17 @@ FILENAME ~ /\.flattened$/ {
 	if ($0 ~ /(^|\/)etc\/rc\.d\//)
 		startup_scripts[$0] = 1;
 }
-FILENAME ~ /\.objdump$/ {
-	if (match($0, /: +file format [^ ]+$/)) {
-		file = substr($0, 1, RSTART - 1);
-		stupid_functions = "";
+FILENAME ~ /\.readelf$/ {
+	if (match($0, /^File:/)) {
+		file = substr($0, 7);
 		next;
 	}
 	if (file == "")
 		next;
-	if ($3 ~ /^(gets|mktemp|tempnam|tmpnam)$/ ||
-	  ($3 ~ /^(strcpy|strcat|sprintf)$/ && audit != ""))
-		stupid_binaries[file] = stupid_binaries[file] " " $3;
-	if ($3 ~ /^(accept|recvfrom)$/)
+	if ($5 ~ /^(gets|mktemp|tempnam|tmpnam)$/ ||
+	  ($5 ~ /^(strcpy|strcat|sprintf)$/ && audit != ""))
+		stupid_binaries[file] = stupid_binaries[file] " " $5;
+	if ($5 ~ /^(accept|recvfrom)$/)
 		network_binaries[file] = 1;
 }
 FILENAME ~ /\.setuid$/ { setuid_binaries[$0] = 1; }

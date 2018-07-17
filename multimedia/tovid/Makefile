@@ -4,7 +4,7 @@
 PORTNAME=	tovid
 PORTVERSION=	0.35.2
 DISTVERSIONPREFIX=	tovid-
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia python
 
 MAINTAINER=	grepper@gmail.com
@@ -25,7 +25,7 @@ RUN_DEPENDS=	mplayer:multimedia/mplayer \
 		normalize:audio/normalize \
 		lame:audio/lame \
 		gnubc>0:math/gnubc \
-		${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR} \
 		bash:shells/bash
 
 USES=		python:2.7 shebangfix

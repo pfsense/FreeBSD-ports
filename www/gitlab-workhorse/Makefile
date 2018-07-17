@@ -2,23 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	gitlab-workhorse
-PORTVERSION=	4.0.0
+PORTVERSION=	4.2.0
 CATEGORIES=	www
 
-MAINTAINER=	idefix@fechner.net
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Smart reverse proxy for GitLab
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go>=1.5.3:lang/go
+BUILD_DEPENDS=	go>=1.5.3:lang/go \
+		git>=2.16.2:devel/git
 
 MAKE_JOBS_UNSAFE=yes
 USES=	gmake
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
 # Find the commit hash here: https://gitlab.com/gitlab-org/gitlab-workhorse/tags
-GL_COMMIT=	75bc61a1ac262705a24e38c3fc6b388efb0fb5c4
+GL_COMMIT=	5ee4b0a9cc7652b65b4cab17d8b280902a8b019d
 
 PLIST_FILES=	bin/gitlab-workhorse \
 		bin/gitlab-zip-cat \

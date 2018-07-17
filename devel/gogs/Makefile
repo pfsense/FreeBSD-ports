@@ -2,8 +2,7 @@
 
 PORTNAME=	gogs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.11.34
-PORTREVISION=	2
+DISTVERSION=	0.11.53
 CATEGORIES=	devel www
 
 MAINTAINER=	dg@syrec.org
@@ -13,10 +12,11 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	go:lang/go
-RUN_DEPENDS=	git:devel/git
+RUN_DEPENDS=	git:devel/git \
+		bash:shells/bash
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	gogits
+GH_ACCOUNT=	gogs
 GH_SUBDIR=	src/github.com/${GH_ACCOUNT}/${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS
@@ -73,6 +73,8 @@ do-install:
 	@${LN} -sf ${GOGS_DBDIR}/data ${STAGEDIR}/${PREFIX}/libexec/${PORTNAME}/data
 	@${MKDIR} ${STAGEDIR}${GOGS_LOGDIR}
 	@${LN} -sf ${GOGS_LOGDIR} ${STAGEDIR}/${PREFIX}/libexec/${PORTNAME}/log
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

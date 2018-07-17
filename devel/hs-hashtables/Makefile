@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hashtables
-PORTVERSION=	1.2.1.1
+PORTVERSION=	1.2.3.0
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 

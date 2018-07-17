@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mutt
-DISTVERSION=	1.9.4
-PORTREVISION?=	0
+DISTVERSION=	1.10.0
+PORTREVISION?=	1
 CATEGORIES+=	mail ipv6
 MASTER_SITES=	ftp://ftp.mutt.org/pub/mutt/ \
 		ftp://ftp.fu-berlin.de/pub/unix/mail/mutt/ \
@@ -11,7 +11,6 @@ MASTER_SITES=	ftp://ftp.mutt.org/pub/mutt/ \
 		ftp://ftp.demon.co.uk/pub/mirrors/mutt/ \
 		http://www.mutt.org.ua/download/mutt-${VVV_PATCH_VERSION}/:vvv \
 		http://www2.mutt.org.ua/download/mutt-${VVV_PATCH_VERSION}/:vvv
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	mutt
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -174,8 +173,8 @@ FLOCK_CONFIGURE_ENABLE=	flock
 
 LOCALES_FIX_CONFIGURE_ON=	--enable-locales-fix
 
-IDN_LIB_DEPENDS=	libidn.so:dns/libidn
-IDN_CONFIGURE_WITH=	idn
+IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2
+IDN_CONFIGURE_WITH=	idn2
 IDN_IMPLIES=	ICONV
 
 IFDEF_PATCH_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ifdef
@@ -203,8 +202,8 @@ DOCS_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-doc-ref
 .include <bsd.port.options.mk>
 
 # un/comment as each VERSION is created for PORTVERSION
-VVV_PATCH_VERSION=	1.9.1
-GREETING_PATCH_VERSION=	1.9.3
+VVV_PATCH_VERSION=	1.10.0
+GREETING_PATCH_VERSION=	1.10.0
 
 .if !defined(VVV_PATCH_VERSION)
 VVV_PATCH_VERSION=	${PORTVERSION}

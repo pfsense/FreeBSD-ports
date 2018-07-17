@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	phoenix_html
-PORTVERSION=	2.11.1
+PORTVERSION=	2.11.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMEPREFIX=	elixir-
 
-MAINTAINER=	olgeni@FreeBSD.org
+MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Functions for working with HTML from Phoenix
 
 LICENSE=	MIT

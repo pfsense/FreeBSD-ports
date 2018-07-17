@@ -11,10 +11,10 @@ DIST_SUBDIR=	KDE/${PORTVERSION}
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Activity Manager daemon
 
-USES=		cmake:outsource compiler:c++11-lib kde:4 tar:xz
+USES=		cmake:outsource compiler:c++11-lib kde:4 qt:4 tar:xz
 USE_KDE=	automoc4 kdelibs soprano nepomuk-core \
 		kactivities
-USE_QT4=	declarative opengl script sql \
+USE_QT=		declarative opengl script sql \
 		moc_build qmake_build rcc_build uic_build
 USE_LDCONFIG=	yes
 DISTINFO_FILE=	${.CURDIR}/../kactivities/distinfo
@@ -27,7 +27,7 @@ CMAKE_ARGS+=	-DCMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS=-rdynamic
 
 # Workaround to keep kactivitymanagerd from crashing:
 # http://lists.freebsd.org/pipermail/freebsd-current/2012-May/033972.html
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1000000
+.if ${OPSYS} == FreeBSD
 CXXFLAGS+=	-fno-use-cxa-atexit
 .endif
 

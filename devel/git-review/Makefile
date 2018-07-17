@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	git-review
-PORTVERSION=	1.25.0
+DISTVERSION=	1.26.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 
@@ -11,9 +11,9 @@ COMMENT=	Allow to push code to review and interact with a Gerrit server
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pbr>0:devel/py-pbr@${FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pbr>0:devel/py-pbr@${PY_FLAVOR}
 RUN_DEPENDS=	git:devel/git \
-		${PYTHON_PKGNAMEPREFIX}requests>2.4:www/py-requests@${FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}requests>2.4:www/py-requests@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils concurrent optsuffix

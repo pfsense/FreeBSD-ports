@@ -45,11 +45,11 @@ fi
 if [ -z "${CCACHE_DIR}" ]; then
 	CCACHE_DIR=$(make -C ${portdir} -VCCACHE_DIR)
 fi
-homedirs=$(awk -F: -v users=$(make -C ${portdir} -V USERS|sed -e 's, ,|,g;/^$/d;s,^,^(,;s,$,)$,') 'users && $1 ~ users {print $9}' ${PORTSDIR}/UIDs|sort -u|sed -e "s|/usr/local|${PREFIX}|"|tr "\n" " ")
+homedirs=$(awk -F: -v users="$(make -C ${portdir} -V USERS|sed -e 's, ,|,g;/^$/d;s,^,^(,;s,$,)$,')" 'users && $1 ~ users {print $9}' ${PORTSDIR}/UIDs|sort -u|sed -e "s|/usr/local|${PREFIX}|"|tr "\n" " ")
 plistsub_sed=$(make -C ${portdir} -VPLIST_SUB_SED | /bin/sh ${PORTSDIR}/Mk/Scripts/plist_sub_sed_sort.sh)
 tmpplist=$(make -C ${portdir} -VTMPPLIST)
 
-while read modtype path extra; do
+while read -r modtype path extra; do
 	# Ignore everything from these files/directories
 	case "${path}" in
 		${CCACHE_DIR}/*|\
@@ -152,10 +152,8 @@ while read modtype path extra; do
 			share/xml/catalog.ports) ;;
 			# Ignore ghc's doc index
 			share/doc/ghc-%%GHC_VERSION%%/*) ;;
-			share/doc/ghc-%%GHC_VERSION%%/html/libraries/%%PORTNAME%%-%%PORTVERSION%%/html) ;;
 			# Ignore ghc's package conf
 			lib/ghc-%%GHC_VERSION%%/package.conf.d/*) ;;
-			lib/ghc-%%GHC_VERSION%%/package.conf.d/%%PORTNAME%%-%%PORTVERSION%%.conf) ;;
 			# Ignore common system config files
 			/etc/group|\
 			/etc/make.conf|\

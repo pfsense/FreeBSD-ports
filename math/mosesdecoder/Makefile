@@ -4,7 +4,7 @@
 PORTNAME=	mosesdecoder
 PORTVERSION=	2.1.1
 DISTVERSIONPREFIX=	RELEASE-
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	math
 
 MAINTAINER=	demon@FreeBSD.org
@@ -26,7 +26,6 @@ SHEBANG_FILES=	scripts/analysis/extract-target-trees.py \
 		scripts/training/flexibility_score.py \
 		scripts/training/filter-rule-table.py \
 		scripts/training/create_count_tables.py
-python_OLD_CMD=	"/usr/bin/env python"
 
 MAKE_ENV+=	BOOST_BUILD_PATH=${WRKSRC}/jam-files/boost-build
 

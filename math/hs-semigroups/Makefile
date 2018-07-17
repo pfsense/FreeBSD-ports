@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	semigroups
-PORTVERSION=	0.18.3
+PORTVERSION=	0.18.4
 PORTREVISION=	1
 CATEGORIES=	math haskell
 
@@ -10,7 +10,7 @@ COMMENT=	Anything that associates
 
 LICENSE=	BSD3CLAUSE
 
-USE_CABAL=	hashable>=1.1 text>=0.10 transformers-compat>=0.3 unordered-containers>=0.2
+USE_CABAL=	hashable>=1.1 transformers-compat>=0.3 unordered-containers>=0.2
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

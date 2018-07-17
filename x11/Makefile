@@ -28,6 +28,7 @@
     SUBDIR += bmpanel2
     SUBDIR += bricons
     SUBDIR += brightside
+    SUBDIR += brisk-menu
     SUBDIR += cinnamon
     SUBDIR += cinnamon-desktop
     SUBDIR += cinnamon-menus
@@ -61,7 +62,6 @@
     SUBDIR += eaglemode
     SUBDIR += editres
     SUBDIR += emprint
-    SUBDIR += enventor
     SUBDIR += erun
     SUBDIR += eterm
     SUBDIR += evieext
@@ -124,10 +124,12 @@
     SUBDIR += kactivitymanagerd
     SUBDIR += kb2mb2
     SUBDIR += kbproto
+    SUBDIR += kde-baseapps
     SUBDIR += kde-baseapps-kde4
     SUBDIR += kde-runtime-kde4
     SUBDIR += kde-workspace-kde4
     SUBDIR += kde4
+    SUBDIR += kde5
     SUBDIR += kdelibs-kde4
     SUBDIR += keybinder
     SUBDIR += keybinder-gtk3
@@ -136,6 +138,7 @@
     SUBDIR += kf5-frameworkintegration
     SUBDIR += kf5-frameworks
     SUBDIR += kf5-kactivities
+    SUBDIR += kf5-kactivities-stats
     SUBDIR += kf5-kded
     SUBDIR += kf5-kdelibs4support
     SUBDIR += kf5-kglobalaccel
@@ -145,6 +148,7 @@
     SUBDIR += kf5-kwindowsystem
     SUBDIR += kf5-plasma-framework
     SUBDIR += kgamma-kde4
+    SUBDIR += konsole
     SUBDIR += konsole-kde4
     SUBDIR += leechcraft
     SUBDIR += lemonbar
@@ -222,6 +226,7 @@
     SUBDIR += lxhotkey
     SUBDIR += lxmenu-data
     SUBDIR += lxpanel
+    SUBDIR += lxqt-globalkeys
     SUBDIR += lxqt-l10n
     SUBDIR += lxrandr
     SUBDIR += mate
@@ -234,6 +239,7 @@
     SUBDIR += mate-session-manager
     SUBDIR += mate-terminal
     SUBDIR += menu-cache
+    SUBDIR += menulibre
     SUBDIR += metalock
     SUBDIR += metisse
     SUBDIR += mkcomposecache
@@ -265,6 +271,15 @@
     SUBDIR += pixman
     SUBDIR += plasma-scriptengine-python-kde4
     SUBDIR += plasma-scriptengine-ruby-kde4
+    SUBDIR += plasma5-kactivitymanagerd
+    SUBDIR += plasma5-kgamma5
+    SUBDIR += plasma5-kscreen
+    SUBDIR += plasma5-kwayland-integration
+    SUBDIR += plasma5-libkscreen
+    SUBDIR += plasma5-plasma
+    SUBDIR += plasma5-plasma-desktop
+    SUBDIR += plasma5-plasma-integration
+    SUBDIR += plasma5-plasma-workspace
     SUBDIR += polybar
     SUBDIR += presentproto
     SUBDIR += printproto
@@ -352,6 +367,7 @@
     SUBDIR += wmctrl
     SUBDIR += wmdrawer
     SUBDIR += wmmatrix
+    SUBDIR += wmsystemtray
     SUBDIR += wmutils-core
     SUBDIR += wmutils-opt
     SUBDIR += wmxss
@@ -499,6 +515,7 @@
     SUBDIR += xrsh
     SUBDIR += xrsi
     SUBDIR += xrx
+    SUBDIR += xscope
     SUBDIR += xscreensaver
     SUBDIR += xscreensaver-gnome
     SUBDIR += xscreensaver-gnome-hacks
@@ -540,6 +557,7 @@
     SUBDIR += xxkb
     SUBDIR += xzoom
     SUBDIR += yad
+    SUBDIR += yakuake
     SUBDIR += yakuake-kde4
     SUBDIR += yalias
     SUBDIR += yeahconsole

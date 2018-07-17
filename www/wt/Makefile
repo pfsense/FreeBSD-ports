@@ -3,7 +3,7 @@
 
 PORTNAME=	wt
 PORTVERSION=	3.3.7
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	www
 
 MAINTAINER=	info@babaei.net
@@ -178,7 +178,8 @@ USE_GNOME+=	pango
 .endif
 
 .if ${PORT_OPTIONS:MQT4}
-USE_QT4=	corelib moc_build
+USES+=		qt:4
+USE_QT=		corelib moc_build
 .endif
 
 .if ${PORT_OPTIONS:MOPENGL}

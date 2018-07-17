@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	fast_tls
-PORTVERSION=	1.0.21
+PORTVERSION=	1.0.22
 CATEGORIES=	security
 PKGNAMEPREFIX=	erlang-
 
-MAINTAINER=	farrokhi@FreeBSD.org
+MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	TLS / SSL OpenSSL-based native driver for Erlang / Elixir
 
 LICENSE=	APACHE20

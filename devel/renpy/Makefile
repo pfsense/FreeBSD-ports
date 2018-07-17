@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	renpy
-PORTVERSION?=	6.99.14.3
+PORTVERSION?=	7.0.0
 DISTVERSIONSUFFIX=-sdk
 PORTREVISION?=	0
 CATEGORIES=	devel games
@@ -16,12 +16,12 @@ LICENSE_NAME_DejaVu=	Bitstream Vera and Arev fonts license
 LICENSE_FILE_DejaVu=	${WRKSRC}/renpy/common/DejaVuSans.txt
 LICENSE_PERMS_DejaVu=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}game_sdl2>0:devel/py-game_sdl2@${FLAVOR}
+BUILD_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}game_sdl2>0:devel/py-game_sdl2@${PY_FLAVOR}
 LIB_DEPENDS=	libfribidi.so:converters/fribidi \
 		libpng.so:graphics/png \
 		libavcodec.so:multimedia/ffmpeg \
 		libfreetype.so:print/freetype2
-RUN_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}game_sdl2>=${PORTVERSION}:devel/py-game_sdl2@${FLAVOR}
+RUN_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}game_sdl2>=${PORTVERSION}:devel/py-game_sdl2@${PY_FLAVOR}
 
 CONFLICTS_INSTALL?=	${PORTNAME}6-*
 
@@ -38,11 +38,10 @@ SHEBANG_FILES=	renpy.py launcher/game/tkaskdir.py
 TARGET_ORDER_OVERRIDE=610:fix-shebang
 BUILD_WRKSRC=	${WRKSRC}/module
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
-MAKE_ENV+=	RENPY_DEPS_INSTALL="${LOCALBASE}"
-PORTDATA=	launcher renpy renpy.py templates
-.ifndef PKGNAMESUFFIX
-PORTDATA+=	gui
-.endif
+MAKE_ENV+=	RENPY_DEPS_INSTALL="${LOCALBASE}" \
+		RENPY_CYTHON=cython-${PYTHON_VER}
+PORTDATA?=	gui
+PORTDATA+=	launcher renpy renpy.py
 PORTDOCS=	*
 PLIST_FILES=	bin/${PORTNAME}
 
@@ -61,7 +60,7 @@ DIST_VARS=	LICENSE+="ART20 PSFL" \
 		PORTDATA+="lib renpy.app renpy.exe renpy.sh"
 EXAMPLES_VARS=	PORTDATA+="the_question tutorial"
 TKINTER_DESC=	Install Tkinter to allow choosing Projects Directory
-TKINTER_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${FLAVOR}
+TKINTER_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR}
 
 . for lic in FREETYPE LIBJPEG LIBPNG MSVCR90
 DIST_VARS+=	LICENSE+=${lic}
@@ -95,7 +94,8 @@ add-empty-dirs:
 		! \( -name "saves" -or -name "pysdlsound" \) | \
 		${SED} 's,^${WRKSRC},@dir ${DATADIR},' >>${TMPPLIST}
 
-post-install:
+post-install:	common-post-install
+common-post-install:
 	${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} -name \*.so \
 		-exec ${STRIP_CMD} {} +
 	${LN} -fs ../${DATADIR_REL}/renpy.py \
@@ -105,7 +105,6 @@ post-install:
 		"! -name *.orig ! -name *.bak \
 		 ! -name saves ! -name log.txt")
 	${CHMOD} +x ${STAGEDIR}${DATADIR}/renpy.py
-	${CHMOD} -R u+w ${STAGEDIR}${DATADIR}/templates
 
 post-install-DOCS-on:
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} \

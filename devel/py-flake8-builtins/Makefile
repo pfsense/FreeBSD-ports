@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flake8-builtins
-PORTVERSION=	1.1.1
+PORTVERSION=	1.4.1
 CATEGORIES=	devel
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ COMMENT=	Check for python builtins being used as variables or parameters
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flake8>=0:devel/py-flake8@${FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flake8>=0:devel/py-flake8@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils

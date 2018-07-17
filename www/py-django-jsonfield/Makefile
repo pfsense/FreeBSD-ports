@@ -2,15 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	jsonfield
-PORTVERSION=	1.0.3
+PORTVERSION=	2.0.2
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	GH
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}django-
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	Reusable JSONField model for Django to store ad-hoc data
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django18>=0:www/py-django18@${FLAVOR}
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django111>=0:www/py-django111@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bro
-PORTVERSION=	2.5.3
+PORTVERSION=	2.5.4
 CATEGORIES=	security
 MASTER_SITES=	https://www.bro.org/downloads/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -16,7 +16,7 @@ BROKEN_powerpc64=	Does not build: error: zero-size array 'names'
 
 LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
-USES=		bison cmake:outsource compiler:c++11-lang ninja perl5 python shebangfix ssl
+USES=		bison cmake:outsource compiler:c++11-lang gettext-runtime ninja perl5 python shebangfix ssl
 
 CMAKE_ARGS+=	-DPYTHON_EXECUTABLE:PATH=${PYTHON_CMD}
 CXXFLAGS+=	-std=c++11 -Wall
@@ -69,10 +69,10 @@ BROCTL_IMPLIES=		BROCCOLI IPSUMDUMP
 
 BROCCOLI_LIB_DEPENDS=	libbroccoli.so:security/broccoli
 BROCTL_BUILD_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash \
-			${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
+			${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 			swig3.0:devel/swig30
 BROCTL_RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash \
-			${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3
+			${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 BROCTL_CMAKE_BOOL=	INSTALL_BROCTL
 BROCTL_USE=		LDCONFIG=yes
 IPSUMDUMP_BUILD_DEPENDS=ipsumdump:net/ipsumdump

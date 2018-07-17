@@ -80,6 +80,7 @@ function telegraf_resync_config() {
 
 [[inputs.system]]
 
+[[inputs.pf]]
 
 EOD;
 
@@ -103,6 +104,20 @@ EOD;
 		$cfg .= "\toverwrite_template = false\n";
 		$cfg .= "\ttemplate_name = \"telegraf\"\n";
 		$cfg .= "\turls = [\"" . $telegraf_conf['elasticsearch_server'] . "\"]\n";
+        } else if ((is_array($telegraf_conf['telegraf_output']) && in_array("graphite", $telegraf_conf['telegraf_output'])) || $telegraf_conf['telegraf_output'] == "graphite") {
+		$cfg .= "[[outputs.graphite]]\n";
+		$cfg .= "\tservers = [\"" . $telegraf_conf['graphite_server'] . "\"]\n";
+		if (!empty($telegraf_conf['graphite_prefix'])) {
+			$cfg .= "\tprefix = " . $telegraf_conf['graphite_prefix'] . "\n";
+		} else {
+			$cfg .= "\tprefix = \"monitor\"\n";
+		}
+		$cfg .= "\ttemplate = \"host.tags.measurement.field\"\n";
+		if (!empty($telegraf_conf['graphite_timeout'])) {
+			$cfg .= "\ttimeout = " . $telegraf_conf['graphite_timeout'] . "\n";
+		} else {
+			$cfg .= "\ttimeout = 2\n";
+		}
 	}
 	$conffile = "/usr/local/etc/telegraf.conf";
 	file_put_contents($conffile, $cfg);

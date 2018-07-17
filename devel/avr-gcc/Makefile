@@ -2,7 +2,7 @@
 
 PORTNAME=	gcc
 PORTVERSION=	5.4.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	GCC/releases/gcc-${DIST_VERSION}
 PKGNAMEPREFIX=	avr-
@@ -56,6 +56,11 @@ BROKEN_mips64=		Fails to configure: cannot compute suffix of object files
 .if (${ARCH} == "amd64")
 ARCH=		x86_64
 .endif
+
+post-patch:
+	@${FIND} ${WRKSRC} -type f \( -name '*.[ch]' -o -name '*.cc' \) | \
+		${XARGS} ${EGREP} -l '"(HOST_WIDE|PLUGIN_COND|PRId64)' | \
+		${XARGS} ${REINPLACE_CMD} -E -e 's/"(HOST_WIDE|PLUGIN_COND|PRId64)/" \1/g'
 
 post-configure:
 	${MKDIR} ${WRKSRC}/gcc/include

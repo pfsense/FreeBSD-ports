@@ -119,7 +119,9 @@ PHP_FUNCTION(pfSense_etherswitch_setport);
 PHP_FUNCTION(pfSense_etherswitch_setport_state);
 PHP_FUNCTION(pfSense_etherswitch_getlaggroup);
 PHP_FUNCTION(pfSense_etherswitch_getvlangroup);
+PHP_FUNCTION(pfSense_etherswitch_setlaggroup);
 PHP_FUNCTION(pfSense_etherswitch_setvlangroup);
+PHP_FUNCTION(pfSense_etherswitch_setmode);
 #endif
 PHP_FUNCTION(pfSense_ipsec_list_sa);
 

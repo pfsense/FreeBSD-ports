@@ -3,11 +3,10 @@
 
 PORTNAME=	doc
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	misc
-MASTER_SITES=	QT/online/qtsdkrepository/linux_x64/desktop/qt5_${QT5_VERSION:S/.//g}_src_doc_examples/qt.${QT5_VERSION:S/.//g}.doc/
+MASTER_SITES=	QT/online/qtsdkrepository/linux_x64/desktop/qt5_${QT5_VERSION:S/.//g}_src_doc_examples/qt.qt5.${QT5_VERSION:S/.//g}.doc/
 PKGNAMEPREFIX=	qt5-
-DISTNAME=	${QT5_VERSION}-0-201801220610qt-everywhere-documentation
+DISTNAME=	${QT5_VERSION}-0-201802092256qt-everywhere-documentation
 DIST_SUBDIR=	KDE/Qt/${QT5_VERSION}
 
 MAINTAINER=	kde@FreeBSD.org
@@ -19,8 +18,8 @@ WRKSRC=		${WRKDIR}/Docs/Qt-${QT5_VERSION}
 #   tar: Damaged 7-Zip archive
 # Depend on p7zip across all versions because Uses/7z.mk does not work if
 # included after bsd.port.pre.mk.
-USES=		7z:p7zip
-USE_QT5=	# we just need access to QT5_VERSION and other variables.
+USES=		7z:p7zip qt:5
+USE_QT=		# we just need access to QT5_VERSION and other variables.
 
 DESCR=		${.CURDIR:H:H}/devel/qt5/pkg-descr
 NO_ARCH=	yes

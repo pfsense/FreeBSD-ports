@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	couchdb
-DISTVERSION=	1.7.1
-PORTREVISION=	1
+DISTVERSION=	1.7.2
 PORTEPOCH=	2
 CATEGORIES=	databases
 MASTER_SITES=	APACHE/couchdb/source/${DISTVERSION}
 DISTNAME=	apache-couchdb-${DISTVERSION}
 
-MAINTAINER=	olgeni@FreeBSD.org
+MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Document database server, accessible via a RESTful JSON API
 
 LICENSE=	APACHE20 BSD3CLAUSE ISCL WTFPL OFL11
@@ -19,8 +18,8 @@ LIB_DEPENDS=	libicudata.so:devel/icu \
 		libmozjs185.so:lang/spidermonkey185 \
 		libcurl.so:ftp/curl
 BUILD_DEPENDS=	${LOCALBASE}/bin/help2man:misc/help2man \
-		erlang>=15.b.01,2:lang/erlang
-RUN_DEPENDS=	erlang>=15.b.01,2:lang/erlang
+		erlang-runtime19>=19.3:lang/erlang-runtime19
+RUN_DEPENDS=	erlang-runtime19>=19.3:lang/erlang-runtime19
 
 USES=		cpe gmake libtool
 USE_RC_SUBR=	couchdb
@@ -29,11 +28,13 @@ PLIST_SUB=	VERSION=${DISTVERSION}
 CPE_VENDOR=	apache
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-CONFIGURE_ARGS=	--with-erlang=${LOCALBASE}/lib/erlang/usr/include \
+CONFIGURE_ARGS=	--with-erlang=${LOCALBASE}/lib/erlang19/usr/include \
 		--localstatedir=/var \
 		--disable-init \
 		--with-js-include=${LOCALBASE}/include/js \
 		--with-js-lib=${LOCALBASE}/lib
+CONFIGURE_ENV+=	ERL=${LOCALBASE}/lib/erlang19/bin/erl \
+		ERLC=${LOCALBASE}/lib/erlang19/bin/erlc
 
 USERS=		couchdb
 GROUPS=		couchdb

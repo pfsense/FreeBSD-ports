@@ -177,7 +177,9 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_etherswitch_setport_state, NULL)
     PHP_FE(pfSense_etherswitch_getlaggroup, NULL)
     PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
+    PHP_FE(pfSense_etherswitch_setlaggroup, NULL)
     PHP_FE(pfSense_etherswitch_setvlangroup, NULL)
+    PHP_FE(pfSense_etherswitch_setmode, NULL)
 #endif
     PHP_FE(pfSense_ipsec_list_sa, NULL)
     {NULL, NULL, NULL}
@@ -2058,24 +2060,104 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 	add_assoc_zval(return_value, "members", &members);
 }
 
+PHP_FUNCTION(pfSense_etherswitch_setlaggroup)
+{
+	char *dev;
+	etherswitch_info_t info;
+	etherswitch_laggroup_t lag;
+	int fd, members, port, tagged, untagged;
+	size_t devlen;
+	zval *zvar;
+	zend_long laggroup;
+	HashTable *hash1, *hash2;
+	zval *val, *val2;
+	zend_long lkey, lkey2;
+	zend_string *skey, *skey2;
+
+	zvar = NULL;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl|z", &dev,
+	    &devlen, &laggroup, &zvar) == FAILURE)
+		RETURN_LONG(-1);
+	if (laggroup < 0)
+		RETURN_LONG(-1);
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_LONG(-1);
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_LONG(-1);
+	memset(&info, 0, sizeof(info));
+	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+	if (laggroup >= info.es_nvlangroups) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+
+	members = untagged = 0;
+	if (zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
+		hash1 = Z_ARRVAL_P(zvar);
+
+		ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
+			if (skey != NULL || (Z_TYPE_P(val) != IS_ARRAY)) {
+				continue;
+			}
+
+			port = lkey;
+			if (port < 0 || port >= info.es_nports) {
+				continue;
+			}
+
+			hash2 = Z_ARRVAL_P(val);
+			tagged = 0;
+			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
+				if (!skey2 || Z_TYPE_P(val2) != IS_LONG) {
+					continue;
+				}
+				if (strlen(ZSTR_VAL(skey2)) == 6 && strcasecmp(ZSTR_VAL(skey2), "tagged") == 0 && Z_LVAL_P(val2) != 0) {
+					tagged = 1;
+				}
+			} ZEND_HASH_FOREACH_END();
+
+			members |= (1 << port);
+			if (!tagged)
+				untagged |= (1 << port);
+
+		} ZEND_HASH_FOREACH_END();
+	}
+
+	memset(&lag, 0, sizeof(lag));
+	lag.es_laggroup = laggroup;
+	if (ioctl(fd, IOETHERSWITCHGETLAGGROUP, &lag) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+	lag.es_member_ports = members;
+	lag.es_untagged_ports = untagged;
+	if (ioctl(fd, IOETHERSWITCHSETLAGGROUP, &lag) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+	close(fd);
+	RETURN_LONG(0);
+}
+
 PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 {
-	char *dev; //, *key;
+	char *dev;
 	etherswitch_info_t info;
 	etherswitch_vlangroup_t vg;
 	int fd, i, members, port, tagged, untagged;
 	size_t devlen;
 	zend_long vlan, vlangroup;
-	//unsigned int key_len;
-	//unsigned long index;
-	//zval **data1, **data2
 	zval *zvar;
 	HashTable *hash1, *hash2;
-	//HashPosition h1p, h2p;
 	zval *val, *val2;
 	zend_long lkey, lkey2;
 	zend_string *skey, *skey2;
-//	int entries = 0;
 
 	zvar = NULL;
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll|z", &dev,
@@ -2109,7 +2191,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 		hash1 = Z_ARRVAL_P(zvar);
 
 		ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
-			if (!lkey || (Z_TYPE_P(val) != IS_ARRAY)) {
+			if (skey != NULL || (Z_TYPE_P(val) != IS_ARRAY)) {
 				continue;
 			}
 
@@ -2123,7 +2205,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 			tagged = 0;
 
 			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
-				if (!skey2 || Z_TYPE_P(val2) != IS_ARRAY) {
+				if (!skey2 || Z_TYPE_P(val2) != IS_LONG) {
 					continue;
 				}
 
@@ -2132,49 +2214,13 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				}
 
 			} ZEND_HASH_FOREACH_END();
-		} ZEND_HASH_FOREACH_END();
-/*
-		zend_hash_internal_pointer_reset_ex(hash1, &h1p);
-
-		while (zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS) {
-			if (zend_hash_get_current_key_ex(hash1, &key, &key_len,
-			    &index, 0, &h1p) != HASH_KEY_IS_LONG ||
-			    Z_TYPE_PP(data1) != IS_ARRAY) {
-				continue;
-			}
-
-			port = index;
-
-			if (port < 0 || port >= info.es_nports)
-				continue;
-
-			hash2 = Z_ARRVAL_PP(data1);
-			tagged = 0;
-
-			zend_hash_internal_pointer_reset_ex(hash2, &h2p);
-
-			while (zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) == SUCCESS) {
-				if (zend_hash_get_current_key_ex(hash2, &key,
-				    &key_len, &index, 0, &h2p) != HASH_KEY_IS_STRING ||
-				    Z_TYPE_PP(data2) != IS_LONG) {
-					continue;
-				}
-				if (key_len == 7 && strcasecmp(key, "tagged") == 0 &&
-				    Z_LVAL_PP(data2) != 0) {
-					tagged = 1;
-				}
-
-				zend_hash_move_forward_ex(hash2, &h2p);
-			}
 
 			members |= (1 << port);
 
 			if (!tagged)
 				untagged |= (1 << port);
 
-			zend_hash_move_forward_ex(hash1, &h1p);
-		}
-	*/
+		} ZEND_HASH_FOREACH_END();
 	}
 
 	/*
@@ -2215,6 +2261,55 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 	}
 	close(fd);
 	RETURN_LONG(vlangroup);
+}
+
+PHP_FUNCTION(pfSense_etherswitch_setmode)
+{
+	char *dev, *mode;
+	etherswitch_conf_t conf;
+	etherswitch_info_t info;
+	int fd;
+	size_t devlen, modelen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &dev,
+	    &devlen, &mode, &modelen) == FAILURE)
+		RETURN_LONG(-1);
+	if (modelen == 0)
+		RETURN_LONG(-1);
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_LONG(-1);
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_LONG(-1);
+	/* Just to check the Switch. */
+	memset(&info, 0, sizeof(info));
+	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+
+	bzero(&conf, sizeof(conf));
+	conf.cmd = ETHERSWITCH_CONF_VLAN_MODE;
+	if (strcasecmp(mode, "isl") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_ISL;
+	else if (strcasecmp(mode, "port") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_PORT;
+	else if (strcasecmp(mode, "dot1q") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_DOT1Q;
+	else if (strcasecmp(mode, "dot1q4k") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_DOT1Q_4K;
+	else if (strcasecmp(mode, "qinq") == 0)
+		conf.vlan_mode = ETHERSWITCH_VLAN_DOUBLE_TAG;
+	else
+		conf.vlan_mode = 0;
+	if (ioctl(fd, IOETHERSWITCHSETCONF, &conf) != 0) {
+		close(fd);
+		RETURN_LONG(-1);
+	}
+	close(fd);
+	RETURN_LONG(0);
 }
 #endif
 
@@ -3478,12 +3573,8 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	struct protoent *p;
 	uint32_t expire, creation;
 	uint64_t bytes[2], id, packets[2];
-	// unsigned int key_len;
-	// unsigned long index;
-	//zval *array, **data1, **data2
 	zval array, *zvar;
 	HashTable *hash1, *hash2;
-	//HashPosition h1p, h2p;
 	zval *val, *val2;
 	zend_long lkey, lkey2;
 	zend_string *skey, *skey2;
@@ -3494,22 +3585,35 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	zvar = NULL;
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|z", &zvar) == FAILURE)
 		RETURN_NULL();
+/*
+	Check if an array was passed as an argument to this function (meaning we want to filter the states in some way) e.g.:
+	Array
+	(
+	    [0] => Array
+	        (
+	            [filter] => igb0
+	        )
+	)
+*/
 	if (zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
 		hash1 = Z_ARRVAL_P(zvar);
 
+		// Find the next (sub) array with a numeric key
 		ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
-			if (!lkey || (Z_TYPE_P(val) != IS_ARRAY)) {
+			if (skey || Z_TYPE_P(val) != IS_ARRAY) {
 				continue;
 			}
 
 			hash2 = Z_ARRVAL_P(val);
+
+			// Now search teh sub-array interfaces, rules or filters
 			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
 				entries = 1;
-				if((strlen(ZSTR_VAL(skey2)) == 9) && (strcasecmp(ZSTR_VAL(skey2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
+				if((strcasecmp(ZSTR_VAL(skey2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
 					filter_if = 1;
-				} else if ((strlen(ZSTR_VAL(skey2)) == 6) && (strcasecmp(ZSTR_VAL(skey2), "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
+				} else if ((strcasecmp(ZSTR_VAL(skey2), "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
 					filter_rl = 1;
-				} else if ((strlen(ZSTR_VAL(skey2)) == 6) && (strcasecmp(ZSTR_VAL(skey2), "filter") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
+				} else if ((strcasecmp(ZSTR_VAL(skey2), "filter") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
 					filter = Z_STRVAL_P(val2);
 				}
 
@@ -3519,39 +3623,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		if (entries == 0) {
 			RETURN_NULL();
 		}
-/*
-		zend_hash_internal_pointer_reset_ex(hash1, &h1p);
 
-		while (zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS) {
-			if (zend_hash_get_current_key_ex(hash1, &key, &key_len,
-			    &index, 0, &h1p) != HASH_KEY_IS_LONG ||
-			    Z_TYPE_PP(data1) != IS_ARRAY) {
-				continue;
-			}
-			hash2 = Z_ARRVAL_PP(data1);
-			zend_hash_internal_pointer_reset_ex(hash2, &h2p);
-			if (zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) != SUCCESS)
-				RETURN_NULL();
-
-			if (zend_hash_get_current_key_ex(hash2, &key, &key_len,
-			    &index, 0, &h2p) != HASH_KEY_IS_STRING) {
-				continue;
-			}
-			if (key_len == 10 && strcasecmp(key, "interface") == 0 &&
-			    Z_TYPE_PP(data2) == IS_STRING) {
-				filter_if = 1;
-			} else if (key_len == 7 && strcasecmp(key, "ruleid") == 0 &&
-			    Z_TYPE_PP(data2) == IS_LONG) {
-				filter_rl = 1;
-			} else if (key_len == 7 && strcasecmp(key, "filter") == 0 &&
-			    Z_TYPE_PP(data2) == IS_STRING) {
-				filter = Z_STRVAL_PP(data2);
-			}
-
-			zend_hash_move_forward_ex(hash1, &h1p);
-		}
-
-*/
 		if (filter_if && filter_rl)
 			RETURN_NULL();
 	}
@@ -3599,30 +3671,6 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				}
 			} ZEND_HASH_FOREACH_END();
 
-/*
-			zend_hash_internal_pointer_reset_ex(hash1, &h1p);
-
-			while (zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS) {
-				hash2 = Z_ARRVAL_PP(data1);
-				zend_hash_internal_pointer_reset_ex(hash2, &h2p);
-				if (zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) != SUCCESS) {
-					free(ps.ps_buf);
-					close(dev);
-					RETURN_NULL();
-				}
-				if (filter_if) {
-					if (strcasecmp(state.ifname, Z_STRVAL_PP(data2)) == 0)
-						found = 1;
-				} else if (filter_rl) {
-					if (ntohl(state.rule) != -1 &&
-					    (long)ntohl(state.rule) == Z_LVAL_PP(data2)) {
-						found = 1;
-					}
-				}
-
-				zend_hash_move_forward_ex(hash1, &h1p);
-			}
-*/
 			if (!found)
 				continue;
 		}

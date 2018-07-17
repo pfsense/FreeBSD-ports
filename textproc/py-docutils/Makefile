@@ -3,7 +3,7 @@
 
 PORTNAME=	docutils
 PORTVERSION=	0.14
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,7 +22,7 @@ USES=		python
 
 OPTIONS_DEFINE=	PYGMENTS
 PYGMENTS_DESC=	Syntax highlighting
-PYGMENTS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygments>=1.6:textproc/py-pygments@${FLAVOR}
+PYGMENTS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygments>=1.6:textproc/py-pygments@${PY_FLAVOR}
 
 SCRIPTS=	rst2html rst2latex rst2man rst2odt rst2odt_prepstyles \
 		rst2pseudoxml rst2s5 rst2xetex rst2xml rstpep2html

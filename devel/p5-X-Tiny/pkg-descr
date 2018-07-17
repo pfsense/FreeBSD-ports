@@ -1,0 +1,5 @@
+This stripped-down exception framework provides a baseline of
+functionality for distributions that want to expose exception
+hierarchies with minimal fuss.
+
+WWW: https://metacpan.org/release/X-Tiny

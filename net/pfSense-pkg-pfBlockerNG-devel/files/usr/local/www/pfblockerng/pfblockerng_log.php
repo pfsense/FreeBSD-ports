@@ -163,6 +163,12 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> '/usr/local/pkg/pfblockerng/',
 						'download'	=> TRUE,
 						'clear'		=> FALSE
+						),
+			'top1m'		=> array('name'		=> 'TOP1M Whitelist',
+						'ext'		=> array('pfbalexawhitelist.txt'),
+						'logdir'	=> "{$pfb['dbdir']}/",	
+						'download'	=> TRUE,
+						'clear'		=> TRUE
 						)
 		);
 

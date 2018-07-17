@@ -31,14 +31,13 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $changedesc = "Services: HAProxy: Frontends";
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
+haproxy_config_init();
+
 $a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
-	
+
 	$a_new = array();
 	/* copy all entries < $before and not selected */
 	for ($i = 0; $i < $before; $i++) {
@@ -83,7 +82,7 @@ if($_GET['action'] == "toggle") {
 			echo "1|";
 		}
 		$changedesc .= " set frontend '$id' status to: {$frontent['status']}";
-		
+
 		touch($d_haproxyconfdirty_path);
 		write_config($changedesc);
 	}
@@ -120,7 +119,7 @@ if ($_POST) {
 			header("Location: haproxy_listeners.php");
 			exit;
 		}
-	} else {	
+	} else {
 
 		// from '\src\usr\local\www\vpn_ipsec.php'
 		/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
@@ -133,7 +132,7 @@ if ($_POST) {
 			}
 		}
 		//
-		
+
 		/* move selected p1 entries before this */
 		if (isset($movebtn) && is_array($_POST['rule']) && count($_POST['rule'])) {
 			$moveto = get_frontend_id($movebtn);
@@ -142,9 +141,9 @@ if ($_POST) {
 				$selected[] = get_frontend_id($selection);
 			}
 			array_moveitemsbefore($a_frontend, $moveto, $selected);
-		
+
 			touch($d_haproxyconfdirty_path);
-			write_config($changedesc);			
+			write_config($changedesc);
 		}
 	}
 } else {
@@ -226,7 +225,7 @@ function toggleFrontend(frontendname) {
 }
 function js_callback(req) {
 	showapplysettings.style.display = 'block';
-	
+
 	if(req !== '') {
 		var itemsplit = req.split("|");
 		buttonid = itemsplit[0];
@@ -241,7 +240,7 @@ function js_callback(req) {
 }
 </script>
 <?php
-	
+
 	function sort_sharedfrontends(&$a, &$b) {
 		// make sure the 'primary frontend' is the first in the array, after that sort by name.
 		if ($a['secondary'] != $b['secondary']) {
@@ -252,7 +251,7 @@ function js_callback(req) {
 		}
 		return 0;
 	}
-	
+
 	$a_frontend_grouped = array();
 	foreach($a_frontend as &$frontend2) {
 		$mainfrontend = get_primaryfrontend($frontend2);
@@ -287,13 +286,13 @@ function js_callback(req) {
 				<tbody class="user-entries">
 <?php
 		$textgray = "";
-		$first = true;		
+		$first = true;
 		$last_frontend_shared = false;
 		$i = 0;
 		foreach ($a_frontend_grouped as $a_frontend) {
 			//usort($a_frontend, 'sort_sharedfrontends');
 			if ((count($a_frontend) > 1 || $last_frontend_shared) && !$first) {
-				?> <tr class="<?=$textgray?>"><td colspan="10">&nbsp;</td></tr> <?	
+				?> <tr class="<?=$textgray?>"><td colspan="10">&nbsp;</td></tr> <?
 			}
 			$first = false;
 			$last_frontend_shared = count($a_frontend) > 1;
@@ -335,7 +334,7 @@ function js_callback(req) {
 					if ($isaclset) {
 						echo haproxyicon("acl", gettext("acl's used") . ": {$isaclset}");
 					}
-					
+
 					if (get_frontend_uses_ssl($frontend)) {
 						$cert = lookup_cert($frontend['ssloffloadcert']);
 						$descr = htmlspecialchars($cert['descr']);
@@ -350,7 +349,7 @@ function js_callback(req) {
 						}
 						echo haproxyicon("cert", "SSL offloading cert: {$descr}");
 					}
-					
+
 					$isadvset = "";
 					if ($frontend['advanced_bind']) {
 						$isadvset .= "Advanced bind: ".htmlspecialchars($frontend['advanced_bind'])."\r\n";
@@ -427,7 +426,7 @@ function js_callback(req) {
 					}
 					?>
 				  </td>
-				  <td class="action-icons">
+				  <td class="action-buttons">
 					<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$frontendname?>" name="move_<?=$frontendname?>" value="move_<?=$frontendname?>"></button>
 					<a href="haproxy_listeners_edit.php?id=<?=$frontendname;?>">
 						<?=haproxyicon("edit", gettext("edit frontend"))?>
@@ -442,7 +441,7 @@ function js_callback(req) {
 				</tr><?php
 			}
 		}
-?>				
+?>
 				</tbody>
 			</table>
 		</div>

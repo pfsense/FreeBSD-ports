@@ -2,11 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	1password-client
-PORTVERSION=	0.3
+PORTVERSION=	0.4.1
+PORTREVISION=	1
 CATEGORIES=	security
-MASTER_SITES=	https://cache.agilebits.com/dist/1P/op/pkg/v${PORTVERSION}/
+MASTER_SITES=	https://cache.agilebits.com/dist/1P/op/pkg/v${PORTVERSION}/ \
+		LOCAL/ler/op
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	ler@FreeBSD.org
 COMMENT=	1Password CLI client
 
 ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386

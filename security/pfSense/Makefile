@@ -16,7 +16,6 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		bind-tools>=0:dns/bind-tools \
 		bsnmp-regex>=0:net-mgmt/bsnmp-regex \
 		bsnmp-ucd>=0:net-mgmt/bsnmp-ucd \
-		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
 		ca_root_nss>=0:security/ca_root_nss \
 		check_reload_status>=0:sysutils/check_reload_status \
 		choparp>=0:net-mgmt/choparp \
@@ -54,6 +53,8 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		${PHP_PKGNAMEPREFIX}pear-Net_IPv6>=0:net/pear-Net_IPv6@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}simplepie>=0:www/simplepie@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
 		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
@@ -70,17 +71,14 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		voucher>=0:sysutils/voucher \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
-		xinetd>=0:security/xinetd
-
-php56_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}suhosin>=0:security/php-suhosin \
-			${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/${PHP_PKGNAMEPREFIX}pfSense-module
-php72_RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR}
+		xinetd>=0:security/xinetd \
+		openvpn-auth-script>=0:security/openvpn-auth-script
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 USES=		kmod php:flavors
 
-IGNORE_WITH_PHP=	70 71
+IGNORE_WITH_PHP=	56 70 71
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext json mbstring \
 		mcrypt hash opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
@@ -90,8 +88,6 @@ NO_BUILD=	yes
 NO_MTREE=	yes
 
 CONFLICTS=	pfSense-vmware-[0-9]*
-
-php72_PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 PLIST_FILES=	/etc/version.patch
 PLIST_DIRS=	/etc
@@ -103,6 +99,7 @@ RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
 		${LOCALBASE}/sbin/smartctl:sysutils/smartmontools \
 		${LOCALBASE}/sbin/wrapresetbtn:sysutils/wrapalixresetbutton \
 		${LOCALBASE}/bin/beep:audio/beep \
+		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
 		devcpu-data>=0:sysutils/devcpu-data
 .endif
 

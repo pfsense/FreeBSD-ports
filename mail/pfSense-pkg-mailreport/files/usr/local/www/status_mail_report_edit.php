@@ -33,8 +33,13 @@ $cmdid = $_REQUEST['cmdid'];
 $logid = $_REQUEST['logid'];
 $id = $_REQUEST['id'];
 
-if (!is_array($config['mailreports']['schedule']))
+if (!is_array($config['mailreports'])) {
+	$config['mailreports'] = array();
+}
+
+if (!is_array($config['mailreports']['schedule'])) {
 	$config['mailreports']['schedule'] = array();
+}
 
 $a_mailreports = &$config['mailreports']['schedule'];
 if (isset($id) && $a_mailreports[$id]) {

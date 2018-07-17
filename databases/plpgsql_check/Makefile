@@ -8,7 +8,7 @@ PORTREVISION=	1
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PostgreSQL extension to check PL/pgSQL code
 
 LICENSE=	UNKNOWN
@@ -23,6 +23,7 @@ LICENSE_TEXT=	If you like it - send a postcard to address: \
 LICENSE_PERMS=	dist-mirror pkg-mirror dist-sell pkg-sell auto-accept
 
 USES=		gmake pgsql:9.2+
+LLD_UNSAFE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	okbob
 

@@ -6,12 +6,11 @@
 #	graphics/digikam-kde4-l10n
 #	graphics/kipi-plugin-*
 #	graphics/kipi-plugins-kde4
-#	graphics/libkface
 #	graphics/libkipiplugins
 # These ports now lead independent lives:
 #	astro/libkgeomap-kde4 (part of KDE Applications)
-#	net/libkvkontakte (part of KDE Applications)
-#	net/libmediawiki (part of digiKam 4.12)
+#	net/libkvkontakte-kde4 (part of KDE Applications)
+#	net/libmediawiki-kde4 (part of digiKam 4.12)
 
 DIGIKAM_VER=	4.14.0
 MASTER_SITES=	KDE/Attic/digikam
@@ -115,12 +114,12 @@ DISTINFO_FILE=	${.CURDIR:H:H}/graphics/digikam-kde4/distinfo
 
 LICENSE?=	GPLv2
 
-USES+=		tar:bzip2
+USES+=		qt:4 tar:bzip2
 
 .if !defined(NO_BUILD)
 USES+=		cmake:noninja kde:4
 USE_KDE+=	automoc4 kdelibs
-USE_QT4+=	qmake_build moc_build rcc_build uic_build
+USE_QT+=	qmake_build moc_build rcc_build uic_build
 
 WRKSRC?=	${WRKDIR}/${DISTNAME}/extra/${PORTNAME}
 

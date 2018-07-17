@@ -1,15 +1,6 @@
---- src/wallet/wallet.h.orig	2018-01-23 18:15:09.538396000 +0200
-+++ src/wallet/wallet.h	2018-01-23 18:15:13.206365000 +0200
-@@ -90,8 +90,6 @@
- class CScript;
- class CTxMemPool;
- class CWalletTx;
--class CTokenTx;
--class CContractBookData;
- 
- /** (client) version numbers for particular wallet features */
- enum WalletFeature
-@@ -579,6 +577,129 @@
+--- src/wallet/wallet.h.orig	2018-05-25 13:32:42 UTC
++++ src/wallet/wallet.h
+@@ -668,7 +668,130 @@ class CAccountingEntry (private)
      std::vector<char> _ssExtra;
  };
  
@@ -19,7 +10,7 @@
 +public:
 +    std::string name;
 +    std::string abi;
-+
+ 
 +    CContractBookData()
 +    {}
 +};
@@ -136,13 +127,15 @@
 +
 +    uint256 GetHash() const;
 +};
- 
++
  /** 
   * A CWallet is an extension of a keystore, which also maintains a set of transactions and balances,
-@@ -1156,128 +1277,4 @@
+  * and provides the ability to create new transactions.
+@@ -1304,129 +1427,5 @@ bool CWallet::DummySignTx(CMutableTransaction &txNew, 
+     }
      return true;
  }
- 
+-
 -class CTokenInfo
 -{
 -public:
@@ -266,5 +259,5 @@
 -    CContractBookData()
 -    {}
 -};
--
+ 
  #endif // BITCOIN_WALLET_WALLET_H

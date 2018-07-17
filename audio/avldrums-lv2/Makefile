@@ -3,6 +3,7 @@
 PORTNAME=	avldrums
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.2
+PORTREVISION=	1
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -31,5 +32,12 @@ PLIST_FILES=	lib/lv2/avldrums.lv2/Black_Pearl_4_LV2.sf2 \
 		lib/lv2/avldrums.lv2/avldrums.ttl \
 		lib/lv2/avldrums.lv2/avldrumsUI_gl.so \
 		lib/lv2/avldrums.lv2/manifest.ttl
+
+OPTIONS_DEFINE_amd64=	SSE
+OPTIONS_DEFINE_i386=	SSE
+OPTIONS_DEFAULT_amd64=	SSE
+OPTIONS_DEFAULT_i386=	SSE
+
+SSE_MAKE_ARGS=		PORT_SIMD_FLAGS="-msse -msse2 -mfpmath=sse"
 
 .include <bsd.port.mk>

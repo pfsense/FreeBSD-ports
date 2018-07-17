@@ -13,7 +13,10 @@ COMMENT=	Simplified, speedy way to manage caching in Django apps
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:www/py-django18@${FLAVOR}
+DEPRECATED=	Project development abandoned
+EXPIRATION_DATE=2018-08-01
+
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:www/py-django18@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

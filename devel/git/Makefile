@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	git
-DISTVERSION=	2.16.3
+DISTVERSION=	2.18.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -22,10 +23,10 @@ CONFLICTS_INSTALL?=	git-gui-[0-9]* git-subversion-[0-9]* git-lite-[0-9]*
 USERS=		git_daemon
 GROUPS=		git_daemon
 
-SUB_FILES=	pkg-message
+SUB_FILES=	pkg-message gitweb.conf
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf gmake shebangfix ssl tar:xz
+USES=		autoreconf gmake iconv shebangfix ssl tar:xz
 CPPFLAGS+=	-isystem${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 MAKE_ARGS+=	DEVELOPER_CFLAGS=
@@ -50,8 +51,10 @@ TEST_TARGET=	test
 
 CONFIGURE_ARGS=	--enable-pthreads=-pthread ac_cv_header_libcharset_h=no
 
+OPTIONS_RADIO=	PCRE_VERSION
+OPTIONS_RADIO_PCRE_VERSION=	PCRE PCRE2
 OPTIONS_DEFINE=	GUI SVN GITWEB CONTRIB P4 CVS HTMLDOCS PERL ICONV CURL \
-		SEND_EMAIL NLS PCRE SUBTREE
+		SEND_EMAIL NLS SUBTREE
 OPTIONS_DEFAULT=	CONTRIB P4 CVS PERL GITWEB ICONV CURL SEND_EMAIL PCRE \
 			SUBTREE
 OPTIONS_SUB=	yes
@@ -59,6 +62,7 @@ OPTIONS_SUB=	yes
 GITWEB_DESC=	Install gitweb
 CONTRIB_DESC=	Install contributed scripts
 P4_DESC=	Enable Perforce support
+PCRE2_DESC=	Use Perl Compatible Regular Expressions (v2)
 CVS_DESC=	Enable CVS support
 HTMLDOCS_DESC=	Install additional documentation
 SEND_EMAIL_DESC=Enable the git-send-email(1) script
@@ -74,9 +78,13 @@ PERL_RUN_DEPENDS=	p5-Error>=0:lang/p5-Error
 PERL_MAKE_ARGS_OFF=	NO_PERL=1
 
 GITWEB_IMPLIES=		PERL
+GITWEB_RUN_DEPENDS=	p5-CGI>=0:www/p5-CGI
 
 PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
-PCRE_CONFIGURE_WITH=	libpcre
+PCRE_CONFIGURE_WITH=	libpcre1
+
+PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
+PCRE2_CONFIGURE_WITH=	libpcre
 
 SEND_EMAIL_IMPLIES=	PERL
 SEND_EMAIL_RUN_DEPENDS=	p5-Authen-SASL>=0:security/p5-Authen-SASL
@@ -154,7 +162,7 @@ post-patch:
 .for FILE in ${RMMAN7}
 	@${RM} ${WRKDIR}/man7/${FILE}
 .endfor
-	@${REINPLACE_CMD} -e 's|share/man/man3|man/man3|' ${WRKSRC}/perl/Makefile.PL
+	@${REINPLACE_CMD} -e "s,%%SITE_PERL%%,${SITE_PERL},g" ${WRKSRC}/Makefile
 
 post-patch-CONTRIB-on:
 	@${REINPLACE_CMD} -e "s,/usr/bin/perl,${PERL}," \
@@ -226,10 +234,15 @@ post-install-CONTRIB-on:
 post-install-CONTRIB-off:
 	# Install the contrib completions anyway
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
-	@${INSTALL_SCRIPT} ${WRKSRC}/contrib/completion/git-completion.bash \
+	${INSTALL_SCRIPT} ${WRKSRC}/contrib/completion/git-completion.bash \
 		${STAGEDIR}${PREFIX}/etc/bash_completion.d/git.sh
 
 post-install-P4-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/git-p4.py ${STAGEDIR}${PREFIX}/bin/
+
+post-install-GITWEB-on:
+	${MKDIR} ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${WRKDIR}/gitweb.conf \
+		${STAGEDIR}${ETCDIR}/gitweb.conf.sample
 
 .include <bsd.port.mk>

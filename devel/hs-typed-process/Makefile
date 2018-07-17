@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	typed-process
-PORTVERSION=	0.1.0.0
-PORTREVISION=	1
+PORTVERSION=	0.2.2.0
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -10,7 +10,7 @@ COMMENT=	The typed-process package
 
 LICENSE=	BSD3CLAUSE
 
-USE_CABAL=	async conduit conduit-extra exceptions stm
+USE_CABAL=	async exceptions
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

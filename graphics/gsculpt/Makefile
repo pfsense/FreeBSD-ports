@@ -3,7 +3,7 @@
 
 PORTNAME=	gsculpt
 PORTVERSION=	0.99.47
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME:S,-src,,}
 DISTNAME=	gSculpt-${PORTVERSION}-alpha-src
@@ -51,6 +51,7 @@ post-patch:
 		 s|'-g'|''| ; \
 		 s|'-DGSCULPT_FPU_X86'|''| ; \
 		 s|'[(]-O2.*-O[)]'|''| ; \
+		 s|'boost_python'|'${PY_BOOST_LIB}'|; \
 		 /^cppLibs/s|BackgroundModel|BackgroundMesh|" \
 		${WRKSRC}/SConstruct
 	@${REINPLACE_CMD} -e \

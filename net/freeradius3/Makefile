@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freeradius
-DISTVERSION=	3.0.16
+DISTVERSION=	3.0.17
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.freeradius.org/pub/freeradius/%SUBDIR%/ \
 		ftp://ftp.ntua.gr/pub/net/radius/freeradius/%SUBDIR%/ \
@@ -17,6 +17,10 @@ COMMENT=	Free RADIUS server implementation
 
 LICENSE=	GPLv2
 
+BROKEN_mips=		fails to compile: unrecognized command line option "-Wno-date-time"
+BROKEN_mips64=		fails to compile: unrecognized command line option "-Wno-date-time"
+BROKEN_powerpc64=	fails to compile: unrecognized command line option "-Wno-date-time"
+
 LIB_DEPENDS=	libgdbm.so:databases/gdbm \
 		libtalloc.so:devel/talloc
 
@@ -26,9 +30,9 @@ KRB5_CONFIG?=	/usr/bin/krb5-config --libs
 CONFLICTS_INSTALL=	gnu-radius-[0-9].* openradius-[0-9].* radiusd-cistron-[0-9].* \
 		freeradius-mysql-[0-9].* freeradius-[^3].*
 
+USES=		gmake readline shebangfix ssl tar:bzip2
 USE_RC_SUBR=	radiusd
 
-USES=		gmake readline shebangfix ssl tar:bzip2
 SHEBANG_FILES=	src/modules/rlm_counter/rad_counter scripts/sql/radsqlrelay
 GNU_CONFIGURE=	yes
 # Prevent /root/.rnd leftover
@@ -45,7 +49,8 @@ _REQUIRE=	NETWORKING SERVERS
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	USER LDAP MYSQL PGSQL UNIXODBC FIREBIRD REDIS \
 		EXPERIMENTAL UDPFROMTO DEVELOPER EDIR PERL REST \
-		FREETDS IDN DOCS SQLITE3 PYTHON RUBY UNBOUND PCRE
+		FREETDS IDN DOCS SQLITE3 PYTHON RUBY UNBOUND PCRE \
+		WINBIND
 OPTIONS_DEFAULT=USER PERL HEIMDAL UDPFROMTO
 OPTIONS_SINGLE=	KRB
 OPTIONS_SINGLE_KRB=	NOKRB HEIMDAL HEIMDAL_PORT MITKRB_PORT
@@ -64,6 +69,7 @@ UDPFROMTO_DESC=		Compile in UDPFROMTO support
 DEVELOPER_DESC=		Enable developer options
 EDIR_DESC=		Enable eDirectory support (implies LDAP)
 REST_DESC=		Enable RESTful API support
+WINBIND_DESC=		Enable native winbind support in rlm_mschap
 
 EDIR_CONFIGURE_WITH=		edir
 EDIR_IMPLIES=			LDAP
@@ -122,6 +128,9 @@ UNBOUND_CONFIGURE_WITH=		rlm_unbound
 UNBOUND_LIB_DEPENDS=		libunbound.so:dns/unbound
 UNIXODBC_CONFIGURE_WITH=	rlm_sql_unixodbc
 UNIXODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
+WINBIND_USES=			samba:build,lib
+WINBIND_CONFIGURE_ON=		--with-winbind-include-dir=${LOCALBASE}/include/samba4 \
+				--with-winbind-lib-dir=${LOCALBASE}/lib/samba4
 
 .include <bsd.port.options.mk>
 

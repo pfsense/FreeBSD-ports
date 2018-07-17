@@ -4,7 +4,7 @@
 PORTNAME=	pyside
 PORTVERSION=	1.2.2
 DISTVERSIONPREFIX=	qt4.8+
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://download.qt-project.org/official_releases/pyside/
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libapiextractor.so:devel/apiextractor \
 CMAKE_ARGS+=	-DGL_H:FILEPATH="${LOCALBASE}/include/GL/gl.h" \
 		-DGL_INCLUDE_DIR:FILEPATH="${LOCALBASE}/include"
 
-USE_QT4=	declarative designer gui help qmake_build \
+USE_QT=		declarative designer gui help qmake_build \
 		moc_build multimedia network opengl \
 		phonon rcc_build script scripttools \
 		svg uic_build webkit
@@ -29,7 +29,7 @@ USE_QT4=	declarative designer gui help qmake_build \
 PLIST_SUB=	PORTVERSION=${PORTVERSION} \
 		PYTHON_VERSION=${PYTHON_VERSION}
 
-USES=		cmake python:2.7 tar:bzip2
+USES=		cmake python:2.7 qt:4 tar:bzip2
 USE_PYTHON=	flavors
 USE_LDCONFIG=	yes
 

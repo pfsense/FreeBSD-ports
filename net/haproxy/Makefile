@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	haproxy
-PORTVERSION=	1.7.10
+PORTVERSION=	1.7.11
 CATEGORIES=	net www
 MASTER_SITES=	http://www.haproxy.org/download/1.7/src/
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
@@ -12,6 +12,9 @@ COMMENT=	Reliable, high performance TCP/HTTP load balancer
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
+
+BROKEN_mips=		fails to build: undefined reference to '__sync_sub_and_fetch_4'
+BROKEN_mips64=		fails to build: undefined reference to '__sync_sub_and_fetch_4'
 
 CONFLICTS_INSTALL=	haproxy-devel-[0-9]*
 

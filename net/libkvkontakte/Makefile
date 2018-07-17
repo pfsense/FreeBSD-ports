@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	libkvkontakte
-PORTVERSION=	4.12.0
-PORTREVISION=	2
+DISTVERSION=	5.0.0
+PORTREVISION=	1
 CATEGORIES=	net kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
 DIST_SUBDIR=	KDE/digikam
@@ -13,13 +13,9 @@ COMMENT=	KDE library for accessing vk.com
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
-LIB_DEPENDS=	libqjson.so:devel/qjson
-
-USES=		cmake:outsource gettext kde:4 pkgconfig tar:xz
-USE_QT4=	moc_build qmake_build rcc_build uic_build
-USE_KDE=	automoc4 kdelibs
-USE_LDCONFIG=	yes
-
-PLIST_SUB+=	SHLIB_VER="${PORTVERSION}"
+USES=		cmake:outsource gettext kde:5 qt:5 tar:xz
+USE_KDE=	config coreaddons ecm i18n kdewebkit kio service widgetsaddons
+USE_QT=		core gui network webkit widgets \
+		buildtools_build qmake_build
 
 .include <bsd.port.mk>

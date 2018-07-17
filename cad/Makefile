@@ -4,6 +4,7 @@
     COMMENT = CAD tools
 
     SUBDIR += NASTRAN-95
+    SUBDIR += abc
     SUBDIR += admesh
     SUBDIR += adms
     SUBDIR += alliance
@@ -17,7 +18,6 @@
     SUBDIR += calculix-ccx
     SUBDIR += cascade
     SUBDIR += chipvault
-    SUBDIR += cider
     SUBDIR += cura-engine
     SUBDIR += dinotrace
     SUBDIR += dxf2fig
@@ -64,6 +64,7 @@
     SUBDIR += ngspice_rework
     SUBDIR += opencascade
     SUBDIR += openscad
+    SUBDIR += openscad-devel
     SUBDIR += openvsp
     SUBDIR += p5-GDS2
     SUBDIR += p5-Verilog-Perl
@@ -82,7 +83,6 @@
     SUBDIR += qucs
     SUBDIR += repsnapper
     SUBDIR += rubygem-gdsii
-    SUBDIR += sceptre
     SUBDIR += scotch
     SUBDIR += solvespace
     SUBDIR += sp2sp

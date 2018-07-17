@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	yaz
-DISTVERSION=	5.23.1
+DISTVERSION=	5.25.0
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://ftp.indexdata.dk/pub/yaz/

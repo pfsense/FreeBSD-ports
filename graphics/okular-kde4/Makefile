@@ -2,7 +2,7 @@
 
 PORTNAME=	okular
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
@@ -10,7 +10,7 @@ COMMENT=	KDE 4 universal document viewer
 
 LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre \
 		libkscreen.so:graphics/libkscreen \
-		libqca.so:devel/qca \
+		libqca.so:devel/qca@qt4 \
 		libtiff.so:graphics/tiff \
 		libpoppler-qt4.so:graphics/poppler-qt4 \
 		libspectre.so:print/libspectre \
@@ -19,10 +19,10 @@ LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre \
 		libepub.so:textproc/ebook-tools \
 		libqmobipocket.so:graphics/kdegraphics-mobipocket-kde4
 
-USES=		cmake:outsource jpeg kde:4 pkgconfig tar:xz
+USES=		cmake:outsource jpeg kde:4 pkgconfig qt:4 tar:xz
 USE_KDE=	kdelibs automoc4 qimageblitz kactivities \
 		libkexiv2
-USE_QT4=	corelib declarative gui opengl xml \
+USE_QT=		corelib declarative gui opengl xml \
 		qmake_build moc_build uic_build rcc_build
 USE_LDCONFIG=	yes
 

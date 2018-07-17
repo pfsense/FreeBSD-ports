@@ -26,7 +26,6 @@ BROKEN_SSL=		openssl-devel
 BROKEN_SSL_REASON_openssl-devel=	incomplete definition of type 'struct dh_st'
 
 SUB_FILES=	pkg-message
-PKGMESSAGE=	${WRKDIR}/pkg-message
 
 SLAVEDIRS=	databases/mariadb101-client
 USES=		bison:build cmake:noninja compiler:c++11-lib cpe libedit ncurses \
@@ -135,7 +134,6 @@ ${ENGINE}_CMAKE_ON=	-DPLUGIN_${ENGINE}=DYNAMIC
 CONNECT_EXTRA_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 CONNECT_EXTRA_USE=	gnome=libxml2
 GSSAPI_NONE_CMAKE_ON=	-DPLUGIN_AUTH_GSSAPI=NO
-INNOBASE_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-MDEV-15288
 LZ4_CMAKE_OFF=		-DGRN_WITH_LZ4=OFF -DWITH_INNODB_LZ4=OFF
 LZ4_CMAKE_ON=		-DGRN_WITH_LZ4=${LOCALBASE}/lib -DWITH_INNODB_LZ4=${LOCALBASE}/lib
 LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4

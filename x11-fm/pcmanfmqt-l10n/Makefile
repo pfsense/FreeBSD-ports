@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pcmanfmqt-l10n
-PORTVERSION=	0.12.0
+PORTVERSION=	0.13.0
 CATEGORIES=	x11-fm
 MASTER_SITES=	LXQT/lxqt-l10n
 DISTNAME=	lxqt-l10n-${DISTVERSION}
@@ -17,8 +17,8 @@ DISTINFO_FILE=	${MASTERDIR}/distinfo
 DESCR=	${MASTERDIR}/pkg-descr
 PLIST=	${.CURDIR}/pkg-plist
 
-USES=	cmake:outsource lxqt pkgconfig tar:xz
-USE_QT5=	buildtools_build qmake_build linguisttools
+USES=	cmake:outsource lxqt pkgconfig qt:5 tar:xz
+USE_QT=		buildtools_build qmake_build linguisttools
 USE_LXQT=	buildtools
 
 CMAKE_ARGS+=	-DWITH_COMPTON_CONF:BOOL=OFF \

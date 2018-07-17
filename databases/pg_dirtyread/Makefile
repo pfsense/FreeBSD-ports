@@ -6,12 +6,13 @@ PORTVERSION=	1.2
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Read dead but unvacuumed tuples from a PostgreSQL relation
 
 LICENSE=	BSD3CLAUSE
 
 USES=		gmake pgsql:9.2+
+LLD_UNSAFE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	ChristophBerg
 

@@ -14,6 +14,9 @@ DISTNAME=	FreeImage${PORTVERSION:S/.//g}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple C/C++ bitmap graphics library
 
+BROKEN_mips=		fails to compile: opcode not supported on this processor: mips3 (mips3) `madd $16,$6'
+BROKEN_mips64=		fails to compile: opcode not supported on this processor: mips3 (mips3) 'madd $4,$5'
+
 USES=		dos2unix gmake zip
 DOS2UNIX_FILES=	Source/LibOpenJPEG/opj_malloc.h \
 		Source/LibRawLite/dcraw/dcraw.c \
@@ -25,6 +28,7 @@ MAKE_ARGS=	CC="${CC}" CPP="${CPP}" CXX="${CXX}"
 CFLAGS+=	-DPNG_ARM_NEON_OPT=0 -fexceptions -fvisibility=hidden
 CFLAGS_aarch64=	-fPIC
 CFLAGS_amd64=	-fPIC
+CFLAGS_armv7=	-fPIC
 
 PLIST_FILES=	include/FreeImage.h \
 		include/FreeImagePlus.h \
@@ -39,7 +43,7 @@ PLIST_FILES=	include/FreeImage.h \
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == amd64 || ${ARCH} == powerpc
+.if ${ARCH} == amd64 || ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == sparc64
 USES+=		compiler:c++0x
 .endif
 

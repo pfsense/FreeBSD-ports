@@ -1,20 +1,25 @@
-# Created by: Douglas Carmichael <dcarmich@dcarmichael.net>
+# Created by: Tobias C. Berner <tcberner@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	kdevelop-pg-qt
-PORTVERSION=	1.0.0
-PORTREVISION=	4
+DISTVERSION=	2.1.0
 CATEGORIES=	devel kde
-MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE
+MASTER_SITES=	KDE/stable/${PORTNAME}/${DISTVERSION}/src
+DIST_SUBDIR=	KDE/kdevelop
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Parser-generator from KDevplatform
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING.LIB
+
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
 
-USES=		bison cmake:outsource compiler:c++11-lib kde:4 tar:bzip2
-USE_KDE=	automoc4 kdelibs
-USE_QT4=	qmake_build moc_build uic_build rcc_build
+USES=		bison cmake:outsource compiler:c++11-lib kde:5 qt:5 tar:xz
+USE_KDE=	ecm
+USE_QT=		core testlib \
+		buildtools_build qmake_build
+
+CONFLICTS=	kdevelop-pg-qt-1.0*
 
 .include <bsd.port.mk>

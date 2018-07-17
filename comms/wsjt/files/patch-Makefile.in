@@ -23,7 +23,7 @@
  
  OBJS1 =	a2d.o abc441.o alignmsg.o ana932.o analytic.o astro.o \
  	avecho.o avemsg4.o avemsg65.o avemsg6m.o avesp2.o azdist.o \
-@@ -97,12 +103,11 @@ F2PYSRCS = ftn_init.f90 ftn_quit.f90 aud
+@@ -97,12 +103,11 @@ F2PYSRCS = ftn_init.f90 ftn_quit.f90 audio_init.f90 sp
  	 azdist0.f90 astro0.f90 chkt0.f90
  
  WsjtMod/Audio.so: libjt.a ${F2PYSRCS} 

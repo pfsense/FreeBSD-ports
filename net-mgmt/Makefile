@@ -178,6 +178,7 @@
     SUBDIR += nedi
     SUBDIR += nefu
     SUBDIR += net-snmp
+    SUBDIR += netbox
     SUBDIR += netdata
     SUBDIR += netdisco
     SUBDIR += netdisco-mibs
@@ -251,6 +252,7 @@
     SUBDIR += p5-Net-IP-Match-Regexp
     SUBDIR += p5-Net-IP-Match-XS
     SUBDIR += p5-Net-IP-Resolver
+    SUBDIR += p5-Net-IP-XS
     SUBDIR += p5-Net-IPAddress
     SUBDIR += p5-Net-IPv4Addr
     SUBDIR += p5-Net-IPv6Addr
@@ -311,11 +313,19 @@
     SUBDIR += py-dnsdiag
     SUBDIR += py-ipcalc
     SUBDIR += py-ipy
+    SUBDIR += py-junos-eznc
     SUBDIR += py-msrest
     SUBDIR += py-msrestazure
+    SUBDIR += py-napalm
+    SUBDIR += py-napalm-logs
+    SUBDIR += py-ncclient
     SUBDIR += py-pdagent
+    SUBDIR += py-pyIOSXR
+    SUBDIR += py-prometheus-client
     SUBDIR += py-pyang
+    SUBDIR += py-pyeapi
     SUBDIR += py-pynsca
+    SUBDIR += py-pynxos
     SUBDIR += py-pysmi
     SUBDIR += py-pyzabbix
     SUBDIR += py-snmp4
@@ -377,6 +387,7 @@
     SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter
     SUBDIR += unifi-devel
+    SUBDIR += unifi-lts
     SUBDIR += unifi5
     SUBDIR += victorops-nagios
     SUBDIR += vidalia

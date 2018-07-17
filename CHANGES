@@ -10,6 +10,36 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20180630:
+AUTHOR: kde@FreeBSD.org
+
+  bsd.qt.mk has been replaced by qt.mk. This changes the way ports have to
+  depend on Qt slightly.
+
+  Previously one would have written
+  	USE_QT4=foo bar
+  or
+  	USE_QT5=foo bar
+  while now one has to write
+  	USES=qt:4
+  	USE_QT=foo bar
+  respectively
+  	USES=qt:5
+  	USE_QT=foo bar
+
+  Further qmake.mk no longer respects QT_NONSTANDARD. Ports that don't want to
+  get the configure environment provided by qmake.mk should add the argument
+  no_env, ports that don't want the configure target should specify no_configure.
+
+20180506:
+AUTHOR: brnrd@FreeBSD.org
+
+  All USE_ and WANT_ variables for PHP have been removed and marked
+  UNSUPPORTED. Use USES= php:<feature> as a replacement.
+
+  USE_PHPIZE, USE_PHPEXT, USE_ZENDEXT, USE_PHP_BUILD,
+  WANT_PHP_CLI, WANT_PHP_CGI, WANT_PHP_MOD, WANT_PHP_WEB, WANT_PHP_EMB
+
 20180311:
 AUTHOR: brnrd@FreeBSD.org
 
@@ -143,8 +173,7 @@ AUTHOR: mat@FreeBSD.org
 
   In all the ports with Python dependencies, the *_DEPENDS entries MUST end
   with the flavor so that the framework knows which to build/use.  This is done
-  by appending '@${PY_FLAVOR}' after the origin (or @${FLAVOR} if in a Python
-  module with Python flavors, as the content will be the same).  For example:
+  by appending '@${PY_FLAVOR}' after the origin.  For example:
 
     RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 

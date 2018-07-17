@@ -35,7 +35,7 @@ TEST_ENV=	${MAKE_ENV} TEST_JOBS=${MAKE_JOBS_NUMBER} \
 USE_GITHUB=	yes
 GH_ACCOUNT=	Perl
 GH_PROJECT=	perl5
-GH_TAGNAME=	v5.27.10-21-g811612a
+GH_TAGNAME=	v5.29.0-0-g9abd784741
 
 OPTIONS_DEFINE=	DEBUG GDBM PERL_64BITINT MULTIPLICITY SITECUSTOMIZE \
 		THREADS PERL_MALLOC DTRACE DOT_INC
@@ -184,6 +184,8 @@ PLIST_SUB+=	PERL_VERSION=${PERL_VERSION} \
 # XXX Remove and change to PERL_VERSION in the plist.
 PLIST_SUB+=	LIBPERL_VER=${LIBPERL_VER}
 
+# Why this is required is explained in:
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=227356#c5
 _PERL5_DEFAULT_FILE=	/tmp/PERL5_DEFAULT
 
 # Get the default version, and possibly, overwrite it.

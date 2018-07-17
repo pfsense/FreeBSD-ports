@@ -3,7 +3,7 @@
 
 PORTNAME=	pokerth
 PORTVERSION=	1.1.2
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -23,8 +23,8 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 BUILD_DEPENDS=	${LOCALBASE}/include/libircclient.h:irc/libircclient \
 		protoc:devel/protobuf
 
-USES=		iconv gmake qmake sqlite ssl
-USE_QT4=	gui corelib network sql sql-sqlite3 \
+USES=		iconv gmake qmake qt:4 sqlite ssl
+USE_QT=		gui corelib network sql sql-sqlite3 \
 		moc_build rcc_build uic_build
 USE_SDL=	mixer
 QMAKE_SOURCE_PATH=	pokerth.pro

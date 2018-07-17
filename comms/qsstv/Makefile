@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	qsstv
-PORTVERSION=	9.2.4
-PORTREVISION=	3
+PORTVERSION=	9.2.6
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://users.telenet.be/on4qz/qsstv/downloads/ \
 		LOCAL/db
@@ -22,8 +21,8 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libv4l2.so:multimedia/libv4l
 BUILD_DEPENDS=	v4l_compat>=0:multimedia/v4l_compat
 
-USES=		qmake
-USE_QT5=	buildtools core gui network widgets xml
+USES=		pkgconfig qmake qt:5
+USE_QT=		buildtools core gui network widgets xml
 USE_GL+=	gl
 
 OPTIONS_DEFINE=	DOCS

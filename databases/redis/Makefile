@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	3.2.11
+DISTVERSION=	4.0.10
 CATEGORIES=	databases
 MASTER_SITES=	http://download.redis.io/releases/
 
@@ -21,6 +21,12 @@ TESTS_DESC=	Install lang/tcl for redis unit tests
 TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == i386 && ! ${CFLAGS:M-march=*}
+# Needed for __atomic_fetch_add_8
+USE_GCC=	yes
+CFLAGS+=	-march=i586
+.endif
 
 .if ${PORT_OPTIONS:MTRIB}
 CATEGORIES+=	ruby
@@ -49,15 +55,13 @@ USES+=		tcl:build
 
 LDFLAGS+=	-lpthread -lm -lexecinfo
 
-CONFLICTS?=	redis-devel-3.*
+CONFLICTS?=	redis-devel-5.*
 
 USES+=		gmake
 MAKE_ENV=	"V=yo"
 USE_RC_SUBR=	redis sentinel
 BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb \
 		redis-cli redis-sentinel redis-server
-
-PKGMESSAGE=	${WRKDIR}/pkg-message
 
 USERS=	redis
 GROUPS=	redis
@@ -99,7 +103,7 @@ do-install:
 		${STAGEDIR}${REDIS_DBDIR} \
 		${STAGEDIR}${REDIS_RUNDIR}
 
-regression-test: build
+do-test:
 	@cd ${WRKSRC} && ${TCLSH} tests/test_helper.tcl
 
 .include <bsd.port.mk>

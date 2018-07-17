@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	unetbootin
-PORTVERSION=	657
+PORTVERSION=	661
 CATEGORIES=	sysutils
-MASTER_SITES=	SF/${PORTNAME}/UNetbootin/${PORTVERSION}
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-source-${PORTVERSION}
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -16,14 +16,15 @@ RUN_DEPENDS=	7z:archivers/p7zip \
 		syslinux:sysutils/syslinux \
 		mke2fs:sysutils/e2fsprogs
 
-USE_QT4=	linguisttools_build moc_build qmake_build uic_build \
+USES=	qt:4
+USE_QT=		linguisttools_build moc_build qmake_build uic_build \
 		corelib gui network
 QMAKE_ARGS=	DEFINES+=LOCALBASE=\\\\\\\"${LOCALBASE}\\\\\\\"
 
 NO_WRKSUBDIR=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e 's,/usr/share,${PREFIX}/share,g' \
+	@${REINPLACE_CMD} -e 's,/usr/,${PREFIX}/,g' \
 		${WRKSRC}/main.cpp
 
 do-configure:

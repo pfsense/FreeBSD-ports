@@ -3,7 +3,7 @@
 
 PORTNAME=	polkit-kde
 PORTVERSION=	0.99.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	sysutils kde
 MASTER_SITES=	KDE/stable/apps/KDE4.x/admin/
 DISTNAME=	${PORTNAME}-agent-1-${PORTVERSION:C/1$/0/}
@@ -13,11 +13,11 @@ COMMENT=	Polkit authentication UI for KDE Workspaces
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libpolkit-qt-agent-1.so:sysutils/polkit-qt
+LIB_DEPENDS=	libpolkit-qt-agent-1.so:sysutils/polkit-qt@qt4
 
-USES=		cmake kde:4 tar:bzip2
+USES=		cmake kde:4 qt:4 tar:bzip2
 USE_KDE=	kdelibs automoc4
-USE_QT4=	moc_build qmake_build rcc_build uic_build
+USE_QT=		moc_build qmake_build rcc_build uic_build
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

@@ -3,7 +3,7 @@
 
 PORTNAME=	csound
 PORTVERSION=	6.06
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	audio lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}6/${PORTNAME:S/c/C/}${PORTVERSION}
 PKGNAMESUFFIX=	6
@@ -15,6 +15,8 @@ COMMENT=	Sound synthesizer
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		swig3.0:devel/swig30 \

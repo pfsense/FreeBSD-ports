@@ -3,11 +3,11 @@
 
 PORTNAME=	kde
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	x11 kde
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	KDE Software Compilation 4 (meta port)
+COMMENT=	KDE Software Compilation 4 (legacy)
 
 USES=		kde:4 metaport
 USE_KDE=	baseapps_run runtime_run workspace_run

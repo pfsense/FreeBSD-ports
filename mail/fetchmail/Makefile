@@ -14,8 +14,6 @@ COMMENT=	Batch mail retrieval utility for IMAP/POP3/ETRN/ODMR
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
 
-BROKEN_SSL=	openssl-devel
-
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 USERS=		${PORTNAME}
@@ -61,7 +59,7 @@ NTLM_PORTDOCS=		README.NTLM
 # POP2 is obsolete
 POP2_CONFIGURE_ENABLE=	POP2
 
-X11_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>=0:x11-toolkits/py-tkinter
+X11_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>=0:x11-toolkits/py-tkinter@${PY_FLAVOR}
 X11_CONFIGURE_OFF=	PYTHON=:
 X11_SUB_FILES_OFF=	fetchmailconf
 
