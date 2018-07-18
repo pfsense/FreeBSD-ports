@@ -15,6 +15,10 @@ LICENSE=	APACHE20
 NO_MTREE=	yes
 NO_BUILD=	yes
 
+.if ${ARCH} == "aarch64"
+RUN_DEPENDS=	/usr/local/bin/ping-auth.sh:security/netgate-ping-auth
+.endif
+
 PLIST_FILES=	libexec/pfSense-upgrade \
 		sbin/pfSense-upgrade
 
