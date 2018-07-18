@@ -1250,6 +1250,13 @@ if [ -e "${progress_file}" ]; then
 	rm -f ${progress_file}
 fi
 
+arch=$(uname -p)
+
+# Initialize the Thoth certificates on ARM64
+if [ "${arch}" = "aarch64" ]; then
+	/usr/local/bin/ping-auth.sh > /dev/null
+fi
+
 abi_setup
 
 if [ -n "${NEW_MAJOR}" -a "${action}" = "install" ]; then
