@@ -760,11 +760,11 @@ PHP_FUNCTION(pfSense_kill_states)
 	if (proto != NULL && proto_len > 0) {
 		if (!strncmp(proto, "tcp", strlen("tcp")))
 			psk.psk_proto = IPPROTO_TCP;
-		else if (!strncmp(proto, "tcp", strlen("udp")))
+		else if (!strncmp(proto, "udp", strlen("udp")))
 			psk.psk_proto = IPPROTO_UDP;
-		else if (!strncmp(proto, "tcp", strlen("icmpv6")))
+		else if (!strncmp(proto, "icmpv6", strlen("icmpv6")))
 			psk.psk_proto = IPPROTO_ICMPV6;
-		else if (!strncmp(proto, "tcp", strlen("icmp")))
+		else if (!strncmp(proto, "icmp", strlen("icmp")))
 			psk.psk_proto = IPPROTO_ICMP;
 	}
 
