@@ -62,4 +62,7 @@
 	<custom_php_deinstall_command>
 		haproxy_custom_php_deinstall_command();
 	</custom_php_deinstall_command>
+	<filter_rules_needed>
+		haproxy_generate_rules
+	</filter_rules_needed>
 </packagegui>

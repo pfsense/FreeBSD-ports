@@ -2270,7 +2270,7 @@ function haproxy_get_transparent_backends(){
 	return $transparent_backends;
 }
 
-function haproxy_generate_rules_plugin($type) {
+function haproxy_generate_rules($type) {
 	$rules = "";
 	switch($type) {
 	case 'filter':
@@ -2990,6 +2990,20 @@ function get_backend($name) {
 
 function use_frontend_as_unixsocket($name) {
 	global $config;
+
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+		$config['installedpackages']['haproxy']['ha_pools'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+	}
+	if (!is_array($backend['ha_servers'])) {
+		$backend['ha_servers'] = array();
+	}
+	if (!is_array($backend['ha_servers']['item'])) {
+		$backend['ha_servers']['item'] = array();
+	}
+
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	foreach ($a_backends as $backend) {
 		$a_servers = getarraybyref($backend,'ha_servers','item');
