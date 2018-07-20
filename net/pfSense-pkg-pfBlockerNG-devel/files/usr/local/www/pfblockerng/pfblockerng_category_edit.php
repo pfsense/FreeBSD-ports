@@ -90,7 +90,7 @@ if (!empty($gtype)) {
 	switch ($gtype) {
 		case 'ipv4':
 			$type		= 'IPv4';
-			$conf_type	= 'pfblockernglistsv4'; 
+			$conf_type	= 'pfblockernglistsv4';
 			$suffix		= '_v4';
 			$active		= array('ip' => TRUE, 'ipv4' => TRUE);
 			break;
@@ -179,7 +179,7 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 						$a_aliasname	= $aliasname;
 						$a_description	= $data['description'];
 						$a_cron		= $data['cron'];
-						
+
 						$new_group = array ( array(	'state' => 'Disabled',
 										'url'	=> $feed['url'],
 										'header'=> $feed['header'] ));
@@ -403,7 +403,7 @@ if ($_POST && isset($_POST['save'])) {
 	// Validate Adv. firewall rule 'Protocol' setting
 	if (!empty($_POST['autoports_in']) || !empty($_POST['autoaddr_in'])) {
 		if (empty($_POST['autoproto_in'])) {
-			$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Inbound firewall rule settings."; 
+			$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Inbound firewall rule settings.";
 		}
 	}
 	if (!empty($_POST['autoports_out']) || !empty($_POST['autoaddr_out'])) {
@@ -427,6 +427,10 @@ if ($_POST && isset($_POST['save'])) {
 	}
 
 	if (!$input_errors) {
+
+		if (!is_array($config['installedpackages'][$conf_type]['config'][$rowid])) {
+			$config['installedpackages'][$conf_type]['config'][$rowid] = array();
+		}
 
 		$config['installedpackages'][$conf_type]['config'][$rowid]['aliasname']		= htmlspecialchars($_POST['aliasname'])		?: '';
 		$config['installedpackages'][$conf_type]['config'][$rowid]['description']	= htmlspecialchars($_POST['description'])	?: '';
@@ -579,7 +583,7 @@ else {
 		$pconfig['aliaslog']		= $rowdata[$rowid]['aliaslog'];
 		$pconfig['stateremoval']	= $rowdata[$rowid]['stateremoval'];
 
-		$pconfig['autoaddrnot_in']	= $rowdata[$rowid]['autoaddrnot_in']; 
+		$pconfig['autoaddrnot_in']	= $rowdata[$rowid]['autoaddrnot_in'];
 		$pconfig['autoports_in']	= $rowdata[$rowid]['autoports_in'];
 		$pconfig['aliasports_in']	= $rowdata[$rowid]['aliasports_in'];
 		$pconfig['autoaddr_in']		= $rowdata[$rowid]['autoaddr_in'];
@@ -638,7 +642,7 @@ if (isset($Lmove) and isset($Xmove) && isset($rowdata[$rowid]['row'])) {
 			if ($pre && $Lmove[$key] != $Xmove) {
 				$final[] = $row;
 			}
-		
+
 			$final = array_merge($final, $move);
 
 			if (!$pre && $Lmove[$key] != $Xmove) {
@@ -883,7 +887,7 @@ foreach ($rowdata[$rowid] as $tags) {
 			$folder = "{$pfb['denydir']}";
 		} elseif (strpos($pconfig['action'], 'Permit_') !== FALSE) {
 			$folder = "{$pfb['permitdir']}";
-		} elseif (strpos($pconfig['action'], 'Match_') !== FALSE) { 
+		} elseif (strpos($pconfig['action'], 'Match_') !== FALSE) {
 			$folder = "{$pfb['matchdir']}";
 		} elseif (strpos($pconfig['action'], 'unbound') !== FALSE) {
 			$folder = "{$pfb['dnsdir']}";
@@ -960,8 +964,8 @@ if ($gtype == 'easylist') {
 			<a target="_blank" href="https://easylist.to/pages/other-supplementary-filter-lists-and-easylist-variants.html">
 			Link: EasyList Filters</a><br /><br />
 			Copyright: EasyList, EasyPrivacy, EasyList Germany, EasyList Italy and EasyList Dutch are dual licensed under
-			Creative Commons Attribution-ShareAlike and the GNU General Public License. 
-		</dl>	
+			Creative Commons Attribution-ShareAlike and the GNU General Public License.
+		</dl>
 	</dd>
 	<dt>Category:</dt>
 		<dd>Select Categories:
@@ -981,7 +985,7 @@ elseif ($gtype == 'ipv4' || $gtype == 'ipv6') {
 						&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename
 					</dd>
 				<dt>GeoIP ISO:</dt>
-					<dd>Utilize the autocomplete <strong>GeoIP Format</strong> option 
+					<dd>Utilize the autocomplete <strong>GeoIP Format</strong> option
 						or manually enter the full URL as /usr/local/share/GeoIP/cc/US_v4.txt
 						&emsp;(Change \'US\' to required code)
 					</dd>
@@ -1026,7 +1030,7 @@ elseif ($gtype == 'dnsbl') {
 
 $infotxt .= '	</dl>';
 
-// Guideline infoblock 
+// Guideline infoblock
 $section->addInput(new Form_StaticText(
 		'',
 		"{$failed}"
@@ -1034,7 +1038,7 @@ $section->addInput(new Form_StaticText(
 		. $infotxt . '</div>'
 ));
 
-// Add 'Change state' and 'Add Row' buttons 
+// Add 'Change state' and 'Add Row' buttons
 $btnadd = '';
 if ($gtype != 'easylist') {
 	$btnadd = new Form_Button(
@@ -1452,7 +1456,7 @@ if (gtype == 'ipv4' || gtype == 'ipv6') {
 	var geoip = "<?=$geoip_isos?>";
 	var geoiparray = geoip.split(',');
 
-	// ASN Auto-Complete for Source (URL) field lookup 
+	// ASN Auto-Complete for Source (URL) field lookup
 	var asnlist = "<?=$pfb['asn_list']?>";
 }
 else if (gtype == 'easylist') {
