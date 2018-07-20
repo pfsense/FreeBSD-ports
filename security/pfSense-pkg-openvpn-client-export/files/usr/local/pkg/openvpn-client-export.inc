@@ -28,10 +28,10 @@ require_once("util.inc");
 require_once("pfsense-utils.inc");
 
 global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
-$current_openvpn_version = "2.4.4";
-$current_openvpn_version_rev = "01";
+$current_openvpn_version = "2.4.6";
+$current_openvpn_version_rev = "02";
 $legacy_openvpn_version = "2.3.18";
-$legacy_openvpn_version_rev = "01";
+$legacy_openvpn_version_rev = "02";
 
 function get_openvpnserver_by_id($srvid) {
 	global $config;
@@ -464,7 +464,8 @@ EOF;
 					$tls_directive = "tls-auth";
 					$tls_keydir = "key-direction 1{$nl}";
 				}
-				$conf .= "<{$tls_directive}>{$nl}" . trim(base64_decode($settings['tls'])) . "{$nl}</{$tls_directive}>{$nl}{$tls_keydir}";
+				$conf .= $tls_keydir;
+				$conf .= "<{$tls_directive}>{$nl}" . trim(base64_decode($settings['tls'])) . "{$nl}</{$tls_directive}>{$nl}";
 			}
 			return $conf;
 		// "yealink" creates: "/client.tar"
