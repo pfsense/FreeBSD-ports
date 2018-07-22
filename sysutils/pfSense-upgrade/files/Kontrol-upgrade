@@ -1074,14 +1074,7 @@ if [ "${USE_MFS_TMPVAR}" = "true" ]; then
 	export PKG_CACHEDIR=/root/var/cache/pkg
 fi
 
-product_version=$(cat /etc/version)
-do_not_send_uniqueid=$(read_xml_tag.sh boolean system/do_not_send_uniqueid)
-if [ "${do_not_send_uniqueid}" != "true" ]; then
-	uniqueid=$(gnid)
-	export HTTP_USER_AGENT="${product}/${product_version}:${uniqueid}"
-else
-	export HTTP_USER_AGENT="${product}/${product_version}"
-fi
+
 
 validate_repo_conf
 
