@@ -26,6 +26,9 @@ require_once("/usr/local/pkg/lcdproc.inc");
 $lcdproc_config         = &$config['installedpackages']['lcdproc']['config'][0];
 $lcdproc_screens_config = &$config['installedpackages']['lcdprocscreens']['config'][0];
 
+if (!is_array($lcdproc_screens_config)) {
+	$lcdproc_screens_config = array();
+}
 // Set default values for anything not in the $config
 $pconfig = $lcdproc_screens_config;
 if (!isset($pconfig['scr_version']))                         $pconfig['scr_version']                         = false;
@@ -58,10 +61,10 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
-	// Input validation would go here, with any invalid values found 
+	// Input validation would go here, with any invalid values found
 	// in $_POST being added to $input_errors, e.g:
 	//   $input_errors[] = "Descriptive error message for the user.";
-	
+
 	if (!$input_errors) {
 		$lcdproc_screens_config['scr_version']                         = $pconfig['scr_version'];
 		$lcdproc_screens_config['scr_time']                            = $pconfig['scr_time'];
@@ -87,7 +90,7 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_traffic_by_address_sort']         = $pconfig['scr_traffic_by_address_sort'];
 		$lcdproc_screens_config['scr_traffic_by_address_filter']       = $pconfig['scr_traffic_by_address_filter'];
 		$lcdproc_screens_config['scr_traffic_by_address_hostipformat'] = $pconfig['scr_traffic_by_address_hostipformat'];
-				
+
 		write_config();
 		sync_package_lcdproc();
 	}
@@ -319,7 +322,7 @@ $group->add(new Form_Select(
 $group->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
 $section->add($group);
 
-		
+
 $form->add($section); // Add the section to our form
 print($form); // Finally . . We can display our new form
 
