@@ -29,7 +29,9 @@ pfb_global();
 $disable_move = FALSE;
 
 $pfb['dconfig'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0];
-
+if (!is_array($pfb['dconfig'])) {
+	$pfb['dconfig'] = array();
+}
 $pconfig = array();
 $pconfig['pfb_dnsbl']		= $pfb['dconfig']['pfb_dnsbl']				?: '';
 $pconfig['pfb_tld']		= $pfb['dconfig']['pfb_tld']				?: '';
@@ -95,7 +97,7 @@ if ($_POST) {
 		}
 
 		// Reset TOP1M Whitelist on user changes
-		if ($pfb['dconfig']['alexa_count'] != $_POST['alexa_count'] || 
+		if ($pfb['dconfig']['alexa_count'] != $_POST['alexa_count'] ||
 		    $pfb['dconfig']['alexa_inclusion'] != $_POST['alexa_inclusion']) {
 			unlink_if_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt");
 		}
@@ -901,7 +903,7 @@ $tld_whitelist_text = 'Enter <strong>each specific</strong> Domain and/or Sub-Do
 					<li>example.com</li>
 					<li>example.com|x.x.x.x&emsp;&emsp;(Replace x.x.x.x with associated Domain/Sub-Domain IP Address.</li>
 				</ul>
-				The First option above will collect the IP Address on each Cron run, 
+				The First option above will collect the IP Address on each Cron run,
 				while the second option will define a Static IP Address.<br /><br />
 
 				You must Whitelist every Domain or Sub-Domain individually.<br />

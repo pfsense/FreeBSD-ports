@@ -29,6 +29,9 @@ pfb_global();
 
 $pfb['sconfig'] = &$config['installedpackages']['pfblockerngsync']['config'][0];
 
+if (!is_array($pfb['sconfig'])) {
+	$pfb['sconfig'] = array();
+}
 $pconfig = array();
 $pconfig['varsynconchanges']	= $pfb['sconfig']['varsynconchanges']	?: '';
 $pconfig['varsynctimeout']	= $pfb['sconfig']['varsynctimeout']	?: 150;
@@ -166,7 +169,7 @@ $rowcounter	= 0;
 
 foreach ($rowdata as $r_id => $row) {
 
-	$target = 'Target #' . ($r_id + 1); 
+	$target = 'Target #' . ($r_id + 1);
 
 	$group = new Form_Group($target);
 	$group->addClass('repeatable');
