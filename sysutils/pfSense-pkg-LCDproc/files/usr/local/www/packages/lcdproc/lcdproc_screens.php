@@ -329,7 +329,7 @@ print($form); // Finally . . We can display our new form
 ?>
 
 <div class="infoblock">
-	<?=print_info_box('For more information see: <a href="http://lcdproc.org/docs.php3">LCDproc documentation</a>.', info)?>
+	<?=print_info_box('For more information see: <a href="http://lcdproc.org/docs.php3">LCDproc documentation</a>.', 'info')?>
 </div>
 
 <?php include("foot.inc"); ?>
