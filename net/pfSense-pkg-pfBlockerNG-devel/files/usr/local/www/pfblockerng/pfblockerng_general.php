@@ -28,7 +28,9 @@ global $config, $pfb;
 pfb_global();
 
 $pfb['gconfig'] = &$config['installedpackages']['pfblockerng']['config'][0];
-
+if (!is_array($pfb['gconfig'])) {
+	$pfb['gconfig'] = array();
+}
 $pconfig = array();
 $pconfig['enable_cb']			= $pfb['gconfig']['enable_cb']				?: '';
 
