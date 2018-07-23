@@ -429,7 +429,7 @@ function pfbng_text_area_decode($text, $mode=FALSE, $type=TRUE) {
 							$custom[] = trim(strtolower(strstr($line, '#', TRUE)));
 						}
 					} else {
-						// Remove commentline	
+						// Remove commentline
 						$custom .= trim(strtolower(strstr($line, '#', TRUE))) . "\n";
 					}
 				}
@@ -2148,7 +2148,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 				$http_status = '200 OK';
 			}
 		}
-	
+
 		// Download using cURL
 		else {
 			if (($fhandle = @fopen("{$file_dwn}.raw", 'w')) !== FALSE) {
@@ -3534,7 +3534,7 @@ function pfb_daemon_filterlog() {
 					if ($d[6] == 'match') {
 						$d[6] = 'unkn(%u)';
 					}
-					
+
 					if ($d[8] == 4) {
 						// Previous:	"Tracker ID/Action/SRC IP/DST IP/DST Port"
 						$p_entry	= "{$d[3]}{$d[6]}{$d[18]}{$d[19]}{$d[21]}";
@@ -4128,7 +4128,7 @@ function pfb_livetail($logfile, $mode) {
 				ob_flush();
 				flush();
 				@fclose($f);
-		
+
 				// Call log mgmt function
 				pfb_log_mgmt();
 				break;
@@ -4149,7 +4149,7 @@ function pfb_url_value($urlvalue, $alias) {
 		$urlvalue	= rtrim($urlvalue, ',');
 		$data		= explode(',', $urlvalue);
 		$keycount	= (count($data) -1);
-	
+
 		foreach ($data as $key => $line) {
 			$urlfinal .= "{$line}";
 			if ($key != $keycount) {
@@ -4733,7 +4733,7 @@ function sync_package_pfblockerng($cron='') {
 					$lists[] = $list;
 				}
 			}
-	
+
 			// ADD DNSBL IP
 			if ($ltype == 'pfblockernglistsv4' && $pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['dnsbl_ip'] != 'Disabled') {
 				$list = array();
@@ -4795,7 +4795,7 @@ function sync_package_pfblockerng($cron='') {
 								elseif ($list['action'] == 'unbound') {
 									$pfb['existing']['dnsbl'][]	= "{$header}";
 								}
-							}					
+							}
 						}
 					}
 				}
@@ -5019,7 +5019,7 @@ function sync_package_pfblockerng($cron='') {
 
 			// Collect Whitelist, create string, and save to file (for grep -vF -f cmd)
 			pfb_logger("\n Loading DNSBL Whitelist...", 1);
-			$pfb_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE); 
+			$pfb_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE);
 			$pfb_whitelist = '';
 			if (!empty($pfb_white)) {
 				foreach ($pfb_white as $line) {
@@ -5637,7 +5637,7 @@ function sync_package_pfblockerng($cron='') {
 															continue 2;
 														}
 
-														// Parse Bambenek Consulting Feed 
+														// Parse Bambenek Consulting Feed
 														elseif (strpos($csvline[3], 'osint.'
 															. 'bambenekconsulting.com') !== FALSE) {
 															$csv_type	= 'bbc';
@@ -5901,7 +5901,7 @@ function sync_package_pfblockerng($cron='') {
 									@file_put_contents("{$pfb['dnsbldir']}/check.conf", $conf, LOCK_EX);
 
 									pfb_logger(".\n", 1);
-		
+
 									// Bypass TOP1M whitelist, if user configured
 									$pfb_alexa = 'Disabled';
 									if ($pfb['dnsbl_alexa'] == 'on' &&
@@ -6196,7 +6196,7 @@ function sync_package_pfblockerng($cron='') {
 						if (file_exists("{$pfborig}/{$cc_alias}.orig")) {
 							$continent_ex	= @md5_file("{$pfborig}/{$cc_alias}.orig");
 						}
-						
+
 						// Check if pfBlockerNG pfctl Continent tables are empty (pfBlockerNG was disabled w/ "keep", then re-enabled)
 						$pfctlck = exec("{$pfb['pfctl']} -vvsTables | {$pfb['grep']} -A1 {$cc_alias} | {$pfb['awk']} '/Addresses/ {s+=$2}; END {print s}'");
 
@@ -6316,7 +6316,9 @@ function sync_package_pfblockerng($cron='') {
 		foreach	($ip_types as $ip_type	=> $vtype) {
 			if (!empty($config['installedpackages'][$ip_type]['config'])) {
 				foreach	($config['installedpackages'][$ip_type]['config'] as $key => $list) {
-
+					if (!is_array($list)) {
+						$list = array();
+					}
 					$list['vtype']	= "{$vtype}";	// Collect list IP type
 					$list['key']	= "{$key}";	// Collect list array key location
 
@@ -6979,6 +6981,9 @@ function sync_package_pfblockerng($cron='') {
 
 	// Update config.xml, if changes required
 	if ($exist_aliases != $new_aliases) {
+		if (!is_array($config['aliases'])) {
+			$config['aliases'] = array();
+		}
 		$config['aliases']['alias'] = $new_aliases;
 		write_config('pfBlockerNG: saving Aliases');
 	}
@@ -7030,7 +7035,7 @@ function sync_package_pfblockerng($cron='') {
 
 					// Remove all existing rules that start with 'pfB_' in the Rule Description
 					if (substr($rule['descr'], 0, 4) != 'pfB_') {
-			
+
 						// Upgrade previous IPv4 pfBlockerNG 'alias type' aliasnames to new '_v4' suffix format
 						foreach (array('source', 'destination') as $rtype) {
 							if (substr($rule[$rtype]['address'], 0, 4) == 'pfB_' &&
@@ -7458,7 +7463,7 @@ function sync_package_pfblockerng($cron='') {
 	if ($pfb_found) {
 		write_config("pfBlockerNG: update NAT rule(s) aliasnames to include '_v4' suffix");
 	}
- 
+
 	#################################
 	#  Call filter_configure once	#
 	#################################
