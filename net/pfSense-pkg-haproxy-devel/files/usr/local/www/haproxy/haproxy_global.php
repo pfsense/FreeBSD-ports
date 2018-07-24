@@ -98,16 +98,16 @@ if ($_POST) {
 		if ($_POST['carpdev'] == "disabled")
 			unset($_POST['carpdev']);
 
-		if ($_POST['maxconn'] && (!is_numeric($_POST['maxconn']))) 
+		if ($_POST['maxconn'] && (!is_numeric($_POST['maxconn'])))
 			$input_errors[] = "The maximum number of connections should be numeric.";
-			
-		if ($_POST['localstatsport'] && (!is_numeric($_POST['localstatsport']))) 
+
+		if ($_POST['localstatsport'] && (!is_numeric($_POST['localstatsport'])))
 			$input_errors[] = "The local stats port should be numeric or empty.";
-			
-		if ($_POST['localstats_refreshtime'] && (!is_numeric($_POST['localstats_refreshtime']))) 
+
+		if ($_POST['localstats_refreshtime'] && (!is_numeric($_POST['localstats_refreshtime'])))
 			$input_errors[] = "The local stats refresh time should be numeric or empty.";
 
-		if ($_POST['localstats_sticktable_refreshtime'] && (!is_numeric($_POST['localstats_sticktable_refreshtime']))) 
+		if ($_POST['localstats_sticktable_refreshtime'] && (!is_numeric($_POST['localstats_sticktable_refreshtime'])))
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
 		if (!$input_errors) {
@@ -123,7 +123,7 @@ if ($_POST) {
 			$config['installedpackages']['haproxy']['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
 			$config['installedpackages']['haproxy']['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
 			$config['installedpackages']['haproxy']['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
-			$config['installedpackages']['haproxy']['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;			
+			$config['installedpackages']['haproxy']['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
 			foreach($simplefields as $stat)
 				$config['installedpackages']['haproxy'][$stat] = $_POST[$stat];
 
@@ -219,9 +219,9 @@ Sets the maximum per-process number of concurrent connections to X.<br/>
 					<strong>NOTE:</strong> setting this value too high will result in HAProxy not being able to allocate enough memory.<br/>
 				{$memusage}
 					Current <a href='/system_advanced_sysctl.php'>'System Tunables'</a> settings.<br/>
-					&nbsp;&nbsp;'kern.maxfiles': <b>{$maxfiles}</b><br/> 
+					&nbsp;&nbsp;'kern.maxfiles': <b>{$maxfiles}</b><br/>
 					&nbsp;&nbsp;'kern.maxfilesperproc': <b>{$maxfilesperproc}</b><br/>
-					
+
 					Full memory usage will only show after all connections have actually been used.
 EOD
 );
@@ -267,7 +267,7 @@ EOD
 EOD
 	));
 $group->setHelp(<<<EOD
-When setting a high amount of allowed simultaneous connections you will need to add and or increase the following two 
+When setting a high amount of allowed simultaneous connections you will need to add and or increase the following two
 <b><a href='/system_advanced_sysctl.php'>'System Tunables'</a></b> kern.maxfiles and kern.maxfilesperproc.
 For HAProxy alone set these to at least the number of allowed connections * 2 + 31. So for 100.000 connections these need
 to be 200.031 or more to avoid trouble, take into account that handles are also used by other processes when setting kern.maxfiles.
