@@ -105,6 +105,9 @@ switch ($gtype) {
 
 // Collect rowdata
 if ($type != 'GeoIP') {
+	if (!is_array($config['installedpackages'][$conf_type])) {
+		$config['installedpackages'][$conf_type] = array();
+	}
 	$rowdata = &$config['installedpackages'][$conf_type]['config'];
 } else {
 
@@ -115,9 +118,13 @@ if ($type != 'GeoIP') {
 		}
 		else {
 			$continent_config			= array();
+			$continent_config[0]			= array();
 			$continent_config[0]['action']		= 'Disabled';
 			$continent_config[0]['cron']		= 'Never';
 			$continent_config[0]['aliaslog']	= 'enabled';
+		}
+		if (!is_array($continent_config[0])) {
+			$continent_config[0] = array();
 		}
 		$continent_config[0]['aliasname']		= $continent;
 		$continent_config[0]['filename']		= str_replace(' ', '_', $continent);
@@ -137,7 +144,7 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 			$savemsg = "Removed [ Type: {$type}, Name: {$name} ]";
 			header("Location: /pfblockerng/pfblockerng_category.php?type={$gtype}&savemsg={$savemsg}");
 			exit;
-	
+
 		case 'update':
 			if (is_array($rowdata)) {
 
@@ -268,7 +275,7 @@ if (isset($savemsg)) {
 						}
 					?>
 					</td>
-		
+
 					<td>
 					<?php
 						$row['description'] = htmlspecialchars($row['description']);
