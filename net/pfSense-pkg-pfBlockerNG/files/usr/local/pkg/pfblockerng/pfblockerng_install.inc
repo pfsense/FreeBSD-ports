@@ -278,14 +278,14 @@ EOF;
 	openssl_x509_export($cert, $publickey);
 	@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
 	update_status(" done.\n");
-	
+
 	update_status("Starting DNSBL Service...");
 	restart_service('dnsbl');
 	update_status(" done.\n");
 }
 
 
-// Upgrade - Adv. Inbound settings to new variable names. 
+// Upgrade - Adv. Inbound settings to new variable names.
 update_status("Upgrading Adv. Inbound firewall rule settings ...");
 $ufound = FALSE;
 $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdnsblsettings', 'pfblockerngafrica', 'pfblockerngantarctica',
@@ -293,6 +293,9 @@ $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdn
 		    'pfblockerngtopspammers', 'pfblockerngproxyandsatellite');
 
 foreach ($upgrade_type as $type) {
+	if (!is_array($config['installedpackages'][$type])) {
+		$config['installedpackages'][$type] = array();
+	}
 	$conf_config = &$config['installedpackages'][$type]['config'];
 	if (isset($conf_config)) {
 		foreach ($conf_config as $key => $utype) {
