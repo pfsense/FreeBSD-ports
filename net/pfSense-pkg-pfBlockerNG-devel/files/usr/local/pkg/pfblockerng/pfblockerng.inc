@@ -1125,6 +1125,11 @@ function pfb_create_dnsbl($mode) {
 			$log = "\nSaving DNSBL config changes.";
 			pfb_logger("{$log}", 1);
 			$config['nat']['rule'] = $new_nat;
+
+			if (!is_array($config['virtualip']['vip'])) {
+				$config['virtualip']['vip'] = array();
+			}
+
 			$config['virtualip']['vip'] = $new_vip;
 			write_config('pfBlockerNG: saving DNSBL changes');
 
@@ -6963,6 +6968,10 @@ function sync_package_pfblockerng($cron='') {
 	// Reload config.xml to get any recent changes
 	$config = parse_config(true);
 
+	if (!is_array($config['aliases'])) {
+		$config['aliases'] = array();
+	}
+
 	$exist_aliases = $config['aliases']['alias'];
 	if (isset($config['aliases']['alias'])) {
 		foreach ($config['aliases']['alias'] as $cbalias) {
@@ -6981,12 +6990,10 @@ function sync_package_pfblockerng($cron='') {
 
 	// Update config.xml, if changes required
 	if ($exist_aliases != $new_aliases) {
-		if (!is_array($config['aliases'])) {
-			$config['aliases'] = array();
-		}
 		$config['aliases']['alias'] = $new_aliases;
 		write_config('pfBlockerNG: saving Aliases');
 	}
+
 	unset($new_aliases, $exist_aliases);
 
 
