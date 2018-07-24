@@ -39,25 +39,16 @@ if (!function_exists("cert_get_purpose")) {
 }
 /**/
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
-
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
+haproxy_config_init();
 
 $a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 $a_pools = $config['installedpackages']['haproxy']['ha_pools']['item'];
-if (!is_array($a_pools)) {
-	$a_pools = array();
-}
 uasort($a_pools, 'haproxy_compareByName');
 
 global $simplefields;
 $simplefields = array('name','desc','status','secondary','primary_frontend','type','forwardfor','httpclose','extaddr','backend_serverpool',
 	'max_connections','client_timeout','port','advanced_bind',
-	'ssloffloadcert','dcertadv','ssloffload','ssloffloadacl','ssloffloadacl_an','ssloffloadacladditional','ssloffloadacladditional_an',
+	'ssloffloadcert','sslsnifilter','ssl_crtlist_advanced','dcertadv','ssloffload','ssloffloadacl','ssloffloadacl_an','ssloffloadacladditional','ssloffloadacladditional_an',
 	'sslclientcert-none','sslclientcert-invalid','sslocsp',
 	'socket-stats',
 	'dontlognull','dontlog-normal','log-separate-errors','log-detailed');
@@ -130,17 +121,23 @@ $fields_aclSelectionList[1]['type']="select";
 $fields_aclSelectionList[1]['size']="10";
 $fields_aclSelectionList[1]['items']=&$a_acltypes;
 
-$fields_aclSelectionList[2]['name']="not";
-$fields_aclSelectionList[2]['columnheader']="Not";
+$fields_aclSelectionList[2]['name']="casesensitive";
+$fields_aclSelectionList[2]['columnheader']="CS";
 $fields_aclSelectionList[2]['colwidth']="5%";
 $fields_aclSelectionList[2]['type']="checkbox";
 $fields_aclSelectionList[2]['size']="5";
 
-$fields_aclSelectionList[3]['name']="value";
-$fields_aclSelectionList[3]['columnheader']="Value";
-$fields_aclSelectionList[3]['colwidth']="35%";
-$fields_aclSelectionList[3]['type']="textbox";
-$fields_aclSelectionList[3]['size']="35";
+$fields_aclSelectionList[3]['name']="not";
+$fields_aclSelectionList[3]['columnheader']="Not";
+$fields_aclSelectionList[3]['colwidth']="5%";
+$fields_aclSelectionList[3]['type']="checkbox";
+$fields_aclSelectionList[3]['size']="5";
+
+$fields_aclSelectionList[4]['name']="value";
+$fields_aclSelectionList[4]['columnheader']="Value";
+$fields_aclSelectionList[4]['colwidth']="35%";
+$fields_aclSelectionList[4]['type']="textbox";
+$fields_aclSelectionList[4]['size']="35";
 
 $interfaces = haproxy_get_bindable_interfaces();
 $interfaces_custom['custom']['name']="Use custom address:";
@@ -175,6 +172,11 @@ $fields_externalAddress[4]['colwidth']="20%";
 $fields_externalAddress[4]['type']="textbox";
 $fields_externalAddress[4]['size']="30";
 
+foreach ($a_action as $key => $value) {
+	if (!empty($value['usage']) && !stristr('frontend', $value['usage'])) {
+		unset($a_action[$key]);
+	}
+}
 $fields_actions=array();
 $fields_actions[0]['name']="action";
 $fields_actions[0]['columnheader']="Action";
@@ -237,7 +239,7 @@ foreach($a_acltypes as $key => $action) {
 			$item = $field;
 			$name = $key . $item['name'];
 			$item['name'] = $name;
-			$item['columnheader'] = $field['name'];
+			$item['columnheader'] = $field['columnheader'];
 			$item['customdrawcell'] = 'customdrawcell_actions';
 			$fields_acl_details[$name] = $item;
 		}
@@ -293,20 +295,13 @@ $errorfileslist = new HaproxyHtmlList("table_errorfile", $fields_errorfile);
 $errorfileslist->keyfield = "errorcode";
 
 if (isset($id) && $a_backend[$id]) {
-	$pconfig['a_acl']=&$a_backend[$id]['ha_acls']['item'];
-	haproxy_check_isarray($pconfig['a_acl']);
-	$pconfig['a_certificates']=&$a_backend[$id]['ha_certificates']['item'];
-	haproxy_check_isarray($pconfig['a_certificates']);
-	$pconfig['clientcert_ca']=&$a_backend[$id]['clientcert_ca']['item'];
-	haproxy_check_isarray($pconfig['clientcert_ca']);
-	$pconfig['clientcert_crl']=&$a_backend[$id]['clientcert_crl']['item'];
-	haproxy_check_isarray($pconfig['clientcert_crl']);
-	$pconfig['a_extaddr']=&$a_backend[$id]['a_extaddr']['item'];
-	haproxy_check_isarray($pconfig['a_extaddr']);
-	$pconfig['a_actionitems']=&$a_backend[$id]['a_actionitems']['item'];
-	haproxy_check_isarray($pconfig['a_actionitems']);
-	$pconfig['a_errorfiles']=&$a_backend[$id]['a_errorfiles']['item'];
-	haproxy_check_isarray($pconfig['a_errorfiles']);
+	$pconfig['a_acl'] = getarraybyref($a_backend[$id],'ha_acls','item');
+	$pconfig['a_certificates'] = getarraybyref($a_backend[$id],'ha_certificates','item');
+	$pconfig['clientcert_ca'] = getarraybyref($a_backend[$id],'clientcert_ca','item');
+	$pconfig['clientcert_crl'] = getarraybyref($a_backend[$id],'clientcert_crl','item');
+	$pconfig['a_extaddr'] = getarraybyref($a_backend[$id],'a_extaddr','item');
+	$pconfig['a_actionitems'] = getarraybyref($a_backend[$id],'a_actionitems','item');
+	$pconfig['a_errorfiles'] = getarraybyref($a_backend[$id],'a_errorfiles','item');
 
 	$pconfig['advanced'] = base64_decode($a_backend[$id]['advanced']);
 	foreach($simplefields as $stat) {
@@ -349,30 +344,30 @@ if ($_POST) {
 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
-		$input_errors[] = "The field 'Name' contains invalid characters.";
+		$input_errors[] = gettext("The field 'Name' contains invalid characters.");
 	}
 
 	if ($pconfig['secondary'] != "yes") {
 		if ($_POST['max_connections'] && !is_numeric($_POST['max_connections'])) {
-			$input_errors[] = "The field 'Max connections' value is not a number.";
+			$input_errors[] = sprintf(gettext("The value '%s' in field 'Max connections' is not a number."), htmlspecialchars($_POST['max_connections']));
 		}
 
 		$ports = explode(",", $_POST['port'] . ",");
 		foreach($ports as $port) {
 			if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
-				$input_errors[] = "The field 'Port' value '".htmlspecialchars($port)."' is not a number or alias thereof.";
+				$input_errors[] = sprintf(gettext("The value '%s' in field 'Port' is not a number or alias thereof."), htmlspecialchars($port));
 			}
 		}
 
 		if ($_POST['client_timeout'] !== "" && !is_numeric($_POST['client_timeout'])) {
-			$input_errors[] = "The field 'Client timeout' value is not a number.";
+			$input_errors[] = sprintf(gettext("The value '%s' in field 'Client timeout' is not a number."), htmlspecialchars($_POST['client_timeout']));
 		}
 	}
 
 	/* Ensure that our pool names are unique */
 	for ($i=0; isset($config['installedpackages']['haproxy']['ha_backends']['item'][$i]); $i++) {
 		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_backends']['item'][$i]['name']) && ($i != $id)) {
-			$input_errors[] = "This frontend name has already been used. Frontend names must be unique. $i != $id";
+			$input_errors[] = gettext("This frontend name has already been used. Frontend names must be unique.")." $i != $id";
 		}
 	}
 
@@ -399,31 +394,33 @@ if ($_POST) {
 
 		$acltype = haproxy_find_acl($acl['expression']);
 		if (preg_match("/[^a-zA-Z0-9\.\-_]/", $acl_name)) {
-			$input_errors[] = "The field 'Name' contains invalid characters.";
+			$input_errors[] = sprintf(gettext("The acl field 'Name' with value '%s' contains invalid characters."), $acl_name);
 		}
 
 		if (!isset($acltype['novalue'])) {
 			if (!preg_match("/.{1,}/", $acl_value)) {
-				$input_errors[] = "The field 'Value' is required.";
+				$input_errors[] = sprintf(gettext("The acl field 'Value' for acl '%s' is required."), $acl_name);
 			}
 		}
 
 		if (!preg_match("/.{2,}/", $acl_name)) {
-			$input_errors[] = "The field 'Name' is required with at least 2 characters.";
+			$input_errors[] = gettext("The acl field 'Name' is required with at least 2 characters.");
 		}
 	}
-	foreach($a_extaddr as $extaddr) {
-		$ports = explode(",",$extaddr['extaddr_port']);
-		foreach($ports as $port){
-			if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
-				$input_errors[] = "The field 'Port' value '".htmlspecialchars($port)."' is not a number or alias thereof.";
+	if ($pconfig['secondary'] != "yes") {
+		foreach($a_extaddr as $extaddr) {
+			$ports = explode(",",$extaddr['extaddr_port']);
+			foreach($ports as $port){
+				if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
+					$input_errors[] = sprintf(gettext("The external address field 'Port' value '%s' is not a number or alias thereof."), htmlspecialchars($port));
+				}
 			}
-		}
 
-		if ($extaddr['extaddr'] == 'custom') {
-			$extaddr_custom = $extaddr['extaddr_custom'];
-			if (empty($extaddr_custom) || (!is_ipaddroralias($extaddr_custom))) {
-				$input_errors[] = sprintf(gettext("%s is not a valid source IP address or alias."),$extaddr_custom);
+			if ($extaddr['extaddr'] == 'custom') {
+				$extaddr_custom = $extaddr['extaddr_custom'];
+				if (empty($extaddr_custom) || (!is_ipaddroralias($extaddr_custom))) {
+					$input_errors[] = sprintf(gettext("The external address '%s' is not a valid source IP address or alias."), $extaddr_custom);
+				}
 			}
 		}
 	}
@@ -448,16 +445,19 @@ if ($_POST) {
 
 		foreach($simplefields as $stat) {
 			update_if_changed($stat, $backend[$stat], $_POST[$stat]);
+			if (empty($backend[$stat])) {
+				unset($backend[$stat]);
+			}
 		}
 
 		update_if_changed("advanced", $backend['advanced'], base64_encode($_POST['advanced']));
-		$backend['ha_acls']['item'] = $a_acl;
-		$backend['ha_certificates']['item'] = $a_certificates;
-		$backend['clientcert_ca']['item'] = $a_clientcert_ca;
-		$backend['clientcert_crl']['item'] = $a_clientcert_crl;
-		$backend['a_extaddr']['item'] = $a_extaddr;
-		$backend['a_actionitems']['item'] = $a_actionitems;
-		$backend['a_errorfiles']['item'] = $a_errorfiles;
+		getarraybyref($backend,'ha_acls')['item'] = $a_acl;
+		getarraybyref($backend,'ha_certificates')['item'] = $a_certificates;
+		getarraybyref($backend,'clientcert_ca')['item'] = $a_clientcert_ca;
+		getarraybyref($backend,'clientcert_crl')['item'] = $a_clientcert_crl;
+		getarraybyref($backend,'a_extaddr')['item'] = $a_extaddr;
+		getarraybyref($backend,'a_actionitems')['item'] = $a_actionitems;
+		getarraybyref($backend,'a_errorfiles')['item'] = $a_errorfiles;
 
 		if (isset($id) && $a_backend[$id]) {
 			$a_backend[$id] = $backend;
@@ -493,12 +493,15 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 	.haproxy_mode_http{display:none;}
 	.haproxy_ssloffloading_show{display:none;}
 	.haproxy_ssloffloading_enabled{display:none;}
+	.haproxy_ssl_advanced{display:none;}
 	.haproxy_primary{}
 	.haproxy_secondary{display:none;}
   </style>
 </head>
 
 <script type="text/javascript">
+	<?php haproxy_js_css(); ?>
+
 	function htmllist_get_select_options(tableId, fieldname, itemstable) {
 		if (tableId === 'table_acls' && fieldname === 'expression') {
 			var type;
@@ -521,17 +524,6 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 		return itemstable;
 	}
 
-	function setCSSdisplay(cssID, display) {
-		var ss = document.styleSheets;
-		for (var i=0; i<ss.length; i++) {
-			var rules = ss[i].cssRules || ss[i].rules;
-			for (var j=0; j<rules.length; j++) {
-				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = display ? "" : "none";
-				}
-			}
-		}
-	}
 	function updatevisibility()	{
 		d = document;
 		ssl = false;
@@ -541,6 +533,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 		var primary;
 		var secondary = d.getElementById("secondary");
 		var primary_frontend = d.getElementById("primary_frontend");
+		var sslsnifilter = d.getElementById("sslsnifilter");
 		if ((secondary !== null) && (secondary.checked)) {
 			primary = primaryfrontends[primary_frontend.value];
 			type = primary['ref']['type'];
@@ -562,10 +555,15 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 		setCSSdisplay(".haproxy_ssloffloading_show", sslshow);
 		setCSSdisplay(".haproxy_ssloffloading_enabled", ssl);
 		setCSSdisplay(".haproxy_mode_http", type === "http");
+		var issecondary = false;
+		var hassnifilter = false;
 		if (secondary !== null) {
+			issecondary = secondary.checked;
 			setCSSdisplay(".haproxy_primary", !secondary.checked);
 			setCSSdisplay(".haproxy_secondary", secondary.checked);
+			hassnifilter = sslsnifilter.value != '';
 		}
+		//setCSSdisplay(".haproxy_ssl_advanced", ssl && (!issecondary || hassnifilter));
 
 		type_change(type);
 
@@ -619,7 +617,11 @@ $section = new Form_Section_class("Edit HAProxy Frontend");
 
 $activedisable = array();
 $activedisable['active'] = "Active";
-$activedisable['disable'] = "Disable";
+$activedisable['disabled'] = "Disabled";
+
+if ($pconfig['status'] == 'disable') {
+	$pconfig['status'] = 'disabled';// make checkmark in overview and editpage the same.
+}
 
 $section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']));
 $section->addInput(new Form_Input('desc', 'Description', 'text', $pconfig['desc']));
@@ -686,11 +688,14 @@ $section->addInput(new Form_StaticText(
 	"Use these to define criteria that will be used with actions defined below to perform them only when certain conditions are met.<br/>".
 	$htmllist_acls->Draw($pconfig['a_acl'])
 ))->setHelp(<<<EOT
+	- 'CS' makes the string matches 'Case Sensitive' so www.domain.tld wil not be the same as WWW.domain.TLD<br/>
+	- 'Not' makes the match if the value given is not matched<br/>
 	Example:
 	<table border='1' style='border-collapse:collapse'>
 		<tr>
 			<td><b>Name</b></td>
 			<td><b>Expression</b></td>
+			<td><b>CI</b></td>
 			<td><b>Not</b></td>
 			<td><b>Value</b></td>
 		</tr>
@@ -698,11 +703,13 @@ $section->addInput(new Form_StaticText(
 			<td>Backend1acl</td>
 			<td>Host matches</td>
 			<td></td>
+			<td></td>
 			<td>www.yourdomain.tld</td>
 		</tr>
 		<tr>
 			<td>addHeaderAcl</td>
 			<td>SSL Client certificate valid</td>
+			<td></td>
 			<td></td>
 			<td></td>
 		</tr>
@@ -863,6 +870,16 @@ $section->addInput(new Form_Checkbox(
 	'Specify additional certificates for this shared-frontend.',
 	$pconfig['ssloffload']
 ),"haproxy_secondary");
+
+$section->addInput(new Form_Input(
+	'sslsnifilter',
+	'SNI Filter',
+	'text',
+	$pconfig['sslsnifilter']
+), "haproxy_ssloffloading_enabled"
+)->setHelp('Specify a SNI filter to apply below SSL settings to specific domain(s), see the "crt-list" option from haproxy for details. <br/>'.
+		'EXAMPLE: *.securedomain.tld !public.securedomain.tld');
+
 $section->addInput(
 	new Form_StaticText(
 		'Certificate',
@@ -887,13 +904,12 @@ $section->addInput(
 	))
 ),"haproxy_ssloffloading_enabled");
 
-
 $section->addInput(new Form_Checkbox(
 	'sslocsp',
 	'OCSP',
 	'Load certificate ocsp responses for easy certificate validation by the client.',
 	$pconfig['sslocsp']
-),"haproxy_ssloffloading_enabled")->setHelp("Make sure to add appropriate acl's to check for presence of a user certificate where needed.");
+),"haproxy_ssloffloading_enabled")->setHelp("A cron job wil update the ocsp response every hour.");
 
 $section->addInput(
 	new Form_StaticText(
@@ -918,11 +934,19 @@ $section->addInput(new Form_Input('dcertadv', 'Advanced ssl options', 'text', $p
 ),"haproxy_ssloffloading_enabled haproxy_primary")->setHelp('NOTE: Paste additional ssl options(without commas) to include on ssl listening options.<br/>
 	some options: force-sslv3, force-tlsv10 force-tlsv11 force-tlsv12 no-sslv3 no-tlsv10 no-tlsv11 no-tlsv12 no-tls-tickets<br/>
 	Example: no-sslv3 ciphers EECDH+aRSA+AES:TLSv1+kRSA+AES:TLSv1+kRSA+3DES');
+// haproxy_ssl_advanced << css class to hide field.?
 
+$section->addInput(new Form_Input('ssl_crtlist_advanced', 'Advanced certificate specific ssl options',
+	'text', $pconfig['ssl_crtlist_advanced']
+),"haproxy_ssloffloading_enabled")->setHelp('NOTE: Paste additional ssl options(without commas) to include on ssl listening options.<br/>
+	some options: alpn, no-ca-names, ecdhe, curves, ciphers, ssl-min-ver and ssl-max-ver<br/>
+	Example: alpn h2,http/1.1 ciphers EECDH+aRSA+AES:TLSv1+kRSA+AES:TLSv1+kRSA+3DES ecdhe secp256k1');
 $form->add($section);
+// options that are in the gui as regular settings: verify, ca-file, crl-file
+// deprecated: npn
 
 $section = new Form_Section_class("SSL Offloading - client certificates");
-$section->addClass("haproxy_ssloffloading_enabled haproxy_primary");
+$section->addClass("haproxy_ssloffloading_enabled");
 $section->addInput(new Form_StaticText(
 	'Note',
 	"<b>Client certificate verification options, leave all these options empty if you do not want to ask for a client certificate</b><br/>
@@ -981,7 +1005,7 @@ events.push(function() {
 	phparray_to_javascriptarray($a_action, "showhide_actionfields",
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 	phparray_to_javascriptarray($a_acltypes, "showhide_aclfields",
-		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
+		Array('/*', '/*/casesensitive', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 
 	$htmllist_extaddr->outputjavascript();
 	$htmllist_acls->outputjavascript();
@@ -1019,9 +1043,25 @@ events.push(function() {
 	$('#ssloffload').click(function () {
 		updatevisibility();
 	});
+	$('#sslsnifilter').on('change input keyup cut paste', function () {
+		updatevisibility();
+	});
+
+	d = document;
+	// make sure enabled/disabled visable/hidden states of items dependant on these boxes are correct when loading the page.
+	$('[id^=table_aclsexpression]').change();
+	$('[id^=table_extaddrextaddr]').change();
 
 	updatevisibility();
 });
+
+	function sethiddenclass(id,showitem) {
+		if (showitem) {
+			$("#"+id).removeClass("hidden");
+		} else {
+			$("#"+id).addClass("hidden");
+		}
+	}
 
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
@@ -1029,20 +1069,18 @@ events.push(function() {
 			field = d.getElementById(tableId+"expression"+rowNr);
 		}
 		if (fieldId === "expression") {
-			var actiontype = field.value;
-
+			var acltypeid = field.value;
+			var acltype = showhide_aclfields[acltypeid];
+			sethiddenclass('table_aclscasesensitive'+rowNr, acltype['casesensitive']);
+			sethiddenclass('table_aclscasesensitive'+rowNr+'_disp', acltype['casesensitive']);
 			var table = d.getElementById(tableId);
 
 			for(var actionkey in showhide_aclfields) {
 				var fields = showhide_aclfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
-					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
-					if (actionkey === actiontype) {
-						$("#"+rowid).removeClass("hidden");
-					} else {
-						$("#"+rowid).addClass("hidden");
-					}
+					sethiddenclass("tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname, actionkey === acltypeid);
+					sethiddenclass(tableId+actionkey+fieldname+rowNr+'_disp', actionkey === acltypeid);
 				}
 			}
 		}

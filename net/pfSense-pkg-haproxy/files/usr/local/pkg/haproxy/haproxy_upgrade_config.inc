@@ -46,6 +46,7 @@ function haproxy_upgrade_config() {
 		/* We have an old config */
 			$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
 			$a_global = &$config['installedpackages']['haproxy'];
+			
 			if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
 				$config['installedpackages']['haproxy']['ha_backends'] = array();
 			}
@@ -53,7 +54,15 @@ function haproxy_upgrade_config() {
 				$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
 			}
 			$a_backends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+
+			if (!is_array($config['installedpackages']['haproxy']['ha_servers'])) {
+				$config['installedpackages']['haproxy']['ha_servers'] = array();
+			}
+			if (!is_array($config['installedpackages']['haproxy']['ha_servers']['item'])) {
+				$config['installedpackages']['haproxy']['ha_servers']['item'] = array();
+			}
 			$a_oldservers = &$config['installedpackages']['haproxy']['ha_servers']['item'];
+
 			if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
 				$config['installedpackages']['haproxy']['ha_pools'] = array();
 			}
@@ -218,6 +227,12 @@ function haproxy_upgrade_config() {
 				$acl_count = array();
 				foreach ($primary as &$frontend){
 					$acl_use = array();
+					if (!is_array($frontend['a_actionitems'])) {
+						$frontend['a_actionitems'] = array();
+					}
+					if (!is_array($frontend['a_actionitems']['item'])) {
+						$frontend['a_actionitems']['item'] = array();
+					}
 					$a_actions = &$frontend['a_actionitems']['item'];
 					if (!is_array($a_actions)) {
 						$a_actions = array();
@@ -270,12 +285,104 @@ function haproxy_upgrade_config() {
 		}
 		$configversion = "00.32";
 	}
+	if ($configversion < "00.57") {
+		$haproxycfg = &$config['installedpackages']['haproxy'];
+		$a_frontend = &$haproxycfg['ha_backends']['item'];
+		// - assign unique ID's to all backends and servers for saving/loading server-state file
+		//
+		// - the backend nolonger automaticaly 'guesses' the desired backend ssl/check-ssl flags..
+		// so to keep existing behaviour the backends that are used multiple times 
+		// are automatically duplicated with different ssl/checkssl options
+		// with settings being explicitly this allows for the user to control when ssl is or isnt used
+		// also for tcp frontend/backend combinations where for example ldaps could pass along
+		
+		$id = 100;
+		$newbackends = array();
+		foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+			$id++;
+			$backend['id'] = $id;
+			
+			$fes = find_frontends_using_backend($backend['name']);
+			$httpfrontend = false;
+			$tcpfrontend = false;
+			foreach($fes as $fename) {
+				$frontend = $a_frontend[get_frontend_id($fename)];
+				if ($frontend['type'] == "http") {
+					$httpfrontend = true;
+				} else {
+					$tcpfrontend = true;
+				}
+			}
+			if ($httpfrontend && $tcpfrontend) {
+				// we have both types.. so duplicate it once for the ssl one..
+				$newbackend = $backend;
+				$oldvalue = $newbackend['name'];
+				$newbackend['name'] = $newbackend['name'] . "_ssl";
+				$newvalue = $newbackend['name'];
+				$id++;
+				$newbackend['id'] = $id;
+				if (is_array($newbackend['ha_servers']['item'])) {
+					foreach($newbackend['ha_servers']['item'] as &$server) {
+						$id++;
+						$server['id'] = $id;
+						if ($tcpfrontend && $server['ssl'] == 'yes') {
+							// https frontend used to automatically switch to using the check-ssl setting..
+							unset($server['ssl']);
+							$server['checkssl'] = 'yes';
+						}
+					}
+				}
+				$newbackends[] = $newbackend;
+				
+				// rename backend references where required.
+				$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+				foreach ($a_frontends as &$frontend) {
+					if ($frontend['type'] == 'http') {
+						continue;
+					}
+					if ($frontend['backend_serverpool'] == $oldvalue) {
+						$frontend['backend_serverpool'] = $newvalue;
+					}
+					if (is_array($frontend['a_actionitems']['item'])) {
+						foreach($frontend['a_actionitems']['item'] as &$item) {
+							if ($item['action'] == "use_backend") {
+								if ($item['use_backendbackend'] == $oldvalue) {
+									$item['use_backendbackend'] = $newvalue;
+								}
+							}
+						}
+					}
+				}
+				unset($frontend);
+				
+			} else {
+				// only https/tcp frontends to this backend..
+				if (is_array($backend['ha_servers']['item'])) {
+					foreach($backend['ha_servers']['item'] as &$server) {
+						$id++;
+						$server['id'] = $id;
+						if (!$httpfrontend && $server['ssl'] == 'yes') {
+							// https frontend used to automatically switch to using the check-ssl setting..
+							unset($server['ssl']);
+							$server['checkssl'] = true;
+						}
+					}
+				}
+			}
+		}
+		unset($backend);
+		// add duplicated backends to the config.
+		foreach($newbackends as $newbackend) {
+			$haproxycfg['ha_pools']['item'][] = $newbackend;
+		}
+		$configversion = "00.57";
+	}
 
 	$writeconfigupdate = $config['installedpackages']['haproxy']['configversion'] <> $configversion;
 	if ($writeconfigupdate) {
 		$config['installedpackages']['haproxy']['configversion'] = $configversion;
 		$static_output .= "HAProxy, write updated config to version: $configversion\n";
 		update_output_window($static_output);
-		write_config("HAProxy, update xml config version");
+		write_config("HAProxy, update xml config version to version: ". $configversion);
 	}
 }
