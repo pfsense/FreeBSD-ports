@@ -2716,9 +2716,15 @@ function get_frontend_acls($frontend) {
 
 function get_backend_acls($backend, $type) {
 	$result = array();
+
+	if (!is_array($backend['a_acl'])) {
+		$backend['a_acl'] = array();
+	}
+
 	if (!is_array($backend['a_acl']['item'])) {
 		$backend['a_acl']['item'] = array();
 	}
+
 	$a_acl = &$backend['a_acl']['item'];
 	if (is_array($a_acl))
 	{

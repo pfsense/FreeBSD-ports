@@ -29,6 +29,9 @@ pfb_global();
 
 $pfb['iconfig'] = &$config['installedpackages']['pfblockerngipsettings']['config'][0];
 
+if (!is_array($pfb['iconfig'])) {
+	$pfb['iconfig'] = array();
+}
 $pconfig = array();
 $pconfig['enable_dup']		= $pfb['iconfig']['enable_dup']				?: '';
 $pconfig['enable_agg']		= $pfb['iconfig']['enable_agg']				?: '';
@@ -255,7 +258,7 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ))->setHelp('This will disable the MaxMind monthly GeoIP database cron update. This does not affect the MaxMind binary cron update.');
 
-// Create page anchor for IP Suppression List 
+// Create page anchor for IP Suppression List
 $section->addInput(new Form_StaticText(
 	NULL,
 	'<div id="Suppression"></div>'));
@@ -369,7 +372,7 @@ $section->addInput(new Form_Select(
 	'autorule_suffix',
 	'Firewall \'Auto\' Rule Suffix',
 	$pconfig['autorule_suffix'],
-	[ 'autorule' => 'auto rule', 'standard' => 'Null (no suffix)', 'ar', 'AR' ] 
+	[ 'autorule' => 'auto rule', 'standard' => 'Null (no suffix)', 'ar', 'AR' ]
 ))->setHelp('Default: <strong>auto rule</strong><br />Select \'Auto Rule\' description suffix for auto defined rules. pfBlockerNG must be disabled to modify suffix.')
   ->setAttribute('style', 'width: auto');
 

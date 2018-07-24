@@ -200,7 +200,7 @@ function sync_package_lcdproc() {
 
 		$config_text = "[server]\n";
 		$config_text .= "DriverPath=/usr/local/lib/lcdproc/\n";
-		$config_text .= "Driver={$lcdproc_config[driver]}\n";
+		$config_text .= "Driver={$lcdproc_config['driver']}\n";
 		$config_text .= "Bind=127.0.0.1\n";
 		$config_text .= "Port=13666\n";
 		$config_text .= "ReportLevel=3\n";
@@ -210,12 +210,12 @@ function sync_package_lcdproc() {
 		$config_text .= "ServerScreen=no\n";
 		$config_text .= "GoodBye=\"Thanks for using\"\n";
 		$config_text .= "GoodBye=\"    {$g['product_name']}     \"\n";
-		$config_text .= "WaitTime={$lcdproc_config[refresh_frequency]}\n";
-		if ($lcdproc_config[backlight] != "" && $lcdproc_config[backlight] != "default") {
+		$config_text .= "WaitTime={$lcdproc_config['refresh_frequency']}\n";
+		if ($lcdproc_config['backlight'] != "" && $lcdproc_config['backlight'] != "default") {
 			/* Backlight setting */
-			$config_text .= "Backlight={$lcdproc_config[backlight]}\n";
+			$config_text .= "Backlight={$lcdproc_config['backlight']}\n";
 		}
-		if ($lcdproc_config[driver] == "sdeclcd") {
+		if ($lcdproc_config['driver'] == "sdeclcd") {
 			/* Sdeclcd Keys settings */
 			$config_text .= "PrevScreenKey=Down\n";
 			$config_text .= "NextScreenKey=Up\n";
@@ -241,7 +241,7 @@ function sync_package_lcdproc() {
 		}
 
 		/* lcdproc default driver definitions */
-		switch($lcdproc_config[driver]) {
+		switch($lcdproc_config['driver']) {
 			case "bayrad":
 				$config_text .= "[{$lcdproc_config['driver']}]\n";
 				$config_text .= "Device={$realport}\n";
@@ -329,7 +329,7 @@ function sync_package_lcdproc() {
 					$config_text .= "DelayBus=true\n";
 					$config_text .= "Size={$lcdproc_config['size']}\n";
 				}
-				if ($lcdproc_config[connection_type] == "winamp") {
+				if ($lcdproc_config['connection_type'] == "winamp") {
 					$config_text .= "KeyDirect_1=Enter\n";
 					$config_text .= "KeyDirect_2=Up\n";
 					$config_text .= "KeyDirect_3=Down\n";
@@ -469,12 +469,12 @@ function sync_package_lcdproc() {
 				break;
 			default:
 				lcdproc_warn("The chosen lcdproc driver is not a valid choice");
-				unset($lcdproc_config[driver]);
+				unset($lcdproc_config['driver']);
 		}
 
 		/* Port speed */
-		if ($lcdproc_config[port_speed] <> '' && $lcdproc_config[port_speed] <> '0') {
-			$port_speed = $lcdproc_config[port_speed];
+		if ($lcdproc_config['port_speed'] <> '' && $lcdproc_config['port_speed'] <> '0') {
+			$port_speed = $lcdproc_config['port_speed'];
 			$config_text .= "Speed={$port_speed}\n";
 		}
 
@@ -485,7 +485,7 @@ if [ `pgrep -f lcdproc_client.ph` ];then
 		sleep 1
 fi
 if  [ `pgrep -anx LCDd` ]; then
-	pkill -anx LCDd 
+	pkill -anx LCDd
 	sleep 1
 fi
 

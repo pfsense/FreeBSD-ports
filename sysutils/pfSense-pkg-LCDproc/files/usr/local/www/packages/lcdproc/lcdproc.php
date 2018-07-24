@@ -49,14 +49,14 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
-	// Input validation would go here, with any invalid values found 
+	// Input validation would go here, with any invalid values found
 	// in $_POST being added to $input_errors, e.g:
 	//   $input_errors[] = "Descriptive error message for the user.";
 
 	if (!$input_errors) {
 		$lcdproc_config['enable']                      = $pconfig['enable'];
 		$lcdproc_config['comport']                     = $pconfig['comport'];
-		$lcdproc_config['size']                        = $pconfig['size'];   
+		$lcdproc_config['size']                        = $pconfig['size'];
 		$lcdproc_config['driver']                      = $pconfig['driver'];
 		$lcdproc_config['connection_type']             = $pconfig['connection_type'];
 		$lcdproc_config['refresh_frequency']           = $pconfig['refresh_frequency'];
@@ -68,7 +68,7 @@ if ($_POST) {
 		$lcdproc_config['outputleds']                  = $pconfig['outputleds'];
 		$lcdproc_config['mtxorb_type']                 = $pconfig['mtxorb_type'];
 		$lcdproc_config['mtxorb_adjustable_backlight'] = $pconfig['mtxorb_adjustable_backlight'];
-				
+
 		write_config();
 		sync_package_lcdproc();
 	}
@@ -193,7 +193,7 @@ $section->addInput(
 	)
 )->setHelp('Select the LCD driver LCDproc should use. Some drivers will show additional settings.');
 
-// The connection type is HD44780-specific, so is hidden by javascript (below) 
+// The connection type is HD44780-specific, so is hidden by javascript (below)
 // if the HD44780 driver is not being used.
 $section->addInput(
 	new Form_Select(
@@ -223,7 +223,7 @@ $section->addInput(
 	)
 )->setHelp('Select the HD44780 connection type');
 
-// The mtxorb_type and mtxorb_adjustable_backlight are Matrix-Orbital-specific, so are 
+// The mtxorb_type and mtxorb_adjustable_backlight are Matrix-Orbital-specific, so are
 // hidden by javascript (below) if the MtxOrb driver is not being used.
 $subsection = new Form_Group('Display type');
 $subsection->add(
@@ -259,23 +259,23 @@ $section->add($subsection);
 			updateInputVisibility();
 		}
 	);
-  
-    function updateInputVisibility() {	
+
+    function updateInputVisibility() {
 		var driverName_lowercase = $('#driver').val().toLowerCase();
-	
-		// Hide the connection type selection field when not using the HD44780 driver		
+
+		// Hide the connection type selection field when not using the HD44780 driver
 		var using_HD44780_driver  = driverName_lowercase.indexOf("hd44780") >= 0;
 		using_HD44780_driver     |= jQuery("#driver option:selected").text().toLowerCase().indexOf("hd44780") >= 0;
 		hideInput('connection_type', !using_HD44780_driver); // Hides the entire section
 
-		// Hide the Matrix Orbital specific fields when not using the MtxOrb driver		
+		// Hide the Matrix Orbital specific fields when not using the MtxOrb driver
 		var using_MtxOrb_driver  = driverName_lowercase.indexOf("mtxorb") >= 0;
 		hideInput('mtxorb_type', !using_MtxOrb_driver); // Hides the entire section, including the mtxorb_adjustable_backlight checkbox
-		
+
 		// Hide the Output-LEDs checkbox when not using the CFontz633 or CFontzPacket driver
 		var driverSupportsLEDs  = driverName_lowercase.indexOf("cfontz633") >= 0;
 		driverSupportsLEDs     |= driverName_lowercase.indexOf("cfontzpacket") >= 0;
-		hideCheckbox('outputleds', !driverSupportsLEDs);		
+		hideCheckbox('outputleds', !driverSupportsLEDs);
 	}
 //]]>
 </script>
@@ -300,7 +300,7 @@ $section->addInput(
 )->setHelp('Set the port speed.<br />Caution: not all the driver or panels support all the speeds, leave "default" if unsure.');
 
 /********* New section *********/
-$form->add($section); 
+$form->add($section);
 $section = new Form_Section('Display preferences');
 /********* New section *********/
 
@@ -320,7 +320,7 @@ $section->addInput(
 	)
 )->setHelp('Set the duration for which each info screen will be displayed.');
 
-// The connection type is CFontz633/CFontzPacket-specific, so is hidden by javascript (above) 
+// The connection type is CFontz633/CFontzPacket-specific, so is hidden by javascript (above)
 // if a CFontz633/CFontzPacket driver is not being used.
 $section->addInput(
 	new Form_Checkbox(
@@ -433,7 +433,7 @@ print($form); // Finally . . We can display our new form
 ?>
 
 <div class="infoblock">
-	<?=print_info_box('For more information see: <a href="http://lcdproc.org/docs.php3">LCDproc documentation</a>.', info)?>
+	<?=print_info_box('For more information see: <a href="http://lcdproc.org/docs.php3">LCDproc documentation</a>.', 'info')?>
 </div>
 
 <?php include("foot.inc"); ?>
