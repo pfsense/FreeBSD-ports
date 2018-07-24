@@ -6321,7 +6321,9 @@ function sync_package_pfblockerng($cron='') {
 		foreach	($ip_types as $ip_type	=> $vtype) {
 			if (!empty($config['installedpackages'][$ip_type]['config'])) {
 				foreach	($config['installedpackages'][$ip_type]['config'] as $key => $list) {
-
+					if (!is_array($list)) {
+						$list = array();
+					}
 					$list['vtype']	= "{$vtype}";	// Collect list IP type
 					$list['key']	= "{$key}";	// Collect list array key location
 
@@ -6984,10 +6986,9 @@ function sync_package_pfblockerng($cron='') {
 
 	// Update config.xml, if changes required
 	if ($exist_aliases != $new_aliases) {
-		if (!is_array($config['aliases']['alias'])) {
-			$config['aliases']['alias'] = array();
+		if (!is_array($config['aliases'])) {
+			$config['aliases'] = array();
 		}
-
 		$config['aliases']['alias'] = $new_aliases;
 		write_config('pfBlockerNG: saving Aliases');
 	}
