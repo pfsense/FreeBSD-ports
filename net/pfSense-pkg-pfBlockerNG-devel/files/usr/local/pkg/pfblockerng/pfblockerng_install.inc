@@ -229,6 +229,9 @@ $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdn
 		    'pfblockerngtopspammers', 'pfblockerngproxyandsatellite');
 
 foreach ($upgrade_type as $type) {
+	if (!is_array($config['installedpackages'][$type])) {
+		$config['installedpackages'][$type] = array();
+	}
 	$conf_config = &$config['installedpackages'][$type]['config'];
 	if (isset($conf_config)) {
 		foreach ($conf_config as $key => $utype) {
@@ -286,7 +289,7 @@ if (!empty($pfb['config'])) {
 
 		if (isset($config['openvpn']['openvpn-server']) &&
 		    strpos($pfb_interfaces['outbound_interface'], 'openvpn') === FALSE) {
-	
+
 			$csv_string = '';
 			if (isset($pfb_interfaces['outbound_interface'])) {
 				$csv_string = ',';
@@ -294,7 +297,7 @@ if (!empty($pfb['config'])) {
 
 			$pfb_interfaces['outbound_interface']	.= "{$csv_string}openvpn";
 			$ufound = TRUE;
-			$u_msg .= ' OpenVPN (Outbound) &';  
+			$u_msg .= ' OpenVPN (Outbound) &';
 		}
 
 		if (isset($config['openvpn']['openvpn-client'])) {
@@ -379,7 +382,7 @@ if ($ufound) {
 	update_status(" saving new changes ... done.\n");
 } else {
 	update_status(" no changes required ... done.\n");
-} 
+}
 
 // Upgrade ET IQRisk categories
 $pfb_iqrisk = &$config['installedpackages']['pfblockerngreputation']['config'][0];
