@@ -30,21 +30,9 @@ require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $changedesc = "Services: HAProxy: Frontends";
-if (!is_array($config['installedpackages'])) {
-	$config['installedpackages'] = array();
-}
 
-if (!is_array($config['installedpackages']['haproxy'])) {
-	$config['installedpackages']['haproxy'] = array();
-}
+haproxy_config_init();
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
-
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
 $a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 
 function array_moveitemsbefore(&$items, $before, $selected) {
@@ -438,12 +426,12 @@ function js_callback(req) {
 					}
 					?>
 				  </td>
-				  <td class="action-icons">
+				  <td class="action-buttons">
 					<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$frontendname?>" name="move_<?=$frontendname?>" value="move_<?=$frontendname?>"></button>
 					<a href="haproxy_listeners_edit.php?id=<?=$frontendname;?>">
 						<?=haproxyicon("edit", gettext("edit frontend"))?>
 					</a>
-					<a href="haproxy_listeners.php?act=del&amp;id=<?=$frontendname;?>" onclick="return confirm('Do you really want to delete this entry?')">
+					<a href="haproxy_listeners.php?act=del&amp;id=<?=$frontendname;?>">
 						<?=haproxyicon("delete", gettext("delete frontend"))?>
 					</a>
 					<a href="haproxy_listeners_edit.php?dup=<?=$frontendname;?>">
@@ -459,16 +447,16 @@ function js_callback(req) {
 		</div>
 	</div>
 	<nav class="action-buttons">
-		<a href="haproxy_listeners_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
+		<a href="haproxy_listeners_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add frontend to the end of the list')?>">
 			<i class="fa fa-level-down icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
-		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
-			<i class="fa fa-trash icon-embed-btn no-confirm"></i>
+		<button name="del_x" type="submit" class="btn btn-danger btn-sm no-confirm" value="<?=gettext("Delete selected frontends"); ?>" title="<?=gettext('Delete selected frontends')?>">
+			<i class="fa fa-trash icon-embed-btn"></i>
 			<?=gettext("Delete"); ?>
 		</button>
-		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
-			<i class="fa fa-save icon-embed-btn no-confirm"></i>
+		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary no-confirm" value="store changes" disabled title="<?=gettext('Save backend order')?>">
+			<i class="fa fa-save icon-embed-btn"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>
