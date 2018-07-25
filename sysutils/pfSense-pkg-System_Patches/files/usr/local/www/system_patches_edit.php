@@ -32,9 +32,14 @@ require_once("patches.inc");
 require_once("pkg-utils.inc");
 require_once('classes/Form.class.php');
 
+if (!is_array($config['installedpackages']['patches'])) {
+	$config['installedpackages']['patches'] = array();
+}
+
 if (!is_array($config['installedpackages']['patches']['item'])) {
 	$config['installedpackages']['patches']['item'] = array();
 }
+
 $a_patches = &$config['installedpackages']['patches']['item'];
 
 $id = $_GET['id'];
