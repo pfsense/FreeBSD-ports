@@ -26,19 +26,7 @@ require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-	$config['installedpackages']['haproxy']['ha_pools'] = array();
-}
-
-if (!is_array($config['installedpackages']['haproxy']['files'])) {
-	$config['installedpackages']['haproxy']['files'] = array();
-}
-
-$a_files = &$config['installedpackages']['haproxy']['files']['item'];
-if (!is_array($a_files)) $a_files = array();
-$a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
-if (!is_array($a_pools)) $a_pools = array();
-
+haproxy_config_init();
 
 $fields_files = array();
 $fields_files[0]['name']="name";

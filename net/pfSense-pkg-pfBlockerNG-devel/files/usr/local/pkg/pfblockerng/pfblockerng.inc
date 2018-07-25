@@ -7008,12 +7008,12 @@ function sync_package_pfblockerng($cron='') {
 	// Only execute if autorules are defined or if an alias has been removed.
 	if ($pfb['autorules'] || $pfb['enable'] == '' || $pfb['remove']) {
 		$message = '';
-		if (count($pfb['deny_inbound']) > 0 || count($pfb['permit_inbound']) > 0 || count($pfb['match_inbound']) > 0) {
+		if (!empty($pfb['deny_inbound']) || !empty($pfb['permit_inbound']) || !empty($pfb['match_inbound'])) {
 			if (empty($pfb['inbound_interfaces'])) {
 				$message = " Unable to apply rules. Inbound interface option not configured.";
 			}
 		}
-		if (count($pfb['deny_outbound']) > 0 || count($pfb['permit_outbound']) > 0 || count($pfb['match_outbound']) > 0) {
+		if (!empty($pfb['deny_outbound']) || !empty($pfb['permit_outbound']) || !empty($pfb['match_outbound'])) {
 			if (empty($pfb['outbound_interfaces'])) {
 				$message .= "\n Unable to apply rules. Outbound interface option not configured.";
 			}
