@@ -125,6 +125,34 @@ if (!$alert_summary) {
 		}
 	}
 
+	if (!is_array($config['installedpackages']['pfblockerngipsettings']['config'])) {
+		$config['installedpackages']['pfblockerngipsettings']['config'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'])) {
+		$config['installedpackages']['pfblockerngdnsblsettings']['config'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['pfblockerngipsettings']['config'][0])) {
+		$config['installedpackages']['pfblockerngipsettings']['config'][0] = array();
+	}
+
+	if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'][0])) {
+		$config['installedpackages']['pfblockerngdnsblsettings']['config'][0] = array();
+	}
+
+	if (!is_array($config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'])) {
+		$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['pfblockerngipsettings']['config'][0]['suppression'])) {
+		$config['installedpackages']['pfblockerngipsettings']['config'][0]['suppression'] = array();
+	}
+
+	if (!is_array($config['installedpackages']['pfblockerngipsettings']['config'][0]['tldexclusion'])) {
+		$config['installedpackages']['pfblockerngipsettings']['config'][0]['tldexclusion'] = array();
+	}
+
 	foreach (array('ipsuppression', 'dnsblwhitelist', 'tldexclusion') as $key => $type) {
 		if ($key == 0) {
 			$clists[$type]['base64'] = &$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'];
