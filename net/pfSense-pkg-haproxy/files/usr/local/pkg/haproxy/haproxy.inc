@@ -1671,8 +1671,8 @@ function haproxy_writeconf($configpath) {
 				if ($frontend['secondary'] != 'yes') {
 					$filename = "$configpath/{$frontend['name']}.pem";
 					$ssl_crt = " ssl";
-//					$ssl_crt = " crt $filename";
-//					$ssl_crt .= " crt $certfolder";
+					$ssl_crt .= " crt $filename";
+					$ssl_crt .= " crt $certfolder";
 					@mkdir($certfolder, 0755, true);
 
 					$crtfiles[] = $filename;
