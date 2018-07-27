@@ -3,9 +3,9 @@
  * snort_check_cron_misc.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -156,8 +156,15 @@ if ($g['booting'] == true)
 $logs = array ();
 
 // Build an array of files to check and limits to check them against from our saved configuration
+$logs['alert'] = array();
+$logs['alert']['limit'] = $config['installedpackages']['snortglobal']['alert_log_limit_size'];
+$logs['alert']['retention'] = $config['installedpackages']['snortglobal']['alert_log_retention'];
+$logs['sid_changes.log'] = array();
 $logs['sid_changes.log']['limit'] = $config['installedpackages']['snortglobal']['sid_changes_log_limit_size'];
 $logs['sid_changes.log']['retention'] = $config['installedpackages']['snortglobal']['sid_changes_log_retention'];
+$logs['app-stats.log'] = array();
+$logs['app-stats.log']['limit'] = $config['installedpackages']['snortglobal'][''appid_stats_log_limit_size'];
+$logs['app-stats.log']['retention'] = $config['installedpackages']['snortglobal']['appid_stats_log_retention'];
 
 // If no interfaces defined, there is nothing to clean up
 if (!is_array($config['installedpackages']['snortglobal']['rule']))
