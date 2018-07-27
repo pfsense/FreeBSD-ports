@@ -106,6 +106,9 @@ function &getarraybyref(&$array) {
 	if (!isset($array)) {
 		return false;
 	}
+	if (!is_array($array)) {
+		$array = array();
+	}
 	$item = &$array;
 	$arg = func_get_args();
 	for($i = 1; $i < count($arg); $i++) {
