@@ -698,23 +698,52 @@ EOD;
 
 /* def ssh_preproc */
 
-$ssh_ports = str_replace(",", " ", snort_expand_port_range($snort_ports['ssh_ports']));
-
 // Make sure we have port numbers or else use defaults
-if (!isset($ssh_ports) || empty($ssh_ports))
+if (isset($snortcfg['ssh_preproc_ports'])) {
+	if (is_alias($snortcfg['ssh_preproc_ports'])) {
+		if (strlen(trim(filter_expand_alias($snortcfg['ssh_preproc_ports']))) > 0) {
+			$ssh_ports = trim(filter_expand_alias($snortcfg['ssh_preproc_ports']));
+			$ssh_ports = preg_replace('/\s+/', ',', trim($ssh_ports));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias {$snortcfg['ssh_preproc_ports']} for SSH Preprocessor Ports parameter ... reverting to default value of 22.");
+			$ssh_ports = "22";
+		}
+	} else {
+          		$ssh_ports = $snortcfg['ssh_preproc_ports'];
+        }
+}
+else {
 	$ssh_ports = "22";
+}
 $ssh_preproc = <<<EOD
 # SSH preprocessor #
 preprocessor ssh: \
 	server_ports { {$ssh_ports} } \
-	autodetect \
-	max_client_bytes 19600 \
-	max_encrypted_packets 20 \
-	max_server_version_len 100 \
-	enable_respoverflow enable_ssh1crc32 \
-	enable_srvoverflow enable_protomismatch
-
+	autodetect
 EOD;
+if (isset($snortcfg['ssh_preproc_max_client_bytes']) && $snortcfg['ssh_preproc_max_client_bytes'] > 0) {
+	$ssh_preproc .= " \\\n\tmax_client_bytes {$snortcfg['ssh_preproc_max_client_bytes']}";
+}
+if (isset($snortcfg['ssh_preproc_max_encrypted_packets']) && $snortcfg['ssh_preproc_max_encrypted_packets'] > 0) {
+	$ssh_preproc .= " \\\n\tmax_encrypted_packets {$snortcfg['ssh_preproc_max_encrypted_packets']}";
+}
+if (isset($snortcfg['ssh_preproc_max_server_version_len']) && $snortcfg['ssh_preproc_max_server_version_len'] > 0) {
+	$ssh_preproc .= " \\\n\tmax_server_version_len {$snortcfg['ssh_preproc_max_server_version_len']}";
+}
+if ($snortcfg['ssh_preproc_enable_respoverflow'] == 'on') {
+	$ssh_preproc .= " \\\n\tenable_respoverflow";
+}
+if ($snortcfg['ssh_preproc_enable_srvoverflow'] == 'on') {
+	$ssh_preproc .= " \\\n\tenable_srvoverflow";
+}
+if ($snortcfg['ssh_preproc_enable_ssh1crc32'] == 'on') {
+	$ssh_preproc .= " \\\n\tenable_ssh1crc32";
+}
+if ($snortcfg['ssh_preproc_enable_protomismatch'] == 'on') {
+	$ssh_preproc .= " \\\n\tenable_protomismatch";
+}
+$ssh_preproc .= "\n";
 
 /* def other_preprocs */
 
