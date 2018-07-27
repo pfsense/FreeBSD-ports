@@ -587,6 +587,12 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 
+	// Configure a default interface snaplen if not previously configured
+	if (!isset($pconfig['snaplen'])) {
+		$pconfig['snaplen'] = '1518';
+		$updated_cfg = true;
+	}
+
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;
 }
