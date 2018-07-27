@@ -163,7 +163,7 @@ $logs['sid_changes.log'] = array();
 $logs['sid_changes.log']['limit'] = $config['installedpackages']['snortglobal']['sid_changes_log_limit_size'];
 $logs['sid_changes.log']['retention'] = $config['installedpackages']['snortglobal']['sid_changes_log_retention'];
 $logs['app-stats.log'] = array();
-$logs['app-stats.log']['limit'] = $config['installedpackages']['snortglobal'][''appid_stats_log_limit_size'];
+$logs['app-stats.log']['limit'] = $config['installedpackages']['snortglobal']['appid_stats_log_limit_size'];
 $logs['app-stats.log']['retention'] = $config['installedpackages']['snortglobal']['appid_stats_log_retention'];
 
 // If no interfaces defined, there is nothing to clean up
