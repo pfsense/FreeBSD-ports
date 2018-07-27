@@ -947,6 +947,9 @@ $form->add($section);
 
 $section = new Form_Section_class("SSL Offloading - client certificates");
 $section->addClass("haproxy_ssloffloading_enabled");
+if ($pconfig['secondary'] == 'yes' && haproxy_version() < "1.8") {
+	$section->addClass("hidden");
+}
 $section->addInput(new Form_StaticText(
 	'Note',
 	"<b>Client certificate verification options, leave all these options empty if you do not want to ask for a client certificate</b><br/>
