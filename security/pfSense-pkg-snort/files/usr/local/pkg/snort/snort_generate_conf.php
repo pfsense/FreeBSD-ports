@@ -83,6 +83,14 @@ foreach ($snort_files as $file) {
 	}
 }
 
+/* define interface snaplen */
+if (!empty($snortcfg['snaplen']) && is_numeric($snortcfg['snaplen'])) {
+	$snaplen = $snortcfg['snaplen'];
+}
+else {
+	$snaplen = '1518';
+}
+
 /* define alert log limit */
 if (!empty($config['installedpackages']['snortglobal']['alert_log_limit_size']) && $config['installedpackages']['snortglobal']['alert_log_limit_size'] != "0")
 	$alert_log_limit_size = $config['installedpackages']['snortglobal']['alert_log_limit_size'] . "K";
