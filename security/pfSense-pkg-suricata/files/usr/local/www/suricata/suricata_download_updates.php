@@ -139,7 +139,7 @@ if ($_REQUEST['updatemode']) {
 		// Revert file system to R/O.
 		conf_mount_ro();
 	}
-	
+
 	// Launch a background process to download the updates
 	$upd_pid = 0;
 	$upd_pid = mwexec_bg("/usr/local/bin/php -f /usr/local/pkg/suricata/suricata_check_for_rule_updates.php");
@@ -279,7 +279,7 @@ include_once("head.inc");
 					<?=gettext('No rule types have been selected for download. ') . gettext('Visit the ') . '<a href="/suricata/suricata_global.php">Global Settings Tab</a>' . gettext(' to select rule types.'); ?></p>
 				<?php else: ?>
 					<br/>
-					<button name="update" id="update" class="btn btn-primary" 
+					<button name="update" id="update" class="btn btn-primary"
 						title="<?=gettext("Check for and apply new update to enabled rule sets"); ?>">
 						<i id="updbtn" class="fa fa-check icon-embed-btn"></i>
 						<?=gettext("Update"); ?>
@@ -346,7 +346,7 @@ $form = new Form(FALSE);
 $modal = new Modal('Rules Update Task', 'updrulesdlg', false, 'Close');
 $modal->addInput(new Form_StaticText (
 	null,
-	'Updating rule sets may take a while ... please wait for the process to complete.<br/><br/>This dialog will auto-close when the update is finished.<br/><br/>' . 
+	'Updating rule sets may take a while ... please wait for the process to complete.<br/><br/>This dialog will auto-close when the update is finished.<br/><br/>' .
 	'<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
 ));
 $form->add($modal);
@@ -354,7 +354,7 @@ print($form);
 ?>
 
 <div class="infoblock">
-	<?=print_info_box('<strong>NOTE:</strong> <a href="http://www.snort.org/" target="_blank">Snort.org</a> and <a href="http://www.emergingthreats.net/" target="_blank">EmergingThreats.net</a> will go down from time to time. Please be patient.', info)?>
+	<?=print_info_box('<strong>NOTE:</strong> <a href="http://www.snort.org/" target="_blank">Snort.org</a> and <a href="http://www.emergingthreats.net/" target="_blank">EmergingThreats.net</a> will go down from time to time. Please be patient.', 'info')?>
 </div>
 
 <script type="text/javascript">
