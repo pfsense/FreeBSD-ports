@@ -3,8 +3,8 @@
  * snort_stream5_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,10 +52,18 @@ if (is_null($id)) {
 }
 
 /* Initialize pointer into requisite section of [config] array */
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'] = array();
+}
 $a_nat = &$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'];
 
 $pconfig = array();
@@ -402,7 +410,8 @@ $bind_to = new Form_Input(
 	$pconfig['ports_client']
 );
 $bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['ports'])));
-$bind_to->setHelp('Specify which ports to check for HTTP data.  Default value is <em>default</em>');
+$bind_to->setHelp('Specify which ports to check for data.  Default value is <em>default</em> which includes ports 21, 22, 23, 25, 42, 53, 70, 79, 109, 110, 111, 113, 119, 135, 136, 137, 139, 143, ' . 
+		  '161, 445, 513, 514, 587, 593, 691, 1433, 1521, 1741, 2100, 3306, 6070, 6665, 6666, 6667, 6668, 6669, 7000, 8181, 32770, 32771, 32772, 32773, 32774, 32775, 32776, 32777, 32778 and 32779.');
 $btnaliases = new Form_Button(
 	'btnSelectAlias',
 	' ' . 'Aliases',
@@ -427,7 +436,7 @@ $bind_to = new Form_Input(
 	$pconfig['ports_server']
 );
 $bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['ports'])));
-$bind_to->setHelp('Specify which ports to check for HTTP data.  Default value is <em>none</em>');
+$bind_to->setHelp('Specify which ports to check for data.  Default value is <em>none</em>.');
 $btnaliases = new Form_Button(
 	'btnSelectAlias',
 	' ' . 'Aliases',
@@ -452,7 +461,10 @@ $bind_to = new Form_Input(
 	$pconfig['ports_both']
 );
 $bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['ports'])));
-$bind_to->setHelp('Specify which ports to check for HTTP data.  Default value is <em>default</em>');
+$bind_to->setHelp('Specify which ports to check for data.  Default value is <em>default</em> which includes ports 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 110, 311, 383, 443, 465, 563, ' . 
+		  '591, 593, 631, 636, 901, 989, 992, 993, 994, 995, 1220, 1414, 1533, 1830, 2301, 2381, 2809, 3037, 3057, 3128, 3443, 3702, 4343, 4848, 5250, 6080, 6988, 7907, 7000, 7001, 7144, 7145, 7510, 7802, 7777, ' . 
+		  '7779, 7801, 7900-7920, 8000, 8008, 8014, 8028, 8080, 8081, 8082, 8085, 8088, 8090, 8118, 8123, 8180, 8222, 8243, 8280, 8300, 8500, 8800, 8888, 8899, 9000, 9060, 9080, 9090, 9091, 9443, 9999, 10000, ' .
+		  '11371, 15489, 29991, 33300, 34412, 34443, 34444, 41080, 44440, 50000, 50002, 51423, 55555 and 56712.');
 $btnaliases = new Form_Button(
 	'btnSelectAlias',
 	' ' . 'Aliases',
