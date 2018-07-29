@@ -35,6 +35,13 @@ function haproxy_upgrade_config() {
 
 	$static_output .= "HAProxy, from version $configversion\n";
 	update_output_window($static_output);
+	
+	if (!is_array($config['installedpackages'])) {
+		$config['installedpackages'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy'])) {
+		$config['installedpackages']['haproxy'] = array();
+	}
 
 	$writeconfigupdate = false;
 	if ($configversion < "00.13") {
@@ -286,6 +293,19 @@ function haproxy_upgrade_config() {
 		$configversion = "00.32";
 	}
 	if ($configversion < "00.57") {
+		if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
+			$config['installedpackages']['haproxy']['ha_backends'] = array();
+		}
+		if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+			$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
+		}
+		if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
+			$config['installedpackages']['haproxy']['ha_pools'] = array();
+		}
+		if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
+			$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
+		}
+
 		$haproxycfg = &$config['installedpackages']['haproxy'];
 		$a_frontend = &$haproxycfg['ha_backends']['item'];
 		// - assign unique ID's to all backends and servers for saving/loading server-state file
