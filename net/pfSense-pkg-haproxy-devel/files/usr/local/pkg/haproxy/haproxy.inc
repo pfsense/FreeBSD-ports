@@ -2372,6 +2372,7 @@ function haproxy_carpipismaster($ip) {
 
 function haproxy_check_run($reload) {
 	global $config, $g, $haproxy_run_message;
+	haproxy_config_init();
 	$haproxylock = lock("haproxy", LOCK_EX);
 	$a_global = &$config['installedpackages']['haproxy'];
 	$configpath = "{$g['varetc_path']}/haproxy";
@@ -2947,6 +2948,9 @@ function haproxy_find_create_certificate($certificatename) {
 
 function haproxy_config_init(){
 	global $config;
+	if (!is_array($config['installedpackages'])) {
+		$config['installedpackages'] = array();
+	}
 	if (!is_array($config['installedpackages']['haproxy'])) {
 		$config['installedpackages']['haproxy'] = array();
 	}
