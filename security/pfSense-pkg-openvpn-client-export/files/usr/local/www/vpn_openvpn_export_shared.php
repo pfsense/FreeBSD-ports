@@ -29,6 +29,9 @@ require_once("classes/Form.class.php");
 
 $pgtitle = array("OpenVPN", "Shared Key Export");
 
+if (!is_array($config['openvpn'])) {
+	$config['openvpn'] = array();
+}
 if (!is_array($config['openvpn']['openvpn-server'])) {
 	$config['openvpn']['openvpn-server'] = array();
 }
