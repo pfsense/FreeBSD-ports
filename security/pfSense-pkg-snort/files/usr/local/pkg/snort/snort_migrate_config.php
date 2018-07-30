@@ -34,10 +34,15 @@ require_once("functions.inc");
 
 global $config;
 
-if (!is_array($config['installedpackages']['snortglobal']))
+if (!is_array($config['installedpackages'])) {
+	$config['installedpackages'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal'])) {
 	$config['installedpackages']['snortglobal'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 
 // Just exit if this is a clean install with no saved settings
 if (empty($config['installedpackages']['snortglobal']['rule']))
@@ -127,16 +132,36 @@ if (empty($config['installedpackages']['snortglobal']['hide_deprecated_rules']))
 /**********************************************************/
 foreach ($rule as &$r) {
 	// Initialize arrays for supported preprocessors if necessary
-	if (!is_array($r['frag3_engine']['item']))
+	if (!is_array($r['frag3_engine'])) {
+		$r['frag3_engine'] = array();
+	}
+	if (!is_array($r['frag3_engine']['item'])) {
 		$r['frag3_engine']['item'] = array();
-	if (!is_array($r['stream5_tcp_engine']['item']))
+	}
+	if (!is_array($r['stream5_tcp_engine'])) {
+		$r['stream5_tcp_engine'] = array();
+	}
+	if (!is_array($r['stream5_tcp_engine']['item'])) {
 		$r['stream5_tcp_engine']['item'] = array();
-	if (!is_array($r['http_inspect_engine']['item']))
+	}
+	if (!is_array($r['http_inspect_engine'])) {
+		$r['http_inspect_engine'] = array();
+	}
+	if (!is_array($r['http_inspect_engine']['item'])) {
 		$r['http_inspect_engine']['item'] = array();
-	if (!is_array($r['ftp_client_engine']['item']))
+	}
+	if (!is_array($r['ftp_client_engine'])) {
+		$r['ftp_client_engine'] = array();
+	}
+	if (!is_array($r['ftp_client_engine']['item'])) {
 		$r['ftp_client_engine']['item'] = array();
-	if (!is_array($r['ftp_server_engine']['item']))
+	}
+	if (!is_array($r['ftp_server_engine'])) {
+		$r['ftp_server_engine'] = array();
+	}
+	if (!is_array($r['ftp_server_engine']['item'])) {
 		$r['ftp_server_engine']['item'] = array();
+	}
 
 	$pconfig = array();
 	$pconfig = $r;
@@ -561,6 +586,47 @@ foreach ($rule as &$r) {
 		}
 		$updated_cfg = true;
 	}
+
+	// Configure a default interface snaplen if not previously configured
+	if (!isset($pconfig['snaplen'])) {
+		$pconfig['snaplen'] = '1518';
+		$updated_cfg = true;
+	}
+
+	// Configure new SSH preprocessor parameter defaults if not already set
+	if (!isset($pconfig['ssh_preproc_ports'])) {
+		$pconfig['ssh_preproc_ports'] = '22';
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_max_encrypted_packets'])) {
+		$pconfig['ssh_preproc_max_encrypted_packets'] = 20;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_max_client_bytes'])) {
+		$pconfig['ssh_preproc_max_client_bytes'] = 19600;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_max_server_version_len'])) {
+		$pconfig['ssh_preproc_max_server_version_len'] = 100;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_enable_respoverflow'])) {
+		$pconfig['ssh_preproc_enable_respoverflow'] = 'on';
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_enable_srvoverflow'])) {
+		$pconfig['ssh_preproc_enable_srvoverflow'] = 'on';
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_enable_ssh1crc32'])) {
+		$pconfig['ssh_preproc_enable_ssh1crc32'] = 'on';
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_enable_protomismatch'])) {
+		$pconfig['ssh_preproc_enable_protomismatch'] = 'on';
+		$updated_cfg = true;
+	}
+	// End new SSH parameters
 
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;

@@ -466,12 +466,6 @@ if ($_POST) {
 		// name changed:
 		$oldvalue = $pool['name'];
 		$newvalue = $_POST['name'];
-		if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-			$config['installedpackages']['haproxy']['ha_backends'] = array();
-		}
-		if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-			$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-		}
 		rename_backend_references($oldvalue, $newvalue);
 	}
 

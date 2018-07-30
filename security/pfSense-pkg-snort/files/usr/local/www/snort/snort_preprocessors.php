@@ -3,7 +3,7 @@
  * snort_preprocessors.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
  * Copyright (c) 2013-2018 Bill Meeks
@@ -38,24 +38,64 @@ if (is_null($id)) {
         exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']))
-	$config['installedpackages']['snortglobal'] = array();
 if (!is_array($config['installedpackages']['snortglobal']['rule']))
 	$config['installedpackages']['snortglobal']['rule'] = array();
 
 // Initialize multiple config engine arrays for supported preprocessors if necessary
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item'] = array();
+}
 
 $a_nat = &$config['installedpackages']['snortglobal']['rule'];
 
@@ -74,18 +114,42 @@ if (isset($id) && isset($a_nat[$id])) {
 	$pconfig = $a_nat[$id];
 
 	// Initialize multiple config engine arrays for supported preprocessors if necessary
-	if (!is_array($pconfig['frag3_engine']['item']))
+	if (!is_array($pconfig['frag3_engine'])) {
+		$pconfig['frag3_engine'] = array();
+	}
+	if (!is_array($pconfig['frag3_engine']['item'])) {
 		$pconfig['frag3_engine']['item'] = array();
-	if (!is_array($pconfig['stream5_tcp_engine']['item']))
+	}
+	if (!is_array($pconfig['stream5_tcp_engine'])) {
+		$pconfig['stream5_tcp_engine'] = array();
+	}
+	if (!is_array($pconfig['stream5_tcp_engine']['item'])) {
 		$pconfig['stream5_tcp_engine']['item'] = array();
-	if (!is_array($pconfig['http_inspect_engine']['item']))
+	}
+	if (!is_array($pconfig['http_inspect_engine'])) {
+		$pconfig['http_inspect_engine'] = array();
+	}
+	if (!is_array($pconfig['http_inspect_engine']['item'])) {
 		$pconfig['http_inspect_engine']['item'] = array();
-	if (!is_array($pconfig['ftp_server_engine']['item']))
+	}
+	if (!is_array($pconfig['ftp_server_engine'])) {
+		$pconfig['ftp_server_engine'] = array();
+	}
+	if (!is_array($pconfig['ftp_server_engine']['item'])) {
 		$pconfig['ftp_server_engine']['item'] = array();
-	if (!is_array($pconfig['ftp_client_engine']['item']))
+	}
+	if (!is_array($pconfig['ftp_client_engine'])) {
+		$pconfig['ftp_client_engine'] = array();
+	}
+	if (!is_array($pconfig['ftp_client_engine']['item'])) {
 		$pconfig['ftp_client_engine']['item'] = array();
-	if (!is_array($pconfig['arp_spoof_engine']['item']))
+	}
+	if (!is_array($pconfig['arp_spoof_engine'])) {
+		$pconfig['arp_spoof_engine'] = array();
+	}
+	if (!is_array($pconfig['arp_spoof_engine']['item'])) {
 		$pconfig['arp_spoof_engine']['item'] = array();
+	}
 
 	/************************************************************/
 	/* To keep new users from shooting themselves in the foot   */
@@ -188,6 +252,22 @@ if (isset($id) && isset($a_nat[$id])) {
 		$pconfig['other_preprocs'] = 'on';
 	if (empty($pconfig['ssh_preproc']))
 		$pconfig['ssh_preproc'] = 'on';
+	if (!isset($pconfig['ssh_preproc_ports']))
+		$pconfig['ssh_preproc_ports'] = '22';
+	if (!isset($pconfig['ssh_preproc_max_encrypted_packets']))
+		$pconfig['ssh_preproc_max_encrypted_packets'] = 20;
+	if (!isset($pconfig['ssh_preproc_max_client_bytes']))
+		$pconfig['ssh_preproc_max_client_bytes'] = 19600;
+	if (!isset($pconfig['ssh_preproc_max_server_version_len']))
+		$pconfig['ssh_preproc_max_server_version_len'] = 100;
+	if (!isset($pconfig['ssh_preproc_enable_respoverflow']))
+		$pconfig['ssh_preproc_enable_respoverflow'] = 'on';
+	if (!isset($pconfig['ssh_preproc_enable_srvoverflow']))
+		$pconfig['ssh_preproc_enable_srvoverflow'] = 'on';
+	if (!isset($pconfig['ssh_preproc_enable_ssh1crc32']))
+		$pconfig['ssh_preproc_enable_ssh1crc32'] = 'on';
+	if (!isset($pconfig['ssh_preproc_enable_protomismatch']))
+		$pconfig['ssh_preproc_enable_protomismatch'] = 'on';
 
 	if (empty($pconfig['http_inspect']))
 		$pconfig['http_inspect'] = "on";
@@ -430,6 +510,14 @@ if ($_POST['ResetAll']) {
 	$pconfig['modbus_preproc'] = "off";
 	$pconfig['gtp_preproc'] = "off";
 	$pconfig['ssh_preproc'] = "on";
+	$pconfig['ssh_preproc_ports'] = '22';
+	$pconfig['ssh_preproc_max_encrypted_packets'] = 20;
+	$pconfig['ssh_preproc_max_client_bytes'] = 19600;
+	$pconfig['ssh_preproc_max_server_version_len'] = 100;
+	$pconfig['ssh_preproc_enable_respoverflow'] == 'on';
+	$pconfig['ssh_preproc_enable_srvoverflow'] == 'on';
+	$pconfig['ssh_preproc_enable_ssh1crc32'] == 'on';
+	$pconfig['ssh_preproc_enable_protomismatch'] == 'on';
 	$pconfig['preproc_auto_rule_disable'] = "off";
 	$pconfig['protect_preproc_rules'] = "off";
 	$pconfig['frag3_detection'] = "on";
@@ -559,6 +647,10 @@ if ($_POST['save']) {
 		if ($_POST['smtp_email_hdrs_log_depth'] != "") { $natent['smtp_email_hdrs_log_depth'] = $_POST['smtp_email_hdrs_log_depth']; }else{ $natent['smtp_email_hdrs_log_depth'] = "1464"; }
 		if ($_POST['sf_appid_mem_cap'] != "") { $natent['sf_appid_mem_cap'] = $_POST['sf_appid_mem_cap']; }else{ $natent['sf_appid_mem_cap'] = "256"; }
 		if ($_POST['sf_appid_stats_period'] != "") { $natent['sf_appid_stats_period'] = $_POST['sf_appid_stats_period']; }else{ $natent['sf_appid_stats_period'] = "300"; }
+		if ($_POST['ssh_preproc_ports'] != "") { $natent['ssh_preproc_ports'] = $_POST['ssh_preproc_ports']; }else{ $natent['ssh_preproc_ports'] = "22"; }
+		if ($_POST['ssh_preproc_max_encrypted_packets'] != "") { $natent['ssh_preproc_max_encrypted_packets'] = $_POST['ssh_preproc_max_encrypted_packets']; }else{ $natent['ssh_preproc_max_encrypted_packets'] = 20; }
+		if ($_POST['ssh_preproc_max_client_bytes'] != "") { $natent['ssh_preproc_max_client_bytes'] = $_POST['ssh_preproc_max_client_bytes']; }else{ $natent['ssh_preproc_max_client_bytes'] = 19600; }
+		if ($_POST['ssh_preproc_max_server_version_len'] != "") { $natent['ssh_preproc_max_server_version_len'] = $_POST['ssh_preproc_max_server_version_len']; }else{ $natent['ssh_preproc_max_server_version_len'] = 100; }
 
 		// Set SDF inspection types
 		if (!empty($_POST['sdf_alert_data_type'])) {
@@ -596,6 +688,10 @@ if ($_POST['save']) {
 		$natent['modbus_preproc'] = $_POST['modbus_preproc'] ? 'on' : 'off';
 		$natent['gtp_preproc'] = $_POST['gtp_preproc'] ? 'on' : 'off';
 		$natent['ssh_preproc'] = $_POST['ssh_preproc'] ? 'on' : 'off';
+		$natent['ssh_preproc_enable_respoverflow'] = $_POST['ssh_preproc_enable_respoverflow'] ? 'on' : 'off';
+		$natent['ssh_preproc_enable_srvoverflow'] = $_POST['ssh_preproc_enable_srvoverflow'] ? 'on' : 'off';
+		$natent['ssh_preproc_enable_ssh1crc32'] = $_POST['ssh_preproc_enable_ssh1crc32'] ? 'on' : 'off';
+		$natent['ssh_preproc_enable_protomismatch'] = $_POST['ssh_preproc_enable_protomismatch'] ? 'on' : 'off';
 		$natent['preproc_auto_rule_disable'] = $_POST['preproc_auto_rule_disable'] ? 'on' : 'off';
 		$natent['protect_preproc_rules'] = $_POST['protect_preproc_rules'] ? 'on' : 'off';
 		$natent['frag3_detection'] = $_POST['frag3_detection'] ? 'on' : 'off';
@@ -825,13 +921,6 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'on'
 	));
 	$section->addInput(new Form_Checkbox(
-		'ssh_preproc',
-		'Enable SSH Detection',
-		'The SSH preprocessor detects various Secure Shell exploit attempts.  Default is Checked.',
-		$pconfig['ssh_preproc'] == 'on' ? true:false,
-		'on'
-	));
-	$section->addInput(new Form_Checkbox(
 		'dns_preprocessor',
 		'Enable DNS Detection',
 		'The DNS preprocessor decodes DNS response traffic and detects vulnerabilities.  Default is Checked.',
@@ -919,7 +1008,78 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	$section->add($group);
 	print($section);
 	//----- END Protocol Aware Flusing settings -----
+
+	//-----	START SSH preproc settings -----
+	if ($pconfig['ssh_preproc']=="on") {
+		$section = new Form_Section('SSH Detection', 'preproc_ssh', COLLAPSIBLE|SEC_OPEN);
+	} else {
+		$section = new Form_Section('SSH Detection', 'preproc_ssh', COLLAPSIBLE|SEC_CLOSED);
+	}
+	$section->addInput(new Form_Checkbox(
+		'ssh_preproc',
+		'Enable SSH Detection',
+		'The SSH preprocessor detects various Secure Shell exploit attempts.  Default is Checked.',
+		$pconfig['ssh_preproc'] == 'on' ? true:false,
+		'on'
+	));
+	$section->addInput(new Form_Input(
+		'ssh_preproc_ports',
+		'Server Ports',
+		'text',
+		$pconfig['ssh_preproc_ports']
+	))->setHelp('Specifies which ports the SSH preprocessor should inspect traffic to.  For multiple ports, separate values with commas.  A configured Port Alias may also be specified.  Default port is 22.')->setAttribute('title', trim(filter_expand_alias($pconfig['ssh_preproc_ports'])));
+	$section->addInput(new Form_Input(
+		'ssh_preproc_max_encrypted_packets',
+		'Max Encrypted Packets',
+		'number',
+		$pconfig['ssh_preproc_max_encrypted_packets']
+	))->setHelp('Specifies the number of stream reassembled encrypted packets that Snort will inspect before ignoring a given SSH session.  ' . 
+		'Once max_encrypted_packets packets have been seen, Snort ignores the session to increase performance.  Default is 20.');
+	$section->addInput(new Form_Input(
+		'ssh_preproc_max_client_bytes',
+		'Max Client Bytes',
+		'number',
+		$pconfig['ssh_preproc_max_client_bytes']
+	))->setHelp('Specifies the number of unanswered bytes allowed to be transferred before alerting on Challenge-Response Overflow or CRC 32.  ' . 
+		'This number must be hit before max_encrypted_packets packets are sent, or else Snort will ignore the traffic.  Default is 19600.');
+	$section->addInput(new Form_Input(
+		'ssh_preproc_max_server_version_len',
+		'Max Server Version Length',
+		'number',
+		$pconfig['ssh_preproc_max_server_version_len']
+	))->setHelp('Specifies the maximum number of bytes allowed in the SSH server version string before alerting on the Secure CRT server version string overflow.  ' . 
+		'Default is 100.');
+	$section->addInput(new Form_Checkbox(
+		'ssh_preproc_enable_respoverflow',
+		'Enable Challenge-Response Overflow',
+		'Enable checking for the Challenge-Response Overflow exploit.  Default is Checked.',
+		$pconfig['ssh_preproc_enable_respoverflow'] == 'on' ? true:false,
+		'on'
+	));
+	$section->addInput(new Form_Checkbox(
+		'ssh_preproc_enable_srvoverflow',
+		'Enable Secure CRT Exploit',
+		'Enable checking for the Secure CRT exploit.  Default is Checked.',
+		$pconfig['ssh_preproc_enable_srvoverflow'] == 'on' ? true:false,
+		'on'
+	));
+	$section->addInput(new Form_Checkbox(
+		'ssh_preproc_enable_ssh1crc32',
+		'Enable CRC 32 Exploit',
+		'Enable checking for the CRC 32 exploit.  Default is Checked.',
+		$pconfig['ssh_preproc_enable_ssh1crc32'] == 'on' ? true:false,
+		'on'
+	));
+	$section->addInput(new Form_Checkbox(
+		'ssh_preproc_enable_protomismatch',
+		'Enable Protocol Mismatch Exploit',
+		'Enable checking for the Protocol Mismatch exploit.  Default is Checked.',
+		$pconfig['ssh_preproc_enable_protomismatch'] == 'on' ? true:false,
+		'on'
+	));
+	print($section);
 ?>
+<!--	END SSH preproc settings  -->
 
 <!--	START HTTP Inspect settings   -->
 	<div class="panel panel-default" id="preproc_http">
@@ -2032,7 +2192,7 @@ $modal->addInput(new Form_IpAddress(
 	'arp_spoof_ip_addr',
 	'IP Address',
 	'',
-	BOTH
+	'BOTH'
 ))->setHelp('Enter IP address of host.');
 $btnsave = new Form_Button(
 	'arp_spoof_save',
@@ -2220,6 +2380,13 @@ print_callout('<p>' . gettext("Remember to save your changes before you exit thi
 		}
 	}
 
+	function ssh_preproc_enable_change() {
+		// Hide SSH section if SSH preprocessor is disabled
+		if (!($('#ssh_preproc').prop('checked'))) {
+			$('#preproc_ssh_panel-body').collapse('toggle');
+		}
+	}
+
 	function enable_change_all() {
 		// -- Collapse HTTP Inspect section if disabled --
 		if (!($('#http_inspect').prop('checked'))) {
@@ -2296,6 +2463,7 @@ events.push(function(){
 	// ---------- Autocomplete --------------------------------------------
 
 	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
+	var portsarray = <?= json_encode(get_alias_list(array("port"))) ?>;
 
 	$('#pscan_ignore_scanners').autocomplete({
 		source: addressarray
@@ -2303,6 +2471,10 @@ events.push(function(){
 
 	$('#pscan_ignore_scanned').autocomplete({
 		source: addressarray
+	});
+
+	$('#ssh_preproc_ports').autocomplete({
+		source: portsarray
 	});
 
 	// ---------- Click handlers ------------------------------------------
@@ -2361,6 +2533,10 @@ events.push(function(){
 
 	$('#smtp_preprocessor').click(function() {
 		smtp_enable_change();
+	});
+
+	$('#ssh_preproc').click(function() {
+		ssh_preproc_enable_change();
 	});
 
 	$('#rulesviewer').on('shown.bs.modal', function() {

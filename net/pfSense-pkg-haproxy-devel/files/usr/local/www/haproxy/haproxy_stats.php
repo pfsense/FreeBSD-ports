@@ -108,7 +108,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "stats");
 ?>
 	<div class="panel panel-default">
 
-	<?
+	<?php
 if (isset($_GET['showstatresolvers'])){
 	$showstatresolversname = $_GET['showstatresolvers'];
 	echo "<td colspan='2'>";

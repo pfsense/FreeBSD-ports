@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2014 Bill Meeks
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -81,6 +81,14 @@ foreach ($snort_files as $file) {
 		if (!file_exists("{$snortcfgdir}/{$file}") || ($ftime > filemtime("{$snortcfgdir}/{$file}")))
 			@copy("{$snortdir}/{$file}", "{$snortcfgdir}/{$file}");
 	}
+}
+
+/* define interface snaplen */
+if (!empty($snortcfg['snaplen']) && is_numeric($snortcfg['snaplen'])) {
+	$snaplen = $snortcfg['snaplen'];
+}
+else {
+	$snaplen = '1518';
 }
 
 /* define alert log limit */
@@ -301,8 +309,10 @@ $ftp_default_client_engine = array( "name" => "default", "bind_to" => "all", "ma
 				    "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				    "bounce" => "yes", "bounce_to_net" => "", "bounce_to_port" => "" );
 
-if (!is_array($snortcfg['ftp_client_engine']['item']))
+if (!is_array($snortcfg['ftp_client_engine']['item'])) {
+	$snortcfg['ftp_client_engine'] = array();
 	$snortcfg['ftp_client_engine']['item'] = array();
+}
 
 // If no FTP client engine is configured, use the default
 // to keep from breaking Snort.
@@ -379,8 +389,10 @@ $ftp_default_server_engine = array( "name" => "default", "bind_to" => "all", "po
 				    "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				    "ignore_data_chan" => "no", "def_max_param_len" => 100 );
 
-if (!is_array($snortcfg['ftp_server_engine']['item']))
+if (!is_array($snortcfg['ftp_server_engine']['item'])) {
+	$snortcfg['ftp_server_engine'] = array();
 	$snortcfg['ftp_server_engine']['item'] = array();
+}
 
 // If no FTP server engine is configured, use the default
 // to keep from breaking Snort.
@@ -686,23 +698,52 @@ EOD;
 
 /* def ssh_preproc */
 
-$ssh_ports = str_replace(",", " ", snort_expand_port_range($snort_ports['ssh_ports']));
-
 // Make sure we have port numbers or else use defaults
-if (!isset($ssh_ports) || empty($ssh_ports))
+if (isset($snortcfg['ssh_preproc_ports'])) {
+	if (is_alias($snortcfg['ssh_preproc_ports'])) {
+		if (strlen(trim(filter_expand_alias($snortcfg['ssh_preproc_ports']))) > 0) {
+			$ssh_ports = trim(filter_expand_alias($snortcfg['ssh_preproc_ports']));
+			$ssh_ports = preg_replace('/\s+/', ',', trim($ssh_ports));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias {$snortcfg['ssh_preproc_ports']} for SSH Preprocessor Ports parameter ... reverting to default value of 22.");
+			$ssh_ports = "22";
+		}
+	} else {
+          		$ssh_ports = $snortcfg['ssh_preproc_ports'];
+        }
+}
+else {
 	$ssh_ports = "22";
+}
 $ssh_preproc = <<<EOD
 # SSH preprocessor #
 preprocessor ssh: \
 	server_ports { {$ssh_ports} } \
-	autodetect \
-	max_client_bytes 19600 \
-	max_encrypted_packets 20 \
-	max_server_version_len 100 \
-	enable_respoverflow enable_ssh1crc32 \
-	enable_srvoverflow enable_protomismatch
-
+	autodetect
 EOD;
+if (isset($snortcfg['ssh_preproc_max_client_bytes']) && $snortcfg['ssh_preproc_max_client_bytes'] > 0) {
+	$ssh_preproc .= " \\\n\tmax_client_bytes {$snortcfg['ssh_preproc_max_client_bytes']}";
+}
+if (isset($snortcfg['ssh_preproc_max_encrypted_packets']) && $snortcfg['ssh_preproc_max_encrypted_packets'] > 0) {
+	$ssh_preproc .= " \\\n\tmax_encrypted_packets {$snortcfg['ssh_preproc_max_encrypted_packets']}";
+}
+if (isset($snortcfg['ssh_preproc_max_server_version_len']) && $snortcfg['ssh_preproc_max_server_version_len'] > 0) {
+	$ssh_preproc .= " \\\n\tmax_server_version_len {$snortcfg['ssh_preproc_max_server_version_len']}";
+}
+if ($snortcfg['ssh_preproc_enable_respoverflow'] == 'on') {
+	$ssh_preproc .= " \\\n\tenable_respoverflow";
+}
+if ($snortcfg['ssh_preproc_enable_srvoverflow'] == 'on') {
+	$ssh_preproc .= " \\\n\tenable_srvoverflow";
+}
+if ($snortcfg['ssh_preproc_enable_ssh1crc32'] == 'on') {
+	$ssh_preproc .= " \\\n\tenable_ssh1crc32";
+}
+if ($snortcfg['ssh_preproc_enable_protomismatch'] == 'on') {
+	$ssh_preproc .= " \\\n\tenable_protomismatch";
+}
+$ssh_preproc .= "\n";
 
 /* def other_preprocs */
 
@@ -1108,8 +1149,10 @@ $frag3_engine = "";
 
 // Now iterate configured Frag3 engines and write them to a string if enabled
 if ($snortcfg['frag3_detection'] == "on") {
-	if (!is_array($snortcfg['frag3_engine']['item']))
+	if (!is_array($snortcfg['frag3_engine']['item'])) {
+		$snortcfg['frag3_engine'] = array();
 		$snortcfg['frag3_engine']['item'] = array();
+}
 
 	// If no frag3 tcp engine is configured, use the default
 	if (empty($snortcfg['frag3_engine']['item']))
@@ -1205,8 +1248,10 @@ $stream5_tcp_engine = "";
 
 // Now iterate configured Stream5 TCP engines and write them to a string if enabled
 if ($snortcfg['stream5_reassembly'] == "on") {
-	if (!is_array($snortcfg['stream5_tcp_engine']['item']))
+	if (!is_array($snortcfg['stream5_tcp_engine']['item'])) {
+		$snortcfg['stream5_tcp_engine'] = array();
 		$snortcfg['stream5_tcp_engine']['item'] = array();
+}
 
 	// If no stream5 tcp engine is configured, use the default
 	if (empty($snortcfg['stream5_tcp_engine']['item']))
@@ -1371,8 +1416,10 @@ $http_inspect_servers = "";
 
 // Iterate configured HTTP_INSPECT servers and write them to string if HTTP_INSPECT enabled
 if ($snortcfg['http_inspect'] <> "off") {
-	if (!is_array($snortcfg['http_inspect_engine']['item']))
+	if (!is_array($snortcfg['http_inspect_engine']['item'])) {
+		$snortcfg['http_inspect_engine'] = array();
 		$snortcfg['http_inspect_engine']['item'] = array();
+}
 
 	// If no http_inspect_engine is configured, use the default
 	if (empty($snortcfg['http_inspect_engine']['item']))
