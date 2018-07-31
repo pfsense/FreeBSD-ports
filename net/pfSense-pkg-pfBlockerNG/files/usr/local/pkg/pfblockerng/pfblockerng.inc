@@ -4086,7 +4086,9 @@ function sync_package_pfblockerng($cron='') {
 
 					// Collect list array key location
 					$list['key'] = "{$key}";
-
+					if (!is_array($list)) {
+						$list = array();
+					}
 					if (!is_array($list['row'])) {
 						$list['row'] = array();
 					}
