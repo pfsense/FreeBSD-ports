@@ -363,14 +363,14 @@ $section->add($group);
 // Build 'textarea' windows
 $section = new Form_Section('Log');
 $section->addInput(new Form_Textarea(
-	pfb_status,
+	'pfb_status',
 	NULL,
 	'Log Viewer Standby'
 ))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '1')->setAttribute('wrap', 'off')
   ->setAttribute('style', 'background:#fafafa;');
 
 $section->addInput(new Form_Textarea(
-	pfb_output,
+	'pfb_output',
 	NULL,
 	NULL
 ))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '30')->setAttribute('wrap', 'off')
@@ -394,7 +394,7 @@ if (isset($pconfig['log_view'])) {
 }
 
 if ($pfb['enable'] == 'on' && isset($pconfig['run']) && !empty($pconfig['pfb_force'])) {
-	// Execute appropriate 'Force command' 
+	// Execute appropriate 'Force command'
 	if ($pconfig['pfb_force'] == 'update') {
 		pfb_cron_update('update');
 	} elseif ($pconfig['pfb_force'] == 'cron') {

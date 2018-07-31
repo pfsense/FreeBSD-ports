@@ -907,6 +907,11 @@ EOF;
 			$log = "Saving pfSense config...\n";
 			pfb_logger("{$log}", 1);
 			$config['nat']['rule'] = $new_nat;
+
+			if (!is_array($config['virtualip']['vip'])) {
+				$config['virtualip']['vip'] = array();
+			}
+
 			$config['virtualip']['vip'] = $new_vip;
 			write_config('pfBlockerNG: saving DNSBL changes');
 
@@ -3438,7 +3443,7 @@ function sync_package_pfblockerng($cron='') {
 										if (!isset($easylist) && substr_count($line, ',') >= 2) {
 											$csvline = str_getcsv($line, ',', '', '"');
 										} else {
-											$csvline = '';
+											$csvline = array();
 										}
 
 										// CSV parser
