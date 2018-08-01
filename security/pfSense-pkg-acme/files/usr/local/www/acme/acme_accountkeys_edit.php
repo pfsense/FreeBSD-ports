@@ -235,13 +235,13 @@ $section->addInput(new \Form_StaticText(
 	'ACME account registration',
 	"<a id='btnregisterkey' class='btn btn-sm btn-primary'>"
 		. "<i id='btnregisterkeyicon' class='fa fa-key'></i> Register ACME account key</a>"
-))->setHelp('Before using an accountkey, it must first be registered with the chosen ACME Server. %1$s' .
+))->setHelp(sprintf(gettext('Before using an accountkey, it must first be registered with the chosen ACME Server. %1$s' .
 	    '%2$s indicates a successful registration, %3$s indicates a failure. ' .
-	    '%1$s In the case of a failure, check %4$s for more information.',
+	    '%1$s In the case of a failure, check %4$s for more information.'),
 	    '<br/>',
 	    '<i class="fa fa-check"></i>',
 	    '<i class="fa fa-times"></i>',
-	    '<tt>/tmp/acme/_registerkey/acme_issuecert.log</tt>');
+	    '<tt>/tmp/acme/_registerkey/acme_issuecert.log</tt>'));
 
 $form->add($section);
 
