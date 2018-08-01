@@ -3,8 +3,8 @@
  * snort_ip_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2014-2017 Bill Meeks
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,8 +38,20 @@ if (is_null($id)) {
 if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
 }
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['wlist_files'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['wlist_files'] = array();
+}
 if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['wlist_files']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['wlist_files']['item'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
+	$config['installedpackages']['snortglobal']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['blist_files'])) {
+	$config['installedpackages']['snortglobal']['rule'][$id]['blist_files'] = array();
 }
 if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['blist_files']['item'])) {
 	$config['installedpackages']['snortglobal']['rule'][$id]['blist_files']['item'] = array();

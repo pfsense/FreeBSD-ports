@@ -3,7 +3,7 @@
  * snort_interfaces_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2018 Bill Meeks
  * Copyright (c) 2008-2009 Robert Zelaya
@@ -25,7 +25,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-global $g;
+global $g, $config;
 
 $snortdir = SNORTDIR;
 $snort_openappdir = SNORT_APPID_ODP_PATH;

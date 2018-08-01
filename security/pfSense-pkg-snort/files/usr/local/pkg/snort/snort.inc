@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2017 Bill Meeks
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,8 +39,12 @@ global $g, $config, $rebuild_rules;
 /* Rebuild Rules Flag -- if "true", rebuild enforcing rules and flowbit-rules files */
 $rebuild_rules = false;
 
-if (!is_array($config['installedpackages']['snortglobal']))
+if (!is_array($config['installedpackages'])) {
+	$config['installedpackages'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal'])) {
 	$config['installedpackages']['snortglobal'] = array();
+}
 
 function snort_is_single_addr_alias($alias) {
 	/***************************************************/
@@ -103,7 +107,7 @@ function snort_expand_port_range($ports, $delim = ',') {
 }
 
 function snort_get_blocked_ips() {
-	$blocked_ips = "";
+	$blocked_ips = array();
 	exec('/sbin/pfctl -t snort2c -T show', $blocked_ips);
 	$blocked_ips_array = array();
 	if (!empty($blocked_ips)) {

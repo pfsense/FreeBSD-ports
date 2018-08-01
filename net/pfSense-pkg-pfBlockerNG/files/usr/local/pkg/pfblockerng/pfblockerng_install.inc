@@ -278,14 +278,14 @@ EOF;
 	openssl_x509_export($cert, $publickey);
 	@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
 	update_status(" done.\n");
-	
+
 	update_status("Starting DNSBL Service...");
 	restart_service('dnsbl');
 	update_status(" done.\n");
 }
 
 
-// Upgrade - Adv. Inbound settings to new variable names. 
+// Upgrade - Adv. Inbound settings to new variable names.
 update_status("Upgrading Adv. Inbound firewall rule settings ...");
 $ufound = FALSE;
 $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdnsblsettings', 'pfblockerngafrica', 'pfblockerngantarctica',
@@ -293,38 +293,40 @@ $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdn
 		    'pfblockerngtopspammers', 'pfblockerngproxyandsatellite');
 
 foreach ($upgrade_type as $type) {
-	$conf_config = &$config['installedpackages'][$type]['config'];
-	if (isset($conf_config)) {
-		foreach ($conf_config as $key => $utype) {
-			if (isset($utype['autoports'])) {
-				$ufound = TRUE;
-				if ($utype['autoports'] == 'on' && !empty($utype['aliasports']) && !isset($conf_config[$key]['autoports_in'])) {
-					$conf_config[$key]['autoports_in'] = 'on';
-					$conf_config[$key]['aliasports_in'] = $utype['aliasports'];
+	if (is_array($config['installedpackages'][$type]['config'])) {
+		$conf_config = &$config['installedpackages'][$type]['config'];
+		if (isset($conf_config)) {
+			foreach ($conf_config as $key => $utype) {
+				if (isset($utype['autoports'])) {
+					$ufound = TRUE;
+					if ($utype['autoports'] == 'on' && !empty($utype['aliasports']) && !isset($conf_config[$key]['autoports_in'])) {
+						$conf_config[$key]['autoports_in'] = 'on';
+						$conf_config[$key]['aliasports_in'] = $utype['aliasports'];
+					}
+					unset($conf_config[$key]['autoports']);
+					unset($conf_config[$key]['aliasports']);
 				}
-				unset($conf_config[$key]['autoports']);
-				unset($conf_config[$key]['aliasports']);
-			}
-			if (isset($utype['autodest'])) {
-				$ufound = TRUE;
-				if ($utype['autodest'] == 'on' && !empty($utype['aliasdest']) && !isset($conf_config[$key]['autoaddr_in'])) {
-					$conf_config[$key]['autoaddr_in'] = 'on';
-					$conf_config[$key]['aliasaddr_in'] = $utype['aliasdest'];
+				if (isset($utype['autodest'])) {
+					$ufound = TRUE;
+					if ($utype['autodest'] == 'on' && !empty($utype['aliasdest']) && !isset($conf_config[$key]['autoaddr_in'])) {
+						$conf_config[$key]['autoaddr_in'] = 'on';
+						$conf_config[$key]['aliasaddr_in'] = $utype['aliasdest'];
+					}
+					unset($conf_config[$key]['autodest']);
+					unset($conf_config[$key]['aliasdest']);
 				}
-				unset($conf_config[$key]['autodest']);
-				unset($conf_config[$key]['aliasdest']);
-			}
-			if (isset($utype['autonot'])) {
-				$ufound = TRUE;
-				if ($utype['autonot'] == 'on' && !isset($conf_config[$key]['autonot_in'])) {
-					$conf_config[$key]['autonot_in'] = $utype['autonot'];
+				if (isset($utype['autonot'])) {
+					$ufound = TRUE;
+					if ($utype['autonot'] == 'on' && !isset($conf_config[$key]['autonot_in'])) {
+						$conf_config[$key]['autonot_in'] = $utype['autonot'];
+					}
+					unset($conf_config[$key]['autonot']);
 				}
-				unset($conf_config[$key]['autonot']);
-			}
-			if (isset($utype['autoproto'])) {
-				$ufound = TRUE;
-				$conf_config[$key]['autoproto_in'] = $utype['autoproto'];
-				unset($conf_config[$key]['autoproto']);
+				if (isset($utype['autoproto'])) {
+					$ufound = TRUE;
+					$conf_config[$key]['autoproto_in'] = $utype['autoproto'];
+					unset($conf_config[$key]['autoproto']);
+				}
 			}
 		}
 	}

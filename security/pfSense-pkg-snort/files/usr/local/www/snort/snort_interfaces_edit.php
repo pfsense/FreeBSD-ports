@@ -3,7 +3,7 @@
  * snort_interfaces_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
  * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
@@ -29,11 +29,9 @@ global $g, $config, $rebuild_rules;
 $snortdir = SNORTDIR;
 $snortlogdir = SNORTLOGDIR;
 
-if (!is_array($config['installedpackages']['snortglobal']))
-	$config['installedpackages']['snortglobal'] = array();
-
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 $a_rule = &$config['installedpackages']['snortglobal']['rule'];
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
@@ -153,6 +151,8 @@ if (empty($pconfig['alertsystemlog_facility']))
 	$pconfig['alertsystemlog_facility'] = "log_auth";
 if (empty($pconfig['alertsystemlog_priority']))
 	$pconfig['alertsystemlog_priority'] = "log_alert";
+if (empty($pconfig['snaplen']))
+	$pconfig['snaplen'] = 1518;
 
 // See if creating a new interface by duplicating an existing one
 if (strcasecmp($action, 'dup') == 0) {
@@ -239,7 +239,7 @@ if ($_POST['save'] && !$input_errors) {
 
 		if ($_POST['descr']) $natent['descr'] =  $_POST['descr']; else $natent['descr'] = convert_friendly_interface_to_friendly_descr($natent['interface']);
 		if ($_POST['performance']) $natent['performance'] = $_POST['performance']; else  unset($natent['performance']);
-		/* if post = on use on off or rewrite the conf */
+		if ($_POST['snaplen'] && is_numeric($_POST['snaplen'])) $natent['snaplen'] = $_POST['snaplen'];
 		if ($_POST['blockoffenders7'] == "on") $natent['blockoffenders7'] = 'on'; else $natent['blockoffenders7'] = 'off';
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
@@ -506,6 +506,12 @@ $section->addInput(new Form_Input(
 	'text',
 	$pconfig['descr']
 ))->setHelp('Enter a meaningful description here for your reference.');
+$section->addInput(new Form_Input(
+	'snaplen',
+	'Snap Length',
+	'number',
+	$pconfig['snaplen']
+))->setHelp('Enter the desired interface snaplen value in bytes.  Default is 1518 and is suitable for most applications.');
 
 $form->add($section);
 
@@ -800,6 +806,7 @@ events.push(function(){
 		disableInput('whitelistname', hide);
 		disableInput('btnWhitelist', hide);
 		disableInput('configpassthru', hide);
+		disableInput('snaplen', hide);
 	}
 
 	function getListContents(listName, listType, ctrlID) {

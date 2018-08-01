@@ -3,7 +3,7 @@
  * snort_interfaces.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
@@ -31,8 +31,9 @@ $rcdir = RCFILEPREFIX;
 $snort_starting = array();
 $by2_starting = array();
 
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 $a_nat = &$config['installedpackages']['snortglobal']['rule'];
 
 // Calculate the index of the next added Snort interface
@@ -488,7 +489,7 @@ if ($savemsg)
 									Click on the <i class="fa fa-lg fa-repeat" alt="Start"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/stop Snort and Barnyard2.
 								</p>
 							</div>
-						</div>', info)?>
+						</div>', 'info')?>
 </div>
 
 <script type="text/javascript">

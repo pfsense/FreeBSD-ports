@@ -3443,7 +3443,7 @@ function sync_package_pfblockerng($cron='') {
 										if (!isset($easylist) && substr_count($line, ',') >= 2) {
 											$csvline = str_getcsv($line, ',', '', '"');
 										} else {
-											$csvline = '';
+											$csvline = array();
 										}
 
 										// CSV parser
@@ -4086,7 +4086,9 @@ function sync_package_pfblockerng($cron='') {
 
 					// Collect list array key location
 					$list['key'] = "{$key}";
-
+					if (!is_array($list)) {
+						$list = array();
+					}
 					if (!is_array($list['row'])) {
 						$list['row'] = array();
 					}

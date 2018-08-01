@@ -26,6 +26,7 @@ var RULE_PATH {$snortcfgdir}/rules
 
 # Configure the snort decoder #
 config checksum_mode: {$cksumcheck}
+config snaplen: {$snaplen}
 config disable_decode_alerts
 config disable_tcpopt_experimental_alerts
 config disable_tcpopt_obsolete_alerts

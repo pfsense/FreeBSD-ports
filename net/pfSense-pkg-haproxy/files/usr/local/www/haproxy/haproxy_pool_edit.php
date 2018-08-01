@@ -28,12 +28,7 @@ require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-	$config['installedpackages']['haproxy']['ha_pools'] = array();
-}
-if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-}
+haproxy_config_init();
 
 $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 
@@ -65,6 +60,7 @@ $simplefields = array(
 "stats_enabled","stats_username","stats_password","stats_uri","stats_scope","stats_realm","stats_admin","stats_node","stats_desc","stats_refresh",
 "persist_stick_expire","persist_stick_tablesize","persist_stick_length","persist_stick_cookiename","persist_sticky_type",
 "persist_cookie_enabled","persist_cookie_name","persist_cookie_mode","persist_cookie_cachable",
+"persist_cookie_postonly","persist_cookie_httponly","persist_cookie_secure","haproxy_cookie_maxidle","haproxy_cookie_maxlife","haproxy_cookie_domains","haproxy_cookie_dynamic_cookie_key",
 "strict_transport_security", "cookie_attribute_secure",
 "email_level", "email_to"
 );
@@ -111,16 +107,23 @@ $fields_servers[4]['type']="textbox";
 $fields_servers[4]['size']="5";
 $fields_servers[4]['maxwidth']="50px";
 $fields_servers[5]['name']="ssl";
-$fields_servers[5]['columnheader']="SSL";
+$fields_servers[5]['columnheader']="Encrypt(SSL)";
 $fields_servers[5]['colwidth']="5%";
 $fields_servers[5]['type']="checkbox";
 $fields_servers[5]['size']="30";
-$fields_servers[6]['name']="weight";
-$fields_servers[6]['columnheader']="Weight";
-$fields_servers[6]['colwidth']="8%";
-$fields_servers[6]['type']="textbox";
-$fields_servers[6]['size']="5";
-$fields_servers[6]['maxwidth']="50px";
+$fields_servers[6]['name']="checkssl";
+$fields_servers[6]['columnheader']="SSL checks";
+$fields_servers[6]['colwidth']="5%";
+$fields_servers[6]['type']="checkbox";
+$fields_servers[6]['size']="30";
+$fields_servers[7]['name']="weight";
+$fields_servers[7]['columnheader']="Weight";
+$fields_servers[7]['colwidth']="8%";
+$fields_servers[7]['type']="textbox";
+$fields_servers[7]['size']="5";
+$fields_servers[7]['maxwidth']="50px";
+$fields_servers[8]['name']="id";
+$fields_servers[8]['type']="hidden";
 
 $listitem_none['']['name']="None";
 
@@ -183,6 +186,12 @@ $fields_servers_details[7]['description']="Advanced, Allows for adding custom HA
 $fields_servers_details[7]['colwidth']="15%";
 $fields_servers_details[7]['type']="textbox";
 $fields_servers_details[7]['size']="80";
+$fields_servers_details[8]['name']="istemplate";
+$fields_servers_details[8]['columnheader']="DNS template count";
+$fields_servers_details[8]['description']="If set configures this server item as a template to provision servers from dns/srv responses.";
+$fields_servers_details[8]['colwidth']="15%";
+$fields_servers_details[8]['type']="textbox";
+$fields_servers_details[8]['size']="80";
 
 $fields_errorfile = array();
 $fields_errorfile[0]['name']="errorcode";
@@ -218,18 +227,29 @@ $fields_aclSelectionList[1]['type']="select";
 $fields_aclSelectionList[1]['size']="10";
 $fields_aclSelectionList[1]['items']=&$a_acltypes;
 
-$fields_aclSelectionList[2]['name']="not";
-$fields_aclSelectionList[2]['columnheader']="Not";
+$fields_aclSelectionList[2]['name']="casesensitive";
+$fields_aclSelectionList[2]['columnheader']="CS";
 $fields_aclSelectionList[2]['colwidth']="5%";
 $fields_aclSelectionList[2]['type']="checkbox";
 $fields_aclSelectionList[2]['size']="5";
 
-$fields_aclSelectionList[3]['name']="value";
-$fields_aclSelectionList[3]['columnheader']="Value";
-$fields_aclSelectionList[3]['colwidth']="35%";
-$fields_aclSelectionList[3]['type']="textbox";
-$fields_aclSelectionList[3]['size']="35";
+$fields_aclSelectionList[3]['name']="not";
+$fields_aclSelectionList[3]['columnheader']="Not";
+$fields_aclSelectionList[3]['colwidth']="5%";
+$fields_aclSelectionList[3]['type']="checkbox";
+$fields_aclSelectionList[3]['size']="5";
 
+$fields_aclSelectionList[4]['name']="value";
+$fields_aclSelectionList[4]['columnheader']="Value";
+$fields_aclSelectionList[4]['colwidth']="35%";
+$fields_aclSelectionList[4]['type']="textbox";
+$fields_aclSelectionList[4]['size']="35";
+
+foreach ($a_action as $key => $value) {
+	if (!empty($value['usage']) && !stristr('backend', $value['usage'])) {
+		unset($a_action[$key]);
+	}
+}
 $fields_actions=array();
 $fields_actions[0]['name']="action";
 $fields_actions[0]['columnheader']="Action";
@@ -272,7 +292,7 @@ foreach($a_acltypes as $key => $action) {
 			$item = $field;
 			$name = $key . $item['name'];
 			$item['name'] = $name;
-			$item['columnheader'] = $field['name'];
+			$item['columnheader'] = $field['columnheader'];
 			$item['customdrawcell'] = 'customdrawcell_actions';
 			$fields_acl_details[$name] = $item;
 		}
@@ -321,41 +341,16 @@ $htmllist_actions->keyfield = "name";
 
 
 if (isset($id) && $a_pools[$id]) {
-	if (!is_array($a_pools[$id]['a_acl'])) {
-		$a_pools[$id]['a_acl'] = array();
-	}
-	if (!is_array($a_pools[$id]['a_acl']['item'])) {
-		$a_pools[$id]['a_acl']['item'] = array();
-	}
-	$pconfig['a_acl'] = &$a_pools[$id]['a_acl']['item'];
-	haproxy_check_isarray($pconfig['a_acl']);
-	if (!is_array($a_pools[$id]['a_actionitems'])) {
-		$a_pools[$id]['a_actionitems'] = array();
-	}
-	if (!is_array($a_pools[$id]['a_actionitems']['item'])) {
-		$a_pools[$id]['a_actionitems']['item'] = array();
-	}
-	$pconfig['a_actionitems'] = &$a_pools[$id]['a_actionitems']['item'];
-	haproxy_check_isarray($pconfig['a_actionitems']);
+	$pconfig['a_acl'] = getarraybyref($a_pools[$id],'a_acl','item');
+	$pconfig['a_actionitems'] = getarraybyref($a_pools[$id],'a_actionitems','item');
+	$a_errorfiles = getarraybyref($a_pools[$id],'errorfiles','item');
+	$a_servers = getarraybyref($a_pools[$id],'ha_servers','item');
 
 	$pconfig['advanced'] = base64_decode($a_pools[$id]['advanced']);
 	$pconfig['advanced_backend'] = base64_decode($a_pools[$id]['advanced_backend']);
 
-	$a_servers = $a_pools[$id]['ha_servers']['item'];
-
 	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_pools[$id][$stat];
-	}
-	if (!is_array($a_pools[$id]['errorfiles'])){
-		$a_pools[$id]['errorfiles'] = array();
-	}
-	if (!is_array($a_pools[$id]['errorfiles']['item'])){
-		$a_pools[$id]['errorfiles']['item'] = array();
-	}
-
-	$a_errorfiles = &$a_pools[$id]['errorfiles']['item'];
-	if (!is_array($a_errorfiles)) {
-		$a_errorfiles = array();
 	}
 }
 
@@ -471,32 +466,7 @@ if ($_POST) {
 		// name changed:
 		$oldvalue = $pool['name'];
 		$newvalue = $_POST['name'];
-		if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-			$config['installedpackages']['haproxy']['ha_backends'] = array();
-		}
-		if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-			$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-		}
-		$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
-		if (!is_array($a_backend)) {
-			$a_backend = array();
-		}
-
-		for ( $i = 0; $i < count($a_backend); $i++) {
-			$backend = &$a_backend[$i];
-			if ($a_backend[$i]['backend_serverpool'] == $oldvalue) {
-				$a_backend[$i]['backend_serverpool'] = $newvalue;
-			}
-			if (is_array($backend['a_actionitems']['item'])) {
-				foreach($backend['a_actionitems']['item'] as &$item) {
-					if ($item['action'] == "use_backend") {
-						if ($item['use_backendbackend'] == $oldvalue) {
-							$item['use_backendbackend'] = $newvalue;
-						}
-					}
-				}
-			}
-		}
+		rename_backend_references($oldvalue, $newvalue);
 	}
 
 	if($pool['name'] != "") {
@@ -522,6 +492,7 @@ if ($_POST) {
 	if (!isset($input_errors)) {
 		if ($changecount > 0) {
 			touch($d_haproxyconfdirty_path);
+			config_id();
 			write_config($changedesc);
 		}
 		header("Location: haproxy_pools.php");
@@ -555,36 +526,13 @@ foreach($simplefields as $field){
   </style>
 </head>
 <script type="text/javascript">
+	<?php haproxy_js_css(); ?>
+
 	function clearcombo(){
 	  for (var i=document.iform.serversSelect.options.length-1; i>=0; i--){
 		document.iform.serversSelect.options[i] = null;
 	  }
 	  document.iform.serversSelect.selectedIndex = -1;
-	}
-
-	function setCSSdisplay(cssID, display)
-	{
-		var ss = document.styleSheets;
-		for (var i=0; i<ss.length; i++) {
-			var rules = ss[i].cssRules || ss[i].rules;
-			for (var j=0; j<rules.length; j++) {
-				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = display ? "" : "none";
-				}
-			}
-		}
-	}
-	function toggleCSSdisplay(cssID)
-	{
-		var ss = document.styleSheets;
-		for (var i=0; i<ss.length; i++) {
-			var rules = ss[i].cssRules || ss[i].rules;
-			for (var j=0; j<rules.length; j++) {
-				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = rules[j].style.display === "none" ? "" : "none";
-				}
-			}
-		}
 	}
 
 	function updatevisibility()
@@ -672,7 +620,9 @@ $serverslist->Draw($a_servers).
 	</td></tr><tr><td class="vncell">
 	Port: </td><td class="vncell">The port of the backend.<br/>EXAMPLE: 80 or 443<br/>
 	</td></tr><tr><td class="vncell">
-	SSL: </td><td class="vncell">Is the backend using SSL (commonly with port 443)<br/>
+	SSL: </td><td class="vncell">Should haproxy encrypt the traffic to the backend with SSL (commonly used with mode http on frontend and a port 443 on backend)
+	</td></tr><tr><td class="vncell">
+	SSL&nbsp;checks: </td><td class="vncell">This can be used with for example a LDAPS health-checks where LDAPS is passed along with mode TCP <br/>
 	</td></tr><tr><td class="vncell">
 	Weight: </td><td class="vncell">A weight between 0 and 256, this setting can be used when multiple servers on different hardware need to be balanced with with a different part the traffic. A server with weight 0 wont get new traffic. Default if empty: 1
 	</td></tr><tr><td class="vncell">
@@ -968,6 +918,43 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['persist_cookie_cachable']
 ),"haproxy_cookie_visible");
 
+$group = new Form_Group('Cookie Options');
+$group->add(new Form_Checkbox(
+	'persist_cookie_postonly',
+	'postonly',
+	'Only insert cookie on post requests.',
+	$pconfig['persist_cookie_postonly']
+),"haproxy_cookie_visible");
+$group->add(new Form_Checkbox(
+	'persist_cookie_httponly',
+	'httponly',
+	'Prevent usage of cookie with non-HTTP components.',
+	$pconfig['persist_cookie_httponly']
+),"haproxy_cookie_visible");
+$group->add(new Form_Checkbox(
+	'persist_cookie_secure',
+	'secure',
+	'Prevent usage of cookie over non-sercure channels.',
+	$pconfig['persist_cookie_secure']
+),"haproxy_cookie_visible");
+$group->addClass("haproxy_cookie_visible");
+$section->add($group);
+
+$group = new Form_Group('Cookie Options');
+$group->add(new Form_Input('haproxy_cookie_maxidle', 'MaxIdle', 'text', $pconfig['haproxy_cookie_maxidle']
+),"haproxy_cookie_visible")->setHelp('Max idle time It only works with insert-mode cookies.');
+$group->add(new Form_Input('haproxy_cookie_maxlife', 'MaxLife', 'text', $pconfig['haproxy_cookie_maxlife']
+),"haproxy_cookie_visible")->setHelp('Max life time It only works with insert-mode cookies.');
+
+$group->addClass("haproxy_cookie_visible");
+$section->add($group);
+
+$section->addInput(new Form_Input('haproxy_cookie_domains', 'Cookie domains', 'text', $pconfig['haproxy_cookie_domains']
+),"haproxy_cookie_visible")->setHelp('Domains to set the cookie for, seperate multiple domains with a space.');
+
+$section->addInput(new Form_Input('haproxy_cookie_dynamic_cookie_key', 'Cookie dynamic key', 'text', $pconfig['haproxy_cookie_dynamic_cookie_key']
+),"haproxy_cookie_visible")->setHelp('Set the dynamic cookie secret key for a backend. This is will be used to generate a dynamic cookie with.');
+
 $form->add($section);
 
 $section = new Form_Section_class('Stick-table persistence');
@@ -1171,7 +1158,7 @@ print $form;
 	phparray_to_javascriptarray($a_action, "showhide_actionfields",
 		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 	phparray_to_javascriptarray($a_acltypes, "showhide_aclfields",
-		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
+		Array('/*', '/*/casesensitive', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
 
 	$serverslist->outputjavascript();
 	$errorfileslist->outputjavascript();
@@ -1182,27 +1169,33 @@ print $form;
 
 	totalrows =  <?php echo $counter; ?>;
 
+
+	function sethiddenclass(id,showitem) {
+		if (showitem) {
+			$("#"+id).removeClass("hidden");
+		} else {
+			$("#"+id).addClass("hidden");
+		}
+	}
+
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId === "toggle_details") {
 			fieldId = "expression";
 			field = d.getElementById(tableId+"expression"+rowNr);
 		}
 		if (fieldId === "expression") {
-			var actiontype = field.value;
-
+			var acltypeid = field.value;
+			var acltype = showhide_aclfields[acltypeid];
+			sethiddenclass('table_aclscasesensitive'+rowNr, acltype['casesensitive']);
+			sethiddenclass('table_aclscasesensitive'+rowNr+'_disp', acltype['casesensitive']);
 			var table = d.getElementById(tableId);
 
 			for(var actionkey in showhide_aclfields) {
 				var fields = showhide_aclfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
-					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
-					var element = d.getElementById(rowid);
-
-					if (actionkey === actiontype)
-						element.style.display = '';
-					else
-						element.style.display = 'none';
+					sethiddenclass("tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname, actionkey === acltypeid);
+					sethiddenclass(tableId+actionkey+fieldname+rowNr+'_disp', actionkey === acltypeid);
 				}
 			}
 		}
@@ -1244,6 +1237,9 @@ events.push(function() {
 	$('#persist_cookie_enabled').on('change', function() {
 		updatevisibility();
 	});
+	$('#persist_cookie_mode').on('change', function() {
+		updatevisibility();
+	});
 	$('#persist_sticky_type').on('change', function() {
 		updatevisibility();
 	});
@@ -1258,6 +1254,9 @@ events.push(function() {
 	});
 
 	updatevisibility();
+	
+	// make sure enabled/disabled visable/hidden states of items dependant on these boxes are correct when loading the page.
+	$('[id^=table_aclsexpression]').change();
 });
 //]]>
 </script>

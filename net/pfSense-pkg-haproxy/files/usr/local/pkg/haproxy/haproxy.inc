@@ -43,28 +43,30 @@ $a_frontendmode['health'] = array('name' => "health", 'shortname' => "health");
 
 global $a_acltypes;
 $a_acltypes = array();
-$a_acltypes["host_starts_with"] = array('name' => 'Host starts with:',
-				'mode' => 'http', 'syntax' => 'hdr_beg(host) -i %1$s');
-$a_acltypes["host_ends_with"] = array('name' => 'Host ends with:',
-				'mode' =>'http', 'syntax' => 'hdr_end(host) -i %1$s');
-$a_acltypes["host_matches"] = array('name' => 'Host matches:',
-				'mode' =>'http', 'syntax' => 'hdr(host) -i %1$s');
-$a_acltypes["host_regex"] = array('name' => 'Host regex:',
-				'mode' =>'http', 'syntax' => 'hdr_reg(host) -i %1$s');
-$a_acltypes["host_contains"] = array('name' => 'Host contains:',
-				'mode' => 'http', 'syntax' => 'hdr_sub(host) -i %1$s');
-$a_acltypes["path_starts_with"] = array('name' => 'Path starts with:',
-				'mode' => 'http', 'syntax' => 'path_beg -i %1$s');
-$a_acltypes["path_ends_with"] = array('name' => 'Path ends with:',
-				'mode' => 'http', 'syntax' => 'path_end -i %1$s');
-$a_acltypes["path_matches"] = array('name' => 'Path matches:',
-				'mode' => 'http', 'syntax' => 'path -i %1$s');
-$a_acltypes["path_regex"] = array('name' => 'Path regex:',
-				'mode' => 'http', 'syntax' => 'path_reg -i %1$s');
-$a_acltypes["path_contains"] = array('name' => 'Path contains:',
-				'mode' => 'http', 'syntax' => 'path_sub -i %1$s');
-$a_acltypes["url_parameter"] = array('name' => 'Url parameter contains:',
-				'mode' => 'http', 'syntax' => 'url_param({parameter}) -i %1$s',
+$a_acltypes["host_starts_with"] = array('name' => 'Host starts with:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m beg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_ends_with"] = array('name' => 'Host ends with:', 'casesensitive' => true,
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m end{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_matches"] = array('name' => 'Host matches:', 'casesensitive' => true,
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m str{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_regex"] = array('name' => 'Host regex:', 'casesensitive' => true,
+				'mode' =>'http', 'syntax' => 'var(txn.txnhost) -m reg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["host_contains"] = array('name' => 'Host contains:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnhost) -m sub{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnhost) hdr(host)");
+$a_acltypes["path_starts_with"] = array('name' => 'Path starts with:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m beg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_ends_with"] = array('name' => 'Path ends with:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m end{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_matches"] = array('name' => 'Path matches:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m str{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_regex"] = array('name' => 'Path regex:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m reg{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_contains"] = array('name' => 'Path contains:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m sub{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["path_dir"] = array('name' => 'Path contains within slashes:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'var(txn.txnpath) -m dir{casesensitive} %1$s', 'advancedoptions' => "http-request set-var(txn.txnpath) path");
+$a_acltypes["url_parameter"] = array('name' => 'Url parameter contains:', 'casesensitive' => true,
+				'mode' => 'http', 'syntax' => 'url_param({parameter}){casesensitive} %1$s',
 	'fields' => array(
 		array('name'=>"parameter",'columnheader'=>"Parameter name",'type'=>"textbox",'size'=>"50",'mask'=>'urlparameter')
 	));
@@ -87,16 +89,16 @@ $a_acltypes["traffic_is_http"] = array('name' => 'Traffic is http (no value need
 $a_acltypes["traffic_is_ssl"] = array('name' => 'Traffic is ssl (no value needed):', 'inspect-delay' => '5',
 				'mode' => 'tcp', 'syntax' => 'req.ssl_ver gt 0', 'advancedoptions' => "tcp-request content accept if { req.ssl_ver gt 0 }");
 // 'ssl_sni_matches' was added in HAProxy1.5dev17
-$a_acltypes["ssl_sni_matches"] = array('name' => 'Server Name Indication TLS extension matches:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_contains"] = array('name' => 'Server Name Indication TLS extension contains:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m sub -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_starts_with"] = array('name' => 'Server Name Indication TLS extension starts with:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m beg -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_ends_with"] = array('name' => 'Server Name Indication TLS extension ends with:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m end -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
-$a_acltypes["ssl_sni_regex"] = array('name' => 'Server Name Indication TLS extension regex:', 'inspect-delay' => '5',
-				'mode' => 'https', 'syntax' => 'req.ssl_sni -m reg -i %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_matches"] = array('name' => 'Server Name Indication TLS extension matches:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_contains"] = array('name' => 'Server Name Indication TLS extension contains:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m sub{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_starts_with"] = array('name' => 'Server Name Indication TLS extension starts with:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m beg{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_ends_with"] = array('name' => 'Server Name Indication TLS extension ends with:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m end{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
+$a_acltypes["ssl_sni_regex"] = array('name' => 'Server Name Indication TLS extension regex:', 'inspect-delay' => '5', 'casesensitive' => true,
+				'mode' => 'https', 'syntax' => 'req.ssl_sni -m reg{casesensitive} %1$s', 'advancedoptions' => "tcp-request content accept if { req.ssl_hello_type 1 }");
 $a_acltypes["custom"] = array('name' => 'Custom acl:',
 				'mode' => '', 'syntax' => '%1$s');
 
@@ -252,7 +254,7 @@ $a_action["use_backend"] = array('name' => "Use Backend", 'mode' => '', 'syntax'
 	));
 $a_action["use_server"] = array('name' => "Use Server", 'mode' => '', 'syntax' => 'use-server {server}', 'usage' => 'backend',
 	'fields' => array(
-		'server' => array('name'=>"server",'columnheader'=>"Server",'type'=>"select",'size'=>"50",'mask'=>'server')
+		'server' => array('name'=>"server",'columnheader'=>"Server",'type'=>"textbox",'size'=>"50",'mask'=>'server')
 	));
 //
 $a_action["custom"] = array('name' => "Custom", 'mode' => '', 'syntax' => '{customaction}',
@@ -261,8 +263,14 @@ $a_action["custom"] = array('name' => "Custom", 'mode' => '', 'syntax' => '{cust
 	));
 //
 $a_action["http-request_allow"] = array('name' => "http-request allow", 'mode'=> 'http', 'syntax' => 'http-request allow');
-$a_action["http-request_deny"] = array('name' => "http-request deny", 'mode'=> 'http', 'syntax' => 'http-request deny');
-$a_action["http-request_tarpit"] = array('name' => "http-request tarpit", 'mode'=> 'http', 'syntax' => 'http-request tarpit');
+$a_action["http-request_deny"] = array('name' => "http-request deny", 'mode'=> 'http', 'syntax' => 'http-request deny {deny_status}',
+	'fields' => array(
+		array('name'=>"deny_status",'columnheader'=>"Status code",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'deny_status')
+	));
+$a_action["http-request_tarpit"] = array('name' => "http-request tarpit", 'mode'=> 'http', 'syntax' => 'http-request tarpit {deny_status}',
+	'fields' => array(
+		array('name'=>"deny_status",'columnheader'=>"Status code",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'deny_status')
+	));
 $a_action["http-request_auth"] = array('name' => "http-request auth", 'mode'=> 'http', 'syntax' => 'http-request auth {realm}',
 	'fields' => array(
 		array('name'=>"realm",'columnheader'=>"Realm",'type'=>"textbox",'size'=>"50",'mask'=>'freetext')
@@ -309,6 +317,23 @@ $a_action["http-request_replace-value"] = array('name' => "http-request header r
 		array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
 		array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
 	));
+
+$a_action["http-request_set-method"] = array('name' => "http-request set method", 'mode'=> 'http', 'syntax' => 'http-request set-method {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+$a_action["http-request_set-path"] = array('name' => "http-request set path", 'mode'=> 'http', 'syntax' => 'http-request set-path {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+$a_action["http-request_set-query"] = array('name' => "http-request set query", 'mode'=> 'http', 'syntax' => 'http-request set-query {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+$a_action["http-request_set-uri"] = array('name' => "http-request set uri", 'mode'=> 'http', 'syntax' => 'http-request set-uri {fmt}',
+	'fields' => array(
+		array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
 //
 $a_action["http-response_allow"] = array('name' => "http-response allow", 'mode'=> 'http', 'syntax' => 'http-response allow');
 $a_action["http-response_deny"] = array('name' => "http-response deny", 'mode'=> 'http', 'syntax' => 'http-response deny');
@@ -343,6 +368,11 @@ $a_action["http-response_replace-value"] = array('name' => "http-response header
 		array('name'=>"name",'columnheader'=>"Headername",'type'=>"textbox",'size'=>"50",'mask'=>'headername'),
 		array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
 		array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
+	));
+$a_action["http-response_set-status"] = array('name' => "http-response set status", 'mode'=> 'http', 'syntax' => 'http-response set-status {status} {reason}',
+	'fields' => array(
+		array('name'=>"status",'columnheader'=>"Status",'type'=>"textbox",'size'=>"50",'mask'=>'text'),
+		array('name'=>"reason",'columnheader'=>"Reason",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'reason')
 	));
 //
 $a_action["tcp-request_connection_accept"] = array('name' => "tcp-request connection accept", 'mode'=> '', 'syntax' => 'tcp-request connection accept');
@@ -414,34 +444,58 @@ function haproxy_portoralias_to_list($port_or_alias) {
 		return $portresult;
 	}
 }
-function haproxy_addressoralias_to_list($address_or_alias) {
+
+function haproxy_expand_alias_array($address_or_alias) {
 	global $aliastable;
 	$result = array();
-	$alias_type = alias_get_type($address_or_alias);
-	if (!empty($alias_type)) {
-		$alias = $aliastable[$address_or_alias];
+	$items = explode(' ', $address_or_alias);
+
+	$i = 0;
+	while($i < count($items)) {
+		$item = $items[$i];
+		$alias_type = alias_get_type($item);
+		$alias = $aliastable[$item];
 		if ($alias_type == "url") {
-			$result = explode(' ',$alias);
+			$items = array_merge($items, explode(' ',$alias));
 		} else
 		if ($alias_type == "network") {
-			//$result = explode(' ',$alias);
+			$items = array_merge($items, explode(' ',$alias));
 		} else
 		if ($alias_type == "host") {
-			$result = explode(' ',$alias);
+			$items = array_merge($items, explode(' ',$alias));
+		} else {
+			$result[] = $item;
 		}
-	} else {
-		$result[] = $address_or_alias;
+		$i++;
+	}
+	return $result;
+}
+
+function haproxy_filter_alias_array($list, $ip=false, $subnet=false, $hostname=false, $convertiptosubnet=false) {
+	$result = array();
+	foreach($list as $item) {
+		if ($ip && $ipv = is_ipaddr($item)) {
+			if ($convertiptosubnet) {
+				if ($ipv == 4) {
+					$item .= "/32";
+				} elseif ($ipv == 6) {
+					$item .= "/128";
+				}
+			}
+			$result[] = $item;
+		} elseif ($subnet && is_subnet($item)) {
+			$result[] = $item;
+		} elseif ($hostname && is_hostname($item)) {
+			$result[] = $item;
+		}
 	}
 	return $result;
 }
 
 function haproxy_hostoralias_to_list($host_or_alias) {
-	if (is_alias($host_or_alias)){
-		$result = filter_expand_alias_array($host_or_alias);
-	} else {
-		$result = array();
-		$result[] = $host_or_alias;
-	}
+	//used by source_ip acl
+	$items = haproxy_expand_alias_array($host_or_alias);
+	$result = haproxy_filter_alias_array($items, true, true);
 	return $result;
 }
 
@@ -494,6 +548,13 @@ function haproxy_custom_php_install_command() {
 # KEYWORD: FreeBSD
 
 . /etc/rc.subr
+
+# rc_fast=yes workaround for pfSense that calls start when it
+# means restart (for a wan-ip change for example..)
+# this way it doesnt check for a already running process 
+# and just fires of the start procedure again. which will
+# take care to restart haproxy gracefully
+rc_fast=yes
 
 name="haproxy"
 rcvar="\${name}_enable"
@@ -597,12 +658,6 @@ EOD;
 
 function haproxy_find_backend($backendname) {
 	global $config;
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-	}
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	foreach ($a_backends as &$backend) {
 		if ($backend['name'] == $backendname) {
@@ -628,34 +683,26 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	$frontend = $backendsettings['frontend'];
 	$ipversion = $backendsettings['ipversion'];
 	$a_global = &$config['installedpackages']['haproxy'];
-	if (!is_array($config['installedpackages']['haproxy']['email_mailers'])) {
-		$config['installedpackages']['haproxy']['email_mailers'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['email_mailers']['item'])) {
-		$config['installedpackages']['haproxy']['email_mailers']['item'] = array();
-	}
-	$a_mailers = &$config['installedpackages']['haproxy']['email_mailers']['item'];
 
-	if (!is_array($config['installedpackages']['haproxy']['dns_resolvers'])) {
-		$config['installedpackages']['haproxy']['dns_resolvers'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['dns_resolvers']['item'])) {
-		$config['installedpackages']['haproxy']['dns_resolvers']['item'] = array();
-	}
+	$a_mailers = &$config['installedpackages']['haproxy']['email_mailers']['item'];
 	$a_resolvers = $config['installedpackages']['haproxy']['dns_resolvers']['item'];
 
-	if (!is_array($pool['ha_servers']['item']) && !$pool['stats_enabled']=='yes') {
-		return;
-	}
 	global $a_checktypes, $a_cookiemode, $a_files_cache, $a_error;
 
 	$server_options = "";
+
 	if (!is_array($pool['ha_servers']['item'])) {
 		$pool['ha_servers']['item'] = array();
 	}
 	$a_servers = &$pool['ha_servers']['item'];
 	$frontendtype = $frontend['type'];
 
+	$idoffset = 0;
+	if ($ipversion == "ipv4")
+		$idoffset += 10000;
+	if ($ipversion == "ipv6")
+		$idoffset += 20000;
+	
 	fwrite ($fd, "backend " . $name . "\n");
 	// https is an alias for tcp for clarity purposes
 	if ($frontendtype == "https") {
@@ -664,6 +711,11 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		$backend_mode = $frontendtype;
 	}
 	fwrite ($fd, "\tmode\t\t\t" . $backend_mode . "\n");
+	$id = "";
+	if (is_numeric($pool['id'])) {
+		$id =  ($pool['id'] + $idoffset);
+		fwrite ($fd, "\tid\t\t\t{$id}\n");
+	}
 	fwrite ($fd, "\tlog\t\t\tglobal\n");
 
 	$use_haproxyresolvers = false;
@@ -716,11 +768,42 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$cookiesyntax = $a_cookiemode[$cookie_mode]["syntax"];
 			$cookie = str_replace("<cookie name>", $pool["persist_cookie_name"], $cookiesyntax);
 			$cookie .= $cookie_cachable == "yes" ? "" : " nocache";
-			fwrite ($fd, "\t" . $cookie . "\n");
+			$cookie_parameters = "";
+			if ($pool["persist_cookie_postonly"] == "yes") {
+				$cookie_parameters .= " postonly";
+			}
+			if ($pool["persist_cookie_httponly"] == "yes") {
+				$cookie_parameters .= " httponly";
+			}
+			if ($pool["persist_cookie_secure"] == "yes") {
+				$cookie_parameters .= " secure";
+			}
+			if (!empty($pool["haproxy_cookie_maxidle"])) {
+				$cookie_parameters .= " maxidle ".$pool["haproxy_cookie_maxidle"];
+			}
+			if (!empty($pool["haproxy_cookie_maxlife"])) {
+				$cookie_parameters .= " maxlife ".$pool["haproxy_cookie_maxlife"];
+			}
+			if (!empty($pool["haproxy_cookie_dynamic_cookie_key"])) {
+				$cookie_parameters .= " dynamic";
+			}
+			$cookiedomains = explode(" ",$pool["haproxy_cookie_domains"]);
+			foreach($cookiedomains as $cookiedomain) {
+				$cookiedomain = trim($cookiedomain);
+				if (!empty($cookiedomain)) {
+					$cookie_parameters .= " domain " . $cookiedomain;
+				}
+			}
+			fwrite ($fd, "\t" . $cookie . $cookie_parameters . "\n");
+			
+			
+			if (!empty($pool["haproxy_cookie_dynamic_cookie_key"])) {
+				fwrite ($fd, "\tdynamic-cookie-key " . $pool["haproxy_cookie_dynamic_cookie_key"] . "\n");
+			}
 		}
 
 		if ($pool["strict_transport_security"] && is_numeric($pool["strict_transport_security"])){
-			fwrite ($fd, "\trspadd Strict-Transport-Security:\\ max-age={$pool["strict_transport_security"]};\n");
+			fwrite ($fd, "\thttp-response set-header Strict-Transport-Security max-age={$pool["strict_transport_security"]};\n");
 		}
 
 		if ($pool["cookie_attribute_secure"] == 'yes'){
@@ -864,7 +947,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	}
 	fwrite ($fd, "\ttimeout server\t\t" . $pool['server_timeout'] . "\n");
 
-	if (empty($pool['retries'])) {
+	if (!is_numeric($pool['retries'])) {
 		$pool['retries'] = 3;
 	}
 	fwrite ($fd, "\tretries\t\t\t" . $pool['retries'] . "\n");
@@ -911,6 +994,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	if (!is_array($a_acl)) {
 		$a_acl = array();
 	}
+	$advancedextra = array();
 	// ACL's
 	foreach ($a_acl as $entry) {
 		$aclitem = $entry['ref'];
@@ -930,7 +1014,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$inspectdelay = $acltype['inspect-delay'];
 		}
 		if ($acltype['advancedoptions'] != '') {
-			$advancedextra[$acltype['syntax']] = $acltype['advancedoptions']."\n";
+			$advancedextra[$acltype['advancedoptions']] = $acltype['advancedoptions'];
 		}
 		if ($acltype['require_client_cert']) {
 			$needs_clientcert[$aclname] = true;
@@ -956,18 +1040,25 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 					$fieldname = $field['name'];
 					$parameter = $aclitem[$expression . $fieldname];
 					if ($fieldname == "backend") {
-						$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+						//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+						$backendname = $parameter . "_" . $ipversion;
 						$parameter = $backendname;
 					}
 					$expr = str_replace("{{$fieldname}}", $parameter, $expr);
 				}
 			}
 		}
+		$casesensitive = $aclitem['casesensitive'] == 'yes' ? "" : " -i";
+		$expr = str_replace("{casesensitive}", $casesensitive, $expr);
+		
 		$config_acls ["\tacl\t\t\t" . $aclname . "\t" .  $expr . "\n"] = 1;
 	}
 	// Write acl's first, so they may be used by advanced text options written by user.
 	foreach($config_acls as $acl => $dummy) {
 		fwrite ($fd, $acl);
+	}
+	foreach($advancedextra as $extra) {
+		fwrite ($fd, "\t".$extra."\n");
 	}
 
 	$a_actionitems = $pool['a_actionitems']['item'];
@@ -986,7 +1077,8 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 				$parameter = $actionitem[$actionid . $field['name']];
 
 				if ($fieldname == "backend") {
-					$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+					//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+					$backendname = $parameter . "_" . $ipversion;
 					/*
 					$backend = $parameter;
 					if (!isset($a_pendingpl[$backendname])) {
@@ -997,6 +1089,9 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 						$a_pendingpl[$backendname]['ipversion'] = $ipversion;
 					}*/
 					$parameter = $backendname;
+				}
+				if (!empty($parameter) && !empty($field['prefix'])) {
+					$parameter = $field['prefix'] . " ". $parameter;
 				}
 				$action_cfg = str_replace("{{$fieldname}}", $parameter, $action_cfg);
 			}
@@ -1085,8 +1180,13 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 			$crtfile = "";
 			$verifynone = "";
 			$verifyhost = "";
-			if ($be['ssl'] == 'yes') {
-				$ssl = $frontendtype == "http" ? ' ssl' : ' check-ssl';
+			if ($be['ssl'] == 'yes' || $be['checkssl'] == 'yes') {
+				if ($be['ssl'] == 'yes') {
+					$ssl .= ' ssl';
+				}
+				if ($be['checkssl'] == 'yes') {
+					$ssl .= ' check-ssl';
+				}
 
 				if ($be['sslserververify'] != 'yes') {
 					$verifynone = " verify none";
@@ -1157,10 +1257,20 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 					$server = $server . ":" . $be['port'];
 				}
 				$servername = $be['name'];
+				$id = "";
 				if (count($servers) > 1) {
 					$servername .= "_" . $counter;
+				} else {
+					if (is_numeric($be['id'])) {
+						 $id = " id " . ($be['id'] + $idoffset);
+					}
 				}
-				fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+				if (is_numeric($be['istemplate'])) {
+					$istemplate = " {$be['istemplate']}";
+					fwrite ($fd, "\tserver-template\t\t\t" . $servername . $istemplate . " " . $server . "$id$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+				} else {
+					fwrite ($fd, "\tserver\t\t\t" . $servername . " " . $server . "$id$ssl$cookie$checkinter$checkport$agentcheck $isbackup$weight$maxconn$cafile$crlfile$verifynone$verifyhost$crtfile$server_options{$advanced_txt} {$be['advanced']}\n");
+				}
 				$counter++;
 			}
 		}
@@ -1278,12 +1388,6 @@ function haproxy_write_certificate_issuer($filename, $certid) {
 function haproxy_uses_ocsp() {
 	global $config;
 
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-		$config['installedpackages']['haproxy']['ha_backends'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-	}
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	if (!is_array($a_frontends)) {
 		return false;
@@ -1329,12 +1433,7 @@ function haproxy_updateocsp_one($socketupdate, $filename, $name) {
 
 function haproxy_updateocsp($socketupdate = true) {
 	global $config, $g;
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-		$config['installedpackages']['haproxy']['ha_backends'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-	}
+
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	if (!is_array($a_frontends)) {
 		return true;
@@ -1349,7 +1448,7 @@ function haproxy_updateocsp($socketupdate = true) {
 		if (is_arrayset($frontend, 'ha_certificates', 'item')) {
 			$certs = $frontend['ha_certificates']['item'];
 			foreach($certs as $cert) {
-				$filename = "$subfolder/{$cert['ssl_certificate']}.pem";
+				$filename = "$subfolder/{$frontend['name']}_{$cert['ssl_certificate']}.pem";
 				haproxy_updateocsp_one($socketupdate, $filename, $frontend['name']);
 			}
 		}
@@ -1370,24 +1469,7 @@ function haproxy_writeconf($configpath) {
 
 	rmdir_recursive($configpath);
 	@mkdir($configpath, 0755, true);
-	if(!is_array($config['installedpackages']['haproxy'])) {
-		$config['installedpackages']['haproxy'] = array();
-	}
-	if(!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-		$config['installedpackages']['haproxy']['ha_backends'] = array();
-	}
-	if(!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
-	if(!is_array($config['installedpackages']['haproxy']['email_mailers'])) {
-		$config['installedpackages']['haproxy']['email_mailers'] = array();
-	}
-	if(!is_array($config['installedpackages']['haproxy']['dns_resolvers'])) {
-		$config['installedpackages']['haproxy']['dns_resolvers'] = array();
-	}
-	if(!is_array($config['installedpackages']['haproxy']['files'])) {
-		$config['installedpackages']['haproxy']['files'] = array();
-	}
+
 	$a_global = &$config['installedpackages']['haproxy'];
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
@@ -1419,7 +1501,11 @@ function haproxy_writeconf($configpath) {
 		if ($a_global['remotesyslog']) {
 			fwrite ($fd, "\tlog\t\t\t{$a_global['remotesyslog']}\t{$a_global['logfacility']}\t{$a_global['loglevel']}\n");
 		}
-		fwrite ($fd, "\tstats socket /tmp/haproxy.socket level admin\n");
+		$exposefdlisteners = "";
+		if (haproxy_version() >= "1.8") {
+			$exposefdlisteners = " expose-fd listeners";
+		}
+		fwrite ($fd, "\tstats socket /tmp/haproxy.socket level admin $exposefdlisteners\n");
 
 		if(!use_transparent_clientip_proxying()) {
 			fwrite ($fd, "\tuid\t\t\t80\n");
@@ -1428,8 +1514,15 @@ function haproxy_writeconf($configpath) {
 		fwrite ($fd, "\tgid\t\t\t80\n");
 		// Set numprocs if defined or use system default (#cores)
 		$numprocs = $a_global['nbproc'] ? $a_global['nbproc'] : "1";
-		fwrite ($fd, "\tnbproc\t\t\t$numprocs\n");
-		fwrite ($fd, "\tchroot\t\t\t$chroot_dir\n");
+		$numthread = $a_global['nbthread'] ? $a_global['nbthread'] : "1";
+		fwrite ($fd, "\tnbproc\t\t\t{$numprocs}\n");
+		if (haproxy_version() >= "1.8") {
+			fwrite ($fd, "\tnbthread\t\t\t{$numthread}\n");
+		}
+		$hard_stop_after = !empty($a_global['hard_stop_after']) ? $a_global['hard_stop_after'] : "15m";
+		fwrite ($fd, "\thard-stop-after\t\t{$hard_stop_after}\n");
+
+		fwrite ($fd, "\tchroot\t\t\t\t$chroot_dir\n");
 		fwrite ($fd, "\tdaemon\n");
 
 		if ($a_global['ssldefaultdhparam']) {
@@ -1471,6 +1564,7 @@ function haproxy_writeconf($configpath) {
 				fwrite ($fd, "\tstats refresh {$a_global['localstats_refreshtime']}\n");
 			}
 			fwrite ($fd, "\tstats admin if TRUE\n");
+			fwrite ($fd, "\tstats show-legends\n");
 			fwrite ($fd, "\tstats uri /haproxy/haproxy_stats.php?haproxystats=1\n");
 			fwrite ($fd, "\ttimeout client 5000\n");
 			fwrite ($fd, "\ttimeout connect 5000\n");
@@ -1513,37 +1607,51 @@ function haproxy_writeconf($configpath) {
 			}
 			$primaryfrontend = get_primaryfrontend($frontend);
 
-			$bname = $primaryfrontend['name'];
-			if (!is_array($a_bind[$bname])) {
-				$a_bind[$bname] = array();
-				$a_bind[$bname] = $primaryfrontend;
-				$a_bind[$bname]['config'] = array();
+			$primary_fename = $primaryfrontend['name'];
+			if (!is_array($a_bind[$primary_fename])) {
+				$a_bind[$primary_fename] = array();
+				$a_bind[$primary_fename] = $primaryfrontend;
+				$a_bind[$primary_fename]['config'] = array();
 			}
 
 			//check ssl info
 			$ssl = get_frontend_uses_ssl($frontend);
-
+			$crtfiles = array();
 			if ($ssl) {
-				//ssl crt ./server.pem ca-file ./ca.crt verify optional crt-ignore-err all crl-file ./ca_crl.pem
-				$filename = "$configpath/{$frontend['name']}.pem";
-				$ssl_crt = " crt $filename";
+				$certfolder = "$configpath/{$primary_fename}";
+				$certs = getarraybyref($frontend,'ha_certificates','item');
+				$ssl_crt = "";
 
-				haproxy_write_certificate_fullchain($filename, $frontend['ssloffloadcert']);
-				if ($frontend['sslocsp'] == 'yes') {
-					$ocspurl = haproxy_getocspurl($filename);
-					if (!empty($ocspurl)) {
-						haproxy_write_certificate_issuer($filename . ".issuer", $frontend['ssloffloadcert']);
-						touch($filename . ".ocsp");//create initial empty file. this will trigger updates, and inform haproxy it 'should' be using ocsp
+				//ssl crt ./server.pem ca-file ./ca.crt verify optional crt-ignore-err all crl-file ./ca_crl.pem
+				if ($frontend['secondary'] != 'yes') {
+					$filename = "$configpath/{$frontend['name']}.pem";
+					$ssl_crt = " ssl";
+//					$ssl_crt .= " crt $filename";
+//					$ssl_crt .= " crt $certfolder";
+					@mkdir($certfolder, 0755, true);
+
+					$crtfiles[] = $filename;
+					haproxy_write_certificate_fullchain($filename, $frontend['ssloffloadcert']);
+					if ($frontend['sslocsp'] == 'yes') {
+						$ocspurl = haproxy_getocspurl($filename);
+						if (!empty($ocspurl)) {
+							haproxy_write_certificate_issuer($filename . ".issuer", $frontend['ssloffloadcert']);
+							touch($filename . ".ocsp");//create initial empty file. this will trigger updates, and inform haproxy it 'should' be using ocsp
+						}
 					}
+				} else {
+					// add the cert to the 'additional certs' array
+					$tempcert = array();
+					$tempcert['ssl_certificate'] = $frontend['ssloffloadcert'];
+					$certs[] = $tempcert;
 				}
 
-				$subfolder = "$configpath/{$frontend['name']}";
-				$certs = $frontend['ha_certificates']['item'];
 				if (is_array($certs)) {
 					if (count($certs) > 0) {
-						@mkdir($subfolder, 0755, true);
+						@mkdir($certfolder, 0755, true);
 						foreach($certs as $cert){
-							$filenamefoldercert = "$subfolder/{$cert['ssl_certificate']}.pem";
+							$filenamefoldercert = "$certfolder/{$frontend['name']}_{$cert['ssl_certificate']}.pem";
+							$crtfiles[] = $filenamefoldercert;
 							haproxy_write_certificate_fullchain($filenamefoldercert, $cert['ssl_certificate']);
 							if ($frontend['sslocsp'] == 'yes') {
 								$ocspurl = haproxy_getocspurl($filenamefoldercert);
@@ -1553,7 +1661,6 @@ function haproxy_writeconf($configpath) {
 								}
 							}
 						}
-						$ssl_crt .= " crt $subfolder";
 					}
 				}
 			} else {
@@ -1561,19 +1668,20 @@ function haproxy_writeconf($configpath) {
 				unlink_if_exists("var/etc/{$frontend['name']}.{$frontend['port']}.crt");//cleanup for possible old haproxy package version
 			}
 
-			$b = &$a_bind[$bname];
+			$b = &$a_bind[$primary_fename];
 
 			if (($frontend['secondary'] != 'yes') && ($frontend['name'] != $b['name'])) {
 				// only 1 frontend can be the primary for a set of frontends that share 1 address:port.
-					$input_errors[] = "Multiple primary frontends for $bname use the 'Shared Frontend' option instead";
+					$input_errors[] = "Multiple primary frontends for $primary_fename use the 'Shared Frontend' option instead";
 			}
 
 			if ($ssl_crt != "") {
 				if ($b['ssl_info'] == "") {
-					$b['ssl_info'] = "ssl {$frontend['dcertadv']}";
+					$b['ssl_info'] = " {$frontend['dcertadv']}";
 				}
 				$b['ssl_info'] .= $ssl_crt;
 			}
+			$frontend['crtfiles'] = $crtfiles; // keep list of .pem files for building the crt-list
 
 			// pointer to each frontend
 			$b['config'][] = $frontend;
@@ -1594,6 +1702,7 @@ function haproxy_writeconf($configpath) {
 			fwrite ($fd, "{$frontendinfo}");
 
 			$advancedextra = array();
+/**/
 			$ca_file = "";
 			$first = true;
 			if (is_array($bind['clientcert_ca']['item'])) {
@@ -1617,11 +1726,21 @@ function haproxy_writeconf($configpath) {
 				}
 				$crl_file = " crl-file $filename";
 			}
-			$advanced_bind = $bind['advanced_bind'];
-			$ssl_info = $bind['ssl_info'];
-			$ssl_info .= $ca_file . $crl_file;
+/**/
+			$ssl_ignoreclienterror = "";
 			if ($bind['sslclientcert-invalid']) {
-				$ssl_info .= " crt-ignore-err all";
+				$ssl_ignoreclienterror = " crt-ignore-err all";
+			}
+
+			$crtlistfilename = "{$configpath}/{$frontendname}.crt_list";
+			$advanced_bind = $bind['advanced_bind'];
+
+			if (empty($bind['ssl_info'])) {
+				$ssl_info = "";
+			} else {
+				$ssl_info = "" . $bind['ssl_info'];
+				$ssl_info .=  " crt-list {$crtlistfilename}";
+				$ssl_info .= $ca_file . $crl_file . $ssl_ignoreclienterror;
 			}
 
 			$useipv4 = false;
@@ -1636,6 +1755,52 @@ function haproxy_writeconf($configpath) {
 				$useipv6 |= is_ipaddrv6($bindip['addr']);
 			}
 			fwrite ($fd, "{$listenip}");
+
+			$crtlist = "";
+			foreach ($bind['config'] as $frontend) {
+				// loop through 'shared frontends' within one primary.
+				$ssloptions = "";
+
+				$ca_file = "";
+				$first = true;
+				if (is_array($frontend['clientcert_ca']['item'])) {
+					$filename = "$configpath/clientca_{$frontend['name']}.pem";
+					foreach($frontend['clientcert_ca']['item'] as $ca) {
+						if (!empty($ca['cert_ca'])) {
+							haproxy_write_certificate_crt($filename, $ca['cert_ca'], false, !$first);
+							$first = false;
+						}
+					}
+					$verify = $frontend['sslclientcert-none'] == 'yes' ? "verify optional" : "verify required";
+					$ca_file = " ca-file $filename $verify";
+				}
+				$crl_file = "";
+				$first = true;
+				if (is_array($frontend['clientcert_crl']['item'])) {
+					$filename = "$configpath/clientcrl_{$frontend['name']}.pem";
+					foreach($frontend['clientcert_crl']['item'] as $ca) {
+						haproxy_write_certificate_crl($filename, $ca['cert_crl'], !$first);
+						$first = false;
+					}
+					$crl_file = " crl-file $filename";
+				}
+
+				//$ssloptions .= " {$frontend['dcertadv']}";
+				$ssl_crtlist_advanced = empty($frontend['ssl_crtlist_advanced']) ? "" : " {$frontend['ssl_crtlist_advanced']}";
+				$ssloptions .= "{$ssl_crtlist_advanced}{$ca_file}{$crl_file}";
+				foreach($frontend['crtfiles'] as $crtfile) {
+					if ($frontendname == $frontend['name']) {
+//						continue;// skip primary from the crt-list
+					}
+					if (haproxy_version() < "1.8") {
+						// 1.7 does not support crt-list 'ssl options', only the filter can be set.
+						$crtlist .= "{$crtfile} {$frontend['sslsnifilter']}\r\n";
+					} else {
+						$crtlist .= "{$crtfile} [{$ssloptions}] {$frontend['sslsnifilter']}\r\n";
+					}
+				}
+			}
+			file_put_contents($crtlistfilename, $crtlist);
 
 			if (use_frontend_as_unixsocket($frontendname)) {
 				fwrite ($fd, "\tbind /tmp/haproxy_chroot/{$frontendname}.socket name unixsocket uid 80 accept-proxy {$ssl_info} {$advanced_bind}\n");
@@ -1805,7 +1970,7 @@ function haproxy_writeconf($configpath) {
 							$inspectdelay = $acltype['inspect-delay'];
 						}
 						if ($acltype['advancedoptions'] != '') {
-							$advancedextra[$acltype['syntax']] = $acltype['advancedoptions']."\n";
+							$advancedextra[$acltype['advancedoptions']] = $acltype['advancedoptions'];
 						}
 						if ($acltype['require_client_cert']) {
 							$needs_clientcert[$aclname] = true;
@@ -1831,13 +1996,16 @@ function haproxy_writeconf($configpath) {
 									$fieldname = $field['name'];
 									$parameter = $aclitem[$expression . $fieldname];
 									if ($fieldname == "backend") {
-										$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+										//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+										$backendname = $parameter . "_" . $ipversion;
 										$parameter = $backendname;
 									}
 									$expr = str_replace("{{$fieldname}}", $parameter, $expr);
 								}
 							}
 						}
+						$casesensitive = $aclitem['casesensitive'] == 'yes' ? "" : " -i";
+						$expr = str_replace("{casesensitive}", $casesensitive, $expr);
 						$config_acls ["\tacl\t\t\t" . $aclname . "\t" .  $expr . "\n"] = 1;
 					}
 
@@ -1856,7 +2024,8 @@ function haproxy_writeconf($configpath) {
 
 								if ($fieldname == "backend") {
 									$backend = $parameter;
-									$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+									//$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+									$backendname = $parameter . "_" . $ipversion;
 									if (!isset($a_pendingpl[$backendname])) {
 										$a_pendingpl[$backendname] = array();
 										$a_pendingpl[$backendname]['name'] = $backendname;
@@ -1865,6 +2034,9 @@ function haproxy_writeconf($configpath) {
 										$a_pendingpl[$backendname]['ipversion'] = $ipversion;
 									}
 									$parameter = $backendname;
+								}
+								if (!empty($parameter) && !empty($field['prefix'])) {
+									$parameter = $field['prefix'] . " ". $parameter;
 								}
 								$action_cfg = str_replace("{{$fieldname}}", $parameter, $action_cfg);
 							}
@@ -1893,7 +2065,7 @@ function haproxy_writeconf($configpath) {
 
 						if ($actionid == "use_backend") {
 							if (empty($condition)) {
-								$config_usedefaultbackends .= "\tdefault_backend {$parameter}{$condition}\n";
+								$config_usedefaultbackends .= "\tdefault_backend {$parameter}\n";
 							} else {
 								if (!empty($actionitem['acl'])){
 									$config_usebackends .= $action;
@@ -2001,13 +2173,6 @@ function frontend_usetransparentbackend($frontend) {
 
 function use_transparent_clientip_proxying() {
 	global $config;
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-	}
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	if (is_array($a_backends)) {
 		foreach ($a_backends as $backend) {
@@ -2021,12 +2186,6 @@ function use_transparent_clientip_proxying() {
 
 function haproxy_get_transparent_backends(){
 	global $config;
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-	}
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$transparent_backends = array();
 	if (!is_array($a_backends)) {
@@ -2037,6 +2196,9 @@ function haproxy_get_transparent_backends(){
 			continue;
 		}
 		$real_if = get_real_interface($backend["transparent_interface"]);
+		if (!is_array($backend['ha_servers'])) {
+			$backend['ha_servers'] = array();
+		}
 		$a_servers = &$backend['ha_servers']['item'];
 		if (is_array($a_servers)) {
 			foreach($a_servers as $be) {
@@ -2210,6 +2372,7 @@ function haproxy_carpipismaster($ip) {
 
 function haproxy_check_run($reload) {
 	global $config, $g, $haproxy_run_message;
+	haproxy_config_init();
 	$haproxylock = lock("haproxy", LOCK_EX);
 	$a_global = &$config['installedpackages']['haproxy'];
 	$configpath = "{$g['varetc_path']}/haproxy";
@@ -2230,7 +2393,7 @@ function haproxy_check_run($reload) {
 		}
 		$useocsp = haproxy_uses_ocsp();
 		if ($useocsp == "true") {
-			install_cron_job("/etc/rc.haproxy_ocsp.sh", true, "*/120");
+			install_cron_job("/etc/rc.haproxy_ocsp.sh", true, "1");
 		} else {
 			install_cron_job("/etc/rc.haproxy_ocsp.sh", false);
 		}
@@ -2280,7 +2443,11 @@ function haproxy_check_run($reload) {
 			}
 
 			syslog(LOG_NOTICE, "haproxy: reload old pid:$old_pid");
-			exec("/usr/local/sbin/haproxy -f {$configpath}/haproxy.cfg -p /var/run/haproxy.pid $sf_st `cat /var/run/haproxy.pid` 2>&1", $output, $errcode);
+			$restartargs = "";
+			if (haproxy_version() >= "1.8") {
+				$restartargs = " -x /tmp/haproxy.socket";
+			}
+			exec("/usr/local/sbin/haproxy -f {$configpath}/haproxy.cfg -p /var/run/haproxy.pid -D $restartargs $sf_st `cat /var/run/haproxy.pid` 2>&1", $output, $errcode);
 		} else {
 			syslog(LOG_NOTICE, "haproxy: starting old pid:$old_pid");
 			exec("/usr/local/sbin/haproxy -f {$configpath}/haproxy.cfg -p /var/run/haproxy.pid -D 2>&1", $output, $errcode);
@@ -2376,13 +2543,6 @@ function haproxy_xmlrpc_sync_configure() {
 
 function get_frontend_id($name) {
 	global $config;
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-		$config['installedpackages']['haproxy']['ha_backends'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-	}
 	$a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$i = 0;
 	foreach($a_frontend as $frontend)
@@ -2404,12 +2564,6 @@ function haproxy_is_frontendname($name) {
 
 function get_primaryfrontend($frontend) {
 	global $config;
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-		$config['installedpackages']['haproxy']['ha_backends'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-	}
 	$a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	if ($frontend['secondary'] == 'yes') {
 		$mainfrontend = $a_frontend[get_frontend_id($frontend['primary_frontend'])];
@@ -2457,8 +2611,8 @@ function get_frontend_bindips($frontend) {
 		if (isset($extaddr['extaddr']) && $extaddr['extaddr'] != "custom") {
 			$a_ip[] = haproxy_interface_ip($extaddr['extaddr']);
 		} else {
-			$iporalias = $extaddr['extaddr_custom'];
-			$a_ip = haproxy_addressoralias_to_list($iporalias);
+			$items = haproxy_expand_alias_array($extaddr['extaddr_custom']);
+			$a_ip = haproxy_filter_alias_array($items, true);
 		}
 		foreach($a_ip as $ip) {
 			$portsnumeric = group_ports(haproxy_portoralias_to_list($extaddr['extaddr_port']));
@@ -2480,13 +2634,6 @@ function get_frontend_bindips($frontend) {
 
 function haproxy_check_config() {
 	global $config;
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-		$config['installedpackages']['haproxy']['ha_backends'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-	}
 	$a_backends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$result = false;
 	$activefrontends = array();
@@ -2524,17 +2671,6 @@ function haproxy_check_config() {
 
 function get_haproxy_backends() {
 	global $config;
-	if (!is_array($config['installedpackages'])) {
-		$config['installedpackages'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['haproxy'])) {
-		$config['installedpackages']['haproxy'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
 	$a_backend = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$result = array();
 	if (!is_array($a_backend)) {
@@ -2550,14 +2686,6 @@ function get_haproxy_backends() {
 
 function get_haproxy_frontends($excludeitem = "") {
 	global $config;
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-		$config['installedpackages']['haproxy']['ha_backends'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-	}
 	$a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$result = array();
 	if (!is_array($a_frontend)) {
@@ -2672,10 +2800,6 @@ function get_frontend_acls($frontend) {
 	}
 
 	if (get_frontend_uses_ssl($frontend)) {
-
-		if (!is_array($frontend['ha_acls']['item'])) {
-			$frontend['ha_acls']['item'] = array();
-		}
 		$a_acl = &$frontend['ha_acls']['item'];
 		if (!is_array($a_acl)) {
 			$a_acl = array();
@@ -2716,15 +2840,12 @@ function get_frontend_acls($frontend) {
 
 function get_backend_acls($backend, $type) {
 	$result = array();
-
 	if (!is_array($backend['a_acl'])) {
 		$backend['a_acl'] = array();
 	}
-
 	if (!is_array($backend['a_acl']['item'])) {
 		$backend['a_acl']['item'] = array();
 	}
-
 	$a_acl = &$backend['a_acl']['item'];
 	if (is_array($a_acl))
 	{
@@ -2751,13 +2872,6 @@ function get_backend_acls($backend, $type) {
 
 function get_backend_id($name) {
 	global $config;
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-	}
 	$a_backend = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$i = 0;
 	if (is_array($a_backend)) {
@@ -2773,13 +2887,6 @@ function get_backend_id($name) {
 
 function get_backend($name) {
 	global $config;
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-	}
 	$a_backend = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$id = get_backend_id($name);
 	if (is_numeric($id)) {
@@ -2790,16 +2897,9 @@ function get_backend($name) {
 
 function use_frontend_as_unixsocket($name) {
 	global $config;
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-	}
-	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
+	$a_backends = getarraybyref($config['installedpackages']['haproxy'],'ha_pools','item');
 	foreach ($a_backends as $backend) {
-		$a_servers = &$backend['ha_servers']['item'];
+		$a_servers = getarraybyref($backend,'ha_servers','item');
 		if (is_array($a_servers)) {
 			foreach($a_servers as $server) {
 				if ($server['forwardto'] && $server['forwardto'] == $name) {
@@ -2827,7 +2927,7 @@ function haproxy_find_create_certificate($certificatename) {
 		return $cert;
 	}
 	global $config;
-	$a_cert =& $config['cert'];
+	$a_cert = &$config['cert'];
 	$cert = array();
 	$cert['refid'] = uniqid();
 	$cert['descr'] = gettext($certificatename);
@@ -2844,4 +2944,143 @@ function haproxy_find_create_certificate($certificatename) {
 	cert_import($cert, $crt, $prv);
 	$a_cert[] = $cert;
 	return $cert;
+}
+
+function haproxy_config_init(){
+	global $config;
+	if (!is_array($config['installedpackages'])) {
+		$config['installedpackages'] = array();
+	}
+	if (!is_array($config['installedpackages']['haproxy'])) {
+		$config['installedpackages']['haproxy'] = array();
+	}
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	if (!is_array($haproxycfg['email_mailers'])) {
+		$haproxycfg['email_mailers'] = array();
+	}
+	if (!is_array($haproxycfg['email_mailers']['item'])) {
+		$haproxycfg['email_mailers']['item'] = array();
+	}
+	if (!is_array($haproxycfg['dns_resolvers'])) {
+		$haproxycfg['dns_resolvers'] = array();
+	}
+	if (!is_array($haproxycfg['dns_resolvers']['item'])) {
+		$haproxycfg['dns_resolvers']['item'] = array();
+	}
+	if (!is_array($haproxycfg['ha_backends'])) {
+		$haproxycfg['ha_backends'] = array();
+	}
+	if (!is_array($haproxycfg['ha_backends']['item'])) {
+		$haproxycfg['ha_backends']['item'] = array();
+	}
+	if (!is_array($haproxycfg['ha_pools'])) {
+		$haproxycfg['ha_pools'] = array();
+	}
+	if (!is_array($haproxycfg['ha_pools']['item'])) {
+		$haproxycfg['ha_pools']['item'] = array();
+	}
+	if (!is_array($haproxycfg['files'])) {
+		$haproxycfg['files'] = array();
+	}
+	if (!is_array($haproxycfg['files']['item'])) {
+		$haproxycfg['files']['item'] = array();
+	}
+}
+
+function config_id() {
+	global $config;
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	$id = 100;
+	foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		if (!is_numeric($backend['id'])) {
+			while(find_server_by_id($id) || find_backend_by_id($id)) {
+				// find unused id..
+				$id++;
+			}
+			$backend['id'] = $id;
+		}
+		if (is_array($backend['ha_servers']['item'])) {
+			foreach($backend['ha_servers']['item'] as &$server) {
+				if (!is_numeric($server['id'])) {
+					while(find_server_by_id($id) || find_backend_by_id($id)) {
+						// find unused id..
+						$id++;
+					}
+					$server['id'] = $id;
+				}
+			}
+		}
+	}
+}
+
+function find_frontends_using_backend($backendname) {
+	global $config;
+	$a_backends = $config['installedpackages']['haproxy']['ha_backends']['item'];
+	$result = array();
+	foreach ($a_backends as $frontend) {
+		$used = false;
+		if($frontend['backend_serverpool'] == $backendname) {
+			$used = true;
+		}
+		$actions = $frontend['a_actionitems']['item'];
+		if (is_array($actions)) {
+			foreach($actions as $action) {
+				if ($action["action"] == "use_backend" && $action['use_backendbackend'] == $backendname) {
+					$used = true;
+				}
+			}
+		}
+		if ($used) {
+			$result[] = $frontend['name'];
+		}
+	}				
+	return $result;
+}
+
+function find_server_by_id($id) {
+	global $config;
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		if (is_array($backend['ha_servers']['item'])) {
+			foreach($backend['ha_servers']['item'] as &$server) {
+				if ($server['id'] == $id) {
+					return $server;
+				}
+			}
+		}
+	}
+	return null;
+}
+
+function find_backend_by_id($id) {
+	global $config;
+	$haproxycfg = &$config['installedpackages']['haproxy'];
+	foreach($haproxycfg['ha_pools']['item'] as &$backend) {
+		if ($backend['id'] == $id) {
+			return $backend;
+		}
+	}
+	return null;
+}
+
+function rename_backend_references($oldvalue, $newvalue) {
+	global $config;
+	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+	foreach ($a_frontends as &$frontend) {
+		if ($frontend['backend_serverpool'] == $oldvalue) {
+			$frontend['backend_serverpool'] = $newvalue;
+		}
+		if (is_array($frontend['a_actionitems']['item'])) {
+			foreach($frontend['a_actionitems']['item'] as &$item) {
+				if ($item['action'] == "use_backend") {
+					if ($item['use_backendbackend'] == $oldvalue) {
+						$item['use_backendbackend'] = $newvalue;
+					}
+				}
+			}
+		}
+	}
+	unset($frontend);
+	
+	//TODO: acl's with backendservercount/backend should also be renamed..
 }

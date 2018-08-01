@@ -1328,14 +1328,14 @@
 				},
 				{
 					"feed":		"Quidsup",
-					"website":	"https://github.com/quidsup/notrack",
-					"url":		"https://raw.githubusercontent.com/quidsup/notrack/master/trackers.txt",
+					"website":	"https://quidsup.net/notrack/blocklist.php",
+					"url":		"https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt",
 					"header":	"Quidsup_Trackers"
 				},
 				{
 					"feed":		"Quidsup",
-					"website":	"https://github.com/quidsup/notrack",
-					"url":		"https://raw.githubusercontent.com/quidsup/notrack/master/malicious-sites.txt",
+					"website":	"https://quidsup.net/notrack/blocklist.php",
+					"url":		"https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt",
 					"header":	"Quidsup_Mal"
 				},
 				{
