@@ -62,62 +62,55 @@ foreach ($a_server as $server) {
 	$ras_server[$vpnid] = $ras_serverent;
 }
 
-$id = $_GET['id'];
-if (isset($_POST['id'])) {
-	$id = $_POST['id'];
-}
-
-$act = $_GET['act'];
-if (isset($_POST['act'])) {
-	$act = $_POST['act'];
-}
+$id = $_POST['id'];
+$act = $_POST['act'];
 
 $error = false;
 
 if (($act == "skconfinline") || ($act == "skconf") || ($act == "skzipconf")) {
-	$srvid = $_GET['srvid'];
+	$srvid = $_POST['srvid'];
 	$srvcfg = get_openvpnserver_by_id($srvid);
 	if (($srvid === false) || ($srvcfg['mode'] != "p2p_shared_key")) {
 		pfSenseHeader("vpn_openvpn_export_shared.php");
 		exit;
 	}
 
-	if (empty($_GET['useaddr'])) {
+	if (empty($_POST['useaddr'])) {
 		$error = true;
 		$input_errors[] = "An IP address or hostname must be specified.";
 	} else {
-		$useaddr = $_GET['useaddr'];
+		$useaddr = $_POST['useaddr'];
 	}
 
 	$proxy = "";
-	if (!empty($_GET['proxy_addr']) || !empty($_GET['proxy_port'])) {
+	if (!empty($_POST['proxy_addr']) || !empty($_POST['proxy_port'])) {
 		$proxy = array();
-		if (empty($_GET['proxy_addr'])) {
+		if (empty($_POST['proxy_addr'])) {
 			$error = true;
 			$input_errors[] = "An address for the proxy must be specified.";
 		} else {
-			$proxy['ip'] = $_GET['proxy_addr'];
+			$proxy['ip'] = $_POST['proxy_addr'];
 		}
-		if (empty($_GET['proxy_port'])) {
+		if (empty($_POST['proxy_port'])) {
 			$error = true;
 			$input_errors[] = "A port for the proxy must be specified.";
 		} else {
-			$proxy['port'] = $_GET['proxy_port'];
+			$proxy['port'] = $_POST['proxy_port'];
 		}
-		$proxy['proxy_type'] = $_GET['proxy_type'];
-		$proxy['proxy_authtype'] = $_GET['proxy_authtype'];
-		if ($_GET['proxy_authtype'] != "none") {
-			if (empty($_GET['proxy_user'])) {
+		$proxy['proxy_type'] = $_POST['proxy_type'];
+		$proxy['proxy_authtype'] = $_POST['proxy_authtype'];
+		if ($_POST['proxy_authtype'] != "none") {
+			if (empty($_POST['proxy_user'])) {
 				$error = true;
 				$input_errors[] = "A username for the proxy configuration must be specified.";
 			} else {
-				$proxy['user'] = $_GET['proxy_user'];
+				$proxy['user'] = $_POST['proxy_user'];
 			}
-			if (!empty($_GET['proxy_user']) && empty($_GET['proxy_password'])) {
+			if (!empty($_POST['proxy_user']) && empty($_POST['proxy_password'])) {
 				$error = true;
 				$input_errors[] = "A password for the proxy user must be specified.";
 			} else {
-				$proxy['password'] = $_GET['proxy_password'];
+				$proxy['password'] = $_POST['proxy_password'];
 			}
 		}
 	}
@@ -324,6 +317,14 @@ servers[<?=$sindex?>][1] = new Array();
 servers[<?=$sindex?>][2] = '<?=$server['mode']?>';
 <?php	endforeach; ?>
 
+function make_form_variable(varname, varvalue) {
+	var exportinput = document.createElement("input");
+	exportinput.type = "hidden";
+	exportinput.name = varname;
+	exportinput.value = varvalue;
+	return exportinput;
+}
+
 function download_begin(act) {
 
 	var index = document.getElementById("server").value;
@@ -379,22 +380,30 @@ function download_begin(act) {
 		}
 	}
 
-	var dlurl;
-	dlurl  = "/vpn_openvpn_export_shared.php?act=" + act;
-	dlurl += "&srvid=" + servers[index][0];
-	dlurl += "&useaddr=" + useaddr;
+	var exportform = document.createElement("form");
+	exportform.method = "POST";
+	exportform.action = "/vpn_openvpn_export_shared.php";
+	exportform.target = "_self";
+	exportform.style.display = "none";
+
+	exportform.appendChild(make_form_variable("act", act));
+	exportform.appendChild(make_form_variable("srvid", servers[index][0]));
+	exportform.appendChild(make_form_variable("useaddr", useaddr));
+
 	if (useproxy) {
-		dlurl += "&proxy_type=" + escape(proxytype);
-		dlurl += "&proxy_addr=" + proxyaddr;
-		dlurl += "&proxy_port=" + proxyport;
-		dlurl += "&proxy_authtype=" + proxyauth;
+		exportform.appendChild(make_form_variable("proxy_type", proxytype));
+		exportform.appendChild(make_form_variable("proxy_addr", proxyaddr));
+		exportform.appendChild(make_form_variable("proxy_port", proxyport));
+		exportform.appendChild(make_form_variable("proxy_authtype", proxyauth));
 		if (useproxypass) {
-			dlurl += "&proxy_user=" + proxyuser;
-			dlurl += "&proxy_password=" + proxypass;
+			exportform.appendChild(make_form_variable("proxy_user", proxyuser));
+			exportform.appendChild(make_form_variable("proxy_password", proxypass));
 		}
 	}
 
-	window.open(dlurl, "_self");
+	exportform.appendChild(make_form_variable(csrfMagicName, csrfMagicToken));
+	document.body.appendChild(exportform);
+	exportform.submit();
 }
 
 function server_changed() {
