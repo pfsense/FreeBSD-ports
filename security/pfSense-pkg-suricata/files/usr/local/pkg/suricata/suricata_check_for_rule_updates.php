@@ -212,9 +212,9 @@ function suricata_download_file_url($url, $file_out) {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
-		
+
 		// detect broken connection so it disconnects after +-10 minutes (with default TCP_KEEPIDLE and TCP_KEEPINTVL) to avoid waiting forever.
-		curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1); 
+		curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1);
 
 		// Honor any system restrictions on sending USERAGENT info
 		if (!isset($config['system']['do_not_send_host_uuid'])) {
@@ -363,7 +363,7 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 		suricata_update_status(gettext(" done.") . "\n");
 		log_error("[Suricata] {$desc} file update downloaded successfully.");
 		error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
-	
+
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
 		if ($file_md5 != trim(md5_file($file_dst))){
 			suricata_update_status(gettext("{$desc} file MD5 checksum failed!") . "\n");
@@ -431,7 +431,7 @@ if ($emergingthreats == 'on') {
 
 /*  Check for and download any new Snort rule sigs */
 if ($snortdownload == 'on') {
-	$snort_custom_url = config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on' ? TRUE : FALSE;
+	$snort_custom_url = $config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on' ? TRUE : FALSE;
 	if (empty($snort_filename)) {
 		log_error(gettext("No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."));
 		error_log(gettext("\tWARNING-- No snortrules-snapshot filename set on GLOBAL SETTINGS tab. Snort rules cannot be updated!\n"), 3, SURICATA_RULES_UPD_LOGFILE);
