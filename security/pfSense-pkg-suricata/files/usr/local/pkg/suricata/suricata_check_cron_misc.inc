@@ -40,7 +40,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 	 ********************************************************/
 
 	global $config;
-	
+
 	// Convert Log Limit Size setting from MB to KB
 	$suricataloglimitsizeKB = round($suricataloglimitsize * 1024);
 	$suricatalogdirsizeKB = suricata_Getdirsize(SURICATALOGDIR);
@@ -79,7 +79,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 			unlink_if_exists("{$suricata_log_dir}/certs/*");
 		}
 
-		if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+		if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
 			goto cleanupExit;
 		}
 
@@ -88,7 +88,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		unlink_if_exists("{$suricata_log_dir}/suricata_*/*.log.*");
 		unlink_if_exists("{$suricata_log_dir}/suricata_*/*.json.*");
 
-		if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+		if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
 			goto cleanupExit;
 		}
 
@@ -97,7 +97,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 			$if_real = get_real_interface($value['interface']);
 			$suricata_uuid = $value['uuid'];
 			$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
-			if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+			if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
 				goto cleanupExit;
 			}
 
@@ -111,12 +111,12 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 					}
 				}
 
-				if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+				if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
 					goto cleanupExit;
 				}
 			}
 
-			if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+			if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
 				goto cleanupExit;
 			}
 		}
