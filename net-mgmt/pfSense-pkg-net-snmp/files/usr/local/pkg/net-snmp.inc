@@ -1353,6 +1353,9 @@ function netsnmp_validate_netsnmptrapdcommunities($post, &$input_errors) {
 	global $config;
 
 	/* type: log, net, execute */
+	if (!is_array($post['type'])) {
+		$post['type'] = array();
+	}
 	foreach ($post['type'] as $t) {
 		if (!in_array($t, array('log', 'net', 'execute'))) {
 			$input_errors[] = gettext("Invalid Process Type.");
@@ -1387,6 +1390,9 @@ function netsnmp_validate_netsnmptrapdusers($post, &$input_errors) {
 		$input_errors[] = gettext("Invalid Trap User.");
 	}
 	/* type: log, net, execute */
+	if (!is_array($post['type'])) {
+		$post['type'] = array();
+	}
 	foreach ($post['type'] as $t) {
 		if (!in_array($t, array('log', 'net', 'execute'))) {
 			$input_errors[] = gettext("Invalid Process Type.");

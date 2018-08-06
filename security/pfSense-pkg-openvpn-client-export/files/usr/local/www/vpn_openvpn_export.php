@@ -118,15 +118,8 @@ foreach ($a_server as $server) {
 	$ras_server[$vpnid] = $ras_serverent;
 }
 
-$id = $_GET['id'];
-if (isset($_POST['id'])) {
-	$id = $_POST['id'];
-}
-
-$act = $_GET['act'];
-if (isset($_POST['act'])) {
-	$act = $_POST['act'];
-}
+$id = $_POST['id'];
+$act = $_POST['act'];
 
 global $simplefields;
 $simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','legacy','randomlocalport',
@@ -183,9 +176,9 @@ for($i = 0; $i < count($ovpnserverdefaults); $i++) {
 
 if (!empty($act)) {
 
-	$srvid = $_GET['srvid'];
-	$usrid = $_GET['usrid'];
-	$crtid = $_GET['crtid'];
+	$srvid = $_POST['srvid'];
+	$usrid = $_POST['usrid'];
+	$crtid = $_POST['crtid'];
 	$srvcfg = get_openvpnserver_by_id($srvid);
 	if ($srvid === false) {
 		pfSenseHeader("vpn_openvpn_export.php");
@@ -203,8 +196,8 @@ if (!empty($act)) {
 	}
 
 	$useaddr = '';
-	if (isset($_GET['useaddr']) && !empty($_GET['useaddr'])) {
-		$useaddr = trim($_GET['useaddr']);
+	if (isset($_POST['useaddr']) && !empty($_POST['useaddr'])) {
+		$useaddr = trim($_POST['useaddr']);
 	}
 
 	if (!(is_ipaddr($useaddr) || is_hostname($useaddr) ||
@@ -212,63 +205,63 @@ if (!empty($act)) {
 		$input_errors[] = "An IP address or hostname must be specified.";
 	}
 
-	$advancedoptions = $_GET['advancedoptions'];
+	$advancedoptions = $_POST['advancedoptions'];
 
-	$verifyservercn = $_GET['verifyservercn'];
-	$blockoutsidedns = $_GET['blockoutsidedns'];
-	$legacy = $_GET['legacy'];
-	$randomlocalport = $_GET['randomlocalport'];
-	$usetoken = $_GET['usetoken'];
+	$verifyservercn = $_POST['verifyservercn'];
+	$blockoutsidedns = $_POST['blockoutsidedns'];
+	$legacy = $_POST['legacy'];
+	$randomlocalport = $_POST['randomlocalport'];
+	$usetoken = $_POST['usetoken'];
 	if ($usetoken && (substr($act, 0, 10) == "confinline")) {
 		$input_errors[] = "Microsoft Certificate Storage cannot be used with an Inline configuration.";
 	}
 	if ($usetoken && (($act == "conf_yealink_t28") || ($act == "conf_yealink_t38g") || ($act == "conf_yealink_t38g2") || ($act == "conf_snom"))) {
 		$input_errors[] = "Microsoft Certificate Storage cannot be used with a Yealink or SNOM configuration.";
 	}
-	$usepkcs11 = $_GET['usepkcs11'];
-	$pkcs11providers = $_GET['pkcs11providers'];
+	$usepkcs11 = $_POST['usepkcs11'];
+	$pkcs11providers = $_POST['pkcs11providers'];
 	if ($usepkcs11 && !$pkcs11providers) {
 		$input_errors[] = "You must provide the PKCS#11 providers.";
 	}
-	$pkcs11id = $_GET['pkcs11id'];
+	$pkcs11id = $_POST['pkcs11id'];
 	if ($usepkcs11 && !$pkcs11id) {
 		$input_errors[] = "You must provide the PKCS#11 ID.";
 	}
 	$password = "";
-	if ($_GET['password']) {
-		if ($_GET['password'] != DMYPWD) {
-			$password = $_GET['password'];
+	if ($_POST['password']) {
+		if ($_POST['password'] != DMYPWD) {
+			$password = $_POST['password'];
 		} else {
 			$password = $cfg['pass'];
 		}
 	}
 
 	$proxy = "";
-	if (!empty($_GET['proxy_addr']) || !empty($_GET['proxy_port'])) {
+	if (!empty($_POST['proxy_addr']) || !empty($_POST['proxy_port'])) {
 		$proxy = array();
-		if (empty($_GET['proxy_addr'])) {
+		if (empty($_POST['proxy_addr'])) {
 			$input_errors[] = "An address for the proxy must be specified.";
 		} else {
-			$proxy['ip'] = $_GET['proxy_addr'];
+			$proxy['ip'] = $_POST['proxy_addr'];
 		}
-		if (empty($_GET['proxy_port'])) {
+		if (empty($_POST['proxy_port'])) {
 			$input_errors[] = "A port for the proxy must be specified.";
 		} else {
-			$proxy['port'] = $_GET['proxy_port'];
+			$proxy['port'] = $_POST['proxy_port'];
 		}
-		$proxy['proxy_type'] = $_GET['proxy_type'];
-		$proxy['proxy_authtype'] = $_GET['proxy_authtype'];
-		if ($_GET['proxy_authtype'] != "none") {
-			if (empty($_GET['proxy_user'])) {
+		$proxy['proxy_type'] = $_POST['proxy_type'];
+		$proxy['proxy_authtype'] = $_POST['proxy_authtype'];
+		if ($_POST['proxy_authtype'] != "none") {
+			if (empty($_POST['proxy_user'])) {
 				$input_errors[] = "A username for the proxy configuration must be specified.";
 			} else {
-				$proxy['user'] = $_GET['proxy_user'];
+				$proxy['user'] = $_POST['proxy_user'];
 			}
-			if (!empty($_GET['proxy_user']) && empty($_GET['proxy_password'])) {
+			if (!empty($_POST['proxy_user']) && empty($_POST['proxy_password'])) {
 				$input_errors[] = "A password for the proxy user must be specified.";
 			} else {
-				if ($_GET['proxy_password'] != DMYPWD) {
-					$proxy['password'] = $_GET['proxy_password'];
+				if ($_POST['proxy_password'] != DMYPWD) {
+					$proxy['password'] = $_POST['proxy_password'];
 				} else {
 					$proxy['password'] = $cfg['proxypass'];
 				}
@@ -716,8 +709,15 @@ endforeach;
 
 serverdefaults = <?=json_encode($ovpnserverdefaults)?>;
 
-function download_begin(act, i, j) {
+function make_form_variable(varname, varvalue) {
+	var exportinput = document.createElement("input");
+	exportinput.type = "hidden";
+	exportinput.name = varname;
+	exportinput.value = varvalue;
+	return exportinput;
+}
 
+function download_begin(act, i, j) {
 	var index = document.getElementById("server").value;
 	var users = servers[index][1];
 	var certs = servers[index][3];
@@ -820,43 +820,49 @@ function download_begin(act, i, j) {
 		}
 	}
 
-	var dlurl;
-	dlurl  = "/vpn_openvpn_export.php?act=" + act;
-	dlurl += "&srvid=" + encodeURIComponent(servers[index][0]);
+	var exportform = document.createElement("form");
+	exportform.method = "POST";
+	exportform.action = "/vpn_openvpn_export.php";
+	exportform.target = "_self";
+	exportform.style.display = "none";
+
+	exportform.appendChild(make_form_variable("act", act));
+	exportform.appendChild(make_form_variable("srvid", servers[index][0]));
 	if (users[i]) {
-		dlurl += "&usrid=" + encodeURIComponent(users[i][0]);
-		dlurl += "&crtid=" + encodeURIComponent(users[i][1]);
+		exportform.appendChild(make_form_variable("usrid", users[i][0]));
+		exportform.appendChild(make_form_variable("crtid", users[i][1]));
 	}
 	if (certs[j]) {
-		dlurl += "&usrid=";
-		dlurl += "&crtid=" + encodeURIComponent(certs[j][0]);
+		exportform.appendChild(make_form_variable("usrid", ""));
+		exportform.appendChild(make_form_variable("crtid", certs[j][0]));
 	}
-	dlurl += "&useaddr=" + encodeURIComponent(useaddr);
-	dlurl += "&verifyservercn=" + encodeURIComponent(verifyservercn);
-	dlurl += "&blockoutsidedns=" + encodeURIComponent(blockoutsidedns);
-	dlurl += "&legacy=" + encodeURIComponent(legacy);
-	dlurl += "&randomlocalport=" + encodeURIComponent(randomlocalport);
-	dlurl += "&usetoken=" + encodeURIComponent(usetoken);
-	dlurl += "&usepkcs11=" + escape(usepkcs11);
-	dlurl += "&pkcs11providers=" + escape(pkcs11providers);
-	dlurl += "&pkcs11id=" + escape(pkcs11id);
+	exportform.appendChild(make_form_variable("useaddr", useaddr));
+	exportform.appendChild(make_form_variable("verifyservercn", verifyservercn));
+	exportform.appendChild(make_form_variable("blockoutsidedns", blockoutsidedns));
+	exportform.appendChild(make_form_variable("legacy", legacy));
+	exportform.appendChild(make_form_variable("randomlocalport", randomlocalport));
+	exportform.appendChild(make_form_variable("usetoken", usetoken));
+	exportform.appendChild(make_form_variable("usepkcs11", usepkcs11));
+	exportform.appendChild(make_form_variable("pkcs11providers", pkcs11providers));
+	exportform.appendChild(make_form_variable("pkcs11id", pkcs11id));
 	if (usepass) {
-		dlurl += "&password=" + encodeURIComponent(pass);
+		exportform.appendChild(make_form_variable("password", pass));
 	}
 	if (useproxy) {
-		dlurl += "&proxy_type=" + encodeURIComponent(proxytype);
-		dlurl += "&proxy_addr=" + encodeURIComponent(proxyaddr);
-		dlurl += "&proxy_port=" + encodeURIComponent(proxyport);
-		dlurl += "&proxy_authtype=" + encodeURIComponent(proxyauth);
+		exportform.appendChild(make_form_variable("proxy_type", proxytype));
+		exportform.appendChild(make_form_variable("proxy_addr", proxyaddr));
+		exportform.appendChild(make_form_variable("proxy_port", proxyport));
+		exportform.appendChild(make_form_variable("proxy_authtype", proxyauth));
 		if (useproxypass) {
-			dlurl += "&proxy_user=" + encodeURIComponent(proxyuser);
-			dlurl += "&proxy_password=" + encodeURIComponent(proxypass);
+			exportform.appendChild(make_form_variable("proxy_user", proxyuser));
+			exportform.appendChild(make_form_variable("proxy_password", proxypass));
 		}
 	}
+	exportform.appendChild(make_form_variable("advancedoptions", advancedoptions));
 
-	dlurl += "&advancedoptions=" + encodeURIComponent(advancedoptions);
-
-	window.open(dlurl, "_self");
+	exportform.appendChild(make_form_variable(csrfMagicName, csrfMagicToken));
+	document.body.appendChild(exportform);
+	exportform.submit();
 }
 
 function server_changed() {

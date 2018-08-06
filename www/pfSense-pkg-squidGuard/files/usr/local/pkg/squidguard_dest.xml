@@ -82,7 +82,7 @@
 			<fieldname>order</fieldname>
 			<description>
 				<![CDATA[
-				Select the new position for this target category. Target categories are listed in this order on ALCs and are matched from the top down in sequence.<br>
+				Select the new position for this target category. Target categories are listed in this order on ACLs and are matched from the top down in sequence.<br>
 				]]>
 			</description>
 			<type>select</type>
