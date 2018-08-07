@@ -1434,23 +1434,23 @@ function haproxy_updateocsp_one($socketupdate, $filename, $name) {
 function haproxy_updateocsp($socketupdate = true) {
 	global $config, $g;
 
-	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
-	if (!is_array($a_frontends)) {
-		return true;
-	}
-
+	$a_frontends = getarraybyref($config,'installedpackages','haproxy','ha_backends','item');
 	$configpath = "{$g['varetc_path']}/haproxy";
 	foreach ($a_frontends as $frontend) {
-		$filename = "$configpath/{$frontend['name']}.pem";
-		haproxy_updateocsp_one($socketupdate, $filename, $frontend['name']);
-
-		$subfolder = "$configpath/{$frontend['name']}";
-		if (is_arrayset($frontend, 'ha_certificates', 'item')) {
-			$certs = $frontend['ha_certificates']['item'];
-			foreach($certs as $cert) {
-				$filename = "$subfolder/{$frontend['name']}_{$cert['ssl_certificate']}.pem";
-				haproxy_updateocsp_one($socketupdate, $filename, $frontend['name']);
-			}
+		$primaryfrontend = get_primaryfrontend($frontend);
+		$subfolder = "$configpath/{$primaryfrontend['name']}";
+		$certs = getarraybyref($frontend, 'ha_certificates', 'item');
+		if ($frontend['secondary'] != 'yes') {
+			$filename = "$configpath/{$frontend['name']}.pem";
+			haproxy_updateocsp_one($socketupdate, $filename, $frontend['name']);
+		} else {
+			$item = array(); // treat seconday frontend certificates as a additional cert of the primary.
+			$item['ssl_certificate'] = $frontend['ssloffloadcert'];
+			$certs[] = $item;
+		}
+		foreach($certs as $cert) {
+			$filename = "$subfolder/{$frontend['name']}_{$cert['ssl_certificate']}.pem";
+			haproxy_updateocsp_one($socketupdate, $filename, $frontend['name']);
 		}
 	}
 }
