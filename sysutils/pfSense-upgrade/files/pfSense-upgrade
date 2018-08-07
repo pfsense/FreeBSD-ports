@@ -613,6 +613,22 @@ pkg_upgrade() {
 			    "Upgrading ${product} u-boot"
 		fi
 
+		if is_pkg_installed ${pkg_prefix}\*; then
+			for _package in $(_pkg query %n $(_pkg info -E -g \
+			    ${pkg_prefix}\*)); do
+				_pkg rquery -U -r ${product} %v ${_package} \
+				    >/dev/null && continue
+
+				# This package was removed from remote repo
+				# Make sure it's uninstalled
+				_exec "pkg-static ${pkg_chroot} set -A 1 ${_package}" \
+				    "Scheduling package ${_package} for removal"
+			done
+		fi
+
+		_exec "pkg-static ${pkg_chroot} autoremove" \
+		    "Removing unnecessary packages" mute ignore_result
+
 		if [ -n "${NEW_MAJOR}" ]; then
 			_pkg_chroot annotate -q -M ${kernel_pkg} new_major 1
 		fi
@@ -697,19 +713,6 @@ pkg_upgrade() {
 			_exec "pkg-static ${pkg_chroot} upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
-		fi
-
-		if is_pkg_installed ${pkg_prefix}\*; then
-			for _package in $(_pkg query %n $(_pkg info -E -g \
-			    ${pkg_prefix}\*)); do
-				_pkg rquery -U %v ${_package} >/dev/null \
-				    && continue
-
-				# This package was removed from remote repo
-				# Make sure it's uninstalled
-				_exec "pkg-static ${pkg_chroot} set -A 1 ${_package}" \
-				    "Scheduling package ${_package} for removal"
-			done
 		fi
 
 		_pkg_chroot annotate -q -D ${kernel_pkg} next_stage
