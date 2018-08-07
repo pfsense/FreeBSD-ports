@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-suricata
-PORTVERSION=	4.0.12
+PORTVERSION=	4.0.13
 PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	# empty
