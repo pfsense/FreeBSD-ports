@@ -3,6 +3,7 @@
 
 PORTNAME=	xtrabackup
 DISTVERSION=	2.4.9
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-${PORTVERSION}/source/tarball/:xtrabackup \
 		SF/boost/boost/1.59.0/:boost

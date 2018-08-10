@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	chromium
-PORTVERSION=	67.0.3396.87
+PORTVERSION=	68.0.3440.84
+PORTREVISION=	1
 CATEGORIES?=	www
 MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -102,7 +103,6 @@ GN_ARGS+=	clang_use_chrome_plugins=false \
 		enable_nacl=false \
 		enable_one_click_signin=true \
 		enable_remoting=false \
-		enable_webrtc=true \
 		fieldtrial_testing_like_official_build=true \
 		is_clang=true \
 		toolkit_views=true \
@@ -134,8 +134,8 @@ GN_ARGS+=	google_api_key="AIzaSyBsp9n41JLW8jCokwn7vhoaMejDFRd1mp8" \
 		google_default_client_secret="IR1za9-1VK0zZ0f_O8MVFicn"
 
 .if !defined(GN_ONLY)
-SUB_FILES=	chromium-browser.desktop chrome
-SUB_LIST+=	COMMENT="${COMMENT}"
+SUB_FILES=	chromium-browser.desktop chrome pkg-message
+SUB_LIST+=	COMMENT="${COMMENT}" DATADIR="${DATADIR}"
 
 OPTIONS_DEFINE=	CODECS CUPS DEBUG DRIVER KERBEROS TEST
 CODECS_DESC=	Compile and enable patented codecs like H.264
@@ -298,6 +298,7 @@ do-install:
 	${INSTALL_LIB} ${WRKSRC}/out/${BUILDTYPE}/swiftshader/${g} \
 		${STAGEDIR}${DATADIR}/swiftshader
 .endfor
+	${INSTALL_SCRIPT} ${FILESDIR}/fix-hanging-tabs.sh ${STAGEDIR}${DATADIR}
 
 post-install-DEBUG-on:
 	${INSTALL_LIB} ${WRKSRC}/out/${BUILDTYPE}/*.so \
