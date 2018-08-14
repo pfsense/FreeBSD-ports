@@ -84,6 +84,12 @@ function nrpe_custom_php_install_command() {
 				'command' => 'check_procs',
 				'warning' => '150',
 				'critical' => '200'
+			),
+			6 => array(
+				'name' => 'check_swap',
+				'command' => 'check_swap',
+				'warning' => '50%',
+				'critical' => '25%'
 			)
 		);
 	}
