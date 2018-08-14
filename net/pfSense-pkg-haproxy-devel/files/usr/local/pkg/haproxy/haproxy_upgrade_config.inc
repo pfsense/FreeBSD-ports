@@ -384,7 +384,7 @@ function haproxy_upgrade_config() {
 						if (!$httpfrontend && $server['ssl'] == 'yes') {
 							// https frontend used to automatically switch to using the check-ssl setting..
 							unset($server['ssl']);
-							$server['checkssl'] = true;
+							$server['checkssl'] = 'yes';
 						}
 					}
 				}
