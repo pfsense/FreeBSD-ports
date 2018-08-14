@@ -46,66 +46,66 @@ function validate_input_apcupsd($post, &$input_errors) {
 
 	if (isset($post['apcupsdenabled'])) {
 		if ($post['polltime'] != '' && !is_numericint($post['polltime'])) {
-			$input_errors[] = 'Poll Time is not numeric.';
+			$input_errors[] = gettext('Poll Time is not numeric.');
 		}
 
 		if ($post['onbatterydelay'] != '' && !is_numericint($post['onbatterydelay'])) {
-			$input_errors[] = 'OnBattery Delay is not numeric.';
+			$input_errors[] = gettext('OnBattery Delay is not numeric.');
 		}
 
 		if ($post['batterylevel'] != '' && !is_numericint($post['batterylevel'])) {
-			$input_errors[] = 'Battery Level is not numeric.';
+			$input_errors[] = gettext('Battery Level is not numeric.');
 		}
 
 		if ($post['minutes'] != '' && !is_numericint($post['minutes'])) {
-			$input_errors[] = 'Minutes is not numeric.';
+			$input_errors[] = gettext('Minutes is not numeric.');
 		}
 
 		if ($post['timeout'] != '' && !is_numericint($post['timeout'])) {
-			$input_errors[] = 'Timeout is not numeric.';
+			$input_errors[] = gettext('Timeout is not numeric.');
 		}
 
 		if ($post['annoy'] != '' && !is_numericint($post['annoy'])) {
-			$input_errors[] = 'Annoy is not numeric.';
+			$input_errors[] = gettext('Annoy is not numeric.');
 		}
 
 		if ($post['annoydelay'] != '' && !is_numericint($post['annoydelay'])) {
-			$input_errors[] = 'Annoy Delay is not numeric.';
+			$input_errors[] = gettext('Annoy Delay is not numeric.');
 		}
 
 		if ($post['killdelay'] != '' && !is_numericint($post['killdelay'])) {
-			$input_errors[] = 'Kill Delay is not numeric.';
+			$input_errors[] = gettext('Kill Delay is not numeric.');
 		}
 
 		if ($post['nisip'] != '') {
 			if (!is_ipaddr_configured($post['nisip']) && !preg_match("/(127.0.0.1|0.0.0.0)/", $post['nisip'])) {
-				$input_errors[] = 'NIS Ip is not a configured IP address.';
+				$input_errors[] = gettext('NIS IP Address is not a configured IP address.');
 			}
 		}
 
 		if ($post['nisport'] != '') {
 			if (!preg_match("/^\d+$/", $post['nisport'])) {
-				$input_errors[] = 'NIS Port is not numeric.';
+				$input_errors[] = gettext('NIS Port is not numeric.');
 			}
 		}
 
 		if ($post['emailnotification'] == 'smtpbuiltin') {
 			if (empty($post['smtphost'])) {
-					$input_errors[] = 'SMTP Host cannot be empty if SMTP builtin is enabled.';
+					$input_errors[] = gettext('SMTP Host cannot be empty if SMTP builtin is enabled.');
 			}
 
 			if (empty($post['smtpport'])) {
-					$input_errors[] = 'SMTP Port cannot be empty if SMTP builtin is enabled.';
+					$input_errors[] = gettext('SMTP Port cannot be empty if SMTP builtin is enabled.');
 			} elseif (!is_port($post['smtpport'])) {
-				$input_errors[]='SMTP Port is not a valid port.';
+				$input_errors[] = gettext('SMTP Port is not a valid port.');
 			}
 
 			if (empty($post['smtpfrom'])) {
-					$input_errors[] = 'From field cannot be empty if SMTP builtin is enabled.';
+					$input_errors[] = gettext('From field cannot be empty if SMTP builtin is enabled.');
 			}
 
 			if (empty($post['smtpto'])) {
-					$input_errors[] = 'To field cannot be empty if SMTP builtin is enabled.';
+					$input_errors[] = gettext('To field cannot be empty if SMTP builtin is enabled.');
 			}
 		}
 
