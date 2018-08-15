@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-suricata
 PORTVERSION=	4.0.13
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -74,8 +74,6 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_interfaces.php \
 		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_interfaces_edit.php \
-		${STAGEDIR}${PREFIX}/www/suricata
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_download_rules.php \
 		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_rules.php \
 		${STAGEDIR}${PREFIX}/www/suricata
