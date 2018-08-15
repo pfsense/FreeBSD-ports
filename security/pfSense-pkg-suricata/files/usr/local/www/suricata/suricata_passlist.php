@@ -3,11 +3,11 @@
  * suricata_passlist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -198,7 +198,7 @@ display_top_tabs($tab_array, true);
 </div>
 
 <div class="infoblock">
-	<?=print_info_box('<strong>Note:</strong><ol><li>Here you can create Pass List files for your Suricata package rules. Hosts on a Pass List are never blocked by Suricata.</li><li>Add all the IP addresses or networks (in CIDR notation) you want to protect against Suricata block decisions.</li><li>The default Pass List includes the WAN IP and gateway, defined DNS servers, VPNs and locally-attached networks.</li><li>Be careful, it is very easy to get locked out of your system by altering the default settings.</li><li>To use a custom Pass List on an interface, you must manually assign the list using the drop-down control on the Interface Settings tab.</li></ol><p>Remember you must restart Suricata on the interface for changes to take effect!</p>', info)?>
+	<?=print_info_box('<strong>Note:</strong><ol><li>Here you can create Pass List files for your Suricata package rules. Hosts on a Pass List are never blocked by Suricata.</li><li>Add all the IP addresses or networks (in CIDR notation) you want to protect against Suricata block decisions.</li><li>The default Pass List includes the WAN IP and gateway, defined DNS servers, VPNs and locally-attached networks.</li><li>Be careful, it is very easy to get locked out of your system by altering the default settings.</li><li>To use a custom Pass List on an interface, you must manually assign the list using the drop-down control on the Interface Settings tab.</li></ol><p>Remember you must restart Suricata on the interface for changes to take effect!</p>', 'info')?>
 </div>
 
 <?php include("foot.inc"); ?>
