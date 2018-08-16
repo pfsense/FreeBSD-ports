@@ -419,7 +419,7 @@ if ($snortdownload == "on") {
 			<table class="table table-striped table-hover table-condensed">
 				<thead>
 					<tr>
-						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext("Enable"); ?></th>
 						<th><?=gettext('Ruleset: Snort GPLv2 Community Rules'); ?></th>
 						<th></th>
 						<th></th>
@@ -432,19 +432,27 @@ if ($snortdownload == "on") {
 				<?php if ($cat_mods[$community_rules_file] == 'enabled') : ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-success" title="<?=gettext('Auto-disabled by settings on SID Mgmt tab'); ?>"></i>
+							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
 						<td colspan="5">
-							<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=gettext('{$msg_community}');?></a>
+							<?php if ($no_community_files): ?>
+								<?php echo gettext("{$msg_community}"); ?>
+							<?php else: ?>
+								<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=gettext('{$msg_community}');?></a>
+							<?php endif; ?>
 						</td>
 					</tr>
 				<?php else: ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-enabled by settings on SID Mgmt tab");?>"><i>
+							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
 						</td>
 						<td colspan="5">
-							<?=gettext("{$msg_community}"); ?>
+							<?php if ($no_community_files): ?>
+								<?php echo gettext("{$msg_community}"); ?>
+							<?php else: ?>
+								<a href='snort_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+							<?php endif; ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -454,7 +462,11 @@ if ($snortdownload == "on") {
 						<input type="checkbox" name="toenable[]" value="<?=$community_rules_file;?>" checked="checked"/>
 					</td>
 					<td colspan="5">
-						<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
+							<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php else: ?>
@@ -463,7 +475,11 @@ if ($snortdownload == "on") {
 						<input type="checkbox" name="toenable[]" value="<?=$community_rules_file; ?>" />
 					</td>
 					<td colspan="5">
-						<?=gettext("{$msg_community}"); ?>
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
+							<a href='snort_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php endif; ?>
@@ -495,24 +511,24 @@ if ($snortdownload == "on") {
 				<thead>
 					<tr>
 					<?php if ($emergingdownload == 'on' && !$no_emerging_files): ?>
-						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext("Enable"); ?></th>
 						<th><?=gettext('Ruleset: ET Open Rules');?></th>
 					<?php elseif ($etpro == 'on' && !$no_emerging_files): ?>
-						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext("Enable"); ?></th>
 						<th><?=gettext('Ruleset: ET Pro Rules');?></th>
 					<?php else: ?>
 						<th colspan="2"><?=gettext("{$et_type} rules {$msg_emerging}"); ?></th>
 					<?php endif; ?>
 					<?php if ($snortdownload == 'on' && !$no_snort_files): ?>
-						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext("Enable"); ?></th>
 						<th><?=gettext('Ruleset: Snort Text Rules');?></th>
-						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext("Enable"); ?></th>
 						<th><?=gettext('Ruleset: Snort SO Rules');?></th>
 					<?php else: ?>
 						<th colspan="4"><?=gettext("Snort Subscriber rules {$msg_snort}"); ?></th>
 					<?php endif; ?>
 					<?php if ($openappid_rulesdownload == 'on' && !$no_openappid_files): ?>
-						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext("Enable"); ?></th>
 						<th><?=gettext('Ruleset: Snort OPENAPPI Rules');?></th>
 						<?php else: ?>
 						<th colspan="4"><?=gettext("Snort OPENAPPID rules {$msg_snort}"); ?></th>
@@ -600,7 +616,7 @@ if ($snortdownload == "on") {
 						echo "</td>\n";
 						echo "<td>\n";
 						if (empty($CHECKED))
-							echo $file;
+							echo "<a href='snort_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
 						else
 							echo "<a href='snort_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
 						echo "</td>\n";
@@ -636,7 +652,7 @@ if ($snortdownload == "on") {
 						echo "</td>\n";
 						echo "<td>\n";
 						if (empty($CHECKED) || $CHECKED == "disabled")
-							echo $file;
+							echo "<a href='snort_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
 						else
 							echo "<a href='snort_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
 						echo "</td>\n";
@@ -672,7 +688,7 @@ if ($snortdownload == "on") {
 						echo "</td>\n";
 						echo "<td>\n";
 						if (empty($CHECKED) || $CHECKED == "disabled")
-							echo $file;
+							echo "<a href='snort_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
 						else
 							echo "<a href='snort_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
 						echo "</td>\n";
@@ -707,7 +723,7 @@ tab') . "></i>\n";
 				echo "</td>\n";
 				echo "<td>\n";
 				if (empty($CHECKED))
-					echo $file;
+					echo "<a href='snort_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
 				else
 					echo "<a href='snort_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
 				echo "</td>\n";
@@ -737,16 +753,24 @@ tab') . "></i>\n";
 
 		function enable_change()
 		{
- 			var endis = !(($('#ips_policy_enable').prop('checked')));
-			disableInput('ips_policy', endis);
+		var endis = !($('#ips_policy_enable').prop('checked'));
 
-		 	for (var i = 0; i < document.iform.elements.length; i++) {
-			    if (document.iform.elements[i].type == 'checkbox') {
-			       var str = document.iform.elements[i].value;
-			       if (str.substr(0,6) == "snort_")
-        			  document.iform.elements[i].disabled = !(endis);
-			    }
- 			}
+		hideInput('ips_policy', endis);
+		hideInput('ips_policy_mode', endis);
+
+		$('input[type="checkbox"]').each(function() {
+			var str = $(this).val();
+
+			if (str.substr(0,6) == "snort_") {
+				$(this).attr('disabled', !endis);
+				if (!endis) {
+					$(this).prop('title', 'Disabled because an IPS Policy is selected');
+				}
+				else {
+					$(this).prop('title', '');
+				}
+			}
+		});
 		}
 
 	events.push(function(){
