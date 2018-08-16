@@ -3,7 +3,7 @@
  * snort.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
@@ -1303,18 +1303,24 @@ function snort_load_rules_map($rules_path) {
 	 *  map[gid][sid]['rule']['category']['action']['disabled']['managed']['flowbits']
 	 *
 	 *  where:
-	 *   gid      = Generator ID from rule, or 1 if general text 
-	 *              rule
-	 *   sid      = Signature ID from rule
-         *   rule     = Complete rule text
-	 *   category = File name of file containing the rule
-	 *   action   = alert, drop, reject or pass
-	 *   disabled = 1 if rule is disabled (commented out), 0 if 
-	 *              rule is enabled
-	 *    managed = 1 if rule is auto-managed by SID MGMT process,
-	 *              0 if not auto-managed 
-	 *   flowbits = Array of applicable flowbits if rule contains 
-	 *              flowbits options
+	 *   gid            = Generator ID from rule, or 1 if general text rule
+	 *   sid            = Signature ID from rule
+         *   rule           = Complete rule text
+	 *   category       = File name of file containing the rule
+	 *   action         = alert, drop, reject or pass
+	 *   disabled       = 1 if rule is disabled (commented out), 0 if 
+	 *                    rule is enabled
+	 *   default_state  = 1 if rule is default enabled, 0 if default disabled
+	 *   default_action = alert, drop, reject or pass  
+	 *   state_toggled  = 1 if rule was toggled by SID MGMT process,
+	 *                    0 if not toggled
+	 *   managed        = 1 if rule is auto-managed by SID MGMT process,
+	 *                    0 if not auto-managed 
+	 *   modified       = 1 if rule action or content is modified by SID MGMT or
+	 *                      IPS Policy process,
+	 *                    0 if not modified
+	 *   flowbits       = Array of applicable flowbits if rule contains 
+	 *                    flowbits options
 	 ************************************************************************************/
 
 	/* First check if we were passed a directory, a single file   */
@@ -1398,6 +1404,9 @@ function snort_load_rules_map($rules_path) {
 				$map_ref[$gid][$sid] = array();
 			$map_ref[$gid][$sid]['rule'] = $rule;
 			$map_ref[$gid][$sid]['category'] = basename($file, ".rules");
+			$map_ref[$gid][$sid]['state_toggled'] = 0;
+			$map_ref[$gid][$sid]['modified'] = 0;
+			$map_ref[$gid][$sid]['managed'] = 0;
 
 			if (preg_match('/^\s*\#+/', $rule))
 				$map_ref[$gid][$sid]['disabled'] = 1;
@@ -1406,10 +1415,23 @@ function snort_load_rules_map($rules_path) {
 
 			/* Grab the rule action (this is for a future option) */
 			$matches = array();
-			if (preg_match('/^\s*#*\s*(alert|log|pass|drop|reject|sdrop)/i', $rule, $matches))
+			if (preg_match('/^\s*#*\s*(alert|log|pass|drop|reject|sdrop)/i', $rule, $matches)) {
 				$map_ref[$gid][$sid]['action'] = $matches[1];
-			else
+				$map_ref[$gid][$sid]['default_action'] = $matches[1];
+			}
+			else {
 				$map_ref[$gid][$sid]['action'] = "";
+			}
+
+			// Determine if default state is "disabled"
+			// or "enabled".
+			if (preg_match('/^\s*\#+/', $rule)) {
+				$map_ref[$gid][$sid]['disabled'] = 1;
+				$map_ref[$gid][$sid]['default_state'] = 0;
+			} else {
+				$map_ref[$gid][$sid]['disabled'] = 0;
+				$map_ref[$gid][$sid]['default_state'] = 1;
+			}
 
 			/* Grab any associated flowbits from the rule.     */
 			$map_ref[$gid][$sid]['flowbits'] = snort_get_flowbits($rule);
@@ -3094,6 +3116,67 @@ EOD;
 	/* Write out barnyard2_conf text string to disk */
 	@file_put_contents("{$snortcfgdir}/barnyard2.conf", $barnyard2_conf_text);
 	unset($barnyard2_conf_text);
+}
+
+function snort_get_filtered_rules($rules, $filter) {
+
+	/************************************************/
+	/* This function returns a rules_map array of   */
+	/* of rules filtered using the GID:SID pairs    */
+	/* found in the passed filter criteria array.   */
+	/*                                              */
+	/*   $rules --> file, a directory or an array   */
+	/*              containing rules files to scan  */
+	/*                                              */
+	/*  $filter --> array of GID:SID pairs to use   */
+	/*              for filtering returned rules    */
+	/*              map array.                      */
+	/*                                              */
+	/*  Returns --> rules_map array                 */
+	/************************************************/
+
+	$tmp_map = array();
+	$filtered_map = array();
+
+	// If the filter array is empty, just
+	// return an empty result to save time
+	// since nothing would match.
+	if (empty($filter)) {
+		return $filtered_map;
+	}
+
+	// Load up all the rules from the location passed
+	$tmp_map = snort_load_rules_map($rules);
+
+	// Now walk the loaded filter list and copy
+	// matching GID:SID rules from the target list
+	// over to the filtered array.
+	foreach ($filter as $k1 => $rulem) {
+		foreach($rulem as $k2 => $v) {
+			if (isset($tmp_map[$k1][$k2])) {
+				if (!is_array($filtered_map[$k1])) {
+					$filtered_map[$k1] = array();
+				}
+				if (!is_array($filtered_map[$k1][$k2])) {
+					$filtered_map[$k1][$k2] = array();
+				}
+				$filtered_map[$k1][$k2]['rule'] = $tmp_map[$k1][$k2]['rule'];
+				$filtered_map[$k1][$k2]['category'] = $tmp_map[$k1][$k2]['category'];
+				$filtered_map[$k1][$k2]['action'] = $tmp_map[$k1][$k2]['action'];
+				$filtered_map[$k1][$k2]['modified'] = $tmp_map[$k1][$k2]['modified'];
+				$filtered_map[$k1][$k2]['disabled'] = $tmp_map[$k1][$k2]['disabled'];
+				$filtered_map[$k1][$k2]['flowbits'] = $tmp_map[$k1][$k2]['flowbits'];
+				$filtered_map[$k1][$k2]['managed'] = $tmp_map[$k1][$k2]['managed'];
+				$filtered_map[$k1][$k2]['state_toggled'] = $tmp_map[$k1][$k2]['state_toggled'];
+				$filtered_map[$k1][$k2]['default_state'] = $tmp_map[$k1][$k2]['default_state'];
+				$filtered_map[$k1][$k2]['default_action'] = $tmp_map[$k1][$k2]['default_action'];
+			}
+		}
+	}
+
+	// Clean up and return the filtered list of rules
+	unset($tmp_map);
+	return $filtered_map;
 }
 
 function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
