@@ -3,7 +3,7 @@
  * snort_migrate_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
@@ -125,6 +125,37 @@ if (empty($config['installedpackages']['snortglobal']['openappid_rules_detectors
 if (empty($config['installedpackages']['snortglobal']['hide_deprecated_rules'])) {
 	$config['installedpackages']['snortglobal']['hide_deprecated_rules'] = "off";
 	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Migrate content of any existing SID Mgmt files in the  */
+/* /var/db/snort/sidmods directory to Base64 encoded      */
+/* strings in SID_MGMT_LIST array in config.xml.          */
+/**********************************************************/
+if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists'])) {
+	$config['installedpackages']['snortglobal']['sid_mgmt_lists'] = array();
+}
+if (empty($config['installedpackages']['snortglobal']['sid_list_migration']) && count($config['installedpackages']['snortglobal']['sid_mgmt_lists']) < 1) {
+	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'])) {
+		$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] = array();
+	}
+	$a_list = &$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'];
+	$sidmodfiles = return_dir_as_array("/var/db/snort/sidmods/");
+	foreach ($sidmodfiles as $sidfile) {
+		$data = file_get_contents("/var/db/snort/sidmods/" . $sidfile);
+		if ($data !== FALSE) {
+			$tmp = array();
+			$tmp['name'] = basename($sidfile);
+			$tmp['modtime'] = filemtime("/var/db/snort/sidmods/" . $sidfile);
+			$tmp['content'] = base64_encode($data);
+			$a_list[] = $tmp;
+		}
+	}
+
+	// Set a flag to show one-time migration is completed
+	$config['installedpackages']['snortglobal']['sid_list_migration'] = "1";
+	$updated_cfg = true;
+	unset($a_list);
 }
 
 /**********************************************************/
