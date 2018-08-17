@@ -3,7 +3,7 @@
  * snort_rules_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -75,7 +75,7 @@ if (substr($file, 0, 10) == "IPS Policy") {
 		$wrap_flag = "soft";
 	}
 	else {
-		$contents = "# Suricata IPS Policy - " . ucfirst(trim(substr($file, strpos($file, "-")+1))) . "\n\n";
+		$contents = "# Snort IPS Policy - " . ucfirst(trim(substr($file, strpos($file, "-")+1))) . "\n\n";
 		foreach (array_keys($rules_map) as $k1) {
 			foreach (array_keys($rules_map[$k1]) as $k2) {
 				$contents .= "# Category: " . $rules_map[$k1][$k2]['category'] . "   SID: {$k2}\n";
@@ -108,7 +108,7 @@ elseif (file_exists("{$snortdir}/rules/{$file}"))
 else
 	$input_errors[] = gettext("Unable to open file: {$displayfile}");
 
-$pgtitle = array(gettext("Suricata"), gettext("Rules File Viewer"));
+$pgtitle = array(gettext("Snort"), gettext("Rules File Viewer"));
 
 include("head.inc");
 
