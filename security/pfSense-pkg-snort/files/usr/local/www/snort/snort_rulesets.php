@@ -601,17 +601,17 @@ if ($snortdownload == "on") {
 							// make sure we include a hidden field to reference it 
 							// so we do not unset it during a post-back.
 							if (in_array($file, $enabled_rulesets_array))
-								echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
+								echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "></i>\n";
+								echo "	\n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 							else {
-								echo "	\n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "></i>\n";
+								echo "	\n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 						}
 						else {
-							echo "	\n<input type=\"checkbox\" name=\"toenable[]\" value=\"{$file}\" {$CHECKED} />\n";
+							echo "	\n" . '<input type="checkbox" name="toenable[]" value="' . $file . '"' . $CHECKED . " />\n";
 						}
 						echo "</td>\n";
 						echo "<td>\n";
@@ -637,17 +637,17 @@ if ($snortdownload == "on") {
 							$CHECKED = "";
 						if (isset($cat_mods[$file])) {
 							if (in_array($file, $enabled_rulesets_array))
-								echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
+								echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "></i>\n";
+								echo "	\n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 							else {
-								echo "	\n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "></i>\n";
+								echo "	\n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 						}
 						else {
-							echo "	\n<input type='checkbox' name='toenable[]' value='{$file}' {$CHECKED} />\n";
+							echo "	\n" . '<input type="checkbox" name="toenable[]" value="' . $file . '"' . $CHECKED . " />\n";
 						}
 						echo "</td>\n";
 						echo "<td>\n";
@@ -673,17 +673,17 @@ if ($snortdownload == "on") {
 							$CHECKED = "";
 						if (isset($cat_mods[$file])) {
 							if (in_array($file, $enabled_rulesets_array))
-								echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
+								echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 							if ($cat_mods[$file] == 'enabled') {
 								$CHECKED = "enabled";
-								echo "	\n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "></i>\n";
+								echo "	\n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 							else {
-								echo "	\n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "></i>\n";
+								echo "	\n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 							}
 						}
 						else {
-							echo "	\n<input type='checkbox' name='toenable[]' value='{$file}' {$CHECKED} />\n";
+							echo "	\n" . '<input type="checkbox" name="toenable[]" value="{$file}"' . '"' .  $CHECKED . " />\n";
 						}
 						echo "</td>\n";
 						echo "<td>\n";
@@ -706,19 +706,17 @@ if ($snortdownload == "on") {
 							$CHECKED = "";
 					if (isset($cat_mods[$file])) {
 						if (in_array($file, $enabled_rulesets_array))
-							echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
+							echo '<input type="hidden" name="toenable[]" value="' . $file . '" />' . "\n";
 					if ($cat_mods[$file] == 'enabled') {
 							$CHECKED = "enabled";
-						echo "  \n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt
-tab') . "></i>\n";
+						echo "  \n" . '<i class="fa fa-adn text-success" title="' . gettext('Auto-enabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 					}
 					else {
-					echo "  \n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt
-tab') . "></i>\n";
+						echo "  \n" . '<i class="fa fa-adn text-danger" title="' . gettext('Auto-disabled by settings on SID Mgmt tab') . '"></i>' . "\n";
 					}
 				}
 				else {
-					echo "  \n<input type=\"checkbox\" name=\"toenable[]\" value=\"{$file}\" {$CHECKED} />\n";
+					echo "  \n" . '<input type="checkbox" name="toenable[]" value="' . $file . '"' . $CHECKED . " />\n";
 				}
 				echo "</td>\n";
 				echo "<td>\n";

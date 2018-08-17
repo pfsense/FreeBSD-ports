@@ -160,45 +160,37 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	$config['installedpackages']['snortglobal']['auto_manage_sids'] = $pconfig['auto_manage_sids'] ? "on" : "off";
 
 	// Grab the SID Mods config for the interfaces from the form's controls array
-	foreach ($_POST['sid_state_order'] as $k => $v) {
-		$a_nat[$k]['sid_state_order'] = $v;
-	}
-	foreach ($_POST['enable_sid_file'] as $k => $v) {
-		if ($v == "None") {
-			unset($a_nat[$k]['enable_sid_file']);
-			continue;
+	if (is_array($_POST['sid_state_order'])) {
+		foreach ($_POST['sid_state_order'] as $k => $v) {
+			$a_nat[$k]['sid_state_order'] = $v;
 		}
-		$a_nat[$k]['enable_sid_file'] = $v;
 	}
-	foreach ($_POST['disable_sid_file'] as $k => $v) {
-		if ($v == "None") {
-			unset($a_nat[$k]['disable_sid_file']);
-			continue;
+	if (is_array($_POST['enable_sid_file'])) {
+		foreach ($_POST['enable_sid_file'] as $k => $v) {
+			if ($v == "None") {
+				unset($a_nat[$k]['enable_sid_file']);
+				continue;
+			}
+			$a_nat[$k]['enable_sid_file'] = $v;
 		}
-		$a_nat[$k]['disable_sid_file'] = $v;
 	}
-	foreach ($_POST['modify_sid_file'] as $k => $v) {
-		if ($v == "None") {
-			unset($a_nat[$k]['modify_sid_file']);
-			continue;
+	if (is_array($_POST['disable_sid_file'])) {
+		foreach ($_POST['disable_sid_file'] as $k => $v) {
+			if ($v == "None") {
+				unset($a_nat[$k]['disable_sid_file']);
+				continue;
+			}
+			$a_nat[$k]['disable_sid_file'] = $v;
 		}
-		$a_nat[$k]['modify_sid_file'] = $v;
 	}
-
-	foreach ($_POST['drop_sid_file'] as $k => $v) {
-		if ($v == "None") {
-			unset($a_nat[$k]['drop_sid_file']);
-			continue;
+	if (is_array($_POST['modify_sid_file'])) {
+		foreach ($_POST['modify_sid_file'] as $k => $v) {
+			if ($v == "None") {
+				unset($a_nat[$k]['modify_sid_file']);
+				continue;
+			}
+			$a_nat[$k]['modify_sid_file'] = $v;
 		}
-		$a_nat[$k]['drop_sid_file'] = $v;
-	}
-
-	foreach ($_POST['reject_sid_file'] as $k => $v) {
-		if ($v == "None") {
-			unset($a_nat[$k]['reject_sid_file']);
-			continue;
-		}
-		$a_nat[$k]['reject_sid_file'] = $v;
 	}
 
 	// Write the new configuration
@@ -333,13 +325,7 @@ include_once("head.inc");
 /* Display Alert message, under form tag or no refresh */
 if ($input_errors)
 	print_input_errors($input_errors);
-?>
 
-<form action="snort_sid_mgmt.php" method="post" enctype="multipart/form-data" name="iform" id="iform" class="form-horizontal">
-	<input type="hidden" name="MAX_FILE_SIZE" value="100000000" />
-	<input type="hidden" name="sidlist_id" id="sidlist_id" value=""/>
-
-<?php
 if ($savemsg) {
 	/* Display save message */
 	print_info_box($savemsg);
@@ -358,7 +344,13 @@ $tab_array[] = array(gettext("SID Mgmt"), true, "/snort/snort_sid_mgmt.php");
 $tab_array[] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
 $tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
 display_top_tabs($tab_array, true);
+?>
 
+<form action="snort_sid_mgmt.php" method="post" enctype="multipart/form-data" name="iform" id="iform" class="form-horizontal">
+	<input type="hidden" name="MAX_FILE_SIZE" value="100000000" />
+	<input type="hidden" name="sidlist_id" id="sidlist_id" value=""/>
+
+<?php
 $section = new Form_Section('SID Management General Settings');
 $group = new Form_Group('Enable Automatic SID State Management');
 $group->add(new Form_Checkbox(
@@ -415,6 +407,7 @@ print($section);
 								</td>
 							</tr>
 						<?php endforeach; ?>
+							</tbody>
 						</table>
 					</td>
 				</tr>
@@ -578,19 +571,17 @@ print($section);
 			   <?php endforeach; ?>
 				</tbody>
 			</table>
-			</div>
 		</div>
-
+	</div>
+	<div>
 		<button type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="btn btn-primary" value="<?=gettext("Save");?>" title="<?=gettext("Save SID Management configuration");?>" >
 			<i class="fa fa-save icon-embed-btn"></i>
 			<?=gettext("Save");?>
 		</button>
 		&nbsp;&nbsp;<?=gettext("Remember to save changes before exiting this page"); ?>
-
 	</div>
 </form>
 </br />
-
 	<div class="infoblock">
 	<?php
 		print_info_box(
