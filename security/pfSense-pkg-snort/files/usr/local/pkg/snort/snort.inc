@@ -2426,6 +2426,7 @@ function snort_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results = F
 					$rule_map[$k1][$k2]['rule'] = ltrim($rule_map[$k1][$k2]['rule'], " \t#");
 					$rule_map[$k1][$k2]['disabled'] = 0;
 					$rule_map[$k1][$k2]['managed'] = 1;
+					$rule_map[$k1][$k2]['state_toggled'] = 1;
 					$changecount++;
 					$modcount++;
 				}
@@ -2433,6 +2434,7 @@ function snort_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results = F
 					$rule_map[$k1][$k2]['rule'] = "# " . $rule_map[$k1][$k2]['rule'];
 					$rule_map[$k1][$k2]['disabled'] = 1;
 					$rule_map[$k1][$k2]['managed'] = 1;
+					$rule_map[$k1][$k2]['state_toggled'] = 1;
 					$changecount++;
 					$modcount++;
 				}
