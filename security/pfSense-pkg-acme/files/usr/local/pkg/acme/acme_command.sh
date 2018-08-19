@@ -7,8 +7,24 @@ include_once("acme.inc");
 
 $command = $argv[1];
 
+$force = false;
+$perform = "";
+$certname = "";
+for($i = 0; $i < count($argv); $i++){
+	if ($argv[$i] == '-force') {
+		$force = true;
+	}
+	if (substr($argv[$i],0,9) == '-perform=') {
+		$perform = substr($argv[$i],9);
+	}
+	if (substr($argv[$i],0,10) == '-certname=') {
+		$certname = substr($argv[$i],10);
+	}
+}
+
 if ($command == "renewall") {
-	renew_all_certificates();
+	renew_all_certificates($force);
+	return;
 }
 
 if ($command == "importcert") {
@@ -59,6 +75,7 @@ if ($command == "importcert") {
 		}
 	}
 	acme_write_all_certificates();
+	return;
 }
 
 if ($command == "deploykey") {
@@ -67,6 +84,7 @@ if ($command == "deploykey") {
 	$token = $argv[4];
 	$payload = $argv[5];
 	challenge_response_put($certificatename, $domain, $token, $payload);
+	return;
 }
 
 if ($command == "removekey") {
@@ -74,4 +92,22 @@ if ($command == "removekey") {
 	$domain = $argv[3];
 	$token = $argv[4];
 	challenge_response_cleanup($certificatename, $domain, $token);
+	return;
 }
+
+if ($perform == "issue" && !empty($certname)) {
+	issue_certificate($certname, $force);
+	return;
+}
+if ($perform == "renew" && !empty($certname)) {
+	issue_certificate($certname, $force, true);
+	return;
+}
+
+echo "Use acme_command.sh like this:\n";
+echo "  acme_command.sh renewall\n";
+echo "  acme_command.sh importcert MyCertificate DomainName CertKeyPath CertPath CaCertPath CertFullChainPath\n";
+echo "  acme_command.sh deploykey MyCertificate DomainName Token Payload\n";
+echo "  acme_command.sh removekey MyCertificate DomainName Token\n";
+echo "  acme_command.sh -- -perform=issue -certname=MyCertificate [-force]\n";
+echo "  acme_command.sh -- -perform=renew -certname=MyCertificate [-force]\n";
