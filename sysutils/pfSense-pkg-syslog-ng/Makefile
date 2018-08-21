@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-syslog-ng
 PORTVERSION=	1.15
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
