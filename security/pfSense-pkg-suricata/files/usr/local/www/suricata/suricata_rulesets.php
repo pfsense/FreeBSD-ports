@@ -89,7 +89,7 @@ if (empty($test))
 if (!file_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "community.rules"))
 	$no_community_files = true;
 
-// If a Snort rules policy is enabled and selected, remove all Snort 
+// If a Snort rules policy is enabled and selected, remove all Snort
 // rules from the configured rule sets to allow automatic selection.
 if ($a_nat[$id]['ips_policy_enable'] == 'on') {
 	if (isset($a_nat[$id]['ips_policy'])) {
@@ -297,7 +297,7 @@ else:
 		'autoflowbits',
 		'Resolve Flowbits',
 		'Auto-enable rules required for checked flowbits',
-		$pconfig['autoflowbits'] == 'on' ? true:false,
+		($pconfig['autoflowbits'] != 'off' && isset($pconfig['autoflowbits'])) ? true : false,
 		'on'
 	))->setHelp(' Default is Checked. Suricata will examine the enabled rules in your chosen rule categories for checked flowbits. ' .
 					'Any rules that set these dependent flowbits will be automatically enabled and added to the list of files in the interface rules directory.');
@@ -360,7 +360,7 @@ else:
 				'max-detect' => 'Maximum Detection')
 			))->setHelp('Connectivity blocks most major threats with few or no false positives. Balanced is a good starter policy. ' .
 						'It is speedy, has good base coverage level, and covers most threats of the day. It includes all rules in Connectivity. Security is a stringent policy. ' .
-						'It contains everything in the first two plus policy-type rules such as Flash in an Excel file.  Maximum Detection encompasses vulnerabilities from 2005 ' . 
+						'It contains everything in the first two plus policy-type rules such as Flash in an Excel file.  Maximum Detection encompasses vulnerabilities from 2005 ' .
 						'or later with a CVSS score of at least 7.5 along with critical malware and exploit kit rules.  The Maximum Detection policy favors detection over rated ' .
 						'throughput. In some situations this policy can and will cause significant throughput reductions.');
 		$section->addInput(new Form_Select(
@@ -369,7 +369,7 @@ else:
 			$pconfig['ips_policy_mode'],
 			array(  'alert' => 'Alert',
 				'policy'  => 'Policy')
-			))->setHelp('When Policy is selected, this will automatically change the action for rules in the selected IPS Policy from their default action of alert to the action specified ' . 
+			))->setHelp('When Policy is selected, this will automatically change the action for rules in the selected IPS Policy from their default action of alert to the action specified ' .
 					'in the policy metadata (typically drop, but may be alert for some policy rules).');
 
 		print($section);
@@ -679,7 +679,7 @@ events.push(function() {
 	}
 
 	//------- Click handlers -----------------------------------------
-	// 
+	//
 	$('#ips_policy_enable').click(function() {
 		enable_change();
 	});
@@ -693,4 +693,3 @@ events.push(function() {
 <?php
 endif;
 include("foot.inc");
-
