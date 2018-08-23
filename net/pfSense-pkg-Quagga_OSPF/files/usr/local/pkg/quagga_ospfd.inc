@@ -344,8 +344,23 @@ function quagga_ospfd_install_conf() {
 	fwrite($fd, $ospf6dconffile);
 	fclose($fd);
 
+	//UPGRADE PATH - Checks if legacy "CARP Disable" mode was previously in use proior to 0.6.20; if previously in use, sets "carpmode" to "quaggadisable". If not in use, sets "carpmode" to "none".
+	if (!isset($ospfd_conf['carpmode'])) {
+		syslog(LOG_NOTICE, "Quagga: CARP failover mode upgrade initializing");
+		if (strpos($ospfd_conf['carpstatusvid'],'_vip') !== false) {
+			$ospfd_conf['carpmode'] = "quaggadisable";
+			syslog(LOG_NOTICE, "Quagga: CARP failover mode established as 'quaggadisable'");
+		}
+		else {
+			$ospfd_conf['carpmode'] = "none";
+			syslog(LOG_NOTICE, "Quagga: CARP failover mode established as 'none'");
+		}
+		write_config( $write_config_only = true );
+		syslog(LOG_NOTICE, "Quagga: CARP failover upgrade complete");
+	}
+	
 	$carp_ip_status_check = "";
-	if (isset($ospfd_conf['carpstatusvid']) && $ospfd_conf['carpstatusvid'] != "none") {
+	if ((isset($ospfd_conf['carpmode']) && $ospfd_conf['carpmode'] == "quaggadisable") && (isset($ospfd_conf['carpstatusvid']) && $ospfd_conf['carpstatusvid'] != "none")) {
 		$vip = get_configured_vip($ospfd_conf['carpstatusvid']);
 		$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
 		$vhid = escapeshellarg("vhid {$vip['vhid']}");
@@ -353,9 +368,34 @@ function quagga_ospfd_install_conf() {
 
 CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
 if [ \${CARP_STATUS} != "MASTER" ]; then
+	logger "Quagga: CARP \"Quagga Disable\" Mode - Interface {$carpcheckinterface} is NOT in MASTER state, exiting";
 	exit;
 fi
 EOF;
+	}
+	
+	$carp_ospfcost_status_check = "";
+	if ((isset($ospfd_conf['carpmode']) && $ospfd_conf['carpmode'] == "ospfcost") && (isset($ospfd_conf['carpcostvid']) && substr($ospfd_conf['carpcostvid'],0,4) != "none") && (isset($ospfd_conf['carpactivecost']) && isset($ospfd_conf['carpbackupcost'])) && ($ospfd_conf['carpactivecost'] >= 0 && $ospfd_conf['carpactivecost'] <= 65535) && ($ospfd_conf['carpbackupcost'] >= 0 && $ospfd_conf['carpbackupcost'] <= 65535)) {
+		$control_script = "/usr/local/bin/quaggactl";
+		$carpvips = explode(",",$ospfd_conf['carpcostvid']);
+		foreach ($carpvips as $vips) {
+			$vip = get_configured_vip($vips);
+			$phyint = get_real_interface($vip['interface']);
+			$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
+			$vhid = escapeshellarg("vhid {$vip['vhid']}");
+			$carp_ospfcost_status_check .= <<<EOF
+
+CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
+if [ \${CARP_STATUS} == "MASTER" ]; then
+	{$control_script} ospf cost {$phyint} {$ospfd_conf['carpactivecost']};
+	logger "Quagga: CARP \"OSPF Cost\" Mode - Interface {$carpcheckinterface} is in MASTER state, OSPF cost set to {$ospfd_conf['carpactivecost']}";
+else
+	{$control_script} ospf cost {$phyint} {$ospfd_conf['carpbackupcost']};
+	logger "Quagga: CARP \"OSPF Cost\" Mode - Interface {$carpcheckinterface} is NOT in MASTER state, OSPF cost set to {$ospfd_conf['carpbackupcost']}";
+fi
+EOF;
+			
+		}
 	}
 
 
@@ -422,6 +462,7 @@ fi
 [ -s {$quagga_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$quagga_config_base}/ospf6d.conf
 [ -s {$quagga_config_base}/bgpdaddmd5pw.conf ] && /sbin/setkey -f {$quagga_config_base}/bgpdaddmd5pw.conf
 [ -s {$quagga_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$quagga_config_base}/bgpd.conf
+{$carp_ospfcost_status_check}
 
 EOF;
 	write_rcfile(array(
@@ -439,18 +480,20 @@ EOF;
 	mwexec("/bin/chmod u+rw,go-rw {$quagga_config_base}/bgpd.conf");
 
 	// Kick off newly created rc.d script
-	if (isset($ospfd_conf['carpstatusvid']) && $ospfd_conf['carpstatusvid'] != "none") {
+	if ((isset($ospfd_conf['carpmode']) && $ospfd_conf['carpmode'] == "quaggadisable") && (isset($ospfd_conf['carpstatusvid']) && $ospfd_conf['carpstatusvid'] != "none")) {
 		$status = get_carp_interface_status($ospfd_conf['carpstatusvid']);
 		switch (strtoupper($status)) {
 			// Stop the service if the VIP is in BACKUP or INIT state.
 			case "BACKUP":
 			case "INIT":
 				mwexec_bg("/usr/local/etc/rc.d/quagga.sh stop");
+				syslog(LOG_NOTICE, "Quagga: CARP \"Quagga Disable\" Mode - Interface {$carpcheckinterface} is NOT in MASTER state, exiting");
 				break;
 			// Start the service if the VIP is MASTER state.
 			case "MASTER":
 			// Assume it's up if the status can't be determined.
 			default:
+				syslog(LOG_NOTICE, "Quagga: CARP \"Quagga Disable\" Mode - Interface {$carpcheckinterface} is in MASTER state, starting");
 				mwexec_bg("/usr/local/etc/rc.d/quagga.sh restart");
 				break;
 		}
@@ -514,24 +557,82 @@ function quagga_ospfd_plugin_carp($pluginparams) {
 	if (is_array($config['installedpackages']['quaggaospfd']['config'])) {
 		$ospfd_conf = &$config['installedpackages']['quaggaospfd']['config'][0];
 	} else {
+		syslog(LOG_ALERT, "Quagga: CONFIGURATION DOES NOT EXIST!");
 		return null;
 	}
 	/* If there is no properly configured CARP status check IP, then stop */
-	if (!isset($ospfd_conf['carpstatusvid']) || $ospfd_conf['carpstatusvid'] == "none") {
+	if (!isset($ospfd_conf['carpmode']) || $ospfd_conf['carpmode'] == "none") {
+		syslog(LOG_ALERT, "Quagga: CARP failover mode not set.");
 		return null;
 	}
+	/* Verify "quaggadisable" parameters are properly set.*/
+	if ( $ospfd_conf['carpmode'] == "quaggadisable" && (!isset($ospfd_conf['carpstatusvid']) || $ospfd_conf['carpstatusvid'] == "none")) {
+		syslog(LOG_ALERT, "Quagga: Failed checking CARP mode parameters: {$ospfd_conf['carpmode']}");
+		return null;
+	}
+	/* Verify "carpmode" parameters are properly set.*/
+	if ( $ospfd_conf['carpmode'] == "ospfcost" && (!isset($ospfd_conf['carpcostvid']) || substr($ospfd_conf['carpcostvid'],0,4) == "none") || !isset($ospfd_conf['carpactivecost']) || !isset($ospfd_conf['carpbackupcost']) || ($ospfd_conf['carpactivecost'] < 0 || $ospfd_conf['carpactivecost'] > 65535) || ($ospfd_conf['carpbackupcost'] < 0 || $ospfd_conf['carpbackupcost'] > 65535)) {
+		syslog(LOG_ALERT, "Quagga: Failed checking CARP mode parameters: {$ospfd_conf['carpmode']}");
+		return null;
+	}
+	
 	list($vhid, $iface) = explode("@", trim($pluginparams['interface']));
 	$friendly = convert_real_interface_to_friendly_interface_name($iface);
-	$vip = get_configured_vip($ospfd_conf['carpstatusvid']);
-	if ($vip['vhid'] != $vhid || $vip['interface'] != $friendly) {
-		return null;
-	}
 
-	/* Start or stop the service as needed based on the CARP transition. */
-	if ($pluginparams['event'] == "rc.carpmaster") {
-		start_service("Quagga OSPFd");
-	} elseif ($pluginparams['event'] == "rc.carpbackup") {
-		stop_service("Quagga OSPFd");
+	switch ($ospfd_conf['carpmode']) {
+		case "quaggadisable":
+			syslog(LOG_INFO, "Quagga: CARP mode {$ospfd_conf['carpmode']}");
+			$vip = get_configured_vip($ospfd_conf['carpstatusvid']);
+			syslog(LOG_INFO, "Quagga: CARP VHID and Interface {$vip['vhid']},{$vip['interface']}");
+			if ($vip['vhid'] != $vhid || $vip['interface'] != $friendly) {
+				return null;
+			}
+			
+			/* Start or stop the service as needed based on the CARP transition. */
+			if ((isset($ospfd_conf['carpmode']) && $ospfd_conf['carpmode'] == "quaggadisable") && (isset($ospfd_conf['carpstatusvid']) && $ospfd_conf['carpstatusvid'] != "none")) {
+				if ($pluginparams['event'] == "rc.carpmaster") {
+					start_service("Quagga OSPFd");
+				} elseif ($pluginparams['event'] == "rc.carpbackup") {
+					stop_service("Quagga OSPFd");
+				}
+			}
+			break;
+		case "ospfcost":
+			syslog(LOG_INFO, "Quagga: CARP mode {$ospfd_conf['carpmode']}");
+			$carpvips = explode(",",$ospfd_conf['carpcostvid']);
+			$match = FALSE;
+			$i = 0;
+			foreach ($carpvips as $vip) {
+				$vips[$i] = get_configured_vip($vip);
+				if (($vips[$i]['vhid'] == $vhid) && ($vips[$i]['interface'] == $friendly)){
+					$match = TRUE;
+					syslog(LOG_INFO, "Quagga: CARP VHID and Interface {$vips[$i]['vhid']} {$vips[$i]['interface']}");
+					$phyint = get_real_interface($vips[$i]['interface']);
+					syslog(LOG_INFO, "Quagga: CARP Interface identified {$phyint}");
+					}
+				$i++;
+			}
+			unset($vip);
+			
+			if ($match != TRUE){
+				syslog(LOG_NOTICE, "Quagga: Couldn't find an Interface or VHID match!");
+				return null;
+			}
+			
+			/* Shift OSPF cost up or downas needed based on the CARP transition. */
+			$control_script = "/usr/local/bin/quaggactl";
+			if ((isset($ospfd_conf['carpmode']) && $ospfd_conf['carpmode'] == "ospfcost") && (isset($ospfd_conf['carpcostvid']) && substr($ospfd_conf['carpcostvid'],0,4) != "none")) {
+				if ($pluginparams['event'] == "rc.carpmaster") {
+					syslog(LOG_INFO, "Quagga: Shifted OSPF Master cost on {$phyint} to {$ospfd_conf['carpactivecost']}");
+					mwexec("{$control_script} ospf cost {$phyint} {$ospfd_conf['carpactivecost']}");
+					return null;
+				} elseif ($pluginparams['event'] == "rc.carpbackup") {
+					syslog(LOG_INFO, "Quagga: Shifted OSPF Backup cost on {$phyint} to {$ospfd_conf['carpbackupcost']}");
+					mwexec("{$control_script} ospf cost {$phyint} {$ospfd_conf['carpbackupcost']}");
+					return null;
+				}
+			}
+			break;
 	}
 }
 
@@ -555,8 +656,8 @@ function write_quagga_running_config($module) {
 	conf_mount_ro();
 }
 
-write_quagga_running_config('bgpd');
-write_quagga_running_config('ospfd');
-write_quagga_running_config('ospf6d');
-write_quagga_running_config('zebra');
+write_quagga_running_config(bgpd);
+write_quagga_running_config(ospfd);
+write_quagga_running_config(ospf6d);
+write_quagga_running_config(zebra);
 ?>
