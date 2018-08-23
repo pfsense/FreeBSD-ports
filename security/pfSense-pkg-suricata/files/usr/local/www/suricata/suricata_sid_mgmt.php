@@ -240,7 +240,7 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
 	safe_mkdir("{$tmpdirname}");
 
 	file_put_contents($tmpdirname . $file, base64_decode($a_list[$_POST['sidlist_id']]['content']));
-	touch($tmpdirname . $file, $a_list[$_POST['sidlist_id']]['modtime']);	
+	touch($tmpdirname . $file, $a_list[$_POST['sidlist_id']]['modtime']);
 
 	if (file_exists($tmpdirname . $file)) {
 		if (isset($_SERVER['HTTPS'])) {
@@ -275,7 +275,7 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
 if (isset($_POST['sidlist_dnload_all'])) {
 	$save_date = date("Y-m-d-H-i-s");
 	$file_name = "suricata_sid_conf_files_{$save_date}.tar.gz";
-	
+
 	// Create a temporary directory to hold the lists as individual files
 	$tmpdirname = "{$g['tmp_path']}/sidmods/";
 	safe_mkdir("{$tmpdirname}");
@@ -283,7 +283,7 @@ if (isset($_POST['sidlist_dnload_all'])) {
 	// Walk all saved lists and write them out to individual files
 	foreach($a_list as $list) {
 		file_put_contents($tmpdirname . $list['name'], base64_decode($list['content']));
-		touch($tmpdirname . $list['name'], $list['modtime']);	
+		touch($tmpdirname . $list['name'], $list['modtime']);
 	}
 
 	// Zip up all the files into a single tar gzip archive
@@ -324,6 +324,9 @@ if (isset($_POST['sidlist_dnload_all'])) {
 // Leave this as the last thing before spewing the page HTML
 // so we can pick up any changes made in code above.
 $sidmodlists = $config['installedpackages']['suricata']['sid_mgmt_lists']['item'];
+if (!is_array($sidmodlists)) {
+	$sidmodlists = array();
+}
 $sidmodselections = Array();
 $sidmodselections[] = "None";
 foreach ($sidmodlists as $list) {
@@ -383,9 +386,9 @@ if ($savemsg) {
 						<?=gettext("Enable automatic management of rule state and content using SID Management Configuration Lists.  Default is Not Checked.")?>
 					</label>
 					<span class="help-block">
-						<?=gettext("When checked, Suricata will automatically enable/disable/modify text rules upon each update using criteria ") . 
-						gettext("specified in SID Management Configuration Lists.  The supported configuration list format is the same as that used ") . 
-						gettext("by PulledPork and Oinkmaster.  See the included sample conf lists for usage examples.  ") . 
+						<?=gettext("When checked, Suricata will automatically enable/disable/modify text rules upon each update using criteria ") .
+						gettext("specified in SID Management Configuration Lists.  The supported configuration list format is the same as that used ") .
+						gettext("by PulledPork and Oinkmaster.  See the included sample conf lists for usage examples.  ") .
 						gettext("Either upload existing configurations to the firewall or create new ones by clicking ADD below."); ?>
 					</span>
 				</div>
@@ -498,7 +501,7 @@ if ($savemsg) {
 	<nav class="action-buttons">
 
 		<button data-toggle="modal" data-target="#sidlist_editor" role="button" aria-expanded="false" type="button" name="sidlist_new" id="sidlist_new" class="btn btn-success btn-sm" title="<?=gettext('Create a new SID Mods List');?>"
-		onClick="document.getElementById('sidlist_data').value=''; document.getElementById('sidlist_name').value=''; document.getElementById('sidlist_editor').style.display='table-row-group'; document.getElementById('sidlist_name').focus(); 
+		onClick="document.getElementById('sidlist_data').value=''; document.getElementById('sidlist_name').value=''; document.getElementById('sidlist_editor').style.display='table-row-group'; document.getElementById('sidlist_name').focus();
 			document.getElementById('sidlist_id').value='<?=count($a_list);?>';">
 			<i class="fa fa-plus icon-embed-btn"></i><?=gettext("Add")?>
 		</button>
@@ -652,15 +655,15 @@ if ($savemsg) {
 <?php
 	print_info_box(
 		'<p>' .
-			gettext("Check the box beside an interface to immediately apply new auto-SID management changes and signal Suricata to live-load the new rules for the interface when clicking Save; " . 
+			gettext("Check the box beside an interface to immediately apply new auto-SID management changes and signal Suricata to live-load the new rules for the interface when clicking Save; " .
 				"otherwise only the new file assignments will be saved.") .
 		'</p>' .
 		'<p>' .
-			gettext("SID State Order controls the order in which enable and disable state modifications are performed. An example would be to disable an entire category and later enable only a rule or two from it. " . 
+			gettext("SID State Order controls the order in which enable and disable state modifications are performed. An example would be to disable an entire category and later enable only a rule or two from it. " .
 				" In this case you would choose 'disable,enable' for the State Order.  Note that the last action performed takes priority.") .
 		'</p>' .
 		'<p>' .
-			gettext("The Enable SID File, Disable SID File, Modify SID File and Drop SID File drop-down controls specify which rule modification lists are run automatically for the interface.  Setting a list control to 'None' disables that modification. " . 
+			gettext("The Enable SID File, Disable SID File, Modify SID File and Drop SID File drop-down controls specify which rule modification lists are run automatically for the interface.  Setting a list control to 'None' disables that modification. " .
 				"Setting all list controls for an interface to 'None' disables automatic SID state management for the interface.") .
 		'</p>', 'info', false);
 ?>
@@ -707,4 +710,3 @@ events.push(function() {
 
 <?php
 include("foot.inc"); ?>
-

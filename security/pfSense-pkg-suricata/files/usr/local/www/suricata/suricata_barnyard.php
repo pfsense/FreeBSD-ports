@@ -3,11 +3,11 @@
  * suricata_barnyard.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -477,7 +477,7 @@ print($form);
 ?>
 
 <div class="infoblock">
-	<?=print_info_box('<strong>Note:</strong> Please save your settings before you click start.', info)?>
+	<?=print_info_box('<strong>Note:</strong> Please save your settings before you click start.', 'info')?>
 </div>
 
 <script type="text/javascript">

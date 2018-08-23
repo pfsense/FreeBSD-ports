@@ -1658,7 +1658,7 @@ PHP_FUNCTION(pfSense_ipfw_tables_list)
 			table_tinfo(&tinfo, info);
 
 			add_next_index_zval(return_value, &tinfo);
-			info = (ipfw_xtable_info *)((caddr_t)(&info) + olh->objsize);
+			info = (ipfw_xtable_info *)((caddr_t)(info) + olh->objsize);
 		}
 
 		free(olh);

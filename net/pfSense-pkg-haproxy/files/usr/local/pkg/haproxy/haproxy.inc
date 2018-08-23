@@ -2173,7 +2173,11 @@ function frontend_usetransparentbackend($frontend) {
 
 function use_transparent_clientip_proxying() {
 	global $config;
+
+	init_config_arr(array('installedpackages', 'haproxy', 'ha_pools', 'item'));
+
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
+
 	if (is_array($a_backends)) {
 		foreach ($a_backends as $backend) {
 			if ($backend["transparent_clientip"] == 'yes') {
@@ -2181,11 +2185,15 @@ function use_transparent_clientip_proxying() {
 			}
 		}
 	}
+
 	return false;
 }
 
 function haproxy_get_transparent_backends(){
 	global $config;
+
+	init_config_arr(array('installedpackages', 'haproxy', 'ha_pools', 'item'));
+
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	$transparent_backends = array();
 	if (!is_array($a_backends)) {
