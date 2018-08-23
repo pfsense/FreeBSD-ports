@@ -78,9 +78,9 @@ defCmdT("Quagga BGP Routes", "{$control_script} bgp route");
 defCmdT("Quagga BGP IPv6 Routes", "{$control_script} bgp6 route");
 defCmdT("Quagga BGP Neighbors", "{$control_script} bgp neighbor");
 defCmdT("Quagga BGP Summary", "{$control_script} bgp sum");
-defCmdT("Quagga ospfd.conf", "/bin/cat {$pkg_homedir}/ospfd.conf");
-defCmdT("Quagga bgpd.conf", "/bin/cat {$pkg_homedir}/bgpd.conf");
-defCmdT("Quagga zebra.conf", "/bin/cat {$pkg_homedir}/zebra.conf");
+defCmdT("Quagga ospfd running-config", "{$control_script} ospf run");
+defCmdT("Quagga bgpd running-config", "{$control_script} bgp run");
+defCmdT("Quagga zebra running-config", "{$control_script} zebra run");
 
 $tab_array = array();
 $tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=quagga_ospfd.xml&id=0");
