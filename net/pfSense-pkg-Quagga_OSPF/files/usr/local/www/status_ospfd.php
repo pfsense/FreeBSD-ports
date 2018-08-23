@@ -2,7 +2,6 @@
 /*
  * status_ospfd.php
  *
- *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2010-2015 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2010 Nick Buraglio <nick@buraglio.com>
