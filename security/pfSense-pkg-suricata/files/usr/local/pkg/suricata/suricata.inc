@@ -3724,6 +3724,8 @@ EOE;
 ######## Start of main suricata.sh
 
 rc_start() {
+	### Make sure libraries path cache is up2sdate
+	/etc/rc.d/ldconfig start
 
 	### Lock out other start signals until we are done
 	/usr/bin/touch {$g['varrun_path']}/suricata_pkg_starting.lck
