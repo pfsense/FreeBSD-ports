@@ -41,6 +41,9 @@ if (!is_array($config['installedpackages']['suricata']['rule']))
 	$config['installedpackages']['suricata']['rule'] = array();
 
 // Initialize required array variables as necessary
+if (!is_array($config['aliases'])) {
+	$config['aliases'] = array();
+}
 if (!is_array($config['aliases']['alias']))
 	$config['aliases']['alias'] = array();
 $a_aliases = $config['aliases']['alias'];
@@ -815,4 +818,3 @@ print($form);
 <?php } ?>
 
 <?php include("foot.inc"); ?>
-

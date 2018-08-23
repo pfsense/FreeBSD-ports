@@ -46,6 +46,9 @@ if (!is_array($config['installedpackages']['suricata']['rule'][$id]['libhtp_poli
 	$config['installedpackages']['suricata']['rule'][$id]['libhtp_policy']['item'] = array();
 
 // Initialize required array variables as necessary
+if (!is_array($config['aliases'])) {
+	$config['aliases'] = array();
+}
 if (!is_array($config['aliases']['alias']))
 	$config['aliases']['alias'] = array();
 $a_aliases = $config['aliases']['alias'];
@@ -710,4 +713,3 @@ if ($importalias) {
 <?php } ?>
 
 <?php include("foot.inc"); ?>
-

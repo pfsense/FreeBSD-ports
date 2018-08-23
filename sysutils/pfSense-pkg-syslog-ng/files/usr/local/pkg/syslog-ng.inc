@@ -179,7 +179,7 @@ function syslogng_get_log_files($objects) {
 
 	foreach ($objects as $object) {
 		if ($object['objecttype'] == 'destination') {
-			preg_match("/\bfile\b\(['\"]([^'\"]*)['\"]/", base64_decode($object['objectparameters']), $match);
+			preg_match("/\s+file\b\(['\"]([^'\"]*)['\"]/", base64_decode($object['objectparameters']), $match);
 			if ($match) {
 				$log_file = $match[1];
 				array_push($log_files, $log_file);
