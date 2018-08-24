@@ -3848,7 +3848,7 @@ function pfb_open_sqlite($table, $message) {
 	}
 
 	if ($db_handle) {
-		$db_handle->exec("PRAGMA journal_mode = wal;");
+		$db_handle->exec("PRAGMA journal_mode = delete;");
 		$db_handle->exec("BEGIN TRANSACTION;"
 				. "{$db_create}"
 				. "END TRANSACTION;");
