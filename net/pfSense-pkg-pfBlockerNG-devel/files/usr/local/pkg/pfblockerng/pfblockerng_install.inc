@@ -138,7 +138,7 @@ else {
 }
 
 
-if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng-container') !== FALSE) {
+if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
 	update_status("Restoring previous pfBlockerNG Widget settings...");
 	// Restore previous widget setting if 'keep' is enabled.
 	$config['widgets']['sequence'] = $pfb['widgets'];
@@ -146,11 +146,11 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 } else {
 	update_status("Adding pfBlockerNG Widget to the Dashboard...");
 	$widgets = $config['widgets']['sequence'];
-	if (strpos($widgets, 'pfblockerng-container') === FALSE) {
+	if (strpos($widgets, 'pfblockerng') === FALSE) {
 		if (empty($widgets)) {
-			$config['widgets']['sequence'] = 'pfblockerng-container:col2:show';
+			$config['widgets']['sequence'] = 'pfblockerng:col2:show';
 		} else {
-			$config['widgets']['sequence'] .= ',pfblockerng-container:col2:show';
+			$config['widgets']['sequence'] .= ',pfblockerng:col2:show';
 		}
 		write_config('pfBlockerNG: Save widget');
 	}
