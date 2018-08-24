@@ -7745,7 +7745,7 @@ function pfblockerng_php_pre_deinstall_command() {
 	if (!empty($pfb['widgets'])) {
 		$widgetlist = explode(',', $pfb['widgets']);
 		foreach ($widgetlist as $key => $widget) {
-			if (strpos($widget, 'pfblockerng-container') !== FALSE) {
+			if (strpos($widget, 'pfblockerng') !== FALSE) {
 				unset($widgetlist[$key]);
 			}
 		}
