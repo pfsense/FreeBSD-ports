@@ -272,39 +272,39 @@
 				},
 				{
 					"feed":		"NoThink",
-					"website":	"http://www.nothink.org/",
+					"website":	"https://www.nothink.org/",
 					"contact":	"https://www.linkedin.com/in/matteo-cantoni-9a9b84",
-					"url":		"http://www.nothink.org/blacklist/blacklist_malware_dns.txt",
+					"url":		"https://www.nothink.org/blacklist/blacklist_malware_dns.txt",
 					"header":	"NoThink_DNS"
 				},
 				{
 					"feed":		"NoThink",
-					"website":	"http://www.nothink.org/",
-					"url":		"http://www.nothink.org/blacklist/blacklist_malware_http.txt",
+					"website":	"https://www.nothink.org/",
+					"url":		"https://www.nothink.org/blacklist/blacklist_malware_http.txt",
 					"header":	"NoThink_HTTP"
 				},
 				{
 					"feed":		"NoThink",
-					"website":	"http://www.nothink.org/",
-					"url":		"http://www.nothink.org/blacklist/blacklist_malware_irc.txt",
+					"website":	"https://www.nothink.org/",
+					"url":		"https://www.nothink.org/blacklist/blacklist_malware_irc.txt",
 					"header":	"NoThink_IRC"
 				},
 				{
 					"feed":		"NoThink",
-					"website":	"http://www.nothink.org/",
-					"url":		"http://www.nothink.org/blacklist/blacklist_ssh_week.txt",
+					"website":	"https://www.nothink.org/",
+					"url":		"https://www.nothink.org/blacklist/blacklist_ssh_week.txt",
 					"header":	"NoThink_SSH"
 				},
 				{
 					"feed":		"NoThink",
-					"website":	"http://www.nothink.org/",
-					"url":		"http://www.nothink.org/blacklist/blacklist_snmp_week.txt",
+					"website":	"https://www.nothink.org/",
+					"url":		"https://www.nothink.org/blacklist/blacklist_snmp_week.txt",
 					"header":	"NoThink_SNMP"
 				},
 				{
 					"feed":		"NoThink",
-					"website":	"http://www.nothink.org/",
-					"url":		"http://www.nothink.org/blacklist/blacklist_telnet_week.txt",
+					"website":	"https://www.nothink.org/",
+					"url":		"https://www.nothink.org/blacklist/blacklist_telnet_week.txt",
 					"header":	"NoThink_Telnet"
 				},
 				{
@@ -961,8 +961,8 @@
 				},
 				{
 					"feed":		"Dan Pollock",
-					"website":	"http://someonewhocares.org/",
-					"url":		"http://someonewhocares.org/hosts/hosts",
+					"website":	"https://someonewhocares.org/",
+					"url":		"https://someonewhocares.org/hosts/hosts",
 					"header":	"SWC"
 				},
 				{
@@ -1346,8 +1346,8 @@
 				},
 				{
 					"feed":		"HostsFile",
-					"website":	"http://www.hostsfile.org/hosts.html",
-					"url":		"http://www.hostsfile.org/Downloads/hosts.txt",
+					"website":	"https://www.hostsfile.org/hosts.html",
+					"url":		"https://www.hostsfile.org/Downloads/hosts.txt",
 					"header":	"HostsFile_BD"
 				},
 				{
@@ -1390,7 +1390,7 @@
 				},
 				{
 					"feed":		"Monero Miner",
-					"website":	"http://laskowski-tech.com/2017/12/15/crypto-miners-on-webservers-part-2/",
+					"website":	"https://laskowski-tech.com/2017/12/15/crypto-miners-on-webservers-part-2/",
 					"url":		"https://raw.githubusercontent.com/Hestat/minerchk/master/hostslist.txt",
 					"info":		"This feed is also contained in the CoinbBlocker Feed",
 					"header":	"MoneroMiner"
