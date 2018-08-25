@@ -5625,6 +5625,9 @@ function sync_package_pfblockerng($cron='') {
 													case 'h3x':
 														if ($csv_count == 8) {
 															$line		= $csvline[2];
+															if (strpos($line, 'btc://') !== FALSE) {
+																continue 2;
+															}
 															$csv_found	= TRUE;
 														}
 														break;
