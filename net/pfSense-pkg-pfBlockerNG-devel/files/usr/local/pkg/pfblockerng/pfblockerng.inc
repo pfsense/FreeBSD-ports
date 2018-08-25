@@ -193,7 +193,7 @@ $pfb['rfc7231'] = array(100 => '100 Continue',			101 => '101 Switching Protocols
 $pfb['def_easylist'] = array(	'EasyList'		=> 'https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt',
 				'EasyPrivacy'		=> 'https://easylist-downloads.adblockplus.org/easyprivacy.txt',
 				'EasyList_Arabic'	=> 'https://easylist-downloads.adblockplus.org/Liste_AR.txt',
-				'EasyList_Bulgarian'	=> 'http://stanev.org/abp/adblock_bg.txt',
+				'EasyList_Bulgarian'	=> 'https://stanev.org/abp/adblock_bg.txt',
 				'EasyList_Chinese'	=> 'https://easylist-downloads.adblockplus.org/easylistchina.txt',
 				'EasyList_Czech_Slovak'	=> 'https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt',
 				'EasyList_Dutch'	=> 'https://easylist-downloads.adblockplus.org/easylistdutch.txt',
