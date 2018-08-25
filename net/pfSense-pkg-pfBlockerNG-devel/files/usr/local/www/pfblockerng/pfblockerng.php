@@ -1316,6 +1316,10 @@ $continent_display	= str_replace('_', ' ', "{$continent}");				// Continent name
 $conf_type		= 'pfblockerng' . strtolower(str_replace('_', '', $continent_en));	// XML config location
 
 $pfb['geoipconfig'] = &$config['installedpackages'][$conf_type]['config'][0];
+if (!is_array($pfb['geoipconfig'])) {
+	$pfb['geoipconfig'] = array();
+}
+
 $active[$continent_display] = TRUE;
 
 $pconfig = array();
@@ -1788,6 +1792,9 @@ global $config, $pfb;
 pfb_global();
 
 $pfb['repconfig'] = &$config['installedpackages']['pfblockerngreputation']['config'][0];
+if (!is_array($pfb['repconfig'])) {
+        $pfb['repconfig'] = array();
+}
 
 $pconfig = array();
 $pconfig['enable_rep']		= $pfb['repconfig']['enable_rep'];
