@@ -3084,7 +3084,7 @@ PHP_FUNCTION(pfSense_interface_create) {
 		array_init(return_value);
 		add_assoc_string(return_value, "error", "Could not create interface");
 	} else {
-		str = zend_string_init(ifr.ifr_name, sizeof(ifr.ifr_name)-1, 0);
+		str = zend_string_init(ifr.ifr_name, strlen(ifr.ifr_name), 0);
 		RETURN_STR(str);
 	}
 }
