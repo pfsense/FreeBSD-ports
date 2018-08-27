@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	signer
-DISTVERSION=	20180826
-PORTREVISION=	1
+DISTVERSION=	20180827
 CATEGORIES=	security
 PKGNAMEPREFIX=	netgate-
 
@@ -13,6 +12,7 @@ LIB_DEPENDS=	libucl.so:textproc/libucl \
 		libfcgi.so:www/fcgi
 
 RUN_DEPENDS=	/etc/thoth/ca.pem:security/netgate-ca \
+		/usr/local/bin/curl:ftp/curl \
 		${LOCALBASE}/bin/setuidgid:sysutils/daemontools
 
 PLIST_FILES=	bin/signer sbin/signer-start.sh
@@ -21,7 +21,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	thoth
 GL_PROJECT=	thoth
-GL_COMMIT=	cce86eeb486fecb412aabd28e5f55b95b88711c7
+GL_COMMIT=	a894ad212de44d0159b271ab5e5859e14c1d4198
 FETCH_BEFORE_ARGS=	--no-verify-peer
 BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}
 INSTALL_WRKSRC=	${WRKSRC}/${PORTNAME}
