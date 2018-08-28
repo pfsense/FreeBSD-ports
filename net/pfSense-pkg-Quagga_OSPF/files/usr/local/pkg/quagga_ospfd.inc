@@ -78,9 +78,9 @@ function quagga_ospfd_install_conf() {
 	// generate ospfd.conf based on the assistant
 	if (is_array($config['installedpackages']['quaggaospfd']['config'])) {
 		$ospfd_conf = &$config['installedpackages']['quaggaospfd']['config'][0];
-	} elseif (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['ospfd'])  ||
-	    isset($config['installedpackages']['quaggaospfdraw']['config'][0]['ospf6d']) ||
-	    isset($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd'])) {
+	} elseif (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['ospfd'])
+		|| isset($config['installedpackages']['quaggaospfdraw']['config'][0]['ospf6d'])
+		|| isset($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd'])) {
 		log_error("Quagga: No assistant generated config for OSPF, but found raw config for one or more daemon");
 	} else {
 		log_error("Quagga OSPFd: No config data found.");
@@ -88,7 +88,7 @@ function quagga_ospfd_install_conf() {
 	}
 
 	if (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['ospfd'])
-	    && !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['ospfd'])) {
+		&& !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['ospfd'])) {
 		// if there is a raw config specifyed in tthe config.xml use that instead of the assisted config
 		$conffile = str_replace("\r","",base64_decode($config['installedpackages']['quaggaospfdraw']['config'][0]['ospfd']));
 	} else {
@@ -266,7 +266,7 @@ function quagga_ospfd_install_conf() {
 
 	/* Make zebra config */
 	if (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['zebra'])
-	    && !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['zebra'])) {
+		&& !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['zebra'])) {
 		// if there is a raw config specifyed in tthe config.xml use that instead of the assisted config
 		$zebraconffile = str_replace("\r", "", base64_decode($config['installedpackages']['quaggaospfdraw']['config'][0]['zebra']));
 	} else {
@@ -291,11 +291,10 @@ function quagga_ospfd_install_conf() {
 
 	/* Make bgpd config, add password and logging */
 	if (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd'])
-	    && !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd'])) {
+		&& !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
 		$bgpdconffile = str_replace("\r","",base64_decode($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd']));
-	}
-	else {
+	} else {
 		$bgpdconffile = "# This file was created by the pfSense package manager.  Do not edit!\n\n";
 		if ($ospfd_conf['password']) {
 			$bgpdconffile .= "password {$ospfd_conf['password']}\n";
@@ -324,20 +323,19 @@ function quagga_ospfd_install_conf() {
 			fwrite($fd, $bgpdaddmd5file);
 			fclose($fd);
 		}
-
 		if ($bgpddelmd5file != "") {
 			$fd = fopen("{$quagga_config_base}/bgpddelmd5pw.conf", "w");
 			fwrite($fd, $bgpddelmd5file);
 			fclose($fd);
 		}
 	}
-        /* Make ospf6 config */
+		/* Make ospf6 config */
 	if (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['ospf6d'])
 	    && !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['ospf6d'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
 		$ospf6dconffile = str_replace("\r","",base64_decode($config['installedpackages']['quaggaospfdraw']['config'][0]['ospf6d']));
 	} else {
-        	$ospf6dconffile = "";
+			$ospf6dconffile = "";
 	}
 
 	$fd = fopen("{$quagga_config_base}/ospf6d.conf", "w");
@@ -350,12 +348,11 @@ function quagga_ospfd_install_conf() {
 		if (strpos($ospfd_conf['carpstatusvid'],'_vip') !== false) {
 			$ospfd_conf['carpmode'] = "quaggadisable";
 			syslog(LOG_NOTICE, "Quagga: CARP failover mode established as 'quaggadisable'");
-		}
-		else {
+		} else {
 			$ospfd_conf['carpmode'] = "none";
 			syslog(LOG_NOTICE, "Quagga: CARP failover mode established as 'none'");
 		}
-		write_config( $write_config_only = true );
+		write_config( $desc = gettext("Quagga_OSPFd: Upgraded failover method for legacy configurations of Quagga_OSPFD") );
 		syslog(LOG_NOTICE, "Quagga: CARP failover upgrade complete");
 	}
 	
@@ -375,7 +372,11 @@ EOF;
 	}
 	
 	$carp_ospfcost_status_check = "";
-	if ((isset($ospfd_conf['carpmode']) && $ospfd_conf['carpmode'] == "ospfcost") && (isset($ospfd_conf['carpcostvid']) && substr($ospfd_conf['carpcostvid'],0,4) != "none") && (isset($ospfd_conf['carpactivecost']) && isset($ospfd_conf['carpbackupcost'])) && ($ospfd_conf['carpactivecost'] >= 0 && $ospfd_conf['carpactivecost'] <= 65535) && ($ospfd_conf['carpbackupcost'] >= 0 && $ospfd_conf['carpbackupcost'] <= 65535)) {
+	if ((isset($ospfd_conf['carpmode']) && $ospfd_conf['carpmode'] == "ospfcost")
+		&& (isset($ospfd_conf['carpcostvid']) && substr($ospfd_conf['carpcostvid'],0,4) != "none")
+		&& (isset($ospfd_conf['carpactivecost']) && isset($ospfd_conf['carpbackupcost']))
+		&& ($ospfd_conf['carpactivecost'] >= 0 && $ospfd_conf['carpactivecost'] <= 65535)
+		&& ($ospfd_conf['carpbackupcost'] >= 0 && $ospfd_conf['carpbackupcost'] <= 65535)) {
 		$control_script = "/usr/local/bin/quaggactl";
 		$carpvips = explode(",",$ospfd_conf['carpcostvid']);
 		foreach ($carpvips as $vips) {
@@ -571,7 +572,11 @@ function quagga_ospfd_plugin_carp($pluginparams) {
 		return null;
 	}
 	/* Verify "carpmode" parameters are properly set.*/
-	if ( $ospfd_conf['carpmode'] == "ospfcost" && (!isset($ospfd_conf['carpcostvid']) || substr($ospfd_conf['carpcostvid'],0,4) == "none") || !isset($ospfd_conf['carpactivecost']) || !isset($ospfd_conf['carpbackupcost']) || ($ospfd_conf['carpactivecost'] < 0 || $ospfd_conf['carpactivecost'] > 65535) || ($ospfd_conf['carpbackupcost'] < 0 || $ospfd_conf['carpbackupcost'] > 65535)) {
+	if ( $ospfd_conf['carpmode'] == "ospfcost" && (!isset($ospfd_conf['carpcostvid'])
+		|| substr($ospfd_conf['carpcostvid'],0,4) == "none")
+		|| !isset($ospfd_conf['carpactivecost']) || !isset($ospfd_conf['carpbackupcost'])
+		|| ($ospfd_conf['carpactivecost'] < 0 || $ospfd_conf['carpactivecost'] > 65535)
+		|| ($ospfd_conf['carpbackupcost'] < 0 || $ospfd_conf['carpbackupcost'] > 65535)) {
 		syslog(LOG_ALERT, "Quagga: Failed checking CARP mode parameters: {$ospfd_conf['carpmode']}");
 		return null;
 	}
@@ -648,16 +653,15 @@ function write_quagga_running_config($module) {
 	if ( file_exists( $moduleRunningFile ) && ( filesize( $moduleRunningFile ) > 0 ) ) {
 		$moduleRunning = fopen( "$moduleRunningFile", "r" );
 		$config['installedpackages']['quaggaospfdraw']['config'][0][$module . "running"] = base64_encode( fread( $moduleRunning, filesize($moduleRunningFile) ));
- 	}
-	else {
+ 	} else {
 		$config['installedpackages']['quaggaospfdraw']['config'][0][$module . "running"] = base64_encode("!!!!! {$module}.conf does not exist or is empty.");
 	}
-	write_config( $write_config_only = true );
+	write_config( $desc = gettext("Quagga_OSPFd: Wrote {$module}.conf startup-config to pfSense config file."), $backup = false, $write_config_only = true );
 	conf_mount_ro();
 }
 
-write_quagga_running_config(bgpd);
-write_quagga_running_config(ospfd);
-write_quagga_running_config(ospf6d);
-write_quagga_running_config(zebra);
+write_quagga_running_config('bgpd');
+write_quagga_running_config('ospfd');
+write_quagga_running_config('ospf6d');
+write_quagga_running_config('zebra');
 ?>
