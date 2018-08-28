@@ -124,8 +124,9 @@ if ($_POST) {
 			$config['installedpackages']['haproxy']['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
 			$config['installedpackages']['haproxy']['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
 			$config['installedpackages']['haproxy']['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
-			foreach($simplefields as $stat)
+			foreach($simplefields as $stat) {
 				$config['installedpackages']['haproxy'][$stat] = $_POST[$stat];
+			}
 
 			// flag for Status/Services to show when the package is 'disabled' so no start button is shown.
 			if ($_POST['enable']) {

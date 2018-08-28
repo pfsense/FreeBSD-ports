@@ -29,8 +29,8 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
-$a_backends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+$a_pools = &getarraybyref($config,'installedpackages','haproxy','ha_pools','item');
+$a_backends = &getarraybyref($config,'installedpackages','haproxy','ha_backends','item');
 
 if ($_POST['apply']) {
 	$result = haproxy_check_and_run($savemsg, true);
