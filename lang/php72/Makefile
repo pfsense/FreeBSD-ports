@@ -61,6 +61,10 @@ DESTDIRNAME=	INSTALL_ROOT
 
 .include <bsd.port.pre.mk>
 
+.if defined(PHP_FD_SETSIZE)
+CONFIGURE_ARGS+=	--enable-fd-setsize=${PHP_FD_SETSIZE}
+.endif
+
 .if ${PORT_OPTIONS:MCLI}
 PHP_SAPI+=	cli
 .else
