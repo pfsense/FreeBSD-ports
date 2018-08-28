@@ -2,7 +2,7 @@
 
 PORTNAME=	php72
 DISTVERSION=	7.2.8
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
 DISTNAME=	php-${DISTVERSION}
@@ -60,6 +60,10 @@ CONFLICTS=	php56-* php70-* php71-*
 DESTDIRNAME=	INSTALL_ROOT
 
 .include <bsd.port.pre.mk>
+
+.if defined(PHP_FD_SETSIZE)
+CONFIGURE_ARGS+=	--enable-fd-setsize=${PHP_FD_SETSIZE}
+.endif
 
 .if ${PORT_OPTIONS:MCLI}
 PHP_SAPI+=	cli
