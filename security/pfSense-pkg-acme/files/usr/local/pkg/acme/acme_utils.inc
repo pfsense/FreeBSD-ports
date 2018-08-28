@@ -53,6 +53,27 @@ if(!function_exists('is_arrayset')){
 	}
 }
 
+if (!function_exists('getarraybyref')) {
+	function &getarraybyref(&$array) {
+		if (!isset($array)) {
+			return false;
+		}
+		if (!is_array($array)) {
+			$array = array();
+		}
+		$item = &$array;
+		$arg = func_get_args();
+		for($i = 1; $i < count($arg); $i++) {
+			$itemindex = $arg[$i];
+			if (!is_array($item[$itemindex])) {
+				$item[$itemindex] = array();
+			}
+			$item = &$item[$itemindex];
+		}
+		return $item;
+	}
+}
+
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
 	

@@ -655,6 +655,12 @@ $acme_domain_validation_method['dns_zilore'] = array('name' => "DNS-Zilore",
 			'description' =>"Fill in the Zilore API Key"
 		)
 	));
+$acme_domain_validation_method['anydns'] = array('name' => "notforuser",
+	'fields' => array(
+		'challengealias' => array('name'=>"challengealias",'columnheader'=>"Enable DNS alias mode",'type'=>"textbox",
+			'description' => '(Optional) Adds the --challenge-alias flag to the acme.sh call.<br/>To use a CNAME for _acme-challenge.importantDomain.tld to direct the acme validation to a different (sub)domain _acme-challenge.aliasDomainForValidationOnly.tld, configure the alternate domain here.<br/>More information can be found <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode" target="_new">here</a>.'
+		)
+	));
 
 //TODO add more challenge validation types
 /* 
@@ -815,14 +821,25 @@ function & get_certificate($name) {
 		return $acmesh->registeraccount($key);
 	}
 
-	function renew_all_certificates() {
-		global $config;
-		$a_global = &$config['installedpackages']['acme'];
-		if (is_array($a_global['certificates']['item'])) {
-			foreach($a_global['certificates']['item'] as $certificate) {
-				echo "Checking if renewal is needed for: {$certificate['name']}\n";
-				issue_certificate($certificate['name']);
+	function renew_all_certificates($force = false) {
+		global $config;		
+		$a_certificates = getarraybyref($config, 'installedpackages', 'acme', 'certificates', 'item');
+		$errors = "";
+		foreach($a_certificates as $certificate) {
+			if ($certificate['status'] != 'active') {
+				echo "Certificate renewal certificate {$certificate['name']} is set to: disabled\n";
+				continue;
 			}
+			echo "Checking if renewal is needed for: {$certificate['name']}\n";
+			$res = issue_certificate($certificate['name'], $force);
+			if (!$res) {
+				$errmsg = "ACME, Failed to renew certificate for {$certificate['name']}";
+				syslog(LOG_WARNING, $errmsg);
+				$errors .= "{$errmsg}\n";
+			}
+		}
+		if (!empty($errors)) {
+			notify_all_remote($errors);
 		}
 	}
 	
@@ -914,11 +931,12 @@ function & get_certificate($name) {
 	}
 		
 	function issue_certificate($id, $force = false, $renew = false) {
+		$result = true;
 		$certificate = & get_certificate($id);
 		if (!$force) {
 			if ($certificate['status'] != 'active') {
 				echo "Certificate renewal for this certificate is set to: disabled\n";
-				return;
+				return $result;
 			}
 
 			$renewafterdays = is_numericint($certificate['renewafter']) ? $certificate['renewafter'] : 60;	
@@ -939,21 +957,29 @@ function & get_certificate($name) {
 			syslog(LOG_NOTICE, "Acme, renewing certificate: {$id}");
 			echo "Renewing certificate \n";
 			$domainstosign = array();
-			$method = "";
 			if (is_array($certificate['a_domainlist']['item'])) {
 				foreach($certificate['a_domainlist']['item'] as $domain) {
 					if ($domain['status'] == 'disable') {
 						continue;
 					}
-					$domainstosign[] = $domain['name'];
 					$method = $domain['method'];
+					$newdomain = new acme_sh_domain($domain['name'], $method);
+					if ($method == "dns_nsupdate") {
+						$newdomain->setnsupdateparameters(
+								$domain["{$method}nsupdate_server"],
+								$domain["{$method}nsupdate_keyname"],
+								$domain["{$method}nsupdate_keyalgo"],
+								$domain["{$method}nsupdate_key"]
+						);
+					}
+					if (substr($method, 0, 4) == "dns_") {
+						$newdomain->setchallengealias($domain["anydns"."challengealias"]);
+					}
+					$domainstosign[] = $newdomain;
 					$envvariables = array();
 					global $acme_domain_validation_method;
 					foreach($acme_domain_validation_method[$method]['fields'] as $key => $field) {
 						$envvariables[$key] = $domain["{$method}{$field['name']}"];
-						if ($method == "dns_nsupdate") {
-							$extras[$domain['name']][$key] = $domain["{$method}{$field['name']}"];
-						}
 					}
 				}
 			}
@@ -966,13 +992,15 @@ function & get_certificate($name) {
 			
 			global $a_acmeserver;
 			$url = $a_acmeserver[$acmeserver]['url'];
-			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]);
+			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]->domainname);
 			$acmesh = new acme_sh($certificate['name'], $url);
 			$action = $renew == true ? "renew" : "issue";
 			$acmesh->dnssleep = $certificate['dnssleep'];
+			$acmesh->challengealias = $certificate['challengealias'];
 			$acmesh->ocspstaple = $certificate['ocspstaple'];
-			$acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $method, $envvariables, $extras);
+			$result = $acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $envvariables);
 		}
+		return $result;
 	}
 	
 	function challenge_response_put($certificatename, $domain, $token, $payload) {
@@ -990,7 +1018,7 @@ function & get_certificate($name) {
 			echo "webroot\n";
 			$directory = $domain_info['webrootfolder'];
 			if(!file_exists($directory) && !@mkdir($directory, 0755, true)) {
-				throw new \RuntimeException("Couldn't create directory to expose challenge: ${tokenPath}");
+				throw new \RuntimeException("Couldn't create directory: '{$directory}' to expose challenge for certificate: {$certificatename}.");
 			}
 			$tokenPath = $directory . "/" . $token;
 			file_put_contents($tokenPath, $payload);
