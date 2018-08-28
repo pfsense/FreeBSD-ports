@@ -256,93 +256,51 @@ if (!is_array($config['installedpackages'][$conf_type]['config'])) {
 // Define default EasyList data (state, easycat and header variables may be user defined)
 if ($gtype == 'easylist') {
 
-	$rowdata[0] = $config['installedpackages'][$conf_type]['config'][0]		?: array();
-	$ex_rowdata = $config['installedpackages'][$conf_type]['config'][0]['row']	?: array();
+	$rowdata[0]['row']	= array();
+	$ex_rows		= $config['installedpackages'][$conf_type]['config'][0] ?: array();
 
-	$rowdata[0]['row'] = array(	array(	'state' 	=> $ex_rowdata[0]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt',
-						'easycat'	=> $ex_rowdata[0]['easycat']	?: '',
-						'header'	=> $ex_rowdata[0]['header']	?: 'EasyList' ),
+	// Create default EasyList data on initial setup
+	if (!is_array($ex_rows['row'])) {
+		$rowdata[0]['aliasname']	= 'EasyList';
+		$rowdata[0]['description']	= 'pfBlockerNG EasyList';
+		$ex_rows['row']			= array();
+	}
 
-					array(	'state'		=> $ex_rowdata[1]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easyprivacy.txt',
-						'easycat'	=> $ex_rowdata[1]['easycat']	?: '',
-						'header'	=> $ex_rowdata[1]['header']	?: 'EasyPrivacy' ),
+	// Collect user-defined settings
+	else {
+		foreach ($ex_rows as $field => $value) {
+			if ($field != 'row') {
+				$rowdata[0][$field] = $value;
+			}
+		}
+	}
 
-					array(	'state'		=> $ex_rowdata[9]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/Liste_AR.txt',
-						'easycat'	=> $ex_rowdata[9]['easycat']	?: '',
-						'header'	=> $ex_rowdata[9]['header']	?: 'EasyList_Arabic' ),
+	// Validate predefined EasyList URLs
+	foreach ($pfb['def_easylist'] as $header => $url) {
+		$found = FALSE;
 
-					array(	'state'		=> $ex_rowdata[7]['state']	?: 'Disabled',
-						'url'		=> 'https://stanev.org/abp/adblock_bg.txt',
-						'easycat'	=> $ex_rowdata[7]['easycat']	?: '',
-						'header'	=> $ex_rowdata[7]['header']	?: 'EasyList_Bulgarian' ),
+		if (!empty($ex_rows['row'])) {
+			foreach ($ex_rows['row'] as $row) {
 
-					array(	'state'		=> $ex_rowdata[6]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylistchina.txt',
-						'easycat'	=> $ex_rowdata[6]['easycat']	?: '',
-						'header'	=> $ex_rowdata[6]['header']	?: 'EasyList_Chinese' ),
+				// Update default EasyList URLs
+				if ($row['header'] == $header) {
+					$found		= TRUE;
+					$row['url']	= $url;
+					break;
+				}
+			}
+		}
 
-					array(	'state'		=> $ex_rowdata[10]['state']	?: 'Disabled',
-						'url'		=> 'https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt',
-						'easycat'	=> $ex_rowdata[10]['easycat']	?: '',
-						'header'	=> $ex_rowdata[10]['header']	?: 'EasyList_Czech_Slovak' ),
-
-					array(	'state'		=> $ex_rowdata[4]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylistdutch.txt',
-						'easycat'	=> $ex_rowdata[4]['easycat']	?: '',
-						'header'	=> $ex_rowdata[4]['header']	?: 'EasyList_Dutch' ),
-
-					array(	'state'		=> $ex_rowdata[5]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/liste_fr.txt',
-						'easycat'	=> $ex_rowdata[5]['easycat']	?: '',
-						'header'	=> $ex_rowdata[5]['header']	?: 'EasyList_French' ),
-
-					array(	'state'		=> $ex_rowdata[2]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist.to/easylistgermany/easylistgermany.txt',
-						'easycat'	=> $ex_rowdata[2]['easycat']	?: '',
-						'header'	=> $ex_rowdata[2]['header']	?: 'EasyList_German' ),
-
-					array(	'state'		=> $ex_rowdata[12]['state']	?: 'Disabled',
-						'url'		=> 'https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt',
-						'easycat'	=> $ex_rowdata[12]['easycat']	?: '',
-						'header'	=> $ex_rowdata[12]['header']	?: 'EasyList_Hebrew' ),
-
-					array(	'state'		=> $ex_rowdata[8]['state']	?: 'Disabled',
-						'url'		=> 'https://raw.githubusercontent.com/heradhis/indonesianadblockrules/master/subscriptions/abpindo.txt',
-						'easycat'	=> $ex_rowdata[8]['easycat']	?: '',
-						'header'	=> $ex_rowdata[8]['header']	?: 'EasyList_Indonesian' ),
-
-					array(	'state'		=> $ex_rowdata[3]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylistitaly.txt',
-						'easycat'	=> $ex_rowdata[3]['easycat']	?: '',
-						'header'	=> $ex_rowdata[3]['header']	?: 'EasyList_Italian' ),
-
-					array(	'state'		=> $ex_rowdata[11]['state']	?: 'Disabled',
-						'url'		=> 'https://notabug.org/latvian-list/adblock-latvian/raw/master/lists/latvian-list.txt',
-						'easycat'	=> $ex_rowdata[11]['easycat']	?: '',
-						'header'	=> $ex_rowdata[11]['header']	?: 'EasyList_Latvian' ),
-
-					array(	'state'		=> $ex_rowdata[13]['state']	?: 'Disabled',
-						'url'		=> 'http://margevicius.lt/easylistlithuania.txt',
-						'easycat'	=> $ex_rowdata[13]['easycat']	?: '',
-						'header'	=> $ex_rowdata[13]['header']	?: 'EasyList_Lithuanian' ),
-
-					array(	'state'		=> $ex_rowdata[14]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/advblock.txt',
-						'easycat'	=> $ex_rowdata[14]['easycat']	?: '',
-						'header'	=> $ex_rowdata[14]['header']	?: 'EasyList_Russian' ),
-
-					array(	'state'		=> $ex_rowdata[16]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylistspanish.txt',
-						'easycat'	=> $ex_rowdata[16]['easycat']	?: '',
-						'header'	=> $ex_rowdata[16]['header']	?: 'EasyList_Spanish' ),
-
-					array(	'state'		=> $ex_rowdata[15]['state']	?: 'Disabled',
-						'url'		=> 'https://adguard.com/en/filter-rules.html?id=13',
-						'easycat'	=> $ex_rowdata[15]['easycat']	?: '',
-						'header'	=> $ex_rowdata[15]['header']	?: 'EasyList_Turkish' ) );
+		// Add Default EasyList entry if not found
+		if (!$found) {
+			$row = array(	'state'		=> 'Disabled',
+					'url'		=> $url,
+					'easycat'	=> '',
+					'header'	=> $header,
+					);
+		}
+		array_push($rowdata[0]['row'], $row);
+	}
 }
 
 // Validate input fields
