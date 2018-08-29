@@ -41,8 +41,8 @@ if (!function_exists("cert_get_purpose")) {
 
 haproxy_config_init();
 
-$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
-$a_pools = $config['installedpackages']['haproxy']['ha_pools']['item'];
+$a_backend = &getarraybyref($config,'installedpackages','haproxy','ha_backends','item');
+$a_pools = getarraybyref($config,'installedpackages','haproxy','ha_pools','item');
 uasort($a_pools, 'haproxy_compareByName');
 
 global $simplefields;
@@ -365,8 +365,9 @@ if ($_POST) {
 	}
 
 	/* Ensure that our pool names are unique */
-	for ($i=0; isset($config['installedpackages']['haproxy']['ha_backends']['item'][$i]); $i++) {
-		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_backends']['item'][$i]['name']) && ($i != $id)) {
+	$a_frontends = getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
+	for ($i=0; isset($a_frontends[$i]); $i++) {
+		if (($_POST['name'] == $a_frontends[$i]['name']) && ($i != $id)) {
 			$input_errors[] = gettext("This frontend name has already been used. Frontend names must be unique.")." $i != $id";
 		}
 	}
