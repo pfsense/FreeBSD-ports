@@ -23,6 +23,7 @@ namespace pfsense_pkg\acme;
 
 $shortcut_section = "acme";
 require("guiconfig.inc");
+require_once("pfsense-utils.inc");
 require_once("acme/acme.inc");
 require_once("acme/acme_utils.inc");
 require_once("acme/acme_htmllist.inc");

@@ -148,6 +148,7 @@ namespace pfsense_pkg\acme {
 /* include all configuration functions */
 require_once("functions.inc");
 require_once("pkg-utils.inc");
+require_once("pfsense-utils.inc");
 require_once("notices.inc");
 require_once("util.inc");
 require_once("acme_utils.inc");
