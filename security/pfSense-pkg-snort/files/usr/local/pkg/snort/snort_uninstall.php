@@ -183,6 +183,7 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on') {
 	mwexec("/sbin/pfctl -t snort2c -T flush");
 	rmdir_recursive("{$snortlogdir}");
 	rmdir_recursive("{$g['vardb_path']}/snort");
+	write_config("Removing Snort configuration");
 	log_error(gettext("[Snort] The package has been completely removed from this system."));
 }
 else {

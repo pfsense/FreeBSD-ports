@@ -65,7 +65,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		scponly>=0:shells/scponly \
 		smartmontools>=0:sysutils/smartmontools \
 		ssh_tunnel_shell>=0:sysutils/ssh_tunnel_shell \
-		sshlockout_pf>=0:sysutils/sshlockout_pf \
+		sshguard>=0:security/sshguard \
 		strongswan>=0:security/strongswan \
 		uclcmd>=0:devel/uclcmd \
 		unbound>=0:dns/unbound \
