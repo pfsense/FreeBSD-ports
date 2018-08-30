@@ -79,9 +79,11 @@ class HtmlList
 			}
 			foreach($fields as $item) {
 				$itemname = $item['name'];
-				$value[$itemname] = $_POST[$this->tablename.$itemname.$x];
-				if ($item['type'] == 'textarea') {
-					$value[$itemname] = base64_encode($value[$itemname]);
+				if (!empty($_POST[$this->tablename.$itemname.$x])) {
+					$value[$itemname] = $_POST[$this->tablename.$itemname.$x];
+					if ($item['type'] == 'textarea') {
+						$value[$itemname] = base64_encode($value[$itemname]);
+					}
 				}
 				$add_item |= isset($_POST[$this->tablename.$itemname.$x]);
 			}

@@ -4,7 +4,6 @@ PORTNAME=	pfSense-Status_Monitoring
 PORTVERSION=	1.7.6
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
-PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
