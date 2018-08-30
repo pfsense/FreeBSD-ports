@@ -1,11 +1,6 @@
 --- src/fw/sshg-fw-pf.sh.orig	2018-06-21 19:46:24 UTC
 +++ src/fw/sshg-fw-pf.sh
-@@ -3,19 +3,19 @@
- # This file is part of SSHGuard.
- 
- fw_init() {
--    pfctl -q -t sshguard -T show > /dev/null
-+    pfctl -q -t $table -T show > /dev/null
+@@ -7,15 +7,15 @@ fw_init() {
  }
  
  fw_block() {
