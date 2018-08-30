@@ -1,15 +1,8 @@
---- src/fw/sshg-fw-pf.sh.orig	2018-08-30 14:05:05 UTC
+--- src/fw/sshg-fw-pf.sh.orig	2018-06-21 19:46:24 UTC
 +++ src/fw/sshg-fw-pf.sh
-@@ -2,20 +2,26 @@
- # sshg-fw-pf
+@@ -3,19 +3,19 @@
  # This file is part of SSHGuard.
  
-+if [ "$4" = "380" ]; then
-+	table="webConfiguratorlockout"
-+else
-+	table="sshguard"
-+fi
-+
  fw_init() {
 -    pfctl -q -t sshguard -T show > /dev/null
 +    pfctl -q -t $table -T show > /dev/null
