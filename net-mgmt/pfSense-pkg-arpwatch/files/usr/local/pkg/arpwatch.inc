@@ -48,7 +48,8 @@ function arpwatch_install_command() {
 	$rc = array();
 	$rc['file'] = 'arpwatch.sh';
 
-	$rc['start'] = '';
+	// Give it a few seconds to stop gracefully, then kill it with fire.
+	$rc['start'] = "/usr/bin/killall -q arpwatch ; sleep 3; /usr/bin/killall -q -9 arpwatch\n";
 
 	$active_interfaces_array = explode(',', $active_interfaces);
 
@@ -63,12 +64,14 @@ function arpwatch_install_command() {
 		}
 	}
 
-	$rc['stop'] = '/usr/bin/killall arpwatch || exit 0';
+	$rc['stop'] = '/usr/bin/killall -q arpwatch';
 
 	write_rcfile($rc);
 
 	if ($arpwatch_config['enable']) {
-		restart_service("arpwatch");
+		if (!platform_booting()) {
+			restart_service("arpwatch");
+		}
 	} else {
 		stop_service("arpwatch");
 	}
