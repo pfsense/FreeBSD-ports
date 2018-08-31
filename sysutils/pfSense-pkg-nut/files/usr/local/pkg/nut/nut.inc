@@ -229,7 +229,7 @@ function nut_sync_config() {
 			$upsdfile .= "\n\n" . base64_decode($nut_config['upsd_conf']) . "\n";
 		}
 
-		$user = "monuser";
+		$user = "local-monitor";
 		$pass = bin2hex(openssl_random_pseudo_bytes(10));
 		$monitor = $nut_config['name'] . " 1 " . $user . " " . $pass . " master";
 
