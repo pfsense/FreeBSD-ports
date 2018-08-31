@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-nut
 PORTVERSION=	2.7.4
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,9 +13,7 @@ COMMENT=	Network UPS Tools
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/upsd:sysutils/nut \
-		${LOCALBASE}/sbin/upsmon:sysutils/nut \
-		${LOCALBASE}/sbin/upsdrvctl:sysutils/nut
+RUN_DEPENDS=	nut>=0:sysutils/nut
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -27,16 +25,12 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/nut
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nut.xml \
-		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nut.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nut/nut.inc \
