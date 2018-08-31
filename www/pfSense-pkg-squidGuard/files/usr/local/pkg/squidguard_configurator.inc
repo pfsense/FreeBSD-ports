@@ -1640,7 +1640,7 @@ function is_iprange_sg($ip_range) {
     if (!is_ipaddr($ip1) || !is_ipaddr($ip2)) return false;
 
     # ip2 < ip1 - wrong
-    if (ipcmp(ip2, ip1) === -1) return false;
+    if (ipcmp($ip2, $ip1) === -1) return false;
 
     return true;
 }

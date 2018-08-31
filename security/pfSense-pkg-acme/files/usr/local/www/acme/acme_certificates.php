@@ -23,6 +23,7 @@ namespace pfsense_pkg\acme;
 
 $shortcut_section = "acme";
 require_once("guiconfig.inc");
+require_once("pfsense-utils.inc");
 require_once("certs.inc");
 require_once("acme/acme.inc");
 require_once("acme/acme_gui.inc");
@@ -31,16 +32,13 @@ require_once("acme/pkg_acme_tabs.inc");
 
 $changedesc = "Services: Acme: Certificates";
 
-if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
-	$config['installedpackages']['acme']['certificates']['item'] = array();
-}
-$a_certifcates = &$config['installedpackages']['acme']['certificates']['item'];
+$a_certificates = &getarraybyref($config, 'installedpackages', 'acme', 'certificates', 'item');
 
 if($_POST['action'] == "toggle") {
 	$id = $_POST['id'];
 	echo "$id|";
-	if (isset($a_certifcates[get_certificate_id($id)])) {
-		$item = &$a_certifcates[get_certificate_id($id)];
+	if (isset($a_certificates[get_certificate_id($id)])) {
+		$item = &$a_certificates[get_certificate_id($id)];
 		if ($item['status'] != "disabled"){
 			$item['status'] = 'disabled';
 			echo "0|";
@@ -59,7 +57,7 @@ if($_POST['action'] == "toggle") {
 if($_POST['action'] == "issuecert") {
 	$id = $_POST['id'];
 	echo $id . "\n";
-	if (isset($a_certifcates[get_certificate_id($id)])) {
+	if (isset($a_certificates[get_certificate_id($id)])) {
 		issue_certificate($id, true);
 	}
 	exit;
@@ -67,7 +65,7 @@ if($_POST['action'] == "issuecert") {
 if($_POST['action'] == "renewcert") {
 	$id = $_POST['id'];
 	echo $id . "\n";
-	if (isset($a_certifcates[get_certificate_id($id)])) {
+	if (isset($a_certificates[get_certificate_id($id)])) {
 		issue_certificate($id, true, true);
 	}
 	exit;
@@ -85,7 +83,7 @@ if ($_POST) {
 				$selected[] = get_certificate_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_certifcates[$itemnr]);
+				unset($a_certificates[$itemnr]);
 				$deleted = true;
 			}
 			if ($deleted) {
@@ -116,7 +114,7 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_certificate_id($selection);
 			}
-			array_moveitemsbefore($a_certifcates, $moveto, $selected);
+			array_moveitemsbefore($a_certificates, $moveto, $selected);
 		
 			touch($d_acmeconfdirty_path);
 			write_config($changedesc);			
@@ -127,9 +125,9 @@ if ($_POST) {
 if ($_GET['act'] == "del") {
 	$id = $_GET['id'];
 	$id = get_certificate_id($id);
-	if (isset($a_certifcates[$id])) {
+	if (isset($a_certificates[$id])) {
 		if (!$input_errors) {
-			unset($a_certifcates[$id]);
+			unset($a_certificates[$id]);
 			$changedesc .= " Item delete";
 			write_config($changedesc);
 			touch($d_acmeconfdirty_path);
@@ -186,7 +184,7 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				</thead>
 				<tbody class="user-entries">
 <?php
-		foreach ($a_certifcates as $certificate) {
+		foreach ($a_certificates as $certificate) {
 			$certificatename = $certificate['name'];
 			$disabled = $certificate['status'] != 'active';
 			?>
@@ -248,7 +246,7 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				<a href="acme_certificates_edit.php?id=<?=$certificatename;?>">
 					<?=acmeicon("edit", gettext("edit"))?>
 				</a>
-				<a href="acme_certificates.php?act=del&amp;id=<?=$certificatename;?>" onclick="return confirm('Do you really want to delete this entry?')">
+				<a href="acme_certificates.php?act=del&amp;id=<?=$certificatename;?>">
 					<?=acmeicon("delete", gettext("delete"))?>
 				</a>
 				<a href="acme_certificates_edit.php?dup=<?=$certificatename;?>">
@@ -263,15 +261,15 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 		</div>
 	</div>
 	<nav class="action-buttons">
-		<a href="acme_certificates_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
+		<a href="acme_certificates_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add certificate to the end of the list')?>">
 			<i class="fa fa-plus icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
-		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
-			<i class="fa fa-trash icon-embed-btn no-confirm"></i>
+		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected certificates"); ?>" title="<?=gettext('Delete selected certificates')?>">
+			<i class="fa fa-trash icon-embed-btn"></i>
 			<?=gettext("Delete"); ?>
 		</button>
-		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
+		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save certificate order')?>">
 			<i class="fa fa-save icon-embed-btn no-confirm"></i>
 			<?=gettext("Save")?>
 		</button>

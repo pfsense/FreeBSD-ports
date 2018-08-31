@@ -23,15 +23,13 @@ namespace pfsense_pkg\acme;
 
 $shortcut_section = "acme";
 require("guiconfig.inc");
+require_once("pfsense-utils.inc");
 require_once("acme/acme.inc");
 require_once("acme/acme_utils.inc");
 require_once("acme/acme_htmllist.inc");
 require_once("acme/pkg_acme_tabs.inc");
 
-if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
-	$config['installedpackages']['acme']['certificates']['item'] = array();
-}
-$a_certificates = &$config['installedpackages']['acme']['certificates']['item'];
+$a_certificates = &getarraybyref($config,'installedpackages','acme','certificates','item');
 
 if (isset($_POST['id'])) {
 	$id = $_POST['id'];
@@ -79,9 +77,9 @@ $fields_domains[2]['columnheader']="Method";
 $fields_domains[2]['colwidth']="15%";
 $fields_domains[2]['type']="select";
 $fields_domains[2]['size']="100px";
-$fields_domains[2]['items']=&$acme_domain_validation_method;
 
-$fields_domains_details=array();
+$fields_domains_details = array();
+$methods = array();
 foreach($acme_domain_validation_method as $key => $action) {
 	if (is_array($action['fields'])) {
 		foreach($action['fields'] as $field) {
@@ -92,7 +90,13 @@ foreach($acme_domain_validation_method as $key => $action) {
 			$fields_domains_details[$name] = $item;
 		}
 	}
+	if ($action['name'] != 'notforuser') {
+		$methods[$key] = array();
+		$methods[$key]['name'] = $action['name'];
+	}
 }
+$fields_domains[2]['items'] = $methods;
+
 $domainslist = new HtmlList("table_domains", $fields_domains);
 $domainslist->keyfield = "name";
 $domainslist->fields_details = $fields_domains_details;
@@ -254,8 +258,8 @@ if ($_POST) {
 	if($certificate['name'] != "") {
 		$changedesc .= " modified certificate: '{$certificate['name']}'";
 	}
-	$certificate['a_domainlist']['item'] = $a_domains;
-	$certificate['a_actionlist']['item'] = $a_actions;
+	getarraybyref($certificate, 'a_domainlist')['item'] = $a_domains;
+	getarraybyref($certificate, 'a_actionlist')['item'] = $a_actions;
 
 	$certificate['keypaste'] = base64_encode($_POST['keypaste']);
 	global $simplefields;
@@ -399,7 +403,6 @@ $section->addInput(new \Form_Input(
 	['min' => '1', 'max' => '3600']
 ))->setHelp('When using a DNS validation method configure how much time to wait before attempting verification after the txt records are added. Defaults to 120 seconds.');
 
-
 $section->addInput(new \Form_StaticText(
 	'Actions list', 
 	"Used to restart webserver processes after this certificate has been renewed<br/>" .
@@ -463,17 +466,17 @@ print $form;
 			var table = d.getElementById(tableId);
 			
 			for(var actionkey in showhide_domainfields) {
+				var showfield = actionkey === actiontype ? '' : 'none';
+				if (actiontype.startsWith('dns_') && actionkey === 'anydns') {
+					showfield = '';
+				}
 				var fields = showhide_domainfields[actionkey]['fields'];
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
 					var element = d.getElementById(rowid);
 					if (element) {
-						if (actionkey === actiontype) {
-							element.style.display = '';
-						} else {
-							element.style.display = 'none';
-						}
+						element.style.display = showfield;
 					}
 				}
 			}

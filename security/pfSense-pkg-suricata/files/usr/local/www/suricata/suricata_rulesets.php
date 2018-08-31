@@ -132,6 +132,8 @@ if (isset($_POST["save"])) {
 	}
 	else {
 		$a_nat[$id]['autoflowbitrules'] = 'off';
+		// Need this here so the GUI renders correctly after saving
+		$_POST['autoflowbits'] = "off";
 		unlink_if_exists("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}");
 	}
 
@@ -297,7 +299,7 @@ else:
 		'autoflowbits',
 		'Resolve Flowbits',
 		'Auto-enable rules required for checked flowbits',
-		($pconfig['autoflowbits'] != 'off' && isset($pconfig['autoflowbits'])) ? true : false,
+		$pconfig['autoflowbits'] != 'off' ? true : false,
 		'on'
 	))->setHelp(' Default is Checked. Suricata will examine the enabled rules in your chosen rule categories for checked flowbits. ' .
 					'Any rules that set these dependent flowbits will be automatically enabled and added to the list of files in the interface rules directory.');

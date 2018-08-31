@@ -158,6 +158,16 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 								$rowdata[$k_field[1]][$k_field[0]] = $value;
 							} else {
 								$continent = strtolower(str_replace(' ', '', $rowdata[$k_field[1]]['aliasname']));
+								
+								if (!is_array($config['installedpackages']['pfblockerng' . $continent])) {
+									$config['installedpackages']['pfblockerng' . $continent] = array();
+								}
+								if (!is_array($config['installedpackages']['pfblockerng' . $continent]['config'])) {
+									$config['installedpackages']['pfblockerng' . $continent]['config'] = array();
+								}
+								if (!is_array($config['installedpackages']['pfblockerng' . $continent]['config'][0])) {
+									$config['installedpackages']['pfblockerng' . $continent]['config'][0] = array();
+								}
 								$config['installedpackages']['pfblockerng' . $continent]['config'][0][$k_field[0]] = $value;
 							}
 						}

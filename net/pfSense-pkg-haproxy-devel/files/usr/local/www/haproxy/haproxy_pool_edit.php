@@ -30,7 +30,7 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
+$a_pools = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
 
 $a_files = haproxy_get_fileslist();
 
@@ -410,8 +410,9 @@ if ($_POST) {
 		$input_errors[] = "The field 'Stats Node' contains invalid characters. Should be a string with digits(0-9), letters(A-Z, a-z), hyphen(-) or underscode(_)";
 	}
 	/* Ensure that our pool names are unique */
-	for ($i=0; isset($config['installedpackages']['haproxy']['ha_pools']['item'][$i]); $i++) {
-		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_pools']['item'][$i]['name']) && ($i != $id)) {
+	$a_backends = getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
+	for ($i=0; isset($a_backends[$i]); $i++) {
+		if (($_POST['name'] == $a_backends[$i]['name']) && ($i != $id)) {
 			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";
 		}
 	}

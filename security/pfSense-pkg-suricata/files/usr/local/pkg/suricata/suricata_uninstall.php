@@ -139,6 +139,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] !
 	unlink_if_exists("{$suricata_rules_upd_log}");
 	rmdir_recursive("{$suricatalogdir}");
 	rmdir_recursive("{$g['vardb_path']}/suricata");
+	write_config("Removing Suricata configuration");
 	log_error(gettext("[Suricata] The package has been removed from this system..."));
 }
 

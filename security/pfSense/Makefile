@@ -55,7 +55,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}simplepie>=0:www/simplepie@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
-		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
+		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
 		qstats>=0:sysutils/qstats \
@@ -64,7 +64,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		relayd>=0:net/relayd \
 		scponly>=0:shells/scponly \
 		ssh_tunnel_shell>=0:sysutils/ssh_tunnel_shell \
-		sshlockout_pf>=0:sysutils/sshlockout_pf \
+		sshguard>=0:security/sshguard \
 		strongswan>=0:security/strongswan \
 		uclcmd>=0:devel/uclcmd \
 		unbound>=0:dns/unbound \

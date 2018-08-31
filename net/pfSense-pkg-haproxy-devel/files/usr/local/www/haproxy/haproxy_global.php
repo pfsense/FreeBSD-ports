@@ -111,29 +111,31 @@ if ($_POST) {
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
 		if (!$input_errors) {
-			$config['installedpackages']['haproxy']['email_mailers']['item'] = $a_mailers;
-			$config['installedpackages']['haproxy']['dns_resolvers']['item'] = $a_resolvers;
-			$config['installedpackages']['haproxy']['enable'] = $_POST['enable'] ? true : false;
-			$config['installedpackages']['haproxy']['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
-			$config['installedpackages']['haproxy']['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
-			$config['installedpackages']['haproxy']['enablesync'] = $_POST['enablesync'] ? true : false;
-			$config['installedpackages']['haproxy']['remotesyslog'] = $_POST['remotesyslog'] ? $_POST['remotesyslog'] : false;
-			$config['installedpackages']['haproxy']['logfacility'] = $_POST['logfacility'] ? $_POST['logfacility'] : false;
-			$config['installedpackages']['haproxy']['loglevel'] = $_POST['loglevel'] ? $_POST['loglevel'] : false;
-			$config['installedpackages']['haproxy']['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
-			$config['installedpackages']['haproxy']['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
-			$config['installedpackages']['haproxy']['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
-			$config['installedpackages']['haproxy']['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
-			foreach($simplefields as $stat)
-				$config['installedpackages']['haproxy'][$stat] = $_POST[$stat];
+			$haproxycfg = &getarraybyref($config, 'installedpackages', 'haproxy');
+			getarraybyref($haproxycfg, 'email_mailers')['item'] = $a_mailers;
+			getarraybyref($haproxycfg, 'dns_resolvers')['item'] = $a_resolvers;
+			$haproxycfg['enable'] = $_POST['enable'] ? true : false;
+			$haproxycfg['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
+			$haproxycfg['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
+			$haproxycfg['enablesync'] = $_POST['enablesync'] ? true : false;
+			$haproxycfg['remotesyslog'] = $_POST['remotesyslog'] ? $_POST['remotesyslog'] : false;
+			$haproxycfg['logfacility'] = $_POST['logfacility'] ? $_POST['logfacility'] : false;
+			$haproxycfg['loglevel'] = $_POST['loglevel'] ? $_POST['loglevel'] : false;
+			$haproxycfg['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
+			$haproxycfg['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
+			$haproxycfg['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
+			$haproxycfg['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
+			foreach($simplefields as $stat) {
+				$haproxycfg[$stat] = $_POST[$stat];
+			}
 
 			// flag for Status/Services to show when the package is 'disabled' so no start button is shown.
 			if ($_POST['enable']) {
-				if (is_array($config['installedpackages']['haproxy']['config'][0])) {
-					unset($config['installedpackages']['haproxy']['config'][0]['enable']);
+				if (is_array($haproxycfg['config'][0])) {
+					unset($haproxycfg['config'][0]['enable']);
 				}
 			} else {
-				$config['installedpackages']['haproxy']['config'][0]['enable'] = 'off';
+				$haproxycfg['config'][0]['enable'] = 'off';
 			}
 			
 			touch($d_haproxyconfdirty_path);
@@ -142,8 +144,8 @@ if ($_POST) {
 	}
 }
 
-$a_mailers = $config['installedpackages']['haproxy']['email_mailers']['item'];
-$a_resolvers = $config['installedpackages']['haproxy']['dns_resolvers']['item'];
+$a_mailers = getarraybyref($config, 'installedpackages', 'haproxy', 'email_mailers', 'item');
+$a_resolvers = getarraybyref($config, 'installedpackages', 'haproxy', 'dns_resolvers', 'item');
 
 $pconfig['enable'] = isset($config['installedpackages']['haproxy']['enable']);
 $pconfig['terminate_on_reload'] = isset($config['installedpackages']['haproxy']['terminate_on_reload']);

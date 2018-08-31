@@ -1,0 +1,16 @@
+--- src/fw/sshg-fw.in.orig	2018-08-30 16:58:50 UTC
++++ src/fw/sshg-fw.in
+@@ -16,7 +16,12 @@ cleanup() {
+ 
+ trap cleanup EXIT INT
+ 
+-while read cmd address addrtype cidr; do
++while read cmd address addrtype cidr service; do
++    if [ "$service" = "380" ]; then
++        export table="webConfiguratorlockout"
++    else
++        export table="sshguard"
++    fi
+     case $cmd in
+         block)
+             fw_block $address $addrtype $cidr;;

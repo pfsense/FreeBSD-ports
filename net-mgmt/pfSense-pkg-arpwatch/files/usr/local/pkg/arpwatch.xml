@@ -38,6 +38,7 @@
 		<rcfile>arpwatch.sh</rcfile>
 		<executable>arpwatch</executable>
 		<description>Arpwatch Daemon</description>
+		<starts_on_sync/>
 	</service>
 	<tabs>
 		<tab>

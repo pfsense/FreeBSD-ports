@@ -189,6 +189,25 @@ $pfb['rfc7231'] = array(100 => '100 Continue',			101 => '101 Switching Protocols
 			526 => 'CF 526 Invalid SSL Certificate',527 => 'CF 527 Railgun Error'
 			);
 
+// Default EasyList Header/URLs
+$pfb['def_easylist'] = array(	'EasyList'		=> 'https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt',
+				'EasyPrivacy'		=> 'https://easylist-downloads.adblockplus.org/easyprivacy.txt',
+				'EasyList_Arabic'	=> 'https://easylist-downloads.adblockplus.org/Liste_AR.txt',
+				'EasyList_Bulgarian'	=> 'https://stanev.org/abp/adblock_bg.txt',
+				'EasyList_Chinese'	=> 'https://easylist-downloads.adblockplus.org/easylistchina.txt',
+				'EasyList_Czech_Slovak'	=> 'https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt',
+				'EasyList_Dutch'	=> 'https://easylist-downloads.adblockplus.org/easylistdutch.txt',
+				'EasyList_French'	=> 'https://easylist-downloads.adblockplus.org/liste_fr.txt',
+				'EasyList_German'	=> 'https://easylist.to/easylistgermany/easylistgermany.txt',
+				'EasyList_Hebrew'	=> 'https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt',
+				'EasyList_Indonesian'	=> 'https://raw.githubusercontent.com/heradhis/indonesianadblockrules/master/subscriptions/abpindo.txt',
+				'EasyList_Italian'	=> 'https://easylist-downloads.adblockplus.org/easylistitaly.txt',
+				'EasyList_Latvian'	=> 'https://notabug.org/latvian-list/adblock-latvian/raw/master/lists/latvian-list.txt',
+				'EasyList_Lithuanian'	=> 'http://margevicius.lt/easylistlithuania.txt',
+				'EasyList_Russian'	=> 'https://easylist-downloads.adblockplus.org/advblock.txt',
+				'EasyList_Spanish'	=> 'https://easylist-downloads.adblockplus.org/easylistspanish.txt',
+				'EasyList_Turkish'	=> 'https://adguard.com/en/filter-rules.html?id=13'
+				);
 
 // [ $pfb ] pfBlockerNG global array. This needs to be called to get the updated settings.
 function pfb_global() {
@@ -3848,7 +3867,7 @@ function pfb_open_sqlite($table, $message) {
 	}
 
 	if ($db_handle) {
-		$db_handle->exec("PRAGMA journal_mode = wal;");
+		$db_handle->exec("PRAGMA journal_mode = delete;");
 		$db_handle->exec("BEGIN TRANSACTION;"
 				. "{$db_create}"
 				. "END TRANSACTION;");
@@ -5283,13 +5302,18 @@ function sync_package_pfblockerng($cron='') {
 								$custom = FALSE;
 							}
 
-							// EasyList - collect enabled EasyList categories
+							// EasyList
 							if (isset($row['easycat'])) {
+
+								// Collect enabled EasyList categories
 								if (empty($row['easycat'])) {
 									pfb_logger("\n [ {$row['header']} ] - Terminated - No categories defined.\n", 1);
 									continue;
 								}
 								$easylist = ",{$row['easycat']},";
+
+								// Update EasyList URL to default URL
+								$row['url'] = $pfb['def_easylist'][$row['header']];
 							}
 							else {
 								unset($easylist);
@@ -5601,6 +5625,9 @@ function sync_package_pfblockerng($cron='') {
 													case 'h3x':
 														if ($csv_count == 8) {
 															$line		= $csvline[2];
+															if (strpos($line, 'btc://') !== FALSE) {
+																continue 2;
+															}
 															$csv_found	= TRUE;
 														}
 														break;
@@ -7745,7 +7772,7 @@ function pfblockerng_php_pre_deinstall_command() {
 	if (!empty($pfb['widgets'])) {
 		$widgetlist = explode(',', $pfb['widgets']);
 		foreach ($widgetlist as $key => $widget) {
-			if (strpos($widget, 'pfblockerng-container') !== FALSE) {
+			if (strpos($widget, 'pfblockerng') !== FALSE) {
 				unset($widgetlist[$key]);
 			}
 		}
