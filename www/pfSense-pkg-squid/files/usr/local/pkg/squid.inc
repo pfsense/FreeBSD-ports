@@ -943,7 +943,7 @@ function squid_validate_cache($post, &$input_errors) {
 	}
 
 	if ($post['donotcache'] != "") {
-		foreach (split("\n", $post['donotcache']) as $host) {
+		foreach (explode("\n", $post['donotcache']) as $host) {
 			$host = trim($host);
 			// Allow matching all subdomains, like .example.com
 			if (strpos($host, '.') === 0) {
