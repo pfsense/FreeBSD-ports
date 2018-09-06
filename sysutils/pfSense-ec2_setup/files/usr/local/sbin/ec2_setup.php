@@ -195,8 +195,12 @@ function addServerCert($caref) {
 function addOpenVPNServer() {
 	global $config;
 
-	if (!is_array($config['openvpn']['openvpn-server']))
+	if (!is_array($config['openvpn'])) {
+		$config['openvpn'] = array();
+	}
+	if (!is_array($config['openvpn']['openvpn-server'])) {
 		$config['openvpn']['openvpn-server'] = array();
+	}
 
 	$a_server = &$config['openvpn']['openvpn-server'];
 
@@ -267,8 +271,12 @@ function configureMgmtNetRules($mgmtnet) {
 		return;
 	}
 
-	if (!is_array($config['filter']['rule']))
+	if (!is_array($config['filter'])) {
+		$config['filter'] = array();
+	}
+	if (!is_array($config['filter']['rule'])) {
 		$config['filter']['rule'] = array();
+	}
 	$a_filter = &$config['filter']['rule'];
 
 	foreach ($a_filter as &$rule) {
@@ -291,8 +299,9 @@ function writeOpenVPNConfig($publicIP) {
 	if (!is_array($config['openvpn']['openvpn-server']) ||
 	    !isset($config['openvpn']['openvpn-server'][0]['description']) ||
 	    ($config['openvpn']['openvpn-server'][0]['description'] !=
-	     'Netgate Auto Remote Access VPN'))
+	     'Netgate Auto Remote Access VPN')) {
 		return;
+	}
 
 	$cfgDir             = "/usr/local/libdata/vpn-profile";
 	$ovpnCfgFile        = "remote-access-openvpn.ovpn";
