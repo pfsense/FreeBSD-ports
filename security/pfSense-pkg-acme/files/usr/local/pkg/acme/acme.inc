@@ -260,7 +260,7 @@ $acme_domain_validation_method['dns_acmedns'] = array('name' => "DNS-acme-dns.io
 		'ACMEDNS_PASSWORD' => array('name'=>"acmedns_password",'columnheader'=>"Password",'type'=>"textbox",
 			'description' =>"Fill in the acme-dns.io Password"
 		),
-		'ACMEDNS_SUBDOMAIN' => array('name'=>"acmedns_subdomain",'columnheader'=>"Subdomian",'type'=>"textbox",
+		'ACMEDNS_SUBDOMAIN' => array('name'=>"acmedns_subdomain",'columnheader'=>"Subdomain",'type'=>"textbox",
 			'description' =>"Fill in the acme-dns.io subdomain"
 		),
 		'ACMEDNS_UPDATE_URL' => array('name'=>"acmedns_update_url",'columnheader'=>"Update URL",'type'=>"textbox",
