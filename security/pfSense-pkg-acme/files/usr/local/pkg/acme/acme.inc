@@ -551,7 +551,7 @@ $acme_domain_validation_method['dns_loopia'] = array('name' => "DNS-Loopia",
 			'description' =>"Fill in the Loopia Password"
 		)
 	));
-$acme_domain_validation_method['dns_luadns'] = array('name' => "DNS-Luadns",
+$acme_domain_validation_method['dns_lua'] = array('name' => "DNS-Luadns",
 	'fields' => array(
 		'LUA_Key' => array('name'=>"lua_key",'columnheader'=>"Key",'type'=>"textbox",
 			'description' =>"Fill in the API Key"
