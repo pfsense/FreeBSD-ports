@@ -186,7 +186,7 @@
 			<fielddescr>Patch Captive Portal</fielddescr>
 			<description>
 				<![CDATA[
-				<strong><span class="text-warning">This feature was removed</span></strong> - see <a href="https://redmine.pfsense.org/issues/5594">Bug #5594</a> for details!
+				<strong><span class="text-warning">This feature was removed</span></strong>
 				]]>
 			</description>
 			<type>info</type>
@@ -327,7 +327,7 @@
 				</span><br/><br/>
 				<strong><span class="text-info">Splice All: </span></strong><br/>
 				<span>
-				This configuration is suitable if you want to use the <a href="https://doc.pfsense.org/index.php/SquidGuard_package" target="_blank">SquidGuard package</a> for web filtering.</br>
+				This configuration is suitable if you want to use the SquidGuard package for web filtering.</br>
 				All destinations will be spliced. SquidGuard can do its job of denying or allowing destinations according its rules, as it does with HTTP.<br/>
 				You do <em>not</em> need to install the CA certificate configured below on clients.<br/>
 				Content filtering (such as Antivirus) <em>will not</em> be available for SSL sites.
@@ -423,7 +423,7 @@
 				<![CDATA[
 				Select Certificate Authority to use when SSL interception is enabled.
 				<div class="infoblock">
-				To create a CA on pfSense, go to <a href="system_camanager.php" target="_blank">System &gt; Cert Manager</a>.<br/>
+				To create a CA on Kontrol, go to <a href="system_camanager.php" target="_blank">System &gt; Cert Manager</a>.<br/>
 				<strong><span class="text-danger">Important:</span></strong> Install the CA certificate as a Trusted Root CA on each computer you want to filter SSL on to avoid SSL error on each connection.
 				</div>
 				]]>
@@ -699,7 +699,40 @@
 			<description>
 				<![CDATA[
 				Put your own custom options here, one per line. They'll be added to the configuration before authetication ACLS (if any).<br/>
-				<strong><span class="text-danger">Warning:</span> These need to be squid.conf native options, otherwise Squid will NOT work.</strong>
+				<strong><span class="text-danger">Warning:</span> These need to be squid.conf native options, otherwise Squid will NOT work.</strong> <br/>
+				<br/>
+				<strong>You can copy/paste the AUTH Config lines below</strong> <br/>
+				<strong>Uncomment and change the config items accordingly</strong> <br/>
+
+
+				<br/>
+				#### NEGOTIATE KERBEROS AUTHENTICATION #### <br/>
+				auth_param negotiate program /usr/local/libexec/squid/negotiate_kerberos_auth  -d -i -s HTTP/kontrol243.kontrol.corp@KONTROL.CORP <br/>
+				auth_param negotiate children 50 startup=20 idle=10 <br/>
+				auth_param negotiate keep_alive on <br/>
+				<br/>
+				<br/>
+				####  NTLMv2 AUTHENTICATION ONLY - IN CASE KERBEROS DOESNT WORK #### <br/>
+				auth_param ntlm program /usr/local/bin/ntlm_auth --helper-protocol=squid-2.5-ntlmssp <br/>
+				auth_param ntlm children 30 startup=20 idle=5  <br/>
+				auth_param ntlm keep_alive off <br/>
+				<br/>
+				<br/>
+				####  NTLM BASIC AUTHENTICATION ONLY - IN CASE KERBEROS/NTLMv2 DOESNT WORK  ####  <br/>
+				#auth_param basic program /usr/local/bin/ntlm_auth --helper-protocol=squid-2.5-basic  <br/>
+				#auth_param basic children 40 startup=15 idle=3  <br/>
+				#auth_param basic use_ntlm_negotiate on  <br/>
+				#auth_param basic realm ENTER CREDENTIALS  <br/>
+				#auth_param basic keep_alive off  <br/>
+				#auth_param basic credentialsttl 2 hours  <br/>
+				<br/>
+				<br/>
+				####  STARTING  CUSTOM ACLs  ####  <br/>
+				acl auth proxy_auth REQUIRED  <br/>
+				<br/>
+				<br/>
+				#### STARTING CUSTOM AUTHORIZATION ACL  ###  <br/>
+				http_access allow auth  <br/>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -714,14 +747,17 @@
 			<description>
 				<![CDATA[
 				Put your own custom options here, one per line. They'll be added to the configuration after authentication definition (if any).<br/>
-				<strong><span class="text-danger">Warning:</span> These need to be squid.conf native options, otherwise Squid will NOT work.</strong>
+				<strong><span class="text-danger">Warning:</span> These need to be squid.conf native options, otherwise Squid will NOT work.</strong> <br/>
+				<br/>
 				]]>
-			</description>
+		    </description>
+
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>78</cols>
 			<rows>10</rows>
 			<advancedfield/>
+
 		</field>
 		<field>
 			<fielddescr>Custom Options (SSL/MITM)</fielddescr>
