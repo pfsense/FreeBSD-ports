@@ -112,7 +112,7 @@
 				<b>Domain:</b> foo.bar matches foo.bar or *.foo.bar<br>
 				<b>Username:</b> 'user1' <br>
 				<b>Ldap search (Ldap filter must be enabled in General Settings):</b> <br>
-				ldapusersearch ldap://192.168.0.100/DC=domain,DC=com?sAMAccountName?sub?(&(sAMAccountName=%s)(memberOf=CN=it%2cCN=Users%2cDC=domain%2cDC=com))<br>
+				ldapusersearch ldap://192.168.0.100:3268/DC=domain,DC=com?sAMAccountName?sub?(&(sAMAccountName=%s)(memberOf=CN=it%2cCN=Users%2cDC=domain%2cDC=com))<br>
 				<i>Attention: these line don't have break line, all on one line</i>
 				]]>
 			</description>
