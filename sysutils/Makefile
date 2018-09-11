@@ -1172,7 +1172,6 @@
     SUBDIR += setquota
     SUBDIR += sformat
     SUBDIR += sg3_utils
-    SUBDIR += sg5100tools
     SUBDIR += shim
     SUBDIR += shlock
     SUBDIR += shmcat
