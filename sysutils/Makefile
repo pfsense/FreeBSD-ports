@@ -894,6 +894,7 @@
     SUBDIR += php71-posix
     SUBDIR += php72-fileinfo
     SUBDIR += php72-posix
+    SUBDIR += php72-sg5100
     SUBDIR += phpfpm_exporter
     SUBDIR += phybs
     SUBDIR += pick
