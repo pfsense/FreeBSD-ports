@@ -118,6 +118,15 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "php_ini.h"
 #include "php_pfSense.h"
 
+#include <dev/sg5100/sg5100_ioctl.h>
+
+#define SG5100_LED_OFF 0
+#define SG5100_LED_RED 1
+#define SG5100_LED_RED_FLASHING 2
+#define SG5100_LED_GREEN 3
+#define SG5100_LED_GREEN_FLASHING 4
+#define SG5100_LED_RED_GREEN_ALTERNATING 5
+
 int pfSense_dhcpd;
 
 ZEND_DECLARE_MODULE_GLOBALS(pfSense)
@@ -4397,5 +4406,94 @@ PHP_FUNCTION(pfSense_ipsec_list_sa) {
 	}
 
 	vici_deinit();
+}
 
+/* SG-5100 status LED control */
+
+static int sg5100_set_mode (long mode) {
+	int devfd;
+	int value;
+	int ret;
+
+	devfd = open ("/dev/sg5100", O_RDONLY);
+	if (devfd == -1) {
+		return 0;
+	}
+
+	switch (mode) {
+	case SG5100_LED_OFF:
+		value = LED_SET_STATUS_OFF;
+		break;
+	case SG5100_LED_RED:
+		value = LED_SET_STATUS_RED;
+		break;
+	case SG5100_LED_RED_FLASHING:
+		value = LED_SET_STATUS_RED_FLASHING;
+		break;
+	case SG5100_LED_GREEN:
+		value = LED_SET_STATUS_GREEN;
+		break;
+	case SG5100_LED_GREEN_FLASHING:
+		value = LED_SET_STATUS_GREEN_FLASHING;
+		break;
+	case SG5100_LED_RED_GREEN_ALTERNATING:
+		value = LED_SET_STATUS_RED_GREEN_FLASHING;
+		break;
+	default:
+		return 0;
+	}
+
+	ret = ioctl (devfd, IOCTL_LED_SET_STATUS, &value);
+
+	close (devfd);
+
+	return 1;
+}
+
+PHP_FUNCTION(pfSense_sg5100_led) {
+	long mode;
+	int ret;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &mode) !=
+	    SUCCESS) {
+		return;
+	}
+
+	if ((mode < SG5100_LED_OFF) ||
+	    (mode > SG5100_LED_RED_GREEN_ALTERNATING)) {
+		RETURN_FALSE;
+	}
+
+	ret = sg5100_set_mode(mode);
+
+	RETURN_TRUE;
+}
+
+static int sg5100_get_switch_state(void) {
+	int devfd;
+	int value;
+	int ret;
+
+	devfd = open ("/dev/sg5100", O_RDONLY);
+	if (devfd == -1) {
+		return 0;
+	}
+
+	ret = ioctl (devfd, IOCTL_GET_BUTTON_STATUS, &value);
+
+	close (devfd);
+
+	if (value == 0x00) {
+		return 1;
+	}
+
+	return 0;
+}
+
+PHP_FUNCTION(pfSense_sg5100_switch) {
+	if (sg5100_get_switch_state() != 0) {
+		RETURN_STRING("on");
+	}
+
+	RETURN_STRING("off");
 }

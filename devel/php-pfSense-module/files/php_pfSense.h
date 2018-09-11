@@ -124,6 +124,8 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup);
 PHP_FUNCTION(pfSense_etherswitch_setmode);
 #endif
 PHP_FUNCTION(pfSense_ipsec_list_sa);
+PHP_FUNCTION(pfSense_sg5100_led);
+PHP_FUNCTION(pfSense_sg5100_switch);
 
 extern zend_module_entry pfSense_module_entry;
 #define phpext_pfSense_ptr &pfSense_module_entry
