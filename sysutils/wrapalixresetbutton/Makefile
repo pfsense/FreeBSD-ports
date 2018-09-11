@@ -2,6 +2,7 @@
 
 PORTNAME=	wrapalixresetbutton
 PORTVERSION=	0.0.7
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
@@ -15,7 +16,9 @@ PLIST_FILES=	sbin/wrapresetbtn \
 		sbin/FW7541resetbtn \
 		sbin/APUresetbtn \
 		sbin/RCC-VEresetbtn \
-		sbin/RCC-DFFresetbtn
+		sbin/RCC-DFFresetbtn \
+		sbin/SG-5100resetbtn \
+		sbin/SG-5100led
 
 ONLY_FOR_ARCHS=	i386 amd64
 
@@ -28,6 +31,8 @@ do-build:
 	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/FW7541resetbtn ${FILESDIR}/FW7541resetbtn.c
 	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/APUresetbtn ${FILESDIR}/APUresetbtn.c
 	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/RCC-VEresetbtn ${FILESDIR}/RCC-VE.c
+	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/SG-5100resetbtn ${FILESDIR}/sg5100resetbtn.c
+	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/SG-5100led ${FILESDIR}/sg5100led.c
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/wrapresetbtn ${STAGEDIR}${PREFIX}/sbin
@@ -36,5 +41,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/APUresetbtn ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/RCC-VEresetbtn ${STAGEDIR}${PREFIX}/sbin
 	${LN} -sf RCC-VEresetbtn ${STAGEDIR}${PREFIX}/sbin/RCC-DFFresetbtn
+	${INSTALL_PROGRAM} ${WRKSRC}/SG-5100resetbtn ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_PROGRAM} ${WRKSRC}/SG-5100led ${STAGEDIR}${PREFIX}/sbin
 
 .include <bsd.port.mk>
