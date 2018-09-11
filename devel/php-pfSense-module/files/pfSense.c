@@ -118,6 +118,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "php_ini.h"
 #include "php_pfSense.h"
 
+#ifdef SG5100_FUNCTIONS
 #include <dev/sg5100/sg5100_ioctl.h>
 
 #define SG5100_LED_OFF 0
@@ -126,6 +127,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define SG5100_LED_GREEN 3
 #define SG5100_LED_GREEN_FLASHING 4
 #define SG5100_LED_RED_GREEN_ALTERNATING 5
+#endif
 
 int pfSense_dhcpd;
 
@@ -4408,6 +4410,7 @@ PHP_FUNCTION(pfSense_ipsec_list_sa) {
 	vici_deinit();
 }
 
+#ifdef SG5100_FUNCTIONS
 /* SG-5100 status LED control */
 
 static int sg5100_set_mode (long mode) {
@@ -4497,3 +4500,4 @@ PHP_FUNCTION(pfSense_sg5100_switch) {
 
 	RETURN_STRING("off");
 }
+#endif
