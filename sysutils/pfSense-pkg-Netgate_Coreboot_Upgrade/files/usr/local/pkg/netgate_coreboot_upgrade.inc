@@ -22,8 +22,6 @@
 require_once("globals.inc");
 require_once("system.inc");
 
-define('COREBOOT_PATH', "%%DATADIR%%/roms/");
-
 function get_coreboot_model() {
 	$specplatform = system_identify_specific_platform();
 
@@ -78,6 +76,8 @@ function get_current_coreboot_details() {
 }
 
 function get_new_coreboot_details() {
+	$coreboot_path = "%%DATADIR%%/roms/";
+
 	$rom_names = array(
 	    'RCC' => '%%COREBOOT_RCC_ROM%%',
 	    'RCCVE' => '%%COREBOOT_RCCVE_ROM%%',
@@ -87,15 +87,15 @@ function get_new_coreboot_details() {
 
 	$model = get_coreboot_model();
 	$details = array();
-	$path = COREBOOT_PATH . $rom_names[$model];
+	$path = $coreboot_path . $rom_names[$model];
 
 	if (empty($model) || empty($rom_names[$model]) ||
-	    !file_exists(COREBOOT_PATH . $rom_names[$model])) {
+	    !file_exists($coreboot_path . $rom_names[$model])) {
 		return $details;
 	}
 
 	$details = get_coreboot_details($rom_names[$model]);
-	$details['rom_path'] = COREBOOT_PATH . $rom_names[$model];
+	$details['rom_path'] = $coreboot_path . $rom_names[$model];
 
 	return $details;
 }
