@@ -193,6 +193,10 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_etherswitch_setmode, NULL)
 #endif
     PHP_FE(pfSense_ipsec_list_sa, NULL)
+#ifdef SG5100_FUNCTIONS
+    PHP_FE(pfSense_sg5100_led, NULL)
+    PHP_FE(pfSense_sg5100_switch, NULL)
+#endif
     {NULL, NULL, NULL}
 };
 
