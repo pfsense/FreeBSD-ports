@@ -59,7 +59,7 @@ define('TAG_BLANK_IMG', 'blank_img');
 # HEX: 47 49 46 38 39 61 - - -
 # SYM: G  I  F  8  9  a  01 00 | 01 00 80 00 00 FF FF FF | 00 00 00 2C 00 00 00 00 | 01 00 01 00 00 02 02 44 | 01 00 3B
 # ----------------------------------------------------------------------------------------------------------------------
-define(GIF_BODY, "GIF89a\x01\x00\x01\x00\x80\x00\x00\xFF\xFF\xFF\x00\x00\x00\x2C\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3B");
+define('GIF_BODY', "GIF89a\x01\x00\x01\x00\x80\x00\x00\xFF\xFF\xFF\x00\x00\x00\x2C\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3B");
 
 $url  = '';
 $msg  = '';
@@ -158,7 +158,7 @@ if ($url) {
               # return blank image
               # --------------------------------------------------------------
               header("Content-Type: image/gif;"); //  charset=windows-1251");
-              echo GIF_BODY;
+              echo 'GIF_BODY';
            }
     }
     # error code
@@ -313,7 +313,7 @@ function filter_by_image_size($url, $val_size) {
          # return blank image
          else {
               header("Content-Type: image/gif;");
-              echo GIF_BODY;
+              echo 'GIF_BODY';
          }
 }
 ?>
