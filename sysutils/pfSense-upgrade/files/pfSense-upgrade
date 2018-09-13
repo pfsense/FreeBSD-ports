@@ -330,7 +330,6 @@ abi_setup() {
 		NEW_MAJOR=""
 	else
 		NEW_MAJOR=1
-		ABI="${ALTABI}"
 	fi
 
 	export CUR_ABI CUR_ALTABI ABI ALTABI NEW_MAJOR
