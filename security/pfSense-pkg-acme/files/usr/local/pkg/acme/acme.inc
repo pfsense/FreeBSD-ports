@@ -59,6 +59,9 @@ namespace { // global code
 
 		/* Find all certificates  */
 		$acmecerts = acme_plugin_certificates(array('type' => 'certificates', 'event' => 'used_certificates'));
+		if (!is_array($acmecerts['certificatelist']) || empty($acmecerts['certificatelist'])) {
+			return;
+		}
 		foreach ($acmecerts['certificatelist'] as $certref => $ac) {
 			acme_write_certificate($certref);
 		}

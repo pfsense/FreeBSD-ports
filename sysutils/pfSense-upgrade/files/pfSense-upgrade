@@ -312,7 +312,6 @@ EOF
 		NEW_MAJOR=""
 	else
 		NEW_MAJOR=1
-		ABI="${ALTABI}"
 	fi
 
 	export CUR_ABI CUR_ALTABI ABI ALTABI NEW_MAJOR
@@ -465,6 +464,14 @@ pkg_upgrade() {
 	# If it's booting and first stage didn't run, just exit
 	if [ -n "${booting}" -a -z "${next_stage}" ]; then
 		_exit 0
+	fi
+
+	if [ -n "${booting}" ]; then
+		model=$(/bin/kenv -q smbios.system.product)
+		if [ "${model}" = "SG-5100" ]; then
+			# Upgrade running during boot (LED blinking red)
+			/usr/local/sbin/SG-5100led 2 >/dev/null 2>&1
+		fi
 	fi
 
 	need_reboot=1
