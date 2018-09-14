@@ -616,6 +616,13 @@ pkg_upgrade() {
 			    [ -s /boot/loader.conf ]; then
 				cp -fp /boot/loader.conf /tmp/loader.conf.backup
 			fi
+			# Force upgrade pfSense-rc together with kernel. It's
+			# failing for some reason on armv6 even with the proper
+			# dependency version registered
+			if upgrade_available ${product}-rc; then
+				_exec "pkg-static upgrade -U ${product}-rc" \
+				    "Upgrading ${product}-rc"
+			fi
 			_exec "pkg-static upgrade -U ${kernel_pkg}" \
 			    "Upgrading ${product} kernel"
 			if [ "${_arch}" = "amd64" ] && \
