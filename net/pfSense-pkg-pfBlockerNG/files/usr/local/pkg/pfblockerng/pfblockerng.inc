@@ -4645,6 +4645,10 @@ function sync_package_pfblockerng($cron='') {
 	// Reload config.xml to get any recent changes
 	$config = parse_config(true);
 
+	if (!is_array($config['aliases'])) {
+		$config['aliases'] = array();
+	}
+
 	$exist_aliases = $config['aliases']['alias'];
 	if (isset($config['aliases']['alias'])) {
 		foreach ($config['aliases']['alias'] as $cbalias) {
