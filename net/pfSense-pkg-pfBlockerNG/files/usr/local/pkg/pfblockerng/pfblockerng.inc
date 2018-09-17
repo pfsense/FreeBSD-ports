@@ -906,6 +906,12 @@ EOF;
 		if ($pfbupdate) {
 			$log = "Saving pfSense config...\n";
 			pfb_logger("{$log}", 1);
+			if (!is_array($config['nat'])) {
+				$config['nat'] = array();
+			}
+			if (!is_array($config['nat']['rule'])) {
+				$config['nat']['rule'] = array();
+			}
 			$config['nat']['rule'] = $new_nat;
 
 			if (!is_array($config['virtualip']['vip'])) {
