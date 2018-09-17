@@ -1143,17 +1143,23 @@ function pfb_create_dnsbl($mode) {
 		if ($pfbupdate) {
 			$log = "\nSaving DNSBL config changes.";
 			pfb_logger("{$log}", 1);
+
+			if (!is_array($config['nat'])) {
+				$config['nat'] = array();
+			}
+			if (!is_array($config['nat']['rule'])) {
+				$config['nat']['rule'] = array();
+			}
 			$config['nat']['rule'] = $new_nat;
 
 			if (!is_array($config['virtualip'])) {
 				$config['virtualip'] = array();
 			}
-
 			if (!is_array($config['virtualip']['vip'])) {
 				$config['virtualip']['vip'] = array();
 			}
-
 			$config['virtualip']['vip'] = $new_vip;
+
 			write_config('pfBlockerNG: saving DNSBL changes');
 
 			// Execute ifconfig to enable VIP address
@@ -3222,7 +3228,7 @@ function pfb_collect_localip() {
 
 	// Remove any duplicate IPs
 	if (!empty($pfb_local)) {
-		$pfb_local = array_flip(array_unique($pfb_local));
+		$pfb_local = array_flip(array_filter(array_unique($pfb_local)));
 	}
 	$pfb_localsub = array_unique($pfb_localsub);
 
@@ -6355,6 +6361,7 @@ function sync_package_pfblockerng($cron='') {
 					if (!is_array($list)) {
 						$list = array();
 					}
+
 					$list['vtype']	= "{$vtype}";	// Collect list IP type
 					$list['key']	= "{$key}";	// Collect list array key location
 
@@ -7024,9 +7031,7 @@ function sync_package_pfblockerng($cron='') {
 		$config['aliases']['alias'] = $new_aliases;
 		write_config('pfBlockerNG: saving Aliases');
 	}
-
 	unset($new_aliases, $exist_aliases);
-
 
 	#########################
 	#	Assign Rules	#
