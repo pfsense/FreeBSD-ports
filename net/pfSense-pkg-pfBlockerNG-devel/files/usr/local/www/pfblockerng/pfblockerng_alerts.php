@@ -37,6 +37,7 @@ $pfb['aglobal'] = &$config['installedpackages']['pfblockerngglobal'];
 if (!is_array($pfb['aglobal'])) {
 	$pfb['aglobal'] = array();
 }
+
 $alertrefresh	= $pfb['aglobal']['alertrefresh']	!= ''	? $pfb['aglobal']['alertrefresh']	: 'on';
 $pfbpageload	= $pfb['aglobal']['pfbpageload']	!= ''	? $pfb['aglobal']['pfbpageload']	: 'default';
 $pfbblockstat	= explode(',', $pfb['aglobal']['pfbblockstat']) ?: array();
@@ -128,16 +129,13 @@ if (!$alert_summary) {
 	if (!is_array($config['installedpackages']['pfblockerngipsettings']['config'])) {
 		$config['installedpackages']['pfblockerngipsettings']['config'] = array();
 	}
-
-	if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'])) {
+ 	if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'])) {
 		$config['installedpackages']['pfblockerngdnsblsettings']['config'] = array();
 	}
-
-	if (!is_array($config['installedpackages']['pfblockerngipsettings']['config'][0])) {
+ 	if (!is_array($config['installedpackages']['pfblockerngipsettings']['config'][0])) {
 		$config['installedpackages']['pfblockerngipsettings']['config'][0] = array();
 	}
-
-	if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'][0])) {
+ 	if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'][0])) {
 		$config['installedpackages']['pfblockerngdnsblsettings']['config'][0] = array();
 	}
 
@@ -220,7 +218,6 @@ if (isset($_POST) && !empty($_POST)) {
 		$pfb['aglobal']['pfbmatchstat']	= htmlspecialchars(implode(',', (array)$_POST['pfbmatchstat']))	?: '';
 		$pfb['aglobal']['pfbdnsblstat']	= htmlspecialchars(implode(',', (array)$_POST['pfbdnsblstat']))	?: '';
 
-
 		foreach ($aglobal_array as $type => $value) {
 			if (ctype_digit(htmlspecialchars($_POST[$type]))) {
 				$pfb['aglobal'][$type] = htmlspecialchars($_POST[$type]);
@@ -228,7 +225,7 @@ if (isset($_POST) && !empty($_POST)) {
 
 		}
 
-		// Remove obsolete xml tag
+		// Remove obsolete XML tag
 		if (isset($pfb['aglobal']['hostlookup'])) {
 			unset($pfb['aglobal']['hostlookup']);
 		}
@@ -508,17 +505,24 @@ if (isset($_POST) && !empty($_POST)) {
 			// Save DNSBL Whitelist file of Domain/CNAME(s)
 			@file_put_contents("{$tmp}.adup", $dnsbl_remove, LOCK_EX);
 
-			// Collect all matching whitelisted Domain/CNAME(s)
 			if (file_exists("{$tmp}.adup") && filesize("{$tmp}.adup") > 0) {
+
+				// Collect all matching whitelisted Domain/CNAME(s)
 				exec("{$pfb['grep']} -F -f {$tmp}.adup {$pfb['dnsbl_file']}.conf > {$tmp}.supp 2>&1");
+
+				// Remove Whitelisted Domain from Unbound database
+				exec("{$pfb['grep']} -vF -f {$tmp}.adup {$pfb['dnsbl_file']}.conf > {$tmp}.tmp && mv -f {$tmp}.tmp {$pfb['dnsbl_file']}.conf");
+
+				// Remove Whitelisted Domain from DNSBL Feed
+				exec("{$pfb['grep']} -vF -f {$tmp}.adup {$pfb['dnsdir']}/{$table}.txt > {$tmp}.tmp && mv -f {$tmp}.tmp {$pfb['dnsdir']}/{$table}.txt");
 			}
 
+			// Remove all Whitelisted Domain/CNAME(s) from Unbound using unbound-control
 			if (file_exists("{$tmp}.supp") && filesize("{$tmp}.supp") > 0) {
 
 				exec("{$pfb['grep']} 'local-zone:' {$tmp}.supp | {$pfb['cut']} -d '\"' -f2 > {$tmp}.zone 2>&1");
 				exec("{$pfb['grep']} '^local-data:' {$tmp}.supp | {$pfb['cut']} -d ' ' -f2 | tr -d '\"' > {$tmp}.data 2>&1");
 
-				// Remove all Whitelisted Domain/CNAME(s) from Unbound using unbound-control
 				$chroot_cmd = "chroot -u unbound -g unbound / /usr/local/sbin/unbound-control -c {$g['unbound_chroot_path']}/unbound.conf";
 
 				if (file_exists("{$tmp}.zone") && filesize("{$tmp}.zone") > 0) {
