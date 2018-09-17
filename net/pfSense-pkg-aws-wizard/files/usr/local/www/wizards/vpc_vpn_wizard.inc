@@ -20,10 +20,10 @@
  */
 
 require_once("globals.inc");
-require("config.inc");
-require("ipsec.inc");
-require("pkg-utils.inc");
-require("aws-sdk-php/aws-autoloader.php");
+require_once("config.inc");
+require_once("ipsec.inc");
+require_once("pkg-utils.inc");
+require_once("aws-sdk-php/aws-autoloader.php");
 
 use Aws\Ec2\Ec2Client;
 use Aws\Exception\AwsException;
