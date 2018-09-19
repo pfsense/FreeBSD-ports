@@ -2799,7 +2799,7 @@ function pfb_aliastables($mode) {
 
 		// Archive aliastable folder
 		if ($mode == 'update') {
-			pfb_logger("\n\nArchiving Aliastable folder\n", 1);
+			pfb_logger("\nArchiving Aliastable folder", 1);
 			$files_to_backup = '';
 			if (glob("{$pfb['aliasdir']}/pfB_*.txt")) {
 				$files_to_backup = "{$pfb['aliasdir']}/pfB_*.txt";
@@ -2812,9 +2812,9 @@ function pfb_aliastables($mode) {
 			// Archive IP Aliastables/Unbound DNSBL Database as required.
 			if (!empty($files_to_backup)) {
 				exec("/usr/bin/tar -jcvf {$pfb['aliasarchive']} {$files_to_backup} >/dev/null 2>&1");
-				pfb_logger("\n\nArchiving selected pfBlockerNG files.\n", 1);
+				pfb_logger("\nArchiving selected pfBlockerNG files.\n", 1);
 			} else {
-				pfb_logger("\n\nNo Files to archive.\n", 1);
+				pfb_logger("\nNo Files to archive.\n", 1);
 			}
 		}
 
@@ -2835,6 +2835,33 @@ function pfb_aliastables($mode) {
 				$config['system']['earlyshellcmd'] = "{$earlyshellcmd}";
 				$msg = "\n** Adding earlyshellcmd **\n";
 			}
+
+			$found = TRUE;
+			if (isset($config['installedpackages']['shellcmdsettings'])) {
+				$found = FALSE;
+				if (is_array($config['installedpackages']['shellcmdsettings']['config'])) {
+					foreach ($config['installedpackages']['shellcmdsettings']['config'] as $key => $shellcmd) {
+						if (strpos($shellcmd['cmd'], 'pfblockerng.sh aliastables') !== FALSE) {
+							$found = TRUE;
+						}
+					}
+				}
+				else {
+					if (!is_array($config['installedpackages']['shellcmdsettings'])) {
+						$config['installedpackages']['shellcmdsettings'] = array();
+					}
+					$config['installedpackages']['shellcmdsettings']['config'] = array();
+				}
+			}
+
+			if (!$found) {
+				$add = array(	'cmd' 		=> $earlyshellcmd,
+						'cmdtype'	=> 'earlyshellcmd',
+						'description'	=> 'pfBlockerNG earlyshellcmd. DO NOT EDIT/DELETE!');
+
+				$config['installedpackages']['shellcmdsettings']['config'][] = $add;
+				$msg = "\n** Adding earlyshellcmd **\n";
+			}
 		}
 	}
 	else {
@@ -2849,6 +2876,14 @@ function pfb_aliastables($mode) {
 			if (preg_grep("/pfblockerng.sh aliastables/", $a_earlyshellcmd)) {
 				$a_earlyshellcmd = preg_grep("/pfblockerng.sh aliastables/", $a_earlyshellcmd, PREG_GREP_INVERT);
 				$msg = "\n** Removing earlyshellcmd **\n";
+			}
+		}
+		if (is_array($config['installedpackages']['shellcmdsettings']['config'])) {
+			foreach ($config['installedpackages']['shellcmdsettings']['config'] as $key => $shellcmd) {
+				if (strpos($shellcmd['cmd'], 'pfblockerng.sh aliastables') !== FALSE) {
+					unset($config['installedpackages']['shellcmdsettings']['config'][$key]);
+					$msg = "\n** Removing earlyshellcmd **\n";
+				}
 			}
 		}
 	}
@@ -7710,6 +7745,13 @@ function pfblockerng_php_pre_deinstall_command() {
 			$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
 			if (preg_grep("/pfblockerng.sh aliastables/", $a_earlyshellcmd)) {
 				$a_earlyshellcmd = preg_grep("/pfblockerng.sh aliastables/", $a_earlyshellcmd, PREG_GREP_INVERT);
+			}
+		}
+		if (is_array($config['installedpackages']['shellcmdsettings']['config'])) {
+			foreach ($config['installedpackages']['shellcmdsettings']['config'] as $key => $shellcmd) {
+				if (strpos($shellcmd['cmd'], 'pfblockerng.sh aliastables') !== FALSE) {
+					unset($config['installedpackages']['shellcmdsettings']['config'][$key]);
+				}
 			}
 		}
 
