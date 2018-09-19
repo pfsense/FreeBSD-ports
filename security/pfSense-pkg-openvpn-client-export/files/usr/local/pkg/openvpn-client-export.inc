@@ -59,9 +59,9 @@ function openvpn_client_export_prefix($srvid, $usrid = null, $crtid = null) {
 	$port = $settings['local_port'];
 
 	$filename_addition = "";
-	if ($usrid && is_numeric($usrid)) {
+	if (isset($usrid) && is_numeric($usrid)) {
 		$filename_addition = "-" . $config['system']['user'][$usrid]['name'];
-	} elseif ($crtid && is_numeric($crtid) && function_exists("cert_get_cn")) {
+	} elseif (isset($crtid) && is_numeric($crtid) && function_exists("cert_get_cn")) {
 		$filename_addition = "-" . str_replace(' ', '_', cert_get_cn($config['cert'][$crtid]['crt']));
 	}
 	return "{$host}-{$prot}-{$port}{$filename_addition}";
