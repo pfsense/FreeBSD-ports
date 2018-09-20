@@ -4084,6 +4084,13 @@ function sync_package_pfblockerng($cron='') {
 		foreach	($list_type as $ip_type	=> $vtype) {
 			if (!empty($config['installedpackages'][$ip_type]['config'])) {
 				foreach	($config['installedpackages'][$ip_type]['config'] as $key => $list) {
+					if (!is_array($list)) {
+						$list = array();
+					}
+					if (!is_array($list['row'])) {
+						$list['row'] = array();
+					}
+					
 					if ($vtype == '_v4') {
 						$list['vtype'] = '_v4';
 					} else {
@@ -4092,12 +4099,7 @@ function sync_package_pfblockerng($cron='') {
 
 					// Collect list array key location
 					$list['key'] = "{$key}";
-					if (!is_array($list)) {
-						$list = array();
-					}
-					if (!is_array($list['row'])) {
-						$list['row'] = array();
-					}
+										
 					// If only the 'customlist' is defined. Remove the 'List row' data.
 					if (empty($list['row'][0]['url'])) {
 						unset($list['row']);
