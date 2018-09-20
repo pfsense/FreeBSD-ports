@@ -643,10 +643,12 @@ whoisconvert() {
 		_type=A
 		_route=route
 		_opt=gAS
+		_ip_type='\.'
 	else
 		_type=AAAA
 		_route=route6
 		_opt=6AS
+		_ip_type=':'
 	fi
 
 	for host in ${custom_list}; do
@@ -658,7 +660,10 @@ whoisconvert() {
 		else
 			asn="$(echo ${host} | tr -d 'AaSs')"
 			echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
-			"${pathmwhois}" -h whois.radb.net \!"${_opt}${asn}" | tail -n +2 | tr -d '\nC' | tr ' ' '\n' >> "${pfborig}${alias}.orig"
+			/usr/local/bin/curl -s "https://api.bgpview.io/asn/${asn}/prefixes" \
+				| tr ',' '\n' | grep '"prefix":' | cut -d '[' -f2 | cut -d '{' -f2 | cut -d ':' -f2-20 | tr -d '"\\[' | grep "${_ip_type}" \
+				>> "${pfborig}${alias}.orig"
+			# "${pathmwhois}" -h whois.radb.net \!"${_opt}${asn}" | tail -n +2 | tr -d '\nC' | tr ' ' '\n' >> "${pfborig}${alias}.orig"
 		fi
 
 		echo >> "${pfborig}${alias}.orig"

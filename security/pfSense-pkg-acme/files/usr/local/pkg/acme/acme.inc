@@ -59,6 +59,9 @@ namespace { // global code
 
 		/* Find all certificates  */
 		$acmecerts = acme_plugin_certificates(array('type' => 'certificates', 'event' => 'used_certificates'));
+		if (!is_array($acmecerts['certificatelist']) || empty($acmecerts['certificatelist'])) {
+			return;
+		}
 		foreach ($acmecerts['certificatelist'] as $certref => $ac) {
 			acme_write_certificate($certref);
 		}
@@ -333,7 +336,7 @@ $acme_domain_validation_method['dns_cf'] = array('name' => "DNS-Cloudflare",
 			'description' =>"Fill in the API Key"
 		),
 		'CF_Email' => array('name'=>"cf_email",'columnheader'=>"Email",'type'=>"textbox",
-			'description' =>"Fill in the API Emailadress"
+			'description' =>"Fill in the API Email Address"
 		)
 	));
 $acme_domain_validation_method['dns_cx'] = array('name' => "DNS-Cloudxns",
