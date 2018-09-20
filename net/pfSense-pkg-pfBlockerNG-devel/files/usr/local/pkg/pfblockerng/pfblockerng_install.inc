@@ -168,7 +168,7 @@ pfb_filter_service();
 update_status(" done.\n");
 
 // Create DNSBL service and link required executables
-update_status("Remove any existing and create link for DNSBL lighttpd executable...");
+update_status(" done.\nRemove any existing and create link for DNSBL lighttpd executable...");
 unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
 link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_pfb');
 
@@ -229,11 +229,8 @@ $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdn
 		    'pfblockerngtopspammers', 'pfblockerngproxyandsatellite');
 
 foreach ($upgrade_type as $type) {
-	if (!is_array($config['installedpackages'][$type])) {
-		$config['installedpackages'][$type] = array();
-	}
 	$conf_config = &$config['installedpackages'][$type]['config'];
-	if (isset($conf_config)) {
+	if (is_array($conf_config)) {
 		foreach ($conf_config as $key => $utype) {
 			if (isset($utype['autoports'])) {
 				$ufound = TRUE;
@@ -302,7 +299,6 @@ if (!empty($pfb['config'])) {
 
 		if (isset($config['openvpn']['openvpn-client'])) {
 			if (strpos($pfb_interfaces['outbound_interface'], 'openvpn') === FALSE && !$ufound) {
-
 				$csv_string = '';
 				if (isset($pfb_interfaces['outbound_interface'])) {
 					$csv_string = ',';
