@@ -249,6 +249,12 @@
 					"header":	"GreenSnow"
 				},
 				{
+					"feed":		"Gwillem",
+					"website":	"https://github.com/gwillem/magento-malware-scanner/tree/master/rules",
+					"url":		"https://raw.githubusercontent.com/gwillem/magento-malware-scanner/master/rules/burner-domains.txt",
+					"header":	"Magento"
+				},
+				{
 					"feed":		"Juniper",
 					"website":	"https://www.juniper.net/",
 					"contact":	"https://www.juniper.net/us/en/contact-us/",
