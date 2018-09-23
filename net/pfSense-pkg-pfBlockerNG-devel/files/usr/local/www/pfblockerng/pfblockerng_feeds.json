@@ -978,6 +978,12 @@
 					"header":	"D_Me_Malw"
 				},
 				{
+					"feed":		"Gwillem",
+					"website":	"https://github.com/gwillem/magento-malware-scanner/tree/master/rules",
+					"url":		"https://raw.githubusercontent.com/gwillem/magento-malware-scanner/master/rules/burner-domains.txt",
+					"header":	"Magento"
+				},
+				{
 					"feed":		"H3X",
 					"website":	"https://tracker.h3x.eu/about/",
 					"url":		"https://tracker.h3x.eu/api/sites_1month.php",
@@ -1012,12 +1018,6 @@
 							"header":	"ISC_SDM"
 							}
 						]
-				},
-				{
-					"feed":		"Gwillem",
-					"website":	"https://github.com/gwillem/magento-malware-scanner/tree/master/rules",
-					"url":		"https://raw.githubusercontent.com/gwillem/magento-malware-scanner/master/rules/burner-domains.txt",
-					"header":	"Magento"
 				},
 				{
 					"feed":		"Malc0de",
