@@ -3920,8 +3920,10 @@ function pfb_open_sqlite($table, $message) {
 
 // Function to close SQLite3 database
 function pfb_close_sqlite($db_handle) {
-	$db_handle->close();
-	unset($db_handle);
+	if (!empty($db_handle)) {
+		$db_handle->close();
+		unset($db_handle);
+	}
 }
 
 
