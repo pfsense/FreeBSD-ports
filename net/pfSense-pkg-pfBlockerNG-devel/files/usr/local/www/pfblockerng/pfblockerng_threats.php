@@ -191,7 +191,7 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://securitytrails.com/#/list/domain/<?=$host;?>/type/ip/page/1">
+					<td><a target="_blank" href="https://securitytrails.com/list/ip/<?=$host;?>?page=1">
 						<?=gettext("SecurityTrails");?></a></td>
 				</tr>
 				<tr>
@@ -363,7 +363,7 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://securitytrails.com/#/domain/domain/<?=$domain;?>">
+					<td><a target="_blank" href="https://securitytrails.com/domain/<?=$domain;?>/dns">
 						<?=gettext("SecurityTrails");?></a></td>
 				</tr>
 				<tr>
