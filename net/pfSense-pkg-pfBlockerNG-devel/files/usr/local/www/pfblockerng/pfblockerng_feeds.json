@@ -1107,7 +1107,7 @@
 					"feed":		"Malware Patrol",
 					"website":	"https://lists.malwarepatrol.net/",
 					"register":	"https://www.malwarepatrol.net/signup-free.shtml",
-					"url":		"https://lists.malwarepatrol.net/cgi/getfile?receipt=_API_KEY_&product=8&list=dansguardian",
+					"url":		"https://lists.malwarepatrol.net/cgi/getfile?receipt=_API_KEY_&product=8&list=mozilla_adblock",
 					"header":	"MPatrol"
 				},
 				{
