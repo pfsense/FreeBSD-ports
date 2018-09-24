@@ -906,6 +906,12 @@ EOF;
 		if ($pfbupdate) {
 			$log = "Saving pfSense config...\n";
 			pfb_logger("{$log}", 1);
+			if (!is_array($config['nat'])) {
+				$config['nat'] = array();
+			}
+			if (!is_array($config['nat']['rule'])) {
+				$config['nat']['rule'] = array();
+			}
 			$config['nat']['rule'] = $new_nat;
 
 			if (!is_array($config['virtualip']['vip'])) {
@@ -4078,6 +4084,13 @@ function sync_package_pfblockerng($cron='') {
 		foreach	($list_type as $ip_type	=> $vtype) {
 			if (!empty($config['installedpackages'][$ip_type]['config'])) {
 				foreach	($config['installedpackages'][$ip_type]['config'] as $key => $list) {
+					if (!is_array($list)) {
+						$list = array();
+					}
+					if (!is_array($list['row'])) {
+						$list['row'] = array();
+					}
+					
 					if ($vtype == '_v4') {
 						$list['vtype'] = '_v4';
 					} else {
@@ -4086,12 +4099,7 @@ function sync_package_pfblockerng($cron='') {
 
 					// Collect list array key location
 					$list['key'] = "{$key}";
-					if (!is_array($list)) {
-						$list = array();
-					}
-					if (!is_array($list['row'])) {
-						$list['row'] = array();
-					}
+										
 					// If only the 'customlist' is defined. Remove the 'List row' data.
 					if (empty($list['row'][0]['url'])) {
 						unset($list['row']);
@@ -4645,6 +4653,10 @@ function sync_package_pfblockerng($cron='') {
 	// Reload config.xml to get any recent changes
 	$config = parse_config(true);
 
+	if (!is_array($config['aliases'])) {
+		$config['aliases'] = array();
+	}
+
 	$exist_aliases = $config['aliases']['alias'];
 	if (isset($config['aliases']['alias'])) {
 		foreach ($config['aliases']['alias'] as $cbalias) {
@@ -4681,12 +4693,12 @@ function sync_package_pfblockerng($cron='') {
 	// Only execute if autorules are defined or if an alias has been removed.
 	if ($pfb['autorules'] || $pfb['enable'] == '' || $pfb['remove']) {
 		$message = '';
-		if (count($pfb['deny_inbound']) > 0 || count($pfb['permit_inbound']) > 0 || count($pfb['match_inbound']) > 0) {
+		if (!empty($pfb['deny_inbound']) || !empty($pfb['permit_inbound']) || !empty($pfb['match_inbound'])) {
 			if (empty($pfb['inbound_interfaces'])) {
 				$message = " Unable to apply rules. Inbound interface option not configured.";
 			}
 		}
-		if (count($pfb['deny_outbound']) > 0 || count($pfb['permit_outbound']) > 0 || count($pfb['match_outbound']) > 0) {
+		if (!empty($pfb['deny_outbound']) || !empty($pfb['permit_outbound']) || !empty($pfb['match_outbound'])) {
 			if (empty($pfb['outbound_interfaces'])) {
 				$message .= "\n Unable to apply rules. Outbound interface option not configured.";
 			}
