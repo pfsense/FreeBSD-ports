@@ -250,6 +250,18 @@ set_vital_flag() {
 	done
 }
 
+unset_vital_flag() {
+	for _package in "$@"; do
+		local _vflag=$(pkg-static query %V ${_package} 2>/dev/null)
+
+		[ "${_vflag}" = "0" ] \
+		    && continue
+
+		_exec "pkg-static set -y -v 0 ${_package}" \
+		    "Removing vital flag from ${_package}" mute
+	done
+}
+
 abi_setup() {
 	local _freebsd_version=$(uname -r)
 	local _pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
@@ -409,9 +421,6 @@ pkg_upgrade() {
 	# figure out which kernel variant is running
 	export kernel_pkg=$(_pkg query %n $(_pkg info \
 	    ${product}-kernel-\* | grep -v -- -debug-))
-
-	# figure out which PHP major version is running
-	local _cur_php_pkg=$(_pkg query %o $(_pkg info -x '^php[0-9]{2}-[0-9]'))
 
 	local _arch=$(uname -p)
 
@@ -576,6 +585,9 @@ pkg_upgrade() {
 			    "Fixing bad /etc/fstab" mute ignore_result
 		fi
 
+		# Remove main PHP package vital flag
+		unset_vital_flag ${cur_php_pkg}
+
 		# Unlock pkg to make sure it's downloaded
 		if [ -n "${NEW_MAJOR}" ]; then
 			pkg_unlock pkg
@@ -660,9 +672,10 @@ pkg_upgrade() {
 		_pkg annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
-		local _new_php_pkg=$(_pkg rquery -Ue "%o ~ ${_cur_php_pkg}" %o)
+		local _new_php_pkg=$(_pkg rquery -U %o | \
+		    grep -s "^${cur_php_pkg}\$")
 
-		if [ "${_cur_php_pkg}" != "${_new_php_pkg}" ]; then
+		if [ "${cur_php_pkg}" != "${_new_php_pkg}" ]; then
 			_pkg annotate -q -M ${kernel_pkg} new_major_php 1
 		fi
 
@@ -882,6 +895,12 @@ compare_pkg_version() {
 	fi
 
 	local _rver=$(_pkg rquery -U %v ${_pkg_name})
+
+	# Maybe we need fresh metadata, lets try to obtain it respecting
+	# dont_update variable
+	if [ -z "${_rver}" ]; then
+		_rver=$(_pkg rquery ${dont_update} %v ${_pkg_name})
+	fi
 
 	if [ -z "${_rver}" ]; then
 		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
@@ -1275,6 +1294,27 @@ if [ "${arch}" = "aarch64" ]; then
 fi
 
 abi_setup
+
+# figure out which PHP major version is running
+cur_php_pkg=$(_pkg query %o $(_pkg info -x '^php[0-9]{2}-[0-9]'))
+if [ -n "${booting}" ]; then
+	unset_vital_flag ${cur_php_pkg}
+else
+	set_vital_flag ${cur_php_pkg}
+fi
+
+if [ "${action}" = "install" ]; then
+	pkg_upgrade_repo
+
+	new_php_pkg=$(_pkg rquery -U %o | grep -s "^${cur_php_pkg}\$")
+
+	if [ "${cur_php_pkg}" != "${new_php_pkg}" ]; then
+		_echo "WARNING: Current pkg repository has a new PHP major"
+		_echo "         version. ${product} should be upgraded before"
+		_echo "         installing any new package."
+		_exit 1
+	fi
+fi
 
 if [ -n "${NEW_MAJOR}" -a "${action}" = "install" ]; then
 	_echo "WARNING: Current pkg repository has a new OS major version."
