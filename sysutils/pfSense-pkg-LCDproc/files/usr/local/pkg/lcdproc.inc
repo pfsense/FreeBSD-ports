@@ -480,7 +480,7 @@ function sync_package_lcdproc() {
 
 		/* Generate rc file start and stop */
 		$stop = <<<EOD
-if [ `pgrep -f lcdproc_client.ph` ];then
+if [ `pgrep -fo lcdproc_client.ph` ];then
 		pkill -f lcdproc_client.ph
 		sleep 1
 fi
