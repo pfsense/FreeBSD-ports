@@ -672,7 +672,8 @@ pkg_upgrade() {
 		_pkg annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
-		local _new_php_pkg=$(_pkg rquery -Ue "%o ~ ${_cur_php_pkg}" %o)
+		local _new_php_pkg=$(_pkg rquery -U %o | \
+		    grep -s "^${cur_php_pkg}\$")
 
 		if [ "${cur_php_pkg}" != "${_new_php_pkg}" ]; then
 			_pkg annotate -q -M ${kernel_pkg} new_major_php 1
