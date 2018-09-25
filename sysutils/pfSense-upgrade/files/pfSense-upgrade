@@ -895,6 +895,12 @@ compare_pkg_version() {
 
 	local _rver=$(_pkg rquery -U %v ${_pkg_name})
 
+	# Maybe we need fresh metadata, lets try to obtain it respecting
+	# dont_update variable
+	if [ -z "${_rver}" ]; then
+		_rver=$(_pkg rquery ${dont_update} %v ${_pkg_name})
+	fi
+
 	if [ -z "${_rver}" ]; then
 		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
 		    "remote version"
