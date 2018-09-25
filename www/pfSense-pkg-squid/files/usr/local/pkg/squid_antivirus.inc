@@ -450,12 +450,16 @@ function squid_antivirus_install_config_files() {
 		$cicap_r[2] = "MaxServers 20";
 		$cicap_m[3] = "@MaxRequestsPerChild\s+0@";
 		$cicap_r[3] = "MaxRequestsPerChild 1000";
+		$cicap_m[4] = "@ListenAddress\s+127.0.0.1@";
+		$cicap_r[4] = "# ListenAddress 127.0.0.1";
+		$cicap_m[5] = "@Port\s+1344@";
+		$cicap_r[5] = "Port 127.0.0.1:1344";
 		/* XXX: Bug #4615
 		 * Do NOT move the C-ICAP log anywhere, ever! It breaks C-ICAP in completely inexplicable ways,
 		 * such as Error: [No Error] or 500 response codes.
 		 */
-		$cicap_m[4] = "@DebugLevel\s1@";
-		$cicap_r[4] = "DebugLevel 0";
+		$cicap_m[6] = "@DebugLevel\s1@";
+		$cicap_r[6] = "DebugLevel 0";
 		if (!file_put_contents("{$cf}.pfsense", preg_replace($cicap_m, $cicap_r, $sample_file), LOCK_EX)) {
 			log_error("[squid] Could not save patched '{$cf}.pfsense' template file!");
 		}
