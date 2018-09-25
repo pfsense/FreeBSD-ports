@@ -1296,6 +1296,19 @@ else
 	set_vital_flag ${cur_php_pkg}
 fi
 
+if [ "${action}" = "install" ]; then
+	pkg_upgrade_repo
+
+	new_php_pkg=$(_pkg rquery -U %o | grep -s "^${cur_php_pkg}\$")
+
+	if [ "${cur_php_pkg}" != "${new_php_pkg}" ]; then
+		_echo "WARNING: Current pkg repository has a new PHP major"
+		_echo "         version. ${product} should be upgraded before"
+		_echo "         installing any new package."
+		_exit 1
+	fi
+fi
+
 if [ -n "${NEW_MAJOR}" -a "${action}" = "install" ]; then
 	_echo "WARNING: Current pkg repository has a new OS major version."
 	_echo "         ${product} should be upgraded before doing any other"
