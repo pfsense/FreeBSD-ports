@@ -75,6 +75,15 @@ foreach ($aglobal_array as $type => $value) {
 }
 
 // Assign variable to suppression config
+if (!is_array($config['installedpackages']['pfblockerngdnsblsettings'])) {
+	$config['installedpackages']['pfblockerngdnsblsettings'] = array();
+}
+if (!is_array($config['installedpackages']['pfblockerngdnsblsettings'][0])) {
+	$config['installedpackages']['pfblockerngdnsblsettings'][0] = array();
+}
+if (!isset($config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'])) {
+	$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'] = '';
+}
 $pfb['dsupp'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'];
 
 // Collect DNSBL Whitelist
