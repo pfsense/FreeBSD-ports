@@ -121,7 +121,7 @@ _exec() {
 }
 
 _pkg() {
-	pkg-static $* 2>/dev/null
+	pkg-static "$@" 2>/dev/null
 	return $?
 }
 
