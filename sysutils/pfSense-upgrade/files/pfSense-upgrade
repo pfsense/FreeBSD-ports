@@ -250,6 +250,18 @@ set_vital_flag() {
 	done
 }
 
+unset_vital_flag() {
+	for _package in "$@"; do
+		local _vflag=$(pkg-static query %V ${_package} 2>/dev/null)
+
+		[ "${_vflag}" = "0" ] \
+		    && continue
+
+		_exec "pkg-static set -y -v 0 ${_package}" \
+		    "Removing vital flag from ${_package}" mute
+	done
+}
+
 abi_setup() {
 	local _freebsd_version=$(uname -r)
 	local _pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
