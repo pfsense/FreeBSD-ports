@@ -24,10 +24,10 @@ $title = $host = $domain = $port = '';
 if (isset($_REQUEST)) {
 	if (isset($_REQUEST['host'])) {
 		$title	= 'Source IP';
-		$host	= htmlspecialchars($_REQUEST['host']);
+		$host	= (filter_var($_REQUEST['host'], FILTER_VALIDATE_IP) !== FALSE) ? htmlspecialchars($_REQUEST['host']) : '';
 	} elseif (isset($_REQUEST['domain'])) {
 		$title	= 'Domain';
-		$domain	= htmlspecialchars($_REQUEST['domain']);
+		$domain	= filter_var($_REQUEST['domain'], FILTER_SANITIZE_STRING);
 	} elseif (isset($_REQUEST['port']) && ctype_digit($_REQUEST['port'])) {
 		$title	= 'Port';
 		$port	= htmlspecialchars($_REQUEST['port']);
@@ -86,7 +86,7 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.fortiguard.com/ip_rep/index.php?data=<?=$host;?>?">
+					<td><a target="_blank" href="https://www.fortiguard.com/webfilter?q=<?=$host;?>&version=8">
 						<?=gettext("FortiGuard");?></a></td>
 				</tr>
 				<tr>
@@ -191,13 +191,18 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://dnstrails.com/#/list/domain/<?=$host;?>/type/ip/page/1">
-						<?=gettext("DNSTrails");?></a></td>
+					<td><a target="_blank" href="https://securitytrails.com/list/ip/<?=$host;?>?page=1">
+						<?=gettext("SecurityTrails");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://pulsedive.com/indicator/?ioc=<?=base64_encode($host);?>">
 						<?=gettext("PulseDive");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.abuseipdb.com/check/<?=$host;?>">
+						<?=gettext("AbuseIPDB");?></a></td>
 				</tr>
 				<br />
 
@@ -358,8 +363,8 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://dnstrails.com/#/domain/domain/<?=$domain;?>">
-						<?=gettext("DNSTrails");?></a></td>
+					<td><a target="_blank" href="https://securitytrails.com/domain/<?=$domain;?>/dns">
+						<?=gettext("SecurityTrails");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
@@ -370,6 +375,16 @@ include('head.inc');
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://pulsedive.com/indicator/?ioc=<?=base64_encode($domain);?>">
 						<?=gettext("PulseDive");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.abuseipdb.com/check/<?=$domain;?>">
+						<?=gettext("AbuseIPDB");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.fortiguard.com/webfilter?q=<?=$domain;?>&version=8">
+						<?=gettext("FortiGuard");?></a></td>
 				</tr>
 
 			<?php else: ?>
