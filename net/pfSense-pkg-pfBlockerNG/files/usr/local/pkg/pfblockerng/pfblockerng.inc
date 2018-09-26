@@ -5150,7 +5150,7 @@ function sync_package_pfblockerng($cron='') {
 			if (!empty($pfb_suppalias)) {
 				$pfb_suppaliascidr = array();
 				foreach ($pfb_suppalias as $key => $subnet) {
-					if (strpos($subnet, '/24') !== FALSE) {
+					if (strpos($subnet, '/24') !== FALSE && is_ipaddrv4($subnet)) {
 						$pfb_suppaliascidr = subnetv4_expand($subnet);
 						unset($pfb_suppalias[$key]);
 					}
