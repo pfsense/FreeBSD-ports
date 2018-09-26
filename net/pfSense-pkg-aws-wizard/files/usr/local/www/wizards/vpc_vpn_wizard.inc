@@ -23,7 +23,7 @@ require_once("globals.inc");
 require_once("config.inc");
 require_once("ipsec.inc");
 require_once("pkg-utils.inc");
-require_once("aws-sdk-php/aws-autoloader.php");
+require_once("aws-sdk/aws-autoloader.php");
 
 use Aws\Ec2\Ec2Client;
 use Aws\Exception\AwsException;
