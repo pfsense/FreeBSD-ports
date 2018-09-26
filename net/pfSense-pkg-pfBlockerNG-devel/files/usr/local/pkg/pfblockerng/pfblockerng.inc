@@ -2982,7 +2982,7 @@ function pfb_remove_states() {
 
 		// Convert '/24' CIDRs
 		$pfb_suppcidr = array();
-		if (strpos($line, '/24') !== FALSE) {
+		if (strpos($line, '/24') !== FALSE && is_ipaddrv4($line)) {
 			$pfb_suppcidr	= subnetv4_expand($line);
 			$pfb_local	= array_merge($pfb_local, $pfb_suppcidr);
 		}
@@ -3210,7 +3210,7 @@ function pfb_collect_localip() {
 	if (is_array($config['virtualip']['vip'])) {
 		foreach ($config['virtualip']['vip'] as $list) {
 			if (!empty($list['subnet']) && !empty($list['subnet_bits'])) {
-				if ($list['subnet_bits'] >= 24) {
+				if ($list['subnet_bits'] >= 24 && is_ipaddrv4($list['subnet'])) {
 					$pfb_local	= array_merge(subnetv4_expand("{$list['subnet']}/{$list['subnet_bits']}"), $pfb_local);
 				} else {
 					$pfb_localsub[] = "{$list['subnet']}/{$list['subnet_bits']}";
@@ -3251,7 +3251,7 @@ function pfb_collect_localip() {
 		foreach ($config['interfaces'] as $int) {
 			if ($int['ipaddr'] != 'dhcp') {
 				if (!empty($int['ipaddr']) && !empty($int['subnet'])) {
-					if ($int['subnet'] >= 24) {
+					if ($int['subnet'] >= 24 && is_ipaddrv4($int['ipaddr'])) {
 						$pfb_local	= array_merge(subnetv4_expand("{$int['ipaddr']}/{$int['subnet']}"), $pfb_local);
 					} else {
 						$pfb_localsub[]	= "{$int['ipaddr']}/{$int['subnet']}";
@@ -6398,6 +6398,9 @@ function sync_package_pfblockerng($cron='') {
 					if (!is_array($list)) {
 						$list = array();
 					}
+					if (!is_array($list['row'])) {
+						$list['row'] = array();
+					}
 
 					$list['vtype']	= "{$vtype}";	// Collect list IP type
 					$list['key']	= "{$key}";	// Collect list array key location
@@ -7543,7 +7546,7 @@ function sync_package_pfblockerng($cron='') {
 	if ($pfb_found) {
 		write_config("pfBlockerNG: update NAT rule(s) aliasnames to include '_v4' suffix");
 	}
-
+ 
 	#################################
 	#  Call filter_configure once	#
 	#################################
