@@ -442,7 +442,7 @@ if (isset($int_gateway)) {
 if (is_array($config['virtualip']['vip'])) {
 	foreach ($config['virtualip']['vip'] as $list) {
 		if (!empty($list['subnet']) && !empty($list['subnet_bits'])) {
-			if ($list['subnet_bits'] >= 24) {
+			if ($list['subnet_bits'] >= 24 && is_ipaddrv4($list['subnet'])) {
 				$pfb_local = array_merge(subnetv4_expand("{$list['subnet']}/{$list['subnet_bits']}"), $pfb_local);
 			} else {
 				$pfb_localsub[] = "{$list['subnet']}/{$list['subnet_bits']}";
@@ -489,7 +489,7 @@ if (is_array($config['interfaces'])) {
 	foreach ($config['interfaces'] as $int) {
 		if ($int['ipaddr'] != 'dhcp') {
 			if (!empty($int['ipaddr']) && !empty($int['subnet'])) {
-				if ($int['subnet'] >= 24) {
+				if ($int['subnet'] >= 24 && is_ipaddrv4($int['ipaddr'])) {
 					$pfb_local = array_merge(subnetv4_expand("{$int['ipaddr']}/{$int['subnet']}"), $pfb_local);
 				} else {
 					$pfb_localsub[] = "{$int['ipaddr']}/{$int['subnet']}";
