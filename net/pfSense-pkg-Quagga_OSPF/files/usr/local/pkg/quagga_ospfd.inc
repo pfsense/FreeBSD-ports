@@ -558,7 +558,6 @@ function quagga_ospfd_plugin_carp($pluginparams) {
 	if (is_array($config['installedpackages']['quaggaospfd']['config'])) {
 		$ospfd_conf = &$config['installedpackages']['quaggaospfd']['config'][0];
 	} else {
-		syslog(LOG_ALERT, "Quagga: CONFIGURATION DOES NOT EXIST!");
 		return null;
 	}
 	/* If there is no properly configured CARP status check IP, then stop */
