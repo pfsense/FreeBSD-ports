@@ -401,6 +401,7 @@ function squid_reverse_upgrade_config() {
 
 		// settings
 		if (!is_array($config['installedpackages']['squidreversegeneral'])) {
+			init_config_arr(array('installedpackages', 'squidreversegeneral', 'config'));
 			$config['installedpackages']['squidreversegeneral']['config'][0] = $old_reverse_settings;
 			unset($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_cache_peer']);
 			unset($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_uri']);
@@ -411,6 +412,7 @@ function squid_reverse_upgrade_config() {
 		if (!is_array($config['installedpackages']['squidreversepeer'])) {
 			foreach (explode("\n", sq_text_area_decode($old_reverse_settings['reverse_cache_peer'])) as $cache_peers) {
 				foreach (explode(";", $cache_peers) as $cache_peer) {
+					init_config_arr(array('installedpackages', 'squidreversepeer', 'config'));
 					$config['installedpackages']['squidreversepeer']['config'][] = array(
 						'description' => 'migrated',
 						'enable' => 'on',
@@ -432,6 +434,7 @@ function squid_reverse_upgrade_config() {
 			foreach (explode("\n", sq_text_area_decode($old_reverse_settings['reverse_uri'])) as $uris) {
 				foreach (explode(";", $uris) as $uri) {
 					$peer_list = (is_array(${'peer_' . $uri[0]}) ? implode(",", ${'peer_' . $uri[0]}) : "");
+					init_config_arr(array('installedpackages', 'squidreverseuri', 'config'));
 					$config['installedpackages']['squidreverseuri']['config'][] = array(
 						'description' => 'migrated',
 						'enable' => 'on',
