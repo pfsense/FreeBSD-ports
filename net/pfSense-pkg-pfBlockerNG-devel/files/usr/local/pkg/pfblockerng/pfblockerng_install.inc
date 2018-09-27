@@ -159,9 +159,9 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 // Create Firewall filter service and link required executables
 update_status("\nRemove any existing and create links for Firewall filter executables...");
 unlink_if_exists('/usr/local/bin/php_pfb');
-link('/usr/local/bin/php', '/usr/local/bin/php_pfb');
+symlink('/usr/local/bin/php', '/usr/local/bin/php_pfb');
 unlink_if_exists('/usr/local/sbin/clog_pfb');
-link('/usr/local/sbin/clog', '/usr/local/sbin/clog_pfb');
+symlink('/usr/local/sbin/clog', '/usr/local/sbin/clog_pfb');
 
 update_status(" done.\nCreating Firewall filter service...");
 pfb_filter_service();
@@ -170,7 +170,7 @@ update_status(" done.\n");
 // Create DNSBL service and link required executables
 update_status(" done.\nRemove any existing and create link for DNSBL lighttpd executable...");
 unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
-link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_pfb');
+symlink('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_pfb');
 
 update_status(" done.\nCreating DNSBL service...");
 pfb_dnsbl_service();
