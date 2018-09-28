@@ -454,7 +454,7 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.bin
 	fi
 
-	if [ -n "${uboot_pkg}" -a -n "${uboot_mntp}" \
+	if [ -n "${uboot_pkg}" -a -n "${uboot_mntp}" -a \
 	    "$(compare_pkg_version ${uboot_pkg})" = "<" ]; then
 		if [ ! -f ${uboot_mntp}/${uboot_bin} ]; then
 			# Try to mount /boot/msdos
