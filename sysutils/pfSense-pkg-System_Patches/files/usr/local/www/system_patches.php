@@ -33,7 +33,7 @@ require_once("patches.inc");
 require_once("pkg-utils.inc");
 require_once('classes/Form.class.php');
 
-init_config_arr('installedpackages', 'patches', 'item');
+init_config_arr(array('installedpackages', 'patches', 'item'));
 $a_patches = &$config['installedpackages']['patches']['item'];
 
 /* if a custom message has been passed along, lets process it */
