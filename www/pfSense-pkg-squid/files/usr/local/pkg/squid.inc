@@ -1772,6 +1772,7 @@ function squid_resync_auth() {
 	global $config, $valid_acls;
 	$write_config = 0;
 	if (!is_array($config['installedpackages']['squidauth']['config'])) {
+		init_config_arr(array('installedpackages', 'squidauth', 'config'));
 		$config['installedpackages']['squidauth']['config'][] = array('auth_method' => "none");
 		$write_config++;
 	}

@@ -423,6 +423,17 @@ pkg_upgrade() {
 	    ${product}-kernel-\* | grep -v -- -debug-))
 
 	local _arch=$(uname -p)
+	local _model=$(/bin/kenv -q smbios.system.product 2>/dev/null)
+
+	SYSTEM=""
+	if [ "${_model}" = "SG-5100" ]; then
+		SYSTEM="SG-5100"
+	elif [ "${_model}" = "mvebu_armada-37xx" ]; then
+		_type=$(/usr/sbin/ofwdump -P model -R / 2>/dev/null)
+		if [ "${_type}" = "Netgate SG-1100" ]; then
+			SYSTEM="SG-1100"
+		fi
+	fi
 
 	# Detect if has u-boot package installed
 	unset uboot_bin
@@ -433,6 +444,9 @@ pkg_upgrade() {
 		    ${product}-u-boot-ufw\*))
 		export uboot_mntp=/boot/msdos
 		export uboot_bin=u-boot.img
+	elif is_pkg_installed ${product}-u-boot-sg1100\*; then
+		export uboot_pkg=$(_pkg query %n $(_pkg info \
+		    ${product}-u-boot-sg1100\*))
 	elif is_pkg_installed ${product}-u-boot-sg3100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-sg3100\*))
@@ -440,7 +454,7 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.bin
 	fi
 
-	if [ -n "${uboot_pkg}" -a \
+	if [ -n "${uboot_pkg}" -a -n "${uboot_mntp}" \
 	    "$(compare_pkg_version ${uboot_pkg})" = "<" ]; then
 		if [ ! -f ${uboot_mntp}/${uboot_bin} ]; then
 			# Try to mount /boot/msdos
@@ -476,8 +490,7 @@ pkg_upgrade() {
 	fi
 
 	if [ -n "${booting}" ]; then
-		model=$(/bin/kenv -q smbios.system.product)
-		if [ "${model}" = "SG-5100" ]; then
+		if [ ${SYSTEM} = "SG-5100" ]; then
 			# Upgrade running during boot (LED blinking red)
 			/usr/local/sbin/SG-5100led 2 >/dev/null 2>&1
 		fi
@@ -641,6 +654,12 @@ pkg_upgrade() {
 			    [ -s /tmp/loader.conf.backup ] && \
 			    [ ! -s /boot/loader.conf ]; then
 				cp -fp /tmp/loader.conf.backup /boot/loader.conf
+			fi
+			if [ ${SYSTEM} = "SG-1100" ]; then
+				# Mount /boot/msdos and update the DTB in FAT slice.
+				mount /boot/msdos >/dev/null 2>&1
+				cp /boot/dtb/armada-3720-sg1100.dtb /boot/msdos
+				umount /boot/msdos >/dev/null 2>&1
 			fi
 		fi
 
