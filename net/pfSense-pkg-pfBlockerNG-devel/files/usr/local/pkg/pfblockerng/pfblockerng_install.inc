@@ -158,7 +158,6 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 
 // Create Firewall filter service and link required executables
 update_status("\nRemove any existing and create links for Firewall filter executables...");
-unlink_if_exists('/usr/local/bin/php_pfb');
 if (file_exists('/usr/local/bin/php_pfb')) {
 	exec('/bin/rm -f /usr/local/bin/php_pfb 2>&1', $output, $retval);
 }
