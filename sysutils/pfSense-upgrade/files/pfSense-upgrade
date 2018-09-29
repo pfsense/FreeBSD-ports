@@ -426,9 +426,7 @@ pkg_upgrade() {
 	local _model=$(/bin/kenv -q smbios.system.product 2>/dev/null)
 
 	SYSTEM=""
-	if [ "${_model}" = "SG-5100" ]; then
-		SYSTEM="SG-5100"
-	elif [ "${_model}" = "mvebu_armada-37xx" ]; then
+	if [ "${_model}" = "mvebu_armada-37xx" ]; then
 		_type=$(/usr/sbin/ofwdump -P model -R / 2>/dev/null)
 		if [ "${_type}" = "Netgate SG-1100" ]; then
 			SYSTEM="SG-1100"
@@ -490,10 +488,7 @@ pkg_upgrade() {
 	fi
 
 	if [ -n "${booting}" ]; then
-		if [ ${SYSTEM} = "SG-5100" ]; then
-			# Upgrade running during boot (LED blinking red)
-			/usr/local/sbin/SG-5100led 2 >/dev/null 2>&1
-		fi
+		/usr/local/sbin/${product}-led.sh updating
 	fi
 
 	need_reboot=1
