@@ -302,7 +302,7 @@ function pfb_filter_service() {
 
 	phpver="\$(/usr/bin/stat \${php_path}/php | cut -d '/' -f1)"
 	if [ -e "\${php_path}/php_pfb" ]; then
-		phppfbver="\$(/usr/bin/stat \${php_path}/pfb_php | cut -d '/' -f1)"
+		phppfbver="\$(/usr/bin/stat \${php_path}/php_pfb | cut -d '/' -f1)"
 	else
 		phppfbver=''
 	fi
