@@ -231,8 +231,15 @@ $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdn
 		    'pfblockerngtopspammers', 'pfblockerngproxyandsatellite');
 
 foreach ($upgrade_type as $type) {
-	$conf_config = &$config['installedpackages'][$type]['config'];
-	if (is_array($conf_config)) {
+	if (is_array($config['installedpackages'][$type]['config'])) {
+		$conf_config = &$config['installedpackages'][$type]['config'];
+
+		// Remove any empty '<config></config>' XML tags
+		if (empty($conf_config[0])) {
+			unset($conf_config[0]);
+			$ufound = TRUE;
+		}
+
 		foreach ($conf_config as $key => $utype) {
 			if (isset($utype['autoports'])) {
 				$ufound = TRUE;
