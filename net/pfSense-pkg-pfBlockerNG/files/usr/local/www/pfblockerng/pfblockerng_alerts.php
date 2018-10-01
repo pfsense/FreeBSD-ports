@@ -78,8 +78,11 @@ foreach ($aglobal_array as $type => $value) {
 if (!is_array($config['installedpackages']['pfblockerngdnsblsettings'])) {
 	$config['installedpackages']['pfblockerngdnsblsettings'] = array();
 }
-if (!is_array($config['installedpackages']['pfblockerngdnsblsettings'][0])) {
-	$config['installedpackages']['pfblockerngdnsblsettings'][0] = array();
+if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'])) {
+	$config['installedpackages']['pfblockerngdnsblsettings']['config'] = array();
+}
+if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'][0])) {
+	$config['installedpackages']['pfblockerngdnsblsettings']['config'][0] = array();
 }
 if (!isset($config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'])) {
 	$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'] = '';
