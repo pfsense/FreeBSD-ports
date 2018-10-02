@@ -490,7 +490,7 @@ pkg_upgrade() {
 		_exit 0
 	fi
 
-	if [ -n "${booting}" ]; then
+	if [ -n "${booting}" -a -x /usr/local/sbin/${product}-led.sh ]; then
 		/usr/local/sbin/${product}-led.sh updating
 	fi
 
