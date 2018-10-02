@@ -297,6 +297,26 @@ function pfb_filter_service() {
 	# Ensure all processes are stopped
 	rc_stop
 
+	# Compare php/php_pfb versions
+	php_path='/usr/local/bin'
+
+	phpver="\$(/usr/bin/stat \${php_path}/php | cut -d '/' -f1)"
+	if [ -e "\${php_path}/php_pfb" ]; then
+		phppfbver="\$(/usr/bin/stat \${php_path}/php_pfb | cut -d '/' -f1)"
+	else
+		phppfbver=''
+	fi
+
+	# Create new hard link for php_pfb on version mismatch
+	if [ "\${phpver}" != "\${phppfbver}" ]; then
+		if [ -e "\${php_path}/php_pfb" ]; then
+			tmpfile="\$(/usr/bin/mktemp /tmp/pfb_php.XXXXXX)"
+			/bin/mv "\${php_path}/php_pfb" "\${tmpfile}"
+		fi
+
+		/bin/ln "\${php_path}/php" "\${php_path}/php_pfb"
+	fi
+
 	# Start pfBlockerNG Firewall filter Daemon
 	if [ -e '/var/log/filter.log' ]; then
 		/usr/local/sbin/clog_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
@@ -7802,10 +7822,6 @@ function pfblockerng_php_pre_deinstall_command() {
 		if (isset($config['installedpackages']['pfblockerngproxyandsatellite']))
 			unset($config['installedpackages']['pfblockerngproxyandsatellite']);
 
-		unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
-		unlink_if_exists('/usr/local/bin/php_pfb');
-		unlink_if_exists('/usr/local/sbin/clog_pfb');
-
 		unlink_if_exists("{$pfb['dnsbl_conf']}");
 		unlink_if_exists("{$pfb['dnsbl_cert']}");
 		unlink_if_exists("{$pfb['aliasarchive']}");
@@ -7814,6 +7830,10 @@ function pfblockerng_php_pre_deinstall_command() {
 		update_status(" All customizations/data will be retained...");
 	}
 
+	unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
+	unlink_if_exists('/usr/local/bin/php_pfb');
+	unlink_if_exists('/usr/local/sbin/clog_pfb');
+	
 	// Remove incorrect xml setting
 	if (isset($config['installedpackages']['pfblockerngantartica'])) {
 		unset($config['installedpackages']['pfblockerngantartica']);
