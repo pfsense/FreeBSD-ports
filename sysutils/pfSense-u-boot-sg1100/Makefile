@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	u-boot
-PORTREVISION=	1
-DISTVERSION=	20180828
+DISTVERSION=	20180902
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 PKGNAMESUFFIX=	-sg1100
@@ -10,6 +9,8 @@ PKGNAMESUFFIX=	-sg1100
 MAINTAINER=	loos@FreeBSD.org
 COMMENT=	Netgate SG-1100 u-boot
 LICENSE=	GPLv2
+
+RUN_DEPENDS=	u-boot-env:sysutils/pfSense-u-boot-env
 
 PLIST_FILES=	share/u-boot/sg1100/flash-image.bin
 
