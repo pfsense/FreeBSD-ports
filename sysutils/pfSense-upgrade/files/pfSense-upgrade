@@ -446,7 +446,8 @@ pkg_upgrade() {
 	elif is_pkg_installed ${product}-u-boot-sg1100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-sg1100\*))
-		export uboot_update=/usr/local/share/u-boot/sg1100/u-boot-update.sh
+		export \
+		    uboot_update=/usr/local/share/u-boot/sg1100/u-boot-update.sh
 	elif is_pkg_installed ${product}-u-boot-sg3100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-sg3100\*))
@@ -489,7 +490,7 @@ pkg_upgrade() {
 		_exit 0
 	fi
 
-	if [ -n "${booting}" ]; then
+	if [ -n "${booting}" -a -x /usr/local/sbin/${product}-led.sh ]; then
 		/usr/local/sbin/${product}-led.sh updating
 	fi
 
@@ -653,7 +654,8 @@ pkg_upgrade() {
 				cp -fp /tmp/loader.conf.backup /boot/loader.conf
 			fi
 			if [ ${SYSTEM} = "SG-1100" ]; then
-				# Mount /boot/msdos and update the DTB in FAT slice.
+				# Mount /boot/msdos and update the DTB in FAT
+				# slice.
 				mount /boot/msdos >/dev/null 2>&1
 				cp /boot/dtb/armada-3720-sg1100.dtb /boot/msdos
 				umount /boot/msdos >/dev/null 2>&1
@@ -663,10 +665,8 @@ pkg_upgrade() {
 		if [ -n "${uboot_pkg}" ] && upgrade_available ${uboot_pkg}; then
 			_exec "pkg-static upgrade -U ${uboot_pkg}" \
 			    "Upgrading ${product} u-boot"
-			if [ -n "${uboot_update}" ]; then
-				if [ -x ${uboot_update} ]; then
-					${uboot_update}
-				fi
+			if [ -n "${uboot_update}" -a -x ${uboot_update} ]; then
+				${uboot_update}
 			fi
 		fi
 
