@@ -460,6 +460,7 @@ function addVpcAlias($alias_name, $alias_cidrs, $alias_descr) {
 
 	global $config;
 
+	init_config_arr(array('aliases', 'alias'));
 	$a_aliases = &$config['aliases']['alias'];
 
 	/*
@@ -560,6 +561,7 @@ function addTunnelInsideAddresses($tunnel_cfgs) {
 
 	global $config, $savemsg;
 
+	init_config_arr(array('virtualip', 'vip'));
 	$a_virtualip = &$config['virtualip']['vip'];
 
 	$all_ip_addrs = '';
@@ -604,6 +606,7 @@ function addTunnelFirewallRules($tunnel_cfgs, $vpc_id) {
 
 	global $config, $savemsg;
 
+	init_config_arr(array('filter', 'rule'));
 	$a_filter = &$config['filter']['rule'];
 	$rule_name = "VPC IPsec auto-rule for $vpc_id";
 	$vpc_tag = str_replace("-", "", $vpc_id);
@@ -664,11 +667,8 @@ function addLocalIpsecCfg($vpc_id, $tunnel_cfgs, $loc_intf, $vpc_cidr, $loc_cidr
 
 	global $config;
 
-	if (!is_array($config['ipsec']['phase1']))
-		$config['ipsec']['phase1'] = array();
-
-	if (!is_array($config['ipsec']['phase2']))
-		$config['ipsec']['phase2'] = array();
+	init_config_arr(array('ipsec', 'phase1'));
+	init_config_arr(array('ipsec', 'phase2'));
 
 	$a_phase1 = &$config['ipsec']['phase1'];
 	$a_phase2 = &$config['ipsec']['phase2'];
@@ -895,6 +895,7 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 		$local_hold_time = $tunnel_cfgs[0]['customer_gateway']['bgp']['hold_time'];
 	}
 
+	init_config_arr(array('installedpackages', 'openbgpd', 'config', 0));
 	$bgp_cfg = &$config['installedpackages']['openbgpd']['config'][0];
 
 	/* Set system-wide settings if there isn't already an AS 
@@ -927,6 +928,7 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 	}
 
 	/* Add our new group if it is not already configured */
+	init_config_arr(array('installedpackages', 'openbgpdgroups', 'config'));
 	$bgp_groups = &$config['installedpackages']['openbgpdgroups']['config'];
 	if (!is_bgp_group_configured($vpc_id)) {
 		$vpc_group = array(
@@ -980,6 +982,7 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 			)
 		);
 
+		init_config_arr(array('installedpackages', 'openbgpdneighbors', 'config'));
 		$neighbor_cfgs = &$config['installedpackages']['openbgpdneighbors']['config'];
 		if (!is_bgp_neighbor_configured($neighbor_addr)) {
 			$neighbor_cfgs[] = $bgp_neighbor_arr;
