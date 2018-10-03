@@ -1210,7 +1210,9 @@ function convert_pfxml_to_sgxml_time($pfconfig) {
                 $sgx_row[F_TIMEDAYS]  = $pfx_row[F_TIMEDAYS];
                 $sgx_row[F_DATERANGE] = $pfx_row[F_DATERANGE];
                 $sgx_row[F_TIMERANGE] = $pfx_row[F_TIMERANGE];
-                $sgx[F_ITEM] = array();
+                if (!array($sgx[F_ITEM])) {
+                    $sgx[F_ITEM] = array();
+                }
                 $sgx[F_ITEM][] = $sgx_row;
             }
         }
