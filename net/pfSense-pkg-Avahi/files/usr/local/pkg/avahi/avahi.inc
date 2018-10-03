@@ -26,7 +26,7 @@ require_once("util.inc");
 require_once("service-utils.inc");
 
 define("AVAHI_CONFIG_FILE", "/usr/local/etc/avahi/avahi-daemon.conf");
-define("AVAHI_RC_FILE", "/usr/local/etc/rc.d/avahi-daemon.sh");
+define("AVAHI_RCFILE", "/usr/local/etc/rc.d/avahi-daemon.sh");
 define("AVAHI_DAEMON", "/usr/local/sbin/avahi-daemon");
 
 
