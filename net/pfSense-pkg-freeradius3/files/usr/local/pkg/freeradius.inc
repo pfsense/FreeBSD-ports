@@ -699,6 +699,8 @@ EOD;
 				$varFREERADIUS_SCRIPTS = FREERADIUS_SCRIPTS;
 				$varusersreplyitem .= <<<EOD
 
+	pfSense-Max-Total-Octets := {$varusersmaxtotaloctets},
+
 	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varusersusername} {$varusersmaxtotaloctetstimerange}"
 EOD;
 				// create limit file - will be always overwritten so we can increase limit from GUI
@@ -950,6 +952,8 @@ EOD;
 				//create exec script
 				$varFREERADIUS_SCRIPTS = FREERADIUS_SCRIPTS;
 				$varmacsreplyitem .= <<<EOD
+
+	pfSense-Max-Total-Octets := {$varmacsmaxtotaloctets},
 
 	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varmacsaddress} {$varmacsmaxtotaloctetstimerange}"
 EOD;
@@ -3658,6 +3662,8 @@ function freeradius_dictionary_resync() {
 ATTRIBUTE 		MOTP-Init-Secret 		900 	string
 ATTRIBUTE 		MOTP-PIN 			901 	string
 ATTRIBUTE 		MOTP-Offset 			902 	string
+
+\$INCLUDE /usr/share/doc/radius/dictionary.pfsense
 
 EOD;
 

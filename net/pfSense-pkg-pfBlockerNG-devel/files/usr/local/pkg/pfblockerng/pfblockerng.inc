@@ -297,6 +297,26 @@ function pfb_filter_service() {
 	# Ensure all processes are stopped
 	rc_stop
 
+	# Compare php/php_pfb versions
+	php_path='/usr/local/bin'
+
+	phpver="\$(/usr/bin/stat \${php_path}/php | cut -d '/' -f1)"
+	if [ -e "\${php_path}/php_pfb" ]; then
+		phppfbver="\$(/usr/bin/stat \${php_path}/php_pfb | cut -d '/' -f1)"
+	else
+		phppfbver=''
+	fi
+
+	# Create new hard link for php_pfb on version mismatch
+	if [ "\${phpver}" != "\${phppfbver}" ]; then
+		if [ -e "\${php_path}/php_pfb" ]; then
+			tmpfile="\$(/usr/bin/mktemp /tmp/pfb_php.XXXXXX)"
+			/bin/mv "\${php_path}/php_pfb" "\${tmpfile}"
+		fi
+
+		/bin/ln "\${php_path}/php" "\${php_path}/php_pfb"
+	fi
+
 	# Start pfBlockerNG Firewall filter Daemon
 	if [ -e '/var/log/filter.log' ]; then
 		/usr/local/sbin/clog_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
@@ -2982,7 +3002,7 @@ function pfb_remove_states() {
 
 		// Convert '/24' CIDRs
 		$pfb_suppcidr = array();
-		if (strpos($line, '/24') !== FALSE) {
+		if (strpos($line, '/24') !== FALSE && is_ipaddrv4($line)) {
 			$pfb_suppcidr	= subnetv4_expand($line);
 			$pfb_local	= array_merge($pfb_local, $pfb_suppcidr);
 		}
@@ -3210,7 +3230,7 @@ function pfb_collect_localip() {
 	if (is_array($config['virtualip']['vip'])) {
 		foreach ($config['virtualip']['vip'] as $list) {
 			if (!empty($list['subnet']) && !empty($list['subnet_bits'])) {
-				if ($list['subnet_bits'] >= 24) {
+				if ($list['subnet_bits'] >= 24 && is_ipaddrv4($list['subnet'])) {
 					$pfb_local	= array_merge(subnetv4_expand("{$list['subnet']}/{$list['subnet_bits']}"), $pfb_local);
 				} else {
 					$pfb_localsub[] = "{$list['subnet']}/{$list['subnet_bits']}";
@@ -3251,7 +3271,7 @@ function pfb_collect_localip() {
 		foreach ($config['interfaces'] as $int) {
 			if ($int['ipaddr'] != 'dhcp') {
 				if (!empty($int['ipaddr']) && !empty($int['subnet'])) {
-					if ($int['subnet'] >= 24) {
+					if ($int['subnet'] >= 24 && is_ipaddrv4($int['ipaddr'])) {
 						$pfb_local	= array_merge(subnetv4_expand("{$int['ipaddr']}/{$int['subnet']}"), $pfb_local);
 					} else {
 						$pfb_localsub[]	= "{$int['ipaddr']}/{$int['subnet']}";
@@ -3920,8 +3940,10 @@ function pfb_open_sqlite($table, $message) {
 
 // Function to close SQLite3 database
 function pfb_close_sqlite($db_handle) {
-	$db_handle->close();
-	unset($db_handle);
+	if (!empty($db_handle)) {
+		$db_handle->close();
+		unset($db_handle);
+	}
 }
 
 
@@ -6396,6 +6418,9 @@ function sync_package_pfblockerng($cron='') {
 					if (!is_array($list)) {
 						$list = array();
 					}
+					if (!is_array($list['row'])) {
+						$list['row'] = array();
+					}
 
 					$list['vtype']	= "{$vtype}";	// Collect list IP type
 					$list['key']	= "{$key}";	// Collect list array key location
@@ -7541,7 +7566,7 @@ function sync_package_pfblockerng($cron='') {
 	if ($pfb_found) {
 		write_config("pfBlockerNG: update NAT rule(s) aliasnames to include '_v4' suffix");
 	}
-
+ 
 	#################################
 	#  Call filter_configure once	#
 	#################################
@@ -7797,10 +7822,6 @@ function pfblockerng_php_pre_deinstall_command() {
 		if (isset($config['installedpackages']['pfblockerngproxyandsatellite']))
 			unset($config['installedpackages']['pfblockerngproxyandsatellite']);
 
-		unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
-		unlink_if_exists('/usr/local/bin/php_pfb');
-		unlink_if_exists('/usr/local/sbin/clog_pfb');
-
 		unlink_if_exists("{$pfb['dnsbl_conf']}");
 		unlink_if_exists("{$pfb['dnsbl_cert']}");
 		unlink_if_exists("{$pfb['aliasarchive']}");
@@ -7809,6 +7830,10 @@ function pfblockerng_php_pre_deinstall_command() {
 		update_status(" All customizations/data will be retained...");
 	}
 
+	unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
+	unlink_if_exists('/usr/local/bin/php_pfb');
+	unlink_if_exists('/usr/local/sbin/clog_pfb');
+	
 	// Remove incorrect xml setting
 	if (isset($config['installedpackages']['pfblockerngantartica'])) {
 		unset($config['installedpackages']['pfblockerngantartica']);

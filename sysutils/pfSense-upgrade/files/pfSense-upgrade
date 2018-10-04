@@ -121,7 +121,7 @@ _exec() {
 }
 
 _pkg() {
-	pkg-static $* 2>/dev/null
+	pkg-static "$@" 2>/dev/null
 	return $?
 }
 
@@ -247,6 +247,18 @@ set_vital_flag() {
 
 		_exec "pkg-static set -y -v 1 ${_package}" \
 		    "Setting vital flag on ${_package}" mute
+	done
+}
+
+unset_vital_flag() {
+	for _package in "$@"; do
+		local _vflag=$(pkg-static query %V ${_package} 2>/dev/null)
+
+		[ "${_vflag}" = "0" ] \
+		    && continue
+
+		_exec "pkg-static set -y -v 0 ${_package}" \
+		    "Removing vital flag from ${_package}" mute
 	done
 }
 
@@ -410,20 +422,32 @@ pkg_upgrade() {
 	export kernel_pkg=$(_pkg query %n $(_pkg info \
 	    ${product}-kernel-\* | grep -v -- -debug-))
 
-	# figure out which PHP major version is running
-	local _cur_php_pkg=$(_pkg query %o $(_pkg info -x '^php[0-9]{2}-[0-9]'))
-
 	local _arch=$(uname -p)
+	local _model=$(/bin/kenv -q smbios.system.product 2>/dev/null)
+
+	SYSTEM=""
+	if [ "${_model}" = "mvebu_armada-37xx" ]; then
+		_type=$(/usr/sbin/ofwdump -P model -R / 2>/dev/null)
+		if [ "${_type}" = "Netgate SG-1100" ]; then
+			SYSTEM="SG-1100"
+		fi
+	fi
 
 	# Detect if has u-boot package installed
 	unset uboot_bin
 	unset uboot_pkg
 	unset uboot_mntp
+	unset uboot_update
 	if is_pkg_installed ${product}-u-boot-ufw\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-ufw\*))
 		export uboot_mntp=/boot/msdos
 		export uboot_bin=u-boot.img
+	elif is_pkg_installed ${product}-u-boot-sg1100\*; then
+		export uboot_pkg=$(_pkg query %n $(_pkg info \
+		    ${product}-u-boot-sg1100\*))
+		export \
+		    uboot_update=/usr/local/share/u-boot/sg1100/u-boot-update.sh
 	elif is_pkg_installed ${product}-u-boot-sg3100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-sg3100\*))
@@ -431,7 +455,7 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.bin
 	fi
 
-	if [ -n "${uboot_pkg}" -a \
+	if [ -n "${uboot_pkg}" -a -n "${uboot_mntp}" -a \
 	    "$(compare_pkg_version ${uboot_pkg})" = "<" ]; then
 		if [ ! -f ${uboot_mntp}/${uboot_bin} ]; then
 			# Try to mount /boot/msdos
@@ -466,12 +490,8 @@ pkg_upgrade() {
 		_exit 0
 	fi
 
-	if [ -n "${booting}" ]; then
-		model=$(/bin/kenv -q smbios.system.product)
-		if [ "${model}" = "SG-5100" ]; then
-			# Upgrade running during boot (LED blinking red)
-			/usr/local/sbin/SG-5100led 2 >/dev/null 2>&1
-		fi
+	if [ -n "${booting}" -a -x /usr/local/sbin/${product}-led.sh ]; then
+		/usr/local/sbin/${product}-led.sh updating
 	fi
 
 	need_reboot=1
@@ -576,6 +596,9 @@ pkg_upgrade() {
 			    "Fixing bad /etc/fstab" mute ignore_result
 		fi
 
+		# Remove main PHP package vital flag
+		unset_vital_flag ${cur_php_pkg}
+
 		# Unlock pkg to make sure it's downloaded
 		if [ -n "${NEW_MAJOR}" ]; then
 			pkg_unlock pkg
@@ -630,11 +653,21 @@ pkg_upgrade() {
 			    [ ! -s /boot/loader.conf ]; then
 				cp -fp /tmp/loader.conf.backup /boot/loader.conf
 			fi
+			if [ ${SYSTEM} = "SG-1100" ]; then
+				# Mount /boot/msdos and update the DTB in FAT
+				# slice.
+				mount /boot/msdos >/dev/null 2>&1
+				cp /boot/dtb/armada-3720-sg1100.dtb /boot/msdos
+				umount /boot/msdos >/dev/null 2>&1
+			fi
 		fi
 
 		if [ -n "${uboot_pkg}" ] && upgrade_available ${uboot_pkg}; then
 			_exec "pkg-static upgrade -U ${uboot_pkg}" \
 			    "Upgrading ${product} u-boot"
+			if [ -n "${uboot_update}" -a -x ${uboot_update} ]; then
+				${uboot_update}
+			fi
 		fi
 
 		if is_pkg_installed ${pkg_prefix}\*; then
@@ -660,9 +693,10 @@ pkg_upgrade() {
 		_pkg annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
-		local _new_php_pkg=$(_pkg rquery -Ue "%o ~ ${_cur_php_pkg}" %o)
+		local _new_php_pkg=$(_pkg rquery -U %o | \
+		    grep -s "^${cur_php_pkg}\$")
 
-		if [ "${_cur_php_pkg}" != "${_new_php_pkg}" ]; then
+		if [ "${cur_php_pkg}" != "${_new_php_pkg}" ]; then
 			_pkg annotate -q -M ${kernel_pkg} new_major_php 1
 		fi
 
@@ -882,6 +916,12 @@ compare_pkg_version() {
 	fi
 
 	local _rver=$(_pkg rquery -U %v ${_pkg_name})
+
+	# Maybe we need fresh metadata, lets try to obtain it respecting
+	# dont_update variable
+	if [ -z "${_rver}" ]; then
+		_rver=$(_pkg rquery ${dont_update} %v ${_pkg_name})
+	fi
 
 	if [ -z "${_rver}" ]; then
 		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
@@ -1268,6 +1308,27 @@ if [ -e "${progress_file}" ]; then
 fi
 
 abi_setup
+
+# figure out which PHP major version is running
+cur_php_pkg=$(_pkg query %o $(_pkg info -x '^php[0-9]{2}-[0-9]'))
+if [ -n "${booting}" ]; then
+	unset_vital_flag ${cur_php_pkg}
+else
+	set_vital_flag ${cur_php_pkg}
+fi
+
+if [ "${action}" = "install" ]; then
+	pkg_upgrade_repo
+
+	new_php_pkg=$(_pkg rquery -U %o | grep -s "^${cur_php_pkg}\$")
+
+	if [ "${cur_php_pkg}" != "${new_php_pkg}" ]; then
+		_echo "WARNING: Current pkg repository has a new PHP major"
+		_echo "         version. ${product} should be upgraded before"
+		_echo "         installing any new package."
+		_exit 1
+	fi
+fi
 
 if [ -n "${NEW_MAJOR}" -a "${action}" = "install" ]; then
 	_echo "WARNING: Current pkg repository has a new OS major version."

@@ -978,6 +978,12 @@
 					"header":	"D_Me_Malw"
 				},
 				{
+					"feed":		"Gwillem",
+					"website":	"https://github.com/gwillem/magento-malware-scanner/tree/master/rules",
+					"url":		"https://raw.githubusercontent.com/gwillem/magento-malware-scanner/master/rules/burner-domains.txt",
+					"header":	"Magento"
+				},
+				{
 					"feed":		"H3X",
 					"website":	"https://tracker.h3x.eu/about/",
 					"url":		"https://tracker.h3x.eu/api/sites_1month.php",
@@ -1101,7 +1107,7 @@
 					"feed":		"Malware Patrol",
 					"website":	"https://lists.malwarepatrol.net/",
 					"register":	"https://www.malwarepatrol.net/signup-free.shtml",
-					"url":		"https://lists.malwarepatrol.net/cgi/getfile?receipt=_API_KEY_&product=8&list=dansguardian",
+					"url":		"https://lists.malwarepatrol.net/cgi/getfile?receipt=_API_KEY_&product=32&list=mozilla_adblock",
 					"header":	"MPatrol"
 				},
 				{

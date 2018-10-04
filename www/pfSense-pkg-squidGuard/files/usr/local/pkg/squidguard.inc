@@ -483,13 +483,13 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
     $sources      = '';
     $source_items = '';
     $destinations = '';
-    $dest_items   = '';
+    $dest_items   = array();
     $rewrites     = '';
     $rewr_names   = '';
     $times        = '';
     $time_names   = '';
-    $acls_up      = '';
-    $acls_over    = '';
+    $acls_up      = array();
+    $acls_over    = array();
 
     $current_id = isset($_POST['id']) ? $_POST['id'] : $_GET['id'];
     $current_id = ($current_id) ? $current_id : 0;
@@ -549,13 +549,12 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
         # 'none' > to '!all'
         $acl_dest = str_replace('none', '!all', $acl_dest);
 
-        $pss = explode(' ', $acl_dest);
-        foreach($pss as $val) {
-            $name = $val;
-            $name = str_replace('!', '', $name);
-            $name = str_replace('^', '', $name);
-            if (!empty($val) && is_array($val)) {
-                switch($val[0]) {
+		$pss = explode(' ', $acl_dest);
+		foreach($pss as $val) {
+			$name = $val;
+			$name = str_replace(array('!', '^'), '', $name);
+			if (!empty($val)) {
+				switch(substr($val, 0, 1)) {
 					case '!':
 						$acls_up[$name] = 'deny';
 					break;
@@ -565,9 +564,9 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
 					default :
 						$acls_up[$name] = 'allow';
 					break;
-                }
-            }
-        }
+				}
+			}
+		}
     }
 
     # acl dest overtime
@@ -575,32 +574,33 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
         # 'none' > to '!all'
         $acl_overdest = str_replace('none', '!all', $acl_overdest);
 
-        $pss = explode(' ', $acl_overdest);
-        foreach($pss as $val) {
-        	if (!is_array($val)) {
-        		$val = array();
-        	}
-
-            $name = $val;
-            $name = str_replace('!', '', $name);
-            $name = str_replace('^', '', $name);
-            if (!empty($val)) {
-                switch($val[0]) {
-                    case '!': $acls_over[$name] = 'deny';  break;
-                    case '^': $acls_over[$name] = 'white'; break;
-					default : $acls_over[$name] = 'allow'; break;
-                }
-            }
-        }
+		$pss = explode(' ', $acl_overdest);
+		foreach($pss as $val) {
+			$name = $val;
+			$name = str_replace(array('!', '^'), '', $name);
+			if (!empty($val)) {
+				switch(substr($val, 0, 1)) {
+					case '!':
+						$acls_over[$name] = 'deny';
+						break;
+					case '^':
+						$acls_over[$name] = 'white';
+						break;
+					default :
+						$acls_over[$name] = 'allow';
+						break;
+				}
+			}
+		}
     }
 
     # --- Destinations ---
     # User destinations
+	if (!is_array($dest_items)) {
+		$dest_items = array();
+	}
     if ($squidguard_config[F_DESTINATIONS]) {
         foreach($squidguard_config[F_DESTINATIONS]['item'] as $dst) {
-			if (!is_array($dest_items)) {
-				$dest_items = array();
-			}
 
             $dest_items[] = array ('name'=>$dst[F_NAME],
                                    'upt_value'=>$acls_up[$dst[F_NAME]],
@@ -608,15 +608,11 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
                                    'description'=>$dst[F_DESCRIPTION]);
         }
     }
-
     # Blacklist
     if ($squidguard_config[F_BLACKLISTENABLED] === 'on') {
         $blk_entries = sg_entries_blacklist();
         if (!empty($blk_entries)) {
             foreach($blk_entries as $dst) {
-				if (!is_array($dest_items)) {
-					$dest_items = array();
-				}
                 $dest_items[] = array ('name'=>$dst,
                                        'upt_value'=>$acls_up[$dst],
                                        'ovt_value'=>$acls_over[$dst],
@@ -626,10 +622,6 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
     }
 
     # Default all
-    if (!is_array($dest_items)) {
-    	$dest_items = array();
-    }
-
     $dest_items[] = array('name'=>FLT_DEFAULT_ALL,
                           'upt_value'=>$acls_up[FLT_DEFAULT_ALL],
                           'ovt_value'=>$acls_over[FLT_DEFAULT_ALL],
@@ -968,25 +960,36 @@ function squidGuard_print_javascript() {
 
     # squidguard_default.xml
     if ($xml === "squidguard_default.xml") {
-        $javascript .= "\n<script language='JavaScript'>";
-        $javascript .= "\n<!--";
-        $javascript .= "\n    document.iform.dest.disabled=1;";
-        $javascript .= "\n//-->";
-        $javascript .= "\n</script>";
+        $javascript .= <<<EOF
+
+<script type="text/javascript">
+//<![CDATA[
+	events.push(function() {
+	disableInput('dest', true);
+	});
+//]]>
+</script>
+
+EOF;
     } # if
 
     # squidguard_acl.xml
     if ($xml === "squidguard_acl.xml") {
-        $javascript .= "\n<script language='JavaScript'>";
-        $javascript .= "\n<!--";
-        $javascript .= "\n    document.iform.dest.disabled=1;";
-        $javascript .= "\n//-->";
-        $javascript .= "\n</script>";
+        $javascript .= <<<EOF
 
+<script type="text/javascript">
+//<![CDATA[
+	events.push(function() {
+	disableInput('dest', true);
+	});
+//]]>
+</script>
+
+EOF;
     } # if
 
     if ($xml === "squidguard_time.xml") {
-        $javascript .= "\n<script language='JavaScript'>";
+        $javascript .= "\n<script type=\"text/javascript\">";
         $javascript .= "\n<!--";
         $javascript .= "\n    function on_updatecontrols() {";
         $javascript .= "\n        for (var i=0; i<99; i++) {";
@@ -1007,7 +1010,7 @@ function squidGuard_print_javascript() {
         $javascript .= "\n    on_updatecontrols();";
         $javascript .= "\n    ";
         $javascript .= "\n//-->";
-        $javascript .= "\n</script>";
+        $javascript .= "\n</script>\n";
     }
 
     print($javascript);
@@ -1207,7 +1210,9 @@ function convert_pfxml_to_sgxml_time($pfconfig) {
                 $sgx_row[F_TIMEDAYS]  = $pfx_row[F_TIMEDAYS];
                 $sgx_row[F_DATERANGE] = $pfx_row[F_DATERANGE];
                 $sgx_row[F_TIMERANGE] = $pfx_row[F_TIMERANGE];
-                $sgx[F_ITEM] = array();
+                if (!array($sgx[F_ITEM])) {
+                    $sgx[F_ITEM] = array();
+                }
                 $sgx[F_ITEM][] = $sgx_row;
             }
         }

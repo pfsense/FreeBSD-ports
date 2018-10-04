@@ -157,23 +157,25 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 }
 
 // Create Firewall filter service and link required executables
-update_status("\nRemove any existing and create links for Firewall filter executables...");
+update_status(" done.\nCreating Firewall filter service...");
+pfb_filter_service();
+stop_service('pfb_filter');
+update_status(" done.\nRemove any existing and create links for Firewall filter executables...");
 unlink_if_exists('/usr/local/bin/php_pfb');
 link('/usr/local/bin/php', '/usr/local/bin/php_pfb');
 unlink_if_exists('/usr/local/sbin/clog_pfb');
 link('/usr/local/sbin/clog', '/usr/local/sbin/clog_pfb');
 
-update_status(" done.\nCreating Firewall filter service...");
-pfb_filter_service();
-update_status(" done.\n");
+update_status(" done.\nStarting Firewall filter Service...");
+start_service('pfb_filter');
 
 // Create DNSBL service and link required executables
+update_status(" done.\nCreating DNSBL service...");
+pfb_dnsbl_service();
+stop_service('pfb_dnsbl');
 update_status(" done.\nRemove any existing and create link for DNSBL lighttpd executable...");
 unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
 link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_pfb');
-
-update_status(" done.\nCreating DNSBL service...");
-pfb_dnsbl_service();
 update_status(" done.\n");
 
 // Create DNSBL Lighttpd config file and DNSBL Certificate and restart DNSBL Service
@@ -186,11 +188,11 @@ if (!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl'])) {
 	update_status("Creating DNSBL Certificate...");
 	pfb_create_dnsbl_cert();
 	update_status(" done.\n");
-
-	update_status("Re-starting DNSBL Service...");
-	restart_service('pfb_dnsbl');
-	update_status(" done.\n");
 }
+
+update_status("Starting DNSBL Service...");
+start_service('pfb_dnsbl');
+update_status(" done.\n");
 
 // Replace 'default' DNSBL active blocked webpage
 if (!file_exists('/usr/local/www/pfblockerng/www/dnsbl_active.php') ||
@@ -229,8 +231,15 @@ $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdn
 		    'pfblockerngtopspammers', 'pfblockerngproxyandsatellite');
 
 foreach ($upgrade_type as $type) {
-	$conf_config = &$config['installedpackages'][$type]['config'];
-	if (is_array($conf_config)) {
+	if (is_array($config['installedpackages'][$type]['config'])) {
+		$conf_config = &$config['installedpackages'][$type]['config'];
+
+		// Remove any empty '<config></config>' XML tags
+		if (empty($conf_config[0])) {
+			unset($conf_config[0]);
+			$ufound = TRUE;
+		}
+
 		foreach ($conf_config as $key => $utype) {
 			if (isset($utype['autoports'])) {
 				$ufound = TRUE;

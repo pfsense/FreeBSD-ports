@@ -75,6 +75,18 @@ foreach ($aglobal_array as $type => $value) {
 }
 
 // Assign variable to suppression config
+if (!is_array($config['installedpackages']['pfblockerngdnsblsettings'])) {
+	$config['installedpackages']['pfblockerngdnsblsettings'] = array();
+}
+if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'])) {
+	$config['installedpackages']['pfblockerngdnsblsettings']['config'] = array();
+}
+if (!is_array($config['installedpackages']['pfblockerngdnsblsettings']['config'][0])) {
+	$config['installedpackages']['pfblockerngdnsblsettings']['config'][0] = array();
+}
+if (!isset($config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'])) {
+	$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'] = '';
+}
 $pfb['dsupp'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'];
 
 // Collect DNSBL Whitelist
@@ -433,7 +445,7 @@ if (isset($int_gateway)) {
 if (is_array($config['virtualip']['vip'])) {
 	foreach ($config['virtualip']['vip'] as $list) {
 		if (!empty($list['subnet']) && !empty($list['subnet_bits'])) {
-			if ($list['subnet_bits'] >= 24) {
+			if ($list['subnet_bits'] >= 24 && is_ipaddrv4($list['subnet'])) {
 				$pfb_local = array_merge(subnetv4_expand("{$list['subnet']}/{$list['subnet_bits']}"), $pfb_local);
 			} else {
 				$pfb_localsub[] = "{$list['subnet']}/{$list['subnet_bits']}";
@@ -480,7 +492,7 @@ if (is_array($config['interfaces'])) {
 	foreach ($config['interfaces'] as $int) {
 		if ($int['ipaddr'] != 'dhcp') {
 			if (!empty($int['ipaddr']) && !empty($int['subnet'])) {
-				if ($int['subnet'] >= 24) {
+				if ($int['subnet'] >= 24 && is_ipaddrv4($int['ipaddr'])) {
 					$pfb_local = array_merge(subnetv4_expand("{$int['ipaddr']}/{$int['subnet']}"), $pfb_local);
 				} else {
 					$pfb_localsub[] = "{$int['ipaddr']}/{$int['subnet']}";
