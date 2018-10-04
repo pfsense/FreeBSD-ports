@@ -2,6 +2,7 @@
 
 PORTNAME=	u-boot
 DISTVERSION=	20180904
+PORTREVISION=	1
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 PKGNAMESUFFIX=	-sg1100
@@ -19,7 +20,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	luiz
 GL_PROJECT=	u-boot-sg1100
-GL_COMMIT=	3b675aca6e27e2c916953878f8a535179381d6d4
+GL_COMMIT=	c0a627bbbdfe6b6696361f5e0ad241e5e274185d
 FETCH_BEFORE_ARGS=	--no-verify-peer
 
 .include <bsd.port.mk>
