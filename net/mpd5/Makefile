@@ -3,7 +3,7 @@
 
 PORTNAME=	mpd
 DISTVERSION=	5.8
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/Mpd5/Mpd-${PORTVERSION}
 PKGNAMESUFFIX=	5
@@ -14,7 +14,9 @@ COMMENT=	Multi-link PPP daemon based on netgraph(4)
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN_SSL=	openssl-devel
+BROKEN_SSL=	openssl-devel openssl111
+BROKEN_SSL_REASON_openss-devel=	needs libfetch(3) linked with system libssl
+BROKEN_SSL_REASON_openssl111=	needs libfetch(3) linked with system libssl
 
 OPTIONS_DEFINE=	NG_IPACCT
 NG_IPACCT_DESC=	Use ng_ipacct kernel module from port
