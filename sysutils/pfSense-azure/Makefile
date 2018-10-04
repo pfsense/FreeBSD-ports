@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-azure
-PORTVERSION=	0.11
+PORTVERSION=	0.12
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -23,11 +23,12 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d
 	${MKDIR} ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/sbin/*-pfsense-* \
 		${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/waagent.conf \
 		${STAGEDIR}${PREFIX}/etc
+	( cd ${STAGEDIR}${PREFIX}/etc/rc.d && ${LN} -sf waagent waagent.sh )
 
 .include <bsd.port.mk>
