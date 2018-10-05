@@ -14,7 +14,7 @@ PLIST_FILES=	sbin/u-boot-env sbin/u-boot-env-read \
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
-GL_ACCOUNT=	luiz
+GL_ACCOUNT=	pfSense
 GL_PROJECT=	u-boot-env-update
 GL_COMMIT=	88ddab8df2dfe6e1a2b2eec1b6b51d0a8b201235
 FETCH_BEFORE_ARGS=	--no-verify-peer
