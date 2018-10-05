@@ -2,7 +2,7 @@
 
 PORTNAME=	u-boot
 DISTVERSION=	20180904
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 PKGNAMESUFFIX=	-sg1100
@@ -13,14 +13,20 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	u-boot-env:sysutils/pfSense-u-boot-env
 
+NO_BUILD=	yes
+NO_ARCH=	yes
+
 PLIST_FILES=	share/u-boot/sg1100/flash-image.bin \
 		share/u-boot/sg1100/u-boot-update.sh
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
-GL_ACCOUNT=	luiz
-GL_PROJECT=	u-boot-sg1100
-GL_COMMIT=	c0a627bbbdfe6b6696361f5e0ad241e5e274185d
+GL_ACCOUNT=	pfSense
+GL_PROJECT=	u-boot-binaries
+GL_COMMIT=	67f5cead4c95facf70a2d5faa399313f56317bd5
 FETCH_BEFORE_ARGS=	--no-verify-peer
+
+do-install:
+	${MAKE} -C ${WRKSRC}/sg1100 DESTDIR=${STAGEDIR} install
 
 .include <bsd.port.mk>

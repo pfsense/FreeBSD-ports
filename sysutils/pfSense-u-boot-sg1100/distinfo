@@ -1,3 +1,3 @@
-TIMESTAMP = 1538680609
-SHA256 (luiz-u-boot-sg1100-c0a627bbbdfe6b6696361f5e0ad241e5e274185d_GL0.tar.gz) = 633bb46cf429974d7cb94e0fc91e820a5a2ab2eb7ac4dd64502740f49d789db1
-SIZE (luiz-u-boot-sg1100-c0a627bbbdfe6b6696361f5e0ad241e5e274185d_GL0.tar.gz) = 611341
+TIMESTAMP = 1538738523
+SHA256 (pfSense-u-boot-binaries-67f5cead4c95facf70a2d5faa399313f56317bd5_GL0.tar.gz) = c17ba413d392fab0989618680faed7c261809680864df12b17699ba3addea512
+SIZE (pfSense-u-boot-binaries-67f5cead4c95facf70a2d5faa399313f56317bd5_GL0.tar.gz) = 1764546
