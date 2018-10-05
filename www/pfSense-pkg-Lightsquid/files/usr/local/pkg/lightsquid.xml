@@ -133,12 +133,12 @@
 			<description>
 				<![CDATA[
 				Password used to access lighttpd.
-				<span class="text-info">(Default: pfsense)</span>
+				<span class="text-info">(Default: kontrol)</span>
 				]]>
 			</description>
 			<type>password</type>
 			<size>5</size>
-			<default_value>pfsense</default_value>
+			<default_value>kontrol</default_value>
 			<required/>
 		</field>
 		<field>
