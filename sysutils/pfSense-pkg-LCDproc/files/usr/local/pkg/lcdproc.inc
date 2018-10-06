@@ -326,13 +326,13 @@ function sync_package_lcdproc() {
 					$config_text .= "Charmap=hd44780_default\n";
 					$config_text .= "DelayBus=true\n";
 					$config_text .= "Size={$lcdproc_config['size']}\n";
-                                        if ($lcdproc_config['connection_type'] = "pertelian") {
-                                                $config_text .= "DelayMult=32\n";
-                                                $config_text .= "Keypad=no\n";
-                                        } else {
-                                                $config_text .= "DelayMult=1\n";
-                                                $config_text .= "Keypad=yes\n";
-                                        }
+					if ($lcdproc_config['connection_type'] = "pertelian") {
+						$config_text .= "DelayMult=32\n";
+						$config_text .= "Keypad=no\n";
+					} else {
+						$config_text .= "DelayMult=1\n";
+						$config_text .= "Keypad=yes\n";
+					}
 				}
 				if ($lcdproc_config['connection_type'] == "winamp") {
 					$config_text .= "KeyDirect_1=Enter\n";
