@@ -318,16 +318,21 @@ function sync_package_lcdproc() {
 					$config_text .= "Device={$realport}\n";
 					$config_text .= "Port=0x378\n";
 					$config_text .= "Speed=0\n";
-					$config_text .= "Keypad=yes\n";
 					$config_text .= set_lcd_value("contrast", 1000, 850);
 					$config_text .= set_lcd_value("brightness", 1000, 800);
 					$config_text .= set_lcd_value("offbrightness", 1000, 0);
 					$config_text .= "Backlight=yes\n";
 					$config_text .= "OutputPort=no\n";
 					$config_text .= "Charmap=hd44780_default\n";
-					$config_text .= "DelayMult=1\n";
 					$config_text .= "DelayBus=true\n";
 					$config_text .= "Size={$lcdproc_config['size']}\n";
+                                        if ($lcdproc_config['connection_type'] = "pertelian") {
+                                                $config_text .= "DelayMult=32\n";
+                                                $config_text .= "Keypad=no\n";
+                                        } else {
+                                                $config_text .= "DelayMult=1\n";
+                                                $config_text .= "Keypad=yes\n";
+                                        }
 				}
 				if ($lcdproc_config['connection_type'] == "winamp") {
 					$config_text .= "KeyDirect_1=Enter\n";
