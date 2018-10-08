@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-aws-wizard
 PORTVERSION=	0.7
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
