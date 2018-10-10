@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ffmpeg
-PORTVERSION=	4.0.1
+PORTVERSION=	4.0.2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	https://ffmpeg.org/releases/
@@ -30,7 +31,7 @@ OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB AOM ASS BEIGNET BS2B CACA CDIO CELT CHROMAPRI
 		DEBUG DOCS DRM FDK_AAC FLITE FONTCONFIG \
 		FREETYPE FREI0R FRIBIDI GME GSM ICONV ILBC JACK KVAZAAR LADSPA \
 		LAME LIBBLURAY LIBRSVG2 LIBXML2 LV2 MODPLUG MYSOFA OPENAL OPENCL OPENCV OPENGL \
-		OPENH264 OPENJPEG OPTIMIZED_CFLAGS OPUS PULSEAUDIO \
+		OPENH264 OPENJPEG OPENMPT OPTIMIZED_CFLAGS OPUS PULSEAUDIO \
 		RUBBERBAND RTCPU SDL SMB SNAPPY SNDIO SOXR SPEEX SRT SSH \
 		TESSERACT THEORA TWOLAME V4L VAAPI VDPAU VIDSTAB VORBIS \
 		VO_AMRWBENC VPX WAVPACK WEBP X264 X265 XCB XVID \
@@ -39,12 +40,6 @@ OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB AOM ASS BEIGNET BS2B CACA CDIO CELT CHROMAPRI
 OPTIONS_DEFAULT=	FONTCONFIG FREETYPE FREI0R GMP GNUTLS ICONV \
 			OPENCV OPTIMIZED_CFLAGS OPUS RTCPU THEORA V4L VAAPI VDPAU \
 			VORBIS VPX X264 X265 XVID
-
-.if !exists(${.CURDIR:H:H}/multimedia/aom)
-# https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/c438899a7064
-# https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/43778a501f1b
-OPTIONS_EXCLUDE+=	AOM
-.endif
 
 .if !exists(${.CURDIR:H:H}/net/srt)
 # https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/a2fc8dbae853
@@ -82,6 +77,7 @@ LV2_DESC=	LV2 audio filtering
 MYSOFA_DESC=	SOFAlizer binaural filter
 NEON_DESC=	Media Processing Engine instructions
 NONFREE_DESC=	Allow use of nonfree code
+OPENMPT_DESC=	Decoding tracked files via libopenmpt
 OPENH264_DESC=	H.264 video codec support via OpenH264
 RUBBERBAND_DESC=Time-stretching and pitch-shifting with librubberband
 RTCPU_DESC=	Detect CPU capabilities at runtime
@@ -295,6 +291,10 @@ OPENH264_CONFIGURE_ENABLE=	libopenh264
 # openjpeg
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
 OPENJPEG_CONFIGURE_ENABLE=	libopenjpeg
+
+# openmpt
+OPENMPT_LIB_DEPENDS=	libopenmpt.so:audio/libopenmpt
+OPENMPT_CONFIGURE_ENABLE=	libopenmpt
 
 # openssl/libtls
 OPENSSL_USES=		ssl

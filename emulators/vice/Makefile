@@ -32,7 +32,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 
 RESTRICTED=	ROMs are copyrighted by Commodore Business Machines
 
-USES=		pkgconfig makeinfo gmake iconv jpeg
+USES=		compiler:c++11-lang pkgconfig makeinfo gmake iconv jpeg
 USE_XORG=	xpm ice sm xext xv xt x11 xmu xxf86vm
 USE_XORG+=	xrender xinerama xi xrandr xcursor xcomposite xdamage xfixes
 GNU_CONFIGURE=	yes
@@ -51,7 +51,7 @@ LMLINKS=	vice.1 x64.1 \
 		vice.1 xplus4.1 \
 		vice.1 xcbm2.1
 
-OPTIONS_DEFINE=	SDL ALSA PULSEAUDIO DOCS
+OPTIONS_DEFINE=	SDL ALSA PULSEAUDIO DOCS NLS
 OPTIONS_SINGLE=	GUI
 OPTIONS_SINGLE_GUI=	GNOMEUI3 GNOMEUI2 XAW
 OPTIONS_DEFAULT?=	GNOMEUI3 SDL ALSA

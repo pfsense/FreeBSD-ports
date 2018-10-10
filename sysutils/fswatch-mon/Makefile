@@ -3,6 +3,7 @@
 
 PORTNAME=	fswatch
 PORTVERSION=	1.11.2
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${PORTVERSION}/
 PKGNAMESUFFIX=	-mon
@@ -20,7 +21,7 @@ INFO=	fswatch
 
 CONFLICTS_INSTALL=	fswatch-[0-9]*
 
-OPTIONS_DEFINE=	NLS
+OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 
 NLS_USES=	gettext

@@ -3,7 +3,6 @@
 
 PORTNAME=	haproxy
 PORTVERSION=	1.7.11
-PORTREVISION=	1
 CATEGORIES=	net www
 MASTER_SITES=	http://www.haproxy.org/download/1.7/src/
 PKGNAMESUFFIX=	17

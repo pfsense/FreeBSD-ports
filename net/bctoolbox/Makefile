@@ -3,7 +3,7 @@
 
 PORTNAME=	bctoolbox
 PORTVERSION=	0.2.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	net
 MASTER_SITES=	SAVANNAH/linphone/bctoolbox
 
@@ -14,7 +14,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	mbedtls>=2.3.0_2:security/mbedtls
-LIB_DEPENDS=	libmbedtls.so.10:security/mbedtls
+LIB_DEPENDS=	libmbedtls.so:security/mbedtls
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-strict

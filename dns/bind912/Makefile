@@ -8,7 +8,7 @@ PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
 PORTREVISION=	0
 .else
 # dns/bind912 here
-PORTREVISION=	1
+PORTREVISION=	0
 .endif
 CATEGORIES=	dns net ipv6
 MASTER_SITES=	ISC/bind9/${ISCVERSION}
@@ -35,7 +35,7 @@ LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
 USES=	cpe libedit
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.12.2-P1
+ISCVERSION=	9.12.2-P2
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -62,11 +62,11 @@ CONFLICTS+=		bind912
 USE_RC_SUBR=	named
 SUB_FILES=	pkg-message named.conf
 CONFLICTS+=		bind-tools
+
+PORTDOCS=	*
 .endif	# BIND_TOOLS_SLAVE
 
 MAKE_JOBS_UNSAFE=	yes
-
-PORTDOCS=	*
 
 OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE JSON PYTHON
 OPTIONS_DEFINE=		IDN LARGE_FILE PYTHON JSON \
@@ -168,9 +168,9 @@ GSSAPI_MIT_USES=	gssapi:mit
 
 GSSAPI_NONE_CONFIGURE_ON=	--without-gssapi
 
-IDN_CONFIGURE_OFF=	--without-idn
-IDN_CONFIGURE_ON=	--with-idn=${LOCALBASE} ${ICONV_CONFIGURE_BASE}
-IDN_LIB_DEPENDS=	libidnkit.so:dns/idnkit
+IDN_CONFIGURE_OFF=	--without-libidn2
+IDN_CONFIGURE_ON=	--with-libidn2=${LOCALBASE} ${ICONV_CONFIGURE_BASE}
+IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2
 IDN_USES=		iconv
 
 IPV6_CONFIGURE_ENABLE=	ipv6

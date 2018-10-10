@@ -10,7 +10,7 @@
 # slave ports instead (`x11/nvidia-driver-340' or `x11/nvidia-driver-304').
 
 PORTNAME=	nvidia-driver
-DISTVERSION?=	390.67
+DISTVERSION?=	390.87
 # Always try to set PORTREVISION as it can be overridden by the slave ports
 PORTREVISION?=	0
 CATEGORIES=	x11
@@ -119,24 +119,22 @@ post-patch: .SILENT
 	${REINPLACE_CMD} -E '/#include "machine\/\.\.\/linux(32)?\/linux.h"/ \
 		{ x ; s/.*/#include "machine\/..\/..\/compat\/linux\/linux_ioctl.h"/ ; H ; x ; }' \
 			${WRKSRC}/src/${NVSRC}/nvidia_linux.c
-# Adjust `vm_object' locking after FreeBSD src r248084 and bogus memset() call
-	${REINPLACE_CMD} -e '/#include <vm\/vm_object.h>/ \
-		{ x ; s/.*/#include <sys\/rwlock.h>/ ; G ; }' \
-			${WRKSRC}/src/${NVSRC}/nv-freebsd.h
-	${REINPLACE_CMD} -E 's/(VM_OBJECT_)(UN)?(LOCK)/\1W\2\3/ ; \
-		/memset/s/sizeof\(ci/sizeof(*ci/' \
-			${WRKSRC}/src/${NVSRC}/nvidia_subr.c
-# Adjust kmem(9) calls after FreeBSD src r254025
-.if ${NVVERSION} < 331.067
-	${REINPLACE_CMD} -e '/kmem_/s/kernel_map/kernel_arena/' \
+# Fix bogus memset() call
+	${REINPLACE_CMD} -e '/memset/s/sizeof(ci/sizeof(*ci/' \
 		${WRKSRC}/src/${NVSRC}/nvidia_subr.c
-.endif
 # Chase `sys/capability.h' rename to `sys/capsicum.h' in FreeBSD src r263232
 	${REINPLACE_CMD} -e 's:sys/capability\.h:sys/capsicum.h:' \
 		${WRKSRC}/src/${NVSRC}/nv-freebsd.h
 .if ${NVVERSION} >= 358.009
 	${REINPLACE_CMD} -e 's:sys/capability\.h:sys/capsicum.h:' \
 		${WRKSRC}/src/nvidia-modeset/nvidia-modeset-freebsd.c
+.endif
+# KPI of kmem_alloc_contig(),kmem_free() changed in FreeBSD src r338143,r338318
+.if ${OSVERSION} >= 1200079
+	${REINPLACE_CMD} \
+	    -e 's/kmem_alloc_contig(kmem_arena, /kmem_alloc_contig(/' \
+	    -e 's/kmem_free(kmem_arena, /kmem_free(/' \
+		${WRKSRC}/src/${NVSRC}/nvidia_subr.c
 .endif
 # Respect WITHOUT_LINUX setting
 	${REINPLACE_CMD} -e 's/exists(\/.*/& \&\& !defined(WITHOUT_LINUX)/' \

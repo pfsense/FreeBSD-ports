@@ -197,8 +197,6 @@ _OPTIONS_TARGETS=	fetch:300:pre fetch:500:do fetch:700:post \
 			package:300:pre package:500:do package:700:post \
 			stage:800:post
 
-PORT_OPTIONS+=	DOCS NLS EXAMPLES IPV6
-
 # Add per arch options
 .for opt in ${OPTIONS_DEFINE_${ARCH}}
 .if empty(OPTIONS_DEFINE:M${opt})
@@ -223,11 +221,10 @@ _ALL_EXCLUDE+=	${opt}
 .  endif
 .endfor
 
-# Remove options the port maintainer doesn't want
+# Remove options the port maintainer doesn't want, part 1
 .for opt in ${_ALL_EXCLUDE:O:u}
 OPTIONS_DEFAULT:=	${OPTIONS_DEFAULT:N${opt}}
 OPTIONS_DEFINE:=	${OPTIONS_DEFINE:N${opt}}
-PORT_OPTIONS:=		${PORT_OPTIONS:N${opt}}
 .  for otype in SINGLE RADIO MULTI GROUP
 .    for m in ${OPTIONS_${otype}}
 OPTIONS_${otype}_${m}:=	${OPTIONS_${otype}_${m}:N${opt}}
@@ -255,6 +252,18 @@ COMPLETE_OPTIONS_LIST=	${ALL_OPTIONS}
 .  for m in ${OPTIONS_${otype}}
 COMPLETE_OPTIONS_LIST+=	${OPTIONS_${otype}_${m}}
 .  endfor
+.endfor
+
+# Some options are always enabled by default.
+.for _opt in DOCS NLS EXAMPLES IPV6
+.if ${COMPLETE_OPTIONS_LIST:M${_opt}}
+PORT_OPTIONS+=	${_opt}
+.endif
+.endfor
+
+# Remove options the port maintainer doesn't want, part 2
+.for opt in ${_ALL_EXCLUDE:O:u}
+PORT_OPTIONS:=		${PORT_OPTIONS:N${opt}}
 .endfor
 
 ## Now create the list of activated options
@@ -410,22 +419,19 @@ PORT_OPTIONS+=	${OPTIONS_SLAVE}
 # Sort options and eliminate duplicates
 PORT_OPTIONS:=	${PORT_OPTIONS:O:u}
 
-## Now some compatibility
-.if empty(PORT_OPTIONS:MDOCS)
-PLIST_SUB+=		PORTDOCS="@comment "
-.else
-PLIST_SUB+=		PORTDOCS=""
-.endif
+_REALLY_ALL_POSSIBLE_OPTIONS:=	${COMPLETE_OPTIONS_LIST} ${_ALL_EXCLUDE}
+_REALLY_ALL_POSSIBLE_OPTIONS:=	${_REALLY_ALL_POSSIBLE_OPTIONS:O:u}
 
-.if empty(PORT_OPTIONS:MEXAMPLES)
-PLIST_SUB+=	        PORTEXAMPLES="@comment "
-.else
-PLIST_SUB+=	        PORTEXAMPLES=""
-.endif
-
-.if ${PORT_OPTIONS:MDEBUG}
-WITH_DEBUG=	yes
-.endif
+# Handle PORTDOCS and PORTEXAMPLES
+.for _type in DOCS EXAMPLES
+. if !empty(_REALLY_ALL_POSSIBLE_OPTIONS:M${_type})
+.  if empty(PORT_OPTIONS:M${_type})
+PLIST_SUB+=		PORT${_type}="@comment "
+.  else
+PLIST_SUB+=		PORT${_type}=""
+.  endif
+. endif
+.endfor
 
 .if defined(NO_OPTIONS_SORT)
 ALL_OPTIONS=	${OPTIONS_DEFINE}
@@ -435,7 +441,7 @@ ALL_OPTIONS=	${OPTIONS_DEFINE}
 _OPTIONS_${target}?=
 .endfor
 
-.for opt in ${COMPLETE_OPTIONS_LIST} ${_ALL_EXCLUDE:O:u}
+.for opt in ${_REALLY_ALL_POSSIBLE_OPTIONS}
 # PLIST_SUB
 PLIST_SUB?=
 SUB_LIST?=

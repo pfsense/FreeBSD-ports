@@ -3,6 +3,7 @@
 
 PORTNAME=	codeblocks
 PORTVERSION=	18.04
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.tuxfamily.org/bartcoding/FreeBSD/ \
 		${MASTER_SITE_LOCAL}
@@ -21,7 +22,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfreetype.so:print/freetype2 \
 		libhunspell-1.6.so:textproc/hunspell
 
-USES=		autoreconf compiler desktop-file-utils fam:gamin localbase \
+USES=		autoreconf compiler:c++11-lang desktop-file-utils fam:gamin localbase \
 		gettext-runtime libtool pathfix pkgconfig shared-mime-info
 USE_WX=		2.8
 USE_GNOME=	gtk20 cairo
@@ -41,7 +42,6 @@ SVNROOT_URI=	svn://svn.code.sf.net/p/codeblocks/code/trunk
 .include <bsd.port.pre.mk>
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
-USE_CXXSTD=	c++11
 . if ${COMPILER_VERSION} >= 35
 CXXFLAGS+=	-Wno-undefined-bool-conversion
 . endif

@@ -3,6 +3,7 @@
 
 PORTNAME=	mygui
 PORTVERSION=	3.2.3.git20171212
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits graphics devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -20,8 +21,6 @@ LIB_DEPENDS+=	libMyGUIEngine.so:x11-toolkits/mygui
 BUILD_WRKSRC=	${WRKSRC}/${MYGUI_SUBDIR}
 INSTALL_WRKSRC=	${WRKSRC}/${MYGUI_SUBDIR}
 .endif
-
-BROKEN_powerpc64=	fails to build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	MyGUI

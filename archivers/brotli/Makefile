@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	brotli
-PORTVERSION=	1.0.4
+PORTVERSION=	1.0.6
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	archivers devel
@@ -22,6 +22,8 @@ GNU_CONFIGURE=	yes
 
 INSTALL_TARGET=	install-strip
 PLIST_SUB=	SHLIBVER=${PORTVERSION}
+
+OPTIONS_DEFINE=	DOCS
 
 pre-configure:
 	(cd ${WRKSRC} && ./bootstrap)

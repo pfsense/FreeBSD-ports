@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	puppet
-PORTVERSION=	4.10.11
+PORTVERSION=	4.10.12
 CATEGORIES=	sysutils
-MASTER_SITES=	http://downloads.puppetlabs.com/puppet/
+MASTER_SITES=	https://downloads.puppetlabs.com/puppet/
 PKGNAMESUFFIX=	4
 
 MAINTAINER=	puppet@FreeBSD.org
@@ -20,7 +20,7 @@ RUN_DEPENDS=	rubygem-hiera>=2.0:sysutils/rubygem-hiera \
 
 USES=		cpe
 CPE_VENDOR=	puppetlabs
-CONFLICTS_INSTALL=	puppet5-*
+CONFLICTS_INSTALL=	puppet5-* puppet6-*
 NO_ARCH=	yes
 NO_BUILD=	yes
 USE_RUBY=	yes

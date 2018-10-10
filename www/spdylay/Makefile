@@ -3,7 +3,7 @@
 
 PORTNAME=	spdylay
 PORTVERSION=	1.4.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	www net
 MASTER_SITES=	https://github.com/tatsuhiro-t/${PORTNAME}/releases/download/v${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -33,6 +33,8 @@ USE_LDCONFIG=	yes
 USES=		compiler:c++11-lang gnome libtool pathfix pkgconfig ssl tar:xz
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/spdycli ${STAGEDIR}${PREFIX}/bin/

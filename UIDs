@@ -69,7 +69,7 @@ mythtv:*:119:119::0:0:MythTV pseudo-user:/nonexistent:/bin/sh
 pdns_recursor:*:120:120::0:0:pdns_recursor pseudo-user:/nonexistent:/usr/sbin/nologin
 otrs:*:121:121::0:0:OTRS Administrator:/usr/local/otrs:/bin/csh
 zabbix:*:122:122::0:0:Zabbix NMS:/nonexistent:/bin/sh
-_ntp:*:123:123::0:0:NTP Daemon:/var/empty:/usr/sbin/nologin
+ntpd:*:123:123::0:0:NTP Daemon:/var/db/ntp:/usr/sbin/nologin
 fetchmail:*:124:124::0:0:Fetchmail mail-retrieval daemon:/nonexistent:/usr/sbin/nologin
 postfix:*:125:125::0:0:Postfix Mail System:/var/spool/postfix:/usr/sbin/nologin
 synapse:*:126:141::0:0:Synapse Daemon:/nonexistent:/usr/sbin/nologin
@@ -177,8 +177,8 @@ osrm:*:228:228::0:0:osrm:/nonexistent:/usr/sbin/nologin
 # free: 229
 carbon:*:230:230::0:0:osrm:/nonexistent:/usr/sbin/nologin
 foundationdb:*:231:231::0:0:foundationdb:/nonexistent:/usr/sbin/nologin
-# free: 232
-# free: 233
+archiva:*:232:232::0:0:Archiva Daemon User:/usr/local/archiva:/bin/sh
+_ntp:*:233:233::0:0:NTP Daemon:/var/empty:/usr/sbin/nologin
 kafka:*:234:234::0:0:Apache Kafka user:/nonexistent:/usr/sbin/nologin
 openhab:*:235:235::0:0:openHAB user:/var/db/openhab2/home:/usr/sbin/nologin
 # free: 236
@@ -423,7 +423,7 @@ minio:*:473:473::0:0:Minio Daemon:/var/tmp/minio:/usr/sbin/nologin
 gitlab-runner:*:474:474::0:0:GitLab Runner Daemon:/var/tmp/gitlab_runner:/usr/sbin/nologin
 traefik:*:475:475::0:0:Traefik Daemon:/var/tmp/traefik:/usr/sbin/nologin
 gitlab-pages:*:476:476::0:0:GitLab Pages Daemon:/var/tmp/gitlab_pages:/usr/sbin/nologin
-# free: 477
+fiche:*:477:477::0:0:fiche Daemon:/usr/local/www/fiche:/usr/sbin/nologin
 prometheus:*:478:478::0:0:Prometheus Daemon:/var/tmp/prometheus:/usr/sbin/nologin
 alertmanager:*:479:479::0:0:Alertmanager Daemon:/var/tmp/alertmanager:/usr/sbin/nologin
 # free: 480
@@ -829,8 +829,8 @@ archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
 # free: 880
 # free: 881
 # free: 882
-# free: 883
-# free: 884
+ipfs-go:*:883:883::0:0:ipfs-go user:/var/db/ipfs-go:/bin/sh
+telegraf:*:884:884::0:0:telegraf user:/nonexistent:/usr/sbin/nologin
 tcpdump:*:885:885::0:0:tcpdump user:/nonexistent:/usr/sbin/nologin
 miniflux:*:886:886::0:0:Miniflux:/nonexistent:/usr/sbin/nologin
 pdagent:*:887:887::0:0:PagerDuty Agent:/nonexistent:/usr/sbin/nologin

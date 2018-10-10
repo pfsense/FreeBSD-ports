@@ -3,8 +3,11 @@
 
 PORTNAME=	osquery
 PORTVERSION=	3.2.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	sysutils
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	516061088514.patch:-p1
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	SQL powered OS instrumentation, monitoring, and analytics
@@ -66,9 +69,9 @@ LLDPD_CONFIGURE_ENV_OFF=SKIP_LLDPD=1
 .include <bsd.port.pre.mk>
 
 .if ${OSVERSION} < 1100000
-BUILD_DEPENDS+=	clang40:devel/llvm40
-CC=	clang40
-CXX=	clang++40
+BUILD_DEPENDS+=	clang60:devel/llvm60
+CC=	clang60
+CXX=	clang++60
 .endif
 
 post-patch:

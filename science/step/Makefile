@@ -2,7 +2,6 @@
 
 PORTNAME=	step
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	science kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -22,6 +21,8 @@ USE_KDE=	attica auth bookmarks codecs completion config configwidgets \
 USE_QT=		core dbus gui network opengl printsupport qml quick svg \
 		widgets xml \
 		buildtools_build qmake_build
+
+OPTIONS_DEFINE=	DOCS
 
 pre-configure:
 # Avoid building translations, should the user pass

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	jira
-PORTVERSION=	1.0.15
+PORTVERSION=	2.0.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -35,13 +35,13 @@ TESTS_DESC=	Install test suite dependencies
 
 MAGIC_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}filemagic>=1.6:devel/py-filemagic@${PY_FLAVOR}
 PARALLEL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}grequests>0:www/py-grequests@${PY_FLAVOR}
-SHELL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipython>=0.13:devel/ipython@${PY_FLAVOR}
+SHELL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipython5>=0.13:devel/ipython5@${PY_FLAVOR}
 TESTS_BUILD_DEPENDS=	${TEST_DEPENDS}
 
 TEST_DEPENDS:=	${RUN_DEPENDS} \
 		${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR}
 
-USES=		python:2.7
+USES=		python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

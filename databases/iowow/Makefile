@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	iowow
-PORTVERSION=	1.2.12
+PORTVERSION=	1.2.13
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -17,5 +17,7 @@ GH_ACCOUNT=	Softmotions
 USE_LDCONFIG=	yes
 
 PORTDOCS=	Changelog README
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

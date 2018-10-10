@@ -102,10 +102,6 @@ DEV_WARNING+=	"USE_GNOME=desktopfileutils is deprecated, please use USES=desktop
 DEV_ERROR+=	"All LIB_DEPENDS should use the new format and start out with lib.  \(libfoo.so vs foo.so\)"
 .endif
 
-.if defined(_PREMKINCLUDED)
-DEV_ERROR+=	"you cannot include bsd.port[.pre].mk twice"
-.endif
-
 .if defined(LICENSE)
 .if ${LICENSE:MBSD}
 DEV_WARNING+=	"LICENSE must not contain BSD, instead use BSD[234]CLAUSE"
@@ -115,6 +111,12 @@ DEV_WARNING+=	"LICENSE must not contain BSD, instead use BSD[234]CLAUSE"
 DEV_WARNING+=	"Please set LICENSE for this port"
 .  endif
 .endif
+
+.for _a in ${ONLY_FOR_ARCHS}
+.if defined(ONLY_FOR_ARCHS_REASON_${_a})
+DEV_WARNING+=	"ONLY_FOR_ARCHS_${_a} is defined and ${_a} is in ONLY_FOR_ARCHS, the message will never be used."
+.endif
+.endfor
 
 .if defined(USE_PYDISTUTILS) && ${USE_PYDISTUTILS} == "easy_install"
 DEV_ERROR+=	"USE_PYDISTUTILS=easy_install is no longer supported, please use USE_PYDISTUTILS=yes"
@@ -156,6 +158,12 @@ DEV_ERROR+=	"USE_TCL and USE_TK are no longer supported, please use USES=tcl or 
 DEV_ERROR+=	"USE_FPC=yes is no longer supported, please use USES=fpc"
 .endif
 
+.for _type in EXAMPLES DOCS
+.  if defined(PORT${_type}) && empty(_REALLY_ALL_POSSIBLE_OPTIONS:M${_type})
+DEV_ERROR+=	"PORT${_type} does not do anything unless the ${_type} option is present."
+.  endif
+.endfor
+
 SANITY_UNSUPPORTED=	USE_OPENAL USE_FAM USE_MAKESELF USE_ZIP USE_LHA USE_CMAKE \
 		USE_READLINE USE_ICONV PERL_CONFIGURE PERL_MODBUILD \
 		USE_PERL5_BUILD USE_PERL5_RUN USE_DISPLAY USE_FUSE \
@@ -170,7 +178,7 @@ SANITY_UNSUPPORTED=	USE_OPENAL USE_FAM USE_MAKESELF USE_ZIP USE_LHA USE_CMAKE \
 		INSTALLS_EGGINFO USE_DOS2UNIX NO_STAGE USE_RUBYGEMS USE_GHOSTSCRIPT \
 		USE_GHOSTSCRIPT_BUILD USE_GHOSTSCRIPT_RUN USE_AUTOTOOLS APACHE_PORT \
 		USE_FPC_RUN WANT_FPC_BASE WANT_FPC_ALL USE_QT4 USE_QT5 QT_NONSTANDARD
-SANITY_DEPRECATED=	PYTHON_PKGNAMESUFFIX MLINKS \
+SANITY_DEPRECATED=	MLINKS \
 			USE_MYSQL WANT_MYSQL_VER \
 			PYDISTUTILS_INSTALLNOSINGLE \
 			USE_APACHE USE_APACHE_BUILD USE_APACHE_RUN
@@ -179,7 +187,7 @@ SANITY_NOTNEEDED=	CMAKE_NINJA WX_UNICODE USE_KDEBASE_VER \
 
 .for a in 1 2 3 4 5 6 7 8 9 L N
 SANITY_DEPRECATED+=	MAN${a}
-MAN${a}_ALT=		it more, obsoleted by staging
+MAN${a}_ALT=		pkg-plist to list manpages
 .endfor
 
 USE_AUTOTOOLS_ALT=	USES=autoreconf and GNU_CONFIGURE=yes
@@ -212,7 +220,6 @@ PYDISTUTILS_AUTOPLIST_ALT=	USE_PYTHON=autoplist
 PYTHON_PY3K_PLIST_HACK_ALT=	USE_PYTHON=py3kplist
 PYDISTUTILS_NOEGGINFO_ALT=	USE_PYTHON=noegginfo
 USE_PYTHON_PREFIX_ALT=		USE_PYTHON=pythonprefix
-PYTHON_PKGNAMESUFFIX_ALT=	PYTHON_PKGNAMEPREFIX
 NO_INSTALL_MANPAGES_ALT=	USES=imake:noman
 UNIQUENAME_ALT=		PKGBASE
 LATEST_LINK_ALT=	PKGBASE

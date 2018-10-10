@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	babeltrace
-PORTVERSION=	1.5.5
+PORTVERSION=	1.5.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -31,6 +31,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 
 PORTDOCS=	ChangeLog std-ext-lib.txt API.txt lttng-live.txt
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|LICENSE mit-license.txt gpl-2.0.txt||' \

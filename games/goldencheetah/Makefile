@@ -4,7 +4,7 @@
 PORTNAME=	GoldenCheetah
 PORTVERSION=	3.2
 DISTVERSIONPREFIX=	V
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 
 MAINTAINER=	trebbu@googlemail.com
@@ -32,6 +32,8 @@ USE_GL=		gl glu
 USE_QT=		corelib gui linguist moc_build network opengl \
 		qmake rcc script sql svg uic webkit xml
 INFO=		GC3-FAQ GC3-Release GC31-Release
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	${CP} ${WRKSRC}/src/gcconfig.pri.in ${WRKSRC}/src/gcconfig.pri

@@ -2,7 +2,7 @@
 
 PORTNAME?=	mariadb
 PORTVERSION=	10.0.36
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
 		http://mirrors.supportex.net/${SITESDIR}/ \
@@ -73,7 +73,7 @@ CONFLICTS_INSTALL=	mariadb5*-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 
 .if !defined(CLIENT_ONLY)
 # MySQL-Server options
-OPTIONS_DEFINE+=	CONNECT_EXTRA MAXKEY
+OPTIONS_DEFINE+=	CONNECT_EXTRA MAXKEY DOCS
 OPTIONS_DEFAULT+=	MAXKEY
 OPTIONS_GROUP=		ENGINES
 OPTIONS_GROUP_ENGINES=	INNOBASE MROONGA OQGRAPH SPHINX SPIDER TOKUDB
@@ -175,6 +175,11 @@ post-patch:
 		${WRKSRC}/cmake/os/DragonFly.cmake
 	${MV} ${WRKSRC}/storage/tokudb ${WRKSRC}/skip-tokudb
 .endif
+
+# This file is being generated incorrectly for unknown reasons.
+# See https://bugs.freebsd.org/230839 for details.
+post-configure:
+	${REINPLACE_CMD} -e 's|-l-pthread|-pthread|g' ${WRKSRC}/scripts/mysql_config
 
 post-configure-MROONGA-on:
 	${REINPLACE_CMD} 's|-llz4|-L${LOCALBASE}/lib -llz4|' \

@@ -2,7 +2,6 @@
 
 PORTNAME=	kollision
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	games kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -14,6 +13,8 @@ USE_KDE=	auth codecs config configwidgets coreaddons crash dbusaddons \
 		widgetsaddons xmlgui
 USE_QT=		core dbus gui network phonon4 qml quick svg widgets xml \
 		buildtools_build qmake_build
+
+OPTIONS_DEFINE=	DOCS
 
 .include <${.CURDIR}/../kdegames/Makefile.common>
 .include <bsd.port.mk>

@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	PyGreSQL
-PORTVERSION=	5.0.4
+PORTVERSION=	5.0.6
 PORTEPOCH=	1
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	http://www.pygresql.org/files/ \
+		CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	wen@FreeBSD.org
@@ -17,6 +18,8 @@ USES=		pgsql python
 USE_PYTHON=	autoplist distutils
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_pg.so

@@ -2,6 +2,7 @@
 
 PORTNAME=	kdenlive
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	multimedia kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -16,11 +17,15 @@ RUN_DEPENDS=	ffmpeg${FFMPEG_SUFX}:multimedia/ffmpeg${FFMPEG_SUFX} \
 
 USES=		cmake:outsource desktop-file-utils gettext-tools pkgconfig \
 		qt:5 shared-mime-info kde:5 tar:xz
-USE_KDE=	archive bookmarks config configwidgets coreaddons crash \
-		dbusaddons ecm filemetadata guiaddons iconthemes \
-		init_run kio newstuff notifications notifyconfig \
-		textwidgets widgetsaddons xmlgui
-USE_QT=		buildtools_build concurrent core dbus gui qmake_build \
+USE_GL=		gl glu
+USE_KDE=	archive attica auth bookmarks codecs completion config \
+		configwidgets coreaddons crash dbusaddons ecm filemetadata \
+		guiaddons i18n iconthemes kio itemviews jobwidgets newstuff \
+		notifications notifyconfig service solid sonnet textwidgets \
+		widgetsaddons xmlgui \
+		init_run
+USE_QT=		concurrent core dbus gui network xml \
+		buildtools_build qmake_build \
 		qml quick quickcontrols_run script svg webkit widgets
 USE_XORG=	x11
 CFLAGS+=	-I${LOCALBASE}/include # linux/input.h
@@ -29,7 +34,7 @@ CMAKE_ARGS=	-DFFMPEG_SUFFIX:STRING="${FFMPEG_SUFX}"
 # Keep in sync with multimedia/mlt, possibly.
 FFMPEG_SUFX=	# Currently empty.
 
-OPTIONS_DEFINE=	DVDWIZARD FREI0R LADSPA SCREENCAST V4L XINE
+OPTIONS_DEFINE=	DVDWIZARD FREI0R LADSPA SCREENCAST V4L XINE DOCS
 OPTIONS_DEFAULT=DVDWIZARD FREI0R LADSPA SCREENCAST V4L XINE
 OPTIONS_SUB=	yes
 
@@ -51,7 +56,7 @@ V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 V4L_CMAKE_OFF=		-DWITH_LibV4L2:BOOL=FALSE
 
 XINE_RUN_DEPENDS=	xine:multimedia/xine
- 
+
 post-patch:
 	@${REINPLACE_CMD} -e '/^update_xdg_mimetypes/ d' \
 		-e '/SharedMimeInfo/ d' \

@@ -11,7 +11,6 @@
     SUBDIR += alpine
     SUBDIR += altermime
     SUBDIR += amavis-logwatch
-    SUBDIR += annoyance-filter
     SUBDIR += anomy-sanitizer
     SUBDIR += antivirus-milter
     SUBDIR += anubis
@@ -225,6 +224,7 @@
     SUBDIR += mairix
     SUBDIR += masqmail
     SUBDIR += mb2md
+    SUBDIR += mblaze
     SUBDIR += mbox2imap
     SUBDIR += mbox2mdir
     SUBDIR += mboxcheck-applet
@@ -262,8 +262,6 @@
     SUBDIR += mulberry
     SUBDIR += mutt
     SUBDIR += mutt-lite
-    SUBDIR += mutt14
-    SUBDIR += mutt14-lite
     SUBDIR += mutt_vc_query
     SUBDIR += muttils
     SUBDIR += nbsmtp
@@ -385,7 +383,6 @@
     SUBDIR += p5-Mail-Box-IMAP4-SSL
     SUBDIR += p5-Mail-Box-Parser-C
     SUBDIR += p5-Mail-Bulkmail
-    SUBDIR += p5-Mail-Cache
     SUBDIR += p5-Mail-CheckUser
     SUBDIR += p5-Mail-ClamAV
     SUBDIR += p5-Mail-DKIM
@@ -401,7 +398,6 @@
     SUBDIR += p5-Mail-Graph
     SUBDIR += p5-Mail-IMAPClient
     SUBDIR += p5-Mail-IMAPTalk
-    SUBDIR += p5-Mail-IMAPTalk-MailCache
     SUBDIR += p5-Mail-LMLM
     SUBDIR += p5-Mail-ListDetector
     SUBDIR += p5-Mail-MailStats
@@ -434,7 +430,6 @@
     SUBDIR += p5-Net-ManageSieve
     SUBDIR += p5-Net-POP3-SSLWrapper
     SUBDIR += p5-Net-QMTP
-    SUBDIR += p5-Net-SMTP-SSL
     SUBDIR += p5-Net-SMTP-Server
     SUBDIR += p5-Net-SMTP-TLS
     SUBDIR += p5-Net-SMTP-TLS-ButMaintained
@@ -458,7 +453,6 @@
     SUBDIR += p5-URI-imaps
     SUBDIR += p5-WWW-GMail
     SUBDIR += p5-WWW-Hotmail
-    SUBDIR += p5-ZConf-Mail
     SUBDIR += p5-qpsmtpd
     SUBDIR += panda-cclient
     SUBDIR += panda-imap
@@ -502,7 +496,6 @@
     SUBDIR += policyd2
     SUBDIR += pop3lite
     SUBDIR += pop3proxy
-    SUBDIR += pop3vscan
     SUBDIR += popa3d
     SUBDIR += popa3d-before-sendmail
     SUBDIR += popcheck
@@ -515,6 +508,7 @@
     SUBDIR += postfix
     SUBDIR += postfix-current
     SUBDIR += postfix-current-sasl
+    SUBDIR += postfix-ldap-sasl
     SUBDIR += postfix-logwatch
     SUBDIR += postfix-policyd-sf
     SUBDIR += postfix-policyd-spf-perl
@@ -544,6 +538,7 @@
     SUBDIR += py-flufl.bounce
     SUBDIR += py-fuglu
     SUBDIR += py-libgmail
+    SUBDIR += py-managesieve3
     SUBDIR += py-milter
     SUBDIR += py-notmuch
     SUBDIR += py-ppolicy
@@ -602,8 +597,8 @@
     SUBDIR += roundcube-automatic_addressbook
     SUBDIR += roundcube-carddav
     SUBDIR += roundcube-contextmenu
-    SUBDIR += roundcube-groupvice
     SUBDIR += roundcube-html5_notifier
+    SUBDIR += roundcube-identity_smtp
     SUBDIR += roundcube-login_info
     SUBDIR += roundcube-markasjunk2
     SUBDIR += roundcube-mobilecube
@@ -613,6 +608,7 @@
     SUBDIR += roundcube-thunderbird_labels
     SUBDIR += roundcube-umich
     SUBDIR += roundcube-veximaccountadmin
+    SUBDIR += roundcube-yubikey_auth
     SUBDIR += rspamd
     SUBDIR += rspamd-devel
     SUBDIR += rss2email2
@@ -632,8 +628,8 @@
     SUBDIR += rubygem-pony
     SUBDIR += rubygem-premailer
     SUBDIR += rubygem-premailer-rails
-    SUBDIR += rubygem-premailer-rails19
     SUBDIR += rubygem-premailer-rails-rails5
+    SUBDIR += rubygem-premailer-rails19
     SUBDIR += rubygem-rmail
     SUBDIR += rubygem-roadie
     SUBDIR += rubygem-roadie-rails

@@ -4,7 +4,7 @@
 PORTNAME=	clblas
 PORTVERSION=	2.10
 DISTVERSIONPREFIX=	v
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -17,8 +17,6 @@ BUILD_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd \
 		libboost_program_options.so:devel/boost-libs
 RUN_DEPENDS=	opencl>=0:devel/opencl
-
-BROKEN_powerpc64=	fails to compile: xgemm.cc: error: extra ';'
 
 USES=		cmake python
 USE_LDCONFIG=	yes

@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	buildsystem
-PORTVERSION=	1.6
+PORTVERSION=	1.7
 CATEGORIES=	devel
 MASTER_SITES=	http://download.netsurf-browser.org/libs/releases/
 PKGNAMEPREFIX=	netsurf-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	neel@neelc.org
 COMMENT=	NetSurf project buildsystem
 
 LICENSE=	MIT
@@ -16,8 +16,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
 
 USES=		gmake perl5 shebangfix
-MAKE_ENV+=	COMPONENT_TYPE="lib-shared"
-perl_CMD=	${SETENV} perl
+MAKE_ENV=	COMPONENT_TYPE="lib-shared"
 SHEBANG_FILES=	testtools/testrunner.pl
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

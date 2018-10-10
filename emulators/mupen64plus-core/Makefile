@@ -19,10 +19,13 @@ USE_GL?=	yes
 USE_SDL?=	sdl2
 USE_LDCONFIG?=	yes
 ONLY_FOR_ARCHS=	i386 amd64
+LDFLAGS_i386=	-Wl,-znotext
 
 OPTFLAGS=	#
 
 MAKE_ENV+=	OPTFLAGS="${OPTFLAGS}"
+
+OPTIONS_DEFINE=	DOCS
 
 .include "${.CURDIR}/../mupen64plus-core/Makefile.common"
 .include <bsd.port.mk>

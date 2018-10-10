@@ -2,10 +2,11 @@
 
 PORTNAME=	lxqt-globalkeys
 PORTVERSION=	0.13.0
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	LXQT
 
-MAINTAINER=	jesper@schmitz.computer
+MAINTAINER=	jsm@FreeBSD.org
 COMMENT=	Global keyboard shortcuts registration
 
 LICENSE=	LGPL21+

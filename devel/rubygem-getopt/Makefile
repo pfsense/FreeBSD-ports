@@ -2,15 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	getopt
-PORTVERSION=	1.4.3
+PORTVERSION=	1.4.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	alexey@renatasystems.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Command line parsing with Ruby
 
-NO_ARCH=	yes
+LICENSE=	ART20
 
+NO_ARCH=	yes
 USE_RUBY=	yes
 USES=		gem
 

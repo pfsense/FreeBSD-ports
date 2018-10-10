@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnatsd
-PORTVERSION=	1.1.0
+PORTVERSION=	1.3.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -17,6 +17,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	nats-io
 
 USE_RC_SUBR=	gnatsd.sh
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc

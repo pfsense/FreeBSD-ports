@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	r10k
-PORTVERSION=	2.6.2
+PORTVERSION=	3.0.2
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	puppet@FreeBSD.org
 COMMENT=	Tool for deploying Puppet environments and modules
 
 LICENSE=	APACHE20
@@ -18,12 +18,18 @@ RUN_DEPENDS=	rubygem-colored>=1.2:textproc/rubygem-colored \
 		rubygem-multi_json>=1.10:devel/rubygem-multi_json \
 		rubygem-puppet_forge>=2.2.8:sysutils/rubygem-puppet_forge
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem shebangfix
+USE_RUBY=	yes
 
-PLIST_FILES=	bin/r10k
+NO_ARCH=	yes
+
+PLIST_FILES=	bin/r10k \
+		${GEM_LIB_DIR}/test
 
 SHEBANG_FILES=	integration/*/*.sh
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' \
+		${WRKSRC}/lib/r10k/settings/loader.rb
 
 .include <bsd.port.mk>

@@ -32,7 +32,8 @@ USE_KDE+=	akonadi akonadicontacts akonadimime akonadisearch calendarcore \
 		calendarutils contacts gravatar kdepim-apps-libs \
 		identitymanagement libkdepim libkleo libksieve \
 		kontactinterface ldap mailcommon mailtransport messagelib \
-		mime pimcommon pimtextedit tnef
+		mime pimcommon pimtextedit tnef \
+		kdepim-runtime5_run
 USE_QT=		core dbus gui location network printsupport qml quick \
 		webchannel webengine widgets xml \
 		buildtools_build qmake_build
@@ -40,5 +41,7 @@ USE_LDCONFIG=	yes
 
 DESCR=		${.CURDIR:H:H}/deskutils/kdepim/pkg-descr
 
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	calculix
-PORTVERSION=	2.13
-PORTREVISION=	2
+PORTVERSION=	2.14
+PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://www.dhondt.de/
 DISTFILES=	${DIST_SOURCES}
@@ -15,7 +15,9 @@ COMMENT=	Three-Dimensional Structural Finite Element Program
 
 LICENSE=	GPLv2
 
+BROKEN=		checksum and size mismatch
 BROKEN_FreeBSD_10=	Does not build with clang on FreeBSD 10, causes segfaults when built with gcc
+BROKEN_aarch64=		fails to link: shapeFunctions.c:(function attach_new): relocation R_AARCH64_CALL26 out of range
 
 RUN_DEPENDS=	ccx:cad/calculix-ccx
 
@@ -82,6 +84,11 @@ do-install:
 	  ${STAGEDIR}${DOCSDIR}
 .endif
 .if ${PORT_OPTIONS:MEXAMPLES}
+	# Some garbage crept in
+	@${RM} ${WRKSRC}/${CGX_VER}/examples/OpenFOAM/couette/constant/polyMesh/*~
+	@${RM} ${WRKSRC}/${CGX_VER}/examples/OpenFOAM/couette/constant/*~
+	@${RM} ${WRKSRC}/${CGX_VER}/examples/OpenFOAM/couette/system/*~
+	@${RM} ${WRKSRC}/${CGX_VER}/examples/ifwhiledemo/*.*~
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@(cd ${WRKSRC}/${CGX_VER}/examples && ${COPYTREE_SHARE} . \
 	  ${STAGEDIR}${EXAMPLESDIR})

@@ -3,26 +3,32 @@
 
 PORTNAME=	libghemical
 PORTVERSION=	3.0.0
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	science
 MASTER_SITES=	http://bioinformatics.org/ghemical/download/release20111012/	\
 		http://bioinformatics.org/ghemical/download/current/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Support libraries of science/ghemical port
 
-BROKEN=		fails to configure
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	obabel:science/openbabel \
 		intltool-update:textproc/intltool \
 		ld:devel/binutils
-LIB_DEPENDS=	libmpqc.so:science/mpqc \
-		libf2c.so:lang/f2c
+LIB_DEPENDS=	libblas.so:math/blas \
+		libint.so:science/libint \
+		libf2c.so:lang/f2c \
+		liblapack.so:math/lapack \
+		libmpqc.so:science/mpqc
 
 USES=		fortran gettext gmake pathfix pkgconfig libtool
 USE_GL=		gl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+
+CONFIGURE_ENV=	LD_PRELOAD=${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libgcc_s.so # workaround: otherwise configure fails
 
 CONFIGURE_ARGS+=	--enable-mpqc
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -33,6 +39,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib -lSCbasis -lSCcints -lSCclass \
 		-lSCrender -lSCscf -lSCscmat -lSCsolvent -lSCstate \
 		-lSCsymmetry -lSCwfn \
 		-lgfortran -lpthread -lblas -llapack
+CXXFLAGS+=	-Wno-c++11-narrowing # fix errors like error: non-constant-expression cannot be narrowed from type 'double' to 'fGL'
 PLIST_SUB=	LIBGHEMICAL_VERSION="${PORTVERSION}"
 INSTALL_TARGET=	install-strip
 

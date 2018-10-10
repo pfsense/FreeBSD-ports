@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sqlite3
-DISTVERSION=	3.24.0
-PORTREVISION=	1
+DISTVERSION=	3.25.1
 CATEGORIES=	databases
 MASTER_SITES=	https://www.sqlite.org/2018/ http://www2.sqlite.org/2018/ http://www3.sqlite.org/2018/
 DISTNAME=	sqlite-autoconf-${PORTVERSION:C/\.([[:digit:]])[[:>:]]/0\1/g:S/.//g}00
@@ -21,7 +20,7 @@ INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 
 # Compilation Options For SQLite https://www.sqlite.org/compile.html
-OPTIONS_DEFINE=		FTS4 UPD_DEL_LIMIT URI URI_AUTHORITY METADATA \
+OPTIONS_DEFINE=		FTS4 URI URI_AUTHORITY METADATA \
 			DIRECT_READ MEMMAN SECURE_DELETE UNLOCK_NOTIFY THREADS \
 			EXTENSION ARMOR STMT DBPAGE DBSTAT FTS5 RBU NULL_TRIM \
 			LIKENOTBLOB STSHELL FTS3_TOKEN UNKNOWN_SQL SORT_REF
@@ -34,7 +33,6 @@ OPTIONS_GROUP_OPT_FUNC=	OFFSET SER1 SOUNDEX
 
 OPT_EXT_DESC=		Optional extensions
 OPT_FUNC_DESC=		Optional functions
-UPD_DEL_LIMIT_DESC=	ORDER BY and LIMIT on UPDATE and DELETE
 URI_DESC=		Enable use the URI filename
 URI_AUTHORITY_DESC=	Allow convert URL into a UNC
 SOUNDEX_DESC=		Enable the soundex() SQL function
@@ -116,10 +114,13 @@ UNICODE_DESC=		Unicode support
 UNICODE61_DESC=		Unicode Version 6.1 tokenizer
 
 # https://www.sqlite.org/rtree.html
-OPTIONS_GROUP_RTREEG=	RTREE RTREE_INT
+OPTIONS_GROUP_RTREEG=	RTREE RTREE_INT GEOPOLY
 RTREEG_DESC=		Index type for range queries
 RTREE_DESC=		Enable R*Tree module
 RTREE_INT_DESC=		Store 32-bit sig int (no float) coordinates
+# https://www.sqlite.org/geopoly.html
+GEOPOLY_DESC=		Uses the GeoJSON notation (RFC-7946)
+GEOPOLY_IMPLIES=	RTREE
 
 OPTIONS_GROUP_RL=	READLINES READLINEP EDITLINE
 RL_DESC=		Which command line editing library to use:
@@ -135,7 +136,7 @@ OPTIONS_DEFAULT=	FTS4 URI METADATA SECURE_DELETE UNLOCK_NOTIFY THREADS \
 			FTS3_TOKEN FTS5
 # SECURE_DELETE, UNLOCK_NOTIFY, DBSTAT (since 41.0) used by www/firefox et al.
 # RTREE used by graphics/mapnik, databases/spatialite
-# FTS3_TOKEN used by audio/clementine-player
+# FTS3_TOKEN used by audio/clementine-player, mail/thunderbird, www/seamonkey
 # FTS5 used by sysutils/tracker
 
 PLIST_FILES=	bin/sqlite3 include/sqlite3.h include/sqlite3ext.h \
@@ -158,6 +159,7 @@ TS3_CPPFLAGS=	-DSQLITE_TEMP_STORE=3
 
 RTREE_CPPFLAGS=	-DSQLITE_ENABLE_RTREE=1
 RTREE_INT_CPPFLAGS=	-DSQLITE_RTREE_INT_ONLY=1
+GEOPOLY_CPPFLAGS=	-DSQLITE_ENABLE_GEOPOLY=1
 
 FTS4_CPPFLAGS=	-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1 -DSQLITE_ENABLE_FTS4=1
 FTS5_CONFIGURE_ENABLE=	fts5
@@ -166,9 +168,6 @@ FTS3_TOKEN_CPPFLAGS=	-DSQLITE_ENABLE_FTS3_TOKENIZER=1
 
 SOUNDEX_CPPFLAGS=	-DSQLITE_SOUNDEX=1
 MEMMAN_CPPFLAGS=	-DSQLITE_ENABLE_MEMORY_MANAGEMENT=1
-UPD_DEL_LIMIT_CPPFLAGS=	-DSQLITE_ENABLE_UPDATE_DELETE_LIMIT=1
-UPD_DEL_LIMIT_PREVENTS=	UPD_DEL_LIMIT
-UPD_DEL_LIMIT_PREVENTS_MSG=	this option may only be used when the library is built from source, not from the amalgamation. Please, do not select it with this port.
 SECURE_DELETE_CPPFLAGS=	-DSQLITE_SECURE_DELETE=1
 UNLOCK_NOTIFY_CPPFLAGS=	-DSQLITE_ENABLE_UNLOCK_NOTIFY=1
 METADATA_CPPFLAGS=	-DSQLITE_ENABLE_COLUMN_METADATA=1

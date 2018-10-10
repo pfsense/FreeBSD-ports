@@ -18,19 +18,46 @@ PLIST=		${.CURDIR}/pkg-plist
 .error Please define CROSS_SYSROOT before building
 .endif
 
-BUTARGET=	${ARCH}-unknown-${OPSYS:tl}${OSREL}
+TARGETARCH=	${ARCH:S/amd64/x86_64/}
+BUTARGET=	${TARGETARCH}-unknown-${OPSYS:tl}${OSREL}
 
 CONFIGURE_ARGS+=	--disable-host-shared
 PREFIX=	/usr
+BUREMOVE=	addr2line \
+		ar \
+		c++filt \
+		dlltool \
+		elfedit \
+		gprof \
+		nlmconv \
+		nm \
+		ranlib \
+		readelf \
+		size \
+		strings \
+		strip \
+		windmc \
+		windres
 
 .include "${MASTERDIR}/Makefile"
 
 .if ${OSVERSION} >= 1100100
 PLIST_SUB+=	OBJCOPY="@comment "
+BUREMOVE+=	objcopy
 .else
 PLIST_SUB+=	OBJCOPY=""
 .endif
 
+.if ${ARCH} == "amd64" || ${ARCH} == "i386"
+PLIST_SUB+=	I386=""
+.else
+PLIST_SUB+=	I386="@comment "
+.endif
+.if ${ARCH} == "amd64"
+PLIST_SUB+=	AMD64=""
+.else
+PLIST_SUB+=	AMD64="@comment "
+.endif
 .if ${ARCH:Mmips*}
 PLIST_SUB+=	MIPS=""
 .else

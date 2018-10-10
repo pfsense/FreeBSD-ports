@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-desktop
-PORTVERSION=	1.20.1
+PORTVERSION=	1.20.3
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -48,5 +48,7 @@ GLIB_SCHEMAS=	org.mate.accessibility-keyboard.gschema.xml \
 		org.mate.thumbnailers.gschema.xml \
 		org.mate.typing-break.gschema.xml \
 		org.mate.debug.gschema.xml
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

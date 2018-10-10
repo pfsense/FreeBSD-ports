@@ -2,18 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	freerdp
-DISTVERSION=	2.0.0-rc1
-PORTREVISION=	6
+DISTVERSION=	2.0.0-rc3
+PORTREVISION=	2
 CATEGORIES=	net comms ipv6
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	78df32c77f28.patch:-p1 ed571e74a594.patch:-p1
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Free implementation of Remote Desktop Protocol
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim
 
 USES=		alias cmake:outsource compiler:c++11-lib cpe gettext localbase pathfix pkgconfig ssl
 USE_LDCONFIG=	yes
@@ -50,7 +51,7 @@ FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 FFMPEG_CMAKE_BOOL=	WITH_FFMPEG
 
 GSTREAMER_CMAKE_BOOL=	WITH_GSTREAMER_1_0
-GSTREAMER_USE=		gnome=glib20 gstreamer1=yes xorg=x11,xext,xextproto,xrandr
+GSTREAMER_USE=		gnome=glib20 gstreamer1=yes xorg=x11,xext,xorgproto,xrandr
 GSTREAMER_LIB_DEPENDS=	libgstbase-1.0.so:multimedia/gstreamer1
 
 ICU_LIB_DEPENDS=	libicuuc.so:devel/icu
@@ -75,8 +76,7 @@ SSE_CMAKE_BOOL=		WITH_SSE2
 
 WAYLAND_DESC=		Build FreeRDP Wayland client
 WAYLAND_BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:multimedia/v4l_compat
-WAYLAND_LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
-			libwayland-client.so:graphics/wayland \
+WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 			libwayland-cursor.so:graphics/wayland \
 			libxkbcommon.so:x11/libxkbcommon
 WAYLAND_CMAKE_BOOL=	WITH_WAYLAND
@@ -84,7 +84,7 @@ WAYLAND_CMAKE_BOOL=	WITH_WAYLAND
 X11_DESC=		Build FreeRDP X11 client
 X11_CMAKE_BOOL=		WITH_X11
 X11_CMAKE_OFF=		-DWITH_XKBFILE=OFF
-X11_USE=		xorg=x11,xcursor,xext,xextproto,xfixes,xi,xinerama,xkbfile,xrandr,xrender,xv
+X11_USE=		xorg=x11,xcursor,xext,xorgproto,xfixes,xi,xinerama,xkbfile,xrandr,xrender,xv
 
 .include <bsd.port.pre.mk>
 

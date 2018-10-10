@@ -3,15 +3,13 @@
 
 PORTNAME=	vowpal_wabbit
 PORTVERSION=	7.10
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	math
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Fast out-of-core learning system
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
-
-BROKEN_powerpc64=	fails to compile: network.cc: 'atoi' was not declared in this scope
 
 USES=		compiler:c++11-lang libtool
 GNU_CONFIGURE=	yes

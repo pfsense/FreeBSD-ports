@@ -3,6 +3,7 @@
 
 PORTNAME=	reduce
 PORTVERSION=	20180117
+PORTREVISION=	2
 CATEGORIES=	math lang
 MASTER_SITES=	SF/${PORTNAME}-algebra/${SFSUBDIR}/
 DISTNAME=	Reduce-svn4372-src
@@ -35,7 +36,7 @@ CPPFLAGS+=	-I${NCURSESINC}
 HAS_CONFIGURE=	yes
 ALL_TARGET=
 
-USE_XORG=	x11 xext xproto xft
+USE_XORG=	x11 xext xorgproto xft
 USES+=		jpeg
 CONFIGURE_ARGS=	--with-csl
 CPPFLAGS+=	`freetype-config --cflags`
@@ -43,7 +44,7 @@ LDFLAGS+=	`freetype-config --libs`
 
 REDUCE_BINS=	${WRKSRC}/cslbuild/${TARGET_SDIR}
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

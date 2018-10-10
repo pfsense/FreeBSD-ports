@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	nsscache
-PORTVERSION=	0.32
-PORTREVISION=	1
+PORTVERSION=	0.36
 DISTVERSIONPREFIX=	version/
 CATEGORIES=	net python
 
-MAINTAINER=	kbowling@freebsd.org
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Python utility to create a local cache of directory services
 
 LICENSE=	GPLv2

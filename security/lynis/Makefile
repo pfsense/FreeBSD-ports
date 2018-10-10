@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lynis
-PORTVERSION=	2.6.4
+PORTVERSION=	2.6.8
 CATEGORIES=	security
 MASTER_SITES=	https://cisofy.com/files/
 
@@ -21,6 +21,8 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 
 PORTDOCS=	FAQ README
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/tINCLUDE_TARGETS/ s|".*"|"${DATADIR}/include"|; \

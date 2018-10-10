@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	trezord
-PORTVERSION=	2.0.14
+PORTVERSION=	2.0.23
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -18,9 +18,14 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	trezor
 GH_PROJECT=	${PORTNAME}-go
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
-
-PATCH_STRIP=	-p1
+GH_TAGNAME=	0e82873
 
 PLIST_FILES=	bin/${GH_PROJECT}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1102000
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-usb_webusb.go
+.endif
+
+.include <bsd.port.post.mk>

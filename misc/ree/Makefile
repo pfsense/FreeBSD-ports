@@ -2,31 +2,41 @@
 # $FreeBSD$
 
 PORTNAME=	ree
-PORTVERSION=	1.3
+PORTVERSION=	1.4.1
 CATEGORIES=	misc
-MASTER_SITES=	http://gnu.ethz.ch/linuks.mine.nu/ree/ \
-		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Tool to dump your ROM extensions
 
-PLIST_FILES=	bin/rom-ree bin/fontdump
-PORTDOCS=	readme
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64 i386
+
+USE_GITHUB=	yes
+
+GH_ACCOUNT=	alexmyczko
+
+PLIST_FILES=	bin/fontdump man/man1/fontdump.1.gz man/man8/rom-ree.8.gz \
+		sbin/rom-ree
+PORTDOCS=	README.md
 
 OPTIONS_DEFINE=	DOCS
 
-do-build:
-.for f in ${PORTNAME} fontdump
-	${CC} ${CFLAGS} ${WRKSRC}/${f}.c -o ${WRKSRC}/${f}
-.endfor
+MAKEFILE=	makefile
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} \
-		${STAGEDIR}${PREFIX}/bin/rom-${PORTNAME}
-	${INSTALL_PROGRAM} ${WRKSRC}/fontdump ${STAGEDIR}${PREFIX}/bin
+post-patch:
+	@${REINPLACE_CMD} \
+		-e 's|ree|rom-ree|g' \
+		-e 's|REE|ROM-REE|g' \
+			${WRKSRC}/ree.8
+
+post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/readme ${STAGEDIR}${DOCSDIR}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/rom-ree \
+		${STAGEDIR}${PREFIX}/bin/fontdump
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${WRKSRC}/ree.8 ${STAGEDIR}${MANPREFIX}/man/man8/rom-ree.8
+	${INSTALL_MAN} ${WRKSRC}/fontdump.1 ${STAGEDIR}${MANPREFIX}/man/man1
 
 .include <bsd.port.mk>

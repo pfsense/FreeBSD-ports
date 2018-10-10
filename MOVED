@@ -338,7 +338,6 @@ x11-wm/kahakai||2008-12-07|Has expired: Development ceased
 palm/synce-gnomevfs||2008-12-07|Has expired: No longer supported by developers
 palm/synce-kde||2008-12-07|Has expired: No longer supported by developers
 palm/synce-multisync||2008-12-07|Has expired: No longer supported by developers
-shells/ksh93-devel||2008-12-07|Has expired: This port is outdated, please use shells/ksh93
 sysutils/dtc-toaster||2008-12-07|Has expired: Has been broken for more than 6 months
 sysutils/dusage||2008-12-07|Has expired: Has been broken for more than 6 months
 games/linux-alienarena||2008-12-07|Has expired: Has been broken for more than 6 months
@@ -773,7 +772,6 @@ editors/openoffice.org-2-devel||2009-07-21|Removed
 games/amy||2009-07-28|Has expired: mastersite disappeared, does not build on recent version
 security/hashish||2009-07-28|Has expired: does not compile
 security/smtpmap||2009-07-28|Has expired: depends on GCC 2.95 which has not been available for 9+ months
-devel/bats|devel/bats-core|2018-07-01|Bats maintainership changed upstream to bats-core team
 devel/boost|devel/boost-libs|2009-07-28|Boost ports were split and sliced
 devel/boost-python|devel/boost-python-libs|2009-07-28|Boost ports were split and sliced
 www/xpi-firegpg||2009-07-31|Removed
@@ -972,7 +970,6 @@ x11-toolkits/gtkada-gcc||2010-01-24|Not really maintained for a while and depend
 x11-toolkits/gtkada-gps||2010-01-28|Has expired: has been broken for 3 months
 x11-fm/velocity||2010-01-28|Has expired: has been broken for 7 months
 x11-drivers/xf86-video-nsc||2010-01-28|Has expired: has been broken for 5 months
-security/shibboleth-sp||2010-01-28|Has expired: has been broken for 3 months
 www/pecl-pecl_http|www/pecl-http|2010-01-31|Duplicate ports
 chinese/stardict2-dict-zh_CN||2010-01-31|Please use chinese/stardict-dict-zh_CN
 math/octave-forge-ann||2010-02-02|Has expired: has been broken for 3 months
@@ -2878,7 +2875,6 @@ news/nntpswitch||2011-11-01|Does not fetch
 news/p5-NewsLib||2011-11-01|Does not fetch
 russian/cyrproxy||2011-11-01|Does not fetch
 science/gerris||2011-11-01|Does not fetch
-security/opensaml||2011-11-01|Does not fetch
 sysutils/wmbattery||2011-11-01|Does not fetch
 textproc/tei-guidelines-p4||2011-11-01|Does not fetch
 textproc/tei-p4||2011-11-01|Does not fetch
@@ -3679,7 +3675,6 @@ x11-toolkits/gal||2012-10-15|Development ceased, nothing in the ports tree uses 
 math/octave-forge-physicalconstants||2012-10-15|Incorporated upstream into math/octave-forge-miscellaneous
 math/octave-forge-combinatorics||2012-10-15|Incorporated upstream into math/octave-forge-miscellaneous
 games/8kingdoms||2012-10-16|Has expired: Broken for more than 6 months
-games/freeorion||2012-10-16|Has expired: Broken for more than 6 months
 games/rigsofrods||2012-10-16|Has expired: Broken for more than 6 months
 sysutils/bacula2-client||2012-10-20|No longer supported upstream and may contain vulnerabilities. Use sysutils/bacula-client instead
 sysutils/bacula2-server||2012-10-20|No longer supported upstream and may contain vulnerabilities. Use sysutils/bacula-server instead
@@ -4427,7 +4422,6 @@ audio/mpeglib_artsplug||2013-07-26|Has expired: Depends on Qt 3.x
 audio/prokyon3||2013-07-26|Has expired: Depends on Qt 3.x
 audio/xmms-kde||2013-07-26|Has expired: Depends on Qt 3.x
 audio/yammi||2013-07-26|Has expired: Depends on Qt 3.x
-biology/xdrawchem||2013-07-26|Has expired: Depends on Qt 3.x
 cad/opencascade-tutorial||2013-07-26|Has expired: Depends on Qt 3.x
 cad/vipec||2013-07-26|Has expired: Depends on Qt 3.x
 chinese/kde3-i18n-zh_CN||2013-07-26|Has expired: Depends on Qt 3.x
@@ -5257,7 +5251,6 @@ devel/hs-DeepArrow||2013-12-22|Has expired: Broken for more than 6 months
 converters/py-svglib||2013-12-22|Has expired: Broken for more than 6 months
 converters/p5-Unicode-Lite||2013-12-22|Has expired: Broken for more than 6 months
 mail/squirrelmail-calendar_sql_backend-plugin||2013-12-22|Has expired: Broken for more than 6 months
-finance/quantlib||2013-12-22|Has expired: Broken for more than 6 months
 games/xkobo||2013-12-22|Has expired: Broken for more than 6 months
 games/quake3-rq3||2013-12-22|Has expired: Broken for more than 6 months
 math/fbm||2013-12-22|Has expired: No new release since 2004, new supported upstream
@@ -5737,7 +5730,6 @@ devel/ros_tutorials||2014-03-28|Has expired: Depends on expiring devel/ros_comm
 math/ros-geometry||2014-03-28|Has expired: Depends on expiring devel/ros_comm
 devel/ros-nxt||2014-03-28|Has expired: Depends on expiring devel/ros_comm
 devel/ros-rx||2014-03-28|Has expired: Depends on expiring devel/ros_comm
-devel/R-cran-vcd||2014-03-28|Has expired: New port without proper maintainer
 devel/ros-documentation||2014-03-28|Has expired: Depends on expiring devel/ros_comm
 devel/ros-common_msgs||2014-03-28|Has expired: Depends on expiring devel/ros_comm
 devel/ros_comm||2014-03-28|Has expired: Broken for more than 6 months
@@ -6560,7 +6552,6 @@ lang/hiphop-php||2014-09-01|Not staged
 lang/lush||2014-09-01|Not staged
 lang/metaocaml||2014-09-01|Not staged
 lang/mpd||2014-09-01|Not staged
-lang/ocaml-camlidl||2014-09-01|Not staged
 lang/ocaml-mode.el||2014-09-01|Not staged
 lang/ocs||2014-09-01|Not staged
 lang/oorexx||2014-09-01|Not staged
@@ -6990,6 +6981,7 @@ databases/ruby-dbi|databases/rubygem-dbi|2014-09-21|Replaced by rubygem-dbi
 databases/ruby-dbd_mysql|databases/rubygem-dbd-mysql|2014-09-21|Replaced by rubygem-dbd-mysql
 databases/ruby-dbd_pg|databases/rubygem-dbd-pg|2014-09-21|Replaced by rubygem-dbd-pg
 databases/ruby-dbd_sqlite|databases/rubygem-dbd-sqlite3|2014-09-21|Replaced by rubygem-dbd-sqlite3
+databases/rubygem-dbd-sqlite|databases/rubygem-dbd-sqlite3|2014-09-21|Remove defunctional port, old sqlite driver for ruby is missing
 databases/ruby-dbd-sqlite||2014-09-21|Dysfunctional
 textproc/ruby-amatch|textproc/rubygem-amatch|2014-09-21|Replaced by textproc/rubygem-amatch
 databases/rubygem-aspectr|devel/rubygem-aspectr|2014-09-21|Change category
@@ -9271,7 +9263,6 @@ audio/last-cmus||2017-04-30|Has expired: Unfetchable for more than six months (g
 audio/mehdiaplayer||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
 japanese/nhocr||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
 misc/xsw||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
-dns/py-adns||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
 dns/py-bonjour||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
 games/robocalypto||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
 games/libfov||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
@@ -9409,6 +9400,7 @@ security/sshguard-pf|security/sshguard|2017-07-20|Merged with security/sshguard
 security/sshguard-null|security/sshguard|2017-07-20|Merged with security/sshguard
 audio/gstreamer1-plugins-mad|audio/gstreamer1-plugins-mpg123|2017-07-21|The GStreamer 1 mad plugin was removed, the mpg123 plugin supplies the same functionality
 x11-toolkits/gstreamer1-plugins-gtksink|x11-toolkits/gstreamer1-plugins-gtk|2017-07-21|The GStreamer 1 gtksink plugin was renamed
+www/rubygem-jquery-ui-rails-rails5||2017-07-22|Remove port that is probably useless (not properly hooked to the build)
 devel/ffcall|devel/libffcall|2017-07-28|Project was renamed
 databases/grass|databases/grass6|2017-07-30|Project was renamed to allow for grass7
 net/rubygem-oauth212|net/rubygem-oauth2|2017-07-31|Has expired: Only created for www/gitlab; please use net/rubygem-oauth2 instead
@@ -9800,6 +9792,7 @@ devel/p5-Parse-Pidl44|devel/p5-Parse-Pidl|2018-01-01|Has expired: use devel/p5-P
 www/rubygem-jwt2|www/rubygem-jwt|2018-01-02|www/rubygem-jwt has been updated to 2.x
 misc/py-qt5-doc||2018-01-02|No longer shipped by upstream
 audio/beast||2018-01-05|Has expired: 4.5 years old version, six versions behind, requires old toolchain, and unmaintained
+devel/rubygem-multipart-post|www/rubygem-multipart-post|2018-01-05|Remove duplicate port
 devel/p5-MooseX-Role-WithOverloading||2018-01-06|Has expired: deprecated by upstream (obsolete with modern Moose)
 devel/p5-Test-Block||2018-01-06|Has expired: Marked as deprecated upstream
 x11-toolkits/qt5-declarative-render2d||2018-01-06|Merged into x11-toolkits/qt5-quick
@@ -10238,7 +10231,6 @@ converters/pdf2djvu||2018-06-07|Has expired: Broken for more than 6 months
 databases/rdb||2018-06-07|Has expired: Broken for more than 6 months
 databases/animenfo-client||2018-06-07|Has expired: Broken for more than 6 months
 databases/ruby-mysql||2018-06-07|Has expired: Broken for more than 6 months
-databases/riak||2018-06-07|Has expired: Broken for more than 6 months
 databases/animenfo-client-gtk||2018-06-07|Has expired: Broken for more than 6 months
 databases/rdfdb||2018-06-07|Has expired: Broken for more than 6 months
 databases/riak2||2018-06-07|Has expired: Broken for more than 6 months
@@ -10288,10 +10280,276 @@ multimedia/qt5-phonon4|multimedia/phonon@qt5|2018-06-21|Moved to a flavored vers
 multimedia/qt5-phonon4-designerplugin|multimedia/phonon-designerplugin@qt5|2018-06-21|Moved to a flavored version
 multimedia/qt5-phonon4-gstreamer|multimedia/phonon-gstreamer@qt5|2018-06-21|Moved to a flavored version
 multimedia/qt5-phonon4-vlc|multimedia/phonon-vlc@qt5|2018-06-21|Moved to a flavored version
-net/libproxy-gnome|net/libproxy-gnome2|2018-07-22|Renamed to make slave names consistent
+net/libproxy-gnome|net/libproxy-gnome2|2018-06-22|Renamed to make slave names consistent
 www/npapi-vlc||2018-06-22|Removed, depends on expired www/libxul
 www/libxul||2018-06-22|Has expired: NPAPI are no longer supported
 mail/postfix211||2018-06-24|Has expired: Not supported anymore by vendor. Please choose a new one version
 mail/postfix211-sasl||2018-06-24|Has expired: Not supported anymore by vendor. Please choose a new one version
 devel/py-binplist||2018-06-26|Has expired: Not depended upon anymore, no longer maintained upstream
+devel/bats|devel/bats-core|2018-07-01|Bats maintainership changed upstream to bats-core team
+net/rubygem-omniauth-twitter12|net/rubygem-omniauth-twitter|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use net/rubygem-omniauth-twitter instead
+net/rubygem-gitaly-proto088|net/rubygem-gitaly-proto|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use net/rubygem-gitaly-proto instead
+net/rubygem-octokit46|net/rubygem-octokit|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use net/rubygem-octokit instead
+net/rubygem-fog-google0|net/rubygem-fog-google|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use net/rubygem-fog-google instead
+net/rubygem-fog-aws1|net/rubygem-fog-aws|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use net/rubygem-fog-aws instead
+textproc/rubygem-asciidoctor-plantuml007|textproc/rubygem-asciidoctor-plantuml|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use textproc/rubygem-asciidoctor-plantuml instead
+graphics/mitsuba||2018-07-03|Has expired: Broken for more than 6 months
+mail/p5-Net-SMTP-SSL||2018-07-03|Has expired: Deprecated by upstream, use Net::SMTP instead
+www/rubygem-kubeclient22|www/rubygem-kubeclient|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use www/rubygem-kubeclient instead
+security/rubygem-doorkeeper42|security/rubygem-doorkeeper|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use security/rubygem-doorkeeper instead
+security/rubygem-net-ssh41|security/rubygem-net-ssh|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use security/rubygem-net-ssh instead
+security/rubygem-omniauth-saml17|security/rubygem-omniauth-saml|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use security/rubygem-omniauth-saml instead
+security/rubygem-doorkeeper-openid_connect12|security/rubygem-doorkeeper-openid_connect|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use security/rubygem-doorkeeper-openid_connect instead
+security/rubygem-attr_encrypted30|security/rubygem-attr_encrypted|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use security/rubygem-attr_encrypted instead
+security/rubygem-omniauth14|security/rubygem-omniauth|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use security/rubygem-omniauth instead
+devel/rubygem-flipper011|devel/rubygem-flipper|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use devel/rubygem-flipper instead
+devel/rubygem-ruby-prof016|devel/rubygem-ruby-prof|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use devel/rubygem-ruby-prof instead
+devel/rubygem-recursive-open-struct10|devel/rubygem-recursive-open-struct|2018-07-03|Has expired: Obsoleted by update of www/rubygem-kubeclient. Please use devel/rubygem-recursive-open-struct instead
+devel/rubygem-flipper-active_support_cache_store011|devel/rubygem-flipper-active_support_cache_store|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use devel/rubygem-flipper-active_support_cache_store instead
+devel/rubygem-gettext_i18n_rails_js12|devel/rubygem-gettext_i18n_rails_js|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use devel/rubygem-gettext_i18n_rails_js instead
+devel/phpunit|devel/phpunit6|2018-07-03|Has expired: No longer maintained upstream
+devel/rubygem-recursive-open-struct100|devel/rubygem-recursive-open-struct|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use devel/rubygem-recursive-open-struct instead
+databases/rubygem-flipper-active_record011|databases/rubygem-flipper-active_record|2018-07-03|Has expired: Obsoleted by update of www/gitlab. Please use databases/rubygem-flipper-active_record instead
+databases/mongodb34-rocks||2018-07-03|Has expired: Broken for more than 6 months
+math/freemat||2018-07-03|Has expired: Complex, unmaintained software with obsolete dependencies
+dns/bind99|dns/bind911|2018-07-04|Has expired: Going out of support, please migrate to dns/bind911
+dns/bind910|dns/bind911|2018-07-04|Has expired: Going out of support, please migrate to dns/bind911
 www/gitlab|www/gitlab-ce|2018-07-04|Port renamed to match name on gitlab.org
+devel/rubygem-oj2|devel/rubygem-oj|2018-07-04|Has expired: Obsoleted by update of www/gitlab. Please use devel/rubygem-oj instead
+net-mgmt/sx||2018-07-08|Has expired: Upstream gone, does not fetch
+www/sxweb||2018-07-08|Removed, web frontend of net-mgmt/sx, upstream also gone
+sysutils/logstash|sysutils/logstash5|2018-07-10|Has expired: End of Life was 2018-02-28
+textproc/kibana46|textproc/kibana5|2018-07-10|Has expired: End of Life was 2018-02-28
+print/cups-connector|print/cloud-print-connector|2018-07-11|Project renamed upstream
+net/wpa_gui|net/wpa_supplicant_gui|2018-07-12|Rename to wpa_supplicant_gui for ease of search
+lang/gcc47|lang/gcc6|2018-07-15|Has expired: Unsupported by upstream. Use GCC 6 or newer instead
+net-p2p/transmission-qt4|net-p2p/transmission-qt@qt4|2018-07-15|Moved into flavored version
+net-p2p/transmission-qt5|net-p2p/transmission-qt@qt5|2018-07-15|Moved into flavored version
+java/jaf||2018-07-16|Included in JRE since 1.6 version
+net/p5-ZConf-Bookmarks||2018-07-16|Has expired: Unmaintained
+net/p5-ZConf||2018-07-16|Has expired: Unmaintained
+textproc/p5-Text-SpellChecker-GUI||2018-07-16|Has expired: Unmaintained
+deskutils/p5-ZConf-Runner-GUI-GTK||2018-07-16|Has expired: Unmaintained
+deskutils/p5-ZConf-BGSet||2018-07-16|Has expired: Unmaintained
+deskutils/p5-ZConf-Runner||2018-07-16|Has expired: Unmaintained
+graphics/p5-Image-Size-FillFullSelect||2018-07-16|Has expired: Unmaintained
+graphics/p5-Imager-AverageGray||2018-07-16|Has expired: Unmaintained
+mail/p5-Mail-IMAPTalk-MailCache||2018-07-16|Has expired: Unmaintained
+mail/p5-ZConf-Mail||2018-07-16|Has expired: Unmaintained
+mail/p5-Mail-Cache||2018-07-16|Has expired: Unmaintained
+www/p5-ZConf-RSS||2018-07-16|Has expired: Unmaintained
+www/p5-ZConf-RSS-GUI-GTK||2018-07-16|Has expired: Unmaintained
+devel/p5-ZConf-GUI||2018-07-16|Has expired: Unmaintained
+net-im/mastodon||2018-07-16|Has expired: Breaks too frequently
+x11-fm/p5-PerlFM||2018-07-16|Has expired: Unmaintained
+astro/p5-ZConf-Weather||2018-07-16|Has expired: Unmaintained
+sysutils/p5-ZConf-Cron||2018-07-16|Has expired: Unmaintained
+x11-fonts/hasklig|x11-fonts/Hasklig|2018-07-16|Name correctly after upstream
+misc/artikulate-kde4||2018-07-17|Has expired: broken for more than three years
+vietnamese/kde4-l10||2018-07-17|Has expired: broken for more than three years
+graphics/projectm-libvisual|graphics/libprojectm|2018-07-17|Code of projectm-libvisual was merged into graphics/libprojectm
+graphics/yafray|graphics/yafaray|2018-07-20|Project renamed
+lang/spec.alpha||2018-07-21|Unused in the ports tree
+sysutils/xen-tools|sysutils/xen-tools47|2018-07-23|Renamed to support multiple versions
+emulators/xen-kernel|emulators/xen-kernel47|2018-07-23|Renamed to support multiple versions
+emulators/xen||2018-07-23|Removed to support multiple versions
+devel/py-levenshtein|devel/py-python-Levenshtein|2018-07-28|Remove the duplicate
+comms/xwota||2018-07-28|Has expired: No server message and no upstream releases
+audio/glame||2018-07-28|Has expired: Does not build
+net/isc-dhcp43-relay|net/isc-dhcp44-relay|2018-07-31|Has expired: Please upgrade to isc-dhcp44
+net/isc-dhcp43-server|net/isc-dhcp44-server|2018-07-31|Has expired: Please upgrade to isc-dhcp44
+net/isc-dhcp43-client|net/isc-dhcp44-client|2018-07-31|Has expired: Please upgrade to isc-dhcp44
+x11/bigreqsproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/compositeproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/damageproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/dmxproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/dri2proto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/dri3proto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/fixesproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/glproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/inputproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/kbproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/presentproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/printproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/randrproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/recordproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/renderproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/resourceproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/scrnsaverproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/trapproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/videoproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xcmiscproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xextproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xf86dgaproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xf86driproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xf86miscproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xf86rushproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xf86vidmodeproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xineramaproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/xproxymanagementprotocol|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11-fonts/fontcacheproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11-fonts/fontsproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11-fonts/xf86bigfontproto|x11/xorgproto|2018-07-31|merged into x11/xorgproto
+x11/evieext|x11/xorgproto|2018-08-01|merged into x11/xorgproto
+net/rubygem-gitaly-proto096|net/rubygem-gitaly-proto|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use net/rubygem-gitaly-proto instead
+security/tripwire12||2018-08-02|Has expired: unfetchable
+security/rubygem-rbnacl4|security/rubygem-rbnacl|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use security/rubygem-rbnacl instead
+www/rubygem-gon61|www/rubygem-gon|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use www/rubygem-gon instead
+databases/pgpool-II-33|databases/pgpool-II-35|2018-08-02|Has expired: Will be deprecated by upstream, please switch to newer pgpool versions
+devel/rubygem-grape-entity060|devel/rubygem-grape-entity|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use devel/rubygem-grape-entity instead
+net/rubygem-gitaly-proto099|net/rubygem-gitaly-proto|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use net/rubygem-gitaly-proto instead
+net/rubygem-gitaly-proto095|net/rubygem-gitaly-proto|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use net/rubygem-gitaly-proto instead
+net/rubygem-omniauth-github11|net/rubygem-omniauth-github|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use net/rubygem-omniauth-github instead
+net/rubygem-asset_sync220|net/rubygem-asset_sync|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use net/rubygem-asset_sync instead
+www/rubygem-gollum-lib-gitlab|www/rubygem-gitlab-gollum-lib|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use www/rubygem-gitlab-gollum-lib instead
+www/py-django-threaded-multihost||2018-08-02|Has expired: Project development unmaintained
+www/py-django-keyedcache||2018-08-02|Has expired: Project development abandoned
+www/py-django-signals-ahoy||2018-08-02|Has expired: Project development unmaintained
+databases/rubygem-redis-namespace15|databases/rubygem-redis-namespace|2018-08-02|Has expired: Obsoleted by update of www/gitlab-ce. Please use databases/rubygem-redis-namespace instead
+security/py-python-social-auth||2018-08-02|Has expired: Upstream Deprecated
+www/py-django-social-auth||2018-08-02|Has expired: no support for new django
+audio/libmusicbrainz3|audio/libmusicbrainz5|2018-08-03|Has expired: Web Service 1.0 support ending 2018-08-01
+emulators/snes9x||2018-08-03|Removed: Please use emulators/snes9x-gtk instead of
+emulators/snes9express||2018-08-03|Please use emulators/snes9x-gtk instead
+security/rubygem-omniauth-shibboleth12||2018-08-04|Removed
+textproc/rubygem-html-pipeline-gitlab||2018-08-04|Removed
+net/qmdnsengine|dns/qmdnsengine|2018-08-04|Move to a proper category
+security/shibboleth2-sp|security/shibboleth-sp|2018-08-07|Project updated to version 3, so the 2 suffix is not valid anymore
+security/opensaml2|security/opensaml|2018-08-07|Project updated to version 3, so the 2 suffix is not valid anymore
+devel/lldb38|devel/llvm38|2018-08-08|METAPORT removed
+lang/clang38|devel/llvm38|2018-08-08|METAPORT removed
+science/py-tensorflow||2018-08-08|Has expired: build broken
+devel/bazel-clang38|devel/bazel|2018-08-08|Slave port depends on obsolete LLVM version
+security/libbeid|security/beid|2018-08-12|No longer just a library
+editors/joe2|editors/joe|2018-08-12|Patches from editors/joe2 have been integrated into editors/joe
+security/keepassx||2018-08-13|Has expired: Use keepassx2 or keepassxc instead
+devel/llvm33|devel/llvm60|2018-08-13|Obsolete and unmaintained
+lang/clang33|devel/llvm60|2018-08-13|Obsolete and unmaintained
+devel/llvm34|devel/llvm60|2018-08-13|Obsolete and unmaintained
+lang/clang34|devel/llvm60|2018-08-13|Obsolete and unmaintained
+databases/mongodb|databases/mongodb34|2018-08-15|Has expired: End of Life October 2016
+net/traceroute||2018-08-16|Has expired: Upstream gone
+net/e169-stats||2018-08-16|Has expired: unknown license
+net/l4ip||2018-08-16|Has expired: unknown license
+net/dhcprelay||2018-08-16|Has expired: unknown license
+emulators/m2000||2018-08-16|Has expired: unknown license
+textproc/ant-xinclude-task||2018-08-16|Has expired: unknown license
+textproc/bomstrip||2018-08-16|Has expired: unknown license
+x11-fonts/ecofont||2018-08-16|Has expired: unknown license
+mail/roundcube-groupvice||2018-08-16|Has expired: unknown license
+security/pft||2018-08-16|Has expired: unknown license
+devel/kickassembler||2018-08-16|Has expired: unknown license
+devel/gdbmods||2018-08-16|Has expired: unknown license
+devel/as31||2018-08-16|Has expired: unknown license
+databases/dbf2mysql||2018-08-16|Has expired: unknown license
+misc/xpns||2018-08-16|Has expired: unknown license
+misc/amfm||2018-08-16|Has expired: unknown license
+games/smashbattle||2018-08-16|Has expired: unknown license
+games/syobon||2018-08-16|Has expired: unknown license
+games/optimax||2018-08-16|Has expired: unknown license
+games/xgospel||2018-08-16|Has expired: unknown license
+biology/blat||2018-08-16|Has expired: unknown license
+x11-clocks/swisswatch||2018-08-16|Has expired: unknown license
+palm/ppmtoTbmp||2018-08-16|Has expired: unknown license
+dns/ghtool||2018-08-16|Has expired: unknown license
+x11-themes/beastie||2018-08-16|Has expired: unknown license
+converters/uudx||2018-08-16|Has expired: unknown license
+sysutils/areca-cli||2018-08-16|Has expired: unknown license
+net-im/tox12|net-im/tox|2018-08-18|Unused
+www/moodle32|www/moodle33|2018-08-19|Has expired: Deprecated by upstream
+archivers/opkg|archivers/opkg-openwrt|2018-08-20|Better naming
+net/openmq||2018-08-21|Has expired: Broken for more than 5 months
+net/coda6_server||2018-08-21|Has expired: Broken for more than 5 months
+net/ceph-devel||2018-08-21|Has expired: Broken for more than 5 months
+java/jgrapht||2018-08-21|Has expired: Broken for more than 5 months
+mail/mutt14||2018-08-21|Has expired: mutt 1.4.x has been out of support for 10+ years use mail/mutt
+www/pydio||2018-08-21|Has expired: Broken for more than 5 months
+security/fastd-devel||2018-08-21|Has expired: Broken for more than 5 months
+security/fastd||2018-08-21|Has expired: Broken for more than 5 months
+devel/bhyve-vm-goagent||2018-08-21|Has expired: Broken for more than 5 months
+devel/cherivis-devel||2018-08-21|Has expired: Depends on broken and expiring cheritrace-devel
+devel/cheritrace-devel||2018-08-21|Has expired: Broken for more than 5 months
+devel/javolution||2018-08-21|Has expired: Broken for more than 5 months
+devel/bisoncpp||2018-08-21|Has expired: Depends on broken and expiring libbobcat
+databases/php5-pdo_cassandra||2018-08-21|Has expired: Broken for more than 5 months
+games/crafty-open-large||2018-08-21|Has expired: Broken for more than 5 months
+games/crafty-open-enormous||2018-08-21|Has expired: Broken for more than 5 months
+games/crafty-open-medium||2018-08-21|Has expired: Broken for more than 5 months
+math/jakarta-commons-math||2018-08-21|Has expired: Broken for more than 5 months
+math/hfst||2018-08-21|Has expired: Broken for more than 5 months
+math/octave-forge-communications||2018-08-21|Has expired: Broken for more than 5 months
+lang/v8-devel||2018-08-21|Has expired: Broken for more than 5 months
+sysutils/rubygem-fluentd010||2018-08-21|Has expired: Broken for more than 5 months
+mail/mutt14-lite||2018-08-21|Remove expired slave port
+net/coda6_client||2018-08-21|Remove expired slave port
+net/openmq-client||2018-08-21|Remove expired slave port
+net-p2p/twister||2018-08-21|Has expired: Broken for more than 5 months
+comms/usrp||2018-08-21|Has expired: Broken for more than 5 months
+devel/libbobcat||2018-08-21|Has expired: Broken for more than 5 months
+net-p2p/dogecoin||2018-08-21|Has expired: Broken for more than 5 months
+misc/freebsd-doc-sr||2018-08-23|Removed
+www/py-django18|www/py-django111|2018-08-25|Has expired: End of Live since 01/04/2018
+x11-themes/qt4-style-Kvantum|x11-themes/Kvantum@qt4|2018-08-26|Moved to flavored version
+x11-themes/qt5-style-Kvantum|x11-themes/Kvantum@qt5|2018-08-26|Moved to flavored version
+devel/gps||2018-08-28|Has expired: Depends on obsolete LLVM 3.8
+net-mgmt/ocsinventory-ng|net-mgmt/ocsinventory-server|2018-08-30|split port
+www/py-buku|www/buku|2018-09-01|Moved to correct directory, port is not a python library
+math/rpy2|math/py-rpy2|2018-09-01|Moved to correct directory, this is a python library
+games/libdungeonmaker||2018-09-02|Has expired: Abandonware. Unused in the ports tree
+net-p2p/lopster||2018-09-02|Has expired: Unmaintained. Napster is dead
+audio/napster||2018-09-02|Has expired: Unmaintained. Napster and OpenNap are dead
+net-p2p/xnap||2018-09-02|Has expired: Unmaintained. Napster, OpenNap, and FastTrack are dead
+russian/napster||2018-09-02|Has expired: Unmaintained. Napster and OpenNap are dead
+devel/mico||2018-09-02|Has expired: unmaintained upstream and unused in the ports tree
+net/rubygem-gitlab_omniauth-ldap1|net/rubygem-gitlab_omniauth-ldap|2018-09-02|Has expired: Use net/rubygem-gitlab_omniauth-ldap instead
+devel/onscripter|games/onscripter|2018-09-03|Moved to better category
+devel/onscripter-1byte|games/onscripter-1byte|2018-09-03|Moved to better category
+devel/ponscripter-sekai|games/ponscripter-sekai|2018-09-03|Moved to better category
+devel/renpy|games/renpy|2018-09-03|Moved to better category
+devel/renpy6|games/renpy6|2018-09-03|Moved to better category
+devel/rlvm|games/rlvm|2018-09-03|Moved to better category
+dns/openmdns|net/openmdns|2018-09-03|Moved to better category
+www/hs-activehs||2018-09-03|Has expired: Doesn't build with recent dependencies
+science/mpqc-mpich|science/mpqc|2018-09-03|MPI option is enabled by default in mpqc, no need for mpqc-mpich
+misc/timediff|misc/tzdiff|2018-09-04|Project was renamed
+www/rubygem-hamlit26|www/rubygem-hamlit|2018-09-06|Has expired: Obsolete by gitlab-ce 11.2.x update, please use www/rubygem-hamlit instead
+games/ppracer|games/etracer|2018-09-10|Has expired: Unmaintained.  Play games/etracer instead
+www/py-django-livesettings||2018-09-13|Has expired: Missing dependency on removed www/py-django-keyedcache
+www/bookmarkbridge||2018-09-16|Has expired: Unmaintained. Unlikely to work correctly with modern browsers
+mail/annoyance-filter||2018-09-16|Has expired: Unmaintained upstream
+mail/pop3vscan||2018-09-16|Has expired: Unmaintained upstream
+audio/firefly|audio/forked-daapd|2018-09-16|Has expired: Unmaintained.  Use audio/forked-daapd instead
+www/hs-hS3||2018-09-16|Has expired: Not being developed upstream
+converters/hs-dataenc||2018-09-16|Has expired: Not being developed upstream
+devel/tinyq||2018-09-16|Has expired: Unmaintained upstream and unused in the ports tree
+devel/hs-hashed-storage||2018-09-16|Has expired: Not being developed upstream
+www/py-searx|www/searx|2018-09-16|Move to a proper directory: this is a server, not a library
+net/syndication|net/kf5-syndication|2018-09-17|Has become a proper KDE framework
+x11-wm/swm||2018-09-21|Has expired: upstream no longer maintained, the screen turns black after starting swm
+graphics/OpenEXR|graphics/openexr|2018-09-22|Renamed to match upstream distribution's lower-case name
+math/mtl||2018-09-27|Has expired: fails to fetch: mastersite times out
+dns/dnscrypt-proxy|dns/dnscrypt-proxy2|2018-09-27|Has expired: Deprecated by upstream, use dns/dnscrypt-proxy2 instead
+www/waterfox||2018-09-29|Has expired: experiment ended: unsustainable
+net/ntp-devel|net/ntp|2018-09-30|Has expired: Use net/ntp instead
+net/xrdp-devel|net/xrdp|2018-09-30|Has expired: Use net/xrdp instead
+net/tigervnc-devel|net/tigervnc|2018-09-30|Has expired: Use net/tigervnc instead
+net/unison-devel|net/unison|2018-09-30|Has expired: Use net/unison instead
+textproc/p5-IDNA-Punycode||2018-09-30|Has expired: Deprecated by upstream
+graphics/gnustep-slideshowkit||2018-09-30|Has expired: unknown license
+graphics/gnustep-slideshow||2018-09-30|Has expired: depends on expiring graphics/gnustep-slideshowkit
+security/lockdown||2018-09-30|Has expired: Renders system unbootable
+devel/p5-Search-Binary||2018-09-30|Has expired: Deprecated by upstream, use List::BinarySearch instead
+devel/p5-ExtUtils-Command|devel/p5-ExtUtils-MakeMaker|2018-09-30|Has expired: ExtUtils::Command has been re-incorporated to ExtUtils-MakeMaker since 7.06, use devel/p5-ExtUtils-MakeMaker instead
+editors/yui||2018-09-30|Has expired: Unmaintained upstream
+x11/tint-devel|x11/tint|2018-09-30|Has expired: Use x11/tint instead
+print/apsfilter||2018-09-30|Mostly unmaintained since 2015 and depends on expired ports
+print/hpijs||2018-09-30|Has expired: Unsupported since 2005, please migrate to print/hplip
+archivers/freeze||2018-09-30|Has expired: unknown license
+accessibility/atk-reference||2018-09-30|Removed stand alone documentation port
+graphics/cairo-reference||2018-09-30|Removed stand-alone documentation port
+deskutils/gnome-shell-extension-overlay-icons|deskutils/gnome-shell-extension-windowoverlay-icons|2018-09-30|Renamed
+deskutils/gnome-tweak-tool|deskutils/gnome-tweaks|2018-09-30|Renamed
+x11-themes/gnome-themes-standard|x11-themes/gnome-themes-extra|2018-09-30|Renamed
+accessibility/mousetweaks||2018-09-30|Remove, no longer maintained
+deskutils/kdeconnect|deskutils/kdeconnect-kde-kde4|2018-09-30|Renamed to make place for KF5 based version

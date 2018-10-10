@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	crontab
-PORTVERSION=	1.1.2
+PORTVERSION=	1.1.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	elixir-
@@ -18,5 +18,7 @@ GH_ACCOUNT=	jshmrtn
 MIX_BUILD_DEPS=	devel/elixir-timex
 MIX_RUN_DEPS:=	${MIX_BUILD_DEPS}
 MIX_REWRITE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

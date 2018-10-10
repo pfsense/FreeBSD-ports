@@ -5,6 +5,7 @@
 
 PORTNAME=	libgit2-glib
 PORTVERSION=	0.26.0
+PORTREVISION=	1
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -26,5 +27,7 @@ GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 CONFIGURE_ARGS=	--disable-python
 INSTALL_TARGET=	install-strip
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

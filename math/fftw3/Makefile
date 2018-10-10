@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fftw3
-DISTVERSION=	3.3.7
-PORTREVISION?=	0
+DISTVERSION=	3.3.8
+PORTREVISION?=	1
 CATEGORIES=	math
 MASTER_SITES=	http://www.fftw.org/ \
 		ftp://ftp.fftw.org/pub/fftw/
@@ -117,7 +117,7 @@ PLIST_SUB+=	FFTW3_SUFX="${FFTW3_SUFX}"
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MOPTIMIZED_CFLAGS}
-CFLAGS+=	-O3 -ffast-math -fstrict-aliasing
+CFLAGS+=	-O3 -fstrict-aliasing
 .  if !defined(WITH_DEBUG)
 CFLAGS+=	-fomit-frame-pointer
 .  endif

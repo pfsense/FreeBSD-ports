@@ -2,12 +2,15 @@
 
 PORTNAME=	kde-runtime
 PORTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	x11 kde kde-applications
 PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Runtime components for KDE Plasma Desktop
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 CONFLICTS_INSTALL=	plasma5-kde-cli-tools
 
@@ -16,7 +19,7 @@ LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 		libslp.so:net/openslp \
 		libssh.so:security/libssh \
 		libqzeitgeist.so:sysutils/qzeitgeist \
-		libImath-2_2.so:graphics/ilmbase \
+		libImath.so:graphics/ilmbase \
 		libassuan.so:security/libassuan \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error \
@@ -44,7 +47,7 @@ OPTIONS_DEFINE=	OPENEXR PULSEAUDIO ZEITGEIST
 OPTIONS_DEFAULT=	OPENEXR
 OPTIONS_SUB=	yes
 
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
 OPENEXR_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_OpenEXR
 
 PULSEAUDIO_DESC=Audio configuration via PulseAudio

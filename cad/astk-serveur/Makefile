@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	astk
-DISTVERSION=	1.13.10-1
-PORTREVISION=	1
+DISTVERSION=	2018.0-1
 CATEGORIES=	cad
 .if !defined(CLIENT_SEUL)
 PKGNAMESUFFIX=	-serveur
@@ -63,7 +62,7 @@ WRKCONF=	${WRKDIR}/${PORTNAME}-${PORTVERSION:R}/configuration
 .if !defined(CLIENT_SEUL)
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}/ASTK_SERV
 PATCHDIR=	${MASTERDIR}/files
-PLIST_SUB=	ASTKDIR=${LINSTDIR}/ASTK_SERV SERV="" CLIENT="@comment "\
+PLIST_SUB+=	ASTKDIR=${LINSTDIR}/ASTK_SERV SERV="" CLIENT="@comment "\
 		vaster=${vaster}
 PATCH2RM=	bin/as_run bin/parallel_cp etc/asrun etc/profile.sh	\
 		asrun/config.py asrun/installation.py asrun/system.py	\
@@ -91,7 +90,7 @@ TKPNG_VER=	0.9
 TKPNG=		tkpng${TKPNG_VER}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}/ASTK_CLIENT
 PATCHDIR=	${MASTERDIR}/files.client
-PLIST_SUB=	ASTKDIR=${LINSTDIR}/ASTK_CLIENT SERV="@comment " CLIENT="" vaster=""	\
+PLIST_SUB+=	ASTKDIR=${LINSTDIR}/ASTK_CLIENT SERV="@comment " CLIENT="" vaster=""	\
 		BWidget_DIR=${LINSTDIR}/ASTK_CLIENT/lib/BWidget-${BWidget_VER}
 PATCH2RM=	bin/astk bin/bsf etc/astkrc/outils lib/init.tcl lib/tkselecteur.tcl
 .endif
@@ -123,7 +122,6 @@ SHIA=		zsh
 .endif
 SHIADEP=	${SHIA}
 BASH2RC=	asrun/calcul.py share/codeaster/asrun/data/mpirun_template
-BASH2RC2=	lib/tkselecteur.tcl
 BASH2RC3=	deprecated_outils.sh extract_info.py deprecated_client.sh	\
 		deprecated_server.sh
 
@@ -262,9 +260,6 @@ do-configure:
 		${WRKSRC}/lib/tkselecteur.tcl
 	${REINPLACE_CMD} -e "s|%%unamesm%%|${unamesm}|"				\
 		${WRKSRC}/lib/init.tcl
-. for sh in ${BASH2RC2}
-	${REINPLACE_CMD} -e 's|/bin/bash|${SHELL_INSTALL_ASTER}|' ${WRKSRC}/${sh}
-. endfor
 .endif
 .for sh in ${BASH2RC3}
 	${REINPLACE_CMD} -e 's|/bin/bash|${SHELL_INSTALL_ASTER}|' ${WRKCONF}/${sh}

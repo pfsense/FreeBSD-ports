@@ -3,7 +3,7 @@
 PORTNAME=	opencpn
 PORTVERSION=	4.4.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	astro geography
 
 MAINTAINER=	ml@netfence.it
@@ -33,6 +33,8 @@ LDFLAGS+=	-Wl,-E # plugins
 LDFLAGS+=	-Wl,--as-needed # ICE, SM, Xext
 
 BROKEN_aarch64=		Fails to compile: use of undeclared identifier rand
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},' \

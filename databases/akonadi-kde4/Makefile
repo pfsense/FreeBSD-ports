@@ -3,7 +3,7 @@
 
 PORTNAME=	akonadi
 PORTVERSION=	1.13.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	databases kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/src
 PKGNAMESUFFIX=	-kde4
@@ -13,6 +13,9 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Storage server for KDE-Pim
 
 LICENSE=	LGPL21
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 # Let process generate meaningful backtrace on core dump.

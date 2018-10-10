@@ -17,7 +17,7 @@ LICENSE_PERMS_BuildLic=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-acc
 
 LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis
 
-USES=		alias dos2unix gmake pkgconfig:build
+USES=		alias dos2unix gmake gnome pkgconfig:build
 DOS2UNIX_REGEX=	.*(\.(c|h)|Makefile)(\.deps)?
 
 USE_GITHUB=	yes
@@ -42,6 +42,8 @@ MAKE_ENV+=	DATADIR="${DATADIR}" \
 SUB_FILES=	pkg-message
 
 PORTDOCS=	readme.txt releasenotes.html
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} 's|/usr/X11R6|${LOCALBASE}|' \

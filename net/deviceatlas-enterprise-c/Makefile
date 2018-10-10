@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	deviceatlas-enterprise-c
-PORTVERSION=	2.1.3
+PORTVERSION=	2.1.4
 CATEGORIES=	net devel
 MASTER_SITES=	#
 
@@ -26,6 +26,8 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 REGISTRATION_URL=	https://deviceatlas.com/deviceatlas-haproxy-module
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 .include <bsd.port.pre.mk>
 
 .if !exists(${DISTDIR}/${DISTNAME}${EXTRACT_SUFX})
@@ -33,6 +35,7 @@ IGNORE?=	you must manually fetch the DeviceAtlas Device Detection C API from ${R
 .endif
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libda.so
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libda.so \
+		${STAGEDIR}${PREFIX}/lib/libci.so
 
 .include <bsd.port.post.mk>

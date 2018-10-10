@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	libffcall
-PORTVERSION=	1.13
+PORTVERSION=	2.1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ndowens@yahoo.com
 COMMENT=	Foreign function call libraries
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_aarch64=		fails to build: checking whether code in malloc()ed memory is executable... Killing runaway build after 14400 seconds with no output
 BROKEN_armv6=		fails to build: avcall-armhf.s:46:2: error: '.syntax divided' arm assembly not supported
 BROKEN_armv7=		fails to build: avcall-armhf.s:46:2: error: '.syntax divided' arm assembly not supported
 BROKEN_mips=		fails to build: gmake[2]: No rule to make target 'avcall-mipsn32-macro.S', needed by 'avcall-mipsn32.s'
@@ -21,11 +22,10 @@ GNU_CONFIGURE=	yes
 USES=		gmake libtool
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS=	--enable-shared
+CONFIGURE_ARGS=		--enable-shared
 CONFIGURE_TARGET=	${ARCH:S/amd64/x86_64/}-portbld-${OPSYS:tl}${OSREL}
 MAKE_JOBS_UNSAFE=	yes
-
-CFLAGS+=	-fPIC
+CFLAGS+=		-fPIC
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libavcall.so \

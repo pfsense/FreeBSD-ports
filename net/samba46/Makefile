@@ -3,7 +3,7 @@
 
 PORTNAME?=			${SAMBA4_BASENAME}46
 PORTVERSION?=			${SAMBA4_VERSION}
-PORTREVISION?=			0
+PORTREVISION?=			1
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
@@ -19,11 +19,9 @@ IGNORE_NONTHREAD_PYTHON=	needs port lang/python${PYTHON_SUFFIX} to be build with
 
 CONFLICTS_INSTALL?=		samba4-4.0.* samba4[1-57-9]-4.* p5-Parse-Pidl-4.*
 
-#EXTRA_PATCHES=		${PATCHDIR}/extra-patch-security:-p1
-
 SAMBA4_BASENAME=		samba
 SAMBA4_PORTNAME=		${SAMBA4_BASENAME}4
-SAMBA4_VERSION=			4.6.15
+SAMBA4_VERSION=			4.6.16
 SAMBA4_DISTNAME=		${SAMBA4_BASENAME}-${SAMBA4_VERSION:S|.p|pre|:S|.r|rc|:S|.t|tp|:S|.a|alpha|}
 
 WRKSRC?=			${WRKDIR}/${DISTNAME}
@@ -101,11 +99,9 @@ MANPAGES_DESC=			Build manpages from DOCBOOK templates
 NTVFS_DESC=			Build *DEPRECATED* NTVFS file server
 
 OPTIONS_RADIO=			DNS ZEROCONF
-OPTIONS_RADIO_DNS=		NSUPDATE BIND99 BIND910 BIND911
+OPTIONS_RADIO_DNS=		NSUPDATE BIND911
 OPTIONS_RADIO_ZEROCONF=		AVAHI MDNSRESPONDER
 
-BIND99_DESC=			Use Bind 9.9 as AD DC DNS server frontend
-BIND910_DESC=			Use Bind 9.10 as AD DC DNS server frontend
 BIND911_DESC=			Use Bind 9.11 as AD DC DNS server frontend
 NSUPDATE_DESC=			Use samba NSUPDATE utility for AD DC
 # XXX: Unconditional dependencies which can't be switched off(if present in the system)
@@ -161,8 +157,6 @@ CONFIGURE_ARGS+=		\
 				--with-sendfile-support \
 				${ICONV_CONFIGURE_BASE}
 
-BIND99_RUN_DEPENDS=		bind99>=9.9.0.0:dns/bind99
-BIND910_RUN_DEPENDS=		bind910>=9.10.0.0:dns/bind910
 BIND911_RUN_DEPENDS=		bind911>=9.11.0.0:dns/bind911
 NSUPDATE_RUN_DEPENDS=		samba-nsupdate:dns/samba-nsupdate
 

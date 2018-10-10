@@ -4,7 +4,7 @@
 PORTNAME=	userfw
 PORTVERSION=	0.1.3
 PORTREVISION=	1
-CATEGORIES=	net kld
+CATEGORIES=	net
 MASTER_SITES=	http://userfw.net/files/release/ \
 		http://imax.in.ua/files/ \
 		http://projects.ukrweb.net/files/
@@ -19,6 +19,8 @@ BROKEN_powerpc=		fails to compile
 BROKEN_powerpc64=	fails to compile: pcpu.h: size of array '__assert_0' is negative
 BROKEN_FreeBSD_11=	fails to build on FreeBSD 11+
 BROKEN_FreeBSD_12=	fails to build on FreeBSD 11+
+DEPRECATED=	Does not build on FreeBSD 11+
+EXPIRATION_DATE=	2018-10-31
 
 SSP_UNSAFE=	kernel module does not support ssp
 USES=		cmake:outsource kmod tar:xz uidfix

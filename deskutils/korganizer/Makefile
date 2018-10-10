@@ -2,7 +2,6 @@
 
 PORTNAME=	korganizer
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	deskutils kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -21,12 +20,15 @@ USE_KDE+=	akonadi akonadicalendar akonadicontacts akonadimime \
 		akonadinotes akonadisearch calendarcore calendarsupport \
 		calendarutils contacts eventviews holidays identitymanagement \
 		incidenceeditor kdepim-apps-libs kontactinterface ldap \
-		libkdepim mailtransport mime pimcommon pimtextedit
+		libkdepim mailtransport mime pimcommon pimtextedit \
+		kdepim-runtime5_run
 USE_QT=		core dbus gui network phonon4 printsupport widgets xml \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes
 
 DESCR=		${.CURDIR:H:H}/deskutils/kdepim/pkg-descr
 
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

@@ -1,18 +1,18 @@
 # $FreeBSD$
 
 PORTNAME=	grafana
-PORTVERSION=	5.0.4
+PORTVERSION=	5.2.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES+=	https://s3-us-west-2.amazonaws.com/grafana-releases/release/:public
 PKGNAMESUFFIX=	${PORTVERSION:C/([0-9]).*/\1/1}
-DISTFILES=	grafana-${PORTVERSION}.linux-x64${EXTRACT_SUFX}:public
+DISTFILES=	grafana-${PORTVERSION}.linux-amd64${EXTRACT_SUFX}:public
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Dashboard and graph editor for multiple data stores
 
-LICENSE=		APACHE20
+LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 ONLY_FOR_ARCHS=	amd64 i386
@@ -24,7 +24,7 @@ USE_RC_SUBR=	grafana
 
 USE_GITHUB=	yes
 GH_SUBDIR=	src/github.com/${PORTNAME}/${PORTNAME}
-TAG=		7dc36ae
+TAG=		0bbac5c
 
 GRAFANA_USER?=	grafana
 GRAFANA_GROUP?=	grafana
@@ -53,7 +53,7 @@ PLIST_SUB+=	GRAFANAHOMEDIR=${GRAFANAHOMEDIR}
 
 post-extract:
 	@${RM} -r ${WRKSRC}/src/github.com/grafana/grafana/public
-	@(cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${DISTDIR}/grafana-${PORTVERSION}.linux-x64${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS} grafana-${PORTVERSION}/public)
+	@(cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${DISTDIR}/grafana-${PORTVERSION}.linux-amd64${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS} grafana-${PORTVERSION}/public)
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${PORTNAME}/${PORTNAME} ; ${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags "-w -X main.version=${PORTVERSION} -X main.commit=${TAG}" -o ./bin/grafana-server ./pkg/cmd/grafana-server

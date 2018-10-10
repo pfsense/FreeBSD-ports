@@ -2,17 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	ss5
-PORTVERSION=	3.8.5
-DISTVERSIONSUFFIX=	-1
-PORTREVISION=	3
+DISTVERSION=	3.8.9-8
 CATEGORIES=	net security
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}${DISTVERSIONSUFFIX}
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	raffaele.delorenzo@libero.it
 COMMENT=	SOCKS v4/v5 application layer gateway with many features
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/License
 
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:C/-[0-9]+//}
+
+USES=		ssl
 USE_OPENLDAP=	yes
 USE_RC_SUBR=	${PORTNAME}
 
@@ -24,9 +26,8 @@ CONFIGURE_ARGS=	--with-binpathbase=${PREFIX}/sbin \
 
 MAKE_ENV=	DATADIR=${DATADIR} EXAMPLESDIR=${EXAMPLESDIR}
 MAKE_ARGS+=	CC="${CC}"
-CFLAGS+=	-DLDAP_DEPRECATED
 
-MAKE_JOBS_UNSAFE=	yes
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},g' ${WRKSRC}/Makefile.in
@@ -34,7 +35,7 @@ post-patch:
 		${WRKSRC}/include/config.h.in
 
 post-install:
-	${MKDIR} ${STAGEDIR}/var/log/ss5
+	${MKDIR} ${STAGEDIR}/var/log/ss5 ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/conf/ss5.conf \
 		${STAGEDIR}${PREFIX}/etc/ss5/ss5.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/conf/ss5.ha \

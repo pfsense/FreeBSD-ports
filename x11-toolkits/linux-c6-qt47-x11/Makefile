@@ -17,7 +17,7 @@ DESCR=		${.CURDIR}/../../devel/qt4/pkg-descr
 RPMVERSION=	1_18.el6
 USES=		linux:c6
 USE_LDCONFIG=	yes
-USE_LINUX=	alsalib dri fontconfig jpeg openssl png qt47 tiff xorglibs
+USE_LINUX=	alsalib dri fontconfig jpeg openssl png qt tiff xorglibs
 USE_LINUX_RPM=	yes
 
 post-patch:

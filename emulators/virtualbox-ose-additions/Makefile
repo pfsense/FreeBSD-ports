@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.2.12
+PORTVERSION=	5.2.18
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX?=	-additions
@@ -101,7 +102,7 @@ VBOX_LIBS=	VBoxEGL.so \
 .if ${PORT_OPTIONS:MX11}
 BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/xorg-server.pc:x11-servers/xorg-server
 RUN_DEPENDS+=	xrandr:x11/xrandr
-USE_XORG+=	inputproto x11 xcursor xext xmu xorg-server xrandr xt
+USE_XORG+=	xorgproto x11 xcursor xext xmu xorg-server xrandr xt
 USES+=		pkgconfig
 VBOX_WITH_X11=	1
 XORG_DRV_ABI=	pkgconf --modversion xorg-server | \
@@ -124,15 +125,6 @@ EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-Config.kmk \
 		${PATCHDIR}/extrapatch-src-VBox-Additions-x11-x11include-xorg-server-1.17.1-compiler.h
 .if ${COMPILER_FEATURES:Mlibc++}
 EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Additions-x11-VBoxClient-Makefile.kmk
-.endif
-.endif
-
-.if ${ARCH} == "amd64"
-.if !exists(/usr/lib32/libc.so)
-pre-everything::
-	@${ECHO} 'Requires 32-bit libraries installed under /usr/lib32.'
-	@${ECHO} 'Do: cd /usr/src; make build32 install32; service ldconfig restart'
-	@${FALSE}
 .endif
 .endif
 

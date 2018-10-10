@@ -5,6 +5,169 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20180930:
+  AFFECTS: users of DRM components
+  AUTHOR: jmd@FreeBSD.org
+
+  A metaport, graphics/drm-kmod, was introduced for users of both the LinuxKPI-
+  based DRM components as well as the legacy ones. It is recommended to use the
+  metaport from now on, which will select a recommended DRM version based on
+  the FreeBSD version.
+
+20180924:
+  AFFECTS: www/libresonic-standalone
+  AUTHOR: jlh@FreeBSD.org
+
+  HTTPS support has been removed from the port, as it will be removed upstream:
+    https://github.com/Libresonic/libresonic/issues/125#issuecomment-256227104
+
+  In order to avoid strange behavior for users who are using this feature, the
+  rc.d script will fail fast if libresonic_ssl="YES". You should remove the
+  following variables from rc.conf(5): libresonic_ssl libresonic_ssl_keystore
+  libresonic_ssl_password.
+
+  # sed -i '' /libresonic_ssl/d /etc/rc.conf
+
+  Users needing SSL are encouraged to use an HTTP reverse-proxy. Example
+  configurations can be found here:
+    https://github.com/Libresonic/libresonic/issues/119
+
+20180922:
+  AFFECTS: users of graphics/ilmbase, graphics/OpenEXR
+  AUTHOR: mandree@FreeBSD.org
+
+  The IlmBase package has been updated to 2.3.0.
+  The OpenEXR package has been renamed to openexr and updated to 2.3.0.
+
+  The PORTREVISION of all ports requiring either has been bumped to
+  ease the reubuilds, and where there were versions in the file names,
+  these have been removed from the *_DEPENDS lines for easier maintenance.
+
+  A full ports or package upgrade should just work.
+
+  If you are doing partial updates, be sure to rebuild and reinstall
+  all packages that require either of OpenEXR or ilmbase.
+  Normally, these can be listed by running:
+
+  # pkg info -q -r OpenEXR ilmbase  | sort -u | xargs pkg info -q -o
+
+20180905:
+  AFFECTS: users of lang/php56
+  AUTHOR: tz@FreeBSD.org
+
+  The default version of PHP has been switched from 5.6 to 7.1.
+
+  If you use binary packages you should make a list of php packages
+  before running 'pkg upgrade':
+
+  # pkg info php5\* > ~/installed-php-ports-list
+
+  After the upgrade, check with such list if all your php extensions
+  are still installed, and reinstall them if needed.
+
+  If you use mod_php56 you need to deinstall it and install mod_php71.
+
+20180901:
+  AFFECTS: net/samba48
+  AUTHOR: timur@FreeBSD.org
+
+  Samba ports from now on are not dependent from the databases/ldb* ports,
+  as the link between Samba and LDB is too tight and each next major Samba
+  release requires it's own major LDB release. Please, remove installed
+  version of databases/ldb13 from your system with:
+
+  # pkg delete -f databases/ldb13
+
+20180901:
+  AFFECTS: net-mgmt/librenms
+  AUTHOR: dvl@FreeBSD.org
+
+  As of version 1.42, to conform with man hier, logs and rrd files have 
+  relocated outside the WWW directory. When upgrading from < 1.42 to more
+  recent versions, the following steps are required.
+
+  You must update config.php and manually relocate the rrd and log files.
+  Before upgrading, please stop librenms,  update the configuration, and
+  relocate the files.
+
+  If you find graphs are not updating, fping >= 4.0 requires an IPv6
+  address. Adding an IPv6 address should fix graphing.
+
+  Please add these entries to config.php:
+
+  $config['installed_from_package'] = true;
+  $config['log_dir'] = '/var/log/librenms';
+  $config['rrd_dir'] = '/var/db/librenms/rrd';
+
+  To relocate the files:
+
+  mkdir /var/log/librenms /var/db/librenms
+  chown www:ww: /var/log/librenms /var/db/librenms
+  cd /usr/local/www/librenms
+  mv rrd /var/db/librenms/
+  mv logs/librenms.log /var/log/librenms/
+  rmdir logs
+
+  An application key is required. Please follow these steps to generate it:
+
+  cd /usr/local/www/librenms
+  cp -i .env.sample .env
+
+  You might need to set your database details in that file.
+  Then run:
+
+  php artisan key:generate
+
+  The output should look something like this:
+
+  **************************************
+  *     Application In Production!     *
+  **************************************
+
+   Do you really wish to run this command? (yes/no) [no]:
+   > y
+
+  Application key [base64:P62La9V........qw=] set successfully.
+ 
+
+20180901:
+  AFFECTS: users of samba46
+  AUTHOR: antoine@FreeBSD.org
+
+  The default version of samba has been switched from 4.6 to 4.7.
+  Upgrade instructions:
+
+  For package users having samba46 installed indirectly (as a dependency):
+    # pkg upgrade
+
+  For package users having samba46 installed directly (leaf port):
+    # pkg upgrade
+    # pkg install samba47
+
+  For ports users:
+    If you want to keep samba46, add DEFAULT_VERSIONS+= samba=4.6 to make.conf
+
+    If you want to upgrade to samba47, remove samba46:
+    # pkg delete -f samba46
+
+    Portmaster users:
+    # portmaster net/samba47
+    # portmaster -a
+
+    Portupgrade users:
+    # portinstall net/samba47
+    # portupgrade -a
+
+20180813:
+  AFFECTS: net/geoipupdate
+  AUTHOR: adamw@FreeBSD.org
+
+  There have been some breaking changes to the GeoIP.conf in version 3.0.0.
+  Read about the changes at
+    https://github.com/maxmind/geoipupdate/blob/master/ChangeLog.md
+  and either edit your GeoIP.conf as needed, or recreate it from
+  GeoIP.conf.sample.
+
 20180810:
   AFFECTS: databases/postgresql??-server
   AUTHOR: girgen@FreeBSD.org
@@ -14,6 +177,97 @@ you update your ports collection, before attempting any port upgrades.
   the port and check the XML option in the option dialog. The reason for this
   is the bad security reputation of libxml2.
  
+20180806:
+  AFFECTS: www/tt-rss
+  AUTHOR: thierry@FreeBSD.org
+
+  tt-rss now uses pdo_mysql/pgsql for database acccess; a web server reload
+  will be required if pdo ext. isn't installed.
+
+20180804:
+  AFFECTS: net-mgmt/zabbix*-server
+  AUTHOR: dbaio@FreeBSD.org
+
+  The JAVAGW option was removed from the Zabbix Server and an additional slave
+  port was created, zabbix*-java, it installs only Zabbix Java Gateway files,
+  this way is possible to deploy a Zabbix Java Gateway without the need to
+  install Zabbix Server components.
+
+  If you are using the JAVAGW option on Zabbix Server, please, install now the
+  new zabbix*-java port.
+
+20180803
+  AFFECTS: users of net/openntpd
+  AUTHOR: naddy@FreeBSD.org
+
+  The numerical ID of the "_ntp" user had to be moved after 12.0-CURRENT
+  (revision 336525) took over its value for a user "ntpd" that uses a
+  different privilege model.
+
+  To avoid clashes between the two users, please remove the openntpd
+  package, delete the old UID with
+
+  # pw userdel _ntp
+
+  and re-install openntpd.
+
+20180731:
+  AFFECTS: users of audio/sndio
+  AUTHOR: tobik@FreeBSD.org
+
+  sndiod(8) will now use the default audio device /dev/dsp instead
+  of /dev/dsp0 if no device was specified.
+
+  The location of ~/.aucat_cookie has moved to ~/.sndio/cookie.  If
+  you share audio devices via sndiod(8) on the network or between
+  local users, please migrate it manually to the new location to
+  guarantee a smooth upgrade.
+
+20180731:
+  AFFECTS: users of x11/xorg and all ports with USE_XORG=*proto
+  AUTHOR: zeising@FreeBSD.org
+
+  The xorg *proto packages have all been merged into one package,
+  x11/xorgproto.  This might cause issues with upgrading.  If you
+  get conflicts between xorgproto and old *proto packages, please
+  remove the old package and install xorgproto again.
+
+  In order to remove all orphaned ports, including all *proto port,
+  the following can be used after the ports tree has been updated:
+  pkg version -l \? | cut -f 1 -w | grep -v compat | xargs pkg delete -fy
+
+20180728:
+  AFFECTS: users who upgrade from security/kc to security/kc24
+  AUTHOR: pi@FreeBSD.org
+
+  The ondisk format changes from kc 2.3 to kc 2.4, so please
+  read the kc24 pkg-message file before the upgrade. It describes
+  how to create a backup, the xml dump and how to import the
+  xml dump afterwards.
+
+20180725:
+  AFFECTS: users of textproc/ibus-typing-booster
+  AUTHOR: thierry@FreeBSD.org
+
+  Due to a migration from IBusConfig to GSettings, the old settings are
+  unfortunately lost, so one has to open the setup tool and recreate ones
+  favourite settings.
+
+20180714:
+  AFFECTS: users of dns/dnsdist
+  AUTHOR: cpm@FreeBSD.org
+
+  After discussing with several users, we noticed that quite a lot of them
+  were not aware that enabling the dnsdist's console without a key, even
+  restricted to the local host, could be a security issue and allow privilege
+  escalation by allowing an unprivileged user to connect to the console and
+  execute Lua code as the dnsdist user. We therefore decided to refuse any
+  connection to the console until a key has been set, so please check that
+  you do set a key before upgrading if you use the console.  
+
+  For further details read: 
+  https://blog.powerdns.com/2018/07/10/dnsdist-1-3-2-released/
+
 20180704:
   AFFECTS: users of www/gitlab
   AUTHOR: mfechner@FreeBSD.org
@@ -6246,7 +6500,7 @@ you update your ports collection, before attempting any port upgrades.
 
   Elasticsearch has been updated to version 1.1.0. If you are updating
   from a version prior to 1.0.0 you will need to do a full cluster
-  shutdown for this update as it can not be performed in a rolling
+  shutdown for this update as it cannot be performed in a rolling
   fashion.
 
 20140401:
@@ -10476,13 +10730,13 @@ you update your ports collection, before attempting any port upgrades.
                       FreeBSD sources.
 
   Also, subversion 1.7.0 changes the working copy format,
-  and a working copy can not be shared between
+  and a working copy cannot be shared between
   subversion 1.7.0 and 1.6.x. Please, think twice before
   upgrading.
 
   Additional the port "devel/subversion16" was created to
   support subversion 1.6.x. Subversion 1.7.x and 1.6.x
-  can not be installed simultaneously!
+  cannot be installed simultaneously!
 
   Binding ports can be built with Subversion 1.7.0 (Default)
   or with Subversion 1.6.x. To build bindings with subversion 1.6.x
@@ -12574,7 +12828,7 @@ or
     o japanese/ibus-mozc
     o devel/py-gyp-devel
 
-  You can not upgrade with portupgrade or portmaster. To upgrade, you
+  You cannot upgrade with portupgrade or portmaster. To upgrade, you
   must deinstall japanese/ibus-mozc first and then install the new
   japanese/ibus-mozc.
 
@@ -14521,7 +14775,7 @@ or
   AUTHOR: pgollucci@FreeBSD.org
 
   www/rt2 www/rt3 www/rt32 www/rt34 are now deprecated and will expire
-  2009-02-01.  All ports now depend on www/rt38 If you can not update
+  2009-02-01.  All ports now depend on www/rt38 If you cannot update
   to www/rt38, www/rt36 is still around.
 
 20081224:

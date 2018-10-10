@@ -6,7 +6,6 @@ bin/radare2
 bin/radiff2
 bin/rafind2
 bin/ragg2
-bin/ragg2-cc
 bin/rahash2
 bin/rarun2
 bin/rasm2
@@ -58,6 +57,7 @@ include/libr/r_types.h
 include/libr/r_types_base.h
 include/libr/r_userconf.h
 include/libr/r_util.h
+include/libr/r_util/r_ascii_table.h
 include/libr/r_util/r_asn1.h
 include/libr/r_util/r_base64.h
 include/libr/r_util/r_base91.h
@@ -66,12 +66,13 @@ include/libr/r_util/r_bitmap.h
 include/libr/r_util/r_buf.h
 include/libr/r_util/r_cache.h
 include/libr/r_util/r_constr.h
+include/libr/r_util/r_ctypes.h
 include/libr/r_util/r_debruijn.h
 include/libr/r_util/r_des.h
 include/libr/r_util/r_file.h
 include/libr/r_util/r_graph.h
 include/libr/r_util/r_hex.h
-include/libr/r_util/r_id_storage.h
+include/libr/r_util/r_idpool.h
 include/libr/r_util/r_itv.h
 include/libr/r_util/r_json.h
 include/libr/r_util/r_log.h
@@ -79,6 +80,7 @@ include/libr/r_util/r_mem.h
 include/libr/r_util/r_mixed.h
 include/libr/r_util/r_name.h
 include/libr/r_util/r_num.h
+include/libr/r_util/r_panels.h
 include/libr/r_util/r_pkcs7.h
 include/libr/r_util/r_pool.h
 include/libr/r_util/r_punycode.h
@@ -95,6 +97,7 @@ include/libr/r_util/r_strbuf.h
 include/libr/r_util/r_strpool.h
 include/libr/r_util/r_sys.h
 include/libr/r_util/r_tree.h
+include/libr/r_util/r_trie.h
 include/libr/r_util/r_uleb128.h
 include/libr/r_util/r_utf16.h
 include/libr/r_util/r_utf32.h
@@ -137,8 +140,6 @@ include/libr/sflib/linux-x86-32/sfsysnr.h
 include/libr/sflib/linux-x86-64/sflib.h
 include/libr/sflib/linux-x86-64/sfsyscall.h
 include/libr/sflib/linux-x86-64/sfsysnr.h
-lib/libr2.so
-lib/libr2.so.%%PORTVERSION%%
 lib/libr_anal.so
 lib/libr_anal.so.%%PORTVERSION%%
 lib/libr_asm.so
@@ -215,7 +216,6 @@ man/man1/rabin2.1.gz
 man/man1/radare2.1.gz
 man/man1/radiff2.1.gz
 man/man1/rafind2.1.gz
-man/man1/ragg2-cc.1.gz
 man/man1/ragg2.1.gz
 man/man1/rahash2.1.gz
 man/man1/rarun2.1.gz
@@ -245,6 +245,7 @@ man/man7/esil.7.gz
 %%PORTDOCS%%%%DOCSDIR%%/fortunes.tips
 %%PORTDOCS%%%%DOCSDIR%%/freebsd.md
 %%PORTDOCS%%%%DOCSDIR%%/gdb.md
+%%PORTDOCS%%%%DOCSDIR%%/gprobe.md
 %%PORTDOCS%%%%DOCSDIR%%/haiku.md
 %%PORTDOCS%%%%DOCSDIR%%/hud
 %%PORTDOCS%%%%DOCSDIR%%/ida.md
@@ -262,6 +263,7 @@ man/man7/esil.7.gz
 %%PORTDOCS%%%%DOCSDIR%%/maemo.md
 %%PORTDOCS%%%%DOCSDIR%%/objc.pl
 %%PORTDOCS%%%%DOCSDIR%%/oo.md
+%%PORTDOCS%%%%DOCSDIR%%/openbsd.md
 %%PORTDOCS%%%%DOCSDIR%%/plugins.md
 %%PORTDOCS%%%%DOCSDIR%%/portscan.r2
 %%PORTDOCS%%%%DOCSDIR%%/qnx.md
@@ -278,17 +280,17 @@ man/man7/esil.7.gz
 %%PORTDOCS%%%%DOCSDIR%%/statis.md
 %%PORTDOCS%%%%DOCSDIR%%/strings.md
 %%PORTDOCS%%%%DOCSDIR%%/termux.md
-%%PORTDOCS%%%%DOCSDIR%%/types.md
 %%PORTDOCS%%%%DOCSDIR%%/uncrustify.cfg
 %%PORTDOCS%%%%DOCSDIR%%/vim
 %%PORTDOCS%%%%DOCSDIR%%/vim2r2.js
 %%PORTDOCS%%%%DOCSDIR%%/windbg.md
 %%PORTDOCS%%%%DOCSDIR%%/windows.md
 %%PORTDOCS%%%%DOCSDIR%%/yara.md
-%%DATADIR%%/%%PORTVERSION%%/cons/Makefile
 %%DATADIR%%/%%PORTVERSION%%/cons/Makefile.bak
+%%DATADIR%%/%%PORTVERSION%%/cons/ayu
 %%DATADIR%%/%%PORTVERSION%%/cons/basic
 %%DATADIR%%/%%PORTVERSION%%/cons/behelit
+%%DATADIR%%/%%PORTVERSION%%/cons/bold
 %%DATADIR%%/%%PORTVERSION%%/cons/cga
 %%DATADIR%%/%%PORTVERSION%%/cons/consonance
 %%DATADIR%%/%%PORTVERSION%%/cons/cutter
@@ -298,16 +300,18 @@ man/man7/esil.7.gz
 %%DATADIR%%/%%PORTVERSION%%/cons/focus
 %%DATADIR%%/%%PORTVERSION%%/cons/lima
 %%DATADIR%%/%%PORTVERSION%%/cons/matrix
-%%DATADIR%%/%%PORTVERSION%%/cons/meson.build
 %%DATADIR%%/%%PORTVERSION%%/cons/monokai
 %%DATADIR%%/%%PORTVERSION%%/cons/ogray
+%%DATADIR%%/%%PORTVERSION%%/cons/onedark
 %%DATADIR%%/%%PORTVERSION%%/cons/pink
 %%DATADIR%%/%%PORTVERSION%%/cons/rasta
+%%DATADIR%%/%%PORTVERSION%%/cons/sepia
 %%DATADIR%%/%%PORTVERSION%%/cons/smyck
 %%DATADIR%%/%%PORTVERSION%%/cons/solarized
 %%DATADIR%%/%%PORTVERSION%%/cons/tango
 %%DATADIR%%/%%PORTVERSION%%/cons/twilight
 %%DATADIR%%/%%PORTVERSION%%/cons/white
+%%DATADIR%%/%%PORTVERSION%%/cons/white2
 %%DATADIR%%/%%PORTVERSION%%/cons/xvilka
 %%DATADIR%%/%%PORTVERSION%%/cons/zenburn
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/cc-arm-32.sdb
@@ -322,6 +326,7 @@ man/man7/esil.7.gz
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/cc-x86-32.sdb
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/cc-x86-64.sdb
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/cc-xtensa-32.sdb
+%%DATADIR%%/%%PORTVERSION%%/fcnsign/spec.sdb
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/types-16.sdb
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/types-32.sdb
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/types-64.sdb
@@ -334,6 +339,7 @@ man/man7/esil.7.gz
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/types-x86-windows-32.sdb
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/types-x86-windows-64.sdb
 %%DATADIR%%/%%PORTVERSION%%/fcnsign/types.sdb
+%%DATADIR%%/%%PORTVERSION%%/flag/tags.r2
 %%DATADIR%%/%%PORTVERSION%%/format/dll/aclui.sdb
 %%DATADIR%%/%%PORTVERSION%%/format/dll/activeds.sdb
 %%DATADIR%%/%%PORTVERSION%%/format/dll/atl.sdb
@@ -346,6 +352,7 @@ man/man7/esil.7.gz
 %%DATADIR%%/%%PORTVERSION%%/format/dll/gsprop32.sdb
 %%DATADIR%%/%%PORTVERSION%%/format/dll/iertutil.sdb
 %%DATADIR%%/%%PORTVERSION%%/format/dll/kernel32.sdb
+%%DATADIR%%/%%PORTVERSION%%/format/dll/mfc120.sdb
 %%DATADIR%%/%%PORTVERSION%%/format/dll/mfc30.sdb
 %%DATADIR%%/%%PORTVERSION%%/format/dll/mfc40.sdb
 %%DATADIR%%/%%PORTVERSION%%/format/dll/mfc42.sdb
@@ -445,6 +452,7 @@ man/man7/esil.7.gz
 %%DATADIR%%/%%PORTVERSION%%/opcodes/sysz.sdb
 %%DATADIR%%/%%PORTVERSION%%/opcodes/tms320.sdb
 %%DATADIR%%/%%PORTVERSION%%/opcodes/v810.sdb
+%%DATADIR%%/%%PORTVERSION%%/opcodes/v850.sdb
 %%DATADIR%%/%%PORTVERSION%%/opcodes/x86.sdb
 %%DATADIR%%/%%PORTVERSION%%/opcodes/xtensa.sdb
 %%DATADIR%%/%%PORTVERSION%%/opcodes/z80.sdb
@@ -466,6 +474,7 @@ man/man7/esil.7.gz
 %%DATADIR%%/%%PORTVERSION%%/syscall/netbsd-x86-32.sdb
 %%DATADIR%%/%%PORTVERSION%%/syscall/openbsd-x86-32.sdb
 %%DATADIR%%/%%PORTVERSION%%/syscall/openbsd-x86-64.sdb
+%%DATADIR%%/%%PORTVERSION%%/syscall/s110-arm-16.sdb
 %%DATADIR%%/%%PORTVERSION%%/syscall/windows-x86-32.sdb
 %%DATADIR%%/%%PORTVERSION%%/syscall/windows-x86-64.sdb
 %%DATADIR%%/%%PORTVERSION%%/www/console.html

@@ -2,7 +2,6 @@
 
 PORTNAME=	gwenview
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	graphics kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -25,5 +24,7 @@ USE_QT=		concurrent core dbus gui network opengl phonon4 printsupport \
 		svg widgets x11extras xml \
 		buildtools_build qmake_build
 USE_XORG=	x11
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

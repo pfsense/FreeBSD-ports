@@ -20,7 +20,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -52,15 +52,20 @@ DISTINFO_FILE=	${.CURDIR}/distinfo
 QT5_VERSION=	5.9.5
 
 OPTIONS_SINGLE=		AUDIO
-OPTIONS_SINGLE_AUDIO=	ALSA PULSEAUDIO
+OPTIONS_SINGLE_AUDIO=	ALSA PULSEAUDIO SNDIO
 OPTIONS_DEFAULT=	ALSA
 
 AUDIO_DESC=		Audio backend
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
-ALSA_QMAKE_ON=		QT_CONFIG+=alsa
+ALSA_VARS=		QMAKE_CONFIGURE_ARGS+=-alsa
+ALSA_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-alsa
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
-PULSEAUDIO_QMAKE_ON=	QT_CONFIG+=pulseaudio
+PULSEAUDIO_VARS=	QMAKE_CONFIGURE_ARGS+=-pulseaudio
+PULSEAUDIO_VARS_OFF=	QMAKE_CONFIGURE_ARGS+=-no-pulseaudio
+SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
+SNDIO_VARS=		QMAKE_CONFIGURE_ARGS+=-sndio
+SNDIO_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-sndio
 
 # We pass `norecursive' to USES=qmake because src/plugins/plugins.pro checks
 # whether webenginewidgets is available, which fails when qmake processes all
@@ -69,14 +74,14 @@ USES=		gperf jpeg python:2.7,build pkgconfig \
 		qmake:norecursive,outsource qt-dist:5,webengine shebangfix
 USE_GNOME=	glib20 libxml2 libxslt
 USE_QT=		core designer gui location network qml quick webchannel \
-		widgets buildtools_build qmake_build
-USE_XORG=	scrnsaverproto x11 xcb xcomposite xcursor xext xi xproto \
+		widgets buildtools_build qmake_build printsupport
+USE_XORG=	x11 xcb xcomposite xcursor xext xi xorgproto \
 		xrandr xrender xscrnsaver xtst
 
 USE_LDCONFIG=	${QT_LIBDIR}
 
 
-QMAKE_CONFIGURE_ARGS=	-no-printing-and-pdf -proprietary-codecs -system-ffmpeg
+QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg
 
 # We could just set it to an empty string as well. "all" does not account for
 # dependencies correctly in the generated Makefiles, use the right target here.
@@ -121,6 +126,13 @@ post-extract:
 # Install FreeBSD's freebsd.pri file.
 	${CP} ${FILESDIR}/freebsd.pri ${WRKSRC}/src/core/config/freebsd.pri
 
+post-extract-SNDIO-on:
+	@cd ${WRKSRC}/src/3rdparty/chromium/media/audio && ${MKDIR} sndio openbsd
+	@${CP} ${FILESDIR}/sndio_*put.* \
+		${WRKSRC}/src/3rdparty/chromium/media/audio/sndio
+	@${CP} ${FILESDIR}/audio_manager_openbsd.* \
+		${WRKSRC}/src/3rdparty/chromium/media/audio/openbsd
+
 pre-configure:
 # Link in ${PYTHON_CMD} to ${CONFIGURE_WRKSRC}/bin -- the scripts hardcode 'python'
 # in too many places to reasonably patch. So just link in ${PYTHON_CMD} to work around
@@ -129,5 +141,7 @@ pre-configure:
 # Unbundle a few dependencies.
 	${PYTHON_CMD} ${WRKSRC}/src/3rdparty/chromium/build/linux/unbundle/replace_gn_files.py \
 		--system-libraries libwebp libxml libxslt yasm
+# Rerun syncqt.pl -- otherwise the resulting package misses some forwarding headers.
+	cd ${WRKSRC} && ${QT_BINDIR}/syncqt.pl -version ${QT5_VERSION}
 
 .include <bsd.port.post.mk>

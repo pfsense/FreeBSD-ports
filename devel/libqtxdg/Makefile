@@ -3,10 +3,11 @@
 
 PORTNAME=	libqtxdg
 PORTVERSION=	3.2.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	LXQT/${PORTNAME}
 
-MAINTAINER=	jesper@schmitz.computer
+MAINTAINER=	jsm@FreeBSD.org
 COMMENT=	Qt implementation of freedesktop.org xdg specs
 
 LICENSE=	LGPL21+

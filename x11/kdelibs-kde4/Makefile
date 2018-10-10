@@ -3,14 +3,17 @@
 
 PORTNAME=	kdelibs
 PORTVERSION=	${KDE4_KDELIBS_VERSION}
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	x11 kde kde-applications
 PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Base set of libraries needed by KDE programs
 
-LIB_DEPENDS=	libImath-2_2.so:graphics/ilmbase \
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
+
+LIB_DEPENDS=	libImath.so:graphics/ilmbase \
 		libjasper.so:graphics/jasper \
 		libpcre.so:devel/pcre \
 		libenchant.so:textproc/enchant \
@@ -85,7 +88,7 @@ UPNP_DESC=	UPnP backend for Solid (WARNING: Unstable)
 UPNP_LIB_DEPENDS=	libHUpnp.so:net/hupnp
 UPNP_CMAKE_ON=	-DHUPNP_ENABLED:BOOL=On
 
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
 OPENEXR_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_OpenEXR
 
 post-patch:

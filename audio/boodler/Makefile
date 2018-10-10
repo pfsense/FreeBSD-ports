@@ -3,7 +3,7 @@
 
 PORTNAME=	boodler
 PORTVERSION=	1.5.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	audio
 MASTER_SITES=	http://www.eblong.com/zarf/boodler/
 DISTFILES=	boodler-153.tar.gz boodler-snd-021902.tar.gz
@@ -45,9 +45,7 @@ OSS_CONFIGURE_ON=	--driver oss
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "amd64" || ${ARCH} == "powerpc" || ${ARCH} == "sparc64"
 CONFIGURE_ARGS+=	--PIC
-.endif
 
 post-patch:
 	${REINPLACE_CMD} -e "s|python|${PYTHON_CMD}|" \

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	knot
-DISTVERSION=	2.6.5
+DISTVERSION=	2.6.8
+PORTREVISION=	1
 CATEGORIES=	dns ipv6
 MASTER_SITES=	https://secure.nic.cz/files/knot-dns/ \
 		https://dns.company/downloads/knot-dns/
@@ -39,7 +40,7 @@ SUB_LIST+=	USERS="${USERS}" GROUPS="${GROUPS}"
 
 PORTDOCS=	AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS
 
-OPTIONS_DEFINE=			DNSTAP FASTPARSER IDN
+OPTIONS_DEFINE=			DNSTAP FASTPARSER IDN DOCS
 
 DNSTAP_DESC=			dnstap support (see dnstap.info)
 DNSTAP_CONFIGURE_ENABLE=	dnstap

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	darcs
-PORTVERSION=	2.14.0
+PORTVERSION=	2.14.1
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 
@@ -12,15 +12,13 @@ COMMENT=	Distributed, interactive, smart revision control system
 LICENSE=	GPLv2
 
 USE_CABAL=	async attoparsec base16-bytestring cryptohash \
-		data-ordlist dataenc fgl graphviz hashable html HTTP \
+		data-ordlist fgl graphviz hashable html HTTP \
 		mmap mtl random \
 		regex-applicative regex-compat-tdfa sandi tar \
 		transformers-compat unix-compat \
 		utf8-string vector zip-archive zlib
 
 EXECUTABLE=	darcs
-
-IGNORE=		Depends on graphics/hs-graphviz, which doesn't compile with recent GHC
 
 MAN1PAGES=	darcs.1
 

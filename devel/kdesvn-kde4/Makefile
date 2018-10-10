@@ -3,7 +3,7 @@
 
 PORTNAME=	kdesvn
 DISTVERSION=	1.7.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/
 PKGNAMESUFFIX=	-kde4
@@ -13,6 +13,9 @@ COMMENT=	KDE frontend for Subversion
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libsvn_client-1.so:devel/subversion \
 		libapr-1.so:devel/apr1 \

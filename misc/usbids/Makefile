@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	usbids
-PORTVERSION=	20180504
+PORTVERSION=	20180815
 CATEGORIES=	misc
 MASTER_SITES=	LOCAL/sunpoet
 
@@ -16,7 +16,7 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 USES=		tar:xz
 
-PLIST_FILES=	%%DATADIR%%/usb.ids
+PORTDATA=	usb.ids
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	racket
-PORTVERSION=	6.12
+PORTVERSION=	7.0
 CATEGORIES=	lang scheme
 MASTER_SITES=	http://mirror.racket-lang.org/installers/${PORTVERSION}/ \
 		http://www.cs.utah.edu/plt/installers/${PORTVERSION}/ \
@@ -44,7 +44,7 @@ USE_LDCONFIG=	yes
 REINPLACE_ARGS=	-i ""
 USE_GNOME=	cairo pango
 
-OPTIONS_DEFINE=	FUTURES
+OPTIONS_DEFINE=	DOCS FUTURES
 OPTIONS_DEFAULT=FUTURES
 
 OPTIONS_DEFINE_amd64=	JIT

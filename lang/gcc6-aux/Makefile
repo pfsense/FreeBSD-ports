@@ -4,6 +4,7 @@
 PORTNAME=	gcc6-aux
 PORTVERSION=	${SNAPSHOT}
 PORTREVISION=	${MAIN_PR}
+PORTEPOCH=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://downloads.dragonlace.net/src/:boot \
 		LOCAL/marino:boot GCC/${MS_SUBDIR}
@@ -14,8 +15,6 @@ COMMENT=	Version of GCC ${GCC_BRANCH} with full Ada support
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
-
-BROKEN_FreeBSD_12_aarch64=	fails to configure: cannot compute sizeof (long long)
 
 .include "${.CURDIR}/Makefile.common"
 
@@ -53,8 +52,10 @@ BOOTSTRAP_DESC=		Create bootstrap compiler (overrides other options)
 .if ${OPSYS} == FreeBSD
 ONLY_FOR_ARCHS=		aarch64 amd64 i386
 MODERN_BINUTILS=	yes
-.  if ${ARCH} == aarch64
+.  if ${ARCH} == aarch64 && ${OSVERSION} > 1200075 #ino64
 BOOTSTRAP_COMPILER=	ada-bootstrap.aarch64.freebsd.120.tar.bz2
+.  elif ${ARCH} == aarch64
+BOOTSTRAP_COMPILER=	ada-bootstrap.aarch64.freebsd.111.tar.bz2
 .  elif ${ARCH} == amd64 && ${OSVERSION} > 1200030 #ino64
 BOOTSTRAP_COMPILER=	ada-bootstrap.${GARCH}.freebsd.120.tar.bz2
 .  elif ${ARCH} == i386  && ${OSVERSION} > 1200030 #ino64

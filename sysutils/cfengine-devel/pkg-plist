@@ -11,7 +11,6 @@ bin/rpmvercmp
 libexec/cfengine/libpromises.so
 libexec/cfengine/libpromises.so.3
 libexec/cfengine/libpromises.so.3.0.6
-
 %%DOCSDIR%%/ChangeLog
 %%DOCSDIR%%/README.md
 %%DOCSDIR%%/examples/abort.cf
@@ -35,6 +34,7 @@ libexec/cfengine/libpromises.so.3.0.6
 %%DOCSDIR%%/examples/badtype.cf
 %%DOCSDIR%%/examples/bsdflags.cf
 %%DOCSDIR%%/examples/bundle_return_values.cf
+%%DOCSDIR%%/examples/bundlesequence.cf
 %%DOCSDIR%%/examples/bundlesmatching.cf
 %%DOCSDIR%%/examples/bundlestate.cf
 %%DOCSDIR%%/examples/canonify.cf
@@ -42,6 +42,7 @@ libexec/cfengine/libpromises.so.3.0.6
 %%DOCSDIR%%/examples/change_detect.cf
 %%DOCSDIR%%/examples/changedbefore.cf
 %%DOCSDIR%%/examples/chdir.cf
+%%DOCSDIR%%/examples/class-automatic-canonificiation.cf
 %%DOCSDIR%%/examples/classes_global.cf
 %%DOCSDIR%%/examples/classesmatching.cf
 %%DOCSDIR%%/examples/classmatch.cf
@@ -188,6 +189,9 @@ libexec/cfengine/libpromises.so.3.0.6
 %%DOCSDIR%%/examples/log_private.cf
 %%DOCSDIR%%/examples/loops.cf
 %%DOCSDIR%%/examples/lsdir.cf
+%%DOCSDIR%%/examples/main.cf
+%%DOCSDIR%%/examples/main_entry_point.cf
+%%DOCSDIR%%/examples/main_library.cf
 %%DOCSDIR%%/examples/maparray.cf
 %%DOCSDIR%%/examples/mapdata.cf
 %%DOCSDIR%%/examples/mapdata_jsonpipe.cf
@@ -203,12 +207,14 @@ libexec/cfengine/libpromises.so.3.0.6
 %%DOCSDIR%%/examples/method_validate.cf
 %%DOCSDIR%%/examples/method_var.cf
 %%DOCSDIR%%/examples/method_var2.cf
+%%DOCSDIR%%/examples/missing_ok.cf
 %%DOCSDIR%%/examples/module_exec.cf
 %%DOCSDIR%%/examples/module_exec_2.cf
 %%DOCSDIR%%/examples/monitord.cf
 %%DOCSDIR%%/examples/mount_fs.cf
 %%DOCSDIR%%/examples/multipassvars.cf
 %%DOCSDIR%%/examples/multiple_outcomes.cf
+%%DOCSDIR%%/examples/mustache_classes.cf
 %%DOCSDIR%%/examples/mustache_template_motd.cf
 %%DOCSDIR%%/examples/namespace.cf
 %%DOCSDIR%%/examples/namespace1.cf
@@ -340,6 +346,7 @@ libexec/cfengine/libpromises.so.3.0.6
 %%DOCSDIR%%/examples/string_head.cf
 %%DOCSDIR%%/examples/string_length.cf
 %%DOCSDIR%%/examples/string_mustache.cf
+%%DOCSDIR%%/examples/string_replace.cf
 %%DOCSDIR%%/examples/string_reverse.cf
 %%DOCSDIR%%/examples/string_split.cf
 %%DOCSDIR%%/examples/string_tail.cf

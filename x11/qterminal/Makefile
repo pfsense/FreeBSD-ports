@@ -2,10 +2,11 @@
 
 PORTNAME=	qterminal
 PORTVERSION=	0.9.0
+PORTREVISION=	2
 CATEGORIES=	x11
 MASTER_SITES=	LXQT
 
-MAINTAINER=	jesper@schmitz.computer
+MAINTAINER=	jsm@FreeBSD.org
 COMMENT=	Lightweight Qt-based terminal emulator
 
 LICENSE=	GPLv2
@@ -19,6 +20,6 @@ USES=	cmake:outsource compiler:c++11-lang gettext-runtime \
 USE_QT=		buildtools_build core gui qmake_build dbus linguisttools \
 	widgets x11extras
 USE_XORG=	x11
-USE_LXQT=	buildtools lxqt
+USE_LXQT=	buildtools
 
 .include <bsd.port.mk>
