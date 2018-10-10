@@ -2,6 +2,7 @@
 
 PORTNAME=	libmypaint
 PORTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/mypaint/libmypaint/releases/download/v${PORTVERSION}/
 
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libjson-c.so:devel/json-c
 
-USES=		gmake gnome libtool localbase pkgconfig tar:xz
+USES=		compiler:c11 gmake gnome libtool localbase pkgconfig tar:xz
 USE_GNOME=	glib20 intltool introspection:build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

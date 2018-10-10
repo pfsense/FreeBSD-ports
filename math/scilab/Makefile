@@ -3,7 +3,7 @@
 
 PORTNAME=	scilab
 PORTVERSION=	5.5.2
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	math cad java
 MASTER_SITES=	http://www.scilab.org/download/${PORTVERSION}/
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
@@ -38,6 +38,7 @@ CONFIGURE_ARGS=	--with-gfortran \
 		-disable-static-system-lib
 CONFIGURE_ENV=	BLAS_LIBS="${BLASLIB}" LAPACK_LIBS="${LAPACKLIB}"
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check  # XXX: tests fail
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -168,9 +169,5 @@ post-install:
 	@# Remove empty dirs in DATADIR/modules - they will be removed by the
 	@# toolbox uninstaller otherwise if 3rd party toolboxes are used
 	@${FIND} ${STAGEDIR}${DATADIR}/modules -type d -empty -delete
-
-check test regression-test: build
-	@(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} \
-		${MAKE_ARGS} check)
 
 .include <bsd.port.post.mk>

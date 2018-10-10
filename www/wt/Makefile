@@ -3,7 +3,7 @@
 
 PORTNAME=	wt
 PORTVERSION=	3.3.7
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	www
 
 MAINTAINER=	info@babaei.net
@@ -17,6 +17,8 @@ LIB_DEPENDS+=	libpng.so:graphics/png \
 		libGraphicsMagick.so:graphics/GraphicsMagick
 
 BROKEN=		fails to build with boost 1.66, see bug 224183
+DEPRECATED=	Broken for more than 5 months
+EXPIRATION_DATE=	2018-08-20
 BROKEN_powerpc64=	fails to link: libwthttp.so. undefined reference to boost::program_options::abstract_variables_map::operator
 
 USE_GITHUB=	yes

@@ -3,7 +3,7 @@
 PORTNAME=	void-zones-tools
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	dns
 
 MAINTAINER=	vidar@karlsen.tech
@@ -17,6 +17,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	cyclaero
 
 SUB_FILES=	pkg-message
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/hosts2zones ${STAGEDIR}${PREFIX}/bin

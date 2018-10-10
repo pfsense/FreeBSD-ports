@@ -3,7 +3,7 @@
 
 PORTNAME=	kdevelop-pg-qt
 DISTVERSION=	1.0.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
 DIST_SUBDIR=	KDE
@@ -11,6 +11,9 @@ PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Parser-generator from KDevplatform
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
 

@@ -31,9 +31,8 @@ CT_GH_TUPLE=		grahamedgecombe:nginx-ct:v1.3.2:ct
 CT_VARS=		DSO_EXTMODS+=ct
 CT_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-ct-LibreSSL
 
-ECHO_GH_TUPLE=		openresty:echo-nginx-module:46334b3:echo
+ECHO_GH_TUPLE=		openresty:echo-nginx-module:c65f5c6:echo
 ECHO_VARS=		DSO_EXTMODS+=echo
-ECHO_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_echo_request_info.c
 
 DRIZZLE_LIB_DEPENDS=	libdrizzle.so:databases/libdrizzle
 DRIZZLE_CONFIGURE_ENV=	LIBDRIZZLE_INC=${LOCALBASE}/include \
@@ -46,13 +45,13 @@ DYNAMIC_UPSTREAM_VARS=		DSO_EXTMODS+=dynamic_upstream
 DYNAMIC_UPSTREAM_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_inet_slab.c
 
 DEVEL_KIT_GH_TUPLE=		simpl:ngx_devel_kit:v0.3.0:devel_kit
-DEVEL_KIT_VARS=			DSO_EXTMODS+=devel_kit
+DEVEL_KIT_VARS=			FIRST_DSO_EXTMODS+=devel_kit
 
 ENCRYPTSESSION_IMPLIES=		DEVEL_KIT
 ENCRYPTSESSION_GH_TUPLE=	openresty:encrypted-session-nginx-module:v0.07:encryptsession
 ENCRYPTSESSION_VARS=		DSO_EXTMODS+=encryptsession
 
-FASTDFS_GH_TUPLE=	happyfish100:fastdfs-nginx-module:85347be:fastdfs
+FASTDFS_GH_TUPLE=	happyfish100:fastdfs-nginx-module:8796a7d:fastdfs
 FASTDFS_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-fastdfs-src-config \
 			${PATCHDIR}/extra-patch-fastdfs-src-mod_fastdfs.conf
 FASTDFS_BUILD_DEPENDS=	${LOCALBASE}/include/fastcommon/logger.h:devel/libfastcommon \
@@ -77,7 +76,7 @@ HEADERS_MORE_VARS=		DSO_EXTMODS+=headers_more
 HTTP_ACCEPT_LANGUAGE_GH_TUPLE=		giom:nginx_accept_language_module:2f69842:accept_language
 HTTP_ACCEPT_LANGUAGE_CONFIGURE_ON=	--add-module=${WRKSRC_accept_language}
 
-HTTP_AUTH_DIGEST_GH_TUPLE=	atomx:nginx-http-auth-digest:274490c:auth_digest
+HTTP_AUTH_DIGEST_GH_TUPLE=	atomx:nginx-http-auth-digest:cd86418:auth_digest
 HTTP_AUTH_DIGEST_VARS=		DSO_EXTMODS+=auth_digest
 
 HTTP_AUTH_KRB5_GH_TUPLE=	stnoonan:spnego-http-auth-nginx-module:7e028a5:auth_krb5
@@ -99,7 +98,7 @@ HTTP_DAV_EXT_CONFIGURE_ON=	--add-module=${WRKSRC_dav_ext}
 HTTP_EVAL_GH_TUPLE=		openresty:nginx-eval-module:582bd25:eval
 HTTP_EVAL_VARS=			DSO_EXTMODS+=eval
 
-HTTP_FANCYINDEX_GH_TUPLE=	aperezdc:ngx-fancyindex:v0.4.2:fancyindex
+HTTP_FANCYINDEX_GH_TUPLE=	aperezdc:ngx-fancyindex:v0.4.3:fancyindex
 HTTP_FANCYINDEX_VARS=		DSO_EXTMODS+=fancyindex
 
 HTTP_FOOTER_GH_TUPLE=		alibaba:nginx-http-footer-filter:1.2.2:footer
@@ -198,7 +197,7 @@ LUA_IMPLIES=		DEVEL_KIT
 LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit21
 LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.1 \
 			LUAJIT_LIB=${LOCALBASE}/lib
-LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.11:lua
+LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.13:lua
 LUA_VARS=		DSO_EXTMODS+=lua
 
 MEMC_GH_TUPLE=		openresty:memc-nginx-module:v0.18:memc
@@ -211,24 +210,23 @@ MODSECURITY_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 				libyajl.so:devel/yajl
 MODSECURITY_USE=		GNOME=libxml2
 MODSECURITY_USES=		apache:2.2+ pkgconfig shebangfix
-MODSECURITY_MASTER_SITES=	http://www.modsecurity.org/tarball/2.9.1S/RC/rc/:modsecurity
-MODSECURITY_DISTFILES=		modsecurity-2.9.1.tar.gz:modsecurity
-MODSECURITY_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-modsecurity-configure \
-				${PATCHDIR}/extra-patch-ngx_http_modsecurity.c
-MODSECURITY_VARS=		WRKSRC_modsecurity=${WRKDIR}/modsecurity-2.9.1
+MODSECURITY_MASTER_SITES=	http://www.modsecurity.org/tarball/2.9.2S/RC/rc/:modsecurity
+MODSECURITY_DISTFILES=		modsecurity-2.9.2.tar.gz:modsecurity
+MODSECURITY_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-modsecurity-configure
+MODSECURITY_VARS=		WRKSRC_modsecurity=${WRKDIR}/modsecurity-2.9.2
 
 MODSECURITY3_LIB_DEPENDS=	libmodsecurity.so:www/mod_security3
-MODSECURITY3_GH_TUPLE=		SpiderLabs:ModSecurity-nginx:4cde86b:modsec
+MODSECURITY3_GH_TUPLE=		SpiderLabs:ModSecurity-nginx:e4df1aa:modsec
 MODSECURITY3_CONFIGURE_ON=	--add-module=${WRKSRC_modsec}
 
-NAXSI_NGINX_VER=	0.55.3
+NAXSI_NGINX_VER=	0.56
 NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:bb7efcc:njs
+NJS_GH_TUPLE=		nginx:njs:e6fed58:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
 
-PASSENGER_NGINX_VER=	5.3.2
+PASSENGER_NGINX_VER=	5.3.5
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USE=		ruby=yes
 PASSENGER_BUILD_DEPENDS=	${LOCALBASE}/bin/rake:devel/rubygem-rake

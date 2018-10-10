@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	relx
-PORTVERSION=	3.24.5
+PORTVERSION=	3.26.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 MASTER_SITES+=	LOCAL/olgeni:deps \
@@ -27,17 +27,19 @@ PLIST_SUB=	VERSION="${PORTVERSION}"
 USE_GITHUB=	yes
 GH_ACCOUNT=	erlware
 
-CACHE_VERSION=	18
+CACHE_VERSION=	19
 # from rebar.config
 REBAR_DEPS=	bbmustache-1.0.4 \
 		cf-0.2.2 \
-		erlware_commons-1.0.5 \
+		erlware_commons-1.2.0 \
 		getopt-1.0.1 \
 		providers-1.7.0
 
 .for _dep in ${REBAR_DEPS}
 DISTFILES+=	${_dep}.tar:hex
 .endfor
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 # convenience target to rebuild the relx cache file
 build-cache:
@@ -68,8 +70,6 @@ post-build:
 	@${LN} -s ${WRKSRC}/_build/dev/lib/${PORTNAME}/ebin ${WRKSRC}
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}/ebin
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}/include
@@ -80,6 +80,11 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/_build/default/lib/relx/ebin/* ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}/ebin
 	cd ${WRKSRC}/priv && ${COPYTREE_SHARE} \* ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}/priv
 	${INSTALL_SCRIPT} ${WRKSRC}/_build/default/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
 

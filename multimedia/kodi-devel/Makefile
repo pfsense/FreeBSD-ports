@@ -1,21 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	kodi
-DISTVERSION=	18.0.g201806300625
-PORTREVISION=	1
 CATEGORIES=	multimedia
+DISTVERSION=	18.0.g201809092101
+PORTREVISION=	2
 PKGNAMESUFFIX?=	-devel
 
 MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Award winning media center application
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/LICENSE.GPL
+LICENSE=	GPLv2+
 
-BROKEN_FreeBSD_10=	does not build
 ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386
 
-BUILD_DEPENDS=	rapidjson>=0:devel/rapidjson \
+BUILD_DEPENDS=	flatbuffers>=0:devel/flatbuffers \
+		rapidjson>=0:devel/rapidjson \
 		swig3.0:devel/swig30
 LIB_DEPENDS=	libass.so:multimedia/libass \
 		libavcodec.so:multimedia/ffmpeg \
@@ -31,6 +30,7 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libfmt.so:devel/libfmt \
 		libfreetype.so:print/freetype2 \
 		libfribidi.so:converters/fribidi \
+		libfstrcmp.so:devel/fstrcmp \
 		libgif.so:graphics/giflib \
 		libgnutls.so:security/gnutls \
 		liblcms2.so:graphics/lcms2 \
@@ -50,18 +50,18 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 # leads to dependency problems where libcpluff.a is not yet finished
 # building when it's required.
 USES=		autoreconf:build cmake:outsource,noninja compiler:c++11-lib \
-		gettext gmake iconv:wchar_t jpeg libtool pkgconfig python:-2.7 \
-		ssl sqlite
+		gettext gmake gnome iconv:wchar_t jpeg libtool pkgconfig \
+		python:2.7 ssl sqlite
 USE_GITHUB=	yes
 GH_ACCOUNT=	xbmc
 GH_PROJECT=	xbmc
-GH_TAGNAME=	8063088ceecc6674763c83a63356fe0296b005a8
+GH_TAGNAME=	18.0b2-Leia
 USE_GNOME=	libxslt libxml2
 USE_JAVA=	yes
 JAVA_BUILD=	yes
 USE_LDCONFIG=	yes
 
-CONFLICTS_INSTALL=	kodi-[0-9]*
+CONFLICTS_INSTALL=	kodi
 
 CMAKE_ARGS=	-DLIBDVD_INCLUDE_DIRS="${LOCALBASE}/include" \
 		-DDVDREAD_LIBRARY="${LOCALBASE}/lib/libdvdread.so" \
@@ -107,7 +107,8 @@ DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 DBUS_CMAKE_BOOL=	ENABLE_DBUS
 
 GBM_BUILD_DEPENDS=	v4l_compat>=0:multimedia/v4l_compat
-GBM_CMAKE_ON=		-DCORE_PLATFORM_NAME:STRING="gbm"
+GBM_CMAKE_ON=		-DCORE_PLATFORM_NAME:STRING="gbm" \
+			-DGBM_RENDER_SYSTEM:STRING="gl"
 GBM_LIB_DEPENDS=	libinput.so:x11/libinput \
 			libxkbcommon.so:x11/libxkbcommon
 

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	nats-streaming-server
-PORTVERSION=	0.9.2
+PORTVERSION=	0.11.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -17,6 +17,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	nats-io
 
 USE_RC_SUBR=	nats_streaming.sh
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc

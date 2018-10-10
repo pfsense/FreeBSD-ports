@@ -3,7 +3,7 @@
 
 PORTNAME=	gcc
 PORTVERSION=	6.4.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	lang java
 MASTER_SITES=	GCC
 PKGNAMESUFFIX=	${SUFFIX}
@@ -80,7 +80,9 @@ MAKE_ARGS+=STAGE1_CXXFLAGS=-fbracket-depth=512
 
 .elif ${ARCH} == powerpc64
 CONFIGURE_ENV+=	UNAME_m="powerpc64"
-USE_GCC=	5	# Cannot require ourselves, needs to be at least 4.9.
+USE_GCC=	5	# This port requires at least GCC 4.9, and we need
+			# to ensure not to cause a dependency on itself (so
+			# USE_GCC=yes or USE_GCC=X+ are not an option).
 
 .elif ${ARCH} == powerpcspe
 CONFIGURE_ARGS+=	--with-cpu=8540 --enable-e500_double --without-fp
@@ -115,7 +117,7 @@ CONFIGURE_ARGS+=--disable-nls \
 		--with-system-zlib
 MAKE_ARGS+=	MAKEINFOFLAGS="--no-split"
 USE_LDCONFIG=	${TARGLIB}
-PLIST_SUB=	GCC_VERSION=${GCC_VERSION} \
+PLIST_SUB+=	GCC_VERSION=${GCC_VERSION} \
 		GNU_HOST=${CONFIGURE_TARGET} \
 		SUFFIX=${SUFFIX}
 INFO=		gcc${SUFFIX}/cpp \

@@ -3,7 +3,7 @@
 
 PORTNAME=	modula3
 PORTVERSION=	5.10.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	lang
 MASTER_SITES=	http://downloads.dragonlace.net/m3/:boot
 DISTFILES=	${SRCDISTFILE} ${BOOTDIST}
@@ -51,6 +51,8 @@ STRIPPKG=	m3staloneback/m3back \
 		hack/dummy \
 		test/test
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
 M3BOOT_ENV=	${MAKE_ENV:C/^LDFLAGS=.*//:C/^CPPFLAGS=.*//} \
@@ -77,7 +79,7 @@ MARCH=		x86_64
 
 NEWBOOTNAME=	m3-bootstrap.${MARCH}.${OPSYS:tu}.${OSREL:S/.//}.tar.bz2
 M3TARGET=	${MARCH}_${OPSYS:tu}
-PLIST_SUB=	T=${M3TARGET} P=cm3/pkg B=cm3/bin L=cm3/lib
+PLIST_SUB+=	T=${M3TARGET} P=cm3/pkg B=cm3/bin L=cm3/lib
 .endif
 
 post-extract:

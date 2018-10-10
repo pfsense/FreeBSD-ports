@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xjobs
-PORTVERSION=	20170630
+PORTVERSION=	20170829
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.maier-komor.de/xjobs/
 
@@ -16,6 +16,8 @@ PLIST_FILES=	bin/xjobs man/man1/xjobs.1.gz
 USES=		tar:tgz
 
 PORTDOCS=	ChangeLog README
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

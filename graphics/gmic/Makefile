@@ -1,13 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	gmic
-DISTVERSIONPREFIX=	v.
-DISTVERSION=	2.3.2
+DISTVERSION=	2.3.6
+PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://gmic.eu/:gmic_stdlib
-DISTFILES=	gmic_stdlib.h:gmic_stdlib
-DIST_SUBDIR=	${PORTNAME}-${DISTVERSIONFULL}
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
+MASTER_SITES=	https://gmic.eu/files/source/
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Framework for image processing
@@ -22,8 +20,8 @@ BROKEN_i386=	error: "c++ crashes, clang-5 and 6 fail: undefined reference to `__
 BUILD_DEPENDS=	${LOCALBASE}/include/CImg.h:graphics/cimg
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libGraphicsMagick++.so:graphics/GraphicsMagick \
-		libIlmImf.so:graphics/OpenEXR \
-		libImath-2_2.so:graphics/ilmbase \
+		libIlmImf.so:graphics/openexr \
+		libImath.so:graphics/ilmbase \
 		libomp.so:devel/openmp \
 		libopencv_core.so:graphics/opencv-core \
 		libopencv_video.so:graphics/opencv \
@@ -33,12 +31,12 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 PORTSCOUT=	limit:[0-9]\..* # not v.220 and similar
 
 USES=		cmake:outsource compiler:c++11-lang jpeg pkgconfig
-USE_GITHUB=	yes
-GH_ACCOUNT=	dtschump
 USE_LDCONFIG=	yes
 
 CMAKE_OFF=	BUILD_LIB_STATIC
 CMAKE_ON=	ENABLE_DYNAMIC_LINKING
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 OPTIONS_DEFINE=		PLUGINS X11
 OPTIONS_DEFAULT=	X11
@@ -52,8 +50,5 @@ PLUGINS_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 X11_CMAKE_BOOL=		ENABLE_X
 X11_USE=		XORG=ice,sm,x11,xext
-
-post-extract:
-	@${CP} ${DISTDIR}/${DIST_SUBDIR}/gmic_stdlib.h ${WRKSRC}/src/
 
 .include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	xtensa-esp32-elf
 DISTVERSION=	1.22.0.g20171219
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases/binutils:source1 \
 		GNU/binutils:source1 \
@@ -31,7 +32,7 @@ DISTFILES=	binutils-2.25.1.tar.bz2:source1 \
 		newlib-2.2.0.tar.gz:source10
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	leres@freebsd.org
+MAINTAINER=	leres@FreeBSD.org
 COMMENT=	Espressif ESP32 toolchain
 
 LICENSE=	GPLv2 LGPL21
@@ -62,6 +63,7 @@ TAGNAME=	1.22.0-80-g6c4433a5
 GH_TUPLE=	espressif:${SUBDIR}:${TAGNAME}
 BINARY_ALIAS=	g++=${CXX} gcc=${CC} python=${PYTHON_VERSION}
 BUILD_ENV=	CT_ALLOW_BUILD_AS_ROOT_SURE=1 \
+		LD_RUN_PATH=${PREFIX}/lib/${CC} \
 		${MAKE_ENV:MPATH=*}
 
 post-extract:

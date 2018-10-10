@@ -35,4 +35,6 @@ SHEBANG_FILES=	protocols/winpopup/winpopup-install \
 		protocols/winpopup/winpopup-send \
 		kopete/kconf_update/*.pl
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.mk>

@@ -15,6 +15,7 @@ BUILD_DEPENDS=	svm_learn:science/svmlight
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USES=		libtool perl5
+USE_CXXSTD=	c++98
 USE_PERL5=	build
 INSTALL_TARGET=	install-strip
 PORTDOCS=	feature.png feature2.png feature3.png \

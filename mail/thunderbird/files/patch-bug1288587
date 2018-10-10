@@ -1,7 +1,7 @@
 diff --git a/build/moz.configure/init.configure b/build/moz.configure/init.configure
 index 855214a..1e91d51 100644
---- mozilla/build/moz.configure/init.configure
-+++ mozilla/build/moz.configure/init.configure
+--- build/moz.configure/init.configure
++++ build/moz.configure/init.configure
 @@ -165,16 +165,17 @@ option(env='PYTHON', nargs=1, help='Python interpreter')
  # ==============================================================
  @depends('PYTHON', check_build_environment, mozconfig, '--help')

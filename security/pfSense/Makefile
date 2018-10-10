@@ -33,9 +33,9 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		hostapd>=0:net/hostapd \
 		igmpproxy>=0:net/igmpproxy \
 		ipmitool>=0:sysutils/ipmitool \
-		isc-dhcp43-client>=0:net/isc-dhcp43-client \
-		isc-dhcp43-relay>=0:net/isc-dhcp43-relay \
-		isc-dhcp43-server>=0:net/isc-dhcp43-server \
+		isc-dhcp44-client>=0:net/isc-dhcp44-client \
+		isc-dhcp44-relay>=0:net/isc-dhcp44-relay \
+		isc-dhcp44-server>=0:net/isc-dhcp44-server \
 		libxml2>=0:textproc/libxml2 \
 		links>=0:www/links \
 		minicron>=0:sysutils/minicron \

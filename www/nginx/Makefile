@@ -3,17 +3,20 @@
 
 PORTNAME=	nginx
 PORTVERSION=	1.14.0
-PORTREVISION?=	6
+PORTREVISION?=	12
 PORTEPOCH=	2
 CATEGORIES=	www
 MASTER_SITES=	http://nginx.org/download/ \
-		LOCAL/osa
+		LOCAL/joneum
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER?=	joneum@FreeBSD.org
 COMMENT?=	Robust and small WWW server
 
 LICENSE=	BSD2CLAUSE
+
+BROKEN_mips=	error ngx_spinlock() or ngx_atomic_cmp_set() are not defined
+BROKEN_mips64=	error ngx_spinlock() or ngx_atomic_cmp_set() are not defined
 
 CONFLICTS_INSTALL=	nginx-devel
 
@@ -201,6 +204,12 @@ _addextmod=	add-module
 
 .for mod in ${DSO_BASEMODS}
 CONFIGURE_ARGS+=	--with-${mod}${_addbasemod}
+.endfor
+
+# Some modules depend on other being there before, for example, devel_kit needs
+# to be there before a few other.
+.for mod in ${FIRST_DSO_EXTMODS}
+CONFIGURE_ARGS+=	--${_addextmod}=${WRKSRC_${mod}}${${mod:tu}_SUBDIR}
 .endfor
 
 .for mod in ${DSO_EXTMODS}

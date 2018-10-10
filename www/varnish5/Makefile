@@ -3,7 +3,7 @@
 PORTNAME=	varnish
 PORTVERSION=	5.2.1
 DISTVERSIONPREFIX=	varnish-
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	www
 PKGNAMESUFFIX=	5
 
@@ -42,6 +42,8 @@ USE_RC_SUBR=	varnishd varnishlog varnishncsa
 BAD_TESTS+=	r00832
 EXTRA_PATCHES+=	${FILESDIR}/no-inet6.patch
 .endif
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 .if defined(BAD_TESTS)

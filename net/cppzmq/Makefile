@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	cppzmq
-PORTVERSION=	4.2.3
+PORTVERSION=	4.3.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -16,7 +17,10 @@ LIB_DEPENDS=	libzmq.so:net/libzmq4
 NO_ARCH=	yes
 
 USES=		cmake pkgconfig
-CMAKE_ARGS=	--no-warn-unused-cli -Wno-dev
+CMAKE_ARGS=	--no-warn-unused-cli \
+		-DCPPZMQ_BUILD_TESTS:BOOL=OFF \
+		-DCPPZMQ_CMAKECONFIG_INSTALL_DIR:PATH="lib/cmake/${PORTNAME}" \
+		-Wno-dev
 
 # cppzmq is included in libzmq2
 CONFLICTS_INSTALL=	libzmq2
@@ -27,16 +31,14 @@ GH_ACCOUNT=	zeromq
 PLIST_FILES=	\
 	include/zmq.hpp \
 	include/zmq_addon.hpp \
-	share/cmake/Modules/FindZeroMQ.cmake \
-	share/cmake/Modules/cppzmqConfig.cmake \
-	share/cmake/Modules/cppzmqConfigVersion.cmake \
-	share/cmake/Modules/cppzmqTargets.cmake \
-	share/cmake/Modules/libzmq-pkg-config/FindZeroMQ.cmake
+	lib/cmake/${PORTNAME}/cppzmqConfig.cmake \
+	lib/cmake/${PORTNAME}/cppzmqConfigVersion.cmake \
+	lib/cmake/${PORTNAME}/cppzmqTargets.cmake \
+	lib/cmake/${PORTNAME}/libzmq-pkg-config/FindZeroMQ.cmake
 
 post-patch:
 	${SED} -i '.orig' \
-		-e 's|find_package(ZeroMQ)|find_package(ZeroMQ QUIET)|' \
-		-e 's|share/cmake/$${PROJECT_NAME}|share/cmake/Modules|' \
-		${WRKSRC}/CMakeLists.txt
+		-e 's|ZeroMQ_LIBRARY AND ZeroMQ_STATIC_LIBRARY|ZeroMQ_LIBRARY|' \
+		${WRKSRC}/libzmq-pkg-config/FindZeroMQ.cmake
 
 .include <bsd.port.mk>

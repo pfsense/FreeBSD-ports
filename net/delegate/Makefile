@@ -25,6 +25,8 @@ PLIST_FILES=	sbin/delegated etc/rc.d/delegated.sh-dist
 PORTDOCS=	CHANGES COPYRIGHT DG9note.html HowToDG.html IPv6NOTE.txt \
 		Manual.htm jpconv.htm tutor-en.htm tutor-jp.htm
 
+OPTIONS_DEFINE=	DOCS
+
 post-extract:
 	@${LN} ${WRKSRC}/CHANGES ${WRKSRC}/COPYRIGHT ${WRKSRC}/DG9note.html \
 		${WRKSRC}/IPv6NOTE.txt ${WRKSRC}/doc
@@ -41,13 +43,15 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/delegated ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_SCRIPT} ${FILESDIR}/delegated.sh \
 		${STAGEDIR}${PREFIX}/etc/rc.d/delegated.sh-dist
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/doc/,} ${STAGEDIR}${DOCSDIR}
 # Re-sign the executable
 	@${MKDIR} ${WRKDIR}/tmp
 	@${CP} ${STAGEDIR}${PREFIX}/sbin/delegated ${WRKDIR}/tmp/dg
 	@${CHMOD} +w ${STAGEDIR}${PREFIX}/sbin/delegated
 	@${WRKDIR}/tmp/dg DGROOT=${WRKDIR}/tmp/ -Fesign -w ${STAGEDIR}${PREFIX}/sbin/delegated
 	@${CHMOD} -w ${STAGEDIR}${PREFIX}/sbin/delegated
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/doc/,} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

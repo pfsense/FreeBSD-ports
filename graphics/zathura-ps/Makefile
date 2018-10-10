@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	zathura-ps
-PORTVERSION=	0.2.4
-PORTREVISION=	3
+PORTVERSION=	0.2.6
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://pwmt.org/projects/zathura-ps/download/ \
 		http://www.madpilot.net/~mad/pwmt.org/
@@ -17,12 +17,17 @@ LIB_DEPENDS=	libspectre.so:print/libspectre
 BUILD_DEPENDS=	zathura:graphics/zathura
 RUN_DEPENDS=	zathura:graphics/zathura
 
-USES=		compiler:c11 desktop-file-utils gmake pkgconfig ssl
+USES=		meson ninja compiler:c11 desktop-file-utils pkgconfig ssl tar:xz
 USE_GNOME=	glib20 gtk30
 
-PLIST_FILES=	lib/zathura/ps.so share/applications/zathura-ps.desktop
+PLIST_FILES=	lib/zathura/libps.so \
+		share/applications/org.pwmt.zathura-ps.desktop \
+		share/appdata/org.pwmt.zathura-ps.metainfo.xml
+
+pre-configure:
+	${REINPLACE_CMD} "s:join_paths(datadir, 'metainfo'):join_paths(datadir, 'appdata'):" ${WRKSRC}/meson.build
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${LOCALBASE}/lib/zathura/ps.so
+	@${STRIP_CMD} ${STAGEDIR}${LOCALBASE}/lib/zathura/libps.so
 
 .include <bsd.port.mk>

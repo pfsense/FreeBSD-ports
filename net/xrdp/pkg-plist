@@ -19,8 +19,6 @@ include/xrdp_client_info.h
 include/xrdp_constants.h
 include/xrdp_rail.h
 include/xrdp_sockets.h
-lib/pulse-%%PULSE_VERSION%%/modules/module-xrdp-sink.so
-lib/pulse-%%PULSE_VERSION%%/modules/module-xrdp-source.so
 libdata/pkgconfig/libpainter.pc
 libdata/pkgconfig/rfxcodec.pc
 libdata/pkgconfig/xrdp.pc
@@ -48,6 +46,7 @@ lib/xrdp/libxrdpapi.so.0
 lib/xrdp/libxrdpapi.so.0.0.0
 etc/pam.d/xrdp-sesman
 etc/rc.d/xrdp
+etc/rc.d/xrdp-sesman
 %%ETCDIR%%/km-00000407.ini
 %%ETCDIR%%/km-00000409.ini
 %%ETCDIR%%/km-00010409.ini

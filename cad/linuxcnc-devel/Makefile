@@ -3,7 +3,7 @@
 
 PORTNAME=	linuxcnc
 PORTVERSION=	20170708
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	cad
 PKGNAMESUFFIX=	-devel
 
@@ -12,7 +12,7 @@ COMMENT=	Open Source CNC machine controller
 
 LICENSE=	GPLv2
 
-BROKEN=		wrong DEPENDS
+BROKEN_FreeBSD_10=	use of undeclared identifier '__builtin_ia32_rdtsc'
 
 LIB_DEPENDS=	libBLT25.so:x11-toolkits/blt \
 		${PY_BOOST} \
@@ -26,13 +26,8 @@ RUN_DEPENDS=	bash:shells/bash \
 		bwidget>=1.4:x11-toolkits/bwidget \
 		${PYTHON_SITELIBDIR}/gtk-2.0/vtemodule.so:x11-toolkits/py-vte \
 		${PYTHON_SITELIBDIR}/gtk-2.0/gtk/gdkgl/__init__.py:x11-toolkits/py-gtkglext \
-		${LOCALBASE}/lib/Img/libtkimg1.4.6.so:graphics/libimg
+		${LOCALBASE}/lib/Img/libtkimg1.4.7.so:graphics/libimg
 BUILD_DEPENDS=	${RUN_DEPENDS}
-
-# Workaround for a clang crash on 12-CURRENT.
-BUILD_DEPENDS+=	clang38:lang/clang38
-CC=		clang38
-CXX=		clang++38
 
 NO_PACKAGE=	Licensing conflict between LinuxCNC (GPL2) and readline (GPL3)
 
@@ -44,7 +39,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-realtime=uspace --enable-non-distributable=yes \
 		CFLAGS="-I${LOCALBASE}/include" LDFLAGS="-L${LOCALBASE}/lib" \
 		CXXFLAGS="-I${LOCALBASE}/include" CXX="${CXX}" CC="${CC}" \
-		--with-locale-dir="${PREFIX}/share/locale" --with-python=${PYTHON_CMD}
+		--with-locale-dir="${PREFIX}/share/locale" --with-python=${PYTHON_CMD} \
+		--with-boost-python=boost_python27
 MAKE_ENV=	BUILD_VERBOSE=1
 USES=		autoreconf gettext gmake ncurses pkgconfig python:2.7 readline shebangfix tk
 USE_GL=		gl glu
@@ -60,8 +56,8 @@ post-patch:
 			-e 's|#!.*/bin/bash|#!${LOCALBASE}/bin/bash|' \
 			-e 's|#!.*/usr/bin/tclsh|#!${LOCALBASE}/bin/tclsh8.6|' \
 			-e 's|#!.*/usr/bin/wish|#!${LOCALBASE}/bin/wish8.6|' \
-			-e 's|#!.*/usr/bin/env python|#!/usr/bin/env python2|' \
-			-e 's|#!.*/usr/bin/python|#!/usr/bin/env python2|' \
+			-e 's|#!.*/usr/bin/env python|#!/usr/bin/env python2.7|' \
+			-e 's|#!.*/usr/bin/python|#!/usr/bin/env python2.7|' \
 			-e 's|lib/tcltk|lib/tcllib|'
 
 .include <bsd.port.mk>

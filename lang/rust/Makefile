@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION?=	1.26.2
-PORTREVISION?=
+PORTVERSION?=	1.29.1
+PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	http://static.rust-lang.org/dist/:src \
 		LOCAL/dumbbell/rust:rust_bootstrap \
@@ -31,10 +31,13 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
 BUILD_DEPENDS=		cmake:devel/cmake
 LIB_DEPENDS=		libcurl.so:ftp/curl \
+			libgit2.so:devel/libgit2 \
 			libssh2.so:security/libssh2
 
 ONLY_FOR_ARCHS?=	aarch64 amd64 i386
 ONLY_FOR_ARCHS_REASON=	requires prebuilt bootstrap compiler
+
+BROKEN_aarch64=		fails to build: bootstrap compiler crashes
 
 # FIXME: The bootstrapped rustc adds -L/usr/local/lib in front of
 # the LDFLAGS. When stage0's rustc is linked, it picks the installed
@@ -44,13 +47,13 @@ ONLY_FOR_ARCHS_REASON=	requires prebuilt bootstrap compiler
 CONFLICTS_INSTALL?=	rust-nightly
 
 # See WRKSRC/src/stage0.txt for this date and version values.
-BOOTSTRAPS_DATE?=		2018-03-29
+BOOTSTRAPS_DATE?=		2018-08-02
 
-RUST_BOOTSTRAP_VERSION?=	1.25.0
+RUST_BOOTSTRAP_VERSION?=	1.28.0
 RUSTC_BOOTSTRAP=		${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/rustc-${RUST_BOOTSTRAP_VERSION_${ARCH}:U${RUST_BOOTSTRAP_VERSION}}-${RUST_TARGET}.tar.gz
 RUST_STD_BOOTSTRAP=		${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/rust-std-${RUST_BOOTSTRAP_VERSION_${ARCH}:U${RUST_BOOTSTRAP_VERSION}}-${RUST_TARGET}.tar.gz
 
-CARGO_BOOTSTRAP_VERSION?=	0.26.0
+CARGO_BOOTSTRAP_VERSION?=	0.29.0
 CARGO_BOOTSTRAP=		${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/cargo-${CARGO_BOOTSTRAP_VERSION_${ARCH}:U${CARGO_BOOTSTRAP_VERSION}}-${RUST_TARGET}.tar.gz
 
 RUST_CHANNEL=	${PKGNAMESUFFIX:Ustable:S/^-//}
@@ -78,6 +81,7 @@ LLNEXTGEN_BUILD_DEPENDS=	LLnextgen:devel/llnextgen
 #     - pre-install to cleanup the ${STAGEDIR}
 #     - post-install to populate the ${TMPPLIST}
 RUST_MANIFESTS=		lib/rustlib/manifest-cargo \
+			lib/rustlib/manifest-clippy-preview \
 			lib/rustlib/manifest-rls-preview \
 			lib/rustlib/manifest-rustc \
 			lib/rustlib/manifest-rustfmt-preview \
@@ -94,6 +98,8 @@ PLIST_FILES=		lib/rustlib/components \
 .include <bsd.port.pre.mk>
 
 X_PY_ENV=	HOME="${WRKDIR}" \
+		LIBGIT2_SYS_USE_PKG_CONFIG=1 \
+		LIBSSH2_SYS_USE_PKG_CONFIG=1 \
 		OPENSSL_DIR="${OPENSSLBASE}"
 X_PY_CMD=	${PYTHON_CMD} ${WRKSRC}/x.py
 
@@ -154,7 +160,9 @@ post-patch:
 		${WRKSRC}/src/stage0.txt
 # After patching crates, we need to update their corresponding
 # `.cargo-checksum.json` to reflect the new checksums verified by Cargo.
-	@for dir in "${WRKSRC}/src/vendor/libc" "${WRKSRC}/src/vendor/openssl" "${WRKSRC}/src/vendor/openssl-sys"; do \
+	@for dir in "${WRKSRC}/src/vendor/libc" \
+	"${WRKSRC}/src/vendor/libgit2-sys" \
+	"${WRKSRC}/src/vendor/openssl"; do \
 		if ! test -d "$$dir"; then \
 			continue; \
 		fi; \
@@ -186,6 +194,13 @@ CCACHE_VALUE=	"${CCACHE_WRAPPER_PATH:C,/libexec/ccache$,,}/bin/ccache"
 CCACHE_VALUE=	false
 .endif
 
+pre-configure:
+	@for file in \
+		${WRKSRC}/src/vendor/backtrace-sys/src/libbacktrace/configure \
+		${WRKSRC}/src/vendor/backtrace-sys/src/libbacktrace/config/libtool.m4; do \
+		mv "$$file" "$$file.dont-fix"; \
+	done
+
 do-configure:
 	${SED} -E \
 		-e 's,%PREFIX%,${PREFIX},' \
@@ -213,6 +228,13 @@ do-configure:
 		if test "$$regex"; then \
 			${REINPLACE_CMD} -E $$regex .cargo-checksum.json; \
 		fi; \
+	done
+
+post-configure:
+	@for file in \
+		${WRKSRC}/src/vendor/backtrace-sys/src/libbacktrace/configure \
+		${WRKSRC}/src/vendor/backtrace-sys/src/libbacktrace/config/libtool.m4; do \
+		mv "$$file.dont-fix" "$$file"; \
 	done
 
 post-configure-DOCS-on:
@@ -250,7 +272,7 @@ do-install:
 	cd ${WRKSRC} && \
 	${SETENV} ${X_PY_ENV} \
 		DESTDIR=${STAGEDIR} \
-	${X_PY_CMD} install \
+	${X_PY_CMD} 'install' \
 		--verbose \
 		--config ./config.toml \
 		--jobs ${MAKE_JOBS_NUMBER}
@@ -300,7 +322,9 @@ post-install:
 # but they contain non-object files which make strip(1) unhappy.
 	@${STRIP_CMD} \
 		${STAGEDIR}${PREFIX}/bin/cargo \
+		${STAGEDIR}${PREFIX}/bin/cargo-clippy \
 		${STAGEDIR}${PREFIX}/bin/cargo-fmt \
+		${STAGEDIR}${PREFIX}/bin/clippy-driver \
 		${STAGEDIR}${PREFIX}/bin/rls \
 		${STAGEDIR}${PREFIX}/bin/rustc \
 		${STAGEDIR}${PREFIX}/bin/rustdoc \
@@ -334,8 +358,8 @@ do-test:
 		--jobs ${MAKE_JOBS_NUMBER}
 
 makesum-all-archs:
-	${MAKE} makesum ARCH=${ONLY_FOR_ARCHS:[1]}
-.for arch in ${ONLY_FOR_ARCHS:[2..-1]}
+	${MAKE} makesum ARCH=${ONLY_FOR_ARCHS:O:[1]}
+.for arch in ${ONLY_FOR_ARCHS:O:[2..-1]}
 	${MAKE} makesum ARCH=${arch} DISTINFO_FILE=${DISTINFO_FILE}.${arch}
 	${GREP} ${RUST_ARCH_${arch}} ${DISTINFO_FILE}.${arch} >> ${DISTINFO_FILE}
 	${RM} ${DISTINFO_FILE}.${arch}

@@ -3,7 +3,7 @@
 
 PORTNAME=	xmms-sapplug
 DISTVERSION=	0.3f
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	LOCAL/ehaupt
 DISTNAME=	sapplug-xmms-${DISTVERSION}
@@ -27,7 +27,9 @@ PLIST_FILES=	lib/xmms/Input/libsap.so
 
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS
 
+CFLAGS_aarch64=	-fpic -DPIC
 CFLAGS_amd64=	-fpic -DPIC
+CFLAGS_i386=	-fpic -DPIC
 
 .include <bsd.port.pre.mk>
 

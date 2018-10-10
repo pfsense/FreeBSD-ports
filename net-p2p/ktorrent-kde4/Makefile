@@ -3,13 +3,16 @@
 
 PORTNAME=	ktorrent
 DISTVERSION=	4.3.1
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	net-p2p kde
 MASTER_SITES=	http://ktorrent.org/downloads/${DISTVERSION}/
 PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	BitTorrent client for KDE
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/bind.hpp:devel/boost-libs
 LIB_DEPENDS=	libtag.so:audio/taglib \

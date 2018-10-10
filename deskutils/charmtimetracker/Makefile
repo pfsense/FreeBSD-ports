@@ -2,9 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	charmtimetracker
-DISTVERSION=	1.11.4
-PORTREVISION=	1
+DISTVERSION=	1.12.0
+PORTREVISION=	0
 CATEGORIES=	deskutils
+
+# PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 
 MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	Time tracker
@@ -14,11 +16,10 @@ COMMENT=	Time tracker
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake:outsource compiler:c++11-lib qt:5
-# Use bundled keychain; the keychain is only used for KDAB-internal
-# features not available or configurable in the port.
-CMAKE_ARGS=	-DCharm_VERSION:STRING=${PORTVERSION} \
-		-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Keychain=TRUE
+LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain@qt5
+
+USES=		cmake:outsource compiler:c++11-lib pkgconfig qt:5
+CMAKE_ARGS=	-DCharm_VERSION:STRING=${PORTVERSION}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	KDAB

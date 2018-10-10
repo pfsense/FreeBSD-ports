@@ -3,7 +3,7 @@
 
 PORTNAME=	exact-image
 PORTVERSION=	0.9.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics perl5 python
 MASTER_SITES=	http://dl.exactcode.de/oss/${PORTNAME}/ LOCAL/bf
 
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libagg.so:graphics/agg \
 		libpng.so:graphics/png \
 		libgif.so:graphics/giflib \
 		libjasper.so:graphics/jasper \
-		libIlmImf.so:graphics/OpenEXR \
+		libIlmImf.so:graphics/openexr \
 		liblcms.so:graphics/lcms \
 		libfreetype.so:print/freetype2 \
 		libexpat.so:textproc/expat2
@@ -30,6 +30,7 @@ BROKEN_armv7=		fails to configure: C++ compiler is not installed or does not wor
 #broken headers on c++ in base system:
 CPPFLAGS+=	-fpermissive -I${LOCALBASE}/include
 USES=		gmake jpeg perl5 pkgconfig python:2.7 tar:bzip2
+USE_CXXSTD=	c++98
 USE_XORG=	x11
 HAS_CONFIGURE=	yes
 INSTALL_WRKSRC=	${WRKSRC}/objdir

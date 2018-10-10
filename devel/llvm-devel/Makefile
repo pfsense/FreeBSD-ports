@@ -3,17 +3,37 @@
 
 PORTNAME=	llvm
 PORTVERSION=	${LLVM_MAJOR}.0.d${SNAPDATE}
-PORTREVISION=	1
+PORTREVISION=	0
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	LLVM and Clang
 
+# License are listed in the order they appear in LICENSE.TXT
+LICENSE=	LLVM GTEST REGEX MIT ARM PD
+LICENSE_COMB=	multi
+LICENSE_NAME_LLVM=	LLVM Release License
+LICENSE_PERMS_LLVM=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_FILE_LLVM=	${WRKSRC}/LICENSE.TXT
+LICENSE_NAME_GTEST=	Google test license
+LICENSE_PERMS_GTEST=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_FILE_GTEST=	${WRKSRC}/utils/unittest/googletest/LICENSE.TXT
+LICENSE_NAME_REGEX=	OpenBSD Regex License
+LICENSE_PERMS_REGEX=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_FILE_REGEX=	${WRKSRC}/lib/Support/COPYRIGHT.regex
+# pyyaml tests are under the MIT license
+LICENSE_NAME_ARM=	ARM Limited license
+LICENSE_PERMS_ARM=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_FILE_ARM=	${WRKSRC}/lib/Target/ARM/LICENSE.TXT
+# md5 is in the public domain
+
 LLVM_SUFFIX=	-devel
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
+
+BUILD_DEPENDS=
 
 USES=		cmake:outsource compiler:c++11-lib libedit perl5 \
 		shebangfix
@@ -21,6 +41,7 @@ USE_LDCONFIG=	${LLVM_PREFIX}/lib
 _USES_PYTHON?=	python:build:2.7
 USES+=		${_USES_PYTHON}
 SHEBANG_FILES=	utils/lit/lit.py utils/llvm-lit/llvm-lit.in \
+		tools/clang/utils/hmaptool/hmaptool \
 		tools/clang/tools/scan-view/bin/scan-view \
 		tools/clang/tools/clang-format/git-clang-format \
 		tools/clang/tools/clang-format/clang-format-diff.py \
@@ -28,11 +49,14 @@ SHEBANG_FILES=	utils/lit/lit.py utils/llvm-lit/llvm-lit.in \
 		tools/clang/tools/extra/clang-tidy/tool/run-clang-tidy.py \
 		tools/clang/tools/extra/include-fixer/find-all-symbols/tool/run-find-all-symbols.py
 
+BROKEN_FreeBSD_10=	error: anonymous union can only contain non-static data members
+
 SUB_FILES=	llvm-wrapper.sh
 SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
 
 CMAKE_INSTALL_PREFIX=	${LLVM_PREFIX}
 CMAKE_ARGS=	-DLLVM_BUILD_LLVM_DYLIB=ON
+CMAKE_ARGS=	-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
 CMAKE_ARGS+=	-DLLVM_ENABLE_RTTI=ON
 CMAKE_ARGS+=	-DLLVM_DEFAULT_TARGET_TRIPLE=${CONFIGURE_TARGET}
 CMAKE_ARGS+=	-DLLVM_HOST_TRIPLE=${CONFIGURE_TARGET}
@@ -40,6 +64,7 @@ CMAKE_ARGS+=	-DLLVM_HOST_TRIPLE=${CONFIGURE_TARGET}
 # we need to either change the whole man-shuffle below, or simply
 # redefine CMAKE_INSTALL_MANDIR
 CMAKE_ARGS+=	-DCMAKE_INSTALL_MANDIR:PATH="share/man"
+CMAKE_ARGS+=	-DLLVM_PARALLEL_LINK_JOBS=1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	llvm-mirror
@@ -74,7 +99,10 @@ COMPILER_RT_GH_TAGNAME=	${COMPILER_RT_COMMIT}:compiler_rt
 COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS:S|^|${_CRTLIBDIR}/|} \
 			${_COMPILER_RT_BLACKLISTS:S|^|${_CRTBLDIR}/|}
 DOCS_PORTDOCS=		llvm
+DOCS_BUILD_DEPENDS=	sphinx-build-${PYTHON_VER}:textproc/py-sphinx@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
 DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
+			-DSPHINX_EXECUTABLE=${LOCALBASE}/bin/sphinx-build-${PYTHON_VER} \
 			-DSPHINX_WARNINGS_AS_ERRORS=OFF \
 			-DLLVM_BUILD_DOCS=ON
 DOCS_PLIST_FILES=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
@@ -90,6 +118,7 @@ LLD_GH_SUBDIR=		tools/lld:lld
 LLD_GH_TAGNAME=		${LLD_COMMIT}:lld
 LLDB_BUILD_DEPENDS=	swig3.0:devel/swig30
 LLDB_DESC=		Install lldb, the LLVM debugger
+LLDB_EXTRA_PATCHES=	${PATCHDIR}/lldb-patch-tools_lldb_source_Plugins_Process_FreeBSD_ProcessFreeBSD.cpp
 LLDB_GH_PROJECT=	lldb:lldb
 LLDB_GH_SUBDIR=		tools/lldb:lldb
 LLDB_GH_TAGNAME=	${LLDB_COMMIT}:lldb
@@ -107,8 +136,6 @@ GOLD_BUILD_DEPENDS=	${LOCALBASE}/bin/ld.gold:devel/binutils
 
 OPTIONS_SUB=	yes
 
-DOCS_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
-
 PLIST_SUB+=	LLVM_MAJOR=${LLVM_MAJOR} \
 		LLVM_RELEASE=${LLVM_RELEASE}
 
@@ -124,6 +151,7 @@ COMMANDS=	bugpoint \
 		llvm-config \
 		llvm-cov \
 		llvm-cvtres \
+		llvm-cxxmap \
 		llvm-diff \
 		llvm-dis \
 		llvm-dlltool \
@@ -153,10 +181,41 @@ COMMANDS=	bugpoint \
 		llvm-strip \
 		llvm-symbolizer \
 		llvm-tblgen \
+		llvm-undname \
+		llvm-xray \
 		macho-dump \
 		opt \
 		sancov
 FIRST_COMMAND=	${COMMANDS:C/^/XXXX/1:MXXXX*:C/^XXXX//}
+
+MAN1SRCS+=	bugpoint.1 \
+		dsymutil.1 \
+		llc.1 \
+		lli.1 \
+		llvm-ar.1 \
+		llvm-as.1 \
+		llvm-bcanalyzer.1 \
+		llvm-build.1 \
+		llvm-config.1 \
+		llvm-cov.1 \
+		llvm-cxxmap.1 \
+		llvm-diff.1 \
+		llvm-dis.1 \
+		llvm-dwarfdump.1 \
+		llvm-exegesis.1 \
+		llvm-extract.1 \
+		llvm-lib.1 \
+		llvm-link.1 \
+		llvm-mca.1 \
+		llvm-nm.1 \
+		llvm-objdump.1 \
+		llvm-pdbutil.1 \
+		llvm-profdata.1 \
+		llvm-readobj.1 \
+		llvm-stress.1 \
+		llvm-symbolizer.1 \
+		opt.1 \
+		tblgen.1
 
 STRIP_LIBS=	BugpointPasses.so \
 		LLVMHello.so \
@@ -219,6 +278,7 @@ COMMANDS+=	c-index-test \
 		clang-offload-bundler \
 		clangd \
 		diagtool \
+		hmaptool \
 		scan-build \
 		scan-view
 MAN1SRCS+=	clang.1 \
@@ -247,7 +307,8 @@ COMMANDS+=	lldb \
 		lldb-argdumper \
 		lldb-mi \
 		lldb-server \
-		lldb-test
+		lldb-test \
+		lldb-vscode
 .endif
 
 .if ! ${OPTIONS_DEFINE:MCOMPILER_RT}
@@ -267,14 +328,6 @@ PLIST_SUB+=	GOLD="@comment "
 PLIST_SUB+=	OPENMP="@comment "
 .else
 .endif
-
-MAN1SRCS+=	bugpoint.1 dsymutil.1 llc.1 lli.1 llvm-ar.1 llvm-as.1 \
-		llvm-bcanalyzer.1 llvm-build.1 llvm-config.1 llvm-cov.1 \
-		llvm-diff.1 llvm-dis.1 llvm-dwarfdump.1 llvm-exegesis.1 \
-		llvm-extract.1 llvm-lib.1 llvm-link.1 llvm-mca.1 llvm-nm.1 \
-		llvm-pdbutil.1 \
-		llvm-profdata.1 llvm-readobj.1 llvm-stress.1 llvm-symbolizer.1 \
-		opt.1 tblgen.1
 
 .include <bsd.port.pre.mk>
 
@@ -308,7 +361,7 @@ _COMPILER_RT_LIBS= \
 	libclang_rt.msan_cxx-x86_64.a.syms \
 	libclang_rt.xray-basic-x86_64.a \
 	libclang_rt.xray-fdr-x86_64.a \
-	libclang_rt.xray-profiler-x86_64.a \
+	libclang_rt.xray-profiling-x86_64.a \
 	libclang_rt.xray-x86_64.a \
 	libclang_rt.profile-x86_64.a \
 	libclang_rt.safestack-x86_64.a \

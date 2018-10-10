@@ -5,7 +5,7 @@ PORTNAME=	xapian-bindings
 PORTVERSION=	1.2.25
 PORTREVISION=	1
 CATEGORIES=	databases
-MASTER_SITES=	http://oligarchy.co.uk/xapian/${PORTVERSION}/ \
+MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
 		LOCAL/sunpoet
 PKGNAMESUFFIX=	12
 
@@ -14,6 +14,8 @@ COMMENT=	Bindings allowing Xapian to be used from various programming languages
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+IGNORE_WITH_PHP=	70 71 72
 
 LIB_DEPENDS=	libxapian.so:databases/xapian-core12
 

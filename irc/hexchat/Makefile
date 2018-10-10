@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hexchat
-PORTVERSION=	2.14.1
+PORTVERSION=	2.14.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	irc gnome ipv6
 
 MAINTAINER=	pkubaj@anongoth.pl
@@ -20,12 +19,12 @@ LIB_DEPENDS=	libproxy.so:net/libproxy \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	${LOCALBASE}/share/xml/iso-codes/iso_639.xml:misc/iso-codes
 
-USES=		meson ninja desktop-file-utils libtool pkgconfig ssl shebangfix \
-		gettext-tools
+USES=		desktop-file-utils gettext-tools gnome libtool meson ninja \
+		pkgconfig shebangfix ssl
 USE_GNOME=	cairo gtk20 intltool libxml2
 USE_XORG=	x11
 USE_GITHUB=	yes
-MESON_ARGS=	-Dwith-ssl=true -Dwith-gtk=true -Dwith-sysinfo=false
+MESON_ARGS=	-Dwith-ssl=true -Dwith-gtk=true
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
@@ -37,7 +36,7 @@ SUB_FILES=	pkg-message
 PORTDOCS=	*
 
 OPTIONS_DEFINE=		CA_BUNDLE CANBERRA DBUS DOCS FISHLIM LUA NOTIFY \
-			PERL PYTHON TEXTFE
+			PERL PYTHON TEXTFE SYSINFO
 
 OPTIONS_DEFAULT=	CA_BUNDLE CANBERRA DBUS NOTIFY PERL PYTHON
 
@@ -47,6 +46,7 @@ CA_BUNDLE_DESC=		Include CA bundle for SSL verification
 CANBERRA_DESC=		Audio support via Libcanberra
 FISHLIM_DESC=		FiSHLiM plugin
 TEXTFE_DESC=		Text frontend
+SYSINFO_DESC=		Sysinfo plugin
 
 CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 CA_BUNDLE_VARS=	CA_BUNDLE="${LOCALBASE}/share/certs/ca-root-nss.crt"
@@ -72,10 +72,14 @@ PYTHON_VARS=		SHEBANG_FILES=meson_post_install.py
 PYTHON_VARS+=		SHEBANG_FILES=plugins/perl/generate_header.py
 PYTHON_VARS+=		SHEBANG_FILES=src/common/make-te.py
 TEXTFE_MESON_TRUE=	with-text
+SYSINFO_MESON_TRUE=	with-sysinfo
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%CA_BUNDLE%%|${CA_BUNDLE}|' \
 		${WRKSRC}/src/common/server.c
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
+		-e 's|%%PERL_VER%%|${PERL_VER}|g' \
+		${WRKSRC}/plugins/perl/meson.build
 
 post-install:
 	${LN} -sf ../share/icons/hicolor/48x48/apps/${PORTNAME}.png \

@@ -11,8 +11,10 @@ USES=		cmake:outsource compiler:c++11-lang gettext kde:5 qt:5 tar:xz
 USE_KDE=	baloo completion config coreaddons ecm emoticons filemetadata \
 		i18n init itemmodels jobwidgets kdelibs4support kio service \
 		widgetsaddons
-USE_QT=		core gui network testlib widgets xml \
+USE_QT=		core dbus gui network testlib widgets xml \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

@@ -336,6 +336,7 @@ share/icons/breeze-dark/actions/16/dvipng.svg
 share/icons/breeze-dark/actions/16/dvips.svg
 share/icons/breeze-dark/actions/16/dynamic-amarok.svg
 share/icons/breeze-dark/actions/16/edit-bomb.svg
+share/icons/breeze-dark/actions/16/edit-clear-all.svg
 share/icons/breeze-dark/actions/16/edit-clear-history.svg
 share/icons/breeze-dark/actions/16/edit-clear-list.svg
 share/icons/breeze-dark/actions/16/edit-clear-locationbar-ltr.svg
@@ -1919,6 +1920,7 @@ share/icons/breeze-dark/actions/22/dvisearch.svg
 share/icons/breeze-dark/actions/22/dynamic-amarok.svg
 share/icons/breeze-dark/actions/22/earthquake.svg
 share/icons/breeze-dark/actions/22/edit-bomb.svg
+share/icons/breeze-dark/actions/22/edit-clear-all.svg
 share/icons/breeze-dark/actions/22/edit-clear-history.svg
 share/icons/breeze-dark/actions/22/edit-clear-list.svg
 share/icons/breeze-dark/actions/22/edit-clear-locationbar-ltr.svg
@@ -3478,6 +3480,7 @@ share/icons/breeze-dark/actions/24/draw-triangle3.svg
 share/icons/breeze-dark/actions/24/draw-triangle4.svg
 share/icons/breeze-dark/actions/24/draw-watercolor.svg
 share/icons/breeze-dark/actions/24/edit-bomb.svg
+share/icons/breeze-dark/actions/24/edit-clear-all.svg
 share/icons/breeze-dark/actions/24/edit-clear-history.svg
 share/icons/breeze-dark/actions/24/edit-clear-list.svg
 share/icons/breeze-dark/actions/24/edit-clear-locationbar-ltr.svg
@@ -5130,6 +5133,7 @@ share/icons/breeze-dark/apps/48/planetkde.svg
 share/icons/breeze-dark/apps/48/plank.svg
 share/icons/breeze-dark/apps/48/planner.svg
 share/icons/breeze-dark/apps/48/planwork.svg
+share/icons/breeze-dark/apps/48/plasma-browser-integration.svg
 share/icons/breeze-dark/apps/48/plasma-media-center.svg
 share/icons/breeze-dark/apps/48/plasma-mobile-phone.svg
 share/icons/breeze-dark/apps/48/plasmadiscover.svg
@@ -5214,6 +5218,7 @@ share/icons/breeze-dark/apps/64/hotspot.svg
 share/icons/breeze-dark/apps/64/kate.svg
 share/icons/breeze-dark/apps/64/kwrite.svg
 share/icons/breeze-dark/apps/64/plasmavault.svg
+share/icons/breeze-dark/apps/64/plasma-browser-integration.svg
 share/icons/breeze-dark/apps/64/sharedlib.svg
 share/icons/breeze-dark/apps/64/system-file-manager.svg
 share/icons/breeze-dark/apps/64/umbrello.svg
@@ -5241,6 +5246,7 @@ share/icons/breeze-dark/devices/16/computer.svg
 share/icons/breeze-dark/devices/16/cups.svg
 share/icons/breeze-dark/devices/16/cupsprinter.svg
 share/icons/breeze-dark/devices/16/drive-harddisk.svg
+share/icons/breeze-dark/devices/16/drive-optical.svg
 share/icons/breeze-dark/devices/16/drive-removable-media-usb-pendrive.svg
 share/icons/breeze-dark/devices/16/drive-removable-media-usb.svg
 share/icons/breeze-dark/devices/16/drive-removable-media.svg
@@ -5282,6 +5288,7 @@ share/icons/breeze-dark/devices/22/computer.svg
 share/icons/breeze-dark/devices/22/cups.svg
 share/icons/breeze-dark/devices/22/cupsprinter.svg
 share/icons/breeze-dark/devices/22/drive-harddisk.svg
+share/icons/breeze-dark/devices/22/drive-optical.svg
 share/icons/breeze-dark/devices/22/drive-removable-media-usb-pendrive.svg
 share/icons/breeze-dark/devices/22/drive-removable-media-usb.svg
 share/icons/breeze-dark/devices/22/drive-removable-media.svg
@@ -5327,6 +5334,7 @@ share/icons/breeze-dark/devices/64/cpu.svg
 share/icons/breeze-dark/devices/64/cups.svg
 share/icons/breeze-dark/devices/64/cupsprinter.svg
 share/icons/breeze-dark/devices/64/drive-harddisk.svg
+share/icons/breeze-dark/devices/64/drive-optical.svg
 share/icons/breeze-dark/devices/64/drive-removable-media-usb-pendrive.svg
 share/icons/breeze-dark/devices/64/drive-removable-media-usb.svg
 share/icons/breeze-dark/devices/64/drive-removable-media.svg
@@ -8205,6 +8213,7 @@ share/icons/breeze/actions/16/dvipng.svg
 share/icons/breeze/actions/16/dvips.svg
 share/icons/breeze/actions/16/dynamic-amarok.svg
 share/icons/breeze/actions/16/edit-bomb.svg
+share/icons/breeze/actions/16/edit-clear-all.svg
 share/icons/breeze/actions/16/edit-clear-history.svg
 share/icons/breeze/actions/16/edit-clear-list.svg
 share/icons/breeze/actions/16/edit-clear-locationbar-ltr.svg
@@ -9788,6 +9797,7 @@ share/icons/breeze/actions/22/dvisearch.svg
 share/icons/breeze/actions/22/dynamic-amarok.svg
 share/icons/breeze/actions/22/earthquake.svg
 share/icons/breeze/actions/22/edit-bomb.svg
+share/icons/breeze/actions/22/edit-clear-all.svg
 share/icons/breeze/actions/22/edit-clear-history.svg
 share/icons/breeze/actions/22/edit-clear-list.svg
 share/icons/breeze/actions/22/edit-clear-locationbar-ltr.svg
@@ -11347,6 +11357,7 @@ share/icons/breeze/actions/24/draw-triangle3.svg
 share/icons/breeze/actions/24/draw-triangle4.svg
 share/icons/breeze/actions/24/draw-watercolor.svg
 share/icons/breeze/actions/24/edit-bomb.svg
+share/icons/breeze/actions/24/edit-clear-all.svg
 share/icons/breeze/actions/24/edit-clear-history.svg
 share/icons/breeze/actions/24/edit-clear-list.svg
 share/icons/breeze/actions/24/edit-clear-locationbar-ltr.svg
@@ -13001,6 +13012,7 @@ share/icons/breeze/apps/48/planetkde.svg
 share/icons/breeze/apps/48/plank.svg
 share/icons/breeze/apps/48/planner.svg
 share/icons/breeze/apps/48/planwork.svg
+share/icons/breeze/apps/48/plasma-browser-integration.svg
 share/icons/breeze/apps/48/plasma-media-center.svg
 share/icons/breeze/apps/48/plasma-mobile-phone.svg
 share/icons/breeze/apps/48/plasmadiscover.svg
@@ -13084,6 +13096,7 @@ share/icons/breeze/apps/64/diaspora.svg
 share/icons/breeze/apps/64/hotspot.svg
 share/icons/breeze/apps/64/kate.svg
 share/icons/breeze/apps/64/kwrite.svg
+share/icons/breeze/apps/64/plasma-browser-integration.svg
 share/icons/breeze/apps/64/plasmavault.svg
 share/icons/breeze/apps/64/sharedlib.svg
 share/icons/breeze/apps/64/system-file-manager.svg
@@ -13112,6 +13125,7 @@ share/icons/breeze/devices/16/computer.svg
 share/icons/breeze/devices/16/cups.svg
 share/icons/breeze/devices/16/cupsprinter.svg
 share/icons/breeze/devices/16/drive-harddisk.svg
+share/icons/breeze/devices/16/drive-optical.svg
 share/icons/breeze/devices/16/drive-removable-media-usb-pendrive.svg
 share/icons/breeze/devices/16/drive-removable-media-usb.svg
 share/icons/breeze/devices/16/drive-removable-media.svg
@@ -13153,6 +13167,7 @@ share/icons/breeze/devices/22/computer.svg
 share/icons/breeze/devices/22/cups.svg
 share/icons/breeze/devices/22/cupsprinter.svg
 share/icons/breeze/devices/22/drive-harddisk.svg
+share/icons/breeze/devices/22/drive-optical.svg
 share/icons/breeze/devices/22/drive-removable-media-usb-pendrive.svg
 share/icons/breeze/devices/22/drive-removable-media-usb.svg
 share/icons/breeze/devices/22/drive-removable-media.svg
@@ -13198,6 +13213,7 @@ share/icons/breeze/devices/64/cpu.svg
 share/icons/breeze/devices/64/cups.svg
 share/icons/breeze/devices/64/cupsprinter.svg
 share/icons/breeze/devices/64/drive-harddisk.svg
+share/icons/breeze/devices/64/drive-optical.svg
 share/icons/breeze/devices/64/drive-removable-media-usb-pendrive.svg
 share/icons/breeze/devices/64/drive-removable-media-usb.svg
 share/icons/breeze/devices/64/drive-removable-media.svg
@@ -14867,6 +14883,7 @@ share/icons/breeze/mimetypes/64/application-x-kplato.svg
 share/icons/breeze/mimetypes/64/application-x-krita.svg
 share/icons/breeze/mimetypes/64/application-x-kvtml.svg
 share/icons/breeze/mimetypes/64/application-x-kword.svg
+share/icons/breeze/mimetypes/64/application-x-labplot2.svg
 share/icons/breeze/mimetypes/64/application-x-lha.svg
 share/icons/breeze/mimetypes/64/application-x-lyx.svg
 share/icons/breeze/mimetypes/64/application-x-lzma-compressed-tar.svg

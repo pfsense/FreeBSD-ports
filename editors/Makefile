@@ -33,6 +33,7 @@
     SUBDIR += dte
     SUBDIR += e3
     SUBDIR += ecce
+    SUBDIR += ecrire
     SUBDIR += edith
     SUBDIR += editorconfig-core-c
     SUBDIR += emacs
@@ -48,6 +49,7 @@
     SUBDIR += gedit
     SUBDIR += gedit-plugins
     SUBDIR += ghex
+    SUBDIR += ghostwriter
     SUBDIR += gmanedit
     SUBDIR += gnotepad+
     SUBDIR += gobby
@@ -64,7 +66,6 @@
     SUBDIR += jed
     SUBDIR += jedit
     SUBDIR += joe
-    SUBDIR += joe2
     SUBDIR += jove
     SUBDIR += jucipp
     SUBDIR += jupp
@@ -213,6 +214,7 @@
     SUBDIR += paredit-mode.el
     SUBDIR += pdfedit
     SUBDIR += pico-alpine
+    SUBDIR += picpas
     SUBDIR += pluma
     SUBDIR += plume-creator-devel
     SUBDIR += poedit
@@ -259,7 +261,6 @@
     SUBDIR += xmlcopyeditor
     SUBDIR += xvile
     SUBDIR += yudit
-    SUBDIR += yui
     SUBDIR += yzis
     SUBDIR += zile
     SUBDIR += zoinks

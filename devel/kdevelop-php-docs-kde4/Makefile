@@ -2,7 +2,7 @@
 
 PORTNAME=	kdevelop-php-docs
 PORTVERSION=	${KDEVELOP_VERSION:S/4./1./}
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/${KDEVELOP_BRANCH}/kdevelop/${KDEVELOP_VERSION}
 DIST_SUBDIR=	KDE/kdevelop/${KDEVELOP_VERSION}
@@ -10,6 +10,9 @@ PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	PHP documentation for KDevelop
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libkdevplatforminterfaces.so:devel/kdevplatform-kde4
 

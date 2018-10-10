@@ -3,10 +3,10 @@
 
 PORTNAME=	fusefs-libs3
 DISTVERSIONPREFIX=	fuse-
-DISTVERSION=	3.2.2
+DISTVERSION=	3.2.5
 CATEGORIES=	sysutils
 
-MAINTAINER=	se@freebsd.org
+MAINTAINER=	se@FreeBSD.org
 COMMENT=	FUSE library version 3 for filesystems implemented in userspace
 
 LICENSE=	LGPL21

@@ -3,7 +3,7 @@
 
 PORTNAME=	telldus-core
 PORTVERSION=	2.1.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	comms
 MASTER_SITES=	http://download.telldus.se/TellStick/Software/telldus-core/
 
@@ -28,6 +28,8 @@ CMAKE_ARGS+=-DGENERATE_MAN=TRUE
 CMAKE_ARGS+=-DSYSCONF_INSTALL_DIR="${PREFIX}/etc"
 # Using global /var, otherwise testport complains "Warning: port uses /usr/local/var instead of /var"
 CMAKE_ARGS+=-DSTATE_INSTALL_DIR="/var/telldus"
+CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
+CXXFLAGS_clang=	-Wno-c++11-narrowing
 
 MAKE_JOBS_UNSAFE=	yes
 

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	elixir
-PORTVERSION=	1.6.5
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.7.3
 CATEGORIES=	lang
 MASTER_SITES+=	https://github.com/elixir-lang/elixir/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/:doc
 DISTFILES=	Docs.zip:doc
@@ -17,10 +17,11 @@ LICENSE=	APACHE20
 BUILD_DEPENDS=	erlang>=19:lang/erlang
 RUN_DEPENDS=	erlang>=19:lang/erlang
 
+USES=		gmake
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	elixir-lang
 
-USES=		gmake
 USE_LOCALE=	en_US.UTF-8
 ALL_TARGET=	# empty
 REINPLACE_ARGS=	-i ""

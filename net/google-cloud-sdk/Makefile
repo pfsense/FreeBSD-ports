@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	google-cloud-sdk
-PORTVERSION=	208.0.1
+PORTVERSION=	217.0.0
 CATEGORIES=	net
 MASTER_SITES=	https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/
 DISTNAME=	google-cloud-sdk-${PORTVERSION}-linux-x86_64
@@ -10,13 +10,16 @@ DISTNAME=	google-cloud-sdk-${PORTVERSION}-linux-x86_64
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Google Cloud SDK for Google Cloud Platform
 
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
+
 USES=		python:2.7
 WRKSRC=		${WRKDIR}/google-cloud-sdk
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/bq bin/gcloud bin/git-credential-gcloud.sh bin/gsutil
-
-RUN_DEPENDS=	python:lang/python \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
 post-extract:
 	@${RM} -r \
@@ -42,6 +45,6 @@ do-install:
 
 post-install:
 	@(cd ${STAGEDIR}${PREFIX} && \
-                ${FIND} -s google-cloud-sdk -type f -o -type l >> ${TMPPLIST})
+		${FIND} -s google-cloud-sdk -type f -o -type l >> ${TMPPLIST})
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	julia
-PORTVERSION=	0.6.3
+PORTVERSION=	1.0.0
 DISTVERSIONSUFFIX=	-full
 PORTREVISION=	1
 CATEGORIES=	lang math
@@ -19,14 +19,17 @@ ONLY_FOR_ARCHS=	amd64 i386
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgit2.so:devel/libgit2 \
 		libgmp.so:math/gmp \
+		libmbedtls.so:security/mbedtls \
 		libmpfr.so:math/mpfr \
 		libopenblasp.so:math/openblas \
 		libpcre2-8.so:devel/pcre2 \
+		libssh2.so:security/libssh2 \
 		libutf8proc.so:textproc/utf8proc
 BUILD_DEPENDS=	patchelf:sysutils/patchelf \
-		pcre2-config:devel/pcre2
+		pcre2-config:devel/pcre2 \
+		cmake:devel/cmake
 
-USES=		gmake compiler:c++11-lib fortran
+USES=		gmake compiler:c++11-lib fortran python:2.7,build perl5
 USE_LDCONFIG=	yes
 
 WRKSRC=	${WRKDIR}/${PORTNAME}
@@ -35,57 +38,50 @@ ALL_TARGET=	default
 INSTALL_TARGET=	install
 TEST_TARGET=	test
 
-PLIST_SUB=	VERSION="${PORTVERSION:R}" \
-		SOVERSION="${PORTVERSION}"
+PLIST_SUB=	VERSION="${PORTVERSION:R}"
 
 CXXFLAGS+=	-stdlib=libc++ -std=c++11
-MAKE_ARGS+=	prefix=${PREFIX} JCXXFLAGS="${CXXFLAGS}" \
+MAKE_ARGS+=	prefix=${PREFIX} \
+		JCXXFLAGS="${CXXFLAGS}" \
 		FORCE_ASSERTIONS=${FORCE_ASSERTIONS} \
+		USE_GPL_LIBS=${USE_GPL_LIBS} \
+		USE_SYSTEM_BLAS=1 \
 		USE_SYSTEM_CURL=1 \
-		USE_GPL_LIBS=${USE_GPL_LIBS}
+		USE_SYSTEM_GMP=1 \
+		USE_SYSTEM_LAPACK=1 \
+		USE_SYSTEM_LIBGIT2=1 \
+		USE_SYSTEM_LIBSSH2=1 \
+		USE_SYSTEM_LIBUV=0 \
+		USE_SYSTEM_MBEDTLS=1 \
+		USE_SYSTEM_MPFR=1 \
+		USE_SYSTEM_PATCHELF=1 \
+		USE_SYSTEM_PCRE=1 \
+		USE_SYSTEM_UTF8PROC=1 \
+		NO_GIT=1
 
-OPTIONS_DEFINE=	EXAMPLES DEBUG DOCS GPL_LIBS DESKTOP NATIVE
+OPTIONS_DEFINE=	DEBUG DOCS GPL_LIBS DESKTOP NATIVE
 OPTIONS_DEFAULT=	SYSLIBM
 OPTIONS_GROUP=	PRIVATE
-OPTIONS_GROUP_PRIVATE=	ARPACK LLVM
 OPTIONS_SINGLE=	LIBM
 OPTIONS_SINGLE_LIBM=	SYSLIBM OPENLIBM
 OPTIONS_SUB=	yes
 
-PRIVATE_DESC=	Build self-shipped private depends
 LIBM_DESC=	Math library implementation
 
 DEBUG_VARS=	FORCE_ASSERTIONS=1 \
 		ALL_TARGET=all
+DEBUG_MAKE_ARGS=	BUNDLE_DEBUG_LIBS=1
 
 PORTDOCS=	html
 DOCS_VARS=	INSTALL_TARGET+=install-docs
 
-PORTEXAMPLES=	*
-EXAMPLES_VARS=	INSTALL_TARGET+=install-examples
-
-GPL_LIBS_DESC=	Build with GPL libs: FFTW and SUITESPARSE
-GPL_LIBS_LIB_DEPENDS=	libfftw3.so:math/fftw3 \
-			libfftw3f.so:math/fftw3-float
+GPL_LIBS_DESC=	Build with GPL lib: SUITESPARSE
 GPL_LIBS_MAKE_ARGS=	USE_SYSTEM_SUITESPARSE=0
 GPL_LIBS_VARS=	USE_GPL_LIBS=1
 
 DESKTOP_DESC=	Install icon, .desktop and appdata files
 DESKTOP_VARS=	INSTALL_TARGET+=install-desktop \
 		INSTALLS_ICONS=yes
-
-ARPACK_DESC=	Build self-shipped private arpack-ng
-ARPACK_MAKE_ARGS=	USE_SYSTEM_ARPACK=0
-ARPACK_MAKE_ARGS_OFF=	USE_SYSTEM_ARPACK=1
-ARPACK_LIB_DEPENDS_OFF=	libarpack.so:math/arpack-ng
-
-LLVM_DESC=	Build self-shipped private LLVM
-LLVM_MAKE_ARGS=	USE_SYSTEM_LLVM=0
-LLVM_MAKE_ARGS_OFF=	USE_SYSTEM_LLVM=1 LLVM_CONFIG=llvm-config40
-LLVM_BUILD_DEPENDS=	cmake:devel/cmake
-LLVM_BUILD_DEPENDS_OFF=	llvm-config40:devel/llvm40
-LLVM_LIB_DEPENDS_OFF=	libLLVM-4.0.so:devel/llvm40
-LLVM_USES=	python:build perl5
 
 SYSLIBM_DESC=	Build with system libm
 SYSLIBM_MAKE_ARGS=	USE_SYSTEM_LIBM=1

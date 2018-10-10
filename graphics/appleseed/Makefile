@@ -3,17 +3,18 @@
 
 PORTNAME=	appleseed
 DISTVERSION=	1.7.1-beta
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Modern, physically-based production renderer
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libpng.so:graphics/png \
-		libIlmImf.so:graphics/OpenEXR \
+		libIlmImf.so:graphics/openexr \
 		libxerces-c.so:textproc/xerces-c3 \
 		liboslexec.so:graphics/openshadinglanguage
 

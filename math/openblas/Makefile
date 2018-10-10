@@ -3,7 +3,7 @@
 
 PORTNAME=	openblas
 PORTVERSION=	0.2.20
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	math
@@ -16,6 +16,8 @@ COMMENT=	Optimized BLAS library based on GotoBLAS2
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_powerpc64=	fails to compile: gemm.c:403: 'SGEMM_DEFAULT_Q' undeclared (first use in this function)
 
 USES=		fortran gmake perl5
 

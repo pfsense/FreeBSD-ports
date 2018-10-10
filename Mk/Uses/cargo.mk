@@ -38,7 +38,7 @@ CARGO_DIST_SUBDIR?=	rust/crates
 
 # Generate list of DISTFILES.
 .for _crate in ${CARGO_CRATES}
-MASTER_SITES+=	${MASTER_SITES_CRATESIO}/${_crate:C/-[0-9].*$//}/${_crate:C/^.*-([0-9].*)/\1/}/download?dummy=/:cargo_${_crate:S/-//g:S/.//g}
+MASTER_SITES+=	${MASTER_SITES_CRATESIO}/${_crate:C/^(.*)-[0-9].*/\1/}/${_crate:C/^.*-([0-9].*)/\1/}/download?dummy=/:cargo_${_crate:S/-//g:S/.//g}
 DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}.tar.gz:cargo_${_crate:S/-//g:S/.//g}
 .endfor
 
@@ -46,7 +46,7 @@ DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}.tar.gz:cargo_${_crate:S/-//g:S/.//g}
 
 CARGO_BUILDDEP?=	yes
 .if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	 rust>=1.19.0_2:lang/rust
+BUILD_DEPENDS+=	 rust>=1.29.1:lang/rust
 .endif
 
 # Location of cargo binary (default to lang/rust's Cargo binary)
@@ -153,6 +153,12 @@ CARGO_ENV+=	LIBGIT2_SYS_USE_PKG_CONFIG=1
 LIB_DEPENDS+=	libgit2.so:devel/libgit2
 .endif
 
+.if ${CARGO_CRATES:Mlibssh2-sys-[0-9]*}
+# Use the system's libssh2 instead of building the bundled version
+CARGO_ENV+=	LIBSSH2_SYS_USE_PKG_CONFIG=1
+LIB_DEPENDS+=	libssh2.so:security/libssh2
+.endif
+
 .if ${CARGO_CRATES:Monig_sys-[0-9]*}
 # onig_sys always prefers the system library but will try to link
 # statically with it.  Since devel/oniguruma doesn't provide a static
@@ -253,8 +259,15 @@ do-test:
 # Helper targets for port maintainers
 #
 
-# cargo-crates will output the crates list from Cargo.lock.
+# cargo-crates will output the crates list from Cargo.lock.  If there
+# is no Cargo.lock for some reason, try and generate it first.
 cargo-crates: extract
+	@if [ ! -r "${CARGO_CARGOLOCK}" ]; then \
+		${ECHO_MSG} "===> ${CARGO_CARGOLOCK} not found.  Trying to generate it..."; \
+		${CARGO_CARGO_RUN} generate-lockfile \
+			--manifest-path ${CARGO_CARGOTOML} \
+			--verbose; \
+	fi
 	@${SETENV} USE_GITHUB=${USE_GITHUB} \
 		${AWK} -f ${SCRIPTSDIR}/cargo-crates.awk ${CARGO_CARGOLOCK}
 

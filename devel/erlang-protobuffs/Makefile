@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	protobuffs
-PORTVERSION=	0.9.0
+PORTVERSION=	0.9.1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 
@@ -10,9 +10,14 @@ COMMENT=	Protocol Buffers interface for Erlang
 
 LICENSE=	APACHE20
 
+DEPRECATED=	upstream deprecated
+EXPIRATION_DATE=2018-10-01
+
 USES=		erlang:rebar
 USE_GITHUB=	yes
 GH_ACCOUNT=	basho
 GH_PROJECT=	erlang_protobuffs
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

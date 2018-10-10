@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sigil
-PORTVERSION=	0.9.9
+PORTVERSION=	0.9.10
 CATEGORIES=	textproc
 
 MAINTAINER=	ports@FreeBSD.org

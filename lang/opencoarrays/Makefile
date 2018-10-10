@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	opencoarrays
-DISTVERSION=	2.0.0
+DISTVERSION=	2.2.0
+PORTREVISION=	2
 CATEGORIES=	lang parallel
 
 MAINTAINER=	as@cmplx.uk
@@ -11,10 +12,13 @@ COMMENT=	Transport layer for coarray Fortran compilers
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_aarch64=		fails to build: Can't open module file 'ieee_arithmetic.mod' for reading at (1): No such file or directory
+
 BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		cmake:outsource fortran
+USE_CSTD=	gnu99
 USE_GITHUB=	yes
 GH_ACCOUNT=	sourceryinstitute
 GH_PROJECT=	OpenCoarrays
@@ -42,7 +46,9 @@ OPENMPI2_CONFIGURE_ENV=	MPI_HOME=${LOCALBASE}/mpi/openmpi2
 
 .include <bsd.port.options.mk>
 
-.if ${GCC_DEFAULT} >= 7
+.if ${GCC_DEFAULT} >= 8
+PLIST_SUB+=	SOVERSION=3
+.elif ${GCC_DEFAULT} == 7
 PLIST_SUB+=	SOVERSION=2
 .elif ${GCC_DEFAULT} == 6
 PLIST_SUB+=	SOVERSION=1

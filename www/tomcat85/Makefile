@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	tomcat
-PORTVERSION=	8.5.30
+PORTVERSION=	8.5.32
 CATEGORIES=	www java
-MASTER_SITES=	APACHE/tomcat/tomcat-8/v${PORTVERSION}/bin
+MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${PORTVERSION:C/([0-9])(.*)/\1/}/v${PORTVERSION}/bin
 PKGNAMESUFFIX=	85
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}
 
@@ -19,7 +19,7 @@ USES=		cpe
 CPE_VENDOR=	apache
 USE_JAVA=	yes
 JAVA_VERSION=	1.7+
-USE_RC_SUBR=	${PKGBASE}
+USE_RC_SUBR=	${PKGBASE:C/-/_/}
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -31,7 +31,7 @@ SUB_LIST=	TOMCAT_HOME=${TOMCAT_HOME} \
 		JAVA_HOME=${JAVA_HOME}
 
 OPTIONS_DEFINE=		HOST_MANAGER MANAGER DOCS EXAMPLES ROOT
-OPTIONS_DEFAULT=	HOST_MANAGER MANAGER DOCS EXAMPLES ROOT
+OPTIONS_DEFAULT=	HOST_MANAGER MANAGER ROOT
 OPTIONS_SUB=		yes
 
 DOCS_DESC=		Install Documentation web application
@@ -53,8 +53,18 @@ post-install:
 	(cd ${STAGEDIR}${TOMCAT_HOME}/conf &&\
 		for f in $$(find . -type f); do ${MV} $$f $$f.sample; done)
 
+post-install-HOST_MANAGER-on:
+	(cd ${STAGEDIR}${TOMCAT_HOME}/webapps &&\
+		for f in host-manager/META-INF/context.xml host-manager/WEB-INF/web.xml; do \
+			${MV} $$f $$f.sample; done)
+
 post-install-HOST_MANAGER-off:
 	@${RM} -R ${STAGEDIR}${TOMCAT_HOME}/webapps/host-manager
+
+post-install-MANAGER-on:
+	(cd ${STAGEDIR}${TOMCAT_HOME}/webapps &&\
+		for f in manager/META-INF/context.xml manager/WEB-INF/web.xml; do \
+			${MV} $$f $$f.sample; done)
 
 post-install-MANAGER-off:
 	@${RM} -R ${STAGEDIR}${TOMCAT_HOME}/webapps/manager

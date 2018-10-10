@@ -2,7 +2,6 @@
 
 PORTNAME=	kolf
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	games kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -19,6 +18,8 @@ USE_QT=		core dbus gui network phonon4 printsupport qml quick \
 		buildtools_build qmake_build
 
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <${.CURDIR}/../kdegames/Makefile.common>
 .include <bsd.port.mk>

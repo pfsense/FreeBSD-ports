@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		bazel
-DISTVERSION=		0.14.0
+DISTVERSION=		0.17.1
 CATEGORIES=		devel java
 MASTER_SITES=		https://storage.googleapis.com/bazel/${PORTVERSION}/rc${FINALRC}/
 DISTNAME=		bazel-${PORTVERSION}rc${FINALRC}-dist
@@ -24,7 +24,7 @@ BUILD_DEPENDS=		bash:shells/bash \
 # In bazel, a release is always code-wise identical to the final release candidate.
 # Hence we can also download that one and so have a simple way to also test earlier release
 # candidates.
-FINALRC=		5
+FINALRC=		7
 
 USES=			shebangfix zip:infozip python
 SHEBANG_REGEX=		.*(sh|txt|_stub|stub_.*|bazel|get_workspace_status|protobuf_support|_so)
@@ -35,13 +35,6 @@ JAVA_BUILD=		yes
 JAVA_RUN=		yes
 
 NO_WRKSUBDIR=		YES
-
-CONFLICTS_INSTALL?=	bazel-clang38
-
-OPTIONS_DEFINE=	CLANG38
-CLANG38_DESC=	Use clang38 as default crosstool
-CLANG38_BUILD_DEPENDS=	clang38:devel/llvm38
-CLANG38_RUN_DEPENDS=	clang38:devel/llvm38
 
 STRIP=	# The bazel binary is also a zip archive (extracted by the elf part), it must not be stripped
 
@@ -66,10 +59,6 @@ post-patch:
 	@${REINPLACE_CMD} \
 	-e 's|/usr/bin/env python|${PYTHON_CMD}|' \
 	${WRKSRC}/src/main/java/com/google/devtools/build/lib/bazel/rules/python/BazelPythonSemantics.java
-
-post-patch-CLANG38-on:
-	@${REINPLACE_CMD} -e 's=/usr/lib/clang=${LOCALBASE}/llvm38/lib/clang=' \
-	-e 's=/usr/bin/clang=${LOCALBASE}/bin/clang38=' ${WRKSRC}/tools/cpp/CROSSTOOL
 
 do-build:
 	@${MKDIR} ${WRKDIR}/bazel_tmp

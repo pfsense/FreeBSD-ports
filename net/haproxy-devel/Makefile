@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	haproxy
-DISTVERSION=	1.9-dev2
+DISTVERSION=	1.9-dev3
 CATEGORIES=	net www
 MASTER_SITES=	http://www.haproxy.org/download/1.9/src/devel/
 PKGNAMESUFFIX=	-devel
@@ -16,7 +16,7 @@ LICENSE_COMB=	multi
 
 CONFLICTS_INSTALL=	haproxy-[0-9]* haproxy17-[0-9]*
 
-USES=		cpe gmake
+USES=		compiler:c++11-lang cpe gmake
 USE_RC_SUBR=	haproxy
 
 MAKE_ARGS=	TARGET=freebsd DEFINE=-DFREEBSD_PORTS USE_GETADDRINFO=1 \

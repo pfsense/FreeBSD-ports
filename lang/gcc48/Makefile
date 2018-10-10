@@ -14,7 +14,7 @@ COMMENT=	GNU Compiler Collection 4.8
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-DEPRECATED=	Unsupported by upstream. Use GCC 6 or newer instead.
+DEPRECATED=	Unsupported by upstream. Use GCC 7 or newer instead.
 ONLY_FOR_ARCHS=	amd64 armv6 i386 powerpc powerpc64 sparc64
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
@@ -61,7 +61,7 @@ CONFIGURE_ENV+=	UNAME_m="powerpc64"
 
 .if ${ARCH} == armv6
 # Override sys.mk including -O in CFLAGS which breaks libgomp building.
-CFLAGS:=	${CFLAGS:S/-O/-O2/g}
+CFLAGS:=	${CFLAGS:S/-O/-O2/}
 . if ${COMPILER_TYPE} == clang
 .  if empty(PORT_OPTIONS:MBOOTSTRAP)
 MAKE_ARGS+=CXXFLAGS=-fbracket-depth=512
@@ -102,7 +102,7 @@ CONFIGURE_ARGS+=--disable-nls \
 		--enable-languages=${LANGUAGES}
 MAKE_ARGS+=	MAKEINFOFLAGS="--no-split"
 USE_LDCONFIG=	${TARGLIB}
-PLIST_SUB=	GCC_VERSION=${GCC_VERSION} \
+PLIST_SUB+=	GCC_VERSION=${GCC_VERSION} \
 		GNU_HOST=${CONFIGURE_TARGET} \
 		SUFFIX=${SUFFIX}
 INFO=		gcc${SUFFIX}/cpp \

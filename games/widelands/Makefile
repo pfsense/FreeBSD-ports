@@ -3,7 +3,7 @@
 
 PORTNAME=	widelands
 DISTVERSION=	build19
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	https://launchpad.net/widelands/${DISTVERSION}/${DISTVERSION}/+download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -38,6 +38,8 @@ DESKTOP_ENTRIES="Widelands" \
 		"widelands" \
 		"Game;StrategyGame;" \
 		""
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \

@@ -4,10 +4,10 @@
 PORTNAME=	nextcloudclient
 PORTVERSION=	0.0.0.20180323
 #DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 
-MAINTAINER=	mr@freebsd.org
+MAINTAINER=	mr@FreeBSD.org
 COMMENT=	NextCloud Desktop Syncing Client
 
 LICENSE=	GPLv2

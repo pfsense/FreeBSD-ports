@@ -14,6 +14,7 @@ LIB_DEPENDS=	libid3.so:audio/id3lib \
 		libgdbm.so:databases/gdbm
 
 USES=		alias gettext gmake libtool ncurses pathfix perl5 pkgconfig
+USE_CXXSTD=	gnu++98
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-ipv6 \
@@ -22,6 +23,7 @@ CONFIGURE_ARGS=	--enable-ipv6 \
 CPPFLAGS+=	-I${LOCALBASE}/include
 CPPFLAGS+=	-D_WANT_SEMUN
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
+LDFLAGS_i386=	-Wl,-znotext
 
 OPTIONS_DEFINE=	ESOUND VORBIS
 OPTIONS_DEFAULT=VORBIS

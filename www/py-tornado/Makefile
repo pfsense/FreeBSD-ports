@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tornado
-PORTVERSION=	5.0.2
+PORTVERSION=	5.1.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,6 +18,10 @@ USES=		python
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 3200
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}futures>0:devel/py-futures@${PY_FLAVOR}
+.endif
 
 .if ${PYTHON_REL} < 3400
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}singledispatch>0:devel/py-singledispatch@${PY_FLAVOR}

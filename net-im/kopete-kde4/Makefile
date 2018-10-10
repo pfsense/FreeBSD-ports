@@ -2,11 +2,14 @@
 
 PORTNAME=	kopete
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	net-im kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE multi-protocol instant messenger
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libidn.so:dns/libidn \
 		libqca.so:devel/qca@qt4 \

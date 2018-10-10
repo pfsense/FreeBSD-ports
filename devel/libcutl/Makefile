@@ -2,7 +2,7 @@
 
 PORTNAME=	libcutl
 PORTVERSION=	1.10.0
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	devel
 MASTER_SITES=	http://www.codesynthesis.com/download/${PORTNAME}/${PORTVERSION:R}/
 
@@ -32,5 +32,7 @@ CONFIGURE_ARGS=	--disable-static \
 		--with-external-boost \
 		--with-external-expat \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

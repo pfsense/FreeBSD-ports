@@ -2,7 +2,7 @@
 
 PORTNAME=	glusterfs
 PORTVERSION=	3.11.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	http://bits.gluster.org/pub/gluster/glusterfs/src/
 
@@ -54,6 +54,8 @@ LDFLAGS+=	-L"${LOCALBASE}/lib" -largp
 INSTALL_TARGET=	install-strip
 PLIST_SUB=	GLUSTERLIBDIR="lib/${PORTNAME}/${PORTVERSION}"
 KMODDIR?=	/boot/modules
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

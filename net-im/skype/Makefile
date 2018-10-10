@@ -14,7 +14,7 @@ COMMENT=	P2P VoIP software
 
 CONFLICTS=	skype-devel-[0-9]*
 
-OPTIONS_DEFINE=	VIDEO
+OPTIONS_DEFINE=	DOCS VIDEO
 OPTIONS_DEFAULT=VIDEO
 
 NO_BUILD=	yes
@@ -22,6 +22,7 @@ NO_BUILD=	yes
 USES=		cpe linux tar:bzip2
 USE_LINUX=	alsalib alsa-plugins-oss dri expat fontconfig libasyncns \
 		libsigcpp20 xorglibs
+BROKEN=		uses non existing libsigcpp20
 RESTRICTED=	Redistribution prohibited.
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_static-${DISTVERSION}

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gitlab-shell
-PORTVERSION=	7.1.4
+PORTVERSION=	8.3.3
 CATEGORIES=	devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	gem:devel/ruby-gems \
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
 # Find the commit hash here: https://gitlab.com/gitlab-org/gitlab-shell/tags
-GL_COMMIT=	6a15f1db609acd6b7dadb2a88d4f5aff3500f160
+GL_COMMIT=	4b19de3a1897d06c3e0d530f679c6f56e250ca41
 
 USERS=		git
 GROUPS=		git

@@ -3,7 +3,7 @@
 
 PORTNAME=	taskd
 PORTVERSION=	1.1.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	deskutils
 MASTER_SITES=	http://taskwarrior.org/download/
 
@@ -47,6 +47,8 @@ SHEBANG_FILES=	demo/client/case* \
 CFLAGS+=	-g -O0
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	(cd ${WRKSRC}/pki && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})

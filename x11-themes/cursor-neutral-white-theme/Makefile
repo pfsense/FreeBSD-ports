@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	cursor-neutral-white-theme
-DISTVERSION=	1.1
-PORTREVISION=	1
+DISTVERSION=	1.1.1
 CATEGORIES=	x11-themes
-MASTER_SITES=	http://www.gnome-look.org/CONTENT/content-files/
+MASTER_SITES=	LOCAL/gblach/
 DISTNAME=	108143-Neutral++_White-${DISTVERSION}
 
 MAINTAINER=	enlightenment@FreeBSD.org
 COMMENT=	White cursor theme based on neutral
 
-USES=	tar:bzip2
+USES=		tar:xz
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/Neutral++_White

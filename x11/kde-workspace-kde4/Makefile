@@ -2,12 +2,15 @@
 
 PORTNAME=	kde-workspace
 PORTVERSION=	${KDE4_WORKSPACE_VERSION}
-PORTREVISION=	21
+PORTREVISION=	26
 CATEGORIES=	x11 kde kde-applications
 PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE Plasma Desktop
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libck-connector.so:sysutils/consolekit2 \
@@ -50,7 +53,7 @@ USE_KDE=	kactivities kdelibs nepomuk-core oxygen-icons5 \
 USE_QT=		corelib dbus declarative designer_build gui network \
 		opengl phonon qtestlib script sql svg webkit xml \
 		moc_build qmake_build rcc_build uic_build
-USE_XORG=	ice sm kbproto x11 xau xcb xcomposite xcursor xdamage xdmcp xext xfixes \
+USE_XORG=	ice sm xorgproto x11 xau xcb xcomposite xcursor xdamage xdmcp xext xfixes \
 		xft xi xinerama xkbfile xpm xrandr xrender xres xscrnsaver xtst xxf86vm
 SHEBANG_FILES=	kwin/clients/oxygen/data/update_oxygen.pl
 USE_LDCONFIG=	yes

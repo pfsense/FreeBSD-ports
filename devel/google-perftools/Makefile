@@ -3,7 +3,7 @@
 
 PORTNAME=	google-perftools
 DISTVERSIONPREFIX=	gperftools-
-DISTVERSION=	2.6.3
+DISTVERSION=	2.7
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/gperftools/gperftools/releases/download/gperftools-${PORTVERSION}/
 DISTNAME=	gperftools-${PORTVERSION}
@@ -14,9 +14,9 @@ COMMENT=	Fast, multi-threaded malloc() and nifty performance analysis tools
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc=		fails to build: assembly not supported, see PR#94: http://code.google.com/p/google-perftools/issues/detail?id=94&can=1
-BROKEN_powerpc64=	fails to build: assembly not supported, see PR#94: http://code.google.com/p/google-perftools/issues/detail?id=94&can=1
-BROKEN_sparc64=		fails to build: assembly not supported, see PR#94: http://code.google.com/p/google-perftools/issues/detail?id=94&can=1
+BROKEN_powerpc=		fails to build: assembly not supported, see PR\#94: http://code.google.com/p/google-perftools/issues/detail?id=94&can=1
+BROKEN_powerpc64=	fails to build: assembly not supported, see PR\#94: http://code.google.com/p/google-perftools/issues/detail?id=94&can=1
+BROKEN_sparc64=		fails to build: assembly not supported, see PR\#94: http://code.google.com/p/google-perftools/issues/detail?id=94&can=1
 
 LIB_DEPENDS=	libunwind.so:devel/libunwind
 
@@ -29,7 +29,7 @@ TEST_TARGET=	check
 
 LIBS+=		-lexecinfo
 
-PLIST_SUB=	SHL3=4.5.1 SHL1=4
+PLIST_SUB=	SHL3=4.5.3 SHL1=4
 
 OPTIONS_DEFINE=		DOCS
 OPTIONS_SINGLE=		PAGESIZE ALIGN

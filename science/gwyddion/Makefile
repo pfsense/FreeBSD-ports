@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gwyddion
-PORTVERSION=	2.45
-PORTREVISION=	3
+PORTVERSION=	2.51
+PORTREVISION=	1
 CATEGORIES=	science graphics
 MASTER_SITES=	SF
 
@@ -15,29 +15,33 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libminizip.so:archivers/minizip \
 		libcfitsio.so:astro/cfitsio \
-		libIlmImf.so:graphics/OpenEXR \
+		libIlmImf.so:graphics/openexr \
 		libfftw3.so:math/fftw3 \
 		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
 
-USES=		desktop-file-utils gettext gmake libtool localbase:ldflags \
+USES=		desktop-file-utils gl gmake libtool localbase:ldflags \
 		pathfix pkgconfig shared-mime-info shebangfix tar:xz
 SHEBANG_FILES=	plugins/process/invert_python.py
-USE_GNOME=	gconf2 gtk20 libxml2
-USE_GL=		glu
-USE_XORG=	xmu
+USE_GNOME=	cairo gtk20 libxml2 pangox-compat
+USE_GL=		gl glu
+USE_XORG=	ice sm x11 xmu xt
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-gtk-doc \
+		--without-pascal \
 		--without-kde4-thumbnailer
 INSTALL_TARGET=	install-strip
 INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 
-GCONF_SCHEMAS=	gwyddion-thumbnailer.schemas
-
-OPTIONS_DEFINE=		PERL PYTHON RUBY UNIQUE
-OPTIONS_DEFAULT=	PERL PYTHON UNIQUE
+OPTIONS_DEFINE=		GCONF NLS PERL PYTHON RUBY UNIQUE
+OPTIONS_DEFAULT=	GCONF PERL PYTHON UNIQUE
 OPTIONS_SUB=		yes
 
+GCONF_CONFIGURE_OFF=	--disable-schemas-install
+GCONF_USE=		GNOME=gconf2
+GCONF_VARS=		GCONF_SCHEMAS=gwyddion-thumbnailer.schemas
+NLS_CONFIGURE_OFF=	--disable-nls
+NLS_USES=		gettext
 PERL_USES=		perl5
 PERL_CONFIGURE_WITH=	perl
 PYTHON_USES=		python:2.7

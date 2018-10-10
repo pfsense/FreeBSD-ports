@@ -349,6 +349,7 @@ lib/calibre/calibre/ebooks/markdown/treeprocessors.py
 lib/calibre/calibre/ebooks/markdown/util.py
 lib/calibre/calibre/ebooks/metadata/__init__.py
 lib/calibre/calibre/ebooks/metadata/archive.py
+lib/calibre/calibre/ebooks/metadata/author_mapper.py
 lib/calibre/calibre/ebooks/metadata/book/__init__.py
 lib/calibre/calibre/ebooks/metadata/book/base.py
 lib/calibre/calibre/ebooks/metadata/book/formatter.py
@@ -668,6 +669,7 @@ lib/calibre/calibre/gui2/actions/__init__.py
 lib/calibre/calibre/gui2/actions/add_to_library.py
 lib/calibre/calibre/gui2/actions/add.py
 lib/calibre/calibre/gui2/actions/annotate.py
+lib/calibre/calibre/gui2/actions/author_mapper.py
 lib/calibre/calibre/gui2/actions/catalog.py
 lib/calibre/calibre/gui2/actions/choose_library.py
 lib/calibre/calibre/gui2/actions/convert.py
@@ -703,6 +705,7 @@ lib/calibre/calibre/gui2/actions/view.py
 lib/calibre/calibre/gui2/actions/virtual_library.py
 lib/calibre/calibre/gui2/add_filters.py
 lib/calibre/calibre/gui2/add.py
+lib/calibre/calibre/gui2/author_mapper.py
 lib/calibre/calibre/gui2/auto_add.py
 lib/calibre/calibre/gui2/bars.py
 lib/calibre/calibre/gui2/book_details.py
@@ -1216,6 +1219,7 @@ lib/calibre/calibre/srv/cdb.py
 lib/calibre/calibre/srv/changes.py
 lib/calibre/calibre/srv/code.py
 lib/calibre/calibre/srv/content.py
+lib/calibre/calibre/srv/convert.py
 lib/calibre/calibre/srv/embedded.py
 lib/calibre/calibre/srv/errors.py
 lib/calibre/calibre/srv/handler.py
@@ -1439,6 +1443,10 @@ lib/calibre/odf/text.py
 lib/calibre/odf/thumbnail.py
 lib/calibre/odf/userfield.py
 lib/calibre/odf/xforms.py
+lib/calibre/polyglot/__init__.py
+lib/calibre/polyglot/builtins.py
+lib/calibre/polyglot/http_server.py
+lib/calibre/polyglot/urllib.py
 lib/calibre/templite/__init__.py
 lib/calibre/tinycss/__init__.py
 lib/calibre/tinycss/color3.py
@@ -1494,7 +1502,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/dictionaries/es-ES/es-ES.aff
 %%DATADIR%%/dictionaries/es-ES/es-ES.dic
 %%DATADIR%%/dictionaries/es-ES/locales
-%%DATADIR%%/ebook-convert-complete.pickle
+%%DATADIR%%/ebook-convert-complete.calibre_msgpack
 %%DATADIR%%/editor-functions.json
 %%DATADIR%%/editor-help/css.json
 %%DATADIR%%/editor-help/html.json
@@ -1502,6 +1510,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/editor-help/opf2.json
 %%DATADIR%%/editor-help/opf3.json
 %%DATADIR%%/editor-help/svg.json
+%%DATADIR%%/editor.js
 %%DATADIR%%/fonts/calibreSymbols.otf
 %%DATADIR%%/fonts/liberation/LiberationMono-Bold.ttf
 %%DATADIR%%/fonts/liberation/LiberationMono-BoldItalic.ttf
@@ -1743,13 +1752,13 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/jacket/stylesheet.css
 %%DATADIR%%/jacket/template.xhtml
 %%DATADIR%%/jquery.simulate.js
-%%DATADIR%%/localization/iso3166.pickle
-%%DATADIR%%/localization/iso639.pickle
+%%DATADIR%%/localization/iso3166.calibre_msgpack
+%%DATADIR%%/localization/iso639.calibre_msgpack
 %%DATADIR%%/localization/locales.zip
-%%DATADIR%%/localization/pykakasi/itaijidict2.pickle
-%%DATADIR%%/localization/pykakasi/kanadict2.pickle
-%%DATADIR%%/localization/pykakasi/kanwadict2.pickle
-%%DATADIR%%/localization/stats.pickle
+%%DATADIR%%/localization/pykakasi/itaijidict2.calibre_msgpack
+%%DATADIR%%/localization/pykakasi/kanadict2.calibre_msgpack
+%%DATADIR%%/localization/pykakasi/kanwadict2.calibre_msgpack
+%%DATADIR%%/localization/stats.calibre_msgpack
 %%DATADIR%%/localization/website-languages.txt
 %%DATADIR%%/metadata_sqlite.sql
 %%DATADIR%%/mime.types
@@ -1771,7 +1780,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/rapydscript/lib/re.pyj
 %%DATADIR%%/rapydscript/lib/traceback.pyj
 %%DATADIR%%/rapydscript/lib/uuid.pyj
-%%DATADIR%%/scripts.pickle
+%%DATADIR%%/scripts.calibre_msgpack
 %%DATADIR%%/template-functions.json
 %%DATADIR%%/templates/book_details.css
 %%DATADIR%%/templates/fb2.xsl
@@ -1787,6 +1796,8 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/tracer.epub
 %%DATADIR%%/user-agent-data.json
 %%DATADIR%%/user-manual-translation-stats.json
+%%DATADIR%%/viewer.html
+%%DATADIR%%/viewer.js
 %%DATADIR%%/viewer/blank.html
 %%DATADIR%%/viewer/bookmarks.js
 %%DATADIR%%/viewer/hyphenate/Hyphenator.js

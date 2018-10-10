@@ -2,7 +2,7 @@
 
 PORTNAME=	cppcms
 PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	SF
 
@@ -10,8 +10,6 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ web development framework
 
 LICENSE=	MIT
-
-BROKEN_powerpc64=	Does not build: error: 'localeconv_l' was not declared in this scope
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 

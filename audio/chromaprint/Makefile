@@ -2,7 +2,7 @@
 
 PORTNAME=	chromaprint
 PORTVERSION=	1.4.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/acoustid/${PORTNAME}/releases/download/v${PORTVERSION}/
 
@@ -23,7 +23,7 @@ CMAKE_ARGS=	-DBUILD_TOOLS:BOOL=true \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-v${PORTVERSION}
 
-OPTIONS_DEFINE=		DOXYGEN TEST
+OPTIONS_DEFINE=		DOCS DOXYGEN TEST
 
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen \
 			dot:graphics/graphviz

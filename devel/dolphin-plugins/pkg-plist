@@ -56,6 +56,8 @@ share/locale/et/LC_MESSAGES/fileviewbazaarplugin.mo
 share/locale/et/LC_MESSAGES/fileviewgitplugin.mo
 share/locale/et/LC_MESSAGES/fileviewhgplugin.mo
 share/locale/et/LC_MESSAGES/fileviewsvnplugin.mo
+share/locale/eu/LC_MESSAGES/fileviewgitplugin.mo
+share/locale/eu/LC_MESSAGES/fileviewsvnplugin.mo
 share/locale/fi/LC_MESSAGES/fileviewbazaarplugin.mo
 share/locale/fi/LC_MESSAGES/fileviewgitplugin.mo
 share/locale/fi/LC_MESSAGES/fileviewsvnplugin.mo
@@ -111,6 +113,9 @@ share/locale/nl/LC_MESSAGES/fileviewbazaarplugin.mo
 share/locale/nl/LC_MESSAGES/fileviewgitplugin.mo
 share/locale/nl/LC_MESSAGES/fileviewhgplugin.mo
 share/locale/nl/LC_MESSAGES/fileviewsvnplugin.mo
+share/locale/nn/LC_MESSAGES/fileviewbazaarplugin.mo
+share/locale/nn/LC_MESSAGES/fileviewgitplugin.mo
+share/locale/nn/LC_MESSAGES/fileviewsvnplugin.mo
 share/locale/pa/LC_MESSAGES/fileviewgitplugin.mo
 share/locale/pa/LC_MESSAGES/fileviewhgplugin.mo
 share/locale/pa/LC_MESSAGES/fileviewsvnplugin.mo

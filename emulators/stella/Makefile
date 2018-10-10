@@ -2,11 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	stella
-PORTVERSION=	4.7.3
-PORTREVISION=	2
+PORTVERSION=	5.1.3
+PORTREVISION=	1
 CATEGORIES=	emulators
-MASTER_SITES=	https://github.com/stella-emu/stella/releases/download/release-${PORTVERSION}/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Multi-platform Atari 2600 VCS emulator
@@ -14,19 +12,21 @@ COMMENT=	Multi-platform Atari 2600 VCS emulator
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/License.txt
 
-LIB_DEPENDS=	libpng.so:graphics/png
-
 BROKEN_aarch64=		fails to compile: Checking for compiler version... 5.0.0, bad; Please ensure you are using GCC 4.7 / Clang 3.4 or above
 BROKEN_armv6=		fails to compile: Checking for compiler version... 5.0.0, bad; Please ensure you are using GCC 4.7 / Clang 3.4 or above
 BROKEN_armv7=		fails to compile: Checking for compiler version... 5.0.0, bad; Please ensure you are using GCC 4.7 / Clang 3.4 or above
-BROKEN_powerpc64=	fails to compile: CartDebug.cxx: 'snprintf' is not a member of 'std'
+
+LIB_DEPENDS=	libpng.so:graphics/png
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	stella-emu
 
 CONFLICTS_INSTALL=	rubygem-stella
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USE_SDL=	sdl2
 USES=		compiler:c++11-lib gmake tar:xz
+USE_SDL=	sdl2
 HAS_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
