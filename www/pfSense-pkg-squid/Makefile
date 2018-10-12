@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-squid
 PORTVERSION=	0.4.44
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,10 +13,10 @@ COMMENT=	pfSense package squid
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/squid:www/squid \
-		${LOCALBASE}/libexec/squid/squid_radius_auth:www/squid_radius_auth \
-		${LOCALBASE}/lib/c_icap/virus_scan.so:www/c-icap-modules \
-		${LOCALBASE}/lib/c_icap/squidclamav.so:www/squidclamav
+RUN_DEPENDS=	squid>=0:www/squid \
+		squid_radius_auth>=0:www/squid_radius_auth \
+		c-icap-modules>=0:www/c-icap-modules \
+		squidclamav>=0:www/squidclamav
 
 NO_BUILD=	yes
 NO_MTREE=	yes
