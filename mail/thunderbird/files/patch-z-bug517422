@@ -2,9 +2,9 @@
 
 diff --git build/moz.configure/old.configure build/moz.configure/old.configure
 index d0fe7accffe6..c46bdd023225 100644
---- mozilla/build/moz.configure/old.configure
-+++ mozilla/build/moz.configure/old.configure
-@@ -288,7 +288,12 @@ def old_configure_options(*options):
+--- build/moz.configure/old.configure
++++ build/moz.configure/old.configure
+@@ -285,7 +285,12 @@ def old_configure_options(*options):
      '--with-system-libvpx',
      '--with-system-nspr',
      '--with-system-nss',
@@ -17,29 +17,13 @@ index d0fe7accffe6..c46bdd023225 100644
      '--with-system-zlib',
      '--with-thumb',
      '--with-thumb-interwork',
-diff --git config/Makefile.in config/Makefile.in
-index a6206bb0ff30..f20987c61754 100644
---- mozilla/config/Makefile.in
-+++ mozilla/config/Makefile.in
-@@ -51,6 +51,11 @@ export:: $(export-preqs)
- 		-DMOZ_SYSTEM_LIBEVENT=$(MOZ_SYSTEM_LIBEVENT) \
- 		-DMOZ_SYSTEM_LIBVPX=$(MOZ_SYSTEM_LIBVPX) \
- 		-DMOZ_SYSTEM_ICU=$(MOZ_SYSTEM_ICU) \
-+		-DMOZ_SYSTEM_OGG=$(MOZ_SYSTEM_OGG) \
-+		-DMOZ_SYSTEM_THEORA=$(MOZ_SYSTEM_THEORA) \
-+		-DMOZ_SYSTEM_VORBIS=$(MOZ_SYSTEM_VORBIS) \
-+		-DMOZ_SYSTEM_TREMOR=$(MOZ_SYSTEM_TREMOR) \
-+		-DMOZ_SYSTEM_SOUNDTOUCH=$(MOZ_SYSTEM_SOUNDTOUCH) \
- 		$(srcdir)/system-headers $(srcdir)/stl-headers | $(PERL) $(topsrcdir)/nsprpub/config/make-system-wrappers.pl system_wrappers
- 	$(INSTALL) system_wrappers $(DIST)
- 
 diff --git config/external/moz.build config/external/moz.build
 index 029ff8504795..2c3a40caa1ba 100644
---- mozilla/config/external/moz.build
-+++ mozilla/config/external/moz.build
-@@ -21,12 +21,21 @@ if CONFIG['MOZ_UPDATER']:
- external_dirs += ['modules/brotli']
- external_dirs += ['modules/woff2']
+--- config/external/moz.build
++++ config/external/moz.build
+@@ -23,12 +23,21 @@ external_dirs += ['modules/woff2']
+ 
+ external_dirs += ['modules/xz-embedded']
  
 -if CONFIG['MOZ_VORBIS']:
 +if not CONFIG['MOZ_SYSTEM_OGG']:
@@ -61,7 +45,7 @@ index 029ff8504795..2c3a40caa1ba 100644
  if CONFIG['MOZ_WEBM_ENCODER']:
      external_dirs += ['media/libmkv']
  
-@@ -52,12 +61,9 @@ external_dirs += [
+@@ -51,11 +60,8 @@ external_dirs += [
      'media/kiss_fft',
      'media/libcubeb',
      'media/libnestegg',
@@ -69,38 +53,48 @@ index 029ff8504795..2c3a40caa1ba 100644
      'media/libopus',
 -    'media/libtheora',
      'media/libspeex_resampler',
-     'media/libstagefright',
 -    'media/libsoundtouch',
+     'media/mp4parse-rust',
      'media/psshparser'
  ]
+diff --git config/system-headers.mozbuild config/system-headers.mozbuild
+index 09d3db5ca8c0..c6533b84c470 100644
+--- config/system-headers.mozbuild
++++ config/system-headers.mozbuild
+@@ -1325,6 +1325,28 @@ if CONFIG['MOZ_SYSTEM_HARFBUZZ']:
+         'harfbuzz/hb.h',
+     ]
  
-diff --git config/system-headers config/system-headers
-index 5ee7f71f9634..13178ac3b3ab 100644
---- mozilla/config/system-headers
-+++ mozilla/config/system-headers
-@@ -1348,3 +1348,17 @@ unicode/utypes.h
- libutil.h
- unwind.h
- fenv.h
-+#if MOZ_SYSTEM_OGG==1
-+ogg/ogg.h
-+ogg/os_types.h
-+#endif
-+#if MOZ_SYSTEM_THEORA==1
-+theora/theoradec.h
-+#endif
-+#if MOZ_SYSTEM_VORBIS==1
-+vorbis/codec.h
-+vorbis/vorbisenc.h
-+#endif
-+#if MOZ_SYSTEM_TREMOR==1
-+tremor/ivorbiscodec.h
-+#endif
++if CONFIG['MOZ_SYSTEM_OGG']:
++    system_headers += [
++        'ogg/ogg.h',
++        'ogg/os_types.h',
++    ]
++
++if CONFIG['MOZ_SYSTEM_THEORA']:
++    system_headers += [
++        'theora/theoradec.h',
++    ]
++
++if CONFIG['MOZ_SYSTEM_VORBIS']:
++    system_headers += [
++        'vorbis/codec.h',
++        'vorbis/vorbisenc.h',
++    ]
++
++if CONFIG['MOZ_SYSTEM_TREMOR']:
++    system_headers += [
++        'tremor/ivorbiscodec.h',
++    ]
++
+ if CONFIG['MOZ_SYSTEM_LIBVPX']:
+     system_headers += [
+         'vpx_mem/vpx_mem.h',
 diff --git dom/media/AudioStream.cpp dom/media/AudioStream.cpp
 index 93ecda4319af..ff674c64ea07 100644
---- mozilla/dom/media/AudioStream.cpp
-+++ mozilla/dom/media/AudioStream.cpp
-@@ -115,7 +115,9 @@ AudioStream::AudioStream(DataSource& aSource)
+--- dom/media/AudioStream.cpp
++++ dom/media/AudioStream.cpp
+@@ -121,7 +121,9 @@ AudioStream::AudioStream(DataSource& aSource)
    : mMonitor("AudioStream")
    , mChannels(0)
    , mOutChannels(0)
@@ -110,7 +104,7 @@ index 93ecda4319af..ff674c64ea07 100644
    , mDumpFile(nullptr)
    , mState(INITIALIZED)
    , mDataSource(aSource)
-@@ -130,9 +132,11 @@ AudioStream::~AudioStream()
+@@ -142,9 +144,11 @@ AudioStream::~AudioStream()
    if (mDumpFile) {
      fclose(mDumpFile);
    }
@@ -119,10 +113,10 @@ index 93ecda4319af..ff674c64ea07 100644
      soundtouch::destroySoundTouchObj(mTimeStretcher);
    }
 +#endif
- }
- 
- size_t
-@@ -151,7 +155,11 @@ nsresult AudioStream::EnsureTimeStretcherInitializedUnlocked()
+ #if defined(XP_WIN)
+   if (XRE_IsContentProcess()) {
+     audio::AudioNotificationReceiver::Unregister(this);
+@@ -168,7 +172,11 @@ nsresult AudioStream::EnsureTimeStretcherInitializedUnlocked()
  {
    mMonitor.AssertCurrentThreadOwns();
    if (!mTimeStretcher) {
@@ -136,9 +130,9 @@ index 93ecda4319af..ff674c64ea07 100644
      mTimeStretcher->setPitch(1.0);
 diff --git dom/media/AudioStream.h dom/media/AudioStream.h
 index 7dc1f60f95cc..67d402a4117f 100644
---- mozilla/dom/media/AudioStream.h
-+++ mozilla/dom/media/AudioStream.h
-@@ -16,7 +16,11 @@
+--- dom/media/AudioStream.h
++++ dom/media/AudioStream.h
+@@ -15,7 +15,11 @@
  #include "mozilla/TimeStamp.h"
  #include "mozilla/UniquePtr.h"
  #include "CubebUtils.h"
@@ -148,9 +142,9 @@ index 7dc1f60f95cc..67d402a4117f 100644
  #include "soundtouch/SoundTouchFactory.h"
 +#endif
  
- namespace mozilla {
- 
-@@ -287,7 +291,11 @@ private:
+ #if defined(XP_WIN)
+ #include "mozilla/audio/AudioNotificationReceiver.h"
+@@ -297,7 +301,11 @@ private:
    uint32_t mChannels;
    uint32_t mOutChannels;
    AudioClock mAudioClock;
@@ -164,9 +158,9 @@ index 7dc1f60f95cc..67d402a4117f 100644
    FILE* mDumpFile;
 diff --git dom/media/moz.build dom/media/moz.build
 index 86b051c58d33..fb6186dce78b 100644
---- mozilla/dom/media/moz.build
-+++ mozilla/dom/media/moz.build
-@@ -308,6 +308,21 @@ if CONFIG['MOZ_WEBRTC']:
+--- dom/media/moz.build
++++ dom/media/moz.build
+@@ -326,6 +326,21 @@ if CONFIG['MOZ_WEBRTC']:
  
  DEFINES['MOZILLA_INTERNAL_API'] = True
  
@@ -185,16 +179,16 @@ index 86b051c58d33..fb6186dce78b 100644
 +if CONFIG['MOZ_SYSTEM_SOUNDTOUCH']:
 +    CXXFLAGS += CONFIG['MOZ_SOUNDTOUCH_CFLAGS']
 +
- if CONFIG['OS_TARGET'] == 'WINNT':
-     DEFINES['WEBRTC_WIN'] = True
- else:
+ if CONFIG['MOZ_ANDROID_HLS_SUPPORT']:
+     DEFINES['MOZ_ANDROID_HLS_SUPPORT'] = True
+ 
 diff --git dom/media/platforms/ffmpeg/ffvpx/FFVPXRuntimeLinker.cpp dom/media/platforms/ffmpeg/ffvpx/FFVPXRuntimeLinker.cpp
 index 078f6ea5ef60..c600db067539 100644
---- mozilla/dom/media/platforms/ffmpeg/ffvpx/FFVPXRuntimeLinker.cpp
-+++ mozilla/dom/media/platforms/ffmpeg/ffvpx/FFVPXRuntimeLinker.cpp
-@@ -11,9 +11,13 @@
- #include "prmem.h"
- #include "prlink.h"
+--- dom/media/platforms/ffmpeg/ffvpx/FFVPXRuntimeLinker.cpp
++++ dom/media/platforms/ffmpeg/ffvpx/FFVPXRuntimeLinker.cpp
+@@ -15,9 +15,13 @@
+ #include <windows.h>
+ #endif
  
 +#ifdef MOZ_SYSTEM_SOUNDTOUCH
 +#include "nsXPCOMPrivate.h" // for XUL_DLL
@@ -206,7 +200,7 @@ index 078f6ea5ef60..c600db067539 100644
  
  namespace mozilla {
  
-@@ -50,6 +54,12 @@ FFVPXRuntimeLinker::Init()
+@@ -64,6 +68,12 @@ FFVPXRuntimeLinker::Init()
  
    sLinkStatus = LinkStatus_FAILED;
  
@@ -218,19 +212,19 @@ index 078f6ea5ef60..c600db067539 100644
 +#else
    // We retrieve the path of the lgpllibs library as this is where mozavcodec
    // and mozavutil libs are located.
-   char* lgpllibsname = PR_GetLibraryName(nullptr, "lgpllibs");
-@@ -60,6 +70,7 @@ FFVPXRuntimeLinker::Init()
-     PR_GetLibraryFilePathname(lgpllibsname,
-                               (PRFuncPtr)&soundtouch::SoundTouch::getVersionId);
-   PR_FreeLibraryName(lgpllibsname);
+   PathString lgpllibsname = GetLibraryName(nullptr, "lgpllibs");
+@@ -73,6 +83,7 @@ FFVPXRuntimeLinker::Init()
+   PathString path =
+     GetLibraryFilePathname(lgpllibsname.get(),
+                            (PRFuncPtr)&soundtouch::SoundTouch::getVersionId);
 +#endif
-   if (!path) {
+   if (path.IsEmpty()) {
      return false;
    }
 diff --git media/libogg/README_MOZILLA media/libogg/README_MOZILLA
 index 6213fdc7770c..ada799916a17 100644
---- mozilla/media/libogg/README_MOZILLA
-+++ mozilla/media/libogg/README_MOZILLA
+--- media/libogg/README_MOZILLA
++++ media/libogg/README_MOZILLA
 @@ -6,3 +6,6 @@ package downloaded from xiph.org and copied using the update.sh script.
  The int-types.patch address a bug that config_types.h generated from
  Linux platform can't be used on OpenSolaris directly see Mozilla bug
@@ -240,8 +234,8 @@ index 6213fdc7770c..ada799916a17 100644
 +Keep version in old-configure.in in sync on updates.
 diff --git media/libsoundtouch/README_MOZILLA media/libsoundtouch/README_MOZILLA
 index dc0dbe8f6886..ea73b55e3e39 100644
---- mozilla/media/libsoundtouch/README_MOZILLA
-+++ mozilla/media/libsoundtouch/README_MOZILLA
+--- media/libsoundtouch/README_MOZILLA
++++ media/libsoundtouch/README_MOZILLA
 @@ -6,3 +6,5 @@ The whole library is not used, only the relevant files are imported in the tree,
  using the script `update.sh`. Some changes have been made to the files, using
  the patch `moz-libsoundtouch.patch`. We also use a custom soundtouch_config.h.
@@ -250,8 +244,8 @@ index dc0dbe8f6886..ea73b55e3e39 100644
 +Keep version in old-configure.in in sync on updates.
 diff --git media/libsoundtouch/src/soundtouch_perms.h media/libsoundtouch/src/soundtouch_perms.h
 index 0af2fe618311..10973564e7a4 100644
---- mozilla/media/libsoundtouch/src/soundtouch_perms.h
-+++ mozilla/media/libsoundtouch/src/soundtouch_perms.h
+--- media/libsoundtouch/src/soundtouch_perms.h
++++ media/libsoundtouch/src/soundtouch_perms.h
 @@ -12,7 +12,9 @@
  
  #pragma GCC visibility push(default)
@@ -264,8 +258,8 @@ index 0af2fe618311..10973564e7a4 100644
  #endif // MOZILLA_SOUNDTOUCH_PERMS_H
 diff --git media/libtheora/README_MOZILLA media/libtheora/README_MOZILLA
 index d48dbfa6f63d..6f30f250220e 100644
---- mozilla/media/libtheora/README_MOZILLA
-+++ mozilla/media/libtheora/README_MOZILLA
+--- media/libtheora/README_MOZILLA
++++ media/libtheora/README_MOZILLA
 @@ -3,3 +3,6 @@ using the update.sh script. The changes made were those applied by update.sh,
  the addition/update of Makefile.in files for the Mozilla build system.
  
@@ -275,8 +269,8 @@ index d48dbfa6f63d..6f30f250220e 100644
 +Keep version in old-configure.in in sync on updates.
 diff --git media/libtheora/moz.build media/libtheora/moz.build
 index c7f85eebff95..aae7b814adb5 100644
---- mozilla/media/libtheora/moz.build
-+++ mozilla/media/libtheora/moz.build
+--- media/libtheora/moz.build
++++ media/libtheora/moz.build
 @@ -21,6 +21,9 @@ FINAL_LIBRARY = 'gkmedias'
  # The encoder is currently not included.
  DEFINES['THEORA_DISABLE_ENCODE'] = True
@@ -285,12 +279,12 @@ index c7f85eebff95..aae7b814adb5 100644
 +    CFLAGS += CONFIG['MOZ_OGG_CFLAGS']
 +
  # Suppress warnings in third-party code.
- if CONFIG['GNU_CC'] or CONFIG['CLANG_CL']:
+ if CONFIG['CC_TYPE'] in ('clang', 'clang-cl', 'gcc'):
      CFLAGS += ['-Wno-type-limits']
 diff --git media/libtremor/README_MOZILLA media/libtremor/README_MOZILLA
 index ee67b53a05c5..81c971773d55 100644
---- mozilla/media/libtremor/README_MOZILLA
-+++ mozilla/media/libtremor/README_MOZILLA
+--- media/libtremor/README_MOZILLA
++++ media/libtremor/README_MOZILLA
 @@ -5,3 +5,6 @@ Makefile.in files for the Mozilla build system.
  
  The upstream release used was http://svn.xiph.org/trunk/Tremor/
@@ -300,8 +294,8 @@ index ee67b53a05c5..81c971773d55 100644
 +Keep version in old-configure.in in sync on updates.
 diff --git media/libtremor/moz.build media/libtremor/moz.build
 index 83afc8e37c64..71ef159da3d7 100644
---- mozilla/media/libtremor/moz.build
-+++ mozilla/media/libtremor/moz.build
+--- media/libtremor/moz.build
++++ media/libtremor/moz.build
 @@ -9,3 +9,5 @@ with Files('*'):
  
  DIRS += ['include/tremor', 'lib']
@@ -310,9 +304,9 @@ index 83afc8e37c64..71ef159da3d7 100644
 +    CFLAGS += CONFIG['MOZ_OGG_CFLAGS']
 diff --git media/libvorbis/README_MOZILLA media/libvorbis/README_MOZILLA
 index 1211ac074b33..eb31084aed25 100644
---- mozilla/media/libvorbis/README_MOZILLA
-+++ mozilla/media/libvorbis/README_MOZILLA
-@@ -8,3 +8,6 @@ https://svn.xiph.org/tags/vorbis/libvorbis-1.3.5@19464
+--- media/libvorbis/README_MOZILLA
++++ media/libvorbis/README_MOZILLA
+@@ -8,3 +8,6 @@ from https://git.xiph.org/vorbis.git
  
  Some files are renamed during the copy to prevent clashes with object
  file names with other Mozilla libraries.
@@ -321,22 +315,22 @@ index 1211ac074b33..eb31084aed25 100644
 +Keep version in old-configure.in in sync on updates.
 diff --git media/libvorbis/moz.build media/libvorbis/moz.build
 index adf393782cc9..923b76231107 100644
---- mozilla/media/libvorbis/moz.build
-+++ mozilla/media/libvorbis/moz.build
+--- media/libvorbis/moz.build
++++ media/libvorbis/moz.build
 @@ -56,3 +56,6 @@ FINAL_LIBRARY = 'gkmedias'
  # Suppress warnings in third-party code.
- if CONFIG['GNU_CC']:
+ if CONFIG['CC_TYPE'] in ('clang', 'gcc'):
      CFLAGS += ['-Wno-uninitialized']
 +
 +if CONFIG['MOZ_SYSTEM_OGG']:
 +    CFLAGS += CONFIG['MOZ_OGG_CFLAGS']
 diff --git old-configure.in old-configure.in
 index b614eef85c89..85f9099dba4d 100644
---- mozilla/old-configure.in
-+++ mozilla/old-configure.in
-@@ -2941,6 +2941,111 @@ if test -n "$MOZ_OMX_PLUGIN"; then
-     fi
+--- old-configure.in
++++ old-configure.in
+@@ -2627,6 +2627,111 @@ if test -n "$MOZ_APPLEMEDIA"; then
  fi
+ fi # COMPILE_ENVIRONMENT
  
 +dnl ========================================================
 +dnl Check for libogg
@@ -348,7 +342,7 @@ index b614eef85c89..85f9099dba4d 100644
 +MOZ_SYSTEM_OGG=)
 +
 +if test -n "$MOZ_SYSTEM_OGG"; then
-+    PKG_CHECK_MODULES(MOZ_OGG, ogg >= 1.3.0)
++    PKG_CHECK_MODULES(MOZ_OGG, ogg >= 1.3.3)
 +
 +    _SAVE_LIBS=$LIBS
 +    LIBS="$LIBS $MOZ_OGG_LIBS"
@@ -369,7 +363,7 @@ index b614eef85c89..85f9099dba4d 100644
 +MOZ_SYSTEM_VORBIS=)
 +
 +if test -n "$MOZ_SYSTEM_VORBIS"; then
-+    PKG_CHECK_MODULES(MOZ_VORBIS, vorbis vorbisenc >= 1.3.5)
++    PKG_CHECK_MODULES(MOZ_VORBIS, vorbis vorbisenc >= 1.3.6)
 +fi
 +
 +AC_SUBST(MOZ_SYSTEM_VORBIS)
@@ -448,9 +442,9 @@ index b614eef85c89..85f9099dba4d 100644
  MOZ_ARG_WITH_BOOL(system-libvpx,
 diff --git toolkit/library/moz.build toolkit/library/moz.build
 index 079a575adec3..514d901195de 100644
---- mozilla/toolkit/library/moz.build
-+++ mozilla/toolkit/library/moz.build
-@@ -237,6 +237,21 @@ if CONFIG['MOZ_SYSTEM_HARFBUZZ']:
+--- toolkit/library/moz.build
++++ toolkit/library/moz.build
+@@ -240,6 +240,21 @@ if CONFIG['MOZ_SYSTEM_HARFBUZZ']:
  if CONFIG['MOZ_SYSTEM_HUNSPELL']:
      OS_LIBS += CONFIG['MOZ_HUNSPELL_LIBS']
  
@@ -474,9 +468,9 @@ index 079a575adec3..514d901195de 100644
  
 diff --git xpcom/build/XPCOMInit.cpp xpcom/build/XPCOMInit.cpp
 index c083ab4bc4f3..62b917043a2c 100644
---- mozilla/xpcom/build/XPCOMInit.cpp
-+++ mozilla/xpcom/build/XPCOMInit.cpp
-@@ -154,7 +154,9 @@ extern nsresult nsStringInputStreamConstructor(nsISupports*, REFNSIID, void**);
+--- xpcom/build/XPCOMInit.cpp
++++ xpcom/build/XPCOMInit.cpp
+@@ -132,7 +132,9 @@ extern nsresult nsStringInputStreamConstructor(nsISupports*, REFNSIID, void**);
  
  #include "mozilla/ipc/GeckoChildProcessHost.h"
  
@@ -486,7 +480,7 @@ index c083ab4bc4f3..62b917043a2c 100644
  #if defined(MOZ_VPX) && !defined(MOZ_VPX_NO_MEM_REPORTING)
  #if defined(HAVE_STDINT_H)
  // mozilla-config.h defines HAVE_STDINT_H, and then it's defined *again* in
-@@ -664,11 +666,13 @@ NS_InitXPCOM2(nsIServiceManager** aResult,
+@@ -639,11 +641,13 @@ NS_InitXPCOM2(nsIServiceManager** aResult,
    // this oddness.
    mozilla::SetICUMemoryFunctions();
  

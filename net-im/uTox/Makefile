@@ -3,7 +3,7 @@
 PORTNAME=	uTox
 DISTVERSION=	0.17.0
 DISTVERSIONSUFFIX=	-full
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net-im net-p2p
 MASTER_SITES=	https://github.com/uTox/uTox/releases/download/v${PORTVERSION}/
 
@@ -12,6 +12,10 @@ COMMENT=	Lightweight Tox client
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_aarch64=		fails to compile: endian.h:68:20: too many arguments provided to function-like macro invocation
+BROKEN_armv6=		fails to compile: endian.h:68:20: too many arguments provided to function-like macro invocation
+BROKEN_armv7=		fails to compile: endian.h:68:20: too many arguments provided to function-like macro invocation
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \

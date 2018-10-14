@@ -29,6 +29,8 @@ PORTDATA=	*
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 .include "${.CURDIR}/bsd.eric6.mk"
 .include <bsd.port.options.mk>
 

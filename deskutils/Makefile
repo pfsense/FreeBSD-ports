@@ -28,6 +28,7 @@
     SUBDIR += cartotheque
     SUBDIR += cdcat
     SUBDIR += charmtimetracker
+    SUBDIR += chart
     SUBDIR += clipit
     SUBDIR += conduit
     SUBDIR += conkyemail
@@ -80,16 +81,16 @@
     SUBDIR += gnome-shell-extension-lockkeys
     SUBDIR += gnome-shell-extension-mediaplayer
     SUBDIR += gnome-shell-extension-openweather
-    SUBDIR += gnome-shell-extension-overlay-icons
     SUBDIR += gnome-shell-extension-panel-osd
     SUBDIR += gnome-shell-extension-recent-items
     SUBDIR += gnome-shell-extension-trash
     SUBDIR += gnome-shell-extension-weather
+    SUBDIR += gnome-shell-extension-windowoverlay-icons
     SUBDIR += gnome-shell-extra-extensions
     SUBDIR += gnome-sound-recorder
     SUBDIR += gnome-system-log
     SUBDIR += gnome-todo
-    SUBDIR += gnome-tweak-tool
+    SUBDIR += gnome-tweaks
     SUBDIR += gnome-utils
     SUBDIR += gnome-weather
     SUBDIR += gnote
@@ -132,7 +133,8 @@
     SUBDIR += kcharselect
     SUBDIR += kcharselect-kde4
     SUBDIR += kchmviewer
-    SUBDIR += kdeconnect
+    SUBDIR += kdeconnect-kde
+    SUBDIR += kdeconnect-kde-kde4
     SUBDIR += kdepim
     SUBDIR += kdepim-addons
     SUBDIR += kdepim-apps-libs
@@ -161,6 +163,7 @@
     SUBDIR += ljclive
     SUBDIR += ljit
     SUBDIR += logjam
+    SUBDIR += lookbook
     SUBDIR += lumina-archiver
     SUBDIR += lumina-calculator
     SUBDIR += lumina-fileinfo
@@ -171,6 +174,7 @@
     SUBDIR += lumina-screenshot
     SUBDIR += lumina-textedit
     SUBDIR += lumina-xdg-entry
+    SUBDIR += lxqt-notificationd
     SUBDIR += mat
     SUBDIR += mate-notification-daemon
     SUBDIR += mate-utils
@@ -200,9 +204,6 @@
     SUBDIR += p5-Data-ICal
     SUBDIR += p5-Data-ICal-DateTime
     SUBDIR += p5-Goo
-    SUBDIR += p5-ZConf-BGSet
-    SUBDIR += p5-ZConf-Runner
-    SUBDIR += p5-ZConf-Runner-GUI-GTK
     SUBDIR += pal
     SUBDIR += parcellite
     SUBDIR += phpcollab
@@ -314,6 +315,7 @@
     SUBDIR += xpostitPlus
     SUBDIR += xrolo
     SUBDIR += xwrits
+    SUBDIR += zanshin
     SUBDIR += zim
     SUBDIR += znotes
     SUBDIR += zorro

@@ -1,14 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	8.11.4
+PORTVERSION=	8.12.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
 PKGNAMESUFFIX=	8
-
-PATCH_SITES=	https://github.com/nodejs/node/commit/
-PATCHFILES=	b8f47b27571f.patch:-p1
 
 MAINTAINER=	bhughes@FreeBSD.org
 COMMENT=	V8 JavaScript for client and server (8.x LTS)
@@ -56,6 +53,7 @@ CONFIGURE_ARGS=	--prefix=${PREFIX_RELDEST} \
 		--without-npm \
 		--shared-cares \
 		--shared-libuv \
+		--shared-nghttp2 \
 		--shared-zlib
 
 SHEBANG_FILES=	tools/specialize_node_d.py tools/genv8constants.py
@@ -65,7 +63,8 @@ REINPLACE_ARGS=	-i ''
 MAKE_ENV+=	CC.host=${CC} CXX.host=${CXX} LINK.host=${CXX} LINK.target=${CXX}
 
 LIB_DEPENDS+=	libcares.so:dns/c-ares\
-		libuv.so:devel/libuv
+		libuv.so:devel/libuv \
+		libnghttp2.so:www/libnghttp2
 
 .include <bsd.port.options.mk>
 

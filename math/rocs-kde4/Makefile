@@ -2,11 +2,14 @@
 
 PORTNAME=	rocs
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	math kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE Graph theory IDE
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 

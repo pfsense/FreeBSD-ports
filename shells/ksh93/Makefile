@@ -24,6 +24,8 @@ COMMENT=	Official AT&T release of KornShell 93
 
 LICENSE=	EPL
 
+CONFLICTS=	ksh93-devel-*
+
 OPTIONS_DEFINE=	EXAMPLES STATIC
 
 FETCH_ENV=	HTTP_AUTH=basic:*:I\ accept\ www.opensource.org/licenses/cpl:.
@@ -36,7 +38,7 @@ KSHVERSION=	2012-08-01
 
 STATIC_MAKE_ENV=	LDFLAGS+=-static
 
-BROKEN_aarch64=		Fails to compile: error: unknown type name Dllscan_t
+BROKEN_aarch64=		Fails to compile: needs sbrk
 
 .include <bsd.port.pre.mk>
 

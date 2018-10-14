@@ -2,7 +2,7 @@
 
 PORTNAME=	libqxp
 PORTVERSION=	0.0.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	https://dev-www.libreoffice.org/src/${PORTNAME}/
 
@@ -30,7 +30,7 @@ USES=		compiler:c++11-lang libtool pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	DOXYGEN TEST
+OPTIONS_DEFINE=	DOCS DOXYGEN TEST
 OPTIONS_DEFAULT=
 OPTIONS_SUB=	yes
 
@@ -41,5 +41,6 @@ TEST_CONFIGURE_ENABLE=	tests
 PORTDOCS=		*
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_CONFIGURE_OFF=	--without-docs
+DOXYGEN_IMPLIES=	DOCS
 
 .include <bsd.port.mk>

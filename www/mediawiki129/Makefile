@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mediawiki
-PORTVERSION=	1.29.2
+PORTVERSION=	1.29.3
 CATEGORIES=	www
 MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	129
@@ -12,7 +12,10 @@ COMMENT=	Wiki engine used by Wikipedia
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki12[378]-[0-9]* mediawiki130-[0-9]*
+CONFLICTS=	mediawiki127-[0-9]* mediawiki13[01]-[0-9]*
+
+DEPRECATED=			Deprecated by upstream
+EXPIRATION_DATE=	2018-10-07
 
 USES=		php:web shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \
@@ -54,8 +57,6 @@ XCACHE_RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/xcache.so:www/xcache
 
 pre-install:
 	@${FIND} -s -d ${WRKSRC} -not -type d | ${SED} "s?${WRKSRC}?${MEDIAWIKIDIR}?g" >>${PLIST}
-	@${ECHO} "@dir %%WWWDIR%%/vendor/monolog/monolog/tests/Monolog/Handler/Fixtures" >> ${PLIST}
-	@${ECHO} "@dir %%WWWDIR%%/tests/phan/issues" >> ${PLIST}
 	@${ECHO} "@mode 0777" >> ${PLIST}
 	@${ECHO} "@dir %%WWWDIR%%/images" >> ${PLIST}
 	@${ECHO} "@mode" >> ${PLIST}

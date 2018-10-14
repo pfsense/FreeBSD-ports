@@ -2,13 +2,16 @@
 
 PORTNAME=	ktp-text-ui
 PORTVERSION=	${KTP_VERSION}
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net-im kde
 MASTER_SITES=	KDE/${KTP_BRANCH}/kde-telepathy/${PORTVERSION}/src
 PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE chat window application
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libtelepathy-qt4.so:net-im/telepathy-qt4 \
 		libtelepathy-logger-qt4.so:net-im/telepathy-logger-qt4 \

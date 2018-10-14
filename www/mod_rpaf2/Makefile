@@ -31,11 +31,11 @@ SUB_FILES=	${APMOD_FILE}
 
 PORTDOCS=	README.md
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKDIR}/${APMOD_FILE} ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d
 	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

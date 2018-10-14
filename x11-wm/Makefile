@@ -62,6 +62,7 @@
     SUBDIR += hs-xmonad
     SUBDIR += hs-xmonad-contrib
     SUBDIR += i3
+    SUBDIR += i3-gaps
     SUBDIR += icewm
     SUBDIR += ion
     SUBDIR += jewel
@@ -73,6 +74,7 @@
     SUBDIR += lwm
     SUBDIR += lxappearance-obconf
     SUBDIR += lxmed
+    SUBDIR += lxqt-panel
     SUBDIR += lxsession
     SUBDIR += marco
     SUBDIR += matwm2
@@ -113,7 +115,6 @@
     SUBDIR += spectrwm
     SUBDIR += stumpwm
     SUBDIR += subtle
-    SUBDIR += swm
     SUBDIR += tinywm
     SUBDIR += transset
     SUBDIR += treewm
@@ -138,6 +139,7 @@
     SUBDIR += xfce4
     SUBDIR += xfce4-desktop
     SUBDIR += xfce4-panel
+    SUBDIR += xfce4-panel-profiles
     SUBDIR += xfce4-session
     SUBDIR += xfce4-wm
 

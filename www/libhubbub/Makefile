@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	libhubbub
-PORTVERSION=	0.3.4
+PORTVERSION=	0.3.5
 CATEGORIES=	www
 MASTER_SITES=	http://download.netsurf-browser.org/libs/releases/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	neel@neelc.org
 COMMENT=	HTML5 parser library
 
 LICENSE=	MIT

@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tea
-PORTVERSION=	44.1.1
+PORTVERSION=	46.2.0
 CATEGORIES=	editors
-MASTER_SITES=	http://semiletov.org/tea/dloads/
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Simple and powerful Qt-based text editor
@@ -13,6 +12,8 @@ LICENSE=	GPLv3
 
 BROKEN_powerpc64=	fails to link: spellchecker.o:(.text+0xd2c): undefined reference to Hunspell::remove(std::string const&)
 
+USES=		gl pkgconfig:build qmake
+
 OPTIONS_SINGLE=	TOOLKITS
 OPTIONS_SINGLE_TOOLKITS=	QT4 QT5
 OPTIONS_DEFINE=		DOCS
@@ -20,9 +21,12 @@ OPTIONS_GROUP=		SPELL
 OPTIONS_GROUP_SPELL=	ASPELL HUNSPELL
 OPTIONS_DEFAULT=	QT4 ASPELL HUNSPELL
 
-USES=		pkgconfig:build qmake tar:bzip2
 USE_GL=		gl
 USE_LOCALE=	en_US.UTF-8
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	psemiletov
+GH_PROJECT=	${PORTNAME}-qt
 
 QT4_USES=	qt:4
 QT4_USE=	qt=corelib,gui,moc_build,network,rcc_build
@@ -41,12 +45,6 @@ ASPELL_QMAKE_OFF=	CONFIG+=noaspell
 
 HUNSPELL_LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell
 HUNSPELL_QMAKE_OFF=	CONFIG+=nohunspell
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|Q_OS_LINUX|Q_OS_UNIX|' ${WRKSRC}/document.cpp
-	@${REINPLACE_CMD} -e \
-		's|/usr/include|${LOCALBASE}/include|' ${WRKSRC}/src.pro
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/tea ${STAGEDIR}${PREFIX}/bin

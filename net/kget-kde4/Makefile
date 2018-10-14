@@ -2,11 +2,14 @@
 
 PORTNAME=	kget
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	net kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE download manager
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libgpgme.so:security/gpgme \
 		libktorrent.so:net-p2p/libktorrent-kde4 \

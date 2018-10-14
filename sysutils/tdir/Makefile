@@ -2,24 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	tdir
-PORTVERSION=	1.71
-PORTREVISION=	2
+PORTVERSION=	1.73
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.tundraware.com/Software/tdir/
 
 MAINTAINER=	tdir@tundraware.com
 COMMENT=	Advanced file directory display utility
 
-BROKEN=		license forbids modification, but the port cannot be used without it
-
 LICENSE=	TundraWare
 LICENSE_NAME=	TundraWare license
 LICENSE_FILE=	${WRKSRC}/tdir-license.txt
-LICENSE_PERMS=	dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell no-auto-accept
+LICENSE_PERMS=	auto-accept dist-mirror no-dist-sell no-pkg-sell pkg-mirror
 
-USES=		python:2.7,run shebangfix
+USES=		python:run shebangfix
 SHEBANG_FILES=	tdir
-python_OLD_CMD=	"/usr//bin/env python"
 NO_ARCH=	yes
 
 PLIST_FILES=	bin/tdir \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	5.0-rc3
+DISTVERSION=	5.0-rc5
 CATEGORIES=	databases
 PKGNAMESUFFIX=	-devel
 
@@ -23,6 +23,9 @@ LUA_DESC=	Use lang/lua instead of builtin lua
 LUAJIT_DESC=	Use lang/luajit instead of builtin lua
 TESTS_DESC=	Install lang/tcl for redis unit tests
 TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
+
+USES+=		gmake
+MAKE_ENV=	"V=yo"
 
 .include <bsd.port.options.mk>
 
@@ -65,8 +68,6 @@ LDFLAGS+=	-lpthread -lm -lexecinfo
 
 CONFLICTS?=	redis-4.*
 
-USES+=		gmake
-MAKE_ENV=	"V=yo"
 USE_RC_SUBR=	redis sentinel
 BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb \
 		redis-cli redis-sentinel redis-server

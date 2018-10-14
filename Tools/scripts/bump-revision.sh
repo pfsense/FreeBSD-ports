@@ -48,6 +48,9 @@ trap "rm -f $tempfile" 0 1 2 3 15
 while [ $# -gt 0 ]
 do
     if [ -f "$1/Makefile" ]; then
+        # See what the port thinks its PORTREVISION is and save that.
+        pre=$(make -C "$1" -V PORTREVISION)
+
         # If the Makefile exists, continue and empty the tempfile, set up variables
 	echo -n > $tempfile
         revision_str=`grep "^PORTREVISION?\?=" "$1/Makefile"`
@@ -91,6 +94,13 @@ do
             # If it still is not there, bail out
             if ! grep -q "^PORTREVISION?\?=" $1/Makefile; then
                     printc "ERROR: $1 PORTREVISION not found and failed to add it!" "red"
+            fi
+
+            # See what the port now has for PORTREVISION.
+            post=$(make -C "$1" -V PORTREVISION)
+
+            if [ "$post" -le "$pre" ]; then
+                printc "ERROR: $1 PORTREVISION went backwards from $pre to $post!" "red"
             fi
             ;;
         *)

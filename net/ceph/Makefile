@@ -3,8 +3,8 @@
 
 PORTNAME=	ceph
 DISTVERSIONPREFIX=	v
-DISTVERSION=	12.2.4
-PORTREVISION=	1
+DISTVERSION=	12.2.7
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	wjw@digiware.nl
@@ -15,12 +15,11 @@ LICENSE_COMB=	dual
 
 # even though i386 will build, it is not really advised.
 ONLY_FOR_ARCHS=	amd64
-IGNORE_FreeBSD_10=	Doesnt build for FreeBSD 10.x
+IGNORE_FreeBSD_10=	Does not build for FreeBSD 10.x
 
 BUILD_DEPENDS=	\
 	yasm:devel/yasm \
-	pkgconf:devel/pkgconf \
-	sphinx-build:textproc/py-sphinx \
+	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR} \
 	gperf:devel/gperf \
 	${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops
 LIB_DEPENDS=	\
@@ -28,7 +27,6 @@ LIB_DEPENDS=	\
 	libboost_thread.so:devel/boost-libs \
 	libleveldb.so:databases/leveldb \
 	libnss3.so:security/nss \
-	libcryptopp.so:security/cryptopp \
 	libsnappy.so:archivers/snappy \
 	libcurl.so:ftp/curl \
 	libxml2.so:textproc/libxml2 \
@@ -42,20 +40,22 @@ RUN_DEPENDS=	\
 	xml:textproc/xmlstarlet \
 	jq:textproc/jq \
 	flock:sysutils/flock \
-	virtualenv:devel/py-virtualenv \
+	${PYTHON_PKGNAMEPREFIX}virtualenv>=0:devel/py-virtualenv@${PY_FLAVOR} \
 	${PYTHON_PKGNAMEPREFIX}prettytable>=0:devel/py-prettytable@${PY_FLAVOR}
 
 CONFLICTS_INSTALL=	ceph-devel
 PORTSCOUT=	limit:^v12\.
 
-USES=	gmake cmake:outsource,noninja python:2.7 fuse gettext-runtime shebangfix
+USES=		cmake:outsource,noninja fuse gettext-runtime gmake \
+		pkgconfig python:2.7 shebangfix ssl
 USE_PYTHON=	cython
 USE_OPENLDAP=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	ceph:DEFAULT
+
 GH_TUPLE+=	ceph:ceph-erasure-code-corpus:2d7d78b:ceph_erasure_code_corpus/ceph-erasure-code-corpus
-GH_TUPLE+=	ceph:ceph-object-corpus:f0ba19f:ceph_object_corpus/ceph-object-corpus
-GH_TUPLE+=	ceph:civetweb:bdaa39a:civetweb/src/civetweb
+GH_TUPLE+=	ceph:ceph-object-corpus:e32bf8c:ceph_object_corpus/ceph-object-corpus
+GH_TUPLE+=	ceph:civetweb:de23828:civetweb/src/civetweb
 GH_TUPLE+=	01org:isa-l_crypto:603529a:isa_l_crypto/src/crypto/isa-l/isa-l_crypto
 GH_TUPLE+=	ceph:gf-complete:7e61b44:gf_complete/src/erasure-code/jerasure/gf-complete
 GH_TUPLE+=	ceph:jerasure:96c76b8:jerasure/src/erasure-code/jerasure/jerasure
@@ -63,25 +63,31 @@ GH_TUPLE+=	ceph:googletest:fdb8504:googletest/src/googletest
 GH_TUPLE+=	ceph:isa-l:7e1a337:isa_l/src/isa-l
 GH_TUPLE+=	ceph:lua:1fce39c:lua/src/lua
 GH_TUPLE+=	ceph:rapidjson:f54b0e4:rapidjson/src/rapidjson
-GH_TUPLE+=	ceph:rocksdb:62782e7:rocksdb/src/rocksdb
+GH_TUPLE+=	ceph:rocksdb:e15382c:rocksdb/src/rocksdb
 GH_TUPLE+=	ceph:xxHash:1f40c65:xxHash/src/xxHash
-GH_TUPLE+=	facebook:zstd:dc99312:zstd/src/zstd
+GH_TUPLE+=	facebook:zstd:f4340f4:zstd/src/zstd
 
-CMAKE_BUILD_TYPE=	Release
 CMAKE_ARGS=	\
 	-D WITH_SYSTEM_BOOST:BOOL=ON \
 	-D CEPH_MAN_DIR:STRING=man \
 	-D WITH_LTTNG:BOOL=OFF \
-	-D WITH_FUSE:BOOL=ON \
+	-D WITH_BABELTRACE:BOOL=OFF \
 	-D WITH_KRBD:BOOL=OFF \
 	-D WITH_XFS:BOOL=OFF \
 	-D WITH_KVS:BOOL=OFF \
-	-D WITH_BABELTRACE:BOOL=OFF \
-	-D HAVE_BABELTRACE:BOOL=OFF \
+	-D WITH_BLKID:BOOL=OFF \
+	-D WITH_SPDK:BOOL=OFF \
+	-D WITH_RDMA=OFF \
+	-D WITH_BLUESTORE:BOOL=OFF \
 	-D WITH_LIBCEPHFS:BOOL=OFF \
 	-D WITH_CEPHFS:BOOL=OFF \
 	-D WITH_EMBEDDED:BOOL=OFF \
-	-D WITH_RADOSGW_BEAST_FRONTEND:BOOL=OFF
+	-D WITH_SYSTEM_BOOST:BOOL=ON \
+	-D WITH_BOOST_CONTEXT:BOOL=OFF \
+	-D WITH_FUSE:BOOL=ON \
+	-D WITH_MANPAGE:BOOL=ON \
+	-D WITH_RADOSGW_BEAST_FRONTEND:BOOL=OFF \
+	-D WITH_MGR_DASHBOARD_FRONTEND:BOOL=OFF
 
 SHEBANG_FILES=src/rbdmap src/ceph-post-file.in src/rbd-replay-many \
 	src/brag/client/ceph-brag src/ceph-rest-api \
@@ -93,6 +99,9 @@ USE_LDCONFIG=	yes
 
 USERS=		ceph
 GROUPS=		ceph
+
+post-patch:
+	${REINPLACE_CMD} 's|sphinx-build|sphinx-build-${PYTHON_VER}|g' ${WRKSRC}/CMakeLists.txt
 
 pre-configure:
 	${LN} -s ${CONFIGURE_WRKSRC} ${WRKSRC}/build

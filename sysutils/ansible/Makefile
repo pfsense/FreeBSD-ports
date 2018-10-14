@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ansible
-PORTVERSION?=	2.6.0
+PORTVERSION?=	2.6.4
 PORTREVISION?=	0
 CATEGORIES=	sysutils python
 MASTER_SITES=	http://releases.ansible.com/ansible/
@@ -68,6 +68,10 @@ post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/ansible.cfg ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/hosts ${STAGEDIR}${EXAMPLESDIR}
+
+post-stage:
+	${FIND} ${STAGEDIR}${PREFIX}/bin -type l -name ansible-\* -lname ansible \
+		-execdir ${RLN} ansible-${PYTHON_VER} {} \;
 
 TEST_WRKSRC=${WRKSRC}/test
 

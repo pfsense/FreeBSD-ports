@@ -1,10 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	filezilla
-PORTVERSION=	3.24.0
-PORTREVISION=	2
+PORTVERSION=	3.36.0
 CATEGORIES=	ftp
-MASTER_SITES=	SF/${PORTNAME}/FileZilla_Client/${PORTVERSION}
+MASTER_SITES=	https://download.filezilla-project.org/client/
 DISTNAME=	FileZilla_${PORTVERSION}_src
 
 MAINTAINER=	rezny@FreeBSD.org
@@ -13,8 +12,7 @@ COMMENT=	Fast and reliable cross-platform FTP, FTPS, and SFTP client
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	xdg-open:devel/xdg-utils
-BUILD_DEPENDS:=	${RUN_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
 LIB_DEPENDS=	libfilezilla.so:ftp/libfilezilla \
 		libgcrypt.so:security/libgcrypt \
 		libgnutls.so:security/gnutls \
@@ -23,6 +21,7 @@ LIB_DEPENDS=	libfilezilla.so:ftp/libfilezilla \
 		libpugixml.so:textproc/pugixml \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
+RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 INSTALLS_ICONS=	yes
 USES=		compiler:c++14-lang gmake iconv:wchar_t localbase pkgconfig sqlite tar:bzip2

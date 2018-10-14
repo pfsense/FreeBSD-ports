@@ -13,8 +13,8 @@ COMMENT=	Image Processing Algorithms
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
+BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Prima>1.24:x11-toolkits/p5-Prima
-BUILD_DEPENDS:=	${RUN_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure

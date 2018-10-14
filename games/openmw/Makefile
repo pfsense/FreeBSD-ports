@@ -3,15 +3,15 @@
 
 PORTNAME=	openmw
 DISTVERSIONPREFIX=	openmw-
-DISTVERSION=	0.43.0
-PORTREVISION=	4
+DISTVERSION=	0.44.0
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Unofficial open source engine reimplementation of the game Morrowind
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/docs/license/GPL3.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libBulletCollision.so:devel/bullet \

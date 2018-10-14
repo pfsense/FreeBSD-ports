@@ -21,7 +21,8 @@ USE_KDE=	attica auth bookmarks codecs completion config configwidgets \
 # pim components
 USE_KDE+=	akonadi akonadicontacts akonadinotes akonadisearch  \
 		calendarcore calendarutils contacts kontactinterface libkdepim \
-		mime pimcommon pimtextedit
+		mime pimcommon pimtextedit \
+		kdepim-runtime5_run
 USE_QT=		core dbus gui network printsupport widgets x11extras xml \
 		buildtools_build qmake_build
 USE_XORG=	ice sm x11 xext
@@ -29,5 +30,7 @@ USE_LDCONFIG=	yes
 
 DESCR=		${.CURDIR:H:H}/deskutils/kdepim/pkg-descr
 
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

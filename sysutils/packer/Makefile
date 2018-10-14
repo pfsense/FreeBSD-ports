@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	packer
-PORTVERSION=	1.2.4
+PORTVERSION=	1.3.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -20,10 +20,4 @@ GH_ACCOUNT=	hashicorp
 
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386"
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-i386
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

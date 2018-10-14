@@ -3,7 +3,7 @@
 
 PORTNAME=	pokerth
 PORTVERSION=	1.1.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -32,6 +32,8 @@ QMAKE_ARGS+=	CONFIG+="client"
 WRKSRC=		${WRKDIR}/${DISTNAME}-rc
 
 PORTDOCS=	server_setup_howto.txt
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -E \

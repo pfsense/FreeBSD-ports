@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	excoveralls
-PORTVERSION=	0.9.1
+PORTVERSION=	0.10.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	elixir-
@@ -17,5 +17,7 @@ MIX_RUN_DEPS=	devel/elixir-exjsx \
 USES=		elixir
 USE_GITHUB=	yes
 GH_ACCOUNT=	parroty
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

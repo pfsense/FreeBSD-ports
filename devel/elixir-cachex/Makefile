@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cachex
-PORTVERSION=	3.0.2
+PORTVERSION=	3.0.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	elixir-
@@ -19,5 +19,7 @@ MIX_BUILD_DEPS=	devel/elixir-eternal \
 		devel/elixir-unsafe
 MIX_RUN_DEPS:=	${MIX_BUILD_DEPS}
 MIX_REWRITE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

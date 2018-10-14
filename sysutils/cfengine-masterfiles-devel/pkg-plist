@@ -4,6 +4,7 @@
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/core/limit_robot_agents.cf
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/core/log_rotation.cf
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/core/main.cf
+%%EXAMPLESDIR%%/masterfiles/cfe_internal/core/watchdog/templates/watchdog.mustache
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/core/watchdog/watchdog.cf
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/enterprise/CFE_hub_specific.cf
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/enterprise/CFE_knowledge.cf
@@ -16,8 +17,8 @@
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/enterprise/templates/httpd.conf.mustache
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/enterprise/templates/runalerts.php.mustache
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/enterprise/templates/runalerts.sh.mustache
+%%EXAMPLESDIR%%/masterfiles/cfe_internal/recommendations.cf
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/update/cfe_internal_dc_workflow.cf
-%%EXAMPLESDIR%%/masterfiles/cfe_internal/update/cfe_internal_local_git_remote.cf
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/update/cfe_internal_update_from_repository.cf
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/update/lib.cf
 %%EXAMPLESDIR%%/masterfiles/cfe_internal/update/systemd_units.cf
@@ -76,15 +77,12 @@
 %%EXAMPLESDIR%%/masterfiles/promises.cf
 %%EXAMPLESDIR%%/masterfiles/services/autorun/hello.cf
 %%EXAMPLESDIR%%/masterfiles/services/main.cf
-%%EXAMPLESDIR%%/masterfiles/sketches/meta/api-runfile.cf
 %%EXAMPLESDIR%%/masterfiles/standalone_self_upgrade.cf
 %%EXAMPLESDIR%%/masterfiles/templates/cf-apache.service.mustache
-%%EXAMPLESDIR%%/masterfiles/templates/cf-consumer.service.mustache
 %%EXAMPLESDIR%%/masterfiles/templates/cf-execd.service.mustache
 %%EXAMPLESDIR%%/masterfiles/templates/cf-hub.service.mustache
 %%EXAMPLESDIR%%/masterfiles/templates/cf-monitord.service.mustache
 %%EXAMPLESDIR%%/masterfiles/templates/cf-postgres.service.mustache
-%%EXAMPLESDIR%%/masterfiles/templates/cf-redis-server.service.mustache
 %%EXAMPLESDIR%%/masterfiles/templates/cf-runalerts.service.mustache
 %%EXAMPLESDIR%%/masterfiles/templates/cf-serverd.service.mustache
 %%EXAMPLESDIR%%/masterfiles/templates/cfengine3.service.mustache
@@ -98,5 +96,6 @@
 %%EXAMPLESDIR%%/modules/packages/nimclient
 %%EXAMPLESDIR%%/modules/packages/pkg
 %%EXAMPLESDIR%%/modules/packages/pkgsrc
+%%EXAMPLESDIR%%/modules/packages/slackpkg
 %%EXAMPLESDIR%%/modules/packages/yum
 %%EXAMPLESDIR%%/modules/packages/zypper

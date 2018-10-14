@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ora2pg
-PORTVERSION=	18.1
+PORTVERSION=	19.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -21,6 +21,8 @@ USES=		perl5
 USE_PERL5=	configure
 USE_GITHUB=	yes
 GH_ACCOUNT=	darold
+
+OPTIONS_DEFINE=	DOCS
 
 do-patch:
 	${REINPLACE_CMD} -e '/install_all :/,/};/s=$$CONFDIR=${STAGEDIR}${ETCDIR}=g' \

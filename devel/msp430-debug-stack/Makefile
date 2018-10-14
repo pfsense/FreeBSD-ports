@@ -2,7 +2,7 @@
 
 PORTNAME=	msp430-debug-stack
 PORTVERSION=	3.12.000.004
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	http://www.ti.com/lit/sw/slac460x/ \
 		http://www.ti.com/lit/ug/slau320ac/:doc1 \
@@ -35,6 +35,8 @@ MAKE_JOBS_UNSAFE=	yes
 SUB_FILES+=	pkg-message
 
 REINPLACE_ARGS=	-i ""
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${FIND} ${WRKSRC}/DLL430_v3/src/TI/DLL430 \

@@ -45,7 +45,7 @@ DYNAMIC_UPSTREAM_GH_TUPLE=	cubicdaiya:ngx_dynamic_upstream:v0.1.6:dynamic_upstre
 DYNAMIC_UPSTREAM_VARS=		DSO_EXTMODS+=dynamic_upstream
 
 DEVEL_KIT_GH_TUPLE=		simpl:ngx_devel_kit:v0.3.0:devel_kit
-DEVEL_KIT_VARS=			DSO_EXTMODS+=devel_kit
+DEVEL_KIT_VARS=			FIRST_DSO_EXTMODS+=devel_kit
 
 ENCRYPTSESSION_IMPLIES=		DEVEL_KIT
 ENCRYPTSESSION_GH_TUPLE=	openresty:encrypted-session-nginx-module:v0.08:encryptsession
@@ -166,10 +166,8 @@ HTTP_UPSTREAM_FAIR_GH_TUPLE=		cryptofuture:nginx-upstream-fair:b5be36f:upstreamf
 HTTP_UPSTREAM_FAIR_VARS=		DSO_EXTMODS+=upstreamfair
 
 HTTP_UPSTREAM_STICKY_IMPLIES=		HTTP_SSL
-HTTP_UPSTREAM_STICKY_MASTER_SITES=	https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/:upstreamsticky
-HTTP_UPSTREAM_STICKY_DISTFILES=		08a395c66e42.tar.gz:upstreamsticky
-HTTP_UPSTREAM_STICKY_CONFIGURE_ON=	--add-module=${WRKDIR}/nginx-goodies-nginx-sticky-module-ng-08a395c66e42/
-HTTP_UPSTREAM_STICKY_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_sticky_misc.c
+HTTP_UPSTREAM_STICKY_GH_TUPLE=          thomsonreuters:nginx-sticky-module-ng:0d58565:upstreamsticky
+HTTP_UPSTREAM_STICKY_CONFIGURE_ON=      --add-module=${WRKSRC_upstreamsticky}
 
 HTTP_VIDEO_THUMBEXTRACTOR_LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 					libavcodec.so:multimedia/ffmpeg \
@@ -217,14 +215,14 @@ MODSECURITY3_LIB_DEPENDS=	libmodsecurity.so:www/mod_security3
 MODSECURITY3_GH_TUPLE=		SpiderLabs:ModSecurity-nginx:4cde86b:modsec
 MODSECURITY3_CONFIGURE_ON=	--add-module=${WRKSRC_modsec}
 
-NAXSI_NGINX_VER=	0.55.3
+NAXSI_NGINX_VER=	0.56
 NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:b4a58c4:njs
+NJS_GH_TUPLE=		nginx:njs:95b46dc:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
 
-PASSENGER_NGINX_VER=	5.3.2
+PASSENGER_NGINX_VER=	5.3.5
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USE=		ruby=yes
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake

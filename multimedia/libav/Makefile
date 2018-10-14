@@ -2,7 +2,7 @@
 
 PORTNAME=	libav
 PORTVERSION=	12.1
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://libav.org/releases/
 
@@ -11,6 +11,7 @@ COMMENT=	Realtime audio/video conversion library
 
 LICENSE=	GPLv2+
 
+BROKEN_aarch64=		fails to link: can't create dynamic relocation R_AARCH64_ABS64 against local symbol in readonly segment
 BROKEN_armv6=		fails to compile: cc: warning: joined argument expects additional value: -mcpu=
 
 BUILD_DEPENDS=	yasm:devel/yasm

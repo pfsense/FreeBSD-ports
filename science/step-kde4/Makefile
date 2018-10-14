@@ -2,11 +2,14 @@
 
 PORTNAME=	step
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	science kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE 4 interactive physics simulator
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libqalculate.so:math/libqalculate \
 		libgsl.so:math/gsl

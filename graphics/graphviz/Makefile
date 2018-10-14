@@ -3,9 +3,9 @@
 
 PORTNAME=	graphviz
 PORTVERSION=	2.40.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics tk
-MASTER_SITES=	http://www.graphviz.org/pub/graphviz/ARCHIVE/
+MASTER_SITES=	https://graphviz.gitlab.io/pub/graphviz/stable/SOURCES/
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Graph Visualization Software from AT&T and Bell Labs
@@ -20,8 +20,9 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libexpat.so:textproc/expat2 \
 		libgd.so:${GD_PORT}
 
-USES=		cpe pathfix shebangfix gmake bison groff pkgconfig \
-		libtool:keepla localbase:ldflags jpeg
+USES=		bison compiler:c++11-lang cpe gmake groff \
+		jpeg libtool:keepla localbase:ldflags pathfix \
+		pkgconfig shebangfix
 GNU_CONFIGURE=	yes
 # sincos is broken on armv6, see ports/220591
 CFLAGS_armv6=	-fno-builtin-sincos -fno-builtin-sin -fno-builtin-cos \

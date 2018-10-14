@@ -3,7 +3,7 @@
 PORTNAME=	tbe
 PORTVERSION=	0.9.2.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	games
 
@@ -23,6 +23,8 @@ USE_QT=		corelib gui linguisttools_build moc_build qmake_build rcc_build \
 		svg uic_build xml
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} 's/ make/ $$(MAKE)/' \

@@ -19,9 +19,11 @@ CONFLICTS=	ntp-devel-* openntpd-*
 
 USES=		cpe pathfix shebangfix libedit libtool localbase:ldflags \
 		pkgconfig
+USES+=		autoreconf # until trustedbsd-mac changes accepted upstream
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-leap-smear
+CONFIGURE_ARGS=	--enable-leap-smear --enable-trustedbsd-mac
+CONFIGURE_ARGS+=	--with-locfile=freebsd # Fix build on ARM
 
 TEST_TARGET=	check
 

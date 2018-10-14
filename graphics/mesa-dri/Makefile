@@ -7,8 +7,7 @@ CATEGORIES=	graphics
 
 COMMENT=	OpenGL hardware acceleration drivers for DRI2+
 
-USE_XORG=	dri2proto dri3proto glproto presentproto x11 xdamage xext \
-		xfixes xshmfence xv xvmc
+USE_XORG=	xorgproto x11 xdamage xext xfixes xshmfence xv xvmc
 
 OPTIONS_DEFINE=	TEXTURE VAAPI VDPAU
 OPTIONS_DEFAULT=TEXTURE
@@ -66,6 +65,7 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-src_gallium_drivers_vc4_Makefile.in
 BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
 .endif
 
+LDFLAGS_i386=		-Wl,-znotext
 .if ${DRI_DRIVERS} || ${VULKAN_DRIVERS:MINTEL}
 . if ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
 # --build-id isn't supported by old GNU ld.bfd in base

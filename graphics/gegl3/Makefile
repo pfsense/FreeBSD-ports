@@ -3,6 +3,7 @@
 
 PORTNAME=	gegl
 PORTVERSION=	0.3.34
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	GIMP
 PKGNAMESUFFIX=	3
@@ -19,7 +20,7 @@ LIB_DEPENDS=	libbabl-0.1.so:x11/babl \
 		libjson-glib-1.0.so:devel/json-glib \
 		libpng.so:graphics/png
 
-USES=		cpe gettext gmake jpeg libtool localbase \
+USES=		compiler:c11 cpe gettext gmake jpeg libtool localbase \
 		pathfix pkgconfig shebangfix uniquefiles tar:bzip2
 USE_GNOME=	glib20 intltool introspection:build
 USE_LDCONFIG=	yes
@@ -81,8 +82,8 @@ LCMS2_CONFIGURE_OFF=	--without-lcms
 LUA_USES=		lua
 LUA_CONFIGURE_WITH=	lua
 
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
-			libImath-2_2.so:graphics/ilmbase
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
+			libImath.so:graphics/ilmbase
 OPENEXR_CONFIGURE_WITH=	openexr
 
 RAW_LIB_DEPENDS=	libraw.so:graphics/libraw

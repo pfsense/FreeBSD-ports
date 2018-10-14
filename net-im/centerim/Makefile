@@ -19,6 +19,7 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpg-error.so:security/libgpg-error
 
 USES=		iconv gmake ncurses pkgconfig python shebangfix ssl
+USE_CXXSTD=	gnu++98
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 CXXFLAGS+=	-I${LOCALBASE}/include
@@ -29,7 +30,7 @@ SHEBANG_FILES=	misc/CenterIMLog2HTML.py misc/cimformathistory misc/cimextracthis
 gawk_OLD_CMD=	/bin/gawk
 gawk_CMD=	/usr/bin/awk
 
-OPTIONS_DEFINE=	NLS MULTIBYTE FRIBIDI MSN YAHOO IRC JABBER GPGME RSS LJ GG
+OPTIONS_DEFINE=	NLS MULTIBYTE FRIBIDI MSN YAHOO IRC JABBER GPGME RSS LJ GG DOCS
 
 FRIBIDI_DESC=	Fribidi Support
 MSN_DESC=	MSN Protocol

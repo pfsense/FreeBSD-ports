@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	php56
-PORTVERSION=	5.6.36
-PORTREVISION?=	1
+PORTVERSION=	5.6.38
+PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
 DISTNAME=	php-${PORTVERSION}
@@ -31,6 +31,9 @@ CONFIGURE_ARGS+=--with-layout=GNU \
 		--program-prefix=""
 USES+=		autoreconf:build
 USE_GNOME=	libxml2
+
+# PR230207 Allow relocations against read-only segments (override lld default)
+LDFLAGS_i386=	-Wl,-z,notext
 
 OPTIONS_DEFINE+=CLI CGI FPM EMBED PHPDBG DEBUG DTRACE IPV6 MAILHEAD LINKTHR ZTS
 OPTIONS_DEFAULT=CLI CGI FPM EMBED LINKTHR

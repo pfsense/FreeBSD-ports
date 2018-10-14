@@ -3,7 +3,7 @@
 
 PORTNAME=	mysql-connector-c++
 PORTVERSION=	1.1.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	databases
 MASTER_SITES=	MYSQL/Connector-C++
 
@@ -15,9 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs
 
-BROKEN_powerpc64=	fails to configure: the compiler doesn't support C++11
-
-USES=		cmake:outsource mysql ssl
+USES=		cmake:outsource compiler:c++11-lang mysql ssl
 USE_LDCONFIG=	yes
 CMAKE_ARGS=	-DDOC_DESTINATION="${DOCSDIR}"
 

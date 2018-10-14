@@ -37,7 +37,6 @@
     SUBDIR += intellij-rubymine
     SUBDIR += intellij-ultimate
     SUBDIR += jad
-    SUBDIR += jaf
     SUBDIR += jai
     SUBDIR += jakarta-bcel
     SUBDIR += jakarta-commons-beanutils
@@ -78,7 +77,6 @@
     SUBDIR += jflex
     SUBDIR += jfreechart
     SUBDIR += jgraph
-    SUBDIR += jgrapht
     SUBDIR += jgraphx
     SUBDIR += jikes
     SUBDIR += jlex

@@ -3,7 +3,7 @@
 
 PORTNAME=	quakeforge
 PORTVERSION=	0.7.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/quake/quake/${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -34,6 +34,7 @@ CONFIGURE_ARGS=	--disable-alsa \
 USE_CSTD=	gnu89
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 SUB_FILES=	pkg-message
 

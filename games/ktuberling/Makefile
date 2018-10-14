@@ -2,7 +2,6 @@
 
 PORTNAME=	ktuberling
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	games kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -18,6 +17,8 @@ USE_KDE=	auth bookmarks codecs completion config configwidgets \
 USE_QT=		core dbus gui multimedia network phonon4 printsupport qml \
 		quick svg testlib widgets xml \
 		buildtools_build qmake_build
+
+OPTIONS_DEFINE=	DOCS
 
 .include <${.CURDIR}/../kdegames/Makefile.common>
 .include <bsd.port.mk>

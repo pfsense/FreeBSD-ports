@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	openssl
-PORTVERSION=	1.0.2o
-PORTREVISION=	4
+PORTVERSION=	1.0.2p
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security devel
 MASTER_SITES=	http://www.openssl.org/source/ \
@@ -18,7 +18,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	libressl-[0-9]* \
 			libressl-devel-[0-9]* \
-			openssl-devel-[0-9]*
+			openssl-devel-[0-9]* \
+			openssl111-[0-9]*
 
 OPTIONS_DEFINE=		DOCS MAN3 PADLOCK RFC3779 SHARED THREADS ZLIB
 OPTIONS_DEFAULT=	ASM MD2 MAN3 SCTP SHARED SSE2 SSL2 SSL3 THREADS
@@ -62,6 +63,7 @@ USE_PERL5=	build
 MAKE_ARGS+=	WHOLE_ARCHIVE_FLAG=--whole-archive
 MAKE_ENV+=	LIBRPATH="${PREFIX}/lib" GREP_OPTIONS=
 SUB_FILES=	pkg-message
+TEST_TARGET=	test
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -73,7 +75,7 @@ MD2_CONFIGURE_ON=	enable-md2
 MD2_CONFIGURE_OFF=	no-md2
 PADLOCK_CFLAGS=		-Wno-unused-function
 PADLOCK_CONFIGURE_OFF=	no-padlock
-PADLOCK_PATCH_SITES=	http://git.alpinelinux.org/cgit/aports/plain/main/openssl/:padlock
+PADLOCK_PATCH_SITES=	http://git.alpinelinux.org/cgit/aports/plain/main/openssl1.0/:padlock
 PADLOCK_PATCHFILES=	1001-crypto-hmac-support-EVP_MD_CTX_FLAG_ONESHOT-and-set-.patch:padlock \
 			1002-backport-changes-from-upstream-padlock-module.patch:padlock \
 			1003-engines-e_padlock-implement-sha1-sha224-sha256-accel.patch:padlock \
@@ -111,7 +113,7 @@ CFLAGS+= -Werror -Qunused-arguments
 .endif
 
 .if ${PREFIX} == /usr
-IGNORE=	the OpenSSL port can not be installed over the base version
+IGNORE=	the OpenSSL port cannot be installed over the base version
 .endif
 
 OPENSSLDIR?=	${PREFIX}/openssl
@@ -154,10 +156,5 @@ post-install-SHARED-on:
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/openssl.txt ${STAGEDIR}${DOCSDIR}/
-
-test: build
-	cd ${WRKSRC} && ${MAKE} test
-
-regression-test:	test
 
 .include <bsd.port.post.mk>

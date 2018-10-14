@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	trustedqsl
-PORTVERSION=	2.2.1
-PORTREVISION=	2
+DISTVERSION=	2.4
+PORTREVISION=	1
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.arrl.org/files/file/LoTW%20Instructions/ \
 		LOCAL/shurd
@@ -20,7 +20,8 @@ BROKEN_SSL=	openssl-devel
 BROKEN_SSL_REASON_openssl-devel=	member access into incomplete type 'EVP_PKEY' (aka 'evp_pkey_st')
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libexpat.so:textproc/expat2
+		libexpat.so:textproc/expat2 \
+		liblmdb.so:databases/lmdb
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
 

@@ -2,6 +2,7 @@
 
 PORTNAME=	ImageMagick
 DISTVERSION=	6.9.9-28
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	http://www.imagemagick.org/download/ \
@@ -37,11 +38,10 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 PORTSCOUT?=	limit:^6\.9\.
 
-CONFLICTS_INSTALL=	execline-[0-9]* # bin/import
-CONFLICTS_INSTALL+=	ImageMagick7 ImageMagick7-nox11 # bin/Magick++-config
+CONFLICTS_INSTALL=	ImageMagick7 ImageMagick7-nox11 # bin/Magick++-config
 
 # This port uses .la files, keep libtool:keepla! (magick/module.c)
-USES=		cpe gettext-runtime gmake gnome libtool:keepla \
+USES=		compiler:c++11-lang cpe gettext-runtime gmake gnome libtool:keepla \
 		localbase pathfix perl5 pkgconfig:both shebangfix tar:xz
 CPE_PRODUCT=	imagemagick
 CPE_VENDOR=	imagemagick
@@ -56,7 +56,7 @@ SAMPLE_FILES=	coder.xml colors.xml delegates.xml log.xml magic.xml mime.xml \
 		policy.xml quantization-table.xml thresholds.xml type-apple.xml \
 		type-dejavu.xml type-ghostscript.xml type-urw-base35.xml \
 		type-windows.xml type.xml
-	
+
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
 OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFTW FONTCONFIG FPX FREETYPE \
@@ -179,8 +179,8 @@ PLIST_SUB+=		MODULES='@comment '
 . if ${_IMAGEMAGICK_THREADS} == "no"
 IGNORE=OpenEXR requires threads. ${_IMAGEMAGICK_THREADS_IGNORE_MSG}
 . else
-LIB_DEPENDS+=		libIlmImf.so:graphics/OpenEXR \
-			libImath-2_2.so:graphics/ilmbase
+LIB_DEPENDS+=		libIlmImf.so:graphics/openexr \
+			libImath.so:graphics/ilmbase
 PLIST_SUB+=		OPENEXR=""
 . endif
 .else

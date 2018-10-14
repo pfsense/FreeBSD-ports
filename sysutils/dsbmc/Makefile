@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dsbmc
-DISTVERSION=	0.4
+DISTVERSION=	0.5
 CATEGORIES=	sysutils
 MASTER_SITES=	http://freeshell.de/~mk/download/
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	dsbmd>=0.3:sysutils/dsbmd
 
-USES=		tar:tgz pkgconfig
+USES=		desktop-file-utils pkgconfig tar:tgz
 USE_GNOME=	cairo gdkpixbuf2
 
 OPTIONS_DEFINE=	GTK3 NLS

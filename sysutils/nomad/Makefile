@@ -5,12 +5,13 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	0.8.4
 CATEGORIES=	sysutils
 
-MAINTAINER=	jhixson@gmail.com
+MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	Cluster manager and scheduler
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		fails to build
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	On i386: go compiler crashes: https://github.com/golang/go/issues/23763
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	traingame
 PORTVERSION=	0.3
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
@@ -15,8 +15,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libxerces-c.so:textproc/xerces-c3 \
 		libboost_filesystem.so:devel/boost-libs
-
-BROKEN_powerpc64=	fails to compile: Main.cpp.o: undefined reference to boost::program_options::arg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nickg

@@ -1,5 +1,3 @@
-TIMESTAMP = 1506804540
-SHA256 (t6-netpbm-v10.80.00_GH0.tar.gz) = a066b36aab18fcb1601aa192872b0282bf74dba65ab7cfdfd13cb0a2a4bb8148
-SIZE (t6-netpbm-v10.80.00_GH0.tar.gz) = 2774451
-SHA256 (t6-netpbm-userguide-r2996_GH0.tar.gz) = a8d5ec3e74cea12f55a797ac0fe5a0f79d9adf578fa2762a7b569e2f1aaa105b
-SIZE (t6-netpbm-userguide-r2996_GH0.tar.gz) = 715558
+TIMESTAMP = 1536574520
+SHA256 (netpbm-10.83.02.tar.gz) = 436bd0c5243fa27976b92cf76317f802264f5410c528f74a522b32029b691b4d
+SIZE (netpbm-10.83.02.tar.gz) = 3252539

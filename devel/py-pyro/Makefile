@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pyro
-PORTVERSION=	4.71
+PORTVERSION=	4.73
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,6 +22,8 @@ USE_PYTHON=	autoplist concurrent distutils
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.pre.mk>
 

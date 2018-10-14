@@ -35,7 +35,7 @@ CONFIGURE_ARGS=	--with-psl
 
 REDUCE_BINS=	${WRKSRC}/pslbuild/${TARGET_SDIR}
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

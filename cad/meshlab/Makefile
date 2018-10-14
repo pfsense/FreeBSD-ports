@@ -3,12 +3,12 @@
 
 PORTNAME=	meshlab
 PORTVERSION=	1.3.3
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/MeshLab%20v${PORTVERSION}/
 DISTNAME=	MeshLabSrc_AllInc_v${PORTVERSION:C|\.||g}
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D triangular meshes processing and editing tool
 
 LICENSE=	GPLv2

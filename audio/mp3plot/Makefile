@@ -3,18 +3,21 @@
 
 PORTNAME=	mp3plot
 DISTVERSION=	0.6.0
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	audio
 MASTER_SITES=	http://p.outlyer.net/mp3plot/files/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Mp3 bitrate plot tool
+COMMENT=	MP3 bitrate plot tool
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_powerpc64=	fails to configure: C++ compiler cannot create executables
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
+
+USE_CXXSTD=	c++98
 
 OPTIONS_DEFINE=	GD IMAGEMAGICK
 OPTIONS_DEFAULT=GD

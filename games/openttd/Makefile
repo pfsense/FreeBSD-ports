@@ -3,7 +3,7 @@
 
 PORTNAME=	openttd
 DISTVERSION=	1.8.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://ca.binaries.openttd.org/binaries/releases/${DISTVERSION}/ \
 		http://cz.binaries.openttd.org/binaries/releases/${DISTVERSION}/ \
@@ -41,6 +41,8 @@ PORTDOCS=	HOWTO_compile_lang_files.txt admin_network.txt \
 
 DESKTOP_ENTRIES="OpenTTD" "${COMMENT}" "${PORTNAME}" "${PORTNAME}" \
 		"Game;Simulation;StrategyGame;" false
+
+OPTIONS_DEFINE=	DOCS
 
 .if defined(WITH_MIDI_PLAYER)
 CONFIGURE_ARGS+=	--with-midi="${WITH_MIDI_PLAYER}"

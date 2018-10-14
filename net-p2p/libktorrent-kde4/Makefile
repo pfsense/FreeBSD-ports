@@ -2,13 +2,16 @@
 
 PORTNAME=	libktorrent
 DISTVERSION=	1.3.1
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	net-p2p kde
 MASTER_SITES=	http://ktorrent.org/downloads/${DISTVERSION:C,^1,4,:C,-.*,,}/
 PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Torrent library from KTorrent project
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/concept_check.hpp:devel/boost-libs
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \

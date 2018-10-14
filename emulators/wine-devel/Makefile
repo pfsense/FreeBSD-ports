@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-DISTVERSION=	3.11
+DISTVERSION=	3.17
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	emulators
-MASTER_SITES=	http://mirrors.ibiblio.org/wine/source/3.x/ \
-		SF/${PORTNAME}/Source
+MASTER_SITES=	SF/${PORTNAME}/Source \
+		http://mirrors.ibiblio.org/wine/source/3.x/
 PKGNAMESUFFIX?=	-devel
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -83,7 +84,7 @@ LDAP_USE=		OPENLDAP=yes
 LIBXSLT_CONFIGURE_WITH=	xslt
 LIBXSLT_LIB_DEPENDS=	libxslt.so:textproc/libxslt
 
-MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.7.1.msi:emulators/wine-mono-devel
+MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.7.3.msi:emulators/wine-mono-devel
 
 MPG123_CONFIGURE_WITH=	mpg123
 MPG123_LIB_DEPENDS=	libmpg123.so:audio/mpg123
@@ -131,9 +132,11 @@ CPPFLAGS+=		-D__builtin_ms_va_list=__builtin_va_list \
 			-D__builtin_ms_va_copy=__builtin_va_copy
 .endif
 
-# Wine assumes a WoW64 package is available however WoW64 is not yet available on FreeBSD.
+# Wine assumes a WoW64 package is available, however WoW64 is not yet
+# available on FreeBSD. Also fix the desktop file.
 post-patch:
 	${REINPLACE_CMD} 's|/wine|/wine64|g' ${WRKSRC}/tools/wineapploader.in
+	${REINPLACE_CMD} '/Exec/s|wine|wine64|g' ${WRKSRC}/loader/wine.desktop
 
 .else
 PLIST_SUB+=		WINE32="" WINE64="@comment "
@@ -146,7 +149,7 @@ DISTFILES+=	${COMP_DIST}:cho
 
 EXTRACT_DEPENDS=bash:shells/bash \
 		git:devel/git \
-		autoreconf-2.69:devel/autoconf
+		autoconf>0:devel/autoconf
 LIB_DEPENDS+=	libtxc_dxtn.so:graphics/s2tc
 
 post-extract: fix-shebang

@@ -3,7 +3,7 @@
 
 PORTNAME=	golem
 PORTVERSION=	0.0.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF
 
@@ -11,6 +11,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small window manager with themes and plugins
 
 LICENSE=	BSD3CLAUSE
+
+BROKEN_aarch64=		fails to link: can't create dynamic relocation R_AARCH64_ADR_PREL_PG_HI21 against symbol: display in readonly segment
 
 USES=		gmake perl5 tar:bzip2
 USE_PERL5=	build
@@ -20,6 +22,7 @@ CONFIGURE_ARGS=	--enable-i18n
 MAKE_ARGS=	DEVEL=1
 
 CFLAGS_amd64=	-fPIC
+CFLAGS_i386=	-fPIC
 
 OPTIONS_DEFINE=	ESOUND XINERAMA
 OPTIONS_DEFAULT=	XINERAMA

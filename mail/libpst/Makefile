@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	libpst
-PORTVERSION=	0.6.71
+PORTVERSION=	0.6.72
 CATEGORIES=	mail converters
 MASTER_SITES=	http://www.five-ten-sg.com/libpst/packages/ \
-		http://fossies.org/unix/privat/ \
+		https://fossies.org/unix/privat/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org

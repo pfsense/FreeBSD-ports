@@ -8,7 +8,7 @@ CATEGORIES=	mail net
 MASTER_SITES=	SF/${PORTNAME}
 DISTNAME=	Slapd-Backend-Cyrus-${PORTVERSION}
 
-MAINTAINER=	alexey@renatasystems.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Slapd backend to translate DIT into Cyrus configuration
 
 BUILD_DEPENDS=	cyrus-imapd24>=0:mail/cyrus-imapd24 \
@@ -27,6 +27,8 @@ PLIST_SUB=	SITE_PERL_REL=${SITE_PERL_REL} \
 		DOCS_DIR_REL=${DOCSDIR_REL}
 
 PORTDOCS=	slapd-cyrus.conf.sample
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}

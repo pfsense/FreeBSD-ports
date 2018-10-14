@@ -21,7 +21,7 @@ PORTDOCS=	README
 PORTEXAMPLES=	README ipTopTalkers ipTrafficMatrix sflowRRDChart.cgi \
 		sflowRRDLoad sflowenable
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

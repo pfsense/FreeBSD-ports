@@ -3,6 +3,7 @@
 
 PORTNAME=	octave-forge-sparsersb
 PORTVERSION=	1.0.6
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libspectrum
-PORTVERSION=	1.4.3
+PORTVERSION=	1.4.4
 CATEGORIES=	emulators devel
 MASTER_SITES=	SF/fuse-emulator/${PORTNAME}/${PORTVERSION}
 
@@ -21,7 +21,9 @@ USE_LDCONFIG=	yes
 
 INSTALL_TARGET=	install-strip
 
-post-install:
+OPTIONS_DEFINE=	DOCS
+
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} AUTHORS ChangeLog README THANKS \
 	    doc/libspectrum.txt ${STAGEDIR}${DOCSDIR}

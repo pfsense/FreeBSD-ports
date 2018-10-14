@@ -1,19 +1,37 @@
 --- configure.in.orig	2018-03-02 20:59:11.000000000 +0800
 +++ configure.in	2018-07-19 14:22:04.753721000 +0800
-@@ -3423,7 +3423,6 @@
+@@ -2573,7 +2573,7 @@
+   AC_CACHE_CHECK(whether qsort_r is GNU version, rb_cv_gnu_qsort_r,
+     [AC_TRY_COMPILE([
+ @%:@include <stdlib.h>
+-void qsort_r(void *base, size_t nmemb, size_t size,
++void (qsort_r)(void *base, size_t nmemb, size_t size,
+ 	    int (*compar)(const void *, const void *, void *),
+ 	    void *arg);
+ ],[ ],
+@@ -2583,7 +2583,7 @@
+   AC_CACHE_CHECK(whether qsort_r is BSD version, rb_cv_bsd_qsort_r,
+     [AC_TRY_COMPILE([
+ @%:@include <stdlib.h>
+-void qsort_r(void *base, size_t nmemb, size_t size,
++void (qsort_r)(void *base, size_t nmemb, size_t size,
+ 	     void *arg, int (*compar)(void *, const void *, const void *));
+ ],[ ],
+       [rb_cv_bsd_qsort_r=yes],
+@@ -3423,7 +3423,7 @@
  			: ${LDSHARED='$(CC) -shared'}
  			if test "$rb_cv_binary_elf" = yes; then
  			    LDFLAGS="$LDFLAGS -rdynamic"
 -			    DLDFLAGS="$DLDFLAGS "'-Wl,-soname,$@'
++			    DLDFLAGS="$DLDFLAGS "'-Wl,-E'
  			else
  			  test "$GCC" = yes && test "$rb_cv_prog_gnu_ld" = yes || LDSHARED='$(LD) -Bshareable'
  			fi
-@@ -3896,6 +3895,8 @@
+@@ -3896,6 +3895,7 @@
      [freebsd*|dragonfly*], [
  	SOLIBS='$(LIBS)'
  	LIBRUBY_SO='lib$(RUBY_SO_NAME).so.$(MAJOR)$(MINOR)'
-+	RUBY_APPEND_OPTIONS(DLDFLAGS, ['-Wl,-soname,${LIBRUBY_SO}' "$LDFLAGS_OPTDIR"])
-+	RUBY_APPEND_OPTIONS(LIBRUBY_DLDFLAGS, ['-Wl,-soname,${LIBRUBY_SO}' "$LDFLAGS_OPTDIR"])
++	RUBY_APPEND_OPTIONS(LIBRUBY_DLDFLAGS, ['-Wl,-soname,${LIBRUBY_SO}'])
  	if test "$rb_cv_binary_elf" != "yes" ; then
  	    LIBRUBY_SO="$LIBRUBY_SO.\$(TEENY)"
  	    LIBRUBY_ALIASES=''

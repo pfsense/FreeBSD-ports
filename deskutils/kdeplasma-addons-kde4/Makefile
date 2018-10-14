@@ -2,7 +2,7 @@
 
 PORTNAME=	kdeplasma-addons
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	deskutils kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
@@ -14,6 +14,9 @@ LIB_DEPENDS=	libqalculate.so:math/libqalculate \
 		libqoauth.so:net/qoauth \
 		libqjson.so:devel/qjson@qt4
 CONFLICTS_INSTALL=	plasma-applet-icontasks-0.[89].*
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 USES=		cmake:outsource eigen:2 kde:4 pkgconfig qt:4 shared-mime-info tar:xz
 USE_KDE=	kdelibs libkexiv2 pimlibs workspace \

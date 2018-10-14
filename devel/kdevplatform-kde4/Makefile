@@ -3,7 +3,7 @@
 
 PORTNAME=	kdevplatform
 PORTVERSION=	${KDEVELOP_VERSION:S/4./1./}
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/${KDEVELOP_BRANCH}/kdevelop/${KDEVELOP_VERSION}
 DIST_SUBDIR=	KDE/kdevelop/${KDEVELOP_VERSION}
@@ -11,6 +11,9 @@ PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Set of libraries for KDE IDE-like programs
+
+DEPRECATED=	KDE4 is EOL upstream
+EXPIRATION_DATE=	2018-12-31
 
 LIB_DEPENDS=	libsvn_client-1.so:devel/subversion \
 		libboost_thread.so:devel/boost-libs \

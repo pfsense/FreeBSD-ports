@@ -3,7 +3,7 @@
 
 PORTNAME=	arx-libertatis
 PORTVERSION=	1.1.2
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	http://downloads.sourceforge.net/arx/ \
 		http://arx-libertatis.org/files/
@@ -23,6 +23,7 @@ USE_GL=		gl glew
 LLD_UNSAFE=	yes
 CMAKE_ARGS=	-DDATA_DIR=arx \
 		-DSTRICT_USE=ON
+CFLAGS_powerpc64+=	-mminimal-toc
 
 SUB_FILES=	pkg-message
 

@@ -1,7 +1,7 @@
---- c-icap.conf.in.orig	2018-09-25 16:30:42 UTC
+--- c-icap.conf.in.orig	2018-09-12 13:40:37 UTC
 +++ c-icap.conf.in
-@@ -129,7 +129,7 @@
- #	The port number that the c-icap server uses to listen to requests.
+@@ -132,7 +132,7 @@ MaxRequestsPerChild  0
+ #	Port [::1]:1346
  # Default:
  #	None
 -Port 1344

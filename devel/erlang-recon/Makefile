@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	recon
-PORTVERSION=	2.3.5
+PORTVERSION=	2.3.6
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 
@@ -16,6 +16,8 @@ GH_ACCOUNT=	ferd
 
 ERL_DOCS=	README.md doc/*
 REBAR_TARGETS=	compile doc
+
+OPTIONS_DEFINE=	DOCS
 
 post-build:
 	@${RM} ${WRKSRC}/doc/packages-frame.html

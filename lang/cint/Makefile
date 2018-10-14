@@ -3,7 +3,7 @@
 
 PORTNAME=	cint
 PORTVERSION=	5.18.00
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	lang
 MASTER_SITES=	http://root.cern.ch/drupal/sites/default/files/
 
@@ -30,6 +30,8 @@ INSTALL_ARGS=	--bindir=${STAGEDIR}${PREFIX}/bin\
 		--libdir=${STAGEDIR}${PREFIX}/lib/cint\
 		--mandir=${STAGEDIR}${PREFIX}/man\
 		--docdir=${STAGEDIR}${DOCSDIR}
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${REINPLACE_CMD} 's,#!/bin/bash,#!${LOCALBASE}/bin/bash,' ${WRKSRC}/cint/lib/dll_stl/setup

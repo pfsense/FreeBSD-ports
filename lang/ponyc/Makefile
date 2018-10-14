@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	ponyc
-DISTVERSION=	0.23.0
+DISTVERSION=	0.24.4
+PORTREVISION=	1
 CATEGORIES=	lang
 
 MAINTAINER=	greg@unrelenting.technology
@@ -25,14 +26,26 @@ MAKE_ARGS=	config=release
 
 LLVM_VERSION=	50
 
-PLIST_SUB=	VERSION="${DISTVERSION}"
+PLIST_SUB=	VERSION="${DISTVERSION}" PONYARCH="${PONYARCH}"
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ponylang
 
 PORTDOCS=	*.md
 
-MAKE_ENV=	prefix=${PREFIX} verbose=true ${"${ARCH}" == aarch64:?arch=armv8-a:}
+.include <bsd.port.options.mk>
+
+MAKE_ENV=	prefix=${PREFIX} verbose=true arch=${PONYARCH}
+
+# Pony defaults to 'native', which
+# a) doesn't work on aarch64
+# b) is not appropriate for official OS packages
+.if "${ARCH}" == aarch64
+PONYARCH?=	armv8-a
+.elif "${ARCH}" == amd64
+# Can't use 'x86-64' because atomics are required
+PONYARCH?=	core2
+.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pony/${DISTVERSION}/bin/ponyc

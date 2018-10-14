@@ -2,12 +2,15 @@
 
 PORTNAME=	dft_tools
 DISTVERSION=	1.5
+PORTREVISION=	3
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Interface to DFT codes in TRIQS
 
 LICENSE=	GPLv3
+
+BROKEN=		wrong LIB_DEPENDS
 
 BUILD_DEPENDS=	boost-libs>=1.53:devel/boost-libs \
 		googletest>0:devel/googletest # not needed: https://github.com/TRIQS/dft_tools/issues/95

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	mame
-PORTVERSION=	0.198
+PORTVERSION=	0.200
+PORTREVISION=	1
 CATEGORIES=	emulators
 
 MAINTAINER=	ports@FreeBSD.org
@@ -62,7 +63,7 @@ EMULATOR=	${MSUBTARGET}64
 .else
 EMULATOR=	${MSUBTARGET}
 .endif
-PLIST_SUB=	EMULATOR=${EMULATOR}
+PLIST_SUB+=	EMULATOR=${EMULATOR}
 
 post-patch:
 	@${RM} ${WRKSRC}/3rdparty/bx/include/compat/freebsd/dirent.h
