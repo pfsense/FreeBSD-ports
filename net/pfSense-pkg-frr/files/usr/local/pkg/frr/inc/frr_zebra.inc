@@ -407,8 +407,8 @@ function frr_zebra_generate_routemaps() {
 		}
 
 		/* Weight */
-		if (frr_validate_ulong($rm['metric_value'])) {
-			$rmconf .= "  match metric {$rm['metric_value']}\n";
+		if (frr_validate_ulong($rm['weight'])) {
+			$rmconf .= "  set weight {$rm['weight']}\n";
 		}
 
 		/* Local Preference */
