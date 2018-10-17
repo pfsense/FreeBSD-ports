@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-ntopng
 PORTVERSION=	0.8.13
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
