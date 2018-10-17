@@ -157,6 +157,8 @@ function ntopng_sync_package() {
 EOD;
 
 	$start = <<<EOD
+### Make sure library path cache is updated
+	/etc/rc.d/ldconfig start
 # Create DB dir before starting, in case it was removed. Otherwise redis will fail.
 	/bin/mkdir -p /var/db/ntopng
 	{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb &
