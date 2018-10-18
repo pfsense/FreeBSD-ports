@@ -2,7 +2,7 @@
 
 PORTNAME=	u-boot-env
 DISTVERSION=	20181018
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 
@@ -17,7 +17,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	u-boot-env-update
-GL_COMMIT=	2b6705eeff4030543df82575af039fee59401d3d
+GL_COMMIT=	ff928bc88a24b349ac51d6d09f0a1e1f393b3bad
 FETCH_BEFORE_ARGS=	--no-verify-peer
 
 .include <bsd.port.mk>
