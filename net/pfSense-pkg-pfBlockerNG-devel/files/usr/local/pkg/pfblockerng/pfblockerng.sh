@@ -22,6 +22,8 @@ pathgrepcidr="/usr/local/bin/grepcidr"
 pathaggregate="/usr/local/bin/iprange"
 pathmwhois="/usr/local/bin/mwhois"
 pathgeoip="/usr/local/bin/geoiplookup"
+pathcurl="/usr/local/bin/curl"
+pathjq="/usr/local/bin/jq"
 pathgunzip=/usr/bin/gunzip
 pathhost=/usr/bin/host
 pathtar=/usr/bin/tar
@@ -291,7 +293,7 @@ cidr_aggregate() {
 
 	counto="$(grep -c ^ ${pfbfolder}${alias}.txt)"
 	"${pathaggregate}" "${pfbfolder}${alias}.txt" > "${tempfile}" && mv -f "${tempfile}" "${pfbfolder}${alias}.txt"
-	
+
 	countf="$(grep -c ^ ${pfbfolder}${alias}.txt)"
 	if [ "${counto}" != "${countf}" ]; then
 		echo; echo '  Aggregation Stats:'
@@ -641,14 +643,10 @@ whoisconvert() {
 
 	if [ "${vtype}" == '_v4' ]; then
 		_type=A
-		_route=route
-		_opt=gAS
-		_ip_type='\.'
+		_bgp_type=4
 	else
 		_type=AAAA
-		_route=route6
-		_opt=6AS
-		_ip_type=':'
+		_bgp_type=6
 	fi
 
 	for host in ${custom_list}; do
@@ -656,17 +654,14 @@ whoisconvert() {
 		host_check="$(echo ${host} | grep '\.')"
 		if [ ! -z "${host_check}" ]; then
 			echo "### Domain: ${host} ###" >> "${pfborig}${alias}.orig"
-			${pathhost} -t ${_type} ${host} | sed 's/^.* //' >> "${pfborig}${alias}.orig"
+			"${pathhost}" -t ${_type} ${host} | sed 's/^.* //' >> "${pfborig}${alias}.orig"
 		else
 			asn="$(echo ${host} | tr -d 'AaSs')"
 			echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
-			/usr/local/bin/curl -s "https://api.bgpview.io/asn/${asn}/prefixes" \
-				| tr ',' '\n' | grep '"prefix":' | cut -d '[' -f2 | cut -d '{' -f2 | cut -d ':' -f2-20 | tr -d '"\\[' | grep "${_ip_type}" \
-				>> "${pfborig}${alias}.orig"
-			# "${pathmwhois}" -h whois.radb.net \!"${_opt}${asn}" | tail -n +2 | tr -d '\nC' | tr ' ' '\n' >> "${pfborig}${alias}.orig"
-		fi
 
-		echo >> "${pfborig}${alias}.orig"
+			bgp_url="https://api.bgpview.io/asn/${asn}/prefixes"
+			"${pathcurl}" -s1 "${bgp_url}" | "${pathjq}" -r ".data.ipv${_bgp_type}_prefixes[].prefix" >> "${pfborig}${alias}.orig"
+		fi
 	done
 }
 
@@ -963,13 +958,14 @@ processet() {
 		etcat='ET_Cnc ET_Bot ET_Spam ET_Drop ET_Spywarecnc ET_Onlinegaming ET_Drivebysrc ET_Cat8 ET_Chatserver ET_Tornode
 			ET_Cat11 ET_Cat12 ET_Compromised ET_Cat14 ET_P2P ET_Proxy ET_Ipcheck ET_Cat18 ET_Utility ET_DDostarget
 			ET_Scanner ET_Cat22 ET_Brute ET_Fakeav ET_Dyndns ET_Undesireable ET_Abusedtld ET_Selfsignedssl ET_Blackhole ET_RAS
-			ET_P2Pcnc ET_Sharedhosting ET_Parking ET_VPN ET_Exesource ET_Cat36 ET_Mobilecnc ET_Mobilespyware ET_Skypenode ET_Bitcoin ET_DDosattack'
+			ET_P2Pcnc ET_Cat32 ET_Parking ET_VPN ET_Exesource ET_Cat36 ET_Mobilecnc ET_Mobilespyware ET_Skypenode
+			ET_Bitcoin ET_DDosattack'
 
 		for file in ${etcat}; do
 
 			case "${category}" in
 
-				8|11|12|14|18|22|36)
+				8|11|12|14|18|22|32|36)
 					# Some ET categories are not in use (For future use)
 					;;
 				*)
