@@ -27,6 +27,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $config, $pfb;
 pfb_global();
 
+init_config_arr(array('installedpackages', 'pfblockerngglobal'));
 $fconfig	= &$config['installedpackages']['pfblockerngglobal'];
 
 // Load/convert Feeds (w/alternative aliasname(s), if user-configured)
@@ -66,6 +67,10 @@ if (is_array($fconfig)) {
 if ($_POST) {
 	if (isset($_POST['save'])) {
 
+		if (isset($input_errors)) {
+			unset($input_errors);
+		}
+
 		$config_mod = FALSE;
 		foreach ($pfb['feeds_list'] as $type => $data) {
 			foreach ($data as $o_aliasname => $aliasname) {
@@ -100,7 +105,7 @@ if ($_POST) {
 			foreach ($selected as $value) {
 
 				if (!empty($value)) {
-					$post					= htmlspecialchars($_POST['alt_' . $value]);
+					$post					= pfb_filter($_POST['alt_' . $value], 1);
 					$value					= strtolower($value);		// config XML tag needs to be lowercase
 					$feed_alt_{$value}			= $post;
 					$fconfig['feed_alt_' . $value]		= $feed_alt_{$value};
@@ -769,7 +774,6 @@ print ($section);
 
 				<td>
 					<?php
-								$row['url'] = filter_var($row['url'], FILTER_SANITIZE_STRING);
 								if (strpos($row['url'], 'http') !== FALSE) {
 									print ("<a target=\"_blank\" href=\"{$row['url']}\">{$row['url']}</a>");
 								} else {
@@ -780,7 +784,7 @@ print ($section);
 
 				<td>
 					<?php
-								print (filter_var($row['header'], FILTER_SANITIZE_STRING));
+								print ($row['header']);
 					?>
 				</td>
 			</tr>
