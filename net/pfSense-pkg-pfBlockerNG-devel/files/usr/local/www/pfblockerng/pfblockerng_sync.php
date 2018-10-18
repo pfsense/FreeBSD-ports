@@ -27,11 +27,9 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $config, $pfb;
 pfb_global();
 
+init_config_arr(array('installedpackages', 'pfblockerngsync', 'config', '0'));
 $pfb['sconfig'] = &$config['installedpackages']['pfblockerngsync']['config'][0];
 
-if (!is_array($pfb['sconfig'])) {
-	$pfb['sconfig'] = array();
-}
 $pconfig = array();
 $pconfig['varsynconchanges']	= $pfb['sconfig']['varsynconchanges']	?: '';
 $pconfig['varsynctimeout']	= $pfb['sconfig']['varsynctimeout']	?: 150;
@@ -42,7 +40,9 @@ if ($_POST) {
 
 	if (isset($_POST['save'])) {
 
-		unset($input_errors);
+		if (isset($input_errors)) {
+			unset($input_errors);
+		}
 		$rowhelper_exist = array();
 
 		$pfb['sconfig']['varsynconchanges']	= $_POST['varsynconchanges'];
