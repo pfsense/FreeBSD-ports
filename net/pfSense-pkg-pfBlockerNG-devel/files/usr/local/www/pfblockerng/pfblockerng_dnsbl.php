@@ -28,10 +28,8 @@ global $config, $pfb;
 pfb_global();
 $disable_move = FALSE;
 
+init_config_arr(array('installedpackages', 'pfblockerngdnsblsettings', 'config', 0));
 $pfb['dconfig'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0];
-if (!is_array($pfb['dconfig'])) {
-	$pfb['dconfig'] = array();
-}
 
 $pconfig = array();
 $pconfig['pfb_dnsbl']		= $pfb['dconfig']['pfb_dnsbl']				?: '';
@@ -83,7 +81,9 @@ if ($_POST) {
 
 	if (isset($_POST['save'])) {
 
-		unset($input_errors);
+		if (isset($input_errors)) {
+			unset($input_errors);
+		}
 
 		// Check if DNSBL Webpage has been changed.
 		$dnsbl_webpage = FALSE;
@@ -103,49 +103,55 @@ if ($_POST) {
 			unlink_if_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt");
 		}
 
-		$pfb['dconfig']['pfb_dnsbl']		= $_POST['pfb_dnsbl']					?: '';
-		$pfb['dconfig']['pfb_tld']		= $_POST['pfb_tld']					?: '';
-		$pfb['dconfig']['pfb_dnsvip']		= $_POST['pfb_dnsvip']					?: '10.10.10.1';
-		$pfb['dconfig']['pfb_dnsvip_type']	= $_POST['pfb_dnsvip_type']				?: 'ipalias';
-		$pfb['dconfig']['pfb_dnsvip_pass']	= $_POST['pfb_dnsvip_pass']				?: '';
-		$pfb['dconfig']['pfb_dnsport']		= $_POST['pfb_dnsport']					?: '8081';
-		$pfb['dconfig']['pfb_dnsport_ssl']	= $_POST['pfb_dnsport_ssl']				?: '8443';
-		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']				?: 'lan';
-		$pfb['dconfig']['pfb_dnsbl_rule']	= $_POST['pfb_dnsbl_rule']				?: '';
-		$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])	?: '';
-		$pfb['dconfig']['dnsbl_webpage']	= $_POST['dnsbl_webpage']				?: 'dnsbl_default.php';
-		$pfb['dconfig']['pfb_dnsbl_sync']	= $_POST['pfb_dnsbl_sync']				?: '';
-		$pfb['dconfig']['action']		= $_POST['action']					?: 'Disabled';
-		$pfb['dconfig']['aliaslog']		= $_POST['aliaslog']					?: 'enabled';
+		foreach (array('aliasports_in', 'aliasaddr_in', 'aliasports_out', 'aliasaddr_out') as $value) {
+			if (!empty($_POST[$value]) && !is_validaliasname($_POST[$value])) {
+				$input_errors[] = 'Settings: Advanced In/Outbound Aliasname error - ' . invalidaliasnamemsg($_POST[$value]);
+			}
+		}
 
-		$pfb['dconfig']['autoaddrnot_in']	= $_POST['autoaddrnot_in']				?: '';
-		$pfb['dconfig']['autoports_in']		= $_POST['autoports_in']				?: '';
-		$pfb['dconfig']['aliasports_in']	= htmlspecialchars($_POST['aliasports_in'])		?: '';
-		$pfb['dconfig']['autoaddr_in']		= $_POST['autoaddr_in']					?: '';
-		$pfb['dconfig']['autonot_in']		= $_POST['autonot_in']					?: '';
-		$pfb['dconfig']['aliasaddr_in']		= htmlspecialchars($_POST['aliasaddr_in'])		?: '';
-		$pfb['dconfig']['autoproto_in']		= $_POST['autoproto_in']				?: '';
-		$pfb['dconfig']['agateway_in']		= $_POST['agateway_in']					?: 'default';
+		$pfb['dconfig']['pfb_dnsbl']		= $_POST['pfb_dnsbl']				?: '';
+		$pfb['dconfig']['pfb_tld']		= $_POST['pfb_tld']				?: '';
+		$pfb['dconfig']['pfb_dnsvip']		= $_POST['pfb_dnsvip']				?: '10.10.10.1';
+		$pfb['dconfig']['pfb_dnsvip_type']	= $_POST['pfb_dnsvip_type']			?: 'ipalias';
+		$pfb['dconfig']['pfb_dnsvip_pass']	= $_POST['pfb_dnsvip_pass']			?: '';
+		$pfb['dconfig']['pfb_dnsport']		= $_POST['pfb_dnsport']				?: '8081';
+		$pfb['dconfig']['pfb_dnsport_ssl']	= $_POST['pfb_dnsport_ssl']			?: '8443';
+		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']			?: 'lan';
+		$pfb['dconfig']['pfb_dnsbl_rule']	= $_POST['pfb_dnsbl_rule']			?: '';
+		$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])?: '';
+		$pfb['dconfig']['dnsbl_webpage']	= $_POST['dnsbl_webpage']			?: 'dnsbl_default.php';
+		$pfb['dconfig']['pfb_dnsbl_sync']	= $_POST['pfb_dnsbl_sync']			?: '';
+		$pfb['dconfig']['action']		= $_POST['action']				?: 'Disabled';
+		$pfb['dconfig']['aliaslog']		= $_POST['aliaslog']				?: 'enabled';
 
-		$pfb['dconfig']['autoaddrnot_out']	= $_POST['autoaddrnot_out']				?: '';
-		$pfb['dconfig']['autoports_out']	= $_POST['autoports_out']				?: '';
-		$pfb['dconfig']['aliasports_out']	= htmlspecialchars($_POST['aliasports_out'])		?: '';
-		$pfb['dconfig']['autoaddr_out']		= $_POST['autoaddr_out']				?: '';
-		$pfb['dconfig']['autonot_out']		= $_POST['autonot_out']					?: '';
-		$pfb['dconfig']['aliasaddr_out']	= htmlspecialchars($_POST['aliasaddr_out'])		?: '';
-		$pfb['dconfig']['autoproto_out']	= $_POST['autoproto_out']				?: '';
-		$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']				?: 'default';
+		$pfb['dconfig']['autoaddrnot_in']	= $_POST['autoaddrnot_in']			?: '';
+		$pfb['dconfig']['autoports_in']		= $_POST['autoports_in']			?: '';
+		$pfb['dconfig']['aliasports_in']	= $_POST['aliasports_in']			?: '';
+		$pfb['dconfig']['autoaddr_in']		= $_POST['autoaddr_in']				?: '';
+		$pfb['dconfig']['autonot_in']		= $_POST['autonot_in']				?: '';
+		$pfb['dconfig']['aliasaddr_in']		= $_POST['aliasaddr_in']			?: '';
+		$pfb['dconfig']['autoproto_in']		= $_POST['autoproto_in']			?: '';
+		$pfb['dconfig']['agateway_in']		= $_POST['agateway_in']				?: 'default';
 
-		$pfb['dconfig']['suppression']		= base64_encode($_POST['suppression'])			?: '';
+		$pfb['dconfig']['autoaddrnot_out']	= $_POST['autoaddrnot_out']			?: '';
+		$pfb['dconfig']['autoports_out']	= $_POST['autoports_out']			?: '';
+		$pfb['dconfig']['aliasports_out']	= $_POST['aliasports_out']			?: '';
+		$pfb['dconfig']['autoaddr_out']		= $_POST['autoaddr_out']			?: '';
+		$pfb['dconfig']['autonot_out']		= $_POST['autonot_out']				?: '';
+		$pfb['dconfig']['aliasaddr_out']	= $_POST['aliasaddr_out']			?: '';
+		$pfb['dconfig']['autoproto_out']	= $_POST['autoproto_out']			?: '';
+		$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']			?: 'default';
 
-		$pfb['dconfig']['alexa_enable']		= $_POST['alexa_enable']				?: '';
-		$pfb['dconfig']['alexa_type']		= $_POST['alexa_type']					?: 'Alexa';
-		$pfb['dconfig']['alexa_count']		= $_POST['alexa_count']					?: '1000';
-		$pfb['dconfig']['alexa_inclusion']	= implode(',', (array)$_POST['alexa_inclusion'])	?: 'com,net,org,ca,co,io';
+		$pfb['dconfig']['suppression']		= base64_encode($_POST['suppression'])		?: '';
 
-		$pfb['dconfig']['tldexclusion']		= base64_encode($_POST['tldexclusion'])			?: '';
-		$pfb['dconfig']['tldblacklist']		= base64_encode($_POST['tldblacklist'])			?: '';
-		$pfb['dconfig']['tldwhitelist']		= base64_encode($_POST['tldwhitelist'])			?: '';
+		$pfb['dconfig']['alexa_enable']		= $_POST['alexa_enable']			?: '';
+		$pfb['dconfig']['alexa_type']		= $_POST['alexa_type']				?: 'Alexa';
+		$pfb['dconfig']['alexa_count']		= $_POST['alexa_count']				?: '1000';
+		$pfb['dconfig']['alexa_inclusion']	= implode(',', (array)$_POST['alexa_inclusion'])?: 'com,net,org,ca,co,io';
+
+		$pfb['dconfig']['tldexclusion']		= base64_encode($_POST['tldexclusion'])		?: '';
+		$pfb['dconfig']['tldblacklist']		= base64_encode($_POST['tldblacklist'])		?: '';
+		$pfb['dconfig']['tldwhitelist']		= base64_encode($_POST['tldwhitelist'])		?: '';
 
 		// Validate DNSBL VIP address
 		if (!is_ipaddrv4($_POST['pfb_dnsvip'])) {
@@ -531,12 +537,6 @@ $section->addInput(new Form_Select(
 	gettext('TLD Inclusion'),
 	$pconfig['alexa_inclusion'],
 	[	'ae' => 'AE',
-		'aero' => 'AERO',
-		'ag' => 'AG',
-		'al' => 'AL',
-		'am' => 'AM',
-		'ar' => 'AR',
-		'ae' => 'AE',
 		'aero' => 'AERO',
 		'ag' => 'AG',
 		'al' => 'AL',
