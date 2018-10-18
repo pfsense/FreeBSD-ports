@@ -47,6 +47,7 @@ $pfb['err']	= '<i class="fa fa-minus-circle text-danger" title="pf Errors found.
 $wglobal_array = array ('popup' => 'off', 'sortcolumn' => 'none', 'sortmix' => 'off', 'sortdir' => 'asc', 'dnsblquery' => 5,
 			'maxfails' => 3, 'maxheight' => 2500, 'clearip' => 'never', 'cleardnsbl' => 'never');
 
+init_config_arr(array('installedpackages', 'pfblockerngglobal'));
 $pfb['wglobal'] = &$config['installedpackages']['pfblockerngglobal'];
 foreach ($wglobal_array as $type => $value) {
 	$pfb[$type] = $pfb['wglobal']['widget-' . "{$type}"] ?: $value;
@@ -72,26 +73,26 @@ if ($_POST) {
 
 	// Save widget customizations
 	if (isset($_POST['pfb_submit'])) {
-		$pfb['wglobal']['widget-popup']			= htmlspecialchars($_POST['pfb_popup'])		?: 'off';
-		$pfb['wglobal']['widget-sortmix']		= htmlspecialchars($_POST['pfb_sortmix'])	?: 'off';
-		$pfb['wglobal']['widget-sortcolumn']		= htmlspecialchars($_POST['pfb_sortcolumn'])	?: 'none';
-		$pfb['wglobal']['widget-sortdir']		= htmlspecialchars($_POST['pfb_sortdir'])	?: 'asc';
-		$pfb['wglobal']['widget-clearip']		= htmlspecialchars($_POST['pfb_clearip'])	?: 'never';
-		$pfb['wglobal']['widget-cleardnsbl']		= htmlspecialchars($_POST['pfb_cleardnsbl'])	?: 'never';
+		$pfb['wglobal']['widget-popup']			= $_POST['pfb_popup']		?: 'off';
+		$pfb['wglobal']['widget-sortmix']		= $_POST['pfb_sortmix']		?: 'off';
+		$pfb['wglobal']['widget-sortcolumn']		= $_POST['pfb_sortcolumn']	?: 'none';
+		$pfb['wglobal']['widget-sortdir']		= $_POST['pfb_sortdir']		?: 'asc';
+		$pfb['wglobal']['widget-clearip']		= $_POST['pfb_clearip']		?: 'never';
+		$pfb['wglobal']['widget-cleardnsbl']		= $_POST['pfb_cleardnsbl']	?: 'never';
 
-		if (ctype_digit(htmlspecialchars($_POST['pfb_dnsblquery']))) {
-			$pfb['wglobal']['widget-dnsblquery']	= htmlspecialchars($_POST['pfb_dnsblquery']);
+		if (ctype_digit($_POST['pfb_dnsblquery'])) {
+			$pfb['wglobal']['widget-dnsblquery']	= $_POST['pfb_dnsblquery'];
 
 			// Restart pfb_dnsbl service on Query frequency changes
 			if ($_POST['pfb_dnsblquery'] != $pfb['dnsblquery']) {
 				restart_service('pfb_dnsbl');
 			}
 		}
-		if (ctype_digit(htmlspecialchars($_POST['pfb_maxfails']))) {
-			$pfb['wglobal']['widget-maxfails']	= htmlspecialchars($_POST['pfb_maxfails']);
+		if (ctype_digit($_POST['pfb_maxfails'])) {
+			$pfb['wglobal']['widget-maxfails']	= $_POST['pfb_maxfails'];
 		}
-		if (ctype_digit(htmlspecialchars($_POST['pfb_maxheight']))) {
-			$pfb['wglobal']['widget-maxheight']	= htmlspecialchars($_POST['pfb_maxheight']);
+		if (ctype_digit($_POST['pfb_maxheight'])) {
+			$pfb['wglobal']['widget-maxheight']	= $_POST['pfb_maxheight'];
 		}
 
 		// Define pfBlockerNG clear [ dnsbl and/or IP ] counter CRON job
