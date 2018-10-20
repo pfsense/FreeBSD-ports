@@ -663,6 +663,12 @@ print ($section);
 									print ("&emsp;<i class=\"fa fa-bug text-danger\" title=\"Feed temporarily unavailable\"></i>");
 								}
 
+								// Add link to Donate/support link
+								if (isset($feed['donate'])) {
+									print ("&emsp;<a target=\"_blank\" href=\"{$feed['donate']}\" title=\"Click to donation/support page.\">
+									<i class=\"fa fa-cart-plus\"></i></a>");
+								}
+
 								// Add link to Feed registration
 								if (isset($feed['register'])) {
 									print ("&emsp;<a target=\"_blank\" href=\"{$feed['register']}\" title=\"Click to register\">
