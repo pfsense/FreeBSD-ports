@@ -390,6 +390,7 @@
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/MiningServerIPList.txt",
 					"register":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/badipslist.html",
 					"info":		"The final URL for this feed will be provided upon registration.",
+					"donate":	"https://amzn.to/2Ol2KKn",
 					"header":	"CoinBlocker"
 				},
 				{
