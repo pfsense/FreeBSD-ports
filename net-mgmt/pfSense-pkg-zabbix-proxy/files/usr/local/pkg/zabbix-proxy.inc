@@ -94,7 +94,8 @@ function sync_package_zabbix_proxy() {
 	conf_mount_rw();
 
 	// Check zabbix proxy config
-	if (is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+	if (isset($config['installedpackages']['%%ZABBIXUNIQNAME%%']) && is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+		init_config_arr(array('installedpackages', '%%ZABBIXUNIQNAME%%', 'config', 0));
 		$zbproxy_config = $config['installedpackages']['%%ZABBIXUNIQNAME%%']['config'][0];
 		if ($zbproxy_config['proxyenabled'] == "on") {
 			$ListenIp = $zbproxy_config['listenip'] ?: "0.0.0.0";
