@@ -116,7 +116,8 @@ function sync_package_zabbix_agent() {
 	conf_mount_rw();
 
 	// Check Zabbix Agent settings
-	if (is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+	if (isset($config['installedpackages']['%%ZABBIXUNIQNAME%%']) && is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+		init_config_arr(array('installedpackages', '%%ZABBIXUNIQNAME%%', 'config', 0));
 		$zbagent_config = $config['installedpackages']['%%ZABBIXUNIQNAME%%']['config'][0];
 		if ($zbagent_config['agentenabled'] == "on") {
 			$RefreshActChecks = (preg_match("/(\d+)/", $zbagent_config['refreshactchecks'], $matches)? $matches[1] : "120");
