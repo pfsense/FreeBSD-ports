@@ -107,7 +107,7 @@ EOD;
 		$cfg .= "[[outputs.graphite]]\n";
 		$cfg .= "\tservers = [\"" . $telegraf_conf['graphite_server'] . "\"]\n";
 		if (!empty($telegraf_conf['graphite_prefix'])) {
-			$cfg .= "\tprefix = " . $telegraf_conf['graphite_prefix'] . "\n";
+			$cfg .= "\tprefix = \"" . $telegraf_conf['graphite_prefix'] . "\"\n";
 		} else {
 			$cfg .= "\tprefix = \"monitor\"\n";
 		}
