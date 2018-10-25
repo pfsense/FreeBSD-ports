@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	u-boot
-DISTVERSION=	20180905
+DISTVERSION=	20181025
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 PKGNAMESUFFIX=	-sg3100
@@ -16,13 +16,15 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 
 PLIST_FILES=	share/u-boot/sg3100/u-boot.bin \
-		share/u-boot/sg3100/u-boot.mmc
+		share/u-boot/sg3100/u-boot.mmc \
+		share/u-boot/sg3100/u-boot-update.sh \
+		share/u-boot/sg3100/ubldr.bin
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	u-boot-binaries
-GL_COMMIT=	838f9c20c07dc4b7ed66912a4d897ab44697160d
+GL_COMMIT=	38e1d13fd270f92ebec422918dd9186b43d89204
 FETCH_BEFORE_ARGS=	--no-verify-peer
 
 do-install:
