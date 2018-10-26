@@ -657,7 +657,7 @@ pkg_upgrade() {
 			    [ ! -s /boot/loader.conf ]; then
 				cp -fp /tmp/loader.conf.backup /boot/loader.conf
 			fi
-			if [ ${SYSTEM} = "SG-1100" ]; then
+			if [ "${SYSTEM}" = "SG-1100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
