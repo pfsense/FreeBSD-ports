@@ -143,11 +143,11 @@ $section->addInput(new Form_Input(
 
 $section->addInput(new Form_Checkbox(
 	'syncinterfaces',
-	'Disable General/DNSBL tab settings sync',
+	'Disable General/IP/DNSBL tab settings sync',
 	NULL,
 	$pconfig['syncinterfaces'] === 'on' ? true:false,
 	'on'
-))->setHelp('When selected, the \'General\' tab and \'DNSBL\' tab customizations will not be sync\'d');
+))->setHelp('When selected, the \'General\', \'IP\', and \'DNSBL\' tab customizations will not be sync\'d');
 $form->add($section);
 
 $section = new Form_Section('XMLRPC Replication Targets');
