@@ -443,8 +443,7 @@ pkg_upgrade() {
 		    ${product}-u-boot-ufw\*))
 		export uboot_mntp=/boot/msdos
 		export uboot_bin=u-boot.img
-		[ -f /usr/local/share/u-boot/ufw/u-boot-update.sh ] \
-		    && export \
+		export \
 		    uboot_update=/usr/local/share/u-boot/ufw/u-boot-update.sh
 	elif is_pkg_installed ${product}-u-boot-sg1100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
@@ -456,8 +455,7 @@ pkg_upgrade() {
 		    ${product}-u-boot-sg3100\*))
 		export uboot_mntp=/boot/u-boot
 		export uboot_bin=u-boot.bin
-		[ -f /usr/local/share/u-boot/sg3100/u-boot-update.sh ] \
-		    && export \
+		export \
 		    uboot_update=/usr/local/share/u-boot/sg3100/u-boot-update.sh
 	fi
 
