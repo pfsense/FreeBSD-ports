@@ -8154,8 +8154,6 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 		}
 	}
 
-	if (isset($config['installedpackages']['pfblockerngipsettings']))
-		 $xml['pfblockerngipsettings']		= $config['installedpackages']['pfblockerngipsettings'];
 	if (isset($config['installedpackages']['pfblockernglistsv4']))
 		$xml['pfblockernglistsv4']		= $config['installedpackages']['pfblockernglistsv4'];
 	if (isset($config['installedpackages']['pfblockernglistsv6']))
