@@ -799,9 +799,9 @@ function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE) {
 	global $config;
 	$pfb_interfaces = array();
 
-	foreach (get_configured_interface_with_descr() as $ifent => $ifdesc) {
-		if ($show_wan || $ifdesc != 'WAN') {
-			$pfb_interfaces[$ifent] = $ifdesc;
+	foreach (get_configured_interface_list() as $ifent => $ifdesc) {
+		if ($show_wan || $ifent != 'wan') {
+			$pfb_interfaces[$ifent] = $ifent;
 		}
 	}
 
@@ -4931,11 +4931,6 @@ function sync_package_pfblockerng($cron='') {
 
 	// Collect pfSense interface order
 	$ifaces = pfb_build_if_list(TRUE, FALSE);
-	if (is_array($ifaces)) {
-		foreach ($ifaces as $key => &$value) {
-			$value = strtolower($value);
-		}
-	}
 
 	foreach (array('inbound', 'outbound') as $type) {
 		$pfb["{$type}_interfaces"] = $pfb["{$type}_floating"] = array();
