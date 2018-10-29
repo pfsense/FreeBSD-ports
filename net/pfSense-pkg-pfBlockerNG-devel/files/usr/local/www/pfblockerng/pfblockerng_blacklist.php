@@ -83,7 +83,8 @@ if (!empty($blacklist_types)) {
 	}
 }
 
-$pfb['bconfig']	= &$config['installedpackages']['pfblockerngblacklist'] ?: array();
+init_config_arr(array('installedpackages', 'pfblockerngblacklist'));
+$pfb['bconfig']	= &$config['installedpackages']['pfblockerngblacklist'];
 
 $pconfig = array();
 $pconfig['blacklist_enable']		= $pfb['bconfig']['blacklist_enable']				?: 'Disable';
@@ -115,10 +116,14 @@ if (isset($blacklist_types)) {
 if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 
 	$rowid		= 0;
-	$savemsg	= '';
 	$a_list		= array();
 	$config_mod	= FALSE;
-	unset($input_errors, $savemsg);
+	if (isset($input_errors)) {
+		unset($input_errors);
+	}
+	if (isset($savemsg)) {
+		unset($savemsg);
+	}
 
 	if (isset($_POST['blacklist_enable'])) {
 		$pfb['bconfig']['blacklist_enable']	= $_POST['blacklist_enable'];
@@ -134,6 +139,8 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 
 		if (isset($_POST['blacklist_selected'])) {
 			$pfb['bconfig']['blacklist_selected']	= implode(',', (array)$_POST['blacklist_selected']);
+		} else {
+			$pfb['bconfig']['blacklist_selected']	= '';
 		}
 		if (isset($_POST['blacklist_freq'])) {
 			$pfb['bconfig']['blacklist_freq']	= $_POST['blacklist_freq'];
@@ -149,20 +156,20 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 			foreach (array('TITLE', 'XML', 'FEED', 'SIZE') as $value) {
 				$lvalue = strtolower($value);	// Config variables must be in lowercase
 				if (isset($blacklist_types[$type][$value])) {
-					$list[$lvalue] = htmlspecialchars($blacklist_types[$type][$value]);
+					$list[$lvalue] = pfb_filter($blacklist_types[$type][$value], 1);
 				}
 			}
 
 			$list['selected'] = implode(',', (array)$_POST['blacklist_' . $type]) ?: '';
 
 			if (isset($_POST['blacklist_' . $type . '_username'])) {
-				$list['username'] = filter_var($_POST['blacklist_' . $type . '_username'], FILTER_SANITIZE_STRING);
+				$list['username'] = pfb_filter($_POST['blacklist_' . $type . '_username'], 1);
 			}
 
 			if (isset($_POST['blacklist_' . $type . '_password'])) {
 				if ($_POST['blacklist_' . $type . '_password'] == $_POST['blacklist_' . $type . '_password_confirm']) {
 					if ($_POST['blacklist_' . $type . '_password'] != DMYPWD) {
-						$list['password'] = filter_var($_POST['blacklist_' . $type . '_password'], FILTER_SANITIZE_STRING);
+						$list['password'] = pfb_filter($_POST['blacklist_' . $type . '_password'], 1);
 					}
 				} else {
 					$input_errors[] = "[ {$setting['TITLE']} ] The password does not match the confirm password!";
@@ -412,8 +419,8 @@ foreach ($blacklist_types as $type => $setting) {
 
 	$group = new Form_Group(NULL);
 	$btnenableall = new Form_Button(
-		'enableall[' . $type . ']',
-		gettext('Enable All'),
+        	'enableall[' . $type . ']',
+        	gettext('Enable All'),
 		NULL,
 		'fa-toggle-on'
 	);

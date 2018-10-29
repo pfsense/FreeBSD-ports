@@ -62,24 +62,29 @@ if (isset($argv[1])) {
 }
 
 // Extras - MaxMind/TOP1M Download URLs/filenames/settings
+$pfb['extras']			= array();
+$pfb['extras'][0]		= array();
 $pfb['extras'][0]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz';
 $pfb['extras'][0]['file_dwn']	= 'GeoIP.dat.gz';
 $pfb['extras'][0]['file']	= 'GeoIP.dat';
 $pfb['extras'][0]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][0]['type']	= 'geoip';
 
+$pfb['extras'][1]		= array();
 $pfb['extras'][1]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz';
 $pfb['extras'][1]['file_dwn']	= 'GeoIPv6.dat.gz';
 $pfb['extras'][1]['file']	= 'GeoIPv6.dat';
 $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][1]['type']	= 'geoip';
 
+$pfb['extras'][2]		= array();
 $pfb['extras'][2]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip';
 $pfb['extras'][2]['file_dwn']	= 'GeoLite2-Country-CSV.zip';
 $pfb['extras'][2]['file']	= '';
 $pfb['extras'][2]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][2]['type']	= 'geoip';
 
+$pfb['extras'][3]			= array();
 if ($pfb['dnsbl_alexatype'] == 'Alexa') {
 	$pfb['extras'][3]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
 } else {
@@ -101,6 +106,7 @@ if ($argv[1] == 'bl' || $argv[1] == 'bls') {
 		$selected = array_flip(explode(',', $argv[2])) ?: array();
 		foreach ($pfb['blconfig']['item'] as $item) {
 			if (isset($selected[$item['xml']])) {
+				$pfb['extras'][$key]			= array();
 				$pfb['extras'][$key]['url']		= $item['feed'];
 				$pfb['extras'][$key]['name']		= $item['title'];
 				$pfb['extras'][$key]['file_dwn']	= pathinfo($item['feed'], PATHINFO_BASENAME);
@@ -555,6 +561,8 @@ function pfblockerng_uc_countries() {
 	safe_mkdir("{$pfb['ccdir_tmp']}");
 
 	$pfb_geoip = array();
+	$pfb_geoip['country'] = array();
+
 	$top_20 = array_flip( array('CN', 'RU', 'JP', 'UA', 'GB', 'DE', 'BR', 'FR', 'IN', 'TR',
 			'IT', 'KR', 'PL', 'ES', 'VN', 'AR', 'CO', 'TW', 'MX', 'CL') );
 
@@ -1307,18 +1315,16 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global \$config, \$pfb;
 pfb_global();
 
-\$continent	= "{$continent}";	// Continent name (Locale specific)
-\$continent_en	= "{$continent_en}";	// Continent name (English)
+\$continent		= "{$continent}";	// Continent name (Locale specific)
+\$continent_en		= "{$continent_en}";	// Continent name (English)
 
 EOF;
 $php_data .= <<<'EOF'
 $continent_display	= str_replace('_', ' ', "{$continent}");				// Continent name displayed on page
 $conf_type		= 'pfblockerng' . strtolower(str_replace('_', '', $continent_en));	// XML config location
 
+init_config_arr(array('installedpackages', $conf_type, 'config', 0));
 $pfb['geoipconfig'] = &$config['installedpackages'][$conf_type]['config'][0];
-if (!is_array($pfb['geoipconfig'])) {
-	$pfb['geoipconfig'] = array();
-}
 
 $active[$continent_display] = TRUE;
 
@@ -1350,6 +1356,16 @@ $pconfig['agateway_out']	= $pfb['geoipconfig']['agateway_out'];
 if ($_POST) {
 	if (isset($_POST['save'])) {
 
+		if (isset($input_errors)) {
+			unset($input_errors);
+		}
+
+		foreach (array('aliasports_in', 'aliasaddr_in', 'aliasports_out', 'aliasaddr_out') as $value) {
+			if (!empty($_POST[$value]) && !is_validaliasname($_POST[$value])) {
+				$input_errors[] = 'Settings: Advanced In/Outbound Aliasname error - ' . invalidaliasnamemsg($_POST[$value]);
+			}
+		}
+
 		$pfb['geoipconfig']['countries4']		= implode(',', (array)$_POST['countries4'])	?: '';
 		$pfb['geoipconfig']['countries6']		= implode(',', (array)$_POST['countries6'])	?: '';
 		$pfb['geoipconfig']['action']			= $_POST['action']				?: '';
@@ -1357,19 +1373,19 @@ if ($_POST) {
 
 		$pfb['geoipconfig']['autoaddrnot_in']		= $_POST['autoaddrnot_in']			?: '';
 		$pfb['geoipconfig']['autoports_in']		= $_POST['autoports_in']			?: '';
-		$pfb['geoipconfig']['aliasports_in']		= htmlspecialchars($_POST['aliasports_in'])	?: '';
+		$pfb['geoipconfig']['aliasports_in']		= $_POST['aliasports_in']			?: '';
 		$pfb['geoipconfig']['autoaddr_in']		= $_POST['autoaddr_in']				?: '';
 		$pfb['geoipconfig']['autonot_in']		= $_POST['autonot_in']				?: '';
-		$pfb['geoipconfig']['aliasaddr_in']		= htmlspecialchars($_POST['aliasaddr_in'])	?: '';
+		$pfb['geoipconfig']['aliasaddr_in']		= $_POST['aliasaddr_in']			?: '';
 		$pfb['geoipconfig']['autoproto_in']		= $_POST['autoproto_in']			?: '';
 		$pfb['geoipconfig']['agateway_in']		= $_POST['agateway_in']				?: '';
 
 		$pfb['geoipconfig']['autoaddrnot_out']		= $_POST['autoaddrnot_out']			?: '';
 		$pfb['geoipconfig']['autoports_out']		= $_POST['autoports_out']			?: '';
-		$pfb['geoipconfig']['aliasports_out']		= htmlspecialchars($_POST['aliasports_out'])	?: '';
+		$pfb['geoipconfig']['aliasports_out']		= $_POST['aliasports_out']			?: '';
 		$pfb['geoipconfig']['autoaddr_out']		= $_POST['autoaddr_out']			?: '';
 		$pfb['geoipconfig']['autonot_out']		= $_POST['autonot_out']				?: '';
-		$pfb['geoipconfig']['aliasaddr_out']		= htmlspecialchars($_POST['aliasaddr_out'])	?: '';
+		$pfb['geoipconfig']['aliasaddr_out']		= $_POST['aliasaddr_out']			?: '';
 		$pfb['geoipconfig']['autoproto_out']		= $_POST['autoproto_out']			?: '';
 		$pfb['geoipconfig']['agateway_out']		= $_POST['agateway_out']			?: '';
 
@@ -1791,10 +1807,8 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $config, $pfb;
 pfb_global();
 
+init_config_arr(array('installedpackages', 'pfblockerngreputation', 'config', 0));
 $pfb['repconfig'] = &$config['installedpackages']['pfblockerngreputation']['config'][0];
-if (!is_array($pfb['repconfig'])) {
-        $pfb['repconfig'] = array();
-}
 
 $pconfig = array();
 $pconfig['enable_rep']		= $pfb['repconfig']['enable_rep'];
@@ -1814,6 +1828,10 @@ $pconfig['etmatch']		= explode(',', $pfb['repconfig']['etmatch']);
 if ($_POST) {
 	if (isset($_POST['save'])) {
 
+		if (!empty($_POST['et_header']) && preg_match("/\W/", $_POST['et_header'])) {
+			$input_errors[] = 'ET Header/Label Name: Name field cannot contain spaces, special or international characters.';
+		}
+
 		$pfb['repconfig']['enable_rep']		= $_POST['enable_rep']				?: '';
 		$pfb['repconfig']['p24_max_var']	= $_POST['p24_max_var']				?: '';
 		$pfb['repconfig']['enable_pdup']	= $_POST['enable_pdup']				?: '';
@@ -1823,15 +1841,20 @@ if ($_POST) {
 		$pfb['repconfig']['ccwhite']		= $_POST['ccwhite']				?: '';
 		$pfb['repconfig']['ccblack']		= $_POST['ccblack']				?: '';
 		$pfb['repconfig']['ccexclude']		= implode(',', (array)$_POST['ccexclude'])	?: '';
-		$pfb['repconfig']['et_header']		= htmlspecialchars($_POST['et_header'])		?: '';
+		$pfb['repconfig']['et_header']		= $_POST['et_header']				?: '';
 		$pfb['repconfig']['etblock']		= implode(',', (array)$_POST['etblock'])	?: '';
 		$pfb['repconfig']['etmatch']		= implode(',', (array)$_POST['etmatch'])	?: '';
 
 		// Set flag to update ET IQRisk on next Cron|Force update|Force reload
 		$pfb['repconfig']['et_update']		= 'enabled';
 
-		write_config('[pfBlockerNG] save Reputation settings');
-		header('Location: /pfblockerng/pfblockerng_reputation.php');
+		if (!$input_errors) {
+			write_config('[pfBlockerNG] save Reputation settings');
+			header('Location: /pfblockerng/pfblockerng_reputation.php');
+		}
+		else {
+			$pconfig = $_POST;	// Restore failed user-entered data
+		}
 	}
 }
 

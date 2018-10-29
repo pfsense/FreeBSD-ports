@@ -52,4 +52,6 @@ $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_th
 
 $priv_list['page-firewall-pfblockerng']['match'][] = "widgets/widgets/pfblockerng.widget.php";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/www/index.php";
+
+$priv_list['page-firewall-pfblockerng']['match'][] = "wizards/pfblockerng_wizard.xml";
 ?>
