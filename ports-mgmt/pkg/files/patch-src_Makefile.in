@@ -96,7 +96,7 @@
  	$(top_builddir)/compat/libbsd_compat.la @LIBJAIL_LIB@ \
  	@LDNS_LIBS@ @OS_LIBS@ -larchive -lz -lutil -lbz2 -llzma -lssl \
 -	-lcrypto -lm $(am__append_2) $(am__append_3) $(am__append_4)
-+	-lcrypto -lm $(am__append_2) $(am__append_3) $(am__append_4) \
++	-lpthread -lcrypto -lm $(am__append_2) $(am__append_3) $(am__append_4) \
 +	$(am__append_5)
  DYNPROG = pkg
  @BUILD_STATIC_TRUE@pkg_static_LDFLAGS = -all-static

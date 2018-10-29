@@ -78,7 +78,7 @@ function getlogs($logdir, $log_extentions = array('log')) {
 $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> "{$pfb['logdir']}/",
 						'logs'		=> array('pfblockerng.log', 'error.log', 'ip_block.log', 'ip_permit.log', 'ip_match.log',
-									'dnsbl.log', 'extras.log', 'dnsbl_parsed_error.log', 'maxmind_ver'),
+									'dnsbl.log', 'extras.log', 'dnsbl_parsed_error.log', 'maxmind_ver', 'wizard.log'),
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
@@ -257,13 +257,6 @@ if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Log Browser'));
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '@self');
 include_once('head.inc');
-
-if (isset($input_errors)) {
-	print_input_errors($input_errors);
-}
-if (isset($savemsg)) {
-	print_info_box($savemsg);
-}
 
 // Define default Alerts Tab href link (Top row)
 $get_req = pfb_alerts_default_page();

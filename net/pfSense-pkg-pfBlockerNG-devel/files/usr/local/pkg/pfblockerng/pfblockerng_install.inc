@@ -139,12 +139,12 @@ else {
 
 
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
-	update_status("Restoring previous pfBlockerNG Widget settings...");
+	update_status("\nRestoring previous pfBlockerNG Widget settings...");
 	// Restore previous widget setting if 'keep' is enabled.
 	$config['widgets']['sequence'] = $pfb['widgets'];
 	write_config('pfBlockerNG: Save widget');
 } else {
-	update_status("Adding pfBlockerNG Widget to the Dashboard...");
+	update_status("\nAdding pfBlockerNG Widget to the Dashboard...");
 	$widgets = $config['widgets']['sequence'];
 	if (strpos($widgets, 'pfblockerng') === FALSE) {
 		if (empty($widgets)) {
@@ -157,10 +157,10 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 }
 
 // Create Firewall filter service and link required executables
-update_status(" done.\nCreating Firewall filter service...");
+update_status(" done.\n\nCreating Firewall filter service...");
 pfb_filter_service();
 stop_service('pfb_filter');
-update_status(" done.\nRemove any existing and create links for Firewall filter executables...");
+update_status(" done.\nRenew Firewall filter executables...");
 unlink_if_exists('/usr/local/bin/php_pfb');
 link('/usr/local/bin/php', '/usr/local/bin/php_pfb');
 unlink_if_exists('/usr/local/sbin/clog_pfb');
@@ -170,10 +170,10 @@ update_status(" done.\nStarting Firewall filter Service...");
 start_service('pfb_filter');
 
 // Create DNSBL service and link required executables
-update_status(" done.\nCreating DNSBL service...");
+update_status(" done.\n\nCreating DNSBL service...");
 pfb_dnsbl_service();
 stop_service('pfb_dnsbl');
-update_status(" done.\nRemove any existing and create link for DNSBL lighttpd executable...");
+update_status(" done.\nRenew DNSBL lighttpd executable...");
 unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
 link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_pfb');
 update_status(" done.\n");
@@ -192,7 +192,7 @@ if (!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl'])) {
 
 update_status("Starting DNSBL Service...");
 start_service('pfb_dnsbl');
-update_status(" done.\n");
+update_status(" done.\n\n");
 
 // Replace 'default' DNSBL active blocked webpage
 if (!file_exists('/usr/local/www/pfblockerng/www/dnsbl_active.php') ||
@@ -203,9 +203,8 @@ if (!file_exists('/usr/local/www/pfblockerng/www/dnsbl_active.php') ||
 
 
 
-// *** [ UPGRADE changed settings ] ***
-
-
+// *** [ UPGRADE previous settings ] ***
+update_status("Upgrading previous settings:\n");
 
 // Remove discontinued pfBlockerNG CRON job
 $pfb_cron = &$config['cron']['item'];
@@ -223,7 +222,7 @@ if (isset($config['installedpackages']['pfblockerngantartica'])) {
 }
 
 // Upgrade Adv. Inbound settings to new variable names.
-update_status("Upgrading Adv. Inbound firewall rule settings ...");
+update_status(" Adv. Inbound firewall rule settings...");
 
 $ufound = FALSE;
 $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdnsblsettings', 'pfblockerngafrica', 'pfblockerngantarctica',
@@ -282,74 +281,76 @@ if ($ufound) {
 }
 
 // Upgrade OpenVPN and IPSec 'checkbox options' to pfBlockerNG In/Out interface selections
-update_status("Upgrading OpenVPN/IPSec interface selections...");
-
-$pfb_interfaces = &$config['installedpackages']['pfblockerng']['config'][0];
+update_status(" OpenVPN/IPSec interface selections...");
 $ufound = FALSE;
-if (!empty($pfb['config'])) {
 
-	$u_msg = '[';
+if (is_array($config['installedpackages']['pfblockerng']['config'][0])) {
+	$pfb_interfaces = &$config['installedpackages']['pfblockerng']['config'][0];
+	if (!empty($pfb['config'])) {
 
-	// pfBlockerNG OpenVPN interface selection upgrade
-	if (isset($pfb_interfaces['openvpn_action']) && $pfb_interfaces['openvpn_action'] == 'on') {
+		$u_msg = '[';
 
-		if (isset($config['openvpn']['openvpn-server']) &&
-		    strpos($pfb_interfaces['outbound_interface'], 'openvpn') === FALSE) {
+		// pfBlockerNG OpenVPN interface selection upgrade
+		if (isset($pfb_interfaces['openvpn_action']) && $pfb_interfaces['openvpn_action'] == 'on') {
+
+			if (isset($config['openvpn']['openvpn-server']) &&
+			    strpos($pfb_interfaces['outbound_interface'], 'openvpn') === FALSE) {
+
+				$csv_string = '';
+				if (isset($pfb_interfaces['outbound_interface'])) {
+					$csv_string = ',';
+				}
+
+				$pfb_interfaces['outbound_interface'] .= "{$csv_string}openvpn";
+				$ufound = TRUE;
+				$u_msg .= ' OpenVPN (Outbound) &';
+			}
+
+			if (isset($config['openvpn']['openvpn-client'])) {
+				if (strpos($pfb_interfaces['outbound_interface'], 'openvpn') === FALSE && !$ufound) {
+					$csv_string = '';
+					if (isset($pfb_interfaces['outbound_interface'])) {
+						$csv_string = ',';
+					}
+					$pfb_interfaces['outbound_interface'] .= "{$csv_string}openvpn";
+					$ufound = TRUE;
+					$u_msg .= ' OpenVPN (Outbound) &';
+				}
+
+				if (strpos($pfb_interfaces['inbound_interface'], 'openvpn') === FALSE) {
+					$csv_string = '';
+					if (isset($pfb_interfaces['inbound_interface'])) {
+						$csv_string = ',';
+					}
+					$pfb_interfaces['inbound_interface'] .= "{$csv_string}openvpn";
+					$ufound = TRUE;
+					$u_msg .= ' OpenVPN (Inbound) &';
+				}
+			}
+		}
+
+		// pfBlockerNG IPSec interface selection upgrade
+		if (isset($pfb['config']['ipsec_action']) &&
+	    	    $pfb_interfaces['ipsec_action'] == 'on' &&
+		    isset($config['ipsec']) &&
+		    !empty($config['ipsec']) &&
+		    strpos($pfb_interfaces['outbound_interface'], 'enc0') === FALSE) {
 
 			$csv_string = '';
 			if (isset($pfb_interfaces['outbound_interface'])) {
 				$csv_string = ',';
 			}
-
-			$pfb_interfaces['outbound_interface']	.= "{$csv_string}openvpn";
+			$pfb_interfaces['outbound_interface'] .= "{$csv_string}enc0";
 			$ufound = TRUE;
-			$u_msg .= ' OpenVPN (Outbound) &';
+			$u_msg .= ' IPSec (Outbound)';
 		}
 
-		if (isset($config['openvpn']['openvpn-client'])) {
-			if (strpos($pfb_interfaces['outbound_interface'], 'openvpn') === FALSE && !$ufound) {
-				$csv_string = '';
-				if (isset($pfb_interfaces['outbound_interface'])) {
-					$csv_string = ',';
-				}
-				$pfb_interfaces['outbound_interface']	.= "{$csv_string}openvpn";
-				$ufound = TRUE;
-				$u_msg .= ' OpenVPN (Outbound) &';
-			}
-
-			if (strpos($pfb_interfaces['inbound_interface'], 'openvpn') === FALSE) {
-				$csv_string = '';
-				if (isset($pfb_interfaces['inbound_interface'])) {
-					$csv_string = ',';
-				}
-				$pfb_interfaces['inbound_interface']	.= "{$csv_string}openvpn";
-				$ufound = TRUE;
-				$u_msg .= ' OpenVPN (Inbound) &';
-			}
+		if (isset($pfb_interfaces['openvpn_action'])) {
+			unset($pfb_interfaces['openvpn_action']);
 		}
-	}
-
-	// pfBlockerNG IPSec interface selection upgrade
-	if (isset($pfb['config']['ipsec_action']) &&
-	    $pfb_interfaces['ipsec_action'] == 'on' &&
-	    isset($config['ipsec']) &&
-	    !empty($config['ipsec']) &&
-	    strpos($pfb_interfaces['outbound_interface'], 'enc0') === FALSE) {
-
-		$csv_string = '';
-		if (isset($pfb_interfaces['outbound_interface'])) {
-			$csv_string = ',';
+		if (isset($pfb_interfaces['ipsec_action'])) {
+			unset($pfb_interfaces['ipsec_action']);
 		}
-		$pfb_interfaces['outbound_interface']	.= "{$csv_string}enc0";
-		$ufound = TRUE;
-		$u_msg .= ' IPSec (Outbound)';
-	}
-
-	if (isset($pfb_interfaces['openvpn_action'])) {
-		unset($pfb_interfaces['openvpn_action']);
-	}
-	if (isset($pfb_interfaces['ipsec_action'])) {
-		unset($pfb_interfaces['ipsec_action']);
 	}
 }
 
@@ -361,17 +362,19 @@ if ($ufound) {
 }
 
 // Upgrade EasyList/EasyPrivacy category settings to new format
-update_status("Upgrading EasyList/Easyprivacy category settings...");
-
-$pfb_easylist = &$config['installedpackages']['pfblockerngdnsbleasylist']['config'][0];
+update_status(" EasyList/EasyPrivacy category settings...");
 $ufound = FALSE;
-if (isset($pfb_easylist) && isset($pfb_easylist['easycat'])) {
-	$easylist	= array();
-	$easycat	= explode(',', $pfb_easylist['easycat']);
-	foreach (array('ea' => 0, 'eap' => 0, 'aa' => 0, 'aap' => 0, 'epts' => 1, 'epti' => 1) as $option => $row) {
-		if (in_array($option, $easycat)) {
-			$easylist[$row][] = $option;
-			$ufound = TRUE;
+
+if (is_array($config['installedpackages']['pfblockerngdnsbleasylist']['config'][0])) {
+	$pfb_easylist = &$config['installedpackages']['pfblockerngdnsbleasylist']['config'][0];
+	if (isset($pfb_easylist) && isset($pfb_easylist['easycat'])) {
+		$easylist	= array();
+		$easycat	= explode(',', $pfb_easylist['easycat']);
+		foreach (array('ea' => 0, 'eap' => 0, 'aa' => 0, 'aap' => 0, 'epts' => 1, 'epti' => 1) as $option => $row) {
+			if (in_array($option, $easycat)) {
+				$easylist[$row][] = $option;
+				$ufound = TRUE;
+			}
 		}
 	}
 }
@@ -390,34 +393,37 @@ if ($ufound) {
 }
 
 // Upgrade ET IQRisk categories
-$pfb_iqrisk = &$config['installedpackages']['pfblockerngreputation']['config'][0];
-update_status("Upgrading Proofpoint/ET IQRisk settings...");
-
+update_status(" Proofpoint/ET IQRisk settings...");
 $ufound = FALSE;
-$et_type = array();
-foreach (array('etblock', 'etmatch') as $type) {
-	if (isset($pfb_iqrisk[$type])) {
 
-		$et_cat = explode(',', $pfb_iqrisk[$type]);
-		foreach ($et_cat as $cat) {
-			switch ($cat) {
-				case 'ET_P2P':
-					$cat = 'ET_P2Pnode';
-					$ufound = TRUE;
-					break;
-				case 'ET_DDos':
-					$cat = 'ET_DDostarget';
-					$ufound = TRUE;
-					break;
-				case 'ET_DDosattack':
-					$cat = 'ET_DDosattacker';
-					$ufound = TRUE;
-					break;
-				case 'ET_Unknown':
-					$ufound = TRUE;
-					continue 2;
+if (is_array($config['installedpackages']['pfblockerngreputation']['config'][0])) {
+	$pfb_iqrisk = &$config['installedpackages']['pfblockerngreputation']['config'][0];
+
+	$et_type = array();
+	foreach (array('etblock', 'etmatch') as $type) {
+		if (isset($pfb_iqrisk[$type])) {
+
+			$et_cat = explode(',', $pfb_iqrisk[$type]);
+			foreach ($et_cat as $cat) {
+				switch ($cat) {
+					case 'ET_P2P':
+						$cat = 'ET_P2Pnode';
+						$ufound = TRUE;
+						break;
+					case 'ET_DDos':
+						$cat = 'ET_DDostarget';
+						$ufound = TRUE;
+						break;
+					case 'ET_DDosattack':
+						$cat = 'ET_DDosattacker';
+						$ufound = TRUE;
+						break;
+					case 'ET_Unknown':
+						$ufound = TRUE;
+						continue 2;
+				}
+				$et_type[$type][] = $cat;
 			}
-			$et_type[$type][] = $cat;
 		}
 	}
 }
@@ -432,9 +438,14 @@ if ($ufound) {
 }
 
 // Move General Tab 'IP settings' to new IP tab
-update_status("Upgrading General Tab -> IP Tab settings...");
-if (!isset($config['installedpackages']['pfblockerngipsettings'])) {
+update_status(" General Tab -> IP Tab settings...");
+
+if (is_array($config['installedpackages']['pfblockerng']['config'][0]) &&
+    !is_array($config['installedpackages']['pfblockerngipsettings']['config'][0])) {
+
 	$pfb['gconfig'] = &$config['installedpackages']['pfblockerng']['config'][0];
+
+	init_config_arr(array('installedpackages', 'pfblockerngipsettings', 'config', 0));
 	$pfb['iconfig'] = &$config['installedpackages']['pfblockerngipsettings']['config'][0];
 
 	$settings = array(	'enable_dup', 'enable_agg', 'suppression', 'enable_log', 'maxmind_locale', 'database_cc',
@@ -454,9 +465,11 @@ else {
 }
 
 // Upgrade pfBlockerNGSuppress alias to IPv4 Suppression custom list
+update_status(" pfBlockerNGSuppress Alias -> IPv4 Suppression Customlist...");
 $ufound = FALSE;
-update_status("Upgrading pfBlockerNGSuppress Alias -> IPv4 Suppression Customlist...");
-if (!isset($config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'])) {
+
+if (is_array($config['installedpackages']['pfblockerngipsettings']['config'][0]) &&
+    !isset($config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'])) {
 
 	$customlist = '';
 	if (isset($config['aliases']['alias'])) {
@@ -523,7 +536,7 @@ if (file_exists('/var/db/pfblockerng/dnsbl_info') &&
 unlink_if_exists('/var/db/pfblockerng/dnsbl_info');
 
 unset($g['pfblockerng_install']);	// Remove 'Install flag'
-update_status("Custom commands completed ... ");
+update_status("Upgrading... done\n\nCustom commands completed ... ");
 
 write_config('[pfBlockerNG] Save installation settings');
 return TRUE;
