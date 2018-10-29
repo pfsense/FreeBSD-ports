@@ -3,7 +3,7 @@
 
 PORTNAME=	ffmpeg
 PORTVERSION=	4.0.2
-PORTREVISION=	4
+PORTREVISION=	8
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	https://ffmpeg.org/releases/
@@ -39,7 +39,7 @@ OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB AOM ASS BEIGNET BS2B CACA CDIO CELT CHROMAPRI
 
 OPTIONS_DEFAULT=	FONTCONFIG FREETYPE FREI0R GMP GNUTLS ICONV \
 			OPENCV OPTIMIZED_CFLAGS OPUS RTCPU THEORA V4L VAAPI VDPAU \
-			VORBIS VPX X264 X265 XVID
+			VORBIS VPX X264 X265 XCB XVID
 
 .if !exists(${.CURDIR:H:H}/net/srt)
 # https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/a2fc8dbae853
@@ -456,8 +456,6 @@ NONFREE_VARS=		RESTRICTED="enabling OPENSSL or FDK_AAC restricts redistribution"
 
 INSTALL_TARGET=	install-progs install-doc install-data \
 		install-libs install-headers install-examples
-
-DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
 
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}

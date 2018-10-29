@@ -18,13 +18,13 @@ BROKEN_SSL_REASON_openssl-devel=	configure: error: OpenSSL libraries and/or dire
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		compiler:c++0x gmake ncurses shebangfix tar:tgz
+USES=		gmake ncurses shebangfix tar:tgz
 SHEBANG_FILES=	tools/*.pl
 USE_GCC=	any
 GNU_CONFIGURE=	yes
 
 # The port does not build with C++11 or later (bug 219275).
-USE_CXXSTD=	gnu++03
+USE_CXXSTD=	gnu++98
 
 CONFLICTS=	ltrace-0*
 
