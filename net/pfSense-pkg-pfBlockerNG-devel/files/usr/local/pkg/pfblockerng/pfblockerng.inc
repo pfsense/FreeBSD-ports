@@ -4063,18 +4063,23 @@ function pfb_open_sqlite($table, $message) {
 
 	if ($table == 1) {
 		$database	= $pfb['dnsbl_info'];
+		$db_table	= 'dnsbl';
 		$db_create	= "CREATE TABLE IF NOT EXISTS dnsbl ( groupname TEXT, timestamp TEXT, entries TEXT, counter INTEGER );";
 	} elseif ($table == 2) {
 		$database	= $pfb['dnsbl_levent'];
+		$db_table	= 'lastevent';
 		$db_create	= "CREATE TABLE IF NOT EXISTS lastevent ( row INTEGER, groupname TEXT, entry TEXT, details TEXT );";
 	} elseif ($table == 3) {
 		$database	= $pfb['dnsbl_levent'];
+		$db_table	= 'resolver';
 		$db_create	= "CREATE TABLE IF NOT EXISTS resolver ( row INTEGER, totalqueries INTEGER, queries INTEGER );";
 	} elseif ($table == 4) {
 		$database	= $pfb['dnsbl_cache'];
+		$db_table	= 'dnsblcache';
 		$db_create	= "CREATE TABLE IF NOT EXISTS dnsblcache ( type TEXT, domain TEXT, groupname TEXT, final TEXT, feed TEXT );";
 	} elseif ($table == 5) {
 		$database	= $pfb['asn_cache'];
+		$db_table	= 'asncache';
 		$db_create	= "CREATE TABLE IF NOT EXISTS asncache ( asn TEXT, host TEXT, timestamp TEXT );";
 	}
 
@@ -4095,6 +4100,24 @@ function pfb_open_sqlite($table, $message) {
 	}
 
 	if ($db_handle) {
+
+		// Validate database integrity
+		$pfb_validate = FALSE;
+		$validate = $db_handle->query("PRAGMA integrity_check;");
+		if ($validate) {
+			while ($res = $validate->fetchArray(SQLITE3_ASSOC)) {
+				if ($res['integrity_check'] == 'ok') {
+					$pfb_validate = TRUE;
+				}
+			}
+		}
+
+		if (!$pfb_validate) {
+			log_error("[pfBlockerNG] DNSBL SQLite3 database [ {$db_table} ] corrupt. Table deletion/re-creation completed.");
+			@copy("{$database}", "{$database}.invalid");
+			$db_create = "DROP TABLE {$db_table}; {$db_create}";
+		}
+
 		$db_handle->exec("PRAGMA journal_mode = delete;");
 		$db_handle->exec("BEGIN TRANSACTION;"
 				. "{$db_create}"
