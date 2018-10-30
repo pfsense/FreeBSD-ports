@@ -799,9 +799,9 @@ function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE) {
 	global $config;
 	$pfb_interfaces = array();
 
-	foreach (get_configured_interface_list() as $ifent => $ifdesc) {
-		if ($show_wan || $ifent != 'wan') {
-			$pfb_interfaces[$ifent] = $ifent;
+	foreach (get_configured_interface_with_descr() as $ifent => $ifdesc) {
+		if ($show_wan || $ifdesc != 'WAN') {
+			$pfb_interfaces[$ifent] = $ifdesc;
 		}
 	}
 
@@ -4936,13 +4936,10 @@ function sync_package_pfblockerng($cron='') {
 		$pfb["{$type}_interfaces"] = $pfb["{$type}_floating"] = array();
 
 		if (!empty($pfb['ipconfig']["{$type}_interface"])) {
-
-			// Sort interface array to match pfSense interface order to allow floating rules to populate.
-			$selected_interfaces	= explode(',', $pfb['ipconfig']["{$type}_interface"]);
-			$sort_interfaces	= array_intersect($ifaces, $selected_interfaces);
+			$interfaces = explode(',', $pfb['ipconfig']["{$type}_interface"]);
 
 			// CSV string for 'pfB_' match rules
-			$pfb["{$type}_floating"]		= ltrim(implode(',', $sort_interfaces), ',');
+			$pfb["{$type}_floating"]		= ltrim(implode(',', $interfaces), ',');
 
 			// Assign base rule/interfaces
 			if ($pfb['float'] == 'on') {
@@ -4950,7 +4947,7 @@ function sync_package_pfblockerng($cron='') {
 				$pfb["{$type}_interfaces"]	= explode(' ', $pfb["{$type}_floating"]);
 			} else {
 				$pfb['base_rule']		= $pfb['base_rule_reg'];
-				$pfb["{$type}_interfaces"]	= $sort_interfaces;
+				$pfb["{$type}_interfaces"]	= $interfaces;
 			}
 		}
 	}
