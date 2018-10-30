@@ -800,7 +800,7 @@ function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE) {
 	$pfb_interfaces = array();
 
 	foreach (get_configured_interface_with_descr() as $ifent => $ifdesc) {
-		if ($show_wan || $ifdesc != 'WAN') {
+		if ($show_wan || $ifent != 'wan') {
 			$pfb_interfaces[$ifent] = $ifdesc;
 		}
 	}
