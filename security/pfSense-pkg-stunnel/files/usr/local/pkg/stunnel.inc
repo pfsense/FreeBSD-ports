@@ -38,9 +38,7 @@ function stunnel_save() {
 	fwrite($fout, "chroot = /var/tmp/stunnel \n");
 	fwrite($fout, "setuid = stunnel \n");
 	fwrite($fout, "setgid = stunnel \n");
-	if (!is_array($config['installedpackages']['stunnel']['config'])) {
-		$config['installedpackages']['stunnel']['config'] = array();
-	}
+	init_config_arr(array('installedpackages', 'stunnel', 'config'));
 
 	// Keep array of in-use certificates so we can clean up after ourselves.
 	$in_use_certs = array();
