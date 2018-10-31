@@ -185,7 +185,7 @@ ocGJzLnR3aW1nLmNvbSkNCmNzMi13YWMtdXMuODMxNS5lY2Rucy5uZXQgIyBDTkFNRSBmb3IgKHBicy5
 				$add['order']		= 'default';
 			} else {
 				$add['action']		= 'Deny_Outbound';
-				$add['cron']		= '01Hour';
+				$add['cron']		= '01hour';
 				$add['aliaslog']	= 'enabled';
 			}
 			$add['dow']			= '1';
