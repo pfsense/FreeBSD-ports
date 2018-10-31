@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-stunnel
 PORTVERSION=	5.37
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
