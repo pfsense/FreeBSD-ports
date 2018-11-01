@@ -3266,8 +3266,12 @@ function suricata_get_filtered_rules($rules, $filter) {
 	foreach ($filter as $k1 => $rulem) {
 		foreach($rulem as $k2 => $v) {
 			if (isset($tmp_map[$k1][$k2])) {
-				$filtered_map[$k1] = array();
-				$filtered_map[$k1][$k2] = array();
+				if (!is_array($filtered_map[$k1])) {
+					$filtered_map[$k1] = array();
+				}
+				if (!is_array($filtered_map[$k1][$k2])) {
+					$filtered_map[$k1][$k2] = array();
+				}
 				$filtered_map[$k1][$k2]['rule'] = $tmp_map[$k1][$k2]['rule'];
 				$filtered_map[$k1][$k2]['category'] = $tmp_map[$k1][$k2]['category'];
 				$filtered_map[$k1][$k2]['action'] = $tmp_map[$k1][$k2]['action'];

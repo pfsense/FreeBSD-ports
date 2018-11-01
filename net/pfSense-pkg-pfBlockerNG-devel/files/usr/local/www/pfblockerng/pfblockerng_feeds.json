@@ -388,6 +388,9 @@
 					"feed":		"CoinBlocker",
 					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/MiningServerIPList.txt",
+					"register":	"https://pulsedive.com/feed/?fid=60",
+					"info":		"The final URL for this feed will be provided upon registration.",
+					"donate":	"https://amzn.to/2Ol2KKn",
 					"header":	"CoinBlocker"
 				},
 				{
@@ -942,24 +945,6 @@
 						]
 				},
 				{
-					"feed":		"Botvrij",
-					"website":	"https://www.botvrij.eu/",
-					"url":		"https://www.botvrij.eu/data/ioclist.domain.raw",
-					"header":	"Botvrij_Dom"
-				},
-				{
-					"feed":		"c-APT-ure",
-					"website":	"https://c-apt-ure.blogspot.com/",
-					"url":		"http://security-research.dyndns.org/pub/malware-feeds/ponmocup-infected-domains-shadowserver.csv",
-					"header":	"Ponmocup"
-				},
-				{
-					"feed":		"Cyber Crime WHQ",
-					"website":	"https://cybercrime-tracker.net/about.php",
-					"url":		"https://cybercrime-tracker.net/all.php",
-					"header":	"CCT_BD"
-				},
-				{
 					"feed":		"Dan Pollock",
 					"website":	"https://someonewhocares.org/",
 					"url":		"https://someonewhocares.org/hosts/hosts",
@@ -978,32 +963,6 @@
 					"header":	"D_Me_Malw"
 				},
 				{
-					"feed":		"Gwillem",
-					"website":	"https://github.com/gwillem/magento-malware-scanner/tree/master/rules",
-					"url":		"https://raw.githubusercontent.com/gwillem/magento-malware-scanner/master/rules/burner-domains.txt",
-					"header":	"Magento"
-				},
-				{
-					"feed":		"H3X",
-					"website":	"https://tracker.h3x.eu/about/",
-					"url":		"https://tracker.h3x.eu/api/sites_1month.php",
-					"header":	"H3X_1M",
-					"alternate": [
-							{
-							"url":		"https://tracker.h3x.eu/api/sites_1hour.php",
-							"header":	"H3X_1h"
-							},
-							{
-							"url":		"https://tracker.h3x.eu/api/sites_1day.php",
-							"header":	"H3X_1d"
-							},
-							{
-							"url":		"https://tracker.h3x.eu/api/sites_1week.php",
-							"header":	"H3X_1w"
-							}
-					]
-				},
-				{
 					"feed":		"Internet Storm Center",
 					"website":	"https://isc.sans.edu/suspicious_domains.html",
 					"url":		"https://isc.sans.edu/feeds/suspiciousdomains_High.txt",
@@ -1018,18 +977,6 @@
 							"header":	"ISC_SDM"
 							}
 						]
-				},
-				{
-					"feed":		"Malc0de",
-					"website":	"https://malc0de.com",
-					"url":		"https://malc0de.com/bl/BOOT",
-					"header":	"Malc0de"
-				},
-				{
-					"feed":		"Malekal",
-					"website":	"https://www.malekal.com/",
-					"url":		"https://www.malekal.com/HOSTS_filtre/HOSTS.txt",
-					"header":	"Malekal_Hosts"
 				},
 				{
 					"feed":		"Malware Domains",
@@ -1056,14 +1003,6 @@
 					"header":	"MVPS"
 				},
 				{
-					"feed":		"Pulsedive",
-					"website":	"https://pulsedive.com/products/feed.php",
-					"url":		"https://pulsedive.com/premium?key=_API_KEY_&types=domain",
-					"register":	"https://pulsedive.com/premium/purchase.php",
-					"info":		"Subscription based feed only!",
-					"header":	"Pulsedive_BD"
-                                },
-				{
 					"feed":		"Spam404",
 					"website":	"http://www.spam404.com/blog/category/Blacklist",
 					"url":		"https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt",
@@ -1088,12 +1027,6 @@
 							"header":	"SFS_Toxic_BD_F3"
 							}
 						]
-				},
-				{
-					"feed":		"VXVault",
-					"website":	"http://vxvault.net/ViriList.php",
-					"url":		"http://vxvault.net/URL_List.php",
-					"header":	"VXVault"
 				}
 			]
 		},
@@ -1107,7 +1040,7 @@
 					"feed":		"Malware Patrol",
 					"website":	"https://lists.malwarepatrol.net/",
 					"register":	"https://www.malwarepatrol.net/signup-free.shtml",
-					"url":		"https://lists.malwarepatrol.net/cgi/getfile?receipt=_API_KEY_&product=32&list=mozilla_adblock",
+					"url":		"https://lists.malwarepatrol.net/cgi/getfile?receipt=_API_KEY_&product=8&list=mozilla_adblock",
 					"header":	"MPatrol"
 				},
 				{
@@ -1290,6 +1223,76 @@
 			"action":	"block",
 			"cron":		"EveryDay",
 			"feeds": [
+				{
+					"feed":		"Botvrij",
+					"website":	"https://www.botvrij.eu/",
+					"url":		"https://www.botvrij.eu/data/ioclist.domain.raw",
+					"header":	"Botvrij_Dom"
+				},
+				{
+					"feed":		"c-APT-ure",
+					"website":	"https://c-apt-ure.blogspot.com/",
+					"url":		"http://security-research.dyndns.org/pub/malware-feeds/ponmocup-infected-domains-shadowserver.csv",
+					"header":	"Ponmocup"
+				},
+				{
+					"feed":		"Cyber Crime WHQ",
+					"website":	"https://cybercrime-tracker.net/about.php",
+					"url":		"https://cybercrime-tracker.net/all.php",
+					"header":	"CCT_BD"
+				},
+				{
+					"feed":		"Gwillem",
+					"website":	"https://github.com/gwillem/magento-malware-scanner/tree/master/rules",
+					"url":		"https://raw.githubusercontent.com/gwillem/magento-malware-scanner/master/rules/burner-domains.txt",
+					"header":	"Magento"
+				},
+				{
+					"feed":		"H3X",
+					"website":	"https://tracker.h3x.eu/about/",
+					"url":		"https://tracker.h3x.eu/api/sites_1month.php",
+					"header":	"H3X_1M",
+					"alternate": [
+							{
+							"url":		"https://tracker.h3x.eu/api/sites_1hour.php",
+							"header":	"H3X_1h"
+							},
+							{
+							"url":		"https://tracker.h3x.eu/api/sites_1day.php",
+							"header":	"H3X_1d"
+							},
+							{
+							"url":		"https://tracker.h3x.eu/api/sites_1week.php",
+							"header":	"H3X_1w"
+							}
+					]
+				},
+				{
+					"feed":		"Malc0de",
+					"website":	"https://malc0de.com",
+					"url":		"https://malc0de.com/bl/BOOT",
+					"header":	"Malc0de"
+				},
+				{
+					"feed":		"Malekal",
+					"website":	"https://www.malekal.com/",
+					"url":		"https://www.malekal.com/HOSTS_filtre/HOSTS.txt",
+					"header":	"Malekal_Hosts"
+				},
+				{
+					"feed":		"Pulsedive",
+					"website":	"https://pulsedive.com/products/feed.php",
+					"url":		"https://pulsedive.com/premium?key=_API_KEY_&types=domain",
+					"register":	"https://pulsedive.com/premium/purchase.php",
+					"info":		"Subscription based feed only!",
+					"header":	"Pulsedive_BD"
+                                },
+				{
+					"feed":		"VXVault",
+					"website":	"http://vxvault.net/ViriList.php",
+					"url":		"http://vxvault.net/URL_List.php",
+					"header":	"VXVault"
+				},
 				{
 					"feed":		"Mitchell Krog",
 					"website":	"https://github.com/mitchellkrogza/Badd-Boyz-Hosts",

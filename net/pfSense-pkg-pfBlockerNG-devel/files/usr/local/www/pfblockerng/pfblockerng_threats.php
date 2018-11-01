@@ -20,24 +20,25 @@
  * limitations under the License.
  */
 
+require('guiconfig.inc');
+include('head.inc');
+
 $title = $host = $domain = $port = '';
 if (isset($_REQUEST)) {
-	if (isset($_REQUEST['host'])) {
+	if (isset($_REQUEST['host']) && is_ipaddr($_REQUEST['host'])) {
 		$title	= 'Source IP';
-		$host	= (filter_var($_REQUEST['host'], FILTER_VALIDATE_IP) !== FALSE) ? htmlspecialchars($_REQUEST['host']) : '';
-	} elseif (isset($_REQUEST['domain'])) {
+		$host	= $_REQUEST['host'];
+	} elseif (isset($_REQUEST['domain']) && is_domain($_REQUEST['domain'])) {
 		$title	= 'Domain';
-		$domain	= filter_var($_REQUEST['domain'], FILTER_SANITIZE_STRING);
-	} elseif (isset($_REQUEST['port']) && ctype_digit($_REQUEST['port'])) {
+		$domain = $_REQUEST['domain'];
+	} elseif (isset($_REQUEST['port']) && is_port($_REQUEST['port'])) {
 		$title	= 'Port';
-		$port	= htmlspecialchars($_REQUEST['port']);
+		$port	= $_REQUEST['port'];
 	}
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Alerts'), gettext("Threat {$title} Lookup"));
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblockerng_alerts.php', '@self');
-require('guiconfig.inc');
-include('head.inc');
 ?>
 
 <div class="panel panel-default">
@@ -203,6 +204,11 @@ include('head.inc');
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.abuseipdb.com/check/<?=$host;?>">
 						<?=gettext("AbuseIPDB");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://bgp.he.net/ip/<?=$host;?>">
+						<?=gettext("Hurricane Electric BGP Toolkit");?></a></td>
 				</tr>
 				<br />
 
