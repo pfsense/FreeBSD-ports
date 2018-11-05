@@ -2897,6 +2897,10 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				add_assoc_long(&encaps, "rxcsum", 1);
 			if (ifr.ifr_curcap & IFCAP_TXCSUM)
 				add_assoc_long(&encaps, "txcsum", 1);
+			if (ifr.ifr_curcap & IFCAP_RXCSUM_IPV6)
+				add_assoc_long(&encaps, "rxcsum6", 1);
+			if (ifr.ifr_curcap & IFCAP_TXCSUM_IPV6)
+				add_assoc_long(&encaps, "txcsum6", 1);
 			if (ifr.ifr_curcap & IFCAP_VLAN_MTU)
 				add_assoc_long(&encaps, "vlanmtu", 1);
 			if (ifr.ifr_curcap & IFCAP_JUMBO_MTU)
