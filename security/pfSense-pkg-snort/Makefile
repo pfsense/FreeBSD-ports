@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-snort
-PORTVERSION=	3.2.9.7
-PORTREVISION=   2
+PORTVERSION=	3.2.9.8
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
