@@ -56,6 +56,9 @@ $snort_version = SNORT_BIN_VERSION;
 
 // Create a collapsed version string for use in the tarball filename
 $snortver = str_replace(".", "", SNORT_BIN_VERSION);
+// Make sure the rules file version is at least 5 characters in length
+// by adding trailing zeros if required.
+$snortver = str_pad($snortver, 5, '0', STR_PAD_RIGHT);
 $snort_filename = "snortrules-snapshot-{$snortver}.tar.gz";
 $snort_filename_md5 = "{$snort_filename}.md5";
 $snort_rule_url = VRT_DNLD_URL;
