@@ -1,4 +1,4 @@
-diff -ruN snort-2.9.11.1.orig/configure snort-2.9.11.1/configure
+diff -ruN snort-2.9.12.orig/configure snort-2.9.12/configure
 --- configure	2017-12-19 22:15:20.000000000 -0500
 +++ configure	2018-01-18 17:42:25.000000000 -0500
 @@ -16834,6 +16836,21 @@
