@@ -683,7 +683,7 @@ if ($snortdownload == "on") {
 							}
 						}
 						else {
-							echo "	\n" . '<input type="checkbox" name="toenable[]" value="{$file}"' . '"' .  $CHECKED . " />\n";
+							echo "	\n" . '<input type="checkbox" name="toenable[]" value="' . $file . '"' . $CHECKED . " />\n";
 						}
 						echo "</td>\n";
 						echo "<td>\n";
