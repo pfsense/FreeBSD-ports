@@ -28,6 +28,12 @@ $snortdir = SNORTDIR;
 $snortbinver = SNORT_BIN_VERSION;
 $snortbinver = str_replace(".", "", $snortbinver);
 
+// Make sure the rules version is at least 5 characters in length
+// by adding trailing zeros if required.
+if (strlen($snortbinver) < 5) {
+	$snortbinver = str_pad($snortbinver, 5, '0', STR_PAD_RIGHT);
+}
+
 $snort_rules_file = "snortrules-snapshot-{$snortbinver}.tar.gz";
 $snort_community_rules_filename = SNORT_GPLV2_DNLD_FILENAME;
 $snort_openappid_filename = SNORT_OPENAPPID_DNLD_FILENAME;
