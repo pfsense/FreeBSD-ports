@@ -1114,11 +1114,11 @@ EOD;
 	// Variables: EAP-TLS
 	$vareapconffragmentsize = ($eapconf['vareapconffragmentsize'] ?: '1024');
 	$vareapconfincludelength = ($eapconf['vareapconfincludelength'] ?: 'yes');
-	$vareapconfcountry = ($eapconf['vareapconfcountry'] ?: 'US');
-	$vareapconfstate = ($eapconf['vareapconfstate'] ?: 'Texas');
-	$vareapconfcity = ($eapconf['vareapconfcity'] ?: 'Austin');
-	$vareapconforganization = ($eapconf['vareapconforganization'] ?: 'My Company Ltd');
-	$vareapconfemail = ($eapconf['vareapconfemail'] ?: 'admin@mycompany.com');
+	$vareapconfcountry = ($eapconf['vareapconfcountry'] ?: '');
+	$vareapconfstate = ($eapconf['vareapconfstate'] ?: '');
+	$vareapconfcity = ($eapconf['vareapconfcity'] ?: '');
+	$vareapconforganization = ($eapconf['vareapconforganization'] ?: '');
+	$vareapconfemail = ($eapconf['vareapconfemail'] ?: '');
 	$vareapconfcommonname = ($eapconf['vareapconfcommonname'] ?: 'internal-ca');
 
 	// Variables: Cache
@@ -1178,13 +1178,7 @@ EOD;
 		$ca['refid'] = uniqid();
 		$ca['descr'] = "FreeRADIUS CA";
 		$ca['serial'] = 0;
-		$dn = array(
-			'countryName' => 'US',
-			'stateOrProvinceName' => 'Texas',
-			'localityName' => 'Austin',
-			'organizationName' => 'Example Certificate Authority',
-			'emailAddress' => 'certs@example.com',
-			'commonName' => 'freeradius-temp-ca');
+		$dn = array('commonName' => 'freeradius-temp-ca');
 		if (!ca_create($ca, "2048", "3650", $dn, "sha256")) {
 			file_notice("FreeRADIUS", gettext("Cannot create temporary FreeRADIUS certificate authority. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section: " . openssl_error_string()));
 			$cert_error = true;
@@ -1255,7 +1249,26 @@ EOD;
 
 	// check if cert issuer of CA and certs match
 	if ($eapconf['vareapconfenablecheckcertissuer'] == 'on') {
-		$vareapconfcheckcertissuer = "check_cert_issuer = " . '"' . "/C={$vareapconfcountry}/ST={$vareapconfstate}/L={$vareapconfcity}/O={$vareapconforganization}/emailAddress={$vareapconfemail}/CN={$vareapconfcommonname}" . '"';
+		$issuessubject = array();
+		if (!empty($vareapconfcountry)) {
+			$issuessubject[] = "C={$vareapconfcountry}";
+		}
+		if (!empty($vareapconfstate)) {
+			$issuessubject[] = "ST={$vareapconfstate}";
+		}
+		if (!empty($vareapconfcity)) {
+			$issuessubject[] = "L={$vareapconfcity}";
+		}
+		if (!empty($vareapconforganization)) {
+			$issuessubject[] = "O={$vareapconforganization}";
+		}
+		if (!empty($vareapconfemail)) {
+			$issuessubject[] = "emailAddress={$vareapconfemail}";
+		}
+		if (!empty($vareapconfcommonname)) {
+			$issuessubject[] = "CN={$vareapconfcommonname}";
+		}
+		$vareapconfcheckcertissuer = "check_cert_issuer = " . '"/' . implode('/', $issuessubject) . '/"';
 	} else {
 		$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
 	}
