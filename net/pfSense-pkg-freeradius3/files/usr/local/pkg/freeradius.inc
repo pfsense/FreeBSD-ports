@@ -1249,26 +1249,20 @@ EOD;
 
 	// check if cert issuer of CA and certs match
 	if ($eapconf['vareapconfenablecheckcertissuer'] == 'on') {
-		$issuessubject = array();
-		if (!empty($vareapconfcountry)) {
-			$issuessubject[] = "C={$vareapconfcountry}";
+		$ca_subject = "";
+		if (empty($eapconf['vareapconfcasubject'] &&
+		    ($ca_cert != false) &&
+		    !$cert_error)) {
+			$ca_details = openssl_x509_parse(base64_decode($ca_cert['crt']));
+			if (is_array($ca_details) && !empty($ca_details['name'])) {
+				$ca_subject = $ca_details['name'];
+			}
+		} else {
+			$ca_subject = trim($eapconf['vareapconfcasubject']);
 		}
-		if (!empty($vareapconfstate)) {
-			$issuessubject[] = "ST={$vareapconfstate}";
+		if (!empty($ca_subject)) {
+			$vareapconfcheckcertissuer = "check_cert_issuer = \"{$ca_subject}\"";
 		}
-		if (!empty($vareapconfcity)) {
-			$issuessubject[] = "L={$vareapconfcity}";
-		}
-		if (!empty($vareapconforganization)) {
-			$issuessubject[] = "O={$vareapconforganization}";
-		}
-		if (!empty($vareapconfemail)) {
-			$issuessubject[] = "emailAddress={$vareapconfemail}";
-		}
-		if (!empty($vareapconfcommonname)) {
-			$issuessubject[] = "CN={$vareapconfcommonname}";
-		}
-		$vareapconfcheckcertissuer = "check_cert_issuer = " . '"/' . implode('/', $issuessubject) . '/"';
 	} else {
 		$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
 	}

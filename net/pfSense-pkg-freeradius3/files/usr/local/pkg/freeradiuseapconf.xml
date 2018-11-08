@@ -272,70 +272,15 @@
 				]]>
 			</sethelp>
 			<type>checkbox</type>
-			<enablefields>vareapconfcountry,vareapconfstate,vareapconfcity,vareapconforganization,vareapconfemail,vareapconfcommonname</enablefields>
+			<enablefields>vareapconfcasubject</enablefields>
 		</field>
 		<field>
-			<fielddescr>Country</fielddescr>
-			<fieldname>vareapconfcountry</fieldname>
+			<fielddescr>CA Subject</fielddescr>
+			<fieldname>vareapconfcasubject</fieldname>
 			<description>
 				<![CDATA[
-				Enter the country of your CA. <span class="text-info">(Example: US)</span></br>
-				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
-				]]>
-			</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>State or Province</fielddescr>
-			<fieldname>vareapconfstate</fieldname>
-			<description>
-				<![CDATA[
-				Enter the state or province of your CA. <span class="text-info">(Example: Texas)</span><br/>
-				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
-				]]>
-			</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>City</fielddescr>
-			<fieldname>vareapconfcity</fieldname>
-			<description>
-				<![CDATA[
-				Enter the city of your CA. <span class="text-info">(Example: Austin)</span><br/>
-				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
-				]]>
-			</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Organization</fielddescr>
-			<fieldname>vareapconforganization</fieldname>
-			<description>
-				<![CDATA[
-				Enter the organization of your CA. <span class="text-info">(Example: My Company Ltd)</span><br/>
-				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
-				]]>
-			</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>E-Mail Address</fielddescr>
-			<fieldname>vareapconfemail</fieldname>
-			<description>
-				<![CDATA[
-				Enter the e-mail address of your CA. <span class="text-info">(Example: admin@company.example.com)</span><br/>
-				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
-				]]>
-			</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Common Name</fielddescr>
-			<fieldname>vareapconfcommonname</fieldname>
-			<description>
-				<![CDATA[
-				Enter the common name of your CA. <span class="text-info">(Example: My Company Ltd Internal CA)</span><br/>
-				<b>Must</b> match the value you set in <a href="system_camanager.php">'System &gt; Cert Manager &gt; CAs'</a>.
+				Enter the subject of the CA to validate, or leave blank to assume the subject of <b>SSL CA Certificate</b> chosen above.
+				<span class="text-info">(Example: /C=US/ST=Texas/L=Austin/O=Example Co/emailAddress=certs@example.com/CN=example-ca)</span><br/>
 				]]>
 			</description>
 			<type>input</type>
