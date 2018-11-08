@@ -2,7 +2,7 @@
  * filterdns.c
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2011 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2018 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,687 +19,464 @@
  */
 
 #include <sys/types.h>
-#include <sys/param.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <sys/queue.h>
 
-#include <net/if.h>
-#include <net/pfvar.h>
-#include <net/ethernet.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
-#include <netinet/ip_fw.h>
+#include <net/if.h>
+#include <netinet/in.h>
 
-#include <stdio.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <netdb.h>
-#include <pthread.h>
-#include <pthread_np.h>
-#include <syslog.h>
-#include <stdarg.h>
 #include <err.h>
-#include <sysexits.h>
-#include <string.h>
-#include <fcntl.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <pthread_np.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sysexits.h>
+#include <syslog.h>
+#include <unistd.h>
 
 #include "filterdns.h"
+#include "tables.h"
 
+int debug = 0;
 static int interval = 30;
-static int dev = -1;
-static int debug = 0;
 static char *file = NULL;
-static pthread_attr_t attr;
+static pthread_attr_t g_attr;
 static pthread_cond_t sig_condvar;
 static pthread_mutex_t sig_mtx;
-static pthread_t sig_thr;
 static pthread_rwlock_t main_lock;
 
-static int pf_tableentry(struct thread_data *, struct sockaddr *, int);
-static int ipfw_tableentry(struct thread_data *, struct sockaddr *, int);
-static int host_dns(struct thread_data *, int);
-static int filterdns_clean_table(struct thread_data *, int);
-static void clear_config(struct thread_list *);
-static void clear_hostname_addresses(struct thread_data *);
-static int filterdns_check_sameip_diff_hostname(struct thread_data *, struct table *);
+static void host_del(struct action *);
+static void action_del(struct action *, struct action_list *);
+static void addr_cleanup(struct addr_list *, const char *);
 
-#define	DELETE			1
-#define	ADD			2
-#define	TABLENAME(name)		(name != NULL ? name : "")
-#define	TABLETYPE(_type)	((_type == PF_TYPE) ? "pf" : "ipfw")
-
-#define satosin(sa)	((struct sockaddr_in *)(sa))
-#define satosin6(sa)	((struct sockaddr_in6 *)(sa))
-
-static int
-get_present_table_entries(struct thread_data *thr)
+const char *
+action_to_string(int type)
 {
-	struct pfioc_table io;
-	struct pfr_table *table;
-	struct pfr_addr *addr;
-	struct table *ent;
-	int i;
-
-	memset(&io, 0, sizeof(io));
-	table = &io.pfrio_table;
-	memset(table, 0, sizeof(*table));
-
-	if (strlcpy(table->pfrt_name, thr->tablename,
-	    sizeof(table->pfrt_name)) >= sizeof(table->pfrt_name))
-		return (-1);
-
-	io.pfrio_buffer = NULL;
-	io.pfrio_esize = sizeof(struct pfr_addr);
-
-	if (ioctl(dev, DIOCRGETADDRS, &io) < 0) {
-		if (debug >= 3)
-			syslog(LOG_WARNING,
-			    "\tCould not get number of entries from table %s",
-			    TABLENAME(thr->tablename));
-		free(io.pfrio_buffer);
-		io.pfrio_buffer = NULL;
-		return (-1);
-	}
-	if (debug >= 3)
-		syslog(LOG_WARNING, "\tTable %s has %u entries",
-		    TABLENAME(thr->tablename), io.pfrio_size);
-	io.pfrio_buffer = calloc(1, io.pfrio_size * io.pfrio_esize);
-	if (io.pfrio_buffer == NULL)
-		return (-1);
-
-	if (debug >= 3)
-		syslog(LOG_WARNING, "\tTable %s has %u entries",
-		    TABLENAME(thr->tablename), io.pfrio_size);
-
-	if (ioctl(dev, DIOCRGETADDRS, &io) < 0) {
-		if (debug >= 3)
-			syslog(LOG_WARNING,
-			    "\tCould not retrieve entries from table %s",
-			    TABLENAME(thr->tablename));
-		free(io.pfrio_buffer);
-		io.pfrio_buffer = NULL;
-		return (-1);
+	switch (type) {
+	case PF_TYPE:
+		return ("pf");
+		/* NOTREACHED */
+		break;
+	case IPFW_TYPE:
+		return ("ipfw");
+		/* NOTREACHED */
+		break;
+	case CMD_TYPE:
+		return ("cmd");
+		/* NOTREACHED */
+		break;
 	}
 
-	if (debug >= 3)
-		syslog(LOG_WARNING, "\tFetched %s has %u entries",
-		    TABLENAME(thr->tablename), io.pfrio_size);
-
-	addr = io.pfrio_buffer;
-	for (i = 0; i < io.pfrio_size; i++) {
-		ent = calloc(1, sizeof(*ent));
-		if (ent == NULL) {
-			if (debug >= 3)
-				syslog(LOG_ERR,
-				    "\tCould not allocate one entry retrying");
-			continue;
-		}
-
-		if (addr[i].pfra_af == AF_INET)
-			ent->addr = calloc(1, sizeof(struct sockaddr_in));
-		else
-			ent->addr = calloc(1, sizeof(struct sockaddr_in6));
-		if (ent->addr == NULL) {
-			free(ent);
-			if (debug >= 3)
-				syslog(LOG_WARNING,
-				    "\tFailed to allocate new address entry for table %s.",
-				    TABLENAME(thr->tablename));
-			continue;
-		}
-		if (addr[i].pfra_af == AF_INET) {
-			ent->addr->sa_len = sizeof(struct sockaddr_in);
-			ent->addr->sa_family = AF_INET;
-			((struct sockaddr_in *)ent->addr)->sin_addr =
-			    addr[i].pfra_ip4addr;
-		} else {
-			ent->addr->sa_len = sizeof(struct sockaddr_in6);
-			ent->addr->sa_family = AF_INET6;
-			((struct sockaddr_in6 *)ent->addr)->sin6_addr =
-			    addr[i].pfra_ip6addr;
-		}
-		if (filterdns_check_sameip_diff_hostname(thr, ent) != EEXIST)
-			TAILQ_INSERT_HEAD(&thr->static_rnh, ent, entry);
-	}
-	free(io.pfrio_buffer);
-
-	if (debug >=3)
-		syslog(LOG_WARNING, "\tTable fetching finished");
-	return (io.pfrio_size);
+	return ("invalid");
 }
 
-static int
-need_to_monitor(struct thread_data *thr, struct sockaddr *addr)
+static void *
+check_action(void *arg)
 {
-	struct table *tmp;
-	char buffer[INET6_ADDRSTRLEN] = { 0 };
+	int error, update;
+	struct action *act;
+	struct _addr_entry *ent, *enttmp;
 
-	if (TAILQ_EMPTY(&thr->static_rnh)) {
-		return (1);
-	}
-
-	TAILQ_FOREACH(tmp, &thr->static_rnh, entry) {
-		if (tmp->addr->sa_family != addr->sa_family)
-			continue;
-		if (memcmp(addr, tmp->addr, addr->sa_len))
-			continue;
-		if (debug >= 2) {
-			if (addr->sa_family == AF_INET)
-				syslog(LOG_WARNING,
-				    "\t\tentry %s is static on table %s",
-				    inet_ntop(addr->sa_family,
-					&satosin(addr)->sin_addr.s_addr,
-					buffer, sizeof buffer),
-				    TABLENAME(thr->tablename));
-			else if (addr->sa_family == AF_INET6)
-				syslog(LOG_WARNING,
-				    "\t\tentry %s is static on table %s",
-				    inet_ntop(addr->sa_family,
-					satosin6(addr)->sin6_addr.s6_addr,
-					buffer, sizeof buffer),
-				    TABLENAME(thr->tablename));
-		}
-		return (0);
-	}
-
-	return (1);
-}
-
-static int
-add_table_entry(struct thread_data *thrdata, struct sockaddr *addr,
-    int forceupdate)
-{
-	struct table *ent, *tmp;
-	char buffer[INET6_ADDRSTRLEN] = { 0 };
-	int error = 0;
-
-	if (addr->sa_family == AF_INET)
-		inet_ntop(addr->sa_family, &satosin(addr)->sin_addr.s_addr,
-		    buffer, sizeof buffer);
-	else if (addr->sa_family == AF_INET6)
-		inet_ntop(addr->sa_family, &satosin6(addr)->sin6_addr.s6_addr,
-		    buffer, sizeof buffer);
-	TAILQ_FOREACH(tmp, &thrdata->rnh, entry) {
-		if (tmp->addr->sa_family != addr->sa_family)
-			continue;
-		if (memcmp(addr, tmp->addr, addr->sa_len))
-			continue;
-		if (debug >= 2)
+	act = (struct action *)arg;
+	pthread_mutex_lock(&act->mtx);
+	act->state = THR_RUNNING;
+	for (;;) {
+		pthread_cond_wait(&act->cond, &act->mtx);
+		if (debug >= 6)
 			syslog(LOG_WARNING,
-			    "\t\tentry %s exists in %s table %s",
-			    buffer, TABLETYPE(thrdata->type),
-			    TABLENAME(thrdata->tablename));
-		tmp->refcnt++;
-		if (forceupdate) {
+			    "\tAwaking from the sleep for type: %s %s%s%shostname: %s",
+			    action_to_string(act->type),
+			    (act->tablename != NULL ? "table: " : ""),
+			    (act->tablename != NULL ? act->tablename : ""),
+			    (act->tablename != NULL ? " " : ""),
+			    act->hostname);
+
+		pthread_rwlock_rdlock(&main_lock);
+		if (act->host != NULL) {
+			TAILQ_FOREACH(ent, &act->rnh, entry) {
+				if (ent->flags & ADDR_STATIC)
+					continue;
+				ent->flags |= ADDR_OLD;
+			}
+
+			/* Copy... */
+			TAILQ_FOREACH(ent, &act->host->rnh, entry) {
+				addr_add(&act->rnh, NULL, ent->addr, (ent->flags & ADDR_STATIC));
+			}
+
+			update = 0;
+			TAILQ_FOREACH_SAFE(ent, &act->rnh, entry, enttmp) {
+				if (ent->flags & ADDR_NEW) {
+					ent->flags &= ~ADDR_NEW;
+					update++;
+				}
+				if (ent->flags & ADDR_OLD) {
+					addr_del(&act->rnh, NULL, ent);
+					update++;
+				}
+			}
+			if (update > 0 && act->tablename != NULL) {
+				error = table_update(act);
+				if (debug >= 4)
+					syslog(LOG_WARNING,
+					    "\tUpdated %s table %s host: %s error: %d",
+					    action_to_string(act->type),
+					    act->tablename, act->hostname,
+					    error);
+			}
+		}
+		pthread_rwlock_unlock(&main_lock);
+
+		if (act->cmd != NULL) {
+			error = system(act->cmd);
 			if (debug >= 2)
 				syslog(LOG_WARNING,
-				    "\tREFRESHING entry %s on %s table %s for host %s",
-				    buffer, TABLETYPE(thrdata->type),
-				    TABLENAME(thrdata->tablename),
-				    thrdata->hostname);
-			if (thrdata->type == PF_TYPE)
-				error = pf_tableentry(thrdata, addr, ADD);
-			else if (thrdata->type == IPFW_TYPE)
-				error = ipfw_tableentry(thrdata, addr, ADD);
-			if (error != 0)
-				return (error);
+				    "\tRan command '%s' with exit status %d because a dns change on hostname %s was detected.",
+				    act->cmd, error, act->hostname);
 		}
-		return (EEXIST);
 	}
+	act->state = THR_DYING;
+	pthread_mutex_unlock(&act->mtx);
 
-	ent = calloc(1, sizeof(*ent));
-	if (ent == NULL) {
-		syslog(LOG_ERR,
-		    "\tFILTERDNS: Failed to allocate new entry for %s table %s.",
-		    TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename));
-		return (ENOMEM);
-	}
-	ent->addr = calloc(1, addr->sa_len);
-	if (ent->addr == NULL) {
-		free(ent);
-		syslog(LOG_WARNING,
-		    "\tFILTERDNS: Failed to allocate new address entry for %s table %s.",
-		    TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename));
-		return (ENOMEM);
-	}
-	memcpy(ent->addr, addr, addr->sa_len);
-	ent->refcnt = 2;
-	TAILQ_INSERT_HEAD(&thrdata->rnh, ent, entry);
+	pthread_mutex_destroy(&act->mtx);
+	pthread_cond_destroy(&act->cond);
+	action_del(act, &action_list);
 
-	syslog(LOG_NOTICE, "\tadding entry %s to %s table %s for host %s",
-	    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
-	    thrdata->hostname);
-
-	if (thrdata->type == PF_TYPE)
-		error = pf_tableentry(thrdata, ent->addr, ADD);
-	else if (thrdata->type == IPFW_TYPE)
-		error = ipfw_tableentry(thrdata, ent->addr, ADD);
-
-	if (error != 0)
-		syslog(LOG_NOTICE,
-		    "\tCOULD NOT add the entry %s to %s table %s for host %s",
-		    buffer, TABLETYPE(thrdata->type),
-		    TABLENAME(thrdata->tablename), thrdata->hostname);
-
-	return (error);
+	return (NULL);
 }
 
 static int
-filterdns_check_sameip_diff_hostname(struct thread_data *thread,
-    struct table *ip)
+action_create(struct action *act, pthread_attr_t *attr)
 {
-	struct thread_data *thr;
-	struct table *e;
-	char buffer[INET6_ADDRSTRLEN] = { 0 };
 
-	if (TAILQ_EMPTY(&thread_list))
-		return (0);
-	if (thread->tablename == NULL)
-		return (0);
+	if (act->state != 0)
+		return (-1);
+	act->state = THR_STARTING;
+	if (debug > 3)
+		syslog(LOG_INFO,
+		    "Creating a new thread for action type: %s %s%s%shostname: %s",
+		    action_to_string(act->type),
+		    (act->tablename != NULL ? "table: " : ""),
+		    (act->tablename != NULL ? act->tablename : ""),
+		    (act->tablename != NULL ? " " : ""),
+		    act->hostname);
 
-	TAILQ_FOREACH(thr, &thread_list, next) {
-		/* Same thread! */
-		if (thr->thr_pid == thread->thr_pid)
-			continue;
-		if (thr->tablename == NULL)
-			continue;
-		if (strlen(thr->tablename) != strlen(thread->tablename))
-			continue;
-		if (strncmp(thr->tablename, thread->tablename,
-		    strlen(thr->tablename)))
-			continue;
-
-		TAILQ_FOREACH(e, &thr->rnh, entry) {
-			if (e->addr->sa_family != ip->addr->sa_family)
-				continue;
-			if (memcmp(ip->addr, e->addr, ip->addr->sa_len))
-				continue;
-			syslog(LOG_INFO,
-			    "IP address %s already present on table %s as address of hostname %s",
-			    inet_ntop(e->addr->sa_family, e->addr->sa_data + 2,
-				buffer, sizeof buffer),
-			    TABLENAME(thr->tablename),
-			    thr->hostname);
-			return (EEXIST);
-		}
+	if (pthread_cond_init(&act->cond, NULL) != 0 ||
+	    pthread_mutex_init(&act->mtx, NULL) != 0)
+		return (-1);
+	if (pthread_create(&act->thr_pid, attr, check_action, act) != 0) {
+		pthread_mutex_destroy(&act->mtx);
+		pthread_cond_destroy(&act->cond);
+		return (-1);
 	}
-
+#if 0
+	pthread_set_name_np(act->thr_pid, act->hostname);
+#endif
 	return (0);
 }
 
-static int
-filterdns_clean_table(struct thread_data *thrdata, int donotcheckrefcount)
+struct action *
+action_add(int type, const char *hostname, const char *tablename, int pipe,
+    const char *cmd, int *eexist)
 {
-	struct table *e, *tmp;
-	char buffer[INET6_ADDRSTRLEN] = { 0 };
-	int removed = 0;
-	int error;
+	char *buf, tmp[16];
+	struct action *search, *act;
 
-	if (TAILQ_EMPTY(&thrdata->rnh))
-		return (0);
-
-	TAILQ_FOREACH_SAFE(e, &thrdata->rnh, entry, tmp) {
-		e->refcnt--;
-		if (e->addr->sa_family == AF_INET)
-			inet_ntop(e->addr->sa_family, e->addr->sa_data + 2,
-			    buffer, sizeof buffer);
-		else if (e->addr->sa_family == AF_INET6)
-			inet_ntop(e->addr->sa_family, e->addr->sa_data + 6,
-			    buffer, sizeof buffer);
-		if (donotcheckrefcount || (e->refcnt <= 0)) {
-			/* If 2 dns names have same ip do not do any operation */
-			if (filterdns_check_sameip_diff_hostname(thrdata, e) ==
-			    EEXIST)
-				continue;
-
-			error = 0;
-			syslog(LOG_NOTICE,
-			    "clearing entry %s from %s table %s on host %s",
-			    buffer, TABLETYPE(thrdata->type),
-			    TABLENAME(thrdata->tablename), thrdata->hostname);
-			if (thrdata->type == PF_TYPE)
-				error = pf_tableentry(thrdata, e->addr, DELETE);
-			else if (thrdata->type == IPFW_TYPE)
-				error = ipfw_tableentry(thrdata, e->addr,
-				    DELETE);
-			if (error != 0)
-				syslog(LOG_ERR,
-				    "COULD NOT clear entry %s from %s table %s on host %s will retry later",
-				    buffer, TABLETYPE(thrdata->type),
-				    TABLENAME(thrdata->tablename),
-				    thrdata->hostname);
-			TAILQ_REMOVE(&thrdata->rnh, e, entry);
-			free(e->addr);
-			free(e);
-			if (!donotcheckrefcount)
-				removed++;
-		} else if (debug >= 2)
-			syslog(LOG_WARNING,
-			    "\tNOT clearing entry %s from %s table %s on host %s",
-			    buffer, TABLETYPE(thrdata->type),
-			    TABLENAME(thrdata->tablename), thrdata->hostname);
+	TAILQ_FOREACH(search, &action_list, next_list) {
+		if (search->type != type || search->pipe != pipe)
+			continue;
+		if ((search->tablename != NULL && tablename == NULL) ||
+		    (search->tablename == NULL && tablename != NULL))
+			continue;
+		if (search->tablename != NULL && tablename != NULL &&
+		    (strlen(search->tablename) != strlen(tablename) ||
+		    strcmp(search->tablename, tablename) != 0))
+			continue;
+		if ((search->cmd != NULL && cmd == NULL) ||
+		    (search->cmd == NULL && cmd != NULL))
+			continue;
+		if (search->cmd != NULL && cmd != NULL &&
+		    (strlen(search->cmd) != strlen(cmd) ||
+		    strcmp(search->cmd, cmd) != 0))
+			continue;
+		if ((search->host != NULL && hostname == NULL) ||
+		    (search->host == NULL && hostname != NULL))
+			continue;
+		if (search->hostname != NULL && hostname != NULL &&
+		    (strlen(search->hostname) != strlen(hostname) ||
+		    strcmp(search->hostname, hostname) != 0))
+			continue;
+		*eexist = 1;
+		return (search);
 	}
 
-	return (removed);
+	*eexist = 0;
+	if (hostname == NULL)
+		return (NULL);
+	act = calloc(1, sizeof(*act));
+	act->type = type;
+	act->pipe = pipe;
+	TAILQ_INIT(&act->rnh);
+	TAILQ_INIT(&act->tbl_rnh);
+	act->hostname = strdup(hostname);
+	if (cmd != NULL)
+		act->cmd = strdup(cmd);
+	if (tablename != NULL)
+		act->tablename = strdup(tablename);
+	TAILQ_INSERT_TAIL(&action_list, act, next_list);
+
+	buf = calloc(1, _BUF_SIZE);
+	strlcpy(buf, "\tAdding Action: ", _BUF_SIZE);
+	strlcat(buf, action_to_string(type), _BUF_SIZE);
+	if (tablename != NULL) {
+		strlcat(buf, " table: ", _BUF_SIZE);
+		strlcat(buf, tablename, _BUF_SIZE);
+	}
+	if (type == IPFW_TYPE && pipe > 0) {
+		strlcat(buf, " pipe: ", _BUF_SIZE);
+		memset(tmp, 0, sizeof(tmp));
+		snprintf(tmp, sizeof(tmp), "%d", pipe);
+		strlcat(buf, tmp, _BUF_SIZE);
+	}
+	if (cmd != NULL) {
+		strlcat(buf, " cmd: ", _BUF_SIZE);
+		strlcat(buf, cmd, _BUF_SIZE);
+	}
+	if (hostname != NULL) {
+		strlcat(buf, " host: ", _BUF_SIZE);
+		strlcat(buf, hostname, _BUF_SIZE);
+	}
+	syslog(LOG_WARNING, "%s", buf);
+	free(buf);
+
+	return (act);
+}
+
+static void
+action_del(struct action *act, struct action_list *actlist)
+{
+	if (debug >= 4)
+		syslog(LOG_INFO,
+		    "Cleaning up action type: %s %s%s%shostname: %s",
+		    action_to_string(act->type),
+		    (act->tablename != NULL ? "table: " : ""),
+		    (act->tablename != NULL ? act->tablename : ""),
+		    (act->tablename != NULL ? " " : ""),
+		    act->hostname);
+	host_del(act);
+	TAILQ_REMOVE(actlist, act, next_list);
+	addr_cleanup(&act->rnh, NULL);
+	table_cleanup(act);
+	if (act->hostname != NULL)
+		free(act->hostname);
+	if (act->tablename != NULL)
+		free(act->tablename);
+	if (act->cmd != NULL)
+		free(act->cmd);
+	free(act);
+}
+
+struct thread_host *
+host_add(struct action *act)
+{
+	char *p, *q;
+	size_t len;
+	struct thread_host *search, *thr;
+
+	if (act == NULL || act->hostname == NULL)
+		return (NULL);
+
+	TAILQ_FOREACH(search, &thread_list, next) {
+		len = 0;
+		if ((p = strchr(act->hostname, '/')) != NULL)
+			len = p - act->hostname;
+		if (len > 0 && len <= strlen(act->hostname)) {
+			if (strncasecmp(search->hostname, act->hostname, len) != 0)
+				continue;
+		} else if (strcasecmp(search->hostname, act->hostname) != 0)
+			continue;
+		search->refcnt++;
+		TAILQ_INSERT_TAIL(&search->actions, act, next_actions);
+		act->host = search;
+		return (search);
+	}
+
+	thr = calloc(1, sizeof(*thr));
+	if (thr == NULL)
+		return (NULL);
+
+	thr->mask = -1;
+	thr->mask6 = -1;
+	thr->hostname = strdup(act->hostname);
+	if ((p = strrchr(thr->hostname, '/')) != NULL) {
+		thr->mask = strtol(p + 1, &q, 0);
+		thr->mask6 = thr->mask;
+		if (!q || *q || thr->mask > 128 || q == (p + 1)) {
+			syslog(LOG_WARNING,
+			    "invalid netmask '%s' for hostname %s\n", p,
+			    thr->hostname);
+			free(thr);
+			return (NULL);
+		}
+		*p = '\0';
+	}
+
+	thr->refcnt = 1;
+	TAILQ_INIT(&thr->rnh);
+	TAILQ_INIT(&thr->actions);
+	TAILQ_INSERT_TAIL(&thread_list, thr, next);
+	TAILQ_INSERT_TAIL(&thr->actions, act, next_actions);
+	act->host = thr;
+
+	if (thr->mask >= 0)
+		syslog(LOG_WARNING, "\t\tAdding host %s/%d", thr->hostname,
+		    thr->mask);
+	else
+		syslog(LOG_WARNING, "\t\tAdding host %s", thr->hostname);
+
+	return (thr);
+}
+
+static void
+host_del(struct action *act)
+{
+	struct thread_host *thr;
+
+	thr = act->host;
+	if (thr != NULL) {
+		thr->refcnt--;
+		TAILQ_REMOVE(&thr->actions, act, next_actions);
+		act->host = NULL;
+		pthread_mutex_lock(&thr->mtx);
+		pthread_cond_signal(&thr->cond);
+		pthread_mutex_unlock(&thr->mtx);
+	}
+}
+
+struct _addr_entry *
+addr_add(struct addr_list *head, const char *hostname, struct sockaddr *addr,
+    uint32_t flags)
+{
+	struct _addr_entry *ent, *tmp;
+	char buffer[INET6_ADDRSTRLEN];
+
+	TAILQ_FOREACH(tmp, head, entry) {
+		if (tmp->addr->sa_family != addr->sa_family)
+			continue;
+		if (tmp->addr->sa_len != addr->sa_len ||
+		    memcmp(addr, tmp->addr, addr->sa_len) != 0)
+			continue;
+		tmp->flags &= ~ADDR_OLD;
+		return (tmp);
+	}
+
+	ent = calloc(1, sizeof(*ent));
+	ent->flags = ADDR_NEW;
+	if (flags & ADDR_STATIC)
+		ent->flags |= ADDR_STATIC;
+	ent->addr = calloc(1, addr->sa_len);
+	memcpy(ent->addr, addr, addr->sa_len);
+	TAILQ_INSERT_HEAD(head, ent, entry);
+
+	if (debug >= 3 && hostname != NULL) {
+		memset(buffer, 0, sizeof(buffer));
+		if (addr->sa_family == AF_INET)
+			inet_ntop(addr->sa_family, &satosin(addr)->sin_addr.s_addr,
+			    buffer, sizeof(buffer));
+		else if (addr->sa_family == AF_INET6)
+			inet_ntop(addr->sa_family, &satosin6(addr)->sin6_addr.s6_addr,
+			    buffer, sizeof(buffer));
+		syslog(LOG_NOTICE, "\t\t\tadding address %s for host %s",
+		    buffer, hostname);
+	}
+
+	return (ent);
+}
+
+void
+addr_del(struct addr_list *head, const char *hostname, struct _addr_entry *addr)
+{
+	char buffer[INET6_ADDRSTRLEN];
+
+	if (debug >= 3 && hostname != NULL) {
+		memset(buffer, 0, sizeof(buffer));
+		if (addr->addr->sa_family == AF_INET)
+			inet_ntop(addr->addr->sa_family,
+			    &satosin(addr->addr)->sin_addr.s_addr,
+			    buffer, sizeof(buffer));
+		else if (addr->addr->sa_family == AF_INET6)
+			inet_ntop(addr->addr->sa_family,
+			    &satosin6(addr->addr)->sin6_addr.s6_addr,
+			    buffer, sizeof(buffer));
+		syslog(LOG_NOTICE, "\t\t\tremoving address %s from host %s",
+		    buffer, hostname);
+	}
+	TAILQ_REMOVE(head, addr, entry);
+	free(addr->addr);
+	free(addr);
+}
+
+static void
+addr_cleanup(struct addr_list *head, const char *hostname)
+{
+	struct _addr_entry *ent, *enttmp;
+
+	TAILQ_FOREACH_SAFE(ent, head, entry, enttmp)
+		addr_del(head, hostname, ent);
 }
 
 static int
-host_dns(struct thread_data *hostd, int forceupdate)
+host_dns(struct thread_host *thr)
 {
 	struct addrinfo hints, *res0, *res;
-	int execcmd, error, retry;
 	char buffer[INET6_ADDRSTRLEN];
+	int error;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_DGRAM;
 	res0 = NULL;
-	error = getaddrinfo(hostd->hostname, NULL, &hints, &res0);
+	error = getaddrinfo(thr->hostname, NULL, &hints, &res0);
 	if (error) {
 		syslog(LOG_WARNING,
 		    "failed to resolve host %s will retry later again.",
-		    hostd->hostname);
+		    thr->hostname);
 		if (res0 != NULL)
 			freeaddrinfo(res0);
 		return (-1);
 	}
 
-	execcmd = 0;
-	retry = 0;
 	for (res = res0; res; res = res->ai_next) {
 		if (res->ai_addr == NULL) {
 			if (debug >=4)
 				syslog(LOG_WARNING,
 				    "Skipping empty address for hostname %s",
-				    hostd->hostname);
+				    thr->hostname);
 			continue;
 		}
-		if (hostd->type == PF_TYPE && !need_to_monitor(hostd,
-		    res->ai_addr))
-			continue;
 		if (res->ai_family == AF_INET) {
 			if (debug > 9)
 				syslog(LOG_WARNING,
-				    "\t\tfound entry %s for %s table %s",
+				    "\t\tfound address %s for host %s",
 				    inet_ntop(res->ai_family,
 				    res->ai_addr->sa_data + 2, buffer,
-				    sizeof buffer), TABLETYPE(hostd->type),
-				    TABLENAME(hostd->tablename));
-			if (hostd->mask > 32) {
-				syslog(LOG_WARNING,
-				    "\t\tinvalid mask for %s/%d",
-				    inet_ntop(res->ai_family,
-					res->ai_addr->sa_data + 2, buffer,
-					sizeof buffer), hostd->mask);
-				hostd->mask = 32;
-			}
-		}
-		if(res->ai_family == AF_INET6) {
+				    sizeof buffer), thr->hostname);
+		} else if (res->ai_family == AF_INET6) {
 			if (debug > 9)
 				syslog(LOG_WARNING,
-				    "\t\tfound entry %s for %s table %s",
+				    "\t\tfound address %s for host %s",
 				    inet_ntop(res->ai_family,
 					res->ai_addr->sa_data + 6, buffer,
-					sizeof buffer), TABLETYPE(hostd->type),
-				    TABLENAME(hostd->tablename));
+					sizeof buffer), thr->hostname);
 		}
-		error = add_table_entry(hostd, res->ai_addr, forceupdate);
-		if (error == 0)
-			execcmd++;
-		else if (error == EAGAIN) {
-			retry++;
-			execcmd++;
-		} else if (error == EPIPE)
-			retry++;
+		addr_add(&thr->rnh, thr->hostname, res->ai_addr, 0);
 	}
 	freeaddrinfo(res0);
 
-	error = filterdns_clean_table(hostd, 0);
-	if (error > 0) {
-		execcmd++;
-		if (debug >= 4)
-			syslog(LOG_WARNING,
-			    "Cleared %d entries for host(%s) table (%s)", error,
-			    hostd->hostname, TABLENAME(hostd->tablename));
-	}
-
-	if (execcmd > 0 && hostd->cmd != NULL) {
-		execcmd = system(hostd->cmd);
-		if (debug >= 2)
-			syslog(LOG_WARNING,
-			    "Ran command %s with exit status %d because a dns change on hostname %s was detected.",
-			    hostd->cmd, execcmd, hostd->hostname);
-	}
-
-	if (retry > 0)
-		return (EAGAIN);
-	else
-		return (0);
-}
-
-static int
-table_get_info(int s, ipfw_obj_header *oh, ipfw_xtable_info *i)
-{
-	char tbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_xtable_info)];
-	int error;
-	socklen_t sz;
-
-	sz = sizeof(tbuf);
-	memset(tbuf, 0, sizeof(tbuf));
-	memcpy(tbuf, oh, sizeof(*oh));
-	oh = (ipfw_obj_header *)tbuf;
-	oh->opheader.opcode = IP_FW_TABLE_XINFO;
-	oh->opheader.version = 0;
-
-	error = getsockopt(s, IPPROTO_IP, IP_FW3, &oh->opheader, &sz);
-	if (error != 0)
-		return (error);
-	if (sz < sizeof(tbuf))
-		return (EINVAL);
-
-	*i = *(ipfw_xtable_info *)(oh + 1);
-
 	return (0);
-}
-
-static int
-ipfw_tableentry(struct thread_data *ipfwd, struct sockaddr *address, int action)
-{
-	char xbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_obj_ctlv) +
-	    sizeof(ipfw_obj_tentry)];
-	int error, retry;
-	ipfw_obj_ctlv *ctlv;
-	ipfw_obj_header *oh;
-	ipfw_obj_ntlv *ntlv;
-	ipfw_obj_tentry *tent;
-	ipfw_table_value *v;
-	ipfw_xtable_info xi;
-	socklen_t size;
-	static int s = -1;
-
-	retry = 3;
-	while (retry-- > 0) {
-
-		error = 0;
-
-		/* XXX - the socket will remain open between calls. */
-		if (s == -1)
-			s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-		if (s < 0) {
-			error = errno;
-			continue;
-		}
-
-		memset(xbuf, 0, sizeof(xbuf));
-		oh = (ipfw_obj_header *)xbuf;
-		if (action == ADD)
-			oh->opheader.opcode = IP_FW_TABLE_XADD;
-		else
-			oh->opheader.opcode = IP_FW_TABLE_XDEL;
-		oh->opheader.version = 1;
-
-		ntlv = &oh->ntlv;
-		ntlv->head.type = IPFW_TLV_TBL_NAME;
-		ntlv->head.length = sizeof(ipfw_obj_ntlv);
-		ntlv->idx = 1;
-		ntlv->set = 0;
-		strlcpy(ntlv->name, ipfwd->tablename, sizeof(ntlv->name));
-		oh->idx = 1;
-
-		if (table_get_info(s, oh, &xi) != 0) {
-			error = ENOENT;
-			break;
-		}
-
-		ntlv->type = xi.type;
-		if (xi.type != IPFW_TABLE_ADDR) {
-			error = EINVAL;
-			break;
-		}
-
-		size = sizeof(ipfw_obj_ctlv) + sizeof(ipfw_obj_tentry);
-		ctlv = (ipfw_obj_ctlv *)(oh + 1);
-		ctlv->count = 1;
-		ctlv->head.length = size;
-
-		tent = (ipfw_obj_tentry *)(ctlv + 1);
-		tent->head.length = sizeof(ipfw_obj_tentry);
-		tent->idx = oh->idx;
-
-		if (address->sa_family == AF_INET) {
-			tent->subtype = AF_INET;
-			tent->masklen = ipfwd->mask;
-			memcpy(&tent->k.addr, &satosin(address)->sin_addr,
-			    sizeof(struct in_addr));
-		} else {
-			tent->subtype = AF_INET6;
-			tent->masklen = ipfwd->mask6;
-			memcpy(&tent->k.addr6, &satosin6(address)->sin6_addr,
-			    sizeof(struct in6_addr));
-		}
-
-		if (ipfwd->pipe != 0) {
-			v = &tent->v.value;
-			v->pipe = ipfwd->pipe;
-		}
-
-		size += sizeof(ipfw_obj_header);
-		error = setsockopt(s, IPPROTO_IP, IP_FW3, &oh->opheader, size);
-
-		/* Operation succeeded. */
-		if (error == 0)
-			break;
-	}
-
-	return (error);
-}
-
-static void
-set_ipmask(struct in6_addr *h, int b)
-{
-	struct pf_addr m;
-	int i, j = 0;
-
-	memset(&m, 0, sizeof m);
-
-	while (b >= 32) {
-		m.addr32[j++] = 0xffffffff;
-		b -= 32;
-	}
-	for (i = 31; i > 31-b; --i)
-		m.addr32[j] |= (1 << i);
-	if (b)
-		m.addr32[j] = htonl(m.addr32[j]);
-
-	/* Mask off bits of the address that will never be used. */
-	for (i = 0; i < 4; i++)
-		h->__u6_addr.__u6_addr32[i] =
-		    h->__u6_addr.__u6_addr32[i] & m.addr32[i];
-}
-
-static int
-pf_tableentry(struct thread_data *pfd, struct sockaddr *address, int action)
-{
-	struct pfioc_table io;
-	struct pfr_table table;
-	struct pfr_addr addr;
-	int error, i = 3;
-
-	if (pfd->tablename == NULL)
-		return (0);
-
-	bzero(&table, sizeof(table));
-	if (strlcpy(table.pfrt_name, pfd->tablename,
-		sizeof(table.pfrt_name)) >= sizeof(table.pfrt_name)) {
-		if (debug >= 1)
-			syslog(LOG_WARNING, "could not add address to table %s",
-			    pfd->tablename);
-		return (0);
-	}
-
-	bzero(&addr, sizeof(addr));
-	if (address->sa_family == AF_INET) {
-		addr.pfra_af = address->sa_family;
-		addr.pfra_net = pfd->mask;
-		addr.pfra_ip4addr = satosin(address)->sin_addr;
-	}
-	if (address->sa_family == AF_INET6) {
-		addr.pfra_af = address->sa_family;
-		memcpy(&addr.pfra_ip6addr, &satosin6(address)->sin6_addr,
-		    sizeof(addr.pfra_ip6addr));
-		addr.pfra_net = pfd->mask6;
-		set_ipmask(&addr.pfra_ip6addr, pfd->mask6);
-	}
-	if(debug >= 4)
-		syslog(LOG_WARNING,
-		    "setting subnet mask for family %i to %i",
-		    addr.pfra_af, addr.pfra_net);
-
-	error = 0;
-	while (i-- > 0) {
-		bzero(&io, sizeof io);
-		io.pfrio_table = table;
-		io.pfrio_buffer = &addr;
-		io.pfrio_esize = sizeof(addr);
-		io.pfrio_size = 1;
-
-		if (action == DELETE) {
-			if (ioctl(dev, DIOCRDELADDRS, &io)) {
-				if (debug >= 3)
-					syslog(LOG_WARNING,
-					    "FAILED to delete address from table %s.",
-					    pfd->tablename);
-				error++;
-			} else {
-				if (debug >= 3)
-					syslog(LOG_WARNING,
-					    "\t DELETED %d addresses(%d) to table %s.",
-					    io.pfrio_ndel, address->sa_family,
-					    pfd->tablename);
-				break;
-			}
-		} else if (action == ADD) {
-			if (ioctl(dev, DIOCRADDADDRS, &io)) {
-				if (debug >= 3)
-					syslog(LOG_WARNING,
-					    "FAILED to add address to table %s with errno %d.",
-					    pfd->tablename, errno);
-				error++;
-			} else {
-				if (debug >= 3)
-					syslog(LOG_WARNING,
-					    "\t ADDED %d addresses(%d) to table %s.",
-					    io.pfrio_nadd, address->sa_family,
-					    pfd->tablename);
-				break;
-			}
-		}
-	}
-
-	return (error);
 }
 
 static int
@@ -728,114 +505,125 @@ is_ipaddrv6(const char *s, struct sockaddr_in6 *sin6)
 static void *
 check_hostname(void *arg)
 {
-	struct thread_data *thrd = arg;
+	struct _addr_entry *ent, *enttmp;
+	struct thread_host *thr;
 	struct timespec ts;
 	struct sockaddr_in in;
 	struct sockaddr_in6 in6;
-	int tmp, added, error;
+	struct action *act;
+	int update;
 
-	if (!thrd->hostname)
+ 	thr = (struct thread_host *)arg;
+	if (!thr->hostname)
 		return (NULL);
 
-	if (debug >= 2)
-		syslog(LOG_WARNING, "Found hostname %s with netmask %d.",
-		    thrd->hostname, thrd->mask);
+	/* Detect if an IP address was passed in. */
+	if (inet_pton(AF_INET, thr->hostname, &in.sin_addr) == 1) {
+		in.sin_family = AF_INET;
+		in.sin_len = sizeof(in);
+		if (thr->mask == -1)
+			thr->mask = 32;
+		if (thr->mask > 32) {
+			syslog(LOG_WARNING,
+			    "invalid mask for %s/%d",
+			    thr->hostname, thr->mask);
+			thr->mask = 32;
+		}
+		addr_add(&thr->rnh, thr->hostname, (struct sockaddr *)&in,
+		    ADDR_STATIC);
+	} else if (is_ipaddrv6(thr->hostname, &in6) == 1)
+		addr_add(&thr->rnh, thr->hostname, (struct sockaddr *)&in6,
+		    ADDR_STATIC);
 
-	if (thrd->type == PF_TYPE)
-		get_present_table_entries(thrd);
-
-	added = 0;
-	tmp = 0;
-	pthread_mutex_lock(&thrd->mtx);
+	pthread_mutex_lock(&thr->mtx);
+	thr->state = THR_RUNNING;
 	for (;;) {
 		clock_gettime(CLOCK_MONOTONIC, &ts);
 		ts.tv_sec += interval;
 		ts.tv_sec += (interval % 30);
 		ts.tv_nsec = 0;
 
-		if (dev < 0) {
-			dev = open("/dev/pf", O_RDWR);
-			if (dev < 0)
-				syslog(LOG_ERR,
-				    "firewall device could not be opened for operation...skipping this time");
+		/* It is safe to ignore the locking here. */
+		if (thr->refcnt == 0)
+			break;
+
+		/*
+		 * Avoid deadlocks, retry later when we cannot acquire the main
+		 * lock.
+		 */
+		if (pthread_rwlock_tryrdlock(&main_lock) != 0)
+			goto again;
+
+		TAILQ_FOREACH(ent, &thr->rnh, entry) {
+			if (ent->flags & ADDR_STATIC)
+				continue;
+			ent->flags |= ADDR_OLD;
 		}
 
-		if (dev > 0) {
-			pthread_rwlock_rdlock(&main_lock);
+		if (thr->mask == -1)
+			(void)host_dns(thr);
 
-			if (thrd->exit == 1) {
-				pthread_rwlock_unlock(&main_lock);
-				break;
-			} else if (thrd->exit == 2) {
-				tmp = 1;
-				added = 0;
-				thrd->exit = 0;
+		update = 0;
+		TAILQ_FOREACH_SAFE(ent, &thr->rnh, entry, enttmp) {
+			if (ent->flags & ADDR_NEW) {
+				ent->flags &= ~ADDR_NEW;
+				update++;
 			}
-
-			/* Detect if and ip address was passed in */
-			if (added == 0 && inet_pton(AF_INET,thrd->hostname,
-			    &in.sin_addr) == 1) {
-				added = 1;
-				in.sin_family = AF_INET;
-				in.sin_len = sizeof(in);
-				if (thrd->mask > 32) {
-					syslog(LOG_WARNING,
-					    "invalid mask for %s/%d",
-					    thrd->hostname, thrd->mask);
-					thrd->mask = 32;
-				}
-				error = add_table_entry(thrd,
-				    (struct sockaddr *)&in, 1);
-			} else if (added == 0 &&
-			    is_ipaddrv6(thrd->hostname, &in6) == 1) {
-				error = add_table_entry(thrd,
-				    (struct sockaddr *)&in6, 1);
-				added = 1;
-			} else if (added == 0) {
-				error = host_dns(thrd, tmp);
+			if (ent->flags & ADDR_OLD) {
+				addr_del(&thr->rnh, thr->hostname, ent);
+				update++;
 			}
-			if (error == EAGAIN) {
-				/*
-				 * Need to retry again due to some issue with
-				 * table handling
-				 */
-				tmp = 1;
-			} else
-				tmp = 0;
-			pthread_rwlock_unlock(&main_lock);
 		}
 
+		if (update > 0) {
+			if (debug >= 4)
+				syslog(LOG_WARNING,
+				    "Change detected on host: %s",
+				    thr->hostname);
+			TAILQ_FOREACH(act, &thr->actions, next_actions) {
+				pthread_mutex_lock(&act->mtx);
+				pthread_cond_signal(&act->cond);
+				pthread_mutex_unlock(&act->mtx);
+			}
+		}
+
+		pthread_rwlock_unlock(&main_lock);
+
+again:
 		/* Hack for sleeping a thread */
-		pthread_cond_timedwait(&thrd->cond, &thrd->mtx, &ts);
+		pthread_cond_timedwait(&thr->cond, &thr->mtx, &ts);
 		if (debug >= 6)
 			syslog(LOG_WARNING,
-			    "\tAwaking from the sleep for hostname %s, %s table %s",
-			    thrd->hostname, TABLETYPE(thrd->type),
-			    TABLENAME(thrd->tablename));
+			    "\tAwaking from the sleep for hostname %s (%d)",
+			    thr->hostname, thr->refcnt);
 	}
-	pthread_mutex_unlock(&thrd->mtx);
+	thr->state = THR_DYING;
+	pthread_mutex_unlock(&thr->mtx);
 
 	if (debug >= 4)
-		syslog(LOG_ERR, "Cleaning up hostname %s", thrd->hostname);
-	pthread_mutex_destroy(&thrd->mtx);
-	pthread_cond_destroy(&thrd->cond);
-	clear_hostname_addresses(thrd);
-	if (thrd->hostname != NULL)
-		free(thrd->hostname);
-	if (thrd->tablename != NULL)
-		free(thrd->tablename);
-	if (thrd->cmd != NULL)
-		free(thrd->cmd);
-	free(thrd);
+		syslog(LOG_INFO, "Cleaning up hostname %s", thr->hostname);
+	pthread_mutex_destroy(&thr->mtx);
+	pthread_cond_destroy(&thr->cond);
+	TAILQ_REMOVE(&thread_list, thr, next);
+	addr_cleanup(&thr->rnh, thr->hostname);
+	if (thr->hostname != NULL)
+		free(thr->hostname);
+	free(thr);
 
 	return (NULL);
 }
 
 static int
-check_hostname_create(struct thread_data *thr)
+check_hostname_create(struct thread_host *thr, pthread_attr_t *attr)
 {
 	pthread_condattr_t condattr;
 
+	if (thr->state != 0)
+		return (-1);
+	thr->state = THR_STARTING;
+	if (debug > 3)
+		syslog(LOG_INFO, "Creating a new thread for host %s",
+		    thr->hostname);
 	if (pthread_mutex_init(&thr->mtx, NULL) != 0)
 		return (-1);
 	if (pthread_condattr_init(&condattr) != 0 ||
@@ -845,66 +633,65 @@ check_hostname_create(struct thread_data *thr)
 		pthread_mutex_destroy(&thr->mtx);
 		return (-1);
 	}
-	if (pthread_create(&thr->thr_pid, &attr, check_hostname, thr) != 0) {
+	if (pthread_create(&thr->thr_pid, attr, check_hostname, thr) != 0) {
 		pthread_mutex_destroy(&thr->mtx);
 		pthread_cond_destroy(&thr->cond);
 		return (-1);
 	}
 	pthread_set_name_np(thr->thr_pid, thr->hostname);
+
 	return (0);
 }
 
-static void
-clear_hostname_addresses(struct thread_data *thr)
+static int
+clear_config(struct action_list *actlist)
 {
-	struct table *a;
+	struct action *act;
+	int count;
 
-	if (!TAILQ_EMPTY(&thr->static_rnh)) {
-		while ((a = TAILQ_FIRST(&thr->static_rnh)) != NULL) {
-			TAILQ_REMOVE(&thr->static_rnh, a, entry);
-			if (a->addr)
-				free(a->addr);
-			free(a);
-		}
+	count = 0;
+	if (TAILQ_EMPTY(actlist))
+		return (count);
+	while ((act = TAILQ_FIRST(actlist)) != NULL) {
+		action_del(act, actlist);
+		count++;
 	}
 
-	if (!TAILQ_EMPTY(&thr->rnh)) {
-		filterdns_clean_table(thr, 1);
-
-		while ((a = TAILQ_FIRST(&thr->rnh)) != NULL) {
-			TAILQ_REMOVE(&thr->rnh, a, entry);
-			if (a->addr)
-				free(a->addr);
-			free(a);
-		}
-	}
+	return (count);
 }
 
 static void *
 merge_config(void *arg __unused) {
-	struct thread_list tmp_thread_list;
-	struct thread_data *thr, *tmpthr, *tmpthr2, *tmpthr3;
-	int foundexisting, error;
+	struct action_list tmp_action_list, new_action_list;
+	struct action *act, *acttmp, *acttmp2, *tmpact;
+	struct thread_host *thr;
+	int new;
+	int count, count1, count2;
 
-	TAILQ_INIT(&tmp_thread_list);
+	TAILQ_INIT(&tmp_action_list);
+	TAILQ_INIT(&new_action_list);
 
 	for (;;) {
 		pthread_mutex_lock(&sig_mtx);
-		error = pthread_cond_wait(&sig_condvar, &sig_mtx);
-		if (error != 0) {
+		if (pthread_cond_wait(&sig_condvar, &sig_mtx) != 0) {
 			syslog(LOG_ERR,
 			    "unable to wait on output queue retrying");
 			continue;
 		}
 		pthread_mutex_unlock(&sig_mtx);
 
+		syslog(LOG_INFO, "%s: configuration reload", __func__);
 		pthread_rwlock_wrlock(&main_lock);
-
-		if (!TAILQ_EMPTY(&thread_list)) {
-			while ((thr = TAILQ_FIRST(&thread_list)) != NULL) {
-				TAILQ_REMOVE(&thread_list, thr, next);
-				TAILQ_INSERT_TAIL(&tmp_thread_list, thr, next);
+	 	if (!TAILQ_EMPTY(&action_list)) {
+			count = 0;
+			while ((act = TAILQ_FIRST(&action_list)) != NULL) {
+				TAILQ_REMOVE(&action_list, act, next_list);
+				TAILQ_INSERT_TAIL(&tmp_action_list, act, next_list);
+				count++;
 			}
+			if (debug > 3)
+				syslog(LOG_INFO, "Copied %d actions to old\n",
+				    count);
 		}
 
 		if (parse_config(file)) {
@@ -913,96 +700,83 @@ merge_config(void *arg __unused) {
 			    );
 			exit(10);
 		}
+		if (!TAILQ_EMPTY(&action_list)) {
+			count = 0;
+			while ((act = TAILQ_FIRST(&action_list)) != NULL) {
+				TAILQ_REMOVE(&action_list, act, next_list);
+				TAILQ_INSERT_TAIL(&new_action_list, act, next_list);
+				count++;
+			}
+			if (debug > 3)
+				syslog(LOG_INFO, "Copied %d actions to new\n",
+				    count);
+		}
 
-		if (!TAILQ_EMPTY(&thread_list)) {
-			TAILQ_FOREACH_SAFE(thr, &thread_list, next, tmpthr2) {
-				foundexisting = 0;
+		count1 = count2 = 0;
+		TAILQ_FOREACH_SAFE(act, &new_action_list, next_list, acttmp) {
+			new = 1;
+			TAILQ_FOREACH_SAFE(tmpact, &tmp_action_list, next_list,
+			    acttmp2) {
+				if (tmpact->type != act->type)
+					continue;
+				if (strlen(tmpact->hostname) != strlen(act->hostname) ||
+				    strcmp(tmpact->hostname, act->hostname) != 0)
+					continue;
+				if ((tmpact->tablename == NULL && act->tablename != NULL) ||
+				    (tmpact->tablename != NULL && act->tablename == NULL))
+					continue;
+				if (tmpact->tablename != NULL && act->tablename != NULL &&
+				    (strlen(tmpact->tablename) != strlen(act->tablename) ||
+				     strcmp(tmpact->tablename, act->tablename) != 0))
+					continue;
 
-				TAILQ_FOREACH_SAFE(tmpthr, &tmp_thread_list,
-				    next, tmpthr3) {
-					if (thr->type != tmpthr->type)
-						continue;
-					if (strlen(thr->hostname) !=
-					    strlen(tmpthr->hostname))
-						continue;
-					if (strncmp(thr->hostname,
-					    tmpthr->hostname,
-					    strlen(thr->hostname)))
-						continue;
-
-					if (thr->tablename != NULL &&
-					    (strlen(thr->tablename) !=
-					    strlen(tmpthr->tablename) ||
-					    strncmp(thr->tablename,
-						tmpthr->tablename,
-						strlen(thr->tablename)))
-					    )
-						continue;
-
-					TAILQ_REMOVE(&thread_list, thr, next);
-					TAILQ_REMOVE(&tmp_thread_list, tmpthr,
-					    next);
-					TAILQ_INSERT_HEAD(&thread_list, tmpthr,
-					    next);
-					if (thr->cmd != NULL) {
-						if (tmpthr->cmd != NULL) {
-							if ((strlen(thr->cmd) !=
-							    strlen(tmpthr->cmd)
-							    || strncmp(thr->cmd,
-								tmpthr->cmd,
-								strlen(thr->cmd)))
-							    ) {
-								free(tmpthr->cmd);
-								tmpthr->cmd =
-								    strdup(thr->cmd);
-							}
-						} else if (thr->cmd != NULL)
-							tmpthr->cmd = strdup(thr->cmd);
-					}
-					if (thr->hostname != NULL)
-						free(thr->hostname);
-					if (thr->tablename != NULL)
-						free(thr->tablename);
-					if (thr->cmd != NULL)
-						free(thr->cmd);
-					free(thr);
-					if (debug > 3)
-						syslog(LOG_ERR,
-						    "Waking resolving thread for host %s",
-						    thr->hostname);
-					tmpthr->exit = 2;
-					if (tmpthr->type != CMD_TYPE)
-						/*
-						 * XXX: Do we really need to
-						 * call filterdns_clean_table()
-						 * at this point?
-						 */
-						filterdns_clean_table(tmpthr, 1);
-					pthread_mutex_lock(&tmpthr->mtx);
-					pthread_cond_signal(&tmpthr->cond);
-					pthread_mutex_unlock(&tmpthr->mtx);
-					foundexisting = 1;
-					break;
-				}
-
-				if (foundexisting == 0) {
-					if (debug > 3)
-						syslog(LOG_ERR,
-						    "Creating a new thread for host %s!",
-						    thr->hostname);
-					if (check_hostname_create(thr) == -1)
-						syslog(LOG_ERR,
-						    "Unable to create monitoring thread for host %s! It will not be monitored!",
-						    thr->hostname);
-				}
+				/* Remove the new copy and use the existing entry. */
+				TAILQ_REMOVE(&tmp_action_list, tmpact, next_list);
+				TAILQ_INSERT_HEAD(&action_list, tmpact, next_list);
+				action_del(act, &new_action_list);
+				new = 0;
+				count1++;
+				break;
+			}
+			if (new == 1) {
+				TAILQ_REMOVE(&new_action_list, act, next_list);
+				TAILQ_INSERT_HEAD(&action_list, act, next_list);
+				count2++;
 			}
 		}
-		if (debug > 3)
-			syslog(LOG_ERR, "Cleaning up previous hostnames");
-		clear_config(&tmp_thread_list);
+		if (debug > 3) {
+			syslog(LOG_INFO,
+			    "Loaded actions: %d old and %d new = %d total",
+			    count1, count2, count1 + count2);
+			syslog(LOG_INFO, "Cleaning up previous actions");
+		}
+		count = clear_config(&tmp_action_list);
+		if (count > 0 && debug > 3)
+			syslog(LOG_INFO, "Stopped %d old actions\n", count);
+
+		if (!TAILQ_EMPTY(&new_action_list) ||
+		    !TAILQ_EMPTY(&tmp_action_list))
+			errx(6, "assert: temporary lists are not empty.");
 		pthread_rwlock_unlock(&main_lock);
 
+		pthread_rwlock_rdlock(&main_lock);
+		TAILQ_FOREACH(act, &action_list, next_list) {
+			if (act->state != 0)
+				continue;
+			if (action_create(act, &g_attr) != 0)
+				errx(2, "could not start action thread.");
+		}
+		TAILQ_FOREACH(thr, &thread_list, next) {
+			if (thr->state != 0)
+				continue;
+			if (check_hostname_create(thr, &g_attr) == -1)
+				errx(2, "could not start host thread for %s",
+				    thr->hostname);
+		}
+		pthread_rwlock_unlock(&main_lock);
 	}
+
+	return (NULL);
 }
 
 static void
@@ -1011,7 +785,7 @@ handle_signal(int sig)
 	if (debug >= 3)
 		syslog(LOG_WARNING, "Received signal %s(%d).", strsignal(sig),
 		    sig);
-	switch(sig) {
+	switch (sig) {
 		case SIGHUP:
 			pthread_mutex_lock(&sig_mtx);
 			pthread_cond_signal(&sig_condvar);
@@ -1020,8 +794,10 @@ handle_signal(int sig)
 		case SIGTERM:
 		case SIGINT:
 			pthread_rwlock_wrlock(&main_lock);
-			clear_config(&thread_list);
+			clear_config(&action_list);
 			pthread_rwlock_unlock(&main_lock);
+			syslog(LOG_INFO, "Waiting 2 seconds for threads to finish");
+			sleep(2);
 			exit(0);
 			break;
 		default:
@@ -1031,40 +807,34 @@ handle_signal(int sig)
 }
 
 static void
-clear_config(struct thread_list *thrlist)
+filterdns_usage(void)
 {
-	struct thread_data *thr;
-
-	if (TAILQ_EMPTY(thrlist))
-		return;
-
-	while ((thr = TAILQ_FIRST(thrlist)) != NULL) {
-		if (debug >= 5)
-			syslog(LOG_INFO, "Clearing out hostname %s",
-			    thr->hostname);
-		clear_hostname_addresses(thr);
-		TAILQ_REMOVE(thrlist, thr, next);
-		thr->exit = 1;
-	}
-}
-
-static void filterdns_usage(void) {
-
 	fprintf(stderr, "usage: filterdns -f -p pidfile -i interval -c filecfg -d debuglevel\n");
 	exit(4);
 }
 
-int main(int argc, char *argv[]) {
-	struct thread_data *thr;
-	int error, ch;
-	char *pidfile;
+int
+main(int argc, char *argv[])
+{
 	FILE *pidfd;
+	char *pidfile;
+	int ch, foreground;
+	pthread_t sig_thr;
 	sig_t sig_error;
-	int foreground = 0;
+	struct action *act;
+	struct thread_host *thr;
+	uid_t uid;
+
+	/*
+	 * Check if filterdns is running as root.  root access is needed later
+	 * when dealing with the firewall tables.
+	 */
+	if ((uid = getuid()) != 0)
+		errx(1, "filterdns can only run as root (uid=%d).", uid);
 
 	file = NULL;
 	pidfile = NULL;
-
+	foreground = 0;
 	while ((ch = getopt(argc, argv, "c:d:fi:p:v")) != -1) {
 		switch (ch) {
 		case 'c':
@@ -1081,7 +851,7 @@ int main(int argc, char *argv[]) {
 			if (interval < 1) {
 				fprintf(stderr, "Invalid interval %d\n",
 				    interval);
-				return (3);
+				exit(3);
 			}
 			break;
 		case 'p':
@@ -1093,42 +863,37 @@ int main(int argc, char *argv[]) {
 			/* NOTREACHED */
 			break;
 		default:
-			fprintf(stderr, "Wrong option: %c given!\n", ch);
 			filterdns_usage();
-			return (ch);
+			/* NOTREACHED */
 			break;
 		}
 	}
 
 	if (file == NULL) {
-		fprintf(stderr, "Configuration file is mandatory!");
+		fprintf(stderr, "Configuration file is mandatory!\n");
 		filterdns_usage();
-		return (-1);
-	}
-
-	if (foreground == 0) {
-		(void)freopen("/dev/null", "w", stdout);
-		(void)freopen("/dev/null", "w", stdin);
-		closefrom(3);
-	}
-
-	TAILQ_INIT(&thread_list);
-	if (parse_config(file)) {
-		syslog(LOG_ERR, "unable to open configuration file");
-		return (EX_OSERR);
-	}
-
-	dev = open("/dev/pf", O_RDWR);
-	if (dev < 0)
-		errx(1, "Could not open device.");
-
-	/* go into background */
-	if (!foreground && daemon(0, 0) == -1) {
-		printf("error in daemon\n");
+		/* NOTREACHED */
 		exit(1);
 	}
 
-	if (!foreground && pidfile) {
+	closefrom(3);
+	if (foreground == 0) {
+		(void)freopen("/dev/null", "w", stdout);
+		(void)freopen("/dev/null", "w", stdin);
+	}
+
+	TAILQ_INIT(&action_list);
+	TAILQ_INIT(&thread_list);
+	if (parse_config(file)) {
+		syslog(LOG_ERR, "unable to open configuration file");
+		errx(1, "cannot open the configuration file.");
+	}
+
+	/* Go to background. */
+	if (!foreground && daemon(0, 0) == -1)
+		err(1, "daemon: ");
+
+	if (foreground == 0 && pidfile) {
 		/* write PID to file */
 		pidfd = fopen(pidfile, "w");
 		if (pidfd) {
@@ -1137,13 +902,13 @@ int main(int argc, char *argv[]) {
 			fprintf(pidfd, "%d\n", getpid());
 			flock(fileno(pidfd), LOCK_UN);
 			fclose(pidfd);
-		} else
+		} else {
 			syslog(LOG_WARNING, "could not open pid file");
+			err(2, "could not open pid file: ");
+		}
 	}
 
-	/*
-	 * Catch SIGHUP in order to reread configuration file.
-	 */
+	/* Catch SIGHUP in order to reload configuration file. */
 	sig_error = signal(SIGHUP, handle_signal);
 	if (sig_error == SIG_ERR)
 		err(EX_OSERR, "unable to set signal handler");
@@ -1155,29 +920,28 @@ int main(int argc, char *argv[]) {
 		err(EX_OSERR, "unable to set signal handler");
 
 	pthread_rwlock_init(&main_lock, NULL);
+	pthread_attr_init(&g_attr);
+	pthread_attr_setdetachstate(&g_attr, PTHREAD_CREATE_DETACHED);
 
-	pthread_attr_init(&attr);
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-
+	TAILQ_FOREACH(act, &action_list, next_list) {
+		if (action_create(act, &g_attr) != 0)
+			errx(2, "could not start action thread.");
+	}
 	TAILQ_FOREACH(thr, &thread_list, next) {
-		if (debug > 3)
-			syslog(LOG_ERR, "Creating a new thread for host %s!",
+		if (check_hostname_create(thr, &g_attr) == -1)
+			errx(2, "could not start host thread for %s",
 			    thr->hostname);
-		if (check_hostname_create(thr) == -1)
-			if (debug >= 1)
-				syslog(LOG_ERR,
-				    "Unable to create monitoring thread for host %s",
-				    thr->hostname);
 	}
 
+	/* Config reload. */
 	pthread_mutex_init(&sig_mtx, NULL);
 	pthread_cond_init(&sig_condvar, NULL);
-	error = pthread_create(&sig_thr, &attr, merge_config, NULL);
-	if (error != 0) {
+	if (pthread_create(&sig_thr, &g_attr, merge_config, NULL) != 0) {
 		if (debug >= 1)
 			syslog(LOG_ERR, "Unable to create signal thread %s",
 			    thr->hostname);
 	}
 	pthread_set_name_np(sig_thr, "signal-thread");
+
 	pthread_exit(NULL);
 }
