@@ -20,8 +20,8 @@ RUN_DEPENDS=	nxproxy:net/nxproxy \
 		x2goclient-cli:net/x2goclient-cli
 
 USES=		qmake qt:4
-USE_XORG=	xpm
-USE_QT=		gui network svg \
+USE_XORG=	x11 xpm
+USE_QT=		corelib gui network svg \
 		linguisttools_build moc_build rcc_build uic_build
 QMAKE_ARGS=	QMAKE_LRELEASE="${LRELEASE}"
 
