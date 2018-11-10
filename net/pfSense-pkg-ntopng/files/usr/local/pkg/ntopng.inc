@@ -101,6 +101,11 @@ function ntopng_sync_package() {
 		$dns_mode = "--dns-mode " . escapeshellarg($ntopng_config['dns_mode']);
 	}
 
+	/* Command Line Options */
+	if (strlen($ntopng_config['cli_options']) > 0) {
+		$cli_options = $ntopng_config['cli_options'];
+	}
+
 	/* Local Networks */
 	switch ($ntopng_config['local_networks']) {
 		case "selected":
@@ -164,7 +169,7 @@ EOD;
 # Create DB dir before starting, in case it was removed. Otherwise redis will fail.
 	/bin/mkdir -p /var/db/ntopng
 	{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb &
-	/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &
+	/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} {$cli_options} &
 EOD;
 	// TODO:
 	// Add support for --data-dir /somewhere, --httpdocs-dir /somewhereelse,

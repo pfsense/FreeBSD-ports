@@ -125,6 +125,12 @@
 			<type>info</type>
 		</field>
 		<field>
+			<fielddescr>Command Line Options</fielddescr>
+			<fieldname>cli_options</fieldname>
+			<description>Custom Command Line Options For ntopng. Get available options at: https://www.ntop.org/guides/ntopng/cli_options.html</description>
+			<type>input</type>
+		</field>
+		<field>
 			<name>Local Networks</name>
 			<type>listtopic</type>
 		</field>
