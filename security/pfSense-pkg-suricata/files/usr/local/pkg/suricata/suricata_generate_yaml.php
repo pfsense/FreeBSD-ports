@@ -3,7 +3,7 @@
  * suricata_generate_yaml.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
@@ -650,6 +650,8 @@ else
 // Add the OS-specific host policies if configured, otherwise
 // just set default to BSD for all networks.
 $host_os_policy = "";
+if (!is_array($suricatacfg['host_os_policy']))
+	$suricatacfg['host_os_policy'] = array();
 if (!is_array($suricatacfg['host_os_policy']['item']))
 	$suricatacfg['host_os_policy']['item'] = array();
 if (count($suricatacfg['host_os_policy']['item']) < 1)
@@ -692,6 +694,8 @@ else {
 // just set default to IDS for all networks.
 $http_hosts_policy = "";
 $http_hosts_default_policy = "";
+if (!is_array($suricatacfg['libhtp_policy']))
+	$suricatacfg['libhtp_policy'] = array();
 if (!is_array($suricatacfg['libhtp_policy']['item']))
 	$suricatacfg['libhtp_policy']['item'] = array();
 if (count($suricatacfg['libhtp_policy']['item']) < 1) {
@@ -824,6 +828,8 @@ if ($suricatacfg['enable_iprep'] == "on") {
 	$iprep_config .= "reputation-categories-file: {$iprep_path}/{$suricatacfg['iprep_catlist']}\n";
 	$iprep_config .= "reputation-files:";
 
+	if (!is_array($suricatacfg['iplist_files']))
+		$suricatacfg['iplist_files'] = array();
 	if (!is_array($suricatacfg['iplist_files']['item']))
 		$suricatacfg['iplist_files']['item'] = array();
 
