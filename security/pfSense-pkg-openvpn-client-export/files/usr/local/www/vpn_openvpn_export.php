@@ -27,7 +27,7 @@ require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
 require_once("classes/Form.class.php");
 
-global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
+global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev, $dyndns_split_domain_types;
 
 $pgtitle = array("OpenVPN", "Client Export Utility");
 
@@ -416,7 +416,7 @@ $useaddrlist = array(
 
 if (is_array($config['dyndnses']['dyndns'])) {
 	foreach ($config['dyndnses']['dyndns'] as $ddns) {
-		if ($ddns['type'] == 'namecheap') {
+		if (in_array($ddns['type'], $dyndns_split_domain_types)) {
 			$useaddrlist[$ddns["host"] . '.' . $ddns["domainname"]] = $ddns["host"] . '.' . $ddns["domainname"];
 		} else {
 			$useaddrlist[$ddns["host"]] = $ddns["host"];
