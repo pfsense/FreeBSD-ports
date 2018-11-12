@@ -113,9 +113,12 @@ function suricata_start($suricatacfg, $if_real) {
 
 	$suricatadir = SURICATADIR;
 	$suricata_uuid = $suricatacfg['uuid'];
+	$suricatalogdir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
 	$suricatabindir = SURICATA_PBI_BINDIR;
 
 	if ($suricatacfg['enable'] == 'on') {
+		// Truncate suricata.log file for this interface.
+		file_put_contents("{$suricatalogdir}/suricata.log", '');
 		$run_mode = $suricatacfg['ips_mode'] == 'ips_mode_inline' ? '--netmap' : '-i ' . $if_real;
 		log_error("[Suricata] Suricata START for {$suricatacfg['descr']}({$if_real})...");
 		mwexec_bg("{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
@@ -3671,6 +3674,7 @@ EOE;
 	fi
 
 	if [ -z \$pid ]; then
+		/bin/cp /dev/null {$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/suricata.log
 		/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata START for {$value['descr']}({$suricata_uuid}_{$if_real})..."
 		{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid > /dev/null 2>&1
 	fi
