@@ -3,11 +3,11 @@
  * suricata_etiqrisk_update.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2016 Bill Meeks
+ * Copyright (C) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,6 +73,10 @@ $iprep_path = SURICATA_IPREP_PATH;
 $iqRisk_tmppath = "{$g['tmp_path']}/IQRisk/";
 $success = FALSE;
 
+if (!is_array($config['installedpackages']['suricata']))
+	$config['installedpackages']['suricata'] = array();
+if (!is_array($config['installedpackages']['suricata']['config']))
+	$config['installedpackages']['suricata']['config'] = array();
 if (!is_array($config['installedpackages']['suricata']['config'][0]))
 	$config['installedpackages']['suricata']['config'][0] = array();
 
