@@ -166,7 +166,7 @@ EXTRA_PATCHES+=		${FILESDIR}/extra-patch-shared_output.c
 CFLAGS+=	-march=i486
 .endif
 
-.if ${ARCH} == "arm"
+.if ${ARCH} == "armv6"
 WITH_DEBUG=	yes
 .endif
 
