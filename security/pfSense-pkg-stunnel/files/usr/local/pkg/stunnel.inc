@@ -28,14 +28,14 @@ require_once('service-utils.inc');
 
 define('STUNNEL_LOCALBASE', '/usr/local');
 define('STUNNEL_ETCDIR', STUNNEL_LOCALBASE . "/etc/stunnel");
+define('STUNNEL_CHROOTDIR', '/var/tmp/stunnel');
 
 function stunnel_save() {
 	global $config;
-	conf_mount_rw();
-	safe_mkdir(STUNNEL_ETCDIR, 0755);
+	stunnel_make_directories();
 	$fout = fopen(STUNNEL_ETCDIR . "/stunnel.conf", "w");
 	fwrite($fout, "cert = " . STUNNEL_ETCDIR . "/stunnel.pem \n");
-	fwrite($fout, "chroot = /var/tmp/stunnel \n");
+	fwrite($fout, "chroot = " . STUNNEL_CHROOTDIR . " \n");
 	fwrite($fout, "setuid = stunnel \n");
 	fwrite($fout, "setgid = stunnel \n");
 	init_config_arr(array('installedpackages', 'stunnel', 'config'));
@@ -76,14 +76,18 @@ function stunnel_save() {
 		}
 	}
 
-	conf_mount_ro();
-
 	restart_service("stunnel");
+}
+
+function stunnel_make_directories() {
+	safe_mkdir(STUNNEL_ETCDIR);
+	safe_mkdir(STUNNEL_CHROOTDIR . "/var/tmp/run/stunnel");
+	system("/usr/sbin/chown -R stunnel:stunnel " . STUNNEL_CHROOTDIR);
 }
 
 function stunnel_install() {
 	global $config;
-	safe_mkdir(STUNNEL_ETCDIR);
+	stunnel_make_directories();
 
 	// Generate a self-signed default certificate if one does not already exist.
 	$stunnel_pem_filename = STUNNEL_ETCDIR . "/stunnel.pem";
@@ -112,8 +116,6 @@ function stunnel_install() {
 		chmod(STUNNEL_ETCDIR . "/stunnel.pem", 0600);
 	}
 
-	@mkdir("/var/tmp/stunnel/var/tmp/run/stunnel", 0755, true);
-	system("/usr/sbin/chown -R stunnel:stunnel /var/tmp/stunnel");
 	$_rcfile['file'] = 'stunnel.sh';
 	$_rcfile['start'] = STUNNEL_LOCALBASE . "/bin/stunnel " . STUNNEL_ETCDIR . "/stunnel.conf \n\t";
 	$_rcfile['stop'] = "/usr/bin/killall stunnel \n\t";
