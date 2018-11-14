@@ -53,7 +53,9 @@ function stunnel_save() {
 			$cert = lookup_cert($pkgconfig['certificate']);
 			if ($cert != false) {
 				file_put_contents(STUNNEL_ETCDIR . "/{$pkgconfig['certificate']}.pem", 
-					base64_decode($cert['prv']) . base64_decode($cert['crt']) . ca_chain($cert));
+					trim(base64_decode($cert['prv'])) . "\n" .
+					trim(base64_decode($cert['crt'])) . "\n" .
+					ca_chain($cert));
 				fwrite($fout, "cert = " . STUNNEL_ETCDIR . "/{$pkgconfig['certificate']}.pem\n");
 				$in_use_certs[] = "{$pkgconfig['certificate']}.pem";
 			}
@@ -91,11 +93,7 @@ function stunnel_install() {
 		$cert['descr'] = sprintf(gettext("stunnel default (%s)"), $cert['refid']);
 
 		$dn = array(
-			'countryName' => "US",
-			'stateOrProvinceName' => "State",
-			'localityName' => "Locality",
 			'organizationName' => "{$g['product_name']} stunnel Self-Signed Certificate",
-			'emailAddress' => "admin@{$config['system']['hostname']}.{$config['system']['domain']}",
 			'commonName' => "{$config['system']['hostname']}-{$cert['refid']}");
 		$old_err_level = error_reporting(0); /* otherwise openssl_ functions throw warnings directly to a page screwing menu tab */
 		if (!cert_create($cert, null, 2048, 365, $dn, "self-signed", "sha256")) {
@@ -108,7 +106,9 @@ function stunnel_install() {
 		error_reporting($old_err_level);
 
 		// Write the .pem file to the expected default location for stunnel and set up required permissions.
-		file_put_contents(STUNNEL_ETCDIR . "/stunnel.pem", base64_decode($cert['prv']) . base64_decode($cert['crt']));
+		file_put_contents(STUNNEL_ETCDIR . "/stunnel.pem",
+			trim(base64_decode($cert['prv'])) . "\n" .
+			trim(base64_decode($cert['crt'])) . "\n");
 		chmod(STUNNEL_ETCDIR . "/stunnel.pem", 0600);
 	}
 
