@@ -3227,7 +3227,7 @@ function sync_package_pfblockerng($cron='') {
 			if (isset($config['installedpackages']['pfblockerngdnsbl']['config'])) {
 				foreach ($config['installedpackages']['pfblockerngdnsbl']['config'] as $list) {
 					// If only the 'customlist' is defined. Remove the 'List row' data.
-					if (empty($list['row'][0]['url'])) {
+					if (isset($list['row']) && empty($list['row'][0]['url'])) {
 						unset($list['row']);
 					}
 
