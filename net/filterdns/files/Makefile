@@ -2,7 +2,7 @@
 # Makefile
 #
 # part of pfSense (https://www.pfsense.org)
-# Copyright (c) 2009-2011 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2009-2018 Rubicon Communications, LLC (Netgate)
 # All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ BINDIR?=        ${PREFIX}/sbin
 DATAMODE=       0444
 INSTALL?=       /usr/bin/install
 
-OBJS=           filterdns.o parse.o
+OBJS=           filterdns.o parse.o tables.o
 
 WARNS=          -Wsystem-headers -Werror -Wall -Wno-format-y2k -W \
                 -Wno-unused-parameter -Wstrict-prototypes \
@@ -44,7 +44,7 @@ ${PROG}: ${OBJS}
 	cc ${CFLAGS} -o ${PROG} ${OBJS} ${LDD}
 
 install: all
-	${INSTALL} ${PROG} ${BINDIR}/
+	${INSTALL} -m 0755 -s ${PROG} ${BINDIR}/
 
 clean:
 	rm -f ${PROG} ${PROG}.core *.o y.tab.h

@@ -3,6 +3,7 @@
 
 PORTNAME=	clamav
 PORTVERSION=	0.100.2
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://www.clamav.net/downloads/production/
 
@@ -163,6 +164,10 @@ EXTRA_PATCHES+=		${FILESDIR}/extra-patch-shared_output.c
 
 .if ${ARCH} == "i386"
 CFLAGS+=	-march=i486
+.endif
+
+.if ${ARCH} == "armv6"
+WITH_DEBUG=	yes
 .endif
 
 post-patch:

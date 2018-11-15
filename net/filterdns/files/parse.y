@@ -2,7 +2,7 @@
  * parse.y
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -83,70 +83,65 @@ grammar		: /* empty */
 		;
 
 dnsrule		: ftype STRING STRING pipe command {
-			struct thread_data *thr = NULL;
-			char *p, *q;
+			int eexist;
+			struct action *act = NULL;
+			struct thread_host *thr = NULL;
 
-			if ($1 != IPFW_TYPE && $1 != PF_TYPE) {
+			if (($1 != IPFW_TYPE && $1 != PF_TYPE) || $2 == NULL) {
 				yyerror("Wrong configuration parameters");
 				YYERROR;
 			}
-			if (thr == NULL) {
-				thr = calloc(1, sizeof(*thr));
-				if (thr == NULL) {
-					yyerror("Filterdns, could not allocate memory");
-					YYERROR;
-				}
-				thr->exit = 0;
-				thr->type = $1;
-				thr->hostname = strdup($2);
-				if ((p = strrchr(thr->hostname, '/')) != NULL) {
-					thr->mask = strtol(p+1, &q, 0);
-					thr->mask6 = thr->mask;
-					if (!q || *q || thr->mask > 128 || q == (p+1)) {
-						syslog(LOG_WARNING, "invalid netmask '%s' for hostname %s\n", p, thr->hostname);
-						YYERROR;
-					}
-					*p = '\0';
-				} else {
-					thr->mask = 32;
-					thr->mask6 = 128;
-				}
-				free($2);
-				thr->tablename = strdup($3);
+			act = action_add($1, $2, $3, $4, $5, &eexist);
+			free($2);
+			if ($3)
 				free($3);
-				if ($4)
-					thr->pipe = $4;
-				if ($5) {
-					thr->cmd = strdup($5);
-					free($5);
-				}
-				TAILQ_INIT(&thr->rnh);
-				TAILQ_INIT(&thr->static_rnh);
-				TAILQ_INSERT_TAIL(&thread_list, thr, next);
+			if ($5)
+				free($5);
+			if (eexist != 0) {
+				yyerror("filterdns: duplicate configuration entry found");
+				free($2);
+				YYERROR;
+			}
+			if (act == NULL) {
+				yyerror("filterdns: could not allocate memory");
+				free($2);
+				YYERROR;
+			}
+			if (thr == NULL)
+				thr = host_add(act);
+			if (thr == NULL) {
+				yyerror("filterdns: could not allocate memory");
+				YYERROR;
 			}
 		}
 		| CMD STRING command {
-			struct thread_data *thr = NULL;
+			int eexist;
+			struct thread_host *thr = NULL;
+			struct action *act = NULL;
 
-			if (!$3) {
-				yyerror("Command is mandatory on CMD type directive");
+			if ($2 == NULL || $3 == NULL) {
+				yyerror("Hostname and Command are mandatory on CMD type directive");
 				YYERROR;
 			}
-			thr = calloc(1, sizeof(*thr));
-			if (thr == NULL) {
-				yyerror("Filterdns, could not allocate memory");
-				YYERROR;
-			}
-			thr->hostname = strdup($2);
+			act = action_add(CMD_TYPE, $2, NULL, 0, $3, &eexist);
 			free($2);
-			thr->type = CMD_TYPE;
-			thr->cmd = strdup($3);
 			free($3);
-			thr->tablename = NULL;
-
-			TAILQ_INIT(&thr->rnh);
-			TAILQ_INIT(&thr->static_rnh);
-                        TAILQ_INSERT_TAIL(&thread_list, thr, next);
+			if (eexist != 0) {
+				yyerror("filterdns: duplicate configuration entry found");
+				free($2);
+				YYERROR;
+			}
+			if (act == NULL) {
+				yyerror("filterdns: could not allocate memory");
+				free($2);
+				YYERROR;
+			}
+			if (thr == NULL)
+				thr = host_add(act);
+			if (thr == NULL) {
+				yyerror("filterdns: could not allocate memory");
+				YYERROR;
+			}
 		}
 		;
 

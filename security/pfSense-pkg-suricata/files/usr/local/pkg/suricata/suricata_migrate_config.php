@@ -3,7 +3,7 @@
  * suricata_migrate_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2018 Bill Meeks
  * All rights reserved.
  *
@@ -218,6 +218,8 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['u2_archive_log
 foreach ($rule as &$r) {
 
 	// Initialize arrays for supported preprocessors if necessary
+	if (!is_array($r['libhtp_policy']))
+		$r['libhtp_policy'] = array();
 	if (!is_array($r['libhtp_policy']['item']))
 		$r['libhtp_policy']['item'] = array();
 

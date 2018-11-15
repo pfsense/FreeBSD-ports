@@ -56,6 +56,14 @@ $snort_version = SNORT_BIN_VERSION;
 
 // Create a collapsed version string for use in the tarball filename
 $snortver = str_replace(".", "", SNORT_BIN_VERSION);
+
+// Make sure the rules version is at least 5 characters in length
+// by adding trailing zeros if required.
+if (strlen($snortver) < 5) {
+	$snortver = str_pad($snortver, 5, '0', STR_PAD_RIGHT);
+	$snort_version .= ".0";
+}
+
 $snort_filename = "snortrules-snapshot-{$snortver}.tar.gz";
 $snort_filename_md5 = "{$snort_filename}.md5";
 $snort_rule_url = VRT_DNLD_URL;
@@ -470,9 +478,8 @@ if ($snortdownload == 'on') {
 	if (file_exists("{$tmpfname}/{$snort_filename}")) {
 		snort_update_status(gettext("Installing Snort Subscriber ruleset..."));
 
-		/* Currently, only FreeBSD-8-1, FreeBSD-9-0 and FreeBSD-10-0 precompiled SO rules exist from Snort.org */
-		/* Default to FreeBSD-10-0 for now as that is highest available version of SO rules */
-		$freebsd_version_so = 'FreeBSD-10-0';
+		/* Default to FreeBSD-11 for now as that is highest available version of SO rules */
+		$freebsd_version_so = 'FreeBSD-11';
 
 		/* Remove the old Snort rules files */
 		$vrt_prefix = VRT_FILE_PREFIX;
