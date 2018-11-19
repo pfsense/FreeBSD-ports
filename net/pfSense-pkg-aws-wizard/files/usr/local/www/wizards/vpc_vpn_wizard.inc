@@ -27,12 +27,8 @@ require_once("aws-sdk/aws-autoloader.php");
 
 use Aws\Ec2\Ec2Client;
 use Aws\Exception\AwsException;
-
-$openbgpd_include = "/usr/local/pkg/openbgpd.inc";
-if (file_exists($openbgpd_include)) {
-	require_once($openbgpd_include);
-}
-
+use Aws\Credentials\AssumeRoleCredentialProvider;
+use Aws\Sts\StsClient;
 
 /*
  *
@@ -49,24 +45,42 @@ $default_regions = [
 ];
 
 /* return a client object */
-function makeClient($awskey, $secret, $part, $region) {
+function makeClient($awskey, $secret, $role, $part, $region) {
 
 	global $default_regions;
 
 	if (!isset($region)) {
 		$region = $default_regions[$part];
 	}
-
-	$ec2Client = new \Aws\Ec2\Ec2Client([
-		'version' => '2016-11-15',
-		'region' => $region,
-		'partition' => $part,
-		'credentials' => [
-			'key' => $awskey,
-			'secret' => $secret,
-		]
-	]);
-
+	if (isset($role)) {
+		$hostname = $config['system']['hostname'];
+		$assumeRoleCredentials = new AssumeRoleCredentialProvider([
+			'client' => new StsClient([
+				'region' => $region,
+				'version' => '2011-06-15'
+			]),
+			'assume_role_params' => [
+				'RoleArn' => $role,
+				'RoleSessionName' => 'pfsense-' . $hostname,
+			]
+		]);
+		$ec2Client = new \Aws\Ec2\Ec2Client([
+			'version' => '2016-11-15',
+			'region' => $region,
+			'partition' => $part,
+			'credentials' => $assumeRoleCredentials
+		]);
+	} else {
+		$ec2Client = new \Aws\Ec2\Ec2Client([
+			'version' => '2016-11-15',
+			'region' => $region,
+			'partition' => $part,
+			'credentials' => [
+				'key' => $awskey,
+				'secret' => $secret,
+			]
+		]);
+	}
 	return $ec2Client;
 }
 
@@ -80,27 +94,26 @@ function retrieveRegions($client) {
 
 /* get the list of VPCs for a user/region specified in the credentials */
 function retrieveVPCs($client) {
-        
+
 	$vpcs = $client->describeVpcs(array(
 		'DryRun' => false
 	));
-         
+
 	return($vpcs['Vpcs']);
-}                               
+}
 
 /* get the CIDR block associated with a particular VPC */
 function getVpcCidr($client, $vpc_id) {
-    
+
 	$vpcs = $client->describeVpcs(array(
 		'DryRun' => false,
 		'VpcIds' => array($vpc_id)
 	));
-                
+
 	return($vpcs['Vpcs'][0]['CidrBlock']);
 }
 
 function addTags($client, $resource_id, $tag_key, $tag_value) {
-
 	$result = $client->createTags(array(
 		'DryRun' => false,
 		'Resources' => array($resource_id),
@@ -111,7 +124,6 @@ function addTags($client, $resource_id, $tag_key, $tag_value) {
 			)
 		)
 	));
-
 }
 
 
@@ -124,8 +136,7 @@ function addVpnGateway($client, $vpc_id) {
 	$vp_gw = $client->createVpnGateway(array(
 			'DryRun' => false,
 			'Type' => 'ipsec.1'
-		)	
-	);
+		));
 
 	/* set a tag to name this gateway */
 	$vp_gw_id = $vp_gw['VpnGateway']['VpnGatewayId'];
@@ -150,7 +161,6 @@ function addVpnGateway($client, $vpc_id) {
 function getVpnGateway($client, $vpc_id) {
 
 	global $savemsg;
-
 	$vp_gws = $client->describeVpnGateways(array(
 		'DryRun' => false,
 		'Filters' => array(
@@ -172,7 +182,7 @@ function getVpnGateway($client, $vpc_id) {
 		$vp_gw_id = addVpnGateway($client, $vpc_id);
 		$savemsg .= "<br>Added new VPN gateway $vp_gw_id.";
 	}
-                
+
 	return($vp_gw_id);
 }
 
@@ -182,7 +192,6 @@ function addCustomerGateway($client, $pub_ip, $bgp_asn = '65000') {
 	 * Create a new customer gateway with the appropriate public IP address.
 	 * Return the ID.
 	 */
-
 	$result = $client->createCustomerGateway(array(
 			'DryRun' => false,
 			'Type' => 'ipsec.1',
@@ -210,7 +219,6 @@ function getCustomerGateway($client, $pub_ip, $bgp_asn = '65000') {
 	 * Search for a customer gateway matching the public IP address that
 	 * the user entered. If there is none, create one. Return the ID.
 	 */
-
 	$cust_gws = $client->describeCustomerGateways(
 		array(
 			'DryRun' => false,
@@ -229,14 +237,13 @@ function getCustomerGateway($client, $pub_ip, $bgp_asn = '65000') {
 	);
 
 	if (count($cust_gws['CustomerGateways']) > 0) {
-		$cust_gw_id = $cust_gws['CustomerGateways'][0]['CustomerGatewayId'
-];
+		$cust_gw_id = $cust_gws['CustomerGateways'][0]['CustomerGatewayId'];
 		$savemsg .= gettext("<br>Using existing customer gateway $cust_gw_id.");
 	} else {
 		$cust_gw_id = addCustomerGateway($client, $pub_ip, $bgp_asn);
 		$savemsg .= gettext("<br>Added customer gateway $cust_gw_id.");
 	}
-        
+
 	return($cust_gw_id);
 }
 
@@ -269,7 +276,6 @@ function getVpnConnection($client, $vp_gw_id, $cust_gw_id, $static_only) {
 	 * VPN gateway ID. If none exist, create a new one. Otherwise use
 	 * the existing one.
 	 */
-
 	$vpn_conns = $client->describeVpnConnections(array(
 		'DryRun' => false,
 		'Filters' => array(
@@ -290,10 +296,10 @@ function getVpnConnection($client, $vp_gw_id, $cust_gw_id, $static_only) {
 
 	if (count($vpn_conns['VpnConnections']) > 0) {
 		$vpn_conn = $vpn_conns['VpnConnections'][0];
-                $savemsg .= gettext("<br>Using existing VPN Connection " . $vpn_conn['VpnConnectionId'] . ".");
-        } else {
+		$savemsg .= gettext("<br>Using existing VPN Connection " . $vpn_conn['VpnConnectionId'] . ".");
+	} else {
 		$vpn_conn = addVpnConnection($client, $vp_gw_id, $cust_gw_id, $static_only);
-                $savemsg .= gettext("<br>Added VPN Connection " . $vpn_conn['VpnConnectionId'] . ".");
+		$savemsg .= gettext("<br>Added VPN Connection " . $vpn_conn['VpnConnectionId'] . ".");
 	}
 
 	return($vpn_conn);
@@ -306,7 +312,6 @@ function updateSecurityGroups($client, $vpc_id, $loc_cidrs) {
 	 * Add rules to allow traffic inbound to the VPC from the local subnets
 	 * on the pfSense side
 	 */
-
 	$sec_groups = $client->describeSecurityGroups(
 		array(
 			'DryRun' => false,
@@ -341,10 +346,9 @@ function updateSecurityGroups($client, $vpc_id, $loc_cidrs) {
 				}
 			}
 		}
-			
-
-		if (count($cidrs_to_add) == 0)
+		if (count($cidrs_to_add) == 0){
 			continue;
+		}
 
 		$cidr_arr = array();
 		foreach (array_keys($cidrs_to_add) as $cidr)
@@ -352,7 +356,6 @@ function updateSecurityGroups($client, $vpc_id, $loc_cidrs) {
 
 		$sec_group_id = $sec_group['GroupId'];
 		$missing_cidrs = implode(',', array_keys($cidrs_to_add));
-
 		$result = $client->authorizeSecurityGroupIngress(array(
 			'DryRun' => false,
 			'GroupId' => $sec_group['GroupId'],
@@ -377,7 +380,6 @@ function addVpnConnectionRoutes($client, $vpn_conn_id, $loc_cidrs) {
 	 */
 
 	global $savemsg;
-
 	$client->waitUntil('VpnConnectionAvailable',
 		array('VpnConnectionIds' => array($vpn_conn_id))
 	);
@@ -446,7 +448,6 @@ function propagateVpnRoutes($client, $vpc_id, $vp_gw_id) {
 		}
 	}
 	$savemsg .= gettext("<br>Route propagation for VPN Gateway $vp_gw_id enabled on route tables $all_route_tables.");
-			
 }
 
 
@@ -535,12 +536,11 @@ function addVpcAliases($tunnel_cfgs, $vpc_id, $vpc_cidr, $loc_cidrs) {
 
 	$our_cidrs = array();
 	$aws_cidrs = array();
-	
 	foreach ($tunnel_cfgs['vpn_connection']['ipsec_tunnel'] as $tunnel_cfg){
 		$tun_inside_addr =
-		    $tunnel_cfg['customer_gateway']['tunnel_inside_address']['ip_address'];
-                $remote_inside_addr =
-		    $tunnel_cfg['vpn_gateway']['tunnel_inside_address']['ip_address'];
+			$tunnel_cfg['customer_gateway']['tunnel_inside_address']['ip_address'];
+		$remote_inside_addr =
+			$tunnel_cfg['vpn_gateway']['tunnel_inside_address']['ip_address'];
 
 		$our_cidrs[] = $tun_inside_addr . "/32";
 		$aws_cidrs[] = $remote_inside_addr . "/32";
@@ -553,11 +553,10 @@ function addVpcAliases($tunnel_cfgs, $vpc_id, $vpc_cidr, $loc_cidrs) {
 
 	addVpcAlias("VPC_Remote_$vpc_tag", $aws_cidrs, "Networks on the VPC side for $vpc_id");
 	addVpcAlias("VPC_Local_$vpc_tag", $our_cidrs, "Networks on the pfSense side for $vpc_id");
-	
 	$savemsg .= gettext("<br>Aliases VPC_Remote_$vpc_tag and VPC_Local_$vpc_tag added.");
 }
 
-function addTunnelInsideAddresses($tunnel_cfgs) {
+function addTunnelInsideAddresses($tunnel_cfgs, $vpc_id) {
 
 	global $config, $savemsg;
 
@@ -568,17 +567,17 @@ function addTunnelInsideAddresses($tunnel_cfgs) {
 	foreach ($tunnel_cfgs['vpn_connection']['ipsec_tunnel'] as $tunnel_cfg) {
 
 		$ip_addr =
-		    $tunnel_cfg['customer_gateway']['tunnel_inside_address']['ip_address'];
+			$tunnel_cfg['customer_gateway']['tunnel_inside_address']['ip_address'];
 		if ($all_ip_addrs != '') {
 			$all_ip_addrs .= ',';
 		}
 		$all_ip_addrs .= $ip_addr;
 
 		$bits =
-		    $tunnel_cfg['customer_gateway']['tunnel_inside_address']['network_cidr'];
+			$tunnel_cfg['customer_gateway']['tunnel_inside_address']['network_cidr'];
 		$descr =
-		    "Inside address for tunnel to " .
-		    $tunnel_cfg['vpn_gateway']['tunnel_outside_address']['ip_address'];
+			"$vpc_id Inside address for tunnel to " .
+			$tunnel_cfg['vpn_gateway']['tunnel_outside_address']['ip_address'];
 
 		/* skip it if there's already a virtual IP with that address */
 		if (find_virtual_ip_alias($ip_addr))
@@ -590,6 +589,7 @@ function addTunnelInsideAddresses($tunnel_cfgs) {
 			'type' => 'single',
 			'subnet' => $ip_addr,
 			'subnet_bits' => $bits,
+			'uniqid' => uniqid(),
 			'descr' => $descr
 		);
 
@@ -726,7 +726,7 @@ function addLocalIpsecCfg($vpc_id, $tunnel_cfgs, $loc_intf, $vpc_cidr, $loc_cidr
 			'type' => 'network',
 			'address' => $tunnel_cfg['customer_gateway']['tunnel_inside_address']['ip_address'],
 			'netbits' => $tunnel_cfg['customer_gateway']['tunnel_inside_address']['network_cidr']
-		);		
+		);
 		$ph2['remoteid'] = array(
 			'type' => 'network',
 			'address' => $remote_inside_addr,
@@ -797,17 +797,16 @@ function addLocalIpsecCfg($vpc_id, $tunnel_cfgs, $loc_intf, $vpc_cidr, $loc_cidr
 
 function is_bgp_group_configured($group_name) {
 
-	global $config;
+	global $config, $savemsg;
 
 	if (!is_array($config['installedpackages']) ||
-	    !is_array($config['installedpackages']['openbgpdgroups']) ||
-	    !is_array($config['installedpackages']['openbgpdgroups']['config'])) {
+		!is_array($config['installedpackages']['frrbgpneighbors']) ||
+		!is_array($config['installedpackages']['frrbgpneighbors']['config'])) {
 		return(false);
 	}
 
-	foreach ($config['installedpackages']['openbgpdgroups']['config'] as $$group_cfg) {
-		if (isset($group_cfg['name']) &&
-		    $group_cfg['name'] == $group_name) {
+	foreach ($config['installedpackages']['frrbgpneighbors']['config'] as $group_cfg) {
+		if (isset($group_cfg['peer']) && $group_cfg['peer'] == $group_name) {
 			return(true);
 		}
 	}
@@ -821,22 +820,21 @@ function is_bgp_neighbor_configured($neighbor_addr) {
 
 	/* if there's no neighbor configuration, initialize it and return */
 	if (!is_array($config['installedpackages']) ||
-	    !is_array($config['installedpackages']['openbgpdneighbors']) ||
-	    !is_array($config['installedpackages']['openbgpdneighbors']['config'])) {
+		!is_array($config['installedpackages']['frrbgpneighbors']) ||
+		!is_array($config['installedpackages']['frrbgpneighbors']['config'])) {
 		return(false);
 	}
 
 	/* check existing neighbors for the one we are about to add */
-	foreach ($config['installedpackages']['openbgpdneighbors']['config'] as $neighbor_cfg) {
-		if (isset($neighbor_cfg['neighbor']) &&
-		    $neighbor_cfg['neighbor'] == $neighbor_addr) {
+	foreach ($config['installedpackages']['frrbgpneighbors']['config'] as $neighbor_cfg) {
+		if (isset($neighbor_cfg['peer']) &&
+			$neighbor_cfg['peer'] == $neighbor_addr) {
 			return(true);
 		}
 	}
 
 	return(false);
 }
-	
 
 function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 
@@ -848,23 +846,25 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 
 	global $config, $savemsg;
 
-	$pkg_name = "pfSense-pkg-OpenBGPD";
-	$short_pkg_name = "OpenBGPD";
+	$pkg_name = "pfSense-pkg-frr";
+	$short_pkg_name = "FRR";
 	$install_status = false;
 
-	/* Quagga OSPF package being installed causes conflict with OpenBGPD.
-	 * Don't install OpenBGPD if Quagga OSPF is already installed. 
+	/* Quagga OSPF package being installed causes conflict with FRR.
+	 * Don't install FRR if Quagga OSPF is already installed.
 	 */
-	$conflicting_pkg = "pfSense-pkg-Quagga_OSPF";
-	if (is_pkg_installed($conflicting_pkg)) {
-		$install_status = false;
-		$savemsg .= gettext("<br>The conflicting package $conflicting_pkg is installed. Installing OpenBGPD will cause instability. Please remove $conflicting_pkg or delete this VPN Connection and add a new one using static routing.");
-	} elseif (!is_pkg_installed($pkg_name)) {
-		conf_mount_rw();
-		$install_status = pkg_install($pkg_name);
-		conf_mount_ro();
-	} else {
-		$install_status = true;
+	$conflicting_pkgs = array("pfSense-pkg-Quagga_OSPF","pfSense-pkg-OpenBGP");
+	foreach ($conflicting_pkgs as $conflicting_pkg) {
+		if (is_pkg_installed($conflicting_pkg)) {
+			$install_status = false;
+			$savemsg .= gettext("<br>The conflicting package $conflicting_pkg is installed. Installing $short_pkg_name will cause instability. Please remove $conflicting_pkg or delete this VPN Connection and add a new one using static routing.");
+		} elseif (!is_pkg_installed($pkg_name)) {
+			conf_mount_rw();
+			$install_status = pkg_install($pkg_name);
+			conf_mount_ro();
+		} else {
+			$install_status = true;
+		}
 	}
 
 	/* if package couldn't be installed, generate configs anyway. In case
@@ -877,7 +877,7 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 		$savemsg .= gettext("<br>$pkg_name successfully installed.");
 	}
 
-	/* 
+	/*
 	 * get BGP parameters from config data returned by AWS
 	 */
 	$remote_as = '';
@@ -890,27 +890,36 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 	/* check AWS config data for local AS also. */
 	$local_as = '';
 	if (isset($tunnel_cfgs[0]['customer_gateway']) &&
-	    isset($tunnel_cfgs[0]['customer_gateway']['bgp'])) {
+		isset($tunnel_cfgs[0]['customer_gateway']['bgp'])) {
 		$local_as = $tunnel_cfgs[0]['customer_gateway']['bgp']['asn'];
 		$local_hold_time = $tunnel_cfgs[0]['customer_gateway']['bgp']['hold_time'];
 	}
 
-	init_config_arr(array('installedpackages', 'openbgpd', 'config', 0));
-	$bgp_cfg = &$config['installedpackages']['openbgpd']['config'][0];
-
-	/* Set system-wide settings if there isn't already an AS 
+	/* Set system-wide settings if there isn't already an AS
 	 * configured
 	 */
+	init_config_arr(array('installedpackages', 'frrbgp', 'config', 0));
+	$bgp_cfg = &$config['installedpackages']['frrbgp']['config'][0];
+
 	if (!isset($bgp_cfg['asnum']) || !$bgp_cfg['asnum']) {
+		$bgp_cfg['enable'] = 'on';
+		$bgp_cfg['adjacencylog'] = '';
 		$bgp_cfg['asnum'] = $local_as;
-		$bgp_cfg['holdtime'] = $local_hold_time;
-		$bgp_cfg['fibupdate'] = 'no';
-		$bgp_cfg['listenip'] = '';
 		$bgp_cfg['routerid'] = '';
+		$bgp_cfg['timers_keepalive'] = '10';
+		$bgp_cfg['timers_holdtime'] = $local_hold_time;
+		$bgp_cfg['timers_updatedelay'] = '';
+		$bgp_cfg['timers_peerwait'] = '';
+		$bgp_cfg['redistributeconnectedsubnets'] = 'no';
+		$bgp_cfg['redistributestatic'] = 'no';
+		$bgp_cfg['redistributekernel'] = 'no';
 
 		$row_arr = array();
 		foreach ($loc_cidrs as $cidr) {
-			$row_arr[] = array( 'networks' => $cidr );
+			$row_arr[] = array(
+				'distributeroutevalue' => $cidr,
+				'distributeroutemap' => 'none'
+			);
 		}
 		$bgp_cfg['row'] = $row_arr;
 	} else {
@@ -920,77 +929,166 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 
 
 	/* initialize BGP groups config if it's not already there */
-	if (!is_array($config['installedpackages']['openbgpdgroups'])) {
-		$config['installedpackages']['openbgpdgroups'] = array();
+	if (!is_array($config['installedpackages']['frrbgpneighbors'])) {
+		$config['installedpackages']['frrbgpneighbors'] = array();
 	}
-	if (!is_array($config['installedpackages']['openbgpdgroups']['config'])) {
-		$config['installedpackages']['openbgpdgroups']['config'] = array();
+	if (!is_array($config['installedpackages']['frrbgpneighbors']['config'])) {
+		$config['installedpackages']['frrbgpneighbors']['config'] = array();
 	}
 
 	/* Add our new group if it is not already configured */
-	init_config_arr(array('installedpackages', 'openbgpdgroups', 'config'));
-	$bgp_groups = &$config['installedpackages']['openbgpdgroups']['config'];
+	init_config_arr(array('installedpackages', 'frrbgpneighbors', 'config'));
+	$bgp_groups = &$config['installedpackages']['frrbgpneighbors']['config'];
 	if (!is_bgp_group_configured($vpc_id)) {
 		$vpc_group = array(
-			'name' => $vpc_id,
-			'remoteas' => $remote_as,
-			'descr' => $vpc_id
+			'peer' => $vpc_id,
+			'descr' => "$vpc_id group",
+			'peergroup' => '',
+			'password' => '',
+			'password_type' => 'none',
+			'asnum' => $remote_as,
+			'updatesource_type' => 'ipv4',
+			'updatesource' => 'default',
+			'defaultoriginate' => 'no',
+			'sendcommunity' => 'disabled',
+			'nexthopself' => 'disabled',
+			'softreconfigurationinbound' => '',
+			'timers_keepalive' => '',
+			'timers_holdtime' => '',
+			'timers_connect' => '',
+			'distribute_in' => 'none',
+			'distribute_out' => 'none',
+			'prefixfilter_in' => 'none',
+			'prefixfilter_out' => 'none',
+			'aspathfilter_in' => 'none',
+			'aspathfilter_out' => 'none',
+			'routemap_in' => 'none',
+			'routemap_out' => 'none',
+			'unsuppressmap' => 'none',
+			'weight' => '',
+			'passive' => '',
+			'addpathtxallpaths' => '',
+			'addpathtxbestpathperas' => '',
+			'advertisementinterval' => '',
+			'allowasin' => 'disabled',
+			'asoverride' => '',
+			'attributeunchanged' => '',
+			'attributeunchanged_aspath' => '',
+			'attributeunchanged_med' => '',
+			'attributeunchanged_nexthop' => '',
+			'bfd_multiplier' => '',
+			'bfd_minrx' => '',
+			'bfd_mintx' => '',
+			'capability' => 'disabled',
+			'dontcapabilitynegotiate' => '',
+			'overridecapability' => '',
+			'ttlsecurityhops' => '',
+			'disableconnectedcheck' => '',
+			'ebgpmultihop' => '',
+			'enforcemultihop' => '',
+			'localas_num' => '',
+			'localas_noprepend' => '',
+			'localas_replaceas' => '',
+			'maximumprefix_num' => '',
+			'maximumprefix_threshold' => '',
+			'maximumprefix_warnonly' => '',
+			'maximumprefix_restart' => '',
+			'removeprivateas' => '',
+			'removeprivateas_all' => '',
+			'removeprivateas_replace' => '',
+			'routeclient_reflector' => '',
+			'routeclient_server' => '',
+			'solo' => ''
 		);
+
 		$bgp_groups[] = $vpc_group;
 	} else {
 		$savemsg .= gettext("<br>BGP group $vpc_id already exists. Manual verification of configuration is required.");
 	}
 
-	if (!is_array($config['installedpackages']['openbgpdneighbors'])) {
-		$config['installedpackages']['openbgpdneighbors'] = array();
-	}
-	if (!is_array($config['installedpackages']['openbgpdneighbors']['config'])) {
-		$config['installedpackages']['openbgpdneighbors']['config'] = array();
-	}
-
 	/* iterate through the tunnel peers and set them up as BGP neighbors */
 	foreach ($tunnel_cfgs as $tunnel_cfg) {
 		if (!is_array($tunnel_cfg['vpn_gateway']) ||
-		    !is_array($tunnel_cfg['vpn_gateway']['tunnel_inside_address']) ||
-		    !is_array($tunnel_cfg['customer_gateway']) ||
-		    !is_array($tunnel_cfg['customer_gateway']['tunnel_inside_address'])) {
+			!is_array($tunnel_cfg['vpn_gateway']['tunnel_inside_address']) ||
+			!is_array($tunnel_cfg['customer_gateway']) ||
+			!is_array($tunnel_cfg['customer_gateway']['tunnel_inside_address'])) {
 			continue;
 		}
-		$neighbor_addr = 
-		    $tunnel_cfg['vpn_gateway']['tunnel_inside_address']['ip_address'];
+		$neighbor_addr =
+			$tunnel_cfg['vpn_gateway']['tunnel_inside_address']['ip_address'];
 		$local_addr =
-		    $tunnel_cfg['customer_gateway']['tunnel_inside_address']['ip_address'];
+			$tunnel_cfg['customer_gateway']['tunnel_inside_address']['ip_address'];
 		$neighbor_desc = "$vpc_id $neighbor_addr";
+		$vip = find_virtual_ip_alias($local_addr);
 		$bgp_neighbor_arr = array(
+			'peer' => $neighbor_addr,
 			'descr' => $neighbor_desc,
-			'neighbor' => $neighbor_addr,
-			'md5sigkey' => '',
-			'md5sigpass' => '',
-			'groupname' => $vpc_id,
-			'row' => array(
-				array(
-					'parameters' => 'announce self'
-				),
-				array(
-					'parameters' => 'local-address',
-					'parmvalue' => $local_addr
-				),
-				array(
-					'parameters' => 'holdtime',
-					'parmvalue' => '30'
-				)
-			)
+			'peergroup' => $vpc_id,
+			'password' => '',
+			'password_type' => 'none',
+			'asnum' => '',
+			'updatesource_type' => 'ipv4',
+			'updatesource' => '_vip'.$vip['uniqid'].'|'.$local_addr,
+			'defaultoriginate' => 'no',
+			'sendcommunity' => 'disabled',
+			'nexthopself' => 'disabled',
+			'softreconfigurationinbound' => '',
+			'timers_keepalive' => '',
+			'timers_holdtime' => '',
+			'timers_connect' => '',
+			'distribute_in' => 'none',
+			'distribute_out' => 'none',
+			'prefixfilter_in' => 'none',
+			'prefixfilter_out' => 'none',
+			'aspathfilter_in' => 'none',
+			'aspathfilter_out' => 'none',
+			'routemap_in' => 'none',
+			'routemap_out' => 'none',
+			'unsuppressmap' => 'none',
+			'weight' => '',
+			'passive' => '',
+			'addpathtxallpaths' => '',
+			'addpathtxbestpathperas' => '',
+			'advertisementinterval' => '',
+			'allowasin' => 'disabled',
+			'asoverride' => '',
+			'attributeunchanged' => '',
+			'attributeunchanged_aspath' => '',
+			'attributeunchanged_med' => '',
+			'attributeunchanged_nexthop' => '',
+			'bfd_multiplier' => '',
+			'bfd_minrx' => '',
+			'bfd_mintx' => '',
+			'capability' => 'disabled',
+			'dontcapabilitynegotiate' => '',
+			'overridecapability' => '',
+			'ttlsecurityhops' => '',
+			'disableconnectedcheck' => '',
+			'ebgpmultihop' => '',
+			'enforcemultihop' => '',
+			'localas_num' => '',
+			'localas_noprepend' => '',
+			'localas_replaceas' => '',
+			'maximumprefix_num' => '',
+			'maximumprefix_threshold' => '',
+			'maximumprefix_warnonly' => '',
+			'maximumprefix_restart' => '',
+			'removeprivateas' => '',
+			'removeprivateas_all' => '',
+			'removeprivateas_replace' => '',
+			'routeclient_reflector' => '',
+			'routeclient_server' => '',
+			'solo' => ''
 		);
 
-		init_config_arr(array('installedpackages', 'openbgpdneighbors', 'config'));
-		$neighbor_cfgs = &$config['installedpackages']['openbgpdneighbors']['config'];
+		init_config_arr(array('installedpackages', 'frrbgpneighbors', 'config'));
+		$neighbor_cfgs = &$config['installedpackages']['frrbgpneighbors']['config'];
 		if (!is_bgp_neighbor_configured($neighbor_addr)) {
 			$neighbor_cfgs[] = $bgp_neighbor_arr;
 		} else {
 			$savemsg .= gettext("<br>Neighbor $neighbor_addr already exists. Manual verification of configuration is required.");
 		}
 	}
-	
 	write_config();
 	return($install_status);
 }
@@ -1007,32 +1105,34 @@ function refreshDirtyConfigs() {
 
 	vpn_ipsec_configure();
 	filter_configure();
-	if (function_exists("openbgpd_install_conf")) {
-		openbgpd_install_conf();
-	}
 
 }
 
 function submit_creds_partition() {
 	global $stepid, $savemsg, $config;
+	if (empty($_POST['awsrole'])) {
+		if (empty($_POST['awskey'])) {
+			$savemsg = gettext("<br>You need to enter an access key ID.");
+			$stepid--;
+			return;
+		}
 
-	if (empty($_POST['awskey'])) {
-		$savemsg = gettext("<br>You need to enter an access key ID.");
-		$stepid--;
-		return;
+		if (empty($_POST['secret'])) {
+			$savemsg = gettext("<br>You need to enter a secret access key.");
+			$stepid--;
+			return;
+		}
+
+		/* To avoid saving the cleartext AWS API secret password to the
+		 * config file, save it as a session variable. */
+		session_start();
+		$_SESSION['awssecret'] = $_POST['secret'];
+		session_write_close();
+	} else {
+		session_start();
+		$_SESSION['awssecret'] = 'none';
+		session_write_close();
 	}
-
-	if (empty($_POST['secret'])) {
-		$savemsg = gettext("<br>You need to enter a secret access key.");
-		$stepid--;
-		return;
-	}
-
-	/* To avoid saving the cleartext AWS API secret password to the
-	 * config file, save it as a session variable. */
-	session_start();
-	$_SESSION['awssecret'] = $_POST['secret'];
-	session_write_close();
 }
 
 function pre_region_select() {
@@ -1041,12 +1141,13 @@ function pre_region_select() {
 	session_start();
 	if (empty($_SESSION['awssecret'])) {
 		$savemsg .= gettext("<br>AWS Secret Key not found in session data.");
-                $stepid=1;
-                return;
+		$stepid=1;
+		return;
 	}
 
 	$client = makeClient($config['vpc']['step1']['awskey'],
 			$_SESSION['awssecret'],
+			$config['vpc']['step1']['awsrole'],
 			$config['vpc']['step1']['partition'], null);
 	session_write_close();
 
@@ -1059,6 +1160,12 @@ function pre_region_select() {
 					$e->getAwsErrorType() .
 					" : " .
 					$e->getAwsErrorMessage());
+		$stepid--;
+		return;
+	} catch (Exception $e) {
+		// AWSException does not catch credentials exceptions for assume role
+		// This covers that case
+		$savemsg .= gettext($e->getMessage());
 		$stepid--;
 		return;
 	}
@@ -1113,15 +1220,16 @@ function before_vpc_select() {
 	session_start();
 	if (empty($_SESSION['awssecret'])) {
 		$savemsg .= gettext("<br>AWS Secret Key not found in session data.");
-                $stepid=1;
-                return;
+		$stepid=1;
+		return;
 	}
 
 	$client = makeClient($config['vpc']['step1']['awskey'],
 				$_SESSION['awssecret'],
+				$config['vpc']['step1']['awsrole'],
 				$config['vpc']['step1']['partition'],
 				$config['vpc']['step2']['region']
-			); 
+			);
 
 	session_write_close();
 
@@ -1134,6 +1242,12 @@ function before_vpc_select() {
 					$e->getAwsErrorType() .
 					" : " .
 					$e->getAwsErrorMessage());
+		$stepid--;
+		return;
+	} catch (Exception $e) {
+		// AWSException does not catch credentials exceptions for assume role
+		// This covers that case
+		$savemsg .= gettext($e->getMessage());
 		$stepid--;
 		return;
 	}
@@ -1183,9 +1297,10 @@ function submit_vpc_select() {
 	session_start();
 	$client = makeClient($config['vpc']['step1']['awskey'],
 				$_SESSION['awssecret'],
+				$config['vpc']['step1']['awsrole'],
 				$config['vpc']['step1']['partition'],
 				$config['vpc']['step2']['region']
-			); 
+			);
 
 	session_write_close();
 
@@ -1201,8 +1316,13 @@ function submit_vpc_select() {
 					$e->getAwsErrorMessage());
 		$stepid--;
 		return;
+	} catch (Exception $e) {
+		// AWSException does not catch credentials exceptions for assume role
+		// This covers that case
+		$savemsg .= gettext($e->getMessage());
+		$stepid--;
+		return;
 	}
-	
 	$config['vpc']['step3']['vpgwid'] = $vp_gw_id;
 	$config['vpc']['step3']['vpccidr'] = $vpc_cidr;
 }
@@ -1237,9 +1357,10 @@ function submit_configure_create_vpn() {
 
 	$client = makeClient($config['vpc']['step1']['awskey'],
 				$_SESSION['awssecret'],
+				$config['vpc']['step1']['awsrole'],
 				$config['vpc']['step1']['partition'],
 				$config['vpc']['step2']['region']
-			); 
+			);
 
 	session_write_close();
 
@@ -1254,8 +1375,9 @@ function submit_configure_create_vpn() {
 		$vpn_conn_id = $vpn_conn['VpnConnectionId'];
 		$config['vpc']['step4']['custgwcfg'] = $vpn_conn['CustomerGatewayConfiguration'];
 		$config['vpc']['step4']['vpnconnid'] = $vpn_conn_id;
-		updateSecurityGroups($client, $vpc_id, $loc_cidrs);
-
+		if (isset($config['vpc']['step4']['updatesecgroups'])) {
+			updateSecurityGroups($client, $vpc_id, $loc_cidrs);
+		}
 		if ($routing == 'static') {
 			addVpnConnectionRoutes($client, $vpn_conn_id, $loc_cidrs);
 		}
@@ -1267,6 +1389,12 @@ function submit_configure_create_vpn() {
 					$e->getAwsErrorType() .
 					" : " .
 					$e->getAwsErrorMessage());
+		$stepid--;
+		return;
+	} catch (Exception $e) {
+		// AWSException does not catch credentials exceptions for assume role
+		// This covers that case
+		$savemsg .= gettext($e->getMessage());
 		$stepid--;
 		return;
 	}
@@ -1287,7 +1415,7 @@ function submit_create_tunnels_config_pfsense() {
 	$tunnel_cfgs = xml2array($config['vpc']['step4']['custgwcfg']);
 
 	addVpcAliases($tunnel_cfgs, $vpc_id, $vpc_cidr, $loc_cidrs);
-	addTunnelInsideAddresses($tunnel_cfgs);
+	addTunnelInsideAddresses($tunnel_cfgs, $vpc_id);
 	addTunnelFirewallRules($tunnel_cfgs, $vpc_id);
 	addLocalIpsecCfg($vpc_id, $tunnel_cfgs, $loc_intf, $vpc_cidr, $loc_cidrs);
 

@@ -48,6 +48,13 @@
 				<description>Your AWS Secret Key</description>
 			</field>
 			<field>
+				<displayname>Assume Role ARN</displayname>
+				<name>awsrole</name>
+				<type>input</type>
+				<description>Use EC2 instance profile to assume role instead of keys</description>
+				<bindstofield>vpc->step1->awsrole</bindstofield>
+			</field>
+			<field>
 				<displayname>Partition</displayname>
 				<name>partition</name>
 				<type>select</type>
@@ -142,6 +149,13 @@
 				<description>Enter a list of local subnets (ones that are directly connected to the firewall) that hosts in your VPC should be able to reach over the VPN tunnel. Expressed as a comma-separated list of one or more CIDR ranges.</description>
 				<displayname>Local subnets</displayname>
 				<bindstofield>vpc->step4->loccidrs</bindstofield>
+			</field>
+			<field>
+				<name>updatesecgroups</name>
+				<type>checkbox</type>
+				<description>Select to allow local subnets access in all security groups.  Alternatively you will need to add appriopriate rules yourself.</description>
+				<displayname>Update Security Groups</displayname>
+				<bindstofield>vpc->step4->updatesecgroups</bindstofield>
 			</field>
 			<field>
 				<name>Next</name>
