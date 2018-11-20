@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	openssh
-DISTVERSION=	7.7p1
-PORTREVISION=	6
+DISTVERSION=	7.9p1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security ipv6
 MASTER_SITES=	OPENBSD/OpenSSH/portable
@@ -26,21 +26,31 @@ CONFIGURE_ARGS=		--prefix=${PREFIX} --with-md5-passwords \
 
 ETCOLD=			${PREFIX}/etc
 
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	error: OpenSSL >= 1.1.0 is not yet supported
-
-FLAVORS=			default hpn
-default_CONFLICTS_INSTALL=	openssl-portable-hpn
-hpn_CONFLICTS_INSTALL=		openssh-portable
+FLAVORS=			default hpn gssapi x509
+default_CONFLICTS_INSTALL=	openssh-portable-hpn openssh-portable-gssapi \
+				openssh-portable-x509
+hpn_CONFLICTS_INSTALL=		openssh-portable openssh-portable-gssapi \
+				openssh-portable-x509
 hpn_PKGNAMESUFFIX=		-portable-hpn
+gssapi_CONFLICTS_INSTALL=	openssh-portable openssh-portable-hpn \
+				openssh-portable-x509
+gssapi_PKGNAMESUFFIX=		-portable-gssapi
+x509_CONFLICTS_INSTALL=		openssh-portable openssh-portable-hpn \
+				openssh-portable-gssapi
+x509_PKGNAMESUFFIX=		-portable-x509
 
-OPTIONS_DEFINE=		PAM TCP_WRAPPERS LIBEDIT BSM \
+OPTIONS_DEFINE=		DOCS PAM TCP_WRAPPERS LIBEDIT BSM \
 			HPN X509 KERB_GSSAPI \
 			LDNS NONECIPHER XMSS
 OPTIONS_DEFAULT=	LIBEDIT PAM TCP_WRAPPERS LDNS
 .if ${FLAVOR:U} == hpn
-OPTIONS_DEFINE+=	DOCS
 OPTIONS_DEFAULT+=	HPN NONECIPHER
+.endif
+.if ${FLAVOR:U} == gssapi
+OPTIONS_DEFAULT+=	KERB_GSSAPI MIT
+.endif
+.if ${FLAVOR:U} == x509
+OPTIONS_DEFAULT+=	X509
 .endif
 OPTIONS_RADIO=		KERBEROS
 OPTIONS_RADIO_KERBEROS=	MIT HEIMDAL HEIMDAL_BASE
@@ -70,10 +80,10 @@ HPN_CONFIGURE_WITH=		hpn
 NONECIPHER_CONFIGURE_WITH=	nonecipher
 
 # See http://www.roumenpetrov.info/openssh/
-X509_VERSION=		11.3.2
+X509_VERSION=		11.5
 X509_PATCH_SITES=	http://www.roumenpetrov.info/openssh/x509-${X509_VERSION}/:x509
 X509_EXTRA_PATCHES+=	${FILESDIR}/extra-patch-x509-glue
-X509_PATCHFILES=	${PORTNAME}-7.7p1+x509-${X509_VERSION}.diff.gz:-p1:x509
+X509_PATCHFILES=	${PORTNAME}-7.9p1+x509-${X509_VERSION}.diff.gz:-p1:x509
 
 MIT_LIB_DEPENDS=		libkrb5.so.3:security/krb5
 HEIMDAL_LIB_DEPENDS=		libkrb5.so.26:security/heimdal
@@ -91,9 +101,13 @@ ETCDIR?=		${PREFIX}/etc/ssh
 
 PATCH_SITES+=		http://mirror.shatow.net/freebsd/${PORTNAME}/:DEFAULT,x509,hpn,gsskex
 
+# Upstream OpenSSL fix but does not apply for x509 patch.
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-c0a35265907533be10ca151ac797f34ae0d68969
+
 # X509 patch includes TCP Wrapper support already
 .if ${PORT_OPTIONS:MX509}
 EXTRA_PATCHES:=		${EXTRA_PATCHES:N${TCP_WRAPPERS_EXTRA_PATCHES}}
+EXTRA_PATCHES:=		${EXTRA_PATCHES:N${FILESDIR}/extra-patch-c0a35265907533be10ca151ac797f34ae0d68969}
 .endif
 
 # Must add this patch before HPN due to conflicts
@@ -108,12 +122,12 @@ EXTRA_PATCHES:=		${EXTRA_PATCHES:N${TCP_WRAPPERS_EXTRA_PATCHES}}
 # Needed glue for applying HPN patch without conflict
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-hpn-gss-glue
 .  endif
-PATCHFILES+=	openssh-7.7p1-gsskex-all-20141021-debian-rh-20171004.patch.gz:-p1:gsskex
+PATCHFILES+=	openssh-7.9p1-gsskex-all-20141021-debian-rh-20181020.patch.gz:-p1:gsskex
 .endif
 
 # https://www.psc.edu/hpn-ssh https://github.com/rapier1/openssh-portable/tree/hpn-openssl1.1-7_7_P1
 .if ${PORT_OPTIONS:MHPN} || ${PORT_OPTIONS:MNONECIPHER}
-#BROKEN=			HPN: Not yet updated for ${DISTVERSION} and disabled in base
+#BROKEN=			HPN: Not yet updated for ${DISTVERSION} yet.
 PORTDOCS+=		HPN-README
 HPN_VERSION=		14v15
 HPN_DISTVERSION=	7.7p1
