@@ -40,6 +40,7 @@ function avahi_write_config($avahi_config) {
 		$real_interfaces[$i] = get_real_interface($i);
 	}
 	$txt .= "allow-interfaces=" . implode(',', $real_interfaces) . "\n";
+	$txt .= "allow-point-to-point=yes\n";
 	$txt .= "use-ipv4=" . ($avahi_config['disable_ipv4'] ? "no" : "yes") . "\n";
 	$txt .= "use-ipv6=" . ($avahi_config['disable_ipv6'] ? "no" : "yes") . "\n";
 
