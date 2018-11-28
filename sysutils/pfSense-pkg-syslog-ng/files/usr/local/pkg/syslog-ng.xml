@@ -33,7 +33,7 @@
 		<name>Syslog-ng</name>
 		<tooltiptext>Setup Syslog-ng</tooltiptext>
 		<section>Services</section>
-		<url>/syslog-ng_log_viewer.php</url>
+		<url>/pkg_edit.php?xml=syslog-ng.xml&amp;id=0</url>
 	</menu>
 	<service>
 		<name>syslog-ng</name>
