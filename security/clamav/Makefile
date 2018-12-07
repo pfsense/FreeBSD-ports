@@ -145,8 +145,6 @@ SED_CONF=	-E -e 's|^\#?(Example)$$|\#\1|' \
 WITH_DEBUG=	yes
 .endif
 
-.include <bsd.port.pre.mk>
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PTHREAD_LIBS%%|-lthr|g' \
 			  -e 's|LC_REVISION=22|LC_REVISION=24|' \
@@ -187,4 +185,4 @@ post-install:
 		  ${STAGEDIR}${RUNDIR}
 	(cd ${WRKSRC}/docs/html; ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/html)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>
