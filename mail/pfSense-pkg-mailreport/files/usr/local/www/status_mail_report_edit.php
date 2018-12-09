@@ -149,7 +149,8 @@ if ($_POST) {
 
 	// Default to midnight if unset/invalid.
 	$pconfig['timeofday'] = isset($pconfig['timeofday']) ? $pconfig['timeofday'] : 0;
-	$friendlytime = sprintf("%02d:00", $pconfig['timeofday']);
+	$pconfig['minuteofday'] = isset($pconfig['minuteofday']) ? $pconfig['minuteofday'] : 0;
+	$friendlytime = sprintf("%02d:%02d", $pconfig['timeofday'],$pconfig['minuteofday']);
 	$friendly = "Daily at {$friendlytime}";
 
 	// If weekly, check for day of week
@@ -306,6 +307,14 @@ $section->addInput(new Form_Select(
 	$pconfig['timeofday'],
 	array_combine(range(0, 23, 1), range(0, 23, 1))
 ))->setHelp('Select the hour of the day when the report should be sent. Be aware that scheduling reports between 1am-3am can cause issues during DST switches in zones that have them. Valid for any type of report.');
+
+$section->addInput(new Form_Select(
+	'minuteofday',
+	'Minute of Day',
+	$pconfig['minuteofday'],
+	array_combine(range(0, 59, 1), range(0, 59, 1))
+))->setHelp('Select the minute of the day when the report should be sent. Valid for any type of report.');
+
 
 $group = new Form_Group('');
 $group->add(new Form_Button(
