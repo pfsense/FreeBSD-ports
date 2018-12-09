@@ -62,7 +62,7 @@ function set_mail_report_cron_jobs($a_mailreports) {
 	// Add new cron jobs
 	foreach($a_mailreports as $id => $report) {
 		$cron_item = array();
-		$cron_item['minute'] = 0;
+		$cron_item['minute'] = isset($report['minuteofday']) ? $report['minuteofday'] : 0;;
 		$cron_item['hour'] = isset($report['timeofday']) ? $report['timeofday'] : 0;
 		$cron_item['mday'] = isset($report['dayofmonth']) ? $report['dayofmonth'] : "*";
 		$cron_item['month'] = isset($report['monthofyear']) ? $report['monthofyear'] : "*";;
@@ -80,6 +80,9 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 
 	if (empty($config['notifications']['smtp']['ipaddress']))
 		return;
+	
+	if (empty($config['notifications']['smtp']['notifyemailaddress']))
+		return;
 
 	$mail = new PHPMailer();
 	$mail->IsSMTP();
@@ -91,7 +94,7 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 		$mail->SMTPAutoTLS = true;
 	} else {
 		$mail->SMTPSecure =  "";
-		$mail->SMTPAutoTLS = false;
+		$mail->SMTPAutoTLS = true;
 	}
 
 	if($config['notifications']['smtp']['username'] &&
@@ -105,8 +108,12 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 	$mail->IsHTML(true);
 	$mail->AddReplyTo($config['notifications']['smtp']['fromaddress'], "Firewall Email Report");
 	$mail->SetFrom($config['notifications']['smtp']['fromaddress'], "Firewall Email Report");
-	$address = $config['notifications']['smtp']['notifyemailaddress'];
-	$mail->AddAddress($address, "Report Recipient");
+	$addresses = explode(",", $config['notifications']['smtp']['notifyemailaddress']);
+	foreach ($addresses as $address){
+		$recipient=explode("@", $address);
+		$recipient=str_replace(array("_",".")," ",$recipient[0]);
+		$mail->AddAddress($address, ucwords(strtolower($recipient));
+	}
 	$mail->Subject = "{$config['system']['hostname']}.{$config['system']['domain']} Email Report: {$headertext}";
 	$mail->Body .= "This is a periodic report from your firewall, {$config['system']['hostname']}.{$config['system']['domain']}.<br /><br />Current report: {$headertext}<br />\n<br />\n";
 	if (!empty($cmdtext))
