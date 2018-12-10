@@ -73,7 +73,7 @@ $section = new \Form_Section("General settings");
 $section->addInput(new \Form_Checkbox(
 	'enable',
 	'Cron Entry',
-	'Enable Acme client renewal job. This will configure cron to renew certificates once a day at 3:16. Keeping track of the last succesfull renewal and the number of days set after to renew again. When renewal happens a service can be restarted or a shell script run to load the new certificate for services that need it, if needed this needs to be configured as a action under the certificate settings.',
+	'Enable Acme client renewal job. This will configure cron to renew certificates once a day at 3:16. Keeping track of the last successful renewal and the number of days set after to renew again. When renewal happens a service can be restarted or a shell script run to load the new certificate for services that need it, if needed this needs to be configured as a action under the certificate settings.',
 	$pconfig['enable']
 ));
 
