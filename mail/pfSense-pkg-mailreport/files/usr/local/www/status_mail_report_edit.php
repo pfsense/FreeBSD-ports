@@ -150,7 +150,7 @@ if ($_POST) {
 	// Default to midnight if unset/invalid.
 	$pconfig['timeofday'] = isset($pconfig['timeofday']) ? $pconfig['timeofday'] : 0;
 	$pconfig['minuteofday'] = isset($pconfig['minuteofday']) ? $pconfig['minuteofday'] : 0;
-	$friendlytime = sprintf("%02d:%02d", $pconfig['timeofday'],$pconfig['minuteofday']);
+	$friendlytime = sprintf("%02d:%02d", $pconfig['timeofday'], $pconfig['minuteofday']);
 	$friendly = "Daily at {$friendlytime}";
 
 	// If weekly, check for day of week
