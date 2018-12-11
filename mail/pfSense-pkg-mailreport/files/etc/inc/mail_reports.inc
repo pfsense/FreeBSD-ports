@@ -62,10 +62,10 @@ function set_mail_report_cron_jobs($a_mailreports) {
 	// Add new cron jobs
 	foreach($a_mailreports as $id => $report) {
 		$cron_item = array();
-		$cron_item['minute'] = isset($report['minuteofday']) ? $report['minuteofday'] : 0;;
+		$cron_item['minute'] = isset($report['minuteofday']) ? $report['minuteofday'] : 0;
 		$cron_item['hour'] = isset($report['timeofday']) ? $report['timeofday'] : 0;
 		$cron_item['mday'] = isset($report['dayofmonth']) ? $report['dayofmonth'] : "*";
-		$cron_item['month'] = isset($report['monthofyear']) ? $report['monthofyear'] : "*";;
+		$cron_item['month'] = isset($report['monthofyear']) ? $report['monthofyear'] : "*";
 		$cron_item['wday'] = isset($report['dayofweek']) ? $report['dayofweek'] : "*";
 		$cron_item['who'] = "root";
 		$cron_item['command'] = "/usr/local/bin/mail_reports_generate.php {$id} &";
@@ -78,12 +78,14 @@ include('phpmailer/PHPMailerAutoload.php');
 function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 	global $config, $g;
 
-	if (empty($config['notifications']['smtp']['ipaddress']))
+	if (empty($config['notifications']['smtp']['ipaddress'])) {
 		return;
+	}
 	
-	if (empty($config['notifications']['smtp']['notifyemailaddress']))
+	if (empty($config['notifications']['smtp']['notifyemailaddress'])) {
 		return;
-
+	}
+	
 	$mail = new PHPMailer();
 	$mail->IsSMTP();
 	$mail->Host = $config['notifications']['smtp']['ipaddress'];
@@ -109,17 +111,19 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 	$mail->AddReplyTo($config['notifications']['smtp']['fromaddress'], "Firewall Email Report");
 	$mail->SetFrom($config['notifications']['smtp']['fromaddress'], "Firewall Email Report");
 	$addresses = explode(",", $config['notifications']['smtp']['notifyemailaddress']);
-	foreach ($addresses as $address){
-		$recipient=explode("@", $address);
-		$recipient=str_replace(array("_",".")," ",$recipient[0]);
-		$mail->AddAddress($address, ucwords(strtolower($recipient));
+	foreach ($addresses as $address) {
+		$recipient = explode("@", $address);
+		$recipient = str_replace(array("_", "."), " ", $recipient[0]);
+		$mail->AddAddress($address, ucwords(strtolower($recipient)));
 	}
 	$mail->Subject = "{$config['system']['hostname']}.{$config['system']['domain']} Email Report: {$headertext}";
 	$mail->Body .= "This is a periodic report from your firewall, {$config['system']['hostname']}.{$config['system']['domain']}.<br /><br />Current report: {$headertext}<br />\n<br />\n";
-	if (!empty($cmdtext))
+	if (!empty($cmdtext)) {
 		$mail->Body .= $cmdtext;
-	if (!empty($logtext))
+	}
+	if (!empty($logtext)) {
 		$mail->Body .= $logtext;
+	}
 	if(is_array($attachments)) {
 		foreach($attachments as $filename) {
 			$shortname = basename($filename);
@@ -157,8 +161,9 @@ function mail_report_get_log($logfile, $tail, $grepfor) {
 function get_friendly_log_name($logfile) {
 	global $logfile_friendly;
 	$friendly = str_replace(".log", "", $logfile);
-	if (!empty($logfile_friendly[$friendly]))
+	if (!empty($logfile_friendly[$friendly])) {
 		$friendly = $logfile_friendly[$friendly];
+	}
 	return $friendly;
 }
 
