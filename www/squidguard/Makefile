@@ -17,7 +17,7 @@ COMMENT=	Fast redirector for squid
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/squid:www/squid
+RUN_DEPENDS=	${LOCALBASE}/sbin/squid:www/squid3
 
 USES=		bdb
 GNU_CONFIGURE=	yes
