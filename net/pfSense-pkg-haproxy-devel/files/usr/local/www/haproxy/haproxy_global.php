@@ -303,10 +303,10 @@ $section->addInput(new Form_Checkbox(
 	'Force immediate stop of old process on reload. (closes existing connections)',
 	$pconfig['terminate_on_reload']
 ))->setHelp(<<<EOD
-	Note: when this option is selected connections will be closed when haproxy is restarted.
-	Otherwise the existing connections will be served by the old haproxy process untill they are closed.
-	Checking this option will interupt existing connections on a restart. (which happens when the configuration is applied,
-	but possibly also when pfSense detects an interface comming up or changing its ip-address)
+	Note: when this option is selected, connections will be closed when haproxy is restarted.
+	Otherwise the existing connections will be served by the old haproxy process until they are closed.
+	Checking this option will interrupt existing connections on a restart (which happens when the configuration is applied,
+	but possibly also when pfSense detects an interface coming up or a change in its ip-address.)
 EOD
 );
 
