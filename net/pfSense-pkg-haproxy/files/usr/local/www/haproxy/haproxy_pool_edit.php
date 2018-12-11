@@ -476,6 +476,7 @@ if ($_POST) {
 	$pool['ha_servers']['item'] = $a_servers;
 	$pool['a_acl']['item'] = $pconfig['a_acl'];
 	$pool['a_actionitems']['item'] = $pconfig['a_actionitems'];
+	$pool['errorfiles']['item'] = $a_errorfiles;
 
 	update_if_changed("advanced", $pool['advanced'], base64_encode($_POST['advanced']));
 	update_if_changed("advanced_backend", $pool['advanced_backend'], base64_encode($_POST['advanced_backend']));

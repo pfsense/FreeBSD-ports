@@ -256,6 +256,7 @@ function js_callback(req) {
 
 	$a_frontend_grouped = array();
 	foreach($a_frontend as &$frontend2) {
+		getarraybyref($frontend2);// makes it a valid array in case the item was completely empty.
 		$mainfrontend = get_primaryfrontend($frontend2);
 		$mainname = $mainfrontend['name'];
 		$ipport = get_frontend_ipport($frontend2, true);
