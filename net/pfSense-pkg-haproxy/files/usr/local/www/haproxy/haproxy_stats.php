@@ -188,14 +188,14 @@ if (isset($_GET['showstatresolvers'])){
 			<a href="/haproxy/haproxy_stats.php?haproxystats=1" target="_blank">Fullscreen stats page</a>
 		</div>
 		<div class="table-responsive panel-body">
-		<? if (isset($pconfig['enable']) && $pconfig['localstatsport'] && is_numeric($pconfig['localstatsport'])){?>
+		<?php if (isset($pconfig['enable']) && $pconfig['localstatsport'] && is_numeric($pconfig['localstatsport'])){?>
 			<iframe id="frame_haproxy_stats" width="1000" height="1500" seamless src="/haproxy/haproxy_stats.php?haproxystats=1<?=$request;?>"></iframe>
-		<? } else { ?>
+		<?php } else { ?>
 			<br/>
 			In the "Settings" configure a internal stats port and enable haproxy for this to be functional. Also make sure the service is running.<br/>
 			<br/>
-		<? } ?>
+		<?php } ?>
 		</div>
-<?}?>
+<?php } ?>
 	</div>
 <?php include("foot.inc");
