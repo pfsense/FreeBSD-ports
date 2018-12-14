@@ -45,7 +45,7 @@
 			<fieldname>enable</fieldname>
 			<type>checkbox</type>
 			<enablefields>enable_led2,enable_led3,gw_led2,gw_led3</enablefields>
-			<description>if this is enabled, it will use LED #2 and #3 to indicate gateway status with a peridic poll.</description>
+			<description>if this is enabled, it will use LED #2 and #3 to indicate gateway status with a periodic poll.</description>
 		</field>			
 		<field>
 			<fielddescr>Enable LED #2</fielddescr>
