@@ -93,12 +93,28 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 
 	if (isset($config['notifications']['smtp']['ssl'])) {
 		$mail->SMTPSecure =  "ssl";
-		$mail->SMTPAutoTLS = true;
 	} else {
 		$mail->SMTPSecure =  "";
-		$mail->SMTPAutoTLS = true;
 	}
 
+	$mail->SMTPAutoTLS = true;
+	if ($config['notifications']['smtp']['sslvalidate'] == "disabled") {
+		$mail->SMTPOptions = array(
+			'ssl' => array(
+			'verify_peer'       => false,
+			'verify_peer_name'  => false,
+			'allow_self_signed' => true,
+			),
+		);
+	} else {
+		$mail->SMTPOptions = array(
+			'ssl' => array(
+			'verify_peer'       => true,
+			'verify_peer_name'  => true,
+			),
+		);		
+	}
+	
 	if($config['notifications']['smtp']['username'] &&
 	   $config['notifications']['smtp']['password']) {
 		$mail->SMTPAuth	= true;
