@@ -277,8 +277,9 @@ function generate_ikev2($phase1, $user, $authMethod, $extendedAuth, $realAddr) {
 
 	/* iOS defaults to 3DES if you don't set encryption algorithms, so
 	 * try to figure out some sane values to use from the system config.
-         * valid encryption algorithms: DES, 3DES, AES-128, AES-256
-         * valid integrity algorithms: SHA1-96, SHA1-160, SHA2-256, SHA2-384,
+	 * valid encryption algorithms: DES, 3DES, AES-128, AES-256,
+	 * AES-128-GCM, AES-256-GCM
+	 * valid integrity algorithms: SHA1-96, SHA1-160, SHA2-256, SHA2-384,
 	 * SHA2-512
 	 */
 	$ikeEncAlg = strtoupper($phase1['encryption-algorithm']['name']);
