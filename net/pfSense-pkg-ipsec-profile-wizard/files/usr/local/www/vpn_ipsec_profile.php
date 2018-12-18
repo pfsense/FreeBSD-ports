@@ -274,7 +274,7 @@ function generate_ikev2($phase1, $user, $authMethod, $extendedAuth, $realAddr) {
 		$dpdLevel = "None";
 	}
 
-
+	$encryption = $phase1['encryption']['item'][0];
 	/* iOS defaults to 3DES if you don't set encryption algorithms, so
 	 * try to figure out some sane values to use from the system config.
 	 * valid encryption algorithms: DES, 3DES, AES-128, AES-256,
@@ -282,9 +282,10 @@ function generate_ikev2($phase1, $user, $authMethod, $extendedAuth, $realAddr) {
 	 * valid integrity algorithms: SHA1-96, SHA1-160, SHA2-256, SHA2-384,
 	 * SHA2-512
 	 */
-	$ikeEncAlg = strtoupper($phase1['encryption-algorithm']['name']);
-	if (isset($phase1['encryption-algorithm']['keylen'])) {
-		$ikeEncAlg .= "-{$phase1['encryption-algorithm']['keylen']}";
+	$ikeEncAlg = strtoupper($encryption['encryption-algorithm']['name']);
+	if (isset($encryption['encryption-algorithm']['keylen'])) {
+		$ikeEncAlg .= "-" .
+		    $encryption['encryption-algorithm']['keylen'];
 	}
 
 	$phase1HashMap = [ 	'sha1' => 'SHA1-96',
@@ -292,7 +293,7 @@ function generate_ikev2($phase1, $user, $authMethod, $extendedAuth, $realAddr) {
 				'sha384' => 'SHA2-384',
 				'sha512' => 'SHA2-512' ];
 
-	$ikeHashAlg = $phase1HashMap[$phase1['hash-algorithm']];
+	$ikeHashAlg = $phase1HashMap[$encryption['hash-algorithm']];
 
 	if ($phase1['certref']) {
 		$cert = lookup_cert($phase1['certref']);
@@ -340,7 +341,7 @@ function generate_ikev2($phase1, $user, $authMethod, $extendedAuth, $realAddr) {
 			"string", $ikeHashAlg, SASCOPE);
 	}
 	$ikeSADict .= key_data_str("DiffieHellmanGroup", "integer",
-		$phase1['dhgroup'], 5);
+		$encryption['dhgroup'], 5);
 	$ikeSADict .= key_data_str("LifeTimeInMinutes", "integer",
 		$phase1['lifetime']/60, 5);
 
