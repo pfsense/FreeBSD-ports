@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-ipsec-profile-wizard
-PORTVERSION=	0.11
+PORTVERSION=	0.12
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
