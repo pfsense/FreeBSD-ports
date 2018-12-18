@@ -705,9 +705,14 @@ function addLocalIpsecCfg($vpc_id, $tunnel_cfgs, $loc_intf, $vpc_cidr, $loc_cidr
 		/* aws returns an encryption algorithm like aes-128-cbc */
 		/* right now they always return exactly aes-128-cbc actually */
 		$aws_crypto = explode('-', $tunnel_cfg['ike']['encryption_protocol']);
-		$ph1['encryption-algorithm'] = array('name' => $aws_crypto[0], 'keylen' => $aws_crypto[1]);
-		$ph1['hash-algorithm'] = $tunnel_cfg['ike']['authentication_protocol'];
-		$ph1['dhgroup'] = str_replace("group", "", $tunnel_cfg['ike']['perfect_forward_secrecy']);
+
+		$encryption = array();
+		$encryption['encryption-algorithm'] = array('name' => $aws_crypto[0], 'keylen' => $aws_crypto[1]);
+		$encryption['hash-algorithm'] = $tunnel_cfg['ike']['authentication_protocol'];
+		$encryption['dhgroup'] = str_replace("group", "", $tunnel_cfg['ike']['perfect_forward_secrecy']);
+		$ph1['encryption']['item'] = array();
+		$ph1['encryption']['item'][0] = $encryption;
+
 		$ph1['lifetime'] = $tunnel_cfg['ike']['lifetime'];
 		$ph1['pre-shared-key'] = $tunnel_cfg['ike']['pre_shared_key'];
 		$ph1['authentication_method'] = 'pre_shared_key';
