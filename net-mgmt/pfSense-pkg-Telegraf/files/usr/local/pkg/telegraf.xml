@@ -114,6 +114,27 @@
             <type>input</type>
             <description>Timeout when submitting data to Graphite</description>
         </field>
+        <field>
+            <fielddescr>HAProxy</fielddescr>
+            <fieldname>haproxy_enable</fieldname>
+            <type>checkbox</type>
+            <description>Enable HAProxy Status Reporting</description>
+            <enablefields>haproxy_port</enablefields>
+        </field>
+        <field>
+           <fielddescr>HAProxy Port (optional)</fielddescr>
+           <fieldname>haproxy_port</fieldname>
+           <type>input</type>
+           <description>Port number where HAProxy status is available (default: 2200)</description>
+        </field>
+        <field>
+            <fielddescr>Additional configuration for Telegraf</fielddescr>
+            <fieldname>telegraf_raw_config</fieldname>
+            <type>textarea</type>
+            <size>80</size>
+            <encoding>base64</encoding>
+            <description>Additional directives for telegraf.conf.</description>
+        </field>
     </fields>
     <custom_php_resync_config_command>
         telegraf_resync_config();

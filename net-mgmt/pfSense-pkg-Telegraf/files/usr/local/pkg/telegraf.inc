@@ -84,6 +84,18 @@ function telegraf_resync_config() {
 
 EOD;
 
+	/* HAProxy Monitor Configuration */
+	if ($telegraf_conf["haproxy_enable"]) {
+		$ha_port = 2200;
+		if ($telegraf_conf["haproxy_port"]) {
+			$ha_port = $telegraf_conf["haproxy_port"];	
+		}
+
+		$cfg .= "\n[[inputs.haproxy]]\n";
+		$cfg .= "\tservers = [\"http://127.0.0.1:" . $ha_port . "/haproxy/haproxy_stats.php?haproxystats=1\"]\n";
+		$cfg .= "\n";
+	}
+
 	if ((is_array($telegraf_conf['telegraf_output']) && in_array("influxdb", $telegraf_conf['telegraf_output'])) || $telegraf_conf['telegraf_output'] == "influxdb") {
 		$cfg .= "[[outputs.influxdb]]\n";
 		$cfg .= "\turls = [\"" . $telegraf_conf['influx_server'] . "\"]\n";
@@ -119,6 +131,15 @@ EOD;
 			$cfg .= "\ttimeout = 2\n";
 		}
 	}
+
+	/* Raw additional configuration options */
+ 	if ($telegraf_conf["telegraf_raw_config"]) {
+		#$telegraf_conf["telegraf_raw_config"] = $_POST["telegraf_raw_config"];
+		$cfg .= "\n# Additional Raw Options\n";
+		$cfg .= $_POST["telegraf_raw_config"];
+		$cfg .= "\n";
+	}
+
 	$conffile = "/usr/local/etc/telegraf.conf";
 	file_put_contents($conffile, $cfg);
 
