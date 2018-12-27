@@ -858,7 +858,7 @@ main(int argc, char *argv[])
 			pidfile = optarg;
 			break;
 		case 'v':
-			printf("Version 1.2\n");
+			printf("Version %%VERSION%%\n");
 			exit(0);
 			/* NOTREACHED */
 			break;
