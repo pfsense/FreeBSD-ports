@@ -1,7 +1,7 @@
 <?php
 /*
  * acme_sh.inc
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -43,7 +43,7 @@ class acme_sh_domain {
 		$this->NSUPDATE_KEY = $key;
 	}
 }
-	
+
 class acme_sh {
 
 	private $accountconfig;
@@ -52,7 +52,7 @@ class acme_sh {
 	private $debug = true;
 	public $dnssleep;
 	public $ocspstaple;
-	
+
 	private function execacmesh($command, $envvariables = null) {
 		$command = "/usr/local/pkg/acme/acme.sh " . $command;
 		if ($this->debug) {
@@ -86,14 +86,14 @@ class acme_sh {
 		}
 		return $return_value;
 	}
-	
-	function __construct($name, $ca) {
+
+	function __construct($name, $ca, $email) {
 		$this->name = $name;
-		$this->init($ca, $name);
+		$this->init($ca, $name, $email);
 	}
-	
-	function init($ca, $name) {
-		$conf = "ACME_DIRECTORY='{$ca}/directory'\n";
+
+	function init($ca, $name, $email) {
+		$conf = "ACME_DIRECTORY='{$ca}/directory'\nACCOUNT_EMAIL='{$email}'\n";
 		$cahost = parse_url($ca, PHP_URL_HOST);
 		$acmeconf = "/tmp/acme/{$name}/";
 		$this->acmeconf = $acmeconf;
@@ -102,7 +102,7 @@ class acme_sh {
 		$this->accountconfig = "{$this->acmeconf}accountconf.conf";
 		file_put_contents("{$this->accountconfig}", $conf);
 	}
-	
+
 	function generateAccountKey() {
 		unlink_if_exists("{$this->path_account}/account.key");
 		$this->debug = false;
@@ -115,7 +115,7 @@ class acme_sh {
 		$privateKey = file_get_contents("{$this->path_account}/account.key");
 		return $privateKey;
 	}
-	
+
 	function registeraccount($key) {
 		file_put_contents("{$this->path_account}/account.key", $key);
 		$result = $this->execacmesh(""
@@ -126,7 +126,7 @@ class acme_sh {
 				. " --log " . escapeshellarg($this->acmeconf."acme_issuecert.log"));
 		return $result == 0;
 	}
-	
+
 	function generateDomainKey($domain, $keylength) {
 		global $a_keylength;
 		$pathadd = "";
@@ -135,7 +135,7 @@ class acme_sh {
 		}
 		$certpath = "{$this->acmeconf}{$domain}{$pathadd}";
 		safe_mkdir($certpath);
-		
+
 		unlink_if_exists("{$certpath}/{$domain}.key");
 		$this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
@@ -148,7 +148,7 @@ class acme_sh {
 		$privateKey = file_get_contents("{$certpath}/{$domain}.key");
 		return $privateKey;
 	}
-	
+
 	function signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $envvariables = null) {
 		// $action = issue / renew
 		global $acme_domain_validation_method;
@@ -161,7 +161,7 @@ class acme_sh {
 		if ($this->ocspstaple == "yes") {
 			$cmdparameters .= " --ocsp-must-staple ";
 		}
-		
+
 		$Le_Domain = $domainstosign[0]->domainname;
 		$certpath = "{$this->acmeconf}{$Le_Domain}/";
 		safe_mkdir($certpath);
@@ -193,13 +193,13 @@ EOF;
 		$hookfile_httpapi = "{$this->acmeconf}httpapi/pfSenseacme.sh";
 		file_put_contents($hookfile_httpapi, $hookcontent_httpapi);
 		chmod($hookfile_httpapi, 0755);
-		
+
 		$certpath = "{$this->acmeconf}{$domainstosign[0]->domainname}";
 		safe_mkdir($certpath);
 		file_put_contents("{$certpath}/{$domainstosign[0]->domainname}.key", $certificatepsk);
 		$domainstr = "";
 		foreach($domainstosign as $domain) {
-			$api = $domain->method; 
+			$api = $domain->method;
 			$domainstr .= " -d " . escapeshellarg($domain->domainname);
 			if (!empty($domain->method)) {
 				$domainparameters = "";
@@ -256,7 +256,7 @@ EOD;
 				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.key", $keydata);
 			}
 		}
-		
+
 		$this->execacmesh(""
 			. " --{$action} {$domainstr}"
 			. " --home " . escapeshellarg($this->acmeconf)

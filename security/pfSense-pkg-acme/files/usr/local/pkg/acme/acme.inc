@@ -1,7 +1,7 @@
 <?php
 /*
  * acme.inc
- * 
+ *
  * part of pfSense (https://www.pfsense.org/)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
@@ -179,6 +179,9 @@ $a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Product
 );
 $a_acmeserver['letsencrypt-production-2'] = array('name' => "Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v02.api.letsencrypt.org'
+);
+$a_acmeserver['buypass-production'] = array('name' => "BuyPass Production ACME v2 (Applies rate limits to certificate requests)",
+    'url' => 'https://api.buypass.com/acme'
 );
 /*$a_acmeserver['dummy'] = array('name' => "dummy",
     'url' => 'https://example.org'
@@ -763,7 +766,7 @@ $acme_domain_validation_method['anydns'] = array('name' => "notforuser",
 	));
 
 //TODO add more challenge validation types
-/* 
+/*
 $acme_domain_validation_method['http-post'] = array('name' => "http-post",
 	'fields' => array(
 		'url' => array('name'=>"url",'columnheader'=>"Url",'type'=>"textbox",'size'=>"50",
@@ -854,7 +857,7 @@ function get_itembyname($a_array, $name) {
 			$i++;
 		}
 	}
-	return null;	
+	return null;
 }
 
 function get_accountkey_id($name) {
@@ -906,23 +909,23 @@ function & get_certificate($name) {
 	return null;
 }
 
-	function generateAccountKey($name, $ca) {
-		$acmesh = new acme_sh($name, $ca);
+	function generateAccountKey($name, $ca, $email = "") {
+		$acmesh = new acme_sh($name, $ca, $email);
 		return $acmesh->generateAccountKey();
 	}
-	
-	function generateDomainKey($name, $ca, $domain, $keylength) {
-		$acmesh = new acme_sh($name, $ca);
+
+	function generateDomainKey($name, $ca, $domain, $keylength, $email = "") {
+		$acmesh = new acme_sh($name, $ca, $email);
 		return $acmesh->generateDomainKey($domain, $keylength);
 	}
-	
+
 	function registerAcmeAccountKey($name, $ca, $key, $email = "") {
 		$acmesh = new acme_sh($name, $ca, $email);
 		return $acmesh->registeraccount($key);
 	}
 
 	function renew_all_certificates($force = false) {
-		global $config;		
+		global $config;
 		$a_certificates = getarraybyref($config, 'installedpackages', 'acme', 'certificates', 'item');
 		$errors = "";
 		foreach($a_certificates as $certificate) {
@@ -942,7 +945,7 @@ function & get_certificate($name) {
 			notify_all_remote($errors);
 		}
 	}
-	
+
 	function getCertificatePSK($ca, $certificate, $domain) {
 		$certificatename = $certificate['name'];
 		$cert = lookup_cert_by_name($certificatename);
@@ -974,7 +977,7 @@ function & get_certificate($name) {
 
 		return base64_decode($cert['prv']);
 	}
-	
+
 	function saveCACertificateToStore($crt) {
 		global $config;
 		$crt_enc = base64_encode($crt);
@@ -995,11 +998,11 @@ function & get_certificate($name) {
 		$a_ca[] = $cert;
 		syslog(LOG_NOTICE, "Acme, storing new CA: {$subject}");
 	}
-	
+
 	function storeCertificateCer($certificatename, $keyfile, $cerfile, $fullchainfile) {
 		global $config;
 		$certupdated = false;
-		
+
 		$key = file_get_contents($keyfile);
 		$crt = file_get_contents($cerfile);
 		$fullchain = "";
@@ -1026,10 +1029,10 @@ function & get_certificate($name) {
 				}
 			}
 		}
-		
+
 		return $certupdated;
 	}
-		
+
 	function issue_certificate($id, $force = false, $renew = false) {
 		$result = true;
 		$certificate = & get_certificate($id);
@@ -1039,7 +1042,7 @@ function & get_certificate($name) {
 				return $result;
 			}
 
-			$renewafterdays = is_numericint($certificate['renewafter']) ? $certificate['renewafter'] : 60;	
+			$renewafterdays = is_numericint($certificate['renewafter']) ? $certificate['renewafter'] : 60;
 			$timetorenew = false;
 			$now = new \DateTime();
 			$lastrenewal = new \DateTime();
@@ -1052,7 +1055,7 @@ function & get_certificate($name) {
 				echo "Renewal number of days not yet reached.\n";
 			}
 		}
-		
+
 		if ($timetorenew || $force) {
 			syslog(LOG_NOTICE, "Acme, renewing certificate: {$id}");
 			echo "Renewing certificate \n";
@@ -1086,17 +1089,18 @@ function & get_certificate($name) {
 					}
 				}
 			}
-			
+
 			echo "account: {$certificate['acmeaccount']} \n";
 			$account = get_accountkey($certificate['acmeaccount']);
 			$acmeserver = $account['acmeserver'];
 			$accountkey = $account['accountkey'];
+			$email = $account['email'];
 			echo "server: $acmeserver \n";
-			
+
 			global $a_acmeserver;
 			$url = $a_acmeserver[$acmeserver]['url'];
 			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]->domainname);
-			$acmesh = new acme_sh($certificate['name'], $url);
+			$acmesh = new acme_sh($certificate['name'], $url, $email);
 			$action = $renew == true ? "renew" : "issue";
 			$acmesh->dnssleep = $certificate['dnssleep'];
 			$acmesh->challengealias = $certificate['challengealias'];
@@ -1105,11 +1109,11 @@ function & get_certificate($name) {
 		}
 		return $result;
 	}
-	
+
 	function challenge_response_put($certificatename, $domain, $token, $payload) {
 		$acmecert = get_certificate($certificatename);
 		global $ftpconn;
-		
+
 		echo "\nchallenge_response_put $certificatename, $domain\n";
 		foreach($acmecert['a_domainlist']['item'] as $domainitem) {
 			if($domainitem['name'] == $domain){
@@ -1140,7 +1144,7 @@ function & get_certificate($name) {
 				echo 'FTP Attempt Failed: ',  $e->getMessage(), "\n";
 			}
 		}
-	}	
+	}
 
 	function challenge_response_cleanup($certificatename, $domain, $token) {
 		global $ftpconn;
