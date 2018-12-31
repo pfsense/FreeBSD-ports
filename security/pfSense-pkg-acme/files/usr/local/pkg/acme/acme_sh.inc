@@ -87,13 +87,13 @@ class acme_sh {
 		return $return_value;
 	}
 	
-	function __construct($name, $ca) {
+	function __construct($name, $ca, $email) {
 		$this->name = $name;
-		$this->init($ca, $name);
+		$this->init($ca, $name, $email);
 	}
 	
-	function init($ca, $name) {
-		$conf = "ACME_DIRECTORY='{$ca}/directory'\n";
+	function init($ca, $name, $email) {
+		$conf = "ACME_DIRECTORY='{$ca}/directory'\nACCOUNT_EMAIL='{$email}'\n";
 		$cahost = parse_url($ca, PHP_URL_HOST);
 		$acmeconf = "/tmp/acme/{$name}/";
 		$this->acmeconf = $acmeconf;
@@ -221,7 +221,7 @@ EOF;
 				} elseif ($api == "standalonetls") {
 					$port = empty($envvariables['port']) ? 443 : $envvariables['port'];
 					$listen = ($envvariables['ipv6'] == "yes") ? "--listen-v6" : "--listen-v4";
-					$domainparameters = " --tls {$listen} --tlsport " . escapeshellarg($port);
+					$domainparameters = " --alpn {$listen} --tlsport " . escapeshellarg($port);
 				} else {
 					$domainparameters = " --webroot pfSenseacme";
 				}
