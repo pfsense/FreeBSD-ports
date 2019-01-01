@@ -99,6 +99,7 @@ outputs:
       filetype: regular
 
   - file-store:
+      version: 2
       enabled: {$file_store_enabled}
       log-dir: files
       force-magic: {$json_log_magic}
@@ -113,20 +114,19 @@ outputs:
       force-magic: {$json_log_magic}
       {$json_log_hash}
 
-  - dns-log:
-      enabled: {$dns_log_enabled}
-      filename: dns.log
-      append: {$dns_log_append}
-      filetype: regular
-
   - eve-log:
       enabled: {$enable_eve_log}
-      type: {$eve_output_type}
-      redis: {$eve_redis_output}
+      filetype: {$eve_output_type}
       filename: eve.json
+      redis: {$eve_redis_output}
       identity: "suricata"
       facility: {$eve_systemlog_facility}
       level: {$eve_systemlog_priority}
+      xff:
+        enabled: {$eve_xff_enabled}
+        mode: {$eve_xff_mode}
+        deployment: {$eve_xff_deployment}
+        header: {$eve_xff_header}
       types: {$eve_out_types}
 
 # Magic file. The extension .mgc is added to the value here.
