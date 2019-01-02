@@ -775,10 +775,6 @@ else
 	$asn1_max_frames = "256";
 
 // Configure App-Layer Parsers/Detection
-if (!empty($suricatacfg['tls_parser']))
-	$tls_parser = $suricatacfg['tls_parser'];
-else
-	$tls_parser = "yes";
 if (!empty($suricatacfg['dcerpc_parser']))
 	$dcerpc_parser = $suricatacfg['dcerpc_parser'];
 else
@@ -791,10 +787,6 @@ if (!empty($suricatacfg['ssh_parser']))
 	$ssh_parser = $suricatacfg['ssh_parser'];
 else
 	$ssh_parser = "yes";
-if (!empty($suricatacfg['smtp_parser']))
-	$smtp_parser = $suricatacfg['smtp_parser'];
-else
-	$smtp_parser = "yes";
 if (!empty($suricatacfg['imap_parser']))
 	$imap_parser = $suricatacfg['imap_parser'];
 else
@@ -807,6 +799,30 @@ if (!empty($suricatacfg['smb_parser']))
 	$smb_parser = $suricatacfg['smb_parser'];
 else
 	$smb_parser = "yes";
+if (!empty($suricatacfg['krb5_parser']))
+	$krb5_parser = $suricatacfg['krb5_parser'];
+else
+	$krb5_parser = "yes";
+if (!empty($suricatacfg['ikev2_parser']))
+	$ikev2_parser = $suricatacfg['ikev2_parser'];
+else
+	$ikev2_parser = "yes";
+if (!empty($suricatacfg['nfs_parser']))
+	$nfs_parser = $suricatacfg['nfs_parser'];
+else
+	$nfs_parser = "yes";
+if (!empty($suricatacfg['tftp_parser']))
+	$tftp_parser = $suricatacfg['tftp_parser'];
+else
+	$tftp_parser = "yes";
+if (!empty($suricatacfg['ntp_parser']))
+	$ntp_parser = $suricatacfg['ntp_parser'];
+else
+	$ntp_parser = "yes";
+if (!empty($suricatacfg['dhcp_parser']))
+	$dhcp_parser = $suricatacfg['dhcp_parser'];
+else
+	$dhcp_parser = "yes";
 
 /* DNS Parser */
 if (!empty($suricatacfg['dns_parser_tcp']))
@@ -817,6 +833,30 @@ if (!empty($suricatacfg['dns_parser_udp']))
 	$dns_parser_udp = $suricatacfg['dns_parser_udp'];
 else
 	$dns_parser_udp = "yes";
+if (!empty($suricatacfg['dns_parser_udp_ports'])) {
+	if (is_alias($suricatacfg['dns_parser_udp_ports'])) {
+		$dns_parser_udp_port = trim(filter_expand_alias($suricatacfg['dns_parser_udp_ports']));
+		$dns_parser_udp_port = preg_replace('/\s+/', ', ', trim($dns_parser_udp_port));
+	}
+	else {
+		$dns_parser_udp_port = $suricatacfg['dns_parser_udp_ports'];
+	}
+}
+else {
+	$dns_parser_udp_port = "443";
+}
+if (!empty($suricatacfg['dns_parser_tcp_ports'])) {
+	if (is_alias($suricatacfg['dns_parser_tcp_ports'])) {
+		$dns_parser_tcp_port = trim(filter_expand_alias($suricatacfg['dns_parser_tcp_ports']));
+		$dns_parser_tcp_port = preg_replace('/\s+/', ', ', trim($dns_parser_tcp_port));
+	}
+	else {
+		$dns_parser_tcp_port = $suricatacfg['dns_parser_tcp_ports'];
+	}
+}
+else {
+	$dns_parser_tcp_port = "443";
+}
 if (!empty($suricatacfg['dns_global_memcap']))
 	$dns_global_memcap = $suricatacfg['dns_global_memcap'];
 else
@@ -839,6 +879,76 @@ if (!empty($suricatacfg['http_parser_memcap']))
 	$http_parser_memcap = $suricatacfg['http_parser_memcap'];
 else
 	$http_parser_memcap = "67108864";
+
+/* SMTP Parser */
+if (!empty($suricatacfg['smtp_parser'])) {
+	$smtp_parser = $suricatacfg['smtp_parser'];
+}
+else {
+	$smtp_parser = "yes";
+}
+if ($suricatacfg['smtp_parser_decode_mime'] == "on") {
+	$smtp_decode_mime = "yes";
+}
+else {
+	$smtp_decode_mime = "no";
+}
+if ($suricatacfg['smtp_parser_decode_base64'] == "on") {
+	$smtp_decode_base64 = "yes";
+}
+else {
+	$smtp_decode_base64 = "no";
+}
+if ($suricatacfg['smtp_parser_decode_quoted_printable'] == "on") {
+	$smtp_decode_quoted_printable = "yes";
+}
+else {
+	$smtp_decode_quoted_printable = "no";
+}
+if ($suricatacfg['smtp_parser_extract_urls'] == "on") {
+	$smtp_extract_urls = "yes";
+}
+else {
+	$smtp_extract_urls = "no";
+}
+if ($suricatacfg['smtp_parser_compute_body_md5'] == "on") {
+	$smtp_body_md5 = "yes";
+}
+else {
+	$smtp_body_md5 = "no";
+}
+
+/* TLS Parser */
+if (!empty($suricatacfg['tls_parser'])) {
+	$tls_parser = $suricatacfg['tls_parser'];
+}
+else {
+	$tls_parser = "yes";
+}
+if (!empty($suricatacfg['tls_detect_ports'])) {
+	if (is_alias($suricatacfg['tls_detect_ports'])) {
+		$tls_detect_port = trim(filter_expand_alias($suricatacfg['tls_detect_ports']));
+		$tls_detect_port = preg_replace('/\s+/', ', ', trim($tls_detect_port));
+	}
+	else {
+		$tls_detect_port = $suricatacfg['tls_detect_ports'];
+	}
+}
+else {
+	$tls_detect_port = "443";
+}
+if (!empty($suricatacfg['tls_ja3_fingerprint'])) {
+	$tls_ja3 = $suricatacfg['tls_ja3_fingerprint'];
+}
+else {
+	$tls_ja3 = "no";
+}
+if (!empty($suricatacfg['tls_encrypt_handling'])) {
+	$tls_encrypt_handling = $suricatacfg['tls_encrypt_handling'];
+}
+else {
+	$tls_encrypt_handling = "default";
+}
 
 /* Configure the IP REP section */
 $iprep_path = rtrim(SURICATA_IPREP_PATH, '/');

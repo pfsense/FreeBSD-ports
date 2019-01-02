@@ -307,43 +307,66 @@ pcre:
 # Holds details on the app-layer. The protocols section details each protocol.
 app-layer:
   protocols:
-    tls:
-      enabled: {$tls_parser}
-      detection-ports:
-        dp: 443
-      #no-reassemble: yes
     dcerpc:
       enabled: {$dcerpc_parser}
-    ftp:
-      enabled: {$ftp_parser}
-    ssh:
-      enabled: {$ssh_parser}
-    smtp:
-      enabled: {$smtp_parser}
-    imap:
-      enabled: {$imap_parser}
-    msn:
-      enabled: {$msn_parser}
-    smb:
-      enabled: {$smb_parser}
-      detection-ports:
-        dp: 139
+    dhcp:
+      enabled: {$dhcp_parser}
     dns:
       global-memcap: {$dns_global_memcap}
       state-memcap: {$dns_state_memcap}
       request-flood: {$dns_request_flood_limit}
-
       tcp:
         enabled: {$dns_parser_tcp}
         detection-ports:
-          dp: 53
+          dp: {$dns_parser_tcp_port}
       udp:
         enabled: {$dns_parser_udp}
         detection-ports:
-          dp: 53
+          dp: {$dns_parser_udp_port}
+    ftp:
+      enabled: {$ftp_parser}
     http:
       enabled: {$http_parser}
       memcap: {$http_parser_memcap}
+    ikev2:
+      enabled: {$ikev2_parser}
+    imap:
+      enabled: {$imap_parser}
+    krb5:
+      enabled: {$krb5_parser}
+    msn:
+      enabled: {$msn_parser}
+    nfs:
+      enabled: {$nfs_parser}
+    ntp:
+      enabled: {$ntp_parser}
+    tls:
+      enabled: {$tls_parser}
+      detection-ports:
+        dp: {$tls_detect_port}
+      ja3-fingerprints: {$tls_ja3}
+      encrypt-handling: {$tls_encrypt_handling}
+    smb:
+      enabled: {$smb_parser}
+      detection-ports:
+        dp: 139, 445
+    smtp:
+      enabled: {$smtp_parser}
+      mime:
+        decode-mime: {$smtp_decode_mime}
+        decode-base64: {$smtp_decode_base64}
+        decode-quoted-printable: {$smtp_decode_quoted_printable}
+        header-value-depth: 2000
+        extract-urls: {$smtp_extract_urls}
+        body-md5: {$smtp_body_md5}
+      inspected-tracker:
+        content-limit: 100000
+        content-inspect-min-size: 32768
+        content-inspect-window: 4096
+    ssh:
+      enabled: {$ssh_parser}
+    tftp:
+      enabled: {$tftp_parser}
 
 ###########################################################################
 # Configure libhtp.
