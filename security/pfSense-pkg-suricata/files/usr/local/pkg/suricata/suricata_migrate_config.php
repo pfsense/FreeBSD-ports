@@ -491,6 +491,14 @@ foreach ($rule as &$r) {
 		$pconfig['dns_parser_tcp'] = "yes";
 		$updated_cfg = true;
 	}
+	if (empty($pconfig['dns_parser_udp_ports'])) {
+		$pconfig['dns_parser_udp_ports'] = "53";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['dns_parser_tcp_ports'])) {
+		$pconfig['dns_parser_tcp_ports'] = "53";
+		$updated_cfg = true;
+	}
 
 	/***********************************************************/
 	/* Create new HTTP App-Layer parser settings if not set    */
@@ -501,6 +509,46 @@ foreach ($rule as &$r) {
 	}
 	if (empty($pconfig['http_parser_memcap'])) {
 		$pconfig['http_parser_memcap'] = "67108864";
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
+	/* Create new SMTP App-Layer parser settings if not set    */
+	/***********************************************************/
+	if (empty($pconfig['smtp_parser_decode_mime'])) {
+		$pconfig['smtp_parser_decode_mime'] = "off";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smtp_parser_decode_base64'])) {
+		$pconfig['smtp_parser_decode_base64'] = "on";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smtp_parser_decode_quoted_printable'])) {
+		$pconfig['smtp_parser_decode_quoted_printable'] = "on";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smtp_parser_extract_urls'])) {
+		$pconfig['smtp_parser_extract_urls'] = "on";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smtp_parser_compute_body_md5'])) {
+		$pconfig['smtp_parser_compute_body_md5'] = "on";
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
+	/* Create new TLS App-Layer parser settings if not set    */
+	/***********************************************************/
+	if (empty($pconfig['tls_detect_ports'])) {
+		$pconfig['tls_detect_ports'] = "443";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['tls_encrypt_handling'])) {
+		$pconfig['tls_encrypt_handling'] = "default";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['tls_ja3_fingerprint'])) {
+		$pconfig['tls_ja3_fingerprint'] = "off";
 		$updated_cfg = true;
 	}
 
