@@ -100,7 +100,9 @@ $suricata_ports = array(
 	"oracle_ports" => "1521", 
 	"ssh_ports" => $ssh_port, 
 	"shellcode_ports" => "!80", 
-	"DNP3_PORTS" => "20000", "file_data_ports" => "\$HTTP_PORTS,110,143"
+	"DNP3_PORTS" => "20000", 
+	"file_data_ports" => "\$HTTP_PORTS,110,143", 
+	"sip_ports" => "5060,5061,5600"
 );
 $port_vars = "";
 	foreach ($suricata_ports as $alias => $avalue) {
