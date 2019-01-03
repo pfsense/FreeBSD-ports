@@ -13,7 +13,7 @@
 max-pending-packets: {$max_pend_pkts}
 
 # Runmode the engine should use.
-runmode: autofp
+runmode: {$runmode}
 
 # If set to auto, the variable is internally switched to 'router' in IPS 
 # mode and 'sniffer-only' in IDS mode.
