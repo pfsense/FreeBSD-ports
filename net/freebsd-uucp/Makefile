@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freebsd-uucp
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONPREFIX=	r
 DISTVERSION=	1_07_4
 CATEGORIES=	net comms ipv6
@@ -41,7 +41,7 @@ VAR_LOG_DESC=			put logfiles into /var/log
 .if ${PORT_OPTIONS:MPAM}
 PAM_SUFFIX=	-pam
 MAKE_ENV+=	WITH_PAM=${WITH_PAM}
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 110000
+.if ${OPSYS} == FreeBSD
 MAKE_ENV+=	MINUSLPAM=-lpam
 .endif
 .endif
@@ -83,8 +83,8 @@ pre-install:
 		${STAGEDIR}${PREFIX}/etc/mtree/uucp-local.mtree
 
 post-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/info
-	${INSTALL_DATA} ${WRKSRC}/uucp/doc/uucp.info ${STAGEDIR}${PREFIX}/info/
+	${MKDIR} ${STAGEDIR}${PREFIX}/${INFO_PATH}
+	${INSTALL_DATA} ${WRKSRC}/uucp/doc/uucp.info ${STAGEDIR}${PREFIX}/${INFO_PATH}
 .if ${PORT_OPTIONS:MVAR_LOG}
 	${MKDIR} ${STAGEDIR}/var/log/uucp
 .endif

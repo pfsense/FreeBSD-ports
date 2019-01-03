@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	10.11.0
+PORTVERSION=	11.6.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
@@ -23,7 +23,6 @@ OPTIONS_SUB=		yes
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
 
-OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 OPTIONS_EXCLUDE_aarch64=	DTRACE
 # dt_modtext:/usr/src/cddl/contrib/opensolaris/lib/libdtrace/common/dt_link.c(820): arm not implemented
 OPTIONS_EXCLUDE_armv6=		DTRACE
@@ -44,7 +43,7 @@ USES=		compiler:c++11-lib gmake python:2.7,build pkgconfig \
 
 HAS_CONFIGURE=	yes
 
-CONFLICTS_INSTALL=	node[4568]-[0-9]*
+CONFLICTS_INSTALL=	node[68]-[0-9]* node10-[0-9]*
 
 CONFIGURE_ARGS=	--prefix=${PREFIX_RELDEST} \
 		--without-npm \
@@ -67,8 +66,8 @@ LIB_DEPENDS+=	libcares.so:dns/c-ares\
 
 .if empty(PORT_OPTIONS:MBUNDLED_SSL)
 
-.if ${OPSYS} == FreeBSD && ${SSL_DEFAULT} != openssl-devel
-IGNORE=		node.js requires openssl 1.1.0, add DEFAULT_VERSIONS+=ssl=openssl-devel to /etc/make.conf or enable BUNDLED_SSL option
+.if ${OPSYS} == FreeBSD && ${SSL_DEFAULT} != openssl111
+IGNORE=		node.js requires openssl 1.1.0, add DEFAULT_VERSIONS+=ssl=openssl111 to /etc/make.conf or enable BUNDLED_SSL option
 .endif
 
 .if !empty(SSL_DEFAULT:Mlibressl*)
@@ -83,7 +82,7 @@ IGNORE=		cannot build node.js with LibreSSL. You must enable BUNDLED_SSL
 CONFIGURE_ARGS+=--openssl-no-asm
 .endif
 
-.if ${COMPILER_TYPE} == gcc
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 # GCC does not expose std::snprintf() without this define
 CXXFLAGS+=	-D_GLIBCXX_USE_C99
 .endif

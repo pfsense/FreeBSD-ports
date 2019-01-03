@@ -3,7 +3,7 @@
 
 PORTNAME=	lkl
 DISTVERSION=	4.16.g20180628
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
@@ -28,8 +28,6 @@ GH_TAGNAME=	86dd3afb590eccc1903611bdaa8bac87757eb80d
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=No one has added other architecture ld formats yet
-
-IGNORE_FreeBSD_10=	requires FreeBSD 11 or newer
 
 WRKSRC_SUBDIR=	tools/lkl
 MAKE_JOBS_UNSAFE=yes

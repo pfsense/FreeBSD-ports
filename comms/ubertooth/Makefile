@@ -3,6 +3,7 @@
 
 PORTNAME=	ubertooth
 PORTVERSION=	201808R1
+PORTREVISION=	1
 CATEGORIES=	comms
 
 MAINTAINER=	gnn@FreeBSD.org
@@ -16,7 +17,7 @@ LIB_DEPENDS=	libpyside-python2.7.so:devel/pyside \
 
 BUILD_DEPENDS=	${PYNUMPY}
 
-USES=		cmake:outsource \
+USES=		cmake \
 		python
 
 USE_GITHUB=	yes

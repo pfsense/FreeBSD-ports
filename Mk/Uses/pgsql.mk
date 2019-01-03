@@ -8,7 +8,7 @@
 #		Maintainer can set version required.  Minimum and maximum
 #		versions can be specified; e.g. 9.0-, 9.2+
 #
-#		WANT_PGSQL=	server[:fetch] pltcl plperl
+#		WANT_PGSQL=	server[:fetch] plperl plpython pltcl
 #
 #		Add PostgreSQL component dependency, using
 #		WANT_PGSQL=	component[:target].
@@ -33,7 +33,7 @@ _INCLUDE_USES_PGSQL_MK=	yes
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-VALID_PGSQL_VER=	9.3 9.4 9.5 9.6 10
+VALID_PGSQL_VER=	9.3 9.4 9.5 9.6 10 11
 
 # Override non-default LIBVERS like this:
 #PGSQL99_LIBVER=6
@@ -132,12 +132,13 @@ IGNORE?=		cannot install: does not work with postgresql${PGSQL_VER_NODOT}-client
 LIB_DEPENDS+=	libpq.so.${PGSQL${PGSQL_VER_NODOT}_LIBVER}:databases/postgresql${PGSQL_VER_NODOT}-client
 .endif
 
-_USE_PGSQL_DEP=		client contrib docs pgtcl pltcl plperl server
+_USE_PGSQL_DEP=		client contrib docs pgtcl plperl plpython pltcl server
 _USE_PGSQL_DEP_client=	psql
 _USE_PGSQL_DEP_contrib=	vacuumlo
 _USE_PGSQL_DEP_docs=	postgresql${PGSQL_VER_NODOT}-docs>0
 _USE_PGSQL_DEP_pgtcl=	${LOCALBASE}/lib/pgtcl/pkgIndex.tcl
 _USE_PGSQL_DEP_plperl=	postgresql${PGSQL_VER_NODOT}-plperl>0
+_USE_PGSQL_DEP_plpython=postgresql${PGSQL_VER_NODOT}-plpython>0
 _USE_PGSQL_DEP_pltcl=	postgresql${PGSQL_VER_NODOT}-pltcl>0
 _USE_PGSQL_DEP_server=	postgres
 .    if defined(WANT_PGSQL)

@@ -3,7 +3,7 @@
 PORTNAME=	uTox
 DISTVERSION=	0.17.0
 DISTVERSIONSUFFIX=	-full
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-im net-p2p
 MASTER_SITES=	https://github.com/uTox/uTox/releases/download/v${PORTVERSION}/
 
@@ -26,7 +26,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libopus.so:audio/opus \
 		libtoxcore.so:net-im/tox
 
-USES=		cmake:outsource compiler:c11 desktop-file-utils dos2unix \
+USES=		cmake compiler:c11 desktop-file-utils dos2unix \
 		openal pkgconfig
 USE_XORG=	ice sm x11 xext xrender
 CMAKE_OFF=	ENABLE_LTO

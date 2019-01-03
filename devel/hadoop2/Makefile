@@ -19,13 +19,13 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} FreeBSD-hadoop2-${PORTVERSION}-maven-repos
 DIST_SUBDIR=	hadoop
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} FreeBSD-hadoop2-${PORTVERSION}-maven-repository.tar.gz jetty-6.1.14.zip
 
-MAINTAINER=	demon@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Apache Map/Reduce framework
 
 LICENSE=	APACHE20
 
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	incomplete definition of type 'struct evp_cipher_ctx_st'
+BROKEN_SSL=	openssl111
+BROKEN_SSL_REASON_openssl111=	incomplete definition of type 'struct evp_cipher_ctx_st'
 
 BUILD_DEPENDS=	${LOCALBASE}/share/java/maven3/bin/mvn:devel/maven3 \
 		cmake:devel/cmake \

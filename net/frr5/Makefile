@@ -2,7 +2,7 @@
 
 PORTNAME=	frr
 PORTVERSION=	5.0.1
-PORTREVISION=	2
+PORTREVISION=	5
 DISTVERSIONPREFIX=	frr-
 CATEGORIES=	net ipv6
 PKGNAMESUFFIX=	5
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	gawk:lang/gawk
 LIB_DEPENDS=	libjson-c.so:devel/json-c
 
-CONFLICTS=	openbgpd openospfd zebra quagga frr3 frr4
+CONFLICTS=	openbgpd openospfd zebra quagga frr3 frr4 frr6
 
 USES=		autoreconf bison compiler:c++11-lang gmake pkgconfig libtool \
 		makeinfo python:2.7,build readline

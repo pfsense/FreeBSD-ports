@@ -3,7 +3,7 @@
 
 PORTNAME=	bugle
 PORTVERSION=	0.0.20100508
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 USES=		libtool pathfix perl5
 USE_GL=		gl
-USE_GCC=	yes
+USE_GCC=	7
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-ltdl-install=no
 INSTALL_TARGET=	install-strip

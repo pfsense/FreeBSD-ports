@@ -3,7 +3,7 @@
 
 PORTNAME=	quackle
 PORTVERSION=	1.0.3
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -11,6 +11,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scrabble-like word game utilizing Qt4
 
 LICENSE=	GPLv3
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 USE_GITHUB=	yes
 

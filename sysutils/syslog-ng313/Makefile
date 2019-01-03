@@ -3,7 +3,7 @@
 
 PORTNAME=	syslog-ng
 DISTVERSION=	3.13.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 DISTFILES=	syslog-ng-${DISTVERSION}.tar.gz
 MASTER_SITES=	https://github.com/balabit/syslog-ng/releases/download/syslog-ng-${DISTVERSION}/
@@ -14,11 +14,12 @@ PKGNAMESUFFIX=	313
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Powerful syslogd replacement
 
-LIB_DEPENDS=	libpcre.so:devel/pcre \
-		libuuid.so:misc/e2fsprogs-libuuid \
-		libbson-1.0.so:devel/libbson
+DEPRECATED=		No longer officially supported by Balabit
+EXPIRATION_DATE=	2019-12-31
 
-BROKEN_powerpc64=	fails to link: Internal error: Segmentation fault (program ld)
+LIB_DEPENDS=	libpcre.so:devel/pcre \
+		libuuid.so:misc/e2fsprogs-libuuid
+
 BROKEN_sparc64=		fails to link: Internal error: Segmentation fault (program ld)
 
 CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
@@ -102,6 +103,7 @@ SQL_PLIST_FILES=		lib/syslog-ng/libafsql.so
 MONGO_CONFIGURE_ENABLE=		mongodb
 MONGO_CONFIGURE_ON=		--with-mongoc=system
 MONGO_LIB_DEPENDS=		libmongoc-1.0.so:devel/mongo-c-driver
+MONGO_LIB_DEPENDS+=		libbson-1.0.so:devel/libbson
 MONGO_PLIST_FILES=		lib/syslog-ng/libafmongodb.so
 
 JSON_CONFIGURE_ENABLE=		json
@@ -110,12 +112,12 @@ JSON_PLIST_FILES=		lib/syslog-ng/libjson-plugin.so \
 				share/syslog-ng/include/scl/cim/template.conf
 
 JAVA_CONFIGURE_ENABLE=		java
-JAVA_USE_JAVA=			yes
+JAVA_USE=			JAVA=yes
 JAVA_PLIST_FILES=		lib/syslog-ng/libmod-java.so \
 				lib/syslog-ng/java-modules/syslog-ng-core.jar
 
 JAVA_MOD_CONFIGURE_ENABLE=	java-modules
-JAVA_MOD_USE_JAVA=		yes
+JAVA_MOD_USE=			JAVA=yes
 JAVA_MOD_BUILD_DEPENDS=		gradle:devel/gradle \
 				bash:shells/bash
 JAVA_MOD_PLIST_DIRS=		lib/syslog-ng/java-modules/elastic-jest-client

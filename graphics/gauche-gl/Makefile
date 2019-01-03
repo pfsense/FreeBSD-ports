@@ -3,7 +3,7 @@
 
 PORTNAME=	gl
 PORTVERSION=	0.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics scheme
 MASTER_SITES=	SF/gauche/Gauche-gl
 PKGNAMEPREFIX=	gauche-
@@ -18,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	gosh:lang/gauche
 RUN_DEPENDS=	gosh:lang/gauche
 
-USES=		localbase makeinfo tar:tgz
+USES=		gl localbase makeinfo tar:tgz
 USE_CSTD=	gnu99
 USE_XORG=	ice sm x11 xext xmu xi
 USE_GL=		gl glu glut

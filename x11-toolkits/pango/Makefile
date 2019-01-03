@@ -3,6 +3,7 @@
 
 PORTNAME=	pango
 PORTVERSION=	1.42.4
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -23,7 +24,7 @@ RUN_DEPENDS=	xorg-fonts-truetype>0:x11-fonts/xorg-fonts-truetype \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gnome localbase meson pkgconfig tar:xz
+USES=		compiler:c11 gettext gnome localbase meson pkgconfig tar:xz
 USE_LDCONFIG=	yes
 USE_GNOME=	cairo glib20 introspection:build
 

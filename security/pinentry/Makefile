@@ -3,7 +3,7 @@
 
 PORTNAME=	pinentry
 PORTVERSION=	1.1.0
-PORTREVISION?=	1
+PORTREVISION?=	3
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/pinentry
 
@@ -62,6 +62,11 @@ GNOME3_RUN_DEPENDS=	${PINENTRY_GNOME3}:security/pinentry-gnome3
 PINENTRY_BIN=	${PINENTRY_${gui}}
 . endif
 .endfor
+
+.if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 do-install:
 	${LN} -sf ${PINENTRY_BIN} ${STAGEDIR}${PREFIX}/bin/pinentry
@@ -139,7 +144,7 @@ CONFIGURE_ARGS+=--disable-pinentry-tty
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/bin/pinentry \
-		${STAGEDIR}${PREFIX}/info/pinentry.info
+		${STAGEDIR}${PREFIX}/share/info/pinentry.info
 
 .endif # !defined(PINENTRY_GUI)
 

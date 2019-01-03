@@ -3,7 +3,7 @@
 
 PORTNAME=	anyterm
 PORTVERSION=	1.1.29
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	www
 MASTER_SITES=	http://anyterm.org/download/ \
 		http://dl1.douglasthrift.net/${PORTNAME}/ \
@@ -18,8 +18,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
 BROKEN_aarch64=		does not build: libstdc++.so: undefined reference to __floatunditf@GCC_4.2.0
-BROKEN_armv6=		does not build: libstdc++.so: undefined reference to __floatunditf@GCC_4.2.0
-BROKEN_armv7=		does not build: libstdc++.so: undefined reference to __floatunditf@GCC_4.2.0
+BROKEN_armv6=		does not build: libstdc++.so: undefined reference to __aeabi_idiv@GCC_3.5
+BROKEN_armv7=		does not build: libstdc++.so: undefined reference to __aeabi_idiv@GCC_3.5
 BROKEN_powerpc64=	Does not build: ld: cannot find -lboost_system
 
 USE_RC_SUBR=	anytermd

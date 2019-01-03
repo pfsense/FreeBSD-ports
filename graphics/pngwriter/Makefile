@@ -3,6 +3,7 @@
 
 PORTNAME=	pngwriter
 PORTVERSION=	0.7.0
+PORTREVISION=	1
 CATEGORIES=	graphics devel
 
 MAINTAINER=	rakuco@FreeBSD.org
@@ -14,15 +15,11 @@ LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2
 
-BROKEN_mips=		fails to build: ios_base.h: 'std::ios_base::ios_base(const std::ios_base&)' is private
-BROKEN_mips64=		fails to build: ios_base.h: 'std::ios_base::ios_base(const std::ios_base&)' is private
-BROKEN_powerpc64=	fails to build: ios_base.h: 'std::ios_base::ios_base(const std::ios_base&)' is private
-
 OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	CHANGES EXAMPLES README PNGwriterQuickReference.pdf
 
-USES=		cmake:outsource
+USES=		cmake compiler:c++11-lang
 CMAKE_ON=	BUILD_SHARED_LIBS PNGwriter_USE_FREETYPE
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes

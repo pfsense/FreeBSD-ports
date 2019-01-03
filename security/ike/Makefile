@@ -14,7 +14,7 @@ COMMENT=	Shrew Soft IKE daemon and client tools
 ONLY_FOR_ARCHS=	i386 amd64
 
 USE_RC_SUBR=	iked
-USES=		bison cmake libedit localbase:ldflags tar:tbz2 ssl
+USES=		bison cmake:insource libedit localbase:ldflags tar:tbz2 ssl
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
@@ -39,6 +39,13 @@ NATT_CMAKE_ON=	-DNATT=YES
 QTGUI_CMAKE_ON=	-DQTGUI=YES
 QTGUI_USES=	qt:4
 QTGUI_USE=	QT=gui,moc_build,qmake_build,rcc_build,uic_build
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MQTGUI}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-install:
 	@if ! ${SYSCTL} -a | ${GREP} -q ipsec; then \

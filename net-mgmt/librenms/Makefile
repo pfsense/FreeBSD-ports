@@ -2,12 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	librenms
-PORTVERSION=	1.43
-PORTREVISION=	1
-# RELEASE_TIMESTAMP is used for a patch inside the vendor code
-# it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
-# It sits here so you remember to update it with each release
-RELEASE_TIMESTAMP=	1535704658
+PORTVERSION=	1.45
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -18,8 +14,14 @@ COMMENT=	Autodiscovering PHP/MySQL/SNMP based network monitoring
 
 LICENSE=	GPLv3
 
-# perhaps we also need python-memcache python-mysqldb
+USES=		python${PY_MYSQL} shebangfix
 
+# RELEASE_TIMESTAMP is used for a patch inside the vendor code
+# it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
+# It sits here so you remember to update it with each release
+RELEASE_TIMESTAMP=	1539772408
+
+# perhaps we also need python-memcache python-mysqldb
 RUN_DEPENDS+=	rrdtool:databases/rrdtool \
 		dot:graphics/graphviz \
 		${LOCALBASE}/share/pear/Net/IPv4.php:net/pear-Net_IPv4@${PHP_FLAVOR} \
@@ -28,9 +30,7 @@ RUN_DEPENDS+=	rrdtool:databases/rrdtool \
 		bash:shells/bash \
 		sudo:security/sudo
 
-USES=		python${PY_MYSQL} shebangfix
-
-USE_PHP=	ctype curl filter gd hash json ldap mbstring mcrypt mysqli openssl pdo posix session simplexml snmp tokenizer xml zip
+USE_PHP=	ctype curl filter gd hash json ldap mbstring mysqli openssl pdo pdo_mysql posix session simplexml snmp tokenizer xml zip
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	librenms
@@ -56,9 +56,9 @@ NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios
 NMAP_RUN_DEPENDS=	nmap:security/nmap
 PYPOLLER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.3:databases/py-MySQLdb@${PY_FLAVOR}
 PYPOLLER_VARS=	PY_MYSQL=:2.7
-X11_RUN_DEPENDS=	Magick-config:graphics/ImageMagick \
+X11_RUN_DEPENDS=	Magick-config:graphics/ImageMagick6 \
 			mtr:net/mtr
-X11_RUN_DEPENDS_OFF=	Magick-config:graphics/ImageMagick-nox11 \
+X11_RUN_DEPENDS_OFF=	Magick-config:graphics/ImageMagick6-nox11 \
 			mtr:net/mtr-nox11
 
 WMIC_RUN_DEPENDS=	wmic:net-mgmt/wmi-client
@@ -104,7 +104,7 @@ ROOT_FILES=	.env.example addhost.php adduser.php alerts.php artisan billing-calc
 		poller-wrapper.py readmegen.yml renamehost.php services-wrapper.py snmp-scan.py \
 		snmptrap.php syslog.php validate.php
 
-ROOT_DIRS=	LibreNMS app bootstrap config contrib database doc html includes lib licenses logs mibs misc resources routes scripts sql-schema storage tests
+ROOT_DIRS=	LibreNMS app bootstrap config contrib database doc html includes licenses logs mibs misc resources routes scripts sql-schema storage tests
 
 # these are directories which require a generic @DIR entry in pkg-plist
 OTHER_DIRS=	storage/app/public \
@@ -157,6 +157,9 @@ do-install:
 # Ensure PHP and Python scripts are executable
 	${FIND} ${STAGEDIR}/${WWWDIR} -type f -name '*.py' -or -type f -name \
 	       '*.php' -exec ${CHMOD} +x {} \;
+# these values should be outside the www tree now
+	${MKDIR} ${STAGEDIR}/var/log/${PORTNAME}
+	${MKDIR} ${STAGEDIR}/var/db/${PORTNAME}
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}/${DOCSDIR}
@@ -170,10 +173,6 @@ do-install-EXAMPLES-on:
 .for f in ${PORTEXAMPLES}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}/${EXAMPLESDIR}
 .endfor
-
-# these values should be outside the www tree now
-	${MKDIR} ${STAGEDIR}/var/log/${PORTNAME}
-	${MKDIR} ${STAGEDIR}/var/db/${PORTNAME}
 
 post-install:
 	@${FIND} -s ${STAGEDIR}${WWWDIR} -type f '(' -name '*.orig' -or -name '*.bak' -or -name '.gitignore' ')' -delete

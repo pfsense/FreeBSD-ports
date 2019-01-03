@@ -2,7 +2,7 @@
 
 PORTNAME=	cryptominisat
 DISTVERSION=	5.6.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 
 MAINTAINER=	arrowd@FreeBSD.org
@@ -15,7 +15,7 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs
 
-USES=		cmake:outsource compiler:c++11-lib
+USES=		cmake compiler:c++11-lib
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

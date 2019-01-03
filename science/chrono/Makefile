@@ -3,7 +3,7 @@
 PORTNAME=	chrono
 DISTVERSION=	2.0.0-9070
 DISTVERSIONSUFFIX=	-g57a828dc0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,7 +16,7 @@ PORTSCOUT=	skipv:3.0.0 # their development continues under the branch 2.X. 3.0.0
 
 BUILD_DEPENDS=	openmpi>0:net/openmpi
 
-USES=		cmake:outsource compiler:c++14-lang fortran
+USES=		cmake compiler:c++14-lang fortran
 USE_GITHUB=	yes
 GH_ACCOUNT=	project${PORTNAME}
 USE_LDCONFIG=	yes

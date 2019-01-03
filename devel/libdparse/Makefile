@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdparse
-PORTVERSION=	0.8.3
+PORTVERSION=	0.9.10
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -13,6 +13,7 @@ LICENSE=	BSL
 
 BUILD_DEPENDS=	ldmd2:lang/ldc \
 		dub:devel/dub \
+		${LOCALBASE}/lib/d/libmir-core.a:devel/mir-core \
 		${LOCALBASE}/lib/d/libstdx-allocator.a:devel/stdx-allocator
 
 USE_GITHUB=	yes

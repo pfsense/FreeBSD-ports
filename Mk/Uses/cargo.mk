@@ -46,7 +46,7 @@ DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}.tar.gz:cargo_${_crate:S/-//g:S/.//g}
 
 CARGO_BUILDDEP?=	yes
 .if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	 rust>=1.29.1:lang/rust
+BUILD_DEPENDS+=	 rust>=1.31.0:lang/rust
 .endif
 
 # Location of cargo binary (default to lang/rust's Cargo binary)
@@ -62,15 +62,13 @@ CARGO_TARGET_DIR?=	${WRKDIR}/target
 #  - RUSTC: path of rustc binary (default to lang/rust)
 #  - RUSTDOC: path of rustdoc binary (default to lang/rust)
 #  - RUSTFLAGS: custom flags to pass to all compiler invocations that Cargo performs
-#
-# XXX LDFLAGS => -C link-arg=$1 (via RUSTFLAGS)
 CARGO_ENV+= \
 	CARGO_HOME=${WRKDIR}/cargo-home \
 	CARGO_BUILD_JOBS=${MAKE_JOBS_NUMBER} \
 	CARGO_TARGET_DIR=${CARGO_TARGET_DIR} \
 	RUSTC=${LOCALBASE}/bin/rustc \
 	RUSTDOC=${LOCALBASE}/bin/rustdoc \
-	RUSTFLAGS="${RUSTFLAGS}"
+	RUSTFLAGS="${RUSTFLAGS} -C linker=${CC:Q} ${LDFLAGS:S/^/-C link-arg=/}"
 
 # Adjust -C target-cpu if -march/-mcpu is set by bsd.cpu.mk
 .if ${ARCH} == amd64 || ${ARCH} == i386
@@ -169,6 +167,18 @@ CARGO_ENV+=	RUSTONIG_SYSTEM_LIBONIG=1
 LIB_DEPENDS+=	libonig.so:devel/oniguruma
 .endif
 
+.if ${CARGO_CRATES:Mopenssl-0.[0-9].*}
+# FreeBSD 12.0 updated base OpenSSL in r339270:
+# https://github.com/sfackler/rust-openssl/commit/276577553501
+. if !exists(${PATCHDIR}/patch-openssl-1.1.1) # skip if backported
+_openssl_VER=	${CARGO_CRATES:Mopenssl-0.[0-9].*:C/.*-//}
+.  if ${_openssl_VER:R:R} == 0 && (${_openssl_VER:R:E} < 10 || ${_openssl_VER:R:E} == 10 && ${_openssl_VER:E} < 4)
+DEV_WARNING+=	"CARGO_CRATES=openssl-0.10.3 or older do not support OpenSSL 1.1.1. Consider updating to the latest version."
+.  endif
+. endif
+.undef _openssl_VER
+.endif
+
 .if ${CARGO_CRATES:Mopenssl-sys-[0-9]*}
 # Make sure that openssl-sys can find the correct version of OpenSSL
 .include "${USESDIR}/ssl.mk"
@@ -241,6 +251,7 @@ do-build:
 .if !target(do-install) && ${CARGO_INSTALL:tl} == "yes"
 do-install:
 	@${CARGO_CARGO_RUN} install \
+		--path . \
 		--root "${STAGEDIR}${PREFIX}" \
 		--verbose \
 		${CARGO_INSTALL_ARGS}

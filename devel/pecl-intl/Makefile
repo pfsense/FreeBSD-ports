@@ -3,17 +3,20 @@
 
 PORTNAME=	intl
 PORTVERSION=	3.0.0
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	devel pear
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PECL extension to support Internationalization(ICU)
 
+DEPRECATED=	Works only with EOL php 5.6
+EXPIRATION_DATE=	2018-12-30
+
 LICENSE=	PHP301
 
 LIB_DEPENDS=	libicui18n.so:devel/icu
 
-IGNORE_WITH_PHP=70 71 72
+IGNORE_WITH_PHP=71 72 73
 USES=		compiler:c++11-lib php:pecl
 USE_CXXSTD=	gnu++11
 

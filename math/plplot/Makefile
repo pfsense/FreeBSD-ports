@@ -3,7 +3,7 @@
 
 PORTNAME=	plplot
 PORTVERSION=	5.12.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math science
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20Source
 
@@ -21,9 +21,10 @@ LIB_DEPENDS=	libLASi.so:devel/lasi \
 RUN_DEPENDS=	bash:shells/bash \
 		${FREEFONT_DIR}/FreeMono.ttf:x11-fonts/freefont-ttf
 
+USES=		compiler:c11 cmake gettext-runtime ghostscript gnome \
+		localbase perl5 pathfix pkgconfig
 USE_GNOME=	cairo pango
 USE_PERL5=	build
-USES=		cmake:outsource gettext-runtime ghostscript localbase perl5 pathfix pkgconfig
 CMAKE_ARGS=	-DENABLE_java:BOOL=OFF \
 		-DENABLE_octave:BOOL=OFF \
 		-DENABLE_pdl:BOOL=OFF \
@@ -107,6 +108,13 @@ WXGTK_CMAKE_ON=		-DwxWidgets_CONFIG_EXECUTABLE:FILEPATH="${WX_CONFIG}"
 
 X11_USE=		XORG=ice,sm,x11,xext
 X11_CMAKE_BOOL=		PLD_xcairo PLD_xwin
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e \

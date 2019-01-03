@@ -244,7 +244,7 @@ _INCLUDE_USES_PYTHON_MK=	yes
 # What Python version and what Python interpreters are currently supported?
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-_PYTHON_VERSIONS=		2.7 3.6 3.7 3.5 3.4	# preferred first
+_PYTHON_VERSIONS=		2.7 3.6 3.7 3.5 # preferred first
 _PYTHON_PORTBRANCH=		2.7		# ${_PYTHON_VERSIONS:[1]}
 _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		lang/python
@@ -307,7 +307,7 @@ WARNING+=	"PYTHON_DEFAULT must be a version present in PYTHON2_DEFAULT or PYTHON
 .if ${_PYTHON_ARGS} == "2"
 DEV_ERROR+=		"USES=python:2 is no longer supported, use USES=python:2.7"
 .elif ${_PYTHON_ARGS} == "3"
-DEV_ERROR+=		"USES=python:3 is no longer supported, use USES=python:3.4+ or an appropriate version range"
+DEV_ERROR+=		"USES=python:3 is no longer supported, use USES=python:3.5+ or an appropriate version range"
 .endif  # ${_PYTHON_ARGS} == "2"
 
 .if defined(PYTHON_VERSION)
@@ -613,8 +613,8 @@ add-plist-pymod:
 .if ${PYTHON_REL} >= 3200 && defined(_PYTHON_FEATURE_PY3KPLIST)
 # When Python version is 3.2+ we rewrite all the filenames
 # of TMPPLIST that end with .py[co], so that they conform
-# to PEP 3147 (see http://www.python.org/dev/peps/pep-3147/)
-PYMAGICTAG=		${PYTHON_CMD} -c 'import imp; print(imp.get_tag())'
+# to PEP 3147 (see https://www.python.org/dev/peps/pep-3147/)
+PYMAGICTAG=		${PYTHON_CMD} -c 'import sys; print(sys.implementation.cache_tag)'
 _USES_stage+=	935:add-plist-python
 add-plist-python:
 	@${AWK} '\

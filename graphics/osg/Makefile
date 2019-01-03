@@ -4,7 +4,7 @@
 PORTNAME=	osg
 PORTVERSION=	3.4.1
 DISTVERSIONPREFIX=	OpenSceneGraph-
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -22,12 +22,14 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	openscenegraph
 GH_PROJECT=	OpenSceneGraph
 
-CONFLICTS=	osg-devel-[0-9]*
+CONFLICTS=	osg-devel
 
-USES=		alias cmake:outsource jpeg pkgconfig
+USES=		alias cmake compiler:c++11-lang gl jpeg pkgconfig
 USE_GL=		gl glu
 USE_XORG=	x11
 USE_LDCONFIG=	yes
+# needed to ensure build on gcc-based archs; harmless otherwise
+CXXFLAGS+=	-Wno-narrowing
 
 PLIST_SUB=	OSG_VERSION=${PORTVERSION} \
 		OSG_SHLIBVER=131 \
@@ -141,6 +143,11 @@ PLIST_SUB+=		QT=""
 .else
 CMAKE_ARGS+=		-DOSG_USE_QT:BOOL=OFF
 PLIST_SUB+=		QT="@comment "
+.endif
+
+.if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 .endif
 
 post-patch:

@@ -3,12 +3,16 @@
 
 PORTNAME=	qterm
 PORTVERSION=	0.5.12
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	chinese
 MASTER_SITES=	SF/qterm/qterm/${PORTVERSION}
 
 MAINTAINER=	kaiwang27@gmail.com
 COMMENT=	BBS client for BSD/Linux
+
+USES=		qt:4 tar:bzip2 cmake:insource perl5
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BROKEN=		fails to build
 
@@ -22,12 +26,11 @@ INSTALLS_ICONS=	yes
 
 CONFLICTS_INSTALL=	torque-[0-9]*
 
-OPTIONS_DEFINE=	DBUS OPENSSL PHONON QTSCRIPT KDE
+OPTIONS_DEFINE=	DBUS OPENSSL PHONON QTSCRIPT
 OPTIONS_DEFAULT=	DBUS OPENSSL PHONON QTSCRIPT
 
 PHONON_DESC=	Multimedia support via Phonon
 QTSCRIPT_DESC=	Scripting support via QtScript Bindings
-KDE_DESC=	Password management via KWallet
 
 OPENSSL_USES=		ssl
 OPENSSL_CMAKE_ON=	-DQTERM_ENABLE_SSH:BOOL=TRUE
@@ -49,11 +52,6 @@ QTSCRIPT_RUN_DEPENDS=	${QT_PLUGINDIR}/script/libqtscript_core.so:devel/qtscriptg
 QTSCRIPT_CMAKE_ON=	-DQTERM_ENABLE_SCRIPT:BOOL=TRUE
 QTSCRIPT_CMAKE_OFF=	-DQTERM_ENABLE_SCRIPT:BOOL=FALSE
 
-KDE_USES=	kde:4
-KDE_USE=	KDE=kdelibs,automoc4
-
-post-patch-KDE-off:
-	${REINPLACE_CMD} -e "/^find_package(KDE4)/d" ${WRKSRC}/CMakeLists.txt
 post-patch:
 	${REINPLACE_CMD} -e "/^set(QT_MIN_VERSION/d" ${WRKSRC}/CMakeLists.txt
 

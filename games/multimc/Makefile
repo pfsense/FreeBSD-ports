@@ -2,7 +2,7 @@
 
 PORTNAME=	multimc
 DISTVERSION=	0.6.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games java
 
 MAINTAINER=	me@tsundoku.ne.jp
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.md
 
 RUN_DEPENDS=	lwjgl>=2.9.3:games/lwjgl
 
-USES=		cmake:outsource compiler:c++14-lang qt:5
+USES=		cmake compiler:c++14-lang qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	MultiMC
 GH_PROJECT=	MultiMC5

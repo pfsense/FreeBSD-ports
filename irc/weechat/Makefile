@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	weechat
-PORTVERSION=	2.2
+PORTVERSION=	2.3
 CATEGORIES=	irc
 MASTER_SITES=	https://weechat.org/files/src/
 
@@ -16,7 +16,7 @@ LIB_DEPENDS+=	libcurl.so:ftp/curl \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error
 
-USES=		cmake:outsource,noninja ncurses libtool tar:xz
+USES=		cmake:noninja ncurses libtool tar:xz
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS+=	-DENABLE_GUILE=no \

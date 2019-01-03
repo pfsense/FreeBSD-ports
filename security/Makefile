@@ -64,6 +64,7 @@
     SUBDIR += ca_root_nss
     SUBDIR += calife
     SUBDIR += cardpeek
+    SUBDIR += cargo-audit
     SUBDIR += ccrypt
     SUBDIR += ccsrch
     SUBDIR += certificate-transparency
@@ -100,7 +101,6 @@
     SUBDIR += cp2fwb
     SUBDIR += cracklib
     SUBDIR += crackpkcs12
-    SUBDIR += crank
     SUBDIR += create-cert
     SUBDIR += cryptlib
     SUBDIR += cryptopp
@@ -175,7 +175,6 @@
     SUBDIR += gcr
     SUBDIR += git-crypt
     SUBDIR += git-remote-gcrypt
-    SUBDIR += gnome-gpg
     SUBDIR += gnome-keyring
     SUBDIR += gnome-keyring-sharp
     SUBDIR += gnome-password-generator
@@ -191,8 +190,6 @@
     SUBDIR += gorilla
     SUBDIR += govpn
     SUBDIR += gpa
-    SUBDIR += gpasman
-    SUBDIR += gpass
     SUBDIR += gpgdir
     SUBDIR += gpgme
     SUBDIR += gpgme-cpp
@@ -204,7 +201,6 @@
     SUBDIR += gsasl
     SUBDIR += gss
     SUBDIR += gstreamer1-plugins-dtls
-    SUBDIR += gtk-knocker
     SUBDIR += gtkpasman
     SUBDIR += gwee
     SUBDIR += hackbot
@@ -226,7 +222,6 @@
     SUBDIR += hs-HsOpenSSL
     SUBDIR += hs-RSA
     SUBDIR += hs-SHA
-    SUBDIR += hs-certificate
     SUBDIR += hs-cipher-aes
     SUBDIR += hs-cipher-aes128
     SUBDIR += hs-cipher-blowfish
@@ -308,7 +303,6 @@
     SUBDIR += keyprint
     SUBDIR += kf5-kdesu
     SUBDIR += kgpg
-    SUBDIR += kgpg-kde4
     SUBDIR += kickpass
     SUBDIR += klee
     SUBDIR += kleopatra
@@ -319,7 +313,6 @@
     SUBDIR += kqoauth
     SUBDIR += kr
     SUBDIR += krb5
-    SUBDIR += krb5-114
     SUBDIR += krb5-115
     SUBDIR += krb5-116
     SUBDIR += krb5-appl
@@ -327,7 +320,6 @@
     SUBDIR += kripp
     SUBDIR += kstart
     SUBDIR += kwalletmanager
-    SUBDIR += kwalletmanager-kde4
     SUBDIR += l0pht-watch
     SUBDIR += l0phtcrack
     SUBDIR += l5
@@ -343,7 +335,6 @@
     SUBDIR += libfprint
     SUBDIR += libgcrypt
     SUBDIR += libgnome-keyring
-    SUBDIR += libgnomesu
     SUBDIR += libgpg-error
     SUBDIR += libgringotts
     SUBDIR += libhijack
@@ -376,6 +367,7 @@
     SUBDIR += libwhisker
     SUBDIR += libyubikey
     SUBDIR += libzrtpcppcore
+    SUBDIR += linux-c6-audit-libs
     SUBDIR += linux-c6-cyrus-sasl2
     SUBDIR += linux-c6-gnutls
     SUBDIR += linux-c6-libgcrypt
@@ -384,6 +376,7 @@
     SUBDIR += linux-c6-libtasn1
     SUBDIR += linux-c6-nss
     SUBDIR += linux-c6-openssl
+    SUBDIR += linux-c6-pam
     SUBDIR += linux-c7-cyrus-sasl2
     SUBDIR += linux-c7-gnutls
     SUBDIR += linux-c7-libgcrypt
@@ -406,6 +399,7 @@
     SUBDIR += maia
     SUBDIR += mailzu
     SUBDIR += makepasswd
+    SUBDIR += maltrail
     SUBDIR += manipulate_data
     SUBDIR += masscan
     SUBDIR += matrixssl
@@ -420,6 +414,7 @@
     SUBDIR += mhash
     SUBDIR += mindterm-binary
     SUBDIR += minisign
+    SUBDIR += modsecurity3
     SUBDIR += monkeysphere
     SUBDIR += morphis
     SUBDIR += munge
@@ -464,7 +459,6 @@
     SUBDIR += openssh-askpass
     SUBDIR += openssh-portable
     SUBDIR += openssl
-    SUBDIR += openssl-devel
     SUBDIR += openssl-unsafe
     SUBDIR += openssl111
     SUBDIR += openssl_tpm_engine
@@ -488,9 +482,13 @@
     SUBDIR += ophcrack
     SUBDIR += orthrus
     SUBDIR += osiris
-    SUBDIR += ossec-hids-client
+    SUBDIR += ossec-hids
+    SUBDIR += ossec-hids-agent
+    SUBDIR += ossec-hids-agent-config
     SUBDIR += ossec-hids-local
+    SUBDIR += ossec-hids-local-config
     SUBDIR += ossec-hids-server
+    SUBDIR += ossec-hids-server-config
     SUBDIR += osslsigncode
     SUBDIR += otpw
     SUBDIR += outguess
@@ -794,6 +792,7 @@
     SUBDIR += pear-Auth_HTTP
     SUBDIR += pear-Auth_PrefManager
     SUBDIR += pear-Auth_SASL
+    SUBDIR += pear-Auth_SASL2
     SUBDIR += pear-Crypt_Blowfish
     SUBDIR += pear-Crypt_CBC
     SUBDIR += pear-Crypt_CHAP
@@ -820,7 +819,6 @@
     SUBDIR += pear-LiveUser_Admin
     SUBDIR += pear-Net_Portscan
     SUBDIR += pear-Text_Password
-    SUBDIR += pecl-crack
     SUBDIR += pecl-crypto
     SUBDIR += pecl-gnupg
     SUBDIR += pecl-krb5
@@ -830,19 +828,15 @@
     SUBDIR += pecl-scrypt
     SUBDIR += pecl-ssh2
     SUBDIR += pecl-ssh2-0
+    SUBDIR += peda
     SUBDIR += pev
     SUBDIR += pgpdump
     SUBDIR += pgpgpg
     SUBDIR += pgpin
-    SUBDIR += php-suhosin
     SUBDIR += php56-filter
     SUBDIR += php56-hash
     SUBDIR += php56-mcrypt
     SUBDIR += php56-openssl
-    SUBDIR += php70-filter
-    SUBDIR += php70-hash
-    SUBDIR += php70-mcrypt
-    SUBDIR += php70-openssl
     SUBDIR += php71-filter
     SUBDIR += php71-hash
     SUBDIR += php71-mcrypt
@@ -851,7 +845,10 @@
     SUBDIR += php72-hash
     SUBDIR += php72-openssl
     SUBDIR += php72-sodium
-    SUBDIR += phpdeadlock
+    SUBDIR += php73-filter
+    SUBDIR += php73-hash
+    SUBDIR += php73-openssl
+    SUBDIR += php73-sodium
     SUBDIR += phpsecinfo
     SUBDIR += pidentd
     SUBDIR += pidgin-encryption
@@ -909,6 +906,7 @@
     SUBDIR += py-backports.ssl_match_hostname
     SUBDIR += py-bcrypt
     SUBDIR += py-borg.localrole
+    SUBDIR += py-bro-pkg
     SUBDIR += py-btchip-python
     SUBDIR += py-cerealizer
     SUBDIR += py-certbot
@@ -975,6 +973,7 @@
     SUBDIR += py-mhash
     SUBDIR += py-mixbox
     SUBDIR += py-mnemonic
+    SUBDIR += py-msoffcrypto-tool
     SUBDIR += py-netmiko
     SUBDIR += py-ntlm-auth
     SUBDIR += py-oauth2client
@@ -982,6 +981,7 @@
     SUBDIR += py-obfsproxy-tor
     SUBDIR += py-onetime
     SUBDIR += py-openssl
+    SUBDIR += py-ospd
     SUBDIR += py-paramiko
     SUBDIR += py-paramiko1
     SUBDIR += py-passlib
@@ -1039,6 +1039,8 @@
     SUBDIR += py-sslstrip
     SUBDIR += py-stem
     SUBDIR += py-stix
+    SUBDIR += py-stix2
+    SUBDIR += py-stix2-patterns
     SUBDIR += py-tlslite
     SUBDIR += py-trezor
     SUBDIR += py-trustedpickle
@@ -1050,7 +1052,6 @@
     SUBDIR += py-vulndb
     SUBDIR += py-yara
     SUBDIR += py-yubikey-manager
-    SUBDIR += py-yubioath-desktop
     SUBDIR += py-zope.app.authentication
     SUBDIR += py-zope.app.localpermission
     SUBDIR += py-zope.app.principalannotation
@@ -1070,6 +1071,7 @@
     SUBDIR += quantis
     SUBDIR += quantis-kmod
     SUBDIR += racoon2
+    SUBDIR += racoon2-legacy
     SUBDIR += radamsa
     SUBDIR += ranpwd
     SUBDIR += ratproxy
@@ -1121,6 +1123,7 @@
     SUBDIR += rubygem-encryptor
     SUBDIR += rubygem-ezcrypto
     SUBDIR += rubygem-googleauth
+    SUBDIR += rubygem-googleauth06
     SUBDIR += rubygem-gpgme
     SUBDIR += rubygem-gpgr
     SUBDIR += rubygem-gssapi
@@ -1212,6 +1215,7 @@
     SUBDIR += scanssh
     SUBDIR += scrypt
     SUBDIR += seahorse
+    SUBDIR += seal
     SUBDIR += seccure
     SUBDIR += secpanel
     SUBDIR += sectok
@@ -1273,7 +1277,6 @@
     SUBDIR += ssss
     SUBDIR += sst
     SUBDIR += starttls
-    SUBDIR += stegdetect
     SUBDIR += steghide
     SUBDIR += stoken
     SUBDIR += strobe
@@ -1281,7 +1284,6 @@
     SUBDIR += stud
     SUBDIR += stunnel
     SUBDIR += subversion-gnome-keyring
-    SUBDIR += subversion-kwallet
     SUBDIR += subweb
     SUBDIR += sudo
     SUBDIR += sudoscript
@@ -1320,8 +1322,8 @@
     SUBDIR += unhide
     SUBDIR += unicornscan
     SUBDIR += unssh
-    SUBDIR += vault
     SUBDIR += vanguards-tor
+    SUBDIR += vault
     SUBDIR += veracrypt
     SUBDIR += vinetto
     SUBDIR += vlock
@@ -1352,8 +1354,10 @@
     SUBDIR += ykclient
     SUBDIR += ykpers
     SUBDIR += yubico-piv-tool
+    SUBDIR += yubikey-manager-qt
     SUBDIR += yubikey-personalization-gui
     SUBDIR += yubikey-piv-manager
+    SUBDIR += yubioath-desktop
     SUBDIR += zebedee
     SUBDIR += zenmap
     SUBDIR += zeronet

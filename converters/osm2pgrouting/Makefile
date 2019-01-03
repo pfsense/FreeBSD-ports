@@ -3,7 +3,7 @@
 PORTNAME=	osm2pgrouting
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.3.3
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	converters databases geography
 
 MAINTAINER=	lbartoletti@tuxfamily.org
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libexpat.so:textproc/expat2 \
 		libpqxx.so:databases/postgresql-libpqxx
 
-USES=		cmake:outsource compiler:c++11-lang pgsql
+USES=		cmake compiler:c++11-lang pgsql
 USE_GITHUB=	yes
 GH_ACCOUNT=	pgRouting
 WANT_PGSQL=	client

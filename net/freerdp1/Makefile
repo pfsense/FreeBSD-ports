@@ -3,7 +3,7 @@
 
 PORTNAME=	freerdp
 PORTVERSION=	1.2.0
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	net comms ipv6
 PKGNAMESUFFIX=	1
 
@@ -20,7 +20,7 @@ GH_ACCOUNT=	FreeRDP
 GH_PROJECT=	${GH_ACCOUNT}
 GH_TAGNAME=	f5ff6e1
 
-USES=		alias cmake:outsource compiler:c++11-lib cpe gettext localbase pathfix pkgconfig ssl
+USES=		alias cmake compiler:c++11-lib cpe gettext localbase pathfix pkgconfig ssl
 USE_LDCONFIG=	yes
 CPE_VENDOR=	freerdp_project
 
@@ -70,17 +70,6 @@ X11_CMAKE_BOOL=		WITH_X11
 X11_CMAKE_OFF=		-DWITH_XKBFILE=OFF
 X11_USE=		xorg=x11,xkbfile,xcursor,xorgproto,xv,xinerama,xext,xrandr,xi,xfixes,xrender
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && (${ARCH} == armv6 || ${ARCH} == armv7)
-.if ${OSVERSION} < 1100500 || \
-	(${OSVERSION} >= 1100500 && ${OSVERSION} < 1100504) || \
-	(${OSVERSION} >= 1200000 && ${OSVERSION} < 1200008)
-BROKEN=	Fails to build on ARMv6/7 (libm bug). See: r305380 (HEAD), r305971 (stable/11) [\#199422, \#211965] \
-	Please update to a later (fixed) version.
-.endif
-.endif
-
 post-patch:
 	@${FIND} ${WRKSRC} -name 'CMakeLists.txt' | ${XARGS} \
 		${REINPLACE_CMD} \
@@ -108,4 +97,4 @@ post-patch:
 		${WRKSRC}/winpr/CMakeLists.txt \
 		${WRKSRC}/CMakeLists.txt
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

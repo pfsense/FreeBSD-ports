@@ -2,7 +2,7 @@
 
 PORTNAME=	domoticz
 PORTVERSION=	4.${DOMOTICZ_REL}
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www
 
 MAINTAINER=	kiwi@oav.net
@@ -29,7 +29,7 @@ TELLDUS_DESC=	Enable support for Telldus
 
 .include <bsd.port.options.mk>
 
-USES=		cmake iconv pkgconfig ssl
+USES=		cmake compiler:c++11-lang iconv pkgconfig ssl
 
 # This hack is to get rid of dependency of git while building
 # the package.

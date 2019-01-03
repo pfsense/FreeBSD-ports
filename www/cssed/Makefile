@@ -3,7 +3,7 @@
 
 PORTNAME=	cssed
 PORTVERSION=	0.4.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	www
 MASTER_SITES=	SF
 
@@ -13,7 +13,8 @@ COMMENT=	Application to help CSS style sheets creation and maintenance
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		dos2unix gettext localbase pathfix pkgconfig
+USES=		compiler:c++11-lang dos2unix gettext gnome localbase pathfix \
+		pkgconfig
 DOS2UNIX_FILES=	scintilla/gtk/ScintillaGTK.cxx
 USE_GNOME=	gtk20 libxml2
 GNU_CONFIGURE=	yes

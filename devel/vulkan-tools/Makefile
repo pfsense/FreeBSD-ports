@@ -3,6 +3,7 @@
 PORTNAME=	vulkan-tools
 DISTVERSIONPREFIX=	sdk-
 DISTVERSION=	1.1.82.0
+PORTREVISION=	1
 CATEGORIES=	devel graphics
 
 MAINTAINER=	greg@unrelenting.technology
@@ -17,7 +18,7 @@ LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader \
 		libXrandr.so:x11/libXrandr \
 		libxcb.so:x11/libxcb
 
-USES=		cmake:outsource compiler:c++11-lib pkgconfig python:3.4+,build
+USES=		cmake compiler:c++11-lib pkgconfig python:3.4+,build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	KhronosGroup

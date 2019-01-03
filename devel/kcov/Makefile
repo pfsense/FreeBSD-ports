@@ -3,6 +3,7 @@
 PORTNAME=	kcov
 DISTVERSIONPREFIX=	v
 DISTVERSION=	36
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	asomers@FreeBSD.org
@@ -12,7 +13,6 @@ LICENSE=	GPLv2 MIT # MIT for bundled handlebars, jquery, tablesorter
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_10= PR228478 devel/elfutils: undefined symbols on 10.4-RELEASE
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	ptrace code is only implemented for amd64
 
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libdw.so:devel/elfutils \
 		libelf.so:devel/elfutils
 
-USES=		cmake:outsource shebangfix python:build gettext-runtime
+USES=		cmake shebangfix python:build gettext-runtime
 
 # Remove -DPORTVERSION (and associated patch) when basing the port on an
 # official release

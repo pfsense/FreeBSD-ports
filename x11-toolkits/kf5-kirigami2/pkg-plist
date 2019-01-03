@@ -14,6 +14,7 @@ lib/libKF5Kirigami2.so
 lib/libKF5Kirigami2.so.5
 lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_MKSPECDIR%%/modules/qt_Kirigami2.pri
+%%QT_QMLDIR%%/org/kde/kirigami.2/AboutPage.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/AbstractApplicationHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/AbstractApplicationItem.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/AbstractApplicationWindow.qml
@@ -37,6 +38,7 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/InlineMessage.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ItemViewHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/Label.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/LinkButton.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ListItemDragHandle.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/OverlayDrawer.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/OverlaySheet.qml
@@ -48,9 +50,9 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/Theme.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ToolBarApplicationHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/Units.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/UrlButton.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/libkirigamiplugin.so
 %%QT_QMLDIR%%/org/kde/kirigami.2/plugins.qmltypes
-%%QT_QMLDIR%%/org/kde/kirigami.2/private/AbstractPageHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionButton.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionIconGroup.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionMenuItem.qml
@@ -58,7 +60,6 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionMenuItemQt510.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionMenuItemQt59.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionsMenu.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/private/BannerGroup.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/BannerImage.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/CardsGridViewPrivate.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/CardsListViewPrivate.qml
@@ -66,13 +67,16 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/DefaultListItemBackground.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/EdgeShadow.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/PageActionPropertyGroup.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/private/PageRowGlobalToolBarStyleGroup.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/private/PageRowGlobalToolBarUI.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/PrivateActionToolButton.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/RefreshableScrollView.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/SwipeItemEventFilter.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/private/TitlesPageHeader.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/private/ToolBarPageHeader.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/private/globaltoolbar/AbstractPageHeader.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/private/globaltoolbar/BreadcrumbControl.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/private/globaltoolbar/PageRowGlobalToolBarStyleGroup.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/private/globaltoolbar/PageRowGlobalToolBarUI.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/private/globaltoolbar/TabBarControl.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/private/globaltoolbar/TitlesPageHeader.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/private/globaltoolbar/ToolBarPageHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/qmldir
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/Material/AbstractListItem.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/Material/Label.qml
@@ -81,7 +85,6 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/AbstractApplicationHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/AbstractListItem.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/ApplicationWindow.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/OverlayDrawer.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/SwipeListItem.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/Theme.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/Units.qml
@@ -103,7 +106,6 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/templates/private/ScrollView.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/templates/qmldir
 share/locale/ar/LC_MESSAGES/libkirigami2plugin_qt.qm
-share/locale/ast/LC_MESSAGES/libkirigami2plugin_qt.qm
 share/locale/ca/LC_MESSAGES/libkirigami2plugin_qt.qm
 share/locale/ca@valencia/LC_MESSAGES/libkirigami2plugin_qt.qm
 share/locale/cs/LC_MESSAGES/libkirigami2plugin_qt.qm

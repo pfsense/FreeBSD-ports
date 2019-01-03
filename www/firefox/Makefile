@@ -28,14 +28,12 @@ BUILD_DEPENDS=	nspr>=4.19:devel/nspr \
 		autoconf-2.13:devel/autoconf213 \
 		yasm:devel/yasm \
 		zip:archivers/zip
-#		soundtouch>=1.9.0:audio/soundtouch \
 
 USE_GECKO=	gecko
 CONFLICTS_INSTALL=	firefox-esr
 MOZ_PKGCONFIG_FILES=	# empty
-USE_MOZILLA=	-cairo -hunspell -soundtouch
+USE_MOZILLA=	-hunspell
 
-USE_GL=		gl
 USES=		tar:xz
 
 FIREFOX_ICON=		${MOZILLA}.png
@@ -44,7 +42,7 @@ FIREFOX_DESKTOP=	${MOZSRC}/taskcluster/docker/${MOZILLA}-snap/${MOZILLA}.desktop
 MOZ_OPTIONS=	--enable-application=browser \
 		--enable-official-branding
 
-OPTIONS_EXCLUDE=	BUNDLED_CAIRO DTRACE
+OPTIONS_EXCLUDE=	DTRACE
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
 

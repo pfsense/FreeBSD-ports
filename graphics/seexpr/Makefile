@@ -4,13 +4,16 @@
 PORTNAME=	seexpr
 DISTVERSIONPREFIX=	v
 PORTVERSION=	2.11
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	graphics math
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Embeddable expression evaluation language
 
 LICENSE=	APACHE20
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	wdas

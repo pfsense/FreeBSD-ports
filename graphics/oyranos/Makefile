@@ -2,13 +2,16 @@
 
 PORTNAME=	oyranos
 PORTVERSION=	0.9.6
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 
 MAINTAINER=	bsam@FreeBSD.org
 COMMENT=	Colour Management System (CMS)
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 RUN_DEPENDS=	${LOCALBASE}/share/color/icc/OpenICC/sRGB.icc:graphics/icc-profiles-openicc \
 		${LOCALBASE}/share/color/icc/basICColor/ISOcoated_v2_300_bas.ICC:graphics/icc-profiles-basiccolor \

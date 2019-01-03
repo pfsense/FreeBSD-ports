@@ -2,17 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	5.0-rc5
+DISTVERSION=	5.0.3
 CATEGORIES=	databases
+MASTER_SITES=	http://download.redis.io/releases/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	Persistent key-value database with built-in net interface
 
 LICENSE=	BSD3CLAUSE
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	antirez
 
 OPTIONS_DEFINE=	JEMALLOC TESTS TRIB
 OPTIONS_RADIO=	EXTLUA
@@ -36,7 +34,7 @@ CFLAGS+=	-march=i586
 .endif
 
 .if ${PORT_OPTIONS:MJEMALLOC}
-MAKE_ENV=	"USE_JEMALLOC=yes"
+MAKE_ENV+=	"USE_JEMALLOC=yes"
 .endif
 
 .if ${PORT_OPTIONS:MTRIB}
@@ -98,6 +96,9 @@ post-patch:
 .endif
 .if ${PORT_OPTIONS:MLUAJIT} || ${PORT_OPTIONS:MLUA}
 	@cd ${WRKSRC}/deps/lua/src && ${CP} fpconv.* lua_* strbuf.* ${WRKSRC}/src/
+.endif
+.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+	${REINPLACE_CMD} -e '/pragma/d' ${WRKSRC}/src/lzf_d.c
 .endif
 
 post-build:

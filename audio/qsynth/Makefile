@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	qsynth
-PORTVERSION=	0.5.2
+PORTVERSION=	0.5.4
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -14,10 +15,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
 
-USES=		gmake pkgconfig qt:5
+USES=		compiler:c++11-lang gmake pkgconfig qt:5
 USE_CXXSTD=	c++11
 USE_QT=		core gui widgets x11extras buildtools_build linguisttools_build qmake_build
-USE_GL=		gl
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_path_ac_cv_qmake=${QMAKE} \
@@ -27,6 +27,8 @@ CONFIGURE_ENV=	ac_cv_path_ac_cv_qmake=${QMAKE} \
 		ac_cv_path_ac_lrelease=${LRELEASE}
 CONFIGURE_ARGS=	--localedir=${DATADIR} \
 		--with-fluidsynth=${LOCALBASE}
+
+LDFLAGS+=	-Wl,--as-needed # cf. PR 224488
 
 OPTIONS_DEFINE=	GRADIENT SYSTEM_TRAY XUNIQUE
 OPTIONS_DEFAULT=	GRADIENT SYSTEM_TRAY XUNIQUE

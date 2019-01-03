@@ -3,7 +3,7 @@
 
 PORTNAME=	grub2
 PORTVERSION=	2.00
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU/grub
 DISTNAME=	grub-${PORTVERSION}
@@ -13,17 +13,23 @@ COMMENT=	Multiboot boot loader
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
-		help2man:misc/help2man
+DEPRECATED=	Unmaintained (more than five years), not updated (one-and-a-half years), does not build with modern compilers	# PR232961
+EXPIRATION_DATE=2019-02-04
 
-CONFLICTS=	grub-0*
-SSP_UNSAFE=	yes
-USE_GCC=	yes
-GNU_CONFIGURE=	yes
+ONLY_FOR_ARCHS=	amd64 i386
+
+BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
+		gsed:textproc/gsed \
+		help2man:misc/help2man
+RUN_DEPENDS=	gsed:textproc/gsed
+
 USES=		autoreconf bison cpe gettext gmake tar:xz
-ONLY_FOR_ARCHS=	i386 amd64
+USE_GCC=	7	# Fails to build with GCC 8, cf. PR 232961, or clang
+
+GNU_CONFIGURE=	yes
 INFO=		grub grub-dev
 MAKE_JOBS_UNSAFE=	yes
+SSP_UNSAFE=	yes
 
 CPE_PRODUCT=	grub
 CPE_VENDOR=	gnu
@@ -55,6 +61,9 @@ PLIST_SUB+=	EFIEMU=""
 post-patch:
 	@${LN} -s ${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf ${WRKSRC}
 	@${TOUCH} -t 200001010000 ${WRKSRC}/Makefile.util.def
+	@${REINPLACE_CMD} -e '/[^auU]sed/ s,sed,gsed,g' ${WRKSRC}/util/grub.d/*.in \
+		${WRKSRC}/util/*.in ${WRKSRC}/util/i386/efi/grub-dumpdevtree \
+		${WRKSRC}/util/bash-completion.d/grub-completion.bash.in
 
 post-configure:
 	@${LN} -sfh /usr/include/machine /usr/include/sys /usr/include/x86 \

@@ -3,6 +3,7 @@
 
 PORTNAME=	caja
 PORTVERSION=	1.20.2
+PORTREVISION=	1
 CATEGORIES=	x11-fm mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -22,8 +23,8 @@ LIB_DEPENDS=	libexif.so:graphics/libexif \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		desktop-file-utils gettext gmake libtool localbase \
-		pathfix pkgconfig shared-mime-info tar:xz
+USES=		compiler:c11 desktop-file-utils gettext gmake gnome libtool \
+		localbase mate pathfix pkgconfig shared-mime-info tar:xz
 USE_MATE=	desktop icontheme:run
 USE_XORG=	ice sm x11
 USE_GNOME=	cairo gtk30 gnomeprefix intltool introspection:build libxml2

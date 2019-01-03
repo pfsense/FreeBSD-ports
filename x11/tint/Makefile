@@ -10,14 +10,12 @@ COMMENT=	Lightweight freedesktop-compliant panel/taskbar/systray/clock
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to build: area.h: redefinition of typedef 'Area'
-
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libImlib2.so:graphics/imlib2 \
 		libstartup-notification-1.so:x11/startup-notification
 
-USES=		alias cmake:outsource desktop-file-utils gettext-runtime \
+USES=		alias cmake desktop-file-utils gettext-runtime \
 		pkgconfig shared-mime-info
 USE_GNOME=	cairo glib20 gtk20 librsvg2 pango
 USE_XORG=	x11 xcomposite xdamage xext xfixes xinerama xrandr xrender

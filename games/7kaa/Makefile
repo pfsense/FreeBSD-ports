@@ -3,7 +3,7 @@
 
 PORTNAME=	7kaa
 PORTVERSION=	2.14.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SF/skfans/7KAA%20${PORTVERSION}
 
@@ -20,13 +20,12 @@ BROKEN_armv7=		fails to compile: OBULLET.cpp:41:9: constant expression evaluates
 LIB_DEPENDS=	libenet.so:net/enet \
 		libcurl.so:ftp/curl
 
-USES=		compiler:c++11-lib gmake localbase openal:al pkgconfig tar:xz
+USES=		compiler:c++11-lang gmake localbase openal:al pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 LLD_UNSAFE=	yes
 CONFIGURE_ARGS=	--disable-nls # no translations ATM
 USE_SDL=	sdl2
-CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
-CXXFLAGS_clang=		-Wno-c++11-narrowing
+CXXFLAGS+=		-Wno-error=narrowing
 
 PLIST_FILES=	bin/${PORTNAME} \
 		share/pixmaps/${PORTNAME}.ico

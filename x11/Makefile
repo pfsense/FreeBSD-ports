@@ -11,6 +11,7 @@
     SUBDIR += alltray
     SUBDIR += alttab
     SUBDIR += altyo
+    SUBDIR += aminal
     SUBDIR += antimicro
     SUBDIR += appres
     SUBDIR += apwal
@@ -27,8 +28,8 @@
     SUBDIR += blast
     SUBDIR += bmpanel2
     SUBDIR += bricons
-    SUBDIR += brightside
     SUBDIR += brisk-menu
+    SUBDIR += cde
     SUBDIR += cinnamon
     SUBDIR += cinnamon-desktop
     SUBDIR += cinnamon-menus
@@ -36,6 +37,7 @@
     SUBDIR += cinnamon-session
     SUBDIR += cl-clx
     SUBDIR += cl-clx-sbcl
+    SUBDIR += compton-conf
     SUBDIR += controllermap
     SUBDIR += cool-retro-term
     SUBDIR += decurs
@@ -46,7 +48,6 @@
     SUBDIR += deforaos-panel
     SUBDIR += deskmenu
     SUBDIR += deskpaint
-    SUBDIR += dgs
     SUBDIR += dmenu
     SUBDIR += dmenu2
     SUBDIR += docker-tray
@@ -69,7 +70,6 @@
     SUBDIR += fpc-x11
     SUBDIR += fstobdf
     SUBDIR += gcb
-    SUBDIR += gdkxft
     SUBDIR += gdm
     SUBDIR += gmrun
     SUBDIR += gnome-clipboard-daemon
@@ -90,8 +90,6 @@
     SUBDIR += gstreamer1-plugins-x
     SUBDIR += gstreamer1-plugins-ximagesrc
     SUBDIR += gsynaptics
-    SUBDIR += gtk-launch
-    SUBDIR += gtk-theme-switch
     SUBDIR += gtk-theme-switch2
     SUBDIR += gtkchtheme
     SUBDIR += gtkterm2
@@ -102,6 +100,7 @@
     SUBDIR += hs-X11-xft
     SUBDIR += hs-xmobar
     SUBDIR += hsetroot
+    SUBDIR += i3blocks
     SUBDIR += i3lock
     SUBDIR += i3status
     SUBDIR += iceauth
@@ -110,16 +109,9 @@
     SUBDIR += imwheel
     SUBDIR += innerspace
     SUBDIR += ipager
-    SUBDIR += kactivities
-    SUBDIR += kactivitymanagerd
     SUBDIR += kb2mb2
     SUBDIR += kde-baseapps
-    SUBDIR += kde-baseapps-kde4
-    SUBDIR += kde-runtime-kde4
-    SUBDIR += kde-workspace-kde4
-    SUBDIR += kde4
     SUBDIR += kde5
-    SUBDIR += kdelibs-kde4
     SUBDIR += keybinder
     SUBDIR += keybinder-gtk3
     SUBDIR += keyboardcast
@@ -136,9 +128,7 @@
     SUBDIR += kf5-kwayland
     SUBDIR += kf5-kwindowsystem
     SUBDIR += kf5-plasma-framework
-    SUBDIR += kgamma-kde4
     SUBDIR += konsole
-    SUBDIR += konsole-kde4
     SUBDIR += leechcraft
     SUBDIR += lemonbar
     SUBDIR += libICE
@@ -182,7 +172,6 @@
     SUBDIR += libgnomekbd
     SUBDIR += libgnomemm26
     SUBDIR += libinput
-    SUBDIR += libkonq-kde4
     SUBDIR += libmatekbd
     SUBDIR += liboldX
     SUBDIR += libsx
@@ -262,8 +251,6 @@
     SUBDIR += perwindowlayoutd
     SUBDIR += pipeglade
     SUBDIR += pixman
-    SUBDIR += plasma-scriptengine-python-kde4
-    SUBDIR += plasma-scriptengine-ruby-kde4
     SUBDIR += plasma5-kactivitymanagerd
     SUBDIR += plasma5-kgamma5
     SUBDIR += plasma5-kscreen
@@ -279,6 +266,7 @@
     SUBDIR += py-pyvirtualdisplay
     SUBDIR += py-qt4-opengl
     SUBDIR += py-qt5-opengl
+    SUBDIR += py-xcffib
     SUBDIR += py-xdot
     SUBDIR += py-xdot06
     SUBDIR += qimageblitz
@@ -398,7 +386,6 @@
     SUBDIR += xcursorgen
     SUBDIR += xcut
     SUBDIR += xdbedizzy
-    SUBDIR += xdialog
     SUBDIR += xditview
     SUBDIR += xdm
     SUBDIR += xdotool
@@ -415,6 +402,7 @@
     SUBDIR += xfce4-embed-plugin
     SUBDIR += xfce4-goodies
     SUBDIR += xfce4-quicklauncher-plugin
+    SUBDIR += xfce4-screensaver
     SUBDIR += xfce4-screenshooter-plugin
     SUBDIR += xfce4-taskmanager
     SUBDIR += xfce4-terminal
@@ -481,7 +469,6 @@
     SUBDIR += xprintidle
     SUBDIR += xprompt
     SUBDIR += xprop
-    SUBDIR += xpyb
     SUBDIR += xrandr
     SUBDIR += xrdb
     SUBDIR += xrefresh
@@ -533,7 +520,6 @@
     SUBDIR += xzoom
     SUBDIR += yad
     SUBDIR += yakuake
-    SUBDIR += yakuake-kde4
     SUBDIR += yalias
     SUBDIR += yeahconsole
     SUBDIR += yelp

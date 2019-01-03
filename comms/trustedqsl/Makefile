@@ -2,7 +2,7 @@
 
 PORTNAME=	trustedqsl
 DISTVERSION=	2.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.arrl.org/files/file/LoTW%20Instructions/ \
 		LOCAL/shurd
@@ -15,9 +15,6 @@ LICENSE=	ARRL
 LICENSE_NAME=	American Radio Relay League, Inc. All rights reserved.
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
-
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	member access into incomplete type 'EVP_PKEY' (aka 'evp_pkey_st')
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2 \

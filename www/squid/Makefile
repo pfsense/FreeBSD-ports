@@ -1,16 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	squid
-PORTVERSION=	4.1
-PORTREVISION=	2
+PORTVERSION=	4.4
+PORTREVISION=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://www.squid-cache.org/Versions/v4/ \
 		http://www2.us.squid-cache.org/Versions/v4/ \
 		http://www1.at.squid-cache.org/Versions/v4/ \
 		http://www.eu.squid-cache.org/Versions/v4/ \
 		http://www1.jp.squid-cache.org/Versions/v4/
-#DIST_SUBDIR=	squid${PORTVERSION:R}
-DIST_SUBDIR=	squid${PORTVERSION}
+DIST_SUBDIR=	squid${PORTVERSION:R}
 
 PATCH_SITES=	http://www.squid-cache.org/%SUBDIR%/ \
 		http://www2.us.squid-cache.org/%SUBDIR%/ \
@@ -19,6 +18,8 @@ PATCH_SITES=	http://www.squid-cache.org/%SUBDIR%/ \
 		http://www1.jp.squid-cache.org/%SUBDIR%/ \
 		http://master.squid-cache.org/~amosjeffries/patches/:nosid
 PATCH_SITE_SUBDIR=	Versions/v4/changesets
+PATCHFILES=	squid-4-bc54d7a6f7ec510a25966f2f800d3ea874657546.patch:-p1\
+		squid-4-0022167d80725513d95b38aaebc90086fc0b6938.patch:-p1
 
 MAINTAINER=	timp87@gmail.com
 COMMENT=	HTTP Caching Proxy
@@ -28,9 +29,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_powerpc64=	fails to link: ext_time_quota_acl.cc: undefined reference to std::ctype
 
-CONFLICTS=	squid*-3.*
-
 USES=		compiler:c++11-lib cpe perl5 shebangfix tar:xz
+
+CONFLICTS=	squid*-3.*
 CPE_VENDOR=	squid-cache
 SHEBANG_FILES=	scripts/*.pl contrib/*.pl tools/*.pl
 GNU_CONFIGURE=	yes
@@ -218,6 +219,7 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 		--with-pidfile=/var/run/squid/squid.pid \
 		--with-swapdir=/var/squid/cache \
 		--without-gnutls \
+		--with-included-ltdl \
 		--enable-auth \
 		--enable-zph-qos \
 		--enable-build-info \
@@ -296,12 +298,12 @@ post-patch:
 	@(cd ${WRKSRC} && ${MV} src/mime.conf.default src/mime.conf.sample)
 
 post-patch-IPV6-off:
-	@${REINPLACE_CMD} -e's/ ::1//' -e's/ fc00::\/7//' \
-		-e's/ fe80::\/10//' -e's/ 2001:DB8::2//' \
-		-e's/ 2001:DB8::a:0\/64//' \
-		-e'/tcp_outgoing_address 2001:db8::c001 good_service_net/d' \
-		-e'/tcp_outgoing_address 2001:db8::beef normal_service_net/d' \
-		-e'/tcp_outgoing_address 2001:db8::1/d' \
+	@${REINPLACE_CMD} -e's| ::1||' -e's|^.*fc00::\/7.*||' \
+		-e's|^.*fe80::\/10.*||' -e's| 2001:DB8::2||' \
+		-e's| 2001:DB8::a:0\/64||' \
+		-e's|tcp_outgoing_address 2001:db8::c001 good_service_net||' \
+		-e's|tcp_outgoing_address 2001:db8::beef normal_service_net||' \
+		-e's|tcp_outgoing_address 2001:db8::1||' \
 		${WRKSRC}/src/cf.data.pre
 
 post-install:

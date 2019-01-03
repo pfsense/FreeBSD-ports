@@ -393,6 +393,7 @@ lib/webmin/virtual-server/help/backup_mkdir.nl.html
 lib/webmin/virtual-server/help/backup_onebyone.fr.html
 lib/webmin/virtual-server/help/backup_onebyone.html
 lib/webmin/virtual-server/help/backup_onebyone.nl.html
+lib/webmin/virtual-server/help/backup_ownrestore.html
 lib/webmin/virtual-server/help/backup_parent.fr.html
 lib/webmin/virtual-server/help/backup_parent.html
 lib/webmin/virtual-server/help/backup_parent.nl.html
@@ -591,7 +592,6 @@ lib/webmin/virtual-server/help/config_docs_text.html
 lib/webmin/virtual-server/help/config_docs_text.nl.html
 lib/webmin/virtual-server/help/config_domains_sort.html
 lib/webmin/virtual-server/help/config_domains_sort.nl.html
-lib/webmin/virtual-server/help/config_dovecot_ssl.html
 lib/webmin/virtual-server/help/config_edit_afiles.html
 lib/webmin/virtual-server/help/config_edit_afiles.nl.html
 lib/webmin/virtual-server/help/config_edit_ftp.html
@@ -754,7 +754,6 @@ lib/webmin/virtual-server/help/config_post_check.html
 lib/webmin/virtual-server/help/config_post_check.nl.html
 lib/webmin/virtual-server/help/config_post_command.html
 lib/webmin/virtual-server/help/config_post_command.nl.html
-lib/webmin/virtual-server/help/config_postfix_ssl.html
 lib/webmin/virtual-server/help/config_postgres.html
 lib/webmin/virtual-server/help/config_postgres.nl.html
 lib/webmin/virtual-server/help/config_pre_command.html
@@ -1027,6 +1026,7 @@ lib/webmin/virtual-server/help/limits_scripts.html
 lib/webmin/virtual-server/help/limits_scripts.nl.html
 lib/webmin/virtual-server/help/limits_shell.html
 lib/webmin/virtual-server/help/limits_shell.nl.html
+lib/webmin/virtual-server/help/linkdom.html
 lib/webmin/virtual-server/help/logrotate.html
 lib/webmin/virtual-server/help/logrotate.nl.html
 lib/webmin/virtual-server/help/mail.de.html
@@ -1320,7 +1320,6 @@ lib/webmin/virtual-server/help/status.html
 lib/webmin/virtual-server/help/status.nl.html
 lib/webmin/virtual-server/help/subs.html
 lib/webmin/virtual-server/help/subs.nl.html
-lib/webmin/virtual-server/help/subs2.html
 lib/webmin/virtual-server/help/subs2.nl.html
 lib/webmin/virtual-server/help/sv.html
 lib/webmin/virtual-server/help/template.fr.html
@@ -1572,8 +1571,10 @@ lib/webmin/virtual-server/help/template_virus_host.html
 lib/webmin/virtual-server/help/template_virus_host.nl.html
 lib/webmin/virtual-server/help/template_web.html
 lib/webmin/virtual-server/help/template_web.nl.html
+lib/webmin/virtual-server/help/template_web_dovecot_ssl.html
 lib/webmin/virtual-server/help/template_web_port.html
 lib/webmin/virtual-server/help/template_web_port.nl.html
+lib/webmin/virtual-server/help/template_web_postfix_ssl.html
 lib/webmin/virtual-server/help/template_web_sslport.html
 lib/webmin/virtual-server/help/template_web_sslport.nl.html
 lib/webmin/virtual-server/help/template_web_sslprotos.html
@@ -1634,6 +1635,7 @@ lib/webmin/virtual-server/help/user_imapf.html
 lib/webmin/virtual-server/help/user_imapf.nl.html
 lib/webmin/virtual-server/help/user_mysqluser2.html
 lib/webmin/virtual-server/help/user_mysqluser2.nl.html
+lib/webmin/virtual-server/help/user_noforward.html
 lib/webmin/virtual-server/help/user_period.fr.html
 lib/webmin/virtual-server/help/user_period.html
 lib/webmin/virtual-server/help/user_period.nl.html
@@ -1807,6 +1809,8 @@ lib/webmin/virtual-server/letsencrypt.cgi
 lib/webmin/virtual-server/licence-info.pl
 lib/webmin/virtual-server/licence.cgi
 lib/webmin/virtual-server/licence.pl
+lib/webmin/virtual-server/license-info.pl
+lib/webmin/virtual-server/license.pl
 lib/webmin/virtual-server/link.cgi
 lib/webmin/virtual-server/list-admins.pl
 lib/webmin/virtual-server/list-aliases.pl

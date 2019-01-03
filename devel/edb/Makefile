@@ -2,7 +2,7 @@
 
 PORTNAME=	edb
 PORTVERSION=	0.9.18
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	devel
 MASTER_SITES=	http://codef00.com/projects/
 DISTNAME=	debugger-${PORTVERSION}
@@ -11,6 +11,9 @@ MAINTAINER=	itechbear@gmail.com
 COMMENT=	Cross-platform x86/x86-64 debugger based on Qt 4
 
 LICENSE=	GPLv2
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 

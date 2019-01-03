@@ -4,7 +4,7 @@
 PORTNAME=	grpc
 PORTVERSION=	1.15.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -13,9 +13,6 @@ COMMENT=	HTTP/2-based RPC framework
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	use of undeclared identifier 'SSL_get0_next_proto_negotiated'
 
 BUILD_DEPENDS=	go:lang/go \
 		yasm:devel/yasm

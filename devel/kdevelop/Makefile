@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	kdevelop
-DISTVERSION=	5.2.3
-PORTREVISION=	2
+DISTVERSION=	5.3.1
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/stable/kdevelop/${DISTVERSION}/src
 DIST_SUBDIR=	KDE/kdevelop
@@ -19,10 +18,10 @@ LIB_DEPENDS=	libkasten3controllers.so:devel/okteta \
 		libsvn_client-1.so:devel/subversion \
 		libboost_thread.so:devel/boost-libs \
 		libkomparediff2.so:textproc/libkomparediff2 \
-		libclang.so.6:devel/llvm60
+		libclang.so.${LLVM_VERSION:C/([1-9])([0-9])/\1/}:devel/llvm${LLVM_VERSION}
 RUN_DEPENDS=	gmake:devel/gmake
 
-USES=		cmake:outsource compiler:c++11-lib desktop-file-utils \
+USES=		cmake compiler:c++11-lib desktop-file-utils \
 		gettext grantlee:5 kde:5 qt:5 shared-mime-info shebangfix tar:xz
 USE_KDE=	archive attica auth bookmarks codecs completion config configwidgets \
 		coreaddons crash guiaddons emoticons i18n iconthemes init \
@@ -31,11 +30,13 @@ USE_KDE=	archive attica auth bookmarks codecs completion config configwidgets \
 		notifyconfig package parts plasma-framework \
 		runner service solid sonnet texteditor textwidgets threadweaver \
 		widgetsaddons windowsystem xmlgui
-USE_QT=		concurrent core dbus gui help network qml quick \
+USE_QT=		concurrent core dbus declarative gui help network \
 		script sql widgets xml buildtools_build qmake_build
 CONFLICTS=	kdevelop-kde4-4* kdevelop-4* kdevplatform-kde4-4* kdevplatform-4*
 SHEBANG_FILES=	kdevplatform/util/kdevplatform_shell_environment.sh \
 		kdevplatform/util/.zshrc
+
+CMAKE_ARGS=	-DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DLLVM_ROOT=${LOCALBASE}/llvm${LLVM_VERSION}
 
 OPTIONS_DEFINE=	WEBENGINE
 WEBENGINE_DESC=	Use WebEngine as help reader
@@ -43,6 +44,8 @@ WEBENGINE_USES=	qt:5
 WEBENGINE_USE=	QT=location,webchannel,webengine
 WEBENGINE_USE_OFF=	QT=webkit
 WEBENGINE_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngineWidgets:BOOL=TRUE
+
+LLVM_VERSION?=	60
 
 SHEBANG_LANG=	zsh
 zsh_OLD_CMD=	/bin/zsh

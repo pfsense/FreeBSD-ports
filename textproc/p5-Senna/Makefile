@@ -2,7 +2,7 @@
 
 PORTNAME=	Senna
 PORTVERSION=	0.51
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DMAKI
@@ -13,8 +13,8 @@ COMMENT=	Perl module for Embeddable Fulltext Search Engine
 
 LICENSE=	LGPL21
 
-BUILD_DEPENDS=	senna-cfg:textproc/senna
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	senna-cfg:textproc/senna
 
 USES=		perl5
 USE_PERL5=	modbuild

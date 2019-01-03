@@ -2,6 +2,7 @@
 
 PORTNAME=	qhttpengine
 DISTVERSION=	1.0.1-5
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-g43f55df
 CATEGORIES=	www
 
@@ -11,7 +12,7 @@ COMMENT=	HTTP server for Qt applications
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cmake:outsource qt:5
+USES=		cmake compiler:c++11-lang qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	nitroshare
 USE_QT=		core network buildtools_build qmake_build

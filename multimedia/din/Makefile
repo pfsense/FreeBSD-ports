@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	din
-PORTVERSION=	37a
+PORTVERSION=	38a
 CATEGORIES=	multimedia
 MASTER_SITES=	https://archive.org/download/dinisnoise_source_code/
 
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libSDL.so:devel/sdl12 \
 		libGL.so:graphics/mesa-libs
 
-USES=		autoreconf tcl:86+
+USES=		autoreconf tcl:86+ gnome
 
 GNU_CONFIGURE=	yes
 

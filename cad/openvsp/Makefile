@@ -2,7 +2,7 @@
 
 PORTNAME=	openvsp
 DISTVERSIONPREFIX=	${GH_PROJECT}_
-DISTVERSION=	3.16.1
+DISTVERSION=	3.16.2
 PORTREVISION=	1
 CATEGORIES=	cad
 
@@ -30,9 +30,8 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libopenNURBS.a:graphics/opennurbs \
 		${LOCALBASE}/include/glm/glm.hpp:math/glm \
 		${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
 
-USES=		compiler:c++11-lang cmake:outsource,noninja localbase\
+USES=		compiler:c++11-lang cmake:noninja localbase\
 		gl gnome jpeg
-
 USE_GITHUB=	yes
 GH_PROJECT=	OpenVSP
 GH_ACCOUNT=	${GH_PROJECT}

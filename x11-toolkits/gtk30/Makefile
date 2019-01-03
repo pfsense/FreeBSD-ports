@@ -5,7 +5,7 @@
 
 PORTNAME=	gtk
 PORTVERSION=	3.22.30
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME/sources/gtk+/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 PKGNAMESUFFIX=	3
@@ -54,8 +54,7 @@ GLIB_SCHEMAS=	org.gtk.Demo.gschema.xml \
 		org.gtk.Settings.FileChooser.gschema.xml
 
 OPTIONS_DEFINE=	CUPS CLOUDPRINT COLORD DEBUG BROADWAY WAYLAND
-OPTIONS_DEFAULT=CUPS COLORD BROADWAY
-OPTIONS_EXCLUDE_FreeBSD_10=	WAYLAND
+OPTIONS_DEFAULT=CUPS COLORD BROADWAY WAYLAND
 OPTIONS_SUB=	yes
 
 BROADWAY_DESC=	Enable GDK Broadway backend for showing GTK+ in the webbrowser using HTML5 and web sockets.
@@ -82,19 +81,10 @@ WAYLAND_DESC=		GDK Wayland backend
 WAYLAND_CONFIGURE_ENABLE=	wayland-backend
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>=0:graphics/wayland-protocols \
 			v4l_compat>=0:multimedia/v4l_compat
-WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
+WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland \
 			libxkbcommon.so:x11/libxkbcommon
 WAYLAND_RUN_DEPENDS=	wayland-protocols>=0:graphics/wayland-protocols
 WAYLAND_USE=		GL=egl
-
-.include <bsd.port.options.mk>
-
-WAYLAND_BUILD_DEPENDS=		wayland-protocols>=0:graphics/wayland-protocols
-WAYLAND_CONFIGURE_ENABLE=	wayland-backend
-WAYLAND_LIB_DEPENDS=		libwayland-client.so:graphics/wayland \
-				libwayland-egl.so:graphics/mesa-libs \
-				libxkbcommon.so:x11/libxkbcommon
-WAYLAND_RUN_DEPENDS=		wayland-protocols>=0:graphics/wayland-protocols
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|[{]libdir[}]/locale|{datadir}/locale|g' \
@@ -106,12 +96,6 @@ pre-configure:
 		${ECHO_MSG} "${PKGNAME}: Needs cairo with X11 support enabled."; \
 		${FALSE}; \
 	fi
-.if ${PORT_OPTIONS:MWAYLAND}
-	@if ! pkg-config --exists wayland-egl; then \
-		${ECHO_MSG} "${PKGNAME}: Needs mesa-libs with wayland support enabled."; \
-		${FALSE}; \
-	fi
-.endif
 
 pre-build:
 	@${RM} -r ${WRKSRC}/docs/gtk.info*

@@ -2,7 +2,7 @@
 
 PORTNAME=	stacks
 DISTVERSION=	1.48
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	biology
 MASTER_SITES=	http://catchenlab.life.illinois.edu/stacks/source/
 
@@ -18,4 +18,10 @@ GNU_CONFIGURE=	yes
 
 LDFLAGS+=	-lpthread
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+USE_GCC=        yes
+.endif
+
+.include <bsd.port.post.mk>

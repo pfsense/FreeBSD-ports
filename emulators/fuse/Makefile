@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fuse
-PORTVERSION=	1.5.6
+PORTVERSION=	1.5.7
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}-emulator/${PORTNAME}/${PORTVERSION}
 
@@ -17,11 +17,12 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png \
 		libspectrum.so:emulators/libspectrum
 
-GNU_CONFIGURE=	yes
-USES=		gettext gmake localbase pkgconfig
+USES=		compiler:c++11-lang gettext gmake gnome localbase perl5 pkgconfig
+USE_PERL5=	build
 USE_GNOME=	cairo libxml2 glib20
 USE_XORG=	x11
 
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--without-alsa --without-joystick
 
 OPTIONS_DEFINE=		AO ICONS ROMS DOCS

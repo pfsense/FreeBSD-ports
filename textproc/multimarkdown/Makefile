@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	multimarkdown
-DISTVERSION=	6.3.2
+DISTVERSION=	6.4.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Extended Markdown processor with more features, written in C
 
 LICENSE=	BSD3CLAUSE MIT GPLv2+ ZLIB
@@ -17,6 +18,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USES=		cmake compiler:c11 localbase:ldflags
 USE_GITHUB=	yes
+
 GH_ACCOUNT=	fletcher
 GH_PROJECT=	MultiMarkdown-6
 

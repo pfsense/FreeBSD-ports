@@ -2,7 +2,7 @@
 
 PORTNAME?=	mariadb
 PORTVERSION=	10.2.19
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://mirrors.supportex.net/${SITESDIR}/ \
 		http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
@@ -25,7 +25,7 @@ LICENSE_PERMS_PerconaFT=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 SUB_FILES=	pkg-message
 
 SLAVEDIRS=	databases/mariadb102-client
-USES=		bison:build cmake:noninja compiler:c++11-lib cpe iconv:translit libedit ncurses shebangfix ssl
+USES=		bison:build cmake:insource,noninja compiler:c++11-lib cpe iconv:translit libedit ncurses shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql
 SHEBANG_FILES=	scripts/*.sh storage/rocksdb/myrocks_hotbackup
 SITESDIR=	mariadb/mariadb-${PORTVERSION}/source
@@ -163,6 +163,10 @@ TOKUDB_VARS=		LICENSE+=PerconaFT LICENSE_COMB=multi
 ZMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
 ZSTD_CMAKE_ON=		-DWITH_ROCKSDB_ZSTD=ON
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
+
+#NOT_FOR_ARCHS=		i386
+#NOT_FOR_ARCHS_REASON=	currently does not compile on i386, see \
+#			https://jira.mariadb.org/browse/MDEV-9627
 
 post-install:
 # Remove programs to avoid conflict with mariadb102-client

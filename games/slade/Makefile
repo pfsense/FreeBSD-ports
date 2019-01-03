@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	slade
-PORTVERSION=	3.1.1.5
-PORTREVISION=	4
+PORTVERSION=	3.1.4
 CATEGORIES=	games
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -20,12 +19,18 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	sirjuddington
 GH_PROJECT=	${PORTNAME:tu}
 
-USES=		cmake compiler:c++11-lib pkgconfig
+USES=		cmake compiler:c++11-lib gl pkgconfig
 USE_WX=		3.0+
 USE_GL=		glew
 USE_CXXSTD=	c++11
 
-PLIST_FILES=	bin/slade share/slade3/slade.pk3
+CMAKE_ARGS=	-DwxWidgets_CONFIG_EXECUTABLE:FILEPATH="${WX_CONFIG}" \
+		-DWX_GTK3:BOOL=OFF -DNO_WEBVIEW:BOOL=ON
+
+PLIST_FILES=	bin/slade share/slade3/slade.pk3 \
+		share/appdata/net.mancubus.SLADE.appdata.xml \
+		share/applications/net.mancubus.SLADE.desktop \
+		share/icons/net.mancubus.SLADE.png
 
 OPTIONS_DEFINE=	FLUIDSYNTH
 OPTIONS_DEFAULT=	FLUIDSYNTH
@@ -38,5 +43,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's,"alsa","oss", ; \
 		/share\/sounds\/sf2/s,/usr,${LOCALBASE},g' \
 			${WRKSRC}/src/Audio/MIDIPlayer.cpp
+	@${REINPLACE_CMD} -e 's,OpenBSD,${OPSYS},' \
+		${WRKSRC}/src/External/zreaders/portable_endian.h
+	@${REINPLACE_CMD} -e 's,wxVSCROLL,static_cast<long>(&),' \
+		${WRKSRC}/src/MapEditor/UI/Dialogs/ActionSpecialDialog.cpp
 
 .include <bsd.port.mk>

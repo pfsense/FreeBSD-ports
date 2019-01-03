@@ -3,7 +3,7 @@
 
 PORTNAME=	quazip
 DISTVERSION=	0.7.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	archivers
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	-${FLAVOR}
@@ -13,18 +13,20 @@ COMMENT=	Qt/C++ wrapper for ZIP/UNZIP package
 
 LICENSE=	LGPL21
 
-FLAVORS=	qt4 qt5
+FLAVORS=	qt5 qt4
 FLAVOR?=	${FLAVORS:[1]}
 
-USES=		cmake:outsource 
+USES=		cmake
 USE_LDCONFIG=	yes
 
 .  if ${FLAVOR} == qt4
+DEPRECATED=	Qt4 has been EOL since december 2015
+EXPIRATION_DATE=2019-03-15
 USES+=		qt:4
 USE_QT=		corelib moc_build network_build qmake_build rcc_build uic_build
 CMAKE_ARGS=	-DBUILD_WITH_QT4:BOOL=TRUE
 .  else
-USES+=		qt:5
+USES+=		compiler:c++11-lang qt:5
 USE_QT=		core buildtools_build qmake_build
 CMAKE_ARGS=	-DBUILD_WITH_QT4:BOOL=FALSE
 QTVER_SUFFIX=	5

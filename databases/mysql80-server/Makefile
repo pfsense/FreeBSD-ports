@@ -3,7 +3,7 @@
 
 PORTNAME?=		mysql
 PORTVERSION=		8.0.12
-PORTREVISION?=		0
+PORTREVISION?=		3
 CATEGORIES=		databases ipv6
 MASTER_SITES=		MYSQL/MySQL-8.0
 PKGNAMESUFFIX?=		80-server
@@ -17,7 +17,7 @@ LICENSE=		GPLv2
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
 
 SLAVEDIRS=	databases/mysql80-client
-USES=		bison:build cmake:outsource,noninja compiler:c++14-lang \
+USES=		bison:build cmake:noninja compiler:c++14-lang \
 		compiler:c++14-lib cpe libedit localbase perl5 shebangfix ssl
 
 USE_PERL5=	run

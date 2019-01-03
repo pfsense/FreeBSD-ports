@@ -3,7 +3,7 @@
 
 PORTNAME=	hgview
 PORTVERSION=	1.9.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	CHEESESHOP \
 		http://download.logilab.org/pub/${PORTNAME}/
@@ -12,6 +12,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast Mercurial log navigator written in pyqt4
 
 LICENSE=	GPLv2
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BROKEN=		fails to configure
 

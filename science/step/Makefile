@@ -2,6 +2,7 @@
 
 PORTNAME=	step
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	science kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,16 +12,21 @@ LIB_DEPENDS=	libcln.so:math/cln \
 		libgsl.so:math/gsl \
 		libqalculate.so:math/libqalculate
 
-USES=		cmake:outsource eigen:3 gettext kde:5 pkgconfig qt:5 tar:xz
+USES=		cmake compiler:c++11-lang eigen:3 gettext kde:5 \
+		pkgconfig qt:5 tar:xz
 USE_KDE=	attica auth bookmarks codecs completion config configwidgets \
 		coreaddons crash doctools ecm emoticons guiaddons i18n \
 		iconthemes init itemmodels itemviews jobwidgets js \
 		kdelibs4support khtml kio newstuff notifications parts \
 		plotting service solid sonnet textwidgets unitconversion \
 		widgetsaddons windowsystem xmlgui
-USE_QT=		core dbus gui network opengl printsupport qml quick svg \
+USE_QT=		core dbus declarative gui network opengl printsupport svg \
 		widgets xml \
 		buildtools_build qmake_build
+CXXFLAGS_powerpc64=	-Wno-error=return-type
+CXXFLAGS_powerpc=	-Wno-error=return-type
+CXXFLAGS_powerpcspe=	-Wno-error=return-type
+CXXFLAGS_sparc64=	-Wno-error=return-type
 
 OPTIONS_DEFINE=	DOCS
 

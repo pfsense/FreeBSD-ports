@@ -3,7 +3,7 @@
 
 PORTNAME=	john
 DISTVERSION=	1.8.0-jumbo-1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	http://www.openwall.com/john/j/ \
 		http://mirrors.kernel.org/openwall/projects/john/${DISTVERSION:C/-.*//}/ \
@@ -15,7 +15,7 @@ COMMENT=	Featureful Unix password cracker
 
 LICENSE=	GPLv2
 
-BROKEN_SSL=	openssl-devel
+BROKEN_SSL=	openssl111
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 

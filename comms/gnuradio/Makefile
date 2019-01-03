@@ -2,6 +2,7 @@
 
 PORTNAME=	gnuradio
 PORTVERSION=	3.7.13.4
+PORTREVISION=	3
 CATEGORIES=	comms astro hamradio
 MASTER_SITES=	http://gnuradio.org/releases/gnuradio/ \
 		LOCAL/db
@@ -10,6 +11,9 @@ MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio Software defined radio
 
 LICENSE=	GPLv3
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BROKEN_aarch64=		fails to compile: /usr/lib/clang/5.0.0/include/mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
 BROKEN_armv6=		fails to compile: /usr/lib/clang/5.0.0/include/mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
@@ -47,7 +51,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 # volk/lib/volk_cpu.c: In function 'i_can_has_3dnow':
 # volk/lib/volk_cpu.c:62: error: can't find a register in class 'BREG' while reloading 'asm'
 # volk/lib/volk_cpu.c:62: error: 'asm' operand has impossible constraints
-USES=		cmake:outsource compiler:c11 fortran iconv perl5 pkgconfig pyqt:4 python:2.7 qt:4 shebangfix
+USES=		cmake compiler:c11 fortran iconv perl5 pkgconfig pyqt:4 python:2.7 qt:4 shebangfix
 SHEBANG_FILES=	grc/scripts/freedesktop/grc_setup_freedesktop.in \
 		gnuradio-runtime/python/gnuradio/ctrlport/gr-ctrlport-monitor \
 		gnuradio-runtime/python/gnuradio/ctrlport/gr-perf-monitorx

@@ -2,6 +2,8 @@
 @comment bin/hb-shape
 @comment bin/hb-subset
 @comment bin/hb-view
+@comment include/harfbuzz/hb-aat-layout.h
+@comment include/harfbuzz/hb-aat.h
 @comment include/harfbuzz/hb-blob.h
 @comment include/harfbuzz/hb-buffer.h
 @comment include/harfbuzz/hb-common.h
@@ -16,19 +18,18 @@
 @comment include/harfbuzz/hb-graphite2.h
 @comment include/harfbuzz/hb-map.h
 include/harfbuzz/hb-icu.h
+@comment include/harfbuzz/hb-ot-color.h
+@comment include/harfbuzz/hb-ot-deprecated.h
 @comment include/harfbuzz/hb-ot-font.h
 @comment include/harfbuzz/hb-ot-layout.h
 @comment include/harfbuzz/hb-ot-math.h
+@comment include/harfbuzz/hb-ot-name.h
 @comment include/harfbuzz/hb-ot-shape.h
-@comment include/harfbuzz/hb-ot-tag.h
 @comment include/harfbuzz/hb-ot-var.h
 @comment include/harfbuzz/hb-ot.h
 @comment include/harfbuzz/hb-set.h
 @comment include/harfbuzz/hb-shape-plan.h
 @comment include/harfbuzz/hb-shape.h
-@comment include/harfbuzz/hb-subset-glyf.hh
-@comment include/harfbuzz/hb-subset-plan.hh
-@comment include/harfbuzz/hb-subset-private.hh
 @comment include/harfbuzz/hb-subset.h
 @comment include/harfbuzz/hb-unicode.h
 @comment include/harfbuzz/hb-version.h

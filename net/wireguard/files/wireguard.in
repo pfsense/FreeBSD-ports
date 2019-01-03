@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# $FreeBSD$
+#
+# PROVIDE: wireguard
+# REQUIRE: DAEMON
+# KEYWORD: shutdown
+#
+# wireguard_enable (bool):    Set to "YES" to enable wireguard.
+#                             (default: "NO")
+#
+# wireguard_interfaces (str): List of interfaces to bring up/down
+#                             on start/stop. (eg: "wg0 wg1")
+#                             (default: "")
+
+. /etc/rc.subr
+
+name=wireguard
+rcvar=wireguard_enable
+
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+
+wireguard_start()
+{
+	for interface in ${wireguard_interfaces}; do
+		%%PREFIX%%/bin/wg-quick up ${interface}
+	done
+}
+
+wireguard_stop()
+{
+	for interface in ${wireguard_interfaces}; do
+		%%PREFIX%%/bin/wg-quick down ${interface}
+	done
+}
+
+load_rc_config $name
+
+: ${wireguard_interfaces=""}
+
+run_rc_command "$1"

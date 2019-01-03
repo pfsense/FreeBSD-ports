@@ -3,7 +3,7 @@
 
 PORTNAME=	lastfm-desktop
 PORTVERSION=	2.1.36
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	audio
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,6 +11,9 @@ COMMENT=	Official Last.fm desktop application suite
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 LIB_DEPENDS=	liblastfm.so:audio/liblastfm \
 		libavcodec.so:multimedia/ffmpeg \

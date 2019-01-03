@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	reduce
-PORTVERSION=	20180117
+PORTVERSION=	20181123
 CATEGORIES=	math lang
 MASTER_SITES=	SF/reduce-algebra/${SFSUBDIR}/
 PKGNAMESUFFIX=	-psl
-DISTNAME=	Reduce-svn4372-src
+DISTNAME=	Reduce-svn4829-src
 
 MAINTAINER=	pfg@FreeBSD.org
 COMMENT=	REDUCE Portable Standard Lisp general-purpose algebra system
@@ -15,9 +15,10 @@ LICENSE=	BSD2CLAUSE
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-SFSUBDIR=	snapshot_2018-01-17
-
 USES=		autoreconf:build libtool gmake ncurses
+
+SFSUBDIR=	snapshot_2018-11-23
+
 TARGET_SDIR=	${ARCH:S/amd64/x86_64/}-unknown-${OPSYS:tl}${OSREL}
 CONFIGURE_ARGS=	--build=${TARGET_SDIR}
 WRKSRC=		${WRKDIR}/${DISTNAME}

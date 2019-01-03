@@ -313,6 +313,9 @@ go/misc/cgo/test/issue26517.go
 go/misc/cgo/test/issue26743.go
 go/misc/cgo/test/issue26743/a.go
 go/misc/cgo/test/issue26743/b.go
+go/misc/cgo/test/issue27340.go
+go/misc/cgo/test/issue27340/a.go
+go/misc/cgo/test/issue28896.go
 go/misc/cgo/test/issue3250.go
 go/misc/cgo/test/issue3250w.go
 go/misc/cgo/test/issue3261.go
@@ -403,6 +406,7 @@ go/misc/cgo/test/sigprocmask.c
 go/misc/cgo/test/sigprocmask.go
 go/misc/cgo/test/test22906.go
 go/misc/cgo/test/test26213.go
+go/misc/cgo/test/test27660.go
 go/misc/cgo/testasan/main.go
 go/misc/cgo/testcarchive/carchive_test.go
 go/misc/cgo/testcarchive/main.c
@@ -2134,6 +2138,7 @@ go/src/cmd/go/internal/generate/generate.go
 go/src/cmd/go/internal/generate/generate_test.go
 go/src/cmd/go/internal/get/discovery.go
 go/src/cmd/go/internal/get/get.go
+go/src/cmd/go/internal/get/path.go
 go/src/cmd/go/internal/get/pkg_test.go
 go/src/cmd/go/internal/get/tag_test.go
 go/src/cmd/go/internal/get/vcs.go
@@ -2399,6 +2404,7 @@ go/src/cmd/go/testdata/script/README
 go/src/cmd/go/testdata/script/binary_only.txt
 go/src/cmd/go/testdata/script/build_GOTMPDIR.txt
 go/src/cmd/go/testdata/script/build_cache_compile.txt
+go/src/cmd/go/testdata/script/build_cache_gomips.txt
 go/src/cmd/go/testdata/script/build_cache_link.txt
 go/src/cmd/go/testdata/script/build_cache_output.txt
 go/src/cmd/go/testdata/script/cover_atomic_pkgall.txt
@@ -2406,6 +2412,10 @@ go/src/cmd/go/testdata/script/cover_pkgall_runtime.txt
 go/src/cmd/go/testdata/script/cpu_profile_twice.txt
 go/src/cmd/go/testdata/script/fileline.txt
 go/src/cmd/go/testdata/script/gcflags_patterns.txt
+go/src/cmd/go/testdata/script/get_brace.txt
+go/src/cmd/go/testdata/script/get_dotfiles.txt
+go/src/cmd/go/testdata/script/get_tilde.txt
+go/src/cmd/go/testdata/script/get_unicode.txt
 go/src/cmd/go/testdata/script/get_with_git_trace.txt
 go/src/cmd/go/testdata/script/goflags.txt
 go/src/cmd/go/testdata/script/help.txt
@@ -2455,6 +2465,7 @@ go/src/cmd/go/testdata/script/mod_get_pseudo.txt
 go/src/cmd/go/testdata/script/mod_get_upgrade.txt
 go/src/cmd/go/testdata/script/mod_get_warning.txt
 go/src/cmd/go/testdata/script/mod_getmode_vendor.txt
+go/src/cmd/go/testdata/script/mod_git_export_subst.txt
 go/src/cmd/go/testdata/script/mod_go_version.txt
 go/src/cmd/go/testdata/script/mod_gobuild_import.txt
 go/src/cmd/go/testdata/script/mod_gofmt_invalid.txt
@@ -2497,6 +2508,7 @@ go/src/cmd/go/testdata/script/mod_versions.txt
 go/src/cmd/go/testdata/script/mod_why.txt
 go/src/cmd/go/testdata/script/pattern_syntax_error.txt
 go/src/cmd/go/testdata/script/run_hello.txt
+go/src/cmd/go/testdata/script/run_wildcard.txt
 go/src/cmd/go/testdata/script/test_badtest.txt
 go/src/cmd/go/testdata/script/test_compile_binary.txt
 go/src/cmd/go/testdata/script/vendor_complex.txt
@@ -8460,6 +8472,19 @@ go/test/fixedbugs/issue26416.go
 go/test/fixedbugs/issue26426.go
 go/test/fixedbugs/issue26438.go
 go/test/fixedbugs/issue26495.go
+go/test/fixedbugs/issue27143.go
+go/test/fixedbugs/issue27232.go
+go/test/fixedbugs/issue27267.go
+go/test/fixedbugs/issue27278.go
+go/test/fixedbugs/issue27289.go
+go/test/fixedbugs/issue27356.go
+go/test/fixedbugs/issue27695.go
+go/test/fixedbugs/issue27695b.go
+go/test/fixedbugs/issue27695c.go
+go/test/fixedbugs/issue27961.go
+go/test/fixedbugs/issue28616.go
+go/test/fixedbugs/issue28688.go
+go/test/fixedbugs/issue28797.go
 go/test/fixedbugs/issue3552.dir/one.go
 go/test/fixedbugs/issue3552.dir/two.go
 go/test/fixedbugs/issue3552.go

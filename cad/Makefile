@@ -35,7 +35,6 @@
     SUBDIR += gerbv
     SUBDIR += ghdl
     SUBDIR += gmsh
-    SUBDIR += gmsh-occ
     SUBDIR += gnucap
     SUBDIR += gplcver
     SUBDIR += gspiceui
@@ -47,7 +46,6 @@
     SUBDIR += k40-whisperer
     SUBDIR += kicad
     SUBDIR += kicad-devel
-    SUBDIR += kicad-library
     SUBDIR += kicad-library-footprints
     SUBDIR += kicad-library-footprints-devel
     SUBDIR += kicad-library-packages3d

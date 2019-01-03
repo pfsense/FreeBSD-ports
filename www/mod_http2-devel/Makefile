@@ -2,11 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	mod_http2
-PORTVERSION=	1.10.20
+PORTVERSION=	1.11.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	-devel
+
+DEPRECATED =	Use the module that is shipped with Apache 2.4
+EXPIRATION_DATE=2019-01-01
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Early experience HTTP/2 modules for Apache httpd
@@ -23,6 +26,7 @@ GH_ACCOUNT=	icing
 GH_PROJECT=	mod_h2
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--without-curl
 
 MODULENAME=	${GH_PROJECT}
 
@@ -40,9 +44,9 @@ post-install:
 	${INSTALL_DATA} ${WRKDIR}/300_mod_proxy_http2.conf \
 		${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d/300_mod_proxy_h2.conf.sample
 	# Rename mod_http2 to mod_h2 to avoid conflict with Apache24
-	${MV} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_http2.so.0.0.0 \
+	${MV} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_http2.so \
 		${STAGEDIR}${PREFIX}/${APACHEMODDIR}/${MODULENAME}.so
-	${MV} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_proxy_http2.so.0.0.0 \
+	${MV} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_proxy_http2.so \
 		${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_proxy_h2.so
 	${RM} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_http2.so
 	${RM} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_proxy_http2.so

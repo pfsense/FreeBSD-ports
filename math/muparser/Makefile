@@ -3,6 +3,7 @@
 
 PORTNAME=	muparser
 PORTVERSION=	2.2.5
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math devel
 
@@ -15,7 +16,11 @@ LICENSE_FILE=	${WRKSRC}/License.txt
 USE_GITHUB=	yes
 GH_ACCOUNT=	beltoforion
 
-USES=		dos2unix pathfix
+USES=		${USES_${ARCH}} dos2unix pathfix
+USES_powerpc64=	compiler:c++11-lang
+USES_powerpc=	compiler:c++11-lang
+USES_powerpcspe=	compiler:c++11-lang
+USES_sparc64=	compiler:c++11-lang
 USE_LDCONFIG=	yes
 
 ALL_TARGET=	lib

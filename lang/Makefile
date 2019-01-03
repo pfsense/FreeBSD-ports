@@ -28,6 +28,7 @@
     SUBDIR += cdent
     SUBDIR += ceylon
     SUBDIR += cfortran
+    SUBDIR += chaiscript
     SUBDIR += chez-scheme
     SUBDIR += chibi-scheme
     SUBDIR += chicken
@@ -104,7 +105,6 @@
     SUBDIR += gcc5
     SUBDIR += gcc6
     SUBDIR += gcc6-aux
-    SUBDIR += gcc6-devel
     SUBDIR += gcc7
     SUBDIR += gcc7-devel
     SUBDIR += gcc8
@@ -112,6 +112,8 @@
     SUBDIR += gcc9-devel
     SUBDIR += gforth
     SUBDIR += ghc
+    SUBDIR += ghc843
+    SUBDIR += ghc862
     SUBDIR += gjs
     SUBDIR += gnat_util
     SUBDIR += gnatcross-aarch64
@@ -128,6 +130,7 @@
     SUBDIR += go
     SUBDIR += go14
     SUBDIR += gprolog
+    SUBDIR += gravity
     SUBDIR += groovy
     SUBDIR += gscheme
     SUBDIR += guile
@@ -160,7 +163,6 @@
     SUBDIR += kf5-kross
     SUBDIR += kross-interpreters
     SUBDIR += kturtle
-    SUBDIR += kturtle-kde4
     SUBDIR += lafontaine
     SUBDIR += lci
     SUBDIR += ldc
@@ -261,7 +263,6 @@
     SUBDIR += parrot
     SUBDIR += pbasic
     SUBDIR += pcc
-    SUBDIR += pecl-perl
     SUBDIR += perl5-devel
     SUBDIR += perl5.24
     SUBDIR += perl5.26
@@ -273,14 +274,12 @@
     SUBDIR += phc
     SUBDIR += php-mode.el
     SUBDIR += php56
-    SUBDIR += php56-extensions
-    SUBDIR += php70
-    SUBDIR += php70-extensions
     SUBDIR += php71
     SUBDIR += php71-extensions
     SUBDIR += php72
     SUBDIR += php72-extensions
-    SUBDIR += php_doc
+    SUBDIR += php73
+    SUBDIR += php73-extensions
     SUBDIR += picoc
     SUBDIR += pocl
     SUBDIR += polyml
@@ -303,13 +302,11 @@
     SUBDIR += python2
     SUBDIR += python27
     SUBDIR += python3
-    SUBDIR += python34
     SUBDIR += python35
     SUBDIR += python36
     SUBDIR += python37
     SUBDIR += qore
     SUBDIR += qscheme
-    SUBDIR += qt5-qml
     SUBDIR += quack
     SUBDIR += racket
     SUBDIR += racket-minimal

@@ -16,8 +16,8 @@ LICENSE_FILE_ART10=	${WRKSRC}/Artistic
 LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
 
 # Uncomment when the default Perl is switched to 5.28
-#DEPRECATED=	Support ends three years after .0 release, please upgrade to a more recent version of Perl
-#EXPIRATION_DATE=2020-05-31
+DEPRECATED=	Support ends three years after .0 release, please upgrade to a more recent version of Perl
+EXPIRATION_DATE=2020-05-31
 
 TEST_TARGET=	test_harness
 TEST_ENV=	${MAKE_ENV} TEST_JOBS=${MAKE_JOBS_NUMBER} \
@@ -254,7 +254,10 @@ post-install:
 	${MKDIR} ${STAGEDIR}${SITE_MAN1} ${STAGEDIR}${SITE_MAN3}
 	${MKDIR} ${STAGEDIR}${SITE_ARCH}/auto
 	${MKDIR} ${STAGEDIR}${SITE_PERL}/auto
-	${LN} ${STAGEDIR}${PREFIX}/bin/perl${PERL_VERSION} ${STAGEDIR}${PREFIX}/bin/perl5
+.if defined(IAMDEFAULTPERL)
+	${LN} -sf perl ${STAGEDIR}${PREFIX}/bin/perl5
+	${LN} -sf perl ${STAGEDIR}${PREFIX}/bin/perl${PERL_VERSION}
+.endif
 	${LN} -sf libperl.so.${PERL_VERSION} ${STAGEDIR}${PREFIX}/${_ARCH_LIB}/CORE/libperl.so
 	${LN} -sf libperl.so.${PERL_VERSION} ${STAGEDIR}${PREFIX}/${_ARCH_LIB}/CORE/libperl.so.${PERL_VER}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/perl${PERL_VERSION}

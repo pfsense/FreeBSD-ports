@@ -85,7 +85,7 @@ _SUF2=	,${PORTEPOCH}
 .endif
 
 .if ${OPSYS} == "FreeBSD"
-.if exists(/usr/sbin/dtrace) && (${OSVERSION} > 1100032) && (${ARCH} == amd64 || ${ARCH} == i386)
+.if exists(/usr/sbin/dtrace) && (${ARCH} == amd64 || ${ARCH} == i386)
 CONFIGURE_ARGS+=--enable-dtrace
 .else
 CONFIGURE_ARGS+=--disable-dtrace
@@ -97,7 +97,7 @@ CONFIGURE_ARGS+=--disable-dtrace
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
-.if (${ARCH} == powerpc || ${ARCH} == powerpc64)
+.if ${ARCH:Mpowerpc*}
 USE_GCC=	yes
 .endif
 

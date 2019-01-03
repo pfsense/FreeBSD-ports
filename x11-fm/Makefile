@@ -12,14 +12,11 @@
     SUBDIR += ezfm
     SUBDIR += filerunner
     SUBDIR += gentoo
-    SUBDIR += gnome-commander2
     SUBDIR += gprename
     SUBDIR += konqueror
     SUBDIR += krusader2
-    SUBDIR += krusader2-kde4
     SUBDIR += librfm
     SUBDIR += libtubo
-    SUBDIR += mtoolsfm
     SUBDIR += mucommander
     SUBDIR += nautilus
     SUBDIR += nemo

@@ -12,6 +12,9 @@ MAINTAINER=	cy@FreeBSD.org
 #		skreuzer@FreeBSD.org is also committer for this port
 COMMENT=	Systems administration tool for networks
 
+DEPRECATED=		OpenSSL 1.1.X is not supported.
+EXPIRATION_DATE=	2021-09-30
+
 LICENSE=	GPLv3
 
 CPE_VENDOR=	gnu
@@ -67,4 +70,13 @@ MYSQL_LDFLAGS=		-L${LOCALBASE}/lib/mysql
 LIBVIRT_CONFIGURE_WITH=	--with-libvirt=${LOCALBASE}
 LIBVIRT_LIB_DEPENDS=	libvirt.so:devel/libvirt
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1200085
+.if ${SSL_DEFAULT} != "openssl"
+BROKEN_FreeBSD_12=	fails to build with openssl111, install security/openssl
+BROKEN_FreeBSD_13=	fails to build with openssl111, install security/openssl
+.endif
+.endif
+
+.include <bsd.port.post.mk>

@@ -2,6 +2,7 @@
 
 PORTNAME=	gui
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits graphics
 PKGNAMEPREFIX=	qt5-
 
@@ -22,7 +23,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libxkbcommon.so:x11/libxkbcommon
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		jpeg localbase qmake:no_env qt-dist:5,base
+USES=		compiler:c++11-lang jpeg localbase qmake:no_env qt-dist:5,base
 USE_GL=		gl egl
 USE_GNOME=	glib20
 USE_QT=		core dbus network qmake_build buildtools_build

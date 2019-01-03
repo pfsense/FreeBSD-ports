@@ -3,9 +3,10 @@
 PORTNAME=	reaver
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.5
+PORTREVISION=	1
 CATEGORIES=	net
 
-MAINTAINER=	martinfilla@post.cz
+MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Reaver brute force attack against WPS (Wi-Fi Protected Setup)
 
 LICENSE=	GPLv2

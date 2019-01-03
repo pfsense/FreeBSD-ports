@@ -3,7 +3,7 @@
 
 PORTNAME=	binutils
 PORTVERSION=	2.30
-PORTREVISION=	5
+PORTREVISION=	7
 PORTEPOCH?=	1
 CATEGORIES?=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases
@@ -46,7 +46,7 @@ BUTARGET?=	${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}
 .endif
 PLIST_SUB=	BUTARGET=${BUTARGET}
 OPTIONS_EXCLUDE=	NLS
-INFO_PATH=	${PKGNAMEPREFIX:S/-$//}/info
+INFO_PATH=	${PKGNAMEPREFIX:S/-$//}/share/info
 CONFIGURE_ARGS+=	--disable-shared \
 			--target=${BUTARGET}
 .else
@@ -63,7 +63,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=	--with-system-zlib \
 			--with-gmp=${LOCALBASE} \
 			--with-mpfr=${LOCALBASE} \
-			--enable-targets=all
+			--enable-targets=all \
+			--enable-threads=yes
 INFO=		as \
 		binutils \
 		gprof \
@@ -120,7 +121,7 @@ post-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/${PKGNAMEPREFIX:S/-$//}
 .endif
 	${RM} ${STAGEDIR}${PREFIX}/${BUTARGET}/lib/ldscripts/i386bsd.*
-	@if [ -d ${STAGEDIR}${PREFIX}/${INFO_PATH} ] ; then rm -rf ${STAGEDIR}${PREFIX}/${INFO_PATH}; fi
+	@if [ -d ${STAGEDIR}${PREFIX}/${INFO_PATH:H} ] ; then rm -rf ${STAGEDIR}${PREFIX}/${INFO_PATH:H}; fi
 	${LN} -fs ../../bin/${BUTARGET}-size ${STAGEDIR}${PREFIX}/${BUTARGET}/bin/size
 .if defined(CROSS_TOOLCHAIN)
 	${MV} ${STAGEDIR}/usr/bin/as ${STAGEDIR}/usr/bin/${BUTARGET}-as

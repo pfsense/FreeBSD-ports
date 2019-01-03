@@ -2,7 +2,7 @@
 
 PORTNAME=	avidemux
 PORTVERSION=	${AVIDEMUX_VERSION}
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	multimedia
 PKGNAMESUFFIX=	-qt4
 
@@ -12,6 +12,7 @@ COMMENT=	Simple GUI based video editor (QT4 UI)
 LIB_DEPENDS=	libADM6avutil.so.54:multimedia/avidemux
 
 MASTERDIR=	${.CURDIR}/../avidemux
+OPTIONS_SLAVE=	QT4
 PLIST=		${.CURDIR}/pkg-plist
 
 .include "${MASTERDIR}/Makefile.common"

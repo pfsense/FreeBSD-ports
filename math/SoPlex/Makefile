@@ -3,6 +3,7 @@
 
 PORTNAME=	SoPlex
 DISTVERSION=	4.0.0
+PORTREVISION=	1
 CATEGORIES=	math science
 MASTER_SITES=	http://soplex.zib.de/download/release/
 DISTNAME=	${PORTNAME:tl}-${DISTVERSION}
@@ -17,7 +18,7 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-USES=		cmake:outsource compiler:c++11-lang tar:tgz
+USES=		cmake compiler:c++11-lang tar:tgz
 USE_LDCONFIG=	yes
 PLIST_SUB=	SHL4=${DISTVERSION}.0 SHL2=${DISTVERSION:R}
 

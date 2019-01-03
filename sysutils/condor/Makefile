@@ -6,7 +6,7 @@
 
 PORTNAME=	condor
 DISTVERSION=	8.4.12
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	sysutils net
 MASTER_SITES=	http://www.acadix.biz/Ports/distfiles/
 DISTNAME=	condor_src-${PORTVERSION}-all-all
@@ -17,8 +17,6 @@ COMMENT=	High-throughput computing on distributively owned resources
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE-2.0.txt
 
-BROKEN_powerpc64=	fails to link: test_unit.hpp:249: undefined reference to boost::unit_test::ut_detail::normalize_test_case_name
-
 LIB_DEPENDS=	libkrb5support.so:security/krb5 \
 		libpcre.so:devel/pcre \
 		libcurl.so:ftp/curl \
@@ -26,8 +24,10 @@ LIB_DEPENDS=	libkrb5support.so:security/krb5 \
 		${PY_BOOST}
 
 # Does not work with Python 3
-USES=		cmake:noninja cpe perl5 pgsql python:2.7 shebangfix ssl
+USES=		cmake:noninja compiler:c++11-lang cpe perl5 pgsql \
+		python:2.7 shebangfix ssl
 USE_LDCONFIG=	yes
+
 CPE_VENDOR=	condor_project
 SHEBANG_FILES=	src/condor_scripts/condor_qsub \
 		src/condor_gridmanager/remote_gahp \
@@ -47,7 +47,7 @@ CMAKE_ARGS=	-DCMAKE_CXX_FLAGS:STRING=${CXXFLAGS} \
 		-DPYTHON_LIBRARY:FILEPATH=${LOCALBASE}/lib/lib${PYTHON_VERSION}.so
 
 SUB_FILES=	condor-config condor_config.local pkg-message
-PLIST_SUB+=	CONDOR_UVER=${PORTVERSION:S/./_/g}
+PLIST_SUB=	CONDOR_UVER=${PORTVERSION:S/./_/g}
 
 USERS=		condor
 GROUPS=		${USERS}
@@ -63,7 +63,7 @@ pre-everything::
 	@( ${PRINTF} "\nWARNING: Condor needs approximately 3GB to build!"; \
 	   ${PRINTF} "         Please make sure your build environment has that much space before continuing.\n" )
 
-post-patch:
+pre-configure:
 	@${REINPLACE_CMD} \
 		-e 's,\(set( C_SHARE_EXAMPLES	\)share/condor,\1${EXAMPLESDIR_REL},' \
 		${WRKSRC}/build/cmake/CondorPackageConfig.cmake

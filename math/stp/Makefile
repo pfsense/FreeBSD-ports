@@ -3,7 +3,7 @@
 
 PORTNAME=	stp
 DISTVERSION=	2.3.1
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	math
 
@@ -14,13 +14,12 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_aarch64=		fails to compile: undefined reference to sbrk
-BROKEN_powerpc64=	fails to compile: main.cpp.o: undefined reference to boost::program_options::error_with_option_name::get_canonical_option_name()
 
 LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs \
 		libminisat.so:math/minisat \
 		libcryptominisat5.so:math/cryptominisat
 
-USES=		bison:build cmake:outsource perl5 python
+USES=		bison:build compiler:c++11-lang cmake perl5 python
 USE_GITHUB=	yes
 USE_PERL5=	build
 USE_LDCONFIG=	yes

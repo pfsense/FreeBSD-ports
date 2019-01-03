@@ -13,6 +13,9 @@ COMMENT=	C++ code generator for CPython extensions
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 		libxslt.so:textproc/libxslt
 
@@ -22,7 +25,7 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION} \
 USE_QT=		corelib qmake_build qtestlib moc_build network \
 		uic_build rcc_build xml xmlpatterns
 
-USES=		cmake python:2.7 qt:4 tar:bzip2
+USES=		cmake:insource python:2.7 qt:4 tar:bzip2
 USE_LDCONFIG=	yes
 
 ALL_TARGET=	all

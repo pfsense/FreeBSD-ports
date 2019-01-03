@@ -4,7 +4,7 @@
 PORTNAME=	BitcoinArmory
 PORTVERSION=	0.93.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	finance
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,6 +12,9 @@ COMMENT=	Desktop bitcoin management system
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BROKEN_aarch64=		fails to compile: c++: language not recognized: 'ar'
 BROKEN_armv6=		fails to compile: c++: language not recognized: 'ar'

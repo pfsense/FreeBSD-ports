@@ -3,9 +3,9 @@
 
 PORTNAME=	postgis
 PORTVERSION=	2.3.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases geography
-MASTER_SITES=	http://download.osgeo.org/postgis/source/
+MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	23
 
 MAINTAINER=	lbartoletti@tuxfamily.org

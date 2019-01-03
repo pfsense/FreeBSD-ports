@@ -2,7 +2,8 @@
 
 PORTNAME=	mppp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.11
+DISTVERSION=	0.12
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +18,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/gmp.h:math/gmp \
 RUN_DEPENDS=	${LOCALBASE}/include/gmp.h:math/gmp \
 		${LOCALBASE}/include/mpfr.h:math/mpfr
 
-USES=		cmake:outsource
+USES=		cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	bluescarni
 NO_BUILD=	yes

@@ -9,6 +9,9 @@ CATEGORIES=	databases
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP extension for interfacing with memcached via libmemcached library
 
+DEPRECATED=	Works only with EOL php 5.6
+EXPIRATION_DATE=	2018-12-30
+
 LICENSE=	PHP30
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
@@ -21,7 +24,7 @@ IGBINARY_DESC=	Binary serializer support
 PORTSCOUT=	limit:^2\.
 
 CONFIGURE_ARGS=	--with-libmemcached-dir=${LOCALBASE}
-IGNORE_WITH_PHP=70 71 72
+IGNORE_WITH_PHP=71 72 73
 USE_PHP=	json:build session:build
 USES=		php:pecl pkgconfig
 

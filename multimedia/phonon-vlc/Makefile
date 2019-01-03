@@ -2,7 +2,7 @@
 
 PORTNAME=	phonon
 DISTVERSION=	0.10.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTNAME}-backend-${PHONON_PLUGIN}/${DISTVERSION}
 PKGNAMESUFFIX=	-${PHONON_PLUGIN}-${FLAVOR}
@@ -15,24 +15,26 @@ COMMENT=	VLC backend for Phonon
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
-FLAVORS=	qt4 qt5
+FLAVORS=	qt5 qt4
 FLAVOR?=	${FLAVORS:[1]}
 
+qt4_BUILD_DEPENDS=	automoc4:devel/automoc4
 qt4_LIB_DEPENDS=	libvlc.so:multimedia/vlc-qt4
-qt5_LIB_DEPENDS=	libvlc.so:multimedia/vlc
+qt5_LIB_DEPENDS=	libvlc.so:multimedia/vlc3
 
-USES=		cmake:outsource pkgconfig tar:xz
+USES=		cmake pkgconfig tar:xz
 
 .  if ${FLAVOR} == qt4
-USES+=		kde:4 qt:4
-USE_KDE=	automoc4
+DEPRECATED=	Qt4 has been EOL since december 2015
+EXPIRATION_DATE=2019-03-15
+USES+=		qt:4
 USE_QT=		corelib gui phonon \
 		qmake_build moc_build rcc_build uic_build
 PLIST_FILES=	lib/kde4/plugins/phonon_backend/phonon_vlc.so \
 		share/kde4/services/phononbackends/vlc.desktop \
 		${QT_PLUGINDIR}/phonon_backend/libphonon_vlc.so
 .  else
-USES+=		kde:5 qt:5
+USES+=		compiler:c++11-lang kde:5 qt:5
 USE_KDE=	ecm
 USE_QT=		core gui widgets phonon4 \
 		buildtools_build qmake_build

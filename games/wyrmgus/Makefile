@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	wyrmgus
-PORTVERSION=	3.3.1
-PORTREVISION=	4
+PORTVERSION=	3.4.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games devel
 
@@ -22,7 +22,7 @@ USE_GITHUB=     yes
 GH_ACCOUNT=     Andrettin
 GH_PROJECT=     Wyrmgus
 
-USES=		compiler:c++11-lib cmake:outsource lua:51 pkgconfig sqlite
+USES=		compiler:c++11-lib cmake lua:51 pkgconfig sqlite
 USE_SDL=	sdl
 CMAKE_ARGS=	-DGAMEDIR:STRING="bin" \
 		-DTOLUA++_APP:STRING="tolua++-${LUA_VER}" \
@@ -40,6 +40,7 @@ PLIST_FILES=	bin/${PORTNAME} \
 OPTIONS_DEFINE=	OPENGL DOCS
 OPTIONS_DEFAULT=OPENGL
 
+OPENGL_USES=		gl
 OPENGL_USE=		GL=gl,glu
 OPENGL_CMAKE_ON=	-DWITH_RENDERER="OpenGL"
 OPENGL_CMAKE_OFF=	-DWITH_RENDERER="NativeSDL"

@@ -3,7 +3,7 @@
 
 PORTNAME=	textroom
 PORTVERSION=	0.8.2
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	editors
 MASTER_SITES=	SF
 
@@ -11,6 +11,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full screen text editor
 
 LICENSE=	GPLv3
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libhunspell-1.6.so:textproc/hunspell \

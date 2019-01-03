@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	teamspeak3-server
-PORTVERSION=	3.4.0
+PORTVERSION=	3.5.1
 PORTEPOCH=	1
 CATEGORIES=	audio net
 MASTER_SITES=	http://dl.4players.de/ts/releases/${PORTVERSION}/ \
@@ -56,11 +56,7 @@ MYSQL_VARS_OFF=	SUB_LIST+=MYSQL=
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100000 && ${OSVERSION} < 1100507
-SUB_LIST+=	CD="cd \$$db_dir"
-.else
 SUB_LIST+=	CD=
-.endif
 
 .if ${ARCH} == "i386"
 TEAMSPEAK_ARCH=	x86

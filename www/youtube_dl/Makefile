@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	youtube_dl
-PORTVERSION=	2018.09.10
+PORTVERSION=	2018.12.17
 CATEGORIES=	www
 MASTER_SITES=	https://yt-dl.org/downloads/${PORTVERSION}/
 DISTNAME=	youtube-dl-${PORTVERSION}
@@ -14,9 +14,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	zip:archivers/zip
 
+USES=		gmake python
+
 ALL_TARGET=	youtube-dl
 MAKE_ARGS=	PYTHON=${PYTHON_CMD}
-USES=		gmake python
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/youtube-dl
 

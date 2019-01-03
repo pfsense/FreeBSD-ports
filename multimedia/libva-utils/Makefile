@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	libva-utils
-PORTVERSION=	2.2.0
+PORTVERSION=	2.3.0
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	madpilot@FreeBSD.org
@@ -13,15 +14,16 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libva.so:multimedia/libva \
 		libdrm.so:graphics/libdrm
 
-USES=		autoreconf gmake libtool pkgconfig tar:bzip2
+USES=		autoreconf compiler:c++11-lang gmake libtool pkgconfig tar:bzip2
 USE_XORG=	x11 xext xfixes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	01org
+GH_ACCOUNT=	intel
 
 OPTIONS_DEFINE=	DEBUG WAYLAND
+OPTIONS_DEFAULT=WAYLAND
 WAYLAND_DESC=	Support wayland protocol
 OPTIONS_SUB=	yes
 

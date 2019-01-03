@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	vtk
-DISTVERSION=	8.1.1
-PORTREVISION=	1
+DISTVERSION=	8.1.2
+PORTREVISION=	3
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	8
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 
 CONFLICTS=	vtk5 vtk6
 
-USES=		alias cmake:outsource jpeg localbase
+USES=		alias cmake compiler:c++11-lang gl jpeg localbase
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	ice x11 xt xext sm
 
@@ -39,8 +39,8 @@ DOCSDIR=	${PREFIX}/share/doc/vtk-${VTK_SHORT_VER}
 DATADIR=	${PREFIX}/share/vtk-${VTK_SHORT_VER}
 
 # Options
-OPTIONS_DEFINE=	DESIGNER DOCS OSMESA EXAMPLES
-OPTIONS_DEFAULT=	QT5
+OPTIONS_DEFINE=	DESIGNER DOCS OSMESA QT5 EXAMPLES
+OPTIONS_DEFAULT=	MPI QT5
 OSMESA_DESC=	Use Mesa for off-screen rendering
 DESIGNER_DESC=	Build the Qt Designer plugin
 OPTIONS_SUB=	yes
@@ -59,18 +59,6 @@ $g_DESC=	Build the $g group
 $w_DESC=	$w wrapping
 .endfor
 
-# Qt radio
-OPTIONS_RADIO=	Qt
-OPTIONS_RADIO_Qt=	QT4 QT5
-Qt_DESC=	Qt GUI support
-QT4_DESC=	Qt 4 toolkit support
-QT5_DESC=	Qt 5 toolkit support
-
-QT4_USES=		qt:4
-QT4_USE=		QT=corelib,designer,gui_build,gui_run,network_build,network_run,sql_build,sql_run,moc_build,uic_build,qmake_build,rcc_build,opengl,webkit_build,webkit_run
-QT4_CMAKE_ON=		-DVTK_QT_VERSION:STRING="4" \
-			-DVTK_Group_Qt:BOOL=ON
-
 QT5_USES=		qt:5
 QT5_USE=		QT=core,gui,sql,uiplugin,widgets,x11extras,qmake_build,buildtools_build
 QT5_CMAKE_ON=		-DVTK_QT_VERSION:STRING="5" \
@@ -79,6 +67,7 @@ QT5_CMAKE_ON=		-DVTK_QT_VERSION:STRING="5" \
 
 DESIGNER_CMAKE_BOOL=	QT_DESIGNER_PLUGIN
 DESIGNER_USE=		QT=designer
+DESIGNER_IMPLIES=	QT5
 
 MPI_LIB_DEPENDS=	libmpi.so:net/openmpi
 MPI_CMAKE_ON=		-DMPIEXEC=${LOCALBASE}/mpi/openmpi/bin/mpiexec
@@ -115,11 +104,6 @@ post-patch:
 		${WRKSRC}/ThirdParty/netcdf/vtknetcdf/include/xxxnetcdf.h
 	@${FIND} ${WRKSRC}/ThirdParty/netcdf -type f | ${XARGS} ${REINPLACE_CMD} \
 		-E 's/[[:<:]]netcdf\.h[[:>:]]/xxxnetcdf.h/'
-	@${REINPLACE_CMD} -e "s|reinterpret_cast<const GLvoid \*>(NULL)|nullptr|g" \
-		${WRKSRC}/Rendering/OpenGL2/*.cxx \
-		${WRKSRC}/Rendering/VolumeOpenGL2/vtkOpenGLProjectedTetrahedraMapper.cxx # many files/places, see https://gitlab.kitware.com/vtk/vtk/issues/17179
-	@${REINPLACE_CMD} -e "s|static_cast<Window>(NULL)|0|g" \
-		${WRKSRC}/Rendering/OpenGL2/*.cxx # many files/places, see https://gitlab.kitware.com/vtk/vtk/issues/17179
 
 .include <bsd.port.options.mk>
 
@@ -133,10 +117,6 @@ CMAKE_ARGS+=	-DVTK_Group_${g}:BOOL=OFF
 
 .if !${PORT_OPTIONS:MOSMESA}
 USE_GL=		gl glu
-.endif
-
-.if ${PORT_OPTIONS:MDESIGNER} && !${PORT_OPTIONS:MQT5} && !${PORT_OPTIONS:MQT4}
-IGNORE=	designer requires either QT4 or QT5
 .endif
 
 post-install: # autoplist: thousands of files, complex dependencies on options

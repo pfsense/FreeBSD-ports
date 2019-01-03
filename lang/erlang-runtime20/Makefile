@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	20.3.8.9
+PORTVERSION=	20.3.8.15
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg			\
 		http://erlang.stacken.kth.se/download/:erlangorg		\
@@ -23,7 +23,9 @@ PATCHFILES=	patch-otp-20.3.1 patch-otp-20.3.2 patch-otp-20.3.3 \
 		patch-otp-20.3.7 patch-otp-20.3.8 patch-otp-20.3.8.1 \
 		patch-otp-20.3.8.2 patch-otp-20.3.8.3 patch-otp-20.3.8.4 \
 		patch-otp-20.3.8.5 patch-otp-20.3.8.6 patch-otp-20.3.8.7 \
-		patch-otp-20.3.8.8 patch-otp-20.3.8.9
+		patch-otp-20.3.8.8 patch-otp-20.3.8.9 patch-otp-20.3.8.10 \
+		patch-otp-20.3.8.11 patch-otp-20.3.8.12 patch-otp-20.3.8.13 \
+		patch-otp-20.3.8.14 patch-otp-20.3.8.15
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Functional programming language from Ericsson
@@ -45,6 +47,7 @@ MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=	DIRTY DTRACE GS HIPE JAVA KQUEUE NATIVE ODBC OPENSSL SCTP THREADS WX
 OPTIONS_DEFAULT=DIRTY DTRACE HIPE KQUEUE OPENSSL SCTP THREADS
+OPTIONS_EXCLUDE_powerpc64=	HIPE
 
 DIRTY_DESC=	Enable Dirty schedulers
 GS_DESC=	Enable GS application (deprecated)
@@ -65,14 +68,13 @@ OPTIONS_EXCLUDE+=	DTRACE
 # respectively)" you probably misconfigured DTrace in some way.
 
 OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
-OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 # ld(1) fails to link probes: missing __dtrace_erlang___* symbols
 OPTIONS_EXCLUDE_aarch64=	DTRACE
 OPTIONS_EXCLUDE_armv6=		DTRACE
 OPTIONS_EXCLUDE_armv7=		DTRACE
 OPTIONS_EXCLUDE_i386=		DTRACE
 
-OPENSSL_VARS=	BROKEN_SSL=openssl-devel
+OPENSSL_VARS=	BROKEN_SSL=openssl111
 
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -102,7 +104,7 @@ WX_VARS=		USE_WX=2.8+ WX_COMPS="wx contrib" USE_GL="gl glu"
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1100000
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-DMAP_NORESERVE=0
 .endif
 

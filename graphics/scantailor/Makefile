@@ -3,7 +3,7 @@
 
 PORTNAME=	scantailor
 PORTVERSION=	0.9.11.1
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -11,6 +11,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive post-processing tool for scanned pages
 
 LICENSE=	GPLv3
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BROKEN_powerpc64=	fails to compile: core.hpp:69: boost::lambda::<unnamed>::_1 causes a section type conflict
 

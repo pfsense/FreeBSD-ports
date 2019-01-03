@@ -3,9 +3,11 @@
 
 PORTNAME=	gri
 PORTVERSION=	2.12.23
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	math
 MASTER_SITES=	SF
+
+LICENSE=	GPLv2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extensible plotting language for producing scientific graphs
@@ -24,21 +26,13 @@ INFO=		gri
 USE_TEX=	formats:build dvipsk:build
 PORTDOCS=	*
 PORTEXAMPLES=	*
-PLIST_FILES=	bin/gri bin/gri_merge bin/gri_unpage \
-		man/man1/gri.1.gz man/man1/gri_merge.1.gz \
-		man/man1/gri_unpage.1.gz \
-		share/emacs/site-lisp/gri-mode.el \
-		%%DATADIR%%/gri.cmd \
-		%%DATADIR%%/logo.dat \
-		%%DATADIR%%/rgb.txt \
-		%%DATADIR%%/startup.msg
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS} || ${PORT_OPTIONS:MEXAMPLES}
-BUILD_DEPENDS+=	convert:graphics/ImageMagick
+BUILD_DEPENDS+=	convert:graphics/ImageMagick6
 .endif
 
 post-patch:

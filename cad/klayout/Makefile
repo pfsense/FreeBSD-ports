@@ -2,7 +2,7 @@
 
 PORTNAME=	klayout
 PORTVERSION=	0.24.9
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	cad
 MASTER_SITES=	http://www.klayout.org/downloads/source/
 
@@ -10,6 +10,9 @@ MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Qt-based GDS2 Viewer
 
 LICENSE=	GPLv2
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 USES=		compiler:c++0x gmake python qt:4
 USE_RUBY=	yes

@@ -3,6 +3,7 @@
 PORTNAME=	edbrowse
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.7.4
+PORTREVISION=	1
 CATEGORIES=	www editors
 
 MAINTAINER=	alfix86@gmail.com
@@ -16,7 +17,7 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libtidy5.so:www/tidy-html5 \
 		libduktape.so:lang/duktape-lib
 
-USES=		cmake perl5 readline
+USES=		cmake:insource compiler:c11 perl5 readline
 USE_PERL5=	build
 USE_GITHUB=	yes
 

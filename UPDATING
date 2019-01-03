@@ -5,6 +5,354 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20181228:
+  AFFECTS: users of devel/trio
+  AUTHOR: rodrigo@freebsd.org
+
+  Since trio 1.16-1, the shared lib previously misnamed libtrio.so.2.0.0
+  is now named libtrio.so.2 and the symlink libtrio.so is created.
+
+20181222:
+  AFFECTS: users of net/ntopng
+  AUTHOR: madpilot@FreeBSD.org
+
+  Since ntopng 3.7, for security reasons, the default setting for
+  the data directory has been changed to "/var/db/ntopng", and the
+  default user has been changed to "ntopng". This new directory is
+  created automatically by the port/package with correct permissions.
+
+  In order to maintain backward compatibility, if you are already
+  using "/var/tmp/ntopng" as data directory, ntopng keeps using that
+  folder, owned by "nobody". This said, using the old defaults is not
+  recommended and a manual action is required in order to migrate to
+  the new settings, unless you are already using a custom directory:
+
+  # service ntopng stop
+  # mv /var/tmp/ntopng/* /var/db/ntopng/
+  # chown -R ntopng:ntopng /var/db/ntopng
+  # service ntopng start
+
+  Please check hte upstream FAQ for reference:
+	https://www.ntop.org/support/faq/migrate-the-data-directory-in-ntopng/
+
+20181218:
+  AFFECTS: users of misc/openhab2
+  AUTHOR: netchild@FreeBSD.org
+
+  If you upgrade from a previous version, make a backup of
+       /var/db/openhab2
+  and run
+       %%PREFIX%%/libexec/openhab2/runtime/bin/update.freebsd
+
+  Config specific info (changes from 2.3.0 to 2.4.0):
+  Astro Binding: The 'kilometer' and 'miles' channels have been replaced
+                 by a new 'distance' channel
+  Jeelink Binding: The 'currentWatt' and 'maxWatt' channels have been
+                   replaced with 'currentPower' and 'maxPower' channels
+  WeatherUnderground Binding: A bridge has been added on top of the
+                              current things, you need to add a bridge
+                              containing your api-key.
+  ZWave Binding: Major changes have been merged to support features
+                 such as security. All things must be deleted and
+                 re-added. Refer to
+                 https://community.openhab.org/t/zwave-binding-updates/51080
+                 for further information.
+  Synop Binding is now using UoM. 'wind-speed-ms' and 'wind-speed-knots'
+                channels have been replaced by a single 'wind-speed'
+                channel.
+  Amazonechocontrol Binding: The account thing does not have settings
+                             anymore. You have to login at amazon
+                             once again through the proxy server
+                             http(s)://<YourOpenHAB>/amazonechocontrol
+  Milight Binding: The various available bulb types do not appear in
+                   the Paper UI Inbox anymore. The correct bulb need
+                   to be added manually. The bulb "zone" is now a
+                   configuration. Bulb Things need to be recreated
+                   to apply this change.
+  Hue emulation: The item to hue ID mapping is no longer stored in
+                 files, but in the openHAB storage service. You need
+                 to rediscover "devices" in all services that use the
+                 hue emulation (Amazon Echo, Google Home, etc).
+
+20181215:
+  AFFECTS: users of sysutils/graylog
+  AUTHOR: dch@FreeBSD.org
+
+  The dependent ports for ElasticSearch and MongoDB have both changed,
+  and upstream changes to the configuration file may require minor
+  changes to work correctly. Refer to the new sample files installed
+  alongside the port for reference:
+
+  server.conf
+  log4j.xml
+  graylog_logging.xml
+
+20181213:
+  AFFECTS: users of lang/perl5*
+  AUTHOR: mat@FreeBSD.org
+
+  The default Perl version has been switched to Perl 5.28.  If you are using
+  binary packages to upgrade your system, you do not have anything to do, pkg
+  upgrade will do the right thing.  For the other people, follow the
+  instructions in entry 20161103, it should still be the same.
+
+20181212:
+  AFFECTS: users of net-im/ejabberd
+  AUTHOR: ashish@FreeBSD.org
+
+  There are some new features added in ejabberd 18.12, esp. related to
+  bookmarks, and XML compression in message archive storage. Please
+  refer to: https://blog.process-one.net/ejabberd-18-12/
+
+20181211:
+  AFFECTS: users of news/inn when upgrading to FreeBSD 12
+  AUTHOR: naddy@FreeBSD.org
+
+  When upgrading from FreeBSD 11 to 12, a change in the size of the
+  ino_t type causes a binary incompatibility in the overview database
+  if the default tradindexed format is used.
+
+  After upgrading the inn package, remove the overview/group.index
+  file and regenerate the history and overview database with
+  makehistory(8) before starting innd.
+
+  # echo '. /usr/local/news/lib/innshellvars && \
+        rm -f $OVERVIEWDIR/group.index && \
+        $NEWSBIN/makehistory -O -s `wc -l <$HISTORY`' | \
+        su -fm news -c '/bin/sh -s'
+
+20181209:
+  AFFECTS: users of DRM ports other than graphics/drm-kmod
+  AUTHOR: jmd@FreeBSD.org
+
+  In order to facilitate future porting efforts and help in supporting multiple
+  FreeBSD versions, the DRM ports other than drm-kmod (graphics/drm-stable-kmod,
+  graphics/drm-next-kmod, graphics/drm-devel-kmod) have been renamed to
+  include the FreeBSD version they are designed for.
+
+  drm-stable-kmod is drm-fbsd11.2-kmod
+  drm-next-kmod is drm-fbsd12.0-kmod
+  drm-devel-kmod is drm-current-kmod
+
+20181209
+  AFFECTS: users of devel/geany and devel/geany-plugins
+  AUTHOR: madpilot@FreeBSD.org
+
+  Geany and its plugins port have been moved to gtk3 and a new gtk2
+  flavor has been added. The gtk2 flavor has a -gtk2 suffix added to the
+  package name.
+
+  If you want to stay with the gtk2 version you need to use "pkg install"
+  to install the new gtk2 flavor, pkg will automatically deinstall the
+  gtk3 flavors.
+
+  If using port, to maintain the gtk2 version, you will need to deinstall
+  geany and its plugins and reinstall specifying the gtk2 flavor.
+
+  Note that the following plugins are not available if using the new
+  gtk3 flavor:
+
+  * geany-plugin-debugger
+  * geany-plugin-devhelp
+  * geany-plugin-geanypy
+  * geany-plugin-multiterm
+  * geany-plugin-scope
+
+20181208:
+  AFFECTS: users of misc/openhab2
+  AUTHOR: netchild@FreeBSD.org
+
+  If you upgrade from a previous version, make a backup of
+       /var/db/openhab2
+  and run
+       %%PREFIX%%/libexec/openhab2/runtime/bin/update.freebsd
+
+  Config specific info (changes from 2.2.0 to 2.3.0):
+  Nest Binding: The 'camera' Thing Type now has channel groups.
+                Add 'camera#' before the channel ID in the channel UID of
+                existing camera channels. The 'time_to_target_mins' channel
+                of the 'thermostat' Thing Type is renamed to 'time_to_target'
+  Oceanic Binding: The 'softener' Thing Type no longer exists and is replaced
+                   by the 'serial' and 'ethernet' Thing Types
+  Yamaha Receiver Binding: The configuration parameter names now use lower
+                           camel case convention. Change 'HOST' to 'host',
+                           'PORT' to 'port' etc
+
+20181124:
+  AFFECTS: users of sysutils/munin-master, sysutils/munin-node, www/owncloud, mail/mailman, net/ntpa
+  AUTHOR: woodsb02@FreeBSD.org
+
+  The newsyslog.conf(5) filename installed by the port has been changed:
+  OLD: ${PREFIX}/etc/newsyslog.conf.d/${PORTNAME}
+  NEW: ${PREFIX}/etc/newsyslog.conf.d/${PORTNAME}.conf
+
+  Any file found at the old location will be automatically moved to the new
+  location. This will ensure log rotation will continue to work after change
+  r340318 to FreeBSD base, where the default newsyslog configuration now only
+  includes filenames that end with '.conf' and do not begin with '.'.
+
+  If you use provisioning/configuration management tools to create or edit this
+  file, you will need to change their configuration to use the new filename.
+
+20181111
+  AFFECTS: users of graphics/mesa-libs
+  AUTHOR: jbeich@FreeBSD.org
+
+  Wayland support has been enabled in ports where it doesn't exclude
+  X11 support in order to make the binary packages usable with Wayland
+  compositors. If you get strange build failures re-run "make config"
+  to pick up the new defaults. If the extra dependencies are not
+  desired add the following to make.conf:
+
+    OPTIONS_UNSET += WAYLAND
+
+20181109
+  AFFECTS: users of security/ossec-hids-server
+  AUTHOR: dominik.lisiak@bemsoft.pl
+
+  The "ossechids_enable" rc variable has been renamed to "ossec_hids_enable".
+
+  If using database output, you need to recreate database using new schema
+  provided in /usr/local/share/doc/ossec-hids.
+
+20181109
+  AFFECTS: users of security/ossec-hids-local
+  AUTHOR: dominik.lisiak@bemsoft.pl
+
+  The "ossechids_enable" rc variable has been renamed to "ossec_hids_enable".
+
+  If using database output, you need to recreate database using new schema
+  provided in /usr/local/share/doc/ossec-hids.
+
+20181109
+  AFFECTS: users of security/ossec-hids-client
+  AUTHOR: dominik.lisiak@bemsoft.pl
+
+  The ossec-hids-client port has been renamed to ossec-hids-agent.
+  Portmaster users will need to run this command:
+
+  portmaster -o security/ossec-hids-agent security/ossec-hids-client
+
+  If the switch doesn't happen automatically for you, just delete the
+  ossec-hids-client package and install ossec-hids-agent.
+
+  The "ossechids_enable" rc variable has been renamed to "ossec_hids_enable".
+
+20181104:
+  AFFECTS: users of sysutils/ansible*
+  AUTHOR: lifanov@FreeBSD.org
+
+  Default Ansible configuration location changed to LOCALBASE/etc/ansible
+  instead of a per-flavor directory. If you use system-wide Ansible
+  configuration, please migrate from a flavored directory to a common
+  one:
+
+  # mv /usr/local/etc/py27-ansible /usr/local/etc/ansible
+
+20181031:
+  AFFECTS: users of www/node
+  AUTHOR: bhughes@FreeBSD.org
+
+  The www/node port has been updated to Node.js v11.0.0, the latest
+  upstream release. A new port, www/node10, has been created for the
+  v10.x LTS branch. Users wanting to stay on v10.x can replace www/node
+  with www/node8 with one of the following commands:
+
+  # pkg install www/node10
+    or
+  # portmaster -o www/node10 www/node
+    or
+  # portupgrade -o www/node10 www/node
+
+20181022:
+  AFFECTS: users of lang/php71
+  AUTHOR: joneum@FreeBSD.org
+
+  The default version of PHP has been switched from 7.1 to 7.2.
+
+  If you use binary packages you should make a list of php packages
+  before running 'pkg upgrade':
+
+  # pkg info php7\* > ~/installed-php-ports-list
+
+  After the upgrade, check with such list if all your php extensions
+  are still installed, and reinstall them if needed.
+
+  If you use mod_php71 you need to deinstall it and install mod_php72.
+
+20181020:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 2.8 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies. Poudriere and pkg handle this correctly,
+  portmaster and portupgrade users can use the following to rebuild all
+  dependent ports.
+
+  Portmaster users:
+      portmaster -r libressl
+  Portupgrade users:
+      portupgrade -fr security/libressl
+
+20181018:
+  AFFECTS: users of security/hitch
+  AUTHOR: zi@FreeBSD.org
+
+  Hitch has been updated to run as the hitch user/group, instead of the
+  previous default of nobody/nobody.  You should review your hitch
+  configuration to ensure that everything has been updated to reflect
+  this change.
+
+20181014:
+  AFFECTS: users of sysutils/ansible
+  AUTHOR: lifanov@FreeBSD.org
+
+  Ansible has been updated to 2.7.0. Please follow the porting guide
+  to update the rulesets:
+
+  https://docs.ansible.com/ansible/devel/porting_guides/porting_guide_2.7.html
+
+  If you wish to stay with 2.6 version, you can switch
+  to new sysutils/ansible2.6 port, which tracks stable 2.6 branch:
+
+  # pkg set -n ansible:ansible26
+
+20181010:
+  AFFECTS: users of mail/courier-imap and other courier ports
+  AUTHOR: madpilot@FreeBSD.org
+
+  Courier-IMAP 5.0.0 added IMAP UTF8 support, and converted maildir
+  folders' names to Unicode.
+
+  Updating an existing system to Courier-IMAP 5.0, and later,
+  requires a manual one-time conversion of all existing maildirs
+  using the maildirmake command. See the maildirmake(1) manual page
+  for more information.
+
+  All other courier ports accessing maildirs also need to be updated
+  at the same time.
+
+20181009:
+  AFFECTS: users of devel/pecl-xdebug*
+  AUTHOR: pizzamig@FreeBSD.org
+
+  xdebug 2.6.1 (devel/pecl-xdebug) is the new default version and it supports
+  PHP from 7.0 to 7.2 included.
+  If you're using PHP 5.6, the previous compatible xdebug version is still
+  available in devel/pecl-xdebug25
+  If you're using PHP 7.3, the only compatible xdebug version is available
+  in devel/pecl-xdebug-devel
+
 20180930:
   AFFECTS: users of DRM components
   AUTHOR: jmd@FreeBSD.org
@@ -82,7 +430,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: net-mgmt/librenms
   AUTHOR: dvl@FreeBSD.org
 
-  As of version 1.42, to conform with man hier, logs and rrd files have 
+  As of version 1.42, to conform with man hier, logs and rrd files have
   relocated outside the WWW directory. When upgrading from < 1.42 to more
   recent versions, the following steps are required.
 
@@ -128,7 +476,7 @@ you update your ports collection, before attempting any port upgrades.
    > y
 
   Application key [base64:P62La9V........qw=] set successfully.
- 
+
 
 20180901:
   AFFECTS: users of samba46
@@ -176,7 +524,7 @@ you update your ports collection, before attempting any port upgrades.
   datatype per default. To retain support for the XML datatype you should build
   the port and check the XML option in the option dialog. The reason for this
   is the bad security reputation of libxml2.
- 
+
 20180806:
   AFFECTS: www/tt-rss
   AUTHOR: thierry@FreeBSD.org
@@ -263,9 +611,9 @@ you update your ports collection, before attempting any port upgrades.
   escalation by allowing an unprivileged user to connect to the console and
   execute Lua code as the dnsdist user. We therefore decided to refuse any
   connection to the console until a key has been set, so please check that
-  you do set a key before upgrading if you use the console.  
+  you do set a key before upgrading if you use the console.
 
-  For further details read: 
+  For further details read:
   https://blog.powerdns.com/2018/07/10/dnsdist-1-3-2-released/
 
 20180704:
@@ -499,7 +847,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of databases/pecl-redis
   AUTHOR: daniel@blodan.se
 
-  pecl-redis 4.0.0 breaks backwards compatibility, users 
+  pecl-redis 4.0.0 breaks backwards compatibility, users
   not aware if you are using the changed functionality or not
   should swap to databases/pecl-redis3
 
@@ -838,9 +1186,9 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of x11-toolkits/kf5-kirigami2 and x11/kf5-plasma-framework
   AUTHOR: kde@FreeBSD.org
 
-  Files that were previously installed by kf5-kirigami2 are now installed 
+  Files that were previously installed by kf5-kirigami2 are now installed
   by kf5-plasma-framework. This can lead to a conflict during the upgrade
-  of the packages. 
+  of the packages.
   It is recommended to first remove the package kf5-kirigami2.
 
 20180115:
@@ -919,7 +1267,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of net-im/ejabberd
   AUTHOR: ashish@FreeBSD.org
 
-  If you are building ejabberd 17.11 on a host, which already has an older 
+  If you are building ejabberd 17.11 on a host, which already has an older
   version of ejabberd installed, then build process will fail with "unknown type
   specifier" errors. As a workaround, please uninstall ejabberd before building
   ejabberd.
@@ -1144,7 +1492,7 @@ you update your ports collection, before attempting any port upgrades.
 
 20171107:
   AFFECTS: users of www/node
-  AUTHOR: bhughes@FreeBSD.org	
+  AUTHOR: bhughes@FreeBSD.org
 
   The www/node port has been updated to node.js v9.0.0, the latest
   upstream release. A new port, www/node8, has been created for the
@@ -1194,7 +1542,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: brnrd@FreeBSD.org
 
   The configuration of mod_rpaf2 has been heavily modified since version
-  0.6. Have a look at https://github.com/gnif/mod_rpaf/tree/v0.8.4 to 
+  0.6. Have a look at https://github.com/gnif/mod_rpaf/tree/v0.8.4 to
   determine what you need to change in your configuration.
 
 20171031:
@@ -1324,7 +1672,7 @@ you update your ports collection, before attempting any port upgrades.
 
   Users should delete the devel/cmake-modules package and then
   upgrade or reinstall devel/cmake.
- 
+
   All ports have been updated to depend only on CMake.
 
 20170904:
@@ -3158,7 +3506,7 @@ you update your ports collection, before attempting any port upgrades.
 
 20160525:
   AFFECTS: users of devel/qtcreator
-  AUTHOR: nolden@kde.org
+  AUTHOR: loise@kde.org
 
   QBS (Qt Build System) was previously shipped as part of qtcreator, now
   it is independently available as devel/qbs. However, on upgrading

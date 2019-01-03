@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	2.12.0
-PORTREVISION=	2
+PORTVERSION=	2.12.1
+PORTREVISION=	1
 CATEGORIES=	emulators
-MASTER_SITES=	http://wiki.qemu.org/download/
+MASTER_SITES=	https://download.qemu.org/
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
 MAINTAINER?=	bofh@FreeBSD.org
@@ -20,7 +20,7 @@ LIB_DEPENDS?=	libnettle.so:security/nettle \
 		libfreetype.so:print/freetype2
 
 HAS_CONFIGURE=	yes
-USES?=		cpe gmake pkgconfig bison perl5 python:2.7,build tar:bzip2
+USES?=		cpe gmake pkgconfig bison perl5 python:2.7,build tar:xz
 USE_PERL5=	build
 MAKE_ENV+=	BSD_MAKE="${MAKE}" V=1
 .if !defined(PKGNAMESUFFIX) || ${PKGNAMESUFFIX} != "-utils"
@@ -92,7 +92,6 @@ CONFIGURE_ARGS?=--localstatedir=/var --extra-ldflags=-L\"/usr/lib\" \
 		--disable-linux-user --disable-linux-aio --disable-xen \
 		--enable-debug-info --python=${PYTHON_CMD} \
 		--extra-cflags=-I${WRKSRC}\ -I${LOCALBASE}/include\ -DPREFIX=\\\"\"${PREFIX}\\\"\"
-MAKE_JOBS_UNSAFE=yes
 
 .include <bsd.port.options.mk>
 
@@ -116,12 +115,7 @@ MAKE_ARGS+=	ARCH=ppc64
 CONFIGURE_ARGS+=	--sparc_cpu=v9
 .endif
 
-# clang in freebsd 10 is unable to assemble linuxboot_dma.bin
-.if (${OSVERSION} < 1100000)
-PLIST_SUB+=	LINUXBOOT_DMA="@comment "
-.else
 PLIST_SUB+=	LINUXBOOT_DMA=""
-.endif
 
 # -lprocstat actually only _needs_ -lelf after r249666 or r250870 (MFC)
 # but it shouldn't matter much
@@ -144,15 +138,6 @@ post-patch:
 	@${REINPLACE_CMD} -E \
 		-e "1s|^(#! )/usr/bin/perl|\1${PERL}|" \
 		${WRKSRC}/scripts/texi2pod.pl
-# clang in freebsd 10 is unable to assemble linuxboot_dma.bin
-.if (${OSVERSION} < 1100000)
-	@${REINPLACE_CMD} -E \
-		-e 's|linuxboot_dma.bin||' \
-		${WRKSRC}/pc-bios/optionrom/Makefile
-	@${REINPLACE_CMD} -E \
-		-e 's|linuxboot_dma.bin||' \
-		${WRKSRC}/Makefile
-.endif
 
 post-patch-CDROM_DMA-off:
 	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/include/hw/ide/internal.h

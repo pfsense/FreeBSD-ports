@@ -3,7 +3,7 @@
 
 PORTNAME=	photivo
 PORTVERSION=	0.0.2015.03.21
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics
 MASTER_SITES=	https://storage.googleapis.com/google-code-archive-source/v2/code.google.com/${PORTNAME}/
 DISTNAME=	source-archive
@@ -36,6 +36,8 @@ qt4_PKGNAMESUFFIX=	-qt4
 qt5_CONFLICTS_INSTALL=	${PORTNAME}-qt4
 
 .if ${FLAVOR:U} == qt4
+DEPRECATED=	Qt4 has been EOL since december 2015
+EXPIRATION_DATE=2019-03-15
 USES+=		qt:4
 USE_QT=		qmake_build moc_build rcc_build uic_build corelib gui network
 CMAKE_ON=	FORCE_QT4

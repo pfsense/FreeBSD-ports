@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stockfish
-DISTVERSION=	9
+DISTVERSION=	10
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	games
 MASTER_SITES=	http://stockfish.s3.amazonaws.com/
@@ -24,8 +24,10 @@ USES=		compiler:c++11-lang gmake zip
 NO_WRKSUBDIR=	yes
 WRKSRC_SUBDIR=	src
 MYARCH=		${ARCH}
-MYCC=		${COMPILER_TYPE}
+MYCC=		${CHOSEN_COMPILER_TYPE}
 TGTBLD=		build
+
+LDFLAGS+=	-fuse-ld=lld
 
 PLIST_FILES=	bin/stockfish
 PORTDOCS=	Readme.md

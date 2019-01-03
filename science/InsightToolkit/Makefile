@@ -3,7 +3,7 @@
 
 PORTNAME=	InsightToolkit
 PORTVERSION=	4.13.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	science biology
 MASTER_SITES=	SF/itk/itk/${ITK_VER}
 
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libgdcmCommon.so:devel/gdcm \
 		libsz.so:science/szip \
 		libtiff.so:graphics/tiff
 
-USES=		cmake:outsource jpeg
+USES=		cmake compiler:c11 jpeg
 CMAKE_ARGS+=	-DBUILD_SHARED_LIBS:BOOL=ON \
 		-DITK_USE_KWSTYLE:BOOL=OFF \
 		-DITK_USE_SYSTEM_LIBRARIES:BOOL=ON \

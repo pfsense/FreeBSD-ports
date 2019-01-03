@@ -3,7 +3,7 @@
 
 PORTNAME=	io
 PORTVERSION=	2017.09.06
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang
 
 MAINTAINER=	gahr@FreeBSD.org
@@ -17,7 +17,7 @@ BROKEN_armv6=		fails to compile: ucontext.h: expected parameter declarator
 BROKEN_armv7=		fails to compile: Coro.c:392:2: no member named 'arm_r0' in 'mcontext_t'
 BROKEN_powerpc64=	fails to build: unrecognized command line option -msse2
 
-USES=		cmake:outsource,noninja compiler:c11 ssl
+USES=		cmake:noninja compiler:c11 ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	stevedekorte

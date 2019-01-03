@@ -3,7 +3,7 @@
 
 PORTNAME=	elmerfem
 PORTVERSION=	8.3.20170524
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	cad science
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,14 +11,16 @@ COMMENT=	ELMER FEM package
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libparpack.so:math/arpack-ng-mpich \
+BROKEN=		fails to build
+
+LIB_DEPENDS=	libparpack.so:math/arpack-ng \
 		libmpich.so:net/mpich
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ElmerCSC
 GH_TAGNAME=	release-8.3
 
-USES=		blaslapack:netlib cmake:outsource fortran gmake tcl
+USES=		blaslapack:netlib cmake fortran gmake tcl
 
 USE_LDCONFIG=	${PREFIX}/lib/elmersolver
 ALL_TARGET=	# empty

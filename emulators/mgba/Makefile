@@ -2,7 +2,7 @@
 
 PORTNAME=	mgba
 DISTVERSION=	0.6.1
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	emulators
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -21,7 +21,7 @@ LICENSE_FILE_MPL20=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 		libpng.so:graphics/png
 
-USES=		cmake:outsource compiler:c++11-lang localbase:ldflags pkgconfig sqlite:3
+USES=		cmake compiler:c++11-lang localbase:ldflags pkgconfig sqlite:3
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mgba-emu
@@ -59,8 +59,8 @@ FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 			libswscale.so:multimedia/ffmpeg
 
 MAGICK_CMAKE_BOOL=	USE_MAGICK
-MAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick \
-			libMagickCore-6.so:graphics/ImageMagick
+MAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6 \
+			libMagickCore-6.so:graphics/ImageMagick6
 
 QT5_CMAKE_BOOL=	BUILD_QT
 QT5_USE=	qt=qmake_build,buildtools_build,core,gui,widgets,network,opengl,multimedia

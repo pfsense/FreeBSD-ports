@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fcitx
-PORTVERSION=	4.2.9.1
-PORTREVISION=	4
+PORTVERSION=	4.2.9.6
+PORTREVISION=	1
 CATEGORIES=	chinese x11
 MASTER_SITES=	http://download.fcitx-im.org/fcitx/:fcitx \
 		http://download.fcitx-im.org/data/:data
@@ -21,14 +21,18 @@ COMMENT=	Flexible Input Method Framework
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
+BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
+		bash:shells/bash \
+		${LOCALBASE}/libdata/pkgconfig/xkeyboard-config.pc:x11/xkeyboard-config
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libdbus-1.so:devel/dbus \
 		libXfixes.so:x11/libXfixes \
 		libXinerama.so:x11/libXinerama \
 		libXrender.so:x11/libXrender \
-		libxkbcommon.so:x11/libxkbcommon
-RUN_DEPENDS=	xdg-open:devel/xdg-utils
+		libxkbcommon.so:x11/libxkbcommon \
+		libuuid.so:misc/e2fsprogs-libuuid
+RUN_DEPENDS=	xdg-open:devel/xdg-utils \
+		xkeyboard-config>=0:x11/xkeyboard-config
 
 SUB_FILES=	pkg-message
 SUB_LIST+=	PORTSDIR=${PORTSDIR}
@@ -39,13 +43,13 @@ USE_GNOME=	pango intltool libxml2 introspection
 USE_KDE=	ecm
 USE_XORG=	x11 xext xkbfile sm ice
 USE_LDCONFIG=	yes
-USES=		qt:4 tar:xz cmake:noninja desktop-file-utils \
+USES=		compiler:c++11-lang gnome qt:4 tar:xz cmake:noninja desktop-file-utils \
 		gettext-tools:build,run gettext-runtime iconv:wchar_t \
-		kde:5 pkgconfig shared-mime-info
+		kde:5 pkgconfig shared-mime-info compiler:c++14-lang
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	GTK2 GTK3 QT4 OPENCC TPUNC DOCS
-OPTIONS_DEFAULT=GTK2 GTK3 QT4
+OPTIONS_DEFAULT=GTK2 GTK3
 OPTIONS_SUB=	yes
 
 GTK2_DESC=	Enable Gtk2 IM module
@@ -87,6 +91,8 @@ SUB_LIST+=	GTK3_IM=xim
 .endif
 
 .if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 USES+=		qt:4
 USE_QT+=		qmake_build moc_build rcc_build uic_build dbus gui inputmethods corelib
 USE_LDCONFIG+=	${PREFIX}/lib/fcitx/qt

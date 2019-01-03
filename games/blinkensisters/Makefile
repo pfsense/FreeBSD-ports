@@ -3,7 +3,7 @@
 
 PORTNAME=	blinkensisters
 PORTVERSION=	0.5.3
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Blinkensisters%20-%20Lost%20Pixels/LostPixels%20${PORTVERSION}
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/DOC/LICENSE
 
 BROKEN_sparc64=	does not compile on sparc64
 
-USES=		cmake compiler:c++11-lang localbase perl5 # actually, old gcc fails in theora.h
+USES=		cmake:insource compiler:c++11-lang localbase perl5 # actually, old gcc fails in theora.h
 USE_SDL=	sdl image ttf
 USE_PERL5=	build
 
