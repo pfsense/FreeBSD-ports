@@ -3,11 +3,11 @@
  * suricata_post_install.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2017 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -142,42 +142,33 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	update_status(gettext("Saved settings detected...") . "\n");
 
 	/****************************************************************/
-	/* Do test and fix for duplicate UUIDs if this install was      */
-	/* impacted by the DUP (clone) bug that generated a duplicate   */
-	/* UUID for the cloned interface.  Also fix any duplicate       */
-	/* entries in ['rulesets'] for "dns-events.rules".              */
+	/* Add all the new built-in events rules to each configured     */
+	/* interface.                                                   */
 	/****************************************************************/
-
 	if (count($config['installedpackages']['suricata']['rule']) > 0) {
-		$uuids = array();
+
+		// Array of default events rules for Suricata
+		$builtin_rules = array( "app-layer-events.rules", "decoder-events.rules", "dnp3-events.rules", "dns-events.rules", "files.rules", "http-events.rules", "ipsec-events.rules", "kerberos-events.rules", 
+					"modbus-events.rules", "nfs-events.rules", "ntp-events.rules", "smb-events.rules", "smtp-events.rules", "stream-events.rules", "tls-events.rules" );
+
 		$suriconf = &$config['installedpackages']['suricata']['rule'];
 		foreach ($suriconf as &$suricatacfg) {
-			// Remove any duplicate ruleset names from earlier bug
 			$rulesets = explode("||", $suricatacfg['rulesets']);
+			foreach ($builtin_rules as $name) {
+				if (in_array($name, $rulesets)) {
+					continue;
+				}
+				else {
+					$rulesets[] = $name;
+				}
+			}
+			// Remove any duplicate ruleset names from earlier bug
 			$suricatacfg['rulesets'] = implode("||", array_keys(array_flip($rulesets)));
-
-			// Now check for and fix a duplicate UUID
-			$if_real = get_real_interface($suricatacfg['interface']);
-			if (!isset($uuids[$suricatacfg['uuid']])) {
-				$uuids[$suricatacfg['uuid']] = $if_real;
-				continue;
-			}
-			else {
-				// Found a duplicate UUID, so generate a
-				// new one for the affected interface.
-				$old_uuid = $suricatacfg['uuid'];
-				$new_uuid = suricata_generate_id();
-				if (file_exists("{$suricatalogdir}suricata_{$if_real}{$old_uuid}/"))
-					@rename("{$suricatalogdir}suricata_{$if_real}{$old_uuid}/", "{$suricatalogdir}suricata_{$if_real}{$new_uuid}/");
-				$suricatacfg['uuid'] = $new_uuid;
-				$uuids[$new_uuid] = $if_real;
-				log_error(gettext("[Suricata] updated UUID for interface " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " from {$old_uuid} to {$new_uuid}."));
-			}
 		}
-		unset($uuids, $rulesets);
+		unset($builtin_rules, $rulesets);
 	}
 	/****************************************************************/
-	/* End of duplicate UUID and "dns-events.rules" bug fix.        */
+	/* End of built-in events rules fix.                            */
 	/****************************************************************/
 
 	/* Do one-time settings migration for new version configuration */

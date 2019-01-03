@@ -560,7 +560,8 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['libhtp_policy']['item'][] = $default;
 
 			// Enable the basic default rules for the interface
-			$natent['rulesets'] = "decoder-events.rules||dns-events.rules||files.rules||http-events.rules||smtp-events.rules||stream-events.rules||tls-events.rules";
+			$natent['rulesets'] = "app-layer-events.rules||decoder-events.rules||dnp3-events.rules||dns-events.rules||files.rules||http-events.rules||ipsec-events.rules||kerberos-events.rules||" . 
+					      "modbus-events.rules||nfs-events.rules||ntp-events.rules||smb-events.rules||smtp-events.rules||stream-events.rules||tls-events.rules";
 
 			// Adding a new interface, so set flag to build new rules
 			$rebuild_rules = true;

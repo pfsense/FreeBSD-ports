@@ -3,11 +3,11 @@
  * suricata_check_for_rule_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2018 Bill Meeks
+ * Copyright (C) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +33,7 @@ global $g, $rebuild_rules;
 
 $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
+$suricata_rules_dir = SURICATA_RULES_DIR;
 $suri_eng_ver = filter_var(SURICATA_BIN_VERSION, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 $mounted_rw = FALSE;
 
@@ -398,7 +399,7 @@ if (is_dir("{$tmpfname}"))
 	rmdir_recursive("{$tmpfname}");
 
 /*  Make sure required suricatadirs exsist */
-safe_mkdir("{$suricatadir}rules");
+safe_mkdir("{$suricata_rules_dir}");
 safe_mkdir("{$tmpfname}");
 safe_mkdir("{$suricatalogdir}");
 
@@ -470,10 +471,10 @@ if ($emergingthreats == 'on') {
 		/* Remove the old Emerging Threats rules files */
 		$eto_prefix = ET_OPEN_FILE_PREFIX;
 		$etpro_prefix = ET_PRO_FILE_PREFIX;
-		unlink_if_exists("{$suricatadir}rules/{$eto_prefix}*.rules");
-		unlink_if_exists("{$suricatadir}rules/{$etpro_prefix}*.rules");
-		unlink_if_exists("{$suricatadir}rules/{$eto_prefix}*ips.txt");
-		unlink_if_exists("{$suricatadir}rules/{$etpro_prefix}*ips.txt");
+		unlink_if_exists("{$suricata_rules_dir}{$eto_prefix}*.rules");
+		unlink_if_exists("{$suricata_rules_dir}{$etpro_prefix}*.rules");
+		unlink_if_exists("{$suricata_rules_dir}{$eto_prefix}*ips.txt");
+		unlink_if_exists("{$suricata_rules_dir}{$etpro_prefix}*ips.txt");
 
 		// The code below renames ET files with a prefix, so we
 		// skip renaming the Suricata default events rule files
@@ -489,12 +490,12 @@ if ($emergingthreats == 'on') {
 		foreach ($files as $file) {
 			$newfile = basename($file);
 			if (in_array($newfile, $default_rules))
-				@copy($file, "{$suricatadir}rules/{$newfile}");
+				@copy($file, "{$suricata_rules_dir}{$newfile}");
 			else {
 				if (strpos($newfile, $prefix) === FALSE)
-					@copy($file, "{$suricatadir}rules/{$prefix}{$newfile}");
+					@copy($file, "{$suricata_rules_dir}{$prefix}{$newfile}");
 				else
-					@copy($file, "{$suricatadir}rules/{$newfile}");
+					@copy($file, "{$suricata_rules_dir}{$newfile}");
 			}
 		}
 		/* IP lists for Emerging Threats rules */
@@ -502,9 +503,9 @@ if ($emergingthreats == 'on') {
 		foreach ($files as $file) {
 			$newfile = basename($file);
 			if ($etpro == "on")
-				@copy($file, "{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "{$newfile}");
+				@copy($file, "{$suricata_rules_dir}" . ET_PRO_FILE_PREFIX . "{$newfile}");
 			else
-				@copy($file, "{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "{$newfile}");
+				@copy($file, "{$suricata_rules_dir}" . ET_OPEN_FILE_PREFIX . "{$newfile}");
 		}
                 /* base etc files for Emerging Threats rules */
 		foreach (array("classification.config", "reference.config", "gen-msg.map", "unicode.map") as $file) {
@@ -527,7 +528,7 @@ if ($snortdownload == 'on') {
 	if (file_exists("{$tmpfname}/{$snort_filename}")) {
 		/* Remove the old Snort rules files */
 		$vrt_prefix = VRT_FILE_PREFIX;
-		unlink_if_exists("{$suricatadir}rules/{$vrt_prefix}*.rules");
+		unlink_if_exists("{$suricata_rules_dir}{$vrt_prefix}*.rules");
 		suricata_update_status(gettext("Installing Snort rules..."));
 		error_log(gettext("\tExtracting and installing Snort rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 
@@ -537,14 +538,14 @@ if ($snortdownload == 'on') {
 		$files = glob("{$tmpfname}/snortrules/rules/*.rules");
 		foreach ($files as $file) {
 			$newfile = basename($file);
-			@copy($file, "{$suricatadir}rules/" . VRT_FILE_PREFIX . "{$newfile}");
+			@copy($file, "{$suricata_rules_dir}" . VRT_FILE_PREFIX . "{$newfile}");
 		}
 
 		/* IP lists */
 		$files = glob("{$tmpfname}/snortrules/rules/*.txt");
 		foreach ($files as $file) {
 			$newfile = basename($file);
-			@copy($file, "{$suricatadir}rules/{$newfile}");
+			@copy($file, "{$suricata_rules_dir}{$newfile}");
 		}
 		rmdir_recursive("{$tmpfname}/snortrules");
 
@@ -574,7 +575,7 @@ if ($snortcommunityrules == 'on') {
 		$files = glob("{$tmpfname}/community/community-rules/*.rules");
 		foreach ($files as $file) {
 			$newfile = basename($file);
-			@copy($file, "{$suricatadir}rules/" . GPL_FILE_PREFIX . "{$newfile}");
+			@copy($file, "{$suricata_rules_dir}" . GPL_FILE_PREFIX . "{$newfile}");
 		}
                 /* base etc files for Snort GPLv2 Community rules */
 		foreach (array("classification.config", "reference.config", "gen-msg.map", "unicode.map") as $file) {
