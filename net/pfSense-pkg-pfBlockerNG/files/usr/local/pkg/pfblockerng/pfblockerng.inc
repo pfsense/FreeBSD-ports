@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1863,7 +1863,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 			if ($logtype == 3) {
 				// Extras - MaxMind downloads
 				@rename("{$file_dwn}.raw", strstr("{$file_dwn}.raw", '.raw', TRUE));
-				exec("/usr/bin/gunzip -dfq {$file_dwn} {$pfb['geoipshare']}");
+				exec("/usr/bin/tar -xzf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
 				return TRUE;
 			}
 			else {
