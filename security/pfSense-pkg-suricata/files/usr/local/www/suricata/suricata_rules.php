@@ -3,11 +3,11 @@
  * suricata_rules.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -101,6 +101,7 @@ function add_title_attribute($tag, $title) {
 $if_real = get_real_interface($pconfig['interface']);
 $suricata_uuid = $a_rule[$id]['uuid'];
 $suricatacfgdir = "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}";
+$suricata_rules_dir = SURICATA_RULES_DIR;
 $snortdownload = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'];
 $emergingdownload = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'];
 $etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'];
@@ -174,11 +175,11 @@ if (empty($categories[0]) && ($currentruleset != "custom.rules") && ($currentrul
 }
 
 /* One last sanity check -- if the rules directory is empty, default to loading custom rules */
-$tmp = glob("{$suricatadir}rules/*.rules");
+$tmp = glob("{$suricata_rules_dir}*.rules");
 if (empty($tmp))
 	$currentruleset = "custom.rules";
 
-$ruledir = "{$suricatadir}rules";
+$ruledir = SURICATA_RULES_DIR;
 $rulefile = "{$ruledir}/{$currentruleset}";
 if ($currentruleset != 'custom.rules') {
 	// Read the currently selected rules file into our rules map array.

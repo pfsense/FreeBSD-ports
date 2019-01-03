@@ -311,6 +311,10 @@ app-layer:
       enabled: {$dcerpc_parser}
     dhcp:
       enabled: {$dhcp_parser}
+    dnp3:
+      enabled: yes
+      detection-ports:
+        dp: 20000
     dns:
       global-memcap: {$dns_global_memcap}
       state-memcap: {$dns_state_memcap}
@@ -334,6 +338,12 @@ app-layer:
       enabled: {$imap_parser}
     krb5:
       enabled: {$krb5_parser}
+    modbus:
+      enabled: yes
+      request-flood: 500
+      detection-ports:
+        dp: 502
+      stream-depth: 0
     msn:
       enabled: {$msn_parser}
     nfs:
