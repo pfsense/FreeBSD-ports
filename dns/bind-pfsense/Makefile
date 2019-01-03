@@ -3,7 +3,7 @@
 PKGNAMEPREFIX=	pfsense-
 
 # Define PORTREVISION in ${MASTERDIR}
-MASTERDIR=	${.CURDIR}/../../dns/bind911
+MASTERDIR=	${.CURDIR}/../../dns/bind912
 
 DESCR=		${.CURDIR}/pkg-descr
 PLIST=		${.CURDIR}/pkg-plist
