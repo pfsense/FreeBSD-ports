@@ -253,6 +253,14 @@ foreach ($rule as &$r) {
 	}
 
 	/***********************************************************/
+	/* Add new run mode value and default it to 'autofp'.      */
+	/***********************************************************/
+	if (empty($pconfig['runmode'])) {
+		$pconfig['runmode'] = "autofp";
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
 	/* Add new interface promisc mode value and default 'on'.  */
 	/***********************************************************/
 	if (empty($pconfig['intf_promisc_mode'])) {

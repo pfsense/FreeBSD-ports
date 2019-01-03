@@ -109,6 +109,8 @@ if (empty($pconfig['ips_mode']))
 	$pconfig['ips_mode'] = 'ips_mode_legacy';
 if (empty($pconfig['block_drops_only']))
 	$pconfig['block_drops_only'] = "off";
+if (empty($pconfig['runmode']))
+	$pconfig['runmode'] = "autofp";
 if (empty($pconfig['max_pending_packets']))
 	$pconfig['max_pending_packets'] = "1024";
 if (empty($pconfig['detect_eng_profile']))
@@ -354,6 +356,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['tracked_files_hash']) $natent['tracked_files_hash'] = $_POST['tracked_files_hash'];
 		if ($_POST['enable_file_store'] == "on") { $natent['enable_file_store'] = 'on'; }else{ $natent['enable_file_store'] = 'off'; }
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
+		if ($_POST['runmode']) $natent['runmode'] = $_POST['runmode']; else unset($natent['runmode']);
 		if ($_POST['max_pending_packets']) $natent['max_pending_packets'] = $_POST['max_pending_packets']; else unset($natent['max_pending_packets']);
 		if ($_POST['inspect_recursion_limit'] >= '0') $natent['inspect_recursion_limit'] = $_POST['inspect_recursion_limit']; else unset($natent['inspect_recursion_limit']);
 		if ($_POST['intf_snaplen'] > '0') $natent['intf_snaplen'] = $_POST['intf_snaplen']; else $natent['inspect_recursion_limit'] = "1518";
@@ -1265,7 +1268,14 @@ $modal->addInput(new Form_StaticText (
 
 $form->add($modal);
 
-$section = new Form_Section('Detection Engine Settings');
+$section = new Form_Section('Performance and Detection Engine Settings');
+$section->addInput(new Form_Select(
+	'runmode',
+	'Run Mode',
+	$pconfig['runmode'],
+	array('autofp' => 'AutoFP', 'workers' => 'Workers', 'single' => 'Single')
+))->setHelp('Choose a Suricata run mode setting. Default is "AutoFP" and is the recommended setting for most cases.  "Workers" uses multiple worker threads, each of which single-handedly processes the packets it acquires (i.e., each thread runs all thread modules). ' . 
+	    '"Single" uses only a single thread for all operations on a packet and is intended for use only in testing or development instances.');
 $section->addInput(new Form_Input(
 	'max_pending_packets',
 	'Max Pending Packets',

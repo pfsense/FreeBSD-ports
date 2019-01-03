@@ -123,7 +123,12 @@ if (!empty($suppress)) {
 else
 	@file_put_contents("{$suricatacfgdir}/threshold.config", "");
 
-// Add interface-specific detection engine settings
+// Add interface-specific performance and detection engine settings
+if (!empty($suricatacfg['runmode']))
+	$runmode = $suricatacfg['runmode'];
+else
+	$runmode = "autofp";
+
 if (!empty($suricatacfg['max_pending_packets']))
 	$max_pend_pkts = $suricatacfg['max_pending_packets'];
 else
