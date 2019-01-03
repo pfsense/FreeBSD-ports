@@ -12,8 +12,7 @@ COMMENT?=	Meta package to install pfSense required ports
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
-		bind-tools>=0:dns/bind-tools \
+RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		bsnmp-regex>=0:net-mgmt/bsnmp-regex \
 		bsnmp-ucd>=0:net-mgmt/bsnmp-ucd \
 		ca_root_nss>=0:security/ca_root_nss \
