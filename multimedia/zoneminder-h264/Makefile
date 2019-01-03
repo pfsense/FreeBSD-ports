@@ -2,13 +2,16 @@
 
 PORTNAME=	zoneminder-h264
 PORTVERSION=	1.30.20170222
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	multimedia
 
 MAINTAINER=	bsd@abinet.ru
 COMMENT=	Complete security camera solution, fully web based with image analysis, experimental h264 version
 
 LICENSE=	GPLv2
+
+DEPRECATED=	h264 feature was commited to main branch, please upgrade to www/zoneminder
+EXPIRATION_DATE= 2019-01-01
 
 CONFLICTS_INSTALL=	zoneminder
 
@@ -41,7 +44,7 @@ USE_GITHUB=	yes
 GH_TUPLE=	zoneminder:ZoneMinder:e723b6d \
 		FriendsOfCake:crud:c3976f1:crud
 
-USES=		cmake:noninja jpeg mysql perl5 php shebangfix ssl
+USES=		cmake:insource,noninja jpeg mysql perl5 php shebangfix ssl
 USE_RC_SUBR=	zoneminder
 USE_PHP=	json pdo_mysql session gd sockets ctype
 

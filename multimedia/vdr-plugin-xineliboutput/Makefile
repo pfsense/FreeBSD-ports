@@ -3,7 +3,7 @@
 
 PORTNAME=	vdr-plugin-xineliboutput
 PORTVERSION=	1.0.90s20120511
-PORTREVISION=	23
+PORTREVISION=	25
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/xineliboutput/files/xineliboutput/vdr-xineliboutput-${PORTVERSION}/:release \
 		LOCAL/nox:snapshot
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libxine.so:multimedia/libxine \
 		libvdpau.so:multimedia/libvdpau
 
 PATCH_STRIP=	-p1
-USES=		pkgconfig tar:bzip2
+USES=		compiler:c++11-lang pkgconfig tar:bzip2
 USE_XORG=	xrandr xrender
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--cc="${CC}" --cxx="${CXX}" --add-cflags=-I${VDRDIR}

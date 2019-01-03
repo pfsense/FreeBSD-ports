@@ -3,10 +3,15 @@
 
 PORTNAME=	scilab
 PORTVERSION=	5.5.2
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	math cad java
-MASTER_SITES=	http://www.scilab.org/download/${PORTVERSION}/
+MASTER_SITES=	https://www.scilab.org/download/${PORTVERSION}/
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
+
+LICENSE=	GPLv2 BSD3CLAUSE
+LICENSE_COMB=	dual
+LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
+LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/COPYING-BSD
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Scientific software package for numerical computations
@@ -17,13 +22,13 @@ LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 		libpcre.so:devel/pcre \
 		libcurl.so:ftp/curl \
 		libhdf5.so:science/hdf5 \
-		libarpack.so:math/arpack \
+		libarpack.so:math/arpack-ng \
 		libfftw3.so:math/fftw3 \
 		libmatio.so:math/matio \
 		libamd.so:math/suitesparse
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		cpe desktop-file-utils fortran gettext gmake iconv \
+USES=		cpe desktop-file-utils fortran gettext gl gmake gnome iconv \
 		libtool ncurses pathfix pkgconfig shared-mime-info
 USE_CXXSTD=	gnu++98
 USE_LOCALE=	en_US.UTF-8

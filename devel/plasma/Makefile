@@ -2,6 +2,7 @@
 
 PORTNAME=	plasma
 DISTVERSION=	g20171121
+PORTREVISION=	1
 CATEGORIES=	devel python
 
 MAINTAINER=	freebsd_ports@k-worx.org
@@ -29,7 +30,7 @@ GH_ACCOUNT=	plasma-disassembler
 GH_PROJECT=	plasma
 GH_TAGNAME=	8ec3bb7
 
-USE_PYTHON=	distutils flavors autoplist
+USE_PYTHON=	distutils noflavors autoplist
 SHEBANG_FILES=	tests/analyzer/run.sh
 SHEBANG_GLOB=	*.py
 
@@ -38,6 +39,13 @@ OPTIONS_DEFAULT=	MEMMAP
 MEMMAP_DESC=	View memory maps (pulls in QT4)
 MEMMAP_USES=	pyqt:4
 MEMMAP_USE=	PYQT=gui_run
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MMEMMAP}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/setup.py

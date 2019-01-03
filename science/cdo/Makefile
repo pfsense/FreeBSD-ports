@@ -3,7 +3,7 @@
 
 PORTNAME=	cdo
 PORTVERSION=	1.9.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science
 MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/18264/ \
 		LOCAL/sunpoet
@@ -13,8 +13,6 @@ COMMENT=	Climate Data Operators
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_powerpc64=	fails to compile: remaplib.cc:1504:6: internal compiler error: in gsi_insert_seq_nodes_after, at gimple-iterator.c:283
 
 OPTIONS_DEFINE=	CGRIBEX HDF5 JASPER NETCDF PROJ SZIP UDUNITS UUID
 OPTIONS_DEFAULT=CGRIBEX HDF5 JASPER NETCDF PROJ SZIP UDUNITS UUID

@@ -3,7 +3,7 @@
 
 PORTNAME=	flang-clang
 DISTVERSION=	6.0-g20180904
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel lang
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -15,12 +15,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	amd64
-IGNORE_FreeBSD_10=	base compiler too old
 
 BUILD_DEPENDS=	llvm60>=0:devel/llvm60
 RUN_DEPENDS=	llvm60>=0:devel/llvm60
 
-USES=		cmake:outsource compiler:c++11-lib libedit tar:xz perl5 \
+USES=		cmake compiler:c++11-lib libedit tar:xz perl5 \
 		python shebangfix
 USE_LDCONFIG=	${PREFIX}/flang/lib
 USE_GNOME=	libxml2

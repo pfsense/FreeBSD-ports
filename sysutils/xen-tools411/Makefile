@@ -13,8 +13,6 @@ COMMENT=	Xen management tools
 LICENSE=	GPLv2 LGPL3
 LICENSE_COMB=	multi
 
-BROKEN_FreeBSD_10=	does not build
-
 LIB_DEPENDS=	libyajl.so:devel/yajl \
 		liblzo2.so:archivers/lzo2 \
 		libpixman-1.so:x11/pixman \
@@ -92,4 +90,3 @@ post-install:
 	${MKDIR} ${STAGEDIR}/var/run/xen
 
 .include <bsd.port.mk>
-

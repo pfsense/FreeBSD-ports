@@ -3,7 +3,7 @@
 
 PORTNAME=			${SAMBA4_BASENAME}48
 PORTVERSION=			${SAMBA4_VERSION}
-PORTREVISION=			1
+PORTREVISION=			0
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
@@ -22,12 +22,11 @@ EXTRA_PATCHES+=			${PATCHDIR}/0001-Zfs-provision-1.patch:-p1
 EXTRA_PATCHES+=			${PATCHDIR}/0001-Freenas-master-mdns-fixes-22.patch:-p1
 EXTRA_PATCHES+=			${PATCHDIR}/0001-audit.patch:-p1
 EXTRA_PATCHES+=			${PATCHDIR}/0001-bug-13175.patch:-p1
-EXTRA_PATCHES+=			${PATCHDIR}/0001-bug-13441-extra.patch:-p1
 EXTRA_PATCHES+=			${PATCHDIR}/0001-bug-228462.patch:-p1
 
 SAMBA4_BASENAME=		samba
 SAMBA4_PORTNAME=		${SAMBA4_BASENAME}4
-SAMBA4_VERSION=			4.8.5
+SAMBA4_VERSION=			4.8.7
 SAMBA4_DISTNAME=		${SAMBA4_BASENAME}-${SAMBA4_VERSION:S|.p|pre|:S|.r|rc|:S|.t|tp|:S|.a|alpha|}
 
 WRKSRC?=			${WRKDIR}/${DISTNAME}
@@ -157,14 +156,14 @@ SAMBA4_BUNDLED_LIBS+=		!libarchive
 BUILD_DEPENDS+=			libarchive>=3.1.2:archivers/libarchive
 RUN_DEPENDS+=			libarchive>=3.1.2:archivers/libarchive
 ### Bundled libraries
-#SAMBA4_BUNDLED_CMOCKA?=	no
-#SAMBA4_BUNDLED_TALLOC?=	no
-#SAMBA4_BUNDLED_TEVENT?=	no
-#SAMBA4_BUNDLED_TDB?=		no
-#SAMBA4_BUNDLED_LDB?=		yes
-#SAMBA4_LDB=			13
+SAMBA4_BUNDLED_CMOCKA?=		no
+SAMBA4_BUNDLED_TALLOC?=		no
+SAMBA4_BUNDLED_TEVENT?=		no
+SAMBA4_BUNDLED_TDB?=		no
+SAMBA4_BUNDLED_LDB?=		yes
+SAMBA4_LDB=			13
 # cmocka
-.if defined(SAMBA4_BUNDLED_CMOCKA)
+.if defined(SAMBA4_BUNDLED_CMOCKA) && ${SAMBA4_BUNDLED_CMOCKA} == yes
 SAMBA4_BUNDLED_LIBS+=		cmocka
 CONFLICTS+=			cmocka-1.*
 PLIST_SUB+=			SAMBA4_BUNDLED_CMOCKA=""
@@ -177,7 +176,7 @@ PLIST_SUB+=			SAMBA4_BUNDLED_CMOCKA="@comment "
 SUB_LIST+=			SAMBA4_BUNDLED_CMOCKA="@comment "
 .endif
 # talloc
-.if defined(SAMBA4_BUNDLED_TALLOC)
+.if defined(SAMBA4_BUNDLED_TALLOC) && ${SAMBA4_BUNDLED_TALLOC} == yes
 SAMBA4_BUNDLED_LIBS+=		talloc
 CONFLICTS+=			talloc-2.*
 PLIST_SUB+=			SAMBA4_BUNDLED_TALLOC=""
@@ -190,7 +189,7 @@ PLIST_SUB+=			SAMBA4_BUNDLED_TALLOC="@comment "
 SUB_LIST+=			SAMBA4_BUNDLED_TALLOC="@comment "
 .endif
 # tevent
-.if defined(SAMBA4_BUNDLED_TEVENT)
+.if defined(SAMBA4_BUNDLED_TEVENT) && ${SAMBA4_BUNDLED_TEVENT} == yes
 SAMBA4_BUNDLED_LIBS+=		tevent
 CONFLICTS+=			tevent-0.*
 PLIST_SUB+=			SAMBA4_BUNDLED_TEVENT=""
@@ -203,7 +202,7 @@ PLIST_SUB+=			SAMBA4_BUNDLED_TEVENT="@comment "
 SUB_LIST+=			SAMBA4_BUNDLED_TEVENT="@comment "
 .endif
 # tdb
-.if defined(SAMBA4_BUNDLED_TDB)
+.if defined(SAMBA4_BUNDLED_TDB) && ${SAMBA4_BUNDLED_TDB} == yes
 SAMBA4_BUNDLED_LIBS+=		tdb
 CONFLICTS+=			tdb-1.*
 PLIST_SUB+=			SAMBA4_BUNDLED_TDB=""
@@ -216,7 +215,7 @@ PLIST_SUB+=			SAMBA4_BUNDLED_TDB="@comment "
 SUB_LIST+=			SAMBA4_BUNDLED_TDB="@comment "
 .endif
 # ldb
-.if defined(SAMBA4_BUNDLED_LDB) || !defined(SAMBA4_LDB)
+.if (defined(SAMBA4_BUNDLED_LDB) && ${SAMBA4_BUNDLED_LDB} == yes) || !defined(SAMBA4_LDB)
 SAMBA4_BUNDLED_LDB=		yes
 SAMBA4_BUNDLED_LIBS+=		ldb
 CONFLICTS+=			ldb-1.* ldb1[23]-1.*
@@ -238,7 +237,9 @@ PLIST_SUB+=			SAMBA4_BUNDLED_LDB="@comment "
 SUB_LIST+=			SAMBA4_BUNDLED_LDB="@comment "
 .endif
 
-.if defined(SAMBA4_BUNDLED_TALLOC) || defined(SAMBA4_BUNDLED_TEVENT) || defined(SAMBA4_BUNDLED_TDB)
+.if (defined(SAMBA4_BUNDLED_TALLOC)  && ${SAMBA4_BUNDLED_TEVENT} == yes) \
+	|| (defined(SAMBA4_BUNDLED_TDB) && ${SAMBA4_BUNDLED_TDB} == yes) \
+	|| (defined(SAMBA4_BUNDLED_TEVENT) && ${SAMBA4_BUNDLED_TEVENT} == yes)
 SAMBA4_BUNDLED_LIBS+=		replace
 .endif
 # Don't use external libcom_err
@@ -343,7 +344,8 @@ LDAP_USE=			OPENLDAP=yes
 LDAP_VARS=			SAMBA4_MODULES+=idmap_ldap
 
 GSSAPI_MIT_CONFIGURE_ON=	--with-system-mitkrb5 ${GSSAPIBASEDIR} \
-				--with-system-mitkdc=${GSSAPIBASEDIR}/sbin/krb5kdc
+				--with-system-mitkdc=${GSSAPIBASEDIR}/sbin/krb5kdc \
+				--with-experimental-mit-ad-dc
 GSSAPI_MIT_USES=		gssapi:mit
 
 LIBZFS_CONFIGURE_WITH=		libzfs
@@ -383,7 +385,7 @@ SAMBA4_MODULES+=		idmap_ad idmap_rfc2307 nss-info_template nss-info_rfc2307 nss-
 .if ${PORT_OPTIONS:MDEVELOPER}
 SAMBA4_MODULES+=		auth_skel pdb_test gpext_security gpext_registry gpext_scripts perfcount_test \
 				vfs_fake_dfq vfs_skel_opaque vfs_skel_transparent vfs_shadow_copy_test vfs_fake_acls \
-				vfs_nfs4acl_xattr vfs_error_inject
+				vfs_nfs4acl_xattr vfs_error_inject vfs_delay_inject
 .endif
 
 .if defined(WANT_EXP_MODULES) && !empty(WANT_EXP_MODULES)
@@ -471,7 +473,7 @@ SUB_LIST+=			SAMBA4_PYTHON3="@comment "
 
 .if !defined(SAMBA4_SUBPORT)
 # Require llvm 4.0 and AMD64
-.if ${PORT_OPTIONS:MAESNI} && ${ARCH} == "amd64" && ${OSVERSION} >= 1100511
+.if ${PORT_OPTIONS:MAESNI} && ${ARCH} == "amd64"
 CONFIGURE_ARGS+=		--accel-aes=intelaesni
 PLIST_FILES+=			lib/samba4/private/libaesni-intel-samba4.so
 .else

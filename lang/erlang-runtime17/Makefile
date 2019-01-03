@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	17.5.6.9
-PORTREVISION=	8
+PORTVERSION=	17.5.6.10
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg			\
 		http://erlang.stacken.kth.se/download/:erlangorg		\
@@ -23,7 +22,8 @@ PATCHFILES=	patch-otp-17.5.1 patch-otp-17.5.2 patch-otp-17.5.3 \
 		patch-otp-17.5.4 patch-otp-17.5.5 patch-otp-17.5.6 \
 		patch-otp-17.5.6.1 patch-otp-17.5.6.2 patch-otp-17.5.6.3 \
 		patch-otp-17.5.6.4 patch-otp-17.5.6.5 patch-otp-17.5.6.6 \
-		patch-otp-17.5.6.7 patch-otp-17.5.6.8 patch-otp-17.5.6.9
+		patch-otp-17.5.6.7 patch-otp-17.5.6.8 patch-otp-17.5.6.9 \
+		patch-otp-17.5.6.10
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Functional programming language from Ericsson
@@ -58,14 +58,13 @@ OPTIONS_EXCLUDE+=	DTRACE
 .endif
 
 OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
-OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 # ld(1) fails to link probes: missing __dtrace_erlang___* symbols
 OPTIONS_EXCLUDE_aarch64=	DTRACE
 OPTIONS_EXCLUDE_armv6=		DTRACE
 OPTIONS_EXCLUDE_armv7=		DTRACE
 OPTIONS_EXCLUDE_i386=		DTRACE
 
-OPENSSL_VARS=	BROKEN_SSL=openssl-devel openssl111
+OPENSSL_VARS=	BROKEN_SSL=openssl111
 
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -107,7 +106,7 @@ BROKEN=	Does not support OpenSSL 1.1, use Erlang 19+
 .  endif
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1100000
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-DMAP_NORESERVE=0
 .endif
 
@@ -153,4 +152,4 @@ post-stage:
 	@cd ${STAGEDIR}${PREFIX}; ${FIND} lib/${ERLANG_LIB}/* -type f -o -type l \
 		| ${SORT} >> ${TMPPLIST}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

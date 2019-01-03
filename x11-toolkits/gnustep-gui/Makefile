@@ -3,7 +3,7 @@
 
 PORTNAME=	gnustep-gui
 PORTVERSION=	0.25.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11-toolkits gnustep
 MASTER_SITES=	GNUSTEP/core
 
@@ -12,8 +12,6 @@ COMMENT=	GNUstep GUI library
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
-
-BROKEN_powerpc64=	fails to build: Illegal instruction (core dumped)
 
 LIB_DEPENDS+=	libtiff.so:graphics/tiff
 LIB_DEPENDS+=	libpng.so:graphics/png

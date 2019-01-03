@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	ompl
-DISTVERSION=	1.4.0
-PORTREVISION=	1
+DISTVERSION=	1.4.1
 DISTVERSIONSUFFIX=	-Source
+PORTREVISION=	3
 CATEGORIES=	misc comms
 MASTER_SITES=	http://cdn.bitbucket.org/${PORTNAME}/${PORTNAME}/downloads/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
-USES=		cmake:outsource eigen:3 pkgconfig zip
+USES=		cmake eigen:3 pkgconfig zip
 USE_LDCONFIG=	yes
 
 CMAKE_OFF=	OMPL_REGISTRATION OMPL_BUILD_TESTS OMPL_BUILD_DEMOS

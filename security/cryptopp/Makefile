@@ -3,6 +3,7 @@
 
 PORTNAME=	cryptopp
 PORTVERSION=	7.0.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://www.cryptopp.com/
 DISTNAME=	cryptopp${PORTVERSION:S/.//g}
@@ -15,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/License.txt
 
 BROKEN_powerpc=	does not compile; unrecognized C++ options
 
-USES=		cpe gmake zip
+USES=		cpe compiler:c++11-lang gmake zip
 USE_LDCONFIG=	yes
 CPE_PRODUCT=	crypto++
 CPE_VENDOR=	cryptopp

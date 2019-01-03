@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	plasma-desktop
-DISTVERSION=	${KDE_PLASMA_VERSION}
-PORTREVISION=	3
+DISTVERSION=	${KDE_PLASMA_VERSION}.1
 CATEGORIES=	x11 kde kde-plasma
 
 MAINTAINER=	kde@FreeBSD.org
@@ -22,7 +21,7 @@ RUN_DEPENDS=	iso-codes>=0:misc/iso-codes \
 BUILD_DEPENDS=	xf86-input-evdev>0:x11-drivers/xf86-input-evdev \
 		xf86-input-libinput>0:x11-drivers/xf86-input-libinput
 
-USES=		cmake:outsource compiler:c++11-lib cpe desktop-file-utils \
+USES=		cmake compiler:c++11-lib cpe desktop-file-utils \
 		gettext kde:5 pkgconfig qt:5 tar:xz
 USE_GNOME=	glib20
 USE_KDE=	activities activities-stats archive attica auth baloo \
@@ -35,14 +34,14 @@ USE_KDE=	activities activities-stats archive attica auth baloo \
 		plasma-workspace runner service solid \
 		sonnet textwidgets unitconversion wallet \
 		widgetsaddons windowsystem xmlgui
-USE_KDE+=	drkonqi_run infocenter_run kmenuedit_run ksysguard_run \
+USE_KDE+=	drkonqi_run infocenter_run kde-cli-tools_run kmenuedit_run ksysguard_run \
 		polkit-kde-agent-1_run systemsettings_run
-USE_QT=		concurrent core dbus gui network phonon4 printsupport qml \
-		quick sql svg widgets x11extras xml \
+USE_QT=		concurrent core dbus declarative gui network phonon4 printsupport \
+		sql svg widgets x11extras xml \
 		buildtools_build qmake_build
 USE_XORG=	ice sm x11 xcb xcursor xext xfixes xft xi xrender
 
-OPTIONS_DEFINE=	PULSEAUDIO SYNAPTICS
+OPTIONS_DEFINE=	SYNAPTICS
 OPTIONS_SUB=	yes
 
 OPTIONS_GROUP=		IM
@@ -50,9 +49,6 @@ OPTIONS_GROUP_IM=	IBUS SCIM
 IM_DESC=		Input Method Support
 
 OPTIONS_DEFAULT=	SYNAPTICS
-
-PULSEAUDIO_CMAKE_BOOL=		WANT_PULSEAUDIO
-PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 
 SYNAPTICS_DESC=			Build touchpad KCM
 SYNAPTICS_BUILD_DEPENDS=	xf86-input-synaptics>0:x11-drivers/xf86-input-synaptics

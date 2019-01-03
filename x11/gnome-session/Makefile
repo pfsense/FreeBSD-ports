@@ -3,6 +3,7 @@
 
 PORTNAME=	gnome-session
 PORTVERSION=	3.28.1
+PORTREVISION=	2
 CATEGORIES=	x11 gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -15,13 +16,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	xmlto:textproc/xmlto
 LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
+		libdbus-glib-1.so:devel/dbus-glib \
 		libepoxy.so:graphics/libepoxy
 RUN_DEPENDS=	${LOCALBASE}/sbin/console-kit-daemon:sysutils/consolekit2 \
 		dbus-daemon:devel/dbus
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gnome localbase:ldflags meson pkgconfig python:3.6+,build tar:xz
+USES=		compiler:c11 gettext gnome localbase:ldflags meson pkgconfig \
+		python:3.6+,build tar:xz
 USE_GNOME=	gnomedesktop3 gtk30
 USE_XORG=	ice sm x11 xcomposite xtrans
 USE_GL=		egl gl glesv2

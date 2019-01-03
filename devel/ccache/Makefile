@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ccache
-PORTVERSION=	3.4.2
-PORTREVISION=	1
+#PORTVERSION must be set later due to depending on PORT_OPTIONS.
+PORTREVISION=	0
 CATEGORIES=	devel
 MASTER_SITES=	https://www.samba.org/ftp/ccache/ \
 		LOCAL/bdrewery
@@ -67,12 +67,20 @@ STATIC_LDFLAGS=	-static
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMEMCACHED}
+PORTVERSION=	3.5.dev.20180926
 USE_GITHUB=	yes
-GH_TAGNAME=	dd9123d3bc0763ef7133330e20ca3e3409a08904
+GH_TAGNAME=	f7712082106bef085515f86ae47e7dbbd2a48b57
 MASTER_SITES=
 DISTINFO_FILE=	${MASTERDIR}/distinfo.memcached
+.if ${PORT_OPTIONS:MDOCS}
 BUILD_DEPENDS+=	${LOCALBASE}/bin/a2x:textproc/asciidoc
 ALL_TARGET=	all docs
+PLIST_FILES+=	man/man1/ccache.1.gz
+.endif
+.else
+PORTVERSION=	3.4.3
+# Only needed pre-3.5
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-configure.ac
 .endif
 
 .include <bsd.port.pre.mk>
@@ -123,7 +131,11 @@ post-build-TINDERBOX-on:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/ccache ${STAGEDIR}${PREFIX}/bin
+	# Memcached uses the 3.5 dev branch which requires asciidoc to generate
+	# ccache.1.
+.if !${PORT_OPTIONS:MMEMCACHED} || ${PORT_OPTIONS:MDOCS}
 	${INSTALL_MAN} ${WRKSRC}/doc/ccache.1 ${STAGEDIR}${PREFIX}/man/man1
+.endif
 	${MKDIR} ${STAGEDIR}${PREFIX}/${CCLINKDIR}/world
 	${INSTALL_SCRIPT} ${WRKDIR}/world-ccache \
 		${STAGEDIR}${PREFIX}/${CCLINKDIR}/world/ccache

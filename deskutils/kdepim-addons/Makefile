@@ -15,7 +15,7 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpgmepp.so:security/gpgme-cpp \
 		libqgpgme.so:security/gpgme-qt5
 
-USES=		cmake:outsource compiler:c++11-lib gettext grantlee:5 kde:5 \
+USES=		cmake compiler:c++11-lib gettext grantlee:5 kde:5 \
 		pkgconfig qt:5 tar:xz
 USE_KDE=	archive auth codecs completion config configwidgets coreaddons \
 		dbusaddons ecm i18n iconthemes itemmodels itemviews jobwidgets \
@@ -29,7 +29,7 @@ USE_KDE+=	akonadi akonadicalendar akonadicontacts akonadiimportwizard \
 		kdepim-apps-libs kitinerary kpkpass libkdepim libkleo libksieve mailcommon \
 		mailimporter mailtransport messagelib mime pimcommon \
 		pimtextedit tnef
-USE_QT=		core dbus gui location network printsupport qml quick testlib \
+USE_QT=		core dbus declarative gui location network printsupport testlib \
 		webchannel webengine widgets xml \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes

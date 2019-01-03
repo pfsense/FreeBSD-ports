@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tbb
-PORTVERSION=	2018.5
+PORTVERSION=	2019.1
 CATEGORIES=	devel
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -26,7 +26,8 @@ SUB_LIST=	prefix="${PREFIX}" \
 		version="${PORTVERSION}"
 
 OPTIONS_DEFINE=	DOCS
-PORTDOCS=	*
+DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen \
+		dot:graphics/graphviz
 
 USE_LDCONFIG=	yes
 ALL_TARGET=	default
@@ -47,6 +48,10 @@ post-patch:
 		-e '/^CPLUS =/s|^CPLUS =.*|CPLUS = ${CXX}|' \
 			${WRKSRC}/build/FreeBSD.${COMPILER_TYPE}.inc
 
+post-build-DOCS-on:
+	cd ${WRKSRC}; \
+		${MAKE_CMD} doxygen
+
 do-install:
 	cd ${WRKSRC}; \
 	${INSTALL_LIB} build/FreeBSD*release/libtbb.so \
@@ -58,11 +63,16 @@ do-install:
 	${LN} -sf libtbbmalloc.so.2 \
 		${STAGEDIR}${PREFIX}/lib/libtbbmalloc.so; \
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/tbb/; \
-	cd include/tbb/ && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include/tbb/
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC}/doc/html && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
+	cd include/tbb/ && \
+		${COPYTREE_SHARE} \
+			. ${STAGEDIR}${PREFIX}/include/tbb/ "! -name *\.html"
 
 post-install:
 	${INSTALL_DATA} ${WRKDIR}/tbb.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig
+
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/html && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

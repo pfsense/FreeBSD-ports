@@ -2,7 +2,7 @@
 
 PORTNAME=	colmap
 DISTVERSION=	3.5
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -85,14 +85,5 @@ post-install:
 post-install-DOCS-on:
 	(cd ${WRKSRC}/doc/_build/html && ${COPYTREE_SHARE} \
 		"${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
-
-.include <bsd.port.options.mk>
-
-post-patch:	sincos-arm
-sincos-arm:
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1101504 && ${MACHINE} == arm
-	@${REINPLACE_CMD} -e 's/-ffast-math/& -fno-unsafe-math-optimizations/' \
-		${WRKSRC}/lib/PoissonRecon/CMakeLists.txt
-.endif
 
 .include <bsd.port.mk>

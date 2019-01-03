@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	libxsmm
-DISTVERSION=	1.9
+DISTVERSION=	1.10
+PORTREVISION=	1
 CATEGORIES=	math science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 BROKEN_i386=	LIBXSMM is only supported on a 64-bit platform!
 
 BUILD_DEPENDS=	bash:shells/bash
+LIB_DEPENDS=	libomp.so:devel/openmp
 
 USES=		fortran gmake localbase:ldflags python:build shebangfix
 SHEBANG_GLOB=	*.sh

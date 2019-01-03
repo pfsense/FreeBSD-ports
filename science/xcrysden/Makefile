@@ -2,7 +2,7 @@
 
 PORTNAME=	xcrysden
 DISTVERSION=	1.5.60
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	science
 MASTER_SITES=	http://www.xcrysden.org/download/
 
@@ -15,11 +15,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libfftw3.so:math/fftw3
 RUN_DEPENDS=	bwidget>0:x11-toolkits/bwidget \
 		babel:science/openbabel \
-		convert:graphics/ImageMagick \
+		convert:graphics/ImageMagick6 \
 		ppmtompeg:graphics/netpbm \
 		xwd:x11/xwd
 
-USES=		fortran gmake localbase:ldflags tcl tk
+USES=		fortran gl gmake localbase:ldflags tcl tk
 USE_GL=		gl glu
 USE_XORG=	x11 xmu
 

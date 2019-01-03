@@ -3,6 +3,7 @@
 
 PORTNAME=	yaml-cpp
 PORTVERSION=	0.3.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	devel
 PKGNAMESUFFIX=	03
@@ -12,9 +13,7 @@ COMMENT=	YAML parser and emitter in C++ matching the YAML 1.2 spec
 
 LICENSE=	MIT
 
-BROKEN_powerpc64=	fails to build: ninja: build.ninja:386: bad $-escape (literal $ must be written as $$)
-
-USES=		cmake
+USES=		compiler:c++11-lang cmake
 USE_LDCONFIG=	yes
 CMAKE_ARGS+=	-DBUILD_SHARED_LIBS:BOOL=ON -DYAML_CPP_BUILD_TOOLS=0
 

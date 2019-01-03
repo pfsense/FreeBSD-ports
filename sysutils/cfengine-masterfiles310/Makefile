@@ -13,6 +13,9 @@ COMMENT=	cfengine sample policies for installations and upgrades
 
 LICENSE=	GPLv3
 
+DEPRECATED=		cfengine310 will retire at FreeBSD 11 EOL
+EXPIRATION_DATE=	2021-09-30
+
 CPE_VENDOR=	gnu
 
 CONFLICTS=	cfengine-masterfiles3[0-9]-* cfengine-masterfiles31[1-9]-*
@@ -32,6 +35,8 @@ USES=		cpe gmake python:build shebangfix
 HAS_CONFIGURE=	yes
 EXAMPLESDIR=	${PREFIX}/share/examples/cfengine-masterfiles
 CONFIGURE_ARGS=	--prefix=${EXAMPLESDIR}
-SHEBANG_FILES=	modules/packages/yum
+SHEBANG_FILES=	modules/packages/yum \
+		modules/packages/zypper
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

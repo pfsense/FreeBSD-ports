@@ -3,7 +3,7 @@
 
 PORTNAME=	MOOSE-neural-simulator
 DISTVERSION=	3.1.2
-PORTREVISION=	4
+PORTREVISION=	6
 DISTVERSIONSUFFIX=	-382-gc93d23a
 CATEGORIES=	science biology
 
@@ -12,6 +12,9 @@ COMMENT=	Multiphysics Object Oriented Simulation Environment
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENCE
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 LIB_DEPENDS=	libgsl.so:math/gsl \
 		libhdf5.so:science/hdf5 \
@@ -25,7 +28,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}pygraphviz>=0:graphics/py-pygraphviz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}suds-jurko>=0.4:net/py-suds-jurko@${PY_FLAVOR}
 
-USES=		cmake:outsource fortran gettext-runtime pyqt:4 python:2.7
+USES=		cmake fortran gettext-runtime pyqt:4 python:2.7
 USE_GITHUB=	yes
 GH_ACCOUNT=	BhallaLab
 GH_PROJECT=	moose

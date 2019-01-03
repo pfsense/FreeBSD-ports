@@ -2,7 +2,7 @@
 
 PORTNAME=	calligra
 DISTVERSION=	3.1.0
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	editors kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE/${PORTNAME}
@@ -36,7 +36,7 @@ LIB_DEPENDS=	libImath.so:graphics/ilmbase \
 BUILD_DEPENDS=	pstoedit:graphics/pstoedit
 RUN_DEPENDS=	pstoedit:graphics/pstoedit
 
-USES=		cmake:outsource cpe compiler:c++11-lib desktop-file-utils eigen:3 \
+USES=		cmake cpe compiler:c++11-lib desktop-file-utils eigen:3 \
 		gettext iconv:translit jpeg kde:5 localbase:ldflags perl5 pkgconfig \
 		qt:5 shared-mime-info sqlite tar:xz
 USE_KDE=	activities archive auth bookmarks codecs completion config \
@@ -47,9 +47,9 @@ USE_KDE=	activities archive auth bookmarks codecs completion config \
 		texteditor textwidgets threadweaver unitconversion wallet \
 		widgetsaddons windowsystem xmlgui \
 		calendarcore okular
-USE_QT=		buildtools_build core dbus gui network opengl \
-		phonon4 printsupport qmake_build qml \
-		quick script sql svg testlib webkit widgets x11extras xml
+USE_QT=		buildtools_build core dbus declarative gui network opengl \
+		phonon4 printsupport qmake_build \
+		script sql svg testlib webkit widgets x11extras xml
 USE_XORG=	ice sm x11 xext
 USE_LDCONFIG=	yes
 

@@ -2,6 +2,7 @@
 
 PORTNAME=	blazeiterative
 PORTVERSION=	g20180409
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +16,7 @@ BUILD_DEPENDS=	blaze>0:math/blaze \
 		openmp>0:devel/openmp
 RUN_DEPENDS=	blaze>0:math/blaze
 
-USES=		cmake:outsource compiler:c++14-lang fortran localbase:ldflags
+USES=		cmake compiler:c++14-lang fortran localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	tjolsen
 GH_PROJECT=	BlazeIterative

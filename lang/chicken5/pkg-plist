@@ -56,6 +56,7 @@ lib/chicken%%SUFFIX%%/9/types.db
 lib/libchicken%%SUFFIX%%.a
 lib/libchicken%%SUFFIX%%.so
 lib/libchicken%%SUFFIX%%.so.9
+man/man1/chicken-do%%SUFFIX%%.1.gz
 man/man1/chicken-install%%SUFFIX%%.1.gz
 man/man1/chicken-profile%%SUFFIX%%.1.gz
 man/man1/chicken-status%%SUFFIX%%.1.gz
@@ -66,6 +67,7 @@ man/man1/csi%%SUFFIX%%.1.gz
 %%FEATHERS%%man/man1/feathers%%SUFFIX%%.1.gz
 %%FEATHERS%%%%DATADIR%%/feathers.tcl
 %%DATADIR%%/setup.defaults
+%%PORTDOCS%%%%DOCSDIR%%/DEPRECATED
 %%PORTDOCS%%%%DOCSDIR%%/LICENSE
 %%PORTDOCS%%%%DOCSDIR%%/NEWS
 %%PORTDOCS%%%%DOCSDIR%%/README
@@ -130,6 +132,7 @@ man/man1/csi%%SUFFIX%%.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/manual/Module (chicken tcp).html
 %%PORTDOCS%%%%DOCSDIR%%/manual/Module (chicken time posix).html
 %%PORTDOCS%%%%DOCSDIR%%/manual/Module (chicken time).html
+%%PORTDOCS%%%%DOCSDIR%%/manual/Module (chicken type).html
 %%PORTDOCS%%%%DOCSDIR%%/manual/Module r4rs.html
 %%PORTDOCS%%%%DOCSDIR%%/manual/Module r5rs.html
 %%PORTDOCS%%%%DOCSDIR%%/manual/Module scheme.html

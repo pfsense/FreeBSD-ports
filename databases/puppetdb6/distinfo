@@ -1,3 +1,3 @@
-TIMESTAMP = 1537338682
-SHA256 (puppetdb-6.0.0.tar.gz) = c4821f6c6acb1e4250a36462cc7b51ffadc2d1510b9b42887b47c1bf75afa070
-SIZE (puppetdb-6.0.0.tar.gz) = 23168375
+TIMESTAMP = 1545174298
+SHA256 (puppetdb-6.1.0.tar.gz) = ddd3295d0c1fa68c882d138223e5d4be1dfb643de6d34c0a82d0e95ff0c4a38b
+SIZE (puppetdb-6.1.0.tar.gz) = 40448212

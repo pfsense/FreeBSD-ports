@@ -3,6 +3,7 @@
 
 PORTNAME=	gdb
 PORTVERSION=	8.2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -18,19 +19,17 @@ ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 mips powerpc powerpc64
 LIB_DEPENDS=	libmpfr.so:math/mpfr
 TEST_DEPENDS=	runtest:misc/dejagnu
 
+USES=		compiler:c++11-lang cpe gmake libtool tar:xz
+USE_PYTHON=	py3kplist
+
 TEST_TARGET=	check
-# XXX: This should be compiler:c++11-lib as GDB doesn't really require
-# C++14.  However, clang in 10.3 crashes while building this port.
-# Requiring C++14 forces 10.3 to use an external version of clang while
-# still using the base system clang on 11.0 and later.
-USES=		compiler:c++14-lang cpe gettext-runtime gmake libtool tar:xz
+
 USE_CSTD=	gnu89
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	CONFIGURED_M4=m4 CONFIGURED_BISON=byacc
 CONFIGURE_ARGS=	--program-suffix=${PORTVERSION:S/.//g} \
 		--enable-targets=all --enable-64-bit-bfd \
-		--with-gdb-datadir=${PREFIX}/share/gdb${PORTVERSION:S/.//g} \
 		--with-separate-debug-dir=/usr/lib/debug \
 		${ICONV_CONFIGURE_ARG} \
 		--with-expat=yes --with-libexpat-prefix=${LOCALBASE} \
@@ -40,15 +39,17 @@ CFLAGS+=	-DRL_NO_COMPAT -Wno-unused-function -Wno-unused-variable
 CFLAGS+=	-Wno-unknown-warning-option
 EXCLUDE=	dejagnu expect sim texinfo intl
 EXTRACT_AFTER_ARGS=	${EXCLUDE:S/^/--exclude /}
-EXTRA_PATCHES=	${FILESDIR}/commit-8aa0243d54
+EXTRA_PATCHES=	${FILESDIR}/commit-8aa0243d54 \
+		${FILESDIR}/commit-93579f6f90 \
+		${FILESDIR}/commit-2861ee4fde
 LIB_DEPENDS+=	libexpat.so:textproc/expat2
 
 VER=		${PORTVERSION:S/.//g}
 PLIST_SUB=	VER=${VER}
 
-OPTIONS_DEFINE=	DEBUG GDB_LINK GUILE KGDB PYTHON TUI
+OPTIONS_DEFINE=	DEBUG GDB_LINK GUILE KGDB NLS PYTHON TUI
 
-OPTIONS_DEFAULT=	GDB_LINK KGDB PYTHON TUI PORT_READLINE PORT_ICONV SYSTEM_ZLIB
+OPTIONS_DEFAULT=	GDB_LINK KGDB NLS PYTHON TUI PORT_READLINE PORT_ICONV SYSTEM_ZLIB
 
 OPTIONS_SINGLE=	READLINE ICONV ZLIB
 OPTIONS_SINGLE_READLINE=	BUNDLED_READLINE PORT_READLINE
@@ -72,6 +73,7 @@ DEBUG_CFLAGS=		-g
 GUILE_CONFIGURE_WITH=	guile
 GUILE_USES=		pkgconfig
 GUILE_LIB_DEPENDS=	libguile-2.0.so:lang/guile2
+NLS_USES=	gettext-runtime
 PORT_READLINE_USES=	readline:port
 PORT_ICONV_USES=	iconv:wchar_t
 PYTHON_CONFIGURE_ON=	--with-python=${PYTHON_CMD}
@@ -91,11 +93,11 @@ EXCLUDE+=	readline
 EXCLUDE+=	zlib
 .endif
 
-.if ${ARCH} == "amd64"
+.if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-freebsd${OSREL}
 .endif
 
-.if ${COMPILER_TYPE} == "clang"
+.if ${CHOSEN_COMPILER_TYPE} == clang
 CFLAGS+=	-Wno-extended-offsetof
 .endif
 
@@ -126,16 +128,20 @@ do-install-TUI-on:
 
 do-install-GDB_LINK-on:
 	${LN} -sf gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdb
+	${LN} -sf gdb${VER}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/gdb.1
 .if ${PORT_OPTIONS:MKGDB}
 	${LN} -sf kgdb${VER} ${STAGEDIR}${PREFIX}/bin/kgdb
+	${LN} -sf kgdb${VER}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/kgdb.1
 .endif
 
 do-install-PYTHON-on:
 	(cd ${WRKSRC}/gdb; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
 	(cd ${WRKSRC}/gdb/data-directory ; \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
+	@(cd ${STAGEDIR}${PREFIX}/share/gdb/python && \
+		${PYTHON_CMD} -m compileall .)
 . for f in gdb gdb/command gdb/function gdb/printer
-	@(cd ${STAGEDIR}${PREFIX}/share/gdb${VER}/python/${f} ; ${CHMOD} 644 *.py* )
+	@(cd ${STAGEDIR}${PREFIX}/share/gdb/python/${f} ; ${CHMOD} 644 *.py* )
 . endfor
 
 do-install-GUILE-on:

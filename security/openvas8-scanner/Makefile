@@ -3,7 +3,7 @@
 
 PORTNAME?=	openvas8-scanner
 PORTVERSION?=	5.0.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES?=	http://wald.intevation.org/frs/download.php/2436/
 DISTNAME=	${PORTNAME:S/${OPENVAS_VER}//}-${PORTVERSION}
@@ -25,7 +25,7 @@ RUN_DEPENDS=	redis-server:databases/redis \
 
 CONFLICTS?=	${PORTNAME:S/${OPENVAS_VER}/9/}-*
 
-USES=		cmake:outsource gettext-runtime gnome pkgconfig
+USES=		cmake gettext-runtime gnome pkgconfig
 USE_GNOME=	glib20
 USE_RC_SUBR=	openvassd
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:S/${OPENVAS_VER}//}

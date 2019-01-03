@@ -11,11 +11,14 @@ DISTNAME=	polkit-qt-${PORTVERSION}
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	PolicyKit manager for Qt
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+BUILD_DEPENDS=	automoc4:devel/automoc4
 LIB_DEPENDS=	libpolkit.so:sysutils/policykit
 
 USE_LDCONFIG=	yes
-USES=		cmake gettext kde:4 pkgconfig qt:4 tar:bzip2
-USE_KDE=	automoc4
+USES=		cmake gettext pkgconfig qt:4 tar:bzip2
 USE_QT=		corelib dbus gui network svg xml  \
 		qmake_build moc_build rcc_build uic_build
 

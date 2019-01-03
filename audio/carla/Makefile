@@ -2,7 +2,8 @@
 
 PORTNAME=	Carla
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.11
+DISTVERSION=	1.9.12
+PORTREVISION=	3
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyliblo>0:audio/py-pyliblo@${PY_FLAVOR}
 
 CONFLICTS_BUILD=	rtaudio-* rtmidi-*
 
-USES=		compiler:c++11-lib desktop-file-utils gmake localbase \
+USES=		compiler:c++11-lib desktop-file-utils gmake gnome localbase \
 		pkgconfig pyqt:5 python:3.4+ qt:5 shared-mime-info shebangfix tar:bz2
 USE_GITHUB=	yes
 GH_ACCOUNT=	falkTX
@@ -29,7 +30,10 @@ USE_LDCONFIG=	${PREFIX}/lib/carla
 SHEBANG_FILES=	data/carla-single source/native-plugins/resources/*
 
 MAKE_ARGS=	HAVE_QT4=false \
-		EXTERNAL_PLUGINS=false
+		EXTERNAL_PLUGINS=false \
+# Give the Makefile the proper versioned binaries of PyQt
+BINARY_ALIAS=	pyuic5=${LOCALBASE}/bin/pyuic5-${PYTHON_VER} \
+		pyrcc5=${LOCALBASE}/bin/pyrcc5-${PYTHON_VER}
 
 OPTIONS_DEFINE=		FFMPEG FLUIDSYNTH LINUXSAMPLER
 OPTIONS_DEFAULT=	FFMPEG FLUIDSYNTH JACK LINUXSAMPLER

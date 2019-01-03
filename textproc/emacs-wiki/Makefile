@@ -3,13 +3,13 @@
 
 PORTNAME=	emacs-wiki
 PORTVERSION=	2.72
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	textproc elisp
 MASTER_SITES=	http://www.mwolson.org/static/dist/emacs-wiki/ \
 		http://dryice.name/computer/FreeBSD/distfiles/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	dryice@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Create and use hyperlinks and simple formatting in plain text files
 
 RUN_DEPENDS=	xml-parse.el${EMACS_PKGNAMESUFFIX}>0:textproc/xml-parse.el@${EMACS_FLAVOR}
@@ -32,7 +32,7 @@ do-install:
 .for i in *.el
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${LISPDIR}
 .endfor
-	${INSTALL_DATA} ${WRKSRC}/emacs-wiki.info ${STAGEDIR}${PREFIX}/info
+	${INSTALL_DATA} ${WRKSRC}/emacs-wiki.info ${STAGEDIR}${PREFIX}/${INFO_PATH}
 
 do-install-CONTRIB-on:
 	${MKDIR} ${STAGEDIR}${LISPDIR}/contrib

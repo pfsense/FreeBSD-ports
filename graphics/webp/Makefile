@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	webp
-PORTVERSION=	1.0.0
+PORTVERSION=	1.0.1
 PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://downloads.webmproject.org/releases/webp/ \
@@ -24,6 +24,8 @@ OPTIONS_SUB=	yes
 
 PORTSCOUT=	limit:^[0-9\.]*$$
 
+USES=		compiler:c11 jpeg libtool localbase
+
 CONFIGURE_ARGS=	--enable-libwebpdecoder \
 		--enable-libwebpdemux  \
 		--enable-libwebpmux \
@@ -31,7 +33,6 @@ CONFIGURE_ARGS=	--enable-libwebpdecoder \
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USES=		compiler:c11 jpeg libtool localbase
 
 X11_CONFIGURE_OFF=	build_vwebp=no
 X11_CONFIGURE_ON=	build_vwebp=yes

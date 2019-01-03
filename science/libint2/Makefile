@@ -5,7 +5,7 @@ PORTNAME=	libint
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.5.0-beta.2-20
 DISTVERSIONSUFFIX=	-gc2e0a72
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	science
 PKGNAMESUFFIX=	2
 
@@ -14,8 +14,6 @@ COMMENT=	Evaluate the integrals in modern atomic and molecular theory
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_FreeBSD_10=	/usr/include/c++/v1/memory:4004:35: error: no viable overloaded '=': __e->__weak_this_ = *this;
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libgmpxx.so:math/gmp

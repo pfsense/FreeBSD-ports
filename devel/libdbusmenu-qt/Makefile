@@ -3,7 +3,7 @@
 
 PORTNAME=	libdbusmenu-qt
 PORTVERSION=	${MAJOR_VER}.${SNAPSHOT_VER:S/.//g}
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	devel
 MASTER_SITES=	http://archive.ubuntu.com/ubuntu/pool/main/libd/${PORTNAME}/ \
 		LOCAL/tcberner/${PORTNAME}/${PORTVERSION}
@@ -15,13 +15,15 @@ COMMENT?=	Qt4 implementation of the DBusMenu protocol
 
 LICENSE=	LGPL20
 
-FLAVORS=	qt4 qt5
+FLAVORS=	qt5 qt4
 FLAVOR?=	${FLAVORS:[1]}
 
-USES=		compiler:c++11-lib cmake:outsource
+USES=		compiler:c++11-lib cmake
 USE_LDCONFIG=	yes
 
 .  if ${FLAVOR} == qt4
+DEPRECATED=	Qt4 has been EOL since december 2015
+EXPIRATION_DATE=2019-03-15
 USES+=		qt:4
 USE_QT=		corelib dbus gui \
 		moc_build qmake_build rcc_build uic_build

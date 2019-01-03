@@ -3,7 +3,7 @@
 
 PORTNAME=	bacula
 PORTVERSION=	7.4.7
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES?=	sysutils
 MASTER_SITES=	SF/bacula/bacula/${PORTVERSION}
 PKGNAMEPREFIX?=	#
@@ -11,6 +11,9 @@ PKGNAMESUFFIX?=	-server
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT?=	Network backup solution (server)
+
+DEPRECATED=	Unsupported. Please migrate to bacula9-server
+EXPIRATION_DATE=	2019-03-01
 
 USES+=		libtool readline shebangfix ssl
 SHEBANG_FILES=	scripts/dvd-handler.in src/cats/make_catalog_backup.pl.in
@@ -129,8 +132,8 @@ MTX_RUN_DEPENDS=	${LOCALBASE}/sbin/mtx:misc/mtx
 
 .include <bsd.port.pre.mk>
 
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
+.if ${SSL_DEFAULT:Mopenssl111}
+BROKEN=		Does not build with openssl111
 .endif
 
 .if ${readline_ARGS} == "port"

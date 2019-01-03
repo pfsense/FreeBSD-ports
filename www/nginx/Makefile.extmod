@@ -8,11 +8,11 @@ ARRAYVAR_IMPLIES=	DEVEL_KIT
 ARRAYVAR_GH_TUPLE=	openresty:array-var-nginx-module:v0.05:arrayvar
 ARRAYVAR_VARS=		DSO_EXTMODS+=arrayvar
 
-AWS_AUTH_GH_TUPLE=	anomalizer:ngx_aws_auth:1e62670:aws_auth
+AWS_AUTH_GH_TUPLE=	anomalizer:ngx_aws_auth:75c94e6:aws_auth
 AWS_AUTH_VARS=		DSO_EXTMODS+=aws_auth
 
 BROTLI_LIB_DEPENDS=	libbrotlicommon.so:archivers/brotli
-BROTLI_GH_TUPLE=	eustas:ngx_brotli:e26248e:brotli
+BROTLI_GH_TUPLE=	eustas:ngx_brotli:8104036:brotli
 BROTLI_VARS=		DSO_EXTMODS+=brotli
 
 CACHE_PURGE_MASTER_SITES=	http://labs.frickle.com/files/:cache_purge
@@ -48,7 +48,7 @@ DEVEL_KIT_GH_TUPLE=		simpl:ngx_devel_kit:v0.3.0:devel_kit
 DEVEL_KIT_VARS=			FIRST_DSO_EXTMODS+=devel_kit
 
 ENCRYPTSESSION_IMPLIES=		DEVEL_KIT
-ENCRYPTSESSION_GH_TUPLE=	openresty:encrypted-session-nginx-module:v0.07:encryptsession
+ENCRYPTSESSION_GH_TUPLE=	openresty:encrypted-session-nginx-module:v0.08:encryptsession
 ENCRYPTSESSION_VARS=		DSO_EXTMODS+=encryptsession
 
 FASTDFS_GH_TUPLE=	happyfish100:fastdfs-nginx-module:8796a7d:fastdfs
@@ -104,7 +104,7 @@ HTTP_FANCYINDEX_VARS=		DSO_EXTMODS+=fancyindex
 HTTP_FOOTER_GH_TUPLE=		alibaba:nginx-http-footer-filter:1.2.2:footer
 HTTP_FOOTER_CONFIGURE_ON=	--add-module=${WRKSRC_footer}
 
-HTTP_GEOIP2_GH_TUPLE=		leev:ngx_http_geoip2_module:2.0:geoip2
+HTTP_GEOIP2_GH_TUPLE=		leev:ngx_http_geoip2_module:3.2:geoip2
 HTTP_GEOIP2_CFLAGS=		-I${LOCALBASE}/include
 HTTP_GEOIP2_VARS=		DSO_EXTMODS+=geoip2
 HTTP_GEOIP2_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
@@ -164,7 +164,7 @@ HTTP_UPSTREAM_CHECK_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-http-modules-ngx_
 					${PATCHDIR}/extra-patch-src-http-ngx_http_upstream_round_robin.c \
 					${PATCHDIR}/extra-patch-src-http-ngx_http_upstream_round_robin.h
 
-HTTP_UPSTREAM_FAIR_GH_TUPLE=		cryptofuture:nginx-upstream-fair:b5be36f:upstreamfair
+HTTP_UPSTREAM_FAIR_GH_TUPLE=		jaygooby:nginx-upstream-fair:10ecdcf:upstreamfair
 HTTP_UPSTREAM_FAIR_VARS=		DSO_EXTMODS+=upstreamfair
 
 HTTP_UPSTREAM_STICKY_IMPLIES=		HTTP_SSL
@@ -209,24 +209,25 @@ MODSECURITY_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 				libpcre.so:devel/pcre \
 				libyajl.so:devel/yajl
 MODSECURITY_USE=		GNOME=libxml2
-MODSECURITY_USES=		apache:2.2+ pkgconfig shebangfix
-MODSECURITY_MASTER_SITES=	http://www.modsecurity.org/tarball/2.9.2S/RC/rc/:modsecurity
-MODSECURITY_DISTFILES=		modsecurity-2.9.2.tar.gz:modsecurity
+MODSECURITY_VERSION=	2.9.3
+MODSECURITY_USES=		apache:2.4+ pkgconfig shebangfix
+MODSECURITY_MASTER_SITES=	http://www.modsecurity.org/tarball/${MODSECURITY_VERSION}/:modsecurity
+MODSECURITY_DISTFILES=		modsecurity-${MODSECURITY_VERSION}.tar.gz:modsecurity
 MODSECURITY_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-modsecurity-configure
-MODSECURITY_VARS=		WRKSRC_modsecurity=${WRKDIR}/modsecurity-2.9.2
+MODSECURITY_VARS=		WRKSRC_modsecurity=${WRKDIR}/modsecurity-${MODSECURITY_VERSION}
 
-MODSECURITY3_LIB_DEPENDS=	libmodsecurity.so:www/mod_security3
-MODSECURITY3_GH_TUPLE=		SpiderLabs:ModSecurity-nginx:e4df1aa:modsec
+MODSECURITY3_LIB_DEPENDS=	libmodsecurity.so:security/modsecurity3
+MODSECURITY3_GH_TUPLE=		SpiderLabs:ModSecurity-nginx:71ede63:modsec
 MODSECURITY3_CONFIGURE_ON=	--add-module=${WRKSRC_modsec}
 
 NAXSI_NGINX_VER=	0.56
 NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:e6fed58:njs
+NJS_GH_TUPLE=		nginx:njs:21572a0:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
 
-PASSENGER_NGINX_VER=	5.3.5
+PASSENGER_NGINX_VER=	6.0.0
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USE=		ruby=yes
 PASSENGER_BUILD_DEPENDS=	${LOCALBASE}/bin/rake:devel/rubygem-rake
@@ -271,7 +272,7 @@ SLOWFS_CACHE_MASTER_SITES=	http://labs.frickle.com/files/:slowfs_cache
 SLOWFS_CACHE_DISTFILES=		ngx_slowfs_cache-1.10.tar.gz:slowfs_cache
 SLOWFS_CACHE_CONFIGURE_ON=	--add-module=${WRKDIR}/ngx_slowfs_cache-1.10
 
-SMALL_LIGHT_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick \
+SMALL_LIGHT_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6 \
 				libpcre.so:devel/pcre
 SMALL_LIGHT_GH_TUPLE=		cubicdaiya:ngx_small_light:v0.9.2:small_light
 SMALL_LIGHT_VARS=		DSO_EXTMODS+=small_light
@@ -280,7 +281,13 @@ SRCACHE_GH_TUPLE=	openresty:srcache-nginx-module:v0.31:srcache
 #SRCACHE_CONFIGURE_ON=	--add-module=${WRKSRC_srcache}
 SRCACHE_VARS=		DSO_EXTMODS+=srcache
 
-VTS_GH_TUPLE=		vozlt:nginx-module-vts:v0.1.15:vts
+VOD_GH_TUPLE=		kaltura:nginx-vod-module:1.23:vod
+VOD_USE=		GNOME=libxml2
+VOD_VARS=		DSO_EXTMODS+=vod
+VOD_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-vod-module-config \
+			${PATCHDIR}/extra-patch-vod-filters-audio_encoder.c    
+
+VTS_GH_TUPLE=		vozlt:nginx-module-vts:v0.1.18:vts
 VTS_CONFIGURE_ON=	--add-module=${WRKSRC_vts}
 
 XSS_GH_TUPLE=		openresty:xss-nginx-module:v0.05:xss

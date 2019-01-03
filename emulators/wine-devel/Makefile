@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-DISTVERSION=	3.17
-PORTREVISION=	1
+DISTVERSION=	4.0-rc4
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
@@ -24,6 +23,8 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 		prelink:sysutils/prelink
 LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
+USES=		bison compiler:c11 desktop-file-utils gmake localbase shebangfix tar:xz
+
 CONFLICTS_INSTALL=	wine-[0-9]* wine-staging-[0-9]* i386-wine-[0-9]* \
 			i386-wine-staging-[0-9]* i386-wine-devel-[0-9]*
 
@@ -40,11 +41,11 @@ CONFIGURE_ARGS+=--verbose \
 		--with-oss \
 		--without-pulse \
 		--without-sane \
+		--without-sdl \
 		--without-tiff \
 		--without-udev
 CONFIGURE_ENV=	CPPBIN="${CPP}" FLEX="${LOCALBASE}/bin/flex"
 WINELIBDIR?=	${PREFIX}/lib
-USES=		bison compiler:c11 desktop-file-utils gmake localbase shebangfix tar:xz
 .if !defined(USE_LDCONFIG32)
 USE_LDCONFIG=	${WINELIBDIR} ${WINELIBDIR}/wine
 .endif
@@ -55,12 +56,14 @@ SUB_FILES=	pkg-message
 
 PORTDATA=	l_intl.nls wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS HAL LDAP LIBXSLT MPG123 OPENAL STAGING V4L VKD3D WINEMAKER X11 GECKO MONO
+OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS HAL LDAP LIBXSLT MPG123 OPENAL STAGING V4L VKD3D VULKAN WINEMAKER X11 GECKO MONO
 OPTIONS_DEFAULT=GNUTLS X11
 OPTIONS_SUB=	yes
 
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
 LIBXSLT_DESC=	Use libxslt (only used by msxml3.dll)
+VKD3D_DESC=	Direct3D 12 support via Vulkan
+VULKAN_DESC=	Vulkan API support
 WINEMAKER_DESC=	Fully support winemaker (requires Perl)
 GECKO_DESC=	Bundle Gecko MSI package for Wine
 MONO_DESC=	Bundle Mono MSI package for Wine
@@ -96,7 +99,12 @@ V4L_CONFIGURE_WITH=	v4l
 V4L_BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_LIB_DEPENDS=	libv4l1.so:multimedia/libv4l
 
-VKD3D_IGNORE=		The VKD3D option is not supported (yet)
+VKD3D_CONFIGURE_WITH=	vkd3d
+VKD3D_USES=		pkgconfig
+VKD3D_LIB_DEPENDS=	libvkd3d.so:graphics/vkd3d
+
+VULKAN_CONFIGURE_WITH=	vulkan
+VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 
 WINEMAKER_RUN_DEPENDS=	p5-XML-LibXML>0:textproc/p5-XML-LibXML
 

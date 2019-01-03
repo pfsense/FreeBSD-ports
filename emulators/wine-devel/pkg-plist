@@ -183,6 +183,8 @@ include/wine/windows/d2d1.h
 include/wine/windows/d2d1.idl
 include/wine/windows/d2d1_1.h
 include/wine/windows/d2d1_1.idl
+include/wine/windows/d2d1_2.h
+include/wine/windows/d2d1_2.idl
 include/wine/windows/d2dbasetypes.h
 include/wine/windows/d2derr.h
 include/wine/windows/d3d.h
@@ -576,8 +578,8 @@ include/wine/windows/msxml6did.h
 include/wine/windows/msxmldid.h
 include/wine/windows/mtxdm.h
 include/wine/windows/multimon.h
-%%STAGING%%include/wine/windows/natupnp.h
-%%STAGING%%include/wine/windows/natupnp.idl
+include/wine/windows/natupnp.h
+include/wine/windows/natupnp.idl
 include/wine/windows/nb30.h
 include/wine/windows/ncrypt.h
 include/wine/windows/ndrtypes.h
@@ -598,6 +600,7 @@ include/wine/windows/ntddcdrm.h
 include/wine/windows/ntddndis.h
 include/wine/windows/ntddscsi.h
 include/wine/windows/ntddstor.h
+include/wine/windows/ntddvdeo.h
 include/wine/windows/ntdef.h
 include/wine/windows/ntdsapi.h
 include/wine/windows/ntlsa.h
@@ -671,6 +674,7 @@ include/wine/windows/pstore.h
 include/wine/windows/pstore.idl
 include/wine/windows/qedit.h
 include/wine/windows/qedit.idl
+include/wine/windows/qos2.h
 include/wine/windows/ras.h
 include/wine/windows/rasdlg.h
 include/wine/windows/raserror.h
@@ -763,6 +767,7 @@ include/wine/windows/strsafe.h
 include/wine/windows/structuredquerycondition.h
 include/wine/windows/structuredquerycondition.idl
 include/wine/windows/svrapi.h
+include/wine/windows/synchapi.h
 include/wine/windows/t2embapi.h
 include/wine/windows/tapi.h
 include/wine/windows/taskschd.h
@@ -1064,6 +1069,7 @@ lib/wine/api-ms-win-core-processenvironment-l1-2-0.dll.so
 lib/wine/api-ms-win-core-processthreads-l1-1-0.dll.so
 lib/wine/api-ms-win-core-processthreads-l1-1-1.dll.so
 lib/wine/api-ms-win-core-processthreads-l1-1-2.dll.so
+lib/wine/api-ms-win-core-processthreads-l1-1-3.dll.so
 lib/wine/api-ms-win-core-processtopology-obsolete-l1-1-0.dll.so
 lib/wine/api-ms-win-core-profile-l1-1-0.dll.so
 lib/wine/api-ms-win-core-psapi-ansi-l1-1-0.dll.so
@@ -1113,6 +1119,7 @@ lib/wine/api-ms-win-core-winrt-l1-1-0.dll.so
 lib/wine/api-ms-win-core-winrt-registration-l1-1-0.dll.so
 lib/wine/api-ms-win-core-winrt-roparameterizediid-l1-1-0.dll.so
 lib/wine/api-ms-win-core-winrt-string-l1-1-0.dll.so
+lib/wine/api-ms-win-core-winrt-string-l1-1-1.dll.so
 lib/wine/api-ms-win-core-wow64-l1-1-0.dll.so
 lib/wine/api-ms-win-core-wow64-l1-1-1.dll.so
 lib/wine/api-ms-win-core-xstate-l1-1-0.dll.so
@@ -1158,6 +1165,7 @@ lib/wine/api-ms-win-mm-mme-l1-1-0.dll.so
 lib/wine/api-ms-win-mm-time-l1-1-0.dll.so
 lib/wine/api-ms-win-ntuser-dc-access-l1-1-0.dll.so
 lib/wine/api-ms-win-ntuser-rectangle-l1-1-0.dll.so
+lib/wine/api-ms-win-ntuser-sysparams-l1-1-0.dll.so
 lib/wine/api-ms-win-perf-legacy-l1-1-0.dll.so
 lib/wine/api-ms-win-power-base-l1-1-0.dll.so
 lib/wine/api-ms-win-power-setting-l1-1-0.dll.so
@@ -1381,6 +1389,7 @@ lib/wine/ext-ms-win-ntuser-draw-l1-1-0.dll.so
 lib/wine/ext-ms-win-ntuser-gui-l1-3-0.dll.so
 lib/wine/ext-ms-win-ntuser-keyboard-l1-3-0.dll.so
 lib/wine/ext-ms-win-ntuser-message-l1-1-1.dll.so
+lib/wine/ext-ms-win-ntuser-misc-l1-2-0.dll.so
 lib/wine/ext-ms-win-ntuser-misc-l1-5-1.dll.so
 lib/wine/ext-ms-win-ntuser-mouse-l1-1-0.dll.so
 lib/wine/ext-ms-win-ntuser-private-l1-1-1.dll.so
@@ -1495,6 +1504,7 @@ lib/wine/fakedlls/api-ms-win-core-processenvironment-l1-2-0.dll
 lib/wine/fakedlls/api-ms-win-core-processthreads-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-core-processthreads-l1-1-1.dll
 lib/wine/fakedlls/api-ms-win-core-processthreads-l1-1-2.dll
+lib/wine/fakedlls/api-ms-win-core-processthreads-l1-1-3.dll
 lib/wine/fakedlls/api-ms-win-core-processtopology-obsolete-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-core-profile-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-core-psapi-ansi-l1-1-0.dll
@@ -1544,6 +1554,7 @@ lib/wine/fakedlls/api-ms-win-core-winrt-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-core-winrt-registration-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-core-winrt-roparameterizediid-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-core-winrt-string-l1-1-0.dll
+lib/wine/fakedlls/api-ms-win-core-winrt-string-l1-1-1.dll
 lib/wine/fakedlls/api-ms-win-core-wow64-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-core-wow64-l1-1-1.dll
 lib/wine/fakedlls/api-ms-win-core-xstate-l1-1-0.dll
@@ -1589,6 +1600,7 @@ lib/wine/fakedlls/api-ms-win-mm-mme-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-mm-time-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-ntuser-dc-access-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-ntuser-rectangle-l1-1-0.dll
+lib/wine/fakedlls/api-ms-win-ntuser-sysparams-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-perf-legacy-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-power-base-l1-1-0.dll
 lib/wine/fakedlls/api-ms-win-power-setting-l1-1-0.dll
@@ -1812,6 +1824,7 @@ lib/wine/fakedlls/ext-ms-win-ntuser-draw-l1-1-0.dll
 lib/wine/fakedlls/ext-ms-win-ntuser-gui-l1-3-0.dll
 lib/wine/fakedlls/ext-ms-win-ntuser-keyboard-l1-3-0.dll
 lib/wine/fakedlls/ext-ms-win-ntuser-message-l1-1-1.dll
+lib/wine/fakedlls/ext-ms-win-ntuser-misc-l1-2-0.dll
 lib/wine/fakedlls/ext-ms-win-ntuser-misc-l1-5-1.dll
 lib/wine/fakedlls/ext-ms-win-ntuser-mouse-l1-1-0.dll
 lib/wine/fakedlls/ext-ms-win-ntuser-private-l1-1-1.dll
@@ -2078,6 +2091,7 @@ lib/wine/fakedlls/qmgr.dll
 lib/wine/fakedlls/qmgrprxy.dll
 lib/wine/fakedlls/quartz.dll
 lib/wine/fakedlls/query.dll
+lib/wine/fakedlls/qwave.dll
 %%WINE32%%lib/wine/fakedlls/rasapi16.dll16
 lib/wine/fakedlls/rasapi32.dll
 lib/wine/fakedlls/rasdlg.dll
@@ -2168,6 +2182,7 @@ lib/wine/fakedlls/traffic.dll
 %%WINE32%%lib/wine/fakedlls/twain.dll16
 lib/wine/fakedlls/twain_32.dll
 %%WINE32%%lib/wine/fakedlls/typelib.dll16
+lib/wine/fakedlls/tzres.dll
 lib/wine/fakedlls/ucrtbase.dll
 %%STAGING%%lib/wine/fakedlls/uianimation.dll
 lib/wine/fakedlls/uiautomationcore.dll
@@ -2463,7 +2478,6 @@ lib/wine/libiphlpapi.def
 lib/wine/libjsproxy.def
 %%WINE32%%lib/wine/libkernel.def
 lib/wine/libkernel32.def
-%%STAGING%%lib/wine/libkernelbase.def
 lib/wine/libloadperf.def
 lib/wine/liblz32.def
 lib/wine/libmapi32.def
@@ -2757,6 +2771,7 @@ lib/wine/qmgr.dll.so
 lib/wine/qmgrprxy.dll.so
 lib/wine/quartz.dll.so
 lib/wine/query.dll.so
+lib/wine/qwave.dll.so
 %%WINE32%%lib/wine/rasapi16.dll16.so
 lib/wine/rasapi32.dll.so
 lib/wine/rasdlg.dll.so
@@ -2847,6 +2862,7 @@ lib/wine/traffic.dll.so
 %%WINE32%%lib/wine/twain.dll16.so
 lib/wine/twain_32.dll.so
 %%WINE32%%lib/wine/typelib.dll16.so
+lib/wine/tzres.dll.so
 lib/wine/ucrtbase.dll.so
 %%STAGING%%lib/wine/uianimation.dll.so
 lib/wine/uiautomationcore.dll.so

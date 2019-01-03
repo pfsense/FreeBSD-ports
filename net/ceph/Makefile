@@ -4,7 +4,7 @@
 PORTNAME=	ceph
 DISTVERSIONPREFIX=	v
 DISTVERSION=	12.2.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	wjw@digiware.nl
@@ -15,7 +15,6 @@ LICENSE_COMB=	dual
 
 # even though i386 will build, it is not really advised.
 ONLY_FOR_ARCHS=	amd64
-IGNORE_FreeBSD_10=	Does not build for FreeBSD 10.x
 
 BUILD_DEPENDS=	\
 	yasm:devel/yasm \
@@ -46,7 +45,7 @@ RUN_DEPENDS=	\
 CONFLICTS_INSTALL=	ceph-devel
 PORTSCOUT=	limit:^v12\.
 
-USES=		cmake:outsource,noninja fuse gettext-runtime gmake \
+USES=		cmake:noninja fuse gettext-runtime gmake \
 		pkgconfig python:2.7 shebangfix ssl
 USE_PYTHON=	cython
 USE_OPENLDAP=	yes

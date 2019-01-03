@@ -2,7 +2,7 @@
 
 PORTNAME=	firebird
 PORTVERSION=	2.5.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES?=	databases
 MASTER_SITES=	https://github.com/FirebirdSQL/${PORTNAME}/releases/download/R2_5_8/
 PKGNAMESUFFIX?=	${PORTVERSION:R:S/.//}-server
@@ -44,6 +44,7 @@ CONFIGURE_ARGS=	--with-system-icu \
 CONFIGURE_ENV+=	PTHREAD_LIBS="-lpthread" \
 		ac_cv_header_atomic_ops_h="no" \
 		ac_cv_lib_atomic_ops_main="no"
+CPPFLAGS+=	-DU_NOEXCEPT= # For USE_CXXSTD=gnu++98
 
 LOCALSTATEDIR=	/var/db/firebird
 CONFDIR=	etc/firebird

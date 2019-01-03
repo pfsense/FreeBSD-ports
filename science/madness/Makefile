@@ -2,7 +2,7 @@
 
 PORTNAME=	madness
 DISTVERSION=	0.10.1.20180823
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		libtcmalloc.so:devel/google-perftools \
 		libxc.so:science/libxc
 
-USES=		cmake:outsource compiler:c++14-lang fortran localbase:ldflags python:build
+USES=		cmake compiler:c++14-lang fortran localbase:ldflags python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	m-a-d-n-e-s-s
 GH_TAGNAME=	ebb3fd7

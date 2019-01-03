@@ -2,6 +2,7 @@
 
 PORTNAME=	signon
 PORTVERSION=	8.58
+PORTREVISION=	1
 CATEGORIES=	sysutils kde
 PKGNAMESUFFIX=	-qt5
 DIST_SUBDIR=	KDE/${GL_ACCOUNT}
@@ -12,7 +13,8 @@ COMMENT=	D-Bus service performing user authentication
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext pathfix pkgconfig python qmake qt:5 tar:bz2
+USES=		compiler:c++11-lang gettext pathfix pkgconfig python qmake \
+		qt:5 tar:bz2
 USE_QT=		core dbus gui network sql testlib xml \
 		buildtools_build qmake_build
 

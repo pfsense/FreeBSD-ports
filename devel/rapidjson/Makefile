@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	rapidjson
-DISTVERSIONPREFIX=	v
 PORTVERSION=	1.1.0
-PORTREVISION=	4
+DISTVERSIONPREFIX=	v
+PORTREVISION=	5
 CATEGORIES=	devel textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -37,14 +37,18 @@ PORTDATA=	*
 .include <bsd.port.pre.mk>
 
 CXXFLAGS+=	-Wno-c++98-compat # for EXAMPLES option, due to this bug: https://github.com/miloyip/rapidjson/issues/761
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 50
+CXXFLAGS_powerpc=	-Wno-error
+CXXFLAGS_powerpcspe=	-Wno-error
+CXXFLAGS_powerpc64=	-Wno-error
+CXXFLAGS_sparc64=	-Wno-error
+.if ${CHOSEN_COMPILER_TYPE} == clang
 CXXFLAGS+=	-Wno-zero-as-null-pointer-constant
 .endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|DOC_INSTALL_DIR}/examples"|CMAKE_INSTALL_PREFIX}/share/examples/${PORTNAME}"| ; s| -march=native||' ${WRKSRC}/CMakeLists.txt
 	@${REINPLACE_CMD} -e 's|-Werror||' ${WRKSRC}/example/CMakeLists.txt ${WRKSRC}/test/unittest/CMakeLists.txt
-	@${REINPLACE_CMD} -e 's|.*travis.*||' ${WRKSRC}/CMakeLists.txt   # travis_doc breaks cmake, see https://github.com/miloyip/rapidjson/issues/715
+	@${REINPLACE_CMD} -e 's|.*travis.*||' ${WRKSRC}/CMakeLists.txt   # travis_doc breaks cmake: see https://github.com/miloyip/rapidjson/issues/715
 	@${REINPLACE_CMD} -e 's|add_subdirectory.*googletest.*|link_directories(${LOCALBASE}/lib)|' ${WRKSRC}/test/CMakeLists.txt
 
 post-install:

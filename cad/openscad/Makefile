@@ -3,7 +3,7 @@
 
 PORTNAME=	openscad
 PORTVERSION=	2015.03
-PORTREVISION=	22
+PORTREVISION=	25
 CATEGORIES=	cad
 MASTER_SITES=	http://files.openscad.org/
 DISTNAME=	openscad-${PORTVERSION}.src
@@ -13,6 +13,9 @@ COMMENT=	Programmer's solid 3D CAD modeller
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 		${LOCALBASE}/include/boost/tuple/tuple.hpp:devel/boost-libs
@@ -43,7 +46,7 @@ post-patch:
 
 #.include <bsd.port.options.mk>
 #
-#.if ${ARCH} == i386 && ${OSVERSION} >= 1100000
+#.if ${ARCH} == i386
 #USE_GCC=        yes
 #.endif
 

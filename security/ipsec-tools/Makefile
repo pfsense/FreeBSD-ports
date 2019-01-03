@@ -8,7 +8,7 @@
 
 PORTNAME=	ipsec-tools
 PORTVERSION=	0.8.2
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	security
 MASTER_SITES=	SF
 
@@ -19,11 +19,10 @@ LICENSE=	BSD3CLAUSE
 
 CONFLICTS=	racoon-[0-9]*
 
-USE_RC_SUBR=	racoon
-
 INSTALL_TARGET=	install-strip
 
 USES=		libtool tar:bzip2 ssl
+USE_RC_SUBR=	racoon
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-shared --sysconfdir=${PREFIX}/etc/racoon \
@@ -36,12 +35,12 @@ PLIST_SUB+=	STATEDIR=${STATEDIR}
 
 OPTIONS_DEFINE=	DEBUG IPV6 ADMINPORT STATS DPD NATT NATTF FRAG HYBRID PAM \
 		RADIUS LDAP GSSAPI SAUNSPEC RC5 IDEA DOCS EXAMPLES WCPSKEY
-OPTIONS_DEFAULT=	DEBUG DPD NATT FRAG HYBRID
+OPTIONS_DEFAULT=	ADMINPORT DEBUG DPD NATT FRAG HYBRID WCPSKEY
 
 ADMINPORT_DESC=	Enable Admin port
 STATS_DESC=	Statistics logging function
 DPD_DESC=	Dead Peer Detection
-NATT_DESC=	NAT-Traversal (kernel-patch required before 11.0-STABLE)
+NATT_DESC=	NAT-Traversal (kernel-patch required before 11.1)
 NATTF_DESC=	require NAT-Traversal (fail without kernel-patch)
 FRAG_DESC=	IKE fragmentation payload support
 HYBRID_DESC=	Hybrid, Xauth and Mode-cfg support
@@ -82,8 +81,28 @@ IDEA_CONFIGURE_ENABLE=		idea
 WCPSKEY_EXTRA_PATCHES=		${FILESDIR}/wildcard-psk.diff
 NATT_EXTRA_PATCHES=		${FILESDIR}/natt.diff
 
+.include <bsd.port.pre.mk>
+
+# Need to be patched for openssl-1.1.1 (default after 1200080)
+.if ${OPSYS} == FreeBSD
+.  if ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base
+BUILD_DEPENDS=	automake>=0:devel/automake
+.  endif
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e "s/-Werror//g ; s/-R$$libdir/-Wl,-rpath=$$libdir/g" ${WRKSRC}/configure
+
+# Need to be patched for openssl-1.1.1 (default after 1200080)
+.if ${OPSYS} == FreeBSD
+.  if ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base
+post-configure:
+	@${REINPLACE_CMD} -e "s/automake-1.14/automake-1.16/g" ${WRKSRC}/Makefile ${WRKSRC}/*/Makefile \
+				${WRKSRC}/*/*/Makefile
+	@${REINPLACE_CMD} -e "s/aclocal-1.14/aclocal-1.16/g" ${WRKSRC}/Makefile ${WRKSRC}/*/Makefile \
+				${WRKSRC}/*/*/Makefile
+.  endif
+.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}/${PREFIX}/etc/racoon
@@ -101,4 +120,12 @@ post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/src/racoon/doc/* ${STAGEDIR}/${DOCSDIR}
 
-.include <bsd.port.mk>
+.if ${OPSYS} == FreeBSD
+.  if ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-aclocal.m4
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-ipsec-tools
+PLIST_FILES+=	include/racoon/openssl_compat.h
+.  endif
+.endif
+
+.include <bsd.port.post.mk>

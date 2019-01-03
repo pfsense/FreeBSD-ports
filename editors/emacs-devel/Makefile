@@ -16,6 +16,7 @@ COMMENT+=	(No X flavor)
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	texinfo>=6.5,1:print/texinfo
 LIB_DEPENDS=	libgmp.so:math/gmp
 
 FLAVORS=		full nox
@@ -23,8 +24,7 @@ full_CONFLICTS_INSTALL=	emacs-devel-nox
 nox_CONFLICTS_INSTALL=	emacs-devel
 nox_PKGNAMESUFFIX=	-devel-nox
 
-USES=		autoreconf:build cpe gmake localbase:ldflags makeinfo ncurses \
-		pkgconfig
+USES=		autoreconf:build cpe gmake localbase:ldflags ncurses pkgconfig
 .if ${FLAVOR:U} != nox
 USES+=		desktop-file-utils
 USE_XORG=	ice sm x11 xcb xext xfixes xinerama xmu xrandr xt
@@ -32,13 +32,13 @@ USE_XORG=	ice sm x11 xcb xext xfixes xinerama xmu xrandr xt
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	321b06b
+GH_TAGNAME=	9fe788a
 
 CONFIGURE_ARGS=	--disable-build-details \
 		--localstatedir=/var \
 		--with-gameuser=games:games \
 		--without-libsystemd \
-		--without-mini-gmp \
+		--without-gpm \
 		--with-wide-int=no
 
 .if ${FLAVOR:U} == nox
@@ -54,7 +54,7 @@ CONFIGURE_ARGS+=	--with-sound=no --without-cairo --without-dbus \
 CONFIGURE_ARGS+=	--with-x
 .endif
 # See r468320 to determine if/when the next line can be removed
-CONFIGURE_ENV=	ac_cv_header_sys_sysinfo_h=no
+CONFIGURE_ENV=	ac_cv_header_sys_sysinfo_h=no MAKEINFO=${LOCALBASE}/bin/makeinfo
 CONFLICTS_INSTALL=	emacs emacs-canna emacs-nox
 GNU_CONFIGURE=	yes
 INFO=		ada-mode auth autotype bovine calc ccmode cl dbus dired-x \
@@ -116,26 +116,32 @@ XWIDGETS_DESC=	Experimental GTK widgets               (requires GTK3)
 ACL_CONFIGURE_ENABLE=	acl
 ALSA_CONFIGURE_ON=	--with-sound=alsa
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+CAIRO_USES=		gnome
 CAIRO_USE=		GNOME=cairo
 CAIRO_CONFIGURE_WITH=	cairo
 CAIRO_IMPLIES=		PNG XFT
 DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 DBUS_CONFIGURE_WITH=	dbus
+GCONF_USES=		gnome
 GCONF_USE=		GNOME=gconf2
 GCONF_CONFIGURE_WITH=	gconf
 GFILE_CONFIGURE_ON=	--with-file-notification=gfile
+GFILE_USES=		gnome
 GFILE_USE=		GNOME=glib20
 GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
 GIF_CONFIGURE_WITH=	gif
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_WITH=	gnutls
+GSETTINGS_USES=		gnome
 GSETTINGS_USE=		GNOME=glib20
 GSETTINGS_CONFIGURE_WITH=	gsettings
 GSETTINGS_IMPLIES=	DBUS
+GTK2_USES=		gnome
 GTK2_USE=		GNOME=cairo,gtk20
 GTK2_CONFIGURE_ON=	--with-x-toolkit=gtk2
 GTK2_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 			libfontconfig.so:x11-fonts/fontconfig
+GTK3_USES=		gnome
 GTK3_USE=		GNOME=cairo,gtk30
 GTK3_CONFIGURE_ON=	--with-x-toolkit=gtk3
 JPEG_USES=		jpeg
@@ -149,7 +155,7 @@ LCMS2_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 M17N_LIB_DEPENDS=	libm17n.so:devel/m17n-lib
 M17N_CONFIGURE_WITH=	m17n-flt
 M17N_IMPLIES=		XFT
-MAGICK_LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick
+MAGICK_LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick6
 MAGICK_CONFIGURE_WITH=	imagemagick
 MAILUTILS_CONFIGURE_WITH=	mailutils
 MAILUTILS_CONFIGURE_ENV_OFF=	ac_cv_prog_liblockfile=no ac_cv_lib_lockfile_maillock=no
@@ -165,6 +171,7 @@ OTF_IMPLIES=		XFT
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_CONFIGURE_WITH=	png
 SCROLLBARS_CONFIGURE_WITH=	toolkit-scroll-bars
+SVG_USES=		gnome
 SVG_USE=		GNOME=cairo,librsvg2
 SVG_CONFIGURE_WITH=	rsvg
 SVG_IMPLIES=		PNG
@@ -180,6 +187,7 @@ XFT_CONFIGURE_WITH=	xft
 XFT_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2
 XIM_CONFIGURE_WITH=	xim
+XML_USES=		gnome
 XML_USE=		GNOME=libxml2
 XML_CONFIGURE_WITH=	xml2
 XPM_USE=		XORG=xpm
@@ -191,7 +199,7 @@ XWIDGETS_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 XWIDGETS_IMPLIES=	GTK3
 
 EMACS_VER=	27.0.50
-EMACS_REV=	20180901
+EMACS_REV=	20181225
 
 .include <bsd.port.options.mk>
 

@@ -3,6 +3,7 @@
 
 PORTNAME=	screen
 PORTVERSION=	4.6.2
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU \
 		ftp://ftp.gnu.org/gnu/screen/ \
@@ -61,6 +62,7 @@ PLIST_SUB+=	MAN="@comment"
 .if ${PORT_OPTIONS:MINFO}
 INFO=		screen
 MAKE_ARGS+=	WITH_INFO=1
+USES+=		makeinfo
 .endif
 
 # Enables support for 256 colour xterm.  Note that you may need to

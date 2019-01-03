@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	15.6.2
+PORTVERSION=	15.7.1
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -16,6 +16,9 @@ COMMENT=	Open Source PBX and telephony toolkit
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Asterisk 15.x will reach EOL on 2019-10-03. Please migrate to net/asterisk16
+EXPIRATION_DATE=2019-10-03
+
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 		libjansson.so:devel/jansson
 
@@ -23,7 +26,7 @@ ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 powerpc sparc64
 
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
-USES=		bison cpe gmake iconv libedit localbase \
+USES=		bison cpe gmake gnome iconv libedit localbase \
 		shebangfix sqlite ssl ncurses
 USE_CSTD=	gnu89
 USE_GNOME=	libxml2
@@ -55,7 +58,7 @@ MAKE_ARGS+=	NOISY_BUILD=yes \
 
 CONFLICTS=		ossp-uuid-[0-9]*
 CONFLICTS_BUILD=	linuxthreads-*
-CONFLICTS_INSTALL=	asterisk13
+CONFLICTS_INSTALL=	asterisk13 asterisk16
 
 OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS LDAP LUA \
 				MP3PLAYER OOH323 OPTIMIZED_CFLAGS PJSIP PORTAUDIO RADIUS SNMP \
@@ -93,7 +96,7 @@ NEWT_DESC=			Newt User Interface
 
 OPTIONS_GROUP+=			SOUNDS
 OPTIONS_GROUP_SOUNDS=		G729 JAPANESE
-SOUNDS_DESC=			Core and/or Music-on-Hold (MoH) Sound Files
+SOUNDS_DESC=			Core and Music-on-Hold (MoH) Sound Files
 G729_DESC=			Install G.729 format sounds
 JAPANESE_DESC=			Install Japanese voice prompts
 ASTERISK_CORE_G729_SOUNDS=	asterisk-core-sounds-en-g729-1.5.tar.gz

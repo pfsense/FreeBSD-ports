@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		openldap
-DISTVERSION=		2.4.46
+DISTVERSION=		2.4.47
 PORTREVISION=		${OPENLDAP_PORTREVISION}
 CATEGORIES=		net databases
 MASTER_SITES=		ftp://ftp.OpenLDAP.org/pub/OpenLDAP/%SUBDIR%/ \
@@ -65,9 +65,9 @@ BROKEN=			incompatible OpenLDAP version: ${WANT_OPENLDAP_VER}
 .endif
 
 PORTREVISION_CLIENT=	0
-PORTREVISION_SERVER=	4
+PORTREVISION_SERVER=	0
 OPENLDAP_SHLIB_MAJOR=	2
-OPENLDAP_SHLIB_MINOR=	10.9
+OPENLDAP_SHLIB_MINOR=	10.10
 OPENLDAP_MAJOR=		${DISTVERSION:R}
 
 OPTIONS_DEFINE=		DEBUG FETCH GSSAPI
@@ -201,10 +201,6 @@ CONFIGURE_ARGS=		--with-threads=posix \
 			--with-tls=openssl \
 			--disable-dependency-tracking \
 			--enable-dynamic
-
-.if ${OSVERSION} < 1101000
-CFLAGS+=		-DMDB_DSYNC=O_SYNC -Dfdatasync=fsync
-.endif
 
 .if ${PORT_OPTIONS:MSASL}
 LIB_DEPENDS+=		libsasl2.so:security/cyrus-sasl2

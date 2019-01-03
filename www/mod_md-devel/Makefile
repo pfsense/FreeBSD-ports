@@ -16,7 +16,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_mips=		fails to compile: md_json.c:29: expected [error|warning|ignored] after pragma GCC diagnostic
 BROKEN_mips64=		fails to compile: md_json.c:29: expected [error|warning|ignored] after pragma GCC diagnostic
-BROKEN_powerpc64=	fails to compile: md_json.c:29: expected [error|warning|ignored] after pragma GCC diagnostic
 
 LIB_DEPENDS=	libaprutil-1.so:devel/apr1 \
 		libcurl.so:ftp/curl \
@@ -41,12 +40,6 @@ PORTDOCS=	README README.md
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100085 && ${SSL_DEFAULT} == base
-IGNORE=		port requires OpenSSL 1.0.2 or later, set DEFAULT_VERSIONS+= ssl=openssl
-.endif
-
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/share/doc/mod_md/LICENSE
 	${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d
@@ -58,4 +51,4 @@ post-install:
 	(cd ${STAGEDIR}${PREFIX}/${APACHEMODDIR} && \
 		${LN} mod_manageddomain.so.0.0.0 mod_manageddomain.so)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

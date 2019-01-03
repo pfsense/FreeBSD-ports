@@ -4,7 +4,7 @@
 
 PORTNAME=	gtkmm
 PORTVERSION=	2.2.12
-PORTREVISION?=	16
+PORTREVISION?=	17
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME/sources/${PORTNAME}/2.2
 PKGNAMESUFFIX=	20
@@ -13,7 +13,7 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ wrapper for Gtk+, Pango, Atk, and Glib
 
-USES+=		tar:bzip2
+USES+=		compiler:c++11-lang tar:bzip2
 
 PORTSCOUT=	ignore:1
 

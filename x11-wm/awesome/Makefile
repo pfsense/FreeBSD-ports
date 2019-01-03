@@ -3,18 +3,18 @@
 
 PORTNAME=	awesome
 PORTVERSION=	4.2
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	x11-wm
 
-MAINTAINER=	garga@FreeBSD.org
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Highly configurable, next generation framework window manager
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	convert:graphics/ImageMagick \
+BUILD_DEPENDS=	convert:graphics/ImageMagick6 \
 		${LUA_MODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-lgi
 RUN_DEPENDS=	${LUA_MODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-lgi \
 		bash:shells/bash
@@ -28,13 +28,11 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libxcb-xrm.so:x11/xcb-util-xrm \
 		libxkbcommon.so:x11/libxkbcommon
 
-BROKEN_powerpc64=	fails to compile: stack.h: redefinition of typedef 'client_t'
-
 CONFLICTS_INSTALL=	awesome3-[0-9]*
 
+USES=		cmake compiler:c11 gettext iconv pkgconfig lua shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	awesomewm
-USES=		cmake:outsource gettext iconv pkgconfig lua shebangfix
 SHEBANG_FILES=	utils/awesome-client
 CMAKE_ARGS=	-DSYSCONFDIR=${PREFIX}/etc \
 		-DAWESOME_MAN_PATH=${MANPREFIX}/man \

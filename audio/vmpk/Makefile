@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vmpk
-DISTVERSION=	0.7.0
+DISTVERSION=	0.7.1
 CATEGORIES=	audio
 MASTER_SITES=	https://phoenixnap.dl.sourceforge.net/project/vmpk/vmpk/${PORTVERSION}/
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libdrumstick-rt.so:audio/drumstick
 
-USES=		cmake:outsource pkgconfig qt:5 tar:bz2
+USES=		compiler:c++11-lang cmake pkgconfig qt:5 tar:bz2
 USE_QT=		core gui network svg widgets x11extras \
 		buildtools_build linguisttools_build qmake_build
 USE_XORG=	xcb

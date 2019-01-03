@@ -2,7 +2,7 @@
 
 PORTNAME=	telegram-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.14
+DISTVERSION=	1.5.4
 CATEGORIES=	net-im
 
 MAINTAINER=	henry.hu.sh@gmail.com
@@ -22,22 +22,28 @@ LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 		libopenal.so:audio/openal-soft \
 		libopus.so:audio/opus
 
-USES=		compiler:c++17-lang cmake:noninja,outsource desktop-file-utils gmake pkgconfig python:2.7,build qt:5 ssl
+USES=		compiler:c++17-lang cmake:noninja desktop-file-utils gmake pkgconfig python:2.7,build qt:5 ssl
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	telegramdesktop
 GH_PROJECT=	tdesktop
 GH_TUPLE=	catchorg:Catch2:5ca44b68:catch/Telegram/ThirdParty/Catch \
 		mapbox:variant:550ac2f:variant/Telegram/ThirdParty/variant \
 		Microsoft:GSL:d846fe5:gsl/Telegram/ThirdParty/GSL \
-		telegramdesktop:libtgvoip:bfa1e6a:libtgvoip/Telegram/ThirdParty/libtgvoip \
-		telegramdesktop:crl:527ad27:crl/Telegram/ThirdParty/crl
+		telegramdesktop:libtgvoip:78e584c:libtgvoip/Telegram/ThirdParty/libtgvoip \
+		telegramdesktop:crl:4291015:crl/Telegram/ThirdParty/crl \
+		Cyan4973:xxHash:7cc9639:xxhash/Telegram/ThirdParty/xxHash
 USE_GNOME=	glib20
 USE_QT=		core gui imageformats network widgets buildtools_build qmake_build dbus
 USE_XORG=	x11 xcb
-INSTALLS_ICONS=	yes
 
 CMAKE_SOURCE_PATH=	${WRKSRC}/out/Release
 
+# Telegram asks each custom build to have its own API ID and hash.
+# Use the default ones for now. We may need to switch to the official ones,
+# or create our own.
+TELEGRAM_API_ID=	17349
+TELEGRAM_API_HASH=	344583e45741c457fe1862106095a5eb
 GYP_DEFINES=	TDESKTOP_DISABLE_CRASH_REPORTS,TDESKTOP_DISABLE_AUTOUPDATE,TDESKTOP_DISABLE_REGISTER_CUSTOM_SCHEME
 
 # Telegram uses OpenAL for its audio, but libtgvoip (for voice calls) can use PulseAudio or ALSA.
@@ -64,22 +70,6 @@ GYP_DEFINES:=	${GYP_DEFINES},TDESKTOP_DISABLE_GTK_INTEGRATION
 
 .include <bsd.port.pre.mk>
 
-
-# This port needs C++17 libs/compiler.
-# Currently, this is not supported by USES=compiler
-# Using clang does not work: libc++ in base does not support C++17.
-# Using gcc does not work: using both libc++ and libstdc++ causes crashes.
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-IGNORE=		Need C++17 support in compiler and runtime
-.endif
-
-# Since 1.3.14, the clang compiler provided in 11.1 (4.0.0) gets a segmentation
-# fault.
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1102000
-CXXFLAGS+=	-DGSL_USE_STD_BYTE=0
-QMAKE_COMPILER=	clang
-.endif
-
 post-patch:
 	@cd ${WRKSRC} && \
 		(${SED} -e " \
@@ -96,14 +86,17 @@ post-patch:
 		${FILESDIR}/gyp-patches | \
 		${PATCH} -z .bak -s)
 	@${ECHO} "#define FREEBSD_QT_PLUGINDIR \"${QT_PLUGINDIR}\"" > ${WRKSRC}/Telegram/SourceFiles/FREEBSD_QT_PLUGINDIR.h
+	@${REINPLACE_CMD} "/Icon=/s|telegram|${PORTNAME}|" ${WRKSRC}/lib/xdg/telegramdesktop.desktop
 
 pre-configure:
 	@cd ${WRKSRC} && gyp \
+	    -Dapi_id=${TELEGRAM_API_ID} \
+	    -Dapi_hash=${TELEGRAM_API_HASH} \
 	    -Dbuild_defines=${GYP_DEFINES} \
 	    -Gconfig=Release \
 	    --depth=Telegram/gyp --generator-output=../.. -Goutput_dir=out Telegram/gyp/Telegram.gyp --format=cmake
 	@TOT=`wc -l < ${WRKSRC}/out/Release/CMakeLists.txt` && NUM=`expr $$TOT - 2` && \
-	    ${SED} -i -e "$$NUM r ${FILESDIR}/CMakeLists.inj" ${WRKSRC}/out/Release/CMakeLists.txt
+	    ${REINPLACE_CMD} "$$NUM r ${FILESDIR}/CMakeLists.inj" ${WRKSRC}/out/Release/CMakeLists.txt
 
 do-install:
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/Telegram ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

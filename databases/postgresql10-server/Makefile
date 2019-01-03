@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	postgresql
-DISTVERSION?=	10.5
+DISTVERSION?=	10.6
+PORTREVISION=	2
 CATEGORIES?=	databases
 MASTER_SITES=	PGSQL/source/v${DISTVERSION}
 PKGNAMESUFFIX?= ${PORTVERSION:R}${COMPONENT}
@@ -159,6 +160,10 @@ SUB_LIST+=	PG_GROUP=${PG_GROUP} \
 		PG_UID=${PG_UID}
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == "i386"
+USES+=		compiler:gcc-c++11-lib
+.endif
 
 .if !defined(SLAVE_ONLY)
 .if ${DISTVERSION:C/([0-9]*).*/\1/} != 10

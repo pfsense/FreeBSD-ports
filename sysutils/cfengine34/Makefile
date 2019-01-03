@@ -13,6 +13,9 @@ MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Systems administration tool for networks
 CPE_VENDOR=	gnu
 
+DEPRECATED=		OpenSSL 1.1.X is not supported.
+EXPIRATION_DATE=	2021-09-30
+
 CONFLICTS=	cfengine-2* cfengine3[0-35-9]-* cfengine31[0-9]-*
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	34
@@ -88,4 +91,13 @@ post-patch:
 		@${REINPLACE_CMD} -e '/^htmldir/s!=.*!= @htmldir@!'\
 				  ${WRKSRC}/docs/Makefile.in
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1200085
+.if ${SSL_DEFAULT} != "openssl"
+BROKEN_FreeBSD_12=	fails to build with openssl111, install security/openssl
+BROKEN_FreeBSD_13=	fails to build with openssl111, install security/openssl
+.endif
+.endif
+
+.include <bsd.port.post.mk>

@@ -100,7 +100,6 @@
     SUBDIR += dovecot-pigeonhole04
     SUBDIR += dovecot22
     SUBDIR += drac
-    SUBDIR += dracmail
     SUBDIR += dspam
     SUBDIR += ecartis
     SUBDIR += elm
@@ -135,7 +134,6 @@
     SUBDIR += fetchmail
     SUBDIR += filtermail
     SUBDIR += findmaildirs
-    SUBDIR += gbuffy
     SUBDIR += geary
     SUBDIR += gensig
     SUBDIR += getmail
@@ -182,8 +180,6 @@
     SUBDIR += jmba
     SUBDIR += junkfilter
     SUBDIR += jwsmtp
-    SUBDIR += kbiff
-    SUBDIR += kshowmail
     SUBDIR += lbdb
     SUBDIR += lens
     SUBDIR += libcmime
@@ -261,7 +257,6 @@
     SUBDIR += mu4e-maildirs
     SUBDIR += mulberry
     SUBDIR += mutt
-    SUBDIR += mutt-lite
     SUBDIR += mutt_vc_query
     SUBDIR += muttils
     SUBDIR += nbsmtp
@@ -380,7 +375,9 @@
     SUBDIR += p5-Mail-Audit
     SUBDIR += p5-Mail-Audit-Attach
     SUBDIR += p5-Mail-Box
+    SUBDIR += p5-Mail-Box-IMAP4
     SUBDIR += p5-Mail-Box-IMAP4-SSL
+    SUBDIR += p5-Mail-Box-POP3
     SUBDIR += p5-Mail-Box-Parser-C
     SUBDIR += p5-Mail-Bulkmail
     SUBDIR += p5-Mail-CheckUser
@@ -403,6 +400,7 @@
     SUBDIR += p5-Mail-MailStats
     SUBDIR += p5-Mail-Mbox-MessageParser
     SUBDIR += p5-Mail-MboxParser
+    SUBDIR += p5-Mail-Message
     SUBDIR += p5-Mail-OpenDKIM
     SUBDIR += p5-Mail-OpenRelay-Simple
     SUBDIR += p5-Mail-POP3Client
@@ -417,6 +415,7 @@
     SUBDIR += p5-Mail-Sendmail
     SUBDIR += p5-Mail-Spool
     SUBDIR += p5-Mail-Tools
+    SUBDIR += p5-Mail-Transport
     SUBDIR += p5-Mail-Transport-Dbx
     SUBDIR += p5-Mail-Verify
     SUBDIR += p5-Mail-Verp
@@ -479,22 +478,19 @@
     SUBDIR += pear-Net_IMAP
     SUBDIR += pear-Net_LMTP
     SUBDIR += pecl-mailparse
-    SUBDIR += pecl-mailparse2
-    SUBDIR += pecl-pop3
     SUBDIR += perdition
     SUBDIR += pflogsumm
     SUBDIR += pfqueue
     SUBDIR += php56-imap
-    SUBDIR += php70-imap
     SUBDIR += php71-imap
     SUBDIR += php72-imap
+    SUBDIR += php73-imap
     SUBDIR += phplist
     SUBDIR += phpmailer
     SUBDIR += phpmailer6
     SUBDIR += pine-pgp-filters
     SUBDIR += pm-lib
     SUBDIR += policyd2
-    SUBDIR += pop3lite
     SUBDIR += pop3proxy
     SUBDIR += popa3d
     SUBDIR += popa3d-before-sendmail
@@ -533,7 +529,7 @@
     SUBDIR += py-authres
     SUBDIR += py-cyruslib
     SUBDIR += py-dkimpy
-    SUBDIR += py-email-reply-parser
+    SUBDIR += py-email_reply_parser
     SUBDIR += py-flask-mail
     SUBDIR += py-flufl.bounce
     SUBDIR += py-fuglu
@@ -629,13 +625,14 @@
     SUBDIR += rubygem-premailer
     SUBDIR += rubygem-premailer-rails
     SUBDIR += rubygem-premailer-rails-rails5
-    SUBDIR += rubygem-premailer-rails19
+    SUBDIR += rubygem-premailer-rails19-rails50
     SUBDIR += rubygem-rmail
     SUBDIR += rubygem-roadie
     SUBDIR += rubygem-roadie-rails
     SUBDIR += rubygem-ruby-qmail
     SUBDIR += rubygem-tmail
     SUBDIR += rubygem-vmail
+    SUBDIR += s-nail
     SUBDIR += sa-stats
     SUBDIR += sa-utils
     SUBDIR += scam-backscatter

@@ -3,7 +3,7 @@
 
 PORTNAME=	mp
 DISTVERSION=	5.2.13
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	editors
 MASTER_SITES=	http://triptico.com/download/mp/
 
@@ -83,6 +83,11 @@ CONFIGURE_ARGS+=	--without-gtk
 DESKTOP_ENTRIES="Minimum Profit" "" "mp" "mp-5" "Utility;TextEditor;Qt;" ""
 CONFIGURE_ARGS+=--with-moc=${MOC}
 CONFIGURE_ENV+=	CCLINK="${CXX}"
+.endif
+
+.if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 .endif
 
 post-patch:

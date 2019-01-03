@@ -3,7 +3,7 @@
 PORTNAME=	mixxx
 PORTVERSION=	2.0.0
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.mixxx.org/${PORTNAME}-${PORTVERSION}/
 PKGNAMESUFFIX=	20
@@ -13,6 +13,9 @@ COMMENT=	DJ mixing application
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BROKEN_aarch64=		fails to compile: Exception("invalid machine type")
 BROKEN_powerpc64=	fails to configure: unmet dependencies: Could not find libprotobuf, libchromaprint, libmp4, and libwavpack
@@ -31,7 +34,8 @@ LIB_DEPENDS=	libchromaprint.so:audio/chromaprint \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		qt:4 scons iconv pkgconfig
+USES=		compiler:c++11-lang iconv pkgconfig qt:4 scons
+USE_CXXSTD=	c++11
 USE_QT=		corelib gui network opengl script scripttools sql sql-sqlite3 \
 		svg testlib xml xmlpatterns linguisttools_build moc_build \
 		qmake_build rcc_build uic_build

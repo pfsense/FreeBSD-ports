@@ -3,7 +3,7 @@
 
 PORTNAME=	dbixx
 PORTVERSION=	0.0.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	SF/cppcms/${PORTNAME}/${PORTVERSION}
 
@@ -17,7 +17,7 @@ LIB_DEPENDS+=	libdbi.so:databases/libdbi
 BUILD_DEPENDS=	libdbi-drivers>=0:databases/libdbi-drivers
 
 GNU_CONFIGURE=	yes
-USES=		libtool pathfix
+USES=		libtool localbase:ldflags pathfix
 USE_LDCONFIG=	yes
 USE_GCC=	any
 

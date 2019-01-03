@@ -3,6 +3,7 @@
 
 PORTNAME=	openorienteering-mapper
 PORTVERSION=	0.8.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics geography
 
@@ -15,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpolyclipping.so:graphics/polyclipping \
 		libproj.so:graphics/proj
 
-USES=		cmake:outsource,noninja compiler:c++14-lang \
+USES=		cmake:noninja compiler:c++14-lang \
 		desktop-file-utils gmake qt:5 shared-mime-info
 USE_QT=		buildtools_build help qmake_build core gui \
 		location network printsupport sensors widgets
@@ -25,7 +26,8 @@ GH_PROJECT=	mapper
 
 CMAKE_ARGS+=	-DLICENSING_PROVIDER=freebsd \
 		-DMapper_PACKAGE_NAME=${PORTNAME} \
-		-Wno-dev
+		-Wno-dev \
+		-DQt5Help_QCOLLECTIONGENERATOR_EXECUTABLE=${QT_BINDIR}/qhelpgenerator
 
 OPTIONS_DEFINE=	DOCS EXAMPLES GDAL NLS TEST TIFF
 OPTIONS_DEFAULT=	GDAL

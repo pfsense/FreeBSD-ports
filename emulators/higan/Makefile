@@ -3,7 +3,7 @@
 
 PORTNAME=	higan
 PORTVERSION=	106
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	emulators games
 MASTER_SITES=	http://download.byuu.org/ \
 		http://www.cyberbotx.com/higan/
@@ -75,6 +75,13 @@ INPUT_SDL_USE=	SDL=sdl
 INPUT_SDL_VARS=	INPUT_DRIVER+=input.sdl
 
 INPUT_X_VARS=	INPUT_DRIVER+=input.xlib
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-patch:
 	${REINPLACE_CMD} \

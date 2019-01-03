@@ -3,7 +3,7 @@
 
 PORTNAME=	flyhard
 PORTVERSION=	0.42
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	http://www.markboyd.me.uk/games/flyhard/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -22,9 +22,8 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 
 USES=		gmake localbase
 GNU_CONFIGURE=	yes
+USE_CXXSTD=	c++98
 USE_SDL=	sdl mixer
-
-CXXFLAGS+=	-Wno-c++11-narrowing
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	AUTHORS ChangeLog README

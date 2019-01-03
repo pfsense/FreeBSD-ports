@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xapian-core
-PORTVERSION=	1.4.7
+PORTVERSION=	1.4.9
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	databases
@@ -22,17 +22,16 @@ SSE2_DESC=	Use SSE2 for floating point
 
 PORTSCOUT=	limitw:1,even
 
+USES=		compiler:c++11-lang libtool pathfix tar:xz
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		compiler:c++11-lang libtool pathfix tar:xz
+USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
 SSE2_CONFIGURE_ENABLE=	sse
 
 post-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/xapian-inspect ${STAGEDIR}${PREFIX}/bin/xapian-inspect
-	${INSTALL_PROGRAM} ${WRKSRC}/examples/.libs/copydatabase ${STAGEDIR}${PREFIX}/bin/xapian-copydatabase
-	${INSTALL_PROGRAM} ${WRKSRC}/examples/.libs/quest ${STAGEDIR}${PREFIX}/bin/xapian-quest
-	${INSTALL_PROGRAM} ${WRKSRC}/examples/.libs/xapian-metadata ${STAGEDIR}${PREFIX}/bin/xapian-metadata
 
 .include <bsd.port.mk>

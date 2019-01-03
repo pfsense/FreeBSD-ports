@@ -3,7 +3,7 @@
 
 PORTNAME=	allacrost
 PORTVERSION=	1.0.2
-PORTREVISION=	24
+PORTREVISION=	25
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-demo/${PORTVERSION}
 DISTNAME=	${PORTNAME}_demo_source_${PORTVERSION}
@@ -45,6 +45,13 @@ EDITOR_USES=		qmake:no_env qt:4
 EDITOR_USE=		QT=corelib,gui,moc_build,opengl,qt3support
 EDITOR_CONFIGURE_ON=	--enable-editor=yes
 EDITOR_CONFIGURE_OFF=	--enable-editor=no
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MEDITOR}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-I/usr/include/|-I${LOCALBASE}/include/|g' \

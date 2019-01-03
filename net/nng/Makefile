@@ -2,7 +2,7 @@
 
 PORTNAME=	nng
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.1
+DISTVERSION=	1.1.1
 CATEGORIES=	net
 
 MAINTAINER=	swills@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	Lightweight, broker-less messaging
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cmake:outsource
+USES=		cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	nanomsg
 

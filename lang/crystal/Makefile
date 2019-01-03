@@ -1,24 +1,21 @@
 # $FreeBSD$
 
 PORTNAME=		crystal
-DISTVERSION=		0.25.1
-PORTREVISION=		1
+DISTVERSION=		0.27.0
 CATEGORIES=		lang
 MASTER_SITES=		https://unrelentingtech.s3.dualstack.eu-west-1.amazonaws.com/crystal/:bootstrap
 DISTFILES=		${BOOTSTRAP_PATH}:bootstrap
 DIST_SUBDIR=		${PORTNAME}
 EXTRACT_ONLY=		${DISTNAME}${EXTRACT_SUFX}
 
-PATCH_SITES=	https://github.com/crystal-lang/crystal/commit/
-PATCHFILES=	8fef4e4.patch:-p1
-
 MAINTAINER=	greg@unrelenting.technology
 COMMENT=	Language with Ruby-like syntax and static type checking
 
 LICENSE=	APACHE20
 
-ONLY_FOR_ARCHS=	aarch64 amd64
-ONLY_FOR_ARCHS_REASON=	requires prebuilt bootstrap compiler
+IGNORE_FreeBSD_11_aarch64=	prebuilt bootstrap for aarch64 only built for FreeBSD >=12
+ONLY_FOR_ARCHS=			aarch64 amd64
+ONLY_FOR_ARCHS_REASON=		requires prebuilt bootstrap compiler
 
 LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
 		libevent.so:devel/libevent \
@@ -27,16 +24,19 @@ LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
 BUILD_DEPENDS=	${LOCALBASE}/bin/llvm-config${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 
 USES=		compiler gmake pkgconfig
-LLVM_VERSION=	60
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	crystal-lang
+
+LLVM_VERSION=	60
+BOOTSTRAP_PATH=	crystal-0.27.0-freebsd${BOOTSTRAP_OSREL}-${ARCH}
 
 MAKE_ARGS=	SHELL=sh \
 		LLVM_CONFIG="${LOCALBASE}/bin/llvm-config${LLVM_VERSION}" \
 		FLAGS="--release --no-debug --progress" \
 		EXPORTS='CRYSTAL_CONFIG_PATH="lib:${PREFIX}/lib/${PORTNAME}"' \
-		CRYSTAL_CACHE_DIR="${WRKDIR}/cache"
+		CRYSTAL_CACHE_DIR="${WRKDIR}/cache" \
+		CRYSTAL_CONFIG_VERSION="${DISTVERSION}"
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -48,22 +48,15 @@ OPTIONS_SUB=		yes
 .include <bsd.port.options.mk>
 
 .if ${OSVERSION} >= 1200000
-. if ${ARCH} == amd64
-BOOTSTRAP_PATH=	crystal-0.25.0-freebsd12.0
-. elif ${ARCH} == aarch64
-BOOTSTRAP_PATH=	crystal-0.25.1-freebsd12.0-aarch64
-LLVM_VERSION=	50
-. endif
+BOOTSTRAP_OSREL=	12
 .else
-. if ${ARCH} == amd64
-BOOTSTRAP_PATH=	crystal-0.25.0-freebsd11.2
-. elif ${ARCH} == aarch64
-IGNORE=		prebuilt bootstrap for aarch64 only exists for 12-CURRENT
-. endif
+BOOTSTRAP_OSREL=	11
 .endif
-.if ${OSVERSION} < 1100000
-IGNORE=		not supported on 10.x or older
+
+.if ${ARCH} == aarch64
+LLVM_VERSION=	50
 .endif
+
 .if ${OPSYS} != FreeBSD
 IGNORE=		not supported on anything but FreeBSD
 .endif

@@ -2,7 +2,7 @@
 
 PORTNAME?=	mariadb
 PORTVERSION=	10.0.37
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
 		http://mirrors.supportex.net/${SITESDIR}/ \
@@ -25,15 +25,13 @@ LICENSE_NAME_PerconaFT=	PerconaFT patents license
 LICENSE_FILE_PerconaFT=	${WRKSRC}/storage/tokudb/PerconaFT/PATENTS
 LICENSE_PERMS_PerconaFT=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_SSL=		openssl-devel openssl111
-BROKEN_SSL_REASON=	incomplete definition of type 'struct dh_st'
-BROKEN_FreeBSD_12=	Does not support OpenSSL 1.1, use the 10.2 or 10.3 port
-BROKEN_FreeBSD_13=	${BROKEN_FreeBSD_12}
+BROKEN_SSL=		openssl111
+BROKEN_SSL_REASON_openssl111=	Does not support OpenSSL 1.1, use MariaDB 10.2 or 10.3
 
 SUB_FILES=	pkg-message
 
 SLAVEDIRS=	databases/mariadb100-client
-USES=		bison:build cmake:noninja compiler:c++11-lib cpe \
+USES=		bison:build cmake:insource,noninja compiler:c++11-lib cpe \
 		ncurses shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql ${PREFIX}/lib/mysql/plugin
 SHEBANG_FILES=	scripts/*.sh
@@ -147,6 +145,9 @@ post-install-TOKUDB-on:
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD
+.  if ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base
+BROKEN=	${BROKEN_SSL_REASON_openssl111}
+.  endif
 CMAKE_ARGS+=	-DWITH_JEMALLOC="system"
 .else
 CMAKE_ARGS+=	-DWITH_JEMALLOC="no"

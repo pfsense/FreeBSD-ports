@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hyperrogue
-PORTVERSION=	10.4t
+PORTVERSION=	10.5a
+DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -18,7 +19,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 USE_GITHUB=	yes
 GH_ACCOUNT=	zenorogue
 
-USES=		autoreconf localbase
+USES=		autoreconf gl localbase
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer gfx ttf
 USE_GL=		gl glew

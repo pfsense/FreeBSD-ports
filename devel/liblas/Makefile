@@ -3,7 +3,7 @@
 
 PORTNAME=	liblas
 PORTVERSION=	1.8.1
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	devel
 
 MAINTAINER=	wen@FreeBSD.org
@@ -15,8 +15,6 @@ BROKEN_aarch64=		fails to compile: file liblas/detail/endian.hpp needs to be set
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libgeotiff.so:graphics/libgeotiff
-
-CONFLICTS=	liblas12-1.2*
 
 PORTSCOUT=	skipv:progress-20071229
 

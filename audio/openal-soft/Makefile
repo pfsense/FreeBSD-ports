@@ -1,9 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	openal-soft
-PORTVERSION=	1.19.0
+PORTVERSION=	1.19.1
+PORTREVISION=	1
 CATEGORIES=	audio
-MASTER_SITES=	http://kcat.strangesoft.net/openal-releases/
+MASTER_SITES=	http://openal-soft.org/openal-releases/
 
 MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Software implementation of the OpenAL specification
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	openal-200[0-9]*
 
-USES=		cmake:outsource compiler:c11 tar:bzip2
+USES=		cmake compiler:c11 tar:bzip2
 USE_LDCONFIG=	yes
 LLD_UNSAFE=	yes
 CMAKE_ARGS=	-DCMAKE_INSTALL_DATADIR:STRING="${PREFIX}/etc"
@@ -53,8 +54,14 @@ SDL_USES=		localbase
 SDL_USE=		SDL=sdl2
 
 SNDIO_CMAKE_BOOL=	ALSOFT_REQUIRE_SNDIO ALSOFT_BACKEND_SNDIO
-SNDIO_IMPLIES=		OSS # provide fallback for missing sndio capture support
 SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MCONFIG}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} 's|/etc/openal|${ETCDIR}|' \

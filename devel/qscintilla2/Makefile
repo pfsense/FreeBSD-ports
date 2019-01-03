@@ -3,7 +3,6 @@
 
 PORTNAME=	qscintilla2
 PORTVERSION=	${QSCI2_VERSION}
-PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	${MASTER_SITES_QSCI2}
@@ -11,6 +10,9 @@ DISTNAME=	${QSCI2_DISTNAME}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 4 port of the Scintilla C++ editor class
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 USES=		compiler:c++11-lib qmake pyqt:4 qt:4
 USE_PYQT=	#

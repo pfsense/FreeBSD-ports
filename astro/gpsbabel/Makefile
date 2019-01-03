@@ -4,6 +4,7 @@
 PORTNAME=	gpsbabel
 DISTVERSIONPREFIX=	${PORTNAME}_
 DISTVERSION=	1_5_4
+PORTREVISION=	1
 CATEGORIES=	astro geography
 
 MAINTAINER=	dev2@heesakkers.info
@@ -19,10 +20,10 @@ USE_GITHUB=	yes
 
 CONFLICTS=	gpsbabel14-[0-9]*
 
+USES=		compiler:c++11-lang localbase qt:5 qt:5
 USE_QT=		core qmake_build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-zlib=system
-USES=		localbase qt:5 qt:5
 
 OPTIONS_DEFINE=	GUI
 OPTIONS_SUB=	yes

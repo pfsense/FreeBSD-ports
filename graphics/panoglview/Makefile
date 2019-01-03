@@ -3,14 +3,14 @@
 
 PORTNAME=	panoglview
 PORTVERSION=	0.2.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics
 MASTER_SITES=	SF/hugin/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ii@any.com.ru
 COMMENT=	Panorama viewer using OpenGL
 
-USES=		gmake
+USES=		compiler:c++11-lang gmake
 USE_GL=		glu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-unicode
@@ -20,7 +20,7 @@ CFLAGS+=	-I${LOCALBASE}/include
 CXXFLAGS+=	-I${LOCALBASE}/include -ftemplate-depth-64
 LIBS+=		-L${LOCALBASE}/lib -lGLU -lGL
 
-USE_WX=		2.8
+USE_WX=		2.8 3.0
 WX_COMPS=	wx
 WX_CONF_ARGS=	relative
 

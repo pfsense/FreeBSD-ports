@@ -1,5 +1,5 @@
-TIMESTAMP = 1537962608
-SHA256 (erlang/otp_src_21.1.tar.gz) = a489ca88d79422a165112120e0295bbd2f777533a81eae5610578d1bd8d89caf
-SIZE (erlang/otp_src_21.1.tar.gz) = 85214629
-SHA256 (erlang/preloaded-21.1.tar.gz) = ba41862f218e908c66c44c3ae969b78dbfe88218e0b93347309f32b2ac2b576b
-SIZE (erlang/preloaded-21.1.tar.gz) = 331961
+TIMESTAMP = 1544538839
+SHA256 (erlang/otp_src_21.2.tar.gz) = f6b07bf8e6705915679a63363ce80faaa6b7c231e7236cde443d6445f7430334
+SIZE (erlang/otp_src_21.2.tar.gz) = 85351485
+SHA256 (erlang/preloaded-21.2.tar.gz) = 014c433f79f2b6ec3c5b74f025e14dc2683a815c16dbc94105fbd4e0eaa686e6
+SIZE (erlang/preloaded-21.2.tar.gz) = 342565

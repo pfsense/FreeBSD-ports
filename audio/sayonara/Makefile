@@ -4,7 +4,7 @@
 PORTNAME=	sayonara
 DISTVERSIONPREFIX=	player-
 DISTVERSION=	1.1.1
-PORTREVISION=	0
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-git1-20180828
 CATEGORIES=	audio
 MASTER_SITES=	http://www.sayonara-player.com/sw/
@@ -18,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libtag.so:audio/taglib \
 		libmtp.so:multimedia/libmtp
 
-USES=		cmake:outsource compiler:c++11-lib desktop-file-utils \
+USES=		cmake compiler:c++11-lib desktop-file-utils \
 		pkgconfig qt:5
 USE_GNOME=	glib20
 USE_GSTREAMER1=	flac libav mpg123 ogg opus vorbis

@@ -3,6 +3,7 @@
 
 PORTNAME=	xorriso
 PORTVERSION=	1.5.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://files.libburnia-project.org/releases/
 DISTNAME=	libisoburn-${PORTVERSION}
@@ -16,9 +17,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libburn.so:devel/libburn \
 		libisofs.so:devel/libisofs
 
-GNU_CONFIGURE=	yes
-USES=		gmake iconv libtool libedit pathfix pkgconfig shebangfix
+USES=		gmake iconv libtool libedit pathfix pkgconfig readline shebangfix
 SHEBANG_FILES=	frontend/xorriso-tcltk
+GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
@@ -50,7 +51,7 @@ post-patch:
 do-install-TK-off:
 	${RM} ${STAGEDIR}${PREFIX}/bin/xorriso-tcltk \
 		${STAGEDIR}${PREFIX}/man/man1/xorriso-tcltk.1.gz \
-		${STAGEDIR}${PREFIX}/info/xorriso-tcltk.info
+		${STAGEDIR}${PREFIX}/share/info/xorriso-tcltk.info
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -7,6 +7,7 @@ MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Version control system
 
 CONFLICTS_INSTALL=	subversion-1.[0-9].[0-9]* \
+			subversion-1.10.[0-9]* \
 			subversion1[0-9]-1.[0-9].[0-9]*
 
 USE_RC_SUBR=	svnserve
@@ -17,7 +18,8 @@ OPTIONS_DEFINE=	\
 		BDB		\
 		DOCS		\
 		FREEBSD_TEMPLATE\
-		GPG_AGENT \
+		GITHUB_HACK	\
+		GPG_AGENT 	\
 		MAINTAINER_DEBUG\
 		NLS		\
 		SASL		\
@@ -27,10 +29,10 @@ OPTIONS_DEFINE=	\
 		TEST		\
 		TOOLS
 
-OPTIONS_DEFAULT=FREEBSD_TEMPLATE LZ4 \
-		SERF TOOLS
+OPTIONS_DEFAULT=FREEBSD_TEMPLATE SERF TOOLS
 
 FREEBSD_TEMPLATE_DESC=	FreeBSD Project log template
+GITHUB_HACK_DESC=	Enable hack to support checkout from github.com
 GPG_AGENT_DESC=		Enable GPG agent password store
 MAINTAINER_DEBUG_DESC=	Build debug version
 SERF_DESC=		WebDAV/Delta-V (HTTP/HTTPS) repo access module
@@ -42,6 +44,8 @@ TOOLS_DESC=		Install several tools
 # Patches required for use with the FreeBSD Project repository only
 FREEBSD_TEMPLATE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-fbsd-template
 SVNSERVE_WRAPPER_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-svnserve-wrapper
+
+GITHUB_HACK_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-github-request-id
 
 USES+=			shebangfix python:2.7,env
 python_OLD_CMD+=	"/bin/env python"
@@ -130,13 +134,10 @@ pre-configure:
 	fi
 .endif
 .if ${PORT_OPTIONS:MSTATIC}
-	@if ${GREP} -q ucol_close ${LOCALBASE}/lib/libsqlite3.a ; then \
-		${ECHO_MSG} "" ; \
-		${ECHO_MSG} "You cannot build static subversion if your SQLite3 is built with ICU enabled."; \
-		${ECHO_MSG} "Please, reinstall 'devel/sqlite3' port with disabled ICU support."; \
-		${ECHO_MSG} "" ; \
-		${FALSE} ; \
-	fi
+LIBS_SQLITE3!=	pkgconf --libs --static sqlite3
+LIBS+=		${LIBS_SQLITE3}
+# for work with ICU
+LIBS+=		-lc++ -lm
 .endif
 
 post-configure:
@@ -224,8 +225,7 @@ _mkrepos:	.USE
 .endif
 
 svn-build-outputs-hack:
-	(cd ${WRKSRC} && ${PATCH} ${PATCH_DIST_ARGS} -p0 < ${PATCHDIR}/extra-patch-build.conf)
-	(cd ${WRKSRC} && python2 gen-make.py --release --installed-libs libsvn_client,libsvn_delta,libsvn_diff,libsvn_fs,libsvn_fs_x,libsvn_ra,libsvn_repos,libsvn_subr,libsvn_wc)
+	(cd ${WRKSRC} && python2.7 gen-make.py --release --installed-libs libsvn_client,libsvn_delta,libsvn_diff,libsvn_fs,libsvn_fs_x,libsvn_ra,libsvn_repos,libsvn_subr,libsvn_wc)
 	${MV} ${WRKSRC}/build-outputs.mk ${FILESDIR}/build-outputs.mk.addons
 
 .include <bsd.port.post.mk>

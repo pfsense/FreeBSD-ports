@@ -3,6 +3,7 @@
 
 PORTNAME=	exiv2
 DISTVERSION=	0.26
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-trunk
 PORTEPOCH=	1
 CATEGORIES=	graphics
@@ -16,8 +17,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		cmake:outsource cpe gettext iconv pathfix
+USES=		cmake compiler:c++11-lang cpe gettext iconv pathfix localbase:ldflags
 USE_LDCONFIG=	yes
+
+LDFLAGS+=	-lintl
 
 CMAKE_ON=	EXIV2_ENABLE_VIDEO \
 		EXIV2_ENABLE_BUILD_PO
@@ -25,8 +28,6 @@ CMAKE_OFF=	EXIV2_ENABLE_BUILD_SAMPLES \
 		EXIV2_ENABLE_LIBXMP
 
 PATHFIX_CMAKELISTSTXT=	CMakeChecks.txt
-
-CFLAGS_powerpc64=	-mminimal-toc
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-trunk
 

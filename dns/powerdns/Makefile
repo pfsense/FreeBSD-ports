@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	powerdns
-DISTVERSION=	4.1.4
+DISTVERSION=	4.1.5
+PORTREVISION=	3
 CATEGORIES=	dns ipv6
 MASTER_SITES=	http://downloads.powerdns.com/releases/
 DISTNAME=	pdns-${DISTVERSION}
@@ -18,6 +19,7 @@ LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs
 
 USES=		compiler:c++11-lib cpe gmake libtool localbase:ldflags pathfix pkgconfig ssl \
 		tar:bzip2
+
 USE_LDCONFIG=	YES
 USE_SUBMAKE=	YES
 GNU_CONFIGURE=	YES

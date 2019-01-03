@@ -2,7 +2,7 @@
 
 PORTNAME=	frr
 PORTVERSION=	3.0.3
-PORTREVISION=	1
+PORTREVISION=	3
 DISTVERSIONPREFIX=	frr-
 CATEGORIES=	net ipv6
 PKGNAMESUFFIX=	3
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	gawk:lang/gawk
 LIB_DEPENDS=	libjson-c.so:devel/json-c
 
-CONFLICTS=	openbgpd openospfd zebra quagga frr4 frr5
+CONFLICTS=	openbgpd openospfd zebra quagga frr4 frr5 frr6
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	FRRouting

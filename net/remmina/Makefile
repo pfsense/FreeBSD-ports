@@ -3,6 +3,7 @@
 
 PORTNAME=	remmina
 DISTVERSION=	1.2.31.4
+PORTREVISION=	1
 CATEGORIES=	net gnome
 
 MAINTAINER=	woodsb02@FreeBSD.org
@@ -19,7 +20,7 @@ GL_ACCOUNT=	Remmina
 GL_PROJECT=	Remmina
 GL_COMMIT=	65d552c9becc957cae124ab5c26562cf22c052b9
 
-USES=		cmake:outsource desktop-file-utils gettext localbase:ldflags pathfix \
+USES=		cmake desktop-file-utils gettext localbase:ldflags pathfix \
 		pkgconfig shared-mime-info ssl
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 pango
 USE_XORG=	ice sm x11 xext xkbfile
@@ -45,7 +46,7 @@ GCRYPT_CMAKE_BOOL=	WITH_GCRYPT
 
 NLS_CMAKE_BOOL=		WITH_TRANSLATIONS
 
-SSH_LIB_DEPENDS=	libssh_threads.so:security/libssh
+SSH_LIB_DEPENDS=	libssh.so:security/libssh
 SSH_LDFLAGS=		-fstack-protector
 SSH_CMAKE_BOOL=		WITH_LIBSSH
 

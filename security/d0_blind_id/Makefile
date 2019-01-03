@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	d0_blind_id
-PORTVERSION=	1.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0
 PORTREVISION=	2
 CATEGORIES=	security devel
 
@@ -15,7 +16,6 @@ LIB_DEPENDS=	libgmp.so:math/gmp
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	divVerent
-GH_TAGNAME=	ff1ce7e
 
 USES=		autoreconf libtool localbase pathfix
 GNU_CONFIGURE=	yes

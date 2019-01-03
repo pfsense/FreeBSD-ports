@@ -20,7 +20,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	8
+PORTREVISION=	13
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -45,7 +45,6 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libpng.so:graphics/png \
 		libre2.so:devel/re2 \
 		libsnappy.so:archivers/snappy \
-		libsrtp.so:net/libsrtp \
 		libwebp.so:graphics/webp
 
 DISTINFO_FILE=	${.CURDIR}/distinfo
@@ -57,7 +56,10 @@ OPTIONS_DEFAULT=	ALSA
 
 AUDIO_DESC=		Audio backend
 
+# Need the alsa plugins to get sound at runtime, otherwise messages
+# that the pcm_oss plugin can't be opened.
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+ALSA_RUN_DEPENDS=	alsa-plugins>=0:audio/alsa-plugins
 ALSA_VARS=		QMAKE_CONFIGURE_ARGS+=-alsa
 ALSA_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-alsa
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
@@ -73,7 +75,7 @@ SNDIO_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-sndio
 USES=		gperf jpeg python:2.7,build pkgconfig \
 		qmake:norecursive,outsource qt-dist:5,webengine shebangfix
 USE_GNOME=	glib20 libxml2 libxslt
-USE_QT=		core designer gui location network qml quick webchannel \
+USE_QT=		core declarative designer gui location network webchannel \
 		widgets buildtools_build qmake_build printsupport
 USE_XORG=	x11 xcb xcomposite xcursor xext xi xorgproto \
 		xrandr xrender xscrnsaver xtst
@@ -86,20 +88,6 @@ QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg
 # We could just set it to an empty string as well. "all" does not account for
 # dependencies correctly in the generated Makefiles, use the right target here.
 ALL_TARGET=	first
-
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-10
-.endif  # ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-
-# 1101513 is 11-STABLE after merging clang, llvm, lld, lldb, compiler-rt and
-#            libc++ 6.0.0 release, and several follow-up fixes.
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1101513
-BUILD_DEPENDS+=	clang60:devel/llvm60
-CC=		clang60
-CXX=		clang++60
-.endif  # ${OPSYS} == FreeBSD && ${OSVERSION} < 1101513
 
 # We need ar(1) from ports because the Chromium code uses the @file syntax.
 # We then need to ensure ld(1) from ports is used because of the archives ar(1)
@@ -144,4 +132,4 @@ pre-configure:
 # Rerun syncqt.pl -- otherwise the resulting package misses some forwarding headers.
 	cd ${WRKSRC} && ${QT_BINDIR}/syncqt.pl -version ${QT5_VERSION}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

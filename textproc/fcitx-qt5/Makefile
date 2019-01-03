@@ -2,7 +2,7 @@
 
 PORTNAME=	fcitx-qt5
 DISTVERSION=	1.2.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libfcitx-config.so:chinese/fcitx \
 		libxkbcommon.so:x11/libxkbcommon
 
-USES=		compiler:c++11-lib cmake:outsource gettext kde:5 pkgconfig qt:5
+USES=		compiler:c++11-lib cmake gettext kde:5 pkgconfig qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	fcitx
 USE_KDE=	ecm

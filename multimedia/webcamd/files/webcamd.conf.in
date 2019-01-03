@@ -51,3 +51,16 @@ notify 100 {
 
 	action "%%PREFIX%%/etc/rc.d/webcamd start $cdev $interface";
 };
+
+# Logitech gamepad 
+notify 100 {
+	match "system"		"USB";
+	match "subsystem"	"INTERFACE";
+	match "type"		"ATTACH";
+
+	match "vendor"		"0x046d";
+	match "product"		"0xc216|0xc219";
+
+	action "%%PREFIX%%/etc/rc.d/webcamd start $cdev $interface";
+};
+

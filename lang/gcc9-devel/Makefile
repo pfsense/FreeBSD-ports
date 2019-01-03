@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	9.0.0.s20180923
+PORTVERSION=	9.0.0.s20181223
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -21,10 +21,13 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpc.so:math/mpc
 BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 RUN_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
-
 .if defined(MAINTAINER_MODE)
 BUILD_DEPENDS+=	runtest:misc/dejagnu
 .endif
+
+USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:xz
+USE_BINUTILS=	yes
+USE_PERL5=	build
 
 CPE_VENDOR=	gnu
 CPE_VERSION=	${GCC_VERSION}
@@ -36,9 +39,6 @@ CPE_VERSION=	${GCC_VERSION}
 DIST_VERSION=	${PORTVERSION:C/([0-9]+).*\.s([0-9]+)/\1-\2/}
 GCC_VERSION=	${PORTVERSION:C/(.+)\.s[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).*/\1/}
-USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:xz
-USE_BINUTILS=	yes
-USE_PERL5=	build
 SSP_UNSAFE=	yes
 
 OPTIONS_DEFINE=		BOOTSTRAP GRAPHITE
@@ -70,6 +70,7 @@ CONFIGURE_ARGS+=	--with-cpu=8540 --enable-e500_double --without-fp
 
 LANGUAGES:=	c,c++,objc,fortran
 TARGLIB=	${PREFIX}/lib/gcc${SUFFIX}
+TARGLIB32=	${PREFIX}/lib32	# The version information is added later
 LIBEXEC=	${PREFIX}/libexec/gcc${SUFFIX}
 GNU_CONFIGURE=	yes
 CONFIGURE_OUTSOURCE=	yes
@@ -139,7 +140,13 @@ post-stage:
 	${RM} -r ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/include-fixed/
 	# Add target libraries and include files to packaging list.
 	${RM} ${WRKDIR}/PLIST.lib
-.for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///}
+
+.if ${ARCH} == powerpc64 && ${PORT_OPTIONS:MMULTILIB}
+	${MKDIR} ${STAGEDIR}${TARGLIB32}/gcc${SUFFIX}
+	${MV} ${STAGEDIR}${PREFIX}/lib/lib32/* ${STAGEDIR}${TARGLIB32}/gcc${SUFFIX}
+.endif
+
+.for d in ${TARGLIB:S/^${PREFIX}\///} ${TARGLIB32:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///}
 	cd ${STAGEDIR}${PREFIX} ; if [ -d $d ]; then \
 	    ${FIND} $d -type f -o -type l >>${WRKDIR}/PLIST.lib ;\
 	fi

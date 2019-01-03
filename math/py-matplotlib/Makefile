@@ -4,7 +4,7 @@
 PORTNAME=	matplotlib
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -82,6 +82,12 @@ QT4AGGBACKEND_BUILD_DEPENDS+=	Xvfb:x11-servers/xorg-vfbserver
 QT5AGGBACKEND_BUILD_DEPENDS+=	Xvfb:x11-servers/xorg-vfbserver
 TKAGGBACKEND_BUILD_DEPENDS+=	Xvfb:x11-servers/xorg-vfbserver
 WXAGGBACKEND_BUILD_DEPENDS=	Xvfb:x11-servers/xorg-vfbserver
+.endif
+
+.include <bsd.port.options.mk>
+.if ${PORT_OPTIONS:MQT4AGG_BACKEND}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 .endif
 
 post-extract:

@@ -3,9 +3,9 @@
 
 PORTNAME=	game
 PORTVERSION=	1.9.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel python
-MASTER_SITES=	http://pygame.seul.org/ftp/
+MASTER_SITES=	https://www.pygame.org/ftp/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	py${PORTNAME}-${PORTVERSION}release
 

@@ -3,14 +3,10 @@
 
 PORTNAME=	yafaray
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0-5
+DISTVERSION=	3.3.0-11
+DISTVERSIONSUFFIX=	-g1c0b43a
 PORTREVISION=	2
-DISTVERSIONSUFFIX=	-g3a98966
 CATEGORIES=	graphics
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	38ca47aeca670c9bd5d21c24c0444be1d8fd22b0.patch:-p1 \
-		135c2aad275382f3a95d905e08d4c9e883a0b461.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Montecarlo raytracing engine
@@ -32,7 +28,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libpng16.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		cmake:outsource jpeg
+USES=		cmake gnome jpeg
 USE_GITHUB=	yes
 GH_ACCOUNT=	YafaRay
 GH_PROJECT=	Core
@@ -42,13 +38,19 @@ USE_LDCONFIG=	yes
 CMAKE_OFF=	WITH_YAF_PY_BINDINGS
 
 OPTIONS_DEFINE=	DOCS QT
-OPTIONS_DEFAULT=	QT
 OPTIONS_SUB=	yes
 
 QT_DESC=	Enable Qt Gui build
 QT_USES=	qt:4
 QT_CMAKE_BOOL=	WITH_QT
 QT_USE=		QT=corelib,gui,moc_build,qmake_build,rcc_build,uic_build
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MQT}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-install:
 	@${RM} ${STAGEDIR}${DOCSDIR}/LICENSES

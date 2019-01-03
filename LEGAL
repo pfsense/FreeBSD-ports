@@ -96,7 +96,6 @@ giftool*		graphics/giftool	Do not redistribute for profit
 gnome2/mcitymicrogui-default* x11-themes/metacity-theme-microgui Themes may contain artwork not done by the author.  Keep FreeBSD safe if the theme author violated copyrights
 GoogleEarthLinux-*	astro/google-earth	Not really sure about the redistribution terms
 groupoffice-com-*	www/groupoffice		Free for personal use only
-gsview*			print/gsview		Can only be distributed for free
 HeroesOfMightAndMagic-*	games/HeroesOfMightAndMagic	Software is commercial
 homard-*		french/homard		The free downloading of HOMARD software is only allowed for coupling with Code_Aster. For any other use, a license agreement is requested. Please contact HOMARD project: <homard@edf.fr>.
 hplip-*-plugin.run	print/hplip-plugin	License agreement is required
@@ -183,7 +182,6 @@ serious.sam*		games/linux-ssamtfe	Redistribution limited
 serious.sam*		games/linux-ssamtse	Redistribution limited
 sharefonts-*		x11-fonts/sharefonts	Shareware: cannot be distributed without prior authorization
 shorten-*		audio/shorten		May not be sold.  May not be distributed if modified
-shoutcast		audio/shoutcast		Personal use only.  See tos.txt in this port for full details
 sid-milter-*		mail/sid-milter		May incorporate intellectual property, possible patent issues
 simian-*		devel/simian		Have to agree to license before download
 skype*			net-im/skype		Redistribution prohibited
@@ -191,7 +189,8 @@ STonX-*			emulators/stonx		Contains ROM (C) by Atari
 stuffit*		archivers/stuffit	Only unmodified original package can be distributed
 susv2.tar.bz2		misc/susv2		Redistribution of the documents is not permitted
 susv3.tar.bz2		misc/susv3		Redistribution of the documents is not permitted
-susv4tc1.tar.bz2	misc/susv4		Redistribution of the documents is not permitted
+susv4tc2.tar.bz2	misc/susv4		Redistribution of the documents is not permitted
+susv4-2018.tar.bz2	misc/susv4		Redistribution of the documents is not permitted
 svm_light.tar.gz	science/svmlight	The software must not be further distributed without prior permission of the author
 taetgen-*		math/tetgen		Academic or personal use only
 tarsnap-*		sysutils/tarsnap	license restricts redistribution of source and binaries

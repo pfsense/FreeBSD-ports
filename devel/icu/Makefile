@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	icu
-DISTVERSION=	62_1
-PORTREVISION?=	2 # keep for icu-lx
+DISTVERSION=	63_1
+PORTREVISION?=	1 # keep for icu-lx
 PORTEPOCH?=	1
 CATEGORIES?=	devel
-MASTER_SITES=	http://download.icu-project.org/files/icu4c/${PORTVERSION}/ \
+MASTER_SITES=	https://github.com/unicode-org/${PORTNAME}/releases/download/release-${DISTVERSION:S/_/-/g}/ \
 		SF/${PORTNAME}/${PORTNAME:tu}4C/${PORTVERSION}
 DISTNAME=	icu4c-${DISTVERSION}-src
 

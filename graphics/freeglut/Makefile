@@ -3,7 +3,7 @@
 
 PORTNAME=	freeglut
 PORTVERSION=	3.0.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -13,7 +13,7 @@ COMMENT=	open source implementation of the GLUT library
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake pathfix
+USES=		cmake:insource pathfix
 USE_LDCONFIG=	yes
 USE_XORG=	ice x11 xi xrandr
 USE_GL=		gl glu

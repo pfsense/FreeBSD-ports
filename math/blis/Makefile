@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	blis
-PORTVERSION=	0.4.0
+PORTVERSION=	0.5.1
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -13,8 +13,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	bash:shells/bash \
 		llvm60>=0:devel/llvm60
-
-BROKEN_powerpc64=	fails to configure: common.mk:118: Unable to determine compiler vendor
 
 OPTIONS_DEFINE=	PARA CBLAS
 PARA_DESC=	use pthread parallelization
@@ -51,11 +49,11 @@ CONFIGURE_ARGS+=	--enable-cblas
 .if ${ARCH} == amd64
 LIBNAME=	x86_64
 CONFIGURE_ARGS+=	x86_64
-PLIST_SUB+=	X8664=""
+PLIST_SUB+=	ARCH="x86_64"
 .else
 LIBNAME=	generic
 CONFIGURE_ARGS+=	generic
-PLIST_SUB+=	X8664="@comment "
+PLIST_SUB+=	ARCH="generic"
 .endif
 
 CC=	${LOCALBASE}/bin/clang60

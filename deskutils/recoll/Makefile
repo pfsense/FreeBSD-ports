@@ -3,7 +3,7 @@
 
 PORTNAME=	recoll
 DISTVERSION=	1.23.7
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	deskutils
 MASTER_SITES=	http://www.lesbonscomptes.com/recoll/
 
@@ -38,9 +38,9 @@ PYDISTUTILS_PKGVERSION=	1.0
 PLIST_SUB=		VERSION="${PORTVERSION}" \
 			PYDISTUTILS_EGGINFO="${PYDISTUTILS_EGGINFO}"
 
-OPTIONS_DEFINE=		ASPELL CHM DJVU KONQUEROR LATEX IMAGE PDF PS \
+OPTIONS_DEFINE=		ASPELL CHM DJVU LATEX IMAGE PDF PS \
 			SOUND QT4 X11MON
-OPTIONS_DEFAULT=	ASPELL IMAGE PDF PS SOUND QT4
+OPTIONS_DEFAULT=	ASPELL IMAGE PDF PS SOUND
 OPTIONS_SUB=		yes
 
 ASPELL_LIB_DEPENDS=	libaspell.so:textproc/aspell
@@ -50,8 +50,6 @@ CHM_RUN_DEPENDS=	pychm>0:textproc/pychm
 DJVU_RUN_DEPENDS=	djvutxt:graphics/djvulibre
 IMAGE_DESC=		Store personal tags or textual descriptions in images
 IMAGE_RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
-KONQUEROR_DESC=		Konqueror webarchive format with Python
-KONQUEROR_RUN_DEPENDS=	kwebkitpart>0:www/kwebkitpart
 LATEX_USE=		tex=dvipsk:run,latex:run
 PDF_RUN_DEPENDS=	pdftotext:graphics/poppler-utils
 PS_RUN_DEPENDS=		pstotext:print/pstotext
@@ -70,6 +68,12 @@ X11MON_USE=		xorg=ice,sm,x11
 X11MON_CONFIGURE_ENABLE=x11mon
 X11MON_CONFIGURE_WITH=	fam
 X11MON_BROKEN=		does not build: index/rclmonrcv.cpp:(.text+0x1f13): undefined reference to `FAMOpen2'
+
+.include <bsd.port.options.mk>
+.if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \

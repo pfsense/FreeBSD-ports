@@ -3,7 +3,7 @@
 
 PORTNAME=		cling
 DISTVERSION=		0.5-2018-08-13
-PORTREVISION=		1
+PORTREVISION=		2
 CATEGORIES=		lang devel
 MASTER_SITES=		https://root.cern.ch/download/cling/
 DISTNAME=		${PORTNAME}_${DISTVERSION:C/^[0-9]\.[0-9]-//}_sources
@@ -30,7 +30,7 @@ LLVM_RELEASE=	5.0.0
 LLVM_SUFFIX=	50_cern-root
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
 
-USES=		cmake:outsource compiler:c11 compiler:c++11-lib cpe \
+USES=		cmake compiler:c11 compiler:c++11-lib cpe \
 		libedit ncurses python:build shebangfix tar:bzip2
 USE_GNOME=	libxml2
 USE_LDCONFIG=	${LLVM_PREFIX}/lib

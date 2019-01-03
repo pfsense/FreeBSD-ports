@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	glib
-PORTVERSION=	2.56.1
+PORTVERSION=	2.56.3
 PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	devel
@@ -29,8 +29,8 @@ USE_LDCONFIG=	yes
 USES+=		compiler:c11 gettext gmake gnome iconv:wchar_t libtool \
 		localbase pathfix perl5 pkgconfig python shebangfix
 USE_PYTHON=	py3kplist
+USE_PERL5=	build
 CONFIGURE_ARGS=	--disable-gtk-doc --with-html-dir=${PREFIX}/share/doc \
-		--disable-man --without-xml-catalog \
 		--enable-static=yes \
 		--with-pcre=system \
 		--disable-fam
@@ -39,7 +39,7 @@ INSTALL_TARGET=	install-strip
 
 SHEBANG_FILES=	*/*.pl
 
-LIBVERSION=	0.5600.1
+LIBVERSION=	0.5600.3
 PLIST_SUB+=	LIBVERSION=${LIBVERSION}
 
 glib_MAN=	gtester.1 gtester-report.1 glib-gettextize.1
@@ -48,22 +48,17 @@ gio_MAN=	gdbus.1 gsettings.1 gio-querymodules.1 gio.1 \
 		glib-compile-resources.1 gresource.1 gdbus-codegen.1
 gobject_MAN=	glib-genmarshal.1 glib-mkenums.1 gobject-query.1
 
-OPTIONS_DEFINE=	COLLATION_FIX DEBUG NLS
+OPTIONS_DEFINE=	DEBUG MANPAGES NLS
+OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=	yes
-# libc collation was fixed by https://svnweb.freebsd.org/changeset/base/290494
-COLLATION_FIX_DESC=	Use ICU for UTF-8 string collation (if libc is broken)
-
-OPTIONS_EXCLUDE_FreeBSD_11=	COLLATION_FIX
-OPTIONS_EXCLUDE_FreeBSD_12=	COLLATION_FIX
 
 DEBUG_CONFIGURE_ON=	--enable-debug=yes
 
-COLLATION_FIX_LIB_DEPENDS+=	libicui18n.so:devel/icu
-COLLATION_FIX_EXTRA_PATCHES+=	${FILESDIR}/extra-patch-glib_Makefile.in \
-		${FILESDIR}/extra-patch-glib_gunicollate.c
-# Disable it until someone can figure why it causes net-im/pidgin crashed.
-# http://www.freebsd.org/cgi/query-pr.cgi?pr=175930 see comment by ed@
-#COLLATION_FIX_CONFIGURE_ENV+=	CFLAGS="-D__STDC_ISO_10646__"
+MANPAGES_BUILD_DEPENDS=		docbook-xml>4.1.2:textproc/docbook-xml \
+				docbook-xsl>0:textproc/docbook-xsl
+MANPAGES_USE=			GNOME=libxslt:build
+MANPAGES_CONFIGURE_ENABLE=	man
+MANPAGES_CONFIGURE_ON=		--with-xml-catalog=${LOCALBASE}/share/xml/catalog
 
 .include <bsd.port.pre.mk>
 
@@ -98,9 +93,18 @@ post-patch:
 		s|-Werror|| ; \
 		s|#define HAVE_SYS_INOTIFY_H 1||' ${WRKSRC}/configure
 
+do-build-MANPAGES-on:
+.for m in glib gio gobject
+. for file in ${${m}_MAN}
+	cd ${WRKSRC}/docs/reference/${m} && ${GMAKE} ${file}
+. endfor
+.endfor
+
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/GConf/gsettings
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/gio/modules
+
+post-install-MANPAGES-on:
 .for m in glib gio gobject
 	${INSTALL_MAN} ${${m}_MAN:S|^|${WRKSRC}/docs/reference/${m}/|} \
 		${STAGEDIR}${PREFIX}/man/man1

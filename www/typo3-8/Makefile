@@ -35,6 +35,11 @@ TYPO3DIR=	${PORTNAME}-${PORT_V_MAJOR}
 USERS=		${WWWOWN}
 GROUPS=		${WWWGRP}
 
+SUB_FILES=	pkg-message
+SUB_LIST+=	PREFIX=${PREFIX} \
+		TYPO3WWW=${TYPO3WWW} \
+		TYPO3DIR=${TYPO3DIR}
+
 DISTFILES+=	${TYPO3SRC}${EXTRACT_SUFX}
 
 OPTIONS_DEFINE=	CURL GD GMP IMAGICK MBSTRING MYSQL ZLIB
@@ -55,9 +60,9 @@ ZLIB_USE=	PHP=zlib
 
 .if ${PORT_OPTIONS:MIMAGICK}
 .if ${PORT_OPTIONS:MX11}
-RUN_DEPENDS+=	convert:graphics/ImageMagick
+RUN_DEPENDS+=	convert:graphics/ImageMagick6
 .else
-RUN_DEPENDS+=	convert:graphics/ImageMagick-nox11
+RUN_DEPENDS+=	convert:graphics/ImageMagick6-nox11
 .endif
 .endif
 

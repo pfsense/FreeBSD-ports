@@ -3,7 +3,7 @@
 
 PORTNAME=	tora
 PORTVERSION=	2.1.3
-PORTREVISION=	14
+PORTREVISION=	15
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	SF
@@ -12,6 +12,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Toolkit for Oracle
 
 LICENSE=	GPLv2
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BUILD_DEPENDS=	cppunit-config:devel/cppunit
 LIB_DEPENDS=	libqscintilla2_qt4.so:devel/qscintilla2 \

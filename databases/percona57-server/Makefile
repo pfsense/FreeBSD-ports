@@ -3,7 +3,7 @@
 
 PORTNAME?=	percona
 DISTVERSION=	5.7.21-20
-PORTREVISION?=	1
+PORTREVISION?=	3
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-${DISTVERSION}/source/tarball/:percona \
 		SF/boost/boost/1.59.0:boost
@@ -20,11 +20,9 @@ LICENSE?=	GPLv2+
 LIB_DEPENDS=	libevent.so:devel/libevent \
 		liblz4.so:archivers/liblz4
 
-BROKEN_powerpc64=	Does not build
-
 SLAVEDIRS=	databases/percona57-client \
 		databases/percona57-pam-for-mysql
-USES=		bison:build cmake:noninja compiler:c11 compiler:c++11-lib \
+USES=		bison:build cmake:insource,noninja compiler:c11 compiler:c++11-lib \
 		cpe libedit localbase perl5 shebangfix
 
 MY_DBDIR=	/var/db/mysql
@@ -40,7 +38,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_PKGCONFIGDIR="${LOCALBASE}/libdata/pkgconfig" \
 		-DINSTALL_DOCREADMEDIR="share/doc/mysql" \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
-		-DINSTALL_INFODIR="info" \
+		-DINSTALL_INFODIR="${INFO_PATH}" \
 		-DINSTALL_LIBDIR="lib/mysql" \
 		-DINSTALL_MANDIR="man" \
 		-DINSTALL_MYSQLDATADIR="/var/db/mysql" \
@@ -84,6 +82,9 @@ USES+=		libedit
 USES+=		libedit
 .else
 LIB_DEPENDS+=	libcurl.so:ftp/curl
+
+BROKEN_powerpc64=	Does not configure: CMake Error at cmake/os/FreeBSD.cmake:34 (MESSAGE): Unsupported compiler!
+
 # MySQL-Server part
 OPTIONS_DEFINE=	OPENSSL FASTMTX INNODBMEMCACHED TOKUDB
 OPTIONS_DEFAULT=	OPENSSL INNODBMEMCACHED
@@ -126,6 +127,14 @@ CMAKE_ARGS+=	-DWITH_EMBEDDED_SERVER="ON"
 # issue 220865: Currently there's no source to be built with server-side support.
 # But this keeps the pkg-plist not overlaping
 CMAKE_ARGS+=	-DWITH_AUTHENTICATION_LDAP=0
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
+SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
+.else
+SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
+.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}/var/db/mysql
