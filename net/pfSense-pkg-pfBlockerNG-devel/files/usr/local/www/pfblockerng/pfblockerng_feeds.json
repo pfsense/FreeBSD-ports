@@ -6,7 +6,7 @@
 			"*",
 			"* part of pfSense (https://www.pfsense.org)",
 			"* Copyright (c) 2016 Rubicon Communications, LLC (Netgate)",
-			"* Copyright (c) 2015-2018 BBcan177@gmail.com",
+			"* Copyright (c) 2015-2019 BBcan177@gmail.com",
 			"* All rights reserved.",
 			"*",
 			"* Licensed under the Apache License, Version 2.0 (the \"License\")",
@@ -35,6 +35,7 @@
 					"contact":	"https://www.abuse.ch/?page_id=4727",
 					"url":		"https://sslbl.abuse.ch/blacklist/dyre_sslipblacklist.csv",
 					"header":	"Abuse_DYRE",
+					"info":		"Feed is currently down!",
 					"alternate": [
 							{
 							"url":		"https://sslbl.abuse.ch/blacklist/dyre_sslipblacklist_aggressive.csv",
@@ -45,15 +46,15 @@
 				{
 					"feed":		"Abuse Feodo Tracker",
 					"website":	"https://feodotracker.abuse.ch/",
-					"url":		"https://feodotracker.abuse.ch/blocklist/?download=badips",
-					"info":		"This Feed is typically empty.",
-					"header":	"Feodo_BadIPs"
-				},
-				{
-					"feed":		"Abuse Feodo Tracker",
-					"website":	"https://feodotracker.abuse.ch/",
-					"url":		"https://feodotracker.abuse.ch/blocklist/?download=ipblocklist",
-					"header":	"Feodo_Block"
+					"url":		"https://feodotracker.abuse.ch/downloads/ipblocklist.txt",
+					"header":	"Abuse_Feodo_C2",
+					"alternate": [
+							{
+							"url":		"https://feodotracker.abuse.ch/downloads/ipblocklist_aggressive.txt",
+							"header":	"Abuse_Feodo_C2_Agr",
+							"info":		"May cause False positives!"
+							}
+						]
 				},
 				{
 					"feed":		"Abuse Ransomware Tracker",
@@ -64,11 +65,11 @@
 				{
 					"feed":		"Abuse SSL Blacklist",
 					"website":	"https://sslbl.abuse.ch/",
-					"url":		"https://sslbl.abuse.ch/blacklist/sslipblacklist.csv",
+					"url":		"https://sslbl.abuse.ch/blacklist/sslipblacklist.txt",
 					"header":	"Abuse_SSLBL",
 					"alternate": [
 							{
-							"url":		"https://sslbl.abuse.ch/blacklist/sslipblacklist_aggressive.csv",
+							"url":		"https://sslbl.abuse.ch/blacklist/sslipblacklist_aggressive.txt",
 							"header":	"Abuse_SSLBL_Agr"
 							}
 						]
@@ -846,6 +847,164 @@
 		}
 	},
 	"dnsbl": {
+		"EasyList": {
+			"info":		"EasyList are Feeds originaly designed for filering on browser based extensions. The DNSBL parser will only utilize those domains which are listed to be blocked in full",
+			"description":	"EasyList Feeds - Utilizing only the domains which are listed to be blocked in full.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"EasyList",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt",
+					"header":	"EasyList"
+				},
+				{
+					"feed":		"EasyPrivacy",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easyprivacy.txt",
+					"header":	"EasyPrivacy"
+				},
+				{
+					"feed":		"EasyList Adware Filter",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/adwarefilters.txt",
+					"header":	"EasyList_Adware"
+				},
+				{
+					"feed":		"EasyList Arabic",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/Liste_AR.txt",
+					"header":	"EasyList_Arabic"
+				},
+				{
+					"feed":		"EasyList Bulgarian",
+					"website":	"https://easylist.to/",
+					"url":		"https://stanev.org/abp/adblock_bg.txt",
+					"header":	"EasyList_Bulgarian"
+				},
+				{
+					"feed":		"EasyList Chinese",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistchina.txt",
+					"header":	"EasyList_Chinese"
+				},
+				{
+					"Feed":		"EasyList CJX Annoyance List",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt",
+					"header":	"EasyList_CJX"
+				},
+				{
+					"feed":		"EasyList Czech/Slovak",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt",
+					"header":	"EasyList_Czech_Slovak"
+				},
+				{
+					"feed":		"EasyList Dutch",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistdutch.txt",
+					"header":	"EasyList_Dutch"
+				},
+				{
+					"feed":		"EasyList French",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/liste_fr.txt",
+					"header":	"EasyList_French"
+				},
+				{
+					"feed":		"EasyList German",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist.to/easylistgermany/easylistgermany.txt",
+					"header":	"EasyList_German"
+				},
+				{
+					"feed":		"EasyList Greek",
+					"website":	"https://easylist.to/",
+					"url":		"https://www.void.gr/kargig/void-gr-filters.txt",
+					"header":	"EasyList_Greek"
+				},
+				{
+					"feed":		"EasyList Hebrew",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt",
+					"header":	"EasyList_Hebrew"
+				},
+				{
+					"feed":		"EasyList Indonesian",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/heradhis/indonesianadblockrules/master/subscriptions/abpindo.txt",
+					"header":	"EasyList_Indonesian"
+				},
+				{
+					"feed":		"EasyList Italian",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistitaly.txt",
+					"header":	"EasyList_Italian"
+				},
+				{
+					"feed":		"EasyList Japanese",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/k2jp/abp-japanese-filters/master/abp_jp.txt",
+					"header":	"EasyList_Japanese"
+				},
+				{
+					"feed":		"EasyList Latvian",
+					"website":	"https://easylist.to/",
+					"url":		"https://notabug.org/latvian-list/adblock-latvian/raw/master/lists/latvian-list.txt",
+					"header":	"EasyList_Latvian"
+				},
+				{
+					"feed":		"EasyList Lithuanian",
+					"website":	"https://easylist.to/",
+					"url":		"http://margevicius.lt/easylistlithuania.txt",
+					"header":	"EasyList_Lithuanian"
+				},
+				{
+					"feed":		"EasyList Norwegian",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/NorwegianList.txt",
+					"header":	"EasyList_Norwegian"
+				},
+				{
+					"feed":		"EasyList Polish",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/polish-adblock-filters/adblock.txt",
+					"header":	"EasyList_Polish"
+				},
+				{
+					"feed":		"EasyList Portuguese",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistportuguese.txt",
+					"header":	"EasyList_Portuguese"
+				},
+				{
+					"feed":		"EasyList Russian",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/advblock.txt",
+					"header":	"EasyList_Russian"
+				},
+				{
+					"feed":		"EasyList Spanish",
+					"website": 	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistspanish.txt",
+					"header":	"EasyList_Spanish"
+				},
+				{
+					"feed":		"EasyList Turkish",
+					"website":	"https://easylist.to/",
+					"url":		"https://adguard.com/en/filter-rules.html?id=13",
+					"header":	"EasyList_Turkish"
+				},
+				{
+					"feed":		"EasyList Vietnamese",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/abpvn/abpvn/master/filter/abpvn.txt",
+					"header":	"EasyList_Vietnamese"
+				}
+			]
+		},
 		"ADs": {
 			"info":		"ADs group is a collection of ADvertisement Domain Feeds.-LB-Some sites may become slow or unresponsive. Whitelist Domains as required.-LB-The frequency of updates is set to once per day.",
 			"description":	"ADs - Collection of ADvertisement Domain Feeds.",
@@ -913,12 +1072,6 @@
 					"website":	"https://ransomwaretracker.abuse.ch/",
 					"url":		"https://ransomwaretracker.abuse.ch/downloads/RW_URLBL.txt",
 					"header":	"Abuse_URLBL"
-				},
-				{
-					"feed":		"Abuse URLhaus",
-					"website":	"https://urlhaus.abuse.ch/",
-					"url":		"https://urlhaus.abuse.ch/downloads/text/",
-					"header":	"Abuse_urlhaus"
 				},
 				{
 					"feed":		"Abuse Zeus",
@@ -1037,6 +1190,12 @@
 			"cron":		"EveryDay",
 			"feeds": [
 				{
+					"feed":		"Abuse URLhaus",
+					"website":	"https://urlhaus.abuse.ch/",
+					"url":		"https://urlhaus.abuse.ch/downloads/text/",
+					"header":	"Abuse_urlhaus"
+				},
+				{
 					"feed":		"Malware Patrol",
 					"website":	"https://lists.malwarepatrol.net/",
 					"register":	"https://www.malwarepatrol.net/signup-free.shtml",
@@ -1046,7 +1205,7 @@
 				{
 					"feed":		"OpenPhish",
 					"website":	"https://openphish.com/phishing_feeds.html",
-					"url":		"https://www.openphish.com/feed.txt",
+					"url":		"https://openphish.com/feed.txt",
 					"header":	"OpenPhish"
 				},
 				{
@@ -1100,6 +1259,12 @@
 					"website":	"https://hosts-file.net/?s=Download",
 					"url":		"https://hosts-file.net/hfs.txt",
 					"header":	"hpHosts_HFS"
+				},
+				{
+					"feed":		"Malwarebytes - hpHosts",
+					"website":	"https://hosts-file.net/?s=Download",
+					"url":		"https://hosts-file.net/hjk.txt",
+					"header":	"hpHosts_HJK"
 				},
 				{
 					"feed":		"Malwarebytes - hpHosts",
@@ -1288,6 +1453,12 @@
 					"header":	"Pulsedive_BD"
                                 },
 				{
+					"feed":		"Steven Black",
+					"website":	"https://github.com/StevenBlack/hosts",
+					"url":		"https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts",
+					"header":	"StevenBlack_BD"
+				},
+				{
 					"feed":		"VXVault",
 					"website":	"http://vxvault.net/ViriList.php",
 					"url":		"http://vxvault.net/URL_List.php",
@@ -1307,8 +1478,8 @@
 				},
 				{
 					"feed":		"Kowabit",
-					"website":	"https://www.kowabit.one/blcklst/",
-					"url":		"https://blocklist.kowabit.one/fritzboxliste.txt",
+					"website":	"https://www.kowabit.de/blcklst/",
+					"url":		"https://blocklist.kowabit.de/fritzboxliste.txt",
 					"header":	"Kowabit"
 				},
 				{
@@ -1358,6 +1529,12 @@
 					"website":	"https://www.hostsfile.org/hosts.html",
 					"url":		"https://www.hostsfile.org/Downloads/hosts.txt",
 					"header":	"HostsFile_BD"
+				},
+				{
+					"feed":		"Yhonay",
+					"website":	"https://github.com/Yhonay/antipopads",
+					"url":		"https://raw.githubusercontent.com/Yhonay/antipopads/master/hosts",
+					"header":	"Yhonay_BD"
 				},
 				{
 					"feed":		"yHosts",
