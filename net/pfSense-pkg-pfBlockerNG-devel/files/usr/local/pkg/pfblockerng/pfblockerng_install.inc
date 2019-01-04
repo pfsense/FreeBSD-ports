@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,10 +31,9 @@ pfb_global();
 $g['pfblockerng_install'] = TRUE;
 
 // Only download MaxMind Database if files do not exist
-$maxmind_verify = 0;
+$maxmind_verify = FALSE;
 
 if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/{$pfb['extras'][1]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/GeoLite2-Country-Blocks-IPv4.csv") ||
     !file_exists("{$pfb['dbdir']}/geoip.txt") ||
     !file_exists("{$pfb['ccdir']}/Top_Spammers_v4.info")) {
@@ -42,7 +41,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 	update_status("\nDownloading MaxMind GeoIP databases. This may take a minute...\n");
 
 	// Remove Alexa and Blacklist category feeds from download process
-	$pfb['extras'] = array_slice($pfb['extras'], 0, 3) ?: array();
+	$pfb['extras'] = array_slice($pfb['extras'], 0, 2) ?: array();
 
 	foreach ($pfb['extras'] as $feed) {
 
@@ -80,24 +79,26 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 			$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if ($http_status == '200 OK') {
 				if (strpos($file_dwn, '.gz') !== FALSE) {
-					exec("/usr/bin/gunzip -dfq {$file_dwn} {$pfb['geoipshare']}");
+					exec("/usr/bin/tar -xzf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
 				} elseif (strpos($file_dwn, '.zip') !== FALSE) {
 					exec("/usr/bin/tar -xf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
 				}
 				unlink_if_exists("{$file_dwn}");
 				update_status(" done.\n");
-				$maxmind_verify += 1;
+
+				if ($feed['file'] == 'GeoLite2-Country-CSV.zip') {
+					$maxmind_verify = TRUE;
+				}
 			}
 			else {
 				update_status(" Failed!\n");
-				break;
 			}
 		}
 		curl_close($ch);
 		@fclose($fhandle);
 	}
 
-	if ($maxmind_verify != 3) {
+	if (!$maxmind_verify) {
 		update_status("MaxMind download Failed! Fetching MaxMind archive from pfSense package repo...\n");
 		// Fetch archived MaxMind database
 		$url = 'https://packages.pfsense.org/packages/config/pfblockerng/countrycodes.tar.bz2';
@@ -108,7 +109,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 			$retval = '';
 			exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f /tmp/countrycodes.tar.bz2", $output, $retval);
 			if ($retval == 0) {
-				$maxmind_verify = 3;
+				$maxmind_verify = TRUE;
 				update_status("Fetch done.\n");
 			} else {
 				update_status("Fetch Failed!\n");
@@ -123,7 +124,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 	}
 
 	// Proceed with conversion of MaxMind files on download success
-	if ($maxmind_verify == 3) {
+	if ($maxmind_verify) {
 		update_status("Converting MaxMind GeoIP databases for pfBlockerNG.\n This may take a few minutes...\n");
 		pfblockerng_uc_countries();
 		update_status("Creating pfBlockerNG Continent PHP files...\n");
@@ -185,9 +186,11 @@ if (!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl'])) {
 	pfb_create_lighttpd();
 	update_status(" done.\n");
 
-	update_status("Creating DNSBL Certificate...");
-	pfb_create_dnsbl_cert();
-	update_status(" done.\n");
+	if (!file_exists("{$pfb['dnsbl_cert']}")) {
+		update_status("Creating DNSBL Certificate...");
+		pfb_create_dnsbl_cert();
+		update_status(" done.\n");
+	}
 }
 
 update_status("Starting DNSBL Service...");
@@ -361,37 +364,6 @@ if ($ufound) {
 	update_status(" no changes required ... done.\n");
 }
 
-// Upgrade EasyList/EasyPrivacy category settings to new format
-update_status(" EasyList/EasyPrivacy category settings...");
-$ufound = FALSE;
-
-if (is_array($config['installedpackages']['pfblockerngdnsbleasylist']['config'][0])) {
-	$pfb_easylist = &$config['installedpackages']['pfblockerngdnsbleasylist']['config'][0];
-	if (isset($pfb_easylist) && isset($pfb_easylist['easycat'])) {
-		$easylist	= array();
-		$easycat	= explode(',', $pfb_easylist['easycat']);
-		foreach (array('ea' => 0, 'eap' => 0, 'aa' => 0, 'aap' => 0, 'epts' => 1, 'epti' => 1) as $option => $row) {
-			if (in_array($option, $easycat)) {
-				$easylist[$row][] = $option;
-				$ufound = TRUE;
-			}
-		}
-	}
-}
-
-if ($ufound) {
-	foreach ($easylist as $row => $options) {
-		if (!isset($pfb_easylist['row'][$row]['easycat'])) {
-			$pfb_easylist['row'][$row]['easycat'] = implode(',', $options);
-		}
-	}
-
-	unset($pfb_easylist['easycat']);
-	update_status(" saving new changes ... done.\n");
-} else {
-	update_status(" no changes required ... done.\n");
-}
-
 // Upgrade ET IQRisk categories
 update_status(" Proofpoint/ET IQRisk settings...");
 $ufound = FALSE;
@@ -534,6 +506,71 @@ if (file_exists('/var/db/pfblockerng/dnsbl_info') &&
 	pfb_close_sqlite($db_handle);
 }
 unlink_if_exists('/var/db/pfblockerng/dnsbl_info');
+
+// Upgrade EasyList to new Format
+update_status(" Upgrading previous EasyLists to new format...");
+$ufound = FALSE;
+
+if (is_array($config['installedpackages']['pfblockerngdnsbleasylist']) &&
+    !empty($config['installedpackages']['pfblockerngdnsbleasylist'])) {
+
+	// Collect all enabled EasyLists
+	$enabled	= array();
+	$ex_easylists	= $config['installedpackages']['pfblockerngdnsbleasylist']['config'][0];
+	if (is_array($ex_easylists['row'])) {
+		foreach ($ex_easylists['row'] as $easylist) {
+			if ($easylist['state'] == 'Enabled') {
+				$enabled[$easylist['header']] = '';
+			}
+		}
+	}
+
+	// Load all pfBlockerNG Feeds
+	if (!empty($enabled)) {
+		$feed_info_raw = json_decode(@file_get_contents("{$pfb['feeds']}"), TRUE);
+		if (json_last_error() === JSON_ERROR_NONE && is_array($feed_info_raw)) {
+
+			$add			= array();
+			$add['aliasname']	= $ex_easylists['aliasname']	?: 'EasyList';
+			$add['description']	= $ex_easylists['description']	?: '';
+			$add['row']		= array();
+
+			foreach ($feed_info_raw['dnsbl']['EasyList'] as $easylists) {
+				if (is_array($easylists)) {
+					foreach ($easylists as $easylist) {
+						if (isset($enabled[$easylist['header']])) {
+							$add['row'][] = array(	'format'	=> 'auto',
+										'state'		=> 'Enabled',
+										'url'		=> $easylist['url'],
+										'header'	=> $easylist['header']);
+							$ufound = TRUE;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if ($ufound) {
+		$add['action']	= $ex_easylists['action'];
+		$add['cron']	= $ex_easylists['cron'];
+		$add['dow']	= $ex_easylists['dow'];
+		$add['logging']	= $ex_easylists['logging'];
+		$add['order']	= $ex_easylists['order'];
+
+		init_config_arr(array('installedpackages', 'pfblockerngdnsbl', 'config'));
+		array_unshift($config['installedpackages']['pfblockerngdnsbl']['config'], $add);
+	}
+
+	// Remove Previous EasyList configuration
+	unset($config['installedpackages']['pfblockerngdnsbleasylist']);
+}
+
+if ($ufound) {
+	update_status(" saving new changes ... done.\n");
+} else {
+	update_status(" no changes required ... done.\n");
+}
 
 unset($g['pfblockerng_install']);	// Remove 'Install flag'
 update_status("Upgrading... done\n\nCustom commands completed ... ");
