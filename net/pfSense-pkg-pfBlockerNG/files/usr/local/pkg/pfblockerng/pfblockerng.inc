@@ -116,7 +116,7 @@ foreach (array('existing', 'actual') as $pftype) {
 
 // Default cURL options
 $pfb['curl_defaults'] = array(  CURLOPT_USERAGENT	=> 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 Chrome/43.0.2357.65 Safari/537.36',
-				CURLOPT_SSL_CIPHER_LIST	=> 'TLSv1.2, TLSv1.1, TLSv1',
+				CURLOPT_SSL_CIPHER_LIST	=> 'TLSv1.3, TLSv1.2',
 				CURLOPT_FOLLOWLOCATION	=> true,
 				CURLOPT_SSL_VERIFYPEER	=> true,
 				CURLOPT_SSL_VERIFYHOST	=> true,
