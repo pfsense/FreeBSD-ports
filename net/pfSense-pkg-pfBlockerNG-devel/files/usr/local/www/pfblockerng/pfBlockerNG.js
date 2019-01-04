@@ -3,7 +3,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -172,9 +172,7 @@ events.push(function() {
 		})
 	}
 
-	if (pagetype != 'easylist') {
-		pfb_remove_label();
-	}
+	pfb_remove_label();
 
 	// Greyout 'Disabled' Action fields
 	$("select[id^='action']").click(function() {
@@ -286,14 +284,5 @@ events.push(function() {
 		$('#aliasaddr_out').autocomplete( {
 			source: networksarray
 		})
-	}
-
-	// Disable user mods to EasyList URLs and set title of URL field
-	if (pagetype == 'easylist') {
-
-		$("[id^='url-']").each(function() {
-			$(this).prop('readonly', true);
-			$(this).attr('title', $(this).val());
-		});
 	}
 });
