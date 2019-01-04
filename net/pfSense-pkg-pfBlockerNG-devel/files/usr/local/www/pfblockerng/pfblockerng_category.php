@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,7 +73,7 @@ if ($_POST) {
 }
 
 // Set 'active' GUI Tabs
-$active = array('ip' => FALSE, 'ipv4' => FALSE, 'ipv6' => FALSE, 'dnsbl' => FALSE, 'feeds' => FALSE, 'easylist' => FALSE);
+$active = array('ip' => FALSE, 'ipv4' => FALSE, 'ipv6' => FALSE, 'dnsbl' => FALSE, 'feeds' => FALSE);
 
 switch ($gtype) {
 	case 'ipv4':
@@ -95,19 +95,11 @@ switch ($gtype) {
 		$conf_type	= 'pfblockerngdnsbl';
 		$active		= array('dnsbl' => TRUE);
 		break;
-	case 'easylist';
-		$type		= 'DNSBL EasyList';
-		$conf_type	= 'pfblockerngdnsbleasylist';
-
-		header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid=0");
-		exit;
 }
 
 // Collect rowdata
 if ($type != 'GeoIP') {
-	if (!is_array($config['installedpackages'][$conf_type])) {
-		$config['installedpackages'][$conf_type] = array();
-	}
+	init_config_arr(array('installedpackages', $conf_type, 'config'));
 	$rowdata = &$config['installedpackages'][$conf_type]['config'];
 } else {
 
@@ -158,16 +150,8 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 								$rowdata[$k_field[1]][$k_field[0]] = $value;
 							} else {
 								$continent = strtolower(str_replace(' ', '', $rowdata[$k_field[1]]['aliasname']));
-								
-								if (!is_array($config['installedpackages']['pfblockerng' . $continent])) {
-									$config['installedpackages']['pfblockerng' . $continent] = array();
-								}
-								if (!is_array($config['installedpackages']['pfblockerng' . $continent]['config'])) {
-									$config['installedpackages']['pfblockerng' . $continent]['config'] = array();
-								}
-								if (!is_array($config['installedpackages']['pfblockerng' . $continent]['config'][0])) {
-									$config['installedpackages']['pfblockerng' . $continent]['config'][0] = array();
-								}
+
+								init_config_arr(array('installedpackages', 'pfblockerng' . $continent, 'config', 0));
 								$config['installedpackages']['pfblockerng' . $continent]['config'][0][$k_field[0]] = $value;
 							}
 						}
@@ -193,7 +177,7 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 $pgtype = 'IP'; $l_pgtype = 'ip';
 $pg_url = '/pfblockerng/pfblockerng_category.php?type=ipv4';
 
-if ($gtype == 'dnsbl' || $gtype == 'easylist') {
+if ($gtype == 'dnsbl') {
 	$pgtype = 'DNSBL'; $l_pgtype = 'dnsbl';
 	$pg_url = '/pfblockerng/pfblockerng_dnsbl.php';
 }
@@ -227,7 +211,6 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6' || $gtype == 'geoip') {
 }
 else {
 	$tab_array[]	= array(gettext('DNSBL Feeds'),		$active['dnsbl'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
-	$tab_array[]	= array(gettext('DNSBL EasyList'),	$active['easylist'],	'/pfblockerng/pfblockerng_category.php?type=easylist');
 	$tab_array[]	= array(gettext('DNSBL Category'),	false,			'/pfblockerng/pfblockerng_blacklist.php');
 }
 display_top_tabs($tab_array, true);
@@ -446,9 +429,9 @@ if ($gtype == 'geoip') {
 			Country ISOs can also be defined in the IPv4/6 Tabs (Refer to blue infoblocks for more details)<br /><br />
 			<strong>Setting changes are applied via CRON or \'Force Update|Reload\' only!</strong></p>');
 }
-elseif ($gtype == 'dnsbl' || $gtype == 'easylist') {
+elseif ($gtype == 'dnsbl') {
 	print_callout('<p><strong>Setting changes are applied via CRON or \'Force Update|Reload\' only!</strong><br /><br />
-			DNSBL Category and EasyList(s) are processed first, followed by the DNSBL Groups.<br />
+			DNSBL Category feeds are processed first, followed by the DNSBL Groups.<br />
 			DNSBL Groups can be prioritized first, by selecting the \'Group Order\' option.</p>');
 }
 else {
