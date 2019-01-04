@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -226,7 +226,6 @@ display_top_tabs($tab_array, true);
 
 $tab_array	= array();
 $tab_array[]	= array(gettext('DNSBL Feeds'),		false,	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
-$tab_array[]	= array(gettext('DNSBL EasyList'),	false,	'/pfblockerng/pfblockerng_category.php?type=easylist');
 $tab_array[]	= array(gettext('DNSBL Category'),	true,	'/pfblockerng/pfblockerng_blacklist.php');
 display_top_tabs($tab_array, true);
 
@@ -444,7 +443,7 @@ foreach ($blacklist_types as $type => $setting) {
 
 print($form);
 print_callout('<p><strong>Setting changes are applied via CRON or \'Force Update|Reload\' only!</strong><br /><br />
-		DNSBL Categories and EasyList(s) are processed first, followed by the DNSBL Groups.<br />
+		DNSBL Category Feeds are processed first, followed by the DNSBL Groups.<br />
 		DNSBL Groups can be prioritized first, by selecting the \'Group Order\' option.</p>');
 ?>
 

@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -272,7 +272,7 @@ $section->addInput(new Form_Select(
 	[	'disabled' => 'Disabled', '24hour' => 'Enabled - ASN entries cached for 24 hours', '12hour' => 'Enabled - ASN entries cached for 12 hours',
 		'4hour' => 'Enabled - ASN entries cached for 4 hours', '1hour' => 'Enabled - ASN entries cached for 1 hour' ]
 ))->setHelp('Query for the ASN (BGPview.io API) for each block/reject/permit/match IP entry. ASN values are cached as per the defined selection.')
-  ->setAttribute('style', 'width: auto'); 
+  ->setAttribute('style', 'width: auto');
 
 // Create page anchor for IP Suppression List
 $section->addInput(new Form_StaticText(
@@ -388,7 +388,7 @@ $section->addInput(new Form_Select(
 	'autorule_suffix',
 	'Firewall \'Auto\' Rule Suffix',
 	$pconfig['autorule_suffix'],
-	[ 'autorule' => 'auto rule', 'standard' => 'Null (no suffix)', 'ar', 'AR' ]
+	[ 'autorule' => 'auto rule', 'standard' => 'Null (no suffix)', 'ar' => 'AR' ]
 ))->setHelp('Default: <strong>auto rule</strong><br />Select \'Auto Rule\' description suffix for auto defined rules. pfBlockerNG must be disabled to modify suffix.')
   ->setAttribute('style', 'width: auto');
 

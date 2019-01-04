@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -64,36 +64,29 @@ if (isset($argv[1])) {
 // Extras - MaxMind/TOP1M Download URLs/filenames/settings
 $pfb['extras']			= array();
 $pfb['extras'][0]		= array();
-$pfb['extras'][0]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz';
-$pfb['extras'][0]['file_dwn']	= 'GeoIP.dat.gz';
-$pfb['extras'][0]['file']	= 'GeoIP.dat';
+$pfb['extras'][0]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz';
+$pfb['extras'][0]['file_dwn']	= 'GeoLite2-Country.tar.gz';
+$pfb['extras'][0]['file']	= 'GeoLite2-Country.mmdb';
 $pfb['extras'][0]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][0]['type']	= 'geoip';
 
 $pfb['extras'][1]		= array();
-$pfb['extras'][1]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz';
-$pfb['extras'][1]['file_dwn']	= 'GeoIPv6.dat.gz';
-$pfb['extras'][1]['file']	= 'GeoIPv6.dat';
+$pfb['extras'][1]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip';
+$pfb['extras'][1]['file_dwn']	= 'GeoLite2-Country-CSV.zip';
+$pfb['extras'][1]['file']	= '';
 $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][1]['type']	= 'geoip';
 
-$pfb['extras'][2]		= array();
-$pfb['extras'][2]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip';
-$pfb['extras'][2]['file_dwn']	= 'GeoLite2-Country-CSV.zip';
-$pfb['extras'][2]['file']	= '';
-$pfb['extras'][2]['folder']	= "{$pfb['geoipshare']}";
-$pfb['extras'][2]['type']	= 'geoip';
-
-$pfb['extras'][3]			= array();
+$pfb['extras'][2]			= array();
 if ($pfb['dnsbl_alexatype'] == 'Alexa') {
-	$pfb['extras'][3]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
+	$pfb['extras'][2]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
 } else {
-	$pfb['extras'][3]['url']	= 'https://s3-us-west-1.amazonaws.com/umbrella-static/top-1m.csv.zip';
+	$pfb['extras'][2]['url']	= 'https://s3-us-west-1.amazonaws.com/umbrella-static/top-1m.csv.zip';
 }
-$pfb['extras'][3]['file_dwn']	= 'top-1m.csv.zip';
-$pfb['extras'][3]['file']	= 'top-1m.csv';
-$pfb['extras'][3]['folder']	= "{$pfb['dbdir']}";
-$pfb['extras'][3]['type']	= 'top1m';
+$pfb['extras'][2]['file_dwn']	= 'top-1m.csv.zip';
+$pfb['extras'][2]['file']	= 'top-1m.csv';
+$pfb['extras'][2]['folder']	= "{$pfb['dbdir']}";
+$pfb['extras'][2]['type']	= 'top1m';
 
 
 if ($argv[1] == 'bl' || $argv[1] == 'bls') {
@@ -163,12 +156,12 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 
 			// If 'General Tab' skip MaxMind download setting if checked, only download binary updates for Reputation/Alerts page.
 			if (!empty($pfb['cc'])) {
-				unset($pfb['extras'][2]);
+				unset($pfb['extras'][1]);
 			}
 
 			// Skip TOP1M update, if disabled
 			if ($pfb['dnsbl_alexa'] != 'on') {
-				unset($pfb['extras'][3]);
+				unset($pfb['extras'][2]);
 			}
 
 			// Proceed with conversion of MaxMind files on download success
@@ -179,18 +172,18 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 
 			break;
 		case 'bu':		// Update MaxMind binary database files only.
-			unset($pfb['extras'][2], $pfb['extras'][3]);
+			unset($pfb['extras'][1], $pfb['extras'][2]);
 			pfblockerng_download_extras();
 			break;
 		case 'al':		// Update TOP1M database only.
-			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2]);
+			unset($pfb['extras'][0], $pfb['extras'][1]);
 			pfblockerng_download_extras();
 			break;
 		case 'bl':		// Update DNSBL Category database(s) only.
 		case 'bls':
-			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2], $pfb['extras'][3]);
+			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2]);
 
-			if (empty($pfb['extras'][4])) {
+			if (empty($pfb['extras'][3])) {
 				break;
 			}
 
@@ -441,7 +434,7 @@ function pfblockerng_sync_cron() {
 	$log = " CRON  PROCESS  START [ NOW ]\n";
 	pfb_logger("{$log}", 1);
 
-	$list_type = array('pfblockernglistsv4' => '_v4', 'pfblockernglistsv6' => '_v6', 'pfblockerngdnsbl' => '_v4', 'pfblockerngdnsbleasylist' => '_v4');
+	$list_type = array('pfblockernglistsv4' => '_v4', 'pfblockernglistsv6' => '_v6', 'pfblockerngdnsbl' => '_v4');
 	foreach ($list_type as $ltype => $vtype) {
 		if (!empty($config['installedpackages'][$ltype]['config'])) {
 			foreach ($config['installedpackages'][$ltype]['config'] as $list) {
@@ -449,7 +442,7 @@ function pfblockerng_sync_cron() {
 					foreach ($list['row'] as $row) {
 						if (!empty($row['url']) && $row['state'] != 'Disabled') {
 
-							if (in_array($ltype, array('pfblockerngdnsbl', 'pfblockerngdnsbleasylist'))) {
+							if ($ltype == 'pfblockerngdnsbl') {
 								$header = "{$row['header']}";
 							} else {
 								$header = "{$row['header']}{$vtype}";
@@ -1292,7 +1285,7 @@ $php_data = <<<EOF
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -1784,7 +1777,7 @@ $php_rep = <<<'EOF'
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
