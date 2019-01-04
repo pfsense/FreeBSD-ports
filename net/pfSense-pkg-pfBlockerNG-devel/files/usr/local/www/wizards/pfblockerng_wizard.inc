@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,10 +111,8 @@ function step4_submitphpaction() {
 	pfb_clear_contents();
 
 	// Add default pfBlockerNG configuration
-	init_config_arr(array('installedpackages'));
-	$new_config = &$config['installedpackages'];
-
 	init_config_arr(array('installedpackages', 'pfblockerng', 'config', 0));
+	$new_config = &$config['installedpackages'];
 	$new_config['pfblockerng']['config'][0]['enable_cb']				= 'on';
 	$new_config['pfblockerng']['config'][0]['pfb_keep']				= 'on';
 
@@ -136,27 +134,29 @@ function step4_submitphpaction() {
 	// Default DNSBL Whitelist
 	$new_config['pfblockerngdnsblsettings']['config'][0]['suppression']		= 
 
-"czMuYW1hem9uYXdzLmNvbQ0KczMtMS5hbWF6b25hd3MuY29tICMgQ05BTUUgZm9yIChzMy5hbWF6b25hd3MuY29tKQ0KLmdpdGh1Yi5jb20NCi5naX
-RodWJ1c2VyY29udGVudC5jb20gDQpnaXRodWIubWFwLmZhc3RseS5uZXQgIyBDTkFNRSBmb3IgKHJhdy5naXRodWJ1c2VyY29udGVudC5jb20pDQouYXBwbGUuY29tIA0KLnNvdXJjZWZvcmdlLm5ldA0KLmZsc
-y1uYS5hbWF6b24uY29tICMgYWxleGENCi5jb250cm9sLmtvY2hhdmEuY29tICMgYWxleGEgMg0KLmRldmljZS1tZXRyaWNzLXVzLTIuYW1hem9uLmNvbSAjIGFsZXhhIDMNCi5hbWF6b24tYWRzeXN0ZW0uY29t
-ICMgYW1hem9uIGFwcCBhZHMNCi5weC5tb2F0YWRzLmNvbSAjIGFtYXpvbiBhcHAgMg0KLndpbGRjYXJkLm1vYXRhZHMuY29tLmVkZ2VrZXkubmV0ICMgQ05BTUUgZm9yIChweC5tb2F0YWRzLmNvbSkNCi5lMTM
-xMzYuZy5ha2FtYWllZGdlLm5ldCAjIENOQU1FIGZvciAocHgubW9hdGFkcy5jb20pDQouc2VjdXJlLWdsLmltcndvcmxkd2lkZS5jb20gIyBhbWF6b24gYXBwIDMNCi5waXhlbC5hZHNhZmVwcm90ZWN0ZWQuY2
-9tICMgYW1hem9uIGFwcCA0DQouYW55Y2FzdC5waXhlbC5hZHNhZmVwcm90ZWN0ZWQuY29tICMgQ05BTUUgZm9yIChwaXhlbC5hZHNhZmVwcm90ZWN0ZWQuY29tKQ0KLmJzLnNlcnZpbmctc3lzLmNvbSAjIGFtY
-XpvbiBhcHAgNQ0KLmJzLmV5ZWJsYXN0ZXIuYWthZG5zLm5ldCAjIENOQU1FIGZvciAoYnMuc2VydmluZy1zeXMuY29tKQ0KLmJzbGEuZXllYmxhc3Rlci5ha2FkbnMubmV0ICMgQ05BTUUgZm9yIChicy5zZXJ2
-aW5nLXN5cy5jb20pDQouYWRzYWZlcHJvdGVjdGVkLmNvbSAjIGFtYXpvbiBhcHAgNg0KLmFueWNhc3Quc3RhdGljLmFkc2FmZXByb3RlY3RlZC5jb20gIyBDTkFNRSBmb3IgKHN0YXRpYy5hZHNhZmVwcm90ZWN
-0ZWQuY29tKQ0KZ29vZ2xlLmNvbQ0Kd3d3Lmdvb2dsZS5jb20NCnlvdXR1YmUuY29tDQp3d3cueW91dHViZS5jb20NCnlvdXR1YmUtdWkubC5nb29nbGUuY29tICMgQ05BTUUgZm9yICh5b3V0dWJlLmNvbSkNCn
-N0YWNrb3ZlcmZsb3cuY29tDQp3d3cuc3RhY2tvdmVyZmxvdy5jb20NCmRyb3Bib3guY29tDQp3d3cuZHJvcGJveC5jb20NCnd3dy5kcm9wYm94LWRucy5jb20gIyBDTkFNRSBmb3IgKGRyb3Bib3guY29tKQ0KL
-mFkc2FmZXByb3RlY3RlZC5jb20NCmNvbnRyb2wua29jaGF2YS5jb20NCnNlY3VyZS1nbC5pbXJ3b3JsZHdpZGUuY29tDQpwYnMudHdpbWcuY29tICMgdHdpdHRlciBpbWFnZXMNCnd3dy5wYnMudHdpbWcuY29t
-ICMgdHdpdHRlciBpbWFnZXMNCmNzMTk2LndhYy5lZGdlY2FzdGNkbi5uZXQgIyBDTkFNRSBmb3IgKHBicy50d2ltZy5jb20pDQpjczItd2FjLmFwci04MzE1LmVkZ2VjYXN0ZG5zLm5ldCAjIENOQU1FIGZvciA
-ocGJzLnR3aW1nLmNvbSkNCmNzMi13YWMtdXMuODMxNS5lY2Rucy5uZXQgIyBDTkFNRSBmb3IgKHBicy50d2ltZy5jb20pDQpjczQ1LndhYy5lZGdlY2FzdGNkbi5uZXQgIyBDTkFNRSBmb3IgKHBicy50d2ltZy
-5jb20p"; 
+"czMuYW1hem9uYXdzLmNvbQ0KczMtMS5hbWF6b25hd3MuY29tICMgQ05BTUUgZm9yIChzMy5hbWF6b25hd3MuY29tKQ0KLmdpdGh1Yi5jb20NCi5naXRodWJ1c2VyY29udGVudC5jb20gDQp
+naXRodWIubWFwLmZhc3RseS5uZXQgIyBDTkFNRSBmb3IgKHJhdy5naXRodWJ1c2VyY29udGVudC5jb20pDQouZ2l0bGFiLmNvbQ0KLmFwcGxlLmNvbSANCi5zb3VyY2Vmb3JnZS5uZXQNCi5mbHMtbmEuYW1hem9uLmNvbSAjIGFsZXhhDQouY29udHJ
+vbC5rb2NoYXZhLmNvbSAjIGFsZXhhIDINCi5kZXZpY2UtbWV0cmljcy11cy0yLmFtYXpvbi5jb20gIyBhbGV4YSAzDQouYW1hem9uLWFkc3lzdGVtLmNvbSAjIGFtYXpvbiBhcHAgYWRzDQoucHgubW9hdGFkcy5jb20gIyBhbWF6b24gYXBwIDINCi5
+3aWxkY2FyZC5tb2F0YWRzLmNvbS5lZGdla2V5Lm5ldCAjIENOQU1FIGZvciAocHgubW9hdGFkcy5jb20pDQouZTEzMTM2LmcuYWthbWFpZWRnZS5uZXQgIyBDTkFNRSBmb3IgKHB4Lm1vYXRhZHMuY29tKQ0KLnNlY3VyZS1nbC5pbXJ3b3JsZHdpZGU
+uY29tICMgYW1hem9uIGFwcCAzDQoucGl4ZWwuYWRzYWZlcHJvdGVjdGVkLmNvbSAjIGFtYXpvbiBhcHAgNA0KLmFueWNhc3QucGl4ZWwuYWRzYWZlcHJvdGVjdGVkLmNvbSAjIENOQU1FIGZvciAocGl4ZWwuYWRzYWZlcHJvdGVjdGVkLmNvbSkNCi5
+icy5zZXJ2aW5nLXN5cy5jb20gIyBhbWF6b24gYXBwIDUNCi5icy5leWVibGFzdGVyLmFrYWRucy5uZXQgIyBDTkFNRSBmb3IgKGJzLnNlcnZpbmctc3lzLmNvbSkNCi5ic2xhLmV5ZWJsYXN0ZXIuYWthZG5zLm5ldCAjIENOQU1FIGZvciAoYnMuc2V
+ydmluZy1zeXMuY29tKQ0KLmFkc2FmZXByb3RlY3RlZC5jb20gIyBhbWF6b24gYXBwIDYNCi5hbnljYXN0LnN0YXRpYy5hZHNhZmVwcm90ZWN0ZWQuY29tICMgQ05BTUUgZm9yIChzdGF0aWMuYWRzYWZlcHJvdGVjdGVkLmNvbSkNCmdvb2dsZS5jb20
+NCnd3dy5nb29nbGUuY29tDQp5b3V0dWJlLmNvbQ0Kd3d3LnlvdXR1YmUuY29tDQp5b3V0dWJlLXVpLmwuZ29vZ2xlLmNvbSAjIENOQU1FIGZvciAoeW91dHViZS5jb20pDQpzdGFja292ZXJmbG93LmNvbQ0Kd3d3LnN0YWNrb3ZlcmZsb3cuY29tDQp
+kcm9wYm94LmNvbQ0Kd3d3LmRyb3Bib3guY29tDQp3d3cuZHJvcGJveC1kbnMuY29tICMgQ05BTUUgZm9yIChkcm9wYm94LmNvbSkNCi5hZHNhZmVwcm90ZWN0ZWQuY29tDQpjb250cm9sLmtvY2hhdmEuY29tDQpzZWN1cmUtZ2wuaW1yd29ybGR3aWR
+lLmNvbQ0KcGJzLnR3aW1nLmNvbSAjIHR3aXR0ZXIgaW1hZ2VzDQp3d3cucGJzLnR3aW1nLmNvbSAjIHR3aXR0ZXIgaW1hZ2VzDQpjczE5Ni53YWMuZWRnZWNhc3RjZG4ubmV0ICMgQ05BTUUgZm9yIChwYnMudHdpbWcuY29tKQ0KY3MyLXdhYy5hcHI
+tODMxNS5lZGdlY2FzdGRucy5uZXQgIyBDTkFNRSBmb3IgKHBicy50d2ltZy5jb20pDQpjczItd2FjLXVzLjgzMTUuZWNkbnMubmV0ICMgQ05BTUUgZm9yIChwYnMudHdpbWcuY29tKQ0KY3M0NS53YWMuZWRnZWNhc3RjZG4ubmV0ICMgQ05BTUUgZm9
+yIChwYnMudHdpbWcuY29tKQ==";
 
 	// Selected Alias/Groups to add to default installation
 	$new = array();
 	$new['pfblockernglistsv4']		= $new['pfblockerngdnsbl'] = $new['pfblockerngdnsbl'] = array();
 	$new['pfblockernglistsv4']['PRI1']	= $feed_info_raw['ipv4']['PRI1'];
+	$new['pfblockerngdnsbl']['EasyList']	= $feed_info_raw['dnsbl']['EasyList'];
 	$new['pfblockerngdnsbl']['ADs']		= $feed_info_raw['dnsbl']['ADs'];
 	$new['pfblockerngdnsbl']['Malicious']	= $feed_info_raw['dnsbl']['Malicious'];
+
+	// Use only EasyList/EasyPrivacy configuration 
+	$new['pfblockerngdnsbl']['EasyList']['feeds'] = array_slice($new['pfblockerngdnsbl']['EasyList']['feeds'], 0, 2);
 
 	foreach ($new as $key => $data) {
 		foreach ($data as $alias => $info) {
@@ -173,7 +173,7 @@ ocGJzLnR3aW1nLmNvbSkNCmNzMi13YWMtdXMuODMxNS5lY2Rucy5uZXQgIyBDTkFNRSBmb3IgKHBicy5
 					$add['row'] = array();
 				}
 				$add['row'][] = array(	'format'	=> 'auto',
-							'state'		=> '<![CDATA[Enabled]]>',
+							'state'		=> 'Enabled',
 							'url'		=> $row['url'],
 							'header'	=> $row['header']);
 			}
@@ -192,36 +192,6 @@ ocGJzLnR3aW1nLmNvbSkNCmNzMi13YWMtdXMuODMxNS5lY2Rucy5uZXQgIyBDTkFNRSBmb3IgKHBicy5
 			$new_config[$key]['config'][] = $add;
 		}
 	}
-
-	// Add EasyList and EasyPrivacy
-	$add			= array();
-	$add['aliasname']	= 'EasyList';
-	$add['description']	= 'pfBlockerNG EasyList';
-
-	$counter = 0;
-	foreach($pfb['def_easylist'] as $header => $url) {
-		if ($counter == 0) {
-			$easycat = 'ea,eap,aa,aap';
-		} elseif ($counter == 1) {
-			$easycat = 'epts,epti';
-		} else {
-			break;
-		}
-		$add['row'][] = array(	'format'	=> 'auto',
-					'state'		=> '<![CDATA[Enabled]]>',
-					'url'		=> $url,
-					'header'	=> $header,
-					'easycat'	=> $easycat);
-		$counter++;
-	}
-
-	$add['action']	= 'unbound';
-	$add['cron']	= 'EveryDay';
-	$add['dow']	= '1';
-	$add['logging']	= 'enabled';
-	$add['order']	= 'default';
-
-	$new_config['pfblockerngdnsbleasylist']['config'][] = $add;
 
 	if (isset($config['pfblockerng_wizard'])) {
 		unset($config['pfblockerng_wizard']);
