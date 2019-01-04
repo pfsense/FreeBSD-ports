@@ -1,6 +1,6 @@
 #!/bin/sh
 # pfBlockerNG IP Reputation Script - By BBcan177@gmail.com - 04-12-14
-# Copyright (c) 2015-2016 BBcan177@gmail.com
+# Copyright (c) 2015-2019 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as
@@ -21,7 +21,7 @@ now=$(/bin/date +%m/%d/%y' '%T)
 pathgrepcidr="/usr/local/bin/grepcidr"
 pathaggregate="/usr/local/bin/aggregate"
 pathmwhois="/usr/local/bin/mwhois"
-pathgeoip="/usr/local/bin/geoiplookup"
+pathgeoip="/usr/local/bin/mmdblookup"
 pathgunzip=/usr/bin/gunzip
 pathhost=/usr/bin/host
 pathtar=/usr/bin/tar
@@ -39,7 +39,7 @@ etmatch="$(echo ${9} | sed 's/,/, /g')"
 
 # File Locations
 aliasarchive="/usr/local/etc/aliastables.tar.bz2"
-pathgeoipdat="/usr/local/share/GeoIP/GeoIP.dat"
+pathgeoipdat="/usr/local/share/GeoIP/GeoLite2-Country.mmdb"
 pfbsuppression=/var/db/pfblockerng/pfbsuppression.txt
 pfbalexa=/var/db/pfblockerng/pfbalexawhitelist.txt
 masterfile=/var/db/pfblockerng/masterfile
@@ -563,20 +563,20 @@ whoisconvert() {
 # Function to check for Reputation application dependencies.
 reputation_depends() {
 	if [ ! -x "${pathgeoip}" ]; then
-		log="Application [ GeoIP ] Not found, cannot proceed. [ ${now} ]"
+		log="Application [ mmdblookup ] Not found, cannot proceed. [ ${now} ]"
 		echo "${log}" | tee -a "${errorlog}"
 		return
 	fi
 
-	# Download MaxMind GeoIP.dat on first install.
+	# Download MaxMind GeoLite2-Country.mmdb on first install.
 	if [ ! -f "${pathgeoipdat}" ]; then
-		echo "Downloading [ MaxMind GeoIP.dat ] [ ${now} ]" >> "${geoiplog}"
+		echo "Downloading [ MaxMind GeoLite2-Country.mmdb ] [ ${now} ]" >> "${geoiplog}"
 		/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php bu
 	fi
 
-	# Exit if GeoIP.dat is not found
+	# Exit if GeoLite2-Country.mmdb is not found
 	if [ ! -f "${pathgeoipdat}" ]; then
-		log="Database GeoIP [ GeoIP.Dat ] not found. Reputation function terminated."
+		log="Database GeoIP [ GeoLite2-Country.mmdb ] not found. Reputation function terminated."
 		echo "${log}" | tee -a "${errorlog}"
 		return
 	fi
@@ -595,7 +595,7 @@ reputation_max() {
 	# Classify repeat offenders by Country code
 	if [ ! -z "${data}" ]; then
 		for ip in ${data}; do
-			ccheck="$(${pathgeoip} -f ${pathgeoipdat} ${ip}.1 | cut -c 24-25)"
+			ccheck="$(${pathgeoip} -f ${pathgeoipdat} -i ${ip}.1 country iso_code 2>&1 | grep -v 'Could\|Got\|^$' | cut -d '"' -f2)"
 			case "${cc}" in
 				*$ccheck*)
 					countr="$((countr + 1))"
@@ -681,7 +681,7 @@ reputation_dmax() {
 	if [ ! -z "${data}" ]; then
 		echo '  Classifying repeat offenders by GeoIP'
 		for ip in ${data}; do
-			ccheck="$(${pathgeoip} -f ${pathgeoipdat} ${ip}.1 | cut -c 24-25)"
+			ccheck="$(${pathgeoip} -f ${pathgeoipdat} -i ${ip}.1 country iso_code 2>&1 | grep -v 'Could\|Got\|^$' | cut -d '"' -f2)"
 			case "${cc}" in
 				*$ccheck*)
 					countr="$((countr + 1))"
