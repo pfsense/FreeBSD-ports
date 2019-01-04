@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mkvtoolnix
-PORTVERSION=	28.2.0
+PORTVERSION=	29.0.0
+PORTREVISION=	2
 CATEGORIES=	multimedia audio
 MASTER_SITES=	http://www.bunkus.org/videotools/mkvtoolnix/sources/ \
 		https://mkvtoolnix.download/sources/
@@ -25,7 +26,8 @@ LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 		libpugixml.so:textproc/pugixml \
 		libmatroska.so:multimedia/libmatroska
 
-USES=		compiler:c++14-lang iconv localbase pkgconfig tar:xz
+USES=		compiler:c++17-lang iconv localbase pkgconfig tar:xz
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	ac_cv_path_PO4A=no
 CONFIGURE_ARGS=	--with-boost=${LOCALBASE} \
@@ -50,13 +52,19 @@ NLS_CONFIGURE_WITH=	gettext
 
 QT5_DESC=	Build and install GUI application (Qt 5)
 QT5_USES=	desktop-file-utils qt:5 shared-mime-info
-QT5_USE=	QT=buildtools_build,concurrent,core,gui,multimedia,network,quick,widgets
+QT5_USE=	QT=buildtools_build,concurrent,core,dbus,declarative,gui,multimedia,network,widgets
 QT5_CONFIGURE_ENABLE=	qt
 QT5_BUILD_DEPENDS=	qmake:devel/qt5-qmake
 QT5_LIB_DEPENDS=	libcmark.so:textproc/cmark
 
 MANTRANS_DESC=		Build and install manpage translations
 MANTRANS_BUILD_DEPENDS=	po4a:textproc/po4a
+
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} != clang
+USE_CXXSTD=	c++17
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/LIBS="-lintl/s,-liconv,$$ICONV_LIBS,' \
@@ -69,4 +77,4 @@ post-configure-NLS-off:
 	@${REINPLACE_CMD} -e 's|#define HAVE_LIBINTL_H|//#define HAVE_LIBINTL_H|g' ${WRKSRC}/config.h
 	@${REINPLACE_CMD} -e 's|S["LIBINTL_LIBS"]=|#S["LIBINTL_LIBS"]=|g' ${WRKSRC}/config.status
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

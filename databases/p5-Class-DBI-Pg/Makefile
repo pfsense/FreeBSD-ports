@@ -3,7 +3,7 @@
 
 PORTNAME=	Class-DBI-Pg
 PORTVERSION=	0.09
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN/Class/DMAKI
 PKGNAMEPREFIX=	p5-
@@ -11,9 +11,9 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extensions to Class::DBI for PostgreSQL
 
-BUILD_DEPENDS=	p5-Class-DBI>=0:databases/p5-Class-DBI \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Class-DBI>=0:databases/p5-Class-DBI \
 		p5-DBD-Pg>=0:databases/p5-DBD-Pg
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	modbuild

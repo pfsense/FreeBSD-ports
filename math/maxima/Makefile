@@ -3,6 +3,7 @@
 
 PORTNAME=	maxima
 PORTVERSION=	5.41.0
+PORTREVISION=	1
 CATEGORIES=	math lisp tk
 MASTER_SITES=	SF/maxima/Maxima-source/${PORTVERSION}-source
 
@@ -25,7 +26,9 @@ CONFIGURE_ARGS=	--with-posix-shell=/bin/sh \
 		${LISPSELECT}
 TEST_TARGET=	check
 
-INFO=		maxima imaxima xmaxima
+INFO=		maxima imaxima xmaxima \
+		abs_integrate drawutils \
+		kovacicODE logic
 
 PLIST_SUB=	BINDIR=${BINDIRECTORY}
 PLIST_SUB+=	LISPBIN=${LISPBINARY}
@@ -74,12 +77,6 @@ BINDIRECTORY=	binary-sbcl
 #LISPBINARY is null so fudge this so deinstall works cleanly
 PLIST_SUB+=	LISPBINARY="@comment "
 MAXIMABINARY=	maxima_core
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-# The older makeinfo from the base fails in 10.3
-BUILD_DEPENDS+=	${LOCALBASE}/bin/makeinfo:print/texinfo
-CONFIGURE_ENV+=	MAKEINFO="${LOCALBASE}/bin/makeinfo"
 .endif
 
 post-patch:

@@ -2,17 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	simlib
-PORTVERSION=	3.02
-PORTREVISION=	1
+DISTVERSION=	3.06
+DISTVERSIONSUFFIX=	-20181003
 CATEGORIES=	science
 MASTER_SITES=	http://www.fit.vutbr.cz/~peringer/SIMLIB/source/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-20111030
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SIMulation LIBrary for C++ programming language
 
+LICENSE=	LGPL20
+
 USES=		gmake
 USE_LDCONFIG=	yes
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 CXXFLAGS+=	-fPIC
@@ -22,7 +24,7 @@ NOT_FOR_ARCHS_REASON=	contains not working ${ARCH}-dependent assembly code
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1101000
+.if ${OPSYS} == FreeBSD
 # nm crashes during the build:
 # Assertion failed: (ddata->output.size > 0), function cpp_demangle_read_sname, file /usr/src/contrib/elftoolchain/libelftc/libelftc_dem_gnu3.c, line 2137.
 USE_BINUTILS=	yes

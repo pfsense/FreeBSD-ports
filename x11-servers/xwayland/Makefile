@@ -2,12 +2,16 @@
 
 PORTNAME=	xwayland
 PORTVERSION=	1.19.1
+# This is inherited from x11-servers/xorg-server
+# Ensure it does not go backwards when bumping
+PORTREVISION=	11
 
 COMMENT=	X Clients under Wayland
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/wayland-protocols.pc:graphics/wayland-protocols
+BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/wayland-protocols.pc:graphics/wayland-protocols \
+		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 		libinput.so:x11/libinput
 

@@ -3,14 +3,12 @@
 
 PORTNAME=	gearmand
 PORTVERSION=	1.0.6
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	devel
 MASTER_SITES=	http://launchpad.net/gearmand/1.0/${PORTVERSION}/+download/
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	Gearman C Server and Library
-
-BROKEN_sparc64=		fails to build: cannot link with boost
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR}
 LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs \
@@ -23,7 +21,6 @@ USERS=		gearmand
 GROUPS=		gearmand
 
 USES=		compiler:c++11-lang pathfix gmake perl5 python:build libtool
-USE_CXXSTD=	c++11
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

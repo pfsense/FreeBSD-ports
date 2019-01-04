@@ -3,6 +3,7 @@
 PORTNAME=	vulkan-loader
 DISTVERSIONPREFIX=sdk-
 DISTVERSION=	1.1.82.0
+PORTREVISION=	3
 CATEGORIES=	graphics devel
 
 MAINTAINER=	greg@unrelenting.technology
@@ -12,7 +13,7 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
 
-USES=		cmake:outsource compiler:c++11-lib pkgconfig python:3.4+,build
+USES=		cmake compiler:c++11-lib pkgconfig python:3.4+,build
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -23,7 +24,7 @@ CMAKE_ON=	CMAKE_SKIP_RPATH
 CMAKE_OFF=	BUILD_TESTS BUILD_WSI_MIR_SUPPORT
 
 OPTIONS_DEFINE=	XLIB XCB WAYLAND
-OPTIONS_DEFAULT=XLIB XCB
+OPTIONS_DEFAULT=XLIB XCB WAYLAND
 
 XLIB_DESC=	Build Xlib WSI (Window System Integration) support
 XCB_DESC=	Build XCB WSI (Window System Integration) support
@@ -36,7 +37,7 @@ XCB_CMAKE_BOOL=		BUILD_WSI_XCB_SUPPORT
 XCB_LIB_DEPENDS=	libX11-xcb.so:x11/libX11 \
 			libxcb.so:x11/libxcb
 WAYLAND_CMAKE_BOOL=	BUILD_WSI_WAYLAND_SUPPORT
-WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/mesa-libs
+WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland
 
 post-patch:
 # Non-x86 targets use C code, so don't abort without GNU as (e.g., on aarch64)

@@ -14,11 +14,14 @@ COMMENT=	Intel Cilk Runtime
 
 LICENSE=	BSD3CLAUSE
 
+DEPRECATED=	Cilk Plus is on its way out (both in GCC and the Intel compilers)
+EXPIRATION_DATE=2019-01-04
+
 ONLY_FOR_ARCHS=		amd64 i386 sparc64
 
 HG_REVISION=	004467
 
-USE_GCC=	yes
+USE_GCC=	7	# GCC 8 removed CilkPlus support
 
 USE_LDCONFIG=	yes
 WRKSRC=	${WRKDIR}/${PORTNAME}${PKGNAMESUFFIX}-src-${HG_REVISION}

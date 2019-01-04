@@ -39,7 +39,6 @@
     SUBDIR += ebook2cwgui
     SUBDIR += echolinux
     SUBDIR += efax
-    SUBDIR += efax-gtk
     SUBDIR += ems-flasher
     SUBDIR += fl_moxgen
     SUBDIR += flcluster
@@ -49,10 +48,8 @@
     SUBDIR += flwrap
     SUBDIR += freedv
     SUBDIR += gammu
-    SUBDIR += ge-x2212
     SUBDIR += geoid
     SUBDIR += gkermit
-    SUBDIR += gmfsk
     SUBDIR += gnocky
     SUBDIR += gnokii
     SUBDIR += gnuradio
@@ -60,7 +57,6 @@
     SUBDIR += gqrx
     SUBDIR += gr-osmosdr
     SUBDIR += grig
-    SUBDIR += gscmxx
     SUBDIR += gsmlib
     SUBDIR += gstreamer1-plugins-spandsp
     SUBDIR += gtkmmorse
@@ -68,7 +64,6 @@
     SUBDIR += hamfax
     SUBDIR += hamlib
     SUBDIR += hcidump
-    SUBDIR += hf
     SUBDIR += hidapi
     SUBDIR += hylafax
     SUBDIR += ibp
@@ -78,8 +73,6 @@
     SUBDIR += kb
     SUBDIR += kermit
     SUBDIR += klog
-    SUBDIR += kremotecontrol-kde4
-    SUBDIR += kvasd
     SUBDIR += libbtbb
     SUBDIR += libconcord
     SUBDIR += libfap
@@ -146,6 +139,7 @@
     SUBDIR += py-lirc
     SUBDIR += py-qt5-serialport
     SUBDIR += py-serial
+    SUBDIR += py-xmodem
     SUBDIR += pyla
     SUBDIR += qico
     SUBDIR += qpage
@@ -196,9 +190,7 @@
     SUBDIR += usbmuxd
     SUBDIR += viewfax
     SUBDIR += vrflash
-    SUBDIR += wsjt
     SUBDIR += wsjtx
-    SUBDIR += wspr
     SUBDIR += wwl
     SUBDIR += wy60
     SUBDIR += xastir

@@ -2,8 +2,7 @@
 #   $MCom: ports/finance/gnucash/Makefile,v 1.26 2008/12/31 03:25:18 mezz Exp $
 
 PORTNAME=	gnucash
-PORTVERSION=	3.2
-PORTREVISION=	5
+PORTVERSION=	3.4
 CATEGORIES=	finance gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION}
 
@@ -26,6 +25,37 @@ LIB_DEPENDS=	libgnome-keyring.so:security/libgnome-keyring \
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \
 		p5-Date-Manip>=0:devel/p5-Date-Manip \
 		p5-Finance-Quote>=0:finance/p5-Finance-Quote
+
+USES=		cmake:insource compiler:c++11-lib desktop-file-utils gettext-tools gnome libtool \
+		localbase perl5 pkgconfig shebangfix tar:bzip2
+USE_XORG=	x11
+USE_CXXSTD=	c++11
+USE_GNOME=	cairo gtk30 intltool libxml2 libxslt
+USE_LDCONFIG=	yes
+
+INSTALLS_ICONS=	yes
+CMAKE_ARGS=	-DCOMPILE_GSCHEMAS=OFF \
+		-DENABLE_BINRELOC=OFF
+SHEBANG_FILES=	common/gnc-test-env.pl libgnucash/quotes/gnc-fq-dump
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
+
+GLIB_SCHEMAS=	org.gnucash.dialogs.business.gschema.xml \
+		org.gnucash.dialogs.checkprinting.gschema.xml \
+		org.gnucash.dialogs.commodities.gschema.xml \
+		org.gnucash.dialogs.export.csv.gschema.xml \
+		org.gnucash.dialogs.gschema.xml \
+		org.gnucash.dialogs.import.csv.gschema.xml \
+		org.gnucash.dialogs.import.generic.gschema.xml \
+		org.gnucash.dialogs.import.qif.gschema.xml \
+		org.gnucash.dialogs.reconcile.gschema.xml \
+		org.gnucash.dialogs.sxs.gschema.xml \
+		org.gnucash.dialogs.totd.gschema.xml \
+		org.gnucash.general.finance-quote.gschema.xml \
+		org.gnucash.gschema.xml \
+		org.gnucash.history.gschema.xml \
+		org.gnucash.warnings.gschema.xml \
+		org.gnucash.window.pages.account.tree.gschema.xml \
+		org.gnucash.window.pages.gschema.xml
 
 OPTIONS_DEFINE=	AQBANKING DATABASE DOCS NLS OFX PYTHON TEST
 OPTIONS_DEFAULT=	AQBANKING OFX
@@ -55,36 +85,6 @@ PYTHON_USES=		python:3.3+
 TEST_BUILD_DEPENDS=	${NONEXISTENT}:devel/googlemock:build \
 			gtest-config:devel/googletest
 
-USES=		cmake compiler:c++11-lib desktop-file-utils gettext-tools libtool localbase \
-		perl5 pkgconfig shebangfix tar:bzip2
-USE_XORG=	x11
-USE_CXXSTD=	c++11
-INSTALLS_ICONS=	yes
-USE_GNOME+=	cairo gtk30 intltool libxml2 libxslt
-USE_LDCONFIG=	yes
-CMAKE_ARGS=	-DCOMPILE_GSCHEMAS=OFF \
-		-DENABLE_BINRELOC=OFF
-SHEBANG_FILES=	common/gnc-test-env.pl libgnucash/quotes/gnc-fq-dump
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
-
-GLIB_SCHEMAS=	org.gnucash.dialogs.business.gschema.xml \
-		org.gnucash.dialogs.checkprinting.gschema.xml \
-		org.gnucash.dialogs.commodities.gschema.xml \
-		org.gnucash.dialogs.export.csv.gschema.xml \
-		org.gnucash.dialogs.gschema.xml \
-		org.gnucash.dialogs.import.csv.gschema.xml \
-		org.gnucash.dialogs.import.generic.gschema.xml \
-		org.gnucash.dialogs.import.qif.gschema.xml \
-		org.gnucash.dialogs.reconcile.gschema.xml \
-		org.gnucash.dialogs.sxs.gschema.xml \
-		org.gnucash.dialogs.totd.gschema.xml \
-		org.gnucash.general.finance-quote.gschema.xml \
-		org.gnucash.gschema.xml \
-		org.gnucash.history.gschema.xml \
-		org.gnucash.warnings.gschema.xml \
-		org.gnucash.window.pages.account.tree.gschema.xml \
-		org.gnucash.window.pages.gschema.xml
-
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MTEST}
@@ -101,7 +101,11 @@ post-patch-TEST-off:
 
 post-install:
 	@(cd ${STAGEDIR}${DATADIR}/icons/hicolor && \
-		${RMDIR} 22x22 32x32 48x48 64x64 96x96 128x128 256x256 scalable)
+		${RMDIR} 16x16/apps 22x22/apps 22x22 24x24/apps 32x32/apps 32x32\
+		48x48/apps 48x48 64x64/apps 64x64 96x96/apps 96x96 \
+		128x128/apps 128x128 256x256/apps 256x256 scalable/apps scalable)
+	@(cd ${STAGEDIR}${PREFIX}/share/icons/hicolor && \
+		${RMDIR} 24x24/actions 16x16/actions)
 
 post-install-PYTHON-on:
 	@(cd ${STAGEDIR}${PREFIX} \

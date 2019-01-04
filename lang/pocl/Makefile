@@ -12,7 +12,6 @@ COMMENT=	POrtable Computing Language (POCL)
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_10=	pocl is not supported on 10.x
 ONLY_FOR_ARCHS=		amd64 i386
 ONLY_FOR_ARCHS_REASON=	only tested on x86
 
@@ -25,7 +24,7 @@ RUN_DEPENDS=	llvm${LLVM_VERSION}>=0:devel/llvm${LLVM_VERSION}
 
 LLVM_VERSION=	${MESA_LLVM_VER:U40}
 
-USES=		cmake:outsource localbase:ldflags ncurses pkgconfig
+USES=		cmake localbase:ldflags ncurses pkgconfig
 USE_CXXSTD=	gnu++11
 USE_LDCONFIG=	yes
 

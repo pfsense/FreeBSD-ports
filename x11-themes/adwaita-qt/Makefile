@@ -3,7 +3,7 @@
 
 PORTNAME=	adwaita-qt
 DISTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-themes
 
 MAINTAINER=	tcberner@FreeBSD.org
@@ -17,8 +17,10 @@ FLAVOR?=	${FLAVORS:[1]}
 qt4_PKGNAMESUFFIX=	4
 qt5_PKGNAMESUFFIX=	5
 
-USES=		cmake:outsource compiler:c++11-lib localbase pkgconfig
+USES=		cmake compiler:c++11-lib localbase pkgconfig
 .  if ${FLAVOR} == qt4
+DEPRECATED=	Qt4 has been EOL since december 2015
+EXPIRATION_DATE=2019-03-15
 USES+=		qt:4
 USE_QT=		corelib dbus gui \
 		moc_build rcc_build uic_build qmake_build

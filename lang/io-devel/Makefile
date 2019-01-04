@@ -3,6 +3,7 @@
 
 PORTNAME=	io
 PORTVERSION=	20180807
+PORTREVISION=	1
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-devel
 
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 CONFLICTS=	io-[0-9]*
 
-USES=		cmake:outsource,noninja compiler:c11
+USES=		cmake:noninja compiler:c11
 
 USE_LDCONFIG=	yes
 

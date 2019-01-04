@@ -4,7 +4,7 @@
 PORTNAME=		aseprite
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.2.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=		graphics
 
 MAINTAINER=		yuri@FreeBSD.org
@@ -14,6 +14,11 @@ LICENSE=		EULA
 LICENSE_NAME=		END-USER LICENSE AGREEMENT FOR ASEPRITE
 LICENSE_FILE=		${WRKSRC}/EULA.txt
 LICENSE_PERMS=		dist-mirror pkg-mirror auto-accept
+
+BROKEN_aarch64=		fails to compile: undefined reference to __va_copy
+BROKEN_armv6=		fails to compile: undefined reference to __va_copy
+BROKEN_armv7=		fails to compile: undefined reference to __va_copy
+BROKEN_sparc64=		fails to compile: vsnprintf is not a member of std
 
 EXTRACT_DEPENDS=	${NONEXISTENT}:x11/pixman:extract
 LIB_DEPENDS=		liballeg.so:devel/allegro \
@@ -30,13 +35,7 @@ LIB_DEPENDS=		liballeg.so:devel/allegro \
 			libtinyxml.so:textproc/tinyxml \
 			libzstd.so:archivers/zstd
 
-BROKEN_aarch64=		fails to compile: undefined reference to __va_copy
-BROKEN_armv6=		fails to compile: undefined reference to __va_copy
-BROKEN_armv7=		fails to compile: undefined reference to __va_copy
-BROKEN_powerpc64=	fails to compile: arena.h: Failed assertion: "arena_mapbits_allocated_get(chunk, pageind) != 0"
-BROKEN_sparc64=		fails to compile: vsnprintf is not a member of std
-
-USES=			cmake:outsource compiler:c++11-lib iconv:wchar_t jpeg localbase:ldflags pkgconfig ssl
+USES=			cmake compiler:c++11-lib iconv:wchar_t jpeg localbase:ldflags pkgconfig ssl
 USE_GITHUB=		yes
 GH_TUPLE=		aseprite:libarchive:c51dbfc:libarchive/third_party/libarchive
 GH_TUPLE+=		aseprite:clip:964a64a:clip/src/clip

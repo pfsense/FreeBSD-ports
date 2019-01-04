@@ -1,4 +1,5 @@
 etc/dbus-1/system.d/org.kde.ksysguard.processlisthelper.conf
+etc/xdg/libksysguard.categories
 include/ksysguard/ksgrd/SensorAgent.h
 include/ksysguard/ksgrd/SensorClient.h
 include/ksysguard/ksgrd/SensorManager.h
@@ -152,6 +153,7 @@ share/locale/ia/LC_MESSAGES/ksgrd.mo
 share/locale/ia/LC_MESSAGES/ksysguardlsofwidgets.mo
 share/locale/ia/LC_MESSAGES/processcore.mo
 share/locale/ia/LC_MESSAGES/processui.mo
+share/locale/id/LC_MESSAGES/ksgrd.mo
 share/locale/id/LC_MESSAGES/ksysguardlsofwidgets.mo
 share/locale/id/LC_MESSAGES/processcore.mo
 share/locale/id/LC_MESSAGES/processui.mo

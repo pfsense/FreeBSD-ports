@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based Upon pfBlocker
@@ -354,9 +354,7 @@ function pfBlockerNG_get_failed() {
 
 	if (!empty($results)) {
 
-		$list_type = array(	'pfblockernglistsv4' => 'ipv4', 'pfblockernglistsv6' => 'ipv6',
-					'pfblockerngdnsbl' => 'dnsbl', 'pfblockerngdnsbleasylist' => 'easylist');
-
+		$list_type = array( 'pfblockernglistsv4' => 'ipv4', 'pfblockernglistsv6' => 'ipv6', 'pfblockerngdnsbl' => 'dnsbl' );
 		$emheight = ($pfb['maxfails'] * 1.37) + 0.1;
 		$response .= "\r";
 		$response .= "<ol style=\"white-space: nowrap; text-overflow: ellipsis; max-height: {$emheight}em; overflow-y: scroll;\"><small>";

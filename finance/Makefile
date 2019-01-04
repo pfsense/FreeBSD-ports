@@ -40,7 +40,6 @@
     SUBDIR += homebank
     SUBDIR += jgnash
     SUBDIR += kmymoney
-    SUBDIR += kmymoney-kde4
     SUBDIR += ktoblzcheck
     SUBDIR += ledger
     SUBDIR += ledgersmb
@@ -95,7 +94,6 @@
     SUBDIR += p5-Math-Financial
     SUBDIR += p5-PayflowPro
     SUBDIR += pear_Payment_DTA
-    SUBDIR += php-tclink
     SUBDIR += prestashop
     SUBDIR += py-bitcoin
     SUBDIR += py-python-obelisk
@@ -104,6 +102,7 @@
     SUBDIR += py-vatnumber
     SUBDIR += py-ystockquote
     SUBDIR += qhacc
+    SUBDIR += qtbitcointrader
     SUBDIR += quantlib
     SUBDIR += quickfix
     SUBDIR += rubygem-money

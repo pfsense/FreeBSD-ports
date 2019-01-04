@@ -2,6 +2,7 @@
 
 PORTNAME=	pc-mixer
 PORTVERSION=	20171212
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	jmaloney@ixsystems.com
@@ -13,7 +14,7 @@ WRKSRC_SUBDIR=	src-qt5
 MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 
 MAKE_JOBS_UNSAFE=yes
-USES=		qmake qt:5 shebangfix tar:xz
+USES=		compiler:c++11-lang gl qmake qt:5 shebangfix tar:xz
 USE_LDCONFIG=	yes
 USE_QT=		core gui network svg linguist \
 		buildtools x11extras widgets multimedia

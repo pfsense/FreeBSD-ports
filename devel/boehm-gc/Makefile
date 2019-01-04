@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gc
-PORTVERSION=	7.6.8
+PORTVERSION=	8.0.2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.hboehm.info/gc/gc_source/ \
 		https://github.com/ivmai/bdwgc/releases/download/v${PORTVERSION}/
@@ -28,7 +28,8 @@ CPE_PRODUCT=	garbage_collector
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
-CONFIGURE_ARGS=	--enable-cplusplus --disable-static
+# NOTE: do not --disable-static, static is useful for e.g. lang/crystal
+CONFIGURE_ARGS=	--enable-cplusplus --enable-static
 MAKE_JOBS_UNSAFE=	yes
 
 WRKSRC=		${WRKDIR}/${DISTNAME:C/[a-z]$//}
@@ -41,15 +42,18 @@ CORDLIBS=	cord
 GCLIBS=		gc
 GCCPPLIBS=	gccpp
 PLIST=		${NONEXISTENT}
-PLIST_FILES=	${CORDLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so,} \
+PLIST_FILES=	${CORDLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.a,} \
+		${CORDLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so,} \
 		${CORDLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1,} \
-		${CORDLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1.3.1,} \
+		${CORDLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1.4.0,} \
+		${GCLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.a,} \
 		${GCLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so,} \
 		${GCLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1,} \
-		${GCLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1.3.4,} \
+		${GCLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1.4.2,} \
+		${GCCPPLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.a,} \
 		${GCCPPLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so,} \
 		${GCCPPLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1,} \
-		${GCCPPLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1.3.2,} \
+		${GCCPPLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1.4.0,} \
 		libdata/pkgconfig/bdw-gc-${GC_VARIANT}.pc
 RUN_DEPENDS+=	${LOCALBASE}/include/gc/gc.h:devel/boehm-gc
 . if ${GC_VARIANT} == "redirect"
@@ -59,6 +63,7 @@ CONFIGURE_ARGS+=	--disable-threads --enable-redirect-malloc
 CONFIGURE_ARGS+=	--enable-threads=posix --disable-redirect-malloc
 OPTIONS_DEFINE+=	PARALLEL_MARK
 PARALLEL_MARK_DESC=	Parallel-thread marking (faster for SMP)
+USES+=		compiler:c11
 . endif
 .else
 CONFIGURE_ARGS+=	--disable-threads --disable-redirect-malloc

@@ -1,6 +1,6 @@
---- Telegram/SourceFiles/settings.cpp.orig	2018-08-04 18:53:40 UTC
+--- Telegram/SourceFiles/settings.cpp.orig	2018-12-24 08:16:05 UTC
 +++ Telegram/SourceFiles/settings.cpp
-@@ -81,6 +81,8 @@ DBIPlatform gPlatform = dbipMac;
+@@ -77,6 +77,8 @@ DBIPlatform gPlatform = dbipMac;
  DBIPlatform gPlatform = dbipLinux64;
  #elif defined Q_OS_LINUX32
  DBIPlatform gPlatform = dbipLinux32;

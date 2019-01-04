@@ -1,0 +1,10 @@
+--- test/unit/CMakeLists.txt.orig	2018-11-04 01:48:17 UTC
++++ test/unit/CMakeLists.txt
+@@ -43,6 +43,7 @@ target_link_libraries(davix-unit-tests
+   gtest_main
+   ${CMAKE_THREAD_LIBS_INIT}
+   ${LIBSSL_PKG_LIBRARIES}
++  uuid
+ )
+ 
+ install(TARGETS davix-unit-tests

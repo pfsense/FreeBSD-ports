@@ -2,7 +2,7 @@
 
 PORTNAME=		webkit
 DISTVERSION=		5.212.0-alpha2
-PORTREVISION=		12
+PORTREVISION=		17
 CATEGORIES=		www
 MASTER_SITES=		https://github.com/annulen/${PORTNAME}/releases/download/${DISTNAME}/
 PKGNAMEPREFIX=		qt5-
@@ -19,12 +19,14 @@ LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig \
 			libpng.so:graphics/png \
 			libwebp.so:graphics/webp
 
-USES=			bison cmake:outsource gperf jpeg pathfix perl5 pkgconfig \
-			python:2.7,build qt:5 sqlite:3 tar:xz
+USES=			bison cmake compiler:c++11-lang gperf jpeg \
+			pathfix perl5 pkgconfig python:2.7,build qt:5 sqlite:3 \
+			tar:xz
 USE_GNOME=		glib20 libxml2 libxslt
+USE_PERL5=		build
 USE_GSTREAMER1=		core
-USE_QT=			core gui location network opengl printsupport \
-			qml quick sensors testlib webchannel widgets \
+USE_QT=			core declarative gui location network opengl printsupport \
+			sensors testlib webchannel widgets \
 			buildtools_build qmake_build
 USE_RUBY=		yes
 USE_XORG=		x11 xcomposite xrender

@@ -3,7 +3,7 @@
 
 PORTNAME=	xapian-bindings
 PORTVERSION=	1.2.25
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -15,14 +15,12 @@ COMMENT=	Bindings allowing Xapian to be used from various programming languages
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-IGNORE_WITH_PHP=	70 71 72
-
 LIB_DEPENDS=	libxapian.so:databases/xapian-core12
 
 CONFLICTS=	xapian-bindings
 
-OPTIONS_DEFINE=	DOCS LUA PHP PYTHON RUBY
-OPTIONS_DEFAULT=PHP PYTHON RUBY
+OPTIONS_DEFINE=	DOCS LUA PYTHON RUBY
+OPTIONS_DEFAULT=PYTHON RUBY
 OPTIONS_SUB=	yes
 
 # BROKEN: ruby.h: error: wrong number of arguments specified for 'deprecated' attribute
@@ -41,9 +39,6 @@ PORTDOCS=	*
 LUA_CONFIGURE_ENV=	LUA="${LUA_CMD}" LUA_INC="${LUA_INCDIR}" LUA_LIB="${LUA_MODLIBDIR}" LUA_SO=.so
 LUA_CONFIGURE_WITH=	lua
 LUA_USES=		lua
-PHP_CONFIGURE_ENV=	PHP_CONFIG=${LOCALBASE}/bin/php-config
-PHP_CONFIGURE_WITH=	php
-PHP_USES=		php:build
 PYTHON_CONFIGURE_ENV=	PYTHON_LIB=${PYTHON_SITELIBDIR}
 PYTHON_CONFIGURE_WITH=	python
 PYTHON_USES=		python:2.7

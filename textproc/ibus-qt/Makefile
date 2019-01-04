@@ -3,7 +3,7 @@
 
 PORTNAME=	ibus-qt
 PORTVERSION=	1.3.3
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME}/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-Source
@@ -14,6 +14,9 @@ COMMENT=	IBus input method module for Qt4
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 BUILD_DEPENDS=	ibus>=1.3.7:textproc/ibus
 RUN_DEPENDS=	ibus>=1.3.7:textproc/ibus
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
@@ -22,7 +25,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 GH_ACCOUNT=	ibus
 
 USE_QT=		gui dbus moc_build qmake_build moc_build uic_build rcc_build
-USES=		cmake compiler:c++11-lib pkgconfig qt:4
+USES=		cmake compiler:c++14-lang pkgconfig qt:4
 CMAKE_ARGS=	-DDOCDIR=${PREFIX}/share/doc/ibus-qt -DLIBDIR=lib
 USE_LDCONFIG=	yes
 CFLAGS+=	-I${LOCALBASE}/include

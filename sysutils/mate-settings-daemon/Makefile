@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-settings-daemon
-PORTVERSION=	1.20.1
+PORTVERSION=	1.20.3
 CATEGORIES=	sysutils mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -44,6 +44,7 @@ GLIB_SCHEMAS=	org.mate.SettingsDaemon.plugins.a11y-keyboard.gschema.xml \
 		org.mate.SettingsDaemon.plugins.background.gschema.xml \
 		org.mate.SettingsDaemon.plugins.clipboard.gschema.xml \
 		org.mate.SettingsDaemon.plugins.datetime.gschema.xml \
+		org.mate.SettingsDaemon.plugins.gschema.xml \
 		org.mate.SettingsDaemon.plugins.housekeeping.gschema.xml \
 		org.mate.SettingsDaemon.plugins.keybindings.gschema.xml \
 		org.mate.SettingsDaemon.plugins.keyboard.gschema.xml \

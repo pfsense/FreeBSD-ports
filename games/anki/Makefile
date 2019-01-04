@@ -3,6 +3,7 @@
 
 PORTNAME=	anki
 DISTVERSION=	2.0.52
+PORTREVISION=	1
 CATEGORIES=	games python
 MASTER_SITES=	https://apps.ankiweb.net/downloads/current/
 DISTNAME=	anki-${PORTVERSION}-source
@@ -13,6 +14,9 @@ COMMENT=	Flashcard trainer with spaced repetition
 
 LICENSE=	AGPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 RUN_DEPENDS=	lame:audio/lame \
 		mplayer:multimedia/mplayer \

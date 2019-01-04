@@ -4,7 +4,7 @@
 PORTNAME=	owncloudclient
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.4.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 
 MAINTAINER=	yonas@fizk.net
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
 		libqt5keychain.so:security/qtkeychain@qt5
 
-USES=		cmake:outsource,noninja compiler:c++11-lib gmake iconv kde:5 \
+USES=		cmake:noninja compiler:c++11-lib gmake iconv kde:5 \
 		localbase:ldflags pkgconfig qt:5 sqlite
 USE_QT=		buildtools_build concurrent core dbus gui linguist_build network \
 		qmake_build sql webkit widgets xml
@@ -39,17 +39,11 @@ DEBUG_CMAKE_ON=		-DCMAKE_BUILD_TYPE:STRING=Debug
 
 PLIST_SUB=	VERSION=${PORTVERSION}
 
-.include <bsd.port.pre.mk>
-
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|.lst |.lst.sample |' ${WRKSRC}/CMakeLists.txt
-.if ${OSVERSION} < 1100101
-	@${REINPLACE_CMD} -e 's/ -fstack-protector-strong//' \
-		${WRKSRC}/src/CMakeLists.txt
-.endif
 
 pre-configure:
 	@cd ${WRKSRC} && ${CP} -f sync-exclude.lst sync-exclude.lst.sample
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

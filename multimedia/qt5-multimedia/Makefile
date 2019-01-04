@@ -2,7 +2,6 @@
 
 PORTNAME=	multimedia
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	qt5-
 
@@ -11,10 +10,11 @@ COMMENT=	Qt audio, video, radio and camera support module
 
 # LICENSE set via USES_QT5 (bsd.qt.mk)
 
-USES=		pkgconfig qmake:norecursive qt-dist:5,multimedia
+USES=		compiler:c++11-lang gl gnome pkgconfig qmake:norecursive \
+		qt-dist:5,multimedia
 USE_GL=		gl
 USE_GNOME=	glib20
-USE_QT=		core gui network opengl qml quick widgets \
+USE_QT=		core declarative gui network opengl widgets \
 		buildtools_build
 USE_XORG=	x11 xext xv
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}

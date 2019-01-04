@@ -12,18 +12,16 @@ COMMENT=	Cross platform C++ library, used by OPAL
 
 LICENSE=	MPL10
 
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	use of undeclared identifier 'BIO_s_file_internal'
-
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
 CONFLICTS=	pwlib-1.*
 
-USES=		autoreconf:build bison gmake pathfix pkgconfig ssl tar:xz
+USES=		autoreconf:build bison compiler:c11 gmake localbase:ldflags \
+		pathfix pkgconfig ssl tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-CPPFLAGS+=	-I${OPENSSLINC} -I${LOCALBASE}/include
-LDFLAGS+=	-L${OPENSSLLIB} -L${LOCALBASE}/lib
+CPPFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
 
 CONFIGURE_ARGS+=--enable-audio \
 		--enable-ipv6 \
@@ -45,6 +43,12 @@ BSDVIDEO_DESC=	BSD video support
 DEBUG_DESC=	Install debug library
 
 .include <bsd.port.options.mk>
+
+.if (${OPSYS} == FreeBSD && ${OSVERSION} > 1200085 && ${SSL_DEFAULT} == base) || ${SSL_DEFAULT} == openssl111
+EXTRA_PATCHES+= ${FILESDIR}/extra-patch-src_ptclib_pssl.cxx-openssl111
+.else
+EXTRA_PATCHES+= ${FILESDIR}/extra-patch-src_ptclib_pssl.cxx
+.endif
 
 PLIST_SUB+=	PORTVERSION=${PORTVERSION} \
 		PVERSION_MAJOR=${PVERSION_MAJOR} \

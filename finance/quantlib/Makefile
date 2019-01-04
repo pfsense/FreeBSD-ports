@@ -3,7 +3,7 @@
 
 PORTNAME=	quantlib
 PORTVERSION=	1.13
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	finance math devel
 MASTER_SITES=	https://dl.bintray.com/${PORTNAME}/releases/
 DISTNAME=	QuantLib-${PORTVERSION}
@@ -31,11 +31,6 @@ OPTIONS_DEFINE+=EXTRA_SAFETY_CHECKS SESSIONS INTRADAY
 OPTIONS_DEFINE+=THREAD_SAFE_OBSERVER_PATTERN
 OPTIONS_DEFINE+=THREAD_SAFE_SINGLETON_INIT
 OPTIONS_DEFINE+=${OPTIONS_DEFAULT}
-
-.if ${CC} == "cc"
-# The base cc/c++ on FreeBSD-10 is too old for OpenMP.
-OPTIONS_EXCLUDE_FreeBSD_10=OPENMP
-.endif
 
 BENCHMARK_DESC=		Install benchmark (it is always built)
 EXTRA_SAFETY_CHECKS_DESC=Trade performance for run-time checks

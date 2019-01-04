@@ -4,10 +4,10 @@ PORTNAME=	swift
 PORTVERSION=	3.1.1
 DISTVERSIONPREFIX=	swift-
 DISTVERSIONSUFFIX=	-RELEASE
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	lang
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Swift programing language
 
 LICENSE=	APACHE20
@@ -45,7 +45,6 @@ USES=		autoreconf:build compiler:c++14-lang libtool localbase:ldflags iconv libe
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 ONLY_FOR_ARCHS=	amd64
-BROKEN_FreeBSD_10=	Builds but does not work
 CONFLICTS_BUILD=	googletest
 LDFLAGS+=	-lobjc
 

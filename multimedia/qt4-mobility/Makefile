@@ -15,13 +15,17 @@ COMMENT=	Qt APIs for mobile devices and desktop platforms
 
 LICENSE=	LGPL21
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 LIB_DEPENDS=	libblkid.so:misc/e2fsprogs-libblkid
 
 DATE=	20130703
-USES=		pkgconfig qmake qt:4 shebangfix tar:xz
+USES=		perl5 pkgconfig qmake qt:4 shebangfix tar:xz
 SHEBANG_FILES=	bin/pathhelper bin/syncheaders
 USE_QT=		declarative corelib dbus gui linguist_build moc_build rcc_build
 USE_LDCONFIG=	yes
+USE_PERL5=	build
 MOBILITY_MODS=
 
 OPTIONS_DEFINE=	BEARER CONNECTIVITY CONTACTS FEEDBACK GALLERY LOCATION \

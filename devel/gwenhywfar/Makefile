@@ -2,7 +2,7 @@
 
 PORTNAME=	gwenhywfar
 PORTVERSION=	4.20.0
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	devel net security
 MASTER_SITES=	http://www.aquamaniac.de/sites/download/download.php?package=01&release=208&file=02&dummy=/
 
@@ -59,6 +59,9 @@ USE_GNOME+=	cairo gdkpixbuf2 gtk20
 .  elif ${SLAVEPORT}=="gtk3"
 USE_GNOME+=	cairo gdkpixbuf2 gtk30
 .  elif ${SLAVEPORT}=="qt4"
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 USES+=		qmake:no_env qt:4
 USE_QT=		corelib gui moc_build uic_build
 CONFIGURE_ARGS+=--with-qt4-includes=${QT_INCDIR} \
@@ -66,7 +69,7 @@ CONFIGURE_ARGS+=--with-qt4-includes=${QT_INCDIR} \
 		--with-qt4-moc=${MOC} \
 		--with-qt4-uic=${UIC}
 .  elif ${SLAVEPORT}=="qt5"
-USES+=		qmake:no_env qt:5
+USES+=		compiler:c++11-lang qmake:no_env qt:5
 USE_GL=		gl
 USE_QT=		core gui widgets \
 		buildtools_build qmake_build

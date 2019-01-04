@@ -6,7 +6,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,6 +31,7 @@
 		<div style="width: 75%; height: 170px; float: left;">
 			<p><h4>Welcome to pfBlockerNG!</h4></p>
 			<p>This wizard will configure an entry level configuration of pfBlockerNG for IP and DNSBL.</p>
+			<p>You can opt-out of this wizard and manually configure pfBlockerNG as required!</p>
 			<p><strong>pfBlockerNG</strong> is developed and maintained by <strong>BBcan177</strong></p>
 		</div>
 
@@ -184,11 +185,11 @@
 			</options>
 		</field>
 		<field>
-			<name>Next</name>
+			<name>Back</name>
 			<type>submit</type>
 		</field>
 		<field>
-			<name>Back</name>
+			<name>Next</name>
 			<type>submit</type>
 		</field>
 	</fields>
@@ -232,11 +233,11 @@
 			<size>10</size>
 		</field>
 		<field>
-			<name>Next</name>
+			<name>Back</name>
 			<type>submit</type>
 		</field>
 		<field>
-			<name>Back</name>
+			<name>Next</name>
 			<type>submit</type>
 		</field>
 	</fields>

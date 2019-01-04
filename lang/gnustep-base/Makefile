@@ -3,7 +3,7 @@
 
 PORTNAME=	gnustep-base
 PORTVERSION=	1.25.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	lang devel gnustep
 MASTER_SITES=	GNUSTEP/core
 
@@ -12,8 +12,6 @@ COMMENT=	GNUstep Foundation library
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
-
-BROKEN_aarch64=		fails to compile: <inline asm>:1:27: unexpected token in argument list
 
 LIB_DEPENDS+=	libffi.so:devel/libffi
 LIB_DEPENDS+=	libxml2.so:textproc/libxml2

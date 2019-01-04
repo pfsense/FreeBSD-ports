@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	iowow
-PORTVERSION=	1.2.13
+PORTVERSION=	1.2.14
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -11,7 +12,7 @@ COMMENT=	Persistent key-value database engine
 
 LICENSE=	MIT
 
-USES=		cmake:outsource compiler:c11
+USES=		cmake compiler:c11
 USE_GITHUB=	yes
 GH_ACCOUNT=	Softmotions
 USE_LDCONFIG=	yes

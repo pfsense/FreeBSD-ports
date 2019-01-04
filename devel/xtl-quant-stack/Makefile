@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	xtl
-DISTVERSION=	0.4.15
+DISTVERSION=	0.5.2
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-quant-stack
 
@@ -19,6 +19,7 @@ TEST_DEPENDS=	nlohmann-json>0:devel/nlohmann-json \
 USES=		cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	QuantStack
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

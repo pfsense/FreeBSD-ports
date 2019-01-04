@@ -4,9 +4,10 @@
 PORTNAME=	clrng
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0-beta
+PORTREVISION=	2
 CATEGORIES=	math
 
-MAINTAINER=	dieterich@ogolem.org
+MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Library for uniform random number generation in OpenCL
 
 LICENSE=	BSD2CLAUSE
@@ -33,4 +34,10 @@ CMAKE_ARGS+=	-DBUILD_CLIENT=OFF \
 
 CMAKE_SOURCE_PATH=	${WRKSRC}/src
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+CFLAGS+= -Wno-expansion-to-defined
+.endif
+
+.include <bsd.port.post.mk>

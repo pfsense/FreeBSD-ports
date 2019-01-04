@@ -3,7 +3,7 @@
 
 PORTNAME=	geeqie
 PORTVERSION=	1.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.geeqie.org/
 
@@ -15,8 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		autoreconf gettext gmake jpeg localbase pkgconfig \
-		desktop-file-utils tar:xz lua:51
+USES=		autoreconf compiler:c++11-lang gettext gmake gnome jpeg \
+		localbase pkgconfig desktop-file-utils tar:xz lua:51
 USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-readmedir="${DOCSDIR}"

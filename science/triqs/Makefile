@@ -2,7 +2,7 @@
 
 PORTNAME=	triqs
 DISTVERSION=	2.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +12,6 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 BROKEN=		wrong LIB_DEPENDS
-BROKEN_FreeBSD_10=	fatal error: 'optional' file not found
 BROKEN_i386=		error: no matching function for call to 'max': https://github.com/TRIQS/triqs/issues/596
 
 BUILD_DEPENDS=	boost-libs>=1.53:devel/boost-libs \
@@ -29,7 +28,7 @@ RUN_DEPENDS=	${PYNUMPY}
 
 PORTSCOUT=	limit:^[0-9]+\.[0-9].*$$
 
-USES=		cmake:outsource,noninja fortran gettext-runtime python:2.7 # python:2.7 matches that in devel/cpp2py
+USES=		cmake:noninja fortran gettext-runtime python:2.7 # python:2.7 matches that in devel/cpp2py
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME:tu}
 USE_LDCONFIG=	yes

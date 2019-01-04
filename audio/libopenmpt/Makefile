@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libopenmpt
-PORTVERSION=	0.3.11
+PORTVERSION=	0.4.0
 DISTVERSIONSUFFIX=	+release.autotools
-PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://lib.openmpt.org/files/libopenmpt/src/ \
 		LOCAL/ehaupt
@@ -15,9 +14,10 @@ COMMENT=	Module music library based on OpenMPT
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake libtool pkgconfig
-GNU_CONFIGURE=	yes
+USES=		compiler:c++11-lang gmake libtool pkgconfig
 USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS+=	--without-portaudiocpp
 
@@ -37,6 +37,9 @@ OGG_CONFIGURE_WITH=		ogg
 PORTAUDIO_CONFIGURE_WITH=	portaudio
 SNDFILE_CONFIGURE_WITH=		sndfile
 VORBIS_CONFIGURE_WITH=		vorbis vorbisfile
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libopenmpt.so.*
 
 post-install-DOCS-on:
 	@${RM} ${STAGEDIR}${DOCSDIR}/LICENSE # do not install twice

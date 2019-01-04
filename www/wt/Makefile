@@ -3,7 +3,7 @@
 
 PORTNAME=	wt
 PORTVERSION=	3.3.7
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	www
 
 MAINTAINER=	info@babaei.net
@@ -25,7 +25,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	kdeforche
 USE_LDCONFIG=	yes
 USE_XORG+=x11
-USES=		cmake:outsource pkgconfig ssl
+USES=		cmake pkgconfig ssl
 CMAKE_ARGS+=	-DCONFIGDIR:STRING=${LOCALBASE}/etc/wt \
 	-DGM_PREFIX:STRING=${LOCALBASE} \
 	-DPNG_PREFIX:STRING=${LOCALBASE} \

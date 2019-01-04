@@ -2,8 +2,8 @@
 
 PORTNAME=	bagel
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.2-21
-DISTVERSIONSUFFIX=	-g2a9472a50
+DISTVERSION=	1.2.1
+PORTREVISION=	2
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -48,5 +48,7 @@ SCALAPACK_IMPLIES=		MPI
 SMITH_DESC=			Compile SMITH generated code
 SMITH_CONFIGURE_ENABLE=		smith
 SMITH_IMPLIES=			MPI
+
+TEST_TARGET=			check # tests fail to build: https://github.com/nubakery/bagel/issues/145
 
 .include <bsd.port.mk>

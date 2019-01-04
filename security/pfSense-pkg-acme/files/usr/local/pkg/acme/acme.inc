@@ -180,6 +180,9 @@ $a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Product
 $a_acmeserver['letsencrypt-production-2'] = array('name' => "Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v02.api.letsencrypt.org'
 );
+$a_acmeserver['buypass-production'] = array('name' => "BuyPass Production ACME v2 (Applies rate limits to certificate requests)",
+    'url' => 'https://api.buypass.com/acme'
+);
 /*$a_acmeserver['dummy'] = array('name' => "dummy",
     'url' => 'https://example.org'
 );*/
@@ -217,7 +220,7 @@ $acme_domain_validation_method['standalone'] = array('name' => "standalone HTTP 
 			'description' =>"Bind to IPv6 instead of IPv4."
 		)
 	));
-$acme_domain_validation_method['standalonetls'] = array('name' => "standalone TLS server",
+$acme_domain_validation_method['standalonetls'] = array('name' => "standalone TLS-ALPN server",
 	'fields' => array(
 		'port' => array('name'=>"port",'columnheader'=>"Port",'type'=>"textbox",'size'=>"50",
 			'description' =>"TLS listen port for stand-alone server. Must be 443 or have port 443 on WAN forwarded to this port. Firewall rules must also allow traffic to reach this port."
@@ -471,6 +474,15 @@ $acme_domain_validation_method['dns_euserv'] = array('name' => "DNS-Euserv.eu",
 			'description' =>"Fill in the Password"
 		)
 	));
+$acme_domain_validation_method['dns_exoscale'] = array('name' => "DNS-Exoscale",
+	'fields' => array(
+		'EXOSCALE_API_KEY' => array('name'=>"exoscale_api_key",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Fill in the Exoscale API Key"
+		),
+		'EXOSCALE_SECRET_KEY' => array('name'=>"exoscale_secret_key",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the Exoscale Secret Key"
+		)
+	));
 $acme_domain_validation_method['dns_freedns'] = array('name' => "DNS-FreeDNS",
 	'fields' => array(
 		'FREEDNS_User' => array('name'=>"freedns_user",'columnheader'=>"Username",'type'=>"textbox",
@@ -591,6 +603,12 @@ $acme_domain_validation_method['dns_linode'] = array('name' => "DNS-Linode",
 	'fields' => array(
 		'LINODE_API_KEY' => array('name'=>"linode_api_key",'columnheader'=>"Linode API Key",'type'=>"textbox",
 			'description' =>"Fill in the Linode API Key"
+		)
+	));
+$acme_domain_validation_method['dns_linode_v4'] = array('name' => "DNS-Linode v4 API",
+	'fields' => array(
+		'LINODE_V4_API_KEY' => array('name'=>"linode_v4_api_key",'columnheader'=>"Linode v4 API Key",'type'=>"textbox",
+			'description' =>"Fill in the Linode v4 API Key"
 		)
 	));
 $acme_domain_validation_method['dns_loopia'] = array('name' => "DNS-Loopia",
@@ -906,13 +924,13 @@ function & get_certificate($name) {
 	return null;
 }
 
-	function generateAccountKey($name, $ca) {
-		$acmesh = new acme_sh($name, $ca);
+	function generateAccountKey($name, $ca, $email = "") {
+		$acmesh = new acme_sh($name, $ca, $email);
 		return $acmesh->generateAccountKey();
 	}
 	
-	function generateDomainKey($name, $ca, $domain, $keylength) {
-		$acmesh = new acme_sh($name, $ca);
+	function generateDomainKey($name, $ca, $domain, $keylength, $email = "") {
+		$acmesh = new acme_sh($name, $ca, $email);
 		return $acmesh->generateDomainKey($domain, $keylength);
 	}
 	
@@ -1091,12 +1109,13 @@ function & get_certificate($name) {
 			$account = get_accountkey($certificate['acmeaccount']);
 			$acmeserver = $account['acmeserver'];
 			$accountkey = $account['accountkey'];
+			$email = $account['email'];
 			echo "server: $acmeserver \n";
 			
 			global $a_acmeserver;
 			$url = $a_acmeserver[$acmeserver]['url'];
 			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]->domainname);
-			$acmesh = new acme_sh($certificate['name'], $url);
+			$acmesh = new acme_sh($certificate['name'], $url, $email);
 			$action = $renew == true ? "renew" : "issue";
 			$acmesh->dnssleep = $certificate['dnssleep'];
 			$acmesh->challengealias = $certificate['challengealias'];

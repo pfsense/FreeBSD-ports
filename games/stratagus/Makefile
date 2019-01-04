@@ -4,7 +4,7 @@
 PORTNAME=	stratagus
 PORTVERSION=	2.4.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -13,15 +13,13 @@ COMMENT=	Free cross-platform real-time strategy gaming engine
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to compile: cc1plus: unrecognized command line option "-std=gnu++0x"
-
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtolua++-${LUA_VER}.so:lang/tolua++
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Wargus
 
-USES=		cmake:outsource lua:51 pkgconfig sqlite
+USES=		cmake compiler:c++11-lang gl lua:51 pkgconfig sqlite
 USE_GL=		gl glu
 USE_SDL=	sdl
 CMAKE_ARGS=	-DGAMEDIR:STRING="bin" \

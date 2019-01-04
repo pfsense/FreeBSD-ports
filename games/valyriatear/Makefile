@@ -3,7 +3,7 @@
 
 PORTNAME=	valyriatear
 PORTVERSION=	1.0.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -53,6 +53,13 @@ EDITOR_DESKTOP_ENTRIES=	\
 
 NLS_CMAKE_OFF=	-DDISABLE_TRANSLATIONS:BOOL=OFF
 NLS_USES=	gettext
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MEDITOR}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \

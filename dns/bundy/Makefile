@@ -3,7 +3,7 @@
 
 PORTNAME=	bundy
 PORTVERSION=	0.20170618
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	dns
 MASTER_SITES=	LOCAL/mat/bundy SF/boost/boost/1.55.0:boost
 DISTFILES+=	boost_1_55_0.tar.bz2:boost
@@ -29,9 +29,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 BROKEN_armv6 =		fails to build: Child process terminated abnormally: Segmentation fault
 BROKEN_armv7 =		fails to build: Child process terminated abnormally: Segmentation fault
 BROKEN_powerpc64=	fails to configure: checking for botan/botan.h... no
-
-BROKEN_FreeBSD_12=	fails with sig11
-BROKEN_FreeBSD_13=	fails with sig11
 
 USES=	compiler:c++11-lang pathfix pkgconfig libtool python:3.4+ autoreconf ssl
 USE_CSTD=	gnu99

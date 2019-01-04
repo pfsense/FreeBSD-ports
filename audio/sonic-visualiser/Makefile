@@ -2,7 +2,7 @@
 
 PORTNAME=	sonic-visualiser
 PORTVERSION=	2.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	https://code.soundsoftware.ac.uk/attachments/download/1675/
 
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libsord-0.so:devel/sord \
 		libvamp-hostsdk.so:audio/vamp-plugin-sdk
 
-USES=	autoreconf desktop-file-utils pkgconfig qt:5
+USES=	autoreconf desktop-file-utils gmake pkgconfig qt:5
 
 GNU_CONFIGURE=	yes
 USE_QT=		buildtools_build core gui network qmake_build testlib widgets xml

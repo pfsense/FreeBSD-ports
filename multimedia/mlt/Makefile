@@ -2,8 +2,8 @@
 
 PORTNAME=	mlt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.10.0
-PORTREVISION?=	1
+DISTVERSION=	6.12.0
+PORTREVISION?=	2
 CATEGORIES?=	multimedia
 
 MAINTAINER=	kde@FreeBSD.org
@@ -12,7 +12,8 @@ COMMENT?=	Multimedia framework for TV broadcasting
 LICENSE?=	GPLv2 GPLv3 LGPL21
 LICENSE_COMB?=	multi
 
-USES+=		alias eigen:3 gmake localbase pkgconfig
+USES+=		alias compiler:c++11-lang eigen:3 gl gmake gnome localbase \
+		pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--enable-gpl --enable-gpl3 --target-os=FreeBSD
 USE_GITHUB=	yes

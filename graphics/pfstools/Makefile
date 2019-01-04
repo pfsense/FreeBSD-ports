@@ -3,7 +3,7 @@
 
 PORTNAME=	pfstools
 DISTVERSION=	2.1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -19,7 +19,7 @@ CONFLICTS=	pfstmo-1.* pfscalibration-1.*
 
 LDFLAGS+=	-lthr
 
-USES=		cmake:outsource tar:tgz dos2unix jpeg perl5
+USES=		cmake tar:tgz dos2unix jpeg perl5
 USE_PERL5=	run
 USE_LDCONFIG=	yes
 
@@ -56,7 +56,7 @@ OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
 			libIex.so:graphics/ilmbase
 
 IMAGEMAGICK_CMAKE_BOOL=	WITH_ImageMagick
-IMAGEMAGICK_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick
+IMAGEMAGICK_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick6
 
 NETPBM_CMAKE_BOOL=	WITH_NetPBM
 NETPBM_LIB_DEPENDS=	libnetpbm.so:graphics/netpbm

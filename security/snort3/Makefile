@@ -3,11 +3,11 @@
 
 PORTNAME=	snort
 DISTVERSION=	3.0.0-a4.243
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 PKGNAMESUFFIX=	3
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight network intrusion detection system
 
 LICENSE=	GPLv2

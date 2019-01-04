@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	courier-authlib
-PORTVERSION=	0.68.0
+PORTVERSION=	0.69.0
 PORTREVISION?=	1
 CATEGORIES?=	security mail
 .if defined(PKGNAMESUFFIX)

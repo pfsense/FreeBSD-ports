@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	php56
-PORTVERSION=	5.6.38
+PORTVERSION=	5.6.39
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -12,6 +12,9 @@ MAINTAINER=	ale@FreeBSD.org
 COMMENT=	PHP Scripting Language
 
 LICENSE=	PHP301
+
+DEPRECATED=	Security Support ends on 31 Dec 2018
+EXPIRATION_DATE=2019-01-01
 
 USES+=		tar:xz cpe
 CPE_PRODUCT=	php
@@ -29,7 +32,7 @@ CONFIGURE_ARGS+=--with-layout=GNU \
 		--with-pcre-regex=${LOCALBASE} \
 		--with-zlib-dir=/usr \
 		--program-prefix=""
-USES+=		autoreconf:build
+USES+=		autoreconf:build gnome
 USE_GNOME=	libxml2
 
 # PR230207 Allow relocations against read-only segments (override lld default)
@@ -52,7 +55,7 @@ MAILHEAD_DESC=	Enable mail header patch
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
 
-CONFLICTS=	php55-5* php70-*
+CONFLICTS=	php70-* php71-* php72-* php73-*
 
 DESTDIRNAME=	INSTALL_ROOT
 

@@ -3,6 +3,7 @@
 
 PORTNAME=	freeswitch
 PORTVERSION=	1.8.1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://files.freeswitch.org/releases/freeswitch/ \
 		http://files.freeswitch.org/releases/sounds/:sounds
@@ -102,9 +103,9 @@ ALL_MODULES_USE=		XORG=x11 OPENLDAP=yes
 
 .if ${PORT_OPTIONS:MALL_MODULES}
 .if ${PORT_OPTIONS:MX11}
-LIB_DEPENDS+=	libMagickWand-6.so:graphics/ImageMagick
+LIB_DEPENDS+=	libMagickWand-6.so:graphics/ImageMagick6
 .else
-LIB_DEPENDS+=	libMagickWand-6.so:graphics/ImageMagick-nox11
+LIB_DEPENDS+=	libMagickWand-6.so:graphics/ImageMagick6-nox11
 .endif
 .endif
 

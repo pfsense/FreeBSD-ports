@@ -3,7 +3,7 @@
 
 PORTNAME=	miro
 PORTVERSION=	6.0
-PORTREVISION=	19
+PORTREVISION=	23
 CATEGORIES=	multimedia
 MASTER_SITES=	ftp://ftp.osuosl.org/pub/pculture.org/miro/src/ \
 		http://ftp.osuosl.org/pub/pculture.org/miro/src/
@@ -24,7 +24,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bsddb>0:databases/py-bsddb@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/dbus/glib.py:devel/py-dbus@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/gtk-2.0/pynotify/_pynotify.so:devel/py-notify@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/libtorrent.so:net-p2p/libtorrent-rasterbar-python \
+		${PYTHON_PKGNAMEPREFIX}libtorrent-rasterbar>0:net-p2p/py-libtorrent-rasterbar@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/webkit/webkit.so:www/py-webkitgtk@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/gtk-2.0/gconf.so:x11-toolkits/py-gnome2@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/pycurl.so:ftp/py-pycurl@${PY_FLAVOR} \
@@ -33,11 +33,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bsddb>0:databases/py-bsddb@${PY_FLAVOR} \
 BUILD_WRKSRC=	${WRKSRC}/linux
 INSTALL_WRKSRC=	${WRKSRC}/linux
 
-USE_GNOME=	gconf2 gtk20
-USE_GSTREAMER=	python gconf
-USES=		gettext gmake pkgconfig desktop-file-utils python:2.7 shared-mime-info shebangfix
+USES=		compiler:c++11-lang desktop-file-utils gettext gmake gnome \
+		pkgconfig python:2.7 shared-mime-info shebangfix
 SHEBANG_FILES=	resources/testdata/7digital-replies/generate.py \
 		resources/testdata/echonest-replies/generate.py
+USE_GNOME=	gconf2 gtk20
+USE_GSTREAMER=	python gconf
 USE_PYTHON=	distutils
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
@@ -66,7 +67,7 @@ post-patch:
 .endfor
 
 .if defined(MAINTAINER_MODE)
-regression-test:	install
+do-test:
 	${PREFIX}/bin/miro --unittest
 .endif
 

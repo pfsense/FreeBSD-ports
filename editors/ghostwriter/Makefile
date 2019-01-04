@@ -2,7 +2,8 @@
 
 PORTNAME=	ghostwriter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.3
+DISTVERSION=	1.7.4
+PORTREVISION=	1
 CATEGORIES=	editors
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell
 
-USES=		desktop-file-utils pkgconfig qmake qt:5
+USES=		compiler:c++11-lang desktop-file-utils pkgconfig qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	wereturtle
 USE_QT=		concurrent core gui network printsupport svg webkit widgets \

@@ -3,8 +3,8 @@
 
 PORTNAME=	aspcud
 PORTVERSION=	1.9.4
-PORTREVISION=	1
 DISTVERSIONPREFIX=     v
+PORTREVISION=	3
 CATEGORIES=	math ports-mgmt sysutils
 
 MAINTAINER=	vsevolod@FreeBSD.org
@@ -18,7 +18,7 @@ RUN_DEPENDS=	gringo:math/gringo \
 		clasp:math/clasp \
 		bash:shells/bash
 
-USES=		compiler:c++11-lang cmake:outsource python:run
+USES=		compiler:c++11-lang cmake python:run
 USE_GITHUB=	yes
 GH_ACCOUNT=	potassco
 

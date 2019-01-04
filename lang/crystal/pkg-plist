@@ -20,6 +20,7 @@ lib/crystal/bool.cr
 lib/crystal/box.cr
 lib/crystal/callstack.cr
 lib/crystal/callstack/lib_unwind.cr
+lib/crystal/channel.cr
 lib/crystal/char.cr
 lib/crystal/char/reader.cr
 lib/crystal/class.cr
@@ -158,7 +159,6 @@ lib/crystal/compiler/crystal/tools/init/template/readme.md.ecr
 lib/crystal/compiler/crystal/tools/init/template/shard.yml.ecr
 lib/crystal/compiler/crystal/tools/init/template/spec_helper.cr.ecr
 lib/crystal/compiler/crystal/tools/init/template/travis.yml.ecr
-lib/crystal/compiler/crystal/tools/init/template/version.cr.ecr
 lib/crystal/compiler/crystal/tools/playground/agent.cr
 lib/crystal/compiler/crystal/tools/playground/agent_instrumentor_transformer.cr
 lib/crystal/compiler/crystal/tools/playground/public/application.css
@@ -196,10 +196,8 @@ lib/crystal/compiler/crystal/types.cr
 lib/crystal/compiler/crystal/util.cr
 lib/crystal/complex.cr
 lib/crystal/concurrent.cr
-lib/crystal/concurrent/channel.cr
 lib/crystal/concurrent/error.cr
 lib/crystal/concurrent/future.cr
-lib/crystal/concurrent/scheduler.cr
 lib/crystal/crc32/crc32.cr
 lib/crystal/crypto/bcrypt.cr
 lib/crystal/crypto/bcrypt/base64.cr
@@ -207,10 +205,15 @@ lib/crystal/crypto/bcrypt/blowfish.cr
 lib/crystal/crypto/bcrypt/password.cr
 lib/crystal/crypto/blowfish.cr
 lib/crystal/crypto/subtle.cr
+lib/crystal/crystal/event.cr
+lib/crystal/crystal/event_loop.cr
 lib/crystal/crystal/hasher.cr
+lib/crystal/crystal/lib_event2.cr
 lib/crystal/crystal/main.cr
+lib/crystal/crystal/scheduler.cr
 lib/crystal/crystal/system.cr
 lib/crystal/crystal/system/dir.cr
+lib/crystal/crystal/system/env.cr
 lib/crystal/crystal/system/file.cr
 lib/crystal/crystal/system/file_descriptor.cr
 lib/crystal/crystal/system/file_info.cr
@@ -218,6 +221,7 @@ lib/crystal/crystal/system/random.cr
 lib/crystal/crystal/system/time.cr
 lib/crystal/crystal/system/unix/arc4random.cr
 lib/crystal/crystal/system/unix/dir.cr
+lib/crystal/crystal/system/unix/env.cr
 lib/crystal/crystal/system/unix/file.cr
 lib/crystal/crystal/system/unix/file_descriptor.cr
 lib/crystal/crystal/system/unix/file_info.cr
@@ -227,10 +231,15 @@ lib/crystal/crystal/system/unix/sysconf_cpucount.cr
 lib/crystal/crystal/system/unix/sysctl_cpucount.cr
 lib/crystal/crystal/system/unix/time.cr
 lib/crystal/crystal/system/unix/urandom.cr
+lib/crystal/crystal/system/win32/dir.cr
+lib/crystal/crystal/system/win32/env.cr
+lib/crystal/crystal/system/win32/file.cr
 lib/crystal/crystal/system/win32/file_descriptor.cr
+lib/crystal/crystal/system/win32/file_info.cr
 lib/crystal/crystal/system/win32/random.cr
 lib/crystal/crystal/system/win32/time.cr
 lib/crystal/crystal/system/win32/zone_names.cr
+lib/crystal/crystal/system/windows.cr
 lib/crystal/csv.cr
 lib/crystal/csv/builder.cr
 lib/crystal/csv/error.cr
@@ -265,17 +274,20 @@ lib/crystal/enum.cr
 lib/crystal/enumerable.cr
 lib/crystal/env.cr
 lib/crystal/errno.cr
-lib/crystal/event.cr
-lib/crystal/event/lib_event2.cr
 lib/crystal/exception.cr
 lib/crystal/ext.cr
 lib/crystal/ext/libcrystal.a
 lib/crystal/ext/sigfault.c
 lib/crystal/ext/sigfault.o
 lib/crystal/fiber.cr
+lib/crystal/fiber/aarch64.cr
+lib/crystal/fiber/arm.cr
+lib/crystal/fiber/i686.cr
+lib/crystal/fiber/x86_64.cr
 lib/crystal/file.cr
 lib/crystal/file/info.cr
 lib/crystal/file/preader.cr
+lib/crystal/file/tempfile.cr
 lib/crystal/file_utils.cr
 lib/crystal/flate/flate.cr
 lib/crystal/flate/reader.cr
@@ -373,6 +385,7 @@ lib/crystal/lib_c/aarch64-linux-gnu/c/netdb.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/netinet/in.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/netinet/tcp.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/pthread.cr
+lib/crystal/lib_c/aarch64-linux-gnu/c/sched.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/signal.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/stdarg.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/stddef.cr
@@ -382,6 +395,7 @@ lib/crystal/lib_c/aarch64-linux-gnu/c/stdlib.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/string.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/sys/file.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/sys/mman.cr
+lib/crystal/lib_c/aarch64-linux-gnu/c/sys/resource.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/sys/select.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/sys/socket.cr
 lib/crystal/lib_c/aarch64-linux-gnu/c/sys/stat.cr
@@ -404,6 +418,7 @@ lib/crystal/lib_c/aarch64-linux-musl/c/netdb.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/netinet/in.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/netinet/tcp.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/pthread.cr
+lib/crystal/lib_c/aarch64-linux-musl/c/sched.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/signal.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/stdarg.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/stddef.cr
@@ -413,6 +428,7 @@ lib/crystal/lib_c/aarch64-linux-musl/c/stdlib.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/string.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/sys/file.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/sys/mman.cr
+lib/crystal/lib_c/aarch64-linux-musl/c/sys/resource.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/sys/select.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/sys/socket.cr
 lib/crystal/lib_c/aarch64-linux-musl/c/sys/stat.cr
@@ -436,6 +452,7 @@ lib/crystal/lib_c/amd64-unknown-openbsd/c/netdb.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/netinet/in.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/netinet/tcp.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/pthread.cr
+lib/crystal/lib_c/amd64-unknown-openbsd/c/sched.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/signal.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/stdarg.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/stddef.cr
@@ -445,6 +462,7 @@ lib/crystal/lib_c/amd64-unknown-openbsd/c/stdlib.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/string.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/sys/file.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/sys/mman.cr
+lib/crystal/lib_c/amd64-unknown-openbsd/c/sys/resource.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/sys/select.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/sys/socket.cr
 lib/crystal/lib_c/amd64-unknown-openbsd/c/sys/stat.cr
@@ -467,6 +485,7 @@ lib/crystal/lib_c/arm-linux-gnueabihf/c/netdb.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/netinet/in.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/netinet/tcp.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/pthread.cr
+lib/crystal/lib_c/arm-linux-gnueabihf/c/sched.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/signal.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/stdarg.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/stddef.cr
@@ -476,6 +495,7 @@ lib/crystal/lib_c/arm-linux-gnueabihf/c/stdlib.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/string.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/sys/file.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/sys/mman.cr
+lib/crystal/lib_c/arm-linux-gnueabihf/c/sys/resource.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/sys/select.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/sys/socket.cr
 lib/crystal/lib_c/arm-linux-gnueabihf/c/sys/stat.cr
@@ -498,6 +518,7 @@ lib/crystal/lib_c/i686-linux-gnu/c/netdb.cr
 lib/crystal/lib_c/i686-linux-gnu/c/netinet/in.cr
 lib/crystal/lib_c/i686-linux-gnu/c/netinet/tcp.cr
 lib/crystal/lib_c/i686-linux-gnu/c/pthread.cr
+lib/crystal/lib_c/i686-linux-gnu/c/sched.cr
 lib/crystal/lib_c/i686-linux-gnu/c/signal.cr
 lib/crystal/lib_c/i686-linux-gnu/c/stdarg.cr
 lib/crystal/lib_c/i686-linux-gnu/c/stddef.cr
@@ -507,6 +528,7 @@ lib/crystal/lib_c/i686-linux-gnu/c/stdlib.cr
 lib/crystal/lib_c/i686-linux-gnu/c/string.cr
 lib/crystal/lib_c/i686-linux-gnu/c/sys/file.cr
 lib/crystal/lib_c/i686-linux-gnu/c/sys/mman.cr
+lib/crystal/lib_c/i686-linux-gnu/c/sys/resource.cr
 lib/crystal/lib_c/i686-linux-gnu/c/sys/select.cr
 lib/crystal/lib_c/i686-linux-gnu/c/sys/socket.cr
 lib/crystal/lib_c/i686-linux-gnu/c/sys/stat.cr
@@ -529,6 +551,7 @@ lib/crystal/lib_c/i686-linux-musl/c/netdb.cr
 lib/crystal/lib_c/i686-linux-musl/c/netinet/in.cr
 lib/crystal/lib_c/i686-linux-musl/c/netinet/tcp.cr
 lib/crystal/lib_c/i686-linux-musl/c/pthread.cr
+lib/crystal/lib_c/i686-linux-musl/c/sched.cr
 lib/crystal/lib_c/i686-linux-musl/c/signal.cr
 lib/crystal/lib_c/i686-linux-musl/c/stdarg.cr
 lib/crystal/lib_c/i686-linux-musl/c/stddef.cr
@@ -538,6 +561,7 @@ lib/crystal/lib_c/i686-linux-musl/c/stdlib.cr
 lib/crystal/lib_c/i686-linux-musl/c/string.cr
 lib/crystal/lib_c/i686-linux-musl/c/sys/file.cr
 lib/crystal/lib_c/i686-linux-musl/c/sys/mman.cr
+lib/crystal/lib_c/i686-linux-musl/c/sys/resource.cr
 lib/crystal/lib_c/i686-linux-musl/c/sys/select.cr
 lib/crystal/lib_c/i686-linux-musl/c/sys/socket.cr
 lib/crystal/lib_c/i686-linux-musl/c/sys/stat.cr
@@ -560,6 +584,7 @@ lib/crystal/lib_c/x86_64-linux-gnu/c/netdb.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/netinet/in.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/netinet/tcp.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/pthread.cr
+lib/crystal/lib_c/x86_64-linux-gnu/c/sched.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/signal.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/stdarg.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/stddef.cr
@@ -569,6 +594,7 @@ lib/crystal/lib_c/x86_64-linux-gnu/c/stdlib.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/string.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/sys/file.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/sys/mman.cr
+lib/crystal/lib_c/x86_64-linux-gnu/c/sys/resource.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/sys/select.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/sys/socket.cr
 lib/crystal/lib_c/x86_64-linux-gnu/c/sys/stat.cr
@@ -591,6 +617,7 @@ lib/crystal/lib_c/x86_64-linux-musl/c/netdb.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/netinet/in.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/netinet/tcp.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/pthread.cr
+lib/crystal/lib_c/x86_64-linux-musl/c/sched.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/signal.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/stdarg.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/stddef.cr
@@ -600,6 +627,7 @@ lib/crystal/lib_c/x86_64-linux-musl/c/stdlib.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/string.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/sys/file.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/sys/mman.cr
+lib/crystal/lib_c/x86_64-linux-musl/c/sys/resource.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/sys/select.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/sys/socket.cr
 lib/crystal/lib_c/x86_64-linux-musl/c/sys/stat.cr
@@ -623,6 +651,7 @@ lib/crystal/lib_c/x86_64-macosx-darwin/c/netdb.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/netinet/in.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/netinet/tcp.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/pthread.cr
+lib/crystal/lib_c/x86_64-macosx-darwin/c/sched.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/signal.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/stdarg.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/stddef.cr
@@ -632,6 +661,7 @@ lib/crystal/lib_c/x86_64-macosx-darwin/c/stdlib.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/string.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/sys/file.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/sys/mman.cr
+lib/crystal/lib_c/x86_64-macosx-darwin/c/sys/resource.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/sys/select.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/sys/socket.cr
 lib/crystal/lib_c/x86_64-macosx-darwin/c/sys/stat.cr
@@ -653,6 +683,7 @@ lib/crystal/lib_c/x86_64-portbld-freebsd/c/netdb.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/netinet/in.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/netinet/tcp.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/pthread.cr
+lib/crystal/lib_c/x86_64-portbld-freebsd/c/sched.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/signal.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/stdarg.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/stddef.cr
@@ -662,6 +693,7 @@ lib/crystal/lib_c/x86_64-portbld-freebsd/c/stdlib.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/string.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/sys/file.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/sys/mman.cr
+lib/crystal/lib_c/x86_64-portbld-freebsd/c/sys/resource.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/sys/select.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/sys/socket.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/sys/stat.cr
@@ -675,19 +707,25 @@ lib/crystal/lib_c/x86_64-portbld-freebsd/c/termios.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/time.cr
 lib/crystal/lib_c/x86_64-portbld-freebsd/c/unistd.cr
 lib/crystal/lib_c/x86_64-unknown-freebsd
+lib/crystal/lib_c/x86_64-windows-msvc/c/basetsd.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/corecrt.cr
+lib/crystal/lib_c/x86_64-windows-msvc/c/direct.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/errno.cr
+lib/crystal/lib_c/x86_64-windows-msvc/c/fcntl.cr
+lib/crystal/lib_c/x86_64-windows-msvc/c/fileapi.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/int_safe.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/io.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/ntsecapi.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/stdarg.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/stddef.cr
+lib/crystal/lib_c/x86_64-windows-msvc/c/stdint.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/stdio.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/stdlib.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/string.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/synchapi.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/sys/stat.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/sys/types.cr
+lib/crystal/lib_c/x86_64-windows-msvc/c/sys/utime.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/win_def.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/winbase.cr
 lib/crystal/lib_c/x86_64-windows-msvc/c/winnt.cr
@@ -773,6 +811,7 @@ lib/crystal/openssl/pkcs5.cr
 lib/crystal/openssl/sha1.cr
 lib/crystal/openssl/ssl/context.cr
 lib/crystal/openssl/ssl/hostname_validation.cr
+lib/crystal/openssl/ssl/server.cr
 lib/crystal/openssl/ssl/socket.cr
 lib/crystal/openssl/x509/certificate.cr
 lib/crystal/openssl/x509/extension.cr
@@ -823,6 +862,7 @@ lib/crystal/spec/formatter.cr
 lib/crystal/spec/junit_formatter.cr
 lib/crystal/spec/methods.cr
 lib/crystal/spec/source.cr
+lib/crystal/spec/tap_formatter.cr
 lib/crystal/static_array.cr
 lib/crystal/string.cr
 lib/crystal/string/builder.cr
@@ -833,10 +873,10 @@ lib/crystal/string_scanner.cr
 lib/crystal/struct.cr
 lib/crystal/symbol.cr
 lib/crystal/system.cr
-lib/crystal/tempfile.cr
 lib/crystal/termios.cr
 lib/crystal/thread.cr
 lib/crystal/thread/condition_variable.cr
+lib/crystal/thread/linked_list.cr
 lib/crystal/thread/mutex.cr
 lib/crystal/time.cr
 lib/crystal/time/format.cr

@@ -3,6 +3,7 @@
 
 PORTNAME=	hplip
 PORTVERSION=	3.17.11
+PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	SF
 
@@ -70,6 +71,9 @@ XSANE_RUN_DEPENDS=	xsane:graphics/xsane
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MQT4} && ${PORT_OPTIONS:MX11}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 USES+=			pyqt:4
 USE_PYQT=		core_run dbussupport_run gui_run sip
 CONFIGURE_ARGS+=	--enable-qt4

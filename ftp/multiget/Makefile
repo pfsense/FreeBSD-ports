@@ -3,7 +3,7 @@
 
 PORTNAME=	multiget
 PORTVERSION=	1.1.3
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	ftp www
 MASTER_SITES=	SF/${PORTNAME}/OldFiles
 
@@ -14,7 +14,7 @@ LICENSE=	GPLv2+
 
 WRKSRC_SUBDIR=	src
 
-USES=		alias dos2unix
+USES=		alias compiler:c++11-lang dos2unix
 USE_WX=		2.8
 MAKEFILE=	makefile
 ALL_TARGET=	MultiGet

@@ -2,7 +2,7 @@
 
 PORTNAME=	petiga
 DISTVERSION=	g20180518
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	math python
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
@@ -23,7 +23,7 @@ BB_COMMIT=	e2a59b1ba054
 
 WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
 
-USES=		cmake:outsource compiler:c++14-lang fortran
+USES=		cmake compiler:c++14-lang fortran
 USE_XORG=	x11
 USE_LDCONFIG=	yes
 

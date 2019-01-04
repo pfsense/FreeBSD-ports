@@ -2,6 +2,7 @@
 
 PORTNAME=	wesnoth
 PORTVERSION=	1.14.5
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}/${PORTNAME}-${PORTVERSION} \
@@ -15,9 +16,6 @@ LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_10=	fails to build with boost 1.66, see bug 224130
-BROKEN_powerpc64=	fails to link: schema_validator.cpp: undefined reference to boost::match_results
-
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libvorbisfile.so:audio/libvorbis \
 		libboost_thread.so:devel/boost-libs \
@@ -28,7 +26,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib -lboost_system
 
 PORTSCOUT=	limitw:1,even
 
-USES=		cmake:outsource cpe pkgconfig python:2.7,run readline:port shebangfix ssl tar:bzip2
+USES=		cmake compiler:c++11-lang cpe pkgconfig \
+		python:2.7,run readline:port shebangfix ssl tar:bzip2
 USE_SDL=	image2 mixer2 ttf2
 USE_LDCONFIG=	yes
 USE_GNOME=	cairo pango

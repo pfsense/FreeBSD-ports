@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pari
-DISTVERSION=	2.11.0
-PORTREVISION=	1
+DISTVERSION=	2.11.1
 PORTEPOCH=	2
 CATEGORIES=	math
 MASTER_SITES=	http://pari.math.u-bordeaux.fr/pub/pari/unix/ \
@@ -16,7 +15,6 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_mips64=		fails to link: mpker.c:(.text+0x33bc): relocation truncated to fit: R_MIPS_TLS_GD against 'PARI_SIGINT_block'
-BROKEN_powerpc64=	fails to link: intnum.o: relocation truncated to fit: R_PPC64_GOT_TLSGD16 against symbol 'avma' defined in .tbss section in init.o
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
@@ -24,6 +22,7 @@ USES=		perl5 readline
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 HAS_CONFIGURE=	yes
+CFLAGS_powerpc64=	-mminimal-toc
 CONFIGURE_SCRIPT=	Configure
 CONFIGURE_ARGS=	--mandir=${MANPREFIX}/man/man1 \
 		--prefix=${PREFIX} \

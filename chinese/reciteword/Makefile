@@ -3,7 +3,7 @@
 
 PORTNAME=	reciteword
 PORTVERSION=	0.8.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	chinese
 MASTER_SITES=	SF \
 		SF/${PORTNAME}/${PORTNAME}-books/${PORTVERSION}:books \
@@ -20,7 +20,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libespeak.so:audio/espeak
 
-USES=		tar:bzip2 gettext gmake localbase pkgconfig
+USES=		compiler:c++11-lang tar:bzip2 gettext gmake gnome localbase \
+		pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk20 intltool esound
 

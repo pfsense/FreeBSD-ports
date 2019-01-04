@@ -9,12 +9,16 @@ share/applications/gpxsee.desktop
 %%DATADIR%%/maps/USGS-imagery.xml
 %%DATADIR%%/maps/USGS-topo.xml
 %%NLS%%%%DATADIR%%/translations/gpxsee_cs.qm
+%%NLS%%%%DATADIR%%/translations/gpxsee_da.qm
 %%NLS%%%%DATADIR%%/translations/gpxsee_de.qm
 %%NLS%%%%DATADIR%%/translations/gpxsee_en.qm
 %%NLS%%%%DATADIR%%/translations/gpxsee_fi.qm
 %%NLS%%%%DATADIR%%/translations/gpxsee_fr.qm
+%%NLS%%%%DATADIR%%/translations/gpxsee_nb.qm
 %%NLS%%%%DATADIR%%/translations/gpxsee_pl.qm
 %%NLS%%%%DATADIR%%/translations/gpxsee_ru.qm
 %%NLS%%%%DATADIR%%/translations/gpxsee_sv.qm
+%%NLS%%%%DATADIR%%/translations/gpxsee_tr.qm
+share/metainfo/gpxsee.appdata.xml
 share/mime/packages/gpxsee.xml
 share/pixmaps/gpxsee.png

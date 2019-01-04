@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	dpkg
-PORTVERSION=	1.19.0.5
+PORTVERSION=	1.19.2
+PORTREVISION=	1
 CATEGORIES=	archivers sysutils
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	dpkg_${PORTVERSION}
@@ -19,7 +20,8 @@ BUILD_DEPENDS=	po4a:textproc/po4a \
 RUN_DEPENDS=	gtar:archivers/gtar \
 		gpatch:devel/patch
 
-USES=		cpe gmake iconv libtool ncurses perl5 pkgconfig tar:xz
+USES=		compiler:c11 cpe gmake iconv libtool ncurses perl5 pkgconfig \
+		tar:xz
 
 CPE_VENDOR=	debian
 WRKSRC=		${WRKDIR}/dpkg-${PORTVERSION}

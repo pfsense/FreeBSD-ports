@@ -3,7 +3,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=	php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	56
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=	71 72 73
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -316,6 +316,7 @@ USES+=		readline
 LIB_DEPENDS+=	librecode.so:converters/recode
 
 CONFIGURE_ARGS+=--with-recode=${LOCALBASE}
+MPHP_MOD_PRIO=	18
 .endif
 
 .if ${PHP_MODNAME} == "session"
@@ -527,8 +528,8 @@ USES+=	mysql
 
 .include <bsd.port.pre.mk>
 
-.if ${PHP_MODNAME} == "openssl" && ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
+.if ${PHP_MODNAME} == "openssl" && ${SSL_DEFAULT:Mopenssl111}
+BROKEN=		Does not build with openssl111
 .endif
 
 .if ${PHP_MODNAME} == "gd"

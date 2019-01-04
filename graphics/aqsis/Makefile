@@ -3,7 +3,7 @@
 
 PORTNAME=	aqsis
 PORTVERSION=	1.8.2
-PORTREVISION=	21
+PORTREVISION=	23
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/${PORTVERSION}
 
@@ -12,6 +12,9 @@ COMMENT=	Photorealistic rendering system
 
 LICENSE=	BSD3CLAUSE GPLv2
 LICENSE_COMB=	multi
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BUILD_DEPENDS=	bison:devel/bison \
 		xsltproc:textproc/libxslt
@@ -26,7 +29,7 @@ LDFLAGS+=	-lpthread # Boost.Thread 1.67+
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 USE_LDCONFIG=	yes
-USES=		cmake:outsource compiler:c++11-lib desktop-file-utils \
+USES=		cmake compiler:c++11-lib desktop-file-utils \
 		qt:4 shared-mime-info shebangfix
 USE_CXXSTD=	gnu++11
 SHEBANG_FILES=	examples/*/*/*.sh \

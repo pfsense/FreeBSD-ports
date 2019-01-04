@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	metasploit
-PORTVERSION=	4.17.14
+PORTVERSION=	4.17.32
 CATEGORIES=	security
 
 MAINTAINER=	tanawts@gmail.com
@@ -17,7 +17,9 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-actionpack4>=4.2.6:www/rubygem-actionpack4 \
 		rubygem-backports>=0:devel/rubygem-backports \
 		rubygem-bcrypt>=0:security/rubygem-bcrypt \
+		rubygem-bcrypt_pbkdf>=0:security/rubygem-bcrypt_pbkdf \
 		rubygem-bundler>=0:sysutils/rubygem-bundler \
+		rubygem-ed25519>=0:security/rubygem-ed25519 \
 		rubygem-jsobfu>=0:www/rubygem-jsobfu \
 		rubygem-json>=0:devel/rubygem-json \
 		rubygem-metasm>=0:devel/rubygem-metasm \
@@ -26,8 +28,8 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-metasploit-credential>=0:security/rubygem-metasploit-credential \
 		rubygem-metasploit_data_models>=0:security/rubygem-metasploit_data_models \
 		rubygem-metasploit-model>=0:security/rubygem-metasploit-model \
-		rubygem-metasploit-payloads>=1.3.47:security/rubygem-metasploit-payloads \
-		rubygem-metasploit_payloads-mettle>=0.4.1:security/rubygem-metasploit_payloads-mettle \
+		rubygem-metasploit-payloads>=1.3.56:security/rubygem-metasploit-payloads \
+		rubygem-metasploit_payloads-mettle>=0.5.0:security/rubygem-metasploit_payloads-mettle \
 		rubygem-msgpack1>=0:devel/rubygem-msgpack1 \
 		rubygem-network_interface>=0:net/rubygem-network_interface \
 		rubygem-rubyntlm>=0:net/rubygem-rubyntlm \
@@ -77,7 +79,8 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-nessus_rest>=0:security/rubygem-nessus_rest \
 		rubygem-nexpose>=0:security/rubygem-nexpose \
 		rubygem-xdr>=0:converters/rubygem-xdr \
-		rubygem-faker>=0:devel/rubygem-faker
+		rubygem-faker>=0:devel/rubygem-faker \
+		rubygem-concurrent-ruby>=0:devel/rubygem-concurrent-ruby
 
 SCRIPTS=	msfconsole msfd msfrpc msfrpcd msfvenom
 
@@ -106,6 +109,7 @@ SHEBANG_FILES=	data/exploits/CVE-2017-17562/build.sh \
 		docker/bin/msfconsole \
 		modules/auxiliary/dos/http/slowloris.py \
 		modules/auxiliary/dos/tcp/claymore_dos.py \
+		modules/auxiliary/gather/office365userenum.py \
 		modules/auxiliary/scanner/smb/impacket/dcomexec.py \
 		modules/auxiliary/scanner/smb/impacket/secretsdump.py \
 		modules/auxiliary/scanner/smb/impacket/wmiexec.py \
@@ -124,11 +128,10 @@ RUN_DEPENDS+=	rubygem-xmlrpc>=0:net/rubygem-xmlrpc
 
 post-patch:
 	${REINPLACE_CMD} 's,git ls-files,find . ! -type d | sed "s|^./||", ; \
-		/bcrypt_pbkdf/d ; \
-		/rbnacl/d ; \
 		/rb-readline/d' \
 		${WRKSRC}/metasploit-framework.gemspec
-	${REINPLACE_CMD} "/pg/s|, '0.20.0'||" ${WRKSRC}/metasploit-framework.gemspec
+	${REINPLACE_CMD} "/pg/s|, '0.20.0'||; \
+		/concurrent-ruby/s|,'1.0.5'||" ${WRKSRC}/metasploit-framework.gemspec
 .if ${RUBY_VER} < 2.4
 	${REINPLACE_CMD} '/xmlrpc/d' ${WRKSRC}/metasploit-framework.gemspec
 .endif

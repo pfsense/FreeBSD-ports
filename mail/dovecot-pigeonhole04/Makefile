@@ -3,7 +3,7 @@
 
 PORTNAME=	dovecot-pigeonhole
 PORTVERSION=	0.4.24
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	http://pigeonhole.dovecot.org/releases/${DOVECOTVERSION}/
 PKGNAMESUFFIX=	04
@@ -13,6 +13,9 @@ MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Sieve plugin for the Dovecot 'deliver' LDA and LMTP
 
 LICENSE=	LGPL21
+
+DEPRECATED=     End of Life upstream, use mail/dovecot-pigeonhole instead
+EXPIRATION_DATE=        2019-01-31
 
 BUILD_DEPENDS=	dovecot22>=2.2.31:mail/dovecot22
 RUN_DEPENDS=	dovecot22>=2.2.31:mail/dovecot22

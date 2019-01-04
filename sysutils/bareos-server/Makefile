@@ -2,7 +2,7 @@
 
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	17.2.5
+DISTVERSION=	17.2.7
 PORTREVISION?=	1
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
@@ -14,14 +14,13 @@ COMMENT?=	Backup archiving recovery open sourced (server)
 LICENSE=	AGPLv3 LGPL3
 LICENSE_COMB=	multi
 
-USE_GITHUB=	yes
-
-USES+=		libtool:keepla pkgconfig readline:port shebangfix
-
 CONFLICTS?=	bacula*-server-* bareos16-server-*
 
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 		libjansson.so:devel/jansson
+
+USES+=		libtool:keepla pkgconfig readline:port shebangfix
+USE_GITHUB=	yes
 
 USERS=		bareos
 GROUPS=		${USERS}

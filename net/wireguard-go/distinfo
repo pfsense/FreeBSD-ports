@@ -1,5 +1,9 @@
-TIMESTAMP = 1528919004
-SHA256 (wireguard-go-0.0.20180613.tar.xz) = 3e22e6f2a715f05f9bbc5b1a9c737ab2edc8f26b2af61f9cc31f83391cd663ff
-SIZE (wireguard-go-0.0.20180613.tar.xz) = 53628
-SHA256 (wireguard-go-0.0.20180613-vendor.tar.xz) = db5bc33f6fdbf9661135a1ff729b8b275c029c639db54edd8b822acc0fd7de80
-SIZE (wireguard-go-0.0.20180613-vendor.tar.xz) = 264700
+TIMESTAMP = 1545592108
+SHA256 (wireguard-go-0.0.20181222.tar.xz) = 53dc611524c40cddd242c972a9559f9793e128a0ce772483f12a2704c9f48c54
+SIZE (wireguard-go-0.0.20181222.tar.xz) = 53032
+SHA256 (golang-crypto-505ab145d0a9_GH0.tar.gz) = 33a4ff7a15a69640a7ce2c65ba94680643554b744c69f3ed3623bd9557c985e7
+SIZE (golang-crypto-505ab145d0a9_GH0.tar.gz) = 1644681
+SHA256 (golang-net-610586996380_GH0.tar.gz) = 3c4e1b42755a416d97fbc335c2bca3ea03abfafc65495ac957a40708f893f69e
+SIZE (golang-net-610586996380_GH0.tar.gz) = 966194
+SHA256 (golang-sys-2a47403f2ae5_GH0.tar.gz) = fd569dabb4065ac6fe6f3b87d7cc9bc0030985c9c5b3edd746d664bbef865e7a
+SIZE (golang-sys-2a47403f2ae5_GH0.tar.gz) = 1119359

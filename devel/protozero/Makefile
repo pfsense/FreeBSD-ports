@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	protozero
-PORTVERSION=	1.6.3
+PORTVERSION=	1.6.4
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -15,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 USE_GITHUB=	yes
 GH_ACCOUNT=	mapbox
 
-USES=		cmake
+USES=		cmake compiler:c++11-lang
 TEST_TARGET=	test
 NO_ARCH=	yes  # header only library
 

@@ -3,9 +3,11 @@
 PORTNAME=	bareos16
 
 PKGNAMESUFFIX=	-traymonitor
-PORTREVISION=	1
 
 COMMENT=	Backup archiving recovery open sourced (traymonitor)
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 LIB_DEPENDS+=	libqwt.so:x11-toolkits/qwt5 \
 		libbareos.so:sysutils/bareos16-client

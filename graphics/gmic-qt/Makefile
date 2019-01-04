@@ -3,6 +3,7 @@
 PORTNAME=	gmic-qt
 DISTVERSIONPREFIX=	v.
 DISTVERSION=	2.3.6
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	graphics kde
 MASTER_SITES=	http://gmic.eu/:stdlib \
@@ -21,7 +22,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfftw3.so:math/fftw3 \
 		libpng.so:graphics/png
 
-USES=		cmake:outsource compiler:c++14-lang pkgconfig qt:5
+USES=		cmake compiler:c++14-lang pkgconfig qt:5
 USE_QT=		core gui network widgets \
 		buildtools_build linguisttools_build qmake_build
 USE_XORG=	ice sm x11 xext

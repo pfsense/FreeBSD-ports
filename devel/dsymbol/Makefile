@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dsymbol
-PORTVERSION=	0.3.5
+PORTVERSION=	0.4.8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -13,6 +13,7 @@ LICENSE=	BSL
 
 BUILD_DEPENDS=	ldmd2:lang/ldc \
 		dub:devel/dub \
+		${LOCALBASE}/lib/d/libmir-core.a:devel/mir-core \
 		${LOCALBASE}/lib/d/libdparse.a:devel/libdparse \
 		${LOCALBASE}/lib/d/libemsi_containers.a:devel/containers \
 		${LOCALBASE}/lib/d/libstdx-allocator.a:devel/stdx-allocator
@@ -26,6 +27,8 @@ D_LIB_DIR=	${PREFIX}/lib/d
 
 post-patch:
 	${REINPLACE_CMD} -e '7,11d' ${WRKSRC}/dub.json
+	${REINPLACE_CMD} -e 's@cache.clear@cache.destroy@g' \
+		${WRKSRC}/src/dsymbol/modulecache.d
 
 do-build:
 	@cd ${WRKSRC} && ${DUB_CMD}

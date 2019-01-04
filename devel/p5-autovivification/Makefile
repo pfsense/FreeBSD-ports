@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	autovivification
-PORTVERSION=	0.16
+PORTVERSION=	0.18
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:VPIT
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Lexically disable autovivification
 
 LICENSE=	MIT

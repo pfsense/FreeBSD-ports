@@ -19,6 +19,7 @@ bin/morbo
 %%SITE_PERL%%/Mojo/DOM/CSS.pm
 %%SITE_PERL%%/Mojo/DOM/HTML.pm
 %%SITE_PERL%%/Mojo/Date.pm
+%%SITE_PERL%%/Mojo/DynamicMethods.pm
 %%SITE_PERL%%/Mojo/EventEmitter.pm
 %%SITE_PERL%%/Mojo/Exception.pm
 %%SITE_PERL%%/Mojo/File.pm
@@ -132,7 +133,6 @@ bin/morbo
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/pinstripe-dark.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/pinstripe-light.png
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/prettify/prettify-mojo-dark.css
-%%SITE_PERL%%/Mojolicious/resources/public/mojo/prettify/prettify-mojo-light.css
 %%SITE_PERL%%/Mojolicious/resources/public/mojo/prettify/run_prettify.js
 %%SITE_PERL%%/Mojolicious/resources/templates/mojo/debug.html.ep
 %%SITE_PERL%%/Mojolicious/resources/templates/mojo/exception.html.ep
@@ -162,6 +162,7 @@ bin/morbo
 %%PERL5_MAN3%%/Mojo::DOM::CSS.3.gz
 %%PERL5_MAN3%%/Mojo::DOM::HTML.3.gz
 %%PERL5_MAN3%%/Mojo::Date.3.gz
+%%PERL5_MAN3%%/Mojo::DynamicMethods.3.gz
 %%PERL5_MAN3%%/Mojo::EventEmitter.3.gz
 %%PERL5_MAN3%%/Mojo::Exception.3.gz
 %%PERL5_MAN3%%/Mojo::File.3.gz

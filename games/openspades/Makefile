@@ -4,7 +4,7 @@
 PORTNAME=	openspades
 PORTVERSION=	0.0.12
 DISTVERSIONPREFIX=	v
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	http://yvt.jp/files/programs/osppaks/:data
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} DevPaks27.zip:data
@@ -15,16 +15,16 @@ COMMENT=	Compatible client of Ace of Spades
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	convert:graphics/ImageMagick # for building icons
+BUILD_DEPENDS=	convert:graphics/ImageMagick6 # for building icons
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-NOT_FOR_ARCHS=		aarch64 powerpc64
-NOT_FOR_ARCHS_REASON=	fails to compile: uses x86 assembly
+BROKEN_aarch64=		fails to compile: uses x86 assembly
+BROKEN_powerpc64=	fails to compile: uses x86 assembly
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	yvt
 
-USES=		cmake compiler:c++11-lib desktop-file-utils
+USES=		cmake:insource compiler:c++11-lib desktop-file-utils
 CMAKE_ARGS=	-DOPENSPADES_RESOURCES=OFF \
 		-DOPENSPADES_INSTALL_MAN="man/man6" \
 		-DOPENSPADES_INSTALL_BINARY="bin" \

@@ -3,7 +3,7 @@
 
 PORTNAME=	gprolog
 PORTVERSION=	1.4.4
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	lang
 MASTER_SITES=	http://www.gprolog.org/
 
@@ -11,6 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free Prolog compiler
 
 LICENSE=	GPLv2
+
+BROKEN=		fails to build
+DEPRECATED=		Abandonware upstream (more than five years), fails in various ways with remotely recent compilers
+EXPIRATION_DATE=	2018-12-18
 
 ONLY_FOR_ARCHS=	i386 amd64
 

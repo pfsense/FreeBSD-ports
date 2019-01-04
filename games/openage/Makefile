@@ -4,9 +4,10 @@ PORTNAME=	openage
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.0-1262
 DISTVERSIONSUFFIX=	-ga554ab49
+PORTREVISION=	2
 CATEGORIES=	games
 
-MAINTAINER=	martinfilla@post.cz
+MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Free engine clone of the Genie Engine
 
 LICENSE=	GPLv3
@@ -30,13 +31,13 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pygments>0:textproc/py-pygments@${PY_FLAVOR}
 
-USES=		cmake:outsource compiler:c++17-lang python:3.4+ qt:5 shebangfix
+USES=		cmake compiler:c++17-lang python:3.4+ qt:5 shebangfix
 SHEBANG_FILES=	configure run.py buildsystem/cythonize.py
 USE_GITHUB=	yes
 GH_ACCOUNT=	SFTtech
 USE_SDL=	image2 sdl2
 USE_GL=		gl glu
-USE_QT=		core gui network qml quick buildtools_build qmake_build
+USE_QT=		core declarative gui network buildtools_build qmake_build
 USE_PYTHON=	cython
 USE_LDCONFIG=	yes
 

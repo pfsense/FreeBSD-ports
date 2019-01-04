@@ -2,6 +2,7 @@
 
 PORTNAME=		nss_wrapper
 PORTVERSION=		1.1.3
+PORTREVISION=	1
 CATEGORIES=		devel
 MASTER_SITES=		SAMBA/cwrap
 
@@ -10,7 +11,7 @@ COMMENT=		Wrapper for the user, group and hosts NSS API
 
 LICENSE=		GPLv3
 
-USES=			cmake:outsource perl5 shebangfix
+USES=			cmake compiler:c++11-lang perl5 shebangfix
 USE_PERL5=		run
 USE_LDCONFIG=		yes
 

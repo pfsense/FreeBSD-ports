@@ -22,7 +22,6 @@ include/board/Transforms.ih
 lib/libboard.a
 lib/libboard.so
 lib/libboard.so.0
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/README
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/arithmetic
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/arithmetic.cpp
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/arrows

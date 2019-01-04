@@ -2,6 +2,7 @@
 
 PORTNAME=	CyLP
 DISTVERSION=	0.7.2-30
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-g65a985b
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}scipy>=0.10.0:science/py-scipy@${FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}scipy>=0.10.0:science/py-scipy@${PY_FLAVOR}
 LIB_DEPENDS=	libblas.so:math/blas \
 		libCbc.so:math/cbc \
 		libCgl.so:math/cgl \

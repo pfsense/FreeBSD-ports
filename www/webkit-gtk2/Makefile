@@ -3,9 +3,9 @@
 
 PORTNAME=	webkit
 PORTVERSION=	2.4.11
-PORTREVISION=	17
+PORTREVISION=	19
 CATEGORIES=	www
-MASTER_SITES=	http://webkitgtk.org/releases/
+MASTER_SITES=	https://webkitgtk.org/releases/
 PKGNAMESUFFIX=	-gtk2
 DISTNAME=	${PORTNAME}gtk-${PORTVERSION}
 
@@ -35,7 +35,7 @@ PORTSCOUT=	limit:^2\.4\.
 BINARY_ALIAS=	python=${PYTHON_CMD}
 USE_GSTREAMER1=	yes
 USE_XORG=	x11 xcomposite xdamage xfixes xrender xt
-USES=		bison compiler:c++11-lib gettext gmake gperf jpeg libtool \
+USES=		bison compiler:c++11-lib gettext gl gmake gnome gperf jpeg libtool \
 		localbase pathfix perl5 pkgconfig python:build shebangfix sqlite tar:xz
 PATHFIX_MAKEFILEIN=	GNUmakefile.in
 USE_RUBY=	yes
@@ -84,7 +84,7 @@ DEBUG_CONFIGURE_OFF=	--disable-debug-symbols
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64 || ${ARCH} == powerpc || ${ARCH} == sparc64
+.if ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
 CONFIGURE_ARGS+=	--disable-jit
 CFLAGS+=		-DENABLE_YARR_JIT=0
 .endif

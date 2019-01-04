@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	movit
-PORTVERSION=	1.4.0
-PORTREVISION=	2
+PORTVERSION=	1.6.2
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://${PORTNAME}.sesse.net/
 
-MAINTAINER=	avilla@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High-performance video filters for the GPU
 
 LICENSE=	GPLv2+
@@ -14,7 +14,8 @@ LICENSE=	GPLv2+
 LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 		libfftw3.so:math/fftw3
 
-USES=		autoreconf gmake eigen:3,build,run libtool pathfix pkgconfig
+USES=		autoreconf compiler:c++11-lang gmake eigen:3,build,run libtool \
+		pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 

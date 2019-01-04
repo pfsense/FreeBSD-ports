@@ -4,10 +4,10 @@ PORTNAME=	admiral
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0-7
 DISTVERSIONSUFFIX=	-g5a9f33b
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11
 
-MAINTAINER=	lebarondemerde@privacychain.ch
+MAINTAINER=	rigoletto@FreeBSD.org
 COMMENT=	Merge concurrent outputs for a status bar
 
 LICENSE=	BSD2CLAUSE

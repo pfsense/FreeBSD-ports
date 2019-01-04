@@ -5,7 +5,7 @@ PORTNAME=	couchbase
 DISTVERSION=	2.4.2
 CATEGORIES=	databases
 
-MAINTAINER=	johnpupu@gmail.com
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Couchbase Server PHP extension
 
 LICENSE=	APACHE20
@@ -16,5 +16,6 @@ LIB_DEPENDS=	libcouchbase.so:databases/libcouchbase
 
 USES=		php:pecl
 USE_PHP=	json:build
+IGNORE_WITH_PHP=	73
 
 .include <bsd.port.mk>

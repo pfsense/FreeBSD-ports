@@ -3,6 +3,7 @@
 PORTNAME=	eternalterminal
 DISTVERSIONPREFIX=	et-v
 DISTVERSION=	4.2.1
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	trevis@silencedpoet.com
@@ -16,7 +17,7 @@ LIB_DEPENDS=	libgflags.so:devel/gflags \
 		libprotobuf.so:devel/protobuf \
 		libsodium.so:security/libsodium
 
-USES=		cmake:outsource ncurses
+USES=		cmake compiler:c++11-lang ncurses
 USE_GITHUB=	yes
 GH_ACCOUNT=	MisterTea
 GH_PROJECT=	EternalTerminal

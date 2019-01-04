@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	luscus
-DISTVERSION=	0.8.5
+DISTVERSION=	0.8.6
 CATEGORIES=	science
 MASTER_SITES=	SF/${PORTNAME}/
 DISTNAME=	${PORTNAME}_${DISTVERSION}
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 RUN_DEPENDS=	bash:shells/bash \
 		babel:science/openbabel
 
-USES=		cmake:outsource gettext-runtime pkgconfig shebangfix
+USES=		cmake gettext-runtime pkgconfig shebangfix
 SHEBANG_GLOB=	*.sh
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 pango pangox-compat
 USE_GL=		gl glu

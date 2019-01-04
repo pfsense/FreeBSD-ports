@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mk-livestatus
-PORTVERSION=	1.2.8p18
+PORTVERSION=	1.2.8p20
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://mathias-kettner.de/download/
 DIST_SUBDIR=	check_mk
@@ -13,18 +14,17 @@ COMMENT=	Nagios event broker module
 LICENSE=	GPLv2
 
 USES=		compiler:c++11-lib gmake
+
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	lib/mk-livestatus/unixcat \
 		lib/mk-livestatus/livestatus.o
 SUB_FILES=	pkg-message
 
-PORTEXAMPLES=	*
-EXAMPLE_FILES=	api/python/example_multisite.py \
-		api/python/example.py \
-		api/python/livestatus.py \
-		api/python/make_nagvis_map.py \
-		api/python/README
+PORTEXAMPLES=	*.py README
+EXAMPLE_FILES=	example_multisite.py example.py \
+		livestatus.py make_nagvis_map.py \
+		README
 
 # parameter "command_file" from nagios.cfg
 COMMAND_FILE?=	/var/spool/nagios/rw/live
@@ -34,10 +34,12 @@ OPTIONS_SINGLE=	NAGIOS
 OPTIONS_SINGLE_NAGIOS=	NAGIOS3 NAGIOS4
 OPTIONS_DEFAULT=	NAGIOS3
 
+EXAMPLES_USES=	python
+
 NAGIOS3_DESC=	build for nagios-3.x
 NAGIOS4_DESC=	build for nagios-4.x
 
-NAGIOS4_CONFIGURE_WITH=nagios4
+NAGIOS4_CONFIGURE_ON=	--with-nagios4
 
 # perl api is really outdated, do not install!
 # Actual version can be found on CPAN
@@ -46,15 +48,15 @@ post-extract:
 	@${RM} -r ${WRKSRC}/api/perl
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/bin/python|${LOCALBASE}/bin/python2.7|g' \
-		-e 's|/var/lib/nagios/rw/live|${COMMAND_FILE}|g' \
-		-e 's|/var/run/nagios/rw/live|${COMMAND_FILE}|g' \
-		${EXAMPLE_FILES:S|^|${WRKSRC}/|}
 	@${REINPLACE_CMD} -e 's|/usr/local/nagios/var/rw/live|${COMMAND_FILE}|' \
 		${WRKSRC}/src/livestatus.h
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	( cd ${WRKSRC} && ${COPYTREE_SHARE} api\* ${STAGEDIR}${EXAMPLESDIR}/ )
+	@${REINPLACE_CMD} -e 's|/usr/bin/python|${PYTHON_CMD}|g' \
+		-e 's|/var/lib/nagios/rw/live|${COMMAND_FILE}|g' \
+		-e 's|/var/run/nagios/rw/live|${COMMAND_FILE}|g' \
+		${PORTEXAMPLES:S|^|${WRKSRC}/api/python/|}
+	${INSTALL_DATA} ${PORTEXAMPLES:S|^|${WRKSRC}/api/python/|} ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

@@ -1,9 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	amass
-DISTVERSIONPREFIX=	v
-DISTVERSION=	2.7.0-8
-DISTVERSIONSUFFIX=	-g5ac544c
+DISTVERSION=	2.8.6
 CATEGORIES=	dns
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,6 +19,7 @@ GH_TUPLE=	OWASP:Amass:${DISTVERSIONFULL}:main/src/github.com/OWASP/Amass \
 		andybalholm:cascadia:v1.0.0:cascadia/src/github.com/andybalholm/cascadia \
 		asaskevich:EventBus:d46933a:EventBus/src/github.com/asaskevich/EventBus \
 		fatih:color:v1.7.0:color/src/github.com/fatih/color \
+		go-ini:ini:f55231c:ini/src/github.com/go-ini/ini \
 		irfansharif:cfilter:d07d951:cfilter/src/github.com/irfansharif/cfilter \
 		johnnadratowski:golang-neo4j-bolt-driver:v0.1:neo4j/src/github.com/johnnadratowski/golang-neo4j-bolt-driver \
 		mattn:go-colorable:v0.0.9:colorable/src/github.com/mattn/go-colorable \
@@ -37,7 +36,7 @@ GH_TUPLE=	OWASP:Amass:${DISTVERSIONFULL}:main/src/github.com/OWASP/Amass \
 		golang:text:4ae1256:text/src/golang.org/x/text \
 		golang:tools:18207bb:tools/src/golang.org/x/tools
 
-PROGS=		${PORTNAME} ${PORTNAME}.db ${PORTNAME}.maltego ${PORTNAME}.netdomains ${PORTNAME}.viz
+PROGS=		${PORTNAME} ${PORTNAME}.db ${PORTNAME}.netdomains ${PORTNAME}.viz
 
 PLIST_FILES=	${PROGS:C/^/bin\//}
 

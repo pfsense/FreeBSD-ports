@@ -2,6 +2,7 @@
 
 PORTNAME=	qdoc
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel textproc
 PKGNAMEPREFIX=	qt5-
 
@@ -11,8 +12,8 @@ COMMENT=	Qt documentation generator
 BUILD_DEPENDS=	llvm60>=0:devel/llvm60
 RUN_DEPENDS=	llvm60>=0:devel/llvm60
 
-USES=		qmake qt-dist:5,tools
-USE_QT=		core qml buildtools_build qdoc-data_run
+USES=		compiler:c++11-lang qmake qt-dist:5,tools
+USE_QT=		core declarative buildtools_build qdoc-data_run
 
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}
 INSTALL_WRKSRC=	${BUILD_WRKSRC}

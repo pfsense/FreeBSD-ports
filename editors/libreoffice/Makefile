@@ -2,7 +2,7 @@
 
 .include "${.CURDIR}/Makefile.common"
 
-PORTREVISION=	5
+PORTREVISION=	4
 MASTER_SITES=	https://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
 		https://dev-www.libreoffice.org/src/:src \
 		https://dev-www.libreoffice.org/extern/:ext
@@ -85,7 +85,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
 		${LOCALBASE}/share/fonts/Carlito/Carlito-Bold.ttf:x11-fonts/crosextrafonts-carlito-ttf \
 		${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu \
-		${LOCALBASE}/share/fonts/emojione-color-font-ttf/EmojiOneColor-SVGinOT.ttf:x11-fonts/emojione-color-font-ttf \
+		${LOCALBASE}/share/fonts/twemoji-color-font-ttf/TwitterColorEmoji-SVGinOT.ttf:x11-fonts/twemoji-color-font-ttf \
 		${LOCALBASE}/share/fonts/GentiumBasic/GenBasI.ttf:x11-fonts/gentium-basic \
 		${LOCALBASE}/share/fonts/Liberation/LiberationMono-Bold.ttf:x11-fonts/liberation-fonts-ttf \
 		${LOCALBASE}/share/fonts/LinLibertineG/LinLibertine_DR_G.ttf:x11-fonts/linuxlibertine-g
@@ -112,7 +112,7 @@ USE_XORG=	ice sm x11 xaw xext xinerama xrandr xrender
 USES=		autoreconf:build bison compiler:c++14-lang cpe gmake jpeg \
 		perl5 pkgconfig python shebangfix shared-mime-info ssl tar:xz
 
-OPTIONS_DEFINE=	CUPS DOCS GNOME GTK2 GTK3 JAVA KDE4 MMEDIA PGSQL SDK SYSTRAY \
+OPTIONS_DEFINE=	CUPS DOCS GNOME GTK2 GTK3 JAVA MMEDIA PGSQL SDK SYSTRAY \
 		TEST WEBDAV
 OPTIONS_DEFAULT=	CUPS GTK2 MMEDIA
 
@@ -189,14 +189,6 @@ JAVA_DISTFILES=	17410483b5b5f267aa18b7e00b65e6e0-hsqldb_1_8_0.zip:src \
 		f94d9870737518e3b597f9265f4e9803-libserializer-1.1.6.zip:src
 JAVA_USE=	JAVA=yes
 JAVA_VARS=	JAVA_BUILD=yes
-
-KDE4_CONFIGURE_ENABLE=	kde4
-KDE4_CONFIGURE_ENV=	KDE4DIR="${KDE_PREFIX}" \
-			QT4DIR="${PREFIX}" \
-			QT4INC="${QT_INCDIR}" \
-			QT4LIB="${QT_LIBDIR}"
-KDE4_USES=	kde:4 qt:4
-KDE4_USE=	KDE=kdelibs QT=moc_build,qmake_build
 
 MMEDIA_CONFIGURE_ENABLE=	gstreamer-1-0
 MMEDIA_USE=	GSTREAMER1=yes
@@ -277,13 +269,12 @@ MAKE_ENV+=	GNUSED=${LOCALBASE}/bin/gsed
 MAKE_ENV+=	DISPLAY=
 MAKE_ENV+=	verbose=1
 
+.include <bsd.port.options.mk>
+
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == "clang"
-CXXFLAGS_WARN=	-Woverloaded-virtual -Wno-unused-parameter
-.if ${COMPILER_VERSION} >= 36
-CXXFLAGS_WARN+=	-Wno-unused-local-typedefs
-.endif
+.if ${CHOSEN_COMPILER_TYPE} == clang
+CXXFLAGS_WARN=	-Woverloaded-virtual -Wno-unused-parameter -Wno-unused-local-typedefs
 .else
 CXXFLAGS_WARN=	-Wshadow -Woverloaded-virtual
 .endif

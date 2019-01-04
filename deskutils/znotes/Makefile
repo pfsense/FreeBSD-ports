@@ -3,16 +3,17 @@
 
 PORTNAME=	znotes
 PORTVERSION=	0.4.5.20150825
+PORTREVISION=	1
 CATEGORIES=	deskutils
 PKGNAMESUFFIX=	-${FLAVOR}
 
-MAINTAINER=	lebarondemerde@privacychain.ch
+MAINTAINER=	rigoletto@FreeBSD.org
 COMMENT=	Simple notes managment application based on Qt
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-FLAVORS=	qt4 qt5
+FLAVORS=	qt5 qt4
 FLAVOR?=	${FLAVORS:[1]}
 
 USES=		qmake
@@ -24,6 +25,8 @@ GH_PROJECT=	zNotes
 GH_TAGNAME=	6423c5e
 
 . if ${FLAVOR} == qt4
+DEPRECATED=	Qt4 has been EOL since december 2015
+EXPIRATION_DATE=2019-03-15
 USES+=		qt:4
 USE_QT=		uic_build moc_build rcc_build linguisttools_build corelib gui network xml
 . else

@@ -2,7 +2,7 @@
 
 PORTNAME=	keepassxc
 DISTVERSION=	2.3.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/keepassxreboot/keepassxc/releases/download/${DISTVERSION}/${PORTNAME}-${DISTVERSION}-src.tar.xz?dummy=/
 
@@ -24,7 +24,8 @@ LIB_DEPENDS=	libargon2.so:security/libargon2 \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error
 
-USES=		cmake:outsource desktop-file-utils qt:5 shared-mime-info tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils qt:5 \
+		shared-mime-info tar:xz
 USE_QT=		buildtools_build concurrent core dbus gui linguisttools network \
 		qmake_build testlib widgets
 USE_XORG=	x11

@@ -2,7 +2,7 @@
 
 PORTNAME=	openstructure
 DISTVERSION=	1.7.1
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	science
 MASTER_SITES=	https://git.scicore.unibas.ch/schwede/${PORTNAME}/repository/${DISTVERSION}/archive.tar.gz?dummy=/
 
@@ -11,6 +11,9 @@ COMMENT=	Molecular modelling and visualization environment
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BUILD_DEPENDS=	fftw3>0:math/fftw3
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
@@ -21,7 +24,7 @@ LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 RUN_DEPENDS=	${PYNUMPY} \
 		bash:shells/bash
 
-USES=		cmake:outsource eigen:3 python pyqt:4 qt:4 shebangfix
+USES=		cmake eigen:3 python pyqt:4 qt:4 shebangfix
 SHEBANG_FILES=	scripts/dng.in scripts/ost.in scripts/ost_config.in
 USE_QT=		corelib gui network opengl xml qmake_build moc_build rcc_build uic_build
 USE_PYQT=	core gui

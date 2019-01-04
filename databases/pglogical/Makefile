@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	pglogical
-PORTVERSION=	2.2.0
+PORTVERSION=	2.2.1
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	matthew@FreeBSD.org

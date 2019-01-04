@@ -5,11 +5,11 @@ bin/pmd
 %%DATADIR%%/antlr-runtime-3.5.2.jar
 %%DATADIR%%/antlr4-runtime-4.7.jar
 %%DATADIR%%/aopalliance-1.0.jar
-%%DATADIR%%/asm-6.2.jar
+%%DATADIR%%/asm-6.2.1.jar
 %%DATADIR%%/cglib-3.2.0.jar
 %%DATADIR%%/commons-beanutils-core-1.8.3.jar
-%%DATADIR%%/commons-io-2.4.jar
-%%DATADIR%%/commons-lang3-3.7.jar
+%%DATADIR%%/commons-io-2.6.jar
+%%DATADIR%%/commons-lang3-3.8.1.jar
 %%DATADIR%%/commons-logging-1.1.1.jar
 %%DATADIR%%/controlsfx-8.40.13.jar
 %%DATADIR%%/error_prone_annotations-2.0.18.jar
@@ -23,7 +23,7 @@ bin/pmd
 %%DATADIR%%/j2objc-annotations-1.1.jar
 %%DATADIR%%/javacc-5.0.jar
 %%DATADIR%%/javax.inject-1.jar
-%%DATADIR%%/jcommander-1.48.jar
+%%DATADIR%%/jcommander-1.72.jar
 %%DATADIR%%/jol-core-0.4.jar
 %%DATADIR%%/jsr305-3.0.1.jar
 %%DATADIR%%/logback-classic-1.1.7.jar
@@ -43,6 +43,7 @@ bin/pmd
 %%DATADIR%%/pmd-java-%%PORTVERSION%%.jar
 %%DATADIR%%/pmd-javascript-%%PORTVERSION%%.jar
 %%DATADIR%%/pmd-jsp-%%PORTVERSION%%.jar
+%%DATADIR%%/pmd-kotlin-%%PORTVERSION%%.jar
 %%DATADIR%%/pmd-matlab-%%PORTVERSION%%.jar
 %%DATADIR%%/pmd-objectivec-%%PORTVERSION%%.jar
 %%DATADIR%%/pmd-perl-%%PORTVERSION%%.jar
@@ -65,7 +66,7 @@ bin/pmd
 %%DATADIR%%/scala-library-2.12.4.jar
 %%DATADIR%%/scala-reflect-2.12.4.jar
 %%DATADIR%%/scala-xml_2.12-1.0.6.jar
-%%DATADIR%%/slf4j-api-1.7.12.jar
+%%DATADIR%%/slf4j-api-1.7.25.jar
 %%DATADIR%%/snakeyaml-1.17.jar
 %%DATADIR%%/undofx-2.0.0.jar
 %%DATADIR%%/wellbehavedfx-0.3.3.jar

@@ -5,7 +5,7 @@ PORTNAME=	clementine
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.3.1-441
 DISTVERSIONSUFFIX=	-gc01b7bc
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-player
 
@@ -14,6 +14,9 @@ COMMENT=	Cross-platform music player based on Amarok 1.4
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 LIB_DEPENDS=	libtag.so:audio/taglib \
@@ -37,6 +40,7 @@ USES=		cmake \
 		gettext-tools \
 		pkgconfig \
 		qt:4 sqlite
+USE_CXXSTD=	c++11
 
 USE_GL=		gl glew glu
 USE_XORG=	x11

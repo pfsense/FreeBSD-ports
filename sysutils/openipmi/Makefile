@@ -3,11 +3,12 @@
 
 PORTNAME=	openipmi
 PORTVERSION=	2.0.25
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/OpenIPMI%202.0%20Library
 DISTNAME=	OpenIPMI-${PORTVERSION}
 
-MAINTAINER=	egypcio@googlemail.com
+MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Complex IPMI management software
 
 LICENSE=	GPLv2

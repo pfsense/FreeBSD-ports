@@ -2,7 +2,7 @@
 
 PORTNAME=	rspamd
 PORTVERSION=	1.8.0.a1.20180920
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
 
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 BUILD_DEPENDS=	ragel:devel/ragel
 RUN_DEPENDS=	ca_root_nss>=3.*:security/ca_root_nss
 
-USES=		cmake:outsource pkgconfig perl5 \
+USES=		cmake pkgconfig perl5 \
 		compiler:c11 sqlite ssl
 USE_LDCONFIG=	yes
 USE_PERL5=	build run

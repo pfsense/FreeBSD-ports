@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	cointop
-PORTVERSION=	1.0.6
+PORTVERSION=	1.1.1
 CATEGORIES=	finance
 
-MAINTAINER=	ndowens.fbsd@yandex.com
+MAINTAINER=	ndowens@yahoo.com
 COMMENT=	Light cryptocurrency coin stats
 
 LICENSE=	APACHE20

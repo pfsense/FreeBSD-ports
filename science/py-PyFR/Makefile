@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	PyFR
-DISTVERSION=	1.7.6
+DISTVERSION=	1.8.0
 PORTREVISION=	2
 CATEGORIES=	science python
 MASTER_SITES=	http://www.pyfr.org/download/

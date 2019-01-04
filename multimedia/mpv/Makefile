@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	mpv
-PORTVERSION=	0.29.0
+PORTVERSION=	0.29.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	6
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
 MASTER_SITES=	https://waf.io/:waf
@@ -44,7 +44,7 @@ CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
 
 OPTIONS_DEFINE=		ARCHIVE ASS DOCS LCMS2 LUAJIT MANPAGES TEST UCHARDET ZSH EXAMPLES
 OPTIONS_DEFAULT=	ARCHIVE ASS DVDREAD DVDNAV MANPAGES OPENGL UCHARDET \
-			V4L VAAPI VDPAU X11 YTDL
+			V4L VAAPI VDPAU WAYLAND X11 YTDL
 OPTIONS_GROUP=		IN VO AO
 OPTIONS_GROUP_IN=	CDIO DVDREAD DVDNAV LIBBLURAY V4L YTDL SMB
 OPTIONS_GROUP_VO=	CACA OPENGL VAAPI VDPAU WAYLAND X11
@@ -108,6 +108,7 @@ OPENAL_CONFIGURE_ENABLE=	openal
 OPENAL_USES=			openal
 OPENAL_VARS=			LLD_UNSAFE=yes # cf. PR 226980
 
+OPENGL_USES=			gl
 OPENGL_USE=			GL=egl,gbm,gl
 OPENGL_CONFIGURE_OFF=		--disable-gl
 OPENGL_IMPLIES=			X11
@@ -142,11 +143,14 @@ VAAPI_CONFIGURE_OFF=		--disable-vaapi
 VDPAU_LIB_DEPENDS=		libvdpau.so:multimedia/libvdpau
 VDPAU_CONFIGURE_OFF=		--disable-vdpau
 
+WAYLAND_BUILD_DEPENDS=		wayland-protocols>=1.14:graphics/wayland-protocols \
+				${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 WAYLAND_LIB_DEPENDS=		libwayland-client.so:graphics/wayland \
 				libwayland-cursor.so:graphics/wayland \
 				libxkbcommon.so:x11/libxkbcommon
 WAYLAND_CONFIGURE_OFF=		--disable-wayland
 
+X11_USES=			gnome
 X11_USE=			XORG=x11,xext,xinerama,xorgproto,xrandr,xscrnsaver,xv,xxf86vm
 X11_VARS=			INSTALLS_ICONS=yes
 X11_CONFIGURE_OFF=		--disable-x11

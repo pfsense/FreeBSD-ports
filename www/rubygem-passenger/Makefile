@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	passenger
-PORTVERSION=	5.3.5
+PORTVERSION=	6.0.0
+PORTREVISION=	1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMEPREFIX=	rubygem-
@@ -24,6 +25,9 @@ FLAVOR?=	${FLAVORS:[1]}
 apache_PKGNAMESUFFIX=	-apache
 nginx_PKGNAMESUFFIX=	-nginx
 
+apache_CONFLICTS_INSTALL=	${PKGNAMEPREFIX}${PORTNAME}-nginx
+nginx_CONFLICTS_INSTALL=	${PKGNAMEPREFIX}${PORTNAME}-apache
+
 OPTIONS_DEFINE=	DEBUG SYMLINK
 OPTIONS_EXCLUDE=DOCS
 SYMLINK_DESC=	Create passenger symlink
@@ -35,21 +39,7 @@ USES+=		apache:2.2+
 USE_RUBY=	yes
 RAKE_BIN=	${LOCALBASE}/bin/rake
 USES+=		cpe gem libtool python:env shebangfix ssl
-SHEBANG_FILES=	\
-	src/cxx_supportlib/vendor-copy/libuv/gyp_uv.py \
-	dev/vagrant/nginx_start \
-	dev/vagrant/provision.sh \
-	dev/ci/run-tests-with-docker \
-	dev/ci/tests/debian/run \
-	dev/ci/tests/rpm/run \
-	dev/ci/scripts/setup-host-natively.sh \
-	dev/ci/scripts/docker-entrypoint-stage2.sh \
-	dev/ci/scripts/inituidgid \
-	dev/ci/scripts/debug-console-wrapper.sh \
-	dev/ci/scripts/run-tests-natively-stage2.sh \
-	dev/ci/scripts/docker-entrypoint.sh \
-	dev/ci/run-tests-natively \
-	dev/ci/setup-host
+SHEBANG_FILES=	src/cxx_supportlib/vendor-copy/libuv/gyp_uv.py
 
 LIB_DEPENDS+=	libuv.so:devel/libuv \
 		libcurl.so:ftp/curl \
@@ -60,7 +50,7 @@ BUILD_DEPENDS+=	rubygem-rack>=0:www/rubygem-rack
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 SUB_LIST+=	GEM_LIB_DIR=${GEM_LIB_DIR} RUBY=${RUBY}
-SUB_FILES=	pkg-message
+SUB_FILES=	pkg-message-${FLAVOR}
 
 PLIST_FILES=	bin/passenger \
 		bin/passenger-config \
@@ -74,12 +64,6 @@ SYMLINK_SUB_LIST=	PASSENGER_INSTALL_DIR="${PREFIX}/${GEMS_DIR}/${PORTNAME}"
 SYMLINK_SUB_LIST_OFF=	PASSENGER_INSTALL_DIR="${PREFIX}/${GEM_LIB_DIR}"
 
 pre-patch:
-.if ${FLAVOR} == nginx
-	@${ECHO_CMD}
-	@${ECHO_CMD} "Do not forget compile www/nginx"
-	@${ECHO_CMD} "with PASSENGER_MODULE support"
-	@${ECHO_CMD}
-.endif
 	@${REINPLACE_CMD} \
 		's!-Wall!!g; \
 		s!gcc!${CC}!g; \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xml-security-c
-PORTVERSION=	2.0.1
+PORTVERSION=	2.0.2
 CATEGORIES=	security
 MASTER_SITES=	APACHE/santuario/c-library
 PKGNAMEPREFIX=	apache-
@@ -22,7 +22,5 @@ CONFIGURE_ENV+=	openssl_LIBS="-L${OPENSSLLIB} -lcrypto" openssl_CFLAGS=-I${OPENS
 
 CPE_PRODUCT=	xml_security_for_c\+\+
 CPE_VENDOR=	apache
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	field has incomplete type HMAC_CTX (aka hmac_ctx_st)
 
 .include <bsd.port.mk>

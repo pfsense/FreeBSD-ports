@@ -2,7 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	powa-archivist
-PORTVERSION=	3.1.1.a.20161106
+DISTVERSIONPREFIX=	REL_
+DISTVERSION=	3_2_0
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -14,8 +16,7 @@ RUN_DEPENDS=	${LOCALBASE}/lib/postgresql/pg_stat_kcache.so:databases/pg_stat_kca
 		${LOCALBASE}/lib/postgresql/pg_qualstats.so:databases/pg_qualstats
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	dalibo
-GH_TAGNAME=	521fdf
+GH_ACCOUNT=	powa-team
 
 USES=		gmake pgsql:9.4+
 WANT_PGSQL=	server contrib
