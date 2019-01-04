@@ -188,7 +188,7 @@ if ($currentruleset != 'custom.rules') {
 
 	// If it is the auto-flowbits file, set the full path.
 	if ($currentruleset == "Auto-Flowbit Rules") {
-		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rules_map = suricata_load_rules_map("{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME);
 	}
 	// Test for the special case of an IPS Policy file
 	// and load the selected policy's rules.
@@ -674,9 +674,10 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 
 	// Reload the rules so we can accurately show content after
 	// resetting any user overrides.
-	// If it is the auto-flowbits file, set the full path.
+	// Test for the auto-flowbits file.
 	if ($currentruleset == "Auto-Flowbit Rules") {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+		$rules_map = suricata_load_rules_map($rulefile);
 	}
 	// Test for the special case of an IPS Policy file
 	// and load the selected policy's rules.
