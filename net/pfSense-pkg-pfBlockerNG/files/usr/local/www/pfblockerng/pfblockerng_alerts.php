@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -38,13 +38,10 @@ global $g, $pfb, $rule_list, $pfb_localsub;
 pfb_global();
 
 // Application paths
-$pathgeoip	= '/usr/local/bin/geoiplookup';
-$pathgeoip6	= '/usr/local/bin/geoiplookup6';
+$pathgeoip = "/usr/local/bin/mmdblookup -f {$pfb['geoipshare']}/GeoLite2-Country.mmdb -i";
 
 // Define file locations
 $filter_logfile = "{$g['varlog_path']}/filter.log";
-$pathgeoipdat	= "{$pfb['geoipshare']}/GeoIP.dat";
-$pathgeoipdat6	= "{$pfb['geoipshare']}/GeoIPv6.dat";
 
 // Proofpoint ET IQRisk header name reference
 $et_header = $config['installedpackages']['pfblockerngreputation']['config'][0]['et_header'];
@@ -1353,10 +1350,9 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 			}
 
 			// Determine Country code of host
-			if (is_ipaddrv4($host)) {
-				$country = substr(exec("{$pathgeoip} -f {$pathgeoipdat} {$host}"), 23, 2);
-			} else {
-				$country = substr(exec("{$pathgeoip6} -f {$pathgeoipdat6} {$host}"), 26, 2);
+			$country = exec("{$pathgeoip} {$host} country iso_code | grep -v '^$' | cut -d '\"' -f2 2>&1");
+			if (empty($country)) {
+				$country = 'Unknown';
 			}
 
 			// Find the header which alerted this host
