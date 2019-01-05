@@ -81,7 +81,7 @@ safe_mkdir(SURICATA_IPREP_PATH);
 
 // Download the latest GeoIP DB updates and create cron task if the feature is not disabled
 if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] != 'off') {
-	log_error(gettext("[Suricata] Installing free GeoIP country database files..."));
+	log_error(gettext("[Suricata] Installing free GeoLite2 country IP database file..."));
 	include("/usr/local/pkg/suricata/suricata_geoipupdate.php");
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 0, 8, "*", "*", "root");
 }

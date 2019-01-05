@@ -3,11 +3,11 @@
  * suricata_uninstall.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -83,7 +83,7 @@ if (!is_subsystem_dirty('mount')) {
 }
 
 /*********************************************************/
-/* Remove files we placed in the Suricata etc directory. */
+/* Remove files we placed in the Suricata directories.   */
 /* pkgng will clean up the base install files.           */
 /*********************************************************/
 unlink_if_exists("{$suricatadir}*.gz.md5");
@@ -96,6 +96,12 @@ unlink_if_exists("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
 unlink_if_exists("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
 unlink_if_exists("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.rules");
 unlink_if_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . "*.txt");
+unlink_if_exists("/usr/local/share/suricata/GeoLite2/GeoLite2-Country.mmdb");
+rmdir_recursive(SURICATA_RULES_DIR);
+rmdir_recursive("/usr/local/share/suricata/GeoLite2");
+
 if (is_array($config['installedpackages']['suricata']['rule'])) {
 	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
 		rmdir_recursive("{$suricatadir}suricata_" . $suricatacfg['uuid'] . "_" . get_real_interface($suricatacfg['interface']));
