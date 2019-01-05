@@ -132,6 +132,9 @@ outputs:
 # Magic file. The extension .mgc is added to the value here.
 magic-file: /usr/share/misc/magic
 
+# GeoLite2 IP geo-location database file path and filename.
+geoip-database: /usr/local/share/suricata/GeoLite2/GeoLite2-Country.mmdb
+
 # Specify a threshold config file
 threshold-file: {$suricatacfgdir}/threshold.config
 

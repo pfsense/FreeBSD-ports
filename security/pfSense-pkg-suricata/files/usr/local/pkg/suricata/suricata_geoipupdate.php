@@ -3,11 +3,11 @@
  * suricata_geoipupdate.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2016 Bill Meeks
+ * Copyright (C) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 
-/* This product includes GeoLite data created by MaxMind, available from 
+/* This product includes GeoLite2 data created by MaxMind, available from 
  * http://www.maxmind.com
 */
 
@@ -35,45 +35,39 @@ require("/usr/local/pkg/suricata/suricata_defs.inc");
  * Start of main code                                                 *
  **********************************************************************/
 global $g, $config;
-$suricata_geoip_dbdir = SURICATA_PBI_BASEDIR . 'share/GeoIP/';
+$suricata_geoip_dbdir = SURICATA_PBI_BASEDIR . 'share/suricata/GeoLite2/';
 $geoip_tmppath = "{$g['tmp_path']}/geoipup/";
 
 // If auto-updates of GeoIP are disabled, then exit
 if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "off")
 	exit(0);
 else
-	log_error(gettext("[Suricata] Updating the GeoIP country database files..."));
+	log_error(gettext("[Suricata] Updating the GeoLite2 country database file..."));
 
-// Download the free GeoIP Legacy country name databases for IPv4 and IPv6
+// Download the free GeoIP Legacy country name databases for IPv4
 // to a temporary location.
-safe_mkdir("$geoip_tmppath");
-if (download_file("http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz", "{$geoip_tmppath}GeoIP.dat.gz") != true)
-	log_error(gettext("[Suricata] An error occurred downloading the 'GeoIP.dat.gz' update file for GeoIP."));
-if (download_file("http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz", "{$geoip_tmppath}GeoIPv6.dat.gz") != true)
-	log_error(gettext("[Suricata] An error occurred downloading the 'GeoIPv6.dat.gz' update file for GeoIP."));
+safe_mkdir($geoip_tmppath);
+if (download_file("https://updates.maxmind.com/geoip/databases/GeoLite2-Country/update", "{$geoip_tmppath}GeoLite2-Country.mmdb.gz") != true)
+	log_error(gettext("[Suricata] An error occurred downloading the 'GeoLite2-Country.mmdb' update file for GeoLite2 location by IP."));
 
 // Mount filesystem read-write since we need to write
-// the extracted databases to PBI_BASE/share/GeoIP.
+// the extracted databases to PBI_BASE/share/suricata/GeoLite2.
 conf_mount_rw();
+safe_mkdir($suricata_geoip_dbdir);
 
 // If the files downloaded successfully, unpack them and store
-// the DB files in the PBI_BASE/share/GeoIP directory.
-if (file_exists("{$geoip_tmppath}GeoIP.dat.gz")) {
-	mwexec("/usr/bin/gunzip -f {$geoip_tmppath}GeoIP.dat.gz");
-	@rename("{$geoip_tmppath}GeoIP.dat", "{$suricata_geoip_dbdir}GeoIP.dat");
-}
-
-if (file_exists("{$geoip_tmppath}GeoIPv6.dat.gz")) {
-	mwexec("/usr/bin/gunzip -f {$geoip_tmppath}GeoIPv6.dat.gz");
-	@rename("{$geoip_tmppath}GeoIPv6.dat", "{$suricata_geoip_dbdir}GeoIPv6.dat");
+// the DB files in the PBI_BASE/share/suricata/GeoLite2 directory.
+if (file_exists("{$geoip_tmppath}GeoLite2-Country.mmdb.gz")) {
+	mwexec("/usr/bin/gunzip -f {$geoip_tmppath}GeoLite2-Country.mmdb.gz");
+	@rename("{$geoip_tmppath}GeoLite2-Country.mmdb", "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb");
 }
 
 // Finished with filesystem mods, so remount read-only
 conf_mount_ro();
 
 // Cleanup the tmp directory path
-rmdir_recursive("$geoip_tmppath");
+//rmdir_recursive("$geoip_tmppath");
 
-log_error(gettext("[Suricata] GeoIP database update finished."));
+log_error(gettext("[Suricata] GeoLite2 IP database update finished."));
 
 ?>
