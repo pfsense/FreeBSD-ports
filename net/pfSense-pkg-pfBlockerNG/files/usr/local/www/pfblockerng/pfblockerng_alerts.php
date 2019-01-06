@@ -602,7 +602,7 @@ function pfb_match_filter_field($flent, $fields) {
 				$field = substr($field, 1);
 				$field_regex = str_replace('/', '\/', str_replace('\/', '/', $field));
 				if (@preg_match("/{$field_regex}/i", $flent[$key])) {
-					return TRUE;
+					return FALSE;
 				}
 			}
 			else {
