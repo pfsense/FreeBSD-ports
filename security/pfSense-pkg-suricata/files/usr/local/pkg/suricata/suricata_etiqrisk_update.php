@@ -3,11 +3,11 @@
  * suricata_etiqrisk_update.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2018 Bill Meeks
+ * Copyright (C) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,7 +49,7 @@ function suricata_check_iprep_md5($filename) {
 	$new_md5 = $old_md5 = "";
 	$et_iqrisk_url = str_replace("_xxx_", $config['installedpackages']['suricata']['config'][0]['iqrisk_code'], ET_IQRISK_DNLD_URL);
 
-	if (download_file("{$et_iqrisk_url}{$filename}.md5sum", "{$iqRisk_tmppath}{$filename}.md5") == true) {
+	if (download_file("{$et_iqrisk_url}{$filename}.md5sum", "{$iqRisk_tmppath}{$filename}.md5", true, 10, 30) == true) {
 		if (file_exists("{$iqRisk_tmppath}{$filename}.md5"))
 			$new_md5 = trim(file_get_contents("{$iqRisk_tmppath}{$filename}.md5"));
 		if (file_exists("{$iprep_path}{$filename}.md5"))

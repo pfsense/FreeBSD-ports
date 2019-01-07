@@ -53,8 +53,6 @@ $pconfig['unified2_log_limit'] = $config['installedpackages']['suricata']['confi
 $pconfig['u2_archive_log_retention'] = $config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'];
 $pconfig['file_store_retention'] = $config['installedpackages']['suricata']['config'][0]['file_store_retention'];
 $pconfig['tls_certs_store_retention'] = $config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'];
-$pconfig['dns_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['dns_log_limit_size'];
-$pconfig['dns_log_retention'] = $config['installedpackages']['suricata']['config'][0]['dns_log_retention'];
 $pconfig['eve_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'];
 $pconfig['eve_log_retention'] = $config['installedpackages']['suricata']['config'][0]['eve_log_retention'];
 $pconfig['sid_changes_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'];
@@ -90,8 +88,6 @@ if (!isset($pconfig['files_json_log_retention']))
 	$pconfig['files_json_log_retention'] = "168";
 if (!isset($pconfig['http_log_retention']))
 	$pconfig['http_log_retention'] = "168";
-if (!isset($pconfig['dns_log_retention']))
-	$pconfig['dns_log_retention'] = "168";
 if (!isset($pconfig['stats_log_retention']))
 	$pconfig['stats_log_retention'] = "168";
 if (!isset($pconfig['tls_log_retention']))
@@ -116,8 +112,6 @@ if (!isset($pconfig['files_json_log_limit_size']))
 	$pconfig['files_json_log_limit_size'] = "1000";
 if (!isset($pconfig['http_log_limit_size']))
 	$pconfig['http_log_limit_size'] = "1000";
-if (!isset($pconfig['dns_log_limit_size']))
-	$pconfig['dns_log_limit_size'] = "750";
 if (!isset($pconfig['stats_log_limit_size']))
 	$pconfig['stats_log_limit_size'] = "500";
 if (!isset($pconfig['tls_log_limit_size']))
@@ -136,7 +130,6 @@ if (isset($_POST['ResetAll'])) {
 	$pconfig['block_log_retention'] = "336";
 	$pconfig['files_json_log_retention'] = "168";
 	$pconfig['http_log_retention'] = "168";
-	$pconfig['dns_log_retention'] = "168";
 	$pconfig['stats_log_retention'] = "168";
 	$pconfig['tls_log_retention'] = "336";
 	$pconfig['u2_archive_log_retention'] = "168";
@@ -149,7 +142,6 @@ if (isset($_POST['ResetAll'])) {
 	$pconfig['block_log_limit_size'] = "500";
 	$pconfig['files_json_log_limit_size'] = "1000";
 	$pconfig['http_log_limit_size'] = "1000";
-	$pconfig['dns_log_limit_size'] = "750";
 	$pconfig['stats_log_limit_size'] = "500";
 	$pconfig['tls_log_limit_size'] = "500";
 	$pconfig['unified2_log_limit'] = "32";
@@ -208,8 +200,6 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 		$config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] = $_POST['u2_archive_log_retention'];
 		$config['installedpackages']['suricata']['config'][0]['file_store_retention'] = $_POST['file_store_retention'];
 		$config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] = $_POST['tls_certs_store_retention'];
-		$config['installedpackages']['suricata']['config'][0]['dns_log_limit_size'] = $_POST['dns_log_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['dns_log_retention'] = $_POST['dns_log_retention'];
 		$config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'] = $_POST['eve_log_limit_size'];
 		$config['installedpackages']['suricata']['config'][0]['eve_log_retention'] = $_POST['eve_log_retention'];
 		$config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'] = $_POST['sid_changes_log_limit_size'];
@@ -324,22 +314,6 @@ $group->add(new Form_Select(
 	$retentions
 ))->setHelp('Retention. Default is 14 DAYS.');
 $group->setHelp('Suricata blocked IPs and event details');
-$section->add($group);
-
-$group = new Form_Group('dns');
-$group->add(new Form_Select(
-	'dns_log_limit_size',
-	'Max Size',
-	$pconfig['dns_log_limit_size'],
-	$log_sizes
-))->setHelp('Max Size. Default is 750 KB.');
-$group->add(new Form_Select(
-	'dns_log_retention',
-	'Retention',
-	$pconfig['dns_log_retention'],
-	$retentions
-))->setHelp('Retention. Default is 7 DAYS.');
-$group->setHelp('DNS request/reply details');
 $section->add($group);
 
 $group = new Form_Group('eve-json');
@@ -497,8 +471,6 @@ events.push(function(){
 		disableInput('tls_log_retention', hide);
 		disableInput('unified2_log_limit', hide);
 		disableInput('u2_archive_log_retention', hide);
-		disableInput('dns_log_retention', hide);
-		disableInput('dns_log_limit_size', hide);
 		disableInput('eve_log_retention', hide);
 		disableInput('eve_log_limit_size', hide);
 		disableInput('sid_changes_log_retention', hide);

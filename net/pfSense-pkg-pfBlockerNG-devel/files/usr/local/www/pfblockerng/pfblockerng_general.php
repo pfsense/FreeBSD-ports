@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -242,7 +242,7 @@ $section->addInput(new Form_StaticText(
 			<span style="color: #8B181B;" class="fa fa-twitter"></span> Follow on Twitter</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://plus.google.com/u/0/109775911285900340944">
 			<span style="color: #8B181B;" class="fa fa-google-plus"></span> Google+</a></li>
-		<li class="list-inline-item"><a target="_blank" href="https://www.reddit.com/user/BBCan177/">
+		<li class="list-inline-item"><a target="_blank" href="https://www.reddit.com/r/pfBlockerNG/new/">
 			<span style="color: #8B181B;" class="fa fa-reddit"></span> Reddit</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://github.com/BBcan177">
 			<span style="color: #8B181B;" class="fa fa-github"></span> GitHub</a></li>

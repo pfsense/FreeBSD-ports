@@ -3,11 +3,11 @@
  * suricata.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2018 Bill Meeks
+ * Copyright (C) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1879,7 +1879,7 @@ function suricata_load_vrt_policy($policy, $mode='alert', $all_rules=null) {
 		/* Since only Snort VRT rules have IPS Policy metadata, */
 		/* limit our search to just those files.                */
 		$suricata_file_pattern = VRT_FILE_PREFIX . "*.rules";
-		$suricata_vrt_files = glob("{$suricatadir}rules/{$suricata_file_pattern}");
+		$suricata_vrt_files = glob(SURICATA_RULES_DIR . "{$suricata_file_pattern}");
 		$all_rules = suricata_load_rules_map($suricata_vrt_files);
 	}
 
@@ -3336,7 +3336,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 		$no_rules_defined = false;
 
 		// Load up all the rules into a Rules Map array.
-		$all_rules = suricata_load_rules_map("{$suricatadir}rules/");
+		$all_rules = suricata_load_rules_map(SURICATA_RULES_DIR);
 
 		// Create an array with the filenames of the enabled
 		// rule category files if we have any.

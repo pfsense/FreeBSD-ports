@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -213,7 +213,6 @@ display_top_tabs($tab_array, true);
 
 $tab_array	= array();
 $tab_array[]	= array(gettext('DNSBL Feeds'),		false,		'/pfblockerng/pfblockerng_category.php?type=dnsbl');
-$tab_array[]	= array(gettext('DNSBL EasyList'),	false,		'/pfblockerng/pfblockerng_category.php?type=easylist');
 $tab_array[]	= array(gettext('DNSBL Category'),	false,		'/pfblockerng/pfblockerng_blacklist.php');
 display_top_tabs($tab_array, true);
 

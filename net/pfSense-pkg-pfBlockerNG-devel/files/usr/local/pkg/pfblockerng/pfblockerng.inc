@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -193,27 +193,6 @@ $pfb['rfc7231'] = array(100 => '100 Continue',			101 => '101 Switching Protocols
 			526 => 'CF 526 Invalid SSL Certificate',527 => 'CF 527 Railgun Error'
 			);
 
-// Default EasyList Header/URLs
-$pfb['def_easylist'] = array(	'EasyList'		=> 'https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt',
-				'EasyPrivacy'		=> 'https://easylist-downloads.adblockplus.org/easyprivacy.txt',
-				'EasyList_Arabic'	=> 'https://easylist-downloads.adblockplus.org/Liste_AR.txt',
-				'EasyList_Bulgarian'	=> 'https://stanev.org/abp/adblock_bg.txt',
-				'EasyList_Chinese'	=> 'https://easylist-downloads.adblockplus.org/easylistchina.txt',
-				'EasyList_Czech_Slovak'	=> 'https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt',
-				'EasyList_Dutch'	=> 'https://easylist-downloads.adblockplus.org/easylistdutch.txt',
-				'EasyList_French'	=> 'https://easylist-downloads.adblockplus.org/liste_fr.txt',
-				'EasyList_German'	=> 'https://easylist.to/easylistgermany/easylistgermany.txt',
-				'EasyList_Hebrew'	=> 'https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt',
-				'EasyList_Indonesian'	=> 'https://raw.githubusercontent.com/heradhis/indonesianadblockrules/master/subscriptions/abpindo.txt',
-				'EasyList_Italian'	=> 'https://easylist-downloads.adblockplus.org/easylistitaly.txt',
-				'EasyList_Latvian'	=> 'https://notabug.org/latvian-list/adblock-latvian/raw/master/lists/latvian-list.txt',
-				'EasyList_Lithuanian'	=> 'http://margevicius.lt/easylistlithuania.txt',
-				'EasyList_Russian'	=> 'https://easylist-downloads.adblockplus.org/advblock.txt',
-				'EasyList_Spanish'	=> 'https://easylist-downloads.adblockplus.org/easylistspanish.txt',
-				'EasyList_Turkish'	=> 'https://adguard.com/en/filter-rules.html?id=13'
-				);
-
-// Function to filter/sanitize user input - ** TODO: Improve filter **
 function pfb_filter($input, $type) {
 
 	$result = '';
@@ -993,6 +972,7 @@ server.event-handler		= "freebsd-kqueue"
 server.network-backend		= "freebsd-sendfile"
 server.dir-listing		= "disable"
 server.document-root		= "/usr/local/www/pfblockerng/www/"
+server.max-request-size		= "1"
 server.errorlog			= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc dnsbl"
 server.pid-file			= "/var/run/dnsbl.pid"
 
@@ -2348,7 +2328,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 			if ($type == 'geoip') {
 				// Extras - MaxMind downloads
 				@rename("{$file_dwn}.raw", strstr("{$file_dwn}.raw", '.raw', TRUE));
-				exec("/usr/bin/gunzip -dfq {$file_dwn} {$pfb['geoipshare']}");
+				exec("/usr/bin/tar -xzf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
 				return TRUE;
 			}
 			elseif ($type == 'blacklist') {
@@ -3406,10 +3386,10 @@ function pfb_collect_localhosts() {
 		}
 	}
 
-	// Collect NAT IP addresses
+	// Collect NAT IP addresses by Target:Port
 	if (is_array($config['nat']['rule'])) {
 		foreach ($config['nat']['rule'] as $natent) {
-			$local_hosts[$natent['target']] = strtolower("{$natent['descr']}");
+			$local_hosts["{$natent['target']}:{$natent['local-port']}"] = strtolower("{$natent['descr']}");
 		}
 	}
 
@@ -3456,12 +3436,7 @@ function pfb_daemon_filterlog() {
 	}
 
 	// Application paths
-	$pathgeoip	= '/usr/local/bin/geoiplookup';
-	$pathgeoip6	= '/usr/local/bin/geoiplookup6';
-
-	// Define file locations
-	$pathgeoipdat	= "{$pfb['geoipshare']}/GeoIP.dat";
-	$pathgeoipdat6	= "{$pfb['geoipshare']}/GeoIPv6.dat";
+	$pathgeoip = "/usr/local/bin/mmdblookup -f {$pfb['geoipshare']}/GeoLite2-Country.mmdb -i";
 
 	// Proofpoint ET IQRisk header name reference
 	init_config_arr(array('installedpackages', 'pfblockerngreputation', 'config', 0));
@@ -3643,17 +3618,28 @@ function pfb_daemon_filterlog() {
 						$dir	= 'in';
 						$host	= $srcip;
 						$client	= $dstip;
+						$port	= $d[21];
 					} else {
 						$dir	= 'out';
 						$host	= $dstip;
 						$client	= $srcip;
+						$port	= $d[20];
 					}
 
 					if (!is_ipaddr($host)) {
 						continue;
 					}
 
-					$hostname = isset($local_hosts[$client]) ? $local_hosts[$client] : 'Unknown';
+					switch (TRUE) {
+						case isset($local_hosts["{$client}:{$port}"]):
+							$hostname = $local_hosts["{$client}:{$port}"];
+							break;
+						case isset($local_hosts[$client]):
+							$hostname = $local_hosts[$client];
+							break;
+						default:
+							$hostname = 'Unknown';
+					}
 
 					// Find the header which alerted this host
 					$pfb_query = find_reported_header($host, $folder);
@@ -3674,15 +3660,17 @@ function pfb_daemon_filterlog() {
 					}
 
 					// Determine GeoIP isocode of host
-					if ($d[8] == 4) {
-						$geoip = substr(exec("{$pathgeoip} -f {$pathgeoipdat} {$host} 2>&1"), 23, 2);
+					$geoip = exec("{$pathgeoip} {$host} country iso_code | grep -v '^$' | cut -d '\"' -f2 2>&1");
+					if (empty($geoip)) {
+						$geoip = 'Unknown';
+					}
 
+					// Modify host for ASN query
+					if ($d[8] == 4) {
 						// For ASN, query for IP Network address (x.x.x.0)
 						$ix = ip_explode($host);
 						$ip = "{$ix['6']}0";
 					} else {
-						$geoip = substr(exec("{$pathgeoip6} -f {$pathgeoipdat6} {$host} 2>&1"), 26, 2);
-
 						// For ASN, query for IP Network address with /48 subnet
 						$ip = gen_subnetv6($host, 48);
 					}
@@ -4102,8 +4090,14 @@ function pfb_open_sqlite($table, $message) {
 	if ($db_handle) {
 
 		// Validate database integrity
-		$pfb_validate = FALSE;
-		$validate = $db_handle->query("PRAGMA integrity_check;");
+		$validate = $pfb_validate = FALSE;
+		try {
+			$validate = $db_handle->query("PRAGMA integrity_check;");
+		}
+		catch (Exception $e) {
+			@file_put_contents($pfb['errlog'], "\nDNSBL_SQL: Failed to validate database - {$message}", FILE_APPEND | LOCK_EX);
+		}
+
 		if ($validate) {
 			while ($res = $validate->fetchArray(SQLITE3_ASSOC)) {
 				if ($res['integrity_check'] == 'ok') {
@@ -4118,10 +4112,15 @@ function pfb_open_sqlite($table, $message) {
 			$db_create = "DROP TABLE {$db_table}; {$db_create}";
 		}
 
-		$db_handle->exec("PRAGMA journal_mode = delete;");
-		$db_handle->exec("BEGIN TRANSACTION;"
-				. "{$db_create}"
-				. "END TRANSACTION;");
+		try {
+			$db_handle->exec("BEGIN TRANSACTION; PRAGMA journal_mode = delete;"
+					. "{$db_create}"
+					. "END TRANSACTION;");
+		}
+		catch (Exception $e) {
+			@file_put_contents($pfb['errlog'], "\nDNSBL_SQL: Database failure - {$message}", FILE_APPEND | LOCK_EX);
+			return;
+		}
 		return $db_handle;
 	}
 	return;
@@ -4257,6 +4256,7 @@ function pfb_daemon_queries() {
 		$sleep_freq = $config['installedpackages']['pfblockerngglobal']['widget-dnsblquery'] ?: 5;
 	}
 
+	$nice		= '/usr/bin/nice -n20';
 	$unbound_pid	= "{$g['varrun_path']}/unbound.pid";
 	$cmd		= '/usr/local/sbin/unbound-control -c /var/unbound/unbound.conf stats_noreset';
 
@@ -4268,29 +4268,26 @@ function pfb_daemon_queries() {
 			continue;
 		}
 
-		$query = '';
-		$now = date('M d H:i:s', time());
-
 		// Collect Unbound Resolver pid
-		$pid = exec("/usr/bin/pgrep -anx 'unbound' 2>&1") ?: 0;
-		if ($pid > 0) {
-
-			// Collect Unbound Resolver pid file timestamp (For cron reload task, which doesn't change pid #)
-			clearstatcache(FALSE, $unbound_pid);
-			$pidt	= @filemtime($unbound_pid);
-
-			$output	= exec("{$cmd} | {$pfb['grep']} 'total.num.queries=' | cut -d '=' -f2 2>&1");
+		$pid = exec("{$nice} /usr/bin/pgrep -anx 'unbound' 2>&1");
+		if (!empty($pid)) {
+			$output	= exec("{$nice} {$cmd} | {$nice} {$pfb['grep']} 'total.num.queries=' | cut -d '=' -f2 2>&1");
 			$query	= intval($output);
-
 			if (!is_numeric($query)) {
 				$query = '';
+			}
+
+			// On an Unbound Reload, the query stat is reset, therefore reuse previous query value
+			if ($query < $p_query) {
+				$t_query	= $query;
+				$query		= $query + $p_query;
+				$pid		= '';
 			}
 		}
 
 		// On initial daemon load
 		if (empty($p_pid)) {
-			$p_pid	= $pid;
-			$p_pidt = $pidt;
+			$p_pid = $pid;
 			continue;
 		}
 
@@ -4303,7 +4300,8 @@ function pfb_daemon_queries() {
 		if ($db_handle) {
 			$result = $db_handle->query("SELECT * FROM resolver WHERE row = 0;");
 			if ($result) {
-				while ($stats = $result->fetchArray(SQLITE3_ASSOC)) {
+				while ($res = $result->fetchArray(SQLITE3_ASSOC)) {
+					$stats = $res;
 					$pfb_found = TRUE;
 				}
 			}
@@ -4319,8 +4317,8 @@ function pfb_daemon_queries() {
 		pfb_close_sqlite($db_handle);
 
 		// If Unbound Resolver pid has changed, clear SQLite database 'queries' entry, and update 'totalqueries/pid' entries
-		if ($pfb_found && ($pid != $p_pid || $pidt != $p_pidt)) {
-			$totalqueries = ($stats['totalqueries'] ?: 0) + ($stats['queries'] ?: 0) + ($query ?: 0);
+		if ($pfb_found && $pid != $p_pid) {
+			$totalqueries = ($stats['totalqueries'] ?: 0) + ($query ?: 0);
 			pfBlockerNG_cleardnsbl('update_totalqueries', $totalqueries);
 		}
 		else {
@@ -4338,9 +4336,13 @@ function pfb_daemon_queries() {
 			}
 		}
 
-		$p_pid		= $pid;
-		$p_pidt		= $pidt;
-		$p_query	= $query;
+		$p_pid = $pid;
+		if (isset($t_query)) {
+			$p_query = $t_query;
+			unset($t_query);
+		} else {
+			$p_query = $query;
+		}
 	}
 }
 
@@ -4698,7 +4700,7 @@ function sync_package_pfblockerng($cron='') {
 		if ($pfb['dnsbl'] == 'on') {
 			pfb_create_dnsbl('enable');
 		}
-		$log = 'Sync terminated during boot process.';
+		$log = 'Update terminated during boot process. If the boot process has completed, delete the file: /var/run/booting.';
 		pfb_logger("\n{$log}\nUPDATE PROCESS ENDED [ NOW ]\n", 1);
 		log_error("[pfBlockerNG] {$log}");
 		return;
@@ -5018,8 +5020,7 @@ function sync_package_pfblockerng($cron='') {
 		// Find all enabled IPv4 'Custom List' header names and check if 'Emerging Threats Update' and 'Custom List Update' needs force updating
 		$list_types = array(	'pfblockernglistsv4'		=> '_v4',
 					'pfblockernglistsv6'		=> '_v6',
-					'pfblockerngdnsbl'		=> '_v4',
-					'pfblockerngdnsbleasylist'	=> '_v4'
+					'pfblockerngdnsbl'		=> '_v4'
 					);
 
 		$pfb_invalid = FALSE;
@@ -5083,7 +5084,7 @@ function sync_package_pfblockerng($cron='') {
 								$config['installedpackages'][$ltype]['config'][$key]['row'][$hkey]['header'] = $row['header'];
 							}
 
-							if (in_array($ltype, array('pfblockerngdnsbl', 'pfblockerngdnsbleasylist'))) {
+							if ($ltype == 'pfblockerngdnsbl') {
 								$header = "{$row['header']}";
 							} else {
 								$header = "{$row['header']}{$vtype}";
@@ -5266,8 +5267,7 @@ function sync_package_pfblockerng($cron='') {
 	}
 
 	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && !$pfb['save'] && !$dnsbl_error) {
-		if (isset($config['installedpackages']['pfblockerngdnsbl']['config']) ||
-		    isset($config['installedpackages']['pfblockerngdnsbleasylist']['config'])) {
+		if (isset($config['installedpackages']['pfblockerngdnsbl']['config'])) {
 			$dnsbl_missing = FALSE;
 
 			// Collect existing DNSBL group statistics
@@ -5501,13 +5501,6 @@ function sync_package_pfblockerng($cron='') {
 				}
 			}
 
-			// Add DNSBL EasyList to '$lists array'
-			if (!empty($config['installedpackages']['pfblockerngdnsbleasylist']['config'])) {
-				foreach ($config['installedpackages']['pfblockerngdnsbleasylist']['config'] as $list) {
-					$lists[] = $list;
-				}
-			}
-
 			if (is_array($config['installedpackages']['pfblockerngdnsbl']['config'])) {
 				foreach ($config['installedpackages']['pfblockerngdnsbl']['config'] as $list) {
 					// If only the 'customlist' is defined. Remove the 'List row' data.
@@ -5523,7 +5516,7 @@ function sync_package_pfblockerng($cron='') {
 									);
 					}
 
-					// Move DNSBL Group to primary position before the EasyList and Blacklist settings
+					// Move DNSBL Group to primary position before the Blacklist settings
 					if ($list['order'] == 'primary') {
 						$list_primary = array();
 						$list_primary[] = $list;
@@ -5566,23 +5559,6 @@ function sync_package_pfblockerng($cron='') {
 								$custom = TRUE;
 							} else {
 								$custom = FALSE;
-							}
-
-							// EasyList
-							if (isset($row['easycat'])) {
-
-								// Collect enabled EasyList categories
-								if (empty($row['easycat'])) {
-									pfb_logger("\n [ {$row['header']} ] - Terminated - No categories defined.\n", 1);
-									continue;
-								}
-								$easylist = ",{$row['easycat']},";
-
-								// Update EasyList URL to default URL
-								$row['url'] = $pfb['def_easylist'][$row['header']];
-							}
-							else {
-								unset($easylist);
 							}
 
 							// If Logging is enabled, utilize DNSBL Web Server & DNSBL VIP, otherwise use '0.0.0.0'
@@ -5678,9 +5654,10 @@ function sync_package_pfblockerng($cron='') {
 								}
 
 								// Variables for Easylists
-								$e_skip = $e_found = $e_lang = FALSE;
-								$run_once = $run_once_2 = FALSE;
-								$csv_parser = FALSE;
+								$easylist = $validate_header = FALSE;
+								$e_replace = array( '||', '.^', '^' );
+
+								$run_once = $csv_parser = FALSE;
 								$csv_type = '';
 								$ipcount = $ip_cnt = 0;
 
@@ -5692,121 +5669,43 @@ function sync_package_pfblockerng($cron='') {
 											// Collect original line
 											$oline = $line;
 
-											// On 'category match', parse EasyList feed
-											if (isset($easylist)) {
-
-												// Workaround for EasyList language feed nuances
-												// $e_1 & $e_2 (usable lines), $e_3 start of non-usable lines
-												if (!$e_found && !$e_lang) {
-
-													$e_lang = TRUE;
-													if (strpos($line, 'Title: EasyList Dutch') !== FALSE) {
-														$e_head	= '!---';
-														$e_1 	= '-Advertentiedomeinen ';
-														$e_2	= '-Advertentiedomeinen-';
-														$e_3	= '-Specifieke blokkeerregels ';
-													}
-													elseif (strpos($line, 'Title: Liste FR') !== FALSE) {
-														$e_head	= '!---';
-														$e_1	= '- Annonceurs';
-														$e_2	= '- Annonceurs popup';
-														$e_3	= html_entity_decode("Publicit\xc3\xa9s tierces");
-													}
-													elseif (strpos($line, 'Title: EasyList China') !== FALSE) {
-														$e_head	= '!---';
-														$e_1	= '-Ads-Union-';
-														$e_2	= '-Popups-';
-														$e_3	= 'Specific advert blocking filters';
-													}
-													elseif (strpos($line, 'Title: Liste AR') !== FALSE) {
-														$e_head = '!---';
-														$e_1	= ' Annonceurs ';
-														$e_2	= 'N/A';
-														$e_3	= html_entity_decode("Publicit\xc3\xa9s tierces");
-													}
-													elseif (strpos($line, 'Title: Easylist Czech') !== FALSE) {
-														$e_head = '! ---';
-														$e_1	= 'Czech 3rd party blocking rules';
-														$e_2	= 'Slovak 3rd party blocking rules';
-														$e_3	= 'Czech Whitelist';
-													}
-													elseif (strpos($line, 'Title: Latvian List') !== FALSE) {
-														$e_head = '! ---';
-														$e_1	= '3rd party ad blocking filters';
-														$e_2	= 'N/A';
-														$e_3	= '1st party whitelists';
-													}
-													elseif (strpos($line, 'Title: EasyList Hebrew') !== FALSE) {
-														$e_head = '!---';
-														$e_1	= '3rd party blocking rules';
-														$e_2	= 'N/A';
-														$e_3	= 'Site specific ad blocking rules';
-													}
-													elseif (strpos($line, 'Title: RU AdList') !== FALSE) {
-														$e_head = '! ***';
-														$e_1	= '! *** advblock/adservers.txt';
-														$e_2	= 'N/A';
-
-														// To be verified
-														//$e_3	= 'specific_hide.txt';
-														$e_3	= '!#adforce.clients';
-													}
-													elseif (strpos($line, 'Title: Adguard Turkish Filter') !== FALSE) {
-														$e_head = '!---';
-														$e_1	= 'Advertising networks';
-														$e_2	= 'N/A';
-														$e_3	= 'Anti-adblock rules';
-													}
-													else {
-														$e_lang = FALSE;
-													}
-												}
-
-												if ($e_lang) {
-
-													// Convert usable header lines to English language syntax
-													if (strpos($line, $e_head) !== FALSE) {
-														$line = str_replace($e_1, '! *** _adservers.', $line);
-														$line = str_replace($e_2, '! *** _adservers_popup.', $line);
-														$line = str_replace($e_3, '! *** _thirdparty.', $line);
-													}
-
-													// Remove any duplicated header lines
-													if ($e_head != '! ***' && substr($line, 0, 5) == '! ***') {
-														continue;
-													}
-												}
-
-												// Start of usable lines
-												if (!$e_found && strpos($line, '! ***') !== FALSE) {
-													if (strpos($line, '_adservers.') !== FALSE ||
-													    strpos($line, 'easyprivacy_trackingservers.') !== FALSE) {
-														$e_found = TRUE;
-													}
-												}
-
-												// Skip un-usable EasyList lines
-												if (isset($easylist) && !$e_found) {
+											// Validate EasyList/AdBlock/uBlock/ADGuard Feeds
+											if (!$validate_header) {
+												if (strpos($line, '[Adblock Plus ') !== FALSE ||
+												    strpos($line, '[uBlock Origin') !== FALSE ||
+												    strpos($line, '! Title: AdGuard') !== FALSE) {
+													$easylist = $validate_header = TRUE;
 													continue;
 												}
+												elseif (substr($line, 0, 1) === '!') {
+													continue;
+												}
+												else {
+													$validate_header = TRUE;
+												}
+											}
+
+											// Remove any '^M' characters
+											if (strpos($line, "\r") !== FALSE) {
+												$line = rtrim($line, "\x00..\x1F");
+											}
+
+											// Remove invalid charaters
+											$line = trim($line, " \t\n\r\0\x0B\xC2\xA0");
+
+											if ($easylist) {
+												if (substr($line, 0, 2) !== '||' ||
+												    substr($line, -1) !== '^' ||
+												    strpos($line, '$') !== FALSE ||
+											    	    strpos($line, '*') !== FALSE ||
+											            strpos($line, '/') !== FALSE) {
+													continue;
+												}
+
+												$lite = TRUE;
+												$line = str_replace($e_replace, '', $line);
 											}
 											else {
-												if (!$run_once && strpos($line, '[Adblock Plus ') !== FALSE) {
-													$log = 'Terminated - Only the EasyList Feeds available in'
-														. ' the EasyList tab are usable.';
-													pfb_logger("\n\n {$log}\n", 1);
-													break;
-												}
-												$run_once = TRUE;
-
-												// Remove any '^M' characters
-												if (strpos($line, "\r") !== FALSE) {
-													$line = rtrim($line, "\x00..\x1F");
-												}
-
-												// Remove invalid charaters
-												$line = trim($line, " \t\n\r\0\x0B\xC2\xA0");
-
 												// If 'tab' character found, replace with whitespace
 												if (strpos($line, "\x09") !== FALSE) {
 													$line = str_replace("\x09", ' ', $line);
@@ -5851,12 +5750,12 @@ function sync_package_pfblockerng($cron='') {
 												if ($csv_parser) {
 													$csvline = str_getcsv($line, ',', '', '"');
 												}
-												elseif (!$run_once_2) {
+												elseif (!$run_once) {
 													if (substr_count($line, ',') >= 2) {
 														$csvline = str_getcsv($line, ',', '', '"');
 														$csv_parser = TRUE;
 													}
-													$run_once_2 = TRUE;
+													$run_once = TRUE;
 												}
 											}
 
@@ -5866,7 +5765,7 @@ function sync_package_pfblockerng($cron='') {
 											}
 
 											// CSV parser
-											if (!isset($easylist) && $csv_parser) {
+											if ($csv_parser) {
 
 												$csv_found = FALSE;
 												$csv_count = count($csvline);
@@ -5972,7 +5871,7 @@ function sync_package_pfblockerng($cron='') {
 
 														// Reset variables for CSV determination
 														else {
-															$csv_parser = $run_once_2 = FALSE;
+															$csv_parser = $run_once = FALSE;
 														}
 														break;
 												}
@@ -5985,68 +5884,8 @@ function sync_package_pfblockerng($cron='') {
 											}
 											$line = trim($line);
 
-											// Only collect defined EasyList categories
-											if (isset($easylist) && strpos($line, '! ***') !== FALSE) {
-												$e_skip = TRUE;
+											if (!$easylist) {
 
-												if (strpos($line, '_thirdparty.') !== FALSE) {
-													break;	// End of usable EasyList/EasyPrivacy feed
-
-												} elseif (strpos($easylist, ',ea,') !== FALSE &&
-												    strpos($line, 'adult_adservers.') === FALSE &&
-												    strpos($line, '_adservers.') !== FALSE) {
-													$e_skip = FALSE;
-												} elseif (strpos($easylist, ',eap,') !== FALSE &&
-												    strpos($line, '_adservers_popup.') !== FALSE) {
-													$e_skip = FALSE;
-												} elseif (strpos($easylist, ',aa,') !== FALSE &&
-												    strpos($line, 'adult_adservers.') !== FALSE) {
-													$e_skip = FALSE;
-												} elseif (strpos($easylist, ',aap,') !== FALSE &&
-												    strpos($line, 'adult_adservers_popup.') !== FALSE) {
-													$e_skip = FALSE;
-												} elseif (strpos($easylist, ',epts,') !== FALSE &&
-												    strpos($line, 'easyprivacy_trackingservers.') !== FALSE) {
-													$e_skip = FALSE;
-												} elseif (strpos($easylist, ',epti,') !== FALSE &&
-												    strpos($line, 'easyprivacy_trackingservers_international.') !== FALSE) {
-													$e_skip = FALSE;
-												}
-											}
-
-											// Parse EasyList line
-											if (isset($easylist)) {
-												if (!$e_skip) {
-
-													if (substr($line, 0, 2) != '||') {
-														continue;
-													}
-
-													// Remove trailing dot (issues.adblockplus.org/ticket/4302)
-													if (strpos($line, '.^') !== FALSE) {
-														$line = str_replace('.^', '^', $line);
-													}
-
-													if (strpos($line, '^') !== FALSE) {
-														$line = trim(str_replace('|', '', strstr($line, '^', TRUE)));
-													} elseif (strpos($line, '$') !== FALSE) {
-														$line = trim(str_replace('|', '', strstr($line, '$', TRUE)));
-													} else {
-														$line = trim(str_replace('|', '', $line));
-													}
-
-													if (strpos($line, '/') !== FALSE) {
-														$line = strstr($line, '/', TRUE);
-													}
-													if (strpos($line, '*') !== FALSE) {
-														$line = strstr($line, '*', TRUE);
-													}
-												}
-												else {
-													continue;
-												}
-											}
-											else {
 												// Typical Host Feed format - Remove characters before space
 												if (!$rev_format && strpos($line, ' ') !== FALSE) {
 													$line = trim(strstr($line, ' ', FALSE));
@@ -6069,43 +5908,43 @@ function sync_package_pfblockerng($cron='') {
 												else {
 													$lite = TRUE;
 												}
+											}
 
-												if (!$lite) {
+											if (!$lite) {
 
-													// If 'http|https|telnet|ftp://' found, remove
-													if (strpos($line, '://') !== FALSE) {
-														$line = substr($line, strpos($line, '://') + 3);
+												// If 'http|https|telnet|ftp://' found, remove
+												if (strpos($line, '://') !== FALSE) {
+													$line = substr($line, strpos($line, '://') + 3);
+												}
+
+												// If '/' character found, remove characters after '/'
+												if (strpos($line, '/') !== FALSE) {
+													$line = strstr($line, '/', TRUE);
+												}
+
+												// If '#' character found, remove characters after '#'
+												if (strpos($line, '#') !== FALSE) {
+													$line = strstr($line, '#', TRUE);
+												}
+
+												// If '?' character found, remove characters after '?'
+												if (strpos($line, '?') !== FALSE) {
+													$line = strstr($line, '?', TRUE);
+												}
+
+												// If special characters found, parse line for host
+												if (strpos($line, ';') !== FALSE) {
+													$host = parse_url($line);
+													if (isset($host['host'])) {
+														$line = $host['host'];
+													} else {
+														$line = strstr($line, ';', TRUE);
 													}
+												}
 
-													// If '/' character found, remove characters after '/'
-													if (strpos($line, '/') !== FALSE) {
-														$line = strstr($line, '/', TRUE);
-													}
-
-													// If '#' character found, remove characters after '#'
-													if (strpos($line, '#') !== FALSE) {
-														$line = strstr($line, '#', TRUE);
-													}
-
-													// If '?' character found, remove characters after '?'
-													if (strpos($line, '?') !== FALSE) {
-														$line = strstr($line, '?', TRUE);
-													}
-
-													// If special characters found, parse line for host
-													if (strpos($line, ';') !== FALSE) {
-														$host = parse_url($line);
-														if (isset($host['host'])) {
-															$line = $host['host'];
-														} else {
-															$line = strstr($line, ';', TRUE);
-														}
-													}
-
-													// Remove any Port numbers at end of line
-													if (strpos($line, ':') !== FALSE) {
-														$line = preg_replace("/:[0-9]{1,5}$/", '', $line);
-													}
+												// Remove any Port numbers at end of line
+												if (strpos($line, ':') !== FALSE) {
+													$line = preg_replace("/:[0-9]{1,5}$/", '', $line);
 												}
 											}
 											$line = trim($line);
@@ -6130,12 +5969,10 @@ function sync_package_pfblockerng($cron='') {
 												$line = mb_convert_encoding($line, 'UTF-8',
 													mb_detect_encoding($line, 'UTF-8, ASCII, ISO-8859-1'));
 
-												if (function_exists('idn_to_ascii')) {
-													$log = "\n  IDN converted: [ {$line} ]\t";
-													$line = idn_to_ascii($line);
-													if (!empty($line)) {
-														pfb_logger("{$log} [ {$line} ]", 1);
-													}
+												$log = "\n  IDN converted: [ {$line} ]\t";
+												$line = idn_to_ascii($line);
+												if (!empty($line)) {
+													pfb_logger("{$log} [ {$line} ]", 1);
 												}
 												else {
 													// Record failed parsed line
@@ -6179,7 +6016,7 @@ function sync_package_pfblockerng($cron='') {
 									@fclose($dhandle);
 								}
 								@fclose($fhandle);
-								unset($csvline, $easylist);
+								unset($csvline);
 
 								// Remove duplicates and save any IPs found in domain feed
 								if (!empty($domain_data_ip)) {
@@ -7570,7 +7407,7 @@ function sync_package_pfblockerng($cron='') {
 					$new_rules[] = $cb_rules;
 				}
 			}
-			if ($pfb['float'] == '' && $pfb['order'] != 'order_1' && !empty($fother_rules)) { 
+			if ($pfb['float'] == '' && $pfb['order'] != 'order_1' && !empty($fother_rules)) {
 				foreach ($fother_rules as $cb_rules) {
 					$new_rules[] = $cb_rules;
 				}
@@ -7752,7 +7589,7 @@ function sync_package_pfblockerng($cron='') {
 	if ($pfb_found) {
 		write_config("pfBlockerNG: update NAT rule(s) aliasnames to include '_v4' suffix");
 	}
- 
+
 	#################################
 	#  Call filter_configure once	#
 	#################################
@@ -8016,7 +7853,6 @@ function pfb_remove_config_settings() {
 			'pfblockernglistsv6',
 			'pfblockerngdnsbl',
 			'pfblockerngdnsblsettings',
-			'pfblockerngdnsbleasylist',
 			'pfblockerngblacklist',
 			'pfblockerngafrica',
 			'pfblockerngantarctica',
@@ -8156,7 +7992,7 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 	/* xml will hold the sections to sync */
 	$xml = array();
 
-	// If User Disabled, remove 'General Tab Customizations' from Sync
+	// If User Disabled, remove 'General/IP/DNSBL Tab Customizations' from Sync
 	if ($config['installedpackages']['pfblockerngsync']['config'][0]['syncinterfaces'] != 'on') {
 		if (isset($config['installedpackages']['pfblockerng'])) {
 			$xml['pfblockerng']		= $config['installedpackages']['pfblockerng'];
@@ -8193,8 +8029,6 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 		$xml['pfblockerngsouthamerica']		= $config['installedpackages']['pfblockerngsouthamerica'];
 	if (isset($config['installedpackages']['pfblockerngproxyandsatellite']))
 		$xml['pfblockerngproxyandsatellite']	= $config['installedpackages']['pfblockerngproxyandsatellite'];
-	if (isset($config['installedpackages']['pfblockerngdnsbleasylist']))
-		$xml['pfblockerngdnsbleasylist']	= $config['installedpackages']['pfblockerngdnsbleasylist'];
 	if (isset($config['installedpackages']['pfblockerngdnsbl']))
 		$xml['pfblockerngdnsbl']		= $config['installedpackages']['pfblockerngdnsbl'];
 	if (isset($config['installedpackages']['pfblockerngblacklist']))

@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Parts based on works from Snort_alerts.php
@@ -32,7 +32,7 @@ global $config, $g, $pfb;
 pfb_global();
 
 // Alerts tab customizations
-$aglobal_array = array('pfbdenycnt' => 25, 'pfbpermitcnt' => 5, 'pfbmatchcnt' => 5, 'pfbdnscnt' => 5, 'pfbfilterlimitentries' => 100);
+$aglobal_array = array('pfbdenycnt' => 25, 'pfbpermitcnt' => 25, 'pfbmatchcnt' => 25, 'pfbdnscnt' => 25, 'pfbfilterlimitentries' => 100);
 
 init_config_arr(array('installedpackages', 'pfblockerngglobal'));
 $pfb['aglobal'] = &$config['installedpackages']['pfblockerngglobal'];
@@ -864,6 +864,7 @@ if (isset($_POST) && !empty($_POST)) {
 
 		if (!isset($clists['ipwhitelist' . $vtype][$table]['data'][$ip])) {
 			exec("{$pfb['pfctl']} -t {$table} -T add {$ip} 2>&1");
+			@file_put_contents("{$pfb['aliasdir']}/{$table}.txt", "\n{$ip}", LOCK_EX);
 
 			if (!empty($descr)) {
 				$whitelist_string = "{$ip} # {$descr}\r\n";
