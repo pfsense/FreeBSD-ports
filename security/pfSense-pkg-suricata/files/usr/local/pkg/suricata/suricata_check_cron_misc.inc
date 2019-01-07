@@ -3,11 +3,11 @@
  * suricata_check_cron_misc.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,14 +39,14 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 	 *                                   in megabytes       *
 	 ********************************************************/
 
-	global $config;
+	global $g, $config;
 
 	// Convert Log Limit Size setting from MB to KB
 	$suricataloglimitsizeKB = round($suricataloglimitsize * 1024);
 	$suricatalogdirsizeKB = suricata_Getdirsize(SURICATALOGDIR);
 
 	if ($suricatalogdirsizeKB > 0 && $suricatalogdirsizeKB > $suricataloglimitsizeKB) {
-		log_error(gettext("[Suricata] Log directory size exceeds configured limit of " . number_format($suricataloglimitsize) . " MB set on Global Settings tab. Starting cleanup of suricata logs."));
+		log_error(gettext("[Suricata] Log directory size exceeds configured limit of " . number_format($suricataloglimitsize) . " MB set on Global Settings tab. Starting cleanup of Suricata logs."));
 		conf_mount_rw();
 
 		// Initialize an array of the log files we want to prune
@@ -203,8 +203,6 @@ $logs['alerts.log']['limit'] = $config['installedpackages']['suricata']['config'
 $logs['alerts.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['alert_log_retention'];
 $logs['block.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['block_log_limit_size'];
 $logs['block.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['block_log_retention'];
-$logs['dns.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['dns_log_limit_size'];
-$logs['dns.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['dns_log_retention'];
 $logs['eve.json']['limit'] = $config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'];
 $logs['eve.json']['retention'] = $config['installedpackages']['suricata']['config'][0]['eve_log_retention'];
 $logs['files-json.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'];
@@ -223,8 +221,9 @@ if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 
 	foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 		$if_real = get_real_interface($value['interface']);
 		$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$value['uuid']}";
-		foreach ($logs as $k => $p)
+		foreach ($logs as $k => $p) {
 			suricata_check_rotate_log("{$suricata_log_dir}/{$k}", $p['limit']*1024, $p['retention']);
+		}
 
 		// Prune any aged-out Barnyard2 archived logs if any exist
 		if (is_dir("{$suricata_log_dir}/barnyard2/archive") &&
@@ -294,6 +293,12 @@ if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 
 			if ($prune_count > 0)
 				log_error(gettext("[Suricata] Packet Capture log cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/..."));
 			unset($files, $remove_files);
+		}
+
+		// Send the running Suricata instance on this interface a SIGHUP signal
+		// so it will re-open the log files we rotated and truncated.
+		if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$value['uuid']}.pid")) {
+			mwexec_bg("/bin/pkill -SIGHUP -F {$g['varrun_path']}/suricata_{$if_real}{$value['uuid']}.pid");
 		}
 	}
 }

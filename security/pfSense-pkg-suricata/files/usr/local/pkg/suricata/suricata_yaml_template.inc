@@ -13,7 +13,7 @@
 max-pending-packets: {$max_pend_pkts}
 
 # Runmode the engine should use.
-runmode: autofp
+runmode: {$runmode}
 
 # If set to auto, the variable is internally switched to 'router' in IPS 
 # mode and 'sniffer-only' in IDS mode.
@@ -99,6 +99,7 @@ outputs:
       filetype: regular
 
   - file-store:
+      version: 2
       enabled: {$file_store_enabled}
       log-dir: files
       force-magic: {$json_log_magic}
@@ -113,24 +114,26 @@ outputs:
       force-magic: {$json_log_magic}
       {$json_log_hash}
 
-  - dns-log:
-      enabled: {$dns_log_enabled}
-      filename: dns.log
-      append: {$dns_log_append}
-      filetype: regular
-
   - eve-log:
       enabled: {$enable_eve_log}
-      type: {$eve_output_type}
-      redis: {$eve_redis_output}
+      filetype: {$eve_output_type}
       filename: eve.json
+      redis: {$eve_redis_output}
       identity: "suricata"
       facility: {$eve_systemlog_facility}
       level: {$eve_systemlog_priority}
+      xff:
+        enabled: {$eve_xff_enabled}
+        mode: {$eve_xff_mode}
+        deployment: {$eve_xff_deployment}
+        header: {$eve_xff_header}
       types: {$eve_out_types}
 
 # Magic file. The extension .mgc is added to the value here.
 magic-file: /usr/share/misc/magic
+
+# GeoLite2 IP geo-location database file path and filename.
+geoip-database: /usr/local/share/suricata/GeoLite2/GeoLite2-Country.mmdb
 
 # Specify a threshold config file
 threshold-file: {$suricatacfgdir}/threshold.config
@@ -307,43 +310,76 @@ pcre:
 # Holds details on the app-layer. The protocols section details each protocol.
 app-layer:
   protocols:
-    tls:
-      enabled: {$tls_parser}
-      detection-ports:
-        dp: 443
-      #no-reassemble: yes
     dcerpc:
       enabled: {$dcerpc_parser}
-    ftp:
-      enabled: {$ftp_parser}
-    ssh:
-      enabled: {$ssh_parser}
-    smtp:
-      enabled: {$smtp_parser}
-    imap:
-      enabled: {$imap_parser}
-    msn:
-      enabled: {$msn_parser}
-    smb:
-      enabled: {$smb_parser}
+    dhcp:
+      enabled: {$dhcp_parser}
+    dnp3:
+      enabled: yes
       detection-ports:
-        dp: 139
+        dp: 20000
     dns:
       global-memcap: {$dns_global_memcap}
       state-memcap: {$dns_state_memcap}
       request-flood: {$dns_request_flood_limit}
-
       tcp:
         enabled: {$dns_parser_tcp}
         detection-ports:
-          dp: 53
+          dp: {$dns_parser_tcp_port}
       udp:
         enabled: {$dns_parser_udp}
         detection-ports:
-          dp: 53
+          dp: {$dns_parser_udp_port}
+    ftp:
+      enabled: {$ftp_parser}
     http:
       enabled: {$http_parser}
       memcap: {$http_parser_memcap}
+    ikev2:
+      enabled: {$ikev2_parser}
+    imap:
+      enabled: {$imap_parser}
+    krb5:
+      enabled: {$krb5_parser}
+    modbus:
+      enabled: yes
+      request-flood: 500
+      detection-ports:
+        dp: 502
+      stream-depth: 0
+    msn:
+      enabled: {$msn_parser}
+    nfs:
+      enabled: {$nfs_parser}
+    ntp:
+      enabled: {$ntp_parser}
+    tls:
+      enabled: {$tls_parser}
+      detection-ports:
+        dp: {$tls_detect_port}
+      ja3-fingerprints: {$tls_ja3}
+      encrypt-handling: {$tls_encrypt_handling}
+    smb:
+      enabled: {$smb_parser}
+      detection-ports:
+        dp: 139, 445
+    smtp:
+      enabled: {$smtp_parser}
+      mime:
+        decode-mime: {$smtp_decode_mime}
+        decode-base64: {$smtp_decode_base64}
+        decode-quoted-printable: {$smtp_decode_quoted_printable}
+        header-value-depth: 2000
+        extract-urls: {$smtp_extract_urls}
+        body-md5: {$smtp_body_md5}
+      inspected-tracker:
+        content-limit: 100000
+        content-inspect-min-size: 32768
+        content-inspect-window: 4096
+    ssh:
+      enabled: {$ssh_parser}
+    tftp:
+      enabled: {$tftp_parser}
 
 ###########################################################################
 # Configure libhtp.
