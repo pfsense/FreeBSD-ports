@@ -3,11 +3,11 @@
  * suricata_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -385,7 +385,7 @@ $section->addInput(new Form_Checkbox(
 	'Enable downloading of free GeoIP Country Database updates. Default is Checked',
 	$pconfig['autogeoipupdate'] == 'on' ? true:false,
 	'on'
-))->setHelp('When enabled, Suricata will automatically download updates for the free legacy GeoIP country database on the 8th of each month at midnight.<br /><br />If you have a subscription for more current GeoIP updates, uncheck this option and instead create your own process to place the required database files in /usr/local/share/GeoIP/.');
+))->setHelp('When enabled, Suricata will automatically download updates for the free GeoLite2 IP country database.<br /><br />If you have a subscription for more current GeoIP2 updates, uncheck this option and instead create your own process to place the required database file in /usr/local/share/suricata/GeoLite2/.');
 $form->add($section);
 
 $section = new Form_Section('General Settings');
