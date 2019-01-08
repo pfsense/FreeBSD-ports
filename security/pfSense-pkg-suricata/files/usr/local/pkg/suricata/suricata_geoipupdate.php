@@ -24,7 +24,7 @@
  */
 
 /* This product includes GeoLite2 data created by MaxMind, available from 
- * http://www.maxmind.com
+ * https://www.maxmind.com
 */
 
 require_once("config.inc");

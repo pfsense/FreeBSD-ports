@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-suricata
 PORTVERSION=	4.1.2
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -20,6 +21,8 @@ NO_MTREE=	yes
 
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
+
+.include <bsd.port.pre.mk>
 
 do-extract:
 	${MKDIR} ${WRKSRC}
@@ -140,5 +143,8 @@ do-install:
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
+.if ${ARCH} == "armv6" || ${ARCH} == "aarch64"
+	cd ${FILESDIR}/arm && ${COPYTREE_SHARE} . ${STAGEDIR}
+.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
