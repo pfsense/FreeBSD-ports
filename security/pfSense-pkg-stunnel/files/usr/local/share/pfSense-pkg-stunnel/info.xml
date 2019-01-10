@@ -2,7 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>stunnel</name>
-		<pkginfolink>https://doc.pfsense.org/index.php/Sudo_Package</pkginfolink>
+		<pkginfolink>https://doc.pfsense.org/index.php/Stunnel_package</pkginfolink>
 		<descr><![CDATA[SSL encryption wrapper between remote client and local or remote servers.]]></descr>
 		<website>http://www.stunnel.org/</website>
 		<version>%%PKGVERSION%%</version>
