@@ -3,11 +3,11 @@
  * suricata.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2018 Bill Meeks
+ * Copyright (C) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1773,7 +1773,7 @@ function suricata_resolve_flowbits($rules, $active_rules) {
 
 	// Check $rules array to be sure it is filled.
 	if (empty($rules)) {
-		log_error(gettext("[Suricata] WARNING: Flowbit resolution not done - no rules in {$suricatadir}rules/ ..."));
+		log_error(gettext("[Suricata] WARNING: Flowbit resolution not done - no rules in ". SURICATA_RULES_DIR . " ..."));
 		return array();
 	}
 
@@ -1879,7 +1879,7 @@ function suricata_load_vrt_policy($policy, $mode='alert', $all_rules=null) {
 		/* Since only Snort VRT rules have IPS Policy metadata, */
 		/* limit our search to just those files.                */
 		$suricata_file_pattern = VRT_FILE_PREFIX . "*.rules";
-		$suricata_vrt_files = glob("{$suricatadir}rules/{$suricata_file_pattern}");
+		$suricata_vrt_files = glob(SURICATA_RULES_DIR . "{$suricata_file_pattern}");
 		$all_rules = suricata_load_rules_map($suricata_vrt_files);
 	}
 
@@ -2263,7 +2263,6 @@ function suricata_get_auto_category_mods($categories, $sid_mods, $action, $log_r
 	/*                                                  */
 	/****************************************************/
 
-	$suricatadir = SURICATADIR;
 	$all_cats = array();
 	$changes = array();
 	$counter = 0;
@@ -2271,7 +2270,7 @@ function suricata_get_auto_category_mods($categories, $sid_mods, $action, $log_r
 
 	// Get a list of all possible categories by loading all rules files
 	foreach (array( VRT_FILE_PREFIX, ET_OPEN_FILE_PREFIX, ET_PRO_FILE_PREFIX, GPL_FILE_PREFIX ) as $prefix) {
-		$files = glob("{$suricatadir}rules/{$prefix}*.rules");
+		$files = glob(SURICATA_RULES_DIR . "{$prefix}*.rules");
 		foreach ($files as $file) {
 			$all_cats[] = basename($file);
 		}
@@ -3311,7 +3310,6 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 	global $config, $rebuild_rules;
 
-	$suricatadir = SURICATADIR;
 	$flowbit_rules_file = FLOWBITS_FILENAME;
 	$suricata_enforcing_rules_file = SURICATA_ENFORCING_RULES_FILENAME;
 	$enabled_rules = array();
@@ -3336,7 +3334,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 		$no_rules_defined = false;
 
 		// Load up all the rules into a Rules Map array.
-		$all_rules = suricata_load_rules_map("{$suricatadir}rules/");
+		$all_rules = suricata_load_rules_map(SURICATA_RULES_DIR);
 
 		// Create an array with the filenames of the enabled
 		// rule category files if we have any.
@@ -3478,7 +3476,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 				log_error('[Suricata] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . '...');
 
 				// Load up all rules into a Rules Map array for flowbits assessment
-				$all_rules = suricata_load_rules_map("{$suricatadir}rules/");
+				$all_rules = suricata_load_rules_map(SURICATA_RULES_DIR);
 				$fbits = suricata_resolve_flowbits($all_rules, $enabled_rules);
 
 				// Check for and disable any flowbit-required rules the

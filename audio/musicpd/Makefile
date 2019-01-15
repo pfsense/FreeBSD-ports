@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	musicpd
-PORTVERSION=	0.21.3
-PORTREVISION=	2
+PORTVERSION=	0.21.4
 CATEGORIES=	audio ipv6
 MASTER_SITES=	https://www.musicpd.org/download/mpd/${PORTVERSION:R}/
 DISTNAME=	mpd-${PORTVERSION}
@@ -37,7 +36,7 @@ PORTDOCS=	AUTHORS README.md NEWS
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS ID3TAG IPV6 ISO9660 SQLITE3 \
-		LAME VORBISENC ZZIP
+		PROXYDB LAME VORBISENC ZZIP
 
 OPTIONS_RADIO=	RESAMPLER ZEROCONF
 
@@ -63,6 +62,7 @@ ADPLUG_DESC=	AdPlug support
 FAAD_DESC=	AAC/MP4 decoding via libfaad
 GME_DESC=	GME support (video game music files)
 ISO9660_DESC=	Direct support for ISO 9660 images
+PROXYDB_DESC=	Proxy database support via libmpdclient
 LAME_DESC=	Support for MP3 Icecast Streams
 QOBUZ_DESC=	Streaming service support: Qobuz
 SIDPLAY2_DESC=	Sidplay support (C64 mono and stereo files)
@@ -140,7 +140,6 @@ JACK_MESON_ON=		-Djack=enabled
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
 OPENAL_MESON_ON=	-Dopenal=enabled
 OPENAL_USES=		openal
-OPENAL_VARS=		LLD_UNSAFE=yes # cf. PR 226980
 PULSEAUDIO_MESON_ON=	-Dpulse=enabled
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 SHOUTCAST_MESON_ON=	-Dshout=enabled
@@ -168,6 +167,8 @@ ISO9660_LIB_DEPENDS=	libcdio_paranoia.so:sysutils/libcdio-paranoia
 # Database plugins
 SQLITE3_MESON_ON=	-Dsqlite=enabled
 SQLITE3_LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
+PROXYDB_MESON_ON=	-Dlibmpdclient=enabled
+PROXYDB_LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient
 
 # Tag plugins
 ID3TAG_MESON_ON=	-Did3tag=enabled

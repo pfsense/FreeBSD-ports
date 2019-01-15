@@ -1,6 +1,6 @@
---- content/browser/webui/web_ui_data_source_impl.h.orig	2018-07-19 22:41:03.715788000 +0200
-+++ content/browser/webui/web_ui_data_source_impl.h	2018-07-19 22:49:20.849552000 +0200
-@@ -30,15 +30,15 @@
+--- content/browser/webui/web_ui_data_source_impl.h.orig	2019-01-09 19:45:44.740357000 +0100
++++ content/browser/webui/web_ui_data_source_impl.h	2019-01-09 19:48:21.066890000 +0100
+@@ -31,15 +31,15 @@
                                             public WebUIDataSource {
   public:
    // WebUIDataSource implementation:

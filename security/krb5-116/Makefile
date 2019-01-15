@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		krb5
-PORTVERSION=		1.16.2
+PORTVERSION=		1.16.3
 CATEGORIES=		security
 MASTER_SITES=		http://web.mit.edu/kerberos/dist/${PORTNAME}/${PORTVERSION:C/^[0-9]*\.[0-9]*/&X/:C/X\.[0-9]*$//:C/X//}/
 .if !defined(MASTERDIR)
@@ -17,7 +17,7 @@ COMMENT=		MIT implementation of RFC 4120 network authentication service
 
 LICENSE=		MIT
 
-CONFLICTS=		heimdal-[0-9]* srp-[0-9]* krb5-11[34]-[0-9]* \
+CONFLICTS=		heimdal-[0-9]* srp-[0-9]* krb5-11[345]-[0-9]* \
 			krb5-1.[0-9]* krb5-devel-*
 CONFLICTS_BUILD=	boringssl-*
 

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	chromium
-PORTVERSION=	68.0.3440.106
-PORTREVISION=	7
+PORTVERSION=	71.0.3578.98
+PORTREVISION=	2
 CATEGORIES?=	www
 MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/ \
 		LOCAL/cpm/chromium/:fonts
@@ -25,6 +25,7 @@ BUILD_DEPENDS+=	gperf:devel/gperf \
 		ffmpeg>=3.2.2,1:multimedia/ffmpeg \
 		flock:sysutils/flock \
 		node:www/node \
+		${LOCALBASE}/bin/ar:devel/binutils \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat \
 		${LOCALBASE}/share/usbids/usb.ids:misc/usbids \
 		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR}
@@ -32,6 +33,7 @@ BUILD_DEPENDS+=	gperf:devel/gperf \
 
 .if !defined(GN_ONLY)
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
+		libatspi.so:accessibility/at-spi2-core \
 		libspeechd.so:accessibility/speech-dispatcher \
 		libsnappy.so:archivers/snappy \
 		libFLAC.so:audio/flac \
@@ -69,14 +71,15 @@ ONLY_FOR_ARCHS=			aarch64 amd64 i386
 .endif
 
 .if defined(GN_ONLY)
-USES=		compiler:c++14-lang localbase:ldflags ninja pkgconfig \
+USES=		compiler:c++14-lang dos2unix localbase:ldflags ninja pkgconfig \
 		python:2.7,build shebangfix tar:xz
 .else
-USES=		bison cpe desktop-file-utils gnome jpeg localbase:ldflags \
+USES=		bison cpe desktop-file-utils dos2unix gl gnome jpeg localbase:ldflags \
 		ninja perl5 pkgconfig python:2.7,build shebangfix tar:xz
 .endif
 MAKE_ARGS=	-C out/${BUILDTYPE}
 BINARY_ALIAS=	python=${PYTHON_CMD}
+DOS2UNIX_FILES=	third_party/skia/third_party/vulkanmemoryallocator/include/vk_mem_alloc.h
 
 .if !defined(GN_ONLY)
 CPE_VENDOR=	google
@@ -102,11 +105,13 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang
 # replace_gn_files.py script, some parts just turned on/off for target host
 # OS "target_os == is_bsd", like libusb, libpci.
 GN_ARGS+=	clang_use_chrome_plugins=false \
+		enable_hangout_services_extension=true \
 		enable_nacl=false \
 		enable_one_click_signin=true \
 		enable_remoting=false \
 		fieldtrial_testing_like_official_build=true \
 		is_clang=true \
+		jumbo_file_merge_limit=8 \
 		toolkit_views=true \
 		treat_warnings_as_errors=false \
 		use_allocator="none" \
@@ -115,7 +120,7 @@ GN_ARGS+=	clang_use_chrome_plugins=false \
 		use_bundled_fontconfig=false \
 		use_custom_libcxx=false \
 		use_gnome_keyring=false \
-		use_gtk3=true \
+		use_jumbo_build=true \
 		use_lld=true \
 		use_sysroot=false \
 		use_system_freetype=true \
@@ -125,7 +130,7 @@ GN_ARGS+=	clang_use_chrome_plugins=false \
 		extra_ldflags="${LDFLAGS}"
 # TODO: investigate building with these options:
 # use_system_minigbm
-GN_BOOTSTRAP_FLAGS=	--no-clean --no-rebuild
+GN_BOOTSTRAP_FLAGS=	--no-clean --no-rebuild --skip-generate-buildfiles
 
 # FreeBSD Chromium Api Key
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys .
@@ -206,13 +211,13 @@ TEST_DISTFILES=		${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX} \
 
 # swiftshader/lib/{libEGL.so,libGLESv2.so} is x86 only
 .if ${ARCH} == aarch64
-PLIST_SUB+=    NOT_AARCH64="@comment "
+PLIST_SUB+=	NOT_AARCH64="@comment "
 .else
 PLIST_SUB+=	NOT_AARCH64=""
 .endif
 
-BUILD_DEPENDS+=	${LOCALBASE}/bin/ar:devel/binutils
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-llvm-base
+# Allow relocations against read-only segments (override lld default)
+LDFLAGS_i386=	-Wl,-znotext
 
 # TODO: -isystem, would be just as ugly as this approach, but more reliably
 # build would fail without C_INCLUDE_PATH/CPLUS_INCLUDE_PATH env var set.
@@ -266,6 +271,7 @@ do-configure:
 .endif
 
 do-test-TEST-on:
+	cd ${WRKSRC}/out/${BUILDTYPE}/gn_build && ./gn_unittests
 .for t in ${TEST_TARGETS}
 	cd ${WRKSRC}/out/${BUILDTYPE} && ${SETENV} LC_ALL=en_US.UTF-8 \
 		./${t} --gtest_filter=-${EXCLUDE_${t}:ts:} || ${TRUE}
@@ -276,7 +282,6 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_MAN} ${WRKSRC}/chrome/app/resources/manpage.1.in \
 		${STAGEDIR}${MANPREFIX}/man/man1/chrome.1
-	${INSTALL_DATA} ${WRKSRC}/out/${BUILDTYPE}/*.service ${STAGEDIR}${DATADIR}
 .for s in 22 24 48 64 128 256
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}x${s}/apps
 	${INSTALL_DATA} ${WRKSRC}/chrome/app/theme/chromium/product_logo_${s}.png \

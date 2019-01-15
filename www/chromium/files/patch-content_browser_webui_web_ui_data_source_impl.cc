@@ -1,6 +1,6 @@
---- content/browser/webui/web_ui_data_source_impl.cc.orig	2018-07-19 22:40:51.613006000 +0200
-+++ content/browser/webui/web_ui_data_source_impl.cc	2018-07-19 22:47:18.163395000 +0200
-@@ -112,24 +112,24 @@
+--- content/browser/webui/web_ui_data_source_impl.cc.orig	2019-01-09 19:45:36.420732000 +0100
++++ content/browser/webui/web_ui_data_source_impl.cc	2019-01-09 19:53:12.218574000 +0100
+@@ -123,24 +123,24 @@
  WebUIDataSourceImpl::~WebUIDataSourceImpl() {
  }
  
@@ -31,7 +31,7 @@
  }
  
  void WebUIDataSourceImpl::AddLocalizedStrings(
-@@ -139,7 +139,7 @@
+@@ -150,7 +150,7 @@
                                                &replacements_);
  }
  
@@ -40,7 +40,7 @@
    localized_strings_.SetBoolean(name, value);
    // TODO(dschuyler): Change name of |localized_strings_| to |load_time_data_|
    // or similar. These values haven't been found as strings for
-@@ -148,21 +148,21 @@
+@@ -159,21 +159,21 @@
    // replacements.
  }
  
@@ -60,7 +60,7 @@
  }
  
 -void WebUIDataSourceImpl::AddResourcePath(base::StringPiece path,
-+void WebUIDataSourceImpl::AddResourcePath(const std::string &path,
++void WebUIDataSourceImpl::AddResourcePath(const std::string& path,
                                            int resource_id) {
 -  path_to_idr_map_[path.as_string()] = resource_id;
 +  path_to_idr_map_[path] = resource_id;

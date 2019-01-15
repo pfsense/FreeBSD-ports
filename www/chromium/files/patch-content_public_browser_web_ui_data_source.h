@@ -1,5 +1,5 @@
---- content/public/browser/web_ui_data_source.h.orig	2018-07-20 15:50:02.520469000 +0200
-+++ content/public/browser/web_ui_data_source.h	2018-07-20 15:53:16.811577000 +0200
+--- content/public/browser/web_ui_data_source.h.orig	2019-01-09 12:09:09.754984000 +0100
++++ content/public/browser/web_ui_data_source.h	2019-01-09 12:14:15.249680000 +0100
 @@ -13,7 +13,6 @@
  
  #include "base/callback.h"

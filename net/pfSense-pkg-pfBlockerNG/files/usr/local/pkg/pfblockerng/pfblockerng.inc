@@ -914,6 +914,10 @@ EOF;
 			}
 			$config['nat']['rule'] = $new_nat;
 
+			if (!is_array($config['virtualip'])) {
+				$config['virtualip'] = array();
+			}
+			
 			if (!is_array($config['virtualip']['vip'])) {
 				$config['virtualip']['vip'] = array();
 			}

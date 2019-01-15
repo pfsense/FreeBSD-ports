@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	citra
-PORTVERSION=	s20181228
+PORTVERSION=	s20190111
 PORTREVISION?=	0
 CATEGORIES=	emulators
 
@@ -21,7 +21,7 @@ BUILD_DEPENDS=	boost-libs>=1.66:devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	citra-emu
-GH_TAGNAME=	fbd0944a5
+GH_TAGNAME=	4f23d5d69
 GH_TUPLE=	citra-emu:ext-libressl-portable:7d01cb0:libressl/externals/libressl \
 		citra-emu:ext-soundtouch:060181e:soundtouch/externals/soundtouch \
 		MerryMage:dynarmic:r1-992-g4e6848d1:dynarmic/externals/dynarmic \
@@ -29,12 +29,13 @@ GH_TUPLE=	citra-emu:ext-libressl-portable:7d01cb0:libressl/externals/libressl \
 		arun11299:cpp-jwt:v1.1.1:cpp_jwt/externals/cpp-jwt \
 		benhoyt:inih:r42-6-g2023872:inih/externals/inih/inih \
 		catchorg:Catch2:v2.3.0:catch/externals/catch \
-		fmtlib:fmt:5.2.1:fmt/externals/fmt \
+		fmtlib:fmt:5.3.0:fmt/externals/fmt \
 		herumi:xbyak:v5.71:xbyak/externals/xbyak \
 		kinetiknz:cubeb:cubeb-0.2-1039-g44341a1:cubeb/externals/cubeb \
 		lsalzman:enet:39a72ab:enet/externals/enet \
 		neobrain:nihstro:fd69de1:nihstro/externals/nihstro \
 		weidai11:cryptopp:CRYPTOPP_7_0_0-23-gf320e7d9:cryptopp/externals/cryptopp/cryptopp \
+		wwylele:teakra:e6ea0ea:teakra/externals/teakra \
 		zeromq:cppzmq:v4.2.3:cppzmq/externals/cppzmq \
 		zeromq:libzmq:v4.2.5:libzmq/externals/libzmq
 

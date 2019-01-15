@@ -3,11 +3,11 @@
  * suricata_define_vars.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,7 +64,9 @@ $suricata_ports = array(
 	"oracle_ports" => "1521",
 	"ssh_ports" => $ssh_port,
 	"shellcode_ports" => "!80",
-	"DNP3_PORTS" => "20000", "file_data_ports" => "\$HTTP_PORTS,110,143"
+	"DNP3_PORTS" => "20000", 
+	"file_data_ports" => "\$HTTP_PORTS,110,143", 
+	"sip_ports" => "5060,5061,5600"
 );
 
 // Sort our SERVERS and PORTS arrays to make values

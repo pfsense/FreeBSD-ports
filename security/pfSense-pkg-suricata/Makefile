@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-suricata
-PORTVERSION=	4.0.13
-PORTREVISION=	11
+PORTVERSION=	4.1.2
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	pfSense package suricata
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	suricata>=4.0.0:security/suricata \
+RUN_DEPENDS=	suricata>=4.1.2:security/suricata \
 		barnyard2:security/barnyard2
 
 NO_BUILD=	yes
@@ -21,6 +21,8 @@ NO_MTREE=	yes
 
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
+
+.include <bsd.port.pre.mk>
 
 do-extract:
 	${MKDIR} ${WRKSRC}
@@ -141,5 +143,8 @@ do-install:
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
+.if ${ARCH} == "armv6" || ${ARCH} == "aarch64"
+	cd ${FILESDIR}/arm && ${COPYTREE_SHARE} . ${STAGEDIR}
+.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
