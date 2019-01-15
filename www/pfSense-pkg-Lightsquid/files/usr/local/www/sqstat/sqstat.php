@@ -58,7 +58,7 @@ function sqstat_AJAX_response( $request ) {
 	$res .= "$('#sqstat_serverver').html('{$ver}');";
 
 	$time = date("h:i:s d/m/Y");
-	$res .= "$('#sqstat_updtime').html({$time}');";
+	$res .= "$('#sqstat_updtime').html('{$time}');";
 
 	$data = sqstat_resultHTML( $data );
 	if ($squidclass->errno == 0) {
