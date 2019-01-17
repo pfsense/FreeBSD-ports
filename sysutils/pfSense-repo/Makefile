@@ -39,6 +39,7 @@ PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//} \
 DEFAULT_ABI=	${OPSYS}:${OSREL:C/\..*//}:${ARCH}
 
 .if ${ARCH} == "aarch64"
+RUN_DEPENDS+=	netgate-ping-auth>=20181211:security/netgate-ping-auth
 ALTABI_ARCH=	aarch64:64
 .elif ${ARCH} == "amd64"
 ALTABI_ARCH=	x86:64
