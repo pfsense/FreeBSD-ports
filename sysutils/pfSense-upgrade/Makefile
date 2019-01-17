@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-upgrade
 PORTVERSION=	0.62
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -15,12 +16,14 @@ LICENSE=	APACHE20
 NO_MTREE=	yes
 NO_BUILD=	yes
 
-.if ${ARCH} == "aarch64"
-RUN_DEPENDS=	/usr/local/bin/ping-auth.sh:security/netgate-ping-auth
-.endif
-
 PLIST_FILES=	libexec/pfSense-upgrade \
 		sbin/pfSense-upgrade
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "aarch64"
+RUN_DEPENDS+=	netgate-ping-auth>=20181211:security/netgate-ping-auth
+.endif
 
 do-extract:
 	@${MKDIR} ${WRKSRC}
@@ -34,4 +37,4 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/pfSense-upgrade.wrapper \
 		${STAGEDIR}${PREFIX}/sbin/pfSense-upgrade
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
