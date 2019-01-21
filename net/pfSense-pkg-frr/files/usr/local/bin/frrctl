@@ -189,7 +189,7 @@ bgp*)
 		;;
 	sum*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp summary $*"
+		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp summary $*"
 		;;
 	nexth*)
 		shift; shift;
