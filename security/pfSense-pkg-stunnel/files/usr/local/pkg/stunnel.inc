@@ -65,7 +65,10 @@ function stunnel_save() {
 		}
 		fwrite($fout, "accept = " . ($pkgconfig['localip'] ? $pkgconfig['localip'] . ":" : "")  . $pkgconfig['localport'] . "\n");
 		fwrite($fout, "connect = " . $pkgconfig['redirectip'] . ":" . $pkgconfig['redirectport'] . "\n");
-		fwrite($fout, "TIMEOUTclose = 0\n\n");
+		fwrite($fout, "debug = " . $pkgconfig['loglevel'] . "\n");
+		if ($pkgconfig['timeoutclose'] != "") {
+			fwrite($fout, "TIMEOUTclose = " . $pkgconfig['timeoutclose'] . "\n");
+		}
 	}
 	fclose($fout);
 
