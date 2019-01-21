@@ -95,7 +95,7 @@ if ($argv[1] == 'bl' || $argv[1] == 'bls') {
 	    !empty($pfb['blconfig']['blacklist_selected']) &&
 	    isset($pfb['blconfig']['item'])) {
 
-		$key = 4;
+		$key = 3;
 		$selected = array_flip(explode(',', $argv[2])) ?: array();
 		foreach ($pfb['blconfig']['item'] as $item) {
 			if (isset($selected[$item['xml']])) {
