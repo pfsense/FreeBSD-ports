@@ -993,15 +993,16 @@ function server_changed() {
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Inline Config<\/a>";
 		if (servers[index][2] == "server_tls") {
-			cell2.innerHTML += "<br\/>- Yealink SIP Handsets: <br\/>";
+			cell2.innerHTML += "<br\/>- Yealink SIP Handsets:<br\/>";
 			cell2.innerHTML += "&nbsp;&nbsp; ";
 			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t28\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> T28<\/a>";
 			cell2.innerHTML += "&nbsp;&nbsp; ";
 			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t38g\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> T38G (1)<\/a>";
 			cell2.innerHTML += "&nbsp;&nbsp; ";
 			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t38g2\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> T38G (2) / V83<\/a>";
-			cell2.innerHTML += "<br\/>";
-			cell2.innerHTML += "- <a href='javascript:download_begin(\"conf_snom\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> SNOM SIP Handset<\/a>";
+			cell2.innerHTML += "<br\/>- Snom SIP Handsets:<br\/>";
+			cell2.innerHTML += "&nbsp;&nbsp; ";
+			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_snom\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> SNOM<\/a>";
 		}
 	}
 	if (servers[index][2] == 'server_user') {
