@@ -126,7 +126,7 @@ function tinc_save() {
 	file_put_contents("{$configpath}/rsa_key.priv", base64_decode($tincconf['cert_key']) . "\n");
 	chmod("{$configpath}/rsa_key.priv", 0600);
 	if ($tincconf['tinc_up']) {
-		$_output = base64_decode($tincconf['tinc_up']) . "\n";
+		$_output = str_replace("\r", "", base64_decode($tincconf['tinc_up'])) . "\n";
 	} else {
 		$_output = "ifconfig \$INTERFACE " . $tincconf['localip'] . " netmask " . $tincconf['vpnnetmask'] . "\n";
 		$_output .= "ifconfig \$INTERFACE group pkg_tinc\n";
