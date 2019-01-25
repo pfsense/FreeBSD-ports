@@ -221,8 +221,7 @@ EOF;
 					$domainparameters = " --standalone {$listen} --httpport " . escapeshellarg($port);
 				} elseif ($api == "standalonetls") {
 					$port = empty($envvariables['port']) ? 443 : $envvariables['port'];
-					$listen = ($envvariables['ipv6'] == "yes") ? "--listen-v6" : "--listen-v4";
-					$domainparameters = " --alpn {$listen} --tlsport " . escapeshellarg($port);
+					$domainparameters = " --alpn --tlsport " . escapeshellarg($port);
 				} else {
 					$domainparameters = " --webroot pfSenseacme";
 				}
