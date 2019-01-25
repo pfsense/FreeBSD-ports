@@ -225,9 +225,6 @@ $acme_domain_validation_method['standalonetls'] = array('name' => "standalone TL
 		'port' => array('name'=>"port",'columnheader'=>"Port",'type'=>"textbox",'size'=>"50",
 			'description' =>"TLS listen port for stand-alone server. Must be 443 or have port 443 on WAN forwarded to this port. Firewall rules must also allow traffic to reach this port."
 		),
-		'ipv6' => array('name'=>"ipv6",'columnheader'=>"IPv6",'type'=>"checkbox",
-			'description' =>"Bind to IPv6 instead of IPv4."
-		)
 	));
 $acme_domain_validation_method['dns_manual'] = array('name' => "DNS-Manual",
 	'fields' => array(
