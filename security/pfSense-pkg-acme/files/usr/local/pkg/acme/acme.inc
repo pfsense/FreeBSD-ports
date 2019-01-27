@@ -225,9 +225,6 @@ $acme_domain_validation_method['standalonetls'] = array('name' => "standalone TL
 		'port' => array('name'=>"port",'columnheader'=>"Port",'type'=>"textbox",'size'=>"50",
 			'description' =>"TLS listen port for stand-alone server. Must be 443 or have port 443 on WAN forwarded to this port. Firewall rules must also allow traffic to reach this port."
 		),
-		'ipv6' => array('name'=>"ipv6",'columnheader'=>"IPv6",'type'=>"checkbox",
-			'description' =>"Bind to IPv6 instead of IPv4."
-		)
 	));
 $acme_domain_validation_method['dns_manual'] = array('name' => "DNS-Manual",
 	'fields' => array(
@@ -238,7 +235,7 @@ $acme_domain_validation_method['dns_nsupdate'] = array('name' => "DNS-NSupdate /
 			'description' =>"Fill in the nsupdate DNS server (IP address or hostname)"
 		),
 		'NSUPDATE_KEYNAME' => array('name'=>"nsupdate_keyname",'columnheader'=>"Key Name",'type'=>"textbox",
-			'description' =>"Fill in a name for the key, if it is different than _acme-challenge.[Domainname]"
+			'description' =>"(Optional) Fill in a name for the key, if it is different than _acme-challenge.[Domainname]"
 		),
 		'NSUPDATE_KEYALGO' => array('name' => 'nsupdate_keyalgo', 'columnheader' => 'Key Algorithm', 'type' => 'select',
 			'items' => array(
@@ -253,6 +250,9 @@ $acme_domain_validation_method['dns_nsupdate'] = array('name' => "DNS-NSupdate /
 		),
 		'NSUPDATE_KEY' => array('name'=>"nsupdate_key",'columnheader'=>"Key",'type'=>"textarea",
 			'description' =>"Fill in the nsupdate key contents"
+		),
+		'NSUPDATE_ZONE' => array('name'=>"nsupdate_zone",'columnheader'=>"Zone",'type'=>"textbox",
+			'description' =>"(Optional) Explicitly set the zone name for updates."
 		)
 	));
 $acme_domain_validation_method['dns_acmedns'] = array('name' => "DNS-acme-dns.io",
@@ -701,6 +701,15 @@ $acme_domain_validation_method['dns_ovh'] = array('name' => "DNS-ovh / kimsufi /
 			'description' =>"Fill in one of: ovh-eu/ovh-ca/kimsufi-eu/kimsufi-ca/soyoustart-eu/soyoustart-ca/runabove-ca"
 		)
 	));
+$acme_domain_validation_method['dns_pointhq'] = array('name' => "DNS-PointDNS / pointhq.com",
+	'fields' => array(
+		'PointHQ_Key' => array('name'=>"pointhq_key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'PointHQ_Email' => array('name'=>"pointhq_email",'columnheader'=>"E-mail",'type'=>"textbox",
+			'description' =>"Fill in the account E-mail address"
+		),
+	));
 $acme_domain_validation_method['dns_pdns'] = array('name' => "DNS-PowerDNS",
 	'fields' => array(
 		'PDNS_Url' => array('name'=>"pdns_url",'columnheader'=>"URL",'type'=>"textbox",
@@ -777,6 +786,9 @@ $acme_domain_validation_method['anydns'] = array('name' => "notforuser",
 	'fields' => array(
 		'challengealias' => array('name'=>"challengealias",'columnheader'=>"Enable DNS alias mode",'type'=>"textbox",
 			'description' => '(Optional) Adds the --challenge-alias flag to the acme.sh call.<br/>To use a CNAME for _acme-challenge.importantDomain.tld to direct the acme validation to a different (sub)domain _acme-challenge.aliasDomainForValidationOnly.tld, configure the alternate domain here.<br/>More information can be found <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode" target="_new">here</a>.'
+		),
+		'challengedomain' => array('name'=>"challengedomain",'columnheader'=>"Enable DNS domain alias mode",'type'=>"checkbox",
+			'description' => '(Optional) Uses the challenge alias value as --challenge-domain instead in the acme.sh call.'
 		)
 	));
 
@@ -833,9 +845,9 @@ function set_cronjob() {
 	global $config;
 	$a_global = &$config['installedpackages']['acme'];
 	if (isset($a_global['enable'])) {
-		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall"', true, "16", "3");
+		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall" | /usr/bin/logger -t ACME 2>&1', true, "16", "3");
 	} else {
-		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall"', false);
+		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall" | /usr/bin/logger -t ACME 2>&1', false);
 	}
 }
 
@@ -856,6 +868,8 @@ function acme_custom_php_install_command() {
 	update_output_window($static_output);
 	$static_output .= "Acme, installing cron job if enabled\n";
 	update_output_window($static_output);
+	/* Remove old cron job (if present), see #9279 */
+	install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall"', false);
 	set_cronjob();
 	$static_output .= "Acme, running acme_custom_php_install_command() DONE\n";
 	update_output_window($static_output);

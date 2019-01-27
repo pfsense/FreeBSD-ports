@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-acme
-PORTVERSION=	0.5.1
+PORTVERSION=	0.5.3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -156,6 +156,8 @@ do-install:
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ovh.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_pdns.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_pointhq.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_selectel.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi

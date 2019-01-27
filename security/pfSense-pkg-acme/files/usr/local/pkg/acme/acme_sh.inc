@@ -205,7 +205,8 @@ EOF;
 				$domainparameters = "";
 				if ($api && substr($api, 0, 4 ) === "dns_") {
 					if (!empty($domain->challengealias)) {
-						$domainstr .= " --challenge-alias " . escapeshellarg($domain->challengealias);
+						$aliasdirective = ($domain->challengedomain == "yes") ? "--challenge-domain" : "--challenge-alias";
+						$domainstr .= " {$aliasdirective} " . escapeshellarg($domain->challengealias);
 					}
 					if ($api == "dns_manual") {
 						$cmdapi = "";
@@ -220,8 +221,7 @@ EOF;
 					$domainparameters = " --standalone {$listen} --httpport " . escapeshellarg($port);
 				} elseif ($api == "standalonetls") {
 					$port = empty($envvariables['port']) ? 443 : $envvariables['port'];
-					$listen = ($envvariables['ipv6'] == "yes") ? "--listen-v6" : "--listen-v4";
-					$domainparameters = " --alpn {$listen} --tlsport " . escapeshellarg($port);
+					$domainparameters = " --alpn --tlsport " . escapeshellarg($port);
 				} else {
 					$domainparameters = " --webroot pfSenseacme";
 				}

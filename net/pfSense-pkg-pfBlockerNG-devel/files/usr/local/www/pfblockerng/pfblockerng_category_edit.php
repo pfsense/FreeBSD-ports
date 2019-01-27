@@ -118,10 +118,6 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 	$rowdata	= $config['installedpackages'][$conf_type]['config'];
 	$all_group = $new_group = array();
 
-	if (!is_array($rowdata[$rowid])) {
-		$rowdata[$rowid] = array();
-	}
-
 	$feed_info = convert_feeds_json();			// Load/convert Feeds (w/alternative aliasname(s), if user-configured
 	if (is_array($feed_info) &&
 	    substr($atype, 0, 9) != 'Whitelist') {

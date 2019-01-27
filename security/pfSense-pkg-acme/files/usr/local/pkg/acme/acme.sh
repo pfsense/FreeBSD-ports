@@ -1091,7 +1091,7 @@ _createcsr() {
   fi
 
   if [ "$acmeValidationv1" ]; then
-    printf "\n1.3.6.1.5.5.7.1.30.1=critical,DER:04:20:${acmeValidationv1}" >>"${csrconf}"
+    printf "\n1.3.6.1.5.5.7.1.31=critical,DER:04:20:${acmeValidationv1}" >>"${csrconf}"
   fi
 
   _csr_cn="$(_idn "$domain")"
@@ -2937,7 +2937,10 @@ _clearup() {
 
 _clearupdns() {
   _debug "_clearupdns"
-  if [ "$dnsadded" != 1 ] || [ -z "$vlist" ]; then
+  _debug "dnsadded" "$dnsadded"
+  _debug "vlist" "$vlist"
+  #dnsadded is "0" or "1" means dns-01 method was used for at least one domain
+  if [ -z "$dnsadded" ] || [ -z "$vlist" ]; then
     _debug "skip dns."
     return
   fi
@@ -3696,7 +3699,7 @@ issue() {
       _authorizations_map=""
       for _authz_url in $(echo "$_authorizations_seg" | tr ',' ' '); do
         _debug2 "_authz_url" "$_authz_url"
-        if ! response="$(_get "$_authz_url")"; then
+        if ! _send_signed_request "$_authz_url"; then
           _err "get to authz error."
           _err "_authorizations_seg" "$_authorizations_seg"
           _err "_authz_url" "$_authz_url"
@@ -3899,8 +3902,8 @@ $_authorizations_map"
         )
 
         if [ "$?" != "0" ]; then
-          _clearup
           _on_issue_err "$_post_hook" "$vlist"
+          _clearup
           return 1
         fi
         dnsadded='1'
@@ -3911,8 +3914,8 @@ $_authorizations_map"
       _savedomainconf "Le_Vlist" "$vlist"
       _debug "Dns record not added yet, so, save to $DOMAIN_CONF and exit."
       _err "Please add the TXT records to the domains, and re-run with --renew."
-      _clearup
       _on_issue_err "$_post_hook"
+      _clearup
       return 1
     fi
 
@@ -3946,7 +3949,7 @@ $_authorizations_map"
       continue
     fi
 
-    _info "Verifying:$d"
+    _info "Verifying: $d"
     _debug "d" "$d"
     _debug "keyauthorization" "$keyauthorization"
     _debug "uri" "$uri"
@@ -4137,7 +4140,11 @@ $_authorizations_map"
       _debug "sleep 2 secs to verify"
       sleep 2
       _debug "checking"
-      response="$(_get "$uri")"
+      if [ "$ACME_VERSION" = "2" ]; then
+        _send_signed_request "$uri"
+      else
+        response="$(_get "$uri")"
+      fi
       if [ "$?" != "0" ]; then
         _err "$d:Verify error:$response"
         _clearupwebbroot "$_currentRoot" "$removelevel" "$token" "$d"
@@ -4213,12 +4220,15 @@ $_authorizations_map"
     fi
     Le_LinkCert="$(echo "$response" | tr -d '\r\n' | _egrep_o '"certificate" *: *"[^"]*"' | cut -d '"' -f 4)"
 
-    if ! _get "$Le_LinkCert" >"$CERT_PATH"; then
+    _tempSignedResponse="$response"
+    if ! _send_signed_request "$Le_LinkCert" "" "needbase64"; then
       _err "Sign failed, can not download cert:$Le_LinkCert."
       _err "$response"
       _on_issue_err "$_post_hook"
       return 1
     fi
+
+    echo "$response" | _dbase64 "multiline" >"$CERT_PATH"
 
     if [ "$(grep -- "$BEGIN_CERT" "$CERT_PATH" | wc -l)" -gt "1" ]; then
       _debug "Found cert chain"
@@ -4229,6 +4239,7 @@ $_authorizations_map"
       _end_n="$(_math $_end_n + 1)"
       sed -n "${_end_n},9999p" "$CERT_FULLCHAIN_PATH" >"$CA_CERT_PATH"
     fi
+    response="$_tempSignedResponse"
   else
     if ! _send_signed_request "${ACME_NEW_ORDER}" "{\"resource\": \"$ACME_NEW_ORDER_RES\", \"csr\": \"$der\"}" "needbase64"; then
       _err "Sign failed. $response"
@@ -4299,7 +4310,8 @@ $_authorizations_map"
       while [ "$_link_issuer_retry" -lt "$_MAX_ISSUER_RETRY" ]; do
         _debug _link_issuer_retry "$_link_issuer_retry"
         if [ "$ACME_VERSION" = "2" ]; then
-          if _get "$Le_LinkIssuer" >"$CA_CERT_PATH"; then
+          if _send_signed_request "$Le_LinkIssuer"; then
+            echo "$response" >"$CA_CERT_PATH"
             break
           fi
         else
@@ -5025,7 +5037,7 @@ _deactivate() {
 
     authzUri="$_authorizations_seg"
     _debug2 "authzUri" "$authzUri"
-    if ! response="$(_get "$authzUri")"; then
+    if ! _send_signed_request "$authzUri"; then
       _err "get to authz error."
       _err "_authorizations_seg" "$_authorizations_seg"
       _err "authzUri" "$authzUri"

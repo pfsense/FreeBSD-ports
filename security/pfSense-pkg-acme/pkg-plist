@@ -60,6 +60,7 @@ pkg/acme/dnsapi/dns_nsone.sh
 pkg/acme/dnsapi/dns_nsupdate.sh
 pkg/acme/dnsapi/dns_ovh.sh
 pkg/acme/dnsapi/dns_pdns.sh
+pkg/acme/dnsapi/dns_pointhq.sh
 pkg/acme/dnsapi/dns_selectel.sh
 pkg/acme/dnsapi/dns_servercow.sh
 pkg/acme/dnsapi/dns_tele3.sh
