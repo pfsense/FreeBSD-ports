@@ -69,6 +69,10 @@ function stunnel_save() {
 		if ($pkgconfig['timeoutclose'] != "") {
 			fwrite($fout, "TIMEOUTclose = " . $pkgconfig['timeoutclose'] . "\n");
 		}
+		if ($pkgconfig['protocol']) {
+			fwrite($fout, "protocol = " . $pkgconfig['protocol'] . "\n");
+		}
+		fwrite($fout, base64_decode($pkgconfig['custom_options']) . "\n");
 	}
 	fclose($fout);
 
