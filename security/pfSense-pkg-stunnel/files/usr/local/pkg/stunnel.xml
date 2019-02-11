@@ -97,6 +97,13 @@
 			<description>Enter the local port to bind this redirection to.</description>
 			<type>input</type>
 		</field>
+		</field>
+			<field>
+			<fielddescr>Protocol</fielddescr>
+			<fieldname>protocol</fieldname>
+			<description>Select a specific application protocol (https://www.stunnel.org/static/stunnel.html#protocol-PROTO)</description>
+			<type>input</type>
+		</field>
 		<field>
 			<fielddescr>Certificate</fielddescr>
 			<fieldname>certificate</fieldname>
@@ -149,6 +156,13 @@
 			<description>Time to wait for close_notify (set to 0 for buggy MSIE)</description>
 			<type>input</type>
 			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Custom Options</fielddescr>
+			<fieldname>custom_options</fieldname>
+			<type>textarea</type>
+			<description>Custom service level options (https://www.stunnel.org/static/stunnel.html#SERVICE-LEVEL-OPTIONS)</description>
+			<encoding>base64</encoding>
 		</field>
 	</fields>
 	<custom_add_php_command_late>
