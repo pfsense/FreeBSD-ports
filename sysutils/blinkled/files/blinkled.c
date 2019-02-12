@@ -7,7 +7,7 @@
  * in the LICENCE file provided within the distribution */
 
 #include <sys/types.h>
-#include <sys/param.h>
+#include <sys/ck.h>
 #include <sys/socket.h>
 #include <net/if.h>
 #include <arpa/inet.h>
@@ -210,7 +210,7 @@ int getifstats(const char * ifname, struct ifdata * data)
 		kvm_close(kd);
 		return -1;
 	}
-	for(ifp = TAILQ_FIRST(&ifh); ifp; ifp = TAILQ_NEXT(&ifc, if_list))
+	for(ifp = STAILQ_FIRST(&ifh); ifp; ifp = STAILQ_NEXT(&ifc, if_link))
 	{
 		n = kvm_read(kd, (u_long)ifp, &ifc, sizeof(ifc));
 		if(n<0)
