@@ -157,6 +157,7 @@ media_status(int s)
 				printf("no carrier");
 			break;
 
+#if (__FreeBSD_version < 1200000)
 		case IFM_FDDI:
 		case IFM_TOKEN:
 			if (ifmr.ifm_status & IFM_ACTIVE)
@@ -164,6 +165,7 @@ media_status(int s)
 			else
 				printf("no ring");
 			break;
+#endif
 
 		case IFM_IEEE80211:
 			if (ifmr.ifm_status & IFM_ACTIVE) {
@@ -369,6 +371,7 @@ static struct ifmedia_description ifm_subtype_ethernet_aliases[] =
 static struct ifmedia_description ifm_subtype_ethernet_option_descriptions[] =
     IFM_SUBTYPE_ETHERNET_OPTION_DESCRIPTIONS;
 
+#if (__FreeBSD_version < 1200000)
 static struct ifmedia_description ifm_subtype_tokenring_descriptions[] =
     IFM_SUBTYPE_TOKENRING_DESCRIPTIONS;
 
@@ -386,6 +389,7 @@ static struct ifmedia_description ifm_subtype_fddi_aliases[] =
 
 static struct ifmedia_description ifm_subtype_fddi_option_descriptions[] =
     IFM_SUBTYPE_FDDI_OPTION_DESCRIPTIONS;
+#endif
 
 static struct ifmedia_description ifm_subtype_ieee80211_descriptions[] =
     IFM_SUBTYPE_IEEE80211_DESCRIPTIONS;
@@ -458,6 +462,7 @@ static struct ifmedia_type_to_subtype ifmedia_types_to_subtypes[] = {
 			{ NULL, 0 },
 		},
 	},
+#if (__FreeBSD_version < 1200000)
 	{
 		{
 			{ &ifm_subtype_shared_descriptions[0], 0 },
@@ -494,6 +499,7 @@ static struct ifmedia_type_to_subtype ifmedia_types_to_subtypes[] = {
 			{ NULL, 0 },
 		},
 	},
+#endif
 	{
 		{
 			{ &ifm_subtype_shared_descriptions[0], 0 },
