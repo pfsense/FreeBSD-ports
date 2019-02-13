@@ -1,0 +1,11 @@
+--- relayd/Makefile.orig	2014-08-10 20:08:47 UTC
++++ relayd/Makefile
+@@ -48,7 +48,7 @@ CFLAGS+=	-DSHA1_DIGEST_LENGTH=SHA_DIGEST_LENGTH \
+ 		-D__dead='' \
+ 		-DHAVE_CONFIG_H
+ CFLAGS+=	-I${.CURDIR} -I${.CURDIR}/../../lib/libutil \
+-		-I${.CURDIR}/../../../libevent
++		-I${.CURDIR}/../../../libevent -I${PREFIX}/include
+ CLEANFILES+=	y.tab.h
+ 
+ LDADD=		-lmd -L${PREFIX}/lib ${LIBEVENT} -lssl -lcrypto
