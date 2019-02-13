@@ -96,7 +96,7 @@ PLIST_SUB+=	PYDISTUTILS_PKGVERSION=${PYDISTUTILS_PKGVERSION}
 PLIST_SUB+=	WITH_PYTHON="@comment "
 .endif
 
-CONFIGURE_ARGS+=--with-openssl="/usr"
+CONFIGURE_ARGS+=--with-openssl="/usr/local"
 
 .if ${PORT_OPTIONS:MDUMMY}
 CONFIGURE_ARGS+=--with-dummy-values
