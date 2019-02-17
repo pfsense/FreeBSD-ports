@@ -51,7 +51,7 @@ global $config;
 if (is_array($config['installedpackages']['squid']['config'][0]) && $config['installedpackages']['squid']['config'][0]['log_dir'] != "") {
 	define('LS_SQUIDLOGPATH', $config['installedpackages']['squid']['config'][0]['log_dir']);
 } else {
-	define('LS_SQUIDLOGPATH', '/var/squid/logs');
+	define('LS_SQUIDLOGPATH', '/var/log/e2guardian');
 }
 
 define('LS_SQUIDLOG', 'access.log');
