@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-VER=2.8.0
+VER=2.8.1
 
 PROJECT_NAME="acme.sh"
 
@@ -37,7 +37,6 @@ _OLD_STAGE_CA_HOST="https://acme-staging.api.letsencrypt.org"
 
 VTYPE_HTTP="http-01"
 VTYPE_DNS="dns-01"
-VTYPE_TLS="tls-sni-01"
 VTYPE_ALPN="tls-alpn-01"
 
 LOCAL_ANY_ADDRESS="0.0.0.0"
@@ -48,7 +47,6 @@ DEFAULT_DNS_SLEEP=120
 
 NO_VALUE="no"
 
-W_TLS="tls"
 W_DNS="dns"
 W_ALPN="alpn"
 DNS_ALIAS_PREFIX="="
@@ -143,6 +141,7 @@ __red() {
 }
 
 _printargs() {
+  _exitstatus="$?"
   if [ -z "$NO_TIMESTAMP" ] || [ "$NO_TIMESTAMP" = "0" ]; then
     printf -- "%s" "[$(date)] "
   fi
@@ -152,6 +151,8 @@ _printargs() {
     printf -- "%s" "$1='$2'"
   fi
   printf "\n"
+  # return the saved exit status 
+  return "$_exitstatus"
 }
 
 _dlg_versions() {
@@ -187,6 +188,7 @@ _dlg_versions() {
 
 #class
 _syslog() {
+  _exitstatus="$?"
   if [ "${SYS_LOG:-$SYSLOG_LEVEL_NONE}" = "$SYSLOG_LEVEL_NONE" ]; then
     return
   fi
@@ -200,6 +202,7 @@ _syslog() {
     fi
   fi
   $__logger_i -t "$PROJECT_NAME" -p "$_logclass" "$(_printargs "$@")" >/dev/null 2>&1
+  return "$_exitstatus"
 }
 
 _log() {
@@ -1192,7 +1195,7 @@ _ss() {
 
   if _exists "netstat"; then
     _debug "Using: netstat"
-    if netstat -h 2>&1 | grep "\-p proto" >/dev/null; then
+    if netstat -help 2>&1 | grep "\-p proto" >/dev/null; then
       #for windows version netstat tool
       netstat -an -p tcp | grep "LISTENING" | grep ":$_port "
     else
@@ -1897,29 +1900,34 @@ _send_signed_request() {
       _err "Can not post to $url"
       return 1
     fi
-    _debug2 original "$response"
-    response="$(echo "$response" | _normalizeJson)"
 
     responseHeaders="$(cat "$HTTP_HEADER")"
-
     _debug2 responseHeaders "$responseHeaders"
-    _debug2 response "$response"
+
     code="$(grep "^HTTP" "$HTTP_HEADER" | _tail_n 1 | cut -d " " -f 2 | tr -d "\r\n")"
     _debug code "$code"
 
-    _CACHED_NONCE="$(echo "$responseHeaders" | grep "Replay-Nonce:" | _head_n 1 | tr -d "\r\n " | cut -d ':' -f 2)"
-
-    _body="$response"
-    if [ "$needbase64" ]; then
-      _body="$(echo "$_body" | _dbase64 | tr -d '\0')"
-      _debug3 _body "$_body"
+    _debug2 original "$response"
+    if echo "$responseHeaders" | grep -i "Content-Type: application/json" >/dev/null 2>&1; then
+      response="$(echo "$response" | _normalizeJson)"
     fi
+    _debug2 response "$response"
 
-    if _contains "$_body" "JWS has invalid anti-replay nonce" || _contains "$_body" "JWS has an invalid anti-replay nonce"; then
-      _info "It seems the CA server is busy now, let's wait and retry. Sleeping $_sleep_retry_sec seconds."
-      _CACHED_NONCE=""
-      _sleep $_sleep_retry_sec
-      continue
+    _CACHED_NONCE="$(echo "$responseHeaders" | grep -i "Replay-Nonce:" | _head_n 1 | tr -d "\r\n " | cut -d ':' -f 2)"
+
+    if ! _startswith "$code" "2"; then
+      _body="$response"
+      if [ "$needbase64" ]; then
+        _body="$(echo "$_body" | _dbase64 multiline)"
+        _debug3 _body "$_body"
+      fi
+
+      if _contains "$_body" "JWS has invalid anti-replay nonce" || _contains "$_body" "JWS has an invalid anti-replay nonce"; then
+        _info "It seems the CA server is busy now, let's wait and retry. Sleeping $_sleep_retry_sec seconds."
+        _CACHED_NONCE=""
+        _sleep $_sleep_retry_sec
+        continue
+      fi
     fi
     break
   done
@@ -3120,8 +3128,8 @@ _on_before_issue() {
         _savedomainconf "Le_HTTPPort" "$Le_HTTPPort"
       fi
       _checkport="$Le_HTTPPort"
-    elif [ "$_currentRoot" = "$W_TLS" ] || [ "$_currentRoot" = "$W_ALPN" ]; then
-      _info "Standalone tls/alpn mode."
+    elif [ "$_currentRoot" = "$W_ALPN" ]; then
+      _info "Standalone alpn mode."
       if [ -z "$Le_TLSPort" ]; then
         Le_TLSPort=443
       else
@@ -3746,10 +3754,6 @@ $_authorizations_map"
         vtype="$VTYPE_DNS"
       fi
 
-      if [ "$_currentRoot" = "$W_TLS" ]; then
-        vtype="$VTYPE_TLS"
-      fi
-
       if [ "$_currentRoot" = "$W_ALPN" ]; then
         vtype="$VTYPE_ALPN"
       fi
@@ -4056,40 +4060,6 @@ $_authorizations_map"
         fi
 
       fi
-
-    elif [ "$vtype" = "$VTYPE_TLS" ]; then
-      #create A
-      #_hash_A="$(printf "%s" $token | _digest "sha256" "hex" )"
-      #_debug2 _hash_A "$_hash_A"
-      #_x="$(echo $_hash_A | cut -c 1-32)"
-      #_debug2 _x "$_x"
-      #_y="$(echo $_hash_A | cut -c 33-64)"
-      #_debug2 _y "$_y"
-      #_SAN_A="$_x.$_y.token.acme.invalid"
-      #_debug2 _SAN_A "$_SAN_A"
-
-      #create B
-      _hash_B="$(printf "%s" "$keyauthorization" | _digest "sha256" "hex")"
-      _debug2 _hash_B "$_hash_B"
-      _x="$(echo "$_hash_B" | cut -c 1-32)"
-      _debug2 _x "$_x"
-      _y="$(echo "$_hash_B" | cut -c 33-64)"
-      _debug2 _y "$_y"
-
-      #_SAN_B="$_x.$_y.ka.acme.invalid"
-
-      _SAN_B="$_x.$_y.acme.invalid"
-      _debug2 _SAN_B "$_SAN_B"
-
-      _ncaddr="$(_getfield "$_local_addr" "$_ncIndex")"
-      _ncIndex="$(_math "$_ncIndex" + 1)"
-      if ! _starttlsserver "$_SAN_B" "$_SAN_A" "$Le_TLSPort" "$keyauthorization" "$_ncaddr"; then
-        _err "Start tls server error."
-        _clearupwebbroot "$_currentRoot" "$removelevel" "$token" "$d"
-        _clearup
-        _on_issue_err "$_post_hook" "$vlist"
-        return 1
-      fi
     elif [ "$vtype" = "$VTYPE_ALPN" ]; then
       acmevalidationv1="$(printf "%s" "$keyauthorization" | _digest "sha256" "hex")"
       _debug acmevalidationv1 "$acmevalidationv1"
@@ -4221,14 +4191,14 @@ $_authorizations_map"
     Le_LinkCert="$(echo "$response" | tr -d '\r\n' | _egrep_o '"certificate" *: *"[^"]*"' | cut -d '"' -f 4)"
 
     _tempSignedResponse="$response"
-    if ! _send_signed_request "$Le_LinkCert" "" "needbase64"; then
+    if ! _send_signed_request "$Le_LinkCert"; then
       _err "Sign failed, can not download cert:$Le_LinkCert."
       _err "$response"
       _on_issue_err "$_post_hook"
       return 1
     fi
 
-    echo "$response" | _dbase64 "multiline" >"$CERT_PATH"
+    echo "$response" >"$CERT_PATH"
 
     if [ "$(grep -- "$BEGIN_CERT" "$CERT_PATH" | wc -l)" -gt "1" ]; then
       _debug "Found cert chain"
