@@ -731,7 +731,7 @@ int main(int argc, char *argv[]) {
 			break;
 
 		default:
-			printf("Unkown Operation, Aborting...\n");
+			printf("Unknown Operation, Aborting...\n");
 			exit (-1);
 
 	}
