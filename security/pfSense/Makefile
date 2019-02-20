@@ -60,7 +60,6 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		qstats>=0:sysutils/qstats \
 		radvd>=0:net/radvd \
 		rate>=0:net-mgmt/rate \
-		relayd>=0:net/relayd \
 		scponly>=0:shells/scponly \
 		ssh_tunnel_shell>=0:sysutils/ssh_tunnel_shell \
 		sshguard>=0:security/sshguard \
