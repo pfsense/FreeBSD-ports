@@ -123,7 +123,7 @@ function quagga_ospfd_install_conf() {
 				}
 				if ($conf['md5password'] && !empty($conf['password'])) {
 					$conffile .= "  ip ospf authentication message-digest\n";
-					$conffile .= "  ip ospf message-digest-key 1 md5 " . substr($conf['password'], 0, 15) . "\n";
+					$conffile .= "  ip ospf message-digest-key 1 md5 " . substr($conf['password'], 0, 16) . "\n";
 				} elseif (!empty($conf['password'])) {
 					$conffile .= "  ip ospf authentication-key " . substr($conf['password'], 0, 8) . "\n";
 				}
