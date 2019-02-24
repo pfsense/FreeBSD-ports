@@ -3,7 +3,7 @@
 
 PORTNAME=	arpwatch
 DISTVERSION=	2.1a15
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	net-mgmt
 MASTER_SITES=	ftp://ftp.ee.lbl.gov/ \
 		GENTOO

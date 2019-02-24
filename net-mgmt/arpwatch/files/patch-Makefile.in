@@ -1,6 +1,6 @@
---- Makefile.in.orig	2000-06-15 00:39:55 UTC
-+++ Makefile.in
-@@ -31,7 +31,7 @@ BINDEST = @sbindir@
+--- Makefile.in.orig	2019-02-06 23:18:11.306011000 -0500
++++ Makefile.in	2019-02-08 21:48:15.165348200 -0500
+@@ -31,7 +31,7 @@
  # Pathname of directory to install the man page
  MANDEST = @mandir@
  # Pathname of directory to install database file
@@ -9,16 +9,7 @@
  
  # VPATH
  srcdir = @srcdir@
-@@ -45,7 +45,7 @@ CC = @CC@
- PROG = arpwatch
- CCOPT = @V_CCOPT@
- INCLS = -I. @V_INCLS@
--DEFS = -DDEBUG @DEFS@ -DARPDIR=\"$(ARPDIR)\" -DPATH_SENDMAIL=\"$(SENDMAIL)\"
-+DEFS = @DEFS@ -DARPDIR=\"$(ARPDIR)\" -DPATH_SENDMAIL=\"$(SENDMAIL)\"
- 
- # Standard CFLAGS
- CFLAGS = $(CCOPT) $(DEFS) $(INCLS)
-@@ -110,13 +110,13 @@ zap: zap.o intoa.o
+@@ -110,13 +110,13 @@
  	$(CC) $(CFLAGS) -o $@ zap.o intoa.o -lutil
  
  install: force
