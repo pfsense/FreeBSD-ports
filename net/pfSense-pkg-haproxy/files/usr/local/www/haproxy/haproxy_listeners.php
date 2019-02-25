@@ -367,7 +367,7 @@ function js_callback(req) {
 					<?=$frontend['name'];?>
 				  </td>
 				  <td>
-					<?=$frontend['desc'];?>
+					<?=htmlspecialchars($frontend['desc']);?>
 				  </td>
 				  <td>
 				    <?php
@@ -412,7 +412,7 @@ function js_callback(req) {
 							echo "<div title='{$hint}'>";
 							echo "<a href='haproxy_pool_edit.php?id={$backend}'>{$backend}</a>";
 							if (!empty($actionitem['acl'])) {
-								echo "&nbsp;if({$actionitem['acl']})";
+								echo "&nbsp;if(" . htmlspecialchars($actionitem['acl']) . ")";
 							}
 							echo "<br/></div>";
 						}

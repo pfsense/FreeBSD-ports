@@ -82,7 +82,7 @@ function frr_generate_config_ospf() {
 				/* If there is a password defined, setup authentication for this interface and also a block for the main OSPF section. */
 				if ($conf['md5password'] && !empty($conf['password'])) {
 					$conffile .= "  ip ospf authentication message-digest\n";
-					$conffile .= "  ip ospf message-digest-key 1 md5 " . substr($conf['password'], 0, 15) . "\n";
+					$conffile .= "  ip ospf message-digest-key 1 md5 " . substr($conf['password'], 0, 16) . "\n";
 
 					$authsettings .= "area ";
 					$authsettings .= (empty($conf['interfacearea'])) ? $conf['interfacearea'] : $ospfd_conf['area'];

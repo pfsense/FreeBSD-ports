@@ -9,6 +9,7 @@ pkg/acme/acme_command.sh
 pkg/acme/acme_sh.inc
 pkg/acme/pkg_acme_tabs.inc
 pkg/acme/dnsapi/dns_acmedns.sh
+pkg/acme/dnsapi/dns_active24.sh
 pkg/acme/dnsapi/dns_ad.sh
 pkg/acme/dnsapi/dns_ali.sh
 pkg/acme/dnsapi/dns_autodns.sh
@@ -22,6 +23,7 @@ pkg/acme/dnsapi/dns_cyon.sh
 pkg/acme/dnsapi/dns_da.sh
 pkg/acme/dnsapi/dns_dgon.sh
 pkg/acme/dnsapi/dns_dnsimple.sh
+pkg/acme/dnsapi/dns_doapi.sh
 pkg/acme/dnsapi/dns_do.sh
 pkg/acme/dnsapi/dns_dpi.sh
 pkg/acme/dnsapi/dns_dp.sh
@@ -58,9 +60,12 @@ pkg/acme/dnsapi/dns_neodigit.sh
 pkg/acme/dnsapi/dns_netcup.sh
 pkg/acme/dnsapi/dns_nsone.sh
 pkg/acme/dnsapi/dns_nsupdate.sh
+pkg/acme/dnsapi/dns_nw.sh
+pkg/acme/dnsapi/dns_online.sh
 pkg/acme/dnsapi/dns_ovh.sh
 pkg/acme/dnsapi/dns_pdns.sh
 pkg/acme/dnsapi/dns_pointhq.sh
+pkg/acme/dnsapi/dns_rackspace.sh
 pkg/acme/dnsapi/dns_selectel.sh
 pkg/acme/dnsapi/dns_servercow.sh
 pkg/acme/dnsapi/dns_tele3.sh

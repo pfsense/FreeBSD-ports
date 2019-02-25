@@ -270,6 +270,12 @@ $acme_domain_validation_method['dns_acmedns'] = array('name' => "DNS-acme-dns.io
 			'description' =>"Fill in a custom ACME DNS Update URL (optional)"
 		),
 	));
+$acme_domain_validation_method['dns_active24'] = array('name' => "DNS-Active24",
+	'fields' => array(
+		'ACTIVE24_Token' => array('name'=>"active24_token",'columnheader'=>"Token",'type'=>"textbox",
+			'description' =>"Fill in the Active24 Token"
+		),
+	));
 $acme_domain_validation_method['dns_ali'] = array('name' => "DNS-Aliyuncs",
 	'fields' => array(
 		'Ali_Key' => array('name'=>"ali_key",'columnheader'=>"Key",'type'=>"textbox",
@@ -412,6 +418,12 @@ $acme_domain_validation_method['dns_dpi'] = array('name' => "DNS-Dnspod.com",
 		),
 		'DPI_Key' => array('name'=>"dpi_key",'columnheader'=>"Key",'type'=>"textbox",
 			'description' =>"Fill in the Key"
+		)
+	));
+$acme_domain_validation_method['dns_doapi'] = array('name' => "DNS-do.de",
+	'fields' => array(
+		'DO_LETOKEN' => array('name'=>"do_letoken",'columnheader'=>"API Token",'type'=>"textbox",
+			'description' =>"Fill in the DO.de API Token"
 		)
 	));
 $acme_domain_validation_method['dns_do'] = array('name' => "DNS-Domain-Offensive / Resellerinterface / Domainrobot",
@@ -686,6 +698,26 @@ $acme_domain_validation_method['dns_nsone'] = array('name' => "DNS-NS1 (nsone.co
 			'description' =>"Fill in the API Key"
 		)
 	));
+$acme_domain_validation_method['dns_nw'] = array('name' => "DNS-NW API: Nexcess / Thermo.io / Futurehosting",
+	'fields' => array(
+		'NW_API_TOKEN' => array('name'=>"nw_api_token",'columnheader'=>"Token",'type'=>"textbox",
+			'description' =>"Fill in the API Token"
+		),
+		'NW_API_ENDPOINT' => array('name' => 'nw_api_endpoint', 'columnheader' => 'API Endpoint', 'type' => 'select',
+			'items' => array(
+				'https://portal.nexcess.net' => array('name' => 'portal.nexcess.net'),
+				'https://core.thermo.io' => array('name' => 'core.thermo.io'),
+				'https://my.futurehosting.com' => array('name' => 'my.futurehosting.com'),
+			),
+			'description' => 'Choose the NW API Endpoint'
+		),
+	));
+$acme_domain_validation_method['dns_online'] = array('name' => "DNS-Online.net",
+	'fields' => array(
+		'ONLINE_API_KEY' => array('name'=>"online_api_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		)
+	));
 $acme_domain_validation_method['dns_ovh'] = array('name' => "DNS-ovh / kimsufi / soyoustart / runabove",
 	'fields' => array(
 		'OVH_AK' => array('name'=>"ovh_ak",'columnheader'=>"Application Key",'type'=>"textbox",
@@ -723,6 +755,15 @@ $acme_domain_validation_method['dns_pdns'] = array('name' => "DNS-PowerDNS",
 		),
 		'PDNS_Ttl' => array('name'=>"pdns_ttl",'columnheader'=>"TTL",'type'=>"textbox",
 			'description' =>"Fill in the TTL 60"
+		)
+	));
+$acme_domain_validation_method['dns_rackspace'] = array('name' => "DNS-Rackspace",
+	'fields' => array(
+		'RACKSPACE_Username' => array('name'=>"rackspace_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Rackspace Username"
+		),
+		'RACKSPACE_Apikey' => array('name'=>"rackspace_apikey",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Rackspace API Key"
 		)
 	));
 $acme_domain_validation_method['dns_selectel'] = array('name' => "DNS-Selectel",
