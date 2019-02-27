@@ -44,7 +44,7 @@ ALTABI_ARCH=	aarch64:64
 ALTABI_ARCH=	x86:64
 .elif ${ARCH} == "i386"
 ALTABI_ARCH=	x86:32
-.elif ${ARCH} == "armv6"
+.elif ${ARCH} == "armv7"
 ALTABI_ARCH=	32:el:eabi:hardfp
 .else
 .error "Invalid arch: ${ARCH}"
