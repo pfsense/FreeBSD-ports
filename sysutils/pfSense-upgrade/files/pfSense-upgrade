@@ -273,6 +273,8 @@ abi_setup() {
 
 	if [ "${_arch}" = "armv6" ]; then
 		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:hardfp"
+	elif [ "${_arch}" = "armv7" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:softfp"
 	elif [ "${_arch}" = "aarch64" ]; then
 		CUR_ALTABI="${CUR_ALTABI}:${_arch}:64"
 	elif [ "${_arch}" = "i386" ]; then
@@ -644,8 +646,8 @@ pkg_upgrade() {
 				cp -fp /boot/loader.conf /tmp/loader.conf.backup
 			fi
 			# Force upgrade pfSense-rc together with kernel. It's
-			# failing for some reason on armv6 even with the proper
-			# dependency version registered
+			# failing for some reason on armv[67] even with the
+			# proper dependency version registered
 			if upgrade_available ${product}-rc; then
 				_exec "pkg-static upgrade -U ${product}-rc" \
 				    "Upgrading ${product}-rc"

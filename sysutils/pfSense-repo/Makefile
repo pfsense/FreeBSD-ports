@@ -47,6 +47,8 @@ ALTABI_ARCH=	x86:64
 ALTABI_ARCH=	x86:32
 .elif ${ARCH} == "armv6"
 ALTABI_ARCH=	32:el:eabi:hardfp
+.elif ${ARCH} == "armv7"
+ALTABI_ARCH=	32:el:eabi:softfp
 .else
 .error "Invalid arch: ${ARCH}"
 .endif

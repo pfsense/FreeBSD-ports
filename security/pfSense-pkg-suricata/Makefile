@@ -143,7 +143,7 @@ do-install:
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
-.if ${ARCH} == "armv6" || ${ARCH} == "aarch64"
+.if ${ARCH} == "armv7" || ${ARCH} == "aarch64"
 	cd ${FILESDIR}/arm && ${COPYTREE_SHARE} . ${STAGEDIR}
 .endif
 
