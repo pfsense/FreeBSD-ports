@@ -3983,7 +3983,7 @@ PHP_FUNCTION(pfSense_fsync) {
 	if ((fname = strdup(fname)) == NULL)
 		RETURN_FALSE;
 	parent_dir = dirname(fname);
-	fd = open(parent_dir, O_RDWR|O_CLOEXEC));
+	fd = open(parent_dir, O_RDWR|O_CLOEXEC);
 	free(fname);
 	if (fd == -1)
 		RETURN_FALSE;
