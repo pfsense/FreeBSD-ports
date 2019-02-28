@@ -112,9 +112,7 @@ function snort_add_supplist_entry($suppress) {
 	/* tell Snort to load it, and return true; otherwise return false.       */
 	if ($found_list) {
 		write_config("Snort pkg: modified Suppress List {$list_name}.");
-		conf_mount_rw();
 		sync_snort_package_config();
-		conf_mount_ro();
 		snort_reload_config($a_instance[$instanceid]);
 		return true;
 	}
@@ -345,9 +343,7 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	conf_mount_rw();
 	snort_generate_conf($a_instance[$instanceid]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 
 	/* Soft-restart Snort to live-load the new rules */

@@ -91,7 +91,6 @@ function validate_input_zabbix_proxy($post, &$input_errors) {
 function sync_package_zabbix_proxy() {
 	global $config, $g;
 
-	conf_mount_rw();
 
 	// Check zabbix proxy config
 	if (isset($config['installedpackages']['%%ZABBIXUNIQNAME%%']) &&
@@ -305,7 +304,6 @@ EOF;
 		unlink_if_exists($zproxy_rcfile);
 	}
 
-	conf_mount_ro();
 }
 
 // Based on openvpn_add_keyfile() function

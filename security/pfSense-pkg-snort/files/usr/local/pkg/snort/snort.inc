@@ -3926,9 +3926,7 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 	unset(\$g["snort_postinstall"]);
 	log_error(gettext("[snort] XMLRPC pkg sync: Generating snort.conf file using Master Host settings..."));
 	\$rebuild_rules = true;
-	conf_mount_rw();
 	sync_snort_package_config();
-	conf_mount_ro();
 	\$rebuild_rules = false;
 	{$snortstart}
 	log_error(gettext("[snort] XMLRPC pkg sync process on this host is complete..."));

@@ -204,9 +204,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 			// Update the snort.conf file and
 			// rebuild rules for this interface.
 			$rebuild_rules = true;
-			conf_mount_rw();
 			snort_generate_conf($a_nat[$k]);
-			conf_mount_ro();
 			$rebuild_rules = false;
 
 			// Signal Snort to "live reload" the rules
