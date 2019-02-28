@@ -97,7 +97,6 @@ if ($_POST['status'] == 'check') {
 if (isset($_POST['del_x'])) {
 	/* Delete selected Snort interfaces */
 	if (is_array($_POST['rule']) && count($_POST['rule'])) {
-		conf_mount_rw();
 		foreach ($_POST['rule'] as $rulei) {
 			$if_real = get_real_interface($a_nat[$rulei]['interface']);
 			$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
@@ -119,9 +118,7 @@ if (isset($_POST['del_x'])) {
 		// Save updated configuration
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
-		conf_mount_rw();
 		sync_snort_package_config();
-		conf_mount_ro();	  
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -154,9 +151,7 @@ else {
 		// Save updated configuration
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
-		conf_mount_rw();
 		sync_snort_package_config();
-		conf_mount_ro();	  
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -179,9 +174,7 @@ if ($_POST['by2toggle'] && is_numericint($_POST['id'])) {
 			// No need to rebuild Snort rules for Barnyard2,
 			// so flag that task as "off" to save time.
 			$rebuild_rules = false;
-			conf_mount_rw();
 			sync_snort_package_config();
-			conf_mount_ro();
 			$rebuild_rules = false;
 			if (snort_is_running($snortcfg['uuid'], $if_real, 'barnyard2')) {
 				log_error("Restarting Barnyard2 on {$if_friendly}({$if_real}) per user request...");
@@ -230,9 +223,7 @@ if ($_POST['toggle'] && is_numericint($_POST['id'])) {
 	\$snortcfg = \$config['installedpackages']['snortglobal']['rule'][{$id}];
 	\$rebuild_rules = true;
 	touch('{$start_lck_file}');
-	conf_mount_rw();
 	sync_snort_package_config();
-	conf_mount_ro();
 	\$rebuild_rules = false;
 	snort_start(\$snortcfg, '{$if_real}');
 	unlink_if_exists('{$start_lck_file}');

@@ -33,7 +33,6 @@ function sync_package_darkstat() {
 	} else {
 		$darkstat_config = array();
 	}
-	conf_mount_rw();
 
 	/* If the service is (being) disabled, stop it (if running), remove rc script and do nothing else */
 	if ($darkstat_config['enable'] != "on") {
@@ -143,7 +142,6 @@ function sync_package_darkstat() {
 		start_service("darkstat");
 	}
 
-	conf_mount_ro();
 }
 
 function validate_input_darkstat($post, &$input_errors) {

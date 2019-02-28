@@ -77,9 +77,7 @@ if (isset($_POST['del_btn'])) {
 		}
 		if ($need_save) {
 			write_config("Suricata pkg: deleted PASS LIST.");
-			conf_mount_rw();
 			sync_suricata_package_config();
-			conf_mount_ro();
 			header("Location: /suricata/suricata_passlist.php");
 			return;
 		}
@@ -101,9 +99,7 @@ else {
 		else {
 			unset($a_passlist[$delbtn_list]);
 			write_config("Suricata pkg: deleted PASS LIST.");
-			conf_mount_rw();
 			sync_suricata_package_config();
-			conf_mount_ro();
 			header("Location: /suricata/suricata_passlist.php");
 			return;
 		}

@@ -715,9 +715,7 @@ if ($_POST['save']) {
 		/* rules for this interface.                     */
 		/*************************************************/
 		$rebuild_rules = true;
-		conf_mount_rw();
 		snort_generate_conf($natent);
-		conf_mount_ro();
 		$rebuild_rules = false;
 
 		/* If 'preproc_auto_rule_disable' is off, then clear log file */

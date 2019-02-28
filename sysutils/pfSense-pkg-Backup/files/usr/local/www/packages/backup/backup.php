@@ -40,11 +40,9 @@ $backup_path = "{$backup_dir}/{$backup_filename}";
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'backup') {
 		if ($a_backup[$_GET['id']]) {
-			conf_mount_rw();
 			unset($a_backup[$_GET['id']]);
 			write_config();
 			header("Location: backup.php");
-			conf_mount_ro();
 			exit;
 		}
 	}
@@ -52,7 +50,6 @@ if ($_GET['act'] == "del") {
 
 if ($_GET['a'] == "download") {
 	if ($_GET['t'] == "backup") {
-		conf_mount_rw();
 
 		$i = 0;
 		if (count($a_backup) > 0) {
@@ -79,7 +76,6 @@ if ($_GET['a'] == "download") {
 		header("Content-Length: " . filesize($backup_path));
 		fpassthru($fd);
 
-		conf_mount_ro();
 		exit;
 	}
 }
@@ -88,23 +84,19 @@ if ($_GET['a'] == "other") {
 	if ($_GET['t'] == "restore") {
 		// Extract the tgz file
 		if (file_exists($backup_path)) {
-			conf_mount_rw();
 			system("/usr/bin/tar -xpzC / -f {$backup_path}");
 			header("Location: backup.php?savemsg=Backup+has+been+restored.");
 		} else {
 			header("Location: backup.php?savemsg=Restore+failed.+Backup+file+not+found.");
 		}
-		conf_mount_ro();
 		exit;
 	}
 }
 
 if (($_POST['submit'] == "Upload") && is_uploaded_file($_FILES['ulfile']['tmp_name'])) {
-	conf_mount_rw();
 	move_uploaded_file($_FILES['ulfile']['tmp_name'], "{$backup_path}");
 	$savemsg = "Uploaded file to {$backup_dir}" . htmlentities($_FILES['ulfile']['name']);
 	system("/usr/bin/tar -xpzC / -f {$backup_path}");
-	conf_mount_ro();
 }
 
 $pgtitle = array(gettext("Diagnostics"), gettext("Backup Files and Directories"), gettext("Settings"));

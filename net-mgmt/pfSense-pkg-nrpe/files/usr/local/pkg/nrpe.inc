@@ -155,10 +155,8 @@ EOD;
 }
 
 function nrpe_resync_package() {
-	conf_mount_rw();
 	nrpe_custom_php_write_config();
 	nrpe_custom_php_service();
-	conf_mount_ro();
 }
 
 function nrpe_custom_php_write_config() {

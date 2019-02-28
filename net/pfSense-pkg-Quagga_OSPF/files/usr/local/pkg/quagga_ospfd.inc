@@ -69,7 +69,6 @@ function quagga_ospfd_get_interfaces() {
 function quagga_ospfd_install_conf() {
 	global $config;
 
-	conf_mount_rw();
 	// Since we need to embed this in a string, copy to a var. Can't embed constnats.
 	$quagga_config_base = PKG_QUAGGA_CONFIG_BASE;
 
@@ -457,9 +456,6 @@ EOF;
 	} else {
 		mwexec_bg("/usr/local/etc/rc.d/quagga.sh restart");
 	}
-
-	// Back to RO mount for NanoBSD and friends
-	conf_mount_ro();
 }
 
 function quagga_ospfd_validate_interface() {
@@ -538,7 +534,6 @@ function quagga_ospfd_plugin_carp($pluginparams) {
 /* The following function checks for the presence of and writes the contents of "/var/etc/quagga/$module.conf" into the $module . "running" field within the config.xml file  */
 function write_quagga_running_config($module) {
 	global $config;
-	conf_mount_rw();
 	// Since we need to embed this in a string, copy to a var. Can't embed constants.
 	$quagga_config_base = PKG_QUAGGA_CONFIG_BASE;
 
@@ -552,7 +547,6 @@ function write_quagga_running_config($module) {
 		$config['installedpackages']['quaggaospfdraw']['config'][0][$module . "running"] = base64_encode("!!!!! {$module}.conf does not exist or is empty.");
 	}
 	write_config( $write_config_only = true );
-	conf_mount_ro();
 }
 
 write_quagga_running_config('bgpd');
