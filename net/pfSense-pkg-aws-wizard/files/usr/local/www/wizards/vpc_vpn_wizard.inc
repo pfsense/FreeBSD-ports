@@ -864,9 +864,7 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 			$install_status = false;
 			$savemsg .= gettext("<br>The conflicting package $conflicting_pkg is installed. Installing $short_pkg_name will cause instability. Please remove $conflicting_pkg or delete this VPN Connection and add a new one using static routing.");
 		} elseif (!is_pkg_installed($pkg_name)) {
-			conf_mount_rw();
 			$install_status = pkg_install($pkg_name);
-			conf_mount_ro();
 		} else {
 			$install_status = true;
 		}
