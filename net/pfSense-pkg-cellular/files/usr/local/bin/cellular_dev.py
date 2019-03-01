@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.7
+#!/bin/python
 #
 # /usr/local/bin/cellular_dev.py
 #
