@@ -17,7 +17,6 @@ RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git \
 		${LOCALBASE}/bin/rsync:net/rsync \
 		${LOCALBASE}/bin/screen:sysutils/screen \
 		${LOCALBASE}/bin/vmdktool:sysutils/vmdktool \
-		${LOCALBASE}/bin/salt:sysutils/py-salt \
 		${LOCALBASE}/bin/sudo:security/sudo \
 		${LOCALBASE}/sbin/nginx:www/nginx \
 		${LOCALBASE}/bin/qemu-arm-static:emulators/qemu-user-static \
