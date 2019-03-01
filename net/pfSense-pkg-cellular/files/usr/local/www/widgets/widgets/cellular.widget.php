@@ -26,7 +26,7 @@ require_once("util.inc");
 require_once("/usr/local/www/widgets/include/interfaces.inc");
 
 $widget_url = '/widgets/widgets/cellular.widget.php';
-define('PYTHON_BIN', '/usr/local/bin/python2.7');
+define('PYTHON_BIN', '%%PYTHON_CMD%%');
 define('INTERFACE_BIN', '/usr/local/sbin/cellular');
 
 if (!file_exists(PYTHON_BIN)) {

@@ -21,12 +21,17 @@ SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
 
 USES=		python shebangfix
-SHEBANG_FILES=	${WRKSRC}${LOCALBASE}/sbin/cellular.py
+SHEBANG_FILES=	${WRKSRC}${PREFIX}/sbin/cellular.py \
+		${WRKSRC}${PREFIX}/bin/cellular_dev.py
 
 do-extract:
 	${MKDIR} ${WRKSRC}
 	${CP} -r ${FILESDIR}/usr ${WRKSRC}
 	${CP} -r ${FILESDIR}/etc ${WRKSRC}
+	@${SED} -i '' -e "s,%%PYTHON_CMD%%,${PYTHON_CMD},g" \
+		${WRKSRC}/usr/local/www/widgets/widgets/cellular.widget.php \
+		${WRKSRC}/usr/local/pkg/cellular.inc \
+		${WRKSRC}/etc/devd/cellular.conf
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
