@@ -27,7 +27,7 @@ require_once('services.inc');
 
 $shortcut_section = "cellular";
 
-define('PYTHON_BIN', '/usr/local/bin/python2.7');
+define('PYTHON_BIN', '%%PYTHON_CMD%%');
 define('INTERFACE_BIN', '/usr/local/sbin/cellular');
 
 
