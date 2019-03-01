@@ -13,7 +13,7 @@ COMMENT=	Voleatech Cellular Module Interface
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/miniterm.py:comms/py-serial
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}serial>0:comms/py-serial@${PY_FLAVOR}
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -65,7 +65,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/cellular.xml
 	(cd ${WRKSRC}${PREFIX} \
 		&& ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
-		-d ${PREFIX} -f sbin)
+		-b -d ${PREFIX} -f sbin)
 	${INSTALL_SCRIPT} ${WRKSRC}${PREFIX}/sbin/cellular.pyc \
 		${STAGEDIR}${PREFIX}/sbin/cellular
 
