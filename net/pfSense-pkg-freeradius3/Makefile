@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-freeradius3
 PORTVERSION=	0.15.7
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
