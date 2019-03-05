@@ -208,7 +208,7 @@ function frr_zebra_generate_accesslists() {
 					break;
 				default:
 					/* If this block is reached, the ACL Type was not valid, so skip this entry. */
-					continue;
+					continue 2;
 			}
 			if (empty($hostspec)) {
 				/* Nothing to do here, there was no valid source or destination for this line/type, so omit the entire line. */
@@ -569,7 +569,7 @@ function frr_zebra_generate_staticroutes() {
 					break;
 				default:
 					/* Invalid target!*/
-					continue;
+					continue 2;
 			}
 			if (!empty($target)) {
 				$staticroutes .= "ip route {$redistr['routevalue']} {$target}\n";
