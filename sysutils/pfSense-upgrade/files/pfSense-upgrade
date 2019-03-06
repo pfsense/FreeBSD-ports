@@ -415,6 +415,28 @@ upgrade_available() {
 	return $?
 }
 
+pkg_set_origin() {
+	local _source="$1"
+	local _target="$2"
+
+	local _pkg_source=""
+	local _pkg_target=""
+	for _pkg_source in $(_pkg query -x %n "${_source}*"); do
+		_pkg_target=$(echo ${_pkg_source} \
+		    | sed "s/${_source}/${_target}/g")
+		_origin_source=$(_pkg query %o ${_pkg_source})
+		_origin_target=$(_pkg rquery -U %o ${_pkg_target})
+		_exec "pkg-static set -o ${_origin_source}:${_origin_target} \
+		    ${_pkg_source}" \
+		    "Update origin ${_origin_source} -> ${_origin_target}" \
+		    mute
+		_exec "pkg-static set -n ${_pkg_source}:${_pkg_target} \
+		    ${_pkg_source}" \
+		    "Update name ${_pkg_source} -> ${_pkg_target}" \
+		    mute
+	done
+}
+
 pkg_upgrade() {
 	# figure out which kernel variant is running
 	export kernel_pkg=$(_pkg query %n $(_pkg info \
@@ -700,6 +722,7 @@ pkg_upgrade() {
 
 		if [ "${cur_php_pkg}" != "${_new_php_pkg}" ]; then
 			_pkg annotate -q -M ${kernel_pkg} new_major_php 1
+			pkg_set_origin ${cur_php_pkg} ${_new_php_pkg}
 		fi
 
 		do_reboot
