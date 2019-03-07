@@ -10,9 +10,11 @@ bin/gpspipe
 bin/gpsprof
 bin/gpxlogger
 bin/lcdgps
+bin/ubxtool
 %%PPS%%bin/ntpshmmon
 %%X11%%bin/xgps
 %%X11%%bin/xgpsspeed
+bin/zerk
 include/gps.h
 include/libgpsmm.h
 %%QTBIND%%lib/libQgpsmm.prl
@@ -20,8 +22,8 @@ include/libgpsmm.h
 %%QTBIND%%lib/libQgpsmm.so.23
 %%QTBIND%%lib/libQgpsmm.so.23.0.0
 lib/libgps.so
-lib/libgps.so.23
-lib/libgps.so.23.0.0
+lib/libgps.so.24
+lib/libgps.so.24.0.0
 man/man1/cgps.1.gz
 man/man1/gegps.1.gz
 man/man1/gps.1.gz
@@ -35,7 +37,8 @@ man/man1/gpspipe.1.gz
 man/man1/gpsprof.1.gz
 man/man1/gpxlogger.1.gz
 man/man1/lcdgps.1.gz
-man/man1/ntpshmmon.1.gz
+man/man1/ubxtool.1.gz
+man/man1/zerk.1.gz
 %%X11%%man/man1/xgps.1.gz
 %%X11%%man/man1/xgpsspeed.1.gz
 man/man3/libQgpsmm.3.gz
@@ -64,6 +67,9 @@ man/man8/gpsinit.8.gz
 %%PYTHON_SITELIBDIR%%/gps/misc.pyc
 %%PYTHON_SITELIBDIR%%/gps/misc.pyo
 %%PYTHON_SITELIBDIR%%/gps/packet.so
+%%PYTHON_SITELIBDIR%%/gps/watch_options.py
+%%PYTHON_SITELIBDIR%%/gps/watch_options.pyc
+%%PYTHON_SITELIBDIR%%/gps/watch_options.pyo
 %%QTBIND%%libdata/pkgconfig/Qgpsmm.pc
 libdata/pkgconfig/libgps.pc
 sbin/gpsd
