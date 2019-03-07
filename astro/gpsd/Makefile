@@ -12,6 +12,9 @@ COMMENT=	Daemon that monitors one or more GPSes attached to a host computer
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}serial>0:comms/py-serial@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}serial>0:comms/py-serial@${PY_FLAVOR}
+
 USES=		cpe pathfix pkgconfig python scons shebangfix
 CPE_VENDOR=	gpsd_project
 USE_PYTHON=	flavors py3kplist
