@@ -19,7 +19,7 @@ RUN_DEPENDS=	sudo:security/sudo \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 NO_BUILD=	yes
-USES=		python:2.7 shebangfix
+USES=		python shebangfix
 
 SHEBANG_FILES=	bin/waagent bin/waagent2.0
 
