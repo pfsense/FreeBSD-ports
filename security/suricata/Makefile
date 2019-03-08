@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	suricata
-DISTVERSION=	4.1.2
-PORTREVISION=   1
+DISTVERSION=	4.1.3
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -24,6 +23,7 @@ CONFLICTS_INSTALL=libhtp
 
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 GNU_CONFIGURE=	yes
 
