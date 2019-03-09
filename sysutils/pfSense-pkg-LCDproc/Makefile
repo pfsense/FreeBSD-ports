@@ -2,14 +2,14 @@
 
 PORTNAME=	pfSense-pkg-LCDproc
 PORTVERSION=	0.10.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	LCDproc package for pfSense
+MAINTAINER=	contato@kontrolsecurity.com.br
+COMMENT=	LCDproc package for Kontrol
 
 LICENSE=	APACHE20
 
