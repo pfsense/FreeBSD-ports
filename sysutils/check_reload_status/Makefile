@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	check_reload_status
-PORTVERSION=	0.0.8
+PORTVERSION=	0.0.9
 CATEGORIES?=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
