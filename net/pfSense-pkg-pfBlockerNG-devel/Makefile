@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-pfBlockerNG-devel
 PORTVERSION=	2.2.5
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -18,11 +18,13 @@ RUN_DEPENDS=	${LOCALBASE}/bin/mmdblookup:net/libmaxminddb \
 		${LOCALBASE}/bin/iprange:net-mgmt/iprange \
 		${LOCALBASE}/bin/mwhois:net/whois \
 		${LOCALBASE}/bin/jq:textproc/jq \
-		${LOCALBASE}/sbin/lighttpd:www/lighttpd
+		${LOCALBASE}/sbin/lighttpd:www/lighttpd \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}maxminddb>0:net/py-maxminddb@${PY_FLAVOR}
 
 CONFLICTS=	pfSense-pkg-pfBlockerNG
 
-USES=		php:flavors
+USES=		php:flavors python
 USE_PHP=	intl
 IGNORE_WITH_PHP=	56 70 71
 NO_BUILD=	yes
