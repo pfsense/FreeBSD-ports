@@ -2,7 +2,7 @@
 
 PORTNAME=	openbor
 # Hint: svn revision is git rev-list --count ${GH_TAGNAME}
-PORTVERSION?=	6966
+PORTVERSION?=	6968
 .ifndef PKGNAMESUFFIX
 PORTREVISION=	0
 .endif
@@ -31,7 +31,7 @@ PORTSCOUT=	ignore:1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	DCurrent
-GH_TAGNAME?=	1caf2797
+GH_TAGNAME?=	d7a031ca
 
 USES+=		gmake pkgconfig
 .if ${PORTVERSION} < 4433
@@ -81,6 +81,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's/ -O[0-9]//; s/ -g//; s/ -Werror//' \
 		-e 's/ -fomit-frame-pointer//' \
 		-e 's/ -freorder-blocks//' \
+		-e 's/ -Wno-unused-result//' \
 		-e 's/ -Wl,-rpath,$$(LIBRARIES)//' \
 		-e '/echo/!s/	@/	/' \
 		-e 's/@echo/@$$(ECHO)/' \
@@ -88,6 +89,8 @@ post-patch:
 		${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e 's/\.openbor/.${PKGBASE}/' \
 		${WRKSRC}/sdl/sdlport.c
+	@${REINPLACE_CMD} -e 's/__builtin_unreachable/__unreachable/' \
+		${WRKSRC}/source/gamelib/loadimg.c
 	@${GREP} -Flr 'malloc.h' ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
 		's,malloc\.h,stdlib.h,'
 	@${REINPLACE_CMD} -e 's/^function \(.*\) {/\1() {/' \
