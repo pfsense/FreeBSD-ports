@@ -713,7 +713,8 @@ pkg_upgrade() {
 		    | egrep '^php[0-9]{2}$')
 
 		if [ "${cur_php_pkg}" != "${_new_php_pkg}" ]; then
-			_pkg annotate -q -M ${kernel_pkg} new_major_php 1
+			_pkg annotate -q -M ${kernel_pkg} new_major_php \
+			    ${_new_php_pkg}
 			pkg_set_origin ${cur_php_pkg} ${_new_php_pkg}
 		fi
 
@@ -756,6 +757,10 @@ pkg_upgrade() {
 				/etc/rc.php_ini_setup >/dev/null 2>&1
 			fi
 
+			if [ -n "${new_major_php}" ]; then
+				_exec "pkg-static upgrade -x ${new_major_php}*" \
+				    "Upgrading PHP to new major version"
+			fi
 			_exec "pkg-static upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""

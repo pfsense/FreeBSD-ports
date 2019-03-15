@@ -52,6 +52,14 @@ ALTABI_ARCH=	32:el:eabi:softfp
 .error "Invalid arch: ${ARCH}"
 .endif
 
+.if ${ARCH} == "armv7"
+ARCH_OLD=	armv6
+ALTABI_ARCH_OLD=32:el:eabi:hardfp
+.else
+ARCH_OLD=	${ARCH}
+ALTABI_ARCH_OLD=${ALTABI_ARCH}
+.endif
+
 DEFAULT_ALTABI=	${OPSYS:tl}:${OSREL:C/\..*//}:${ALTABI_ARCH}
 
 .if defined(PKG_REPO_BRANCH_DEVEL_${ARCH}) && !empty(PKG_REPO_BRANCH_DEVEL_${ARCH})
@@ -86,11 +94,13 @@ do-build:
 	@if [ -f ${WRKSRC}/${f}.abi ]; then \
 		${REINPLACE_CMD} -i '' \
 			-e "s,%%ARCH%%,${ARCH},g" \
+			-e "s,%%ARCH_OLD%%,${ARCH_OLD},g" \
 			${WRKSRC}/${f}.abi; \
 	fi
 	@if [ -f ${WRKSRC}/${f}.altabi ]; then \
 		${REINPLACE_CMD} -i '' \
 			-e "s,%%ARCH%%,${ALTABI_ARCH},g" \
+			-e "s,%%ARCH_OLD%%,${ALTABI_ARCH_OLD},g" \
 			${WRKSRC}/${f}.altabi; \
 	fi
 .endfor
