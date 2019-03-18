@@ -1,6 +1,5 @@
-diff -ruN ./suricata-4.1.2.orig/src/Makefile.am ./suricata-4.1.2/src/Makefile.am
---- ./suricata-4.1.2.orig/src/Makefile.am	2018-12-21 09:43:33.000000000 -0500
-+++ ./src//Makefile.am	2019-01-02 16:20:51.000000000 -0500
+--- ./suricata-4.1.3.orig/src/Makefile.am	2018-12-21 09:43:33.000000000 -0500
++++ ./src//Makefile.am
 @@ -10,6 +10,7 @@
  suricata_SOURCES = \
  alert-debuglog.c alert-debuglog.h \
@@ -9,9 +8,8 @@ diff -ruN ./suricata-4.1.2.orig/src/Makefile.am ./suricata-4.1.2/src/Makefile.am
  alert-prelude.c alert-prelude.h \
  alert-syslog.c alert-syslog.h \
  alert-unified2-alert.c alert-unified2-alert.h \
-diff -ruN ./suricata-4.1.2.orig/src/Makefile.in ./suricata-4.1.2/src/Makefile.in
---- ./suricata-4.1.2.orig/src/Makefile.in	2018-12-21 09:43:49.000000000 -0500
-+++ ./src//Makefile.in	2019-01-02 16:21:55.000000000 -0500
+--- ./suricata-4.1.3.orig/src/Makefile.in	2018-12-21 09:43:49.000000000 -0500
++++ ./src//Makefile.in
 @@ -112,7 +112,7 @@
  am__installdirs = "$(DESTDIR)$(bindir)"
  PROGRAMS = $(bin_PROGRAMS)
@@ -21,11 +19,10 @@ diff -ruN ./suricata-4.1.2.orig/src/Makefile.in ./suricata-4.1.2/src/Makefile.in
  	alert-unified2-alert.$(OBJEXT) app-layer.$(OBJEXT) \
  	app-layer-dcerpc.$(OBJEXT) app-layer-dcerpc-udp.$(OBJEXT) \
  	app-layer-detect-proto.$(OBJEXT) app-layer-dnp3.$(OBJEXT) \
-diff -ruN ./suricata-4.1.2.orig/src/alert-pf.c ./suricata-4.1.2/src/alert-pf.c
---- ./suricata-4.1.2.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src//alert-pf.c	2018-12-18 21:07:46.000000000 -0500
+--- ./suricata-4.1.3.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src//alert-pf.c
 @@ -0,0 +1,1077 @@
-+/* Copyright (C) 2007-2018 Open Information Security Foundation
++/* Copyright (C) 2007-2019 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
 + * the GNU General Public License version 2 as published by the Free
@@ -43,7 +40,7 @@ diff -ruN ./suricata-4.1.2.orig/src/alert-pf.c ./suricata-4.1.2/src/alert-pf.c
 + *
 + * Portions of this module are based on previous works of the following:
 + *
-+ * Copyright (c) 2018  Bill Meeks
++ * Copyright (c) 2019  Bill Meeks
 + * Copyright (c) 2012  Ermal Luci
 + * Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 + * Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -1102,11 +1099,10 @@ diff -ruN ./suricata-4.1.2.orig/src/alert-pf.c ./suricata-4.1.2/src/alert-pf.c
 +    return TM_ECODE_OK;
 +}
 +
-diff -ruN ./suricata-4.1.2.orig/src/alert-pf.h ./suricata-4.1.2/src/alert-pf.h
---- ./suricata-4.1.2.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
-+++ ./src//alert-pf.h	2018-12-18 20:22:46.000000000 -0500
+--- ./suricata-4.1.3.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
++++ ./src//alert-pf.h
 @@ -0,0 +1,59 @@
-+/* Copyright (C) 2007-2010 Open Information Security Foundation
++/* Copyright (C) 2007-2019 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
 + * the GNU General Public License version 2 as published by the Free
@@ -1124,7 +1120,7 @@ diff -ruN ./suricata-4.1.2.orig/src/alert-pf.h ./suricata-4.1.2/src/alert-pf.h
 + *
 + * Portions of this module are based on previous works of the following:
 + *
-+ * Copyright (c) 2018  Bill Meeks
++ * Copyright (c) 2019  Bill Meeks
 + * Copyright (c) 2012  Ermal Luci
 + * Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 + * Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -1165,9 +1161,8 @@ diff -ruN ./suricata-4.1.2.orig/src/alert-pf.h ./suricata-4.1.2/src/alert-pf.h
 +
 +#endif /* __ALERT_PF_H__ */
 +
-diff -ruN ./suricata-4.1.2.orig/src/output.c ./suricata-4.1.2/src/output.c
---- ./suricata-4.1.2.orig/src/output.c	2018-12-21 09:43:34.000000000 -0500
-+++ ./src//output.c	2019-01-02 16:24:38.000000000 -0500
+--- ./suricata-4.1.3.orig/src/output.c	2018-12-21 09:43:34.000000000 -0500
++++ ./src//output.c
 @@ -45,6 +45,7 @@
  #include "alert-debuglog.h"
  #include "alert-prelude.h"
@@ -1185,9 +1180,8 @@ diff -ruN ./suricata-4.1.2.orig/src/output.c ./suricata-4.1.2/src/output.c
      /* unified2 log */
      Unified2AlertRegister();
      /* drop log */
-diff -ruN ./suricata-4.1.2.orig/src/suricata-common.h ./suricata-4.1.2/src/suricata-common.h
---- ./suricata-4.1.2.orig/src/suricata-common.h	2018-12-21 09:43:34.000000000 -0500
-+++ ./src//suricata-common.h	2019-01-02 16:25:44.000000000 -0500
+--- ./suricata-4.1.3.orig/src/suricata-common.h	2018-12-21 09:43:34.000000000 -0500
++++ ./src//suricata-common.h
 @@ -439,6 +439,7 @@
      LOGGER_JSON_STATS,
      LOGGER_PRELUDE,

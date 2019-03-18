@@ -1,9 +1,8 @@
 # Created by: Patrick Tracanelli <eksffa@freebsdbrasil.com.br>
-# $FreeBSD$
+# $FreeBSD: head/security/suricata/Makefile 495041 2019-03-08 14:35:45Z garga $
 
 PORTNAME=	suricata
-DISTVERSION=	4.1.2
-PORTREVISION=   1
+DISTVERSION=	4.1.3
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -24,6 +23,7 @@ CONFLICTS_INSTALL=libhtp
 
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 GNU_CONFIGURE=	yes
 
@@ -76,7 +76,7 @@ LUA_CONFIGURE_ON=		--enable-lua \
 				--with-liblua-includes=${LUA_INCDIR} \
 				--with-liblua-libraries=${LUA_LIBDIR}
 
-LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit21
+LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit
 LUAJIT_CONFIGURE_ON=		--enable-luajit
 
 NSS_LIB_DEPENDS=		libnss3.so:security/nss \
