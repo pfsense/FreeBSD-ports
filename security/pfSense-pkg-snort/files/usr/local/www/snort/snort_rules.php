@@ -602,9 +602,7 @@ elseif (isset($_POST['clear'])) {
 	unset($a_rule[$id]['customrules']);
 	write_config("Snort pkg: clear all custom rules for {$a_rule[$id]['interface']}.");
 	$rebuild_rules = true;
-	conf_mount_rw();
 	snort_generate_conf($a_rule[$id]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 	$pconfig['customrules'] = '';
 
@@ -619,9 +617,7 @@ elseif (isset($_POST['save'])) {
 		unset($a_rule[$id]['customrules']);
 	write_config("Snort pkg: save modified custom rules for {$a_rule[$id]['interface']}.");
 	$rebuild_rules = true;
-	conf_mount_rw();
 	snort_generate_conf($a_rule[$id]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 	$output = "";
 	$retcode = "";
@@ -665,9 +661,7 @@ elseif ($_POST['apply']) {
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	conf_mount_rw();
 	snort_generate_conf($a_rule[$id]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 
 	// Soft-restart Snort to live-load new rules

@@ -66,9 +66,6 @@ $g['suricata_postinstall'] = true;
 // Remove any LCK files for Suricata that might have been left behind
 unlink_if_exists("{$g['varrun_path']}/suricata_pkg_starting.lck");
 
-// Mount file system read/write so we can modify some files
-conf_mount_rw();
-
 // Remove any previously installed script since we rebuild it
 unlink_if_exists("{$rcdir}suricata.sh");
 
@@ -190,7 +187,6 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	include('/usr/local/pkg/suricata/suricata_check_for_rule_updates.php');
 	update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
-	conf_mount_rw();
 
 	// Make sure config variable is an array (PHP7 likes every level to be created individually )
 	if (!is_array($config['installedpackages']['suricata'])) {
@@ -268,9 +264,6 @@ if (empty($config['installedpackages']['suricata']['config'][0]['forcekeepsettin
 	update_status("   " . gettext("\n  Setting up initial configuration.") . "\n");
 	$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] = 'on';
 }
-
-// Finished with file system mods, so remount it read-only
-conf_mount_ro();
 
 // Update Suricata package version in configuration
 update_status(gettext("  " . "Setting package version in configuration file.") . "\n");

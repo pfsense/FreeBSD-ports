@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gpsd
-PORTVERSION=	3.17
+PORTVERSION=	3.18.1
 CATEGORIES=	astro geography
 MASTER_SITES=	SAVANNAH
 
@@ -12,12 +12,15 @@ COMMENT=	Daemon that monitors one or more GPSes attached to a host computer
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cpe pathfix pkgconfig python:2.7 scons shebangfix
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}serial>0:comms/py-serial@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}serial>0:comms/py-serial@${PY_FLAVOR}
+
+USES=		cpe pathfix pkgconfig python scons shebangfix
 CPE_VENDOR=	gpsd_project
-USE_PYTHON=	flavors
+USE_PYTHON=	flavors py3kplist
 USE_RC_SUBR=	gpsd
 SHEBANG_FILES=	*.py gps/*.py gegps xgps gpscat xgpsspeed gpsprof \
-		gpsfake
+		gpsfake ubxtool zerk
 
 MAKE_ARGS=	prefix="${PREFIX}" mandir="man" pkgconfig="libdata/pkgconfig" \
 		manbuild=no target_python="${PYTHON_CMD}"

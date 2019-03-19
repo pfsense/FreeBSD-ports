@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	musicpd
-PORTVERSION=	0.21.4
-PORTREVISION=	1
+PORTVERSION=	0.21.5
 CATEGORIES=	audio ipv6
 MASTER_SITES=	https://www.musicpd.org/download/mpd/${PORTVERSION:R}/
 DISTNAME=	mpd-${PORTVERSION}
@@ -124,6 +123,7 @@ WILDMIDI_MESON_ON=	-Dwildmidi=enabled
 WILDMIDI_LIB_DEPENDS=	libWildMidi.so:audio/wildmidi
 
 # Encoder plugins
+VORBISENC_IMPLIES=	VORBIS
 VORBISENC_MESON_ON=	-Dvorbisenc=enabled
 VORBISENC_LIB_DEPENDS=	libvorbisenc.so:audio/libvorbis
 LAME_MESON_ON=		-Dlame=enabled

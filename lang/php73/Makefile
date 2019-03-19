@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	php73
-DISTVERSION=	7.3.2
+DISTVERSION=	7.3.3
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=   PHP/distributions
@@ -64,6 +64,10 @@ CONFLICTS=	php56-* php70-* php71-* php72-*
 DESTDIRNAME=	INSTALL_ROOT
 
 .include <bsd.port.pre.mk>
+
+.if defined(PHP_FD_SETSIZE)
+CONFIGURE_ARGS+=	--enable-fd-setsize=${PHP_FD_SETSIZE}
+.endif
 
 .if ${PORT_OPTIONS:MCLI}
 PHP_SAPI+=	cli
