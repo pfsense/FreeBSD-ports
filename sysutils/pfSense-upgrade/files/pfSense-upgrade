@@ -1338,7 +1338,8 @@ fi
 if [ "${action}" = "install" ]; then
 	pkg_upgrade_repo
 
-	new_php_pkg=$(_pkg rquery -U %dn ${_meta_pkg} | egrep '^php[0-9]{2}$')
+	new_php_pkg=$(_pkg rquery -U %dn $(get_meta_pkg_name) \
+	    | egrep '^php[0-9]{2}$')
 
 	if [ "${cur_php_pkg}" != "${new_php_pkg}" ]; then
 		_echo "WARNING: Current pkg repository has a new PHP major"
