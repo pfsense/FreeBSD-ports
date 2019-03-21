@@ -80,7 +80,6 @@ function validate_form_lcdproc($post, &$input_errors) {
 			case "ugen1.2":
 			case "ugen1.3":
 			case "ugen2.2":
-				continue;
 				break;
 			default:
 				$input_errors[] = "The chosen COM port is not valid";
@@ -99,7 +98,6 @@ function validate_form_lcdproc($post, &$input_errors) {
 			case "20x2":
 			case "20x4":
 			case "40x2":
-				continue;
 				break;
 			default:
 				$input_errors[] = "The chosen display size is not valid";
@@ -115,7 +113,6 @@ function validate_form_lcdproc($post, &$input_errors) {
 			case "19200":
 			case "57600":
 			case "115200":
-				continue;
 				break;
 			default:
 				$input_errors[] = "The chosen port speed is not valid";
