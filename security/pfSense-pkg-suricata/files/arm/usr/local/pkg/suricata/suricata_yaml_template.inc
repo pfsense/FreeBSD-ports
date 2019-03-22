@@ -30,6 +30,14 @@ default-packet-size: 1514
 # The default logging directory.
 default-log-dir: {$suricatalogdir}suricata_{$if_real}{$suricata_uuid}
 
+# global stats configuration
+stats:
+  enabled: {$stats_log_enabled}
+  interval: {$stats_upd_interval}
+  #decoder-events: true
+  decoder-events-prefix: "decoder.event"
+  #stream-events: false
+
 # Configure the type of alert (and other) logging.
 outputs:
 
@@ -81,10 +89,12 @@ outputs:
       certs-log-dir: certs
 
   - stats:
-      enabled: {$stats_log_enabled}
+      enabled: yes
       filename: stats.log
-      interval: {$stats_upd_interval}
       append: {$stats_log_append}
+      totals: yes
+      threads: no
+      #null-values: yes
 
   - syslog:
       enabled: {$alert_syslog}
