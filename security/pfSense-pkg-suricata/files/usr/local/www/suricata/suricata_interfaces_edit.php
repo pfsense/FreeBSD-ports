@@ -187,6 +187,8 @@ if (empty($pconfig['eve_log_smtp']))
 	$pconfig['eve_log_smtp'] = "on";
 if (empty($pconfig['eve_log_flow']))
 	$pconfig['eve_log_flow'] = "off";
+if (empty($pconfig['eve_log_netflow']))
+	$pconfig['eve_log_netflow'] = "off";
 if (empty($pconfig['eve_log_stats']))
 	$pconfig['eve_log_stats'] = "off";
 if (empty($pconfig['eve_log_stats_totals']))
@@ -399,6 +401,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_log_smtp'] == "on") { $natent['eve_log_smtp'] = 'on'; }else{ $natent['eve_log_smtp'] = 'off'; }
 		if ($_POST['eve_log_stats'] == "on") { $natent['eve_log_stats'] = 'on'; }else{ $natent['eve_log_stats'] = 'off'; }
 		if ($_POST['eve_log_flow'] == "on") { $natent['eve_log_flow'] = 'on'; }else{ $natent['eve_log_flow'] = 'off'; }
+		if ($_POST['eve_log_netflow'] == "on") { $natent['eve_log_netflow'] = 'on'; }else{ $natent['eve_log_netflow'] = 'off'; }
 		if ($_POST['eve_log_stats_totals'] == "on") { $natent['eve_log_stats_totals'] = 'on'; }else{ $natent['eve_log_stats_totals'] = 'off'; }
 		if ($_POST['eve_log_stats_deltas'] == "on") { $natent['eve_log_stats_deltas'] = 'on'; }else{ $natent['eve_log_stats_deltas'] = 'off'; }
 		if ($_POST['eve_log_stats_threads'] == "on") { $natent['eve_log_stats_threads'] = 'on'; }else{ $natent['eve_log_stats_threads'] = 'off'; }
@@ -1081,6 +1084,14 @@ $group->add(new Form_Checkbox(
 ));
 
 $group->add(new Form_Checkbox(
+	'eve_log_netflow',
+	'Net Flow',
+	'Net Flow',
+	$pconfig['eve_log_netflow'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
 	'eve_log_drop',
 	'Dropped Traffic',
 	'Dropped Traffic',
@@ -1727,6 +1738,7 @@ events.push(function(){
 		disableInput('eve_log_ssh', disable);
 		disableInput('eve_log_smtp', disable);
 		disableInput('eve_log_flow', disable);
+		disableInput('eve_log_netflow', disable);
 		disableInput('eve_log_drop', disable);
 		disableInput('eve_log_alerts_packet',disable)
 		disableInput('eve_log_alerts_payload',disable);

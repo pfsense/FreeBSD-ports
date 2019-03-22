@@ -502,6 +502,9 @@ if ($suricatacfg['eve_log_stats'] == 'on'){
 
 if ($suricatacfg['eve_log_flow'] == 'on') {
 	$eve_out_types .= "\n        - flow                        # Bi-directional flows";
+}
+
+if ($suricatacfg['eve_log_netflow'] == 'on') {
 	$eve_out_types .= "\n        - netflow                     # Uni-directional flows";
 }
 
