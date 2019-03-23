@@ -1210,6 +1210,7 @@ EOD;
 		if (base64_decode($ca_cert['crt'])) {
 			$crl_cert = lookup_crl($eapconf["ssl_ca_crl"]);
 			if ($crl_cert != false) {
+				crl_update($crl_cert);
 				$crl = base64_decode($crl_cert['text']);
 				$check_crl = "check_crl = yes";
 			} else {
