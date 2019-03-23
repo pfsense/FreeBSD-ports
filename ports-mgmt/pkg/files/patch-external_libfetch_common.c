@@ -30,7 +30,7 @@
 +	OPENSSL_cpuid_setup();
 +	ENGINE_load_ateccx08();
 +	OPENSSL_load_builtin_modules();
-+	ENGINE_register_complete_all();
++	ENGINE_register_all_complete();
 +#endif
  	SSL_load_error_strings();
 +	OPENSSL_config(NULL);
