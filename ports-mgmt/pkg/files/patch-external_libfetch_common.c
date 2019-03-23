@@ -12,7 +12,7 @@
  /*** Local data **************************************************************/
  
  /*
-@@ -836,13 +841,26 @@ fetch_ssl(conn_t *conn, const struct url
+@@ -836,13 +841,29 @@ fetch_ssl(conn_t *conn, const struct url *URL, int ver
  	X509_NAME *name;
  	char *str;
  
@@ -27,7 +27,10 @@
  	}
  
 +#ifdef WITH_STATIC_ENGINE
++	OPENSSL_cpuid_setup();
 +	ENGINE_load_ateccx08();
++	OPENSSL_load_builtin_modules();
++	ENGINE_register_complete_all();
 +#endif
  	SSL_load_error_strings();
 +	OPENSSL_config(NULL);

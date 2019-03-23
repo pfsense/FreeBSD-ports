@@ -10,7 +10,7 @@
  
  # This Makefile.in is free software; the Free Software Foundation
  # gives unlimited permission to copy and/or distribute it,
-@@ -91,15 +91,20 @@ POST_UNINSTALL = :
+@@ -91,15 +91,21 @@ POST_UNINSTALL = :
  build_triplet = @build@
  host_triplet = @host@
  @HAVE_ELF_ABI_TRUE@am__append_1 = -Wl,--enable-new-dtags
@@ -20,6 +20,7 @@
 +@HAVE_STATIC_ENGINE_TRUE@am__append_2 = -lateccx08 \
 +@HAVE_STATIC_ENGINE_TRUE@			-lcryptoauth \
 +@HAVE_STATIC_ENGINE_TRUE@			-lthoth \
++@HAVE_STATIC_ENGINE_TRUE@			-lusb \
 +@HAVE_STATIC_ENGINE_TRUE@			-lpthread
 +
 +@HAVE_ELF_ABI_TRUE@@LIBELF_BUNDLED_TRUE@am__append_3 = $(top_builddir)/external/libelf_static.la
@@ -36,7 +37,7 @@
  subdir = src
  ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
  am__aclocal_m4_deps = $(top_srcdir)/m4/ax_append_flag.m4 \
-@@ -152,8 +157,8 @@ pkg_static_OBJECTS = $(am_pkg_static_OBJ
+@@ -152,8 +158,8 @@ pkg_static_OBJECTS = $(am_pkg_static_OBJECTS)
  @HAVE_MACHO_ABI_TRUE@am__DEPENDENCIES_2 = $(top_builddir)/external/libmachista_static.la
  pkg_static_DEPENDENCIES = $(pkg_OBJECTS) \
  	$(top_builddir)/libpkg/libpkg_static.la \
@@ -47,7 +48,7 @@
  pkg_static_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
  	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
  	$(pkg_static_LDFLAGS) $(LDFLAGS) -o $@
-@@ -171,7 +176,25 @@ am__v_at_0 = @
+@@ -171,7 +177,25 @@ am__v_at_0 = @
  am__v_at_1 = 
  DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
  depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -74,7 +75,7 @@
  am__mv = mv -f
  COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
  	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-@@ -486,6 +509,7 @@ OBJEXT = @OBJEXT@
+@@ -486,6 +510,7 @@ OBJEXT = @OBJEXT@
  OS_CFLAGS = @OS_CFLAGS@
  OS_LDFLAGS = @OS_LDFLAGS@
  OS_LIBS = @OS_LIBS@
@@ -82,7 +83,7 @@
  OS_STATIC = @OS_STATIC@
  OTOOL = @OTOOL@
  OTOOL64 = @OTOOL64@
-@@ -604,7 +628,7 @@ pkg_SOURCES = add.c \
+@@ -604,7 +629,7 @@ pkg_SOURCES = add.c \
  
  pkg_LDADD = @OS_LDFLAGS@ $(top_builddir)/libpkg/libpkg.la \
  	$(top_builddir)/compat/libbsd_compat.la @LIBJAIL_LIB@ -lutil \
@@ -91,7 +92,7 @@
  pkg_CFLAGS = @OS_CFLAGS@ \
  			-I$(top_srcdir)/libpkg \
  			-I$(top_builddir)/libpkg \
-@@ -619,7 +643,8 @@ pkg_static_LDADD = @OS_LDFLAGS@ $(pkg_OB
+@@ -619,7 +644,8 @@ pkg_static_LDADD = @OS_LDFLAGS@ $(pkg_OBJECTS) \
  	$(top_builddir)/libpkg/libpkg_static.la \
  	$(top_builddir)/compat/libbsd_compat.la @LIBJAIL_LIB@ \
  	@LDNS_LIBS@ @OS_LIBS@ -larchive -lz -lutil -lbz2 -llzma -lssl \
@@ -101,7 +102,7 @@
  DYNPROG = pkg
  @BUILD_STATIC_TRUE@pkg_static_LDFLAGS = -all-static
  dist_sysconf_DATA = pkg.conf.sample
-@@ -644,8 +669,8 @@ Makefile: $(srcdir)/Makefile.in $(top_bu
+@@ -644,8 +670,8 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config
  	  *config.status*) \
  	    cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh;; \
  	  *) \
@@ -112,7 +113,7 @@
  	esac;
  
  $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
-@@ -720,42 +745,48 @@ mostlyclean-compile:
+@@ -720,43 +746,49 @@ mostlyclean-compile:
  distclean-compile:
  	-rm -f *.tab.c
  
@@ -188,16 +189,17 @@
 +@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pkg-utils.Po@am__quote@ # am--include-marker
 +@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pkg-version.Po@am__quote@ # am--include-marker
 +@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pkg-which.Po@am__quote@ # am--include-marker
-+
+ 
 +$(am__depfiles_remade):
 +	@$(MKDIR_P) $(@D)
 +	@echo '# dummy' >$@-t && $(am__mv) $@-t $@
 +
 +am--depfiles: $(am__depfiles_remade)
- 
++
  .c.o:
  @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@@ -1481,7 +1512,7 @@ $(TEST_SUITE_LOG): $(TEST_LOGS)
+ @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@@ -1481,7 +1513,7 @@ $(TEST_SUITE_LOG): $(TEST_LOGS)
  	fi;								\
  	$$success || exit 1
  
@@ -206,7 +208,7 @@
  	@list='$(RECHECK_LOGS)';           test -z "$$list" || rm -f $$list
  	@list='$(RECHECK_LOGS:.log=.trs)'; test -z "$$list" || rm -f $$list
  	@test -z "$(TEST_SUITE_LOG)" || rm -f $(TEST_SUITE_LOG)
-@@ -1517,7 +1548,10 @@ recheck: all 
+@@ -1517,7 +1549,10 @@ recheck: all 
  @am__EXEEXT_TRUE@	$(am__common_driver_flags) $(AM_TEST_LOG_DRIVER_FLAGS) $(TEST_LOG_DRIVER_FLAGS) -- $(TEST_LOG_COMPILE) \
  @am__EXEEXT_TRUE@	"$$tst" $(AM_TESTS_FD_REDIRECT)
  
@@ -218,7 +220,7 @@
  	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
  	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
  	list='$(DISTFILES)'; \
-@@ -1594,7 +1628,42 @@ clean-am: clean-generic clean-libtool cl
+@@ -1594,7 +1629,42 @@ clean-am: clean-generic clean-libtool clean-sbinPROGRA
  	mostlyclean-am
  
  distclean: distclean-am
@@ -262,7 +264,7 @@
  	-rm -f Makefile
  distclean-am: clean-am distclean-compile distclean-generic \
  	distclean-tags
-@@ -1640,7 +1709,42 @@ install-ps-am:
+@@ -1640,7 +1710,42 @@ install-ps-am:
  installcheck-am:
  
  maintainer-clean: maintainer-clean-am
@@ -306,7 +308,7 @@
  	-rm -f Makefile
  maintainer-clean-am: distclean-am maintainer-clean-generic
  
-@@ -1661,16 +1765,16 @@ uninstall-am: uninstall-dist_sysconfDATA
+@@ -1661,16 +1766,16 @@ uninstall-am: uninstall-dist_sysconfDATA uninstall-sbi
  
  .MAKE: check-am install-am install-strip
  

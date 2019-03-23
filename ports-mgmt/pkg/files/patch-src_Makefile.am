@@ -1,6 +1,6 @@
 --- src/Makefile.am.orig	2018-02-14 21:01:26 UTC
 +++ src/Makefile.am
-@@ -73,6 +73,13 @@ pkg_static_LDADD= @OS_LDFLAGS@ \
+@@ -73,6 +73,14 @@ pkg_static_LDADD= @OS_LDFLAGS@ \
  			-lcrypto \
  			-lm
  
@@ -8,6 +8,7 @@
 +pkg_static_LDADD+=	-lateccx08 \
 +			-lcryptoauth \
 +			-lthoth \
++			-lusb \
 +			-lpthread
 +endif
 +
