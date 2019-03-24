@@ -428,9 +428,9 @@ else:
 						</td>
 						<td colspan="4">
 						<?php if ($no_community_files): ?>
-							<?php echo gettext("{$msg_community}"); ?>
+							<?php echo $msg_community; ?>
 						<?php else: ?>
-							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=gettext('{$msg_community}');?></a>
+							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=$msg_community;?></a>
 						<?php endif; ?>
 						</td>
 					</tr>
@@ -441,9 +441,9 @@ else:
 						</td>
 						<td colspan="4">
 						<?php if ($no_community_files): ?>
-							<?php echo gettext("{$msg_community}"); ?>
+							<?php echo $msg_community; ?>
 						<?php else: ?>
-							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=$msg_community; ?></a>
 						<?php endif; ?>
 						</td>
 					</tr>
@@ -455,9 +455,9 @@ else:
 					</td>
 					<td colspan="4">
 						<?php if ($no_community_files): ?>
-							<?php echo gettext("{$msg_community}"); ?>
+							<?php echo $msg_community; ?>
 						<?php else: ?>
-							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
+							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo $msg_community; ?></a>
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -468,9 +468,9 @@ else:
 					</td>
 					<td colspan="4">
 						<?php if ($no_community_files): ?>
-							<?php echo gettext("{$msg_community}"); ?>
+							<?php echo $msg_community; ?>
 						<?php else: ?>
-							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=$msg_community; ?></a>
 						<?php endif; ?>
 					</td>
 				</tr>

@@ -62,6 +62,7 @@ if (is_null($id)) {
 if (isset($id) && isset($a_rule[$id])) {
 	$pconfig['interface'] = $a_rule[$id]['interface'];
 	$pconfig['rulesets'] = $a_rule[$id]['rulesets'];
+	$pconfig['sensitive_data'] = $a_rule[$id]['sensitive_data'] == 'on' ? 'on' : 'off';
 }
 
 // Convert named interfaces to real
@@ -115,7 +116,11 @@ if (!empty($pconfig['rulesets']))
 $categories[] = "custom.rules";
 $categories[] = "decoder.rules";
 $categories[] = "preprocessor.rules";
-$categories[] = "sensitive-data.rules";
+
+// Add Sensitive-Data rules only if corresponding preprocessor is enabled
+if ($pconfig['sensitive_data'] == 'on') {
+	$categories[] = "sensitive-data.rules";
+}
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled, and adjust the available rulesets
@@ -198,12 +203,22 @@ if ($currentruleset != 'custom.rules') {
 		// the enabled rule categories for this interface.
 		$rule_files = explode("||", $pconfig['rulesets']);
 
-		// Prepend the Snort rules path to each entry.
+		// Prepend the Snort rules path to each enabled category entry.
 		foreach ($rule_files as $k => $v) {
 			$rule_files[$k] = $ruledir . "/" . $v;
 		}
+
+		// Include the preprocessor, decoder and sensitive data rules
+		$rule_files[] = "{$snortcfgdir}/preproc_rules/decoder.rules";
+		$rule_files[] = "{$snortcfgdir}/preproc_rules/preprocessor.rules";
+		$rule_files[] = "{$snortcfgdir}/preproc_rules/sensitive-data.rules";
+
+		// Finally, include any custom rules and auto-flowbits rules
 		$rule_files[] = "{$snortcfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$snortcfgdir}/rules/custom.rules";
+
+		// Now filter the array of rules against the list of user-forced
+		// enabled GID:SID pairs.
 		$rules_map = snort_get_filtered_rules($rule_files, snort_load_sid_mods($a_rule[$id]['rule_sid_on']));
 	}
 	elseif ($currentruleset == "User Forced Disabled Rules") {
@@ -211,12 +226,22 @@ if ($currentruleset != 'custom.rules') {
 		// the enabled rule categories for this interface.
 		$rule_files = explode("||", $pconfig['rulesets']);
 
-		// Prepend the Snort rules path to each entry.
+		// Prepend the Snort rules path to each enabled category entry.
 		foreach ($rule_files as $k => $v) {
 			$rule_files[$k] = $ruledir . "/" . $v;
 		}
+
+		// Include the preprocessor, decoder and sensitive data rules
+		$rule_files[] = "{$snortcfgdir}/preproc_rules/decoder.rules";
+		$rule_files[] = "{$snortcfgdir}/preproc_rules/preprocessor.rules";
+		$rule_files[] = "{$snortcfgdir}/preproc_rules/sensitive-data.rules";
+
+		// Finally, include any custom rules and auto-flowbits rules
 		$rule_files[] = "{$snortcfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$snortcfgdir}/rules/custom.rules";
+
+		// Now filter the array of rules against the list of user-forced
+		// diabled GID:SID pairs.
 		$rules_map = snort_get_filtered_rules($rule_files, snort_load_sid_mods($a_rule[$id]['rule_sid_off']));
 	}
 	// If it's not a special case, and we can't find
