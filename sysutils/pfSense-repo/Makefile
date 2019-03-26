@@ -82,6 +82,7 @@ do-build:
 .for f in ${PFSENSE_REPOS_${ARCH}}
 	@${REINPLACE_CMD} -i '' \
 		-e "s,%%ARCH%%,${ARCH},g" \
+		-e "s,%%ARCH_NEW%%,${ARCH_NEW},g" \
 		-e "s,%%PKG_REPO_BRANCH_DEVEL%%,${PKG_REPO_BRANCH_DEVEL},g" \
 		-e "s,%%PKG_REPO_BRANCH_RELEASE%%,${PKG_REPO_BRANCH_RELEASE},g" \
 		-e "s,%%PKG_REPO_SERVER_DEVEL%%,${PKG_REPO_SERVER_DEVEL},g" \
