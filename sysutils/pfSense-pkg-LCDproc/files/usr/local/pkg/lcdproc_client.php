@@ -190,57 +190,6 @@ function get_interfaces_stats() {
 	return($status);
 }
 
-function get_slbd_stats() {
-	global $g;
-	global $config;
-
-	if (!is_array($config['load_balancer']['lbpool'])) {
-		$config['load_balancer']['lbpool'] = array();
-	}
-	$a_pool = &$config['load_balancer']['lbpool'];
-
-	$slbd_logfile = "{$g['varlog_path']}/slbd.log";
-
-	$nentries = $config['syslog']['nentries'];
-	if (!$nentries) {
-		$nentries = 50;
-	}
-
-	$now = time();
-	$year = date("Y");
-	$pstatus = "";
-	$i = 0;
-	foreach ($a_pool as $vipent) {
-		$pstatus[] = "{$vipent['name']}";
-		if ($vipent['type'] == "gateway") {
-			$poolfile = "{$g['tmp_path']}/{$vipent['name']}.pool";
-			if (file_exists("$poolfile")) {
-				$poolstatus = file_get_contents("$poolfile");
-			} else {
-				continue;
-			}
-			foreach ((array) $vipent['servers'] as $server) {
-				$lastchange = "";
-				$svr = explode("|", $server);
-				$monitorip = $svr[1];
-				if (stristr($poolstatus, $monitorip)) {
-					$online = "Up";
-				} else {
-					$online = "Down";
-				}
-				$pstatus[] = strtoupper($svr[0]) ." [{$online}]";
-			}
-		} else {
-			$pstatus[] = "{$vipent['monitor']}";
-		}
-	}
-	if (count($a_pool) == 0) {
-		$pstatus[] = "Disabled";
-	}
-	$status = implode(", ", $pstatus);
-	return($status);
-}
-
 function get_carp_stats() {
 	global $g;
 	global $config;
@@ -968,15 +917,6 @@ function build_interface($lcd) {
 						$lcd_cmds[] = "widget_add $name text_wdgt scroller";
 						$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"+ IPsec Tunnels\"";
 						break;
-					case "scr_slbd":
-						$lcd_cmds[] = "screen_add $name";
-						$lcd_cmds[] = "screen_set $name heartbeat off";
-						$lcd_cmds[] = "screen_set $name name $name";
-						$lcd_cmds[] = "screen_set $name duration $refresh_frequency";
-						$lcd_cmds[] = "widget_add $name title_wdgt string";
-						$lcd_cmds[] = "widget_add $name text_wdgt scroller";
-						$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"+ Load Balancer\"";
-						break;
 					case "scr_interfaces":
 						$lcd_cmds[] = "screen_add $name";
 						$lcd_cmds[] = "screen_set $name heartbeat off";
@@ -1040,7 +980,8 @@ function build_interface($lcd) {
 						}
 						$includeSummary = false; // this screen needs all the lines
 						break;
-
+					default:
+						break;
 				}
 				if ($includeSummary) add_summary_declaration($lcd_cmds, $name);
 			}
@@ -1183,10 +1124,6 @@ function loop_status($lcd) {
 					$ipsec = get_ipsec_stats();
 					$lcd_cmds[] = "widget_set $name text_wdgt 1 2 $lcdpanel_width 2 h 4 \"{$ipsec}\"";
 					break;
-				case "scr_slbd":
-					$slbd = get_slbd_stats();
-					$lcd_cmds[] = "widget_set $name text_wdgt 1 2 $lcdpanel_width 2 h 4 \"{$slbd}\"";
-					break;
 				case "scr_interfaces":
 					$interfaces = get_interfaces_stats();
 					$lcd_cmds[] = "widget_set $name text_wdgt 1 2 $lcdpanel_width 2 h 4 \"{$interfaces}\"";
@@ -1275,6 +1212,8 @@ function loop_status($lcd) {
 						$lcd_cmds[] = "widget_set $name  data_wdgt{$i} 1 2         \"\"";							
 					}
 					$updateSummary = false;
+					break;
+				default:
 					break;
 			}
 			if ($name != "scr_traffic_interface" && substr($name, 0, 23) != 'scr_traffic_by_address_') {	// "scr_traffic_interface" isn't a real screen, it's a parameter for the "scr_traffic" screen
