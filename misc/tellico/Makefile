@@ -3,7 +3,7 @@
 
 PORTNAME=	tellico
 DISTVERSION=	3.1.4
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	misc kde
 MASTER_SITES=	http://tellico-project.org/files/
 
@@ -22,8 +22,8 @@ LIB_DEPENDS=	libbtparse.so:textproc/btparse \
 		libtag.so:audio/taglib \
 		libyaz.so:net/yaz
 
-USES=		cmake desktop-file-utils gettext kde:5 pkgconfig python:run \
-		qt:5 shared-mime-info shebangfix tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 \
+		pkgconfig python:run qt:5 shared-mime-info shebangfix tar:xz
 USE_GNOME=	libxml2 libxslt
 USE_KDE=	archive attica5 auth bookmarks codecs completion config \
 		configwidgets coreaddons crash ecm filemetadata guiaddons \

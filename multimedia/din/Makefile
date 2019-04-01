@@ -1,25 +1,23 @@
 # $FreeBSD$
 
 PORTNAME=	din
-PORTVERSION=	38a
+PORTVERSION=	39.0.1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://archive.org/download/dinisnoise_source_code/
 
 MAINTAINER=	santhosh.raju@gmail.com
-COMMENT=	DIN Is Noise is an open source, cross-platform sound \
-		synthesizer
+COMMENT=	Open source, cross-platform sound synthesizer
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libasound.so:audio/alsa-lib \
-		libjack.so:audio/jack \
-		libtcl${TCL_SHLIB_VER}.so:lang/tcl${TCL_SHLIB_VER} \
-		libSDL.so:devel/sdl12 \
-		libGL.so:graphics/mesa-libs
+		libjack.so:audio/jack
 
-USES=		autoreconf tcl:86+ gnome
+USES=		autoreconf tcl:86+ gl gnome
+USE_GL=		gl
+USE_SDL=	sdl
 
 GNU_CONFIGURE=	yes
 

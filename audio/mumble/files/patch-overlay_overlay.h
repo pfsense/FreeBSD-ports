@@ -1,6 +1,6 @@
---- overlay/overlay.h.orig	2014-08-08 15:51:59 UTC
+--- overlay/overlay.h.orig	2019-03-13 18:38:10 UTC
 +++ overlay/overlay.h
-@@ -42,6 +42,25 @@ struct OverlayMsgHeader {
+@@ -18,6 +18,25 @@ struct OverlayMsgHeader {
  #define OVERLAY_MSGTYPE_INIT 0
  struct OverlayMsgInit {
  	unsigned int uiWidth;

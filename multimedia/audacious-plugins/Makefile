@@ -3,6 +3,7 @@
 
 PORTNAME=	audacious-plugins
 PORTVERSION=	3.10.1
+PORTREVISION=	1
 CATEGORIES=	multimedia audio
 MASTER_SITES=	http://distfiles.audacious-media-player.org/
 
@@ -101,9 +102,9 @@ SAMPLERATE_LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 SAMPLERATE_CONFIGURE_ENABLE=	resample
 SCROBBLER_LIB_DEPENDS=	libcurl.so:ftp/curl
 SCROBBLER_CONFIGURE_ENABLE=	scrobbler2
-SDL_LIB_DEPENDS=	libSDL2.so:devel/sdl20
 SDL_CONFIGURE_ON=	--enable-sdlout --with-libsdl=2
 SDL_CONFIGURE_OFF=	--disable-sdlout
+SDL_USE=		SDL=sdl2
 SID_LIB_DEPENDS=	libsidplayfp.so:audio/libsidplayfp
 SID_CONFIGURE_ENABLE=	sid
 SNDFILE_LIB_DEPENDS=	libsndfile.so:audio/libsndfile
@@ -117,7 +118,6 @@ VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 VORBIS_CONFIGURE_ENABLE=vorbis
 WAVPACK_LIB_DEPENDS=	libwavpack.so:audio/wavpack
 WAVPACK_CONFIGURE_ENABLE=	wavpack
-OPTIONS_SUB=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's| $${MFLAGS}||g' \

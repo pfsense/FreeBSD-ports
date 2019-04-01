@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	gnustep-gui
-PORTVERSION=	0.25.1
-PORTREVISION=	7
+DISTVERSIONPREFIX=	gui-
+DISTVERSION=	0_27_0
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits gnustep
-MASTER_SITES=	GNUSTEP/core
 
 MAINTAINER=	theraven@FreeBSD.org
 COMMENT=	GNUstep GUI library
@@ -21,12 +21,13 @@ LIB_DEPENDS+=	libsndfile.so:audio/libsndfile
 LIB_DEPENDS+=	libao.so:audio/libao
 LIB_DEPENDS+=	libflite.so:audio/flite
 
-OPTIONS_DEFINE=	DOCS CUPS ASPELL
-OPTIONS_DEFAULT=	CUPS
-OPTIONS_SUB=	yes
+USES=		gnustep jpeg pkgconfig
+USE_GNUSTEP=	base build
+USE_XORG=	x11 xt
 
-DOCS_BUILD_DEPENDS=	texi2html:textproc/texi2html \
-			texi2pdf:print/texinfo
+USE_GITHUB=	yes
+GH_ACCOUNT=	gnustep
+GH_PROJECT=	libs-gui
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-tiff-library=${LOCALBASE}/lib
@@ -37,16 +38,16 @@ CONFIGURE_ARGS+=	--with-x
 CONFIGURE_ARGS+=	--with-x-include=${LOCALBASE}/include
 CONFIGURE_ARGS+=	--with-x-include=${LOCALBASE}/lib
 
-USES=		gnustep jpeg pkgconfig
-USE_GNUSTEP=	base build
-USE_XORG=	x11 xt
-
-EXTRA_PATCHES+=	${FILESDIR}/GNUmakefile.patch
-EXTRA_PATCHES+=	${FILESDIR}/GNUmakefile.speech.patch
-EXTRA_PATCHES+=	${FILESDIR}/AudioOutputSink.m.patch
 MAKE_FLAGS+=	OPTFLAG="${CFLAGS}"
 
 PLIST_SUB+=	BASEVERSION=${PORTVERSION:C/[.][0-9]*$//1}
+
+OPTIONS_DEFINE=	DOCS CUPS ASPELL
+OPTIONS_DEFAULT=	CUPS
+OPTIONS_SUB=	yes
+
+DOCS_BUILD_DEPENDS=	texi2html:textproc/texi2html \
+			texi2pdf:print/texinfo
 
 CUPS_CONFIGURE_ENABLE=		cups
 CUPS_LIB_DEPENDS+=	libcups.so:print/cups

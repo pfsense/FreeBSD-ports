@@ -3,7 +3,7 @@
 
 PORTNAME=	golem
 PORTVERSION=	0.0.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF
 
@@ -12,6 +12,7 @@ COMMENT=	Small window manager with themes and plugins
 
 LICENSE=	BSD3CLAUSE
 
+BROKEN=		All plugins fail to load with Undefined symbol "display"
 BROKEN_aarch64=		fails to link: can't create dynamic relocation R_AARCH64_ADR_PREL_PG_HI21 against symbol: display in readonly segment
 
 USES=		gmake perl5 tar:bzip2
@@ -24,12 +25,9 @@ MAKE_ARGS=	DEVEL=1
 CFLAGS_amd64=	-fPIC
 CFLAGS_i386=	-fPIC
 
-OPTIONS_DEFINE=	ESOUND XINERAMA
+OPTIONS_DEFINE=	XINERAMA
 OPTIONS_DEFAULT=	XINERAMA
 OPTIONS_SUB=	yes
-
-ESOUND_USE=	GNOME=esound
-ESOUND_CONFIGURE_ON=	--enable-sound
 
 XINERAMA_USE=	XORG=xinerama
 XINERAMA_CONFIGURE_ON=	--enable-xinerama

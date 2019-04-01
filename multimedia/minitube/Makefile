@@ -2,7 +2,7 @@
 
 PORTNAME=	minitube
 DISTVERSION=	2.9
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia www
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	TV-like client for YouTube
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		qmake qt:5
+USES=		compiler:c++11-lang qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	flaviotordini
 USE_GL=		gl

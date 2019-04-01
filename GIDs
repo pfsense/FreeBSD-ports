@@ -176,8 +176,8 @@ archiva:*:232:
 _ntp:*:233:
 kafka:*:234:
 openhab:*:235:
-# free: 236
-# free: 237
+rspamd:*:236:
+paperless:*:237:
 # free: 238
 # free: 239
 aprsd:*:240:
@@ -295,7 +295,7 @@ sonarr:*:351:
 radarr:*:352:
 _iodined:*:353:
 jackett:*:354:
-# free: 355
+nzbhydra2:*:355:
 # free: 356
 # free: 357
 # free: 358
@@ -460,7 +460,7 @@ pwhois:*:512:
 # free: 517
 # free: 518
 # free: 519
-# free: 520
+libvirtdbus:*:520:
 davmail:*:521:
 nullmail:*:522:
 freevo:*:523:
@@ -545,7 +545,7 @@ _tss:*:601:
 _pkcs11:*:602:
 _acme:*:603:
 # free: 604
-# free: 605
+_hockeypuck:*:605:
 # free: 606
 # free: 607
 # free: 608
@@ -790,8 +790,8 @@ sogod:*:846:
 domoticz:*:847:
 graylog:*:848:
 chronyd:*:849:
-# free: 850
-# free: 851
+qbittorrent:*:850:
+cassandra:*:851:
 # free: 852
 _geodns:*:853:
 # free: 854
@@ -822,7 +822,7 @@ _geodns:*:853:
 # free: 879
 # free: 880
 # free: 881
-# free: 882
+midpoint:*:882:
 ipfs-go:*:883:
 telegraf:*:884:
 tcpdump:*:885:

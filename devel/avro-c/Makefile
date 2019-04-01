@@ -19,7 +19,8 @@ BROKEN_sparc64=	fails to build
 LIB_DEPENDS=	libjansson.so:devel/jansson \
 		libsnappy.so:archivers/snappy
 
-USES=		cmake pkgconfig
+USES=		cmake compiler:c++11-lang pathfix pkgconfig
+
 USE_LDCONFIG=	yes
 WRKSRC_SUBDIR=	lang/c
 
@@ -29,6 +30,5 @@ USE_GITHUB=	yes
 post-patch:
 	@${REINPLACE_CMD} '/SNAPPY_PKG/ s|libsnappy|snappy|; /add_subdirectory(docs)/d' ${WRKSRC}/CMakeLists.txt
 	@${REINPLACE_CMD} '1 s|/bin/bash|/bin/sh|' ${WRKSRC}/version.sh
-	@${REINPLACE_CMD} 's|lib/pkgconfig|libdata/pkgconfig|' ${WRKSRC}/src/CMakeLists.txt
 
 .include <bsd.port.mk>

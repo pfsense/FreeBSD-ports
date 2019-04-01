@@ -3,6 +3,7 @@
 
 PORTNAME=	omniorb
 DISTVERSION=	4.2.3
+PORTREVISION=	3
 CATEGORIES=	devel python
 MASTER_SITES=	SF/${PORTNAME}/omniORBpy/omniORBpy-${DISTVERSION:S/-2//}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,6 +21,7 @@ RUN_DEPENDS=	omniidl:devel/omniORB
 BUILD_DEPENDS=	${NONEXISTENT}:devel/omniORB:patch
 
 USES=		gmake python shebangfix ssl tar:bzip2
+USE_PYTHON=	py3kplist
 
 CONFLICTS=	py*-orbit-2* ${PYTHON_PKGNAMEPREFIX}omniorb3-3*
 
@@ -51,11 +53,6 @@ post-install:
 	cd ${STAGEDIR}${PYTHON_SITELIBDIR} && ${PYTHON_CMD} -c "import py_compile;py_compile.compile('CosNaming__POA/__init__.py',None,'CosNaming__POA/__init__.pyc',True)"
 	cd ${STAGEDIR}${PYTHON_SITELIBDIR} && ${PYTHON_CMD} -c "import py_compile;py_compile.compile('omniidl_be/python.py',None,'omniidl_be/python.pyc',True)"
 	@${RM} ${STAGEDIR}${PYTHON_SITELIBDIR}/omniidl_be/__init__.py
-	@${STRIP_CMD} ${STAGEDIR}/${PYTHON_SITELIBDIR}/_omnipymodule.so.4.2
-	@${STRIP_CMD} ${STAGEDIR}/${PYTHON_SITELIBDIR}/_omniZIOPmodule.so.4.2
-	@${STRIP_CMD} ${STAGEDIR}/${PYTHON_SITELIBDIR}/_omniConnMgmtmodule.so.4.2
-	@${STRIP_CMD} ${STAGEDIR}/${PYTHON_SITELIBDIR}/_omnicodesetsmodule.so.4.2
-	@${STRIP_CMD} ${STAGEDIR}/${PYTHON_SITELIBDIR}/_omnisslTPmodule.so.4.2
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html

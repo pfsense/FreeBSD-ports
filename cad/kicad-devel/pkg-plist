@@ -32,10 +32,7 @@ share/appdata/kicad.appdata.xml
 %%DESKTOPDIR%%/pcbcalculator.desktop
 %%DESKTOPDIR%%/pcbnew.desktop
 %%PORTDOCS%%%%DOCSDIR%%/scripts/ddr3_length_match.py
-%%PORTDOCS%%%%DOCSDIR%%/scripts/get_libngspice_so.sh
 %%PORTDOCS%%%%DOCSDIR%%/scripts/lib_convert.py
-%%PORTDOCS%%%%DOCSDIR%%/scripts/mk_macos_icons.py
-%%PORTDOCS%%%%DOCSDIR%%/scripts/mk_mime_icons.py
 %%PORTDOCS%%%%DOCSDIR%%/scripts/test_kicad_plugin.py
 %%PORTDOCS%%%%DOCSDIR%%/scripts/test_plugin.py
 share/icons/hicolor/128x128/apps/bitmap2component.png
@@ -295,6 +292,7 @@ share/icons/hicolor/scalable/mimetypes/application-x-kicad-schematic.svg
 %%DATADIR%%/plugins/netlist_form_cadstar-RINF.xsl
 %%DATADIR%%/plugins/netlist_form_cadstar.xsl
 %%DATADIR%%/plugins/netlist_form_pads-pcb.asc.xsl
+%%DATADIR%%/scripting/kicad_pyshell/__init__.py
 %%DATADIR%%/scripting/plugins/FPC_wizard.py
 %%DATADIR%%/scripting/plugins/FootprintWizardBase.py
 %%DATADIR%%/scripting/plugins/PadArray.py

@@ -1,23 +1,21 @@
---- Makefile.orig	2018-07-30 13:35:39 UTC
+--- Makefile.orig	2019-03-15 16:38:36 UTC
 +++ Makefile
-@@ -49,9 +49,9 @@ OUT := build/$(build)
- SRCS := $(wildcard js*.c utf*.c regexp.c)
- HDRS := $(wildcard js*.h mujs.h utf.h regexp.h)
+@@ -15,7 +15,8 @@ endif
  
--default: static
-+default: shared
- static: $(OUT)/mujs-pp $(OUT)/mujs $(OUT)/libmujs.a $(OUT)/mujs.pc
--shared: static $(OUT)/libmujs.so
-+shared: $(OUT)/mujs $(OUT)/libmujs.so $(OUT)/mujs.pc
+ # Compiler flags for various configurations:
  
- astnames.h: jsparse.h
- 	grep -E '(AST|EXP|STM)_' jsparse.h | sed 's/^[^A-Z]*\(AST_\)*/"/;s/,.*/",/' | tr A-Z a-z > $@
-@@ -115,7 +115,7 @@ install-static: install-common
- install-shared: install-common
- 	install -m 755 build/release/libmujs.so $(DESTDIR)$(libdir)
+-CFLAGS := -std=c99 -pedantic -Wall -Wextra -Wno-unused-parameter
++# change to c11 on FreeBSD because FreeBSD headers induce c11 through isnan(3), etc.
++CFLAGS := -std=c11 -pedantic -Wall -Wextra -Wno-unused-parameter
  
--install: install-static
-+install: install-shared
+ ifeq "$(CC)" "clang"
+   CFLAGS += -Wunreachable-code
+@@ -31,7 +32,7 @@ else ifeq "$(build)" "sanitize"
+   CFLAGS += -pipe -g -fsanitize=address -fno-omit-frame-pointer
+   LDFLAGS += -fsanitize=address
+ else
+-  CFLAGS += -Os
++  CFLAGS += -O3 # use -O3 on FreeBSD instead of -Os because this isn't an embedded platform
+   LDFLAGS += -Wl,-s
+ endif
  
- tarball:
- 	git archive --format=zip --prefix=mujs-$(VERSION)/ HEAD > mujs-$(VERSION).zip

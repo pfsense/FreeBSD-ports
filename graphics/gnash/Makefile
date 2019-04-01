@@ -26,8 +26,8 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 
 CONFLICTS=	gnash-devel-[0-9]*
 
-USES=		autoreconf compiler:c++11-lang cpe desktop-file-utils gl \
-		gmake gnome jpeg libtool pkgconfig tar:bzip2
+USES=		cpe tar:bzip2 compiler:c++11-lang autoreconf gmake libtool \
+		pkgconfig jpeg gnome gl desktop-file-utils
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 WANT_GSTREAMER=	yes
@@ -108,6 +108,9 @@ GNASH_RENDERERS+=	agg
 IGNORE=		support for OpenGL is currently broken, use option AGG
 GNASH_RENDERERS+=	ogl
 LIB_DEPENDS+=		libgdkglext-x11-1.0.so:x11-toolkits/gtkglext
+. if ${PORT_OPTIONS:MVAAPI}
+LIB_DEPENDS+=		libva-glx.so:multimedia/libva-glx
+. endif
 .endif
 
 .if ${PORT_OPTIONS:MCAIRO}

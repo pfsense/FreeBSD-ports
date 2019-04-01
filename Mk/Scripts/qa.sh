@@ -366,11 +366,9 @@ proxydeps_suggest_uses() {
 		${pkg} = "audio/esound" -o \
 		${pkg} = "devel/gconf2" -o \
 		${pkg} = "devel/gconfmm26" -o \
-		${pkg} = "devel/glib12" -o \
 		${pkg} = "devel/glib20" -o \
 		${pkg} = "devel/glibmm" -o \
 		${pkg} = "audio/gsound" -o \
-		${pkg} = "x11-toolkits/gtk12" -o \
 		${pkg} = "x11-toolkits/gtk20" -o \
 		${pkg} = "x11-toolkits/gtk30" -o \
 		${pkg} = "www/gtkhtml3" -o \
@@ -654,7 +652,7 @@ proxydeps() {
 				# If we don't already depend on it, and we don't provide it
 				if ! listcontains ${dep_file_pkg} "${LIB_RUN_DEPENDS} ${PKGORIGIN}"; then
 					# If the package has a flavor, check that the dependency is not on that particular flavor.
-					flavor=$(pkg annotate -q -S "${dep_file_pkg}" flavor)
+					flavor=$(pkg annotate -q -S "$(pkg which -q "${dep_file}")" flavor)
 					if [ -n "${flavor}" ]; then
 						if listcontains ${dep_file_pkg}@${flavor} "${LIB_RUN_DEPENDS} ${PKGORIGIN}"; then
 							continue
@@ -927,10 +925,50 @@ license()
 	return 0
 }
 
+# This is to prevent adding dependencies to meta ports that are only there to
+# improve the end user experience.
+depends_blacklist()
+{
+	local dep rc instead
+
+	rc=0
+
+	for dep in ${UNIFIED_DEPENDS}; do
+		origin=$(expr "${dep}" : ".*:\([^@]*\)")
+		instead=""
+
+		case "$origin" in
+			lang/python|lang/python2|lang/python3)
+				# lang/python depends on lang/pythonX, but it's
+				# ok, it is also in the blacklist.
+				if [ ${PKGORIGIN} != lang/python ]; then
+					instead="USES=python:xy with a specific version"
+				fi
+				;;
+			lang/gcc)
+				instead="USE_GCC"
+				;;
+			devel/llvm)
+				instead="a dependency on devel/llvm\${LLVM_DEFAULT}"
+				;;
+			www/py-django)
+				instead="one of the www/py-djangoXYZ port"
+				;;
+		esac
+
+		if [ -n "${instead}" ]; then
+			err "$origin should not be depended upon. Instead, use $instead."
+			rc=1
+		fi
+	done
+
+	return $rc
+}
+
 checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo"
 checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
 checks="$checks proxydeps sonames perlcore no_arch gemdeps gemfiledeps flavors"
-checks="$checks license"
+checks="$checks license depends_blacklist"
 
 ret=0
 cd ${STAGEDIR} || exit 1

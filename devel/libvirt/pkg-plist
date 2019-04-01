@@ -38,7 +38,6 @@ man/man8/virtlogd.8.gz
 etc/logrotate.d/libvirtd
 etc/logrotate.d/libvirtd.lxc
 etc/logrotate.d/libvirtd.qemu
-etc/logrotate.d/libvirtd.uml
 etc/logrotate.d/libvirtd.libxl
 include/libvirt/libvirt-admin.h
 include/libvirt/libvirt-common.h
@@ -71,7 +70,9 @@ lib/libvirt.so
 lib/libvirt.so.0
 lib/libvirt.so.%%SHLIB_VER%%
 %%NSS%%lib/libnss_libvirt.so.1
+%%NSS%%lib/libnss_libvirt_guest.so.1
 %%NSS%%lib/nss_libvirt.so.1
+%%NSS%%lib/nss_libvirt_guest.so.1
 libdata/pkgconfig/libvirt-admin.pc
 libdata/pkgconfig/libvirt-lxc.pc
 libdata/pkgconfig/libvirt-qemu.pc
@@ -129,7 +130,6 @@ share/augeas/lenses/tests/test_virtlogd.aug
 %%DOCSDIR%%%%PORTVERSION%%/html/drvqemu.html
 %%DOCSDIR%%%%PORTVERSION%%/html/drvremote.html
 %%DOCSDIR%%%%PORTVERSION%%/html/drvtest.html
-%%DOCSDIR%%%%PORTVERSION%%/html/drvuml.html
 %%DOCSDIR%%%%PORTVERSION%%/html/drvvbox.html
 %%DOCSDIR%%%%PORTVERSION%%/html/drvvirtuozzo.html
 %%DOCSDIR%%%%PORTVERSION%%/html/drvvmware.html

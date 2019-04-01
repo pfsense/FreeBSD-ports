@@ -110,6 +110,7 @@ lib/pure/cstrutils.nim
 lib/pure/db_common.nim
 lib/pure/distros.nim
 lib/pure/dynlib.nim
+lib/pure/editdistance.nim
 lib/pure/encodings.nim
 lib/pure/endians.nim
 lib/pure/events.nim
@@ -396,5 +397,6 @@ nim/compiler/writetracking.nim
 nim/doc/advopt.txt
 nim/doc/basicopt.txt
 %%PORTDOCS%%@dir %%DOCSDIR%%
+%%PORTDOCS%%%%DOCSDIR%%/html/overview.html
 %%TOOLS%%bin/nimgrep
 %%TOOLS%%bin/nimsuggest

@@ -2,23 +2,35 @@
 # $FreeBSD$
 
 PORTNAME=	timescaledb
-PORTVERSION=	1.1.1
+PORTVERSION=	1.2.2
 CATEGORIES=	databases
 
 MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Time-series database built on PostgreSQL
 
-LICENSE=	APACHE20
-LICENSE_FILE=	${WRKSRC}/LICENSE-APACHE
+LICENSE=		APACHE20 TSL
+LICENSE_COMB=		multi
+LICENSE_NAME_TSL=	Timescale License Agreement
+LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
+LICENSE_FILE_TSL=	${WRKSRC}/tsl/LICENSE-TIMESCALE
+LICENSE_PERMS_TSL=	dist-mirror pkg-mirror auto-accept
 
 USES=		compiler:c11 cmake pgsql:9.6,10,11 ssl
 
 USE_GITHUB=	YES
 GH_ACCOUNT=	timescale
 
-WANT_PGSQL=	server
-
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 SUB_FILES=	pkg-message
+SUB_LIST=	PORTVERSION=${PORTVERSION}
+
+WANT_PGSQL=	server
+
+OPTIONS_DEFINE=		TSL
+OPTIONS_DEFAULT=	TSL
+OPTIONS_SUB=		yes
+
+TSL_DESC=		Enables TSL licensed code in additon to Apache license code
+TSL_CMAKE_BOOL_OFF=	APACHE_ONLY
 
 .include <bsd.port.mk>

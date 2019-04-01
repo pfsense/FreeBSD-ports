@@ -11,6 +11,7 @@
     SUBDIR += emelfm2
     SUBDIR += ezfm
     SUBDIR += filerunner
+    SUBDIR += fsv2
     SUBDIR += gentoo
     SUBDIR += gprename
     SUBDIR += konqueror
@@ -22,7 +23,6 @@
     SUBDIR += nemo
     SUBDIR += pcmanfm
     SUBDIR += pcmanfm-qt
-    SUBDIR += pcmanfmqt-l10n
     SUBDIR += qtfm
     SUBDIR += rodent
     SUBDIR += rox-filer

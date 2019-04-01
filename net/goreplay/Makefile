@@ -15,8 +15,7 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	buger
-GH_TUPLE=	google:gopacket:b09bf40:gopacket/vendor/github.com/google/gopacket \
-		Shopify:sarama:0fb560e:sarama/vendor/github.com/Shopify/sarama \
+GH_TUPLE=	google:gopacket:v1.1.16:gopacket/vendor/github.com/google/gopacket \
 		mattbaird:elastigo:34c4c4d:elastigo/vendor/github.com/mattbaird/elastigo \
 		bitly:go-hostpool:d0e59c2:hostpool/vendor/github.com/bitly/go-hostpool \
 		araddon:gou:50a94aa:gou/vendor/github.com/araddon/gou

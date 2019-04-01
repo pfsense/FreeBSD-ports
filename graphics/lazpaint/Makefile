@@ -3,6 +3,7 @@
 PORTNAME=	lazpaint
 PORTVERSION=	6.4.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -24,8 +25,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	bgrabitmap
 GH_PROJECT=	lazpaint
 GH_TAGNAME=	4fc4381
-GH_TUPLE=	bgrabitmap:bgracontrols:8e9d32a:bgracontrols/bgracontrols \
-		bgrabitmap:bgrabitmap:dffb32a:bgrabitmap/bgrabitmapnew
+GH_TUPLE=	bgrabitmap:bgracontrols:ec090e5:bgracontrols/bgracontrols \
+		bgrabitmap:bgrabitmap:cd2d856:bgrabitmap/bgrabitmapnew
 
 USE_FPC_gtk2=	cairo
 USE_GNOME_gtk2=	cairo
@@ -37,6 +38,7 @@ LAZARUS_PROJECT_FILES+=	bgracontrols/bgracontrols.lpk
 LAZARUS_PROJECT_FILES+=	lazpaint/lazpaint.lpi
 
 LAZBUILD_ARGS=	-d
+LLD_UNSAFE=	yes
 
 post-patch:
 	${REINPLACE_CMD} 's|%%DATADIR%%|${DATADIR}|g' ${WRKSRC}/lazpaint/utranslation.pas

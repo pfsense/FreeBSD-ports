@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	eastl
-DISTVERSION=	3.12.07
-PORTREVISION=	1
+DISTVERSION=	3.13.04
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +9,9 @@ COMMENT=	Electronic Arts Standard Template Library
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+NOT_FOR_ARCHS=		aarch64 armv6 armv7
+NOT_FOR_ARCHS_REASON=	test/packages/EABase/include/Common/EABase/config/eaplatform.h:436:4: error: Unknown processor
 
 USES=		cmake compiler:c++14-lang
 USE_GITHUB=	yes

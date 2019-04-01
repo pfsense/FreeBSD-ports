@@ -2,8 +2,7 @@
 
 PORTNAME=	quantum-espresso
 DISTVERSIONPREFIX=	qe-
-DISTVERSION=	6.3
-PORTREVISION=	5
+DISTVERSION=	6.4
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,6 +11,9 @@ COMMENT=	Package for research in electronic structure, simulation, optimization
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/License
 
+BROKEN_armv6=	fails to build: gfortran8: error: iotk_base_tmp.f90: No such file or directory
+BROKEN_armv7=	fails to build: gfortran8: error: iotk_base_tmp.f90: No such file or directory
+
 BUILD_DEPENDS=	fox-xml>0:textproc/fox-xml \
 		bash:shells/bash
 LIB_DEPENDS=	libmpich.so:net/mpich \
@@ -19,7 +21,7 @@ LIB_DEPENDS=	libmpich.so:net/mpich \
 		liblapack.so:math/lapack
 
 USES=		fortran gmake python shebangfix
-SHEBANG_FILES=	configure PW/tools/cell2ibrav.py
+SHEBANG_FILES=	configure
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	QEF

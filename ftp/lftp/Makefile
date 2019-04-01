@@ -3,7 +3,7 @@
 
 PORTNAME=	lftp
 PORTVERSION=	4.8.4
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	ftp ipv6
 MASTER_SITES=	http://lftp.tech/ftp/ \
 		http://lftp.tech/ftp/old/ \
@@ -15,7 +15,7 @@ MASTER_SITES=	http://lftp.tech/ftp/ \
 		ftp://ftp.cs.tu-berlin.de/pub/net/ftp/lftp/
 
 MAINTAINER=	martymac@FreeBSD.org
-COMMENT=	Shell-like command line ftp client
+COMMENT=	Shell-like command line FTP client
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

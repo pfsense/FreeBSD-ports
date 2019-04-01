@@ -32,14 +32,10 @@ USE_XORG=	ice sm x11 xcb xext xfixes xinerama xmu xrandr xt
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	9fe788a
+GH_TAGNAME=	8b30082
 
 CONFIGURE_ARGS=	--disable-build-details \
-		--localstatedir=/var \
-		--with-gameuser=games:games \
-		--without-libsystemd \
-		--without-gpm \
-		--with-wide-int=no
+		--localstatedir=/var
 
 .if ${FLAVOR:U} == nox
 CONFIGURE_ARGS+=	--with-sound=no --without-cairo --without-dbus \
@@ -54,7 +50,7 @@ CONFIGURE_ARGS+=	--with-sound=no --without-cairo --without-dbus \
 CONFIGURE_ARGS+=	--with-x
 .endif
 # See r468320 to determine if/when the next line can be removed
-CONFIGURE_ENV=	ac_cv_header_sys_sysinfo_h=no MAKEINFO=${LOCALBASE}/bin/makeinfo
+CONFIGURE_ENV=	ac_cv_header_sys_sysinfo_h=no
 CONFLICTS_INSTALL=	emacs emacs-canna emacs-nox
 GNU_CONFIGURE=	yes
 INFO=		ada-mode auth autotype bovine calc ccmode cl dbus dired-x \
@@ -74,9 +70,9 @@ SUB_LIST=	EMACS_VER=${EMACS_VER} # sources.el
 
 OPTIONS_DEFINE=	ACL DBUS GCONF GNUTLS GSETTINGS JSON LCMS2 M17N MAILUTILS \
 		MODULES OTF SCROLLBARS SOURCES THREADS XFT XIM XML XWIDGETS
-OPTIONS_DEFAULT=	ACL DBUS GCONF GIF GNUTLS GSETTINGS GTK3 JPEG JSON \
-		KQUEUE LCMS2 M17N MAGICK MAILUTILS MODULES OSS OTF PNG \
-		SCROLLBARS SOURCES SVG THREADS TIFF XFT XIM XML XPM
+OPTIONS_DEFAULT=	ACL DBUS GIF GNUTLS GSETTINGS GTK3 JPEG JSON KQUEUE \
+		LCMS2 M17N MAGICK MAILUTILS MODULES OSS OTF PNG SCROLLBARS \
+		SOURCES SVG THREADS TIFF XFT XIM XML XPM
 OPTIONS_GROUP=	GRAPHICS
 OPTIONS_GROUP_GRAPHICS=	CAIRO GIF JPEG MAGICK PNG SVG TIFF XPM
 OPTIONS_RADIO=	FILENOTIFY SOUND X11TOOLKIT
@@ -199,7 +195,7 @@ XWIDGETS_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 XWIDGETS_IMPLIES=	GTK3
 
 EMACS_VER=	27.0.50
-EMACS_REV=	20181225
+EMACS_REV=	20190313
 
 .include <bsd.port.options.mk>
 

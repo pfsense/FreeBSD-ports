@@ -2,6 +2,7 @@
 
 PORTNAME=	libav
 PORTVERSION=	12.3
+PORTREVISION=	2
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://libav.org/releases/
 
@@ -181,6 +182,7 @@ CONFIGURE_ENV+=	ASFLAGS=-no-integrated-as
 
 .if ${ARCH} == "i386"
 CONFIGURE_ARGS+=	--extra-cflags=-m32
+LLD_UNSAFE=	yes
 .endif
 
 # License definitions

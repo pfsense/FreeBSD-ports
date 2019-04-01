@@ -5,7 +5,7 @@ PORTVERSION=	5.5.20140810
 PORTREVISION=	3
 CATEGORIES=	net
 
-MAINTAINER=	mm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenBSD relay daemon
 
 LICENSE=	ISCL
@@ -23,6 +23,8 @@ MAKE_ARGS+=	BINDIR=${PREFIX}/sbin MANDIR=${PREFIX}/man/man
 
 USERS=		_relayd
 GROUPS=		_relayd
+
+BROKEN_FreeBSD_12=	does not build, OpenSSL 1.1 unsupported	
 
 .include <bsd.port.pre.mk>
 

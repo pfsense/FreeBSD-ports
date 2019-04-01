@@ -2,7 +2,8 @@
 
 .include "${.CURDIR}/Makefile.common"
 
-PORTREVISION=	4
+PORTREVISION=	3
+
 MASTER_SITES=	https://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
 		https://dev-www.libreoffice.org/src/:src \
 		https://dev-www.libreoffice.org/extern/:ext
@@ -19,20 +20,21 @@ BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		cppunit-config:devel/cppunit \
 		dmake:devel/dmake \
 		${LOCALBASE}/bin/gperf:devel/gperf \
-		${LOCALBASE}/include/mdds-1.2/mdds/global.hpp:devel/mdds \
+		mdds>=1.4:devel/mdds \
 		gpatch:devel/patch \
 		ucpp:devel/ucpp \
 		${LOCALBASE}/include/sane/sane.h:graphics/sane-backends \
 		vigra-config:graphics/vigra \
 		${LOCALBASE}/include/glm/glm.hpp:math/glm \
 		bash:shells/bash \
-		gsed:textproc/gsed
+		gsed:textproc/gsed \
+		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR}
 LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libboost_date_time.so:devel/boost-libs \
 		libicutu.so:devel/icu \
 		liblangtag.so:devel/liblangtag \
 		libltdl.so:devel/libltdl \
-		liborcus-0.13.so:devel/liborcus \
+		liborcus-0.14.so:devel/liborcus \
 		libplds4.so:devel/nspr \
 		libcurl.so:ftp/curl \
 		libcairo.so:graphics/cairo \
@@ -60,13 +62,14 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libxmlsec1-nss.so:security/xmlsec1 \
 		libclucene-core.so:textproc/clucene \
 		libexpat.so:textproc/expat2 \
-		libhunspell-1.6.so:textproc/hunspell \
+		libhunspell-1.7.so:textproc/hunspell \
 		libhyphen.so:textproc/hyphen \
 		libabw-0.1.so:textproc/libabw \
 		libe-book-0.1.so:textproc/libe-book \
 		libepubgen-0.1.so:textproc/libepubgen \
 		libexttextcat-2.0.so:textproc/libexttextcat \
 		libmwaw-0.3.so:textproc/libmwaw03 \
+		libnumbertext-1.0.so:textproc/libnumbertext \
 		libodfgen-0.1.so:textproc/libodfgen01 \
 		libqxp-0.0.so:textproc/libqxp \
 		librevenge-0.0.so:textproc/librevenge \
@@ -90,13 +93,14 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		${LOCALBASE}/share/fonts/Liberation/LiberationMono-Bold.ttf:x11-fonts/liberation-fonts-ttf \
 		${LOCALBASE}/share/fonts/LinLibertineG/LinLibertine_DR_G.ttf:x11-fonts/linuxlibertine-g
 
-DISTFILES+=	4b87018f7fff1d054939d19920b751a0-collada2gltf-master-cb1d97788a.tar.bz2:src
+DISTFILES+=	4b87018f7fff1d054939d19920b751a0-collada2gltf-master-cb1d97788a.tar.bz2:src \
+		49a64f3bcf20a7909ba2751349231d6652ded9cd2840e961b5164d09de3ffa63-opens___.ttf:ext
 
 NOT_FOR_ARCHS=		aarch64 armv6 armv7
 NOT_FOR_ARCHS_REASON=	Unsupported host_cpu
 
 .if defined(PRERELEASE)
-MASTER_SITES+=	http://dev-builds.libreoffice.org/pre-releases/src/
+MASTER_SITES+=	https://dev-builds.libreoffice.org/pre-releases/src/
 .endif
 
 INSTALL_TARGET=	distro-pack-install
@@ -110,17 +114,20 @@ USE_OPENLDAP=	yes
 USE_PERL5=	build
 USE_XORG=	ice sm x11 xaw xext xinerama xrandr xrender
 USES=		autoreconf:build bison compiler:c++14-lang cpe gmake jpeg \
+		mysql:client \
 		perl5 pkgconfig python shebangfix shared-mime-info ssl tar:xz
 
-OPTIONS_DEFINE=	CUPS DOCS GNOME GTK2 GTK3 JAVA MMEDIA PGSQL SDK SYSTRAY \
-		TEST WEBDAV
+OPTIONS_DEFINE=	CUPS DOCS GNOME GTK2 GTK3 JAVA KDE5 MMEDIA PGSQL QT5 SDK \
+		SYSTRAY TEST WEBDAV
 OPTIONS_DEFAULT=	CUPS GTK2 MMEDIA
 
 GTK2_DESC=	GTK+ 2 GUI toolkit support
 GTK3_DESC=	GTK+ 3 GUI toolkit support (experimental)
 JAVA_DESC=	Add Java support (XML filters, macros, DB connections)
+KDE5_DESC=	KF5/Qt5 GUI toolkit support (require QT5)
 MMEDIA_DESC=	Enable multimedia backend for Impress
 PGSQL_DESC=	Build with PostgreSQL-SDBC driver
+QT5_DESC=	Qt5 GUI toolkit support
 SDK_DESC=	Build with SDK
 SYSTRAY_DESC=	Enable systemtray quickstarter
 TEST_DESC=	Run all regression tests
@@ -190,12 +197,21 @@ JAVA_DISTFILES=	17410483b5b5f267aa18b7e00b65e6e0-hsqldb_1_8_0.zip:src \
 JAVA_USE=	JAVA=yes
 JAVA_VARS=	JAVA_BUILD=yes
 
+KDE5_CONFIGURE_ENABLE=	kde5
+KDE5_USE=	kde=config,coreaddons,i18n,kio,windowsystem
+KDE5_USES=	kde:5
+KDE5_IMPLIES=	QT5
+
 MMEDIA_CONFIGURE_ENABLE=	gstreamer-1-0
 MMEDIA_USE=	GSTREAMER1=yes
 
 PGSQL_CONFIGURE_ENABLE=	postgresql-sdbc
 PGSQL_CONFIGURE_WITH=	gssapi krb5
 PGSQL_USES=	pgsql
+
+QT5_CONFIGURE_ENABLE=	qt5
+QT5_USE=	qt=buildtools_build,core,gui,network,qmake_build,widgets,x11extras
+QT5_USES=	qt:5
 
 SDK_BUILD_DEPENDS=	doxygen:devel/doxygen
 SDK_CONFIGURE_ENABLE=	odk
@@ -261,7 +277,8 @@ CONFIGURE_ENV=	DMAKE=${LOCALBASE}/bin/dmake \
 		OPENCOLLADA_CFLAGS="${COLLADA_CFLAGS}" \
 		OPENCOLLADA_LIBS="${COLLADA_LIBS}" \
 		PYTHON_CFLAGS="`${PYTHON_VERSION}-config --cflags`" \
-		PYTHON_LIBS="`${PYTHON_VERSION}-config --libs`"
+		PYTHON_LIBS="`${PYTHON_VERSION}-config --libs`" \
+		ac_cv_path_SED=${LOCALBASE}/bin/gsed
 
 MAKE_ARGS+=	TMPDIR=${WRKDIR}
 MAKE_ENV+=	CXXFLAGS_WARN="${CXXFLAGS_WARN}"
@@ -308,6 +325,9 @@ post-install-SDK-on:
 	@cd ${STAGEDIR}${PREFIX} && \
 	${FIND} -s ${subdir}/libreoffice -not -type d >> ${TMPPLIST}
 .endfor
+
+post-install-GTK3-on:
+	@${ECHO_CMD} "share/gir-1.0/LOKDocView-0.1.gir" >> ${TMPPLIST}
 
 add-plist-gnome:
 .for subdir in gnome hicolor locolor

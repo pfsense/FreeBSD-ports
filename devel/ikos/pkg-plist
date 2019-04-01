@@ -18,7 +18,6 @@ include/ikos/ar/pass/name_values.hpp
 include/ikos/ar/pass/pass.hpp
 include/ikos/ar/pass/simplify_cfg.hpp
 include/ikos/ar/pass/simplify_upcast_comparison.hpp
-include/ikos/ar/pass/unify_exit_nodes.hpp
 include/ikos/ar/semantic.hpp
 include/ikos/ar/semantic/bundle.hpp
 include/ikos/ar/semantic/code.hpp
@@ -28,6 +27,7 @@ include/ikos/ar/semantic/function.hpp
 include/ikos/ar/semantic/intrinsic.hpp
 include/ikos/ar/semantic/statement.hpp
 include/ikos/ar/semantic/statement_visitor.hpp
+include/ikos/ar/semantic/symbol_table.hpp
 include/ikos/ar/semantic/type.hpp
 include/ikos/ar/semantic/type_visitor.hpp
 include/ikos/ar/semantic/value.hpp
@@ -164,9 +164,9 @@ include/ikos/frontend/llvm/import/exception.hpp
 include/ikos/frontend/llvm/import/importer.hpp
 include/ikos/frontend/llvm/import/source_location.hpp
 include/ikos/frontend/llvm/pass.hpp
-lib/libikos-ar.a
-lib/libikos-llvm-to-ar.a
-lib/libikos-pp.a
+lib/libikos-ar.so
+lib/libikos-llvm-to-ar.so
+lib/libikos-pp.so
 %%PYTHON_SITELIBDIR%%/ikos-2.1-py%%PYTHON_VER%%.egg-info
 %%PYTHON_SITELIBDIR%%/ikos/__init__.py
 %%PYTHON_SITELIBDIR%%/ikos/__init__.pyc

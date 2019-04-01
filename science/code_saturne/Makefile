@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	code_saturne
-PORTVERSION=	5.3.1
-PORTREVISION=	1
+PORTVERSION=	5.3.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	science parallel
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -12,7 +12,6 @@ COMMENT=	EDF's general purpose Computational Fluid Dynamics (CFD) software
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	python:lang/python
 LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo	\
 		libcgns.so:science/cgnslib	\
 		libhdf5.so:science/hdf5		\
@@ -27,11 +26,16 @@ GH_ACCOUNT=	code-saturne
 
 USES=		autoreconf bison fortran gettext gnome gmake iconv libtool	\
 		pyqt:5 python:2.7 shebangfix
+
 USE_GNOME=	libxml2
 USE_PYQT=	core gui sip widgets xml_build
+SHEBANG_FILES=	install_saturne.py tests/unittests.py bin/*.py build-aux/*.py
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/libxml2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+BINARY_ALIAS=	python=${PYTHON_CMD} \
+		pyrcc5=pyrcc5-${PYTHON_VER} \
+		pyuic5=pyuic5-${PYTHON_VER}
 
 OPTIONS_DEFINE=		DOCS EXAMPLES ATLAS BATCH MPI
 OPTIONS_DEFAULT=	BATCH MPI METIS
@@ -72,7 +76,8 @@ USE_TEX=	tex:build
 BUILD_DEPENDS+=	fig2dev:print/transfig		\
 		doxygen:devel/doxygen		\
 		dot:graphics/graphviz		\
-		sphinx-build:textproc/py-sphinx@${PY_FLAVOR}
+		sphinx-build-${PYTHON_VER}:textproc/py-sphinx@${PY_FLAVOR}
+BINARY_ALIAS+=	sphinx-build=sphinx-build-${PYTHON_VER}
 ALL_TARGET=	all pdf
 DOCS=		AUTHORS ChangeLog README
 .endif
@@ -83,6 +88,8 @@ pre-configure:
 	${FLEX} -o ${WRKSRC}/src/mei/mei_scanner.c ${WRKSRC}/src/mei/mei_scanner.l
 	${LOCALBASE}/bin/bison --defines=${WRKSRC}/src/mei/mei_parser.h	\
 		-o ${WRKSRC}/src/mei/mei_parser.c ${WRKSRC}/src/mei/mei_parser.y
+	${REINPLACE_CMD} -e 's|/usr/bin/env python|${PYTHON_CMD}|'	\
+		${WRKSRC}/Makefile.am
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}

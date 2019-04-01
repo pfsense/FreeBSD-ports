@@ -8,7 +8,7 @@ CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	freebsd_ports@k-worx.org
+MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Table/data-grid framework for Django
 
 LICENSE=	BSD2CLAUSE
@@ -19,6 +19,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django111>=0:www/py-django111@${PY_FLAVOR} \
 
 USES=		python
 USE_PYTHON=	distutils autoplist
-NO_ARCH=	yes
+
+NO_ARCH=		yes
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}dj21-django-tables2
 
 .include <bsd.port.mk>

@@ -1,9 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	yadifa
-DISTVERSION=	2.3.8
-PORTREVISION=	2
-DISTVERSIONSUFFIX=	-7713
+DISTVERSION=	2.3.9
+DISTVERSIONSUFFIX=	-8497
 CATEGORIES=	dns ipv6
 MASTER_SITES=	http://cdn.yadifa.eu/sites/default/files/releases/
 
@@ -13,8 +12,9 @@ COMMENT=	Authoritative nameserver with DNSSEC capabilities
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=	libtool ssl
+
 GNU_CONFIGURE=	yes
-USES=		libtool compiler:c11 ssl
 CONFIGURE_ARGS=	--localstatedir=/var
 
 OPTIONS_DEFINE=	CTRL DOCS EXAMPLES TCL RRL MESSAGES NSID
@@ -43,19 +43,19 @@ post-configure:
 	${REINPLACE_CMD} -e 's|/usr/local/var|/var|' -e 's|/var/zones|/var/${PORTNAME}|' ${WRKSRC}/etc/yadifad.conf.example
 
 pre-build:
-	@cd ${WRKSRC} && ${MAKE_CMD} features
+	cd ${WRKSRC} && ${MAKE_CMD} features
 
 post-install:
-	${MV} ${STAGEDIR}${PREFIX}/etc/yadifad.conf \
+	${CP} ${WRKSRC}/etc/yadifad.conf \
 		${STAGEDIR}${PREFIX}/etc/yadifad.conf.sample
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
-	@${MV} ${STAGEDIR}/var/zones ${STAGEDIR}/var/${PORTNAME}
+	${MV} ${STAGEDIR}/var/zones ${STAGEDIR}/var/${PORTNAME}
 
 post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 .for f in yadifa yadifad
-	@${LN} -s ../../${EXAMPLESDIR_REL}/$f.bash_completion \
+	${LN} -s ../../${EXAMPLESDIR_REL}/$f.bash_completion \
 		${STAGEDIR}${PREFIX}/etc/bash_completion.d/$f.sh
 .endfor
 

@@ -87,6 +87,7 @@ CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 		-DDEFAULT_SYSCONFDIR="${PREFIX}/etc" \
 		-DWITH_JEMALLOC="system" \
 		-DWITH_LIBWRAP=1 \
+		-DWITH_CONNECT_WITH_MONGO="OFF" \
 		-DWITH_SSL="${OPENSSLBASE}" \
 		-DWITH_UNIT_TESTS=0 \
 		-DWITHOUT_DOCS=1 \
@@ -192,6 +193,7 @@ CMAKE_ARGS+=	-DWITHOUT_TOKUDB
 .endif
 
 post-patch:
+	${REINPLACE_CMD} 's|/usr/bin/env python|${PYTHON_CMD}|' ${WRKSRC}/CMakeLists.txt
 	${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/mysys/my_default.c
 	${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/scripts/mysql_config.sh \
 		${WRKSRC}/storage/tokudb/PerconaFT/cmake_modules/TokuThirdParty.cmake

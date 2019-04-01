@@ -2,7 +2,7 @@
 
 PORTNAME=	shake
 PORTVERSION=	0.16.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -12,7 +12,6 @@ LICENSE=	BSD3CLAUSE
 
 USE_CABAL=	extra>=1.3 hashable>=1.1.2.3 js-flot js-jquery old-time \
 		primitive random unordered-containers>=0.2.1 utf8-string>=0.3
-
 EXECUTABLE=	shake
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"

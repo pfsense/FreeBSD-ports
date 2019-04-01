@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ilias
-PORTVERSION=	5.3.11
+PORTVERSION=	5.4.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
@@ -27,7 +27,6 @@ GH_PROJECT=	ILIAS
 USES=		cpe jpeg php
 NO_BUILD=	yes
 PLIST=		${WRKDIR}/plist
-SUB_FILES=	pkg-message
 USE_PHP=	pdo_mysql session zlib gd pdf dom xsl pcre simplexml
 ILIASDIR=	www/ilias
 ILIASDATADIR=	www/iliasdata
@@ -35,21 +34,24 @@ PLIST_SUB=	ILIASDATADIR=${ILIASDATADIR}
 SUB_FILES=	pkg-message
 SUB_LIST=	ILIASDATADIR=${ILIASDATADIR}
 
-OPTIONS_DEFINE=		SCORM2004 Checker Mail
+OPTIONS_DEFINE=		SCORM2004 CHECKER MAIL
 SCORM2004_USE=		php=json
-Checker_RUN_DEPENDS=	${LOCALBASE}/share/pear/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR}
-Mail_RUN_DEPENDS=	${LOCALBASE}/share/pear/Mail.php:mail/pear-Mail@${PHP_FLAVOR}
+CHECKER_RUN_DEPENDS=	${LOCALBASE}/share/pear/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR}
+MAIL_RUN_DEPENDS=	${LOCALBASE}/share/pear/Mail.php:mail/pear-Mail@${PHP_FLAVOR}
 
 EXTRA_FILES=	%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/_mocha \
-		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/express \
+		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/he \
+		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/mkdirp \
 		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/mocha \
 		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/uuid \
-		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/mocha/node_modules/.bin/jade \
+		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/mocha/node_modules/.bin/he \
 		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/mocha/node_modules/.bin/mkdirp \
-		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/mocha/node_modules/.bin/supports-color \
-		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/supertest/node_modules/superagent/node_modules/.bin/mime \
-		%%WWWDIR%%/libs/composer/vendor/bin/export-plural-rules \
-		%%WWWDIR%%/libs/composer/vendor/bin/export-plural-rules.php \
+		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/send/node_modules/.bin/mime \
+		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/superagent/node_modules/.bin/mime \
+		%%WWWDIR%%/libs/composer/vendor/bin/generate_vcards \
+		%%WWWDIR%%/libs/composer/vendor/bin/naturalselection \
+		%%WWWDIR%%/libs/composer/vendor/bin/sabredav \
+		%%WWWDIR%%/libs/composer/vendor/bin/vobject \
 		%%WWWDIR%%/libs/composer/vendor/simplesamlphp/simplesamlphp/locales/no
 
 pre-install:

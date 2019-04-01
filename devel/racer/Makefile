@@ -3,7 +3,8 @@
 
 PORTNAME=	racer
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.16
+DISTVERSION=	2.1.17
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	beyert@cs.ucr.edu
@@ -46,7 +47,7 @@ CARGO_CRATES=	aho-corasick-0.6.9 \
 		crossbeam-utils-0.2.2 \
 		derive_more-0.13.0 \
 		either-1.5.0 \
-		ena-0.9.3 \
+		ena-0.11.0 \
 		env_logger-0.6.0 \
 		fuchsia-zircon-0.3.3 \
 		fuchsia-zircon-sys-0.3.3 \
@@ -54,7 +55,7 @@ CARGO_CRATES=	aho-corasick-0.6.9 \
 		itoa-0.4.3 \
 		lazy_static-1.2.0 \
 		lazycell-1.2.0 \
-		libc-0.2.44 \
+		libc-0.2.49 \
 		lock_api-0.1.5 \
 		log-0.4.6 \
 		memchr-2.1.1 \
@@ -63,7 +64,6 @@ CARGO_CRATES=	aho-corasick-0.6.9 \
 		num_cpus-1.8.0 \
 		owning_ref-0.4.0 \
 		parking_lot-0.6.4 \
-		parking_lot_core-0.2.14 \
 		parking_lot_core-0.3.1 \
 		proc-macro2-0.4.24 \
 		quick-error-1.2.2 \
@@ -84,15 +84,15 @@ CARGO_CRATES=	aho-corasick-0.6.9 \
 		regex-syntax-0.6.3 \
 		remove_dir_all-0.5.1 \
 		rls-span-0.4.0 \
-		rustc-ap-arena-297.0.0 \
-		rustc-ap-graphviz-297.0.0 \
-		rustc-ap-rustc_cratesio_shim-297.0.0 \
-		rustc-ap-rustc_data_structures-297.0.0 \
-		rustc-ap-rustc_errors-297.0.0 \
-		rustc-ap-rustc_target-297.0.0 \
-		rustc-ap-serialize-297.0.0 \
-		rustc-ap-syntax-297.0.0 \
-		rustc-ap-syntax_pos-297.0.0 \
+		rustc-ap-arena-306.0.0 \
+		rustc-ap-graphviz-306.0.0 \
+		rustc-ap-rustc_cratesio_shim-306.0.0 \
+		rustc-ap-rustc_data_structures-306.0.0 \
+		rustc-ap-rustc_errors-306.0.0 \
+		rustc-ap-rustc_target-306.0.0 \
+		rustc-ap-serialize-306.0.0 \
+		rustc-ap-syntax-306.0.0 \
+		rustc-ap-syntax_pos-306.0.0 \
 		rustc-hash-1.0.1 \
 		rustc-rayon-0.1.1 \
 		rustc-rayon-core-0.1.1 \

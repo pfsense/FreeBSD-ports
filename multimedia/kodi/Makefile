@@ -2,7 +2,7 @@
 
 PORTNAME=	kodi
 DISTVERSION=	17.6
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	multimedia java
 
 MAINTAINER=	mickael.maillot@gmail.com
@@ -187,7 +187,7 @@ CONFIGURE_ARGS+=	--disable-debug --enable-gl --disable-gles \
 			--disable-libbluetooth --disable-libcap \
 			--disable-gtest --disable-libav-compat
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if ${ARCH} != armv6 && ${ARCH} != armv7
 BUILD_DEPENDS+=	gtk-update-icon-cache:x11-toolkits/gtk20
@@ -202,7 +202,7 @@ PLIST_SUB+=	ARM="@comment "
 PLIST_SUB+=	X86=""
 .else
 # armv6 || armv7 (rpi1 and rpi2 only)
-EXTRA_PATCHES=	${FILESDIR}/extra-armv6_hal
+EXTRA_PATCHES+=	${FILESDIR}/extra-armv6_hal
 CONFIGURE_ARGS+=	--enable-player=omxplayer
 LIB_DEPENDS+=	libEGL.so:misc/raspberrypi-userland \
 		libhal.so:sysutils/hal \
@@ -233,4 +233,4 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/kodi/kodi-xrandr
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

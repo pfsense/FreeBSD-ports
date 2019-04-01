@@ -2,7 +2,7 @@
 
 PORTNAME=	lean
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.4.1
+DISTVERSION=	3.4.2
 CATEGORIES=	math
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,13 +14,13 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-USES=		cmake
+USES=		cmake compiler:c++11-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	leanprover
 USE_LDCONFIG=	yes
 
 WRKSRC_SUBDIR=	src
 
-PORTSCOUT=	limit:.*[0-9]*\.[0-9]*$$
+PORTSCOUT=	limit:.*[0-9]+\.[0-9]+$$
 
 .include <bsd.port.mk>

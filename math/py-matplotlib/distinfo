@@ -1,5 +1,5 @@
-TIMESTAMP = 1520663268
-SHA256 (matplotlib-matplotlib-v2.1.2_GH0.tar.gz) = 613d79282a0a8ba88cfc52dbcf1b08ab070dae395c3d313d141ccc3f87e3c9fa
-SIZE (matplotlib-matplotlib-v2.1.2_GH0.tar.gz) = 35181192
-SHA256 (5b7a21e53e11a7064b2171c0d91afda67f30c4e7.patch) = f332f13cd365cdc3903bed12bdb483366e0212d9481f0949474334db96cc3257
-SIZE (5b7a21e53e11a7064b2171c0d91afda67f30c4e7.patch) = 1736
+TIMESTAMP = 1553231915
+SHA256 (matplotlib-2.2.4.tar.gz) = 029620799e581802961ac1dcff5cb5d3ee2f602e0db9c0f202a90495b37d2126
+SIZE (matplotlib-2.2.4.tar.gz) = 36974286
+SHA256 (jquery-ui-1.12.1.zip) = f8233674366ab36b2c34c577ec77a3d70cac75d2e387d8587f3836345c0f624d
+SIZE (jquery-ui-1.12.1.zip) = 439463

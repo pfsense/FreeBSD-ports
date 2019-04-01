@@ -2,7 +2,7 @@
 
 PORTNAME=	yesod-core
 PORTVERSION=	1.6.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -10,6 +10,9 @@ COMMENT=	Creation of type-safe, RESTful web applications
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=		Haskell libraries are getting pushed out of the ports tree. If you are using this port for development, consider switching to cabal sandboxes (old way), cabal new-build (new way), or use devel/stack. If you believe this port shouldn't be removed, contact haskell@FreeBSD.org
+EXPIRATION_DATE=	2019-04-14
 
 USE_CABAL=	aeson>=0.5 auto-update blaze-builder>=0.2.1.4 blaze-html>=0.5 \
 		blaze-markup>=0.5.1 case-insensitive>=0.2 cereal>=0.3 \

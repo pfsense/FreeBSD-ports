@@ -3,12 +3,11 @@
 
 PORTNAME=	yafaray
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.0-11
-DISTVERSIONSUFFIX=	-g1c0b43a
-PORTREVISION=	2
+DISTVERSION=	3.3.0-15
+DISTVERSIONSUFFIX=	-g67f6586
 CATEGORIES=	graphics
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Montecarlo raytracing engine
 
 LICENSE=	GPLv2 LGPL21
@@ -17,7 +16,7 @@ LICENSE_FILE_GPLv2=	${WRKSRC}/LICENSES
 LICENSE_FILE_LGPL21=	${WRKSRC}/LICENSES
 
 ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_EASON=	assembly is only for amd64 and i386, but it breaks on i386: https://github.com/YafaRay/Core/issues/111
+ONLY_FOR_ARCHS_REASON=	assembly is only for amd64 and i386, but it breaks on i386: https://github.com/YafaRay/Core/issues/111
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfreetype.so:print/freetype2 \
@@ -41,16 +40,9 @@ OPTIONS_DEFINE=	DOCS QT
 OPTIONS_SUB=	yes
 
 QT_DESC=	Enable Qt Gui build
-QT_USES=	qt:4
+QT_USES=	qt:5
 QT_CMAKE_BOOL=	WITH_QT
-QT_USE=		QT=corelib,gui,moc_build,qmake_build,rcc_build,uic_build
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MQT}
-DEPRECATED=		Qt4 has been EOL since december 2015
-EXPIRATION_DATE=	2019-03-15
-.endif
+QT_USE=		QT=core,gui,widgets,qmake_build,buildtools_build,qmake_build
 
 post-install:
 	@${RM} ${STAGEDIR}${DOCSDIR}/LICENSES

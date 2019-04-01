@@ -5,7 +5,14 @@
 # Maintained by: haskell@FreeBSD.org
 #
 
-ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386
+ONLY_FOR_ARCHS=	amd64 i386
+
+GHC_VERSION_MAJOR=	${GHC_VERSION:S/./ /g:[1]}
+GHC_VERSION_MINOR=	${GHC_VERSION:S/./ /g:[2]}
+
+.if ${GHC_VERSION_MAJOR} >= 8 && ${GHC_VERSION_MINOR} >= 6
+ONLY_FOR_ARCHS+=	aarch64 armv6 armv7 powerpc64
+.endif
 
 DATADIR=	${PREFIX}/share/ghc-${GHC_VERSION}
 EXAMPLESDIR=	${PREFIX}/share/examples/ghc-${GHC_VERSION}
@@ -81,17 +88,17 @@ GHC_ARCH=		${ARCH:S/amd64/x86_64/:C/armv.*/arm/}
 .include <bsd.port.options.mk>
 
 .if empty(PORT_OPTIONS:MBOOT)
-.  if ${ARCH} == armv6 || ${ARCH} == armv7
-BOOT_GHC_VERSION=	8.4.2
-.  else
+.  if ${ARCH} == amd64 || ${ARCH} == i386
 BOOT_GHC_VERSION=	8.4.3
+.  else
+BOOT_GHC_VERSION=	8.6.3
 .  endif
 
 # When GHC being compiled and GHC used for bootstrapping support different
 # LLVM versions, we have to pull in both. Luckily, this is relatively rare.
 .  if ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7
 # LLVM version that bootstrap compiler uses
-BOOT_LLVM_VERSION=	50
+BOOT_LLVM_VERSION=	60
 
 .    if ${BOOT_LLVM_VERSION} != ${LLVM_VERSION}
 BUILD_DEPENDS+=		llc${BOOT_LLVM_VERSION}:devel/llvm${BOOT_LLVM_VERSION}
@@ -105,6 +112,7 @@ DISTFILES+=		ghc-${BOOT_GHC_VERSION}-boot-${ARCH}-freebsd${EXTRACT_SUFX}:boot
 .if ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7
 # CONFIGURE_TARGET must to be the same as the llvm triple
 CONFIGURE_TARGET=	${ARCH}-unknown-freebsd${"${ARCH:Maarch64}" != "":?:-gnueabihf}
+CONFIGURE_ENV+=		STRIP=${LOCALBASE}/bin/strip
 EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-aclocal.m4
 BUILD_DEPENDS+=		ld.gold:devel/binutils \
 			llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
@@ -118,6 +126,15 @@ IGNORE=	lang/ghc on ARM requires at least __FreeBSD_version 1200064
 
 .  ifdef QEMU_EMULATING
 IGNORE=	qemu-user-static isn't able to build lang/ghc, but it builds fine on a real hardware
+.  endif
+.endif
+
+.if ${ARCH} == powerpc64
+USE_GCC=	yes
+CONFIGURE_ENV+=	STRIP=${LOCALBASE}/bin/strip
+
+.  if ${OSVERSION} < 1200086
+IGNORE=	lang/ghc on powerpc64 requires at least __FreeBSD_version 1200086
 .  endif
 .endif
 
@@ -163,9 +180,9 @@ MAKE_ENV+=	PATH=${SLAVES_PREFIX}/bin:${PATH}
 CONFIGURE_ENV+=	PATH=${SLAVES_PREFIX}/bin:${PATH}
 
 post-extract:
-# don't use the "wrap" trick on arches that use post-ino64 bootstrap binaries (arm*)
+# Use the "wrap" trick on arches that have to use pre-ino64 bootstrap binaries
 .if empty(PORT_OPTIONS:MBOOT) && ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200031 && \
-    ${ARCH} != aarch64 && ${ARCH} != armv6 && ${ARCH} != armv7
+    (${ARCH} == amd64 || ${ARCH} == i386)
 	@${REINPLACE_CMD} -e 's|@SettingsCCompilerLinkFlags@|& -Wl,--wrap=readdir_r,--wrap=stat,--wrap=lstat,--wrap=fstat,--wrap=mknod|' ${BOOT_DIR}/settings.in
 .endif
 
@@ -221,7 +238,7 @@ pre-configure: apply-slist
 	@${MKDIR} ${TMPDIR}
 .if empty(PORT_OPTIONS:MBOOT) && ${OPSYS} == FreeBSD && \
     ${OSVERSION} >= 1200031 && \
-    ${ARCH} != aarch64 && ${ARCH} != armv6 && ${ARCH} != armv7
+    (${ARCH} == amd64 || ${ARCH} == i386)
 	${CC} ${CFLAGS} -c -o ${BOOT_DIR}/wrap.o ${PATCHDIR}/wrap.c
 	for x in ${BOOT_DIR}/rts/dist/build/libCffi*.a; do \
 	    ${AR} q $$x ${BOOT_DIR}/wrap.o; ${RANLIB} $$x; \
@@ -301,6 +318,12 @@ create-bootstrap:
 # Much like create-bootstrap, just different naming and output format
 .PHONY: create-stack-bindist
 create-stack-bindist:
+	${REINPLACE_CMD} -e '/^mandir/d' \
+			-e '/^infodir/d' \
+			-e '/^docdir/d' \
+			-e '/^htmldir/d' \
+		${WRKSRC}/mk/build.mk
+
 	cd ${WRKSRC} \
 		&& gmake binary-dist TAR_COMP=xz \
 		&& ${MV} ${WRKSRC}/ghc-${GHC_VERSION}-${GHC_ARCH}-portbld-freebsd.tar.xz /tmp/

@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	librenms
-PORTVERSION=	1.45
-PORTREVISION=	2
+PORTVERSION=	1.49
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
 DISTFILES=	${PORTNAME}-vendor-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}${EXTRACT_SUFX}:vendor
 
-MAINTAINER=	bofh@FreeBSD.org
+MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Autodiscovering PHP/MySQL/SNMP based network monitoring
 
 LICENSE=	GPLv3
@@ -19,7 +18,7 @@ USES=		python${PY_MYSQL} shebangfix
 # RELEASE_TIMESTAMP is used for a patch inside the vendor code
 # it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
 # It sits here so you remember to update it with each release
-RELEASE_TIMESTAMP=	1539772408
+RELEASE_TIMESTAMP=	1551670633
 
 # perhaps we also need python-memcache python-mysqldb
 RUN_DEPENDS+=	rrdtool:databases/rrdtool \
@@ -30,7 +29,7 @@ RUN_DEPENDS+=	rrdtool:databases/rrdtool \
 		bash:shells/bash \
 		sudo:security/sudo
 
-USE_PHP=	ctype curl filter gd hash json ldap mbstring mysqli openssl pdo pdo_mysql posix session simplexml snmp tokenizer xml zip
+USE_PHP=	ctype curl filter gd hash json ldap mbstring mysqli openssl pdo pdo_mysql phar posix session simplexml snmp tokenizer xml zip
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	librenms
@@ -72,8 +71,7 @@ SHEBANG_FILES=	scripts/auth_test.php scripts/deploy-docs.sh scripts/github-remov
 		scripts/Migration/XML_Conversion/convert.sh \
 		scripts/Migration/XML_Conversion/destwork.sh \
 		scripts/Migration/XML_Conversion/mkdir.sh \
-		scripts/removespikes.php scripts/agent-local/nfs-stats.sh \
-		scripts/removespikes.pl scripts/watchmaillog/watchmaillog.pl \
+		scripts/removespikes.pl scripts/removespikes.php scripts/watchmaillog/watchmaillog.pl \
 		poller.php poller-wrapper.py \
 		../${PORTNAME}-vendor-${PORTVERSION}/ezyang/htmlpurifier/maintenance/generate-includes.php \
 		../${PORTNAME}-vendor-${PORTVERSION}/ezyang/htmlpurifier/maintenance/flush-definition-cache.php \
@@ -99,7 +97,7 @@ SUB_LIST+=	PHP="${PHPBASE}/bin/php" PYTHON=${PYTHON_CMD}
 ROOT_FILES=	.env.example addhost.php adduser.php alerts.php artisan billing-calculate.php \
 		build-base.php build.sql check-services.php composer.json \
 		composer.lock config.php.default config_to_json.php cronic daily.php daily.sh \
-		delhost.php discovery-wrapper.py discovery.php dist-pollers.php irc.php \
+		delhost.php discovery-wrapper.py discovery.php dist-pollers.php irc.php lnms \
 		librenms-service.py mkdocs.yml pbin.sh phpunit.xml ping.php poll-billing.php poller.php poller-service.py \
 		poller-wrapper.py readmegen.yml renamehost.php services-wrapper.py snmp-scan.py \
 		snmptrap.php syslog.php validate.php
@@ -109,13 +107,17 @@ ROOT_DIRS=	LibreNMS app bootstrap config contrib database doc html includes lice
 # these are directories which require a generic @DIR entry in pkg-plist
 OTHER_DIRS=	storage/app/public \
 		storage/debugbar \
+		storage/framework/cache/data \
 		storage/framework/testing \
 		storage/logs \
+		tests/Browser/console \
+		tests/Browser/screenshots \
 		vendor/amenadiel/jpgraph/tests/_output \
 		vendor/amenadiel/jpgraph/tests/_support/_generated \
 		vendor/laravel/laravel/bootstrap/cache \
 		vendor/laravel/laravel/storage/app/public \
 		vendor/laravel/laravel/storage/framework/cache \
+		vendor/laravel/laravel/storage/framework/cache/data \
 		vendor/laravel/laravel/storage/framework/sessions \
 		vendor/laravel/laravel/storage/framework/testing \
 		vendor/laravel/laravel/storage/framework/views \
@@ -128,16 +130,15 @@ NO_ARCH=	yes
 
 APACHEMOD_USES=		php:mod
 APACHEMOD_USES_OFF=	php:web
-APACHEMOD_USE=		USES=apache:run,22+
 
 post-patch:
-	${REINPLACE_CMD}    's|%%PORTNAME%%|${PORTNAME}|g'                   ${WRKSRC}/config.php.default
-	${REINPLACE_CMD}    's|%%WWW_USER%%|${WWW_USER}|g'                   ${WRKSRC}/config.php.default
-	${REINPLACE_CMD}    's|%%LOCALBASE%%|${LOCALBASE}|g'                 ${WRKSRC}/poller-wrapper.py ${WRKSRC}/poller.php
-	${REINPLACE_CMD}    's|%%PORTVERSION%%|${PORTVERSION}|g'             ${WRKSRC}/includes/common.php
-	${REINPLACE_CMD}    's|%%RELEASE_TIMESTAMP%%|${RELEASE_TIMESTAMP}|g' ${WRKSRC}/includes/common.php
-	${REINPLACE_CMD} -e 's|/opt/librenms|${WWWDIR}|'                     ${WRKSRC}/html/install.php
-	${RM} ${WRKSRC}/LibreNMS/Validations/Updates.php
+	@${REINPLACE_CMD}    's|%%PORTNAME%%|${PORTNAME}|g'                   ${WRKSRC}/config.php.default
+	@${REINPLACE_CMD}    's|%%WWW_USER%%|${WWW_USER}|g'                   ${WRKSRC}/config.php.default
+	@${REINPLACE_CMD}    's|%%LOCALBASE%%|${LOCALBASE}|g'                 ${WRKSRC}/poller-wrapper.py ${WRKSRC}/poller.php
+	@${REINPLACE_CMD}    's|%%PORTVERSION%%|${PORTVERSION}|g'             ${WRKSRC}/includes/common.php
+	@${REINPLACE_CMD}    's|%%RELEASE_TIMESTAMP%%|${RELEASE_TIMESTAMP}|g' ${WRKSRC}/includes/common.php
+	@${REINPLACE_CMD} -e 's|/opt/librenms|${WWWDIR}|'                     ${WRKSRC}/html/install.php
+	@${RM} ${WRKSRC}/LibreNMS/Validations/Updates.php
 
 do-install:
 	${MKDIR} ${STAGEDIR}/${WWWDIR}
@@ -152,6 +153,8 @@ do-install:
 	(cd ${WRKDIR}/${PORTNAME}-vendor-${PORTVERSION} && ${COPYTREE_SHARE} . ${STAGEDIR}/${WWWDIR}/vendor)
 # Make daily.sh executable
 	${CHMOD} 0755 ${STAGEDIR}/${WWWDIR}/daily.sh
+# lnms does not fall into any other +x category
+	${CHMOD} 0755 ${STAGEDIR}/${WWWDIR}/lnms
 # Files in scripts dir should be executable
 	${FIND} ${STAGEDIR}/${WWWDIR}/scripts -type f -exec ${CHMOD} +x {} \;
 # Ensure PHP and Python scripts are executable

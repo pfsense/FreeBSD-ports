@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libu2f-host
-PORTVERSION=	1.1.6
-PORTREVISION=	1
+PORTVERSION=	1.1.9
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	security devel
 
@@ -19,13 +18,17 @@ LIB_DEPENDS=	libhidapi.so:comms/hidapi \
 RUN_DEPENDS=	${LOCALBASE}/etc/devd/u2f.conf:security/u2f-devd
 
 USES=	autoreconf pkgconfig gmake libtool
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Yubico
 
-CONFIGURE_ARGS=	--disable-gtk-doc
-INSTALL_TARGET=	install-strip
+OPTIONS_DEFINE=	DOCS
+OPTIONS_SUB=	yes
+
+DOCS_BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
+DOCS_CONFIGURE_ENABLE=	gtk-doc
 
 .include <bsd.port.mk>

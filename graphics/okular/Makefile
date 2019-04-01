@@ -2,7 +2,7 @@
 
 PORTNAME=	okular
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,6 +11,8 @@ COMMENT=	KDE universal document viewer
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	markdown:textproc/discount
+RUN_DEPENDS=	markdown:textproc/discount
 LIB_DEPENDS=	libchm.so:misc/chmlib \
 		libdjvulibre.so:graphics/djvulibre \
 		libepub.so:textproc/ebook-tools \
@@ -18,7 +20,7 @@ LIB_DEPENDS=	libchm.so:misc/chmlib \
 		libqmobipocket.so:graphics/kdegraphics-mobipocket \
 		libpoppler.so:graphics/poppler \
 		libpoppler-qt5.so:graphics/poppler-qt5 \
-		libqca-qt5.so:devel/qca@qt5 \
+		libqca-qt5.so:devel/qca \
 		libspectre.so:print/libspectre \
 		libtiff.so:graphics/tiff \
 		libzip.so:archivers/libzip
@@ -35,6 +37,11 @@ USE_QT=		core dbus declarative gui network phonon4 printsupport speech \
 		svg widgets xml \
 		buildtools_build qmake_build
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS PURPOSE
+OPTIONS_DEFAULT=	PURPOSE
+
+PURPOSE_DESC=	Enable 'Share' menu
+PURPOSE_USE=	KDE=purpose
+PURPOSE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_KDEExperimentalPurpose
 
 .include <bsd.port.mk>

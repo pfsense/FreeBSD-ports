@@ -32,7 +32,7 @@ include/gnutls/x509.h
 %%DANE%%lib/libgnutls-dane.so.0.4.1
 lib/libgnutls.so
 lib/libgnutls.so.30
-lib/libgnutls.so.30.23.0
+lib/libgnutls.so.30.23.1
 lib/libgnutlsxx.so
 lib/libgnutlsxx.so.28
 lib/libgnutlsxx.so.28.1.0
@@ -131,6 +131,8 @@ man/man3/gnutls_certificate_set_ocsp_status_request_function2.3.gz
 man/man3/gnutls_certificate_set_ocsp_status_request_mem.3.gz
 man/man3/gnutls_certificate_set_params_function.3.gz
 man/man3/gnutls_certificate_set_pin_function.3.gz
+man/man3/gnutls_certificate_set_rawpk_key_file.3.gz
+man/man3/gnutls_certificate_set_rawpk_key_mem.3.gz
 man/man3/gnutls_certificate_set_retrieve_function.3.gz
 man/man3/gnutls_certificate_set_retrieve_function2.3.gz
 man/man3/gnutls_certificate_set_retrieve_function3.3.gz
@@ -382,6 +384,8 @@ man/man3/gnutls_pcert_export_openpgp.3.gz
 man/man3/gnutls_pcert_export_x509.3.gz
 man/man3/gnutls_pcert_import_openpgp.3.gz
 man/man3/gnutls_pcert_import_openpgp_raw.3.gz
+man/man3/gnutls_pcert_import_rawpk.3.gz
+man/man3/gnutls_pcert_import_rawpk_raw.3.gz
 man/man3/gnutls_pcert_import_x509.3.gz
 man/man3/gnutls_pcert_import_x509_list.3.gz
 man/man3/gnutls_pcert_import_x509_raw.3.gz
@@ -1169,15 +1173,6 @@ man/man3/gnutls_x509_trust_list_remove_trust_mem.3.gz
 man/man3/gnutls_x509_trust_list_verify_crt.3.gz
 man/man3/gnutls_x509_trust_list_verify_crt2.3.gz
 man/man3/gnutls_x509_trust_list_verify_named_crt.3.gz
-%%PORTDOCS%%%%DOCSDIR%%/gnutls-client-server-use-case.png
-%%PORTDOCS%%%%DOCSDIR%%/gnutls-handshake-sequence.png
-%%PORTDOCS%%%%DOCSDIR%%/gnutls-handshake-state.png
-%%PORTDOCS%%%%DOCSDIR%%/gnutls-internals.png
-%%PORTDOCS%%%%DOCSDIR%%/gnutls-layers.png
-%%PORTDOCS%%%%DOCSDIR%%/gnutls-logo.png
-%%PORTDOCS%%%%DOCSDIR%%/gnutls-modauth.png
-%%PORTDOCS%%%%DOCSDIR%%/gnutls-x509.png
-%%PORTDOCS%%%%DOCSDIR%%/pkcs11-vision.png
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-alert.c
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-cert-select-pkcs11.c
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-cert-select.c

@@ -3,7 +3,7 @@
 
 PORTNAME=	qbrew
 PORTVERSION=	0.4.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	misc
 MASTER_SITES=	http://www.usermode.org/code/
 
@@ -13,7 +13,7 @@ COMMENT=	Homebrewer's recipe calculator
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		qmake qt:5
+USES=		compiler:c++11-lang gl qmake qt:5
 USE_GL=		gl
 USE_QT=		buildtools_build qmake_build \
 		core gui printsupport widgets xml

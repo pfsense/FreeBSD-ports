@@ -1,11 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	cadabra2
-DISTVERSION=	2.2.4
+DISTVERSION=	2.2.5-5
+DISTVERSIONSUFFIX=	-gf10cac6b9a
+PORTREVISION=	1
 CATEGORIES=	math
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	5d52108df5b05eeba2ffbd7220776887297c2846.patch:-p1 # https://github.com/kpeeters/cadabra2/pull/82
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Computer algebra system for solving field theory problems
@@ -32,7 +31,7 @@ USE_TEX=	base texmf texhash
 USE_LDCONFIG=	yes
 OPTIONS_SUB=	yes
 
-CMAKE_ON=	BUILD_SHARED_LIBS USE_PYTHON_3 # OFF doesn't work, still links to python3: https://github.com/kpeeters/cadabra2/issues/76
+CMAKE_ON=	ENABLE_SYSTEM_JSONCPP BUILD_SHARED_LIBS USE_PYTHON_3 # OFF doesn't work, still links to python3: https://github.com/kpeeters/cadabra2/issues/76
 CMAKE_OFF=	ENABLE_MATHEMATICA
 CXXFLAGS+=	-I${LOCALBASE}/include/jsoncpp
 LDFLAGS+=	-ljsoncpp
@@ -46,6 +45,6 @@ GUI_CMAKE_BOOL=	ENABLE_FRONTEND
 GUI_INSTALLS_ICONS=	yes
 
 post-extract: # unbundle
-	@${RM} -r ${WRKSRC}/client_server/jsoncpp ${WRKSRC}/client_server/websocketpp
+	@${RM} -r ${WRKSRC}/libs/jsoncpp ${WRKSRC}/libs/websocketpp
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 
 PORTNAME=	packr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.13.7
+DISTVERSION=	2.0.8
 CATEGORIES=	devel
 
 MAINTAINER=	dg@syrec.org
@@ -13,26 +13,41 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		go
 
+GO_PKGNAME=	github.com/gobuffalo/packr
+GO_TARGET=	./packr \
+		./v2/packr2
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	gobuffalo
-GH_SUBDIR=	src/github.com/gobuffalo/packr
-GH_TUPLE=	golang:net:2f5d238:net/src/golang.org/x/net \
-		golang:sync:1d60e46:sync/src/golang.org/x/sync \
-		pkg:errors:v0.8.0:errors/src/github.com/pkg/errors \
-		spf13:cobra:v0.0.3:cobra/src/github.com/spf13/cobra \
-		spf13:pflag:v1.0.2:pflag/src/github.com/spf13/pflag
+GH_TUPLE=	\
+		gobuffalo:envy:v1.6.15:gobuffalo_envy/vendor/github.com/gobuffalo/envy \
+		gobuffalo:genny:e16e52a:gobuffalo_genny/vendor/github.com/gobuffalo/genny \
+		gobuffalo:gogen:8f38393:gobuffalo_gogen/vendor/github.com/gobuffalo/gogen \
+		gobuffalo:logger:86e12af:gobuffalo_logger/vendor/github.com/gobuffalo/logger \
+		gobuffalo:mapi:v1.0.1:gobuffalo_mapi/vendor/github.com/gobuffalo/mapi \
+		gobuffalo:packd:a385830:gobuffalo_packd/vendor/github.com/gobuffalo/packd \
+		gobuffalo:syncx:33c2958:gobuffalo_syncx/vendor/github.com/gobuffalo/syncx \
+		golang:crypto:c2843e0:golang_crypto/vendor/golang.org/x/crypto \
+		golang:sync:e225da7:golang_sync/vendor/golang.org/x/sync \
+		golang:sys:d0b11bd:golang_sys/vendor/golang.org/x/sys \
+		golang:tools:bb1270c:golang_tools/vendor/golang.org/x/tools \
+		inconshreveable:mousetrap:v1.0.0:inconshreveable_mousetrap/vendor/github.com/inconshreveable/mousetrap \
+		joho:godotenv:v1.3.0:joho_godotenv/vendor/github.com/joho/godotenv \
+		karrick:godirwalk:v1.8.0:karrick_godirwalk/vendor/github.com/karrick/godirwalk \
+		markbates:oncer:bf2de49:markbates_oncer/vendor/github.com/markbates/oncer \
+		markbates:safe:v1.0.1:markbates_safe/vendor/github.com/markbates/safe \
+		pkg:errors:v0.8.1:pkg_errors/vendor/github.com/pkg/errors \
+		rogpeppe:go-internal:v1.2.2:rogpeppe_go_internal/vendor/github.com/rogpeppe/go-internal \
+		sirupsen:logrus:v1.4.0:sirupsen_logrus/vendor/github.com/sirupsen/logrus \
+		spf13:cobra:v0.0.3:spf13_cobra/vendor/github.com/spf13/cobra \
+		spf13:pflag:v1.0.3:spf13_pflag/vendor/github.com/spf13/pflag
 
-PLIST_FILES=	bin/packr
+PLIST_FILES=	bin/packr \
+		bin/packr2
 
 PORTDOCS=	README.md
 
 OPTIONS_DEFINE=	DOCS
-
-do-build:
-	cd ${WRKSRC}/${GH_SUBDIR}/packr && ${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go build
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${GH_SUBDIR}/packr/packr ${STAGEDIR}${PREFIX}/bin
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

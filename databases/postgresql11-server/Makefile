@@ -2,7 +2,10 @@
 # $FreeBSD$
 
 PORTNAME?=	postgresql
-DISTVERSION?=	11.1
+DISTVERSION?=	11.2
+# PORTREVISION must be ?= otherwise, all other port get this PORTREVISION and
+# not their own.  Probably best to keep it at ?=0 when reset here too.
+PORTREVISION?=	1
 CATEGORIES?=	databases
 MASTER_SITES=	PGSQL/source/v${DISTVERSION}
 PKGNAMESUFFIX?= ${PORTVERSION:R}${COMPONENT}
@@ -26,7 +29,7 @@ OPTIONS_SUB=	yes
 PKGINSTALL?=	${PKGDIR}/pkg-install${COMPONENT}
 USES+=		tar:bzip2 cpe
 .if !defined(NO_BUILD)
-USES+=	gmake
+USES+=		gmake
 GNU_CONFIGURE=	yes
 .endif
 
@@ -87,6 +90,11 @@ DTRACE_DESC=	Build with DTrace probes
 TZDATA_DESC=	Use internal timezone database
 XML_DESC=	Build with XML data type
 
+.if ${DISTVERSION:C/([0-9]*).*/\1/} >= 11
+OPTIONS_DEFINE+=LLVM
+LLVM_DESC=	Build with support for JIT-compiling expressions
+.endif
+
 .if ${DISTVERSION:C/([0-9]*).*/\1/} < 10
 # See http://people.freebsd.org/~girgen/postgresql-icu/README.html for more info
 OPTIONS_DEFINE+=	ICU
@@ -100,27 +108,27 @@ USES+=		pkgconfig
 # See http://www.freebsd.org/cgi/query-pr.cgi?pr=ports/76999 for more info
 # (requires dump/restore if modified.)
 OPTIONS_DEFINE+=	INTDATE
-INTDATE_DESC=	Builds with 64-bit date/time type
+INTDATE_DESC=		Builds with 64-bit date/time type
 OPTIONS_DEFAULT+=	TZDATA INTDATE
 .endif
 
 .if !defined(SLAVE_ONLY)
 OPTIONS_DEFINE+=	NLS PAM GSSAPI OPTIMIZED_CFLAGS DEBUG DOCS
 . if ${DISTVERSION:R} == 9.2 || ${DISTVERSION:R} == 9.3
-  OPTIONS_RADIO= KRB5
-  OPTIONS_RADIO_KRB5= MIT_KRB5 HEIMDAL_KRB5
+  OPTIONS_RADIO=	KRB5
+  OPTIONS_RADIO_KRB5=	MIT_KRB5 HEIMDAL_KRB5
 . endif
 
-KRB5_DESC=	Build with kerberos provider support
-NLS_DESC=	Use internationalized messages
-PAM_DESC=	Build with PAM Support
-MIT_KRB5_DESC=	Build with MIT kerberos support
+KRB5_DESC=		Build with kerberos provider support
+NLS_DESC=		Use internationalized messages
+PAM_DESC=		Build with PAM Support
+MIT_KRB5_DESC=		Build with MIT kerberos support
 HEIMDAL_KRB5_DESC=	Builds with Heimdal kerberos
-GSSAPI_DESC=	Build with GSSAPI support
+GSSAPI_DESC=		Build with GSSAPI support
 OPTIMIZED_CFLAGS_DESC=	Builds with compiler optimizations (-O3)
 
 OPTIONS_DEFINE+=	SSL
-SSL_DESC=	Build with OpenSSL support
+SSL_DESC=		Build with OpenSSL support
 
 OPTIONS_DEFAULT+=	SSL
 .endif # !SLAVE_ONLY
@@ -128,44 +136,57 @@ OPTIONS_DEFAULT+=	SSL
 .if defined(CLIENT_ONLY)
 LIBEDIT_CONFIGURE_ON+=--with-libedit-preferred
 LIBEDIT_USES=		libedit
-LIBEDIT_USES_OFF=		readline
+LIBEDIT_USES_OFF=	readline
 .endif # CLIENT_ONLY
 
-SSL_USES=	ssl
-SSL_CONFIGURE_WITH=openssl
+SSL_USES=		ssl
+SSL_CONFIGURE_WITH=	openssl
 
 PAM_CONFIGURE_WITH=	pam
 
 XML_CONFIGURE_WITH=	libxml
 XML_LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
-TZDATA_CONFIGURE_OFF=--with-system-tzdata=/usr/share/zoneinfo
+TZDATA_CONFIGURE_OFF=	--with-system-tzdata=/usr/share/zoneinfo
 
-INTDATE_CONFIGURE_OFF=--disable-integer-datetimes
+INTDATE_CONFIGURE_OFF=	--disable-integer-datetimes
 
 NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=	gettext
+NLS_USES=		gettext
 
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=		OPENLDAP=yes
 
-OPTIMIZED_CFLAGS_CFLAGS=	-O3 -funroll-loops
+OPTIMIZED_CFLAGS_CFLAGS=-O3 -funroll-loops
 
 DEBUG_CONFIGURE_ENABLE=	debug
 
-PLIST_SUB+=	PG_USER=${PG_USER} \
-		PG_GROUP=${PG_GROUP}
-SUB_LIST+=	PG_GROUP=${PG_GROUP} \
-		PG_USER=${PG_USER} \
-		PG_UID=${PG_UID}
+PLIST_SUB+=		PG_USER=${PG_USER} \
+			PG_GROUP=${PG_GROUP}
+SUB_LIST+=		PG_GROUP=${PG_GROUP} \
+			PG_USER=${PG_USER} \
+			PG_UID=${PG_UID}
 
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == "i386"
-CFLAGS+=	-msse2
+USES+=		compiler:gcc-c++11-lib
 .endif
 
-.if !defined(SLAVE_ONLY)
+.if ${DISTVERSION:C/([0-9]*).*/\1/} >= 11
+.  if defined(SERVER_ONLY) && ${PORT_OPTIONS:MLLVM}
+LLVM_VERSION=		60
+BUILD_DEPENDS+=		llvm-config${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+RUN_DEPENDS+=		llvm-config${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+CONFIGURE_ENV+=		LLVM_CONFIG=${LOCALBASE}/bin/llvm-config60 CLANG=${LOCALBASE}/bin/clang60
+CONFIGURE_ARGS+=	--with-llvm
+PLIST_SUB+=		LLVM=""
+.  else
+PLIST_SUB+=		LLVM="@comment "
+CONFIGURE_ARGS+=	--without-llvm
+.  endif
+.endif
+
 .if ${DISTVERSION:C/([0-9]*).*/\1/} < 10
 .  if ( defined(SERVER_ONLY) && ${PORT_OPTIONS:MICU} ) || make(makesum)
 USES+=		autoreconf
@@ -174,8 +195,7 @@ PATCH_SITES+=	http://people.freebsd.org/~girgen/postgresql-icu/:icu
 PATCHFILES+=	${ICU_PATCHFILE}:icu
 LIB_DEPENDS+=	libicudata.so:devel/icu
 .  endif
-.endif # not version 10
-.endif # !SLAVE_ONLY
+.endif # server && version < 10
 
 .if !defined(SLAVE_ONLY)
 
@@ -184,7 +204,7 @@ PATCH_DIST_STRIP=-p1
 .  if ${PORT_OPTIONS:MDTRACE}
 CONFIGURE_ARGS+=--enable-dtrace
 LDFLAGS+=-lelf
-INSTALL_TARGET=install
+INSTALL_TARGET=	install
 .  endif
 
 .if ${PORT_OPTIONS:MGSSAPI}

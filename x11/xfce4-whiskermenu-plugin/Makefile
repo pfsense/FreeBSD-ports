@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-whiskermenu-plugin
-PORTVERSION=	2.3.0
-PORTREVISION=	1
+PORTVERSION=	2.3.2
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
@@ -14,9 +13,9 @@ COMMENT=	Alternate menu for the Xfce Desktop
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake compiler:c++14-lang gettext-tools localbase pkgconfig \
+USES=		cmake compiler:c++14-lang gettext-tools gnome localbase pkgconfig \
 		tar:bzip2 xfce:gtk3
-USE_GNOME=	gtk30 cairo
+USE_GNOME=	cairo gtk30
 USE_XFCE=	panel
 
 INSTALLS_ICONS=	yes

@@ -3,6 +3,7 @@
 
 PORTNAME=		oolite
 PORTVERSION=		1.88
+PORTREVISION=	1
 CATEGORIES=		games gnustep
 MASTER_SITES=		https://github.com/OoliteProject/oolite/releases/download/1.88/
 DISTNAME=		${PORTNAME}-source-${PORTVERSION}
@@ -23,7 +24,7 @@ LIB_DEPENDS=		libespeak.so:audio/espeak \
 			libpng.so:graphics/png \
 			libminizip.so:archivers/minizip
 
-USES=			gl gnustep openal:al perl5 python:build tar:bzip2
+USES=			gl gnustep openal:al perl5 python:2.7,build tar:bzip2
 USE_CXXSTD=		gnu++98
 USE_GL=			gl glu
 USE_SDL=		sdl

@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	cairo
-PORTVERSION=	1.15.12
+PORTVERSION=	1.16.0
 PORTEPOCH=	2
 CATEGORIES=	graphics
-#MASTER_SITES=	http://cairographics.org/releases/
-MASTER_SITES=	http://cairographics.org/snapshots/
+MASTER_SITES=	http://cairographics.org/releases/ \
+		http://cairographics.org/snapshots/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Vector graphics library with cross-device output support
@@ -22,16 +22,13 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 
 PORTSCOUT=	skipv:5c-1.1,5c-1.2,5c-1.5
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-html-dir=${DOCSDIR} \
-		--disable-directfb \
-		--enable-tee
 USES=		cpe gnome libtool pathfix pkgconfig tar:xz
 CPE_VENDOR=	cairographics
 USE_XORG=	pixman
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-html-dir=${DOCSDIR} \
 		--disable-directfb \
 		--disable-gallium \
@@ -47,6 +44,7 @@ OPTIONS_SUB=	yes
 X11_USE=	xorg=x11,xext,xrender
 X11_CONFIGURE_ENABLE=xlib
 
+OPENGL_USES=	gl
 OPENGL_USE=	gl=gl,egl xorg=xorgproto:both
 OPENGL_CONFIGURE_ENABLE=gl egl
 OPENGL_IMPLIES=	X11
@@ -57,8 +55,6 @@ GLIB_USE=	gnome=glib20
 GLIB_CONFIGURE_ENABLE=	gobject
 
 XCB_DESC=	Enable XCB (X C-language Binding) Support
-XCB_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/xcb-renderutil.pc:x11/xcb-util-renderutil
-XCB_RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/xcb-renderutil.pc:x11/xcb-util-renderutil
 XCB_USE=	xorg=xcb
 XCB_CONFIGURE_ENABLE=	xcb
 
@@ -67,7 +63,7 @@ MIPS_BUILD_DEPENDS=	${LOCALBASE}/include/atomic_ops.h:devel/libatomic_ops
 MIPS_USES=	localbase
 MIPS_CONFIGURE_ENV=	cairo_cv_atomic_primitives="libatomic-ops"
 
-PLIST_SUB+=	LIBVER=2.11512.0
+PLIST_SUB+=	LIBVER=2.11600.0
 
 post-patch:
 	@${REINPLACE_CMD} -e '/strings/s/ - / -a /' \

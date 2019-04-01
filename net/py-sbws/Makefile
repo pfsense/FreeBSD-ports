@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=		sbws
-PORTVERSION=		1.0.2
-PORTREVISION=		1
+PORTVERSION=		1.0.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=		net python
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
@@ -15,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 		# pysocks: indirect dependency via requests[socks]
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pysocks>=1.6.8:net/py-pysocks@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>=2.18.4:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}stem>=1.7.0:security/py-stem@${PY_FLAVOR} \
 		tor:security/tor
 
@@ -25,8 +25,10 @@ USE_PYTHON=	autoplist distutils concurrent flavors
 CPE_VENDOR=	torproject
 GH_ACCOUNT=	torproject
 
-SHEBANG_FILES=	tests/testnets/simple.common/03-network-in-ready-state.py \
-		tests/testnets/simple-ipv4/03-network-in-ready-state.py \
-		tests/testnets/simple-ipv6/03-network-in-ready-state.py
+SHEBANG_FILES=	setup.py \
+		scripts/tools/get-per-relay-budget.py \
+		scripts/tools/sbws-http-server.py \
+		scripts/tools/scale-v3bw-with-budget.py \
+		tests/integration/net/wait.py
 
 .include <bsd.port.mk>

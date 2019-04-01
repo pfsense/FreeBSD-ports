@@ -3,6 +3,7 @@
 PORTNAME=	opensubdiv
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3_3_3
+PORTREVISION=	1
 CATEGORIES?=	graphics
 
 MAINTAINER=	FreeBSD@Shaneware.biz
@@ -30,6 +31,7 @@ OPTIONS_SUB=		yes
 DOCS_CMAKE_BOOL_OFF=	NO_DOC
 DOCS_BUILD_DEPENDS=	rst2html.py:textproc/py-docutils \
 			doxygen>=1.8.4:devel/doxygen
+DOCS_USES=		python:build
 
 EXAMPLES_CMAKE_BOOL_OFF=	NO_EXAMPLES
 EXAMPLES_USE=		xorg=ice,sm,x11,xcursor,xext,xi,xinerama,xrandr,xxf86vm

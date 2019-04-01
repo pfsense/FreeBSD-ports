@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	concourse
-PORTVERSION=	4.2.1
+PORTVERSION=	4.2.3
 CATEGORIES=	net sysutils
 MASTER_SITES=	LOCAL/dumbbell/concourse/
 PKGNAMESUFFIX=	-fly
@@ -10,8 +10,6 @@ MAINTAINER=	dumbbell@FreeBSD.org
 COMMENT=	CLI for Concourse
 
 LICENSE=	APACHE20
-
-CONFLICTS_INSTALL=	fly
 
 GO_CMD=		${LOCALBASE}/bin/go
 GO_PKGNAME=	github.com/concourse/fly

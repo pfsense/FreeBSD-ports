@@ -3,7 +3,7 @@
 
 PORTNAME=	glib
 PORTVERSION=	2.56.3
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
@@ -72,7 +72,7 @@ CONFIGURE_ARGS+=	--with-libiconv=gnu
 .endif
 
 .if ${ARCH} == powerpc64
-EXTRA_PATCHES=	${FILESDIR}/extra-arch-powerpc64
+EXTRA_PATCHES+=	${FILESDIR}/extra-arch-powerpc64
 .endif
 
 # Let glib use asm code for implementing atomic ops on i386 and amd64.

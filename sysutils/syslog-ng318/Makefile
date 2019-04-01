@@ -3,8 +3,8 @@
 
 PORTNAME=	syslog-ng
 DISTVERSION=	3.18.1
+PORTREVISION=	2
 CATEGORIES=	sysutils
-DISTFILES=	syslog-ng-${DISTVERSION}.tar.gz
 MASTER_SITES=	https://github.com/balabit/syslog-ng/releases/download/syslog-ng-${DISTVERSION}/
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	318
@@ -13,10 +13,13 @@ PKGNAMESUFFIX=	318
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Powerful syslogd replacement
 
+BROKEN_sparc64=		fails to link: Internal error: Segmentation fault (program ld)
+
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libuuid.so:misc/e2fsprogs-libuuid
 
-BROKEN_sparc64=		fails to link: Internal error: Segmentation fault (program ld)
+USES=		autoreconf:build gmake libtool pathfix pkgconfig ssl \
+		gettext-runtime python:3.5+,build shebangfix
 
 CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
 		syslog-ng[0-9][0-9]-[0-9]* \
@@ -24,29 +27,26 @@ CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 MAKE_JOBS_UNSAFE=	yes
-OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON GEOIP GEOIP2 DOCS REDIS JAVA PYTHON MONGO CURL JAVA_MOD AMQP
-OPTIONS_DEFAULT=	JSON
+OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON GEOIP2 DOCS REDIS JAVA PYTHON MONGO CURL JAVA_MOD AMQP
+OPTIONS_DEFAULT=	CURL JSON
 TCP_WRAPPERS_DESC=	Build with TCP Wrappers
 SQL_DESC=		Build with database (libdbi) support
 SPOOF_DESC=		Build with spoof source support
 SMTP_DESC=		Build with SMTP support
 JSON_DESC=		Build with JSON-C support
-GEOIP_DESC=		Build with GeoIP support (deprecated)
 GEOIP2_DESC=		Build with geoip2 (MaxMindDB) support
 REDIS_DESC=		Build with Redis support
 JAVA_DESC=		Build with Java support (no modules)
 JAVA_MOD_DESC=		Build with Java modules (needs Maven / Internet access)
-PYTHON_DESC=		Build with Python 3.6 support
+PYTHON_DESC=		Build with Python ${PYTHON_VER} support
 CURL_DESC=		Build with Curl HTTP support
 AMQP_DESC=		Build with AMQP support
 
-USES=		autoreconf:build gmake libtool pathfix pkgconfig ssl \
-		gettext-runtime python:3.6,build shebangfix
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	syslog-ng
 SHEBANG_FILES=	lib/merge-grammar.py
-SHEBANG_LANG=	python3
 GNU_CONFIGURE=	yes
+# Note: Even if PYTHON is deselected, glib20 will install python.
 USE_GNOME=	glib20
 SUB_FILES=	pkg-message
 INSTALL_TARGET=	install-strip
@@ -54,7 +54,8 @@ INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc --localstatedir=/var/db \
 		--enable-dynamic-linking --enable-manpages \
 		--disable-linux-caps \
-		--datadir=${PREFIX}/share/
+		--datadir=${PREFIX}/share/ \
+		--with-python=${PYTHON_VER}
 
 CONFIGURE_ENV+=		OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 			OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"
@@ -63,9 +64,9 @@ TCP_WRAPPERS_CONFIGURE_ENABLE=	tcp-wrapper
 
 SPOOF_LIB_DEPENDS=		libnet.so:net/libnet
 SPOOF_CONFIGURE_ENABLE=		spoof-source
-SPOOF_CONFIGURE_ON=		--with-libnet=/usr/local/bin
-SPOOF_CONFIGURE_ENV=		LIBNET_CFLAGS="-I/usr/local/include" \
-				LIBNET_LIBS="-L/usr/local/lib -lnet"
+SPOOF_CONFIGURE_ON=		--with-libnet=${LOCALBASE}/bin
+SPOOF_CONFIGURE_ENV=		LIBNET_CFLAGS="-I${LOCALBASE}/include" \
+				LIBNET_LIBS="-L${LOCALBASE}/lib -lnet"
 
 IPV6_CONFIGURE_ENABLE=		ipv6
 
@@ -73,13 +74,8 @@ AMQP_CONFIGURE_ENABLE=		amqp
 AMQP_PLIST_FILES=		lib/syslog-ng/libafamqp.so
 AMQP_LIB_DEPENDS=		librabbitmq.so:net/rabbitmq-c
 
-GEOIP_CONFIGURE_ENABLE=		geoip
-GEOIP_LIB_DEPENDS=		libGeoIP.so:net/GeoIP
-GEOIP_CONFIGURE_ENV=		GEOIP_LIBS="-L${LOCALBASE}/lib -lGeoIP"
-GEOIP_PLIST_FILES=		lib/syslog-ng/libgeoip-plugin.so
-
 GEOIP2_CONFIGURE_ENABLE=	geoip2
-GEOIP2_LIB_DEPENDS=		libmaxminddb.so:net/libmaxminddb                                
+GEOIP2_LIB_DEPENDS=		libmaxminddb.so:net/libmaxminddb
 GEOIP2_LDFLAGS=			-L${LOCALBASE}/lib
 GEOIP2_PLIST_FILES=		lib/syslog-ng/libgeoip2-plugin.so
 
@@ -141,54 +137,53 @@ JAVA_MOD_PLIST_FILES=		lib/syslog-ng/java-modules/log4j-1.2.16.jar \
 				lib/syslog-ng/java-modules/http.jar \
 				lib/syslog-ng/java-modules/syslog-ng-common.jar
 
-PYTHON_CONFIGURE_ON=		--enable-python
-PYTHON_CONFIGURE_OFF=		--disable-python --with-python=3.6
-PYTHON_CONFIGURE_WITH=		python=3.6
+PYTHON_USES=			python:3.5+ 
+PYTHON_CONFIGURE_ON=		--enable-python 
+PYTHON_CONFIGURE_OFF=		--disable-python
 PYTHON_PLIST_FILES=		lib/syslog-ng/libmod-python.so \
-                   %%PYTHON_SITELIBDIR%%/syslogng-1.0-py%%PYTHON_VER%%.egg-info \
-                   %%PYTHON_SITELIBDIR%%/syslogng/__init__.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/__pycache__/__init__.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__init__.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/__init__.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/choicecompleter.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/choicecompleter.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/commandlinelexer.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/commandlinelexer.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/completer.py  \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/completer.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/completerlang.py  \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/completerlang.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/debuggercli.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/debuggercli.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/debuglang.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/debuglang.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/getoptlexer.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/getoptlexer.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/langcompleter.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/langcompleter.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/lexer.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/lexer.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/lexertoken.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/lexertoken.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/macrocompleter.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/macrocompleter.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/readline.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/readline.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/syslognginternals.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/syslognginternals.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/tablexer.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/tablexer.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/templatelang.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/templatelang.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/templatelexer.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/templatelexer.cpython-36.pyc \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/tflang.py \
-                   %%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/tflang.cpython-36.pyc
+		%%PYTHON_SITELIBDIR%%/syslogng-1.0-py%%PYTHON_VER%%.egg-info \
+		%%PYTHON_SITELIBDIR%%/syslogng/__init__.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/__pycache__/__init__.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__init__.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/__init__.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/choicecompleter.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/choicecompleter.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/commandlinelexer.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/commandlinelexer.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/completer.py  \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/completer.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/completerlang.py  \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/completerlang.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/debuggercli.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/debuggercli.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/debuglang.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/debuglang.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/getoptlexer.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/getoptlexer.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/langcompleter.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/langcompleter.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/lexer.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/lexer.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/lexertoken.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/lexertoken.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/macrocompleter.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/macrocompleter.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/readline.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/readline.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/syslognginternals.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/syslognginternals.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/tablexer.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/tablexer.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/templatelang.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/templatelang.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/templatelexer.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/templatelexer.cpython-${PYTHON_SUFFIX}.pyc \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/tflang.py \
+		%%PYTHON_SITELIBDIR%%/syslogng/debuggercli/__pycache__/tflang.cpython-${PYTHON_SUFFIX}.pyc
 
 CURL_CONFIGURE_OFF=		--with-libcurl=off
 CURL_LIB_DEPENDS=		libcurl.so:ftp/curl
 CURL_PLIST_FILES=		lib/syslog-ng/libhttp.so
-
 
 .include <bsd.port.pre.mk>
 
@@ -202,7 +197,7 @@ post-patch:
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
-	${INSTALL} -d -o ${SHAREOWN} -g ${SHAREGRP} ${STAGEDIR}${DOCSDIR}
+	${INSTALL} -d ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/AUTHORS ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/NEWS.md ${STAGEDIR}${DOCSDIR}

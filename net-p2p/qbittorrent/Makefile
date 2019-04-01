@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	qbittorrent
-DISTVERSION=	4.1.4
-PORTREVISION=	2
+DISTVERSION=	4.1.5
+PORTREVISION=	4
 CATEGORIES=	net-p2p ipv6
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -18,9 +18,8 @@ LIB_DEPENDS=	libtorrent-rasterbar.so:net-p2p/libtorrent-rasterbar \
 
 FLAVORS=	default nox
 FLAVOR?=	${FLAVORS:[1]}
-default_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 nox_PKGNAMESUFFIX=	-nox
-nox_PLIST=		${NONEXISTENT}
+nox_PLIST=		${MASTERDIR}/pkg-plist-nox
 
 USES=			compiler:c++11-lib pkgconfig qmake:no_env qt:5 tar:xz
 GNU_CONFIGURE=		yes
@@ -38,27 +37,27 @@ USE_GL=			gl
 SUFFIX=			-nox
 COMMENT+=		(web UI version)
 CONFIGURE_ARGS+=	--disable-gui
-PLIST_FILES=		bin/qbittorrent${SUFFIX} \
-			man/man1/qbittorrent${SUFFIX}.1.gz
+USERS=			qbittorrent
+GROUPS=			qbittorrent
+USE_RC_SUBR=		qbittorrent
+SUB_LIST=		USER=${USERS} GROUP=${GROUPS}
+PLIST_SUB=		USER=${USERS} GROUP=${GROUPS}
 .endif
 
-OPTIONS_DEFINE=		DBUS DEBUG DOCS
+OPTIONS_DEFINE=		DBUS DEBUG
 OPTIONS_DEFAULT=	DBUS
 
 DEBUG_CONFIGURE_ENABLE=	debug
 DBUS_CONFIGURE_ENABLE=	qt-dbus
 DBUS_USE=		qt=dbus
 
-PORTDOCS=		AUTHORS Changelog README.md
-
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/qbittorrent${SUFFIX}
 	${INSTALL_MAN} ${WRKSRC}/doc/qbittorrent${SUFFIX}.1 \
 		${STAGEDIR}${MAN1PREFIX}/man/man1/
 	@${RM} -r ${STAGEDIR}${PREFIX}/share/man
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+.if ${FLAVOR} == nox
+	@${MKDIR} ${STAGEDIR}/var/db/qbittorrent/conf ${STAGEDIR}/var/db/qbittorrent/Downloads
+.endif
 
 .include <bsd.port.mk>

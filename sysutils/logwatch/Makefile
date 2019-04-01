@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	logwatch
-PORTVERSION=	7.4.3
+PORTVERSION=	7.5.1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -11,8 +11,6 @@ COMMENT=	Log file analysis program
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-RUN_DEPENDS=	p5-MIME-Base64>=0:converters/p5-MIME-Base64
 
 USES=		perl5 shebangfix
 USE_PERL5=	run

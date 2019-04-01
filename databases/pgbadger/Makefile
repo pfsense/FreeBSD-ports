@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pgbadger
-PORTVERSION=	10.2
+PORTVERSION=	10.3
 DISTVERSIONPREFIX=v
 CATEGORIES=	databases
 
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	gsed:textproc/gsed
 USE_GITHUB=	yes
 GH_ACCOUNT=	darold
 
-USES=		perl5
+USES=		gmake perl5
 USE_PERL5=	configure
 
 NO_ARCH=	yes

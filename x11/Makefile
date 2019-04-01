@@ -10,7 +10,6 @@
     SUBDIR += alacritty
     SUBDIR += alltray
     SUBDIR += alttab
-    SUBDIR += altyo
     SUBDIR += aminal
     SUBDIR += antimicro
     SUBDIR += appres
@@ -22,6 +21,7 @@
     SUBDIR += bbdock
     SUBDIR += bbrun
     SUBDIR += beforelight
+    SUBDIR += bemenu
     SUBDIR += bgrot
     SUBDIR += bgs
     SUBDIR += bitmap
@@ -63,6 +63,7 @@
     SUBDIR += evilvte
     SUBDIR += fbdesk
     SUBDIR += fbpanel
+    SUBDIR += find-cursor
     SUBDIR += fireflies
     SUBDIR += florence
     SUBDIR += flruler
@@ -85,6 +86,7 @@
     SUBDIR += gnustep-app
     SUBDIR += gpctool
     SUBDIR += grabc
+    SUBDIR += grim
     SUBDIR += gromit
     SUBDIR += gskrab
     SUBDIR += gstreamer1-plugins-x
@@ -109,6 +111,7 @@
     SUBDIR += imwheel
     SUBDIR += innerspace
     SUBDIR += ipager
+    SUBDIR += j4-dmenu-desktop
     SUBDIR += kb2mb2
     SUBDIR += kde-baseapps
     SUBDIR += kde5
@@ -129,7 +132,6 @@
     SUBDIR += kf5-kwindowsystem
     SUBDIR += kf5-plasma-framework
     SUBDIR += konsole
-    SUBDIR += leechcraft
     SUBDIR += lemonbar
     SUBDIR += libICE
     SUBDIR += libSM
@@ -166,7 +168,6 @@
     SUBDIR += libfm
     SUBDIR += libfm-extra
     SUBDIR += libfm-qt
-    SUBDIR += libfmqt-l10n
     SUBDIR += libgnome
     SUBDIR += libgnome-reference
     SUBDIR += libgnomekbd
@@ -206,8 +207,6 @@
     SUBDIR += lxpanel
     SUBDIR += lxqt-about
     SUBDIR += lxqt-globalkeys
-    SUBDIR += lxqt-globalkeys-l10n
-    SUBDIR += lxqt-l10n
     SUBDIR += lxqt-runner
     SUBDIR += lxrandr
     SUBDIR += mate
@@ -246,7 +245,6 @@
     SUBDIR += p5-X11-XCB
     SUBDIR += p5-X11-Xlib
     SUBDIR += p5-XTerm-Conf
-    SUBDIR += pantheon-terminal
     SUBDIR += pcdm
     SUBDIR += perwindowlayoutd
     SUBDIR += pipeglade
@@ -263,24 +261,20 @@
     SUBDIR += polybar
     SUBDIR += printscreen
     SUBDIR += props
+    SUBDIR += py-caffeine-ng
     SUBDIR += py-pyvirtualdisplay
-    SUBDIR += py-qt4-opengl
     SUBDIR += py-qt5-opengl
     SUBDIR += py-xcffib
     SUBDIR += py-xdot
     SUBDIR += py-xdot06
-    SUBDIR += qimageblitz
-    SUBDIR += qt4-graphicssystems-opengl
-    SUBDIR += qt4-inputmethods
     SUBDIR += qt5-qev
     SUBDIR += qt5-x11extras
     SUBDIR += qterminal
-    SUBDIR += qterminal-l10n
-    SUBDIR += qxkb
     SUBDIR += radare-cutter
     SUBDIR += rendercheck
     SUBDIR += rgb
     SUBDIR += rofi
+    SUBDIR += rofi-pass
     SUBDIR += rox-wallpaper
     SUBDIR += roxbg
     SUBDIR += roxterm
@@ -303,6 +297,7 @@
     SUBDIR += slim
     SUBDIR += slock
     SUBDIR += slop
+    SUBDIR += slurp
     SUBDIR += smproxy
     SUBDIR += sselp
     SUBDIR += stalonetray
@@ -310,6 +305,8 @@
     SUBDIR += sterm
     SUBDIR += stjerm
     SUBDIR += swarp
+    SUBDIR += swayidle
+    SUBDIR += swaylock
     SUBDIR += sxhkd
     SUBDIR += sxpc
     SUBDIR += tabbed
@@ -331,6 +328,7 @@
     SUBDIR += wbar
     SUBDIR += wbarconf
     SUBDIR += wdm
+    SUBDIR += wl-clipboard
     SUBDIR += wmappl
     SUBDIR += wmblob
     SUBDIR += wmbutton
@@ -367,6 +365,7 @@
     SUBDIR += xcb-proto
     SUBDIR += xcb-util
     SUBDIR += xcb-util-cursor
+    SUBDIR += xcb-util-errors
     SUBDIR += xcb-util-image
     SUBDIR += xcb-util-keysyms
     SUBDIR += xcb-util-renderutil
@@ -413,7 +412,6 @@
     SUBDIR += xfindproxy
     SUBDIR += xfishtank
     SUBDIR += xforward
-    SUBDIR += xfree86_xkb_xml
     SUBDIR += xfwp
     SUBDIR += xgamma
     SUBDIR += xgc
@@ -488,6 +486,7 @@
     SUBDIR += xsetmode
     SUBDIR += xsetpointer
     SUBDIR += xsetroot
+    SUBDIR += xsettingsd
     SUBDIR += xskyroot
     SUBDIR += xsm
     SUBDIR += xsnow

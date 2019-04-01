@@ -3,7 +3,7 @@
 
 PORTNAME=	git-annex
 PORTVERSION=	6.20170520
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -82,7 +82,7 @@ WEBDAV_FLAG_CABAL=	DAV
 
 ASSISTANT_DESC=		'assistant' and 'watch' commands
 ASSISTANT_FLAG_ENABLE=	Assistant
-ASSISTANT_FLAG_CABAL=	dns mountpoints hinotify 
+ASSISTANT_FLAG_CABAL=	dns mountpoints hinotify
 
 WEBAPP_DESC=		Web application (requires assistant)
 WEBAPP_FLAG_DEPENDS=	ASSISTANT

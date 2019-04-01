@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stonesoup
-PORTVERSION=	0.22.1
-PORTREVISION=	1
+PORTVERSION=	0.23.1
 CATEGORIES=	games
 
 MAINTAINER=	lifanov@FreeBSD.org
@@ -15,8 +14,10 @@ LICENSE_FILE=	${WRKSRC}/../../LICENSE
 NOT_FOR_ARCHS=		armv6
 NOT_FOR_ARCHS_REASON=	missing platform \#define or unsupported compiler
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
+
 USES=		bison compiler:c++11-lib gmake lua:51 perl5 pkgconfig \
-		shebangfix sqlite tar:xz
+		python:build shebangfix sqlite tar:xz
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	crawl
@@ -24,7 +25,9 @@ GH_PROJECT=	crawl
 
 USE_PERL5=	build
 SHEBANG_FILES=	util/gen-mi-enum \
-		util/good-depfile
+		util/good-depfile \
+		util/species-gen.py \
+		util/txc
 
 SAVEDIR=	\~/.stonesoup
 WRKSRC_SUBDIR=	crawl-ref/source
@@ -34,13 +37,17 @@ PLIST_SUB=	SAVEDIR="${SAVEDIR}"
 
 MAKE_ARGS=	prefix=${PREFIX} \
 		DATADIR=${DATADIR} \
-		SAVEDIR=${SAVEDIR} \
 		DESTDIR=${STAGEDIR} \
+		FORCE_CC=${CC} \
+		FORCE_CXX=${CXX} \
 		INSTALL_UGRP=root:games \
+		LUA_PACKAGE=lua-5.1 \
 		NO_AUTO_OPT=YesPlease \
 		NO_OPTIMIZE=YesPlease \
 		NO_TRY_GOLD=YesPlease \
+		NOSSE=YesPlease \
 		POSIX=YesPlease \
+		SAVEDIR=${SAVEDIR} \
 		SQLITE_INCLUDE_DIR=${LOCALBASE}/include \
 		SQLITE_LIB=-lsqlite3 \
 		V=yes

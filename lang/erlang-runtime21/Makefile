@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	21.2
+PORTVERSION=	21.3
 # NB when bumping OTP versions also bump PORTREVISION in databases/couchdb2
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg			\
 		http://erlang.stacken.kth.se/download/:erlangorg		\
 		http://www.csd.uu.se/ftp/mirror/erlang/download/:erlangorg	\
 		http://olgeni.olgeni.com/~olgeni/distfiles/:local		\
-		LOCAL/olgeni:local
+		LOCAL/olgeni:local \
+		LOCAL/dch:local
 PKGNAMESUFFIX=	-runtime21
 DISTNAME=	otp_src_${ERLANG_REL}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:erlangorg		\
@@ -18,7 +19,8 @@ DIST_SUBDIR=	erlang
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
-		LOCAL/olgeni
+		LOCAL/olgeni \
+		LOCAL/dch
 PATCHFILES=
 
 MAINTAINER=	erlang@FreeBSD.org
@@ -31,7 +33,7 @@ BROKEN_sparc64=	Fails to build: error: fp_except undeclared
 WRKSRC=		${WRKDIR}/otp_src_${ERLANG_REL}
 
 ERLANG_LIB=	${PORTNAME}${PORTVERSION:C/\..*//}
-ERLANG_REL=	21.2
+ERLANG_REL=	21.3
 
 OPTIONS_SUB=	yes
 SUB_FILES=	pkg-message
@@ -41,6 +43,7 @@ MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=	DIRTY DTRACE GS HIPE JAVA KQUEUE NATIVE ODBC OPENSSL SCTP THREADS WX
 OPTIONS_DEFAULT=DIRTY DTRACE HIPE KQUEUE OPENSSL SCTP THREADS
+OPTIONS_EXCLUDE_powerpc64=	HIPE
 
 DIRTY_DESC=	Enable Dirty schedulers
 GS_DESC=	Enable GS application (deprecated)

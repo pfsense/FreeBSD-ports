@@ -3,12 +3,14 @@
 
 PORTNAME=	octave-forge-linear-algebra
 PORTVERSION=	2.2.2
-PORTREVISION=	9
+PORTREVISION=	10
 PORTEPOCH=	1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
+
+BROKEN=		does not build with octave>=5.1.0
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.

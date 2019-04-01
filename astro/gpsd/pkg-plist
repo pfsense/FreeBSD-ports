@@ -17,10 +17,6 @@ bin/ubxtool
 bin/zerk
 include/gps.h
 include/libgpsmm.h
-%%QTBIND%%lib/libQgpsmm.prl
-%%QTBIND%%lib/libQgpsmm.so
-%%QTBIND%%lib/libQgpsmm.so.23
-%%QTBIND%%lib/libQgpsmm.so.23.0.0
 lib/libgps.so
 lib/libgps.so.24
 lib/libgps.so.24.0.0
@@ -70,7 +66,6 @@ man/man8/gpsinit.8.gz
 %%PYTHON_SITELIBDIR%%/gps/watch_options.py
 %%PYTHON_SITELIBDIR%%/gps/watch_options.pyc
 %%PYTHON_SITELIBDIR%%/gps/watch_options.pyo
-%%QTBIND%%libdata/pkgconfig/Qgpsmm.pc
 libdata/pkgconfig/libgps.pc
 sbin/gpsd
 sbin/gpsdctl

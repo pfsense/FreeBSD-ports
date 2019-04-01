@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	11.11.0
+PORTVERSION=	11.13.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
@@ -12,10 +12,14 @@ COMMENT=	V8 JavaScript for client and server
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_SSL=		openssl libressl libressl-devel
+BROKEN_SSL_REASON=	Node.js 11.x requires OpenSSL 1.1.x or the BUNDLED_SSL option enabled
 ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386 powerpc64
 
 OPTIONS_DEFINE=		BUNDLED_SSL DOCS NLS DTRACE
-OPTIONS_DEFAULT=	BUNDLED_SSL DTRACE
+OPTIONS_DEFAULT=	DTRACE
+OPTIONS_DEFAULT_FreeBSD_11=	BUNDLED_SSL
+OPTIONS_DEFAULT+=	${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
 OPTIONS_SUB=		yes
 
 .if !exists(/usr/sbin/dtrace)
@@ -34,6 +38,7 @@ BUNDLED_SSL_CONFIGURE_OFF=	--shared-openssl --openssl-use-def-ca-store
 BUNDLED_SSL_RUN_DEPENDS_OFF=	ca_root_nss>=0:security/ca_root_nss
 
 NLS_CONFIGURE_ON=	--with-intl=system-icu
+NLS_BUILD_DEPENDS=	icu>=63.1:devel/icu
 NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
 
 DTRACE_CONFIGURE_ON=	--with-dtrace
@@ -60,29 +65,24 @@ MAKE_ENV+=	CC.host=${CC} CFLAGS.host="${CFLAGS}" \
 		CXX.host=${CXX} CXXFLAGS.host="${CXXFLAGS}" \
 		LINK.host=${CXX} LDFLAGS.host="${LDFLAGS}"
 
+BUILD_DEPENDS+=	c-ares>=1.15.0:dns/c-ares\
+		libuv>=1.26.0:devel/libuv \
+		libnghttp2>=1.34.0:www/libnghttp2
 LIB_DEPENDS+=	libcares.so:dns/c-ares\
 		libuv.so:devel/libuv \
 		libnghttp2.so:www/libnghttp2
 
 .include <bsd.port.options.mk>
 
-.if empty(PORT_OPTIONS:MBUNDLED_SSL)
-
-.if ${OPSYS} == FreeBSD && ${SSL_DEFAULT} != openssl111
-IGNORE=		node.js requires openssl 1.1.0, add DEFAULT_VERSIONS+=ssl=openssl111 to /etc/make.conf or enable BUNDLED_SSL option
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085
+BROKEN_SSL+=	base
 .endif
 
-.if !empty(SSL_DEFAULT:Mlibressl*)
-IGNORE=		cannot build node.js with LibreSSL. You must enable BUNDLED_SSL
-.endif
-
+.if ${PORT_OPTIONS:MBUNDLED_SSL} && ${ARCH} != amd64 && ${ARCH} != i386
+CONFIGURE_ARGS+=--openssl-no-asm
 .endif
 
 .include <bsd.port.pre.mk>
-
-.if ${ARCH} != amd64 && ${ARCH} != i386
-CONFIGURE_ARGS+=--openssl-no-asm
-.endif
 
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 # GCC does not expose std::snprintf() without this define

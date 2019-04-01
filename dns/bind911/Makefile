@@ -20,7 +20,7 @@ LIB_DEPENDS=	libxml2.so:textproc/libxml2
 USES=	cpe libedit
 
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.11.5-P4
+ISCVERSION=	9.11.6
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -38,7 +38,7 @@ CONFIGURE_ARGS=	--localstatedir=/var --disable-linux-caps \
 		--sysconfdir=${ETCDIR}
 ETCDIR=		${PREFIX}/etc/namedb
 
-CONFLICTS=	bind-tools bind99 bind910 bind912 bind913 bind9-devel
+CONFLICTS=	bind-tools bind912 bind913 bind914 bind9-devel
 
 SUB_FILES=	pkg-message named.conf
 USE_RC_SUBR=	named
@@ -52,7 +52,7 @@ OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE JSON PYTHON \
 			FILTER_AAAA
 OPTIONS_DEFINE=		IDN LARGE_FILE PYTHON JSON \
 			FIXED_RRSET SIGCHASE IPV6 THREADS FILTER_AAAA \
-			RPZ_NSIP RPZ_NSDNAME DOCS GEOIP \
+			RPZ_NSIP RPZ_NSDNAME DOCS \
 			MINCACHE PORTREVISION QUERYTRACE LMDB DNSTAP \
 			START_LATE TUNING_LARGE TCP_FASTOPEN
 
@@ -78,7 +78,6 @@ DLZ_STUB_DESC=		DLZ stub driver
 DNSTAP_DESC=		Provides fast passive logging of DNS messages
 FILTER_AAAA_DESC=	Enable filtering of AAAA records
 FIXED_RRSET_DESC=	Enable fixed rrset ordering
-GEOIP_DESC=		Allow geographically based ACL.
 GSSAPI_BASE_DESC=	Using Heimdal in base
 GSSAPI_HEIMDAL_DESC=	Using security/heimdal
 GSSAPI_MIT_DESC=	Using security/krb5
@@ -123,9 +122,6 @@ DNSTAP_LIB_DEPENDS=	libfstrm.so:devel/fstrm \
 FILTER_AAAA_CONFIGURE_ENABLE=	filter-aaaa
 
 FIXED_RRSET_CONFIGURE_ENABLE=	fixed-rrset
-
-GEOIP_CONFIGURE_WITH=	geoip
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 GSSAPI_BASE_CONFIGURE_ON=\
 	--with-gssapi=${GSSAPIBASEDIR} KRB5CONFIG="${KRB5CONFIG}"
@@ -189,13 +185,24 @@ TUNING_LARGE_IMPLIES=	THREADS
 TUNING_LARGE_CONFIGURE_ON=	--with-tuning=large
 TUNING_LARGE_CONFIGURE_OFF=	--with-tuning=default
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if defined(WITH_DEBUG)
-CONFIGURE_ARGS+=	--enable-symtable
+CONFIGURE_ARGS+=	--enable-symtable \
+			--enable-developer
+USES+=	perl5 pkgconfig
+USE_PERL5=	build
+BUILD_DEPENDS+=	cmocka>0:sysutils/cmocka
+# Developer mode needs ssl, always
+.if !${PORT_OPTIONS:MSSL}
+CONFIGURE_ARGS+=	--with-openssl=${OPENSSLBASE}
+USES+=		ssl
+.endif
 .else
 CONFIGURE_ARGS+=	--disable-symtable
 .endif
+
+.include <bsd.port.pre.mk>
 
 .if ${SSL_DEFAULT} == base
 SUB_LIST+=	ENGINES=/usr/lib/engines

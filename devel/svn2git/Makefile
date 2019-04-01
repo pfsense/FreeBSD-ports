@@ -3,6 +3,7 @@
 
 PORTNAME=	svn2git
 PORTVERSION=	1.0.12
+PORTREVISION=	1
 CATEGORIES=	devel kde
 
 MAINTAINER=	dbn@FreeBSD.org
@@ -17,7 +18,7 @@ RUN_DEPENDS=	git:devel/git \
 		p5-Term-ReadKey>=0:devel/p5-Term-ReadKey \
 		p5-subversion>=0:devel/p5-subversion
 
-USES=		qmake qt:5
+USES=		compiler:c++11-lang qmake qt:5
 USE_GITHUB=	yes
 USE_QT=		core
 GH_ACCOUNT=	svn-all-fast-export

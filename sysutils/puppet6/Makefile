@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	puppet
-PORTVERSION=	6.1.0
+PORTVERSION=	6.3.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	https://downloads.puppetlabs.com/puppet/
 PKGNAMESUFFIX=	6
 
 MAINTAINER=	puppet@FreeBSD.org
@@ -28,7 +28,11 @@ RUN_DEPENDS=	facter>=3.0:sysutils/facter \
 
 USES=		cpe
 CPE_VENDOR=	puppetlabs
+USE_GITHUB=	yes
+GH_ACCOUNT=	puppetlabs
+
 CONFLICTS_INSTALL=	puppet4-* puppet5-*
+PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 NO_ARCH=	yes
 NO_BUILD=	yes
 USE_RUBY=	yes
@@ -90,6 +94,8 @@ post-install:
 		${SED} 's,^${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
 	@${FIND} ${STAGEDIR}${RUBY_SITELIBDIR}/${PORTNAME} -type f | \
 		${SED} 's,^${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/specifications
+	${INSTALL_DATA} ${WRKSRC}/.gemspec ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/specifications/${PORTNAME}-${PORTVERSION}.gemspec
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

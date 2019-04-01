@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	go
-PORTVERSION=	1.11.4
+PORTVERSION=	1.12.1
 PORTEPOCH=	1
 CATEGORIES=	lang
 MASTER_SITES=	https://golang.org/dl/
@@ -17,18 +17,13 @@ BUILD_DEPENDS=	go14>=1.4:lang/go14
 
 USES=		shebangfix
 SHEBANG_LANG=	sh perl
-SHEBANG_FILES=	src/*.bash \
-		doc/articles/wiki/*.bash \
-		lib/time/*.bash \
-		misc/benchcmp \
+SHEBANG_FILES=	misc/benchcmp \
 		misc/nacl/go_nacl_*_exec \
 		misc/wasm/go_js_wasm_exec \
-		src/cmd/go/*.sh \
-		src/cmd/vendor/github.com/google/pprof/internal/binutils/testdata/build_mac.sh \
-		src/net/http/cgi/testdata/*.cgi \
-		src/regexp/syntax/*.pl
+		src/net/http/cgi/testdata/test.cgi
+SHEBANG_GLOB=	*.bash *.pl *.sh
 
-sh_OLD_CMD=	"/usr/bin/env bash"
+sh_OLD_CMD=	/bin/bash "/usr/bin/env bash"
 sh_CMD=		${SH}
 
 WRKSRC=		${WRKDIR}/go
@@ -65,7 +60,9 @@ do-build:
 		GOBIN= GOARCH=${GOARCH} GOOS=${OPSYS:tl} \
 		GO386=${GO386} \
 		${SH} make.bash -v
-	${RM} -r ${WRKSRC}/pkg/obj
+	${RM} -r ${WRKSRC}/pkg/obj \
+	    ${WRKSRC}/pkg/bootstrap \
+	    ${WRKSRC}/pkg/${OPSYS:tl}_${GOARCH}/cmd
 
 do-install:
 	@${CP} -a ${WRKSRC} ${STAGEDIR}${PREFIX}
