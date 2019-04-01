@@ -208,7 +208,7 @@ function get_slbd_stats() {
 
 	$now = time();
 	$year = date("Y");
-	$pstatus = "";
+	$pstatus = array();
 	$i = 0;
 	foreach ($a_pool as $vipent) {
 		$pstatus[] = "{$vipent['name']}";
