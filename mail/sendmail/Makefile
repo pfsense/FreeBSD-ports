@@ -2,7 +2,7 @@
 
 PORTNAME=	sendmail
 PORTVERSION=	8.15.2
-PORTREVISION=	14
+PORTREVISION=	18
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/
 DISTNAME=	${PORTNAME}.${PORTVERSION}
@@ -25,6 +25,8 @@ MAKE_ARGS=	UBINOWN=${UID} UBINGRP=${GID} \
 		SBINOWN=${UID} SBINGRP=${GID} \
 		GBINOWN=${UID} GBINGRP=${GID} \
 		MANOWN=${UID} MANGRP=${GID} \
+		CFOWN=${UID} CFGRP=${GID} \
+		MSPQOWN=${UID} \
 		LIBMODE=0644 UBINMODE=0755 GBINMODE=2755
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DOCS=		KNOWNBUGS LICENSE PGPKEYS README RELEASE_NOTES \
@@ -235,6 +237,11 @@ pre-install:
 	@${ECHO_CMD} "share/doc/sendmail/CYRUS_LOOKUP" >>${PLIST}
 .endif
 .endif
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/mail
+	@${SED} \
+	 -e "s=\([ 	]\)/.*$$=\\1${SENDMAIL}=" \
+	 ${FILESDIR}/mailer.conf \
+	 > ${STAGEDIR}${PREFIX}/etc/mail/mailer.conf.sendmail
 
 # We want mail.local and rmail for our system.
 # the build install catmans only, we have to fix this.
@@ -258,7 +265,6 @@ post-install:
 	${RM} ${STAGEDIR}${PREFIX}/man/cat*/*
 # final perm of sendmail is 2555 (see plist), needed for strip cmd
 	${CHMOD} 755 ${STAGEDIR}${PREFIX}/sbin/sendmail
-
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/vacation
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rmail
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/*
@@ -290,16 +296,16 @@ mailer.base:
 		${DESTDIR}/etc/mail/mailer.conf
 
 mailer.conf:
+.if exists(${DESTDIR}${PREFIX}/etc/mail/mailer.conf.sendmail)
+	@${CP} -v ${DESTDIR}${PREFIX}/etc/mail/mailer.conf.sendmail \
+		${DESTDIR}${PREFIX}/etc/mail/mailer.conf
+.else
+	@${MKDIR} ${DESTDIR}${PREFIX}/etc/mail
 	@${SED} \
-	-e "s=^sendmail[ 	]*/.*$$=sendmail	${SENDMAIL}=" \
-	-e "s=^send-mail[ 	]*/.*$$=send-mail	${SENDMAIL}=" \
-	-e "s=^mailq[ 	]*/.*$$=mailq		${SENDMAIL}=" \
-	-e "s=^newaliases[ 	]*/.*$$=newaliases	${SENDMAIL}=" \
-	-e "s=^hoststat[ 	]*/.*$$=hoststat	${SENDMAIL}=" \
-	-e "s=^purgestat[ 	]*/.*$$=purgestat	${SENDMAIL}=" \
-	 ${DESTDIR}/etc/mail/mailer.conf > ${DESTDIR}/etc/mail/mailer.conf.new
-	${MV} ${DESTDIR}/etc/mail/mailer.conf.new \
-		${DESTDIR}/etc/mail/mailer.conf
+	 -e "s=\([ 	]\)/.*$$=\\1${SENDMAIL}=" \
+	 ${FILESDIR}/mailer.conf \
+	 > ${DESTDIR}${PREFIX}/etc/mail/mailer.conf
+.endif
 
 # create sumbit.cf on older systems
 #

@@ -3,7 +3,7 @@
 
 PORTNAME=	opencsg
 PORTVERSION=	1.4.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.opencsg.org/
 DISTNAME=	OpenCSG-${PORTVERSION}
@@ -14,12 +14,9 @@ COMMENT=	Constructive Solid Geometry rendering library
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../license.txt
 
-DEPRECATED=		Qt4 has been EOL since december 2015
-EXPIRATION_DATE=	2019-03-15
-
-USES=		compiler:c++11-lang qmake qt:4
-USE_GL=		gl glew
-USE_QT=		qmake_build
+USES=		compiler:c++11-lang qmake qt:5
+USE_GL=		gl glesv2 glew
+USE_QT=		opengl qmake_build
 WRKSRC=		${WRKDIR}/${DISTNAME}/src
 PLIST_SUB=      PORTVERSION=${PORTVERSION}
 

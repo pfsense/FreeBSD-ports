@@ -2,29 +2,31 @@
 
 PORTNAME=	wx
 PORTVERSION=	3.0.4
-PORTREVISION=	4
 DISTVERSIONPREFIX=	v
+PORTREVISION=	7
 CATEGORIES=	x11-toolkits
-PKGNAMESUFFIX=	30-gtk2
+PKGNAMESUFFIX=	30-gtk3
 
-MAINTAINER=	portmaster@bsdforge.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The wxWidgets GUI toolkit with GTK+ bindings
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/docs/gpl.txt
 
-LIB_DEPENDS=	libpng.so:graphics/png \
-		libtiff.so:graphics/tiff \
-		libexpat.so:textproc/expat2
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libpng.so:graphics/png \
+		libtiff.so:graphics/tiff
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	wxWidgets
 GH_PROJECT=	wxWidgets
 
-USES=		compiler:c++11-lib gmake iconv jpeg localbase pkgconfig
+USES=		compiler:c++11-lib gl gmake gnome iconv jpeg localbase pkgconfig
 USE_XORG=	x11 sm xxf86vm xinerama
-USE_GL=		glu
-USE_GNOME=	gtk20
+USE_GL=		gl glu
+USE_GNOME=	cairo gdkpixbuf2 gtk30
 USE_LDCONFIG=	yes
 USE_CXXSTD=	c++11
 GNU_CONFIGURE=	yes
@@ -34,7 +36,7 @@ CONFIGURE_ARGS=	--with-libpng=sys \
 		--with-zlib=sys \
 		--with-expat=sys \
 		--with-opengl \
-		--with-gtk \
+		--with-gtk=3 \
 		--without-gnomevfs \
 		--disable-epollloop \
 		--disable-joystick \
@@ -48,7 +50,7 @@ CONFIGURE_ARGS=	--with-libpng=sys \
 CONFIGURE_ENV=	X11BASE="${LOCALBASE}" \
 		ac_cv_header_sys_inotify_h=no
 
-OPTIONS_DEFINE=	GSTREAMER MSPACK NLS WEBKIT
+OPTIONS_DEFINE=	GSTREAMER NOTIFY MSPACK NLS WEBKIT
 OPTIONS_DEFAULT=GSTREAMER MSPACK WEBKIT
 MSPACK_DESC=	Microsoft archives support
 OPTIONS_SUB=	yes
@@ -58,11 +60,14 @@ NLS_USES=	gettext
 GSTREAMER_CONFIGURE_ENABLE=	mediactrl
 GSTREAMER_USE=	GNOME=gconf2 GSTREAMER1=yes
 
+NOTIFY_CONFIGURE_WITH=	libnotify
+NOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
+
 MSPACK_CONFIGURE_WITH=	libmspack
 MSPACK_LIB_DEPENDS=	libmspack.so:archivers/libmspack
 
 WEBKIT_CONFIGURE_ENABLE=	webview
-WEBKIT_LIB_DEPENDS=	libwebkitgtk-1.0.so:www/webkit-gtk2
+WEBKIT_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3
 
 .include <bsd.port.pre.mk>
 

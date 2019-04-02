@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	kcgi
-PORTVERSION=	0.10.8
+PORTVERSION=	0.10.10
+PORTREVISION=	1
 CATEGORIES=	www devel
 MASTER_SITES=	http://kristaps.bsd.lv/kcgi/snapshots/
 
@@ -10,16 +11,16 @@ COMMENT=	Minimal sandboxed CGI library in C
 
 LICENSE=	ISCL
 
-USES=		tar:tgz gmake
+USES=		tar:tgz
 
 OPTIONS_DEFINE=	EXAMPLES
 
 HAS_CONFIGURE=	yes
 MAKE_ARGS=	DATADIR=${EXAMPLESDIR}
-MAKEFILE=	GNUmakefile
+USE_RC_SUBR=	kfcgi
 
 post-patch:
 	@${REINPLACE_CMD} -e "s/install -m 0555/${INSTALL_PROGRAM}/" \
-		${WRKSRC}/GNUmakefile
+		${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

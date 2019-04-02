@@ -3,6 +3,7 @@
 
     COMMENT = X11 fonts and font utilities
 
+    SUBDIR += 3270font
     SUBDIR += Hasklig
     SUBDIR += alef
     SUBDIR += alegreya
@@ -15,6 +16,7 @@
     SUBDIR += artwiz-aleczapka-se
     SUBDIR += artwiz-fonts
     SUBDIR += averiagwf
+    SUBDIR += b612
     SUBDIR += bdfresize
     SUBDIR += bdftopcf
     SUBDIR += bitstream-vera
@@ -28,6 +30,7 @@
     SUBDIR += comfortaa-ttf
     SUBDIR += comic-neue
     SUBDIR += consolamono-ttf
+    SUBDIR += courier-prime
     SUBDIR += croscorefonts-fonts-ttf
     SUBDIR += crosextrafonts-caladea-ttf
     SUBDIR += crosextrafonts-carlito-ttf
@@ -42,10 +45,12 @@
     SUBDIR += encodings
     SUBDIR += exo
     SUBDIR += fantasque-sans-mono
+    SUBDIR += fanwood
     SUBDIR += farsifonts
     SUBDIR += fifteen
     SUBDIR += fira
     SUBDIR += firacode
+    SUBDIR += firago
     SUBDIR += fntsample
     SUBDIR += font-adobe-100dpi
     SUBDIR += font-adobe-75dpi
@@ -93,7 +98,6 @@
     SUBDIR += font-xfree86-type1
     SUBDIR += fontconfig
     SUBDIR += fontconfig-reference
-    SUBDIR += fontmatrix
     SUBDIR += fonts-indic
     SUBDIR += fonttosfnt
     SUBDIR += freefont-ttf
@@ -110,16 +114,21 @@
     SUBDIR += google-fonts
     SUBDIR += hack-font
     SUBDIR += hanazono-fonts-ttf
+    SUBDIR += hermit
     SUBDIR += inconsolata-lgc-ttf
     SUBDIR += inconsolata-ttf
     SUBDIR += indic-ttf
     SUBDIR += intlfonts
+    SUBDIR += iosevka
     SUBDIR += isabella
     SUBDIR += jmk-x11-fonts
     SUBDIR += junction
     SUBDIR += junicode
     SUBDIR += kaputa
     SUBDIR += khmeros
+    SUBDIR += lato
+    SUBDIR += league-gothic
+    SUBDIR += league-spartan
     SUBDIR += lfpfonts-fix
     SUBDIR += lfpfonts-var
     SUBDIR += libFS
@@ -129,18 +138,19 @@
     SUBDIR += libXft
     SUBDIR += liberation-fonts-ttf
     SUBDIR += libfontenc
+    SUBDIR += linden-hill
     SUBDIR += linux-c6-fontconfig
     SUBDIR += linux-c7-fontconfig
     SUBDIR += linuxlibertine
     SUBDIR += linuxlibertine-g
     SUBDIR += lohit
     SUBDIR += manu-gothica
+    SUBDIR += material-icons-ttf
     SUBDIR += materialdesign-ttf
     SUBDIR += meslo
     SUBDIR += mgopen
     SUBDIR += mkbold
     SUBDIR += mkbold-mkitalic
-    SUBDIR += mkfontdir
     SUBDIR += mkfontscale
     SUBDIR += mkitalic
     SUBDIR += mondulkiri
@@ -150,7 +160,12 @@
     SUBDIR += nerd-fonts
     SUBDIR += nexfontsel
     SUBDIR += noto
-    SUBDIR += noto-lite
+    SUBDIR += noto-basic
+    SUBDIR += noto-extra
+    SUBDIR += noto-jp
+    SUBDIR += noto-kr
+    SUBDIR += noto-sc
+    SUBDIR += noto-tc
     SUBDIR += nucleus
     SUBDIR += ohsnap
     SUBDIR += oldschool-pc-fonts
@@ -164,6 +179,7 @@
     SUBDIR += pingwi
     SUBDIR += plex-ttf
     SUBDIR += powerline-fonts
+    SUBDIR += prociono
     SUBDIR += profont
     SUBDIR += proggy_fonts
     SUBDIR += proggy_fonts-ttf
@@ -205,6 +221,7 @@
     SUBDIR += urwfonts-ttf
     SUBDIR += uw-ttyp0
     SUBDIR += vollkorn-ttf
+    SUBDIR += vtfontcvt-ng
     SUBDIR += webfonts
     SUBDIR += wqy
     SUBDIR += xfontsel

@@ -3,7 +3,7 @@
 
 PORTNAME=	codelite
 PORTVERSION=	12.0
-PORTREVISION=	0
+PORTREVISION=	2
 CATEGORIES=	editors devel
 
 MAINTAINER=	mmokhi@FreeBSD.org
@@ -12,7 +12,7 @@ COMMENT=	Open Source IDE for C/C++
 LICENSE=	GPLv2+
 
 RUN_DEPENDS=	xterm:x11/xterm
-LIB_DEPENDS+=	libhunspell-1.6.so:textproc/hunspell
+LIB_DEPENDS+=	libhunspell-1.7.so:textproc/hunspell
 
 BROKEN_armv6=		fails to configure: has leading or trailing whitespace.  This is now an error according to policy CMP0004
 
@@ -20,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	eranif
 
 USES=		cmake:noninja compiler:c++11-lib dos2unix gettext \
-		pathfix shebangfix sqlite
+		pathfix pkgconfig shebangfix sqlite
 USE_GNOME+=	cairo gtk20
 DOS2UNIX_GLOB=	*.cpp *.txt
 SHEBANG_FILES=	Runtime/codelite_xterm

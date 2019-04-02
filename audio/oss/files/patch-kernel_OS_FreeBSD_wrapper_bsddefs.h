@@ -1,12 +1,12 @@
---- kernel/OS/FreeBSD/wrapper/bsddefs.h.orig	2019-01-12 19:57:42 UTC
+--- kernel/OS/FreeBSD/wrapper/bsddefs.h.orig	2019-03-06 07:52:21 UTC
 +++ kernel/OS/FreeBSD/wrapper/bsddefs.h
-@@ -91,6 +91,9 @@ typedef int ddi_iblock_cookie_t;
- extern void oss_udelay (unsigned long t);
- 
+@@ -93,8 +93,8 @@ extern void oss_udelay (unsigned long t);
  #ifdef _KERNEL
-+#ifdef memset
-+#undef memset
-+#endif
- #define memset oss_memset
+ #ifdef memset
+ #undef memset
+-#define memset oss_memset
+ #endif
++#define memset oss_memset
  extern void *oss_memset (void *t, int val, int l);
  #endif
+ 

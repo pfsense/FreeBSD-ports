@@ -2,7 +2,7 @@
 
 PORTNAME=	puppetdb-cli
 PORTVERSION=	1.2.5
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	databases
 
 MAINTAINER=	puppet@FreeBSD.org
@@ -16,7 +16,7 @@ BROKEN_SSL_REASON_libressl=		Needs an old version of OpenSSL (older than 1.1)
 BROKEN_SSL_REASON_libressl-devel=	Needs an old version of OpenSSL (older than 1.1)
 BROKEN_SSL_REASON_openssl111=		Needs an older version of OpenSSL (older than 1.1)
 
-USES=		cargo perl5 ssl
+USES=		cargo perl5
 USE_GITHUB=	yes
 USE_PERL5=	build
 
@@ -46,7 +46,7 @@ CARGO_CRATES=	advapi32-sys-0.2.0 \
 		ktmw32-sys-0.1.0 \
 		language-tags-0.2.2 \
 		lazy_static-0.2.11 \
-		libc-0.2.34 \
+		libc-0.2.49 \
 		log-0.3.8 \
 		matches-0.1.6 \
 		memchr-2.0.1 \

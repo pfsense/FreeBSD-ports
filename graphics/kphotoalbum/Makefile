@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	kphotoalbum
-DISTVERSION=	5.4
+DISTVERSION=	5.4.2
+PORTREVISION=	3
 CATEGORIES=	graphics kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/
 DIST_SUBDIR=	KDE
@@ -14,7 +15,8 @@ LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 		libKF5KGeoMap.so:astro/libkgeomap \
 		libKF5Kipi.so:graphics/libkipi
 
-USES=		cmake jpeg kde:5 pkgconfig qt:5 shebangfix tar:xz
+USES=		cmake compiler:c++11-lang jpeg kde:5 pkgconfig qt:5 shebangfix \
+		tar:xz
 USE_KDE=	archive auth codecs completion config \
 		configwidgets coreaddons ecm i18n \
 		iconthemes jobwidgets kio marble service \

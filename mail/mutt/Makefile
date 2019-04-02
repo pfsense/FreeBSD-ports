@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mutt
-DISTVERSION=	1.11.1
-PORTREVISION=	1
+DISTVERSION=	1.11.4
+#PORTREVISION=	0
 CATEGORIES+=	mail ipv6
 MASTER_SITES=	ftp://ftp.mutt.org/pub/mutt/ \
 		ftp://ftp.fu-berlin.de/pub/unix/mail/mutt/ \
@@ -102,7 +102,7 @@ URLVIEW_RUN_DEPENDS=	urlview:textproc/urlview
 
 .ifmake makesum # for optional distfiles patchfiles
 PORT_DBDIR=		/dev/null
-OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
+OPTIONS_DEFAULT+=	${OPTIONS_DEFINE}
 .endif
 
 DEBUG_CONFIGURE_ON=	--enable-debug
@@ -187,8 +187,8 @@ DOCS_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-doc-ref
 .include <bsd.port.options.mk>
 
 # un/comment as each VERSION is created for PORTVERSION
-#VVV_PATCH_VERSION=	1.11.1
-#GREETING_PATCH_VERSION=	1.11.1
+VVV_PATCH_VERSION=	1.11.1
+GREETING_PATCH_VERSION=	1.11.4
 
 .if !defined(VVV_PATCH_VERSION)
 VVV_PATCH_VERSION=	${PORTVERSION}

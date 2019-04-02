@@ -3,7 +3,7 @@
 
 PORTNAME=	scroll
 PORTVERSION=	1.20180421
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -15,7 +15,6 @@ PKGNAMEPREFIX=
 
 USE_CABAL=	IfElse case-insensitive data-default monad-loops mtl \
 		optparse-applicative ncurses random vector
-
 STANDALONE=	yes
 EXECUTABLE=	scroll
 

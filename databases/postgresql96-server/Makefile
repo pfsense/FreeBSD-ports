@@ -1,7 +1,7 @@
 # Created by: Marc G. Fournier <scrappy@FreeBSD.org>
 # $FreeBSD$
 
-DISTVERSION?=	9.6.11
+DISTVERSION?=	9.6.12
 PORTREVISION=	1
 PKGNAMESUFFIX?=	${PORTVERSION:R:S/.//}${COMPONENT}
 
@@ -24,4 +24,4 @@ PG_UID?=	770
 ICU_PATCHFILE=	pg-96b4-icu-2016-10-02.diff.gz
 OPTIONS_DEFAULT+=ICU
 
-.include "${.CURDIR}/../postgresql10-server/Makefile"
+.include "${.CURDIR}/../postgresql11-server/Makefile"

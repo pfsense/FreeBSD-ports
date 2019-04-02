@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	ciscoconfparse
-DISTVERSION=	1.3.20
+DISTVERSION=	1.3.32
 CATEGORIES=	net-mgmt python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	freebsd_ports@k-worx.org
+MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Parse, audit, query, build and modify Cisco IOS-style configurations
 
 LICENSE=	GPLv3+
@@ -20,6 +20,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}colorama>0:devel/py-colorama@${PY_FLAVOR} \
 
 USES=		python
 USE_PYTHON=	distutils autoplist
+
 NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>

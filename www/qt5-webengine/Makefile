@@ -8,8 +8,8 @@
 # - We are using several stub files, especially in Chromium's base/ and net/
 #   layers. We should look at implementing the missing bits instead.
 # - We are currently not using any sandboxing mechanism.
-# - We are disabling support for features such as WebRTC and printing. We need
-#   to see what it would take to properly support them.
+# - We are disabling support for features such as WebRTC. We need to see what
+#   it would take to properly support them.
 # - We need to see if more "use_system_<FOO>" flags can be passed.
 # - The process of porting QtWebEngine needs to be documented so we can move to
 #   newer releases more easily.
@@ -20,7 +20,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	13
+PORTREVISION=	1
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -30,6 +30,7 @@ COMMENT=	Qt 5 library to render web content
 BUILD_DEPENDS=	bison:devel/bison \
 		ninja:devel/ninja \
 		yasm:devel/yasm \
+		${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libdbus-1.so:devel/dbus \
@@ -38,6 +39,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
 		libjsoncpp.so:devel/jsoncpp \
+		liblcms2.so:graphics/lcms2 \
 		libnspr4.so:devel/nspr \
 		libnss3.so:security/nss \
 		libopus.so:audio/opus \
@@ -45,10 +47,11 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libpng.so:graphics/png \
 		libre2.so:devel/re2 \
 		libsnappy.so:archivers/snappy \
+		libvpx.so:multimedia/libvpx \
 		libwebp.so:graphics/webp
 
 DISTINFO_FILE=	${.CURDIR}/distinfo
-QT5_VERSION=	5.9.5
+QT5_VERSION=	5.12.1
 
 OPTIONS_SINGLE=		AUDIO
 OPTIONS_SINGLE_AUDIO=	ALSA PULSEAUDIO SNDIO
@@ -72,8 +75,9 @@ SNDIO_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-sndio
 # We pass `norecursive' to USES=qmake because src/plugins/plugins.pro checks
 # whether webenginewidgets is available, which fails when qmake processes all
 # .pro files at once.
-USES=		gperf jpeg python:2.7,build pkgconfig \
+USES=		gl gnome gperf jpeg python:2.7,build pkgconfig \
 		qmake:norecursive,outsource qt-dist:5,webengine shebangfix
+USE_GL=		gl
 USE_GNOME=	glib20 libxml2 libxslt
 USE_QT=		core declarative designer gui location network webchannel \
 		widgets buildtools_build qmake_build printsupport
@@ -82,8 +86,7 @@ USE_XORG=	x11 xcb xcomposite xcursor xext xi xorgproto \
 
 USE_LDCONFIG=	${QT_LIBDIR}
 
-
-QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg
+QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg -disable-webrtc
 
 # We could just set it to an empty string as well. "all" does not account for
 # dependencies correctly in the generated Makefiles, use the right target here.

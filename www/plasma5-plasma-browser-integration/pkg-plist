@@ -5,7 +5,6 @@ lib/mozilla/native-messaging-hosts/org.kde.plasma.browser_integration.json
 %%QT_PLUGINDIR%%/kf5/kded/browserintegrationreminder.so
 %%QT_PLUGINDIR%%/krunner_browsertabs.so
 share/kservices5/plasma-runner-browsertabs.desktop
-share/locale/ast/LC_MESSAGES/plasma_runner_browsertabs.mo
 share/locale/ca/LC_MESSAGES/plasma-browser-integration-reminder.mo
 share/locale/ca/LC_MESSAGES/plasma_runner_browsertabs.mo
 share/locale/ca@valencia/LC_MESSAGES/plasma-browser-integration-reminder.mo
@@ -24,11 +23,13 @@ share/locale/fi/LC_MESSAGES/plasma-browser-integration-reminder.mo
 share/locale/fi/LC_MESSAGES/plasma_runner_browsertabs.mo
 share/locale/fr/LC_MESSAGES/plasma-browser-integration-reminder.mo
 share/locale/fr/LC_MESSAGES/plasma_runner_browsertabs.mo
+share/locale/gl/LC_MESSAGES/plasma-browser-integration-reminder.mo
 share/locale/gl/LC_MESSAGES/plasma_runner_browsertabs.mo
 share/locale/id/LC_MESSAGES/plasma-browser-integration-reminder.mo
 share/locale/id/LC_MESSAGES/plasma_runner_browsertabs.mo
 share/locale/it/LC_MESSAGES/plasma-browser-integration-reminder.mo
 share/locale/it/LC_MESSAGES/plasma_runner_browsertabs.mo
+share/locale/ja/LC_MESSAGES/plasma-browser-integration-reminder.mo
 share/locale/ja/LC_MESSAGES/plasma_runner_browsertabs.mo
 share/locale/ko/LC_MESSAGES/plasma_runner_browsertabs.mo
 share/locale/nb/LC_MESSAGES/plasma_runner_browsertabs.mo
@@ -59,3 +60,5 @@ share/locale/uk/LC_MESSAGES/plasma-browser-integration-reminder.mo
 share/locale/uk/LC_MESSAGES/plasma_runner_browsertabs.mo
 share/locale/zh_CN/LC_MESSAGES/plasma-browser-integration-reminder.mo
 share/locale/zh_CN/LC_MESSAGES/plasma_runner_browsertabs.mo
+share/locale/zh_TW/LC_MESSAGES/plasma-browser-integration-reminder.mo
+share/locale/zh_TW/LC_MESSAGES/plasma_runner_browsertabs.mo

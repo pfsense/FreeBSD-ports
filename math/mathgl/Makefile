@@ -2,7 +2,7 @@
 
 PORTNAME=	mathgl
 DISTVERSION=	2.4.2.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION:R}
 
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libpng.so:graphics/png \
 		libsz.so:science/szip
 
-USES=		cmake jpeg gettext-runtime python:2.7
+USES=		cmake compiler:c++11-lang gettext-runtime jpeg python:2.7
 USE_GL=		gl glu glut
 USE_XORG=	xi xmu
 USE_LDCONFIG=	yes

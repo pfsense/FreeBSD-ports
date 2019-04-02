@@ -10,7 +10,6 @@
     SUBDIR += bitcoin-daemon
     SUBDIR += bitcoin-utils
     SUBDIR += bitflu
-    SUBDIR += bitmessage
     SUBDIR += bnbt
     SUBDIR += btpd
     SUBDIR += couchpotato
@@ -28,7 +27,6 @@
     SUBDIR += eiskaltdcpp-data
     SUBDIR += eiskaltdcpp-gtk
     SUBDIR += eiskaltdcpp-lib
-    SUBDIR += eiskaltdcpp-qt
     SUBDIR += frost
     SUBDIR += gkremldk
     SUBDIR += go-ethereum
@@ -92,17 +90,6 @@
     SUBDIR += transmission-remote-gui
     SUBDIR += tribler
     SUBDIR += uhub
-    SUBDIR += valknut
-    SUBDIR += verlihub
-    SUBDIR += verlihub-plugins
-    SUBDIR += verlihub-plugins-chatroom
-    SUBDIR += verlihub-plugins-floodprotect
-    SUBDIR += verlihub-plugins-forbid
-    SUBDIR += verlihub-plugins-iplog
-    SUBDIR += verlihub-plugins-isp
-    SUBDIR += verlihub-plugins-luascript
-    SUBDIR += verlihub-plugins-messanger
-    SUBDIR += verlihub-plugins-stats
     SUBDIR += vuze
     SUBDIR += xmrig
     SUBDIR += zetacoin

@@ -2,7 +2,6 @@
 
 PORTNAME=	gui
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	x11-toolkits graphics
 PKGNAMEPREFIX=	qt5-
 
@@ -31,6 +30,7 @@ USE_XORG=	ice sm x11 xi xrender
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-eglfs \
 		-no-evdev \
+		-no-libudev \
 		-system-harfbuzz
 # Explicitely set to c++14 as to net get c++17/c++1z, as libX11's headers
 # are using the obsolete 'register' key word.

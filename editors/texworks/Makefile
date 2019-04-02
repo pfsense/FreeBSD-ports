@@ -4,6 +4,7 @@
 PORTNAME=	texworks
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	0.6.2
+PORTREVISION=	4
 CATEGORIES=	editors
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -13,11 +14,12 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	hunspell:textproc/hunspell
-LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell \
+LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell \
 		libpoppler.so:graphics/poppler \
 		libpoppler-qt5.so:graphics/poppler-qt5
 
-USES=		cmake desktop-file-utils pkgconfig qt:5
+USES=		compiler:c++11-lang cmake desktop-file-utils pkgconfig \
+		qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	TeXworks
 USE_QT=		buildtools_build designer_build qmake_build \

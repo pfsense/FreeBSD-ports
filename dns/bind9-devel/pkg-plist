@@ -44,7 +44,6 @@ include/dns/dns64.h
 include/dns/dnsrps.h
 include/dns/dnssec.h
 include/dns/dnstap.h
-%%DNSTAP%%include/dns/dnstap.pb-c.h
 include/dns/ds.h
 include/dns/dsdigest.h
 include/dns/dyndb.h
@@ -124,7 +123,6 @@ include/dns/zoneverify.h
 include/dns/zt.h
 include/dst/dst.h
 include/dst/gssapi.h
-include/dst/lib.h
 include/dst/result.h
 include/irs/context.h
 include/irs/dnsconf.h
@@ -177,8 +175,6 @@ include/isc/magic.h
 include/isc/md.h
 include/isc/mem.h
 include/isc/meminfo.h
-include/isc/msgcat.h
-include/isc/msgs.h
 include/isc/mutex.h
 include/isc/mutexblock.h
 include/isc/net.h
@@ -234,7 +230,6 @@ include/isccc/base64.h
 include/isccc/cc.h
 include/isccc/ccmsg.h
 include/isccc/events.h
-include/isccc/lib.h
 include/isccc/result.h
 include/isccc/sexpr.h
 include/isccc/symtab.h
@@ -274,7 +269,6 @@ include/pkcs11/eddsa.h
 include/pkcs11/pkcs11.h
 include/pkcs11/pkcs11f.h
 include/pkcs11/pkcs11t.h
-lib/filter-aaaa.so
 lib/libbind9.a
 lib/libdns.a
 lib/libirs.a
@@ -282,6 +276,7 @@ lib/libisc.a
 lib/libisccc.a
 lib/libisccfg.a
 lib/libns.a
+lib/named/filter-aaaa.so
 man/man1/arpaname.1.gz
 man/man1/bind9-config.1.gz
 man/man1/delv.1.gz

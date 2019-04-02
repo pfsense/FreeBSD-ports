@@ -3,21 +3,21 @@
 
 PORTNAME=	droid-fonts-ttf
 PORTVERSION=	20131024
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	x11-fonts
 MASTER_SITES=	LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	The Droid typeface family
+COMMENT=	Droid typeface family
 
 LICENSE=	APACHE20
 
-NO_ARCH=	yes
-NO_BUILD=	yes
 USES=		fonts tar:xz
 
+NO_ARCH=	yes
+NO_BUILD=	yes
+
 FONTNAME=	Droid
-SUB_FILES=	pkg-message
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${FONTSDIR}/

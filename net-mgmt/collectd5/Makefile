@@ -3,7 +3,7 @@
 
 PORTNAME=	collectd
 PORTVERSION=	5.8.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://storage.googleapis.com/collectd-tarballs/
 PKGNAMESUFFIX=	5
@@ -201,7 +201,6 @@ OPENLDAP_CONFIGURE_WITH=	libldap=${LOCALBASE}
 
 PERL_USES=			perl5
 PERL_CONFIGURE_ENABLE=		perl
-PERL_CONFIGURE_DISABLE=		perl
 PERL_CONFIGURE_WITH=		perl=${PERL} perl-bindings libperl
 
 PGSQL_USES=			pgsql

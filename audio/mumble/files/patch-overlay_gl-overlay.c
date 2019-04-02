@@ -1,6 +1,6 @@
---- overlay_gl/overlay.c.orig	2014-08-08 15:51:59 UTC
+--- overlay_gl/overlay.c.orig	2019-03-13 18:38:10 UTC
 +++ overlay_gl/overlay.c
-@@ -45,6 +45,7 @@
+@@ -16,6 +16,7 @@
  #include <sys/ipc.h>
  #include <sys/time.h>
  #include <sys/socket.h>

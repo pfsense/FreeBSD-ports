@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	notmuch
-PORTVERSION=	0.28
-PORTREVISION=	1
+PORTVERSION=	0.28.2
 CATEGORIES?=	mail
 MASTER_SITES=	https://notmuchmail.org/releases/
 
@@ -60,6 +59,11 @@ DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_CONFIGURE_WITH=	api-docs
 MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 MANPAGES_CONFIGURE_WITH=	docs
+
+post-patch:
+# Avoid conflict with C++20 <version> by ignoring <...> under WRKSRC
+	@${REINPLACE_CMD} -i .c++20 's/-I$$(srcdir)/-iquote$$(srcdir)/' \
+		${WRKSRC}/*/Makefile.local
 
 # Install bash completions without incurring a dependcy on
 # shells/bash-completion.  Also avoid automatic installation of

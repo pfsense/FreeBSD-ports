@@ -75,7 +75,7 @@ postfix:*:125:125::0:0:Postfix Mail System:/var/spool/postfix:/usr/sbin/nologin
 synapse:*:126:141::0:0:Synapse Daemon:/nonexistent:/usr/sbin/nologin
 navcron:*:127:127::0:0:Network Administration Visualized:/usr/local/nav:/usr/sbin/nologin
 sd-agent:*:128:128::0:0:ServerDensity Agent:/nonexistent:/usr/sbin/nologin
-# free: 129
+digdag:*:129:65534::0:0:digdag server:/nonexistent:/usr/sbin/nologin
 _bgpd:*:130:130::0:0:BGP Daemon:/var/empty:/usr/sbin/nologin
 _ospfd:*:131:131::0:0:OSPF Daemon:/var/empty:/usr/sbin/nologin
 _spamd:*:132:132::0:0:Spam Daemon:/var/empty:/usr/sbin/nologin
@@ -126,7 +126,7 @@ mlvpn:*:176:176::0:0:mlVPN pseudo-user:/var/run/mlvpn:/usr/sbin/nologin
 _mdnsd:*:177:177::0:0:Multicast DNS Daemon:/var/empty:/usr/sbin/nologin
 otpw:*:178:178::0:0:OTPW pseudo-user:/var/lib/otpw:/usr/sbin/nologin
 gdnsd:*:179:179::0:0:gDNSd pseudo-user:/nonexistent:/usr/sbin/nologin
-# free: 180
+# free: 180, GID used
 nagios:*:181:181::0:0:Nagios pseudo-user:/var/spool/nagios:/usr/sbin/nologin
 noc:*:182:182::0:0:NOC pseudo-user:/usr/local/noc:/bin/sh
 icinga:*:183:183::0:0:Icinga pseudo-user:/var/spool/icinga:/usr/sbin/nologin
@@ -174,15 +174,15 @@ postgrey:*:225:225::0:0:Postgrey Owner:/nonexistent:/usr/sbin/nologin
 sqlgrey:*:226:226::0:0:SQLgrey Owner:/nonexistent:/usr/sbin/nologin
 _hfm:*:227:227::0:0:hfm daemon:/nonexistent:/usr/sbin/nologin
 osrm:*:228:228::0:0:osrm:/nonexistent:/usr/sbin/nologin
-# free: 229
+# free: 229, GID used
 carbon:*:230:230::0:0:osrm:/nonexistent:/usr/sbin/nologin
 foundationdb:*:231:231::0:0:foundationdb:/nonexistent:/usr/sbin/nologin
 archiva:*:232:232::0:0:Archiva Daemon User:/usr/local/archiva:/bin/sh
 _ntp:*:233:233::0:0:NTP Daemon:/var/empty:/usr/sbin/nologin
 kafka:*:234:234::0:0:Apache Kafka user:/nonexistent:/usr/sbin/nologin
 openhab:*:235:235::0:0:openHAB user:/var/db/openhab2/home:/usr/sbin/nologin
-# free: 236
-# free: 237
+rspamd:*:236:236::0:0:rspamd pseudo-user:/nonexistent:/usr/sbin/nologin
+paperless:*:237:237::0:0:paperless user:/var/db/paperless:/bin/sh
 # free: 238
 # free: 239
 aprsd:*:240:240::0:0:aprsd:/nonexistent:/bin/sh
@@ -300,8 +300,7 @@ sonarr:*:351:351::0:0:Sonarr PVR:/nonexistent:/usr/sbin/nologin
 radarr:*:352:352::0:0:Radarr Daemon:/nonexistent:/usr/sbin/nologin
 _iodined:*:353:353::0:0:Iodine Daemon:/nonexistent:/usr/sbin/nologin
 jackett:*:354:354::0:0:Jackett Torznab Proxy Daemon:/nonexistent:/usr/sbin/nologin
-# free: 354
-# free: 355
+nzbhydra2:*:355:355::0:0:NZBHydra 2 Daemon:/nonexistent:/usr/sbin/nologin
 # free: 356
 # free: 357
 # free: 358
@@ -466,7 +465,7 @@ pwhois:*:512:512::0:0:pwhoisd User:/nonexistent:/usr/sbin/nologin
 # free: 517
 # free: 518
 # free: 519
-# free: 520
+libvirtdbus:*:520:520::0:0:Libvirt D-Bus bridge:/nonexistent:/usr/sbin/nologin
 davmail:*:521:521::0:0:Davmail Exchange Gateway:/nonexistent:/usr/sbin/nologin
 nullmail:*:522:522::0:0:Nullmailer Mail System:/var/spool/nullmailer:/bin/sh
 freevo:*:523:523::0:0:Freevo User:/var/db/freevo:/bin/sh
@@ -551,7 +550,7 @@ _tss:*:601:601:daemon:0:0:TrouSerS user:/var/empty:/usr/sbin/nologin
 _pkcs11:*:602:602:daemon:0:0:opencryptoki user:/var/empty:/usr/sbin/nologin
 _acme:*:603:603::0:0:ACME client user:/var/empty:/usr/sbin/nologin
 # free: 604
-# free: 605
+_hockeypuck:*:605:605::0:0:hockeypuck pgp keyserver user:/var/empty:/usr/sbin/nologin
 # free: 606
 # free: 607
 # free: 608
@@ -796,8 +795,8 @@ sogod:*:846:846::0:0:SOGo groupware:/nonexistent:/usr/sbin/nologin
 domoticz:*:847:847::0:0:domoticz user:/nonexistent:/usr/sbin/nologin
 graylog:*:848:848::0:0:Graylog user:/nonexistent:/usr/sbin/nologin
 chronyd:*:849:849::0:0:chronyd user:/nonexistent:/usr/sbin/nologin
-# free: 850
-# free: 851
+qbittorrent:*:850:850::0:0:qBittorrent Daemon User:/var/db/qbittorrent/conf:/usr/sbin/nologin
+cassandra:*:851:851::0:0:Cassandra DB Daemon User:/var/db/cassandra:/usr/sbin/nologin
 # free: 852
 _geodns:*:853:853::0:0:GeoDNS User:/var/empty:/usr/sbin/nologin
 # free: 854
@@ -828,7 +827,7 @@ archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
 # free: 879
 # free: 880
 # free: 881
-# free: 882
+midpoint:*:882:882::0:0:midPoint user:/var/db/midpoint:/usr/sbin/nologin
 ipfs-go:*:883:883::0:0:ipfs-go user:/var/db/ipfs-go:/bin/sh
 telegraf:*:884:884::0:0:telegraf user:/nonexistent:/usr/sbin/nologin
 tcpdump:*:885:885::0:0:tcpdump user:/nonexistent:/usr/sbin/nologin

@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-fenv
 PORTVERSION=	0.1.0
-PORTREVISION=	18
+PORTREVISION=	20
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

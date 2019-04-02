@@ -136,12 +136,10 @@
     SUBDIR += p5-XML-WBXML
     SUBDIR += p5-bsdconv
     SUBDIR += p5-plutil
+    SUBDIR += pdf2djvu
     SUBDIR += pear-Services_JSON
     SUBDIR += pecl-igbinary
     SUBDIR += php-bsdconv
-    SUBDIR += php56-iconv
-    SUBDIR += php56-mbstring
-    SUBDIR += php56-recode
     SUBDIR += php71-iconv
     SUBDIR += php71-mbstring
     SUBDIR += php71-recode
@@ -158,7 +156,6 @@
     SUBDIR += py-better-bencode
     SUBDIR += py-bsdconv
     SUBDIR += py-iconv
-    SUBDIR += py-pint
     SUBDIR += py-rencode
     SUBDIR += py-text-unidecode
     SUBDIR += py-unidecode

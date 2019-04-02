@@ -33,12 +33,9 @@
     SUBDIR += chibi-scheme
     SUBDIR += chicken
     SUBDIR += chicken5
-    SUBDIR += cilkplus
     SUBDIR += cim
     SUBDIR += cint
     SUBDIR += cjs
-    SUBDIR += clang-devel
-    SUBDIR += clang35
     SUBDIR += cling
     SUBDIR += clojure
     SUBDIR += clojure-mode.el
@@ -113,6 +110,7 @@
     SUBDIR += gforth
     SUBDIR += ghc
     SUBDIR += ghc843
+    SUBDIR += ghc844
     SUBDIR += ghc862
     SUBDIR += gjs
     SUBDIR += gnat_util
@@ -273,7 +271,6 @@
     SUBDIR += pharo
     SUBDIR += phc
     SUBDIR += php-mode.el
-    SUBDIR += php56
     SUBDIR += php71
     SUBDIR += php71-extensions
     SUBDIR += php72
@@ -319,7 +316,6 @@
     SUBDIR += rexx-wrapper
     SUBDIR += rhino
     SUBDIR += rubinius
-    SUBDIR += ruby23
     SUBDIR += ruby24
     SUBDIR += ruby25
     SUBDIR += runawk

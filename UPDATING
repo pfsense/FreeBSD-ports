@@ -5,6 +5,259 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20190328:
+  AFFECTS: www/firefox-i18n, www/firefox-esr-i18n, mail/thunderbird-i18n, www/seamonkey-i18n
+  AUTHOR: gecko@FreeBSD.org
+
+  Separate packages for localization packs are no longer supported.
+  Firefox 65+ has in-browser menu while Firefox ESR60, Thunderbird 60
+  or SeaMonkey 2.49 should download preferred .xpi manually. Refer to
+  the following article (including previous revisions) how to do this.
+
+  https://support.mozilla.org/kb/use-firefox-another-language
+
+20190328:
+  AFFECTS: users of www/qt5-webengine
+  AUTHOR: kde@FreeBSD.org
+
+  Users that upgrade www/qt5-webengine without using pkg/poudriere might
+  experience failures due to conflicts with the installed version of 5.9.5.
+
+  In that case, pkg delete -f the qt5-webengine package before building
+  the updated version.
+
+20190314:
+  AFFECTS: users of mail/rspamd, mail/rspamd-devel
+  AUTHOR: vsevolod@FreeBSD.org
+
+  User and group that rspamd run as are changed from nobody:nobody to
+  rspamd:rspamd. Unless it is clean install you need to execute following
+  command.
+
+  # chown -R rspamd:rspamd /var/db/rspamd /var/log/rspamd /var/run/rspamd
+
+20190311:
+  AFFECTS: users of x11/xorg, x11-fonts/mkfontscale, x11-fonts/mkfontdir
+  AUTHOR: zeising@FreeBSD.org
+
+  The x11-fonts/mkfontdir port has been removed and the functionality
+  has been merged into x11-fonts/mkfontscale.  This might cause issues
+  with upgrading.  If you get conflicts between mkfontscale and mkfontdir
+  please remove mkfontdir before upgrading.
+
+  To do this, simply run the following:
+      pkg delete -f mkfontdir
+
+20190311:
+  AFFECTS: users of www/igal2
+  AUTHOR: rodrigo@freebsd.org
+
+  www/igal2 2.2-1 is now built with graphics/ImageMagick6-nox11
+  and don't install the ImageMagik X11 dependencies anymore.
+  A build option allows you to restore the previous behaviour.
+
+20190303:
+  AFFECTS: users of x11-fonts/noto*
+  AUTHOR: sunpoet@FreeBSD.org
+
+  Google Noto Fonts family has been converted to several ports. x11-fonts/noto
+  is a meta port which includes 1 old port and 5 new ports as follows:
+  - x11-fonts/noto-basic (was noto-lite): basic fonts set with emoji
+  - x11-fonts/noto-extra: extra fonts set
+  - x11-fonts/noto-jp: Japanese fonts set
+  - x11-fonts/noto-kr: Korean fonts set
+  - x11-fonts/noto-sc: Simplified Chinese fonts set
+  - x11-fonts/noto-tc: Traditional Chinese fonts set
+
+20190302:
+  AFFECTS: users of sysutils/paladin
+  AUTHOR: Ryan Westlund <rlwestlund@gmail.com>
+
+  The way paladin parses its config file has changed, please
+  check the provided sample config.
+
+20190227:
+  AFFECTS: users of security/softether, security/softether-devel
+  AUTHOR: meta@FreeBSD.org
+
+  These ports' bridge, client, server daemon unintendedly had spit out
+  chain_certs (certificate chain) directory on libexec directory until
+  r494024.
+
+  If your ${PREFIX}/libexec/softether/chain_certs directory is empty, you
+  can remove the directory safely. If the directory is not empty, move it
+  to ${SE_DBDIR} when upgrading softether. Following commands should help:
+
+      service softether_(bridge|cleint|server) stop
+      (portmaster, portupgrade or pkg upgrade)
+      mv ${PREFIX}/libexec/softether/chain_certs ${SE_DBDIR}/
+      service softether_(bridge|cleint|server) start
+
+  With the default Makefile settings, ${SE_DBDIR} is set to /var/db/softether.
+
+20190224:
+  AFFECTS: users of security/gnutls
+  AUTHOR: tijl@FreeBSD.org
+
+  GnuTLS now looks for its configuration files in PREFIX/etc (/usr/local/etc)
+  instead of /etc.  If the following files exist they have to be moved.  On a
+  default installation these files do not exist.
+
+  /etc/gnutls/default-priorities
+  /etc/gnutls/pkcs11.conf
+  /etc/tpasswd
+  /etc/tpasswd.conf
+
+20190215:
+  AFFECTS: users of net-im/ejabberd
+  AUTHOR: ashish@FreeBSD.org
+
+  If you've mod_mam enabled with compress_xml set to true, then you're affected
+  by bug where the XML namespace, and tag elements get interchanged in the MAM cache
+  which results in invalid XML, and causing XMPP clients to disconnect. For more details,
+  please refer to: https://github.com/processone/ejabberd/issues/2744
+
+  This upgrade contains the patch that fixes the problem going forward. For fixing already
+  affected users, you'll need to wipe off the MAM cache for the affected users:
+
+      sudo -u ejabberd -H ejabberdctl remove_mam_for_user <user> <server>
+
+20190207:
+  AFFECTS: users of net-mgmt/mk-livestatus
+  AUTHOR: egypcio@FreeBSD.org
+
+  The default Nagios version supported by net-mgmt/mk-livestatus changed
+  from Nagios 3 to Nagios 4 - the respective Nagios package was added to
+  net-mgmt/mk-livestatus' runtime dependencies.
+
+  If you still need support for Nagios 3 you just need to change the
+  options for net-mgmt/mk-livestatus and compile the port yourself.
+
+20190202:
+  AFFECTS: users of archivers/urbackup-server
+  AUTHOR: freebsd@coombscloud.com
+
+  Some of the port's sources previously included absolute references to /etc/urbackup.  
+  The upgrade now changes these references to ${PREFIX}/etc/urbackup. If you have placed 
+  any configuration files within /etc/urbackup, these should be relocated to 
+  ${PREFIX}/etc/urbackup.
+
+20190124:
+  AFFECTS: users of sysutils/rubygem-fluentd, sysutils/fluent-bit
+  AUTHOR: girgen@FreeBSD.org
+
+  The fluentd port has been upgraded from the 0.12 line to 1.3.3.  The upgrade
+  is mostly non-disruptive since there is a backward compatibility with 0.12
+  plugins and configuration files, but care should be taken about the order of
+  server upgrades since fluentd 1.x is unable to send it's data to version 0.12
+  instances.  You should carefully read
+  https://docs.fluentd.org/v1.0/articles/update-from-v0.12 before performing
+  any upgrade activities.
+
+20190120:
+  AFFECTS: users of mail/fetchmail
+  AUTHOR: mandree@FreeBSD.org
+
+  The fetchmail port no longer offers the X11 option and no longer
+  depends on Python.  The corresponding fetchmailconf Python program has now
+  been split out into a separate port or package, so that fetchmail itself
+  will no longer require Python.
+
+  Users who wish to use fetchmailconf should install the new fetchmailconf
+  port or package.
+
+20190119:
+  AFFECTS: users of german/webalizer2, japanese/webalizer, polish/webalizer2, portuguese/webalizer-pt_BR, portuguese/webalizer-pt_PT, ukrainian/webalizer, www/geolizer, www/webalizer
+  AUTHOR: dinoex@FreeBSD.org
+
+  The option GEOIP has beeen changed to used the new datebase.
+  Either copy GeoLite2-Country.mmdb in the working directory,
+  or set the GeoIPDatabase option to the location of the file.
+
+20190114:
+  AFFECTS: users of graphics/qgis
+  AUTHOR: rhurlin@gwdg.de
+
+  GIS 3.4 LTR, the first long-term release (LTR) of QGIS 3, has landed
+  in the FreeBSD ports tree. It will also replace the previous 2.18 LTR
+  in the QGIS package repositories in February 2019 [1].
+
+  Beside, the latest Qt4 version 4.8.7 has been EOL since December 2015
+  and its expiration date on FreeBSD is set to March, 15th 2019.
+  Because QGIS 2 is based on Qt4 and Python2, it was decided to not create
+  a legacy port for QGIS 2, after graphics/qgis changed to QGIS 3.
+
+  For users moving over from the 2.18 LTR there is a huge list of new
+  features and impactful changes in this new 3.4 LTR version. Most notably
+  3.x plugins are incompatible with 2.x plugins, so please review your
+  plugin usage carefully. Before moving over, if you have not already
+  done so, take a look at the changelogs from versions 3.0, 3.2, and
+  3.4 [2][3][4] to understand the full scope of changes in the 3.x release.
+
+  [1] https://qgis.org/en/site/getinvolved/development/roadmap.html#release-schedule
+  [2] http://changelog.qgis.org/en/qgis/version/3.0.0/
+  [3] http://changelog.qgis.org/en/qgis/version/3.2.0/
+  [4] http://changelog.qgis.org/en/qgis/version/3.4-LTR/
+
+20190114:
+  AFFECTS: x11-wm/sway
+  AUTHOR: jbeich@FreeBSD.org
+
+  swayidle and swaylock split out into x11/swayidle and x11/swaylock.
+  Check your sway config and install those if required.
+
+20190113:
+  AFFECTS: users of net/GeoIP
+  AUTHOR: adamw@FreeBSD.org
+
+  Maxmind no longer provides geolocation data in the legacy format used
+  by net/GeoIP. All GEOIP-related OPTIONS have been removed, and all
+  GeoIP-dependent ports will be removed soon.
+
+  Where possible, you must switch to net/libmaxminddb, which uses the
+  newer (and fully supported) GeoIP 2 format. Unfortunately, this is
+  not a drop-in replacement. To fetch the GeoIP 2 geolocation databases,
+  whether the free or paid versions, you must use net/geoipupdate
+  (pkg install geoipupdate).
+
+  The legacy database is no longer available, and we cannot distribute
+  it by the Maxmind license, so the legacy GeoIP format is essentially
+  dead.
+
+20190108:
+  AFFECTS: users of databases/mysql-connector-java
+  AUTHOR: matthew@FreeBSD.org
+
+  The databases/mysql-connector-java port has been updated to 8.0.13,
+  which requires a minimum of Java 1.8, so dropping support for Java
+  1.6 and 1.7.  Users of those versions of Java should substitute the
+  databases/mysql-connector-java51 port which remains at version
+  5.1.47
+
+20190103:
+  AFFECTS: users of multimedia/vlc*
+  AUTHOR: riggs@FreeBSD.org
+
+  The multimedia/vlc port has been upgraded to 3.0.5, the latest upstream
+  release. Subsequently, multimedia/vlc-qt4 and multimedia/vlc3 have been
+  retired and removed from the ports tree. Users who previously used
+  multimedia/vlc3 might want to switch to multimedia/vlc with the following
+  commands:
+
+  # pkg install multimedia/vlc
+    or
+  # portmaster -o multimedia/vlc multimedia/vlc3
+    or
+  # portupgrade -o multimedia/vlc multimedia/vlc3
+
+20190102:
+  AFFECTS: users of net/serviio
+  AUTHOR: netchild@FreeBSD.org
+
+  If you have customized your etc/serviio/profile.xml you need to review
+  and merge changes from the profile.xml.sample file, else you may not be
+  able to watch mkv files.
+
 20181228:
   AFFECTS: users of devel/trio
   AUTHOR: rodrigo@freebsd.org
@@ -476,7 +729,6 @@ you update your ports collection, before attempting any port upgrades.
    > y
 
   Application key [base64:P62La9V........qw=] set successfully.
-
 
 20180901:
   AFFECTS: users of samba46
@@ -2506,7 +2758,6 @@ you update your ports collection, before attempting any port upgrades.
   version of OpenSSL or LibreSSL that supports the AES256 and SHA256
   algorithms.
 
-
 20170120:
   AFFECTS: users of databases/mysql56-server
   AUTHOR: feld@FreeBSD.org
@@ -2870,6 +3121,11 @@ you update your ports collection, before attempting any port upgrades.
 
 	portupgrade -f `pkg shlib -qR libperl.so.5.20`
 
+	  If, for some reason, this command fails at one point, it is safe to
+	  run it again, it will not rebuild what it already rebuilt, as the
+	  ports that have been rebuilt no longer depend on libperl.so.5.20 but
+	  on libperl.so.5.24.
+
   Portmaster users:
 	portmaster -o lang/perl5.24 lang/perl5.20
 
@@ -2880,6 +3136,11 @@ you update your ports collection, before attempting any port upgrades.
 	  can do so with:
 
 	portmaster -f `pkg shlib -qR libperl.so.5.20`
+
+	  If, for some reason, this command fails at one point, it is safe to
+	  run it again, it will not rebuild what it already rebuilt, as the
+	  ports that have been rebuilt no longer depend on libperl.so.5.20 but
+	  on libperl.so.5.24.
 
 20161102:
   AFFECTS: users of security/acme-client
@@ -5514,7 +5775,6 @@ you update your ports collection, before attempting any port upgrades.
 
   This is all that is needed to continue using an existing Fedora 10 Linux base
   and userland.
-
 
 20141208:
   AFFECTS: users of ports-mgmt/poudriere, ports-mgmt/poudriere-devel
@@ -9229,7 +9489,6 @@ you update your ports collection, before attempting any port upgrades.
     or
   # pkg install -fR lang/ghc
 
-
 20121218:
   AFFECTS: users of icu
   AUTHOR: bapt@FreeBSD.org
@@ -10267,7 +10526,6 @@ you update your ports collection, before attempting any port upgrades.
   # portmaster -r ghc
     or
   # portupgrade -fr lang/ghc
-
 
 20120531:
   AFFECTS: users of graphics/png
@@ -12112,7 +12370,6 @@ or
   routines were moved from liblutil to libldap.  If you previously built
   the library with "FETCH" support, this would cause libldap to depend on
   FreeBSD's libfetch.so library.
-
 
   As of 20110402, a local change have been introduced so OpenLDAP libraries
   link against libfetch.so when FETCH is enabled.  Normally, no further user

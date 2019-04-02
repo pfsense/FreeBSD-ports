@@ -51,6 +51,7 @@
     SUBDIR += gnome-icons-iris
     SUBDIR += gnome-icons-jini
     SUBDIR += gnome-icons-lila
+    SUBDIR += gnome-icons-luv
     SUBDIR += gnome-icons-noia-full
     SUBDIR += gnome-icons-noia-warm
     SUBDIR += gnome-icons-refined
@@ -121,6 +122,7 @@
     SUBDIR += mate-icon-theme
     SUBDIR += mate-icon-theme-faenza
     SUBDIR += mate-themes
+    SUBDIR += materia-gtk-theme
     SUBDIR += metacity-aluminumalloy-cryogenic-theme
     SUBDIR += metacity-aluminumalloy-smog-theme
     SUBDIR += metacity-aluminumalloy-toxic-theme
@@ -138,20 +140,17 @@
     SUBDIR += numix-theme
     SUBDIR += openbox-arc-theme
     SUBDIR += openbox-themes
+    SUBDIR += papirus-icon-theme
     SUBDIR += plank-theme-moka
     SUBDIR += plasma5-breeze
     SUBDIR += plasma5-breeze-gtk
     SUBDIR += plasma5-kde-gtk-config
     SUBDIR += plasma5-oxygen
     SUBDIR += plasma5-plasma-workspace-wallpapers
-    SUBDIR += qt4-style-float
-    SUBDIR += qt4-style-phase
-    SUBDIR += qt4-style-quantumstyle
     SUBDIR += qt5-style-plugins
     SUBDIR += qtcurve
     SUBDIR += qtcurve-gtk2
     SUBDIR += qtcurve-kf5
-    SUBDIR += qtcurve-qt4
     SUBDIR += qtcurve-qt5
     SUBDIR += qtcurve-utils
     SUBDIR += rezlooks
@@ -162,6 +161,7 @@
     SUBDIR += slim-themes
     SUBDIR += thewidgetfactory
     SUBDIR += ubuntulooks
+    SUBDIR += wallpapers-freebsd-kde
     SUBDIR += xcursor-themes
     SUBDIR += xfce-evolution
     SUBDIR += xfce-icons-elementary

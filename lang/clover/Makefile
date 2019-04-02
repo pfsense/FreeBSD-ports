@@ -2,6 +2,7 @@
 
 PORTNAME=	clover
 PORTVERSION=	${MESAVERSION}
+PORTREVISION=	2
 CATEGORIES=	lang
 
 COMMENT=	Mesa "Clover" OpenCL library

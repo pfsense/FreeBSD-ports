@@ -3,7 +3,7 @@
 
 PORTNAME=	chapping
 PORTVERSION=	0.43
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	http://forja.rediris.es/frs/download.php/760/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -15,11 +15,9 @@ COMMENT=	Turn based board football game
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler gmake tar:bzip2
+USES=		gmake sdl tar:bzip2
 USE_SDL=	sdl image gfx ttf
-
-CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
-CXXFLAGS_clang=	-Wno-c++11-narrowing
+USE_CXXSTD=	c++98
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-source
 ALL_TARGET=	linux

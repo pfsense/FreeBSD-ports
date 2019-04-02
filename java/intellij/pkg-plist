@@ -111,9 +111,9 @@ share/applications/idea.desktop
 %%IDEA_HOME%%/lib/constraint-layout.jar
 %%IDEA_HOME%%/lib/cucumber-core-1.2.4.jar
 %%IDEA_HOME%%/lib/cucumber-java-1.2.5.jar
-%%IDEA_HOME%%/lib/delight-nashorn-sandbox-0.1.16.jar
+%%IDEA_HOME%%/lib/delight-rhino-sandbox-0.0.9.jar
 %%IDEA_HOME%%/lib/dexlib2-2.2.1.jar
-%%IDEA_HOME%%/lib/ecj-4.7.2.jar
+%%IDEA_HOME%%/lib/ecj-4.10.jar
 %%IDEA_HOME%%/lib/eddsa-0.2.0.jar
 %%IDEA_HOME%%/lib/error_prone_annotations-2.3.1.jar
 %%IDEA_HOME%%/lib/extensions.jar
@@ -192,8 +192,8 @@ share/applications/idea.desktop
 %%IDEA_HOME%%/lib/maven-model-builder-3.3.9.jar
 %%IDEA_HOME%%/lib/maven-repository-metadata-3.3.9.jar
 %%IDEA_HOME%%/lib/microba.jar
-%%IDEA_HOME%%/lib/miglayout-core-5.1.jar
-%%IDEA_HOME%%/lib/miglayout-swing-5.1.jar
+%%IDEA_HOME%%/lib/miglayout-core-5.2.jar
+%%IDEA_HOME%%/lib/miglayout-swing-5.2.jar
 %%IDEA_HOME%%/lib/mutability-annotations-compat.jar
 %%IDEA_HOME%%/lib/nanoxml-2.2.3.jar
 %%IDEA_HOME%%/lib/nekohtml-1.9.22.jar
@@ -215,11 +215,12 @@ share/applications/idea.desktop
 %%IDEA_HOME%%/lib/plexus-interpolation-1.21.jar
 %%IDEA_HOME%%/lib/plexus-utils-3.0.22.jar
 %%IDEA_HOME%%/lib/protobuf-java-3.4.0.jar
-%%IDEA_HOME%%/lib/proxy-vole-1.0.5.jar
+%%IDEA_HOME%%/lib/proxy-vole-1.0.6.jar
 %%IDEA_HOME%%/lib/pty4j-0.8.6.jar
 %%IDEA_HOME%%/lib/purejavacomm-0.0.11.1.jar
 %%IDEA_HOME%%/lib/resources.jar
 %%IDEA_HOME%%/lib/resources_en.jar
+%%IDEA_HOME%%/lib/rhino-1.7.10.jar
 %%IDEA_HOME%%/lib/rngom-20051226-patched.jar
 %%IDEA_HOME%%/lib/rt/debugger-agent.jar
 %%IDEA_HOME%%/lib/sa-jdwp-1.12.jar
@@ -10240,8 +10241,8 @@ share/applications/idea.desktop
 %%IDEA_HOME%%/plugins/xslt-debugger/lib/rmi-stubs.jar
 %%IDEA_HOME%%/plugins/xslt-debugger/lib/rt/saxon.jar
 %%IDEA_HOME%%/plugins/xslt-debugger/lib/rt/saxon9he.jar
-%%IDEA_HOME%%/plugins/xslt-debugger/lib/rt/serializer.jar
-%%IDEA_HOME%%/plugins/xslt-debugger/lib/rt/xalan.jar
+%%IDEA_HOME%%/plugins/xslt-debugger/lib/rt/serializer-2.7.2.jar
+%%IDEA_HOME%%/plugins/xslt-debugger/lib/rt/xalan-2.7.2.jar
 %%IDEA_HOME%%/plugins/xslt-debugger/lib/rt/xslt-debugger-engine-impl.jar
 %%IDEA_HOME%%/plugins/xslt-debugger/lib/xslt-debugger-engine.jar
 %%IDEA_HOME%%/plugins/xslt-debugger/lib/xslt-debugger.jar

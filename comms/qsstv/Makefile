@@ -2,7 +2,7 @@
 
 PORTNAME=	qsstv
 PORTVERSION=	9.2.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://users.telenet.be/on4qz/qsstv/downloads/ \
 		LOCAL/db
@@ -22,7 +22,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libv4l2.so:multimedia/libv4l
 BUILD_DEPENDS=	v4l_compat>=0:multimedia/v4l_compat
 
-USES=		pkgconfig qmake qt:5
+USES=		compiler:c++11-lang pkgconfig qmake qt:5
 USE_QT=		buildtools core gui network widgets xml
 USE_GL+=	gl
 

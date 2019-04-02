@@ -8,7 +8,7 @@ MASTER_SITES=	http://files.bsdroot.lv/my/FreeBSD/distfiles/hastymail2-devel/
 PKGNAMESUFFIX=	-devel
 DISTNAME=	${PORTNAME}-devel-${HASTYMAIL_REV}
 
-MAINTAINER=	graudeejs@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small, fast and secure yet powerful IMAP webmail
 
 LICENSE=	GPLv2+
@@ -21,7 +21,6 @@ USES=		php:web
 USE_PHP=	session imap pcre
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-NO_BUILD=	yes
 FIND_SKIP_OPTS=	-not -name hastymail2.conf.example -not -name '*.orig'
 
 CONFLICTS_INSTALL=	hastymail2-[0-9]*
@@ -49,7 +48,7 @@ RUN_DEPENDS+=	${LOCALBASE}/share/pear/MDB2/Driver/pgsql.php:databases/pear-MDB2_
 .endif
 .endif
 
-.if ${PORT_OPTIONS:MDB} && (${PORT_OPTIONS:MMYSQL} || ${PORT_OPTIONS:MPGSQL}}
+.if ${PORT_OPTIONS:MDB} && (${PORT_OPTIONS:MMYSQL} || ${PORT_OPTIONS:MPGSQL})
 RUN_DEPENDS+=	${LOCALBASE}/share/pear/DB.php:databases/pear-DB@${PHP_FLAVOR}
 .endif
 

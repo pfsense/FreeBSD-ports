@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dfmt
-PORTVERSION=	0.8.3
+PORTVERSION=	0.9.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -11,6 +11,8 @@ COMMENT=	Formatter for D source code
 
 LICENSE=	BSL
 
+BROKEN=		fails to build
+
 BUILD_DEPENDS=	ldmd2:lang/ldc \
 		dub:devel/dub \
 		rdmd:lang/dlang-tools \
@@ -18,6 +20,7 @@ BUILD_DEPENDS=	ldmd2:lang/ldc \
 		${LOCALBASE}/lib/d/libmir-core.a:devel/mir-core \
 		${LOCALBASE}/lib/d/libstdx-allocator.a:devel/stdx-allocator
 
+USES=		pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	dlang-community
 

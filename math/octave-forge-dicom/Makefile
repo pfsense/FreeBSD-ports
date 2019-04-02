@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-dicom
 PORTVERSION=	0.2.1
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -11,6 +11,8 @@ COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
+
+BROKEN=		does not build with octave>=5.1.0
 
 LIB_DEPENDS+=	libgdcmCommon.so:devel/gdcm
 

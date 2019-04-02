@@ -127,7 +127,6 @@
     SUBDIR += bsdtris
     SUBDIR += bsp
     SUBDIR += bstone
-    SUBDIR += bubble-chains
     SUBDIR += bubbros
     SUBDIR += bugsquish
     SUBDIR += bugsx
@@ -140,8 +139,6 @@
     SUBDIR += bzflag-server
     SUBDIR += cake
     SUBDIR += caph
-    SUBDIR += capicity
-    SUBDIR += capitalism
     SUBDIR += cardpics
     SUBDIR += castlevox
     SUBDIR += cataclysm-dda
@@ -161,6 +158,7 @@
     SUBDIR += cleanq3
     SUBDIR += cockatrice
     SUBDIR += coffeebreak
+    SUBDIR += colobot
     SUBDIR += colorcode
     SUBDIR += columns
     SUBDIR += concentration
@@ -229,6 +227,7 @@
     SUBDIR += dxx-rebirth
     SUBDIR += easyrpg-player
     SUBDIR += eboard
+    SUBDIR += ecwolf
     SUBDIR += edge
     SUBDIR += editss
     SUBDIR += eduke32
@@ -281,7 +280,6 @@
     SUBDIR += flightgear-mb339-pan
     SUBDIR += flightgear-terragear
     SUBDIR += flobopuyo
-    SUBDIR += flukz
     SUBDIR += flyhard
     SUBDIR += flying
     SUBDIR += fmars
@@ -375,7 +373,6 @@
     SUBDIR += gnustep-sudoku
     SUBDIR += gogrepo
     SUBDIR += golddig
-    SUBDIR += goldencheetah
     SUBDIR += golly
     SUBDIR += gomoku
     SUBDIR += goonies
@@ -434,7 +431,6 @@
     SUBDIR += irrlamb
     SUBDIR += ishido
     SUBDIR += ivan
-    SUBDIR += jag
     SUBDIR += jaggedalliance2
     SUBDIR += java-games-suite
     SUBDIR += jchessboard
@@ -455,7 +451,6 @@
     SUBDIR += kajaani-kombat
     SUBDIR += kanagram
     SUBDIR += kapman
-    SUBDIR += kardsgt
     SUBDIR += kartofel
     SUBDIR += katawa-shoujo
     SUBDIR += katomic
@@ -463,7 +458,6 @@
     SUBDIR += kblocks
     SUBDIR += kbounce
     SUBDIR += kbreakout
-    SUBDIR += kcheckers
     SUBDIR += kdegames
     SUBDIR += kdiamond
     SUBDIR += keeperrl
@@ -613,7 +607,6 @@
     SUBDIR += mt_dolphin_ia
     SUBDIR += mt_gtk_client
     SUBDIR += mtaserver
-    SUBDIR += mudmagic
     SUBDIR += multimc
     SUBDIR += mvdsv
     SUBDIR += nInvaders
@@ -691,7 +684,6 @@
     SUBDIR += openmsx
     SUBDIR += openmw
     SUBDIR += openomf
-    SUBDIR += openpref
     SUBDIR += openra
     SUBDIR += openrct2
     SUBDIR += opensfx
@@ -745,12 +737,10 @@
     SUBDIR += pipenightdreams
     SUBDIR += pipepanic
     SUBDIR += pipewalker
-    SUBDIR += plutocracy
     SUBDIR += pmars
     SUBDIR += pmars-sdl
     SUBDIR += poker-engine
     SUBDIR += poker-eval
-    SUBDIR += pokerth
     SUBDIR += polyglot
     SUBDIR += pongix
     SUBDIR += ponscripter-sekai
@@ -790,14 +780,11 @@
     SUBDIR += q3cellshading
     SUBDIR += qcc
     SUBDIR += qccx
-    SUBDIR += qgo
     SUBDIR += qmars
     SUBDIR += qnetwalk
     SUBDIR += qonk
     SUBDIR += qqwing
     SUBDIR += qstat
-    SUBDIR += qtads
-    SUBDIR += quackle
     SUBDIR += quadra
     SUBDIR += quadrapassel
     SUBDIR += quake-data
@@ -914,7 +901,6 @@
     SUBDIR += spacezero
     SUBDIR += speak
     SUBDIR += species
-    SUBDIR += spellathon
     SUBDIR += spellcast
     SUBDIR += speyes
     SUBDIR += spicetrade
@@ -933,7 +919,6 @@
     SUBDIR += stransball2
     SUBDIR += stratagus
     SUBDIR += stuntrally
-    SUBDIR += sudoku-sensei
     SUBDIR += sudoku_solver
     SUBDIR += sudsol
     SUBDIR += super_mario_bros_python
@@ -950,7 +935,6 @@
     SUBDIR += tanglet
     SUBDIR += tanks-of-freedom
     SUBDIR += tbclock
-    SUBDIR += tbe
     SUBDIR += tecnoballz
     SUBDIR += teeworlds
     SUBDIR += tenebrae
@@ -1135,11 +1119,11 @@
     SUBDIR += xpilot-ng-server
     SUBDIR += xpipeman
     SUBDIR += xpired
-    SUBDIR += xptools
     SUBDIR += xpuzzletama
     SUBDIR += xpyraminx
     SUBDIR += xqf
     SUBDIR += xrally
+    SUBDIR += xray_re-tools
     SUBDIR += xrick
     SUBDIR += xrisk
     SUBDIR += xroach

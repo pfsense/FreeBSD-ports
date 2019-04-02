@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	kore
-PORTVERSION=	3.2.1
+PORTVERSION=	3.2.2
 CATEGORIES=	devel www
 MASTER_SITES=	https://kore.io/releases/
 
@@ -12,12 +12,10 @@ COMMENT=	Web application framework for writing web APIs in C
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_powerpc64=	fails to compile: cc1: error: -Werror=c11-extensions: No option -Wc11-extensions
-
 FLAVORS=	default notls
 notls_PKGNAMESUFFIX=	-notls
 
-USES=		compiler gmake ssl
+USES=		compiler:c11 gmake ssl
 
 CFLAGS+=	${CFLAGS_${CHOSEN_COMPILER_TYPE}} -I${OPENSSLINC}
 CFLAGS_clang=	-Wno-error=c11-extensions # 12.0 + -pedantic

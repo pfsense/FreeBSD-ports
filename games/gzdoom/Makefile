@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gzdoom
-PORTVERSION=	3.3.2
+PORTVERSION=	3.7.2
 PORTREVISION=	1
 DISTVERSIONPREFIX=	g
 CATEGORIES=	games
@@ -22,9 +22,9 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfluidsynth.so:audio/fluidsynth \
 		libgme.so:audio/libgme
 
-DATADIR=	${DMDIR}/${PORTNAME}
+USES=		cmake gettext jpeg openal pkgconfig
 
-USES=		cmake	gettext jpeg openal pkgconfig
+DATADIR=	${DMDIR}/${PORTNAME}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	coelckers

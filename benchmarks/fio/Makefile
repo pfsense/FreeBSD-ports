@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	fio
-PORTVERSION=	3.12
-PORTREVISION=	1
+PORTVERSION=	3.13
 CATEGORIES=	benchmarks
 MASTER_SITES=	http://brick.kernel.dk/snaps/
 
 MAINTAINER=	bapt@FreeBSD.org
-COMMENT=	FIO - flexible IO tester
+COMMENT=	Flexible IO tester
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake tar:bzip2
 

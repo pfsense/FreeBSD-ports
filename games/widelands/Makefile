@@ -3,7 +3,7 @@
 
 PORTNAME=	widelands
 DISTVERSION=	build19
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	https://launchpad.net/widelands/${DISTVERSION}/${DISTVERSION}/+download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -19,8 +19,8 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libicuuc.so:devel/icu \
 		libboost_regex.so:devel/boost-libs
 
-USES=		cmake compiler:c++11-lib gettext \
-		tar:bzip2 python:build
+USES=		cmake compiler:c++11-lib gettext gl \
+		tar:bzip2 python:build sdl
 CMAKE_ARGS=	-DWL_INSTALL_BASEDIR="${PREFIX}" \
 		-DWL_INSTALL_DATADIR="${DATADIR}" \
 		-DWL_INSTALL_DOCDIR="${DOCSDIR}" \
@@ -28,10 +28,6 @@ CMAKE_ARGS=	-DWL_INSTALL_BASEDIR="${PREFIX}" \
 		-DWL_OPTIMIZE_FLAGS=""
 USE_GL=		gl glew
 USE_SDL=	sdl2 mixer2 image2 net2 ttf2
-CXXFLAGS_powerpc=	-Wno-maybe-uninitialized
-CXXFLAGS_powerpcspe=	-Wno-maybe-uninitialized
-CXXFLAGS_powerpc64=	-Wno-maybe-uninitialized
-CXXFLAGS_sparc64=	-Wno-maybe-uninitialized
 
 PORTDATA=	*
 PORTDOCS=	*

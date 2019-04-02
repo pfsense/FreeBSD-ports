@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lxqt-qtplugin
-PORTVERSION=	0.13.0
-PORTREVISION=	2
+PORTVERSION=	0.14.0
 CATEGORIES=	sysutils
 MASTER_SITES=	LXQT
 
@@ -12,12 +11,10 @@ COMMENT=	LXQt system integration plugin for Qt
 
 LICENSE=	LGPL21+
 
-LIB_DEPENDS=	libdbusmenu-qt5.so:devel/libdbusmenu-qt@qt5 \
-		libfm.so:x11/libfm \
-		libmenu-cache.so:x11/menu-cache \
+LIB_DEPENDS=	libdbusmenu-qt5.so:devel/libdbusmenu-qt \
 		libexif.so:graphics/libexif
 
-USES=	cmake compiler:c++11-lib kde:5 lxqt pkgconfig tar:xz qt:5 gettext-runtime
+USES=	cmake compiler:c++14-lang kde:5 lxqt pkgconfig tar:xz qt:5 gnome gettext-runtime
 
 USE_XORG=xcb
 USE_GNOME=glib20
@@ -26,6 +23,7 @@ USE_QT=	buildtools_build qmake_build core dbus gui svg widgets \
 USE_KDE=	windowsystem
 USE_LXQT=	buildtools qtxdg libfmqt
 USE_LDCONFIG=	yes
+
 PLIST_FILES=	${QT_PLUGINDIR}/platformthemes/libqtlxqt.so
 
 .include <bsd.port.mk>

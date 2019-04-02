@@ -11,10 +11,11 @@ COMMENT=	Perl wrapper to use with Amanda (with libthr.so.* linked)
 
 USES=		perl5
 USE_PERL5=	run
+
+NO_WRKSUBDIR=	yes
 SUB_FILES=	perl-amanda.c
 SUB_LIST=	PREFIX=${LOCALBASE}
 PLIST_FILES=	bin/perl-amanda
-WRKSRC=		${WRKDIR}
 
 do-fetch:
 	@${DO_NADA}
@@ -22,10 +23,10 @@ do-fetch:
 pre-build: apply-slist
 
 do-build:
-	cd ${WRKSRC} && ${CC} -o perl-amanda perl-amanda.c
+	cd ${WRKSRC} && ${CC} -o perl-amanda ${WRKDIR}/perl-amanda.c
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKDIR}/perl-amanda ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_PROGRAM} ${WRKSRC}/perl-amanda ${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.pre.mk>
 

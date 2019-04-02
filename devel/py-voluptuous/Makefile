@@ -1,8 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	voluptuous
-PORTVERSION=	0.9.3
+PORTVERSION=	0.11.5
 CATEGORIES=	devel python
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
@@ -11,11 +12,14 @@ COMMENT=	Python data validation library
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	alecthomas
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils
+
 NO_ARCH=	yes
+
+do-test:
+	@cd ${WRKSRC} && nosetests-${PYTHON_VER}
 
 .include <bsd.port.mk>

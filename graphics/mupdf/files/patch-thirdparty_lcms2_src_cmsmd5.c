@@ -1,4 +1,4 @@
---- thirdparty/lcms2/src/cmsmd5.c.orig	2018-10-31 19:49:39 UTC
+--- thirdparty/lcms2/src/cmsmd5.c.orig	2018-01-23 19:37:31 UTC
 +++ thirdparty/lcms2/src/cmsmd5.c
 @@ -29,7 +29,7 @@
  #ifdef CMS_USE_BIG_ENDIAN

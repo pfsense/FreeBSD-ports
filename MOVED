@@ -824,7 +824,6 @@ audio/gmpc-autoplaylist||2009-09-24|Unmaintained upstream
 audio/gmpc-stopbutton||2009-09-24|Unmaintained upstream
 sysutils/zccron|sysutils/p5-ZConf-Cron|2009-09-27|Please use sysutils/p5-ZConf-Cron
 devel/p5-Cwd|devel/p5-PathTools|2009-09-30|Please use devel/p5-PathTools
-x11/electricsheep||2009-10-02|No source tarball, Unix code unmaintained
 sysutils/fusefs-gphotofs||2009-10-05|Removed
 x11/kxgenerator||2009-10-07|Has expired: Project abandoned, master site disappeared
 hebrew/geresh||2009-10-08|No longer maintained upstream
@@ -2970,7 +2969,6 @@ x11/wmmsg||2011-12-28|Has expired: No more public distfiles
 x11-toolkits/libgtkeditor||2011-12-28|Has expired: No longer supported upstream, not depended upon anymore
 misc/demoniac||2011-12-28|Has expired: No more upstream, no more public distfiles
 databases/clip||2011-12-28|Has expired: No upstream development for a long time
-x11-toolkits/gtkextra||2011-12-28|Has expired: no longer supported upstream, no more depend on
 www/xpi-mousegestures||2011-12-28|Has expired: Development has been ceased and not compatible with Firefox > 2
 www/xpi-mozex||2011-12-28|Has expired: Development has been ceased and not compatible with Firefox > 3
 sysutils/duplicity05||2012-01-01|Has expired: This version is out of date, and the 0.6.x branch is considered stable
@@ -4049,7 +4047,6 @@ sysutils/sarah||2013-03-03|Has expired: No more upstream, no more public distfil
 www/igal||2013-03-03|Has expired: No more upstream, no more public distfiles, consider using www/llgal
 finance/tinyerp-server||2013-03-03|Has expired: No more upstream, no more public distfiles, consider using finance/openerp-server
 ports-mgmt/portcheck||2013-03-03|Has expired: No more upstream, no more public distfiles
-security/sslproxy||2013-03-03|Has expired: Abandoned upstream
 x11-themes/e17-theme-darkness||2013-03-03|Has expired: No more public distfiles
 x11-themes/e17-theme-cthulhain||2013-03-03|Has expired: Dead upstream since 2008
 x11-servers/driglide||2013-03-03|Has expired: 3dfx is dead, fails to compile on recent versions of FreeBSD
@@ -4082,7 +4079,6 @@ net-p2p/transmission25|net-p2p/transmission|2013-03-09|gtk version is now fine
 net-p2p/transmission25-cli|net-p2p/transmission-cli|2013-03-09|gtk version is now fine
 net-p2p/transmission25-daemon|net-p2p/transmission-daemon|2013-03-09|gtk version is now fine
 net-p2p/transmission25-gtk2|net-p2p/transmission-gtk2|2013-03-09|gtk version is now fine
-net-p2p/transmission25-qt4|net-p2p/transmission-qt4|2013-03-09|gtk version is now fine
 www/transmission25-web|www/transmission-web|2013-03-09|gtk version is now fine
 net-p2p/transmission-gtk2|net-p2p/transmission-gtk|2013-03-09|Now uses GTK 3
 ftp/proma||2013-03-09|Has expired: Broken for more than 6 months
@@ -5275,7 +5271,6 @@ devel/qt4-declarative|x11-toolkits/qt4-declarative|2014-01-06|Moved to unify wit
 devel/qt4-qtestlib|devel/qt4-testlib|2014-01-06|Renamed to unify with Qt 5
 x11/qt4-opengl|graphics/qt4-opengl|2014-01-06|Moved to unify with Qt 5
 graphics/wings-devel|graphics/wings|2014-01-07|Obsoleted by the main port
-devel/llvm|devel/llvm32|2014-01-08|Has expired: Migrate to devel/llvm32 or newer
 devel/reflex|textproc/reflex|2014-01-08|Duplicate
 devel/hs-hat||2014-01-09|Upstream has vanished
 devel/hs-hdoc||2014-01-09|Removed
@@ -7093,7 +7088,6 @@ sysutils/pessulus||2014-11-19|Abandonware, depends on non existing USE_GNOME com
 x11-toolkits/libzvt||2014-11-19|Abandonware, not depended on anymore
 net-p2p/gtkhx||2014-11-19|Does not work anymore
 korean/ami||2014-11-19|Does not work anymore
-graphics/xzgv||2014-11-19|Abandonware since at least 2008
 deskutils/gtkjournal||2014-11-19|Abandonware, not working anymore
 deskutils/splashsetter||2014-11-19|Abandonware, useless without gnome2
 editors/emacs23|editors/emacs|2014-11-19|Has expired: Unmaintained upstream, use editors/emacs
@@ -7335,7 +7329,6 @@ security/cyassl|security/wolfssl|2015-03-28|Renamed upstream
 devel/rubygem-rcov||2015-03-28|Has expired: Does not work with Ruby 2.x
 emulators/linux_dist-gentoo-stage3||2015-03-28|Has expired: Broken for more than 6 months
 emulators/linux_base-gentoo-stage3||2015-03-28|Has expired: Broken for more than 6 months
-www/vimb|www/vimb-gtk3|2015-03-29|Split into www/vimb-gtk2 and www/vimb-gtk3 (former default)
 ports-mgmt/portbuilder||2015-03-31|Has expired: No longer developed and overcome by changed in the Ports Collection
 devel/subversion16|devel/subversion|2015-03-31|Has expired: EoL, use devel/subversion
 lang/nimrod|lang/nim|2015-04-03|Renamed by upstream
@@ -7836,7 +7829,6 @@ archivers/wzip||2015-11-28|Has expired: Broken for more than 6 months
 databases/sybtcl||2015-11-28|Has expired: Broken for more than 6 months
 biology/povchem||2015-11-28|Has expired: Broken for more than 6 months
 audio/btc||2015-11-28|Has expired: Broken for more than 6 months
-astro/wmglobe||2015-11-28|Has expired: Broken for more than 6 months
 graphics/pyro||2015-11-28|Has expired: Broken for more than 6 months
 graphics/jpeg2ps||2015-11-28|Has expired: Broken for more than 6 months
 chinese/gugod-clean||2015-11-28|Has expired: Broken for more than 6 months
@@ -7885,7 +7877,6 @@ graphics/rubyphoto||2015-11-28|Has expired: Broken for more than 6 months
 german/bsdpaste||2015-11-28|Has expired: Broken for more than 6 months
 audio/amrcoder||2015-11-28|Has expired: Broken for more than 6 months
 sysutils/bashburn||2015-11-28|Has expired: Broken for more than 6 months
-editors/e93||2015-11-28|Has expired: Broken for more than 6 months
 audio/tepsonic||2015-11-28|Has expired: Broken for more than 6 months
 astro/ephem||2015-11-28|Has expired: Broken for more than 6 months
 chinese/cce||2015-11-28|Has expired: Broken for more than 6 months
@@ -8358,7 +8349,6 @@ irc/slirc||2016-07-04|Has expired: Broken for more than 6 months
 irc/qwebirc||2016-07-04|Has expired: Broken for more than 6 months
 biology/platon||2016-07-04|Has expired: Broken for more than 6 months
 news/slnr||2016-07-04|Has expired: Broken for more than 6 months
-science/jmol||2016-07-04|Has expired: Broken for more than 6 months
 net/nstxd||2016-07-04|Has expired: Broken for more than 6 months
 net/sprinkle||2016-07-04|Has expired: Broken for more than 6 months
 editors/ssam||2016-07-04|Has expired: Broken for more than 6 months
@@ -8469,7 +8459,6 @@ audio/mangler||2016-07-04|Has expired: Broken for more than 6 months
 audio/hawkvoice||2016-07-04|Has expired: Broken for more than 6 months
 x11-wm/e-module-mpdule||2016-07-04|Has expired: Broken for more than 6 months
 x11-wm/e-module-tclock||2016-07-04|Has expired: Broken for more than 6 months
-x11-wm/musca||2016-07-04|Has expired: Broken for more than 6 months
 x11-wm/e-module-places||2016-07-04|Has expired: Broken for more than 6 months
 x11-wm/e-module-forecasts||2016-07-04|Has expired: Broken for more than 6 months
 x11-wm/e-module-net||2016-07-04|Has expired: Broken for more than 6 months
@@ -8681,7 +8670,6 @@ multimedia/libmovtar||2016-11-05|Not used anymore, abandonware
 devel/p5-Test-Exception-LessClever||2016-11-06|Deprecated by upstream
 www/py-django-piston||2016-11-06|Has expired: Abandoned upstream. Doesn't work with django>=1.6
 net/remmina-plugin-i18n||2016-11-08|Plugin translations removed upstream in GH commit 2dd0526
-net/p5-Net-Ping||2016-11-08|Has expired: This or newer version included in all supported versions of perl
 ftp/curl-hiphop||2016-11-08|Has expired: useful only for removed hiphop-php
 textproc/rubygem-string-scrub||2016-11-08|Has expired: needed only for EOL versions of Ruby
 textproc/erlang-p1xml|textproc/erlang-fast_xml|2016-11-08|Project was renamed
@@ -9039,7 +9027,6 @@ net/py-pysimplesoap|net/py-soap2py|2017-03-13|Rename to match upstream naming
 games/trigger-data|games/trigger-rally|2017-03-15|Merged into games/trigger-rally
 devel/py-setuptools27|devel/py27-setuptools|2017-03-16|Renamed to better match other python ports
 devel/py-setuptools33|devel/py33-setuptools|2017-03-16|Renamed to better match other python ports
-devel/py-setuptools34|devel/py34-setuptools|2017-03-16|Renamed to better match other python ports
 devel/py-setuptools35|devel/py35-setuptools|2017-03-16|Renamed to better match other python ports
 devel/py-setuptools36|devel/py36-setuptools|2017-03-16|Renamed to better match other python ports
 devel/rubygem-devise-rails4|devel/rubygem-devise|2017-03-16|Has expired: Please use devel/rubygem-devise instead
@@ -9057,7 +9044,6 @@ net/samba36|net/samba43|2017-03-21|Obsolete
 multimedia/mplayer2|multimedia/mpv|2017-03-25|Has expired: Development ceased in favour of mpv, last release from 2013
 devel/buildbot-slave|devel/buildbot-worker|2017-03-27|Renamed to match new upstream package name/terminology
 print/musixtex||2017-03-27|Has expired: Broken for more than 6 months
-www/wml||2017-03-27|Has expired: Broken for more than 6 months
 www/offline-npm||2017-03-27|Has expired: Broken for more than 6 months
 x11-themes/kde-icons-cezanne||2017-03-27|Has expired: Broken for more than 6 months
 x11-themes/kde-icons-sky||2017-03-27|Has expired: Broken for more than 6 months
@@ -9107,7 +9093,6 @@ x11-toolkits/libgtksourceviewmm||2017-04-03|Obsolete and not depend on anymore
 graphics/goocanvasmm||2017-04-03|Obsolete and not depend on anymore
 x11-themes/kde4-icons-oxygen|x11-themes/kf5-oxygen-icons5|2017-04-03|Replaced by x11-themes/kf5-oxygen-icons5
 devel/php5-geshi|devel/php-geshi|2017-04-04|Update PKGNAMEPREFIX: it builds fine with PHP 7.x
-databases/p5-Search-Xapian|databases/p5-Search-Xapian12|2017-04-04|Rename to match Xapian PKGNAMESUFFIX
 archivers/pecl-snappy|archivers/php-snappy|2017-04-04|Update PKGNAMEPREFIX: it builds fine with PHP 7.x
 textproc/kibana50|textproc/kibana5|2017-04-05|Rename port to match the rest of the 5.X line of the elastic stack
 textproc/kibana50-x-pack|textproc/kibana5-x-pack|2017-04-05|Rename port to match the rest of the 5.X line of the elastic stack
@@ -9582,7 +9567,6 @@ devel/buildbot-pkg|devel/py-buildbot-pkg|2017-11-29|Rename to comply with PyPI s
 devel/buildbot-waterfall-view|devel/py-buildbot-waterfall-view|2017-11-29|Rename to comply with PyPI scheme
 devel/buildbot-worker|devel/py-buildbot-worker|2017-11-29|Rename to comply with PyPI scheme
 devel/buildbot-www|devel/py-buildbot-www|2017-11-29|Rename to comply with PyPI scheme
-emulators/ppsspp-devel|emulators/ppsspp|2017-11-29|Out of date: use emulators/ppsspp for now
 audio/shairport|audio/shairport-sync|2017-11-29|Has expired: Officially unmaintained upstream. Use audio/shairport-sync instead
 accessibility/py3-speech-dispatcher|accessibility/py-speech-dispatcher@py36|2017-11-30|Moved to a flavored, generic, version
 accessibility/py3-atspi|accessibility/py-atspi@py36|2017-11-30|Moved to a flavored, generic, version
@@ -9593,8 +9577,6 @@ databases/py3-apsw|databases/py-apsw@py36|2017-11-30|Moved to a flavored, generi
 databases/py3-bsddb3|databases/py-bsddb3@py36|2017-11-30|Moved to a flavored, generic, version
 databases/py3-mysqlclient|databases/py-mysqlclient@py36|2017-11-30|Moved to a flavored, generic, version
 databases/py3-psycopg2|databases/py-psycopg2@py36|2017-11-30|Moved to a flavored, generic, version
-databases/py34-gdbm|databases/py-gdbm@py34|2017-11-30|Moved to a flavored, generic, version
-databases/py34-sqlite3|databases/py-sqlite3@py34|2017-11-30|Moved to a flavored, generic, version
 databases/py35-gdbm|databases/py-gdbm@py35|2017-11-30|Moved to a flavored, generic, version
 databases/py35-sqlite3|databases/py-sqlite3@py35|2017-11-30|Moved to a flavored, generic, version
 databases/py36-gdbm|databases/py-gdbm@py36|2017-11-30|Moved to a flavored, generic, version
@@ -9675,7 +9657,6 @@ devel/py3-voluptuous|devel/py-voluptuous@py36|2017-11-30|Moved to a flavored, ge
 devel/py3-wcwidth|devel/py-wcwidth@py36|2017-11-30|Moved to a flavored, generic, version
 devel/py3-xdg|devel/py-xdg@py36|2017-11-30|Moved to a flavored, generic, version
 devel/py3-yaml|devel/py-yaml@py36|2017-11-30|Moved to a flavored, generic, version
-devel/py34-setuptools|devel/py-setuptools@py34|2017-11-30|Moved to a flavored, generic, version
 devel/py35-setuptools|devel/py-setuptools@py35|2017-11-30|Moved to a flavored, generic, version
 devel/py36-setuptools|devel/py-setuptools@py36|2017-11-30|Moved to a flavored, generic, version
 dns/py3-dnspython|dns/py-dnspython@py36|2017-11-30|Moved to a flavored, generic, version
@@ -9727,7 +9708,6 @@ textproc/py3-texttable|textproc/py-texttable@py36|2017-11-30|Moved to a flavored
 www/py3-cssutils|www/py-cssutils@py36|2017-11-30|Moved to a flavored, generic, version
 www/py3-httplib2|www/py-httplib2@py36|2017-11-30|Moved to a flavored, generic, version
 www/py3-requests|www/py-requests@py36|2017-11-30|Moved to a flavored, generic, version
-x11-toolkits/py34-tkinter|x11-toolkits/py-tkinter@py34|2017-11-30|Moved to a flavored, generic, version
 x11-toolkits/py35-tkinter|x11-toolkits/py-tkinter@py35|2017-11-30|Moved to a flavored, generic, version
 x11-toolkits/py36-tkinter|x11-toolkits/py-tkinter@py36|2017-11-30|Moved to a flavored, generic, version
 security/py-rekall_gui||2017-11-30|Has expired: PoC that is no longer supported
@@ -10002,10 +9982,8 @@ devel/alf||2018-03-02|Has expired: Abandonware, unused in the ports tree
 net/remmina-plugin-gnome|net/remmina-plugin-secret|2018-03-04|Renamed upstream
 databases/php71-memcache|databases/php-memcache@php71|2018-03-08|Merge into a flavorized version
 databases/php72-memcache|databases/php-memcache@php72|2018-03-08|Merge into a flavorized version
-ftp/php56-fastdfs|ftp/php-fastdfs@php56|2018-03-08|Merge into flavorized version
 ftp/php71-fastdfs|ftp/php-fastdfs@php71|2018-03-08|Merge into flavorized version
 ftp/php72-fastdfs|ftp/php-fastdfs@php72|2018-03-08|Merge into flavorized version
-www/unit-php56|www/unit-php@php56|2018-03-08|Merge into flavorized version
 www/unit-php71|www/unit-php@php71|2018-03-08|Merge into flavorized version
 www/unit-php72|www/unit-php@php72|2018-03-08|Merge into flavorized version
 databases/php70-memcached|databases/php-memcached|2018-03-08|Move to flavorized version
@@ -10035,11 +10013,7 @@ www/phpmp||2018-03-08|Has expired: Unmaintained, all www files wrongly belongs t
 www/lionwiki||2018-03-08|Has expired: Unmaintained, all www files wrongly belongs to www user
 databases/php-memcached|databases/pecl-memcached|2018-03-10|Remove duplicate port, use databases/pecl-memcached instead
 emulators/i386-wine-staging|emulators/i386-wine-devel|2018-03-10|Broken for months, abandoned upstream
-archivers/quazip-qt5|archivers/quazip@qt5|2018-03-11|Moved to a flavoured version
 devel/go-json-rest||2018-03-11|Go libraries aren't allowed (GH/ant0ine/go-json-rest)
-security/qtkeychain-qt4|security/qtkeychain@qt4|2018-03-12|Moved to a flavoured version
-security/qtkeychain-qt5|security/qtkeychain@qt5|2018-03-12|Moved to a flavoured version
-devel/libdbusmenu-qt5|devel/libdbusmenu-qt@qt5|2018-03-12|Moved to a flavoured version
 finance/electrum2|finance/electrum|2018-03-13|Has expired: Vulnerable legacy port, please use finance/electrum instead
 math/py-gsl|math/py-pygsl|2018-03-13|Rename to match PyPI naming
 www/mediawiki123|www/mediawiki127|2018-03-14|Has expired: Upstream no longer maintained
@@ -10099,11 +10073,6 @@ devel/libkgapi|devel/libkgapi-kde4|2018-04-11|Make room for KDE updates
 finance/libalkimia|finance/alkimia-qt4|2018-04-13|Project renamed
 security/py-zxcvbn-python|security/py-zxcvbn|2018-04-13|Renamed upstream
 devel/py-libusb115|devel/py-libusb1|2018-04-14|Unused and unmaintained upstream
-devel/qca-qt5|devel/qca@qt5|2018-04-14|Moved to a flavoured version
-devel/qjson-qt5|devel/qjson@qt5|2018-04-14|Moved to a flavoured version
-sysutils/polkit-qt5|sysutils/polkit-qt@qt5|2018-04-14|Moved to flavoured version
-multimedia/gstreamer1-qt4|multimedia/gstreamer1-qt@qt4|2018-04-14|Moved to a flavoured version
-multimedia/gstreamer1-qt5|multimedia/gstreamer1-qt@qt5|2018-04-14|Moved to a flavoured version
 www/mod_antiloris||2018-04-16|Apache 2.2 End of Life
 www/mod_auth_imap2||2018-04-16|Apache 2.2 End of Life
 www/mod_authn_sasl||2018-04-16|Apache 2.2 End of Life
@@ -10208,7 +10177,6 @@ comms/java-commapi-freebsd||2018-06-07|Has expired: Depends on BROKEN and expiri
 comms/soundmodem||2018-06-07|Has expired: Broken for more than 6 months
 comms/jsdr||2018-06-07|Has expired: Broken for more than 6 months
 comms/java-commapi||2018-06-07|Has expired: Broken for more than 6 months
-converters/pdf2djvu||2018-06-07|Has expired: Broken for more than 6 months
 databases/rdb||2018-06-07|Has expired: Broken for more than 6 months
 databases/animenfo-client||2018-06-07|Has expired: Broken for more than 6 months
 databases/ruby-mysql||2018-06-07|Has expired: Broken for more than 6 months
@@ -10253,14 +10221,8 @@ net/syncthing-discosrv|net/syncthing|2018-06-18|Has expired: Included in net/syn
 net/syncthing-inotify|net/syncthing|2018-06-18|Has expired: Included in net/syncthing now
 net/syncthing-cli|net/syncthing|2018-06-18|Has expired: Included in net/syncthing now
 x11-themes/adwaita-common||2018-06-19|Move to flavored version
-x11-themes/adwaita-qt4|x11-themes/adwaita-qt@qt4|2018-06-19|Move to flavored version
-x11-themes/adwaita-qt5|x11-themes/adwaita-qt@qt5|2018-06-19|Move to flavored version
 net-p2p/qbittorrent-nox11|net-p2p/qbittorrent@nox|2018-06-20|Moved to a flavored version
 math/digitizer|graphics/engauge-digitizer|2018-06-20|The previously deleted port math/digitizer is now graphics/engauge-digitizer
-multimedia/qt5-phonon4|multimedia/phonon@qt5|2018-06-21|Moved to a flavored version
-multimedia/qt5-phonon4-designerplugin|multimedia/phonon-designerplugin@qt5|2018-06-21|Moved to a flavored version
-multimedia/qt5-phonon4-gstreamer|multimedia/phonon-gstreamer@qt5|2018-06-21|Moved to a flavored version
-multimedia/qt5-phonon4-vlc|multimedia/phonon-vlc@qt5|2018-06-21|Moved to a flavored version
 net/libproxy-gnome|net/libproxy-gnome2|2018-06-22|Renamed to make slave names consistent
 www/npapi-vlc||2018-06-22|Removed, depends on expired www/libxul
 www/libxul||2018-06-22|Has expired: NPAPI are no longer supported
@@ -10304,8 +10266,6 @@ textproc/kibana46|textproc/kibana5|2018-07-10|Has expired: End of Life was 2018-
 print/cups-connector|print/cloud-print-connector|2018-07-11|Project renamed upstream
 net/wpa_gui|net/wpa_supplicant_gui|2018-07-12|Rename to wpa_supplicant_gui for ease of search
 lang/gcc47|lang/gcc6|2018-07-15|Has expired: Unsupported by upstream. Use GCC 6 or newer instead
-net-p2p/transmission-qt4|net-p2p/transmission-qt@qt4|2018-07-15|Moved into flavored version
-net-p2p/transmission-qt5|net-p2p/transmission-qt@qt5|2018-07-15|Moved into flavored version
 java/jaf||2018-07-16|Included in JRE since 1.6 version
 net/p5-ZConf-Bookmarks||2018-07-16|Has expired: Unmaintained
 net/p5-ZConf||2018-07-16|Has expired: Unmaintained
@@ -10331,8 +10291,6 @@ vietnamese/kde4-l10||2018-07-17|Has expired: broken for more than three years
 graphics/projectm-libvisual|graphics/libprojectm|2018-07-17|Code of projectm-libvisual was merged into graphics/libprojectm
 graphics/yafray|graphics/yafaray|2018-07-20|Project renamed
 lang/spec.alpha||2018-07-21|Unused in the ports tree
-sysutils/xen-tools|sysutils/xen-tools47|2018-07-23|Renamed to support multiple versions
-emulators/xen-kernel|emulators/xen-kernel47|2018-07-23|Renamed to support multiple versions
 emulators/xen||2018-07-23|Removed to support multiple versions
 devel/py-levenshtein|devel/py-python-Levenshtein|2018-07-28|Remove the duplicate
 comms/xwota||2018-07-28|Has expired: No server message and no upstream releases
@@ -10471,8 +10429,6 @@ devel/libbobcat||2018-08-21|Has expired: Broken for more than 5 months
 net-p2p/dogecoin||2018-08-21|Has expired: Broken for more than 5 months
 misc/freebsd-doc-sr||2018-08-23|Removed
 www/py-django18|www/py-django111|2018-08-25|Has expired: End of Live since 01/04/2018
-x11-themes/qt4-style-Kvantum|x11-themes/Kvantum@qt4|2018-08-26|Moved to flavored version
-x11-themes/qt5-style-Kvantum|x11-themes/Kvantum@qt5|2018-08-26|Moved to flavored version
 devel/gps||2018-08-28|Has expired: Depends on obsolete LLVM 3.8
 net-mgmt/ocsinventory-ng|net-mgmt/ocsinventory-server|2018-08-30|split port
 www/py-buku|www/buku|2018-09-01|Moved to correct directory, port is not a python library
@@ -10549,8 +10505,6 @@ editors/latexila|editors/gnome-latex|2018-10-05|Project was renamed
 math/arpack|math/arpack-ng|2018-10-06|math/arpack is the old, unmaintained version, math/arpack-ng should be used instead
 net-p2p/libtorrent-rasterbar-python|net-p2p/py-libtorrent-rasterbar|2018-10-06|Rename to the canonical name for a python port
 biology/tinker|science/tinker|2018-10-06|Move to proper category
-net-im/telepathy-qt4|net-im/telepathy-qt@qt4|2018-10-07|Moved to flavored version
-net-im/telepathy-qt5|net-im/telepathy-qt@qt5|2018-10-07|Moved to flavored version
 graphics/gegl3|graphics/gegl|2018-10-07|Replaced old gegl version with the newer version
 www/mediawiki129|www/mediawiki131|2018-10-08|Has expired: Deprecated by upstream
 devel/pecl-xdebug26|devel/pecl-xdebug|2018-10-09|Renamed because 2.6 is the new default
@@ -10871,7 +10825,6 @@ math/octave-forge-fl-core||2018-12-21|Has expired: Broken for more than 6 months
 math/octave-forge-pdb||2018-12-21|Has expired: Broken for more than 6 months
 math/octave-forge-audio||2018-12-21|Has expired: Broken for more than 6 months
 math/geg||2018-12-21|Has expired: Uses obsolete glib12
-math/grpn||2018-12-21|Has expired: Uses obsolete glib12
 x11/gdkxft||2018-12-21|Has expired: Uses obsolete glib12
 x11/gtk-theme-switch||2018-12-21|Has expired: Uses obsolete glib12
 x11/xpyb||2018-12-21|Has expired: Broken for more than 6 months
@@ -11470,4 +11423,696 @@ java/netbeans-devel|java/netbeans|2018-12-31|Development port was removed now th
 audio/kid3-qt4|audio/kid3-qt5|2018-12-31|Has expired: KDE4 is EOL upstream
 textproc/uim-kde4||2018-12-31|Has expired: Qt4 has been EOL since december 2015
 misc/kde4-xdg-env||2018-12-31|Removed, KDE4-related
-x11-themes/wallpapers-freebsd-kde4||2018-12-31|Removed, KDE4-related
+x11-themes/wallpapers-freebsd-kde4|x11-themes/wallpapers-freebsd-kde|2018-12-31|Renamed, the port is not KDE4 specific
+textproc/pecl-xdiff|textproc/pecl-xdiff2|2019-01-01|Has expired: Works only with EOL php 5.6
+www/mod_http2-devel||2019-01-01|Has expired: Use the module that is shipped with Apache 2.4
+www/varnish5|www/varnish6|2019-01-01|Has expired: Varnish 5 is Retired
+security/pecl-ssh2-0|security/pecl-ssh2|2019-01-01|Has expired: Works only with EOL php 5.6
+security/bitwarden-ruby||2019-01-01|Has expired: Expects very specific rubygem versions for new updates. Please follow instructions in git repo
+devel/pecl-intl||2019-01-01|Has expired: Works only with EOL php 5.6
+devel/pecl-APCu4|devel/pecl-APCu|2019-01-01|Has expired: Works only with EOL php 5.6
+databases/pecl-memcache||2019-01-01|Has expired: Works only with EOL php 5.6
+databases/pecl-memcached2|databases/pecl-memcached|2019-01-01|Has expired: Works only with EOL php 5.6
+math/pecl-bitset2|math/pecl-bitset|2019-01-01|Has expired: Works only with EOL php 5.6
+multimedia/zoneminder-h264|multimedia/zoneminder|2019-01-01|Has expired: h264 feature was commited to main branch, please upgrade to www/zoneminder
+lang/php56|lang/php72|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+net/php56-soap|net/php72-soap|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+net/php56-ldap|net/php72-ldap|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+net/php56-xmlrpc|net/php72-xmlrpc|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+net/php56-sockets|net/php72-sockets|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-ctype|textproc/php72-ctype|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-xmlwriter|textproc/php72-xmlwriter|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-xmlreader|textproc/php72-xmlreader|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-pspell|textproc/php72-pspell|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-dom|textproc/php72-dom|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-xsl|textproc/php72-xsl|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-simplexml|textproc/php72-simplexml|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-enchant|textproc/php72-enchant|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-wddx|textproc/php72-wddx|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+textproc/php56-xml|textproc/php72-xml|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+graphics/php56-gd|graphics/php72-gd|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+graphics/php56-exif|graphics/php72-exif|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+mail/php56-imap|mail/php72-imap|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+www/php56-session|www/php72-session|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+www/php56-opcache|www/php72-opcache|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+www/php56-tidy|www/php72-tidy|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+security/php56-openssl|security/php72-openssl|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+security/php56-mcrypt|security/php72-sodium|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+security/php56-filter|security/php72-filter|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+security/php56-hash|security/php72-hash|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+devel/php56-sysvmsg|devel/php72-sysvmsg|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+devel/php56-tokenizer|devel/php72-tokenizer|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+devel/php56-sysvsem|devel/php72-sysvsem|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+devel/php56-shmop|devel/php72-shmop|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+devel/php56-readline|devel/php72-readline|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+devel/php56-json|devel/php72-json|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+devel/php56-pcntl|devel/php72-pcntl|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+devel/php56-sysvshm|devel/php72-sysvshm|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+devel/php56-gettext|devel/php72-gettext|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-mysqli|databases/php72-mysqli|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-mysql||2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-pdo_odbc|databases/php72-pdo_odbc|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-pdo_mysql|databases/php72-pdo_mysql|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-sqlite3|databases/php72-sqlite3|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-pdo_dblib|databases/php72-pdo_dblib|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-pdo_firebird|databases/php72-pdo_firebird|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-pgsql|databases/php72-pgsql|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-pdo_sqlite|databases/php72-pdo_sqlite|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-sybase_ct||2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-interbase|databases/php72-interbase|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-dba|databases/php72-dba|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-odbc|databases/php72-odbc|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-pdo_pgsql|databases/php72-pdo_pgsql|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-pdo|databases/php72-pdo|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+databases/php56-mssql||2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+ftp/php56-curl|ftp/php72-curl|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+ftp/php56-ftp|ftp/php72-ftp|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+misc/php56-calendar|misc/php72-calendar|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+math/php56-bcmath|math/php72-bcmath|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+math/php56-gmp|math/php72-gmp|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+archivers/php56-zip|archivers/php72-zip|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+archivers/php56-zlib|archivers/php72-zlib|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+archivers/php56-phar|archivers/php72-phar|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+archivers/php56-bz2|archivers/php72-bz2|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+net-mgmt/php56-snmp|net-mgmt/php72-snmp|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+converters/php56-iconv|converters/php72-iconv|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+converters/php56-mbstring|converters/php72-mbstring|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+converters/php56-recode|converters/php72-recode|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+sysutils/php56-posix|sysutils/php72-posix|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+sysutils/php56-fileinfo|sysutils/php72-fileinfo|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+www/mod_php56|www/mod_php72|2019-01-01|Has expired: Security Support ends on 31 Dec 2018
+multimedia/vlc-qt4||2019-01-02|Has expired: Upstream supported ended in 2018, port deprecated on 31 Dec 2018
+multimedia/phonon-vlc@qt4||2019-01-02|vlc-qt4 has been removed, vlc now always uses qt5
+multimedia/phonon-vlc@qt5|multimedia/phonon-vlc|2019-01-02|vlc-qt4 has been removed, vlc now always uses qt5
+multimedia/vlc3|multimedia/vlc|2019-01-03|multimedia/vlc updated to supported upstream branch (previously vlc3)
+databases/php7-tarantool|databases/php-tarantool|2019-01-03|Rename php7-tarantool to php-tarantool after php5-tarantool removal
+net/ssltunnel-server||2019-01-05|Has expired: Does not build, upstream disappeared
+lang/cilkplus||2019-01-05|Has expired: Cilk Plus is on its way out (both in GCC and the Intel compilers)
+net/ssltunnel-client||2019-01-05|Removed, client part of expired net/ssltunnel-server
+devel/py-mongoengine|databases/py-mongoengine|2019-01-08|Move to a better category
+databases/postgresql93-client|databases/postgresql94-client|2019-01-09|Has expired: PostgreSQL-9.3 has reached end-of-life
+databases/postgresql93-docs|databases/postgresql94-docs|2019-01-09|Has expired: PostgreSQL-9.3 has reached end-of-life
+databases/postgresql93-contrib|databases/postgresql94-contrib|2019-01-09|Has expired: PostgreSQL-9.3 has reached end-of-life
+databases/postgresql93-pltcl|databases/postgresql94-pltcl|2019-01-09|Has expired: PostgreSQL-9.3 has reached end-of-life
+databases/postgresql93-pgtcl|databases/postgresql94-pgtcl|2019-01-09|Removed, part of expired PostgreQSL 9.3
+databases/postgresql93-plperl|databases/postgresql94-plperl|2019-01-09|Has expired: PostgreSQL-9.3 has reached end-of-life
+databases/postgresql93-plpython|databases/postgresql94-plpython|2019-01-09|Has expired: PostgreSQL-9.3 has reached end-of-life
+databases/postgresql93-server|databases/postgresql94-server|2019-01-09|Has expired: PostgreSQL-9.3 has reached end-of-life
+mail/drac||2019-01-16|Has expired: Unmaintained upstream since 2003
+lang/clang35|devel/llvm70|2019-01-18|Removed, unmaintained and not depended on
+lang/clang-devel|devel/llvm-devel|2019-01-18|Unneeded metaport
+sysutils/py-nomad|sysutils/py-python-nomad|2019-01-25|renamed to match project name
+devel/py-easyconfig|devel/py-python-easyconfig|2019-01-28|Rename to reflect official Python modules naming scheme
+sysutils/py-consul|sysutils/py-python-consul|2019-01-30|renamed to match project name
+astro/weatherspect||2019-02-02|Has expired: Weather Underground does not provide free API keys anymore
+devel/rubygem-temple07|devel/rubygem-temple|2019-02-02|Obsolete, please use devel/rubygem-temple instead
+mail/dovecot-pigeonhole04|mail/dovecot-pigeonhole|2019-02-04|Has expired: End of Life upstream, use mail/dovecot-pigeonhole instead
+multimedia/pyjama||2019-02-04|Has expired: Unmaintained upstream
+devel/py-omniorb-3|devel/py-omniorb|2019-02-04|Has expired: Uses legacy version of omniORB, consider using devel/py-omniorb
+mail/dovecot22|mail/dovecot|2019-02-04|Has expired: End of Life upstream, use mail/dovecot instead
+devel/hs-uuagc-bootstrap||2019-02-04|Has expired: No release since 2011
+sysutils/hs-angel||2019-02-04|Has expired: No releases since 2016
+devel/hs-uuagc||2019-02-04|Has expired: No release since 2015
+ports-mgmt/hs-porte||2019-02-04|Has expired: No updates since 2010
+net/pdb||2019-02-04|Has expired: Depends on expired net/py-pcs
+irc/iroffer||2019-02-04|Has expired: Abandoned upstream
+sysutils/fusefs-wdfs||2019-02-04|Has expired: Abandonware, functionally incomplete, has problems with caching
+net/py-pcs||2019-02-04|Has expired: Broken for more than 6 months
+sysutils/hs-ekg||2019-02-04|Removed, depends on expired sysutils/hs-ekg-json
+sysutils/hs-ekg-json||2019-02-04|Has expired: Doesn't build with newest Haskell libraries
+net-mgmt/icinga-core||2019-02-04|Has expired: Upstream EOLed Icinga 1.x from 2018-12-31
+net-mgmt/icinga||2019-02-04|Removed, depends on expired net-mgmt/icinga-core
+net-mgmt/icli||2019-02-04|Removed, depends on expired net-mgmt/icinga-core
+net-mgmt/icinga-classicweb||2019-02-04|Has expired: Upstream EOLed Icinga 1.x from 2018-12-31
+net-mgmt/pnp-icinga||2019-02-04|Removed, depends on expired net-mgmt/icinga-classicweb
+sysutils/yum||2019-02-07|Has expired: Abandoned upstream, does not work with python3
+sysutils/createrepo||2019-02-07|Has expired: Abandoned upstream, does not work with python3
+www/wml||2019-02-08|Removing to be properly added back with svn copy
+misc/soapysdr-hackrf|comms/soapysdrhackrf|2019-02-09|Move to the proper category/name
+math/wxMaxima|math/wxmaxima|2019-02-10|rename for consistency
+net-mgmt/py-snmp4|net-mgmt/py-pysnmp|2019-02-11|Renamed to match upstream naming
+net-mgmt/py-snmp4-apps|net-mgmt/py-pysnmp-apps|2019-02-11|Renamed to match upstream naming
+net-mgmt/py-snmp4-mibs|net-mgmt/py-pysnmp-mibs|2019-02-11|Renamed to match upstream naming
+science/mmtf|science/mmtf-cpp|2019-02-16|Rename to match the project name on github
+dns/p5-pgeodns||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+ftp/proftpd-mod_geoip||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net/go-geoip||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net/py-GeoIP|net/py-GeoIP2|2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net/pecl-geoip||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net/subnetcalc||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net/p5-Geo-IP||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net/rubygem-geoip||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+security/sguil||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+devel/go-sql-driver||2019-02-16|Has expired: Go source should not be packaged
+devel/geoip-java||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+dns/go-geodns||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+devel/omniORB-4.1||2019-02-16|Has expired: Legacy version please consider using devel/omniORB
+devel/omniNotify||2019-02-16|Removed: Unmaintained upstream since 2004
+net-p2p/verlihub||2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net-p2p/verlihub-plugins||2019-02-16|Has expired: Verlihub uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net-p2p/verlihub-plugins-chatroom||2019-02-16|Has expired: Verlihub uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net-p2p/verlihub-plugins-floodprotect||2019-02-16|Has expired: Verlihub uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net-p2p/verlihub-plugins-forbid||2019-02-16|Has expired: Verlihub uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net-p2p/verlihub-plugins-iplog||2019-02-16|Has expired: Verlihub uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net-p2p/verlihub-plugins-isp||2019-02-16|Has expired: Verlihub uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net-p2p/verlihub-plugins-luascript||2019-02-16|Has expired: Verlihub uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net-p2p/verlihub-plugins-messanger||2019-02-16|Has expired: Verlihub uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+net-p2p/verlihub-plugins-stats||2019-02-16|Has expired: Verlihub uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+www/mod_geoip2|www/mod_maxminddb|2019-02-16|Has expired: Uses legacy GeoIP 1 format which no longer works; switch to GeoIP 2 where possible
+devel/libdouble-conversion|devel/double-conversion|2019-02-16|Rename to match the project name on github and on most other systems, and in installed cmake files
+security/tmux-cssh||2019-02-17|Upstream has disappeared; sysutils/scct is an alternative
+net/GeoIP|net/libmaxminddb|2019-02-17|Has expired: Legacy databases no longer available. Switch to net/libmaxminddb instead
+x11-toolkits/bakery||2019-02-20|Abandonware, no depend on
+net-im/telepathy-butterfly||2019-02-20|Abandoned non function MSN client
+net-im/papyon||2019-02-20|Abandoned non function MSN client
+net-im/emesene||2019-02-20|Abandoned non function MSN client
+net-im/pebrot||2019-02-20|Abandoned non function MSN client
+games/plutocracy||2019-02-21|Has expired: broken, upstream gone
+x11-toolkits/gtksourceview|x11-toolkits/gtksourceview4|2019-02-22|Old version not depended on
+deskutils/fusenshi||2019-02-22|Abandonware, not depended on
+www/erwn||2019-02-22|Abandonware, not depended on
+textproc/scrollkeeper|textproc/rarian|2019-02-23|rarian replaced scrollkeeper long ago
+devel/eggdbus||2019-02-23|Abandonned since 2009, not depended on
+devel/libgalago||2019-02-23|Abandonned since 2006, not depended on
+net-im/libyahoo2||2019-02-23|Yahoo messenger has been discontinued in July 17, 2018
+net-im/py-xmpppy-yahoo||2019-02-23|Yahoo messenger has been discontinued in July 17, 2018
+graphics/glitz||2019-02-23|Development stopped in 2008, not depended on
+x11/xfree86_xkb_xml||2019-02-24|The project is discontinued
+devel/rtichoke|devel/radian|2019-02-26|Project is renamed
+sysutils/xen-tools411|sysutils/xen-tools|2019-02-27|Rename in preparation for having a single Xen port
+emulators/xen-kernel411|emulators/xen-kernel|2019-02-27|Rename in preparation for having a single Xen port
+net/ceph|net/ceph12|2019-02-27|Make room for other ceph versions
+devel/rubygem-grape0|devel/rubygem-grape|2019-02-28|Has expired: Use devel/rubygem-grape instead
+www/rubygem-jwt1|www/rubygem-jwt|2019-02-28|Has expired: Use www/rubygem-jwt instead
+www/rubygem-rack-cors0|www/rubygem-rack-cors|2019-02-28|Has expired: Use www/rubygem-rack-cors instead
+databases/py-sqlparse01|databases/py-sqlparse020|2019-02-28|Removed: Use databases/py-sqlparse020, if you need sqlparse for py-twext
+devel/uboot-mkimage|sysutils/u-boot-tools|2019-03-03|Has expired: Use sysutils/u-boot-tools
+graphics/clutter-gtk|graphics/clutter-gtk3|2019-03-03|Has expired: 0.10.x is unmaintained upstream and unused in the ports tree
+databases/puppetdb4|databases/puppetdb5|2019-03-03|Has expired: Puppet 4 has reached EOL
+sysutils/puppet4|sysutils/puppet5|2019-03-03|Has expired: Puppet 4 has reached EOL
+sysutils/puppetserver|sysutils/puppetserver5|2019-03-03|Has expired: Puppet 4 has reached EOL
+www/qupzilla-qt5|www/falkon|2019-03-03|Has expired: Project continues as www/falkon
+databases/puppetdb-terminus4|databases/puppetdb-terminus5|2019-03-03|Has expired: Puppet 4 has reached EOL
+sysutils/bacula-client|sysutils/bacula9-client|2019-03-03|Has expired: Unsupported. Please migrate to bacula9-server
+net-mgmt/nagios-check_bacula|net-mgmt/nagios-check_bacula9|2019-03-03|Has expired: Unsupported. Please migrate to bacula9-server
+security/kc|security/kc24|2019-03-03|Has expired: Versions 2.4.x use incompatible database format
+sysutils/bacula-server|sysutils/bacula9-server|2019-03-03|Has expired: Unsupported. Please migrate to bacula9-server
+sysutils/bacula-docs|sysutils/bacula9-docs|2019-03-03|Has expired: Unsupported. Please migrate to bacula9-docs
+sysutils/bacula-client-static|sysutils/bacula9-client-static|2019-03-03|Has expired: Unsupported. Please migrate to bacula9-server
+sysutils/bacula-bat|sysutils/bacula9-bat|2019-03-03|Has expired: Unsupported. Please migrate to bacula9-server
+x11-fonts/noto-lite|x11-fonts/noto-basic|2019-03-03|Rename for reorganizing noto* ports
+devel/rubygem-rufus-scheduler342|devel/rubygem-rufus-scheduler|2019-03-04|Has expired: Use devel/rubygem-rufus-scheduler instead
+devel/cpuflags||2019-03-04|Has expired: does not recognize modern CPUs; use -march=native instead
+www/moodle31|www/moodle35|2019-03-04|Has expired: Upstream no longer maintained
+www/moodle34|www/moodle35|2019-03-04|Has expired: Upstream no longer maintained
+net/wireshark-qt5|net/wireshark|2019-03-05|Only GUI for wireshark is Qt5
+devel/elixir-lager_logger||2019-03-06|Has expired: Broken for more than 6 months
+devel/gpsim||2019-03-06|Has expired: Broken for more than 6 months
+devel/hgview||2019-03-06|Has expired: Broken for more than 6 months
+games/mudmagic||2019-03-06|Has expired: Broken for more than 6 months
+math/mumps-mpich||2019-03-06|Has expired: Broken for more than 6 months
+math/sdpara||2019-03-06|Has expired: Broken for more than 6 months
+net/tn5250j||2019-03-06|Has expired: Broken for more than 6 months
+net-im/pidgin-skype||2019-03-06|Has expired: Broken for more than 6 months
+net-im/skype||2019-03-06|Has expired: Broken for more than 6 months
+net-im/skype-devel||2019-03-06|Has expired: Broken for more than 6 months
+science/dft_tools||2019-03-06|Has expired: Broken for more than 6 months
+science/triqs||2019-03-06|Has expired: Broken for more than 6 months
+security/hamachi||2019-03-06|Has expired: Broken for more than 6 months
+textproc/elixir-ex_doc||2019-03-06|Has expired: Broken for more than 6 months
+x11/altyo||2019-03-06|Has expired: Broken for more than 6 months
+x11/pantheon-terminal||2019-03-06|Has expired: Broken for more than 6 months
+x11-wm/e-module-everything-websearch||2019-03-06|Has expired: Broken for more than 6 months
+net-mgmt/py-pysnmp-apps|net-mgmt/py-snmpclitools|2019-03-06|Renamed upstream
+math/mumps-edf|math/mumps|2019-03-10|Use mumps-edf as MUMPS 5
+textproc/soprano||2019-03-11|Has expired: Qt4 has been EOL since december 2015
+x11-fonts/mkfontdir|x11-fonts/mkfontscale|2019-03-11|Merged into one package
+emulators/ppsspp-devel|emulators/ppsspp|2019-03-14|Out of date: use emulators/ppsspp for now
+sysutils/polkit-qt@qt4||2019-03-16|Qt4 deprecation
+sysutils/polkit-qt@qt5|sysutils/polkit-qt|2019-03-16|Flavor has been removed
+security/qtkeychain@qt4||2019-03-16|Qt4 deprecation
+security/qtkeychain@qt5|security/qtkeychain|2019-03-16|Flavor has been removed
+deskutils/znotes@qt4||2019-03-16|Qt4 deprecation
+deskutils/znotes@qt5|deskutils/znotes|2019-03-16|Flavor has been removed
+net-im/telepathy-qt@qt4||2019-03-16|Qt4 deprecation
+net-im/telepathy-qt@qt5|net-im/telepathy-qt|2019-03-16|Flavor has been removed
+graphics/fracplanet@qt4||2019-03-16|Qt4 deprecation
+graphics/fracplanet@qt5|graphics/fracplanet|2019-03-16|Flavor has been removed
+graphics/photivo@qt4||2019-03-16|Qt4 deprecation
+graphics/photivo@qt5|graphics/photivo|2019-03-16|Flavor has been removed
+archivers/quazip@qt4||2019-03-16|Qt4 deprecation
+archivers/quazip@qt5|archivers/quazip|2019-03-16|Flavor has been removed
+net-p2p/transmission@qt4||2019-03-16|Qt4 deprecation
+net-p2p/transmission@qt5|net-p2p/transmission-qt|2019-03-16|Flavor has been removed
+x11-themes/Kvantum@qt4||2019-03-16|Qt4 deprecation
+x11-themes/Kvantum@qt5|x11-themes/Kvantum|2019-03-16|Flavor has been removed
+devel/qjson@qt4||2019-03-16|Qt4 deprecation
+devel/qjson@qt5|devel/qjson|2019-03-16|Flavor has been removed
+devel/qca@qt4||2019-03-16|Qt4 deprecation
+devel/qca@qt5|devel/qca|2019-03-16|Flavor has been removed
+x11-themes/adwaita@qt4||2019-03-16|Qt4 deprecation
+x11-themes/adwaita@qt5|x11-themes/adwaita-qt|2019-03-16|Flavor has been removed
+devel/libdbusmenu-qt@qt4||2019-03-16|Qt4 deprecation
+devel/libdbusmenu-qt@qt5|devel/libdbusmenu-qt|2019-03-16|Flavor has been removed
+multimedia/gstreamer1-qt@qt4||2019-03-16|Qt4 deprecation
+multimedia/gstreamer1-qt@qt5|multimedia/gstreamer1-qt|2019-03-16|Flavor has been removed
+x11-toolkits/qwt6@qt4||2019-03-16|Qt4 deprecation
+x11-toolkits/qwt6@qt5|x11-toolkits/qwt6|2019-03-16|Flavor has been removed
+devel/eric6@qt4_py27||2019-03-16|Qt4 deprecation
+devel/eric6@qt4_py35||2019-03-16|Qt4 deprecation
+devel/eric6@qt4_py36||2019-03-16|Qt4 deprecation
+devel/eric6@qt4_py37||2019-03-16|Qt4 deprecation
+multimedia/phonon@qt4||2019-03-16|Qt4 deprecation
+multimedia/phonon@qt5|multimedia/phonon|2019-03-16|Flavor has been removed
+multimedia/phonon-designerplugin@qt4||2019-03-16|Qt4 deprecation
+multimedia/phonon-designerplugin@qt5|multimedia/phonon-designerplugin|2019-03-16|Flavor has been removed
+multimedia/phonon-gstreamer@qt4||2019-03-16|Qt4 deprecation
+multimedia/phonon-gstreamer@qt5|multimedia/phonon-gstreamer|2019-03-16|Flavor has been removed
+devel/git-cola||2019-03-16|Removed
+emulators/gns3||2019-03-16|Removed
+accessibility/qt4-accessible||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+astro/qlandkartegt||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+astro/stellarium-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+astro/xglobe||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/acoustid-fingerprinter||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/cueplayer||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/esperanza||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/lastfm-desktop||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/minitunes||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/mixxx20||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/puddletag||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/qmpdclient||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/skype-call-recorder||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+biology/clustalx||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+cad/layouteditor||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+cad/leocad||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+cad/meshlab||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+cad/qfsm||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+cad/qucs||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+chinese/gcin-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+chinese/qt4-codecs-cn||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+chinese/qt4-codecs-tw||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+chinese/qterm||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+comms/dabstick-radio||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+comms/hamfax||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+comms/linpsk||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/py-qt4-sql||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/qt4-ibase-plugin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/qt4-mysql-plugin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/qt4-odbc-plugin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/qt4-pgsql-plugin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/qt4-sql||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/qt4-sqlite-plugin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/qt4-sqlite3-plugin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/sqliteman||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+databases/tora||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+deskutils/cdcat||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+deskutils/launchy||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+deskutils/qorganizer||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+deskutils/qrfcview||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+deskutils/qtm||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+deskutils/tuxcards||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+deskutils/vym||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/apiextractor||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/automoc4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/edb||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/generatorrunner||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/grantlee||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/gwenhywfar-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/kaptain||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/ninja-ide||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/piklab||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-assistant||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-core||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-dbus||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-dbussupport||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-declarative||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-designer||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-designerplugin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-help||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-qscintilla2||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-script||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-scripttools||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/py-qt4-test||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/pyside||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/pyside-tools||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qbzr||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qct||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qdevelop||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qprog||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qross||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qscintilla2||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qscintilla2-designerplugin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-assistant||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-assistant-adp||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-corelib||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-dbus||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-designer||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-help-tools||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-libqtassistantclient||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-linguist||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-linguisttools||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-makeqpf||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-moc||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-porting||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-qdbusviewer||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-qdoc3||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-qmake||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-qmlviewer||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-qt3support||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-qtsolutions-singleapplication||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-qtsolutions-soap||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-qvfb||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-rcc||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-script||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-scripttools||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-testlib||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-uic||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-uic3||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qtscriptgenerator||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/shiboken||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/subcommander2||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/universalindentgui||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+editors/leo||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+editors/lfhex||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+editors/plume-creator-devel||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+editors/textroom||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+editors/yzis||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+emulators/dboxfe||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+emulators/q4wine||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+emulators/qtemu||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+emulators/swine||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+finance/alkimia-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+finance/bitcoin-armory||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+finance/qhacc||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+ftp/scythia||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/bubble-chains||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/capicity||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/capitalism||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/flukz||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/goldencheetah||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/jag||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/kardsgt||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/kcheckers||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/openpref||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/pokerth||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/qgo||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/qtads||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/quackle||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/spellathon||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/sudoku-sensei||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/tbe||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+games/xptools||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+german/tipp10||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/aqsis||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/autoq3d||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/burplex||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/darknock||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/djview4-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/easypaint||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/eos-movrec||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/gle-graphics||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/lprof-devel||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/luminance||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/meshviewer||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/natron||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/pencil||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/prison||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/py-qt4-svg||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/qt4-iconengines||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/qt4-imageformats||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/qt4-opengl||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/qt4-pixeltool||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/qt4-svg||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/qxv||2019-03-16|Has expired: Qt4 has been EOL since december 2015, qxv is unmaintained
+graphics/scantailor||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/seexpr||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/smillaenlarger||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/structuresynth||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/yagf||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+japanese/qt4-codecs-jp||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+korean/qt4-codecs-kr||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+mail/qgmailnotifier||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+math/qtiplot||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+math/qtoctave||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+math/qwtplot3d-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+misc/py-qt4-demo||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+misc/py-qt4-doc||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+misc/qmetro||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+misc/qt4-doc||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+misc/qt4-l10n||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+misc/qt4-qtconfig||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+misc/qt4-qtdemo||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+misc/saaghar||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/2mandvd||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/abby||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/avidemux-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/gstreamer-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/mediadownloader||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/mlt-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/phonon-xine||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/py-qt4-multimedia||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/py-qt4-phonon||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/qmmp||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/qmmp-plugin-pack||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/qt4-mobility||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/qt4-multimedia||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+multimedia/umplayer||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net/avahi-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net/cagibi||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net/hupnp||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net/ostinato||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net/py-qt4-network||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net/qjsonrpc||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net/qoauth||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net/qt4-network||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net/qtweetlib||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-im/libjreen||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-im/psimedia||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-im/ramblercontacts||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-im/telepathy-logger-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-im/turpial||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-im/vacuum-im||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-mgmt/nagiosagent||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-mgmt/qkismet||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-p2p/bitmessage||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-p2p/eiskaltdcpp-qt||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-p2p/valknut||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+polish/qfaktury||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+print/kpdftool||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+print/scribus||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+science/MOOSE-neural-simulator||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+science/avogadro|science/avogadro2|2019-03-16|Has expired: Qt4 has been EOL since december 2015, the new generation, avogadro2, should be used
+science/openstructure||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+science/qtresistors||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+security/keepassx2||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+security/kqoauth||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+security/tpmmanager||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/android-file-transfer-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/bacula9-bat||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/bareos-traymonitor||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/bareos16-bat||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/bareos16-traymonitor||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/policykit-qt||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/qpxtool||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/qsynergy||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/qzeitgeist||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+sysutils/searchmonkey||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/beediff||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/dixit||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/goldendict||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/ibus-qt||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/py-qt4-xml||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/py-qt4-xmlpatterns||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/qt4-clucene||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/qt4-xml||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/qt4-xmlpatterns||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/qt4-xmlpatterns-tool||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/scim-bridge-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/uim-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/xxdiff||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+www/aria2fe||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+www/cutycapt||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+www/py-qt4-webkit||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+www/qt4-webkit||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+www/qupzilla-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11/leechcraft||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11/py-qt4-opengl||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11/qimageblitz||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11/qt4-graphicssystems-opengl||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11/qt4-inputmethods||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11/qxkb||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-fonts/fontmatrix||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-themes/qt4-style-float||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-themes/qt4-style-phase||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-themes/qt4-style-quantumstyle||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-themes/qtcurve-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-toolkits/attica||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-toolkits/py-qt4-gui||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-toolkits/qt4-declarative||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-toolkits/qt4-gui||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-toolkits/qt4pas||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-toolkits/qwt5||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-toolkits/qwt5-designerplugin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-toolkits/soqt||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+x11-wm/qlwm||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/dream||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+audio/liblastfm||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+comms/ubertooth||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/bzr-explorer||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+devel/qt4-help||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+editors/lazarus-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+net-im/qxmpp||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/ayam||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/iccexamin||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/openfx-io||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+security/yubikey-piv-manager||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+textproc/xxdiff-scripts||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+graphics/py-pivy||2019-03-16|Has expired: Qt4 has been EOL since december 2015
+security/pinentry-qt4||2019-03-17|Has expired: Qt4 has been EOL since december 2015
+www/libsocialweb||2019-03-23|Project was archived upstream
+www/vimb-gtk2|www/vimb|2019-03-24|Merged into www/vimb
+www/vimb-gtk3|www/vimb|2019-03-24|Merged into www/vimb
+audio/gmpc-wikipedia||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+cad/xtrkcad||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+deskutils/rednotebook||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+devel/dissy||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+devel/geany-plugin-devhelp||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+devel/geany-plugin-webhelper||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+editors/gwrite||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+mail/claws-mail-fancy||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+multimedia/miro||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+misc/xiphos||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+net/libproxy-webkit||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+net-im/hotot||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/deforaos-surfer||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/gnome-web-photo||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issue
+www/hs-webkit||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/p5-Gtk2-WebKit||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/py-jswebkit||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issue
+www/py-webkitgtk||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/rubygem-webkit-gtk||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/rubygem-webkit-gtk2||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/uzbl||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/webkit-gtk2||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/webkit-gtk3||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/webkit-sharp||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issues
+www/xombrero||2019-03-24|Has expired: webkit-gtk* last release in 2016 and security issue
+net/rubygem-fog-openstack02|net/rubygem-fog-openstack|2019-03-25|Obsolete, please use net/rubygem-fog-openstack instead
+www/rubygem-unicorn-worker-killer044|www/rubygem-unicorn-worker-killer|2019-03-25|Obsolete, please use www/rubygem-unicorn-worker-killer instead
+www/rubygem-unicorn51|www/rubygem-unicorn|2019-03-25|Obsolete, please use www/rubygem-unicorn instead
+textproc/rubygem-version_sorter21|textproc/rubygem-version_sorter|2019-03-25|Obsolete, please use textproc/rubygem-version_sorter instead
+net-im/rubygem-hipchat15|net-im/rubygem-hipchat|2019-03-25|Obsolete, please use net-im/rubygem-hipchat instead
+devel/rubygem-fog-json102|devel/rubygem-fog-json|2019-03-25|Obsolete, please use devel/rubygem-fog-json instead
+x11/libmfmqt-l10n||2019-03-28|Obsolete by upstream
+x11-toolkits/qtermwidget-l10n||2019-03-28|Obsolete by upstream
+graphics/lximageqt-l10n||2019-03-28|Obsolete by upstream
+x11/lxqt-globalkeys-l10n||2019-03-28|Obsolete by upstream
+x11-fm/pcmanfmqt-l10n||2019-03-28|Obsolete by upstream
+devel/liblxqt-l10n||2019-03-28|Obsolete by upstream
+x11/lxqt-l10n||2019-03-28|Obsolete by upstream
+x11/qterminal-l10n||2019-03-28|Obsolete by upstream
+mail/thunderbird-i18n||2019-03-29|Obsolete, manually download preferred langpack and set intl.locale.requested
+www/firefox-esr-i18n||2019-03-29|Obsolete, manually download preferred langpack and set intl.locale.requested
+www/firefox-i18n||2019-03-29|Obsolete, use native UI to select and download preferred langpack
+www/seamonkey-i18n||2019-03-29|Obsolete, manually download preferred langpack and set general.useragent.locale
+mail/xpi-displayquota||2019-03-29|Legacy extensions aren't supported after Firefox 57
+mail/xpi-dispmua||2019-03-29|Legacy extensions aren't supported after Firefox 57
+russian/xpi-tabextensions||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-adblock_plus||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-adblock||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-clear_cache_button||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-close-all-tabs||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-colorfultabs||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-conkeror||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-cssviewer||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-cutemenus-crystalsvg||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-default_full_zoom_level||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-delicious||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-downthemall||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-errorzilla||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-firebug||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-firefox-showcase||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-firemobilesimulator||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-fission||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-flagfox||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-flashblock||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-flashgot||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-flatbmark||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-forecastfox||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-formfox||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-foxmarks||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-foxyproxy||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-gdata_provider||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-ghostery||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-gmail-manager||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-google-notebook||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-google_shortcuts||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-grab_and_drag||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-greasemonkey||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-httpfox||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-imagezoom||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-imdbpreview||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-imglikeopera||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-infolister||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-informenter||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-inline-google-definitions||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-it_s_all_text||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-jslib||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-jsview||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-jv||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-leechblock||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-linkification||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-live_http_headers||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-live_pagerank||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-menueditor||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-modify_headers||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-mrtech-local-install||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-neo-diggler||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-no-referrer||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-passwordmaker||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-pdf_download||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-permatabs||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-quick-locale-switcher||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-quickproxy||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-resurrectpages||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-sameplace||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-scrapbook||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-searchstatus||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-server_spy||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-server_switcher||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-sessionmanager||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-showip||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-speed-dial||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-splash||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-stumbleupon||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-stylish||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-table2clipboard||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-tabmixplus||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-tagzilla||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-togglewordwrap||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-torbutton||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-twitterfox||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-u2f4moz||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-uBlock_origin||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-unplug||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-urllink||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-user_agent_switcher||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-vimperator||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-web_developer||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-wmlbrowser||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-xhtml-ruby-support||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-xmpp4moz||2019-03-29|Legacy extensions aren't supported after Firefox 57
+www/xpi-yslow||2019-03-29|Legacy extensions aren't supported after Firefox 57
+converters/py-pint|devel/py-Pint|2019-03-31|Remove duplicate port
+graphics/py-PyX12|graphics/py-PyX|2019-03-31|Duplicate port
+x11-toolkits/fltk-devel||2019-03-31|Has expired: Older than x11-toolkits/fltk -- there is no point in having old snapshots
+devel/rubygem-sidekiq-cron0|devel/rubygem-sidekiq-cron|2019-03-31|Has expired: Use devel/rubygem-sidekiq-cron instead
+lang/ruby23|lang/ruby24|2019-03-31|Has expired: Use lang/ruby24 or above
+misc/rubygem-mime-types29|misc/rubygem-mime-types|2019-03-31|Has expired: Use misc/rubygem-mime-types instead
+net/rubygem-gitlab_omniauth-ldap20|net/rubygem-gitlab_omniauth-ldap|2019-03-31|Has expired: Use net/rubygem-gitlab_omniauth-ldap instead
+net/rubygem-rubyntlm05|net/rubygem-rubyntlm|2019-03-31|Has expired: Use net/rubygem-rubyntlm instead
+security/kbfs|security/keybase|2019-03-31|Has expired: Merged into security/keybase
+security/rubygem-sshkey1|security/rubygem-sshkey|2019-03-31|Has expired: Use security/rubygem-sshkey instead

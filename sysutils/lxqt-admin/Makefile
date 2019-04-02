@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lxqt-admin
-PORTVERSION=	0.13.0
+PORTVERSION=	0.14.0
 CATEGORIES=	sysutils
 MASTER_SITES=	LXQT
 
@@ -18,10 +18,5 @@ USE_QT=	buildtools_build qmake_build core dbus gui svg \
 USE_KDE=	windowsystem
 USE_GNOME=	glib20
 USE_LXQT=	buildtools lxqt
-
-PLIST_FILES=	bin/lxqt-admin-user \
-		bin/lxqt-admin-user-helper \
-		share/applications/lxqt-admin-user.desktop \
-		share/polkit-1/actions/org.lxqt.lxqt-admin-user.policy
 
 .include <bsd.port.mk>

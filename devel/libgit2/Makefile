@@ -1,9 +1,12 @@
 # $FreeBSD$
 
 # Also update devel/libgit2-glib, devel/rubygem-rugged, devel/py-pygit2
+# Make sure you bump revision of depending ports, if SONAME changes
+# objdump -p libgit2.so |grep SONAME
+# Tools/scripts/search_lib_depends_and_bump.sh devel/libgit2
 
 PORTNAME=	libgit2
-PORTVERSION=	0.27.8
+PORTVERSION=	0.28.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -12,11 +15,10 @@ COMMENT=	Portable, pure C implementation of the Git core
 
 LICENSE=	GPLv2
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	libgit2
-
 USES=		cmake pathfix pkgconfig python:build ssl
 USE_LDCONFIG=	yes
+USE_GITHUB=	yes
+GH_ACCOUNT=	libgit2
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION} SHLIB_VER=${PORTVERSION:R:E}
 

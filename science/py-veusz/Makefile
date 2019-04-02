@@ -2,36 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	veusz
-PORTVERSION=	1.19.1
-PORTREVISION=	5
+DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSION=	3.0.1
 CATEGORIES=	science kde
-MASTER_SITES=	http://download.gna.org/veusz/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	devel@stasyan.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Scientific plotting package
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-DEPRECATED=		Qt4 has been EOL since december 2015
-EXPIRATION_DATE=	2019-03-15
-
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		python pyqt:4 qt:4 shebangfix
-USE_PYQT=	gui svg
+USES=		python:3.5+ pyqt:5 qt:5 shebangfix
+USE_GITHUB=	yes
+USE_PYQT=	core gui svg
 USE_PYTHON=	distutils concurrent autoplist
-USE_QT=		corelib gui xml
+USE_QT=		core gui xml widgets qmake_build
 SHEBANG_FILES=	examples/embedexample.py
 
-post-patch:
-	@${REINPLACE_CMD} \
-		-e 's,distutils\.command\.install ,setuptools\.command\.install ,' \
-		${WRKSRC}/setup.py
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/veusz/helpers/*.so
+MAKE_ENV=       SIP_DIR=${LOCALBASE}/share/PyQt5/${PYTHON_VER}/sip
 
 .include <bsd.port.mk>

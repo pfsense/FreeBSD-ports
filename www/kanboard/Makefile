@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	kanboard
-PORTVERSION=	1.2.6
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.2.8
 CATEGORIES=	www
 
 MAINTAINER=	bsd@if0.eu
@@ -11,13 +11,13 @@ COMMENT=	Simple visual task board software
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		php
+USE_PHP=	ctype curl dom gd hash filter iconv json mcrypt mbstring \
+		openssl pdo session simplexml zlib xml
+USE_GITHUB=	yes
+
 NO_BUILD=	yes
 NO_ARCH=	yes
-USES=		php
-USE_GITHUB=	yes
-USE_PHP=	ctype curl dom gd hash filter iconv json mcrypt mbstring \
-		openssl pdo session simplexml \
-		zlib xml
 
 KANBOARD_USERNAME?=	www
 KANBOARD_GROUPNAME?=	${KANBOARD_USERNAME}
@@ -31,7 +31,8 @@ OPTIONS_DEFAULT=	SQLITE
 OPTIONS_DEFINE=		OPCACHE
 OPCACHE_DESC=	OPcache support (recommended)
 
-MYSQL_USE=	MYSQL=client PHP=mysql,pdo_mysql
+MYSQL_USES=	mysql
+MYSQL_USE=	PHP=pdo_mysql,mysqli
 PGSQL_USES=	pgsql
 PGSQL_USE=	PHP=pdo_pgsql,pgsql
 SQLITE_USE=	PHP=pdo_sqlite,sqlite3

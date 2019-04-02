@@ -1,6 +1,7 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
 # $FreeBSD$
 
+PORTREVISION=	2
 CATEGORIES=	multimedia lang
 PKGNAMESUFFIX=	-libvlc
 

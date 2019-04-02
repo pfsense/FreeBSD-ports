@@ -5,11 +5,11 @@ PORTNAME=	bind
 PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
 .if defined(BIND_TOOLS_SLAVE)
 # dns/bind-tools here
-PORTREVISION=	1
+PORTREVISION=	0
 .else
 # XXX: correct version
 # dns/bind9xx here
-PORTREVISION=	2
+PORTREVISION=	0
 .endif
 CATEGORIES=	dns net ipv6
 # XXX: put the ISC master_site
@@ -38,13 +38,13 @@ LIB_DEPENDS=	libxml2.so:textproc/libxml2
 # XXX: remove tar:bz2
 USES=	compiler:c11 cpe libedit ssl tar:bz2
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.13.4a0.2018.12.20
+ISCVERSION=	9.15.0a0.2019.03.29
 # XXX: Remove gitlab
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.isc.org
 GL_ACCOUNT=	isc-projects
 GL_PROJECT=	bind9
-GL_COMMIT=	1b95cb79bbb53e0cbec8618678c99b35985d22be
+GL_COMMIT=	7e069cb16a0a6b8d3551ecb793e1cea682815942
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -62,7 +62,7 @@ CONFIGURE_ARGS=	--localstatedir=/var --disable-linux-caps \
 ETCDIR=		${PREFIX}/etc/namedb
 
 # XXX: Add -devel
-CONFLICTS=	bind99 bind910 bind911 bind912 bind913
+CONFLICTS=	bind911 bind912 bind913 bind914
 
 .if defined(BIND_TOOLS_SLAVE)
 CONFIGURE_ARGS+=	--disable-shared
@@ -86,8 +86,8 @@ OPTIONS_RADIO=	CRYPTO
 OPTIONS_RADIO_CRYPTO=	NATIVE_PKCS11
 
 .if !defined(BIND_TOOLS_SLAVE)
-OPTIONS_DEFAULT+=	DLZ_FILESYSTEM LMDB RPZ_NSDNAME RPZ_NSIP TCP_FASTOPEN
-OPTIONS_DEFINE+=	RPZ_NSIP RPZ_NSDNAME DOCS GEOIP \
+OPTIONS_DEFAULT+=	DLZ_FILESYSTEM LMDB TCP_FASTOPEN
+OPTIONS_DEFINE+=	DOCS \
 			OVERRIDECACHE PORTREVISION QUERYTRACE LMDB DNSTAP \
 			START_LATE TUNING_LARGE TCP_FASTOPEN
 OPTIONS_GROUP=		DLZ
@@ -109,7 +109,6 @@ DLZ_POSTGRESQL_DESC=	DLZ Postgres driver
 DLZ_STUB_DESC=		DLZ stub driver
 DNSTAP_DESC=		Provides fast passive logging of DNS messages
 FIXED_RRSET_DESC=	Enable fixed rrset ordering
-GEOIP_DESC=		Allow geographically based ACL.
 GSSAPI_BASE_DESC=	Using Heimdal in base
 GSSAPI_HEIMDAL_DESC=	Using security/heimdal
 GSSAPI_MIT_DESC=	Using security/krb5
@@ -121,8 +120,6 @@ NATIVE_PKCS11_DESC=	Use PKCS\#11 native API (**READ HELP**)
 PORTREVISION_DESC=	Show PORTREVISION in the version string
 PYTHON_DESC=		Build with Python utilities
 QUERYTRACE_DESC=	Enable the very verbose query tracelogging
-RPZ_NSDNAME_DESC=	Enable RPZ NSDNAME policy records
-RPZ_NSIP_DESC=		Enable RPZ NSIP trigger rules
 SIGCHASE_DESC=		dig/host/nslookup will do DNSSEC validation
 START_LATE_DESC=	Start BIND late in the boot process (see help)
 TCP_FASTOPEN_DESC=	RFC 7413 support
@@ -149,9 +146,6 @@ DNSTAP_LIB_DEPENDS=	libfstrm.so:devel/fstrm \
 			libprotobuf-c.so:devel/protobuf-c
 
 FIXED_RRSET_CONFIGURE_ENABLE=	fixed-rrset
-
-GEOIP_CONFIGURE_WITH=	geoip
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 GSSAPI_BASE_CONFIGURE_ON=\
 	--with-gssapi=${GSSAPIBASEDIR} KRB5CONFIG="${KRB5CONFIG}"
@@ -191,10 +185,6 @@ PYTHON_USES=	python
 
 QUERYTRACE_CONFIGURE_ENABLE=	querytrace
 
-RPZ_NSDNAME_CONFIGURE_ENABLE=	rpz-nsdname
-
-RPZ_NSIP_CONFIGURE_ENABLE=	rpz-nsip
-
 SIGCHASE_CONFIGURE_ON=	STD_CDEFINES="-DDIG_SIGCHASE=1"
 
 START_LATE_SUB_LIST=	NAMED_REQUIRE="SERVERS cleanvar" \
@@ -207,13 +197,19 @@ TCP_FASTOPEN_CONFIGURE_ENABLE=	tcp-fastopen
 TUNING_LARGE_CONFIGURE_ON=	--with-tuning=large
 TUNING_LARGE_CONFIGURE_OFF=	--with-tuning=default
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if defined(WITH_DEBUG)
-CONFIGURE_ARGS+=	--enable-symtable
+CONFIGURE_ARGS+=	--enable-symtable \
+			--enable-developer
+USES+=	perl5 pkgconfig
+USE_PERL5=	build
+BUILD_DEPENDS+=	cmocka>0:sysutils/cmocka
 .else
 CONFIGURE_ARGS+=	--disable-symtable
 .endif
+
+.include <bsd.port.pre.mk>
 
 .if ${SSL_DEFAULT} == base
 SUB_LIST+=	ENGINES=/usr/lib/engines

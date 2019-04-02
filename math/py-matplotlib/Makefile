@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	matplotlib
-DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.2
-PORTREVISION=	5
+DISTVERSION=	2.2.4
 CATEGORIES=	math python
+MASTER_SITES=	CHEESESHOP:DEFAULT \
+		https://jqueryui.com/resources/download/:jquery
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	5b7a21e53e11a7064b2171c0d91afda67f30c4e7.patch:-p1 # fix of the failure on 12 i386: https://github.com/matplotlib/matplotlib/issues/10698
+DISTFILES=	${PORTNAME}-${PORTVERSION}.tar.gz \
+		jquery-ui-1.12.1.zip:jquery
 
 MAINTAINER=	mainland@apeiron.net
 COMMENT=	Plotting library uses a syntax familiar to MATLAB users
@@ -22,19 +21,20 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libtcl86.so:lang/tcl86
 RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}cycler>0:devel/py-cycler@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>=1.4:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cycler>=0.10:devel/py-cycler@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dateutil>=2.1:devel/py-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=0:devel/py-pytz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>=0:devel/py-pyparsing@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tornado>0:www/py-tornado@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}tornado>0:www/py-tornado@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}kiwisolver>=1.0.0:math/py-kiwisolver@${PY_FLAVOR}
 py27_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}backports.functools_lru_cache>0:devel/py-backports.functools_lru_cache@${PY_FLAVOR}
 
-USES=		compiler:c++11-lib gettext pkgconfig python shebangfix uniquefiles:dirs
-USE_GITHUB=	yes
+USES=		compiler:c++11-lib gettext gnome pkgconfig python shebangfix uniquefiles:dirs
 USE_PYTHON=	autoplist distutils
+
 CFLAGS+=	-I${LOCALBASE}/include
 
-OPTIONS_DEFINE=		EXAMPLES GTKBACKEND GTKAGGBACKEND QT4AGGBACKEND \
+OPTIONS_DEFINE=		EXAMPLES GTKBACKEND GTKAGGBACKEND \
 			QT5AGGBACKEND TKAGGBACKEND WXAGGBACKEND
 OPTIONS_DEFAULT=	GTKBACKEND GTKAGGBACKEND TKAGGBACKEND
 OPTIONS_SUB=		yes
@@ -51,11 +51,6 @@ GTKAGGBACKEND_DESC=	GTKAgg backend support
 GTKAGGBACKEND_USE=	GNOME=gtk20,pygtk2,cairo,gdkpixbuf2
 GTKAGGBACKEND_VARS=	GTKAGG_BACKEND=True
 GTKAGGBACKEND_VARS_OFF=	GTKAGG_BACKEND=False
-QT4AGGBACKEND_DESC=	Qt4Agg backend support
-QT4AGGBACKEND_USES=	pyqt:4
-QT4AGGBACKEND_USE=	PYQT=gui
-QT4AGGBACKEND_VARS=	QT4AGG_BACKEND=True
-QT4AGGBACKEND_VARS_OFF=	QT4AGG_BACKEND=False
 QT5AGGBACKEND_DESC=	Qt5Agg backend support
 QT5AGGBACKEND_USES=	pyqt:5
 QT5AGGBACKEND_USE=	PYQT=sip,widgets
@@ -78,40 +73,25 @@ PORTEXAMPLES=	*
 .if defined(PACKAGE_BUILDING)
 GTKBACKEND_BUILD_DEPENDS=	Xvfb:x11-servers/xorg-vfbserver
 GTKAGGBACKEND_BUILD_DEPENDS=	Xvfb:x11-servers/xorg-vfbserver
-QT4AGGBACKEND_BUILD_DEPENDS+=	Xvfb:x11-servers/xorg-vfbserver
 QT5AGGBACKEND_BUILD_DEPENDS+=	Xvfb:x11-servers/xorg-vfbserver
 TKAGGBACKEND_BUILD_DEPENDS+=	Xvfb:x11-servers/xorg-vfbserver
 WXAGGBACKEND_BUILD_DEPENDS=	Xvfb:x11-servers/xorg-vfbserver
 .endif
 
-.include <bsd.port.options.mk>
-.if ${PORT_OPTIONS:MQT4AGG_BACKEND}
-DEPRECATED=		Qt4 has been EOL since december 2015
-EXPIRATION_DATE=	2019-03-15
-.endif
-
 post-extract:
-	${FIND} ${WRKSRC} -name \*.py | ${XARGS} ${CHMOD} -x
+	@${FIND} ${WRKSRC} -name '*.py' | ${XARGS} ${CHMOD} -x
 
 post-patch:
-	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
-			 -e 's|%%TCL_INCLUDEDIR%%|${TCL_INCLUDEDIR}|g' \
-			 -e 's|%%TK_INCLUDEDIR%%|${TK_INCLUDEDIR}|g' \
-			 -e 's|%%TCL_LIBDIR%%|${TCL_LIBDIR}|g' \
-			 -e 's|%%TK_LIBDIR%%|${TK_LIBDIR}|g' \
-			 -e 's|%%TCL_VER%%|${TCL_SHLIB_VER}|g' \
-			 -e 's|%%TK_VER%%|${TK_SHLIB_VER}|g' \
-		${WRKSRC}/setupext.py
-	${REINPLACE_CMD} -e 's|%%GTK_BACKEND%%|${GTK_BACKEND}|g' \
+	@${REINPLACE_CMD} -e 's|%%DISTDIR%%|${DISTDIR}|g' ${WRKSRC}/setup.py
+	@${REINPLACE_CMD} -e 's|%%GTK_BACKEND%%|${GTK_BACKEND}|g' \
 			 -e 's|%%GTKAGG_BACKEND%%|${GTKAGG_BACKEND}|g' \
-			 -e 's|%%QT4AGG_BACKEND%%|${QT4AGG_BACKEND}|g' \
 			 -e 's|%%QT5AGG_BACKEND%%|${QT5AGG_BACKEND}|g' \
 			 -e 's|%%TKAGG_BACKEND%%|${TKAGG_BACKEND}|g' \
 			 -e 's|%%WXAGG_BACKEND%%|${WXAGG_BACKEND}|g' \
 		${WRKSRC}/setup.cfg
 
 post-install:
-	@${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/matplotlib -name '*.so' \
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/matplotlib -name '*.so' \
 		| ${XARGS} ${STRIP_CMD}
 
 post-install-EXAMPLES-on:

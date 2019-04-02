@@ -2,7 +2,7 @@
 
 PORTNAME=	gcc
 PORTVERSION=	6.4.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	base
 MASTER_SITES=	GCC/releases/gcc-${DISTVERSION} \
 		http://www.mpfr.org/mpfr-3.1.6/:mpfr \
@@ -21,14 +21,6 @@ COMMENT=	GNU Compiler Collection
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-.if !defined(CROSS_TOOLCHAIN)
-.error Please define CROSS_TOOLCHAIN before building
-.endif
-
-.if !defined(CROSS_SYSROOT)
-.error Please define CROSS_SYSROOT before building
-.endif
-
 TARGETARCH=	${ARCH:S/amd64/x86_64/}
 GCC_TARGET=	${TARGETARCH}-unknown-${OPSYS:tl}${OSREL}
 
@@ -44,6 +36,7 @@ PLIST_SUB=	TARGETARCH=${TARGETARCH} \
 		GCC_VERSION=${PORTVERSION}
 
 EXTRA_PATCHES+= ${.CURDIR}/../../devel/powerpc64-gcc/files/freebsd-format-extensions
+EXTRA_PATCHES+= ${.CURDIR}/../../devel/powerpc64-gcc/files/freebsd-libdir
 EXTRA_PATCHES+= ${.CURDIR}/../../devel/powerpc64-gcc/files/patch-gcc-freebsd-mips
 
 GNU_CONFIGURE=	yes
@@ -65,6 +58,12 @@ INSTALL_TARGET?=	install-gcc
 
 .if ${OSVERSION} >= 1200000
 CONFIGURE_ARGS+= --enable-initfini-array
+.endif
+
+.if ${HOSTARCH} == "amd64"
+CONFIGURE_TARGET=	x86_64-unknown-${OPSYS:tl}${OSREL}
+.else
+CONFIGURE_TARGET=	${HOSTARCH}-unknown-${OPSYS:tl}${OSREL}
 .endif
 
 .if ${ARCH} == "amd64" || ${ARCH} == "i386"

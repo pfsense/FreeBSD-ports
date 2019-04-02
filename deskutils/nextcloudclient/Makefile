@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	nextcloudclient
-PORTVERSION=	0.0.0.20181226
-#PORTREVISION=	2
+PORTVERSION=	0.0.0.20190207
+PORTREVISION=	2
 CATEGORIES=	deskutils
 
 MAINTAINER=	mr@FreeBSD.org
@@ -12,7 +12,7 @@ COMMENT=	NextCloud Desktop Syncing Client
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
-		libqt5keychain.so:security/qtkeychain@qt5
+		libqt5keychain.so:security/qtkeychain
 
 USES=		cmake:noninja compiler:c++11-lib gmake iconv \
 		localbase:ldflags pkgconfig qt:5 sqlite ssl
@@ -28,7 +28,7 @@ DEBUG=		yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	nextcloud
 GH_PROJECT=	desktop
-GH_TAGNAME=	9cea77b0fbc7130134a02475ade3392c402ae1ce
+GH_TAGNAME=	ca624def40d5e431bc84a157ffba1bc187d5ecee
 
 #OPTIONS_DEFINE=		DEBUG DOCS
 OPTIONS_DEFINE=		DEBUG # DOCS doesn't build currently

@@ -2,7 +2,7 @@
 
 PORTNAME=		git-lfs
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.6.1
+DISTVERSION=		2.7.1
 CATEGORIES=		devel
 
 MAINTAINER=	egypcio@FreeBSD.org
@@ -15,9 +15,6 @@ RUN_DEPENDS=	git:devel/git
 
 USES=		go
 USE_GITHUB=	yes
-
-GH_TUPLE=	davecgh:go-spew:d8f796a:davecgh_spew/vendor/github.com/davecgh/go-spew \
-		pmezard:go-difflib:792786c:pmezard_difflib/vendor/github.com/pmezard/go-difflib
 
 GO_PKGNAME=	github.com/${PORTNAME}/${PORTNAME}
 

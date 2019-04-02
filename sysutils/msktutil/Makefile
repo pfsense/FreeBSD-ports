@@ -2,11 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	msktutil
-PORTVERSION=	1.0
-PORTREVISION=	1
+PORTVERSION=	1.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
-MASTER_SITES=	SF/${PORTNAME} \
-		ZI
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Utility to manage Active Directory interoperability
@@ -14,12 +12,14 @@ COMMENT=	Utility to manage Active Directory interoperability
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake ssl tar:bzip2
+LIB_DEPENDS=	libudns.so:dns/udns
+
+USES=		autoreconf ssl
+USE_GITHUB=	yes
 USE_OPENLDAP=	yes
 GNU_CONFIGURE=	yes
-WANT_OPENLDAP_SASL=	yes
-
 CONFIGURE_ARGS+=--with-sasldir=${LOCALBASE} --with-ldapdir=${LOCALBASE}
+WANT_OPENLDAP_SASL=	yes
 
 OPTIONS_SINGLE=	GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT

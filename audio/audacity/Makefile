@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	audacity
-PORTVERSION=	2.3.0
+PORTVERSION=	2.3.1
 DISTVERSIONPREFIX=	Audacity-
-PORTREVISION=	3
 CATEGORIES=	audio
 
 MAINTAINER=	xxjack12xx@gmail.com
@@ -25,13 +24,15 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libsoxr.so:audio/libsoxr \
 		libsndfile.so:audio/libsndfile
 
-USES=		autoreconf compiler:c++11-lib cpe desktop-file-utils gettext-tools gmake iconv libtool pkgconfig shared-mime-info shebangfix dos2unix localbase
+USES=		autoreconf compiler:c++11-lib cpe desktop-file-utils dos2unix \
+		gettext-tools gmake gnome iconv libtool localbase pkgconfig \
+		shared-mime-info shebangfix
 GNU_CONFIGURE=	yes
 NLS_USES=	gettext-runtime
 NLS_CONFIGURE_ENABLE=	nls
 NLS_CONFIGURE_WITH=	libintl-prefix="${LOCALBASE}"
 OPTIONS_SUB=	yes
-USE_WX=		3.0+
+USE_WX=		3.1+
 WX_COMPS=	wx
 INSTALLS_ICONS=	yes
 PORTDOCS=	README.txt
@@ -39,8 +40,9 @@ DOS2UNIX_GLOB=	Makefile.* *.c* *.h
 SHEBANG_FILES=	lib-src/lv2/build
 USE_GITHUB=	yes
 
-OPTIONS_DEFINE=	NLS DEBUG DOCS DYNLOAD FFMPEG FLAC ID3TAG LADSPA LAME LV2 \
-		MAD MOD_SCRIPT_PIPE MOD_NYQ_BENCH SBSMS SOUNDTOUCH TWOLAME VAMP VORBIS VST
+OPTIONS_DEFINE=	DEBUG DOCS DYNLOAD FFMPEG FLAC ID3TAG LADSPA LAME LV2 MAD \
+		MOD_NYQ_BENCH MOD_SCRIPT_PIPE NLS SBSMS SOUNDTOUCH STATIC_WX \
+		TWOLAME VAMP VORBIS VST
 OPTIONS_DEFAULT=	FLAC ID3TAG LADSPA MAD \
 			SBSMS SOUNDTOUCH TWOLAME VAMP VORBIS VST
 
@@ -57,6 +59,7 @@ MOD_SCRIPT_PIPE_DESC=	mod-script-pipe scripting support
 MOD_NYQ_BENCH_DESC=	Enable Nyquist Workbench
 SBSMS_DESC=	Use libsbsms for pitch and tempo changing
 SOUNDTOUCH_DESC=	Use libSoundTouch for pitch and tempo changing
+STATIC_WX_DESC=	Link wx statically
 TAGLIB_DESC=	Use TagLib for metadata support
 TWOLAME_DESC=	Use libtwolame for MP2 export support
 VAMP_DESC=	Vamp plug-in support
@@ -83,11 +86,11 @@ DEBUG_CONFIGURE_WITH=	debug
 DOCS_BUILD_DEPENDS=	docbook-to-man:textproc/docbook-to-man \
 			docbook2man:textproc/docbook-utils
 
-DYNLOAD_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/libavcodec.pc:multimedia/ffmpeg
-DYNLOAD_BUILD_DEPENDS=	${LOCALBASE}/include/lame/lame.h:audio/lame
+DYNLOAD_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/libavcodec.pc:multimedia/ffmpeg \
+			${LOCALBASE}/include/lame/lame.h:audio/lame
 DYNLOAD_CONFIGURE_ENABLE=	dynamic-loading
-DYNLOAD_CPPFLAGS=		-I${LOCALBASE}/include	# for audio/lame using
-DYNLOAD_LDFLAGS=		-L${LOCALBASE}/lib	# for audio/lame using
+DYNLOAD_CPPFLAGS=		-I${LOCALBASE}/include	# for audio/lame
+DYNLOAD_LDFLAGS=		-L${LOCALBASE}/lib	# for audio/lame
 
 FFMPEG_CONFIGURE_WITH=	ffmpeg=system
 FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
@@ -127,6 +130,8 @@ SOUNDTOUCH_CONFIGURE_WITH=	soundtouch=system
 SOUNDTOUCH_LIB_DEPENDS=	libSoundTouch.so:audio/soundtouch
 
 SSE_CONFIGURE_ENABLE=	sse
+
+STATIC_WX_ENABLE=	static-wx
 
 TWOLAME_CONFIGURE_WITH=	libtwolame=system
 TWOLAME_LIB_DEPENDS=	libtwolame.so:audio/twolame

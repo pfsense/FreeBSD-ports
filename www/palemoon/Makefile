@@ -4,7 +4,7 @@
 PORTNAME=	palemoon
 DISTVERSION=	27.9.4
 DISTVERSIONSUFFIX=_Release
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	www ipv6
 
 MAINTAINER=	lichray@gmail.com
@@ -40,7 +40,7 @@ MOZ_OPTIONS=	--enable-application=browser \
 		--enable-jemalloc-lib
 
 OPTIONS_DEFAULT=	GTK2
-OPTIONS_EXCLUDE=	DTRACE JACK TEST WAYLAND
+OPTIONS_EXCLUDE=	JACK TEST WAYLAND
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
 

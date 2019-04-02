@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	iroffer
-PORTVERSION=	3.31
+PORTVERSION=	3.32
 CATEGORIES=	irc
 MASTER_SITES=	https://iroffer.net/
 PKGNAMESUFFIX=	-dinoex${PKGNAMESUFFIX2}
@@ -45,13 +45,22 @@ OPTIONS_DEFAULT=CURL RUBY UPNP GEOIP
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 CURL_CONFIGURE_ON=	-curl
 RUBY_USE=		RUBY=yes
-RUBY_LIB_DEPENDS=	lib${RUBY_NAME}.so:${RUBY_PORT} \
-			libunwind.so:devel/libunwind
+RUBY_LIB_DEPENDS=	lib${RUBY_NAME}.so:${RUBY_PORT}
 RUBY_CONFIGURE_ON=	-ruby
 UPNP_LIB_DEPENDS=	libminiupnpc.so:net/miniupnpc
 UPNP_CONFIGURE_ON=	-upnp
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
+GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 GEOIP_CONFIGURE_ON=	-geoip
+
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MRUBY}
+# make stage-qa happy
+# keep in sync with all platforms where libunwind is available
+.if (${ARCH} == amd64 || ${ARCH} == i386)
+LIB_DEPENDS+=	libunwind.so:devel/libunwind
+.endif
+.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/iroffer ${STAGEDIR}${PREFIX}/bin/
@@ -76,4 +85,4 @@ do-install-EXAMPLES-on:
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${EXAMPLESDIR}/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

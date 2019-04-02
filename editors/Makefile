@@ -22,6 +22,7 @@
     SUBDIR += codelite
     SUBDIR += cooledit
     SUBDIR += cream
+    SUBDIR += cudatext
     SUBDIR += deforaos-editor
     SUBDIR += dexed
     SUBDIR += dhex
@@ -31,6 +32,7 @@
     SUBDIR += drjava
     SUBDIR += dte
     SUBDIR += e3
+    SUBDIR += e93
     SUBDIR += ecce
     SUBDIR += ecrire
     SUBDIR += edith
@@ -38,7 +40,7 @@
     SUBDIR += emacs
     SUBDIR += emacs-devel
     SUBDIR += encryptpad
-    SUBDIR += featherpad 
+    SUBDIR += featherpad
     SUBDIR += fileobj
     SUBDIR += flim
     SUBDIR += focuswriter
@@ -54,7 +56,6 @@
     SUBDIR += gnome-latex
     SUBDIR += gobby
     SUBDIR += gomate
-    SUBDIR += gwrite
     SUBDIR += heme
     SUBDIR += hexcurse
     SUBDIR += hexedit
@@ -75,13 +76,10 @@
     SUBDIR += kile
     SUBDIR += komodo-edit
     SUBDIR += lazarus
-    SUBDIR += lazarus-qt4
     SUBDIR += lazarus-qt5
     SUBDIR += le
     SUBDIR += leafpad
     SUBDIR += led
-    SUBDIR += leo
-    SUBDIR += lfhex
     SUBDIR += libreoffice
     SUBDIR += libreoffice-af
     SUBDIR += libreoffice-am
@@ -101,6 +99,7 @@
     SUBDIR += libreoffice-cy
     SUBDIR += libreoffice-da
     SUBDIR += libreoffice-dgo
+    SUBDIR += libreoffice-dsb
     SUBDIR += libreoffice-dz
     SUBDIR += libreoffice-el
     SUBDIR += libreoffice-en_GB
@@ -125,6 +124,7 @@
     SUBDIR += libreoffice-is
     SUBDIR += libreoffice-it
     SUBDIR += libreoffice-ka
+    SUBDIR += libreoffice-kab
     SUBDIR += libreoffice-kk
     SUBDIR += libreoffice-km
     SUBDIR += libreoffice-kmr_Latn
@@ -207,15 +207,16 @@
     SUBDIR += p5-Proc-InvokeEditor
     SUBDIR += p5-Vimana
     SUBDIR += paredit-mode.el
+    SUBDIR += parinfer-rust
     SUBDIR += pdfedit
     SUBDIR += pico-alpine
     SUBDIR += picpas
     SUBDIR += pluma
-    SUBDIR += plume-creator-devel
     SUBDIR += poedit
     SUBDIR += psgml
     SUBDIR += puff
     SUBDIR += py-editorconfig
+    SUBDIR += py-pynvim
     SUBDIR += py-room
     SUBDIR += rox-edit
     SUBDIR += rubygem-neovim
@@ -234,7 +235,6 @@
     SUBDIR += texmacs
     SUBDIR += texmaker
     SUBDIR += texstudio
-    SUBDIR += textroom
     SUBDIR += texworks
     SUBDIR += the
     SUBDIR += thoteditor
@@ -250,13 +250,13 @@
     SUBDIR += web-mode
     SUBDIR += with-editor
     SUBDIR += wordgrinder
+    SUBDIR += wxhexeditor
     SUBDIR += xcoral
     SUBDIR += xed
     SUBDIR += xi-core
     SUBDIR += xmlcopyeditor
     SUBDIR += xvile
     SUBDIR += yudit
-    SUBDIR += yzis
     SUBDIR += zile
     SUBDIR += zoinks
 

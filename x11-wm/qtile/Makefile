@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qtile
-PORTVERSION=	0.12.0
+PORTVERSION=	0.13.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11-wm
 
@@ -11,6 +11,8 @@ COMMENT=	Small, flexible, scriptable tiling window manager written in Python
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		tries to download during configure phase
 
 BUILD_DEPENDS=  ${PYTHON_PKGNAMEPREFIX}cffi>1.1.0:devel/py-cffi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>1.4.1:devel/py-six@${PY_FLAVOR} \
