@@ -303,6 +303,10 @@ post-patch-IPV6-off:
 		-e's|tcp_outgoing_address 2001:db8::1||' \
 		${WRKSRC}/src/cf.data.pre
 
+post-configure-GSSAPI_MIT-on:
+	@${REINPLACE_CMD} -e '/#define.*USE_HEIMDAL_KRB5/d' \
+		${WRKSRC}/include/autoconf.h
+
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/src/auth/basic/DB/passwd.sql \
