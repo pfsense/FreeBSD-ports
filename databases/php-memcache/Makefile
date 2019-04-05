@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	memcache
-PORTVERSION=	3.0.9
+PORTVERSION=	4.0.3
 CATEGORIES=	databases
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -20,12 +20,9 @@ USES=		dos2unix php:ext
 USE_PHP=	session:build zlib:build
 
 CONFIGURE_ARGS=	--with-zlib-dir=/usr
-IGNORE_WITH_PHP=56
-USE_CSTD=	gnu89
 
 GH_ACCOUNT=	websupport-sk
 GH_PROJECT=	pecl-${PORTNAME}
-GH_TAGNAME=	e702b5f
 USE_GITHUB=	yes
 
 post-install-EXAMPLES-on:

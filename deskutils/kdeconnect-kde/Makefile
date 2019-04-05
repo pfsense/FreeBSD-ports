@@ -1,10 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	kdeconnect-kde
-DISTVERSION=	1.3.1
-PORTREVISION=	2
+DISTVERSION=	1.3.4
 CATEGORIES=	deskutils kde
-MASTER_SITES=	KDE/stable/kdeconnect/${DISTVERSION}/src/
+MASTER_SITES=	KDE/stable/kdeconnect/${DISTVERSION}
 DIST_SUBDIR=	KDE
 
 MAINTAINER=	kde@FreeBSD.org
@@ -14,8 +13,9 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfakekey.so:x11/libfakekey \
-		libqca-qt5.so:devel/qca@qt5
-RUN_DEPENDS=	sshfs:sysutils/fusefs-sshfs
+		libqca-qt5.so:devel/qca
+RUN_DEPENDS=	sshpass:security/sshpass \
+		sshfs:sysutils/fusefs-sshfs
 
 CONFLICTS_INSTALL=	kdeconnect-kde-0.7* kdeconnect-kde-kde4-0.7.*
 

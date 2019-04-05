@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	zsh
-DISTVERSION=	5.6.2
-PORTREVISION=	1
+DISTVERSION=	5.7.1
 CATEGORIES=	shells
-MASTER_SITES=	http://www.zsh.org/pub/ \
+MASTER_SITES=	https://www.zsh.org/pub/ \
 		SF \
-		http://www.zsh.org/pub/:doc \
+		https://www.zsh.org/pub/:doc \
 		SF/${PORTNAME}/${PORTNAME}-doc/${PORTVERSION}:doc
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 

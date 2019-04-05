@@ -2,7 +2,7 @@
 
 PORTNAME=	bingrep
 PORTVERSION=	g20171111
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -33,7 +33,7 @@ CARGO_CRATES=	aho-corasick-0.6.3 \
 		hexplay-0.2.0 \
 		kernel32-sys-0.2.2 \
 		lazy_static-0.2.8 \
-		libc-0.2.40 \
+		libc-0.2.49 \
 		log-0.3.8 \
 		memchr-1.0.1 \
 		memrange-0.1.3 \
@@ -71,7 +71,6 @@ CARGO_CRATES=	aho-corasick-0.6.3 \
 		winapi-build-0.1.1 \
 		wincolor-0.1.4
 CARGO_USE_GITHUB=	yes
-CARGO_GH_CARGOTOML=	${WRKSRC}/Cargo.toml ${WRKSRC_metagoblin}/Cargo.toml
 
 PLIST_FILES=	bin/bingrep
 

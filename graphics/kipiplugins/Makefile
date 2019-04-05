@@ -2,7 +2,7 @@
 
 PORTNAME=	kipiplugins
 DISTVERSION=	5.9.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics kde
 MASTER_SITES=	KDE/stable/digikam
 DIST_SUBDIR=	KDE/digikam/${PORTVERSION}
@@ -36,7 +36,6 @@ KVKONTAKTE_CMAKE_BOOL=	DIGIKAMSC_COMPILE_LIBKVKONTAKTE
 KVKONTAKTE_LIB_DEPENDS=	libKF5Vkontakte.so:net/libkvkontakte
 
 DISTNAME=	digikam-${PORTVERSION}
-DISTINFO_FILE=	${.CURDIR:H:H}/graphics/digikam/distinfo
 DESCR=		${.CURDIR:H:H}/graphics/digikam/pkg-descr
 
 PLIST_SUB=		SHLIB_VER=${DISTVERSION}

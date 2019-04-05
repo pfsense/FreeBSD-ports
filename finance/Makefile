@@ -21,12 +21,10 @@
     SUBDIR += R-cran-urca
     SUBDIR += R-cran-vars
     SUBDIR += alkimia
-    SUBDIR += alkimia-qt4
     SUBDIR += aqbanking
     SUBDIR += aqmoney
     SUBDIR += beancount
     SUBDIR += beanie
-    SUBDIR += bitcoin-armory
     SUBDIR += cbb
     SUBDIR += cointop
     SUBDIR += electrum
@@ -96,12 +94,13 @@
     SUBDIR += pear_Payment_DTA
     SUBDIR += prestashop
     SUBDIR += py-bitcoin
+    SUBDIR += py-pycoin
+    SUBDIR += py-python-bitcoinlib
     SUBDIR += py-python-obelisk
     SUBDIR += py-stripe
     SUBDIR += py-ta-lib
     SUBDIR += py-vatnumber
     SUBDIR += py-ystockquote
-    SUBDIR += qhacc
     SUBDIR += qtbitcointrader
     SUBDIR += quantlib
     SUBDIR += quickfix

@@ -2,7 +2,7 @@
 
 PORTNAME=	orange3-text
 DISTVERSION=	0.5.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,6 +10,8 @@ MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Text Mining add-on for Orange3
 
 LICENSE=	AGPLv3
+
+BROKEN=		installs in examples namespace
 
 RUN_DEPENDS=	orange3>0:misc/orange3 \
 		${PYNUMPY} \

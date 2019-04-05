@@ -3,6 +3,7 @@
 
 PORTNAME=	vice
 PORTVERSION=	3.3
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/vice-emu/releases
 
@@ -12,7 +13,6 @@ COMMENT=	Emulator for Commodore C64, C128, VIC20, PET, and CBM-II
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf \
-		mkfontdir:x11-fonts/mkfontdir \
 		mkfontscale:x11-fonts/mkfontscale \
 		xa65:devel/xa65
 LIB_DEPENDS=	libpng.so:graphics/png \
@@ -30,16 +30,12 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libgnutls.so:security/gnutls
 
 RESTRICTED=	ROMs are copyrighted by Commodore Business Machines
-
-USES=		compiler:c++11-lang pkgconfig makeinfo gmake \
-		iconv:wchar_t jpeg readline gettext
+USES=		compiler:c++11-lang pkgconfig makeinfo localbase:ldflags \
+		gmake iconv:wchar_t jpeg readline gettext
 USE_XORG=	xpm ice sm xext xv xt x11 xmu xxf86vm
 USE_XORG+=	xrender xinerama xi xrandr xcursor xcomposite xdamage xfixes
 HAS_CONFIGURE=	yes
 MAKE_ENV+=	MAKEINFOFLAGS="--no-split"
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-CPPFLAGS+=	-I${LOCALBASE}/include
 CONFIGURE_ARGS+=	--enable-ipv6 \
 			--enable-external-ffmpeg \
 			--mandir="${PREFIX}/man" \

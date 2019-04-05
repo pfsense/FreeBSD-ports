@@ -2,6 +2,7 @@
 
 PORTNAME=	zoneminder
 PORTVERSION=	1.32.3
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	bsd@abinet.ru
@@ -89,11 +90,7 @@ CMAKE_ARGS+=	-DZM_PERL_MM_PARMS=INSTALLDIRS=site \
 
 .include <bsd.port.pre.mk>
 
-.if ${PHP_VER} >= 71
 RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu@${PHP_FLAVOR}
-.else
-RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu4@${PHP_FLAVOR}
-.endif
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
@@ -104,6 +101,12 @@ post-extract:
 	${CP} ${FILESDIR}/README.FreeBSD ${PKGMESSAGE}
 	${REINPLACE_CMD} -e 's|/dev/shm|/tmp|g' ${WRKSRC}/scripts/ZoneMinder/lib/ZoneMinder/ConfigData.pm.in
 #	${REINPLACE_CMD} -e 's|E_ALL|E_ALL^E_NOTICE|g' ${WRKSRC}/web/index.php
+
+post-patch:
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
+	@${REINPLACE_CMD} -i .c++20 's/"version/&.txt/' \
+		${WRKSRC}/CMakeLists.txt
 
 pre-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}/temp

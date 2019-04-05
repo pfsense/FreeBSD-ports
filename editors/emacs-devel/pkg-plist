@@ -4,11 +4,11 @@ bin/emacs
 bin/emacs-%%EMACS_VER%%
 bin/emacsclient
 bin/etags
+libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/emacs.pdmp
 libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/hexl
 libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/movemail
 libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/profile
 libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/rcs2log
-@(games,games,4555) libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/update-game-score
 man/man1/ctags.1.gz
 man/man1/ebrowse.1.gz
 man/man1/emacs.1.gz
@@ -23,7 +23,6 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/%%ETCDIR%%.service
 %%DATADIR%%/%%EMACS_VER%%/etc/AUTHORS
 %%DATADIR%%/%%EMACS_VER%%/etc/CALC-NEWS
-%%DATADIR%%/%%EMACS_VER%%/etc/CENSORSHIP
 %%DATADIR%%/%%EMACS_VER%%/etc/COPYING
 %%DATADIR%%/%%EMACS_VER%%/etc/DEBUG
 %%DATADIR%%/%%EMACS_VER%%/etc/DEVEL.HUMOR
@@ -32,16 +31,11 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/ERC-NEWS
 %%DATADIR%%/%%EMACS_VER%%/etc/ETAGS.EBNF
 %%DATADIR%%/%%EMACS_VER%%/etc/ETAGS.README
-%%DATADIR%%/%%EMACS_VER%%/etc/FTP
-%%DATADIR%%/%%EMACS_VER%%/etc/GNU
-%%DATADIR%%/%%EMACS_VER%%/etc/GNUS-NEWS
 %%DATADIR%%/%%EMACS_VER%%/etc/HELLO
 %%DATADIR%%/%%EMACS_VER%%/etc/HISTORY
 %%DATADIR%%/%%EMACS_VER%%/etc/JOKES
-%%DATADIR%%/%%EMACS_VER%%/etc/LINUX-GNU
 %%DATADIR%%/%%EMACS_VER%%/etc/MACHINES
 %%DATADIR%%/%%EMACS_VER%%/etc/MH-E-NEWS
-%%DATADIR%%/%%EMACS_VER%%/etc/MORE.STUFF
 %%DATADIR%%/%%EMACS_VER%%/etc/NEWS
 %%DATADIR%%/%%EMACS_VER%%/etc/NEWS.1-17
 %%DATADIR%%/%%EMACS_VER%%/etc/NEWS.18
@@ -55,14 +49,11 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/NEWS.26
 %%DATADIR%%/%%EMACS_VER%%/etc/NEXTSTEP
 %%DATADIR%%/%%EMACS_VER%%/etc/NXML-NEWS
-%%DATADIR%%/%%EMACS_VER%%/etc/ORDERS
 %%DATADIR%%/%%EMACS_VER%%/etc/ORG-NEWS
 %%DATADIR%%/%%EMACS_VER%%/etc/PROBLEMS
 %%DATADIR%%/%%EMACS_VER%%/etc/README
 %%DATADIR%%/%%EMACS_VER%%/etc/TERMS
-%%DATADIR%%/%%EMACS_VER%%/etc/THE-GNU-PROJECT
 %%DATADIR%%/%%EMACS_VER%%/etc/TODO
-%%DATADIR%%/%%EMACS_VER%%/etc/WHY-FREE
 %%DATADIR%%/%%EMACS_VER%%/etc/charsets/8859-10.map
 %%DATADIR%%/%%EMACS_VER%%/etc/charsets/8859-11.map
 %%DATADIR%%/%%EMACS_VER%%/etc/charsets/8859-13.map
@@ -1862,6 +1853,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/ffap.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/filecache.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/filecache.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/fileloop.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/fileloop.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/filenotify.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/filenotify.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/files-x.el.gz
@@ -2321,6 +2314,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/lao.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/misc-lang.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/misc-lang.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/language/pinyin.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/language/pinyin.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/romanian.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/romanian.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/sinhala.el.gz
@@ -2655,8 +2650,6 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/mpc.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/msb.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/msb.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/multifile.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/multifile.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/mwheel.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/mwheel.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/ange-ftp.el.gz
@@ -2783,6 +2776,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-ftp.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-gvfs.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-gvfs.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-integration.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-integration.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-loaddefs.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-rclone.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-rclone.elc
@@ -3952,6 +3947,7 @@ share/metainfo/emacs.appdata.xml
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/dispextern.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/dispnew.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/disptab.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/dmpstruct.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/doc.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/doprnt.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/dosfns.c
@@ -3969,6 +3965,9 @@ share/metainfo/emacs.appdata.xml
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/eval.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fileio.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/filelock.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fingerprint-dummy.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fingerprint.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fingerprint.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/firstfile.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/floatfns.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fns.c
@@ -4021,10 +4020,13 @@ share/metainfo/emacs.appdata.xml
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/minibuf.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/module-env-25.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/module-env-26.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/module-env-27.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/msdos.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/msdos.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/nsgui.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/nsterm.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pdumper.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pdumper.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/print.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/process.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/process.h
@@ -4133,6 +4135,3 @@ share/icons/hicolor/scalable/apps/emacs.ico
 share/icons/hicolor/scalable/apps/emacs.svg
 share/icons/hicolor/scalable/mimetypes/emacs-document.svg
 share/icons/hicolor/scalable/mimetypes/emacs-document23.svg
-@(games,games,0664) /var/games/emacs/snake-scores
-@(games,games,0664) /var/games/emacs/tetris-scores
-@dir(games,games,0755) /var/games/emacs

@@ -16,4 +16,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django111>0:www/py-django111@${PY_FLAVOR}
 USES=		python
 USE_PYTHON=	distutils autoplist
 
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}dj21-django-cors-headers
+
 .include <bsd.port.mk>

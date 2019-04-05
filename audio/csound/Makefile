@@ -4,7 +4,7 @@
 PORTNAME=	csound
 DISTVERSION=	6.12.2-83
 DISTVERSIONSUFFIX=	-gdf2edd269
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio lang
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -23,6 +23,9 @@ USES=		alias bison cmake compiler:c++11-lib eigen:3 localbase ncurses python:2.7
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 
+CFLAGS_powerpc=	-maltivec
+CFLAGS_powerpcspe=	-DPFFFT_SIMD_DISABLE
+CFLAGS_powerpc64=	-maltivec
 CMAKE_ARGS=	-DBUILD_CSOUNDVST:BOOL=OFF \
 		-DBUILD_PD_CLASS:BOOL=OFF \
 		-DPYTHON_MODULE_INSTALL_DIR:PATH="${PYTHONPREFIX_SITELIBDIR}" \

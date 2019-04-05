@@ -138,7 +138,8 @@ MOZ_PKGCONFIG_FILES?=	${MOZILLA}-gtkmozembed ${MOZILLA}-js \
 
 MOZ_EXPORT+=	${CONFIGURE_ENV} \
 				RUSTFLAGS="${RUSTFLAGS}" \
-				PERL="${PERL}"
+				PERL="${PERL}" \
+				ac_cv_clock_monotonic=
 MOZ_OPTIONS+=	--prefix="${PREFIX}"
 MOZ_MK_OPTIONS+=MOZ_OBJDIR="${BUILD_WRKSRC}"
 
@@ -168,7 +169,7 @@ harfbuzz_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 harfbuzz_MOZ_OPTIONS=	--with-system-harfbuzz
 .endif
 
-hunspell_LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell
+hunspell_LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 hunspell_MOZ_OPTIONS=	--enable-system-hunspell
 
 icu_LIB_DEPENDS=		libicui18n.so:devel/icu
@@ -355,17 +356,9 @@ MOZ_OPTIONS+=	--enable-debug --disable-release
 STRIP=	# ports/184285
 .else
 MOZ_OPTIONS+=	--disable-debug --disable-debug-symbols --enable-release
-. if ${MOZILLA_VER:R:R} >= 56 && (${ARCH:Maarch64} || ${MACHINE_CPU:Msse2})
+. if ${MOZILLA_VER:R:R} >= 67 && (${ARCH:Maarch64} || ${MACHINE_CPU:Msse2})
 MOZ_OPTIONS+=	--enable-rust-simd
 . endif
-.endif
-
-.if ${PORT_OPTIONS:MDTRACE}
-MOZ_OPTIONS+=	--enable-dtrace \
-		--disable-gold
-STRIP=
-.else
-MOZ_OPTIONS+=	--disable-dtrace
 .endif
 
 .if ${PORT_OPTIONS:MPROFILE}

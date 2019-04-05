@@ -3,7 +3,7 @@
 PORTNAME=	cquery
 PORTVERSION=	20180718
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	henry.hu.sh@gmail.com
@@ -14,7 +14,7 @@ LICENSE=	MIT
 BROKEN_powerpc64=	fails to build: Checking for 'clang++' (C++ compiler): not found
 
 BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-LIB_DEPENDS=	libclang.so.${LLVM_DEFAULT:C/[0-9]$//}:devel/llvm${LLVM_DEFAULT}
+LIB_DEPENDS=	libclang.so:devel/llvm${LLVM_DEFAULT}
 
 USES=		compiler:c++14-lang waf
 
@@ -26,8 +26,6 @@ GH_TUPLE=	miloyip:rapidjson:daabb88:rapidjson/third_party/rapidjson \
 		msgpack:msgpack-c:208595b:msgpack/third_party/msgpack-c \
 		emilk:loguru:6bf94c:loguru/third_party/loguru \
 		zeux:pugixml:24a7064:pugixml/third_party/pugixml
-
-LLVM_DEFAULT?=	60
 
 PLIST_FILES=	bin/cquery
 

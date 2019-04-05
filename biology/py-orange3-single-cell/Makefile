@@ -2,7 +2,7 @@
 
 PORTNAME=	orange3-single-cell
 DISTVERSION=	0.8.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	biology python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -22,7 +22,8 @@ RUN_DEPENDS=	orange3>0:misc/orange3 \
 		${PYTHON_PKGNAMEPREFIX}scikit-learn>0:science/py-scikit-learn@${PY_FLAVOR} \
 		${PYNUMPY}
 
-USES=		python:3.4+
+# Supports 3.4+ but loompy 3.6+ only.
+USES=		python:3.6+
 USE_GITHUB=	yes
 GH_ACCOUNT=	biolab
 USE_PYTHON=	distutils autoplist

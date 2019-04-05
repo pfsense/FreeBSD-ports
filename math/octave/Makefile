@@ -3,7 +3,7 @@
 
 PORTNAME=	octave
 PORTVERSION=	${OCTAVE_VERSION}
-PORTREVISION=	7
+PORTREVISION=	1
 CATEGORIES=	math java
 MASTER_SITES=	GNU
 
@@ -38,7 +38,9 @@ LIB_DEPENDS=	libGraphicsMagick.so:graphics/GraphicsMagick \
 		libfreetype.so:print/freetype2 \
 		libdrm.so:graphics/libdrm \
 		libOSMesa.so:graphics/libosmesa \
-		libsundials_arkode.so:math/sundials
+		libsundials_arkode.so:math/sundials \
+		libportaudio.so:audio/portaudio
+#		libsndfile.so:audio/libsndfile # Commented out until this port no longer has vulnerabilities.
 
 USES=		charsetfix fortran gmake libtool perl5 pkgconfig qt:5 readline \
 		tar:xz compiler:c++14-lang \
@@ -50,7 +52,8 @@ USE_JAVA=	yes
 JAVA_VERSION=	1.7+
 USE_QT=		core gui help network opengl \
 		qmake_build buildtools_build linguist_build \
-		printsupport sql widgets
+		printsupport sql widgets \
+		xml
 USE_XORG=	x11 xext xfixes xft \
 		xcursor xinerama xrender
 USE_GL=		gl glu
@@ -59,7 +62,7 @@ OCTAVE_VERSION=	${PORTVERSION}
 GNU_HOST=	${ARCH}-portbld-freebsd${OSREL}
 PLIST_SUB=	OCTAVE_VERSION=${OCTAVE_VERSION} GNU_HOST=${GNU_HOST}
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-L${LOCALBASE}/lib -L${LOCALBASE}/lib/qt5
 CONFIGURE_ENV=	GPERF="${LOCALBASE}/bin/gperf" \
 		JAVA_HOME=${JAVA_HOME} \
 		MAKEINFO=${LOCALBASE}/bin/makeinfo \
@@ -96,14 +99,11 @@ ATLAS_USES=		blaslapack:atlas
 
 post-patch:
 	${REINPLACE_CMD} 's+"makeinfo"+"${LOCALBASE}/bin/makeinfo"+' ${WRKSRC}/libinterp/corefcn/help.cc
-	${REINPLACE_CMD} 's+lapack lapack_rs6k+${LAPACKLIB:C/-l//}+' ${WRKSRC}/configure
-	${REINPLACE_CMD} 's+-lumfpack+-lumfpack -lsuitesparseconfig -lamd -lcholmod -lcolamd ${LAPACKLIB}+' ${WRKSRC}/configure
-	${REINPLACE_CMD} 's+-lcholmod+-lumfpack -lsuitesparseconfig -lamd -lcholmod -lcolamd ${LAPACKLIB}+' ${WRKSRC}/configure
 	${REINPLACE_CMD} 's/"-qt$$qt_version"/"-qt=qt$$qt_version"/' ${WRKSRC}/configure
 
 post-install:
 	(cd ${STAGEDIR}${DATADIR} && ${LN} -s ${PORTVERSION}/imagelib  .)
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/octave/${PORTVERSION}/liboctave.so.6.0.0
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/octave/${PORTVERSION}/liboctave.so.7.0.0
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

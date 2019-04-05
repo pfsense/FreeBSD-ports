@@ -12,16 +12,13 @@ COMMENT=	Bootable Live USB creator for various Linux distributions
 
 LICENSE=	GPLv2+
 
-DEPRECATED=		Qt4 has been EOL since december 2015
-EXPIRATION_DATE=	2019-03-15
-
 RUN_DEPENDS=	7z:archivers/p7zip \
 		syslinux:sysutils/syslinux \
 		mke2fs:sysutils/e2fsprogs
 
-USES=	qt:4
-USE_QT=		linguisttools_build moc_build qmake_build uic_build \
-		corelib gui network
+USES=		qt:5
+USE_QT=		buildtools_build linguisttools_build qmake_build \
+		core gui network widgets
 QMAKE_ARGS=	DEFINES+=LOCALBASE=\\\\\\\"${LOCALBASE}\\\\\\\"
 
 NO_WRKSUBDIR=	yes

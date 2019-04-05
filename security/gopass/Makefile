@@ -3,7 +3,7 @@
 
 PORTNAME=	gopass
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.3
+DISTVERSION=	1.8.5
 CATEGORIES=	security
 
 MAINTAINER=	sascha@root-login.org
@@ -18,6 +18,9 @@ RUN_DEPENDS=	git:devel/git \
 USES=		go
 USE_GITHUB=	yes
 GH_ACCOUNT=	gopasspw
+
+ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON=	Upstream only supports amd64
 
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
 

@@ -1,10 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	gnustep-back
-PORTVERSION=	0.25.1
-PORTREVISION=	2
+DISTVERSIONPREFIX=	back-
+DISTVERSION=	0_27_0
 CATEGORIES=	x11-toolkits gnustep
-MASTER_SITES=	GNUSTEP/core
 
 MAINTAINER=	theraven@FreeBSD.org
 COMMENT=	GNUstep GUI backend
@@ -19,6 +18,16 @@ LIB_DEPENDS+=	libgif.so:graphics/giflib \
 		libfreetype.so:print/freetype2 \
 		libcairo.so:graphics/cairo
 
+USES=		gnustep jpeg pkgconfig gl
+USE_GNUSTEP=	base gui build
+USE_XORG=	xft xrender xmu xext x11 xcursor xfixes xmu
+USE_GL=	gl
+USE_LDCONFIG=	${GNUSTEP_SYSTEM_LIBRARIES}
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	gnustep
+GH_PROJECT=	libs-back
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-tiff-library=${LOCALBASE}/lib \
 		--with-tiff-include=${LOCALBASE}/include \
@@ -29,11 +38,11 @@ CONFIGURE_ARGS=	--with-tiff-library=${LOCALBASE}/lib \
 		--enable-graphics=cairo \
 		--disable-glitz
 
-USES=		gnustep jpeg pkgconfig
-USE_GNUSTEP=	base gui build
-USE_XORG=	xft xrender xmu xext x11 xcursor xfixes xmu
-USE_GL=		yes
-USE_LDCONFIG=	${GNUSTEP_SYSTEM_LIBRARIES}
+# LLD 7 creates a library that does not work with FreeBSD (or OpenBSD) rtld -
+# it loads apparently without errors, but the global constructors are not
+# called.  It also appears to corrupt some internal state, as throwing an
+# exception causes a crash inside rtld.
+LLD_UNSAFE=	yes
 
 MAKE_FLAGS+=	OPTFLAG="${CFLAGS} -I${LOCALBASE}/include"
 BACKVERSION=	${PORTVERSION:C/([0-9])*[.]([0-9]*).*/\1\2/1}

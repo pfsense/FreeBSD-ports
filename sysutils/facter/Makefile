@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	facter
-PORTVERSION=	3.12.2
+PORTVERSION=	3.13.0
 CATEGORIES?=	sysutils
 MASTER_SITES=	https://downloads.puppetlabs.com/facter/
 
@@ -12,7 +12,6 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_DragonFly=	DragonFly is not supported upstream
-BROKEN_powerpc64=	fails to compile: collection.cc: 'stoi' was not declared in this scope
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libcurl.so:ftp/curl \
@@ -53,12 +52,6 @@ post-install:
 
 test: build
 	cd ${WRKSRC}/lib && bundle install --path vendor
-	cd ${WRKSRC} && ${MAKE_CMD} test
+	cd ${CONFIGURE_WRKSRC} && ${MAKE_CMD} test
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${COMPILER_FEATURES:Mlibstdc++}
-BROKEN=		Build with system libstdc++ is unsupported
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

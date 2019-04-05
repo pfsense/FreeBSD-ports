@@ -12,7 +12,7 @@ lib/cmake/KF5Kirigami2/KF5Kirigami2Targets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/KF5Kirigami2/KF5Kirigami2Targets.cmake
 lib/libKF5Kirigami2.so
 lib/libKF5Kirigami2.so.5
-lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
+lib/libKF5Kirigami2.so.5.56.0
 %%QT_MKSPECDIR%%/modules/qt_Kirigami2.pri
 %%QT_QMLDIR%%/org/kde/kirigami.2/AboutPage.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/AbstractApplicationHeader.qml
@@ -22,6 +22,7 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/AbstractItemViewHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/AbstractListItem.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/Action.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/ActionTextField.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ActionToolBar.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ApplicationHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ApplicationItem.qml
@@ -56,16 +57,15 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionButton.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionIconGroup.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionMenuItem.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionMenuItemBase.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionMenuItemQt510.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionMenuItemQt59.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/ActionsMenu.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/BannerImage.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/CardsGridViewPrivate.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/CardsListViewPrivate.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/private/ContextDrawerActionItem.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/CornerShadow.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/DefaultListItemBackground.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/EdgeShadow.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/private/GlobalDrawerActionItem.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/PageActionPropertyGroup.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/PrivateActionToolButton.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/private/RefreshableScrollView.qml

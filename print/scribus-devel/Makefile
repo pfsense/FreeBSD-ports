@@ -3,7 +3,7 @@
 
 PORTNAME=	scribus
 PORTVERSION=	1.5.4
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	print editors
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}${PKGNAMESUFFIX}/${PORTVERSION}/ \
 		http://www.scribus.net/downloads/${PORTVERSION}/
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libboost_thread.so:devel/boost-libs \
-		libhunspell-1.6.so:textproc/hunspell \
+		libhunspell-1.7.so:textproc/hunspell \
 		libcairo.so:graphics/cairo \
 		librevenge-0.0.so:textproc/librevenge \
 		libcups.so:print/cups \
@@ -36,7 +36,7 @@ LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libharfbuzz.so:print/harfbuzz \
 		libicuuc.so:devel/icu
 
-USES=		cmake desktop-file-utils dos2unix jpeg pkgconfig python qt:5 shared-mime-info ssl tar:xz
+USES=		cmake desktop-file-utils dos2unix jpeg pkgconfig python:2.7 qt:5 shared-mime-info ssl tar:xz
 USE_QT=		buildtools_build core declarative gui linguisttools_build network opengl \
 		printsupport qmake_build widgets xml
 USE_GNOME=	libxml2

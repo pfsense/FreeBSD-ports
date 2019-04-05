@@ -3,12 +3,14 @@
 
 PORTNAME=	lumina-notify
 PORTVERSION=	1.4.1
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
 MAINTAINER=	jt@ixsystems.com
 COMMENT=	Alarm/notification utility from the Lumina Desktop
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/../../../LICENSE
 
 OPTIONS_DEFINE=	I18N
 OPTIONS_DEFAULT=	I18N
@@ -18,7 +20,7 @@ I18N_DESC=	Install localization files
 
 MAKE_JOBS_UNSAFE=yes
 
-USES=		qmake qt:5
+USES=		compiler:c++11-lang qmake qt:5
 USE_QT=		core gui widgets network svg \
 		buildtools_build x11extras concurrent multimedia
 USE_GITHUB=	yes

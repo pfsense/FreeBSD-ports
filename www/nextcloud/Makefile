@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	nextcloud
-DISTVERSION=	15.0.0
+DISTVERSION=	15.0.5
 CATEGORIES=	www
 MASTER_SITES=	https://download.nextcloud.com/server/releases/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
@@ -61,11 +61,7 @@ SSL_USE=	PHP=openssl
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MAPCU}
-.	if ${PHP_VER} >= 70
-RUN_DEPENDS+=   ${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu@${PHP_FLAVOR}
-.	else
-RUN_DEPENDS+=   ${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu4@${PHP_FLAVOR}
-.	endif
+RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu@${PHP_FLAVOR}
 .endif
 
 post-extract:
@@ -79,7 +75,7 @@ post-patch:
 do-install:
 	@${MKDIR} -m 0755 ${STAGEDIR}${WWWDIR}
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}
-	@${INSTALL_SCRIPT} ${WRKDIR}/config.sample.php ${STAGEDIR}${WWWDIR}/config/config.sample.php
+	${INSTALL_SCRIPT} ${WRKDIR}/config.sample.php ${STAGEDIR}${WWWDIR}/config/config.sample.php
 	@${RM} ${STAGEDIR}${WWWDIR}/updater/updater.phar
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/data
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/apps

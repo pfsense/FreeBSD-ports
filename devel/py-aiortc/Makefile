@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	aiortc
-PORTVERSION=	0.9.16
+PORTVERSION=	0.9.18
+PORTREVISION=	1
 CATEGORIES=	devel multimedia python www
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +17,7 @@ LIB_DEPENDS=	libopus.so:audio/opus \
 		libvpx.so:multimedia/libvpx
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.0.0:devel/py-cffi@${PY_FLAVOR}
 RUN_DEPENDS=	\
-		${PYTHON_PKGNAMEPREFIX}aioice>=0.6.7:devel/py-aioice@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}aioice>=0.6.12:devel/py-aioice@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}attrs>0:devel/py-attrs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}av>=6.1.0:multimedia/py-av@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}crcmod>0:devel/py-crcmod@${PY_FLAVOR} \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dbf
-PORTVERSION=	3.1.3
+PORTVERSION=	4.1.2
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 

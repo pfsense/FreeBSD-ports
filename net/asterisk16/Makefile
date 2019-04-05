@@ -9,6 +9,7 @@ MASTER_SITE_SUBDIR=	asterisk/ \
 			sounds/releases/:g729
 PKGNAMESUFFIX=	16
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Open Source PBX and telephony toolkit
@@ -19,7 +20,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 		libjansson.so:devel/jansson
 
-ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 powerpc sparc64
+ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386 powerpc sparc64
 
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -29,20 +30,21 @@ USE_CSTD=	gnu89
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	asterisk
+USE_GITHUB=	nodefault
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--datarootdir=${DATADIR} \
-			--with-ilbc=internal \
-			--with-crypto=${OPENSSLBASE} \
-			--with-pjproject-bundled=no \
-			--with-ssl=${OPENSSLBASE}
+CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
+		--with-ilbc=internal \
+		--with-crypto=${OPENSSLBASE} \
+		--with-pjproject-bundled=no \
+		--with-ssl=${OPENSSLBASE}
 
 CPE_VENDOR=	digium
 
 SHEBANG_FILES=	agi/agi-test.agi \
 		agi/jukebox.agi \
 		contrib/scripts/astversion
-
+LDFLAGS=	-L.
 MAKE_ENV=	PTHREAD_LIBS="-lpthread" \
 		MKDIR="${MKDIR}" \
 		PWLIBDIR=${LOCALBASE}/share/pwlib \
@@ -57,11 +59,11 @@ CONFLICTS=		ossp-uuid-[0-9]*
 CONFLICTS_BUILD=	linuxthreads-*
 CONFLICTS_INSTALL=	asterisk13 asterisk15
 
-OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS LDAP LUA \
+OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS LDAP LUA MACRO \
 				MP3PLAYER OOH323 OPTIMIZED_CFLAGS PJSIP PORTAUDIO RADIUS SNMP \
 				SPANDSP SRTP SYSINFO XMPP
-OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MP3PLAYER NEWT ODBC MYSQL PGSQL PJSIP \
-				PORTAUDIO RADIUS SNMP SPANDSP SPEEX SQLITE2 SRTP VORBIS
+OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MACRO MP3PLAYER NEWT ODBC MYSQL PGSQL \
+				PJSIP PORTAUDIO RADIUS SNMP SPANDSP SPEEX SQLITE2 SRTP VORBIS
 
 OPTIONS_DEFINE_i386=		DAHDI
 OPTIONS_DEFINE_amd64=		DAHDI
@@ -75,7 +77,7 @@ OPTIONS_DEFAULT_armv6=		BASE
 OPTIONS_DEFAULT_armv7=		BASE
 
 OPTIONS_GROUP=			CODECS
-OPTIONS_GROUP_CODECS=		GSM NEWG711 SPEEX VORBIS
+OPTIONS_GROUP_CODECS=		GSM NEWG711 OPUS SPEEX VORBIS
 CODECS_DESC=			Encoder/Decoder (Codec) Support
 
 OPTIONS_SINGLE=			COMPILER
@@ -106,9 +108,11 @@ BACKTRACE_DESC?= Stack backtrace support via (lib)execinfo
 BASE_DESC=	Use base compiler
 DAHDI_DESC?=	DAHDI support
 EXCHANGE_DESC?=	Exchange calendar support
+MACRO_DESC?=	Enable app_macro (deprecated)
 MP3PLAYER_DESC=	Install MP3 Player for Music-On-Hold (mpg123)
 NEWG711_DESC?=	New G711 Codec
 OOH323_DESC?=	ooh323 support
+OPUS_DESC?=	Opus Codec
 PJSIP_DESC?=	Build the PJSIP based SIP channel
 SRTP_DESC?=	SecureRTP support
 SYSINFO_DESC?=	Use devel/libsysinfo to get system information
@@ -166,6 +170,10 @@ ODBC_CONFIGURE_WITH=	unixodbc
 ODBC_CONFIGURE_ON=	--with-ltdl
 ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC \
 			libltdl.so:devel/libltdl
+
+OPUS_LIB_DEPENDS=	libopus.so:audio/opus
+OPUS_EXTRACT_ONLY=	${DISTFILE_opus}
+OPUS_GH_TUPLE=		traud:asterisk-opus:83e1b458c77e0e287adeca494eeb79edb077b0ff:opus
 
 PGSQL_CONFIGURE_WITH=	postgres
 PGSQL_USES=		pgsql
@@ -244,8 +252,13 @@ post-extract:
 	@${FIND} ${WRKSRC} -name '*.d' -delete
 
 post-extract-G729-on:
-	${CP} ${DISTDIR}/${ASTERISK_CORE_G729_SOUNDS} ${WRKSRC}/sounds
-	${CP} ${DISTDIR}/${ASTERISK_MOH_G729_SOUNDS} ${WRKSRC}/sounds
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/${ASTERISK_CORE_G729_SOUNDS} ${WRKSRC}/sounds
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/${ASTERISK_MOH_G729_SOUNDS} ${WRKSRC}/sounds
+
+post-extract-OPUS-on:
+	${CP} ${WRKSRC_opus}/include/asterisk/* ${WRKSRC}/include/asterisk
+	${CP} ${WRKSRC_opus}/codecs/* ${WRKSRC}/codecs
+	${CP} ${WRKSRC_opus}/res/* ${WRKSRC}/res
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/var/lib|${PREFIX}/share|g' ${WRKSRC}/configs/samples/musiconhold.conf.sample
@@ -265,6 +278,9 @@ post-configure:
 	@cd ${WRKSRC} && ./menuselect/menuselect --disable res_timing_kqueue menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable chan_mgcp menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable res_pktccops menuselect.makeopts
+
+post-configure-MACRO-on:
+	@cd ${WRKSRC} && ./menuselect/menuselect --enable app_macro menuselect.makeopts
 
 post-configure-MYSQL-on:
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable res_config_mysql menuselect.makeopts

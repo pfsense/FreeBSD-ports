@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gdb
-PORTVERSION=	8.2
-PORTREVISION=	3
+PORTVERSION=	8.2.1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libmpfr.so:math/mpfr
 TEST_DEPENDS=	runtest:misc/dejagnu
 
 USES=		compiler:c++11-lang cpe gmake libtool tar:xz
-USE_PYTHON=	py3kplist
+USE_PYTHON=	flavors py3kplist
 
 TEST_TARGET=	check
 
@@ -85,6 +85,27 @@ TUI_CONFIGURE_ENABLE=	tui
 
 .include <bsd.port.pre.mk>
 
+.if ${PORT_OPTIONS:MPYTHON}
+.if ${PYTHON_VER} != ${PYTHON_DEFAULT}
+PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
+.endif
+.endif
+
+.if ${PORT_OPTIONS:MPYTHON} && exists(/usr/lib/libc++.so.1)
+USE_GITHUB=	nodefault
+
+GH_ACCOUNT=	bsdjhb:libcxx
+GH_PROJECT=	libcxx-gdbpy:libcxx
+GH_TAGNAME=	99aae0c:libcxx
+
+# Workaround USE_GITHUB preventing the default DISTFILES
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+
+PLIST_SUB+=	LIBCXX=""
+.else
+PLIST_SUB+=	LIBCXX="@comment "
+.endif
+
 .if ! ${PORT_OPTIONS:MBUNDLED_READLINE}
 EXCLUDE+=	readline
 .endif
@@ -143,6 +164,14 @@ do-install-PYTHON-on:
 . for f in gdb gdb/command gdb/function gdb/printer
 	@(cd ${STAGEDIR}${PREFIX}/share/gdb/python/${f} ; ${CHMOD} 644 *.py* )
 . endfor
+.if exists(/usr/lib/libc++.so.1)
+	@(cd ${WRKSRC_libcxx} ; \
+		${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} install )
+	@(cd ${STAGEDIR}${PREFIX}/share/gdb/auto-load/usr/lib && \
+		${PYTHON_CMD} -m compileall .)
+	@(cd ${STAGEDIR}${PREFIX}/share/libcxx-gdbpy/libcxx && \
+		${PYTHON_CMD} -m compileall .)
+.endif
 
 do-install-GUILE-on:
 	(cd ${WRKSRC}/gdb; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-guile )

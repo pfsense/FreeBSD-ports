@@ -3,6 +3,7 @@
 
 PORTNAME=	pijul
 PORTVERSION=	0.11.0
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://pijul.org/releases/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -86,7 +87,7 @@ CARGO_CRATES=	adler32-1.0.3 \
 		kernel32-sys-0.2.2 \
 		lazy_static-1.1.0 \
 		lazycell-1.2.0 \
-		libc-0.2.43 \
+		libc-0.2.49 \
 		libflate-0.1.18 \
 		libpijul-0.11.0 \
 		line-0.1.9 \

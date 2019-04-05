@@ -27,6 +27,8 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/action.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/action/builder.rb
+%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/action/builtin/after_trigger.rb
+%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/action/builtin/before_trigger.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/action/builtin/box_add.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/action/builtin/box_check_outdated.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/action/builtin/box_remove.rb
@@ -131,6 +133,7 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/deep_merge.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/downloader.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/env.rb
+%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/experimental.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/file_checksum.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/file_mode.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/guest_inspection.rb
@@ -177,6 +180,7 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/cap/plugin.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/cloud/auth/login.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/cloud/auth/logout.rb
+%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/cloud/auth/middleware/add_authentication.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/cloud/auth/plugin.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/cloud/auth/root.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/cloud/auth/whoami.rb
@@ -224,7 +228,6 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/login/command.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/login/errors.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/login/locales/en.yml
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/login/middleware/add_authentication.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/login/plugin.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/package/command.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/package/plugin.rb
@@ -572,6 +575,9 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/hosts/suse/cap/nfs.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/hosts/suse/host.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/hosts/suse/plugin.rb
+%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/hosts/void/cap/nfs.rb
+%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/hosts/void/host.rb
+%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/hosts/void/plugin.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/hosts/windows/cap/configured_ip_addresses.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/hosts/windows/cap/nfs.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/hosts/windows/cap/provider_install_virtualbox.rb
@@ -963,6 +969,5 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/vagrant.gemspec
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/version.txt
 %%GEMS_DIR%%specifications/vagrant-%%PORTVERSION%%.gemspec
-%%DATADIR%%/embedded/cacert.pem
 %%DATADIR%%/embedded/rgloader/loader.rb
 @dir %%GEMS_DIR%%extensions

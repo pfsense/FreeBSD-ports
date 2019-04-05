@@ -118,17 +118,19 @@ find_catport()
 
 find_expired()
 {
-	EXPVAR=EXPIRATION_DATE
-
-	find -H ${PORTSDIR} -mindepth 3 -maxdepth 3 -name "Makefile*" \
-		|xargs grep -H "^${EXPVAR}"  \
-		|grep -v '^#'  \
-		|sed -E "s|${PORTSDIR}/?([^/]+/[^/]+)/Makefile[^:]*:${EXPVAR}=[[:space:]]*([0-9-]{10})$|\2 \1|g" \
-		|perl -ne "if ((substr(\$_, 0, 10) cmp '${TODAY}') <= 0) { print(\$_); }" \
-		|while read expdate catport ; do \
-			echo -n "${expdate} ${catport}: " ; \
-			make -C ${PORTSDIR}/${catport} -V DEPRECATED ; \
+	for category in $(make -C ${PORTSDIR} -V SUBDIR); do
+		for port in $(make -C ${PORTSDIR}/${category} -V SUBDIR); do
+			DATE="$(make -C ${PORTSDIR}/${category}/${port} -V EXPIRATION_DATE)"
+			if [ -n "${DATE}" -a ! "${DATE}" \> "${TODAY}" ] ; then
+				if [ "$1" = 1 ] ; then
+					echo -n "${DATE} ${category}/${port}: "
+					make -C ${PORTSDIR}/${category}/${port} -V DEPRECATED
+				else
+					echo "${category}/${port}"
+				fi
+			fi
 		done
+	done
 }
 
 # create temporary checkout directory
@@ -488,7 +490,7 @@ if [ ${1} = "-F" ] ; then
 	if [ ${#} -ne 1 ] ; then
 		usage
 	fi
-	find_expired
+	find_expired 1
 	exit
 fi
 
@@ -496,7 +498,7 @@ if [ ${1} = "-a" ] ; then
 	if [ ${#} -ne 1 ] ; then
 		usage
 	fi
-	${0} `find_expired |cut -f 2 -d ' ' |cut -f 1 -d :`
+	${0} `find_expired 0`
 	exit
 fi
 

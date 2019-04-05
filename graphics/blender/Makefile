@@ -3,7 +3,7 @@
 
 PORTNAME=	blender
 PORTVERSION=	2.79b
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics games
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -46,6 +46,14 @@ PLIST_SUB+=	VER=2.79
 OPTIONS_SUB=	yes
 
 .include "${.CURDIR}/Makefile.options"
+
+# libunwind is specific to amd64/i386
+OPTIONS_EXCLUDE_aarch64=	CAMERATRACK
+OPTIONS_EXCLUDE_armv6=		CAMERATRACK
+OPTIONS_EXCLUDE_armv7=		CAMERATRACK
+OPTIONS_EXCLUDE_powerpc=	CAMERATRACK
+OPTIONS_EXCLUDE_powerpc64=	CAMERATRACK
+OPTIONS_EXCLUDE_powerpcspe=	CAMERATRACK
 
 ALEMBIC_CMAKE_BOOL=		WITH_ALEMBIC
 ALEMBIC_LIB_DEPENDS=		libAlembic.so:graphics/alembic

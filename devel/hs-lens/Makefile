@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	lens
-PORTVERSION=	4.16.1
+PORTVERSION=	4.17
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 
@@ -10,8 +10,13 @@ COMMENT=	Lenses, Folds and Traversals
 
 LICENSE=	BSD3CLAUSE
 
+DEPRECATED=		Haskell libraries are getting pushed out of the ports tree. If you are using this port for development, consider switching to cabal sandboxes (old way), cabal new-build (new way), or use devel/stack. If you believe this port shouldn't be removed, contact haskell@FreeBSD.org
+EXPIRATION_DATE=	2019-04-14
+
+BROKEN=		Doesn't build with recent GHC
+
 USE_CABAL=	base-orphans>=0.3 bifunctors>=5 call-stack comonad>=4 \
-		contravariant>=0.3 distributive>=0.3 exceptions>=0.1.1 \
+		contravariant distributive>=0.3 exceptions>=0.1.1 \
 		free>=4 hashable>=1.1.2.3 kan-extensions>=4.2.1 mtl>=2.0.1 \
 		parallel>=3.1.0.1 profunctors>=5 reflection>=2 \
 		semigroupoids>=5 semigroups>=0.8.4 tagged>=0.4.4 \

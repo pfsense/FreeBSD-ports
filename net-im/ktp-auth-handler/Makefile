@@ -2,6 +2,7 @@
 
 PORTNAME=	ktp-auth-handler
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	2
 CATEGORIES=	net-im kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -10,8 +11,8 @@ COMMENT=	KWallet integration module for KDE Telepathy
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libqca-qt5.so:devel/qca@qt5 \
-		libtelepathy-qt5.so:net-im/telepathy-qt@qt5 \
+LIB_DEPENDS=	libqca-qt5.so:devel/qca \
+		libtelepathy-qt5.so:net-im/telepathy-qt \
 		libKTpCommonInternals.so:net-im/ktp-common-internals  \
 		libaccounts-qt5.so:net-im/libaccounts-qt5 \
 		libkaccounts.so:net-im/kaccounts-integration \

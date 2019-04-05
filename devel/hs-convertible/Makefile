@@ -3,13 +3,16 @@
 
 PORTNAME=	convertible
 PORTVERSION=	1.1.1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Typeclasses and instances for converting between types
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=		Haskell libraries are getting pushed out of the ports tree. If you are using this port for development, consider switching to cabal sandboxes (old way), cabal new-build (new way), or use devel/stack. If you believe this port shouldn't be removed, contact haskell@FreeBSD.org
+EXPIRATION_DATE=	2019-04-14
 
 USE_CABAL=	mtl old-locale old-time
 

@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	icu
-DISTVERSION=	63_1
-PORTREVISION?=	1 # keep for icu-lx
+DISTVERSION=	64_1
+PORTREVISION?=	0 # keep for icu-lx
 PORTEPOCH?=	1
 CATEGORIES?=	devel
-MASTER_SITES=	https://github.com/unicode-org/${PORTNAME}/releases/download/release-${DISTVERSION:S/_/-/g}/ \
+MASTER_SITES=	https://github.com/unicode-org/${PORTNAME}/releases/download/release-${DISTVERSION:S/rc/-&/:S/_/-/g}/ \
 		SF/${PORTNAME}/${PORTNAME:tu}4C/${PORTVERSION}
 DISTNAME=	icu4c-${DISTVERSION}-src
 
@@ -27,12 +27,12 @@ CONFIGURE_ARGS+=--with-data-packaging=archive \
 CPPFLAGS+=	-DICU_NO_USER_DATA_OVERRIDE
 MAKE_ARGS=	VERBOSE=1
 TEST_TARGET=	check
-USES+=		compiler:c++11-lib gmake pathfix tar:tgz
+USES+=		compiler:c++11-lib gmake pathfix python:build tar:tgz
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/icu/source
 
 ICUMAJOR=	${PORTVERSION:C/\..*//}
-PLIST_SUB+=	ICUMAJOR=${ICUMAJOR} ICUVER=${PORTVERSION}
+PLIST_SUB+=	ICUMAJOR=${ICUMAJOR} ICUVER=${PORTVERSION:C/r.?/1/}
 
 .ifndef PKGNAMESUFFIX
 post-install:
@@ -44,7 +44,7 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/*
 # Filename varies by endianness: icudt<major>b.dat vs. icudt<major>l.dat
 	@(cd ${STAGEDIR}${PREFIX} && ${ECHO_CMD} \
-		${DATADIR_REL}/${PORTVERSION}/icudt*.dat >>${TMPPLIST})
+		${DATADIR_REL}/${PORTVERSION:C/r.?/1/}/icudt*.dat >>${TMPPLIST})
 .endif # PKGNAMESUFFIX
 
 .include <bsd.port.mk>

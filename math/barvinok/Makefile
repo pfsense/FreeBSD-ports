@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	barvinok
-DISTVERSION=	0.41.1
+DISTVERSION=	0.41.2
 CATEGORIES=	math
 MASTER_SITES=	http://barvinok.gforge.inria.fr/
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libglpk.so:math/glpk \
 		libntl.so:math/ntl \
 		libpolylibgmp.so:math/polylib
 
-USES=		gmake libtool localbase:ldflags pkgconfig
+USES=		compiler:c11 gmake libtool localbase:ldflags pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --enable-shared --enable-shared-barvinok \
 		--with-gmp=system --with-polylib=system --with-isl=system

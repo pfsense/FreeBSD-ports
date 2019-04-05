@@ -14,7 +14,8 @@ USES=		cmake compiler:c++11-lib cpe gettext kde:5 pkgconfig \
 USE_KDE=	auth bookmarks breeze codecs completion config configwidgets \
 		coreaddons ecm i18n iconthemes itemviews jobwidgets kio \
 		notifications service solid wayland \
-		widgetsaddons windowsystem xmlgui
+		widgetsaddons windowsystem xmlgui \
+		qqc2-desktop-style_run
 USE_QT=		concurrent core declarative dbus gui network quickcontrols2 widgets \
 		x11extras xml \
 		buildtools_build qmake_build
@@ -32,7 +33,7 @@ NOTO_DESC=	KDE default font
 LIGHT_DESC=	Use noto-light
 BIG_DESC=	Use complete noto
 
-LIGHT_RUN_DEPENDS=	noto-lite>=0:x11-fonts/noto-lite
+LIGHT_RUN_DEPENDS=	noto-basic>=0:x11-fonts/noto-basic
 BIG_RUN_DEPENDS=	noto>=0:x11-fonts/noto
 
 .include <bsd.port.mk>

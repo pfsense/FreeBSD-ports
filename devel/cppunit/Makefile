@@ -2,9 +2,9 @@
 
 PORTNAME=	cppunit
 PORTVERSION=	1.14.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel
-MASTER_SITES=	http://dev-www.libreoffice.org/src/
+MASTER_SITES=	https://dev-www.libreoffice.org/src/
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	C++ port of the JUnit framework for unit testing

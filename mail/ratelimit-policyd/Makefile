@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ratelimit-policyd
-PORTVERSION=	1.0.1
+PORTVERSION=	1.0.3
 CATEGORIES=	mail
-MASTER_SITES=	GH
 
 MAINTAINER=	000.fbsd@quip.cz
 COMMENT=	Sender rate limit policy daemon for Postfix

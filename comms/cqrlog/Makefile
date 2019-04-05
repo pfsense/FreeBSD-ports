@@ -4,7 +4,7 @@
 PORTNAME=	cqrlog
 PORTVERSION=	2.3.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -23,7 +23,7 @@ LLD_UNSAFE=	yes
 SHEBANG_FILES=	tools/cqrlog-apparmor-fix \
 		voice_keyer/voice_keyer.sh
 USE_FPC=	cairo fcl-base chm fcl-db fcl-image fcl-json fcl-net fcl-web \
-		fcl-registry rtl-extra fcl-xml mysql numlib openssl \
+		fcl-registry rtl-extra fcl-xml mysql numlib opengl openssl \
 		pasjpeg regexpr x11
 
 ALL_TARGET=	${PORTNAME}

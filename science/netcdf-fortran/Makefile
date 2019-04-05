@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	netcdf-fortran
-PORTVERSION=	4.4.4
-PORTREVISION=	7
+PORTVERSION=	4.4.5
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -17,13 +17,14 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libnetcdf.so:science/netcdf
 
+USES=		fortran libtool localbase makeinfo pathfix
+
 CPPFLAGS+=	-fPIC -DPIC -DgFortran
 GNU_CONFIGURE=	yes
 MAKE_ENV=	MAKEINFOFLAGS=--no-split
 MAKE_JOBS_UNSAFE=	yes
 TEST_TARGET=	check
 USE_LDCONFIG=	yes
-USES=		fortran libtool localbase makeinfo pathfix
 
 GH_ACCOUNT=	Unidata
 USE_GITHUB=	yes

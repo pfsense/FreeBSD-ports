@@ -12,18 +12,16 @@ COMMENT=	PHP-based ISP Server Management Panel
 
 LICENSE=	GPLv2
 
-WRKSRC=		${WRKDIR}
-
-SUB_FILES+=	pkg-message pkg-deinstall
-SUB_LIST+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP} PORTNAME=${PORTNAME}
-PLIST_SUB+=	${SUB_LIST}
-
+USES=		php:cli
 USE_PHP=	bcmath curl filter ftp json pdo_mysql posix session xml zip
 
-USES=		php:cli
+SUB_FILES=	pkg-message pkg-deinstall
+SUB_LIST=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP} PORTNAME=${PORTNAME}
+PLIST_SUB=	${SUB_LIST}
 
 NO_ARCH=	yes
 NO_BUILD=	yes
+NO_WRKSUBDIR=	yes
 
 OPTIONS_DEFINE=	LIBNSS LOGROTATE MYSQLS DKIM PCNTL NLS
 
@@ -46,7 +44,6 @@ APACHE_DESC=	Apache as HTTP/HTTPS server
 LIGHTTPD_DESC=	Lighttpd as HTTP/HTTPS server
 NGINX_DESC=	Nginx as HTTP/HTTPS server
 MYSQLC_DESC=	MySQL database client only
-MYSQLS_DESC=	MySQL database server and client
 POSTFIX_DESC=	Postfix as SMTP server
 EXIM_DESC=	Exim as SMTP server
 DKIM_DESC=	OpenDKIM for DomainKeys Identified Mail
@@ -64,7 +61,7 @@ LOGROTATE_DESC=	Logrotate for log rotation
 MYSQLS_DESC=	Depend on MySQL server
 NLS_DESC=	Enable NLS support (required for webFTP frontend)
 
-OPTIONS_DEFAULT=	APACHE MYSQLS POSTFIX DOVECOT2 PROFTPD WEBALIZER MYSQLS PCNTL
+OPTIONS_DEFAULT=	APACHE POSTFIX DOVECOT2 PROFTPD WEBALIZER MYSQLS PCNTL
 
 POSTFIX_RUN_DEPENDS=	postfix:mail/postfix
 
@@ -106,7 +103,7 @@ NLS_USES=	gettext-runtime:run
 NLS_USE=	PHP=gettext
 
 do-install:
-	cd ${WRKDIR}/${PORTNAME} && \
+	cd ${WRKSRC}/${PORTNAME} && \
 	${FIND} . ! -name .gitignore | \
 	${CPIO} --quiet -pdm ${STAGEDIR}${WWWDIR}
 

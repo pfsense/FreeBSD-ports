@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stellarium
-PORTVERSION=	0.18.3
+PORTVERSION=	0.19.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	astro
 EXTRACT_ONLY=	${_DISTFILES:Nstars_*.cat:N*.pdf}
@@ -17,7 +17,7 @@ CONFLICTS_INSTALL=	${PORTNAME}-qt4-0.12.*
 USE_GITHUB=	yes
 GH_ACCOUNT=	Stellarium
 
-USES=		cmake gettext qt:5
+USES=		cmake desktop-file-utils gettext qt:5 shared-mime-info
 USE_QT=		qmake_build buildtools_build linguisttools_build \
 		concurrent core gui network opengl printsupport widgets
 

@@ -16,9 +16,6 @@ man/man1/emailrelay.1.gz
 sbin/emailrelay
 sbin/emailrelay-passwd
 sbin/emailrelay-submit
-%%GUI%%%%DATADIR%%/emailrelay-icon.png
-%%GUI%%sbin/emailrelay-gui
-%%GUI%%sbin/emailrelay-gui.real
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/COPYING
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog
@@ -602,7 +599,6 @@ sbin/emailrelay-submit
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/folderclosed.png
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/folderopen.png
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions.html
-%%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_0x7e.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_b.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_c.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_d.html
@@ -611,7 +607,6 @@ sbin/emailrelay-submit
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_eval.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_f.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_func.html
-%%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_func_0x7e.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_func_b.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_func_c.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_func_d.html
@@ -636,6 +631,7 @@ sbin/emailrelay-submit
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_func_w.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_func_x.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_func_y.html
+%%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_func_~.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_g.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_h.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_i.html
@@ -658,6 +654,7 @@ sbin/emailrelay-submit
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_w.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_x.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_y.html
+%%DOXYGEN%%%%DOCSDIR%%/doxygen/functions_~.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/gaddress_8h.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/gaddress_8h_source.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/gaddress__ipv4_8cpp.html
@@ -1207,4 +1204,5 @@ sbin/emailrelay-submit
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/tabs.css
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/unionGNet_1_1AddressImp_1_1Sockaddr-members.html
 %%DOXYGEN%%%%DOCSDIR%%/doxygen/unionGNet_1_1AddressImp_1_1Sockaddr.html
+%%DATADIR%%/emailrelay-icon.png
 @dir var/spool/emailrelay

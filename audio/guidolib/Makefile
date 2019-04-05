@@ -4,6 +4,7 @@ PORTNAME=	guidolib
 DISTVERSIONPREFIX=	v
 DISTVERSION=	164-61
 DISTVERSIONSUFFIX=	-gbcd5705d
+PORTREVISION=	1
 CATEGORIES=	audio graphics print
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -16,7 +17,7 @@ LICENSE=	MPL20
 
 BUILD_DEPENDS=	cmake:devel/cmake
 
-USES=		gmake gnome pkgconfig qt:5
+USES=		compiler:c++11-lang gmake gnome pkgconfig qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	grame-cncm
 USE_QT=		core gui widgets printsupport xml buildtools_build qmake_build

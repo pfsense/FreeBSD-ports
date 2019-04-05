@@ -7,11 +7,14 @@ CATEGORIES=	databases geography
 MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	20
 
-MAINTAINER=	sunpoet@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Geographic objects support for PostgreSQL databases
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Upstream no longer maintained
+EXPIRATION_DATE=2019-06-15
 
 LIB_DEPENDS=	libgeos.so:graphics/geos \
 		libjson-c.so:devel/json-c \

@@ -16,11 +16,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django111>=1.11:www/py-django111@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}django-js-asset>0:www/py-django-js-asset@${PY_FLAVOR}
 
-CONFLICTS_INSTALL=py*-django-happenings
-
 USES=		gettext python
 USE_PYTHON=	autoplist distutils
 
-NO_ARCH=	yes
+NO_ARCH=		yes
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django-happenings \
+			${PYTHON_PKGNAMEPREFIX}dj21-django-mptt
 
 .include <bsd.port.mk>

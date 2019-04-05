@@ -3,7 +3,7 @@
 
 PORTNAME=	ilmbase
 PORTVERSION=	2.3.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics devel
 MASTER_SITES=	https://github.com/openexr/openexr/releases/download/v${PORTVERSION}/
 
@@ -24,6 +24,10 @@ GNU_CONFIGURE=	yes
 # The configure script uses bash arrays
 CONFIGURE_SHELL=${BASH_CMD}
 CONFIGURE_ARGS=	--disable-static
+# libtool links C++ libraries with -nostdlib, which prevents -pthread from
+# having an effect (at least with clang). Make sure we also pass -lpthread so
+# we do link against libthr.so.
+CONFIGURE_ENV+=	PTHREAD_LIBS="-pthread -lpthread"
 TEST_TARGET=	check
 
 PORTDOCS=	AUTHORS ChangeLog README.md

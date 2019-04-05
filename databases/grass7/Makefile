@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	grass
-PORTVERSION=	7.4.3
+PORTVERSION=	7.6.0
 PORTREVISION=	2
 CATEGORIES=	databases geography
-MASTER_SITES=	http://grass.osgeo.org/%SUBDIR%/ \
+MASTER_SITES=	https://grass.osgeo.org/%SUBDIR%/ \
 		http://grass.cict.fr/%SUBDIR%/ \
 		http://grass.fbk.eu/%SUBDIR%/ \
 		http://grass.gis-lab.info/%SUBDIR%/ \
@@ -16,7 +16,7 @@ MASTER_SITES=	http://grass.osgeo.org/%SUBDIR%/ \
 		http://pinus.gntech.ac.kr/grass/%SUBDIR%/ \
 		http://wgbis.ces.iisc.ernet.in/grass/%SUBDIR%/ \
 		http://wgrass.media.osaka-cu.ac.jp/grassh/%SUBDIR%/
-MASTER_SITE_SUBDIR=	grass74/source
+MASTER_SITE_SUBDIR=	grass${VER}/source
 PKGNAMESUFFIX=	7
 
 MAINTAINER=	lbartoletti@tuxfamily.org
@@ -38,7 +38,7 @@ LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libgeos.so:graphics/geos
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		blaslapack compiler:openmp fortran gettext gmake iconv \
+USES=		blaslapack compiler:openmp fortran gettext gmake gl iconv \
 		jpeg perl5 pkgconfig python:2.7 readline shebangfix tk
 SHEBANG_LANG=	nviz
 nviz_OLD_CMD=	nviz
@@ -73,17 +73,18 @@ CONFIGURE_ARGS=	--with-includes=${LOCALBASE}/include \
 ALL_TARGET=	default
 USE_LDCONFIG=	${PREFIX}/${GRASS_INST_DIR}/lib
 MAKE_ENV+=	TARGET="${CONFIGURE_TARGET}"
+VER=		${PORTVERSION:R:C/\.//}
 
 PLIST_SUB=	GRASS_INST_DIR="${GRASS_INST_DIR}" \
 		VERSION="${PORTVERSION}" \
-		VER="${PORTVERSION:R:C/\.//}"
+		VER="${VER}" MAJVER="${PKGNAMESUFFIX}"
 
 OPTIONS_DEFINE=		LAS MOTIF NETCDF PDAL
 OPTIONS_MULTI=		DB
 OPTIONS_MULTI_DB=	MYSQL ODBC PGSQL SQLITE
 #OPTIONS_SINGLE=		BLAS
 #OPTIONS_SINGLE_BLAS=	ATLAS NETLIB GOTOBLAS OPENBLAS
-OPTIONS_DEFAULT=	LAS PDAL PGSQL SQLITE NETLIB
+OPTIONS_DEFAULT=	LAS PDAL PGSQL SQLITE NETLIB MOTIF NETCDF MYSQL ODBC
 OPTIONS_SUB=		yes
 
 #BLAS_DESC=		BLAS/LAPACK support
@@ -189,5 +190,7 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/etc/lister/*
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/lib/libgrass_*.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/tools/g.echo
+	${LN} -sf ${PORTNAME}${VER} \
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}${PKGNAMESUFFIX}
 
 .include <bsd.port.mk>

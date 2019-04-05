@@ -2,10 +2,10 @@
 
 PORTNAME=	phantomjs
 PORTVERSION=	2.1.1
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	lang
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Minimalistic, headless, WebKit-based, JavaScript-driven tool
 
 LICENSE=	BSD3CLAUSE
@@ -14,6 +14,8 @@ BROKEN_powerpc64=	fails to build: g++48: not found
 BROKEN_sparc64=		does not link on sparc64
 BROKEN_SSL=	openssl111
 BROKEN_SSL_REASON_openssl111=	error: member access into incomplete type 'X509' (aka 'x509_st')
+DEPRECATED=	Project has been discontinued: https://github.com/ariya/phantomjs/issues/15344
+EXPIRATION_DATE=2019-05-15
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \

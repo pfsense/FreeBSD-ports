@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	doublecmd
-PORTVERSION=	0.8.3
+PORTVERSION=	0.9.1
 PORTREVISION=	1
 CATEGORIES=	x11-fm
-PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 MASTER_SITES=	SF/${PORTNAME}/Double%20Commander%20Source
+PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 DISTFILES=	${DISTNAME}.tar.gz ${PORTNAME}-help-${HELPVERSION}-src.tar.gz
 
@@ -17,9 +17,10 @@ LICENSE=	GPLv2
 
 ONLY_FOR_ARCHS=	amd64 i386
 
+USES=		dos2unix desktop-file-utils fpc gnome lazarus:flavors
+
 PORTDOCS=	*
 
-USES=		dos2unix desktop-file-utils fpc lazarus:flavors
 USE_FPC=	cairo chm fcl-base fcl-db fcl-image fcl-json fcl-registry \
 		fcl-xml iconvenc pasjpeg rtl-extra x11 regexpr
 USE_GNOME=	cairo glib20
@@ -38,16 +39,17 @@ LAZARUS_PROJECT_FILES+=	components/viewer/viewerpackage.lpk
 LAZARUS_PROJECT_FILES+=	components/gifanim/pkg_gifanim.lpk
 LAZARUS_PROJECT_FILES+=	components/synunihighlighter/synuni.lpk
 
-LAZARUS_NO_FLAVORS=qt5
 LAZBUILD_ARGS=	-d --pcp=${WRKSRC}/tmppcp
 MAKE_ENV+=	LDVER=ld.bfd # for DragonFly
+LLD_UNSAFE=	yes
 
 HELPVERSION=	0.6.0
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DOCSRC=		${WRKDIR}/${PORTNAME}-help-${HELPVERSION}
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt4
-qt4_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt4 ${PORTNAME}-qt5
+qt4_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt4
 
 OPTIONS_DEFINE=		DOCS DEBUG
 OPTIONS_GROUP=		WCX WDX WFX WLX DSX
@@ -60,7 +62,6 @@ OPTIONS_GROUP_WCX=	WCX_CPIO \
 OPTIONS_GROUP_WDX=	WDX_AUDIOINFO \
 			WDX_RPM \
 			WDX_DEB \
-			WDX_SVN \
 			WDX_XPI \
 			WDX_SCRIPTS \
 			WDX_TEXTLINE
@@ -82,7 +83,6 @@ WDX_AUDIOINFO_DESC=	Information about audio files
 WDX_DEB_DESC=	Debian package file information
 WDX_RPM_DESC=	Red Hat package file information
 WDX_SCRIPTS_DESC=	Add support to use custom Lua scripts
-WDX_SVN_DESC=	Subversion repository information
 WDX_XPI_DESC=	Mozilla plugin file information
 WDX_TEXTLINE_DESC=	Show and replace single lines in text files
 
@@ -104,7 +104,6 @@ OPTIONS_DEFAULT=	WCX_CPIO \
 			WDX_AUDIOINFO \
 			WDX_RPM \
 			WDX_DEB \
-			WDX_SVN \
 			WDX_SCRIPTS \
 			WDX_TEXTLINE \
 			WDX_XPI \
@@ -163,10 +162,6 @@ LAZARUS_PROJECT_FILES+=		plugins/wdx/rpm_wdx/src/rpm_wdx.lpi
 LAZARUS_PROJECT_FILES+=		plugins/wdx/deb_wdx/src/deb_wdx.lpi
 .endif
 
-.if ${PORT_OPTIONS:MWDX_SVN}
-LAZARUS_PROJECT_FILES+=		plugins/wdx/svn_wdx/src/svn_wdx.lpi
-.endif
-
 .if ${PORT_OPTIONS:MWDX_XPI}
 LAZARUS_PROJECT_FILES+=		plugins/wdx/xpi_wdx/src/xpi_wdx.lpi
 .endif
@@ -176,7 +171,7 @@ LAZARUS_PROJECT_FILES+=		plugins/wdx/textline/src/TextLine.lpi
 .endif
 
 .if ${PORT_OPTIONS:MWFX_SAMBA}
-LAZARUS_PROJECT_FILES+= 	plugins/wfx/samba/src/samba.lpi
+LAZARUS_PROJECT_FILES+=		plugins/wfx/samba/src/samba.lpi
 .endif
 
 .if ${PORT_OPTIONS:MWLX_MPLAYER}
@@ -198,7 +193,6 @@ post-patch:
 		${WRKSRC}/src/uGlobsPaths.pas
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 		${WRKSRC}/plugins/wlx/WlxMplayer/src/wlxMplayer.lpr
-	@${REINPLACE_CMD} -e '3632d' ${WRKSRC}/src/fmain.pas
 	@${REINPLACE_CMD} -e 's| Default="True"||g' \
 		-e 's|Name="NoDebug Full Optimizations"|Name="NoDebug Full Optimizations" Default="True"|g' \
 			${WRKSRC}/src/${PORTNAME}.lpi
@@ -243,9 +237,6 @@ pre-install:
 .if ${PORT_OPTIONS:MWDX_DEB}
 	@${ECHO_CMD} "%%DATADIR%%/plugins/wdx/deb_wdx/deb_wdx.wdx" >> ${PLIST}
 .endif
-.if ${PORT_OPTIONS:MWDX_SVN}
-	@${ECHO_CMD} "%%DATADIR%%/plugins/wdx/svn_wdx/svn_wdx.wdx" >> ${PLIST}
-.endif
 .if ${PORT_OPTIONS:MWDX_XPI}
 	@${ECHO_CMD} "%%DATADIR%%/plugins/wdx/xpi_wdx/xpi_wdx.wdx" >> ${PLIST}
 .endif
@@ -274,8 +265,7 @@ pre-install:
 
 .for FILE in %%DATADIR%%/doublecmd.ext.example %%DATADIR%%/pixmaps.txt \
 	%%DATADIR%%/multiarc.ini bin/doublecmd share/applications/doublecmd.desktop \
-	share/pixmaps/doublecmd.png share/icons/hicolor/scalable/apps/doublecmd.svg \
-	%%DATADIR%%/doublecmd.xml
+	share/pixmaps/doublecmd.png share/icons/hicolor/scalable/apps/doublecmd.svg
 	@${ECHO_CMD} ${FILE} >> ${PLIST}
 .endfor
 
@@ -334,10 +324,6 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/plugins/wdx/deb_wdx/
 	${INSTALL_LIB} ${WRKSRC}/plugins/wdx/deb_wdx/lib/deb_wdx.wdx ${STAGEDIR}${DATADIR}/plugins/wdx/deb_wdx/
 .endif
-.if ${PORT_OPTIONS:MWDX_SVN}
-	@${MKDIR} ${STAGEDIR}${DATADIR}/plugins/wdx/svn_wdx/
-	${INSTALL_LIB} ${WRKSRC}/plugins/wdx/svn_wdx/lib/svn_wdx.wdx ${STAGEDIR}${DATADIR}/plugins/wdx/svn_wdx/
-.endif
 .if ${PORT_OPTIONS:MWDX_XPI}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/plugins/wdx/xpi_wdx/
 	${INSTALL_LIB} ${WRKSRC}/plugins/wdx/xpi_wdx/lib/xpi_wdx.wdx ${STAGEDIR}${DATADIR}/plugins/wdx/xpi_wdx/
@@ -377,7 +363,7 @@ do-install:
 			${FIND} * -type f -exec ${INSTALL_DATA} {} "${STAGEDIR}${DATADIR}/${DIRE}/{}" \;
 .endfor
 
-.for FILE in doublecmd.ext.example pixmaps.txt multiarc.ini install/linux/doublecmd.xml
+.for FILE in doublecmd.ext.example pixmaps.txt multiarc.ini
 	${INSTALL_DATA} ${WRKSRC}/${FILE} ${STAGEDIR}${DATADIR}
 .endfor
 

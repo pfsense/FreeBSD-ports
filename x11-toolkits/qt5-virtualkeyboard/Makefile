@@ -8,7 +8,7 @@ PKGNAMEPREFIX=	qt5-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 5 Virtual Keyboard Module
 
-LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell
+LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 
 USES=		compiler:c++11-lang pkgconfig qmake qt-dist:5,virtualkeyboard
 USE_QT=		core declarative network gui widgets svg buildtools_build

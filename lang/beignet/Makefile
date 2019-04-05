@@ -4,7 +4,7 @@
 PORTNAME=	beignet
 DISTVERSION=	1.3.2
 DISTVERSIONSUFFIX=	-source
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	lang
 MASTER_SITES=	https://01.org/sites/default/files/
 

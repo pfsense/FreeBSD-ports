@@ -3,7 +3,7 @@
 
 PORTNAME=	transcode
 PORTVERSION=	1.1.7
-PORTREVISION=	37
+PORTREVISION=	38
 CATEGORIES=	multimedia
 MASTER_SITES=	https://bitbucket.org/france/transcode-tcforge/downloads/
 
@@ -112,6 +112,8 @@ V4L_BUILD_DEPENDS=		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_CONFIGURE_ENABLE=		v4l
 
 .include <bsd.port.pre.mk>
+
+LDFLAGS_i386+=	-Wl,-z,notext
 
 .if empty(ICONV_LIB)
 CONFIGURE_ARGS+=ac_cv_lib_iconv_iconv_open=no \

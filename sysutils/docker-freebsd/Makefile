@@ -6,11 +6,13 @@ PORTVERSION=	20150625
 PORTREVISION=	2
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Docker containment system
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	go>=1.4:lang/go \
 		bash:shells/bash \

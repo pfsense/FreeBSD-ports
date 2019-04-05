@@ -1,4 +1,5 @@
 bin/svclone
+bin/svmod
 %%ROOT%%@dir %%RUNITDIR%%
 %%ROOT%%@dir %%RUNITDIR%%/core-services
 %%RUNITDIR%%/1
@@ -33,7 +34,9 @@ bin/svclone
 @sample %%RUNITDIR%%/core-services/92-nfs.sh.sample
 %%RUNITDIR%%/core-services/93-ctld.sh
 %%RUNITDIR%%/core-services/95-mount-late.sh
+%%RUNITDIR%%/core-services/95-swap-late.sh
 %%RUNITDIR%%/core-services/99-binmisc.sh
+%%RUNITDIR%%/core-services/99-ports-env.sh
 %%RUNITDIR%%/core-services/99-start-jails.sh
 %%RUNITDIR%%/ctrlaltdel
 %%RUNITDIR%%/functions
@@ -51,6 +54,7 @@ man/man8/runsvchdir.8.gz
 man/man8/runsvdir.8.gz
 man/man8/sv.8.gz
 man/man8/svclone.8.gz
+man/man8/svmod.8.gz
 man/man8/svlogd.8.gz
 man/man8/utmpset.8.gz
 sbin/chpst

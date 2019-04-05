@@ -3,8 +3,9 @@
 
 PORTNAME=	bro
 PORTVERSION=	2.6.1
+PORTREVISION=	2
 CATEGORIES=	security
-MASTER_SITES=	https://www.bro.org/downloads/
+MASTER_SITES=	https://www.zeek.org/downloads/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	leres@FreeBSD.org
@@ -13,8 +14,6 @@ COMMENT=	System for detecting network intruders in real-time
 LICENSE=	BSD3CLAUSE
 
 BROKEN_powerpc64=	Does not build: error: zero-size array 'names'
-
-LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 USES=		bison cmake compiler:c++11-lang gettext-runtime ninja perl5 python shebangfix ssl
 
@@ -51,14 +50,15 @@ PLIST_SUB+=	ARCH=${ARCH} \
 USERS=		${BROUSER}
 GROUPS=		${BROGROUP}
 
-OPTIONS_DEFINE=	BROCCOLI BROCTL BROKER DEBUG IPSUMDUMP LBL_CF LBL_HF \
-		NETMAP PERFTOOLS
-OPTIONS_DEFAULT=BROCCOLI BROCTL IPSUMDUMP LBL_CF LBL_HF NETMAP
+OPTIONS_DEFINE=	BROCCOLI BROCTL BROKER DEBUG GEOIP2 IPSUMDUMP LBL_CF \
+		LBL_HF NETMAP PERFTOOLS
+OPTIONS_DEFAULT=BROCCOLI BROCTL GEOIP2 IPSUMDUMP LBL_CF LBL_HF NETMAP
 OPTIONS_SUB=	yes
 
 BROCCOLI_DESC=	Build support for libbroccoli communications
 BROCTL_DESC=	BroControl support (implies BROCCOLI and IPSUMDUMP)
 BROKER_DESC=	Enable the Broker communication library
+GEOIP2_DESC=	Build with GeoIP2 (MaxMindDB) support
 IPSUMDUMP_DESC=	Enables traffic summaries
 LBL_CF_DESC=	Unix time to formated time/date filter support
 LBL_HF_DESC=	Address to hostname filter support
@@ -74,6 +74,7 @@ BROCTL_BUILD_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash \
 BROCTL_RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash \
 			${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 BROCTL_CMAKE_BOOL=	INSTALL_BROCTL
+GEOIP2_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 IPSUMDUMP_BUILD_DEPENDS=ipsumdump:net/ipsumdump
 IPSUMDUMP_RUN_DEPENDS=	ipsumdump:net/ipsumdump
 BROKER_BUILD_DEPENDS=	swig3.0:devel/swig30

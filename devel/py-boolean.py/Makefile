@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	boolean.py
-DISTVERSION=	3.5
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.6
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	freebsd_ports@k-worx.org
+MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Create and parse boolean expressions and create custom boolean DSL
 
 LICENSE=	BSD2CLAUSE
@@ -14,6 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		python
 USE_PYTHON=	distutils concurrent autoplist
+USE_GITHUB=	yes
+GH_ACCOUNT=	bastikr
 
 NO_ARCH=	yes
 PORTDOCS=	*

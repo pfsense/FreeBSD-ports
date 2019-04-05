@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wyrmgus
-PORTVERSION=	3.4.1
-PORTREVISION=	1
+PORTVERSION=	3.5.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games devel
 
@@ -17,6 +16,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libtolua++-${LUA_VER}.so:lang/tolua++ \
 		libogg.so:audio/libogg \
 		liboaml.so:audio/oaml
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/tokenizer.hpp:devel/boost-libs
 
 USE_GITHUB=     yes
 GH_ACCOUNT=     Andrettin
@@ -44,6 +44,11 @@ OPENGL_USES=		gl
 OPENGL_USE=		GL=gl,glu
 OPENGL_CMAKE_ON=	-DWITH_RENDERER="OpenGL"
 OPENGL_CMAKE_OFF=	-DWITH_RENDERER="NativeSDL"
+
+post-patch:
+# fix debug build
+	@${REINPLACE_CMD} -e 's|OAML_LIBRARIES_SHARED_DEBUG|OAML_LIBRARIES_SHARED|' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e '/stratagus-dbg/ d' ${WRKSRC}/CMakeLists.txt
 
 do-install:
 	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/stratagus ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

@@ -3,7 +3,8 @@
 
 PORTNAME=	neovim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.2
+DISTVERSION=	0.3.4
+PORTREVISION=	1
 CATEGORIES=	editors
 
 MAINTAINER=	adamw@FreeBSD.org
@@ -20,6 +21,10 @@ LIB_DEPENDS=	libluajit-5.1.so:lang/luajit \
 		libunibilium.so:devel/unibilium \
 		libuv.so:devel/libuv \
 		libvterm.so:devel/libvterm
+TEST_DEPENDS=	autoconf>=0:devel/autoconf \
+		aclocal:devel/automake \
+		gmake:devel/gmake \
+		libtool:devel/libtool
 
 USES=		cmake iconv lua:build pathfix pkgconfig
 USE_GITHUB=	yes
@@ -30,10 +35,13 @@ CMAKE_ARGS=	-DLUA_PRG:FILEPATH="${LUA_CMD}" \
 		-DCMAKE_INSTALL_MANDIR:PATH="${MANPREFIX}/man" \
 		-DDEPS_PREFIX:PATH="${LOCALBASE}"
 
-OPTIONS_DEFINE=	NLS
+OPTIONS_DEFINE=	NLS PYNVIM
 OPTIONS_SUB=	yes
 NLS_CMAKE_BOOL=	ENABLE_LIBINTL
 NLS_USES=	gettext
+PYNVIM_DESC=	Enable support for plugins written in python
+PYNVIM_USES=	python:run
+PYNVIM_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pynvim>=0.3.0:editors/py-pynvim@${PY_FLAVOR}
 
 post-patch:
 	@${REINPLACE_CMD} -e \

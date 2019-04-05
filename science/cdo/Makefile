@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	cdo
-PORTVERSION=	1.9.5
-PORTREVISION=	2
+PORTVERSION=	1.9.6
+PORTREVISION=	1
 CATEGORIES=	science
-MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/18264/ \
+MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/19299/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -14,19 +14,22 @@ COMMENT=	Climate Data Operators
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	CGRIBEX HDF5 JASPER NETCDF PROJ SZIP UDUNITS UUID
-OPTIONS_DEFAULT=CGRIBEX HDF5 JASPER NETCDF PROJ SZIP UDUNITS UUID
+OPTIONS_DEFINE=	CGRIBEX ECCODES HDF5 JASPER NETCDF PROJ SZIP UDUNITS UUID
+OPTIONS_DEFAULT=CGRIBEX ECCODES HDF5 JASPER NETCDF PROJ SZIP UDUNITS UUID
 OPTIONS_SUB=	yes
 CGRIBEX_DESC=	Use CGRIBEX library for GRIB1 files
+ECCODES_DESC=	Use ecCodes for GRIB files
 HDF5_IMPLIES=	SZIP
 NETCDF_IMPLIES=	HDF5
 UUID_DESC=	UUID support
 
-PORTSCOUT=	site:https://code.zmaw.de/projects/cdo/files
+PORTSCOUT=	site:https://code.mpimet.mpg.de/projects/cdo/files
+
+USES=		compiler:c++11-lang gmake libtool localbase pathfix
 
 CONFIGURE_ARGS=	--disable-data \
 		--disable-extra \
-		--disable-grib \
+		--disable-fortran \
 		--disable-ieg \
 		--disable-openmp \
 		--disable-service \
@@ -37,12 +40,13 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 TEST_TARGET=	check
-USES=		compiler:c++11-lib gmake libtool localbase pathfix
 USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
 CGRIBEX_CONFIGURE_WITH=	cgribex
 CGRIBEX_LIB_DEPENDS=	libcgribex.so:science/cgribex
+ECCODES_CONFIGURE_WITH=	eccodes
+ECCODES_LIB_DEPENDS=	libeccodes.so:science/eccodes
 HDF5_CONFIGURE_WITH=	hdf5
 HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5
 JASPER_CONFIGURE_WITH=	jasper

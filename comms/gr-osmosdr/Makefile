@@ -4,7 +4,7 @@ PORTNAME=	gr-osmosdr
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.4-99
 DISTVERSIONSUFFIX=	-gc98be5d
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	comms hamradio
 
@@ -12,6 +12,8 @@ MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	GNU Radio OsmoSDR module
 
 LICENSE=	GPLv3
+
+BROKEN=		does not build with Gnuradio 3.8
 
 BUILD_DEPENDS=	swig3.0:devel/swig30 \
 		cheetah:devel/py-cheetah

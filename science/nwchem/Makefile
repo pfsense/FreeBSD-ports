@@ -1,12 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	nwchem
-PORTVERSION=	6.8.1.20181107
-PORTREVISION=	1
+PORTVERSION=	6.8.1.20190319
 CATEGORIES=	science
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME}/commit/
-PATCHFILES=	ce7c387b4f37c70947cb3b41a6beaf8fce628634.patch:-p2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	High-performance computational chemistry software
@@ -20,13 +16,14 @@ BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libblas.so:math/blas \
 		libga.so:devel/ga \
 		libmpich.so:net/mpich
+RUN_DEPENDS=	nwchem-data>0:science/nwchem-data
 
-USES=		fortran gmake ${ARCH_64BIT:S/^$/perl5/:S/64//} shebangfix
+USES=		fortran gmake perl5 shebangfix
 SHEBANG_FILES=	../contrib/distro-tools/build_* ../contrib/add_*
 SHEBANG_GLOB=	*.sh
 USE_GITHUB=	yes
 GH_ACCOUNT=	nwchemgit
-GH_TAGNAME=	master-oct22_2018-21-gd3913ef8b
+GH_TAGNAME=	master-oct22_2018-159-gc6db09ce9
 USE_PERL5=	build
 
 MAKEFILE=	GNUmakefile
@@ -39,6 +36,8 @@ SUB_FILES=	nwchemrc
 WRKSRC_SUBDIR=	src
 
 BINARY_ALIAS=	gcc=${CC} gfortran=gfortran${GCC_DEFAULT}
+
+PLIST_FILES=	bin/nwchem etc/nwchemrc
 
 post-extract:
 	@${RM} ${WRKSRC}/atomscf/src.orig
@@ -54,11 +53,8 @@ pre-build:
 do-install:
 	${INSTALL_DATA} ${WRKDIR}/nwchemrc ${STAGEDIR}${PREFIX}/etc/nwchemrc
 	${INSTALL_PROGRAM} ${WRKSRC}/../bin/LINUX${ARCH_64BIT}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-	cd ${WRKSRC}/basis && ${COPYTREE_SHARE} libraries ${STAGEDIR}${DATADIR}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} data ${STAGEDIR}${DATADIR}
-	@${MKDIR} ${STAGEDIR}${DATADIR}/libraryps
-.for d in development_psps HGH_LDA library1 library2 ofpw_default paw_default pspw_default pspw_new pspw_old Spin_Orbit TETER TM
-	cd ${WRKSRC}/nwpw/libraryps && ${COPYTREE_SHARE} ${d} ${STAGEDIR}${DATADIR}/libraryps/
-.endfor
+
+do-test:
+	@cd ${WRKSRC}/../QA && NWCHEM_TOP=${WRKSRC}/.. NWCHEM_TARGET=LINUX64 ./doqmtests.mpi
 
 .include <bsd.port.mk>

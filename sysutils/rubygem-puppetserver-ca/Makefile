@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	puppetserver-ca
-PORTVERSION=	1.2.1
+PORTVERSION=	1.3.1
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 

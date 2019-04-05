@@ -3,7 +3,7 @@
 
 PORTNAME=	freefilesync
 DISTVERSION=	9.8
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	https://www.freefilesync.org/download/ \
 		https://www.freefilesync.org/archive/
@@ -14,6 +14,8 @@ COMMENT=	Backup software to synchronize files and folders
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKDIR}/License.txt
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	${LOCALBASE}/include/zenxml/xml.h:textproc/zenxml
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \

@@ -3,7 +3,7 @@
 PORTNAME=	modsecurity
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.0.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security www
 MASTER_SITES=	https://github.com/SpiderLabs/ModSecurity/releases/download/v${PORTVERSION}/
 PKGNAMESUFFIX=	3
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre.so:devel/pcre \
 		libyajl.so:devel/yajl \
-		libGeoIP.so:net/GeoIP
+		libmaxminddb.so:net/libmaxminddb
 
 USES=		compiler:c++11-lang gmake gnome libtool pkgconfig:build
 USE_GNOME=	libxml2
