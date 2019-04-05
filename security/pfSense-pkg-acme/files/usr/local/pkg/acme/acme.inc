@@ -372,6 +372,15 @@ $acme_domain_validation_method['dns_conoha'] = array('name' => "DNS-Conoha",
 			'description' =>"Fill in the Identity Service API"
 		)
 	));
+$acme_domain_validation_method['dns_cn'] = array('name' => "DNS-Core-Networks",
+	'fields' => array(
+		'CN_User' => array('name'=>"cn_user",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Fill in the Username"
+		),
+		'CN_Password' => array('name'=>"cn_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the Password"
+		)
+	));
 $acme_domain_validation_method['dns_cyon'] = array('name' => "DNS-cyon.ch",
 	'fields' => array(
 		'CY_Username' => array('name'=>"cy_username",'columnheader'=>"Username",'type'=>"textbox",
@@ -379,6 +388,15 @@ $acme_domain_validation_method['dns_cyon'] = array('name' => "DNS-cyon.ch",
 		),
 		'CY_Password' => array('name'=>"cy_password",'columnheader'=>"Password",'type'=>"textbox",
 			'description' =>"Fill in the CY Password"
+		)
+	));
+$acme_domain_validation_method['dns_desec'] = array('name' => "DNS-deSEC.io",
+	'fields' => array(
+		'DEDYN_TOKEN' => array('name'=>"dedyn_token",'columnheader'=>"Token",'type'=>"textbox",
+			'description' =>"Fill in the API Token"
+		),
+		'DEDYN_NAME' => array('name'=>"dedyn_name",'columnheader'=>"Name",'type'=>"textbox",
+			'description' =>"Fill in the Username"
 		)
 	));
 $acme_domain_validation_method['dns_dgon'] = array('name' => "DNS-DigitalOcean",
@@ -668,7 +686,13 @@ $acme_domain_validation_method['dns_namecheap'] = array('name' => "DNS-Namecheap
 			'description' =>"Username"
 		)
 	));
-$acme_domain_validation_method['dns_namesilo'] = array('name' => "DNS-Namesilo",
+$acme_domain_validation_method['dns_namesilo'] = array('name' => "DNS-NederHost",
+	'fields' => array(
+		'NederHost_Key' => array('name'=>"nederhost_key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"NederHost API Key"
+		)
+	));
+$acme_domain_validation_method['dns_nederhost'] = array('name' => "DNS-Namesilo",
 	'fields' => array(
 		'Namesilo_Key' => array('name'=>"namesilo_key",'columnheader'=>"Key",'type'=>"textbox",
 			'description' =>"Namesilo API Key"
@@ -716,6 +740,15 @@ $acme_domain_validation_method['dns_online'] = array('name' => "DNS-Online.net",
 	'fields' => array(
 		'ONLINE_API_KEY' => array('name'=>"online_api_key",'columnheader'=>"API Key",'type'=>"textbox",
 			'description' =>"Fill in the API Key"
+		)
+	));
+$acme_domain_validation_method['dns_openprovider'] = array('name' => "DNS-OpenProvider",
+	'fields' => array(
+		'OPENPROVIDER_USER' => array('name'=>"openprovider_user",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Username"
+		),
+		'OPENPROVIDER_PASSWORDHASH' => array('name'=>"openprovider_passwordhash",'columnheader'=>"Password Hash",'type'=>"textbox",
+			'description' =>"Password Hash"
 		)
 	));
 $acme_domain_validation_method['dns_ovh'] = array('name' => "DNS-ovh / kimsufi / soyoustart / runabove",
@@ -790,6 +823,15 @@ $acme_domain_validation_method['dns_tele3'] = array('name' => "DNS-Tele3.cz",
 			'description' =>"Secret"
 		)
 	));
+$acme_domain_validation_method['dns_ultra'] = array('name' => "DNS-UltraDNS",
+	'fields' => array(
+		'ULTRA_USR' => array('name'=>"ultra_usr",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Username"
+		),
+		'ULTRA_PWD' => array('name'=>"ULTRA_PWD",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Password"
+		)
+	));
 $acme_domain_validation_method['dns_unoeuro'] = array('name' => "DNS-UnoEuro",
 	'fields' => array(
 		'UNO_User' => array('name'=>"uno_user",'columnheader'=>"Username",'type'=>"textbox",
@@ -817,6 +859,15 @@ $acme_domain_validation_method['dns_zonomi'] = array('name' => "DNS-Zonomi",
 			'description' =>"Fill in the Zonomi API Key"
 		)
 	));
+$acme_domain_validation_method['dns_zone'] = array('name' => "DNS-Zone.ee",
+	'fields' => array(
+		'ZONE_Username' => array('name'=>"zone_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Username"
+		),
+		'ZONE_Key' => array('name'=>"zone_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"API Key"
+		)
+	));
 $acme_domain_validation_method['dns_zilore'] = array('name' => "DNS-Zilore",
 	'fields' => array(
 		'Zilore_Key' => array('name'=>"zilore_key",'columnheader'=>"Zilore API Key",'type'=>"textbox",
@@ -829,7 +880,7 @@ $acme_domain_validation_method['anydns'] = array('name' => "notforuser",
 			'description' => '(Optional) Adds the --challenge-alias flag to the acme.sh call.<br/>To use a CNAME for _acme-challenge.importantDomain.tld to direct the acme validation to a different (sub)domain _acme-challenge.aliasDomainForValidationOnly.tld, configure the alternate domain here.<br/>More information can be found <a href="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode" target="_new">here</a>.'
 		),
 		'challengedomain' => array('name'=>"challengedomain",'columnheader'=>"Enable DNS domain alias mode",'type'=>"checkbox",
-			'description' => '(Optional) Uses the challenge alias value as --challenge-domain instead in the acme.sh call.'
+			'description' => '(Optional) Uses the challenge domain alias value as --domain-alias instead in the acme.sh call.'
 		)
 	));
 
