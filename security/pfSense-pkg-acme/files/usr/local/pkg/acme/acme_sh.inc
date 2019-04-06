@@ -205,7 +205,7 @@ EOF;
 				$domainparameters = "";
 				if ($api && substr($api, 0, 4 ) === "dns_") {
 					if (!empty($domain->challengealias)) {
-						$aliasdirective = ($domain->challengedomain == "yes") ? "--challenge-domain" : "--challenge-alias";
+						$aliasdirective = ($domain->challengedomain == "yes") ? "--domain-alias" : "--challenge-alias";
 						$domainstr .= " {$aliasdirective} " . escapeshellarg($domain->challengealias);
 					}
 					if ($api == "dns_manual") {
