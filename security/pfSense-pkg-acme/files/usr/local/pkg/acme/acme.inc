@@ -686,13 +686,13 @@ $acme_domain_validation_method['dns_namecheap'] = array('name' => "DNS-Namecheap
 			'description' =>"Username"
 		)
 	));
-$acme_domain_validation_method['dns_namesilo'] = array('name' => "DNS-NederHost",
+$acme_domain_validation_method['dns_nederhost'] = array('name' => "DNS-NederHost",
 	'fields' => array(
 		'NederHost_Key' => array('name'=>"nederhost_key",'columnheader'=>"Key",'type'=>"textbox",
 			'description' =>"NederHost API Key"
 		)
 	));
-$acme_domain_validation_method['dns_nederhost'] = array('name' => "DNS-Namesilo",
+$acme_domain_validation_method['dns_namesilo'] = array('name' => "DNS-Namesilo",
 	'fields' => array(
 		'Namesilo_Key' => array('name'=>"namesilo_key",'columnheader'=>"Key",'type'=>"textbox",
 			'description' =>"Namesilo API Key"
