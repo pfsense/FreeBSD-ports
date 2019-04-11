@@ -272,19 +272,22 @@ main(int argc, char **argv)
 		case FCGI_STDERR:
 			if (end_header == 0) {
 				while ((linebuf = strsep(&buf, "\n")) != NULL) {
-					if (end_header == 1) {
-						if (*linebuf != '#' &&
-						    *(linebuf+1) != '!') {
-							printf("%s\n", linebuf);
-						}
-						break;
-					} else if (strlen(linebuf) == 1) {
-						end_header = 1;
+					if (end_header == 0) {
+						if (strlen(linebuf) == 1)
+							end_header = 1;
 						continue;
 					}
+					if (*linebuf == '#' &&
+					    *(linebuf+1) == '!')
+						continue;
+
+					printf("%s", linebuf);
+					if (buf != NULL)
+						printf("\n");
+					break;
 				}
-			}
-			printf("%s", buf);
+			} else if (buf != NULL)
+				printf("%s", buf);
 			free(buf);
 			break;
 		case FCGI_ABORT_REQUEST:
