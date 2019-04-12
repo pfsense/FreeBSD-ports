@@ -3,9 +3,9 @@
  * snort_defs.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,7 +73,7 @@ if (!defined("VRT_DNLD_URL"))
 if (!defined("ET_VERSION"))
 	define("ET_VERSION", "2.9.0");
 if (!defined("ET_BASE_DNLD_URL"))
-	define("ET_BASE_DNLD_URL", "http://rules.emergingthreats.net/"); 
+	define("ET_BASE_DNLD_URL", "https://rules.emergingthreats.net/"); 
 if (!defined("ETPRO_BASE_DNLD_URL"))
 	define("ETPRO_BASE_DNLD_URL", "https://rules.emergingthreatspro.com/"); 
 if (!defined("SNORT_ET_DNLD_FILENAME"))
@@ -89,7 +89,7 @@ if (!defined("SNORT_OPENAPPID_DNLD_URL"))
 if (!defined("SNORT_OPENAPPID_DNLD_FILENAME"))
 	define("SNORT_OPENAPPID_DNLD_FILENAME", "snort-openappid.tar.gz");
 if (!defined("SNORT_OPENAPPID_RULES_URL"))
-	define("SNORT_OPENAPPID_RULES_URL", "http://files.pfsense.org/openappid/");
+	define("SNORT_OPENAPPID_RULES_URL", "https://files.pfsense.org/openappid/");
 if (!defined("SNORT_OPENAPPID_RULES_FILENAME"))
 	define("SNORT_OPENAPPID_RULES_FILENAME", "appid_rules.tar.gz");
 if (!defined("SNORT_RULES_UPD_LOGFILE"))
