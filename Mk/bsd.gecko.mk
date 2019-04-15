@@ -119,6 +119,11 @@ BUILD_DEPENDS+=	rust-cbindgen>=0.6.8:devel/rust-cbindgen \
 MOZ_OPTIONS+=	--enable-pie
 .endif
 
+.if ${MOZILLA_VER:R:R} >= 65
+# Let vendor add -fstack-protector-strong on all architectures
+SSP_UNSAFE=		yes
+.endif
+
 MOZILLA_SUFX?=	none
 MOZSRC?=	${WRKSRC}
 PLISTF?=	${WRKDIR}/plist_files
@@ -138,8 +143,7 @@ MOZ_PKGCONFIG_FILES?=	${MOZILLA}-gtkmozembed ${MOZILLA}-js \
 
 MOZ_EXPORT+=	${CONFIGURE_ENV} \
 				RUSTFLAGS="${RUSTFLAGS}" \
-				PERL="${PERL}" \
-				ac_cv_clock_monotonic=
+				PERL="${PERL}"
 MOZ_OPTIONS+=	--prefix="${PREFIX}"
 MOZ_MK_OPTIONS+=MOZ_OBJDIR="${BUILD_WRKSRC}"
 
