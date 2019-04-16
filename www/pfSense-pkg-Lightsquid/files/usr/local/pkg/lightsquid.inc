@@ -271,13 +271,10 @@ EOF;
 		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv']) {
 			$lscert = system_webgui_create_certificate();
 		}
-		$cert = base64_decode($lscert['crt']);
-		$key = base64_decode($lscert['prv']);
-		$ca = ca_chain($lscert);
-		$cert = str_replace("\r", "", $cert);
-		$key = str_replace("\r", "", $key);
-		$cert = str_replace("\n\n", "\n", $cert);
-		$key = str_replace("\n\n", "\n", $key);
+		$cert = trim(unixnewlines(base64_decode($lscert['crt']))) . "\n";
+		$key = trim(unixnewlines(base64_decode($lscert['prv']))) . "\n";
+		$ca = trim(unixnewlines(ca_chain($lscert))) . "\n";
+
 		if (!empty($cert) && !empty($key)) {
 			$fd = fopen($lighttpd_ls_cert_path, "w");
 			if (!$fd) {
@@ -286,7 +283,7 @@ EOF;
 			}
 			chmod($lighttpd_ls_cert_path, 0600);
 			if (!empty($ca)) {
-				$cert_chain = $cert . "\n" . $ca;
+				$cert_chain = $cert . $ca;
 			} else {
 				$cert_chain = $cert;
 			}
