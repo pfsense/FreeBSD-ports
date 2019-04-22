@@ -3,8 +3,8 @@
  * snort_ip_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,27 +35,8 @@ if (is_null($id)) {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['wlist_files'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['wlist_files'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['wlist_files']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['wlist_files']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['blist_files'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['blist_files'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['blist_files']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['blist_files']['item'] = array();
-}
+init_config_arr('installedpackages', 'snortglobal', 'rule', $id, 'wlist_files');
+init_config_arr('installedpackages', 'snortglobal', 'rule', $id, 'blist_files');
 
 $a_nat = &$config['installedpackages']['snortglobal']['rule'];
 
@@ -147,8 +128,12 @@ if ($_POST['apply']) {
 	$rebuild_rules = false;
 	snort_generate_conf($a_nat[$id]);
 
-	// Soft-restart Snort to live-load new IPREP lists
-	snort_reload_config($a_nat[$id]);
+	// If Snort is already running, must restart to change IP REP preprocessor configuration.
+	if (snort_is_running($snort_uuid, $if_real)) {
+		log_error(gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
+		snort_stop($a_nat[$id], $if_real);
+		snort_start($a_nat[$id], $if_real, TRUE);
+	}
 
 	// Sync to configured CARP slaves if any are enabled
 	snort_sync_on_changes();
@@ -186,8 +171,12 @@ if ($_POST['save']) {
 		$rebuild_rules = false;
 		snort_generate_conf($a_nat[$id]);
 
-		// Soft-restart Snort to live-load new variables
-		snort_reload_config($a_nat[$id]);
+		// If Snort is already running, must restart to change IP REP preprocessor configuration.
+		if (snort_is_running($snort_uuid, $if_real)) {
+			log_error(gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
+			snort_stop($a_nat[$id], $if_real);
+			snort_start($a_nat[$id], $if_real, TRUE);
+		}
 
 		// Sync to configured CARP slaves if any are enabled
 		snort_sync_on_changes();
