@@ -1295,6 +1295,10 @@ elif [ -n "${force_ipv6}" ]; then
 	export IP_VERSION="6"
 fi
 
+# Force debug if /cf/conf/upgrade_debug is present
+[ -f "/cf/conf/upgrade_debug" ] \
+    && stdout=''
+
 # Set default action when no parameter is set
 : ${action:="upgrade"}
 
