@@ -417,7 +417,10 @@ pkg_set_origin() {
 
 	local _pkg_source=""
 	local _pkg_target=""
-	for _pkg_source in $(_pkg query -g %n "${_source}*"); do
+
+	local _pkg_list=$(_pkg query -g %n "${_source}-*")
+	_pkg_list="${_pkg_list} $(_pkg query -g %n "*-${_source}")"
+	for _pkg_source in ${_pkg_list}; do
 		_pkg_target=$(echo ${_pkg_source} \
 		    | sed "s/${_source}/${_target}/g")
 		_origin_source=$(_pkg query %o ${_pkg_source})
