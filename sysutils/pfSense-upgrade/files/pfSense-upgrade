@@ -417,7 +417,7 @@ pkg_set_origin() {
 
 	local _pkg_source=""
 	local _pkg_target=""
-	for _pkg_source in $(_pkg query -x %n "${_source}*"); do
+	for _pkg_source in $(_pkg query -g %n "${_source}*"); do
 		_pkg_target=$(echo ${_pkg_source} \
 		    | sed "s/${_source}/${_target}/g")
 		_origin_source=$(_pkg query %o ${_pkg_source})
@@ -765,7 +765,7 @@ pkg_upgrade() {
 			fi
 
 			if [ -n "${new_major_php}" ]; then
-				_exec "pkg-static upgrade -x ${new_major_php}*" \
+				_exec "pkg-static upgrade -g ${new_major_php}*" \
 				    "Upgrading PHP to new major version"
 			fi
 			_exec "pkg-static upgrade${dont_update}" \
