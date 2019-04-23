@@ -767,10 +767,6 @@ pkg_upgrade() {
 				/etc/rc.php_ini_setup >/dev/null 2>&1
 			fi
 
-			if [ -n "${new_major_php}" ]; then
-				_exec "pkg-static upgrade -g ${new_major_php}*" \
-				    "Upgrading PHP to new major version"
-			fi
 			_exec "pkg-static upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
