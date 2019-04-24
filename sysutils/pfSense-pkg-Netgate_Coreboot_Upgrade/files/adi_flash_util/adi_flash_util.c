@@ -387,7 +387,7 @@ int main(int argc, char *argv[]) {
 			break;
 
 		default:
-			fprintf(stderr, "Unkown Operation, Aborting...\n");
+			fprintf(stderr, "Unknown Operation, Aborting...\n");
 			/* delete bios layout file */
 			unlink(BIOS_LAYOUT);
 			exit(-1);
