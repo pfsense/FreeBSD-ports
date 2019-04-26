@@ -91,6 +91,18 @@
 			<encoding>base64</encoding>
         </field>
         <field>
+            <fielddescr>Skip SSL verify</fielddescr>
+            <fieldname>insecure_skip_verify</fieldname>
+            <type>checkbox</type>
+            <description>Use SSL but skip chain and host verification</description>
+        </field>
+        <field>
+            <fielddescr>Short Hostname</fielddescr>
+            <fieldname>shortname</fieldname>
+            <type>checkbox</type>
+            <description>Use short hostname instead of FQDN</description>
+        </field>
+        <field>
             <fielddescr>*ElasticSearch Servers</fielddescr>
             <fieldname>elasticsearch_server</fieldname>
             <type>input</type>
@@ -126,6 +138,38 @@
            <fieldname>haproxy_port</fieldname>
            <type>input</type>
            <description>Port number where HAProxy status is available (default: 2200)</description>
+        </field>
+        <field>
+           <fielddescr>Enable Netstat Monitor</fielddescr>
+           <fieldname>netstat_enable</fieldname>
+           <type>checkbox</type>
+        </field>
+        <field>
+           <fielddescr>Enable Ping Monitor</fielddescr>
+           <fieldname>ping_enable</fieldname>
+           <type>checkbox</type>
+           <description>Enable Ping Monitor (up to 4 hosts (IPs), entered below)</description>
+           <enablefields>ping_host_1,ping_host_2,ping_host_3,ping_host_4</enablefields>
+        </field>
+        <field>
+           <fielddescr>Ping Host 1</fielddescr>
+           <fieldname>ping_host_1</fieldname>
+           <type>input</type>
+        </field>
+        <field>
+           <fielddescr>Ping Host 2 (optional)</fielddescr>
+           <fieldname>ping_host_2</fieldname>
+           <type>input</type>
+        </field>
+        <field>
+           <fielddescr>Ping Host 3 (optional)</fielddescr>
+           <fieldname>ping_host_3</fieldname>
+           <type>input</type>
+        </field>
+        <field>
+           <fielddescr>Ping Host 4 (optional)</fielddescr>
+           <fieldname>ping_host_4</fieldname>
+           <type>input</type>
         </field>
         <field>
             <fielddescr>Additional configuration for Telegraf</fielddescr>
