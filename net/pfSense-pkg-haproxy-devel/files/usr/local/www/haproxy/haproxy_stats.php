@@ -38,13 +38,27 @@ if (isset($_GET['haproxystats']) || isset($_GET['scope']) || (isset($_POST) && i
 				$request .= ";$key=$arg";
 			}
 		}
-		$options = array(
-		  'http'=>array(
-			'method'=>"POST",
-			'header'=>"Accept-language: en\r\n".
-			          "Content-type: application/x-www-form-urlencoded\r\n",
-			'content'=>http_build_query($_POST)
-		));
+		$postdata = "";
+		if (isset($_POST['action'])) {
+			// get 'all' POST variables as a few can have the same 'name', $_POST then only contains one.
+			// this happens for example when disabling multiple servers on stats page at once.
+			$postdata = file_get_contents("php://input");
+		}
+		if ($postdata) {
+			$options = array(
+			  'http'=>array(
+				'method'=>"POST",
+				'header'=>"Accept-language: en\r\n".
+						  "Content-type: application/x-www-form-urlencoded\r\n",
+				'content'=>$postdata
+			));
+		} else {
+			$options = array(
+			  'http'=>array(
+				'method'=>"GET",
+				'header'=>"Accept-language: en\r\n"
+			));
+		}
 		$context = stream_context_create($options);
 		$response = @file_get_contents("http://127.0.0.1:{$pconfig['localstatsport']}/haproxy/haproxy_stats.php?haproxystats=1".$request, false, $context);
 		if (is_array($http_response_header)){
