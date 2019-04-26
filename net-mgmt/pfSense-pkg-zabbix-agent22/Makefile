@@ -5,9 +5,8 @@ MASTERDIR=	${.CURDIR}/../pfSense-pkg-zabbix-agent
 PORTNAME=	pfSense-pkg-zabbix-agent${ZABBIXVERSION}
 
 CONFLICTS=	pfSense-pkg-zabbix-agent \
-		pfSense-pkg-zabbix-agent32 \
-		pfSense-pkg-zabbix-agent34 \
-		pfSense-pkg-zabbix-agent4
+		pfSense-pkg-zabbix-agent4 \
+		pfSense-pkg-zabbix-agent42
 
 RUN_DEPENDS=	zabbix_agentd:net-mgmt/zabbix${ZABBIXVERSION}-agent
 

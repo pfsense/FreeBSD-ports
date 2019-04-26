@@ -5,9 +5,8 @@ MASTERDIR=	${.CURDIR}/../pfSense-pkg-zabbix-proxy
 PORTNAME=	pfSense-pkg-zabbix-proxy${ZABBIXVERSION}
 
 CONFLICTS=	pfSense-pkg-zabbix-proxy \
-		pfSense-pkg-zabbix-proxy32 \
-		pfSense-pkg-zabbix-proxy34 \
-		pfSense-pkg-zabbix-proxy4
+		pfSense-pkg-zabbix-proxy4 \
+		pfSense-pkg-zabbix-proxy42
 
 RUN_DEPENDS=	zabbix_proxy:net-mgmt/zabbix${ZABBIXVERSION}-proxy
 
