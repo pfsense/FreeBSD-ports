@@ -3,32 +3,23 @@
 
 PORTNAME=	bind
 PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
-.if defined(BIND_TOOLS_SLAVE)
-# dns/bind-tools here
-PORTREVISION=	0
-.else
-PORTREVISION=	0
-.endif
+PORTREVISION=	1
 CATEGORIES=	dns net ipv6
 MASTER_SITES=	ISC/bind9/${ISCVERSION}
-.if defined(BIND_TOOLS_SLAVE)
-PKGNAMESUFFIX=	-tools
-.else
 PKGNAMESUFFIX=	912
-.endif
 DISTNAME=	${PORTNAME}-${ISCVERSION}
 
 MAINTAINER=	mat@FreeBSD.org
-.if defined(BIND_TOOLS_SLAVE)
-COMMENT=	Command line tools from BIND: delv, dig, host, nslookup...
-.else
 COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
-.endif
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
+DEPRECATED=	Support ends, please move to dns/bind914.
+EXPIRATION_DATE=	2019-05-31
+
 LIB_DEPENDS=	libxml2.so:textproc/libxml2
+RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 
 USES=	compiler:c11 cpe libedit
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
@@ -47,40 +38,33 @@ CONFIGURE_ARGS=	--localstatedir=/var --disable-linux-caps \
 		--with-readline="-L${LOCALBASE}/lib -ledit" \
 		--with-dlopen=yes \
 		--with-gost=no \
+		--without-python \
 		--sysconfdir=${ETCDIR}
 ETCDIR=		${PREFIX}/etc/namedb
 
 CONFLICTS=	bind911 bind913 bind914 bind9-devel
 
-.if defined(BIND_TOOLS_SLAVE)
-CONFIGURE_ARGS+=	--disable-shared
-CONFLICTS+=		bind912
-.else
 USE_RC_SUBR=	named
 SUB_FILES=	pkg-message named.conf
-CONFLICTS+=		bind-tools
 
 PORTDOCS=	*
-.endif	# BIND_TOOLS_SLAVE
 
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE JSON PYTHON
-OPTIONS_DEFINE=		IDN LARGE_FILE PYTHON JSON \
-			FIXED_RRSET SIGCHASE IPV6 THREADS
+OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE JSON \
+			DLZ_FILESYSTEM LMDB RPZ_NSDNAME RPZ_NSIP TCP_FASTOPEN
+OPTIONS_DEFINE=		IDN LARGE_FILE JSON \
+			FIXED_RRSET SIGCHASE IPV6 THREADS \
+			RPZ_NSIP RPZ_NSDNAME DOCS \
+			MINCACHE PORTREVISION QUERYTRACE LMDB DNSTAP \
+			START_LATE TUNING_LARGE TCP_FASTOPEN
 
 OPTIONS_RADIO=	CRYPTO
 OPTIONS_RADIO_CRYPTO=	SSL NATIVE_PKCS11
 
-.if !defined(BIND_TOOLS_SLAVE)
-OPTIONS_DEFAULT+=	DLZ_FILESYSTEM LMDB RPZ_NSDNAME RPZ_NSIP TCP_FASTOPEN
-OPTIONS_DEFINE+=	RPZ_NSIP RPZ_NSDNAME DOCS \
-			MINCACHE PORTREVISION QUERYTRACE LMDB DNSTAP \
-			START_LATE TUNING_LARGE TCP_FASTOPEN
 OPTIONS_GROUP=		DLZ
 OPTIONS_GROUP_DLZ=	DLZ_POSTGRESQL DLZ_MYSQL DLZ_BDB \
 			DLZ_LDAP DLZ_FILESYSTEM DLZ_STUB
-.endif	# BIND_TOOLS_SLAVE
 OPTIONS_SINGLE=		GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 
@@ -105,7 +89,6 @@ LMDB_DESC=		Use LMDB for zone management
 MINCACHE_DESC=		Use the mincachettl patch
 NATIVE_PKCS11_DESC=	Use PKCS\#11 native API (**READ HELP**)
 PORTREVISION_DESC=	Show PORTREVISION in the version string
-PYTHON_DESC=		Build with Python utilities
 QUERYTRACE_DESC=	Enable the very verbose query tracelogging
 RPZ_NSDNAME_DESC=	Enable RPZ NSDNAME policy records
 RPZ_NSIP_DESC=		Enable RPZ NSIP trigger rules
@@ -173,11 +156,6 @@ MINCACHE_EXTRA_PATCHES=	${FILESDIR}/extrapatch-bind-min-override-ttl
 NATIVE_PKCS11_CONFIGURE_ENABLE=	native-pkcs11
 NATIVE_PKCS11_IMPLIES=	THREADS
 
-PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply@${PY_FLAVOR}
-PYTHON_CONFIGURE_WITH=	python=${PYTHON_CMD}
-PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply@${PY_FLAVOR}
-PYTHON_USES=	python
-
 QUERYTRACE_CONFIGURE_ENABLE=	querytrace
 
 RPZ_NSDNAME_CONFIGURE_ENABLE=	rpz-nsdname
@@ -229,16 +207,6 @@ SUB_LIST+=	ENGINES=${LOCALBASE}/lib/engines
 .endif
 
 post-patch:
-.if defined(BIND_TOOLS_SLAVE)
-	@${REINPLACE_CMD} -e 's#^SUBDIRS.*#SUBDIRS = lib bin#' \
-		-e 's#isc-config.sh installdirs#installdirs#' \
-		-e 's#.*INSTALL.*isc-config.*##' \
-		-e 's#.*INSTALL.*bind.keys.*##' \
-		${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e 's#^SUBDIRS.*#SUBDIRS = delv dig dnssec tools nsupdate \\#' \
-		-e 's#^	.*check confgen ##' \
-		${WRKSRC}/bin/Makefile.in
-.else
 .  for FILE in check/named-checkconf.8 named/named.8 nsupdate/nsupdate.1 \
 	rndc/rndc.8
 	@${REINPLACE_CMD} -e 's#/etc/named.conf#${ETCDIR}/named.conf#g' \
@@ -246,9 +214,7 @@ post-patch:
 		-e "s#/var\/run\/named\/named.pid#/var/run/named/pid#" \
 		${WRKSRC}/bin/${FILE}
 .  endfor
-.endif
 
-.if !defined(BIND_TOOLS_SLAVE)
 .  if ${PORTREVISION:N0}
 post-patch-PORTREVISION-on:
 	@${REINPLACE_CMD} -e '/EXTENSIONS/s#=$$#=_${PORTREVISION}#' \
@@ -277,10 +243,5 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/doc/arm/Bv9ARM.pdf ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/CHANGES* ${WRKSRC}/HISTORY.md \
 		${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
-.endif	# BIND_TOOLS_SLAVE
-
-# Can't use USE_PYTHON=autoplist
-post-install-PYTHON-on:
-	@${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -type f | ${SED} -e 's|${STAGEDIR}||' >> ${TMPPLIST}
 
 .include <bsd.port.post.mk>
