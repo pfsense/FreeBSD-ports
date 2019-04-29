@@ -2,8 +2,7 @@
 # $FreeBSD: head/security/strongswan/Makefile 471205 2018-05-31 12:39:51Z krion $
 
 PORTNAME=	strongswan
-PORTVERSION=	5.7.2
-PORTREVISION=	2
+DISTVERSION=	5.8.0dr2
 CATEGORIES=	security
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
