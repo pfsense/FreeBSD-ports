@@ -7,7 +7,7 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/named:dns/bind-pfsense
+RUN_DEPENDS=	bind914>0:dns/bind914
 
 MAINTAINER=	tech@voleatech.de
 COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
