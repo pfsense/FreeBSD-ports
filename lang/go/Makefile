@@ -42,6 +42,7 @@ GOARCH=386
 GOARCH=amd64
 .elif ${ARCH} == armv6 || ${ARCH} == armv7
 GOARCH=arm
+GOARM=7
 .else
 IGNORE=		unknown arch ${ARCH}
 .endif
@@ -60,7 +61,7 @@ do-build:
 		GOROOT=${WRKSRC} GOROOT_FINAL=${PREFIX}/go \
 		GOROOT_BOOTSTRAP=${LOCALBASE}/go14 \
 		GOBIN= GOARCH=${GOARCH} GOOS=${OPSYS:tl} \
-		GO386=${GO386} \
+		GO386=${GO386} ${GOARM} \
 		${SH} make.bash -v
 	${RM} -r ${WRKSRC}/pkg/obj \
 	    ${WRKSRC}/pkg/bootstrap \
