@@ -13,7 +13,7 @@ COMMENT=	Kontrol E2guardian Package
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/e2guardian:www/e2guardian53 \
+RUN_DEPENDS=	${LOCALBASE}/sbin/e2guardian:www/e2guardian \
 		/usr/local/sbin/clamd:security/clamav \
 		/usr/local/share/certs/ca-root-nss.crt:security/ca_root_nss
 
@@ -126,4 +126,3 @@ do-install:
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}/usr/local/pkg/e2guardian.xml
 .include <bsd.port.mk>
-
