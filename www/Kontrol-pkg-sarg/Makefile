@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	Kontrol-pkg-Sarg
+PORTNAME=	Kontrol-pkg-sarg
 PORTVERSION=	0.6.15
 #PORTREVISION=	5
 CATEGORIES=	www
