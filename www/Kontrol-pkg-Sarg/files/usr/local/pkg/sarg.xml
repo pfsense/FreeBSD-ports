@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	sarg.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012-2013 Marcello Coutinho
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>sarg</name>
+	<version>0.6.6</version>
+	<title>Status: Sarg Settings</title>
+	<include_file>/usr/local/pkg/sarg.inc</include_file>
+	<menu>
+		<name>Sarg Reports</name>
+		<tooltiptext>Configure Sarg</tooltiptext>
+		<section>Status</section>
+		<url>/pkg_edit.php?xml=sarg.xml</url>
+	</menu>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=sarg.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg_edit.php?xml=sarg_users.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Schedule</text>
+			<url>/pkg.php?xml=sarg_schedule.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View Report</text>
+			<url>/sarg_reports.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=sarg_sync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Report Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Proxy Server</fielddescr>
+			<fieldname>proxy_server</fieldname>
+			<description>Select proxy server type to read logs from.</description>
+			<type>select</type>
+ 			<options>
+ 				<option><name>E2guardian</name><value>e2guardian</value></option>
+ 				<option><name>Squidguard</name><value>squidguard</value></option>
+ 				<option><name>Squid</name><value>squid</value></option>
+ 			</options>
+		</field>
+		<field>
+			<fielddescr>Report Options</fielddescr>
+			<fieldname>report_options</fieldname>
+			<description>
+				<![CDATA[
+				Select Sarg report options. Default values are in ( )<br />
+				Use CTRL + click to (de)select multiple values.
+				]]>
+			</description>
+			<type>select</type>
+ 			<options>
+ 				<option><name>Use graphs where is possible. (yes)</name><value>use_graphs</value></option>
+ 				<option><name>Use anonymous file and directory names in the report. (no)</name><value>anonymous_output_files </value></option>
+ 				<option><name>Convert IP address to DNS name (no)</name><value>resolve_ip</value></option>
+ 				<option><name>Use IP Address instead userid in reports. (no)</name><value>user_ip</value></option>
+ 				<option><name>Sort Fields in reverse order (no)</name><value>user_sort_field_order</value></option>
+ 				<option><name>Remove temporary files from root report directory (yes)</name><value>remove_temp_files</value></option>
+ 				<option><name>Generate the main index.html (yes)</name><value>main_index</value></option>
+ 				<option><name>Generate the index tree by file (yes)</name><value>index_tree</value></option>
+ 				<option><name>Overwrite report (no)</name><value>overwrite_report</value></option>
+ 				<option><name>Use comma instead of dot in reports (yes)</name><value>use_comma</value></option>
+ 				<option><name>Show full URL in report (no)</name><value>long_url</value></option>
+ 				<option><name>Privacy (no)</name><value>privacy</value></option>
+ 				<option><name>Show bytes in sites users reports (no)</name><value>bytes_in_sites_users_report</value></option>
+ 				<option><name>Show abbreviated values in reports (no)</name><value>displayed_values</value></option>
+ 				<option><name>Show the downloaded volume on Date/Time reports (yes)</name><value>date_time_by_bytes</value></option>
+ 				<option><name>Show the elapsed time on Date/Time reports (no)</name><value>date_time_by_elap</value></option>
+ 			</options>
+ 			<multiple/>
+ 			<size>16</size>
+		</field>
+		<field>
+			<fielddescr>Report To Generate</fielddescr>
+			<fieldname>report_type</fieldname>
+			<description>
+				<![CDATA[
+				Sarg report type. All types are enabled by default.<br />
+				Use CTRL + click to (de)select multiple values.
+				]]>
+			</description>
+			<type>select</type>
+ 			<options>
+ 				<option><name>topusers - users, sites, times, bytes, connects, links to accessed sites, etc.</name><value>topusers</value></option>
+ 				<option><name>topsites	- site, connect and bytes report</name><value>topsites</value></option>
+ 				<option><name>sites_users - users and sites report</name><value>sites_users</value></option>
+ 				<option><name>users_sites - sites accessed by the user report</name><value>users_sites</value></option>
+ 				<option><name>date_time	- bytes used per day and hour report</name><value>date_time</value></option>
+ 				<option><name>denied - denied sites with full URL report</name><value>denied</value></option>
+ 				<option><name>auth_failures - autentication failures report</name><value>auth_failures</value></option>
+ 				<option><name>site_user_time_date - sites, dates, times and bytes report</name><value>site_user_time_date</value></option>
+ 				<option><name>downloads - downloads per user report</name><value>downloads</value></option>
+ 			</options>
+ 			<multiple/>
+ 			<size>9</size>
+		</field>
+		 <field>
+		 	<fielddescr>Date Format</fielddescr>
+			<fieldname>report_date_format</fieldname>
+		 	<description>Date format to use in reports.</description>
+			<type>select</type>
+			<options>
+				<option><name>American mm/dd/yy (default)</name><value>u</value></option>
+				<option><name>European dd/mm/yy</name><value>e</value></option>
+				<option><name>Weekly yy.ww</name><value>w</value></option>
+			</options>
+			<default_value>u</default_value>
+		</field>
+		 <field>
+		 	<fielddescr>Report Charset</fielddescr>
+			<fieldname>report_charset</fieldname>
+		 	<description>Select character set for the reports.</description>
+			<type>select</type>
+			<options>
+				<option><name>UTF-8 (default)</name><value>UTF-8</value></option>
+				<option><name>Latin1 - West European</name><value>Latin1</value></option>
+				<option><name>Latin2 - Central and East European</name><value>Latin2</value></option>
+				<option><name>Latin3 - Southeast European</name><value>Latin3</value></option>
+				<option><name>Latin4 - Scandinavian/Baltic</name><value>Latin4</value></option>
+				<option><name>Latin5 - Turkish</name><value>Latin5</value></option>
+				<option><name>Latin6 - Lappish/Nordic/Eskimo</name><value>Latin6</value></option>
+				<option><name>Cyrillic</name><value>Cyrillic</value></option>
+				<option><name>Arabic</name><value>Arabic</value></option>
+				<option><name>Greek</name><value>Greek</value></option>
+				<option><name>Hebrew</name><value>Hebrew</value></option>
+				<option><name>Windows-1251</name><value>Windows-1251</value></option>
+				<option><name>Japan</name><value>Japan</value></option>
+				<option><name>KOI8-R</name><value>Koi8-r</value></option>
+			</options>
+			<default_value>UTF-8</default_value>
+		</field>
+		<field>
+			<fielddescr>Host Aliases</fielddescr>
+			<fieldname>hostalias</fieldname>
+			<description>
+				<![CDATA[
+				Host names (one per line) and the optional alias to use in the report instead of that host name.<br />
+				Host names may contain up to one wildcard denoted by a *. The wildcard must not be at the end of the host name.<br />
+				The host name may be followed by an optional alias; if no alias is provided, the host name, including the wildcard, replaces any matching host name found in the log.<br />
+				Host names replaced by identical aliases are grouped together in the reports.<br />
+				IP addresses are supported and accept the CIDR notation both for IPv4 and IPv6 addresses.<br /><br />
+				<strong>Examples:</strong><br />
+				*.gstatic.com<br />
+				mt*.google.com<br />
+				*.myphone.microsoft.com<br />
+				*.myphone.microsoft.com:443 *.myphone.microsoft.com:secure<br />
+				*.freeav.net antivirus:freeav<br />
+				*.mail.live.com<br />
+				65.52.00.00/14 *.mail.live.com
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>10</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>Limit Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Max Elapsed</fielddescr>
+			<fieldname>max_elapsed</fieldname>
+			<description>
+				<![CDATA[
+				If elapsed time recorded in log is greater than specified limit in milliseconds, use 0 for elapsed time.<br />
+				<strong>Examples:</strong> 0 means no checking; 28800000 means 8 hours.
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Files Limits</fielddescr>
+			<fieldname>lastlog</fieldname>
+			<description>
+				<![CDATA[
+				How many reports files will be be kept in reports directory. The oldest report file will be automatically removed.<br />
+				Default: 0 - means no limit.
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Days Limits</fielddescr>
+			<fieldname>daylimit</fieldname>
+			<description>
+				<![CDATA[
+				Report files will be kept in reports directory for this many days. Report files older than limit will be automatically removed.<br />
+				Leave empty to not remove old reports.
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+		</field>
+		<field>
+			<fielddescr>Top Users Limit</fielddescr>
+			<fieldname>topuser_num</fieldname>
+			<description>
+				<![CDATA[
+				How many users appear in topsites report.
+				Default: 0 - means no limit.
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Denied Limit</fielddescr>
+			<fieldname>denied_report_limit</fieldname>
+			<description><![CDATA[Default: 0 - means no limit.]]></description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>AuthFail Limit</fielddescr>
+			<fieldname>authfail_report_limit</fieldname>
+			<description><![CDATA[Default: 0 - means no limit.]]></description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>User Report Limit</fielddescr>
+			<fieldname>user_report_limit</fieldname>
+			<description><![CDATA[Default: 0 - means no limit.]]></description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<name>Exclude Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Exclude string</fielddescr>
+			<fieldname>exclude_string</fieldname>
+			<description>
+				<![CDATA[
+				Records from access.log file that contain one of listed strings will be ignored.<br />
+				<strong>Format: string1:string2:...:stringn</strong>
+				]]>
+			</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<fielddescr>Exclude Hosts</fielddescr>
+			<fieldname>exclude_hostlist</fieldname>
+			<description>
+				<![CDATA[
+				Hosts, domains or subnets that will be excluded from reports.<br /><br />
+				<strong>Examples:</strong><br />
+				192.168.10.10 - exclude this IP address only.<br />
+				192.168.10.0/24 - exclude entire subnet.<br />
+				host1.example.com - exclude this hostname only.<br />
+				*.example.com - exclude entire domain.
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>10</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Exclude codes</fielddescr>
+			<fieldname>exclude_codelist</fieldname>
+			<description>
+				<![CDATA[
+				Ignore records with these <a href="http://wiki.squid-cache.org/SquidFaq/SquidLogs#Squid_result_codes">Squid result codes</a>.<br />
+				Only codes matching exactly one of the line is rejected. The comparison is not case sensitive.<br />
+				<strong>Write one code per line. Lines starting with a # are ignored.</strong><br />
+				<strong>Example:</strong> NONE/400
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>10</rows>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		sarg_package_install();
+	</custom_php_install_command>
+	<custom_php_validation_command>
+		sarg_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		sync_package_sarg();
+	</custom_php_resync_config_command>
+</packagegui>

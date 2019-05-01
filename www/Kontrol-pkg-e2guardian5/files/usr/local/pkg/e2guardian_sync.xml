@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+		<![CDATA[
+/* $Id$ */
+/*
+ * e2guardian_sync.inc
+ *
+ * part of Unofficial packages for pfSense(R) softwate
+ * Copyright (c) 2015-2017 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+		]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>e2guardiansync</name>
+	<version>1.0</version>
+	<title>Services: E2guardian</title>
+	<include_file>/usr/local/pkg/e2guardian.inc</include_file>
+	<tabs>
+		<tab>
+			<text>Daemon</text>
+			<url>/pkg_edit.php?xml=e2guardian.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=e2guardian_config.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Limits</text>
+			<url>/pkg_edit.php?xml=e2guardian_limits.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Blacklist</text>
+			<url>/pkg_edit.php?xml=e2guardian_blacklist.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg.php?xml=e2guardian_site_acl.xml</url>
+		</tab>
+		<tab>
+			<text>LDAP</text>
+			<url>/pkg.php?xml=e2guardian_ldap.xml</url>
+		</tab>
+		<tab>
+			<text>Groups</text>
+			<url>/pkg.php?xml=e2guardian_groups.xml</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg_edit.php?xml=e2guardian_users.xml</url>
+		</tab>
+		<tab>
+			<text>IPs</text>
+			<url>/pkg_edit.php?xml=e2guardian_ips.xml</url>
+		</tab>
+               <tab>
+                        <text>Real Time</text>
+                        <url>/e2guardian_monitor.php</url>
+                </tab>
+		<tab>
+			<text>Report and Log</text>
+			<url>/pkg_edit.php?xml=e2guardian_log.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=e2guardian_sync.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Help</text>
+			<url>/e2guardian_about.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>E2guardian XMLRPC Sync</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Automatically sync e2guardian configuration changes</fielddescr>
+			<fieldname>synconchanges</fieldname>
+			<description>Select a sync method for e2guardian.</description>
+			<type>select</type>
+			<required/>
+			<default_value>auto</default_value>
+			<options>
+				<option><name>Sync to configured system backup server</name><value>auto</value></option>
+				<option><name>Sync to host(s) defined below</name><value>manual</value></option>
+				<option><name>Do not sync this package configuration</name><value>disabled</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Sync timeout</fielddescr>
+			<fieldname>synctimeout</fieldname>
+			<description>Select sync max wait time</description>
+			<type>select</type>
+			<required/>
+			<default_value>30</default_value>
+			<options>
+				<option><name>15 seconds</name><value>30</value></option>
+				<option><name>30 seconds (Default)</name><value>60</value></option>
+				<option><name>60 seconds</name><value>90</value></option>
+				<option><name>90 seconds</name><value>120</value></option>
+				<option><name>120 seconds</name><value>250</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Replication Targets</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Enable</fielddescr>
+					<fieldname>syncdestinenable</fieldname>
+					<type>checkbox</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Protocol</fielddescr>
+					<fieldname>syncprotocol</fieldname>
+					<type>select</type>
+					<default_value>HTTP</default_value>
+					<options>
+						<option><name>HTTP</name><value>http</value></option>
+						<option><name>HTTPS</name><value>https</value></option>
+					</options>
+					<width>1</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>IP Address/Hostname</fielddescr>
+					<fieldname>ipaddress</fieldname>
+					<type>input</type>
+					<required/>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Port</fielddescr>
+					<fieldname>syncport</fieldname>
+					<type>input</type>
+					<width>1</width>
+					<required/>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Username</fielddescr>
+					<fieldname>username</fieldname>
+					<type>input</type>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Password</fielddescr>
+					<fieldname>password</fieldname>
+					<type>password</type>
+					<width>2</width>
+					<required/>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_command_before_form>
+		e2guardian_check_config();
+	</custom_php_command_before_form>
+	<custom_php_install_command>
+		e2guardian_php_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		e2guardian_php_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		e2guardian_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		write_config("E2guardian sync settings.");
+	</custom_php_resync_config_command>
+</packagegui>
