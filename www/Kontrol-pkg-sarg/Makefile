@@ -56,6 +56,6 @@ do-install:
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
-		${FILESDIR}${PREFIX}/pkg/sarg.xml
+		${STAGEDIR}${PREFIX}/pkg/sarg.xml
 
 .include <bsd.port.mk>
