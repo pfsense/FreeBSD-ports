@@ -100,7 +100,7 @@ namespace { // global code
 		} else {
 			$execstr = <<<EOD
 require_once('service-utils.inc');
-service_control_restart("{$servicename}", $extras);
+service_control_restart("{$servicename}", var_export($extras, true));
 EOD;
 		}
 		$resp = $rpc_client->xmlrpc_exec_php($execstr);
@@ -180,7 +180,7 @@ $a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Product
 $a_acmeserver['letsencrypt-production-2'] = array('name' => "Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v02.api.letsencrypt.org'
 );
-$a_acmeserver['buypass-production'] = array('name' => "BuyPass Production ACME v2 (Applies rate limits to certificate requests)",
+$a_acmeserver['buypass-production'] = array('name' => "BuyPass Production ACME v1 (Applies rate limits to certificate requests)",
     'url' => 'https://api.buypass.com/acme'
 );
 /*$a_acmeserver['dummy'] = array('name' => "dummy",
@@ -388,6 +388,12 @@ $acme_domain_validation_method['dns_cyon'] = array('name' => "DNS-cyon.ch",
 		),
 		'CY_Password' => array('name'=>"cy_password",'columnheader'=>"Password",'type'=>"textbox",
 			'description' =>"Fill in the CY Password"
+		)
+	));
+$acme_domain_validation_method['dns_ddnss'] = array('name' => "DNS-ddnss.de",
+	'fields' => array(
+		'DDNSS_Token' => array('name'=>"ddnss_token",'columnheader'=>"Token",'type'=>"textbox",
+			'description' =>"API Token (e.g. aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee)"
 		)
 	));
 $acme_domain_validation_method['dns_desec'] = array('name' => "DNS-deSEC.io",
