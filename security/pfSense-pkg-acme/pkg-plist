@@ -22,6 +22,7 @@ pkg/acme/dnsapi/dns_conoha.sh
 pkg/acme/dnsapi/dns_cx.sh
 pkg/acme/dnsapi/dns_cyon.sh
 pkg/acme/dnsapi/dns_da.sh
+pkg/acme/dnsapi/dns_ddnss.sh
 pkg/acme/dnsapi/dns_desec.sh
 pkg/acme/dnsapi/dns_dgon.sh
 pkg/acme/dnsapi/dns_dnsimple.sh

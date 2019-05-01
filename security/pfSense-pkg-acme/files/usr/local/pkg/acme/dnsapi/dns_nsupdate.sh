@@ -6,6 +6,11 @@
 dns_nsupdate_add() {
   fulldomain=$1
   txtvalue=$2
+  NSUPDATE_SERVER="${NSUPDATE_SERVER:-$(_readaccountconf_mutable NSUPDATE_SERVER)}"
+  NSUPDATE_SERVER_PORT="${NSUPDATE_SERVER_PORT:-$(_readaccountconf_mutable NSUPDATE_SERVER_PORT)}"
+  NSUPDATE_KEY="${NSUPDATE_KEY:-$(_readaccountconf_mutable NSUPDATE_KEY)}"
+  NSUPDATE_ZONE="${NSUPDATE_ZONE:-$(_readaccountconf_mutable NSUPDATE_ZONE)}"
+
   _checkKeyFile $fulldomain || return 1
   THISNSUPDATE_KEY="${NSUPDATE_KEY}${fulldomain}.key"
   if [ ! -r "${NSUPDATE_SERVER}${fulldomain}.server" ] || [ -z "${NSUPDATE_SERVER}" ]; then
@@ -47,6 +52,12 @@ EOF
 #Usage: dns_nsupdate_rm   _acme-challenge.www.domain.com
 dns_nsupdate_rm() {
   fulldomain=$1
+
+  NSUPDATE_SERVER="${NSUPDATE_SERVER:-$(_readaccountconf_mutable NSUPDATE_SERVER)}"
+  NSUPDATE_SERVER_PORT="${NSUPDATE_SERVER_PORT:-$(_readaccountconf_mutable NSUPDATE_SERVER_PORT)}"
+  NSUPDATE_KEY="${NSUPDATE_KEY:-$(_readaccountconf_mutable NSUPDATE_KEY)}"
+  NSUPDATE_ZONE="${NSUPDATE_ZONE:-$(_readaccountconf_mutable NSUPDATE_ZONE)}"
+
   _checkKeyFile || return 1
   test "${fulldomain#*_acme-challenge}" == "${fulldomain}" && _info "Skipping nsupdate for TXT on base domain." && return 0
   if [ ! -r "${NSUPDATE_SERVER}${fulldomain}.server" ] || [ -z "${NSUPDATE_SERVER}" ]; then
