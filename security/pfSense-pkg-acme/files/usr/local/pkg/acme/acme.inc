@@ -98,9 +98,10 @@ namespace { // global code
 			/* The GUI needs a special event to restart, it is not a traditional service. */
 			$execstr = "send_event('service restart webgui');";
 		} else {
+			$extras = var_export($extras, true);
 			$execstr = <<<EOD
 require_once('service-utils.inc');
-service_control_restart("{$servicename}", var_export($extras, true));
+service_control_restart("{$servicename}", {$extras});
 EOD;
 		}
 		$resp = $rpc_client->xmlrpc_exec_php($execstr);
