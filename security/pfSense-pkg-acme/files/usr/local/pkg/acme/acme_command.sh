@@ -69,6 +69,9 @@ if ($command == "importcert") {
 				syslog(LOG_NOTICE, "Acme, Restarting remote service via XMLRPC {$action['command']}");
 				list($servicename, $extras) = acme_fixup_service_args($action['command']);
 				if (!empty($servicename)) {
+					/* Wait a few seconds before triggering the restart in case the
+					   secondary node is not yet ready after configuration sync */
+					sleep(10);
 					acme_xmlrpc_restart_service($servicename, $extras);
 				}
 			}
