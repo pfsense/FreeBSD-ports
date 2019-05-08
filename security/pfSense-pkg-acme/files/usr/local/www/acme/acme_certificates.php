@@ -206,14 +206,14 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 			<table class="table table-hover table-striped table-condensed sortable-theme-bootstrap" data-sortable>
 				<thead>
 					<tr>
-						<th></th>
+						<th data-sortable="false"></th>
 						<th>On</th>
 						<th>Name</th>
 						<th>Description</th>
 						<th>Account</th>
-						<th>Last renewed</th>
-						<th>Renew</th>
-						<th>Actions</th>
+						<th data-sortable-type="date">Last renewed</th>
+						<th data-sortable="false">Renew</th>
+						<th data-sortable="false">Actions</th>
 					</tr>
 				</thead>
 				<tbody class="user-entries">
