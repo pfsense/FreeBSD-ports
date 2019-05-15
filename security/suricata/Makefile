@@ -1,8 +1,8 @@
 # Created by: Patrick Tracanelli <eksffa@freebsdbrasil.com.br>
-# $FreeBSD$
+# $FreeBSD: head/security/suricata/Makefile 500707 2019-05-03 08:40:08Z joneum $
 
 PORTNAME=	suricata
-DISTVERSION=	4.1.3
+DISTVERSION=	4.1.4
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -76,7 +76,7 @@ LUA_CONFIGURE_ON=		--enable-lua \
 				--with-liblua-includes=${LUA_INCDIR} \
 				--with-liblua-libraries=${LUA_LIBDIR}
 
-LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit21
+LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit
 LUAJIT_CONFIGURE_ON=		--enable-luajit
 
 NSS_LIB_DEPENDS=		libnss3.so:security/nss \
