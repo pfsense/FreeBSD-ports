@@ -3,11 +3,11 @@
  * suricata_sid_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,7 +58,7 @@ function suricata_is_sidmodslist_active($sidlist) {
 	 * used by an interface.                             *
 	 *                                                   *
 	 * Returns: TRUE  if List is in use                  *
-	 *          FALSE if List is not in use              *
+	 *          FALSE if List can be deleted             *
 	 *****************************************************/
 
 	global $g, $config;
@@ -76,8 +76,20 @@ function suricata_is_sidmodslist_active($sidlist) {
 		if ($rule['modify_sid_file'] == $sidlist) {
 			return TRUE;
 		}
-		if ($rule['drop_sid_file'] == $sidlist) {
-			return TRUE;
+
+		// The tests below let the user remove an assigned
+		// DROP_SID or REJECT_SID list from an interface
+		// that now uses a mode where these list types
+		// are no longer applicable.
+		if ($rule['blockoffenders'] == 'on' && ($rule['ips_mode'] == 'ips_mode_inline' || $rule['block_drops_only'] == 'on')) {
+			if ($rule['drop_sid_file'] == $sidlist) {
+				return TRUE;
+			}
+		}
+		if ($rule['blockoffenders'] == 'on' && $rule['ips_mode'] == 'ips_mode_inline') {
+			if ($rule['reject_sid_file'] == $sidlist) {
+				return TRUE;
+			}
 		}
 	}
 	return FALSE;
@@ -112,6 +124,18 @@ if (isset($_POST['upload'])) {
 
 if (isset($_POST['sidlist_delete']) && isset($a_list[$_POST['sidlist_id']])) {
 	if (!suricata_is_sidmodslist_active($a_list[$_POST['sidlist_id']]['name'])) {
+
+		// Remove the list from DROP_SID or REJECT_SID if assigned on any interface.
+		foreach($a_nat as $k => $rule) {
+			if ($rule['drop_sid_file'] == $a_list[$_POST['sidlist_id']]['name']) {
+				unset($a_nat[$k]['drop_sid_file']);
+			}
+			if ($rule['reject_sid_file'] == $a_list[$_POST['sidlist_id']]['name']) {
+				unset($a_nat[$k]['reject_sid_file']);
+			}
+		}
+
+		// Now delete the list itself
 		unset($a_list[$_POST['sidlist_id']]);
 
 		// Write the new configuration
@@ -611,7 +635,7 @@ if ($savemsg) {
 							</select>
 						<?php else : ?>
 							<input type="hidden" name="drop_sid_file[<?=$k?>]" id="drop_sid_file[<?=$k?>]" value="<?=isset($natent['drop_sid_file']) ? $natent['drop_sid_file'] : 'none';?>">
-							<span class="text-center"><?=gettext("Not Applicable")?></span>
+							<span class="text-center"><?=gettext("N/A")?></span>
 						<?php endif; ?>
 					</td>
 					<td>
@@ -630,7 +654,7 @@ if ($savemsg) {
 							</select>
 						<?php else : ?>
 							<input type="hidden" name="reject_sid_file[<?=$k?>]" id="reject_sid_file[<?=$k?>]" value="<?=isset($natent['reject_sid_file']) ? $natent['reject_sid_file'] : 'none';?>">
-							<span class="text-center"><?=gettext("Not Applicable")?></span>
+							<span class="text-center"><?=gettext("N/A")?></span>
 						<?php endif; ?>
 					</td>
 				</tr>
