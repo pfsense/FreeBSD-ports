@@ -1,0 +1,21 @@
+commit 97708f7ff7571a159ca9a3d03804ffc506469449
+Author: Tobias Brunner <tobias@strongswan.org>
+Date:   Fri May 17 17:15:38 2019 +0200
+
+    proposal: Add missing curve448/x448 keywords
+    
+     #3064
+
+diff --git a/src/libstrongswan/crypto/proposal/proposal_keywords_static.txt b/src/libstrongswan/crypto/proposal/proposal_keywords_static.txt
+index b214a9e..ba3fb52 100644
+--- src/libstrongswan/crypto/proposal/proposal_keywords_static.txt
++++ src/libstrongswan/crypto/proposal/proposal_keywords_static.txt
+@@ -166,6 +166,8 @@ ecp384bp,         DIFFIE_HELLMAN_GROUP, ECP_384_BP,                0
+ ecp512bp,         DIFFIE_HELLMAN_GROUP, ECP_512_BP,                0
+ curve25519,       DIFFIE_HELLMAN_GROUP, CURVE_25519,               0
+ x25519,           DIFFIE_HELLMAN_GROUP, CURVE_25519,               0
++curve448,         DIFFIE_HELLMAN_GROUP, CURVE_448,                 0
++x448,             DIFFIE_HELLMAN_GROUP, CURVE_448,                 0
+ ntru112,          DIFFIE_HELLMAN_GROUP, NTRU_112_BIT,              0
+ ntru128,          DIFFIE_HELLMAN_GROUP, NTRU_128_BIT,              0
+ ntru192,          DIFFIE_HELLMAN_GROUP, NTRU_192_BIT,              0
