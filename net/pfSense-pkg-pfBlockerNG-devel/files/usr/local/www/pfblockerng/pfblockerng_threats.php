@@ -210,6 +210,16 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 					<td><a target="_blank" href="https://bgp.he.net/ip/<?=$host;?>">
 						<?=gettext("Hurricane Electric BGP Toolkit");?></a></td>
 				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://myip.ms/info/whois/<?=$host;?>">
+						<?=gettext("MYIP.MS");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://viz.greynoise.io/ip/<?=$host;?>">
+				</tr>
+
 				<br />
 
 				<!-- Mail Server threat source links -->
