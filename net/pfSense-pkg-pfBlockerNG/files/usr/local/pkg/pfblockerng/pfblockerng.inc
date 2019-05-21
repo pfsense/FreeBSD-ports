@@ -869,7 +869,7 @@ server.errorlog			= "/var/log/pfblockerng/dnsbl_error.log"
 server.pid-file			= "/var/run/dnsbl.pid"
 server.modules			= ( "mod_access", "mod_fastcgi", "mod_rewrite" )
 
-server.indexfiles		= ( "index.php" )
+index-file.names		= ( "index.php" )
 mimetype.assign			= ( ".html" => "text/html", ".gif" => "image/gif" )
 url.access-deny			= ( "~", ".inc" )
 fastcgi.server			= ( ".php" => ( "localhost" => ( "socket" => "/var/run/php-fpm.socket", "broken-scriptfilename" => "enable" ) ) )
@@ -877,7 +877,7 @@ fastcgi.server			= ( ".php" => ( "localhost" => ( "socket" => "/var/run/php-fpm.
 debug.log-condition-handling	= "enable"
 
 \$HTTP["host"] =~ ".*" {
-	url.rewrite-once = ( ".*" => "index.php" )
+	url.rewrite-once = ( ".*" => "/index.php" )
 }
 
 \$SERVER["socket"] == "0.0.0.0:{$pfb['dnsbl_port_ssl']}" {
@@ -889,7 +889,7 @@ debug.log-condition-handling	= "enable"
 	ssl.cipher-list		= "AES128+EECDH:AES256+EECDH:AES128+EDH:AES256+EDH:AES128-SHA:AES256-SHA:!aNULL:!eNULL:!DSS"
 
 	\$HTTP["host"] =~ ".*" {
-		url.rewrite-once = ( ".*" => "index.php" )
+		url.rewrite-once = ( ".*" => "/index.php" )
 	}
 }
 
