@@ -425,9 +425,6 @@ function pfblockerng_download_extras($timeout=600, $type='') {
 function pfblockerng_sync_cron() {
 	global $config, $pfb, $pfbarr;
 
-	// Call base hour converter
-	$pfb_sch = pfb_cron_base_hour();
-
 	$hour = date('G');
 	$dow  = date('N');
 	$pfb['update_cron'] = FALSE;
@@ -482,7 +479,8 @@ function pfblockerng_sync_cron() {
 									}
 									break;
 								default:
-									if ($pfb['interval'] == '1' || in_array($hour, $pfb_sch)) {
+									$pfb_sch = pfb_cron_base_hour($list['cron']);
+									if (in_array($hour, $pfb_sch)) {
 										pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format']);
 									}
 									break;
