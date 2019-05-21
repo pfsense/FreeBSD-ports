@@ -206,7 +206,7 @@ function pfb_filter($input, $type) {
 		default:
 			break;
 	}
-	return $result;
+	return $result == FALSE ? '' : $result;
 }
 
 
@@ -700,13 +700,13 @@ function pfblockerng_cron_exists($pfb_cmd, $pfb_min, $pfb_hour, $pfb_mday, $pfb_
 
 
 // Calculate the cron task base hour setting
-function pfb_cron_base_hour() {
+function pfb_cron_base_hour($freq) {
 	global $pfb;
 
-	switch($pfb['interval']) {
+	switch($freq) {
 		case 'Disabled':
 		case 1:
-			return array();
+			$j = 23; $k = 1;
 			break;
 		case 2:
 			$j = 11; $k = 2;
@@ -929,15 +929,17 @@ function dnsbl_save_stats() {
 					$group['groupname'] = pfb_filter($group['groupname'], 1);
 
 					$stmt = $db_handle->prepare($db_update);
-					$stmt->bindValue(':groupname', $group['groupname'], SQLITE3_TEXT);
+					if ($stmt) {
+						$stmt->bindValue(':groupname', $group['groupname'], SQLITE3_TEXT);
 
-					if (!$pfb_delete) {
-						$group['timestamp'] = pfb_filter($group['timestamp'], 1);
+						if (!$pfb_delete) {
+							$group['timestamp'] = pfb_filter($group['timestamp'], 1);
 
-						$stmt->bindValue(':timestamp', $group['timestamp'], SQLITE3_TEXT);
-						$stmt->bindValue(':entries', $group['entries'], SQLITE3_TEXT);
+							$stmt->bindValue(':timestamp', $group['timestamp'], SQLITE3_TEXT);
+							$stmt->bindValue(':entries', $group['entries'], SQLITE3_TEXT);
+						}
+						$stmt->execute();
 					}
-					$stmt->execute();
 				}
 			}
 		}
@@ -986,7 +988,7 @@ EOF;
 
 	$pfb_conf .= <<<EOF
 
-server.indexfiles		= ( "index.php" )
+index-file.names		= ( "index.php" )
 mimetype.assign			= ( ".html" => "text/html", ".gif" => "image/gif" )
 url.access-deny			= ( "~", ".inc" )
 fastcgi.server			= ( ".php" => ( "localhost" => ( "socket" => "/var/run/php-fpm.socket", "broken-scriptfilename" => "enable" ) ) )
@@ -997,22 +999,28 @@ accesslog.format		= "INDEX!%r!%V!%h!%{Referer}i * %r * %{User-Agent}i"
 accesslog.filename		= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc index"
 
 \$HTTP["scheme"] == "http" {
-	url.rewrite-once = ( ".*" => "index.php" )
+	url.rewrite-once = ( ".*" => "/index.php" )
 }
 
 \$HTTP["remoteip"] =~ ".*" {
 	\$SERVER["socket"] == "0.0.0.0:{$pfb['dnsbl_port_ssl']}" {
 		ssl.engine	= "enable"
 		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
+		ssl.dh-file	= "/etc/dh-parameters.4096"
+		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
+		ssl.ec-curve	= "secp384r1"
 	}
 
 	\$SERVER["socket"] == "{$pfb['dnsbl_vip']}:443" {
 		ssl.engine	= "enable"
 		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
+		ssl.dh-file	= "/etc/dh-parameters.4096"
+		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
+		ssl.ec-curve	= "secp384r1"
 	}
 
 	\$HTTP["host"] =~ ".*" {
-		url.rewrite-once = ( ".*" => "index.php" )
+		url.rewrite-once = ( ".*" => "/index.php" )
 	}
 }
 
@@ -3686,16 +3694,20 @@ function pfb_daemon_filterlog() {
 							// Clear cached entries older than defined cache setting
 							$db_update = "DELETE FROM asncache WHERE timestamp <= datetime('now', 'localtime', :asn_cache)";
 							$stmt = $db_handle->prepare($db_update);
-							$stmt->bindValue(':asn_cache', $asn_cache, SQLITE3_TEXT);
-							$stmt->execute();
+							if ($stmt) {
+								$stmt->bindValue(':asn_cache', $asn_cache, SQLITE3_TEXT);
+								$stmt->execute();
+							}
 
 							// Query for cached Host IP
 							$db_update = "SELECT * FROM asncache WHERE host = :host;";
 							$stmt = $db_handle->prepare($db_update);
-							$stmt->bindValue(':host', $ip, SQLITE3_TEXT);
-							$result = $stmt->execute();
-							if ($result) {
-								$asn_cache = $result->fetchArray(SQLITE3_ASSOC);
+							if ($stmt) {
+								$stmt->bindValue(':host', $ip, SQLITE3_TEXT);
+								$result = $stmt->execute();
+								if ($result) {
+									$asn_cache = $result->fetchArray(SQLITE3_ASSOC);
+								}
 							}
 						}
 						pfb_close_sqlite($db_handle);
@@ -3746,9 +3758,11 @@ function pfb_daemon_filterlog() {
 								if ($db_handle) {
 									$asn = pfb_filter($asn, 1);
 									$stmt = $db_handle->prepare($db_update);
-									$stmt->bindValue(':asn', $asn, SQLITE3_TEXT);
-									$stmt->bindValue(':host', $ip, SQLITE3_TEXT);
-									$stmt->execute();
+									if ($stmt) {
+										$stmt->bindValue(':asn', $asn, SQLITE3_TEXT);
+										$stmt->bindValue(':host', $ip, SQLITE3_TEXT);
+										$stmt->execute();
+									}
 								}
 								pfb_close_sqlite($db_handle);
 							}
@@ -3829,10 +3843,12 @@ function pfb_dnsbl_parse($domain, $src_ip, $req_agent) {
 	if ($db_handle) {
 		$db_update = "SELECT * FROM dnsblcache WHERE domain = :domain;";
 		$stmt = $db_handle->prepare($db_update);
-		$stmt->bindValue(':domain', $domain, SQLITE3_TEXT);
-		$result = $stmt->execute();
-		if ($result) {
-			$dnsbl_cache = $result->fetchArray(SQLITE3_ASSOC);
+		if ($stmt) {
+			$stmt->bindValue(':domain', $domain, SQLITE3_TEXT);
+			$result = $stmt->execute();
+			if ($result) {
+				$dnsbl_cache = $result->fetchArray(SQLITE3_ASSOC);
+			}
 		}
 	}
 	pfb_close_sqlite($db_handle);
@@ -3901,12 +3917,14 @@ function pfb_dnsbl_parse($domain, $src_ip, $req_agent) {
 			$pfb_feed	= pfb_filter($pfb_feed, 1);
 
 			$stmt = $db_handle->prepare($db_update);
-			$stmt->bindValue(':type', $pfb_type, SQLITE3_TEXT);
-			$stmt->bindValue(':domain', $domain, SQLITE3_TEXT);
-			$stmt->bindValue(':groupname', $pfb_group, SQLITE3_TEXT);
-			$stmt->bindValue(':final', $pfb_final, SQLITE3_TEXT);
-			$stmt->bindValue(':feed', $pfb_feed, SQLITE3_TEXT);
-			$stmt->execute();
+			if ($stmt) {
+				$stmt->bindValue(':type', $pfb_type, SQLITE3_TEXT);
+				$stmt->bindValue(':domain', $domain, SQLITE3_TEXT);
+				$stmt->bindValue(':groupname', $pfb_group, SQLITE3_TEXT);
+				$stmt->bindValue(':final', $pfb_final, SQLITE3_TEXT);
+				$stmt->bindValue(':feed', $pfb_feed, SQLITE3_TEXT);
+				$stmt->execute();
+			}
 		}
 		pfb_close_sqlite($db_handle);
 	}
@@ -4183,8 +4201,10 @@ function pfb_log_event($type, $domain, $src_ip, $req_agent) {
 			$db_update	= "UPDATE dnsbl SET counter = counter + 1 WHERE groupname = :pfb_group";
 
 			$stmt = $db_handle->prepare($db_update);
-			$stmt->bindValue(':pfb_group', $pfb_group, SQLITE3_TEXT);
-			$stmt->execute();
+			if ($stmt) {
+				$stmt->bindValue(':pfb_group', $pfb_group, SQLITE3_TEXT);
+				$stmt->execute();
+			}
 		}
 		pfb_close_sqlite($db_handle);
 	}
@@ -4235,10 +4255,12 @@ function pfb_dnsbl_lastevent($p_group, $p_entry, $p_details) {
 			$p_details	= pfb_filter($p_details, 1);
 
 			$stmt = $db_handle->prepare($db_update);
-			$stmt->bindValue(':p_group', $p_group, SQLITE3_TEXT);
-			$stmt->bindValue(':p_entry', $p_entry, SQLITE3_TEXT);
-			$stmt->bindValue(':p_details', $p_details, SQLITE3_TEXT);
-			$stmt->execute();
+			if ($stmt) {
+				$stmt->bindValue(':p_group', $p_group, SQLITE3_TEXT);
+				$stmt->bindValue(':p_entry', $p_entry, SQLITE3_TEXT);
+				$stmt->bindValue(':p_details', $p_details, SQLITE3_TEXT);
+				$stmt->execute();
+			}
 		}
 		pfb_close_sqlite($db_handle);
 	}
@@ -4329,8 +4351,10 @@ function pfb_daemon_queries() {
 				if ($db_handle) {
 					$db_update = "UPDATE resolver SET queries = :query WHERE row = 0";
 					$stmt = $db_handle->prepare($db_update);
-					$stmt->bindValue(':query', $query, SQLITE3_INTEGER);
-					$stmt->execute();
+					if ($stmt) {
+						$stmt->bindValue(':query', $query, SQLITE3_INTEGER);
+						$stmt->execute();
+					}
 				}
 				pfb_close_sqlite($db_handle);
 			}
@@ -4590,8 +4614,10 @@ function pfBlockerNG_cleardnsbl($mode, $totalqueries = 0) {
 				if ($mode == 'update_totalqueries') {
 					if (is_numeric($totalqueries)) {
 						$stmt = $db_handle->prepare($data[2]);
-						$stmt->bindValue(':totalqueries', $totalqueries, SQLITE3_INTEGER);
-						$stmt->execute();
+						if ($stmt) {
+							$stmt->bindValue(':totalqueries', $totalqueries, SQLITE3_INTEGER);
+							$stmt->execute();
+						}
 					}
 				}
 				else {
@@ -7666,7 +7692,7 @@ function sync_package_pfblockerng($cron='') {
 		} elseif ($pfb['interval'] == 24) {
 			$pfb_hour = $pfb['24hour'];
 		} else {
-			$pfb_hour = implode(',', pfb_cron_base_hour());
+			$pfb_hour = implode(',', pfb_cron_base_hour($pfb['interval']));
 		}
 
 		$pfb_mday	= '*';
