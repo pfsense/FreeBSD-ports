@@ -23,13 +23,15 @@ gtk2_PKGNAMESUFFIX=	-gtk2
 gtk3_CONFLICTS_INSTALL=	geany-gtk2
 
 USES=		compiler:c++11-lang desktop-file-utils gettext-tools gmake \
-		gnome libtool localbase pathfix pkgconfig tar:bzip2
+		gnome libtool localbase pathfix pkgconfig python:build \
+		shebangfix tar:bzip2
 USE_GNOME=	cairo intltool
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
+SHEBANG_FILES=	scripts/gen-api-gtkdoc.py
 
 OPTIONS_DEFINE=	VTE NLS DOCS
 OPTIONS_DEFAULT=	VTE
