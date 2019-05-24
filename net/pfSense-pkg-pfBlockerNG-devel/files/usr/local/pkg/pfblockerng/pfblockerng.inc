@@ -1818,6 +1818,11 @@ function pfb_update_unbound($mode, $pfbupdate) {
 					array(	'dnsbl_add_zone',	'local_zones',		'Add local-zone(s)' ),
 					array(	'dnsbl_add_data',	'local_datas',		'Add local-data(s)' ));
 
+			// Disable zone updates when TLD is disabled
+			if (!$pfb['dnsbl_tld']) {
+				unset($ucsync[0], $ucsync[2]);
+			}
+			
 			pfb_logger("\nResolver Live Sync finalizing:", 1);
 			foreach ($ucsync as $skey => $sync) {
 				$file = $pfb[$sync[0]];
