@@ -653,12 +653,18 @@ function frr_generate_config_zebra() {
 		/* Route Maps */
 		/* Per-protocol applications of Route Maps*/
 		$zebraconffile .= frr_zebra_generate_routemaps();
-		/* Null Routes */
-		$zebraconffile .= frr_zebra_generate_nullroutes();
-		/* Static Routes */
-		$zebraconffile .= frr_zebra_generate_staticroutes();
 		/* Default Accept Filters */
 		$zebraconffile .= frr_zebra_generate_acceptfilters();
+
+		$staticdconffile = $frr_auto_config_warning;
+		/* Null Routes */
+		$staticdconffile .= frr_zebra_generate_nullroutes();
+		/* Static Routes */
+		$staticdconffile .= frr_zebra_generate_staticroutes();
+
 	}
 	file_put_contents("{$frr_config_base}/zebra.conf", $zebraconffile);
+	if (!empty($staticdconffile) && ($staticdconffile != $frr_auto_config_warning)) {
+		file_put_contents("{$frr_config_base}/staticd.conf", $staticdconffile);
+	}
 }
