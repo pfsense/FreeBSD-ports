@@ -5293,7 +5293,10 @@ function sync_package_pfblockerng($cron='') {
 	}
 
 	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && !$pfb['save'] && !$dnsbl_error) {
-		if (isset($config['installedpackages']['pfblockerngdnsbl']['config'])) {
+		if (isset($config['installedpackages']['pfblockerngdnsbl']['config']) ||
+		    (isset($pfb['blconfig']) && $pfb['blconfig']['blacklist_enable'] != 'Disable' &&
+		    !empty($pfb['blconfig']['blacklist_selected']))) {
+			
 			$dnsbl_missing = FALSE;
 
 			// Collect existing DNSBL group statistics
