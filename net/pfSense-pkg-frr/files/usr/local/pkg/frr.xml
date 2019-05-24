@@ -105,6 +105,12 @@
 		<description>FRR core/abstraction daemon</description>
 	</service>
 	<service>
+		<name>FRR staticd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>staticd</executable>
+		<description>FRR static route daemon</description>
+	</service>
+	<service>
 		<name>FRR bgpd</name>
 		<rcfile>frr.sh</rcfile>
 		<executable>bgpd</executable>
