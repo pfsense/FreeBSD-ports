@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-frr
-PORTVERSION=	0.4
+PORTVERSION=	0.4.1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
