@@ -1592,10 +1592,10 @@ EOF;
 			if (preg_match('/(\d+)(h|m)/', $e2guardian_groups['freq'], $matches)) {
 			    switch ($matches[2]){
 			        case 'm':
-			            e2g_check_cron("{$cron_cmd} $e2_group_source '{$e2guardian_groups[$e2_group_source]}'", "create", "*/{$matches[1]}", "0");
+			            e2g_check_cron("{$cron_cmd} $e2_group_source '{$e2guardian_groups[$e2_group_source]}'", "create", "*/{$matches[1]}", "*");
 			            break;
 			        case 'h':
-			            e2g_check_cron("{$cron_cmd} $e2_group_source '{$e2guardian_groups[$e2_group_source]}'", "create",  "0", "*/{$matches[1]}");
+			            e2g_check_cron("{$cron_cmd} $e2_group_source '{$e2guardian_groups[$e2_group_source]}'", "create",  "*", "*/{$matches[1]}");
 			            break;
 			    }
 			} else {
