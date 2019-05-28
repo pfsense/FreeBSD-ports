@@ -1057,7 +1057,7 @@ do_reboot() {
 	if [ -z "${dont_reboot}" ]; then
 		_echo "Upgrade is complete.  Rebooting ${_msg}"
 		echo "Upgrade is complete.  Rebooting ${_msg}" | wall
-		/etc/rc.notify_message -e -g -m \
+		/etc/rc.notify_message -e -m \
 		    "Upgrade is complete.  Rebooting ${_msg}" >/dev/null 2>&1
 		if [ "${_now}" = "now" ]; then
 			/etc/rc.reboot ${reboot_params}
@@ -1068,7 +1068,7 @@ do_reboot() {
 	else
 		_echo "Upgrade is complete."
 		echo "Upgrade is complete." | wall
-		/etc/rc.notify_message -e -g -m "Upgrade is complete." \
+		/etc/rc.notify_message -e -m "Upgrade is complete." \
 		    >/dev/null 2>&1
 	fi
 }

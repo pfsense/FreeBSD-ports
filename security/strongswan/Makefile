@@ -2,7 +2,7 @@
 # $FreeBSD: head/security/strongswan/Makefile 471205 2018-05-31 12:39:51Z krion $
 
 PORTNAME=	strongswan
-DISTVERSION=	5.8.0rc1
+PORTVERSION=	5.8.0
 CATEGORIES=	security
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
@@ -13,7 +13,7 @@ COMMENT=	Open Source IKEv2 IPsec-based VPN solution
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe gperf libtool:keepla pkgconfig tar:bzip2 ssl
+USES=		cpe libtool:keepla pkgconfig tar:bzip2 ssl
 USE_RC_SUBR=	strongswan
 USE_LDCONFIG=	${PREFIX}/lib/ipsec
 
