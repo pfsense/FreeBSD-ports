@@ -38,17 +38,21 @@ display_top_tabs($tab_array);
 $nis_server = check_nis_running_apcupsd();
 
 if ( $_POST['strapcaccess'] ) {
-	puts("<div class=\"panel panel-success responsive\"><div class=\"panel-heading\"><h2 class=\"panel-title\">Status information from apcupsd</h2></div>");
-	puts("<pre>");
-	puts("Running: apcaccess -h {$_POST['strapcaccess']} <br />");
-	putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin");
-	$ph = popen("apcaccess -h {$_POST['strapcaccess']} 2>&1", "r" );
-	while ($line = fgets($ph)) {
-		echo htmlspecialchars($line);
+	if (is_hostname($_POST['strapcaccess'])) {
+		puts("<div class=\"panel panel-success responsive\"><div class=\"panel-heading\"><h2 class=\"panel-title\">Status information from apcupsd</h2></div>");
+		puts("<pre>");
+		puts("Running: apcaccess -h " . htmlspecialchars($_POST['strapcaccess']) . " <br />");
+		putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin");
+		$ph = popen("apcaccess -h " . escapeshellarg($_POST['strapcaccess']) . " 2>&1", "r" );
+		while ($line = fgets($ph)) {
+			echo htmlspecialchars($line);
+		}
+		pclose($ph);
+		puts("</pre>");
+		puts("</div>");
+	} else {
+		print_input_errors(array(gettext("Invalid hostname or IP address")));
 	}
-	pclose($ph);
-	puts("</pre>");
-	puts("</div>");
 } elseif ($nis_server) {
 	$nisip = (check_nis_ip_apcupsd() != ''? check_nis_ip_apcupsd() : "localhost");
 	$nisport = (check_nis_port_apcupsd() != '' ? check_nis_port_apcupsd() : "3551");
