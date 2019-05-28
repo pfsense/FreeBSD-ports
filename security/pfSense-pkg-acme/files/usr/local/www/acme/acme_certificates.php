@@ -242,10 +242,10 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				<?=$certificate['name'];?>
 			  </td>
 			  <td>
-				<?=$certificate['desc'];?>
+				<?=htmlspecialchars($certificate['desc']);?>
 			  </td>
 			  <td>
-				<?=$certificate['acmeaccount'];?>
+				<?=htmlspecialchars($certificate['acmeaccount']);?>
 			  </td>
 			  <td style="white-space: nowrap">
 				<?=date('r', $certificate['lastrenewal']);?>
