@@ -1,6 +1,6 @@
 diff -ruN ./snort-2.9.13.orig/src/output-plugins/Makefile.am ./snort-2.9.13/src/output-plugins/Makefile.am
 --- ./snort-2.9.13.orig/src/output-plugins/Makefile.am	2019-03-20 01:28:02.000000000 -0400
-+++ ./src/output-plugins/Makefile.am	2019-04-12 16:26:50.000000000 -0400
++++ ./src/output-plugins/Makefile.am	2019-05-27 16:00:45.000000000 -0400
 @@ -13,7 +13,8 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
@@ -13,19 +13,18 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/Makefile.am ./snort-2.9.13/src/
  libspo_a_SOURCES += \
 diff -ruN ./snort-2.9.13.orig/src/output-plugins/Makefile.in ./snort-2.9.13/src/output-plugins/Makefile.in
 --- ./snort-2.9.13.orig/src/output-plugins/Makefile.in	2019-03-21 06:34:00.000000000 -0400
-+++ ./src/output-plugins/Makefile.in	2019-04-12 16:30:05.000000000 -0400
-@@ -116,7 +116,9 @@
++++ ./src/output-plugins/Makefile.in	2019-05-27 16:04:05.000000000 -0400
+@@ -116,7 +116,8 @@
  	spo_log_tcpdump.c spo_log_tcpdump.h spo_unified2.c \
  	spo_unified2.h spo_log_ascii.c spo_log_ascii.h \
  	spo_alert_sf_socket.h spo_alert_sf_socket.c spo_alert_test.c \
 -	spo_alert_test.h spo_log_buffer_dump.c spo_log_buffer_dump.h
 +	spo_alert_test.h spo_log_buffer_dump.c spo_log_buffer_dump.h \
-+	spo_alert_test.h spo_log_buffer_dump.c spo_log_buffer_dump.h \
 +	spo_pf.h spo_pf.c
  @BUILD_BUFFER_DUMP_TRUE@am__objects_1 = spo_log_buffer_dump.$(OBJEXT)
  am_libspo_a_OBJECTS = spo_alert_fast.$(OBJEXT) \
  	spo_alert_full.$(OBJEXT) spo_alert_syslog.$(OBJEXT) \
-@@ -124,6 +126,7 @@
+@@ -124,6 +125,7 @@
  	spo_log_null.$(OBJEXT) spo_log_tcpdump.$(OBJEXT) \
  	spo_unified2.$(OBJEXT) spo_log_ascii.$(OBJEXT) \
  	spo_alert_sf_socket.$(OBJEXT) spo_alert_test.$(OBJEXT) \
@@ -33,7 +32,7 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/Makefile.in ./snort-2.9.13/src/
  	$(am__objects_1)
  libspo_a_OBJECTS = $(am_libspo_a_OBJECTS)
  AM_V_P = $(am__v_P_@AM_V@)
-@@ -334,6 +337,7 @@
+@@ -334,6 +336,7 @@
  	spo_log_tcpdump.h spo_unified2.c spo_unified2.h \
  	spo_log_ascii.c spo_log_ascii.h spo_alert_sf_socket.h \
  	spo_alert_sf_socket.c spo_alert_test.c spo_alert_test.h \
@@ -43,8 +42,8 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/Makefile.in ./snort-2.9.13/src/
  
 diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_pf.c ./snort-2.9.13/src/output-plugins/spo_pf.c
 --- ./snort-2.9.13.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.c	2019-04-12 16:35:14.000000000 -0400
-@@ -0,0 +1,756 @@
++++ ./src/output-plugins/spo_pf.c	2019-05-27 20:59:29.000000000 -0400
+@@ -0,0 +1,762 @@
 +/*
 +* Copyright (c) 2019  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
@@ -227,27 +226,25 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_pf.c ./snort-2.9.13/src/out
 +        s2c_ifmon_thread_created = -1;
 +    }
 +
-+    DEBUG_WRAP(DebugMessage(DEBUG_LOG, "spoink block'n!!\n"););
-+
-+	// Test for valid IP header in packet and
-+	// ignore packets with no valid IP information
-+	// since we need IP addresses to block.
-+	if (!IsIP(p))
-+		return;
++    // Test for valid IP header in packet and
++    // ignore packets with no valid IP information
++    // since we need IP addresses to block.
++    if (!IsIP(p))
++        return;
 +
 +    switch (data->block) {
-+    case SPOINK_BLOCK_DST:
-+	ip = GET_DST_IP(p);
-+	break;
-+    case SPOINK_BLOCK_BOTH:
-+	ip = GET_DST_IP(p);
-+	if (!s2c_parse_search_wl(ip, data->head, data->iflhead))
-+		s2c_pf_block(data, ip);
-+	/* CONTINUE */
-+    case SPOINK_BLOCK_SRC:
-+    default:
-+	ip = GET_SRC_IP(p);
-+	break;
++        case SPOINK_BLOCK_DST:
++            ip = GET_DST_IP(p);
++            break;
++        case SPOINK_BLOCK_BOTH:
++            ip = GET_DST_IP(p);
++            if (!s2c_parse_search_wl(ip, data->head, data->iflhead))
++                s2c_pf_block(data, ip);
++            /* CONTINUE */
++        case SPOINK_BLOCK_SRC:
++        default:
++            ip = GET_SRC_IP(p);
++            break;
 +    }
 +    if (s2c_parse_search_wl(ip, data->head, data->iflhead))
 +	return;
@@ -427,6 +424,8 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_pf.c ./snort-2.9.13/src/out
 +    int res = 0;
 +    
 +    data = (SpoAlertPfData *)SnortAlloc(sizeof(SpoAlertPfData));
++    if (data == NULL)
++	FatalError("Unable to allocate memory for alert_pf data: %s\n", strerror(errno));    
 +    
 +    if(args == NULL) 
 +	FatalError("Unable to load alert_pf args: %s\n", strerror(errno));    
@@ -437,8 +436,12 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_pf.c ./snort-2.9.13/src/out
 +    
 +    DEBUG_WRAP(DebugMessage(DEBUG_LOG,"ParseAlertPfArgs: %s\n", args););
 +
-+    toks = mSplit(args, ",", 4, &num_toks, 0);
++    toks = mSplit(args, ",", 0, &num_toks, 0);
 +    
++    // A minimum of 2 two arguments are required.  The first must be
++    // the pass list file and the second must the name of the pf
++    // table where blocked IPs are to be stored.
++
 +    if(num_toks <= 1) 
 +	FatalError("snort.conf => You must supply TWO arguments for the pf plugin...: %s\n", strerror(errno));
 +
@@ -454,7 +457,7 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_pf.c ./snort-2.9.13/src/out
 +	FatalError("snort.conf => Unable to load whitelist: %s\n", strerror(errno)); 
 +    fclose(wl);
 +
-+    if (toks[1] == NULL)
++    if (!strlen(toks[1]))
 +     	FatalError("snort.conf => No pf table defined %s\n", strerror(errno));                
 +    else
 +     	data->pftable = strdup(toks[1]);
@@ -462,23 +465,25 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_pf.c ./snort-2.9.13/src/out
 +    if (s2c_pf_intbl(data->fd, data->pftable, 0) == 0)
 +    	FatalError("pf.conf => Table %s does not exist in packet filter: %s\n", data->pftable, strerror(errno));	
 +
-+    if (toks[2] == NULL)
-+	data->block = SPOINK_BLOCK_SRC;
-+    else if (!strncmp("src", toks[2], strlen("src")))
-+     	data->block = SPOINK_BLOCK_SRC;
-+    else if (!strncmp("dst", toks[2], strlen("dst")))
-+     	data->block = SPOINK_BLOCK_DST;
-+    else if (!strncmp("both", toks[2], strlen("both")))
-+     	data->block = SPOINK_BLOCK_BOTH;
-+    else
-+     	data->block = SPOINK_BLOCK_SRC;
++    // Set default values for optional arguments.
++    data->block = SPOINK_BLOCK_SRC;
++    data->kill = 0;
 +
-+    if (toks[3] == NULL)
-+     	data->kill = 0;
-+    else if (!strncmp("kill", toks[3], strlen("kill")))
-+	data->kill = 1;
-+    else
-+     	data->kill = 0;
++    // Process any remaining optional arguments supplied for this plugin.
++    for (int i = 2; i < num_toks; i++)
++    {
++        // Which IP to block?
++        if (!strncmp("src", toks[i], strlen("src")))
++            data->block = SPOINK_BLOCK_SRC;
++        else if (!strncmp("dst", toks[i], strlen("dst")))
++            data->block = SPOINK_BLOCK_DST;
++        else if (!strncmp("both", toks[i], strlen("both")))
++            data->block = SPOINK_BLOCK_BOTH;
++
++        // Should we kill active states when blocking an IP?
++        if (!strncmp("kill", toks[i], strlen("kill")))
++            data->kill = 1;
++    }
 +
 +    return data;
 +}
@@ -676,7 +681,7 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_pf.c ./snort-2.9.13/src/out
 +				continue;
 +			}
 +			if (sfip_pton(cad, &ipw->waddr) != SFIP_SUCCESS) {
-+				ErrorMessage("Non ip(%s) parameter passed with white list, skipping...", cad);
++				ErrorMessage("Non IP(%s) parameter passed with white list, skipping...", cad);
 +				free(ipw);
 +				continue;
 +			} // else
@@ -684,7 +689,7 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_pf.c ./snort-2.9.13/src/out
 +
 +			LIST_INSERT_HEAD(head, ipw, elem);		
 +		} else 
-+			ErrorMessage("Errors with line(%s) passed with white list, skipping...", cad);
++			ErrorMessage("Errors encountered on line(%s) passed with white list, skipping...", cad);
 +	}
 +
 +	lock.l_type = F_UNLCK;
@@ -849,7 +854,7 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_pf.h ./snort-2.9.13/src/out
 +#endif 
 diff -ruN ./snort-2.9.13.orig/src/plugbase.c ./snort-2.9.13/src/plugbase.c
 --- ./snort-2.9.13.orig/src/plugbase.c	2019-03-20 01:28:02.000000000 -0400
-+++ ./src/plugbase.c	2019-04-12 16:34:27.000000000 -0400
++++ ./src/plugbase.c	2019-05-27 16:08:16.000000000 -0400
 @@ -123,6 +123,7 @@
  #include "output-plugins/spo_csv.h"
  #include "output-plugins/spo_log_null.h"
