@@ -22,7 +22,7 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libpcap.so:net/libpcap
 RUN_DEPENDS=	daq>=2.2.2_1:net/daq
 
-USES=			cpe libtool pathfix shebangfix ssl bison
+USES=			bison cpe libtool pathfix shebangfix ssl
 USE_RC_SUBR=		snort
 USE_LDCONFIG=		yes
 
