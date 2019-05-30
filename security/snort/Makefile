@@ -3,6 +3,7 @@
 
 PORTNAME=	snort
 PORTVERSION=	2.9.13
+PORTREVISION=   1
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/ \
 		ZI
@@ -15,13 +16,13 @@ COMMENT=	Lightweight network intrusion detection system
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	daq>=2.2.2:net/daq
+BUILD_DEPENDS=	daq>=2.2.2_1:net/daq
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
 		libpcap.so:net/libpcap
-RUN_DEPENDS=	daq>=2.2.2:net/daq
+RUN_DEPENDS=	daq>=2.2.2_1:net/daq
 
-USES=			cpe libtool pathfix shebangfix ssl
+USES=			bison cpe libtool pathfix shebangfix ssl
 USE_RC_SUBR=		snort
 USE_LDCONFIG=		yes
 
