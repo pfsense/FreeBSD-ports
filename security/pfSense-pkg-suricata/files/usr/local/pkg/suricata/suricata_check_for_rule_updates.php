@@ -35,7 +35,6 @@ $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
 $suricata_rules_dir = SURICATA_RULES_DIR;
 $suri_eng_ver = filter_var(SURICATA_BIN_VERSION, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-$mounted_rw = FALSE;
 
 /* define checks */
 $oinkid = $config['installedpackages']['suricata']['config'][0]['oinkcode'];
@@ -71,12 +70,6 @@ else {
 	$snort_community_rules_filename = GPLV2_DNLD_FILENAME;
 	$snort_community_rules_filename_md5 = GPLV2_DNLD_FILENAME . ".md5";
 	$snort_community_rules_url = GPLV2_DNLD_URL;
-}
-
-/* Mount the Suricata conf directories R/W so we can modify files there */
-if (!is_subsystem_dirty('mount')) {
-	conf_mount_rw();
-	$mounted_rw = TRUE;
 }
 
 /* Set up Emerging Threats rules filenames and URL */
@@ -716,10 +709,6 @@ if (is_dir("{$tmpfname}")) {
 suricata_update_status(gettext("The Rules update has finished.") . "\n");
 log_error(gettext("[Suricata] The Rules update has finished."));
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-
-/* Remount filesystem read-only if we changed it in this module */
-if ($mounted_rw == TRUE)
-	conf_mount_ro();
 
 /* Save this update status to the configuration file */
 if ($update_errors)

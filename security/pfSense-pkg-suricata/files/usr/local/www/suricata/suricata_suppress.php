@@ -93,9 +93,7 @@ if (isset($_POST['del_btn'])) {
 		}
 		if ($need_save) {
 			write_config("Suricata pkg: deleted SUPPRESSION LIST.");
-			conf_mount_rw();
 			sync_suricata_package_config();
-			conf_mount_ro();
 			header("Location: /suricata/suricata_suppress.php");
 			return;
 		}

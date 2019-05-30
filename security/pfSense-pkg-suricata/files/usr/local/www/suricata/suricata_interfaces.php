@@ -52,7 +52,6 @@ $ifaces = get_configured_interface_list();
 if (isset($_POST['del_x'])) {
 	/* delete selected interfaces */
 	if (is_array($_POST['rule']) && count($_POST['rule'])) {
-		conf_mount_rw();
 		foreach ($_POST['rule'] as $rulei) {
 			$if_real = get_real_interface($a_nat[$rulei]['interface']);
 			$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$rulei]['interface']);
@@ -70,9 +69,7 @@ if (isset($_POST['del_x'])) {
 		write_config("Suricata pkg: deleted one or more Suricata interfaces.");
 		sleep(2);
 
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -106,9 +103,7 @@ if (isset($_POST['del_x'])) {
 		// Save updated configuration
 		write_config("Suricata pkg: deleted one or more Suricata interfaces.");
 		sleep(2);
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -135,9 +130,7 @@ if ($_POST['by2toggle']) {
 		// No need to rebuild Suricata rules for Barnyard2,
 		// so flag that task as "off" to save time.
 		$rebuild_rules = false;
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 		suricata_barnyard_start($suricatacfg, $if_real);
 		$by2_starting[$id] = 'TRUE';
 	} else {
@@ -178,9 +171,7 @@ if ($_POST['toggle']) {
 	\$suricatacfg = \$config['installedpackages']['suricata']['rule'][{$id}];
 	\$rebuild_rules = true;
 	touch('{$start_lck_file}');
-	conf_mount_rw();
 	sync_suricata_package_config();
-	conf_mount_ro();
 	\$rebuild_rules = false;
 	suricata_start(\$suricatacfg, '{$if_real}');
 	unlink_if_exists('{$start_lck_file}');

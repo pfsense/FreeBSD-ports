@@ -134,9 +134,6 @@ if ($rc === true) {
 fclose($fout);
 curl_close($ch);
 
-// Mount filesystem read-write since we need to write the
-// extracted databases to usr/local/share/suricata/GeoLite2.
-conf_mount_rw();
 safe_mkdir($suricata_geoip_dbdir);
 
 // If the file downloaded successfully, unpack it and store
@@ -147,9 +144,6 @@ if (file_exists("{$geoip_tmppath}GeoLite2-Country.mmdb.gz") && $response == 200)
 	log_error("[Suricata] Copying new database to {$suricata_geoip_dbdir}GeoLite2-Country.mmdb...");
 	@rename("{$geoip_tmppath}GeoLite2-Country.mmdb", "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb");
 }
-
-// Finished with filesystem mods, so remount read-only
-conf_mount_ro();
 
 // Cleanup the tmp directory path
 rmdir_recursive("$geoip_tmppath");
