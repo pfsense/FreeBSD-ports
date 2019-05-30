@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-snort
-PORTVERSION=	3.2.9.8
-PORTREVISION=	6
+PORTVERSION=	4.0
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +12,7 @@ COMMENT=	pfSense package snort
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	snort>=2.9.13:security/snort \
+RUN_DEPENDS=	snort>=2.9.13_1:security/snort \
 		barnyard2>=0:security/barnyard2
 
 NO_BUILD=	yes
@@ -136,6 +135,10 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}/var/db/snort/sidmods/enablesid-sample.conf \
 		${STAGEDIR}/var/db/snort/sidmods
 	${INSTALL_DATA} ${FILESDIR}/var/db/snort/sidmods/modifysid-sample.conf \
+		${STAGEDIR}/var/db/snort/sidmods
+	${INSTALL_DATA} ${FILESDIR}/var/db/snort/sidmods/dropsid-sample.conf \
+		${STAGEDIR}/var/db/snort/sidmods
+	${INSTALL_DATA} ${FILESDIR}/var/db/snort/sidmods/rejectsid-sample.conf \
 		${STAGEDIR}/var/db/snort/sidmods
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
