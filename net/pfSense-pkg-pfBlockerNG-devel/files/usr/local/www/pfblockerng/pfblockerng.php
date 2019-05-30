@@ -425,9 +425,6 @@ function pfblockerng_download_extras($timeout=600, $type='') {
 function pfblockerng_sync_cron() {
 	global $config, $pfb, $pfbarr;
 
-	// Call base hour converter
-	$pfb_sch = pfb_cron_base_hour();
-
 	$hour = date('G');
 	$dow  = date('N');
 	$pfb['update_cron'] = FALSE;
@@ -482,7 +479,8 @@ function pfblockerng_sync_cron() {
 									}
 									break;
 								default:
-									if ($pfb['interval'] == '1' || in_array($hour, $pfb_sch)) {
+									$pfb_sch = pfb_cron_base_hour($list['cron']);
+									if (in_array($hour, $pfb_sch)) {
 										pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format']);
 									}
 									break;
@@ -1353,12 +1351,6 @@ if ($_POST) {
 			unset($input_errors);
 		}
 
-		foreach (array('aliasports_in', 'aliasaddr_in', 'aliasports_out', 'aliasaddr_out') as $value) {
-			if (!empty($_POST[$value]) && !is_validaliasname($_POST[$value])) {
-				$input_errors[] = 'Settings: Advanced In/Outbound Aliasname error - ' . invalidaliasnamemsg($_POST[$value]);
-			}
-		}
-
 		$pfb['geoipconfig']['countries4']		= implode(',', (array)$_POST['countries4'])	?: '';
 		$pfb['geoipconfig']['countries6']		= implode(',', (array)$_POST['countries6'])	?: '';
 		$pfb['geoipconfig']['action']			= $_POST['action']				?: '';
@@ -1382,6 +1374,14 @@ if ($_POST) {
 		$pfb['geoipconfig']['autoproto_out']		= $_POST['autoproto_out']			?: '';
 		$pfb['geoipconfig']['agateway_out']		= $_POST['agateway_out']			?: '';
 
+		// Validate Adv. In/Outbound firewall rules settings
+		foreach (array( 'aliasports_in' => 'Port In', 'aliasaddr_in' => 'Destination In',
+				'aliasports_out' => 'Port Out', 'aliasaddr_out' => 'Destination Out') as $value => $auto_dir) {
+			if (!empty($_POST[$value]) && !is_alias($_POST[$value])) {
+				$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an existing Alias";
+			}
+		}
+
 		// Validate Adv. firewall rule 'Protocol' setting
 		if (!empty($_POST['autoports_in']) || !empty($_POST['autoaddr_in'])) {
 			if (empty($_POST['autoproto_in'])) {
@@ -1397,6 +1397,26 @@ if ($_POST) {
 		// Validate if any Countries (v4/v6) are defined when Action is enabled.
 		if ($_POST['action'] != 'Disabled' && !isset($_POST['countries4']) && !isset($_POST['countries6'])) {
 			$input_errors[] = "No Countries defined!";
+		}
+
+		// Avoid creating a permit rule on WAN with 'any'
+		if ($_POST['action'] == 'Permit_Inbound' || $_POST['action'] == 'Permit_Both') {
+			$pfb_warning = FALSE;
+			if ($_POST['autoproto_in'] == '') {
+				$pfb_warning = TRUE;
+				$input_errors[] = "Warning: When using an Action setting of 'Permit Inbound or Permit Both',"
+					. " you must configure the 'Advanced Inbound Custom Protocol' setting. The current setting of 'Any' is not allowed.";
+			}
+			if ($_POST['aliasports_in'] == '' && $_POST['aliasaddr_in'] == '') {
+				$pfb_warning = TRUE;
+				$input_errors[] = "Warning:  When using an Action setting of 'Permit Inbound or Permit Both',"
+					. " you must configure at least one of 'Advanced Inbound Custom Port/Destination' settings.";
+			}
+			if ($pfb_warning) {
+				$input_errors[] = '';
+				$input_errors[] = '===> WARNING <===';
+				$input_errors[] = "Improper Permit rules on the WAN can catastrophically impact the security of your network!";
+			}
 		}
 
 		if (!$input_errors) {

@@ -174,6 +174,12 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 		$snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}";
 		update_status(gettext("Generating configuration for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
 
+		// Remove any existing dynamic preprocessor library files from
+		// the snort_dynamicpreprocessor directory for the interface.
+		// The snort.conf file generation code farther down will copy
+		// in new ones from '/usr/local/lib/snort_dynamicpreprocessor'.
+		mwexec("/bin/rm -rf {$snortcfgdir}/snort_dynamicpreprocessor/*.so");
+
 		// Pull in the PHP code that generates the snort.conf file
 		// variables that will be substituted further down below.
 		include("/usr/local/pkg/snort/snort_generate_conf.php");

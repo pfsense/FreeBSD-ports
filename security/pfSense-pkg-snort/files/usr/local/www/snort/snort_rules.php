@@ -3,9 +3,9 @@
  * snort_rules.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -154,6 +154,18 @@ if ($a_rule[$id]['autoflowbitrules'] == 'on')
 	$categories[] = "Auto-Flowbit Rules";
 natcasesort($categories);
 
+// Only add custom ALERT, DROP or REJECT Action Rules
+// option if blocking is enabled.
+if ($a_rule[$id]['blockoffenders7'] == 'on') {
+	$categories[] = "User Forced ALERT Action Rules";
+
+	// Show custom DROP  and REJECT rules only if using Inline IPS mode.
+	if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+		$categories[] = "User Forced DROP Action Rules";
+		$categories[] = "User Forced REJECT Action Rules";
+	}
+}
+
 // Add custom Category to view all Active Rules
 // on the interface at the bottom of the list.
 $categories[] = "Active Rules";
@@ -183,7 +195,7 @@ if ($currentruleset != 'custom.rules') {
 
 	// Test for the special case of an IPS Policy file.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy")
-		$rules_map = snort_load_vrt_policy($a_rule[$id]['ips_policy']);
+		$rules_map = snort_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
 
 	// Test for preproc_rules file and set the full path.
 	elseif (file_exists("{$snortdir}/preproc_rules/{$currentruleset}"))
@@ -244,6 +256,15 @@ if ($currentruleset != 'custom.rules') {
 		// diabled GID:SID pairs.
 		$rules_map = snort_get_filtered_rules($rule_files, snort_load_sid_mods($a_rule[$id]['rule_sid_off']));
 	}
+	elseif ($currentruleset == "User Forced ALERT Action Rules") {
+		$rules_map = snort_get_filtered_rules("{$snortcfgdir}/rules/", snort_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+	}
+	elseif ($currentruleset == "User Forced DROP Action Rules") {
+		$rules_map = snort_get_filtered_rules("{$snortcfgdir}/rules/", snort_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+	}
+	elseif ($currentruleset == "User Forced REJECT Action Rules") {
+		$rules_map = snort_get_filtered_rules("{$snortcfgdir}/rules/", snort_load_sid_mods($a_rule[$id]['rule_sid_force_reject']));
+	}
 	// If it's not a special case, and we can't find
 	// the given rule file, then notify the user.
 	elseif (!file_exists($rulefile)) {
@@ -262,6 +283,12 @@ snort_auto_sid_mgmt($rules_map, $a_rule[$id], FALSE);
 // Load up our enablesid and disablesid arrays with enabled or disabled SIDs
 $enablesid = snort_load_sid_mods($a_rule[$id]['rule_sid_on']);
 $disablesid = snort_load_sid_mods($a_rule[$id]['rule_sid_off']);
+
+/* Load up our rule action arrays with manually changed SID actions */
+$alertsid = snort_load_sid_mods($a_rule[$id]['rule_sid_force_alert']);
+$dropsid = snort_load_sid_mods($a_rule[$id]['rule_sid_force_drop']);
+$rejectsid = snort_load_sid_mods($a_rule[$id]['rule_sid_force_reject']);
+snort_modify_sids_action($rules_map, $a_rule[$id]);
 
 /* Process AJAX request to view content of a specific rule */
 if ($_POST['action'] == 'loadRule') {
@@ -355,7 +382,7 @@ if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_
 	write_config("Snort pkg: modified state for rule {$gid}:{$sid} on {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
-	mark_subsystem_dirty('snort_rules');
+	mark_subsystem_dirty('snort_rules_state');
 
 	// Update our in-memory rules map with the changes just saved
 	// to the Snort configuration file.
@@ -363,6 +390,140 @@ if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_
 
 	// Set a scroll-to anchor location
 	$anchor = "rule_{$gid}_{$sid}";
+}
+elseif (isset($_POST['rule_action_save']) && isset($_POST['ruleActionOptions']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
+
+	// Get the GID:SID tags embedded in the clicked rule icon.
+	$gid = $_POST['gid'];
+	$sid = $_POST['sid'];
+
+	// Get the posted rule action
+	$action = $_POST['ruleActionOptions'];
+
+	// Put the target SID in the appropriate lists of modified
+	// SID actions based on the requested action; if default
+	// action is requested, remove the SID from all SID modified
+	// action lists.
+	switch ($action) {
+		case "action_default":
+			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['default_action'];
+			if (isset($alertsid[$gid][$sid])) {
+				unset($alertsid[$gid][$sid]);
+			}
+			if (isset($dropsid[$gid][$sid])) {
+				unset($dropsid[$gid][$sid]);
+			}
+			if (isset($rejectsid[$gid][$sid])) {
+				unset($rejectsid[$gid][$sid]);
+			}
+			break;
+
+		case "action_alert":
+			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['alert'];
+			if (!is_array($alertsid[$gid])) {
+				$alertsid[$gid] = array();
+			}
+			if (!is_array($alertsid[$gid][$sid])) {
+				$alertsid[$gid][$sid] = array();
+			}
+			$alertsid[$gid][$sid] = "alertsid";
+			if (isset($dropsid[$gid][$sid])) {
+				unset($dropsid[$gid][$sid]);
+			}
+			if (isset($rejectsid[$gid][$sid])) {
+				unset($rejectsid[$gid][$sid]);
+			}
+			break;
+
+		case "action_drop":
+			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['drop'];
+			if (!is_array($dropsid[$gid])) {
+				$dropsid[$gid] = array();
+			}
+			if (!is_array($dropsid[$gid][$sid])) {
+				$dropsid[$gid][$sid] = array();
+			}
+			$dropsid[$gid][$sid] = "dropsid";
+			if (isset($alertsid[$gid][$sid])) {
+				unset($alertsid[$gid][$sid]);
+			}
+			if (isset($rejectsid[$gid][$sid])) {
+				unset($rejectsid[$gid][$sid]);
+			}
+			break;
+
+		case "action_reject":
+			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['reject'];
+			if (!is_array($rejectsid[$gid])) {
+				$rejectsid[$gid] = array();
+			}
+			if (!is_array($rejectsid[$gid][$sid])) {
+				$rejectsid[$gid][$sid] = array();
+			}
+			$rejectsid[$gid][$sid] = "rejectsid";
+			if (isset($alertsid[$gid][$sid])) {
+				unset($alertsid[$gid][$sid]);
+			}
+			if (isset($dropsid[$gid][$sid])) {
+				unset($dropsid[$gid][$sid]);
+			}
+			break;
+
+		default:
+			$input_errors[] = gettext("WARNING - unknown rule action of '{$action}' passed in $_POST parameter.  No change made to rule action.");
+	}
+
+	if (!$input_errors) {
+		// Write the updated forced rule action values to the config file.
+		$tmp = "";
+		foreach (array_keys($alertsid) as $k1) {
+			foreach (array_keys($alertsid[$k1]) as $k2)
+				$tmp .= "{$k1}:{$k2}||";
+		}
+		$tmp = rtrim($tmp, "||");
+
+		if (!empty($tmp))
+			$a_rule[$id]['rule_sid_force_alert'] = $tmp;
+		else
+			unset($a_rule[$id]['rule_sid_force_alert']);
+
+		$tmp = "";
+		foreach (array_keys($dropsid) as $k1) {
+			foreach (array_keys($dropsid[$k1]) as $k2)
+				$tmp .= "{$k1}:{$k2}||";
+		}
+		$tmp = rtrim($tmp, "||");
+
+		if (!empty($tmp))
+			$a_rule[$id]['rule_sid_force_drop'] = $tmp;
+		else
+			unset($a_rule[$id]['rule_sid_force_drop']);
+
+		$tmp = "";
+		foreach (array_keys($rejectsid) as $k1) {
+			foreach (array_keys($rejectsid[$k1]) as $k2)
+				$tmp .= "{$k1}:{$k2}||";
+		}
+		$tmp = rtrim($tmp, "||");
+
+		if (!empty($tmp))
+			$a_rule[$id]['rule_sid_force_reject'] = $tmp;
+		else
+			unset($a_rule[$id]['rule_sid_force_reject']);
+
+		/* Update the config.xml file. */
+		write_config("Snort pkg: modified action for rule {$gid}:{$sid} on {$a_rule[$id]['interface']}.");
+
+		// We changed a rule action, remind user to apply the changes
+		mark_subsystem_dirty('snort_rules_action');
+
+		// Update our in-memory rules map with the changes just saved
+		// to the Snort configuration file.
+		snort_modify_sids_action($rules_map, $a_rule[$id]);
+
+		// Set a scroll-to anchor location
+		$anchor = "rule_{$gid}_{$sid}";
+	}
 }
 elseif ($_POST['disable_all'] && !empty($rules_map)) {
 
@@ -403,7 +564,7 @@ elseif ($_POST['disable_all'] && !empty($rules_map)) {
 	write_config("Snort pkg: disabled all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
-	mark_subsystem_dirty('snort_rules');
+	mark_subsystem_dirty('snort_rules_state');
 
 	// Update our in-memory rules map with the changes just saved
 	// to the Snort configuration file.
@@ -447,7 +608,7 @@ elseif ($_POST['enable_all'] && !empty($rules_map)) {
 	write_config("Snort pkg: enable all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
-	mark_subsystem_dirty('snort_rules');
+	mark_subsystem_dirty('snort_rules_state');
 
 	// Update our in-memory rules map with the changes just saved
 	// to the Snort configuration file.
@@ -462,6 +623,12 @@ elseif ($_POST['resetcategory'] && !empty($rules_map)) {
 				unset($enablesid[$k1][$k2]);
 			if (isset($disablesid[$k1][$k2]))
 				unset($disablesid[$k1][$k2]);
+			if (isset($alertsid[$k1][$k2]))
+				unset($alertsid[$k1][$k2]);
+			if (isset($dropsid[$k1][$k2]))
+				unset($dropsid[$k1][$k2]);
+			if (isset($rejectsid[$k1][$k2]))
+				unset($rejectsid[$k1][$k2]);
 		}
 	}
 
@@ -490,10 +657,47 @@ elseif ($_POST['resetcategory'] && !empty($rules_map)) {
 	else				
 		unset($a_rule[$id]['rule_sid_off']);
 
+	// Write the updated alertsid, dropsid and rejectsid values to the config file.
+	$tmp = "";
+	foreach (array_keys($alertsid) as $k1) {
+		foreach (array_keys($alertsid[$k1]) as $k2)
+			$tmp .= "{$k1}:{$k2}||";
+	}
+	$tmp = rtrim($tmp, "||");
+
+	if (!empty($tmp))
+		$a_rule[$id]['rule_sid_force_alert'] = $tmp;
+	else
+		unset($a_rule[$id]['rule_sid_force_alert']);
+
+	$tmp = "";
+	foreach (array_keys($dropsid) as $k1) {
+		foreach (array_keys($dropsid[$k1]) as $k2)
+			$tmp .= "{$k1}:{$k2}||";
+	}
+	$tmp = rtrim($tmp, "||");
+
+	if (!empty($tmp))
+		$a_rule[$id]['rule_sid_force_drop'] = $tmp;
+	else
+		unset($a_rule[$id]['rule_sid_force_drop']);
+
+	$tmp = "";
+	foreach (array_keys($rejectsid) as $k1) {
+		foreach (array_keys($rejectsid[$k1]) as $k2)
+			$tmp .= "{$k1}:{$k2}||";
+	}
+	$tmp = rtrim($tmp, "||");
+
+	if (!empty($tmp))
+		$a_rule[$id]['rule_sid_force_reject'] = $tmp;
+	else
+		unset($a_rule[$id]['rule_sid_force_reject']);
+
 	write_config("Snort pkg: remove enablesid/disablesid changes for category {$currentruleset} on {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
-	mark_subsystem_dirty('snort_rules');
+	mark_subsystem_dirty('snort_rules_reset');
 
 	// Reload the rules so we can accurately show content after
 	// resetting any user overrides.
@@ -539,6 +743,15 @@ elseif ($_POST['resetcategory'] && !empty($rules_map)) {
 		$rule_files[] = "{$snortcfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$snortcfgdir}/rules/custom.rules";
 		$rules_map = snort_get_filtered_rules($rule_files, snort_load_sid_mods($a_rule[$id]['rule_sid_off']));
+	}
+	elseif ($currentruleset == "User Forced ALERT Action Rules") {
+		$rules_map = snort_get_filtered_rules("{$snortcfgdir}/rules/", snort_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+	}
+	elseif ($currentruleset == "User Forced DROP Action Rules") {
+		$rules_map = snort_get_filtered_rules("{$snortcfgdir}/rules/", snort_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+	}
+	elseif ($currentruleset == "User Forced REJECT Action Rules") {
+		$rules_map = snort_get_filtered_rules("{$snortcfgdir}/rules/", snort_load_sid_mods($a_rule[$id]['rule_sid_force_reject']));
 	}
 	// If it's not a special case, and we can't find
 	// the given rule file, then notify the user.
@@ -556,12 +769,15 @@ elseif ($_POST['resetall'] && !empty($rules_map)) {
 	// Remove all modified SIDs from config.xml and save the changes.
 	unset($a_rule[$id]['rule_sid_on']);
 	unset($a_rule[$id]['rule_sid_off']);
+	unset($a_rule[$id]['rule_sid_force_alert']);
+	unset($a_rule[$id]['rule_sid_force_drop']);
+	unset($a_rule[$id]['rule_sid_force_reject']);
 
 	/* Update the config.xml file. */
 	write_config("Snort pkg: remove all enablesid/disablesid changes for {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
-	mark_subsystem_dirty('snort_rules');
+	mark_subsystem_dirty('snort_rules_reset');
 
 	// Reload the rules so we can accurately show content after
 	// resetting any user overrides.
@@ -608,6 +824,16 @@ elseif ($_POST['resetall'] && !empty($rules_map)) {
 		$rule_files[] = "{$snortcfgdir}/rules/custom.rules";
 		$rules_map = snort_get_filtered_rules($rule_files, snort_load_sid_mods($a_rule[$id]['rule_sid_off']));
 	}
+	elseif ($currentruleset == "User Forced ALERT Action Rules") {
+		$rules_map = snort_get_filtered_rules("{$snortcfgdir}/rules/", snort_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+	}
+	elseif ($currentruleset == "User Forced DROP Action Rules") {
+		$rules_map = snort_get_filtered_rules("{$snortcfgdir}/rules/", snort_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+	}
+	elseif ($currentruleset == "User Forced REJECT Action Rules") {
+		$rules_map = snort_get_filtered_rules("{$snortcfgdir}/rules/", snort_load_sid_mods($a_rule[$id]['rule_sid_force_reject']));
+	}
+
 	// If it's not a special case, and we can't find
 	// the given rule file, then notify the user.
 	elseif (!file_exists($rulefile)) {
@@ -621,7 +847,9 @@ elseif ($_POST['resetall'] && !empty($rules_map)) {
 }
 elseif (isset($_POST['cancel'])) {
 	$pconfig['customrules'] = base64_decode($a_rule[$id]['customrules']);
-	clear_subsystem_dirty('snort_rules');
+	clear_subsystem_dirty('snort_rules_reset');
+	clear_subsystem_dirty('snort_rules_state');
+	clear_subsystem_dirty('snort_rules_action');
 }
 elseif (isset($_POST['clear'])) {
 	unset($a_rule[$id]['customrules']);
@@ -658,10 +886,12 @@ elseif (isset($_POST['save'])) {
 	else {
 		// Soft-restart Snort to live-load new rules
 		snort_reload_config($a_rule[$id]);
-		$savemsg = gettext("Custom rules validated successfully and any active Snort process on this interface has been signalled to live-load the new rules.");
+		$savemsg = gettext("Custom rules validated successfully and any active Snort process on this interface has been signaled to live-load the new rules.");
 	}
 
-	clear_subsystem_dirty('snort_rules');
+	clear_subsystem_dirty('snort_rules_reset');
+	clear_subsystem_dirty('snort_rules_state');
+	clear_subsystem_dirty('snort_rules_action');
 
 	// Sync to configured CARP slaves if any are enabled
 	snort_sync_on_changes();
@@ -692,8 +922,10 @@ elseif ($_POST['apply']) {
 	// Soft-restart Snort to live-load new rules
 	snort_reload_config($a_rule[$id]);
 
-	// We have saved changes and done a soft restart, so clear "dirty" flag
-	clear_subsystem_dirty('snort_rules');
+	// We have saved changes and done a soft restart, so clear "dirty" flags
+	clear_subsystem_dirty('snort_rules_reset');
+	clear_subsystem_dirty('snort_rules_state');
+	clear_subsystem_dirty('snort_rules_action');
 
 	// Sync to configured CARP slaves if any are enabled
 	snort_sync_on_changes();
@@ -727,9 +959,17 @@ if ($savemsg) {
 <input type='hidden' name='gid' id='gid' value=''/>
 
 <?php
-if (is_subsystem_dirty('snort_rules')) {
+if (is_subsystem_dirty('snort_rules_state')) {
 	$_POST['if'] = $id . "|" . $currentruleset;
 	print_info_box('<p>' . gettext("A change has been made to a rule state.") . '<br/>' . gettext("Click APPLY when finished to send the changes to the running configuration.") . '</p>');
+}
+if (is_subsystem_dirty('snort_rules_action')) {
+	$_POST['if'] = $id . "|" . $currentruleset;
+	print_info_box('<p>' . gettext("A change has been made to a rule action.") . '<br/>' . gettext("Click APPLY when finished to send the changes to the running configuration.") . '</p>');
+}
+if (is_subsystem_dirty('snort_rules_reset')) {
+	$_POST['if'] = $id . "|" . $currentruleset;
+	print_info_box('<p>' . gettext("A rule category has been reset to vendor defaults.") . '<br/>' . gettext("Click APPLY when finished to send the changes to the running configuration.") . '</p>');
 }
 
 $tab_array = array();
@@ -907,12 +1147,26 @@ print($section);
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle-o text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Enabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Enabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-enabled by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action/content modified by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is alert');?></small></td>
+				<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders7'] == 'on') : ?>
+						<td style="padding-left: 8px;"><i class="fa fa-hand-stop-o text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
+				<?php else : ?>
+						<td><td></td></td>
+				<?php endif; ?>
 					</tr>
 					<tr>
 						<td></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle-o text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Disabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
+						<td><td></td></td>
+				<?php if ($a_rule[$id]['blockoffenders7'] == 'on' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline') : ?>
+						<td style="padding-left: 8px;"><i class="fa fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
+				<?php else : ?>
+						<td><td></td></td>
+				<?php endif; ?>
+						<td><td></td></td>
 					</tr>
 				</tbody>
 			</table>
@@ -923,7 +1177,8 @@ print($section);
 
 					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
 						<colgroup>
-							<col width="3%">
+							<col width="5%">
+							<col width="5%">
 							<col width="4%">
 							<col width="9%">
 							<col width="5%">
@@ -935,7 +1190,8 @@ print($section);
 						</colgroup>
 						<thead>
 						   <tr class="sortableHeaderRowIdentifier">
-							<th class="sorttable_nosort">&nbsp;</th>
+							<th class="sorttable_nosort"><?=gettext("State");?></th>
+							<th><?=gettext("Action");?></th>
 							<th><?=gettext("GID"); ?></th>
 							<th><?=gettext("SID"); ?></th>
 							<th><?=gettext("Proto"); ?></th>
@@ -989,7 +1245,7 @@ print($section);
 									$disable_cnt++;
 									$user_disable_cnt++;
 									$iconb_class = 'class="fa fa-times-circle text-danger text-left"';
-									$title = gettext("Disabled by user. Click to change rule state");
+									$title = gettext("Forec-Disabled by user. Click to change rule state");
 								}
 								// See if the rule is in our list of user-enabled overrides
 								elseif (isset($enablesid[$gid][$sid])) {
@@ -997,7 +1253,7 @@ print($section);
 									$enable_cnt++;
 									$user_enable_cnt++;
 									$iconb_class = 'class="fa fa-check-circle text-success text-left"';
-									$title = gettext("Enabled by user. Click to change rule state");
+									$title = gettext("Force-Enabled by user. Click to change rule state");
 								}
 
 								// These last two checks handle normal cases of default-enabled or default disabled rules
@@ -1014,6 +1270,38 @@ print($section);
 									$enable_cnt++;
 									$iconb_class = 'class="fa fa-check-circle-o text-success text-left"';
 									$title = gettext("Enabled by default. Click to change rule state");
+								}
+
+								// Determine which icon to display in the second column for rule action.
+								// Default to ALERT icon.
+								$textss = $textse = "";
+								$iconact_class = 'class="fa fa-exclamation-triangle text-warning text-center"';
+								if (isset($alertsid[$gid][$sid]) && $a_rule[$id]['blockoffenders7'] == 'on' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+									$title_act = gettext("Rule action is User-Forced to alert on traffic when triggered.");
+								}
+								else {
+									$title_act = gettext("Rule will alert on traffic when triggered.");
+								}
+								if ($v['action'] == 'drop' && $a_rule[$id]['blockoffenders7'] == 'on' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+									$iconact_class = 'class="fa fa-thumbs-down text-danger text-center"';
+									if (isset($dropsid[$gid][$sid])) {
+										$title_act = gettext("Rule action is User-Forced to drop traffic when triggered.");
+									}
+									else {
+										$title_act = gettext("Rule will drop traffic when triggered.");
+									}
+								}
+								elseif ($v['action'] == 'reject' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders7'] == 'on') {
+									$iconact_class = 'class="fa fa-hand-stop-o text-warning text-center"';
+									if (isset($rejectsid[$gid][$sid])) {
+										$title_act = gettext("Rule action is User-Forced to reject traffic when triggered.");
+									}
+									else {
+										$title_act = gettext("Rule will reject traffic when triggered.");
+									}
+								}
+								if ($a_rule[$id]['blockoffenders7'] == 'on' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+									$title_act .= gettext("  Click to change rule action.");
 								}
 
 								// Pick off the first section of the rule (prior to the start of the MSG field),
@@ -1045,6 +1333,14 @@ print($section);
 									<i class="fa fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
 							<?php endif; ?>
 								</td>
+							<?php if ($a_rule[$id]['blockoffenders7'] == 'on' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline') : ?>
+								<td><?=$textss; ?><a id="rule_<?=$gid; ?>_<?=$sid; ?>_action" href="#" onClick="toggleAction('<?=$sid; ?>', '<?=$gid; ?>');" 
+									<?=$iconact_class; ?> title="<?=$title_act; ?>"></a><?=$textse; ?>
+								</td>
+							<?php else : ?>
+								<td><?=$textss; ?><i <?=$iconact_class; ?> title="<?=$title_act; ?>"></i><?=$textse; ?>
+								</td>
+							<?php endif; ?>
 							       <td ondblclick="showRuleContents('<?=$gid; ?>','<?=$sid; ?>');">
 									<?=$textss . $gid . $textse; ?>
 							       </td>
@@ -1085,7 +1381,8 @@ print($section);
 
 					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
 						<colgroup>
-							<col width="4%">
+							<col width="5%">
+							<col width="5%">
 							<col width="5%">
 							<col width="7%">
 							<col width="22%">
@@ -1094,7 +1391,8 @@ print($section);
 						</colgroup>
 						<thead>
 						   <tr class="sortableHeaderRowIdentifier">
-							<th sorttable_nosort>&nbsp;</th>
+							<th sorttable_nosort><?=gettext("State"); ?></th>
+							<th><?=gettext("Action");?></th>
 							<th><?=gettext("GID"); ?></th>
 							<th><?=gettext("SID"); ?></th>
 							<th><?=gettext("Classification"); ?></th>
@@ -1145,7 +1443,7 @@ print($section);
 											$disable_cnt++;
 											$user_disable_cnt++;
 											$iconb_class = 'class="fa fa-times-circle text-danger text-left"';
-											$title = gettext("Disabled by user. Click to change rule state");
+											$title = gettext("Force-Disabled by user. Click to change rule state");
 										}
 										// See if the rule is in our list of user-enabled overrides
 										elseif (isset($enablesid[$gid][$sid])) {
@@ -1153,7 +1451,7 @@ print($section);
 											$enable_cnt++;
 											$user_enable_cnt++;
 											$iconb_class = 'class="fa fa-check-circle text-success text-left"';
-											$title = gettext("Enabled by user. Click to change rule state");
+											$title = gettext("Force-Enabled by user. Click to change rule state");
 										}
 
 										// These last two checks handle normal cases of default-enabled or default disabled rules
@@ -1171,6 +1469,39 @@ print($section);
 											$iconb_class = 'class="fa fa-check-circle-o text-success text-left"';
 											$title = gettext("Enabled by default. Click to change rule state");
 										}
+
+										// Determine which icon to display in the second column for rule action.
+										// Default to ALERT icon.
+										$textss = $textse = "";
+										$iconact_class = 'class="fa fa-exclamation-triangle text-warning text-center"';
+										if (isset($alertsid[$gid][$sid]) && $a_rule[$id]['blockoffenders7'] == 'on' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+											$title_act = gettext("Rule action is User-Forced to alert on traffic when triggered.");
+										}
+										else {
+											$title_act = gettext("Rule will alert on traffic when triggered.");
+										}
+										if ($v['action'] == 'drop' && $a_rule[$id]['blockoffenders7'] == 'on' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+											$iconact_class = 'class="fa fa-thumbs-down text-danger text-center"';
+											if (isset($dropsid[$gid][$sid])) {
+												$title_act = gettext("Rule action is User-Forced to drop traffic when triggered.");
+											}
+											else {
+												$title_act = gettext("Rule will drop traffic when triggered.");
+											}
+										}
+										elseif ($v['action'] == 'reject' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders7'] == 'on') {
+											$iconact_class = 'class="fa fa-hand-stop-o text-warning text-center"';
+											if (isset($rejectsid[$gid][$sid])) {
+												$title_act = gettext("Rule action is User-Forced to reject traffic when triggered.");
+											}
+											else {
+												$title_act = gettext("Rule will reject traffic when triggered.");
+											}
+										}
+										if ($a_rule[$id]['blockoffenders7'] == 'on' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+											$title_act .= gettext("  Click to change rule action.");
+										}
+
 										$message = snort_get_msg($v['rule']);
 										$matches = array();
 										if (preg_match('/(?:classtype\b\s*:)\s*(\S*\s*;)/iU', $v['rule'], $matches))
@@ -1191,6 +1522,15 @@ print($section);
 											<i class="fa fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
 									<?php endif; ?>
 										</td>
+									<?php if ($a_rule[$id]['blockoffenders7'] == 'on' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline') : ?>
+										<td><?=$textss; ?><a id="rule_<?=$gid; ?>_<?=$sid; ?>_action" href="#" onClick="toggleAction('<?=$sid; ?>', '<?=$gid; ?>');" 
+											<?=$iconact_class; ?> title="<?=$title_act; ?>"></a><?=$textse; ?>
+										</td>
+									<?php else : ?>
+										<td><?=$textss; ?><i <?=$iconact_class; ?> title="<?=$title_act; ?>"></i><?=$textse; ?>
+										</td>
+									<?php endif; ?>
+
 									       <td ondblclick="showRuleContents('<?=$gid; ?>','<?=$sid; ?>');">
 											<?=$textss . $gid . $textse; ?>
 									       </td>
@@ -1238,6 +1578,49 @@ print($section);
 </div>
 
 <?php endif;?>
+<!-- Modal Rule SID action selector window -->
+<div class="modal fade" role="dialog" id="sid_action_selector">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title"><?=gettext("Rule Action Selection")?></h3>
+			</div>
+			<div class="modal-body">
+				<h4><?=gettext("Choose desired rule action from selections below: ");?></h4>
+				<label class="radio-inline">
+					<input type="radio" name="ruleActionOptions" id="action_default" value="action_default"> <span class = "label label-default">Default</span>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="ruleActionOptions" id="action_alert" value="action_alert"> <span class = "label label-warning">ALERT</span>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="ruleActionOptions" id="action_drop" value="action_drop"> <span class = "label label-danger">DROP</span>
+				</label>
+
+		<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders7'] == 'on') : ?>
+				<label class="radio-inline">
+					<input type="radio" name="ruleActionOptions" id="action_reject" value="action_reject"> <span class = "label label-warning">REJECT</span>
+				</label>
+		<?php endif; ?>
+				<br /><br />
+					<p><?=gettext("Choosing 'Default' will return the rule action to the original value specified by the rule author.  Note this is usually ALERT.");?></p>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-sm btn-primary" id="rule_action_save" name="rule_action_save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close selector");?>">
+					<i class="fa fa-save icon-embed-btn"></i>
+					<?=gettext("Save");?>
+				</button>
+				<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
+					<?=gettext("Cancel");?>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- Modal Rule SID state selector window -->
 <div class="modal fade" role="dialog" id="sid_state_selector">
 	<div class="modal-dialog">
@@ -1305,6 +1688,18 @@ function toggleState(sid, gid) {
 	$('#gid').val(gid);
 	$('#openruleset').val($('#selectbox').val());
 	$('#sid_state_selector').modal('show');
+}
+
+function toggleAction(sid, gid) {
+	if ($('#rule_'+gid+'_'+sid).hasClass('text-success')) {
+		$('#sid').val(sid);
+		$('#gid').val(gid);
+		$('#openruleset').val($('#selectbox').val());
+		$('#sid_action_selector').modal('show');
+	}
+	else {
+		alert("Rule is disabled, so changing ACTION is meaningless and thus is disabled for this rule.");
+	}
 }
 
 function wopen(url, name)

@@ -182,7 +182,7 @@ if ($pfb['enable'] == 'on') {
 	}
 	else {
 		// Find next cron hour schedule
-		$crondata = pfb_cron_base_hour();
+		$crondata = pfb_cron_base_hour($pfb['interval']);
 		$cron_hour_begin = 0;
 		$cron_hour_next  = '';
 		if (!empty($crondata)) {
@@ -229,7 +229,7 @@ if ($pfb['interval'] == 1) {
 } elseif ($pfb['interval'] == 24) {
 	$pfb_hour = $pfb['24hour'];
 } else {
-	$pfb_hour = implode(',', pfb_cron_base_hour());
+	$pfb_hour = implode(',', pfb_cron_base_hour($pfb['interval']));
 }
 
 // Determine if CRON job is missing
