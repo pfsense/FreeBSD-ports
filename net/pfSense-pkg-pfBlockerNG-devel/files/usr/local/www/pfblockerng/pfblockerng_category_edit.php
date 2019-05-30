@@ -257,6 +257,10 @@ if ($_POST && isset($_POST['save'])) {
 	if (isset($savemsg)) {
 		unset($savemsg);
 	}
+	
+	if (isset($_REQUEST['savemsg'])) {
+		unset($_REQUEST['savemsg']);
+	}
 
 	if (empty($_POST['aliasname'])) {
 		$input_errors[] = 'Info: Name field must be defined.';
@@ -303,9 +307,10 @@ if ($_POST && isset($_POST['save'])) {
 	}
 
 	// Validate Adv. firewall rule settings
-	foreach (array('aliasports_in', 'aliasaddr_in', 'aliasports_out', 'aliasaddr_out') as $value) {
-		if (!empty($_POST[$value]) && !is_validaliasname($_POST[$value])) {
-			$input_errors[] = 'Settings: Advanced In/Outbound Aliasname error - ' . invalidaliasnamemsg($_POST[$value]);
+	foreach (array(	'aliasports_in' => 'Port In', 'aliasaddr_in' => 'Destination In',
+			'aliasports_out' => 'Port Out', 'aliasaddr_out' => 'Destination Out') as $value => $auto_dir) {
+		if (!empty($_POST[$value]) && !is_alias($_POST[$value])) {
+			$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an existing Alias";
 		}
 	}
 
@@ -332,6 +337,26 @@ if ($_POST && isset($_POST['save'])) {
 		if ($_POST['autoaddrnot_out'] == 'on' && $_POST['action'] != 'Alias_Native') {
 			$input_errors[] = "Action setting must be defined as 'Alias Native' when using 'Invert Destination'"
 						. " with Advanced Outbound firewall rule settings.";
+		}
+	}
+
+	// Avoid creating a permit rule on WAN with 'any'
+	if ($_POST['action'] == 'Permit_Inbound' || $_POST['action'] == 'Permit_Both') {
+		$pfb_warning = FALSE;
+		if ($_POST['autoproto_in'] == '') {
+			$pfb_warning = TRUE;
+			$input_errors[] = "Warning: When using an Action setting of 'Permit Inbound or Permit Both',"
+					. " you must configure the 'Advanced Inbound Custom Protocol' setting. The current setting of 'Any' is not allowed.";
+		}
+		if ($_POST['aliasports_in'] == '' && $_POST['aliasaddr_in'] == '') {
+			$pfb_warning = TRUE;
+			$input_errors[] = "Warning:  When using an Action setting of 'Permit Inbound or Permit Both',"
+					. " you must configure at least one of 'Advanced Inbound Custom Port/Destination' settings.";
+		}
+		if ($pfb_warning) {
+			$input_errors[] = '';
+			$input_errors[] = '===> WARNING <===';
+			$input_errors[] = "Improper Permit rules on the WAN can catastrophically impact the security of your network!";
 		}
 	}
 

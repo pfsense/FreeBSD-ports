@@ -411,12 +411,14 @@ $group->add(new Form_Select(
 $section->add($group);
 
 $lista = array();
-$indexdir = '/usr/local/www/pfblockerng/www/';
+$indexdir = '/usr/local/www/pfblockerng/www';
 if (is_dir("{$indexdir}")) {
-	$list = glob("{$indexdir}/dnsbl_*.php");
+	$list = glob("{$indexdir}/*.{php,html}", GLOB_BRACE);
 	if (!empty($list)) {
 		foreach ($list as $line) {
-			if (strpos($line, 'dnsbl_active.php') === FALSE) {
+			if (strpos($line, 'index.php') !== FALSE || strpos($line, 'dnsbl_active.php') !== FALSE) {
+                                continue;
+                        } else {
 				$file = pathinfo($line, PATHINFO_BASENAME);
 				$l = array($file => $file);
 				$lista = array_merge($lista, $l);

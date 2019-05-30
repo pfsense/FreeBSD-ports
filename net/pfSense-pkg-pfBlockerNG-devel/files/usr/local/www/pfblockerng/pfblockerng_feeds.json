@@ -30,20 +30,6 @@
 			"cron":		"01hour",
 			"feeds": [
 				{
-					"feed":		"Abuse Dyre Blacklist",
-					"website":	"https://sslbl.abuse.ch/blacklist/",
-					"contact":	"https://www.abuse.ch/?page_id=4727",
-					"url":		"https://sslbl.abuse.ch/blacklist/dyre_sslipblacklist.csv",
-					"header":	"Abuse_DYRE",
-					"info":		"Feed is currently down!",
-					"alternate": [
-							{
-							"url":		"https://sslbl.abuse.ch/blacklist/dyre_sslipblacklist_aggressive.csv",
-							"header":	"Abuse_DYRE_Agr"
-							}
-						]
-				},
-				{
 					"feed":		"Abuse Feodo Tracker",
 					"website":	"https://feodotracker.abuse.ch/",
 					"url":		"https://feodotracker.abuse.ch/downloads/ipblocklist.txt",
@@ -908,6 +894,12 @@
 					"header":	"EasyList_Dutch"
 				},
 				{
+					"feed":		"EasyList Finland",
+					"website":	"https://github.com/finnish-easylist-addition/finnish-easylist-addition",
+					"url":		"https://raw.githubusercontent.com/finnish-easylist-addition/finnish-easylist-addition/master/Finland_adb.txt",
+					"header":	"EasyList_Finland"
+				},
+				{
 					"feed":		"EasyList French",
 					"website":	"https://easylist.to/",
 					"url":		"https://easylist-downloads.adblockplus.org/liste_fr.txt",
@@ -1180,6 +1172,12 @@
 							"header":	"SFS_Toxic_BD_F3"
 							}
 						]
+				},
+				{
+					"feed":		"The AntiSocial Engineer",
+					"website":	"https://theantisocialengineer.com/blacklist/",
+					"url":		"http://theantisocialengineer.com/AntiSocial_Blacklist_Community_V1.txt",
+					"header":	"AntiSocial_BD"
 				}
 			]
 		},
@@ -1517,12 +1515,6 @@
 					"website":	"https://quidsup.net/notrack/blocklist.php",
 					"url":		"https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt",
 					"header":	"Quidsup_Mal"
-				},
-				{
-					"feed":		"MOAB: Mother of All",
-					"website":	"https://forum.xda-developers.com/showthread.php?t=1916098",
-					"url":		"https://adblock.mahakala.is/",
-					"header":	"MOAB_BD"
 				},
 				{
 					"feed":		"HostsFile",
