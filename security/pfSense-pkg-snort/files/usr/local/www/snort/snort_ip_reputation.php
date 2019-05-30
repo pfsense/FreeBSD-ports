@@ -35,15 +35,26 @@ if (is_null($id)) {
 	exit;
 }
 
-init_config_arr('installedpackages', 'snortglobal', 'rule', $id, 'wlist_files');
-init_config_arr('installedpackages', 'snortglobal', 'rule', $id, 'blist_files');
-
 $a_nat = &$config['installedpackages']['snortglobal']['rule'];
 
 $pconfig = $a_nat[$id];
 $iprep_path = SNORT_IPREP_PATH;
 $if_real = get_real_interface($a_nat[$id]['interface']);
 $snort_uuid = $config['installedpackages']['snortglobal']['rule'][$id]['uuid'];
+
+// Init 'blist_files' and 'wlist_files' arrays if necessary
+if (!is_array($a_nat[$id]['blist_files'])) {
+	$a_nat[$id]['blist_files'] = array();
+}
+if (!is_array($a_nat[$id]['blist_files']['item'])) {
+	$a_nat[$id]['blist_files']['item'] = array();
+}
+if (!is_array($a_nat[$id]['wlist_files'])) {
+	$a_nat[$id]['wlist_files'] = array();
+}
+if (!is_array($a_nat[$id]['wlist_files']['item'])) {
+	$a_nat[$id]['wlist_files']['item'] = array();
+}
 
 // Set sensible defaults for any empty parameters
 if (empty($pconfig['iprep_memcap']))
@@ -176,6 +187,7 @@ if ($_POST['save']) {
 			log_error(gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
 			snort_stop($a_nat[$id], $if_real);
 			snort_start($a_nat[$id], $if_real, TRUE);
+			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because IP Reputation preprocessor changes require a restart.");
 		}
 
 		// Sync to configured CARP slaves if any are enabled
@@ -246,6 +258,19 @@ if (is_subsystem_dirty('snort_iprep')) {
 	$msg .= '</div>';
 	$msg .= '<div class="pull-right"><button type="submit" class="btn btn-default btn-warning" name="apply" value="Apply Changes">Apply Changes</button></div>';
 	print '<div class="alert-warning clearfix" role="alert">' . $msg . '<br/></div>';
+}
+
+if (!is_array($pconfig['blist_files'])) {
+	$pconfig['blist_files'] = array();
+}
+if (!is_array($pconfig['blist_files']['item'])) {
+	$pconfig['blist_files']['item'] = array();
+}
+if (!is_array($pconfig['wlist_files'])) {
+	$pconfig['wlist_files'] = array();
+}
+if (!is_array($pconfig['wlist_files']['item'])) {
+	$pconfig['wlist_files']['item'] = array();
 }
 
 if ($g['platform'] == "nanobsd") {

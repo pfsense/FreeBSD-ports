@@ -3,9 +3,9 @@
  * snort_rulesets.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,6 +54,7 @@ if (isset($id) && $a_nat[$id]) {
 		$pconfig['autoflowbitrules'] = $a_nat[$id]['autoflowbitrules'] == 'on' ? 'on' : 'off';;
 	$pconfig['ips_policy_enable'] = $a_nat[$id]['ips_policy_enable'] == 'on' ? 'on' : 'off';;
 	$pconfig['ips_policy'] = $a_nat[$id]['ips_policy'];
+	$pconfig['ips_policy_mode'] = $a_nat[$id]['ips_policy_mode'];
 }
 
 $if_real = get_real_interface($pconfig['interface']);
@@ -119,10 +120,12 @@ if (isset($_POST["save"])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$enabled_items = "";
@@ -169,15 +172,18 @@ if (isset($_POST['unselectall'])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
+	$pconfig['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	$enabled_rulesets_array = array();
 
 	$savemsg = gettext("All rule categories have been de-selected.  ");
@@ -191,10 +197,12 @@ if (isset($_POST['selectall'])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
@@ -379,6 +387,14 @@ if ($snortdownload == "on") {
 		'in an Excel file.  Max-Detect is a policy created for testing network traffic through your ' . 
 		'device.  This policy should be used with caution on production systems!</span>'
 	));
+	$section->addInput(new Form_Select(
+		'ips_policy_mode',
+		'IPS Policy Mode',
+		$pconfig['ips_policy_mode'],
+		array(  'alert' => 'Alert',
+			'policy'  => 'Policy')
+		))->setHelp('When Policy is selected, this will automatically change the action for rules in the selected IPS Policy from their default action of alert to the action specified ' .
+				'in the policy metadata (typically drop, but may be alert for some policy rules).');
 	print($section);
 }
 

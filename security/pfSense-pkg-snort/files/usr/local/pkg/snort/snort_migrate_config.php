@@ -3,8 +3,8 @@
  * snort_migrate_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -152,8 +152,37 @@ if (empty($config['installedpackages']['snortglobal']['sid_list_migration']) && 
 		}
 	}
 
-	// Set a flag to show one-time migration is completed
-	$config['installedpackages']['snortglobal']['sid_list_migration'] = "1";
+	// Set a flag to show one-time migration is completed.
+	// We can increment this flag in later versions if we
+	// need to import additional files as SID_MGMT_LISTS.
+	$config['installedpackages']['snortglobal']['sid_list_migration'] = "2";
+	$updated_cfg = true;
+	unset($a_list);
+}
+elseif ($config['installedpackages']['snortglobal']['sid_list_migration'] < "2") {
+
+	// Import dropsid-sample.conf and rejectsid-sample.conf
+	// files if missing from the SID_MGMT_LIST array.
+	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'])) {
+		$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] = array();
+	}
+	$sidmodfiles = array( "dropsid-sample.conf", "rejectsid-sample.conf" );
+	$a_list = &$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'];
+	foreach ($sidmodfiles as $sidfile) {
+		if (!in_array($sidfile, $a_list)) {
+			$data = file_get_contents("/var/db/snort/sidmods/" . $sidfile);
+			if ($data !== FALSE) {
+				$tmp = array();
+				$tmp['name'] = basename($sidfile);
+				$tmp['modtime'] = filemtime("/var/db/snort/sidmods/" . $sidfile);
+				$tmp['content'] = base64_encode($data);
+				$a_list[] = $tmp;
+			}
+		}		
+	}
+
+	// Set a flag to show this one-time migration is completed
+	$config['installedpackages']['snortglobal']['sid_list_migration'] = "2";
 	$updated_cfg = true;
 	unset($a_list);
 }
@@ -658,6 +687,14 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 	// End new SSH parameters
+
+	/**********************************************************/
+	/* Create new interface IPS mode setting if not set       */
+	/**********************************************************/
+	if (empty($pconfig['ips_mode'])) {
+		$pconfig['ips_mode'] = 'ips_mode_legacy';
+		$updated_cfg = true;
+	}
 
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;

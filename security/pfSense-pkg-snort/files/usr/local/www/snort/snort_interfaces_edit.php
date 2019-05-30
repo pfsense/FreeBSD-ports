@@ -3,9 +3,9 @@
  * snort_interfaces_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -153,6 +153,8 @@ if (empty($pconfig['alertsystemlog_priority']))
 	$pconfig['alertsystemlog_priority'] = "log_alert";
 if (empty($pconfig['snaplen']))
 	$pconfig['snaplen'] = 1518;
+if (empty($pconfig['ips_mode']))
+	$pconfig['ips_mode'] = 'ips_mode_legacy';
 
 // See if creating a new interface by duplicating an existing one
 if (strcasecmp($action, 'dup') == 0) {
@@ -238,6 +240,7 @@ if ($_POST['save'] && !$input_errors) {
 		if ($_POST['descr']) $natent['descr'] =  $_POST['descr']; else $natent['descr'] = convert_friendly_interface_to_friendly_descr($natent['interface']);
 		if ($_POST['performance']) $natent['performance'] = $_POST['performance']; else  unset($natent['performance']);
 		if ($_POST['snaplen'] && is_numeric($_POST['snaplen'])) $natent['snaplen'] = $_POST['snaplen'];
+		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
 		if ($_POST['blockoffenders7'] == "on") $natent['blockoffenders7'] = 'on'; else $natent['blockoffenders7'] = 'off';
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
@@ -475,6 +478,11 @@ if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
 
+if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
+	print_info_box(gettext('IPS inline mode requires that Hardware Checksum, Hardware TCP Segmentation and Hardware Large Receive Offloading ' .
+				'all be disabled on the ') . '<b>' . gettext('System > Advanced > Networking ') . '</b>' . gettext('tab.'));
+}
+
 $form = new Form(new Form_Button(
 	'save',
 	'Save'
@@ -532,17 +540,35 @@ $section->addInput(new Form_Select(
 	array(  'log_emerg' => gettext('LOG_EMERG'), 'log_crit' => gettext('LOG_CRIT'), 'log_alert' => gettext('LOG_ALERT'), 'log_err' => gettext('LOG_ERR'), 
 		'log_warning' => gettext('LOG_WARNING'), 'log_notice' => gettext('LOG_NOTICE'), 'log_info' => gettext('LOG_INFO'), 'log_debug' => gettext('LOG_DEBUG') )
 ))->setHelp('Select system log Priority (Level) to use for reporting. Default is LOG_ALERT.');
+
+$form->add($section);
+
+$section = new Form_Section('Block Settings');
 $section->addInput(new Form_Checkbox(
 	'blockoffenders7',
 	'Block Offenders',
-	'Checking this option will automatically block hosts that generate a Snort alert',
+	'Checking this option will automatically block hosts that generate a Snort alert.  Default is Not Checked.',
 	$pconfig['blockoffenders7'] == 'on' ? true:false,
 	'on'
 ));
+$group = new Form_Group('IPS Mode');
+$group->add(new Form_Select(
+	'ips_mode',
+	'IPS Mode',
+	$pconfig['ips_mode'],
+	array( "ips_mode_legacy" => "Legacy Mode", "ips_mode_inline" => "Inline Mode" )
+))->setHelp('Select blocking mode operation.  Legacy Mode inspects copies of packets while Inline Mode inserts the Snort inspection ' . 
+		'engine into the network stack between the NIC and the OS. Default is Legacy Mode.');
+$group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets for inspection as they traverse the interface.  Some "leakage" of packets will occur before ' . 
+		'Snort can determine if the traffic matches a rule and should be blocked.  Inline mode instead intercepts and inspects packets before they are handed ' . 
+		'off to the host network stack for further processing.  Packets matching DROP rules are simply discarded (dropped) and not passed to the host ' . 
+		'network stack.  No leakage of packets occurs with Inline Mode.  WARNING:  Inline Mode only works with NIC drivers which properly support Netmap!  If the ' . 
+		'hardware NIC driver does not support Netmap, using Inline Mode can result in a firewall system crash!  If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
+$section->add($group);
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
 	'Kill States',
-	'Checking this option will kill firewall states for the blocked IP.  Default is checked.',
+	'Checking this option will kill firewall established states for the blocked IP.  Default is checked.',
 	$pconfig['blockoffenderskill'] == 'on' ? true:false,
 	'on'
 ));
@@ -554,6 +580,28 @@ $section->addInput(new Form_Select(
 ))->setHelp('Select which IP extracted from the packet you wish to block.  Default is BOTH.');
 
 $form->add($section);
+
+// Add Inline IPS rule edit warning modal pop-up
+$modal = new Modal('Important Information About IPS Inline Mode Blocking', 'ips_warn_dlg', 'large', 'Close');
+
+$modal->addInput(new Form_StaticText (
+	null,
+	'<span class="help-block">' . 
+	gettext('When using Inline IPS Mode blocking, you must manually change the rule action ') . 
+	gettext('from ALERT to DROP for every rule which you wish to block traffic when triggered.') . 
+	'<br/><br/>' . 
+	gettext('The default action for rules is ALERT.  This will produce alerts but will not ') . 
+	gettext('block traffic when using Inline IPS Mode for blocking. ') . 
+	'<br/><br/>' . 
+	gettext('Use the "dropsid.conf" feature on the SID MGMT tab to select rules whose action ') . 
+	gettext('should be changed from ALERT to DROP.  If you run the Snort Subscriber Rules and have ') . 
+	gettext('an IPS policy selected on the CATEGORIES tab, then rules defined as DROP by the ') . 
+	gettext('selected IPS policy will have their action automatically changed to DROP when the ') . 
+	gettext('"IPS Policy Mode" selector is configured for "Policy".') . 
+	'</span>'
+));
+
+$form->add($modal);
 
 $section = new Form_Section('Detection Performance Settings');
 $section->addInput(new Form_Select(
@@ -646,7 +694,7 @@ $group->add(new Form_Button(
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#whitelist')->setAttribute('data-toggle', 'modal');
 $group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . '<br />' .
-		'This option will only be used when block offenders is on.');
+		'This option will only be used when block offenders is on and IPS Mode is set to Legacy Mode.');
 $section->add($group);
 
 $form->add($section);
@@ -769,7 +817,13 @@ events.push(function(){
 		var hide = ! $('#blockoffenders7').prop('checked');
 		hideCheckbox('blockoffenderskill', hide);
 		hideSelect('blockoffendersip', hide);
+		hideSelect('ips_mode', hide);
 		hideClass('passlist', hide);
+		if ($('#ips_mode').val() == 'ips_mode_inline') {
+			hideCheckbox('blockoffenderskill', true);
+			hideSelect('blockoffendersip', true);
+			hideClass('passlist', true);
+		}
 	}
 
 	function toggle_system_log() {
@@ -784,6 +838,7 @@ events.push(function(){
 		disableInput('alertsystemlog_facility', hide);
 		disableInput('alertsystemlog_priority', hide);
 		disableInput('blockoffenders7', hide);
+		disableInput('ips_mode', hide);
 		disableInput('blockoffenderskill', hide);
 		disableInput('blockoffendersip', hide);
 		disableInput('performance', hide);
@@ -857,6 +912,21 @@ events.push(function(){
 	// When 'blockoffenders7' is clicked, disable/enable associated form controls
 	$('#blockoffenders7').click(function() {
 		enable_blockoffenders();
+	});
+
+	$('#ips_mode').on('change', function() {
+		if ($('#ips_mode').val() == 'ips_mode_inline') {
+			hideCheckbox('blockoffenderskill', true);
+			hideSelect('blockoffendersip', true);
+			hideClass('passlist', true);
+			$('#ips_warn_dlg').modal('show');
+		}
+		else {
+			hideCheckbox('blockoffenderskill', false);
+			hideSelect('blockoffendersip', false);
+			hideClass('passlist', false);
+			$('#ips_warn_dlg').modal('hide');
+		}
 	});
 
 	// ---------- On initial page load ------------------------------------------------------------

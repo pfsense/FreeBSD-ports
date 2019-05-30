@@ -3,10 +3,10 @@
  * snort_preprocessors.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -722,13 +722,16 @@ if ($_POST['save']) {
 		if ($natent['preproc_auto_rule_disable'] == 'off')
 			unlink_if_exists("{$snortlogdir}/{$disabled_rules_log}");
 
-		/*******************************************************/
-		/* Signal Snort to reload Host Attribute Table if one  */
-		/* is configured and saved.                            */
-		/*******************************************************/
-		if ($natent['host_attribute_table'] == "on" && 
-		    !empty($natent['host_attribute_data']))
-			snort_reload_config($natent, "SIGURG");
+		/* If Snort is running, a restart is required   */
+		/* in order to pick up any preprocessor setting */
+		/* changes.                                     */
+		$if_real = get_real_interface($a_nat[$id]['interface']);
+		if (snort_is_running($a_nat[$id]['uuid'], $if_real)) {
+			log_error(gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to Preprocessor configuration change."));
+			snort_stop($a_nat[$id], $if_real);
+			snort_start($a_nat[$id], $if_real, TRUE);
+			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because Preprocessor changes require a restart.");
+		}
 
 		/* Sync to configured CARP slaves if any are enabled */
 		snort_sync_on_changes();
