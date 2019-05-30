@@ -93,11 +93,11 @@ function tinc_save() {
 		$_output .= base64_decode($host['cert_pub']) . "\n";
 		file_put_contents("{$configpath}/hosts/" . $host['name'], $_output);
 		if ($host['host_up']) {
-			file_put_contents("{$configpath}/hosts/" . $host['name'] . '-up', str_replace("\r", "", base64_decode($host['host_up'])) . "\n");
+			file_put_contents("{$configpath}/hosts/" . $host['name'] . '-up', unixnewlines(base64_decode($host['host_up'])) . "\n");
 			chmod("{$configpath}/hosts/" . $host['name'] . '-up', 0744);
 		}
 		if ($host['host_down']) {
-			file_put_contents("{$configpath}/hosts/" . $host['name'] . '-down', str_replace("\r", "", base64_decode($host['host_down'])) . "\n");
+			file_put_contents("{$configpath}/hosts/" . $host['name'] . '-down', unixnewlines(base64_decode($host['host_down'])) . "\n");
 			chmod("{$configpath}/hosts/" . $host['name'] . '-down', 0744);
 		}
 	}
@@ -125,7 +125,7 @@ function tinc_save() {
 	file_put_contents("{$configpath}/rsa_key.priv", base64_decode($tincconf['cert_key']) . "\n");
 	chmod("{$configpath}/rsa_key.priv", 0600);
 	if ($tincconf['tinc_up']) {
-		$_output = base64_decode($tincconf['tinc_up']) . "\n";
+		$_output = unixnewlines(base64_decode($tincconf['tinc_up'])) . "\n";
 	} else {
 		$_output = "ifconfig \$INTERFACE " . $tincconf['localip'] . " netmask " . $tincconf['vpnnetmask'] . "\n";
 		$_output .= "ifconfig \$INTERFACE group pkg_tinc\n";
@@ -133,23 +133,23 @@ function tinc_save() {
 	file_put_contents("{$configpath}/tinc-up", $_output);
 	chmod("{$configpath}/tinc-up", 0744);
 	if ($tincconf['tinc_down']) {
-		file_put_contents("{$configpath}/tinc-down", str_replace("\r", "", base64_decode($tincconf['tinc_down'])) . "\n");
+		file_put_contents("{$configpath}/tinc-down", unixnewlines(base64_decode($tincconf['tinc_down'])) . "\n");
 		chmod("{$configpath}/tinc-down", 0744);
 	}
 	if ($tincconf['host_up']) {
-		file_put_contents("{$configpath}/host-up", str_replace("\r", "", base64_decode($tincconf['host_up'])) . "\n");
+		file_put_contents("{$configpath}/host-up", unixnewlines(base64_decode($tincconf['host_up'])) . "\n");
 		chmod("{$configpath}/host-up", 0744);
 	}
 	if ($tincconf['host_down']) {
-		file_put_contents("{$configpath}/host-down", str_replace("\r", "", base64_decode($tincconf['host_down'])) . "\n");
+		file_put_contents("{$configpath}/host-down", unixnewlines(base64_decode($tincconf['host_down'])) . "\n");
 		chmod("{$configpath}/host-down", 0744);
 	}
 	if ($tincconf['subnet_up']) {
-		file_put_contents("{$configpath}/subnet-up", str_replace("\r", "", base64_decode($tincconf['subnet_up'])) . "\n");
+		file_put_contents("{$configpath}/subnet-up", unixnewlines(base64_decode($tincconf['subnet_up'])) . "\n");
 		chmod("{$configpath}/subnet-up", 0744);
 	}
 	if ($tincconf['subnet_down']) {
-		file_put_contents("{$configpath}/subnet-down", str_replace("\r", "", base64_decode($tincconf['subnet_down'])) . "\n");
+		file_put_contents("{$configpath}/subnet-down", unixnewlines(base64_decode($tincconf['subnet_down'])) . "\n");
 		chmod("{$configpath}/subnet-down", 0744);
 	}
 
