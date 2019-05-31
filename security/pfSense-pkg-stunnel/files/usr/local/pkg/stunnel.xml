@@ -97,7 +97,6 @@
 			<description>Enter the local port to bind this redirection to.</description>
 			<type>input</type>
 		</field>
-		</field>
 			<field>
 			<fielddescr>Protocol</fielddescr>
 			<fieldname>protocol</fieldname>
