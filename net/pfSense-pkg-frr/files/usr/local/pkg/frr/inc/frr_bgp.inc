@@ -815,6 +815,7 @@ function frr_bgp_generate_communitylists() {
 
 function frr_generate_config_bgp() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
+	unlink_if_exists("{$frr_config_base}/bgpd.conf");
 	/* Make bgpd config */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];

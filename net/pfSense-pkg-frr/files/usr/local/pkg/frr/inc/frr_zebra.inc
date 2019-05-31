@@ -617,6 +617,8 @@ function frr_zebra_generate_acceptfilters() {
 /* Make zebra config */
 function frr_generate_config_zebra() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
+	unlink_if_exists("{$frr_config_base}/zebra.conf");
+	unlink_if_exists("{$frr_config_base}/staticd.conf");
 	/* Populate FRR Global Settings */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
