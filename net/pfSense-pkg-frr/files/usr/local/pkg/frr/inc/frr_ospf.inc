@@ -21,6 +21,7 @@
 
 function frr_generate_config_ospf() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
+	unlink_if_exists("{$frr_config_base}/ospfd.conf");
 	/* Populate FRR Global Settings */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
