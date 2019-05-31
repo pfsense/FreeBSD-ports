@@ -253,6 +253,18 @@ function frr_ospf6_interfaces_validate_input() {
 
 function frr_ospf6_validate_input() {
 	global $config, $g, $input_errors;
+
+	if (!empty($_POST['routerid']) && !is_ipaddr($_POST['routerid'])) {
+		$input_errors[] = "Router ID must be an IP address.";
+	}
+
+	if (empty($_POST['routerid'])) {
+
+		if (!is_array($config['installedpackages']['frr']['config']) ||
+		    empty($config['installedpackages']['frr']['config'][0]['routerid'])) {
+			$input_errors[] = "Router ID is required because the global Router ID is not set.";
+		}
+	}
 }
 
 
