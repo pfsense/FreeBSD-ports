@@ -149,6 +149,10 @@ function frr_bgp_generate_router() {
 	if (!empty($frr_bgp_conf['adjacencylog'])) {
 		$bgpconf .= "  bgp log-neighbor-changes\n";
 	}
+	/* IPv4 unicast default disable */
+	if (!empty($frr_bgp_conf['nodefipv4unicast'])) {
+		$bgpconf .= "  no bgp default ipv4-unicast\n";
+	}
 	/* If the router ID is defined in BGP, use that, otherwise try to use
 	 * the global router ID, if one is set. */
 	if (is_ipaddrv4($frr_bgp_conf['routerid'])) {
@@ -815,6 +819,7 @@ function frr_bgp_generate_communitylists() {
 
 function frr_generate_config_bgp() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
+	unlink_if_exists("{$frr_config_base}/bgpd.conf");
 	/* Make bgpd config */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
