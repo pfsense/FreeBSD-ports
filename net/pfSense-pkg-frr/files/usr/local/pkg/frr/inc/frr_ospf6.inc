@@ -113,7 +113,8 @@ function frr_generate_config_ospf6() {
 				} else {
 					$area = ($redistr['routearea'] == "") ? $ospf6d_conf['area'] : $redistr['routearea'];
 					$cost = (is_numeric($redistr['routearea']) && ($redistr['routearea'] >= 0)) ? $redistr['routearea']: 1;
-					$redist .= "  area {$area} range {$redistr['routevalue']} cost {$cost}\n";
+					// Disable for now. Not yet supported in FRR.
+					// $redist .= "  area {$area} range {$redistr['routevalue']} cost {$cost}\n";
 				}
 			}
 		}
@@ -172,8 +173,9 @@ function frr_generate_config_ospf6() {
 			foreach ($interface_networks as $ifn) {
 				if (is_subnetv6($ifn['subnet'])) {
 					$cost = (is_numeric($conf['metric']) && ($conf['metric'] >= 0)) ? $conf['metric'] : 1;
-					$conffile .= "  area {$ifn['area']} range {$ifn['subnet']} cost {$cost}\n";
-					$conffile .= "  area {$ifn['area']} export-list dnr6-list\n";
+					// Disable for now. Not yet supported in FRR.
+					// $conffile .= "  area {$ifn['area']} range {$ifn['subnet']} cost {$cost}\n";
+					// $conffile .= "  area {$ifn['area']} export-list dnr6-list\n";
 				}
 			}
 		}
