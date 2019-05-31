@@ -92,12 +92,11 @@ function frr_generate_config_ospf6() {
 					$conffile .= "  ipv6 ospf6 passive\n";
 				}
 				list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface'], true);
-				if (empty($interface_ip)) {
-					continue;
-				}
 				$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['area'];
 				$router_interface_areas .= "  interface {$realif} area {$interface_area}\n";
-				$interface_networks[] = array( "subnet" => "{$subnet}/{$interface_subnet}", "area" => $interface_area);
+				if (!empty($interface_subnet)) {
+					$interface_networks[] = array( "subnet" => "{$subnet}/{$interface_subnet}", "area" => $interface_area);
+				}
 			}
 		}
 		$redist = "";
