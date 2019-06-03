@@ -94,6 +94,12 @@
 			</options>
 		</field>
 		<field>
+			<fielddescr>Instance ID</fielddescr>
+			<fieldname>instanceid</fieldname>
+			<description>Instance ID for this OSPF6 interface (leave blank for default).</description>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Metric</fielddescr>
 			<fieldname>metric</fieldname>
 			<description>Metric (cost) for this OSPF6 interface (leave blank for default).</description>

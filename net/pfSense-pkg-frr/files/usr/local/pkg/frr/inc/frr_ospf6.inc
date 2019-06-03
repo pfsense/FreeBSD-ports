@@ -70,6 +70,9 @@ function frr_generate_config_ospf6() {
 					continue;
 				}
 				$conffile .= "interface {$realif}\n" ;
+				if (isset($conf['instanceid']) && (strlen($conf['instanceid']) > 0)) {
+					$conffile .= "  ipv6 ospf6 instance-id {$conf['instanceid']}\n";
+				}
 				if (!empty($conf['networktype'])) {
 					$conffile .= "  ipv6 ospf6 network {$conf['networktype']}\n";
 				}
@@ -93,10 +96,12 @@ function frr_generate_config_ospf6() {
 				}
 				list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface'], true);
 				$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['area'];
-				$router_interface_areas .= "  interface {$realif} area {$interface_area}\n";
-				if (!empty($interface_subnet)) {
-					$interface_networks[] = array( "subnet" => "{$subnet}/{$interface_subnet}", "area" => $interface_area);
+				if (is_subnetv6("{$subnet}/{$interface_subnet}")) {
+					$cost = (is_numeric($conf['metric']) && ($conf['metric'] >= 0)) ? $conf['metric'] : 1;
+					$router_interface_areas .= "  area {$interface_area} range {$subnet}/{$interface_subnet} cost {$cost}\n";
+					$router_interface_areas .= "  area {$interface_area} export-list dnr6-list\n";
 				}
+				$router_interface_areas .= "  interface {$realif} area {$interface_area}\n";
 			}
 		}
 		$redist = "";
@@ -168,16 +173,6 @@ function frr_generate_config_ospf6() {
 			$spf_maxhold = $spf_minhold * 10;
 			$spf_delay = ($ospf6d_conf['spfdelay']) ? $ospf6d_conf['spfdelay'] : 200;
 			$conffile .= "  timers throttle spf {$spf_delay} {$spf_minhold} {$spf_maxhold}\n";
-		}
-		if (is_array($interface_networks)) {
-			foreach ($interface_networks as $ifn) {
-				if (is_subnetv6($ifn['subnet'])) {
-					$cost = (is_numeric($conf['metric']) && ($conf['metric'] >= 0)) ? $conf['metric'] : 1;
-					// Disable for now. Not yet supported in FRR.
-					// $conffile .= "  area {$ifn['area']} range {$ifn['subnet']} cost {$cost}\n";
-					// $conffile .= "  area {$ifn['area']} export-list dnr6-list\n";
-				}
-			}
 		}
 		if (!empty($redist)) {
 			$conffile .= $redist;
