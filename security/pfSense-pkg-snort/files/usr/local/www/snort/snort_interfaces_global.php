@@ -3,10 +3,10 @@
  * snort_interfaces_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2018 Bill Meeks
  * Copyright (c) 2008-2009 Robert Zelaya
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -270,21 +270,21 @@ $section->addInput(new Form_Checkbox(
 ));
 $section->addInput(new Form_StaticText(
 	null,
-	'The OpenAppID package contains the application signatures required by the AppID preprocessor.'
+	'The OpenAppID Detectors package contains the application signatures required by the AppID preprocessor and the OpenAppID text rules.'
 ));
 $section->addInput(new Form_StaticText(
 	'OpenAppID Version',
 	$openappid_ver
 ));
-$group = new Form_Group('Enable RULES OpenAppID');
+$group = new Form_Group('Enable AppID Open Text Rules');
 $group->add(new Form_Checkbox(
         'openappid_rules_detectors',
         'Enable RULES OpenAppID',
-        'Click to enable download of APPID Open rules',
+        'Click to enable download of the AppID Open Text Rules',
         $pconfig['openappid_rules_detectors'] == 'on' ? true:false,
         'on'
 ));
-$group->setHelp('Note - the AppID Open Rules file is maintained by a volunteer contributor and hosted by the pfSense team.  ' . 
+$group->setHelp('Note - the AppID Open Text Rules file is maintained by a volunteer contributor and hosted by the pfSense team.  ' . 
 'The URL for the file ' . 'is <a href="' . SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '" target="_blank">' . 
 SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '</a>.');
 $section->add($group);

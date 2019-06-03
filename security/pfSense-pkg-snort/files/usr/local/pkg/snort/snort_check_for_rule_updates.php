@@ -3,9 +3,9 @@
  * snort_check_for_rule_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -429,13 +429,13 @@ if ($openappid_detectors == 'on') {
 	else
 		$openappid_detectors = 'off';
 }
-/*  Check for and download any new Snort OpenAppID RULES detectors */
+/*  Check for and download any new Snort AppID Open Text Rules */
 if ($openappid_rules_detectors == 'on') {
-        if (snort_check_rule_md5("{$snort_openappid_rules_url}{$snort_openappid_rules_filename}.md5", "{$tmpfname}/{$snort_openappid_rules_filename_md5}", "Snort OpenAppID RULES detectors")) {
+        if (snort_check_rule_md5("{$snort_openappid_rules_url}{$snort_openappid_rules_filename}.md5", "{$tmpfname}/{$snort_openappid_rules_filename_md5}", "Snort AppID Open Text Rules")) {
                 $file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_openappid_rules_filename_md5}"));
                 file_put_contents("{$tmpfname}/{$snort_openappid_rules_filename_md5}", $file_md5);
                 /* download snort-openappid file rules */
-                if (!snort_fetch_new_rules("{$snort_openappid_rules_url}{$snort_openappid_rules_filename}", "{$tmpfname}/{$snort_openappid_rules_filename}", $file_md5, "Snort OpenAppID RULES detectors"))
+                if (!snort_fetch_new_rules("{$snort_openappid_rules_url}{$snort_openappid_rules_filename}", "{$tmpfname}/{$snort_openappid_rules_filename}", $file_md5, "Snort AppID Open Text Rules"))
                         $openappid_rules_detectors = 'off';
         }
         else
@@ -565,13 +565,13 @@ if ($openappid_detectors == 'on') {
 		error_log(gettext("\tInstallation of Snort OpenAppID detectors completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
 }
-/* Untar Snort OpenAppID detectors file to SNORT_APPID_ODP_PATH */
+/* Untar Snort AppID Open Text Rules file to SNORT_APPID_RULES_PATH */
 if ($openappid_rules_detectors == 'on') {
         // If we have a valid downloaded file, then first cleanup the old directory
         if (file_exists("{$tmpfname}/{$snort_openappid_rules_filename}")) {
-                snort_update_status(gettext("Installing Snort OpenAppID RULES detectors..."));
+                snort_update_status(gettext("Installing Snort OpenAppID Rules..."));
                 $snort_openappid_rules_path = SNORT_APPID_RULES_PATH;
-                error_log(gettext("\tExtracting and installing Snort OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+                error_log(gettext("\tExtracting and installing Snort AppID Open Text Rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
                 exec("/usr/bin/tar oxzf {$tmpfname}/{$snort_openappid_rules_filename} -C {$snort_openappid_rules_path}");
                 if (file_exists("{$tmpfname}/{$snort_openappid_rules_filename_md5}")) {
                         snort_update_status(gettext("Copying md5 signature to snort directory..."));
@@ -579,7 +579,7 @@ if ($openappid_rules_detectors == 'on') {
                 }
                 snort_update_status(gettext(" done.") . "\n");
                 unlink_if_exists("{$tmpfname}/{$snort_openappid_rules_filename}");
-                error_log(gettext("\tInstallation of Snort OpenAppID detectors completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+                error_log(gettext("\tInstallation of Snort AppID Open Text Rules completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
         }
 }
 
