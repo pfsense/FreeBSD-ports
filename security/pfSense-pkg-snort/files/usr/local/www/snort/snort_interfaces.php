@@ -3,8 +3,8 @@
  * snort_interfaces.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,14 +50,15 @@ if ($_POST['status'] == 'check') {
 	// Iterate configured Snort interfaces and get status of each
 	// into an associative array.  Return the array to the Ajax
 	// caller as a JSON object.
-	foreach ($a_nat as $natent) {
-		$intf_key = "snort_" . get_real_interface($natent['interface']) . $natent['uuid'];
-		if ($natent['enable'] == "on") {
-			if (snort_is_running($natent['uuid'], get_real_interface($natent['interface']))) {
+	foreach ($a_nat as $intf) {
+		$intf_key = "snort_" . get_real_interface($intf['interface']);
+		if ($intf['enable'] == "on") {
+			if (snort_is_running(get_real_interface($intf['interface']))) {
 				$list[$intf_key] = "RUNNING";
 			}
 			elseif (file_exists("{$g['varrun_path']}/{$intf_key}_starting.lck") || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) {
 				$list[$intf_key] = "STARTING";
+				$snort_starting[$id] = 'TRUE';
 			}
 			else {
 				$list[$intf_key] = "STOPPED";
@@ -66,18 +67,15 @@ if ($_POST['status'] == 'check') {
 		else {
 			$list[$intf_key] = "DISABLED";
 		}
-	}
 
-	// Iterate configured Barnyard2 interfaces and add status of each
-	// to the JSON array object.
-	foreach ($a_nat as $natent) {
-		$intf_key = "barnyard2_" . get_real_interface($natent['interface']) . $natent['uuid'];
-		$snort_intf_key = "snort_" . get_real_interface($natent['interface']) . $natent['uuid'];
-		if ($natent['barnyard_enable'] == "on") {
-			if (snort_is_running($natent['uuid'], get_real_interface($natent['interface']), 'barnyard2')) {
+		// Now check and set Barnyard2 status for the interface
+		$intf_key = "barnyard2_" . get_real_interface($intf['interface']);
+
+		if ($intf['barnyard_enable'] == "on") {
+			if (snort_is_running(get_real_interface($intf['interface']), 'barnyard2')) {
 				$list[$intf_key] = "RUNNING";
 			}
-			elseif (file_exists("{$g['varrun_path']}/{$snort_intf_key}_starting.lck") || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) {
+			elseif ($snort_starting[$id] == TRUE || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) {
 				$list[$intf_key] = "STARTING";
 			}
 			else {
@@ -176,7 +174,7 @@ if ($_POST['by2toggle'] && is_numericint($_POST['id'])) {
 			$rebuild_rules = false;
 			sync_snort_package_config();
 			$rebuild_rules = false;
-			if (snort_is_running($snortcfg['uuid'], $if_real, 'barnyard2')) {
+			if (snort_is_running($if_real, 'barnyard2')) {
 				log_error("Restarting Barnyard2 on {$if_friendly}({$if_real}) per user request...");
 				snort_barnyard_stop($snortcfg, $if_real);
 				snort_barnyard_start($snortcfg, $if_real);
@@ -188,7 +186,7 @@ if ($_POST['by2toggle'] && is_numericint($_POST['id'])) {
 			$by2_starting[$id] = 'TRUE';
 			break;
 		case 'stop':
-			if (snort_is_running($snortcfg['uuid'], $if_real, 'barnyard2')) {
+			if (snort_is_running($if_real, 'barnyard2')) {
 				log_error("Stopping Barnyard2 on {$if_friendly}({$if_real}) per user request...");
 				snort_barnyard_stop($snortcfg, $if_real);
 			}
@@ -213,8 +211,8 @@ if ($_POST['toggle'] && is_numericint($_POST['id'])) {
 
 	// Create steps for the background task to start Snort.
 	// These commands will be handed off to a CLI PHP session
-	// for background execution as self-deleting PHP file.
-	$start_lck_file = "{$g['varrun_path']}/snort_{$if_real}{$snortcfg['uuid']}_starting.lck";
+	// for background execution in a self-deleting PHP file.
+	$start_lck_file = "{$g['varrun_path']}/snort_{$if_real}_starting.lck";
 	$snort_start_cmd = <<<EOD
 	<?php
 	require_once('/usr/local/pkg/snort/snort.inc');
@@ -233,23 +231,23 @@ EOD;
 
 	switch ($_POST['toggle']) {
 		case 'start':
-			file_put_contents("{$g['tmp_path']}/snort_{$if_real}{$snortcfg['uuid']}_startcmd.php", $snort_start_cmd);
-			if (snort_is_running($snortcfg['uuid'], $if_real)) {
+			file_put_contents("{$g['tmp_path']}/snort_{$if_real}_startcmd.php", $snort_start_cmd);
+			if (snort_is_running($if_real)) {
 				log_error("Restarting Snort on {$if_friendly}({$if_real}) per user request...");
 				snort_stop($snortcfg, $if_real);
-				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}{$snortcfg['uuid']}_startcmd.php");
+				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}_startcmd.php");
 			}
 			else {
 				log_error("Starting Snort on {$if_friendly}({$if_real}) per user request...");
-				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}{$snortcfg['uuid']}_startcmd.php");
+				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}_startcmd.php");
 			}
 			$snort_starting[$id] = 'TRUE';
-			if ($snortcfg['barnyard_enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid")) {
+			if ($snortcfg['barnyard_enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
 				$by2_starting[$id] = 'TRUE';
 			}
 			break;
 		case 'stop':
-			if (snort_is_running($snortcfg['uuid'], $if_real)) {
+			if (snort_is_running($if_real)) {
 				log_error("Stopping Snort on {$if_friendly}({$if_real}) per user request...");
 				snort_stop($snortcfg, $if_real);
 			}
@@ -307,7 +305,7 @@ if ($savemsg)
 					<th><?=gettext("Interface"); ?></th>
 					<th><?=gettext("Snort Status"); ?></th>
 					<th><?=gettext("Pattern Match"); ?></th>
-					<th><?=gettext("Blocking"); ?></th>
+					<th><?=gettext("Blocking Mode"); ?></th>
 					<th><?=gettext("Barnyard2 Status"); ?></th>
 					<th><?=gettext("Description"); ?></th>
 					<th><?=gettext("Actions"); ?></th>
@@ -330,7 +328,7 @@ if ($savemsg)
 					$no_rules = true;
 
 				foreach ($a_nat as $natent): ?>
-				<tr id="fr<?=$nnats?>">
+				<tr id="fr<?=$i?>">
 				<?php
 					/* convert fake interfaces to real and check if iface is up */
 					/* There has to be a smarter way to do this */
@@ -353,90 +351,92 @@ if ($savemsg)
 						$no_rules_footnote = true;
 				?>
 					<td>
-						<input type="checkbox" id="frc<?=$nnats?>" name="rule[]" value="<?=$i?>" onClick="fr_bgcolor('<?=$nnats?>')" style="margin: 0; padding: 0;">
+						<input type="checkbox" id="frc<?=$i?>" name="rule[]" value="<?=$i?>" onClick="fr_bgcolor('<?=$i?>')" style="margin: 0; padding: 0;">
 					</td>
-					<td id="frd<?=$nnats?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$nnats?>';">
+					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
 						<?php
 							echo $natend_friendly;
 						?>
 					</td>
-					<td id="frd<?=$nnats?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$nnats?>';">
-						<?php if ($config['installedpackages']['snortglobal']['rule'][$nnats]['enable'] == 'on') : ?>
-							<?php if (snort_is_running($snort_uuid, $if_real)) : ?>
-								<i id="snort_<?=$if_real.$snort_uuid;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('snort is running on this interface');?>"></i>
+					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
+						<?php if ($config['installedpackages']['snortglobal']['rule'][$i]['enable'] == 'on') : ?>
+							<?php if (snort_is_running($if_real)) : ?>
+								<i id="snort_<?=$if_real;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('snort is running on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real.$snort_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real.$snort_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real.$snort_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
-							<?php elseif ($snort_starting[$nnats] == 'TRUE' || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) : ?>
-								<i id="snort_<?=$if_real.$snort_uuid;?>" class="fa fa-cog fa-spin text-info icon-primary" title="<?=gettext('snort is starting on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+							<?php elseif ($snort_starting[$i] == 'TRUE' || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) : ?>
+								<i id="snort_<?=$if_real;?>" class="fa fa-cog fa-spin text-info icon-primary" title="<?=gettext('snort is starting on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real.$snort_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real.$snort_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real.$snort_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php else: ?>
 								<i class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('snort is stopped on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real.$snort_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real.$snort_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real.$snort_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php endif; ?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>&nbsp;
 						<?php endif; ?>
 					</td>
-					<td id="frd<?=$nnats?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$nnats?>';">
-						<?php if ($config['installedpackages']['snortglobal']['rule'][$nnats]['performance'] != "") : ?>
-							<?=gettext(strtoupper($config['installedpackages']['snortglobal']['rule'][$nnats]['performance']))?>
+					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
+						<?php if ($config['installedpackages']['snortglobal']['rule'][$i]['performance'] != "") : ?>
+							<?=gettext(strtoupper($config['installedpackages']['snortglobal']['rule'][$i]['performance']))?>
 						<?php else: ?>
 							<?=gettext('UNKNOWN');?>
 						<?php endif; ?>
 					</td>
-					<td id="frd<?=$nnats?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$nnats?>';">
-						<?php if ($config['installedpackages']['snortglobal']['rule'][$nnats]['blockoffenders7'] == 'on') : ?>
-							<?=gettext('ENABLED');?>
-						<?php else: ?>
+					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
+						<?php if ($config['installedpackages']['snortglobal']['rule'][$i]['blockoffenders7'] == 'on' && $config['installedpackages']['snortglobal']['rule'][$i]['ips_mode'] == 'ips_mode_legacy') : ?>
+							<?=gettext('LEGACY MODE');?>
+						<?php elseif ($config['installedpackages']['snortglobal']['rule'][$i]['blockoffenders7'] == 'on' && $config['installedpackages']['snortglobal']['rule'][$i]['ips_mode'] == 'ips_mode_inline') : ?>
+							<?=gettext('INLINE IPS');?>
+						<?php else : ?>
 							<?=gettext('DISABLED');?>
 						<?php endif; ?>
 					</td>
-					<td id="frd<?=$nnats?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$nnats?>';">
-						<?php if ($config['installedpackages']['snortglobal']['rule'][$nnats]['barnyard_enable'] == 'on') : ?>
-							<?php if (snort_is_running($snort_uuid, $if_real, 'barnyard2')) : ?>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('barnyard2 is running on this interface');?>"></i>
+					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
+						<?php if ($config['installedpackages']['snortglobal']['rule'][$i]['barnyard_enable'] == 'on') : ?>
+							<?php if (snort_is_running($if_real, 'barnyard2')) : ?>
+								<i id="barnyard2_<?=$if_real;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('barnyard2 is running on this interface');?>"></i>
 								&nbsp;
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
-							<?php elseif ($by2_starting[$nnats] == 'TRUE' || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) : ?>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>" class="fa fa-cog fa-spin text-info icon-primary" title="<?=gettext('barnyard2 is starting on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
+							<?php elseif ($by2_starting[$i] == 'TRUE' || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) : ?>
+								<i id="barnyard2_<?=$if_real;?>" class="fa fa-cog fa-spin text-info icon-primary" title="<?=gettext('barnyard2 is starting on this interface');?>"></i>
 								&nbsp;
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
 							<?php else: ?>
 								<i class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('barnyard2 is stopped on this interface');?>"></i>
 								&nbsp;
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
 							<?php endif; ?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>&nbsp;
 						<?php endif; ?>
 					</td>
-					<td class="bg-info" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$nnats?>';">
+					<td class="text-info" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
 						<?=htmlspecialchars($natent['descr'])?>
 					</td>
 					<td>
-						<a href="snort_interfaces_edit.php?id=<?=$nnats;?>" class="fa fa-pencil icon-primary" title="<?=gettext('Edit this Snort interface mapping');?>"></a>
+						<a href="snort_interfaces_edit.php?id=<?=$i;?>" class="fa fa-pencil icon-primary" title="<?=gettext('Edit this Snort interface mapping');?>"></a>
 						<?php if ($id_gen < count($ifaces)): ?>
-							<a href="snort_interfaces_edit.php?id=<?=$nnats?>&action=dup" class="fa fa-clone" title="<?=gettext('Clone this Snort instance to an available interface');?>"></a>
+							<a href="snort_interfaces_edit.php?id=<?=$i?>&action=dup" class="fa fa-clone" title="<?=gettext('Clone this Snort instance to an available interface');?>"></a>
 						<?php endif; ?>
-						<a style="cursor:pointer;" class="fa fa-trash no-confirm icon-primary" id="Xldel_<?=$nnats?>" title="<?=gettext('Delete this Snort interface mapping'); ?>"></a>
-						<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$nnats?>" name="ldel_<?=$nnats?>" value="ldel_<?=$nnats?>" title="<?=gettext('Delete this Snort interface mapping'); ?>">Delete this Snort interface mapping</button>
+						<a style="cursor:pointer;" class="fa fa-trash no-confirm icon-primary" id="Xldel_<?=$i?>" title="<?=gettext('Delete this Snort interface mapping'); ?>"></a>
+						<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$i?>" name="ldel_<?=$i?>" value="ldel_<?=$i?>" title="<?=gettext('Delete this Snort interface mapping'); ?>">Delete this Snort interface mapping</button>
 					</td>	
 				</tr>
-				<?php $i++; $nnats++; endforeach; ob_end_flush(); ?>
+				<?php $i++; endforeach; ob_end_flush(); ?>
 				</tbody>
 			</table>
 		</div>
@@ -514,16 +514,20 @@ if ($savemsg)
 
 		// The JSON object returned by check_status() is an associative array
 		// of interface unique IDs and corresponding service status.  The
-		// "key" is the service name followed by the physical interface and a UUID.
+		// "key" is the service name followed by the real physical interface name.
 		// The "value" of the key is either "DISABLED, STOPPED, STARTING, or RUNNING".
 		//
-		// Example keys:  snort_em1998 or barnyard2_em1998
+		// Example keys:  snort_em1 or barnyard2_em1
 		//
 		// Within the HTML of this page, icon controls for displaying status
 		// and for starting/restarting/stopping the service are tagged with
 		// control IDs using "key" followed by the icon's function.  These
 		// control IDs are used in the code below to alter icon appearance
 		// depending on the service status.
+		//
+		// Because an interface name in FreeBSD can contain CSS special characters
+		// such as a period, any CSS special characters in an interface name are
+		// escaped by double-backslashes in the code below.
 
 		var data = jQuery.parseJSON(responseData);
 
@@ -532,28 +536,28 @@ if ($savemsg)
 			var service_name = key.substring(0, key.indexOf('_'));
 			if (data[key] != 'DISABLED') {
 				if (data[key] == 'STOPPED') {
-					$('#' + key).removeClass('fa-check-circle fa-cog fa-spin text-success text-info');
-					$('#' + key).addClass('fa-times-circle text-danger');
-					$('#' + key).prop('title', service_name + ' is stopped on this interface');
-					$('#' + key + '_restart').addClass('hidden');
-					$('#' + key + '_stop').addClass('hidden');
-					$('#' + key + '_start').removeClass('hidden');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-cog fa-spin text-success text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-times-circle text-danger');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is stopped on this interface');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').addClass('hidden');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_start').removeClass('hidden');
 				}
 				if (data[key] == 'STARTING') {
-					$('#' + key).removeClass('fa-check-circle fa-times-circle text-success text-danger');
-					$('#' + key).addClass('fa-cog fa-spin text-info');
-					$('#' + key).prop('title', service_name + ' is starting on this interface');
-					$('#' + key + '_restart').addClass('hidden');
-					$('#' + key + '_start').addClass('hidden');
-					$('#' + key + '_stop').removeClass('hidden');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-times-circle text-success text-danger');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-spin text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is starting on this interface');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_start').addClass('hidden');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
 				}
 				if (data[key] == 'RUNNING') {
-					$('#' + key).addClass('fa-check-circle text-success');
-					$('#' + key).removeClass('fa-times-circle fa-cog fa-spin text-danger text-info');
-					$('#' + key).prop('title', service_name + ' is running on this interface');
-					$('#' + key + '_restart').removeClass('hidden');
-					$('#' + key + '_stop').removeClass('hidden');
-					$('#' + key + '_start').addClass('hidden');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-check-circle text-success');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-times-circle fa-cog fa-spin text-danger text-info');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is running on this interface');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').removeClass('hidden');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_stop').removeClass('hidden');
+					$('#' + key.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_start').addClass('hidden');
 				}
 			}
 		}
