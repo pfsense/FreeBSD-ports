@@ -32,6 +32,7 @@ function arpwatch_install_command() {
 	$arpwatch_config = $config['installedpackages']['arpwatch']['config'][0];
 	$active_interfaces = $arpwatch_config['active_interfaces'];
 	$notifications_recipient = $arpwatch_config['notifications_recipient'];
+	$disable_carp = ($arpwatch_config['disable_carp'] == 'on') ? '-v' : '';
 	$disable_bogons = ($arpwatch_config['disable_bogons'] == 'on') ? '-N' : '';
 	$disable_zero = ($arpwatch_config['disable_zero'] == 'on') ? '-z' : '';
 	$update_vendors = ($arpwatch_config['update_vendors'] == 'on');
@@ -60,7 +61,7 @@ function arpwatch_install_command() {
 
 			touch($arp_file);
 
-			$rc['start'] .= "/usr/local/sbin/arpwatch $disable_bogons $disable_zero -f $arp_file -i $ifname -m $notifications_recipient"."\n";
+			$rc['start'] .= "/usr/local/sbin/arpwatch $disable_carp $disable_bogons $disable_zero -f $arp_file -i $ifname -m $notifications_recipient"."\n";
 		}
 	}
 
