@@ -930,7 +930,7 @@ elseif ($_POST['apply']) {
 	// Sync to configured CARP slaves if any are enabled
 	snort_sync_on_changes();
 
-	if (snort_is_running($snort_uuid, $if_real))
+	if (snort_is_running($if_real))
 		$savemsg = gettext("Snort is 'live-reloading' the new rule set.");
 }
 

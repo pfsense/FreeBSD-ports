@@ -501,50 +501,48 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 }
 
 /* checks to see if service is running */
-function snort_is_running($snort_uuid, $if_real, $type = 'snort') {
+function snort_is_running($if_real, $type = 'snort') {
 	global $config, $g;
 
-	return isvalidpid("{$g['varrun_path']}/{$type}_{$if_real}{$snort_uuid}.pid");
+	return isvalidpid("{$g['varrun_path']}/{$type}_{$if_real}.pid");
 }
 
 function snort_barnyard_stop($snortcfg, $if_real) {
 	global $config, $g;
 
-	$snort_uuid = $snortcfg['uuid'];
-	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid")) {
+	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
 		log_error("[Snort] Barnyard2 STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		killbypid("{$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid");
+		killbypid("{$g['varrun_path']}/barnyard2_{$if_real}.pid");
 
 		// Now wait up to 5 seconds for Barnyard2 to actually stop and clear its PID file
 		$count = 0;
 		do {
-			if (!isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid"))
+			if (!isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid"))
 				break;
 			sleep(1);
 			$count++;
 		} while ($count < 5);
 	}
-	unlink_if_exists("{$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid");
+	unlink_if_exists("{$g['varrun_path']}/barnyard2_{$if_real}.pid");
 }
 
 function snort_stop($snortcfg, $if_real) {
 	global $config, $g;
 
-	$snort_uuid = $snortcfg['uuid'];
-	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid")) {
+	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
 		log_error("[Snort] Snort STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		killbypid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid");
+		killbypid("{$g['varrun_path']}/snort_{$if_real}.pid");
 
 		// Now wait up to 10 seconds for Snort to actually stop and clear its PID file
 		$count = 0;
 		do {
-			if (!isvalidpid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid"))
+			if (!isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid"))
 				break;
 			sleep(1);
 			$count++;
 		} while ($count < 10);
 	}
-	unlink_if_exists("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid");
+	unlink_if_exists("{$g['varrun_path']}/snort_{$if_real}.pid");
 
 	snort_barnyard_stop($snortcfg, $if_real);
 }
@@ -557,12 +555,12 @@ function snort_barnyard_start($snortcfg, $if_real, $background=FALSE) {
 	$snort_uuid = $snortcfg['uuid'];
 	$snortbindir = SNORT_PBI_BINDIR;
 
-	if ($snortcfg['barnyard_enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid")) {
+	if ($snortcfg['barnyard_enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
 		log_error("[Snort] Barnyard2 START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		if ($background)
-			mwexec_bg("{$snortbindir}barnyard2 -r {$snort_uuid} -f \"snort_{$snort_uuid}_{$if_real}.u2\" --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q");
+			mwexec_bg("{$snortbindir}barnyard2 -f \"snort_{$snort_uuid}_{$if_real}.u2\" --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q");
 	else
-			mwexec("{$snortbindir}barnyard2 -r {$snort_uuid} -f \"snort_{$snort_uuid}_{$if_real}.u2\" --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q");
+			mwexec("{$snortbindir}barnyard2 -f \"snort_{$snort_uuid}_{$if_real}.u2\" --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q");
 	}
 }
 
@@ -579,7 +577,7 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 	else
 		$quiet = "-q --suppress-config-log";
 
-	if ($snortcfg['enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid")) {
+	if ($snortcfg['enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
 
 		// Adjust the interface specification and DAQ type according to operating mode
 		if ($snortcfg['ips_mode'] == "ips_mode_inline" && $snortcfg['blockoffenders7'] == "on") {
@@ -593,9 +591,9 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 
 		log_error("[Snort] Snort START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		if ($background)
-			mwexec_bg("{$snortbindir}snort -R _{$if_real}{$snort_uuid} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
+			mwexec_bg("{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
 		else
-			mwexec("{$snortbindir}snort -R _{$if_real}{$snort_uuid} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
+			mwexec("{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
 		snort_barnyard_start($snortcfg, $if_real, $background);
 	}
 }
@@ -678,9 +676,9 @@ function snort_reload_config($snortcfg, $signal="SIGHUP") {
 	/* Only send the SIGHUP if Snort is running and we    */
 	/* can find a valid PID for the process.              */
 	/******************************************************/
-	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid")) {
+	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
 		log_error("[Snort] Snort RELOAD CONFIG for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid");
+		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/snort_{$if_real}.pid");
 	}
 }
 
@@ -699,16 +697,15 @@ function snort_barnyard_reload_config($snortcfg, $signal="HUP") {
 	global $g;
 
 	$snortdir = SNORTDIR;
-	$snort_uuid = $snortcfg['uuid'];
 	$if_real = get_real_interface($snortcfg['interface']);
 
 	/******************************************************/
 	/* Only send the SIGHUP if Barnyard2 is running and   */
 	/* we can find a valid PID for the process.           */
 	/******************************************************/
-	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid")) {
+	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
 		log_error("[Snort] Barnyard2 CONFIG RELOAD initiated for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid");
+		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/barnyard2_{$if_real}.pid");
 	}
 }
 
@@ -3261,22 +3258,20 @@ function snort_create_rc() {
 		$start_barnyard = <<<EOE
 
 	sleep 2
-	if [ ! -f {$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid ]; then
-		pid=`/bin/pgrep -fn "barnyard2 -r {$snort_uuid} "`
-	else
-		pid=`/bin/pgrep -F {$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid`
+	if [ ! -f {$g['varrun_path']}/barnyard2_{$if_real}.pid ]; then
+		pid=`/bin/pgrep -F {$g['varrun_path']}/barnyard2_{$if_real}.pid`
 	fi
 	if [ -z \$pid ]; then
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Barnyard2 START for {$value['descr']}({$snort_uuid}_{$if_real})..."
-		{$snortbindir}barnyard2 -r {$snort_uuid} -f snort_{$snort_uuid}_{$if_real}.u2 --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q > /dev/null 2>&1
+		/usr/bin/logger -p daemon.info -i -t SnortStartup "Barnyard2 START for {$value['descr']}({$if_real})..."
+		{$snortbindir}barnyard2 -f snort_{$snort_uuid}_{$if_real}.u2 --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q > /dev/null 2>&1
 	fi
 EOE;
 		$stop_barnyard2 = <<<EOE
 
-	if [ -f {$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid ]; then
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Barnyard2 STOP for {$value['descr']}({$snort_uuid}_{$if_real})..."
-		pid=`/bin/pgrep -F {$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid`
-                /bin/pkill -F {$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid -a
+	if [ -f {$g['varrun_path']}/barnyard2_{$if_real}.pid ]; then
+		/usr/bin/logger -p daemon.info -i -t SnortStartup "Barnyard2 STOP for {$value['descr']}({$if_real})..."
+		pid=`/bin/pgrep -F {$g['varrun_path']}/barnyard2_{$if_real}.pid`
+                /bin/pkill -F {$g['varrun_path']}/barnyard2_{$if_real}.pid -a
 		time=0 timeout=30
 		while kill -0 \$pid 2>/dev/null; do
 			sleep 1
@@ -3285,21 +3280,8 @@ EOE;
 				break
 			fi
 		done
-		if [ -f {$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid ]; then
-			/bin/rm {$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid
-		fi
-	else
-		pid=`/bin/pgrep -fn "barnyard2 -r {$snort_uuid} "`
-		if [ ! -z \$pid ]; then
-			/bin/pkill -f "barnyard2 -r {$snort_uuid} "
-			time=0 timeout=30
-			while kill -0 \$pid 2>/dev/null; do
-				sleep 1
-				time=\$((time+1))
-				if [ \$time -gt \$timeout ]; then
-					break
-				fi
-			done
+		if [ -f {$g['varrun_path']}/barnyard2_{$if_real}.pid ]; then
+			/bin/rm {$g['varrun_path']}/barnyard2_{$if_real}.pid
 		fi
         fi
 EOE;
@@ -3311,15 +3293,15 @@ EOE;
 		$start_snort_iface_start[] = <<<EOE
 
 	# Start snort and barnyard2 for {$value['descr']}
-	if [ ! -f {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid ]; then
-		pid=`/bin/pgrep -fn "snort -R {$if_real}{$snort_uuid} "`
+	if [ ! -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
+		pid=`/bin/pgrep -fn "snort -R {$if_real} "`
 	else
-		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid`
+		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}.pid`
 	fi
 
 	if [ -z \$pid ]; then
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort START for {$value['descr']}({$snort_uuid}_{$if_real})..."
-		{$snortbindir}snort -R _{$if_real}{$snort_uuid} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface} > /dev/null 2>&1
+		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort START for {$value['descr']}({$if_real})..."
+		{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface} > /dev/null 2>&1
 	fi
 
 	{$start_barnyard2}
@@ -3328,10 +3310,10 @@ EOE;
 		$start_snort_iface_stop[] = <<<EOE
 
 	# Stop snort and barnyard2 for {$value['descr']}
-	if [ -f {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid ]; then
-		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid`
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$snort_uuid}_{$if_real})..."
-		/bin/pkill -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid -a
+	if [ -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
+		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}.pid`
+		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$if_real})..."
+		/bin/pkill -F {$g['varrun_path']}/snort_{$if_real}.pid -a
 		time=0 timeout=30
 		while kill -0 \$pid 2>/dev/null; do
 			sleep 1
@@ -3340,14 +3322,14 @@ EOE;
 				break
 			fi
 		done
-		if [ -f {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid ]; then
-			/bin/rm {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid
+		if [ -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
+			/bin/rm {$g['varrun_path']}/snort_{$if_real}.pid
 		fi
 	else
-		pid=`/bin/pgrep -fn "snort -R {$if_real}{$snort_uuid} "`
+		pid=`/bin/pgrep -fn "snort -R {$if_real} "`
 		if [ ! -z \$pid ]; then
 			/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$snort_uuid}_{$if_real})..."
-			/bin/pkill -fn "snort -R {$if_real}{$snort_uuid} "
+			/bin/pkill -fn "snort -R {$if_real} "
 			time=0 timeout=30
 			while kill -0 \$pid 2>/dev/null; do
 				sleep 1
