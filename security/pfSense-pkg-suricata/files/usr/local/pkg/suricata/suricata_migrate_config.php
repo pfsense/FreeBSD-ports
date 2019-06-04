@@ -49,7 +49,7 @@ $rule = &$config['installedpackages']['suricata']['rule'];
 /****************************************************************************/
 
 $updated_cfg = false;
-log_error("[Suricata] Checking configuration settings version...");
+syslog(LOG_NOTICE, "[Suricata] Checking configuration settings version...");
 
 // Check the configuration version to see if XMLRPC Sync should be
 // auto-disabled as part of the upgrade due to config format changes.
@@ -57,7 +57,7 @@ if ($config['installedpackages']['suricata']['config'][0]['suricata_config_ver']
     ($config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] == 'auto' ||
      $config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] == 'manual')) {
 	$config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] = "disabled";
-	log_error("[Suricata] Turning off Suricata Sync on this host due to configuration format changes in this update.  Upgrade all Suricata Sync targets to this same Suricata package version before re-enabling Suricata Sync.");
+	syslog(LOG_NOTICE, "[Suricata] Turning off Suricata Sync on this host due to configuration format changes in this update.  Upgrade all Suricata Sync targets to this same Suricata package version before re-enabling Suricata Sync.");
 	$updated_cfg = true;
 }
 
@@ -690,10 +690,10 @@ unset($r);
 // Log a message indicating what we did
 if ($updated_cfg) {
 	write_config("Updated Suricata package settings to new configuration format.");
-	log_error("[Suricata] Settings successfully migrated to new configuration format.");
+	syslog(LOG_NOTICE, "[Suricata] Settings successfully migrated to new configuration format.");
 }
 else {
-	log_error("[Suricata] Configuration version is current.");
+	syslog(LOG_NOTICE, "[Suricata] Configuration version is current.");
 }
 
 ?>

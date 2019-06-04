@@ -68,7 +68,7 @@ function suricata_barnyard_stop($suricatacfg, $if_real) {
 
 	$suricata_uuid = $suricatacfg['uuid'];
 	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid")) {
-		log_error("[Suricata] Barnyard2 STOP for {$suricatacfg['descr']}({$if_real})...");
+		syslog(LOG_NOTICE, "[Suricata] Barnyard2 STOP for {$suricatacfg['descr']}({$if_real})...");
 		killbypid("{$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid");
 	}
 }
@@ -78,7 +78,7 @@ function suricata_stop($suricatacfg, $if_real) {
 
 	$suricata_uuid = $suricatacfg['uuid'];
 	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-		log_error("[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
+		syslog(LOG_NOTICE, "[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
 		killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 		sleep(1);
 
@@ -103,7 +103,7 @@ function suricata_barnyard_start($suricatacfg, $if_real) {
 	$suricatabindir = SURICATA_PBI_BINDIR;
 
 	if ($suricatacfg['barnyard_enable'] == 'on') {
-		log_error("[Suricata] Barnyard2 START for {$suricatacfg['descr']}({$if_real})...");
+		syslog(LOG_NOTICE, "[Suricata] Barnyard2 START for {$suricatacfg['descr']}({$if_real})...");
 		mwexec_bg("{$suricatabindir}barnyard2 -r {$suricata_uuid} -f unified2.alert --pid-path {$g['varrun_path']} --nolock-pidfile -c {$suricatadir}/barnyard2.conf -d {$suricatalogdir} -D -q");
 	}
 }
@@ -120,7 +120,7 @@ function suricata_start($suricatacfg, $if_real) {
 		// Truncate suricata.log file for this interface.
 		file_put_contents("{$suricatalogdir}/suricata.log", '');
 		$run_mode = $suricatacfg['ips_mode'] == 'ips_mode_inline' ? '--netmap' : '-i ' . $if_real;
-		log_error("[Suricata] Suricata START for {$suricatacfg['descr']}({$if_real})...");
+		syslog(LOG_NOTICE, "[Suricata] Suricata START for {$suricatacfg['descr']}({$if_real})...");
 		mwexec_bg("{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 	} else {
 		return;
@@ -212,7 +212,7 @@ function suricata_reload_config($suricatacfg, $signal="USR2") {
 	/* we can find a valid PID for the process.           */
 	/******************************************************/
 	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-		log_error("[Suricata] Suricata LIVE RULE RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
+		syslog("LOG_NOTICE, [Suricata] Suricata LIVE RULE RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
 		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 	}
 }
@@ -240,7 +240,7 @@ function suricata_barnyard_reload_config($suricatacfg, $signal="HUP") {
 	/* we can find a valid PID for the process.           */
 	/******************************************************/
 	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid")) {
-		log_error("[Suricata] Barnyard2 CONFIG RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
+		syslog(LOG_NOTICE, "[Suricata] Barnyard2 CONFIG RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
 		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid");
 	}
 }
@@ -1773,7 +1773,7 @@ function suricata_resolve_flowbits($rules, $active_rules) {
 
 	// Check $rules array to be sure it is filled.
 	if (empty($rules)) {
-		log_error(gettext("[Suricata] WARNING: Flowbit resolution not done - no rules in ". SURICATA_RULES_DIR . " ..."));
+		syslog(LOG_WARNING, gettext("[Suricata] WARNING: Flowbit resolution not done - no rules in ". SURICATA_RULES_DIR . " ..."));
 		return array();
 	}
 
@@ -1971,7 +1971,7 @@ function suricata_parse_sidconf_file($sidconf_file,$split_lines=TRUE) {
 	// we can read like a normal file.
 	$fd = fopen("php://temp", "r+");
 	if ($fd == FALSE) {
-		log_error("[Suricata] Failed to open SID MGMT list '{$sidconf_file}' for processing.");
+		syslog(LOG_ERR, "[Suricata] Failed to open SID MGMT list '{$sidconf_file}' for processing.");
 		return $sid_mods;
 	}
 	fwrite($fd, base64_decode($list['content']));
@@ -2125,7 +2125,7 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 				// Attempt to open the 'disable_sid_file' for the interface
 				// Verify the assigned SID Mgmt List still exists in the firewall configuration
 				if (!suricata_sid_mgmt_list_exist($suricatacfg['disable_sid_file'])) {
-					log_error(gettext("[Suricata] Error - unable to open disable_sid list \"{$suricatacfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+					syslog(LOG_ERR, gettext("[Suricata] ERROR: unable to open disable_sid list \"{$suricatacfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to find disable_sid list \"{$suricatacfg['disable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2146,7 +2146,7 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 
 				// Attempt to open the 'enable_sid_file' for the interface
 				if (!suricata_sid_mgmt_list_exist($suricatacfg['enable_sid_file'])) {
-					log_error(gettext("[Suricata] Error - unable to open enable_sid list \"{$suricatacfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+					syslog(LOG_ERR, gettext("[Suricata] ERROR: unable to open enable_sid list \"{$suricatacfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to find enable_sid list \"{$suricatacfg['enable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2170,7 +2170,7 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 
 				// Attempt to open the 'enable_sid_file' for the interface
 				if (!suricata_sid_mgmt_list_exist($suricatacfg['enable_sid_file'])) {
-					log_error(gettext("[Suricata] Error - unable to find enable_sid list \"{$suricatacfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+					syslog(LOG_ERR, gettext("[Suricata] ERROR: unable to find enable_sid list \"{$suricatacfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to open enable_sid list \"{$suricatacfg['enable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2191,7 +2191,7 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 
 				// Attempt to open the 'disable_sid_file' for the interface
 				if (!suricata_sid_mgmt_list_exist($suricatacfg['disable_sid_file'])) {
-					log_error(gettext("[Suricata] Error - unable to open disable_sid list \"{$suricatacfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+					syslog(LOG_ERR, gettext("[Suricata] ERROR: unable to open disable_sid list \"{$suricatacfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to find disable_sid list \"{$suricatacfg['disable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2209,7 +2209,7 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 			break;
 
 		default:
-			log_error(gettext("[Suricata] Unrecognized 'sid_state_order' value.  Skipping auto CATEGORY mgmt step for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+			syslog(LOG_ERR, gettext("[Suricata] Unrecognized 'sid_state_order' value.  Skipping auto CATEGORY mgmt step for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 			if ($log_results == TRUE) {
 				error_log(gettext("ERROR: unrecognized 'sid_state_order' value.  Skipping auto CATEGORY mgmt step for ") . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']). ".\n", 3, $log_file);
 			}
@@ -2416,7 +2416,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 			break;
 
 		default:
-			log_error(gettext("[Suricata] Error - unknown action '{$action}' supplied to suricata_modify_sid_state() function...no SIDs modified."));
+			syslog(LOG_WARN, gettext("[Suricata] WARNING - unknown action '{$action}' supplied to suricata_modify_sid_state() function...no SIDs modified."));
 			return $sids;
 	}
 
@@ -2715,7 +2715,7 @@ function suricata_process_enablesid(&$rule_map, $suricatacfg, $log_results = FAL
 
 	// Verify the 'enable_sid' list for the interface exists
 	if (!suricata_sid_mgmt_list_exist($suricatacfg['enable_sid_file'])) {
-		log_error(gettext("[Suricata] Error - unable to find enable_sid list \"{$suricatacfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: unable to find enable_sid list \"{$suricatacfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
 	}
 	else
@@ -2762,7 +2762,7 @@ function suricata_process_disablesid(&$rule_map, $suricatacfg, $log_results = FA
 
 	// Verify the 'disable_sid' list for the interface exists
 	if (!suricata_sid_mgmt_list_exist($suricatacfg['disable_sid_file'])) {
-		log_error(gettext("[Suricata] Error - unable to find disable_sid list \"{$suricatacfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: unable to find disable_sid list \"{$suricatacfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
 	} else {
 		$sid_mods = suricata_parse_sidconf_file($suricatacfg['disable_sid_file']);
@@ -2809,7 +2809,7 @@ function suricata_process_modifysid(&$rule_map, $suricatacfg, $log_results = FAL
 
 	// Verify the 'modify_sid' list for the interface exists
 	if (!suricata_sid_mgmt_list_exist($suricatacfg['modify_sid_file'])) {
-		log_error(gettext("[Suricata] Error - unable to find modify_sid list \"{$suricatacfg['modify_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: unable to find modify_sid list \"{$suricatacfg['modify_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
 	} else {
 		$sid_mods = suricata_parse_sidconf_file($suricatacfg['modify_sid_file'],FALSE);
@@ -2856,7 +2856,7 @@ function suricata_process_dropsid(&$rule_map, $suricatacfg, $log_results = FALSE
 
 	// Verify the 'drop_sid' list for the interface exists
 	if (!suricata_sid_mgmt_list_exist($suricatacfg['drop_sid_file'])) {
-		log_error(gettext("[Suricata] Error - unable to find drop_sid list \"{$suricatacfg['drop_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: unable to find drop_sid list \"{$suricatacfg['drop_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
 	} else {
 		$sid_mods = suricata_parse_sidconf_file($suricatacfg['drop_sid_file']);
@@ -2903,7 +2903,7 @@ function suricata_process_rejectsid(&$rule_map, $suricatacfg, $log_results = FAL
 
 	// Verify the 'reject_sid' list for the interface exists
 	if (!suricata_sid_mgmt_list_exist($suricatacfg['reject_sid_file'])) {
-		log_error(gettext("[Suricata] Error - unable to find reject_sid list \"{$suricatacfg['reject_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: unable to find reject_sid list \"{$suricatacfg['reject_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
 	} else {
 		$sid_mods = suricata_parse_sidconf_file($suricatacfg['reject_sid_file']);
@@ -3033,9 +3033,9 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 				break;
 
 			default:
-				log_error(gettext("[Suricata] Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+				syslog(LOG_WARN, gettext("[Suricata] WARNING: Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 				if ($log_results == TRUE) {
-					error_log(gettext("ERROR: unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for ") . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']). ".\n", 3, $log_file);
+					error_log(gettext("WARNING: unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for ") . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']). ".\n", 3, $log_file);
 				}
 				$result = FALSE;
 		}
@@ -3323,7 +3323,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 		return;
 
 	// Log a message for rules rebuild in progress
-	log_error(gettext("[Suricata] Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " ..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " ..."));
 
 	// Get any automatic rule category enable/disable modifications
 	// if auto-SID Mgmt is enabled and conf files exist for the interface.
@@ -3441,7 +3441,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 		// If auto-flowbit resolution is enabled, generate the dependent flowbits rules file.
 		if ($suricatacfg['autoflowbitrules'] == 'on') {
-			log_error('[Suricata] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . '...');
+			syslog(LOG_NOTICE, '[Suricata] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . '...');
 			$fbits = suricata_resolve_flowbits($all_rules, $enabled_rules);
 
 			// Check for and disable any flowbit-required rules the user has
@@ -3473,7 +3473,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 			// If auto-flowbit resolution is enabled, generate the dependent flowbits rules file.
 			if ($suricatacfg['autoflowbitrules'] == 'on') {
-				log_error('[Suricata] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . '...');
+				syslog(LOG_NOTICE, '[Suricata] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . '...');
 
 				// Load up all rules into a Rules Map array for flowbits assessment
 				$all_rules = suricata_load_rules_map(SURICATA_RULES_DIR);
@@ -3509,12 +3509,12 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 	// Log a warning if the interface has no rules defined or enabled
 	if ($no_rules_defined) {
-		log_error(gettext("[Suricata] Warning - no text rules selected for: " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " ..."));
+		syslog(LOG_WARN, gettext("[Suricata] WARNING: - no text rules selected for: " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " ..."));
 	}
 
 	// Build a new sid-msg.map file from the enabled
 	// rules and copy it to the interface directory.
-	log_error(gettext("[Suricata] Building new sid-msg.map file for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . "..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Building new sid-msg.map file for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . "..."));
 	suricata_build_sid_msg_map("{$suricatacfgdir}/rules/", "{$suricatacfgdir}/sid-msg.map");
 }
 
@@ -3986,7 +3986,7 @@ function suricata_remove_dead_rules() {
 	}
 
 	// Log how many obsoleted files were removed
-	log_error(gettext("[Suricata] Removed {$count} obsoleted rules category files."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Removed {$count} obsoleted rules category files."));
 
 	// Now remove any dead rules files from the interface configurations
 	if (!empty($cats) && is_array($config['installedpackages']['suricata']['rule'])) {
@@ -4013,7 +4013,7 @@ function suricata_sync_on_changes() {
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || $g['suricata_postinstall'] == TRUE) {
-		log_error("[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
+		syslog(LOG_NOTICE, "[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
 
@@ -4027,7 +4027,7 @@ function suricata_sync_on_changes() {
 				if (is_array($suricata_sync['row'])) {
 					$rs = $suricata_sync['row'];
 				} else {
-					log_error("[suricata] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
+					syslog(LOG_NOTICE, "[suricata] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
 					return;
 				}
 				break;
@@ -4048,13 +4048,13 @@ function suricata_sync_on_changes() {
 						$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '443';
 					}
 					if ($system_carp['synchronizetoip'] == "") {
-						log_error("[suricata] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+						syslog(LOG_NOTICE, "[suricata] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 						return;
 					} else {
 						$rs[0]['varsyncdestinenable'] = TRUE;
 					}
 				} else {
-					log_error("[suricata] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+					syslog(LOG_NOTICE, "[suricata] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 					return;
 				}
 				break;			
@@ -4063,7 +4063,7 @@ function suricata_sync_on_changes() {
 				break;
 		}
 		if (is_array($rs)) {
-			log_error("[suricata] XMLRPC sync is starting.");
+			syslog(LOG_NOTICE, "[suricata] XMLRPC sync is starting.");
 			foreach ($rs as $sh) {
 				// Only sync enabled replication targets
 				if ($sh['varsyncdestinenable']) {
@@ -4094,11 +4094,11 @@ function suricata_sync_on_changes() {
 					if ($success) {
 						suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $syncstartsuricata);
 					} else {
-						log_error("[suricata] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+						syslog(LOG_ERR, "[suricata] ERROR: XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
 					}
 				}
 			}
-			log_error("[suricata] XMLRPC sync completed.");
+			syslog(LOG_NOTICE, "[suricata] XMLRPC sync completed.");
 		}
  	}
 }
@@ -4115,12 +4115,12 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || isset($g['suricata_postinstall'])) {
-		log_error("[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
+		syslog(LOG_NOTICE, "[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
-		log_error("[suricata] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		syslog(LOG_ERR, "[suricata] ERROR: A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
 	}
 
@@ -4133,17 +4133,17 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 	
 	$downloadrulescmd = "";
 	if ($syncdownloadrules == "yes") {
-		$downloadrulescmd = "log_error(gettext(\"[suricata] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
+		$downloadrulescmd = "syslog(LOG_NOTICE, gettext(\"[suricata] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
 		$downloadrulescmd .= "\tinclude_once(\"/usr/local/pkg/suricata/suricata_check_for_rule_updates.php\");\n";
 	}
 	$suricatastart = "";
 	if ($syncstartsuricata == "ON") {
-		$suricatastart = "log_error(gettext(\"[suricata] XMLRPC pkg sync: Checking Suricata status...\"));\n";
+		$suricatastart = "syslog(LOG_NOTICE, gettext(\"[suricata] XMLRPC pkg sync: Checking Suricata status...\"));\n";
 		$suricatastart .= "\tif (!is_process_running(\"suricata\")) {\n";
-		$suricatastart .= "\t\tlog_error(gettext(\"[suricata] XMLRPC pkg sync: Suricata not running. Sending a start command...\"));\n";
+		$suricatastart .= "\t\tsyslog(LOG_NOTICE, gettext(\"[suricata] XMLRPC pkg sync: Suricata not running. Sending a start command...\"));\n";
 		$suricatastart .= "\t\t\$sh_script = RCFILEPREFIX . \"suricata.sh\";\n";
 		$suricatastart .= "\t\tmwexec_bg(\"{\$sh_script} start\");\n\t}\n";
-		$suricatastart .= "\telse {\n\t\tlog_error(gettext(\"[suricata] XMLRPC pkg sync: Suricata is running...\"));\n\t}\n";
+		$suricatastart .= "\telse {\n\t\tsyslog(LOG_NOTICE, gettext(\"[suricata] XMLRPC pkg sync: Suricata is running...\"));\n\t}\n";
 	}
 
 	/*************************************************/
@@ -4163,12 +4163,12 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 	\$pkg_interface = "console";
 	{$downloadrulescmd}
 	unset(\$g["suricata_postinstall"]);
-	log_error(gettext("[suricata] XMLRPC pkg sync: Generating suricata.yaml file using Master Host settings..."));
+	syslog(LOG_NOTICE, gettext("[suricata] XMLRPC pkg sync: Generating suricata.yaml file using Master Host settings..."));
 	\$rebuild_rules = true;
 	sync_suricata_package_config();
 	\$rebuild_rules = false;
 	{$suricatastart}
-	log_error(gettext("[suricata] XMLRPC pkg sync process on this host is complete..."));
+	syslog(LOG_NOTICE, gettext("[suricata] XMLRPC pkg sync process on this host is complete..."));
 	\$pkg_interface = \$orig_pkg_interface;
 	unset(\$g["suricata_sync_in_progress"]);
 	return true;
@@ -4244,25 +4244,25 @@ EOD;
 			$method = 'pfsense.exec_php';
 			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
 
-			log_error("[suricata] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
+			syslog(LOG_NOTICE, "[suricata] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
 			$msg = new XML_RPC_Message($method, $params);
 			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 			$cli->setCredentials($username, $password);
 			$resp = $cli->send($msg, $synctimeout);
 			$error = "";
 			if (!$resp) {
-				$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				log_error($error);
+				$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 			} elseif ($resp->faultCode()) {
-				$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				log_error($error);
+				$error = "ERROR: An error was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 			}
 		}
 
 		if (!empty($sid_files) && $error == "") {
-			log_error("[suricata] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[suricata] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
 		}
 
 		/*************************************************/
@@ -4277,25 +4277,25 @@ EOD;
 			$method = 'pfsense.exec_php';
 			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
 
-			log_error("[suricata] Suricata XMLRPC sync sending IPREP files to {$url}:{$port}.");
+			syslog(LOG_NOTICE, "[suricata] Suricata XMLRPC sync sending IPREP files to {$url}:{$port}.");
 			$msg = new XML_RPC_Message($method, $params);
 			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 			$cli->setCredentials($username, $password);
 			$resp = $cli->send($msg, $synctimeout);
 			$error = "";
 			if (!$resp) {
-				$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				log_error($error);
+				$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 			} elseif ($resp->faultCode()) {
-				$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				log_error($error);
+				$error = "ERROR: An error was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 			}
 		}
 
 		if (!empty($iprep_files) && $error == "") {
-			log_error("[suricata] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[suricata] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
 		}
 
 		/* assemble xmlrpc payload */
@@ -4304,7 +4304,7 @@ EOD;
 			XML_RPC_encode($xml)
 		);
 
-		log_error("[suricata] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
+		syslog(LOG_NOTICE, "[suricata] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
 		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
@@ -4313,15 +4313,15 @@ EOD;
 		/* send our XMLRPC message and timeout after defined sync timeout value*/
 		$resp = $cli->send($msg, $synctimeout);
 		if (!$resp) {
-			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.";
-			log_error($error);
+			$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.";
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
+			$error = "ERROR: An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		} else {
-			log_error("[suricata] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
+			syslog(LOG_NOTICE, "[suricata] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
 		}
 
 		/* assemble xmlrpc payload */
@@ -4331,40 +4331,40 @@ EOD;
 			XML_RPC_encode($execcmd)
 		);
 
-		log_error("[suricata] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
+		syslog(LOG_NOTICE, "[suricata] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 		$cli->setCredentials($username, $password);
 		$resp = $cli->send($msg, $synctimeout);
 		if (!$resp) {
-			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error($error);
+			$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
+			$error = "ERROR: An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		} else {
-			log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
 		}
 
 		$params2 = array(
 			XML_RPC_encode($password),
 			XML_RPC_encode($execcmd2)
 		);
-		log_error("[suricata] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
+		syslog(LOG_NOTICE, "[suricata] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
 		$msg2 = new XML_RPC_Message($method, $params2);
 		$resp = $cli->send($msg2, $synctimeout);
 		if (!$resp) {
-			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error($error);
+			$error = "ERROR: A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
+			$error = "ERROR: An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		} else {
-			log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
 		}
 	}
 }
