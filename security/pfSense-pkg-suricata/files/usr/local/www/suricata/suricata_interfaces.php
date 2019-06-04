@@ -135,10 +135,10 @@ if ($_POST['by2toggle']) {
 		$by2_starting[$id] = TRUE;
 	} else {
 		if ($if_friendly == $suricatacfg['descr']) {
-			log_error("Toggle (barnyard stopping) for {$if_friendly}...");
+			syslog(LOG_NOTICE, "Toggle (barnyard stopping) for {$if_friendly}...");
 		}
 		else {
-			log_error("Toggle (barnyard stopping) for {$if_friendly}({$suricatacfg['descr']})...");
+			syslog(LOG_NOTICE, "Toggle (barnyard stopping) for {$if_friendly}({$suricatacfg['descr']})...");
 		}
 		suricata_barnyard_stop($suricatacfg, $if_real);
 		unset($by2_starting[$id]);
@@ -183,12 +183,12 @@ EOD;
 		case 'start':
 			file_put_contents("{$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php", $suricata_start_cmd);
 			if (suricata_is_running($suricatacfg['uuid'], $if_real)) {
-				log_error("Restarting Suricata on {$if_friendly}({$if_real}) per user request...");
+				syslog(LOG_NOTICE, "Restarting Suricata on {$if_friendly}({$if_real}) per user request...");
 				suricata_stop($suricatacfg, $if_real);
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
 			}
 			else {
-				log_error("Starting Suricata on {$if_friendly}({$if_real}) per user request...");
+				syslog(LOG_NOTICE, "Starting Suricata on {$if_friendly}({$if_real}) per user request...");
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_startcmd.php");
 			}
 			$suri_starting[$id] = TRUE;
@@ -198,7 +198,7 @@ EOD;
 			break;
 		case 'stop':
 			if (suricata_is_running($suricatacfg['uuid'], $if_real)) {
-				log_error("Stopping Suricata on {$if_friendly}({$if_real}) per user request...");
+				syslog(LOG_NOTICE, "Stopping Suricata on {$if_friendly}({$if_real}) per user request...");
 				suricata_stop($suricatacfg, $if_real);
 			}
 			unset($suri_starting[$id]);
