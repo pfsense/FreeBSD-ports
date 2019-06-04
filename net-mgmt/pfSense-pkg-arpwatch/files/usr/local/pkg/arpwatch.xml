@@ -81,6 +81,12 @@
 			<required/>
 		</field>
 		<field>
+			<fielddescr>Disable CARP/VRRP</fielddescr>
+			<fieldname>disable_carp</fieldname>
+			<type>checkbox</type>
+			<description>Disables reporting CARP/VRRP ethernet prefixes.</description>
+		</field>
+		<field>
 			<fielddescr>Disable bogons</fielddescr>
 			<fieldname>disable_bogons</fieldname>
 			<type>checkbox</type>

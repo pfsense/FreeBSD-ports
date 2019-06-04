@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	curl
-PORTVERSION=	7.64.1
-PORTREVISION=	1
+PORTVERSION=	7.65.0
+PORTREVISION=	2
 CATEGORIES=	ftp net www
 MASTER_SITES=	https://curl.haxx.se/download/ \
 		LOCAL/sunpoet
@@ -132,7 +132,7 @@ PSL_LIB_DEPENDS=	libpsl.so:dns/libpsl
 RTMP_CONFIGURE_WITH=	librtmp
 RTMP_LIB_DEPENDS=	librtmp.so:multimedia/librtmp
 RTMP_USES=		pkgconfig
-RTSP_ENABLE=		rtsp
+RTSP_CONFIGURE_ENABLE=	rtsp
 SMB_CONFIGURE_ENABLE=	smb
 SMTP_CONFIGURE_ENABLE=	smtp
 TELNET_CONFIGURE_ENABLE=telnet

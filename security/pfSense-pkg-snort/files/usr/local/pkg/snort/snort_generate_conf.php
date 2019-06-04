@@ -3,9 +3,9 @@
  * snort_generate_conf.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -132,14 +132,14 @@ if ($snortcfg['barnyard_enable'] == "on") {
 
 /* define spoink */
 $spoink_type = "";
-if ($snortcfg['blockoffenders7'] == "on") {
-	$pfkill = "";
-	if ($snortcfg['blockoffenderskill'] == "on")
-		$pfkill = "kill";
+if ($snortcfg['blockoffenders7'] == "on" && $snortcfg['ips_mode'] == "ips_mode_legacy") {
 	$spoink_wlist = snort_build_list($snortcfg, $snortcfg['whitelistname'], true);
 	/* write Pass List */
 	@file_put_contents("{$snortcfgdir}/{$snortcfg['whitelistname']}", implode("\n", $spoink_wlist));
-	$spoink_type = "output alert_pf: {$snortcfgdir}/{$snortcfg['whitelistname']},snort2c,{$snortcfg['blockoffendersip']},{$pfkill}";
+	$spoink_type = "output alert_pf: {$snortcfgdir}/{$snortcfg['whitelistname']},snort2c,{$snortcfg['blockoffendersip']}";
+	if ($snortcfg['blockoffenderskill'] == "on") {
+		$spoink_type .= ",kill";
+	}
 }
 
 /* define selected suppress file */
@@ -1052,10 +1052,6 @@ $default_disabled_preprocs = array(
 /* Begin preprocessor lib file copies  */
 /***************************************/
 
-// Start by removing all existing preproc libraries in the
-// snort_dynamicpreprocessors directory for the interface.
-mwexec("/bin/rm -rf {$snort_dirs['dynamicpreprocessor']}/*.so");
-
 // Build the string variable we use to actually populate the snort.conf
 // file's preprocessors config section by walking the list of enabled
 // preprocessors and copying the required library files from the master
@@ -1064,28 +1060,42 @@ $snort_preprocessors = "";
 foreach ($snort_preproc as $preproc) {
 	if ($snortcfg[$preproc] == 'on' || empty($snortcfg[$preproc]) ) {
 
-		/* If preprocessor is not explicitly "on" or "off", then default to "off" if in our default disabled list */
+		/* If preprocessor is not explicitly "on" or "off", then default to "off" if it  */
+		/* is in our default disabled list by skipping the library file copy.            */
 		if (empty($snortcfg[$preproc]) && in_array($preproc, $default_disabled_preprocs))
 			continue;
 
 		/* NOTE: The $$ is not a bug. It is an advanced feature of php */
 		if (!empty($snort_preproc_libs[$preproc])) {
 			$preproclib = "libsf_" . $snort_preproc_libs[$preproc] . ".so";
-			if (!file_exists($snort_dirs['dynamicpreprocessor'] . "{$preproclib}")) {
+			if (!file_exists($snort_dirs['dynamicpreprocessor'] . "/{$preproclib}")) {
 				if (file_exists("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}")) {
-					@copy("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}", "{$snort_dirs['dynamicpreprocessor']}/{$preproclib}");
+					// Use '/bin/cp -p' to preserve file timestamps because a changed
+					// timestamp will cause SIGHUP (live reload) to give a false error
+					// about a changed dynamic preprocessor configuration.
+					mwexec("/bin/cp -p {$snortlibdir}/snort_dynamicpreprocessor/{$preproclib} {$snort_dirs['dynamicpreprocessor']}/{$preproclib}");
 					$snort_preprocessors .= $$preproc;
 					$snort_preprocessors .= "\n";
 				} else
-					log_error("Could not find the {$preproclib} file. Snort might error out!");
+					log_error("Could not find the {$preproclib} library file in '{$snortlibdir}/snort_dynamicpreprocessor/'. Snort might fail to start!");
 			} else {
 				$snort_preprocessors .= $$preproc;
 				$snort_preprocessors .= "\n";
 			}
 		} else {
+			// Some preprocessors don't have a library, so just add
+			// their configuration settings to the master string.
 			$snort_preprocessors .= $$preproc;
 			$snort_preprocessors .= "\n";
 		}
+	}
+	elseif ($snortcfg[$preproc] == 'off' && !empty($snort_preproc_libs[$preproc])) {
+
+		// Remove the associated *.so library file from our local
+		// snort_dynamicpreprocessor directory for any disabled
+		// dynamic preprocessor.
+		$preproclib = "libsf_" . $snort_preproc_libs[$preproc] . ".so";
+		mwexec("rm -f {$snort_dirs['dynamicpreprocessor']}/{$preproclib}");
 	}
 }
 // Remove final trailing newline
@@ -1376,9 +1386,10 @@ else
 // Check for and configure Host Attribute Table if enabled
 $host_attrib_config = "";
 if ($snortcfg['host_attribute_table'] == "on" && !empty($snortcfg['host_attribute_data'])) {
-	@file_put_contents("{$snortcfgdir}/host_attributes", base64_decode($snortcfg['host_attribute_data']));
+	// Remove carriage returns from encoded XML data when writing file to disk
+	@file_put_contents("{$snortcfgdir}/host_attributes.xml", str_replace("\r", '', base64_decode($snortcfg['host_attribute_data'])));
 	$host_attrib_config = "# Host Attribute Table #\n";
-	$host_attrib_config .= "attribute_table filename {$snortcfgdir}/host_attributes\n";
+	$host_attrib_config .= "attribute_table filename {$snortcfgdir}/host_attributes.xml\n";
 	if (!empty($snortcfg['max_attribute_hosts']))
 		$host_attrib_config .= "config max_attribute_hosts: {$snortcfg['max_attribute_hosts']}\n";
 	if (!empty($snortcfg['max_attribute_services_per_host']))

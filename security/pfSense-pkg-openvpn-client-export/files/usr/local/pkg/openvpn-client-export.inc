@@ -995,12 +995,11 @@ function openvpn_client_export_find_port_forwards($targetip, $targetport, $targe
 
 	foreach ($config['nat']['rule'] as $natent) {
 		$dest = array();
-		if (!isset($natent['disabled']) && ($natent['target'] == $targetip) && ($natent['local-port'] == $targetport) && ($natent['protocol'] == $targetproto)) {
-			$dest['proto'] = $natent['protocol'];
-
-			// Could be multiple ports... But we can only use one.
-			$dports = is_port($natent['destination']['port']) ? array($natent['destination']['port']) : filter_expand_alias_array($natent['destination']['port']);
-			$dest['port'] = $dports[0];
+		if (!isset($natent['disabled']) &&
+		   ($natent['target'] == $targetip) &&
+		   ($natent['local-port'] == $targetport) &&
+		   ($natent['protocol'] == strtolower(substr($targetproto, 0, 3)))) {
+			$dest['proto'] = $targetproto;
 
 			// Could be network or address ...
 			$natif = (!$natent['interface']) ? "wan" : $natent['interface'];
@@ -1037,7 +1036,15 @@ function openvpn_client_export_find_port_forwards($targetip, $targetport, $targe
 				}
 			}
 
-			$destinations[] = $dest;
+			$dports = is_port($natent['destination']['port'])
+			    ? array($natent['destination']['port'])
+			    : filter_expand_alias_array($natent['destination']['port']);
+
+			// Could be multiple ports, we add all of them
+			foreach ($dports as $dport) {
+				$dest['port'] = $dport;
+				$destinations[] = $dest;
+			}
 		}
 	}
 

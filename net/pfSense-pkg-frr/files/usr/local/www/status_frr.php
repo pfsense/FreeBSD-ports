@@ -178,7 +178,7 @@ if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "ospf")) && $frr_
 	defCmdT("ospf_routes", "OSPF Routes", "{$control_script} ospf route", true, 1);
 }
 
-if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "ospf6")) && $frr_enabled && $ospfd_enabled) {
+if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "ospf6")) && $frr_enabled && $ospf6d_enabled) {
 	defCmdT("ospf6_general", "OSPF6 General", "{$control_script} ospf6 general");
 	defCmdT("ospf6_neighbors", "OSPF6 Neighbors", "{$control_script} ospf6 neighbor");
 	defCmdT("ospf6_routes", "OSPF6 Routes", "{$control_script} ospf6 route", true, 1);

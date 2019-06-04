@@ -150,7 +150,48 @@ function frr_global_prefixes_validate_input() {
 	global $config, $input_errors, $pkg;
 	frr_sort_rows_by_seq();
 
+	if (empty($_POST['name'])) {
+		$input_errors[] = "A name is required.";
+	}
+
 	/* Do not allow a name of: dnr6-list */
+	if ($_POST['name'] == "dnr6-list") {
+		$input_errors[] = "That name is reserved.";
+	}
+
+	foreach ($_POST as $key => $value) {
+		$matches = array();
+		if (preg_match("/^seq(\d+)$/", $key, $matches)) {
+			if (!is_numeric($_POST["seq{$matches[1]}"])) {
+				$input_errors[] = "Sequence in row {$matches[1]} must be a number.";
+			}
+		}
+		if (preg_match("/^action(\d+)$/", $key, $matches)) {
+			if (!in_array($_POST["action{$matches[1]}"], array('deny', 'permit'))) {
+				$input_errors[] = "Action in row {$matches[1]} must be Deny or Permit.";
+			}
+		}
+		if (preg_match("/^source(\d+)$/", $key, $matches)) {
+			if (!is_subnet($_POST["source{$matches[1]}"])) {
+				$input_errors[] = "Network in row {$matches[1]} must be a subnet.";
+			}
+		}
+		if (preg_match("/^ge(\d+)$/", $key, $matches)) {
+			if (!empty($_POST["ge{$matches[1]}"]) && !is_numeric($_POST["ge{$matches[1]}"])) {
+				$input_errors[] = "Minimum prefix in row {$matches[1]} must be a number.";
+			} elseif (isset($_POST["le{$matches[1]}"]) &&
+				    is_numeric($_POST["le{$matches[1]}"]) &&
+				    ( (int) $_POST["ge{$matches[1]}"] + 1 >= (int) $_POST["le{$matches[1]}"] )) {
+				$input_errors[] = "Minimum prefix in row {$matches[1]} must be less than maximum, and differ by more than 1.";
+			}
+		}
+		if (preg_match("/^le(\d+)$/", $key, $matches)) {
+			if (!empty($_POST["le{$matches[1]}"]) && !is_numeric($_POST["le{$matches[1]}"])) {
+				$input_errors[] = "Maximum prefix in row {$matches[1]} must be a number.";
+			}
+		}
+	}
+
 }
 
 function frr_global_routemaps_validate_input() {
@@ -181,6 +222,9 @@ function frr_ospf_interfaces_validate_input() {
 	if ($_POST['md5password'] && empty($_POST['password'])) {
 		$input_errors[] = "Please input a password.";
 	}
+	if (!empty($_POST['password']) && strlen($_POST['password']) > 8) {
+		$input_errors[] = "Password must be 8 characters or less.";
+	}
 }
 
 function frr_ospf_validate_input() {
@@ -209,6 +253,18 @@ function frr_ospf6_interfaces_validate_input() {
 
 function frr_ospf6_validate_input() {
 	global $config, $g, $input_errors;
+
+	if (!empty($_POST['routerid']) && !is_ipaddr($_POST['routerid'])) {
+		$input_errors[] = "Router ID must be an IP address.";
+	}
+
+	if (empty($_POST['routerid'])) {
+
+		if (!is_array($config['installedpackages']['frr']['config']) ||
+		    empty($config['installedpackages']['frr']['config'][0]['routerid'])) {
+			$input_errors[] = "Router ID is required because the global Router ID is not set.";
+		}
+	}
 }
 
 

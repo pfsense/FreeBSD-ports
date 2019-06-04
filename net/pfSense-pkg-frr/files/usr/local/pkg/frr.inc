@@ -273,6 +273,10 @@ if [ -e /var/run/frr/zebra.pid ]; then
 	/bin/pkill -F /var/run/frr/zebra.pid
 	/bin/rm -f /var/run/frr/zebra.pid
 fi
+if [ -e /var/run/frr/staticd.pid ]; then
+	/bin/pkill -F /var/run/frr/staticd.pid
+	/bin/rm -f /var/run/frr/staticd.pid
+fi
 if [ -e /var/run/frr/ospfd.pid ]; then
 	/bin/pkill -F /var/run/frr/ospfd.pid
 	/bin/rm -f /var/run/frr/ospfd.pid
@@ -292,6 +296,7 @@ EOF;
 /bin/mkdir -p /var/run/frr
 /bin/mkdir -p /var/log/frr
 /bin/rm -f /var/run/frr/zebra.pid
+/bin/rm -f /var/run/frr/staticd.pid
 /bin/rm -f /var/run/frr/ospfd.pid
 /bin/rm -f /var/run/frr/ospf6d.pid
 /bin/rm -f /var/run/frr/bgpd.pid
@@ -310,6 +315,11 @@ if /bin/pgrep -q zebra; then
 	sleep 1
 	/usr/bin/killall -9 zebra 2>/dev/null
 fi
+if /bin/pgrep -q staticd; then
+	/usr/bin/killall staticd
+	sleep 1
+	/usr/bin/killall -9 staticd 2>/dev/null
+fi
 if /bin/pgrep -q ospfd; then
 	/usr/bin/killall ospfd
 	sleep 1
@@ -327,6 +337,7 @@ if /bin/pgrep -q bgpd; then
 fi
 {$carp_ip_status_check}
 [ -s {$frr_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$frr_config_base}/zebra.conf
+[ -s {$frr_config_base}/staticd.conf ] && /usr/local/sbin/staticd -d -f {$frr_config_base}/staticd.conf
 [ -s {$frr_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$frr_config_base}/ospfd.conf
 [ -s {$frr_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$frr_config_base}/ospf6d.conf
 [ -s {$frr_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$frr_config_base}/bgpd.conf
@@ -346,6 +357,7 @@ EOF;
 	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/ospfd.conf");
 	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/ospf6d.conf");
 	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/zebra.conf");
+	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/staticd.conf");
 	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/bgpd.conf");
 
 	/* Start/Restart FRR, if a CARP VIP is set, check its status and act

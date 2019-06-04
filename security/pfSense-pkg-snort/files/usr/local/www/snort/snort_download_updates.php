@@ -243,7 +243,7 @@ display_top_tabs($tab_array, true);
 					<td><?=gettext($openappid_detectors_sig_date);?></td>
 				</tr>
 				<tr>
-                                        <td><?=gettext("Snort OpenAppID RULES Detectors");?></td>
+                                        <td><?=gettext("Snort AppID Open Text Rules");?></td>
                                         <td><?=trim($openappid_detectors_rules_sig_chk_local);?></td>
                                         <td><?=gettext($openappid_detectors_rules_sig_date);?></td>
                                 </tr>

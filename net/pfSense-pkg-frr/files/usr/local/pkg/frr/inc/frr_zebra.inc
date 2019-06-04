@@ -617,6 +617,8 @@ function frr_zebra_generate_acceptfilters() {
 /* Make zebra config */
 function frr_generate_config_zebra() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
+	unlink_if_exists("{$frr_config_base}/zebra.conf");
+	unlink_if_exists("{$frr_config_base}/staticd.conf");
 	/* Populate FRR Global Settings */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
@@ -653,12 +655,18 @@ function frr_generate_config_zebra() {
 		/* Route Maps */
 		/* Per-protocol applications of Route Maps*/
 		$zebraconffile .= frr_zebra_generate_routemaps();
-		/* Null Routes */
-		$zebraconffile .= frr_zebra_generate_nullroutes();
-		/* Static Routes */
-		$zebraconffile .= frr_zebra_generate_staticroutes();
 		/* Default Accept Filters */
 		$zebraconffile .= frr_zebra_generate_acceptfilters();
+
+		$staticdconffile = $frr_auto_config_warning;
+		/* Null Routes */
+		$staticdconffile .= frr_zebra_generate_nullroutes();
+		/* Static Routes */
+		$staticdconffile .= frr_zebra_generate_staticroutes();
+
 	}
 	file_put_contents("{$frr_config_base}/zebra.conf", $zebraconffile);
+	if (!empty($staticdconffile) && ($staticdconffile != $frr_auto_config_warning)) {
+		file_put_contents("{$frr_config_base}/staticd.conf", $staticdconffile);
+	}
 }

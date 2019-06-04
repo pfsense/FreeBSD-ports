@@ -136,6 +136,9 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 }
 else {
 	update_status("\nMaxMind GeoIP databases previously downloaded.\n");
+	update_status("Re-creating pfBlockerNG Continent PHP files... ");
+	pfblockerng_get_countries();
+	update_status("done.\n");
 }
 
 
