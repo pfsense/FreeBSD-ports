@@ -76,6 +76,17 @@ safe_mkdir(SURICATALOGDIR);
 safe_mkdir(SURICATA_SID_MODS_PATH);
 safe_mkdir(SURICATA_IPREP_PATH);
 
+/*****************************************************************/
+/* In the event this is a reinstall (or update), then recreate   */
+/* critical config files from the package sample templates.      */
+/*****************************************************************/
+$map_files = array( "classification.config", "reference.config", "threshold.config" );
+foreach ($map_files as $f) {
+	if (file_exists(SURICATADIR . $f . ".sample") && !file_exists(SURICATADIR . $f)) {
+		copy(SURICATADIR . $f . ".sample", SURICATADIR . $f);
+	}
+}
+
 // Download the latest GeoIP DB updates and create cron task if the feature is not disabled
 if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] != 'off') {
 	log_error(gettext("[Suricata] Installing free GeoLite2 country IP database file in /usr/local/share/suricata/GeoLite2/..."));
