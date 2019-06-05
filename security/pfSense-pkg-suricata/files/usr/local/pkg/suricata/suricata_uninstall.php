@@ -35,12 +35,12 @@ $rcdir = RCFILEPREFIX;
 $suricata_rules_upd_log = SURICATA_RULES_UPD_LOGFILE;
 $suri_pf_table = SURICATA_PF_TABLE;
 
-log_error(gettext("[Suricata] Suricata package uninstall in progress..."));
+syslog(LOG_NOTICE, gettext("[Suricata] Suricata package uninstall in progress..."));
 
 /* Make sure all active Suricata processes are terminated */
 /* Log a message only if a running process is detected */
 if (is_service_running("suricata"))
-	log_error(gettext("[Suricata] Suricata STOP for all interfaces..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Stopping Suricata on all configured interfaces..."));
 killbyname("suricata");
 sleep(1);
 
@@ -51,7 +51,7 @@ unlink_if_exists("{$g['varrun_path']}/suricata*.lck");
 /* Make sure all active Barnyard2 processes are terminated */
 /* Log a message only if a running process is detected     */
 if (is_service_running("barnyard2"))
-	log_error(gettext("[Suricata] Barnyard2 STOP for all interfaces..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Stopping Barnyard2 on all configured interfaces..."));
 killbyname("barnyard2");
 sleep(1);
 
@@ -67,7 +67,7 @@ install_cron_job("suricata_etiqrisk_update.php", false);
 
 /* See if we are to keep Suricata log files on uninstall */
 if ($config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on') {
-	log_error(gettext("[Suricata] Clearing all Suricata-related log files..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Clearing all Suricata-related log files..."));
 	unlink_if_exists("{$suricata_rules_upd_log}");
 	rmdir_recursive("{$suricatalogdir}");
 }
@@ -122,14 +122,14 @@ if (!empty($widgets)) {
 
 /* Keep this as a last step */
 if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] != 'on') {
-	log_error(gettext("Not saving settings... all Suricata configuration info and logs deleted..."));
+	syslog(LOG_NOTICE, gettext("Not saving settings... all Suricata configuration info and logs deleted..."));
 	unset($config['installedpackages']['suricata']);
 	unset($config['installedpackages']['suricatasync']);
 	unlink_if_exists("{$suricata_rules_upd_log}");
 	rmdir_recursive("{$suricatalogdir}");
 	rmdir_recursive("{$g['vardb_path']}/suricata");
 	write_config("Removing Suricata configuration");
-	log_error(gettext("[Suricata] The package has been removed from this system..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] The package has been removed from this system..."));
 }
 
 ?>

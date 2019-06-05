@@ -238,8 +238,8 @@ function suricata_download_file_url($url, $file_out) {
 			$rc = curl_exec($ch);
 			if ($rc === true)
 				break;
-			log_error(gettext("[Suricata] Rules download error: " . curl_error($ch)));
-			log_error(gettext("[Suricata] Will retry in 15 seconds..."));
+			syslog(LOG_ERR, gettext("[Suricata] ERROR: Rules download error: " . curl_error($ch)));
+			syslog(LOG_NOTICE, gettext("[Suricata] Will retry the download in 15 seconds..."));
 			sleep(15);
 		}
 		if ($rc === false)
@@ -252,12 +252,12 @@ function suricata_download_file_url($url, $file_out) {
 
 		// If we had to try more than once, log it
 		if ($counter > 1)
-			log_error(gettext("File '" . basename($file_out) . "' download attempts: {$counter} ..."));
+			syslog(LOG_NOTICE, gettext("File '" . basename($file_out) . "' download attempts: {$counter} ..."));
 		return ($http_code == 200) ? true : $http_code;
 	}
 	else {
 		$last_curl_error = gettext("Failed to create file " . $file_out);
-		log_error(gettext("[Suricata] Failed to create file {$file_out} ..."));
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: Failed to create file {$file_out} ..."));
 		return false;
 	}
 }
@@ -298,7 +298,7 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 			$md5_check_old = file_get_contents("{$suricatadir}{$filename_md5}");
 			if ($md5_check_new == $md5_check_old) {
 				suricata_update_status(gettext("{$desc} are up to date.") . "\n");
-				log_error(gettext("[Suricata] {$desc} are up to date..."));
+				syslog(LOG_NOTICE, gettext("[Suricata] {$desc} are up to date..."));
 				error_log(gettext("\t{$desc} are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 				return false;
 			}
@@ -312,8 +312,8 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 		$suricata_err_msg = gettext("Server returned error code {$rc}.");
 		suricata_update_status(gettext("{$desc} md5 error ... Server returned error code {$rc}") . "\n");
 		suricata_update_status(gettext("{$desc} will not be updated.") . "\n");
-		log_error(gettext("[Suricata] {$desc} md5 download failed..."));
-		log_error(gettext("[Suricata] Server returned error code {$rc}..."));
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: {$desc} md5 download failed..."));
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: Remote server returned error code {$rc}..."));
 		error_log(gettext("\t{$suricata_err_msg}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tServer error message was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -347,7 +347,7 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	$filename = basename($file_dst);
 
 	suricata_update_status(gettext("There is a new set of {$desc} posted. Downloading..."));
-	log_error(gettext("[Suricata] There is a new set of {$desc} posted. Downloading {$filename}..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] There is a new set of {$desc} posted. Downloading {$filename}..."));
 	error_log(gettext("\tThere is a new set of {$desc} posted.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 	error_log(gettext("\tDownloading file '{$filename}'...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
        	$rc = suricata_download_file_url($file_url, $file_dst);
@@ -355,15 +355,14 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	// See if the download from the URL was successful
 	if ($rc === true) {
 		suricata_update_status(gettext(" done.") . "\n");
-		log_error("[Suricata] {$desc} file update downloaded successfully.");
+		syslog(LOG_NOTICE, "[Suricata] {$desc} file update downloaded successfully.");
 		error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
 
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
 		if ($file_md5 != trim(md5_file($file_dst))){
 			suricata_update_status(gettext("{$desc} file MD5 checksum failed!") . "\n");
-			log_error(gettext("[Suricata] {$desc} file download failed.  Bad MD5 checksum."));
-        	        log_error(gettext("[Suricata] Downloaded File MD5: " . md5_file($file_dst)));
-			log_error(gettext("[Suricata] Expected File MD5: {$file_md5}"));
+			syslog(LOG_ERR, gettext("[Suricata] ERROR: {$desc} file download failed.  Bad MD5 checksum."));
+        	        syslog(LOG_ERR, gettext("[Suricata] ERROR: Downloaded file has MD5: " . md5_file($file_dst)). gettext(", but expected MD5: {$file_md5}"));
 			error_log(gettext("\t{$desc} file download failed.  Bad MD5 checksum.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\tDownloaded {$desc} file MD5: " . md5_file($file_dst) . "\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			error_log(gettext("\tExpected {$desc} file MD5: {$file_md5}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -375,8 +374,8 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	}
 	else {
 		suricata_update_status(gettext("{$desc} file download failed!") . "\n");
-		log_error(gettext("[Suricata] {$desc} file download failed... server returned error '{$rc}'."));
-		error_log(gettext("\t{$desc} file download failed.  Server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		syslog(LOG_ERR, gettext("[Suricata] ERROR: {$desc} file download failed... server returned error '{$rc}'."));
+		error_log(gettext("\tERROR: {$desc} file download failed.  Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		$update_errors = true;
@@ -427,7 +426,7 @@ if ($emergingthreats == 'on') {
 if ($snortdownload == 'on') {
 	$snort_custom_url = $config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on' ? TRUE : FALSE;
 	if (empty($snort_filename)) {
-		log_error(gettext("No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."));
+		syslog(LOG_WARN, gettext("WARNING: No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."));
 		error_log(gettext("\tWARNING-- No snortrules-snapshot filename set on GLOBAL SETTINGS tab. Snort rules cannot be updated!\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		$snortdownload = 'off';
 	}
@@ -587,7 +586,7 @@ if ($snortcommunityrules == 'on') {
 
 // If removing deprecated rules categories, then do it
 if ($config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on") {
-	log_error(gettext("[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 	suricata_remove_dead_rules();
 }
 
@@ -678,14 +677,14 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		// if enabled, else just do a hard restart of all the instances.
 		if ($config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == 'on') {
 			suricata_update_status(gettext('Signaling Suricata to live-load the new set of rules...'));
-			log_error(gettext("[Suricata] Live-Reload of rules from auto-update is enabled..."));
+			syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of rules from auto-update is enabled..."));
 			error_log(gettext("\tLive-Reload of updated rules is enabled...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 				suricata_reload_config($value);
 				error_log(gettext("\tLive swap of updated rules requested for " . convert_friendly_interface_to_friendly_descr($value['interface']) . ".\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			}
 			suricata_update_status(gettext(" done.") . "\n");
-			log_error(gettext("[Suricata] Live-Reload of updated rules completed..."));
+			syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of updated rules completed..."));
 			error_log(gettext("\tLive-Reload of the updated rules is complete.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		}
 		else {
@@ -693,7 +692,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			error_log(gettext("\tRestarting Suricata to activate the new set of rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
        			restart_service("suricata");
 			suricata_update_status(gettext(" done.") . "\n");
-			log_error(gettext("[Suricata] Suricata has restarted with your new set of rules..."));
+			syslog(LOG_NOTICE, gettext("[Suricata] Suricata has restarted with your new set of rules..."));
 			error_log(gettext("\tSuricata has restarted with your new set of rules.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		}
 	}
@@ -707,7 +706,7 @@ if (is_dir("{$tmpfname}")) {
 }
 
 suricata_update_status(gettext("The Rules update has finished.") . "\n");
-log_error(gettext("[Suricata] The Rules update has finished."));
+syslog(LOG_NOTICE, gettext("[Suricata] The Rules update has finished."));
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 
 /* Save this update status to the configuration file */
