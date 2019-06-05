@@ -1,6 +1,6 @@
 diff -ruN ./suricata-4.1.4.orig/src/Makefile.am ./suricata-4.1.4/src/Makefile.am
 --- ./suricata-4.1.4.orig/src/Makefile.am	2019-04-30 03:14:35.000000000 -0400
-+++ ./src/Makefile.am	2019-05-13 14:24:42.000000000 -0400
++++ ./src/Makefile.am	2019-06-05 15:42:11.000000000 -0400
 @@ -10,6 +10,7 @@
  suricata_SOURCES = \
  alert-debuglog.c alert-debuglog.h \
@@ -11,21 +11,29 @@ diff -ruN ./suricata-4.1.4.orig/src/Makefile.am ./suricata-4.1.4/src/Makefile.am
  alert-unified2-alert.c alert-unified2-alert.h \
 diff -ruN ./suricata-4.1.4.orig/src/Makefile.in ./suricata-4.1.4/src/Makefile.in
 --- ./suricata-4.1.4.orig/src/Makefile.in	2019-04-30 03:14:50.000000000 -0400
-+++ ./src/Makefile.in	2019-05-13 14:25:55.000000000 -0400
++++ ./src/Makefile.in	2019-06-05 15:43:34.000000000 -0400
 @@ -112,7 +112,7 @@
  am__installdirs = "$(DESTDIR)$(bindir)"
  PROGRAMS = $(bin_PROGRAMS)
  am_suricata_OBJECTS = alert-debuglog.$(OBJEXT) alert-fastlog.$(OBJEXT) \
 -	alert-prelude.$(OBJEXT) alert-syslog.$(OBJEXT) \
-+	alert-prelude.$(OBJEXT) alert-syslog.$(OBJEXT) alert-pf.$(OBJEXT) \
++	alert-pf.$(OBJEXT) alert-prelude.$(OBJEXT) alert-syslog.$(OBJEXT) \
  	alert-unified2-alert.$(OBJEXT) app-layer.$(OBJEXT) \
  	app-layer-dcerpc.$(OBJEXT) app-layer-dcerpc-udp.$(OBJEXT) \
  	app-layer-detect-proto.$(OBJEXT) app-layer-dnp3.$(OBJEXT) \
+@@ -654,6 +654,7 @@
+ suricata_SOURCES = \
+ alert-debuglog.c alert-debuglog.h \
+ alert-fastlog.c alert-fastlog.h \
++alert-pf.c alert-pf.h \
+ alert-prelude.c alert-prelude.h \
+ alert-syslog.c alert-syslog.h \
+ alert-unified2-alert.c alert-unified2-alert.h \
 diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 --- ./suricata-4.1.4.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2018-12-18 21:07:46.000000000 -0500
-@@ -0,0 +1,1077 @@
-+/* Copyright (C) 2007-2018 Open Information Security Foundation
++++ ./src/alert-pf.c	2019-06-05 14:26:02.000000000 -0400
+@@ -0,0 +1,1081 @@
++/* Copyright (C) 2007-2019 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
 + * the GNU General Public License version 2 as published by the Free
@@ -43,7 +51,7 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 + *
 + * Portions of this module are based on previous works of the following:
 + *
-+ * Copyright (c) 2018  Bill Meeks
++ * Copyright (c) 2019  Bill Meeks
 + * Copyright (c) 2012  Ermal Luci
 + * Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 + * Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -51,7 +59,7 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 + * Copyright (c) 2003, 2004 Armin Wolfermann:
 + * 
 + * The AlertPfBlock() function is based 
-+ * on Armin's Wolfermann pftabled-1.03 functions.
++ * on Armin Wolfermann's pftabled-1.03 functions.
 + *
 + * All rights reserved.
 + *
@@ -400,14 +408,14 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +	if (ret == 1 && strlen(cad) > 0) {
 +	    /* is it an IPv6 address? */
 +	    if (strchr(cad, ':') != NULL) {
-+	        if (SCRadixAddKeyIPV6String(cad, ctx->tree, NULL) == NULL) {
++	        if (SCRadixAddKeyIPV6String(cad, ctx->tree, ctx) == NULL) {
 +		    SCLogInfo("alert-pf -> Invalid IP(%s) parameter provided in Pass List, skipping...", cad);
 +		    continue;
 +		}
 +		count++;
 +	    }
 +	    else {
-+		if (SCRadixAddKeyIPV4String(cad, ctx->tree, NULL) == NULL) {
++		if (SCRadixAddKeyIPV4String(cad, ctx->tree, ctx) == NULL) {
 +		    SCLogInfo("alert-pf -> Invalid IP(%s) parameter provided in Pass List, skipping...", cad);
 +		    continue;
 +		}
@@ -447,13 +455,13 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +                    case AF_INET:
 +			PrintInet(AF_INET, (const void *)&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, tmp, sizeof(tmp));
 +			SCLogInfo("alert-pf -> adding firewall interface %s IPv4 address %s to automatic interface IP Pass List.", ifa->ifa_name, tmp);
-+			SCRadixAddKeyIPV4((uint8_t *)(&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr), ctx->tree, 0);
++			SCRadixAddKeyIPV4((uint8_t *)(&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr), ctx->tree, ctx);
 +			break;
 +
 +		    case AF_INET6:
 +			PrintInet(AF_INET6, (const void *)&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, tmp, sizeof(tmp));
 +			SCLogInfo("alert-pf -> adding firewall interface %s IPv6 address %s to automatic interface IP Pass List.", ifa->ifa_name, tmp);
-+			SCRadixAddKeyIPV6((uint8_t *)(&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr), ctx->tree, 0);
++			SCRadixAddKeyIPV6((uint8_t *)(&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr), ctx->tree, ctx);
 +			break;
 +
 +		    default:
@@ -522,7 +530,7 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +			if (ip->family == AF_INET) {
 +				if (SCRadixFindKeyIPV4ExactMatch((uint8_t *)&ip->addr_data32, ctx->tree, NULL) == NULL) {
 +					// Not already in list, so add it
-+					SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree, NULL);
++					SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree, ctx);
 +    					PrintInet(AF_INET, (const void *)&ip->addr_data32, tmp, sizeof(tmp));
 +					SCLogInfo("alert-pf -> added address %s to automatic firewall interface IP Pass List.", tmp);
 +				}
@@ -788,6 +796,8 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +
 +    ctx->file_ctx = logfile_ctx;
 +
++    /* Parse the remaining arguments for this plugin from */
++    /* the suricata.yaml conf file.                       */
 +    ctx->kill_state = 1;
 +    if (kill_state == NULL) {
 +        SCLogWarning(SC_ERR_INVALID_ARGUMENT, "alert-pf: kill-state parameter not recognized, defaulting to 'yes'.");
@@ -851,6 +861,8 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +        default:
 +            block = "both";
 +    }
++
++    /* Set defaults for any missing conf arguments */
 +    const char *state = ctx->kill_state ? "on" : "off";
 +    const char *drops = ctx->block_drops ? "on" : "off";
 +
@@ -1104,9 +1116,9 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +
 diff -ruN ./suricata-4.1.4.orig/src/alert-pf.h ./suricata-4.1.4/src/alert-pf.h
 --- ./suricata-4.1.4.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.h	2018-12-18 20:22:46.000000000 -0500
++++ ./src/alert-pf.h	2019-06-05 14:27:11.000000000 -0400
 @@ -0,0 +1,59 @@
-+/* Copyright (C) 2007-2010 Open Information Security Foundation
++/* Copyright (C) 2007-2019 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
 + * the GNU General Public License version 2 as published by the Free
@@ -1124,7 +1136,7 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.h ./suricata-4.1.4/src/alert-pf.h
 + *
 + * Portions of this module are based on previous works of the following:
 + *
-+ * Copyright (c) 2018  Bill Meeks
++ * Copyright (c) 2019  Bill Meeks
 + * Copyright (c) 2012  Ermal Luci
 + * Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 + * Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -1167,32 +1179,32 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.h ./suricata-4.1.4/src/alert-pf.h
 +
 diff -ruN ./suricata-4.1.4.orig/src/output.c ./suricata-4.1.4/src/output.c
 --- ./suricata-4.1.4.orig/src/output.c	2019-04-30 03:14:35.000000000 -0400
-+++ ./src/output.c	2019-05-13 14:27:48.000000000 -0400
-@@ -45,6 +45,7 @@
++++ ./src/output.c	2019-06-05 15:47:14.000000000 -0400
+@@ -43,6 +43,7 @@
+ #include "alert-fastlog.h"
+ #include "alert-unified2-alert.h"
  #include "alert-debuglog.h"
++#include "alert-pf.h"
  #include "alert-prelude.h"
  #include "alert-syslog.h"
-+#include "alert-pf.h"
  #include "output-json-alert.h"
- #include "output-json-flow.h"
- #include "output-json-netflow.h"
-@@ -1049,6 +1050,8 @@
-     AlertPreludeRegister();
-     /* syslog log */
-     AlertSyslogRegister();
+@@ -1045,6 +1046,8 @@
+     AlertFastLogRegister();
+     /* debug log */
+     AlertDebugLogRegister();
 +    /* alerf pf */
 +    AlertPfRegister();
-     /* unified2 log */
-     Unified2AlertRegister();
-     /* drop log */
+     /* prelue log */
+     AlertPreludeRegister();
+     /* syslog log */
 diff -ruN ./suricata-4.1.4.orig/src/suricata-common.h ./suricata-4.1.4/src/suricata-common.h
 --- ./suricata-4.1.4.orig/src/suricata-common.h	2019-04-30 03:14:35.000000000 -0400
-+++ ./src/suricata-common.h	2019-05-13 14:28:41.000000000 -0400
-@@ -439,6 +439,7 @@
-     LOGGER_JSON_STATS,
++++ ./src/suricata-common.h	2019-06-05 15:48:20.000000000 -0400
+@@ -440,6 +440,7 @@
      LOGGER_PRELUDE,
      LOGGER_PCAP,
-+    LOGGER_ALERT_PF,
      LOGGER_JSON_METADATA,
++    LOGGER_ALERT_PF,
      LOGGER_SIZE,
  } LoggerId;
+ 
