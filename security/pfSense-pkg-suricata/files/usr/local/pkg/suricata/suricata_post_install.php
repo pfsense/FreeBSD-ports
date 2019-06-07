@@ -76,16 +76,27 @@ safe_mkdir(SURICATALOGDIR);
 safe_mkdir(SURICATA_SID_MODS_PATH);
 safe_mkdir(SURICATA_IPREP_PATH);
 
+/*****************************************************************/
+/* In the event this is a reinstall (or update), then recreate   */
+/* critical config files from the package sample templates.      */
+/*****************************************************************/
+$map_files = array( "classification.config", "reference.config", "threshold.config" );
+foreach ($map_files as $f) {
+	if (file_exists(SURICATADIR . $f . ".sample") && !file_exists(SURICATADIR . $f)) {
+		copy(SURICATADIR . $f . ".sample", SURICATADIR . $f);
+	}
+}
+
 // Download the latest GeoIP DB updates and create cron task if the feature is not disabled
 if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] != 'off') {
-	log_error(gettext("[Suricata] Installing free GeoLite2 country IP database file in /usr/local/share/suricata/GeoLite2/..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Installing free GeoLite2 country IP database file in /usr/local/share/suricata/GeoLite2/..."));
 	include("/usr/local/pkg/suricata/suricata_geoipupdate.php");
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 6, "*", "*", "*", "root");
 }
 
 // Download the latest ET IQRisk updates and create cron task if the feature is not disabled
 if ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] == 'on') {
-	log_error(gettext("[Suricata] Installing Emerging Threats IQRisk IP List..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Installing Emerging Threats IQRisk IP List..."));
 	include("/usr/local/pkg/suricata/suricata_etiqrisk_update.php");
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_etiqrisk_update.php", TRUE, 0, "*/6", "*", "*", "*", "root");
 }
@@ -109,7 +120,7 @@ while (suricata_cron_job_exists($suri_pf_table, FALSE)) {
 }
 
 if ($cron_count > 0) {
-	log_error(gettext("[Suricata] Removed {$cron_count} duplicate 'remove_blocked_hosts' cron task(s)."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Removed {$cron_count} duplicate 'remove_blocked_hosts' cron task(s)."));
 }
 
 /*********************************************************/
@@ -135,7 +146,7 @@ if (!is_array($config['installedpackages']['suricata']['config'][0])) {
 
 // remake saved settings if previously flagged
 if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on') {
-	log_error(gettext("[Suricata] Saved settings detected... rebuilding installation with saved settings."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Saved settings detected... rebuilding installation with saved settings."));
 	update_status(gettext("Saved settings detected...") . "\n");
 
 	/****************************************************************/
@@ -172,7 +183,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	update_status(gettext("Migrating settings to new configuration..."));
 	include('/usr/local/pkg/suricata/suricata_migrate_config.php');
 	update_status(gettext(" done.") . "\n");
-	log_error(gettext("[Suricata] Downloading and updating configured rule types."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Downloading and updating configured rule types."));
 	include('/usr/local/pkg/suricata/suricata_check_for_rule_updates.php');
 	update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
@@ -244,7 +255,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 
 	$rebuild_rules = false;
 	update_status(gettext("Finished rebuilding Suricata configuration from saved settings.") . "\n");
-	log_error(gettext("[Suricata] Finished rebuilding installation from saved settings."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Finished rebuilding installation from saved settings."));
 }
 
 // If this is first install and "forcekeepsettings" is empty,
@@ -292,7 +303,7 @@ write_config("Suricata pkg v{$config['installedpackages']['package'][get_package
 
 // Done with post-install, so clear flag
 unset($g['suricata_postinstall']);
-log_error(gettext("[Suricata] Package post-installation tasks completed."));
+syslog(LOG_NOTICE, gettext("[Suricata] Package post-installation tasks completed."));
 return true;
 
 ?>
