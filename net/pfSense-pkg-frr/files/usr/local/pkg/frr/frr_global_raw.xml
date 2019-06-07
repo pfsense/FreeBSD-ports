@@ -143,6 +143,20 @@
 			<cols>65</cols>
 		</field>
 		<field>
+			<fielddescr>staticd.conf</fielddescr>
+			<fieldname>staticd</fieldname>
+			<description>
+				<![CDATA[
+				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
+				To get back the GUI configuration save this form below once with empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
 			<fielddescr>bgpd.conf</fielddescr>
 			<fieldname>bgpd</fieldname>
 			<description>
