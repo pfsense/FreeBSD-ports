@@ -147,7 +147,7 @@ if (!$input_errors) {
 
 		// If deprecated rules should be removed, then do it
 		if ($config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on") {
-			log_error(gettext("[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+			syslog(gettext(LOG_NOTICE, "[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 			suricata_remove_dead_rules();
 		}
 
@@ -314,7 +314,7 @@ $section->addInput(new Form_Input(
 	'Snort Rules Filename',
 	'text',
 	$pconfig['snort_rules_file']
-))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29120.tar.gz');
+))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29130.tar.gz<br />DO NOT specify a Snort3 rules file!  Snort3 rules are incompatible witih Suricata 4.x and will break your installation!');
 $section->addInput(new Form_Input(
 	'oinkcode',
 	'Snort Oinkmaster Code',
