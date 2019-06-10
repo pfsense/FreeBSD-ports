@@ -222,7 +222,9 @@ function frr_ospf_interfaces_validate_input() {
 	if ($_POST['md5password'] && empty($_POST['password'])) {
 		$input_errors[] = "Please input a password.";
 	}
-	if (!empty($_POST['password']) && strlen($_POST['password']) > 8) {
+	if (!empty($_POST['password']) &&
+	    (strlen($_POST['password']) > 8) &&
+	    $_POST['md5password'] != "on") {
 		$input_errors[] = "Password must be 8 characters or less.";
 	}
 }

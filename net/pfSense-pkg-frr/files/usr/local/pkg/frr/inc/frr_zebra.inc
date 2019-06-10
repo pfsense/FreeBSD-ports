@@ -521,14 +521,17 @@ function frr_zebra_generate_nullroutes() {
 		/* If FRR is not configured or the route handling list is empty, stop. */
 		return null;
 	}
-	$nullroutes = "\n# Null Routes\n";
 	/* Check FRR configuration network list for null route entries */
 	foreach ($config['installedpackages']['frr']['config'][0]['row'] as $redistr) {
 		if (isset($redistr['nullroute']) && is_subnet($redistr['routevalue'])) {
 			$nullroutes .= "ip route {$redistr['routevalue']} Null0\n";
 		}
 	}
-	return $nullroutes;
+	if (!empty($nullroutes)) {
+		return "\n# Null Routes\n" . $nullroutes;
+	} else {
+		return null;
+	}
 }
 
 /* Static Routes for zebra configuration based on GUI config */
@@ -540,7 +543,6 @@ function frr_zebra_generate_staticroutes() {
 		/* If FRR is not configured or the route handling list is empty, stop. */
 		return null;
 	}
-	$staticroutes = "\n# Static Routes\n";
 	/* Check FRR configuration network list for null route entries */
 	foreach ($config['installedpackages']['frr']['config'][0]['row'] as $redistr) {
 		if (isset($redistr['nullroute']) || !is_subnet($redistr['routevalue'])) {
@@ -576,7 +578,11 @@ function frr_zebra_generate_staticroutes() {
 			}
 		}
 	}
-	return $staticroutes;
+	if (!empty($staticroutes)) {
+		return "\n# Static Routes\n" . $staticroutes;
+	} else {
+		return null;
+	}
 }
 
 /* Generate a convenience list of accept filters */
@@ -626,7 +632,7 @@ function frr_generate_config_zebra() {
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['zebra']) &&
 	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['zebra'])) {
-		// if there is a raw config specifyed in tthe config.xml use that instead of the assisted config
+		// if there is a raw config specified in the config.xml use that instead of the assisted config
 		$zebraconffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['zebra']));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
@@ -657,7 +663,23 @@ function frr_generate_config_zebra() {
 		$zebraconffile .= frr_zebra_generate_routemaps();
 		/* Default Accept Filters */
 		$zebraconffile .= frr_zebra_generate_acceptfilters();
+	}
+	file_put_contents("{$frr_config_base}/zebra.conf", $zebraconffile);
 
+	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['staticd']) &&
+	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['staticd'])) {
+		// if there is a raw config specified in the config.xml use that instead of the assisted config
+		$staticdconffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['staticd']));
+	} else {
+		/* If there is no raw configuration and no GUI configuration, stop. */
+		if (empty($frr_conf)) {
+			log_error("FRR staticd: No config data found.");
+			return;
+		}
+		if (empty($frr_conf['enable'])) {
+			/* FRR master switch is off. */
+			return;
+		}
 		$staticdconffile = $frr_auto_config_warning;
 		/* Null Routes */
 		$staticdconffile .= frr_zebra_generate_nullroutes();
@@ -665,7 +687,6 @@ function frr_generate_config_zebra() {
 		$staticdconffile .= frr_zebra_generate_staticroutes();
 
 	}
-	file_put_contents("{$frr_config_base}/zebra.conf", $zebraconffile);
 	if (!empty($staticdconffile) && ($staticdconffile != $frr_auto_config_warning)) {
 		file_put_contents("{$frr_config_base}/staticd.conf", $staticdconffile);
 	}
