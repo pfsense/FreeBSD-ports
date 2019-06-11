@@ -468,7 +468,7 @@ EOF;
 					$tls_keydir = "key-direction 1{$nl}";
 				}
 				$conf .= $tls_keydir;
-				$conf .= "<{$tls_directive}>{$nl}" . trim(base64_decode($settings['tls'])) . "{$nl}</{$tls_directive}>{$nl}";
+				$conf .= "<{$tls_directive}>{$nl}" . trim(str_replace("\r\n",$nl,base64_decode($settings['tls']))) . "{$nl}</{$tls_directive}>{$nl}";
 			}
 			return $conf;
 		// "yealink" creates: "/client.tar"
