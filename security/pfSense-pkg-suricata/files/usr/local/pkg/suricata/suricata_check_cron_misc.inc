@@ -104,7 +104,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 				// Truncate the log file if it exists
 				if (file_exists("{$suricata_log_dir}/{$file}")) {
 					try {
-						file_put_contents("{$suricata_log_dir}/{$file}", "");
+						fclose(fopen("{$suricata_log_dir}/{$file}", 'w'));
 					} catch (Exception $e) {
 						syslog(LOG_ERR, "[Suricata] ERROR: Failed to truncate file '{$suricata_log_dir}/{$file}' -- error was {$e->getMessage()}");
 					}
@@ -123,7 +123,11 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		// Truncate the Rules Update Log file if it exists
 		if (file_exists(SURICATA_RULES_UPD_LOGFILE)) {
 			syslog(LOG_NOTICE, gettext("[Suricata] Truncating the Rules Update Log file..."));
-			@file_put_contents(SURICATA_RULES_UPD_LOGFILE, "");
+			try {
+				fclose(fopen(SURICATA_RULES_UPD_LOGFILE, 'w'));
+			} catch (Exception $e) {
+				syslog(LOG_ERR, "[Suricata] ERROR: Failed to truncate Rules Update Log '" . SURICATA_RULES_UPD_LOGFILE . "' -- error was {$e->getMessage()}");
+			}
 		}
 
 		cleanupExit:
@@ -160,8 +164,8 @@ function suricata_check_rotate_log($log_file, $log_limit, $retention) {
 	if (($log_limit > 0) && (filesize($log_file) >= $log_limit)) {
 		$newfile = $log_file . "." . date('Y_md_Hi');
 		try {
-			copy($log_file, $newfile);
-			file_put_contents($log_file, "");
+			rename($log_file, $newfile);
+			touch($log_file);
 		} catch (Exception $e) {
 			syslog(LOG_ERR, "[Suricata] ERROR: Failed to rotate file '{$log_file}' -- error was {$e->getMessage()}");
 		}
