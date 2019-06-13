@@ -74,22 +74,18 @@ if ($config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on') 
 
 /*********************************************************/
 /* Remove files we placed in the Suricata directories.   */
-/* pkgng will clean up the base install files.           */
+/* pkg will clean up the base install files.             */
 /*********************************************************/
 unlink_if_exists("{$suricatadir}*.gz.md5");
 unlink_if_exists("{$suricatadir}gen-msg.map");
-unlink_if_exists("{$suricatadir}unicode.map");
 unlink_if_exists("{$suricatadir}classification.config");
 unlink_if_exists("{$suricatadir}reference.config");
-unlink_if_exists("{$suricatadir}rules/*.txt");
-unlink_if_exists("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "*.rules");
-unlink_if_exists(SURICATA_RULES_DIR . "*.rules");
 unlink_if_exists(SURICATA_RULES_DIR . "*.txt");
+unlink_if_exists(SURICATA_RULES_DIR . VRT_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . ET_OPEN_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . ET_PRO_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . GPL_FILE_PREFIX . "*.rules");
 unlink_if_exists("/usr/local/share/suricata/GeoLite2/GeoLite2-Country.mmdb");
-rmdir_recursive(SURICATA_RULES_DIR);
 rmdir_recursive("/usr/local/share/suricata/GeoLite2");
 
 if (is_array($config['installedpackages']['suricata']['rule'])) {
