@@ -1,0 +1,39 @@
+# $FreeBSD$
+
+PORTNAME=	pfSense-pkg-node_exporter
+PORTVERSION=	0.18.1
+PORTEPOCH=	1
+CATEGORIES=	sysutils
+MASTER_SITES=	# empty
+DISTFILES=	# empty
+EXTRACT_ONLY=	# empty
+
+MAINTAINER=	coreteam@pfsense.org
+COMMENT=	pfSense package node_exporter
+
+LICENSE=	APACHE20
+
+RUN_DEPENDS=	${LOCALBASE}/bin/node_exporter:sysutils/node_exporter
+
+NO_BUILD=	yes
+NO_MTREE=	yes
+
+SUB_FILES=	pkg-install pkg-deinstall
+SUB_LIST=	PORTNAME=${PORTNAME}
+
+do-extract:
+	${MKDIR} ${WRKSRC}
+
+do-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.conf.d
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/node_exporter.xml ${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/node_exporter.inc ${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/rc.conf.d/node_exporter ${STAGEDIR}${PREFIX}/etc/rc.conf.d/
+	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml ${STAGEDIR}${DATADIR}
+	${INSTALL_SCRIPT} ${FILESDIR}${DATADIR}/node_exporter.sh ${STAGEDIR}${DATADIR}
+	${INSTALL_SCRIPT} ${FILESDIR}${DATADIR}/interface-collector.py ${STAGEDIR}${DATADIR}
+	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" ${STAGEDIR}${DATADIR}/info.xml
+
+.include <bsd.port.mk>

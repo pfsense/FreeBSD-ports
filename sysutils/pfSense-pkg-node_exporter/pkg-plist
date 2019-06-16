@@ -1,0 +1,6 @@
+pkg/node_exporter.xml
+pkg/node_exporter.inc
+etc/rc.conf.d/node_exporter
+%%DATADIR%%/node_exporter.sh
+%%DATADIR%%/interface-collector.py
+%%DATADIR%%/info.xml
