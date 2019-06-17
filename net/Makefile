@@ -242,6 +242,7 @@
     SUBDIR += haproxy-devel
     SUBDIR += haproxy17
     SUBDIR += haproxy18
+    SUBDIR += haproxy19
     SUBDIR += hexinject
     SUBDIR += hidentd
     SUBDIR += hinfo
