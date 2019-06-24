@@ -99,14 +99,14 @@ if (isset($_POST['del_x'])) {
 			$if_real = get_real_interface($a_nat[$rulei]['interface']);
 			$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
 			$snort_uuid = $a_nat[$rulei]['uuid'];
-			log_error("Stopping Snort on {$if_friendly}({$if_real}) due to interface deletion...");
+			syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to interface deletion...");
 			snort_stop($a_nat[$rulei], $if_real);
 			rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
 			rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
 
 			// Finally delete the interface's config entry entirely
 			unset($a_nat[$rulei]);
-			log_error("Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
+			syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
 		}
 	  
 		/* If all the Snort interfaces are removed, then unset the interfaces config array. */
@@ -137,14 +137,14 @@ else {
 		$if_real = get_real_interface($a_nat[$delbtn_list]['interface']);
 		$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
 		$snort_uuid = $a_nat[$delbtn_list]['uuid'];
-		log_error("Stopping Snort on {$if_friendly}({$if_real}) due to interface deletion...");
+		syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to interface deletion...");
 		snort_stop($a_nat[$delbtn_list], $if_real);
 		rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
 		rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
 
 		// Finally delete the interface's config entry entirely
 		unset($a_nat[$delbtn_list]);
-		log_error("Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
+		syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
 
 		// Save updated configuration
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
@@ -175,19 +175,19 @@ if ($_POST['by2toggle'] && is_numericint($_POST['id'])) {
 			sync_snort_package_config();
 			$rebuild_rules = false;
 			if (snort_is_running($if_real, 'barnyard2')) {
-				log_error("Restarting Barnyard2 on {$if_friendly}({$if_real}) per user request...");
+				syslog(LOG_NOTICE, "Restarting Barnyard2 on {$if_friendly}({$if_real}) per user request...");
 				snort_barnyard_stop($snortcfg, $if_real);
 				snort_barnyard_start($snortcfg, $if_real);
 			}
 			else {
-				log_error("Starting Barnyard2 on {$if_friendly}({$if_real}) per user request...");
+				syslog(LOG_NOTICE, "Starting Barnyard2 on {$if_friendly}({$if_real}) per user request...");
 				snort_barnyard_start($snortcfg, $if_real);
 			}
 			$by2_starting[$id] = 'TRUE';
 			break;
 		case 'stop':
 			if (snort_is_running($if_real, 'barnyard2')) {
-				log_error("Stopping Barnyard2 on {$if_friendly}({$if_real}) per user request...");
+				syslog(LOG_NOTICE, "Stopping Barnyard2 on {$if_friendly}({$if_real}) per user request...");
 				snort_barnyard_stop($snortcfg, $if_real);
 			}
 			unset($by2_starting[$id]);
@@ -233,12 +233,12 @@ EOD;
 		case 'start':
 			file_put_contents("{$g['tmp_path']}/snort_{$if_real}_startcmd.php", $snort_start_cmd);
 			if (snort_is_running($if_real)) {
-				log_error("Restarting Snort on {$if_friendly}({$if_real}) per user request...");
+				syslog(LOG_NOTICE, "Restarting Snort on {$if_friendly}({$if_real}) per user request...");
 				snort_stop($snortcfg, $if_real);
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}_startcmd.php");
 			}
 			else {
-				log_error("Starting Snort on {$if_friendly}({$if_real}) per user request...");
+				syslog(LOG_NOTICE, "Starting Snort on {$if_friendly}({$if_real}) per user request...");
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}_startcmd.php");
 			}
 			$snort_starting[$id] = 'TRUE';
@@ -248,7 +248,7 @@ EOD;
 			break;
 		case 'stop':
 			if (snort_is_running($if_real)) {
-				log_error("Stopping Snort on {$if_friendly}({$if_real}) per user request...");
+				syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) per user request...");
 				snort_stop($snortcfg, $if_real);
 			}
 			unset($snort_starting[$id]);

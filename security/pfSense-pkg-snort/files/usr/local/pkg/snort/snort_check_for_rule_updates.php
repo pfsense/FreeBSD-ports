@@ -222,8 +222,8 @@ function snort_download_file_url($url, $file_out) {
 			$rc = curl_exec($ch);
 			if ($rc === true)
 				break;
-			log_error(gettext("[Snort] Rules download error: " . curl_error($ch)));
-			log_error(gettext("[Snort] Will retry in 15 seconds..."));
+			syslog(LOG_ERR, gettext("[Snort] Rules download error: " . curl_error($ch)));
+			syslog(LOG_ERR, gettext("[Snort] Will retry in 15 seconds..."));
 			sleep(15);
 		}
 		if ($rc === false)
@@ -236,12 +236,12 @@ function snort_download_file_url($url, $file_out) {
 
 		// If we had to try more than once, log it
 		if ($counter > 1)
-			log_error(gettext("File '" . basename($file_out) . "' download attempts: {$counter} ..."));
+			syslog(LOG_NOTICE, gettext("File '" . basename($file_out) . "' download attempts: {$counter} ..."));
 		return ($http_code == 200) ? true : $http_code;
 	}
 	else {
 		$last_curl_error = gettext("Failed to create file " . $file_out);
-		log_error(gettext("[Snort] Failed to create file {$file_out} ..."));
+		syslog(LOG_ERR, gettext("[Snort] Failed to create file {$file_out} ..."));
 		return false;
 	}
 }
@@ -286,7 +286,7 @@ function snort_check_rule_md5($file_url, $file_dst, $desc = "") {
 			snort_update_status(gettext(" done.") . "\n");
 			if ($md5_check_new == $md5_check_old) {
 				snort_update_status(gettext("{$desc} are current. No update required.") . "\n");
-				log_error(gettext("[Snort] {$desc} are up to date..."));
+				syslog(LOG_NOTICE, gettext("[Snort] {$desc} are up to date..."));
 				error_log(gettext("\t{$desc} are up to date.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 				return false;
 			}
@@ -303,8 +303,8 @@ function snort_check_rule_md5($file_url, $file_dst, $desc = "") {
 		snort_update_status(gettext(" FAILED!") . "\n");
 		snort_update_status(gettext("{$desc} md5 error ... Server returned error code {$rc} ...") . "\n");
 		snort_update_status(gettext("{$desc} will not be updated.\n{$snort_err_msg}") . "\n");
-		log_error(gettext("[Snort] {$desc} md5 download failed..."));
-		log_error(gettext("[Snort] Server returned error code {$rc}..."));
+		syslog(LOG_ERR, gettext("[Snort] {$desc} md5 download failed..."));
+		syslog(LOG_ERR, gettext("[Snort] Server returned error code {$rc}..."));
 		error_log(gettext("\t{$snort_err_msg}\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\tServer error message was: {$last_curl_error}\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -338,7 +338,7 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	$filename = basename($file_dst);
 
 	snort_update_status(gettext("There is a new set of {$desc} posted.\nDownloading {$filename}..."));
-	log_error(gettext("[Snort] There is a new set of {$desc} posted. Downloading {$filename}..."));
+	syslog(LOG_NOTICE, gettext("[Snort] There is a new set of {$desc} posted. Downloading {$filename}..."));
 	error_log(gettext("\tThere is a new set of {$desc} posted.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	error_log(gettext("\tDownloading file '{$filename}'...\n"), 3, SNORT_RULES_UPD_LOGFILE);
        	$rc = snort_download_file_url($file_url, $file_dst);
@@ -346,15 +346,15 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	// See if the download from the URL was successful
 	if ($rc === true) {
 		snort_update_status(gettext(" done.") . "\n");
-		log_error("[Snort] {$desc} file update downloaded successfully");
+		syslog(LOG_NOTICE, "[Snort] {$desc} file update downloaded successfully");
 		error_log(gettext("\tDone downloading rules file.\n"),3, SNORT_RULES_UPD_LOGFILE);
 	
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
 		if ($file_md5 != trim(md5_file($file_dst))){
 			snort_update_status(gettext("{$desc} file MD5 checksum failed...") . "\n");
-			log_error(gettext("[Snort] {$desc} file download failed.  Bad MD5 checksum..."));
-        	        log_error(gettext("[Snort] Downloaded File MD5: " . md5_file($file_dst)));
-			log_error(gettext("[Snort] Expected File MD5: {$file_md5}"));
+			syslog(LOG_ERR, gettext("[Snort] {$desc} file download failed.  Bad MD5 checksum..."));
+        	        syslog(LOG_ERR, gettext("[Snort] Downloaded File MD5: " . md5_file($file_dst)));
+			syslog(LOG_ERR, gettext("[Snort] Expected File MD5: {$file_md5}"));
 			error_log(gettext("\t{$desc} file download failed.  Bad MD5 checksum.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			error_log(gettext("\tDownloaded {$desc} file MD5: " . md5_file($file_dst) . "\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			error_log(gettext("\tExpected {$desc} file MD5: {$file_md5}\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -367,7 +367,7 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	else {
 		snort_update_status(gettext(" FAILED!") . "\n");
 		snort_update_status(gettext("{$desc} file download failed... server returned error '{$rc}'.") . "\n");
-		log_error(gettext("[Snort] {$desc} file download failed... server returned error '{$rc}'..."));
+		syslog(LOG_ERR, gettext("[Snort] {$desc} file download failed... server returned error '{$rc}'..."));
 		error_log(gettext("\t{$desc} file download failed.  Server returned error {$rc}.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -668,7 +668,7 @@ if ($emergingthreats == 'on') {
 
 // If removing deprecated rules categories, then do it
 if ($config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on") {
-	log_error(gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+	syslog(LOG_NOTICE, gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 	snort_remove_dead_rules();
 }
 
@@ -787,7 +787,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		sleep(3);
 		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
 		snort_update_status(gettext(" done.") . "\n");
-       		log_error(gettext("[Snort] Snort has restarted with your new set of rules..."));
+       		syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted with your new set of rules..."));
 		error_log(gettext("\tSnort has restarted with your new set of rules.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
 }
@@ -804,7 +804,7 @@ elseif ($openappid_detectors == 'on') {
 		sleep(2);
 		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
 		snort_update_status(gettext(" done.") . "\n");
-       		log_error(gettext("[Snort] Snort has restarted with your new set of OpenAppID detectors..."));
+       		syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted with your new set of OpenAppID detectors..."));
 		error_log(gettext("\tSnort has restarted with your new set of OpenAppID detectors.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
 }
@@ -817,7 +817,7 @@ if (is_dir("{$tmpfname}")) {
 }
 
 snort_update_status(gettext("The Rules update has finished.") . "\n");
-log_error(gettext("[Snort] The Rules update has finished."));
+syslog(LOG_NOTICE, gettext("[Snort] The Rules update has finished."));
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SNORT_RULES_UPD_LOGFILE);
 
 /* Save this update status to the configuration file */
