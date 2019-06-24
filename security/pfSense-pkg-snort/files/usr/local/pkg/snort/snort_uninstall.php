@@ -3,9 +3,9 @@
  * snort_uninstall.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -160,6 +160,17 @@ if (is_array($config['installedpackages']['snortglobal']['rule']) && count($conf
 }
 
 /**********************************************************/
+/* Clear IP addresses we placed in <snort2c> pf table if  */
+/* that option is enabled on GLOBAL SETTINGS tab or if    */
+/* the package and its configuration are being removed.   */
+/**********************************************************/
+if (($config['installedpackages']['snortglobal']['clearblocks'] == 'on') ||
+    ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on')) {
+	log_error(gettext("[Snort] Flushing <snort2c> firewall table to remove addresses blocked by Snort..."));
+	mwexec("/sbin/pfctl -t snort2c -T flush");
+}
+
+/**********************************************************/
 /* Keep this as a last step because it is the total       */
 /* removal of the configuration settings when the user    */
 /* has elected to not retain the package configuration.   */
@@ -169,8 +180,6 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on') {
 	unset($config['installedpackages']['snortglobal']);
 	unset($config['installedpackages']['snortsync']);
 	unlink_if_exists("{$snort_rules_upd_log}");
-	log_error(gettext("[Snort] Flushing <snort2c> firewall table to remove addresses blocked by Snort..."));
-	mwexec("/sbin/pfctl -t snort2c -T flush");
 	rmdir_recursive("{$snortlogdir}");
 	rmdir_recursive("{$g['vardb_path']}/snort");
 	write_config("Removing Snort configuration");
