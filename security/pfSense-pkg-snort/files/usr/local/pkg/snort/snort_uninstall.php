@@ -134,8 +134,11 @@ if (is_dir(SNORT_APPID_ODP_PATH)) {
 if (is_dir("/usr/local/lib/snort_dynamicrules")) {
 	rmdir_recursive("/usr/local/lib/snort_dynamicrules");
 }
+if (is_dir(SNORTDIR . "/signatures")) {
+	rmdir_recursive(SNORTDIR . "/signatures");
+}
 unlink_if_exists(SNORTDIR . "/*.md5");
-unlink_if_exists(SNORTDIR . "/*.txt");
+unlink_if_exists(SNORTDIR . "/rules/*.txt");
 unlink_if_exists(SNORTDIR . "/classification.config");
 unlink_if_exists(SNORTDIR . "/reference.config");
 unlink_if_exists(SNORTDIR . "/preproc_rules/*.rules");
@@ -143,6 +146,7 @@ unlink_if_exists(SNORTDIR . "/rules/" . VRT_FILE_PREFIX . "*.rules");
 unlink_if_exists(SNORTDIR . "/rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
 unlink_if_exists(SNORTDIR . "/rules/" . ET_PRO_FILE_PREFIX . "*.rules");
 unlink_if_exists(SNORTDIR . "/rules/" . GPL_FILE_PREFIX . "*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . "appid.rules");
 unlink_if_exists(SNORT_APPID_RULES_PATH . OPENAPPID_FILE_PREFIX . "*.rules");
 
 if (is_array($config['installedpackages']['snortglobal']['rule']) && count($config['installedpackages']['snortglobal']['rule']) > 0) {

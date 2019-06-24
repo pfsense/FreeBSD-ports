@@ -387,7 +387,6 @@ if (is_dir("{$tmpfname}"))
 
 /*  Make sure required snortdirs exsist */
 safe_mkdir("{$snortdir}/rules");
-safe_mkdir("{$snortdir}/signatures");
 safe_mkdir("{$snortdir}/preproc_rules");
 safe_mkdir("{$tmpfname}");
 safe_mkdir("{$snortlibdir}/snort_dynamicrules");
