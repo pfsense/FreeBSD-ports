@@ -64,12 +64,17 @@ unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
 /* Set flag for post-install in progress */
 $g['snort_postinstall'] = true;
 
+/*****************************************************************/
 /* In the event this is a reinstall (or update), then recreate   */
-/* critical map files from the package sample templates.         */
-$map_files = array("unicode.map", "gen-msg.map", "classification.config", "reference.config", "attribute_table.dtd");
+/* critical map, config and preprocessor rules files from the    */
+/* package sample templates.                                     */
+/*****************************************************************/
+$map_files = array("/unicode.map", "/gen-msg.map", "/classification.config", "/reference.config", 
+		   "/attribute_table.dtd", "/preproc_rules/preprocessor.rules", 
+		   "/preproc_rules/decoder.rules" , "/preproc_rules/sensitive-data.rules" );
 foreach ($map_files as $f) {
-	if (file_exists(SNORTDIR . "/" . $f . "-sample") && !file_exists(SNORTDIR . "/" . $f)) {
-		copy(SNORTDIR . "/" . $f . "-sample", SNORTDIR . "/" . $f);
+	if (file_exists(SNORTDIR .  $f . "-sample") && !file_exists(SNORTDIR . $f)) {
+		copy(SNORTDIR .  $f . "-sample", SNORTDIR . $f);
 	}
 }
 
