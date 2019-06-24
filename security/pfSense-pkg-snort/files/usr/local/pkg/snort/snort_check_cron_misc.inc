@@ -3,9 +3,9 @@
  * snort_check_cron_misc.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,7 +62,11 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 
 			// Truncate the alert log file if it exists
 			if (file_exists("{$snort_log_dir}/alert")) {
-				@file_put_contents("{$snort_log_dir}/alert", "");
+				try {
+					fclose(fopen("{$snort_log_dir}/alert", 'w'));
+				} catch (Exception $e) {
+					log_error(gettext("[Snort] ERROR: Failed to truncate file '{$snort_log_dir}/alert' -- error was {$e->getMessage()}"));
+				}
 			}
 
 			// Cleanup any perfmon stats logs
@@ -120,8 +124,8 @@ function snort_check_rotate_log($log_file, $log_limit, $retention) {
 	if (($log_limit > 0) && (filesize($log_file) >= $log_limit)) {
 		$newfile = $log_file . "." . strval(time());
 		try {
-			copy($log_file, $newfile);
-			file_put_contents($log_file, "");
+			rename($log_file, $newfile);
+			touch($log_file);
 		} catch (Exception $e) {
 			log_error("[Snort] Failed to rotate file '{$log_file}' -- error was {$e->getMessage()}");
 		}
