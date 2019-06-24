@@ -363,21 +363,21 @@ if ($savemsg)
 							<?php if (snort_is_running($if_real)) : ?>
 								<i id="snort_<?=$if_real;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('snort is running on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php elseif ($snort_starting[$i] == 'TRUE' || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) : ?>
 								<i id="snort_<?=$if_real;?>" class="fa fa-cog fa-spin text-info icon-primary" title="<?=gettext('snort is starting on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php else: ?>
-								<i class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('snort is stopped on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>" class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('snort is stopped on this interface');?>"></i>
 								&nbsp;
-								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
-								<i id="snort_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start snort on this interface');?>"></i>
+								<i id="snort_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info hidden" onclick="javascript:snort_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop snort on this interface');?>"></i>
 							<?php endif; ?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>&nbsp;
@@ -404,21 +404,21 @@ if ($savemsg)
 							<?php if (snort_is_running($if_real, 'barnyard2')) : ?>
 								<i id="barnyard2_<?=$if_real;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('barnyard2 is running on this interface');?>"></i>
 								&nbsp;
-								<i id="barnyard2_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
 							<?php elseif ($by2_starting[$i] == 'TRUE' || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) : ?>
 								<i id="barnyard2_<?=$if_real;?>" class="fa fa-cog fa-spin text-info icon-primary" title="<?=gettext('barnyard2 is starting on this interface');?>"></i>
 								&nbsp;
-								<i id="barnyard2_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
 							<?php else: ?>
-								<i class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('barnyard2 is stopped on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>" class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('barnyard2 is stopped on this interface');?>"></i>
 								&nbsp;
-								<i id="barnyard2_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$i?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('stop', '<?=$i?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
+								<i id="barnyard2_<?=$if_real;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle($(this), 'stop', '<?=$i?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
 							<?php endif; ?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>&nbsp;
@@ -563,13 +563,39 @@ if ($savemsg)
 		}
 	}	
 
-	function snort_iface_toggle(action, id) {
+	function snort_iface_toggle(elem, action, id) {
+		// Peel off the first part of the control name
+		// to identify the STATUS icon.
+		var fldName = $(elem).attr('id');
+		fldName = fldName.substring(0, fldName.lastIndexOf('_'));
+		var service_name = fldName.substring(0, fldName.indexOf('_'));
+
+		// If stopping the service, change STATUS to a spinning gear cog.
+		if (action == 'stop') {
+			$('#' + fldName.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-times-circle text-success text-danger');
+			$('#' + fldName.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-spin text-info');
+			$('#' + fldName.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is stopping on this interface');
+			$('#' + fldName.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
+		}
 		$('#toggle').val(action);
 		$('#id').val(id);
 		$('#iform').submit();
 	}
 
-	function by2_iface_toggle(action, id) {
+	function by2_iface_toggle(elem, action, id) {
+		// Peel off the first part of the control name
+		// to identify the STATUS icon.
+		var fldName = $(elem).attr('id');
+		fldName = fldName.substring(0, fldName.lastIndexOf('_'));
+		var service_name = fldName.substring(0, fldName.indexOf('_'));
+
+		// If stopping the service, change STATUS to a spinning gear cog.
+		if (action == 'stop') {
+			$('#' + fldName.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).removeClass('fa-check-circle fa-times-circle text-success text-danger');
+			$('#' + fldName.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).addClass('fa-cog fa-spin text-info');
+			$('#' + fldName.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).prop('title', service_name + ' is stopping on this interface');
+			$('#' + fldName.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ) + '_restart').addClass('hidden');
+		}
 		$('#by2toggle').val(action);
 		$('#id').val(id);
 		$('#iform').submit();
