@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-Status_Monitoring
-PORTVERSION=	1.7.7
+PORTVERSION=	1.7.8
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

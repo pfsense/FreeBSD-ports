@@ -167,7 +167,7 @@ foreach ($side as $settings) {
 
 	$rrd_array = rrd_fetch($settings['rrd_file'], $rrd_options);
 	if (!($rrd_array)) {
-		die ('{ "error" : "' . rrd_error() . '" }');
+		die ('{ "error" : ' . json_encode(rrd_error()) . ' }');
 	}
 
 	$ds_list = array_keys ($rrd_array['data']);
