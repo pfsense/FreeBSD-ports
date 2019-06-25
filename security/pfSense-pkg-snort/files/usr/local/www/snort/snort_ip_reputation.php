@@ -141,7 +141,7 @@ if ($_POST['apply']) {
 
 	// If Snort is already running, must restart to change IP REP preprocessor configuration.
 	if (snort_is_running($if_real)) {
-		log_error(gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
+		syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
 		snort_stop($a_nat[$id], $if_real);
 		snort_start($a_nat[$id], $if_real, TRUE);
 	}
@@ -184,7 +184,7 @@ if ($_POST['save']) {
 
 		// If Snort is already running, must restart to change IP REP preprocessor configuration.
 		if (snort_is_running($if_real)) {
-			log_error(gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
+			syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
 			snort_stop($a_nat[$id], $if_real);
 			snort_start($a_nat[$id], $if_real, TRUE);
 			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because IP Reputation preprocessor changes require a restart.");

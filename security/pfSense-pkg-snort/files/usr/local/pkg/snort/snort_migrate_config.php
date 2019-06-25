@@ -56,7 +56,7 @@ $rule = &$config['installedpackages']['snortglobal']['rule'];
 /****************************************************************************/
 
 $updated_cfg = false;
-log_error("[Snort] Checking configuration settings version...");
+syslog(LOG_NOTICE, "[Snort] Checking configuration settings version...");
 
 // Check the configuration version to see if XMLRPC Sync should
 // auto-disabled as part of the upgrade due to config format changes.
@@ -64,7 +64,7 @@ if (empty($config['installedpackages']['snortglobal']['snort_config_ver']) &&
     ($config['installedpackages']['snortsync']['config']['varsynconchanges'] == 'auto' ||
      $config['installedpackages']['snortsync']['config']['varsynconchanges'] == 'manual')) {
 	$config['installedpackages']['snortsync']['config']['varsynconchanges']	= "disabled";
-	log_error("[Snort] Turning off Snort Sync on this host due to configuration format changes in this update.  Upgrade all Snort Sync targets to this same Snort package version before re-enabling Snort Sync.");
+	syslog(LOG_NOTICE, "[Snort] Turning off Snort Sync on this host due to configuration format changes in this update.  Upgrade all Snort Sync targets to this same Snort package version before re-enabling Snort Sync.");
 	$updated_cfg = true;
 }
 
@@ -229,7 +229,7 @@ foreach ($rule as &$r) {
 	// Create a default "frag3_engine" if none are configured
 	if (empty($pconfig['frag3_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating Frag3 Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating Frag3 Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "policy" => "bsd", 
 				"timeout" => 60, "min_ttl" => 1, "detect_anomalies" => "on", 
 				"overlap_limit" => 0, "min_frag_len" => 0 );
@@ -263,7 +263,7 @@ foreach ($rule as &$r) {
 	// Create a default Stream5 engine array if none are configured
 	if (empty($pconfig['stream5_tcp_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating Stream5 Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating Stream5 Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "policy" => "bsd", "timeout" => 30, 
 				"max_queued_bytes" => 1048576, "detect_anomalies" => "off", "overlap_limit" => 0, 
 				"max_queued_segs" => 2621, "require_3whs" => "off", "startup_3whs_timeout" => 0, 
@@ -330,7 +330,7 @@ foreach ($rule as &$r) {
 	// Create a default HTTP_INSPECT engine if none are configured
 	if (empty($pconfig['http_inspect_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating HTTP_Inspect Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating HTTP_Inspect Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "server_profile" => "all", "enable_xff" => "off", 
 				"log_uri" => "off", "log_hostname" => "off", "server_flow_depth" => 65535, "enable_cookie" => "on", 
 				"client_flow_depth" => 1460, "extended_response_inspection" => "on", "no_alerts" => "off", 
@@ -380,7 +380,7 @@ foreach ($rule as &$r) {
 	// Create a default FTP_CLIENT engine if none are configured
 	if (empty($pconfig['ftp_client_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating FTP Client Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating FTP Client Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "max_resp_len" => 256, 
 				  "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				  "bounce" => "yes", "bounce_to_net" => "", "bounce_to_port" => "" );
@@ -407,7 +407,7 @@ foreach ($rule as &$r) {
 	// Create a default FTP_SERVER engine if none are configured
 	if (empty($pconfig['ftp_server_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating FTP Server Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating FTP Server Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "ports" => "default", 
 				  "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				  "ignore_data_chan" => "no", "def_max_param_len" => 100 );
@@ -704,10 +704,10 @@ unset($r);
 
 // Log a message if we changed anything
 if ($updated_cfg) {
-	log_error("[Snort] Settings successfully migrated to new configuration format...");
+	syslog(LOG_NOTICE, "[Snort] Settings successfully migrated to new configuration format...");
 }
 else {
-	log_error("[Snort] Configuration version is current...");
+	syslog(LOG_NOTICE, "[Snort] Configuration version is current...");
 }
 
 ?>

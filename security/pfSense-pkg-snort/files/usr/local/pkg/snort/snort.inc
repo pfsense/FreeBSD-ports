@@ -3,9 +3,9 @@
  * snort.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -511,7 +511,7 @@ function snort_barnyard_stop($snortcfg, $if_real) {
 	global $config, $g;
 
 	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
-		log_error("[Snort] Barnyard2 STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
+		syslog(LOG_NOTICE, "[Snort] Barnyard2 STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		killbypid("{$g['varrun_path']}/barnyard2_{$if_real}.pid");
 
 		// Now wait up to 5 seconds for Barnyard2 to actually stop and clear its PID file
@@ -530,7 +530,7 @@ function snort_stop($snortcfg, $if_real) {
 	global $config, $g;
 
 	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
-		log_error("[Snort] Snort STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
+		syslog(LOG_NOTICE, "[Snort] Snort STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		killbypid("{$g['varrun_path']}/snort_{$if_real}.pid");
 
 		// Now wait up to 10 seconds for Snort to actually stop and clear its PID file
@@ -556,7 +556,7 @@ function snort_barnyard_start($snortcfg, $if_real, $background=FALSE) {
 	$snortbindir = SNORT_PBI_BINDIR;
 
 	if ($snortcfg['barnyard_enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
-		log_error("[Snort] Barnyard2 START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
+		syslog(LOG_NOTICE, "[Snort] Barnyard2 START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		if ($background)
 			mwexec_bg("{$snortbindir}barnyard2 -f \"snort_{$snort_uuid}_{$if_real}.u2\" --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q");
 	else
@@ -589,7 +589,7 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 			$daq_type = "--daq pcap --daq-mode passive --treat-drop-as-alert";
 		}
 
-		log_error("[Snort] Snort START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
+		syslog(LOG_NOTICE, "[Snort] Snort START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		if ($background)
 			mwexec_bg("{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
 		else
@@ -677,7 +677,7 @@ function snort_reload_config($snortcfg, $signal="SIGHUP") {
 	/* can find a valid PID for the process.              */
 	/******************************************************/
 	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
-		log_error("[Snort] Snort RELOAD CONFIG for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
+		syslog(LOG_NOTICE, "[Snort] Snort RELOAD CONFIG for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/snort_{$if_real}.pid");
 	}
 }
@@ -704,7 +704,7 @@ function snort_barnyard_reload_config($snortcfg, $signal="HUP") {
 	/* we can find a valid PID for the process.           */
 	/******************************************************/
 	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
-		log_error("[Snort] Barnyard2 CONFIG RELOAD initiated for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
+		syslog(LOG_NOTICE, "[Snort] Barnyard2 CONFIG RELOAD initiated for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/barnyard2_{$if_real}.pid");
 	}
 }
@@ -1687,7 +1687,7 @@ function snort_resolve_flowbits($rules, $active_rules) {
 
 	/* Check $rules array to be sure it is filled.    */
 	if (empty($rules)) {
-		log_error(gettext("[Snort] WARNING: Flowbit resolution not done - no rules in {$snortdir}/rules/ ..."));
+		syslog(LOG_WARN, gettext("[Snort] WARNING: Flowbit resolution not done - no rules in {$snortdir}/rules/ ..."));
 		return array();
 	}
 
@@ -1932,7 +1932,7 @@ function snort_parse_sidconf_file($sidconf_file,$split_lines=TRUE) {
 	// we can read like a normal file.
 	$fd = fopen("php://temp", "r+");
 	if ($fd == FALSE) {
-		log_error("[Snort] Failed to open SID MGMT list '{$sidconf_file}' for processing.");
+		syslog(LOG_ERR, "[Snort] Failed to open SID MGMT list '{$sidconf_file}' for processing.");
 		return $sid_mods;
 	}
 	fwrite($fd, base64_decode($list['content']));
@@ -2042,7 +2042,7 @@ function snort_process_dropsid(&$rule_map, $snortcfg, $log_results = FALSE, $log
 
 	// Verify the 'drop_sid' list for the interface exists
 	if (!snort_sid_mgmt_list_exist($snortcfg['drop_sid_file'])) {
-		log_error(gettext("[Snort] Error - unable to find drop_sid list \"{$snortcfg['drop_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find drop_sid list \"{$snortcfg['drop_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 		return;
 	} else {
 		$sid_mods = snort_parse_sidconf_file($snortcfg['drop_sid_file']);
@@ -2089,7 +2089,7 @@ function snort_process_rejectsid(&$rule_map, $snortcfg, $log_results = FALSE, $l
 
 	// Verify the 'reject_sid' list for the interface exists
 	if (!snort_sid_mgmt_list_exist($snortcfg['reject_sid_file'])) {
-		log_error(gettext("[Snort] Error - unable to find reject_sid list \"{$snortcfg['reject_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find reject_sid list \"{$snortcfg['reject_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 		return;
 	} else {
 		$sid_mods = snort_parse_sidconf_file($snortcfg['reject_sid_file']);
@@ -2174,7 +2174,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 				// Attempt to open the 'disable_sid_file' for the interface
 				// Verify the assigned SID Mgmt List still exists in the firewall configuration
 				if (!snort_sid_mgmt_list_exist($snortcfg['disable_sid_file'])) {
-					log_error(gettext("[Snort] Error - unable to open disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+					syslog(LOG_ERR, gettext("[Snort] Error - unable to open disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to find disable_sid list \"{$snortcfg['disable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2194,7 +2194,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 
 				// Attempt to open the 'enable_sid_file' for the interface
 				if (!snort_sid_mgmt_list_exist($snortcfg['enable_sid_file'])) {
-					log_error(gettext("[snort] Error - unable to open enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+					syslog(LOG_ERR, gettext("[snort] Error - unable to open enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2217,7 +2217,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 
 				// Attempt to open the 'enable_sid_file' for the interface
 				if (!snort_sid_mgmt_list_exist($snortcfg['enable_sid_file'])) {
-					log_error(gettext("[Snort] Error - unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+					syslog(LOG_ERR, gettext("[Snort] Error - unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to open enable_sid list \"{$snortcfg['enable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2238,7 +2238,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 
 				// Attempt to open the 'disable_sid_file' for the interface
 				if (!snort_sid_mgmt_list_exist($snortcfg['disable_sid_file'])) {
-					log_error(gettext("[Snort] Error - unable to open disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+					syslog(LOG_ERR, gettext("[Snort] Error - unable to open disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to find disable_sid list \"{$snortcfg['disable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2256,7 +2256,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 			break;
 
 		default:
-			log_error(gettext("[Snort] Unrecognized 'sid_state_order' value.  Skipping auto CATEGORY mgmt step for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+			syslog(LOG_ALERT, gettext("[Snort] Unrecognized 'sid_state_order' value.  Skipping auto CATEGORY mgmt step for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 			if ($log_results == TRUE) {
 				error_log(gettext("ERROR: unrecognized 'sid_state_order' value.  Skipping auto CATEGORY mgmt step for ") . convert_friendly_interface_to_friendly_descr($snortcfg['interface']). ".\n", 3, $log_file);
 			}
@@ -2457,7 +2457,7 @@ function snort_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results = F
 			break;
 
 		default:
-			log_error(gettext("[Snort] Error - unknown action '{$action}' supplied to snort_modify_sid_state() function...no SIDs modified."));
+			syslog(LOG_ALERT, gettext("[Snort] Error - unknown action '{$action}' supplied to snort_modify_sid_state() function...no SIDs modified."));
 			return $sids;
 	}
 
@@ -2730,7 +2730,7 @@ function snort_process_enablesid(&$rule_map, $snortcfg, $log_results = FALSE, $l
 
 	// Verify the 'enable_sid' list for the interface exists
 	if (!snort_sid_mgmt_list_exist($snortcfg['enable_sid_file'])) {
-		log_error(gettext("[Snort] Error - unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 		return;
 	}
 	else
@@ -2776,7 +2776,7 @@ function snort_process_disablesid(&$rule_map, $snortcfg, $log_results = FALSE, $
 
 	// Verify the 'disable_sid' list for the interface exists
 	if (!snort_sid_mgmt_list_exist($snortcfg['disable_sid_file'])) {
-		log_error(gettext("[Snort] Error - unable to find disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 		return;
 	}
 	else {
@@ -2823,7 +2823,7 @@ function snort_process_modifysid(&$rule_map, $snortcfg, $log_results = FALSE, $l
 
 	// Verify the 'modify_sid' list for the interface exists
 	if (!snort_sid_mgmt_list_exist($snortcfg['modify_sid_file'])) {
-		log_error(gettext("[Snort] Error - unable to find modify_sid list \"{$snortcfg['modify_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find modify_sid list \"{$snortcfg['modify_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 		return;
 	} else {
 		$sid_mods = snort_parse_sidconf_file($snortcfg['modify_sid_file'],FALSE);
@@ -2945,7 +2945,7 @@ function snort_auto_sid_mgmt(&$rule_map, $snortcfg, $log_results = FALSE) {
 				break;
 
 			default:
-				log_error(gettext("[Snort] Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+				syslog(LOG_ALERT, gettext("[Snort] Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 				if ($log_results == TRUE) {
 					error_log(gettext("ERROR: unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for ") . convert_friendly_interface_to_friendly_descr($snortcfg['interface']). ".\n", 3, $log_file);
 				}
@@ -3555,7 +3555,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 		return;
 
 	/* Log a message for rules rebuild in progress */
-	log_error(gettext("[Snort] Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . " ..."));
+	syslog(LOG_NOTICE, gettext("[Snort] Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . " ..."));
 
 	// Get any automatic rule category enable/disable modifications
 	// if auto-SID Mgmt is enabled and conf files exist for the interface.
@@ -3683,7 +3683,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 		/* Check for and disable any rules dependent upon disabled preprocessors if  */
 		/* this option is enabled for the interface.                                 */
 		if ($snortcfg['preproc_auto_rule_disable'] == "on") {
-			log_error('[Snort] Checking for rules dependent on disabled preprocessors for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
+			syslog(LOG_NOTICE, '[Snort] Checking for rules dependent on disabled preprocessors for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
 			snort_filter_preproc_rules($snortcfg, $enabled_rules);
 		}
 
@@ -3692,7 +3692,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 
 		/* If auto-flowbit resolution is enabled, generate the dependent flowbits rules file. */
 		if ($snortcfg['autoflowbitrules'] == 'on') {
-			log_error('[Snort] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
+			syslog(LOG_NOTICE, '[Snort] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
 			$fbits = snort_resolve_flowbits($all_rules, $enabled_rules);
 
 			/* Check for and disable any flowbit-required rules the user has  */
@@ -3702,7 +3702,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 			/* Check for and disable any flowbit-required rules dependent upon     */
 			/* disabled preprocessors if this option is enabled for the interface. */
 			if ($snortcfg['preproc_auto_rule_disable'] == "on") {
-				log_error('[Snort] Checking flowbit rules dependent on disabled preprocessors for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
+				syslog(LOG_NOTICE, '[Snort] Checking flowbit rules dependent on disabled preprocessors for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
 				snort_filter_preproc_rules($snortcfg, $fbits, true);
 			}
 			snort_write_flowbit_rules_file($fbits, "{$snortcfgdir}/rules/{$flowbit_rules_file}");
@@ -3725,7 +3725,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 
 		// If auto-flowbit resolution is enabled, generate the dependent flowbits rules file.
 		if ($snortcfg['autoflowbitrules'] == 'on') {
-			log_error('[Snort] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
+			syslog(LOG_NOTICE, '[Snort] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
 
 			// Load up all rules into a Rules Map array for flowbits assessment
 			$all_rules = snort_load_rules_map("{$snortdir}/rules/");
@@ -3754,7 +3754,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 
 	/* Build a new sid-msg.map file from the enabled */
 	/* rules and copy it to the interface directory. */
-	log_error(gettext("[Snort] Building new sid-msg.map file for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
+	syslog(LOG_NOTICE, gettext("[Snort] Building new sid-msg.map file for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
 	snort_build_sid_msg_map("{$snortcfgdir}/rules/", "{$snortcfgdir}/sid-msg.map");
 }
 
@@ -3892,7 +3892,7 @@ function snort_filter_preproc_rules($snortcfg, &$active_rules, $persist_log = fa
 	/* than optimal with the preprocessors disabled.   */
 	/***************************************************/
 	if ($disabled_count > 0) {
-		log_error(gettext("[Snort] Warning: auto-disabled {$disabled_count} rules due to disabled preprocessor dependencies."));
+		syslog(LOG_WARN, gettext("[Snort] Warning: auto-disabled {$disabled_count} rules due to disabled preprocessor dependencies."));
 		natcasesort($log_msg);
 		if ($fp) {
 			/* Only write the header when not persisting the log */
@@ -3917,7 +3917,7 @@ function snort_filter_preproc_rules($snortcfg, &$active_rules, $persist_log = fa
 				@fwrite($fp, sprintf("%-30s  %-10s  %-20s  %s", $tmp[0], $tmp[1], $tmp[2], $tmp[3]) . "\n");
 			}
 		}
-		log_error(gettext("[Snort] See '{$file}' for list of auto-disabled rules."));
+		syslog(LOG_NOTICE, gettext("[Snort] See '{$file}' for list of auto-disabled rules."));
 		unset($log_msg);
 	}
 	if ($fp)
@@ -4015,7 +4015,7 @@ function snort_remove_dead_rules() {
 	}
 
 	// Log how many obsoleted files were removed
-	log_error(gettext("[Snort] Removed {$count} obsoleted rules category files."));
+	syslog(LOG_NOTICE, gettext("[Snort] Removed {$count} obsoleted rules category files."));
 
 	// Now remove any dead rules files from the interface configurations
 	if (!empty($cats) && is_array($config['installedpackages']['snortglobal']['rule'])) {
@@ -4041,7 +4041,7 @@ function snort_sync_on_changes() {
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || $g['snort_postinstall']) {
-		log_error("[snort] Skipping XMLRPC sync when booting up or during package reinstallation.");
+		syslog(LOG_NOTICE, "[snort] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
 
@@ -4055,7 +4055,7 @@ function snort_sync_on_changes() {
 				if (is_array($snort_sync['row'])){
 					$rs=$snort_sync['row'];
 				} else {
-					log_error("[snort] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
+					syslog(LOG_NOTICE, "[snort] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
 					return;
 				}
 				break;
@@ -4076,13 +4076,13 @@ function snort_sync_on_changes() {
 						$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '443';
 					}
 					if ($system_carp['synchronizetoip'] == "") {
-						log_error("[snort] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+						syslog(LOG_NOTICE, "[snort] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 						return;
 					} else {
 						$rs[0]['varsyncdestinenable'] = TRUE;
 					}
 				} else {
-					log_error("[snort] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+					syslog(LOG_NOTICE, "[snort] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 					return;
 				}
 				break;			
@@ -4091,7 +4091,7 @@ function snort_sync_on_changes() {
 				break;
 		}
 		if (is_array($rs)){
-			log_error("[snort] XMLRPC sync is starting.");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync is starting.");
 			foreach ($rs as $sh){
 				// Only sync enabled replication targets
 				if ($sh['varsyncdestinenable']) {
@@ -4122,11 +4122,11 @@ function snort_sync_on_changes() {
 					if ($success) {
 						snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $syncstartsnort);
 					} else {
-						log_error("[snort] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+						syslog(LOG_ERR, "[snort] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
 					}
 				}
 			}
-			log_error("[snort] XMLRPC sync completed.");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync completed.");
 		}
  	}
 }
@@ -4143,12 +4143,12 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || isset($g['snort_postinstall'])) {
-		log_error("[snort] Skipping XMLRPC sync when booting up or during package reinstallation.");
+		syslog(LOG_NOTICE, "[snort] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
-		log_error("[snort] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		syslog(LOG_ERR, "[snort] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
 	}
 
@@ -4161,17 +4161,17 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 	
 	$downloadrulescmd = "";
 	if ($syncdownloadrules == "yes") {
-		$downloadrulescmd = "log_error(gettext(\"[snort] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
+		$downloadrulescmd = "syslog(LOG_NOTICE, gettext(\"[snort] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
 		$downloadrulescmd .= "\tinclude_once(\"/usr/local/pkg/snort/snort_check_for_rule_updates.php\");\n";
 	}
 	$snortstart = "";
 	if ($syncstartsnort == "ON") {
-		$snortstart = "log_error(gettext(\"[snort] XMLRPC pkg sync: Checking Snort status...\"));\n";
+		$snortstart = "syslog(LOG_NOTICE, gettext(\"[snort] XMLRPC pkg sync: Checking Snort status...\"));\n";
 		$snortstart .= "\tif (!is_process_running(\"snort\")) {\n";
-		$snortstart .= "\t\tlog_error(gettext(\"[snort] XMLRPC pkg sync: Snort not running. Sending a start command...\"));\n";
+		$snortstart .= "\t\tsyslog(LOG_NOTICE, gettext(\"[snort] XMLRPC pkg sync: Snort not running. Sending a start command...\"));\n";
 		$snortstart .= "\t\t\$sh_script = RCFILEPREFIX . \"snort.sh\";\n";
 		$snortstart .= "\t\tmwexec_bg(\"{\$sh_script} start\");\n\t}\n";
-		$snortstart .= "\telse {\n\t\tlog_error(gettext(\"[snort] XMLRPC pkg sync: Snort is running...\"));\n\t}\n";
+		$snortstart .= "\telse {\n\t\tsyslog(LOG_NOTICE, gettext(\"[snort] XMLRPC pkg sync: Snort is running...\"));\n\t}\n";
 	}
 
 	/*************************************************/
@@ -4191,12 +4191,12 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 	\$pkg_interface = "console";
 	{$downloadrulescmd}
 	unset(\$g["snort_postinstall"]);
-	log_error(gettext("[snort] XMLRPC pkg sync: Generating snort.conf file using Master Host settings..."));
+	syslog(LOG_NOTICE, gettext("[snort] XMLRPC pkg sync: Generating snort.conf file using Master Host settings..."));
 	\$rebuild_rules = true;
 	sync_snort_package_config();
 	\$rebuild_rules = false;
 	{$snortstart}
-	log_error(gettext("[snort] XMLRPC pkg sync process on this host is complete..."));
+	syslog(LOG_NOTICE, gettext("[snort] XMLRPC pkg sync process on this host is complete..."));
 	\$pkg_interface = \$orig_pkg_interface;
 	unset(\$g["snort_sync_in_progress"]);
 	return true;
@@ -4272,7 +4272,7 @@ EOD;
 			$method = 'pfsense.exec_php';
 			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
 
-			log_error("[snort] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
 			$msg = new XML_RPC_Message($method, $params);
 			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 			$cli->setCredentials($username, $password);
@@ -4280,17 +4280,17 @@ EOD;
 			$error = "";
 			if (!$resp) {
 				$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				log_error($error);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Snort Settings Sync", "");
 			} elseif ($resp->faultCode()) {
 				$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				log_error($error);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Snort Settings Sync", "");
 			}
 		}
 
 		if (!empty($sid_files) && $error == "") {
-			log_error("[snort] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
 		}
 
 		/*************************************************/
@@ -4305,7 +4305,7 @@ EOD;
 			$method = 'pfsense.exec_php';
 			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
 
-			log_error("[snort] Snort XMLRPC sync sending IPREP files to {$url}:{$port}.");
+			syslog(LOG_NOTICE, "[snort] Snort XMLRPC sync sending IPREP files to {$url}:{$port}.");
 			$msg = new XML_RPC_Message($method, $params);
 			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 			$cli->setCredentials($username, $password);
@@ -4313,17 +4313,17 @@ EOD;
 			$error = "";
 			if (!$resp) {
 				$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				log_error($error);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Snort Settings Sync", "");
 			} elseif ($resp->faultCode()) {
 				$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				log_error($error);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Snort Settings Sync", "");
 			}
 		}
 
 		if (!empty($iprep_files) && $error == "") {
-			log_error("[snort] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_ERR, "[snort] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
 		}
 
 		/* assemble xmlrpc payload */
@@ -4332,7 +4332,7 @@ EOD;
 			XML_RPC_encode($xml)
 		);
 
-		log_error("[snort] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
+		syslog(LOG_NOTICE, "[snort] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
 		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
@@ -4342,14 +4342,14 @@ EOD;
 		$resp = $cli->send($msg, $synctimeout);
 		if (!$resp) {
 			$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port}.";
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} elseif ($resp->faultCode()) {
 			$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} else {
-			log_error("[snort] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
+			syslog(LOG_NOTICE, "[snort] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
 		}
 
 		/* assemble xmlrpc payload */
@@ -4359,40 +4359,40 @@ EOD;
 			XML_RPC_encode($execcmd)
 		);
 
-		log_error("[snort] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
+		syslog(LOG_NOTICE, "[snort] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 		$cli->setCredentials($username, $password);
 		$resp = $cli->send($msg, $synctimeout);
 		if (!$resp) {
 			$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} elseif ($resp->faultCode()) {
 			$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} else {
-			log_error("[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
 		}
 
 		$params2 = array(
 			XML_RPC_encode($password),
 			XML_RPC_encode($execcmd2)
 		);
-		log_error("[snort] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
+		syslog(LOG_NOTICE, "[snort] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
 		$msg2 = new XML_RPC_Message($method, $params2);
 		$resp = $cli->send($msg2, $synctimeout);
 		if (!$resp) {
 			$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} elseif ($resp->faultCode()) {
 			$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} else {
-			log_error("[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
 		}
 	}
 }
