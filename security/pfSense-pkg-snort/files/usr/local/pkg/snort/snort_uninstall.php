@@ -164,7 +164,7 @@ if (is_array($config['installedpackages']['snortglobal']['rule']) && count($conf
 /* that option is enabled on GLOBAL SETTINGS tab or if    */
 /* the package and its configuration are being removed.   */
 /**********************************************************/
-if (($config['installedpackages']['snortglobal']['clearblocks'] == 'on') ||
+if (($config['installedpackages']['snortglobal']['clearblocks'] != 'on') ||
     ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on')) {
 	syslog(LOG_NOTICE, gettext("[Snort] Flushing <snort2c> firewall table to remove addresses blocked by Snort..."));
 	mwexec("/sbin/pfctl -t snort2c -T flush");

@@ -57,6 +57,8 @@ if (!isset($pconfig['rule_update_starttime']))
 	$pconfig['rule_update_starttime'] = '00:05';
 if (!isset($config['installedpackages']['snortglobal']['forcekeepsettings']))
 	$pconfig['forcekeepsettings'] = 'on';
+if (!isset($config['installedpackages']['snortglobal']['clearblocks']))
+	$pconfig['clearblocks'] = 'on';
 if (!isset($config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer']))
 	$pconfig['curl_no_verify_ssl_peer'] = 'off';
 
@@ -339,7 +341,7 @@ $section->addInput(new Form_Select(
 $section->addInput(new Form_Checkbox(
 	'clearblocks',
 	'Remove Blocked Hosts After Deinstall',
-	'Click to clear all blocked hosts added by Snort when removing the package.',
+	'Click to clear all blocked hosts added by Snort when removing the package.  Default is checked.',
 	$pconfig['clearblocks'] == 'on' ? true:false,
 	'on'
 ));
