@@ -141,6 +141,7 @@ unlink_if_exists(SNORTDIR . "/*.md5");
 unlink_if_exists(SNORTDIR . "/rules/*.txt");
 unlink_if_exists(SNORTDIR . "/classification.config");
 unlink_if_exists(SNORTDIR . "/reference.config");
+unlink_if_exists(SNORTDIR . "/unicode.map");
 unlink_if_exists(SNORTDIR . "/preproc_rules/*.rules");
 unlink_if_exists(SNORTDIR . "/rules/" . VRT_FILE_PREFIX . "*.rules");
 unlink_if_exists(SNORTDIR . "/rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
