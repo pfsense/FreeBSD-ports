@@ -1687,7 +1687,7 @@ function snort_resolve_flowbits($rules, $active_rules) {
 
 	/* Check $rules array to be sure it is filled.    */
 	if (empty($rules)) {
-		syslog(LOG_WARN, gettext("[Snort] WARNING: Flowbit resolution not done - no rules in {$snortdir}/rules/ ..."));
+		syslog(LOG_WARNING, gettext("[Snort] WARNING: Flowbit resolution not done - no rules in {$snortdir}/rules/ ..."));
 		return array();
 	}
 
@@ -3892,7 +3892,7 @@ function snort_filter_preproc_rules($snortcfg, &$active_rules, $persist_log = fa
 	/* than optimal with the preprocessors disabled.   */
 	/***************************************************/
 	if ($disabled_count > 0) {
-		syslog(LOG_WARN, gettext("[Snort] Warning: auto-disabled {$disabled_count} rules due to disabled preprocessor dependencies."));
+		syslog(LOG_WARNING, gettext("[Snort] Warning: auto-disabled {$disabled_count} rules due to disabled preprocessor dependencies."));
 		natcasesort($log_msg);
 		if ($fp) {
 			/* Only write the header when not persisting the log */
