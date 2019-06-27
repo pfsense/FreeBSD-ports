@@ -553,7 +553,7 @@ function snort_barnyard_start($snortcfg, $if_real, $background=FALSE) {
 	$snortdir = SNORTDIR;
 	$snortlogdir = SNORTLOGDIR;
 	$snort_uuid = $snortcfg['uuid'];
-	$snortbindir = SNORT_PBI_BINDIR;
+	$snortbindir = SNORT_BINDIR;
 
 	if ($snortcfg['barnyard_enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
 		syslog(LOG_NOTICE, "[Snort] Barnyard2 START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
@@ -570,7 +570,7 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 	$snortdir = SNORTDIR;
 	$snortlogdir = SNORTLOGDIR;
 	$snort_uuid = $snortcfg['uuid'];
-	$snortbindir = SNORT_PBI_BINDIR;
+	$snortbindir = SNORT_BINDIR;
 
 	if ($config['installedpackages']['snortglobal']['verbose_logging'] == "on")
 		$quiet = "";
@@ -3215,7 +3215,7 @@ function snort_create_rc() {
 
 	$snortdir = SNORTDIR;
 	$snortlogdir = SNORTLOGDIR;
-	$snortbindir = SNORT_PBI_BINDIR;
+	$snortbindir = SNORT_BINDIR;
 	$rcdir = RCFILEPREFIX;	
 
 	$snortconf = $config['installedpackages']['snortglobal']['rule'];
@@ -3939,7 +3939,7 @@ function snort_generate_conf($snortcfg) {
 		return;
 
 	$snortdir = SNORTDIR;
-	$snortlibdir = SNORT_PBI_BASEDIR . "lib";
+	$snortlibdir = SNORT_BASEDIR . "lib";
 	$snortlogdir = SNORTLOGDIR;
 	$flowbit_rules_file = FLOWBITS_FILENAME;
 	$snort_enforcing_rules_file = SNORT_ENFORCING_RULES_FILENAME;
