@@ -29,10 +29,10 @@ require("/usr/local/pkg/snort/snort_defs.inc");
 global $g, $config, $rebuild_rules;
 
 $snortdir = SNORTDIR;
-$snortlibdir = SNORT_PBI_BASEDIR . "lib";
+$snortlibdir = SNORT_BASEDIR . "lib";
 $snortlogdir = SNORTLOGDIR;
 $snortiprepdir = SNORT_IPREP_PATH;
-$snortbindir = SNORT_PBI_BINDIR;
+$snortbindir = SNORT_BINDIR;
 
 /* define checks */
 $oinkid = $config['installedpackages']['snortglobal']['oinkmastercode'];
