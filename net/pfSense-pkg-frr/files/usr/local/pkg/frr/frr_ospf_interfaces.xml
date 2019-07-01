@@ -40,6 +40,10 @@
 			<active/>
 		</tab>
 		<tab>
+			<text>OSPF Areas</text>
+			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
+		</tab>
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>
@@ -66,11 +70,23 @@
 			<fieldname>descr</fieldname>
 		</columnitem>
 		<columnitem>
-			<fielddescr>Metric</fielddescr>
+			<fielddescr>Cost</fielddescr>
 			<fieldname>metric</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Area</fielddescr>
+			<fieldname>interfacearea</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Authentication</fielddescr>
+			<fieldname>authtype</fieldname>
 		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
+		<field>
+			<name>Interface Options</name>
+			<type>listtopic</type>
+		</field>
 		<field>
 			<fielddescr>Interface</fielddescr>
 			<fieldname>interface</fieldname>
@@ -87,7 +103,7 @@
 			<size>30</size>
 			<type>input</type>
 		</field>
- 		<field>
+		<field>
 			<fielddescr>Network Type</fielddescr>
 			<fieldname>networktype</fieldname>
 			<description>Select OSPF Network Type of the interface.</description>
@@ -102,9 +118,26 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>Metric</fielddescr>
+			<fielddescr>Interface is Passive</fielddescr>
+			<fieldname>passive</fieldname>
+			<description>Prevent transmission and reception of OSPF packets on this interface. The specified interface will be announced as a stub network.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Ignore MTU</fielddescr>
+			<fieldname>mtuignore</fieldname>
+			<description>Ignore MTU values for OSPF peers on this interface. Allows OSPF to form full adjacencies even when there is an MTU mismatch.</description>
+			<type>checkbox</type>
+		</field>
+
+		<field>
+			<name>OSPF Interface Handling</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Cost</fielddescr>
 			<fieldname>metric</fieldname>
-			<description>Metric (cost) for this OSPF interface (leave blank for default).</description>
+			<description>Cost (Metric) for this OSPF interface (leave blank for default).</description>
 			<type>input</type>
 		</field>
 		<field>
@@ -114,56 +147,90 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Interface is Passive</fielddescr>
-			<fieldname>passive</fieldname>
-			<description>Prevent transmission and reception of OSPF packets on this interface. The specified interface will be announced as a stub network.</description>
-			<type>checkbox</type>
-		</field>
-		<field>
 			<fielddescr>Accept Filter</fielddescr>
 			<fieldname>acceptfilter</fieldname>
-			<description>Do not add routes for this interface subnet or IP address from OSPF into the routing table. (Suggested for Multi-WAN environments).</description>
+			<description>Prevent routes for this interface subnet or IP address from being distributed by OSPF (Suggested for Multi-WAN environments).</description>
 			<type>checkbox</type>
 		</field>
+
 		<field>
-			<fielddescr>Enable MD5 password for this FRR ospfd interface (default no)</fielddescr>
-			<fieldname>md5password</fieldname>
-			<description>Enables the use of an MD5 password to on this instance</description>
-			<type>checkbox</type>
+			<name>Authentication</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Authentication Type</fielddescr>
+			<fieldname>authtype</fieldname>
+			<description>
+				<![CDATA[
+				The type of OSPF authentication to use on this interface.
+				This type must match all neighbors reachable through this interface.
+				<br />
+				Using Message Digest is the best practice as Simple Password authentication is weak.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value></default_value>
+			<options>
+				<option><value></value><name>None (default)</name></option>
+				<option><value>digest</value><name>Message Digest (MD5 Hash)</name></option>
+				<option><value>simple</value><name>Simple Password</name></option>
+				<option><value>null</value><name>Null (Overrides Area Value)</name></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Password</fielddescr>
 			<fieldname>password</fieldname>
-			<description>Password for this OSPF interface.</description>
+			<description>
+				<![CDATA[
+				Password to use with Simple Password or Message Digest authentication.
+				This value must match all neighbors reachable through this interface.
+				<br />
+				Simple passwords may be up to 8 characters, Message Digest passwords (keys) may be up to 16 characters.
+				]]>
+			</description>
 			<type>input</type>
+		</field>
+
+		<field>
+			<name>Advanced</name>
+			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Router Priority</fielddescr>
 			<fieldname>routerpriorityelections</fieldname>
 			<description>
 				<![CDATA[
-				Router priority when participating in elections for DR (Default 1)<br />
-				Valid range is 0-255. 0 will cause the router to not participate in election.
+				Router priority when participating in elections for DR (0-255, Default 1)<br />
+				0 will cause the router to not participate in election.
 				]]>
 			</description>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Hello Interval</fielddescr>
-			<fieldname>hellointervalinseconds</fieldname>
-			<description>Hello Interval this OSPF interface in seconds (Default 10).</description>
-			<type>input</type>
-		</field>
-		<field>
 			<fielddescr>Retransmit Interval</fielddescr>
 			<fieldname>retransmitinterval</fieldname>
-			<description>Retransmit Interval this OSPF interface in seconds (Default 5).</description>
+			<description>Retransmit Interval this OSPF interface in seconds (3-65535, Default 5).</description>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Dead Timer</fielddescr>
+			<fielddescr>Hello Interval</fielddescr>
+			<fieldname>hellointervalinseconds</fieldname>
+			<description>Hello Interval this OSPF interface in seconds (1-65535, Default 10).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Dead Interval</fielddescr>
 			<fieldname>deadtimer</fieldname>
-			<description>Dead Timer for this OSPF interface in seconds (Default 40).</description>
+			<description>Dead Interval for this OSPF interface in seconds (1-65535, Default 40).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Minimal Hello</fielddescr>
+			<fieldname>minimalhello</fieldname>
+			<description>
+				Minimal Hello multiplier for this OSPF interface in seconds (1-10, Default disabled).
+				Overrides the Hello Interval and Dead Interval and instead sends this number of Hello messages per second.
+			</description>
 			<type>input</type>
 		</field>
 	</fields>
