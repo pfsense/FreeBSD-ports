@@ -37,7 +37,7 @@ require("/usr/local/pkg/snort/snort_defs.inc");
 global $config, $g;
 
 $snortdir = SNORTDIR;
-$snortlibdir = SNORT_PBI_BASEDIR . "lib";
+$snortlibdir = SNORT_BASEDIR . "lib";
 $snortlogdir = SNORTLOGDIR;
 $rcdir = RCFILEPREFIX;
 $snort_rules_upd_log = SNORT_RULES_UPD_LOGFILE;
