@@ -3,7 +3,7 @@
 
 PORTNAME=	dinotrace
 PORTVERSION=	9.4c
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	cad
 MASTER_SITES=	http://www.veripool.org/ftp/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -12,6 +12,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical signal trace waveform viewer
 
 LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake motif perl5 tar:tgz
 USE_XORG=	x11 sm ice xmu xt

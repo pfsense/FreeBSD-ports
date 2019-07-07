@@ -33,21 +33,12 @@ require_once("patches.inc");
 require_once("pkg-utils.inc");
 require_once('classes/Form.class.php');
 
-if (!is_array($config['installedpackages'])) {
-	$config['installedpackages'] = array();
-}
-if (!is_array($config['installedpackages']['patches'])) {
-	$config['installedpackages']['patches'] = array();
-}
-if (!is_array($config['installedpackages']['patches']['item'])) {
-	$config['installedpackages']['patches']['item'] = array();
-}
-
+init_config_arr(array('installedpackages', 'patches', 'item'));
 $a_patches = &$config['installedpackages']['patches']['item'];
 
 /* if a custom message has been passed along, lets process it */
-if ($_GET['savemsg']) {
-	$savemsg = $_GET['savemsg'];
+if ($_POST['savemsg']) {
+	$savemsg = $_POST['savemsg'];
 }
 
 if ($_POST) {
@@ -57,28 +48,28 @@ if ($_POST) {
 	}
 }
 
-if (($_GET['act'] == "fetch") && ($a_patches[$_GET['id']])) {
-	$savemsg = patch_fetch($a_patches[$_GET['id']]) ? gettext("Patch Fetched Successfully") : gettext("Patch Fetch Failed");
+if (($_POST['act'] == "fetch") && ($a_patches[$_POST['id']])) {
+	$savemsg = patch_fetch($a_patches[$_POST['id']]) ? gettext("Patch Fetched Successfully") : gettext("Patch Fetch Failed");
 }
-if (($_GET['act'] == "test") && ($a_patches[$_GET['id']])) {
-	$savemsg = patch_test_apply($a_patches[$_GET['id']]) ? gettext("Patch can be applied cleanly") : gettext("Patch can NOT be applied cleanly");
-	$savemsg .= " (<a href=\"system_patches.php?id={$_GET['id']}&amp;fulltest=apply\">" . gettext("detail") . "</a>)";
+if (($_POST['act'] == "test") && ($a_patches[$_POST['id']])) {
+	$savemsg = patch_test_apply($a_patches[$_POST['id']]) ? gettext("Patch can be applied cleanly") : gettext("Patch can NOT be applied cleanly");
+	$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=apply\" usepost>" . gettext("detail") . "</a>)";
 	$savemsg .= empty($savemsg) ? "" : "<br/>";
-	$savemsg .= patch_test_revert($a_patches[$_GET['id']]) ? gettext("Patch can be reverted cleanly") : gettext("Patch can NOT be reverted cleanly");
-	$savemsg .= " (<a href=\"system_patches.php?id={$_GET['id']}&amp;fulltest=revert\">" . gettext("detail") . "</a>)";
+	$savemsg .= patch_test_revert($a_patches[$_POST['id']]) ? gettext("Patch can be reverted cleanly") : gettext("Patch can NOT be reverted cleanly");
+	$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=revert\" usepost>" . gettext("detail") . "</a>)";
 }
-if (($_GET['fulltest']) && ($a_patches[$_GET['id']])) {
-	if ($_GET['fulltest'] == "apply") {
-		$fulldetail = patch_test_apply($a_patches[$_GET['id']], true);
-	} elseif ($_GET['fulltest'] == "revert") {
-		$fulldetail = patch_test_revert($a_patches[$_GET['id']], true);
+if (($_POST['fulltest']) && ($a_patches[$_POST['id']])) {
+	if ($_POST['fulltest'] == "apply") {
+		$fulldetail = patch_test_apply($a_patches[$_POST['id']], true);
+	} elseif ($_POST['fulltest'] == "revert") {
+		$fulldetail = patch_test_revert($a_patches[$_POST['id']], true);
 	}
 }
-if (($_GET['act'] == "apply") && ($a_patches[$_GET['id']])) {
-	$savemsg = patch_apply($a_patches[$_GET['id']]) ? gettext("Patch applied successfully") : gettext("Patch could NOT be applied!");
+if (($_POST['act'] == "apply") && ($a_patches[$_POST['id']])) {
+	$savemsg = patch_apply($a_patches[$_POST['id']]) ? gettext("Patch applied successfully") : gettext("Patch could NOT be applied!");
 }
-if (($_GET['act'] == "revert") && ($a_patches[$_GET['id']])) {
-	$savemsg = patch_revert($a_patches[$_GET['id']]) ? gettext("Patch reverted successfully") : gettext("Patch could NOT be reverted!");
+if (($_POST['act'] == "revert") && ($a_patches[$_POST['id']])) {
+	$savemsg = patch_revert($a_patches[$_POST['id']]) ? gettext("Patch reverted successfully") : gettext("Patch could NOT be reverted!");
 }
 
 $need_save = false;
@@ -160,7 +151,7 @@ if ($savemsg) {
 <form name="mainform" method="post">
 	<?php if (!empty($fulldetail)): ?>
 	<div class="panel panel-default">
-		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Patch Test Output')?> <?= htmlspecialchars($_GET['fulltest']) ?></h2></div>
+		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Patch Test Output')?> <?= htmlspecialchars($_POST['fulltest']) ?></h2></div>
 		<div class="panel-body table-responsive">
 			<pre><?=$fulldetail; ?></pre>
 			<a href="system_patches.php">Close</a><br/><br/>
@@ -207,24 +198,24 @@ foreach ($a_patches as $thispatch):
 		</td>
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if (empty($thispatch['patch'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=fetch" class="btn btn-sm btn-primary"><i class="fa fa-download"></i> <?=gettext("Fetch"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa fa-download"></i> <?=gettext("Fetch"); ?></a>
 		<?php elseif (!empty($thispatch['location'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=fetch" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i> <?=gettext("Re-Fetch"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa fa-refresh"></i> <?=gettext("Re-Fetch"); ?></a>
 		<?php endif; ?>
 		</td>
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if (!empty($thispatch['patch'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=test" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> <?=gettext("Test"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=test" class="btn btn-sm btn-primary" usepost><i class="fa fa-check"></i> <?=gettext("Test"); ?></a>
 		<?php endif; ?>
 		</td>
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if ($can_apply): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=apply" class="btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
 		<?php endif; ?>
 		</td>
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if ($can_revert): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=revert" class="btn btn-sm btn-primary"><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
 		<?php endif; ?>
 		</td>
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">

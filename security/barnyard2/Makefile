@@ -3,13 +3,15 @@
 PORTNAME=	barnyard2
 PORTVERSION=	1.13
 DISTVERSIONPREFIX=	v2-
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Interpreter for Snort unified2 binary output files
 
 LICENSE=	GPLv2
+
+USES=		autoreconf libtool
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	firnsy
@@ -32,7 +34,6 @@ OPTIONS_DESC=	Enable tcl support for sguil
 OPTIONS_DEFAULT+=	TCL
 .endif
 
-USES=		autoreconf libtool
 USE_RC_SUBR=	barnyard2
 GNU_CONFIGURE=	yes
 
@@ -67,6 +68,8 @@ WANT_PGSQL_VER=		92+
 PORT_PCAP_LIB_DEPENDS=	libpcap.so.1:net/libpcap
 PORT_PCAP_CONFIGURE_ON=	--with-libpcap-includes=${LOCALBASE}/include \
 			--with-libpcap-libraries=${LOCALBASE}/lib
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} 's|/etc|${LOCALBASE}/etc|' \

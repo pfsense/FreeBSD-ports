@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-ntopng
-PORTVERSION=	0.8.12
+PORTVERSION=	0.8.13
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -16,8 +17,8 @@ RUN_DEPENDS=	${LOCALBASE}/bin/ntopng:net/ntopng \
 		${LOCALBASE}/bin/redis-cli:databases/redis \
 		${LOCALBASE}/bin/gdbmtool:databases/gdbm \
 		${LOCALBASE}/share/fonts/webfonts/arial.ttf:x11-fonts/webfonts \
-		${LOCALBASE}/bin/acyclic:graphics/graphviz \
-		${LOCALBASE}/bin/geoiplookup:net/GeoIP
+		${LOCALBASE}/bin/acyclic:graphics/graphviz
+LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 
 CONFLICTS=	pfSense-base-nanobsd-[0-9]*
 

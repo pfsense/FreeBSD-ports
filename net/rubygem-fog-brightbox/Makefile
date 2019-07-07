@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fog-brightbox
-PORTVERSION=	0.14.0
-PORTREVISION=	2
+PORTVERSION=	1.0.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -13,12 +12,13 @@ COMMENT=	Module for the 'fog' gem to support Brightbox Cloud
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-fog-core1>=1.22:devel/rubygem-fog-core1 \
-		rubygem-fog-json>=0:devel/rubygem-fog-json \
-		rubygem-inflecto>=0.0.2:devel/rubygem-inflecto
+RUN_DEPENDS=	rubygem-dry-inflector>=0:devel/rubygem-dry-inflector \
+		rubygem-fog-core>=1.45:devel/rubygem-fog-core \
+		rubygem-fog-json>=0:devel/rubygem-fog-json
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

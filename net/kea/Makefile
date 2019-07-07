@@ -1,10 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	kea
-PORTVERSION=	1.3.0
-PORTREVISION=	1
+PORTVERSION=	${ISCVERSION:S/-P/P/:S/-beta/b/:S/a/.a/:S/rc/.rc/}
+PORTREVISION=	0
 CATEGORIES=	net ipv6
-MASTER_SITES=	ISC/kea/${PORTVERSION}
+MASTER_SITES=	ISC/kea/${ISCVERSION}
+DISTNAME=	${PORTNAME}-${ISCVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Alternative DHCP implementation by ISC
@@ -12,12 +13,21 @@ COMMENT=	Alternative DHCP implementation by ISC
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_powerpc64=	fails to configure: checking for log4cplus library... no
+
 LIB_DEPENDS=	liblog4cplus.so:devel/log4cplus \
 		libboost_system.so:devel/boost-libs
 
-BROKEN_powerpc64=	fails to configure: checking for log4cplus library... no
+# ISC releases things like 1.4.0-P1, which our versioning doesn't like
+ISCVERSION=	1.5.0
 
-USES=		autoreconf compiler:c++11-lang libtool pathfix python:3.3+ ssl
+CPE_VENDOR=	isc
+CPE_VERSION=	${ISCVERSION:C/-.*//}
+.if ${ISCVERSION:M*-*}
+CPE_UPDATE=	${ISCVERSION:C/.*-//:tl}
+.endif
+
+USES=		autoreconf compiler:c++11-lang iconv libtool pathfix ssl cpe
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
@@ -35,11 +45,12 @@ PORTDOCS=	AUTHORS COPYING ChangeLog README \
 		examples
 
 OPTIONS_DEFINE=	DOCS MYSQL PGSQL
-DOCS_MAKE_ARGS_OFF= \
+OPTIONS_SUB=	yes
+DOCS_MAKE_ARGS_OFF=	\
 		INSTALL_STRIP_PROGRAM="${WRKSRC}/install-sh -c -s" \
 		INSTALL_STRIP_FLAG="-s" \
 		INSTALL_PROGRAM_ENV="STRIPPROG=${STRIP}"
-DOCS_INSTALL_TARGET_OFF= \
+DOCS_INSTALL_TARGET_OFF=	\
 		install-exec-am \
 		install-pkgconfigDATA \
 		install-pkgincludeHEADERS

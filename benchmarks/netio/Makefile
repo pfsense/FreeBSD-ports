@@ -2,22 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	netio
-PORTVERSION=	1.32
+PORTVERSION=	1.33
 CATEGORIES=	benchmarks net ipv6
-MASTER_SITES=	LOCAL/arved
-DISTNAME=	netio132
+MASTER_SITES=	http://www.ars.de/ \
+		LOCAL/arved
+DISTNAME=	netio133
 
 MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Network benchmark
 
-WRKSRC=		${WRKDIR}
 USES=		dos2unix gmake zip
-DOS2UNIX_FILES=	Makefile netio.c
-PLIST_FILES=	bin/netio
 
+LICENSE_PERMS=no-pkg-mirror
+RESTRICTED=	Usage permitted for non-commercial purposes only
+NO_CDROM=	Sale for profit is not permitted
+
+DOS2UNIX_FILES=	Makefile netio.c
+NO_WRKSUBDIR=	yes
+PLIST_FILES=	bin/netio
 CFLAGS+=	-DUNIX -DSOCKLEN_T
 LIBS+=		-pthread
-MAKE_ENV+=	OUT=-o
+MAKE_ENV=	OUT=-o
 
 OPTIONS_DEFINE=	IPV6
 IPV6_PLIST_FILES=	bin/netio6

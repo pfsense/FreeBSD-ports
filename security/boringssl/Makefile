@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	boringssl
-PORTVERSION=	0.0.0.0.2018.01.10.01
+PORTVERSION=	0.0.0.0.2018.10.30.01
 CATEGORIES=	security
 
 MAINTAINER=	swills@FreeBSD.org
@@ -11,8 +11,8 @@ BUILD_DEPENDS=	go:lang/go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
-GH_TAGNAME=	b6317b9
-USES=		cmake localbase perl5
+GH_TAGNAME=	144d924
+USES=		cmake:insource localbase perl5
 CMAKE_ARGS+=	-DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1
 USE_LDCONFIG=	yes
 LDFLAGS+=	-Wl,-rpath,${PREFIX}/lib

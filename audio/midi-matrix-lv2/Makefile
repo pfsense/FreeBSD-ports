@@ -3,6 +3,7 @@
 
 PORTNAME=	midi-matrix
 PORTVERSION=	0.20.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://gitlab.com/OpenMusicKontrollers/midi_matrix.lv2/repository/archive.tar.gz?ref=${PORTVERSION}&dummy=/
 PKGNAMESUFFIX=	-lv2
@@ -13,11 +14,9 @@ COMMENT=	LV2 'Midi Matrix' plugin bundle: 'Channel Filter'
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to build: cc1: unrecognized command line option -std=gnu11
-
 BUILD_DEPENDS=	lv2>0:audio/lv2
 
-USES=		cmake pkgconfig
+USES=		cmake compiler:c11 pkgconfig
 USE_XORG=	x11 xext
 USE_GL=		gl glu
 

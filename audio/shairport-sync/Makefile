@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	shairport-sync
-DISTVERSION=	3.2d8
+DISTVERSION=	3.2.2
 CATEGORIES=	audio
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -16,10 +16,11 @@ LIB_DEPENDS=	libavahi-client.so:net/avahi-app \
 		libpopt.so:devel/popt \
 		libsoxr.so:audio/libsoxr
 
-GNU_CONFIGURE=	yes
 USES=		autoreconf libtool pkgconfig ssl
-
 USE_GITHUB=	yes
+
+GNU_CONFIGURE=	yes
+
 GH_ACCOUNT=	mikebrady
 
 USE_RC_SUBR=	${PORTNAME}

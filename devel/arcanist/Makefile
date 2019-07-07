@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	arcanist
-PORTVERSION=	20180420
+PORTVERSION=	20181231
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
@@ -18,12 +19,12 @@ CONFLICTS=	arc-*
 PHP_DESTDIR=	lib/php/arcanist
 USES=		php:flavors python:2.7,env shebangfix
 SHEBANG_FILES=	scripts/breakout.py
-USE_PHP=	curl dom hash json simplexml
+USE_PHP=	curl dom hash json simplexml zlib
 USE_GITHUB=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 GH_ACCOUNT=	phacility
-GH_TAGNAME=	ad3087e
+GH_TAGNAME=	25c2381
 
 OPTIONS_DEFINE=	ENCODINGS
 OPTIONS_DEFAULT=ENCODINGS
@@ -34,5 +35,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}
 	cd ${WRKSRC} ; ${PAX} -rw * ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}
 	${LN} -sf ../${PHP_DESTDIR}/scripts/arcanist.php ${STAGEDIR}${PREFIX}/bin/arc
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/bash-completion/completions/
+	${RLN} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/resources/shell/bash-completion ${STAGEDIR}${PREFIX}/share/bash-completion/completions/arc
 
 .include <bsd.port.mk>

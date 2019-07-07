@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -28,6 +28,7 @@ global $config, $pfb;
 pfb_global();
 $disable_move = FALSE;
 
+init_config_arr(array('installedpackages', 'pfblockerngdnsblsettings', 'config', 0));
 $pfb['dconfig'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0];
 
 $pconfig = array();
@@ -80,7 +81,9 @@ if ($_POST) {
 
 	if (isset($_POST['save'])) {
 
-		unset($input_errors);
+		if (isset($input_errors)) {
+			unset($input_errors);
+		}
 
 		// Check if DNSBL Webpage has been changed.
 		$dnsbl_webpage = FALSE;
@@ -95,54 +98,60 @@ if ($_POST) {
 		}
 
 		// Reset TOP1M Whitelist on user changes
-		if ($pfb['dconfig']['alexa_count'] != $_POST['alexa_count'] || 
+		if ($pfb['dconfig']['alexa_count'] != $_POST['alexa_count'] ||
 		    $pfb['dconfig']['alexa_inclusion'] != $_POST['alexa_inclusion']) {
 			unlink_if_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt");
 		}
 
-		$pfb['dconfig']['pfb_dnsbl']		= $_POST['pfb_dnsbl']					?: '';
-		$pfb['dconfig']['pfb_tld']		= $_POST['pfb_tld']					?: '';
-		$pfb['dconfig']['pfb_dnsvip']		= $_POST['pfb_dnsvip']					?: '10.10.10.1';
-		$pfb['dconfig']['pfb_dnsvip_type']	= $_POST['pfb_dnsvip_type']				?: 'ipalias';
-		$pfb['dconfig']['pfb_dnsvip_pass']	= $_POST['pfb_dnsvip_pass']				?: '';
-		$pfb['dconfig']['pfb_dnsport']		= $_POST['pfb_dnsport']					?: '8081';
-		$pfb['dconfig']['pfb_dnsport_ssl']	= $_POST['pfb_dnsport_ssl']				?: '8443';
-		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']				?: 'lan';
-		$pfb['dconfig']['pfb_dnsbl_rule']	= $_POST['pfb_dnsbl_rule']				?: '';
-		$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])	?: '';
-		$pfb['dconfig']['dnsbl_webpage']	= $_POST['dnsbl_webpage']				?: 'dnsbl_default.php';
-		$pfb['dconfig']['pfb_dnsbl_sync']	= $_POST['pfb_dnsbl_sync']				?: '';
-		$pfb['dconfig']['action']		= $_POST['action']					?: 'Disabled';
-		$pfb['dconfig']['aliaslog']		= $_POST['aliaslog']					?: 'enabled';
+		foreach (array('aliasports_in', 'aliasaddr_in', 'aliasports_out', 'aliasaddr_out') as $value) {
+			if (!empty($_POST[$value]) && !is_validaliasname($_POST[$value])) {
+				$input_errors[] = 'Settings: Advanced In/Outbound Aliasname error - ' . invalidaliasnamemsg($_POST[$value]);
+			}
+		}
 
-		$pfb['dconfig']['autoaddrnot_in']	= $_POST['autoaddrnot_in']				?: '';
-		$pfb['dconfig']['autoports_in']		= $_POST['autoports_in']				?: '';
-		$pfb['dconfig']['aliasports_in']	= htmlspecialchars($_POST['aliasports_in'])		?: '';
-		$pfb['dconfig']['autoaddr_in']		= $_POST['autoaddr_in']					?: '';
-		$pfb['dconfig']['autonot_in']		= $_POST['autonot_in']					?: '';
-		$pfb['dconfig']['aliasaddr_in']		= htmlspecialchars($_POST['aliasaddr_in'])		?: '';
-		$pfb['dconfig']['autoproto_in']		= $_POST['autoproto_in']				?: '';
-		$pfb['dconfig']['agateway_in']		= $_POST['agateway_in']					?: 'default';
+		$pfb['dconfig']['pfb_dnsbl']		= $_POST['pfb_dnsbl']				?: '';
+		$pfb['dconfig']['pfb_tld']		= $_POST['pfb_tld']				?: '';
+		$pfb['dconfig']['pfb_dnsvip']		= $_POST['pfb_dnsvip']				?: '10.10.10.1';
+		$pfb['dconfig']['pfb_dnsvip_type']	= $_POST['pfb_dnsvip_type']			?: 'ipalias';
+		$pfb['dconfig']['pfb_dnsvip_pass']	= $_POST['pfb_dnsvip_pass']			?: '';
+		$pfb['dconfig']['pfb_dnsport']		= $_POST['pfb_dnsport']				?: '8081';
+		$pfb['dconfig']['pfb_dnsport_ssl']	= $_POST['pfb_dnsport_ssl']			?: '8443';
+		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']			?: 'lan';
+		$pfb['dconfig']['pfb_dnsbl_rule']	= $_POST['pfb_dnsbl_rule']			?: '';
+		$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])?: '';
+		$pfb['dconfig']['dnsbl_webpage']	= $_POST['dnsbl_webpage']			?: 'dnsbl_default.php';
+		$pfb['dconfig']['pfb_dnsbl_sync']	= $_POST['pfb_dnsbl_sync']			?: '';
+		$pfb['dconfig']['action']		= $_POST['action']				?: 'Disabled';
+		$pfb['dconfig']['aliaslog']		= $_POST['aliaslog']				?: 'enabled';
 
-		$pfb['dconfig']['autoaddrnot_out']	= $_POST['autoaddrnot_out']				?: '';
-		$pfb['dconfig']['autoports_out']	= $_POST['autoports_out']				?: '';
-		$pfb['dconfig']['aliasports_out']	= htmlspecialchars($_POST['aliasports_out'])		?: '';
-		$pfb['dconfig']['autoaddr_out']		= $_POST['autoaddr_out']				?: '';
-		$pfb['dconfig']['autonot_out']		= $_POST['autonot_out']					?: '';
-		$pfb['dconfig']['aliasaddr_out']	= htmlspecialchars($_POST['aliasaddr_out'])		?: '';
-		$pfb['dconfig']['autoproto_out']	= $_POST['autoproto_out']				?: '';
-		$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']				?: 'default';
+		$pfb['dconfig']['autoaddrnot_in']	= $_POST['autoaddrnot_in']			?: '';
+		$pfb['dconfig']['autoports_in']		= $_POST['autoports_in']			?: '';
+		$pfb['dconfig']['aliasports_in']	= $_POST['aliasports_in']			?: '';
+		$pfb['dconfig']['autoaddr_in']		= $_POST['autoaddr_in']				?: '';
+		$pfb['dconfig']['autonot_in']		= $_POST['autonot_in']				?: '';
+		$pfb['dconfig']['aliasaddr_in']		= $_POST['aliasaddr_in']			?: '';
+		$pfb['dconfig']['autoproto_in']		= $_POST['autoproto_in']			?: '';
+		$pfb['dconfig']['agateway_in']		= $_POST['agateway_in']				?: 'default';
 
-		$pfb['dconfig']['suppression']		= base64_encode($_POST['suppression'])			?: '';
+		$pfb['dconfig']['autoaddrnot_out']	= $_POST['autoaddrnot_out']			?: '';
+		$pfb['dconfig']['autoports_out']	= $_POST['autoports_out']			?: '';
+		$pfb['dconfig']['aliasports_out']	= $_POST['aliasports_out']			?: '';
+		$pfb['dconfig']['autoaddr_out']		= $_POST['autoaddr_out']			?: '';
+		$pfb['dconfig']['autonot_out']		= $_POST['autonot_out']				?: '';
+		$pfb['dconfig']['aliasaddr_out']	= $_POST['aliasaddr_out']			?: '';
+		$pfb['dconfig']['autoproto_out']	= $_POST['autoproto_out']			?: '';
+		$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']			?: 'default';
 
-		$pfb['dconfig']['alexa_enable']		= $_POST['alexa_enable']				?: '';
-		$pfb['dconfig']['alexa_type']		= $_POST['alexa_type']					?: 'Alexa';
-		$pfb['dconfig']['alexa_count']		= $_POST['alexa_count']					?: '1000';
-		$pfb['dconfig']['alexa_inclusion']	= implode(',', (array)$_POST['alexa_inclusion'])	?: 'com,net,org,ca,co,io';
+		$pfb['dconfig']['suppression']		= base64_encode($_POST['suppression'])		?: '';
 
-		$pfb['dconfig']['tldexclusion']		= base64_encode($_POST['tldexclusion'])			?: '';
-		$pfb['dconfig']['tldblacklist']		= base64_encode($_POST['tldblacklist'])			?: '';
-		$pfb['dconfig']['tldwhitelist']		= base64_encode($_POST['tldwhitelist'])			?: '';
+		$pfb['dconfig']['alexa_enable']		= $_POST['alexa_enable']			?: '';
+		$pfb['dconfig']['alexa_type']		= $_POST['alexa_type']				?: 'Alexa';
+		$pfb['dconfig']['alexa_count']		= $_POST['alexa_count']				?: '1000';
+		$pfb['dconfig']['alexa_inclusion']	= implode(',', (array)$_POST['alexa_inclusion'])?: 'com,net,org,ca,co,io';
+
+		$pfb['dconfig']['tldexclusion']		= base64_encode($_POST['tldexclusion'])		?: '';
+		$pfb['dconfig']['tldblacklist']		= base64_encode($_POST['tldblacklist'])		?: '';
+		$pfb['dconfig']['tldwhitelist']		= base64_encode($_POST['tldwhitelist'])		?: '';
 
 		// Validate DNSBL VIP address
 		if (!is_ipaddrv4($_POST['pfb_dnsvip'])) {
@@ -204,7 +213,6 @@ display_top_tabs($tab_array, true);
 
 $tab_array	= array();
 $tab_array[]	= array(gettext('DNSBL Feeds'),		false,		'/pfblockerng/pfblockerng_category.php?type=dnsbl');
-$tab_array[]	= array(gettext('DNSBL EasyList'),	false,		'/pfblockerng/pfblockerng_category.php?type=easylist');
 $tab_array[]	= array(gettext('DNSBL Category'),	false,		'/pfblockerng/pfblockerng_blacklist.php');
 display_top_tabs($tab_array, true);
 
@@ -214,7 +222,7 @@ if (isset($input_errors)) {
 
 $form = new Form('Save DNSBL settings');
 
-$section = new Form_Section('DNSBL Configuration');
+$section = new Form_Section('DNSBL');
 $section->addInput(new Form_StaticText(
 	'Links',
 	'<small>'
@@ -227,7 +235,8 @@ $dnsbl_text = '<div class="infoblock">
 			<span class="text-danger">Note: </span>
 			DNSBL requires the DNS Resolver (Unbound) to be used as the DNS service.<br />
 			When a DNS request is made for a Domain that is listed in DNSBL, the request is redirected to the Virtual IP address<br />
-			where an instance of Lighttpd Web Server will collect the packet statistics and push a \'1x1\' GIF image to the Browser.<br /><br />
+			where an instance of Lighttpd Web Server will collect the packet statistics and push a \'1x1\' GIF image to the Browser.<br />
+			If the blocked domain is a root domain, a customizable Blocked Webpage will be displayed to the user.<br /><br />
 
 			If browsing is slow, check for Firewall LAN Rules/Limiters that might be blocking access to the DNSBL VIP.<br /><br />
 
@@ -304,6 +313,9 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['pfb_tld'] === 'on' ? true:false,
 	'on'
 ))->setHelp($dnsbl_text);
+$form->add($section);
+
+$section = new Form_Section('DNSBL Webserver Configuration');
 
 $section->addInput(new Form_Input(
 	'pfb_dnsvip',
@@ -338,7 +350,7 @@ $section->add($group);
 
 $section->addInput(new Form_Input(
 	'pfb_dnsport',
-	gettext('Listening Port'),
+	gettext('Port'),
 	'number',
 	$pconfig['pfb_dnsport'],
 	[ 'min' => 1, 'max' => 65535, 'placeholder' => 'Enter DNSBL Listening Port' ]
@@ -348,7 +360,7 @@ $section->addInput(new Form_Input(
 
 $section->addInput(new Form_Input(
 	'pfb_dnsport_ssl',
-	gettext('SSL Listening Port'),
+	gettext('SSL Port'),
 	'number',
 	$pconfig['pfb_dnsport_ssl'],
 	[ 'min' => 1, 'max' => 65535, 'placeholder' => 'Enter DNSBL VIP address' ]
@@ -361,11 +373,14 @@ $int_size	= count($interface_list) ?: '1';
 
 $section->addInput(new Form_Select(
 	'dnsbl_interface',
-	gettext('Listening Interface'),
+	gettext('Webserver Interface'),
 	$pconfig['dnsbl_interface'],
 	$interface_list
 ))->setHelp('Select the interface you want the DNSBL Web Server to Listen on.<br />'
 	. 'Default: <strong>LAN</strong> - Selected Interface should be a Local Interface only.');
+$form->add($section);
+
+$section = new Form_Section('DNSBL Configuration');
 
 $group = new Form_Group('Permit Firewall Rules');
 $group->add(new Form_Checkbox(
@@ -376,9 +391,15 @@ $group->add(new Form_Checkbox(
 	'on'
 ))->setWidth(7)
   ->setHelp('This will create \'Floating\' Firewall permit rules to allow traffic from the Selected Interface(s) to access<br />'
-		. 'the DNSBL VIP on the DNSBL Listening interface. (ICMP and Webserver ports only). This is only required for networks with multiple LAN Segments.');
+		. 'the <strong>DNSBL Webserver</strong>. (ICMP and Webserver ports only).'
+		. '<br /><br />'
+		. 'This option is not designed to bypass DNSBL for the non-selected LAN segments<br />'
+		. 'This option is only required for networks with multiple LAN Segments.');
 
+// Remove Localhost from Interface options
+//array_pop($interface_list);
 $int_size = count($interface_list) ?: '1';
+
 $group->add(new Form_Select(
 	'dnsbl_allow_int',
 	NULL,
@@ -390,12 +411,14 @@ $group->add(new Form_Select(
 $section->add($group);
 
 $lista = array();
-$indexdir = '/usr/local/www/pfblockerng/www/';
+$indexdir = '/usr/local/www/pfblockerng/www';
 if (is_dir("{$indexdir}")) {
-	$list = glob("{$indexdir}/dnsbl_*.php");
+	$list = glob("{$indexdir}/*.{php,html}", GLOB_BRACE);
 	if (!empty($list)) {
 		foreach ($list as $line) {
-			if (strpos($line, 'dnsbl_active.php') === FALSE) {
+			if (strpos($line, 'index.php') !== FALSE || strpos($line, 'dnsbl_active.php') !== FALSE) {
+                                continue;
+                        } else {
 				$file = pathinfo($line, PATHINFO_BASENAME);
 				$l = array($file => $file);
 				$lista = array_merge($lista, $l);
@@ -410,7 +433,7 @@ $section->addInput(new Form_Select(
 	'Blocked Webpage',
 	$pconfig['dnsbl_webpage'],
 	$lista
-))->sethelp('Default: <strong>dnsbl_default.php</strong><br />Select the DNSBL Blocked Webpage.<br />'
+))->sethelp('Default: <strong>dnsbl_default.php</strong><br />Select the DNSBL Blocked Webpage.<br /><br />'
 	. 'Custom block web pages can be added to: <strong>/usr/local/www/pfblockerng/www/</strong> folder.')
   ->setAttribute('style', 'width: auto')
   ->setAttribute('size', $list_size);
@@ -426,165 +449,6 @@ $section->addInput(new Form_Checkbox(
 	. '<br />&emsp;&emsp;&emsp;&emsp;<span class="text-danger">Note: </span>A Force Reload will run a full Reload of Unbound');
 
 $form->add($section);
-
-$section = new Form_Section('DNSBL IP Firewall Rule Settings', 'DNSBL_IP_Firewall', COLLAPSIBLE|SEC_CLOSED);
-$section->addInput(new Form_StaticText(
-	NULL,
-	'Configure settings for Firewall Rules when any DNSBL Feed contain IP Addresses.<br />'
-	. '<span class="text-danger">Note: </span>To utilize this feature, you must define the Inbound/Outbound Interfaces in the IP Tab.'
-));
-
-$list_action_text = 'Default: <strong>Disabled</strong>
-			<div class="infoblock">
-				Select the <strong>Action</strong> for Firewall Rules when any DNSBL Feed contain IP addresses.<br /><br />
-				<strong><u>\'Disabled\' Rule:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
-
-				<strong><u>\'Deny\' Rules:</u></strong><br />
-				\'Deny\' rules create high priority \'block\' or \'reject\' rules on the stated interfaces.
-				 They don\'t change the \'pass\' rules on other interfaces. Typical uses of \'Deny\' rules are:<br />
-
-				<ul>
-				<li><strong>Deny Both</strong> - blocks all traffic in both directions, if the source or destination IP is in the block list</li>
-				<li><strong>Deny Inbound/Deny Outbound</strong> - blocks all traffic in one direction <u>unless</u> it is part of a session started by
-				traffic sent in the other direction. Does not affect traffic in the other direction.</li>
-				<li>One way \'Deny\' rules can be used to selectively block <u>unsolicited</u> incoming (new session) packets in one direction, while
-				still allowing <u>deliberate</u> outgoing sessions to be created in the other direction.</li>
-				</ul>
-
-				<strong><u>\'Alias\' Rule:</u></strong><br />
-				<strong>\'Alias\'</strong> rules create an <a href="/firewall_aliases.php">alias</a> for the list (and do nothing else).
-				This enables a pfBlockerNG list to be used by name, in any firewall rule or pfSense function, as desired.
-			</div>';
-
-$section->addInput(new Form_Select(
-	'action',
-	gettext('List Action'),
-	$pconfig['action'],
-	[ 'Disabled' => 'Disabled', 'Deny_Inbound' => 'Deny Inbound', 'Deny_Outbound' => 'Deny Outbound', 'Deny_Both' => 'Deny Both', 'Alias_Deny' => 'Alias Deny' ]
-))->setHelp($list_action_text);
-
-$section->addInput(new Form_Select(
-	'aliaslog',
-	gettext('Enable Logging'),
-	$pconfig['aliaslog'],
-	[ 'enabled' => 'Enable', 'disabled' => 'Disable' ]
-))->sethelp('Default: <strong>Enable</strong><br />Select - Logging to Status: System Logs: FIREWALL ( Log )<br />'
-		. 'This can be overriden by the \'Global Logging\' Option in the General Tab.'
-);
-
-$form->add($section);
-
-// Print Advanced Firewall Rule Settings (Inbound and Outbound) section
-foreach (array( 'In' => 'Source', 'Out' => 'Destination') as $adv_mode => $adv_type) {
-
-	$advmode = strtolower($adv_mode);
-
-	// Collect all pfSense 'Port' Aliases
-	$portslist = $networkslist = '';
-	if (!empty($config['aliases']['alias'])) {
-		foreach ($config['aliases']['alias'] as $alias) {
-			if ($alias['type'] == 'port') {
-				$portslist .= "{$alias['name']},";
-			} elseif ($alias['type'] == 'network') {
-				$networkslist .= "{$alias['name']},";
-			}
-		}
-	}
-	$ports_list	= trim($portslist, ',');
-	$networks_list	= trim($networkslist, ',');
-
-	$section = new Form_Section("Advanced {$adv_mode}bound Firewall Rule Settings", "adv{$advmode}boundsettings", COLLAPSIBLE|SEC_CLOSED);
-	$section->addInput(new Form_StaticText(
-		NULL,
-		"<span class=\"text-danger\">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
-			<dl class=\"dl-horizontal\">
-				<dt>{$adv_mode}bound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
-			</dl>
-			Configuring the Adv. {$adv_mode}bound Rule settings, will allow for more customization of the {$adv_mode}bound Auto-Rules."));
-
-	$section->addInput(new Form_Checkbox(
-		'autoaddrnot_' . $advmode,
-		"Invert {$adv_type}",
-		NULL,
-		$pconfig['autoaddrnot_' . $advmode] === 'on' ? true:false,
-		'on'
-	))->setHelp("Option to invert the sense of the match. ie - Not (!) {$adv_type} Address(es)");
-
-	$group = new Form_Group("Custom DST Port");
-	$group->add(new Form_Checkbox(
-		'autoports_' . $advmode,
-		'Custom DST Port',
-		NULL,
-		$pconfig['autoports_' . $advmode] === 'on' ? true:false,
-		'on'
-	))->setHelp('Enable')
-	  ->setWidth(2);
-
-	$group->add(new Form_Input(
-		'aliasports_' . $advmode,
-		'Custom Port',
-		'text',
-		$pconfig["aliasports_{$advmode}"]
-	))->setHelp("<a target=\"_blank\" href=\"/firewall_aliases.php?tab=port\">Click Here to add/edit Aliases</a>
-			Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name."
-	)->setWidth(8);
-	$section->add($group);
-
-	if ($adv_type == 'Source') {
-		$custom_location = 'Destination';
-	} else {
-		$custom_location = 'Source';
-	}
-
-	$group = new Form_Group("Custom {$custom_location}");
-	$group->add(new Form_Checkbox(
-		'autoaddr_' . $advmode,
-		"Custom {$custom_location}",
-		NULL,
-		$pconfig["autoaddr_{$advmode}"] === 'on' ? true:false,
-		'on'
-	))->setHelp('Enable')->setWidth(1);
-
-	$group->add(new Form_Checkbox(
-		'autonot_' . $advmode,
-		NULL,
-		NULL,
-		$pconfig["autonot_{$advmode}"] === 'on' ? true:false,
-		'on'
-	))->setHelp('Invert')->setWidth(1);
-
-	$group->add(new Form_Input(
-		'aliasaddr_' . $advmode,
-		"Custom {$custom_location}",
-		'text',
-		$pconfig['aliasaddr_' . $advmode]
-	))->sethelp('<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>'
-		. 'Do not manually enter Addresses(es).<br />Do not use \'pfB_\' in the \'IP Network Type\' Alias name.<br />'
-		. "Select 'invert' to invert the sense of the match. ie - Not (!) {$custom_location} Address(es)"
-	)->setWidth(8);
-	$section->add($group);
-
-	$group = new Form_Group('Custom Protocol');
-	$group->add(new Form_Select(
-		'autoproto_' . $advmode,
-		NULL,
-		$pconfig['autoproto_' . $advmode],
-		['' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP']
-	))->setHelp("<strong>Default: any</strong><br />Select the Protocol used for {$adv_mode}bound Firewall Rule(s).<br />
-		<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!");
-	$section->add($group);
-
-	$group = new Form_Group('Custom Gateway');
-	$group->add(new Form_Select(
-		'agateway_' . $advmode,
-		NULL,
-		$pconfig['agateway_' . $advmode],
-		pfb_get_gateways()
-	))->setHelp("Select alternate Gateway or keep 'default' setting.");
-
-	$section->add($group);
-	$form->add($section);
-}
 
 // Print Custom List TextArea section
 $section = new Form_Section('DNSBL Whitelist', 'DNSBL_Whitelist_customlist', COLLAPSIBLE|SEC_CLOSED);
@@ -625,7 +489,7 @@ $form->add($section);
 
 $section = new Form_Section('TOP1M Whitelist', 'TOP1M_Whitelist', COLLAPSIBLE|SEC_CLOSED);
 $top1m_text = 'The TOP1M feed can be used to whitelist the most popular Domain names to avoid false positives.<br />
-		Note: The domains listed in the TOP1M *may* be malicious in nature, there consider limiting this feature.<br /><br />
+		Note: The domains listed in the TOP1M *may* be malicious in nature, consider limiting this feature.<br /><br />
 		Whitelist(s) available:<br />
 
 		<ul>
@@ -674,12 +538,6 @@ $section->addInput(new Form_Select(
 	gettext('TLD Inclusion'),
 	$pconfig['alexa_inclusion'],
 	[	'ae' => 'AE',
-		'aero' => 'AERO',
-		'ag' => 'AG',
-		'al' => 'AL',
-		'am' => 'AM',
-		'ar' => 'AR',
-		'ae' => 'AE',
 		'aero' => 'AERO',
 		'ag' => 'AG',
 		'al' => 'AL',
@@ -901,7 +759,7 @@ $tld_whitelist_text = 'Enter <strong>each specific</strong> Domain and/or Sub-Do
 					<li>example.com</li>
 					<li>example.com|x.x.x.x&emsp;&emsp;(Replace x.x.x.x with associated Domain/Sub-Domain IP Address.</li>
 				</ul>
-				The First option above will collect the IP Address on each Cron run, 
+				The First option above will collect the IP Address on each Cron run,
 				while the second option will define a Static IP Address.<br /><br />
 
 				You must Whitelist every Domain or Sub-Domain individually.<br />
@@ -923,6 +781,165 @@ $section->addInput(new Form_Textarea(
   ->setHelp($tld_whitelist_text);
 
 $form->add($section);
+
+$section = new Form_Section('DNSBL IPs');
+$section->addInput(new Form_StaticText(
+        NULL,
+        'When IPs are found in any Domain based Feed, you can configure IP Firewall Rules for these IPs<br /><br />'
+	. '<span class="text-danger">Note: </span>To utilize this feature, you must define the Inbound/Outbound Interfaces in the <strong>IP Tab</strong>.'
+));
+
+$list_action_text = 'Default: <strong>Disabled</strong>
+			<div class="infoblock">
+				Select the <strong>Action</strong> for Firewall Rules when any DNSBL Feed contain IP addresses.<br /><br />
+				<strong><u>\'Disabled\' Rule:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
+
+				<strong><u>\'Deny\' Rules:</u></strong><br />
+				\'Deny\' rules create high priority \'block\' or \'reject\' rules on the stated interfaces.
+				 They don\'t change the \'pass\' rules on other interfaces. Typical uses of \'Deny\' rules are:<br />
+
+				<ul>
+				<li><strong>Deny Both</strong> - blocks all traffic in both directions, if the source or destination IP is in the block list</li>
+				<li><strong>Deny Inbound/Deny Outbound</strong> - blocks all traffic in one direction <u>unless</u> it is part of a session started by
+				traffic sent in the other direction. Does not affect traffic in the other direction.</li>
+				<li>One way \'Deny\' rules can be used to selectively block <u>unsolicited</u> incoming (new session) packets in one direction, while
+				still allowing <u>deliberate</u> outgoing sessions to be created in the other direction.</li>
+				</ul>
+
+				<strong><u>\'Alias\' Rule:</u></strong><br />
+				<strong>\'Alias\'</strong> rules create an <a href="/firewall_aliases.php">alias</a> for the list (and do nothing else).
+				This enables a pfBlockerNG list to be used by name, in any firewall rule or pfSense function, as desired.
+			</div>';
+
+$section->addInput(new Form_Select(
+	'action',
+	gettext('List Action'),
+	$pconfig['action'],
+	[ 'Disabled' => 'Disabled', 'Deny_Inbound' => 'Deny Inbound', 'Deny_Outbound' => 'Deny Outbound', 'Deny_Both' => 'Deny Both', 'Alias_Deny' => 'Alias Deny' ]
+))->setHelp($list_action_text);
+
+$section->addInput(new Form_Select(
+	'aliaslog',
+	gettext('Enable Logging'),
+	$pconfig['aliaslog'],
+	[ 'enabled' => 'Enable', 'disabled' => 'Disable' ]
+))->sethelp('Default: <strong>Enable</strong><br />Select - Logging to Status: System Logs: FIREWALL ( Log )<br />'
+		. 'This can be overriden by the \'Global Logging\' Option in the General Tab.'
+);
+$form->add($section);
+
+// Print Advanced Firewall Rule Settings (Inbound and Outbound) section
+foreach (array( 'In' => 'Source', 'Out' => 'Destination') as $adv_mode => $adv_type) {
+
+	$advmode = strtolower($adv_mode);
+
+	// Collect all pfSense 'Port' Aliases
+	$portslist = $networkslist = '';
+	if (!empty($config['aliases']['alias'])) {
+		foreach ($config['aliases']['alias'] as $alias) {
+			if ($alias['type'] == 'port') {
+				$portslist .= "{$alias['name']},";
+			} elseif ($alias['type'] == 'network') {
+				$networkslist .= "{$alias['name']},";
+			}
+		}
+	}
+	$ports_list	= trim($portslist, ',');
+	$networks_list	= trim($networkslist, ',');
+
+	$section = new Form_Section("DNSBL IPs - Advanced {$adv_mode}bound Firewall Rule Settings", "adv{$advmode}boundsettings", COLLAPSIBLE|SEC_CLOSED);
+	$section->addInput(new Form_StaticText(
+		NULL,
+		"<span class=\"text-danger\">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+			<dl class=\"dl-horizontal\">
+				<dt>{$adv_mode}bound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
+			</dl>
+			Configuring the Adv. {$adv_mode}bound Rule settings, will allow for more customization of the {$adv_mode}bound Auto-Rules."));
+
+	$section->addInput(new Form_Checkbox(
+		'autoaddrnot_' . $advmode,
+		"Invert {$adv_type}",
+		NULL,
+		$pconfig['autoaddrnot_' . $advmode] === 'on' ? true:false,
+		'on'
+	))->setHelp("Option to invert the sense of the match. ie - Not (!) {$adv_type} Address(es)");
+
+	$group = new Form_Group("Custom DST Port");
+	$group->add(new Form_Checkbox(
+		'autoports_' . $advmode,
+		'Custom DST Port',
+		NULL,
+		$pconfig['autoports_' . $advmode] === 'on' ? true:false,
+		'on'
+	))->setHelp('Enable')
+	  ->setWidth(2);
+
+	$group->add(new Form_Input(
+		'aliasports_' . $advmode,
+		'Custom Port',
+		'text',
+		$pconfig["aliasports_{$advmode}"]
+	))->setHelp("<a target=\"_blank\" href=\"/firewall_aliases.php?tab=port\">Click Here to add/edit Aliases</a>
+			Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name."
+	)->setWidth(8);
+	$section->add($group);
+
+	if ($adv_type == 'Source') {
+		$custom_location = 'Destination';
+	} else {
+		$custom_location = 'Source';
+	}
+
+	$group = new Form_Group("Custom {$custom_location}");
+	$group->add(new Form_Checkbox(
+		'autoaddr_' . $advmode,
+		"Custom {$custom_location}",
+		NULL,
+		$pconfig["autoaddr_{$advmode}"] === 'on' ? true:false,
+		'on'
+	))->setHelp('Enable')->setWidth(1);
+
+	$group->add(new Form_Checkbox(
+		'autonot_' . $advmode,
+		NULL,
+		NULL,
+		$pconfig["autonot_{$advmode}"] === 'on' ? true:false,
+		'on'
+	))->setHelp('Invert')->setWidth(1);
+
+	$group->add(new Form_Input(
+		'aliasaddr_' . $advmode,
+		"Custom {$custom_location}",
+		'text',
+		$pconfig['aliasaddr_' . $advmode]
+	))->sethelp('<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>'
+		. 'Do not manually enter Addresses(es).<br />Do not use \'pfB_\' in the \'IP Network Type\' Alias name.<br />'
+		. "Select 'invert' to invert the sense of the match. ie - Not (!) {$custom_location} Address(es)"
+	)->setWidth(8);
+	$section->add($group);
+
+	$group = new Form_Group('Custom Protocol');
+	$group->add(new Form_Select(
+		'autoproto_' . $advmode,
+		NULL,
+		$pconfig['autoproto_' . $advmode],
+		['' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP']
+	))->setHelp("<strong>Default: any</strong><br />Select the Protocol used for {$adv_mode}bound Firewall Rule(s).<br />
+		<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!");
+	$section->add($group);
+
+	$group = new Form_Group('Custom Gateway');
+	$group->add(new Form_Select(
+		'agateway_' . $advmode,
+		NULL,
+		$pconfig['agateway_' . $advmode],
+		pfb_get_gateways()
+	))->setHelp("Select alternate Gateway or keep 'default' setting.");
+
+	$section->add($group);
+	$form->add($section);
+}
+
 print ($form);
 print_callout('<strong>Setting changes are applied via CRON or \'Force Update|Reload\' only!</strong>');
 

@@ -15,13 +15,15 @@ COMMENT=	Base class for creating plugin-enabled objects
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Task-Weaken>=0:devel/p5-Task-Weaken
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Task-Weaken>=0:devel/p5-Task-Weaken
 
 USES=		perl5
 USE_PERL5=	configure
 
-post-install:
+OPTIONS_DEFINE=	EXAMPLES
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}/
 

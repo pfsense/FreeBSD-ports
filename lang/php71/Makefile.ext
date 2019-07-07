@@ -5,7 +5,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=	php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	71
-IGNORE_WITH_PHP=	55 56 70
+IGNORE_WITH_PHP=	72 73
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -96,11 +96,14 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 USES+=		jpeg
 
-CONFIGURE_ARGS+=--with-gd \
+CONFIGURE_ARGS+=--with-gd=${LOCALBASE} \
 		--with-freetype-dir=${LOCALBASE} \
 		--with-jpeg-dir=${LOCALBASE} \
 		--with-png-dir=${LOCALBASE} \
 		--with-zlib-dir=/usr
+
+EXTRACT_AFTER_ARGS=--no-same-owner --no-same-permissions --exclude libgd \
+		php-${PORTVERSION}/ext/gd
 
 OPTIONS_DEFINE=TRUETYPE JIS WEBP X11
 OPTIONS_DEFAULT=TRUETYPE X11
@@ -110,7 +113,6 @@ JIS_DESC=	Enable JIS-mapped Japanese font support
 WEBP_DESC=  Enable WebP image format support
 X11_DESC=	Enable XPM support
 
-PHP_HEADER_DIRS=libgd
 .endif
 
 .if ${PHP_MODNAME} == "gettext"
@@ -525,6 +527,7 @@ CONFIGURE_ARGS+=--with-xpm-dir=${LOCALBASE}
 .endif
 
 .if ${PHP_MODNAME} == "imap"
+PHP_MOD_PRIO=	30
 .	if ${PORT_OPTIONS:MPANDA}
 LIB_DEPENDS+=	libc-client4.so.10:mail/panda-cclient
 .	else

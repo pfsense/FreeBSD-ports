@@ -158,7 +158,7 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 				<tbody class="user-entries">
 <?php
 		foreach ($a_accountkeys as $accountkey) {
-			$accountname = $accountkey['name'];
+			$accountname = htmlspecialchars($accountkey['name']);
 			?>
 			<tr id="fr<?=$accountname;?>" <?=$display?> onClick="fr_toggle('<?=$accountname;?>')" ondblclick="document.location='acme_accountkeys_edit.php?id=<?=$accountname;?>';">
 				<td>
@@ -166,13 +166,13 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 					<a class="fa fa-anchor" id="Xmove_<?=$accountname?>" title="<?=gettext("Move checked entries to here")?>"></a>
 				</td>
 			  <td>
-				<?=$accountkey['name'];?>
+				<?=$accountname;?>
 			  </td>
 			  <td>
-				<?=$accountkey['desc'];?>
+				<?=htmlspecialchars($accountkey['desc']);?>
 			  </td>
 			  <td>
-				<?=$accountkey['acmeserver'];?>
+				<?=htmlspecialchars($accountkey['acmeserver']);?>
 			  </td>
 			  <td class="action-icons">
 				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$accountname?>" name="move_<?=$accountname?>" value="move_<?=$accountname?>"></button>

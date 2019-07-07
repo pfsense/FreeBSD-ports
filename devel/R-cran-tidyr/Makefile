@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tidyr
-PORTVERSION=	0.8.1
+PORTVERSION=	0.8.2
+PORTREVISION=	1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -19,7 +20,7 @@ CRAN_DEPENDS=	R-cran-dplyr>=0.7.0:math/R-cran-dplyr \
 		R-cran-rlang>0:devel/R-cran-rlang \
 		R-cran-stringi>0:textproc/R-cran-stringi \
 		R-cran-tibble>0:devel/R-cran-tibble \
-		R-cran-tidyselect>0:devel/R-cran-tidyselect
+		R-cran-tidyselect>=0.2.5:devel/R-cran-tidyselect
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 

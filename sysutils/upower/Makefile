@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	upower
-PORTVERSION=	0.99.4
+PORTVERSION=	0.99.7
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://upower.freedesktop.org/releases/
 
@@ -15,7 +16,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpolkit-gobject-1.so:sysutils/polkit \
 		libdbus-glib-1.so:devel/dbus-glib
 
-USES=		gettext gmake libtool localbase pathfix pkgconfig tar:xz
+USES=		compiler:c11 gettext gmake gnome libtool localbase \
+		pathfix pkgconfig tar:xz
 USE_GNOME=	intlhack glib20 introspection:build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

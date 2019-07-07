@@ -1,13 +1,9 @@
 # Created by: George Reid <greid@ukug.uk.freebsd.org>
 # $FreeBSD$
 
-# Minor version bumps may not be ABI compatible and deskutils/cdcat
-# links to the static library, so bump PORTREVISION of dependent
-# ports when appropriate.
-
 PORTNAME=	cryptopp
-PORTVERSION=	5.6.5
-PORTREVISION=	4
+PORTVERSION=	7.0.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://www.cryptopp.com/
 DISTNAME=	cryptopp${PORTVERSION:S/.//g}
@@ -18,9 +14,7 @@ COMMENT=	Free C++ class library of Cryptographic Primitives
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/License.txt
 
-BROKEN_powerpc=	does not compile; unrecognized C++ options
-
-USES=		cpe gmake zip
+USES=		cpe compiler:c++11-lang gmake zip
 USE_LDCONFIG=	yes
 CPE_PRODUCT=	crypto++
 CPE_VENDOR=	cryptopp
@@ -30,7 +24,7 @@ NO_WRKSUBDIR=		yes
 
 CXXFLAGS+=	-Wno-deprecated-declarations -fPIC
 MAKEFILE=	GNUmakefile
-ALL_TARGET=	static shared
+ALL_TARGET=	static shared libcryptopp.pc
 
 SOVERSION=	${PORTVERSION:R:R}
 PLIST_SUB+=	SOVERSION=${SOVERSION} \
@@ -39,6 +33,8 @@ PLIST_SUB+=	SOVERSION=${SOVERSION} \
 OPTIONS_DEFINE=		DEBUG DOCS FULL_DEBUG THREADS TOOLS
 OPTIONS_DEFINE_amd64=	SIMD
 OPTIONS_DEFINE_i386=	SIMD
+OPTIONS_DEFINE_powerpc=	SIMD
+OPTIONS_DEFINE_powerpc64=	SIMD
 OPTIONS_DEFAULT=	THREADS TOOLS
 OPTIONS_SUB=		yes
 
@@ -61,30 +57,23 @@ THREADS_LDFLAGS=	-lpthread
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSIMD}
-.  if ${MACHINE_CPU:Msse2}
-USES+=		compiler:c++14-lang
-CXXFLAGS+=	-msse2
-.  else
+.  if ${ARCH} == i386 || ${ARCH} == amd64
+.    if !${MACHINE_CPU:Msse2}
 CXXFLAGS+=	-DCRYPTOPP_DISABLE_ASM -DCRYPTOPP_DISABLE_SSE2
-.  endif
-.  if ${MACHINE_CPU:Msse3} && ${MACHINE_CPU:Mssse3}
-CXXFLAGS+=	-msse3 -mssse3
-.  else
-CXXFLAGS+=	-DCRYPTOPP_DISABLE_SSE3
-.  endif
-.  if ${MACHINE_CPU:Msse41} && ${MACHINE_CPU:Msse42}
-CXXFLAGS+=	-msse4.1 -msse4.2
-.  else
+.    endif
+.    if !${MACHINE_CPU:Mssse3}
+CXXFLAGS+=	-DCRYPTOPP_DISABLE_SSSE3
+.    endif
+.    if !${MACHINE_CPU:Msse41}
 CXXFLAGS+=	-DCRYPTOPP_DISABLE_SSE4
+.    endif
+.  elif ${ARCH} == powerpc || ${ARCH} == powerpc64
+CXXFLAGS+=	-DCRYPTOPP_ALTIVEC_AVAILABLE -maltivec -mcrypto -mvsx
 .  endif
 .else
-CXXFLAGS+=	-DCRYPTOPP_DISABLE_ASM
-.endif
-
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MSIMD} && ${MACHINE_CPU:Msse2} && ${CHOSEN_COMPILER_TYPE} == gcc
-USE_GCC=	yes
+CXXFLAGS+=	-DCRYPTOPP_DISABLE_ASM -DCRYPTOPP_DISABLE_SSE2 \
+		-DCRYPTOPP_DISABLE_SSSE3 -DCRYPTOPP_DISABLE_SSE4 \
+		-DCRYPTOPP_DISABLE_ALTIVEC
 .endif
 
 pre-configure-FULL_DEBUG-on:
@@ -105,6 +94,7 @@ do-install:
 	${INSTALL_LIB} ${WRKSRC}/libcryptopp.so ${STAGEDIR}${PREFIX}/lib/libcryptopp.so.${PORTVERSION}
 	${LN} -fs libcryptopp.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libcryptopp.so.${SOVERSION}
 	${LN} -fs libcryptopp.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libcryptopp.so
+	${INSTALL_DATA} ${WRKSRC}/libcryptopp.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/cryptopp
 	(for i in `${FIND} ${WRKSRC}/ -name '*.h' \
 			-and -not -name 'dll.h' \
@@ -121,4 +111,4 @@ do-install-TOOLS-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/cryptest.exe ${STAGEDIR}${PREFIX}/bin/cryptest
 	${INSTALL_DATA} ${WRKSRC}/TestData/usage.dat ${STAGEDIR}${DATADIR}/TestData
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

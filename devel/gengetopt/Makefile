@@ -3,7 +3,7 @@
 
 PORTNAME=	gengetopt
 PORTVERSION=	2.22.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -28,6 +28,8 @@ DOC_EXAMPLES=	README.example cmdline1.c cmdline1.h cmdline2.c cmdline2.h \
 		main1.cc main2.c multiple_example.c sample1.ggo sample2.ggo
 TESTS_EXAMPLES=	test_manual_help.c test_manual_help_cmd.c \
 		test_manual_help_cmd.ggo test_manual_help_cmd.h
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 \

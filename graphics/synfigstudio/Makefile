@@ -3,7 +3,7 @@
 
 PORTNAME=	synfigstudio
 PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	8
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	SF/synfig/releases/${PORTVERSION}/source
 
@@ -14,8 +14,8 @@ LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	etl>=0.04.19_1:devel/etl
 LIB_DEPENDS=	libHalf.so:graphics/ilmbase \
-		libIlmImf.so:graphics/OpenEXR \
-		libMagick++-6.so:graphics/ImageMagick \
+		libIlmImf.so:graphics/openexr \
+		libMagick++-6.so:graphics/ImageMagick6 \
 		libfftw3.so:math/fftw3 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \

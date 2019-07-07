@@ -1,11 +1,11 @@
---- lib/notification/CMakeLists.txt.orig	2017-03-29 09:55:49.000000000 +0200
-+++ lib/notification/CMakeLists.txt	2017-05-30 16:24:26.695167000 +0200
-@@ -38,7 +38,7 @@ set_target_properties (
+--- lib/notification/CMakeLists.txt.orig	2018-10-11 12:01:05 UTC
++++ lib/notification/CMakeLists.txt
+@@ -35,7 +35,7 @@ set_target_properties (
  )
  
  install_if_not_exists(
 -  ${PROJECT_SOURCE_DIR}/etc/icinga2/features-available/notification.conf
 +  ${PROJECT_SOURCE_DIR}/etc/icinga2/features-available/notification.conf.sample
-   ${CMAKE_INSTALL_SYSCONFDIR}/icinga2/features-available
+   ${ICINGA2_CONFIGDIR}/features-available
  )
  

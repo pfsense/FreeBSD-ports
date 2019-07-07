@@ -3,7 +3,7 @@
 
 PORTNAME=	exult
 PORTVERSION=	1.5.0.20160514
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
@@ -12,22 +12,23 @@ COMMENT=	Ultima VII engine
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
-		libpng.so:graphics/png
-
 BROKEN_armv6=		fails to compile: constant expression evaluates to -1 which cannot be narrowed to type char
 BROKEN_armv7=		fails to compile: constant expression evaluates to -1 which cannot be narrowed to type char
 BROKEN_aarch64=		fails to compile: constant expression evaluates to -1 which cannot be narrowed to type char
 
+LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
+		libpng.so:graphics/png
+
 USE_GITHUB=	yes
 GH_TAGNAME=	b15afba
 
-USES=		autoreconf compiler:c++11-lib gmake libtool localbase pkgconfig
+USES=		autoreconf compiler:c++11-lib gmake gnome libtool localbase \
+		pkgconfig
+USE_CXXSTD=	c++98
 USE_XORG=	xext
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-alsa \
 		--with-icondir=${PREFIX}/share/pixmaps
-
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=		DOCS FLUIDSYNTH GIMP STUDIO THUMBNAILER

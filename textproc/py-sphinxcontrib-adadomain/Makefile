@@ -2,21 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	sphinxcontrib-adadomain
-PORTVERSION=	0.1
-PORTREVISION=	3
+PORTVERSION=	0.2
 CATEGORIES=	textproc
-MASTER_SITES=	https://pypi.python.org/packages/source/s/${PORTNAME}/ \
-		LOCAL/marino
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	araujo@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Sphinx Adadomain Extension
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=1.1.3:textproc/py-sphinx@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=1.0:textproc/py-sphinx@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 PORTNAME=	gdma
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.2.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +12,7 @@ COMMENT=	Anthony Stone's Gaussian Distributed Multipole Analysis
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake:outsource fortran
+USES=		cmake fortran
 USE_GITHUB=	yes
 GH_ACCOUNT=	psi4
 USE_LDCONFIG=	yes

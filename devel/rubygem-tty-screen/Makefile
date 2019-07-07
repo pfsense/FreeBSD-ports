@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tty-screen
-PORTVERSION=	0.6.4
+PORTVERSION=	0.6.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,8 +12,9 @@ COMMENT=	Terminal screen size detection
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

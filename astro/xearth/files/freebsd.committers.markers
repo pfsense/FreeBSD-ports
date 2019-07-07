@@ -155,6 +155,7 @@
  51.533,	7.683,		"stefan"			# Unna, Germany
  51.47670,	7.60220		"flo"				# Dortmund, Germany
  51.290484,	7.293945,	"markus"			# Dortmund, Germany
+ 50.73389,	7.09972,	"egypcio"			# Bonn, Germany
  51.385658,	7.007214,	"lofi"				# Essen, Germany
  43.6,		7.00,		"clement,bruno"	align=left	# Mougins, France
  49.398056,	6.983889,	"netchild"			# Eppelborn, Germany
@@ -184,7 +185,6 @@
  51.9201,	4.4905,		"marks"				# Rotterdam, The Netherlands
  50.383,	4.36,		"jylefort"	align=left	# Charleroi, Belgium
  50.7323,	3.104,		"vanhu"				# Tourcoing, France
- 45.780306,     3.089687,       "romain"                        # Clermont-Ferrand, France
  48.36,		2.99,		"charnier"	align=left	# Cannes Ecluse, France
  48.8345364	2.7160113	"martymac"			# Bussy Saint Georges, France
  48.83,		2.36,		"antoine"			# Paris, France
@@ -272,6 +272,7 @@
  36.294167,	-82.4725,	"jsa"				# Jonesborough, TN, USA
  34.827667,	-82.553759,	"laszlof"			# Easley, SC, USA
  42.28,		-83.75,		"rees"				# Ann Arbor, MI, USA
+ 35.739974,	-83.993768,	"jhixson"			# Maryville, TN, USA
  33.817888,	-84.485421,	"ahze"				# Smyrna, GA, USA
  39.1361,	-84.5030,	"cokane"			# Cincinnati, OH, USA
  33.916601,	-84.641075,	"jhb"				# Marietta, GA, USA
@@ -303,6 +304,7 @@
  40.1,		-105.3,		"gibbs,ken"			# Boulder, CO, USA
  29.067,	-110.967,	"jcamou"			# Hermosillo, Sonora, Mexico
  40.298753,	-111.696486,	"jamie"				# Orem, UT, USA
+ 33.3437,	-111.9344	"kbowling"			# Tempe, Arizona, USA
  51.083,	-114.13,	"davidc"			# Calgary, Alberta, Canada
  51.083,	-114.167,	"aaron"				# Calgary, Alberta, Canada
  47.74075,	-116.83366,	"jasone"			# Coeur d'Alene, ID, USA
@@ -360,4 +362,5 @@
  49.2,		-123.08,	"gonzo"				# Vancouver, BC, Canada
  48.3898,	-123.4875,	"cy"				# Victoria, BC, Canada
  40.0,		-123.5,		"jkh"				# Miranda, CA, USA
+-17.56343,	-149.57844,	"romain"			# Faa'a, Tahiti, French Polynesia
  61.21884,	-149.888462,	"beech"				# Anchorage, AK, USA

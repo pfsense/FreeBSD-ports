@@ -3,7 +3,7 @@
 
 PORTNAME=	repsnapper
 DISTVERSION=	2.5a4
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	cad
 
 MAINTAINER=	martin.dieringer@gmx.de
@@ -11,8 +11,6 @@ COMMENT=	Controller and GCode generator for RepRap 3D printers
 
 LICENSE=	GPLv2 BSD3CLAUSE MIT
 LICENSE_COMB=	multi
-
-BROKEN_powerpc64=	fails to compile: clipper.hpp:52:10: 'vector' file not found
 
 LIB_DEPENDS=	libgtkglextmm-x11-1.2.so:x11-toolkits/gtkglextmm \
 		libpolyclipping.so:graphics/polyclipping \

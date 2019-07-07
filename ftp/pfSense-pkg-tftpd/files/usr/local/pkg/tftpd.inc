@@ -37,23 +37,19 @@ define('FILES_DIR', '/tftpboot');
 
 /* Create backup of the TFTP server directory */
 function tftp_create_backup($trigger_download = false) {
-	conf_mount_rw();
 	safe_mkdir(BACKUP_DIR);
 	if (mwexec("/usr/bin/tar -czC / -f " . BACKUP_PATH . " " . FILES_DIR) || !file_exists(BACKUP_PATH)) {
 		header("Location: tftp_files.php?savemsg=Backup+failed.&result=alert-warning");
 	} elseif ($trigger_download == false) {
 		header("Location: tftp_files.php?savemsg=Backup+has+been+created");
 	}
-	conf_mount_ro();
 }
 
 /* Restore backup of the TFTP server directory */
 function tftp_restore_backup() {
 	if (file_exists(BACKUP_PATH)) {
-		conf_mount_rw();
 		mwexec("/usr/bin/tar -xpzC / -f " . BACKUP_PATH);
 		header("Location: tftp_files.php?savemsg=Backup+has+been+restored.");
-		conf_mount_ro();
 	} else {
 		header("Location: tftp_files.php?savemsg=Restore+failed.+Backup+file+not+found.&result=alert-warning");
 	}
@@ -97,7 +93,6 @@ function upgrade_config_tftpd() {
 function sync_package_tftpd() {
 	global $g, $config;
 
-	conf_mount_rw();
 
 	if (is_array($config['installedpackages']['tftpd'])) {
 		$tftpd_conf = &$config['installedpackages']['tftpd']['config'][0];
@@ -159,7 +154,6 @@ function sync_package_tftpd() {
 		sleep(3);
 	}
 
-	conf_mount_ro();
 }
 
 function validate_form_tftpd($post, &$input_errors) {

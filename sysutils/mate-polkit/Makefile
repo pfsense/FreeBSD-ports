@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	mate-polkit
-PORTVERSION=	1.20.0
+PORTVERSION=	1.20.1
 CATEGORIES=	sysutils mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	MATE frontend to the PolicKit framework
+COMMENT=	MATE frontend to the PolicyKit framework
 
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING

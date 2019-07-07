@@ -3,33 +3,29 @@
 
 PORTNAME=	festalon
 PORTVERSION=	0.5.5
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	audio
 MASTER_SITES=	http://projects.raphnet.net/festalon/ \
 		LOCAL/ehaupt
-PKGNAMEPREFIX?=
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT?=	Command line player for .nsf and .hes audio files
+COMMENT=	Command line player for .nsf and .hes audio files
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_i386=	does not build on i386 FreeBSD 10.x and later
+ONLY_FOR_ARCHS=	amd64
 
-LIB_DEPENDS+=	libsamplerate.so:audio/libsamplerate
+LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 
-USES+=		libtool pkgconfig tar:bzip2
+USES=		libtool pkgconfig tar:bzip2
+USE_SDL=	sdl
+
 GNU_CONFIGURE=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-ONLY_FOR_ARCHS=	i386 amd64
-
 OPTIONS_DEFINE=	DOCS
-
-.if ${PKGNAMEPREFIX} == ""
-
-USE_SDL=	yes
 
 PLIST_FILES=	bin/festalon
 PORTDOCS=	README
@@ -37,8 +33,9 @@ PORTDOCS=	README
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

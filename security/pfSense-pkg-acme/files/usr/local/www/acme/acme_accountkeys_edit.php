@@ -40,7 +40,7 @@ if ($_POST['action'] == "registerkey") {
 	$email = $_POST['email'];
 	$ca = $a_acmeserver[$caname]['url'];
 	echo "Register key at ca: {$ca}\n";
-	echo registerAcmeAccountKey("_registerkey", $ca, $key, $email);
+	echo (registerAcmeAccountKey("_registerkey", $ca, $key, $email)) ? "reg-ok" : "reg-fail" ;
 	exit;
 }
 
@@ -204,13 +204,12 @@ $section->addInput(new \Form_Input('desc', 'Description', 'text', $pconfig['desc
 
 $section->addInput(new \Form_Select(
 	'acmeserver',
-	'Acme Server',
+	'ACME Server',
 	$pconfig['acmeserver'],
 	form_keyvalue_array($a_acmeserver)
 ))->setHelp('The ACME server which will be used to issue certificates using this key.%1$s' .
 	'Use testing servers until certificate validation works, then switch to production.%1$s' .
-	'Only ACME v2 servers support wildcard certificates.%1$s%1$s' .
-	'ACME v2 servers are experimental and only the staging service is active at the moment. ', '<br/>');
+	'Only ACME v2 servers support wildcard certificates.%1$s%1$s', '<br/>');
 
 $section->addInput(new \Form_Input(
 	'email',
@@ -232,10 +231,16 @@ $section->addInput(new \Form_StaticText(
 ));
 
 $section->addInput(new \Form_StaticText(
-	'Acme account registration',
+	'ACME account registration',
 	"<a id='btnregisterkey' class='btn btn-sm btn-primary'>"
-		. "<i id='btnregisterkeyicon' class='fa fa-key'></i> Register acme account key</a>"
-))->setHelp("Before using an accountkey, it must first be registered with the chosen CA.");
+		. "<i id='btnregisterkeyicon' class='fa fa-key'></i> Register ACME account key</a>"
+))->setHelp('Before using an accountkey, it must first be registered with the chosen ACME Server. %1$s' .
+	    '%2$s indicates a successful registration, %3$s indicates a failure. ' .
+	    '%1$s In the case of a failure, check %4$s for more information.',
+	    '<br/>',
+	    '<i class="fa fa-check"></i>',
+	    '<i class="fa fa-times"></i>',
+	    '<tt>/tmp/acme/_registerkey/acme_issuecert.log</tt>');
 
 $form->add($section);
 
@@ -305,7 +310,11 @@ events.push(function() {
 			type: "post",
 			data: { action: "registerkey", caname: caname, key: key, email: email },
 			success: function(data) {
-				$("#btnregisterkeyicon").removeClass("fa-cog fa-spin").addClass("fa-check");
+				if (data.toLowerCase().indexOf("reg-ok") > -1 ) {
+					$("#btnregisterkeyicon").removeClass("fa-cog fa-spin").addClass("fa-check");
+				} else {
+					$("#btnregisterkeyicon").removeClass("fa-cog fa-spin").addClass("fa-times");
+				}
 			}
 		});
 	});

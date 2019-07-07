@@ -2,7 +2,7 @@
 
 PORTNAME=	nsa
 PORTVERSION=	0.2.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails5
@@ -17,6 +17,8 @@ RUN_DEPENDS=	rubygem-activesupport5>=4.2:devel/rubygem-activesupport5 \
 
 USES=		gem shebangfix
 USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 SHEBANG_FILES=	bin/setup
 

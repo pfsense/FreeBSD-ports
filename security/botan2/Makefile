@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	botan
-DISTVERSION=	2.6.0
-PORTREVISION=	1
+DISTVERSION=	2.9.0
 CATEGORIES=	security
 MASTER_SITES=	http://botan.randombit.net/releases/
 PKGNAMESUFFIX=	2
@@ -16,34 +15,33 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 
 BROKEN_armv6=		include/arm_neon.h:28:2: error: "NEON support not enabled"
 BROKEN_armv7=		fails to package: pkg-static: Unable to access file stage/usr/local/include/botan-2/botan/rdrand_rng.h:No such file or directory
-BROKEN_powerpc64=	fails to configure: Unknown compiler "None"; available options: clang ekopath gcc hpcc icc msvc pgi sunstudio xlc
 
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs
 
-OPTIONS_DEFINE=		SQLITE3 SSL DOCS
-OPTIONS_DEFAULT=	SSL
-OPTIONS_SUB=		yes
-
 USES=		compiler:c++11-lang gmake python:build shebangfix tar:tgz
+SHEBANG_FILES=	configure.py src/scripts/install.py
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 CONFIGURE_SCRIPT=	configure.py
 CONFIGURE_ARGS=	--with-external-includedir=${PREFIX}/include \
 		--with-external-libdir=${PREFIX}/lib \
-		--with-boost --with-bzip2 --with-lzma --with-zlib
+		--with-boost --with-bzip2 --with-lzma --with-zlib \
+		--cc=${COMPILER_TYPE}
 LDFLAGS+=	-pthread
-SHEBANG_FILES=	configure.py src/scripts/install.py
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 PORTDOCS=	*
+
+OPTIONS_DEFINE=		DOCS SQLITE3 SSL
+OPTIONS_DEFAULT=	SSL
+OPTIONS_SUB=		yes
 
 SQLITE3_USES=		sqlite
 SQLITE3_CONFIGURE_WITH=	sqlite3
 
 SSL_USES=		ssl
 SSL_CONFIGURE_WITH=	openssl
-SSL_VARS=		BROKEN_SSL=	openssl-devel
 
 .include <bsd.port.options.mk>
 
@@ -62,8 +60,6 @@ post-patch:
 		${WRKSRC}/src/build-data/cc/clang.txt
 
 post-install:
-.for i in bin/botan lib/libbotan-2.so.5.6.0
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${i}
-.endfor
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/botan ${STAGEDIR}${PREFIX}/lib/libbotan-2.so.9.9.0
 
 .include <bsd.port.mk>

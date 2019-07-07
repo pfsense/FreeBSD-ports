@@ -1,4 +1,4 @@
---- bsd/kernel.cc.orig	2017-07-02 01:38:15 UTC
+--- bsd/kernel.cc.orig	2018-09-12 13:52:23 UTC
 +++ bsd/kernel.cc
 @@ -93,6 +93,9 @@ static int mib_uvm[2] = { CTL_VM, VM_UVMEXP2 };
  static int mib_uvm[2] = { CTL_VM, VM_UVMEXP };
@@ -10,7 +10,7 @@
  #include <sys/vmmeter.h>
  #endif
  
-@@ -328,7 +331,9 @@ BSDGetPageStats(uint64_t *meminfo, uint64_t *pageinfo)
+@@ -339,7 +342,9 @@ BSDGetPageStats(uint64_t *meminfo, uint64_t *pageinfo)
  	GET_VM_STATS(v_active_count);
  	GET_VM_STATS(v_inactive_count);
  	GET_VM_STATS(v_wire_count);
@@ -20,7 +20,7 @@
  	GET_VM_STATS(v_free_count);
  	GET_VM_STATS(v_page_size);
  	GET_VM_STATS(v_vnodepgsin);
-@@ -350,7 +355,9 @@ BSDGetPageStats(uint64_t *meminfo, uint64_t *pageinfo)
+@@ -361,7 +366,9 @@ BSDGetPageStats(uint64_t *meminfo, uint64_t *pageinfo)
  		meminfo[0] = (uint64_t)vm.v_active_count * vm.v_page_size;
  		meminfo[1] = (uint64_t)vm.v_inactive_count * vm.v_page_size;
  		meminfo[2] = (uint64_t)vm.v_wire_count * vm.v_page_size;

@@ -1,22 +1,22 @@
 # Created by: Alexander Botero-Lowry <alex@foxybanana.com>
 # $FreeBSD$
 
-PORTREVISION=	16
+PORTREVISION=	19
 CATEGORIES=	audio
 PKGNAMEPREFIX=	cpp-
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	C++ Bindings for XMMS2
 
-LIB_DEPENDS+=	libboost_signals.so:devel/boost-libs \
-		libxmmsclient.so:audio/xmms2
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/bind.hpp:devel/boost-libs
+LIB_DEPENDS=	libxmmsclient.so:audio/xmms2
 
 MASTERDIR=	${.CURDIR}/../xmms2
 USES=		ssl
 USE_LDCONFIG=	yes
 USE_GNOME=	glib20
 
-BROKEN_SSL=	openssl-devel
+BROKEN_SSL=	openssl111
 
 PLIST=		${.CURDIR}/pkg-plist
 

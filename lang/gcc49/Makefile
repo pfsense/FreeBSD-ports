@@ -3,7 +3,7 @@
 
 PORTNAME=	gcc
 PORTVERSION=	4.9.4
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	lang
 MASTER_SITES=	GCC
 PKGNAMESUFFIX=	${SUFFIX}
@@ -14,7 +14,8 @@ COMMENT=	GNU Compiler Collection 4.9
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-DEPRECATED=	Unsupported by upstream. Use GCC 6 or newer instead.
+DEPRECATED=	Unsupported by upstream. Use GCC 7 or newer instead.
+EXPIRATION_DATE=2019-04-26
 ONLY_FOR_ARCHS=	amd64 armv6 i386 powerpc powerpc64 sparc64
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
@@ -22,18 +23,18 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpc.so:math/mpc
 BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 RUN_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
-
 .if defined(MAINTAINER_MODE)
 BUILD_DEPENDS+=	runtest:misc/dejagnu
 .endif
+
+USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
+USE_BINUTILS=	yes
+USE_PERL5=	build
 
 CPE_VENDOR=	gnu
 
 GCC_VERSION=	${PORTVERSION}
 SUFFIX=		${PORTVERSION:C/([0-9]+).([0-9]+).*/\1\2/}
-USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
-USE_BINUTILS=	yes
-USE_PERL5=	build
 SSP_UNSAFE=	yes
 
 OPTIONS_DEFINE=		BOOTSTRAP
@@ -61,7 +62,7 @@ CONFIGURE_ENV+=	UNAME_m="powerpc64"
 
 .if ${ARCH} == armv6
 # Override sys.mk including -O in CFLAGS which breaks libgomp building.
-CFLAGS:=	${CFLAGS:S/-O/-O2/g}
+CFLAGS:=	${CFLAGS:S/-O/-O2/}
 . if ${COMPILER_TYPE} == clang
 .  if empty(PORT_OPTIONS:MBOOTSTRAP)
 MAKE_ARGS+=CXXFLAGS+=-fbracket-depth=512
@@ -102,7 +103,7 @@ CONFIGURE_ARGS+=--disable-nls \
 		--enable-languages=${LANGUAGES}
 MAKE_ARGS+=	MAKEINFOFLAGS="--no-split"
 USE_LDCONFIG=	${TARGLIB}
-PLIST_SUB=	GCC_VERSION=${GCC_VERSION} \
+PLIST_SUB+=	GCC_VERSION=${GCC_VERSION} \
 		GNU_HOST=${CONFIGURE_TARGET} \
 		SUFFIX=${SUFFIX}
 INFO=		gcc${SUFFIX}/cpp \

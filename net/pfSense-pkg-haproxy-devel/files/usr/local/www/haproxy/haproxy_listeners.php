@@ -33,7 +33,7 @@ $changedesc = "Services: HAProxy: Frontends";
 
 haproxy_config_init();
 
-$a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+$a_frontend = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
 
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
@@ -173,10 +173,12 @@ function haproxy_userlist_backend_servers($backendname) {
 	global $a_servermodes;
 	$backend_servers = "";
 	$backend = get_backend($backendname);
-	if ($backend && is_array($backend['ha_servers']) && is_array($backend['ha_servers']['item'])){
-		$servers = $backend['ha_servers']['item'];
-		$backend_servers = sprintf(gettext("Servers in \"%s\" pool:"), $backendname);
-		if (is_array($servers)){
+	if ($backend){
+		$servers = getarraybyref($backend, 'ha_servers', 'item');
+		if (count($servers) == 0) {
+			$backend_servers = sprintf(gettext("There are no servers in \"%s\" pool"), $backendname);
+		} else {
+			$backend_servers = sprintf(gettext("Servers in \"%s\" pool:"), $backendname);
 			foreach($servers as $server){
 				$srvstatus = $server['status'];
 				$status = $a_servermodes[$srvstatus]['sign'];
@@ -254,6 +256,7 @@ function js_callback(req) {
 
 	$a_frontend_grouped = array();
 	foreach($a_frontend as &$frontend2) {
+		getarraybyref($frontend2);// makes it a valid array in case the item was completely empty.
 		$mainfrontend = get_primaryfrontend($frontend2);
 		$mainname = $mainfrontend['name'];
 		$ipport = get_frontend_ipport($frontend2, true);
@@ -338,13 +341,11 @@ function js_callback(req) {
 					if (get_frontend_uses_ssl($frontend)) {
 						$cert = lookup_cert($frontend['ssloffloadcert']);
 						$descr = htmlspecialchars($cert['descr']);
-						if (is_array($frontend['ha_certificates']) && is_array($frontend['ha_certificates']['item'])) {
-							$certs = $frontend['ha_certificates']['item'];
-							if (count($certs) > 0){
-								foreach($certs as $certitem){
-									$cert = lookup_cert($certitem['ssl_certificate']);
-									$descr .= "\n".htmlspecialchars($cert['descr']);
-								}
+						$certs = getarraybyref($frontend, 'ha_certificates', 'item');
+						if (count($certs) > 0){
+							foreach($certs as $certitem){
+								$cert = lookup_cert($certitem['ssl_certificate']);
+								$descr .= "\n".htmlspecialchars($cert['descr']);
 							}
 						}
 						echo haproxyicon("cert", "SSL offloading cert: {$descr}");
@@ -366,7 +367,7 @@ function js_callback(req) {
 					<?=$frontend['name'];?>
 				  </td>
 				  <td>
-					<?=$frontend['desc'];?>
+					<?=htmlspecialchars($frontend['desc']);?>
 				  </td>
 				  <td>
 				    <?php
@@ -403,18 +404,17 @@ function js_callback(req) {
 				  </td>
 				  <td>
 					<?php
-					if (is_array($frontend['a_actionitems']['item'])) {
-						foreach ($frontend['a_actionitems']['item'] as $actionitem) {
-							if ($actionitem['action'] == "use_backend") {
-								$backend = $actionitem['use_backendbackend'];
-								$hint = haproxy_userlist_backend_servers($backend);
-								echo "<div title='{$hint}'>";
-								echo "<a href='haproxy_pool_edit.php?id={$backend}'>{$backend}</a>";
-								if (!empty($actionitem['acl'])) {
-									echo "&nbsp;if({$actionitem['acl']})";
-								}
-								echo "<br/></div>";
+					$a_actionitems = getarraybyref($frontend, 'a_actionitems', 'item');
+					foreach ($a_actionitems as $actionitem) {
+						if ($actionitem['action'] == "use_backend") {
+							$backend = $actionitem['use_backendbackend'];
+							$hint = haproxy_userlist_backend_servers($backend);
+							echo "<div title='{$hint}'>";
+							echo "<a href='haproxy_pool_edit.php?id={$backend}'>{$backend}</a>";
+							if (!empty($actionitem['acl'])) {
+								echo "&nbsp;if(" . htmlspecialchars($actionitem['acl']) . ")";
 							}
+							echo "<br/></div>";
 						}
 					}
 					$hint = haproxy_userlist_backend_servers($frontend['backend_serverpool']);

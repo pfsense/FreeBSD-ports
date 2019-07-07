@@ -3,7 +3,7 @@
 
 PORTNAME=	xconq
 DISTVERSION=	7.5.0-0pre.0.20050612
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games tcl tk
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}
 
@@ -20,6 +20,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-alternate-scoresdir=${SCOREDIR} \
 		--enable-alternate-gameuser=root \
 		--enable-alternate-gamegroup=games
+CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
+CXXFLAGS_clang=	-Wno-c++11-narrowing
 MAKE_ARGS=	GAMEPERM=755 DIRPERM=775 FILEPERM=664
 MAKE_JOBS_UNSAFE=	yes
 

@@ -29,7 +29,7 @@ require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-$simplefields = array('localstats_refreshtime', 'localstats_sticktable_refreshtime', 'log-send-hostname', 'ssldefaultdhparam',
+$simplefields = array('nbthread', 'hard_stop_after', 'localstats_refreshtime', 'localstats_sticktable_refreshtime', 'log-send-hostname', 'ssldefaultdhparam',
   'email_level', 'email_myhostname', 'email_from', 'email_to',
   'resolver_retries', 'resolver_timeoutretry', 'resolver_holdvalid');
 
@@ -76,13 +76,12 @@ $mailerslist->keyfield = "name";
 $resolverslist = new HaproxyHtmlList("table_resolvers", $fields_resolvers);
 $resolverslist->keyfield = "name";
 
-if (!is_array($config['installedpackages']['haproxy']))
-	$config['installedpackages']['haproxy'] = array();
+haproxy_config_init();
 
 if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
-
+	
 	if ($_POST['calculate_certificate_chain']) {
 		$changed = haproxy_recalculate_certifcate_chain();
 		if ($changed > 0)
@@ -112,51 +111,41 @@ if ($_POST) {
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
 		if (!$input_errors) {
-			if (!is_array($config['installedpackages']['haproxy']['email_mailers'])) {
-				$config['installedpackages']['haproxy']['email_mailers'] = array();
+			$haproxycfg = &getarraybyref($config, 'installedpackages', 'haproxy');
+			getarraybyref($haproxycfg, 'email_mailers')['item'] = $a_mailers;
+			getarraybyref($haproxycfg, 'dns_resolvers')['item'] = $a_resolvers;
+			$haproxycfg['enable'] = $_POST['enable'] ? true : false;
+			$haproxycfg['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
+			$haproxycfg['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
+			$haproxycfg['enablesync'] = $_POST['enablesync'] ? true : false;
+			$haproxycfg['remotesyslog'] = $_POST['remotesyslog'] ? $_POST['remotesyslog'] : false;
+			$haproxycfg['logfacility'] = $_POST['logfacility'] ? $_POST['logfacility'] : false;
+			$haproxycfg['loglevel'] = $_POST['loglevel'] ? $_POST['loglevel'] : false;
+			$haproxycfg['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
+			$haproxycfg['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
+			$haproxycfg['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
+			$haproxycfg['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
+			foreach($simplefields as $stat) {
+				$haproxycfg[$stat] = $_POST[$stat];
 			}
-			if (!is_array($config['installedpackages']['haproxy']['dns_resolvers'])) {
-				$config['installedpackages']['haproxy']['dns_resolvers'] = array();
-			}
-			$config['installedpackages']['haproxy']['email_mailers']['item'] = $a_mailers;
-			$config['installedpackages']['haproxy']['dns_resolvers']['item'] = $a_resolvers;
-			$config['installedpackages']['haproxy']['enable'] = $_POST['enable'] ? true : false;
-			$config['installedpackages']['haproxy']['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
-			$config['installedpackages']['haproxy']['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
-			$config['installedpackages']['haproxy']['enablesync'] = $_POST['enablesync'] ? true : false;
-			$config['installedpackages']['haproxy']['remotesyslog'] = $_POST['remotesyslog'] ? $_POST['remotesyslog'] : false;
-			$config['installedpackages']['haproxy']['logfacility'] = $_POST['logfacility'] ? $_POST['logfacility'] : false;
-			$config['installedpackages']['haproxy']['loglevel'] = $_POST['loglevel'] ? $_POST['loglevel'] : false;
-			$config['installedpackages']['haproxy']['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
-			$config['installedpackages']['haproxy']['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
-			$config['installedpackages']['haproxy']['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
-			$config['installedpackages']['haproxy']['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
-			foreach($simplefields as $stat)
-				$config['installedpackages']['haproxy'][$stat] = $_POST[$stat];
 
 			// flag for Status/Services to show when the package is 'disabled' so no start button is shown.
 			if ($_POST['enable']) {
-				if (is_array($config['installedpackages']['haproxy']['config'][0])) {
-					unset($config['installedpackages']['haproxy']['config'][0]['enable']);
+				if (is_array($haproxycfg['config'][0])) {
+					unset($haproxycfg['config'][0]['enable']);
 				}
 			} else {
-				$config['installedpackages']['haproxy']['config'][0]['enable'] = 'off';
+				$haproxycfg['config'][0]['enable'] = 'off';
 			}
-
+			
 			touch($d_haproxyconfdirty_path);
 			write_config();
 		}
 	}
 }
 
-$a_mailers = $config['installedpackages']['haproxy']['email_mailers']['item'];
-if (!is_array($a_mailers)) {
-	$a_mailers = array();
-}
-$a_resolvers = $config['installedpackages']['haproxy']['dns_resolvers']['item'];
-if (!is_array($a_resolvers)) {
-	$a_resolvers = array();
-}
+$a_mailers = getarraybyref($config, 'installedpackages', 'haproxy', 'email_mailers', 'item');
+$a_resolvers = getarraybyref($config, 'installedpackages', 'haproxy', 'dns_resolvers', 'item');
 
 $pconfig['enable'] = isset($config['installedpackages']['haproxy']['enable']);
 $pconfig['terminate_on_reload'] = isset($config['installedpackages']['haproxy']['terminate_on_reload']);
@@ -292,13 +281,21 @@ $section->add($group);
 $cpucores = trim(`/sbin/sysctl kern.smp.cpus | cut -d" " -f2`);
 
 $section->addInput(new Form_Input('nbproc', 'Number of processes to start', 'text', $pconfig['nbproc']
-))->setHelp(<<<EOD
+))->setPlaceholder("1")->setHelp(<<<EOD
 	Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
 	Note : Consider leaving this value empty or 1  because in multi-process mode (nbproc > 1) memory is not shared between the processes, which could result in random behaviours for several options like ACL's, sticky connections, stats pages, admin maintenance options and some others.<br/>
 	For more information about the <b>"nbproc"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#nbproc' target='_blank'>HAProxy Documentation</a></b>
 EOD
 );
 
+if (haproxy_version() >= "1.8") {
+	$section->addInput(new Form_Input('nbthread', 'Number of theads to start per process', 'text', $pconfig['nbthread']
+	))->setPlaceholder("1")->setHelp(<<<EOD
+		Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
+		FOR NOW, THREADS SUPPORT IN HAPROXY 1.8 IS HIGHLY EXPERIMENTAL AND IT MUST BE ENABLED WITH CAUTION AND AT YOUR OWN RISK.
+EOD
+	);
+}
 
 $section->addInput(new Form_Checkbox(
 	'terminate_on_reload',
@@ -306,13 +303,19 @@ $section->addInput(new Form_Checkbox(
 	'Force immediate stop of old process on reload. (closes existing connections)',
 	$pconfig['terminate_on_reload']
 ))->setHelp(<<<EOD
-	Note: when this option is selected connections will be closed when haproxy is restarted.
-	Otherwise the existing connections will be served by the old haproxy process untill they are closed.
-	Checking this option will interupt existing connections on a restart. (which happens when the configuration is applied,
-	but possibly also when pfSense detects an interface comming up or changing its ip-address)
+	Note: when this option is selected, connections will be closed when haproxy is restarted.
+	Otherwise the existing connections will be served by the old haproxy process until they are closed.
+	Checking this option will interrupt existing connections on a restart (which happens when the configuration is applied,
+	but possibly also when pfSense detects an interface coming up or a change in its ip-address.)
 EOD
 );
 
+$section->addInput(new Form_Input('hard_stop_after', 'Reload stop behaviour', 'text', $pconfig['hard_stop_after']
+))->setPlaceholder("15m")->setHelp(<<<EOD
+	Defines the maximum time allowed to perform a clean soft-stop.
+	Defaults to 15 minutes, but could also be defined in different units like 30s, 15m, 3h or 1d.
+EOD
+);
 
 $vipinterfaces = array();
 $vipinterfaces[] = array('ip' => '', 'name' => 'Disabled');

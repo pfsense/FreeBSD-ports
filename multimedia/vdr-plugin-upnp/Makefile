@@ -3,7 +3,7 @@
 
 PORTNAME=	vdr-plugin-upnp
 PORTVERSION=	0.0.2a2
-PORTREVISION=	34
+PORTREVISION=	38
 CATEGORIES=	multimedia
 MASTER_SITES=	http://projects.vdr-developer.org/attachments/download/177/
 DISTNAME=	${PORTNAME:S/-plugin-/-/}-${DISTVERSIONPREFIX}${DISTVERSION:S/a/-alpha/}${DISTVERSIONSUFFIX}
@@ -16,6 +16,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_FreeBSD_12=	fails to compile: inc/util.h:21:10: 'libavformat/avformat.h' file not found
+BROKEN_FreeBSD_13=	fails to compile: inc/util.h:21:10: 'libavformat/avformat.h' file not found
 
 LIB_DEPENDS=	libavcodec0.so:multimedia/ffmpeg0 \
 		libboost_system.so:devel/boost-libs \

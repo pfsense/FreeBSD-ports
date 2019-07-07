@@ -101,7 +101,6 @@ function shellcmd_forced_restore($pkg) {
 
 function shellcmd_sync_package() {
 	global $config;
-	conf_mount_rw();
 
 	$cmd = '';
 	$cmdtype = '';
@@ -112,8 +111,8 @@ function shellcmd_sync_package() {
 	 * See /etc/inc/xmlparse.inc and /etc/inc/xmlreader.inc
 	 */
 	$afterfilterchangeshellcmd = '';
-	$tmp = $config['installedpackages']['shellcmdsettings']['config'];
-	$a_shellcmd_config = &$tmp;
+	init_config_arr(array('installedpackages', 'shellcmdsettings', 'config'));
+	$a_shellcmd_config = &$config['installedpackages']['shellcmdsettings']['config'];
 	if (!is_array($a_shellcmd_config)) {
 		$a_shellcmd_config = array();
 	}
@@ -163,11 +162,8 @@ function shellcmd_sync_package() {
 function shellcmd_import_config() {
 	global $config;
 
-	$tmp = $config['installedpackages']['shellcmdsettings']['config'];
-	$shellcmd_config = &$tmp;
-	if (!is_array($shellcmd_config)) {
-		$shellcmd_config = array();
-	}
+	init_config_arr(array('installedpackages', 'shellcmdsettings', 'config'));
+	$shellcmd_config = &$config['installedpackages']['shellcmdsettings']['config'];
 
 	$i = 0;
 

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libpinyin
-PORTVERSION=	1.2.0
+PORTVERSION=	2.2.0
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}
 
@@ -11,8 +12,8 @@ COMMENT=	Library to deal with pinyin
 
 LICENSE=	GPLv2
 
+USES=		bdb compiler:c++11-lang gettext gmake libtool pathfix pkgconfig
 USE_GNOME=	glib20
-USES=		bdb gettext gmake libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
@@ -24,6 +25,6 @@ INSTALL_TARGET=install-strip
 PLIST_SUB+=	VER=${PORTVERSION}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpinyin.so.6.0.0
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpinyin.so.13.0.0
 
 .include <bsd.port.mk>

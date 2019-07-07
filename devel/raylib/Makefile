@@ -5,7 +5,7 @@ DISTVERSION=	2.0.0
 DISTVERSIONSUFFIX=	-dev
 CATEGORIES=	devel
 
-MAINTAINER=	martinfilla@post.cz
+MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Library to learn videogames programming
 
 LICENSE=	ZLIB
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 LIB_DEPENDS=	libglfw.so:graphics/glfw
 
-USES=		cmake:outsource localbase:ldflags
+USES=		cmake localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	raysan5
 USE_LDCONFIG=	yes

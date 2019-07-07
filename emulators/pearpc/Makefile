@@ -3,7 +3,7 @@
 
 PORTNAME=	pearpc
 PORTVERSION=	0.5
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}.0
 
@@ -33,7 +33,7 @@ SDL_CONFIGURE_OFF=	--enable-ui=x11
 .if ${ARCH} == "amd64" || ${ARCH} == "i386"
 USE_GCC=	yes
 # The port does not build with C++11 or later (bug 219275).
-USE_CXXSTD=	gnu++03
+USE_CXXSTD=	gnu++98
 .else
 CONFIGURE_ARGS+=	--enable-cpu=generic
 .endif

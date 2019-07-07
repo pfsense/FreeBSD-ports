@@ -2,7 +2,7 @@
 
 PORTNAME=	waifu2x-w2xc
 DISTVERSION=	r6
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	vapoursynth-
 
@@ -35,6 +35,8 @@ DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
 PLIST_FILES=	%%DATADIR%%/libwaifu2x-w2xc.so
 PORTDATA=	models
 PORTDOCS=	*.md
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/\*linux\*/*/' \

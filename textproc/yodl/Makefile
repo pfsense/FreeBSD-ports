@@ -2,12 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	yodl
-PORTVERSION=	3.05.01
+PORTVERSION=	3.10.00
 PORTREVISION=	2
 CATEGORIES=	textproc
-MASTER_SITES=	SF
-DISTNAME=	${PORTNAME}_${PORTVERSION}
-EXTRACT_SUFX=	.orig.tar.gz
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Easy to use but powerful document formatting/preparation language
@@ -20,8 +17,11 @@ BUILD_DEPENDS=	icmake:devel/icmake \
 		bash:shells/bash \
 		gsed:textproc/gsed
 
-USES=		perl5 shebangfix compiler:c++11-lib
+USES=		perl5 shebangfix compiler:c++14-lang
 USE_PERL5=	build
+USE_GITLAB=	yes
+GL_ACCOUNT=	fbb-git
+GL_COMMIT=	5fa97b175c85581d01329013cfdb4239f019b023
 
 SHEBANG_LANG=	icmake
 icmake_OLD_CMD=	/usr/bin/icmake
@@ -48,15 +48,10 @@ PORTDOCS=	*
 
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WRKSRC_SUBDIR=	${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
-USE_TEX=	latex:build dvipsk:build
-.endif
+DOCS_USE=	TEX=latex:build,dvipsk:build
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|"/usr"|"${PREFIX}"| ; \
@@ -84,17 +79,17 @@ do-build:
 	@cd ${WRKSRC} && ./build programs strip
 	@cd ${WRKSRC} && ./build macros
 	@cd ${WRKSRC} && ./build man
-.if ${PORT_OPTIONS:MDOCS}
+
+do-build-DOCS-on:
 	@cd ${WRKSRC} && ./build manual
-.endif
 
 do-install:
 	@cd ${WRKSRC} && ./build install programs ${STAGEDIR}
 	@cd ${WRKSRC} && ./build install macros ${STAGEDIR}
 	@cd ${WRKSRC} && ./build install man ${STAGEDIR}
-.if ${PORT_OPTIONS:MDOCS}
+
+do-install-DOCS-on:
 	@cd ${WRKSRC} && ./build install manual ${STAGEDIR}
 	@cd ${WRKSRC} && ./build install docs ${STAGEDIR}
-.endif
 
 .include <bsd.port.mk>

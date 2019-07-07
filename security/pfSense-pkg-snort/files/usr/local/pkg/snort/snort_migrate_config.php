@@ -3,8 +3,8 @@
  * snort_migrate_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,15 @@ require_once("functions.inc");
 
 global $config;
 
-if (!is_array($config['installedpackages']['snortglobal']))
+if (!is_array($config['installedpackages'])) {
+	$config['installedpackages'] = array();
+}
+if (!is_array($config['installedpackages']['snortglobal'])) {
 	$config['installedpackages']['snortglobal'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 
 // Just exit if this is a clean install with no saved settings
 if (empty($config['installedpackages']['snortglobal']['rule']))
@@ -51,7 +56,7 @@ $rule = &$config['installedpackages']['snortglobal']['rule'];
 /****************************************************************************/
 
 $updated_cfg = false;
-log_error("[Snort] Checking configuration settings version...");
+syslog(LOG_NOTICE, "[Snort] Checking configuration settings version...");
 
 // Check the configuration version to see if XMLRPC Sync should
 // auto-disabled as part of the upgrade due to config format changes.
@@ -59,7 +64,7 @@ if (empty($config['installedpackages']['snortglobal']['snort_config_ver']) &&
     ($config['installedpackages']['snortsync']['config']['varsynconchanges'] == 'auto' ||
      $config['installedpackages']['snortsync']['config']['varsynconchanges'] == 'manual')) {
 	$config['installedpackages']['snortsync']['config']['varsynconchanges']	= "disabled";
-	log_error("[Snort] Turning off Snort Sync on this host due to configuration format changes in this update.  Upgrade all Snort Sync targets to this same Snort package version before re-enabling Snort Sync.");
+	syslog(LOG_NOTICE, "[Snort] Turning off Snort Sync on this host due to configuration format changes in this update.  Upgrade all Snort Sync targets to this same Snort package version before re-enabling Snort Sync.");
 	$updated_cfg = true;
 }
 
@@ -123,20 +128,100 @@ if (empty($config['installedpackages']['snortglobal']['hide_deprecated_rules']))
 }
 
 /**********************************************************/
+/* Migrate content of any existing SID Mgmt files in the  */
+/* /var/db/snort/sidmods directory to Base64 encoded      */
+/* strings in SID_MGMT_LIST array in config.xml.          */
+/**********************************************************/
+if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists'])) {
+	$config['installedpackages']['snortglobal']['sid_mgmt_lists'] = array();
+}
+if (empty($config['installedpackages']['snortglobal']['sid_list_migration']) && count($config['installedpackages']['snortglobal']['sid_mgmt_lists']) < 1) {
+	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'])) {
+		$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] = array();
+	}
+	$a_list = &$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'];
+	$sidmodfiles = return_dir_as_array("/var/db/snort/sidmods/");
+	foreach ($sidmodfiles as $sidfile) {
+		$data = file_get_contents("/var/db/snort/sidmods/" . $sidfile);
+		if ($data !== FALSE) {
+			$tmp = array();
+			$tmp['name'] = basename($sidfile);
+			$tmp['modtime'] = filemtime("/var/db/snort/sidmods/" . $sidfile);
+			$tmp['content'] = base64_encode($data);
+			$a_list[] = $tmp;
+		}
+	}
+
+	// Set a flag to show one-time migration is completed.
+	// We can increment this flag in later versions if we
+	// need to import additional files as SID_MGMT_LISTS.
+	$config['installedpackages']['snortglobal']['sid_list_migration'] = "2";
+	$updated_cfg = true;
+	unset($a_list);
+}
+elseif ($config['installedpackages']['snortglobal']['sid_list_migration'] < "2") {
+
+	// Import dropsid-sample.conf and rejectsid-sample.conf
+	// files if missing from the SID_MGMT_LIST array.
+	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'])) {
+		$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] = array();
+	}
+	$sidmodfiles = array( "dropsid-sample.conf", "rejectsid-sample.conf" );
+	$a_list = &$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'];
+	foreach ($sidmodfiles as $sidfile) {
+		if (!in_array($sidfile, $a_list)) {
+			$data = file_get_contents("/var/db/snort/sidmods/" . $sidfile);
+			if ($data !== FALSE) {
+				$tmp = array();
+				$tmp['name'] = basename($sidfile);
+				$tmp['modtime'] = filemtime("/var/db/snort/sidmods/" . $sidfile);
+				$tmp['content'] = base64_encode($data);
+				$a_list[] = $tmp;
+			}
+		}		
+	}
+
+	// Set a flag to show this one-time migration is completed
+	$config['installedpackages']['snortglobal']['sid_list_migration'] = "2";
+	$updated_cfg = true;
+	unset($a_list);
+}
+
+/**********************************************************/
 /* Migrate per interface settings if required.            */
 /**********************************************************/
 foreach ($rule as &$r) {
 	// Initialize arrays for supported preprocessors if necessary
-	if (!is_array($r['frag3_engine']['item']))
+	if (!is_array($r['frag3_engine'])) {
+		$r['frag3_engine'] = array();
+	}
+	if (!is_array($r['frag3_engine']['item'])) {
 		$r['frag3_engine']['item'] = array();
-	if (!is_array($r['stream5_tcp_engine']['item']))
+	}
+	if (!is_array($r['stream5_tcp_engine'])) {
+		$r['stream5_tcp_engine'] = array();
+	}
+	if (!is_array($r['stream5_tcp_engine']['item'])) {
 		$r['stream5_tcp_engine']['item'] = array();
-	if (!is_array($r['http_inspect_engine']['item']))
+	}
+	if (!is_array($r['http_inspect_engine'])) {
+		$r['http_inspect_engine'] = array();
+	}
+	if (!is_array($r['http_inspect_engine']['item'])) {
 		$r['http_inspect_engine']['item'] = array();
-	if (!is_array($r['ftp_client_engine']['item']))
+	}
+	if (!is_array($r['ftp_client_engine'])) {
+		$r['ftp_client_engine'] = array();
+	}
+	if (!is_array($r['ftp_client_engine']['item'])) {
 		$r['ftp_client_engine']['item'] = array();
-	if (!is_array($r['ftp_server_engine']['item']))
+	}
+	if (!is_array($r['ftp_server_engine'])) {
+		$r['ftp_server_engine'] = array();
+	}
+	if (!is_array($r['ftp_server_engine']['item'])) {
 		$r['ftp_server_engine']['item'] = array();
+	}
 
 	$pconfig = array();
 	$pconfig = $r;
@@ -144,7 +229,7 @@ foreach ($rule as &$r) {
 	// Create a default "frag3_engine" if none are configured
 	if (empty($pconfig['frag3_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating Frag3 Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating Frag3 Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "policy" => "bsd", 
 				"timeout" => 60, "min_ttl" => 1, "detect_anomalies" => "on", 
 				"overlap_limit" => 0, "min_frag_len" => 0 );
@@ -178,7 +263,7 @@ foreach ($rule as &$r) {
 	// Create a default Stream5 engine array if none are configured
 	if (empty($pconfig['stream5_tcp_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating Stream5 Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating Stream5 Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "policy" => "bsd", "timeout" => 30, 
 				"max_queued_bytes" => 1048576, "detect_anomalies" => "off", "overlap_limit" => 0, 
 				"max_queued_segs" => 2621, "require_3whs" => "off", "startup_3whs_timeout" => 0, 
@@ -245,7 +330,7 @@ foreach ($rule as &$r) {
 	// Create a default HTTP_INSPECT engine if none are configured
 	if (empty($pconfig['http_inspect_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating HTTP_Inspect Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating HTTP_Inspect Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "server_profile" => "all", "enable_xff" => "off", 
 				"log_uri" => "off", "log_hostname" => "off", "server_flow_depth" => 65535, "enable_cookie" => "on", 
 				"client_flow_depth" => 1460, "extended_response_inspection" => "on", "no_alerts" => "off", 
@@ -295,7 +380,7 @@ foreach ($rule as &$r) {
 	// Create a default FTP_CLIENT engine if none are configured
 	if (empty($pconfig['ftp_client_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating FTP Client Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating FTP Client Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "max_resp_len" => 256, 
 				  "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				  "bounce" => "yes", "bounce_to_net" => "", "bounce_to_port" => "" );
@@ -322,7 +407,7 @@ foreach ($rule as &$r) {
 	// Create a default FTP_SERVER engine if none are configured
 	if (empty($pconfig['ftp_server_engine']['item'])) {
 		$updated_cfg = true;
-		log_error("[Snort] Migrating FTP Server Engine configuration for interface {$pconfig['descr']}...");
+		syslog(LOG_NOTICE, "[Snort] Migrating FTP Server Engine configuration for interface {$pconfig['descr']}...");
 		$default = array( "name" => "default", "bind_to" => "all", "ports" => "default", 
 				  "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				  "ignore_data_chan" => "no", "def_max_param_len" => 100 );
@@ -562,6 +647,55 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 
+	// Configure a default interface snaplen if not previously configured
+	if (!isset($pconfig['snaplen'])) {
+		$pconfig['snaplen'] = '1518';
+		$updated_cfg = true;
+	}
+
+	// Configure new SSH preprocessor parameter defaults if not already set
+	if (!isset($pconfig['ssh_preproc_ports'])) {
+		$pconfig['ssh_preproc_ports'] = '22';
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_max_encrypted_packets'])) {
+		$pconfig['ssh_preproc_max_encrypted_packets'] = 20;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_max_client_bytes'])) {
+		$pconfig['ssh_preproc_max_client_bytes'] = 19600;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_max_server_version_len'])) {
+		$pconfig['ssh_preproc_max_server_version_len'] = 100;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_enable_respoverflow'])) {
+		$pconfig['ssh_preproc_enable_respoverflow'] = 'on';
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_enable_srvoverflow'])) {
+		$pconfig['ssh_preproc_enable_srvoverflow'] = 'on';
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_enable_ssh1crc32'])) {
+		$pconfig['ssh_preproc_enable_ssh1crc32'] = 'on';
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['ssh_preproc_enable_protomismatch'])) {
+		$pconfig['ssh_preproc_enable_protomismatch'] = 'on';
+		$updated_cfg = true;
+	}
+	// End new SSH parameters
+
+	/**********************************************************/
+	/* Create new interface IPS mode setting if not set       */
+	/**********************************************************/
+	if (empty($pconfig['ips_mode'])) {
+		$pconfig['ips_mode'] = 'ips_mode_legacy';
+		$updated_cfg = true;
+	}
+
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;
 }
@@ -570,10 +704,10 @@ unset($r);
 
 // Log a message if we changed anything
 if ($updated_cfg) {
-	log_error("[Snort] Settings successfully migrated to new configuration format...");
+	syslog(LOG_NOTICE, "[Snort] Settings successfully migrated to new configuration format...");
 }
 else {
-	log_error("[Snort] Configuration version is current...");
+	syslog(LOG_NOTICE, "[Snort] Configuration version is current...");
 }
 
 ?>

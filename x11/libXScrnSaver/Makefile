@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	libXScrnSaver
-PORTVERSION=	1.2.2
-PORTREVISION=	3
+PORTVERSION=	1.2.3
+PORTREVISION=	2
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -12,6 +12,6 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 XORG_CAT=	lib
-USE_XORG=	x11 xext xextproto scrnsaverproto:both
+USE_XORG=	x11 xext xorgproto
 
 .include <bsd.port.mk>

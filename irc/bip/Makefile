@@ -12,7 +12,7 @@ COMMENT=	Simple IRC proxy with SSL support
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_SSL=	openssl-devel
+BROKEN_SSL=	openssl111
 
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib -L${OPENSSLLIB}
@@ -28,6 +28,13 @@ PORTDOCS=	AUTHORS BUGS ChangeLog NEWS README TODO
 EXAMPLEFILES=	bip.conf bip.vim
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	error: incomplete definition of type 'struct dh_st'
+BROKEN_FreeBSD_13=	error: incomplete definition of type 'struct dh_st'
+.endif
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/bip.1 ${STAGEDIR}${PREFIX}/man/man1
@@ -46,4 +53,4 @@ post-install-EXAMPLES-on:
 	${INSTALL_DATA} ${WRKSRC}/samples/${i} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

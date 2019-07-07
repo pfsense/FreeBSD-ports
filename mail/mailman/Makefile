@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mailman
-DISTVERSION=	2.1.27
+DISTVERSION=	2.1.29
+PORTREVISION=	5
 CATEGORIES=	mail
 MASTER_SITES=	GNU \
 		SF/${PORTNAME}/Mailman%202.1%20%28stable%29/${PORTVERSION} \
@@ -70,8 +71,8 @@ PORTDOCS=	ACKNOWLEDGMENTS BUGS FAQ INSTALL NEWS README README-I18N.en \
 
 OPTIONS_SINGLE=	MTA
 OPTIONS_SINGLE_MTA=	COURIER EXIM4 OPENSMTPD POSTFIX SENDMAIL
-OPTIONS_DEFINE=	HTDIG NAMAZU2 NLS DOCS
-OPTIONS_DEFAULT=	SENDMAIL
+OPTIONS_DEFINE=	HTDIG NAMAZU2 NOMAILPWD NLS DOCS
+OPTIONS_DEFAULT=	SENDMAIL NOMAILPWD
 COURIER_DESC=	for use with courier
 EXIM4_DESC=	for use with exim4
 OPENSMTPD_DESC=	for use with opensmtpd - EXPERIMENTAL -
@@ -79,6 +80,7 @@ POSTFIX_DESC=	for use with postfix
 SENDMAIL_DESC=	for use with sendmail
 HTDIG_DESC=	- EXPERIMENTAL - htdig integration patches
 NAMAZU2_DESC=	Make private archives searchable with namazu2
+NOMAILPWD_DESC=	Elide plaintext passwords from monthly reminders
 MTA_DESC=	Integrate with which MTA?
 
 .include <bsd.port.options.mk>
@@ -124,11 +126,11 @@ MAIL_GID?=	_smtpd
 PKGNAMESUFFIX+=	-with-htdig
 # how to create PATCHFILES:
 #X identify what is the version of msapiro's patches corresponding to the release.
-#X fetch http://bazaar.launchpad.net/~msapiro/mailman/htdig/tarball/1768
+#X fetch http://bazaar.launchpad.net/~msapiro/mailman/htdig/tarball/1781
 #X unpack this tarball, and the original distfile
-#X diff -NEur original-unpack bazaar-unpack | xz --best -c >msapiro-htdig-1768.patch.xz
+#X diff -NEur original-unpack bazaar-unpack | xz --best -c >msapiro-htdig-1781.patch.xz
 #X upload the latter with mode 0644 or similar to freefall's public_distfiles/ directory
-_HTDIGREV=	1768
+_HTDIGREV=	1781
 PATCHFILES+=	msapiro-htdig-${_HTDIGREV}.patch.xz
 RUN_DEPENDS+=	htdig:textproc/htdig
 PLIST_SUB+=	SUB_HTDIG=""
@@ -139,6 +141,10 @@ PLIST_SUB+=	SUB_HTDIG="@comment "
 .if ${PORT_OPTIONS:MNAMAZU2}
 RUN_DEPENDS+=	mknmz:databases/namazu2
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-Mailman-Cgi-private.py
+.endif
+
+.if ${PORT_OPTIONS:MNOMAILPWD}
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-mailpasswds
 .endif
 
 BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dnspython>=0:dns/py-dnspython@${PY_FLAVOR}

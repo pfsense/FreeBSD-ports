@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	avahi
-PORTVERSION=	0.6.31
-PORTREVISION?=	6
+PORTVERSION=	0.7
+PORTREVISION?=	2
 CATEGORIES?=	net dns
 MASTER_SITES=	http://www.avahi.org/download/
 PKGNAMESUFFIX?=	-app
@@ -20,12 +20,13 @@ AVAHI_SLAVE?=	no
 LIB_DEPENDS?=	libexpat.so:textproc/expat2 \
 		libdaemon.so:devel/libdaemon \
 		libdbus-glib-1.so:devel/dbus-glib \
+		libdbus-1.so:devel/dbus \
 		libgdbm.so:databases/gdbm
 
 USERS?=		${PORTNAME}
 GROUPS?=	${USERS}
 
-USES+=		alias gettext gmake libtool pathfix pkgconfig
+USES+=		alias gettext gmake gnome libtool pathfix pkgconfig
 USE_GNOME+=	glib20 intltool introspection
 USE_GNOME_SUBR=	yes
 USE_LDCONFIG=	yes
@@ -36,10 +37,11 @@ CONFIGURE_ARGS?=--with-distro=freebsd \
 		--disable-doxygen-doc \
 		--disable-doxygen-dot \
 		--disable-qt3 \
+		--disable-qt4 \
 		--localstatedir=/var \
 		--enable-compat-howl
 CPPFLAGS+=	-I${LOCALBASE}/include -DHAVE_KQUEUE
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-L${LOCALBASE}/lib -lintl
 INSTALL_TARGET=	install-strip
 
 .if ${AVAHI_SLAVE} == no
@@ -77,12 +79,12 @@ CONFIGURE_ARGS+=--enable-python
 .else
 CONFIGURE_ARGS+=--disable-python
 .endif
-.if ${AVAHI_SLAVE} == qt4
-CONFIGURE_ARGS+=--enable-qt4 \
+.if ${AVAHI_SLAVE} == qt5
+CONFIGURE_ARGS+=--enable-qt5 \
 		--disable-expat \
 		--disable-gdbm
 .else
-CONFIGURE_ARGS+=--disable-qt4
+CONFIGURE_ARGS+=--disable-qt5
 .endif
 .if ${AVAHI_SLAVE} == sharp
 CONFIGURE_ARGS+=--enable-mono
@@ -94,6 +96,8 @@ CONFIGURE_ARGS+=--disable-stack-protector
 post-patch: avahi-post-patch
 
 avahi-post-patch:
+	@${REINPLACE_CMD} -e 's|avahi_runtime_dir="/run"|avahi_runtime_dir="/var/run"|' \
+		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|/etc|${PREFIX}/etc|' \
 		${WRKSRC}/man/*.*
 	@${RM} ${WRKSRC}/man/*.bak
@@ -151,6 +155,7 @@ avahi-post-install:
 		${STAGEDIR}${PREFIX}/etc/avahi/${f}.sample
 .endfor
 .if ${AVAHI_SLAVE}==no
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/dbus-1/system-services
 	${INSTALL_DATA} ${FILESDIR}/org.freedesktop.Avahi.service \
 		${STAGEDIR}${PREFIX}/share/dbus-1/system-services
 .endif

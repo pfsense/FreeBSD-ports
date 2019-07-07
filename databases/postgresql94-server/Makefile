@@ -1,7 +1,9 @@
 # Created by: Marc G. Fournier <scrappy@FreeBSD.org>
 # $FreeBSD$
 
-DISTVERSION?=	9.4.18
+DISTVERSION?=	9.4.22
+# PORTREVISION must be ?= otherwise, all slave ports get this PORTREVISION and
+# not their own.  Probably best to keep it at ?=0 when reset here too.
 PORTREVISION=	0
 PKGNAMESUFFIX?=	${PORTVERSION:R:S/.//}${COMPONENT}
 
@@ -20,4 +22,4 @@ PG_USER?=	pgsql
 PG_GROUP?=	pgsql
 PG_UID?=	70
 
-.include "${.CURDIR}/../postgresql10-server/Makefile"
+.include "${.CURDIR}/../postgresql11-server/Makefile"

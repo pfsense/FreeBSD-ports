@@ -3,6 +3,7 @@
 PORTNAME=	cgl
 DISTVERSIONPREFIX=	releases/
 DISTVERSION=	0.59.10
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,7 +15,7 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		libClp.so:math/clp \
 		liblapack.so:math/lapack
 
-USES=		gmake libtool pkgconfig
+USES=		compiler:c++11-lang gmake libtool pkgconfig
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	coin-or

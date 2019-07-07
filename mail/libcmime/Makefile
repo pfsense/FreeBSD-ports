@@ -3,7 +3,7 @@
 
 PORTNAME=	libcmime
 PORTVERSION=	0.2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	http://www.libcmime.org/files/
 
@@ -13,7 +13,7 @@ COMMENT=	Lightweight C mime library
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		bison cmake:noninja pkgconfig
+USES=		bison cmake:insource,noninja pkgconfig
 USE_LDCONFIG=	yes
 CMAKE_ARGS=	--no-warn-unused-cli
 

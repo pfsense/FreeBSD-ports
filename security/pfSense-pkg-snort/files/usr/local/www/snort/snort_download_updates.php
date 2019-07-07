@@ -28,6 +28,12 @@ $snortdir = SNORTDIR;
 $snortbinver = SNORT_BIN_VERSION;
 $snortbinver = str_replace(".", "", $snortbinver);
 
+// Make sure the rules version is at least 5 characters in length
+// by adding trailing zeros if required.
+if (strlen($snortbinver) < 5) {
+	$snortbinver = str_pad($snortbinver, 5, '0', STR_PAD_RIGHT);
+}
+
 $snort_rules_file = "snortrules-snapshot-{$snortbinver}.tar.gz";
 $snort_community_rules_filename = SNORT_GPLV2_DNLD_FILENAME;
 $snort_openappid_filename = SNORT_OPENAPPID_DNLD_FILENAME;
@@ -161,17 +167,11 @@ if (isset($_POST['clear'])) {
 
 if (isset($_POST['mode'])) {
 	if ($_POST['mode'] == 'force') {
-		// Mount file system R/W since we need to remove files
-		conf_mount_rw();
-
 		// Remove the existing MD5 signature files to force a download
 		unlink_if_exists("{$snortdir}/{$emergingthreats_filename}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_community_rules_filename}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_rules_file}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_openappid_filename}.md5");
-
-		// Revert file system to R/O.
-		conf_mount_ro();
 	}
 	
 	// Launch a background process to download the updates
@@ -243,7 +243,7 @@ display_top_tabs($tab_array, true);
 					<td><?=gettext($openappid_detectors_sig_date);?></td>
 				</tr>
 				<tr>
-                                        <td><?=gettext("Snort OpenAppID RULES Detectors");?></td>
+                                        <td><?=gettext("Snort AppID Open Text Rules");?></td>
                                         <td><?=trim($openappid_detectors_rules_sig_chk_local);?></td>
                                         <td><?=gettext($openappid_detectors_rules_sig_date);?></td>
                                 </tr>

@@ -20,6 +20,8 @@ include/mdds-%%API_VERSION%%/mdds/point_quad_tree.hpp
 include/mdds-%%API_VERSION%%/mdds/quad_node.hpp
 include/mdds-%%API_VERSION%%/mdds/rectangle_set.hpp
 include/mdds-%%API_VERSION%%/mdds/rectangle_set_def.inl
+include/mdds-%%API_VERSION%%/mdds/rtree.hpp
+include/mdds-%%API_VERSION%%/mdds/rtree_def.inl
 include/mdds-%%API_VERSION%%/mdds/segment_tree.hpp
 include/mdds-%%API_VERSION%%/mdds/segment_tree_def.inl
 include/mdds-%%API_VERSION%%/mdds/sorted_string_map.hpp

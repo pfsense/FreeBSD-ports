@@ -3,7 +3,7 @@
 
 PORTNAME=	freera
 PORTVERSION=	080203
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}%20${PORTNAME}%2B%2B/0.47%20beta
 DISTNAME=	${PORTVERSION}_freera++_src
@@ -14,7 +14,7 @@ COMMENT=	Westwood red alert game engine
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/gpl.txt
 
-USES=		scons
+USES=		compiler:c++11-lang scons
 USE_SDL=	sdl mixer
 
 WRKSRC=		${WRKDIR}/freera++

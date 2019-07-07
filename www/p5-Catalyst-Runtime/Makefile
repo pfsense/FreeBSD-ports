@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Catalyst-Runtime
-PORTVERSION=	5.90118
+PORTVERSION=	5.90124
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -18,7 +18,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 # - devel/p5-Test-WWW-Mechanize-Catalyst
 # - www/p5-Catalyst-Engine-PSGI
 # - www/p5-CatalystX-LeakChecker
-BUILD_DEPENDS=	p5-CGI-Simple>=1.109:www/p5-CGI-Simple \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-CGI-Simple>=1.109:www/p5-CGI-Simple \
 		p5-CGI-Struct>=0:www/p5-CGI-Struct \
 		p5-Class-C3-Adopt-NEXT>=0.07:devel/p5-Class-C3-Adopt-NEXT \
 		p5-Class-Load>=0.12:devel/p5-Class-Load \
@@ -36,6 +37,7 @@ BUILD_DEPENDS=	p5-CGI-Simple>=1.109:www/p5-CGI-Simple \
 		p5-MooseX-Getopt>=0.48:devel/p5-MooseX-Getopt \
 		p5-MooseX-MethodAttributes>=0.24:devel/p5-MooseX-MethodAttributes \
 		p5-Path-Class>=0.09:devel/p5-Path-Class \
+		p5-PerlIO-utf8_strict>=0:devel/p5-PerlIO-utf8_strict \
 		p5-Plack>=0.9991:www/p5-Plack \
 		p5-Plack-Middleware-FixMissingBodyInRedirect>=0.09:www/p5-Plack-Middleware-FixMissingBodyInRedirect \
 		p5-Plack-Middleware-MethodOverride>=0.12:www/p5-Plack-Middleware-MethodOverride \
@@ -55,7 +57,6 @@ BUILD_DEPENDS=	p5-CGI-Simple>=1.109:www/p5-CGI-Simple \
 		p5-URI-ws>=0.03:net/p5-URI-ws \
 		p5-libwww>=5.837:www/p5-libwww \
 		p5-namespace-clean>=0.23:devel/p5-namespace-clean
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-Term-Size-Any>=0:devel/p5-Term-Size-Any \
 		p5-Test-Fatal>=0:devel/p5-Test-Fatal \
 		p5-Test-Without-Module>=0:devel/p5-Test-Without-Module \
@@ -64,14 +65,14 @@ TEST_DEPENDS=	p5-Term-Size-Any>=0:devel/p5-Term-Size-Any \
 
 PORTSCOUT=	limit:^[0-9\.]*$$
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 
 .if ${PERL_LEVEL} < 502501
-BUILD_DEPENDS+=	p5-Scalar-List-Utils>=1.45:lang/p5-Scalar-List-Utils
 RUN_DEPENDS+=	p5-Scalar-List-Utils>=1.45:lang/p5-Scalar-List-Utils
 .endif
 

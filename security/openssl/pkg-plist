@@ -1052,6 +1052,7 @@ man/man1/x509.1.gz
 %%MAN3%%man/man3/OBJ_txt2obj.3.gz
 %%MAN3%%man/man3/OPENSSL_Applink.3.gz
 %%MAN3%%man/man3/OPENSSL_VERSION_NUMBER.3.gz
+%%MAN3%%man/man3/OPENSSL_VERSION_TEXT.3.gz
 %%MAN3%%man/man3/OPENSSL_config.3.gz
 %%MAN3%%man/man3/OPENSSL_ia32cap.3.gz
 %%MAN3%%man/man3/OPENSSL_ia32cap_loc.3.gz
@@ -1432,6 +1433,7 @@ man/man1/x509.1.gz
 %%MAN3%%man/man3/SSL_get_servername.3.gz
 %%MAN3%%man/man3/SSL_get_servername_type.3.gz
 %%MAN3%%man/man3/SSL_get_session.3.gz
+%%MAN3%%man/man3/SSL_get_shared_ciphers.3.gz
 %%MAN3%%man/man3/SSL_get_shared_curve.3.gz
 %%MAN3%%man/man3/SSL_get_shutdown.3.gz
 %%MAN3%%man/man3/SSL_get_ssl_method.3.gz
@@ -1628,6 +1630,7 @@ man/man1/x509.1.gz
 %%MAN3%%man/man3/X509_check_ip.3.gz
 %%MAN3%%man/man3/X509_check_ip_asc.3.gz
 %%MAN3%%man/man3/X509_check_private_key.3.gz
+%%MAN3%%man/man3/X509_cmp_time.3.gz
 %%MAN3%%man/man3/X509_free.3.gz
 %%MAN3%%man/man3/X509_new.3.gz
 %%MAN3%%man/man3/X509_verify_cert.3.gz

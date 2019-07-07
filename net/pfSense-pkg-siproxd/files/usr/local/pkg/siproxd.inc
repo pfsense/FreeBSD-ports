@@ -42,7 +42,6 @@ function deinstall_package_siproxd() {
 
 function sync_package_siproxd_users() {
 	global $g, $config;
-	conf_mount_rw();
 
 	$siproxd_pwfile = SIPROXD . '/etc/siproxd_passwd.cfg';
 	$fout = fopen($siproxd_pwfile, "w");
@@ -54,7 +53,6 @@ function sync_package_siproxd_users() {
 	}
 	fclose($fout);
 
-	conf_mount_ro();
 	/* Reload settings to sync users */
 	sigkillbypid("{$g['varrun_path']}/siproxd.pid", "HUP");
 }
@@ -121,7 +119,6 @@ function siproxd_create_chroot() {
 function sync_package_siproxd() {
 	global $config;
 
-	conf_mount_rw();
 	siproxd_create_chroot();
 
 	if (is_array($config['installedpackages']['siproxdsettings'])) {
@@ -362,7 +359,6 @@ function sync_package_siproxd() {
 	}
 	filter_configure();
 
-	conf_mount_ro();
 
 }
 

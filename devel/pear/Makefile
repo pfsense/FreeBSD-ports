@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	pear
-PORTVERSION=	1.10.5
-PORTREVISION=	1
+PORTVERSION=	1.10.6
+PORTREVISION=	0
 CATEGORIES=	devel
-MASTER_SITES=	http://mirror.bsdproject.de/
+MASTER_SITES=	http://mirror.bsdproject.de/ \
+	LOCAL/joneum
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	joneum@FreeBSD.org
@@ -21,6 +22,8 @@ NO_ARCH=	yes
 USE_PHP=	pcre:build xml:build zlib:build
 
 PEARDIR=	${PREFIX}/share/pear
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|" \

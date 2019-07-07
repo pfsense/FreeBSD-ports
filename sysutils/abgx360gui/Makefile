@@ -3,7 +3,7 @@
 
 PORTNAME=	abgx360gui
 PORTVERSION=	1.0.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	sysutils
 MASTER_SITES=	http://freebsd.unixfreunde.de/sources/ \
 		http://update.cooltrainer.org/abgx360/:png \
@@ -15,6 +15,8 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	root@cooltrainer.org
 COMMENT=	wxWidgets frontend for abgx360
 
+LICENSE=	NONE
+
 RUN_DEPENDS=	abgx360:sysutils/abgx360 \
 		xterm:x11/xterm
 
@@ -22,6 +24,7 @@ PLIST_FILES=	bin/abgx360gui \
 		share/pixmaps/abgx360-256.png
 
 GNU_CONFIGURE=	yes
+USES=		compiler:c++11-lang
 USE_WX=		2.8
 WX_COMPS=	wx
 CONFIGURE_ARGS=	--with-wx=${LOCALBASE} \

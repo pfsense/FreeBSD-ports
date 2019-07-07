@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	h5py
-PORTVERSION=	2.8.0
+PORTVERSION=	2.9.0
+PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,22 +14,14 @@ COMMENT=	General-purpose Python interface to the HDF5 library
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/licenses/license.txt
 
-BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}pkgconfig>=0:devel/py-pkgconfig@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pkgconfig>=0:devel/py-pkgconfig@${PY_FLAVOR} \
+		${RUN_DEPENDS}
 LIB_DEPENDS=	libhdf5.so:science/hdf5
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist concurrent cython distutils
-
-PORTDOCS=	*
-PORTEXAMPLES=	collective_io.py \
-		multiprocessing_example.py \
-		swmr_inotify_example.py \
-		swmr_multiprocess.py \
-		threading_example.py
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

@@ -2,6 +2,7 @@
 
 PORTNAME=	akmos
 PORTVERSION=	0.7.2
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	melanhit@gmail.com
@@ -10,7 +11,7 @@ COMMENT=	Cryptographic library with low footprint
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake:outsource compiler:c++11-lang
+USES=		cmake compiler:c++11-lang
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	melanhit

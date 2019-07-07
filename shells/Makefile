@@ -4,6 +4,8 @@
     COMMENT = Shells
 
     SUBDIR += 44bsd-csh
+    SUBDIR += ammonite
+    SUBDIR += antibody
     SUBDIR += bash
     SUBDIR += bash-completion
     SUBDIR += bash-static
@@ -20,9 +22,11 @@
     SUBDIR += heirloom-sh
     SUBDIR += hs-shelly
     SUBDIR += ibsh
+    SUBDIR += ion
     SUBDIR += jailkit
     SUBDIR += klish
     SUBDIR += ksh93
+    SUBDIR += ksh93-devel
     SUBDIR += lshell
     SUBDIR += mksh
     SUBDIR += nologinmsg
@@ -50,6 +54,7 @@
     SUBDIR += xonsh
     SUBDIR += zsh
     SUBDIR += zsh-antigen
+    SUBDIR += zsh-completions
     SUBDIR += zsh-navigation-tools
 
 .include <bsd.port.subdir.mk>

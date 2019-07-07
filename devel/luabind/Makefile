@@ -3,7 +3,7 @@
 
 PORTNAME=	luabind
 PORTVERSION=	0.9.1
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	${PY_BOOST}
 
-USES=		lua:51 python:env
+USES=		compiler:c++11-lang lua:51 python:env
 USE_LDCONFIG=	yes
 
 CPPFLAGS+=	-I.. -I${LUA_INCDIR} -I${LOCALBASE}/include

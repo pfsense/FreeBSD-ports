@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PKGNAMESUFFIX=	-saslauthd
-PORTREVISION=	3
+PORTREVISION=	1
 
 COMMENT=	SASL authentication server for cyrus-sasl2
 
@@ -12,7 +12,7 @@ INSTALL_WRKSRC=	${WRKSRC}/saslauthd
 USE_RC_SUBR=	saslauthd
 
 CYRUS_CONFIGURE_ARGS=	--with-saslauthd=${SASLAUTHD_RUNPATH}
-CONFIGURE_ENV+=	andrew_cv_runpath_switch=none
+CONFIGURE_ENV+=		andrew_cv_runpath_switch=none
 
 OPTIONS_DEFINE=		DOCS HTTPFORM OPENLDAP OPENLDAP_SASL
 OPTIONS_RADIO=		GSSAPI SASLDB
@@ -56,6 +56,6 @@ GSSAPI_MIT_USES=		gssapi:mit
 GSSAPI_MIT_CONFIGURE_ON=	--enable-gssapi="${GSSAPIBASEDIR}" \
 				--with-gss_impl=mit
 
-DOCS=		AUTHORS COPYING ChangeLog INSTALL LDAP_SASLAUTHD NEWS README
+DOCS=		COPYING ChangeLog LDAP_SASLAUTHD
 
 .include "${.CURDIR}/../../security/cyrus-sasl2/Makefile.common"

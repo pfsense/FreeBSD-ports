@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	frr
-PORTVERSION=	5.0.1
+PORTVERSION=	5.0.2
 DISTVERSIONPREFIX=	frr-
 CATEGORIES=	net ipv6
 PKGNAMESUFFIX=	5
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	gawk:lang/gawk
 LIB_DEPENDS=	libjson-c.so:devel/json-c
 
-CONFLICTS=	openbgpd openospfd zebra quagga frr3 frr4
+CONFLICTS=	openbgpd openospfd zebra quagga frr3 frr4 frr6 frr7
 
 USES=		autoreconf bison compiler:c++11-lang gmake pkgconfig libtool \
 		makeinfo python:2.7,build readline
@@ -49,7 +49,6 @@ GROUPS=	frr frrvty
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-INSTALL_TARGET=	install-strip
 
 # PIM compile but didn't work on FreeBSD
 CONFIGURE_ARGS=	--enable-user=frr \

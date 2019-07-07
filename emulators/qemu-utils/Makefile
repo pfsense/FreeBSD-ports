@@ -6,7 +6,7 @@ MAINTAINER=	asomers@FreeBSD.org
 COMMENT=	QEMU userland utilities
 
 HAS_CONFIGURE=	yes
-USES=		cpe gmake pkgconfig perl5 python:2.7,build tar:bzip2
+USES=		cpe gmake pkgconfig perl5 python:2.7,build tar:xz
 USES+=		gettext-runtime
 USE_GNOME+=	glib20
 MAKE_ENV+=	BSD_MAKE="${MAKE}" PREFIX=${PREFIX}
@@ -23,7 +23,6 @@ EXTRA_PATCHES=	${.CURDIR}/files/patch-configure
 PKGMESSAGE=
 
 PORTDOCS=	qemu-doc.html qemu-doc.txt
-		
 
 CONFIGURE_ARGS?=--localstatedir=/var --extra-ldflags=-L\"${LOCALBASE}/lib\" \
 		--disable-libssh2 \
@@ -73,8 +72,7 @@ CONFIGURE_ARGS?=--localstatedir=/var --extra-ldflags=-L\"${LOCALBASE}/lib\" \
 		--disable-glusterfs \
 		--disable-tpm \
 		--disable-numa \
-		--disable-blobs \
-		--without-pixman
+		--disable-blobs
 
 LIB_DEPENDS=
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	mirrormagic
 PORTVERSION=	2.0.2
-PORTREVISION=	18
+PORTREVISION=	20
 CATEGORIES=	games
 MASTER_SITES=	http://www.artsoft.org/RELEASES/unix/mirrormagic/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -29,7 +29,7 @@ DESKTOP_ENTRIES="Mirror Magic" \
 		"Game;LogicGame;" \
 		""
 
-OPTIONS_DEFINE=	SDL
+OPTIONS_DEFINE=	SDL DOCS
 OPTIONS_DEFAULT=SDL
 
 SDL_USE=		SDL=image,mixer,sdl

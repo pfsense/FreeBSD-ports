@@ -2,7 +2,7 @@
 
 PORTNAME=	fmtconv
 PORTVERSION=	r20
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	vapoursynth-
 
@@ -32,6 +32,8 @@ DATADIR=	${PREFIX}/lib/vapoursynth
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
 PLIST_FILES=	%%DATADIR%%/libfmtconv.so
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/x86_64/&|amd64/' \

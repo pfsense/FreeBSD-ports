@@ -1,9 +1,9 @@
-# Created by: Michael Lyngbøl <lyngbol@wheel.dk>
+# Created by: Michael LyngbÃ¸l <lyngbol@wheel.dk>
 # $FreeBSD$
 
 PORTNAME=	scli
 PORTVERSION=	0.3.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-mgmt
 MASTER_SITES=	ftp://ftp.ibr.cs.tu-bs.de/local/${PORTNAME}/ \
 		http://matt.peterson.org/FreeBSD/ports/

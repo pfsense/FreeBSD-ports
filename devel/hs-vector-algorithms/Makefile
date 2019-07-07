@@ -1,14 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	vector-algorithms
-PORTVERSION=	0.7.0.1
-PORTREVISION=	4
+PORTVERSION=	0.8.0.1
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Efficient algorithms for vector arrays
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=		Haskell libraries are getting pushed out of the ports tree. If you are using this port for development, consider switching to cabal sandboxes (old way), cabal new-build (new way), or use devel/stack. If you believe this port shouldn't be removed, contact haskell@FreeBSD.org
+EXPIRATION_DATE=	2019-04-14
 
 USE_CABAL=	mtl mwc-random primitive>=0.3 vector>=0.6
 

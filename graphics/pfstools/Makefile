@@ -3,7 +3,7 @@
 
 PORTNAME=	pfstools
 DISTVERSION=	2.1.0
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -19,7 +19,7 @@ CONFLICTS=	pfstmo-1.* pfscalibration-1.*
 
 LDFLAGS+=	-lthr
 
-USES=		cmake:outsource tar:tgz dos2unix jpeg perl5
+USES=		cmake tar:tgz dos2unix jpeg perl5
 USE_PERL5=	run
 USE_LDCONFIG=	yes
 
@@ -52,11 +52,11 @@ TIFF_CMAKE_BOOL=	WITH_TIFF
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 OPENEXR_CMAKE_BOOL=	WITH_OpenEXR
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
-			libIex-2_2.so:graphics/ilmbase
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
+			libIex.so:graphics/ilmbase
 
 IMAGEMAGICK_CMAKE_BOOL=	WITH_ImageMagick
-IMAGEMAGICK_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick
+IMAGEMAGICK_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick6
 
 NETPBM_CMAKE_BOOL=	WITH_NetPBM
 NETPBM_LIB_DEPENDS=	libnetpbm.so:graphics/netpbm
@@ -83,12 +83,12 @@ ALIGN_LIB_DEPENDS=	libopencv_nonfree.so:graphics/opencv \
 
 GLVIEW_CMAKE_BOOL=	WITH_pfsglview
 GLVIEW_CMAKE_ON=	-DGLUT_INCLUDE_DIRS=${LOCALBASE}/include
+GLVIEW_USES=		gl
 GLVIEW_USE=		GL=glut GL=gl,glu
 
 VIEW_CMAKE_BOOL=	WITH_QT
-VIEW_USES=		qt:5
-VIEW_USE=		QT=buildtools_build,qmake_build,widgets
-VIEW_USE=		GL=glut GL=gl,glu QT=core,gui,widgets
+VIEW_USES=		gl qt:5
+VIEW_USE=		GL=glut GL=gl,glu QT=core,gui,widgets,buildtools_build,qmake_build
 
 OPENMP_USES=		compiler:openmp
 

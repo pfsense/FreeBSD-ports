@@ -3,11 +3,11 @@
  * suricata_ip_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,6 +40,12 @@ if (is_null($id)) {
 
 if (!is_array($config['installedpackages']['suricata']['rule'])) {
 	$config['installedpackages']['suricata']['rule'] = array();
+}
+if (!is_array($config['installedpackages']['suricata']['rule'][$id])) {
+	$config['installedpackages']['suricata']['rule'][$id] = array();
+}
+if (!is_array($config['installedpackages']['suricata']['rule'][$id]['iplist_files'])) {
+	$config['installedpackages']['suricata']['rule'][$id]['iplist_files'] = array();
 }
 if (!is_array($config['installedpackages']['suricata']['rule'][$id]['iplist_files']['item'])) {
 	$config['installedpackages']['suricata']['rule'][$id]['iplist_files']['item'] = array();
@@ -150,9 +156,7 @@ if ($_POST['save']) {
 
 		// Update the suricata conf file for this interface
 		$rebuild_rules = false;
-		conf_mount_rw();
 		suricata_generate_yaml($a_nat[$id]);
-		conf_mount_ro();
 
 		// Soft-restart Suricata to live-load new variables
 		suricata_reload_config($a_nat[$id]);

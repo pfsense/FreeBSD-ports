@@ -10,6 +10,17 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20181225:
+AUTHOR: kde@FreeBSD.org
+
+  cmake.mk now defaults to out-of-sourcetree builds. The option 'outsource'
+  has been removed. Ports that need an intree build now can pass 'insource'.
+
+20181110:
+AUTHOR: bapt@FreeBSD.org
+
+  texinfo files are now installed in ${PREFIX}/share/info
+
 20180630:
 AUTHOR: kde@FreeBSD.org
 
@@ -119,10 +130,10 @@ AUTHOR: kde@FreeBSD.org
 
 20180102:
 AUTHOR: kde@FreeBSD.org
-  
+
   There is a new USES=eigen to depend on math/eigen[23].
-  
-  Usage: 
+
+  Usage:
     USES=eigen:<version>[,<type>]
 
     version: 2 or 3 (required)
@@ -131,18 +142,18 @@ AUTHOR: kde@FreeBSD.org
   For example:
     USES=eigen:2,build,run
   will add a BUILD- and RUN_DEPENDS on math/eigen2, and
-    USES=eigen:3 
+    USES=eigen:3
   will add a BUILD_DEPENDS on math/eigen3.
 
 20171231:
 AUTHOR: kde@FreeBSD.org
 
-  USES=cmake now supports two additional list variables: 
+  USES=cmake now supports two additional list variables:
     * CMAKE_ON  : List of variables to turn on
     * CMAKE_OFF : List of variables to turn off
   This can be used as a shortcut to append these to CMAKE_ARGS.
 
-  For example ports that previously set 
+  For example ports that previously set
     CMAKE_ARGS=		-DVAR1:BOOL=TRUE -DVAR2:BOOL=TRUE -DVAR3:BOOL=FALSE
   can now set this as
     CMAKE_ON=		VAR1 VAR2
@@ -270,7 +281,6 @@ AUTHOR: kde@FreeBSD.org
       USES=cmake:<args>
   to
       USES=cmake:<args>,noninja
-
 
 20170417:
 AUTHOR:	kwm@FreeBSD.org
@@ -1871,7 +1881,6 @@ AUTHOR: makc@FreeBSD.org
    In-source build (equivalent to plain USE_CMAKE=yes) can be used if
    project doesn't support out-of-source build.
 
-
 20130319:
 AUTHOR: bapt@FreeBSD.org
 
@@ -2795,7 +2804,6 @@ AUTHOR: edwin@FreeBSD.org
 
   Use "make -V MASTER_SITES" to see the differences.
 
-
 20050313:
 AUTHOR: ahze@FreeBSD.org, kwm@FreeBSD.org
   The following changes were committed:
@@ -3405,7 +3413,6 @@ AUTHOR:	gnome@FreeBSD.org
 	Hopefully galeon2 can catch up to peoples' expectations from
 	galeon1 soon, and we can remove the GTK1 ports altogether.
 
-
 20040204:
 AUTHOR:	portmgr@FreeBSD.org
 	The bsd.php.mk file has been moved out of the lang/php4 port
@@ -3581,7 +3588,7 @@ listed here, and it only starts on January 29, 2004.
 
 Copyright information:
 
-Copyright 2004-2012 FreeBSD Foundation All Rights Reserved.
+Copyright 2004-2019 FreeBSD Foundation All Rights Reserved.
 
 Redistribution, publication, translation and use, with or without
 modification, in full or in part, in any form or format of this

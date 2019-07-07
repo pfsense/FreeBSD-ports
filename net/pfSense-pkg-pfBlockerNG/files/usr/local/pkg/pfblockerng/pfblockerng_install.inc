@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,10 +31,9 @@ pfb_global();
 $g['pfblockerng_install'] = true;
 
 // Only download MaxMind Database if files do not exist
-$maxmind_verify = 0;
+$maxmind_verify = FALSE;
 
 if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/{$pfb['extras'][1]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/GeoLite2-Country-Blocks-IPv4.csv") ||
     !file_exists("{$pfb['ccdir']}/A1_ZW_rep_v4.txt") ||
     !file_exists("{$pfb['dbdir']}/GeoIP_Locale")) {
@@ -42,7 +41,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 	update_status("\nDownloading MaxMind GeoIP databases. This may take a minute...\n");
 
 	// Remove Alexa from download process
-	unset($pfb['extras'][3]);
+	$pfb['extras'] = array_slice($pfb['extras'], 0, 2) ?: array();
 
 	foreach ($pfb['extras'] as $feed) {
 
@@ -58,7 +57,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 			}
 
 			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 Chrome/43.0.2357.65 Safari/537.36');
-			curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1.2, TLSv1.1, TLSv1');
+			curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1.3, TLSv1.2');
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
@@ -80,24 +79,26 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 			$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if ($http_status == '200 OK') {
 				if (strpos($file_dwn, '.gz') !== FALSE) {
-					exec("/usr/bin/gunzip -dfq {$file_dwn} {$pfb['geoipshare']}");
+					exec("/usr/bin/tar -xzf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
 				} elseif (strpos($file_dwn, '.zip') !== FALSE) {
 					exec("/usr/bin/tar -xf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
 				}
 				unlink_if_exists("{$file_dwn}");
 				update_status(" done.\n");
-				$maxmind_verify += 1;
+
+				if ($feed['file'] == 'GeoLite2-Country-CSV.zip') {
+					$maxmind_verify = TRUE;
+				}
 			}
 			else {
 				update_status(" Failed!\n");
-				break;
 			}
 		}
 		curl_close($ch);
 		@fclose($fhandle);
 	}
 
-	if ($maxmind_verify != 3) {
+	if (!$maxmind_verify) {
 		update_status("MaxMind download Failed! Fetching MaxMind archive from pfSense package repo...\n");
 		// Fetch archived MaxMind database
 		$url = 'https://packages.pfsense.org/packages/config/pfblockerng/countrycodes.tar.bz2';
@@ -108,7 +109,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 			$retval = '';
 			exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f /tmp/countrycodes.tar.bz2", $output, $retval);
 			if ($retval == 0) {
-				$maxmind_verify = 3;
+				$maxmind_verify = TRUE;
 				update_status("Fetch done.\n");
 			} else {
 				update_status("Fetch Failed!\n");
@@ -123,7 +124,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
 	}
 
 	// Proceed with conversion of MaxMind files on download success
-	if ($maxmind_verify == 3) {
+	if ($maxmind_verify) {
 		update_status("Converting MaxMind GeoIP databases for pfBlockerNG.\n This may take a few minutes...\n");
 		pfblockerng_uc_countries();
 		update_status("Creating pfBlockerNG Continent XML files...\n");
@@ -138,7 +139,7 @@ else {
 }
 
 
-if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng-container') !== FALSE) {
+if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
 	update_status("Restoring previous pfBlockerNG Widget settings...");
 	// Restore previous widget setting if 'keep' is enabled.
 	$config['widgets']['sequence'] = $pfb['widgets'];
@@ -146,11 +147,11 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 } else {
 	update_status("Adding pfBlockerNG Widget to the Dashboard...");
 	$widgets = $config['widgets']['sequence'];
-	if (strpos($widgets, 'pfblockerng-container') === FALSE) {
+	if (strpos($widgets, 'pfblockerng') === FALSE) {
 		if (empty($widgets)) {
-			$config['widgets']['sequence'] = 'pfblockerng-container:col2:show';
+			$config['widgets']['sequence'] = 'pfblockerng:col2:show';
 		} else {
-			$config['widgets']['sequence'] .= ',pfblockerng-container:col2:show';
+			$config['widgets']['sequence'] .= ',pfblockerng:col2:show';
 		}
 		write_config('pfBlockerNG: Save widget');
 	}
@@ -278,14 +279,14 @@ EOF;
 	openssl_x509_export($cert, $publickey);
 	@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
 	update_status(" done.\n");
-	
+
 	update_status("Starting DNSBL Service...");
 	restart_service('dnsbl');
 	update_status(" done.\n");
 }
 
 
-// Upgrade - Adv. Inbound settings to new variable names. 
+// Upgrade - Adv. Inbound settings to new variable names.
 update_status("Upgrading Adv. Inbound firewall rule settings ...");
 $ufound = FALSE;
 $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdnsblsettings', 'pfblockerngafrica', 'pfblockerngantarctica',
@@ -293,38 +294,40 @@ $upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdn
 		    'pfblockerngtopspammers', 'pfblockerngproxyandsatellite');
 
 foreach ($upgrade_type as $type) {
-	$conf_config = &$config['installedpackages'][$type]['config'];
-	if (isset($conf_config)) {
-		foreach ($conf_config as $key => $utype) {
-			if (isset($utype['autoports'])) {
-				$ufound = TRUE;
-				if ($utype['autoports'] == 'on' && !empty($utype['aliasports']) && !isset($conf_config[$key]['autoports_in'])) {
-					$conf_config[$key]['autoports_in'] = 'on';
-					$conf_config[$key]['aliasports_in'] = $utype['aliasports'];
+	if (is_array($config['installedpackages'][$type]['config'])) {
+		$conf_config = &$config['installedpackages'][$type]['config'];
+		if (isset($conf_config)) {
+			foreach ($conf_config as $key => $utype) {
+				if (isset($utype['autoports'])) {
+					$ufound = TRUE;
+					if ($utype['autoports'] == 'on' && !empty($utype['aliasports']) && !isset($conf_config[$key]['autoports_in'])) {
+						$conf_config[$key]['autoports_in'] = 'on';
+						$conf_config[$key]['aliasports_in'] = $utype['aliasports'];
+					}
+					unset($conf_config[$key]['autoports']);
+					unset($conf_config[$key]['aliasports']);
 				}
-				unset($conf_config[$key]['autoports']);
-				unset($conf_config[$key]['aliasports']);
-			}
-			if (isset($utype['autodest'])) {
-				$ufound = TRUE;
-				if ($utype['autodest'] == 'on' && !empty($utype['aliasdest']) && !isset($conf_config[$key]['autoaddr_in'])) {
-					$conf_config[$key]['autoaddr_in'] = 'on';
-					$conf_config[$key]['aliasaddr_in'] = $utype['aliasdest'];
+				if (isset($utype['autodest'])) {
+					$ufound = TRUE;
+					if ($utype['autodest'] == 'on' && !empty($utype['aliasdest']) && !isset($conf_config[$key]['autoaddr_in'])) {
+						$conf_config[$key]['autoaddr_in'] = 'on';
+						$conf_config[$key]['aliasaddr_in'] = $utype['aliasdest'];
+					}
+					unset($conf_config[$key]['autodest']);
+					unset($conf_config[$key]['aliasdest']);
 				}
-				unset($conf_config[$key]['autodest']);
-				unset($conf_config[$key]['aliasdest']);
-			}
-			if (isset($utype['autonot'])) {
-				$ufound = TRUE;
-				if ($utype['autonot'] == 'on' && !isset($conf_config[$key]['autonot_in'])) {
-					$conf_config[$key]['autonot_in'] = $utype['autonot'];
+				if (isset($utype['autonot'])) {
+					$ufound = TRUE;
+					if ($utype['autonot'] == 'on' && !isset($conf_config[$key]['autonot_in'])) {
+						$conf_config[$key]['autonot_in'] = $utype['autonot'];
+					}
+					unset($conf_config[$key]['autonot']);
 				}
-				unset($conf_config[$key]['autonot']);
-			}
-			if (isset($utype['autoproto'])) {
-				$ufound = TRUE;
-				$conf_config[$key]['autoproto_in'] = $utype['autoproto'];
-				unset($conf_config[$key]['autoproto']);
+				if (isset($utype['autoproto'])) {
+					$ufound = TRUE;
+					$conf_config[$key]['autoproto_in'] = $utype['autoproto'];
+					unset($conf_config[$key]['autoproto']);
+				}
 			}
 		}
 	}

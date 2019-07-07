@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libarchive
-PORTVERSION=	3.3.2
+PORTVERSION=	3.3.3
 PORTEPOCH=	1
 CATEGORIES=	archivers
 MASTER_SITES=	https://libarchive.org/downloads/
@@ -10,20 +10,24 @@ MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Library to create and read several streaming archive formats
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-OPTIONS_DEFINE=	LZ4 LZO NETTLE
-OPTIONS_DEFAULT=LZ4 LZO
+OPTIONS_DEFINE=	LZ4 LZO OPENSSL NETTLE ZSTD
+OPTIONS_DEFAULT=LZ4 LZO OPENSSL
 
 LZ4_DESC=	Support lz4 compression via liblz4
 LZO_DESC=	Support lzo compression via liblzo2
-NETTLE_DESC=	Use Nettle instead of OpenSSL
+OPENSSL_DESC=	Mtree and xar hashes support through openssl
+NETTLE_DESC=	Crypto support from Nettle
+ZSTD_DESC=      Support zstd compression
 
-USES=		cpe iconv libtool pathfix
+USES=		cpe iconv libtool localbase:ldflags pathfix
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+TEST_TARGET=	check
 
 CONFIGURE_ARGS=	--without-xml2
 
@@ -81,20 +85,17 @@ PLIST_FILES=	bin/bsdcat \
 		man/man5/mtree.5.gz \
 		man/man5/tar.5.gz
 
-CFLAGS+=	"-I${LOCALBASE}/include"
-CPPFLAGS+=	"-I${LOCALBASE}/include"
-LDFLAGS+=	"-L${LOCALBASE}/lib"
-
 LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 LZO_CONFIGURE_WITH=	lzo2
 LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
 LZ4_CONFIGURE_WITH=	lz4
+ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
+ZSTD_CONFIGURE_WITH=	zstd
 
 NETTLE_LIB_DEPENDS=	libnettle.so:security/nettle
 NETTLE_CONFIGURE_WITH=	nettle
-NETTLE_CONFIGURE_ON=	--without-openssl
-NETTLE_USES_OFF=	ssl
-NETTLE_CONFIGURE_OFF=	--with-openssl
+OPENSSL_USES=		ssl
+OPENSSL_CONFIGURE_WITH=	openssl
 
 .include <bsd.port.pre.mk>
 
@@ -103,8 +104,5 @@ CONFIGURE_ENV+=	ac_cv_header_localcharset_h=no \
 		ac_cv_func_locale_charset=no \
 		ac_cv_lib_charset_locale_charset=no
 .endif
-
-check:
-	@(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check)
 
 .include <bsd.port.post.mk>

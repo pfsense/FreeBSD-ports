@@ -2,6 +2,7 @@
 
 PORTNAME=	libkdcraw
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	graphics kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -15,10 +16,12 @@ LIB_DEPENDS=	libjasper.so:graphics/jasper \
 CMAKE_ARGS+=	-DWITH_OpenMP:BOOL=False \
 		-DENABLE_RAWSPEED=True
 
-USES=		cmake:outsource compiler:c++11-lang jpeg kde:5 pkgconfig qt:5 tar:xz
+USES=		cmake compiler:c++11-lang jpeg kde:5 pkgconfig qt:5 tar:xz
 USE_KDE=	ecm
 USE_QT=		core gui \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

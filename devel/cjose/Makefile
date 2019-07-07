@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cjose
-PORTVERSION=	0.4.1
+PORTVERSION=	0.6.1
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libjansson.so:devel/jansson
 
-USES=		libtool pathfix pkgconfig ssl
+USES=		compiler:c++11-lang libtool pathfix pkgconfig ssl
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

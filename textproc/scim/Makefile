@@ -3,7 +3,7 @@
 
 PORTNAME=	scim
 PORTVERSION=	1.4.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
@@ -14,7 +14,8 @@ LICENSE=	LGPL21
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		gettext gmake iconv libtool pathfix pkgconfig
+USES=		compiler:c++11-lang gettext gmake gnome iconv libtool pathfix \
+		pkgconfig
 USE_GNOME=	gtk20 intlhack
 USE_XORG=	x11 xpm
 USE_LDCONFIG=	yes

@@ -3,11 +3,11 @@
  * suricata_select_alias.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -216,7 +216,7 @@ if (!in_array($alias['type'], $a_types))
 
 	print_info_box('<strong>' . gettext('Note:') . '<br></strong>' . gettext('Fully-Qualified Domain Name (FQDN) host Aliases cannot be used as Suricata configuration parameters. ' .
 		' Aliases resolving to a single FQDN value are disabled in the list above. ' .
-		'In the case of nested Aliases where one or more of the nested values is a FQDN host, the FQDN host will not be included in the {$title} configuration.'), info, false);
+		'In the case of nested Aliases where one or more of the nested values is a FQDN host, the FQDN host will not be included in the {$title} configuration.'), 'info', false);
 ?>
 </div>
 </form>

@@ -36,7 +36,6 @@ function setup_routed() {
 	}
 
 	$gw = "";
-	conf_mount_rw();
 
 	if (isset($config['installedpackages']['routed']['config'][0]['enable']) &&
 	    $config['installedpackages']['routed']['config'][0]['enable'] == "on") {
@@ -71,7 +70,6 @@ function setup_routed() {
 		unlink_if_exists("/usr/local/etc/rc.d/routed.sh");
 	}
 
-	conf_mount_ro();
 }
 
 function setup_etc_gateways($iface = "", $mode = "") {

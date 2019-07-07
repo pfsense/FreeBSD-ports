@@ -3,7 +3,7 @@
 
 PORTNAME=	ffmpegthumbnailer
 PORTVERSION=	2.2.0
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	multimedia graphics
 
 MAINTAINER=	clutton@zoho.com
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 USE_GITHUB=	yes
 GH_ACCOUNT=	dirkvdb
 
-USES=		cmake:outsource compiler:c++11-lib jpeg localbase pathfix pkgconfig
+USES=		cmake compiler:c++11-lib jpeg localbase pathfix pkgconfig
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 

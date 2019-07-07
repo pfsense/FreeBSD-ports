@@ -2,21 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	julius
-PKGNAMESUFFIX=	-caesariii
-PORTVERSION=	g20180430
-PORTREVISION=	1
+PORTVERSION=	1.0.0
+DISTVERSIONPREFIX=	v
+PORTEPOCH=	1
 CATEGORIES=	games
+PKGNAMESUFFIX=	-caesariii
 
 MAINTAINER=	pkubaj@anongoth.pl
 COMMENT=	Open source re-implementation of Caesar III
 
 LICENSE=	GPLv3
 
-USES=		cmake:outsource
+USES=		cmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	bvschaik
-GH_TAGNAME=	cb7ecdf
 
 USE_SDL=	mixer2 sdl2
 

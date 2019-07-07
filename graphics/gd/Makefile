@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libgd
-PORTVERSION=	2.2.4
+PORTVERSION=	2.2.5
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES+=	graphics
@@ -24,6 +24,7 @@ USES=		tar:xz pkgconfig pathfix libtool:keepla shebangfix jpeg
 SHEBANG_FILES=	${WRKSRC}/src/bdftogd
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+TEST_TARGET=	check
 
 OPTIONS_DEFINE=	FONTCONFIG ICONV XPM WEBP
 OPTIONS_DEFAULT=FONTCONFIG WEBP
@@ -90,6 +91,6 @@ pre-build:
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/src/gdhelpers.h \
 		${STAGEDIR}${PREFIX}/include/
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgd.so.6.0.4
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgd.so.6*
 
 .include <bsd.port.mk>

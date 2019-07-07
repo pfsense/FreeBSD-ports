@@ -2,6 +2,7 @@
 
 PORTNAME=	skanlite
 DISTVERSION=	2.1.0.1
+PORTREVISION=	2
 CATEGORIES=	graphics kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION:R:R}/
 
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/src/COPYING
 LIB_DEPENDS=	libKF5Sane.so:graphics/libksane \
 		libpng.so:graphics/png
 
-USES=		cmake:outsource gettext kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
 USE_KDE=	ecm auth config configwidgets codecs completion \
 		coreaddons doctools i18n jobwidgets kio \
 		service widgetsaddons xmlgui

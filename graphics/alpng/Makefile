@@ -3,7 +3,7 @@
 
 PORTNAME=	alpng
 PORTVERSION=	1.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}13
@@ -13,12 +13,14 @@ COMMENT=	Library for display PNG images in programs
 
 LIB_DEPENDS=	liballeg.so:devel/allegro
 
-HAS_CONFIGURE=	yes
-WRKSRC=		${WRKDIR}
-MAKEFILE=	makefile
 USES=		gmake
+
+HAS_CONFIGURE=	yes
+MAKEFILE=	makefile
 MAKE_ARGS=	CC="${CC}"
 CFLAGS+=	-I${LOCALBASE}/include
+
+NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	include/alpng.h \
 		lib/libalpng.a

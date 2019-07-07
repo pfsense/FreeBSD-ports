@@ -3,6 +3,7 @@
 
 PORTNAME=	neon
 PORTVERSION=	0.30.2
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/lev
 
@@ -35,6 +36,7 @@ LIBXML_CONFIGURE_WITH=	libxml2
 LIBXML_USE=		GNOME=libxml2
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
+OPENSSL_CONFIGURE_ENV=	ne_cv_libsfor_SSL_library_init=-lssl
 OPENSSL_CONFIGURE_WITH=	ssl
 OPENSSL_USES=		ssl
 PROXY_CONFIGURE_WITH=	libproxy
@@ -59,10 +61,4 @@ post-patch:
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libneon.so.27.*
 
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MOPENSSL} && ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

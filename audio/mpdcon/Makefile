@@ -2,7 +2,7 @@
 
 PORTNAME=	mpdcon
 PORTVERSION=	1.5.1
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	audio gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	MPDCon-${PORTVERSION}
@@ -10,13 +10,14 @@ DISTNAME=	MPDCon-${PORTVERSION}
 MAINTAINER=	theraven@FreeBSD.org
 COMMENT=	MPD client for GNUstep
 
-LICENSE=	GPLv2
-
-USES=		gnustep
-USE_GNUSTEP=	base gui back build
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/Documentation/COPYING
 
 LIB_DEPENDS=	libmpdclient.so.2:audio/libmpdclient \
 		libSQLClient.so:databases/sqlclient
+
+USES=		gnustep
+USE_GNUSTEP=	base gui back build
 
 post-patch:
 	${REINPLACE_CMD} -e \

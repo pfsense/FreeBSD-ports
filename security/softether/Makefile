@@ -1,39 +1,26 @@
 # $FreeBSD$
 
 PORTNAME=	softether
-PORTVERSION=	4.25.9656
+DISTVERSION=	4.29-9680
 CATEGORIES=	security
-MASTER_SITES=	http://www.softether-download.com/files/softether/v4.25-9656-rtm-2018.01.15-tree/Source_Code/
-DISTNAME=	${PORTNAME}-src-v4.25-9656-rtm
+MASTER_SITES=	https://www.softether-download.com/files/softether/v${DISTVERSION}-rtm-2019.02.28-tree/Source_Code/
+DISTNAME=	${PORTNAME}-src-v${DISTVERSION}-rtm
 
-MAINTAINER=	hrs@FreeBSD.org
-COMMENT=	Softether VPN solution
+MAINTAINER=	meta@FreeBSD.org
+COMMENT=	SoftEther VPN 4 (RTM version)
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS_INSTALL=	softether-devel
+ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS_REASON=	Upstream only supports amd64 and i386: https://www.softether.org/3-spec
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+USES=		dos2unix gmake iconv:wchar_t localbase:ldflags ncurses \
+		readline ssl
+USE_RC_SUBR=	softether_bridge softether_client softether_server
 
-PORTDOCS=	AUTHORS.TXT ChangeLog LICENSE README THIRD_PARTY.TXT WARNING.TXT
-DOS2UNIX_FILES=	AUTHORS.TXT ChangeLog LICENSE README THIRD_PARTY.TXT \
-		WARNING.TXT \
-		src/Cedar/Cedar.h \
-		src/Cedar/Cedar.h \
-		src/Cedar/Client.h \
-		src/Cedar/Nat.h \
-		src/Cedar/Server.c \
-		src/Cedar/Server.h \
-		src/Cedar/Virtual.h \
-		src/Mayaqua/Cfg.c \
-		src/Mayaqua/Cfg.h \
-		src/Mayaqua/Kernel.c \
-		src/Mayaqua/Mayaqua.c \
-		src/Mayaqua/Network.c \
-		src/Mayaqua/Network.h \
-		src/Mayaqua/Table.h \
-		src/Mayaqua/Unix.c
+DOS2UNIX_FILES=	ChangeLog LICENSE README *.TXT \
+		src/Cedar/*.* src/Mayaqua/*.*
 
 OPTIONS_DEFINE=	DOCS UNLOCK
 
@@ -44,37 +31,82 @@ OPTIONS_DEFINE=	DOCS UNLOCK
 #  - Deep-inspect packet logging function
 #  - Source IP address control list function
 #  - syslog transfer function
-UNLOCK_DESC= Unlock regional lockout (JP and CN)
+UNLOCK_DESC=	Unlock regional lockout (JP and CN)
 UNLOCK_EXTRA_PATCHES=	${FILESDIR}/extra-patch-unrestrict-enterprise-functions
 
-ONLY_FOR_ARCHS=	i386 amd64
+CONFLICTS_INSTALL=	softether-devel-4.* softether5
+PORTDOCS=	AUTHORS.TXT ChangeLog LICENSE README THIRD_PARTY.TXT WARNING.TXT
 
-USES=		dos2unix gmake iconv:wchar_t localbase:ldflags ncurses \
-		readline ssl
-USE_RC_SUBR=	softether_bridge softether_client softether_server
-SUB_FILES=	vpncmd
-MAKE_JOBS_UNSAFE=	yes
+SE_DBDIR?=	/var/db/${PORTNAME}
+SE_LOGDIR?=	/var/log/${PORTNAME}
+PLIST_SUB=	SE_DBDIR="${SE_DBDIR}" SE_LOGDIR="${SE_LOGDIR}"
+SUB_LIST=	SE_DBDIR="${SE_DBDIR}" SE_LOGDIR="${SE_LOGDIR}"
+SUB_FILES=	pkg-message vpncmd
 
-LOGDIR?=	/var/log/softether
-PLIST_SUB+=	LOGDIR="${LOGDIR}"
-SUB_LIST=	LOGDIR="${LOGDIR}"
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
 
 # a pity the source directory has such a naming scheme, but well
-WRKSRC=		${WRKDIR}/v4.25-9656
+WRKSRC=		${WRKDIR}/v${DISTVERSION}
 
 ALL_TARGET=	build
 
 .include <bsd.port.options.mk>
 
-# skip configure at all and copy the corresponding Makefile in place
-post-extract:
+post-patch:
+	# SoftEther scatters logs, config files and PID files in PREFIX/libexec
+	# directory. To write them in the right place, replace it.
+	${REINPLACE_CMD} \
+		-e "s|@vpn_server_template|${SE_DBDIR}/vpn_server_template|" \
+		-e "s|@vpn_server|${SE_DBDIR}/vpn_server|" \
+		-e "s|@vpn_bridge|${SE_DBDIR}/vpn_bridge|" \
+		-e "s|@vpn_gate_svc|${SE_DBDIR}/vpn_gate_svc|" \
+		-e "s|@vpn_gate_relay|${SE_DBDIR}/vpn_gate_relay|" \
+		${WRKSRC}/src/Cedar/Server.c
+
+	${REINPLACE_CMD} \
+		-e "s|@adminip|${SE_DBDIR}/adminip|" \
+		-e "s|@etherlogger|${SE_DBDIR}/etherlogger|" \
+		-e "s|@vpn_client|${SE_DBDIR}/vpn_client|" \
+		-e "s|@vpn_router|${SE_DBDIR}/vpn_router|" \
+		-e "s|@custom|${SE_DBDIR}/custom|" \
+		-e "s|@backup|${SE_DBDIR}/backup|" \
+		-e "s|@save_binary|${SE_DBDIR}/save_binary|" \
+		-e "s|@lang|${SE_DBDIR}/lang|" \
+		-e "s|@azureserver|${SE_DBDIR}/azureserver|" \
+		-e "s|@server_log|${SE_DIR}/server|" \
+		-e "s|@security_log|${SE_LOGDIR}/security|" \
+		-e "s|@packet_log|${SE_LOGDIR}/packet|" \
+		-e "s|@secure_nat_log|${SE_LOGDIR}/secure_nat|" \
+		-e "s|@client_log|${SE_LOGDIR}/client|" \
+		-e "s|@tiny_log|${SE_LOGDIR}/tiny|" \
+		-e "s|@carrier_log|${SE_LOGDIR}/carrier|" \
+		-e "s|@etherlogger_log|${SE_LOGDIR}/etherlogger|" \
+		${WRKSRC}/src/Cedar/Cedar.h \
+		${WRKSRC}/src/Cedar/Client.h \
+		${WRKSRC}/src/Cedar/Nat.h \
+		${WRKSRC}/src/Cedar/Server.c \
+		${WRKSRC}/src/Mayaqua/Cfg.c \
+		${WRKSRC}/src/Mayaqua/Cfg.h \
+		${WRKSRC}/src/Mayaqua/Table.h
+
+	${REINPLACE_CMD} \
+		-e "s|abort_error_log\.txt|${SE_LOGDIR}/abort_error_log.txt|" \
+		${WRKSRC}/src/Mayaqua/Kernel.c
+
+	${REINPLACE_CMD} \
+		-e "s|%%SE_DBDIR%%|${SE_DBDIR}|g" \
+		${WRKSRC}/src/Cedar/Protocol.c \
+		${WRKSRC}/src/Mayaqua/Unix.c \
+		${WRKSRC}/src/Mayaqua/Network.c
+
+	# skip configure at all and copy the corresponding Makefile in place
 .if ${ARCH} != "amd64"
 	@${CP} ${WRKSRC}/src/makefiles/freebsd_32bit.mak ${WRKSRC}/Makefile
 .else
 	@${CP} ${WRKSRC}/src/makefiles/freebsd_64bit.mak ${WRKSRC}/Makefile
 .endif
-
-# pull in user specific CFLAGS and LDFLAGS
+	# pull in user specific CFLAGS and LDFLAGS
 	@${REINPLACE_CMD} -e "s|OPTIONS_COMPILE_RELEASE=|OPTIONS_COMPILE_RELEASE=${CFLAGS} |g" ${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e "s|OPTIONS_LINK_RELEASE=|OPTIONS_LINK_RELEASE=${LDFLAGS} |g" ${WRKSRC}/Makefile
 
@@ -88,13 +120,12 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/vpnserver/vpnserver ${STAGEDIR}/${PREFIX}/libexec/${PORTNAME}/vpnserver
 	${INSTALL_DATA} ${WRKSRC}/bin/vpnserver/hamcore.se2 ${STAGEDIR}/${PREFIX}/libexec/${PORTNAME}/hamcore.se2
 	${INSTALL_SCRIPT} ${WRKDIR}/vpncmd ${STAGEDIR}/${PREFIX}/sbin/vpncmd
-
-post-install:
 .for i in vpnbridge vpnclient vpncmd vpnserver
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}/${i}
 .endfor
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${MKDIR} ${STAGEDIR}${LOGDIR}
+	@${MKDIR} ${STAGEDIR}${SE_DBDIR}
+	@${MKDIR} ${STAGEDIR}${SE_LOGDIR}
 .for doc in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
 .endfor

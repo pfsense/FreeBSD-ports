@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	clhep
-PORTVERSION=	2.4.0.4
+PORTVERSION=	2.4.1.0
 CATEGORIES=	science
 MASTER_SITES=	http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/
 
@@ -12,12 +12,10 @@ COMMENT=	Object-oriented toolkit for particle physics applications by CERN
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-BROKEN_powerpc64=	fails to compile: c++11 extension is not available for /usr/bin/c++
-BROKEN_FreeBSD_10=	does not compile on clan3.4, requires 3.5+
+USES=		cmake compiler:c++11-lang perl5 tar:tgz
 
 WRKSRC=		${WRKDIR}/${PORTVERSION}/${PORTNAME:tu}
 
-USES=		cmake:outsource compiler:c++11-lang perl5 tar:tgz
 USE_PERL5=	build
 USE_LDCONFIG=	yes
 

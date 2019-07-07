@@ -3,7 +3,7 @@
 
 PORTNAME=	widelands
 DISTVERSION=	build19
-PORTREVISION=	10
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	https://launchpad.net/widelands/${DISTVERSION}/${DISTVERSION}/+download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -19,8 +19,8 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libicuuc.so:devel/icu \
 		libboost_regex.so:devel/boost-libs
 
-USES=		cmake:outsource compiler:c++11-lib gettext \
-		tar:bzip2 python:build
+USES=		cmake compiler:c++11-lib gettext gl \
+		tar:bzip2 python:build sdl
 CMAKE_ARGS=	-DWL_INSTALL_BASEDIR="${PREFIX}" \
 		-DWL_INSTALL_DATADIR="${DATADIR}" \
 		-DWL_INSTALL_DOCDIR="${DOCSDIR}" \
@@ -38,6 +38,8 @@ DESKTOP_ENTRIES="Widelands" \
 		"widelands" \
 		"Game;StrategyGame;" \
 		""
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \

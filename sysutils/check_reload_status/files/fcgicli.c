@@ -110,8 +110,8 @@ main(int argc, char **argv)
 	FCGI_Header *tmpl, rHeader;
 	struct sbuf *sbtmp2, *sbtmp;
 	struct utsname uts;
-	int ch, ispost = 0, len, result;
-	char *data = NULL, *script = NULL, *mtype = NULL, *buf;
+	int ch, ispost = 0, len, result, end_header = 0;
+	char *data = NULL, *script = NULL, *mtype = NULL, *buf, *linebuf;
 	const char *socketpath;
 
 	tzset();
@@ -270,7 +270,24 @@ main(int argc, char **argv)
 		case FCGI_DATA:
 		case FCGI_STDOUT:
 		case FCGI_STDERR:
-			printf("%s", buf);
+			if (end_header == 0) {
+				while ((linebuf = strsep(&buf, "\n")) != NULL) {
+					if (end_header == 0) {
+						if (strlen(linebuf) == 1)
+							end_header = 1;
+						continue;
+					}
+					if (*linebuf == '#' &&
+					    *(linebuf+1) == '!')
+						continue;
+
+					printf("%s", linebuf);
+					if (buf != NULL)
+						printf("\n");
+					break;
+				}
+			} else if (buf != NULL)
+				printf("%s", buf);
 			free(buf);
 			break;
 		case FCGI_ABORT_REQUEST:

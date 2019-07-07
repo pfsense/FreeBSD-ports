@@ -2,7 +2,7 @@
 
 PORTNAME=	hjsmin
 PORTVERSION=	0.2.0.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -12,7 +12,6 @@ LICENSE=	BSD3CLAUSE
 
 USE_CABAL=	blaze-builder>=0.2 language-javascript>=0.5.14 \
 		optparse-applicative>=0.7
-
 EXECUTABLE=	hjsmin
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"

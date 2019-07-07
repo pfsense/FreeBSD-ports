@@ -17,7 +17,7 @@ LIB_DEPENDS=	libassuan.so:security/libassuan  \
 		libical.so:devel/libical \
 		libxapian.so:databases/xapian-core
 
-USES=		cmake:outsource compiler:c++11-lib gettext kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 tar:xz
 USE_KDE=	auth bookmarks codecs completion config configwidgets \
 		coreaddons crash dbusaddons ecm guiaddons i18n iconthemes \
 		itemmodels itemviews jobwidgets kdelibs4support kio \
@@ -33,5 +33,7 @@ USE_QT=		core dbus gui network printsupport sql widgets xml \
 USE_LDCONFIG=	yes
 
 DESCR=		${.CURDIR:H:H}/deskutils/kdepim/pkg-descr
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

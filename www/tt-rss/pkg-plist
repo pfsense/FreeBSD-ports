@@ -8,9 +8,8 @@
 %%WWWDIR%%/atom-to-html.xsl
 %%WWWDIR%%/backend.php
 %%WWWDIR%%/cache/export/.empty
+%%WWWDIR%%/cache/feeds/.empty
 %%WWWDIR%%/cache/images/.empty
-%%WWWDIR%%/cache/js/.empty
-%%WWWDIR%%/cache/simplepie/.empty
 %%WWWDIR%%/cache/upload/.empty
 %%WWWDIR%%/classes/api.php
 %%WWWDIR%%/classes/article.php
@@ -20,11 +19,10 @@
 %%WWWDIR%%/classes/counters.php
 %%WWWDIR%%/classes/db.php
 %%WWWDIR%%/classes/db/mysqli.php
-%%WWWDIR%%/classes/db/pdo.php
 %%WWWDIR%%/classes/db/pgsql.php
 %%WWWDIR%%/classes/db/prefs.php
-%%WWWDIR%%/classes/db/stmt.php
 %%WWWDIR%%/classes/dbupdater.php
+%%WWWDIR%%/classes/debug.php
 %%WWWDIR%%/classes/digest.php
 %%WWWDIR%%/classes/dlg.php
 %%WWWDIR%%/classes/feedenclosure.php
@@ -43,7 +41,9 @@
 %%WWWDIR%%/classes/labels.php
 %%WWWDIR%%/classes/logger.php
 %%WWWDIR%%/classes/logger/sql.php
+%%WWWDIR%%/classes/logger/stdout.php
 %%WWWDIR%%/classes/logger/syslog.php
+%%WWWDIR%%/classes/mailer.php
 %%WWWDIR%%/classes/opml.php
 %%WWWDIR%%/classes/plugin.php
 %%WWWDIR%%/classes/pluginhandler.php
@@ -56,64 +56,36 @@
 %%WWWDIR%%/classes/pref/users.php
 %%WWWDIR%%/classes/rpc.php
 %%WWWDIR%%/classes/rssutils.php
-%%WWWDIR%%/classes/ttrssmailer.php
 @mode 0400
 @sample %%WWWDIR%%/config.php.sample
 @mode
-%%WWWDIR%%/css/cdm.css
-%%WWWDIR%%/css/dijit.css
-%%WWWDIR%%/css/layout.css
-%%WWWDIR%%/css/prefs.css
-%%WWWDIR%%/css/tt-rss.css
-%%WWWDIR%%/css/utility.css
-%%WWWDIR%%/css/zoom.css
+%%WWWDIR%%/css/cdm.less
+%%WWWDIR%%/css/default.css
+%%WWWDIR%%/css/default.css.map
+%%WWWDIR%%/css/default.less
+%%WWWDIR%%/css/defines.less
+%%WWWDIR%%/css/dijit_basic.less
+%%WWWDIR%%/css/dijit_light.less
+%%WWWDIR%%/css/prefs.less
+%%WWWDIR%%/css/tt-rss.less
+%%WWWDIR%%/css/utility.less
+%%WWWDIR%%/css/zoom.less
 %%WWWDIR%%/errors.php
 %%WWWDIR%%/feed-icons/.empty
 %%WWWDIR%%/feed-icons/index.html
 %%WWWDIR%%/icons/.empty
-%%WWWDIR%%/images/alert.png
-%%WWWDIR%%/images/archive.png
 %%WWWDIR%%/images/blank_icon.gif
-%%WWWDIR%%/images/collapse.png
-%%WWWDIR%%/images/cross.png
-%%WWWDIR%%/images/error.png
 %%WWWDIR%%/images/favicon-72px.png
 %%WWWDIR%%/images/favicon.png
-%%WWWDIR%%/images/feed.png
-%%WWWDIR%%/images/filter.png
-%%WWWDIR%%/images/folder.png
-%%WWWDIR%%/images/fresh.png
 %%WWWDIR%%/images/indicator_tiny.gif
 %%WWWDIR%%/images/indicator_white.gif
 %%WWWDIR%%/images/information.png
-%%WWWDIR%%/images/label.png
 %%WWWDIR%%/images/logo_small.png
 %%WWWDIR%%/images/logo_wide.png
-%%WWWDIR%%/images/mark_set.png
-%%WWWDIR%%/images/mark_unset.png
-%%WWWDIR%%/images/new_version.png
-%%WWWDIR%%/images/page_white_go.png
-%%WWWDIR%%/images/plugin.png
-%%WWWDIR%%/images/plugin_disabled.png
-%%WWWDIR%%/images/pub_set.png
-%%WWWDIR%%/images/pub_unset.png
-%%WWWDIR%%/images/score_half_high.png
-%%WWWDIR%%/images/score_half_low.png
-%%WWWDIR%%/images/score_high.png
-%%WWWDIR%%/images/score_low.png
-%%WWWDIR%%/images/score_neutral.png
-%%WWWDIR%%/images/star.png
-%%WWWDIR%%/images/tag.png
-%%WWWDIR%%/images/tick.png
-%%WWWDIR%%/images/time.png
 %%WWWDIR%%/images/toolbar.png
-%%WWWDIR%%/images/treeExpandImages.png
-%%WWWDIR%%/images/untick.png
-%%WWWDIR%%/images/user.png
 %%WWWDIR%%/include/autoload.php
 %%WWWDIR%%/include/colors.php
 %%WWWDIR%%/include/controls.php
-%%WWWDIR%%/include/crypt.php
 %%WWWDIR%%/include/db-prefs.php
 %%WWWDIR%%/include/db.php
 %%WWWDIR%%/include/errorhandler.php
@@ -126,25 +98,31 @@
 %%WWWDIR%%/include/version.php
 %%WWWDIR%%/index.php
 %%WWWDIR%%/install/index.php
+%%WWWDIR%%/js/AppBase.js
+%%WWWDIR%%/js/Article.js
+%%WWWDIR%%/js/CommonDialogs.js
+%%WWWDIR%%/js/CommonFilters.js
+%%WWWDIR%%/js/FeedStoreModel.js
 %%WWWDIR%%/js/FeedTree.js
+%%WWWDIR%%/js/Feeds.js
+%%WWWDIR%%/js/Headlines.js
 %%WWWDIR%%/js/PluginHost.js
+%%WWWDIR%%/js/PrefFeedStore.js
 %%WWWDIR%%/js/PrefFeedTree.js
+%%WWWDIR%%/js/PrefFilterStore.js
 %%WWWDIR%%/js/PrefFilterTree.js
+%%WWWDIR%%/js/PrefHelpers.js
 %%WWWDIR%%/js/PrefLabelTree.js
-%%WWWDIR%%/js/deprecated.js
-%%WWWDIR%%/js/feedlist.js
-%%WWWDIR%%/js/functions.js
+%%WWWDIR%%/js/PrefUsers.js
+%%WWWDIR%%/js/common.js
 %%WWWDIR%%/js/index.html
 %%WWWDIR%%/js/prefs.js
 %%WWWDIR%%/js/tt-rss.js
-%%WWWDIR%%/js/viewfeed.js
+%%WWWDIR%%/lib/CheckBoxStoreModel.js
 %%WWWDIR%%/lib/CheckBoxTree.js
 %%WWWDIR%%/lib/MiniTemplator.class.php
-%%WWWDIR%%/lib/Mobile_Detect.php
+%%WWWDIR%%/lib/_CheckBoxTreeNode.js
 %%WWWDIR%%/lib/accept-to-gettext.php
-%%WWWDIR%%/lib/button/license.txt
-%%WWWDIR%%/lib/button/musicplayer.swf
-%%WWWDIR%%/lib/button/musicplayer_f6.swf
 %%WWWDIR%%/lib/dijit/BackgroundIframe.js
 %%WWWDIR%%/lib/dijit/CONTRIBUTING.md
 %%WWWDIR%%/lib/dijit/Calendar.js
@@ -1691,6 +1669,7 @@
 %%WWWDIR%%/lib/dojo/fx/Toggler.js
 %%WWWDIR%%/lib/dojo/fx/easing.js
 %%WWWDIR%%/lib/dojo/gears.js
+%%WWWDIR%%/lib/dojo/global.js
 %%WWWDIR%%/lib/dojo/has.js
 %%WWWDIR%%/lib/dojo/hash.js
 %%WWWDIR%%/lib/dojo/hccss.js
@@ -1838,75 +1817,31 @@
 %%WWWDIR%%/lib/dojo/uacss.js
 %%WWWDIR%%/lib/dojo/when.js
 %%WWWDIR%%/lib/dojo/window.js
+%%WWWDIR%%/lib/flat-ttrss/flat_combined.css
+%%WWWDIR%%/lib/flat-ttrss/flat_combined_dark.css
+%%WWWDIR%%/lib/flat-ttrss/flat_combined_dark_blue.css
+%%WWWDIR%%/lib/flat-ttrss/fonts/flat-icon.eot
+%%WWWDIR%%/lib/flat-ttrss/fonts/flat-icon.svg
+%%WWWDIR%%/lib/flat-ttrss/fonts/flat-icon.ttf
+%%WWWDIR%%/lib/flat-ttrss/fonts/flat-icon.woff
+%%WWWDIR%%/lib/flat-ttrss/images/loadingAnimation.gif
+%%WWWDIR%%/lib/flat-ttrss/images/progressBarStrips.png
 %%WWWDIR%%/lib/floIcon.php
 %%WWWDIR%%/lib/gettext/README
 %%WWWDIR%%/lib/gettext/gettext.inc
 %%WWWDIR%%/lib/gettext/gettext.php
 %%WWWDIR%%/lib/gettext/streams.php
+%%WWWDIR%%/lib/iconfont/MaterialIcons-Regular.eot
+%%WWWDIR%%/lib/iconfont/MaterialIcons-Regular.ijmap
+%%WWWDIR%%/lib/iconfont/MaterialIcons-Regular.svg
+%%WWWDIR%%/lib/iconfont/MaterialIcons-Regular.ttf
+%%WWWDIR%%/lib/iconfont/MaterialIcons-Regular.woff
+%%WWWDIR%%/lib/iconfont/MaterialIcons-Regular.woff2
+%%WWWDIR%%/lib/iconfont/README.md
+%%WWWDIR%%/lib/iconfont/codepoints
+%%WWWDIR%%/lib/iconfont/material-icons.css
 %%WWWDIR%%/lib/index.html
 %%WWWDIR%%/lib/jimIcon.php
-%%WWWDIR%%/lib/jshrink/Minifier.php
-%%WWWDIR%%/lib/jshrink/README.md
-%%WWWDIR%%/lib/otphp/LICENCE
-%%WWWDIR%%/lib/otphp/lib/hotp.php
-%%WWWDIR%%/lib/otphp/lib/otp.php
-%%WWWDIR%%/lib/otphp/lib/otphp.php
-%%WWWDIR%%/lib/otphp/lib/totp.php
-%%WWWDIR%%/lib/otphp/vendor/base32.php
-%%WWWDIR%%/lib/otphp/vendor/libs.php
-%%WWWDIR%%/lib/phpmailer/class.phpmailer.php
-%%WWWDIR%%/lib/phpmailer/class.smtp.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-am.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-ar.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-az.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-be.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-bg.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-br.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-ca.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-ch.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-cs.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-cz.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-da.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-de.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-dk.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-el.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-eo.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-es.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-et.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-fa.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-fi.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-fo.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-fr.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-gl.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-he.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-hr.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-hu.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-id.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-it.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-ja.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-ka.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-ko.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-lt.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-lv.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-ms.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-nb.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-nl.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-no.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-pl.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-pt_br.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-pt.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-ro.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-ru.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-se.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-sk.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-sl.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-sr.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-sv.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-tr.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-uk.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-vi.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-zh_cn.php
-%%WWWDIR%%/lib/phpmailer/language/phpmailer.lang-zh.php
 %%WWWDIR%%/lib/phpqrcode/CHANGELOG
 %%WWWDIR%%/lib/phpqrcode/INSTALL
 %%WWWDIR%%/lib/phpqrcode/README
@@ -2332,8 +2267,6 @@
 %%WWWDIR%%/lib/phpqrcode/tools/merged_config.php
 %%WWWDIR%%/lib/phpqrcode/tools/merged_header.php
 %%WWWDIR%%/lib/prototype.js
-%%WWWDIR%%/lib/readability/JSLikeHTMLElement.php
-%%WWWDIR%%/lib/readability/Readability.php
 %%WWWDIR%%/lib/scriptaculous/controls.js
 %%WWWDIR%%/lib/scriptaculous/effects.js
 %%WWWDIR%%/lib/scriptaculous/scriptaculous.js
@@ -2396,8 +2329,10 @@
 %%WWWDIR%%/messages.pot
 %%WWWDIR%%/opml.php
 %%WWWDIR%%/plugins.local/index.html
+%%WWWDIR%%/plugins/af_comics/.gitignore
 %%WWWDIR%%/plugins/af_comics/af_comics_template.php
 %%WWWDIR%%/plugins/af_comics/filter_base.php
+%%WWWDIR%%/plugins/af_comics/filters.local/.empty
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_cad.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_comicclass.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_comicpress.php
@@ -2409,17 +2344,8 @@
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_tfd.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_twp.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_whomp.php
-%%WWWDIR%%/plugins/af_comics/filters.local/.empty
 %%WWWDIR%%/plugins/af_comics/init.php
 %%WWWDIR%%/plugins/af_fsckportal/init.php
-%%WWWDIR%%/plugins/af_lang_detect/init.php
-%%WWWDIR%%/plugins/af_lang_detect/languagedetect/data/lang.dat
-%%WWWDIR%%/plugins/af_lang_detect/languagedetect/data/unicode_blocks.dat
-%%WWWDIR%%/plugins/af_lang_detect/languagedetect/LanguageDetect.php
-%%WWWDIR%%/plugins/af_lang_detect/languagedetect/Text/LanguageDetect/Exception.php
-%%WWWDIR%%/plugins/af_lang_detect/languagedetect/Text/LanguageDetect/ISO639.php
-%%WWWDIR%%/plugins/af_lang_detect/languagedetect/Text/LanguageDetect/Parser.php
-%%WWWDIR%%/plugins/af_psql_trgm/button.png
 %%WWWDIR%%/plugins/af_psql_trgm/init.js
 %%WWWDIR%%/plugins/af_psql_trgm/init.php
 %%WWWDIR%%/plugins/af_readability/init.php
@@ -2437,12 +2363,7 @@
 %%WWWDIR%%/plugins/auto_assign_labels/init.php
 %%WWWDIR%%/plugins/bookmarklets/init.php
 %%WWWDIR%%/plugins/cache_starred_images/init.php
-%%WWWDIR%%/plugins/close_button/button.png
 %%WWWDIR%%/plugins/close_button/init.php
-%%WWWDIR%%/plugins/embed_original/button.png
-%%WWWDIR%%/plugins/embed_original/init.css
-%%WWWDIR%%/plugins/embed_original/init.js
-%%WWWDIR%%/plugins/embed_original/init.php
 %%WWWDIR%%/plugins/googlereaderkeys/init.php
 %%WWWDIR%%/plugins/import_export/import_export.js
 %%WWWDIR%%/plugins/import_export/init.php
@@ -2453,7 +2374,6 @@
 %%WWWDIR%%/plugins/mailto/init.js
 %%WWWDIR%%/plugins/mailto/init.php
 %%WWWDIR%%/plugins/mailto/mail.png
-%%WWWDIR%%/plugins/mark_button/init.php
 %%WWWDIR%%/plugins/no_iframes/init.php
 %%WWWDIR%%/plugins/no_title_counters/init.js
 %%WWWDIR%%/plugins/no_title_counters/init.php
@@ -2461,24 +2381,20 @@
 %%WWWDIR%%/plugins/no_url_hashes/init.php
 %%WWWDIR%%/plugins/note/init.php
 %%WWWDIR%%/plugins/note/note.js
-%%WWWDIR%%/plugins/note/note.png
 %%WWWDIR%%/plugins/nsfw/init.js
 %%WWWDIR%%/plugins/nsfw/init.php
 %%WWWDIR%%/plugins/search_sphinx/init.php
 %%WWWDIR%%/plugins/search_sphinx/sphinxapi.php
 %%WWWDIR%%/plugins/share/init.php
-%%WWWDIR%%/plugins/share/notshared.png
-%%WWWDIR%%/plugins/share/share_prefs.js
+%%WWWDIR%%/plugins/share/share.css
 %%WWWDIR%%/plugins/share/share.js
-%%WWWDIR%%/plugins/share/share.png
+%%WWWDIR%%/plugins/share/share_prefs.js
 %%WWWDIR%%/plugins/shorten_expanded/init.css
 %%WWWDIR%%/plugins/shorten_expanded/init.js
 %%WWWDIR%%/plugins/shorten_expanded/init.php
 %%WWWDIR%%/plugins/swap_jk/init.php
-%%WWWDIR%%/plugins/toggle_sidebar/application_side_list.png
 %%WWWDIR%%/plugins/toggle_sidebar/init.php
 %%WWWDIR%%/plugins/vf_shared/init.php
-%%WWWDIR%%/plugins/vf_shared/share.png
 %%WWWDIR%%/prefs.php
 %%WWWDIR%%/public.php
 %%WWWDIR%%/register.php
@@ -2521,6 +2437,9 @@
 %%WWWDIR%%/schema/versions/mysql/130.sql
 %%WWWDIR%%/schema/versions/mysql/131.sql
 %%WWWDIR%%/schema/versions/mysql/132.sql
+%%WWWDIR%%/schema/versions/mysql/133.sql
+%%WWWDIR%%/schema/versions/mysql/134.sql
+%%WWWDIR%%/schema/versions/mysql/135.sql
 %%WWWDIR%%/schema/versions/mysql/14.sql
 %%WWWDIR%%/schema/versions/mysql/15.sql
 %%WWWDIR%%/schema/versions/mysql/16.sql
@@ -2651,6 +2570,9 @@
 %%WWWDIR%%/schema/versions/pgsql/130.sql
 %%WWWDIR%%/schema/versions/pgsql/131.sql
 %%WWWDIR%%/schema/versions/pgsql/132.sql
+%%WWWDIR%%/schema/versions/pgsql/133.sql
+%%WWWDIR%%/schema/versions/pgsql/134.sql
+%%WWWDIR%%/schema/versions/pgsql/135.sql
 %%WWWDIR%%/schema/versions/pgsql/14.sql
 %%WWWDIR%%/schema/versions/pgsql/15.sql
 %%WWWDIR%%/schema/versions/pgsql/16.sql
@@ -2751,19 +2673,21 @@
 %%WWWDIR%%/templates/resetpass_link_template.txt
 %%WWWDIR%%/templates/resetpass_template.txt
 %%WWWDIR%%/tests/ApiTest.php
-%%WWWDIR%%/tests/functional/BasicTest.php
-%%WWWDIR%%/tests/functional/PrefsTest.php
 %%WWWDIR%%/themes.local/.empty
 %%WWWDIR%%/themes/.empty
 %%WWWDIR%%/themes/compact.css
-%%WWWDIR%%/themes/default.php
+%%WWWDIR%%/themes/compact.css.map
+%%WWWDIR%%/themes/compact.less
 %%WWWDIR%%/themes/night.css
+%%WWWDIR%%/themes/night.css.map
+%%WWWDIR%%/themes/night.less
+%%WWWDIR%%/themes/night_base.less
+%%WWWDIR%%/themes/night_blue.css
+%%WWWDIR%%/themes/night_blue.css.map
+%%WWWDIR%%/themes/night_blue.less
 @mode u=rx
 %%WWWDIR%%/update.php
 %%WWWDIR%%/update_daemon2.php
-@mode
-%%WWWDIR%%/utils/localized_schema.txt
-@mode u=rx
 %%WWWDIR%%/utils/extract-i18n-js.pl
 %%WWWDIR%%/utils/gitlab-ci/check-schema.sh
 %%WWWDIR%%/utils/gitlab-ci/config-template.php
@@ -2771,20 +2695,66 @@
 %%WWWDIR%%/utils/gitlab-ci/php-lint.sh
 %%WWWDIR%%/utils/gitlab-ci/phpmd-ruleset.xml
 %%WWWDIR%%/utils/gitlab-ci/phpmd.sh
+@mode
+%%WWWDIR%%/utils/localized_schema.txt
+@mode u=rx
 %%WWWDIR%%/utils/regen_config_checks.sh
 %%WWWDIR%%/utils/update-translations.sh
 @mode
+%%WWWDIR%%/vendor/Psr/Log/Test/LoggerInterfaceTest.php
+%%WWWDIR%%/vendor/Psr/Log/NullLogger.php
+%%WWWDIR%%/vendor/Psr/Log/LogLevel.php
+%%WWWDIR%%/vendor/Psr/Log/LoggerTrait.php
+%%WWWDIR%%/vendor/Psr/Log/LoggerInterface.php
+%%WWWDIR%%/vendor/Psr/Log/LoggerAwareTrait.php
+%%WWWDIR%%/vendor/Psr/Log/LoggerAwareInterface.php
+%%WWWDIR%%/vendor/Psr/Log/InvalidArgumentException.php
+%%WWWDIR%%/vendor/Psr/Log/AbstractLogger.php
+%%WWWDIR%%/vendor/OTPHP/TOTP.php
+%%WWWDIR%%/vendor/OTPHP/OTPHP.php
+%%WWWDIR%%/vendor/OTPHP/OTP.php
+%%WWWDIR%%/vendor/OTPHP/LICENCE
+%%WWWDIR%%/vendor/OTPHP/HOTP.php
+%%WWWDIR%%/vendor/OTPHP/Base32.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Readability.php
+%%WWWDIR%%/vendor/andreskrey/Readability/ParseException.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/NodeUtility.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/NodeTrait.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMText.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMProcessingInstruction.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMNotation.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMNode.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMEntityReference.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMEntity.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMElement.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMDocumentType.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMDocumentFragment.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMDocument.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMComment.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMCharacterData.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMCdataSection.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM/DOMAttr.php
+%%WWWDIR%%/vendor/andreskrey/Readability/Configuration.php
 @owner
 @group
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/vendor/Psr/Log/Test
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/vendor/Psr/Log
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/vendor/OTPHP
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/vendor/andreskrey/Readability/Nodes/DOM
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/vendor/andreskrey/Readability/Nodes
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/vendor/andreskrey/Readability
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/utils/gitlab-ci
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/utils
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/themes.local
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/themes
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/tests
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/templates
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/schema/versions/pgsql
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/schema/versions/mysql
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/schema/versions
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/schema
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/vf_shared
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/toggle_sidebar
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/swap_jk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/shorten_expanded
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/share
@@ -2794,33 +2764,29 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/no_url_hashes
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/no_title_counters
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/no_iframes
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/mark_button
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/mailto
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/mail
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/import_export
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/googlereaderkeys
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/embed_original
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/close_button
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/cache_starred_images
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/bookmarklets
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/auto_assign_labels
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/auth_remote
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/auth_internal
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_zz_vidmute
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_zz_noautoplay
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_zz_imgproxy
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_youtube_embed
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_unburn
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_tumblr_1280
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_redditimgur
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_readability
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_psql_trgm
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_lang_detect/languagedetect/data
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_lang_detect/languagedetect/Text/LanguageDetect
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_lang_detect/languagedetect/Text
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_lang_detect/languagedetect
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_lang_detect
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_fsckportal
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_comics/filters.local
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_comics/filters
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_comics
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_zz_noautoplay
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins.local
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lock
@@ -2878,7 +2844,6 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/ar_SA
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/scriptaculous
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/readability
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/phpqrcode/tools
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/phpqrcode/cache/mask_7
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/phpqrcode/cache/mask_6
@@ -2892,12 +2857,6 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/phpqrcode/bindings/tcpdf
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/phpqrcode/bindings
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/phpqrcode
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/phpmailer/language
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/phpmailer
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/otphp/vendor
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/otphp/lib
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/otphp
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/jshrink
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/gettext
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/store/util
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/store/api
@@ -2909,11 +2868,14 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/resources
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/request
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/promise
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/on
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/zh-tw
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/zh
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/uk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/tr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/th
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/sv
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/sr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/sl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/sk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/ru
@@ -2923,21 +2885,26 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/pl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/nl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/nb
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/mk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/ko
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/kk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/ja
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/it
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/id
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/hu
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/hr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/he
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/fr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/fi
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/eu
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/es
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/el
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/de
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/da
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/cs
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/ca
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/bs
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/bg
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/az
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls/ar
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/nls
@@ -2956,6 +2923,7 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/tr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/th
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/sv
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/sr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/sl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/sk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/ru
@@ -2965,10 +2933,13 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/pl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/nl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/nb
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/mk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/ko
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/ja
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/it
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/id
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/hu
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/hr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/he
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/fr-ch
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/fr
@@ -2983,6 +2954,7 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/da
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/cs
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/ca
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/bs
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls/ar
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr/nls
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dojo/cldr
@@ -3014,9 +2986,11 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/templates
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/zh-tw
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/zh
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/uk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/tr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/th
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/sv
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/sr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/sl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/sk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/ru
@@ -3026,21 +3000,26 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/pl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/nl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/nb
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/mk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/ko
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/kk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/ja
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/it
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/id
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/hu
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/hr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/he
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/fr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/fi
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/eu
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/es
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/el
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/de
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/da
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/cs
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/ca
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/bs
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/bg
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/az
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls/ar
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/nls
@@ -3051,9 +3030,11 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/templates
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/zh-tw
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/zh
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/uk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/tr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/th
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/sv
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/sr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/sl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/sk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/ru
@@ -3063,21 +3044,26 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/pl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/nl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/nb
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/mk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/ko
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/kk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/ja
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/it
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/id
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/hu
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/hr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/he
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/fr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/fi
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/eu
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/es
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/el
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/de
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/da
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/cs
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/ca
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/bs
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/bg
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/az
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls/ar
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/form/nls
@@ -3086,9 +3072,11 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/plugins
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/zh-tw
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/zh
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/uk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/tr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/th
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/sv
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/sr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/sl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/sk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/ru
@@ -3098,28 +3086,32 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/pl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/nl
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/nb
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/mk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/ko
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/kk
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/ja
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/it
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/id
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/hu
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/hr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/he
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/fr
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/fi
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/eu
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/es
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/el
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/de
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/da
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/cs
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/ca
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/bs
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/bg
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/az
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls/ar
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor/nls
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_editor
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit/_base
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/dijit
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib/button
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lib
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/js
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/install
@@ -3136,9 +3128,7 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/classes/auth
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/classes
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/cache/upload
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/cache/simplepie
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/cache/js
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/cache/images
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/cache/feeds
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/cache/export
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/cache
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/api

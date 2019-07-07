@@ -3,9 +3,11 @@
 BASE_GST_ALL_PLUGINS= \
 		alsa \
 		cdparanoia \
+		gl \
 		ivorbis \
 		libvisual \
 		ogg \
+		opengl \
 		opus \
 		pango \
 		theora \
@@ -13,7 +15,13 @@ BASE_GST_ALL_PLUGINS= \
 		x \
 		xvideo
 
+BASE_GST_NON_PLUGINS= \
+		--disable-gles2 \
+		--disable-egl \
+		--disable-glx
+
 BAD_GST_ALL_PLUGINS+= \
+		aom \
 		assrender \
 		bs2b \
 		chromaprint \
@@ -26,13 +34,13 @@ BAD_GST_ALL_PLUGINS+= \
 		flite \
 		gme \
 		gsm \
-		gtk3 \
 		hls \
 		kate \
 		kms \
 		ladspa \
 		libde265 \
 		libmms \
+		lv2 \
 		modplug \
 		mpeg2enc \
 		mplex \
@@ -42,13 +50,12 @@ BAD_GST_ALL_PLUGINS+= \
 		openal \
 		opencv \
 		openexr \
-		opengl \
 		openh264 \
 		openjpeg \
+		openmpt \
 		resindvd \
 		rtmp \
 		rsvg \
-		schro \
 		smoothstreaming \
 		sndfile \
 		soundtouch \
@@ -57,20 +64,14 @@ BAD_GST_ALL_PLUGINS+= \
 		srtp \
 		ttml \
 		vdpau \
+		vulkan \
 		wayland \
 		webp \
 		webrtcdsp \
 		x265 \
 		zbar \
 
-# --with-egl-window-system=none --disable-opengl --disable-gles2 --disable-egl --disable-glx \
-
-# XXX need to sort these three out.
 BAD_GST_NON_PLUGINS= \
-		--disable-gles2 \
-		--disable-egl \
-		--disable-glx
-BAD_GST_NON_PLUGINS+= \
 		--enable-bz2 \
 		--enable-dvb \
 		--enable-shm \
@@ -84,13 +85,12 @@ BAD_GST_NON_PLUGINS+= \
 		--disable-directsound \
 		--disable-msdk \
 		--disable-nvenc \
+		--disable-nvdec \
 		--disable-sbc \
 		--disable-tinyalsa \
 		--disable-uvch264 \
 		--disable-vcd \
-		--disable-vulkan \
 		--disable-wasapi \
-		--disable-wgl \
 		--disable-winks \
 		--disable-winscreencap
 
@@ -100,16 +100,20 @@ GOOD_GST_ALL_PLUGINS+= \
 		flac \
 		gdk_pixbuf \
 		gst_v4l2 \
+		gtk3 \
 		jack \
 		jpeg \
+		lame \
 		libcaca \
 		libdv \
 		libpng \
+		mpg123 \
 		pulse \
 		shout2 \
 		soup \
 		speex \
 		taglib \
+		twolame \
 		vpx \
 		wavpack \
 		x
@@ -119,7 +123,6 @@ GOOD_GST_NON_PLUGINS=	\
 		--disable-directsound \
 		--disable-osx_audio \
 		--disable-osx_video \
-		--disable-sunaudio \
 		--disable-waveform \
 		--enable-bz2 \
 		--enable-oss \
@@ -132,11 +135,8 @@ UGLY_GST_ALL_PLUGINS+= \
 		amrwb \
 		cdio \
 		dvdread \
-		lame \
 		mpeg2dec \
-		mpg123 \
 		sidplay \
-		twolame \
 		x264
 
 UGLY_GST_NON_PLUGINS=
@@ -146,6 +146,7 @@ UGLY_GST_NON_PLUGINS=
 .for d in ${BASE_GST_ALL_PLUGINS}
 CONFIGURE_ARGS+=	--disable-${d}
 .endfor
+CONFIGURE_ARGS+= ${BASE_GST_NON_PLUGINS}
 .endif
 
 .if ${DIST}=="bad"
@@ -205,6 +206,9 @@ gst_amrnb_PLIST_FILES=	${GST_LIB_DIR}/libgstamrnb.so \
 gst_amrwb_LIB_DEPENDS=	libopencore-amrwb.so:audio/opencore-amr
 gst_amrwb_GST_PLUGIN_DIR=	ext/amrwbdec
 gst_amrwb_PLIST_FILES=	${GST_LIB_DIR}/libgstamrwbdec.so
+
+# aom
+gst_aom_LIB_DEPENDS=	libaom.so:multimedia/aom
 
 # assrender
 gst_assrender_LIB_DEPENDS=	libass.so:multimedia/libass
@@ -266,7 +270,9 @@ gst_gdk_pixbuf_USE_GNOME=	gdkpixbuf2
 gst_gdk_pixbuf_PLIST_FILES=	${GST_LIB_DIR}/libgstgdkpixbuf.so
 
 # gl
+gst_gl_USES=	gl
 gst_gl_USE_GL=	gl glu glesv2 egl
+gst_gl_BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 gst_gl_LIB_DEPENDS=	libgraphene-1.0.so:graphics/graphene
 gst_gl_CONFIGURE_ARGS=	--enable-gl --enable-glx \
 			--enable-egl --enable-gles2
@@ -280,6 +286,8 @@ gst_gme_LIB_DEPENDS=	libgme.so:audio/libgme
 gst_gsm_LIB_DEPENDS=	libgsm.so:audio/gsm
 
 # gtk3
+gst_gtk3_USES=		gnome
+gst_gtk3_USE_GSTREAMER1=	gl
 gst_gtk3_USE_GNOME=	cairo gdkpixbuf2 gtk30
 gst_gtk3_CONFIGURE_ARGS=--enable-gtk3
 gst_gtk3_GST_PLUGIN_DIR=ext/gtk
@@ -313,6 +321,7 @@ gst_libcaca_PLIST_FILES=	${GST_LIB_DIR}/libgstcacasink.so
 
 # libde265
 gst_libde265_LIB_DEPENDS=	libde265.so:multimedia/libde265
+gst_libde265_PLIST_FILES=	${GST_LIB_DIR}/libgstde265.so
 
 # libmms
 gst_libmms_LIB_DEPENDS=	libmms.so:net/libmms
@@ -320,6 +329,14 @@ gst_libmms_PLIST_FILES=	${GST_LIB_DIR}/libgstmms.so
 
 # librfb
 gst_librfb_USE_XORG=	x11
+
+# liblv2
+gst_lv2_USES=		pkgconfig
+gst_lv2_BUILD_DEPENDS=	lv2>=1.14.0:audio/lv2
+gst_lv2_LIB_DEPENDS=	libsord-0.so:devel/sord \
+			libserd-0.so:devel/serd \
+			libsratom-0.so:audio/sratom \
+			liblilv-0.so:audio/lilv
 
 # png
 gst_libpng_LIB_DEPENDS=	libpng.so:graphics/png
@@ -361,14 +378,17 @@ gst_opencv_PLIST_FILES=		#
 gst_opencv_USES=	compiler:c++11-lib
 
 # openexr
-gst_openexr_LIB_DEPENDS=libImath-2_2.so:graphics/ilmbase \
-			libIlmImf.so:graphics/OpenEXR
+gst_openexr_LIB_DEPENDS=libImath.so:graphics/ilmbase \
+			libIlmImf.so:graphics/openexr
 
 # openjpeg
 gst_openjpeg_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
 
 # openh264
 gst_openh264_LIB_DEPENDS=	libopenh264.so:multimedia/openh264
+
+# openmpt
+gst_openmpt_LIB_DEPENDS=	libopenmpt.so:audio/libopenmpt
 
 # opus
 gst_opus_LIB_DEPENDS=	libopus.so:audio/opus
@@ -420,11 +440,7 @@ gst_spc_LIB_DEPENDS=	libopenspc.so:audio/libopenspc
 gst_speex_LIB_DEPENDS=	libspeex.so:audio/speex
 
 # srtp
-gst_srtp_LIB_DEPENDS=	libsrtp.so:net/libsrtp
-
-# schroedinger or schro for short
-gst_schro_LIB_DEPENDS=		libschroedinger-1.0.so:multimedia/schroedinger
-gst_schro_GST_PLUGIN_DIR=	ext/schroedinger
+gst_srtp_LIB_DEPENDS=	libsrtp2.so:net/libsrtp2
 
 # taglib
 gst_taglib_LIB_DEPENDS=	libtag.so:audio/taglib
@@ -460,8 +476,17 @@ gst_vpx_PLIST_FILES=	${GST_LIB_DIR}/libgstvpx.so \
 gst_vdpau_LIB_DEPENDS=	libvdpau.so:multimedia/libvdpau
 gst_vdpau_GST_PLUGIN_DIR=	sys/vdpau
 
+# vulkan
+gst_vulkan_BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
+gst_vulkan_LIB_DEPENDS=		libvulkan.so:graphics/vulkan-loader \
+				libwayland-client.so:graphics/wayland
+gst_vulkan_CONFIGURE_ARGS=	--enable-wayland
+
 # webp
 gst_webp_LIB_DEPENDS=	libwebp.so:graphics/webp
+
+# webrtcdsp
+gst_webrtcdsp_LIB_DEPENDS=	libwebrtc_audio_processing.so:audio/webrtc-audio-processing
 
 # X ximage and xvimage sinks aka output
 .if ${DIST} == base

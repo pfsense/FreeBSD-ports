@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	varnish
-PORTVERSION=	4.1.9
+PORTVERSION=	4.1.10
 DISTVERSIONPREFIX=	varnish-
 PORTREVISION=	0
 CATEGORIES=	www
@@ -43,6 +43,8 @@ SUB_FILES=	pkg-message
 BAD_TESTS+=	r00832
 EXTRA_PATCHES+=	${FILESDIR}/no-inet6.patch
 .endif
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 .if defined(BAD_TESTS)

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.0.35
+PORTVERSION=	10.0.38
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
@@ -17,18 +17,18 @@ PKGNAMESUFFIX?=	100-server
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
 
+DEPRECATED=	Upstream End-of-Life March 2019 (https://mariadb.org/about/maintenance-policy/)
+EXPIRATION_DATE=	2019-04-01
+
 LICENSE=	GPLv2
 LICENSE_NAME_PerconaFT=	PerconaFT patents license
 LICENSE_FILE_PerconaFT=	${WRKSRC}/storage/tokudb/PerconaFT/PATENTS
 LICENSE_PERMS_PerconaFT=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_SSL=		openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	incomplete definition of type 'struct dh_st'
-
 SUB_FILES=	pkg-message
 
 SLAVEDIRS=	databases/mariadb100-client
-USES=		bison:build cmake:noninja compiler:c++11-lib cpe \
+USES=		bison:build cmake:insource,noninja compiler:c++11-lib cpe \
 		ncurses shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql ${PREFIX}/lib/mysql/plugin
 SHEBANG_FILES=	scripts/*.sh
@@ -73,7 +73,7 @@ CONFLICTS_INSTALL=	mariadb5*-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 
 .if !defined(CLIENT_ONLY)
 # MySQL-Server options
-OPTIONS_DEFINE+=	CONNECT_EXTRA MAXKEY
+OPTIONS_DEFINE+=	CONNECT_EXTRA MAXKEY DOCS
 OPTIONS_DEFAULT+=	MAXKEY
 OPTIONS_GROUP=		ENGINES
 OPTIONS_GROUP_ENGINES=	INNOBASE MROONGA OQGRAPH SPHINX SPIDER TOKUDB
@@ -175,6 +175,11 @@ post-patch:
 		${WRKSRC}/cmake/os/DragonFly.cmake
 	${MV} ${WRKSRC}/storage/tokudb ${WRKSRC}/skip-tokudb
 .endif
+
+# This file is being generated incorrectly for unknown reasons.
+# See https://bugs.freebsd.org/230839 for details.
+post-configure:
+	${REINPLACE_CMD} -e 's|-l-pthread|-pthread|g' ${WRKSRC}/scripts/mysql_config
 
 post-configure-MROONGA-on:
 	${REINPLACE_CMD} 's|-llz4|-L${LOCALBASE}/lib -llz4|' \

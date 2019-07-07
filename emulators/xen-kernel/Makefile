@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	xen
-PORTVERSION=	4.7.2
-PORTREVISION=	9
+PORTVERSION=	4.11.1
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
 PKGNAMESUFFIX=	-kernel
@@ -15,85 +15,59 @@ LICENSE=	GPLv2
 ONLY_FOR_ARCHS=	amd64
 
 USES=		cpe gmake python:2.7,build
-
-# We need to use ld from ports because the version in base doesn't
-# support the '--build-id' switch that's needed for live hypervisor
-# hot-patching. Once the ld version in base supports this option the
-# dependency can be removed.
-#
-# GNU objcopy is used instead of elftc objcopy because of bug #533:
-# https://sourceforge.net/p/elftoolchain/tickets/533/
-# Once this is solved we should be able to switch to elfcopy.
-#
-# And finally we also need to use nm from binutils because the one
-# from base cannot deal with i386pep binary files which is the format
-# of the Xen EFI image (note that FreeBSD cannot yet boot as Dom0 from EFI,
-# but the image is built anyway). This is reported to elftc as bug #534:
-# https://sourceforge.net/p/elftoolchain/tickets/534/
-MAKE_ARGS=	clang=y PYTHON=${PYTHON_CMD} LD="${LD}" OBJCOPY="${OBJCOPY}" \
-		NM="${NM}"
-USE_BINUTILS=	yes
+# Ports build environment has ARCH=amd64 set which disables Xen automatic arch
+# detection, but amd64 is not a valid arch for Xen. Hardcode x86_64 on the
+# command line in order to overwrite the one from the environment.
+MAKE_ARGS=	clang=y PYTHON=${PYTHON_CMD} ARCH=x86_64
 NO_MTREE=	yes
 STRIP=		#
 PLIST_FILES=	/boot/xen \
-		/boot/xen.4th
-EXTRA_PATCHES=	${FILESDIR}/0001-xen-logdirty-prevent-preemption-if-finished.patch:-p1 \
-		${FILESDIR}/0002-xen-rework-paging_log_dirty_op-to-work-with-hvm-gues.patch:-p1 \
-		${FILESDIR}/kconf_arch.patch:-p1 \
-		${FILESDIR}/0001-x86-drop-unneeded-__packed-attributes.patch:-p1 \
-		${FILESDIR}/0002-build-clang-fix-XSM-dummy-policy-when-using-clang-4..patch:-p1 \
-		${FILESDIR}/xsa212.patch:-p1 \
-		${FILESDIR}/xsa213-4.7.patch:-p1 \
-		${FILESDIR}/xsa214.patch:-p1 \
-		${FILESDIR}/xsa215.patch:-p1 \
-		${FILESDIR}/xsa217.patch:-p1 \
-		${FILESDIR}/0001-IOMMU-handle-IOMMU-mapping-and-unmapping-failures.patch:-p1 \
-		${FILESDIR}/0002-gnttab-fix-unmap-pin-accounting-race.patch:-p1 \
-		${FILESDIR}/0003-gnttab-Avoid-potential-double-put-of-maptrack-entry.patch:-p1 \
-		${FILESDIR}/0004-gnttab-correct-maptrack-table-accesses.patch:-p1 \
-		${FILESDIR}/xsa219-4.8.patch:-p1 \
-		${FILESDIR}/xsa220-4.7.patch:-p1 \
-		${FILESDIR}/xsa221.patch:-p1 \
-		${FILESDIR}/xsa222-1-4.7.patch:-p1 \
-		${FILESDIR}/xsa222-2-4.7.patch:-p1 \
-		${FILESDIR}/0001-gnttab-Fix-handling-of-dev_bus_addr-during-unmap.patch:-p1 \
-		${FILESDIR}/0002-gnttab-never-create-host-mapping-unless-asked-to.patch:-p1 \
-		${FILESDIR}/0003-gnttab-correct-logic-to-get-page-references-during-m.patch:-p1 \
-		${FILESDIR}/0004-gnttab-__gnttab_unmap_common_complete-is-all-or-noth.patch:-p1 \
-		${FILESDIR}/xsa226-4.7.patch:-p1 \
-		${FILESDIR}/xsa227.patch:-p1 \
-		${FILESDIR}/xsa228-4.8.patch:-p1 \
-		${FILESDIR}/xsa230.patch:-p1 \
-		${FILESDIR}/xsa231-4.7.patch:-p1 \
-		${FILESDIR}/xsa232.patch:-p1 \
-		${FILESDIR}/xsa233.patch:-p1 \
-		${FILESDIR}/xsa234-4.8.patch:-p1 \
-		${FILESDIR}/0001-x86-dont-allow-MSI-pIRQ-mapping-on-unowned-device.patch:-p1 \
-		${FILESDIR}/0002-x86-enforce-proper-privilege-when-mapping-pIRQ-s.patch:-p1 \
-		${FILESDIR}/0003-x86-MSI-disallow-redundant-enabling.patch:-p1 \
-		${FILESDIR}/0004-x86-IRQ-conditionally-preserve-irq-pirq-mapping-on-error.patch:-p1 \
-		${FILESDIR}/0005-x86-FLASK-fix-unmap-domain-IRQ-XSM-hook.patch:-p1 \
-		${FILESDIR}/xsa238.patch:-p1 \
-		${FILESDIR}/xsa239.patch:-p1 \
-		${FILESDIR}/0001-x86-limit-linear-page-table-use-to-a-single-level.patch:-p1 \
-		${FILESDIR}/0002-x86-mm-Disable-PV-linear-pagetables-by-default.patch:-p1 \
-		${FILESDIR}/xsa241-4.8.patch:-p1 \
-		${FILESDIR}/xsa242-4.9.patch:-p1 \
-		${FILESDIR}/xsa243-4.7.patch:-p1 \
-		${FILESDIR}/xsa244-4.7.patch:-p1 \
-		${FILESDIR}/xsa236-4.9.patch:-p1 \
-		${FILESDIR}/0001-x86-compat-fix-compilation-errors-with-clang-6.patch:-p1 \
-		${FILESDIR}/xsa246-4.7.patch:-p1 \
-		${FILESDIR}/0001-p2m-Always-check-to-see-if-removing-a-p2m-entry-actu.patch:-p1 \
-		${FILESDIR}/0002-p2m-Check-return-value-of-p2m_set_entry-when-decreas.patch:-p1 \
-		${FILESDIR}/xsa248-4.8.patch:-p1 \
-		${FILESDIR}/xsa249.patch:-p1 \
-		${FILESDIR}/xsa250.patch:-p1 \
-		${FILESDIR}/xsa251-4.8.patch:-p1 \
-		${FILESDIR}/0001-x86-entry-Remove-support-for-partial-cpu_user_regs-f.patch:-p1 \
-		${FILESDIR}/0001-x86-mm-Always-set-_PAGE_ACCESSED-on-L4e-updates.patch:-p1 \
-		${FILESDIR}/0001-x86-Meltdown-band-aid-against-malicious-64-bit-PV-gu.patch:-p1 \
-		${FILESDIR}/0002-x86-allow-Meltdown-band-aid-to-be-disabled.patch:-p1
+		/boot/xen.4th \
+		lib/debug/boot/xen.debug
+
+# IOMMU fixes
+EXTRA_PATCHES=	${FILESDIR}/0001-pci-treat-class-0-devices-as-endpoints.patch:-p1
+# vPCI MSI fixes
+EXTRA_PATCHES+=	${FILESDIR}/0001-vpci-msi-split-code-to-bind-pirq.patch:-p1 \
+		${FILESDIR}/0002-vpci-msi-fix-update-of-bound-MSI-interrupts.patch:-p1
+# Add extra RAM regions to Dom0 memory map as UNUSABNLE
+EXTRA_PATCHES+=	${FILESDIR}/0001-x86-dom0-add-extra-RAM-regions-as-UNUSABLE-for-PVH-m.patch:-p1
+# MTRR guest setup for PVH
+EXTRA_PATCHES+=	${FILESDIR}/0001-x86-mtrr-introduce-mask-to-get-VCNT-from-MTRRcap-MSR.patch:-p1 \
+		${FILESDIR}/0001-x86-HVM-improve-MTRR-load-checks.patch:-p1 \
+		${FILESDIR}/0002-x86-mtrr-split-enabled-field-into-two-boolean-flags.patch:-p1 \
+		${FILESDIR}/0003-hvm-mtrr-add-emacs-local-variables-block-with-format.patch:-p1 \
+		${FILESDIR}/0004-hvm-mtrr-use-the-hardware-number-of-variable-ranges-.patch:-p1 \
+		${FILESDIR}/0005-hvm-mtrr-copy-hardware-state-for-Dom0.patch:-p1 \
+		${FILESDIR}/0006-libxc-pvh-set-default-MTRR-type-to-write-back.patch:-p1 \
+		${FILESDIR}/0007-docs-pvh-document-initial-MTRR-state.patch:-p1
+# Build with lld (LLVM linker)
+EXTRA_PATCHES+=	${FILESDIR}/0001-x86-replace-usage-in-the-linker-script.patch:-p1
+# Fix PVH Dom0 build with shadow paging
+EXTRA_PATCHES+= ${FILESDIR}/0001-x86-pvh-change-the-order-of-the-iommu-initialization.patch:-p1
+# Forward dom0 lapic EOIs to underlying hardware
+EXTRA_PATCHES+=	${FILESDIR}/0001-x86-dom0-propagate-PVH-vlapic-EOIs-to-hardware.patch:-p1
+# Fix deadlock in IO-APIC gsi mapping
+EXTRA_PATCHES+=	${FILESDIR}/0001-pvh-dom0-fix-deadlock-in-GSI-mapping.patch:-p1
+# Fix for migration/save
+EXTRA_PATCHES+=	${FILESDIR}/0001-x86-mm-locks-remove-trailing-whitespace.patch:-p1 \
+		${FILESDIR}/0002-x86-mm-locks-convert-some-macros-to-inline-functions.patch:-p1 \
+		${FILESDIR}/0003-x86-mm-locks-apply-a-bias-to-lock-levels-for-control.patch:-p1
+
+# XSA-284
+EXTRA_PATCHES+=	${FILESDIR}/xsa284.patch:-p1
+# XSA-287
+EXTRA_PATCHES+=	${FILESDIR}/xsa287-4.11.patch:-p1
+# XSA-290
+EXTRA_PATCHES+=	${FILESDIR}/xsa290-4.11-1.patch:-p1 \
+		${FILESDIR}/xsa290-4.11-2.patch:-p1
+# XSA-292
+EXTRA_PATCHES+=	${FILESDIR}/xsa292.patch:-p1
+# XSA-293
+EXTRA_PATCHES+=	${FILESDIR}/xsa293-4.11-1.patch:-p1 \
+		${FILESDIR}/xsa293-4.11-2.patch:-p1
+# XSA-294
+EXTRA_PATCHES+=	${FILESDIR}/xsa294-4.11.patch:-p1
 
 .include <bsd.port.options.mk>
 
@@ -101,24 +75,20 @@ EXTRA_PATCHES=	${FILESDIR}/0001-xen-logdirty-prevent-preemption-if-finished.patc
 IGNORE=		only supported on FreeBSD
 .endif
 
-.if ${OSVERSION} < 1100055
-IGNORE=		only supported on recent FreeBSD 11
+.if ${OSVERSION} < 1200074
+IGNORE=		only supported on FreeBSD 12.0 or newer
 .endif
-
-pre-build:
-	${MAKE_CMD} -C ${WRKSRC}/xen defconfig ${MAKE_ARGS}
-	# Enable hypervisor hot-patching.
-	echo 'CONFIG_XSPLICE=y' >> ${WRKSRC}/xen/.config
-	echo 'CONFIG_FAST_SYMBOL_LOOKUP=y' >> ${WRKSRC}/xen/.config
 
 # The ports native 'build' target cannot be used because it sets
 # CFLAGS, and that breaks the Xen build system.
 do-build:
-	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC}/xen build ${MAKE_ARGS}
+	${MAKE_CMD} -j${MAKE_JOBS_NUMBER} -C ${WRKSRC} build-xen ${MAKE_ARGS}
 
 do-install:
 	${MKDIR} ${STAGEDIR}/boot
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/debug/boot/
 	${INSTALL_PROGRAM} ${WRKSRC}/xen/xen ${STAGEDIR}/boot
 	${INSTALL_DATA} ${FILESDIR}/xen.4th ${STAGEDIR}/boot
+	${INSTALL_DATA} ${WRKSRC}/xen/xen-syms ${STAGEDIR}${PREFIX}/lib/debug/boot/xen.debug
 
 .include <bsd.port.mk>

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rsyslog
-PORTVERSION=	8.36.0
+PORTVERSION=	8.40.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.rsyslog.com/files/download/rsyslog/
 
@@ -27,8 +27,10 @@ USE_LDCONFIG=	yes
 
 CONFLICTS_BUILD=	libinotify-*
 
-OPTIONS_DEFINE=	DBI DOCS ELASTIC GCRYPT GNUTLS GSSAPI JSONPARSE  MYSQL PGSQL \
+OPTIONS_DEFINE=	DBI DOCS ELASTIC GCRYPT GSSAPI JSONPARSE  MYSQL PGSQL \
 		RELP SNMP NORMALIZE
+OPTIONS_RADIO=	SSLLIB
+OPTIONS_RADIO_SSLLIB=	GNUTLS OPENSSL
 OPTIONS_DEFAULT=GCRYPT
 OPTIONS_SUB=	yes
 
@@ -46,6 +48,7 @@ GCRYPT_CONFIGURE_ENABLE=libgcrypt
 GCRYPT_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 			libgpg-error.so:security/libgpg-error
 GCRYPT_BUILD_DEPENDS=	libgcrypt-config:security/libgcrypt
+GCRYPT_PLIST_FILES=	lib/rsyslog/lmcry_gcry.so
 
 GNUTLS_DESC=		GNUTLS module for rsyslog
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
@@ -68,6 +71,13 @@ MYSQL_USES=		mysql
 MYSQL_CONFIGURE_ENABLE=	mysql
 MYSQL_PLIST_FILES=	lib/rsyslog/ommysql.so
 MYSQL_PORTDOCS=		plugins/ommysql/createDB.sql
+
+OPENSSL_USES=		ssl
+OPENSSL_CONFIGURE_ENABLE=	openssl
+OPENSSL_CONFIGURE_ENV=	OPENSSL_LIBS="-L${OPENSSLLIB} -lssl -lcrypto" \
+			OPENSSL_CFLAGS="-I ${OPENSSLINC}"
+OPENSSL_PLIST_FILES=	lib/rsyslog/lmnsd_ossl.so
+
 
 PGSQL_DESC=		PostgreSQL output module for rsyslog
 PGSQL_USES=		pgsql
@@ -135,9 +145,6 @@ post-patch:
 	@${GREP} -rl '/etc/rsyslog.conf' ${WRKSRC}|${XARGS} ${REINPLACE_CMD} -e\
 		's|/etc/rsyslog.conf|${PREFIX}/etc/rsyslog.conf|'
 	@${REINPLACE_CMD} -e 's,/lib/rsyslog,${PREFIX}/lib/rsyslog,' ${WRKSRC}/tools/syslogd.c
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100504
-	@${REINPLACE_CMD} -e 's,recvmmsg ,,' ${WRKSRC}/configure.ac
-.endif
 	@${FIND} ${WRKSRC} -name '*.bak' -delete
 
 post-install-DOCS-on:

@@ -12,7 +12,7 @@ COMMENT=	Throw colourful bubbles to build groups and destroy the groups
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS:=	${RUN_DEPENDS} \
+BUILD_DEPENDS=	${RUN_DEPENDS} \
 		p5-File-Slurp>=0:devel/p5-File-Slurp
 RUN_DEPENDS=	p5-SDL>=2.511:devel/p5-SDL \
 		p5-Locale-gettext>=0:devel/p5-Locale-gettext \
@@ -26,15 +26,15 @@ USES=		compiler:features perl5 pkgconfig tar:bzip2
 USE_PERL5=	modbuild
 USE_SDL=	mixer pango sdl ttf
 
+DESKTOP_ENTRIES=	"Frozen Bubble" "" \
+			"${PREFIX}/share/pixmaps/frozen-bubble.png" \
+			"${PORTNAME}" "ArcadeGame;Game;" true
+
 .include <bsd.port.pre.mk>
 
 .if ${CHOSEN_COMPILER_TYPE:Mclang}
 CFLAGS+=	-Qunused-arguments
 .endif
-
-DESKTOP_ENTRIES=	"Frozen Bubble" "" \
-			"${PREFIX}/share/pixmaps/frozen-bubble.png" \
-			"${PORTNAME}" "ArcadeGame;Game;" true
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/share/icons/frozen-bubble-icon-64x64.png \

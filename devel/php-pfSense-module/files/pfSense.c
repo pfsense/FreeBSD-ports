@@ -1658,7 +1658,7 @@ PHP_FUNCTION(pfSense_ipfw_tables_list)
 			table_tinfo(&tinfo, info);
 
 			add_next_index_zval(return_value, &tinfo);
-			info = (ipfw_xtable_info *)((caddr_t)(&info) + olh->objsize);
+			info = (ipfw_xtable_info *)((caddr_t)(info) + olh->objsize);
 		}
 
 		free(olh);
@@ -2897,6 +2897,10 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				add_assoc_long(&encaps, "rxcsum", 1);
 			if (ifr.ifr_curcap & IFCAP_TXCSUM)
 				add_assoc_long(&encaps, "txcsum", 1);
+			if (ifr.ifr_curcap & IFCAP_RXCSUM_IPV6)
+				add_assoc_long(&encaps, "rxcsum6", 1);
+			if (ifr.ifr_curcap & IFCAP_TXCSUM_IPV6)
+				add_assoc_long(&encaps, "txcsum6", 1);
 			if (ifr.ifr_curcap & IFCAP_VLAN_MTU)
 				add_assoc_long(&encaps, "vlanmtu", 1);
 			if (ifr.ifr_curcap & IFCAP_JUMBO_MTU)
@@ -3084,7 +3088,7 @@ PHP_FUNCTION(pfSense_interface_create) {
 		array_init(return_value);
 		add_assoc_string(return_value, "error", "Could not create interface");
 	} else {
-		str = zend_string_init(ifr.ifr_name, sizeof(ifr.ifr_name)-1, 0);
+		str = zend_string_init(ifr.ifr_name, strlen(ifr.ifr_name), 0);
 		RETURN_STR(str);
 	}
 }
@@ -3953,28 +3957,22 @@ PHP_FUNCTION(pfSense_sync) {
 }
 
 PHP_FUNCTION(pfSense_fsync) {
-	char *parent_dir = NULL;
-	char *fname = NULL;
+	char *fname, *parent_dir;
 	size_t fname_len;
 	int fd;
 
-	if (ZEND_NUM_ARGS() != 1) {
+	if (ZEND_NUM_ARGS() != 1 ||
+	    zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &fname,
+	    &fname_len) == FAILURE) {
 		RETURN_FALSE;
 	}
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &fname, &fname_len) == FAILURE) {
+	if (fname_len == 0)
 		RETURN_FALSE;
-	}
 
-	if (strlen(fname) == 0) {
-		RETURN_FALSE;
-	}
-
-	if ((fd = open(fname, O_RDONLY|O_CLOEXEC)) == -1) {
+	if ((fd = open(fname, O_RDWR|O_CLOEXEC)) == -1) {
 		php_printf("\tcan't open %s\n", fname);
 		RETURN_FALSE;
 	}
-
 	if (fsync(fd) == -1) {
 		php_printf("\tcan't fsync %s\n", fname);
 		close(fd);
@@ -3982,12 +3980,13 @@ PHP_FUNCTION(pfSense_fsync) {
 	}
 	close(fd);
 
-	if ((parent_dir = dirname(fname)) == NULL)
+	if ((fname = strdup(fname)) == NULL)
 		RETURN_FALSE;
-
-	if ((fd = open(parent_dir, O_RDONLY|O_CLOEXEC)) == -1)
+	parent_dir = dirname(fname);
+	fd = open(parent_dir, O_RDWR|O_CLOEXEC);
+	free(fname);
+	if (fd == -1)
 		RETURN_FALSE;
-
 	if (fsync(fd) == -1) {
 		close(fd);
 		RETURN_FALSE;

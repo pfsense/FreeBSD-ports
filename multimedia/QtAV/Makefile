@@ -3,7 +3,7 @@
 PORTNAME=		QtAV
 PORTVERSION=		1.12.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=		3
+PORTREVISION=	7
 CATEGORIES=		multimedia
 DIST_SUBDIR=		KDE
 
@@ -16,9 +16,9 @@ LICENSE_FIKE=		${WRKSRC}/lgpl-2.1.txt
 LIB_DEPENDS=		libass.so:multimedia/libass \
 			libavcodec.so:multimedia/ffmpeg
 
-USES=			qmake:outsource qt:5
+USES=			compiler:c++11-lang qmake:outsource qt:5
 USE_GL=			gl
-USE_QT=			core gui network opengl qml quick sql widgets \
+USE_QT=			core declarative gui network opengl sql widgets \
 			buildtools_build qmake_build
 USE_XORG=		x11 xext xv
 

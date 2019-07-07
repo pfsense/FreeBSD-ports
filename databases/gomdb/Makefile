@@ -2,13 +2,16 @@
 
 PORTNAME=	gomdb
 PORTVERSION=	20140824
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	databases
 
 MAINTAINER=	cheffo@freebsd-bg.org
 COMMENT=	Go wrapper for LMDB - OpenLDAP Lightning Memory-Mapped Database
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=		Go libraries should not be packaged
+EXPIRATION_DATE=	2019-03-31
 
 BUILD_DEPENDS=	go:lang/go
 

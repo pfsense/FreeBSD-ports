@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-builder
-PORTVERSION=	2.4.4
+PORTVERSION=	2.5.0
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -17,7 +17,6 @@ RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git \
 		${LOCALBASE}/bin/rsync:net/rsync \
 		${LOCALBASE}/bin/screen:sysutils/screen \
 		${LOCALBASE}/bin/vmdktool:sysutils/vmdktool \
-		${LOCALBASE}/bin/salt:sysutils/py-salt \
 		${LOCALBASE}/bin/sudo:security/sudo \
 		${LOCALBASE}/sbin/nginx:www/nginx \
 		${LOCALBASE}/bin/qemu-arm-static:emulators/qemu-user-static \

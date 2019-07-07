@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	govpn
-PORTVERSION=	7.3
+DISTVERSION=	7.5
 PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://www.govpn.info/download/
@@ -24,5 +24,7 @@ INSTALL_TARGET=	install-strip
 
 PLIST_FILES=	bin/govpn-server bin/govpn-client bin/govpn-verifier \
 		share/govpn/newclient.sh
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fftw3
-DISTVERSION=	3.3.7
-PORTREVISION?=	0
+DISTVERSION=	3.3.8
+PORTREVISION?=	3
 CATEGORIES=	math
 MASTER_SITES=	http://www.fftw.org/ \
 		ftp://ftp.fftw.org/pub/fftw/
@@ -117,15 +117,12 @@ PLIST_SUB+=	FFTW3_SUFX="${FFTW3_SUFX}"
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MOPTIMIZED_CFLAGS}
-CFLAGS+=	-O3 -ffast-math -fstrict-aliasing
+CFLAGS+=	-O3 -fstrict-aliasing
 .  if !defined(WITH_DEBUG)
 CFLAGS+=	-fomit-frame-pointer
 .  endif
 .  if ${ARCH} == "i386" && (${COMPILER_TYPE} == "gcc" || !empty(USE_GCC)) && !${PORT_OPTIONS:MOPENMPI}
 CFLAGS+=	-malign-double
-.  endif
-.  if ${ARCH} == "armv6" && ${OPSYS} == FreeBSD && ${OSVERSION} < 1200032
-CFLAGS+=	-fno-unsafe-math-optimizations
 .  endif
 WITHOUT_NO_STRICT_ALIASING=	yes
 .endif # end OPTIMIZED_CFLAGS

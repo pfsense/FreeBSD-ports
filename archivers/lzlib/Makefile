@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lzlib
-PORTVERSION=	1.9
+PORTVERSION=	1.10
 CATEGORIES=	archivers
 MASTER_SITES=	SAVANNAH/lzip/lzlib
 

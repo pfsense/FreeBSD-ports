@@ -20,6 +20,10 @@ share/doc/HTML/pt/ksysguard/index.cache.bz2
 share/doc/HTML/pt/ksysguard/index.docbook
 share/doc/HTML/pt_BR/ksysguard/index.cache.bz2
 share/doc/HTML/pt_BR/ksysguard/index.docbook
+share/doc/HTML/ru/ksysguard/index.cache.bz2
+share/doc/HTML/ru/ksysguard/index.docbook
+share/doc/HTML/sv/ksysguard/index.cache.bz2
+share/doc/HTML/sv/ksysguard/index.docbook
 share/doc/HTML/uk/ksysguard/index.cache.bz2
 share/doc/HTML/uk/ksysguard/index.docbook
 share/icons/hicolor/16x16/apps/computer.png
@@ -37,7 +41,6 @@ share/knotifications5/ksysguard.notifyrc
 share/kxmlgui5/ksysguard/ksysguardui.rc
 share/locale/af/LC_MESSAGES/ksysguard.mo
 share/locale/ar/LC_MESSAGES/ksysguard.mo
-share/locale/ast/LC_MESSAGES/ksysguard.mo
 share/locale/be/LC_MESSAGES/ksysguard.mo
 share/locale/be@latin/LC_MESSAGES/ksysguard.mo
 share/locale/bg/LC_MESSAGES/ksysguard.mo
@@ -125,3 +128,4 @@ share/locale/wa/LC_MESSAGES/ksysguard.mo
 share/locale/xh/LC_MESSAGES/ksysguard.mo
 share/locale/zh_CN/LC_MESSAGES/ksysguard.mo
 share/locale/zh_TW/LC_MESSAGES/ksysguard.mo
+share/metainfo/org.kde.ksysguard.appdata.xml

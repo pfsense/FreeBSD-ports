@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Parts based on works from Snort_alerts.php
@@ -32,7 +32,9 @@ global $config, $g, $pfb;
 pfb_global();
 
 // Alerts tab customizations
-$aglobal_array = array('pfbdenycnt' => 25, 'pfbpermitcnt' => 5, 'pfbmatchcnt' => 5, 'pfbdnscnt' => 5, 'pfbfilterlimitentries' => 100);
+$aglobal_array = array('pfbdenycnt' => 25, 'pfbpermitcnt' => 25, 'pfbmatchcnt' => 25, 'pfbdnscnt' => 25, 'pfbfilterlimitentries' => 100);
+
+init_config_arr(array('installedpackages', 'pfblockerngglobal'));
 $pfb['aglobal'] = &$config['installedpackages']['pfblockerngglobal'];
 
 $alertrefresh	= $pfb['aglobal']['alertrefresh']	!= ''	? $pfb['aglobal']['alertrefresh']	: 'on';
@@ -123,6 +125,18 @@ if (!$alert_summary) {
 		}
 	}
 
+	init_config_arr(array('installedpackages', 'pfblockerngipsettings', 'config', 0));
+	init_config_arr(array('installedpackages', 'pfblockerngdnsblsettings', 'config', 0));
+
+	$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'] = 
+		$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'] ?: '';
+
+	$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'] =
+		$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'] ?: '';
+
+	$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['tldexclusion'] =
+		$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['tldexclusion'] ?: '';
+
 	foreach (array('ipsuppression', 'dnsblwhitelist', 'tldexclusion') as $key => $type) {
 		if ($key == 0) {
 			$clists[$type]['base64'] = &$config['installedpackages']['pfblockerngipsettings']['config'][0]['v4suppression'];
@@ -163,11 +177,11 @@ if (isset($_REQUEST)) {
 	if (isset($_REQUEST['filterip']) || isset($_REQUEST['filterdnsbl'])) {
 
 		if (isset($_REQUEST['filterip'])) {
-			$filterfieldsarray[13]		= htmlspecialchars($_REQUEST['filterip']);
-			$pfbdnscnt			= 0;
+			$filterfieldsarray[13]	= pfb_filter($_REQUEST['filterip'], 1);
+			$pfbdnscnt		= 0;
 		}
 		else {
-			$filterfieldsarray[13]	= htmlspecialchars($_REQUEST['filterdnsbl']);
+			$filterfieldsarray[13]	= pfb_filter($_REQUEST['filterdnsbl'], 1);
 			$pfbdenycnt		= $pfbpermitcnt = $pfbmatchcnt = 0;
 		}
 		$pfb['filterlogentries']	= TRUE;
@@ -181,7 +195,9 @@ if (isset($_REQUEST)) {
 		$refresharr = unserialize(urldecode($_REQUEST['refresh']));
 		if (isset($refresharr)) {
 			foreach ($refresharr as $key => $type) {
-				$filterfieldsarray[htmlspecialchars($key)] = htmlspecialchars($type) ?: null;
+				if (is_int($key)) {
+					$filterfieldsarray[$key] = pfb_filter($type, 1);
+				}
 			}
 		}
 		$pfb['filterlogentries']	= TRUE;
@@ -194,23 +210,21 @@ if (isset($_POST) && !empty($_POST)) {
 	// Save Alerts tab customizations
 	if (isset($_POST['save'])) {
 
-		$pfb['aglobal']['alertrefresh']	= htmlspecialchars($_POST['alertrefresh'])			?: 'off';
-		$pfb['aglobal']['pfbextdns']	= htmlspecialchars($_POST['pfbextdns'])				?: '8.8.8.8';
-		$pfb['aglobal']['pfbpageload']	= htmlspecialchars($_POST['pfbpageload'])			?: 'default';
-		$pfb['aglobal']['pfbblockstat']	= htmlspecialchars(implode(',', (array)$_POST['pfbblockstat']))	?: '';
-		$pfb['aglobal']['pfbpermitstat']= htmlspecialchars(implode(',', (array)$_POST['pfbpermitstat']))?: '';
-		$pfb['aglobal']['pfbmatchstat']	= htmlspecialchars(implode(',', (array)$_POST['pfbmatchstat']))	?: '';
-		$pfb['aglobal']['pfbdnsblstat']	= htmlspecialchars(implode(',', (array)$_POST['pfbdnsblstat']))	?: '';
-
+		$pfb['aglobal']['alertrefresh']	= $_POST['alertrefresh']			?: 'off';
+		$pfb['aglobal']['pfbextdns']	= $_POST['pfbextdns']				?: '8.8.8.8';
+		$pfb['aglobal']['pfbpageload']	= $_POST['pfbpageload']				?: 'default';
+		$pfb['aglobal']['pfbblockstat']	= implode(',', (array)$_POST['pfbblockstat'])	?: '';
+		$pfb['aglobal']['pfbpermitstat']= implode(',', (array)$_POST['pfbpermitstat'])	?: '';
+		$pfb['aglobal']['pfbmatchstat']	= implode(',', (array)$_POST['pfbmatchstat'])	?: '';
+		$pfb['aglobal']['pfbdnsblstat']	= implode(',', (array)$_POST['pfbdnsblstat'])	?: '';
 
 		foreach ($aglobal_array as $type => $value) {
-			if (ctype_digit(htmlspecialchars($_POST[$type]))) {
-				$pfb['aglobal'][$type] = htmlspecialchars($_POST[$type]);
+			if (ctype_digit($_POST[$type])) {
+				$pfb['aglobal'][$type] = $_POST[$type];
 			}
-
 		}
 
-		// Remove obsolete xml tag
+		// Remove obsolete XML tag
 		if (isset($pfb['aglobal']['hostlookup'])) {
 			unset($pfb['aglobal']['hostlookup']);
 		}
@@ -222,7 +236,7 @@ if (isset($_POST) && !empty($_POST)) {
 
 	// Collect 'Filter selection' from 'Alert Statistics' Filter action and convert to existing filter fields
 	foreach (array( 'srcipin' => 'srcip', 'srcipout' => 'srcip', 'dstipin' => 'dstip', 'dstipout' => 'dstip', 'srcport' => 'srcport',
-			'dstport' => 'dstport', 'geoip' => 'geoip', 'aliasname' => 'alias', 'feed' => 'feed', 'dfeed' => 'feed',
+			'dstport' => 'dstport', 'geoip' => 'geoip', 'asn' => 'asn', 'aliasname' => 'alias', 'feed' => 'feed', 'dfeed' => 'feed',
 			'dnsbltype' => 'feed', 'interface' => 'int', 'protocol' => 'proto', 'direction' => '', 'date' => 'date',
 			'domain' => 'dstip', 'evald' => 'dstip', 'ip' => 'srcip', 'agent' => 'dnsbl', 'webtype' => 'dnsbl',
 			'date' => 'date', 'datehr' => 'date', 'datehrmin' => 'date', 'tld' => 'dstip', 'groupblock' => 'alias','grouptotal' => 'alias')
@@ -234,11 +248,11 @@ if (isset($_POST) && !empty($_POST)) {
 			if (strpos($submit_type, 'srcip') !== FALSE || strpos($submit_type, 'dstip') !== FALSE) {
 
 				$data = explode(',', $_POST['filterlogentries_submit_' . $submit_type]);
-				$_POST['filterlogentries_' . $filter_type]	= htmlspecialchars($data[0]);
-				$_POST['filterlogentries_geoip']		= htmlspecialchars($data[1]);
+				$_POST['filterlogentries_' . $filter_type]	= pfb_filter($data[0], 1);
+				$_POST['filterlogentries_geoip']		= pfb_filter($data[1], 1);
 			}
 			else {
-				$_POST['filterlogentries_' . $filter_type] = htmlspecialchars($_POST['filterlogentries_submit_' . $submit_type]);
+				$_POST['filterlogentries_' . $filter_type] = pfb_filter($_POST['filterlogentries_submit_' . $submit_type], 1);
 			}
 			$_POST['filterlogentries_submit'] = 'Apply Filter';
 			break;
@@ -283,14 +297,14 @@ if (isset($_POST) && !empty($_POST)) {
 
 		foreach (array( 0 => 'rule', 2 => 'int', 6 => 'proto', 7 => 'srcip', 8 => 'dstip',
 				9 => 'srcport', 10 => 'dstport', 12 => 'geoip', 13 => 'alias',
-				15 => 'feed', 90 => 'dnsbl', 99 => 'date') as $key => $type) {
+				15 => 'feed', 16 => 'dsthostname', 17 => 'srchostname', 18 => 'asn', 90 => 'dnsbl', 99 => 'date') as $key => $type) {
 
-			$type = htmlspecialchars($_POST['filterlogentries_' . "{$type}"]) ?: null;
+			$type = pfb_filter($_POST['filterlogentries_' . "{$type}"], 1);
 			if ($key == 6) {
 				$type = strtolower("{$type}");
 			}
 
-			$filterfieldsarray[$key] = $type ?: null;
+			$filterfieldsarray[$key] = $type ?: NULL;
 		}
 	}
 
@@ -303,13 +317,16 @@ if (isset($_POST) && !empty($_POST)) {
 	// Add an IPv4 (/32 or /24 only) to the suppression customlist
 	if (isset($_POST['addsuppress']) && !empty($_POST['addsuppress'])) {
 
-		$ip	= htmlspecialchars($_POST['ip']);
-		$cidr	= htmlspecialchars($_POST['cidr']);
-		$table	= htmlspecialchars($_POST['table']);
-		$descr	= htmlspecialchars($_POST['descr']);
+		$cidr = '';
+		if ($_POST['cidr'] == '32' || $_POST['cidr'] == '24') {
+			$cidr = $_POST['cidr'];
+		}
+		$ip	= is_ipaddrv4($_POST['ip']) ? $_POST['ip'] : '';
+		$table	= pfb_filter($_POST['table'], 1);
+		$descr	= pfb_filter($_POST['descr'], 1);
 
 		// If IP is not valid or CIDR field is empty, exit
-		if (!is_ipaddrv4($ip) || empty($cidr)) {
+		if (empty($ip) || empty($cidr)) {
 			$savemsg = gettext('Cannot Suppress: IPv4 not valid or CIDR value missing');
 			header("Location: /pfblockerng/pfblockerng_alerts.php?savemsg={$savemsg}");
 			exit;
@@ -317,7 +334,7 @@ if (isset($_POST) && !empty($_POST)) {
 
 		$savemsg1 = "Host IP address {$ip}";
 		$ix = ip_explode($ip);	// Explode IP into evaluation strings
-		if ($cidr == 32) {
+		if ($cidr == '32') {
 			$pfb_pfctl = exec("{$pfb['pfctl']} -t {$table} -T show | grep {$ip} 2>&1");
 			if (!empty($pfb_pfctl)) {
 				$savemsg2 = ' : Removed /32 entry';
@@ -342,7 +359,7 @@ if (isset($_POST) && !empty($_POST)) {
 			}
 		}
 		else {
-			$cidr = 24;
+			$cidr = '24';
 			$savemsg2 = ' : Removed /24 entry';
 			$pfb_pfctl = array();
 			exec("{$pfb['pfctl']} -t {$table} -T delete {$ix[5]} 2>&1", $pfb_pfctl);
@@ -360,7 +377,7 @@ if (isset($_POST) && !empty($_POST)) {
 			$savemsg = gettext("Host IP address {$ip} already exists in the IPv4 Suppression customlist.");
 		} else {
 			$v4suppression_dat = '';
-			if ($cidr == 24) {
+			if ($cidr == '24') {
 				$v4suppression_dat .= "{$ix[5]}";
 			} else {
 				$v4suppression_dat .= "{$ip}/32";
@@ -391,8 +408,8 @@ if (isset($_POST) && !empty($_POST)) {
 	// Add Domain/CNAME(s) to the DNSBL Whitelist customlist or TLD Exclusion customlist
 	if (isset($_POST['addwhitelistdom']) && !empty($_POST['addwhitelistdom'])) {
 
-		$domain		= htmlspecialchars($_POST['domain']);
-		$table		= htmlspecialchars($_POST['table']);
+		$domain		= pfb_filter($_POST['domain'], 1);
+		$table		= pfb_filter($_POST['table'], 1);
 
 		// If Domain or Table field is empty, exit.
 		if (empty($domain) || empty($table)) {
@@ -401,7 +418,7 @@ if (isset($_POST) && !empty($_POST)) {
 			exit;
 		}
 
-		$descr		= htmlspecialchars($_POST['descr']);
+		$descr		= pfb_filter($_POST['descr'], 1);
 
 		$wildcard = FALSE;
 		if ($_POST['dnsbl_wildcard'] == 'true') {
@@ -490,17 +507,24 @@ if (isset($_POST) && !empty($_POST)) {
 			// Save DNSBL Whitelist file of Domain/CNAME(s)
 			@file_put_contents("{$tmp}.adup", $dnsbl_remove, LOCK_EX);
 
-			// Collect all matching whitelisted Domain/CNAME(s)
 			if (file_exists("{$tmp}.adup") && filesize("{$tmp}.adup") > 0) {
+
+				// Collect all matching whitelisted Domain/CNAME(s)
 				exec("{$pfb['grep']} -F -f {$tmp}.adup {$pfb['dnsbl_file']}.conf > {$tmp}.supp 2>&1");
+
+				// Remove Whitelisted Domain from Unbound database
+				exec("{$pfb['grep']} -vF -f {$tmp}.adup {$pfb['dnsbl_file']}.conf > {$tmp}.tmp && mv -f {$tmp}.tmp {$pfb['dnsbl_file']}.conf");
+
+				// Remove Whitelisted Domain from DNSBL Feed
+				exec("{$pfb['grep']} -vF -f {$tmp}.adup {$pfb['dnsdir']}/{$table}.txt > {$tmp}.tmp && mv -f {$tmp}.tmp {$pfb['dnsdir']}/{$table}.txt");
 			}
 
+			// Remove all Whitelisted Domain/CNAME(s) from Unbound using unbound-control
 			if (file_exists("{$tmp}.supp") && filesize("{$tmp}.supp") > 0) {
 
 				exec("{$pfb['grep']} 'local-zone:' {$tmp}.supp | {$pfb['cut']} -d '\"' -f2 > {$tmp}.zone 2>&1");
 				exec("{$pfb['grep']} '^local-data:' {$tmp}.supp | {$pfb['cut']} -d ' ' -f2 | tr -d '\"' > {$tmp}.data 2>&1");
 
-				// Remove all Whitelisted Domain/CNAME(s) from Unbound using unbound-control
 				$chroot_cmd = "chroot -u unbound -g unbound / /usr/local/sbin/unbound-control -c {$g['unbound_chroot_path']}/unbound.conf";
 
 				if (file_exists("{$tmp}.zone") && filesize("{$tmp}.zone") > 0) {
@@ -567,7 +591,7 @@ if (isset($_POST) && !empty($_POST)) {
 	// Delete entry from customlists (IP Suppression, DNSBL Whitelist, TLD Exclusion and IPv4/6 Permit Customlists)
 	if (isset($_POST['entry_delete']) && !empty($_POST['entry_delete'])) {
 
-		$entry = htmlspecialchars($_POST['domain']);
+		$entry = pfb_filter($_POST['domain'], 1);
 		if (empty($entry)) {
 			$savemsg = gettext('Cannot Delete entry, value missing.');
 			header("Location: /pfblockerng/pfblockerng_alerts.php?savemsg={$savemsg}");
@@ -627,7 +651,7 @@ if (isset($_POST) && !empty($_POST)) {
 				}
 
 				$type	= 'IPv4 Suppression';
-				$table	= htmlspecialchars($_POST['table']);
+				$table	= pfb_filter($_POST['table'], 1);
 				$ix	= ip_explode($entry);	// Explode IP into evaluation strings
 
 				// Check if IP has 255 single entries (User suppressed /32 for a /24 Blocked IP)
@@ -673,7 +697,7 @@ if (isset($_POST) && !empty($_POST)) {
 				}
 				break;
 			case 'delete_ipwhitelist':
-				$table = htmlspecialchars($_POST['table']);
+				$table = pfb_filter($_POST['table'], 1);
 				$vtype = 6;
 				if (strpos($table, '_v4')) {
 					$vtype = 4;
@@ -712,8 +736,8 @@ if (isset($_POST) && !empty($_POST)) {
 	// Unlock/Lock DNSBL events
 	if (isset($_POST['dnsbl_remove']) && !empty($_POST['dnsbl_remove'])) {
 
-		$domain		= htmlspecialchars($_POST['domain']);
-		$dnsbl_type	= htmlspecialchars($_POST['dnsbl_type']);
+		$domain		= pfb_filter($_POST['domain'], 1);
+		$dnsbl_type	= pfb_filter($_POST['dnsbl_type'], 1);
 
 		// If Domain or DNSBL type field is empty, exit.
 		if (empty($domain) || empty($dnsbl_type)) {
@@ -785,11 +809,11 @@ if (isset($_POST) && !empty($_POST)) {
 	// Unlock/Lock IP events
 	if (isset($_POST['ip_remove']) && !empty($_POST['ip_remove'])) {
 
-		$ip	= htmlspecialchars($_POST['ip']);
-		$table	= htmlspecialchars($_POST['table']);
+		$ip	= is_ipaddrv4($_POST['ip']) ? $_POST['ip'] : '';
+		$table	= pfb_filter($_POST['table'], 1);
 
 		// If IP or table field is empty, exit.
-		if ((!is_ipaddr($ip) && !is_subnet($ip)) || empty($table)) {
+		if ((empty($ip) && !is_subnet($ip)) || empty($table)) {
 			$savemsg = gettext('Cannot Lock/Unlock - IP or table missing');
 			header("Location: /pfblockerng/pfblockerng_alerts.php?savemsg={$savemsg}");
 			exit;
@@ -815,17 +839,17 @@ if (isset($_POST) && !empty($_POST)) {
 	// Whitelist IP events
 	if (isset($_POST['ip_white']) && $_POST['ip_white'] == 'true') {
 
-		$ip	= htmlspecialchars($_POST['ip']);
-		$table	= htmlspecialchars($_POST['table']);
-		$descr	= htmlspecialchars($_POST['descr']);
+		$ip	= is_ipaddrv4($_POST['ip']) ? $_POST['ip'] : '';
+		$table	= pfb_filter($_POST['table'], 1);
+		$descr	= pfb_filter($_POST['descr'], 1);
 
-		$vtype = 6;
-		if (strpos($table, '_v4')) {
-			$vtype = 4;
+		$vtype = '6';
+		if (strpos($table, '_v4') !== FALSE) {
+			$vtype = '4';
 		}
 
 		// If IP or table field is empty, exit.
-		if (!is_ipaddr($ip) || empty($table)) {
+		if (empty($ip) || empty($table)) {
 			$savemsg = gettext('Cannot Whitelist - IP address or Whitelist missing');
 			header("Location: /pfblockerng/pfblockerng_alerts.php?savemsg={$savemsg}");
 			exit;
@@ -840,7 +864,7 @@ if (isset($_POST) && !empty($_POST)) {
 
 		if (!isset($clists['ipwhitelist' . $vtype][$table]['data'][$ip])) {
 			exec("{$pfb['pfctl']} -t {$table} -T add {$ip} 2>&1");
-			$descr = htmlspecialchars($_POST['descr']) ?: '';
+			@file_put_contents("{$pfb['aliasdir']}/{$table}.txt", "\n{$ip}", LOCK_EX);
 
 			if (!empty($descr)) {
 				$whitelist_string = "{$ip} # {$descr}\r\n";
@@ -908,7 +932,8 @@ if ($alert_summary) {
 					'direction'	=> 13,
 					'geoip'		=> 14,
 					'aliasname'	=> 15,
-					'feed'		=> 17);
+					'feed'		=> 17,
+					'asn'		=> 20);
 	} else {
 		$stat_info = array(	'webtype'	=> 1,
 					'date'		=> 2,
@@ -928,6 +953,8 @@ if ($alert_summary) {
 	$sss_cmd	= "sort | uniq -c | {$pfb['sed']} 's/^ *//' | sort -nr";
 
 	$alert_stats = array();
+	$alert_stats[$alert_view] = array();
+
 	foreach ($stat_info as $stat_type => $column) {
 		if (file_exists($alert_log)) {
 
@@ -985,6 +1012,13 @@ if ($alert_summary) {
 
 			if (!empty($stats)) {
 				foreach($stats as $key => $line) {
+
+					// Remove last column for '-' and '+' indicator
+					$eol = substr($line, -2);
+					if ($eol == ' -' || $eol == ' +') {
+						continue;
+					}
+
 					$data = array_map('trim', explode(' ', trim($line), 2));
 					$alert_stats[$alert_view][$stat_type][$data[1] ?: $unknown_msg] = $data[0] ?: 0;
 				}
@@ -1011,7 +1045,7 @@ if ($alert_summary) {
 		if ($alert_view == 'dnsbl_stat') {
 			$alert_stats[$alert_view]['grouptotal'] = array();
 			$alert_stats[$alert_view]['groupblock'] = array();
-	
+
 			if (file_exists($pfb['dnsbl_info'])) {
 				$db_handle = pfb_open_sqlite(1, 'Report Stats');
 				if ($db_handle) {
@@ -1043,9 +1077,6 @@ function pfb_match_filter_field($flent, $fields) {
 
 	if (isset($fields)) {
 		foreach ($fields as $key => $field) {
-			if (empty($field)) {
-				continue;
-			}
 
 			$field_regex = str_replace('/', '\/', str_replace('\/', '/', $field));
 			if (strpos($field_regex, '(') !== FALSE) {
@@ -1055,6 +1086,11 @@ function pfb_match_filter_field($flent, $fields) {
 			if (strpos($field_regex, '[') !== FALSE) {
 				$field_regex = str_replace(']', '\]', str_replace('\]', ']', $field_regex));
 				$field_regex = str_replace('[', '\[', str_replace('\[', '[', $field_regex));
+			}
+
+			// Remove 'AS' characters from ASN queries
+			if ($key == 18) {
+				$field_regex = str_replace('AS', '', $field_regex);
 			}
 
 			if (strpos($field, '!') !== FALSE) {
@@ -1083,14 +1119,20 @@ $get_req = pfb_alerts_default_page();
 // refresh every 60 secs
 if ($alertrefresh == 'on') {
 
+	$pfSense_url = '';
+	if ($_SERVER['REQUEST_SCHEME'] == 'http' || $_SERVER['REQUEST_SCHEME'] == 'https') {
+		$http_host	= pfb_filter($_SERVER['HTTP_HOST'], 1);
+		$pfSense_url	= "{$_SERVER['REQUEST_SCHEME']}://{$http_host}";
+	}
+
 	if ($pfb['filterlogentries']) {
 		// Refresh page with 'Filter options' if defined.
 		$refreshentries = urlencode(serialize($filterfieldsarray));
-		print ("<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php?refresh={$refreshentries}\" />\n");
+		print ("<meta http-equiv=\"refresh\" content=\"60;url={$pfSense_url}/pfblockerng/pfblockerng_alerts.php?refresh={$refreshentries}\" />\n");
 	} elseif ($alert_summary) {
-		print ("<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php?view={$alert_view}\" />\n");
+		print ("<meta http-equiv=\"refresh\" content=\"60;url={$pfSense_url}/pfblockerng/pfblockerng_alerts.php?view={$alert_view}\" />\n");
 	} else {
-		print ("<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php\" />\n");
+		print ("<meta http-equiv=\"refresh\" content=\"60;url={$pfSense_url}/pfblockerng/pfblockerng_alerts.php\" />\n");
 	}
 }
 
@@ -1247,64 +1289,74 @@ if ($pfb['dnsbl'] == 'on') {
 	  ->setAttribute('style', 'width: auto');
 	$section->add($group);
 
+	$ip_stats_array = array('srcipin'	=> 'Top SRC IP Inbound',
+				'srcipout'	=> 'Top SRC IP Outbound',
+				'dstipin'	=> 'Top DST IP Inbound',
+				'dstipout'	=> 'Top DST IP Outbound',
+				'srcport'	=> 'Top SRC Port',
+				'dstport'	=> 'Top DST Port',
+				'geoip'		=> 'Top GeoIP',
+				'asn'		=> 'Top ASN',
+				'aliasname'	=> 'Top Aliasname',
+				'feed'		=> 'Top Feed',
+				'interface'	=> 'Top Interface',
+				'protocol'	=> 'Top Protocol',
+				'direction'	=> 'Top Direction',
+				'date'		=> 'Historical Summary');
+	$table_size = count($ip_stats_array);
+
 	$group = new Form_Group('Alert Statistics');
 	$group->add(new Form_Select(
 		'pfbblockstat',
 		'Disabled IP Block Stats',
 		$pfbblockstat,
-		[	'srcipin' => 'Top SRC IP Inbound', 'srcipout' => 'Top SRC IP Outbound',
-			'dstipin' => 'Top DST IP Inbound', 'dstipout' => 'Top DST IP Outbound',
-			'srcport' => 'Top SRC Port', 'dstport' => 'Top DST Port',
-			'geoip' => 'Top GeoIP', 'aliasname' => 'Top Aliasname',
-			'feed' => 'Top Feed', 'interface' => 'Top Interface',
-			'protocol' => 'Top Protocol', 'direction' => 'Top Direction', 'date' => 'Historical Summary' ],
+		$ip_stats_array,
 		TRUE
 	))->setHelp("Select the <strong>IP Block</strong> Stat table(s) to hide")
 	  ->setAttribute('style', 'width: auto; overflow: hidden;')
-	  ->setAttribute('size', 11);
+	  ->setAttribute('size', $table_size);
 
 	$group->add(new Form_Select(
 		'pfbpermitstat',
 		'Disabled IP Permit Stats',
 		$pfbpermitstat,
-		[	'srcipin' => 'Top SRC IP Inbound', 'srcipout' => 'Top SRC IP Outbound',
-			'dstipin' => 'Top DST IP Inbound', 'dstipout' => 'Top DST IP Outbound',
-			'srcport' => 'Top SRC Port', 'dstport' => 'Top DST Port',
-			'geoip' => 'Top GeoIP', 'aliasname' => 'Top Aliasname',
-			'feed' => 'Top Feed', 'interface' => 'Top Interface',
-			'protocol' => 'Top Protocol', 'direction' => 'Top Direction', 'date' => 'Historical Summary' ],
+		$ip_stats_array,
 		TRUE
 	))->setHelp("Select the <strong>IP Permit</strong> Stat table(s) to hide")
 	  ->setAttribute('style', 'width: auto; overflow: hidden;')
-	  ->setAttribute('size', 11);
+	  ->setAttribute('size', $table_size);
 
 	$group->add(new Form_Select(
 		'pfbmatchstat',
 		'Disabled IP Match Stats',
 		$pfbmatchstat,
-		[	'srcipin' => 'Top SRC IP Inbound', 'srcipout' => 'Top SRC IP Outbound',
-			'dstipin' => 'Top DST IP Inbound', 'dstipout' => 'Top DST IP Outbound',
-			'srcport' => 'Top SRC Port', 'dstport' => 'Top DST Port',
-			'geoip' => 'Top GeoIP', 'aliasname' => 'Top Aliasname',
-			'feed' => 'Top Feed', 'interface' => 'Top Interface',
-			'protocol' => 'Top Protocol', 'direction' => 'Top Direction', 'date' => 'Historical Summary' ],
+		$ip_stats_array,
 		TRUE
 	))->setHelp("Select the <strong>Match Stat</strong> table(s) to hide")
 	  ->setAttribute('style', 'width: auto; overflow: hidden;')
-	  ->setAttribute('size', 11);
+	  ->setAttribute('size', $table_size);
 
 	$group->add(new Form_Select(
 		'pfbdnsblstat',
 		'Disabled DNSBL Stats',
 		$pfbdnsblstat,
-		[	'domain' => 'Top Blocked Domain', 'evald' => 'Top Blocked Eval\'d', 'grouptotal' => 'Top Group Count',
-			'groupblock' => 'Top Blocked Group', 'dfeed' => 'Top Blocked Feed', 'ip' => 'Top Source IP', 'agent' => 'Top User-Agent',
-			'tld' => 'Top TLD', 'webtype' => 'Top Webpage Types', 'dnsbltype' => 'Top DNSBL Types',
-			'datehr' => 'Top Date/Hr', 'datehrmin' => 'Top Date/Hr/Min', 'date' => 'Historical Summary' ],
+		[	'domain'	=> 'Top Blocked Domain',
+			'evald'		=> 'Top Blocked Eval\'d',
+			'grouptotal'	=> 'Top Group Count',
+			'groupblock'	=> 'Top Blocked Group',
+			'dfeed'		=> 'Top Blocked Feed',
+			'ip'		=> 'Top Source IP',
+			'agent'		=> 'Top User-Agent',
+			'tld'		=> 'Top TLD',
+			'webtype'	=> 'Top Webpage Types',
+			'dnsbltype'	=> 'Top DNSBL Types',
+			'datehr'	=> 'Top Date/Hr',
+			'datehrmin'	=> 'Top Date/Hr/Min',
+			'date'		=> 'Historical Summary' ],
 		TRUE
 	))->setHelp("Select the <strong>DNSBL Stat</strong> table(s) to hide")
 	  ->setAttribute('style', 'width: auto; overflow: hidden;')
-	  ->setAttribute('size', 13);
+	  ->setAttribute('size', $table_size);
 	$section->add($group);
 }
 
@@ -1321,58 +1373,35 @@ if (!$alert_summary) {
 	$group = new Form_Group(NULL);
 	$group->add(new Form_Input(
 		'filterlogentries_date',
-		'Date',
+		'IP/DNSBL - Date',
 		'text',
 		$filterfieldsarray[99]
 	))->setAttribute('title', 'Enter filter \'Date\'.');
 
 	$group->add(new Form_Input(
-		'filterlogentries_srcip',
-		'Source IP Address',
-		'text',
-		$filterfieldsarray[7]
-	))->setAttribute('title', 'Enter filter \'Source IP Address\'.');
-
-	$group->add(new Form_Input(
-		'filterlogentries_srcport',
-		'Source:Port',
-		'text',
-		$filterfieldsarray[9]
-	))->setAttribute('title', 'Enter filter \'Source:Port\'.');
-
-	$group->add(new Form_Input(
 		'filterlogentries_int',
-		'Interface',
+		'IP - Interface',
 		'text',
 		$filterfieldsarray[2]
 	))->setAttribute('title', 'Enter filter \'Interface\'.');
-	$section->add($group);
 
-	$group = new Form_Group(NULL);
 	$group->add(new Form_Input(
 		'filterlogentries_rule',
-		'Rule Number Only',
+		'IP - Rule Number Only',
 		'text',
 		$filterfieldsarray[0]
 	))->setAttribute('title', 'Enter filter \'Rule Number\' only.');
 
 	$group->add(new Form_Input(
-		'filterlogentries_dstip',
-		'Dest. IP/Domain Name',
+		'filterlogentries_alias',
+		'IP/DNSBL - Alias|Group',
 		'text',
-		$filterfieldsarray[8]
-	))->setAttribute('title', 'Enter filter \'Destination IP Address/Domain Name\'.');
-
-	$group->add(new Form_Input(
-		'filterlogentries_dstport',
-		'Destination:Port',
-		'text',
-		$filterfieldsarray[10]
-	))->setAttribute('title', 'Enter filter \'Destination:Port\'.');
+		$filterfieldsarray[13]
+	))->setAttribute('title', 'Enter filter \'Aliasname\'.');
 
 	$group->add(new Form_Input(
 		'filterlogentries_proto',
-		'Protocol',
+		'IP - Protocol',
 		'text',
 		$filterfieldsarray[6]
 	))->setAttribute('title', 'Enter filter \'Protocol\'.');
@@ -1380,36 +1409,85 @@ if (!$alert_summary) {
 
 	$group = new Form_Group(NULL);
 	$group->add(new Form_Input(
-		'filterlogentries_alias',
-		'Aliasname',
+		'filterlogentries_srcip',
+		'IP/DNSBL - Source Address',
 		'text',
-		$filterfieldsarray[13]
-	))->setAttribute('title', 'Enter filter \'Aliasname\'.');
+		$filterfieldsarray[7]
+	))->setAttribute('title', 'Enter filter \'Source IP Address\'.');
 
 	$group->add(new Form_Input(
+		'filterlogentries_srchostname',
+		'IP/DNSBL - Source Hostname',
+		'text',
+		$filterfieldsarray[17]
+	))->setAttribute('title', 'Enter filter \'Source Hostname\'.');
+
+	$group->add(new Form_Input(
+		'filterlogentries_srcport',
+		'IP - Source:Port',
+		'text',
+		$filterfieldsarray[9]
+	))->setAttribute('title', 'Enter filter \'Source:Port\'.');
+	$section->add($group);
+
+	$group = new Form_Group(NULL);
+	$group->add(new Form_Input(
+		'filterlogentries_dstip',
+		'IP - Destination Address',
+		'text',
+		$filterfieldsarray[8]
+	))->setAttribute('title', 'Enter filter \'Destination IP Address\'.');
+
+	$group->add(new Form_Input(
+		'filterlogentries_dsthostname',
+		'IP - Destination Hostname',
+		'text',
+		$filterfieldsarray[16]
+	))->setAttribute('title', 'Enter filter \'Destination Hostname\'.');
+
+	$group->add(new Form_Input(
+		'filterlogentries_dstport',
+		'IP - Destination:Port',
+		'text',
+		$filterfieldsarray[10]
+	))->setAttribute('title', 'Enter filter \'Destination:Port\'.');
+	$section->add($group);
+
+	$group = new Form_Group(NULL);
+	$group->add(new Form_Input(
 		'filterlogentries_feed',
-		'Feed',
+		'IP/DNSBL - Feed',
 		'text',
 		$filterfieldsarray[15]
 	))->setAttribute('title', 'Enter filter \'Feed name\'.');
 
 	$group->add(new Form_Input(
 		'filterlogentries_geoip',
-		'GeoIP',
+		'IP - GeoIP',
 		'text',
 		$filterfieldsarray[12]
 	))->setAttribute('title', 'Enter filter \'GeoIP\'.')
 	  ->setwidth(2);
+
+	$group->add(new Form_Input(
+		'filterlogentries_asn',
+		'IP - ASN',
+		'text',
+		$filterfieldsarray[18]
+	))->setAttribute('title', 'Enter filter \'ASN\'.')
+	  ->setwidth(2);
 	$section->add($group);
 
 	if ($pfb['dnsbl'] == 'on') {
-		$section->addInput(new Form_Input(
+		$group = new Form_Group(NULL);
+		$group->add(new Form_Input(
 			'filterlogentries_dnsbl',
 			'',
 			'text',
 			$filterfieldsarray[90],
-			['placeholder' => 'DNSBL User-Agent/URI']
+			['placeholder' => 'DNSBL - Referer|URI|User-Agent']
 		))->setAttribute('title', 'Enter filter \'DNSBL User-Agent/URI\'.');
+		$section->add($group);
 	}
 
 	$group = new Form_Group(NULL);
@@ -1466,6 +1544,11 @@ print($form);
 
 if (!$alert_summary):
 
+	// Remove blank entries in Filter Fields Array
+	if (is_array($filterfieldsarray) && !empty($filterfieldsarray)) {
+		$filterfieldsarray = array_filter($filterfieldsarray);
+	}
+
 	// Print Unlocked IPs and Domain table
 	if (!empty($ip_unlock) || !empty($dnsbl_unlock)): ?>
 
@@ -1501,7 +1584,7 @@ if (!$alert_summary):
 					$alert = '<a class="fa fa-info icon-pointer icon-primary" target="_blank"'
 							. ' href="/pfblockerng/pfblockerng_threats.php?host='
 							. $entry . '" title="Click for Threat source IP Lookup for [ ' . $entry . ' ]"></a>';
-				} else { 
+				} else {
 					$unlock = '<i class="fa fa-unlock icon-primary text-primary" id="DNSBL_LCK|' . $entry . '|' . $type
 							. '" title="Re-Lock ' . $data[1] . ': [ ' . $entry . ' ] back into DNSBL? "></i>';
 
@@ -1663,9 +1746,11 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 
 				// SRC IP Address and Hostname
 				if (isset($local_hosts[$fields[3]])) {
-					$pfbalertdnsbl[7] = "{$fields[3]}<br /><small>{$local_hosts[$fields[3]]}</small>";
+					$pfbalertdnsbl[7]	= $fields[3];
+					$pfbalertdnsbl[17]	= "<br /><small>{$local_hosts[$fields[3]]}</small>";
 				} else {
-					$pfbalertdnsbl[7] = $fields[3];
+					$pfbalertdnsbl[7]	= $fields[3];
+					$pfbalertdnsbl[17]	= '';
 				}
 
 				$pfbalertdnsbl[8]	= $fields[2];	// Blocked Domain
@@ -1765,7 +1850,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 								. "&emsp;After a Reload any new blocked Domains can be Whitelisted at that time.";
 					}
 					else {
-						$supp_dom_txt = "Whitelist [ {$fields[2]} ]\n\n" 
+						$supp_dom_txt = "Whitelist [ {$fields[2]} ]\n\n"
 								. "Note:&emsp;This will immediately remove the blocked Domain\n"
 								. "&emsp;&emsp;&emsp;&nbsp;and associated CNAMES from DNSBL.\n"
 								. "&emsp;&emsp;&emsp;&nbsp;(CNAMES: Define the external DNS server in Alert settings.)\n\n"
@@ -1777,7 +1862,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 					// Determine if Domain is blocked via TLD Blacklist
 					$pfb_found = FALSE;
 					if ($fields[5] != 'DNSBL_TLD') {
-			
+
 						// Remove Whitelist Icon for 'Unknown'
 						if ($fields[6] == 'Unknown') {
 							$supp_dom = '';
@@ -1870,7 +1955,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 					$supp_dom_txt  = "Note:&emsp;The following Domain is in the TLD Exclusion customlist:\n\n"
 							. "TLD Exclusion:&emsp;[ {$wt_line} ]\n\n"
 							. "&#8226; TLD Exclusions require a Force Reload when a Domain is initially added.\n"
-							. "&#8226; To remove this Domain from the TLD Exclusion customlist, Click 'OK'"; 
+							. "&#8226; To remove this Domain from the TLD Exclusion customlist, Click 'OK'";
 
 					$supp_dom = '<i class="fa fa-trash-o no-confirm icon-pointer icon-primary" id="DNSBLWT|'
 							. 'delete_exclusion|' . $fields[7] . '" title="' . $supp_dom_txt . '"></i>';
@@ -1901,7 +1986,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 							else {
 								$unlock_dom = '<i class="fa fa-lock icon-primary text-danger" id="DNSBL_ULCK|'
 										. $qdomain . '|' . $fields[5]
-										. '" title="Unlock Domain: [ ' . $qdomain . '] from DNSBL?' . $tnote . '" ></i>'; 
+										. '" title="Unlock Domain: [ ' . $qdomain . '] from DNSBL?' . $tnote . '" ></i>';
 							}
 						} else {
 							if ($pfb_found) {
@@ -1945,7 +2030,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 				print ("<tr>
 					<td>{$pfbalertdnsbl[99]}{$dup_cnt}</td>
 					<td><small>{$pfbalertdnsbl[2]}</small></td>
-					<td>{$pfbalertdnsbl[7]}</td>
+					<td>{$pfbalertdnsbl[7]}{$pfbalertdnsbl[17]}</td>
 					<td>{$unlock_dom}&nbsp;{$alert_dom}&nbsp;{$supp_dom}</td>
 					<td  title=\"{$url_title}\">{$pfbalertdnsbl[8]}<small>&emsp;[ {$fields[5]} ]</small> {$pfb_https}
 						<br />&nbsp;&nbsp;<small>{$pfbalertdnsbl[90]}</small></td>
@@ -1970,7 +2055,7 @@ if ($type != 'DNSBL') {
 					<th><?=gettext("Source")?></th>
 					<th><!----- Buttons -----></th>
 					<th><?=gettext("Destination")?></th>
-					<th><?=gettext("GeoIP")?></th>
+					<th><?=$pfb['asn_reporting'] != 'disabled' ? gettext("GeoIP/ASN") : gettext("GeoIP")?></th>
 					<th><?=gettext("Feed")?></th>
 				</tr>
 			</thead>
@@ -2024,7 +2109,8 @@ if ($type != 'DNSBL' && file_exists("{$pfb_log}")) {
 				[14]	= IP evaluated
 				[15]	= Feed Name
 				[16]	= gethostbyaddr resolved hostname
-				[17]	= Client Hostname			*/
+				[17]	= Client Hostname
+				[18]	= ASN					*/
 
 			// If alerts filtering is selected, process filters as required.
 			if ($pfb['filterlogentries']) {
@@ -2114,6 +2200,21 @@ if ($type != 'DNSBL' && file_exists("{$pfb_log}")) {
 				$validate = exec("/usr/bin/find {$folder} -type f {$query} | xargs {$pfb['grep']} '^{$q_ip}' 2>&1");
 			}
 
+			// ASN - Add to GeoIP column
+			if ($pfb['asn_reporting'] != 'disabled' && !empty($fields[18]) && $fields[18] != 'Unknown') {
+
+				if (strpos($fields[18], '| ') !== FALSE) {
+					$asn = explode('| ', $fields[18], 3);
+					$fields[18] = "<span title=\"| " . $asn[2] . "\">AS{$asn[1]}</span>";
+				} else {
+					$asn = explode(' ', $fields[18], 2);
+					$fields[18] = "<span title=\"" . $asn[1] . "\">AS{$asn[0]}</span>";
+				}
+			}
+			else {
+				$fields[18] = '';
+			}
+
 			// Determine if a different IP/CIDR is now alerting on this host
 			if (empty($validate)) {
 				$pfb_query = find_reported_header($host, $folder);
@@ -2167,19 +2268,20 @@ if ($type != 'DNSBL' && file_exists("{$pfb_log}")) {
 
 			// Suppression Icon
 			$supp_ip = $unlock_ip = '&nbsp;&nbsp;&nbsp;';
-			if ($pfb['supp'] == 'on' && $rtype == 'block' && $pfb_ipv4 && !$pfb_geoip && $mask_suppression) {
+			if ($rtype == 'block' && $pfb_ipv4 && !$pfb_geoip && $mask_suppression) {
 
-				$v4suppression32 = FALSE;
-				if (isset($clists['ipsuppression']['data'][$host . '/32'])) {
-					$w_line = rtrim($clists['ipsuppression']['data'][$host . '/32'], "\x00..\x1F");
-					$v4suppression32 = TRUE;
-				}
+				$v4suppression32 = $v4suppression24 = FALSE; 
+				if ($pfb['supp'] == 'on') {
+					if (isset($clists['ipsuppression']['data'][$host . '/32'])) {
+						$w_line = rtrim($clists['ipsuppression']['data'][$host . '/32'], "\x00..\x1F");
+						$v4suppression32 = TRUE;
+					}
 
-				$v4suppression24 = FALSE;
-				$ix = ip_explode($host);
-				if (isset($clists['ipsuppression']['data'][$ix[5]])) {
-					$w_line = rtrim($clists['ipsuppression']['data'][$ix[5]], "\x00..\x1F");
-					$v4suppression24 = TRUE;
+					$ix = ip_explode($host);
+					if (isset($clists['ipsuppression']['data'][$ix[5]])) {
+						$w_line = rtrim($clists['ipsuppression']['data'][$ix[5]], "\x00..\x1F");
+						$v4suppression24 = TRUE;
+					}
 				}
 
 				// Host is not in the Suppression List
@@ -2390,7 +2492,7 @@ if ($type != 'DNSBL' && file_exists("{$pfb_log}")) {
 				<td>{$fields[97]}{$srcport}<br /><small>{$hostname['src']}</small></td>
 				<td>{$dst_icons}</td>
 				<td>{$fields[98]}{$dstport}&emsp;{$query_port}<br /><small>{$hostname['dst']}</small></td>
-				<td>{$fields[12]}</td>
+				<td>{$fields[12]}<br />{$fields[18]}</td>
 				<td title=\"{$pfb_matchtitle}\">{$strike1}{$fields[15]}{$strike2}{$alias_new}<br />
 					<small>{$strike1}{$fields[14]}{$strike2}{$eval_new}</small></td></tr>");
 
@@ -2488,6 +2590,7 @@ elseif ($alert_summary):
 				'srcport'	=> array("Top SRC Port (1-1024 only)",		'Found', 'SRC Port(s)',		FALSE, ''),
 				'dstport'	=> array("Top DST Port",			'Found', 'DST Port(s)',		FALSE, ''),
 				'geoip'		=> array("Top GeoIP",				'Found', 'GeoIP(s)',		FALSE, ''),
+				'asn'		=> array("Top ASN",				'Found', 'ASN(s)',		FALSE, ''),
 				'aliasname'	=> array("Top Aliasname",			'Found', 'Aliasname(s)',	FALSE, ''),
 				'feed'		=> array("Top Feed",				'Found', 'Feed{s)',		FALSE, ''),
 				'interface'	=> array("Top Interface",			'Found', 'Interface(s)',	FALSE, ''),
@@ -2513,8 +2616,15 @@ elseif ($alert_summary):
 
 	foreach ($stats as $stat_type => $stype):
 
-		$topcount = count($alert_stats[$alert_view][$stat_type]);
-		$sumlines = array_sum($alert_stats[$alert_view][$stat_type]);
+		if ($stat_type == 'asn' && $pfb['asn_reporting'] == 'disabled') {
+			continue;
+		}
+
+		$topcount = $sumlines = 0;
+		if (!empty($alert_stats[$alert_view][$stat_type])) {
+			$topcount = count($alert_stats[$alert_view][$stat_type]);
+			$sumlines = array_sum($alert_stats[$alert_view][$stat_type]);
+		}
 
 		$height = 30;
 		if ($topcount > 0) {
@@ -2560,7 +2670,7 @@ elseif ($alert_summary):
 
 						<?php if ($stype[3]): ?>
 						<th style="width: 2%; text-align: center;">
-							<?=gettext(($stat_type == 'domain' || $stat_type == 'evald') ? 'Type' : 'GeoIP');?></th> 
+							<?=gettext(($stat_type == 'domain' || $stat_type == 'evald') ? 'Type' : 'GeoIP');?></th>
 						<?php endif; ?>
 
 						<th><small><?=$stype[1] . "&emsp;[ {$topcount} ]&emsp;" . $stype[2]?></th>
@@ -2568,7 +2678,7 @@ elseif ($alert_summary):
 				</thead>
 				<tbody>
 					<?php
-					if (!empty($alert_stats)) {
+					if (!empty($alert_stats[$alert_view][$stat_type])) {
 						foreach ($alert_stats[$alert_view][$stat_type] as $data => $data_count) {
 							$alert_event = $btnsubmit = $query_port = $hostname = '';
 							$subdata = array();
@@ -2579,6 +2689,29 @@ elseif ($alert_summary):
 							}
 							elseif ($stat_type == 'srcport' || $stat_type == 'dstport') {
 								$filter_value = "^{$data}$";
+							}
+							elseif ($stat_type == 'asn') {
+								if ($data == 'null') {
+									continue;
+								} elseif ($data != 'Unknown' && !ctype_digit($data)) { 
+									if (strpos($data, '| ') !== FALSE) {
+										$ex		= explode('| ', $data, 3);
+										$filter_value	= $ex[1];
+										$data		= "{$ex[1]} | {$ex[2]}";
+									} else {
+										$ex		= explode(' ', $data, 2);
+										$filter_value	= $ex[0];
+										$data		= "{$ex[0]} | {$ex[1]}";
+									}
+								}
+							}
+							elseif ($stat_type == 'domain') {
+								$ex = explode(',', $data, 2);
+								$filter_value = $ex[0];
+							}
+							elseif ($stat_type == 'evald') {
+								$ex = explode(',', $data, 2);
+								$filter_value = $ex[1];
 							}
 
 							if ($stat_type != 'direction') {
@@ -2715,7 +2848,7 @@ var pieChart_<?=$stat_type?> = new d3pie("pieChart_<?=$stat_type?>", {
 		"canvasHeight": 390,
 		"canvasWidth": 560,
 		"pieInnerRadius": 60,
-		"pieOuterRadius": "78%" 
+		"pieOuterRadius": "78%"
 	},
 	"data": {
 		"sortOrder": "value-asc",
@@ -2758,7 +2891,7 @@ var pieChart_<?=$stat_type?> = new d3pie("pieChart_<?=$stat_type?>", {
 	},
 	"labels": {
 		"outer": {
-			"pieDistance": 25 
+			"pieDistance": 25
 		},
 		"inner": {
 			"format": "percentage",
@@ -2796,7 +2929,7 @@ var pieChart_<?=$stat_type?> = new d3pie("pieChart_<?=$stat_type?>", {
 		"pullOutSegmentOnClick": {
 			"effect": "linear",
 			"speed": 400,
-			"size": 20 
+			"size": 20
 		},
 		highlightSegmentOnMouseover: true,
 		highlightLuminosity: -0.7
@@ -2824,7 +2957,7 @@ var pieChart_<?=$stat_type?> = new d3pie("pieChart_<?=$stat_type?>", {
 		},
 		"pieCenterOffset": {
 			"x": 0,
-			"y": 0 
+			"y": 0
 		},
 		colors: {
 			background: null,
@@ -2868,6 +3001,13 @@ function ip_suppression() {
 }
 
 function ip_suppression_type() {
+
+	// Confirm if the Suppression option is enabled
+	var is_supp = "<?=$pfb['supp']?>";
+	if (is_supp != 'on') {
+		alert('The IP Suppression option has not been enabled. Please enable this option in the IP Tab to suppress this IP.');
+		$(this).dialog('close');
+	}
 
 	var buttons = {};
 	buttons['Suppress /32'] = function() {
@@ -2992,6 +3132,8 @@ events.push(function() {
 			pieChart_dstport.redraw();
 		} else if (pieChart == 'geoip') {
 			pieChart_geoip.redraw();
+		} else if (pieChart == 'asn') {
+			pieChart_asn.redraw();
 		} else if (pieChart == 'aliasname') {
 			pieChart_aliasname.redraw();
 		} else if (pieChart == 'feed') {

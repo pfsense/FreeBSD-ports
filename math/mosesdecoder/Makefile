@@ -4,11 +4,13 @@
 PORTNAME=	mosesdecoder
 PORTVERSION=	2.1.1
 DISTVERSIONPREFIX=	RELEASE-
-PORTREVISION=	11
+PORTREVISION=	15
 CATEGORIES=	math
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Statistical machine translation system
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	bash:shells/bash \
 		bjam:devel/boost-jam

@@ -23,6 +23,7 @@ namespace pfsense_pkg\acme;
 
 $shortcut_section = "acme";
 require_once("guiconfig.inc");
+require_once("pfsense-utils.inc");
 require_once("certs.inc");
 require_once("acme/acme.inc");
 require_once("acme/acme_gui.inc");
@@ -31,16 +32,13 @@ require_once("acme/pkg_acme_tabs.inc");
 
 $changedesc = "Services: Acme: Certificates";
 
-if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
-	$config['installedpackages']['acme']['certificates']['item'] = array();
-}
-$a_certifcates = &$config['installedpackages']['acme']['certificates']['item'];
+$a_certificates = &getarraybyref($config, 'installedpackages', 'acme', 'certificates', 'item');
 
 if($_POST['action'] == "toggle") {
 	$id = $_POST['id'];
 	echo "$id|";
-	if (isset($a_certifcates[get_certificate_id($id)])) {
-		$item = &$a_certifcates[get_certificate_id($id)];
+	if (isset($a_certificates[get_certificate_id($id)])) {
+		$item = &$a_certificates[get_certificate_id($id)];
 		if ($item['status'] != "disabled"){
 			$item['status'] = 'disabled';
 			echo "0|";
@@ -59,7 +57,7 @@ if($_POST['action'] == "toggle") {
 if($_POST['action'] == "issuecert") {
 	$id = $_POST['id'];
 	echo $id . "\n";
-	if (isset($a_certifcates[get_certificate_id($id)])) {
+	if (isset($a_certificates[get_certificate_id($id)])) {
 		issue_certificate($id, true);
 	}
 	exit;
@@ -67,7 +65,7 @@ if($_POST['action'] == "issuecert") {
 if($_POST['action'] == "renewcert") {
 	$id = $_POST['id'];
 	echo $id . "\n";
-	if (isset($a_certifcates[get_certificate_id($id)])) {
+	if (isset($a_certificates[get_certificate_id($id)])) {
 		issue_certificate($id, true, true);
 	}
 	exit;
@@ -85,7 +83,7 @@ if ($_POST) {
 				$selected[] = get_certificate_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_certifcates[$itemnr]);
+				unset($a_certificates[$itemnr]);
 				$deleted = true;
 			}
 			if ($deleted) {
@@ -116,7 +114,7 @@ if ($_POST) {
 			foreach($_POST['rule'] as $selection) {
 				$selected[] = get_certificate_id($selection);
 			}
-			array_moveitemsbefore($a_certifcates, $moveto, $selected);
+			array_moveitemsbefore($a_certificates, $moveto, $selected);
 		
 			touch($d_acmeconfdirty_path);
 			write_config($changedesc);			
@@ -127,9 +125,9 @@ if ($_POST) {
 if ($_GET['act'] == "del") {
 	$id = $_GET['id'];
 	$id = get_certificate_id($id);
-	if (isset($a_certifcates[$id])) {
+	if (isset($a_certificates[$id])) {
 		if (!$input_errors) {
-			unset($a_certifcates[$id]);
+			unset($a_certificates[$id]);
 			$changedesc .= " Item delete";
 			write_config($changedesc);
 			touch($d_acmeconfdirty_path);
@@ -165,28 +163,62 @@ echo "</div>";
 <?php
 display_top_tabs_active($acme_tab_array['acme'], "certificates");
 ?>
+<div class="panel panel-default" id="search-panel">
+	<div class="panel-heading">
+		<h2 class="panel-title">
+			<?=gettext('Search')?>
+			<span class="widget-heading-icon pull-right">
+				<a data-toggle="collapse" href="#search-panel_panel-body">
+					<i class="fa fa-plus-circle"></i>
+				</a>
+			</span>
+		</h2>
+	</div>
+	<div id="search-panel_panel-body" class="panel-body collapse in">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">
+				<?=gettext("Search term")?>
+			</label>
+			<div class="col-sm-5"><input class="form-control" name="searchstr" id="searchstr" type="text"/></div>
+			<div class="col-sm-2">
+				<select id="where" class="form-control">
+					<option value="0"><?=gettext("Name")?></option>
+					<option value="1"><?=gettext("Description")?></option>
+					<option value="2" selected><?=gettext("Both")?></option>
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<a id="btnsearch" title="<?=gettext("Search")?>" class="btn btn-primary btn-sm"><i class="fa fa-search icon-embed-btn"></i><?=gettext("Search")?></a>
+				<a id="btnclear" title="<?=gettext("Clear")?>" class="btn btn-info btn-sm"><i class="fa fa-undo icon-embed-btn"></i><?=gettext("Clear")?></a>
+			</div>
+			<div class="col-sm-10 col-sm-offset-2">
+				<span class="help-block"><?=gettext('Enter a search string or *nix regular expression to search certificate names and distinguished names.')?></span>
+			</div>
+		</div>
+	</div>
+</div>
 <form action="acme_certificates.php" method="post">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h2 class="panel-title">Certificates</h2>
 		</div>
 		<div id="mainarea" class="table-responsive panel-body">
-			<table class="table table-hover table-striped table-condensed">
+			<table class="table table-hover table-striped table-condensed sortable-theme-bootstrap" data-sortable>
 				<thead>
 					<tr>
-						<th></th>
+						<th data-sortable="false"></th>
 						<th>On</th>
-						<th width="30%">Name</th>
-						<th width="20%">Description</th>
+						<th>Name</th>
+						<th>Description</th>
 						<th>Account</th>
-						<th>Last renewed</th>
-						<th>Renew</th>
-						<th>Actions</th>
+						<th data-sortable-type="date">Last renewed</th>
+						<th data-sortable="false">Renew</th>
+						<th data-sortable="false">Actions</th>
 					</tr>
 				</thead>
 				<tbody class="user-entries">
 <?php
-		foreach ($a_certifcates as $certificate) {
+		foreach ($a_certificates as $certificate) {
 			$certificatename = $certificate['name'];
 			$disabled = $certificate['status'] != 'active';
 			?>
@@ -210,13 +242,13 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				<?=$certificate['name'];?>
 			  </td>
 			  <td>
-				<?=$certificate['desc'];?>
+				<?=htmlspecialchars($certificate['desc']);?>
 			  </td>
 			  <td>
-				<?=$certificate['acmeaccount'];?>
+				<?=htmlspecialchars($certificate['acmeaccount']);?>
 			  </td>
-			  <td>
-				<?=date('d-m-Y H:i:s', $certificate['lastrenewal']);?>
+			  <td style="white-space: nowrap">
+				<?=date('r', $certificate['lastrenewal']);?>
 			  </td>
 			  <td>
 				  <?php
@@ -248,7 +280,7 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				<a href="acme_certificates_edit.php?id=<?=$certificatename;?>">
 					<?=acmeicon("edit", gettext("edit"))?>
 				</a>
-				<a href="acme_certificates.php?act=del&amp;id=<?=$certificatename;?>" onclick="return confirm('Do you really want to delete this entry?')">
+				<a href="acme_certificates.php?act=del&amp;id=<?=$certificatename;?>">
 					<?=acmeicon("delete", gettext("delete"))?>
 				</a>
 				<a href="acme_certificates_edit.php?dup=<?=$certificatename;?>">
@@ -263,19 +295,25 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 		</div>
 	</div>
 	<nav class="action-buttons">
-		<a href="acme_certificates_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
+		<a href="acme_certificates_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add certificate to the end of the list')?>">
 			<i class="fa fa-plus icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
-		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
-			<i class="fa fa-trash icon-embed-btn no-confirm"></i>
+		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected certificates"); ?>" title="<?=gettext('Delete selected certificates')?>">
+			<i class="fa fa-trash icon-embed-btn"></i>
 			<?=gettext("Delete"); ?>
 		</button>
-		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
+		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save certificate order')?>">
 			<i class="fa fa-save icon-embed-btn no-confirm"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>
+
+<div class="infoblock blockopen">
+	<?php print_info_box(sprintf(gettext('Use the search box to filter the list and show only matching entries. <br />' .
+						   'Click table column headers to sort table entries. ' .
+						   'Do not use the movement/reordering controls after sorting the table.'), '<br />'), 'info', false); ?>
+</div>
 </form>
 
 <script type="text/javascript">
@@ -376,6 +414,52 @@ events.push(function() {
 	// Check all of the rule checkboxes so that their values are posted
 	$('#order-store').click(function () {
 	   $('[id^=frc]').prop('checked', true);
+	});
+
+	// Make these controls plain buttons
+	$("#btnsearch").prop('type', 'button');
+	$("#btnclear").prop('type', 'button');
+
+	// Search for a term in the entry name and/or dn
+	$("#btnsearch").click(function() {
+		var searchstr = $('#searchstr').val().toLowerCase();
+		var table = $("table tbody");
+		var where = $('#where').val();
+
+		table.find('tr').each(function (i) {
+			var $tds = $(this).find('td'),
+				shortname = $tds.eq(2).text().trim().toLowerCase(),
+				descr = $tds.eq(3).text().trim().toLowerCase();
+
+			regexp = new RegExp(searchstr);
+			if (searchstr.length > 0) {
+				if (!(regexp.test(shortname) && (where != 1)) && !(regexp.test(descr) && (where != 0))) {
+					$(this).hide();
+				} else {
+					$(this).show();
+				}
+			} else {
+				$(this).show();	// A blank search string shows all
+			}
+		});
+	});
+
+	// Clear the search term and unhide all rows (that were hidden during a previous search)
+	$("#btnclear").click(function() {
+		var table = $("table tbody");
+
+		$('#searchstr').val("");
+
+		table.find('tr').each(function (i) {
+			$(this).show();
+		});
+	});
+
+	// Hitting the enter key will do the same as clicking the search button
+	$("#searchstr").on("keyup", function (event) {
+		if (event.keyCode == 13) {
+			$("#btnsearch").get(0).click();
+		}
 	});
 });
 //]]>

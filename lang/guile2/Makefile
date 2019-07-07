@@ -3,7 +3,7 @@
 
 PORTNAME=	guile
 PORTVERSION=	2.0.14
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	lang scheme
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	2
@@ -11,9 +11,8 @@ PKGNAMESUFFIX=	2
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	GNU Ubiquitous Intelligent Language for Extension
 
-LICENSE=	LGPL21
-
-BROKEN_mips64=		fails to build: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
+LICENSE=	GPLv3 LGPL3
+LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libltdl.so:devel/libltdl \
@@ -24,8 +23,10 @@ CONFLICTS_INSTALL=	guile-[0-9]*
 
 MAKE_JOBS_UNSAFE=	yes
 
-USES=		charsetfix gmake libtool makeinfo ncurses pathfix pkgconfig \
-		readline
+USES=		charsetfix ${USES_${ARCH}} gmake iconv libtool makeinfo ncurses pathfix \
+		pkgconfig readline
+USES_powerpc64=	compiler:c11
+
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

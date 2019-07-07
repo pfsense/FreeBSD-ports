@@ -12,6 +12,7 @@ MAINTAINER=	arundel@h3c.de
 COMMENT=	Open source Gameboy Advance emulator
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	nasm:devel/nasm
 LIB_DEPENDS=	libpng.so:graphics/png

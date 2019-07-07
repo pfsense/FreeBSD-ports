@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netdata
-PORTVERSION=	1.10.0
+PORTVERSION=	1.13.0
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt
 
@@ -20,6 +20,8 @@ USES=		autoreconf pathfix pkgconfig:both python shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	firehol
+
+SHEBANG_GLOB=	*
 
 NETDATA_CACHE=	/var/cache/${PORTNAME}
 NETDATA_LOG=	/var/log/${PORTNAME}
@@ -45,10 +47,15 @@ SUB_FILES=	${PORTNAME}.conf.sample
 USERS=		netdata
 GROUPS=		netdata
 
-OPTIONS_DEFINE=	FREEIPMI
+OPTIONS_DEFINE=	CUPS FREEIPMI
 OPTIONS_SUB=	YES
-FREEIPMI_DESC=	Enable support for freeipmi
 
+CUPS_DESC=	Enable support for cups
+CUPS_CONFIGURE_ENABLE=	plugin-cups
+CUPS_LIB_DEPENDS=	libcups.so:print/cups
+
+FREEIPMI_DESC=	Enable support for freeipmi
+FREEIPMI_CONFIGURE_ENABLE=	plugin-freeipmi
 FREEIPMI_LIB_DEPENDS=	libfreeipmi.so:sysutils/freeipmi
 
 post-patch:
@@ -67,7 +74,8 @@ post-install:
 	${MKDIR} ${STAGEDIR}${NETDATA_CACHE}
 	${MKDIR} ${STAGEDIR}${NETDATA_LOG}
 	${MKDIR} ${STAGEDIR}${NETDATA_PERST}
-	(for file in ${STAGEDIR}${ETCDIR}/*.conf ${STAGEDIR}${ETCDIR}/*/*.conf; do \
+	(for file in ${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*.conf \
+			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*/*.conf; do \
 		${MV} $$file $$file".sample"; \
 	done)
 

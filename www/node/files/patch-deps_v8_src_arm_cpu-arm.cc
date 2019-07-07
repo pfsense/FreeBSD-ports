@@ -1,4 +1,4 @@
---- deps/v8/src/arm/cpu-arm.cc.orig	2017-06-15 11:55:20 UTC
+--- deps/v8/src/arm/cpu-arm.cc.orig	2019-01-30 20:43:13 UTC
 +++ deps/v8/src/arm/cpu-arm.cc
 @@ -7,6 +7,9 @@
  #ifdef __QNXNTO__

@@ -3,8 +3,9 @@
 
 PORTNAME=	httping
 PORTVERSION=	2.5
+PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES=	http://www.vanheusden.com/httping/ \
+MASTER_SITES=	https://www.vanheusden.com/httping/ \
 		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -43,6 +44,10 @@ MAKE_ENV+=	SSL=yes
 USES+=		ssl
 .else
 MAKE_ENV+=	SSL=no
+.endif
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000
+MAKE_ENV+=	TFO=yes
 .endif
 
 do-install:

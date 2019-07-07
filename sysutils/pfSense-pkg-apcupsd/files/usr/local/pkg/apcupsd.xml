@@ -127,7 +127,7 @@
 				<tr>
 					<td>snmp</td>
 					<td>hostname:port:vendor:community</td>
-					<td>SNMP network link to an SNMP-enabled UPS device. Hostname is the ip address or hostname of the UPS on the network.<br />
+					<td>SNMP network link to an SNMP-enabled UPS device. Hostname is the IP address or hostname of the UPS on the network.<br />
 					Vendor can be can be "APC" or "APC_NOTRAP". "APC_NOTRAP" will disable SNMP trap catching; you usually want "APC".<br />
 					Port is usually 161. Community is usually "private".</td>
 				</tr>
@@ -282,7 +282,7 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>NIS IP</fielddescr>
+			<fielddescr>NIS IP Address</fielddescr>
 			<fieldname>nisip</fieldname>
 			<description>
 				<![CDATA[

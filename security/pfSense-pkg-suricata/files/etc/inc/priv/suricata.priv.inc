@@ -3,8 +3,8 @@
  * suricata.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,6 @@ $priv_list['page-services-suricata']['match'][] = "suricata/suricata_barnyard.ph
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_blocked.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_check_for_rule_updates.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_define_vars.php*";
-$priv_list['page-services-suricata']['match'][] = "suricata/suricata_download_rules.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_download_updates.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_app_parsers.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_libhtp_policy_engine.php*";

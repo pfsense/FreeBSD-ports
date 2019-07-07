@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	MathMod
-PORTVERSION=	8.0
+PORTVERSION=	9.0
+PORTREVISION=	1
 CATEGORIES=	math graphics
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -14,7 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	parisolab
 GH_PROJECT=	${PORTNAME:tl}
 
-USES=		dos2unix qmake qt:5
+USES=		compiler:c++11-lang dos2unix gl qmake qt:5
 USE_GL=		gl
 USE_QT=		buildtools_build core gui opengl qmake_build widgets
 

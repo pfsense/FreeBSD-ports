@@ -1,11 +1,11 @@
---- common.mk.orig	2017-08-18 15:46:39 UTC
+--- common.mk.orig	2018-08-28 18:46:05 UTC
 +++ common.mk
-@@ -38,7 +38,7 @@ install: all doc
- 	cp -f utils/newclient.sh $(SHAREDIR)
- 	chmod 755 $(SHAREDIR)/newclient.sh
- 	mkdir -p $(DOCDIR)
--	cp -f -L AUTHORS INSTALL NEWS README README.RU THANKS $(DOCDIR)
-+	cp -f -L AUTHORS INSTALL NEWS NEWS.RU README README.RU THANKS $(DOCDIR)
- 	chmod 644 $(DOCDIR)/*
+@@ -3,7 +3,7 @@
+ LDFLAGS = -X cypherpunks.ru/govpn.Version=$(VERSION)
+ PREFIX ?= /usr/local
+ BINDIR = $(DESTDIR)$(PREFIX)/bin
+-INFODIR = $(DESTDIR)$(PREFIX)/info
++INFODIR = $(DESTDIR)$(PREFIX)/share/info
+ SHAREDIR = $(DESTDIR)$(PREFIX)/share/govpn
+ DOCDIR = $(DESTDIR)$(PREFIX)/share/doc/govpn
  
- install-strip: install

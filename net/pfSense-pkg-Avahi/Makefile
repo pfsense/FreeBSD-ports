@@ -1,18 +1,18 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Avahi
-PORTVERSION=	1.13
+PORTVERSION=	2.0.0
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
-EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package Avahi
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libavahi-core.so:net/avahi-app
+RUN_DEPENDS=	avahi-app>=0:net/avahi-app
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -24,22 +24,21 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/avahi
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/avahi
+	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/avahi.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/avahi.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/avahi.inc \
-		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/avahi/avahi.inc \
+		${STAGEDIR}${PREFIX}/pkg/avahi
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/avahi.priv.inc \
 		${STAGEDIR}/etc/inc/priv
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/avahi/ssh.service \
-		${STAGEDIR}${PREFIX}/etc/avahi
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/avahi/sftp-ssh.service \
-		${STAGEDIR}${PREFIX}/etc/avahi
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/avahi_settings.php \
+		${STAGEDIR}${PREFIX}/www
+
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
 

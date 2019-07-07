@@ -3,7 +3,7 @@
 
 PORTNAME=	librsb
 PORTVERSION=	1.2.0r7
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	SF/librsb
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/r/-rc/}
@@ -27,6 +27,8 @@ SHEBANG_FILES=	scripts/*.sh
 USE_LDCONFIG=	yes
 
 MANUAL_PACKAGE_BUILD=	Optimizes for the local machine
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -E s/sed/gsed/g ${WRKSRC}/scripts/*.sh

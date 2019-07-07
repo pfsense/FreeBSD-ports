@@ -3,7 +3,7 @@
 
 PORTNAME=	vdr-plugin-ttxtsubs
 PORTVERSION=	0.2.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	multimedia
 MASTER_SITES=	http://projects.vdr-developer.org/attachments/download/725/
 DISTNAME=	${PORTNAME:S/-plugin-/-/}-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
@@ -14,7 +14,6 @@ COMMENT=	Video Disk Recorder - teletext subtitle plugin
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_12= does not build with newer clang
 PATCH_STRIP=	-p1
 WRKSRC=		${WRKDIR}/${PLUGIN}-${DISTVERSION}
 

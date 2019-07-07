@@ -3,7 +3,7 @@
 
 PORTNAME=	blobby
 PORTVERSION=	1.0
-PORTREVISION=	6
+PORTREVISION=	10
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Blobby%20Volley%202%20%28Linux%29/${PORTVERSION}
@@ -15,7 +15,6 @@ COMMENT=	Official continuation of the famous Blobby Volley 1.x game
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to build: cc1plus: unrecognized command line option "-std=c++11"
 NOT_FOR_ARCHS=		aarch64
 NOT_FOR_ARCHS_REASON=	fails to compile: I can't tell what endian-ness to use for your architecture
 
@@ -23,7 +22,8 @@ LIB_DEPENDS=	libphysfs.so:devel/physfs
 BUILD_DEPENDS=	zip:archivers/zip \
 		${LOCALBASE}/include/boost/crc.hpp:devel/boost-libs
 
-USES=		cmake dos2unix localbase:ldflags pkgconfig
+USES=		cmake compiler:c++11-lang dos2unix gl localbase:ldflags \
+		pkgconfig
 DOS2UNIX_REGEX=	.*\.(c|h|cpp)
 CMAKE_ARGS=	-DDATADIR:PATH="${DATADIR}"
 WRKSRC=		${WRKDIR}/blobby-${PORTVERSION}

@@ -3,6 +3,7 @@
 
 PORTNAME=	mygui
 PORTVERSION=	3.2.3.git20171212
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits graphics devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -21,15 +22,13 @@ BUILD_WRKSRC=	${WRKSRC}/${MYGUI_SUBDIR}
 INSTALL_WRKSRC=	${WRKSRC}/${MYGUI_SUBDIR}
 .endif
 
-BROKEN_powerpc64=	fails to build
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	MyGUI
 GH_TAGNAME=	b1e4bc8
 
 MYGUI_RENDERSYSTEM?=	0
 
-USES=		cmake compiler:c++11-lib pkgconfig
+USES=		cmake:insource compiler:c++11-lib pkgconfig
 CMAKE_ARGS=	-DMYGUI_BUILD_DEMOS=FALSE \
 		-DMYGUI_BUILD_TOOLS=FALSE \
 		-DMYGUI_BUILD_DOCS=FALSE \

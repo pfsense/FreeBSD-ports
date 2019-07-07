@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libmediainfo
-PORTVERSION=	18.05
+PORTVERSION=	18.12
 CATEGORIES=	multimedia
 MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -22,11 +22,13 @@ OPTIONS_DEFINE=	CURL MMS TINYXML2
 OPTIONS_DEFAULT=TINYXML2
 TINYXML2_DESC=	Use textproc/tinyxml2 instead of bundled one
 
+USES=		alias compiler:c++11-lang libtool localbase pathfix pkgconfig tar:xz
+
 CONFIGURE_ARGS=	--enable-shared --enable-static
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
-USES=		alias libtool localbase pathfix pkgconfig tar:xz
 
 WRKSRC=		${WRKDIR}/MediaInfo_CLI_GNU_FromSource/MediaInfoLib/Project/GNU/Library
 

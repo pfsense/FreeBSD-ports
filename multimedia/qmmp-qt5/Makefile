@@ -2,7 +2,7 @@
 
 PORTNAME=	qmmp
 PORTVERSION=	1.2.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	multimedia
 MASTER_SITES=	http://qmmp.ylsoftware.com/files/ \
 	SF/qmmp-dev/${PORTNAME}/
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 CONFLICTS=	${PORTNAME}-0.*
 PORTSCOUT=	limit:^1\..*
 
-USES=		cmake:outsource pathfix pkgconfig qt:5 tar:bzip2
+USES=		cmake pathfix pkgconfig qt:5 tar:bzip2
 USE_QT=		core gui network widgets xml \
 		buildtools_build linguisttools_build qmake_build
 USE_LDCONFIG=	yes

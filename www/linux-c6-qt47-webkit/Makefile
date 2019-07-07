@@ -12,11 +12,11 @@ DIST_SUBDIR=	atrpms
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Qt WebKit implementation (Linux CentOS ${LINUX_DIST_VER})
 
-DESCR=		${.CURDIR}/../../devel/qt4/pkg-descr
+DESCR=		${.CURDIR}/../../devel/linux-c6-qt47/pkg-descr
 RPMVERSION=	1_18.el6
 USES=		linux:c6
 USE_LDCONFIG=	yes
-USE_LINUX=	fontconfig png xorglibs sqlite3 qt47 qt47-x11
+USE_LINUX=	fontconfig png xorglibs sqlite3 qt qt-x11
 USE_LINUX_RPM=	yes
 
 .include <bsd.port.mk>

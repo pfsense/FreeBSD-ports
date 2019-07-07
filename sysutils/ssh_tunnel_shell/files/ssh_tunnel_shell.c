@@ -62,7 +62,7 @@ main(__unused int argc, __unused char *argv[])
 	const char *user, *tt;
 	char buf[MAXLINE];
 	char c;
-	int fd, nbytes;
+	int fd, msent, nbytes;
 
 	if ((tt = ttyname(0)) == NULL)
 		tt = "UNKNOWN";
@@ -72,21 +72,25 @@ main(__unused int argc, __unused char *argv[])
 	syslog(LOG_CRIT, "Login by %s on %s", user, tt);
 	closelog();
 
-	
+	msent = 0;
 	if (fexist(PATH)) {
 		fd = open(PATH, O_RDONLY);
 		if (fd > 0) {
-			while(nbytes > 0) {
+			do {
 				bzero(buf, MAXLINE);
 				nbytes = read(fd, buf, MAXLINE - 1);
-				if (nbytes > 0) {
+				if (nbytes < 0)
+					break;
+				else if (nbytes > 0) {
 					buf[nbytes] = '\0';
 					printf("%s", buf);
+					msent++;
 				}
-			}
+			} while (nbytes > 0);
 			close(fd);
 		}
-	} else
+	}
+	if (msent == 0)
 		printf("%s", MESSAGE);
 	while (gettimeofday(&tv, NULL) < 0)
 		;

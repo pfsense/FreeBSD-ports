@@ -2,9 +2,9 @@
 
 PORTNAME=	hunspell
 PORTVERSION=	20161207
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	german textproc
-MASTER_SITES=	http://www.j3e.de/ispell/igerman98/dict/ \
+MASTER_SITES=	https://www.j3e.de/ispell/igerman98/dict/ \
 		LOCAL/sunpoet/${PORTNAME}
 DISTNAME=	igerman98-${PORTVERSION}
 DIST_SUBDIR=	${PORTNAME}
@@ -15,17 +15,21 @@ COMMENT=	German hunspell dictionaries
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
+BROKEN_armv6=	fails to install: hunspell-capmain-plus_de_DE.tmp: Error 1
+BROKEN_armv7=	fails to install: hunspell-capmain-plus_de_DE.tmp: Error 1
+
 BUILD_DEPENDS=	aspell:textproc/aspell \
+		gsed:textproc/gsed \
 		hunspell:textproc/hunspell
 
-BROKEN_armv6=		fails to install: hunspell-capmain-plus_de_DE.tmp: Error 1
-BROKEN_armv7=		fails to install: hunspell-capmain-plus_de_DE.tmp: Error 1
-
 USES=		gmake perl5 shebangfix tar:bzip2
+USE_PERL5=	build
+
 ALL_TARGET=	hunspell-all
 NO_ARCH=	yes
-USE_PERL5=	build
 SHEBANG_FILES=	bin/*.pl
+
+BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 
 PLIST_FILES=	%%DATADIR%%/de_AT.aff \
 		%%DATADIR%%/de_AT.dic \

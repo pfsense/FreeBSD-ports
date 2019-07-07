@@ -3,6 +3,7 @@
 
 PORTNAME=	hte
 PORTVERSION=	2.1.1.g20161206
+PORTREVISION=	2
 CATEGORIES=	editors
 
 MAINTAINER=	rene@FreeBSD.org
@@ -10,8 +11,6 @@ COMMENT=	File editor/viewer/analyzer for executables
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_FreeBSD_10=	misgenerated yacc code
 
 USES=		autoreconf compiler:c++14-lang makeinfo ncurses tar:bzip2
 USE_GITHUB=	yes

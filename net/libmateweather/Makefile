@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libmateweather
-PORTVERSION=	1.20.0
+PORTVERSION=	1.20.1
 CATEGORIES=	net mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -25,5 +25,7 @@ INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.mate.weather.gschema.xml
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

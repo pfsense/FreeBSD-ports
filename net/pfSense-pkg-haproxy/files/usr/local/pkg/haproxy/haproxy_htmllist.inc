@@ -58,7 +58,7 @@ class HaproxyHtmlList
 		phparray_to_javascriptarray($table_def, "tabledefinition_".$this->tablename,Array('/*','/*/*'));
 		phparray_to_javascriptarray($this->fields, "fields_".$this->tablename,Array('/*','/*/name','/*/type','/*/text','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
 		if (!is_array($this->fields_details)) {
-			$this -> fields_details = array();
+			$this->fields_details = array();
 		}
 		if (count($this->fields_details) != 0) {
 			phparray_to_javascriptarray($this->fields_details,"fields_details_".$this->tablename,Array('/*','/*/name','/*/columnheader','/*/description','/*/type','/*/text','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name','/*/items/*/*/name'));
@@ -82,9 +82,11 @@ class HaproxyHtmlList
 			}
 			foreach($fields as $item) {
 				$itemname = $item['name'];
-				$value[$itemname] = $_POST[$this->tablename.$itemname.$x];
-				if ($item['type'] == 'textarea') {
-					$value[$itemname] = base64_encode($value[$itemname]);
+				if (!empty($_POST[$this->tablename.$itemname.$x])) {
+					$value[$itemname] = $_POST[$this->tablename.$itemname.$x];
+					if ($item['type'] == 'textarea') {
+						$value[$itemname] = base64_encode($value[$itemname]);
+					}
 				}
 				$add_item |= isset($_POST[$this->tablename.$itemname.$x]);
 			}
@@ -155,6 +157,7 @@ class HaproxyHtmlList
 			} else {
 				$result .= htmlspecialchars($itemvalue);
 			}
+			$result = "<div id='".$itemnamenr."_disp'>".$result."</div>";
 		}
 		return $result;
 	}
@@ -174,6 +177,9 @@ class HaproxyHtmlList
 					<tr>
 						<th><!-- checkbox --></th>";
 		foreach($items as $item){
+			if ($item['type'] == 'hidden') {
+				continue;
+			}
 			$result .= "<th>{$item['columnheader']}</th>";
 		}
 		$result .= "<th>Actions</th>
@@ -203,9 +209,12 @@ class HaproxyHtmlList
 
 					$leftitem = true;
 					foreach($items as $item) {
-						$result .= "<td>";
 						$itemname = $item['name'];
 						$itemvalue = $value[$itemname];
+						if ($item['type'] == 'hidden') {
+							continue;
+						}
+						$result .= "<td>";
 						if (isset($item['customdrawcell'])) {
 							$result .= $item['customdrawcell']($this, $item, $itemvalue, false, $itemname, $counter);
 						} else {
@@ -216,17 +225,19 @@ class HaproxyHtmlList
 
 					}
 					$result .= "
-					<td class='action-icons'>
+					<td class='action-buttons'>
 					<a onclick='editRow({$counter}); return false;'>".haproxyicon('edit','edit entry')."</a>
 					<a onclick='deleteRow({$counter}, \"{$tablename}\"); return false;'>".haproxyicon('delete','delete entry')."</a>
 					<a onclick='dupRow({$counter}, \"{$tablename}\"); return false;'>".haproxyicon('clone','duplicate entry')."</a>
 					";
-					if (empty($this->noindex)) {
+/* // shouldnt need this anymore.. the checkbox+anchor is implemented everywhere..
+ * 					if (empty($this->noindex)) {
 						$result .= "
 						<a onclick='moveRowUp({$counter}, \"{$tablename}\"); return false;'>".haproxyicon('moveup','move row up')."</a>
 						<a onclick='moveRowDown({$counter}, \"{$tablename}\"); return false;'>".haproxyicon('movedown','move row down')."</a>
 						";
 					}
+*/
 					$result .= "
 					</td>";
 					$result .= "</tr>";
@@ -237,9 +248,15 @@ class HaproxyHtmlList
 							<input type='checkbox' id='frec{$counter}' onClick='fr_toggle_two({$counter},this)' name='{$tablename}_row[]' value='{$counter}'/>
 							<a class='fa fa-anchor' id='Xmove_{$counter}' onClick='moveRowUpAboveAnchor({$counter}, \"{$tablename}\")'  title='".gettext("Move checked entries to here")."'></a>
 						</td>";
+				$hiddenitems = "";
 				foreach($items as $item){
 					$itemname = $item['name'];
 					$itemvalue = $value[$itemname];
+					if ($item['type'] == 'hidden') {
+						$rowitemname = $this->tablename . $itemname . $counter;
+						$hiddenitems .= "<input name='{$rowitemname}' type='hidden' value='{$itemvalue}' />";
+						continue;
+					}		
 					$result .= "<td>".$key;
 					if (isset($item['customdrawcell'])) {
 						$result .= $item['customdrawcell']($this, $item, $itemvalue, true, $itemname, $counter);
@@ -250,17 +267,12 @@ class HaproxyHtmlList
 					$key = "";
 				}
 				$result .= "
-		<td class='action-icons'>
+		<td class='action-buttons'>
+			{$hiddenitems}
 			<input name='{$tablename}_rowindex[]' id='{$tablename}_rowindex{$counter}' class='hidden' value='{$counter}' />
 			<a onclick='deleteRow({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('delete','delete entry')."</a>
 			<a onclick='dupRow({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('clone','duplicate entry')."</a>
 			";
-			if (empty($this->noindex)) {
-				$result .= "
-				<a onclick='moveRowUp({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('moveup','move row up')."</a>
-				<a onclick='moveRowDown({$counter}, \"{$tablename}\"); return false;' >".haproxyicon('movedown','move row down')."</a>
-				";
-			}
 			$result .= "
 		</td>";
 				$result .= "</tr>";
@@ -280,6 +292,7 @@ EOT
 						$leftitem = true;
 						foreach($itemdetails as $item) {
 							$itemname = $item['name'];
+							$itemid = "{$tablename}{$itemname}{$counter}";
 							$itemvalue = $value[$itemname];
 							if ($this->fields_details_showfieldfunction != null) {
 								// filter context un-related items through customizable function.
@@ -291,7 +304,7 @@ EOT
 							if (empty($itemvalue)) {
 								continue;
 							}
-							$result .= "<div style='float: left;padding-right: 2px;'>";
+							$result .= "<div style='float: left;padding-right: 2px;' id='".$itemid."_disp'>";
 							$tdclass = "";
 							if (!$leftitem) {
 								$result .= ", ";
@@ -449,6 +462,9 @@ function haproxy_htmllist_js(){
 		tr.appendChild(td);
 
 		for (var i in items) {
+			if (items[i]['type']=='hidden') {
+				continue;//dont copy hidden fields.. like a id field that should stay unique
+			}
 			fieldhtml = createFieldHtml(tableId, items[i], totalrows);
 			td = d.createElement("td");
 			td.innerHTML = fieldhtml;
@@ -456,7 +472,7 @@ function haproxy_htmllist_js(){
 			fieldcount += 1;
 		}
 		td = d.createElement("td");
-		td.setAttribute("class","action-icons");
+		td.setAttribute("class","action-buttons");
 
 		// Recreate the action icons.
 		var actions = "";

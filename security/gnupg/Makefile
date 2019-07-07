@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnupg
-PORTVERSION=	2.2.9
+PORTVERSION=	2.2.15
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 
@@ -22,34 +22,36 @@ BUILD_DEPENDS=	libassuan>=2.5.1:security/libassuan \
 		libgpg-error>=1.16:security/libgpg-error
 RUN_DEPENDS=	pinentry:security/pinentry
 
+USES=		compiler:c11 cpe gmake iconv pkgconfig readline sqlite tar:bzip2
+
 CONFLICTS=	gnupg-2.0.* dirmngr-[0-9]*
 CPE_VENDOR=	gnupg
 
-USES=		compiler:c11 cpe gmake iconv pkgconfig readline sqlite tar:bzip2
 CONFIGURE_ARGS=	--disable-ntbtls --disable-wks-tools \
 		--enable-gpg-is-gpg2 --enable-symcryptrun
 GNU_CONFIGURE=	yes
 INFO=		gnupg
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=	GNUTLS LDAP SCDAEMON NLS DOCS SUID_GPG
+SUB_FILES=	pkg-message
+
+OPTIONS_DEFINE=	DOCS GNUTLS LARGE_RSA LDAP NLS SCDAEMON SUID_GPG
 OPTIONS_DEFAULT=GNUTLS SCDAEMON
-NO_OPTIONS_SORT=yes
 OPTIONS_SUB=	yes
 
+LARGE_RSA_DESC=	Enable support for 8192-bit RSA keys
 LDAP_DESC=	LDAP keyserver interface
 SCDAEMON_DESC=	Enable Smartcard daemon (with libusb)
 SUID_GPG_DESC=	Install GPG with suid
-# In jail, SUID is required to avoid warning
-# (security.bsd.unprivileged_mlock sysctl is not used in jail).
 
 GNUTLS_CONFIGURE_ENABLE=gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 
+LARGE_RSA_CONFIGURE_ENABLE=	large-secmem
+
 LDAP_CONFIGURE_WITH=	ldap=${LOCALBASE}
 LDAP_LIBS=		-L${LOCALBASE}/lib
 LDAP_USE=		OPENLDAP=yes
-LDAP_USES=		readline
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext

@@ -26,19 +26,10 @@ require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-	$config['installedpackages']['haproxy']['ha_pools'] = array();
-}
+haproxy_config_init();
 
-if (!is_array($config['installedpackages']['haproxy']['files'])) {
-	$config['installedpackages']['haproxy']['files'] = array();
-}
-
-$a_files = &$config['installedpackages']['haproxy']['files']['item'];
-if (!is_array($a_files)) $a_files = array();
-$a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
-if (!is_array($a_pools)) $a_pools = array();
-
+$a_files = &getarraybyref($config,'installedpackages','haproxy','files','item');
+$a_pools = &getarraybyref($config,'installedpackages','haproxy','ha_pools','item');
 
 $fields_files = array();
 $fields_files[0]['name']="name";
@@ -83,18 +74,17 @@ if ($_POST) {
 
 		// replace references in backends to renamed 'files'
 		foreach($a_pools as &$backend) {
-			if (is_arrayset($backend,'errorfiles','item')) {
-				foreach($backend['errorfiles']['item'] as &$errorfile) {
-					$found = false;
-					foreach($a_files as $key => $file) {
-						if ($errorfile['errorfile'] == $key) {
-							$errorfile['errorfile'] = $file['name'];
-							$found = true;
-						}
+			$a_errorfiles = getarraybyref($backend, 'errorfiles', 'item');
+			foreach($a_errorfiles as &$errorfile) {
+				$found = false;
+				foreach($a_files as $key => $file) {
+					if ($errorfile['errorfile'] == $key) {
+						$errorfile['errorfile'] = $file['name'];
+						$found = true;
 					}
-					if (!$found) {
-						$input_errors[] = "Errorfile marked for deletion: " . $errorfile['errorfile'] . " which is used in backend " . $backend['name'];
-					}
+				}
+				if (!$found) {
+					$input_errors[] = "Errorfile marked for deletion: " . $errorfile['errorfile'] . " which is used in backend " . $backend['name'];
 				}
 			}
 		}

@@ -3,7 +3,7 @@
 
 PORTNAME=	traingame
 PORTVERSION=	0.3
-PORTREVISION=	14
+PORTREVISION=	18
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
@@ -16,13 +16,11 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libxerces-c.so:textproc/xerces-c3 \
 		libboost_filesystem.so:devel/boost-libs
 
-BROKEN_powerpc64=	fails to compile: Main.cpp.o: undefined reference to boost::program_options::arg
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	nickg
 GH_TAGNAME=	cb6513e
 
-USES=		cmake compiler:c++11-lib dos2unix pkgconfig
+USES=		cmake:insource compiler:c++11-lib dos2unix pkgconfig
 DOS2UNIX_GLOB=	*.mtl *.obj
 USE_CXXSTD=	c++11
 USE_SDL=	sdl image

@@ -1,11 +1,11 @@
---- lib/livestatus/CMakeLists.txt.orig	2017-03-29 09:55:49.000000000 +0200
-+++ lib/livestatus/CMakeLists.txt	2017-05-30 16:24:26.692057000 +0200
-@@ -48,7 +48,7 @@ set_target_properties (
+--- lib/livestatus/CMakeLists.txt.orig	2018-10-11 12:01:05 UTC
++++ lib/livestatus/CMakeLists.txt
+@@ -71,7 +71,7 @@ set_target_properties (
  )
  
  install_if_not_exists(
 -  ${PROJECT_SOURCE_DIR}/etc/icinga2/features-available/livestatus.conf
 +  ${PROJECT_SOURCE_DIR}/etc/icinga2/features-available/livestatus.conf.sample
-   ${CMAKE_INSTALL_SYSCONFDIR}/icinga2/features-available
+   ${ICINGA2_CONFIGDIR}/features-available
  )
  

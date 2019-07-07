@@ -3,6 +3,7 @@
 
 PORTNAME=	ocre
 PORTVERSION=	0.043
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://lem.eui.upm.es/pub/ocre/
 DISTNAME=	${PORTNAME}_v${PORTVERSION:S/./_/}
@@ -13,14 +14,14 @@ COMMENT=	Simple optical character recognition solution
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libaspell.so:textproc/aspell
-RUN_DEPENDS=	display:graphics/ImageMagick \
+RUN_DEPENDS=	display:graphics/ImageMagick6 \
 		gnuplot:math/gnuplot \
 		ispell:textproc/aspell-ispell
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/${PORTNAME}
 
+USES=		compiler:c11 gettext gmake pkgconfig tar:tgz
 USE_GNOME=	gtk20
-USES=		gettext gmake pkgconfig tar:tgz
 MAKE_ARGS=	CC="${CC}" CFLAGS1="${CFLAGS}"
 
 post-extract:

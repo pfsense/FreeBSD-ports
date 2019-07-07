@@ -1,5 +1,5 @@
-TIMESTAMP = 1528741888
-SHA256 (PointCloudLibrary-pcl-pcl-1.8.1_GH0.tar.gz) = 5a102a2fbe2ba77c775bf92c4a5d2e3d8170be53a68c3a76cfc72434ff7b9783
-SIZE (PointCloudLibrary-pcl-pcl-1.8.1_GH0.tar.gz) = 66787596
-SHA256 (2309bdab20fb2a385d374db6a87349199279db18.patch) = 78610e04b7119a23b8841c656caaa41a28ab26d4820ee1f9616d7abf107fde9f
-SIZE (2309bdab20fb2a385d374db6a87349199279db18.patch) = 1853
+TIMESTAMP = 1543643496
+SHA256 (PointCloudLibrary-pcl-pcl-1.9.1_GH0.tar.gz) = 0add34d53cd27f8c468a59b8e931a636ad3174b60581c0387abb98a9fc9cddb6
+SIZE (PointCloudLibrary-pcl-pcl-1.9.1_GH0.tar.gz) = 67158067
+SHA256 (5605910a26f2.patch) = dedcf1520051a7b07bf894114368eab4b257ac2f0f08d3ab77f52faae68260e3
+SIZE (5605910a26f2.patch) = 1347

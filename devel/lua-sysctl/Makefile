@@ -11,13 +11,13 @@ COMMENT=	Small sysctl(3) interface for lua
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_FreeBSD_10=	does not build (error: use of undeclared identifier 'CTLTYPE_S8')
-
 USES=		pkgconfig lua
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kAworu
 GH_PROJECT=	lua-${PORTNAME}
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e "s/5.1/${LUA_VER}/g" ${WRKSRC}/Makefile

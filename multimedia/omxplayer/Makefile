@@ -3,10 +3,13 @@
 
 PORTNAME=	omxplayer
 PORTVERSION=	20161004
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	multimedia
 
-MAINTAINER=	mikael.urankar@gmail.com
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	96800576209b.patch:-p1
+
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Raspberry Pi video player
 
 LICENSE=	GPLv2

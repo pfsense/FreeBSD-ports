@@ -3,7 +3,7 @@
 
 PORTNAME=	Tie-LevelDB
 PORTVERSION=	0.07
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,19 +14,20 @@ COMMENT=	Perl Interface to the Google LevelDB NoSQL database
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BROKEN_aarch64=	does not build: error: Please implement AtomicPointer for this platform
-BROKEN_powerpc64=	does not build: error: unrecognized command line option -std=c++0x
+NOT_FOR_ARCHS=		aarch64 powerpc powerpc64 powerpcspe
+NOT_FOR_ARCHS_REASON=	does not build: Please implement AtomicPointer for this platform
 BROKEN_sparc64=	does not build: unrecognized command line options
 
 LIB_DEPENDS=	libleveldb.so:databases/leveldb
 
-MAKE_ARGS=	CC="${CXX}"
+USES=		compiler:c++0x gmake localbase perl5
 USE_PERL5=	configure
-USES=		compiler gmake localbase perl5
+
+MAKE_ARGS=	CC="${CXX}"
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang
+.if ${CHOSEN_COMPILER_TYPE} == clang
 CFLAGS+=	-Wno-reserved-user-defined-literal
 .endif
 

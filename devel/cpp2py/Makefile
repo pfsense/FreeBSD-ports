@@ -3,7 +3,7 @@
 PORTNAME=	cpp2py
 DISTVERSION=	1.5-19
 DISTVERSIONSUFFIX=	-g5fd079c
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,7 +21,7 @@ BUILD_DEPENDS=	${PY_DEPENDS} \
 RUN_DEPENDS=	${PY_DEPENDS} \
 		llvm${LLVM_VER}>0:devel/llvm${LLVM_VER}
 
-USES=		cmake:outsource compiler:c++14-lang python:2.7 shebangfix
+USES=		cmake compiler:c++14-lang python:2.7 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	TRIQS
 SHEBANG_FILES=	bin/c*

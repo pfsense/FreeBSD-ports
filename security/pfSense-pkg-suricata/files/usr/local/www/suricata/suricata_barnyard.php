@@ -3,11 +3,11 @@
  * suricata_barnyard.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,9 +92,7 @@ if ($_POST['save']) {
 
 		// No need to rebuild rules for Barnyard2 changes
 		$rebuild_rules = false;
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -196,9 +194,7 @@ if ($_POST['save']) {
 
 		// No need to rebuild rules for Barnyard2 changes
 		$rebuild_rules = false;
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 
 		// If disabling Barnyard2 on the interface, stop any
 		// currently running instance.  If an instance is
@@ -477,7 +473,7 @@ print($form);
 ?>
 
 <div class="infoblock">
-	<?=print_info_box('<strong>Note:</strong> Please save your settings before you click start.', info)?>
+	<?=print_info_box('<strong>Note:</strong> Please save your settings before you click start.', 'info')?>
 </div>
 
 <script type="text/javascript">

@@ -17,6 +17,8 @@ CONFLICTS=	hping-devel-[0-9]*
 
 WRKSRC=		${WRKDIR}/hping2-rc3
 
+BROKEN_aarch64=	fails to build: cannot find the byte order for this architecture, fix bytesex.h
+
 USES=		gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--force-libpcap
@@ -27,11 +29,7 @@ PORTDOCS=	AS-BACKDOOR HPING2-HOWTO.txt HPING2-IS-OPEN \
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100030
 EXTRA_PATCHES=	${FILESDIR}/extra-patch-sendip.c
-.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/hping2 ${STAGEDIR}${PREFIX}/sbin/hping
@@ -42,4 +40,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/docs/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	drumgizmo
-PORTVERSION=	0.9.14
+PORTVERSION=	0.9.16
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.drumgizmo.org/releases/${PORTNAME}-${PORTVERSION}/
 
@@ -12,8 +13,7 @@ COMMENT=	Multichannel drum sampler
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	lv2>=1.14.0:audio/lv2 \
-		pkg-config:devel/pkgconf
+BUILD_DEPENDS=	lv2>=1.14.0:audio/lv2
 LIB_DEPENDS=	libsmf.so:audio/libsmf \
 		libzita-resampler.so:audio/zita-resampler \
 		libjack.so:audio/jack \
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libsmf.so:audio/libsmf \
 		libexpat.so:textproc/expat2
 
 GNU_CONFIGURE=	yes
-USES=		gettext-runtime libtool
+USES=		compiler:c++11-lang gettext-runtime gnome libtool pkgconfig
 USE_GNOME=	glib20
 USE_XORG=	x11 xext
 

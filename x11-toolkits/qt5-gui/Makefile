@@ -22,7 +22,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libxkbcommon.so:x11/libxkbcommon
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		jpeg localbase qmake:no_env qt-dist:5,base
+USES=		compiler:c++11-lang jpeg localbase qmake:no_env qt-dist:5,base
 USE_GL=		gl egl
 USE_GNOME=	glib20
 USE_QT=		core dbus network qmake_build buildtools_build
@@ -30,6 +30,7 @@ USE_XORG=	ice sm x11 xi xrender
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-eglfs \
 		-no-evdev \
+		-no-libudev \
 		-system-harfbuzz
 # Explicitely set to c++14 as to net get c++17/c++1z, as libX11's headers
 # are using the obsolete 'register' key word.

@@ -1,17 +1,20 @@
---- ./Makefile.in.orig	2002-10-20 22:27:56.000000000 +0200
-+++ ./Makefile.in	2014-01-03 01:50:13.000000000 +0100
-@@ -1,11 +1,11 @@
- # Makefile for bmf
+--- Makefile.in.orig	2002-10-09 16:41:56 UTC
++++ Makefile.in
+@@ -28,7 +28,7 @@ bmf.o: bmf.c
+ 	$(CC) $(CFLAGS) -DPACKAGE=\"bmf\" -DVERSION=\"$(VERSION)\" -c $<
  
--BINDIR=/usr/bin
--MANDIR=/usr/share/man
-+BINDIR=${PREFIX}/bin
-+MANDIR=${PREFIX}/man
+ bmf.1: bmf.xml
+-	xsltproc --docbook db2man/docbook.xsl bmf.xml
++	xmlto --skip-validation man bmf.xml
  
- VERSION=0.9.4
+ bmfconv: bmfconv.o dbmysql.o dbdb.o dbtext.o dbh.o lex.o vec.o str.o
+ 	$(CC) -o $@ bmfconv.o dbmysql.o dbdb.o dbtext.o dbh.o lex.o vec.o str.o $(LDFLAGS)
+@@ -37,7 +37,7 @@ bmfconv.o: bmfconv.c
+ 	$(CC) $(CFLAGS) -DPACKAGE=\"bmfconv\" -DVERSION=\"$(VERSION)\" -c $<
  
--CC=@CC@
-+CC?=@CC@
- CFLAGS=@CFLAGS@
- LDFLAGS=@LDFLAGS@
- SYSLIBS=@SYSLIBS@
+ bmfconv.1: bmfconv.xml
+-	xsltproc --docbook db2man/docbook.xsl bmfconv.xml
++	xmlto man bmfconv.xml
+ 
+ install: checkroot bmf bmf.1 bmfconv bmfconv.1
+ 	[ -d $(DESTDIR)$(BINDIR) ] || mkdir -p $(DESTDIR)$(BINDIR)

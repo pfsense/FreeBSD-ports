@@ -20,7 +20,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE_GNU_GPL_2.txt
 
 LIB_DEPENDS=	libosg.so:graphics/osg
 
-USES=		alias cmake:noninja lua:51 tar:xz
+USES=		alias compiler:c++11-lang cmake:insource,noninja gl lua:51 tar:xz
+USE_CXXSTD=	gnu++98
 USE_GL=		gl glu
 
 MISC_VER=	20091027
@@ -35,7 +36,7 @@ PORTDOCS=	*
 DESKTOP_ENTRIES=	"Palomino" "" "${PORTNAME}" \
 			"${PORTNAME}" "Game;ArcadeGame;" ""
 
-OPTIONS_DEFINE=	GUI PLIB SDL
+OPTIONS_DEFINE=	DOCS GUI PLIB SDL
 OPTIONS_DEFAULT=GUI SDL
 OPTIONS_SUB=	yes
 

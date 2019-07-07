@@ -4,6 +4,7 @@ PORTNAME=	seahub
 DISTVERSIONPREFIX=	v
 DISTVERSION=	${SEAHUB_VER}
 DISTVERSIONSUFFIX=	-pro
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	ultima@FreeBSD.org
@@ -25,11 +26,12 @@ RUN_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}django-formtools>=0:www/py-django-formtools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-post_office>=0:www/py-django-post_office@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-constance>=0:www/py-django-constance@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}django-webpack-loader>=0.6.0:www/py-django-webpack-loader@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gunicorn>=0:www/py-gunicorn@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}flup6>=0:www/py-flup6@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}chardet>=0:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests-oauthlib>=0.6.0:www/py-requests-oauthlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}openpyxl>=0:textproc/py-openpyxl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR} \
@@ -66,10 +68,7 @@ USE_RC_SUBR=	${PORTNAME}
 
 SUB_FILES=	pkg-message
 
-do-patch:
-	echo "${WRKSRC}..."
-	@${MKDIR} ${WRKSRC}/runtime
-	${CP} ${FILESDIR}/runtime_seahub.conf ${WRKSRC}/runtime/seahub.conf
+post-patch:
 	${REINPLACE_CMD} -Ee "s|SEAFILE_VERSION = '[0-9]+\.[0-9]+\.[0-9]+'|SEAFILE_VERSION = '${SEAFILE_VER}'|" \
 			 ${WRKSRC}/seahub/settings.py
 	${REINPLACE_CMD} -e 's|##FIX_WWWDIR##|${PREFIX}/${HAIWENDIR}|' ${WRKSRC}/*.template
@@ -89,10 +88,8 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${SEAFILE_SERVER}/runtime/ \
 		${STAGEDIR}${PREFIX}/${SEAHUBDIR} ${STAGEDIR}${PREFIX}/${SEAHUB_DATA_DIR} \
 		${STAGEDIR}${PREFIX}/${SEAHUB_DATA_DIR}/custom
-	${INSTALL} ${WRKSRC}/runtime/seahub.conf \
-		${STAGEDIR}${PREFIX}/${SEAFILE_SERVER}/runtime/
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${SEAHUBDIR} \
-	"! -name Makefile ! -name runtime ! -name seahub.conf ! -name avatars \
+	"! -name Makefile ! -name seahub.conf ! -name avatars \
 	! -name default-non-register.jpg ! -name default.png ! -name groups")
 	(cd ${WRKSRC}/media && ${COPYTREE_SHARE} ./avatars \
 		 ${STAGEDIR}${PREFIX}/${SEAHUB_DATA_DIR})

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	WWW-Contact
-PORTVERSION=	0.47
-PORTREVISION=	1
+PORTVERSION=	0.51
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:FAYLAND
@@ -15,7 +14,8 @@ COMMENT=	Contact importer for all the major email systems
 LICENSE=	ART20 GPLv1
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Crypt-SSLeay>=0:security/p5-Crypt-SSLeay \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Crypt-SSLeay>=0:security/p5-Crypt-SSLeay \
 		p5-HTML-Parser>=0:www/p5-HTML-Parser \
 		p5-HTML-TokeParser-Simple>=0:www/p5-HTML-TokeParser-Simple \
 		p5-HTML-Tree>=0:www/p5-HTML-Tree \
@@ -26,7 +26,6 @@ BUILD_DEPENDS=	p5-Crypt-SSLeay>=0:security/p5-Crypt-SSLeay \
 		p5-Text-vCard>=0:textproc/p5-Text-vCard \
 		p5-WWW-Mechanize>=0:www/p5-WWW-Mechanize \
 		p5-WWW-Mechanize-GZip>=0:www/p5-WWW-Mechanize-GZip
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure

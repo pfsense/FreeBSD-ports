@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	mysqlwsrep
-PORTVERSION?=	5.7.21
+PORTVERSION?=	5.7.24
 DISTVERSIONPREFIX?=	wsrep_
-DISTVERSIONSUFFIX?=	-25.14
-PORTREVISION?=	1
+DISTVERSIONSUFFIX?=	-25.16
 CATEGORIES=	databases ipv6
 MASTER_SITES+=	SF/boost/boost/1.59.0:boost
 PKGNAMESUFFIX=	57-server
@@ -24,7 +23,7 @@ RUN_DEPENDS=	bash:shells/bash \
 LIB_DEPENDS=	libevent.so:devel/libevent liblz4.so:archivers/liblz4
 
 USES=		bison \
-		cmake:outsource,noninja \
+		cmake:noninja \
 		compiler:c++11-lib \
 		compiler:c11 \
 		libedit \
@@ -40,8 +39,8 @@ MY_SECDIR=	/var/db/mysql_secure
 MY_TMPDIR=	/var/db/mysql_tmpdir
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	codership
-GH_PROJECT?=	mysql-wsrep
+GH_TUPLE?=	codership:mysql-wsrep:${DISTVERSIONPREFIX}${PORTVERSION}${DISTVERSIONSUFFIX} \
+		codership:wsrep-API:eab2d5d5a31672c0b7d116ef1629ff18392fd7d0:dummy/wsrep/src
 
 DATADIR=	${PREFIX}/share/mysql
 ETCDIR=		${PREFIX}/etc/mysql
@@ -127,7 +126,6 @@ MMAN1=		my_print_defaults.1 \
 		mysqldumpslow.1 \
 		mysqlhotcopy.1 \
 		mysqlman.1 \
-		mysqltest.1 \
 		perror.1 \
 		replace.1 \
 		resolve_stack_dump.1 \

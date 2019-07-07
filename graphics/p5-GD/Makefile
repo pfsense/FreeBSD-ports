@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	GD
-PORTVERSION=	2.68
+PORTVERSION=	2.71
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,7 +14,6 @@ LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-ExtUtils-PkgConfig>=0:devel/p5-ExtUtils-PkgConfig
 LIB_DEPENDS=	libgd.so:graphics/gd
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure

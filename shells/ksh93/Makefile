@@ -24,6 +24,10 @@ COMMENT=	Official AT&T release of KornShell 93
 
 LICENSE=	EPL
 
+BROKEN_aarch64=		Fails to compile: needs sbrk
+
+CONFLICTS=	ksh93-devel-*
+
 OPTIONS_DEFINE=	EXAMPLES STATIC
 
 FETCH_ENV=	HTTP_AUTH=basic:*:I\ accept\ www.opensource.org/licenses/cpl:.
@@ -36,14 +40,8 @@ KSHVERSION=	2012-08-01
 
 STATIC_MAKE_ENV=	LDFLAGS+=-static
 
-BROKEN_aarch64=		Fails to compile: error: unknown type name Dllscan_t
-
-.include <bsd.port.pre.mk>
-
 post-patch:
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100093
 	@${REINPLACE_CMD} -e 's|SF_FLAGS|SFIO_FLAGS|g' ${WRKSRC}/src/lib/libast/include/sfio*.h ${WRKSRC}/src/lib/libast/sfio/*.c
-.endif
 
 do-build:
 	@cd ${WRKSRC}/ && ${SETENV} -i ${MAKE_ENV} ${SH} bin/package flat make
@@ -57,4 +55,4 @@ do-install:
 do-test:
 	cd ${WRKSRC}/src/cmd/ksh93/tests/ && ${SETENV} SHELL=${WRKSRC}/bin/ksh ${WRKSRC}/bin/ksh shtests
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

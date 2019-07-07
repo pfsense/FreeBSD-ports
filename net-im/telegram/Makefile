@@ -3,7 +3,7 @@
 
 PORTNAME=	telegram
 PORTVERSION=	1.4.1.g20161227
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-im
 
 MAINTAINER=	cpm@FreeBSD.org
@@ -32,6 +32,14 @@ GH_SUBDIR=	tgl:tgl tgl/tl-parser:tlparser
 PLIST_FILES=	bin/telegram-cli \
 		etc/telegram-cli/server.pub
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-openssl-1.1.0
+.endif
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/telegram-cli

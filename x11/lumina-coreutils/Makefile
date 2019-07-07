@@ -3,12 +3,14 @@
 
 PORTNAME=	lumina-coreutils
 PORTVERSION=	1.4.1
+PORTREVISION=	2
 CATEGORIES=	x11
 
 MAINTAINER=	jt@ixsystems.com
 COMMENT=	Lumina Desktop Environment
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
 RUN_DEPENDS=	xrandr:x11/xrandr
 
@@ -24,7 +26,7 @@ I18N_DESC=	Install localization files
 
 MAKE_JOBS_UNSAFE=yes
 
-USES=		qmake qt:5
+USES=		compiler:c++11-lang qmake qt:5
 USE_LDCONFIG=	yes
 USE_QT=		core gui widgets network svg imageformats \
 		buildtools_build x11extras concurrent multimedia

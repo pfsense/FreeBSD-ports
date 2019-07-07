@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libvncserver
-PORTVERSION=	0.9.11
-PORTREVISION=	2
+PORTVERSION=	0.9.12
 DISTVERSIONPREFIX=	LibVNCServer-
+PORTREVISION=	2
 CATEGORIES=	net devel
 
 MAINTAINER=	araujo@FreeBSD.org
@@ -12,39 +12,42 @@ COMMENT=	Provide an easy API to a custom vnc server
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libpng.so:graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png \
+		liblzo2.so:archivers/lzo2
+
+USES=		cmake jpeg libtool pathfix pkgconfig
+USE_LDCONFIG=	yes
+
+CMAKE_ON=	WITH_24BPP WITH_JPEG WITH_LZO WITH_PNG \
+		WITH_THREADS WITH_TIGHTVNC_FILETRANSFER \
+		WITH_WEBSOCKETS WITH_ZLIB
+CMAKE_OFF=	WITH_FFMPEG WITH_SDL WITH_SYSTEMD
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	LibVNC
 
-USES=		autoreconf jpeg libtool pathfix pkgconfig
-USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-INSTALL_TARGET=	install-strip
-
-OPTIONS_DEFINE=		GCRYPT IPV6 VAAPI
+OPTIONS_DEFINE=		GCRYPT IPV6 SASL
 OPTIONS_SINGLE=		SSL
 OPTIONS_SINGLE_SSL=	GNUTLS OPENSSL
-OPTIONS_DEFAULT=	OPENSSL
+OPTIONS_DEFAULT=	GCRYPT OPENSSL
 GCRYPT_DESC=		libgcrypt support
+SASL_DESC=		SASL support
+
+GCRYPT_CMAKE_BOOL=	WITH_GCRYPT
+GCRYPT_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
+			libgpg-error.so:security/libgpg-error
+
+IPV6_CMAKE_BOOL=	WITH_IPv6
+
+SASL_CMAKE_BOOL=	WITH_SASL
+SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 
 GNUTLS_IMPLIES=		GCRYPT
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
-GNUTLS_CONFIGURE_WITH=	gnutls
+GNUTLS_CMAKE_BOOL=	WITH_GNUTLS
 
-OPENSSL_CONFIGURE_WITH=	crypto ssl
+OPENSSL_CMAKE_BOOL=	WITH_OPENSSL
 OPENSSL_USES=		ssl
-
-GCRYPT_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
-			libgpg-error.so:security/libgpg-error
-GCRYPT_CONFIGURE_WITH=	gcrypt
-
-IPV6_CONFIGURE_WITH=	ipv6
-
-VAAPI_LIB_DEPENDS=	libva.so:multimedia/libva
-VAAPI_CONFIGURE_WITH=	libva
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/rfb/default8x16.h ${STAGEDIR}${PREFIX}/include/rfb

@@ -1,13 +1,15 @@
 # $FreeBSD$
 
 PORTNAME?=	mcollective-puppet-common
-PORTVERSION=	1.13.2
+PORTVERSION=	1.14.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	puppet@FreeBSD.org
 COMMENT?=	MCollective common files to manage the Puppet Agent
 
 LICENSE=	APACHE20
+
+DEPRECATED=	Agents are better distributed through the Puppet forge
 
 RUN_DEPENDS?=	mcollective>=2:sysutils/mcollective
 

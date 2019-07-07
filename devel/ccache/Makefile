@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ccache
-PORTVERSION=	3.4.2
-PORTREVISION=	0
+#PORTVERSION must be set later due to depending on PORT_OPTIONS.
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://www.samba.org/ftp/ccache/ \
 		LOCAL/bdrewery
@@ -62,17 +62,27 @@ NO_CCACHE_DEPEND=	yes
 
 OPTIONS_SUB=	yes
 
-STATIC_LDFLAGS=	-static
+STATIC_LDFLAGS+=	-static
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMEMCACHED}
+# Hack for libsasl2.a requiring HMAC_CTX_reset from hidden libntlm.a.
+STATIC_LDFLAGS+= -L${LOCALBASE}/lib/sasl2
+PORTVERSION=	3.5.dev.20180926
 USE_GITHUB=	yes
-GH_TAGNAME=	dd9123d3bc0763ef7133330e20ca3e3409a08904
+GH_TAGNAME=	f7712082106bef085515f86ae47e7dbbd2a48b57
 MASTER_SITES=
 DISTINFO_FILE=	${MASTERDIR}/distinfo.memcached
+.if ${PORT_OPTIONS:MDOCS}
 BUILD_DEPENDS+=	${LOCALBASE}/bin/a2x:textproc/asciidoc
 ALL_TARGET=	all docs
+PLIST_FILES+=	man/man1/ccache.1.gz
+.endif
+.else
+PORTVERSION=	3.4.3
+# Only needed pre-3.5
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-configure.ac
 .endif
 
 .include <bsd.port.pre.mk>
@@ -89,11 +99,11 @@ PLIST_SUB+=	CCLINKDIR="${CCLINKDIR}"
 CCACHE_COMPILERS+=	icc icpc
 .endif
 
-GNU_COMPILERS+=		34 42 43 44 45 46 47 48 49 5 6 7 8
+GNU_COMPILERS+=		34 42 43 44 45 46 47 48 49 5 6 7 8 9
 CCACHE_COMPILERS+=	cc c++ CC gcc g++ ${GNU_COMPILERS:S|^|gcc|} ${GNU_COMPILERS:S|^|g++|}
 
 .if ${PORT_OPTIONS:MCLANGLINK}
-CLANG_COMPILERS+=	33 34 35 36 37 38 39 40 50 60 -devel
+CLANG_COMPILERS+=	33 34 35 36 37 38 39 40 50 60 70 80 -devel
 CCACHE_COMPILERS+=	clang clang++ ${CLANG_COMPILERS:S|^|clang|} ${CLANG_COMPILERS:S|^|clang++|}
 .endif
 
@@ -115,7 +125,7 @@ post-patch-MEMCACHED-off:
 
 post-build-TINDERBOX-on:
 	@${MKDIR} ${WRKDIR}/tb/opt
-	@${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${WRKDIR}/tb/opt
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${WRKDIR}/tb/opt
 .for l in ${CCACHE_COMPILERS}
 	@${LN} -sf ${PORTNAME} ${WRKDIR}/tb/opt/${l}
 .endfor
@@ -123,7 +133,11 @@ post-build-TINDERBOX-on:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/ccache ${STAGEDIR}${PREFIX}/bin
+	# Memcached uses the 3.5 dev branch which requires asciidoc to generate
+	# ccache.1.
+.if !${PORT_OPTIONS:MMEMCACHED} || ${PORT_OPTIONS:MDOCS}
 	${INSTALL_MAN} ${WRKSRC}/doc/ccache.1 ${STAGEDIR}${PREFIX}/man/man1
+.endif
 	${MKDIR} ${STAGEDIR}${PREFIX}/${CCLINKDIR}/world
 	${INSTALL_SCRIPT} ${WRKDIR}/world-ccache \
 		${STAGEDIR}${PREFIX}/${CCLINKDIR}/world/ccache

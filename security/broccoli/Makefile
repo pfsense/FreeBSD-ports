@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	broccoli
-PORTVERSION=	1.97
+PORTVERSION=	1.101
 PORTEPOCH=	1
 CATEGORIES=	security
-MASTER_SITES=	https://www.bro.org/downloads/release/
-DISTNAME=	bro-2.4.1
+MASTER_SITES=	https://www.zeek.org/downloads/
+DISTNAME=	bro-2.6.1
 
 MAINTAINER=	leres@FreeBSD.org
 COMMENT=	Bro Client Communications Library
@@ -14,12 +14,11 @@ COMMENT=	Bro Client Communications Library
 LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	swig3.0:devel/swig30
-LIB_DEPENDS=	libGeoIP.so:net/GeoIP
+
+USES=		cmake ssl bison
+USE_LDCONFIG=	yes
 
 EXTRACT_AFTER_ARGS=	${DISTNAME}/aux/broccoli
-
-USES=		cmake:outsource ssl bison
-USE_LDCONFIG=	yes
 CMAKE_SOURCE_PATH=	${WRKSRC}/aux/broccoli
 BINARY_ALIAS=	swig=swig3.0
 

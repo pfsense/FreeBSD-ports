@@ -3,7 +3,7 @@
 
 PORTNAME=	viennacl
 PORTVERSION=	1.7.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/1.7.x/
 DISTNAME=	ViennaCL-${PORTVERSION}
@@ -18,6 +18,6 @@ BUILD_DEPENDS=	${LOCALBASE}/include/CL/opencl.h:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 RUN_DEPENDS=	${LOCALBASE}/include/CL/opencl.h:devel/opencl
 
-USES=		cmake:outsource compiler:openmp localbase
+USES=		cmake compiler:openmp localbase
 
 .include <bsd.port.mk>

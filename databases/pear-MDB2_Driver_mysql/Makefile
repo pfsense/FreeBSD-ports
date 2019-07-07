@@ -13,9 +13,9 @@ LICENSE=	BSD3CLAUSE
 BUILD_DEPENDS=	${PEAR_PKGNAMEPREFIX}MDB2>=0:databases/pear-MDB2@${PHP_FLAVOR}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-NO_ARCH=	yes
 USES=		pear
-USE_PHP=	mysql
-IGNORE_WITH_PHP=	70 71 72
+USE_PHP=	mysqli
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

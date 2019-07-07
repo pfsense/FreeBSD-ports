@@ -170,7 +170,6 @@ function squid_check_ca_hashes() {
 		}
 	}
 	if ($cert_count < 10) {
-		conf_mount_rw();
 		// create ca-root hashes from ca-root-nss package
 		log_error("[squid] Creating root certificate bundle hashes from the Mozilla Project...");
 		$cas = file(SQUID_LOCALBASE . '/share/certs/ca-root-nss.crt');
@@ -364,9 +363,7 @@ fi
 
 EOD;
 
-	conf_mount_rw();
 	write_rcfile($rc);
-	conf_mount_ro();
 }
 
 /* Start sqp_monitor.sh watchdog script */
@@ -943,7 +940,7 @@ function squid_validate_cache($post, &$input_errors) {
 	}
 
 	if ($post['donotcache'] != "") {
-		foreach (split("\n", $post['donotcache']) as $host) {
+		foreach (explode("\n", $post['donotcache']) as $host) {
 			$host = trim($host);
 			// Allow matching all subdomains, like .example.com
 			if (strpos($host, '.') === 0) {
@@ -1178,7 +1175,7 @@ function squid_resync_general() {
 					// Should never get here
 					$sslproxy_dhparams = "";
 				}
-				file_put_contents($crt_pk, base64_decode($srv_cert['prv']) . base64_decode($srv_cert['crt']));
+				file_put_contents($crt_pk, unixnewlines(base64_decode($srv_cert['prv']) . "\n" . base64_decode($srv_cert['crt'])));
 				$sslcrtd_children = ($settings['sslcrtd_children'] ? $settings['sslcrtd_children'] : 5);
 				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
 				$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
@@ -1772,6 +1769,7 @@ function squid_resync_auth() {
 	global $config, $valid_acls;
 	$write_config = 0;
 	if (!is_array($config['installedpackages']['squidauth']['config'])) {
+		init_config_arr(array('installedpackages', 'squidauth', 'config'));
 		$config['installedpackages']['squidauth']['config'][] = array('auth_method' => "none");
 		$write_config++;
 	}
@@ -2030,7 +2028,6 @@ function squid_resync($via_rpc = "no") {
 		return;
 	}
 
-	conf_mount_rw();
 
 	// Fix user/group entry permissions
 	squid_fixup_user();
@@ -2069,7 +2066,6 @@ function squid_resync($via_rpc = "no") {
 	// restart Squid if enabled and reconfigure filter
 	squid_restart_services();
 	filter_configure();
-	conf_mount_ro();
 }
 
 /*

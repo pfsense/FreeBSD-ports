@@ -26,6 +26,7 @@ include/varnish/tbl/h2_error.h
 include/varnish/tbl/h2_frames.h
 include/varnish/tbl/h2_settings.h
 include/varnish/tbl/h2_stream.h
+include/varnish/tbl/htc.h
 include/varnish/tbl/http_headers.h
 include/varnish/tbl/http_response.h
 include/varnish/tbl/locks.h
@@ -79,8 +80,8 @@ include/varnish/vut_options.h
 include/varnish/vtim.h
 include/varnish/waiter/waiter.h
 lib/libvarnishapi.so
-lib/libvarnishapi.so.1
-lib/libvarnishapi.so.1.0.6
+lib/libvarnishapi.so.2
+lib/libvarnishapi.so.2.0.0
 lib/varnish/vmods/libvmod_blob.so
 lib/varnish/vmods/libvmod_directors.so
 lib/varnish/vmods/libvmod_proxy.so

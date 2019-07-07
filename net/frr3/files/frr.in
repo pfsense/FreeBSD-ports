@@ -17,7 +17,7 @@
 # Per daemon tuning may be done with daemon_name_flags
 #  zebra_flags="-P 0"
 #  bgpd_flags="-nrP 0" and so on
-# If you want to give the routing deamons a chance to catchup before
+# If you want to give the routing daemons a chance to catchup before
 # continueing, set frr_wait_for to a "default" or certain prefix.
 #  frr_wait_for="default"
 # Set the time limit for the wait.
@@ -89,6 +89,7 @@ do_cmd()
 {
 	local ret
 	ret=0
+	frr_cmd=$1
 	for daemon in ${frr_daemons}; do
 	    command=%%PREFIX%%/sbin/${daemon}
 	    required_files=%%ETCDIR%%/${daemon}.conf
@@ -118,11 +119,11 @@ frr_cmd=$1
 
 case "$1" in
     force*)
-	frr_cmd=${frr_cmd#force}
-	;;
+		frr_cmd=${frr_cmd#force}
+		;;
     fast*)
-	frr_cmd=${frr_cmd#fast}
-	;;
+		frr_cmd=${frr_cmd#fast}
+		;;
 esac
 shift
 
@@ -131,24 +132,24 @@ if [ $# -ge 1 ]; then
 fi
 
 case "${frr_cmd}" in
-    start)
-	if [ -n "${frr_extralibs_path}" ]; then
-	    /sbin/ldconfig -m ${frr_extralibs_path}
-	fi
-	# Why should I need to add this check ?
-	checkyesno frr_enable && do_cmd "start"
-	;;
+    start|quietstart)
+		if [ -n "${frr_extralibs_path}" ]; then
+	    	/sbin/ldconfig -m ${frr_extralibs_path}
+		fi
+		# Why should I need to add this check ?
+		checkyesno frr_enable && do_cmd "start"
+		;;
     stop)
-	frr_daemons=$(reverse_list ${frr_daemons})
-	do_cmd "stop"
-	;;
+		frr_daemons=$(reverse_list ${frr_daemons})
+		do_cmd "stop"
+		;;
     restart)
-	frr_daemons=$(reverse_list ${frr_daemons})
-    	do_cmd "stop"
-	frr_daemons=$(reverse_list ${frr_daemons})
-	checkyesno frr_enable && do_cmd "start"
-	;;
+		frr_daemons=$(reverse_list ${frr_daemons})
+		do_cmd "stop"
+		frr_daemons=$(reverse_list ${frr_daemons})
+		checkyesno frr_enable && do_cmd "start"
+		;;
     *)
-	do_cmd "${frr_cmd}"
-	;;
+		do_cmd "${frr_cmd}"
+		;;
 esac

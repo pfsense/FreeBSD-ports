@@ -11,12 +11,11 @@ COMMENT=	Load balancer for UDP and TCP based protocols
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libGeoIP.so:net/GeoIP
+USES=		ssl
 
 GNU_CONFIGURE=	yes
-USES=		ssl
 USE_RC_SUBR=	pen
-CONFIGURE_ARGS=	--with-daemon --with-docdir=${DOCSDIR} --with-geoip \
+CONFIGURE_ARGS=	--with-daemon --with-docdir=${DOCSDIR} --without-geoip \
 		--with-ssl=${OPENSSLBASE}
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib

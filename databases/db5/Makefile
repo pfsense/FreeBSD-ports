@@ -3,7 +3,7 @@
 
 PORTNAME=	db5
 PORTVERSION=	5.3.28
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	databases java
 MASTER_SITES=	http://download.oracle.com/berkeley-db/
 PKGNAMEPREFIX?=
@@ -16,14 +16,14 @@ MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Oracle Berkeley DB, revision ${BDBVER}
 
 LICENSE=	SLEEPYCAT
-LICENSE_NAME=	Sleepycat
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-LICENSE_FILE=	${WRKSRC}/../LICENSE
 LICENSE_GROUPS=	FSF GPL OSI
+LICENSE_NAME=	Sleepycat
+LICENSE_FILE=	${WRKSRC}/../LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BDBVER=		${PORTVERSION:R}
 BDBMAJ=		${BDBVER:R}
-CONFIGURE_ARGS=	--enable-cxx --enable-stl \
+CONFIGURE_ARGS=	--enable-cxx --enable-stl --enable-dbm \
 		--enable-compat185 --enable-dump185 \
 		--includedir=${PREFIX}/include/${PORTNAME} \
 		--libdir=${PREFIX}/lib/${PORTNAME} \
@@ -74,11 +74,8 @@ DOCS_INSTALL_TARGET=	install_docs
 # db5 uses a deprecated instruction for mutexes on ARM, fbsd bug#197227
 # and also bug#205001
 CONFIGURE_ARGS+=	--enable-posixmutexes
-. if ${OSVERSION} > 1100100
-#                 ^ leave that as ">" it really is greater than but NOT equal
 # force POSIX mutexes - the OS supports PTHREAD_PROCESS_SHARED
 CONFIGURE_ARGS+=	--with-mutex=POSIX/pthreads
-. endif
 .endif
 
 post-patch:

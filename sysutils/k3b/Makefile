@@ -2,7 +2,6 @@
 
 PORTNAME=	k3b
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	sysutils multimedia kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -22,8 +21,8 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 RUN_DEPENDS=	cdrecord:sysutils/cdrtools
 BUILD_DEPENDS=	cdrecord:sysutils/cdrtools
 
-USES=		cmake:outsource desktop-file-utils gettext iconv kde:5 pkgconfig \
-		qt:5 shared-mime-info tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext iconv \
+		kde:5 pkgconfig qt:5 shared-mime-info tar:xz
 
 USE_KDE=	archive attica auth bookmarks codecs completion config \
 		configwidgets coreaddons ecm filemetadata i18n iconthemes \
@@ -35,7 +34,7 @@ USE_QT=		core dbus gui network webkit widgets xml \
 # The ffmpeg-plugin needs patching
 CMAKE_ARGS=	-DK3B_BUILD_FFMPEG_DECODER_PLUGIN:BOOL=FALSE
 
-OPTIONS_DEFINE=		CDRDAO DVDPLUSRW EMOVIX VCDIMAGER
+OPTIONS_DEFINE=		CDRDAO DVDPLUSRW EMOVIX VCDIMAGER DOCS
 OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
 
 CDRDAO_DESC=		Burning: cdrdao

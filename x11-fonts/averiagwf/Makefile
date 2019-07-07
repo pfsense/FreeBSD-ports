@@ -2,6 +2,7 @@
 
 PORTNAME=	averiagwf
 PORTVERSION=	1.00
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://iotic.com/averia/font-files/GWF/
 DISTNAME=	AveriaGWF
@@ -18,6 +19,8 @@ NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 PORTDOCS=	FONTLOG.txt
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${FONTSDIR}

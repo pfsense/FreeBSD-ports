@@ -1,11 +1,13 @@
 bin/konsole
 bin/konsoleprofile
+etc/xdg/konsole.categories
 etc/xdg/konsole.knsrc
 lib/libkdeinit5_konsole.so
 lib/libkonsoleprivate.so.%%KDE_APPLICATIONS_VERSION_SHORT%%
 lib/libkonsoleprivate.so.%%KDE_APPLICATIONS_VERSION%%
 %%QT_PLUGINDIR%%/konsolepart.so
 share/applications/org.kde.konsole.desktop
+share/khotkeys/konsole.khotkeys
 share/knotifications5/konsole.notifyrc
 %%DATADIR%%/BlackOnLightYellow.colorscheme
 %%DATADIR%%/BlackOnRandomLight.colorscheme

@@ -3,6 +3,7 @@
 PORTNAME=	qtpass
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.3
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	brouwer@annejan.com
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	pass:sysutils/password-store
 
-USES=		qmake:outsource qt:5
+USES=		compiler:c++11-lang gl qmake:outsource qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	IJhack
 GH_PROJECT=	QtPass

@@ -2,113 +2,96 @@
 # $FreeBSD$
 
 PORTNAME=	maxima
-PORTVERSION=	5.41.0
+PORTVERSION=	5.42.2
+PORTREVISION=	1
 CATEGORIES=	math lisp tk
 MASTER_SITES=	SF/maxima/Maxima-source/${PORTVERSION}-source
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	phascolarctos@protonmail.ch
 COMMENT=	Symbolic mathematics program
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=				GPLv2 MAXIMAEXTRACLAUSE
+LICENSE_COMB=				multi
+LICENSE_NAME_MAXIMAEXTRACLAUSE=		Maxima extra clause
+LICENSE_FILE_MAXIMAEXTRACLAUSE=		${FILESDIR}/license-extra-clause.txt
+LICENSE_PERMS_MAXIMAEXTRACLAUSE=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/${LISPPORT}
-PATCH_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
-RUN_DEPENDS=	${LOCALBASE}/bin/${LISPPORT} \
-		${LOCALBASE}/bin/gnuplot:math/gnuplot
+RUN_DEPENDS=	gnuplot:math/gnuplot \
+		rlwrap:devel/rlwrap
 
-USES=		gmake makeinfo perl5 python:build tk:85+ shared-mime-info
-USE_PERL5=	build
+USES=		autoreconf gmake makeinfo shared-mime-info tk:85+
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-posix-shell=/bin/sh \
-		--with-wish=${WISH} \
-		${LISPSELECT}
-TEST_TARGET=	check
+CONFIGURE_ARGS=	PYTHON=dummy
 
-INFO=		maxima imaxima xmaxima
+INFO=		imaxima maxima xmaxima abs_integrate drawutils kovacicODE logic
 
-PLIST_SUB=	BINDIR=${BINDIRECTORY}
-PLIST_SUB+=	LISPBIN=${LISPBINARY}
-PLIST_SUB+=	MAXIMABIN=${MAXIMABINARY}
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
-PORTDATA=	*
-
+OPTIONS_DEFINE=		EXAMPLES DOCS NOUSERINIT MANPAGES TEST
 OPTIONS_SINGLE=		LISP
-OPTIONS_SINGLE_LISP=	CLISP CMUCL SBCL
+OPTIONS_SINGLE_LISP=	CCL CMUCL SBCL
 
-OPTIONS_DEFAULT=	SBCL
+OPTIONS_DEFAULT=	NOUSERINIT MANPAGES SBCL
+OPTIONS_SUB=		yes
 
-CLISP_DESC=	Build with Clisp
-CMUCL_DESC=	Build with CMU Common Lisp
-SBCL_DESC=	Build with Steel Bank Common Lisp
+CCL_DESC=		Build with Clozure Common Lisp
+CCL_BUILD_DEPENDS=	ccl:lang/ccl
+CCL_RUN_DEPENDS=	ccl:lang/ccl
+CCL_CONFIGURE_ON=	--with-ccl=ccl
+CCL_PLIST_SUB=		BINDIR=binary-openmcl BINNAME=maxima.image
 
-.include <bsd.port.pre.mk>
+CMUCL_DESC=		Build with CMU Common Lisp
+CMUCL_BUILD_DEPENDS=	lisp:lang/cmucl
+CMUCL_RUN_DEPENDS=	lisp:lang/cmucl
+CMUCL_CONFIGURE_ON=	--enable-cmucl
+CMUCL_PLIST_SUB=	BINDIR=binary-cmucl BINNAME=maxima_core
 
-# Lisp to build with. Define only ONE of these!
-.if ${PORT_OPTIONS:MCLISP}
-LISPSELECT=	--enable-clisp
-LISPPORT=	clisp:lang/clisp
-BINDIRECTORY=	binary-clisp
-LISPBINARY=	lisp.run
-PLIST_SUB+=	LISPBINARY=""
-MAXIMABINARY=	maxima.mem
-.endif
+NOUSERINIT_DESC=	Do not load user init file for lisp (only for sbcl)
 
-.if ${PORT_OPTIONS:MCMUCL}
-LISPSELECT=	--enable-cmucl
-LISPPORT=	lisp:lang/cmucl
-BINDIRECTORY=	binary-cmucl
-LISPBINARY=	lisp
-PLIST_SUB+=	LISPBINARY=""
-MAXIMABINARY=	maxima_core
-STRIP=	#strip(1) chokes on LISPBINARY
-.endif
+SBCL_DESC=		Build with Steel Bank Common Lisp
+SBCL_BUILD_DEPENDS=	sbcl:lang/sbcl
+SBCL_RUN_DEPENDS=	sbcl:lang/sbcl
+SBCL_CONFIGURE_ON=	--enable-sbcl
+SBCL_PLIST_SUB=		BINDIR=binary-sbcl BINNAME=maxima_core
 
-.if ${PORT_OPTIONS:MSBCL}
-.  if ${ARCH} == "i386"
-DYNAMIC_SPACE_SIZE?=	512
-.  else
-DYNAMIC_SPACE_SIZE?=	1024
-.  endif
-.  if defined(DYNAMIC_SPACE_SIZE)
-MAXIMA_LISP_OPTIONS+=	--dynamic-space-size ${DYNAMIC_SPACE_SIZE}
-.  endif
-.  if defined(MAXIMA_LISP_OPTIONS) && !empty(MAXIMA_LISP_OPTIONS)
-LISPSELECT=	--with-sbcl="sbcl ${MAXIMA_LISP_OPTIONS}"
-.  else
-LISPSELECT=	--enable-sbcl
-.  endif
-LISPPORT=	sbcl:lang/sbcl
-BINDIRECTORY=	binary-sbcl
-#LISPBINARY is null so fudge this so deinstall works cleanly
-PLIST_SUB+=	LISPBINARY="@comment "
-MAXIMABINARY=	maxima_core
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-# The older makeinfo from the base fails in 10.3
-BUILD_DEPENDS+=	${LOCALBASE}/bin/makeinfo:print/texinfo
-CONFIGURE_ENV+=	MAKEINFO="${LOCALBASE}/bin/makeinfo"
-.endif
-
+NO_ARCH=	yes
+TEST_TARGET=	check
+TEST_BUILD_DEPENDS=	gnuplot:math/gnuplot \
+			rlwrap:devel/rlwrap
 post-patch:
-	@${GREP} -Fe '.core' -l -r ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
-		-e 's;\.core;_core;g'
-	@${FIND} -X ${WRKSRC}/interfaces/xmaxima -name 'Makefile.in' | ${XARGS} \
-		${REINPLACE_CMD} -e "s;tclsh;${TCLSH};g"
-	@${REINPLACE_CMD} -e "s;/usr;${LOCALBASE};g" ${WRKSRC}/src/intl.lisp
-	@${REINPLACE_CMD} -e 's;$$maxima_image_base;$${maxima_image_base};g' \
-		${WRKSRC}/src/maxima.in
-.if defined(MAXIMA_LISP_OPTIONS) && !empty(MAXIMA_LISP_OPTIONS)
-	@${REINPLACE_CMD} -e 's;"@SBCL_NAME@";@SBCL_NAME@;g' \
-		${WRKSRC}/src/maxima.in
-	@${REINPLACE_CMD} -e 's;"$$(SBCL_NAME)";$$(SBCL_NAME);g' \
-		${WRKSRC}/src/Makefile.in
-.endif
+	${GREP} -Fe '.core' -l -r ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} 's;\.core;_core;g'
+	${FIND} -X ${WRKSRC}/interfaces/xmaxima -name 'Makefile.in' | ${XARGS} ${REINPLACE_CMD} "s;tclsh;${TCLSH};g"
+	${REINPLACE_CMD} "s;/usr;${LOCALBASE};g" ${WRKSRC}/src/intl.lisp
+	${REINPLACE_CMD} 's;demo;;' ${WRKSRC}/Makefile.am
 
-pre-build:
-	@${FIND} ${WRKSRC} \( -name '*.bak' -o -name '*.fbsd10bak' -o \
-		-name '*.orig' \) -delete
+post-patch-TEST-off:
+	${REINPLACE_CMD} 's;tests;;' ${WRKSRC}/Makefile.am
 
-.include <bsd.port.post.mk>
+pre-build-CCL-on:
+	cd ${WRKSRC}/src/ && ${MKDIR} binary-ccl && ${LN} -s binary-ccl binary-openmcl
+
+post-build-MANPAGES-on:
+	${GZIP_CMD} ${WRKSRC}/doc/man/maxima.1
+
+post-build-TEST-on: do-test
+
+post-install:
+	for x in "" "-1" "-2" "-3"; do ${INSTALL_MAN} ${WRKSRC}/doc/info/maxima.info$$x ${STAGEDIR}${PREFIX}/${INFO_PATH}; done
+	${INSTALL_MAN} ${WRKSRC}/doc/info/maxima-index.lisp ${STAGEDIR}${PREFIX}/${INFO_PATH}
+
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/doc/info && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} '-name maxima*\.html'
+
+post-install-EXAMPLES-on:
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/demo && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR} '-name *\.dem'
+
+post-install-MANPAGES-on:
+	${INSTALL_MAN} ${WRKSRC}/doc/man/maxima.1.gz ${STAGEDIR}${PREFIX}/man/man1
+
+post-install-NOUSERINIT-on:
+	${REINPLACE_CMD} 's;--end-runtime-options;--end-runtime-options --no-userinit;' ${STAGEDIR}${PREFIX}/bin/maxima
+
+.include <bsd.port.mk>

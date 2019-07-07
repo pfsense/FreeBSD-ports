@@ -3,7 +3,7 @@
 PORTNAME=	katawa-shoujo
 PORTVERSION=	1.3.1
 DISTVERSIONSUFFIX=-[linux-x86][18161880]
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://dl.katawa-shoujo.com/gold_${PORTVERSION}/:game \
 		http://dl.katawa-shoujo.com/patches/:patch \
@@ -19,7 +19,7 @@ COMMENT=	Bishoujo-style visual novel about disabled adolescents
 
 LICENSE=	CC-BY-NC-ND-3.0
 
-RUN_DEPENDS=	renpy6<6.99.11:devel/renpy6
+RUN_DEPENDS=	renpy6<6.99.11:games/renpy6
 
 USES=		tar:bz2
 NO_ARCH=	yes

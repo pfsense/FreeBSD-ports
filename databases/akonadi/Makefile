@@ -15,7 +15,7 @@ BUILD_DEPENDS=	xsltproc:textproc/libxslt
 
 CONFLICTS=	akonadi-[0-9]* akonadi-kf5-git-[0-9]*
 
-USES=		cmake:outsource compiler:c++11-lib gettext kde:5 \
+USES=		cmake compiler:c++11-lib gettext kde:5 \
 		qt:5 shared-mime-info tar:xz
 USE_GNOME=	libxml2
 USE_KDE=	auth codecs completion config configwidgets coreaddons crash \
@@ -51,6 +51,8 @@ SQLITE_CMAKE_ON=	-DAKONADI_BUILD_QSQLITE:BOOL=ON
 SQLITE_CMAKE_OFF=	-DAKONADI_BUILD_QSQLITE:BOOL=OFF
 
 OPTIONS_DEFAULT=	MYSQL
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 # To avoid overflow, MySQL settings need to be lower than

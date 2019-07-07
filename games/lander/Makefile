@@ -3,7 +3,7 @@
 
 PORTNAME=	lander
 PORTVERSION=	0.6.6
-PORTREVISION=	12
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	http://www.nickg.me.uk/files/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -14,12 +14,14 @@ COMMENT=	Lunar Lander clone
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_powerpc64=	fails to configure: error: Could not link against boost_filesystem-boost_filesystem
+
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libboost_filesystem.so:devel/boost-libs \
 		libpng.so:graphics/png
 
 GNU_CONFIGURE=	yes
-USES=		gettext localbase pkgconfig
+USES=		compiler:c++11-lib gettext localbase pkgconfig
 USE_SDL=	sdl image mixer
 USE_GL=		gl glu
 

@@ -1,20 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	plasma-browser-integration
-DISTVERSION=	5.10.95.20181011
-CATEGORIES=	www kde
-PKGNAMEPREFIX=	plasma5- # this port is not yet using CATEGORIES=kde-plasma
+DISTVERSION=	${KDE_PLASMA_VERSION}
+CATEGORIES=	www kde kde-plasma
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Plasma5 components to integrate browsers into the desktop
 
-USES=		cmake:outsource kde:5 qt:5
-USE_KDE=	activities config coreaddons i18n kio notifications package \
-		plasma-framework runner service windowsystem
-USE_QT=		core dbus gui widgets \
+USES=		compiler:c++11-lang cmake kde:5 qt:5 tar:xz
+USE_KDE=	activities completion config coreaddons dbusaddons i18n kio \
+		notifications package plasma-framework runner service \
+		widgetsaddons windowsystem
+USE_QT=		concurrent core dbus gui network widgets \
 		buildtools_build qmake_build
-USE_GITHUB=	yes
-GH_ACCOUNT=	KDE
-GH_TAGNAME=	c593654
 
 .include <bsd.port.mk>

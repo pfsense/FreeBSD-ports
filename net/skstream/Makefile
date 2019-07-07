@@ -3,7 +3,7 @@
 
 PORTNAME=	skstream
 PORTVERSION=	0.3.9
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	SF/worldforge/${PORTNAME}%20%28network%20lib%29/${PORTVERSION}
 
@@ -13,6 +13,9 @@ COMMENT=	iostream based C++ socket library
 USES=		libtool pathfix pkgconfig compiler:c++11-lib gmake
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+
+CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
+CXXFLAGS_clang=	-Wno-c++11-narrowing
 
 OPTIONS_DEFINE=	DOCS
 

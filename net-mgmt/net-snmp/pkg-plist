@@ -30,7 +30,7 @@ bin/snmpvacm
 bin/snmpwalk
 %%WITH_TKMIB%%bin/tkmib
 bin/traptoemail
-etc/newsyslog.conf.d/net-snmp.conf
+%%NEWSYSLOG%%etc/newsyslog.conf.d/net-snmp.conf
 include/net-snmp/agent/agent_callbacks.h
 include/net-snmp/agent/agent_handler.h
 include/net-snmp/agent/agent_index.h
@@ -191,6 +191,7 @@ include/net-snmp/system/freebsd9.h
 include/net-snmp/system/freebsd10.h
 include/net-snmp/system/freebsd11.h
 include/net-snmp/system/freebsd12.h
+include/net-snmp/system/freebsd13.h
 include/net-snmp/system/generic.h
 include/net-snmp/system/hpux.h
 include/net-snmp/system/irix.h

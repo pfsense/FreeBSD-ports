@@ -3,7 +3,7 @@
 
 PORTNAME=	clanlib
 PORTVERSION=	1.0.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	devel
 MASTER_SITES=	http://www.clanlib.org/download/releases-1.0/
 PKGNAMESUFFIX=	1
@@ -20,8 +20,9 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libvorbis.so:audio/libvorbis \
 		libogg.so:audio/libogg
 
-USES=		alias gmake jpeg libtool localbase:ldflags pathfix \
+USES=		alias gmake gl jpeg libtool localbase:ldflags pathfix \
 		pkgconfig tar:tgz
+USE_CXXSTD=	c++98
 USE_XORG=	x11 xi xxf86vm
 USE_LDCONFIG=	yes
 USE_SDL=	gfx

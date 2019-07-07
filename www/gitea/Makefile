@@ -3,7 +3,7 @@
 
 PORTNAME=	gitea
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.3
+DISTVERSION=	1.8.2
 CATEGORIES=	www
 
 MAINTAINER=	stb@lassitu.de
@@ -36,11 +36,11 @@ OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
 
 CERT_VARS=	GO_TAGS+=cert
 PAM_VARS=	GO_TAGS+=pam
-SQLITE_VARS=	GO_TAGS+=sqlite
+SQLITE_VARS=	GO_TAGS+="sqlite sqlite_unlock_notify"
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100513
+.if ${OPSYS} == FreeBSD
 DAEMONARGS=	-S -l \$${gitea_facility} -s \$${gitea_priority} -T \$${name}
 .else
 DAEMONARGS=	-f

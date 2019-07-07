@@ -1,22 +1,20 @@
---- base/process/process_metrics_posix.cc.orig	2017-09-05 21:05:11.000000000 +0200
-+++ base/process/process_metrics_posix.cc	2017-09-11 19:41:06.103369000 +0200
-@@ -16,6 +16,8 @@
+--- base/process/process_metrics_posix.cc.orig	2019-03-11 22:00:51 UTC
++++ base/process/process_metrics_posix.cc
+@@ -19,6 +19,8 @@
  
  #if defined(OS_MACOSX)
  #include <malloc/malloc.h>
-+#elif defined(OS_BSD)
++#elif defined(OS_FREEBSD)
 +#include <stdlib.h>
  #else
  #include <malloc.h>
  #endif
-@@ -103,8 +105,9 @@
+@@ -107,7 +109,7 @@ size_t ProcessMetrics::GetMallocUsage() {
+ #else
+   return minfo.hblkhd + minfo.arena;
  #endif
- #elif defined(OS_FUCHSIA)
+-#elif defined(OS_FUCHSIA)
++#elif defined(OS_FUCHSIA) || defined(OS_BSD)
    // TODO(fuchsia): Not currently exposed. https://crbug.com/735087.
--  return 0;
-+  NOTIMPLEMENTED();
+   return 0;
  #endif
-+  return 0;
- }
- 
- }  // namespace base

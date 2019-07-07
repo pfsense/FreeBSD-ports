@@ -15,7 +15,7 @@
 # was removed.
 #
 # $FreeBSD$
-# $MCom: portlint/portlint.pl,v 1.467 2018/06/24 16:07:04 jclarke Exp $
+# $MCom: portlint/portlint.pl,v 1.488 2019/01/22 16:16:28 jclarke Exp $
 #
 
 use strict;
@@ -50,7 +50,7 @@ $portdir = '.';
 # version variables
 my $major = 2;
 my $minor = 18;
-my $micro = 3;
+my $micro = 8;
 
 # default setting - for FreeBSD
 my $portsdir = '/usr/ports';
@@ -153,14 +153,14 @@ my @varlist =  qw(
 	WRKDIR WRKSRC NO_WRKSUBDIR SCRIPTDIR FILESDIR
 	PKGDIR COMMENT DESCR PLIST PKGCATEGORY PKGINSTALL PKGDEINSTALL
 	PKGREQ PKGMESSAGE DISTINFO_FILE .CURDIR USE_LDCONFIG USE_AUTOTOOLS
-	USE_GNOME USE_PERL5 USE_QT5 INDEXFILE PKGORIGIN CONFLICTS PKG_VERSION
+	USE_GNOME USE_PERL5 USE_QT USE_QT5 INDEXFILE PKGORIGIN CONFLICTS PKG_VERSION
 	PLIST_FILES PLIST_DIRS PORTDOCS PORTEXAMPLES
 	OPTIONS_DEFINE OPTIONS_RADIO OPTIONS_SINGLE OPTIONS_MULTI
 	OPTIONS_GROUP OPTIONS_SUB INSTALLS_OMF USE_RC_SUBR USES DIST_SUBDIR
 	ALLFILES CHECKSUM_ALGORITHMS INSTALLS_ICONS GNU_CONFIGURE
 	CONFIGURE_ARGS MASTER_SITE_SUBDIR LICENSE LICENSE_COMB NO_STAGE
 	DEVELOPER SUB_FILES SHEBANG_LANG MASTER_SITES_SUBDIRS FLAVORS
-	USE_PYTHON
+	USE_PYTHON LICENSE_PERMS
 );
 
 my %makevar;
@@ -218,6 +218,7 @@ open(MK, 'Makefile') || die "Makefile: $!";
 my $ulineno = -1;
 my $uulineno = -1;
 my @muses = ();
+my @omuses = ();
 while (my $mline = <MK>) {
 	if ($uulineno == -1 && $mline =~ /^USE_/) {
 		$uulineno = $.;
@@ -230,10 +231,22 @@ while (my $mline = <MK>) {
 		    push @muses, split(/\s+/, $1);
 		}
     }
+	if ($mline =~ /^[\w\d]+_USES[?+]?=\s*(.*)/) {
+		if ($1) {
+			push @omuses, split(/\s+/, $1);
+		}
+	}
 }
 if ($uulineno > -1 && $ulineno > -1 && $uulineno < $ulineno) {
 	&perror("WARN", 'Makefile', $uulineno, "USE_* seen before USES.  ".
 		"According to the porters-handbook, USES must appear first.");
+}
+my %hmuses = map { $_ => 1 } @muses;
+foreach my $omuse (@omuses) {
+	if ($hmuses{$omuse}) {
+		&perror("WARN", 'Makefile', -1, "$omuse is specified in both USES ".
+			"and a optional *_USES.  It only needs to be specified in one.");
+	}
 }
 foreach my $muse (@muses) {
 	$makevar{USES} .= " " . $muse;
@@ -478,6 +491,10 @@ sub checkdescr {
 
 	open(IN, "< $file") || return 0;
 	while (<IN>) {
+		if ($_ =~ /[ \t]+\n?$/) {
+			&perror("WARN", $file, $., "whitespace before end ".
+				"of line.");
+		}
 		$tmp .= $_;
 		chomp || &perror("WARN", $file, -1, "lines should terminate with a ".
 			"newline (i.e. '\\n').");
@@ -1102,7 +1119,7 @@ sub check_depends_syntax {
 			}
 			my $ok = $k;
 			if ($k =~ /^\$\{(\w+)\}$/) {
-				$k = get_makevar($1);
+				$k = get_makevar_shallow($1);
 				push @ks, split(/\s+/, $k);
 				next;
 			}
@@ -1487,6 +1504,10 @@ sub checkmakefile {
 	# whole file: PLIST_FILES and PLIST_DIRS
 	#
 	print "OK: checking PLIST_FILES and PLIST_DIRS.\n" if ($verbose);
+	my $python_plist = 0;
+	if ($makevar{USE_PYTHON} && $makevar{USE_PYTHON} =~ /\bautoplist\b/) {
+		$python_plist = 1;
+	}
 	if ($whole =~ /\nPLIST_FILES.?=/ || $whole =~ /\nPLIST_DIRS.?=/) {
 		if (-f 'pkg-plist') {
 			my $lineno = &linenumber($`);
@@ -1713,7 +1734,7 @@ sub checkmakefile {
 		# skip global options
 		next if ($i eq 'DOCS' or $i eq 'NLS' or $i eq 'EXAMPLES' or $i eq 'IPV6' or $i eq 'X11' or $i eq 'DEBUG');
 		if (!grep(/^$i$/, (@mopt, @popt))) {
-			if ($whole !~ /\n${i}_($m)(_\w+)?(.)?=[^\n]+/) {
+			if ($whole !~ /\n${i}_($m)(_\w+)?(.)?=[^\n]+/ and $whole !~ /\n[-\w]+-${i}-(on|off):\n/) {
 				if (!$slaveport) {
 					&perror("WARN", $file, -1, "$i is listed in ".
 						"OPTIONS_DEFINE, but no PORT_OPTIONS:M$i appears.");
@@ -1755,6 +1776,30 @@ sub checkmakefile {
 		&perror("WARN", $file, $lineno, "is $1$2 a user-settable option? ".
 			"Consider using WITH_$2 instead.")
 		if ($1.$2 ne 'USE_GCC');
+	}
+
+	#
+	# whole file: check for use of *_CMAKE_ARGS
+	#
+	print "OK: checking for use of *_CMAKE_ARGS instead of *_CMAKE_ON|OFF.\n" if ($verbose);
+	if ($whole =~ /\n([\w\d]+)_CMAKE_ARGS/) {
+		my $lineno = &linenumber($`);
+		&perror("WARN", $file, $lineno, "Use $1_CMAKE_ON or $1_CMAKE_OFF instead ".
+			"of $1_CMAKE_ARGS.  The former macros will automatically update ".
+			"CMAKE_ARGS.");
+	}
+
+	#
+	# while file: check that CMAKE_BOOL just has words
+	#
+	print "OK: checking that *_CMAKE_BOOL only contains words.\n" if ($verbose);
+	if ($whole =~ /\n([\w\d]+)_CMAKE_BOOL[?+:]?=([^\n]+)\n/) {
+		my $lineno = &linenumber($`);
+		my $o = $1;
+		if ($2 =~ /-D/) {
+			&perror("FATAL", $file, $lineno, "Only bare words can be used for ".
+				"${o}_CMAKE_BOOL.  The -D flag will be added automatically.");
+		}
 	}
 
 	#
@@ -3101,6 +3146,21 @@ MAINTAINER COMMENT
 			&perror("FATAL", $file, -1, "LICENSE_COMB contains invalid value '$1' - must be one of 'single', 'dual', 'multi'");
 		}
 
+		# Check for proper license file usage
+		if ($tmp =~ /\nLICENSE_FILE_([^\s=]+)([\s=])/) {
+			my $lfn = $1;
+			my $nchar = $2;
+			if (!grep(/\b$lfn\b/, $makevar{LICENSE})) {
+				&perror("FATAL", $file, -1, "license specified is $makevar{LICENSE}, ".
+					"but LICENSE_FILE specified is for $lfn.");
+			}
+
+			if ($lfn =~ /\+$/ && $nchar eq '=') {
+				&perror("WARN", $file, -1, "if license ends with a '+', make sure ".
+					"LICENSE_FILE_$lfn is followed by a space before the '='.");
+			}
+		}
+
 		$idx++;
 
 		push(@varnames, qw(
@@ -3159,16 +3219,13 @@ EXTRACT_DEPENDS LIB_DEPENDS PATCH_DEPENDS BUILD_DEPENDS RUN_DEPENDS
 TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 	);
 
-	if ($tmp =~ /^(PATCH_|EXTRACT_|LIB_|BUILD_|RUN_|TEST_|FETCH_)DEPENDS/m) {
+	if ($tmp =~ /^([\w\d]+_)?(PATCH_|EXTRACT_|LIB_|BUILD_|RUN_|TEST_|FETCH_)DEPENDS/m) {
 		&checkearlier($file, $tmp, @varnames);
 
 		check_depends_syntax($tmp, $file);
 
 		foreach my $i (@linestocheck) {
-			foreach my $flavor (split(/\s+/, $makevar{FLAVORS} // '')) {
-				$tmp =~ s/${flavor}_$i[?+:]?=[^\n]+\n//g;
-			}
-			$tmp =~ s/$i[?+:]?=[^\n]+\n//g;
+			$tmp =~ s/^([\w\d]+_)?$i[?+:]?=[^\n]+\n//g;
 		}
 
 		# Remove any other *_DEPENDS lines as people may
@@ -3184,8 +3241,72 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 	push(@varnames, @linestocheck);
 	&checkearlier($file, $tmp, @varnames);
 
+	# section 8: FLAVORS/FLAVOR(optional)
 	#
-	# Makefile 7: check the rest of file
+	print "OK: check eighth section of $file (FLAVORS: optional).\n"
+		if ($verbose);
+	$tmp = $sections[$idx] // '';
+
+	if ($tmp =~ /(FLAVORS|FLAVOR)/) {
+		&checkearlier($file, $tmp, @varnames);
+
+		$idx++;
+	}
+
+	push(@varnames, qw(
+		FLAVORS FLAVOR
+	));
+
+	# section 9: USES/USE_x(optional)
+	#
+	print "OK: check ninth section of $file (USES: optional).\n"
+		if ($verbose);
+	$tmp = $sections[$idx] // '';
+	my $use_github_set = 0;
+
+	if ($tmp =~ /(USES|USE_)/) {
+		&checkearlier($file, $tmp, @varnames);
+
+		foreach my $line (split(/(USE(?:S[?+]|[_\w\d]+)?=[^\n]+\n)/, $tmp)) {
+			if ($line =~ /USES[?+]?=[^\n]+\n/) {
+				print "OK: seen USES.\n" if ($verbose);
+				$tmp =~ s/USES[?+]?=[^\n]+\n//;
+				next;
+			}
+			if ($line =~ /USE([_\w\d]+)=[^\n]+\n/) {
+				print "OK: seen USE$1.\n" if ($verbose);
+				if ($tmp =~ /USE_GITHUB/) {
+					$use_github_set = 1;
+				}
+				print "OK: USE_GITHUB set\n" if($use_github_set && $verbose);
+				$tmp =~ s/USE([_\w\d]+)=[^\n]+\n//;
+				next;
+			}
+		}
+		print "OK: check if GH_ options are in use\n"
+                	if ($verbose);
+		foreach my $line (split(/(GH(?:S[?+]|[_\w\d]+)?=[^\n]+\n)/, $tmp)) {
+			if ($line =~ /GH([_\w\d]+)=[^\n]+\n/) {
+				print "OK: seen GH$1.\n" if ($verbose);
+				print "No USE_GITHUB seen but GH$1 used\n"
+					unless ($use_github_set);
+				$tmp =~ s/GH([_\w\d]+)=[^\n]+\n//;
+				next;
+			}
+
+		}
+
+		&checkextra($tmp, 'USES/USE_x', $file);
+
+		$idx++;
+	}
+
+	push(@varnames, qw(
+		USES
+	));
+
+	#
+	# Makefile 10: check the rest of file
 	#
 	print "OK: checking the rest of the $file.\n" if ($verbose);
 	$tmp = join("\n\n", @sections[$idx .. scalar(@sections)-1]);
@@ -3253,9 +3374,16 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 
 	# check RESTRICTED/NO_CDROM/NO_PACKAGE
 	print "OK: checking RESTRICTED/NO_CDROM/NO_PACKAGE.\n" if ($verbose);
-	if ($committer && $tmp =~ /\n(RESTRICTED|NO_CDROM|NO_PACKAGE)[+?]?=/) {
-		&perror("WARN", $file, -1, "\"$1\" found. do not forget to update ".
-			"ports/LEGAL.");
+	my $lps = $makevar{LICENSE_PERMS} // '';
+	if ($committer && ($tmp =~ /\n(RESTRICTED|NO_CDROM|NO_PACKAGE)[+?]?=/ ||
+		$lps =~ /\bno-\b/)) {
+		&perror("WARN", $file, -1, "Restrictive licensing found.  ".
+			"Do not forget to update ports/LEGAL.");
+	}
+
+	if ($tmp =~ /\nNO_PACKAGE[+?]?=/) {
+		&perror("WARN", $file, -1, "NO_PACKAGE is obsolete.  It should be ".
+			"replaced with \"LICENSE_PERMS=no-pkg-mirror\"");
 	}
 
 	# check NO_STAGE
@@ -3301,6 +3429,7 @@ TEST_DEPENDS FETCH_DEPENDS DEPENDS_TARGET
 		&perror("WARN", $file, -1, "since you already have GNU_CONFIGURE, ".
 			"you do not need $1.");
 	}
+
 
 	# check direct use of important make targets.
 	if ($tmp =~ /\n(fetch|extract|patch|configure|build|install):/) {
@@ -3635,6 +3764,21 @@ sub get_makevar {
 	return $result;
 }
 
+sub get_makevar_shallow {
+	my($cmd, $result);
+
+	$cmd = join(' -dV -V ', "make $makeenv MASTER_SITE_BACKUP=''", map { "'$_'" } @_);
+	$result = `$cmd`;
+	chomp $result;
+
+	$result =~ s/\n\n/\n\0\n/g;
+	if (${^CHILD_ERROR_NATIVE} != 0) {
+		die "\nFATAL ERROR: make(1) died with status ${^CHILD_ERROR_NATIVE} and returned '$result'";
+	}
+
+	return $result;
+}
+
 sub get_makevar_raw {
 	my($cmd, $result);
 
@@ -3691,7 +3835,7 @@ sub urlcheck {
 # GNOME wants INSTALL_ICONS, but Qt-based applications, including KDE, don't.
 # Be pessimistic: everything needs it unless we know it doesn't.
 sub needs_installs_icons {
-	return $makevar{USE_QT5} eq ''
+	return $makevar{USE_QT5} eq '' && $makevar{USE_QT} eq ''
 }
 
 sub TRUE {1;}

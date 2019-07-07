@@ -3,11 +3,11 @@
  * suricata_rules_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,7 +92,7 @@ elseif (isset($_GET['sid']) && is_numericint($_GET['sid']) && isset($_GET['gid']
 	elseif ($file == "suricata.rules")
 		$rules_map = suricata_load_rules_map("{$suricatacfgdir}rules/suricata.rules");
 	else
-		$rules_map = suricata_load_rules_map("{$suricatadir}rules/{$file}");
+		$rules_map = suricata_load_rules_map(SURICATA_RULES_DIR . $file);
 
 	$contents = $rules_map[$_GET['gid']][trim($_GET['sid'])]['rule'];
 	$wrap_flag = "soft";
@@ -101,8 +101,8 @@ elseif (isset($_GET['sid']) && is_numericint($_GET['sid']) && isset($_GET['gid']
 elseif ($file == "Auto-Flowbit Rules")
 	$contents = file_get_contents("{$suricatacfgdir}rules/{$flowbit_rules_file}");
 // Is it a rules file in the ../rules/ directory?
-elseif (file_exists("{$suricatadir}rules/{$file}"))
-	$contents = file_get_contents("{$suricatadir}rules/{$file}");
+elseif (file_exists(SURICATA_RULES_DIR . $file))
+	$contents = file_get_contents(SURICATA_RULES_DIR . $file);
 // It is not something we can display, so exit.
 else
 	$input_errors[] = gettext("Unable to open file: {$displayfile}");

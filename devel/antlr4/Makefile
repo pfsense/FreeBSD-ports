@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	antlr4
-PORTVERSION=	4.7.1
+PORTVERSION=	4.7.2
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.antlr.org/download/
 DISTNAME=	antlr-${PORTVERSION}-complete
@@ -14,6 +14,7 @@ COMMENT=	ANother Tool for Language Recognition
 LICENSE=	BSD3CLAUSE
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	1.8+
 INSTALL_JAR=	${DISTFILES}

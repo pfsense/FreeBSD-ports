@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wmmp
-PORTVERSION=	0.12.4
+PORTVERSION=	0.12.6
 CATEGORIES=	audio windowmaker
 
 MAINTAINER=	nicolasherry@gmail.com

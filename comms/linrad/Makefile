@@ -2,7 +2,7 @@
 
 PORTNAME=	linrad
 PORTVERSION=	4.02
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.nitehawk.com/sm5bsz/linuxdsp/archive/\
 		http://www.sm5bsz.com/linuxdsp/archive/
@@ -32,8 +32,8 @@ LINRAD_DOCFILES=	z_APM.txt z_BUFFERS.txt z_CALIBRATE.txt \
 			z_USERS_EXTRA.txt z_USERS_HWARE.txt
 
 BROKEN_aarch64=		fails to compile: implicit declaration of function outb
-BROKEN_armv6=		fails to configure: can not find /nxb-bin/usr/bin/cc
-BROKEN_armv7=		fails to configure: can not find /nxb-bin/usr/bin/cc
+BROKEN_armv6=		fails to configure: cannot find /nxb-bin/usr/bin/cc
+BROKEN_armv7=		fails to configure: cannot find /nxb-bin/usr/bin/cc
 BROKEN_powerpc64=	fails to compile: implicit declaration of function outb
 BROKEN_sparc64=		fails to compile: implicit declaration of function outb
 

@@ -1,3 +1,3 @@
-TIMESTAMP = 1520018475
-SHA256 (vstakhov-rspamd-1.7.0.a2.20180302-0fed6e67d_GH0.tar.gz) = 686ccca475b6a3188818336eb1b16a2a6f66c4c9b1ed208e02c08d62680d8d31
-SIZE (vstakhov-rspamd-1.7.0.a2.20180302-0fed6e67d_GH0.tar.gz) = 4414948
+TIMESTAMP = 1552743429
+SHA256 (rspamd-rspamd-1.9.1.a1.20190316-dbfdd2b_GH0.tar.gz) = 60dec7a0790134cb9b5f538693fd3f715b84e086f54c7ccf986cd9a259514ca4
+SIZE (rspamd-rspamd-1.9.1.a1.20190316-dbfdd2b_GH0.tar.gz) = 4406052

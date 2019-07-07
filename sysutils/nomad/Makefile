@@ -2,14 +2,16 @@
 
 PORTNAME=	nomad
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.4
+DISTVERSION=	0.8.7
 CATEGORIES=	sysutils
 
-MAINTAINER=	jhixson@gmail.com
+MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	Cluster manager and scheduler
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		fails to build
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	On i386: go compiler crashes: https://github.com/golang/go/issues/23763
@@ -18,12 +20,17 @@ BUILD_DEPENDS=	go:lang/go
 
 USES=		compiler
 USE_GITHUB=	yes
-GH_ACCOUNT=	hashicorp
+GH_ACCOUNT=	hashicorp golang:sys
+GH_PROJECT=	sys:sys
+GH_TAGNAME=	fa43e7bc11b:sys
 GH_SUBDIR=	src/github.com/hashicorp/nomad
 USE_RC_SUBR=	nomad
 
 USERS=		nomad
 GROUPS=		nomad
+
+post-patch:
+	${MV} ${WRKSRC_sys}/cpu ${WRKSRC}/vendor/golang.org/x/sys
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/hashicorp/nomad && \

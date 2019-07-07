@@ -3,7 +3,7 @@
 
 PORTNAME=	camera
 PORTVERSION=	0.8
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	graphics gnustep
 MASTER_SITES=	http://download.gna.org/gsimageapps/
 DISTNAME=	Camera-${PORTVERSION}

@@ -3,10 +3,10 @@
  * snort_interfaces_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2018 Bill Meeks
  * Copyright (c) 2008-2009 Robert Zelaya
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-global $g;
+global $g, $config;
 
 $snortdir = SNORTDIR;
 $snort_openappdir = SNORT_APPID_ODP_PATH;
@@ -57,6 +57,8 @@ if (!isset($pconfig['rule_update_starttime']))
 	$pconfig['rule_update_starttime'] = '00:05';
 if (!isset($config['installedpackages']['snortglobal']['forcekeepsettings']))
 	$pconfig['forcekeepsettings'] = 'on';
+if (!isset($config['installedpackages']['snortglobal']['clearblocks']))
+	$pconfig['clearblocks'] = 'on';
 if (!isset($config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer']))
 	$pconfig['curl_no_verify_ssl_peer'] = 'off';
 
@@ -135,7 +137,7 @@ if (!$input_errors) {
 
 		// If deprecated rules should be removed, then do it
 		if ($config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on") {
-			log_error(gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+			syslog(LOG_NOTICE, gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 			snort_remove_dead_rules();
 		}
 
@@ -162,9 +164,7 @@ if (!$input_errors) {
 		write_config("Snort pkg: modified global settings.");
 
 		/* create whitelist and homenet file, then sync files */
-		conf_mount_rw();
 		sync_snort_package_config();
-		conf_mount_ro();
 
 		/* forces page to reload new settings */
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
@@ -272,21 +272,21 @@ $section->addInput(new Form_Checkbox(
 ));
 $section->addInput(new Form_StaticText(
 	null,
-	'The OpenAppID package contains the application signatures required by the AppID preprocessor.'
+	'The OpenAppID Detectors package contains the application signatures required by the AppID preprocessor and the OpenAppID text rules.'
 ));
 $section->addInput(new Form_StaticText(
 	'OpenAppID Version',
 	$openappid_ver
 ));
-$group = new Form_Group('Enable RULES OpenAppID');
+$group = new Form_Group('Enable AppID Open Text Rules');
 $group->add(new Form_Checkbox(
         'openappid_rules_detectors',
         'Enable RULES OpenAppID',
-        'Click to enable download of APPID Open rules',
+        'Click to enable download of the AppID Open Text Rules',
         $pconfig['openappid_rules_detectors'] == 'on' ? true:false,
         'on'
 ));
-$group->setHelp('Note - the AppID Open Rules file is maintained by a volunteer contributor and hosted by the pfSense team.  ' . 
+$group->setHelp('Note - the AppID Open Text Rules file is maintained by a volunteer contributor and hosted by the pfSense team.  ' . 
 'The URL for the file ' . 'is <a href="' . SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '" target="_blank">' . 
 SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '</a>.');
 $section->add($group);
@@ -341,7 +341,7 @@ $section->addInput(new Form_Select(
 $section->addInput(new Form_Checkbox(
 	'clearblocks',
 	'Remove Blocked Hosts After Deinstall',
-	'Click to clear all blocked hosts added by Snort when removing the package.',
+	'Click to clear all blocked hosts added by Snort when removing the package.  Default is checked.',
 	$pconfig['clearblocks'] == 'on' ? true:false,
 	'on'
 ));

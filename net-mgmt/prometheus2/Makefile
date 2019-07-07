@@ -2,7 +2,7 @@
 
 PORTNAME=	prometheus
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.1
+DISTVERSION=	2.8.0
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	dor.bsd@xm0.uk
@@ -12,14 +12,10 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go gmake
-GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
 USE_GITHUB=	yes
 USE_RC_SUBR=	prometheus
 
-OPTIONS_DEFINE=		USE_SYSLOG
-OPTIONS_DEFAULT=	USE_SYSLOG
-USE_SYSLOG_DESC=	Install configuration files for syslog and newsyslog
-OPTIONS_SUB=		yes
+GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
 
 PROMETHEUS_USER?=	prometheus
 PROMETHEUS_GROUP?=	prometheus
@@ -35,9 +31,7 @@ PROMETHEUS_DB_DIR=			/var/db/${PORTNAME}
 PROMETHEUS_LOG_DIR=			/var/log/prometheus
 PROMETHEUS_LOG_FILE=			${PROMETHEUS_LOG_DIR}/prometheus.log
 
-SUB_FILES=	prometheus \
-		newsyslog.conf \
-		syslog.d.conf
+SUB_FILES=	prometheus
 
 SUB_LIST+=	PROMETHEUS_USER=${PROMETHEUS_USER} \
 		PROMETHEUS_GROUP=${PROMETHEUS_GROUP} \
@@ -56,17 +50,18 @@ PLIST_SUB+=	PORTNAME=${PORTNAME} \
 
 BUILD_USER?=	${USER}
 LD_FLAG_X_PREFIX=	-X ${GO_PKGNAME}/vendor/${GO_PKGNAME:H}/common/version
-LD_FLAG_STRING=	-s \
+LD_FLAG_STRING=		-s \
 		${LD_FLAG_X_PREFIX}.Version=${PORTVERSION} \
 		${LD_FLAG_X_PREFIX}.Revision=${PORTREVISION} \
 		${LD_FLAG_X_PREFIX}.Branch=release-${PORTVERSION:R} \
 		${LD_FLAG_X_PREFIX}.BuildUser=${BUILD_USER}
+GO_BUILDFLAGS=	-v -ldflags "${LD_FLAG_STRING}"
 
 do-build:
 .for bin in ${PROMETHEUS_BINARIES}
 	( cd ${GO_WRKSRC}/cmd/${bin} ; \
 		${SETENV} ${MAKE_ENV} ${GO_ENV} \
-		${GO_CMD} install -v -ldflags "${LD_FLAG_STRING}" )
+		${GO_CMD} install ${GO_BUILDFLAGS} )
 .endfor
 
 do-install:
@@ -86,14 +81,5 @@ do-install:
 	( cd ${WRKSRC}/consoles \
 		&& ${COPYTREE_SHARE} . ${STAGEDIR}${PROMETHEUS_CONSOLES_DIR} \
 	)
-
-post-install-USE_SYSLOG-on:
-	@${MKDIR} ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} \
-		${WRKDIR}/syslog.d.conf \
-		${STAGEDIR}${ETCDIR}/syslog.d.conf.sample
-	${INSTALL_DATA} \
-		${WRKDIR}/newsyslog.conf \
-		${STAGEDIR}${ETCDIR}/newsyslog.conf.sample
 
 .include <bsd.port.mk>

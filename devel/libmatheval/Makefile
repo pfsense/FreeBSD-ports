@@ -3,7 +3,7 @@
 
 PORTNAME=	libmatheval
 PORTVERSION=	1.1.11
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel math
 MASTER_SITES=	GNU
 
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libguile.so:lang/guile
 
 USES=		libtool localbase makeinfo pathfix
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	LEXLIB=-lfl_pic MAKEINFO="${MAKEINFO} --no-split"
+CONFIGURE_ENV=	LEXLIB=-lfl MAKEINFO="${MAKEINFO} --no-split"
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

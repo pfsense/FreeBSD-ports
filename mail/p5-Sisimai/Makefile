@@ -1,8 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	Sisimai
-PORTVERSION=	4.22.6
+PORTVERSION=	4.24.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:AKXLIX
@@ -14,10 +15,11 @@ COMMENT=	Mail Analyzing Interface for bounce mails
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-TEST_DEPENDS=	p5-Class-Accessor-Lite>0:devel/p5-Class-Accessor-Lite
+RUN_DEPENDS=	p5-Class-Accessor-Lite>0:devel/p5-Class-Accessor-Lite
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

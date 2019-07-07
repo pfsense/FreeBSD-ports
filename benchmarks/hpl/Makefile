@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hpl
-PORTVERSION=	2.1
-PORTREVISION=	9
+DISTVERSION=	2.2
+PORTREVISION=	1
 CATEGORIES=	benchmarks
 MASTER_SITES=	NETLIB/benchmark/hpl
 
@@ -11,7 +11,7 @@ MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	High Performance Computing Linpack Benchmark
 
 LIB_DEPENDS=	libblas.so:math/blas \
-		libmpich.so:net/mpich2
+		libmpich.so:net/mpich
 
 USES=		fortran
 USE_LDCONFIG=	yes
@@ -32,7 +32,8 @@ post-patch:
 		s|ARCH[ )]|_&|g ; \
 		s|^HPL_OPTS[ ]*=.*$$|HPL_OPTS =| ; \
 		s|^LAlib[ ]*=.*$$|LAlib = $$\(LAdir\)/lib/libblas.a| ; \
-		s|libpmpich.a|libmpl.a -lpthread|' \
+		s|libmpich.a|libmpich.so -lpthread| ; \
+		s|libpmpich.a|libmpl.so -lpthread|' \
 		${WRKSRC}/setup/Make.${HPL_ARCH}
 	@${REINPLACE_CMD} -e 's|HPL\.dat|${PREFIX}/etc/${PORTNAME}/&|' \
 		${WRKSRC}/testing/ptest/HPL_pdinfo.c

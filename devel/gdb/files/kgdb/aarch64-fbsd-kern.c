@@ -180,6 +180,11 @@ aarch64_fbsd_kernel_init_abi (struct gdbarch_info info, struct gdbarch *gdbarch)
 
   fbsd_vmcore_set_supply_pcb (gdbarch, aarch64_fbsd_supply_pcb);
   fbsd_vmcore_set_cpu_pcb_addr (gdbarch, kgdb_trgt_stop_pcb);
+
+  /* The kernel is linked at a virtual address with the upper 4 bits
+     set, so all 64 bits of virtual addresses need to be treated as
+     significant.  */
+  set_gdbarch_significant_addr_bit (gdbarch, 64);
 }
 
 /* Provide a prototype to silence -Wmissing-prototypes.  */

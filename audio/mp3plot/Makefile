@@ -3,18 +3,20 @@
 
 PORTNAME=	mp3plot
 DISTVERSION=	0.6.0
-PORTREVISION=	21
+PORTREVISION=	24
 CATEGORIES=	audio
 MASTER_SITES=	http://p.outlyer.net/mp3plot/files/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Mp3 bitrate plot tool
+COMMENT=	MP3 bitrate plot tool
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to configure: C++ compiler cannot create executables
-
+USES=		compiler:c++11-lang
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
+
+USE_CXXSTD=	c++98
 
 OPTIONS_DEFINE=	GD IMAGEMAGICK
 OPTIONS_DEFAULT=GD
@@ -30,7 +32,7 @@ PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 GD_CONFIGURE_ENABLE=	gd
 GD_LIB_DEPENDS=		libgd.so:graphics/gd
 IMAGEMAGICK_CONFIGURE_ENABLE=	magick
-IMAGEMAGICK_LIB_DEPENDS=libMagick++-6.so:graphics/ImageMagick
+IMAGEMAGICK_LIB_DEPENDS=libMagick++-6.so:graphics/ImageMagick6
 
 post-patch:
 	@${REINPLACE_CMD} -e '/bldtype_/s|-O2||g; s|^extra_LD.*||g' ${WRKSRC}/configure

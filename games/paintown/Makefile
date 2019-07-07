@@ -13,6 +13,8 @@ COMMENT=	Fighting game similar to Streets of Rage and TMNT
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		fails to build
+
 LIB_DEPENDS=	liballeg.so:devel/allegro \
 		libpng.so:graphics/png \
 		libfreetype.so:print/freetype2
@@ -20,7 +22,7 @@ LIB_DEPENDS=	liballeg.so:devel/allegro \
 BROKEN_aarch64=	Fails to link: missing sbrk
 
 USES=		dos2unix scons tar:bzip2
-USE_SDL=	yes
+USE_SDL=	sdl
 INSTALLS_ICONS=	yes
 DOS2UNIX_REGEX=	.*\.(c|cpp|h)
 

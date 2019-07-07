@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	unifi
-PORTVERSION=	5.7.15
-PORTREVISION=	1
+PORTVERSION=	5.10.19
+PORTREVISION=	0
 CATEGORIES=	net-mgmt java
 MASTER_SITES=	http://dl.ubnt.com/unifi/${PORTVERSION}-${UNIFI_BUILD}/
 PKGNAMESUFFIX=	-devel
@@ -14,17 +14,15 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 MAINTAINER=	bryce@bryce.net
 COMMENT=	UniFi Controller development release
 
-RUN_DEPENDS=	mongodb>0:databases/mongodb \
+LICENSE=	EULA
+LICENSE_NAME=	End User License Agreement
+LICENSE_TEXT=	${RESTRICTED}
+LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell no-auto-accept
+
+RESTRICTED=	License restrictions, see https://www.ubnt.com/eula/
+
+RUN_DEPENDS=	mongodb36>0:databases/mongodb36 \
 		snappyjava>0:archivers/snappy-java
-
-SUB_LIST+=	USERS=${USERS} GROUPS=${GROUPS} JAVASHAREDIR=${JAVASHAREDIR} \
-		JAVA=${JAVA}
-
-EXTRACT_CMD=	/usr/bin/ar
-EXTRACT_BEFORE_ARGS=	-p
-EXTRACT_AFTER_ARGS=	data.tar.xz | ${TAR} -xf -
-
-UNIFI_BUILD=	e9b882be05
 
 USES=		cpe
 CPE_VENDOR=	ubnt
@@ -34,19 +32,25 @@ JAVA_VERSION=	1.8
 JAVA_OS=	native
 JAVA_VENDOR=	openjdk bsdjava
 JAVA_RUN=	yes
+USE_RC_SUBR=	unifi
+
+EXTRACT_CMD=	${AR}
+EXTRACT_BEFORE_ARGS=	-p
+EXTRACT_AFTER_ARGS=	data.tar.xz | ${TAR} -xf -
 
 NO_BUILD=	yes
 NO_ARCH=	yes
-
-USE_RC_SUBR=	unifi
+NO_WRKSUBDIR=	yes
 
 USERS=		unifi
 GROUPS=		unifi
 
-NO_WRKSUBDIR=	yes
+SUB_LIST=	USERS=${USERS} GROUPS=${GROUPS} JAVASHAREDIR=${JAVASHAREDIR} \
+		JAVA=${JAVA}
 
-CONFLICTS=	unifi2-* unifi3-* unifi4-* unifi5-*
+CONFLICTS=	unifi5-*
 
+UNIFI_BUILD=	113b57454f
 DIR_LIST=	conf data logs run work
 
 post-patch:

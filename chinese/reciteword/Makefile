@@ -3,7 +3,7 @@
 
 PORTNAME=	reciteword
 PORTVERSION=	0.8.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	chinese
 MASTER_SITES=	SF \
 		SF/${PORTNAME}/${PORTNAME}-books/${PORTVERSION}:books \
@@ -15,16 +15,20 @@ DISTFILES=	${DISTNAME}.tar.bz2 \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Education software to help people to study English
 
+DEPRECATED=	depends on audio/esound
+EXPIRATION_DATE=	2019-03-25
+
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libespeak.so:audio/espeak
 
+USES=		compiler:c++11-lang tar:bzip2 gettext gmake gnome localbase \
+		pkgconfig
 GNU_CONFIGURE=	yes
-USES=		tar:bzip2 gettext gmake pkgconfig
 USE_GNOME=	gtk20 intltool esound
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+
+CXXFLAGS+=	-Wno-reserved-user-defined-literal
 
 PORTDOCS=	AUTHORS ChangeLog INSTALL README readme.txt
 

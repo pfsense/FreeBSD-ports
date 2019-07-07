@@ -1,10 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	jattach
-DISTVERSION=	g20170928
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.5
 CATEGORIES=	java devel
 
-MAINTAINER=	mizhka@gmail.com
+MAINTAINER=	mizhka@FreeBSD.org
 COMMENT=	JVM dynamic attach utility
 
 LICENSE=	APACHE20
@@ -14,7 +15,6 @@ USES=	gmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	apangin
-GH_TAGNAME=	ccc2f05
 
 PLIST_FILES=	bin/jattach
 

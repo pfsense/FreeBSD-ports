@@ -37,7 +37,7 @@ linux_ARGS=		${LINUX_DEFAULT:S/_64//}
 .endif
 
 .if ${linux_ARGS} == c6
-LINUX_DIST_VER?=	6.9
+LINUX_DIST_VER?=	6.10
 .if ${ARCH} == amd64 && ${LINUX_DEFAULT} != c6
 LINUX_ARCH=		x86_64
 .elif ${ARCH} == amd64 || ${ARCH} == i386
@@ -172,6 +172,9 @@ BUILD_DEPENDS+=		${linux_${i:C/:.*//}_DEP}
 .endif
 .if ${_i_args:Mrun} || empty(_i_args)
 RUN_DEPENDS+=		${linux_${i:C/:.*//}_DEP}
+.endif
+.if !defined(linux_${i:C/:.*//}_DEP)
+DEV_ERROR+=		"USE_LINUX=${i}: package does not exist"
 .endif
 .endfor
 

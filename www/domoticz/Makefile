@@ -2,7 +2,11 @@
 
 PORTNAME=	domoticz
 PORTVERSION=	4.${DOMOTICZ_REL}
+PORTREVISION=	3
 CATEGORIES=	www
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	9d226dab339f.patch:-p1
 
 MAINTAINER=	kiwi@oav.net
 COMMENT=	Home Automation System
@@ -28,7 +32,7 @@ TELLDUS_DESC=	Enable support for Telldus
 
 .include <bsd.port.options.mk>
 
-USES=		cmake iconv pkgconfig ssl
+USES=		cmake compiler:c++11-lang iconv pkgconfig ssl
 
 # This hack is to get rid of dependency of git while building
 # the package.

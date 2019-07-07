@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	note
-DISTVERSION=	1.3.22
-PORTREVISION=	1
+DISTVERSION=	1.3.26
 CATEGORIES=	deskutils perl5
 MASTER_SITES=	http://www.daemon.de/idisk/Apps/note/
 
-MAINTAINER=	lebarondemerde@privacychain.ch
+MAINTAINER=	rigoletto@FreeBSD.org
 COMMENT=	Console based tool to handle encrypted notes
 
 LICENSE=	GPLv1
@@ -16,8 +15,9 @@ RUN_DEPENDS=	p5-YAML>=0.1:textproc/p5-YAML \
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
-OPTIONS_DEFINE=		MYSQL PWSAFE3
+OPTIONS_DEFINE=		EXAMPLES MYSQL PWSAFE3
 OPTIONS_DEFAULT=	BLOWFISH DES IDEA MYSQL PWSAFE3
 
 MYSQL_RUN_DEPENDS=	p5-DBD-mysql>0:databases/p5-DBD-mysql \

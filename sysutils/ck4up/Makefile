@@ -7,7 +7,7 @@ CATEGORIES=	sysutils
 MASTER_SITES=	http://jue.li/crux/ck4up/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Checks http and ftp sites for updates
+COMMENT=	Check HTTP and FTP sites for updates
 
 RUN_DEPENDS=	${RUBY_ARCHLIBDIR}/gdbm.so:databases/ruby-gdbm
 
@@ -20,6 +20,8 @@ PORTEXAMPLES=	ck4up.conf
 
 PLIST_FILES=	bin/ck4up \
 		man/man1/ck4up.1.gz
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr|${LOCALBASE}|g' \

@@ -3,11 +3,11 @@
  * suricata_rulesets.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,12 @@ require_once("/usr/local/pkg/suricata/suricata.inc");
 global $g, $rebuild_rules;
 
 $suricatadir = SURICATADIR;
+$suricata_rules_dir = SURICATA_RULES_DIR;
 $flowbit_rules_file = FLOWBITS_FILENAME;
 
 // Array of default events rules for Suricata
-$default_rules = array( "decoder-events.rules", "dns-events.rules", "files.rules", "http-events.rules",
-			"smtp-events.rules", "stream-events.rules", "tls-events.rules" );
+$default_rules = array( "app-layer-events.rules", "decoder-events.rules", "dnp3-events.rules", "dns-events.rules", "files.rules", "http-events.rules", "ipsec-events.rules", "kerberos-events.rules", 
+			"modbus-events.rules", "nfs-events.rules", "ntp-events.rules", "smb-events.rules", "smtp-events.rules", "stream-events.rules", "tls-events.rules" );
 
 if (!is_array($config['installedpackages']['suricata']['rule'])) {
 	$config['installedpackages']['suricata']['rule'] = array();
@@ -67,13 +68,13 @@ $no_snort_files = false;
 
 $enabled_rulesets_array = explode("||", $a_nat[$id]['rulesets']);
 
-/* Test rule categories currently downloaded to $SURICATADIR/rules and set appropriate flags */
+/* Test rule categories currently downloaded to SURICATA_RULES_DIR and set appropriate flags */
 if ($emergingdownload == 'on') {
-	$test = glob("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
+	$test = glob("{$suricata_rules_dir}" . ET_OPEN_FILE_PREFIX . "*.rules");
 	$et_type = "ET Open";
 }
 elseif ($etpro == 'on') {
-	$test = glob("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.rules");
+	$test = glob("{$suricata_rules_dir}" . ET_PRO_FILE_PREFIX . "*.rules");
 	$et_type = "ET Pro";
 }
 else
@@ -82,14 +83,14 @@ else
 if (empty($test))
 	$no_emerging_files = true;
 
-$test = glob("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
+$test = glob("{$suricata_rules_dir}" . VRT_FILE_PREFIX . "*.rules");
 if (empty($test))
 	$no_snort_files = true;
 
-if (!file_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "community.rules"))
+if (!file_exists("{$suricata_rules_dir}" . GPL_FILE_PREFIX . "community.rules"))
 	$no_community_files = true;
 
-// If a Snort rules policy is enabled and selected, remove all Snort 
+// If a Snort rules policy is enabled and selected, remove all Snort
 // rules from the configured rule sets to allow automatic selection.
 if ($a_nat[$id]['ips_policy_enable'] == 'on') {
 	if (isset($a_nat[$id]['ips_policy'])) {
@@ -132,6 +133,8 @@ if (isset($_POST["save"])) {
 	}
 	else {
 		$a_nat[$id]['autoflowbitrules'] = 'off';
+		// Need this here so the GUI renders correctly after saving
+		$_POST['autoflowbits'] = "off";
 		unlink_if_exists("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}");
 	}
 
@@ -142,9 +145,7 @@ if (isset($_POST["save"])) {
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	conf_mount_rw();
 	suricata_generate_yaml($a_nat[$id]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 
 	/* Signal Suricata to "live reload" the rules */
@@ -204,25 +205,25 @@ if (isset($_POST["save"])) {
 	$enabled_rulesets_array = $default_rules;
 
 	if ($emergingdownload == 'on') {
-		$files = glob("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
+		$files = glob("{$suricata_rules_dir}" . ET_OPEN_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
 	}
 	elseif ($etpro == 'on') {
-		$files = glob("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.rules");
+		$files = glob("{$suricata_rules_dir}" . ET_PRO_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
 	}
 
 	if ($snortcommunitydownload == 'on') {
-		$files = glob("{$suricatadir}rules/" . GPL_FILE_PREFIX . "community.rules");
+		$files = glob("{$suricata_rules_dir}" . GPL_FILE_PREFIX . "community.rules");
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
 	}
 
 	/* Include the Snort rules only if enabled and no IPS policy is set */
 	if ($snortdownload == 'on' && empty($_POST['ips_policy_enable'])) {
-		$files = glob("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
+		$files = glob("{$suricata_rules_dir}" . VRT_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
 	}
@@ -271,7 +272,7 @@ $tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suric
 $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
 display_top_tabs($tab_array, true);
 
-$isrulesfolderempty = glob("{$suricatadir}rules/*.rules");
+$isrulesfolderempty = glob("{$suricata_rules_dir}*.rules");
 $iscfgdirempty = array();
 
 if (file_exists("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/custom.rules")) {
@@ -297,7 +298,7 @@ else:
 		'autoflowbits',
 		'Resolve Flowbits',
 		'Auto-enable rules required for checked flowbits',
-		$pconfig['autoflowbits'] == 'on' ? true:false,
+		$pconfig['autoflowbits'] != 'off' ? true : false,
 		'on'
 	))->setHelp(' Default is Checked. Suricata will examine the enabled rules in your chosen rule categories for checked flowbits. ' .
 					'Any rules that set these dependent flowbits will be automatically enabled and added to the list of files in the interface rules directory.');
@@ -360,7 +361,7 @@ else:
 				'max-detect' => 'Maximum Detection')
 			))->setHelp('Connectivity blocks most major threats with few or no false positives. Balanced is a good starter policy. ' .
 						'It is speedy, has good base coverage level, and covers most threats of the day. It includes all rules in Connectivity. Security is a stringent policy. ' .
-						'It contains everything in the first two plus policy-type rules such as Flash in an Excel file.  Maximum Detection encompasses vulnerabilities from 2005 ' . 
+						'It contains everything in the first two plus policy-type rules such as Flash in an Excel file.  Maximum Detection encompasses vulnerabilities from 2005 ' .
 						'or later with a CVSS score of at least 7.5 along with critical malware and exploit kit rules.  The Maximum Detection policy favors detection over rated ' .
 						'throughput. In some situations this policy can and will cause significant throughput reductions.');
 		$section->addInput(new Form_Select(
@@ -369,7 +370,7 @@ else:
 			$pconfig['ips_policy_mode'],
 			array(  'alert' => 'Alert',
 				'policy'  => 'Policy')
-			))->setHelp('When Policy is selected, this will automatically change the action for rules in the selected IPS Policy from their default action of alert to the action specified ' . 
+			))->setHelp('When Policy is selected, this will automatically change the action for rules in the selected IPS Policy from their default action of alert to the action specified ' .
 					'in the policy metadata (typically drop, but may be alert for some policy rules).');
 
 		print($section);
@@ -378,7 +379,7 @@ else:
 ?>
 
 <div class="panel panel-default">
-	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Select the rulesets (Categories) Snort will load at startup")?></h2></div>
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Select the rulesets (Categories) Suricata will load at startup")?></h2></div>
 	<div class="panel-body">
 		<div class="table-responsive col-sm-12">
 			<i class="fa fa-adn text-success"></i>&nbsp;<?=gettext('- Category is auto-enabled by SID Mgmt conf files'); ?><br/>
@@ -425,9 +426,9 @@ else:
 						</td>
 						<td colspan="4">
 						<?php if ($no_community_files): ?>
-							<?php echo gettext("{$msg_community}"); ?>
+							<?php echo $msg_community; ?>
 						<?php else: ?>
-							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=gettext('{$msg_community}');?></a>
+							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=$msg_community;?></a>
 						<?php endif; ?>
 						</td>
 					</tr>
@@ -438,9 +439,9 @@ else:
 						</td>
 						<td colspan="4">
 						<?php if ($no_community_files): ?>
-							<?php echo gettext("{$msg_community}"); ?>
+							<?php echo $msg_community; ?>
 						<?php else: ?>
-							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=$msg_community; ?></a>
 						<?php endif; ?>
 						</td>
 					</tr>
@@ -452,9 +453,9 @@ else:
 					</td>
 					<td colspan="4">
 						<?php if ($no_community_files): ?>
-							<?php echo gettext("{$msg_community}"); ?>
+							<?php echo $msg_community; ?>
 						<?php else: ?>
-							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
+							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo $msg_community; ?></a>
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -465,9 +466,9 @@ else:
 					</td>
 					<td colspan="4">
 						<?php if ($no_community_files): ?>
-							<?php echo gettext("{$msg_community}"); ?>
+							<?php echo $msg_community; ?>
 						<?php else: ?>
-							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=$msg_community; ?></a>
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -524,7 +525,7 @@ else:
 				if (empty($isrulesfolderempty))
 					$dh  = opendir("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/");
 				else
-					$dh  = opendir("{$suricatadir}rules/");
+					$dh  = opendir("{$suricata_rules_dir}");
 
 				while (false !== ($filename = readdir($dh))) {
 					$filename = basename($filename);
@@ -679,7 +680,7 @@ events.push(function() {
 	}
 
 	//------- Click handlers -----------------------------------------
-	// 
+	//
 	$('#ips_policy_enable').click(function() {
 		enable_change();
 	});
@@ -693,4 +694,3 @@ events.push(function() {
 <?php
 endif;
 include("foot.inc");
-

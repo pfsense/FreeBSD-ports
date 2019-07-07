@@ -2,27 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	dnsforwarder
-PORTVERSION=	20170319
+PORTVERSION=	6.1.15
 CATEGORIES=	dns
+PORTEPOCH=	1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dnsforwarder is A simple DNS forwarder
 
 LICENSE=	GPLv3
+LICENSE_FILES= ${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	holmium
-GH_TAGNAME=	441ef2081651020ac1bd42f91017dbdad044c7d8
-
 USES=		localbase
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-ccflags=no
+USE_GITHUB=	yes
+GH_ACCOUNT=	holmium
 
 PLIST_FILES=	bin/dnsforwarder
-
+GNU_CONFIGURE=	yes
 MAKEFILE=	makefile
 
 .include <bsd.port.mk>

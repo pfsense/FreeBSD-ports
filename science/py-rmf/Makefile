@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rmf
-DISTVERSION=	g20180614
+DISTVERSION=	1.1
 CATEGORIES=	science graphics
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	swig3.0:devel/swig30
 LIB_DEPENDS=	libRMF.so:science/rmf
 
-USES=		cmake:outsource python shebangfix
+USES=		cmake compiler:c++11-lang python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	salilab
 GH_TAGNAME=	f917cf2

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	spin
-PORTVERSION=	6.4.5
+PORTVERSION=	6.4.8
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://spinroot.com/spin/Src/
 DISTNAME=	spin${PORTVERSION:S/.//g}
@@ -13,6 +14,10 @@ COMMENT=	On-the-fly verification system for asynchronous concurrent systems
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		depends on the gcc meta port
+
+RUN_DEPENDS=	gcc:lang/gcc
 
 WRKSRC=		${WRKDIR}/Spin/Src${PORTVERSION}
 MAKEFILE=	makefile

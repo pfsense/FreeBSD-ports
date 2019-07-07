@@ -2,7 +2,7 @@
 
 PORTNAME=	icinga2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.8.4
+DISTVERSION=	2.10.5
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	lme@FreeBSD.org
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libyajl.so:devel/yajl
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
-USES=		alias bison cmake compiler:c++0x libedit ssl
+USES=		alias bison cmake:insource compiler:c++0x libedit ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga
 
@@ -29,7 +29,7 @@ OPTIONS_GROUP_BACKEND=	MYSQL PGSQL
 OPTIONS_RADIO=		PLUGINS
 OPTIONS_RADIO_PLUGINS=	MONPLUGINS NAGPLUGINS
 
-OPTIONS_DEFAULT=	DOCS MYSQL PGSQL MONPLUGINS
+OPTIONS_DEFAULT=	MYSQL PGSQL MONPLUGINS
 
 MONPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/monitoring-plugins
 NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios-plugins
@@ -68,7 +68,7 @@ PLIST_SUB=	ICINGA2USER=${ICINGA2USER} \
 		ICINGA2GROUP=${ICINGA2GROUP} \
 		WWWGRP=${WWWGRP}
 
-SUB_FILES=	pkg-message ${PORTNAME}-newsyslog
+SUB_FILES=	pkg-message ${PORTNAME}-newsyslog.conf
 
 # Config files with references to "Linux"
 LINUX_CONFIG=	groups.conf services.conf hosts.conf
@@ -98,7 +98,7 @@ pre-install:
 
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/newsyslog/
-	${INSTALL_DATA} ${WRKDIR}/${PORTNAME}-newsyslog ${STAGEDIR}${EXAMPLESDIR}/newsyslog/${PORTNAME}
+	${INSTALL_DATA} ${WRKDIR}/${PORTNAME}-newsyslog.conf ${STAGEDIR}${EXAMPLESDIR}/newsyslog/${PORTNAME}.conf
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/vim/vimfiles
 	(cd ${WRKSRC}/tools/syntax/vim && ${COPYTREE_SHARE} . \
 		${STAGEDIR}${PREFIX}/share/vim/vimfiles)

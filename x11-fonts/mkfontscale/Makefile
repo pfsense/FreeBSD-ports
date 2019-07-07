@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mkfontscale
-PORTVERSION=	1.1.3
+PORTVERSION=	1.2.1
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	x11@FreeBSD.org
@@ -14,10 +14,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 XORG_CAT=	app
-USE_XORG=	xproto fontenc
+USE_XORG=	xorgproto fontenc
 
-CONFIGURE_ARGS+=--disable-maintainer-mode
-
-PLIST_FILES=	bin/mkfontscale man/man1/mkfontscale.1.gz
+PLIST_FILES=	bin/mkfontdir \
+		bin/mkfontscale \
+		man/man1/mkfontdir.1.gz \
+		man/man1/mkfontscale.1.gz
 
 .include <bsd.port.mk>

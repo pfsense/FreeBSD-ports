@@ -3,7 +3,7 @@
 
 PORTNAME=	kaa-base
 PORTVERSION=	0.6.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	multimedia python
 MASTER_SITES=	SF/freevo/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ MAINTAINER=	fbsd@opal.com
 COMMENT=	Kaa Media Repository
 
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2.py:textproc/py-libxml2@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/pygame/__init__.py:devel/py-game@${PY_FLAVOR}
+		${PYGAME}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		python:2.7

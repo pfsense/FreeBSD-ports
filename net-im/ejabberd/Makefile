@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ejabberd
-PORTVERSION=	18.06
+PORTVERSION=	19.02
 CATEGORIES=	net-im
 
 MAINTAINER=	ashish@FreeBSD.org
@@ -18,11 +18,12 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libpng.so:graphics/png \
 		libwebp.so:graphics/webp
 
+USES=		cpe gmake pkgconfig shebangfix ssl jpeg autoreconf:build
+
 USERS=		ejabberd
 GROUPS=		${USERS}
 
 GNU_CONFIGURE=	yes
-USES=		cpe gmake pkgconfig shebangfix ssl jpeg autoreconf:build
 USE_RC_SUBR=	${PORTNAME}
 NOPRECIOUSMAKEVARS=	yes
 CPE_VENDOR=	process-one
@@ -42,11 +43,13 @@ GH_TUPLE=	erlang-lager:lager:${LAGER_VER}:lager/deps/lager \
 		potatosalad:erlang-jose:${JOSE_VER}:jose/deps/jose \
 		processone:eimp:${EIMP_VER}:eimp/deps/eimp \
 		DeadZen:goldrush:${GOLDRUSH_VER}:goldrush/deps/goldrush \
-		dvv:base64url:f2c64ed8:base64url/deps/base64url
+		dvv:base64url:f2c64ed8:base64url/deps/base64url \
+		processone:ezlib:${EZLIB_VER}:ezlib/deps/ezlib \
+		processone:pkix:${PKIX_VER}:pkix/deps/pkix \
+		processone:mqtree:${MQTREE_VER}:mqtree/deps/mqtree
 
-OPTIONS_DEFINE=	ODBC PAM DOCS MYSQL PGSQL ICONV RIAK ZLIB REDIS SIP SQLITE \
+OPTIONS_DEFINE=	ODBC PAM DOCS MYSQL PGSQL RIAK REDIS SIP SQLITE \
 		STUN TOOLS FULLXML
-OPTIONS_DEFAULT=	ICONV
 
 EJABBERD_LIBDIR=lib/erlang/lib
 MAKE_ENV=	PORTVERSION=${PORTVERSION}
@@ -65,16 +68,15 @@ SUBS= 		PORTNAME=${PORTNAME} PORTVERSION=${PORTVERSION}		\
 		FAST_XML_VER=${FAST_XML_VER}				\
 		FAST_YAML_VER=${FAST_YAML_VER}				\
 		GOLDRUSH_VER=${GOLDRUSH_VER}				\
-		HAMCREST_VER=${HAMCREST_VER} ICONV_VER=${ICONV_VER}	\
+		HAMCREST_VER=${HAMCREST_VER}				\
 		JIFFY_VER=${JIFFY_VER} JOSE_VER=${JOSE_VER}		\
 		LAGER_VER=${LAGER_VER} LUERL_VER=${LUERL_VER}		\
-		MECK_VER=${MECK_VER} MOKA_VER=${MOKA_VER}		\
+		MQTREE_VER=${MQTREE_VER}				\
 		P1_MYSQL_VER=${P1_MYSQL_VER}				\
 		P1_OAUTH2_VER=${P1_OAUTH2_VER}				\
 		P1_PGSQL_VER=${P1_PGSQL_VER}				\
-		P1_UTILS_VER=${P1_UTILS_VER}				\
+		P1_UTILS_VER=${P1_UTILS_VER} PKIX_VER=${PKIX_VER}	\
 		RIAK_PB_VER=${RIAK_PB_VER} RIAKC_VER=${RIAKC_VER}	\
-		SAMERLIB_VER=${SAMERLIB_VER}				\
 		SQLITE3_VER=${SQLITE3_VER}				\
 		STRINGPREP_VER=${STRINGPREP_VER} STUN_VER=${STUN_VER}	\
 		XMPP_VER=${XMPP_VER}
@@ -88,35 +90,33 @@ SUB_LIST=	${SUBS} \
 SHEBANG_FILES=	${WRKSRC}/ejabberdctl.template
 
 BASE64URL_VER=	0.0.1
-CACHE_TAB_VER=	1.0.14
-EIMP_VER=	1.0.6
-EPAM_VER=	1.0.4
+CACHE_TAB_VER=	1.0.18
+EIMP_VER=	1.0.10
+EPAM_VER=	1.0.5
 EREDIS_VER=	1.0.8
-ESIP_VER=	1.0.24
-EZLIB_VER=	1.0.4
-FAST_TLS_VER=	1.0.23
-FAST_XML_VER=	1.1.31
-FAST_YAML_VER=	1.0.15
+ESIP_VER=	1.0.28
+EZLIB_VER=	1.0.5
+FAST_TLS_VER=	1.1.0
+FAST_XML_VER=	1.1.35
+FAST_YAML_VER=	1.0.18
 GOLDRUSH_VER=	0.1.9
 HAMCREST_VER=	0.4.1
-ICONV_VER=	1.0.8
 JIFFY_VER=	0.14.8
 JOSE_VER=	1.8.4
-LAGER_VER=	3.4.2
+LAGER_VER=	3.6.7
 LUERL_VER=	0.3
-MECK_VER=	0.8.4
-MOKA_VER=	1.0.5d
-P1_MYSQL_VER=	1.0.6
-P1_OAUTH2_VER=	0.6.3
-P1_PGSQL_VER=	1.1.6
-P1_UTILS_VER=	1.0.12
+MQTREE_VER=	1.0.2
+P1_MYSQL_VER=	1.0.9
+P1_OAUTH2_VER=	0.6.4
+P1_PGSQL_VER=	1.1.7
+P1_UTILS_VER=	1.0.14
+PKIX_VER=	1.0.1
 RIAK_PB_VER=	2.3.2
 RIAKC_VER=	2.5.3
-SAMERLIB_VER=	0.8.0e
 SQLITE3_VER=	1.1.6
-STRINGPREP_VER=	1.0.12
-STUN_VER=	1.0.23
-XMPP_VER=	1.2.1
+STRINGPREP_VER=	1.0.15
+STUN_VER=	1.0.27
+XMPP_VER=	1.3.2
 
 OPTIONS_SUB=		yes
 RIAK_DESC=	Riak database support
@@ -135,28 +135,28 @@ RIAK_CONFIGURE_ENABLE=	riak
 RIAK_GH_TUPLE=	processone:riak-erlang-client:${RIAKC_VER}:riakc/deps/riakc \
 		basho:riak_pb:${RIAK_PB_VER}:riak_pb/deps/riak_pb \
 		basho:hamcrest-erlang:${HAMCREST_VER}:hamcrest/deps/hamcrest
-ICONV_CONFIGURE_ENABLE=	iconv
-ICONV_GH_TUPLE=	processone:iconv:${ICONV_VER}:iconv/deps/iconv
 REDIS_CONFIGURE_ENABLE=	redis
 REDIS_GH_TUPLE=	wooga:eredis:v${EREDIS_VER}:eredis/deps/eredis
 SIP_CONFIGURE_ENABLE=	sip
 SIP_GH_TUPLE=	processone:esip:${ESIP_VER}:esip/deps/esip
+SIP_IMPLIES=	STUN
 STUN_CONFIGURE_ENABLE=	stun
 STUN_GH_TUPLE=	processone:stun:${STUN_VER}:stun/deps/stun
 SQLITE_CONFIGURE_ENABLE=sqlite
 SQLITE_GH_TUPLE=	processone:erlang-sqlite3:${SQLITE3_VER}:sqlite3/deps/sqlite3
 TOOLS_CONFIGURE_ENABLE=	tools
-TOOLS_GH_TUPLE=	rvirding:luerl:v${LUERL_VER}:luerl/deps/luerl \
-		eproxus:meck:${MECK_VER}:meck/deps/meck \
-		processone:moka:${MOKA_VER}:moka/deps/moka \
-		processone:samerlib:${SAMERLIB_VER}:samerlib/deps/samerlib
+TOOLS_GH_TUPLE=	rvirding:luerl:v${LUERL_VER}:luerl/deps/luerl
 FULLXML_CONFIGURE_ENABLE=	full-xml
-ZLIB_CONFIGURE_ENABLE=	zlib
-ZLIB_GH_TUPLE=	processone:ezlib:${EZLIB_VER}:ezlib/deps/ezlib
 SQLITE_USES=		sqlite
-ICONV_USES=		iconv:wchar_t
-ICONV_LDFLAGS=		${ICONV_LIB}
 DOCS_MAKE_ARGS_OFF=	NOPORTDOCS=yes
+
+pre-everything::
+	@if ${PKG_BIN} query %n-%v net-im/ejabberd; then \
+		${ECHO_MSG} needs to be uninstalled, before this port build could proceed. ; \
+		${ECHO_MSG} For details: https://github.com/processone/ejabberd/issues/2194 ; \
+		${ECHO_MSG} Sorry for the inconvenience. ; \
+		exit 1; \
+	fi
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,^convert,${LOCALBASE}/bin/convert,' ${WRKSRC}/tools/captcha.sh

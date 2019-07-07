@@ -3,6 +3,7 @@
 
 PORTNAME=	rhythmbox
 PORTVERSION=	3.4.2
+PORTREVISION=	4
 CATEGORIES=	audio gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -34,7 +35,7 @@ USES=		desktop-file-utils gmake gnome libtool localbase \
 		pathfix pkgconfig tar:xz
 USE_GNOME=	cairo intlhack glib20 gnomeprefix gtk30 introspection \
 		pygobject3 libxml2
-USE_XORG=	ice x11 xproto
+USE_XORG=	ice x11 xorgproto
 GNU_CONFIGURE=	yes
 USE_GSTREAMER1=	flac lame jpeg cdparanoia vorbis
 CONFIGURE_ARGS=	--enable-vala \
@@ -49,7 +50,7 @@ INSTALL_TARGET=	install-strip
 GLIB_SCHEMAS=	org.gnome.rhythmbox.gschema.xml
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	BRASERO DAAP GRILO IPOD LIRC MTP NLS NOTIFY PYTHON
+OPTIONS_DEFINE=	BRASERO DAAP DOCS GRILO IPOD LIRC MTP NLS NOTIFY PYTHON
 OPTIONS_DEFAULT=BRASERO NOTIFY PYTHON
 BRASERO_DESC=	Brasero disc burning support
 BRASERO_CONFIGURE_WITH=	brasero

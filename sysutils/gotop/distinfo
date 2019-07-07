@@ -1,0 +1,9 @@
+TIMESTAMP = 1550907308
+SHA256 (cjbassi-gotop-3.0.0_GH0.tar.gz) = d5147080bb6057f0bf0900b38438e89aa066959c845bdd4c84a9c9fe478b176f
+SIZE (cjbassi-gotop-3.0.0_GH0.tar.gz) = 1887890
+SHA256 (docopt-docopt.go-ee0de3b_GH0.tar.gz) = 6eb951df9aa0503060e3912fd10f5f592b4453a5f1d5130995db02aa4697374d
+SIZE (docopt-docopt.go-ee0de3b_GH0.tar.gz) = 30659
+SHA256 (shirou-gopsutil-v2.19.01_GH0.tar.gz) = 5ea929c3e3550a9601f41c0813f0c9da3ba338ebd1060452aded2d4ba1cb8444
+SIZE (shirou-gopsutil-v2.19.01_GH0.tar.gz) = 118948
+SHA256 (golang-sys-37707fd_GH0.tar.gz) = 9a86c90f564594b3f201540d19fb4fb828e1df8af61bb2fa9190a760cba039a7
+SIZE (golang-sys-37707fd_GH0.tar.gz) = 795284

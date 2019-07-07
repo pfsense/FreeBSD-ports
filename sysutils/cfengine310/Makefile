@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cfengine
-PORTVERSION=	3.10.3
+PORTVERSION=	3.10.5
 CATEGORIES=	sysutils
 MASTER_SITES=	https://s3.amazonaws.com/cfengine-package-repos/tarballs/
 
@@ -15,7 +15,10 @@ LICENSE=	GPLv3
 
 CPE_VENDOR=	gnu
 
-CONFLICTS=	cfengine-2* cfengine3[0-9]-* cfengine31[1-9]-*
+DEPRECATED=		OpenSSL 1.1.X is not supported.
+EXPIRATION_DATE=	2021-09-30
+
+CONFLICTS=	cfengine3[0-9]-* cfengine31[1-9]-*
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	310
 CONFLICTS+=	cfengine-3.*
@@ -67,4 +70,13 @@ MYSQL_LDFLAGS=		-L${LOCALBASE}/lib/mysql
 LIBVIRT_CONFIGURE_WITH=	--with-libvirt=${LOCALBASE}
 LIBVIRT_LIB_DEPENDS+=	libvirt.so:devel/libvirt
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1200085
+.if ${SSL_DEFAULT} != "openssl"
+BROKEN_FreeBSD_12=	fails to build with openssl111, install security/openssl
+BROKEN_FreeBSD_13=	fails to build with openssl111, install security/openssl
+.endif
+.endif
+
+.include <bsd.port.post.mk>

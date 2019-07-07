@@ -3,7 +3,7 @@
 
 PORTNAME=	jogl
 PORTVERSION=	1.1.1
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	graphics devel java
 MASTER_SITES=	http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1/
 EXTRACT_SUFX=	-src.zip
@@ -29,8 +29,7 @@ ALL_TARGET=	all
 ONLY_FOR_ARCHS=	i386 amd64
 
 USES=		zip
-USE_XORG=	x11 xau xdamage xdmcp xext xf86vidmodeproto xfixes xproto xt \
-		xxf86vm
+USE_XORG=	x11 xau xdamage xdmcp xext xfixes xorgproto xt xxf86vm
 USE_GL=		gl
 USE_ANT=	yes
 USE_LDCONFIG=	yes
@@ -66,7 +65,7 @@ PLIST_SUB+=	JDK7="@comment "
 .endif
 
 .if ${JAVA_PORT_VERSION:M1.8.*}
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-build.xml
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-build.xml
 .endif
 
 post-patch:

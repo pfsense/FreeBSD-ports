@@ -3,9 +3,9 @@
  * snort_blocked.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014-2016 Bill Meeks
+ * Copyright (c) 2014-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,8 +29,9 @@ $snortlogdir = SNORTLOGDIR;
 // Grab pfSense version so we can refer to it later on this page
 $pfs_version=substr(trim(file_get_contents("/etc/version")),0,3);
 
-if (!is_array($config['installedpackages']['snortglobal']['alertsblocks']))
+if (!is_array($config['installedpackages']['snortglobal']['alertsblocks'])) {
 	$config['installedpackages']['snortglobal']['alertsblocks'] = array();
+}
 
 $pconfig['brefresh'] = $config['installedpackages']['snortglobal']['alertsblocks']['brefresh'];
 $pconfig['blertnumber'] = $config['installedpackages']['snortglobal']['alertsblocks']['blertnumber'];

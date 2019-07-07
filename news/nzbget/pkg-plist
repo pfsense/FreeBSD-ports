@@ -1,8 +1,7 @@
 bin/nzbget
 @sample etc/nzbget.conf.sample
-@comment %%PORTDOCS%%%%DOCSDIR%%/COPYING
-@comment %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog
+%%PORTDOCS%%%%DOCSDIR%%/COPYING
 %%PORTDOCS%%%%DOCSDIR%%/README
 %%DATADIR%%/nzbget.conf
 %%DATADIR%%/scripts/EMail.py
@@ -15,6 +14,8 @@ bin/nzbget
 %%DATADIR%%/webui/history.js
 %%DATADIR%%/webui/img/download-anim-green-2x.png
 %%DATADIR%%/webui/img/download-anim-orange-2x.png
+%%DATADIR%%/webui/img/favicon-256x256-opaque.png
+%%DATADIR%%/webui/img/favicon-256x256.png
 %%DATADIR%%/webui/img/favicon.ico
 %%DATADIR%%/webui/img/icons-2x.png
 %%DATADIR%%/webui/img/icons.png

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	webhook
-PORTVERSION=	2.6.8
+PORTVERSION=	2.6.9
 CATEGORIES=	www
 
 MAINTAINER=	stb@lassitu.de
@@ -20,7 +20,7 @@ PLIST_FILES=	"@sample etc/webhook.yaml.sample" sbin/webhook
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100513
+.if ${OPSYS} == FreeBSD
 DAEMONARGS=	-S -l \$${webhook_facility} -s \$${webhook_priority} -t \$${name}
 .else
 DAEMONARGS=	-f

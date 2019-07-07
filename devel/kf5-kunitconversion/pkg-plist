@@ -17,7 +17,6 @@ lib/libKF5UnitConversion.so.5
 lib/libKF5UnitConversion.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_MKSPECDIR%%/modules/qt_KUnitConversion.pri
 share/locale/ar/LC_MESSAGES/kunitconversion5.mo
-share/locale/ast/LC_MESSAGES/kunitconversion5.mo
 share/locale/bg/LC_MESSAGES/kunitconversion5.mo
 share/locale/bs/LC_MESSAGES/kunitconversion5.mo
 share/locale/ca/LC_MESSAGES/kunitconversion5.mo
@@ -39,6 +38,7 @@ share/locale/gl/LC_MESSAGES/kunitconversion5.mo
 share/locale/hr/LC_MESSAGES/kunitconversion5.mo
 share/locale/hu/LC_MESSAGES/kunitconversion5.mo
 share/locale/ia/LC_MESSAGES/kunitconversion5.mo
+share/locale/id/LC_MESSAGES/kunitconversion5.mo
 share/locale/is/LC_MESSAGES/kunitconversion5.mo
 share/locale/it/LC_MESSAGES/kunitconversion5.mo
 share/locale/ja/LC_MESSAGES/kunitconversion5.mo

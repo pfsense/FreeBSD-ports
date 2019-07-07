@@ -14,10 +14,9 @@ COMMENT=	GAP is a system for computational discrete algebra
 
 LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libgmp.so:math/gmp
-
 BROKEN_aarch64=		fails to link: undefined reference to SyAllocBags
-BROKEN_powerpc64=	fails to package: 2_manifolds_54.scb: No such file or directory
+
+LIB_DEPENDS=	libgmp.so:math/gmp
 
 USES=		gmake shebangfix tar:bzip2
 SHEBANG_FILES=	configure \
@@ -47,6 +46,9 @@ PLIST_FILES=	bin/gap
 post-patch:
 	@${REINPLACE_CMD} -i '' -e '1s|/usr/bin/sh|/bin/sh|' \
 	    ${WRKSRC}/pkg/happrime/make_tarball
+# Avoid conflict with C++20 <version> by ignoring <...> under WRKSRC
+	@${REINPLACE_CMD} -i .c++20 's/-I/-iquote/' \
+		${WRKSRC}/pkg/*/Makefile.in
 
 post-build:
 	cd ${WRKSRC}/pkg/simpcomp && \

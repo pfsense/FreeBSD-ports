@@ -3,8 +3,8 @@
  * snort_alerts.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2009-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,8 +28,11 @@ require_once("/usr/local/www/widgets/include/widget-snort.inc");
 global $config, $g;
 
 /* retrieve snort variables */
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
+	$config['installedpackages'] = array();
+	$config['installedpackages']['snortglobal'] = array();
 	$config['installedpackages']['snortglobal']['rule'] = array();
+}
 $a_instance = &$config['installedpackages']['snortglobal']['rule'];
 
 // Set some CSS class variables
@@ -116,14 +119,14 @@ function snort_widget_get_alerts() {
 
 			if (file_exists("/tmp/alert_snort{$snort_uuid}")) {
 
-				/*              0         1            2      3       4   5     6   7       8   9       10 11             12       */
-				/* File format: timestamp,generator_id,sig_id,sig_rev,msg,proto,src,srcport,dst,dstport,id,classification,priority */
+				/*              0         1            2      3       4   5     6   7       8   9       10 11             12       13     14          */
+				/* File format: timestamp,generator_id,sig_id,sig_rev,msg,proto,src,srcport,dst,dstport,id,classification,priority,action,disposition */
 				if (!$fd = fopen("/tmp/alert_snort{$snort_uuid}", "r")) {
 					log_error(gettext("[Snort Widget] Failed to open file /tmp/alert_snort{$snort_uuid}"));
 					continue;
 				}
 				while (($fields = fgetcsv($fd, 1000, ',', '"')) !== FALSE) {
-					if(count($fields) < 13)
+					if(count($fields) < 14 || count($fields) > 15)
 						continue;
 
 					// Get the Snort interface this alert was received from

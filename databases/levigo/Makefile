@@ -2,13 +2,16 @@
 
 PORTNAME=	levigo
 PORTVERSION=	20150216
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	databases
 
 MAINTAINER=	cheffo@freebsd-bg.org
 COMMENT=	Levigo is a Go wrapper for LevelDB
 
 LICENSE=	MIT
+
+DEPRECATED=		Go libraries should not be packaged
+EXPIRATION_DATE=	2019-03-31
 
 BUILD_DEPENDS=	go:lang/go
 LIB_DEPENDS=	libleveldb.so:databases/leveldb

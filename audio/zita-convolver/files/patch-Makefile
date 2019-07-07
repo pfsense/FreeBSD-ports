@@ -1,43 +1,42 @@
---- Makefile.orig	2011-11-20 21:30:54 UTC
+--- Makefile.orig	2018-08-26 13:35:37 UTC
 +++ Makefile
-@@ -21,8 +21,8 @@
+@@ -20,10 +20,10 @@
+ 
  # Modify as required.
  #
- PREFIX = /usr/local
 -SUFFIX := $(shell uname -m | sed -e 's/^unknown/$//' -e 's/^i.86/$//' -e 's/^x86_64/$/64/')
--LIBDIR = lib$(SUFFIX)
 +#SUFFIX := $(shell uname -m | sed -e 's/^unknown/$//' -e 's/^i.86/$//' -e 's/^x86_64/$/64/')
-+LIBDIR = lib
+ PREFIX ?= /usr/local
+ INCDIR ?= $(PREFIX)/include
+-LIBDIR ?= $(PREFIX)/lib$(SUFFIX)
++LIBDIR ?= $(PREFIX)/lib
  
  
- MAJVERS = 3
-@@ -33,7 +33,7 @@ VERSION = $(MAJVERS).$(MINVERS)
- CPPFLAGS += -I. -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS -DENABLE_VECTOR_MODE 
- CXXFLAGS += -fPIC -Wall
- CXXFLAGS += -ffast-math -funroll-loops -O3
+ MAJVERS = 4
+@@ -34,7 +34,7 @@ VERSION = $(MAJVERS).$(MINVERS)
+ CPPFLAGS += -I. -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS
+ CPPFLAGS += -DENABLE_VECTOR_MODE 
+ CXXFLAGS += -fPIC -Wall -ffast-math -funroll-loops -O2
 -CXXFLAGS += -march=native
 +#CXXFLAGS += -march=native
  LDLFAGS += 
  LDLIBS +=
  
-@@ -45,9 +45,10 @@ ZITA-CONVOLVER_DEP = -lfftw3f -lpthread
+@@ -46,6 +46,7 @@ ZITA-CONVOLVER_DEP = -lfftw3f -lpthread
  ZITA-CONVOLVER_O = zita-convolver.o
  ZITA-CONVOLVER_H = zita-convolver.h 
  
 +all: $(ZITA-CONVOLVER_MIN)
  
  $(ZITA-CONVOLVER_MIN):	$(ZITA-CONVOLVER_O)
--	g++ -shared $(LDFLAGS) -Wl,-soname,$(ZITA-CONVOLVER_MAJ) -o $(ZITA-CONVOLVER_MIN) $(ZITA-CONVOLVER_O) $(ZITA-CONVOLVER_DEP)
-+	${CXX} -shared $(LDFLAGS) -Wl,-soname,$(ZITA-CONVOLVER_MAJ) -o $(ZITA-CONVOLVER_MIN) $(ZITA-CONVOLVER_O) $(ZITA-CONVOLVER_DEP)
- 
- 
- install:	$(ZITA-CONVOLVER_MIN)
-@@ -56,7 +57,7 @@ install:	$(ZITA-CONVOLVER_MIN)
- 	install -m 644 $(ZITA-CONVOLVER_H) $(DESTDIR)$(PREFIX)/include
- 	install -m 755 $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(PREFIX)/$(LIBDIR)
- 	ln -sf $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(PREFIX)/$(LIBDIR)/$(ZITA-CONVOLVER_SO)
+ 	$(CXX) -shared $(LDFLAGS) -Wl,-soname,$(ZITA-CONVOLVER_MAJ) -o $(ZITA-CONVOLVER_MIN) $(ZITA-CONVOLVER_O) $(ZITA-CONVOLVER_DEP)
+@@ -56,7 +57,8 @@ install:	$(ZITA-CONVOLVER_MIN)
+ 	install -d $(DESTDIR)$(LIBDIR)
+ 	install -m 644 $(ZITA-CONVOLVER_H) $(DESTDIR)$(INCDIR)
+ 	install -m 755 $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(LIBDIR)
 -	ldconfig
-+	ln -sf $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(PREFIX)/$(LIBDIR)/$(ZITA-CONVOLVER_MAJ)
++	#ldconfig
++	ln -sf $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(LIBDIR)/$(ZITA-CONVOLVER_MAJ)
+ 	ln -sf $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(LIBDIR)/$(ZITA-CONVOLVER_SO)
  
- clean:
- 	/bin/rm -f *~ *.o *.a *.d *.so.*
+ uninstall:

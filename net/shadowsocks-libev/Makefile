@@ -4,7 +4,7 @@
 PORTNAME=	shadowsocks-libev
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.1.3
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	net
 
 MAINTAINER=	xiaoding+freebsd@xiaoding.org
@@ -12,6 +12,8 @@ COMMENT=	Lightweight tunnel proxy which can help you get through firewalls
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_powerpc64=	fails to link: cc: Internal error: Segmentation fault (program ld)
 
 LIB_DEPENDS=	libev.so:devel/libev \
 		libmbedcrypto.so:security/mbedtls \

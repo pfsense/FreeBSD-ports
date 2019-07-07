@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pkgconf
-PORTVERSION=	1.4.2
+PORTVERSION=	1.6.0
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://distfiles.dereferenced.org/pkgconf/ \
@@ -26,6 +26,8 @@ CONFIGURE_ARGS=	--with-pkg-config-dir=${PREFIX}/libdata/pkgconfig:/usr/libdata/p
 		--with-system-libdir=/usr/lib \
 		--with-system-includedir=/usr/include
 MAKE_ARGS=	MANDIR="${MAN1PREFIX}/man/man1"
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${LN} -sf pkgconf ${STAGEDIR}${PREFIX}/bin/pkg-config

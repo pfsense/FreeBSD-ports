@@ -12,6 +12,8 @@ COMMENT=	Software Token for UNIX compatible with RSA SecurID
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
+BROKEN=		Package requirements (nettle >= 2.4) were not met
+
 LIB_DEPENDS=	libtomcrypt.so:security/libtomcrypt # can alternatively use nettle, potentially port option can be created
 
 USES=		libtool localbase pkgconfig
@@ -20,7 +22,7 @@ USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	X11
+OPTIONS_DEFINE=	DOCS X11
 OPTIONS_SUB=	yes
 
 X11_CONFIGURE_WITH=	gtk

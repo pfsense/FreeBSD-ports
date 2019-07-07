@@ -5,7 +5,7 @@ PORTNAME=	pthreads
 PORTVERSION=	3.1.6
 CATEGORIES=	devel
 
-MAINTAINER=	johnpupu@gmail.com
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Compatible Threading API for PHP7.0+
 
 LICENSE=	PHP301
@@ -13,7 +13,7 @@ LICENSE=	PHP301
 CFLAGS+=	-I${LOCALBASE}/include
 
 USES=		php:pecl
-IGNORE_WITH_PHP=56 71
+IGNORE_WITH_PHP=	71
 
 .include <bsd.port.options.mk>
 

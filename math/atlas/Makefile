@@ -3,7 +3,7 @@
 
 PORTNAME=	atlas
 PORTVERSION=	3.8.4
-PORTREVISION=	14
+PORTREVISION=	16
 PORTEPOCH=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/math-${PORTNAME}/Stable/${PORTVERSION}
@@ -227,6 +227,7 @@ do-install:
 	(cd ${WRKSRC}/${opt}/ARCHS; \
 		${COPYTREE_SHARE} "*" ${STAGEDIR}${DATADIR}/${opt} \
 		"! -name Makefile -and ! -name *.tgz")
+	@${FIND} ${STAGEDIR}${DATADIR}/${opt} -type d -empty -delete
 .    endif
 .endfor
 .if ${PORT_OPTIONS:MDOCS}

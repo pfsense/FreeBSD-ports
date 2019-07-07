@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cacti
-PORTVERSION=	1.1.37
+PORTVERSION=	1.2.1
 CATEGORIES=	net-mgmt www
 MASTER_SITES=	http://www.cacti.net/downloads/ \
 		ftp://ftpmirror.uk/freebsd-ports/cacti/
@@ -15,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	rrdtool:databases/rrdtool
 
 USES=		cpe mysql php:web shebangfix
+
 USE_PHP=	ctype filter gd gettext gmp hash json ldap mbstring openssl pcre pdo pdo_mysql posix session simplexml sockets snmp xml zlib
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -45,6 +46,11 @@ SUB_LIST+=	CACTIDIR=${CACTIDIR} CACTIUSER=${CACTIUSER} \
 		CACTIGROUP=${CACTIGROUP}
 
 CONFLICTS_INSTALL=	cacti88
+
+OPTIONS_DEFINE=		SNMPBIN
+OPTIONS_DEFAULT=	SNMPBIN
+SNMPBIN_DESC=		Force use of SNMP binary instead of phpXX-snmp functions
+SNMPBIN_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-lib_snmp.php
 
 post-patch:
 	@${FIND} ${WRKSRC} -name \*.orig -delete; \

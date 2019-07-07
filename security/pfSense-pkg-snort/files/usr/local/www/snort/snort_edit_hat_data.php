@@ -3,8 +3,8 @@
  * snort_edit_hat_data.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,9 +52,7 @@ if ($_POST['clear']) {
 	$a_nat[$id]['host_attribute_table'] = 'off';
 	write_config("Snort pkg: cleared Host Attribute Table data for {$a_nat[$id]['interface']}.");
 	$rebuild_rules = false;
-	conf_mount_rw();
 	snort_generate_conf($a_nat[$id]);
-	conf_mount_ro();
 	$pconfig['host_attribute_data'] = "";
 }
 
@@ -66,9 +64,7 @@ if ($_POST['save']) {
 		$a_nat[$id]['host_attribute_table'] = 'off';
 	write_config("Snort pkg: modified Host Attribute Table data for {$a_nat[$id]['interface']}.");
 	$rebuild_rules = false;
-	conf_mount_rw();
 	snort_generate_conf($a_nat[$id]);
-	conf_mount_ro();
 	$pconfig['host_attribute_data'] = $_POST['host_attribute_data'];
 }
 

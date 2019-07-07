@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Net-Libdnet
-PORTVERSION=	0.98
-PORTREVISION=	2
+PORTVERSION=	0.99
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,9 +12,9 @@ COMMENT=	Libdnet interface
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	p5-Class-Gomor>=0:devel/p5-Class-Gomor
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Class-Gomor>=0:devel/p5-Class-Gomor
 LIB_DEPENDS=	libdnet.so:net/libdnet
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 CONFIGURE_ARGS=	INC='-I${LOCALBASE}/include'
 USES=		perl5

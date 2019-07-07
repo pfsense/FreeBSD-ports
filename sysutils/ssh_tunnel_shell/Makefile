@@ -2,7 +2,7 @@
 
 PORTNAME=	ssh_tunnel_shell
 PORTVERSION=	0.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none

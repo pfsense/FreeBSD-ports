@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	prosody
-PORTVERSION=	0.10.2
+PORTVERSION=	0.11.2
 CATEGORIES=	net-im
 MASTER_SITES=	http://prosody.im/downloads/source/ \
 		http://redundancy.redundancy.org/mirror/
@@ -13,8 +13,6 @@ COMMENT=	Simple extensible XMPP server written in Lua
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to compile: table.c:14: 'for' loop initial declaration used outside C99 mode
-
 RUN_DEPENDS=	${LUA_MODLIBDIR}/socket/core.so:net/luasocket-51 \
 		${LUA_MODLIBDIR}/ssl.so:security/luasec-51 \
 		${LUA_MODLIBDIR}/lxp.so:textproc/luaexpat-51 \
@@ -22,7 +20,7 @@ RUN_DEPENDS=	${LUA_MODLIBDIR}/socket/core.so:net/luasocket-51 \
 		${LUA_MODLIBDIR}/bit.so:devel/lua51-bitop
 LIB_DEPENDS=	libidn.so:dns/libidn
 
-USES=		cpe gmake lua:51 shebangfix ssl
+USES=		compiler:c11 cpe gmake lua:51 shebangfix ssl
 SHEBANG_FILES=	prosody prosodyctl
 LUA_PREMK=	yes
 HAS_CONFIGURE=	yes
@@ -31,20 +29,23 @@ LDFLAGS+=	-L${OPENSSLLIB}
 CONFIGURE_ARGS=	--ostype=freebsd \
 		--c-compiler="${CC}" \
 		--linker="${CC}" \
-		--with-lua-include="${LUA_INCDIR}"
-CONFIGURE_ENV=	LOCALBASE="${LOCALBASE}" \
-		PREFIX="${PREFIX}" \
-		LUA_SUFFIX="-${LUA_VER}" \
-		LUA_LIBDIR="${LUA_LIBDIR}" \
-		LUA_INCDIR="${LUA_INCDIR}"
+		--with-lua-include="${LUA_INCDIR}" \
+		--lua-suffix="${LUA_VER_STR}" \
+		--with-lua-include="${LUA_INCDIR}" \
+		--with-lua-lib="${LUA_LIBDIR}" \
+		--prefix="${PREFIX}" 
 
+MAKEFILE=       GNUmakefile
 USERS=		prosody
 GROUPS=		${USERS}
 
 USE_RC_SUBR=	prosody
 SUB_FILES=	pkg-deinstall
 SUB_LIST=	USERS=${USERS} GROUPS=${GROUPS}
-PLIST_SUB=	PROSODY_USER=${USERS} PROSODY_GROUP=${GROUPS}
+PLIST_SUB=	PROSODY_USER=${USERS} \
+		PROSODY_USER_regex=\b${USERS}\b \
+		PROSODY_GROUP=${GROUPS} \
+		PROSODY_GROUP_regex=\b${GROUPS}\b
 
 OPTIONS_DEFINE=	LUAJIT
 LUAJIT_DESC=		Run prosody using luajit

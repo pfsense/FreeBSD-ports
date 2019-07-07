@@ -3,6 +3,7 @@
 PORTNAME=		freebayes
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.2.0
+PORTREVISION=	1
 CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -16,7 +17,7 @@ BROKEN_armv7=		fails to compile: invalid conversion between vector type and inte
 
 # Submodules use older versions than the ports, so we cannot safely unbundle
 # No shared libs are built by the submodules so there will be no conflicts
-USES=		gmake tar:xz
+USES=		compiler:c++11-lang gmake tar:xz
 USE_GITHUB=	yes
 GH_ACCOUNT=	ekg
 GH_TUPLE=	walaj:SeqLib:5941c68:SeqLib/SeqLib-temp \

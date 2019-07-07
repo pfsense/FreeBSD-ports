@@ -1,17 +1,22 @@
 # $FreeBSD$
 
 PORTNAME=	font-awesome
-DISTVERSION=	5.0.13
+DISTVERSION=	5.7.2
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://use.fontawesome.com/releases/v${DISTVERSION}/
-DISTNAME=	fontawesome-free-${DISTVERSION}
+DISTNAME=	fontawesome-free-${DISTVERSION}-desktop
 
 MAINTAINER=	dg@syrec.org
 COMMENT=	Suite of pictographic icons from Font Awesome (free version)
 
 LICENSE=	OFL11
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		fonts zip
+
+PORTSCOUT=	site:https://github.com/FortAwesome/Font-Awesome/releases
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 
@@ -19,14 +24,10 @@ SUB_FILES=	pkg-message
 
 PLIST_FILES=	${FONTSDIR}/Font\ Awesome\ 5\ Brands-Regular-400.otf \
 		${FONTSDIR}/Font\ Awesome\ 5\ Free-Regular-400.otf \
-		${FONTSDIR}/Font\ Awesome\ 5\ Free-Solid-900.otf \
-		${FONTSDIR}/fa-brands-400.ttf \
-		${FONTSDIR}/fa-regular-400.ttf \
-		${FONTSDIR}/fa-solid-900.ttf
+		${FONTSDIR}/Font\ Awesome\ 5\ Free-Solid-900.otf
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${FONTSDIR}
-	${INSTALL_DATA} ${WRKSRC}/use-on-desktop/*.otf ${STAGEDIR}${FONTSDIR}
-	${INSTALL_DATA} ${WRKSRC}/web-fonts-with-css/webfonts/*.ttf ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/otfs/*.otf ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

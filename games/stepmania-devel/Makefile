@@ -4,7 +4,7 @@
 PORTNAME=	stepmania
 PORTVERSION=	5.0.11
 DISTVERSIONPREFIX=	v
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	games
 PKGNAMESUFFIX=	-devel
@@ -15,6 +15,8 @@ COMMENT=	Rhythm game simulator
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/Docs/Licenses.txt
 
+BROKEN=		fails to build
+
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libpng.so:graphics/png
 
@@ -22,7 +24,7 @@ BROKEN_powerpc64=	fails to compile: cc1plus: unrecognized command line option "-
 
 USE_GITHUB=	yes
 
-USES=		cmake:outsource iconv jpeg perl5 pkgconfig shebangfix
+USES=		cmake:insource iconv jpeg perl5 pkgconfig shebangfix
 SHEBANG_FILES=	Utils/*.pl extern/zlib/zlib2ansi
 USE_XORG=	x11 xrandr xtst
 USE_GL=		glew

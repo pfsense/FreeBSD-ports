@@ -3,6 +3,7 @@
 
 PORTNAME=	nsca-ng
 PORTVERSION=	1.4
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://www.nsca-ng.org/download/ http://www.nsca-ng.org/download/
 
@@ -33,7 +34,14 @@ CONFIGURE_ARGS+=	--enable-server
 
 PORTDOCS=	NEWS COPYING README PROTOCOL TODO
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 .include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	cannot link with OpenSSL
+BROKEN_FreeBSD_13=	cannot link with OpenSSL
+.endif
 
 .if ${SSL_DEFAULT:Mlibressl*}
 IGNORE=	Requires PSK which is unsupported by the selected LibreSSL

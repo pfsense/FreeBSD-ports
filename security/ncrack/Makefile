@@ -5,7 +5,7 @@ PORTNAME=	ncrack
 DISTVERSION=	0.6
 CATEGORIES=	security
 MASTER_SITES=	http://nmap.org/ncrack/dist/ \
-				http://redundancy.redundancy.org/mirror/
+		http://redundancy.redundancy.org/mirror/
 
 MAINTAINER=	lx@FreeBSD.org
 COMMENT=	High-speed network authentication cracking tool
@@ -18,6 +18,13 @@ USES=		gmake ssl
 CPPFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 
-WRKSRC=	${WRKDIR}/${PORTNAME}-${DISTVERSION}.0
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}.0
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	Your OpenSSL headers do not match your library
+BROKEN_FreeBSD_13=	Your OpenSSL headers do not match your library
+.endif
+
+.include <bsd.port.post.mk>

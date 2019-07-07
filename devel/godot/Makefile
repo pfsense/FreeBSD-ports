@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	godot
-PORTVERSION=	3.0.3
+PORTVERSION=	3.0.6
+PORTREVISION=	1
 DISTVERSIONSUFFIX= -stable
 CATEGORIES=	devel games
 
@@ -17,6 +18,7 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE.txt
 BROKEN_aarch64=		fails to build: KeyError: 'android_arch'
 BROKEN_armv6=		fails to build: KeyError: 'android_arch'
 BROKEN_armv7=		fails to build: KeyError: 'android_arch'
+BROKEN_powerpc64=	fails to compile: inv_txfm_sse2.h:14:32: emmintrin.h: No such file or directory
 
 BUILD_DEPENDS=	yasm:devel/yasm
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
@@ -34,7 +36,7 @@ USE_GL=		gl glew glu
 USE_GITHUB=	yes
 GH_ACCOUNT=	godotengine
 
-MAKE_ARGS+=		platform=x11 builtin_libpng=False builtin_openssl=False verbose=True
+MAKE_ARGS+=		platform=x11 builtin_libpng=False builtin_openssl=False
 MAKE_ARGS+=		${MAKE_ARGS_${CHOSEN_COMPILER_TYPE}}
 MAKE_ARGS_clang=	use_llvm=True
 CXXFLAGS+=		-DRTAUDIO_ENABLED

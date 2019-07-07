@@ -3,8 +3,8 @@
  * suricata_migrate_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2018 Bill Meeks
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (C) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,7 +49,7 @@ $rule = &$config['installedpackages']['suricata']['rule'];
 /****************************************************************************/
 
 $updated_cfg = false;
-log_error("[Suricata] Checking configuration settings version...");
+syslog(LOG_NOTICE, "[Suricata] Checking configuration settings version...");
 
 // Check the configuration version to see if XMLRPC Sync should be
 // auto-disabled as part of the upgrade due to config format changes.
@@ -57,7 +57,7 @@ if ($config['installedpackages']['suricata']['config'][0]['suricata_config_ver']
     ($config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] == 'auto' ||
      $config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] == 'manual')) {
 	$config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] = "disabled";
-	log_error("[Suricata] Turning off Suricata Sync on this host due to configuration format changes in this update.  Upgrade all Suricata Sync targets to this same Suricata package version before re-enabling Suricata Sync.");
+	syslog(LOG_NOTICE, "[Suricata] Turning off Suricata Sync on this host due to configuration format changes in this update.  Upgrade all Suricata Sync targets to this same Suricata package version before re-enabling Suricata Sync.");
 	$updated_cfg = true;
 }
 
@@ -145,15 +145,6 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['block_log_limi
 	$updated_cfg = true;
 }
 
-if (!isset($config['installedpackages']['suricata']['config'][0]['dns_log_retention']) && $config['installedpackages']['suricata']['config'][0]['dns_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['dns_log_retention'] = "168";
-	$updated_cfg = true;
-}
-if (!isset($config['installedpackages']['suricata']['config'][0]['dns_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['dns_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['dns_log_limit_size'] = "750";
-	$updated_cfg = true;
-}
-
 if (!isset($config['installedpackages']['suricata']['config'][0]['eve_log_retention']) && $config['installedpackages']['suricata']['config'][0]['eve_log_retention'] != '0') {
 	$config['installedpackages']['suricata']['config'][0]['eve_log_retention'] = "168";
 	$updated_cfg = true;
@@ -218,6 +209,8 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['u2_archive_log
 foreach ($rule as &$r) {
 
 	// Initialize arrays for supported preprocessors if necessary
+	if (!is_array($r['libhtp_policy']))
+		$r['libhtp_policy'] = array();
 	if (!is_array($r['libhtp_policy']['item']))
 		$r['libhtp_policy']['item'] = array();
 
@@ -260,6 +253,14 @@ foreach ($rule as &$r) {
 	}
 
 	/***********************************************************/
+	/* Add new run mode value and default it to 'autofp'.      */
+	/***********************************************************/
+	if (empty($pconfig['runmode'])) {
+		$pconfig['runmode'] = "autofp";
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
 	/* Add new interface promisc mode value and default 'on'.  */
 	/***********************************************************/
 	if (empty($pconfig['intf_promisc_mode'])) {
@@ -279,7 +280,23 @@ foreach ($rule as &$r) {
 	/* Add new EVE logging settings if not present             */
 	/***********************************************************/
 	if (!isset($pconfig['eve_output_type'])) {
-		$pconfig['eve_output_type'] = "file";
+		$pconfig['eve_output_type'] = "regular";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_alerts_xff'])) {
+		$pconfig['eve_log_alerts_xff'] = "off";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_alerts_xff_mode'])) {
+		$pconfig['eve_log_alerts_xff_mode'] = "extra-data";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_alerts_xff_deployment'])) {
+		$pconfig['eve_log_alerts_xff_deployment'] = "reverse";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_alerts_xff_header'])) {
+		$pconfig['eve_log_alerts_xff_header'] = "X-Forwarded-For";
 		$updated_cfg = true;
 	}
 	if (empty($pconfig['eve_systemlog_facility'])) {
@@ -298,12 +315,40 @@ foreach ($rule as &$r) {
 		$pconfig['eve_log_http'] = "on";
 		$updated_cfg = true;
 	}
+	if (!isset($pconfig['eve_log_nfs'])) {
+		$pconfig['eve_log_nfs'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_smb'])) {
+		$pconfig['eve_log_smb'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_krb5'])) {
+		$pconfig['eve_log_krb5'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_ikev2'])) {
+		$pconfig['eve_log_ikev2'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_tftp'])) {
+		$pconfig['eve_log_tftp'] = "on";
+		$updated_cfg = true;
+	}
 	if (!isset($pconfig['eve_log_dns'])) {
 		$pconfig['eve_log_dns'] = "on";
 		$updated_cfg = true;
 	}
 	if (!isset($pconfig['eve_log_tls'])) {
 		$pconfig['eve_log_tls'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_dhcp'])) {
+		$pconfig['eve_log_dhcp'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_dhcp_extended'])) {
+		$pconfig['eve_log_dhcp_extended'] = "off";
 		$updated_cfg = true;
 	}
 	if (!isset($pconfig['eve_log_files'])) {
@@ -454,6 +499,14 @@ foreach ($rule as &$r) {
 		$pconfig['dns_parser_tcp'] = "yes";
 		$updated_cfg = true;
 	}
+	if (empty($pconfig['dns_parser_udp_ports'])) {
+		$pconfig['dns_parser_udp_ports'] = "53";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['dns_parser_tcp_ports'])) {
+		$pconfig['dns_parser_tcp_ports'] = "53";
+		$updated_cfg = true;
+	}
 
 	/***********************************************************/
 	/* Create new HTTP App-Layer parser settings if not set    */
@@ -464,6 +517,46 @@ foreach ($rule as &$r) {
 	}
 	if (empty($pconfig['http_parser_memcap'])) {
 		$pconfig['http_parser_memcap'] = "67108864";
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
+	/* Create new SMTP App-Layer parser settings if not set    */
+	/***********************************************************/
+	if (empty($pconfig['smtp_parser_decode_mime'])) {
+		$pconfig['smtp_parser_decode_mime'] = "off";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smtp_parser_decode_base64'])) {
+		$pconfig['smtp_parser_decode_base64'] = "on";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smtp_parser_decode_quoted_printable'])) {
+		$pconfig['smtp_parser_decode_quoted_printable'] = "on";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smtp_parser_extract_urls'])) {
+		$pconfig['smtp_parser_extract_urls'] = "on";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smtp_parser_compute_body_md5'])) {
+		$pconfig['smtp_parser_compute_body_md5'] = "on";
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
+	/* Create new TLS App-Layer parser settings if not set    */
+	/***********************************************************/
+	if (empty($pconfig['tls_detect_ports'])) {
+		$pconfig['tls_detect_ports'] = "443";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['tls_encrypt_handling'])) {
+		$pconfig['tls_encrypt_handling'] = "default";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['tls_ja3_fingerprint'])) {
+		$pconfig['tls_ja3_fingerprint'] = "off";
 		$updated_cfg = true;
 	}
 
@@ -596,10 +689,11 @@ unset($r);
 
 // Log a message indicating what we did
 if ($updated_cfg) {
-	log_error("[Suricata] Settings successfully migrated to new configuration format.");
+	write_config("Updated Suricata package settings to new configuration format.");
+	syslog(LOG_NOTICE, "[Suricata] Settings successfully migrated to new configuration format.");
 }
 else {
-	log_error("[Suricata] Configuration version is current.");
+	syslog(LOG_NOTICE, "[Suricata] Configuration version is current.");
 }
 
 ?>

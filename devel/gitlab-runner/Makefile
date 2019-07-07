@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gitlab-runner
-PORTVERSION=	11.0.0
+PORTVERSION=	11.7.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	\
 		https://gitlab-runner-downloads.s3.amazonaws.com/master/docker/:dockerx64 \
@@ -25,14 +26,14 @@ RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
 		git:devel/git
 
 USE_GITLAB=	yes
+
 GL_ACCOUNT=	gitlab-org
-GL_COMMIT=	5396d320cd17c02bd4133d52b8ac9acd21b20f51
-GITREV=		5396d320
-GITBRANCH=	11-0-stable
-BUILT=		2018-06-22T11:03:39+00:00
+GL_COMMIT=	8bb608ff3a677132022502b07dae8a3ea679f3d1
+GITBRANCH=	11-7-stable
+BUILT=		2019-01-15T15:24:23+0000
 
 GO_LDFLAGS=	-X gitlab.com/gitlab-org/gitlab-runner/common.VERSION=${PORTVERSION} \
-		-X gitlab.com/gitlab-org/gitlab-runner/common.REVISION=${GITREV} \
+		-X gitlab.com/gitlab-org/gitlab-runner/common.REVISION=${GL_COMMIT:C/^(........).*/\1/} \
 		-X gitlab.com/gitlab-org/gitlab-runner/common.BUILT=${BUILT} \
 		-X gitlab.com/gitlab-org/gitlab-runner/common.BRANCH=${GITBRANCH} \
 		-s -w
@@ -48,6 +49,7 @@ post-extract:
 	@${MKDIR} ${WRKSRC}/out/docker/
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/prebuilt-x86_64.tar.xz ${WRKSRC}/out/docker/
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/prebuilt-arm.tar.xz ${WRKSRC}/out/docker/
+	@${MV} ${WRKSRC}/vendor ${WRKSRC}/src
 
 do-build:
 	@cd ${WRKSRC} && go-bindata \
@@ -60,7 +62,6 @@ do-build:
 		out/docker/prebuilt-x86_64.tar.xz \
 		out/docker/prebuilt-arm.tar.xz
 	@cd ${WRKSRC} && go fmt executors/docker/bindata.go
-	@${MV} ${WRKSRC}/vendor ${WRKSRC}/src
 	@${MKDIR} ${WRKSRC}/src/gitlab.com/gitlab-org
 	@${LN} -s ${WRKSRC} ${WRKSRC}/src/gitlab.com/gitlab-org/gitlab-runner
 	@cd ${WRKSRC} && \

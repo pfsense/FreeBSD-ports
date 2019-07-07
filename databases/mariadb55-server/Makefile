@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	5.5.60
+PORTVERSION=	5.5.64
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/mariadb/${PORTNAME}-${PORTVERSION}/source/ \
@@ -23,7 +23,7 @@ LICENSE=	GPLv2
 SUB_FILES=	pkg-message
 
 SLAVEDIRS=	databases/mariadb55-client
-USES+=		cmake:noninja shebangfix ssl
+USES+=		cmake:insource,noninja shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql
 SHEBANG_FILES=	scripts/*.sh sql-bench/[a-km-z]*
 
@@ -50,8 +50,6 @@ CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 DATADIR=	${PREFIX}/share/mysql
 
 BROKEN_sparc64=		Does not compile: Unsupported platform
-BROKEN_SSL=		openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	incomplete definition of type 'struct dh_st'
 
 .if defined(USE_MYSQL)
 .error You have 'USE_MYSQL' variable defined either in environment or in make(1) arguments. Please undefine and try again.

@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	libnspsl
-PORTVERSION=	0.1.2
+PORTVERSION=	0.1.3
 CATEGORIES=	dns
 MASTER_SITES=	http://download.netsurf-browser.org/libs/releases/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	neel@neelc.org
 COMMENT=	NetSurf public suffix list handling
 
 LICENSE=	MIT

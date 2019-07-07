@@ -1,2 +1,5 @@
-SHA256 (namecoin-namecoin-nc0.3.80_GH0.tar.gz) = 3f5e5af95cea46111d3cf1663f0e84d5fda653917745e0607a3ca4773baea59c
-SIZE (namecoin-namecoin-nc0.3.80_GH0.tar.gz) = 1471777
+TIMESTAMP = 1540917313
+SHA256 (namecoin-namecoin-core-nc0.17.0_GH0.tar.gz) = b9e56cebd6756ad8ff7c8f6c9e633cb56cb139c7c4437189945b3f25acbe0082
+SIZE (namecoin-namecoin-core-nc0.17.0_GH0.tar.gz) = 5465627
+SHA256 (indolering-namecoin-graphics-a13a73b_GH0.tar.gz) = 82f308a3527d96a202099feb96a754d036bbdaa875156ad002ba2747d75000c7
+SIZE (indolering-namecoin-graphics-a13a73b_GH0.tar.gz) = 7364908

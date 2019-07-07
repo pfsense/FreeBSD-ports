@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libuv
-PORTVERSION=	1.21.0
+PORTVERSION=	1.27.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
-#MASTER_SITES=	http://dist.libuv.org/dist/v${PORTVERSION}/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Multi-platform support library with a focus on asynchronous I/O
@@ -20,10 +19,11 @@ TEST_DEPENDS=	gyp:devel/py-gyp	\
 
 USE_GITHUB=	yes
 
-USES=		autoreconf libtool pathfix pkgconfig
+USES=		autoreconf libtool pathfix pkgconfig python:test shebangfix
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
+SHEBANG_FILES=	gyp_uv.py
 
 pre-configure:
 	${ECHO_CMD} "m4_define([UV_EXTRA_AUTOMAKE_FLAGS], [ serial-tests])" \

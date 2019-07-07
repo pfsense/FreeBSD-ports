@@ -2,6 +2,7 @@
 
 PORTNAME=	p8-platform
 PORTVERSION=	2.1.0.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	devel
 
@@ -10,7 +11,7 @@ COMMENT=	Platform support library used by libCEC and binary add-ons for Kodi
 
 LICENSE=	GPLv2+
 
-USES=		cmake
+USES=		cmake compiler:c++11-lang
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Pulse-Eight

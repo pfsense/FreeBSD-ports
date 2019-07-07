@@ -3,7 +3,7 @@
 
 PORTNAME=	mysql-connector-c++
 PORTVERSION=	1.1.9
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	databases
 MASTER_SITES=	MYSQL/Connector-C++
 
@@ -15,22 +15,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs
 
-BROKEN_powerpc64=	fails to configure: the compiler doesn't support C++11
-
-USES=		cmake:outsource mysql ssl
+USES=		cmake compiler:c++11-lang mysql ssl
 USE_LDCONFIG=	yes
-CMAKE_ARGS=	-DDOC_DESTINATION="${DOCSDIR}"
+CMAKE_ARGS=	-DDOC_DESTINATION="${DOCSDIR}" -DCMAKE_ENABLE_C++11=ON 
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1100000
-CMAKE_ARGS+=-DCMAKE_ENABLE_C++11=ON
-.endif
 
 post-install:
 	@${RM} ${STAGEDIR}${DOCSDIR}/INSTALL \
@@ -69,4 +61,4 @@ do-test:
 	test/unit/classes/statement )
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

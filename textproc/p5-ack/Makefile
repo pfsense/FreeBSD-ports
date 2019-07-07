@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ack
-PORTVERSION=	2.24
+PORTVERSION=	2.28
 CATEGORIES=	textproc sysutils perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PETDANCE
@@ -14,8 +14,8 @@ COMMENT=	Grep-like text finder for large trees of text
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-BUILD_DEPENDS=	p5-File-Next>=1.16:sysutils/p5-File-Next
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-File-Next>=1.16:sysutils/p5-File-Next
 TEST_DEPENDS=	bash:shells/bash \
 		p5-IO-Tty>=0:devel/p5-IO-Tty
 
@@ -23,9 +23,11 @@ CONFLICTS_INSTALL=	ja-ack-[0-9]*
 
 PORTSCOUT=	limit:^[0-9\.]*$$
 
-NO_ARCH=	yes
 USES=		cpe perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
+
 CPE_VENDOR=	beyondgrep
 
 .include <bsd.port.mk>

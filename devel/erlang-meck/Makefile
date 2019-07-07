@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	meck
-PORTVERSION=	0.8.9
+PORTVERSION=	0.8.12
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 
@@ -13,5 +13,7 @@ LICENSE=	APACHE20
 USES=		erlang:rebar
 USE_GITHUB=	yes
 GH_ACCOUNT=	eproxus
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

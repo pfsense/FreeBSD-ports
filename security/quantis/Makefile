@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	quantis
-DISTVERSION=	v13.11.08
-PORTREVISION=	9
+DISTVERSION=	v18.03.08
+PORTREVISION=	3
 CATEGORIES=	security devel java
-MASTER_SITES=	http://www.idquantique.com/~download/Quantis/ \
-		LOCAL/ale
-DISTNAME=	Quantis-${DISTVERSION}-src
+MASTER_SITES=	https://www.idquantique.com/wordpress/wp-content/uploads/
+DISTNAME=	Quantis-${DISTVERSION}
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Libraries and utilities to access Quantis devices
@@ -16,12 +15,15 @@ LICENSE=	BSD3CLAUSE GPLv2
 LICENSE_COMB=	dual
 LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/../License.txt
 
+BROKEN=		does not build
 BROKEN_aarch64=		fails to build: Could not find JNI (missing: JAVA_AWT_LIBRARY JAVA_JVM_LIBRARY)
 BROKEN_armv6=		fails to build: Could not find JNI (missing: JAVA_AWT_LIBRARY JAVA_JVM_LIBRARY)
 BROKEN_armv7=		fails to build: Could not find JNI (missing: JAVA_AWT_LIBRARY JAVA_JVM_LIBRARY)
 
-OPTIONS_DEFINE=	PCI USB JAVA COMPAT TOOL GUI DOCS EXAMPLES
-OPTIONS_DEFAULT=PCI USB JAVA TOOL GUI
+USES=		cmake compiler:c++11-lang zip:infozip
+
+OPTIONS_DEFINE=	PCI USB JAVA COMPAT TOOL DOCS EXAMPLES
+OPTIONS_DEFAULT=PCI USB JAVA TOOL
 NO_OPTIONS_SORT=yes
 
 PCI_DESC=	Enable Quantis PCI support
@@ -29,10 +31,8 @@ USB_DESC=	Enable Quantis USB support
 JAVA_DESC=	Enable Java support
 COMPAT_DESC=	Build API v1 compatibility libraries
 TOOL_DESC=	Build EasyQuantis application
-GUI_DESC=	Build QT4 GUI for EasyQuantis application
 
 EXTRACT_BEFORE_ARGS=	-aqo
-USES=		cmake compiler:c++11-lang qt:4 zip:infozip
 USE_LDCONFIG=	yes
 SUB_FILES=	pkg-message
 
@@ -76,11 +76,7 @@ PLIST_SUB+=	COMPAT="@comment "
 BUILD_DEPENDS+=	${LOCALBASE}/lib/libboost_date_time.a:devel/boost-libs
 CXXFLAGS+=	-I${LOCALBASE}/include
 
-. if ${PORT_OPTIONS:MGUI}
-USE_QT+=	gui moc_build uic_build rcc_build qmake_build
-. else
 CMAKE_ARGS+=	-DDISABLE_EASYQUANTIS_GUI=1
-. endif
 
 PLIST_SUB+=	TOOL=""
 .else

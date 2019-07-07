@@ -2,6 +2,7 @@
 
 PORTNAME=	xlife++
 DISTVERSION=	2.0.1
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	https://uma.ensta-paristech.fr/soft/XLiFE++/var/files/src/
 DISTNAME=	xlifepp-sources-v${DISTVERSION}-2018-05-09
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BROKEN_aarch64=		fails to compile: BlasUtil.h:63:63: no type named 'ReturnType' in 'Eigen::ScalarBinaryOpTraits<__attribute__
 
-USES=		cmake:outsource eigen:3 fortran tar:tbz
+USES=		cmake eigen:3 fortran tar:tbz
 USE_LDCONFIG=	yes
 
 CMAKE_OFF=	XLIFEPP_ENABLE_ARPACK # should be ON, but it fails to build. Reported to their bugs ML.

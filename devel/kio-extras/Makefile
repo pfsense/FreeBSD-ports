@@ -2,7 +2,7 @@
 
 PORTNAME=	kio-extras
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel kde kde-applications # kde kde-applications-plasma
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	Plasma5 library to increase the functionality of KIO
 LIB_DEPENDS=	libtag.so:audio/taglib \
 		libHalf.so:graphics/ilmbase
 
-USES=		cmake:outsource compiler:c++11-lib gettext gperf kde:5 \
+USES=		cmake compiler:c++11-lib gettext gperf kde:5 \
 		pkgconfig qt:5 shared-mime-info shebangfix tar:xz
 USE_KDE=	activities archive auth bookmarks codecs completion config \
 		configwidgets coreaddons crash dbusaddons dnssd doctools ecm \
@@ -19,13 +19,16 @@ USE_KDE=	activities archive auth bookmarks codecs completion config \
 		jobwidgets js kdelibs4support khtml kio notifications parts \
 		pty service solid sonnet textwidgets unitconversion \
 		widgetsaddons windowsystem xmlgui
-USE_QT=		core dbus gui location network phonon4 printsupport qml quick \
+USE_QT=		core dbus declarative gui location network phonon4 printsupport \
 		sql svg testlib webchannel widgets xml \
 		buildtools_build qmake_build
 SHEBANG_FILES=	info/kde-info2html
 
-OPTIONS_DEFINE=	SAMBA MTP EXR EXIV SLP SSH WEBENGINE TAGLIB
-OPTIONS_DEFAULT=SAMBA MTP EXR EXIV SLP SSH WEBENGINE TAGLIB
+# CVE-2018-19120
+CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngineWidget
+
+OPTIONS_DEFINE=	SAMBA MTP EXR EXIV SLP SSH TAGLIB DOCS
+OPTIONS_DEFAULT=SAMBA MTP EXR EXIV SLP SSH TAGLIB
 OPTIONS_SUB=	yes
 
 SAMBA_DESC=		Needed to build the SMB kioslave
@@ -38,7 +41,7 @@ MTP_LIB_DEPENDS=	libmtp.so:multimedia/libmtp
 
 EXR_DESC=		Provides support for OpenEXR formatted images in the thumbnail kioslave
 EXR_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_OpenEXR
-EXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR
+EXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
 
 EXIV_DESC=		Provides support for automatic rotation of JPEGs in the thumbnail kioslave
 EXIV_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Exiv2
@@ -57,10 +60,4 @@ TAGLIB_DESC=		Needed to build the audio thumbnail kioslave
 TAGLIB_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Taglib
 TAGLIB_LIB_DEPENDS=	libtag.so:audio/taglib
 
-WEBENGINE_DESC=		Needed to build the html thumbnailer
-WEBENGINE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngineWidget
-WEBENGINE_USES=	qt:5
-WEBENGINE_USE=		QT=webengine
-
 .include <bsd.port.mk>
-

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	memcached
-PORTVERSION=	3.0.4
+PORTVERSION=	3.1.3
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -18,10 +18,10 @@ OPTIONS_DEFINE=	IGBINARY SASL
 OPTIONS_DEFAULT=SASL
 IGBINARY_DESC=	Binary serializer support
 
-CONFIGURE_ARGS=	--with-libmemcached-dir=${LOCALBASE}
-IGNORE_WITH_PHP=56
-USE_PHP=	json:build session:build
 USES=		php:pecl pkgconfig
+USE_PHP=	json:build session:build
+
+CONFIGURE_ARGS=	--with-libmemcached-dir=${LOCALBASE}
 
 IGBINARY_CONFIGURE_ENABLE=	memcached-igbinary
 IGBINARY_USE=		PHP=igbinary:build

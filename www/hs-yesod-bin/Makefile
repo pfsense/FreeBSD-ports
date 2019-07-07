@@ -1,14 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	yesod-bin
-PORTVERSION=	1.5.2.3
-PORTREVISION=	3
+PORTVERSION=	1.6.0.3
+PORTREVISION=	2
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Yesod helper executable
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_CABAL=	async attoparsec>=0.10 base64-bytestring \
 		blaze-builder>=0.2.1.4 conduit>=1.2 conduit-extra \
@@ -24,8 +25,6 @@ USE_CABAL=	async attoparsec>=0.10 base64-bytestring \
 
 EXECUTABLE=	yesod
 STANDALONE=	yes
-
-IGNORE=		Doesn't build with recent Cabal
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	pluma
-PORTVERSION=	1.20.1
+PORTVERSION=	1.20.3
+PORTREVISION=	1
 CATEGORIES=	editors mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -37,5 +38,7 @@ GLIB_SCHEMAS=	org.mate.pluma.gschema.xml \
 		org.mate.pluma.plugins.filebrowser.gschema.xml \
 		org.mate.pluma.plugins.spell.gschema.xml \
                 org.mate.pluma.plugins.time.gschema.xml
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

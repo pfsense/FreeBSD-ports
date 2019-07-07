@@ -28,7 +28,7 @@ DESKTOP_ENTRIES="TkDVD" \
 		"AudioVideo;DiscBurning;" \
 		true
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|tclsh|${TCLSH}|' ${WRKSRC}/install.tcl \

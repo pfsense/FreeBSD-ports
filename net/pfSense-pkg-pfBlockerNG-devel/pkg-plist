@@ -28,6 +28,8 @@ www/pfblockerng/www/index.php
 www/widgets/include/widget-pfblockerng.inc
 www/widgets/javascript/pfblockerng.js
 www/widgets/widgets/pfblockerng.widget.php
+www/wizards/pfblockerng_wizard.xml
+www/wizards/pfblockerng_wizard.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
 @dir /etc/inc

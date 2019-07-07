@@ -3,6 +3,7 @@
 
 PORTNAME=	kodi-addon-pvr-iptvsimple
 PORTVERSION=	2.4.14
+DISTVERSIONSUFFIX=	-Krypton
 CATEGORIES=	multimedia
 
 MAINTAINER=	decke@FreeBSD.org
@@ -15,11 +16,10 @@ LIB_DEPENDS=	libp8-platform.so:devel/p8-platform \
 		libkodiplatform.so:devel/kodi-platform
 RUN_DEPENDS=	kodi:multimedia/kodi
 
-USES=		cmake:outsource,noninja
+USES=		cmake:noninja
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kodi-pvr
 GH_PROJECT=	pvr.iptvsimple
-GH_TAGNAME=	${PORTVERSION}-Krypton
 
 .include <bsd.port.mk>

@@ -21,20 +21,23 @@ NO_BUILD=		yes
 NO_ARCH=		yes
 PORTDOCS=		CHANGELOG INSTALL README whatweb.xsl
 
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
 	${REINPLACE_CMD} -e \
 	's!/usr/share/whatweb/!${RUBY_SITELIBDIR}/whatweb!' \
 	${WRKSRC}/whatweb
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
-
 .for dir in addons lib my-plugins plugin-development plugins plugins-disabled
 	( cd ${WRKSRC}/${dir} && \
 	${COPYTREE_SHARE} . ${STAGEDIR}${RUBY_SITELIBDIR}/whatweb/${dir} )
 .endfor
 	${INSTALL_MAN} ${WRKSRC}/whatweb.1 ${STAGEDIR}${MANPREFIX}/man/man1
 	${INSTALL_SCRIPT} ${WRKSRC}/whatweb ${STAGEDIR}${PREFIX}/bin/whatweb
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

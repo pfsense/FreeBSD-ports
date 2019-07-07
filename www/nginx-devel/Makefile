@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nginx
-PORTVERSION=	1.15.0
-PORTREVISION=	3
+PORTVERSION=	1.15.10
 CATEGORIES=	www
 MASTER_SITES=	http://nginx.org/download/ \
 		LOCAL/osa
@@ -14,10 +13,11 @@ MAINTAINER?=	osa@FreeBSD.org
 COMMENT?=	Robust and small WWW server
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	nginx
 
-PORTSCOUT=	limit:^1\.14\.[0-9]*
+PORTSCOUT=	limit:^1\.15\.[0-9]*
 
 USES=		cpe
 
@@ -67,7 +67,7 @@ NO_OPTIONS_SORT=	yes
 OPTIONS_GROUP=	MAILGRP HTTPGRP
 # Modules that are part of the base nginx distribution
 OPTIONS_GROUP_HTTPGRP= GOOGLE_PERFTOOLS HTTP HTTP_ADDITION HTTP_AUTH_REQ \
-	HTTP_CACHE HTTP_DAV HTTP_FLV HTTP_GEOIP HTTP_GUNZIP_FILTER HTTP_GZIP_STATIC \
+	HTTP_CACHE HTTP_DAV HTTP_FLV HTTP_GUNZIP_FILTER HTTP_GZIP_STATIC \
 	HTTP_IMAGE_FILTER HTTP_MP4 HTTP_PERL HTTP_RANDOM_INDEX HTTP_REALIP \
 	HTTP_REWRITE HTTP_SECURE_LINK HTTP_SLICE HTTP_SSL HTTP_STATUS HTTP_SUB \
 	HTTP_XSLT HTTPV2 STREAM STREAM_SSL STREAM_SSL_PREREAD
@@ -146,8 +146,6 @@ HTTP_AUTH_REQ_CONFIGURE_ON=	--with-http_auth_request_module
 HTTP_CACHE_CONFIGURE_OFF=	--without-http-cache
 HTTP_DAV_CONFIGURE_ON=		--with-http_dav_module
 HTTP_FLV_CONFIGURE_ON=		--with-http_flv_module
-HTTP_GEOIP_LIB_DEPENDS=		libGeoIP.so:net/GeoIP
-HTTP_GEOIP_VARS=		DSO_BASEMODS+=http_geoip_module
 HTTP_GZIP_STATIC_CONFIGURE_ON=	--with-http_gzip_static_module
 HTTP_GUNZIP_FILTER_CONFIGURE_ON=--with-http_gunzip_module
 HTTP_IMAGE_FILTER_LIB_DEPENDS=	libgd.so:graphics/gd
@@ -180,7 +178,7 @@ MAIL_SSL_CONFIGURE_ON=		--with-mail_ssl_module
 STREAM_VARS=			DSO_BASEMODS+=stream
 STREAM_SSL_IMPLIES=		HTTP_SSL
 STREAM_SSL_CONFIGURE_ON=	--with-stream_ssl_module
-STREAM_SSL_PREREAD_OFF=		--without-stream_ssl_preread_module
+STREAM_SSL_PREREAD_CONFIGURE_ON=--with-stream_ssl_preread_module
 
 ### External modules
 .include "Makefile.extmod"
@@ -198,6 +196,12 @@ _addextmod=	add-module
 CONFIGURE_ARGS+=	--with-${mod}${_addbasemod}
 .endfor
 
+# Some modules depend on other being there before, for example, devel_kit needs
+# to be there before a few other.
+.for mod in ${FIRST_DSO_EXTMODS}
+CONFIGURE_ARGS+=	--${_addextmod}=${WRKSRC_${mod}}${${mod:tu}_SUBDIR}
+.endfor
+
 .for mod in ${DSO_EXTMODS}
 CONFIGURE_ARGS+=	--${_addextmod}=${WRKSRC_${mod}}${${mod:tu}_SUBDIR}
 .endfor
@@ -209,10 +213,6 @@ CONFIGURE_ARGS+=	--${_addextmod}=${WRKDIR}/${moddir}
 .if empty(PORT_OPTIONS:MHTTP) && empty(PORT_OPTIONS:MMAIL)
 IGNORE=		requires at least HTTP or MAIL to \
 		be defined.  Please do 'make config' again
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100085 && ${SSL_DEFAULT} == base && ${PORT_OPTIONS:MCT}
-IGNORE=		CT option requires OpenSSL 1.0.2, add DEFAULT_VERSIONS+=ssl=openssl to /etc/make.conf
 .endif
 
 .if !${PORT_OPTIONS:MHTTP_REWRITE} && !defined(USE_HTTP_REWRITE)

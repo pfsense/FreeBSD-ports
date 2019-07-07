@@ -23,7 +23,6 @@
 function backup_sync_package() {
 	global $config;
 	if ($config['installedpackages']['backup']['config'] != "") {
-		conf_mount_rw();
 		foreach ($config['installedpackages']['backup']['config'] as $rowhelper) {
 			if ($rowhelper['enabled'] != "false") {
 				//$tmp_php = base64_decode($rowhelper['php']);
@@ -35,7 +34,6 @@ function backup_sync_package() {
 				}
 			}
 		}
-		conf_mount_ro();
 	}
 }
 

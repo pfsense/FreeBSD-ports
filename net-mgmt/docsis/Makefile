@@ -2,33 +2,37 @@
 # $FreeBSD$
 
 PORTNAME=	docsis
-PORTVERSION=	0.9.6
+PORTVERSION=	0.9.8
+DISTVERSIONPREFIX=	upstream/
 CATEGORIES=	net-mgmt
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	plcmaechler@gmail.com
 COMMENT=	Binary configuration file encoder/decoder
 
 LICENSE=	GPLv2+
 
-BUILD_DEPENDS=	gm4:devel/m4
-LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
+BUILD_DEPENDS=	gm4:devel/m4 \
+		flex:textproc/flex
+LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp \
+		libpkg.so:ports-mgmt/pkg
 
+USES=		autoreconf bison libtool ssl
+USE_GITHUB=	yes
 GNU_CONFIGURE=	yes
-USES=		bison ssl
+MAKE_JOBS_UNSAFE=	yes
 
 PLIST_SUB=	MIBS=share/snmp/mibs
 
-BROKEN_amd64=	Produces corrupt files on amd64
-
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+GH_ACCOUNT=	rlaager
 
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/^htmldocdir/s|share/docsis|share/doc/docsis|' \
-		${WRKSRC}/doc/Makefile.in
+		${WRKSRC}/doc/Makefile.am
 	@${REINPLACE_CMD} -e \
 		'/^examplesdir/s|docsis/examples|examples/docsis|' \
-		${WRKSRC}/examples/Makefile.in
+		${WRKSRC}/examples/Makefile.am
 
 .include <bsd.port.mk>

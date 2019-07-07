@@ -1,8 +1,8 @@
 # Created by: Riaan Kruger <riaank@gmail.com>
-# $FreeBSD$
+# $FreeBSD: head/security/strongswan/Makefile 471205 2018-05-31 12:39:51Z krion $
 
 PORTNAME=	strongswan
-PORTVERSION=	5.6.3
+PORTVERSION=	5.8.0
 CATEGORIES=	security
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
@@ -15,8 +15,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe libtool:keepla pkgconfig tar:bzip2 ssl
 USE_RC_SUBR=	strongswan
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	${PREFIX}/lib/ipsec
+
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
 CONFIGURE_ARGS=	--enable-kernel-pfkey \
@@ -39,10 +40,10 @@ CONFIGURE_ARGS=	--enable-kernel-pfkey \
 		--with-group=wheel  \
 		--with-lib-prefix=${PREFIX}
 
-OPTIONS_DEFINE=	CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS EAPSIMFILE GCM IKEv1 \
+OPTIONS_DEFINE=	CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS EAPSIMFILE GCM IKEV1 \
 		IPSECKEY KERNELLIBIPSEC LOADTESTER LDAP MEDIATION MYSQL PKI SCEP SMP \
 		SQLITE SWANCTL TESTVECTOR TPM UNBOUND UNITY VICI XAUTH
-OPTIONS_DEFAULT=	BUILTIN CURL IKEv1 PKI SWANCTL VICI
+OPTIONS_DEFAULT=	BUILTIN CURL IKEV1 PKI SWANCTL VICI
 OPTIONS_SINGLE=	PRINTF_HOOKS
 OPTIONS_SINGLE_PRINTF_HOOKS=	BUILTIN LIBC VSTR
 OPTIONS_SUB=	yes
@@ -54,7 +55,7 @@ EAPDYNAMIC_DESC=	Enable EAP dynamic proxy module
 EAPRADIUS_DESC=		Enable EAP Radius proxy authentication
 EAPSIMFILE_DESC=	Enable EAP SIM with file backend
 GCM_DESC=		Enable GCM AEAD wrapper crypto plugin
-IKEv1_DESC=	Enable IKEv1 support
+IKEV1_DESC=	Enable IKEv1 support
 IPSECKEY_DESC=	Enable authentication with IPSECKEY resource records with DNSSEC
 KERNELLIBIPSEC_DESC=	Enable IPSec userland backend
 LOADTESTER_DESC=	Enable load testing plugin
@@ -82,7 +83,7 @@ EAPDYNAMIC_CONFIGURE_ON=--enable-eap-dynamic
 EAPRADIUS_CONFIGURE_ON=	--enable-eap-radius
 EAPSIMFILE_CONFIGURE_ON=--enable-eap-sim --enable-eap-sim-file
 GCM_CONFIGURE_ON=	--enable-gcm
-IKEv1_CONFIGURE_OFF=	--disable-ikev1
+IKEV1_CONFIGURE_OFF=	--disable-ikev1
 IPSECKEY_CONFIGURE_ON=	--enable-ipseckey
 KERNELLIBIPSEC_CONFIGURE_ON=	--enable-kernel-libipsec
 LOADTESTER_CONFIGURE_ON=--enable-load-tester
@@ -106,7 +107,9 @@ UNBOUND_LIB_DEPENDS=	libunbound.so:dns/unbound \
 			libldns.so:dns/ldns
 UNITY_CONFIGURE_ON=	--enable-unity
 VICI_CONFIGURE_ON=	--enable-vici
-XAUTH_CONFIGURE_ON=	--enable-xauth-eap --enable-xauth-generic
+XAUTH_CONFIGURE_ON=	--enable-xauth-eap \
+			--enable-xauth-generic \
+			--enable-xauth-pam
 BUILTIN_CONFIGURE_ON=	--with-printf-hooks=builtin
 LIBC_CONFIGURE_ON=	--with-printf-hooks=glibc
 VSTR_CONFIGURE_ON=	--with-printf-hooks=vstr
@@ -127,7 +130,7 @@ PLIST_SUB+=	SQL=""
 PLIST_SUB+=	SQL="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MIKEv1} || ${PORT_OPTIONS:MXAUTH}
+.if ${PORT_OPTIONS:MIKEV1} || ${PORT_OPTIONS:MXAUTH}
 PLIST_SUB+=	XAUTHGEN=""
 .else
 PLIST_SUB+=	XAUTHGEN="@comment "
@@ -137,10 +140,6 @@ post-install:
 .if ${PORT_OPTIONS:MVICI}
 	${INSTALL_DATA} ${WRKSRC}/src/libcharon/plugins/vici/libvici.h \
 		${STAGEDIR}${PREFIX}/include
-.endif
-.if ${PORT_OPTIONS:MSWANCTL}
-	${MV} ${STAGEDIR}${PREFIX}/etc/swanctl/swanctl.conf \
-		${STAGEDIR}${PREFIX}/etc/swanctl/swanctl.conf.sample
 .endif
 
 .include <bsd.port.mk>

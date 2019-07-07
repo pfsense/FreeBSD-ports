@@ -15,5 +15,4 @@ Xdebug also provides:
     * script execution analysis
     * capabilities to debug your scripts interactively with a debug client
 
-WWW: https://www.xdebug.org/
-WWW: https://pecl.php.net/package/xdebug
+WWW: http://www.xdebug.org/

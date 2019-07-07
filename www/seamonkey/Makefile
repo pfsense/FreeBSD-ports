@@ -3,7 +3,7 @@
 
 PORTNAME=	seamonkey
 DISTVERSION=	2.49.4
-PORTREVISION=	10
+PORTREVISION=	25
 MOZILLA_VER=	52 # above + 3
 CATEGORIES?=	www mail news editors irc ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
@@ -19,7 +19,6 @@ BUILD_DEPENDS=	nspr>=4.13.1:devel/nspr \
 		harfbuzz>=1.4.1:print/harfbuzz \
 		graphite2>=1.3.8:graphics/graphite2 \
 		png>=1.6.25:graphics/png \
-		libvorbis>=1.3.5,3:audio/libvorbis \
 		libvpx>=1.5.0:multimedia/libvpx \
 		sqlite3>=3.17.0:databases/sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
@@ -27,25 +26,24 @@ BUILD_DEPENDS=	nspr>=4.13.1:devel/nspr \
 		autoconf-2.13:devel/autoconf213 \
 		yasm:devel/yasm \
 		zip:archivers/zip
-#		soundtouch>=1.9.0:audio/soundtouch \
 
 LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 SSP_UNSAFE=	yes
 USE_GECKO=	gecko
-USE_GL=		gl
 USES=		tar:xz
 MOZ_PIS_SCRIPTS=	moz_pis_S50cleanhome
 
 MOZ_OPTIONS+=	--enable-application=suite
 
-USE_MOZILLA=	-soundtouch
+USE_MOZILLA=	-webp
 MOZ_PKGCONFIG_FILES=
 
 OPTIONS_DEFINE=	LDAP LIGHTNING RUST
 OPTIONS_SINGLE=	TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3
 OPTIONS_DEFAULT=CANBERRA GTK3 LDAP LIGHTNING
+OPTIONS_EXCLUDE=WAYLAND
 
 LDAP_DESC?=	LDAP support for Mailnews
 

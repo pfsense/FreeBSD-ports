@@ -2,9 +2,10 @@
 
 PORTNAME=	gxplugins
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4
+DISTVERSION=	0.6
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
+DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Set of LV2 plugins from the guitarix project
@@ -13,18 +14,25 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	lv2>0:audio/lv2
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
 
-USES=		compiler:c++11-lang gettext-runtime gmake localbase pkgconfig
+USES=		compiler:c++11-lang gettext-runtime gmake gnome localbase pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	brummer10
 GH_PROJECT=	GxPlugins.lv2
-USE_GNOME=	gtk20 glib20 gdkpixbuf2 atk cairo pango
+USE_GNOME=	cairo
+USE_XORG=	x11
+USE_BINUTILS=	yes # linking needs some GNU features, fails on 12 without this, see https://github.com/brummer10/GxPlugins.lv2/issues/9
 
-.for x in	GxBottleRocket.lv2:21c9948 GxGuvnor.lv2:9ae6f47 GxHotBox.lv2:c841718 GxHyperion.lv2:af82eb8 GxQuack.lv2:a502805 GxSD1.lv2:22f8a40  \
-		GxSD2Lead.lv2:7a4a20b GxSVT.lv2:8f2e1ef GxSaturator.lv2:6eb8870 GxSlowGear.lv2:759bc93 GxSuperFuzz.lv2:9406f2e GxSuppaToneBender.lv2:25efb3a \
-		GxToneMachine.lv2:a53ea0f GxUVox720k.lv2:ac18d3a GxVBassPreAmp.lv2:85a9011 GxVintageFuzzMaster.lv2:4bb15cb GxVmk2.lv2:08ace4f GxVoodoFuzz.lv2:1557baf
+MAKE_ENV=	PATH=${LOCALBASE}/bin:/usr/bin:/bin # 'ld' needs to be first in the path on 12, -B{path} isn't sufficient for some reason
+LDFLAGS+=	-B${LOCALBASE}/bin # Use ld provided by USE_BINUTILS for GNU features, otherwise GNU ld isn't called
+
+.for x in	GxAxisFace.lv2:43b9c8a GxBoobTube.lv2:4a5dd48 GxBottleRocket.lv2:0be3709 GxCreamMachine.lv2:bad5307 GxDOP250.lv2:0b7cadd  \
+		GxFz1b.lv2:52ecd61 GxFz1s.lv2:7bb67aa GxGuvnor.lv2:9b16717 GxHeathkit.lv2:d88647e GxHotBox.lv2:3df0a12  \
+		GxHyperion.lv2:0436d91 GxKnightFuzz.lv2:0cd6814 GxLiquidDrive.lv2:e12a9d9 GxMicroAmp.lv2:611bd7d GxQuack.lv2:2668d1e  \
+		GxSD1.lv2:456418c GxSD2Lead.lv2:4f219a1 GxSVT.lv2:437ca62 GxSaturator.lv2:792f414 GxSlowGear.lv2:145fef7  \
+		GxSunFace.lv2:3676397 GxSuperFuzz.lv2:eda8506 GxSuppaToneBender.lv2:e806945 GxToneMachine.lv2:413f833 GxTubeDistortion.lv2:4e12a26  \
+		GxUVox720k.lv2:7fb222e GxVBassPreAmp.lv2:95bc7fb GxValveCaster.lv2:c29392b GxVintageFuzzMaster.lv2:dd3cb30 GxVmk2.lv2:1ef6805  \
+		GxVoodoFuzz.lv2:b6750b9
 GH_TUPLE+=	brummer10:${x}:${x:C/\..*//}/${x:C/:.*//}
 .endfor
 

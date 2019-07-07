@@ -8,6 +8,7 @@
     SUBDIR += afterstep-stable
     SUBDIR += amiwm
     SUBDIR += antiwm
+    SUBDIR += aphelia
     SUBDIR += awesome
     SUBDIR += awesome-vicious
     SUBDIR += bbkeys
@@ -15,7 +16,6 @@
     SUBDIR += blackbox
     SUBDIR += bspwm
     SUBDIR += ccsm
-    SUBDIR += cde
     SUBDIR += clementine-wm
     SUBDIR += compiz
     SUBDIR += compiz-fusion
@@ -33,7 +33,6 @@
     SUBDIR += e-module-cpu
     SUBDIR += e-module-deskshow
     SUBDIR += e-module-everything-places
-    SUBDIR += e-module-everything-websearch
     SUBDIR += e-module-mem
     SUBDIR += e-module-rmb
     SUBDIR += e-module-wlan
@@ -62,6 +61,7 @@
     SUBDIR += hs-xmonad
     SUBDIR += hs-xmonad-contrib
     SUBDIR += i3
+    SUBDIR += i3-gaps
     SUBDIR += icewm
     SUBDIR += ion
     SUBDIR += jewel
@@ -73,16 +73,21 @@
     SUBDIR += lwm
     SUBDIR += lxappearance-obconf
     SUBDIR += lxmed
+    SUBDIR += lxqt
+    SUBDIR += lxqt-panel
+    SUBDIR += lxqt-session
     SUBDIR += lxsession
     SUBDIR += marco
     SUBDIR += matwm2
     SUBDIR += mcwm
     SUBDIR += metacity
     SUBDIR += muffin
+    SUBDIR += musca
     SUBDIR += mutter
     SUBDIR += nickleby
     SUBDIR += obapps
     SUBDIR += obconf
+    SUBDIR += obconf-qt
     SUBDIR += obkey
     SUBDIR += obmenu
     SUBDIR += obpager
@@ -100,7 +105,6 @@
     SUBDIR += plasma5-kwin
     SUBDIR += plwm
     SUBDIR += pwm
-    SUBDIR += qlwm
     SUBDIR += qtile
     SUBDIR += ratmen
     SUBDIR += ratmenu
@@ -110,10 +114,11 @@
     SUBDIR += sawfish
     SUBDIR += selectwm
     SUBDIR += simple-ccsm
+    SUBDIR += skippy-xd
     SUBDIR += spectrwm
     SUBDIR += stumpwm
     SUBDIR += subtle
-    SUBDIR += swm
+    SUBDIR += sway
     SUBDIR += tinywm
     SUBDIR += transset
     SUBDIR += treewm
@@ -138,6 +143,7 @@
     SUBDIR += xfce4
     SUBDIR += xfce4-desktop
     SUBDIR += xfce4-panel
+    SUBDIR += xfce4-panel-profiles
     SUBDIR += xfce4-session
     SUBDIR += xfce4-wm
 

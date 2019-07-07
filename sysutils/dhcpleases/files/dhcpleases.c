@@ -736,7 +736,7 @@ reopen:
 		for (;;) {
 			nev = kevent(kq, &chlist, 1, &evlist, 1, NULL);
 			if (nev == -1) {
-				syslog(LOG_ERR, "kqueue error: unkown");
+				syslog(LOG_ERR, "kqueue error: unknown");
 				fclose(fp);
 				goto reopen;
 			} else if (nev > 0) {

@@ -36,7 +36,6 @@ function ladvd_resync_config() {
 	}
 
 	$ladvd_conf = &$config['installedpackages']['ladvd']['config'][0];
-	conf_mount_rw();
 
 	/* ladvd is turned off in package settings */
 	if (empty($ladvd_conf['enable'])) {
@@ -105,9 +104,6 @@ function ladvd_resync_config() {
 	} else {
 		start_service("ladvd");
 	}
-
-	sleep(1);
-	conf_mount_ro();
 }
 
 ?>

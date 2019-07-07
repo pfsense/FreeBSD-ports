@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	freerdp
-DISTVERSION=	2.0.0-rc1
-PORTREVISION=	6
+DISTVERSION=	2.0.0-rc4
+PORTREVISION=	1
 CATEGORIES=	net comms ipv6
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	78df32c77f28.patch:-p1 ed571e74a594.patch:-p1
+PATCHFILES=	649f49f.patch:-p1 effa8b8.patch:-p1 0c83efa.patch:-p1
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Free implementation of Remote Desktop Protocol
@@ -15,9 +15,14 @@ COMMENT=	Free implementation of Remote Desktop Protocol
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		alias cmake:outsource compiler:c++11-lib cpe gettext localbase pathfix pkgconfig ssl
+LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim
+
+USES=		alias cmake compiler:c++11-lib cpe gettext localbase pathfix pkgconfig ssl
 USE_LDCONFIG=	yes
 CPE_VENDOR=	freerdp_project
+
+BROKEN_SSL=	libressl-devel
+BROKEN_SSL_REASON_libressl-devel=	fails to compile: no member named 'alert_dispatch' in 'struct ssl3_state_st'
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	FreeRDP
@@ -50,7 +55,7 @@ FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 FFMPEG_CMAKE_BOOL=	WITH_FFMPEG
 
 GSTREAMER_CMAKE_BOOL=	WITH_GSTREAMER_1_0
-GSTREAMER_USE=		gnome=glib20 gstreamer1=yes xorg=x11,xext,xextproto,xrandr
+GSTREAMER_USE=		gnome=glib20 gstreamer1=yes xorg=x11,xext,xorgproto,xrandr
 GSTREAMER_LIB_DEPENDS=	libgstbase-1.0.so:multimedia/gstreamer1
 
 ICU_LIB_DEPENDS=	libicuuc.so:devel/icu
@@ -74,9 +79,8 @@ PULSEAUDIO_CMAKE_BOOL=	WITH_PULSE
 SSE_CMAKE_BOOL=		WITH_SSE2
 
 WAYLAND_DESC=		Build FreeRDP Wayland client
-WAYLAND_BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:multimedia/v4l_compat
-WAYLAND_LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
-			libwayland-client.so:graphics/wayland \
+WAYLAND_BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 			libwayland-cursor.so:graphics/wayland \
 			libxkbcommon.so:x11/libxkbcommon
 WAYLAND_CMAKE_BOOL=	WITH_WAYLAND
@@ -84,18 +88,7 @@ WAYLAND_CMAKE_BOOL=	WITH_WAYLAND
 X11_DESC=		Build FreeRDP X11 client
 X11_CMAKE_BOOL=		WITH_X11
 X11_CMAKE_OFF=		-DWITH_XKBFILE=OFF
-X11_USE=		xorg=x11,xcursor,xext,xextproto,xfixes,xi,xinerama,xkbfile,xrandr,xrender,xv
-
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == "FreeBSD" && ${ARCH} == "armv6"
-.if ${OSVERSION} < 1100500 || \
-	(${OSVERSION} >= 1100500 && ${OSVERSION} < 1100504) || \
-	(${OSVERSION} >= 1200000 && ${OSVERSION} < 1200008)
-BROKEN=	Fails to build on ARMv6 (libm bug). See: r305380 (HEAD), r305971 (stable/11) [\#199422, \#211965] \
-	Please update to a later (fixed) version.
-.endif
-.endif
+X11_USE=		xorg=x11,xcursor,xext,xorgproto,xfixes,xi,xinerama,xkbfile,xrandr,xrender,xv
 
 post-patch:
 	@${REINPLACE_CMD} -e '/CMAKE_INSTALL_RPATH /d' \
@@ -113,4 +106,4 @@ post-patch:
 		${WRKSRC}/server/shadow/CMakeLists.txt \
 		${WRKSRC}/libfreerdp/CMakeLists.txt
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

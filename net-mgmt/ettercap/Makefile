@@ -4,6 +4,7 @@
 PORTNAME=	ettercap
 PORTVERSION=	0.8.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt security
 
@@ -32,7 +33,7 @@ CMAKE_ON=	HAVE_DLOPEN
 LDFLAGS+=	${ICONV_LIB} -lnet -lpcap
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
-USES=		bison cmake:outsource cpe iconv localbase:ldflags pkgconfig
+USES=		bison cmake cpe iconv localbase:ldflags pkgconfig
 
 DOCS=		AUTHORS CHANGELOG README README.BINARIES README.BUGS \
 		README.GIT README.PLATFORMS THANKS TODO TODO.TESTING \

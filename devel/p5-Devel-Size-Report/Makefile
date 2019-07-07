@@ -8,12 +8,15 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	alexey@renatasystems.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extension to generate a size report for all elements in a structure
 
-BUILD_DEPENDS=	p5-Array-RefElem>=1.00:misc/p5-Array-RefElem \
+LICENSE=	ART10 GPLv1+
+LICENSE_COMB=	dual
+
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Array-RefElem>=1.00:misc/p5-Array-RefElem \
 		p5-Devel-Size>=0.69:devel/p5-Devel-Size
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure

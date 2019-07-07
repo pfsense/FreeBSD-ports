@@ -3,7 +3,7 @@
 
 PORTNAME=	blokish
 PORTVERSION=	0.9.4
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/v${PORTVERSION}
 DISTNAME=	${PORTNAME}_v${PORTVERSION}
@@ -15,7 +15,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		gmake localbase tar:tgz
+USES=		compiler:c++11-lang gl gmake localbase tar:tgz
 USE_GL=		gl
 USE_WX=		2.8
 

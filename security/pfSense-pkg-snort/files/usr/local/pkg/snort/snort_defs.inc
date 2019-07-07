@@ -3,9 +3,9 @@
  * snort_defs.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,25 +24,33 @@
 global $g, $config;
 
 /* Define some useful constants for Snort */
-if (!defined("SNORT_PBI_BASEDIR")) {
-	define("SNORT_PBI_BASEDIR", "/usr/local/");
+if (!defined("SNORT_BASEDIR")) {
+	define("SNORT_BASEDIR", "/usr/local/");
 }
-if (!defined("SNORT_PBI_BINDIR"))
-	define("SNORT_PBI_BINDIR", SNORT_PBI_BASEDIR . "bin/");
+if (!defined("SNORT_BINDIR"))
+	define("SNORT_BINDIR", SNORT_BASEDIR . "bin/");
 if (!defined("SNORTDIR"))
-	define("SNORTDIR", SNORT_PBI_BASEDIR . "etc/snort");
+	define("SNORTDIR", SNORT_BASEDIR . "etc/snort");
 if (!defined("SNORTLOGDIR"))
 	define("SNORTLOGDIR", "{$g['varlog_path']}/snort");
 if (!defined("SNORT_BIN_VERSION")) {
-	// Grab the Snort binary version programmatically
-	$snortbindir = SNORT_PBI_BINDIR;
-	$snortver = exec_command("{$snortbindir}/snort -V 2>&1 |/usr/bin/grep Version | /usr/bin/cut -c20-27");
-	$snortver = trim($snortver);
-	if (!empty($snortver))
-		define("SNORT_BIN_VERSION", $snortver);
-	else
-		define("SNORT_BIN_VERSION", "2.9.11.1");
+	// Grab the Snort binary version programmatically by
+	// running the binary with the command-line argument
+	// to display the version information.
+	$snortbindir = SNORT_BINDIR;
+	$snortver = exec_command("{$snortbindir}/snort -V 2>&1 |/usr/bin/grep Version | /usr/bin/cut -c20-31");
+
+	// Extract just the numbers and decimal point
+	// delimiters at the front of the version string.
+	$matches = array();
+	if (preg_match('/^[^\s]+/', $snortver, $matches)) {
+		define("SNORT_BIN_VERSION", $matches[0]);
+	}
+	else {
+		define("SNORT_BIN_VERSION", "2.9.13");
+	}
 }
+
 if (!defined("SNORT_SID_MODS_PATH"))
 	define('SNORT_SID_MODS_PATH', "{$g['vardb_path']}/snort/sidmods/");
 if (!defined("SNORT_IPREP_PATH"))
@@ -65,7 +73,7 @@ if (!defined("VRT_DNLD_URL"))
 if (!defined("ET_VERSION"))
 	define("ET_VERSION", "2.9.0");
 if (!defined("ET_BASE_DNLD_URL"))
-	define("ET_BASE_DNLD_URL", "http://rules.emergingthreats.net/"); 
+	define("ET_BASE_DNLD_URL", "https://rules.emergingthreats.net/"); 
 if (!defined("ETPRO_BASE_DNLD_URL"))
 	define("ETPRO_BASE_DNLD_URL", "https://rules.emergingthreatspro.com/"); 
 if (!defined("SNORT_ET_DNLD_FILENAME"))
@@ -81,7 +89,7 @@ if (!defined("SNORT_OPENAPPID_DNLD_URL"))
 if (!defined("SNORT_OPENAPPID_DNLD_FILENAME"))
 	define("SNORT_OPENAPPID_DNLD_FILENAME", "snort-openappid.tar.gz");
 if (!defined("SNORT_OPENAPPID_RULES_URL"))
-	define("SNORT_OPENAPPID_RULES_URL", "http://files.pfsense.org/openappid/");
+	define("SNORT_OPENAPPID_RULES_URL", "https://files.pfsense.org/openappid/");
 if (!defined("SNORT_OPENAPPID_RULES_FILENAME"))
 	define("SNORT_OPENAPPID_RULES_FILENAME", "appid_rules.tar.gz");
 if (!defined("SNORT_RULES_UPD_LOGFILE"))

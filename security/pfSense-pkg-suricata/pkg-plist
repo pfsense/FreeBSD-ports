@@ -18,7 +18,6 @@ www/suricata/suricata_global.php
 www/suricata/suricata_alerts.php
 www/suricata/suricata_interfaces.php
 www/suricata/suricata_interfaces_edit.php
-www/suricata/suricata_download_rules.php
 www/suricata/suricata_rules.php
 www/suricata/suricata_rulesets.php
 www/suricata/suricata_rules_flowbits.php

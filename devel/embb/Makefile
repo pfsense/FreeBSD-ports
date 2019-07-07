@@ -3,7 +3,7 @@
 
 PORTNAME=	embb
 PORTVERSION=	1.0.0
-PORTREVISION=	1
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -16,7 +16,7 @@ LICENSE_COMB=	multi
 USE_GITHUB=	yes
 GH_ACCOUNT=	siemens
 
-USES=		cmake:outsource compiler:c++11-lib
+USES=		cmake compiler:c++11-lib
 
 CMAKE_ARGS=	-DINSTALL_PREFIX=${PREFIX} \
 		-DUSE_C11_AND_CXX11:BOOL=true

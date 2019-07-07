@@ -3,9 +3,9 @@
 
 PORTNAME=	graphviz
 PORTVERSION=	2.40.1
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	graphics tk
-MASTER_SITES=	http://www.graphviz.org/pub/graphviz/ARCHIVE/
+MASTER_SITES=	https://graphviz.gitlab.io/pub/graphviz/stable/SOURCES/
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Graph Visualization Software from AT&T and Bell Labs
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libgd.so:${GD_PORT}
 
 USES=		cpe pathfix shebangfix gmake bison groff pkgconfig \
-		libtool:keepla localbase:ldflags jpeg
+		libtool:keepla localbase:ldflags jpeg compiler:c++11-lang
 GNU_CONFIGURE=	yes
 # sincos is broken on armv6, see ports/220591
 CFLAGS_armv6=	-fno-builtin-sincos -fno-builtin-sin -fno-builtin-cos \
@@ -53,8 +53,8 @@ PDOCS_HTML=	doc/*.html doc/info/*.gif
 
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
 
-OPTIONS_DEFINE=	XPM DIGCOLA IPSEPCOLA ICONV NLS PANGOCAIRO LIBRSVG2 POPPLER \
-		ANN GTS GTK2 GDK GDK_PIXBUF GNOMEUI SMYRNA GVEDIT MING DEVIL \
+OPTIONS_DEFINE=	XPM DIGCOLA IPSEPCOLA ICONV NLS PANGOCAIRO POPPLER \
+		ANN GTS GTK2 GDK GDK_PIXBUF GNOMEUI SMYRNA MING DEVIL \
 		GHOSTSCRIPT PERL PHP PYTHON RUBY LUA TCL TK GUILE NVTHREADS \
 		DOCS EXAMPLES
 OPTIONS_DEFAULT=	XPM DIGCOLA IPSEPCOLA ICONV PANGOCAIRO NVTHREADS
@@ -70,7 +70,6 @@ GDK_DESC=	gdk library support (requires GTK2)
 GDK_PIXBUF_DESC=gdk pixbuf support (requires GDK)
 GNOMEUI_DESC=	libgnomeui support
 SMYRNA_DESC=	SMYRNA graph viewer (requires GTK2)
-GVEDIT_DESC=	gvedit (requires qt)
 MING_DESC=	ming plugin
 DEVIL_DESC=	devil plugin
 GHOSTSCRIPT_DESC=ghostscript plugin (requires PANGOCAIRO)
@@ -88,13 +87,9 @@ XPM_USE=	XORG=xaw,xpm,xmu,xt,sm,ice,xext,x11,xau,xdmcp,xp
 ICONV_USES=	iconv
 NLS_USES=	gettext
 PANGOCAIRO_USE=	GNOME=pango,cairo XORG=xrender,x11,xau,xdmcp
-LIBRSVG2_USE=	GNOME=librsvg2 GL=gl,glu,glut
 GTK2_USE=	XORG=sm,ice,xext,xinerama,xi,xrandr,xcursor,xfixes GNOME=gtk20
 GNOMEUI_USE=	GNOME=libgnomeui
 SMYRNA_USE=	GNOME=libglade2,pangox-compat GL=glut
-GVEDIT_USES=	qt:4
-GVEDIT_USE=	qt=qmake_build,moc_build,rcc_build,uic_build \
-		qt=linguist_build,corelib,gui
 GHOSTSCRIPT_USES=ghostscript
 PERL_USES=	perl5
 PHP_USES=	php:build
@@ -120,8 +115,6 @@ IPSEPCOLA_CONFIGURE_WITH=	ipsepcola
 IPSEPCOLA_IMPLIES=		DIGCOLA
 NLS_CONFIGURE_ENABLE=		nls
 PANGOCAIRO_CONFIGURE_WITH=	pangocairo
-LIBRSVG2_CONFIGURE_WITH=	rsvg
-LIBRSVG2_IMPLIES=		PANGOCAIRO
 POPPLER_CONFIGURE_WITH=		poppler
 ANN_CONFIGURE_WITH=		ann
 ANN_CONFIGURE_ENV=	ANN_CFLAGS=-I${LOCALBASE}/include ANN_LIBS=-lann
@@ -135,8 +128,6 @@ GNOMEUI_CONFIGURE_WITH=		gnomeui
 GNOMEUI_IMPLIES=		GTK2
 SMYRNA_CONFIGURE_WITH=		smyrna glade gtkgl gtkglext
 SMYRNA_IMPLIES=			GTK2 GTS
-GVEDIT_CONFIGURE_ON=		--with-gvedit=yes
-GVEDIT_CONFIGURE_OFF=		--with-qt=no
 MING_CONFIGURE_WITH=		ming
 DEVIL_CONFIGURE_WITH=		devil
 GHOSTSCRIPT_CONFIGURE_OFF=	--with-ghostscript=no
@@ -182,6 +173,8 @@ CONFIGURE_ARGS+=	--program-transform-name="s/x/x/" \
 		--with-libgd \
 		--with-fontconfigincludedir=${LOCALBASE}/include \
 		--with-fontconfiglibdir=${LOCALBASE}/lib \
+		--without-rsvg \
+		--with-qt=no \
 		--disable-io --disable-ocaml --disable-java \
 		--disable-sharp
 
@@ -256,10 +249,8 @@ post-patch:
 	${REINPLACE_CMD} -e 's|GTS_LIBS)|GTS_LIBS) $$(MATH_LIBS)|' \
 		${WRKSRC}/cmd/smyrna/Makefile.in
 	${CP} ${WRKSRC}/lib/cgraph/cgraph.h ${WRKSRC}/plugin/ming/
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100093
 	${REINPLACE_CMD} -e 's|SF_FLAGS|SFIO_FLAGS|g' \
 		${WRKSRC}/lib/sfio/*.[ch]
-.endif
 
 post-patch-DOCS-off:
 	${REINPLACE_CMD} -e 's| install-txtDATA$$||' \

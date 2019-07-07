@@ -4,7 +4,7 @@ PORTNAME=	aquaria
 DISTVERSIONPREFIX=	OSE-v
 DISTVERSION=	1.002-22
 DISTVERSIONSUFFIX=	-g84366ad
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	games
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -22,11 +22,11 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	AquariaOSE
 GH_PROJECT=	Aquaria
 
-USES=		cmake lua:51 openal pkgconfig
+USES=		cmake:insource compiler:c++11-lang lua:51 openal pkgconfig
 EXCLUDE=	AL FTGL GL SDL* freetype2 glm glpng/png glpng/zlib \
 		libogg-* libvorbis-* lua-* tinyxml2*
 EXTRACT_AFTER_ARGS=${EXCLUDE:S,^,--exclude ExternalLibs/,}
-CMAKE_ARGS=	AQUARIA_DEFAULT_DATA_DIR:PATH="${DATADIR}"
+CMAKE_ARGS=	-DAQUARIA_DEFAULT_DATA_DIR:PATH="${DATADIR}"
 CMAKE_OFF=	AQUARIA_INTERNAL_FREETYPE \
 		AQUARIA_INTERNAL_FTGL \
 		AQUARIA_INTERNAL_LUA \

@@ -4,7 +4,7 @@
 PORTNAME=	xneur
 PORTVERSION=	0.17.0
 DISTVERSIONSUFFIX=.orig
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	deskutils
 MASTER_SITES=	https://launchpad.net/~andrew-crew-kuznetsov/+archive/xneur-stable/+files/
 DISTNAME=	${PORTNAME}_${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
@@ -14,15 +14,20 @@ COMMENT=	Auto keyboard switcher
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	fails to compile: text.c:272: nested functions are disabled, use -fnested-functions to re-enable
-
 LIB_DEPENDS=	libnotify.so:devel/libnotify \
 		libpcre.so:devel/pcre
 
-USES=		compiler:nestedfct iconv libtool localbase pathfix pkgconfig
+USES=		compiler:nestedfct gnome iconv libtool localbase pathfix \
+		pkgconfig
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --libdir=${PREFIX}/lib/xneur
+CFLAGS_mips=	-fnested-functions
+CFLAGS_mips64=	-fnested-functions
+CFLAGS_powerpc=	-fnested-functions
+CFLAGS_powerpcspe=	-fnested-functions
+CFLAGS_powerpc64=	-fnested-functions
+CFLAGS_sparc64=	-fnested-functions
 
 USE_LDCONFIG=	${PREFIX}/lib/xneur ${PREFIX}/lib/xneur/xneur
 INSTALLS_ICONS=	yes

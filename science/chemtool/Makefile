@@ -3,6 +3,7 @@
 
 PORTNAME=	chemtool
 DISTVERSION=	1.6.14
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	http://ruby.chemie.uni-freiburg.de/~martin/chemtool/
 
@@ -17,7 +18,7 @@ LIB_DEPENDS=	libEMF.so:graphics/libemf \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	transfig:print/transfig
 
-USES=		gmake pkgconfig
+USES=		compiler:c++11-lang gmake gnome pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-emf=yes --with-localedir=${PREFIX}
 USE_GNOME=	cairo gdkpixbuf2 gtk20

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pdal
-DISTVERSION=	1.7.2
+DISTVERSION=	1.8.0
 CATEGORIES=	math databases graphics
 
 MAINTAINER=	lbartoletti@tuxfamily.org
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		liblaszip.so:archivers/laszip \
 		libjsoncpp.so:devel/jsoncpp
 
-USES=		cmake:outsource compiler:c++11-lib pathfix pkgconfig
+USES=		cmake compiler:c++11-lib pathfix pkgconfig
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME:tu}

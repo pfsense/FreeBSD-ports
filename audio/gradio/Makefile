@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gradio
-PORTVERSION=	7.1
+PORTVERSION=	7.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	arved@FreeBSD.org
@@ -17,18 +16,17 @@ BUILD_DEPENDS=	valac:lang/vala
 LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 		libjson-glib-1.0.so:devel/json-glib
 
-USES=		gettext meson pkgconfig python:3.4+,env sqlite
+USES=		gettext gnome meson pkgconfig python:3.4+,env sqlite
 USE_GITHUB=	yes
 GH_ACCOUNT=	haecker-felix
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30
 USE_GSTREAMER1=	mpg123 soup
+
 INSTALLS_ICONS=	yes
-
+WRKSRC=		${WRKDIR}/Gradio-${PORTVERSION}
 GLIB_SCHEMAS=	de.haeckerfelix.gradio.gschema.xml
-
-.include <bsd.port.pre.mk>
 
 post-patch:
 	${REINPLACE_CMD} -e "s,python3,${PYTHON_CMD}," ${WRKSRC}/meson_post_install.sh
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

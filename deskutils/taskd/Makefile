@@ -3,7 +3,7 @@
 
 PORTNAME=	taskd
 PORTVERSION=	1.1.0
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	deskutils
 MASTER_SITES=	http://taskwarrior.org/download/
 
@@ -15,7 +15,7 @@ LICENSE=	MIT
 LIB_DEPENDS=	libgnutls.so:security/gnutls
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cmake:outsource compiler:c++11-lib shebangfix
+USES=		cmake compiler:c++11-lib shebangfix
 USE_RC_SUBR=	taskd
 
 USERS=		taskd
@@ -47,6 +47,8 @@ SHEBANG_FILES=	demo/client/case* \
 CFLAGS+=	-g -O0
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	(cd ${WRKSRC}/pki && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})

@@ -3,9 +3,9 @@
  * snort_check_cron_misc.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,12 +44,11 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 	$snortloglimitsizeKB = round($snortloglimitsize * 1024);
 	$snortlogdirsizeKB = snort_Getdirsize(SNORTLOGDIR);
 	if ($snortlogdirsizeKB > 0 && $snortlogdirsizeKB > $snortloglimitsizeKB) {
-		log_error(gettext("[Snort] Log directory size exceeds configured limit of " . number_format($snortloglimitsize) . " MB set on Global Settings tab. All Snort log files will be truncated."));
-		conf_mount_rw();
+		syslog(LOG_NOTICE, gettext("[Snort] Log directory size exceeds configured limit of " . number_format($snortloglimitsize) . " MB set on Global Settings tab. All Snort log files will be truncated."));
 
 		// Truncate the Rules Update Log file if it exists
 		if (file_exists(SNORT_RULES_UPD_LOGFILE)) {
-			log_error(gettext("[Snort] Truncating the Rules Update Log file..."));
+			syslog(LOG_NOTICE, gettext("[Snort] Truncating the Rules Update Log file..."));
 			@file_put_contents(SNORT_RULES_UPD_LOGFILE, "");
 		}
 
@@ -58,12 +57,16 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 			$if_real = get_real_interface($value['interface']);
 			$snort_uuid = $value['uuid'];
 			$snort_log_dir = SNORTLOGDIR . "/snort_{$if_real}{$snort_uuid}";
-			log_error(gettext("[Snort] Truncating logs for {$value['descr']} ({$if_real})..."));
+			syslog(LOG_NOTICE, gettext("[Snort] Truncating logs for {$value['descr']} ({$if_real})..."));
 			snort_post_delete_logs($snort_uuid);
 
 			// Truncate the alert log file if it exists
 			if (file_exists("{$snort_log_dir}/alert")) {
-				@file_put_contents("{$snort_log_dir}/alert", "");
+				try {
+					fclose(fopen("{$snort_log_dir}/alert", 'w'));
+				} catch (Exception $e) {
+					syslog(LOG_ERR, gettext("[Snort] ERROR: Failed to truncate file '{$snort_log_dir}/alert' -- error was {$e->getMessage()}"));
+				}
 			}
 
 			// Cleanup any perfmon stats logs
@@ -86,12 +89,11 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 
 			// Soft-restart Snort process to resync logging
 			if (file_exists("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid")) {
-				log_error(gettext("[Snort] Restarting logging on {$value['descr']} ({$if_real})..."));
+				syslog(LOG_NOTICE, gettext("[Snort] Restarting logging on {$value['descr']} ({$if_real})..."));
 				mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid -a");
 			}
 		}
-		conf_mount_ro();
-		log_error(gettext("[Snort] Automatic clean-up of Snort logs completed."));
+		syslog(LOG_NOTICE, gettext("[Snort] Automatic clean-up of Snort logs completed."));
 	}
 }
 
@@ -122,10 +124,10 @@ function snort_check_rotate_log($log_file, $log_limit, $retention) {
 	if (($log_limit > 0) && (filesize($log_file) >= $log_limit)) {
 		$newfile = $log_file . "." . strval(time());
 		try {
-			copy($log_file, $newfile);
-			file_put_contents($log_file, "");
+			rename($log_file, $newfile);
+			touch($log_file);
 		} catch (Exception $e) {
-			log_error("[Snort] Failed to rotate file '{$log_file}' -- error was {$e->getMessage()}");
+			syslog(LOG_ERR, "[Snort] Failed to rotate file '{$log_file}' -- error was {$e->getMessage()}");
 		}
 	}
 
@@ -156,8 +158,15 @@ if ($g['booting'] == true)
 $logs = array ();
 
 // Build an array of files to check and limits to check them against from our saved configuration
+$logs['alert'] = array();
+$logs['alert']['limit'] = $config['installedpackages']['snortglobal']['alert_log_limit_size'];
+$logs['alert']['retention'] = $config['installedpackages']['snortglobal']['alert_log_retention'];
+$logs['sid_changes.log'] = array();
 $logs['sid_changes.log']['limit'] = $config['installedpackages']['snortglobal']['sid_changes_log_limit_size'];
 $logs['sid_changes.log']['retention'] = $config['installedpackages']['snortglobal']['sid_changes_log_retention'];
+$logs['app-stats.log'] = array();
+$logs['app-stats.log']['limit'] = $config['installedpackages']['snortglobal']['appid_stats_log_limit_size'];
+$logs['app-stats.log']['retention'] = $config['installedpackages']['snortglobal']['appid_stats_log_retention'];
 
 // If no interfaces defined, there is nothing to clean up
 if (!is_array($config['installedpackages']['snortglobal']['rule']))
@@ -185,7 +194,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 			}
 			unset($rotated_files);
 			if ($prune_count > 0)
-				log_error(gettext("[Snort] Alert pcap file cleanup job removed {$prune_count} pcap file(s) from {$snort_log_dir}/..."));
+				syslog(LOG_NOTICE, gettext("[Snort] Alert pcap file cleanup job removed {$prune_count} pcap file(s) from {$snort_log_dir}/..."));
 		}
 
 		// Prune any aged-out Barnyard2 archived logs if any exist
@@ -201,7 +210,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 			}
 			unset($files);
 			if ($prune_count > 0)
-				log_error(gettext("[Snort] Barnyard2 archived logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/barnyard2/archive/..."));
+				syslog(LOG_NOTICE, gettext("[Snort] Barnyard2 archived logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/barnyard2/archive/..."));
 		}
 
 		// Prune aged-out perfmon stats logs if any exist
@@ -222,7 +231,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 			}
 			unset($list, $files);
 			if ($prune_count > 0)
-				log_error(gettext("[Snort] perfmon stats logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/..."));
+				syslog(LOG_NOTICE, gettext("[Snort] perfmon stats logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/..."));
 		}
 
 		// Prune any aged-out AppID stats logs if any exist
@@ -238,7 +247,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 			}
 			unset($files);
 			if ($prune_count > 0)
-				log_error(gettext("[Snort] AppID stats logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/..."));
+				syslog(LOG_NOTICE, gettext("[Snort] AppID stats logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/..."));
 		}
 	}
 }

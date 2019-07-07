@@ -22,6 +22,9 @@ INSTALL_TARGET+=	install-doc
 PORTDOCS=		htick.html
 DOCSDIR=		${PREFIX}/share/doc/husky
 INFO=			htick
+MAKE_ARGS=		INFODIR=${PREFIX}/${INFO_PATH}
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${REINPLACE_CMD} -e 's^/fido/etc/config^${PREFIX}/etc/fido/config^' \

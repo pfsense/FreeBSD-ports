@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Image-Base-SVG
-PORTVERSION=	4
-PORTREVISION=	1
+PORTVERSION=	5
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,16 +13,14 @@ COMMENT=	SVG image file output
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	p5-Image-Base>=0:graphics/p5-Image-Base \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Image-Base>=0:graphics/p5-Image-Base \
 		p5-SVG>=2.38:textproc/p5-SVG \
 		p5-SVG-Parser>=0:textproc/p5-SVG-Parser
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+
+USES=		perl5
+USE_PERL5=	configure
 
 NO_ARCH=	yes
-USE_PERL5=	configure
-USES=		perl5
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|Image-Base-SVG|Image::Base::SVG|' ${WRKSRC}/Makefile.PL
 
 .include <bsd.port.mk>

@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gcolor3
-PORTVERSION=	2.2
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.3.1
 CATEGORIES=	graphics
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -13,17 +13,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_powerpc64=	fails to compile: main.c: In function '_print_version_and_exit': will never be executed
 
-USES=		autoreconf gmake gettext libtool pkgconfig
+USES=		gnome gettext meson libtool pkgconfig
+USE_GITLAB=	yes
+GL_SITE=	https://gitlab.gnome.org
+GL_ACCOUNT=	World
+GL_COMMIT=	17dca0125fc3c931418d8723b684332d35bd5715
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
-GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	Hjdskes
-
-OPTIONS_DEFINE=	NLS
-OPTIONS_SUB=	yes
-
-NLS_CONFIGURE_ENABLE=	nls
 
 .include <bsd.port.mk>

@@ -4,7 +4,8 @@
 PORTNAME=	libshout
 PORTVERSION=	2.4.1
 CATEGORIES=	audio net
-MASTER_SITES=	http://downloads.xiph.org/releases/${PORTNAME}/ \
+MASTER_SITES=	https://downloads.xiph.org/releases/libshout/ \
+		https://svn.xiph.org/releases/libshout/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -13,19 +14,18 @@ COMMENT=	Connect and transmit data to an Icecast media streaming server
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	undefined reference to `SSLeay_add_all_algorithms'
-
 LIB_DEPENDS=	libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis
 
 OPTIONS_DEFINE=	DOCS SPEEX THEORA
 OPTIONS_DEFAULT=SPEEX THEORA
 
+USES=		gmake libtool pathfix pkgconfig ssl
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+LDFLAGS+=	-lcrypto
 USE_LDCONFIG=	yes
-USES=		gmake libtool pathfix pkgconfig ssl
 
 PORTDOCS=	*
 

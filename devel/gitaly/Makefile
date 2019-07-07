@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gitaly
-DISTVERSION=	0.100.0
+DISTVERSION=	1.27.1
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -11,25 +12,25 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 # define dependencies that are required for build and run under MY_DEPENDS
-MY_DEPENDS=	git>=2.16.2:devel/git \
-		rubygem-rugged>=0.27.1:devel/rubygem-rugged \
-		rubygem-github-linguist53>=5.3.3:textproc/rubygem-github-linguist53 \
-		rubygem-bundler>0:sysutils/rubygem-bundler \
-		rubygem-gitlab-markup>=1.6.2:textproc/rubygem-gitlab-markup \
-		rubygem-gitaly-proto099>=0.99.0:net/rubygem-gitaly-proto099 \
+MY_DEPENDS=	git>=2.18:devel/git \
+		rubygem-bundler>=1.16.5:sysutils/rubygem-bundler \
+		rubygem-rugged>=0.28.0:devel/rubygem-rugged \
+		rubygem-github-linguist>=6.1:textproc/rubygem-github-linguist \
+		rubygem-gitlab-markup>=1.6.5:textproc/rubygem-gitlab-markup \
+		rubygem-gitaly-proto>=1.13.0:net/rubygem-gitaly-proto \
 		rubygem-activesupport50>=5.0.2:devel/rubygem-activesupport50 \
-		rubygem-rdoc>=4.2:devel/rubygem-rdoc \
+		rubygem-rdoc>=6.0:devel/rubygem-rdoc \
 		rubygem-gitlab-gollum-lib>=4.2:www/rubygem-gitlab-gollum-lib \
 		rubygem-gitlab-gollum-rugged_adapter>=0.4.4:www/rubygem-gitlab-gollum-rugged_adapter \
-		rubygem-grpc>=1.11.0:net/rubygem-grpc \
+		rubygem-grpc>=1.15.0:net/rubygem-grpc \
 		rubygem-sentry-raven>=2.7.2:devel/rubygem-sentry-raven \
+		rubygem-faraday>=0.12:www/rubygem-faraday \
+		rubygem-rbtrace>0:devel/rubygem-rbtrace \
 		rubygem-licensee8>=8.9.0:devel/rubygem-licensee8 \
-		rubygem-google-protobuf351>=3.5.1:devel/rubygem-google-protobuf351
-
-BUILD_DEPENDS=	go>=1.8:lang/go \
+		rubygem-google-protobuf>=3.6:devel/rubygem-google-protobuf
+BUILD_DEPENDS=	go>=1.10:lang/go \
 		gem:devel/ruby-gems \
 		${MY_DEPENDS}
-
 RUN_DEPENDS=	${MY_DEPENDS} \
 		gitlab-shell>=6.0.4:devel/gitlab-shell
 
@@ -39,9 +40,10 @@ USE_RUBY=	yes
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
 # Find this here: https://gitlab.com/gitlab-org/gitaly/tags
-GL_COMMIT=	15606d3061414479453534814d32132bd9411617
+GL_COMMIT=	a3648fa4ba39e937093c10802ddc26aa00c58e9b
 
 post-patch:
+	${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|" ${WRKSRC}/config.toml.example
 	${MV} ${WRKSRC}/config.toml.example ${WRKSRC}/config.toml.sample
 
 do-install:
@@ -52,9 +54,5 @@ do-install:
 	(cd ${WRKSRC}/_build/bin/ && ${COPYTREE_SHARE} .  ${STAGEDIR}${DATADIR}/bin && \
 	cd ${WRKSRC} && ${COPYTREE_SHARE} config.toml.sample  ${STAGEDIR}${DATADIR}) && \
 	cd ${WRKSRC}/ruby && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/ruby
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${DATADIR}/bin/gitaly
-	${STRIP_CMD} ${STAGEDIR}${DATADIR}/bin/gitaly-ssh
 
 .include <bsd.port.mk>

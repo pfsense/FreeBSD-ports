@@ -1,4 +1,3 @@
-SHA256 (adonthell-src-0.3.5.tar.gz) = b1b24f26b9f32782793b222c687943442be83fc0d7f5dbb4928a61074be36dd7
-SIZE (adonthell-src-0.3.5.tar.gz) = 877439
-SHA256 (wastesedge-src-0.3.5.tar.gz) = f872a2dc89ca454523f5b55c7fc8b29986dae8bc72f52647a6e1dab3f2a30674
-SIZE (wastesedge-src-0.3.5.tar.gz) = 10749912
+TIMESTAMP = 1547059886
+SHA256 (adonthell-src-0.3.8.tar.gz) = c006f95bc58f095eff1a6b4bfc3ec96a455c76cdc8b64c4b2430ad7775c2ccec
+SIZE (adonthell-src-0.3.8.tar.gz) = 889244

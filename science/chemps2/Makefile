@@ -2,7 +2,8 @@
 
 PORTNAME=	CheMPS2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.7
+DISTVERSION=	1.8.9
+PORTREVISION=	2
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		libsz.so:science/szip
 
-USES=		blaslapack:openblas cmake:outsource fortran
+USES=		blaslapack:openblas cmake fortran
 USE_GITHUB=	yes
 GH_ACCOUNT=	SebWouters
 USE_LDCONFIG=	yes

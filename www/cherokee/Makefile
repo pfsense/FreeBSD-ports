@@ -4,7 +4,7 @@
 PORTNAME=	cherokee
 PORTVERSION=	1.2.104
 DISTVERSIONPREFIX=	v
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	www
 
 MAINTAINER=	ports@FreeBSD.org
@@ -13,6 +13,7 @@ COMMENT=	Fast and flexible web server
 LICENSE=	GPLv2
 
 BROKEN_FreeBSD_12=	fails to configure: Unable to detect data struct is used by crypt_r
+BROKEN_FreeBSD_13=	fails to configure: Unable to detect data struct is used by crypt_r
 
 USE_GITHUB=	yes
 GH_PROJECT=	webserver
@@ -31,6 +32,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static \
 		--localstatedir=${CHEROKEE_VARDIR} \
 		--without-php \
+		--with-geoip=no \
 		--with-python=${PYTHON_CMD} \
 		--with-wwwroot=${WWWDIR} \
 		--with-wwwuser=${CHEROKEE_USER} \
@@ -52,9 +54,9 @@ CHEROKEE_VARDIR?=	/var
 CHEROKEE_USER=		www
 CHEROKEE_GROUP=		www
 
-OPTIONS_DEFINE=		ADMIN DOCS FFMPEG GEOIP INTPCRE IPV6 LDAP MYSQL \
+OPTIONS_DEFINE=		ADMIN DOCS FFMPEG INTPCRE IPV6 LDAP MYSQL \
 			RRDTOOL UWSGI
-OPTIONS_DEFAULT=	ADMIN GEOIP
+OPTIONS_DEFAULT=	ADMIN
 OPTIONS_SUB=		yes
 
 ADMIN_DESC=		Build the Admin Interface
@@ -64,9 +66,6 @@ ADMIN_CONFIGURE_OFF=	--disable-admin
 FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 FFMPEG_CONFIGURE_ON=	--with-ffmpeg=yes
 FFMPEG_CONFIGURE_OFF=	--with-ffmpeg=no
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
-GEOIP_CONFIGURE_ON=	--with-geoip=yes
-GEOIP_CONFIGURE_OFF=	--with-geoip=no
 INTPCRE_DESC=		Use internal PCRE library
 INTPCRE_LIB_DEPENDS_OFF=libpcre.so:devel/pcre
 INTPCRE_CONFIGURE_ON=	--enable-internal-pcre

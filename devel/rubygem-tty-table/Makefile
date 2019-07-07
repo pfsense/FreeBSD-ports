@@ -3,6 +3,7 @@
 
 PORTNAME=	tty-table
 PORTVERSION=	0.10.0
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -18,8 +19,9 @@ RUN_DEPENDS=	rubygem-equatable>=0.5.0:devel/rubygem-equatable \
 		rubygem-strings>=0.1.0:devel/rubygem-strings \
 		rubygem-tty-screen>=0.6.4:devel/rubygem-tty-screen
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

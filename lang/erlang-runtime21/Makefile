@@ -2,13 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	21.0.1
+PORTVERSION=	21.3
+# NB when bumping OTP versions also bump PORTREVISION in databases/couchdb2
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg			\
 		http://erlang.stacken.kth.se/download/:erlangorg		\
 		http://www.csd.uu.se/ftp/mirror/erlang/download/:erlangorg	\
 		http://olgeni.olgeni.com/~olgeni/distfiles/:local		\
-		LOCAL/olgeni:local
+		LOCAL/olgeni:local \
+		LOCAL/dch:local
 PKGNAMESUFFIX=	-runtime21
 DISTNAME=	otp_src_${ERLANG_REL}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:erlangorg		\
@@ -17,8 +19,9 @@ DIST_SUBDIR=	erlang
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
-		LOCAL/olgeni
-PATCHFILES=	patch-otp-21.0.1
+		LOCAL/olgeni \
+		LOCAL/dch
+PATCHFILES=
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Functional programming language from Ericsson
@@ -30,7 +33,7 @@ BROKEN_sparc64=	Fails to build: error: fp_except undeclared
 WRKSRC=		${WRKDIR}/otp_src_${ERLANG_REL}
 
 ERLANG_LIB=	${PORTNAME}${PORTVERSION:C/\..*//}
-ERLANG_REL=	21.0
+ERLANG_REL=	21.3
 
 OPTIONS_SUB=	yes
 SUB_FILES=	pkg-message
@@ -40,6 +43,7 @@ MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=	DIRTY DTRACE GS HIPE JAVA KQUEUE NATIVE ODBC OPENSSL SCTP THREADS WX
 OPTIONS_DEFAULT=DIRTY DTRACE HIPE KQUEUE OPENSSL SCTP THREADS
+OPTIONS_EXCLUDE_powerpc64=	HIPE
 
 DIRTY_DESC=	Enable Dirty schedulers
 GS_DESC=	Enable GS application (deprecated)
@@ -60,14 +64,13 @@ OPTIONS_EXCLUDE+=	DTRACE
 # respectively)" you probably misconfigured DTrace in some way.
 
 OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
-OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 # ld(1) fails to link probes: missing __dtrace_erlang___* symbols
 OPTIONS_EXCLUDE_aarch64=	DTRACE
 OPTIONS_EXCLUDE_armv6=		DTRACE
 OPTIONS_EXCLUDE_armv7=		DTRACE
 OPTIONS_EXCLUDE_i386=		DTRACE
 
-OPENSSL_VARS=	BROKEN_SSL=openssl-devel
+OPENSSL_VARS=	BROKEN_SSL=openssl111
 
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -97,7 +100,7 @@ WX_VARS=		USE_WX=2.8+ WX_COMPS="wx contrib" USE_GL="gl glu"
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1100000
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-DMAP_NORESERVE=0
 .endif
 

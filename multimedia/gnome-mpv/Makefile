@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-mpv
-PORTVERSION=	0.14
+PORTVERSION=	0.16
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${PORTVERSION}/
 
@@ -13,7 +13,7 @@ LICENSE=	GPLv3+
 LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 		libmpv.so:multimedia/mpv
 
-USES=		desktop-file-utils gettext-tools gmake pkgconfig tar:xz
+USES=		compiler:c11 desktop-file-utils gettext-tools gmake pkgconfig tar:xz
 USE_GNOME=	cairo gtk30
 GNU_CONFIGURE=	yes
 GLIB_SCHEMAS=	io.github.GnomeMpv.gschema.xml \

@@ -224,19 +224,19 @@ $form->add($section);
 
 $form->addGlobal(new Form_Input(
 	'id',
-	id,
+	'id',
 	'hidden',
 	''
 ));
 $form->addGlobal(new Form_Input(
 	'ip',
-	ip,
+	'ip',
 	'hidden',
 	''
 ));
 $form->addGlobal(new Form_Input(
 	'mode',
-	mode,
+	'mode',
 	'hidden',
 	''
 ));
@@ -248,7 +248,7 @@ print($form);
 	<div class="panel-heading"><h2 class="panel-title"><?=sprintf(gettext("Last %s Hosts Blocked by Suricata"), $bnentries)?></h2></div>
 	<div class="panel-body table-responsive">
 		<div class="content table-responsive">
-			<span class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Only blocked IP addresses from Legacy Mode interfaces are shown! ' . 
+			<span class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Only blocked IP addresses from Legacy Mode interfaces are shown! ' .
 			'For inline IPS mode interfaces, dropped IP addresses are ');?><span class="text-danger"><?=gettext('highlighted ');?></span>
 			<?=gettext('on the ALERTS tab.');?></span>
 		</div>
@@ -372,7 +372,7 @@ print($form);
 					<td><?=$counter;?></td>
 					<td style="word-wrap:break-word; white-space:normal"><?=$tmp_ip;?><br/><?=$rdns_link;?></td>
 					<td style="word-wrap:break-word; white-space:normal"><?=$blocked_desc;?></td>
-					<td><i class="fa fa-times icon-pointer text-danger" onClick="$('#ip').val('<?=$block_ip_str;?>');$('#mode').val('todelete');$('#formblock').submit();" 
+					<td><i class="fa fa-times icon-pointer text-danger" onClick="$('#ip').val('<?=$block_ip_str;?>');$('#mode').val('todelete');$('#formblock').submit();"
 					 title="<?=gettext("Delete host from Blocked Table");?>"></i></td>
 				</tr>
 		<?php
@@ -435,4 +435,3 @@ function htmlspecialchars(str) {
 <?php
 include("foot.inc");
 ?>
-

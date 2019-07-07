@@ -17,7 +17,7 @@ BROKEN_aarch64=		fails to compile: GVector.java:168: bad use of '>'
 BROKEN_armv6=		fails to compile: build.xml: Compile failed; see the compiler error output for details
 BROKEN_armv7=		fails to compile: build.xml: Compile failed; see the compiler error output for details
 
-USES=		tar:bzip2
+USES=		gl tar:bzip2
 USE_JAVA=	yes
 USE_GL=		gl
 USE_XORG=	xt
@@ -32,6 +32,8 @@ DOCSSRC=	${WRKSRC}/j3d-core/build/freebsd/javadocs/docs-public
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	${REINPLACE_CMD} -e 's|gcc|${CC}|g' \

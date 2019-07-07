@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	R
-DISTVERSION=	3.5.0
+DISTVERSION=	3.5.3
 PORTREVISION=	1
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${PORTVERSION:C|\..*||}
@@ -12,7 +12,6 @@ COMMENT=	Language for statistical computing and graphics
 
 LICENSE=	GPLv2
 
-BROKEN_FreeBSD_10_armv6=	Fails to build
 ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
@@ -73,7 +72,7 @@ ATLAS_USES=		blaslapack:atlas
 ATLAS_CONFIGURE_ON=	--disable-BLAS-shlib
 CAIROPANGO_IMPLIES=	X11
 CAIROPANGO_CONFIGURE_WITH=	cairo
-CAIROPANGO_USES=	gettext jpeg pkgconfig
+CAIROPANGO_USES=	gettext gnome jpeg pkgconfig
 CAIROPANGO_USE=		GNOME=pango,cairo
 FLANG_USES=		fortran:flang
 FLANG_USES_OFF=		fortran

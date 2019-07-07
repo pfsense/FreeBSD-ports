@@ -3,11 +3,11 @@
  * suricata_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -147,7 +147,7 @@ if (!$input_errors) {
 
 		// If deprecated rules should be removed, then do it
 		if ($config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on") {
-			log_error(gettext("[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
+			syslog(gettext(LOG_NOTICE, "[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 			suricata_remove_dead_rules();
 		}
 
@@ -188,9 +188,7 @@ if (!$input_errors) {
 			install_cron_job("/usr/local/pkg/suricata/suricata_geoipupdate.php", FALSE);
 
 		/* create passlist and homenet file, then sync files */
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 
 		/* forces page to reload new settings */
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
@@ -316,7 +314,7 @@ $section->addInput(new Form_Input(
 	'Snort Rules Filename',
 	'text',
 	$pconfig['snort_rules_file']
-))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29111.tar.gz');
+))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29130.tar.gz<br />DO NOT specify a Snort3 rules file!  Snort3 rules are incompatible witih Suricata 4.x and will break your installation!');
 $section->addInput(new Form_Input(
 	'oinkcode',
 	'Snort Oinkmaster Code',
@@ -385,7 +383,7 @@ $section->addInput(new Form_Checkbox(
 	'Enable downloading of free GeoIP Country Database updates. Default is Checked',
 	$pconfig['autogeoipupdate'] == 'on' ? true:false,
 	'on'
-))->setHelp('When enabled, Suricata will automatically download updates for the free legacy GeoIP country database on the 8th of each month at midnight.<br /><br />If you have a subscription for more current GeoIP updates, uncheck this option and instead create your own process to place the required database files in /usr/local/share/GeoIP/.');
+))->setHelp('When enabled, Suricata will automatically download updates for the free GeoLite2 IP country database.<br /><br />If you have a subscription for more current GeoIP2 updates, uncheck this option and instead create your own process to place the required database file in /usr/local/share/suricata/GeoLite2/.');
 $form->add($section);
 
 $section = new Form_Section('General Settings');
@@ -427,7 +425,7 @@ print $form;
 </div>
 
 <div class="infoblock">
-	<?=print_info_box('<strong>Note:</strong> Changing any settings on this page will affect all Suricata-configured interfaces.', info)?>
+	<?=print_info_box('<strong>Note:</strong> Changing any settings on this page will affect all Suricata-configured interfaces.', 'info')?>
 </div>
 
 <script type="text/javascript">

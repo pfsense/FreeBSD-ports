@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bird
-PORTVERSION=	1.6.4
+PORTVERSION=	1.6.5
 CATEGORIES=	net
 MASTER_SITES=	ftp://bird.network.cz/pub/bird/
 
@@ -21,6 +21,8 @@ CONFIGURE_ARGS=	--localstatedir=/var
 MAKE_JOBS_UNSAFE=	yes
 
 USE_RC_SUBR=	${PKGBASE}
+
+GROUPS=		birdvty
 
 .if ${FLAVOR:U} == ipv6
 CONFIGURE_ARGS+=	--enable-ipv6

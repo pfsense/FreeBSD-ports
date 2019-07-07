@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	arachne-pnr
-PORTVERSION=	g20180310
+PORTVERSION=	g20181021
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	jsorocil@gmail.com
@@ -13,11 +14,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	icestorm>=g0:devel/icestorm
 
-USES=		gmake
+USES=		compiler:c++11-lang gmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	cseed
-GH_TAGNAME=	6701132cbd5c7b31edd0ff18ca6727eb3691186b
+GH_TAGNAME=	840bdfdeb38809f9f6af4d89dd7b22959b176fdd
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/arachne-pnr

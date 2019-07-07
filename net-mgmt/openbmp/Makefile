@@ -4,7 +4,7 @@
 PORTNAME=	openbmp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.14.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	pizzamig@FreeBSD.org
@@ -18,7 +18,7 @@ LIB_DEPENDS=	librdkafka.so:net/librdkafka \
 				libsasl2.so:security/cyrus-sasl2 \
 				libyaml-cpp.so:devel/yaml-cpp
 
-USES=		cmake:outsource ssl
+USES=		cmake ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenBMP
 

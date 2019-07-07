@@ -2,8 +2,7 @@
 
 PORTNAME=	SoapySDR
 DISTVERSIONPREFIX=	soapy-sdr-
-DISTVERSION=	0.6.1-71
-DISTVERSIONSUFFIX=	-g69c16e9
+DISTVERSION=	0.7.1
 CATEGORIES=	misc hamradio python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE_1_0.txt
 BUILD_DEPENDS=	swig3.0:devel/swig30
 LIB_DEPENDS=	libSoapySDR.so:misc/soapysdr
 
-USES=		cmake:outsource python
+USES=		cmake compiler:c++11-lang gettext-runtime python
 USE_GITHUB=	yes
 GH_ACCOUNT=	pothosware
 USE_PYTHON=	flavors

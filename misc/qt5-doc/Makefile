@@ -1,4 +1,4 @@
-# Created by: Marie Loise Nolden <nolden@kde.org>
+# Created by: Marie Loise Nolden <loise@kde.org>
 # $FreeBSD$
 
 PORTNAME=	doc
@@ -6,7 +6,7 @@ DISTVERSION=	${QT5_VERSION}
 CATEGORIES=	misc
 MASTER_SITES=	QT/online/qtsdkrepository/linux_x64/desktop/qt5_${QT5_VERSION:S/.//g}_src_doc_examples/qt.qt5.${QT5_VERSION:S/.//g}.doc/
 PKGNAMEPREFIX=	qt5-
-DISTNAME=	${QT5_VERSION}-0-201802092256qt-everywhere-documentation
+DISTNAME=	${QT5_VERSION}-0-201901300533qt-everywhere-documentation
 DIST_SUBDIR=	KDE/Qt/${QT5_VERSION}
 
 MAINTAINER=	kde@FreeBSD.org

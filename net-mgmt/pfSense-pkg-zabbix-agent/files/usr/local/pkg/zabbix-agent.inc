@@ -113,10 +113,11 @@ function validate_input_zabbix_agent($post, &$input_errors) {
 function sync_package_zabbix_agent() {
 	global $config, $g;
 
-	conf_mount_rw();
 
 	// Check Zabbix Agent settings
-	if (is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+	if (isset($config['installedpackages']['%%ZABBIXUNIQNAME%%']) &&
+	    is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+		init_config_arr(array('installedpackages', '%%ZABBIXUNIQNAME%%', 'config', 0));
 		$zbagent_config = $config['installedpackages']['%%ZABBIXUNIQNAME%%']['config'][0];
 		if ($zbagent_config['agentenabled'] == "on") {
 			$RefreshActChecks = (preg_match("/(\d+)/", $zbagent_config['refreshactchecks'], $matches)? $matches[1] : "120");
@@ -303,7 +304,6 @@ EOF;
 		unlink_if_exists($zagent_rcfile);
 	}
 
-	conf_mount_ro();
 }
 
 // Based on openvpn_add_keyfile() function

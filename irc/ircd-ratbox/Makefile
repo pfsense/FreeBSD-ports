@@ -3,7 +3,7 @@
 
 PORTNAME=	ircd-ratbox
 PORTVERSION=	3.0.10
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	irc ipv6
 MASTER_SITES=	http://www.ratbox.org/download/				\
 		http://www.ratbox.org/download/old/
@@ -50,7 +50,7 @@ PORTDOCS=	[^i]*.txt README.* technical/[^i]*.txt Tao-of-IRC.*
 #-- Options ------------------------------------------------------------
 
 OPTIONS_DEFINE=		OPENSSL IPV6 ZIPLINKS SHARED_MODS ASSERT SMALL_NET	\
-			SERVICES SHORTCUTS
+			SERVICES SHORTCUTS DOCS
 ZIPLINKS_DESC=		Support compressed server links
 SHARED_MODS_DESC=	Support shared modules
 ASSERT_DESC=		Enable debugging code

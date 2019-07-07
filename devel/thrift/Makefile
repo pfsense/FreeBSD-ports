@@ -3,6 +3,7 @@
 
 PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION}	# get these from bsd.thrift.mk. any upgrade needs to check ALL dependencies
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/thrift/${PORTVERSION}
@@ -12,11 +13,7 @@ COMMENT=	Framework for scalable cross-language services development
 
 LICENSE=	APACHE20
 
-BROKEN_mips=		fails to compile: unrecognized command line option "-Wno-c++11-long-long"
-BROKEN_mips64=		fails to compile: unrecognized command line option "-Wno-c++11-long-long"
-BROKEN_powerpc64=	fails to compile: unrecognized command line option "-Wno-c++11-long-long"
-
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf compiler:c++11-lang libtool pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=	yes
@@ -53,6 +50,9 @@ PLIST_FILES=	bin/thrift
 .include "bsd.thrift.mk"
 
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
+
+post-patch:
+	${REINPLACE_CMD} 's,-Werror,,' ${WRKSRC}/lib/rb/ext/extconf.rb
 
 pre-configure:
 	@${REINPLACE_CMD} '/config.h/d' ${WRKSRC}/lib/cpp/Makefile.am

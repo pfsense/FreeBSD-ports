@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mybb
-DISTVERSION=	1.8.16
+DISTVERSION=	1.8.21
 CATEGORIES=	www
 
 MAINTAINER=	joneum@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	PHP-based bulletin board / discussion forum system
 LICENSE=	GPLv3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	${PORTNAME}_1816
+GH_TAGNAME=	${PORTNAME}_1821pl1
 
 USES=		cpe mysql php:web
 NO_BUILD=	yes
@@ -24,7 +24,7 @@ PLIST_SUB=	WWWOWN=${WWWOWN}
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}
 	${CP} -R ${WRKSRC}/ ${STAGEDIR}${WWWDIR}
-	${TOUCH} ${STAGEDIR}${WWWDIR}/inc/config.php.sample
+#	${TOUCH} ${STAGEDIR}${WWWDIR}/inc/config.php.sample
 	${MV} ${STAGEDIR}${WWWDIR}/inc/settings.php \
 		${STAGEDIR}${WWWDIR}/inc/settings.php.sample
 

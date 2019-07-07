@@ -3,8 +3,8 @@
 
 PORTNAME=	googlemock
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	1.8.0-712
-DISTVERSIONSUFFIX=	-g9bda90b
+DISTVERSION=	1.8.1
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -21,7 +21,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	google
 GH_PROJECT=	googletest
 
-USES=		autoreconf libtool localbase python:run shebangfix
+USES=		autoreconf compiler:c++11-lang libtool localbase python:run shebangfix
 SHEBANG_FILES=	scripts/gmock_doctor.py
 WRKSRC_SUBDIR=	${PORTNAME}
 GNU_CONFIGURE=	yes

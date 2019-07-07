@@ -3,7 +3,7 @@
 
 PORTNAME=	numptyphysics
 DISTVERSION=	0.3.r20090104
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 
@@ -13,7 +13,7 @@ COMMENT=	Drawing physics-based puzzle game
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:bzip2 desktop-file-utils
+USES=		compiler:c++11-lang tar:bzip2 desktop-file-utils
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl image
 USE_XORG=	x11

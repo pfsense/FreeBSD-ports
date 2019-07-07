@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	tiff
-PORTVERSION=	4.0.9
-PORTREVISION=	1
+PORTVERSION=	4.0.10
 CATEGORIES=	graphics
-MASTER_SITES=	http://download.osgeo.org/libtiff/
+MASTER_SITES=	https://download.osgeo.org/libtiff/
 
 MAINTAINER=	portmgr@FreeBSD.org
 COMMENT=	Tools and library routines for working with TIFF images
@@ -23,7 +22,10 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-jpeg-include-dir=${LOCALBASE}/include \
 			--with-jpeg-lib-dir=${LOCALBASE}/lib \
-			--without-x
+			--without-x \
+			--disable-webp \
+			--disable-zstd
+
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 

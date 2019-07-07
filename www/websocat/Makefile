@@ -1,0 +1,164 @@
+# Created by: Sergey A. Osokin <osa@FreeBSD.org>
+# $FreeBSD$
+
+PORTNAME=	websocat
+DISTVERSION=	1.4.0
+DISTVERSIONPREFIX=	v
+CATEGORIES=	www
+
+MAINTAINER=	osa@FreeBSD.org
+COMMENT=	WebSockets tools
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=	cargo
+USE_GITHUB=	yes
+GH_ACCOUNT=	vi
+
+CARGO_FEATURES=	ssl seqpacket
+
+CARGO_CRATES=	MacTypes-sys-2.1.0 \
+		arc-swap-0.3.7 \
+		arrayvec-0.4.10 \
+		autocfg-0.1.2 \
+		base64-0.10.1 \
+		base64-0.9.3 \
+		bitflags-1.0.4 \
+		byteorder-1.3.1 \
+		bytes-0.4.12 \
+		cc-1.0.31 \
+		cfg-if-0.1.7 \
+		clap-2.32.0 \
+		cloudabi-0.0.3 \
+		core-foundation-0.5.1 \
+		core-foundation-sys-0.5.1 \
+		crossbeam-deque-0.7.1 \
+		crossbeam-epoch-0.7.1 \
+		crossbeam-queue-0.1.2 \
+		crossbeam-utils-0.6.5 \
+		derivative-1.0.2 \
+		env_logger-0.6.1 \
+		fnv-1.0.6 \
+		foreign-types-0.3.2 \
+		foreign-types-shared-0.1.1 \
+		fuchsia-cprng-0.1.1 \
+		fuchsia-zircon-0.3.3 \
+		fuchsia-zircon-sys-0.3.3 \
+		futures-0.1.25 \
+		heck-0.3.1 \
+		httparse-1.3.3 \
+		hyper-0.10.15 \
+		idna-0.1.5 \
+		iovec-0.1.2 \
+		kernel32-sys-0.2.2 \
+		language-tags-0.2.2 \
+		lazy_static-1.3.0 \
+		lazycell-1.2.1 \
+		libc-0.2.50 \
+		lock_api-0.1.5 \
+		log-0.3.9 \
+		log-0.4.6 \
+		matches-0.1.8 \
+		memoffset-0.2.1 \
+		mime-0.2.6 \
+		mio-0.6.16 \
+		mio-named-pipes-0.1.6 \
+		mio-uds-0.6.7 \
+		miow-0.2.1 \
+		miow-0.3.3 \
+		native-tls-0.2.2 \
+		net2-0.2.33 \
+		nodrop-0.1.13 \
+		num_cpus-1.10.0 \
+		openssl-0.10.20 \
+		openssl-probe-0.1.2 \
+		openssl-sys-0.9.43 \
+		owning_ref-0.4.0 \
+		parking_lot-0.7.1 \
+		parking_lot_core-0.4.0 \
+		percent-encoding-1.0.1 \
+		pkg-config-0.3.14 \
+		proc-macro2-0.4.27 \
+		quote-0.6.11 \
+		rand-0.6.5 \
+		rand_chacha-0.1.1 \
+		rand_core-0.3.1 \
+		rand_core-0.4.0 \
+		rand_hc-0.1.0 \
+		rand_isaac-0.1.1 \
+		rand_jitter-0.1.3 \
+		rand_os-0.1.3 \
+		rand_pcg-0.1.2 \
+		rand_xorshift-0.1.1 \
+		rdrand-0.4.0 \
+		readwrite-0.1.1 \
+		redox_syscall-0.1.51 \
+		remove_dir_all-0.5.1 \
+		rustc_version-0.2.3 \
+		safemem-0.3.0 \
+		schannel-0.1.15 \
+		scopeguard-0.3.3 \
+		security-framework-0.2.2 \
+		security-framework-sys-0.2.3 \
+		semver-0.9.0 \
+		semver-parser-0.7.0 \
+		sha1-0.6.0 \
+		signal-hook-0.1.8 \
+		slab-0.4.2 \
+		slab_typesafe-0.1.3 \
+		smallvec-0.6.9 \
+		smart-default-0.3.0 \
+		socket2-0.3.8 \
+		stable_deref_trait-1.1.1 \
+		structopt-0.2.15 \
+		structopt-derive-0.2.15 \
+		syn-0.15.29 \
+		tempfile-3.0.7 \
+		textwrap-0.10.0 \
+		time-0.1.42 \
+		tk-listen-0.2.1 \
+		tokio-0.1.17 \
+		tokio-codec-0.1.1 \
+		tokio-current-thread-0.1.5 \
+		tokio-executor-0.1.6 \
+		tokio-file-unix-0.5.1 \
+		tokio-fs-0.1.6 \
+		tokio-io-0.1.12 \
+		tokio-process-0.2.3 \
+		tokio-reactor-0.1.9 \
+		tokio-signal-0.2.7 \
+		tokio-stdin-stdout-0.1.5 \
+		tokio-sync-0.1.4 \
+		tokio-tcp-0.1.3 \
+		tokio-threadpool-0.1.12 \
+		tokio-timer-0.2.10 \
+		tokio-tls-0.2.1 \
+		tokio-trace-core-0.1.0 \
+		tokio-udp-0.1.3 \
+		tokio-uds-0.2.5 \
+		traitobject-0.1.0 \
+		typeable-0.1.2 \
+		unicase-1.4.2 \
+		unicode-bidi-0.3.4 \
+		unicode-normalization-0.1.8 \
+		unicode-segmentation-1.2.1 \
+		unicode-width-0.1.5 \
+		unicode-xid-0.1.0 \
+		url-1.7.2 \
+		vcpkg-0.2.6 \
+		version_check-0.1.5 \
+		websocket-0.22.3 \
+		winapi-0.2.8 \
+		winapi-0.3.6 \
+		winapi-build-0.1.1 \
+		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		ws2_32-sys-0.2.1
+
+PLIST_FILES=	bin/websocat
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/websocat
+
+.include <bsd.port.mk>

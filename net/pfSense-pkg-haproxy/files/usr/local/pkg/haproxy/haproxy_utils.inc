@@ -278,7 +278,7 @@ function haproxy_cert_signed_by($cert, $signedbycert) {
 
 function haproxy_recalculate_certifcate_chain(){
 	// and set "selfsigned" for certificates that where used to sign themselves
-	// recalculate the "caref" for all certificates where it is currently unkown.
+	// recalculate the "caref" for all certificates where it is currently unknown.
 
 	$allcertificates = haproxy_get_certificates('ca,server,user',true);
 	$items_recalculated = 0;
@@ -497,6 +497,9 @@ function haproxy_js_select_options($keyvaluelist, $selected="") {
 
 function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="", $onchangeEvent="", $style="") {
 	$result = "";
+	if (!is_array($keyvaluelist)) {
+		$keyvaluelist = array();
+	}
 	if (count($keyvaluelist) > 0) {
 		if ($onchangeEvent != "") {
 			$onchangeEvent = " onchange='$onchangeEvent'";
@@ -519,4 +522,48 @@ function haproxy_keyvalue_array($hap_array) {
 		$result[$key] = $item['name'];
 	}
 	return $result;
+}
+
+function haproxy_js_css() {
+	echo <<<PRE
+	function getCSSrule(cssID) {
+		var ss = document.styleSheets;
+		for (var i=0; i<ss.length; i++) {
+			var rules;
+			try {
+				rules = ss[i].cssRules || ss[i].rules;
+			} catch(e) {
+				// some plugins add 3rd party stylesheets, FF throws an SecurityError when trying to access those rules.
+				if(e.name !== "SecurityError") {
+					throw e;
+				}
+			}
+			if (rules) {
+				for (var j=0; j<rules.length; j++) {
+					if (rules[j].selectorText === cssID) {
+						return rules[j];
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	function setCSSdisplay(cssID, display) {
+		rule = getCSSrule(cssID);
+		if (rule) {
+			rule.style.display = display ? "" : "none";
+		}
+	}
+
+	function toggleCSSdisplay(cssID)
+	{
+		rule = getCSSrule(cssID);
+		if (rule) {
+			rule.style.display = rule.style.display === "none" ? "" : "none";
+		}
+	}
+
+PRE;
+
 }

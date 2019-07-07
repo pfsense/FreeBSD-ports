@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mediawiki
-PORTVERSION=	1.27.4
+PORTVERSION=	1.27.5
 CATEGORIES=	www
 MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	127
@@ -12,7 +12,10 @@ COMMENT=	Wiki engine used by Wikipedia
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki12[389]-[0-9]* mediawiki130-[0-9]*
+DEPRECATED=	Upstream no longer maintained
+EXPIRATION_DATE=2019-04-14
+
+CONFLICTS=	mediawiki13[0-2]-[0-9]*
 
 USES=		php:web shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \
@@ -33,13 +36,12 @@ PLIST=		${WRKDIR}/plist
 SUB_FILES=	pkg-message
 SUB_LIST=	MEDIAWIKIDIR=${PREFIX}/${MEDIAWIKIDIR}
 
-OPTIONS_DEFINE=		LDAP MEMCACHED IMAGICK SOCKETS XCACHE
+OPTIONS_DEFINE=		LDAP MEMCACHED IMAGICK SOCKETS
 OPTIONS_SINGLE=		DB
 OPTIONS_SINGLE_DB=	MYSQL PGSQL SQLITE
 OPTIONS_DEFAULT=	MYSQL SOCKETS
 
 MEMCACHED_DESC=	Use memcached
-XCACHE_DESC=	Use xCache
 IMAGICK_DESC=	Use ImageMagick
 SOCKETS_DESC=	Use sockets
 
@@ -51,11 +53,9 @@ SOCKETS_USE=	php=sockets
 
 MEMCACHED_RUN_DEPENDS=	memcached:databases/memcached
 IMAGICK_RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/imagick.so:graphics/pecl-imagick@${PHP_FLAVOR}
-XCACHE_RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/xcache.so:www/xcache
 
 pre-install:
 	@${FIND} -s -d ${WRKSRC} -not -type d | ${SED} "s?${WRKSRC}?${MEDIAWIKIDIR}?g" >>${PLIST}
-	@${ECHO} "@dir %%WWWDIR%%/vendor/monolog/monolog/tests/Monolog/Handler/Fixtures" >> ${PLIST}
 	@${ECHO} "@mode 0777" >> ${PLIST}
 	@${ECHO} "@dir %%WWWDIR%%/images" >> ${PLIST}
 	@${ECHO} "@mode" >> ${PLIST}

@@ -14,7 +14,8 @@ COMMENT=	Read MaxMind DB files
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	p5-Data-IEEE754>=0:devel/p5-Data-IEEE754 \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Data-IEEE754>=0:devel/p5-Data-IEEE754 \
 		p5-Data-Printer>=0:devel/p5-Data-Printer \
 		p5-Data-Validate-IP>=0.25:net-mgmt/p5-Data-Validate-IP \
 		p5-DateTime>=0:devel/p5-DateTime \
@@ -25,7 +26,6 @@ BUILD_DEPENDS=	p5-Data-IEEE754>=0:devel/p5-Data-IEEE754 \
 		p5-MooX-StrictConstructor>=0:devel/p5-MooX-StrictConstructor \
 		p5-Role-Tiny>=0:devel/p5-Role-Tiny \
 		p5-namespace-autoclean>=0:devel/p5-namespace-autoclean
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-Path-Class>=0.27:devel/p5-Path-Class \
 		p5-Test-Bits>=0:devel/p5-Test-Bits \
 		p5-Test-Fatal>=0:devel/p5-Test-Fatal \
@@ -36,10 +36,4 @@ NO_ARCH=	yes
 USE_PERL5=	configure
 USES=		perl5
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502300
-TEST_DEPENDS+=	p5-Scalar-List-Utils>=1.42:lang/p5-Scalar-List-Utils
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

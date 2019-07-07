@@ -2,7 +2,7 @@
 
 PORTNAME=	oxygen
 PORTVERSION=	1.4.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-themes
 MASTER_SITES=	KDE/stable/${PORTNAME}-gtk3/${PORTVERSION}/src
 PKGNAMEPREFIX=	gtk3-
@@ -17,7 +17,7 @@ LICENSE=	LGPL21
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libdbus-glib-1.so:devel/dbus-glib
 
+USES=		cmake compiler:c++11-lang pkgconfig tar:bzip2
 USE_GNOME=	gtk30
-USES=		cmake:outsource pkgconfig tar:bzip2
 
 .include <bsd.port.mk>

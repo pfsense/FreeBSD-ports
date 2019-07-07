@@ -2,7 +2,7 @@
 
 PORTNAME=	msp430-debug-stack
 PORTVERSION=	3.12.000.004
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	http://www.ti.com/lit/sw/slac460x/ \
 		http://www.ti.com/lit/ug/slau320ac/:doc1 \
@@ -24,17 +24,19 @@ LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 USES=		compiler:c++11-lib dos2unix gmake zip:infozip
 USE_LDCONFIG=	yes
 
-WRKSRC=		${WRKDIR}
 DOS2UNIX_REGEX=	.*/Makefile|.*\.(cpp|h)
 
-MAKE_ARGS+=	BOOST_DIR=${LOCALBASE} \
+MAKE_ARGS=	BOOST_DIR=${LOCALBASE} \
 		HIDAPI_DIR=${LOCALBASE}
 
 MAKE_JOBS_UNSAFE=	yes
+NO_WRKSUBDIR=		yes
 
-SUB_FILES+=	pkg-message
+SUB_FILES=	pkg-message
 
 REINPLACE_ARGS=	-i ""
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${FIND} ${WRKSRC}/DLL430_v3/src/TI/DLL430 \

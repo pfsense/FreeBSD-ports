@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pgroonga
-PORTVERSION=	2.0.5
+PORTVERSION=	2.1.8
 CATEGORIES=	databases textproc
 MASTER_SITES=	http://packages.groonga.org/source/pgroonga/
 
@@ -14,6 +14,7 @@ LICENSE=	PostgreSQL
 LIB_DEPENDS=	libgroonga.so:textproc/groonga
 
 USES=		gmake pgsql pkgconfig
+
 LLD_UNSAFE=	yes
 SUB_FILES=	pkg-message
 

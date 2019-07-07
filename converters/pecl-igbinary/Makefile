@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	igbinary
-PORTVERSION=	2.0.7
+PORTVERSION=	3.0.1
 CATEGORIES=	converters
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -13,8 +13,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		php:pecl
 
-post-patch:
-	@${CP} ${WRKSRC}/src/php${PHP_VER:C|.$||}/igbinary.h ${WRKSRC}/igbinary.h
-	@${CP} ${WRKSRC}/src/php${PHP_VER:C|.$||}/php_igbinary.h ${WRKSRC}/php_igbinary.h
+post-patch:	 
+	@${CP} ${WRKSRC}/src/php7/igbinary.h ${WRKSRC}/igbinary.h
+	@${CP} ${WRKSRC}/src/php7/php_igbinary.h ${WRKSRC}/php_igbinary.h
 
 .include <bsd.port.mk>

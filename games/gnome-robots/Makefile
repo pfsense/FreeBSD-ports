@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-robots
-PORTVERSION=	3.22.1
+PORTVERSION=	3.22.3
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gnome robots
@@ -31,5 +31,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=${PREFIX}/share
 
 GLIB_SCHEMAS=	org.gnome.robots.gschema.xml
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/games
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	cool-retro-term
 PORTVERSION=	1.0.0
-PORTREVISION=	3
+PORTREVISION=	7
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11
 
@@ -17,13 +17,13 @@ GH_ACCOUNT=	Swordfish90
 GH_PROJECT=	qmltermwidget:qtw
 GH_TAGNAME=	v0.1.0:qtw
 
-USES=		desktop-file-utils qmake qt:5
-USE_QT=		qmake_build buildtools_build core gui qml quick widgets \
+USES=		gmake desktop-file-utils qmake qt:5
+USE_QT=		qmake_build buildtools_build core declarative gui widgets \
 		graphicaleffects_run quickcontrols_run
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == powerpc
+.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
 USE_GCC=	yes
 .else
 CC=		clang

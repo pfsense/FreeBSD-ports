@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tinyxml2
-PORTVERSION=	6.2.0
+PORTVERSION=	7.0.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	textproc
 
@@ -14,9 +15,9 @@ LICENSE=	ZLIB
 OPTIONS_DEFINE=	EXAMPLES
 
 CMAKE_OFF=	BUILD_TESTS
-CMAKE_ON=	BUILD_SHARED_LIBS BUILD_STATIC_LIBS
+CMAKE_ON=	BUILD_SHARED_LIBS
+USES=		cmake:insource compiler:c++11-lang dos2unix pathfix
 USE_LDCONFIG=	yes
-USES=		cmake dos2unix pathfix
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 PORTEXAMPLES=	*
@@ -27,6 +28,9 @@ USE_GITHUB=	yes
 post-patch:
 	@${REINPLACE_CMD} -e '/CMAKE_DEBUG_POSTFIX/d' ${WRKSRC}/CMakeLists.txt
 
+post-install:
+	${AR} cq ${STAGEDIR}${PREFIX}/lib/libtinyxml2.a ${WRKSRC}/CMakeFiles/tinyxml2.dir/tinyxml2.cpp.o
+	
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	cd ${WRKSRC}/ && ${COPYTREE_SHARE} resources ${STAGEDIR}${EXAMPLESDIR}/

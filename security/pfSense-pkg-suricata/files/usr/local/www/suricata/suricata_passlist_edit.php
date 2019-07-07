@@ -179,9 +179,7 @@ if ($_POST['save']) {
 		write_config("Suricata pkg: modified PASS LIST {$p_list['name']}.");
 
 		/* create pass list and homenet file, then sync files */
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 
 		header("Location: /suricata/suricata_passlist.php");
 		exit;

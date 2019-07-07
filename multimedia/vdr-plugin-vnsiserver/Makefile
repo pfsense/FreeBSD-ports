@@ -3,7 +3,7 @@
 
 PORTNAME=	vdr-plugin-vnsiserver
 PORTVERSION=	14.0.20150330
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	ports@FreeBSD.org
@@ -12,7 +12,6 @@ COMMENT=	Video Disk Recorder - VNSI server plugin
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_12=	does not build with newer clang
 USE_GITHUB=	yes
 GH_ACCOUNT=	FernetMenta
 GH_TAGNAME=	36e2b61

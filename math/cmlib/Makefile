@@ -3,7 +3,7 @@
 
 PORTNAME=	cmlib
 PORTVERSION=	3.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	NL/blas:blas ftp://ftp.nist.gov/pub/cmlib/
 # Get d1mach.f, i1mach.f, r1mach.f from BLAS, rather than from CMLIB.
@@ -17,14 +17,15 @@ COMMENT=	NIST Core math library (CMLIB)
 
 USES=		fortran uidfix
 USE_LDCONFIG=	yes
-WRKSRC=		${WRKDIR}
 SHLIB_MAJOR=	1
 
 LDFLAGS+=	${FFLAGS}
 LDADD ?=	-lgfortran -lm
 SRCCONF=	/dev/null
-MAKE_ENV+=	LDADD="${LDADD}" SHLIB_MAJOR="${SHLIB_MAJOR}" \
+MAKE_ENV=	LDADD="${LDADD}" SHLIB_MAJOR="${SHLIB_MAJOR}" \
 		SRCCONF="${SRCCONF}"
+
+NO_WRKSUBDIR=	yes
 
 OPTIONS_DEFINE=	DOCS
 

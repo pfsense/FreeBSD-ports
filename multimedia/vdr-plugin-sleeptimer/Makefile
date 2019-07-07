@@ -3,7 +3,7 @@
 
 PORTNAME=	vdr-plugin-sleeptimer
 PORTVERSION=	0.8.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	multimedia
 MASTER_SITES=	http://projects.vdr-developer.org/attachments/download/652/
 
@@ -12,8 +12,6 @@ COMMENT=	Video Disk Recorder - sleep timer plugin
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_FreeBSD_12=	does not build with newer clang
 
 USES=		tar:tgz
 PATCH_STRIP=	-p1

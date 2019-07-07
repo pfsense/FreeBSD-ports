@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ffi
-PORTVERSION=	1.9.25
+PORTVERSION=	1.10.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libffi.so:devel/libffi
 
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
 
 .include <bsd.port.mk>

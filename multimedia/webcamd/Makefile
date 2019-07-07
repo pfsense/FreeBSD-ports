@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	webcamd
-PORTVERSION=	4.12.0.1
+PORTVERSION=	4.20.0.1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.selasky.org/hans_petter/distfiles/ \
-		http://home.selasky.org:8192/distfiles/
+		http://home.selasky.org/distfiles/
 
 MAINTAINER=	hselasky@FreeBSD.org
 COMMENT=	Port of Linux USB webcam and DVB drivers into userspace

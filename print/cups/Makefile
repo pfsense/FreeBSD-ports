@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	cups
-PORTVERSION=	2.2.8
+PORTVERSION=	2.2.10
 DISTVERSIONPREFIX=v
-PORTREVISION=	1
 CATEGORIES=	print
 
 MAINTAINER=	tijl@FreeBSD.org
@@ -83,6 +82,10 @@ PLIST_SUB+=	OVERWRITE="@comment "
 PLIST_SUB+=	USB=""
 .else
 PLIST_SUB+=	USB="@comment "
+.endif
+
+.if defined(WITH_DEBUG)
+CONFIGURE_ARGS+=--enable-debug --enable-debug-printfs
 .endif
 
 .include <bsd.port.pre.mk>

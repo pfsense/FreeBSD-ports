@@ -3,6 +3,7 @@
 PORTNAME=	assimp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.1.0
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,8 +13,6 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libminizip.so:archivers/minizip
-
-BROKEN_powerpc64=	Does not build: error: ByteSwap has not been declared
 
 USES=		cmake compiler:c++11-lib localbase:ldflags pkgconfig
 USE_GITHUB=	yes

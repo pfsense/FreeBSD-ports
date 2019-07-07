@@ -3,7 +3,7 @@
 
 PORTNAME=	skkinput3
 PORTVERSION=	3.0.6
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	japanese x11
 MASTER_SITES=	OSDN/${PORTNAME}/2222
 DISTNAME=	skkinput-${PORTVERSION}
@@ -31,9 +31,9 @@ SKK10_DESC=	Install SKK10 elisp files
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSKK10}
-PLIST_SUB=	SKK8="@comment " SKK10=""
+PLIST_SUB+=	SKK8="@comment " SKK10=""
 .else
-PLIST_SUB=	SKK8="" SKK10="@comment "
+PLIST_SUB+=	SKK8="" SKK10="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MDBSKKD}

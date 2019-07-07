@@ -3,7 +3,7 @@
 
 PORTNAME=	mod_auth_pgsql
 PORTVERSION=	2.0.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	http://www.giuseppetanzilli.it/mod_auth_pgsql2/dist/
 PKGNAMESUFFIX=	2
@@ -18,6 +18,8 @@ AP_LIB?=	${LOCALBASE}/lib -lpq
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 PORTDOCS=	mod_auth_pgsql.html
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

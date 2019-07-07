@@ -3,7 +3,7 @@
 
 PORTNAME=	cvs
 PORTVERSION=	1.12.13
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	devel ipv6
 MASTER_SITES=	GNU/non-gnu/${PORTNAME}/source/feature/${PORTVERSION}
 PKGNAMESUFFIX=	-devel
@@ -23,6 +23,15 @@ INFO=		cvs cvsclient
 
 CVS_SITE?=	:pserver:anoncvs@anoncvs.jp.FreeBSD.org:/home/ncvs
 CVS_VER?=	v${PORTVERSION:S//_/g}
+
+OPTIONS_DEFINE=	PAM
+PAM_DESC=	PAM support
+
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MPAM}
+CONFIGURE_ARGS+=--enable-pam
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} 's/${PORTVERSION:S/./\./g}/&-devel/g' \
@@ -46,4 +55,4 @@ generate-patch:
 	  -e 's,\$$FreeBSD: ,FreeBSD: ,' \
 	  >> ${FILESDIR}/patch-freebsdlocal
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

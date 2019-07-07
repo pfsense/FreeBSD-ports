@@ -13,13 +13,9 @@ COMMENT=	Library of C++ classes for flexible logging
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_mips=		fails to compile: Appender.cpp: extra ';'
-BROKEN_mips64=		fails to compile: Appender.cpp: extra ';'
-BROKEN_powerpc64=	fails to compile: Appender.cpp: extra ';'
-
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		gmake libtool pathfix
+USES=		compiler:c++11-lang gmake libtool pathfix
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-html-docs
 REINPLACE_ARGS=	-i ""

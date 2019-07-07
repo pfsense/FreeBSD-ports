@@ -12,19 +12,20 @@ COMMENT?=		Fun-Focused voxel world game
 
 LICENSE=		GPLv3+
 
+BROKEN=			fails to build
+BROKEN_powerpc64=	fails to link: sibling call optimization does not allow automatic multiple TOCs
+
 LIB_DEPENDS=		libIrrlicht.so:x11-toolkits/irrlicht \
 			libfreetype.so:print/freetype2
 
-BROKEN_powerpc64=	fails to link: sibling call optimization does not allow automatic multiple TOCs
-
-USES=			cmake tar:bzip2
+USES=			cmake:insource tar:bzip2
 LLD_UNSAFE=		yes
 
 WRKSRC=			${WRKDIR}/${PORTNAME}
 
 OPTIONS_SUB=		yes
 
-OPTIONS_DEFINE=		NLS SOUND SQLITE3
+OPTIONS_DEFINE=		NLS SOUND SQLITE3 DOCS
 OPTIONS_MULTI=		BINARIES
 OPTIONS_MULTI_BINARIES=	CLIENT SERVER
 

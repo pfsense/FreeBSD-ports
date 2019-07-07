@@ -4,7 +4,7 @@
 
 PORTNAME=	ekiga
 PORTVERSION=	4.0.1
-PORTREVISION=	17
+PORTREVISION=	25
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -15,16 +15,16 @@ COMMENT=	VoIP and video conferencing application
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	v4l_compat>=0:multimedia/v4l_compat \
+BUILD_DEPENDS=	boost-libs>=1.53:devel/boost-libs \
+		v4l_compat>=0:multimedia/v4l_compat \
 		gnome-icon-theme>=3.0.0:misc/gnome-icon-theme
-LIB_DEPENDS=	libboost_signals.so:devel/boost-libs \
-		libopal.so:net/opal \
+LIB_DEPENDS=	libopal.so:net/opal \
 		libv4l2.so:multimedia/libv4l
 RUN_DEPENDS=	gnome-icon-theme>=3.0.0:misc/gnome-icon-theme
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lang cpe gettext gmake kde:4 libtool localbase \
-		pathfix perl5 pkgconfig tar:xz
+USES=		compiler:c++11-lang cpe gettext gmake libtool localbase \
+		pathfix pkgconfig tar:xz
 USE_XORG=	xv
 USE_GNOME=	gtk20 intlhack libxml2
 INSTALLS_ICONS=	yes
@@ -39,15 +39,11 @@ EVOLUTION_DESC=	Evolution data server support
 GNOMEHELP_DESC=	Build Ekiga help files
 
 #OPTIONS_GROUP=	EXP
-#OPTIONS_GROUP_EXP=	KDE KAB GSTREAMER XCAP LOUDMOUTH
+#OPTIONS_GROUP_EXP=	GSTREAMER XCAP LOUDMOUTH
 EXP_DESC=	Experimental features
-KDE_DESC=	KDE 4 support
-KAB_DESC=	KAddressBook support
 GSTREAMER_DESC=	Gstreamer support
 XCAP_DESC=	Remote contact storage via HTTP in xml format
 LOUDMOUTH_DESC=	XMPP (jabber) support
-
-KAB_IMPLIES=	KDE
 
 # Note that h.323 support is enabled when opal is build with it.
 
@@ -55,25 +51,7 @@ KAB_IMPLIES=	KDE
 
 PLIST_SUB+=	VERSION=${PORTVERSION}
 
-.if ${PORT_OPTIONS:MKDE} || ${PORT_OPTIONS:MKAB}
-USES+=		qt:4
-USE_KDE=	kdelibs
-USE_QT=		corelib
-CONFIGURE_ARGS+=--enable-kde
-#CONFIGURE_ENV+=KDE_CFLAGS="-I${KDE_PREFIX}/include -I${QT_INCDIR} \
-#	-I${LOCALBASE}/include" KDE_LIBS="-L${KDE_PREFIX}/lib"
-CPPFLAGS+=	-I${KDE_PREFIX}/include
-LDFLAGS+=	-L${KDE_PREFIX}/lib
-.else
-CONFIGURE_ARGS+=--disable-kde
-.endif
-
-.if ${PORT_OPTIONS:MKAB}
-CONFIGURE_ARGS+=--enable-kab
-USE_KDE+=	pimlibs
-.else
-CONFIGURE_ARGS+=--disable-kab
-.endif
+CONFIGURE_ARGS+=--disable-kde --disable-kab
 
 .if ${PORT_OPTIONS:MGSTREAMER}
 CONFIGURE_ARGS+=--enable-gstreamer

@@ -74,12 +74,20 @@
 		<field>
 			<fielddescr>Interface</fielddescr>
 			<fieldname>interface</fieldname>
-			<description>Enter the desired participating interface here.</description>
 			<type>select_source</type>
 			<source><![CDATA[frr_get_interfaces(false, false)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<required/>
+			<description>
+				<![CDATA[
+				Enter the desired participating interface here.<br /><br />
+				If this interface has a gateway, rules on this interface will have <tt>reply-to</tt>
+				by default. This will interfere with the operation of OSPFv3 on the interface. Add
+				a rule at the top of the ruleset for this interface to pass IPv6 OSPF traffic with
+				<b>Disable reply-to</b> checked in <b>Advanced Options</b>.
+				]]>
+			</description>
 		</field>
  		<field>
 			<fielddescr>Network Type</fielddescr>
@@ -92,6 +100,12 @@
 				<option><value>broadcast</value><name>Broadcast</name></option>
 				<option><value>point-to-point</value><name>Point-to-Point</name></option>
 			</options>
+		</field>
+		<field>
+			<fielddescr>Instance ID</fielddescr>
+			<fieldname>instanceid</fieldname>
+			<description>Instance ID for this OSPF6 interface (leave blank for default).</description>
+			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Metric</fielddescr>

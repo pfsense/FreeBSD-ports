@@ -3,7 +3,7 @@
 
 PORTNAME=	qelectrotech
 PORTVERSION=	0.5
-PORTREVISION=	3
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://download.tuxfamily.org/qet/tags/20151127/
@@ -19,7 +19,7 @@ USES=		compiler:c++11-lib desktop-file-utils qmake qt:5 shared-mime-info
 USE_QT=		buildtools_build gui network printsupport \
 		sql-sqlite3 svg xml
 
-OPTIONS_DEFINE=       DEBUG
+OPTIONS_DEFINE=       DEBUG DOCS
 
 DEBUG_VARS=           BUILD_TYPE=debug
 DEBUG_VARS_OFF=       BUILD_TYPE=release

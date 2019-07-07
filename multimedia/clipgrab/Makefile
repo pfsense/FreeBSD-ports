@@ -2,24 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	clipgrab
-PORTVERSION=	3.4.11
+PORTVERSION=	3.7.2
+PORTREVISION=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	http://download.clipgrab.de/
+MASTER_SITES=	https://download.clipgrab.org/
 
-MAINTAINER=	ports@FreeBSD.org
+PATCH_SITES=	https://gitlab.com/kikadf/clipgrab-qt5/raw/patches/patches/
+PATCHFILES=	clipgrab-qt5-${PORTVERSION}.patch:-p1
+
+MAINTAINER=	kikadf.01@gmail.com
 COMMENT=	Program to download videos from YouTube and etc
 
 LICENSE=	GPLv3
 
-USES=		qmake qt:4 tar:bzip2
-USE_QT=		gui xml uic_build moc_build \
-		rcc_build network dbus webkit
+USES=		qmake qt:5
+USE_QT=		core dbus gui network webkit widgets xml buildtools_build
 
+LDFLAGS+=	-Wl,--as-needed # cf. PR 224488
 PLIST_FILES=	bin/${PORTNAME} \
-		%%DATADIR%%/icon.png \
-		%%DATADIR%%/logo.png \
-		%%DATADIR%%/paypal-logo.png \
-		%%DATADIR%%/splash.png
+		${DATADIR}/icon.png \
+		${DATADIR}/logo.png \
+		${DATADIR}/paypal-logo.png \
+		${DATADIR}/splash.png
 
 DESKTOP_ENTRIES="Clipgrab" "Download and convert videos from YouTube and etc" \
 		"${DATADIR}/icon.png" "${PORTNAME}" \
@@ -28,8 +32,7 @@ DESKTOP_ENTRIES="Clipgrab" "Download and convert videos from YouTube and etc" \
 QMAKE_SOURCE_PATH=	${WRKSRC}/${PORTNAME}.pro
 
 post-patch:
-	${REINPLACE_CMD} -e 's,img/,share/${PORTNAME}/,g' \
-	${WRKSRC}/*.cpp
+	@${REINPLACE_CMD} -e 's,img/,share/${PORTNAME}/,g' ${WRKSRC}/*.cpp
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

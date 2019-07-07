@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tar
-PORTVERSION=	1.30
+PORTVERSION=	1.32
 CATEGORIES=	archivers sysutils
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	g
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 INFO=		tar
 
-USES=		charsetfix cpe iconv:${STATIC_ARGS} localbase makeinfo tar:xz
+USES=		charsetfix cpe iconv:${STATIC_ARGS} localbase tar:xz
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=g

@@ -2,6 +2,7 @@
 
 PORTNAME=	flcluster
 PORTVERSION=	1.0.4
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/fldigi/${PORTNAME}
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-panel
-PORTVERSION=	1.20.1
+PORTVERSION=	1.20.3
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -43,5 +43,7 @@ GLIB_SCHEMAS=	org.mate.panel.applet.clock.gschema.xml \
 		org.mate.panel.menubar.gschema.xml \
 		org.mate.panel.object.gschema.xml \
 		org.mate.panel.toplevel.gschema.xml
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

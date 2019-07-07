@@ -3,7 +3,7 @@
 
 PORTNAME=	vdr-plugin-extrecmenu
 PORTVERSION=	1.2.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	multimedia
 MASTER_SITES=	http://projects.vdr-developer.org/attachments/download/936/
 DISTNAME=	vdr-${PLUGIN}-${PORTVERSION}
@@ -14,7 +14,6 @@ COMMENT=	Video Disk Recorder - extended recordings menu
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_12=	does not build with newer clang
 USES=		tar:tgz
 PATCH_STRIP=	-p1
 WRKSRC=		${WRKDIR}/${PLUGIN}-${PORTVERSION}

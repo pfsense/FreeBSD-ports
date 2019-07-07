@@ -3,7 +3,7 @@
 
 PORTNAME=	openalchemist
 PORTVERSION=	0.3
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -23,7 +23,8 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
 
-USES=		autoreconf gmake iconv jpeg pkgconfig python:2.7,run shebangfix
+USES=		autoreconf gl gmake gnome iconv jpeg pkgconfig python:2.7,run \
+		shebangfix
 SHEBANG_FILES=	openalchemist-config
 
 USE_GNOME=	pygtk2
@@ -32,6 +33,8 @@ USE_GL=		gl glu
 USE_SDL=	sdl gfx
 
 PORTDOCS=	AUTHORS ChangeLog README TODO
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -E -e 's|0.8|1.0|g' -e 's|^%|#|g' ${WRKSRC}/configure.ac

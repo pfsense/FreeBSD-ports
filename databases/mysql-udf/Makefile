@@ -3,7 +3,7 @@
 
 PORTNAME=	mysql-udf
 PORTVERSION=	0.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	databases
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -13,6 +13,9 @@ COMMENT=	Set of user-defined functions for the MySQL server
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		mysql
+CFLAGS_aarch64+=-fPIC
+CFLAGS_amd64+=	-fPIC
+CFLAGS_i386+=	-fPIC
 
 MODULES=	colwidth confidence_higher confidence_lower correlation \
 		faculty geomean intercept kurtosis longest median noverm \
@@ -21,12 +24,6 @@ MODULES=	colwidth confidence_higher confidence_lower correlation \
 .for MODULE in ${MODULES}
 PLIST_FILES+=	lib/mysql/plugin/udf_${MODULE}.so
 .endfor
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == amd64
-CFLAGS+=	-fPIC
-.endif
 
 do-build:
 .for MODULE in ${MODULES}
@@ -41,4 +38,4 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/udf_${MODULE}.so ${STAGEDIR}${PREFIX}/lib/mysql/plugin/udf_${MODULE}.so
 .endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

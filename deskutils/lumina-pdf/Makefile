@@ -2,12 +2,14 @@
 
 PORTNAME=	lumina-pdf
 PORTVERSION=	1.4.1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 
 MAINTAINER=	jt@ixsystems.com
 COMMENT=	PDF viewer from the Lumina Desktop
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/../../../LICENSE
 
 LIB_DEPENDS=	libpoppler-qt5.so:graphics/poppler-qt5
 
@@ -25,7 +27,7 @@ MAKE_JOBS_UNSAFE=yes
 
 USE_QT=		core gui widgets network svg multimedia \
 		buildtools_build x11extras concurrent printsupport
-USES=		qmake qt:5
+USES=		compiler:c++11-lang qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	trueos
 GH_PROJECT=	lumina

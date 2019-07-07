@@ -3,11 +3,11 @@
  * suricata_post_install.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2017 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,9 +66,6 @@ $g['suricata_postinstall'] = true;
 // Remove any LCK files for Suricata that might have been left behind
 unlink_if_exists("{$g['varrun_path']}/suricata_pkg_starting.lck");
 
-// Mount file system read/write so we can modify some files
-conf_mount_rw();
-
 // Remove any previously installed script since we rebuild it
 unlink_if_exists("{$rcdir}suricata.sh");
 
@@ -79,16 +76,27 @@ safe_mkdir(SURICATALOGDIR);
 safe_mkdir(SURICATA_SID_MODS_PATH);
 safe_mkdir(SURICATA_IPREP_PATH);
 
+/*****************************************************************/
+/* In the event this is a reinstall (or update), then recreate   */
+/* critical config files from the package sample templates.      */
+/*****************************************************************/
+$map_files = array( "classification.config", "reference.config", "threshold.config" );
+foreach ($map_files as $f) {
+	if (file_exists(SURICATADIR . $f . ".sample") && !file_exists(SURICATADIR . $f)) {
+		copy(SURICATADIR . $f . ".sample", SURICATADIR . $f);
+	}
+}
+
 // Download the latest GeoIP DB updates and create cron task if the feature is not disabled
 if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] != 'off') {
-	log_error(gettext("[Suricata] Installing free GeoIP country database files..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Installing free GeoLite2 country IP database file in /usr/local/share/suricata/GeoLite2/..."));
 	include("/usr/local/pkg/suricata/suricata_geoipupdate.php");
-	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 0, 8, "*", "*", "root");
+	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 6, "*", "*", "*", "root");
 }
 
 // Download the latest ET IQRisk updates and create cron task if the feature is not disabled
 if ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] == 'on') {
-	log_error(gettext("[Suricata] Installing Emerging Threats IQRisk IP List..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Installing Emerging Threats IQRisk IP List..."));
 	include("/usr/local/pkg/suricata/suricata_etiqrisk_update.php");
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_etiqrisk_update.php", TRUE, 0, "*/6", "*", "*", "*", "root");
 }
@@ -112,7 +120,7 @@ while (suricata_cron_job_exists($suri_pf_table, FALSE)) {
 }
 
 if ($cron_count > 0) {
-	log_error(gettext("[Suricata] Removed {$cron_count} duplicate 'remove_blocked_hosts' cron task(s)."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Removed {$cron_count} duplicate 'remove_blocked_hosts' cron task(s)."));
 }
 
 /*********************************************************/
@@ -138,57 +146,47 @@ if (!is_array($config['installedpackages']['suricata']['config'][0])) {
 
 // remake saved settings if previously flagged
 if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on') {
-	log_error(gettext("[Suricata] Saved settings detected... rebuilding installation with saved settings."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Saved settings detected... rebuilding installation with saved settings."));
 	update_status(gettext("Saved settings detected...") . "\n");
 
 	/****************************************************************/
-	/* Do test and fix for duplicate UUIDs if this install was      */
-	/* impacted by the DUP (clone) bug that generated a duplicate   */
-	/* UUID for the cloned interface.  Also fix any duplicate       */
-	/* entries in ['rulesets'] for "dns-events.rules".              */
+	/* Add all the new built-in events rules to each configured     */
+	/* interface.                                                   */
 	/****************************************************************/
-
 	if (count($config['installedpackages']['suricata']['rule']) > 0) {
-		$uuids = array();
+
+		// Array of default events rules for Suricata
+		$builtin_rules = array( "app-layer-events.rules", "decoder-events.rules", "dnp3-events.rules", "dns-events.rules", "files.rules", "http-events.rules", "ipsec-events.rules", "kerberos-events.rules", 
+					"modbus-events.rules", "nfs-events.rules", "ntp-events.rules", "smb-events.rules", "smtp-events.rules", "stream-events.rules", "tls-events.rules" );
+
 		$suriconf = &$config['installedpackages']['suricata']['rule'];
 		foreach ($suriconf as &$suricatacfg) {
-			// Remove any duplicate ruleset names from earlier bug
 			$rulesets = explode("||", $suricatacfg['rulesets']);
+			foreach ($builtin_rules as $name) {
+				if (in_array($name, $rulesets)) {
+					continue;
+				}
+				else {
+					$rulesets[] = $name;
+				}
+			}
+			// Remove any duplicate ruleset names from earlier bug
 			$suricatacfg['rulesets'] = implode("||", array_keys(array_flip($rulesets)));
-
-			// Now check for and fix a duplicate UUID
-			$if_real = get_real_interface($suricatacfg['interface']);
-			if (!isset($uuids[$suricatacfg['uuid']])) {
-				$uuids[$suricatacfg['uuid']] = $if_real;
-				continue;
-			}
-			else {
-				// Found a duplicate UUID, so generate a
-				// new one for the affected interface.
-				$old_uuid = $suricatacfg['uuid'];
-				$new_uuid = suricata_generate_id();
-				if (file_exists("{$suricatalogdir}suricata_{$if_real}{$old_uuid}/"))
-					@rename("{$suricatalogdir}suricata_{$if_real}{$old_uuid}/", "{$suricatalogdir}suricata_{$if_real}{$new_uuid}/");
-				$suricatacfg['uuid'] = $new_uuid;
-				$uuids[$new_uuid] = $if_real;
-				log_error(gettext("[Suricata] updated UUID for interface " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " from {$old_uuid} to {$new_uuid}."));
-			}
 		}
-		unset($uuids, $rulesets);
+		unset($builtin_rules, $rulesets);
 	}
 	/****************************************************************/
-	/* End of duplicate UUID and "dns-events.rules" bug fix.        */
+	/* End of built-in events rules fix.                            */
 	/****************************************************************/
 
 	/* Do one-time settings migration for new version configuration */
 	update_status(gettext("Migrating settings to new configuration..."));
 	include('/usr/local/pkg/suricata/suricata_migrate_config.php');
 	update_status(gettext(" done.") . "\n");
-	log_error(gettext("[Suricata] Downloading and updating configured rule types."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Downloading and updating configured rule types."));
 	include('/usr/local/pkg/suricata/suricata_check_for_rule_updates.php');
 	update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
-	conf_mount_rw();
 
 	// Make sure config variable is an array (PHP7 likes every level to be created individually )
 	if (!is_array($config['installedpackages']['suricata'])) {
@@ -257,7 +255,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 
 	$rebuild_rules = false;
 	update_status(gettext("Finished rebuilding Suricata configuration from saved settings.") . "\n");
-	log_error(gettext("[Suricata] Finished rebuilding installation from saved settings."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Finished rebuilding installation from saved settings."));
 }
 
 // If this is first install and "forcekeepsettings" is empty,
@@ -267,8 +265,35 @@ if (empty($config['installedpackages']['suricata']['config'][0]['forcekeepsettin
 	$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] = 'on';
 }
 
-// Finished with file system mods, so remount it read-only
-conf_mount_ro();
+/**********************************************************/
+/* Incorporate content of SID Mgmt example files in the   */
+/* /var/db/suricata/sidmods directory to Base64 encoded   */
+/* strings in SID_MGMT_LIST array in config.xml if this   */
+/* is a first-time green field install of Suricata.       */
+/**********************************************************/
+if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists'])) {
+	$config['installedpackages']['suricata']['sid_mgmt_lists'] = array();
+}
+if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migration']) && count($config['installedpackages']['suricata']['sid_mgmt_lists']) < 1) {
+	if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists']['item'])) {
+		$config['installedpackages']['suricata']['sid_mgmt_lists']['item'] = array();
+	}
+	$a_list = &$config['installedpackages']['suricata']['sid_mgmt_lists']['item'];
+	$sidmodfiles = array("disablesid-sample.conf", "dropsid-sample.conf", "enablesid-sample.conf", "modifysid-sample.conf");
+	foreach ($sidmodfiles as $sidfile) {
+		if (file_exists(SURICATA_SID_MODS_PATH . $sidfile)) {
+			$data = file_get_contents(SURICATA_SID_MODS_PATH . $sidfile);
+			if ($data !== FALSE) {
+				$tmp = array();
+				$tmp['name'] = basename($sidfile);
+				$tmp['modtime'] = filemtime(SURICATA_SID_MODS_PATH . $sidfile);
+				$tmp['content'] = base64_encode($data);
+				$a_list[] = $tmp;
+			}
+		}
+	}
+	$config['installedpackages']['suricata']['config'][0]['sid_list_migration'] = "1";
+}
 
 // Update Suricata package version in configuration
 update_status(gettext("  " . "Setting package version in configuration file.") . "\n");
@@ -278,7 +303,7 @@ write_config("Suricata pkg v{$config['installedpackages']['package'][get_package
 
 // Done with post-install, so clear flag
 unset($g['suricata_postinstall']);
-log_error(gettext("[Suricata] Package post-installation tasks completed."));
+syslog(LOG_NOTICE, gettext("[Suricata] Package post-installation tasks completed."));
 return true;
 
 ?>

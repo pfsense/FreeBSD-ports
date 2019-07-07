@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	patsy
-PORTVERSION=	0.5.0
+PORTVERSION=	0.5.1
 PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
@@ -20,6 +20,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 
 USES=		python
 USE_PYTHON=	autoplist concurrent distutils
+
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES

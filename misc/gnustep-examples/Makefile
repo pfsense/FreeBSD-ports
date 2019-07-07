@@ -2,7 +2,7 @@
 
 PORTNAME=	gnustep-examples
 PORTVERSION=	1.4.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	misc gnustep
 MASTER_SITES=	GNUSTEP/usr-apps
 
@@ -11,6 +11,8 @@ COMMENT=	GNUstep example applications
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		fails to build
 
 USES=		gnustep
 USE_GNUSTEP=	back build

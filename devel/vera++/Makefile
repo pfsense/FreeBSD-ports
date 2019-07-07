@@ -3,7 +3,7 @@
 
 PORTNAME=	vera++
 PORTVERSION=	1.3.0
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=	https://bitbucket.org/verateam/vera/downloads/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
 
 BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
 
-USES=		cmake:outsource tk
+USES=		compiler:c++11-lang cmake tk
 
 CMAKE_ARGS+=	-DTCL_INCLUDE_PATH=${TCL_INCLUDEDIR} \
 		-DTK_INCLUDE_PATH=${TK_INCLUDEDIR} \

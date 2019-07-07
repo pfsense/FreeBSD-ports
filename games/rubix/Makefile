@@ -3,7 +3,7 @@
 
 PORTNAME=	rubix
 PORTVERSION=	1.0.6
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://sed.free.fr/rubix/ \
 		http://mirror.mcx2.org/
@@ -24,7 +24,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if (${ARCH} == mips || ${ARCH} == mips64 || ${ARCH} == powerpc || ${ARCH} == powerpc64) && ${COMPILER_TYPE} == gcc
+.if (${ARCH} == mips || ${ARCH} == mips64 || ${ARCH} == powerpc || ${ARCH} == powerpc64) && ${CHOSEN_COMPILER_TYPE} == gcc
 CFLAGS+=	-fnested-functions
 .endif
 

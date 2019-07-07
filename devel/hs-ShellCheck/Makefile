@@ -2,8 +2,7 @@
 
 PORTNAME=	ShellCheck
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.7-129
-DISTVERSIONSUFFIX=	-gb5e5d24
+DISTVERSION=	0.6.0
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 
@@ -19,6 +18,10 @@ GH_ACCOUNT=	koalaman
 GH_PROJECT=	${PORTNAME:tl}
 
 EXECUTABLE=	shellcheck
+IGNORE_DOCS=	yes
+IGNORE_DYNAMIC=	yes
+IGNORE_PROFILE=	yes
+STANDALONE=	yes
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

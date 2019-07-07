@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sshfs
-PORTVERSION=	3.3.1
+PORTVERSION=	3.5.1
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	rst2man:textproc/py-docutils
 
-USES=		fuse:3 gettext meson pkgconfig
+USES=		fuse:3 gettext gnome meson pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	libfuse

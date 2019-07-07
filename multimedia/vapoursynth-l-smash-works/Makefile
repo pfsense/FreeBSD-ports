@@ -3,7 +3,7 @@
 PORTNAME=	l-smash-works
 DISTVERSION=	0.0-935 # git rev-list --count HEAD
 DISTVERSIONSUFFIX=	-g3edd194
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	vapoursynth-
 
@@ -45,11 +45,14 @@ PLIST_FILES=	lib/libvslsmashsource.so.${PORTVERSION:E} \
 		%%DATADIR%%/libvslsmashsource.so
 PORTDOCS=	README
 
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
 	@${REINPLACE_CMD} -Ee '/CROSS/!s/^(CC|LD|REV|HASH)=.*/: $${&}/' \
 		-e 's/pushd/cd/; s/popd/cd -/' \
 		-e 's/-Os //; /=.*-fexcess-precision/d' \
 		${WRKSRC}/configure
+	@${REINPLACE_CMD} 's/ -msse2 -g0//' ${WRKSRC}/${MAKEFILE}
 
 post-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \

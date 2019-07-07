@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	spdlog
-PORTVERSION=	0.17.0
+PORTVERSION=	1.3.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -12,9 +12,10 @@ COMMENT=	Super fast C++ logging library
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		cmake compiler:c++11-lib pathfix
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	gabime
-
-USES=		cmake compiler:c++11-lib dos2unix pathfix
+CMAKE_ARGS=	-DSPDLOG_BUILD_BENCH=off
 
 .include <bsd.port.mk>

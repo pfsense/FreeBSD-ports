@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	devhelp
-PORTVERSION=	3.24.0
-PORTREVISION=	3
+PORTVERSION=	3.28.1
+PORTREVISION=	1
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -14,6 +14,7 @@ COMMENT=	Developer help browser for GNOME 3
 LICENSE=	GPLv2
 LICENSE_FILES=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	itstool:textproc/itstool
 LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3
 

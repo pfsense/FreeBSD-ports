@@ -3,7 +3,7 @@
 
 PORTNAME=	cpuminer
 PORTVERSION=	2.5.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net-p2p math
 MASTER_SITES=	SF/cpuminer
 DISTNAME=	pooler-${PORTNAME}-${PORTVERSION}
@@ -16,7 +16,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libjansson.so:devel/jansson
 
-OPTIONS_DEFINE=	GCC
+OPTIONS_DEFINE=	GCC DOCS
 OPTIONS_DEFAULT=GCC
 
 USES=		autoreconf cpe

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sleuthkit
-PORTVERSION=	4.6.1
+PORTVERSION=	4.6.5
 CATEGORIES=	sysutils security
 MASTER_SITES=	https://github.com/sleuthkit/sleuthkit/releases/download/sleuthkit-${PORTVERSION}/
 
@@ -26,7 +26,7 @@ CONFLICTS=	ja-ls-[0-9]* icat-[0-9]*
 CPPFLAGS+=	-D_WITH_GETLINE
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_header_libpq_fe_h=no
-USES=		libtool perl5 sqlite
+USES=		compiler:c++11-lang libtool perl5 sqlite
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 DATADIR=	${PREFIX}/share/tsk

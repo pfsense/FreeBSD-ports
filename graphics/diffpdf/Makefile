@@ -2,7 +2,7 @@
 
 PORTNAME=	diffpdf
 PORTVERSION=	2.1.3
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.qtrac.eu/
 
@@ -11,10 +11,11 @@ COMMENT=	Compare two PDF files-textually or visually
 
 LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libpoppler-qt4.so:graphics/poppler-qt4
+LIB_DEPENDS=	libpoppler-qt5.so:graphics/poppler-qt5
 
-USES=		compiler:c++11-lang qmake qt:4
-USE_QT=		qmake_build moc_build rcc_build uic_build linguist_build
+USES=		compiler:c++11-lang qmake qt:5
+USE_GL=		gl
+USE_QT=		buildtools linguist_build core gui printsupport widgets
 
 PLIST_FILES=	bin/diffpdf
 

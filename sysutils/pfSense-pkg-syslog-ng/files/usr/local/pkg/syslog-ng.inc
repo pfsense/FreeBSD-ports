@@ -179,7 +179,7 @@ function syslogng_get_log_files($objects) {
 
 	foreach ($objects as $object) {
 		if ($object['objecttype'] == 'destination') {
-			preg_match("/\bfile\b\(['\"]([^'\"]*)['\"]/", base64_decode($object['objectparameters']), $match);
+			preg_match("/\s+file\b\(['\"]([^'\"]*)['\"]/", base64_decode($object['objectparameters']), $match);
 			if ($match) {
 				$log_file = $match[1];
 				array_push($log_files, $log_file);
@@ -266,7 +266,6 @@ function syslogng_generate_rules($type) {
 
 function syslogng_resync() {
 	global $config;
-	conf_mount_rw();
 
 	$settings = $config['installedpackages']['syslogng']['config'][0];
 	$objects = $config['installedpackages']['syslogngadvanced']['config'];
@@ -359,7 +358,6 @@ function syslogng_resync() {
 	}
 
 	write_config();
-	conf_mount_ro();
 	filter_configure();
 }
 
@@ -393,7 +391,6 @@ else
 fi
 
 EOD;
-	conf_mount_rw();
 	write_rcfile($rc);
 }
 ?>

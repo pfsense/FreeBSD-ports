@@ -23,28 +23,28 @@ require_once("pkg-utils.inc");
 require_once("globals.inc");
 require_once("notices.inc");
 
-$apcstatus[killpower] = "UPS now committed to shut down";
-$apcstatus[commfailure] = "Communications with UPS lost";
-$apcstatus[commok] = "Communications with UPS restored";
-$apcstatus[onbattery] = "Power failure. Running on UPS batteries";
-$apcstatus[offbattery] = "Power has returned...";
-$apcstatus[failing] = "UPS battery power exhausted. Doing shutdown";
-$apcstatus[timeout] = "UPS battery runtime limit exceeded. Doing shutdown";
-$apcstatus[loadlimit] = "UPS battery discharge limit reached. Doing shutdown";
-$apcstatus[runlimit] = "UPS battery runtime percent reached. Doing shutdown";
-$apcstatus[doreboot] = "Beginning Reboot Sequence";
-$apcstatus[doshutdown] = "Beginning Shutdown Sequence";
-$apcstatus[annoyme] = "Power problems please logoff";
-$apcstatus[emergency] = "Emergency Shutdown. Possible UPS battery failure";
-$apcstatus[changeme] = "Emergency! UPS batteries have failed. Change them NOW";
-$apcstatus[remotedown] = "Remote Shutdown. Beginning Shutdown Sequence";
+$apcstatus['killpower'] = gettext("UPS now committed to shut down");
+$apcstatus['commfailure'] = gettext("Communications with UPS lost");
+$apcstatus['commok'] = gettext("Communications with UPS restored");
+$apcstatus['onbattery'] = gettext("Power failure. Running on UPS batteries");
+$apcstatus['offbattery'] = gettext("Power has returned...");
+$apcstatus['failing'] = gettext("UPS battery power exhausted. Doing shutdown");
+$apcstatus['timeout'] = gettext("UPS battery runtime limit exceeded. Doing shutdown");
+$apcstatus['loadlimit'] = gettext("UPS battery discharge limit reached. Doing shutdown");
+$apcstatus['runlimit'] = gettext("UPS battery runtime percent reached. Doing shutdown");
+$apcstatus['doreboot'] = gettext("Beginning Reboot Sequence");
+$apcstatus['doshutdown'] = gettext("Beginning Shutdown Sequence");
+$apcstatus['annoyme'] = gettext("Power problems please logoff");
+$apcstatus['emergency'] = gettext("Emergency Shutdown. Possible UPS battery failure");
+$apcstatus['changeme'] = gettext("Emergency! UPS batteries have failed. Change them NOW");
+$apcstatus['remotedown'] = gettext("Remote Shutdown. Beginning Shutdown Sequence");
 
 if (empty($argv[1]) || empty($apcstatus["$argv[1]"])) {
 	return;
 }
 
 $apcsubject = "apcupsd - " . $apcstatus["$argv[1]"];
-$apcmessage = "Status information from apcupsd:\n";
+$apcmessage = gettext("Status information from apcupsd") . ":\n";
 
 putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin");
 $ph = popen('apcaccess status 2>&1', "r" );

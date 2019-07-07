@@ -2,27 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	tt-rss
-PORTVERSION=	g20171120
+PORTVERSION=	g20181226
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	https://git.tt-rss.org/git/tt-rss/archive/
 DISTNAME=	${GIT_TAGNAME}
+DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Tiny Tiny RSS: web-based news feed (RSS/Atom) aggregator
 
 LICENSE=	GPLv2
 
-GIT_TAGNAME=	d2957a2718
-
-NO_BUILD=	yes
-NO_ARCH=	yes
-
 USES=		php:cli,web shebangfix gettext-tools
 USE_PHP=	ctype dom fileinfo hash json mbstring pcntl posix session xmlrpc
+
 REINPLACE_ARGS=	-i ""
 SHEBANG_FILES=	lib/dojo-src/rebuild-dojo.sh utils/extract-i18n-js.pl
 WRKSRC=		${WRKDIR}/tt-rss
+
+GIT_TAGNAME=	734af3357d
+
+NO_BUILD=	yes
+NO_ARCH=	yes
 
 USE_RC_SUBR=	ttrssd
 
@@ -36,14 +38,14 @@ GD_DESC=	Use OTP QR code generation
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PHP+=	pgsql
+USE_PHP+=	pdo_pgsql pgsql
 DB=		pgsql
 MYSQL=		"\#"
 PGSQL=
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_PHP+=	mysqli
+USE_PHP+=	pdo_mysql mysqli
 DB=		mysql
 MYSQL=
 PGSQL=		"\#"

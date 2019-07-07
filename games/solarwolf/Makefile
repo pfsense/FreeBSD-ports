@@ -3,9 +3,9 @@
 
 PORTNAME=	solarwolf
 PORTVERSION=	1.5
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
-MASTER_SITES=	http://www.pygame.org/shredwheat/solarwolf/
+MASTER_SITES=	https://www.pygame.org/shredwheat/solarwolf/
 
 MAINTAINER=	mail@maxlor.com
 COMMENT=	Action/arcade game originally based of SolarFox on the Atari 2600

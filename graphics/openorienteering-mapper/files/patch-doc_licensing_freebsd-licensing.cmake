@@ -1,4 +1,4 @@
---- doc/licensing/freebsd-licensing.cmake.orig	2018-04-14 16:13:40 UTC
+--- doc/licensing/freebsd-licensing.cmake.orig	2018-12-25 07:13:44 UTC
 +++ doc/licensing/freebsd-licensing.cmake
 @@ -0,0 +1,6 @@
 +include("linux-distribution.cmake")

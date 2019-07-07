@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	oaml
-PORTVERSION=	1.3.3
+PORTVERSION=	1.3.4
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
 
@@ -19,7 +20,7 @@ LIB_DEPENDS=	libogg.so:audio/libogg \
 USE_GITHUB=	yes
 GH_ACCOUNT=	oamldev
 
-USES=		cmake
+USES=		cmake compiler:c++11-lang
 CMAKE_ARGS=	-DENABLE_UNITYPLUGIN:BOOL=OFF
 
 PORTDOCS=	*

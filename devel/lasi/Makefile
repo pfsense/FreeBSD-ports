@@ -4,12 +4,12 @@
 
 PORTNAME=	lasi
 PORTVERSION=	1.1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20Source
 DISTNAME=	libLASi-${PORTVERSION}
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ stream output interface for creating Postscript documents
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 OPTIONS_DEFINE=	DOXYGEN EXAMPLES
 OPTIONS_SUB=	yes
 
-USES=		cmake pathfix pkgconfig
+USES=		cmake compiler:c++11-lang gnome pathfix pkgconfig
 PATHFIX_CMAKELISTSTXT=	pkg-config.cmake
 USE_GNOME=	pango
 

@@ -2,9 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	blis
-LIBVERSION=	0.3.2
-PORTVERSION=	${LIBVERSION}g20180501
-PORTREVISION=	1
+PORTVERSION=	0.5.1
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -14,9 +12,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	bash:shells/bash \
-		llvm50>=0:devel/llvm50
-
-BROKEN_powerpc64=	fails to configure: common.mk:118: Unable to determine compiler vendor
+		llvm60>=0:devel/llvm60
 
 OPTIONS_DEFINE=	PARA CBLAS
 PARA_DESC=	use pthread parallelization
@@ -26,7 +22,6 @@ OPTIONS_SUB=		yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	flame
-GH_TAGNAME=	8adb2f9
 
 USES=		gmake python shebangfix
 USE_LDCONFIG=	yes
@@ -54,19 +49,14 @@ CONFIGURE_ARGS+=	--enable-cblas
 .if ${ARCH} == amd64
 LIBNAME=	x86_64
 CONFIGURE_ARGS+=	x86_64
-PLIST_SUB+=	X8664=""
+PLIST_SUB+=	ARCH="x86_64"
 .else
 LIBNAME=	generic
 CONFIGURE_ARGS+=	generic
-PLIST_SUB+=	X8664="@comment "
+PLIST_SUB+=	ARCH="generic"
 .endif
 
-CC=	${LOCALBASE}/bin/clang50
-CXX=	${LOCALBASE}/bin/clang++50
-
-post-install:
-	${MV} ${STAGEDIR}/${PREFIX}/lib/libblis-${LIBVERSION}-${LIBNAME}.a ${STAGEDIR}/${PREFIX}/lib/libblis.a
-	${MV} ${STAGEDIR}/${PREFIX}/lib/libblis-${LIBVERSION}-${LIBNAME}.so ${STAGEDIR}/${PREFIX}/lib/libblis.so
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libblis.so
+CC=	${LOCALBASE}/bin/clang60
+CXX=	${LOCALBASE}/bin/clang++60
 
 .include <bsd.port.mk>

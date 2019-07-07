@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	connectagram
-PORTVERSION=	1.2.6
+PORTVERSION=	1.2.9
+PORTREVISION=	3
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	games
 MASTER_SITES=	http://gottcode.org/connectagram/
@@ -25,8 +26,6 @@ OPTIONS_SUB=	yes
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|share/man|man|' ${WRKSRC}/connectagram.pro
-	@${REINPLACE_CMD} -e \
-		's|std::lround|lround|' ${WRKSRC}/src/*.cpp
 
 post-patch-NLS-off:
 	@${REINPLACE_CMD} -e \
@@ -34,7 +33,7 @@ post-patch-NLS-off:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} CREDITS ChangeLog NEWS README \
+	(cd ${WRKSRC} && ${INSTALL_DATA} CREDITS ChangeLog README \
 		${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

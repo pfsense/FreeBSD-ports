@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	guitarix
-DISTVERSION=	0.37.1
-PORTREVISION=	1
+DISTVERSION=	0.37.3
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/
 PKGNAMESUFFIX=	-lv2
@@ -25,6 +25,7 @@ BUILD_DEPENDS=	lv2>0:audio/lv2 \
 		ladspa>0:audio/ladspa # https://sourceforge.net/p/guitarix/bugs/61/
 LIB_DEPENDS=	libavahi-common.so:net/avahi-app \
 		libboost_system.so:devel/boost-libs \
+		libcurl.so:ftp/curl \
 		libfftw3f.so:math/fftw3-float \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
@@ -40,7 +41,7 @@ LIB_DEPENDS=	libavahi-common.so:net/avahi-app \
 RUN_DEPENDS=	roboto-fonts-ttf>0:x11-fonts/roboto-fonts-ttf
 
 USES=		eigen:3 libarchive localbase:ldflags pkgconfig \
-		python:build readline waf tar:xz
+		python:2.7,build readline waf tar:xz
 USE_GNOME=	atkmm cairo gtk20 gtkmm24 pangomm
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes

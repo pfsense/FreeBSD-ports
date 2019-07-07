@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-DISTVERSION=	2.4.4
+DISTVERSION=	2.5.0
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,8 +12,7 @@ COMMENT?=	Meta package to install pfSense required ports
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
-		bind-tools>=0:dns/bind-tools \
+RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		bsnmp-regex>=0:net-mgmt/bsnmp-regex \
 		bsnmp-ucd>=0:net-mgmt/bsnmp-ucd \
 		ca_root_nss>=0:security/ca_root_nss \
@@ -33,9 +32,9 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		hostapd>=0:net/hostapd \
 		igmpproxy>=0:net/igmpproxy \
 		ipmitool>=0:sysutils/ipmitool \
-		isc-dhcp43-client>=0:net/isc-dhcp43-client \
-		isc-dhcp43-relay>=0:net/isc-dhcp43-relay \
-		isc-dhcp43-server>=0:net/isc-dhcp43-server \
+		isc-dhcp44-client>=0:net/isc-dhcp44-client \
+		isc-dhcp44-relay>=0:net/isc-dhcp44-relay \
+		isc-dhcp44-server>=0:net/isc-dhcp44-server \
 		libxml2>=0:textproc/libxml2 \
 		links>=0:www/links \
 		minicron>=0:sysutils/minicron \
@@ -49,29 +48,29 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		${PHP_PKGNAMEPREFIX}pear-Auth_RADIUS>=0:net/pear-Auth_RADIUS@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-Crypt_CHAP>=0:security/pear-Crypt_CHAP@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-Mail>=0:mail/pear-Mail@${PHP_FLAVOR} \
-		${PHP_PKGNAMEPREFIX}pear-Net_Growl>=0:net/pear-Net_Growl@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-Net_IPv6>=0:net/pear-Net_IPv6@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}simplepie>=0:www/simplepie@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
-		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
+		${PHP_PKGNAMEPREFIX}phpseclib>=0:security/phpseclib@${PHP_FLAVOR} \
+		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pftop>=0:sysutils/pftop \
 		qstats>=0:sysutils/qstats \
 		radvd>=0:net/radvd \
 		rate>=0:net-mgmt/rate \
-		relayd>=0:net/relayd \
 		scponly>=0:shells/scponly \
 		ssh_tunnel_shell>=0:sysutils/ssh_tunnel_shell \
-		sshlockout_pf>=0:sysutils/sshlockout_pf \
+		sshguard>=0:security/sshguard \
 		strongswan>=0:security/strongswan \
 		uclcmd>=0:devel/uclcmd \
 		unbound>=0:dns/unbound \
 		voucher>=0:sysutils/voucher \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
-		xinetd>=0:security/xinetd
+		xinetd>=0:security/xinetd \
+		openvpn-auth-script>=0:security/openvpn-auth-script
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 

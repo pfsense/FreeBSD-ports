@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mlterm
-PORTVERSION=	3.8.6
+PORTVERSION=	3.8.7
 CATEGORIES=	x11
 MASTER_SITES=	SF/${PORTNAME}/01release/${PORTNAME}-${PORTVERSION}
 
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz
 
-USES=		gettext libtool perl5 pkgconfig
+USES=		gettext gnome libtool perl5 pkgconfig
 USE_XORG=	sm x11 xft
 USE_GNOME=	cairo gdkpixbuf2 gtk20 vte
 USE_LDCONFIG=	yes
@@ -29,9 +29,10 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -lintl
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFINE=	CAIRO DOCS FRIBIDI IBUS M17NLIB REGIS SCIM SIXEL UIM
+OPTIONS_DEFINE=	CAIRO DOCS FCITX FRIBIDI IBUS M17NLIB REGIS SCIM SIXEL UIM
 OPTIONS_SUB=	yes
 CAIRO_DESC=	Use Cairo for type engine (experimental)
+FCITX_DESC=	Fcitx support (experimental)
 FRIBIDI_DESC=	Use Fribidi for BiDi rendering
 IBUS_DESC=	IBUS support (experimental)
 M17NLIB_DESC=	m17n library support (experimental)
@@ -39,6 +40,9 @@ REGIS_DESC=	ReGIS graphics support
 SCIM_DESC=	SCIM support (experimental)
 SIXEL_DESC=	Sixel graphics support
 UIM_DESC=	uim support (experimental)
+
+FCITX_CONFIGURE_ENABLE=	fcitx
+FCITX_LIB_DEPENDS=	libfcitx-gclient.so:chinese/fcitx
 
 FRIBIDI_CONFIGURE_ENABLE=	fribidi
 FRIBIDI_LIB_DEPENDS=	libfribidi.so:converters/fribidi
@@ -61,9 +65,7 @@ CAIRO_CONFIGURE_OFF=	--with-type-engines="xcore,xft"
 
 SIXEL_CONFIGURE_ENABLE=	sixel
 
-REGIS_LIB_DEPENDS=	libSDL.so:devel/sdl12 \
-			libSDL_ttf.so:graphics/sdl_ttf \
-			libfontconfig.so:x11-fonts/fontconfig
+REGIS_USE=		SDL=ttf
 
 .include <bsd.port.options.mk>
 

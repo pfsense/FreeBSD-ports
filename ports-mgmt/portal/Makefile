@@ -2,13 +2,15 @@
 
 PORTNAME=	portal
 PORTVERSION=	0.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	culot@FreeBSD.org
 COMMENT=	Front-end to pkg(8)
 
 LICENSE=	BSD2CLAUSE
+
+BROKEN_powerpc64=	fails to build: /usr/local/lib/gcc6/include/c++/thread:189: undefined reference to `std::thread::_State::~_State()'
 
 PLIST_FILES=	bin/${PORTNAME} \
 		man/man1/${PORTNAME}.1.gz

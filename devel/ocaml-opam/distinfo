@@ -1,2 +1,3 @@
-SHA256 (opam-01/opam-full-1.2.2.tar.gz) = 15e617179251041f4bf3910257bbb8398db987d863dd3cfc288bdd958de58f00
-SIZE (opam-01/opam-full-1.2.2.tar.gz) = 1535335
+TIMESTAMP = 1548876727
+SHA256 (opam-full-2.0.3.tar.gz) = 0589da4da184584a5445d59385009536534f60bc0e27772245b2f49e5fa8f0e2
+SIZE (opam-full-2.0.3.tar.gz) = 7870020

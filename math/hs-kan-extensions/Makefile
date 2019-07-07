@@ -2,7 +2,7 @@
 
 PORTNAME=	kan-extensions
 PORTVERSION=	5.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -10,8 +10,10 @@ COMMENT=	Kan extensions, Kan lifts, various forms of the Yoneda lemma, and (co)d
 
 LICENSE=	BSD3CLAUSE
 
-USE_CABAL=	adjunctions comonad contravariant distributive free mtl \
-		semigroupoids tagged
+DEPRECATED=		Haskell libraries are getting pushed out of the ports tree. If you are using this port for development, consider switching to cabal sandboxes (old way), cabal new-build (new way), or use devel/stack. If you believe this port shouldn't be removed, contact haskell@FreeBSD.org
+EXPIRATION_DATE=	2019-04-14
+
+USE_CABAL=	adjunctions comonad distributive free mtl semigroupoids tagged
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

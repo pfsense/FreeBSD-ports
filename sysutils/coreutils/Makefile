@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	coreutils
-PORTVERSION=	8.28
+PORTVERSION=	8.31
 CATEGORIES=	sysutils textproc
 MASTER_SITES=	GNU
 
@@ -13,7 +13,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	idutils-[0-9]*
 
-MAKE_JOBS_UNSAFE=	yes
+USES=		cpe gmake iconv perl5 charsetfix tar:xz
+CPE_VENDOR=	gnu
+USE_PERL5=	build	# required for tests and man page generation
+USE_LDCONFIG=	yes
+TEST_TARGET=	check
 
 GNU_CONFIGURE=	yes
 # A rather nasty hack to stop gnustat from conflicting with base gstat
@@ -25,22 +29,18 @@ CONFIGURE_ENV=	FORCE_UNSAFE_CONFIGURE=1
 # XXX bug 224740: configure hangs
 CONFIGURE_ENV+=	gl_cv_func_printf_enomem=no
 .endif
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
-
-USES=		cpe gmake iconv perl5 charsetfix tar:xz
-USE_PERL5=	build	# build - required for tests and man page generation
-USE_LDCONFIG=	yes
 
 INFO=		coreutils
-CPE_VENDOR=	gnu
 
 OPTIONS_DEFINE=	GMP NLS
 OPTIONS_SUB=	yes
-NLS_USES=	gettext
-NLS_CONFIGURE_ENABLE=	nls
 GMP_LIB_DEPENDS=	libgmp.so:math/gmp
 GMP_CONFIGURE_WITH=	gmp
+NLS_USES=	gettext
+NLS_CONFIGURE_ENABLE=	nls
+
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 post-build:
 	@${REINPLACE_CMD} -e "s/ lib / /g" ${WRKSRC}/Makefile
@@ -49,8 +49,5 @@ post-build:
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/g* \
 		${STAGEDIR}${PREFIX}/libexec/coreutils/libstdbuf.so
-
-#regression-test: build
-#	(cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check)
 
 .include <bsd.port.mk>

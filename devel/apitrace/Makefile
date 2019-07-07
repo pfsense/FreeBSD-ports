@@ -2,6 +2,7 @@
 
 PORTNAME=	apitrace
 DISTVERSION=	7.1-455
+PORTREVISION=	3
 DISTVERSIONSUFFIX=	-g7c76b90
 CATEGORIES=	devel
 
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		cmake:outsource compiler:c++11-lang pkgconfig python:2.7 shebangfix
+USES=		cmake compiler:c++11-lang pkgconfig python:2.7 shebangfix
 USE_GITHUB=	yes
 USE_XORG=	x11
 

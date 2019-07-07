@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	smbclient
-PORTVERSION=	0.9.0
-PORTREVISION=	3
+PORTVERSION=	1.0.0
 CATEGORIES=	net pear
 
 MAINTAINER=	sunpoet@FreeBSD.org

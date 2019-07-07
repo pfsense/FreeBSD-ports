@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gdnsd
-PORTVERSION=	2.2.4
-PORTREVISION=	2
+PORTVERSION=	2.4.2
 CATEGORIES=	dns
 MASTER_SITES=	https://github.com/gdnsd/gdnsd/releases/download/v${PORTVERSION}/ \
 		ZI \
@@ -27,22 +26,15 @@ USES=		pkgconfig libtool tar:xz perl5 gmake
 USE_PERL5=	build
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-CONFLICTS_INSTALL=	gdnsd-1.[0-9]*
+CONFLICTS_INSTALL=	gdnsd-1.[0-9]* gdnsd3-3.[0-9]*
 
 USE_RC_SUBR=	gdnsd
 
 USERS?=		gdnsd
 GROUPS?=	gdnsd
 
-OPTIONS_DEFINE=	DOCS URCU
+OPTIONS_DEFINE=	DOCS MAXMINDDB URCU
 OPTIONS_DEFAULT=MAXMINDDB
-
-OPTIONS_RADIO=		GEOLIB
-OPTIONS_RADIO_GEOLIB=	GEOIP MAXMINDDB
-GEOLIB_DESC=		GeoIP backend
-
-GEOIP_DESC=		Enable GeoIP1 Support
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 MAXMINDDB_DESC=		Enable GeoIP1 + GeoIP2 Support
 MAXMINDDB_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb

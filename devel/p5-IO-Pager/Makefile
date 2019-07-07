@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	IO-Pager
-PORTVERSION=	0.39
+PORTVERSION=	0.40
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,11 +13,13 @@ COMMENT=	Select a pager, optionally pipe it output if destination is a TTY
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-File-Which>=0:sysutils/p5-File-Which
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-File-Which>=0:sysutils/p5-File-Which
+
+USES=		perl5 tar:tgz
+USE_PERL5=	configure
 
 NO_ARCH=	yes
-USE_PERL5=	configure
-USES=		perl5 tar:tgz
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C|0$||}
 
 .include <bsd.port.mk>

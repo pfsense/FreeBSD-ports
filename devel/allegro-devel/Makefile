@@ -23,7 +23,7 @@ LIB_DEPENDS+=	libjack.so:audio/jack \
 		libFLAC.so:audio/flac \
 		libphysfs.so:devel/physfs
 
-USES=		cmake jpeg openal:soft pkgconfig
+USES=		cmake:insource jpeg openal:soft pkgconfig
 USE_XORG=	x11 xpm xext xcursor xxf86vm xxf86dga
 USE_GL=		glu
 USE_GNOME=	gtk20
@@ -64,6 +64,7 @@ DOCS_BUILD_DEPENDS=	${LOCALBASE}/bin/pandoc:textproc/hs-pandoc
 ALSA_LIB_DEPENDS=	libasound.so.2:audio/alsa-lib
 ALSA_CMAKE_ON=		-DWANT_ALSA=on
 ALSA_CMAKE_OFF=		-DWANT_ALSA=off
+DEMOS_IMPLIES=	EXAMPLES
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CMAKE_ON=	-DWANT_PULSEAUDIO=on
 PULSEAUDIO_CMAKE_OFF=	-DWANT_PULSEAUDIO=off

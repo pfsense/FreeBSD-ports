@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fuse-utils
-DISTVERSION=	1.4.2
+DISTVERSION=	1.4.3
 CATEGORIES=	emulators
 MASTER_SITES=	SF/fuse-emulator/${PORTNAME}/${PORTVERSION}
 
@@ -23,6 +23,8 @@ USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libspectrum-prefix=${LOCALBASE} \
 		--with-local-prefix=${LOCALBASE}
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

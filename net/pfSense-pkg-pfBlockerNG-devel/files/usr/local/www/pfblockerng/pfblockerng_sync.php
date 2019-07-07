@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -27,6 +27,7 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $config, $pfb;
 pfb_global();
 
+init_config_arr(array('installedpackages', 'pfblockerngsync', 'config', '0'));
 $pfb['sconfig'] = &$config['installedpackages']['pfblockerngsync']['config'][0];
 
 $pconfig = array();
@@ -39,7 +40,9 @@ if ($_POST) {
 
 	if (isset($_POST['save'])) {
 
-		unset($input_errors);
+		if (isset($input_errors)) {
+			unset($input_errors);
+		}
 		$rowhelper_exist = array();
 
 		$pfb['sconfig']['varsynconchanges']	= $_POST['varsynconchanges'];
@@ -140,11 +143,11 @@ $section->addInput(new Form_Input(
 
 $section->addInput(new Form_Checkbox(
 	'syncinterfaces',
-	'Disable General/DNSBL tab settings sync',
+	'Disable General/IP/DNSBL tab settings sync',
 	NULL,
 	$pconfig['syncinterfaces'] === 'on' ? true:false,
 	'on'
-))->setHelp('When selected, the \'General\' tab and \'DNSBL\' tab customizations will not be sync\'d');
+))->setHelp('When selected, the \'General\', \'IP\', and \'DNSBL\' tab customizations will not be sync\'d');
 $form->add($section);
 
 $section = new Form_Section('XMLRPC Replication Targets');
@@ -166,7 +169,7 @@ $rowcounter	= 0;
 
 foreach ($rowdata as $r_id => $row) {
 
-	$target = 'Target #' . ($r_id + 1); 
+	$target = 'Target #' . ($r_id + 1);
 
 	$group = new Form_Group($target);
 	$group->addClass('repeatable');

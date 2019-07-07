@@ -14,9 +14,12 @@ MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Systems administration tool for networks
 CPE_VENDOR=	gnu
 
+DEPRECATED=		OpenSSL 1.1.X is not supported.
+EXPIRATION_DATE=	2021-09-30
+
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
-CONFLICTS=	cfengine-2* cfengine-3.[124-9]* cfengine-devel-* \
+CONFLICTS=	cfengine-3.[124-9]* cfengine-devel-* \
 		cfengine3[0124-9]-* cfengine31[0-9]-*
 
 USE_RC_SUBR=	cf-execd cf-serverd
@@ -80,4 +83,13 @@ CONFIGURE_ARGS+=	--with-libvirt=${LOCALBASE}
 LIB_DEPENDS+=		libvirt.so:devel/libvirt
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1200085
+.if ${SSL_DEFAULT} != "openssl"
+BROKEN_FreeBSD_12=	fails to build with openssl111, install security/openssl
+BROKEN_FreeBSD_13=	fails to build with openssl111, install security/openssl
+.endif
+.endif
+
+.include <bsd.port.post.mk>

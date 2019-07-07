@@ -2,7 +2,7 @@
 
 PORTNAME=	uhd
 PORTVERSION=	3.10.3.0
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://files.ettus.com/binaries/images/
 DISTFILES=	${IMAGE_FILE}
@@ -28,9 +28,12 @@ CONFLICTS=	usrp-[0-9]*
 BROKEN_FreeBSD_12_aarch64=	fails to configure: Could not find standard set_new_handler function
 BROKEN_FreeBSD_12_armv6=	fails to configure: Could not find standard set_new_handler function
 BROKEN_FreeBSD_12_armv7=	fails to configure: Could not find standard set_new_handler function
+BROKEN_FreeBSD_13_aarch64=	fails to configure: Could not find standard set_new_handler function
+BROKEN_FreeBSD_13_armv6=	fails to configure: Could not find standard set_new_handler function
+BROKEN_FreeBSD_13_armv7=	fails to configure: Could not find standard set_new_handler function
 BROKEN_powerpc64=		fails to link: undefined reference to boost function
 
-USES=		compiler:c++11-lib cmake:outsource ncurses pkgconfig \
+USES=		compiler:c++11-lib cmake ncurses pkgconfig \
 		dos2unix python:2.7 shebangfix
 USE_LDCONFIG=		yes
 CMAKE_SOURCE_PATH=	${WRKSRC}/host
@@ -48,7 +51,7 @@ CMAKE_ARGS+=	-DPKG_LIB_DIR:STRING="share/uhd" -DUHD_TXRX_DEBUG_PRINTS="yes"
 
 IMAGE_FILE=	uhd-images_003.010.003.000-release.zip
 
-OPTIONS_DEFINE= DOXYGEN
+OPTIONS_DEFINE= DOXYGEN DOCS
 #OPTIONS_DEFAULT= DOXYGEN
 
 OPTIONS_SUB=yes

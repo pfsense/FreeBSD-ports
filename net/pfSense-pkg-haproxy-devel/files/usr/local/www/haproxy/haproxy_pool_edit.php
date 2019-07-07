@@ -30,7 +30,7 @@ require_once("haproxy/pkg_haproxy_tabs.inc");
 
 haproxy_config_init();
 
-$a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
+$a_pools = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
 
 $a_files = haproxy_get_fileslist();
 
@@ -410,8 +410,9 @@ if ($_POST) {
 		$input_errors[] = "The field 'Stats Node' contains invalid characters. Should be a string with digits(0-9), letters(A-Z, a-z), hyphen(-) or underscode(_)";
 	}
 	/* Ensure that our pool names are unique */
-	for ($i=0; isset($config['installedpackages']['haproxy']['ha_pools']['item'][$i]); $i++) {
-		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_pools']['item'][$i]['name']) && ($i != $id)) {
+	$a_backends = getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
+	for ($i=0; isset($a_backends[$i]); $i++) {
+		if (($_POST['name'] == $a_backends[$i]['name']) && ($i != $id)) {
 			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";
 		}
 	}
@@ -466,12 +467,6 @@ if ($_POST) {
 		// name changed:
 		$oldvalue = $pool['name'];
 		$newvalue = $_POST['name'];
-		if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-			$config['installedpackages']['haproxy']['ha_backends'] = array();
-		}
-		if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-			$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-		}
 		rename_backend_references($oldvalue, $newvalue);
 	}
 
@@ -481,6 +476,7 @@ if ($_POST) {
 	$pool['ha_servers']['item'] = $a_servers;
 	$pool['a_acl']['item'] = $pconfig['a_acl'];
 	$pool['a_actionitems']['item'] = $pconfig['a_actionitems'];
+	$pool['errorfiles']['item'] = $a_errorfiles;
 
 	update_if_changed("advanced", $pool['advanced'], base64_encode($_POST['advanced']));
 	update_if_changed("advanced_backend", $pool['advanced_backend'], base64_encode($_POST['advanced_backend']));

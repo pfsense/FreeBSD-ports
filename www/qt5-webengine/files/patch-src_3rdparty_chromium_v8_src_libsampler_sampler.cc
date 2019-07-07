@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/v8/src/libsampler/sampler.cc.orig	2018-03-20 07:19:58 UTC
+--- src/3rdparty/chromium/v8/src/libsampler/sampler.cc.orig	2019-01-16 10:59:47 UTC
 +++ src/3rdparty/chromium/v8/src/libsampler/sampler.cc
-@@ -499,9 +499,9 @@ void SignalHandler::FillRegisterState(void* context, R
+@@ -550,9 +550,9 @@ void SignalHandler::FillRegisterState(void* context, R
    state->sp = reinterpret_cast<void*>(mcontext.mc_rsp);
    state->fp = reinterpret_cast<void*>(mcontext.mc_rbp);
  #elif V8_HOST_ARCH_ARM

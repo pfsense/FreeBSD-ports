@@ -3,7 +3,7 @@
 
 PORTNAME=	codeblocks
 PORTVERSION=	17.12
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/Sources/${PORTVERSION}
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -14,17 +14,16 @@ COMMENT=	Open source, cross-platform, free C/C++ IDE
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-BROKEN_powerpc64=	fails to configure: checking for exit in -lboost_system-boost_system... no
-
 BUILD_DEPENDS=	zip:archivers/zip
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libhunspell-1.6.so:textproc/hunspell \
+		libhunspell-1.7.so:textproc/hunspell \
 		libtinyxml.so:textproc/tinyxml
 
-USES=		tar:xz autoreconf compiler desktop-file-utils fam:gamin localbase \
-		gettext-runtime libtool pathfix pkgconfig shared-mime-info
+USES=		autoreconf compiler:c++11-lang desktop-file-utils \
+		fam:gamin gettext-runtime libtool localbase \
+		pathfix pkgconfig shared-mime-info tar:xz
 USE_WX=		2.8
 USE_GNOME=	gtk20 cairo
 USE_XORG=	x11

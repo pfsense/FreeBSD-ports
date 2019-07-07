@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	percona
-DISTVERSION=	5.6.39-83.1
-PORTREVISION?=	1
+DISTVERSION=	5.6.42-84.2
+PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.6/Percona-Server-${DISTVERSION}/source/tarball/
 PKGNAMESUFFIX?=	56-server
@@ -16,12 +16,10 @@ LICENSE?=	GPLv2+
 
 BROKEN_armv6=		fails to compile: sql/mysqld.cc:198:19: error: cannot combine with previous 'type-name' declaration specifier
 BROKEN_armv7=		fails to compile: sql/mysqld.cc:198:19: error: cannot combine with previous 'type-name' declaration specifier
-NOT_FOR_ARCHS=		powerpc64
-NOT_FOR_ARCHS_REASON=	unsupported platform
 
 SLAVEDIRS=	databases/percona56-client \
 		databases/percona-pam-for-mysql
-USES=		bison cmake:noninja perl5 shebangfix
+USES=		bison compiler:c++11-lang cmake:insource,noninja perl5 shebangfix
 
 OPTIONS_DEFINE=	OPENSSL FASTMTX INNODBMEMCACHED TOKUDB
 OPTIONS_DEFAULT=	OPENSSL INNODBMEMCACHED
@@ -42,7 +40,7 @@ DATADIR=	${PREFIX}/share/mysql
 CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 		-DINSTALL_DOCREADMEDIR="share/doc/mysql" \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
-		-DINSTALL_INFODIR="info" \
+		-DINSTALL_INFODIR="${INFO_PATH}" \
 		-DINSTALL_LIBDIR="lib/mysql" \
 		-DINSTALL_MANDIR="man" \
 		-DINSTALL_MYSQLDATADIR="/var/db/mysql" \

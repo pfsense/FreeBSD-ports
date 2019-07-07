@@ -64,7 +64,7 @@
 			</table>
 		</div>
 		<p>Powered by: <strong>pfBlockerNG DNSBL</strong>&emsp;
-			<a target="_blank" href="http://pfblockerng.com">www.pfBlockerNG</a>
+			<a target="_blank" href="http://pfblockerng.com">pfBlockerNG.com</a>
 		</p>
 	</div>
 </body>

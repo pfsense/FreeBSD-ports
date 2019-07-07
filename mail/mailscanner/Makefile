@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	MailScanner
-PORTVERSION=	5.0.3
+PORTVERSION=	5.1.2
 PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	https://s3.amazonaws.com/msv5/release/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-${PATCHLEVEL}.nix
 
-MAINTAINER=	kkobb@skylinecorp.com
+MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Powerful virus/spam scanning framework for mail gateways
 
 LICENSE=	GPLv2
@@ -58,7 +58,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS} \
 
 CONFLICTS=	MailScanner-devel-[0-9]*
 
-PATCHLEVEL=	7
+PATCHLEVEL=	1
 
 USES=		perl5 shebangfix
 SHEBANG_GLOB=	* usr/lib/MailScanner/init/* usr/lib/MailScanner/wrapper/* \
@@ -161,6 +161,8 @@ do-build:
 
 	@${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},g' \
 		${WRKSRC}/usr/lib/${PORTNAME}/wrapper/*
+	@${REINPLACE_CMD} -e 's,/usr$$,&/local,' \
+		${WRKSRC}/etc/${PORTNAME}/virus.scanners.conf
 	@${FIND} ${WRKSRC} \( -name "*.bak" -or -name "*.orig" \) -delete
 
 do-install:

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	google-compute-engine-oslogin
-DISTVERSION=	1.3.0
+DISTVERSION=	1.4.3
 CATEGORIES=	sysutils
 
 MAINTAINER=	helen.koike@collabora.com
@@ -10,22 +10,17 @@ COMMENT=	OS Login Guest Environment for Google Compute Engine
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
-BROKEN_mips=		fails to compile: utils/oslogin_utils.cc:16:23: curl/curl.h: No such file or directory
-BROKEN_mips64=		fails to compile: utils/oslogin_utils.cc:16:23: curl/curl.h: No such file or directory
-BROKEN_powerpc64=	fails to compile: utils/oslogin_utils.cc:16:23: curl/curl.h: No such file or directory
-
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libjson-c.so:devel/json-c
 RUN_DEPENDS=	gsed:textproc/gsed \
 		${LOCALBASE}/lib/pam_mkhomedir.so:security/pam_mkhomedir
 
-USES=		gmake
+USES=		compiler:c++11-lang gmake localbase:ldflags
 USE_LDCONFIG=	yes
-USE_GCC=	any
 USE_GITHUB=	yes
 GH_ACCOUNT=	GoogleCloudPlatform
 GH_PROJECT=	compute-image-packages
-GH_TAGNAME=	20180611
+GH_TAGNAME=	20190124
 MAKE_ARGS=	JSON_INCLUDE_PATH=${LOCALBASE}/include/json-c \
 		BIN_INSTALL_PATH=/bin \
 		PAM_INSTALL_PATH=/lib \
@@ -37,8 +32,10 @@ WRKSRC_SUBDIR=	google_compute_engine_oslogin
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/etc/sudoers.d|${PREFIX}/etc/sudoers.d|g ; \
-		s|/usr/bin|${PREFIX}/bin|g' ${WRKSRC}/bin/google_oslogin_control
+	@${REINPLACE_CMD} -e 's!%%PREFIX%%!${PREFIX}!' \
+		${WRKSRC}/bin/google_oslogin_control \
+		${WRKSRC}/libnss_cache_oslogin/nss_cache_oslogin.c \
+		${WRKSRC}/nss_cache/nss_cache.cc
 
 post-install:
 	${LN} -sf libnss_${PORTNAME}-${DISTVERSION}.so ${STAGEDIR}${PREFIX}/lib/nss_oslogin.so.1

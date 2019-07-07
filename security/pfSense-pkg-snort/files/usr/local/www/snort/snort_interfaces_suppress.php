@@ -3,9 +3,9 @@
  * snort_interfaces_suppress.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2015 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -28,12 +28,15 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['suppress']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['suppress'])) {
 	$config['installedpackages']['snortglobal']['suppress'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['suppress']['item']))
+}
+if (!is_array($config['installedpackages']['snortglobal']['suppress']['item'])) {
 	$config['installedpackages']['snortglobal']['suppress']['item'] = array();
+}
 $a_suppress = &$config['installedpackages']['snortglobal']['suppress']['item'];
 $id_gen = count($config['installedpackages']['snortglobal']['suppress']['item']);
 
@@ -73,9 +76,7 @@ if (isset($_POST['del_btn'])) {
 		}
 		if ($need_save) {
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
-			conf_mount_rw();
 			sync_snort_package_config();
-			conf_mount_ro();
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
@@ -97,9 +98,7 @@ else {
 		else {
 			unset($a_suppress[$delbtn_list]);
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
-			conf_mount_rw();
 			sync_snort_package_config();
-			conf_mount_ro();
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}

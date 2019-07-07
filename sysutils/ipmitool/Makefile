@@ -13,7 +13,7 @@ COMMENT=	CLI to manage IPMI systems
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_SSL=	openssl-devel
+BROKEN_SSL=	openssl111
 
 USES=		cpe tar:bzip2 gmake readline ssl
 CPE_VENDOR=	sun
@@ -48,6 +48,12 @@ FREEIPMI_LIB_DEPENDS=	libfreeipmi.so:sysutils/freeipmi
 FREEIPMI_CPPFLAGS=	-I${LOCALBASE}/include
 FREEIPMI_LDFLAGS=	-L${LOCALBASE}/lib
 FREEIPMI_CONFIGURE_ENABLE=	intf-free
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src_plugins_lanplus_lanplus__crypt__impl.c
+.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${PERIODIC_DIR}

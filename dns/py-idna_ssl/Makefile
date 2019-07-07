@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	idna_ssl
-PORTVERSION=	1.0.1
+PORTVERSION=	1.1.0
 CATEGORIES=	dns python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,6 +22,6 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>=2.3:www/py-aiohttp@${PY_FLAVOR} \
 
 NO_ARCH=	yes
 USE_PYTHON=	autoplist distutils
-USES=		python:3.3-3.6
+USES=		python:3.3+
 
 .include <bsd.port.mk>

@@ -4,7 +4,7 @@
 # Please update update atril-lite also
 
 PORTNAME=	atril
-PORTVERSION=	1.20.1
+PORTVERSION=	1.20.2
 CATEGORIES=	graphics print mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -26,8 +26,8 @@ LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib \
 PORTSCOUT=	limitw:1,even
 SLAVEPORT?=	no
 
-USES=		desktop-file-utils gettext gmake libarchive libtool pathfix \
-		pkgconfig tar:xz
+USES=		compiler:c11 desktop-file-utils gettext gmake gnome libarchive \
+		libtool mate pathfix pkgconfig tar:xz
 USE_MATE=	icontheme
 USE_XORG=	ice sm x11
 USE_GNOME=	cairo gtk30 intlhack libxml2

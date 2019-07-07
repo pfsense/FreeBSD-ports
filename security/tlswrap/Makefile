@@ -3,7 +3,7 @@
 
 PORTNAME=	tlswrap
 PORTVERSION=	1.0.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://www.tlswrap.com/
 DISTNAME=	${PORTNAME}-1.04
@@ -18,6 +18,8 @@ CFLAGS+=	-I${OPENSSLINC}
 
 OPTIONS_DEFINE=	DOCS
 
+.include <bsd.port.pre.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -E 's,^(CC|CFLAGS|LDFLAGS).*=,\1?=,g' \
 		${WRKSRC}/Makefile.in
@@ -29,4 +31,4 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

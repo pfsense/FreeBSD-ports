@@ -1,4 +1,5 @@
 man/man1/desktop-installer.1.gz
+sbin/battery_shutdown.sh
 sbin/desktop-installer
 %%DATADIR%%/90-vboxguest.fdi
 %%DATADIR%%/GNOME2/xinitrc

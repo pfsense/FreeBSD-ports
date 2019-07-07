@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	mysql
-PORTVERSION=	5.5.60
-PORTREVISION?=	0
+PORTVERSION=	5.5.62
+PORTREVISION?=	1
 CATEGORIES=	databases ipv6
 MASTER_SITES=	MYSQL/MySQL-5.5
 PKGNAMESUFFIX?=	55-server
@@ -14,7 +14,7 @@ COMMENT?=	Multithreaded SQL database (server)
 LICENSE=	GPLv2
 
 SLAVEDIRS=	databases/mysql55-client
-USES=		cmake:noninja readline shebangfix
+USES=		cmake:insource,noninja readline shebangfix
 CXXFLAGS+=	${CPPFLAGS}
 NO_OPTIONS_SORT=yes
 
@@ -49,6 +49,12 @@ SHEBANG_FILES=	scripts/*.pl* scripts/*.sh
 .endif
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
+SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
+.else
+SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
+.endif
 
 .if ${PORT_OPTIONS:MSSL}
 CMAKE_ARGS+=	-DWITH_SSL=bundled

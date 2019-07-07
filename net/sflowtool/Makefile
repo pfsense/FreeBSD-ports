@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sflowtool
-PORTVERSION=	3.41
+PORTVERSION=	5.02
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -18,10 +18,9 @@ GH_ACCOUNT=	sflow
 
 PLIST_FILES=	bin/sflowtool
 PORTDOCS=	README
-PORTEXAMPLES=	README ipTopTalkers ipTrafficMatrix sflowRRDChart.cgi \
-		sflowRRDLoad sflowenable
+PORTEXAMPLES=	sflowenable
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

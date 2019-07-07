@@ -1024,6 +1024,8 @@ share/dbus-1/interfaces/kf5_org.freedesktop.PowerManagement.Inhibit.xml
 share/dbus-1/interfaces/kf5_org.freedesktop.PowerManagement.xml
 share/dbus-1/interfaces/kf5_org.kde.Solid.Networking.Client.xml
 share/dbus-1/interfaces/kf5_org.kde.Solid.PowerManagement.PolicyAgent.xml
+share/doc/HTML/ca/kcontrol5/kcm_ssl/details.png
+share/doc/HTML/ca/kcontrol5/kcm_ssl/module.png
 share/doc/HTML/ca/kcontrol5/kcm_ssl/index.cache.bz2
 share/doc/HTML/ca/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/ca/kdebugdialog5/index.cache.bz2
@@ -1068,6 +1070,8 @@ share/doc/HTML/sv/kcontrol5/kcm_ssl/index.cache.bz2
 share/doc/HTML/sv/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/sv/kdebugdialog5/index.cache.bz2
 share/doc/HTML/sv/kdebugdialog5/index.docbook
+share/doc/HTML/ru/kcontrol5/kcm_ssl/index.cache.bz2
+share/doc/HTML/ru/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/uk/kcontrol5/kcm_ssl/index.cache.bz2
 share/doc/HTML/uk/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/uk/kdebugdialog5/index.cache.bz2
@@ -1818,7 +1822,6 @@ share/kservicetypes5/qimageio_plugin.desktop
 share/locale/af/LC_MESSAGES/kdelibs4support.mo
 share/locale/ar/LC_MESSAGES/kdelibs4support.mo
 share/locale/as/LC_MESSAGES/kdelibs4support.mo
-share/locale/ast/LC_MESSAGES/kdelibs4support.mo
 share/locale/be/LC_MESSAGES/kdelibs4support.mo
 share/locale/be@latin/LC_MESSAGES/kdelibs4support.mo
 share/locale/bg/LC_MESSAGES/kdelibs4support.mo

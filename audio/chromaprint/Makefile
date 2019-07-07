@@ -2,7 +2,7 @@
 
 PORTNAME=	chromaprint
 PORTVERSION=	1.4.3
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/acoustid/${PORTNAME}/releases/download/v${PORTVERSION}/
 
@@ -15,7 +15,7 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE.md
 
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 
-USES=		cmake:outsource compiler:c++11-lib pathfix
+USES=		cmake compiler:c++11-lib pathfix
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DBUILD_TOOLS:BOOL=true \
@@ -23,7 +23,7 @@ CMAKE_ARGS=	-DBUILD_TOOLS:BOOL=true \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-v${PORTVERSION}
 
-OPTIONS_DEFINE=		DOXYGEN TEST
+OPTIONS_DEFINE=		DOCS DOXYGEN TEST
 
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen \
 			dot:graphics/graphviz

@@ -21,6 +21,7 @@
 
 function frr_generate_config_ospf6() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
+	unlink_if_exists("{$frr_config_base}/ospf6d.conf");
 	/* Populate FRR Global Settings */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
@@ -69,6 +70,9 @@ function frr_generate_config_ospf6() {
 					continue;
 				}
 				$conffile .= "interface {$realif}\n" ;
+				if (isset($conf['instanceid']) && (strlen($conf['instanceid']) > 0)) {
+					$conffile .= "  ipv6 ospf6 instance-id {$conf['instanceid']}\n";
+				}
 				if (!empty($conf['networktype'])) {
 					$conffile .= "  ipv6 ospf6 network {$conf['networktype']}\n";
 				}
@@ -91,12 +95,13 @@ function frr_generate_config_ospf6() {
 					$conffile .= "  ipv6 ospf6 passive\n";
 				}
 				list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface'], true);
-				if (empty($interface_ip)) {
-					continue;
-				}
 				$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['area'];
+				if (is_subnetv6("{$subnet}/{$interface_subnet}")) {
+					$cost = (is_numeric($conf['metric']) && ($conf['metric'] >= 0)) ? $conf['metric'] : 1;
+					$router_interface_areas .= "  area {$interface_area} range {$subnet}/{$interface_subnet} cost {$cost}\n";
+					$router_interface_areas .= "  area {$interface_area} export-list dnr6-list\n";
+				}
 				$router_interface_areas .= "  interface {$realif} area {$interface_area}\n";
-				$interface_networks[] = array( "subnet" => "{$subnet}/{$interface_subnet}", "area" => $interface_area);
 			}
 		}
 		$redist = "";
@@ -113,7 +118,8 @@ function frr_generate_config_ospf6() {
 				} else {
 					$area = ($redistr['routearea'] == "") ? $ospf6d_conf['area'] : $redistr['routearea'];
 					$cost = (is_numeric($redistr['routearea']) && ($redistr['routearea'] >= 0)) ? $redistr['routearea']: 1;
-					$redist .= "  area {$area} range {$redistr['routevalue']} cost {$cost}\n";
+					// Disable for now. Not yet supported in FRR.
+					// $redist .= "  area {$area} range {$redistr['routevalue']} cost {$cost}\n";
 				}
 			}
 		}
@@ -167,15 +173,6 @@ function frr_generate_config_ospf6() {
 			$spf_maxhold = $spf_minhold * 10;
 			$spf_delay = ($ospf6d_conf['spfdelay']) ? $ospf6d_conf['spfdelay'] : 200;
 			$conffile .= "  timers throttle spf {$spf_delay} {$spf_minhold} {$spf_maxhold}\n";
-		}
-		if (is_array($interface_networks)) {
-			foreach ($interface_networks as $ifn) {
-				if (is_subnetv6($ifn['subnet'])) {
-					$cost = (is_numeric($conf['metric']) && ($conf['metric'] >= 0)) ? $conf['metric'] : 1;
-					$conffile .= "  area {$ifn['area']} range {$ifn['subnet']} cost {$cost}\n";
-					$conffile .= "  area {$ifn['area']} export-list dnr6-list\n";
-				}
-			}
 		}
 		if (!empty($redist)) {
 			$conffile .= $redist;

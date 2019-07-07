@@ -3,9 +3,9 @@
  * snort_post_install.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,26 +64,18 @@ unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
 /* Set flag for post-install in progress */
 $g['snort_postinstall'] = true;
 
-/* Set conf partition to read-write so we can make changes there */
-conf_mount_rw();
-
-/* cleanup default files */
-@rename("{$snortdir}/snort.conf-sample", "{$snortdir}/snort.conf");
-@rename("{$snortdir}/threshold.conf-sample", "{$snortdir}/threshold.conf");
-@rename("{$snortdir}/sid-msg.map-sample", "{$snortdir}/sid-msg.map");
-@rename("{$snortdir}/unicode.map-sample", "{$snortdir}/unicode.map");
-@rename("{$snortdir}/file_magic.conf-sample", "{$snortdir}/file_magic.conf");
-@rename("{$snortdir}/classification.config-sample", "{$snortdir}/classification.config");
-@rename("{$snortdir}/generators-sample", "{$snortdir}/generators");
-@rename("{$snortdir}/reference.config-sample", "{$snortdir}/reference.config");
-@rename("{$snortdir}/gen-msg.map-sample", "{$snortdir}/gen-msg.map");
-@rename("{$snortdir}/attribute_table.dtd-sample", "{$snortdir}/attribute_table.dtd");
-
-/* fix up the preprocessor rules filenames from a PBI package install */
-$preproc_rules = array("decoder.rules", "preprocessor.rules", "sensitive-data.rules");
-foreach ($preproc_rules as $file) {
-	if (file_exists("{$snortdir}/preproc_rules/{$file}-sample"))
-		@rename("{$snortdir}/preproc_rules/{$file}-sample", "{$snortdir}/preproc_rules/{$file}");
+/*****************************************************************/
+/* In the event this is a reinstall (or update), then recreate   */
+/* critical map, config and preprocessor rules files from the    */
+/* package sample templates.                                     */
+/*****************************************************************/
+$map_files = array("/unicode.map", "/gen-msg.map", "/classification.config", "/reference.config", 
+		   "/attribute_table.dtd", "/preproc_rules/preprocessor.rules", 
+		   "/preproc_rules/decoder.rules" , "/preproc_rules/sensitive-data.rules" );
+foreach ($map_files as $f) {
+	if (file_exists(SNORTDIR .  $f . "-sample") && !file_exists(SNORTDIR . $f)) {
+		copy(SNORTDIR .  $f . "-sample", SNORTDIR . $f);
+	}
 }
 
 /* Remove any previously installed scripts since we rebuild them */
@@ -101,7 +93,7 @@ safe_mkdir(SNORT_APPID_ODP_PATH);
 /* by removing it as a separately installed package.                 */
 $pkgid = get_package_id("Dashboard Widget: Snort");
 if ($pkgid >= 0) {
-	log_error(gettext("[Snort] Removing legacy 'Dashboard Widget: Snort' package because the widget is now part of the Snort package."));
+	syslog(LOG_NOTICE, gettext("[Snort] Removing legacy 'Dashboard Widget: Snort' package because the widget is now part of the Snort package."));
 	unset($config['installedpackages']['package'][$pkgid]);
 	unlink_if_exists("/usr/local/pkg/widget-snort.xml");
 }
@@ -124,7 +116,7 @@ while (snort_cron_job_exists("snort2c", FALSE)) {
 	$cron_count++;
 }
 if ($cron_count > 0)
-	log_error(gettext("[Snort] Removed {$cron_count} duplicate 'remove_blocked_hosts' cron task(s)."));
+	syslog(LOG_NOTICE, gettext("[Snort] Removed {$cron_count} duplicate 'remove_blocked_hosts' cron task(s)."));
 
 /*********************************************************/
 /* END OF BUG FIX CODE                                   */
@@ -132,7 +124,7 @@ if ($cron_count > 0)
 
 /* remake saved settings */
 if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
-	log_error(gettext("[Snort] Saved settings detected... rebuilding installation with saved settings."));
+	syslog(LOG_NOTICE, gettext("[Snort] Saved settings detected... rebuilding installation with saved settings."));
 	update_status(gettext("Saved settings detected.") . "\n");
 
 	/****************************************************************/
@@ -160,7 +152,7 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 					@rename("{$snortlogdir}snort_{$if_real}{$old_uuid}/", "{$snortlogdir}snort_{$if_real}{$new_uuid}/");
 				$snortcfg['uuid'] = $new_uuid;
 				$uuids[$new_uuid] = $if_real;
-				log_error(gettext("[Snort] updated UUID for interface " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . " from {$old_uuid} to {$new_uuid}."));
+				syslog(LOG_NOTICE, gettext("[Snort] updated UUID for interface " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . " from {$old_uuid} to {$new_uuid}."));
 				$fixed_duplicate = TRUE;
 			}
 		}
@@ -174,11 +166,10 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	update_status(gettext("Migrating settings to new configuration..."));
 	include('/usr/local/pkg/snort/snort_migrate_config.php');
 	update_status(gettext(" done.") . "\n");
-	log_error(gettext("[Snort] Downloading and updating configured rule sets."));
+	syslog(LOG_NOTICE, gettext("[Snort] Downloading and updating configured rule sets."));
 	include('/usr/local/pkg/snort/snort_check_for_rule_updates.php');
 	update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
-	conf_mount_rw();
 
 	/* Create the snort.conf files for each enabled interface */
 	$snortconf = $config['installedpackages']['snortglobal']['rule'];
@@ -187,6 +178,12 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 		$snort_uuid = $snortcfg['uuid'];
 		$snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}";
 		update_status(gettext("Generating configuration for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
+
+		// Remove any existing dynamic preprocessor library files from
+		// the snort_dynamicpreprocessor directory for the interface.
+		// The snort.conf file generation code farther down will copy
+		// in new ones from '/usr/local/lib/snort_dynamicpreprocessor'.
+		mwexec("/bin/rm -rf {$snortcfgdir}/snort_dynamicpreprocessor/*.so");
 
 		// Pull in the PHP code that generates the snort.conf file
 		// variables that will be substituted further down below.
@@ -233,11 +230,8 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 
 	$rebuild_rules = false;
 	update_status(gettext("Finished rebuilding Snort configuration files.") . "\n");
-	log_error(gettext("[Snort] Finished rebuilding installation from saved settings."));
+	syslog(LOG_NOTICE, gettext("[Snort] Finished rebuilding installation from saved settings."));
 }
-
-/* We're finished with conf partition mods, return to read-only */
-conf_mount_ro();
 
 /* If an existing Snort Dashboard Widget container is not found, */
 /* then insert our default Widget Dashboard container.           */
@@ -250,7 +244,7 @@ write_config("Snort pkg v{$config['installedpackages']['package'][get_package_id
 
 /* Done with post-install, so clear flag */
 unset($g['snort_postinstall']);
-log_error(gettext("[Snort] Package post-installation tasks completed..."));
+syslog(LOG_NOTICE, gettext("[Snort] Package post-installation tasks completed..."));
 return true;
 
 ?>

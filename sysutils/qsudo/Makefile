@@ -2,6 +2,7 @@
 
 PORTNAME=	qsudo
 DISTVERSION=	201711240000
+PORTREVISION=	2
 CATEGORIES=	sysutils security
 
 MAINTAINER=	jt@ixsystems.com
@@ -12,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 RUN_DEPENDS=	sudo:security/sudo
 
-USES=		qmake qt:5
+USES=		compiler:c++11-lang qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	trueos
 GH_TAGNAME=	815e31c

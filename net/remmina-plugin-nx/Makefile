@@ -11,6 +11,6 @@ USE_XORG+=	x11 xkbfile
 
 MASTERDIR=	${.CURDIR}/../remmina-plugins
 
-LIB_DEPENDS+=	libssh_threads.so:security/libssh
+LIB_DEPENDS+=	libssh.so:security/libssh
 
 .include "${MASTERDIR}/Makefile"

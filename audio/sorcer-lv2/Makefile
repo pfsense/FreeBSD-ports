@@ -3,7 +3,7 @@
 PORTNAME=	Sorcer
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	1.1.3
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	lv2>0:audio/lv2 \
 		${LOCALBASE}/include/boost/circular_buffer.hpp:devel/boost-libs
 LIB_DEPENDS=	libntk.so:x11-toolkits/ntk
 
-USES=		cmake:outsource pkgconfig
+USES=		cmake pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	openAVproductions
 GH_PROJECT=	openAV-${PORTNAME}

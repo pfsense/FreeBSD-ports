@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	puppetdb-terminus
-PORTVERSION=	5.2.2
+PORTVERSION=	5.2.7
 CATEGORIES=	databases ruby
-MASTER_SITES=	http://downloads.puppetlabs.com/puppetdb/
+MASTER_SITES=	https://downloads.puppetlabs.com/puppetdb/
 PKGNAMESUFFIX=	5
 DISTNAME=	puppetdb-${PORTVERSION}
 
@@ -14,7 +14,7 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	puppet5>=0:sysutils/puppet5
 
-CONFLICTS_INSTALL=	puppetdb-terminus3-* puppetdb-terminus4-*
+CONFLICTS_INSTALL=	puppetdb-terminus4-* puppetdb-terminus6-*
 USE_RUBY=	yes
 NO_BUILD=	yes
 USES=		gmake

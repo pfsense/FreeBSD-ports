@@ -3,6 +3,7 @@
 
 PORTNAME=	cln
 PORTVERSION=	1.3.4
+PORTREVISION=	1
 CATEGORIES=	math devel
 MASTER_SITES=	http://www.ginac.de/CLN/ \
 		http://www.mirrors.wiretapped.net/security/cryptography/libraries/math/cln/ \
@@ -25,6 +26,9 @@ INFO=		cln
 
 .if ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7
 CPPFLAGS+=	-DNO_ASM
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src_base_cl__low.h \
+		${PATCHDIR}/extra-patch-src_base_low_cl__low__div.cc \
+		${PATCHDIR}/extra-patch-src_base_low_cl__low__mul.cc
 .endif
 
 .include <bsd.port.post.mk>

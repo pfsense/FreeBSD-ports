@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rssroll
-PORTVERSION=	0.5
-PORTREVISION=	1
+PORTVERSION=	0.6.2
 CATEGORIES=	www
 
 MAINTAINER=	koue@chaosophia.net
@@ -10,14 +9,29 @@ COMMENT=	RSS collector in C
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libxml2.so:textproc/libxml2 \
-		libsqlite3.so:databases/sqlite3
+LIB_DEPENDS=	libcurl.so:ftp/curl
 
+USES=		sqlite:3
+USE_GNOME=	libxml2
+
+CEZ_VERSION=	1.05
 USE_GITHUB=	yes
 GH_ACCOUNT=	koue
 
-GNU_CONFIGURE=	yes
+GH_PROJECT=	rssroll:rssroll \
+		libcez:libcez
+GH_TAGNAME=	${CEZ_VERSION}:libcez
+
+CFLAGS+=	-I${WRKSRC_libcez}/src/config \
+		-I${WRKSRC_libcez}/src/fossil \
+		-I${WRKSRC_libcez}/src/misc
+
+LDFLAGS+=	-L${WRKSRC_libcez}/src/config \
+		-L${WRKSRC_libcez}/src/fossil \
+		-L${WRKSRC_libcez}/src/misc
+
+pre-configure:
+	@(cd ${WRKSRC_libcez} && ${SETENV} ${MAKE_ENV} ${MAKE})
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/rssroll ${STAGEDIR}${PREFIX}/bin

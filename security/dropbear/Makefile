@@ -53,6 +53,8 @@ TWOFISH128_DESC=	Enable Twofish128-based encryption
 TWOFISH256_DESC=	Enable Twofish256-based encryption
 
 3DES_IMPLIES=	CTR
+CBC_IMPLIES=	CTR
+
 STATIC_CONFIGURE_ENABLE=	static
 
 post-patch:

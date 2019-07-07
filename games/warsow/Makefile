@@ -3,7 +3,7 @@
 
 PORTNAME=	warsow
 PORTVERSION=	1.51
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	http://update.warsow.net/mirror/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -13,6 +13,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Futuristic, fast-paced first person shooter
 
 LICENSE=	GPLv2
+
+BROKEN=		fails to build
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 RUN_DEPENDS=	${LOCALBASE}/${DATADIR_REL}/basewsw/data1_15.pk3:games/warsow-data

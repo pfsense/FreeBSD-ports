@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Redis-Fast
-PORTVERSION=	0.21
+PORTVERSION=	0.22
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,7 +14,6 @@ LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	p5-File-Which>=0:sysutils/p5-File-Which \
-		p5-Module-Build>=0.4005:devel/p5-Module-Build \
 		p5-Module-Build-XSUtil>=0.02:devel/p5-Module-Build-XSUtil \
 		gmake:devel/gmake
 RUN_DEPENDS=	p5-Try-Tiny>=0:lang/p5-Try-Tiny

@@ -3,7 +3,7 @@
 PORTNAME=	erd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.0.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +12,7 @@ COMMENT=	AcesIII electron repulsion integrals
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake:outsource fortran
+USES=		cmake fortran
 USE_GITHUB=	yes
 GH_ACCOUNT=	psi4
 USE_LDCONFIG=	yes

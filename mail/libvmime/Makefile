@@ -4,7 +4,7 @@
 PORTNAME=	libvmime
 PORTVERSION=	0.9.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	mail
 
 MAINTAINER=	ports@FreeBSD.org
@@ -20,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	kisli
 GH_PROJECT=	vmime
 
-USES=		cmake:outsource,noninja compiler:c++11-lib iconv pkgconfig
+USES=		cmake:noninja compiler:c++11-lib iconv pkgconfig
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DLIB_SUFFIX:STRING="" \

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	eom
-PORTVERSION=	1.20.0
+PORTVERSION=	1.20.1
+PORTREVISION=	1
 CATEGORIES=	graphics mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -21,8 +22,8 @@ LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		desktop-file-utils gettext gmake jpeg libtool localbase \
-		pathfix pkgconfig tar:xz
+USES=		compiler:c11 desktop-file-utils gettext gmake gnome \
+		jpeg libtool localbase mate pathfix pkgconfig tar:xz
 USE_MATE=	desktop icontheme
 USE_XORG=	x11
 USE_GNOME=	cairo gnomeprefix gtk30 intltool introspection \
@@ -35,7 +36,7 @@ INSTALL_TARGET=	install-strip
 GLIB_SCHEMAS=	org.mate.eom.gschema.xml \
 		org.mate.eom.enums.xml
 
-OPTIONS_DEFINE=	EXIF EXEMPI
+OPTIONS_DEFINE=	EXIF EXEMPI DOCS
 OPTIONS_DEFAULT=EXIF EXEMPI
 
 EXEMPI_DESC=		XMP support

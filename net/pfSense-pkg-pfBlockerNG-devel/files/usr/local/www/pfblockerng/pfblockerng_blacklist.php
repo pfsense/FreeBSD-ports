@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -83,7 +83,8 @@ if (!empty($blacklist_types)) {
 	}
 }
 
-$pfb['bconfig']	= &$config['installedpackages']['pfblockerngblacklist'] ?: array();
+init_config_arr(array('installedpackages', 'pfblockerngblacklist'));
+$pfb['bconfig']	= &$config['installedpackages']['pfblockerngblacklist'];
 
 $pconfig = array();
 $pconfig['blacklist_enable']		= $pfb['bconfig']['blacklist_enable']				?: 'Disable';
@@ -115,10 +116,14 @@ if (isset($blacklist_types)) {
 if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 
 	$rowid		= 0;
-	$savemsg	= '';
 	$a_list		= array();
 	$config_mod	= FALSE;
-	unset($input_errors, $savemsg);
+	if (isset($input_errors)) {
+		unset($input_errors);
+	}
+	if (isset($savemsg)) {
+		unset($savemsg);
+	}
 
 	if (isset($_POST['blacklist_enable'])) {
 		$pfb['bconfig']['blacklist_enable']	= $_POST['blacklist_enable'];
@@ -134,6 +139,8 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 
 		if (isset($_POST['blacklist_selected'])) {
 			$pfb['bconfig']['blacklist_selected']	= implode(',', (array)$_POST['blacklist_selected']);
+		} else {
+			$pfb['bconfig']['blacklist_selected']	= '';
 		}
 		if (isset($_POST['blacklist_freq'])) {
 			$pfb['bconfig']['blacklist_freq']	= $_POST['blacklist_freq'];
@@ -149,20 +156,20 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 			foreach (array('TITLE', 'XML', 'FEED', 'SIZE') as $value) {
 				$lvalue = strtolower($value);	// Config variables must be in lowercase
 				if (isset($blacklist_types[$type][$value])) {
-					$list[$lvalue] = htmlspecialchars($blacklist_types[$type][$value]);
+					$list[$lvalue] = pfb_filter($blacklist_types[$type][$value], 1);
 				}
 			}
 
 			$list['selected'] = implode(',', (array)$_POST['blacklist_' . $type]) ?: '';
 
 			if (isset($_POST['blacklist_' . $type . '_username'])) {
-				$list['username'] = filter_var($_POST['blacklist_' . $type . '_username'], FILTER_SANITIZE_STRING);
+				$list['username'] = pfb_filter($_POST['blacklist_' . $type . '_username'], 1);
 			}
 
 			if (isset($_POST['blacklist_' . $type . '_password'])) {
 				if ($_POST['blacklist_' . $type . '_password'] == $_POST['blacklist_' . $type . '_password_confirm']) {
 					if ($_POST['blacklist_' . $type . '_password'] != DMYPWD) {
-						$list['password'] = filter_var($_POST['blacklist_' . $type . '_password'], FILTER_SANITIZE_STRING);
+						$list['password'] = pfb_filter($_POST['blacklist_' . $type . '_password'], 1);
 					}
 				} else {
 					$input_errors[] = "[ {$setting['TITLE']} ] The password does not match the confirm password!";
@@ -219,7 +226,6 @@ display_top_tabs($tab_array, true);
 
 $tab_array	= array();
 $tab_array[]	= array(gettext('DNSBL Feeds'),		false,	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
-$tab_array[]	= array(gettext('DNSBL EasyList'),	false,	'/pfblockerng/pfblockerng_category.php?type=easylist');
 $tab_array[]	= array(gettext('DNSBL Category'),	true,	'/pfblockerng/pfblockerng_blacklist.php');
 display_top_tabs($tab_array, true);
 
@@ -412,8 +418,8 @@ foreach ($blacklist_types as $type => $setting) {
 
 	$group = new Form_Group(NULL);
 	$btnenableall = new Form_Button(
-		'enableall[' . $type . ']',
-		gettext('Enable All'),
+        	'enableall[' . $type . ']',
+        	gettext('Enable All'),
 		NULL,
 		'fa-toggle-on'
 	);
@@ -437,7 +443,7 @@ foreach ($blacklist_types as $type => $setting) {
 
 print($form);
 print_callout('<p><strong>Setting changes are applied via CRON or \'Force Update|Reload\' only!</strong><br /><br />
-		DNSBL Categories and EasyList(s) are processed first, followed by the DNSBL Groups.<br />
+		DNSBL Category Feeds are processed first, followed by the DNSBL Groups.<br />
 		DNSBL Groups can be prioritized first, by selecting the \'Group Order\' option.</p>');
 ?>
 

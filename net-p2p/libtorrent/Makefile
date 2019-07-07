@@ -1,30 +1,25 @@
 # $FreeBSD$
 
 PORTNAME=	libtorrent
-PORTVERSION=	0.13.6
-PORTREVISION=	5
+PORTVERSION=	0.13.7
+PORTREVISION=	3
 CATEGORIES=	net-p2p
-MASTER_SITES=	http://rtorrent.net/downloads/
+MASTER_SITES=	https://rtorrent.net/downloads/
 
-MAINTAINER=	pipfstarrd@openmailbox.org
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	BitTorrent Library written in C++
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_SSL=	openssl-devel
-
-CONFLICTS_INSTALL=	rblibtorrent-[0-9]* rblibtorrent-devel-[0-9]*
-
-USES=		compiler:c++11-lang libtool pathfix pkgconfig ssl
+USES=		autoreconf compiler:c++11-lang libtool pathfix pkgconfig ssl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-debug
 CONFIGURE_ENV=	OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto" OPENSSL_CFLAGS="-I\
 								${OPENSSLINC}"
-INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	IPV6 KQUEUE
+OPTIONS_DEFINE=	KQUEUE
 OPTIONS_DEFAULT=KQUEUE
 KQUEUE_DESC=	Use kqueue(2) support
 
@@ -32,7 +27,6 @@ KQUEUE_DESC=	Use kqueue(2) support
 # linking libtorrent to avoid linking with base's libcrypto.
 MAKE_ARGS=	LDFLAGS="${LDFLAGS}"
 
-IPV6_CONFIGURE_ENABLE=	ipv6
 KQUEUE_CONFIGURE_WITH=	kqueue
 
 .include <bsd.port.pre.mk>
@@ -45,22 +39,7 @@ KQUEUE_CONFIGURE_WITH=	kqueue
 CONFIGURE_ARGS+=--disable-instrumentation
 .endif
 
-# Workaround to build on >= 10.x
-.if ${OPSYS} == FreeBSD
-USE_CXXSTD=	c++11
-EXTRA_PATCHES+=	${FILESDIR}/extra-clang
-.endif
-
-post-patch:
-.if ${OPSYS} == FreeBSD
-	@${FIND} ${WRKSRC} \( -name '*.h' -o -name '*.cc' \) -type f \
-		-exec ${REINPLACE_CMD} -e 's/tr1::/std::/g' {} \; \
-		-exec ${REINPLACE_CMD} -e 's/std::std::/std::/g' {} \; \
-		-exec ${REINPLACE_CMD} -e '/namespace tr1/d' {} \; \
-		-exec ${REINPLACE_CMD} -e '/include/s,tr1/,,' {} \;
-	@${REINPLACE_CMD} -e 's/\.assign/.fill/' \
-		${WRKSRC}/src/torrent/utils/extents.h \
-		${WRKSRC}/src/torrent/utils/log.cc
-.endif
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtorrent.so.20.0.0
 
 .include <bsd.port.post.mk>

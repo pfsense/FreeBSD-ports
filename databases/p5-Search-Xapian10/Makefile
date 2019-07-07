@@ -5,7 +5,7 @@ PORTNAME=	Search-Xapian
 PORTVERSION=	1.0.23.0
 PORTREVISION=	2
 CATEGORIES=	databases perl5
-MASTER_SITES=	http://oligarchy.co.uk/xapian/${PORTVERSION:R}/
+MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION:R}/
 PKGNAMEPREFIX=	p5-
 PKGNAMESUFFIX=	10
 
@@ -15,8 +15,8 @@ COMMENT=	Perl XS frontend to the Xapian C++ search library
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	xapian-core10>=1.0.22:databases/xapian-core10
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	xapian-core10>=1.0.22:databases/xapian-core10
 
 CONFLICTS_INSTALL=	p5-Search-Xapian12
 

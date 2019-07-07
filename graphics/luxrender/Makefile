@@ -3,7 +3,7 @@
 
 PORTNAME=	luxrender
 DISTVERSION?=	1.6
-PORTREVISION=	9
+PORTREVISION=	13
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/luxrender/lux/get/ \
 		https://bitbucket.org/luxrender/luxrays/get/:lr
@@ -51,11 +51,6 @@ OPTIONS_DEFAULT=	X11
 FREEIMAGE_DESC=	Build with FreeImage (otherwise use OIIO only)
 FREEIMAGE_CMAKE_ON=	-DLUX_USE_FREEIMAGE:BOOL=ON
 FREEIMAGE_LIB_DEPENDS=	libfreeimage.so:graphics/freeimage
-
-X11_DESC=	Build GUI executable (requires Qt 4)
-X11_USES=	qt:4
-X11_USE=	QT=moc_build,qmake_build,rcc_build,uic_build,corelib,gui
-X11_PLIST_FILES=	bin/luxrender
 
 post-extract:
 	@${LN} -sf ${PORTNAME}-luxrays-${LUXRAYS_REV} ${WRKDIR}/luxrays

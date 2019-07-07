@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	amqp
-PORTVERSION=	1.9.3
+PORTVERSION=	1.9.4
 CATEGORIES=	net pear
 
 MAINTAINER=	jnlin@freebsd.cs.nctu.edu.tw

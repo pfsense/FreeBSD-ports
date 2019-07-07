@@ -3,7 +3,7 @@
 
 PORTNAME=	skytools
 PORTVERSION=	3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	http://pgfoundry.org/frs/download.php/3622/
 
@@ -25,6 +25,8 @@ SHEBANG_FILES=	setup_pkgloader.py setup_skytools.py \
 CONFIGURE_ARGS=	--with-python=${PYTHON_CMD} \
 		--docdir=${EXAMPLESDIR} \
 		--with-pgconfig=${LOCALBASE}/bin/pg_config
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e 's=share/doc=share/examples=' ${WRKSRC}/setup_skytools.py

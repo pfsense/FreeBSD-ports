@@ -14,6 +14,8 @@ LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2=	${WRKSRC}/doc/LICENSE.GPL
 LICENSE_FILE_LGPL21=	${WRKSRC}/doc/LICENSE.LGPL
 
+BROKEN_FreeBSD=	fails to compile with clang6 or later
+
 LIB_DEPENDS=	libscim-1.0.so:textproc/scim
 
 USES=		gettext gmake pkgconfig

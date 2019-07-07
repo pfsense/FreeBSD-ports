@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	yaml
-PORTVERSION=	2.0.2
+PORTVERSION=	2.0.4
 CATEGORIES=	textproc pear
 
 MAINTAINER=	dbaio@FreeBSD.org
@@ -14,6 +14,5 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
 
 USES=		php:pecl
-IGNORE_WITH_PHP=	56
 
 .include <bsd.port.mk>

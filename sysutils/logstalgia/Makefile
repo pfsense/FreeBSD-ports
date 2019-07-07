@@ -4,6 +4,7 @@
 PORTNAME=	logstalgia
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	1.1.2
+PORTREVISION=	5
 CATEGORIES=	sysutils www
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -11,8 +12,6 @@ COMMENT=	Website access log visualization tool
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_powerpc64=	fails to compile: custom.cpp: 'sscanf' was not declared in this scope
 
 BUILD_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:math/glm
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \

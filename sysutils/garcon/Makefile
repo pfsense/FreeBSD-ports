@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	garcon
-PORTVERSION=	0.6.1
+PORTVERSION=	0.6.2
 CATEGORIES=	sysutils xfce
 MASTER_SITES=	XFCE/src/xfce/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
@@ -17,19 +17,21 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-USES=		gettext-tools gmake libtool pathfix pkgconfig tar:bzip2 xfce:gtk3
-USE_GNOME=	glib20 gtk20 gtk30 intltool cairo gdkpixbuf2
+USES=		gettext-tools gmake gnome libtool pathfix pkgconfig \
+		tar:bzip2 xfce:gtk3
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20 gtk30 intltool
 USE_XFCE=	libmenu
 USE_LDCONFIG=	yes
 
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS=	--without-html-dir \
 		--enable-gtk2
 
 OPTIONS_DEFINE=		NLS
-NLS_USES=		gettext-runtime
-NLS_CONFIGURE_ENABLE=	nls
 OPTIONS_SUB=		yes
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext-runtime
 
 .include <bsd.port.mk>

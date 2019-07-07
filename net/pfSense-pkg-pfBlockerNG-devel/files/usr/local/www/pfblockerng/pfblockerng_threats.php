@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -20,24 +20,25 @@
  * limitations under the License.
  */
 
+require('guiconfig.inc');
+include('head.inc');
+
 $title = $host = $domain = $port = '';
 if (isset($_REQUEST)) {
-	if (isset($_REQUEST['host'])) {
+	if (isset($_REQUEST['host']) && is_ipaddr($_REQUEST['host'])) {
 		$title	= 'Source IP';
-		$host	= htmlspecialchars($_REQUEST['host']);
-	} elseif (isset($_REQUEST['domain'])) {
+		$host	= $_REQUEST['host'];
+	} elseif (isset($_REQUEST['domain']) && is_domain($_REQUEST['domain'])) {
 		$title	= 'Domain';
-		$domain	= htmlspecialchars($_REQUEST['domain']);
-	} elseif (isset($_REQUEST['port']) && ctype_digit($_REQUEST['port'])) {
+		$domain = $_REQUEST['domain'];
+	} elseif (isset($_REQUEST['port']) && is_port($_REQUEST['port'])) {
 		$title	= 'Port';
-		$port	= htmlspecialchars($_REQUEST['port']);
+		$port	= $_REQUEST['port'];
 	}
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Alerts'), gettext("Threat {$title} Lookup"));
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblockerng_alerts.php', '@self');
-require('guiconfig.inc');
-include('head.inc');
 ?>
 
 <div class="panel panel-default">
@@ -86,7 +87,7 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.fortiguard.com/ip_rep/index.php?data=<?=$host;?>?">
+					<td><a target="_blank" href="https://www.fortiguard.com/webfilter?q=<?=$host;?>&version=8">
 						<?=gettext("FortiGuard");?></a></td>
 				</tr>
 				<tr>
@@ -191,14 +192,34 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://dnstrails.com/#/list/domain/<?=$host;?>/type/ip/page/1">
-						<?=gettext("DNSTrails");?></a></td>
+					<td><a target="_blank" href="https://securitytrails.com/list/ip/<?=$host;?>?page=1">
+						<?=gettext("SecurityTrails");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://pulsedive.com/indicator/?ioc=<?=base64_encode($host);?>">
 						<?=gettext("PulseDive");?></a></td>
 				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.abuseipdb.com/check/<?=$host;?>">
+						<?=gettext("AbuseIPDB");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://bgp.he.net/ip/<?=$host;?>">
+						<?=gettext("Hurricane Electric BGP Toolkit");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://myip.ms/info/whois/<?=$host;?>">
+						<?=gettext("MYIP.MS");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://viz.greynoise.io/ip/<?=$host;?>">
+				</tr>
+
 				<br />
 
 				<!-- Mail Server threat source links -->
@@ -358,8 +379,8 @@ include('head.inc');
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://dnstrails.com/#/domain/domain/<?=$domain;?>">
-						<?=gettext("DNSTrails");?></a></td>
+					<td><a target="_blank" href="https://securitytrails.com/domain/<?=$domain;?>/dns">
+						<?=gettext("SecurityTrails");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
@@ -370,6 +391,16 @@ include('head.inc');
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://pulsedive.com/indicator/?ioc=<?=base64_encode($domain);?>">
 						<?=gettext("PulseDive");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.abuseipdb.com/check/<?=$domain;?>">
+						<?=gettext("AbuseIPDB");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.fortiguard.com/webfilter?q=<?=$domain;?>&version=8">
+						<?=gettext("FortiGuard");?></a></td>
 				</tr>
 
 			<?php else: ?>

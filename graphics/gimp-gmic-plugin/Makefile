@@ -2,7 +2,7 @@
 
 PORTNAME=	gmic
 PORTVERSION=	1.6.9
-PORTREVISION=	14
+PORTREVISION=	19
 CATEGORIES=	graphics
 MASTER_SITES=	http://gmic.eu/files/source/
 PKGNAMEPREFIX=	gimp-
@@ -13,14 +13,15 @@ MAINTAINER=	rm@FreeBSD.org
 COMMENT=	GREYC's Magic Image Converter
 
 LIB_DEPENDS=	libGraphicsMagick++.so:graphics/GraphicsMagick \
-		libIlmImf.so:graphics/OpenEXR \
+		libIlmImf.so:graphics/openexr \
 		libopencv_video.so:graphics/opencv \
-		libMagick++-6.so:graphics/ImageMagick \
+		libMagick++-6.so:graphics/ImageMagick6 \
 		libavcodec.so:multimedia/ffmpeg \
 		libfftw3.so:math/fftw3 \
-		libgimp-2.0.so:graphics/gimp-app
+		libgimp-2.0.so:graphics/gimp-app \
+		libcurl.so:ftp/curl
 
-OPTIONS_DEFINE=	BASH
+OPTIONS_DEFINE=	BASH EXAMPLES
 OPTIONS_SUB=	yes
 BASH_RUN_DEPENDS=	bash:shells/bash
 

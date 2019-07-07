@@ -26,6 +26,9 @@ require_once("/usr/local/pkg/lcdproc.inc");
 $lcdproc_config         = &$config['installedpackages']['lcdproc']['config'][0];
 $lcdproc_screens_config = &$config['installedpackages']['lcdprocscreens']['config'][0];
 
+if (!is_array($lcdproc_screens_config)) {
+	$lcdproc_screens_config = array();
+}
 // Set default values for anything not in the $config
 $pconfig = $lcdproc_screens_config;
 if (!isset($pconfig['scr_version']))                         $pconfig['scr_version']                         = false;
@@ -38,7 +41,6 @@ if (!isset($pconfig['scr_load']))                            $pconfig['scr_load'
 if (!isset($pconfig['scr_states']))                          $pconfig['scr_states']                          = false;
 if (!isset($pconfig['scr_carp']))                            $pconfig['scr_carp']                            = false;
 if (!isset($pconfig['scr_ipsec']))                           $pconfig['scr_ipsec']                           = false;
-if (!isset($pconfig['scr_slbd']))                            $pconfig['scr_slbd']                            = false;
 if (!isset($pconfig['scr_interfaces']))                      $pconfig['scr_interfaces']                      = false;
 if (!isset($pconfig['scr_mbuf']))                            $pconfig['scr_mbuf']                            = false;
 if (!isset($pconfig['scr_cpufrequency']))                    $pconfig['scr_cpufrequency']                    = false;
@@ -58,10 +60,10 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
-	// Input validation would go here, with any invalid values found 
+	// Input validation would go here, with any invalid values found
 	// in $_POST being added to $input_errors, e.g:
 	//   $input_errors[] = "Descriptive error message for the user.";
-	
+
 	if (!$input_errors) {
 		$lcdproc_screens_config['scr_version']                         = $pconfig['scr_version'];
 		$lcdproc_screens_config['scr_time']                            = $pconfig['scr_time'];
@@ -73,7 +75,6 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_states']                          = $pconfig['scr_states'];
 		$lcdproc_screens_config['scr_carp']                            = $pconfig['scr_carp'];
 		$lcdproc_screens_config['scr_ipsec']                           = $pconfig['scr_ipsec'];
-		$lcdproc_screens_config['scr_slbd']                            = $pconfig['scr_slbd'];
 		$lcdproc_screens_config['scr_interfaces']                      = $pconfig['scr_interfaces'];
 		$lcdproc_screens_config['scr_mbuf']                            = $pconfig['scr_mbuf'];
 		$lcdproc_screens_config['scr_cpufrequency']                    = $pconfig['scr_cpufrequency'];
@@ -87,7 +88,7 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_traffic_by_address_sort']         = $pconfig['scr_traffic_by_address_sort'];
 		$lcdproc_screens_config['scr_traffic_by_address_filter']       = $pconfig['scr_traffic_by_address_filter'];
 		$lcdproc_screens_config['scr_traffic_by_address_hostipformat'] = $pconfig['scr_traffic_by_address_hostipformat'];
-				
+
 		write_config();
 		sync_package_lcdproc();
 	}
@@ -190,14 +191,6 @@ $section->addInput(
 		'IPsec', // checkbox label
 		'Display IPsec tunnels', // checkbox text
 		$pconfig['scr_ipsec'] // checkbox initial value
-	)
-);
-$section->addInput(
-	new Form_Checkbox(
-		'scr_slbd', // checkbox name (id)
-		'Load Balancer', // checkbox label
-		'Display the load balance state', // checkbox text
-		$pconfig['scr_slbd'] // checkbox initial value
 	)
 );
 $section->addInput(
@@ -319,14 +312,14 @@ $group->add(new Form_Select(
 $group->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
 $section->add($group);
 
-		
+
 $form->add($section); // Add the section to our form
 print($form); // Finally . . We can display our new form
 
 ?>
 
 <div class="infoblock">
-	<?=print_info_box('For more information see: <a href="http://lcdproc.org/docs.php3">LCDproc documentation</a>.', info)?>
+	<?=print_info_box('For more information see: <a href="http://lcdproc.org/docs.php3">LCDproc documentation</a>.', 'info')?>
 </div>
 
 <?php include("foot.inc"); ?>

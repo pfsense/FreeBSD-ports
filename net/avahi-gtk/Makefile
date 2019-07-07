@@ -1,14 +1,17 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
 # $FreeBSD$
 
-PORTREVISION=	4
+PORTREVISION=	1
 CATEGORIES=	net
 PKGNAMESUFFIX=	-gtk
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gtk+ tools and bindings to the Avahi mDNS system
 
-LIB_DEPENDS=	libavahi-common.so:net/avahi-app
+LIB_DEPENDS=	libavahi-common.so:net/avahi-app \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libgdbm.so:databases/gdbm
 RUN_DEPENDS=	avahi-header>=0.6:net/avahi-header
 
 MASTERDIR=	${.CURDIR}/../avahi-app
@@ -22,7 +25,13 @@ AVAHI_PKGCONFIG=avahi-ui.pc
 
 MANPAGES=	bssh.1
 
-USE_GNOME+=	libglade2
+USE_GNOME+=	cairo gdkpixbuf2 libglade2
+
+do-build:
+	@${DO_MAKE_BUILD} -C ${WRKSRC}/avahi-common
+	@${DO_MAKE_BUILD} -C ${WRKSRC}/avahi-client
+	@${DO_MAKE_BUILD} -C ${WRKSRC}/avahi-glib
+	@${DO_MAKE_BUILD} -C ${WRKSRC}/avahi-ui
 
 post-build:
 	@(cd ${WRKSRC}/avahi-discover-standalone && \

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	webengine
-PORTREVISION=	4
+PORTREVISION=	2
 CATEGORIES=	www devel python
 
 MAINTAINER=	kde@FreeBSD.org
@@ -9,11 +9,14 @@ COMMENT=	Python bindings for the Qt5 toolkit, QtWebEngine module
 
 # LICENSE set in Mk/Uses/pyqt.mk
 
+BUILD_DEPENDS=	${PY_ENUM34}
+RUN_DEPENDS=	${PY_ENUM34}
+
 USES=		python pyqt:5 qt:5
 USE_GL=		gl
 USE_PYQT=	sip_build core_run gui_run network_run webchannel_run
-USE_PYTHON=	flavors
-USE_QT=		core gui location network printsupport qml quick webchannel \
+USE_PYTHON=	concurrent flavors py3kplist
+USE_QT=		core declarative gui location network printsupport webchannel \
 		webengine widgets qmake_build
 
 CONFIGURE_ARGS=	--enable QtWebEngine \
@@ -27,7 +30,7 @@ OPTIONS_DEFAULT=	API
 OPTIONS_SUB=		yes
 
 API_DESC=		Install QtWebEngine API for QScintilla2
-API_CONFIGURE_ON=	--qsci-api --qsci-api-destdir=${QSCIDIR}
+API_CONFIGURE_ON=	--qsci-api --qsci-api-destdir=${PYQT_APIDIR}
 API_CONFIGURE_OFF=	--no-qsci-api
 API_LIB_DEPENDS=	libqscintilla2_qt5.so:devel/qscintilla2-qt5
 DEBUG_CONFIGURE_ON=	--debug --trace

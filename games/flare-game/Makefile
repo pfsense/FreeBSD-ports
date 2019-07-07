@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flare
-PORTVERSION=	1.06
+PORTVERSION=	1.09.01
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 PKGNAMESUFFIX=	-game
@@ -15,10 +15,10 @@ LICENSE=	CC-BY-SA-3.0
 RUN_DEPENDS=	flare:games/flare-engine
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	clintbellanger
+GH_ACCOUNT=	flareteam
 GH_PROJECT=	${PORTNAME}${PKGNAMESUFFIX}
 
-USES=		cmake
+USES=		cmake gnome
 CMAKE_BUILD_TYPE=	#empty
 INSTALLS_ICONS=	yes
 NO_ARCH=	yes
@@ -27,7 +27,7 @@ CMAKE_ARGS=	-DBINDIR="bin" -DDATADIR="share/flare"
 
 PORTDOCS=	*
 PORTDATA=	*
-PLIST_FILES=	share/appdata/org.flarerpg.Flare.appdata.xml
+PLIST_FILES=	share/metainfo/org.flarerpg.Flare.appdata.xml
 
 OPTIONS_DEFINE=	DOCS
 

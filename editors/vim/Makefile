@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vim
-PORTVERSION=	8.1.0039
+PORTVERSION=	8.1.1365
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
@@ -37,9 +37,11 @@ SHEBANG_FILES=	runtime/tools/demoserver.py runtime/tools/efm_perl.pl
 VIM_VER=	${PORTNAME}${PORTVERSION:R:S|.||g}
 
 # OPTIONS
-OPTIONS_DEFAULT=	CSCOPE DEFAULT_VIMRC EXUBERANT_CTAGS GTK2 PERL PYTHON2 RUBY
-OPTIONS_DEFINE=		CSCOPE DEFAULT_VIMRC EXUBERANT_CTAGS NLS XTERM_SAVE
-OPTIONS_SINGLE=		UI
+# ### Make sure any new options are excluded below in CONSOLE/TINY
+OPTIONS_DEFAULT=	CSCOPE DEFAULT_VIMRC CTAGS_EXUBERANT GTK3 PERL PYTHON2 RUBY
+OPTIONS_DEFINE=		CSCOPE DEFAULT_VIMRC NLS XTERM_SAVE
+OPTIONS_SINGLE=		CTAGS UI
+OPTIONS_SINGLE_CTAGS=	CTAGS_BASE CTAGS_EXUBERANT CTAGS_UNIVERSAL
 OPTIONS_SINGLE_UI=	ATHENA CONSOLE GNOME GTK2 GTK3 MOTIF X11
 OPTIONS_GROUP=		LANGBIND
 OPTIONS_GROUP_LANGBIND=	LUA PERL PYTHON2 PYTHON3 RUBY SCHEME TCL
@@ -51,17 +53,22 @@ OPTIONS_SLAVE=		CONSOLE
 # Exclude everything except the two options above
 OPTIONS_EXCLUDE:=	${OPTIONS_DEFINE:NDEFAULT_VIMRC} \
 			${OPTIONS_SINGLE_UI:NCONSOLE} \
-			${OPTIONS_GROUP_LANGBIND}
+			${OPTIONS_GROUP_LANGBIND} \
+			${OPTIONS_SINGLE_CTAGS}
 .elif defined(TINY)
 OPTIONS_SLAVE=		CONSOLE
 OPTIONS_EXCLUDE:=	${OPTIONS_DEFINE} \
 			${OPTIONS_SINGLE_UI:NCONSOLE} \
-			${OPTIONS_GROUP_LANGBIND}
+			${OPTIONS_GROUP_LANGBIND} \
+			${OPTIONS_SINGLE_CTAGS}
 .endif
 
 DEFAULT_VIMRC_DESC=	Install bundled vimrc as default setting
-EXUBERANT_CTAGS_DESC=	Use exctags instead of ctags
 XTERM_SAVE_DESC=	Restore xterm screen after exit
+
+CTAGS_BASE_DESC=	Use system ctags
+CTAGS_EXUBERANT_DESC=	Use exctags instead of ctags
+CTAGS_UNIVERSAL_DESC=	Use uctags instead of ctags
 
 UI_DESC=		User interface
 ATHENA_DESC=		Athena GUI toolkit
@@ -78,7 +85,8 @@ OPTIONS_EXCLUDE_powerpc64=	RUBY
 CSCOPE_CONFIGURE_ENABLE=cscope
 CSCOPE_RUN_DEPENDS=	cscope:devel/cscope
 
-EXUBERANT_CTAGS_RUN_DEPENDS=	exctags:devel/ctags
+CTAGS_EXUBERANT_RUN_DEPENDS=	exctags:devel/ctags
+CTAGS_UNIVERSAL_RUN_DEPENDS=	uctags:devel/universal-ctags
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
@@ -94,18 +102,18 @@ CONSOLE_VARS=		GUI=no
 
 GNOME_PLIST_SUB=	GUI="" DESKTOP=""
 GNOME_IMPLIES=		NLS
-GNOME_USE=		GNOME=gdkpixbuf2,libgnomeui XORG=ice,sm,glproto,x11,xpm,xt
-GNOME_USES=		desktop-file-utils
+GNOME_USE=		GNOME=gdkpixbuf2,libgnomeui XORG=ice,sm,xorgproto,x11,xpm,xt
+GNOME_USES=		desktop-file-utils gnome
 GNOME_VARS=		GUI=gnome2 INSTALLS_ICONS=yes
 
 GTK2_PLIST_SUB=		GUI="" DESKTOP=""
 GTK2_USE=		GNOME=gdkpixbuf2,gtk20 XORG=ice,sm,x11,xpm,xt
-GTK2_USES=		desktop-file-utils
+GTK2_USES=		desktop-file-utils gnome
 GTK2_VARS=		GUI=gtk2 INSTALLS_ICONS=yes
 
 GTK3_PLIST_SUB=		GUI="" DESKTOP=""
 GTK3_USE=		GNOME=cairo,gdkpixbuf2,gtk30 XORG=ice,sm,x11,xpm,xt
-GTK3_USES=		desktop-file-utils
+GTK3_USES=		desktop-file-utils gnome
 GTK3_VARS=		GUI=gtk3 INSTALLS_ICONS=yes
 
 MOTIF_CONFIGURE_ENV=	MOTIFHOME=${LOCALBASE}
@@ -129,10 +137,12 @@ PERL_CONFIGURE_ENABLE=	perlinterp
 PERL_USES=		perl5
 
 PYTHON2_CONFIGURE_ENABLE=	pythoninterp
+PYTHON2_CONFIGURE_WITH=	python-command=${LOCALBASE}/bin/python${PYTHON2_DEFAULT}
 PYTHON2_BUILD_DEPENDS=	python${PYTHON2_DEFAULT}:lang/python${PYTHON2_DEFAULT:S/.//}
 PYTHON2_RUN_DEPENDS=	${PYTHON2_BUILD_DEPENDS}
 
 PYTHON3_CONFIGURE_ENABLE=	python3interp
+PYTHON3_CONFIGURE_WITH=	python3-command=${PYTHON_CMD}
 PYTHON3_USES=		python:3.4+
 
 RUBY_CONFIGURE_ENABLE=	rubyinterp
@@ -170,11 +180,14 @@ post-install:
 .endfor
 
 # OPTIONS
-post-patch-EXUBERANT_CTAGS-off:
+post-patch-CTAGS_BASE-on:
 	@${FIND} ${WRKSRC}/runtime/ -name 'menu*.vim' -print0 | ${XARGS} -0 ${REINPLACE_CMD} -Ee 's!ctags -R ?\.!${FIND} . -type f \\| ${XARGS} ctags!g'
 
-post-patch-EXUBERANT_CTAGS-on:
+post-patch-CTAGS_EXUBERANT-on:
 	@${FIND} ${WRKSRC}/runtime/ -name 'menu*.vim' -print0 | ${XARGS} -0 ${REINPLACE_CMD} -e 's|ctags -R|exctags -R|g'
+
+post-patch-CTAGS_UNIVERSAL-on:
+	@${FIND} ${WRKSRC}/runtime/ -name 'menu*.vim' -print0 | ${XARGS} -0 ${REINPLACE_CMD} -e 's|ctags -R|uctags -R|g'
 
 post-patch-LUA-on:
 	@${REINPLACE_CMD} -e 's|set dummy lua;|set dummy ${LUA_CMD};|g' ${WRKSRC}/src/auto/configure

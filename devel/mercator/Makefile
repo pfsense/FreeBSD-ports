@@ -3,12 +3,15 @@
 
 PORTNAME=	mercator
 PORTVERSION=	0.3.3
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	devel
 MASTER_SITES=	SF/worldforge/Mercator%20%28terrain%20lib%29/${PORTVERSION}
 
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	Procedural terrain library
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libwfmath-1.0.so:math/wfmath
 

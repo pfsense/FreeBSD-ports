@@ -3,6 +3,7 @@
 
 PORTNAME=	atanks
 PORTVERSION=	6.5
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}/
 
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liballeg.so:devel/allegro
 
-USES=		gmake
+USES=		compiler:c++0x gmake
 
 PORTDOCS=	Changelog README README_ru.txt credits.txt
 

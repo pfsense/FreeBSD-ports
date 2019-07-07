@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-net-snmp
 PORTVERSION=	0.1.5
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty

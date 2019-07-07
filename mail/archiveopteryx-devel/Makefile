@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	archiveopteryx
-PORTVERSION=	3.2.99.20180207
+PORTVERSION=	3.2.99.20181030
 PORTREVISION=	0
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
@@ -12,16 +12,12 @@ COMMENT=	Advanced PostgreSQL-based IMAP/POP server
 
 LICENSE=	MIT
 
-BROKEN_mips=		fails to build: /bin/sh: clang: not found
-BROKEN_mips64=		fails to build: /bin/sh: clang: not found
-BROKEN_powerpc64=	Does not build: /bin/sh: clang: not found
-
 BUILD_DEPENDS=	jam:devel/jam
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	aox
 GH_PROJECT=	aox
-GH_TAGNAME=	8a59400
+GH_TAGNAME=	96ab17e
 
 USES=		perl5 ssl
 USE_PERL5=	build
@@ -42,11 +38,15 @@ PLIST_SUB+=	GROUPS="${GROUPS}"
 
 JAM?=		${LOCALBASE}/bin/jam
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
-# force Clang when on FreeBSD
+# force Clang when on FreeBSD with clang in base
 .if ${OPSYS} == FreeBSD
-JAMARG=	"-sCLANG=1"
+.if ! ${ARCH:Mmips*} && ! ${ARCH:Mpowerpc*} && ! ${ARCH} == sparc64
+JAMARG+=	"-sCLANG=1"
+.endif
 .endif
 
 post-patch:

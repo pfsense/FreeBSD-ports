@@ -1,3 +1,3 @@
-TIMESTAMP = 1530345829
-SHA256 (rsyslog-8.36.0.tar.gz) = 8a4b5beb92c6b308c3d14de2364c2788f62ef5d37ca0448144619edfe508ee70
-SIZE (rsyslog-8.36.0.tar.gz) = 2639477
+TIMESTAMP = 1544620533
+SHA256 (rsyslog-8.40.0.tar.gz) = 414abbdd27b65d3cd513e1a8a7ccbd110d06160759189e818ea93aca962fc194
+SIZE (rsyslog-8.40.0.tar.gz) = 2726022

@@ -3,16 +3,17 @@
 
 PORTNAME=	vtun
 PORTVERSION=	3.0.4
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	SF
 
-MAINTAINER=	cy@FreeBSD.org
+MAINTAINER=	mat@FreeBSD.org
 COMMENT=	Virtual Tunnels over TCP/IP networks with traffic shaping
 
 LICENSE=	GPLv2
 
-BROKEN_SSL=	openssl-devel
+DEPRECATED=		No longer supported by upline
+EXPIRATION_DATE=	2021-09-30
 
 LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 

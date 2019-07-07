@@ -106,6 +106,7 @@ lib/mysql/plugin/mysql_clear_password.so
 man/man1/msql2mysql.1.gz
 man/man1/mysql.1.gz
 man/man1/mysql_config.1.gz
+man/man1/mysql_embedded.1.gz
 man/man1/mysql_find_rows.1.gz
 man/man1/mysql_plugin.1.gz
 man/man1/mysql_waitpid.1.gz
@@ -117,3 +118,4 @@ man/man1/mysqldump.1.gz
 man/man1/mysqlimport.1.gz
 man/man1/mysqlshow.1.gz
 man/man1/mysqlslap.1.gz
+@comment %%DATADIR%%/wsrep.cnf

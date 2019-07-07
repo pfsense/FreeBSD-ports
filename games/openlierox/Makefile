@@ -3,7 +3,7 @@
 
 PORTNAME=	openlierox
 DISTVERSION=	0.58_rc3
-PORTREVISION=	16
+PORTREVISION=	19
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/OpenLieroX%20${DISTVERSION:C/_/%20/}
@@ -12,10 +12,9 @@ DISTNAME=	OpenLieroX_${DISTVERSION}.src
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Extremely addictive realtime worms shoot-em-up
 
-LIB_DEPENDS=	libboost_signals.so:devel/boost-libs \
-		libcurl.so:ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		tar:bzip2 cmake localbase pkgconfig
+USES=		cmake:insource compiler:c++11-lang gnome localbase pkgconfig tar:bzip2
 USE_SDL=	sdl image
 USE_GNOME=	libxml2
 

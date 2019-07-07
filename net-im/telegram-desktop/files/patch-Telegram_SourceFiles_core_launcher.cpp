@@ -1,30 +1,30 @@
---- Telegram/SourceFiles/core/launcher.cpp.orig	2018-01-03 10:46:01 UTC
+--- Telegram/SourceFiles/core/launcher.cpp.orig	2019-02-01 12:51:46 UTC
 +++ Telegram/SourceFiles/core/launcher.cpp
-@@ -13,6 +13,8 @@ https://github.com/telegramdesktop/tdesk
- #include "core/main_queue_processor.h"
- #include "application.h"
+@@ -15,6 +15,8 @@ https://github.com/telegramdesktop/tdesktop/blob/maste
+ #include "core/sandbox.h"
+ #include "base/concurrent_timer.h"
  
 +#include "FREEBSD_QT_PLUGINDIR.h"
 +
  namespace Core {
+ namespace {
  
- std::unique_ptr<Launcher> Launcher::Create(int argc, char *argv[]) {
-@@ -31,9 +33,10 @@ void Launcher::init() {
+@@ -208,9 +210,10 @@ void Launcher::init() {
  
- 	QCoreApplication::setApplicationName(qsl("TelegramDesktop"));
+ 	QApplication::setApplicationName(qsl("TelegramDesktop"));
  
 -#ifndef OS_MAC_OLD
 +#if !defined(Q_OS_MAC) && QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
 +	// Retina display support is working fine, others are not.
- 	QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling, true);
+ 	QApplication::setAttribute(Qt::AA_DisableHighDpiScaling, true);
 -#endif // OS_MAC_OLD
 +#endif // not defined Q_OS_MAC and QT_VERSION >= 5.6.0
  
  	initHook();
  }
-@@ -51,6 +54,11 @@ int Launcher::exec() {
+@@ -228,6 +231,11 @@ int Launcher::exec() {
  	Logs::start(this); // must be started before Platform is started
- 	Platform::start(); // must be started before QApplication is created
+ 	Platform::start(); // must be started before Sandbox is created
  
 +	// I don't know why path is not in QT_PLUGIN_PATH by default
 +	QCoreApplication::addLibraryPath(FREEBSD_QT_PLUGINDIR);
@@ -34,14 +34,13 @@
  	auto result = executeApplication();
  
  	DEBUG_LOG(("Telegram finished, result: %1").arg(result));
-@@ -136,6 +144,10 @@ void Launcher::prepareSettings() {
- 		gUpdateURL = QUrl(qsl("http://tdesktop.com/linux32/tupdates/current"));
- 		gPlatformString = qsl("Linux32bit");
+@@ -329,6 +337,9 @@ void Launcher::prepareSettings() {
  	break;
-+	case dbipFreeBSD:
-+		gUpdateURL = QUrl(qsl(""));
-+		gPlatformString = qsl("FreeBSD");
+ 	case dbipLinux32:
+ 		gPlatformString = qsl("Linux32bit");
 +	break;
++	case dbipFreeBSD:
++		gPlatformString = qsl("FreeBSD");
+ 	break;
  	}
  
- 	auto path = Platform::CurrentExecutablePath(_argc, _argv);

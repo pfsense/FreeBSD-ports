@@ -32,6 +32,7 @@ function arpwatch_install_command() {
 	$arpwatch_config = $config['installedpackages']['arpwatch']['config'][0];
 	$active_interfaces = $arpwatch_config['active_interfaces'];
 	$notifications_recipient = $arpwatch_config['notifications_recipient'];
+	$disable_carp = ($arpwatch_config['disable_carp'] == 'on') ? '-v' : '';
 	$disable_bogons = ($arpwatch_config['disable_bogons'] == 'on') ? '-N' : '';
 	$disable_zero = ($arpwatch_config['disable_zero'] == 'on') ? '-z' : '';
 	$update_vendors = ($arpwatch_config['update_vendors'] == 'on');
@@ -48,7 +49,8 @@ function arpwatch_install_command() {
 	$rc = array();
 	$rc['file'] = 'arpwatch.sh';
 
-	$rc['start'] = '';
+	// Give it a few seconds to stop gracefully, then kill it with fire.
+	$rc['start'] = "/usr/bin/killall -q arpwatch ; sleep 3; /usr/bin/killall -q -9 arpwatch\n";
 
 	$active_interfaces_array = explode(',', $active_interfaces);
 
@@ -59,16 +61,18 @@ function arpwatch_install_command() {
 
 			touch($arp_file);
 
-			$rc['start'] .= "/usr/local/sbin/arpwatch $disable_bogons $disable_zero -f $arp_file -i $ifname -m $notifications_recipient"."\n";
+			$rc['start'] .= "/usr/local/sbin/arpwatch $disable_carp $disable_bogons $disable_zero -f $arp_file -i $ifname -m $notifications_recipient"."\n";
 		}
 	}
 
-	$rc['stop'] = '/usr/bin/killall arpwatch || exit 0';
+	$rc['stop'] = '/usr/bin/killall -q arpwatch';
 
 	write_rcfile($rc);
 
 	if ($arpwatch_config['enable']) {
-		restart_service("arpwatch");
+		if (!platform_booting()) {
+			restart_service("arpwatch");
+		}
 	} else {
 		stop_service("arpwatch");
 	}

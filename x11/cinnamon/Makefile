@@ -3,7 +3,7 @@
 
 PORTNAME=	cinnamon
 PORTVERSION=	2.4.6
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	x11 gnome
 DIST_SUBDIR=	gnome3
 
@@ -14,6 +14,7 @@ BUILD_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
 		gnome-autogen.sh:devel/gnome-common
 LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification \
 		libcaribou.so:accessibility/caribou \
+		libgnome-keyring.so:security/libgnome-keyring \
 		libmuffin.so:x11-wm/muffin \
 		libtelepathy-glib.so:net-im/telepathy-glib \
 		libtelepathy-logger.so:net-im/telepathy-logger \
@@ -27,7 +28,7 @@ LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification \
 		libaccountsservice.so:sysutils/accountsservice
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR} \
 		ca_root_nss>=0:security/ca_root_nss \
-		gnome-themes-standard>=3.0.0:x11-themes/gnome-themes-standard \
+		gnome-themes-extra>=3.0.0:x11-themes/gnome-themes-extra \
 		cinnamon-control-center:sysutils/cinnamon-control-center \
 		cinnamon-translations>=0:misc/cinnamon-translations \
 		cinnamon-screensaver:x11/cinnamon-screensaver \

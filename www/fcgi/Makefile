@@ -3,12 +3,12 @@
 
 PORTNAME=	fcgi
 PORTVERSION=	2.4.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/adamw
 PKGNAMESUFFIX=	-devkit
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	john@essenz.com
 COMMENT=	FastCGI Development Kit
 
 LICENSE=	Open_Market_FastCGI_license

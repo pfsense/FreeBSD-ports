@@ -8,7 +8,7 @@ PKGNAMESUFFIX=	${JDK_VERSION}-doc
 DISTNAME=	jdk-${PORTVERSION}_doc-all
 
 MAINTAINER=	java@FreeBSD.org
-COMMENT=	Java Development Kit ${JDK_MAJOR_VER} Documentation
+COMMENT=	Java Development Kit ${JDK_VERSION} Documentation
 
 DOCSDIR?=	${PREFIX}/share/doc/jdk${JDK_VERSION}
 RESTRICTED=	This documentation is under license and export control.
@@ -22,6 +22,8 @@ DOWNLOAD_URL=	http://www.oracle.com/technetwork/java/javase/downloads/index.html
 NO_BUILD=	yes
 USES=		zip
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

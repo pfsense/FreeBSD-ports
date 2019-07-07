@@ -3,7 +3,7 @@
 
 PORTNAME=	llpp
 PORTVERSION=	25
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	http://repo.or.cz/llpp.git/snapshot/
 DISTNAME=	v${PORTVERSION}
@@ -19,6 +19,10 @@ LICENSE_COMB=	multi
 LICENSE_NAME_PUBLIC_DOMAIN=	Public Domain
 LICENSE_FILE_PUBLIC_DOMAIN=	${WRKSRC}/README
 LICENSE_PERMS_PUBLIC_DOMAIN=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BROKEN=		fails to build
+DEPRECATED=	fails to build with mupdf 1.14.0 and unable to update due to outdated lang/ocaml
+EXPIRATION_DATE=	2019-03-31
 
 BUILD_DEPENDS=	gsed:textproc/gsed
 LIB_DEPENDS=	libcurl.so:ftp/curl \

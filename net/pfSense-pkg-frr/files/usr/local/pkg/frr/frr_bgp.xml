@@ -131,6 +131,12 @@
 			<type>input</type>
 			<combinefields>end</combinefields>
 		</field>
+		<field>
+			<fielddescr>Disable Default IPv4 Unicast</fielddescr>
+			<fieldname>nodefipv4unicast</fieldname>
+			<description>If checked, BGP will not assume IPv4 unicast by default.</description>
+			<type>checkbox</type>
+		</field>
 
 		<field>
 			<name>Network Distribution</name>

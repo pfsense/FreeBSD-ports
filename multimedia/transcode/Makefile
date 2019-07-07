@@ -3,7 +3,7 @@
 
 PORTNAME=	transcode
 PORTVERSION=	1.1.7
-PORTREVISION=	34
+PORTREVISION=	38
 CATEGORIES=	multimedia
 MASTER_SITES=	https://bitbucket.org/france/transcode-tcforge/downloads/
 
@@ -96,7 +96,7 @@ SDL_USE=			SDL=sdl
 SDL_CONFIGURE_ENABLE=		sdl
 SDL_CONFIGURE_ENV_ON=		SDL_CONFIG="${SDL_CONFIG}"
 
-IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick
+IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6
 IMAGEMAGICK_CONFIGURE_ENABLE=	imagemagick
 IMAGEMAGICK_CONFIGURE_ON=	--with-imagemagick-prefix=${LOCALBASE}
 
@@ -112,6 +112,8 @@ V4L_BUILD_DEPENDS=		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_CONFIGURE_ENABLE=		v4l
 
 .include <bsd.port.pre.mk>
+
+LDFLAGS_i386+=	-Wl,-z,notext
 
 .if empty(ICONV_LIB)
 CONFIGURE_ARGS+=ac_cv_lib_iconv_iconv_open=no \

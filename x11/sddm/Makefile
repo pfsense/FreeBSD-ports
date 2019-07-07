@@ -1,46 +1,59 @@
 # $FreeBSD$
 
 PORTNAME=	sddm
-PORTVERSION=	0.14.0
+PORTVERSION=	0.17.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	5
 CATEGORIES=	x11
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	QML based login manager
 
-USES=		cmake:outsource desktop-file-utils kde:5 qt:5
+# The source code is GPLv2+, but the provided themes are:
+#  - CC-BY 3.0 (default greeter theme, maldives)
+#  - CC-BY 4.0 (maya)
+#  - Apache20 (font included with maya)
+LICENSE=	GPLv2+ CC-BY-3.0 CC-BY-4.0 APACHE20
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2+=	${WRKSRC}/LICENSE
+LICENSE_FILE_CC-BY-3.0=	${WRKSRC}/LICENSE.CC-BY-3.0
+
+RUN_DEPENDS=	dbus-run-session:devel/dbus
+
+USES=		cmake compiler:c++11-lang kde:5 qt:5
+USE_GITHUB=	yes
 USE_KDE=	ecm
-USE_QT=		concurrent core dbus gui linguisttools multimedia network \
-		printsupport qml quick script sql webkit widgets \
-		buildtools_build qmake_build
+USE_QT=		core declarative dbus gui network \
+		buildtools_build linguisttools_build qmake_build
 USE_XORG=	xcb
 
 CMAKE_ARGS=	-DUID_MIN=1000 \
 		-DUID_MAX=65000 \
 		-DCMAKE_INSTALL_SYSCONFDIR:PATH=${LOCALBASE}/etc
-# We need to disable PAM at the moment and use the passwd-based backend;
-# the two backend are mutually exclusive, and we have to investigate how
-# to make it compatible with OpenPAM.
-CMAKE_ARGS+=	-DENABLE_PAM:BOOL=FALSE
 
 USE_RC_SUBR=	sddm
+SUB_FILES=	xinitrc.desktop
 
 USERS=		sddm
 GROUPS=		sddm
 
-USE_GITHUB=	yes
+# There are multiple patches that apply to Display.cpp,
+# fixing CVE-2018-14345 and backported from 0.18.
+EXTRA_PATCHES=	${PATCHDIR}/git-patch-147cec38d ${PATCHDIR}/git-patch-b02b00559
 
 post-patch:
-# Patch in the correct location for X11 startup files, and make the session start
-# script of sddm use the value of ${STARTUP} defined by 90-consolekit
-	${REINPLACE_CMD} -e 's#/etc/X11#${LOCALBASE}/etc/X11#g' \
-			 -e '/exec.*session/s#exec#exec $${STARTUP}#g' \
-		${PATCH_WRKSRC}/data/scripts/Xsession
+	@${REINPLACE_CMD} -e 's#/etc/X11#${LOCALBASE}/etc/X11#' \
+		-e 's#/usr/bin/#${LOCALBASE}/bin/#g' \
+		-e 's#/usr/share/#${LOCALBASE}/share/#' \
+		${WRKSRC}/data/scripts/Xsession \
+		${WRKSRC}/src/common/Configuration.h
 
 post-install:
+	${MV} ${STAGEDIR}${PREFIX}/etc/sddm.conf \
+		${STAGEDIR}${PREFIX}/etc/sddm.conf.sample
 # Install xsession.desktop to launch .xinitrc via sddm.
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/xsessions
-	${INSTALL_DATA} ${FILESDIR}/xinitrc.desktop ${STAGEDIR}${PREFIX}/share/xsessions
+	${INSTALL_DATA} ${WRKDIR}/xinitrc.desktop ${STAGEDIR}${PREFIX}/share/xsessions
 	${INSTALL_SCRIPT} ${FILESDIR}/xinit-session ${STAGEDIR}${PREFIX}/share/sddm/scripts
 
 .include <bsd.port.mk>

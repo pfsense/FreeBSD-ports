@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	m2crypto
-PORTVERSION=	0.30.1
+PORTVERSION=	0.32.0
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,14 +14,12 @@ COMMENT=	Crypto and SSL toolkit for Python
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	Error: Syntax error in input(1).
-
 BUILD_DEPENDS=	swig3.0:devel/swig30
 
-PYDISTUTILS_BUILDARGS=	build_ext --include=${OPENSSLINC} --openssl=${OPENSSLBASE} --swig=${LOCALBASE}/bin/swig3.0
-USE_PYTHON=	autoplist concurrent distutils
 USES=		python ssl
+USE_PYTHON=	autoplist concurrent distutils
+
+PYDISTUTILS_BUILDARGS=	build_ext --include=${OPENSSLINC} --openssl=${OPENSSLBASE} --swig=${LOCALBASE}/bin/swig3.0
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|swig\(', '-version\)|swig3.0\1|" ${WRKSRC}/setup.py

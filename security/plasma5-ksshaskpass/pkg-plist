@@ -1,7 +1,6 @@
 bin/ksshaskpass
 man/man1/ksshaskpass.1.gz
 share/locale/ar/LC_MESSAGES/ksshaskpass.mo
-share/locale/ast/LC_MESSAGES/ksshaskpass.mo
 share/locale/bs/LC_MESSAGES/ksshaskpass.mo
 share/locale/ca/LC_MESSAGES/ksshaskpass.mo
 share/locale/ca@valencia/LC_MESSAGES/ksshaskpass.mo
@@ -18,6 +17,7 @@ share/locale/fr/LC_MESSAGES/ksshaskpass.mo
 share/locale/gl/LC_MESSAGES/ksshaskpass.mo
 share/locale/he/LC_MESSAGES/ksshaskpass.mo
 share/locale/ia/LC_MESSAGES/ksshaskpass.mo
+share/locale/id/LC_MESSAGES/ksshaskpass.mo
 share/locale/it/LC_MESSAGES/ksshaskpass.mo
 share/locale/ja/LC_MESSAGES/ksshaskpass.mo
 share/locale/ko/LC_MESSAGES/ksshaskpass.mo

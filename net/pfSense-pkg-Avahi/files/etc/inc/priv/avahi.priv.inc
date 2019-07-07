@@ -3,7 +3,7 @@
  * avahi.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018 Denny Page
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,10 +22,10 @@
 global $priv_list;
 
 $priv_list['page-services-avahi'] = array();
-$priv_list['page-services-avahi']['name'] = "WebCfg - Services: Avahi package";
-$priv_list['page-services-avahi']['descr'] = "Allow access to Avahi package GUI";
+$priv_list['page-services-avahi']['name'] = "WebCfg - Services: Avahi";
+$priv_list['page-services-avahi']['descr'] = "Access the Avahi package gui";
 
 $priv_list['page-services-avahi']['match'] = array();
-$priv_list['page-services-avahi']['match'][] = "pkg_edit.php?xml=avahi.xml*";
+$priv_list['page-services-avahi']['match'][] = "avahi_settings.php*";
 
 ?>

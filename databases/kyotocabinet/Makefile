@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	kyotocabinet
-PORTVERSION=	1.2.76
-PORTREVISION=	1
+PORTVERSION=	1.2.77
 CATEGORIES=	databases
-MASTER_SITES=	http://fallabs.com/${PORTNAME}/pkg/ \
+MASTER_SITES=	https://fallabs.com/${PORTNAME}/pkg/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -19,13 +18,14 @@ BROKEN_powerpc=		fails to link
 
 OPTIONS_DEFINE=	DOCS
 
+USES=		gmake
+
 CPPFLAGS+=	-fPIC
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 MAKE_ARGS=	PCDIR=${PREFIX}/libdata/pkgconfig
 REINPLACE_ARGS=	-i ''
 TEST_TARGET=	check
-USES=		gmake
 USE_LDCONFIG=	yes
 
 post-patch:
@@ -33,7 +33,9 @@ post-patch:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libkyotocabinet.so.16.13.0
-	${FIND} ${STAGEDIR}${DOCSDIR}/ -type d -exec ${CHMOD} ${BINMODE} {} \;
-	${FIND} ${STAGEDIR}${DOCSDIR}/ -type f -exec ${CHMOD} ${DOCMODE} {} \;
+
+post-install-DOCS-on:
+	${FIND} ${STAGEDIR}${DOCSDIR}/ -type d -exec ${CHMOD} ${BINMODE} {} +
+	${FIND} ${STAGEDIR}${DOCSDIR}/ -type f -exec ${CHMOD} ${DOCMODE} {} +
 
 .include <bsd.port.mk>

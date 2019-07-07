@@ -1,11 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	help
-PORTREVISION=	6
+PORTREVISION=	1
 CATEGORIES=	devel python
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python bindings for the Qt5 toolkit, QtHelp module
+
+BUILD_DEPENDS=	${PY_ENUM34}
+RUN_DEPENDS=	${PY_ENUM34}
 
 CONFIGURE_ARGS=	--enable QtHelp
 PYQT_DIST=	yes
@@ -13,15 +16,15 @@ PYQT_DIST=	yes
 USES=		python pyqt:5 qt:5
 USE_GL=		gl
 USE_PYQT=	sip_build core_run widgets_run
-USE_PYTHON=	flavors
-USE_QT=		core gui widgets help network sql buildtools_build qmake_build xml 
+USE_PYTHON=	concurrent flavors py3kplist
+USE_QT=		core gui widgets help network sql buildtools_build qmake_build xml
 
 OPTIONS_DEFINE=	API DEBUG
 OPTIONS_DEFAULT=API
 OPTIONS_SUB=	yes
 
 API_DESC=		Install QtHelp API for QScintilla2
-API_CONFIGURE_ON=	--qsci-api --qsci-api-destdir=${QSCIDIR}
+API_CONFIGURE_ON=	--qsci-api --qsci-api-destdir=${PYQT_APIDIR}
 API_CONFIGURE_OFF=	--no-qsci-api
 API_LIB_DEPENDS=	libqscintilla2_qt5.so:devel/qscintilla2-qt5
 DEBUG_CONFIGURE_ON=	--debug --trace

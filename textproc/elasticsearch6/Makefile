@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	elasticsearch
-PORTVERSION=	6.2.4
-PORTREVISION=	0
+PORTVERSION=	6.4.2
+PORTREVISION=	1
 CATEGORIES=	textproc java devel
 MASTER_SITES=	https://artifacts.elastic.co/downloads/${PORTNAME}/ \
 		http://mirrors.rit.edu/zi/
@@ -27,6 +27,7 @@ NO_BUILD=	yes
 JAVA_VERSION=	1.8+
 USE_RC_SUBR=	${PORTNAME}
 SHEBANG_FILES=	bin/elasticsearch \
+		bin/elasticsearch-cli \
 		bin/elasticsearch-env \
 		bin/elasticsearch-plugin
 
@@ -36,6 +37,7 @@ OPTIONS_DEFINE=	DOCS
 
 CONFIG_FILES=	elasticsearch.yml log4j2.properties jvm.options
 BINS=		elasticsearch \
+		elasticsearch-cli \
 		elasticsearch-env \
 		elasticsearch-plugin
 
@@ -56,6 +58,8 @@ post-patch:
 	${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|g" ${WRKSRC}/config/elasticsearch.yml
 	${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|g" ${WRKSRC}/bin/elasticsearch
 	${RM} ${WRKSRC}/lib/jna-*.jar
+	# ML plugin not supported on FreeBSD
+	${RM} -rf ${WRKSRC}/modules/x-pack/x-pack-ml
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/elasticsearch
@@ -90,5 +94,6 @@ post-install:
 		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
 	${ECHO} "@dir lib/elasticsearch/plugins" >> ${TMPPLIST}
 	${ECHO} "@dir libexec/elasticsearch" >> ${TMPPLIST}
+	${ECHO} "@dir(elasticsearch,elasticsearch,0755) ${ETCDIR}" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

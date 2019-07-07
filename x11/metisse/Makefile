@@ -22,6 +22,7 @@ CONFLICTS=	fvwm-1.* fvwm-2.*
 BROKEN_aarch64=	Fails to build: error: GETLEFTBITS_ALIGNMENT must be 1
 BROKEN_armv6=	Fails to build: error: GETLEFTBITS_ALIGNMENT must be 1
 BROKEN_armv7=	Fails to build: error: GETLEFTBITS_ALIGNMENT must be 1
+BROKEN_i386=	case value evaluates to -2147481600, which cannot be narrowed to type 'unsigned long'
 
 USES=		gettext libtool localbase:ldflags pathfix pkgconfig python:2.7 shebangfix tar:bzip2
 SHEBANG_FILES=	${WRKSRC}/fvwm-insitu/bin/fvwm-convert-2.4.in \
@@ -73,6 +74,12 @@ GTK2_USE=	GNOME=gtk20
 GCONF_USE=	GNOME=gconf2,libglade2
 
 post-patch:
+	@${REINPLACE_CMD} -e '/foldable/s,false),0x0),' \
+		${WRKSRC}/FvwmCompositor/desktop/MetisseDesktop.cxx
+	@${REINPLACE_CMD} -e '1296s,opt ==,*&,' \
+		${WRKSRC}/FvwmCompositor/fvwmmodule/FvwmModule.cxx
+	@${REINPLACE_CMD} -e 's,1<<31,1l<<31,' \
+		${WRKSRC}/fvwm-insitu/libs/Module.h
 # Catch up with new <fribidi-types.h> header name
 	@${REINPLACE_CMD} -e 's,fribidi_types\.h,fribidi-types.h,' \
 		${WRKSRC}/fvwm-insitu/libs/FBidi.c

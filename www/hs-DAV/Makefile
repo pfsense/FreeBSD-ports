@@ -2,7 +2,7 @@
 
 PORTNAME=	DAV
 PORTVERSION=	1.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -16,7 +16,6 @@ USE_CABAL=	case-insensitive>=0.4 data-default either>=4.1 \
 		network-uri>=2.6 optparse-applicative>=0.10.0 \
 		transformers-base utf8-string xml-conduit>=1.0 \
 		xml-hamlet>=0.4
-
 EXECUTABLE=	hdav
 
 FLAGS_ENABLE=	network-uri

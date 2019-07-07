@@ -18,7 +18,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	basho
 GH_TAGNAME=	4d38821	# required
 
-post-install:
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}
 

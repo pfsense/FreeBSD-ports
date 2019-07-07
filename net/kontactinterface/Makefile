@@ -9,7 +9,7 @@ COMMENT=	KDE glue for embedding KParts into Kontact
 
 LICENSE=	LGPL21
 
-USES=		cmake:outsource compiler:c++11-lib gettext kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 tar:xz
 USE_KDE=	auth codecs completion config configwidgets coreaddons ecm \
 		emoticons i18n iconthemes init itemmodels itemviews jobwidgets \
 		kdelibs4support kio parts service sonnet textwidgets \
@@ -20,5 +20,7 @@ USE_LDCONFIG=	yes
 
 DESCR=		${.CURDIR:H:H}/deskutils/kdepim/pkg-descr
 
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

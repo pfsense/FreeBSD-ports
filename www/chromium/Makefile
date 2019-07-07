@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	chromium
-PORTVERSION=	65.0.3325.181
-PORTREVISION=	6
+PORTVERSION=	73.0.3683.103
 CATEGORIES?=	www
-MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/
+MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/ \
+		LOCAL/cpm/chromium/:fonts
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER?=	chromium@FreeBSD.org
@@ -24,6 +24,7 @@ BUILD_DEPENDS+=	gperf:devel/gperf \
 		ffmpeg>=3.2.2,1:multimedia/ffmpeg \
 		flock:sysutils/flock \
 		node:www/node \
+		${LOCALBASE}/bin/ar:devel/binutils \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat \
 		${LOCALBASE}/share/usbids/usb.ids:misc/usbids \
 		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR}
@@ -31,6 +32,7 @@ BUILD_DEPENDS+=	gperf:devel/gperf \
 
 .if !defined(GN_ONLY)
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
+		libatspi.so:accessibility/at-spi2-core \
 		libspeechd.so:accessibility/speech-dispatcher \
 		libsnappy.so:archivers/snappy \
 		libFLAC.so:audio/flac \
@@ -49,7 +51,6 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libpng.so:graphics/png \
 		libwebp.so:graphics/webp \
 		libavcodec.so:multimedia/ffmpeg \
-		libvpx.so:multimedia/libvpx \
 		libopenh264.so:multimedia/openh264 \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
@@ -61,7 +62,7 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libfontconfig.so:x11-fonts/fontconfig
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
-		noto-lite>0:x11-fonts/noto-lite
+		noto-basic>0:x11-fonts/noto-basic
 
 BROKEN_FreeBSD_11_aarch64=	components/safe_browsing_db/v4_rice.cc:120:18: use of overloaded operator '&' is ambiguous
 ONLY_FOR_ARCHS=			aarch64 amd64 i386
@@ -69,13 +70,15 @@ ONLY_FOR_ARCHS=			aarch64 amd64 i386
 .endif
 
 .if defined(GN_ONLY)
-USES=		compiler:c++14-lang ninja pkgconfig python:2.7,build shebangfix tar:xz
-.else
-USES=		bison cpe desktop-file-utils jpeg ninja perl5 pkgconfig \
+USES=		compiler:c++14-lang dos2unix localbase:ldflags ninja pkgconfig \
 		python:2.7,build shebangfix tar:xz
+.else
+USES=		bison cpe desktop-file-utils dos2unix gl gnome jpeg localbase:ldflags \
+		ninja perl5 pkgconfig python:2.7,build shebangfix tar:xz
 .endif
 MAKE_ARGS=	-C out/${BUILDTYPE}
 BINARY_ALIAS=	python=${PYTHON_CMD}
+DOS2UNIX_FILES=	third_party/skia/third_party/vulkanmemoryallocator/include/vk_mem_alloc.h
 
 .if !defined(GN_ONLY)
 CPE_VENDOR=	google
@@ -83,8 +86,8 @@ CPE_PRODUCT=	chrome
 USE_GL=		gl
 USE_LDCONFIG=	${DATADIR}
 USE_PERL5=	build
-USE_XORG=	scrnsaverproto x11 xcb xcomposite xcursor xext xdamage xfixes xi \
-		xproto xrandr xrender xscrnsaver xtst
+USE_XORG=	x11 xcb xcomposite xcursor xext xdamage xfixes xi \
+		xorgproto xrandr xrender xscrnsaver xtst
 USE_GNOME=	atk dconf glib20 gtk30 libxml2 libxslt
 SHEBANG_FILES=	chrome/tools/build/linux/chrome-wrapper
 ALL_TARGET=	chrome
@@ -101,12 +104,13 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang
 # replace_gn_files.py script, some parts just turned on/off for target host
 # OS "target_os == is_bsd", like libusb, libpci.
 GN_ARGS+=	clang_use_chrome_plugins=false \
+		enable_hangout_services_extension=true \
 		enable_nacl=false \
 		enable_one_click_signin=true \
 		enable_remoting=false \
-		enable_webrtc=true \
 		fieldtrial_testing_like_official_build=true \
 		is_clang=true \
+		jumbo_file_merge_limit=8 \
 		toolkit_views=true \
 		treat_warnings_as_errors=false \
 		use_allocator="none" \
@@ -115,18 +119,17 @@ GN_ARGS+=	clang_use_chrome_plugins=false \
 		use_bundled_fontconfig=false \
 		use_custom_libcxx=false \
 		use_gnome_keyring=false \
-		use_gtk3=true \
+		use_jumbo_build=true \
 		use_lld=true \
 		use_sysroot=false \
 		use_system_freetype=true \
 		use_system_harfbuzz=true \
 		use_system_libjpeg=true \
-		use_system_sqlite=false \
-		extra_cxxflags="-I${LOCALBASE}/include" \
-		extra_ldflags="-L${LOCALBASE}/lib"
+		extra_cxxflags="${CXXFLAGS}" \
+		extra_ldflags="${LDFLAGS}"
 # TODO: investigate building with these options:
 # use_system_minigbm
-GN_BOOTSTRAP_FLAGS=	--no-clean --no-rebuild
+GN_BOOTSTRAP_FLAGS=	--no-clean --no-rebuild --skip-generate-buildfiles
 
 # FreeBSD Chromium Api Key
 # Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys .
@@ -137,7 +140,7 @@ GN_ARGS+=	google_api_key="AIzaSyBsp9n41JLW8jCokwn7vhoaMejDFRd1mp8" \
 		google_default_client_secret="IR1za9-1VK0zZ0f_O8MVFicn"
 
 .if !defined(GN_ONLY)
-SUB_FILES=	chromium-browser.desktop chrome
+SUB_FILES=	chromium-browser.desktop chrome pkg-message
 SUB_LIST+=	COMMENT="${COMMENT}"
 
 OPTIONS_DEFINE=	CODECS CUPS DEBUG DRIVER KERBEROS TEST
@@ -170,13 +173,13 @@ DEBUG_VARS=		BUILDTYPE=Debug \
 			GN_ARGS+=is_debug=true \
 			GN_ARGS+=is_component_build=false \
 			GN_BOOTSTRAP_FLAGS+=--debug \
-			WANTSPACE="lots of free disk space (~ 12GB)"
+			WANTSPACE="lots of free disk space (~ 13GB)"
 DEBUG_VARS_OFF=		BUILDTYPE=Release \
 			GN_ARGS+=is_debug=false \
 			GN_ARGS+=is_official_build=true \
 			GN_ARGS+=symbol_level=0 \
 			GN_ARGS+=remove_webcore_debug_symbols=true \
-			WANTSPACE="a fair amount of free disk space (~ 5.8GB)"
+			WANTSPACE="a fair amount of free disk space (~ 6.5GB)"
 
 DRIVER_MAKE_ARGS=	chromedriver
 
@@ -199,19 +202,27 @@ SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
 
 .include "Makefile.tests"
 TEST_ALL_TARGET=	${TEST_TARGETS}
-TEST_DISTFILES=		${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX}
+TEST_DISTFILES=		${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX} \
+			test_fonts${EXTRACT_SUFX}:fonts
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1101513
-BUILD_DEPENDS+=	clang60:devel/llvm60
-CC=             clang60
-CXX=            clang++60
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-llvm-port
+# swiftshader/lib/{libEGL.so,libGLESv2.so} is x86 only
+.if ${ARCH} == aarch64
+PLIST_SUB+=	NOT_AARCH64="@comment "
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/ar:devel/binutils
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-llvm-base
+PLIST_SUB+=	NOT_AARCH64=""
 .endif
+
+# Make better javascript with java
+.if (${ARCH} == amd64 || ${ARCH} == i386) && !defined(GN_ONLY)
+JAVA_BUILD=	yes
+JAVA_VERSION=	1.8
+USE_JAVA=	yes
+.endif
+
+# Allow relocations against read-only segments (override lld default)
+LDFLAGS_i386=	-Wl,-znotext
 
 # TODO: -isystem, would be just as ugly as this approach, but more reliably
 # build would fail without C_INCLUDE_PATH/CPLUS_INCLUDE_PATH env var set.
@@ -224,6 +235,10 @@ pre-everything::
 	@${ECHO_MSG} "To build Chromium, you should have around 2GB of memory"
 	@${ECHO_MSG} "and ${WANTSPACE}."
 	@${ECHO_MSG}
+
+post-extract-TEST-on:
+	@${MKDIR} ${WRKSRC}/third_party/test_fonts/test_fonts
+	@${MV} ${WRKDIR}/test_fonts ${WRKSRC}/third_party/test_fonts/
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|@@PACKAGE@@|chromium|' \
@@ -243,7 +258,7 @@ pre-configure:
 	#./build/linux/unbundle/remove_bundled_libraries.py [list of preserved]
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \
 		./build/linux/unbundle/replace_gn_files.py --system-libraries \
-		ffmpeg flac freetype harfbuzz-ng libdrm libvpx libwebp libxml libxslt openh264 opus snappy yasm || ${FALSE}
+		ffmpeg flac freetype harfbuzz-ng libdrm libusb libwebp libxml libxslt openh264 opus snappy yasm || ${FALSE}
 .endif
 
 do-configure:
@@ -258,6 +273,12 @@ do-configure:
 	# Setup nodejs dependency
 	@${MKDIR} ${WRKSRC}/third_party/node/freebsd/node-freebsd-x64/bin
 	${LN} -sf ${LOCALBASE}/bin/node ${WRKSRC}/third_party/node/freebsd/node-freebsd-x64/bin/node
+
+	# Setup java dependency on amd64 and i386
+.if ${ARCH} == amd64 || ${ARCH} == i386
+	@${MKDIR} ${WRKDIR}/bin
+	${LN} -sf ${LOCALBASE}/openjdk8/bin/java ${WRKDIR}/bin/java
+.endif
 .endif
 
 do-test-TEST-on:
@@ -271,7 +292,6 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_MAN} ${WRKSRC}/chrome/app/resources/manpage.1.in \
 		${STAGEDIR}${MANPREFIX}/man/man1/chrome.1
-	${INSTALL_DATA} ${WRKSRC}/out/${BUILDTYPE}/*.service ${STAGEDIR}${DATADIR}
 .for s in 22 24 48 64 128 256
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}x${s}/apps
 	${INSTALL_DATA} ${WRKSRC}/chrome/app/theme/chromium/product_logo_${s}.png \
@@ -292,14 +312,20 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/chrome ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/chrome/tools/build/linux/chrome-wrapper \
 		${STAGEDIR}${DATADIR}
+
+	# ANGLE
 .for f in libEGL.so libGLESv2.so
 	${INSTALL_LIB} ${WRKSRC}/out/${BUILDTYPE}/${f} ${STAGEDIR}${DATADIR}
 .endfor
+
+	# SwiftShader
+.if ${ARCH} != aarch64
 	@${MKDIR} ${STAGEDIR}${DATADIR}/swiftshader
 .for g in libEGL.so libGLESv2.so
 	${INSTALL_LIB} ${WRKSRC}/out/${BUILDTYPE}/swiftshader/${g} \
 		${STAGEDIR}${DATADIR}/swiftshader
 .endfor
+.endif
 
 post-install-DEBUG-on:
 	${INSTALL_LIB} ${WRKSRC}/out/${BUILDTYPE}/*.so \
@@ -311,4 +337,5 @@ post-install-DRIVER-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/out/${BUILDTYPE}/chromedriver \
 		${STAGEDIR}${PREFIX}/bin
 .endif
+
 .include <bsd.port.mk>

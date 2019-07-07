@@ -31,31 +31,15 @@ require_once("haproxy/haproxy.inc");
 require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-	$config['installedpackages']['haproxy']['ha_backends'] = array();
-}
+haproxy_config_init();
 
-if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-}
-$a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+$a_frontend = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
 
 function haproxy_add_stats_example() {
 	global $config, $d_haproxyconfdirty_path;
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-		$config['installedpackages']['haproxy']['ha_backends'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-	}
-	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
-	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+
+	$a_backends = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
+	$a_frontends = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
 	$webcert = haproxy_find_create_certificate("HAProxy stats default");
 
 	$backend = array();
@@ -87,16 +71,8 @@ function haproxy_add_stats_example() {
 
 function template_errorfile() {
 	global $config, $d_haproxyconfdirty_path, $savemsg;
-	if (!is_array($config['installedpackages']['haproxy']['files'])) {
-		$config['installedpackages']['haproxy']['files'] = array();
-	}
-	if (!is_array($config['installedpackages']['haproxy']['files']['item'])) {
-		$config['installedpackages']['haproxy']['files']['item'] = array();
-	}
-	$a_files = &$config['installedpackages']['haproxy']['files']['item'];
-	if (!is_array($a_files)) {
-		$a_files = array();
-	}
+
+	$a_files = &getarraybyref($config, 'installedpackages', 'haproxy', 'files', 'item');
 	$a_files_cache = haproxy_get_fileslist();
 	$changecount = 0;
 	if (!isset($a_files_cache["ExampleErrorfile"])) {
@@ -141,24 +117,8 @@ EOD;
 function haproxy_template_multipledomains() {
 	global $config, $d_haproxyconfdirty_path;
 
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends'])) {
-		$config['installedpackages']['haproxy']['ha_backends'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools'])) {
-		$config['installedpackages']['haproxy']['ha_pools'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-		$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
-		$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
-	}
-
-	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
-	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+	$a_backends = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_pools', 'item');
+	$a_frontends = &getarraybyref($config, 'installedpackages', 'haproxy', 'ha_backends', 'item');
 
 	$backend = array();
 	$backend["name"] = "example_backend1";

@@ -3,12 +3,14 @@
 
 PORTNAME=	lumina-calculator
 PORTVERSION=	1.4.1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 
 MAINTAINER=	jt@ixsystems.com
 COMMENT=	Scientific calculator from the Lumina Desktop
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/../../../LICENSE
 
 LIB_DEPENDS+=	libxcb-ewmh.so:x11/xcb-util-wm \
 		libxcb-icccm.so:x11/xcb-util-wm \
@@ -27,7 +29,7 @@ I18N_DESC=	Install localization files
 
 MAKE_JOBS_UNSAFE=yes
 
-USES=		qmake qt:5
+USES=		compiler:c++11-lang gl qmake qt:5
 USE_GL=		gl
 USE_XORG=	x11 xdamage xcb
 USE_QT=		core gui widgets network svg \

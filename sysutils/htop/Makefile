@@ -3,6 +3,7 @@
 
 PORTNAME=	htop
 DISTVERSION=	2.2.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	gaod@hychen.org
@@ -11,7 +12,7 @@ COMMENT=	Better top(1) - interactive process viewer
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf libtool localbase ncurses pkgconfig python:2.7,build shebangfix
+USES=		autoreconf libtool localbase ncurses pkgconfig python:build shebangfix
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-unicode
 USE_GITHUB=	yes

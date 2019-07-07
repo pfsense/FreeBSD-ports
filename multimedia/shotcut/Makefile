@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	shotcut
-PORTVERSION=	${FULLVERSION:R}
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+DISTVERSION=	${FULLVERSION}
 CATEGORIES=	multimedia
 
-MAINTAINER=	avilla@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free, open source, cross-platform video editor
 
 LICENSE=	GPLv3
@@ -19,13 +18,14 @@ RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg \
 USE_GITHUB=	yes
 GH_ACCOUNT=	mltframework
 # Needed to be able to correctly check for updates in-app.
-FULLVERSION=	17.02.01
+FULLVERSION=	19.02.28
 
 USES=		pkgconfig qmake qt:5
-USE_QT=		buildtools_build concurrent_build core \
+USE_QT=		buildtools_build concurrent_build core declarative \
 		graphicaleffects_run gui multimedia network opengl \
-		printsupport qml quick quickcontrols_run sql \
+		printsupport quickcontrols_run sql \
 		sql-sqlite3_run webkit websockets widgets x11extras xml
+USE_SDL=	sdl2
 USE_XORG=	x11
 QMAKE_ARGS=	${PORTNAME:tu}_VERSION="${FULLVERSION}"
 DESKTOP_ENTRIES="Shotcut" \
@@ -64,10 +64,5 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps
 	${INSTALL_DATA} ${WRKSRC}/icons/${PORTNAME}-logo-64.png \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps/${PORTNAME}.png
-
-post-install-NLS-on:
-	${MKDIR} ${STAGEDIR}${DATADIR}/translations
-	${INSTALL_DATA} ${WRKSRC}/translations/*.qm \
-		${STAGEDIR}${DATADIR}/translations
 
 .include <bsd.port.mk>

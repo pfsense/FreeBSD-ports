@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libosmo-sccp
-PORTVERSION=	0.8.1
+PORTVERSION=	0.10.0
 CATEGORIES=	devel
 MASTER_SITES=	http://git.osmocom.org/libosmo-sccp/snapshot/ \
 		http://chaosophia.net/downloads/osmocom/${PORTNAME}/
@@ -20,6 +20,8 @@ CONFLICTS_INSTALL=libmtp-[0-9]* # lib/libmtp.a
 
 USES=		autoreconf libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${ECHO_CMD} ${PORTVERSION} > ${WRKSRC}/.tarball-version

@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	godot
-PORTVERSION=	2.1.4
-DISTVERSIONSUFFIX=	-stable
+PORTVERSION=	2.1.5
 PORTREVISION=	1
+DISTVERSIONSUFFIX=	-stable
 CATEGORIES=	devel games
 PKGNAMESUFFIX?=	2
 
@@ -25,7 +25,7 @@ RUN_DEPENDS=	xdg-user-dir:devel/xdg-user-dirs \
 		xmessage:x11/xmessage
 
 USES=		compiler:c++11-lib pkgconfig scons ssl
-USE_XORG=	x11 xcursor xinerama xrandr
+USE_XORG=	x11 xcursor xi xinerama xrandr
 USE_GL=		gl glu
 
 USE_GITHUB=	yes
@@ -54,6 +54,7 @@ AUDIO_DESC=		Audio support
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_MAKE_ARGS=		alsa=yes
 EXAMPLES_GH_PROJECT=	godot-demo-projects:DEMOS
+EXAMPLES_GH_TAGNAME=	2.1.4-stable:DEMOS
 EXAMPLES_PORTEXAMPLES=	*
 OSS_MAKE_ARGS=		oss=yes
 PULSEAUDIO_LIB_DEPENDS=	libpulse-simple.so:audio/pulseaudio
@@ -61,6 +62,7 @@ PULSEAUDIO_MAKE_ARGS=	pulseaudio=yes
 TOOLS_DESC=		Include development tools (IDE)
 TOOLS_MAKE_ARGS=	target=release_debug tools=yes
 TOOLS_MAKE_ARGS_OFF=	target=release tools=no
+TOOLS_LDFLAGS=	-lexecinfo
 TOOLS_DESKTOP_ENTRIES=	"Godot-v2" "${COMMENT}" "${GODOTFILE}" \
 			"${GODOTFILE}" "Development;IDE;" ""
 TOOLS_PLIST_FILES=	share/pixmaps/${GODOTFILE}.png \

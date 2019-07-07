@@ -2,6 +2,7 @@
 
 PORTNAME=	foswiki
 PORTVERSION=	2.1.6
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	SF
 DISTNAME=	Foswiki-${PORTVERSION}
@@ -14,10 +15,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	p5-Error>=0.15:lang/p5-Error \
 		p5-Algorithm-Diff>=1.1901:devel/p5-Algorithm-Diff \
+		p5-CGI>=3.15:www/p5-CGI \
+		p5-Email-MIME>=1.903:mail/p5-Email-MIME \
+		p5-File-Copy-Recursive>=0:devel/p5-File-Copy-Recursive \
+		p5-JSON>=0:converters/p5-JSON \
 		p5-Text-Diff>=0.35:textproc/p5-Text-Diff \
 		p5-Sort-Maker>=0.06:devel/p5-Sort-Maker
 
 USES=		cpe perl5 tar:tgz
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 
@@ -72,19 +78,14 @@ post-patch:
 		LocalLib.cfg
 	@${FIND} ${WRKSRC} -name \*.orig -delete
 
+pre-install:
+	@cd ${WRKSRC} && \
+		${PERL} tools/rewriteshebang.pl -p ${PERL} -d ${WRKSRC}/bin -d ${WRKSRC}/tools --noask
+
 post-install-APACHE-on:
 	@${MKDIR} ${STAGEDIR}${CONFDIR}
-	@if [ -d "${STAGEDIR}${CONFDIR}" ]; then \
-	  ${INSTALL_DATA} ${WRKSRC}/foswiki_httpd_conf.txt \
-		${STAGEDIR}${CONFDIR}/foswiki.conf.sample; \
-	else \
-	  ${ECHO_MSG} "" ; \
-	  ${ECHO_MSG} "Please check your Apache installation -" ; \
-	  ${ECHO_MSG} "${CONFDIR} doesn't exist," ; \
-	  ${ECHO_MSG} "so I cannot install foswiki.conf.sample there!" ; \
-	  ${ECHO_MSG} "" ; \
-	  ${FALSE} ; \
-	fi
+	${INSTALL_DATA} ${WRKSRC}/foswiki_httpd_conf.txt \
+		${STAGEDIR}${CONFDIR}/foswiki.conf.sample
 
 .include "${.CURDIR}/bsd.foswiki.mk"
 .include <bsd.port.mk>

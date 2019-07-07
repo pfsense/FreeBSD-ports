@@ -3,7 +3,7 @@
 
 PORTNAME=	blender
 PORTVERSION=	2.79b
-PORTREVISION=	1
+PORTREVISION=	10
 CATEGORIES=	graphics games
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -24,9 +24,8 @@ RUN_DEPENDS=	${PYNUMPY}
 # libraries are used, if either of the most common options in blender
 # are set. We will pull boost in just to be on the safe side.
 
-# 10.4 fails to build with clang3.4 so we want to use clang50
-# clang50 is already in place for opengl
-USES=		cmake:outsource compiler:c++14-lang desktop-file-utils \
+# USES=compiler is needed to support gcc built archs
+USES=		cmake compiler:c++14-lang desktop-file-utils \
 		jpeg python:3.5 shebangfix
 USE_XORG=	x11 xext xfixes xmu xrender
 USE_GL=		gl glu glew
@@ -47,6 +46,14 @@ PLIST_SUB+=	VER=2.79
 OPTIONS_SUB=	yes
 
 .include "${.CURDIR}/Makefile.options"
+
+# libunwind is specific to amd64/i386
+OPTIONS_EXCLUDE_aarch64=	CAMERATRACK
+OPTIONS_EXCLUDE_armv6=		CAMERATRACK
+OPTIONS_EXCLUDE_armv7=		CAMERATRACK
+OPTIONS_EXCLUDE_powerpc=	CAMERATRACK
+OPTIONS_EXCLUDE_powerpc64=	CAMERATRACK
+OPTIONS_EXCLUDE_powerpcspe=	CAMERATRACK
 
 ALEMBIC_CMAKE_BOOL=		WITH_ALEMBIC
 ALEMBIC_LIB_DEPENDS=		libAlembic.so:graphics/alembic
@@ -69,10 +76,10 @@ CYCLES_CMAKE_BOOL=		WITH_CYCLES
 CYCLESOSL_IMPLIES=		CYCLES
 CYCLESOSL_CMAKE_BOOL=		WITH_CYCLES_OSL WITH_LLVM
 CYCLESOSL_CMAKE_ON=		-DLLVM_STATIC:BOOL=OFF \
-				-DLLVM_CONFIG:STRING="${LOCALBASE}/bin/llvm-config40"
-CYCLESOSL_BUILD_DEPENDS=	llvm-config40:devel/llvm40
+				-DLLVM_CONFIG:STRING="${LOCALBASE}/bin/llvm-config60"
+CYCLESOSL_BUILD_DEPENDS=	llvm-config60:devel/llvm60
 CYCLESOSL_LIB_DEPENDS=		liboslcomp.so:graphics/openshadinglanguage
-CYCLESOSL_RUN_DEPENDS=		llvm-config40:devel/llvm40
+CYCLESOSL_RUN_DEPENDS=		llvm-config60:devel/llvm60
 DDS_CMAKE_BOOL=			WITH_IMAGE_DDS
 FFMPEG_CMAKE_BOOL=		WITH_CODEC_FFMPEG
 FFMPEG_LIB_DEPENDS=		libavutil.so:multimedia/ffmpeg
@@ -109,7 +116,7 @@ OPENCOLORIO_LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio \
 				libyaml-cpp03.so:devel/yaml-cpp03 \
 				libtinyxml.so:textproc/tinyxml
 OPENEXR_CMAKE_BOOL=		WITH_IMAGE_OPENEXR
-OPENEXR_LIB_DEPENDS=		libIlmImf.so:graphics/OpenEXR \
+OPENEXR_LIB_DEPENDS=		libIlmImf.so:graphics/openexr \
 				libHalf.so:graphics/ilmbase
 OPENIMAGEIO_IMPLIES=		OPENEXR TIFF
 OPENIMAGEIO_CMAKE_BOOL=		WITH_OPENIMAGEIO

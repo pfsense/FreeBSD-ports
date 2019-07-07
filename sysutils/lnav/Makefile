@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	lnav
-PORTVERSION=	0.8.2
+PORTVERSION=	0.8.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	tom@hur.st
@@ -12,14 +11,13 @@ COMMENT=	Terminal based log file navigator
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_powerpc64=	fails to build: lnav.cc:(.text+0x509c): undefined reference to pcrecpp::RE::QuoteMeta[abi:cxx11](pcrecpp::StringPiece const&)
-
 LIB_DEPENDS=	libpcrecpp.so:devel/pcre
+
+USES=		autoreconf compiler:c++14-lang gmake ncurses sqlite readline
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	tstack
 
-USES=		autoreconf compiler:c++14-lang gmake ncurses sqlite readline
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
 

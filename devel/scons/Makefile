@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	scons
-PORTVERSION=	3.0.1
+PORTVERSION=	3.0.4
 CATEGORIES=	devel python
 MASTER_SITES=	SF
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	gm4:devel/m4
 
-USES=		python:2.7 shebangfix
+USES=		python shebangfix
 SHEBANG_FILES=	script/scons*
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes

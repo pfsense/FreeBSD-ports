@@ -3,7 +3,7 @@
 
 PORTNAME=	thingylaunch
 PORTVERSION=	2.0.3
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	x11
 MASTER_SITES=	http://gahr.ch/thingylaunch/
 
@@ -19,9 +19,9 @@ LIBX11_DESC=		Build against libX11
 LIBXCB_DESC=		Build against libXCB
 OPTIONS_DEFAULT=	LIBX11
 
-USE_XORG=	xproto
+USE_XORG=	xorgproto
 USE_CXXSTD=	c++11
-USES=		cmake:outsource compiler:c++11-lib
+USES=		cmake compiler:c++11-lib
 
 .include <bsd.port.options.mk>
 

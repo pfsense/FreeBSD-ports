@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	hyperscan
-PORTVERSION=	4.6.0
+PORTVERSION=	4.7.0
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel textproc
 MASTER_SITES=	SF/boost/boost/1.65.1:boost
@@ -15,8 +16,8 @@ LICENSE=	BSD3CLAUSE
 BUILD_DEPENDS=	ragel:devel/ragel
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	01org
-USES=	compiler:c++11-lib cmake:outsource pathfix python:build
+GH_ACCOUNT=	intel
+USES=	compiler:c++11-lib cmake pathfix python:build
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	SSSE3 is required for work
 
@@ -32,6 +33,8 @@ NATIVE_CFLAGS=		-march=native -mtune=native
 
 NATIVE_CXXFLAGS_OFF=	-march=core2
 NATIVE_CFLAGS_OFF=	-march=core2
+
+CFLAGS+=	-fPIC
 
 .include <bsd.port.options.mk>
 

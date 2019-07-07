@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bftpd
-PORTVERSION=	4.9
+PORTVERSION=	5.0
 CATEGORIES=	ftp
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -20,6 +20,8 @@ WRKSRC=	${WRKDIR}/${PORTNAME}
 PLIST_FILES=	sbin/${PORTNAME} etc/${PORTNAME}.conf.sample \
 		man/man8/bftpd.8.gz
 PORTDOCS=	en pl sk
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc/bftpd.conf,${PREFIX}/etc/bftpd.conf,' \

@@ -2,18 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	pianobar
-PORTVERSION=	2017.08.30
-PORTREVISION=	1
+PORTVERSION=	2019.01.25
 CATEGORIES=	audio
 MASTER_SITES=	https://6xq.net/${PORTNAME}/
 
-PATCH_SITES=	https://github.com/PromyLOPh/${PORTNAME}/commit/
-PATCHFILES=	38b16f9957a7.patch:-p1
-
-MAINTAINER=	jhixson@gmail.com
+MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	Command-line Pandora online radio player
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libao.so:audio/libao \
 		libfaad.so:audio/faad \
@@ -24,10 +21,11 @@ LIB_DEPENDS=	libao.so:audio/libao \
 		libavcodec.so:multimedia/ffmpeg \
 		libcurl.so:ftp/curl
 
+USES=		alias gmake pkgconfig tar:bzip2
+
 PLIST_FILES=	bin/pianobar \
 		man/man1/pianobar.1.gz
 
-USES=		alias gmake pkgconfig tar:bzip2
 MAKE_ARGS+=	CC="${CC}" PREFIX="${PREFIX}"
 
 CFLAGS+=	-I${LOCALBASE}/include -std=c99

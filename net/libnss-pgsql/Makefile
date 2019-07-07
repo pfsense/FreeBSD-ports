@@ -3,6 +3,7 @@
 
 PORTNAME=	libnss-pgsql
 PORTVERSION=	1.5.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	PGSQL/projects/pgFoundry/sysauth/NSS/nss1.5.0-beta
 DISTNAME=	${PORTNAME}-${PORTVERSION}-beta
@@ -18,6 +19,8 @@ USES=		autoreconf gmake libtool pgsql tar:tgz
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc --includedir=${PREFIX}/include --libdir=${PREFIX}/lib --with-docdir=${DOCSDIR}
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

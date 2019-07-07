@@ -15,6 +15,8 @@ include/botan-2/botan/assert.h
 include/botan-2/botan/atomic.h
 include/botan-2/botan/auto_rng.h
 include/botan-2/botan/b64_filt.h
+include/botan-2/botan/base32.h
+include/botan-2/botan/base58.h
 include/botan-2/botan/base64.h
 include/botan-2/botan/basefilt.h
 include/botan-2/botan/bcrypt.h
@@ -203,6 +205,7 @@ include/botan-2/botan/psk_db.h
 include/botan-2/botan/psk_db_sql.h
 include/botan-2/botan/pssr.h
 include/botan-2/botan/pubkey.h
+include/botan-2/botan/pwdhash.h
 include/botan-2/botan/rc4.h
 %%HAS_RDRAND_RNG%%include/botan-2/botan/rdrand_rng.h
 include/botan-2/botan/reducer.h
@@ -214,6 +217,7 @@ include/botan-2/botan/rotate.h
 include/botan-2/botan/rsa.h
 include/botan-2/botan/salsa20.h
 include/botan-2/botan/scan_name.h
+include/botan-2/botan/scrypt.h
 include/botan-2/botan/secmem.h
 include/botan-2/botan/secqueue.h
 include/botan-2/botan/seed.h
@@ -272,6 +276,7 @@ include/botan-2/botan/totp.h
 include/botan-2/botan/tss.h
 include/botan-2/botan/twofish.h
 include/botan-2/botan/types.h
+include/botan-2/botan/uuid.h
 include/botan-2/botan/version.h
 include/botan-2/botan/whrlpool.h
 include/botan-2/botan/workfactor.h
@@ -303,7 +308,7 @@ include/botan-2/botan/xts.h
 include/botan-2/botan/zlib.h
 lib/libbotan-2.a
 lib/libbotan-2.so
-lib/libbotan-2.so.5
-lib/libbotan-2.so.5.6.0
+lib/libbotan-2.so.9
+lib/libbotan-2.so.9.9.0
 %%PYTHON_SITELIBDIR%%/botan2.py
 libdata/pkgconfig/botan-2.pc

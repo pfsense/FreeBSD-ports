@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	veracrypt
-PORTVERSION=	1.22
+PORTVERSION=	1.23
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME:S/v/V/:S/c/C/}%20${PORTVERSION}/
 DISTNAME=	${PORTNAME:S/v/V/:S/c/C/}_${PORTVERSION}_Source
@@ -9,12 +10,12 @@ DISTNAME=	${PORTNAME:S/v/V/:S/c/C/}_${PORTVERSION}_Source
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Open-source disk encryption software based on Truecrypt
 
-LICENSE_FILE=	${DOCSDIR}/LICENSE
-
 BUILD_DEPENDS=	yasm:devel/yasm
 RUN_DEPENDS=	${LOCALBASE}/bin/sudo:security/sudo
 
-USES=		desktop-file-utils fuse gmake iconv pkgconfig tar:bz2
+LICENSE_FILE=	${DOCSDIR}/LICENSE
+
+USES=		compiler:c++11-lang desktop-file-utils fuse gmake iconv pkgconfig tar:bz2
 USE_WX=		3.0+
 NO_WRKSUBDIR=	yes
 BUILD_WRKSRC=	${WRKSRC}/src

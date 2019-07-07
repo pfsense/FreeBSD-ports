@@ -15,12 +15,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	"Only builds on amd64: https://github.com/arangodb/arangodb/issues/2334"
-BROKEN_FreeBSD_10=	libc++ is too old
 
 CONFLICTS_INSTALL=	arangodb32
 CONFLICTS_BUILD=	v8
 
-USES=		cmake:outsource,noninja compiler gmake python:2.7 ssl  # ninja: error: loading 'build.ninja': No such file or directory
+USES=		cmake:noninja compiler gmake python:2.7 ssl  # ninja: error: loading 'build.ninja': No such file or directory
 USE_GITHUB=	yes
 
 CMAKE_OFF=	USE_JEMALLOC
@@ -30,6 +29,8 @@ CMAKE_ARGS=	-DBASE_LD_FLAGS:STRING="-L${BUILD_WRKSRC}/3rdParty/V8/v5.7.492.77/x6
 USERS=		arangodb
 GROUPS=		arangodb
 USE_RC_SUBR=	arangod
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

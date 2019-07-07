@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for
@@ -124,6 +124,15 @@ if ($_POST) {
 	$pconfig = $_POST;
 }
 
+// Load Wizard settings and reload pfBlockerNG
+$pfb_wizard = FALSE;
+if (isset($_GET) && isset($_GET['wizard']) && $_GET['wizard'] == 'reload') {
+	$pconfig['run']			= '';
+	$pconfig['pfb_force']		= 'reload';
+	$pconfig['pfb_reload_option']	= 'All';
+	$pfb_wizard			= TRUE;
+}
+
 // Define default Alerts Tab href link (Top row)
 $get_req = pfb_alerts_default_page();
 
@@ -173,7 +182,7 @@ if ($pfb['enable'] == 'on') {
 	}
 	else {
 		// Find next cron hour schedule
-		$crondata = pfb_cron_base_hour();
+		$crondata = pfb_cron_base_hour($pfb['interval']);
 		$cron_hour_begin = 0;
 		$cron_hour_next  = '';
 		if (!empty($crondata)) {
@@ -220,7 +229,7 @@ if ($pfb['interval'] == 1) {
 } elseif ($pfb['interval'] == 24) {
 	$pfb_hour = $pfb['24hour'];
 } else {
-	$pfb_hour = implode(',', pfb_cron_base_hour());
+	$pfb_hour = implode(',', pfb_cron_base_hour($pfb['interval']));
 }
 
 // Determine if CRON job is missing
@@ -423,8 +432,39 @@ if ($pfb['enable'] == 'on' && isset($pconfig['run']) && !empty($pconfig['pfb_for
 		write_config('pfBlockerNG: Running Force Reload');
 		pfb_cron_update('reload');
 	}
-}
 
+	if ($pfb_wizard) {
+
+		$wizard_log =
+'<div class="pull-left alert alert-info clearfix" style="width: 100%;" role="alert">
+	<p>pfBlockerNG has been successfully configured and updated. This installation will now block IPs based on some recommended
+		Feed source providers. It will also block most ADverts based on Feed sources including EasyList/EasyPrivacy. Some additional
+		Feed source providers include some malicious domain blocking.</p>
+	<p>Please note that this is an entry level configuration for pfBlockerNG IP and DNSBL components. It is designed to allow new
+		users to get running quickly to learn how effective pfBlockerNG can be for their networks.</p>
+	<p>The Feeds tab includes many different types of IP and DNSBL feed sources. Careful review should be completed to select which feeds are
+		appropriate for your needs.</p><br />
+	<p><u>NOTE</u>:</p><br />
+	<ul>
+		<li>Please review the update log above for any errors.</li>
+		<li>For DNSBL, ensure that all of your LAN devices are pointed at pfSense ONLY for DNS resolution.</li>
+		<li>For users who have VLANS, please enable the DNSBL permit firewall rule option to allow all subnets to access the
+			DNSBL Webserver, or there may be some browser timeouts.</li>
+		<li>All IP/DNSBL events will be reported to the Reports/Alerts Tab. You can whitelist from the Alerts tab directly.</li>
+		<li>Review the Reports/Statistics tabs for an in-depth summary of all IP and DNSBL events</li>
+	</ul><br />
+	<p>The Wizard is now finalized!</p>
+	<p><small>A copy of this message has been saved to the wizard.log file</small></p>
+</div>';
+		print ("{$wizard_log}");
+
+		$wizard_log = str_replace(array("\x09", '</p><br />'), array('', '<br />'), $wizard_log);
+		$wizard_log = str_replace(array('</p>', '<br />'), "\n", $wizard_log);
+		$wizard_log = str_replace('<li>', ' - ', $wizard_log);
+		$wizard_log = strip_tags($wizard_log);
+		@file_put_contents('/var/log/pfblockerng/wizard.log', "{$wizard_log}", LOCK_EX);
+	}
+}
 ?>
 
 <script type="text/javascript">
@@ -473,8 +513,14 @@ events.push(function(){
 		$('#pfb_reload_option_ip').prop('checked', false);
 	});
 
+	// Scroll to the bottom of the page
+	var pfb_wizard = "<?=$pfb_wizard;?>";
+	if (pfb_wizard) {
+		$("html, body").animate({ scrollTop: $(document).height() }, 2000);
+	}
+
+	// Scroll to the bottom of the page
 	$('#run').click(function() {
-		// Scroll to the bottom of the page
 		$("html, body").animate({ scrollTop: $(document).height() }, 2000);
 	});
 });

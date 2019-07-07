@@ -3,7 +3,7 @@
 
 PORTNAME=	hashcat-legacy
 PORTVERSION=	2.00
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	security
 
 MAINTAINER=	lifanov@FreeBSD.org
@@ -25,6 +25,8 @@ ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	uses amd64 instructions
 
 ALL_TARGET=	posix64 posixXOP
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -r 's|^(CC_.*[[:blank:]]*=[[:blank:]]*)gcc[[:blank:]]*$$|\1${CC}|' ${WRKSRC}/src/Makefile

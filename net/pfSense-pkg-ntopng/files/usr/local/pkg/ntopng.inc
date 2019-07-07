@@ -39,6 +39,7 @@ function ntopng_php_deinstall_command() {
 	global $config;
 
 	/* Wipe data and settings if the user does not wish to keep them */
+	init_config_arr(array('installedpackages', 'ntopng', 'config', 0));
 	$ntopng_config = $config['installedpackages']['ntopng']['config'][0];
 	if ($ntopng_config['keepdata'] != "on") {
 		if (is_dir("/var/db/ntopng/")) {
@@ -77,7 +78,8 @@ function ntopng_sync_package() {
 	}
 
 	$ifaces = "";
-	$ntopng_config =& $config['installedpackages']['ntopng']['config'][0];
+	init_config_arr(array('installedpackages', 'ntopng', 'config', 0));
+	$ntopng_config = &$config['installedpackages']['ntopng']['config'][0];
 
 	/* Just stop services and unlink rc script if disabled */
 	if ($ntopng_config['enable'] != "on") {
@@ -141,13 +143,8 @@ function ntopng_sync_package() {
 	}
 	*/
 
-	/* Disable alerts */
-	if ($ntopng_config['disable_alerts'] == "on") {
-		$disable_alerts = "-H";
-	}
-
 	if ($config['system']['webgui']['protocol'] == "https") {
-		$cert =& lookup_cert($config['system']['webgui']['ssl-certref']);
+		$cert = lookup_cert($config['system']['webgui']['ssl-certref']);
 		ntopng_write_cert_file("/usr/local/share/ntopng/httpdocs/ssl/ntopng-cert.pem", $cert);
 		$http_args = "-w 0 -W 3000";
 	} else {
@@ -162,6 +159,8 @@ function ntopng_sync_package() {
 EOD;
 
 	$start = <<<EOD
+### Make sure library path cache is updated
+	/etc/rc.d/ldconfig start
 # Create DB dir before starting, in case it was removed. Otherwise redis will fail.
 	/bin/mkdir -p /var/db/ntopng
 	{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb &
@@ -217,6 +216,7 @@ function ntopng_redis_started() {
 
 function ntopng_set_redis_password() {
 	global $config, $ntopng_config, $redis_path;
+	init_config_arr(array('installedpackages', 'ntopng', 'config', 0));
 	$ntopng_config = $config['installedpackages']['ntopng']['config'][0];
 
 	if (!empty($ntopng_config['redis_password'])) {
@@ -256,6 +256,7 @@ function ntopng_update_geoip() {
 
 	/* Do not (re)start services on package (re)install, only on manual GeoIP updates via the GUI */
 	if ($_POST['Submit'] == "Update GeoIP Data") {
+		init_config_arr(array('installedpackages', 'ntopng', 'config', 0));
 		$ntopng_config = $config['installedpackages']['ntopng']['config'][0];
 		ntopng_services_stop();
 		if ($ntopng_config['enable'] == "on") {
@@ -289,6 +290,7 @@ function ntopng_fixup_geoip() {
 
 function ntopng_flush_historical_data() {
 	global $config, $ntopng_config, $redis_path;
+	init_config_arr(array('installedpackages', 'ntopng', 'config', 0));
 	$ntopng_config = $config['installedpackages']['ntopng']['config'][0];
 
 	if (ntopng_redis_started()) {

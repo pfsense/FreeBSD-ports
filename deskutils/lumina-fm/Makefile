@@ -3,12 +3,14 @@
 
 PORTNAME=	lumina-fm
 PORTVERSION=	1.4.1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 
 MAINTAINER=	jt@ixsystems.com
 COMMENT=	Insight file manager from the Lumina Desktop
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/../../../LICENSE
 
 CONFLICTS_INSTALL=	lumina-1.2.*
 
@@ -24,7 +26,7 @@ MAKE_JOBS_UNSAFE=yes
 
 USE_QT=		core gui widgets network svg imageformats \
 		buildtools_build x11extras multimedia concurrent
-USES=		qmake qt:5
+USES=		compiler:c++11-lang qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	trueos
 GH_PROJECT=	lumina

@@ -3,11 +3,11 @@
  * suricata_uninstall.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,14 +34,13 @@ $iprep_path = SURICATA_IPREP_PATH;
 $rcdir = RCFILEPREFIX;
 $suricata_rules_upd_log = SURICATA_RULES_UPD_LOGFILE;
 $suri_pf_table = SURICATA_PF_TABLE;
-$mounted_rw = FALSE;
 
-log_error(gettext("[Suricata] Suricata package uninstall in progress..."));
+syslog(LOG_NOTICE, gettext("[Suricata] Suricata package uninstall in progress..."));
 
 /* Make sure all active Suricata processes are terminated */
 /* Log a message only if a running process is detected */
 if (is_service_running("suricata"))
-	log_error(gettext("[Suricata] Suricata STOP for all interfaces..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Stopping Suricata on all configured interfaces..."));
 killbyname("suricata");
 sleep(1);
 
@@ -52,7 +51,7 @@ unlink_if_exists("{$g['varrun_path']}/suricata*.lck");
 /* Make sure all active Barnyard2 processes are terminated */
 /* Log a message only if a running process is detected     */
 if (is_service_running("barnyard2"))
-	log_error(gettext("[Suricata] Barnyard2 STOP for all interfaces..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Stopping Barnyard2 on all configured interfaces..."));
 killbyname("barnyard2");
 sleep(1);
 
@@ -68,34 +67,27 @@ install_cron_job("suricata_etiqrisk_update.php", false);
 
 /* See if we are to keep Suricata log files on uninstall */
 if ($config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on') {
-	log_error(gettext("[Suricata] Clearing all Suricata-related log files..."));
+	syslog(LOG_NOTICE, gettext("[Suricata] Clearing all Suricata-related log files..."));
 	unlink_if_exists("{$suricata_rules_upd_log}");
 	rmdir_recursive("{$suricatalogdir}");
 }
 
-/**************************************************/
-/* If not already, set Suricata conf partition to */
-/* read-write so we can make changes there        */
-/**************************************************/
-if (!is_subsystem_dirty('mount')) {
-	conf_mount_rw();
-	$mounted_rw = TRUE;
-}
-
 /*********************************************************/
-/* Remove files we placed in the Suricata etc directory. */
-/* pkgng will clean up the base install files.           */
+/* Remove files we placed in the Suricata directories.   */
+/* pkg will clean up the base install files.             */
 /*********************************************************/
 unlink_if_exists("{$suricatadir}*.gz.md5");
 unlink_if_exists("{$suricatadir}gen-msg.map");
-unlink_if_exists("{$suricatadir}unicode.map");
 unlink_if_exists("{$suricatadir}classification.config");
 unlink_if_exists("{$suricatadir}reference.config");
-unlink_if_exists("{$suricatadir}rules/*.txt");
-unlink_if_exists("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . "*.txt");
+unlink_if_exists(SURICATA_RULES_DIR . VRT_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . ET_OPEN_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . ET_PRO_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . GPL_FILE_PREFIX . "*.rules");
+unlink_if_exists("/usr/local/share/suricata/GeoLite2/GeoLite2-Country.mmdb");
+rmdir_recursive("/usr/local/share/suricata/GeoLite2");
+
 if (is_array($config['installedpackages']['suricata']['rule'])) {
 	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
 		rmdir_recursive("{$suricatadir}suricata_" . $suricatacfg['uuid'] . "_" . get_real_interface($suricatacfg['interface']));
@@ -124,22 +116,16 @@ if (!empty($widgets)) {
 	write_config("Suricata pkg removed Dashboard Alerts widget.");
 }
 
-/*******************************************************/
-/* We're finished with conf partition mods, return to  */
-/* read-only if we changed it                          */
-/*******************************************************/
-if ($mounted_rw == TRUE)
-	conf_mount_ro();
-
 /* Keep this as a last step */
 if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] != 'on') {
-	log_error(gettext("Not saving settings... all Suricata configuration info and logs deleted..."));
+	syslog(LOG_NOTICE, gettext("Not saving settings... all Suricata configuration info and logs deleted..."));
 	unset($config['installedpackages']['suricata']);
 	unset($config['installedpackages']['suricatasync']);
 	unlink_if_exists("{$suricata_rules_upd_log}");
 	rmdir_recursive("{$suricatalogdir}");
 	rmdir_recursive("{$g['vardb_path']}/suricata");
-	log_error(gettext("[Suricata] The package has been removed from this system..."));
+	write_config("Removing Suricata configuration");
+	syslog(LOG_NOTICE, gettext("[Suricata] The package has been removed from this system..."));
 }
 
 ?>

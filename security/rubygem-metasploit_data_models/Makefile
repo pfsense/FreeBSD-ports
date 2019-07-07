@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	metasploit_data_models
-PORTVERSION=	2.0.16
+PORTVERSION=	3.0.8
 PORTEPOCH=	2
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
@@ -20,14 +20,11 @@ RUN_DEPENDS=	rubygem-activerecord4>=4.2.6:databases/rubygem-activerecord4 \
 		rubygem-recog>=2.0:security/rubygem-recog \
 		rubygem-arel-helpers>=0:databases/rubygem-arel-helpers \
 		rubygem-postgres_ext>=0:databases/rubygem-postgres_ext \
-		rubygem-pg>=0:databases/rubygem-pg
+		rubygem-pg0>=0:databases/rubygem-pg0
 
 NO_ARCH=	yes
 USE_RUBY=	yes
 USES=		gem
 PLIST_FILES=	bin/mdm_console
-
-post-patch:
-	${REINPLACE_CMD} "/pg/s|= 0.20.0|>= 0.20.0|" ${WRKSRC}/metasploit_data_models.gemspec
 
 .include <bsd.port.mk>

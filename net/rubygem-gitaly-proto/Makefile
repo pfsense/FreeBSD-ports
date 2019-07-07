@@ -2,20 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	gitaly-proto
-PORTVERSION=	0.100.0
+PORTVERSION=	1.13.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	sunpoet@FreeBSD.org
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Protobuf specifications and client libraries for Gitaly
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-google-protobuf>=3.1:devel/rubygem-google-protobuf \
-		rubygem-grpc>=1.10:net/rubygem-grpc
+RUN_DEPENDS=	rubygem-grpc>=1.0:net/rubygem-grpc
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

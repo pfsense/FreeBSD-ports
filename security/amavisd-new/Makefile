@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	amavisd-new
-PORTVERSION=	2.11.0
-PORTREVISION=	2
+PORTVERSION=	2.11.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	http://www.ijs.si/software/amavisd/ \
@@ -23,7 +23,7 @@ RUN_DEPENDS=	p5-Unix-Syslog>=0:sysutils/p5-Unix-Syslog \
 		p5-Mail-DKIM>=0.33:mail/p5-Mail-DKIM \
 		p5-Net-LibIDN>=0:dns/p5-Net-LibIDN
 
-USES=		perl5 shebangfix tar:xz
+USES=		perl5 shebangfix tar:bz2
 USE_PERL5=	run
 SHEBANG_FILES=	amavisd-agent amavisd-nanny amavisd-release p0f-analyzer.pl \
 		amavisd-snmp-subagent amavisd
@@ -43,7 +43,7 @@ AMAVISQUARANTINE?=	/var/virusmails
 DAEMON?=	/usr/sbin/daemon -p
 
 OPTIONS_DEFINE=	IPV6 BDB SNMP SQLITE MYSQL PGSQL LDAP SASL SPAMASSASSIN P0F ALTERMIME \
-		FILE RAR UNRAR ARJ UNARJ LHA ARC NOMARCH CAB RPM ZOO UNZOO LZOP FREEZE \
+		FILE RAR UNRAR ARJ UNARJ LHA ARC NOMARCH CAB RPM ZOO UNZOO LZOP \
 		P7ZIP MSWORD TNEF DOCS
 OPTIONS_DEFAULT=	BDB SPAMASSASSIN FILE UNRAR ARJ LHA ARC CAB RPM ZOO LZOP \
 			P7ZIP MSWORD
@@ -70,7 +70,6 @@ RPM_DESC=		RPM support with archivers/rpm2cpio
 ZOO_DESC=		ZOO support with archivers/zoo
 UNZOO_DESC=		ZOO support with archivers/unzoo
 LZOP_DESC=		LZOP support with archivers/lzop
-FREEZE_DESC=		FREEZE support with archivers/freeze
 P7ZIP_DESC=		P7ZIP support with archivers/p7zip
 MSWORD_DESC=		Ms Word support with textproc/ripole
 TNEF_DESC=		Add external tnef decoder converters/tnef
@@ -201,10 +200,6 @@ RUN_DEPENDS+=	unzoo>=4.4_1:archivers/unzoo
 
 .if ${PORT_OPTIONS:MLZOP}
 RUN_DEPENDS+=	${LOCALBASE}/bin/lzop:archivers/lzop
-.endif
-
-.if ${PORT_OPTIONS:MFREEZE}
-RUN_DEPENDS+=	${LOCALBASE}/bin/unfreeze:archivers/freeze
 .endif
 
 .if ${PORT_OPTIONS:MP7ZIP}

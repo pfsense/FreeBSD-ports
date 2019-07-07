@@ -2,7 +2,7 @@
 
 PORTNAME=	ffms2
 DISTVERSION=	2.23
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -27,6 +27,8 @@ CPPFLAGS+=	`pkg-config vapoursynth --cflags`
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 DATADIR=	${PREFIX}/lib/vapoursynth
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^dist_doc_DATA/s,=,& \

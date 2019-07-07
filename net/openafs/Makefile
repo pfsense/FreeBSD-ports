@@ -21,7 +21,7 @@ LICENSE_NAME=	IBM Public License Version 1.0
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_FreeBSD_12=	does not build (use of undeclared identifier 'ROOTINO')
+BROKEN=		fails to build
 ONLY_FOR_ARCHS=	i386 amd64
 
 AFS_DISTVERSION=	1.6.22
@@ -79,52 +79,10 @@ FUSE_CONFIGURE_OFF=	--disable-fuse-client
 CFLAGS+=	-mstackrealign
 .endif
 
-.if ${OSREL} == "11.0" || ${OSREL} == "11.1" || ${OSREL} == "12.0"
 # Upstream does not support the client on 11 and newer
 CONFIGURE_ARGS += --disable-kernel-module
-PLIST_SUB+=	KMOD="@comment "
 
 post-install:
 	@${RMDIR} ${STAGEDIR}${PREFIX}/lib/openafs
-.else
-CONFIGURE_ARGS += --enable-kernel-module
-PLIST_SUB+=	KMOD=
-USE_RC_SUBR+= afsd
-
-KERNCONF?=	GENERIC
-KERNCONFDIR?=	${SRC_BASE}/sys/${ARCH}/conf
-
-# Use the first component of ${KERNCONF}.
-.for K in ${KERNCONF}
-_KERNCONF?=$K
-.endfor
-
-.if !exists(${KERNCONFDIR}/${_KERNCONF})
-IGNORE=	requires kernel configuration file ${_KERNCONF} to build
-.endif
-
-# Do not show users the reminder about cleandepend and depend
-post-extract:
-	${MKDIR} ${WRKDIR}/conf
-	cd ${KERNCONFDIR} && \
-	    /usr/sbin/config -d ${WRKDIR}/conf ${_KERNCONF} >/dev/null
-
-create-sample-files:
-	@${ECHO_CMD} openafs.org > ${WRKDIR}/ThisCell
-	@${ECHO_CMD} "${AFSMNTDIR}:${AFSCACHEDIR}:150000" > ${WRKDIR}/cacheinfo
-	${INSTALL_DATA} ${DISTDIR}/CellServDB.${DBVERSION} ${WRKDIR}/CellServDB
-
-post-install: create-sample-files
-	@${MKDIR} ${STAGEDIR}${ETCDIR}
-.for F in CellServDB ThisCell cacheinfo
-	${INSTALL_DATA} ${WRKDIR}/${F} ${STAGEDIR}${ETCDIR}/${F}.sample
-.endfor
-	${INSTALL_KLD} ${STAGEDIR}${PREFIX}/lib/openafs/libafs.ko \
-	    ${STAGEDIR}${KMODDIR}
-	@${RM} ${STAGEDIR}${PREFIX}/lib/openafs/libafs.ko
-	@${RMDIR} ${STAGEDIR}${PREFIX}/lib/openafs
-	@${MKDIR} ${STAGEDIR}${AFSMNTDIR} \
-	    ${STAGEDIR}${AFSSTATEDIR} ${STAGEDIR}${AFSCACHEDIR}
-.endif # ${OSREL} blacklist
 
 .include <bsd.port.post.mk>

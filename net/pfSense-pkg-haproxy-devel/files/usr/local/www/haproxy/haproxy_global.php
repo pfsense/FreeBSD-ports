@@ -98,42 +98,44 @@ if ($_POST) {
 		if ($_POST['carpdev'] == "disabled")
 			unset($_POST['carpdev']);
 
-		if ($_POST['maxconn'] && (!is_numeric($_POST['maxconn']))) 
+		if ($_POST['maxconn'] && (!is_numeric($_POST['maxconn'])))
 			$input_errors[] = "The maximum number of connections should be numeric.";
-			
-		if ($_POST['localstatsport'] && (!is_numeric($_POST['localstatsport']))) 
+
+		if ($_POST['localstatsport'] && (!is_numeric($_POST['localstatsport'])))
 			$input_errors[] = "The local stats port should be numeric or empty.";
-			
-		if ($_POST['localstats_refreshtime'] && (!is_numeric($_POST['localstats_refreshtime']))) 
+
+		if ($_POST['localstats_refreshtime'] && (!is_numeric($_POST['localstats_refreshtime'])))
 			$input_errors[] = "The local stats refresh time should be numeric or empty.";
 
-		if ($_POST['localstats_sticktable_refreshtime'] && (!is_numeric($_POST['localstats_sticktable_refreshtime']))) 
+		if ($_POST['localstats_sticktable_refreshtime'] && (!is_numeric($_POST['localstats_sticktable_refreshtime'])))
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
 		if (!$input_errors) {
-			$config['installedpackages']['haproxy']['email_mailers']['item'] = $a_mailers;
-			$config['installedpackages']['haproxy']['dns_resolvers']['item'] = $a_resolvers;
-			$config['installedpackages']['haproxy']['enable'] = $_POST['enable'] ? true : false;
-			$config['installedpackages']['haproxy']['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
-			$config['installedpackages']['haproxy']['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
-			$config['installedpackages']['haproxy']['enablesync'] = $_POST['enablesync'] ? true : false;
-			$config['installedpackages']['haproxy']['remotesyslog'] = $_POST['remotesyslog'] ? $_POST['remotesyslog'] : false;
-			$config['installedpackages']['haproxy']['logfacility'] = $_POST['logfacility'] ? $_POST['logfacility'] : false;
-			$config['installedpackages']['haproxy']['loglevel'] = $_POST['loglevel'] ? $_POST['loglevel'] : false;
-			$config['installedpackages']['haproxy']['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
-			$config['installedpackages']['haproxy']['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
-			$config['installedpackages']['haproxy']['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
-			$config['installedpackages']['haproxy']['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;			
-			foreach($simplefields as $stat)
-				$config['installedpackages']['haproxy'][$stat] = $_POST[$stat];
+			$haproxycfg = &getarraybyref($config, 'installedpackages', 'haproxy');
+			getarraybyref($haproxycfg, 'email_mailers')['item'] = $a_mailers;
+			getarraybyref($haproxycfg, 'dns_resolvers')['item'] = $a_resolvers;
+			$haproxycfg['enable'] = $_POST['enable'] ? true : false;
+			$haproxycfg['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
+			$haproxycfg['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
+			$haproxycfg['enablesync'] = $_POST['enablesync'] ? true : false;
+			$haproxycfg['remotesyslog'] = $_POST['remotesyslog'] ? $_POST['remotesyslog'] : false;
+			$haproxycfg['logfacility'] = $_POST['logfacility'] ? $_POST['logfacility'] : false;
+			$haproxycfg['loglevel'] = $_POST['loglevel'] ? $_POST['loglevel'] : false;
+			$haproxycfg['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
+			$haproxycfg['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
+			$haproxycfg['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
+			$haproxycfg['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
+			foreach($simplefields as $stat) {
+				$haproxycfg[$stat] = $_POST[$stat];
+			}
 
 			// flag for Status/Services to show when the package is 'disabled' so no start button is shown.
 			if ($_POST['enable']) {
-				if (is_array($config['installedpackages']['haproxy']['config'][0])) {
-					unset($config['installedpackages']['haproxy']['config'][0]['enable']);
+				if (is_array($haproxycfg['config'][0])) {
+					unset($haproxycfg['config'][0]['enable']);
 				}
 			} else {
-				$config['installedpackages']['haproxy']['config'][0]['enable'] = 'off';
+				$haproxycfg['config'][0]['enable'] = 'off';
 			}
 			
 			touch($d_haproxyconfdirty_path);
@@ -142,8 +144,8 @@ if ($_POST) {
 	}
 }
 
-$a_mailers = $config['installedpackages']['haproxy']['email_mailers']['item'];
-$a_resolvers = $config['installedpackages']['haproxy']['dns_resolvers']['item'];
+$a_mailers = getarraybyref($config, 'installedpackages', 'haproxy', 'email_mailers', 'item');
+$a_resolvers = getarraybyref($config, 'installedpackages', 'haproxy', 'dns_resolvers', 'item');
 
 $pconfig['enable'] = isset($config['installedpackages']['haproxy']['enable']);
 $pconfig['terminate_on_reload'] = isset($config['installedpackages']['haproxy']['terminate_on_reload']);
@@ -219,9 +221,9 @@ Sets the maximum per-process number of concurrent connections to X.<br/>
 					<strong>NOTE:</strong> setting this value too high will result in HAProxy not being able to allocate enough memory.<br/>
 				{$memusage}
 					Current <a href='/system_advanced_sysctl.php'>'System Tunables'</a> settings.<br/>
-					&nbsp;&nbsp;'kern.maxfiles': <b>{$maxfiles}</b><br/> 
+					&nbsp;&nbsp;'kern.maxfiles': <b>{$maxfiles}</b><br/>
 					&nbsp;&nbsp;'kern.maxfilesperproc': <b>{$maxfilesperproc}</b><br/>
-					
+
 					Full memory usage will only show after all connections have actually been used.
 EOD
 );
@@ -267,7 +269,7 @@ EOD
 EOD
 	));
 $group->setHelp(<<<EOD
-When setting a high amount of allowed simultaneous connections you will need to add and or increase the following two 
+When setting a high amount of allowed simultaneous connections you will need to add and or increase the following two
 <b><a href='/system_advanced_sysctl.php'>'System Tunables'</a></b> kern.maxfiles and kern.maxfilesperproc.
 For HAProxy alone set these to at least the number of allowed connections * 2 + 31. So for 100.000 connections these need
 to be 200.031 or more to avoid trouble, take into account that handles are also used by other processes when setting kern.maxfiles.
@@ -301,10 +303,10 @@ $section->addInput(new Form_Checkbox(
 	'Force immediate stop of old process on reload. (closes existing connections)',
 	$pconfig['terminate_on_reload']
 ))->setHelp(<<<EOD
-	Note: when this option is selected connections will be closed when haproxy is restarted.
-	Otherwise the existing connections will be served by the old haproxy process untill they are closed.
-	Checking this option will interupt existing connections on a restart. (which happens when the configuration is applied,
-	but possibly also when pfSense detects an interface comming up or changing its ip-address)
+	Note: when this option is selected, connections will be closed when haproxy is restarted.
+	Otherwise the existing connections will be served by the old haproxy process until they are closed.
+	Checking this option will interrupt existing connections on a restart (which happens when the configuration is applied,
+	but possibly also when pfSense detects an interface coming up or a change in its ip-address.)
 EOD
 );
 

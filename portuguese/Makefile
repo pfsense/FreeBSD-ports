@@ -9,12 +9,9 @@
     SUBDIR += hunspell
     SUBDIR += hyphen
     SUBDIR += irpf-pt_BR
-    SUBDIR += kde4-l10n
-    SUBDIR += kde4-l10n-pt_BR
     SUBDIR += libreoffice
     SUBDIR += libreoffice-pt_BR
     SUBDIR += mythes
-    SUBDIR += php_doc-br
     SUBDIR += webalizer-pt_BR
     SUBDIR += webalizer-pt_PT
 

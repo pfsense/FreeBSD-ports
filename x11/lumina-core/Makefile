@@ -3,12 +3,14 @@
 
 PORTNAME=	lumina-core
 PORTVERSION=	1.4.1
+PORTREVISION=	1
 CATEGORIES=	x11
 
 MAINTAINER=	jt@ixsystems.com
 COMMENT=	Lumina Desktop Environment
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
 RUN_DEPENDS=	fluxbox>=0:x11-wm/fluxbox \
 		xscreensaver>=0:x11/xscreensaver \
@@ -39,7 +41,7 @@ RUN_DEPENDS+=	gstreamer1-plugins-core>=0:multimedia/gstreamer1-plugins-core
 
 MAKE_JOBS_UNSAFE=yes
 
-USES=		qmake qt:5
+USES=		compiler:c++11-lang gl qmake qt:5
 USE_GL=		gl
 USE_XORG=	x11 xdamage xcb
 USE_LDCONFIG=	yes

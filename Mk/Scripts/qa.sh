@@ -279,31 +279,16 @@ libperl() {
 			# No results presents a blank line from heredoc.
 			[ -z "${f}" ] && continue
 			files=$((files+1))
-			found=$(readelf -d ${f} | awk "BEGIN {libperl=1; rpath=10; runpath=100}
+			found=$(readelf -d ${f} | awk "BEGIN {libperl=1}
 				/NEEDED.*${LIBPERL}/  { libperl = 0 }
-				/RPATH.*perl.*CORE/   { rpath   = 0 }
-				/RUNPATH.*perl.*CORE/ { runpath = 0 }
-				END {print libperl+rpath+runpath}
+				END {print libperl}
 				")
 			case "${found}" in
-				*1)
+				1)
 					warn "${f} is not linked with ${LIBPERL}, not respecting lddlflags?"
 					;;
-				*0)
+				0)
 					has_some_libperl_so=1
-					# Older Perl did not USE_LDCONFIG.
-					if [ ! -f ${LOCALBASE}/${LDCONFIG_DIR}/perl5 ]; then
-						case "${found}" in
-							*1?)
-								warn "${f} does not have a rpath to ${LIBPERL}, not respecting lddlflags?"
-								;;
-						esac
-						case "${found}" in
-							1??)
-								warn "${f} does not have a runpath to ${LIBPERL}, not respecting lddlflags?"
-								;;
-						esac
-					fi
 					;;
 			esac
 		# Use heredoc to avoid losing rc from find|while subshell
@@ -312,7 +297,7 @@ libperl() {
 		EOT
 
 		if [ ${files} -gt 0 -a ${has_some_libperl_so} -eq 0 ]; then
-			err "None of the .so in ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL} are linked with ${LIBPERL}, see above for the full list."
+			err "None of the ${files} .so in ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL} are linked with ${LIBPERL}, see above for the full list."
 			return 1
 		else
 			return 0
@@ -381,11 +366,9 @@ proxydeps_suggest_uses() {
 		${pkg} = "audio/esound" -o \
 		${pkg} = "devel/gconf2" -o \
 		${pkg} = "devel/gconfmm26" -o \
-		${pkg} = "devel/glib12" -o \
 		${pkg} = "devel/glib20" -o \
 		${pkg} = "devel/glibmm" -o \
 		${pkg} = "audio/gsound" -o \
-		${pkg} = "x11-toolkits/gtk12" -o \
 		${pkg} = "x11-toolkits/gtk20" -o \
 		${pkg} = "x11-toolkits/gtk30" -o \
 		${pkg} = "www/gtkhtml3" -o \
@@ -611,7 +594,7 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "devel/readline" ]; then
 		warn "you need USES+=readline"
 	# ssl
-	elif [ ${pkg} = "security/openssl" -o ${pkg} = "security/openssl-devel" \
+	elif [ ${pkg} = "security/openssl" -o ${pkg} = "security/openssl111" \
 	  -o ${pkg} = "security/libressl" -o ${pkg} = "security/libressl-devel" \
 	  ]; then
 		warn "you need USES=ssl"
@@ -669,7 +652,7 @@ proxydeps() {
 				# If we don't already depend on it, and we don't provide it
 				if ! listcontains ${dep_file_pkg} "${LIB_RUN_DEPENDS} ${PKGORIGIN}"; then
 					# If the package has a flavor, check that the dependency is not on that particular flavor.
-					flavor=$(pkg annotate -q -S "${dep_file_pkg}" flavor)
+					flavor=$(pkg annotate -q -S "$(pkg which -q "${dep_file}")" flavor)
 					if [ -n "${flavor}" ]; then
 						if listcontains ${dep_file_pkg}@${flavor} "${LIB_RUN_DEPENDS} ${PKGORIGIN}"; then
 							continue
@@ -905,7 +888,7 @@ flavors()
 		pkgnames=$(make -C "${CURDIR}" flavors-package-names|sort)
 		uniques=$(echo "${pkgnames}"|uniq)
 		if [ "$pkgnames" != "${uniques}" ]; then
-			err "Package names are not uniques with flavors:"
+			err "Package names are not unique with flavors:"
 			make -C "${CURDIR}" pretty-flavors-package-names >&2
 			err "maybe use <flavor>_PKGNAMEPREFIX/SUFFIX".
 			rc=1
@@ -914,9 +897,78 @@ flavors()
 	return ${rc}
 }
 
+license()
+{
+	local lic autoaccept pkgmirror #distsell distmirror pkgsell
+
+	if [ -n "$DISABLE_LICENSES" ]; then
+		warn "You have disabled the licenses framework with DISABLE_LICENSES, unable to run checks"
+	elif [ -n "$LICENSE" ]; then
+		for lic in $LICENSE_PERMS; do
+			case "$lic" in
+				auto-accept) autoaccept=1 ;;
+				#dist-mirror) distmirror=1 ;;
+				#dist-sell)   distsell=1   ;;
+				pkg-mirror)  pkgmirror=1  ;;
+				#pkg-sell)    pkgsell=1    ;;
+			esac
+		done
+
+		if [ -z "$autoaccept" ]; then
+			warn "License is not auto-accepted, packages will not be built, ports depending on this one will be ignored."
+		fi
+		if [ -z "$pkgmirror" ]; then
+			warn "License does not allow package to be distributed, ports depending on this one will be ignored"
+		fi
+	fi
+
+	return 0
+}
+
+# This is to prevent adding dependencies to meta ports that are only there to
+# improve the end user experience.
+depends_blacklist()
+{
+	local dep rc instead
+
+	rc=0
+
+	for dep in ${UNIFIED_DEPENDS}; do
+		origin=$(expr "${dep}" : ".*:\([^@]*\)")
+		instead=""
+
+		case "$origin" in
+			lang/python|lang/python2|lang/python3)
+				# lang/python depends on lang/pythonX, but it's
+				# ok, it is also in the blacklist.
+				if [ ${PKGORIGIN} != lang/python ]; then
+					instead="USES=python:xy with a specific version"
+				fi
+				;;
+			lang/gcc)
+				instead="USE_GCC"
+				;;
+			devel/llvm)
+				instead="a dependency on devel/llvm\${LLVM_DEFAULT}"
+				;;
+			www/py-django)
+				instead="one of the www/py-djangoXYZ port"
+				;;
+		esac
+
+		if [ -n "${instead}" ]; then
+			err "$origin should not be depended upon. Instead, use $instead."
+			rc=1
+		fi
+	done
+
+	return $rc
+}
+
 checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo"
 checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
 checks="$checks proxydeps sonames perlcore no_arch gemdeps gemfiledeps flavors"
+checks="$checks license depends_blacklist"
 
 ret=0
 cd ${STAGEDIR} || exit 1

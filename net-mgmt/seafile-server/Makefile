@@ -3,6 +3,7 @@
 PORTNAME=	seafile-server
 DISTVERSIONPREFIX=	v
 DISTVERSION=	${SEAFILE_VER}
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-server
 CATEGORIES=	net-mgmt
 
@@ -28,8 +29,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} 
 
 CONFLICTS=	seafile-[0-9]*
 
-USES=		autoreconf iconv libarchive libtool localbase mysql \
-		pathfix pgsql pkgconfig python:-2.7 shebangfix sqlite ssl
+USES=		autoreconf compiler:c11 iconv libarchive libtool localbase mysql \
+		pathfix pgsql pkgconfig python:2.7 shebangfix sqlite ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	haiwen
 USE_GNOME=	glib20
@@ -61,13 +62,9 @@ FUSE_LIB_DEPENDS=	libfuse.so:sysutils/fusefs-libs
 
 NLS_USES=		gettext
 
-.include <bsd.port.options.mk>
-
 post-patch:
 # Fix P_KTHREAD r295435
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100097
 	${REINPLACE_CMD} 's/P_KTHREAD/P_KPROC/' ${WRKSRC}/lib/utils.c
-.endif
 	${REINPLACE_CMD} 's/python/${PYTHON_VERSION}/' \
 		${WRKSRC}/scripts/upgrade/regenerate_secret_key.sh
 	${REINPLACE_CMD} -e 's|^INSTALL.*|INSTALLPATH="${PREFIX}/${SEAFILE_SERVER}/seafile"|' \

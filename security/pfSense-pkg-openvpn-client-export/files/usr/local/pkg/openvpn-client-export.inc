@@ -28,10 +28,10 @@ require_once("util.inc");
 require_once("pfsense-utils.inc");
 
 global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
-$current_openvpn_version = "2.4.4";
-$current_openvpn_version_rev = "01";
+$current_openvpn_version = "2.4.7";
+$current_openvpn_version_rev = "03";
 $legacy_openvpn_version = "2.3.18";
-$legacy_openvpn_version_rev = "01";
+$legacy_openvpn_version_rev = "02";
 
 function get_openvpnserver_by_id($srvid) {
 	global $config;
@@ -59,9 +59,9 @@ function openvpn_client_export_prefix($srvid, $usrid = null, $crtid = null) {
 	$port = $settings['local_port'];
 
 	$filename_addition = "";
-	if ($usrid && is_numeric($usrid)) {
+	if (isset($usrid) && is_numeric($usrid)) {
 		$filename_addition = "-" . $config['system']['user'][$usrid]['name'];
-	} elseif ($crtid && is_numeric($crtid) && function_exists("cert_get_cn")) {
+	} elseif (isset($crtid) && is_numeric($crtid) && function_exists("cert_get_cn")) {
 		$filename_addition = "-" . str_replace(' ', '_', cert_get_cn($config['cert'][$crtid]['crt']));
 	}
 	return "{$host}-{$prot}-{$port}{$filename_addition}";
@@ -358,10 +358,13 @@ EOF;
 	// add optional settings
 	$compression = "";
 	switch ($settings['compression']) {
+		case 'none':
+			$settings['compression'] = '';
 		case 'lz4':
 		case 'lz4-v2':
 		case 'lzo':
 		case 'stub':
+		case 'stub-v2':
 			$compression .= "compress {$settings['compression']}";
 			break;
 		case 'noadapt':
@@ -464,7 +467,8 @@ EOF;
 					$tls_directive = "tls-auth";
 					$tls_keydir = "key-direction 1{$nl}";
 				}
-				$conf .= "<{$tls_directive}>{$nl}" . trim(base64_decode($settings['tls'])) . "{$nl}</{$tls_directive}>{$nl}{$tls_keydir}";
+				$conf .= $tls_keydir;
+				$conf .= "<{$tls_directive}>{$nl}" . trim(base64_decode($settings['tls'])) . "{$nl}</{$tls_directive}>{$nl}";
 			}
 			return $conf;
 		// "yealink" creates: "/client.tar"
@@ -991,12 +995,11 @@ function openvpn_client_export_find_port_forwards($targetip, $targetport, $targe
 
 	foreach ($config['nat']['rule'] as $natent) {
 		$dest = array();
-		if (!isset($natent['disabled']) && ($natent['target'] == $targetip) && ($natent['local-port'] == $targetport) && ($natent['protocol'] == $targetproto)) {
-			$dest['proto'] = $natent['protocol'];
-
-			// Could be multiple ports... But we can only use one.
-			$dports = is_port($natent['destination']['port']) ? array($natent['destination']['port']) : filter_expand_alias_array($natent['destination']['port']);
-			$dest['port'] = $dports[0];
+		if (!isset($natent['disabled']) &&
+		   ($natent['target'] == $targetip) &&
+		   ($natent['local-port'] == $targetport) &&
+		   ($natent['protocol'] == strtolower(substr($targetproto, 0, 3)))) {
+			$dest['proto'] = $targetproto;
 
 			// Could be network or address ...
 			$natif = (!$natent['interface']) ? "wan" : $natent['interface'];
@@ -1033,7 +1036,15 @@ function openvpn_client_export_find_port_forwards($targetip, $targetport, $targe
 				}
 			}
 
-			$destinations[] = $dest;
+			$dports = is_port($natent['destination']['port'])
+			    ? array($natent['destination']['port'])
+			    : filter_expand_alias_array($natent['destination']['port']);
+
+			// Could be multiple ports, we add all of them
+			foreach ($dports as $dport) {
+				$dest['port'] = $dport;
+				$destinations[] = $dest;
+			}
 		}
 	}
 

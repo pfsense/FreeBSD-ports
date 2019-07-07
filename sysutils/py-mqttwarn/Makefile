@@ -1,9 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	mqttwarn
-DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6-367
-DISTVERSIONSUFFIX=	-gc28e1d3
+DISTVERSION=	0.10.4
+PORTREVISION=	1
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,8 +12,8 @@ COMMENT=	Subscribe to MQTT topics and notify pluggable services
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}paho-mqtt>=0:net/py-paho-mqtt@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}supervisor>=0:sysutils/py-supervisor@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}paho-mqtt>=0:net/py-paho-mqtt@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}supervisor>=0:sysutils/py-supervisor@${PY_FLAVOR}
 
 USES=		python:2.7 shebangfix
 USE_PYTHON=	flavors
@@ -22,7 +21,6 @@ SHEBANG_REGEX=	'.*\.py$$'
 USE_GITHUB=	yes
 GH_ACCOUNT=	jpmens
 
-#NO_BUILD=	yes
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES

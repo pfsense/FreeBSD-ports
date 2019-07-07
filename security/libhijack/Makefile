@@ -2,8 +2,8 @@
 
 PORTNAME=	libhijack
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0-1
-DISTVERSIONSUFFIX=	-g50804aa
+DISTVERSION=	0.8.0-2
+DISTVERSIONSUFFIX=	-g972534d
 CATEGORIES=	security
 
 MAINTAINER=	shawn.webb@hardenedbsd.org
@@ -20,10 +20,8 @@ USE_LDCONFIG=	yes
 
 PLIST_FILES=	include/hijack.h \
 		lib/libhijack.so \
-		lib/libhijack.so.1 \
+		lib/libhijack.so.2 \
 		sbin/hijack
-
-BROKEN_FreeBSD_10=	Designed for 11.0 and newer
 
 do-install: # the original install fails: https://github.com/SoldierX/libhijack/issues/6
 	${INSTALL_DATA} ${WRKSRC}/include/hijack.h ${STAGEDIR}${PREFIX}/include

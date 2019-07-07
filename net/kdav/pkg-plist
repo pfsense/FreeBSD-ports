@@ -55,7 +55,6 @@ lib/libKPimKDAV.so.5
 lib/libKPimKDAV.so.%%KDE_APPLICATIONS_SHLIB_VER%%
 %%QT_MKSPECDIR%%/modules/qt_kdav.pri
 share/locale/ar/LC_MESSAGES/libkdav.mo
-share/locale/ast/LC_MESSAGES/libkdav.mo
 share/locale/ca/LC_MESSAGES/libkdav.mo
 share/locale/ca@valencia/LC_MESSAGES/libkdav.mo
 share/locale/cs/LC_MESSAGES/libkdav.mo
@@ -72,9 +71,11 @@ share/locale/nb/LC_MESSAGES/libkdav.mo
 share/locale/nl/LC_MESSAGES/libkdav.mo
 share/locale/pl/LC_MESSAGES/libkdav.mo
 share/locale/pt/LC_MESSAGES/libkdav.mo
+share/locale/pt_BR/LC_MESSAGES/libkdav.mo
 share/locale/ru/LC_MESSAGES/libkdav.mo
 share/locale/sk/LC_MESSAGES/libkdav.mo
 share/locale/sr/LC_MESSAGES/libkdav.mo
 share/locale/sv/LC_MESSAGES/libkdav.mo
 share/locale/uk/LC_MESSAGES/libkdav.mo
 share/locale/zh_CN/LC_MESSAGES/libkdav.mo
+share/locale/zh_TW/LC_MESSAGES/libkdav.mo

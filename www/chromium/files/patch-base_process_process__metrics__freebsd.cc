@@ -1,34 +1,35 @@
---- base/process/process_metrics_freebsd.cc.orig	2018-02-24 16:25:08.000000000 +0100
-+++ base/process/process_metrics_freebsd.cc	2018-03-03 19:25:40.067505000 +0100
-@@ -12,6 +12,10 @@
- #include "base/macros.h"
- #include "base/memory/ptr_util.h"
+--- base/process/process_metrics_freebsd.cc.orig	2019-03-21 01:36:27.000000000 +0100
++++ base/process/process_metrics_freebsd.cc	2019-03-24 22:18:22.764297000 +0100
+@@ -5,6 +5,7 @@
+ #include "base/process/process_metrics.h"
+ 
+ #include <stddef.h>
++#include <sys/types.h>
+ #include <sys/sysctl.h>
+ #include <sys/user.h>
+ #include <unistd.h>
+@@ -14,11 +15,15 @@
+ #include "base/process/process_metrics_iocounters.h"
+ #include "base/stl_util.h"
  
 +#include <unistd.h> /* getpagesize() */
 +#include <fcntl.h>  /* O_RDONLY */
 +#include <kvm.h>
++#include <libutil.h>
 +
  namespace base {
  
  ProcessMetrics::ProcessMetrics(ProcessHandle process)
-@@ -25,6 +29,11 @@
-   return WrapUnique(new ProcessMetrics(process));
+-    : process_(process),
+-      last_cpu_(0) {}
++    : process_(process) {}
+ 
+ // static
+ std::unique_ptr<ProcessMetrics> ProcessMetrics::CreateProcessMetrics(
+@@ -69,4 +74,93 @@
+   return mem_total - (mem_free*pagesize) - (mem_inactive*pagesize);
  }
  
-+bool GetVmStatInfo(VmStatInfo* vmstat) {
-+  NOTIMPLEMENTED();
-+  return false;
-+}
-+
- size_t ProcessMetrics::GetPagefileUsage() const {
-   struct kinfo_proc info;
-   int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, process_ };
-@@ -118,6 +127,60 @@
-   pagesize = getpagesize();
- 
-   return mem_total - (mem_free*pagesize) - (mem_inactive*pagesize);
-+}
-+
 +int GetNumberOfThreads(ProcessHandle process) {
 +  // Taken from FreeBSD top (usr.bin/top/machine.c)
 +
@@ -81,6 +82,41 @@
 +  meminfo->swap_free = (swap_total - swap_used) * pagesizeKB;
 +
 +  return true;
- }
- 
++}
++
++int ProcessMetrics::GetOpenFdCount() const {
++  struct kinfo_file * kif;
++  int cnt;
++
++  if ((kif = kinfo_getfile(process_, &cnt)) == NULL)
++    return -1;
++
++  free(kif);
++
++  return cnt;
++}
++
++int ProcessMetrics::GetOpenFdSoftLimit() const {
++  size_t length;
++  int total_count = 0;
++  int mib[] = { CTL_KERN, KERN_MAXFILESPERPROC };
++
++  length = sizeof(total_count);
++
++  if (sysctl(mib, base::size(mib), &total_count, &length, NULL, 0) < 0) {
++    total_count = -1;
++  }
++
++  return total_count;
++}
++
++uint64_t ProcessMetrics::GetVmSwapBytes() const {
++   NOTIMPLEMENTED();
++   return 0;
++}
++
++int ProcessMetrics::GetIdleWakeupsPerSecond() {
++  NOTIMPLEMENTED();
++  return 0;
++}
  }  // namespace base

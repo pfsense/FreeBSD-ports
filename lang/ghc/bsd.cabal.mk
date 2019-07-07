@@ -54,10 +54,7 @@ GHC_LIB_DOCSDIR_REL=	share/doc/ghc-${GHC_VERSION}/html/libraries
 
 CABAL_LIBDIR=		${PREFIX}/lib/cabal/ghc-${GHC_VERSION}
 CABAL_LIBSUBDIR=	${PACKAGE}
-CABAL_ARCH=		x86_64
-.if ("${ARCH}" == "i386")
-CABAL_ARCH=		i386
-.endif
+CABAL_ARCH=		${ARCH:S/amd64/x86_64/:C/armv.*/arm/:S/powerpc64/ppc64/}
 CABAL_ARCHSUBDIR=	${CABAL_ARCH}-freebsd-ghc-${GHC_VERSION}
 CABAL_LIBDIR_REL=	${CABAL_LIBDIR:S,^${PREFIX}/,,}
 
@@ -96,6 +93,9 @@ BUILD_DEPENDS+=	ghc:lang/ghc
 BUILD_DEPENDS+=	ghc>=${GHC_VERSION}:lang/ghc
 .endif
 
+.if ${ARCH} == powerpc64
+USE_BINUTILS=	yes
+.endif
 
 CONFIGURE_ARGS+=	--with-gcc=${CC} --with-ld=${LD} --with-ar=${AR}
 
@@ -325,7 +325,7 @@ add-plist-post: add-plist-cabal
 add-plist-cabal:
 
 .  if !defined(STANDALONE)
-	@${ECHO_CMD} '@postunexec ${LOCALBASE}/bin/ghc-pkg unregister --force ${PORTNAME}-${PORTVERSION}' >> ${TMPPLIST}
+	@${ECHO_CMD} '@postunexec ${LOCALBASE}/bin/ghc-pkg unregister --no-user-package-db --force ${PORTNAME}-${PORTVERSION}' >> ${TMPPLIST}
 .  endif
 
 .  if defined(HADDOCK_AVAILABLE) && ${PORT_OPTIONS:MDOCS}

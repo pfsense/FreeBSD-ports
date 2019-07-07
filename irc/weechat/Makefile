@@ -2,21 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	weechat
-PORTVERSION=	2.1
+PORTVERSION=	2.4
 CATEGORIES=	irc
 MASTER_SITES=	https://weechat.org/files/src/
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Lightweight and user friendly ncurses based IRC client
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS+=	libcurl.so:ftp/curl \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error
 
-USES=		cmake:outsource,noninja ncurses libtool tar:xz
+USES=		cmake:noninja ncurses libtool tar:xz
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS+=	-DENABLE_GUILE=no \
@@ -66,9 +66,11 @@ MANPAGES_CMAKE_ON=	-DMANDIR=${MANPREFIX}/man
 MANPAGES_BUILD_DEPENDS=	${LOCALBASE}/bin/asciidoctor:textproc/rubygem-asciidoctor
 NLS_USES=		gettext
 PERL_USES=		perl5
-PHP_USES=		php:embed
+PHP_USES=		php:build,embed
 PYTHON_USES=		python
 RUBY_USE=		ruby=yes
+TCL_CMAKE_ON=		-DTCL_VERSION:STRING="${TCL_VER}" \
+			-DTCL_TCLSH:PATH="${TCLSH}"
 TCL_USES=		tcl:85+
 
 .include <bsd.port.pre.mk>

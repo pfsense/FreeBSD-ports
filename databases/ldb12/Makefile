@@ -2,7 +2,7 @@
 
 PORTNAME=		ldb
 PORTVERSION=		1.2.3
-PORTREVISION=		0
+PORTREVISION=		1
 PORTEPOCH=		0
 CATEGORIES=		databases
 MASTER_SITES=		SAMBA
@@ -31,7 +31,7 @@ CONFLICTS_INSTALL=	ldb-1.1.* ldb13-1.3.*
 #nopython_CONFLICTS=	ldb
 #default_CONFLICTS=	ldb-nopython
 
-USES=			compiler pkgconfig waf
+USES=			compiler:c++11-lang pkgconfig waf
 USE_LDCONFIG=		yes
 WAF_CMD=		buildtools/bin/waf
 CONFIGURE_LOG=		bin/config.log
@@ -133,7 +133,7 @@ BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/do
 			xsltproc:textproc/libxslt
 .endif
 # No fancy color error messages
-.if ${COMPILER_TYPE} == "clang"
+.if ${CHOSEN_COMPILER_TYPE} == clang
 CFLAGS+=		-fno-color-diagnostics
 .endif
 CONFIGURE_ENV+=		NOCOLOR=yes

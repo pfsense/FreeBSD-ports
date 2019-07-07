@@ -15,7 +15,7 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 RUN_DEPENDS=	${LOCALBASE}/bin/gmd5sum:sysutils/coreutils
 
 
-USES=		cmake:outsource gettext kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
 USE_KDE=	codecs completion config coreaddons i18n itemmodels \
 		widgetsaddons windowsystem \
 		pimtextedit
@@ -23,6 +23,9 @@ USE_QT=		core gui widgets \
 		buildtools_build qmake_build
 
 _CORETOOLS=	md5sum sha1sum sha256sum sha512sum
+
+OPTIONS_DEFINE=	DOCS
+
 post-extract:
 # use the binaries of coreutils
 .  for ct in ${_CORETOOLS}

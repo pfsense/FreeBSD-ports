@@ -3,7 +3,7 @@
 
 PORTNAME?=	cdrdao
 PORTVERSION=	1.2.4
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES=	sysutils audio
 MASTER_SITES=	SF/cdrdao
 DISTNAME=	cdrdao-${PORTVERSION}
@@ -69,7 +69,7 @@ CONFIGURE_ARGS+=	--with-mp3-support=no --with-ogg-support=no
 
 CONFIGURE_ARGS+=	--without-pcctsbin --without-pcctsinc \
 			--with-posix-threads=no --with-scglib
-MAKE_ENV=		CCOM=cc
+MAKE_ENV+=		CCOM=cc
 SCSILIBXARCH!=		${UNAME} -m
 
 post-extract:

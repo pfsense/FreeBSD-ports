@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	lazarus
-PORTVERSION=	1.8.4
+PORTVERSION=	2.0.0
 PKGNAMESUFFIX?=  -gtk2
 PORTREVISION?=	0
 CATEGORIES=	editors devel
@@ -21,8 +21,8 @@ ONLY_FOR_ARCHS=	i386 amd64
 
 USES=		fpc gettext gmake iconv
 USE_FPC?=	chm cairo dblib fcl-base fcl-db fcl-fpcunit fcl-image fcl-json fcl-net \
-		fcl-registry fcl-res fcl-web fcl-xml gtk2 ibase iconvenc mysql \
-		numlib odbc openssl oracle pasjpeg postgres regexpr rtl-extra \
+		fcl-registry fcl-res fcl-web fcl-xml fppkg gtk2 ibase iconvenc mysql \
+		numlib odbc opengl openssl oracle pasjpeg postgres regexpr rtl-extra \
 		sqlite x11
 USE_XORG=	x11
 OPT?=		"-Sgic "
@@ -31,6 +31,7 @@ MAKE_ENV=	OPT=${OPT}
 PLIST=		${WRKDIR}/pkg-plist
 WRKSRC?=	${WRKDIR}/${PORTNAME}
 DATADIR?=	${PREFIX}/share/${PORTNAME}-${PORTVERSION}
+LLD_UNSAFE=	yes
 
 OPTIONS_DEFINE=		GDB
 GDB_DESC=		Install a newest version  of gdb

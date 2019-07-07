@@ -1,12 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	mgba
-DISTVERSION=	0.6.1
-PORTREVISION=	2
+DISTVERSION=	0.7.0
 CATEGORIES=	emulators
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	a7a51a11373f.patch:-p1
 
 MAINTAINER=	greg@unrelenting.technology
 COMMENT=	Game Boy Advance (GBA) emulator/debugger
@@ -20,7 +16,7 @@ LICENSE_FILE_MPL20=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 		libpng.so:graphics/png
 
-USES=		cmake:outsource compiler:c++11-lang localbase:ldflags pkgconfig sqlite:3
+USES=		cmake compiler:c++11-lang gl gnome localbase:ldflags pkgconfig sqlite:3
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mgba-emu
@@ -38,12 +34,13 @@ CMAKE_ARGS=	-DCMAKE_INSTALL_DOCDIR:STRING="${DOCSDIR}" \
 		-DBUILD_GLES2:BOOL=OFF
 LDFLAGS+=	-Wl,--as-needed # glu
 
-OPTIONS_DEFINE=	DEBUGGERS FFMPEG MAGICK QT5
-OPTIONS_DEFAULT=	DEBUGGERS FFMPEG MAGICK QT5
+OPTIONS_DEFINE=	DEBUGGERS FFMPEG LIBRETRO MAGICK QT5 DOCS
+OPTIONS_DEFAULT=	DEBUGGERS FFMPEG LIBRETRO MAGICK QT5
 OPTIONS_SUB=	yes
 
 DEBUGGERS_DESC=	Debugging infrastructure (CLI debugger, GDB remote stub)
 FFMPEG_DESC=	FFmpeg video recording support
+LIBRETRO_DESC=	libretro core
 MAGICK_DESC=	ImageMagick GIF recording support
 QT5_DESC=	Qt 5 frontend
 
@@ -57,9 +54,12 @@ FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 			libavutil.so:multimedia/ffmpeg \
 			libswscale.so:multimedia/ffmpeg
 
+LIBRETRO_CMAKE_BOOL=	BUILD_LIBRETRO
+LIBRETRO_CMAKE_ON=	-DLIBRETRO_LIBDIR:PATH="${PREFIX}/lib/libretro"
+
 MAGICK_CMAKE_BOOL=	USE_MAGICK
-MAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick \
-			libMagickCore-6.so:graphics/ImageMagick
+MAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6 \
+			libMagickCore-6.so:graphics/ImageMagick6
 
 QT5_CMAKE_BOOL=	BUILD_QT
 QT5_USE=	qt=qmake_build,buildtools_build,core,gui,widgets,network,opengl,multimedia

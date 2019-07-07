@@ -3,7 +3,7 @@
 
 PORTNAME=	taglib
 PORTVERSION=	1.11.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://taglib.github.io/releases/
 
@@ -15,7 +15,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LGPL
 LICENSE_FILE_MPL11=	${WRKSRC}/COPYING.MPL
 
-USES=		cmake cpe pathfix
+USES=		cmake compiler:c++11-lang cpe pathfix
 USE_LDCONFIG=	yes
 
 CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_Boost \

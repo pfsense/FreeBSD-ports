@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2018 BBcan177@gmail.com
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -85,12 +85,12 @@ if ($_POST) {
 if (!empty($gtype)) {
 
 	// Set 'active' GUI Tabs
-	$active = array('ip' => FALSE, 'ipv4' => FALSE, 'ipv6' => FALSE, 'dnsbl' => FALSE, 'feeds' => FALSE, 'easylist' => FALSE);
+	$active = array('ip' => FALSE, 'ipv4' => FALSE, 'ipv6' => FALSE, 'dnsbl' => FALSE, 'feeds' => FALSE);
 
 	switch ($gtype) {
 		case 'ipv4':
 			$type		= 'IPv4';
-			$conf_type	= 'pfblockernglistsv4'; 
+			$conf_type	= 'pfblockernglistsv4';
 			$suffix		= '_v4';
 			$active		= array('ip' => TRUE, 'ipv4' => TRUE);
 			break;
@@ -106,12 +106,6 @@ if (!empty($gtype)) {
 			$suffix		= '';
 			$active		= array('dnsbl' => TRUE, 'feeds' => TRUE);
 			break;
-		case 'easylist';
-			$type		= 'DNSBL EasyList';
-			$conf_type	= 'pfblockerngdnsbleasylist';
-			$suffix		= '';
-			$active		= array('dnsbl' => TRUE, 'easylist' => TRUE);
-			break;
 	}
 }
 
@@ -120,7 +114,8 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 	$rowid		= 0;
 	$pfb_found	= FALSE;
 	$disable_move	= TRUE;
-	$rowdata	= $config['installedpackages'][$conf_type]['config'] ?: array();
+	init_config_arr(array('installedpackages', $conf_type, 'config'));
+	$rowdata	= $config['installedpackages'][$conf_type]['config'];
 	$all_group = $new_group = array();
 
 	$feed_info = convert_feeds_json();			// Load/convert Feeds (w/alternative aliasname(s), if user-configured
@@ -142,6 +137,7 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 
 					// If an alternate URL is defined, add applicable URL
 					if (isset($feed['alternate'])) {
+						init_config_arr(array('installedpackages', 'pfblockerngglobal'));
 						$selected = $config['installedpackages']['pfblockerngglobal']['feed_alt_' . strtolower($feed['header'])];
 						$selected = str_replace('alt_', '', $selected);
 
@@ -179,7 +175,7 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 						$a_aliasname	= $aliasname;
 						$a_description	= $data['description'];
 						$a_cron		= $data['cron'];
-						
+
 						$new_group = array ( array(	'state' => 'Disabled',
 										'url'	=> $feed['url'],
 										'header'=> $feed['header'] ));
@@ -198,6 +194,9 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 			$rowdata[$rowid]['aliasname']	= $a_aliasname;
 			$rowdata[$rowid]['description']	= $a_description;
 			$rowdata[$rowid]['cron']	= $a_cron;
+		}
+		if (!is_array($rowdata[$rowid]['row'])) {
+			$rowdata[$rowid]['row'] = array();
 		}
 		$rowdata[$rowid]['row'][] = array(	'state' => 'Disabled',
 							'url'	=> $a_url,
@@ -236,7 +235,7 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 $pgtype = 'IP'; $l_pgtype = 'ip';
 $pg_url = '/pfblockerng/pfblockerng_category.php?type=ipv4';
 
-if ($gtype == 'dnsbl' || $gtype == 'easylist') {
+if ($gtype == 'dnsbl') {
 	$pgtype = 'DNSBL'; $l_pgtype = 'dnsbl';
 	$pg_url = '/pfblockerng/pfblockerng_dnsbl.php';
 }
@@ -245,112 +244,23 @@ $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext($pgtype), 
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', "{$pg_url}", '@self');
 
 include_once('head.inc');
-
-if (!is_array($config['installedpackages'][$conf_type])) {
-	$config['installedpackages'][$conf_type] = array();
-}
-if (!is_array($config['installedpackages'][$conf_type]['config'])) {
-	$config['installedpackages'][$conf_type]['config'] = array();
-}
-
-// Define default EasyList data (state, easycat and header variables may be user defined)
-if ($gtype == 'easylist') {
-
-	$rowdata[0] = $config['installedpackages'][$conf_type]['config'][0]		?: array();
-	$ex_rowdata = $config['installedpackages'][$conf_type]['config'][0]['row']	?: array();
-
-	$rowdata[0]['row'] = array(	array(	'state' 	=> $ex_rowdata[0]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt',
-						'easycat'	=> $ex_rowdata[0]['easycat']	?: '',
-						'header'	=> $ex_rowdata[0]['header']	?: 'EasyList' ),
-
-					array(	'state'		=> $ex_rowdata[1]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easyprivacy.txt',
-						'easycat'	=> $ex_rowdata[1]['easycat']	?: '',
-						'header'	=> $ex_rowdata[1]['header']	?: 'EasyPrivacy' ),
-
-					array(	'state'		=> $ex_rowdata[9]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/Liste_AR.txt',
-						'easycat'	=> $ex_rowdata[9]['easycat']	?: '',
-						'header'	=> $ex_rowdata[9]['header']	?: 'EasyList_Arabic' ),
-
-					array(	'state'		=> $ex_rowdata[7]['state']	?: 'Disabled',
-						'url'		=> 'https://stanev.org/abp/adblock_bg.txt',
-						'easycat'	=> $ex_rowdata[7]['easycat']	?: '',
-						'header'	=> $ex_rowdata[7]['header']	?: 'EasyList_Bulgarian' ),
-
-					array(	'state'		=> $ex_rowdata[6]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylistchina.txt',
-						'easycat'	=> $ex_rowdata[6]['easycat']	?: '',
-						'header'	=> $ex_rowdata[6]['header']	?: 'EasyList_Chinese' ),
-
-					array(	'state'		=> $ex_rowdata[10]['state']	?: 'Disabled',
-						'url'		=> 'https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt',
-						'easycat'	=> $ex_rowdata[10]['easycat']	?: '',
-						'header'	=> $ex_rowdata[10]['header']	?: 'EasyList_Czech_Slovak' ),
-
-					array(	'state'		=> $ex_rowdata[4]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylistdutch.txt',
-						'easycat'	=> $ex_rowdata[4]['easycat']	?: '',
-						'header'	=> $ex_rowdata[4]['header']	?: 'EasyList_Dutch' ),
-
-					array(	'state'		=> $ex_rowdata[5]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/liste_fr.txt',
-						'easycat'	=> $ex_rowdata[5]['easycat']	?: '',
-						'header'	=> $ex_rowdata[5]['header']	?: 'EasyList_French' ),
-
-					array(	'state'		=> $ex_rowdata[2]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist.to/easylistgermany/easylistgermany.txt',
-						'easycat'	=> $ex_rowdata[2]['easycat']	?: '',
-						'header'	=> $ex_rowdata[2]['header']	?: 'EasyList_German' ),
-
-					array(	'state'		=> $ex_rowdata[12]['state']	?: 'Disabled',
-						'url'		=> 'https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt',
-						'easycat'	=> $ex_rowdata[12]['easycat']	?: '',
-						'header'	=> $ex_rowdata[12]['header']	?: 'EasyList_Hebrew' ),
-
-					array(	'state'		=> $ex_rowdata[8]['state']	?: 'Disabled',
-						'url'		=> 'https://raw.githubusercontent.com/heradhis/indonesianadblockrules/master/subscriptions/abpindo.txt',
-						'easycat'	=> $ex_rowdata[8]['easycat']	?: '',
-						'header'	=> $ex_rowdata[8]['header']	?: 'EasyList_Indonesian' ),
-
-					array(	'state'		=> $ex_rowdata[3]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylistitaly.txt',
-						'easycat'	=> $ex_rowdata[3]['easycat']	?: '',
-						'header'	=> $ex_rowdata[3]['header']	?: 'EasyList_Italian' ),
-
-					array(	'state'		=> $ex_rowdata[11]['state']	?: 'Disabled',
-						'url'		=> 'https://notabug.org/latvian-list/adblock-latvian/raw/master/lists/latvian-list.txt',
-						'easycat'	=> $ex_rowdata[11]['easycat']	?: '',
-						'header'	=> $ex_rowdata[11]['header']	?: 'EasyList_Latvian' ),
-
-					array(	'state'		=> $ex_rowdata[13]['state']	?: 'Disabled',
-						'url'		=> 'http://margevicius.lt/easylistlithuania.txt',
-						'easycat'	=> $ex_rowdata[13]['easycat']	?: '',
-						'header'	=> $ex_rowdata[13]['header']	?: 'EasyList_Lithuanian' ),
-
-					array(	'state'		=> $ex_rowdata[14]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/advblock.txt',
-						'easycat'	=> $ex_rowdata[14]['easycat']	?: '',
-						'header'	=> $ex_rowdata[14]['header']	?: 'EasyList_Russian' ),
-
-					array(	'state'		=> $ex_rowdata[16]['state']	?: 'Disabled',
-						'url'		=> 'https://easylist-downloads.adblockplus.org/easylistspanish.txt',
-						'easycat'	=> $ex_rowdata[16]['easycat']	?: '',
-						'header'	=> $ex_rowdata[16]['header']	?: 'EasyList_Spanish' ),
-
-					array(	'state'		=> $ex_rowdata[15]['state']	?: 'Disabled',
-						'url'		=> 'https://adguard.com/en/filter-rules.html?id=13',
-						'easycat'	=> $ex_rowdata[15]['easycat']	?: '',
-						'header'	=> $ex_rowdata[15]['header']	?: 'EasyList_Turkish' ) );
-}
+init_config_arr(array('installedpackages', $conf_type, 'config', 0));
 
 // Validate input fields
 if ($_POST && isset($_POST['save'])) {
 
 	$pconfig = $_POST;
 	$line = 1;
-	unset($input_errors);
+	if (isset($input_errors)) {
+		unset($input_errors);
+	}
+	if (isset($savemsg)) {
+		unset($savemsg);
+	}
+	
+	if (isset($_REQUEST['savemsg'])) {
+		unset($_REQUEST['savemsg']);
+	}
 
 	if (empty($_POST['aliasname'])) {
 		$input_errors[] = 'Info: Name field must be defined.';
@@ -392,18 +302,22 @@ if ($_POST && isset($_POST['save'])) {
 				$input_errors[] = "{$type} Source Definitions, Line {$line}: "
 							. "API key not defined! Add your subscripton API Key to the Source field URL or disable/remove feed.";
 			}
-
-			if ($value != 'Disabled' && $gtype == 'easylist' && empty($_POST["easycat-{$key_1}"])) {
-				$input_errors[] = "{$type} Source Definitions, Line {$line}: No Categories defined.";
-			}
 			$line++;
+		}
+	}
+
+	// Validate Adv. firewall rule settings
+	foreach (array(	'aliasports_in' => 'Port In', 'aliasaddr_in' => 'Destination In',
+			'aliasports_out' => 'Port Out', 'aliasaddr_out' => 'Destination Out') as $value => $auto_dir) {
+		if (!empty($_POST[$value]) && !is_alias($_POST[$value])) {
+			$input_errors[] = "Settings: Advanced {$auto_dir}bound Alias error - Must use an existing Alias";
 		}
 	}
 
 	// Validate Adv. firewall rule 'Protocol' setting
 	if (!empty($_POST['autoports_in']) || !empty($_POST['autoaddr_in'])) {
 		if (empty($_POST['autoproto_in'])) {
-			$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Inbound firewall rule settings."; 
+			$input_errors[] = "Settings: Protocol setting cannot be set to 'Default' with Advanced Inbound firewall rule settings.";
 		}
 	}
 	if (!empty($_POST['autoports_out']) || !empty($_POST['autoaddr_out'])) {
@@ -426,14 +340,39 @@ if ($_POST && isset($_POST['save'])) {
 		}
 	}
 
+	// Avoid creating a permit rule on WAN with 'any'
+	if ($_POST['action'] == 'Permit_Inbound' || $_POST['action'] == 'Permit_Both') {
+		$pfb_warning = FALSE;
+		if ($_POST['autoproto_in'] == '') {
+			$pfb_warning = TRUE;
+			$input_errors[] = "Warning: When using an Action setting of 'Permit Inbound or Permit Both',"
+					. " you must configure the 'Advanced Inbound Custom Protocol' setting. The current setting of 'Any' is not allowed.";
+		}
+		if ($_POST['aliasports_in'] == '' && $_POST['aliasaddr_in'] == '') {
+			$pfb_warning = TRUE;
+			$input_errors[] = "Warning:  When using an Action setting of 'Permit Inbound or Permit Both',"
+					. " you must configure at least one of 'Advanced Inbound Custom Port/Destination' settings.";
+		}
+		if ($pfb_warning) {
+			$input_errors[] = '';
+			$input_errors[] = '===> WARNING <===';
+			$input_errors[] = "Improper Permit rules on the WAN can catastrophically impact the security of your network!";
+		}
+	}
+
 	if (!$input_errors) {
 
-		$config['installedpackages'][$conf_type]['config'][$rowid]['aliasname']		= htmlspecialchars($_POST['aliasname'])		?: '';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['description']	= htmlspecialchars($_POST['description'])	?: '';
+		if (!is_array($config['installedpackages'][$conf_type]['config'][$rowid])) {
+			$config['installedpackages'][$conf_type]['config'][$rowid] = array();
+		}
 
-		$config['installedpackages'][$conf_type]['config'][$rowid]['action']		= $_POST['action']		?: 'Disabled';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['cron']		= $_POST['cron']		?: 'Never';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['dow']		= $_POST['dow']			?: '';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['aliasname']		= $_POST['aliasname']			?: '';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['description']	= pfb_filter($_POST['description'], 1)	?: '';
+
+		$config['installedpackages'][$conf_type]['config'][$rowid]['action']		= $_POST['action']			?: 'Disabled';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['cron']		= $_POST['cron']			?: 'Never';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['dow']		= $_POST['dow']				?: '';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['sort']		= $_POST['sort']			?: 'sort';
 
 		if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 			$config['installedpackages'][$conf_type]['config'][$rowid]['aliaslog']		= $_POST['aliaslog']		?: 'enabled';
@@ -441,19 +380,19 @@ if ($_POST && isset($_POST['save'])) {
 
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddrnot_in']	= $_POST['autoaddrnot_in']	?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autoports_in']	= $_POST['autoports_in']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_in']	= htmlspecialchars($_POST['aliasports_in'])	?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_in']	= $_POST['aliasports_in']	?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddr_in']	= $_POST['autoaddr_in']		?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autonot_in']	= $_POST['autonot_in']		?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_in']	= htmlspecialchars($_POST['aliasaddr_in'])	?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_in']	= $_POST['aliasaddr_in']	?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autoproto_in']	= $_POST['autoproto_in']	?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_in']	= $_POST['agateway_in']		?: 'default';
 
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddrnot_out']	= $_POST['autoaddrnot_out']	?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autoports_out']	= $_POST['autoports_out']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_out']	= htmlspecialchars($_POST['aliasports_out'])	?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_out']	= $_POST['aliasports_out']	?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddr_out']	= $_POST['autoaddr_out']	?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autonot_out']	= $_POST['autonot_out']		?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_out']	= htmlspecialchars($_POST['aliasaddr_out'])	?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_out']	= $_POST['aliasaddr_out']	?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['autoproto_out']	= $_POST['autoproto_out']	?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_out']	= $_POST['agateway_out']	?: 'default';
 
@@ -468,16 +407,16 @@ if ($_POST && isset($_POST['save'])) {
 
 		// Set flag to update CustomList on next Cron|Force update|Force reload
 		if (base64_decode($config['installedpackages'][$conf_type]['config'][$rowid]['custom']) != $_POST['custom']) {
-			$action = htmlspecialchars($_POST['action']);
-			$aname  = htmlspecialchars($_POST['aliasname']);
+			$action = $_POST['action'];
+			$aname  = $_POST['aliasname'];
 
 			pfb_determine_list_detail($action, '', $conf_type, $rowid);
 			touch("{$pfbarr['folder']}/{$aname}_custom{$suffix}.update");
 		}
 
+		init_config_arr(array('installedpackages', $conf_type, 'config', $rowid));
 		$config['installedpackages'][$conf_type]['config'][$rowid]['custom']			= base64_encode($_POST['custom']) ?: '';
 
-		$easycat = array();
 		$rowhelper_exist = array();
 
 		foreach ($_POST as $key => $value) {
@@ -489,42 +428,25 @@ if ($_POST && isset($_POST['save'])) {
 				// Collect all rowhelper keys
 				$rowhelper_exist[$k_field[1]] = '';
 
-				// Convert 'EasyList' categories from array to csv string
-				if (strpos($key, 'easycat') !== FALSE) {
-					$value = empty($value) ? '' : htmlspecialchars(implode(',', $value));
-
-					// Flag to remove undefined 'easycat' settings from config
-					if (isset($_POST["easycat-{$k_field[1]}"])) {
-						$easycat[$k_field[1]] = TRUE;
-					}
-				}
-
 				if ($k_field[0] == 'url' && in_array($_POST["format-{$k_field[1]}"], array( 'whois', 'asn', 'geoip' ))) {
-					$value = filter_var($value, FILTER_SANITIZE_STRING);
+					$value = pfb_filter($value, 1);
 				} elseif ($k_field[0] == 'url') {
-					$value = filter_var($value, FILTER_SANITIZE_URL);
+					$value = pfb_filter($value, 2);
 				} else {
 					$value = htmlspecialchars($value);
 				}
 
-				//print "\n{$key}\n\t{$k_field[0]}|{$k_field[1]}|{$value}|";
+				init_config_arr(array('installedpackages', $conf_type, 'config', $rowid, 'row', $k_field[1]));
 				$config['installedpackages'][$conf_type]['config'][$rowid]['row'][$k_field[1]][$k_field[0]] = $value;
 			}
 		}
 
-		// Remove all undefined EasyList Category settings for the 16 pre-defined EasyList Feeds
-		if ($gtype == 'easylist') {
-			for ($x=0; $x <= 15; $x++) {
-				if (!isset($easycat[$x])) {
-					$config['installedpackages'][$conf_type]['config'][$rowid]['row'][$x]['easycat'] = '';
-				}
-			}
-		}
-
 		// Remove all undefined rowhelpers
-		foreach ($config['installedpackages'][$conf_type]['config'][$rowid]['row'] as $r_key => $row) {
-			if (!isset($rowhelper_exist[$r_key])) {
-				unset($config['installedpackages'][$conf_type]['config'][$rowid]['row'][$r_key]);
+		if (is_array($config['installedpackages'][$conf_type]['config'][$rowid]['row'])) {
+			foreach ($config['installedpackages'][$conf_type]['config'][$rowid]['row'] as $r_key => $row) {
+				if (!isset($rowhelper_exist[$r_key])) {
+					unset($config['installedpackages'][$conf_type]['config'][$rowid]['row'][$r_key]);
+				}
 			}
 		}
 
@@ -533,7 +455,8 @@ if ($_POST && isset($_POST['save'])) {
 			unset($config['installedpackages'][$conf_type]['config'][$rowid]['infolists']);
 		}
 
-		$name = $config['installedpackages'][$conf_type]['config'][$rowid]['aliasname'];
+		init_config_arr(array('installedpackages', $conf_type, 'config', $rowid));
+		$name = $config['installedpackages'][$conf_type]['config'][$rowid]['aliasname'] ?: 'Unknown';
 		$savemsg = "Saved [ Type:{$type}, Name:{$name} ] configuration";
 		write_config("pfBlockerNG: {$savemsg}");
 		header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
@@ -544,26 +467,14 @@ if ($_POST && isset($_POST['save'])) {
 
 		// Restore $_POST data on input errors
 		$pconfig = $_POST;
-		foreach ($_POST as $key => $value) {
-
-			// Parse 'rowhelper' tables and restore failed data into $rowdata array
-			if (strpos($key, '-') !== FALSE) {
-				$k_field = explode('-', $key);
-				if (strpos($key, 'easycat') !== FALSE && is_array($value)) {
-					$value = implode(',', $value);
-				}
-
-				$rowdata[$rowid]['row'][$k_field[1]][$k_field[0]] = $value;
-			}
-		}
 	}
 }
 else {
 
-	// Don't load the config if EasyList Data is not defined
-	if ($gtype == 'easylist' || $action == 'addgroup' || $action == 'add') {
+	if ($action == 'addgroup' || $action == 'add') {
 		;
 	} else {
+		init_config_arr(array('installedpackages', $conf_type, 'config'));
 		$rowdata = &$config['installedpackages'][$conf_type]['config'];
 	}
 
@@ -574,12 +485,13 @@ else {
 	$pconfig['action']		= $rowdata[$rowid]['action'];
 	$pconfig['cron']		= $rowdata[$rowid]['cron'];
 	$pconfig['dow']			= $rowdata[$rowid]['dow'];
+	$pconfig['sort']		= $rowdata[$rowid]['sort'];
 
 	if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 		$pconfig['aliaslog']		= $rowdata[$rowid]['aliaslog'];
 		$pconfig['stateremoval']	= $rowdata[$rowid]['stateremoval'];
 
-		$pconfig['autoaddrnot_in']	= $rowdata[$rowid]['autoaddrnot_in']; 
+		$pconfig['autoaddrnot_in']	= $rowdata[$rowid]['autoaddrnot_in'];
 		$pconfig['autoports_in']	= $rowdata[$rowid]['autoports_in'];
 		$pconfig['aliasports_in']	= $rowdata[$rowid]['aliasports_in'];
 		$pconfig['autoaddr_in']		= $rowdata[$rowid]['autoaddr_in'];
@@ -638,7 +550,7 @@ if (isset($Lmove) and isset($Xmove) && isset($rowdata[$rowid]['row'])) {
 			if ($pre && $Lmove[$key] != $Xmove) {
 				$final[] = $row;
 			}
-		
+
 			$final = array_merge($final, $move);
 
 			if (!$pre && $Lmove[$key] != $Xmove) {
@@ -678,7 +590,6 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 }
 else {
 	$tab_array[]	= array(gettext('DNSBL Feeds'),		$active['feeds'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
-	$tab_array[]	= array(gettext('DNSBL EasyList'),	$active['easylist'],	'/pfblockerng/pfblockerng_category.php?type=easylist');
 	$tab_array[]	= array(gettext('DNSBL Category'),	false,			'/pfblockerng/pfblockerng_blacklist.php');
 }
 display_top_tabs($tab_array, true);
@@ -758,6 +669,26 @@ if (empty($rowdata[$rowid]['row'])) {
 							'header'	=> '' ) );
 }
 
+// Sort row by Header/Label field followed by Enabled/Disabled State settings
+if (empty($rowdata[$rowid]['sort']) || $rowdata[$rowid]['sort'] == 'sort') {
+	$new_disabled = $new_enabled = array();
+	foreach ($rowdata[$rowid]['row'] as $key => $data) {
+		if ($data['state'] == 'Disabled') {
+			$new_disabled[$data['header']] = $data;
+		} else {
+			$new_enabled[$data['header']] = $data;
+		}
+	}
+	ksort($new_disabled, SORT_NATURAL | SORT_FLAG_CASE);
+	ksort($new_enabled, SORT_NATURAL | SORT_FLAG_CASE);
+
+	$new = $new_enabled + $new_disabled;
+	foreach ($new as $key => $data) {
+		$final[] = $data;
+	}
+	$rowdata[$rowid]['row'] = $final;
+}
+
 $numrows	= (count($rowdata[$rowid]['row']) -1) ?: 0;
 $rowcounter	= 0;
 $failed		= '';	// Failed download help text
@@ -771,14 +702,11 @@ foreach ($rowdata[$rowid] as $tags) {
 	foreach ($tags as $r_id => $row) {
 
 		$line_label = 'XXXX';	// Used to signal JQuery removal of html label column (To allow utilizing of full page width)
-		if ($gtype == 'easylist') {
-			$line_label = str_replace('_', ' ', $row['header']);
-		}
 
 		$group = new Form_Group($line_label);
 		$group->addClass('repeatable');
 
-		if ($gtype != 'easylist') {
+		if ($rowdata[$rowid]['sort'] == 'no-sort') {
 
 			$move_anchor = "<input type=\"checkbox\" name=\"Lmove[{$r_id}]\" value=\"{$r_id}\" />
 						<button type=\"submit\" class=\"fa fa-anchor button-icon\" name=\"Xmove\" value=\"{$r_id}\"
@@ -825,65 +753,20 @@ foreach ($rowdata[$rowid] as $tags) {
 		  ->setAttribute('size', 1)
 		  ->setWidth(1);
 
-		$width = 5;
-		if ($gtype == 'dnsbl') {
-			$width = 5;
-		} elseif ($gtype == 'easylist') {
-			$width = 3;
-		}
-
 		$group->add(new Form_Input(
 				'url-' . $r_id,
 				'',
 				'text',
 				$row['url']
 		))->setHelp(($numrows == $rowcounter) ? 'Source' : NULL)
-		  ->setWidth($width);
-
-		if ($gtype == 'easylist') {
-			// EasyList
-			$options[0] = array(	'ea' => 'Adservers', 'eap' => 'Adservers Popup',
-						'aa' => 'Adult Adservers', 'aap' => 'Adult Adservers Popup' );
-
-			// EasyPrivacy
-			$options[1] = array(	'epts' => 'Tracking Servers', 'epti' => 'Tracking International' );
-
-			// EasyList language specific
-			$options[2] = array(	'ea' => 'Adservers', 'eap' => 'Adservers Popup' );
-			$options[5]= array(	'ea' => 'Czech Adservers', 'eap' => 'Slovak Adservers' );
-
-			switch ($r_id) {
-				case '0':
-				case '1':
-					$option_list = $options[$r_id];
-					break;
-				case '5':
-					$option_list = $options[5];
-					break;
-				default:
-					$option_list = $options[2];
-					break;
-			}
-
-			$size = count($option_list);
-
-			$group->add(new Form_Select(
-					'easycat-' . $r_id,
-					'',
-					explode(',', $row['easycat']),
-					$option_list,
-					TRUE
-			))->setHelp(($numrows == $rowcounter) ? 'Category' : NULL)
-			  ->setAttribute('size', $size)
-			  ->setWidth(3);
-		}
+		  ->setWidth(5);
 
 		// Indicate any failed downloads with yellow select field background
 		if (strpos($pconfig['action'], 'Deny_') !== FALSE) {
 			$folder = "{$pfb['denydir']}";
 		} elseif (strpos($pconfig['action'], 'Permit_') !== FALSE) {
 			$folder = "{$pfb['permitdir']}";
-		} elseif (strpos($pconfig['action'], 'Match_') !== FALSE) { 
+		} elseif (strpos($pconfig['action'], 'Match_') !== FALSE) {
 			$folder = "{$pfb['matchdir']}";
 		} elseif (strpos($pconfig['action'], 'unbound') !== FALSE) {
 			$folder = "{$pfb['dnsdir']}";
@@ -907,15 +790,13 @@ foreach ($rowdata[$rowid] as $tags) {
 		  ->setWidth(3);
 
 		// Delete row button
-		if ($gtype != 'easylist') {
-			$group->add(new Form_Button(
-				'deleterow' . $rowcounter,
-				'Delete',
-				NULL,
-				'fa-trash'
-			))->removeClass('btn-primary')
-			  ->addClass('btn-warning btn-xs')->setWidth(1);
-		}
+		$group->add(new Form_Button(
+			'deleterow' . $rowcounter,
+			'Delete',
+			NULL,
+			'fa-trash'
+		))->removeClass('btn-primary')
+		  ->addClass('btn-warning btn-xs')->setWidth(1);
 
 		$rowcounter++;
 		$section->add($group);
@@ -955,22 +836,7 @@ $infotxt .= '	</dd>
 				<dt>URL:</dt>
 		';
 
-if ($gtype == 'easylist') {
-	$infotxt .= '<dd>Only the hardcoded ADBlock EasyLists above can be used in this Tab.<br /><br />
-			<a target="_blank" href="https://easylist.to/pages/other-supplementary-filter-lists-and-easylist-variants.html">
-			Link: EasyList Filters</a><br /><br />
-			Copyright: EasyList, EasyPrivacy, EasyList Germany, EasyList Italy and EasyList Dutch are dual licensed under
-			Creative Commons Attribution-ShareAlike and the GNU General Public License. 
-		</dl>	
-	</dd>
-	<dt>Category:</dt>
-		<dd>Select Categories:
-			<dl class="dl-horizontal">
-				<dd>CTRL+CLICK to select/unselect the categories</dd>
-			</dl>
-		</dd>';
-}
-elseif ($gtype == 'ipv4' || $gtype == 'ipv6') {
+if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 	$infotxt .= '			<dd>External link to source&emsp;(ie:&nbsp;
 						<a target="_blank" href="https://rules.emergingthreats.net/blockrules/compromised-ips.txt">ET Compromised</a>,
 						<a target="_blank" href="https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt">ET Blocked</a>,
@@ -981,14 +847,14 @@ elseif ($gtype == 'ipv4' || $gtype == 'ipv6') {
 						&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename
 					</dd>
 				<dt>GeoIP ISO:</dt>
-					<dd>Utilize the autocomplete <strong>GeoIP Format</strong> option 
+					<dd>Utilize the autocomplete <strong>GeoIP Format</strong> option
 						or manually enter the full URL as /usr/local/share/GeoIP/cc/US_v4.txt
 						&emsp;(Change \'US\' to required code)
 					</dd>
 				<dt>Whois:</dt><dd>Domain name to IP Address&emsp;(ie: facebook.com)<br />
 					Note: This will only return a partial list of resolved IPs for each Domain!</dd>
 				<dt>ASN:</dt><dd>ASN to IP Address&emsp;(ie: AS32934)
-						&emsp;(<a target="_blank" href="https://asn.cymru.com/">Click for ASN Lookup via cymru.com</a>)</dd>
+						&emsp;(<a target="_blank" href="https://asn.cymru.com/">Click for IP<->ASN Lookup via Team Cymru.com</a>)</dd>
 			</dl>
 		</dd>';
 }
@@ -1018,15 +884,10 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 				<strong>CIDR:</strong>172.16.1.0/24
 			</dd>';
 }
-elseif ($gtype == 'dnsbl') {
-	$infotxt .= '<dt>Note:</dt>
-			<dd><strong>AdBlock Easylists <u>cannot</u> be used in this Tab.</strong></dd>
-			</dt>';
-}
 
 $infotxt .= '	</dl>';
 
-// Guideline infoblock 
+// Guideline infoblock
 $section->addInput(new Form_StaticText(
 		'',
 		"{$failed}"
@@ -1034,19 +895,17 @@ $section->addInput(new Form_StaticText(
 		. $infotxt . '</div>'
 ));
 
-// Add 'Change state' and 'Add Row' buttons 
+// Add 'Change state' and 'Add Row' buttons
 $btnadd = '';
-if ($gtype != 'easylist') {
-	$btnadd = new Form_Button(
-		'addrow',
-		'Add',
-		null,
-		'fa-plus'
-	);
-	$btnadd->removeClass('btn-primary')
-		->addClass('btn-xs btn-success')
-		->setAttribute('title', "Add new entry to {$type} Source Definition table");
-}
+$btnadd = new Form_Button(
+	'addrow',
+	'Add',
+	null,
+	'fa-plus'
+);
+$btnadd->removeClass('btn-primary')
+	->addClass('btn-xs btn-success')
+	->setAttribute('title', "Add new entry to {$type} Source Definition table");
 
 $btnstate = new Form_Button(
 	'chgstate',
@@ -1170,6 +1029,14 @@ $section->addInput(new Form_Select(
 	['1' => 'Monday', '2' => 'Tuesday', '3' => 'Wednesday', '4' => 'Thursday', '5' => 'Friday', '6' => 'Saturday', '7' => 'Sunday']
 ))->setHelp('Default: <strong>Monday</strong><br />Select the \'Weekly\' ( Day of the Week ) to Update <br />'
 		. 'This is only required for the \'Weekly\' Frequency Selection. The 24 Hour Download \'Time\' will be used.')
+  ->setAttribute('style', 'width: auto');
+
+$section->addInput(new Form_Select(
+	'sort',
+	'Auto-Sort Header field',
+	$pconfig['sort'],
+	['sort' => 'Enable auto-sort', 'no-sort' => 'Disable auto-sort']
+))->setHelp('Automatic sorting of the Header/Label field grouped by the Enabled/Disabled State field setting.')
   ->setAttribute('style', 'width: auto');
 
 if ($gtype == 'ipv4' || $gtype == 'ipv6') {
@@ -1334,7 +1201,7 @@ else {
 		$pconfig['order'],
 		['default' => 'Default', 'primary' => 'Primary']
 	))->setHelp('Default: <strong>Default</strong><br />'
-			. 'When set as \'Primary\', this DNSBL Group will be processed before all other DNSBL Groups/EasyList/Blacklist(s)')
+			. 'When set as \'Primary\', this DNSBL Group will be processed before all other DNSBL Groups/Category(s)')
 	  ->setAttribute('style', 'width: auto');
 
 	$section->addInput(new Form_Select(
@@ -1418,9 +1285,9 @@ $section->addInput(new Form_Textarea(
 $form->add($section);
 print ($form);
 
-if ($gtype == 'dnsbl' || $gtype == 'easylist') {
+if ($gtype == 'dnsbl') {
 	print_callout('<p><strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or \'Force Update|Reload\' only!</strong><br /><br />
-			DNSBL Category and EasyList(s) are processed first, followed by the DNSBL Groups.<br />
+			DNSBL Category Feeds are processed first, followed by the DNSBL Groups.<br />
 			DNSBL Groups can be prioritized first, by selecting the \'Group Order\' option.</p>');
 }
 else {
@@ -1452,11 +1319,8 @@ if (gtype == 'ipv4' || gtype == 'ipv6') {
 	var geoip = "<?=$geoip_isos?>";
 	var geoiparray = geoip.split(',');
 
-	// ASN Auto-Complete for Source (URL) field lookup 
+	// ASN Auto-Complete for Source (URL) field lookup
 	var asnlist = "<?=$pfb['asn_list']?>";
-}
-else if (gtype == 'easylist') {
-	var pagetype = 'easylist';
 }
 else if (gtype == 'dnsbl') {
 	var pagetype = 'dnsbl';

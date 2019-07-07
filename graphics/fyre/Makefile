@@ -3,7 +3,7 @@
 
 PORTNAME=	fyre
 PORTVERSION=	1.0.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	http://releases.navi.cx/fyre/
 
@@ -13,7 +13,8 @@ COMMENT=	Chaos map rendering system with GTK+-2 interface
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-USES=		desktop-file-utils gmake pkgconfig shared-mime-info tar:bzip2
+USES=		compiler:c++11-lang desktop-file-utils gmake pkgconfig \
+		shared-mime-info tar:bzip2
 USE_GNOME=	libglade2
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
@@ -22,7 +23,7 @@ OPTIONS_DEFINE=		OPTIMIZED_CFLAGS OPENEXR GNET DOCS
 OPTIONS_DEFAULT=	OPENEXR GNET
 
 OPENEXR_CONFIGURE_ENABLE=	openexr
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
 
 GNET_DESC=		Networking support via GNet
 GNET_CONFIGURE_ENABLE=	gnet

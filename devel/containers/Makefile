@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	containers
-PORTVERSION=	0.7.0
+DISTVERSION=	0.8.0-alpha.11
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -13,6 +13,7 @@ LICENSE=	BSL
 
 BUILD_DEPENDS=	ldmd2:lang/ldc \
 		dub:devel/dub \
+		${LOCALBASE}/lib/d/libmir-core.a:devel/mir-core \
 		${LOCALBASE}/lib/d/libstdx-allocator.a:devel/stdx-allocator
 
 USE_GITHUB=	yes

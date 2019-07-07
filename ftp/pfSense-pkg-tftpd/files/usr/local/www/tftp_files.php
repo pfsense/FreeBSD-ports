@@ -76,11 +76,9 @@ if ($_GET['a'] == "other" && $_GET['t'] == "restore") {
 /* Upload files to TFTP server */
 if ($_POST['upload'] == "Upload" && $_FILES["tftpd_fileup"]["error"] == UPLOAD_ERR_OK) {
 	if (is_uploaded_file($_FILES['tftpd_fileup']['tmp_name'])) {
-		conf_mount_rw();
 		$tmp_name = $_FILES["tftpd_fileup"]["tmp_name"];
 		$name = basename($_FILES["tftpd_fileup"]["name"]);
 		move_uploaded_file($tmp_name, FILES_DIR . "/{$name}");
-		conf_mount_ro();
 	} else {
 		$input_errors[] = gettext("Failed to upload file {$_FILES["tftpd_fileup"]["name"]}");
 	}
@@ -89,7 +87,6 @@ if ($_POST['upload'] == "Upload" && $_FILES["tftpd_fileup"]["error"] == UPLOAD_E
 /* Delete a file from TFTP server */
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'tftp') {
-		conf_mount_rw();
 		$filename = htmlspecialchars($_GET['filename']);
 		$error_msg = "Attempt to delete files outside of TFTP server directory rejected!";
 		if (!tftp_filesdir_bounds_check($filename, $error_msg)) {
@@ -97,7 +94,6 @@ if ($_GET['act'] == "del") {
 			return;
 		} else {
 			unlink_if_exists("{$filename}");
-			conf_mount_ro();
 			header("Location: tftp_files.php");
 			exit;
 		}

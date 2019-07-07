@@ -38,13 +38,27 @@ if (isset($_GET['haproxystats']) || isset($_GET['scope']) || (isset($_POST) && i
 				$request .= ";$key=$arg";
 			}
 		}
-		$options = array(
-		  'http'=>array(
-			'method'=>"POST",
-			'header'=>"Accept-language: en\r\n".
-			          "Content-type: application/x-www-form-urlencoded\r\n",
-			'content'=>http_build_query($_POST)
-		));
+		$postdata = "";
+		if (isset($_POST['action'])) {
+			// get 'all' POST variables as a few can have the same 'name', $_POST then only contains one.
+			// this happens for example when disabling multiple servers on stats page at once.
+			$postdata = file_get_contents("php://input");
+		}
+		if ($postdata) {
+			$options = array(
+			  'http'=>array(
+				'method'=>"POST",
+				'header'=>"Accept-language: en\r\n".
+						  "Content-type: application/x-www-form-urlencoded\r\n",
+				'content'=>$postdata
+			));
+		} else {
+			$options = array(
+			  'http'=>array(
+				'method'=>"GET",
+				'header'=>"Accept-language: en\r\n"
+			));
+		}
 		$context = stream_context_create($options);
 		$response = @file_get_contents("http://127.0.0.1:{$pconfig['localstatsport']}/haproxy/haproxy_stats.php?haproxystats=1".$request, false, $context);
 		if (is_array($http_response_header)){
@@ -108,7 +122,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "stats");
 ?>
 	<div class="panel panel-default">
 
-	<?
+	<?php
 if (isset($_GET['showstatresolvers'])){
 	$showstatresolversname = $_GET['showstatresolvers'];
 	echo "<td colspan='2'>";
@@ -188,14 +202,14 @@ if (isset($_GET['showstatresolvers'])){
 			<a href="/haproxy/haproxy_stats.php?haproxystats=1" target="_blank">Fullscreen stats page</a>
 		</div>
 		<div class="table-responsive panel-body">
-		<? if (isset($pconfig['enable']) && $pconfig['localstatsport'] && is_numeric($pconfig['localstatsport'])){?>
+		<?php if (isset($pconfig['enable']) && $pconfig['localstatsport'] && is_numeric($pconfig['localstatsport'])){?>
 			<iframe id="frame_haproxy_stats" width="1000" height="1500" seamless src="/haproxy/haproxy_stats.php?haproxystats=1<?=$request;?>"></iframe>
-		<? } else { ?>
+		<?php } else { ?>
 			<br/>
 			In the "Settings" configure a internal stats port and enable haproxy for this to be functional. Also make sure the service is running.<br/>
 			<br/>
-		<? } ?>
+		<?php } ?>
 		</div>
-<?}?>
+<?php } ?>
 	</div>
 <?php include("foot.inc");

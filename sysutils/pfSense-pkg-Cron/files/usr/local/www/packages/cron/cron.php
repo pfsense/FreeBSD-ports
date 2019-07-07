@@ -112,7 +112,7 @@ display_top_tabs($tab_array);
 </div>
 
 <div class="infoblock">
-	<?=print_info_box('For more information see: <a href="http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html">FreeBSD Handbook - Configuring cron(8)</a> and <a href="https://www.freebsd.org/cgi/man.cgi?query=crontab&amp;sektion=5">crontab(5) man page</a>.', info)?>
+	<?=print_info_box('For more information see: <a href="http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html">FreeBSD Handbook - Configuring cron(8)</a> and <a href="https://www.freebsd.org/cgi/man.cgi?query=crontab&amp;sektion=5">crontab(5) man page</a>.', 'info')?>
 </div>
 
 <?php include("foot.inc"); ?>

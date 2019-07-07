@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	alembic
-PORTVERSION=	1.7.8
+PORTVERSION=	1.7.10
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -10,7 +11,7 @@ COMMENT=	Open framework for storing and sharing graphic scene data
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libImath-2_2.so:graphics/ilmbase
+LIB_DEPENDS=	libImath.so:graphics/ilmbase
 
 USES=		cmake compiler:c++11-lang
 USE_CXXSTD=	c++11

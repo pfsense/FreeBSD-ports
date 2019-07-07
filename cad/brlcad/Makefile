@@ -3,7 +3,7 @@
 
 PORTNAME=	brlcad
 PORTVERSION=	7.24.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/BRL-CAD%20Source/${PORTVERSION}
 
@@ -13,6 +13,7 @@ COMMENT=	CSG modelling system from the US Ballistic Research Laboratory
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		fails to build
 BROKEN_sparc64=	does not compile: invokes i386 assembler
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs \
@@ -27,11 +28,11 @@ LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 
 CONFLICTS_INSTALL=	py[23][0-9]-epsilon
 
-USES=		bison cmake:outsource pathfix pkgconfig python:env shebangfix \
+USES=		bison cmake:insource pathfix pkgconfig python:env shebangfix \
 		tar:bzip2 tk:85
 USE_GL=		gl glu
-USE_XORG=	ice inputproto sm x11 xau xcb xdamage xdmcp xext xfixes xft xi \
-		xproto xrender xscrnsaver xt xxf86vm
+USE_XORG=	ice sm x11 xau xcb xdamage xdmcp xext xfixes xft xi \
+		xorgproto xrender xscrnsaver xt xxf86vm
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	src/conv/intaval-g.py
 

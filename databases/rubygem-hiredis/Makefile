@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hiredis
-PORTVERSION=	0.6.1
+PORTVERSION=	0.6.3
+PORTREVISION=	1
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	redis>=0:databases/redis
 
-USE_RUBY=	yes
 USES=		gem gmake
+USE_RUBY=	yes
 
 .include <bsd.port.mk>

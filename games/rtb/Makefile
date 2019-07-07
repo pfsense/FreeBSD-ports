@@ -4,7 +4,7 @@
 PORTNAME=	RealTimeBattle
 PORTVERSION=	1.0.8
 DISTVERSIONSUFFIX=	-Ext
-PORTREVISION=	11
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}-1.0.x/${PORTNAME}%20${PORTVERSION}
 
@@ -16,13 +16,16 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gsed:textproc/gsed
 
-USES=		gettext gmake perl5 pkgconfig python:2.7 tar:bzip2
+USES=		compiler:c++11-lang dos2unix gettext gmake gnome \
+		localbase:ldflags perl5 pkgconfig python:2.7 tar:bzip2
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-rtb-dir=${PREFIX}/lib/${PORTNAME}
+DOS2UNIX_FILES=	team-framework/bots/cobra/cobra_clientspecificrepository.h
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+INFO=		RealTimeBattle
+CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
+CXXFLAGS_clang=	-Wno-c++11-narrowing
 
 DESKTOP_ENTRIES="${PORTNAME}" "" "" "${PORTNAME:tl}" "" ""
 

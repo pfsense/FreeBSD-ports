@@ -3,15 +3,16 @@
 PORTNAME=	reaver
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.5
+PORTREVISION=	1
 CATEGORIES=	net
 
-MAINTAINER=	martinfilla@post.cz
+MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Reaver brute force attack against WPS (Wi-Fi Protected Setup)
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../docs/LICENSE
 
-USES=		gmake
+USES=		compiler:c++11-lang gmake
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	t6x

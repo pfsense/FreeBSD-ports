@@ -3,7 +3,7 @@
 
 PORTNAME=	superlu
 PORTVERSION=	5.2.1
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	http://crd-legacy.lbl.gov/~xiaoye/SuperLU/ \
 		http://crd-legacy.lbl.gov/~xiaoye/:doc
@@ -16,7 +16,7 @@ COMMENT=	Library of routines for performing sparse factorization
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/License.txt
 
-USES=		cmake:outsource fortran
+USES=		cmake fortran
 USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/SuperLU_${PORTVERSION}

@@ -3,18 +3,21 @@
 
 PORTNAME=	eps
 PORTVERSION=	1.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}inter7/${PORTNAME}inter7/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	EPS is a Email Parsing System
 
+BROKEN_aarch64=		fails to link: can't create dynamic relocation R_AARCH64_ABS64 against symbol: content_prefs in readonly segment
+
 OPTIONS_DEFINE=	DOCS
 
 USE_CSTD=	gnu89
 
 CFLAGS_amd64=	-fPIC
+CFLAGS_i386=	-fPIC
 
 PORTDOCS=	howto
 

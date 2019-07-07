@@ -1,12 +1,12 @@
---- components/gcm_driver/gcm_client_impl.cc.orig	2017-04-19 19:06:32 UTC
+--- components/gcm_driver/gcm_client_impl.cc.orig	2019-03-11 22:00:56 UTC
 +++ components/gcm_driver/gcm_client_impl.cc
-@@ -136,6 +136,9 @@ void ToCheckinProtoVersion(
+@@ -150,6 +150,9 @@ void ToCheckinProtoVersion(
      case GCMClient::PLATFORM_CROS:
        platform = checkin_proto::ChromeBuildProto_Platform_PLATFORM_CROS;
        break;
-+    case GCMClient::PLATFORM_BSD: // TODO what the hell are those?
++    case GCMClient::PLATFORM_BSD:
 +      platform = checkin_proto::ChromeBuildProto_Platform_PLATFORM_LINUX;
 +      break;
-     case GCMClient::PLATFORM_UNKNOWN:
+     case GCMClient::PLATFORM_UNSPECIFIED:
        // For unknown platform, return as LINUX.
        platform = checkin_proto::ChromeBuildProto_Platform_PLATFORM_LINUX;

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pkg_replace
-PORTVERSION=	20180530
+PORTVERSION=	20181024
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	http://member.tokoha-u.ac.jp/~kdeguchi/download/
 
@@ -12,12 +12,13 @@ COMMENT=	Utility for upgrading installed packages
 LICENSE=	PD
 
 USES=		tar:xz
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
 
-PORTDOCS=	README README.ja
+PORTDOCS=	ChangeLog README README.ja
 
 OPTIONS_DEFINE=	DOCS
 

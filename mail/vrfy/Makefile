@@ -11,11 +11,11 @@ DISTNAME=	${PORTNAME}
 MAINTAINER=	jadawin@FreeBSD.org
 COMMENT=	Verify mail address
 
-WRKSRC=		${WRKDIR}
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" RES=""
+NO_WRKSUBDIR=	yes
 PLIST_FILES=	bin/vrfy
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKDIR}/vrfy ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/vrfy ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

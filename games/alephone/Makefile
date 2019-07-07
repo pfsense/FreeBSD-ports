@@ -3,7 +3,7 @@
 
 PORTNAME=	alephone
 PORTVERSION=	20150620
-PORTREVISION=	11
+PORTREVISION=	15
 CATEGORIES=	games
 MASTER_SITES=	SF/marathon/Aleph%20One/2015-06-20
 DISTNAME=	AlephOne-${PORTVERSION}
@@ -13,7 +13,8 @@ COMMENT=	The open source version of Bungie's Marathon game
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/function.hpp:devel/boost-libs
 
-USES=		gmake localbase pkgconfig tar:bzip2
+USES=		compiler:c++11-lang gmake localbase pkgconfig tar:bzip2
+USE_CXXSTD=	gnu++98
 USE_SDL=	image net sdl ttf
 USE_GL=		yes
 GNU_CONFIGURE=	yes

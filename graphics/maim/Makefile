@@ -3,7 +3,7 @@
 PORTNAME=	maim
 PORTVERSION=	5.5.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics
 
 MAINTAINER=	neel@neelc.org
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libImlib2.so:graphics/imlib2 \
 		libpng.so:graphics/png \
 		libslopy.so:x11/slop
 
-USES=		cmake jpeg
+USES=		cmake compiler:c++11-lang jpeg
 USE_GITHUB=	yes
 GH_ACCOUNT=	naelstrof
 USE_GL=		gl glut

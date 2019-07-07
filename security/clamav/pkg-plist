@@ -1,37 +1,73 @@
+%%JSON%%bin/clamsubmit
+%%JSON%%man/man1/clamsubmit.1.gz
+%%MILTER%%@sample etc/clamav-milter.conf.sample
+%%MILTER%%sbin/clamav-milter
+%%NO_MSPACK%%lib/libclammspack.so
+%%NO_MSPACK%%lib/libclammspack.so.0
+%%NO_MSPACK%%lib/libclammspack.so.0.1.0
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Installation-Unix.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Installation-Unix/Steps-Debian-Ubuntu.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Installation-Unix/Steps-Redhat-CentOS.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Installation-Unix/Steps-macOS.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Installation-Windows.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Introduction.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/OnAccess.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/AuthenticodeRules.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/BodySignatureFormat.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/BytecodeSignatures.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/ContainerMetadata.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/DatabaseInfo.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/DynamicConfig.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/EncryptedArchives.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/ExtendedSignatures.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/FileTypeMagic.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/FileTypes.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/FunctionalityLevels.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/HashSignatures.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/LogicalSignatures.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/PhishSigs.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/Whitelists.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Signatures/YaraRules.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Usage.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Usage/Configuration.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Usage/Scanning.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/Usage/SignatureManagement.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/development.html
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/images/demon.png
+%%PORTDOCS%%%%DOCSDIR%%/html/UserManual/libclamav.html
+%%UNRAR%%lib/libclamunrar.so
+%%UNRAR%%lib/libclamunrar.so.9
+%%UNRAR%%lib/libclamunrar.so.9.0.2
+%%UNRAR%%lib/libclamunrar_iface.so
+%%UNRAR%%lib/libclamunrar_iface.so.9
+%%UNRAR%%lib/libclamunrar_iface.so.9.0.2
+@dir(%%CLAMAVUSER%%,%%CLAMAVGROUP%%,0755) %%DBDIR%%
+@dir(%%CLAMAVUSER%%,%%CLAMAVGROUP%%,0755) %%LOGDIR%%
+@dir(%%CLAMAVUSER%%,%%CLAMAVGROUP%%,0755) %%RUNDIR%%
+@sample etc/clamd.conf.sample
+@sample etc/freshclam.conf.sample
 bin/clamav-config
 bin/clambc
 bin/clamconf
 bin/clamdscan
 bin/clamdtop
 bin/clamscan
-%%JSON%%bin/clamsubmit
 bin/freshclam
 bin/sigtool
-%%MILTER%%sbin/clamav-milter
-sbin/clamd
-include/clamav.h
 include/clamav-config.h
+include/clamav-types.h
+include/clamav.h
 lib/libclamav.so
-lib/libclamav.so.7
-lib/libclamav.so.7.1.1
-lib/libclammspack.a
-lib/libclammspack.so
-lib/libclammspack.so.0
-lib/libclammspack.so.0.1.0
-%%UNRAR%%lib/libclamunrar.so
-%%UNRAR%%lib/libclamunrar.so.7
-%%UNRAR%%lib/libclamunrar.so.7.1.1
-%%UNRAR%%lib/libclamunrar_iface.so
-%%UNRAR%%lib/libclamunrar_iface.so.7
-%%UNRAR%%lib/libclamunrar_iface.so.7.1.1
+lib/libclamav.so.9
+lib/libclamav.so.9.0.2
 libdata/pkgconfig/libclamav.pc
-libdata/pkgconfig/libclammspack.pc
 man/man1/clambc.1.gz
 man/man1/clamconf.1.gz
 man/man1/clamdscan.1.gz
 man/man1/clamdtop.1.gz
 man/man1/clamscan.1.gz
-%%JSON%%man/man1/clamsubmit.1.gz
 man/man1/freshclam.1.gz
 man/man1/sigtool.1.gz
 man/man5/clamav-milter.conf.5.gz
@@ -39,9 +75,4 @@ man/man5/clamd.conf.5.gz
 man/man5/freshclam.conf.5.gz
 man/man8/clamav-milter.8.gz
 man/man8/clamd.8.gz
-@sample etc/clamd.conf.sample
-@sample etc/freshclam.conf.sample
-%%MILTER%%@sample etc/clamav-milter.conf.sample
-@dir(%%CLAMAVUSER%%,%%CLAMAVGROUP%%,0755) %%DBDIR%%
-@dir(%%CLAMAVUSER%%,%%CLAMAVGROUP%%,0755) %%LOGDIR%%
-@dir(%%CLAMAVUSER%%,%%CLAMAVGROUP%%,0755) %%RUNDIR%%
+sbin/clamd

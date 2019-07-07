@@ -91,10 +91,11 @@ function validate_input_zabbix_proxy($post, &$input_errors) {
 function sync_package_zabbix_proxy() {
 	global $config, $g;
 
-	conf_mount_rw();
 
 	// Check zabbix proxy config
-	if (is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+	if (isset($config['installedpackages']['%%ZABBIXUNIQNAME%%']) &&
+	    is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+		init_config_arr(array('installedpackages', '%%ZABBIXUNIQNAME%%', 'config', 0));
 		$zbproxy_config = $config['installedpackages']['%%ZABBIXUNIQNAME%%']['config'][0];
 		if ($zbproxy_config['proxyenabled'] == "on") {
 			$ListenIp = $zbproxy_config['listenip'] ?: "0.0.0.0";
@@ -303,7 +304,6 @@ EOF;
 		unlink_if_exists($zproxy_rcfile);
 	}
 
-	conf_mount_ro();
 }
 
 // Based on openvpn_add_keyfile() function

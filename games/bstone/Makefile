@@ -3,6 +3,7 @@
 PORTNAME=	bstone
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.9
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	devel@stasyan.com
@@ -11,7 +12,7 @@ COMMENT=	Source port of Blake Stone
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
-USES=		cmake:outsource compiler:c++11-lang localbase:ldflags pkgconfig
+USES=		cmake compiler:c++11-lang localbase:ldflags pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	bibendovsky
 USE_SDL=	sdl2

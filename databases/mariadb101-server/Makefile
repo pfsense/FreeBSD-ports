@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.1.33
-PORTREVISION?=	0
+PORTVERSION=	10.1.39
+PORTREVISION=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
 		http://mirrors.supportex.net/${SITESDIR}/ \
@@ -22,13 +22,10 @@ LICENSE_NAME_PerconaFT=	PerconaFT patents license
 LICENSE_FILE_PerconaFT=	${WRKSRC}/storage/tokudb/PerconaFT/PATENTS
 LICENSE_PERMS_PerconaFT=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_SSL=		openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	incomplete definition of type 'struct dh_st'
-
 SUB_FILES=	pkg-message
 
 SLAVEDIRS=	databases/mariadb101-client
-USES=		bison:build cmake:noninja compiler:c++11-lib cpe libedit ncurses \
+USES=		bison:build cmake:insource,noninja compiler:c++11-lib cpe libedit ncurses \
 		shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql
 SHEBANG_FILES=	scripts/*.sh
@@ -44,7 +41,7 @@ FASTMTX_DESC=		Replace mutexes with spinlocks
 
 .if !defined(CLIENT_ONLY)
 # MySQL-Server options
-OPTIONS_DEFINE+=	CONNECT_EXTRA MAXKEY
+OPTIONS_DEFINE+=	CONNECT_EXTRA MAXKEY DOCS
 OPTIONS_DEFAULT+=	MAXKEY SPHINX SPIDER
 OPTIONS_GROUP=		COMPRESSION ENGINES GROONGA
 OPTIONS_GROUP_COMPRESSION=	LZ4 LZO SNAPPY
@@ -153,10 +150,6 @@ TOKUDB_IMPLIES=		SNAPPY
 TOKUDB_PORTDOCS=	README.md
 TOKUDB_VARS=		LICENSE+=PerconaFT LICENSE_COMB=multi
 ZMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
-
-NOT_FOR_ARCHS=		i386
-NOT_FOR_ARCHS_REASON=	currently does not compile on i386, see \
-			https://jira.mariadb.org/browse/MDEV-9627
 
 post-install:
 # Remove programs to avoid conflict with mariadb101-client

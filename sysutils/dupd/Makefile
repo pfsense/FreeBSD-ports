@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dupd
-PORTVERSION=	1.4
+PORTVERSION=	1.7
 CATEGORIES=	sysutils
 
 MAINTAINER=	tom@hur.st
@@ -11,26 +11,30 @@ COMMENT=	File duplicate detection CLI utility
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+TEST_DEPENDS+=	bash:shells/bash
+
+USES=		gmake localbase perl5 sqlite:3 ssl
+USE_PERL5=	test
+
+ALL_TARGET=	dupd
+TEST_TARGET=	test
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	jvirkki
-GH_PROJECT=	libbloom:libbloom
-GH_TAGNAME=	v1.4:libbloom
 
-USES=	gmake ssl sqlite:3
-LLD_UNSAFE=	yes
+OPTIONS_DEFINE=	DOCS OPTIMIZED_CFLAGS
 
-PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
+OPTIMIZED_CFLAGS_MAKE_ARGS=	CFLAGS="${CFLAGS:S/O2/O3/g}"
 
-MAKE_ARGS=	LIB="-L${PREFIX}/lib" INC="-I${WRKSRC_libbloom} -I${PREFIX}/include" \
-		LIBBLOOM_LIB="${WRKSRC_libbloom}/build" USAGE="${WRKSRC}/build/usage.o" \
-		DIRENT_HAS_TYPE=1 GITHASH=c25a635e1d27ebf5759875a7ff907d8eec7f5be9
+# This gets rid of extra optimization caused by opt?
+post-extract:
+	${REINPLACE_CMD} -e '/OPT?=/d' ${WRKSRC}/Makefile
 
-do-build:
-	(cd ${WRKSRC_libbloom} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${WRKSRC_libbloom}/build/libbloom.a MM=-DGRR)
-	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS})
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC}/docs ; ${INSTALL_DATA} * ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

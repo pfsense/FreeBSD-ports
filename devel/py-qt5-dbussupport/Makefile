@@ -7,15 +7,17 @@ CATEGORIES=	devel python
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt event loop support for dbus-python
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0.8:devel/py-dbus@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0.8:devel/py-dbus@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0.8:devel/py-dbus@${PY_FLAVOR} \
+		${PY_ENUM34}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0.8:devel/py-dbus@${PY_FLAVOR} \
+		${PY_ENUM34}
 
 CONFIGURE_ARGS=	--enable QtCore
 PYQT_DIST=	yes
 
 USES=		pkgconfig python pyqt:5 qt:5
 USE_PYQT=	sip_build
-USE_PYTHON=	flavors
+USE_PYTHON=	concurrent flavors py3kplist
 USE_QT=		core buildtools_build qmake_build
 
 OPTIONS_DEFINE=		DEBUG

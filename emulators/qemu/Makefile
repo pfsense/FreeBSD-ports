@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	2.9.0
-PORTREVISION=	1
+PORTVERSION=	2.12.1
+PORTREVISION=	2
 CATEGORIES=	emulators
-MASTER_SITES=	http://wiki.qemu.org/download/
+MASTER_SITES=	https://download.qemu.org/
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
 MAINTAINER?=	bofh@FreeBSD.org
@@ -13,21 +13,23 @@ COMMENT?=	QEMU CPU Emulator
 
 LICENSE=	GPLv2
 
+BROKEN_powerpc64=	fails to compile: In function aio_bh_poll: internal compiler error: Segmentation fault
+
 LIB_DEPENDS?=	libnettle.so:security/nettle \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-HAS_CONFIGURE=	yes
-USES?=		cpe gmake pkgconfig bison perl5 python:2.7,build tar:bzip2
-USE_PERL5=	build
-MAKE_ENV+=	BSD_MAKE="${MAKE}" V=1
-.if !defined(PKGNAMESUFFIX) || ${PKGNAMESUFFIX} != "-utils"
+.if !defined(PKGNAMESUFFIX) || (${PKGNAMESUFFIX} != "-utils" && ${PKGNAMESUFFIX} != "-guest-agent")
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64
 USE_XORG=	pixman
-USE_GNOME+=	cairo glib20
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 # XXX someone wants to debug sparc64 hosts?
+USE_GNOME+=	cairo glib20 libxml2
 .endif
 
-BROKEN_powerpc64=	fails to compile: In function aio_bh_poll: internal compiler error: Segmentation fault
+USES?=		cpe gl gmake gnome pkgconfig bison perl5 python:2.7,build tar:xz
+USE_PERL5=	build
+
+HAS_CONFIGURE=	yes
+MAKE_ENV+=	BSD_MAKE="${MAKE}" V=1
 
 OPTIONS_DEFINE=	SAMBA X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CURL \
 		VDE CDROM_DMA PCAP USBREDIR GNS3 X86_TARGETS \
@@ -61,7 +63,7 @@ PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_CONFIGURE_OFF=	--disable-vnc-png
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 CURL_CONFIGURE_OFF=	--disable-curl
-OPENGL_USE=	GL=yes
+OPENGL_USE=	GL=glu
 OPENGL_CONFIGURE_OFF=	--disable-opengl
 USBREDIR_BUILD_DEPENDS=	usbredir>=0.6:net/usbredir
 USBREDIR_RUN_DEPENDS=	usbredir>=0.6:net/usbredir
@@ -88,7 +90,7 @@ WITHOUT_CPU_CFLAGS=yes	#to avoid problems with register allocation
 CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
 CONFIGURE_ARGS?=--localstatedir=/var --extra-ldflags=-L\"/usr/lib\" \
 		--extra-ldflags=-L\"${LOCALBASE}/lib\" --disable-libssh2 --enable-debug \
-		--prefix=${PREFIX} --cc=${CC} --enable-docs --disable-kvm \
+		--prefix=${PREFIX} --cc=${CC} --enable-netmap --enable-docs --disable-kvm \
 		--disable-linux-user --disable-linux-aio --disable-xen \
 		--enable-debug-info --python=${PYTHON_CMD} \
 		--extra-cflags=-I${WRKSRC}\ -I${LOCALBASE}/include\ -DPREFIX=\\\"\"${PREFIX}\\\"\"
@@ -115,12 +117,7 @@ MAKE_ARGS+=	ARCH=ppc64
 CONFIGURE_ARGS+=	--sparc_cpu=v9
 .endif
 
-# clang in freebsd 10 is unable to assemble linuxboot_dma.bin
-.if (${OSVERSION} < 1100000)
-PLIST_SUB+=	LINUXBOOT_DMA="@comment "
-.else
 PLIST_SUB+=	LINUXBOOT_DMA=""
-.endif
 
 # -lprocstat actually only _needs_ -lelf after r249666 or r250870 (MFC)
 # but it shouldn't matter much
@@ -143,15 +140,6 @@ post-patch:
 	@${REINPLACE_CMD} -E \
 		-e "1s|^(#! )/usr/bin/perl|\1${PERL}|" \
 		${WRKSRC}/scripts/texi2pod.pl
-# clang in freebsd 10 is unable to assemble linuxboot_dma.bin
-.if (${OSVERSION} < 1100000)
-	@${REINPLACE_CMD} -E \
-		-e 's|linuxboot_dma.bin||' \
-		${WRKSRC}/pc-bios/optionrom/Makefile
-	@${REINPLACE_CMD} -E \
-		-e 's|linuxboot_dma.bin||' \
-		${WRKSRC}/Makefile
-.endif
 
 post-patch-CDROM_DMA-off:
 	@${REINPLACE_CMD} -e '/USE_DMA_CDROM/d' ${WRKSRC}/include/hw/ide/internal.h
@@ -172,7 +160,6 @@ post-install:
 	${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifup.sample ${STAGEDIR}${PREFIX}/etc
 	${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifdown.sample ${STAGEDIR}${PREFIX}/etc
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/qemu-*
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ivshmem-*
 
 post-install-DOCS-on:
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} docs ${STAGEDIR}${DOCSDIR}/)

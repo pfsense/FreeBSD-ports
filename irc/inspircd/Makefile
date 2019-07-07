@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	inspircd
-PORTVERSION=	2.0.26
+PORTVERSION=	2.0.27
 DISTVERSIONPREFIX=	v
 CATEGORIES=	irc
 
@@ -10,14 +10,15 @@ MAINTAINER=	dg@syrec.org
 COMMENT=	Modular C++ IRC daemon
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/docs/COPYING
+LICENSE_FILE=	${WRKSRC}/docs/LICENSE.txt
 
 # Configure script is written in perl
 USES=		cpe perl5
+USE_GITHUB=	yes
 USE_PERL5=	build
+
 CPE_VENDOR=	inspire_ircd
 CPE_PRODUCT=	inspircd
-USE_GITHUB=	yes
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-cc=${CXX} \
@@ -57,11 +58,10 @@ PLIST_SUB=	INSPIRCD_DBDIR=${INSPIRCD_DBDIR} \
 
 CONFLICTS=	inspircd-1.*
 
-OPTIONS_DEFINE=	GEOIP GNUTLS IPV6 LDAPAUTH LDAPOPER MYSQL OPENSSL PCRE PGSQL POSIX SQLITE
+OPTIONS_DEFINE=	GNUTLS IPV6 LDAPAUTH LDAPOPER MYSQL OPENSSL PCRE PGSQL POSIX SQLITE
 OPTIONS_DEFAULT=OPENSSL POSIX
 OPTIONS_SUB=	yes
 
-GEOIP_DESC=	Build m_geoip module
 GNUTLS_DESC=	Build m_ssl_gnutls module
 LDAPAUTH_DESC=	Build m_ldapauth module
 LDAPOPER_DESC=	Build m_ldapoper module
@@ -71,9 +71,6 @@ PCRE_DESC=	Build m_regex_pcre module
 PGSQL_DESC=	Build m_pgsql module
 POSIX_DESC=	Build m_regex_posix module
 SQLITE_DESC=	Build m_sqlite3 module
-
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
-GEOIP_VARS=		extras+=m_geoip.cpp
 
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_USES=		pkgconfig

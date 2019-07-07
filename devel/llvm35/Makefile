@@ -2,7 +2,7 @@
 
 PORTNAME=	llvm
 DISTVERSION=	3.5.2
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/releases/3.5.2/
 DISTNAME=	${PORTNAME}-${DISTVERSION}.src
@@ -10,6 +10,9 @@ PKGNAMESUFFIX=	${LLVM_SUFFIX}
 
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	Low Level Virtual Machine
+
+DEPRECATED=	Obsolete and unmaintained
+EXPIRATION_DATE=2019-08-31
 
 BROKEN_aarch64=		fails to build
 BROKEN_armv6=		fails to build: llvm-config.cpp:46:10: 'LibraryDependencies.inc' file not found

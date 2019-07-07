@@ -4,7 +4,7 @@
 PORTNAME=	trackballs
 PORTVERSION=	1.3.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libguile-2.0.so:lang/guile2 \
 		libgc.so:devel/boehm-gc
 
-USES=		cmake desktop-file-utils gettext-runtime pkgconfig
+USES=		cmake desktop-file-utils gettext-runtime gl gnome pkgconfig
 
 USE_GITHUB=	yes
 

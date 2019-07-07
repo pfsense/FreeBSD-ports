@@ -699,6 +699,8 @@ EOD;
 				$varFREERADIUS_SCRIPTS = FREERADIUS_SCRIPTS;
 				$varusersreplyitem .= <<<EOD
 
+	pfSense-Max-Total-Octets := {$varusersmaxtotaloctets},
+
 	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varusersusername} {$varusersmaxtotaloctetstimerange}"
 EOD;
 				// create limit file - will be always overwritten so we can increase limit from GUI
@@ -951,6 +953,8 @@ EOD;
 				$varFREERADIUS_SCRIPTS = FREERADIUS_SCRIPTS;
 				$varmacsreplyitem .= <<<EOD
 
+	pfSense-Max-Total-Octets := {$varmacsmaxtotaloctets},
+
 	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varmacsaddress} {$varmacsmaxtotaloctetstimerange}"
 EOD;
 				// create limit file - will be always overwritten so we can increase limit from GUI
@@ -1110,11 +1114,11 @@ EOD;
 	// Variables: EAP-TLS
 	$vareapconffragmentsize = ($eapconf['vareapconffragmentsize'] ?: '1024');
 	$vareapconfincludelength = ($eapconf['vareapconfincludelength'] ?: 'yes');
-	$vareapconfcountry = ($eapconf['vareapconfcountry'] ?: 'US');
-	$vareapconfstate = ($eapconf['vareapconfstate'] ?: 'Texas');
-	$vareapconfcity = ($eapconf['vareapconfcity'] ?: 'Austin');
-	$vareapconforganization = ($eapconf['vareapconforganization'] ?: 'My Company Ltd');
-	$vareapconfemail = ($eapconf['vareapconfemail'] ?: 'admin@mycompany.com');
+	$vareapconfcountry = ($eapconf['vareapconfcountry'] ?: '');
+	$vareapconfstate = ($eapconf['vareapconfstate'] ?: '');
+	$vareapconfcity = ($eapconf['vareapconfcity'] ?: '');
+	$vareapconforganization = ($eapconf['vareapconforganization'] ?: '');
+	$vareapconfemail = ($eapconf['vareapconfemail'] ?: '');
 	$vareapconfcommonname = ($eapconf['vareapconfcommonname'] ?: 'internal-ca');
 
 	// Variables: Cache
@@ -1174,13 +1178,7 @@ EOD;
 		$ca['refid'] = uniqid();
 		$ca['descr'] = "FreeRADIUS CA";
 		$ca['serial'] = 0;
-		$dn = array(
-			'countryName' => 'US',
-			'stateOrProvinceName' => 'Texas',
-			'localityName' => 'Austin',
-			'organizationName' => 'Example Certificate Authority',
-			'emailAddress' => 'certs@example.com',
-			'commonName' => 'freeradius-temp-ca');
+		$dn = array('commonName' => 'freeradius-temp-ca');
 		if (!ca_create($ca, "2048", "3650", $dn, "sha256")) {
 			file_notice("FreeRADIUS", gettext("Cannot create temporary FreeRADIUS certificate authority. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section: " . openssl_error_string()));
 			$cert_error = true;
@@ -1212,6 +1210,7 @@ EOD;
 		if (base64_decode($ca_cert['crt'])) {
 			$crl_cert = lookup_crl($eapconf["ssl_ca_crl"]);
 			if ($crl_cert != false) {
+				crl_update($crl_cert);
 				$crl = base64_decode($crl_cert['text']);
 				$check_crl = "check_crl = yes";
 			} else {
@@ -1251,7 +1250,20 @@ EOD;
 
 	// check if cert issuer of CA and certs match
 	if ($eapconf['vareapconfenablecheckcertissuer'] == 'on') {
-		$vareapconfcheckcertissuer = "check_cert_issuer = " . '"' . "/C={$vareapconfcountry}/ST={$vareapconfstate}/L={$vareapconfcity}/O={$vareapconforganization}/emailAddress={$vareapconfemail}/CN={$vareapconfcommonname}" . '"';
+		$ca_subject = "";
+		if (empty($eapconf['vareapconfcasubject'] &&
+		    ($ca_cert != false) &&
+		    !$cert_error)) {
+			$ca_details = openssl_x509_parse(base64_decode($ca_cert['crt']));
+			if (is_array($ca_details) && !empty($ca_details['name'])) {
+				$ca_subject = $ca_details['name'];
+			}
+		} else {
+			$ca_subject = trim($eapconf['vareapconfcasubject']);
+		}
+		if (!empty($ca_subject)) {
+			$vareapconfcheckcertissuer = "check_cert_issuer = \"{$ca_subject}\"";
+		}
 	} else {
 		$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
 	}
@@ -2989,6 +3001,7 @@ ldap {
 		control:NT-Password		:= 'ntPassword'
 		control:LM-Password		:= 'sambaLmPassword'
 		control:NT-Password		:= 'sambaNtPassword'
+		control:NT-Password		:= 'ipaNTHash'
 		control:LM-Password		:= 'dBCSPwd'
 		control:Password-With-Header	+= 'userPassword'
 		control:SMB-Account-CTRL-TEXT	:= 'acctFlags'
@@ -3657,6 +3670,8 @@ function freeradius_dictionary_resync() {
 ATTRIBUTE 		MOTP-Init-Secret 		900 	string
 ATTRIBUTE 		MOTP-PIN 			901 	string
 ATTRIBUTE 		MOTP-Offset 			902 	string
+
+\$INCLUDE /usr/share/doc/radius/dictionary.pfsense
 
 EOD;
 

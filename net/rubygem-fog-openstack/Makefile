@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fog-openstack
-PORTVERSION=	0.1.25
+PORTVERSION=	1.0.8
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -12,8 +12,8 @@ COMMENT=	Module for the 'fog' gem to support OpenStack clouds
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	rubygem-fog-core1>=1.40:devel/rubygem-fog-core1 \
-		rubygem-fog-json102>=1.0:devel/rubygem-fog-json102 \
+RUN_DEPENDS=	rubygem-fog-core>=2.1:devel/rubygem-fog-core \
+		rubygem-fog-json>=1.0:devel/rubygem-fog-json \
 		rubygem-ipaddress>=0.8:net/rubygem-ipaddress
 
 USES=		gem

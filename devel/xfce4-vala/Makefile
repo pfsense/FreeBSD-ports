@@ -3,7 +3,7 @@
 
 PORTNAME=	xfce4-vala
 PORTVERSION=	4.10.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel xfce
 MASTER_SITES=	XFCE/src/bindings/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
@@ -15,10 +15,10 @@ LICENSE=	LGPL21
 
 BUILD_DEPENDS=	valac:lang/vala
 
-GNU_CONFIGURE=	yes
-USES=	pkgconfig gmake pathfix xfce tar:bzip2
+USES=		gmake gnome pathfix pkgconfig tar:bzip2 xfce
 USE_XFCE=	panel
 
-CONFIGURE_ARGS=	--with-vala-api=0.36
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-vala-api=0.40
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	yelp-xsl
-PORTVERSION=	3.18.1
+PORTVERSION=	3.28.0
 CATEGORIES=	textproc gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -10,14 +10,17 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	DocBook XSLT stylesheets for yelp
 
-PORTSCOUT=	limitw:1,even
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.LGPL
 
 BUILD_DEPENDS=	itstool:textproc/itstool
 
-USES=		gettext gmake gnome pathfix pkgconfig tar:xz
+PORTSCOUT=	limitw:1,even
+
+USES=		gettext gmake gnome localbase pathfix \
+		pkgconfig tar:xz
 USE_GNOME=	gnomeprefix intlhack libxml2 libxslt
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -20,7 +20,7 @@ USES=		iconv pathfix libtool cpe
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 
-APR_VERSION=	1.6.3
+APR_VERSION=	1.6.5
 APU_VERSION=	1.6.1
 
 CPE_VENDOR=	apache
@@ -120,6 +120,12 @@ APU_CONF_ARGS+=	--with-crypto
 APU_CONF_ARGS+=	--without-crypto
 .endif
 
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MMYSQL} && ${MYSQL_VER} == 80
+BROKEN=	Does not build with MySQL 8.0, see https://bz.apache.org/bugzilla/show_bug.cgi?id=62631
+.endif
+
 post-extract:
 # cleanup files not used on this platform
 	@${FIND} ${WRKDIR} -type f \( -name 'NWGNU*' -o -name '*.ds?' -o -name '*.dep' -o -name '*.mak' -o -name '*.win' \) -delete
@@ -170,4 +176,4 @@ rpfl: configure
 	${SED} -i '' -E 's|^configure:[0-9]+:|configure:_pid_:|g' ${APR_WRKDIR}/config.log
 	${SED} -i '' -E 's|^configure:[0-9]+:|configure:_pid_:|g' ${APU_WRKDIR}/config.log
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

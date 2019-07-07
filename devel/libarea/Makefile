@@ -3,7 +3,7 @@
 
 PORTNAME=	libarea
 PORTVERSION=	20160313
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	devel cad
 
 MAINTAINER=	pfg@FreeBSD.org
@@ -17,7 +17,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Heeks
 GH_TAGNAME=	f1986ac
 
-USES=		cmake:outsource python
+USES=		cmake python
 USE_LDCONFIG=	yes
 
 post-patch:

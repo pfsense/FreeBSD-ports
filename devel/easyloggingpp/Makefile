@@ -2,7 +2,8 @@
 
 PORTNAME=	easyloggingpp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	9.96.4
+DISTVERSION=	9.96.7
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +12,7 @@ COMMENT=	C++ logging library
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake:outsource compiler:c++11-lang
+USES=		cmake compiler:c++11-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	muflihun
 USE_LDCONFIG=	yes

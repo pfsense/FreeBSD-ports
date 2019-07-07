@@ -2,8 +2,7 @@
 
 PORTNAME=	MetaPhysicL
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.0-23
-DISTVERSIONSUFFIX=	-g3e4e88f
+DISTVERSION=	0.3.3
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,8 +17,6 @@ GH_ACCOUNT=	roystgnr
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--disable-static
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmetaphysicl.so.0.0.0
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

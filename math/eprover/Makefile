@@ -3,6 +3,7 @@
 PORTNAME=	eprover
 DISTVERSIONPREFIX=	E-
 DISTVERSION=	2.0
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	greg@unrelenting.technology
@@ -35,14 +36,4 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${f}
 .endfor
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-# the default compiler hangs on 10
-BUILD_DEPENDS+=	clang40:devel/llvm40
-RUN_DEPENDS+=	clang40:devel/llvm40
-CC=		clang40
-CXX=		clang++40
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

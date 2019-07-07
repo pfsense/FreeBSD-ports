@@ -11,7 +11,8 @@ BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-
 		docbook-xml>0:textproc/docbook-xml
 RUN_DEPENDS=	keditbookmarks:deskutils/keditbookmarks
 
-USES=		cmake:outsource gettext pkgconfig kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang gettext pkgconfig kde:5 \
+		qt:5 tar:xz
 USE_KDE=	auth attica bookmarks codecs completion config configwidgets \
 		coreaddons crash dbusaddons ecm emoticons globalaccel guiaddons i18n \
 		iconthemes init itemmodels jobwidgets kdelibs4support kio \
@@ -20,5 +21,7 @@ USE_KDE=	auth attica bookmarks codecs completion config configwidgets \
 USE_QT=		core dbus gui network printsupport script scripttools sql \
 		widgets xml \
 		buildtools_build qmake_build
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

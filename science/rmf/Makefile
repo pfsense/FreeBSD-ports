@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	rmf
-DISTVERSION=	g20180614
+DISTVERSION=	1.1
+PORTREVISION=	4
 CATEGORIES=	science graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,7 +15,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libhdf5.so:science/hdf5 \
 		libsz.so:science/szip
 
-USES=		cmake:outsource python:build shebangfix
+USES=		compiler:c++11-lang cmake python:build shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	salilab
 GH_TAGNAME=	f917cf2

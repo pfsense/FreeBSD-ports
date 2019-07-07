@@ -2,7 +2,7 @@
 
 PORTNAME=	xine
 PORTVERSION=	0.99.9
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-ui/${PORTVERSION}
 DISTNAME=	${PORTNAME}-ui-${PORTVERSION}
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 
 USES=		desktop-file-utils gmake iconv jpeg pkgconfig readline \
 		shared-mime-info tar:xz
-USE_XORG=	x11 xext xinerama xscrnsaver xtst xv xxf86vm
+USE_XORG=	x11 xext xinerama xscrnsaver xt xtst xv xxf86vm
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-vdr-keys \
 		--disable-nvtvsimple \
@@ -55,7 +55,7 @@ WIN32_CODECS_RUN_DEPENDS=\
 XFT_USE=		XORG=xft
 XFT_CONFIGURE_ENABLE=	xft
 
-XINE_PLUGINSDIR=	lib/xine/plugins/2.5
+XINE_PLUGINSDIR=	lib/xine/plugins/2.7
 
 post-patch:
 	@${REINPLACE_CMD} -e \

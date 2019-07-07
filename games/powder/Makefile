@@ -12,11 +12,14 @@ DISTNAME=	${PORTNAME}${PORTVERSION}_src
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Graphical dungeon crawling game
 
-USES=		gmake
+USES=		compiler gmake
 USE_SDL=	sdl
 MAKE_JOBS_UNSAFE=yes
 
 BUILD_WRKSRC=	${WRKSRC}/port/linux
+
+CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
+CXXFLAGS_clang=	-Wno-c++11-narrowing
 
 PLIST_FILES=	bin/powder
 PORTDOCS=	README.TXT LICENSE.TXT CREDITS.TXT
@@ -32,7 +35,9 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/powder ${STAGEDIR}${PREFIX}/bin/
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
 .endfor

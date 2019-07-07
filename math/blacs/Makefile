@@ -3,7 +3,7 @@
 
 PORTNAME=	blacs
 PORTVERSION=	1.7
-PORTREVISION=	31
+PORTREVISION=	33
 CATEGORIES=	math
 MASTER_SITES=	NETLIB/blacs
 DISTNAME=	BLACS
@@ -17,6 +17,8 @@ COMMENT=	The BLACS (Basic Linear Algebra Communication Subprograms)
 SUB_FILES=	pkg-message
 USES=		fortran gmake
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

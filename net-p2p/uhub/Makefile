@@ -17,7 +17,7 @@ BROKEN_aarch64=	fails to compile: CPUINFO not defined
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		cmake perl5 sqlite
+USES=		cmake:insource perl5 sqlite
 USE_RC_SUBR=	uhub
 USE_PERL5=	build
 
@@ -32,6 +32,13 @@ OPTIONS_SUB=		yes
 
 OPENSSL_USES=		ssl
 OPENSSL_CMAKE_BOOL=	SSL_SUPPORT
+
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	incomplete definition of type 'struct bio_st'
+BROKEN_FreeBSD_13=	incomplete definition of type 'struct bio_st'
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -55,4 +62,4 @@ do-install:
 	@${ECHO_CMD} -n > ${STAGEDIR}${ETCDIR}/${i}.sample
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

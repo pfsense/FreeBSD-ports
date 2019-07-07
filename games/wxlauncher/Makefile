@@ -3,7 +3,7 @@
 
 PORTNAME=	wxlauncher
 PORTVERSION=	0.10.0
-PORTREVISION=	2
+PORTREVISION=	4
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	games
 
@@ -20,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	scp-fs2open
 GH_PROJECT=	wxLauncher
 
-USES=		cmake:outsource openal pkgconfig python:2.7,build
+USES=		cmake openal pkgconfig python:2.7,build
 USE_SDL=	sdl2
 CMAKE_ARGS+=	-DRESOURCES_PATH:STRING="${DATADIR}"
 

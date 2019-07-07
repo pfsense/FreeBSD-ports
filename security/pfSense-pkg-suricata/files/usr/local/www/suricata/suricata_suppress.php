@@ -3,11 +3,11 @@
  * suricata_suppress.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -93,9 +93,7 @@ if (isset($_POST['del_btn'])) {
 		}
 		if ($need_save) {
 			write_config("Suricata pkg: deleted SUPPRESSION LIST.");
-			conf_mount_rw();
 			sync_suricata_package_config();
-			conf_mount_ro();
 			header("Location: /suricata/suricata_suppress.php");
 			return;
 		}
@@ -190,7 +188,7 @@ display_top_tabs($tab_array, true);
 
 
 <div class="infoblock">
-	<?=print_info_box('<p><strong>Note:</strong> Here you can create event filtering and suppression for your Suricata package rules.</p><p>Please note that you must restart a running Interface so that changes can take effect.</p><p>You cannot delete a Suppress List that is currently assigned to a Suricata interface (instance).</p><p>You must first unassign the Suppress List on the Interface Edit tab.</p>', info)?>
+	<?=print_info_box('<p><strong>Note:</strong> Here you can create event filtering and suppression for your Suricata package rules.</p><p>Please note that you must restart a running Interface so that changes can take effect.</p><p>You cannot delete a Suppress List that is currently assigned to a Suricata interface (instance).</p><p>You must first unassign the Suppress List on the Interface Edit tab.</p>', 'info')?>
 </div>
 
 <?php include("foot.inc"); ?>

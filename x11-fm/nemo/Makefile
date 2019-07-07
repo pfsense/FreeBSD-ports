@@ -3,7 +3,7 @@
 
 PORTNAME=	nemo
 PORTVERSION=	2.4.5
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	x11-fm gnome
 DIST_SUBDIR=	gnome3
 
@@ -22,8 +22,8 @@ LIB_DEPENDS=	libexif.so:graphics/libexif \
 RUN_DEPENDS=	gnome-icon-theme>=0:misc/gnome-icon-theme \
 		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 
-USES=		autoreconf:build desktop-file-utils gettext gmake libtool pathfix \
-		pkgconfig python:2.7 shared-mime-info
+USES=		autoreconf:build compiler:c++11-lang desktop-file-utils gettext \
+		gmake libtool pathfix pkgconfig python:2.7 shared-mime-info
 USE_GNOME=	gnomedesktop3 gnomeprefix intlhack introspection:build \
 		libxml2 pygobject3
 USE_GITHUB=	yes
@@ -42,7 +42,7 @@ OPTIONS_SUB=			yes
 OPTIONS_DEFINE=			TRACKER
 OPTIONS_DEFAULT=		TRACKER
 TRACKER_CONFIGURE_ENABLE=	tracker
-TRACKER_LIB_DEPENDS=		libtracker-sparql-1.0.so:sysutils/tracker
+TRACKER_LIB_DEPENDS=		libtracker-sparql-2.0.so:sysutils/tracker
 TRACKER_DESC=			Integration with tracker
 
 post-patch:
@@ -57,6 +57,7 @@ post-patch:
 		${WRKSRC}/files/Makefile.in
 
 	@${REINPLACE_CMD} -e 's|-DGTK_DISABLE_DEPRECATED||g' \
+		-e 's|tracker-sparql-1.0|tracker-sparql-2.0|g' \
 		${WRKSRC}/configure.in
 
 	@${REINPLACE_CMD} -e 's|/usr/share|${PREFIX}/share|g' \

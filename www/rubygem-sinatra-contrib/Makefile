@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	sinatra-contrib
-PORTVERSION=	2.0.1
+PORTVERSION=	2.0.5
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -17,10 +17,11 @@ RUN_DEPENDS=	rubygem-multi_json>=0:devel/rubygem-multi_json \
 		rubygem-sinatra>=${PORTVERSION}:www/rubygem-sinatra \
 		rubygem-tilt>=1.3:devel/rubygem-tilt
 
+USES=		gem
+USE_RUBY=	yes
+
 NO_ARCH=	yes
 REINPLACE_ARGS=	-i ''
-USE_RUBY=	yes
-USES=		gem
 
 post-patch:
 # Remove backports

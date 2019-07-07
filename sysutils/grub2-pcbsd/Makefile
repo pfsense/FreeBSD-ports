@@ -3,7 +3,7 @@
 
 PORTNAME=	grub2-pcbsd
 PORTVERSION=	2.02q
-PORTREVISION=	12
+PORTREVISION=	16
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.pcbsd.org/~kris/software/ \
 		ftp://ftp.pcbsd.org/pub/software/
@@ -14,12 +14,14 @@ COMMENT=	Multiboot boot loader
 
 LICENSE=	GPLv3
 
+BROKEN=		fails to build
+
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 		${LOCALBASE}/bin/bash:shells/bash \
 		help2man:misc/help2man
 
 WRKSRC=		${WRKDIR}/grub-2.02
-CONFLICTS=	grub-0* grub2-2*
+CONFLICTS=	grub2-2*
 SSP_UNSAFE=	yes
 USE_GCC=	yes
 GNU_CONFIGURE=	yes
@@ -39,6 +41,8 @@ SUB_FILES=	00_header 10_kfreebsd 10_ktrueos 30_os-prober 50_otherbe
 
 OPTIONS_DEFINE=	MKFONT FUSE
 OPTIONS_DEFAULT=MKFONT
+OPTIONS_SUB=	yes
+
 MKFONT_DESC=	Build grub-mkfont (require freetype2)
 FUSE_DESC=	Build grub-mount (require FUSE)
 
@@ -57,20 +61,14 @@ BUILD_DEPENDS+=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu 
 CONFIGURE_ARGS+=	--enable-grub-mkfont
 .else
 CONFIGURE_ARGS+=	--disable-grub-mkfont
-MKFONT=		"@comment "
 .endif
-
-PLIST_SUB+=	MKFONT=${MKFONT}
 
 .if ${PORT_OPTIONS:MFUSE}
 LIB_DEPENDS+=	libfuse.so:sysutils/fusefs-libs
 CONFIGURE_ARGS+=	--enable-grub-mount
 .else
 CONFIGURE_ARGS+=	--disable-grub-mount
-FUSE=		"@comment "
 .endif
-
-PLIST_SUB+=	FUSE=${FUSE}
 
 post-patch:
 	@${TOUCH} -t 200001010000 ${WRKSRC}/Makefile.util.def

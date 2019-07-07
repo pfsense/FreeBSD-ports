@@ -2,7 +2,7 @@
 
 PORTNAME=	supertux
 PORTVERSION=	0.4.0
-PORTREVISION=	12
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/SuperTux/supertux/releases/download/v${PORTVERSION}/
 PKGNAMESUFFIX=	2
@@ -15,12 +15,10 @@ LIB_DEPENDS=	libphysfs.so:devel/physfs \
 		libcurl.so:ftp/curl \
 		libvorbis.so:audio/libvorbis
 
-BROKEN_FreeBSD_10=	does not build on 10.x
-
 LLD_UNSAFE=	yes
 USE_SDL=	sdl2 image2
 USE_GL=		glew
-USES=		cmake:outsource compiler:c++11-lib dos2unix iconv \
+USES=		cmake compiler:c++11-lib dos2unix iconv \
 		openal:al pkgconfig tar:bzip2
 # Unhide std::to_string() to fix build with GCC (see ports/193528 for details)
 CFLAGS+=	-D_GLIBCXX_USE_C99

@@ -3,19 +3,16 @@
 
 PORTNAME=	mesa-dri
 PORTVERSION=	${MESAVERSION}
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 COMMENT=	OpenGL hardware acceleration drivers for DRI2+
 
-USE_XORG=	dri2proto dri3proto glproto presentproto x11 xdamage xext \
-		xfixes xshmfence xv xvmc
+USE_XORG=	xorgproto x11 xdamage xext xfixes xshmfence xv xvmc
 
-OPTIONS_DEFINE=	TEXTURE VAAPI VDPAU
-OPTIONS_DEFAULT=TEXTURE
+OPTIONS_DEFINE=	VAAPI VDPAU WAYLAND
+OPTIONS_DEFAULT=WAYLAND
 OPTIONS_SUB=	yes
-
-TEXTURE_DESC=	Enable texture-float support (patent encumbered)
-TEXTURE_CONFIGURE_ENABLE=	texture-float
 
 VAAPI_CONFIGURE_ENABLE=	va
 VAAPI_LIB_DEPENDS=	libva.so:multimedia/libva
@@ -23,6 +20,10 @@ VAAPI_USE=		XORG=xcb
 
 VDPAU_CONFIGURE_ENABLE=	vdpau
 VDPAU_LIB_DEPENDS=	libvdpau.so:multimedia/libvdpau
+
+WAYLAND_DESC=		Enable support for the Wayland platform in Vulkan drivers
+WAYLAND_BUILD_DEPENDS=	wayland-protocols>=1.8:graphics/wayland-protocols
+WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 
 .include <bsd.port.options.mk>
 .include "${.CURDIR:H:H}/graphics/mesa-dri/Makefile.common"
@@ -42,7 +43,11 @@ VULKAN_DRIVERS=		#
 .if ${ARCH} == amd64 || ${ARCH} == i386 \
  || ${ARCH} == powerpc || ${ARCH} == powerpc64
 DRI_DRIVERS+=		RADEON R200
-GALLIUM_DRIVERS+=	R300 R600
+GALLIUM_DRIVERS+=	R600
+. if "${MESA_LLVM_VER}" != "" && (${ARCH} == amd64 || ${ARCH} == i386)
+# https://cgit.freedesktop.org/mesa/mesa/commit/?id=58952675f6d4
+GALLIUM_DRIVERS+=	R300
+. endif
 . if "${MESA_LLVM_VER}" != ""	# until PPC gets LLVM in base
 GALLIUM_DRIVERS+=	RADEONSI
 VULKAN_DRIVERS+=	RADEON
@@ -64,14 +69,21 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-src_gallium_drivers_vc4_Makefile.in
 
 .if ${VULKAN_DRIVERS}
 BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
+USE_XORG+=		xcb xrandr
 .endif
 
+LDFLAGS_i386=		-Wl,-znotext
 .if ${DRI_DRIVERS} || ${VULKAN_DRIVERS:MINTEL}
 . if ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
 # --build-id isn't supported by old GNU ld.bfd in base
 USE_BINUTILS=		yes
 LDFLAGS+=		-B${LOCALBASE}/bin
 . endif
+.endif
+
+# enables VK_KHR_wayland_surface in Vulkan drivers
+.if ${PORT_OPTIONS:MWAYLAND} && !empty(VULKAN_DRIVERS)
+CONFIGURE_ARGS+=	--with-platforms=x11,surfaceless,drm,wayland
 .endif
 
 CONFIGURE_ARGS+=	--with-dri-drivers="${DRI_DRIVERS:tl}" \

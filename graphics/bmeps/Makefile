@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bmpp
-DISTVERSION=	4.15.0
+DISTVERSION=	4.21.0
 CATEGORIES=	graphics perl5
 MASTER_SITES=	SF/dktools/dktools/dktools-${PORTVERSION}
 DISTNAME=	dktools-${PORTVERSION}
@@ -16,22 +16,18 @@ LICENSE_FILE=	${WRKSRC}/bsdlic.txt
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-CONFLICTS_INSTALL=	dktools[0-9]*
-
 USES=		gmake jpeg localbase:ldflags
+
+CONFLICTS_INSTALL=	dktools[0-9]*
 GNU_CONFIGURE=	yes
 ALL_TARGET=	bmpp
 
 # We do not want to include sys/termios.h even if it exists, and we do not want
 # to depend on BDB for db.h (it is used by other parts of dktools).
 CONFIGURE_ENV=	ac_cv_header_sys_termios_h=no\
-		ac_cv_header_db_h=no\
-		DESTDIR=${STAGEDIR}
+		ac_cv_header_db_h=no
 
 PLIST_FILES=	bin/bmpp man/man1/bmpp.1.gz
-
-post-patch:
-	@${REINPLACE_CMD} 's@sz->lsz =@st->lsz =@' ${WRKSRC}/dk3sf.c
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bmpp ${STAGEDIR}${PREFIX}/bin

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pari
-DISTVERSION=	2.9.5
+DISTVERSION=	2.11.1
 PORTEPOCH=	2
 CATEGORIES=	math
 MASTER_SITES=	http://pari.math.u-bordeaux.fr/pub/pari/unix/ \
@@ -15,7 +15,6 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_mips64=		fails to link: mpker.c:(.text+0x33bc): relocation truncated to fit: R_MIPS_TLS_GD against 'PARI_SIGINT_block'
-BROKEN_powerpc64=	fails to link: intnum.o: relocation truncated to fit: R_PPC64_GOT_TLSGD16 against symbol 'avma' defined in .tbss section in init.o
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
@@ -23,13 +22,14 @@ USES=		perl5 readline
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 HAS_CONFIGURE=	yes
+CFLAGS_powerpc64=	-mminimal-toc
 CONFIGURE_SCRIPT=	Configure
 CONFIGURE_ARGS=	--mandir=${MANPREFIX}/man/man1 \
 		--prefix=${PREFIX} \
 		--with-readline
 ALL_TARGET=	gp
 
-OPTIONS_DEFINE=		DOCS OPTIMIZED_CFLAGS X11
+OPTIONS_DEFINE=		DOCS EXAMPLES OPTIMIZED_CFLAGS X11
 OPTIONS_RADIO=		THREADS
 OPTIONS_RADIO_THREADS=	PTHREADS MPI
 OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS X11 PTHREADS
@@ -43,8 +43,8 @@ OPTIMIZED_CFLAGS_CFLAGS=	-O3 -fno-strict-aliasing -fomit-frame-pointer
 X11_CONFIGURE_ON=	--graphic=X11
 X11_CONFIGURE_OFF=	--graphic=none
 X11_USE=		xorg=x11
-MPI_RUN_DEPENDS=	${LOCALBASE}/bin/mpirun:net/mpich2
-MPI_BUILD_DEPENDS=	${LOCALBASE}/bin/mpicc:net/mpich2
+MPI_RUN_DEPENDS=	${LOCALBASE}/bin/mpirun:net/mpich
+MPI_BUILD_DEPENDS=	${LOCALBASE}/bin/mpicc:net/mpich
 MPI_LIB_DEPENDS=	libgmp.so:math/gmp
 PTHREADS_LIB_DEPENDS=	libgmp.so:math/gmp
 PTHREADS_CONFIGURE_ON=	--mt=pthread --with-gmp=${LOCALBASE}

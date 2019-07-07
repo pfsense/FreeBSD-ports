@@ -115,7 +115,7 @@ function frr_get_interfaces($includedefault = true, $includevips = true, $includ
 	return $ifs;
 }
 
-/* Simple utility function to translate a select_source list of items into a 
+/* Simple utility function to translate a select_source list of items into a
  * list of values for easier testing by in_array() and similar cases. */
 function frr_get_list_values($arr) {
 	$vals = array();
@@ -273,6 +273,10 @@ if [ -e /var/run/frr/zebra.pid ]; then
 	/bin/pkill -F /var/run/frr/zebra.pid
 	/bin/rm -f /var/run/frr/zebra.pid
 fi
+if [ -e /var/run/frr/staticd.pid ]; then
+	/bin/pkill -F /var/run/frr/staticd.pid
+	/bin/rm -f /var/run/frr/staticd.pid
+fi
 if [ -e /var/run/frr/ospfd.pid ]; then
 	/bin/pkill -F /var/run/frr/ospfd.pid
 	/bin/rm -f /var/run/frr/ospfd.pid
@@ -292,6 +296,7 @@ EOF;
 /bin/mkdir -p /var/run/frr
 /bin/mkdir -p /var/log/frr
 /bin/rm -f /var/run/frr/zebra.pid
+/bin/rm -f /var/run/frr/staticd.pid
 /bin/rm -f /var/run/frr/ospfd.pid
 /bin/rm -f /var/run/frr/ospf6d.pid
 /bin/rm -f /var/run/frr/bgpd.pid
@@ -310,6 +315,11 @@ if /bin/pgrep -q zebra; then
 	sleep 1
 	/usr/bin/killall -9 zebra 2>/dev/null
 fi
+if /bin/pgrep -q staticd; then
+	/usr/bin/killall staticd
+	sleep 1
+	/usr/bin/killall -9 staticd 2>/dev/null
+fi
 if /bin/pgrep -q ospfd; then
 	/usr/bin/killall ospfd
 	sleep 1
@@ -327,6 +337,7 @@ if /bin/pgrep -q bgpd; then
 fi
 {$carp_ip_status_check}
 [ -s {$frr_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$frr_config_base}/zebra.conf
+[ -s {$frr_config_base}/staticd.conf ] && /usr/local/sbin/staticd -d -f {$frr_config_base}/staticd.conf
 [ -s {$frr_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$frr_config_base}/ospfd.conf
 [ -s {$frr_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$frr_config_base}/ospf6d.conf
 [ -s {$frr_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$frr_config_base}/bgpd.conf
@@ -346,6 +357,7 @@ EOF;
 	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/ospfd.conf");
 	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/ospf6d.conf");
 	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/zebra.conf");
+	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/staticd.conf");
 	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/bgpd.conf");
 
 	/* Start/Restart FRR, if a CARP VIP is set, check its status and act
@@ -503,4 +515,150 @@ function frr_generate_config() {
 
 	/* Setup TCP MD5 authentication */
 	frr_setkey();
+}
+
+/* Upgrade the FRR configuration to the latest format */
+function frr_package_config_upgrade() {
+	global $config;
+	update_status("Upgrading FRR Settings ... ");
+	$need_write = false;
+	/* Populate FRR Global Settings */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	} else {
+		/* If FRR is not configured, stop. */
+		return null;
+	}
+
+	/* Populate FRR OSPF Settings */
+	init_config_arr(array('installedpackages', 'frrospfd', 'config', '0'));
+	$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
+	init_config_arr(array('installedpackages', 'frrglobalacls', 'config'));
+	$frr_acls_conf = &$config['installedpackages']['frrglobalacls']['config'];
+	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
+	$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
+	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
+	$frr_ospfinterfaces_conf = &$config['installedpackages']['frrospfdinterfaces']['config'];
+	init_config_arr(array('installedpackages', 'frrospfdareas', 'config'));
+	$frr_areas_conf = &$config['installedpackages']['frrospfdareas']['config'];
+
+	/* Iterate old network list looking for items marked to not redistribute */
+	$dnrlist = array();
+	if (is_array($ospfd_conf['row'])) {
+		foreach ($ospfd_conf['row'] as $idx => &$redistr) {
+			if (empty($redistr['routevalue']) ||
+			    ($redistr['redistribute']) != 'ON') {
+				continue;
+			}
+			$dnrlist[] = $redistr['routevalue'];
+			unset($ospfd_conf['row'][$idx]);
+			$need_write = true;
+		}
+	}
+
+	/* Only import these items if there are values to process.
+	 * If there are none, it means we have already imported or there was
+	 * nothing to import, thus the changes are not needed. */
+	if (!empty($dnrlist)) {
+		/* Create a new access-list called dnr-list
+		 * Add entries for old "do not redistribute" networks */
+		$dnracl = array(
+			'name' => 'dnr-list',
+			'descr' => 'Do Not Redistribute (imported)',
+		);
+		$seq = 10;
+		$dnracl['row'] = array();
+		foreach ($dnrlist as $dnr) {
+			$dnracl['row'][] = array(
+				'seq' => $seq,
+				'action' => 'deny',
+				'source' => $dnr
+			);
+			$seq += 10;
+		}
+		$dnracl['row'][] = array(
+			'seq' => $seq,
+			'action' => 'permit',
+			'source' => 'any'
+		);
+		$frr_acls_conf[] = $dnracl;
+
+		/* Create a new Route Map named DNR using the dnr-list */
+		$frr_routemap_conf[] = array(
+			'name' => 'DNR',
+			'descr' => 'Do Not Redistribute List',
+			'action' => 'permit',
+			'seq' => '10',
+			'acl_match' => 'dnr-list',
+		);
+
+		/* Create new Area entry for default area with its export list set to dnr-list */
+		$frr_areas_conf[] = array(
+			'area' => $ospfd_conf['area'],
+			'descr' => 'Default Area (imported)',
+			'type' => $ospfd_conf['updatefib'],
+			'exportlist' => 'dnr-list',
+		);
+
+		/* Set redist route-maps to DNR and distribute lists to dnr-list */
+		if ($ospfd_conf['redistributeconnectedsubnets']) {
+			$ospfd_conf['redistributeconnectedsubnets_routemap'] = "DNR";
+			$ospfd_conf['redistributeconnectedsubnets_distlist'] = "dnr-list";
+		}
+		if ($ospfd_conf['redistributekernel']) {
+			$ospfd_conf['redistributekernel_routemap'] = "DNR";
+			$ospfd_conf['redistributekernel_distlist'] = "dnr-list";
+		}
+		if ($ospfd_conf['redistributebgp']) {
+			$ospfd_conf['redistributebgp_routemap'] = "DNR";
+			$ospfd_conf['redistributebgp_distlist'] = "dnr-list";
+		}
+		if ($ospfd_conf['redistributestatic']) {
+			$ospfd_conf['redistributestatic_routemap'] = "DNR";
+			$ospfd_conf['redistributestatic_distlist'] = "dnr-list";
+		}
+		if ($ospfd_conf['redistributedefaultroute']) {
+			$ospfd_conf['redistributedefaultroute_routemap'] = "DNR";
+		}
+	}
+
+	/* interface auth to new select style */
+	foreach ($frr_ospfinterfaces_conf as &$conf) {
+		$realif = get_real_interface($conf['interface']);
+		if (empty($realif) ||
+		    empty($conf['password']) ||
+		    isset($conf['authtype'])) {
+			continue;
+		}
+		if ($conf['md5password']) {
+			$conf['authtype'] = "digest";
+			unset($conf['md5password']);
+		} else {
+			$conf['authtype'] = "simple";
+		}
+		$need_write = true;
+	}
+
+	/* updatefib -> areatype */
+	if (isset($conf['updatefib'])) {
+		$conf['areatype'] = $conf['updatefib'];
+		unset($conf['updatefib']);
+		$need_write = true;
+	}
+
+	/* Save Changes */
+	if ($need_write) {
+		update_status("Saving changes ... ");
+		write_config('FRR: Upgraded Settings.');
+		update_status("Done.\n");
+	} else {
+		update_status("Nothing to do.\n");
+	}
+
+}
+
+/* Install-time functions */
+function frr_package_install() {
+	/* Upgrade the configuration */
+	frr_package_config_upgrade();
 }

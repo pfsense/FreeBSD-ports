@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	foundation
-PORTVERSION=	0.0.20
+PORTVERSION=	0.0.21
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 
@@ -10,7 +10,14 @@ COMMENT=	A custom prelude with no dependencies apart from base
 
 LICENSE=	BSD3CLAUSE
 
+DEPRECATED=		Haskell libraries are getting pushed out of the ports tree. If you are using this port for development, consider switching to cabal sandboxes (old way), cabal new-build (new way), or use devel/stack. If you believe this port shouldn't be removed, contact haskell@FreeBSD.org
+EXPIRATION_DATE=	2019-04-14
+
 USE_CABAL=	basement
+
+post-extract:
+	${ECHO} "import Distribution.Simple" > ${WRKSRC}/Setup.hs
+	${ECHO} "main = defaultMain" >>  ${WRKSRC}/Setup.hs
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	zita-convolver
-PORTVERSION=	3.1.0
-PORTREVISION=	2
+DISTVERSION=	4.0.3
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/
 
@@ -19,11 +19,11 @@ LIB_DEPENDS=	libfftw3f.so:math/fftw3-float
 USES=		compiler:c++11-lib gmake localbase:ldflags tar:bz2
 USE_LDCONFIG=	yes
 
-WRKSRC_SUBDIR=	libs
+WRKSRC_SUBDIR=	source
 
 PLIST_FILES=	include/zita-convolver.h \
 		lib/libzita-convolver.so \
-		lib/libzita-convolver.so.3 \
+		lib/libzita-convolver.so.4 \
 		lib/libzita-convolver.so.${PORTVERSION}
 
 post-install:

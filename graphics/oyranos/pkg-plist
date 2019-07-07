@@ -12,7 +12,7 @@ bin/oyranos-profiles
 bin/oyranos-xforms
 bin/oyranos-xforms-fltk
 bin/oyranos-xforms-modules
-bin/qcmsevents-qt4
+bin/qcmsevents
 etc/xdg/autostart/oyranos-monitor-setup.desktop
 include/oyranos/alpha/oyranos_alpha.h
 include/oyranos/icc34.h
@@ -72,8 +72,8 @@ include/oyranos/oyranos_types.h
 include/oyranos/oyranos_version.h
 lib/cmake/oyranos/OyranosConfig.cmake
 lib/color/modules/liboyranos_CUPS_cmm_module.so
-lib/color/modules/liboyranos_lcms_cmm_module.so
 lib/color/modules/liboyranos_lcm2_cmm_module.so
+lib/color/modules/liboyranos_lcms_cmm_module.so
 lib/color/modules/liboyranos_lraw_cmm_module.so
 lib/color/modules/liboyranos_oJPG_cmm_module.so
 lib/color/modules/liboyranos_oPNG_cmm_module.so
@@ -121,7 +121,7 @@ man/man3/oyranos-config.3.gz
 man/man3/oyranos.3.gz
 share/applications/oyranos-image-display.desktop
 share/applications/oyranos-profile-install.desktop
-share/applications/qcmsevents-qt4-applet.desktop
+share/applications/qcmsevents-applet.desktop
 share/color/rank-map/config.icc_profile.monitor.oyX1.qarz.json
 share/color/rank-map/config.icc_profile.printer.CUPS.json
 share/color/rank-map/config.icc_profile.raw-image.oyRE.json
@@ -140,4 +140,4 @@ share/man/man1/oyranos-xforms-fltk.1
 share/man/man1/oyranos-xforms-modules.1
 share/pixmaps/lcms_logo2.png
 share/pixmaps/oyranos_logo.png
-share/pixmaps/qcmsevents-qt4.svg
+share/pixmaps/qcmsevents.svg

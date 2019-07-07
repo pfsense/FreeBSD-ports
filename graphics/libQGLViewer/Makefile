@@ -3,6 +3,7 @@
 
 PORTNAME=	libQGLViewer
 DISTVERSION=	2.7.1
+PORTREVISION=	2
 CATEGORIES=	graphics devel
 MASTER_SITES=	http://www.libqglviewer.com/src/
 
@@ -12,7 +13,7 @@ COMMENT=	C++ library based on Qt5 that eases the creation of OpenGL 3D viewers
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-USES=		qmake qt:5
+USES=		compiler:c++11-lang gl qmake qt:5
 USE_GL=		gl glu
 USE_QT=		core designer gui opengl widgets xml buildtools_build
 USE_LDCONFIG=	yes

@@ -3,7 +3,7 @@
 
 PORTNAME=	trigger-rally
 PORTVERSION=	0.6.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SF/trigger-rally/trigger-${PORTVERSION}
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libphysfs.so:devel/physfs
 LIB_DEPENDS+=	libalut.so:audio/freealut
 
 WRKSRC_SUBDIR=	src
-USES=		gmake openal:al,alut
+USES=		compiler:c++11-lang gmake openal:al,alut
 USE_SDL=	sdl2 image2
 USE_GL=		glu gl glew
 MAKEFILE=	GNUmakefile
@@ -30,6 +30,8 @@ DESKTOP_ENTRIES="Trigger" "" "trigger" \
 		"trigger-rally" "" false
 
 PORTDOCS=	README-stereo.txt README.txt DATA_AUTHORS.txt
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WORKINGSRC}/bin/trigger-rally ${STAGEDIR}${PREFIX}/bin

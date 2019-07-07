@@ -8,11 +8,11 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JJORE
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	tobez@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Turns ref() into a multimethod
 
-BUILD_DEPENDS=	p5-B-Utils>=0:devel/p5-B-Utils
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-B-Utils>=0:devel/p5-B-Utils
 
 USES=		perl5
 USE_PERL5=	configure
@@ -20,7 +20,7 @@ USE_PERL5=	configure
 .include <bsd.port.pre.mk>
 
 .if ${PERL_LEVEL} >= 502501
-BROKEN=		Does not build, op_sibling usage. https://rt.cpan.org/Public/Bug/Display.html?id=118008
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ref.xs
 .endif
 
 .include <bsd.port.post.mk>

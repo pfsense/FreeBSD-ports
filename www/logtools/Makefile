@@ -3,6 +3,7 @@
 
 PORTNAME=	logtools
 PORTVERSION=	0.13e
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://www.coker.com.au/logtools/
 
@@ -11,11 +12,7 @@ COMMENT=	Useful tools to deal with CLF files (Common Log File format)
 
 LICENSE=	GPLv2
 
-BROKEN_mips=		fails to compile: clfmerge.cpp: error: unordered_map: No such file or directory
-BROKEN_mips64=		fails to compile: clfmerge.cpp: error: unordered_map: No such file or directory
-BROKEN_powerpc64=	fails to compile: clfmerge.cpp: error: unordered_map: No such file or directory
-
-USES=		tar:tgz
+USES=		compiler:c++11-lang tar:tgz
 GNU_CONFIGURE=	yes
 
 post-patch:

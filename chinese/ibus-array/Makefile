@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ibus-array
-PORTVERSION=	0.1.2
+PORTVERSION=	0.2.1
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	chinese
 
@@ -15,7 +15,7 @@ RUN_DEPENDS=	ibus-daemon:textproc/ibus
 
 GNU_CONFIGURE=	yes
 
-USES=		autoreconf gettext gmake libtool pkgconfig sqlite
+USES=		autoreconf gettext gmake libtool pkgconfig python:2.7 sqlite
 USE_GNOME+=	glib20
 
 USE_GITHUB=	yes

@@ -3,11 +3,11 @@
  * suricata_flow_stream.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +41,9 @@ if (!is_array($config['installedpackages']['suricata']['rule']))
 	$config['installedpackages']['suricata']['rule'] = array();
 
 // Initialize required array variables as necessary
+if (!is_array($config['aliases'])) {
+	$config['aliases'] = array();
+}
 if (!is_array($config['aliases']['alias']))
 	$config['aliases']['alias'] = array();
 $a_aliases = $config['aliases']['alias'];
@@ -319,9 +322,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 			$a_nat[$id] = $natent;
 			write_config();
 			$rebuild_rules = false;
-			conf_mount_rw();
 			suricata_generate_yaml($natent);
-			conf_mount_ro();
 
 			// Sync to configured CARP slaves if any are enabled
 			suricata_sync_on_changes();
@@ -809,10 +810,9 @@ print($form);
 ?>
 
 <div class="infoblock">
-	<?=print_info_box('<strong>Note:</strong> Please save your settings before you exit. Changes will rebuild the rules file. This may take several seconds. Suricata must also be restarted to activate any changes made on this screen.', info)?>
+	<?=print_info_box('<strong>Note:</strong> Please save your settings before you exit. Changes will rebuild the rules file. This may take several seconds. Suricata must also be restarted to activate any changes made on this screen.', 'info')?>
 </div>
 
 <?php } ?>
 
 <?php include("foot.inc"); ?>
-

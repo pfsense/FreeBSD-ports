@@ -2,7 +2,8 @@
 
 PORTNAME=	otter-browser
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.99
+DISTVERSION=	1.0.01
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,11 +12,11 @@ COMMENT=	Browser based on Qt 5
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell
+LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 
-USES=		cmake:outsource compiler:c++11-lib desktop-file-utils qt:5
-USE_QT=		concurrent core dbus gui multimedia network printsupport \
-		qml script sql sql-sqlite3 svg widgets xmlpatterns \
+USES=		cmake compiler:c++11-lib desktop-file-utils qt:5
+USE_QT=		concurrent core dbus declarative gui multimedia network printsupport \
+		script sql sql-sqlite3 svg widgets xmlpatterns \
 		buildtools_build qmake_build
 
 USE_GITHUB=	yes
@@ -28,7 +29,7 @@ OPTIONS_DEFAULT=	QTWEBENGINE QTWEBKIT
 QTWEBENGINE_DESC=	Build QtWebEngine backend
 QTWEBKIT_DESC=		Build QtWebKit backend
 
-QTWEBENGINE_USE=	qt=location,quick,webchannel,webengine
+QTWEBENGINE_USE=	qt=declarative,location,webchannel,webengine
 QTWEBENGINE_CMAKE_BOOL=	ENABLE_QTWEBENGINE
 
 QTWEBKIT_USE=		qt=webkit

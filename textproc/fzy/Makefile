@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	fzy
-DISTVERSION=	0.9
+DISTVERSION=	1.0
 CATEGORIES=	textproc
 
-MAINTAINER=	gor@clogic.com.ua
+MAINTAINER=	o.hushchenkov@gmail.com
 COMMENT=	Interactive fuzzy text selector for the terminal
 
 LICENSE=	MIT
