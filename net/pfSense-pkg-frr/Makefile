@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-frr
-PORTVERSION=	0.6
+PORTVERSION=	0.6.1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -44,6 +44,8 @@ do-install:
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_bgp_neighbors.xml \
 		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_ospf_interfaces.xml \
+		${STAGEDIR}${PREFIX}/pkg/frr
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_ospf_areas.xml \
 		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_global_routemaps.xml \
 		${STAGEDIR}${PREFIX}/pkg/frr

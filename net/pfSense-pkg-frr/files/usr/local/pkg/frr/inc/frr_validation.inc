@@ -149,8 +149,6 @@ function frr_sort_rows_by_seq() {
 function frr_global_acls_validate_input() {
 	global $config, $input_errors, $pkg;
 	frr_sort_rows_by_seq();
-
-	/* Do not allow a name of: dnr-list */
 }
 
 function frr_global_prefixes_validate_input() {
@@ -159,11 +157,6 @@ function frr_global_prefixes_validate_input() {
 
 	if (empty($_POST['name'])) {
 		$input_errors[] = "A name is required.";
-	}
-
-	/* Do not allow a name of: dnr6-list */
-	if ($_POST['name'] == "dnr6-list") {
-		$input_errors[] = "That name is reserved.";
 	}
 
 	foreach ($_POST as $key => $value) {
@@ -179,7 +172,7 @@ function frr_global_prefixes_validate_input() {
 			}
 		}
 		if (preg_match("/^source(\d+)$/", $key, $matches)) {
-			if (!is_subnet($_POST["source{$matches[1]}"])) {
+			if (!is_subnet($_POST["source{$matches[1]}"]) && ($_POST["source{$matches[1]}"] != 'any')) {
 				$input_errors[] = "Network in row {$matches[1]} must be a subnet.";
 			}
 		}
@@ -204,7 +197,7 @@ function frr_global_prefixes_validate_input() {
 function frr_global_routemaps_validate_input() {
 	global $config, $input_errors;
 
-	/* Do not allow a name of: ACCEPTFILTER, DNR, DNR6 */
+	/* Do not allow a name of: ACCEPTFILTER */
 }
 
 function frr_global_raw_validate_input() {
