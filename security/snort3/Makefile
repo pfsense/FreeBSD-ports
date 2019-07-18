@@ -18,7 +18,7 @@ BUILD_DEPENDS=	daq>=2.2.2:net/daq \
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
 		libpcap.so:net/libpcap \
-		libluajit-5.1.so:lang/luajit \
+		libluajit-5.1.so:lang/luajit21 \
 		libhwloc.so:devel/hwloc
 RUN_DEPENDS=	daq>=2.2.2:net/daq
 
