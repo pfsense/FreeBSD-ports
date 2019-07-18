@@ -1,7 +1,7 @@
---- content/browser/service_manager/service_manager_context.cc.orig	2019-03-11 22:00:58 UTC
-+++ content/browser/service_manager/service_manager_context.cc
-@@ -99,7 +99,7 @@
- #include "jni/ContentNfcDelegate_jni.h"
+--- content/browser/service_manager/service_manager_context.cc.orig	2019-02-06 19:17:17.245963000 +0100
++++ content/browser/service_manager/service_manager_context.cc	2019-02-06 19:18:30.535127000 +0100
+@@ -100,7 +100,7 @@
+ #include "ui/aura/env.h"
  #endif
  
 -#if defined(OS_LINUX)
@@ -9,27 +9,21 @@
  #include "components/services/font/font_service_app.h"
  #include "components/services/font/public/interfaces/constants.mojom.h"
  #endif
-@@ -378,12 +378,12 @@ void CreateInProcessAudioService(
+@@ -436,7 +436,7 @@
                       BrowserMainLoop::GetAudioManager(), std::move(request)));
  }
  
 -#if defined(OS_LINUX)
 +#if defined(OS_LINUX) || defined(OS_BSD)
- std::unique_ptr<service_manager::Service> CreateFontService(
-     service_manager::mojom::ServiceRequest request) {
-   return std::make_unique<font_service::FontServiceApp>(std::move(request));
- }
--#endif  // defined(OS_LINUX)
-+#endif  // defined(OS_LINUX) || defined(OS_BSD)
- 
- std::unique_ptr<service_manager::Service> CreateResourceCoordinatorService(
-     service_manager::mojom::ServiceRequest request) {
-@@ -618,7 +618,7 @@ ServiceManagerContext::ServiceManagerContext(
-         base::BindRepeating(&CreateVideoCaptureService));
-   }
+ void CreateFontService(service_manager::mojom::ServiceRequest request) {
+   // The font service owns itself here, deleting on self-termination.
+   auto service =
+@@ -700,7 +700,7 @@
+   out_of_process_services[data_decoder::mojom::kServiceName] =
+       base::BindRepeating(&base::ASCIIToUTF16, "Data Decoder Service");
  
 -#if defined(OS_LINUX)
 +#if defined(OS_LINUX) || defined(OS_BSD)
-   RegisterInProcessService(
-       packaged_services_connection_.get(), font_service::mojom::kServiceName,
-       base::CreateSequencedTaskRunnerWithTraits(
+   packaged_services_connection_->AddServiceRequestHandler(
+       font_service::mojom::kServiceName,
+       base::BindRepeating([](service_manager::mojom::ServiceRequest request) {
