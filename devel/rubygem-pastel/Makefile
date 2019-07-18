@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pastel
-PORTVERSION=	0.7.2
+PORTVERSION=	0.7.3
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,11 +12,12 @@ COMMENT=	Terminal strings styling with intuitive and clean API
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-equatable>=0.5.0:devel/rubygem-equatable \
-		rubygem-tty-color>=0.4.0:devel/rubygem-tty-color
+RUN_DEPENDS=	rubygem-equatable>=0.6:devel/rubygem-equatable \
+		rubygem-tty-color>=0.5:devel/rubygem-tty-color
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

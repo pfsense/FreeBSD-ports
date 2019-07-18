@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	yubico-piv-tool
-PORTVERSION=	1.6.2
+PORTVERSION=	1.7.0
 #PORTREVISION=	0
 CATEGORIES=	security
 MASTER_SITES=	https://developers.yubico.com/yubico-piv-tool/Releases/
@@ -28,13 +28,22 @@ PLIST_FILES=	bin/yubico-piv-tool \
 		lib/libykcs11.a \
 		lib/libykcs11.so \
 		lib/libykcs11.so.1 \
-		lib/libykcs11.so.1.4.4 \
+		lib/libykcs11.so.1.5.0 \
 		lib/libykpiv.a \
 		lib/libykpiv.so \
 		lib/libykpiv.so.1 \
-		lib/libykpiv.so.1.4.4 \
+		lib/libykpiv.so.1.5.0 \
 		libdata/pkgconfig/ykcs11.pc \
 		libdata/pkgconfig/ykpiv.pc \
 		man/man1/yubico-piv-tool.1.gz
+
+post-patch:
+.if exists(/usr/lib/libstdc++.so)
+	@${REINPLACE_CMD} -e '/#pragma GCC diagnostic/d' \
+		${WRKSRC}/lib/ykpiv.c \
+		${WRKSRC}/lib/util.c \
+		${WRKSRC}/lib/internal.c \
+		${WRKSRC}/tool/yubico-piv-tool.c
+.endif
 
 .include <bsd.port.mk>

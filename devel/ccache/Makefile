@@ -3,9 +3,9 @@
 
 PORTNAME=	ccache
 #PORTVERSION must be set later due to depending on PORT_OPTIONS.
-PORTREVISION=	1
+PORTREVISION=	0
 CATEGORIES=	devel
-MASTER_SITES=	https://www.samba.org/ftp/ccache/ \
+MASTER_SITES=	https://github.com/ccache/ccache/releases/download/v${DISTVERSION}/ \
 		LOCAL/bdrewery
 
 MAINTAINER=	bdrewery@FreeBSD.org
@@ -46,12 +46,12 @@ MEMCACHED_CFLAGS=		-I${LOCALBASE}/include
 
 STATIC_CONFIGURE_ENABLE=	static
 
+.if empty(OPTIONS_SLAVE:MMEMCACHED)
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-Makefile.in
+.endif
+
 .if defined(WITH_CCACHE_BUILD) && empty(OPTIONS_SLAVE:MMEMCACHED) && \
     !defined(NO_CCACHE_DEPEND)
-# Don't allow autoreconf. We want no dependencies on this to keep
-# WITH_CCACHE_BUILD working.
-USES:=		${USES:Nautoreconf}
-
 MEMCACHED_IGNORE=		MEMCACHED cannot be combined with WITH_CCACHE_BUILD.  Use devel/ccache-memcached
 # XXX: This needs more testing with Poudriere before enabling. Also bsd.options.mk support.
 #MEMCACHED_DEPENDS_ARGS+= NO_CCACHE_DEPEND=1
@@ -80,9 +80,7 @@ ALL_TARGET=	all docs
 PLIST_FILES+=	man/man1/ccache.1.gz
 .endif
 .else
-PORTVERSION=	3.4.3
-# Only needed pre-3.5
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-configure.ac
+PORTVERSION=	3.7.1
 .endif
 
 .include <bsd.port.pre.mk>

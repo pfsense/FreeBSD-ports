@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	plasma-desktop
-DISTVERSION=	${KDE_PLASMA_VERSION}.2
-PORTREVISION=	1
+DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	x11 kde kde-plasma
 
 MAINTAINER=	kde@FreeBSD.org
@@ -15,6 +14,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfreetype.so:print/freetype2 \
 		libxcb-image.so:x11/xcb-util-image \
 		libxcb-keysyms.so:x11/xcb-util-keysyms \
+		libxcb-util.so:x11/xcb-util \
 		libxkbfile.so:x11/libxkbfile
 RUN_DEPENDS=	iso-codes>=0:misc/iso-codes \
 		xf86-input-evdev>0:x11-drivers/xf86-input-evdev \

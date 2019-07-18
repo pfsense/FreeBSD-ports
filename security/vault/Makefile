@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	vault
-PORTVERSION=	1.0.2
+PORTVERSION=	1.1.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -11,7 +12,7 @@ COMMENT=	Tool for securely accessing secrets
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go>=1.9:lang/go
+USES=		go
 
 USE_GITHUB=	yes
 GH_TUPLE=	hashicorp:${PORTNAME}:${VAULTTAG}:DEFAULT/src/github.com/hashicorp/${PORTNAME} \
@@ -26,6 +27,7 @@ USERS=		vault
 GROUPS=		vault
 
 PLIST_FILES=	bin/${PORTNAME}
+SUB_FILES=	pkg-message
 
 post-patch:
 	@${CP} ${WRKDIR}/vaultui-${PORTVERSION}/http/bindata_assetfs.go ${WRKDIR}/vault-${PORTVERSION}/http/bindata_assetfs.go

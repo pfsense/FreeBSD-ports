@@ -7,13 +7,11 @@ DISTVERSIONPREFIX=	${PORTNAME}-
 PORTREVISION=	2
 CATEGORIES=	net-mgmt
 
-MAINTAINER=	dch@skunkwerks.at
+MAINTAINER=	dch@FreeBSD.org
 COMMENT=	C library and command-line tool for Riemann
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_aarch64=		fails to build: FAIL: tests/check_symver
 
 BUILD_DEPENDS=	check>0:devel/check
 LIB_DEPENDS=	libprotobuf-c.so:devel/protobuf-c \

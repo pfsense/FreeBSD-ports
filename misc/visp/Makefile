@@ -2,6 +2,7 @@
 
 PORTNAME=	visp
 DISTVERSION=	3.2.0
+PORTREVISION=	3
 CATEGORIES=	misc
 MASTER_SITES=	http://gforge.inria.fr/frs/download.php/latestfile/475/
 
@@ -21,10 +22,10 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		libopencv_videoio.so:graphics/opencv \
 		libpcl_common.so:graphics/pcl-pointclouds \
 		libqhull.so:math/qhull5 \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libv4l2.so:multimedia/libv4l
 
-USES=		cmake eigen:3 fortran gnome jpeg
+USES=		cmake compiler:c++11-lang eigen:3 fortran gnome jpeg
 USE_GNOME=	libxml2
 USE_XORG=	ice sm x11 xext
 USE_LDCONFIG=	yes
@@ -36,6 +37,6 @@ OPTIONS_DEFINE=		OGRE
 OGRE_DESC=		Include Ogre support
 OGRE_CMAKE_BOOL=	USE_OGRE
 OGRE_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
-			libOgreMain.so:graphics/ogre3d
+			libOgreMain.so:graphics/ogre3d19
 
 .include <bsd.port.mk>

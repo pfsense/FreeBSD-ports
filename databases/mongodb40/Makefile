@@ -2,7 +2,7 @@
 
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	4.0.6
+DISTVERSION=	4.0.8
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/ \
@@ -21,7 +21,7 @@ ONLY_FOR_ARCHS=	aarch64 amd64
 ONLY_FOR_ARCHS_REASON=	"Only supported on amd64 and aarch64 (i386 deprecated in v3)"
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah>=2.4.4:devel/py-cheetah@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}typing>=3.6.2:devel/py-typing@${PY_FLAVOR} \
+		${PY_TYPING} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR} \
 		${LOCALBASE}/bin/ar:devel/binutils
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \

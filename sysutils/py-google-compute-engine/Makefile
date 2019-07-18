@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	google-compute-engine
-DISTVERSION=	2.8.13
-PORTREVISION=	5
+DISTVERSION=	2.8.16
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,7 +11,8 @@ COMMENT=	Guest Environment for Google Compute Engine
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}netaddr>0:net/py-netaddr@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto>0:devel/py-boto@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}netaddr>0:net/py-netaddr@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}netifaces>0:net/py-netifaces@${PY_FLAVOR} \
 		google_oslogin_control:sysutils/google-compute-engine-oslogin \
 		sudo:security/sudo
@@ -33,7 +33,7 @@ SHEBANG_FILES=	../google-compute-engine/src/usr/bin/google_optimize_local_ssd \
 USE_GITHUB=	yes
 GH_ACCOUNT=	GoogleCloudPlatform
 GH_PROJECT=	compute-image-packages
-GH_TAGNAME=	20190416
+GH_TAGNAME=	20190522
 
 USE_RC_SUBR=	google_accounts_daemon google_clock_skew_daemon \
 		google_instance_setup google_network_daemon google_startup

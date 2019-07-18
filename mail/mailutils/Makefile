@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mailutils
-PORTVERSION=	3.6
+PORTVERSION=	3.7
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	GNU GNU_ALPHA
 
@@ -13,7 +14,7 @@ LICENSE=	GPLv3+
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		gmake libtool localbase readline tar:xz
+USES=		gmake iconv libtool localbase readline tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	comsatd imap4d pop3d
@@ -48,10 +49,9 @@ GNUTLS_CONFIGURE_WITH=	gnutls
 GSSAPI_RUN_DEPENDS=	cyrus-sasl-gssapi>0:security/cyrus-sasl2-gssapi
 GSSAPI_CONFIGURE_WITH=	gssapi
 
-GUILE_LIB_DEPENDS=	libguile-2.0.so:lang/guile2 libgmp.so:math/gmp
-GUILE_USES=		pkgconfig
+GUILE_LIB_DEPENDS=	libguile-2.2.so:lang/guile2 libgmp.so:math/gmp
+GUILE_USES=		makeinfo pkgconfig
 GUILE_CONFIGURE_WITH=	guile
-GUILE_BROKEN=		requires Guile >= 2.2.0 (see PR 229613)
 
 MH_CONFIGURE_ENABLE=	mh
 

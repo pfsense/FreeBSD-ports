@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bacula
-PORTVERSION=	9.4.2
-PORTREVISION=	0
+PORTVERSION=	9.4.3
 CATEGORIES?=	sysutils
 MASTER_SITES=	SF/bacula/bacula/${PORTVERSION}
 PKGNAMEPREFIX?=	#
@@ -11,6 +10,9 @@ PKGNAMESUFFIX?=	9-server
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT?=	Network backup solution (server)
+
+LICENSE=	AGPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES+=		libtool readline shebangfix ssl
 SHEBANG_FILES=	src/cats/make_catalog_backup.pl.in

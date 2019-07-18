@@ -3,6 +3,7 @@
 
 PORTNAME=	freeipmi
 PORTVERSION=	1.6.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
@@ -12,19 +13,15 @@ COMMENT=	Library and tools to support IPMI-capable hardware
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_aarch64=		invokes x86 assembler
-BROKEN_armv6=		invokes x86 assembler
-BROKEN_armv7=		invokes x86 assembler
-BROKEN_mips=		invokes x86 assembler
-BROKEN_mips64=		invokes x86 assembler
-BROKEN_sparc64=		invokes x86 assembler
-BROKEN_powerpc64=	invokes x86 assembler
+ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386 powerpc64
 
 LIB_DEPENDS=	libargp.so:devel/argp-standalone \
 		libgcrypt.so:security/libgcrypt
 
 OPTIONS_DEFINE=	DEBUG DOCS IOPERM IPV6
 IOPERM_DESC=	Use i386_set_ioperm
+
+USES=		gmake libtool localbase shebangfix
 
 CFLAGS+=	-D_WANT_SEMUN
 CONFIGURE_ARGS=	--disable-init-scripts \
@@ -35,7 +32,6 @@ CONFIGURE_ARGS=	--disable-init-scripts \
 CONFIGURE_ENV=	PTHREAD_LIBS=-lpthread ac_cv_path_CPP=${CPP}
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		gmake libtool localbase shebangfix
 
 INFO=		freeipmi-faq
 PLIST_SUB=	CACHE_DIR=${CACHE_DIR}
@@ -48,7 +44,7 @@ SHEBANG_FILES=	contrib/ganglia/ganglia_ipmi_sensors.pl \
 		contrib/pet/check_rmcpping \
 		contrib/pet/petalert.pl
 
-DEBUG_CONFIGURE_ARGS=	--enable-debug --enable-trace
+DEBUG_CONFIGURE_ON=	--enable-debug --enable-trace
 DEBUG_INSTALL_TARGET=	install
 DEBUG_INSTALL_TARGET_OFF=	install-strip
 IOPERM_CPPFLAGS=	-DUSE_IOPERM

@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	xfmpc
-PORTVERSION=	0.2.3
-PORTREVISION=	1
+PORTVERSION=	0.3.0
 CATEGORIES=	audio xfce
-MASTER_SITES=	XFCE/src/apps/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -18,8 +17,8 @@ LIB_DEPENDS=	libmpd.so:audio/libmpd \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		gettext-tools gmake gnome pkgconfig tar:bzip2 xfce
-USE_GNOME=	cairo gtk20 intlhack intltool
+USES=		gettext-tools gmake gnome pkgconfig tar:bzip2 xfce:gtk3
+USE_GNOME=	cairo gtk30 intltool
 USE_XFCE=	libmenu
 USE_XORG=	ice sm x11
 

@@ -4,6 +4,7 @@
 PORTNAME=	sfcgal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3.6
+PORTREVISION=	1
 CATEGORIES=	databases math graphics
 
 MAINTAINER=	lbartoletti@tuxfamily.org
@@ -17,11 +18,10 @@ LIB_DEPENDS=	libCGAL.so:math/cgal \
 		libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr
 
-USES=		cmake compiler libtool
+USES=		cmake compiler:c++0x libtool
 USE_GITHUB=	yes
 GH_ACCOUNT=	Oslandia
 GH_PROJECT=	SFCGAL
-compiler_ARGS=	c++0x
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	SHL3=${PORTVERSION} SHL1=${PORTVERSION:R:R}

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	opencoarrays
-DISTVERSION=	2.3.1
+DISTVERSION=	2.7.1
 CATEGORIES=	lang parallel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -51,10 +51,8 @@ PLIST_SUB+=	SOVERSION=3
 PLIST_SUB+=	SOVERSION=2
 .elif ${GCC_DEFAULT} == 6
 PLIST_SUB+=	SOVERSION=1
-.elif ${GCC_DEFAULT} == 5
-PLIST_SUB+=	SOVERSION=0
 .else
-IGNORE=		requires GCC 5 or higher
+IGNORE=		requires GCC 6 or higher
 .endif
 
 post-patch:

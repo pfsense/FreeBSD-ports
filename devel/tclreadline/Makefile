@@ -3,6 +3,7 @@
 
 PORTNAME=	tclreadline
 PORTVERSION=	2.3.5
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel tcl
 
@@ -18,6 +19,7 @@ CONFIGURE_ARGS+=--with-tcl=${TCL_LIBDIR} \
 		--with-readline-includes=${LOCALBASE}/include \
 		--with-readline-library="-L${LOCALBASE}/lib -lreadline" \
 		--with-tk=no
+INSTALL_TARGET=	install-strip
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	flightaware

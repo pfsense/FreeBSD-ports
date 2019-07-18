@@ -1,6 +1,7 @@
 # Created by: Charlie Kester <corky1951@comcast.net>
 # $FreeBSD$
 
+PORTREVISION=	0
 CATEGORIES=	multimedia python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 

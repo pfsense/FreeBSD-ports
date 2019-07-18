@@ -3,6 +3,7 @@
 
 PORTNAME=	paramiko
 PORTVERSION=	2.4.2
+PORTREVISION=	1
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -26,7 +27,7 @@ USE_PYTHON=	autoplist distutils
 CONFLICTS_INSTALL=	py??-paramiko1-*
 NO_ARCH=		yes
 
-do-test: extract
+do-test:
 	@(cd ${WRKSRC} && ${PYTHON_CMD} -m unittest discover .)
 
 .include <bsd.port.mk>

@@ -1,2 +1,3 @@
-SHA256 (mysql-connector-python-1.2.3.tar.gz) = 03b4ba1c2d4ede2817137b487b3d2e1e38e6ed9423fe91bf13db2fe739a33350
-SIZE (mysql-connector-python-1.2.3.tar.gz) = 285849
+TIMESTAMP = 1556304503
+SHA256 (mysql-connector-python-8.0.16.tar.gz) = 5ce6a980062e2a7d447b98bef7d873aa26c6bbb987548a617b2d39a82c7d8d94
+SIZE (mysql-connector-python-8.0.16.tar.gz) = 12019794

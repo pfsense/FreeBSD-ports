@@ -36,7 +36,7 @@ SHEBANG_FILES=	utils/lit/lit.py utils/llvm-lit/llvm-lit.in \
 		tools/clang/tools/clang-format/clang-format-diff.py \
 		tools/clang/tools/extra/clang-tidy/tool/clang-tidy-diff.py \
 		tools/clang/tools/extra/clang-tidy/tool/run-clang-tidy.py \
-		tools/clang/tools/extra/include-fixer/find-all-symbols/tool/run-find-all-symbols.py \
+		tools/clang/tools/extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py \
 		tools/opt-viewer/optrecord.py \
 		tools/opt-viewer/opt-diff.py \
 		tools/opt-viewer/opt-stats.py \
@@ -76,6 +76,8 @@ OPTIONS_DEFAULT_amd64=	COMPILER_RT GOLD OPENMP
 OPTIONS_DEFAULT_i386=	COMPILER_RT OPENMP
 OPTIONS_SUB=	yes
 
+# Pre-declared for options framework
+LIB_DEPENDS=
 PLIST_FILES=
 
 CLANG_DESC=	Build clang
@@ -107,11 +109,13 @@ EXTRAS_GH_PROJECT=	clang-tools-extra:extras
 EXTRAS_GH_SUBDIR=	tools/clang/tools/extra:extras
 EXTRAS_GH_TAGNAME=	${EXTRAS_COMMIT}:extras
 LIT_DESC=		Install lit and FileCheck test tools
+LIT_LIB_DEPENDS=	libz3.so:math/z3
 LLD_DESC=		Install lld, the LLVM linker
 LLD_GH_PROJECT=		lld:lld
 LLD_GH_SUBDIR=		tools/lld:lld
 LLD_GH_TAGNAME=		${LLD_COMMIT}:lld
 LLDB_BUILD_DEPENDS=	swig3.0:devel/swig30
+LLDB_EXTRA_PATCHES=	${PATCHDIR}/lldb
 LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_GH_PROJECT=	lldb:lldb
 LLDB_GH_SUBDIR=		tools/lldb:lldb
@@ -139,12 +143,14 @@ MAN1SRCS+=	bugpoint.1 \
 		dsymutil.1 \
 		llc.1 \
 		lli.1 \
+		llvm-addr2line.1 \
 		llvm-ar.1 \
 		llvm-as.1 \
 		llvm-bcanalyzer.1 \
 		llvm-build.1 \
 		llvm-config.1 \
 		llvm-cov.1 \
+		llvm-cxxfilt.1 \
 		llvm-cxxmap.1 \
 		llvm-diff.1 \
 		llvm-dis.1 \
@@ -152,14 +158,21 @@ MAN1SRCS+=	bugpoint.1 \
 		llvm-exegesis.1 \
 		llvm-extract.1 \
 		llvm-lib.1 \
+		llvm-lipo.1 \
 		llvm-link.1 \
 		llvm-mca.1 \
 		llvm-nm.1 \
+		llvm-objcopy.1 \
 		llvm-objdump.1 \
 		llvm-pdbutil.1 \
 		llvm-profdata.1 \
+		llvm-ranlib.1 \
+		llvm-readelf.1 \
 		llvm-readobj.1 \
+		llvm-size.1 \
 		llvm-stress.1 \
+		llvm-strings.1 \
+		llvm-strip.1 \
 		llvm-symbolizer.1 \
 		opt.1 \
 		tblgen.1
@@ -262,11 +275,8 @@ _COMPILER_RT_LIBS= \
 	libclang_rt.cfi_diag-x86_64.a \
 	libclang_rt.dd-x86_64.a \
 	libclang_rt.dyndd-x86_64.so \
-	libclang_rt.esan-x86_64.a \
-	libclang_rt.esan-x86_64.a.syms \
 	libclang_rt.fuzzer-x86_64.a \
 	libclang_rt.fuzzer_no_main-x86_64.a \
-	libclang_rt.lsan-x86_64.a \
 	libclang_rt.msan-x86_64.a \
 	libclang_rt.msan-x86_64.a.syms \
 	libclang_rt.msan_cxx-x86_64.a \
@@ -302,7 +312,6 @@ _COMPILER_RT_LIBS+= \
 	libclang_rt.builtins-i386.a \
 	libclang_rt.cfi-i386.a \
 	libclang_rt.cfi_diag-i386.a \
-	libclang_rt.lsan-i386.a \
 	libclang_rt.profile-i386.a \
 	libclang_rt.safestack-i386.a \
 	libclang_rt.stats-i386.a \
@@ -341,6 +350,8 @@ post-patch:
 	    ${WRKSRC}/CMakeLists.txt
 
 post-patch-CLANG-on:
+	${REINPLACE_CMD} -e 's|%%LLVM_PREFIX%%|${LLVM_PREFIX}|' \
+	    ${PATCH_WRKSRC}/tools/clang/lib/Driver/ToolChains/CommonArgs.cpp
 	${REINPLACE_CMD} -e 's|%%LLVM_SUFFIX%%|${LLVM_SUFFIX}|' \
 	    ${PATCH_WRKSRC}/tools/clang/tools/clang-format/clang-format.py \
 	    ${PATCH_WRKSRC}/tools/clang/tools/clang-format/clang-format-sublime.py \
@@ -363,6 +374,7 @@ post-install:
 .endfor
 
 post-install-DOCS-on:
+	${RM} -r ${STAGEDIR}${DOCSDIR}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${MV} ${STAGEDIR}${LLVM_PREFIX}/share/doc/* ${STAGEDIR}${DOCSDIR}
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/doc

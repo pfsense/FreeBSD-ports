@@ -1,6 +1,6 @@
---- headless/lib/browser/headless_content_browser_client.h.orig	2019-01-30 02:18:02.000000000 +0100
-+++ headless/lib/browser/headless_content_browser_client.h	2019-02-01 09:56:18.585343000 +0100
-@@ -34,7 +34,7 @@
+--- headless/lib/browser/headless_content_browser_client.h.orig	2019-06-04 18:55:24 UTC
++++ headless/lib/browser/headless_content_browser_client.h
+@@ -35,7 +35,7 @@ class HeadlessContentBrowserClient : public content::C
        ::storage::OptionalQuotaSettingsCallback callback) override;
    content::GeneratedCodeCacheSettings GetGeneratedCodeCacheSettings(
        content::BrowserContext* context) override;

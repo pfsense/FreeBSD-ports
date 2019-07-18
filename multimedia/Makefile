@@ -10,7 +10,6 @@
     SUBDIR += aegisub
     SUBDIR += aom
     SUBDIR += aravis
-    SUBDIR += asdcplib
     SUBDIR += assimp
     SUBDIR += atomicparsley
     SUBDIR += audacious
@@ -62,9 +61,9 @@
     SUBDIR += dvts
     SUBDIR += emby-server
     SUBDIR += emovix
+    SUBDIR += ffaudioconverter
     SUBDIR += ffdec
     SUBDIR += ffmpeg
-    SUBDIR += ffmpeg0
     SUBDIR += ffmpeg2theora
     SUBDIR += ffmpegthumbnailer
     SUBDIR += ffms2
@@ -81,7 +80,6 @@
     SUBDIR += gdialog
     SUBDIR += gdvrecv
     SUBDIR += gmerlin
-    SUBDIR += gmerlin-avdecoder
     SUBDIR += gmimms
     SUBDIR += gmmlib
     SUBDIR += gmp-api
@@ -145,6 +143,9 @@
     SUBDIR += gstreamer1-plugins-resindvd
     SUBDIR += gstreamer1-plugins-rtmp
     SUBDIR += gstreamer1-plugins-smoothstreaming
+    SUBDIR += gstreamer1-plugins-svt-av1
+    SUBDIR += gstreamer1-plugins-svt-hevc
+    SUBDIR += gstreamer1-plugins-svt-vp9
     SUBDIR += gstreamer1-plugins-theora
     SUBDIR += gstreamer1-plugins-ttml
     SUBDIR += gstreamer1-plugins-ugly
@@ -176,9 +177,11 @@
     SUBDIR += kissdx
     SUBDIR += kmplayer
     SUBDIR += kodi
+    SUBDIR += kodi-addon-inputstream.adaptive-devel
     SUBDIR += kodi-addon-peripheral-joystick
     SUBDIR += kodi-addon-pvr-hts
     SUBDIR += kodi-addon-pvr-iptvsimple
+    SUBDIR += kodi-addon-vfs.libarchive-devel
     SUBDIR += kodi-devel
     SUBDIR += kvazaar
     SUBDIR += l-smash
@@ -207,6 +210,7 @@
     SUBDIR += libmpeg2
     SUBDIR += libmpeg3
     SUBDIR += libmtp
+    SUBDIR += libopenshot
     SUBDIR += libquicktime
     SUBDIR += libquicktime-lame
     SUBDIR += libquvi
@@ -266,7 +270,6 @@
     SUBDIR += mpc-qt
     SUBDIR += mpeg2codec
     SUBDIR += mpeg2play
-    SUBDIR += mpeg4ip
     SUBDIR += mpeg_encode
     SUBDIR += mpeg_play
     SUBDIR += mpeg_stat
@@ -291,6 +294,7 @@
     SUBDIR += oggvideotools
     SUBDIR += ogmrip
     SUBDIR += ogmtools
+    SUBDIR += olive
     SUBDIR += omxplayer
     SUBDIR += openh264
     SUBDIR += openshot
@@ -305,6 +309,7 @@
     SUBDIR += p5-Subtitles
     SUBDIR += p5-Umph-Prompt
     SUBDIR += pHash
+    SUBDIR += peek
     SUBDIR += phonon
     SUBDIR += phonon-designerplugin
     SUBDIR += phonon-gstreamer
@@ -327,6 +332,7 @@
     SUBDIR += py-av
     SUBDIR += py-cec
     SUBDIR += py-enzyme
+    SUBDIR += py-ffmpeg-python
     SUBDIR += py-flvlib
     SUBDIR += py-gstreamer
     SUBDIR += py-gstreamer1
@@ -382,6 +388,7 @@
     SUBDIR += snappy
     SUBDIR += spigot
     SUBDIR += spook
+    SUBDIR += subsync
     SUBDIR += subtitlecomposer
     SUBDIR += subtitleeditor
     SUBDIR += subtitleoffsetmodifier
@@ -404,6 +411,7 @@
     SUBDIR += tvheadend
     SUBDIR += umph
     SUBDIR += umr
+    SUBDIR += ustreamer
     SUBDIR += v4l-utils
     SUBDIR += v4l_compat
     SUBDIR += vamps
@@ -428,10 +436,8 @@
     SUBDIR += vdr-plugin-remote
     SUBDIR += vdr-plugin-skinenigmang
     SUBDIR += vdr-plugin-sleeptimer
-    SUBDIR += vdr-plugin-softhddevice
     SUBDIR += vdr-plugin-streamdev
     SUBDIR += vdr-plugin-ttxtsubs
-    SUBDIR += vdr-plugin-upnp
     SUBDIR += vdr-plugin-vdrmanager
     SUBDIR += vdr-plugin-vnsiserver
     SUBDIR += vdr-plugin-wirbelscan

@@ -3,6 +3,7 @@
 
 PORTNAME=	quantlib
 PORTVERSION=	1.15
+PORTREVISION=	2
 CATEGORIES=	finance math devel
 MASTER_SITES=	https://dl.bintray.com/${PORTNAME}/releases/
 DISTNAME=	QuantLib-${PORTVERSION}
@@ -15,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
-USES=	compiler libtool
+USES=		compiler:c++11-lang libtool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	EMACS=no

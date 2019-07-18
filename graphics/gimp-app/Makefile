@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	gimp-app
-PORTVERSION=	2.10.8
-PORTREVISION=	2
+PORTVERSION=	2.10.10
+PORTREVISION=	3
 PORTEPOCH?=	1
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}
@@ -34,6 +34,13 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
 		glib-networking>=0:net/glib-networking \
 		mypaint-brushes>0:graphics/mypaint-brushes
+
+LIB_DEPENDS+=	libjson-glib-1.0.so:devel/json-glib \
+		${LIB_DEPENDS_${ARCH}}
+
+LIB_DEPENDS_aarch64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_amd64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_i386=	libunwind.so:devel/libunwind
 
 GNU_CONFIGURE=	yes
 USES+=		compiler:c++14-lang cpe gettext gmake gnome jpeg libtool \

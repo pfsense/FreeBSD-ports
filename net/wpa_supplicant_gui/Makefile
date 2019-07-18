@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wpa_supplicant_gui
-DISTVERSION=	2.7
-PORTREVISION=	1
+DISTVERSION=	2.8
 CATEGORIES=	net
 MASTER_SITES=	http://w1.fi/releases/ \
 		http://partmedia.users.sourceforge.net/dist/:icons \
@@ -32,8 +31,6 @@ PLIST_FILES=	sbin/wpa_gui \
 		share/icons/hicolor/scalable/apps/wpa_gui.svgz \
 		man/man8/wpa_gui.8.gz
 WRKSRC_SUBDIR=	wpa_supplicant
-SUB_FILES=	pkg-message
-SUB_LIST=	LOCALBASE=${LOCALBASE}
 
 OPTIONS_DEFINE=	DEBUG NLS
 

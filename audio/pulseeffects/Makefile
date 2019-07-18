@@ -2,7 +2,7 @@
 
 PORTNAME=	pulseeffects
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.4.7
+DISTVERSION=	4.6.0
 CATEGORIES=	audio
 
 MAINTAINER=	daniel@shafer.cc
@@ -25,7 +25,10 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libpulse.so:audio/pulseaudio \
 		librubberband.so:audio/rubberband \
 		libsamplerate.so:audio/libsamplerate \
+		libserd-0.so:devel/serd \
 		libsndfile.so:audio/libsndfile \
+		libsord-0.so:devel/sord \
+		libsratom-0.so:audio/sratom \
 		libzita-convolver.so:audio/zita-convolver
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>0:graphics/py-cairo@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gstreamer1>=1.4.0:multimedia/py-gstreamer1@${PY_FLAVOR} \
@@ -83,13 +86,14 @@ GLIB_SCHEMAS=	com.github.wwmm.pulseeffects.gschema.xml \
 		com.github.wwmm.pulseeffects.sourceoutputs.multibandgate.gschema.xml \
 		com.github.wwmm.pulseeffects.sourceoutputs.pitch.gschema.xml \
 		com.github.wwmm.pulseeffects.sourceoutputs.reverb.gschema.xml \
-		com.github.wwmm.pulseeffects.sourceoutputs.webrtc.gschema.xml
+		com.github.wwmm.pulseeffects.sourceoutputs.webrtc.gschema.xml \
+		com.github.wwmm.pulseeffects.spectrum.gschema.xml
 
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 SHEBANG_FILES=	meson_post_install.py
 
-HELP_LANGS=	pt_BR ru
+HELP_LANGS=	it_IT pt_BR ru
 HELP_PNGS=	advancedinfo.png blacklist.png effectsorder.png enableapp.png \
 		saturated.png settingsmenu.png userpresets.png
 

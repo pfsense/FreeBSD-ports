@@ -121,7 +121,6 @@ _GSTREAMER_PLUGINS+= \
 		bz2 \
 		cdaudio \
 		dvd \
-		esound \
 		ffmpeg \
 		fluendo-mp3 \
 		fluendo-mpegdemux \
@@ -135,7 +134,6 @@ _GSTREAMER_PLUGINS+= \
 		mp3 \
 		nas \
 		python \
-		qt4 \
 		schroedinger \
 		sdl \
 		vdpau \
@@ -226,9 +224,6 @@ cdparanoia_IMPL=	#
 
 chromaprint_DEPENDS=	audio/gstreamer-plugins-chromaprint
 chromeprint_IMPL=	bad
-
-esound_DEPENDS=	audio/gstreamer-plugins-esound
-esound_IMPL=	good
 
 faac_DEPENDS=	audio/gstreamer-plugins-faac
 faac_IMPL=	bad
@@ -497,10 +492,6 @@ mplex_IMPL=	bad
 
 openh264_DEPENDS=	multimedia/gstreamer-plugins-openh264
 openh264_IMPL=		bad
-
-qt4_DEPENDS=	multimedia/gstreamer-qt4
-qt4_GST_PREFIX=	gstreamer-
-qt4_IMPL=	#
 
 rtmp_DEPENDS=	multimedia/gstreamer-plugins-rtmp
 rtmp_IMPL=	bad

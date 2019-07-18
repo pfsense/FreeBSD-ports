@@ -4,7 +4,7 @@
 PORTNAME=	boinc-client
 PORTVERSION=	7.8.6
 DISTVERSIONPREFIX=	client_release/7.8/
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net
 
 MAINTAINER=	ler@FreeBSD.org
@@ -56,7 +56,6 @@ NO_NET_INFO_DESC=	Do not send host address and name to servers
 
 OPTIONS_SUB=		yes
 
-MANAGER_USES=		iconv
 MANAGER_LIB_DEPENDS=	libnotify.so:devel/libnotify \
 			libfontconfig.so:x11-fonts/fontconfig \
 			libsqlite3.so:databases/sqlite3 \
@@ -64,6 +63,7 @@ MANAGER_LIB_DEPENDS=	libnotify.so:devel/libnotify \
 MANAGER_CONFIGURE_ON=	--with-sqlite3-prefix=${LOCALBASE}
 MANAGER_CONFIGURE_OFF=	--with-wx-config=false --without-x
 MANAGER_CONFIGURE_ENABLE=manager
+MANAGER_USES=		gnome iconv
 MANAGER_USE=		GNOME=cairo,gdkpixbuf2,glib20,gtk20,pango \
 			XORG=xcb,x11,xext,xscrnsaver WX=3.0
 
@@ -76,10 +76,9 @@ CLIENT_USE=		RC_SUBR=boinc-client
 LINUX_CONFIGURE_ON=	--with-boinc-alt-platform=i686-pc-linux-gnu
 LINUX_USES=		linux
 
-X11_USES=		jpeg
-X11_USE=		GL=glut XORG=xmu,xi
-X11_USE_XORG+=		x11 xscrnsaver
-X11_CONFIGURE_OFF=	ax_cv_check_glut_libglut=no
+X11_USES=		jpeg gl
+X11_USE=		GL=glut XORG=x11,xscrnsaver,xmu,xi
+X11_CONFIGURE_OFF=	--without-x ax_cv_check_glut_libglut=no
 
 .include <bsd.port.options.mk>
 
@@ -102,10 +101,6 @@ SUB_LIST+=	OPTION_USER="true"
 SUB_LIST+=	OPTION_USER=""
 .endif
 
-.if ${PORT_OPTIONS:NX11}
-CONFIGURE_ARGS+=	--without-x
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|@PREFIX@|${PREFIX}|' \
 		${WRKSRC}/client/hostinfo_unix.cpp
@@ -122,9 +117,9 @@ post-patch:
 	    ${WRKSRC}/zip/zip/z_fileio.c ${WRKSRC}/zip/zip/z_globals.c \
 	    ${WRKSRC}/zip/zip/zip.c ${WRKSRC}/zip/zip/zipfile.c \
 	    ${WRKSRC}/zip/zip/zipup.c
-.if ${PORT_OPTIONS:NX11}
+
+post-patch-X11-off:
 	@${REINPLACE_CMD} -e 's|enable_xss="yes"|enable_xss="no"|' ${WRKSRC}/configure.ac
-.endif
 
 post-install:
 .for name in config.h project_specific_defines.h api/reduce.h \

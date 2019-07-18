@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	php73
-DISTVERSION=	7.3.6
+DISTVERSION=	7.3.7
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
-MASTER_SITES=   PHP/distributions
+MASTER_SITES=	PHP/distributions
 DISTNAME=	php-${DISTVERSION}
 
 MAINTAINER=	tz@FreeBSD.org
@@ -29,6 +29,7 @@ CONFIGURE_ARGS+=--with-layout=GNU \
 		--with-pcre-regex=${LOCALBASE} \
 		--with-password-argon2=${LOCALBASE} \
 		--program-prefix=""
+CONFIGURE_ENV=	CPPFLAGS="-I${LOCALBASE}/include"
 USES+=		autoreconf:build
 USE_GNOME=	libxml2
 

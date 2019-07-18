@@ -4,7 +4,7 @@
 PORTNAME=	xastir
 DISTVERSIONPREFIX=	Release-
 DISTVERSION=	2.1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	carl@stagecraft.cx
@@ -12,6 +12,8 @@ COMMENT=	X Amateur Station Tracking and Information Reporting
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		magick/image-private.h: No such file or directory
 
 BUILD_DEPENDS=	xfontsel:x11-fonts/xfontsel
 RUN_DEPENDS=	wget:ftp/wget

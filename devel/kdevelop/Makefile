@@ -2,7 +2,7 @@
 
 PORTNAME=	kdevelop
 DISTVERSION=	5.3.2
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/stable/kdevelop/${DISTVERSION}/src
 DIST_SUBDIR=	KDE/kdevelop
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	kdev-pg-qt:devel/kdevelop-pg-qt \
 		llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
-LIB_DEPENDS=	libkasten3controllers.so:devel/okteta \
+LIB_DEPENDS=	libKasten4Controllers.so:devel/okteta \
 		libapr-1.so:devel/apr1 \
 		libsvn_client-1.so:devel/subversion \
 		libboost_thread.so:devel/boost-libs \
@@ -29,7 +29,7 @@ USE_KDE=	archive attica auth bookmarks codecs completion config configwidgets \
 		coreaddons crash guiaddons emoticons i18n iconthemes init \
 		itemmodels itemviews jobwidgets kcmutils kdeclarative \
 		kio libksysguard newstuff notifications \
-		notifyconfig package parts plasma-framework \
+		notifyconfig package parts plasma-framework purpose \
 		runner service solid sonnet texteditor textwidgets threadweaver \
 		widgetsaddons windowsystem xmlgui
 USE_QT=		concurrent core dbus declarative gui help network \

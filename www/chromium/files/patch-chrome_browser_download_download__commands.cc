@@ -1,6 +1,6 @@
---- chrome/browser/download/download_commands.cc.orig	2018-12-03 21:16:39.000000000 +0100
-+++ chrome/browser/download/download_commands.cc	2018-12-05 14:35:24.756358000 +0100
-@@ -220,7 +220,7 @@
+--- chrome/browser/download/download_commands.cc.orig	2019-04-30 22:22:33 UTC
++++ chrome/browser/download/download_commands.cc
+@@ -159,7 +159,7 @@ Browser* DownloadCommands::GetBrowser() const {
    return browser_displayer.browser();
  }
  
@@ -9,7 +9,7 @@
  bool DownloadCommands::IsDownloadPdf() const {
    base::FilePath path = model_->GetTargetFilePath();
    return path.MatchesExtension(FILE_PATH_LITERAL(".pdf"));
-@@ -237,7 +237,7 @@
+@@ -176,7 +176,7 @@ bool DownloadCommands::CanOpenPdfInSystemViewer() cons
    return IsDownloadPdf() &&
           (IsAdobeReaderDefaultPDFViewer() ? is_adobe_pdf_reader_up_to_date
                                            : true);

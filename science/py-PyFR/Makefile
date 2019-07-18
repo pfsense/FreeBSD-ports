@@ -2,7 +2,7 @@
 
 PORTNAME=	PyFR
 DISTVERSION=	1.8.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science python
 MASTER_SITES=	http://www.pyfr.org/download/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,6 +12,9 @@ COMMENT=	Framework for solving advection-diffusion type problems
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Depends on expiring devel/openmp
+EXPIRATION_DATE=	2019-12-31
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}appdirs>=1.4.0:devel/py-appdirs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gimmik>=2.0:math/py-gimmik@${PY_FLAVOR} \

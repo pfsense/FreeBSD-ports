@@ -3,7 +3,7 @@
 
 PORTNAME=	softhsm
 PORTVERSION=	2.5.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://dist.opendnssec.org/source/ \
 		http://dist.opendnssec.org/source/testing/
@@ -48,7 +48,7 @@ MIGRATE_CONFIGURE_WITH=	migrate
 CRYP_BOTAN_CONFIGURE_ON=	--with-crypto-backend=botan
 CRYP_BOTAN_LIB_DEPENDS=	libbotan-1.10.so:security/botan110
 
-CRYP_OPEN_CONFIGURE_ON=	--with-crypto-backend=openssl
+CRYP_OPEN_CONFIGURE_ON=	--with-crypto-backend=openssl --with-openssl=${OPENSSLBASE}
 
 .include <bsd.port.options.mk>
 
@@ -56,7 +56,7 @@ CRYP_OPEN_CONFIGURE_ON=	--with-crypto-backend=openssl
 CONFIGURE_ARGS+=	--disable-gost
 .endif
 
-# openssl-1.1.1 (default after 1200080) doesn't  support GHOST (yet), punt for now. 
+# openssl-1.1.1 (default after 1200080) doesn't  support GHOST (yet), punt for now.
 .if ${OSVERSION}>=1200080
 CONFIGURE_ARGS+=	--disable-gost
 .endif

@@ -3,7 +3,7 @@
 PORTNAME=	libprojectM
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.1.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libftgl.so:graphics/ftgl \
 RUN_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:math/glm
 
 USES=		autoreconf:build compiler:c++11-lang gl gmake libtool \
-		localbase:ldflags pkgconfig qt:5
+		localbase:ldflags pkgconfig qt:5 sdl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	projectM-visualizer
@@ -41,7 +41,10 @@ OPTIONS_DEFAULT=	PULSEAUDIO
 OPTIONS_SUB=		yes
 
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
+PULSEAUDIO_BROKEN_OFF=	Erroneously requires pulseaudio, expected to be fixed in 3.1.1
+
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
+JACK_BROKEN=		Missing: bin/projectM-jack, expected to be fixed in 3.1.1
 
 pre-configure:
 	@cd ${WRKSRC}/ && ${SH} autogen.sh

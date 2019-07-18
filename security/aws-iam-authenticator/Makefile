@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	aws-iam-authenticator
-PORTVERSION=	0.3.0
+PORTVERSION=	0.4.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -15,18 +15,11 @@ USES=		go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kubernetes-sigs
-GH_SUBDIR=	src/github.com/heptio/authenticator
+GH_SUBDIR=	src/github.com/kubernetes-sigs/${PORTNAME}
+
+GO_TARGET=	${GO_PKGNAME}/cmd/${PORTNAME}
+GO_BUILDFLAGS=	-ldflags="-X main.version=${PORTVERSION}"
 
 PLIST_FILES=	bin/${PORTNAME}
-
-do-build:
-	cd ${WRKSRC}/${GH_SUBDIR} && \
-		GOPATH=${WRKSRC} go build \
-		./cmd/heptio-authenticator-aws
-
-do-install:
-	${INSTALL_PROGRAM} \
-		${WRKSRC}/heptio-authenticator-aws \
-		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 
 PORTNAME=	dartsim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.7.3
+DISTVERSION=	6.8.5
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,6 +11,9 @@ COMMENT=	Dynamic Animation and Robotics Toolkit
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_i386=	clang failure: https://bugs.llvm.org/show_bug.cgi?id=41757
+
+BUILD_DEPENDS=	pagmo2>0:science/pagmo2
 LIB_DEPENDS=	libassimp.so:multimedia/assimp \
 		libBulletDynamics.so:devel/bullet \
 		libboost_system.so:devel/boost-libs \
@@ -19,6 +22,7 @@ LIB_DEPENDS=	libassimp.so:multimedia/assimp \
 		libfcl.so:math/fcl \
 		libflann_cpp.so:math/flann \
 		libipopt.so:math/ipopt \
+		liblz4.so:archivers/liblz4 \
 		liboctomap.so:math/octomap \
 		libode.so:devel/ode \
 		libosg.so:graphics/osg \

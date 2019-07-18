@@ -2,7 +2,7 @@
 
 PORTNAME=	kio-extras
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	devel kde kde-applications # kde kde-applications-plasma
 
 MAINTAINER=	kde@FreeBSD.org
@@ -17,9 +17,9 @@ USE_KDE=	activities archive auth bookmarks codecs completion config \
 		configwidgets coreaddons crash dbusaddons dnssd doctools ecm \
 		emoticons guiaddons i18n iconthemes init itemmodels itemviews \
 		jobwidgets js kdelibs4support khtml kio notifications parts \
-		pty service solid sonnet textwidgets unitconversion \
+		pty service solid sonnet syntaxhighlighting textwidgets unitconversion \
 		widgetsaddons windowsystem xmlgui
-USE_QT=		core dbus declarative gui location network phonon4 printsupport \
+USE_QT=		concurrent core dbus declarative gui location network phonon4 printsupport \
 		sql svg testlib webchannel widgets xml \
 		buildtools_build qmake_build
 SHEBANG_FILES=	info/kde-info2html

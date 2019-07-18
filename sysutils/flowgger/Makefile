@@ -3,7 +3,7 @@
 PORTNAME=	flowgger
 DISTVERSION=	0.2.6-28
 DISTVERSIONSUFFIX=	-gab572a0
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	sysutils
 
 MAINTAINER=	ports@FreeBSD.org
@@ -12,7 +12,7 @@ COMMENT=	Fast data collector
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cargo
+USES=		cargo ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	jedisct1
 GH_TUPLE=	Manishearth:rust-clippy:387efd459c0ad3db7af15f1a573057b8587f9748:clippy \

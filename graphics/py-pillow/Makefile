@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	pillow
-PORTVERSION=	5.3.0
+PORTVERSION=	6.0.0
+PORTREVISION=	1
 CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -17,7 +18,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-runner>0:devel/py-pytest-runner@${PY_FLAVOR}
 
-# Python 2.7,3.4+
+# Python 2.7,3.5+
 USES=		cpe python
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist concurrent distutils
@@ -25,12 +26,11 @@ USE_PYTHON=	autoplist concurrent distutils
 GH_ACCOUNT=	python-${PORTNAME}
 GH_PROJECT=	${PORTNAME:C/p/P/}
 
-CONFLICTS_INSTALL=	py*-imaging-*
-
-OPTIONS_DEFINE=		FREETYPE JPEG JPEG2000 LCMS PNG TIFF TKINTER WEBP
-OPTIONS_DEFAULT=	FREETYPE JPEG JPEG2000 PNG TKINTER WEBP
+OPTIONS_DEFINE=		FREETYPE JPEG JPEG2000 LCMS OLE PNG TIFF TKINTER WEBP
+OPTIONS_DEFAULT=	FREETYPE JPEG JPEG2000 OLE PNG TIFF TKINTER WEBP
 
 LCMS_DESC=		Little Color Management System
+OLE_DESC=		Microsoft OLE2 file format support
 TKINTER_DESC=		Tkinter (Tcl/Tk) BitmapImage & PhotoImage support
 
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
@@ -48,6 +48,8 @@ JPEG2000_VARS_OFF=	PYDISTUTILS_BUILDARGS+=--disable-jpeg2000
 LCMS_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 LCMS_VARS=		PYDISTUTILS_BUILDARGS+=--enable-lcms
 LCMS_VARS_OFF=		PYDISTUTILS_BUILDARGS+=--disable-lcms
+
+OLE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}olefile>0:devel/py-olefile@${PY_FLAVOR}
 
 PNG_VARS=		PYDISTUTILS_BUILDARGS+=--enable-zlib
 PNG_VARS_OFF=		PYDISTUTILS_BUILDARGS+=--disable-zlib

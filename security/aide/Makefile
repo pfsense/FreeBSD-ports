@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	aide
-PORTVERSION=	0.16
+PORTVERSION=	0.16.1
 CATEGORIES=	security
-MASTER_SITES=	SF \
-		http://www.cs.tut.fi/~rammer/
+MASTER_SITES=	https://github.com/aide/aide/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	cy@FreeBSD.org
-COMMENT=	Replacement and extension for Tripwire
+COMMENT=	File and directory integrity checker
 
 LIB_DEPENDS=	libmhash.so:security/mhash \
 		libpcre.so:devel/pcre

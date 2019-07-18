@@ -1,15 +1,15 @@
---- content/renderer/media/stream/processed_local_audio_source.cc.orig	2018-12-12 22:56:07.000000000 +0100
-+++ content/renderer/media/stream/processed_local_audio_source.cc	2019-01-09 12:08:00.136944000 +0100
-@@ -35,7 +35,7 @@
-     const_cast<void**>(&kProcessedLocalAudioSourceIdentifier);
-
- bool ApmInAudioServiceEnabled() {
+--- content/renderer/media/stream/processed_local_audio_source.cc.orig	2019-06-04 18:55:23 UTC
++++ content/renderer/media/stream/processed_local_audio_source.cc
+@@ -80,7 +80,7 @@ void LogAudioProcesingProperties(
+ }  // namespace
+ 
+ bool IsApmInAudioServiceEnabled() {
 -#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
 +#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
    return base::FeatureList::IsEnabled(features::kWebRtcApmInAudioService);
  #else
    return false;
-@@ -341,7 +341,7 @@
+@@ -406,7 +406,7 @@ void ProcessedLocalAudioSource::CaptureUsingProcessor(
      bool key_pressed) {
  #if defined(OS_WIN) || defined(OS_MACOSX)
    DCHECK_LE(volume, 1.0);

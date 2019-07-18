@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lv2
-PORTVERSION=	1.14.0
-PORTREVISION=	2
+PORTVERSION=	1.16.0
 CATEGORIES=	audio
 MASTER_SITES=	http://lv2plug.in/spec/
 
@@ -19,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pygments>0:textproc/py-pygments@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rdflib>0:textproc/py-rdflib@${PY_FLAVOR}
 
-USES=		python:-3.6 shebangfix tar:bzip2 waf
+USES=		python shebangfix tar:bzip2 waf
 
 SHEBANG_FILES=	lv2specgen/lv2specgen.py
 
@@ -38,7 +37,6 @@ EXAMPLES_LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
 			libfreetype.so:print/freetype2
 EXAMPLES_USES=		pkgconfig gnome
 EXAMPLES_USE=		GNOME=atk,cairo,gdkpixbuf2,glib20,gtk20,pango
-EXAMPLES_CONFIGURE_ENV=	CC='${CC} -Wl,--as-needed' # Gtk deps
 
 post-install:
 # Waf doesn't have built-in strip support

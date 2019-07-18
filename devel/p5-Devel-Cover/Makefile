@@ -1,8 +1,7 @@
-# Created by: mat
 # $FreeBSD$
 
 PORTNAME=	Devel-Cover
-PORTVERSION=	1.31
+PORTVERSION=	1.33
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

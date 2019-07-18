@@ -1,8 +1,8 @@
---- chrome/browser/ui/startup/bad_flags_prompt.cc.orig	2017-06-05 19:03:03 UTC
+--- chrome/browser/ui/startup/bad_flags_prompt.cc.orig	2019-06-04 18:55:18 UTC
 +++ chrome/browser/ui/startup/bad_flags_prompt.cc
-@@ -72,7 +72,7 @@ void ShowBadFlagsPrompt(Browser* browser) {
-     // This flag gives extensions more powers.
+@@ -88,7 +88,7 @@ static const char* kBadFlags[] = {
      extensions::switches::kExtensionsOnChromeURLs,
+ #endif
  
 -#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
 +#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)

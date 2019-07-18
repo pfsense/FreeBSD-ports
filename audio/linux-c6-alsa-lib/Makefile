@@ -3,6 +3,7 @@
 
 PORTNAME=	alsa-lib
 PORTVERSION=	1.1.0
+DISTVERSIONSUFFIX=	-4.el6
 PORTREVISION=	3
 CATEGORIES=	audio linux
 
@@ -13,11 +14,11 @@ LICENSE=	GPLv3
 
 RUN_DEPENDS=	alsa-lib>0:audio/alsa-lib
 
-DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
-RPMVERSION=	4.el6
 USES=		linux:c6
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
+
+DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 
 OPTIONS_DEFINE=	DOCS
 

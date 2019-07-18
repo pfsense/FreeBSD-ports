@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Inline
-PORTVERSION=	0.81
+PORTVERSION=	0.83
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:INGY
@@ -16,7 +16,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-Parse-RecDescent>=1.800:devel/p5-Parse-RecDescent
+RUN_DEPENDS=	p5-Parse-RecDescent>=1.800000:devel/p5-Parse-RecDescent
 TEST_DEPENDS=	p5-Inline-Files>=0:devel/p5-Inline-Files \
 		p5-Test-Warn>=0.23:devel/p5-Test-Warn
 

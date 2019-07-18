@@ -2,7 +2,7 @@
 
 PORTNAME=		libnormaliz
 DISTVERSIONPREFIX=	v
-DISTVERSION=		3.6.3
+DISTVERSION=		3.7.3
 CATEGORIES=		math
 
 MAINTAINER=	phascolarctos@protonmail.ch
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/dynamic_bitset.hpp:devel/boost-libs \
 		${LOCALBASE}/include/gmpxx.h:math/gmp
 
-USES=		gmake
+USES=		autoreconf compiler:c++11-lang gmake libtool
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	Normaliz
@@ -23,20 +23,22 @@ GH_PROJECT=	Normaliz
 BUILD_WRKSRC=	${WRKSRC}/source/libnormaliz
 INSTALL_WRKSRC=	${WRKSRC}/source/libnormaliz
 
-CXXFLAGS+=	-I ${LOCALBASE}/include
+CXXFLAGS+=	-I ${LOCALBASE}/include \
+		-I ${WRKSRC}/source
 MAKEFILE=	Makefile.classic
+GNU_CONFIGURE=	yes
+LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=		COCOA DOCS FLINT OPENMP
 COCOA_DESC=		Link with libcocoa.a (might cause circular dependency)
-FLINT_DESC=		Link with libflint.a
 COCOA_BUILD_DEPENDS=	${LOCALBASE}/lib/libcocoa.a:math/cocoalib
-COCOA_CXXFLAGS=		-DNMZ_COCOA -DCoCoA_THREADSAFE_HACK
-COCOA_LDFLAGS=		${LOCALBASE}/lib -lcocoa
+COCOA_CONFIGURE_ENABLE=	nmzintegrate
+FLINT_DESC=		Link with libflint.so
 FLINT_BUILD_DEPENDS=	${LOCALBASE}/lib/libflint.so:math/flint2
-FLINT_CXXFLAGS=		-DNMZ_FLINT
-FLINT_LDFLAGS=		-L ${LOCALBASE}/lib -lflint -lmpfr
+FLINT_CONFIGURE_ENABLE=	flint
+FLINT_LDFLAGS=		-lpthread
 OPENMP_BUILD_DEPENDS=	${LOCALBASE}/lib/libomp.so:devel/openmp
-OPENMP_CXXFLAGS=	-fopenmp
+OPENMP_CONFIGURE_ENABLE=	openmp
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/libnormaliz

@@ -2,7 +2,7 @@
 
 PORTNAME=	prosearch
 PORTVERSION=	0.19.4
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net www
 MASTER_SITES=	http://pro.setun.net/search/download/ SF/pro-search/pro-search/${PORTVERSION}
 
@@ -24,7 +24,7 @@ PLIST_SUB+=	SEARCHDIR=${SEARCHDIR} WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 
 #TODO user and group for crawler
 OPTIONS_DEFINE=	CRAWLER SAMBA RSYNC APACHE MOD_PERL2 MOD_FASTCGI \
-		DB MYSQL PGSQL PGPP SQLITE SPHINX
+		DB MYSQL PGSQL PGPP SQLITE
 OPTIONS_DEFAULT=	CRAWLER SAMBA APACHE DB MYSQL
 CRAWLER_DESC=		With crawler (nmap, p5-libwww)
 SAMBA_DESC=		crawler with SAMBA (file://)
@@ -33,14 +33,9 @@ APACHE_DESC=		With web server apache2.2+
 MOD_PERL2_DESC=		With MOD_PERL2
 MOD_FASTCGI_DESC=	With MOD_FASTCGI
 DB_DESC=		With both database server and client
-#MARIA_DESC=		mariaDB
 PGPP_DESC=		postgres pure Perl connection driver
-SPHINX_DESC=		sphinx fulltext search engine
 #NGINX_DESC=		With web server (NGINX)
 
-#RG1_DESC=	Database backend
-#OPTIONS_RADIO=	RG1
-#OPTIONS_RADIO_RG1=	MYSQL MARIA
 .include <bsd.port.options.mk>
 
 RUN_DEPENDS+=\
@@ -84,12 +79,6 @@ ${LOCALBASE}/${APACHEMODDIR}/mod_fastcgi.so:www/mod_fastcgi	\
 p5-FCGI>=0:www/p5-FCGI
 .endif
 
-.if ${PORT_OPTIONS:MSPHINX}
-WITH_MYSQL=	client	# for dbi
-RUN_DEPENDS+=\
-searchd:textproc/sphinxsearch-devel
-.endif
-
 .if ${PORT_OPTIONS:MMYSQL}
 USES+=	mysql
 RUN_DEPENDS+=\
@@ -98,17 +87,6 @@ p5-DBD-mysql>=0:databases/p5-DBD-mysql
 
 .if ${PORT_OPTIONS:MDB} && ${PORT_OPTIONS:MMYSQL}
 USES+=	mysql:server
-.endif
-
-.if ${PORT_OPTIONS:MMARIA}
-RUN_DEPENDS+=\
-p5-DBD-mysql>=0:databases/p5-DBD-mysql \
-${LOCALBASE}bin/mysql:databases/mariadb100-client
-.endif
-
-.if ${PORT_OPTIONS:MDB} && ${PORT_OPTIONS:MMARIA}
-RUN_DEPENDS+=\
-${LOCALBASE}/libexec/mysqld:databases/mariadb100-server
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}

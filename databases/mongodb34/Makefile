@@ -2,7 +2,7 @@
 
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	3.4.20
+DISTVERSION=	3.4.21
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/ \
@@ -28,8 +28,6 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR} \
 
 CONFLICTS_BUILD=	mongo-cxx-driver
 CONFLICTS_INSTALL=	mongodb36 mongodb40
-
-CHOSEN_COMPILER_TYPE=	clang
 
 USES=		compiler:c++14-lang cpe dos2unix python:build scons
 DOS2UNIX_FILES=	src/third_party/IntelRDFPMathLib20U1/LIBRARY/src/bid_functions.h

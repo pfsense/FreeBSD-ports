@@ -2,7 +2,7 @@
 
 PORTNAME=	mppp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13
+DISTVERSION=	0.16
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,15 +17,12 @@ BUILD_DEPENDS=	${LOCALBASE}/include/gmp.h:math/gmp \
 RUN_DEPENDS=	${LOCALBASE}/include/gmp.h:math/gmp \
 		${LOCALBASE}/include/mpfr.h:math/mpfr
 
-USES=		cmake
+USES=		cmake compiler:c++14-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	bluescarni
-NO_BUILD=	yes
-NO_ARCH=	yes
 
-TEST_USES=	compiler:c++14-lang
-TEST_ARGS=	-DMPPP_BUILD_TESTS=ON -DMPPP_WITH_MPFR=ON #-DMPPP_WITH_QUADMATH=ON (quadmath requires __float128, only available in clang6)
-BENCHMARK_ARGS=	-DMPPP_BUILD_BENCHMARKS=ON -DMPPP_BENCHMARK_BOOST=ON
+TEST_ARGS=	-DMPPP_BUILD_TESTS=ON -DMPPP_WITH_MPFR=ON -DMPPP_WITH_QUADMATH=OFF # no quad-precision fp type on FreeBSD, requested __float128 reinstantiation, bug#238129
+BENCHMARK_ARGS=	-DMPPP_BUILD_BENCHMARKS=ON -DMPPP_BENCHMARK_BOOST=OFF
 
 do-test:
 	@cd ${BUILD_WRKSRC} && \

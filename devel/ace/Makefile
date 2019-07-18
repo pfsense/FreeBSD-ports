@@ -17,12 +17,10 @@ LICENSE_NAME=	ACE
 LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_aarch64=		Fails to link: missing sbrk
 BROKEN_powerpc=		Does not compile on ${ARCH}
-BROKEN_powerpc64=	Does not build on ${ARCH}: undefined reference to fmodl
 BROKEN_sparc64=		Does not compile on ${ARCH}
 
-USES=		gmake localbase:ldflags perl5 pkgconfig shebangfix tar:bzip2
+USES=		compiler:c++11-lang gmake localbase:ldflags perl5 pkgconfig shebangfix tar:bzip2
 USE_PERL5=	build
 SHEBANG_FILES=	bin/*.pl MPC/*.pl
 MAKE_ENV=	LD_LIBRARY_PATH="${WRKSRC}/lib" ACE_ROOT="${WRKSRC}" \

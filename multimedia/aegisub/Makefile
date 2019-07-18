@@ -3,7 +3,7 @@
 
 PORTNAME=	aegisub
 PORTVERSION=	3.2.2
-PORTREVISION=	37
+PORTREVISION=	39
 CATEGORIES=	multimedia
 MASTER_SITES=	http://ftp.aegisub.org/pub/archives/releases/source/ \
 		ftp://ftp.aegisub.org/pub/archives/releases/source/ \
@@ -14,6 +14,9 @@ COMMENT=	Cross-platform subtitle editor
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE
+
+NOT_FOR_ARCHS=		powerpc64
+NOT_FOR_ARCHS_REASON_powerpc64=		No support for PowerPC 64 bit mode
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libicui18n.so:devel/icu \

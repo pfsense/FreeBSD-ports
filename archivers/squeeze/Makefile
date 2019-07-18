@@ -5,7 +5,7 @@ PORTNAME=	squeeze
 PORTVERSION=	0.2.3
 PORTREVISION=	10
 CATEGORIES=	archivers xfce
-MASTER_SITES=	XFCE/src/apps/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -24,7 +24,6 @@ USE_XFCE=	thunar
 USE_XORG=	x11
 USE_GNOME=	gtk20 glib20 intltool intlhack
 USE_LDCONFIG=	yes
-MAKE_JOB_SAFE=	yes
 
 CONFIGURE_ARGS=--disable-static --without-html-dir
 

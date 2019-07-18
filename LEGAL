@@ -72,6 +72,7 @@ ecw_jpeg_2000_*.zip	graphics/libecwj2	Registration required to download sources,
 edith*			editors/edith		Redistribution not allowed
 eijiro*			japanese/eijiro-fpw	The original dictionary is not free
 emc2*			math/emc2		No resale, contact author for commercial usage
+emiclock-*		x11-clocks/emiclock	Changes on the code or repackaging requires author approval
 et-linux-*		games/linux-enemyterritory Redistribution limited
 etqw*			games/linux-etqw-demo-server Redistribution limited
 etqw*			games/linux-etqw-server Redistribution limited
@@ -152,7 +153,6 @@ mindfocus-*		games/mindfocus		Contains commercial character data
 mindterm-*		security/mindterm-binary Do not sell for profit
 mist64-cbmbasic-*	lang/cbmbasic		Based on decompiled C64 KERNAL binary; not really sure about the legal status
 molden*			biology/molden		Free for academic, non-profit usage; do not redistribute source and executable
-ncftpd-*		ftp/ncftpd		30 day evaluation license
 nero2_linux_*		games/linux-nerogame	Freeware, but license terms are unclear
 NetComponents-*		java/netcomponents	No redistribution except as part of a substantially different product
 nntpcache-*		news/nntpcache		Free for individuals and non-military, non-profit organisations only
@@ -184,7 +184,6 @@ sharefonts-*		x11-fonts/sharefonts	Shareware: cannot be distributed without prio
 shorten-*		audio/shorten		May not be sold.  May not be distributed if modified
 sid-milter-*		mail/sid-milter		May incorporate intellectual property, possible patent issues
 simian-*		devel/simian		Have to agree to license before download
-skype4*			net-im/skype4		Redistribution prohibited
 STonX-*			emulators/stonx		Contains ROM (C) by Atari
 stuffit*		archivers/stuffit	Only unmodified original package can be distributed
 susv2.tar.bz2		misc/susv2		Redistribution of the documents is not permitted

@@ -4,7 +4,8 @@
 # Please update update atril-lite also
 
 PORTNAME=	atril
-PORTVERSION=	1.20.2
+PORTVERSION=	1.22.1
+PORTREVISION=	3
 CATEGORIES=	graphics print mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -12,7 +13,7 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	MATE multi-format document viewer
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool

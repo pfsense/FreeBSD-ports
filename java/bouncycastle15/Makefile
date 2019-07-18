@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bouncycastle
-PORTVERSION=	1.60
+PORTVERSION=	1.61
 PORTREVISION=	1
 CATEGORIES=	java security
 MASTER_SITES=	http://www.bouncycastle.org/download/ \

@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	botan
-DISTVERSION=	2.9.0
+DISTVERSION=	2.10.0
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://botan.randombit.net/releases/
 PKGNAMESUFFIX=	2
@@ -14,7 +15,6 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
 BROKEN_armv6=		include/arm_neon.h:28:2: error: "NEON support not enabled"
-BROKEN_armv7=		fails to package: pkg-static: Unable to access file stage/usr/local/include/botan-2/botan/rdrand_rng.h:No such file or directory
 
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs
 
@@ -29,6 +29,9 @@ CONFIGURE_ARGS=	--with-external-includedir=${PREFIX}/include \
 		--with-boost --with-bzip2 --with-lzma --with-zlib \
 		--cc=${COMPILER_TYPE}
 LDFLAGS+=	-pthread
+
+SHLIBVER=	${DISTVERSION:S/./ /g:[2]}
+PLIST_SUB=	SHLIBVER=${SHLIBVER}
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 PORTDOCS=	*
@@ -60,6 +63,6 @@ post-patch:
 		${WRKSRC}/src/build-data/cc/clang.txt
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/botan ${STAGEDIR}${PREFIX}/lib/libbotan-2.so.9.9.0
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/botan ${STAGEDIR}${PREFIX}/lib/libbotan-2.so.${SHLIBVER}.${SHLIBVER}.0
 
 .include <bsd.port.mk>

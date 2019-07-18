@@ -1,7 +1,19 @@
 bin/lmp
+bin/msi2lmp
 etc/profile.d/lammps.csh
 etc/profile.d/lammps.sh
 man/man1/lmp.1.gz
+man/man1/msi2lmp.1.gz
+%%DATADIR%%/frc_files/README
+%%DATADIR%%/frc_files/cff91.frc
+%%DATADIR%%/frc_files/clayff.frc
+%%DATADIR%%/frc_files/compass_published.frc
+%%DATADIR%%/frc_files/cvff.frc
+%%DATADIR%%/frc_files/cvff_aug.frc
+%%DATADIR%%/frc_files/oplsaa.frc
+%%DATADIR%%/frc_files/pcff.frc
+%%DATADIR%%/frc_files/pcff.rlb
+%%DATADIR%%/frc_files/pcff_templates.dat
 %%DATADIR%%/potentials/Ag_u3.eam
 %%DATADIR%%/potentials/AlCu.adp
 %%DATADIR%%/potentials/AlCu.bop.table
@@ -20,6 +32,7 @@ man/man1/lmp.1.gz
 %%DATADIR%%/potentials/BNC.tersoff
 %%DATADIR%%/potentials/BNCH-old.ILP
 %%DATADIR%%/potentials/BNCH.ILP
+%%DATADIR%%/potentials/C.drip
 %%DATADIR%%/potentials/C.lcbop
 %%DATADIR%%/potentials/CC.KC
 %%DATADIR%%/potentials/CC.KC-full
@@ -28,6 +41,7 @@ man/man1/lmp.1.gz
 %%DATADIR%%/potentials/CH.KC
 %%DATADIR%%/potentials/CH.airebo
 %%DATADIR%%/potentials/CH.airebo-m
+%%DATADIR%%/potentials/CH.rebo
 %%DATADIR%%/potentials/CH_taper.KC
 %%DATADIR%%/potentials/CdTe.bop.table
 %%DATADIR%%/potentials/CdTe.sw

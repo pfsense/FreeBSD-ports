@@ -2,7 +2,7 @@
 
 PORTNAME=	aminal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.9
+DISTVERSION=	0.9.0
 CATEGORIES=	x11
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,9 +11,7 @@ COMMENT=	Golang terminal emulator from scratch
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/LICENSE
 
-BUILD_DEPENDS=	go:lang/go
-
-USES=		gl
+USES=		gl go
 USE_GITHUB=	nodefault # the main code is in GH_TUPLE
 GH_ACCOUNT=	liamg
 GH_TUPLE=	liamg:aminal:${DISTVERSIONFULL}:main/src/github.com/liamg/aminal \
@@ -27,7 +25,12 @@ MAKE_ENV=	CGO_CFLAGS="-I${LOCALBASE}/include" CGO_LDFLAGS="-L${LOCALBASE}/lib"
 
 PLIST_FILES=	bin/${PORTNAME}
 
-PORTSCOUT=	skipv:nightly.*
+PORTSCOUT=	limit:^[0-9].*
+
+post-patch: # https://github.com/liamg/aminal/issues/208
+	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/platform && \
+		${CP} linuxLaunch.go freebsdLaunch.go && \
+		${REINPLACE_CMD} 's|build linux|build freebsd|' freebsdLaunch.go
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME} && \

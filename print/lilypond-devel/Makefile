@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-DISTVERSION=	2.19.82
+DISTVERSION=	2.19.83
 CATEGORIES=	print audio
 MASTER_SITES=	http://lilypond.org/download/source/v${DISTVERSION:R}/
 PKGNAMESUFFIX=	-devel
@@ -52,7 +52,6 @@ USE_PERL5=	build
 USE_GNOME=	pango
 
 MAKEFILE=	GNUmakefile
-GNU_MAKEFILE=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-texgyre-dir=${LOCALBASE}/${TEXMFDISTDIR}/fonts/opentype/public/tex-gyre \

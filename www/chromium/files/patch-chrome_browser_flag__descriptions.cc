@@ -1,6 +1,6 @@
---- chrome/browser/flag_descriptions.cc.orig	2018-12-12 22:56:03.000000000 +0100
-+++ chrome/browser/flag_descriptions.cc	2018-12-28 16:55:56.434650000 +0100
-@@ -3555,13 +3555,13 @@
+--- chrome/browser/flag_descriptions.cc.orig	2019-06-04 18:55:17 UTC
++++ chrome/browser/flag_descriptions.cc
+@@ -3465,29 +3465,29 @@ const char kInstallableInkDropDescription[] =
  
  // Random platform combinations -----------------------------------------------
  
@@ -14,11 +14,15 @@
 -#endif  // defined(OS_WIN) || defined(OS_LINUX)
 +#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
  
- #if defined(OS_WIN) || defined(OS_MACOSX)
+-#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  
-@@ -3574,13 +3574,13 @@
+ const char kWebGL2ComputeContextName[] = "WebGL 2.0 Compute";
+ const char kWebGL2ComputeContextDescription[] =
+     "Enable the use of WebGL 2.0 Compute API.";
  
- #endif  // defined(OS_WIN) || defined(OS_MACOSX)
+-#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS)
++#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  
 -#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
 +#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
@@ -30,5 +34,5 @@
 -#endif  // defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
 +#endif  // defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
  
- const char kExperimentalUiName[] = "Use all upcoming UI features";
- const char kExperimentalUiDescription[] = "Use all upcoming UI features.";
+ #if defined(OS_MACOSX) || defined(OS_CHROMEOS)
+ 

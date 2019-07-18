@@ -1,6 +1,6 @@
---- content/common/BUILD.gn.orig	2018-06-13 00:10:17.000000000 +0200
-+++ content/common/BUILD.gn	2018-07-20 00:38:14.267181000 +0200
-@@ -430,6 +430,12 @@
+--- content/common/BUILD.gn.orig	2019-06-04 18:55:23 UTC
++++ content/common/BUILD.gn
+@@ -375,6 +375,12 @@ source_set("common") {
      libs += [ "android" ]
    }
  

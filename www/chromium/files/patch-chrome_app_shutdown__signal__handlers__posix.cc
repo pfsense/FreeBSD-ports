@@ -1,6 +1,6 @@
---- chrome/app/shutdown_signal_handlers_posix.cc.orig	2018-12-12 22:56:02.000000000 +0100
-+++ chrome/app/shutdown_signal_handlers_posix.cc	2019-01-13 01:50:13.594124000 +0100
-@@ -183,12 +183,18 @@
+--- chrome/app/shutdown_signal_handlers_posix.cc.orig	2019-04-30 22:22:32 UTC
++++ chrome/app/shutdown_signal_handlers_posix.cc
+@@ -186,12 +186,18 @@ void InstallShutdownSignalHandlers(
    g_pipe_pid = getpid();
    g_shutdown_pipe_read_fd = pipefd[0];
    g_shutdown_pipe_write_fd = pipefd[1];
@@ -18,4 +18,4 @@
 +#endif
  #endif
    ShutdownDetector* detector = new ShutdownDetector(
-       g_shutdown_pipe_read_fd, shutdown_callback, task_runner);
+       g_shutdown_pipe_read_fd, std::move(shutdown_callback), task_runner);

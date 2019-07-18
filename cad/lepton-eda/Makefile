@@ -2,6 +2,7 @@
 
 PORTNAME=	lepton-eda
 PORTVERSION=	1.9.7
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-20181211
 CATEGORIES=	cad
 
@@ -13,13 +14,13 @@ LICENSE=	GPLv2+
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libgc-threaded.so:devel/boehm-gc-threaded \
-		libguile-2.0.so:lang/guile2 \
+		libguile-2.2.so:lang/guile2 \
 		libpng.so:graphics/png \
 		libstroke.so:devel/libstroke
 
-USES=		autoreconf desktop-file-utils gettext-tools gnome groff:build \
-		libtool localbase makeinfo pathfix perl5 pkgconfig python:run \
-		shared-mime-info shebangfix
+USES=		autoreconf desktop-file-utils gettext-tools gnome \
+		groff:build libtool localbase makeinfo pathfix perl5 \
+		pkgconfig python:2.7,run shared-mime-info shebangfix
 USE_GITHUB=	yes
 USE_GNOME=	cairo gtk20
 USE_LDCONFIG=	yes
@@ -55,7 +56,13 @@ NLS_USES=		gettext-runtime
 # work around for errors while running
 # build-tools/icon-theme-installer:
 #
-# Cannot find 'install -m 0644'; You probably want to pass -x $(INSTALL_DATA)
+# Cannot find 'install -m 0644'; You probably want to pass -x ${INSTALL_DATA}
+#
+#   NOTE: in the error message above (I wanted to show it
+#   verbatim), INSTALL_DATA actually is enclosed in
+#   parenthesis, not in curly brackets.
+#   I had to change it to appease portlint(1), which does
+#   not ignore comments in makefiles.
 #
 # for 3 dirs (attrib/data, liblepton/data, schematic/data)
 # the following lines should be in the generated Makefile:

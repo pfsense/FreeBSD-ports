@@ -3,7 +3,7 @@
 
 PORTNAME=	telepathy-haze
 PORTVERSION=	0.8.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-im
 MASTER_SITES=	http://telepathy.freedesktop.org/releases/telepathy-haze/
 
@@ -14,7 +14,7 @@ LIB_DEPENDS=	libpurple.so:net-im/libpurple \
 		libidn.so:dns/libidn \
 		libtelepathy-glib.so:net-im/telepathy-glib
 
-USES=		gmake pathfix pkgconfig
+USES=		gmake pathfix pkgconfig python:2.7,build
 USE_GNOME=	libxslt:build
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
