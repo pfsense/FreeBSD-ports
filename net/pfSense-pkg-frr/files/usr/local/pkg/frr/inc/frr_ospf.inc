@@ -400,6 +400,13 @@ function frr_generate_config_ospf() {
 			$conffile .= $redist;
 		}
 
+		/* Access Lists */
+		$conffile .= frr_zebra_generate_accesslists();
+		/* Prefix Lists */
+		$conffile .= frr_zebra_generate_prefixlists();
+		/* Route maps. */
+		$conffile .= frr_zebra_generate_routemaps();
+
 	}
 	safe_mkdir($frr_config_base);
 	file_put_contents("{$frr_config_base}/ospfd.conf", $conffile);
