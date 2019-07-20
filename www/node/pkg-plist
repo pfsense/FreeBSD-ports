@@ -42,6 +42,11 @@ include/node/node_version.h
 %%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN32/no-asm/crypto/include/internal/dso_conf.h
 %%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN32/no-asm/include/openssl/opensslconf.h
 %%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN32/no-asm/include/progs.h
+%%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN64-ARM/no-asm/crypto/buildinf.h
+%%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN64-ARM/no-asm/crypto/include/internal/bn_conf.h
+%%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN64-ARM/no-asm/crypto/include/internal/dso_conf.h
+%%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN64-ARM/no-asm/include/openssl/opensslconf.h
+%%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN64-ARM/no-asm/include/progs.h
 %%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN64A/asm/crypto/buildinf.h
 %%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN64A/asm/crypto/include/internal/bn_conf.h
 %%BUNDLED_SSL%%include/node/openssl/archs/VC-WIN64A/asm/crypto/include/internal/dso_conf.h
@@ -409,6 +414,7 @@ include/node/node_version.h
 %%BUNDLED_SSL%%include/node/openssl/x509err.h
 %%BUNDLED_SSL%%include/node/openssl/x509v3.h
 %%BUNDLED_SSL%%include/node/openssl/x509v3err.h
+include/node/v8-internal.h
 include/node/v8-platform.h
 include/node/v8-profiler.h
 include/node/v8-testing.h
@@ -416,6 +422,8 @@ include/node/v8-util.h
 include/node/v8-value-serializer-version.h
 include/node/v8-version.h
 include/node/v8-version-string.h
+include/node/v8-wasm-trap-handler-posix.h
+include/node/v8-wasm-trap-handler-win.h
 include/node/v8.h
 include/node/v8config.h
 %%DTRACE%%lib/dtrace/node.d

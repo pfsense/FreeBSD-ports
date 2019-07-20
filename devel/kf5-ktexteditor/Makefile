@@ -15,7 +15,7 @@ USE_KDE=	archive auth codecs completion config configwidgets \
 		coreaddons ecm guiaddons i18n iconthemes itemviews \
 		jobwidgets kio parts service sonnet syntaxhighlighting \
 		textwidgets widgetsaddons xmlgui
-USE_QT=		buildtools_build core dbus gui network printsupport \
-		qmake_build script widgets xml xmlpatterns
+USE_QT=		buildtools_build concurrent core dbus declarative gui \
+		network printsupport qmake_build script widgets xml xmlpatterns
 
 .include <bsd.port.mk>

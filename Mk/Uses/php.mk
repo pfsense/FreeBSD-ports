@@ -101,7 +101,8 @@ php_ARGS:=	${php_ARGS:Nflavors}
 php_ARGS+=	ext
 .    if !defined(USE_GITHUB)
 EXTRACT_SUFX=	.tgz
-MASTER_SITES=	http://pecl.php.net/get/
+MASTER_SITES=	https://pecl.php.net/get/ \
+		http://pecl.php.net/get/
 .    endif
 PKGNAMEPREFIX=	${PECL_PKGNAMEPREFIX}
 DIST_SUBDIR=	PECL
@@ -300,6 +301,8 @@ _INCLUDE_USES_PHP_POST_MK=yes
 
 .  if ${php_ARGS:Mext} || ${php_ARGS:Mzend}
 PHP_MODNAME?=	${PORTNAME}
+PHP_EXT_PKGMESSAGE=	${WRKDIR}/php-ext-pkg-message
+_PKGMESSAGES+=	${PHP_EXT_PKGMESSAGE}
 PHP_HEADER_DIRS+=	.
 # If there is no priority defined, we wing it.
 .    if !defined(PHP_MOD_PRIO)
@@ -348,6 +351,15 @@ add-plist-phpext:
 		>> ${TMPPLIST}
 	@${ECHO_CMD} "${PHP_EXT_INI_FILE}" \
 		>> ${TMPPLIST}
+	@${ECHO_CMD} "[" > ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "{" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "  message: <<EOD" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "This file has been added to automatically load the installed extension:" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "${PREFIX}/${PHP_EXT_INI_FILE}" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "EOD" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "  type: install" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "}" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "]" >> ${PHP_EXT_PKGMESSAGE}
 .  endif
 
 # Extensions
@@ -401,7 +413,6 @@ mcrypt_DEPENDS=	security/php${PHP_VER}-mcrypt
 memcache_DEPENDS=	databases/php-memcache@${PHP_FLAVOR}
 memcached_DEPENDS=	databases/pecl-memcached@${PHP_FLAVOR}
 mssql_DEPENDS=	databases/php${PHP_VER}-mssql
-mysql_DEPENDS=	databases/php${PHP_VER}-mysql
 mysqli_DEPENDS=	databases/php${PHP_VER}-mysqli
 odbc_DEPENDS=	databases/php${PHP_VER}-odbc
 opcache_DEPENDS=	www/php${PHP_VER}-opcache

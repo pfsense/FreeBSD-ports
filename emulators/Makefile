@@ -23,7 +23,6 @@
     SUBDIR += cpmtools
     SUBDIR += cpmtools2
     SUBDIR += darcnes
-    SUBDIR += desmume
     SUBDIR += dgen-sdl
     SUBDIR += dolphin-emu
     SUBDIR += dosbox
@@ -32,6 +31,7 @@
     SUBDIR += dynagui
     SUBDIR += dynamips-community
     SUBDIR += e-uae
+    SUBDIR += edumips64
     SUBDIR += emulationstation
     SUBDIR += fceux
     SUBDIR += fmsx
@@ -73,6 +73,7 @@
     SUBDIR += mame
     SUBDIR += mastergear
     SUBDIR += mednafen
+    SUBDIR += mesen
     SUBDIR += mess
     SUBDIR += mgba
     SUBDIR += mtools
@@ -100,6 +101,7 @@
     SUBDIR += openmsx
     SUBDIR += p5-Acme-6502
     SUBDIR += parallels-tools
+    SUBDIR += pcem
     SUBDIR += pcemu
     SUBDIR += pcsxr
     SUBDIR += pearpc
@@ -113,10 +115,10 @@
     SUBDIR += qemu-cheri
     SUBDIR += qemu-devel
     SUBDIR += qemu-powernv
-    SUBDIR += qemu-riscv
     SUBDIR += qemu-sbruno
     SUBDIR += qemu-user-static
     SUBDIR += qemu-utils
+    SUBDIR += qemu2
     SUBDIR += qmc2
     SUBDIR += quasi88
     SUBDIR += riscv-fesvr
@@ -168,12 +170,11 @@
     SUBDIR += xbraitenberg
     SUBDIR += xcpc
     SUBDIR += xen-kernel
-    SUBDIR += xen-kernel47
     SUBDIR += xhomer
     SUBDIR += xsystem35
+    SUBDIR += yuzu
+    SUBDIR += yuzu-qt5
     SUBDIR += xzx
-    SUBDIR += yabause
-    SUBDIR += yape
     SUBDIR += zsnes
 
 .include <bsd.port.subdir.mk>

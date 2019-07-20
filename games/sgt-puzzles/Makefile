@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	puzzles
-PORTVERSION=	20181213
+PORTVERSION=	20190415
 CATEGORIES=	games
 MASTER_SITES=	http://www.chiark.greenend.org.uk/~sgtatham/puzzles/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -15,7 +15,7 @@ COMMENT=	Simon Tatham's Portable Puzzle Collection
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-COMMITHASH=	ced51ad
+COMMITHASH=	e2135d5
 
 USES=		autoreconf gmake gnome pkgconfig
 GNU_CONFIGURE=	yes
@@ -69,7 +69,7 @@ post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/puzzles.txt ${WRKSRC}/HACKING ${STAGEDIR}${DOCSDIR}/
 
-check-puzzle-list-completeness::
+check-puzzle-list-completeness: extract
 	@${ECHO_CMD} ${PUZZLE_LIST} | ${FMT} -w 1 | ${SORT} > ${WRKDIR}/puzzle_list.port
 	@${LS} ${WRKSRC}/icons | ${GREP} 48d24.png | ${CUT} -f 1 -d- | ${SORT} > ${WRKDIR}/puzzle_list.upstream
 	@cmp ${WRKDIR}/puzzle_list.port ${WRKDIR}/puzzle_list.upstream

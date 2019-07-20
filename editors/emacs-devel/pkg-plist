@@ -7,7 +7,6 @@ bin/etags
 libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/emacs.pdmp
 libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/hexl
 libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/movemail
-libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/profile
 libexec/emacs/%%EMACS_VER%%/%%GNU_HOST%%/rcs2log
 man/man1/ctags.1.gz
 man/man1/ebrowse.1.gz
@@ -1443,6 +1442,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/dirtrack.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/disp-table.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/disp-table.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/display-fill-column-indicator.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/display-fill-column-indicator.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/display-line-numbers.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/display-line-numbers.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/dnd.el.gz
@@ -2440,6 +2441,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/quick-cns.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/rfc1345.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/rfc1345.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/sami.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/sami.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/sgml-input.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/sgml-input.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/sisheng.el.gz
@@ -2877,6 +2880,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/gulp.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/html2text.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/html2text.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/info-edit.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/info-edit.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/iswitchb.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/iswitchb.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/landmark.el.gz
@@ -3947,7 +3952,6 @@ share/metainfo/emacs.appdata.xml
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/dispextern.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/dispnew.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/disptab.h
-%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/dmpstruct.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/doc.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/doprnt.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/dosfns.c
@@ -3965,9 +3969,6 @@ share/metainfo/emacs.appdata.xml
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/eval.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fileio.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/filelock.c
-%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fingerprint-dummy.c
-%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fingerprint.c
-%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fingerprint.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/firstfile.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/floatfns.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/fns.c
@@ -3990,6 +3991,7 @@ share/metainfo/emacs.appdata.xml
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/gnutls.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/gtkutil.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/gtkutil.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/hbfont.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/image.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/indent.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/indent.h

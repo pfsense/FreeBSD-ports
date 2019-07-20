@@ -3,6 +3,7 @@
 
 PORTNAME=	pspp
 PORTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	GNU
 
@@ -17,10 +18,12 @@ LIB_DEPENDS=	libgslcblas.so:math/gsl
 
 USES=		cpe charsetfix gettext-tools gmake gnome iconv localbase libtool \
 		perl5 pkgconfig readline
+
 CPE_VENDOR=	gnu
 USE_GNOME=	libxml2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
+LDFLAGS+=	-L${LOCALBASE}/lib -lxml2
 MAKE_ARGS=	MAKEINFO="${LOCALBASE}/bin/makeinfo" \
 		XMLLINT="${LOCALBASE}/bin/xmllint"
 INSTALL_TARGET=	install-strip

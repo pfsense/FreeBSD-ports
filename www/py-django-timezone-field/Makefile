@@ -19,6 +19,7 @@ USES=		python
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=		yes
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}dj21-django-timezone-field
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}dj21-django-timezone-field \
+			${PYTHON_PKGNAMEPREFIX}dj22-django-timezone-field
 
 .include <bsd.port.mk>

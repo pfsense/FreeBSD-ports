@@ -31,7 +31,6 @@
     SUBDIR += gnustep-ftp
     SUBDIR += gstreamer1-plugins-curl
     SUBDIR += horde-gollem
-    SUBDIR += hs-curl
     SUBDIR += hsftp
     SUBDIR += jftp
     SUBDIR += jftpgw
@@ -44,7 +43,6 @@
     SUBDIR += mirror
     SUBDIR += multiget
     SUBDIR += ncftp3
-    SUBDIR += ncftpd
     SUBDIR += net2ftp
     SUBDIR += netdumpd
     SUBDIR += ocaml-ocurl

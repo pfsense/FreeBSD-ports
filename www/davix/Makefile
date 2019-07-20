@@ -1,10 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	davix
-DISTVERSION=	0.7.1
-PORTREVISION=	1
+DISTVERSION=	0.7.3
 CATEGORIES=	www
-MASTER_SITES=	https://github.com/cern-fts/davix/releases/download/R_${DISTVERSION:S/./_/g}/
+MASTER_SITES=	http://grid-deployment.web.cern.ch/grid-deployment/dms/lcgutil/tar/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Make the task of managing files over HTTP-based protocols simple
@@ -20,6 +19,8 @@ USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+PORTSCOUT=	limit:^[0-9\.]*$$ # prevent versions like N.N.N-el7.x86_64
 
 post-install:
 	@${RM} -r ${STAGEDIR}${DOCSDIR}

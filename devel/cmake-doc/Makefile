@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cmake
-DISTVERSION=	3.13.4
+DISTVERSION=	3.14.5
 CATEGORIES=	devel
 MASTER_SITES=	https://www.cmake.org/files/v${PORTVERSION:R}/
 PKGNAMESUFFIX=	-doc
@@ -19,6 +19,7 @@ DISTINFO_FILE=	${.CURDIR}/../cmake/distinfo
 NO_ARCH=	yes
 USES=		cmake qt:5
 USE_QT=		help_build
+USE_LOCALE=	en_US.UTF-8
 
 CMAKE_OFF=	SPHINX_MAN
 CMAKE_ON=	SPHINX_HTML SPHINX_QTHELP

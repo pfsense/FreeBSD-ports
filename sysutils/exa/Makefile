@@ -3,7 +3,7 @@
 PORTNAME=	exa
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.8.0
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	sysutils
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -11,6 +11,8 @@ COMMENT=	Modern replacement for ls
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE
+
+LIB_DEPENDS=	libgit2.so:devel/libgit2
 
 USES=		cargo
 USE_GITHUB=	yes

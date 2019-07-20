@@ -2,20 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	labplot
-PORTVERSION=	2.5.0
-PORTREVISION=	4
+PORTVERSION=	2.6
 CATEGORIES=	math kde
-MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}.0
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	Data plotting and function analysis tool for KDE
+COMMENT=	Data plotting and function analysis tool by KDE
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgsl.so:math/gsl
 
-USES=		bison cmake desktop-file-utils kde:5 qt:5 shared-mime-info tar:xz
+USES=		bison cmake compiler:c++11-lang desktop-file-utils kde:5 qt:5 \
+		shared-mime-info tar:xz
 USE_KDE=	archive auth bookmarks codecs completion config configwidgets \
 		coreaddons crash ecm_build guiaddons i18n iconthemes itemviews \
 		jobwidgets kdelibs4support kio newstuff notifications parts \

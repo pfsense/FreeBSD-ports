@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	bitvector
-PORTVERSION=	3.4.8
+PORTVERSION=	3.4.9
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP \
 		https://engineering.purdue.edu/kak/dist/
@@ -14,23 +14,25 @@ COMMENT=	Pure-Python memory-efficient packed representation for bit arrays
 LICENSE=	PSFL
 
 USES=		python
+
 USE_PYTHON=	autoplist distutils
 PYDISTUTILS_PKGNAME=	BitVector
 
+NO_ARCH=	yes
+
 PORTDOCS=	README BitVector-${PORTVERSION}.html
+DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	@${RM} ${WRKSRC}/test.py
 
-DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
-
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
-regression-test:
+do-test:
 	@(cd ${WRKSRC}/TestBitVector && ${PYTHON_CMD} Test.py)
 
 .include <bsd.port.mk>

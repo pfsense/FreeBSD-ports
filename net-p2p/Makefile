@@ -32,7 +32,6 @@
     SUBDIR += go-ethereum
     SUBDIR += gtk-gnutella
     SUBDIR += gtorrentviewer
-    SUBDIR += hs-torrent
     SUBDIR += jackett
     SUBDIR += jigdo
     SUBDIR += ktorrent
@@ -93,6 +92,5 @@
     SUBDIR += vuze
     SUBDIR += xmrig
     SUBDIR += zetacoin
-    SUBDIR += zetacoin-nox11
 
 .include <bsd.port.subdir.mk>

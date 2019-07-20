@@ -3,13 +3,16 @@
 
 PORTNAME=	thunar-archive-plugin
 PORTVERSION=	0.3.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	archivers xfce
-MASTER_SITES=	XFCE/src/thunar-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/thunar-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Archive plugin for the Thunar File Manager
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
@@ -27,5 +30,9 @@ OPTIONS_SUB=		yes
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext-runtime
+
+post-install:
+	${RLN} ${STAGEDIR}${PREFIX}/libexec/thunar-archive-plugin/file-roller.tap \
+		${STAGEDIR}${PREFIX}/libexec/thunar-archive-plugin/org.gnome.FileRoller.tap
 
 .include <bsd.port.mk>

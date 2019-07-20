@@ -6,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	math kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	KDE 5 frontend to mathematical software
+COMMENT=	Mathematical software frontend by KDE
 
 LIB_DEPENDS=	libAnalitza.so:math/analitza \
 		libcln.so:math/cln \
@@ -15,14 +15,14 @@ LIB_DEPENDS=	libAnalitza.so:math/analitza \
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl \
 		docbook-xml>0:textproc/docbook-xml
 
-USES=		cmake compiler:c++11-lang gettext kde:5 pkgconfig \
-		python:3.4+ qt:5 tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 \
+		pkgconfig python:3.4+ qt:5 tar:xz
 USE_KDE=	attica auth archive bookmarks codecs completion config \
 		configwidgets coreaddons crash ecm emoticons i18n iconthemes \
 		itemmodels itemviews init jobwidgets kdelibs4support kio \
-		newstuff parts pty service solid sonnet texteditor textwidgets \
-		widgetsaddons xmlgui
-USE_QT=		core dbus gui network printsupport widgets xml xmlpatterns \
+		newstuff parts pty service solid sonnet syntaxhighlighting \
+		texteditor textwidgets widgetsaddons xmlgui
+USE_QT=		concurrent core dbus gui network printsupport widgets xml xmlpatterns \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes
 

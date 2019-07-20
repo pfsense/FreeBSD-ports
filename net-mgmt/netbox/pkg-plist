@@ -213,6 +213,7 @@
 %%DATADIR%%/extras/migrations/0015_remove_useraction.py
 %%DATADIR%%/extras/migrations/0016_exporttemplate_add_cable.py
 %%DATADIR%%/extras/migrations/0017_exporttemplate_mime_type_length.py
+%%DATADIR%%/extras/migrations/0018_exporttemplate_add_jinja2.py
 %%DATADIR%%/extras/migrations/__init__.py
 %%DATADIR%%/extras/models.py
 %%DATADIR%%/extras/querysets.py
@@ -675,6 +676,7 @@
 %%DATADIR%%/tenancy/api/views.py
 %%DATADIR%%/tenancy/apps.py
 %%DATADIR%%/tenancy/filters.py
+%%DATADIR%%/tenancy/filtersets.py
 %%DATADIR%%/tenancy/forms.py
 %%DATADIR%%/tenancy/migrations/0001_initial.py
 %%DATADIR%%/tenancy/migrations/0002_tenant_group_optional.py

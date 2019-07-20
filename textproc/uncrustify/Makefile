@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	uncrustify
-PORTVERSION=	0.68.1
+PORTVERSION=	0.69.0
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	textproc
 
@@ -12,14 +12,9 @@ COMMENT=	Highly configurable source code beautifier
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-#BROKEN_mips=		fails to compile: cc1plus: error: unrecognized command line option "-std=gnu++0x"
-#BROKEN_mips64=		fails to compile: cc1plus: error: unrecognized command line option "-std=gnu++0x"
-#BROKEN_powerpc64=	fails to compile: cc1plus: error: unrecognized command line option "-std=gnu++0x"
-
 USE_GITHUB=	yes
-GH_TAGNAME=	dbe32c0
 
-USES=		cmake
+USES=		cmake compiler:c++11-lang
 CMAKE_ARGS=	-DNoGitVersionString:BOOL=TRUE
 TEST_TARGET=	test
 

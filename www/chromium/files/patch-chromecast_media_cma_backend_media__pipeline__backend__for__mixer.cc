@@ -1,6 +1,6 @@
---- chromecast/media/cma/backend/media_pipeline_backend_for_mixer.cc.orig	2019-03-17 18:44:55 UTC
+--- chromecast/media/cma/backend/media_pipeline_backend_for_mixer.cc.orig	2019-06-04 18:55:21 UTC
 +++ chromecast/media/cma/backend/media_pipeline_backend_for_mixer.cc
-@@ -14,9 +14,9 @@
+@@ -16,9 +16,9 @@
  #include "chromecast/media/cma/backend/av_sync.h"
  #include "chromecast/media/cma/backend/video_decoder_for_mixer.h"
  
@@ -12,7 +12,7 @@
  
  #if defined(OS_FUCHSIA)
  #include <zircon/syscalls.h>
-@@ -226,7 +226,7 @@ MediaPipelineBackendForMixer::GetTaskRunner() const {
+@@ -239,7 +239,7 @@ MediaPipelineBackendForMixer::GetTaskRunner() const {
    return static_cast<TaskRunnerImpl*>(params_.task_runner)->runner();
  }
  

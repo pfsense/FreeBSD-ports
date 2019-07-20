@@ -4,7 +4,7 @@
 PORTNAME=	logstalgia
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	1.1.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	sysutils www
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -27,7 +27,7 @@ USE_SDL=	image2 sdl2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	acaudwell
-GH_PROJECT=	Logstalgia:DEFAULT Core:core
+GH_PROJECT=	Logstalgia Core:core
 GH_TAGNAME=	1534074:core
 
 post-extract:

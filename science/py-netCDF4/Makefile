@@ -5,7 +5,7 @@ PORTNAME=	netCDF4
 PORTVERSION=	1.3.1
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	rel
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,16 +14,15 @@ COMMENT=	Python Interface to the NetCDF Library (versions 3 and 4)
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	${PYNUMPY} \
-		${LOCALBASE}/bin/cython:lang/cython
+BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		libnetcdf.so:science/netcdf
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+RUN_DEPENDS=	${PYNUMPY}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 USES=		python
-USE_PYTHON=	autoplist concurrent distutils cython
+USE_PYTHON=	autoplist concurrent distutils cython cython_run
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}

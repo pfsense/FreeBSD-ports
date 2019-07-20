@@ -3,7 +3,6 @@
 
     COMMENT = Ports for managing, installing, and developing FreeBSD ports and packages
 
-    SUBDIR += bsdadminscripts
     SUBDIR += bsdadminscripts2
     SUBDIR += caronade
     SUBDIR += chucky
@@ -19,6 +18,7 @@
     SUBDIR += lsknobs
     SUBDIR += managepkg
     SUBDIR += mkreadmes
+    SUBDIR += modules2tuple
     SUBDIR += octopkg
     SUBDIR += p5-FreeBSD-Portindex
     SUBDIR += p5-FreeBSD-Ports

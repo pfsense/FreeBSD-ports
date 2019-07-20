@@ -3,7 +3,7 @@
 
 PORTNAME=	tracker-miners
 PORTVERSION=	2.0.5
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 
@@ -22,7 +22,7 @@ LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libFLAC.so:audio/flac \
 		libtotem-plparser.so:multimedia/totem-pl-parser \
 		libpoppler-glib.so:graphics/poppler-glib \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libtag.so:audio/taglib \
 		libtiff.so:graphics/tiff \
 		libgif.so:graphics/giflib \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	iperf
-PORTVERSION=	3.6
+PORTVERSION=	3.7
 CATEGORIES=	benchmarks ipv6
 MASTER_SITES=	https://downloads.es.net/pub/iperf/
 PKGNAMESUFFIX=	3
@@ -17,7 +17,7 @@ GNU_CONFIGURE=	yes
 USES=		libtool ssl
 USE_LDCONFIG=	yes
 
-PORTDOCS=	README.md RELEASE_NOTES
+PORTDOCS=	README.md RELNOTES.md
 
 # Set ${DOCSDIR} to avoid conflict with benchmarks/iperf ${DOCSDIR}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}

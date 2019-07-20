@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	alex
-PORTVERSION=	3.2.1
-PORTREVISION=	4
+PORTVERSION=	3.2.4
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -11,15 +11,14 @@ COMMENT=	Tool for generating lexical analysers in Haskell
 
 LICENSE=	BSD3CLAUSE
 
-USE_CABAL=	QuickCheck>=2
+USES=		cabal
 
-XMLDOCS=	doc/alex:html
-XMLDOCS_CONF=	yes
+OPTIONS_DEFINE=	EXAMPLES
 
-STANDALONE=	yes
-EXECUTABLE=	alex
+PORTEXAMPLES=	Makefile *.x *.y
 
-INSTALL_PORTEXAMPLES=	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}
+post-install-EXAMPLES-on:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}
 
-.include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bacula
-PORTVERSION=	9.2.2
+PORTVERSION=	9.4.3
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	9-docs
@@ -15,6 +15,7 @@ COMMENT=	Bacula document set
 
 USES=		tar:bz2
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 PORTDOCS=	*.pdf
 

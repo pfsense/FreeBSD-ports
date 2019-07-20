@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	django-filter
-DISTVERSION=	2.0.0
+DISTVERSION=	2.1.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}dj21-
@@ -18,6 +18,7 @@ USES=		python:3.5+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=		yes
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django-filter
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django-filter \
+			${PYTHON_PKGNAMEPREFIX}dj22-django-filter
 
 .include <bsd.port.mk>

@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	texstudio
-DISTVERSION=	2.12.14
-PORTREVISION=	5
+DISTVERSION=	2.12.16
+PORTREVISION=	1
 CATEGORIES=	editors
 
 MAINTAINER=	rigoletto@FreeBSD.org
@@ -10,7 +10,6 @@ COMMENT=	Integrated writing environment for LaTeX documents
 
 LICENSE=	GPLv2
 
-BROKEN_aarch64=		fails to compile: error: no member named mc_eip in __mcontext
 BROKEN_armv6=		fails to compile: error: no member named mc_eip in __mcontext
 
 LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell \

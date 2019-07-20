@@ -2,18 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION?=	1.33.0
-PORTREVISION?=	1
+PORTVERSION?=	1.35.0
+PORTREVISION?=	0
 CATEGORIES=	lang
-MASTER_SITES=	http://static.rust-lang.org/dist/:src \
-		LOCAL/dumbbell/rust:rust_bootstrap \
+MASTER_SITES=	https://static.rust-lang.org/dist/:src \
 		LOCAL/tobik/rust:rust_bootstrap \
 		https://static.rust-lang.org/dist/:rust_bootstrap \
-		LOCAL/dumbbell/rust:cargo_bootstrap \
 		LOCAL/tobik/rust:cargo_bootstrap \
-		https://static.rust-lang.org/dist/:cargo_bootstrap \
-		https://s3.amazonaws.com/rust-lang-ci/cargo-builds/:cargo_bootstrap \
-		LOCAL/marino:bootstrap
+		https://static.rust-lang.org/dist/:cargo_bootstrap
 DISTNAME?=	${PORTNAME}c-${PORTVERSION}-src
 DISTFILES?=	${NIGHTLY_SUBDIR}${DISTNAME}${EXTRACT_SUFX}:src \
 		${RUSTC_BOOTSTRAP}:rust_bootstrap \
@@ -42,25 +38,17 @@ ONLY_FOR_ARCHS_REASON=	requires prebuilt bootstrap compiler
 CONFLICTS_INSTALL?=	rust-nightly
 
 # See WRKSRC/src/stage0.txt for this date and version values.
-BOOTSTRAPS_DATE?=		2019-01-17
-BOOTSTRAPS_DATE_aarch64?=	2018-12-20
-BOOTSTRAPS_DATE_armv6?=		2018-12-20
-BOOTSTRAPS_DATE_armv7?=		2018-12-20
-BOOTSTRAPS_DATE_powerpc64?=	2018-12-20
+BOOTSTRAPS_DATE?=		2019-05-14
 
-RUST_BOOTSTRAP_VERSION?=	1.32.0
-RUST_BOOTSTRAP_VERSION_aarch64?=	1.32.0
-RUST_BOOTSTRAP_VERSION_armv6?=	1.32.0
-RUST_BOOTSTRAP_VERSION_armv7?=	1.32.0
-RUST_BOOTSTRAP_VERSION_powerpc64?=	1.32.0
+RUST_BOOTSTRAP_VERSION?=	1.34.2
+RUST_BOOTSTRAP_VERSION_aarch64?=	1.34.0
+RUST_BOOTSTRAP_VERSION_armv6?=	1.34.0
+RUST_BOOTSTRAP_VERSION_armv7?=	1.34.0
+RUST_BOOTSTRAP_VERSION_powerpc64?=	1.34.0
 RUSTC_BOOTSTRAP=		${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/rustc-${RUST_BOOTSTRAP_VERSION_${ARCH}:U${RUST_BOOTSTRAP_VERSION}}-${RUST_TARGET}.tar.gz
 RUST_STD_BOOTSTRAP=		${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/rust-std-${RUST_BOOTSTRAP_VERSION_${ARCH}:U${RUST_BOOTSTRAP_VERSION}}-${RUST_TARGET}.tar.gz
 
-CARGO_BOOTSTRAP_VERSION?=	0.33.0
-CARGO_BOOTSTRAP_VERSION_aarch64?=	0.33.0
-CARGO_BOOTSTRAP_VERSION_armv6?=	0.33.0
-CARGO_BOOTSTRAP_VERSION_armv7?=	0.33.0
-CARGO_BOOTSTRAP_VERSION_powerpc64?=	0.33.0
+CARGO_BOOTSTRAP_VERSION?=	0.35.0
 CARGO_BOOTSTRAP=		${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/cargo-${CARGO_BOOTSTRAP_VERSION_${ARCH}:U${CARGO_BOOTSTRAP_VERSION}}-${RUST_TARGET}.tar.gz
 
 CARGO_VENDOR_DIR?=		${WRKSRC}/vendor
@@ -277,7 +265,7 @@ post-install:
 	        }' \
 	        "$$f" >> ${TMPPLIST}; \
 	done
-	${RM} ${STAGEDIR}${PREFIX}/share/doc/rust/*.old
+	${RM} -r ${STAGEDIR}${PREFIX}/share/doc/rust/*.old
 	${SORT} -u < ${TMPPLIST} > ${TMPPLIST}.uniq
 	${MV} ${TMPPLIST}.uniq ${TMPPLIST}
 	@${RM} \
@@ -298,13 +286,15 @@ do-test:
 		--config ./config.toml \
 		--jobs ${MAKE_JOBS_NUMBER}
 
-makesum-all-archs:
-	${MAKE} makesum ARCH=${ONLY_FOR_ARCHS:O:[1]}
+.if !defined(_RUST_MAKESUM_GUARD)
+makesum:
+	${MAKE} -D_RUST_MAKESUM_GUARD makesum ARCH=${ONLY_FOR_ARCHS:O:[1]}
 .for arch in ${ONLY_FOR_ARCHS:O:[2..-1]}
-	${MAKE} makesum ARCH=${arch} DISTINFO_FILE=${DISTINFO_FILE}.${arch}
+	${MAKE} -D_RUST_MAKESUM_GUARD makesum ARCH=${arch} DISTINFO_FILE=${DISTINFO_FILE}.${arch}
 	${GREP} ${RUST_ARCH_${arch}} ${DISTINFO_FILE}.${arch} >> ${DISTINFO_FILE}
 	${RM} ${DISTINFO_FILE}.${arch}
 .endfor
+.endif
 
 BOOTSTRAPS_SOURCE_PKG_FBSDVER=		10
 BOOTSTRAPS_SOURCE_PKG_FBSDVER_aarch64=	11

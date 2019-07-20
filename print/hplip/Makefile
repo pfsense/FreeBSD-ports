@@ -3,7 +3,7 @@
 
 PORTNAME=	hplip
 PORTVERSION=	3.17.11
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	print
 MASTER_SITES=	SF
 
@@ -78,7 +78,7 @@ CONFIGURE_ARGS+=	--disable-qt5
 .endif
 
 .if ${PORT_OPTIONS:MX11} && ! ${PORT_OPTIONS:MQT5}
-BROKEN=			The X11 option requires one of the QT4 or QT5 options
+BROKEN=			The X11 option requires the QT5 option
 .endif
 
 post-patch:

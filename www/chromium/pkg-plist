@@ -192,6 +192,7 @@ bin/chrome
 %%DATADIR%%/resources/inspector/audits2_test_runner/audits2_test_runner_module.js
 %%DATADIR%%/resources/inspector/audits2_worker.js
 %%DATADIR%%/resources/inspector/audits2_worker/audits2_worker_module.js
+%%DATADIR%%/resources/inspector/axe_core_test_runner/axe_core_test_runner_module.js
 %%DATADIR%%/resources/inspector/bindings_test_runner/bindings_test_runner_module.js
 %%DATADIR%%/resources/inspector/browser_debugger/browser_debugger_module.js
 %%DATADIR%%/resources/inspector/changes/changes_module.js
@@ -317,9 +318,9 @@ bin/chrome
 %%DEBUG%%%%DATADIR%%/character_data_generator
 %%DEBUG%%%%DATADIR%%/libVkICD_mock_icd.so
 %%DEBUG%%%%DATADIR%%/libVkLayer_core_validation.so
-%%DEBUG%%%%DATADIR%%/libVkLayer_object_tracker.so
-%%DEBUG%%%%DATADIR%%/libVkLayer_parameter_validation.so
-%%DEBUG%%%%DATADIR%%/libVkLayer_threading.so
+%%DEBUG%%%%DATADIR%%/libVkLayer_object_lifetimes.so
+%%DEBUG%%%%DATADIR%%/libVkLayer_stateless_validation.so
+%%DEBUG%%%%DATADIR%%/libVkLayer_thread_safety.so
 %%DEBUG%%%%DATADIR%%/libVkLayer_unique_objects.so
 %%DEBUG%%%%DATADIR%%/libmalloc_wrapper.so
 %%DEBUG%%%%DATADIR%%/libtest_shared_library.so

@@ -3,6 +3,7 @@
 
 PORTNAME=	zsh
 DISTVERSION=	5.7.1
+PORTREVISION=	1
 CATEGORIES=	shells
 MASTER_SITES=	https://www.zsh.org/pub/ \
 		SF \

@@ -2,7 +2,7 @@
 
 PORTNAME=	teleport
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.1.5
+DISTVERSION=	3.2.2
 CATEGORIES=	security
 
 MAINTAINER=	seanc@FreeBSD.org
@@ -13,10 +13,9 @@ LICENSE=	APACHE20
 NOT_FOR_ARCHS=	i386
 NOT_FOR_ARCHS_REASON=	Uses 64bit types
 
-BUILD_DEPENDS=	go:lang/go \
-		zip:archivers/zip
+BUILD_DEPENDS=	zip:archivers/zip
 
-USES=		compiler gmake
+USES=		compiler gmake go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	gravitational

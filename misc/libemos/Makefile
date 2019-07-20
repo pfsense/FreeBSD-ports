@@ -2,6 +2,7 @@
 
 PORTNAME=	libemos
 DISTVERSION=	4.5.9
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-Source
 CATEGORIES=	misc
 MASTER_SITES=	https://confluence.ecmwf.int/download/attachments/3473472/
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libeccodes.so:science/eccodes \
 		libfftw3.so:math/fftw3 \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
 USES=		cmake:noninja fortran
 

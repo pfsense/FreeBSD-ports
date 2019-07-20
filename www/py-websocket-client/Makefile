@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	websocket-client
-PORTVERSION=	0.47.0
+PORTVERSION=	0.56.0
 PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
@@ -15,17 +15,23 @@ DISTNAME=	${PORTNAME:S/-/_/g}-${DISTVERSION}
 MAINTAINER=	alfred@FreeBSD.org
 COMMENT=	Websocket client for python
 
-LICENSE=	ISCL
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	distutils concurrent autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_REL} < 3500
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}backports.ssl_match_hostname>0:security/py-backports.ssl_match_hostname@${PY_FLAVOR}
 .endif
+
+do-test:
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.post.mk>

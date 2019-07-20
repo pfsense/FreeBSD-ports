@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	r10k
-PORTVERSION=	3.1.1
+PORTVERSION=	3.2.0
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -23,8 +23,7 @@ USE_RUBY=	yes
 
 NO_ARCH=	yes
 
-PLIST_FILES=	bin/r10k \
-		${GEM_LIB_DIR}/test
+PLIST_FILES=	bin/r10k
 
 SHEBANG_FILES=	integration/*/*.sh
 

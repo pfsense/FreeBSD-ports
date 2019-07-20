@@ -2,14 +2,15 @@
 
 PORTNAME=		mtxclient
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.2.0
+DISTVERSION=		0.2.1
+PORTREVISION=		1
 CATEGORIES=		net-im
 
 MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	Client API library for the Matrix protocol
 
 LICENSE=	MIT
-LICENSE_FILES=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	nlohmann-json>=3:devel/nlohmann-json \
 		spdlog>=1.3:devel/spdlog \

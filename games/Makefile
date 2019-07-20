@@ -52,7 +52,6 @@
     SUBDIR += apricots
     SUBDIR += aquaria
     SUBDIR += arkanoidsb
-    SUBDIR += armagetron
     SUBDIR += arx-libertatis
     SUBDIR += asc
     SUBDIR += ascii-invaders
@@ -70,6 +69,7 @@
     SUBDIR += auralquiz
     SUBDIR += avanor
     SUBDIR += avoision
+    SUBDIR += avp
     SUBDIR += awale
     SUBDIR += awele
     SUBDIR += balazar
@@ -109,7 +109,6 @@
     SUBDIR += bombherman
     SUBDIR += bombz
     SUBDIR += bomns
-    SUBDIR += boswars
     SUBDIR += bouncy
     SUBDIR += bovo
     SUBDIR += braincurses
@@ -145,9 +144,7 @@
     SUBDIR += catesc
     SUBDIR += cave9
     SUBDIR += cavezofphear
-    SUBDIR += ceferino
     SUBDIR += cgoban
-    SUBDIR += chanta
     SUBDIR += chapping
     SUBDIR += chessx
     SUBDIR += childsplay
@@ -192,12 +189,13 @@
     SUBDIR += cutemaze
     SUBDIR += cuyo
     SUBDIR += d2x
-    SUBDIR += d2x-xl
+    SUBDIR += dMagnetic
     SUBDIR += dangen
     SUBDIR += dangerdeep
     SUBDIR += dangerdeep-data
     SUBDIR += darkplaces
     SUBDIR += defendguin
+    SUBDIR += devilutionX
     SUBDIR += dhewm3
     SUBDIR += diameter
     SUBDIR += diaspora
@@ -216,7 +214,6 @@
     SUBDIR += doom-wolfendoom
     SUBDIR += doomlegacy
     SUBDIR += doomsday
-    SUBDIR += drcreep
     SUBDIR += drm
     SUBDIR += duckmaze
     SUBDIR += duel
@@ -292,7 +289,6 @@
     SUBDIR += freecell-solver
     SUBDIR += freeciv
     SUBDIR += freeciv-nox11
-    SUBDIR += freeciv-sounds
     SUBDIR += freecol
     SUBDIR += freedink
     SUBDIR += freedink-data
@@ -311,10 +307,10 @@
     SUBDIR += fretsonfire
     SUBDIR += fretsonfire-data
     SUBDIR += frikqcc
-    SUBDIR += frobtads
     SUBDIR += frogatto
     SUBDIR += frotz
     SUBDIR += frozen-bubble
+    SUBDIR += fs2open
     SUBDIR += fteqw
     SUBDIR += funnyboat
     SUBDIR += galaxis
@@ -327,11 +323,6 @@
     SUBDIR += gemdropx
     SUBDIR += gemrb
     SUBDIR += genact
-    SUBDIR += ggz-client-libs
-    SUBDIR += ggz-gtk-client
-    SUBDIR += ggz-gtk-games
-    SUBDIR += ggz-sdl-games
-    SUBDIR += ggz-txt-client
     SUBDIR += gigalomania
     SUBDIR += gillo
     SUBDIR += gl-117
@@ -372,6 +363,7 @@
     SUBDIR += gnustep-ladder
     SUBDIR += gnustep-sudoku
     SUBDIR += gogrepo
+    SUBDIR += gogui
     SUBDIR += golddig
     SUBDIR += golly
     SUBDIR += gomoku
@@ -396,6 +388,7 @@
     SUBDIR += gzdoom
     SUBDIR += hangman
     SUBDIR += hedgewars
+    SUBDIR += hedgewars-server
     SUBDIR += help_hannahs_horse
     SUBDIR += heretic
     SUBDIR += heroes
@@ -502,13 +495,12 @@
     SUBDIR += lbreakout
     SUBDIR += lbreakout2
     SUBDIR += ldmud
+    SUBDIR += leela-zero
     SUBDIR += legend-of-edgar
     SUBDIR += legends
     SUBDIR += legesmotus
     SUBDIR += lexter
     SUBDIR += lgeneral
-    SUBDIR += lianliankan
-    SUBDIR += libggz
     SUBDIR += libgnome-games-support
     SUBDIR += libkdegames
     SUBDIR += libkmahjongg
@@ -516,6 +508,7 @@
     SUBDIR += libmaitretarot
     SUBDIR += libmt_client
     SUBDIR += libshhcards
+    SUBDIR += libtmcg
     SUBDIR += lightsoff
     SUBDIR += lightyears
     SUBDIR += lincity
@@ -553,6 +546,7 @@
     SUBDIR += linux-worldofgoo-demo
     SUBDIR += linwarrior
     SUBDIR += liquidwar
+    SUBDIR += lizzie
     SUBDIR += lm-solve
     SUBDIR += lmarbles
     SUBDIR += lmpc
@@ -679,6 +673,7 @@
     SUBDIR += opengfx
     SUBDIR += openglad
     SUBDIR += openjazz
+    SUBDIR += openjk
     SUBDIR += openlierox
     SUBDIR += openmortal
     SUBDIR += openmsx
@@ -696,6 +691,7 @@
     SUBDIR += openxcom
     SUBDIR += openyahtzee
     SUBDIR += orbital_eunuchs_sniper
+    SUBDIR += orthorobot
     SUBDIR += osgg
     SUBDIR += outerspace
     SUBDIR += p5-Acme-GuessNumber
@@ -711,8 +707,8 @@
     SUBDIR += p5-Games-GuessWord
     SUBDIR += p5-Games-Tournament-RoundRobin
     SUBDIR += pachi
+    SUBDIR += pachi-game-engine
     SUBDIR += pacmanarena
-    SUBDIR += paintown
     SUBDIR += palapeli
     SUBDIR += palomino
     SUBDIR += pangzero
@@ -767,7 +763,6 @@
     SUBDIR += pycadia
     SUBDIR += pydance
     SUBDIR += pyfa
-    SUBDIR += pykawari
     SUBDIR += pysolfc
     SUBDIR += pyspacewar
     SUBDIR += pysycache
@@ -911,7 +906,6 @@
     SUBDIR += starlanes
     SUBDIR += steelstorm
     SUBDIR += stendhal
-    SUBDIR += stepmania-devel
     SUBDIR += stockfish
     SUBDIR += stonesoup
     SUBDIR += stonesoup-sdl
@@ -948,7 +942,6 @@
     SUBDIR += thegrind
     SUBDIR += thudboard
     SUBDIR += tileworld
-    SUBDIR += tinymux
     SUBDIR += tkmoo
     SUBDIR += tomatoes
     SUBDIR += tome4
@@ -1015,14 +1008,10 @@
     SUBDIR += vodovod
     SUBDIR += volleyball
     SUBDIR += vor
-    SUBDIR += voxelands
-    SUBDIR += voxelands-server
     SUBDIR += vultures-eye
     SUBDIR += wanderer
     SUBDIR += wargus
     SUBDIR += warmux
-    SUBDIR += warsow
-    SUBDIR += warsow-data
     SUBDIR += warzone2100
     SUBDIR += wesnoth
     SUBDIR += whichwayisup
@@ -1046,6 +1035,7 @@
     SUBDIR += xasteroids
     SUBDIR += xataxx
     SUBDIR += xbat
+    SUBDIR += xbill
     SUBDIR += xbl
     SUBDIR += xblackjack
     SUBDIR += xblast

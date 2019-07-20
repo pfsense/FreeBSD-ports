@@ -26,6 +26,7 @@
     SUBDIR += agrum
     SUBDIR += aircraft-datcom
     SUBDIR += antioch
+    SUBDIR += apbs
     SUBDIR += atom
     SUBDIR += atompaw
     SUBDIR += avogadro2
@@ -54,6 +55,7 @@
     SUBDIR += coordgenlibs
     SUBDIR += coot
     SUBDIR += cp2k
+    SUBDIR += cp2k-data
     SUBDIR += crf++
     SUBDIR += dalton
     SUBDIR += datawarrior
@@ -130,6 +132,7 @@
     SUBDIR += libssm
     SUBDIR += libsvm
     SUBDIR += libsvm-python
+    SUBDIR += libvdwxc
     SUBDIR += libxc
     SUBDIR += liggghts
     SUBDIR += lm
@@ -159,6 +162,7 @@
     SUBDIR += msms
     SUBDIR += multiwfn
     SUBDIR += namd
+    SUBDIR += nest
     SUBDIR += netcdf
     SUBDIR += netcdf-cxx
     SUBDIR += netcdf-fortran
@@ -170,6 +174,7 @@
     SUBDIR += openkim
     SUBDIR += openmx
     SUBDIR += opensim-core
+    SUBDIR += opensph
     SUBDIR += opsin
     SUBDIR += p5-Algorithm-SVMLight
     SUBDIR += p5-Chemistry-3DBuilder
@@ -202,6 +207,7 @@
     SUBDIR += p5-Mcstas-Tools
     SUBDIR += p5-PerlMol
     SUBDIR += p5-Physics-Unit
+    SUBDIR += pagmo2
     SUBDIR += paje
     SUBDIR += paraview
     SUBDIR += pcmsolver
@@ -226,6 +232,7 @@
     SUBDIR += py-chempy
     SUBDIR += py-coards
     SUBDIR += py-dlib
+    SUBDIR += py-eccodes-python
     SUBDIR += py-geometer
     SUBDIR += py-gpaw
     SUBDIR += py-gsd
@@ -297,9 +304,11 @@
     SUBDIR += sigrok-firmware-utils
     SUBDIR += silo
     SUBDIR += simbody
+    SUBDIR += simgrid
     SUBDIR += simint
     SUBDIR += simlib
     SUBDIR += simsmith
+    SUBDIR += smoldyn
     SUBDIR += sparta
     SUBDIR += spglib
     SUBDIR += step

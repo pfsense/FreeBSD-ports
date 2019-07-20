@@ -2,12 +2,9 @@
 
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.6-7909 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-ga254a203b
+DISTVERSION=	0.0.6-8329 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-gad10eb391
 CATEGORIES=	emulators
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	1e28a22860c0.patch:-p1 # Clang 7
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	PS3 emulator/debugger
@@ -27,11 +24,11 @@ ONLY_FOR_ARCHS_REASON=	requires int128 and SSE2
 USE_GITHUB=	yes
 GH_ACCOUNT=	RPCS3
 GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-27-g9220f5e:hidapi/3rdparty/hidapi \
-		RPCS3:llvm:5c906fd1694e:llvm/llvm \
+		RPCS3:llvm:b860b5e8f4ee:llvm/llvm \
 		Cyan4973:xxHash:v0.6.5:xxHash/3rdparty/xxHash \
 		jbeder:yaml-cpp:yaml-cpp-0.6.2-23-geca9cfd:yamlcpp/3rdparty/yaml-cpp \
-		kobalicek:asmjit:1e550aa:asmjit/asmjit \
-		KhronosGroup:glslang:5.1-184-gc99304c5:glslang/Vulkan/glslang \
+		kobalicek:asmjit:fc251c9:asmjit/asmjit \
+		KhronosGroup:glslang:7.11.3214:glslang/Vulkan/glslang \
 		Microsoft:GSL:v2.0.0:GSL/3rdparty/GSL \
 		USCiLab:cereal:v1.2.0:cereal/3rdparty/cereal \
 		zeux:pugixml:v1.9-51-g8bf806c:pugixml/3rdparty/pugixml
@@ -44,8 +41,12 @@ USE_XORG=	x11
 LLD_UNSAFE=	yes # XXX ports/219089
 CMAKE_ON=	CMAKE_SKIP_RPATH USE_SYSTEM_FFMPEG USE_SYSTEM_LIBPNG
 CMAKE_OFF=	USE_NATIVE_INSTRUCTIONS
-CXXFLAGS+=	-Wno-macro-redefined # __STDC_*_MACROS sys/cdefs.h vs. llvm-config
 LDFLAGS+=	-Wl,--as-needed # GLU
+
+# XXX Remove after FreeBSD 11.2/12.0 reach EOL i.e., around 2020-02-01
+.if !exists(/usr/include/c++/v1/charconv) && exists(/usr/lib/libc++.so)
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-revert-f9ad6358563b
+.endif
 
 OPTIONS_DEFINE=	ALSA EVDEV GDB LLVM PULSEAUDIO VULKAN
 OPTIONS_DEFAULT=ALSA LLVM VULKAN

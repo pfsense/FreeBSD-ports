@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=		ldb
-PORTVERSION=		1.3.6
-PORTREVISION=		0
+PORTVERSION=		1.3.8
+PORTREVISION=		1
 PORTEPOCH=		0
 CATEGORIES=		databases
 MASTER_SITES=		SAMBA
@@ -18,15 +18,13 @@ IGNORE_NONTHREAD_PYTHON=needs port lang/python${PYTHON_SUFFIX} to be build with 
 BUILD_DEPENDS=		${LDB_DEPENDS}
 RUN_DEPENDS=		${LDB_DEPENDS}
 
-LDB_DEPENDS=		talloc>=2.1.14:devel/talloc \
-			tevent>=0.9.37:devel/tevent \
-			tdb>=1.3.16:databases/tdb \
+LDB_DEPENDS=		talloc1>=2.1.14:devel/talloc1 \
+			tevent1>=0.9.37:devel/tevent1 \
+			tdb1>=1.3.16:databases/tdb1 \
 			cmocka>=1.1.1:sysutils/cmocka \
 			popt>=0:devel/popt
 
-CONFLICTS_INSTALL=	ldb-1.1.* ldb12-1.2.*
-
-EXTRA_PATCHES+=		${PATCHDIR}/0001-bug-13362.patch:-p3
+CONFLICTS_INSTALL=	ldb-1.1.* ldb1[24-6]-1.*
 
 #FLAVORS=		default nopython
 #nopython_PKGNAMESUFFIX=	-nopython
@@ -53,11 +51,11 @@ CONFIGURE_ARGS+=	--bundled-libraries=!talloc,!tevent,!tdb,!popt,!cmocka \
 OPTIONS_DEFINE=		MANPAGES DEBUG
 MANPAGES_DESC=		Build and install manpages (requires textproc/docbook-xsl)
 
-.include <bsd.port.options.mk>
-
 DEBUG_CONFIGURE_ON=	--verbose --enable-debug
 DEBUG_MAKE_ARGS=	--verbose
 DEBUG_FLAGS=		-g -ggdb3 -O0
+
+.include <bsd.port.options.mk>
 
 LDB_BINS=		bin/ldbedit \
 			bin/ldbmodify \

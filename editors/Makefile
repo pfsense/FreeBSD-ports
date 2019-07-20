@@ -28,7 +28,6 @@
     SUBDIR += dhex
     SUBDIR += diakonos
     SUBDIR += dkns
-    SUBDIR += dlangide
     SUBDIR += drjava
     SUBDIR += dte
     SUBDIR += e3
@@ -218,6 +217,7 @@
     SUBDIR += py-editorconfig
     SUBDIR += py-pynvim
     SUBDIR += py-room
+    SUBDIR += quilter
     SUBDIR += rox-edit
     SUBDIR += rubygem-neovim
     SUBDIR += scite
@@ -254,6 +254,7 @@
     SUBDIR += xcoral
     SUBDIR += xed
     SUBDIR += xi-core
+    SUBDIR += xi-term
     SUBDIR += xmlcopyeditor
     SUBDIR += xvile
     SUBDIR += yudit

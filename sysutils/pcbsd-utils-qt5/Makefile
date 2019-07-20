@@ -3,7 +3,7 @@
 
 PORTNAME=	pcbsd-utils-qt5
 PORTVERSION=	1444236547
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -26,8 +26,6 @@ RUN_DEPENDS=	pc-updatemanager:sysutils/pcbsd-utils \
 		cdda2wav:sysutils/cdrtools
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpoppler-qt5.so:graphics/poppler-qt5
-
-CONFLICTS?=	pcbsd-utils-qt4-[0-9]*
 
 MAKE_JOBS_UNSAFE=yes
 ONLY_FOR_ARCHS=	amd64

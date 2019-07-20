@@ -1,12 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	libzim
-PORTVERSION=	4.0.4
-PORTREVISION=	2
+PORTVERSION=	5.0.0
 CATEGORIES=	devel
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Reference implementation of the ZIM specification
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libicui18n.so:devel/icu \
 		libxapian.so:databases/xapian-core

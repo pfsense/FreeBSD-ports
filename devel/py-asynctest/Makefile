@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	asynctest
-PORTVERSION=	0.12.2
+PORTVERSION=	0.13.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +12,9 @@ COMMENT=	Enhance unittest for testing asyncio libraries
 
 LICENSE=	APACHE20
 
-NO_ARCH=	yes
+USES=		python:3.5+
 USE_PYTHON=	autoplist distutils
-USES=		python:3.4+
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

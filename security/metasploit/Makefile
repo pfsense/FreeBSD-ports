@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	metasploit
-PORTVERSION=	5.0.13
+PORTVERSION=	5.0.28
 CATEGORIES=	security
 
 MAINTAINER=	tanawts@gmail.com
@@ -12,6 +12,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	nmap:security/nmap \
+		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
 		rubygem-activerecord4>=4.2.6:databases/rubygem-activerecord4 \
 		rubygem-activesupport4>=4.2.6:devel/rubygem-activesupport4 \
 		rubygem-actionpack4>=4.2.6:www/rubygem-actionpack4 \
@@ -24,11 +25,11 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-metasploit-aggregator>=0:security/rubygem-metasploit-aggregator \
 		rubygem-metasploit-concern>=0:security/rubygem-metasploit-concern \
 		rubygem-metasploit-credential>=0:security/rubygem-metasploit-credential \
-		rubygem-metasploit_data_models>=0:security/rubygem-metasploit_data_models \
+		rubygem-metasploit_data_models>=3.0.10_2:security/rubygem-metasploit_data_models \
 		rubygem-metasploit-model>=0:security/rubygem-metasploit-model \
-		rubygem-metasploit-payloads>=1.3.62:security/rubygem-metasploit-payloads \
-		rubygem-metasploit_payloads-mettle>=0.5.7:security/rubygem-metasploit_payloads-mettle \
-		rubygem-msgpack1>=0:devel/rubygem-msgpack1 \
+		rubygem-metasploit-payloads>=1.3.70:security/rubygem-metasploit-payloads \
+		rubygem-metasploit_payloads-mettle>=0.5.16:security/rubygem-metasploit_payloads-mettle \
+		rubygem-msgpack>=0:devel/rubygem-msgpack \
 		rubygem-network_interface>=0:net/rubygem-network_interface \
 		rubygem-rubyntlm>=0:net/rubygem-rubyntlm \
 		rubygem-nokogiri>=0:textproc/rubygem-nokogiri \

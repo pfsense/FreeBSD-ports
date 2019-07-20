@@ -1,16 +1,17 @@
---- Makefile.PL.orig	2018-01-12 02:11:18 UTC
+--- Makefile.PL.orig	2019-05-19 16:09:14 UTC
 +++ Makefile.PL
-@@ -333,7 +333,8 @@ my $orig = \&ExtUtils::MM_Unix::c_o;
- 	foreach (@rv) {
+@@ -374,8 +374,8 @@ my $orig = \&ExtUtils::MM_Unix::c_o;
+ 		# sometimes g++, thus we need to force the
+ 		# compiler to compile in the specific language
+ 		# fixes https://github.com/sass/perl-libsass/issues/38
+-		s/\$\*\.c\s*(?=\n|\r|\Z)/-xc \$\*\.c/g;
+-		s/\$\*\.c(pp|xx)\s*(?=\n|\r|\Z)/-xc++ \$\*\.c$1/g;
++		s/\$\*\.c\s*(?=\n|\r|\Z)/-xc \$\*\.c -o \$\*.o/g;
++		s/\$\*\.c(pp|xx)\s*(?=\n|\r|\Z)/-xc++ \$\*\.c$1 -o \$\*.o/g;
  		# add c++0x flag only for cpp files
  		# otherwise XS perl handshake fails
--		s/\$\*\.c(pp|xx)\s*(?=\n|\r|\Z)/-xc++ -std=c++0x \$\*\.c$1/g
-+		s/\$\*\.c\s*(?=\n|\r|\Z)/\$\*\.c$1 -o \$\*.o/g;
-+		s/\$\*\.c(pp|xx)\s*(?=\n|\r|\Z)/-xc++ -std=c++0x \$\*\.c$1 -o \$\*\.o/g;
- 	}
- 	return @rv;
- };
-@@ -719,7 +720,7 @@ sub libsass_plugin_glob
+ 		s/\$\*\.c(pp|xx)\s*(?=\n|\r|\Z)/-std=c++0x \$\*\.c$1/g
+@@ -750,7 +750,7 @@ sub libsass_plugin_glob
  	# special case (does not compile with perl inc path)
  	# readdir and friends were not available from headers
  	push @ret, 'plugins/glob/vendor/FS$(OBJ_EXT):';

@@ -2,7 +2,7 @@
 
 PORTNAME=	xen
 PKGNAMESUFFIX=	-tools
-PORTVERSION=	4.11.1
+PORTVERSION=	4.12.0
 PORTREVISION=	2
 CATEGORIES=	sysutils emulators
 MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
@@ -41,20 +41,10 @@ HAS_CONFIGURE=	yes
 # Set ARCH=x86_64 in order to overwrite the environment ARCH=amd64
 MAKE_ARGS=	clang=y ARCH=x86_64
 
-# Set correct include paths taking /usr/local into account.
-EXTRA_PATCHES=	${FILESDIR}/0001-build-fix-include-paths-in-FreeBSD.patch:-p1
-# Build with lld (LLVM linker)
-EXTRA_PATCHES+=	${FILESDIR}/0001-x86-replace-usage-in-the-linker-script.patch:-p1
-# Fix docs build
-EXTRA_PATCHES+=	${FILESDIR}/0001-docs-use-the-make-wildcard-function-instead-of-find.patch:-p1
-# Fix hvmloader build with LLVM LD
-EXTRA_PATCHES+=	${FILESDIR}/0001-hvmloader-fix-build-with-LLVM-Linker.patch:-p1
-
 CONFIGURE_ARGS+=	--with-system-seabios=${LOCALBASE}/share/seabios/bios.bin \
 			--mandir=${MANPREFIX}/man
 
-SHEBANG_FILES=	tools/misc/xen-ringwatch \
-		tools/misc/xencov_split \
+SHEBANG_FILES=	tools/misc/xencov_split \
 		tools/python/scripts/convert-legacy-stream \
 		tools/python/scripts/verify-stream-v2 \
 		tools/xenmon/xenmon.py
@@ -63,6 +53,32 @@ ALL_TARGET=		tools
 DOCS_ALL_TARGET=	docs
 INSTALL_TARGET=		install-tools
 DOCS_INSTALL_TARGET=	install-docs
+
+EXTRA_PATCHES+=	${PATCHDIR}/0001-tools-include-propagate-python-interpreter-path.patch:-p1
+
+# Pre-patches for XSA-297 to apply cleanly
+EXTRA_PATCHES+=	${PATCHDIR}/0001-x86-tsx-Implement-controls-for-RTM-force-abort-mode.patch:-p1 \
+		${PATCHDIR}/0001-x86-msr-Shorten-ARCH_CAPABILITIES_-constants.patch:-p1 \
+		${PATCHDIR}/0002-x86-spec-ctrl-Extend-repoline-safey-calcuations-for-.patch:-p1
+
+# Fixes for XSA-297 (MDS)
+EXTRA_PATCHES+=	${PATCHDIR}/xsa297-4.12-1.patch:-p1 \
+		${PATCHDIR}/xsa297-4.12-2.patch:-p1 \
+		${PATCHDIR}/xsa297-4.12-3.patch:-p1 \
+		${PATCHDIR}/xsa297-4.12-4.patch:-p1 \
+		${PATCHDIR}/xsa297-4.12-5.patch:-p1 \
+		${PATCHDIR}/xsa297-4.12-6.patch:-p1 \
+		${PATCHDIR}/xsa297-4.12-7.patch:-p1
+
+# LLD 8 changed the behaviour re the placement of orphaned sections, which
+# produces a non-bootable Xen kernel:
+#
+# https://bugs.llvm.org/show_bug.cgi?id=42327
+#
+# Backport the fixes from upstream
+EXTRA_PATCHES+=	${PATCHDIR}/0001-x86-linker-add-a-reloc-section-to-ELF-linker-script.patch:-p1 \
+		${PATCHDIR}/0003-xen-link-handle-.init.rodata.cst-sections-in-the-lin.patch:-p1 \
+		${PATCHDIR}/0004-x86-check-for-multiboot-1-2-header-presence.patch:-p1
 
 .include <bsd.port.options.mk>
 

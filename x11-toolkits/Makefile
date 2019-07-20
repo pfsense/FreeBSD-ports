@@ -60,16 +60,6 @@
     SUBDIR += gtksourceview4
     SUBDIR += gtksourceviewmm3
     SUBDIR += hippo-canvas
-    SUBDIR += hs-GLURaw
-    SUBDIR += hs-GLUT
-    SUBDIR += hs-OpenGL
-    SUBDIR += hs-OpenGLRaw
-    SUBDIR += hs-gtk
-    SUBDIR += hs-gtk2hs
-    SUBDIR += hs-gtksourceview2
-    SUBDIR += hs-pango
-    SUBDIR += hs-vte
-    SUBDIR += hs-wxdirect
     SUBDIR += irrlicht
     SUBDIR += itk
     SUBDIR += iwidgets
@@ -186,7 +176,6 @@
     SUBDIR += pangomm
     SUBDIR += pangox-compat
     SUBDIR += pangoxsl
-    SUBDIR += phat
     SUBDIR += plasma5-kdeplasma-addons
     SUBDIR += plib
     SUBDIR += pure-gtk
@@ -194,6 +183,7 @@
     SUBDIR += py-AnyQt
     SUBDIR += py-Pmw
     SUBDIR += py-SquareMap
+    SUBDIR += py-easygui
     SUBDIR += py-fltk
     SUBDIR += py-gnome2
     SUBDIR += py-gtk2

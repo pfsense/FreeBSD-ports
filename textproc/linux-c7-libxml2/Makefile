@@ -3,6 +3,7 @@
 
 PORTNAME=	libxml2
 PORTVERSION=	2.9.1
+DISTVERSIONSUFFIX=	-6.el7_2.3
 PORTREVISION=	1
 CATEGORIES=	textproc linux
 
@@ -11,13 +12,12 @@ COMMENT=	Library providing XML and HTML support (Linux CentOS ${LINUX_DIST_VER})
 
 LICENSE=	MIT
 
-CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
-
-DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
-RPMVERSION=	6.el7_2.3
 USES=		linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
+
+CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
+DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 
 OPTIONS_DEFINE=	DOCS
 

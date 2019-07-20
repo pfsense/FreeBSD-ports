@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pyside2-tools
-DISTVERSION=	5.12.1
+DISTVERSION=	5.12.3
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/QtForPython/shiboken2/PySide2-${DISTVERSION}-src
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -27,7 +27,6 @@ USE_QT=		3d buildtools_build charts core datavis3d declarative \
 		websockets widgets x11extras xml xmlpatterns
 
 SHEBANG_FILES=	pyside_tool.py pyside2-uic
-python_OLD_COMMAND=	"/usr/bin/env python"
 
 CMAKE_ARGS+=	"-DUSE_PYTHON_VERSION=${PYTHON_VER}"
 

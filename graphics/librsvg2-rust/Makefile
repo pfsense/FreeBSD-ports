@@ -2,21 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	librsvg
-PORTVERSION=	2.45.5
-PORTREVISION=	2
+PORTVERSION=	2.45.7
 CATEGORIES=	graphics gnome
-MASTER_SITES=	GNOME \
-		CRATESIO/libc/0.2.49:libc
+MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2-rust
-DISTFILES=	gnome2/${DISTNAME}${EXTRACT_SUFX} \
-		rust/crates/libc-0.2.49.tar.gz:libc
+DIST_SUBDIR=	gnome2
 
 MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Library for parsing and rendering SVG vector-graphic files
 
 LICENSE=	LGPL20
 
-BUILD_DEPENDS=	${RUST_DEFAULT}>=1.27.0:lang/${RUST_DEFAULT} \
+BUILD_DEPENDS=	${RUST_DEFAULT}>=1.30.0:lang/${RUST_DEFAULT} \
 		valac:lang/vala
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -41,16 +38,9 @@ MAKE_ENV=	RUSTC=${LOCALBASE}/bin/rustc
 CONFLICTS_INSTALL=	librsvg2
 
 post-patch:
-# Avoid dependency loop with gtk3 (it depends on librsvg2), do not build rsvg-view
-	@${REINPLACE_CMD} -e 's|GTK3_REQUIRED=3.[0-9][0-9].[0-9]|GTK3_REQUIRED=9.90.0|g' \
-		${WRKSRC}/configure
 # Disable vendor checksums
 	@${REINPLACE_CMD} -e 's/"files":{[^}]*}/"files":{}/' \
 		${WRKSRC}/vendor/*/.cargo-checksum.json
-# Replace vendored libc crate with libc-0.2.49 for tier 2 arch support
-	${RM} -r ${WRKSRC}/vendor/libc
-	${MV} ${WRKDIR}/libc-0.2.49 ${WRKSRC}/vendor/libc
-	@${ECHO_CMD} '{"files":{}}' > ${WRKSRC}/vendor/libc/.cargo-checksum.json
 
 pre-configure:
 	@cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${LOCALBASE}/bin/cargo update

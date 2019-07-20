@@ -3,13 +3,13 @@
 
 PORTNAME=	scribus
 PORTVERSION=	1.5.4
-PORTREVISION=	8
+PORTREVISION=	12
 CATEGORIES=	print editors
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}${PKGNAMESUFFIX}/${PORTVERSION}/ \
 		http://www.scribus.net/downloads/${PORTVERSION}/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	pkubaj@anongoth.pl
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Comprehensive desktop publishing program (development version)
 
 LICENSE=	GPLv2+
@@ -36,9 +36,10 @@ LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libharfbuzz.so:print/harfbuzz \
 		libicuuc.so:devel/icu
 
-USES=		cmake desktop-file-utils dos2unix jpeg pkgconfig python:2.7 qt:5 shared-mime-info ssl tar:xz
-USE_QT=		buildtools_build core declarative gui linguisttools_build network opengl \
-		printsupport qmake_build widgets xml
+USES=		cmake compiler:c++11-lang desktop-file-utils dos2unix gnome \
+		jpeg pkgconfig python:2.7 qt:5 shared-mime-info ssl tar:xz
+USE_QT=		buildtools_build core declarative gui linguisttools_build \
+		network opengl printsupport qmake_build widgets xml
 USE_GNOME=	libxml2
 INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
@@ -46,10 +47,6 @@ USE_LDCONFIG=	yes
 CMAKE_ARGS+=	-DWANT_HUNSPELL=YES -Wno-ferror-limit -DCMAKE_COLOR_MAKEFILE:BOOL=ON
 
 OPTIONS_DEFINE=	DOCS
-
-DOS2UNIX_FILE=	scribus/plugins/import/pdf/importpdf.cpp \
-		scribus/plugins/import/pdf/slaoutput.cpp \
-		scribus/plugins/import/pdf/slaoutput.h
 
 post-install:
 		${LN} -sf ../share/icons/1_5_1/scribus.png \

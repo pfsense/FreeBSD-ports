@@ -1,8 +1,7 @@
-# Created by: mat
 # $FreeBSD$
 
 PORTNAME=	Devel-Size
-PORTVERSION=	0.82
+PORTVERSION=	0.83
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

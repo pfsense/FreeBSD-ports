@@ -2,7 +2,7 @@
 
 PORTNAME=	ceres-solver
 DISTVERSION=	1.14.0
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	math
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -52,8 +52,10 @@ GFLAGS_CMAKE_BOOL=	GFLAGS
 
 OPENMP_USES=		compiler:openmp
 OPENMP_CMAKE_BOOL=	OPENMP
+.if !exists(/usr/include/omp.h)
 # XXX ports/199603 + ports/210337
 OPENMP_VARS=		OPENMP=gcc-
+.endif
 
 SCHUR_DESC=		Fixed-size schur specializations
 SCHUR_CMAKE_BOOL=	SCHUR_SPECIALIZATIONS
@@ -68,9 +70,7 @@ TEST_TEST_TARGET=	test ARGS="-V"
 TEST_IMPLIES=		GFLAGS
 
 LAPACK_DESC=		Linear Algebra PACKage
-LAPACK_USES=		fortran # LDFLAGS
 LAPACK_CMAKE_BOOL=	LAPACK
-LAPACK_CMAKE_ON=	-DCMAKE_POLICY_DEFAULT_CMP0056:STRING=NEW # USES=fortran
 # Avoid conflict with Ceres threading by using single-threaded BLAS library.
 # BLASLIB from USES=blaslapack cannot be used as it's multi-threaded.
 # https://github.com/xianyi/OpenBLAS/wiki/faq#multi-threaded

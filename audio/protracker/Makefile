@@ -17,8 +17,9 @@ USES=		localbase:ldflags sdl
 USE_SDL=	sdl2
 
 SVN_URL=	https://svn.code.sf.net/p/protracker/code/trunk
-SVN_REV=	171
+SVN_REV=	180
 
+CFLAGS_i386+=	-msse2
 LDFLAGS+=	-lSDL2 -lm
 
 PLIST_FILES=	bin/protracker man/man1/protracker.1.gz \
