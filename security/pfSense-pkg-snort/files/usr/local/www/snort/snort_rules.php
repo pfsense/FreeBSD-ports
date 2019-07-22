@@ -27,7 +27,7 @@ require_once("/usr/local/pkg/snort/snort.inc");
 global $g, $rebuild_rules;
 
 $snortdir = SNORTDIR;
-$snortbindir = SNORT_PBI_BINDIR;
+$snortbindir = SNORT_BINDIR;
 $rules_map = array();
 $categories = array();
 $pconfig = array();
