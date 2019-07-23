@@ -35,6 +35,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 OPTIONS_DEFINE=		ADDRESSSANITIZER DEBUG DOCS LARGEPCAP PIE THREADSANITIZER STATICDAQ
 OPTIONS_DEFINE_amd64=	HYPERSCAN TSC
 OPTIONS_DEFAULT=	STATICDAQ
+OPTIONS_SUB=		yes
 
 ADDRESSSANITIZER_DESC=	Enable address sanitizer
 DEBUG_DESC=		Enable debug
@@ -61,4 +62,10 @@ HYPERSCAN_LIB_DEPENDS=	libhs.so:devel/hyperscan
 
 CONFLICTS=	snort-2*
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} != "amd64"
+PLIST_SUB+=	TSC="@comment "
+.endif
+
+.include <bsd.port.post.mk>
