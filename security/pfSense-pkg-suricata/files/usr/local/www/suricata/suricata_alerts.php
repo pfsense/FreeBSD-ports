@@ -3,11 +3,11 @@
  * suricata_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -176,6 +176,9 @@ if ($a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instance
 	// REJECT forcing is only applicable to Inline IPS Mode
 	if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' ) {
 		$rejectsid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_force_reject']);
+	}
+	else {
+		$rejectsid = array();
 	}
 }
 
