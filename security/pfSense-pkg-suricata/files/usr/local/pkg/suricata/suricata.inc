@@ -119,7 +119,7 @@ function suricata_start($suricatacfg, $if_real) {
 	if ($suricatacfg['enable'] == 'on') {
 		// Truncate suricata.log file for this interface.
 		file_put_contents("{$suricatalogdir}/suricata.log", '');
-		$run_mode = $suricatacfg['ips_mode'] == 'ips_mode_inline' ? '--netmap' : '-i ' . $if_real;
+		$run_mode = $suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on' ? '--netmap' : '-i ' . $if_real;
 		syslog(LOG_NOTICE, "[Suricata] Suricata START for {$suricatacfg['descr']}({$if_real})...");
 		mwexec_bg("{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 	} else {
@@ -304,7 +304,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		// and allow all traffic to pass!  We do include
 		// locally-attached networks, VPNs, VIPs and the WAN IP
 		// when building only the HOME_NET variable.
-		if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $passlist == TRUE) {
+		if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on' && $passlist == TRUE) {
 			$localnet = 'no';
 			$wanip = 'no';
 			$vpns = 'no';
@@ -3609,7 +3609,7 @@ function suricata_create_rc() {
 		}
 		$suricata_uuid = $value['uuid'];
 		$if_real = get_real_interface($value['interface']);
-		$run_mode = $value['ips_mode'] == 'ips_mode_inline' ? '--netmap' : '-i ' . $if_real;
+		$run_mode = $value['ips_mode'] == 'ips_mode_inline' && $value['blockoffenders'] == 'on' ? '--netmap' : '-i ' . $if_real;
 
 		$start_barnyard = <<<EOE
 
