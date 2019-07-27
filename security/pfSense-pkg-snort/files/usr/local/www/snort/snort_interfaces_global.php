@@ -35,13 +35,13 @@ if ($_POST['save'])
 	$pconfig = $_POST;
 else {
 	$pconfig['snortdownload'] = $config['installedpackages']['snortglobal']['snortdownload'] == "on" ? 'on' : 'off';
-	$pconfig['oinkmastercode'] = $config['installedpackages']['snortglobal']['oinkmastercode'];
-	$pconfig['etpro_code'] = $config['installedpackages']['snortglobal']['etpro_code'];
+	$pconfig['oinkmastercode'] = htmlentities($config['installedpackages']['snortglobal']['oinkmastercode']);
+	$pconfig['etpro_code'] = htmlentities($config['installedpackages']['snortglobal']['etpro_code']);
 	$pconfig['emergingthreats'] = $config['installedpackages']['snortglobal']['emergingthreats'] == "on" ? 'on' : 'off';
 	$pconfig['emergingthreats_pro'] = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == "on" ? 'on' : 'off';
 	$pconfig['rm_blocked'] = $config['installedpackages']['snortglobal']['rm_blocked'];
 	$pconfig['autorulesupdate7'] = $config['installedpackages']['snortglobal']['autorulesupdate7'];
-	$pconfig['rule_update_starttime'] = $config['installedpackages']['snortglobal']['rule_update_starttime'];
+	$pconfig['rule_update_starttime'] = htmlentities($config['installedpackages']['snortglobal']['rule_update_starttime']);
 	$pconfig['forcekeepsettings'] = $config['installedpackages']['snortglobal']['forcekeepsettings'] == "on" ? 'on' : 'off';
 	$pconfig['snortcommunityrules'] = $config['installedpackages']['snortglobal']['snortcommunityrules'] == "on" ? 'on' : 'off';
 	$pconfig['clearblocks'] = $config['installedpackages']['snortglobal']['clearblocks'] == "on" ? 'on' : 'off';
@@ -141,8 +141,8 @@ if (!$input_errors) {
 			snort_remove_dead_rules();
 		}
 
-		$config['installedpackages']['snortglobal']['oinkmastercode'] = $_POST['oinkmastercode'];
-		$config['installedpackages']['snortglobal']['etpro_code'] = $_POST['etpro_code'];
+		$config['installedpackages']['snortglobal']['oinkmastercode'] = trim(html_entity_decode($_POST['oinkmastercode']));
+		$config['installedpackages']['snortglobal']['etpro_code'] = trim(html_entity_decode($_POST['etpro_code']));
 
 		$config['installedpackages']['snortglobal']['rm_blocked'] = $_POST['rm_blocked'];
 		$config['installedpackages']['snortglobal']['autorulesupdate7'] = $_POST['autorulesupdate7'];
@@ -154,7 +154,7 @@ if (!$input_errors) {
 				$tmp = str_pad($_POST['rule_update_starttime'], 4, "0", STR_PAD_LEFT);
 				$_POST['rule_update_starttime'] = substr($tmp, 0, 2) . ":" . substr($tmp, -2);
 			}
-			$config['installedpackages']['snortglobal']['rule_update_starttime'] = str_pad($_POST['rule_update_starttime'], 4, "0", STR_PAD_LEFT);
+			$config['installedpackages']['snortglobal']['rule_update_starttime'] = str_pad(html_entity_decode($_POST['rule_update_starttime']), 4, "0", STR_PAD_LEFT);
 		}
 
 		$config['installedpackages']['snortglobal']['forcekeepsettings'] = $_POST['forcekeepsettings'] ? 'on' : 'off';
