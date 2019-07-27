@@ -152,8 +152,8 @@ if (!$input_errors) {
 		}
 
 		$config['installedpackages']['suricata']['config'][0]['snort_rules_file'] = html_entity_decode($_POST['snort_rules_file']);
-		$config['installedpackages']['suricata']['config'][0]['oinkcode'] = html_entity_decode($_POST['oinkcode']);
-		$config['installedpackages']['suricata']['config'][0]['etprocode'] = html_entity_decode($_POST['etprocode']);
+		$config['installedpackages']['suricata']['config'][0]['oinkcode'] = trim(html_entity_decode($_POST['oinkcode']));
+		$config['installedpackages']['suricata']['config'][0]['etprocode'] = trim(html_entity_decode($_POST['etprocode']));
 		$config['installedpackages']['suricata']['config'][0]['rm_blocked'] = $_POST['rm_blocked'];
 		$config['installedpackages']['suricata']['config'][0]['autoruleupdate'] = $_POST['autoruleupdate'];
 		$config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'] = trim(html_entity_decode($_POST['etopen_custom_rule_url']));
