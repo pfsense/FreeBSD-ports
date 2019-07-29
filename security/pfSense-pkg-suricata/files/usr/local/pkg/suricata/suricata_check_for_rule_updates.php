@@ -715,6 +715,5 @@ if ($update_errors)
 else
 	$config['installedpackages']['suricata']['config'][0]['last_rule_upd_status'] = gettext("success");
 $config['installedpackages']['suricata']['config'][0]['last_rule_upd_time'] = time();
-write_config("Suricata pkg: updated status for updated rules package(s) check.", FALSE);
 
 ?>
