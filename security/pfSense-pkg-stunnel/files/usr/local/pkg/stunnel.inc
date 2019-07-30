@@ -59,6 +59,8 @@ function stunnel_save() {
 				fwrite($fout, "cert = " . STUNNEL_ETCDIR . "/{$pkgconfig['certificate']}.pem\n");
 				$in_use_certs[] = "{$pkgconfig['certificate']}.pem";
 			}
+		} else {
+			stunnel_make_default_cert();
 		}
 		if ($pkgconfig['sourceip']) {
 			fwrite($fout, "local = " . $pkgconfig['sourceip'] . "\n");
@@ -83,6 +85,7 @@ function stunnel_save() {
 		}
 	}
 
+	stunnel_rcfile();
 	restart_service("stunnel");
 }
 
@@ -92,42 +95,48 @@ function stunnel_make_directories() {
 	system("/usr/sbin/chown -R stunnel:stunnel " . STUNNEL_CHROOTDIR);
 }
 
-function stunnel_install() {
-	global $config;
-	stunnel_make_directories();
-
+function stunnel_make_default_cert() {
 	// Generate a self-signed default certificate if one does not already exist.
 	$stunnel_pem_filename = STUNNEL_ETCDIR . "/stunnel.pem";
 	if (!file_exists($stunnel_pem_filename)) {
 		$cert = array();
 		$cert['refid'] = uniqid();
 		$cert['descr'] = sprintf(gettext("stunnel default (%s)"), $cert['refid']);
+		$cert_hostname = "{$config['system']['hostname']}-{$cert['refid']}";
 
 		$dn = array(
 			'organizationName' => "{$g['product_name']} stunnel Self-Signed Certificate",
-			'commonName' => "{$config['system']['hostname']}-{$cert['refid']}");
+			'commonName' => $cert_hostname,
+			'subjectAltName' => "DNS:{$cert_hostname}");
 		$old_err_level = error_reporting(0); /* otherwise openssl_ functions throw warnings directly to a page screwing menu tab */
-		if (!cert_create($cert, null, 2048, 365, $dn, "self-signed", "sha256")) {
+		if (cert_create($cert, null, 2048, 365, $dn, "self-signed", "sha256")) {
+			// Write the .pem file to the expected default location for stunnel and set up required permissions.
+			file_put_contents(STUNNEL_ETCDIR . "/stunnel.pem",
+				trim(base64_decode($cert['prv'])) . "\n" .
+				trim(base64_decode($cert['crt'])) . "\n");
+			chmod(STUNNEL_ETCDIR . "/stunnel.pem", 0600);
+		} else {
 			while ($ssl_err = openssl_error_string()) {
 				log_error(sprintf(gettext("Error creating stunnel certificate: openssl library returns: %s"), $ssl_err));
 			}
-			error_reporting($old_err_level);
-			return null;
 		}
 		error_reporting($old_err_level);
-
-		// Write the .pem file to the expected default location for stunnel and set up required permissions.
-		file_put_contents(STUNNEL_ETCDIR . "/stunnel.pem",
-			trim(base64_decode($cert['prv'])) . "\n" .
-			trim(base64_decode($cert['crt'])) . "\n");
-		chmod(STUNNEL_ETCDIR . "/stunnel.pem", 0600);
 	}
+}
 
+function stunnel_rcfile() {
 	$_rcfile['file'] = 'stunnel.sh';
 	$_rcfile['start'] = STUNNEL_LOCALBASE . "/bin/stunnel " . STUNNEL_ETCDIR . "/stunnel.conf \n\t";
 	$_rcfile['stop'] = "/usr/bin/killall stunnel \n\t";
 	write_rcfile($_rcfile);
 	unlink_if_exists("/usr/local/etc/rc.d/stunnel");
+}
+
+function stunnel_install() {
+	global $config;
+	stunnel_make_directories();
+	stunnel_make_default_cert();
+	stunnel_rcfile();
 }
 
 function stunnel_deinstall() {
