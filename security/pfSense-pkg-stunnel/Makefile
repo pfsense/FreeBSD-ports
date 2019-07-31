@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-stunnel
-PORTVERSION=	5.47
-PORTREVISION=	4
+PORTVERSION=	5.50
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
