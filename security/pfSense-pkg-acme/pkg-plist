@@ -58,7 +58,6 @@ pkg/acme/dnsapi/dns_linode.sh
 pkg/acme/dnsapi/dns_linode_v4.sh
 pkg/acme/dnsapi/dns_loopia.sh
 pkg/acme/dnsapi/dns_lua.sh
-pkg/acme/dnsapi/dns_maradns.sh
 pkg/acme/dnsapi/dns_me.sh
 pkg/acme/dnsapi/dns_myapi.sh
 pkg/acme/dnsapi/dns_mydnsjp.sh
@@ -68,7 +67,6 @@ pkg/acme/dnsapi/dns_namesilo.sh
 pkg/acme/dnsapi/dns_nederhost.sh
 pkg/acme/dnsapi/dns_neodigit.sh
 pkg/acme/dnsapi/dns_netcup.sh
-pkg/acme/dnsapi/dns_nsd.sh
 pkg/acme/dnsapi/dns_nsone.sh
 pkg/acme/dnsapi/dns_nsupdate.sh
 pkg/acme/dnsapi/dns_nw.sh
