@@ -232,6 +232,7 @@ EOF;
 				$nsupdatefileprefix = "{$certpath}nsupdate";
 				$envvariables['NSUPDATE_SERVER'] = $nsupdatefileprefix;
 				$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
+				$envvariables['NSUPDATE_ZONE'] = $domain->NSUPDATE_ZONE;
 				$nsupdatedomain = $domain->domainname;
 				if (!empty($domain->challengealias)) {
 					$nsupdatedomain = $domain->challengealias;
