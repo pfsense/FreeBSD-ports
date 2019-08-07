@@ -1,0 +1,19 @@
+--- schemas/create_mysql.orig	2019-08-07 17:47:42 UTC
++++ schemas/create_mysql
+@@ -51,13 +51,13 @@ CREATE TABLE sig_reference (sig_id  INT 
+                             PRIMARY KEY(sig_id, ref_seq));
+ 
+ CREATE TABLE reference (  ref_id        INT         UNSIGNED NOT NULL AUTO_INCREMENT,
+-                          ref_system_id INT         UNSIGNED NOT NULL,
++                          `ref_system_id` INT         UNSIGNED NOT NULL,
+                           ref_tag       TEXT NOT NULL,
+                           PRIMARY KEY (ref_id));
+ 
+-CREATE TABLE reference_system ( ref_system_id   INT         UNSIGNED NOT NULL AUTO_INCREMENT,
++CREATE TABLE reference_system ( `ref_system_id`   INT         UNSIGNED NOT NULL AUTO_INCREMENT,
+                                 ref_system_name VARCHAR(20),
+-                                PRIMARY KEY (ref_system_id));
++                                PRIMARY KEY (`ref_system_id`));
+ 
+ CREATE TABLE sig_class ( sig_class_id        INT    UNSIGNED NOT NULL AUTO_INCREMENT,
+                          sig_class_name      VARCHAR(60) NOT NULL,
