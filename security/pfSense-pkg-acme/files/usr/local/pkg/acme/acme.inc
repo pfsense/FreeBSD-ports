@@ -1290,11 +1290,13 @@ function & get_certificate($name) {
 								$domain["{$method}nsupdate_server"],
 								$domain["{$method}nsupdate_keyname"],
 								$domain["{$method}nsupdate_keyalgo"],
-								$domain["{$method}nsupdate_key"]
+								$domain["{$method}nsupdate_key"],
+								$domain["{$method}nsupdate_zone"]
 						);
 					}
 					if (substr($method, 0, 4) == "dns_") {
 						$newdomain->setchallengealias($domain["anydns"."challengealias"]);
+						$newdomain->setchallengedomain($domain["anydns"."challengedomain"]);
 					}
 					$domainstosign[] = $newdomain;
 					$envvariables = array();
