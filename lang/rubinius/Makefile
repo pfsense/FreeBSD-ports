@@ -3,6 +3,7 @@
 
 PORTNAME=	rubinius
 PORTVERSION=	3.86
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://releases.rubini.us/:source
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:source
@@ -13,6 +14,9 @@ COMMENT=	LLVM based ruby language implementation
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		Could not find 'bundler' (1.13.6)
+ONLY_FOR_ARCHS=	amd64
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/bundle:sysutils/rubygem-bundler \
 		${LOCALBASE}/bin/bison:devel/bison \
@@ -35,8 +39,6 @@ CONFIGURE_ARGS=	-P "${PREFIX}" \
 		--vendordir "${PREFIX}/lib/ruby/vendor_ruby/rubinius" \
 		--stagingdir "${STAGEDIR}${PREFIX}" --with-execinfo \
 		--system-name ${OPSYS}
-
-ONLY_FOR_ARCHS=	amd64
 
 USES=		gmake perl5 readline tar:bzip2 libedit ssl
 USE_LOCALE=	en_US.UTF-8
@@ -73,9 +75,7 @@ BROKEN_FreeBSD_12=	checking for OpenSSL_add_all_digests() in -lcrypto... no
 BROKEN_FreeBSD_13=	checking for OpenSSL_add_all_digests() in -lcrypto... no
 .endif
 
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64
-.elif ${ARCH} == "amd64"
+.if ${ARCH} == "amd64"
 F_ARCH=		x86_64
 .elif ${ARCH} == "i386"
 F_ARCH=		x86

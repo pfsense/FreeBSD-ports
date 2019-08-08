@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	FAudio
-DISTVERSION=	19.03
+DISTVERSION=	19.07
 CATEGORIES=	audio
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -19,6 +19,8 @@ USE_LDCONFIG=	yes
 USE_SDL=	sdl2
 
 CMAKE_ON=	FFMPEG
+
+PLIST_SUB=	SOVERSION=${DISTVERSION:S,., ,g:[1..2]:ts.}
 
 do-test:
 	@cd ${BUILD_WRKSRC} && \

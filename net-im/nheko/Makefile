@@ -2,20 +2,23 @@
 
 PORTNAME=	nheko
 DISTVERSIONPREFIX=v
-DISTVERSION=	0.6.3
+DISTVERSION=	0.6.4
+PORTREVISION=		1
 CATEGORIES=	net-im
 
 MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	Matrix IM client based on Qt technologies
 
 LICENSE=	GPLv3
-LICENSE_FILES=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	cmark:textproc/cmark \
-		mtxclient>=0.2:net-im/mtxclient \
+BUILD_DEPENDS=	mtxclient>=0.2.1:net-im/mtxclient \
 		nlohmann-json>=3:devel/nlohmann-json \
 		spdlog>=1.3:devel/spdlog
-LIB_DEPENDS=	liblmdb.so:databases/lmdb
+LIB_DEPENDS=	liblmdb.so:databases/lmdb \
+		libsodium.so:security/libsodium \
+		libolm.so:security/olm \
+		libcmark.so:textproc/cmark
 
 USES=		cmake compiler:c++17-lang pkgconfig \
 		localbase:ldflags qt:5 tar:xz

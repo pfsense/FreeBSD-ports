@@ -3,6 +3,7 @@
 
 PORTNAME=	paprefs
 PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://freedesktop.org/software/pulseaudio/${PORTNAME}/
 
@@ -16,7 +17,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libpulse.so:audio/pulseaudio
 
-USES=		meson pkgconfig tar:xz
+USES=		compiler:c++11-lang gnome meson pkgconfig tar:xz
 USE_GNOME=	atkmm glib20 glibmm gtk30 gtkmm30 libsigc++20
 
 OPTIONS_DEFINE=	PK NLS

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libgeotiff
-PORTVERSION=	1.4.3
+PORTVERSION=	1.5.1
 CATEGORIES=	graphics
 MASTER_SITES=	https://download.osgeo.org/geotiff/libgeotiff/ \
 		LOCAL/sunpoet
@@ -13,6 +13,7 @@ COMMENT=	Library for reading and writing GeoTIFF information tags
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	proj>=6:graphics/proj
 LIB_DEPENDS=	libjbig.so:graphics/jbigkit \
 		libproj.so:graphics/proj \
 		libtiff.so:graphics/tiff

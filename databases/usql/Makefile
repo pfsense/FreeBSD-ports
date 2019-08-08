@@ -2,8 +2,7 @@
 
 PORTNAME=	usql
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.1-20
-DISTVERSIONSUFFIX=	-g114dc37
+DISTVERSION=	0.7.4
 CATEGORIES=	databases
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,7 +11,7 @@ COMMENT=	Universal command-line interface for SQL databases
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go:lang/go
+USES=		go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	xo

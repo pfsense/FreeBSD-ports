@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	calibre
-PORTVERSION=	3.40.1
-PORTREVISION=	1
+PORTVERSION=	3.44.0
+PORTREVISION=	2
 CATEGORIES=	deskutils python
 MASTER_SITES=	http://download.calibre-ebook.com/${PORTVERSION}/
 
@@ -33,7 +33,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		${PYTHON_PKGNAMEPREFIX}css-parser>=1.0.4:www/py-css-parser@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dnspython>=0:dns/py-dnspython@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}beautifulsoup32>=0:www/py-beautifulsoup32@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mechanize>=0:www/py-mechanize@${PY_FLAVOR} \
@@ -58,8 +58,9 @@ USE_GNOME=	glib20
 USE_XORG=	xrender xext x11
 
 EXTRACT_BEFORE_ARGS=	-x -s '/^calibre/~-src/' -f
-SHEBANG_GLOB=	*.sh *.py
-python_OLD_CMD=	"/usr/bin/env python2" /bin/python2 /usr/bin/python2 /usr/local/bin/python2
+SHEBANG_GLOB=	*.sh *.py *.recipe
+python_OLD_CMD=	"/usr/bin/env python2" "/usr/bin/env  python2" "/usr/bin/env  python" /bin/python2 \
+		/usr/bin/python2 /usr/local/bin/python2
 WRKSRC=		${WRKDIR}/${PORTNAME}-src-${PORTVERSION}
 MAKE_ENV+=	FC_INC_DIR="${LOCALBASE}/include/fontconfig" \
 		FC_LIB_DIR="${LOCALBASE}/lib" \
@@ -77,8 +78,12 @@ MAKE_ENV+=	FC_INC_DIR="${LOCALBASE}/include/fontconfig" \
 		SIP_DIR=${PYQT_SIPDIR}
 
 post-patch:
-	@${REINPLACE_CMD} -e "s|#!/usr/bin/env python2|#!${PYTHON_CMD}|" \
-		${WRKSRC}/setup/install.py
+	@${REINPLACE_CMD} -e "s|#!/usr/bin/env python{py_major_version}|#!${PYTHON_CMD}|" \
+			-e "s|#!/usr/bin/env python2|#!${PYTHON_CMD}|" \
+			-e "s|#!/usr/bin/env python|#!${PYTHON_CMD}|" \
+		${WRKSRC}/setup/install.py \
+		${WRKSRC}/src/calibre/gui2/dialogs/custom_recipes.py \
+		${WRKSRC}/src/calibre/gui2/preferences/tweaks.py
 
 do-build:
 	@${MKDIR} ${WRKDIR}/calibre-config ${WRKDIR}/xdg-config
@@ -97,12 +102,8 @@ do-install:
 		${PYSETUP} install --prefix ${PREFIX} \
 		--staging-root ${STAGEDIR}${PREFIX})
 	@${RM} ${STAGEDIR}${PREFIX}/bin/calibre-uninstall \
-		${STAGEDIR}${PREFIX}/share/applications/defaults.list \
-		${STAGEDIR}${PREFIX}/share/mime/application/* \
-		${STAGEDIR}${PREFIX}/share/mime/text/*
-	@${RMDIR} ${STAGEDIR}${PREFIX}/share/desktop-directories \
-		${STAGEDIR}${PREFIX}/share/mime/application \
-		${STAGEDIR}${PREFIX}/share/mime/text
+		${STAGEDIR}${PREFIX}/share/applications/defaults.list
+	@${RMDIR} ${STAGEDIR}${PREFIX}/share/desktop-directories
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/calibre/calibre/plugins/*
 
 .include <bsd.port.mk>

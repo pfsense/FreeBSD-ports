@@ -2,7 +2,7 @@
 
 PORTNAME=	cutelyst
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.7.0
+DISTVERSION=	2.8.0
 CATEGORIES=	www
 
 MAINTAINER=	adridg@FreeBSD.org
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		cmake compiler:c++11-lang localbase qt:5
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
-USE_QT=		qmake_build buildtools_build \
+USE_QT=		qmake_build buildtools_build linguisttools_build \
 		core network sql
 
 CMAKE_ARGS=	-DBUILD_ALL=OFF \

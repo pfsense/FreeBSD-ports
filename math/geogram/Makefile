@@ -1,10 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	geogram
-DISTVERSION=	1.6.9
-PORTREVISION=	1
+DISTVERSION=	1.6.11
 CATEGORIES=	math
-MASTER_SITES=	https://gforge.inria.fr/frs/download.php/file/37779/
+MASTER_SITES=	https://gforge.inria.fr/frs/download.php/file/37934/
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org

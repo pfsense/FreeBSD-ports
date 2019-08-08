@@ -4,7 +4,7 @@
 PORTNAME=	librasterlite2
 PORTVERSION=	1.0.0
 DISTVERSIONSUFFIX=-rc0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 
@@ -40,6 +40,6 @@ CONFIGURE_ENV+=	LIBLZMA_CFLAGS=" " LIBLZMA_LIBS="-llzma"
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-LIBS+=		-lsqlite3
+LIBS+=		-lsqlite3 -lm
 
 .include <bsd.port.mk>

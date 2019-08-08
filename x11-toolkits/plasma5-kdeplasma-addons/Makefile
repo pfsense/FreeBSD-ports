@@ -11,15 +11,13 @@ USES=		cmake compiler:c++11-lib cpe gettext \
 		kde:5 pkgconfig qt:5 tar:xz
 USE_KDE=	activities archive attica auth bookmarks codecs completion \
 		config configwidgets coreaddons crash ecm emoticons guiaddons \
-		i18n iconthemes init itemmodels itemviews jobwidgets kcmutils \
-		kdelibs4support kio kross newstuff notifications package parts\
+		holidays i18n iconthemes init itemmodels itemviews jobwidgets kcmutils \
+		kdeclarative kdelibs4support kio kross newstuff notifications package parts\
 		plasma-framework plasma-workspace runner service solid \
 		sonnet textwidgets unitconversion widgetsaddons windowsystem xmlgui
-USE_QT=		core dbus declarative graphicaleffects gui location network \
-		printsupport script webchannel widgets x11extras xml \
+USE_QT=		concurrent core dbus declarative graphicaleffects gui location network \
+		printsupport script webchannel webengine widgets x11extras xml \
 		buildtools_build qmake_build
-# The webengine in the offical ports is too old for now. Once updated to 5.12.x r
-# readd webengine.
 
 OPTIONS_DEFINE=	PURPOSE
 OPTIONS_DEFAULT=	PURPOSE

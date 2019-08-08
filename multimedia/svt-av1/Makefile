@@ -2,7 +2,7 @@
 
 PORTNAME=	svt-av1
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	0.6.0
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -24,30 +24,17 @@ USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	OpenVisualCloud
 GH_PROJECT=	SVT-AV1
-CMAKE_OFF=	BUILD_TESTING # no useful tests yet
+CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_OFF=	NATIVE
 
 post-patch:
-# Default CFLAGS are already set by USES=cmake
-	@${REINPLACE_CMD} -i .flags -E -e 's/ -mavx//' \
-		-e 's/CMAKE_C_FLAGS "/&$${CMAKE_C_FLAGS} /' \
-		-e '/C_FLAGS_(RELEASE|DEBUG)/d' \
-		-e '/NASM_FLAGS_DEBUG/d' \
+# Keep using nasm and drop vendor -O/-g
+	@${REINPLACE_CMD} -e '/find_program.*yasm/d' \
+		-Ee '/set.*(release|debug)_flags_to_test/,/\)/d' \
 		${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -i .flags -e 's/-march=core-avx2/-mavx2/' \
-		${WRKSRC}/Source/Lib/Common/ASM_AVX2/CMakeLists.txt \
-# Avoid lang/gcc* dependency
-	@${REINPLACE_CMD} -i .gcc -e 's/gcc-//' \
-		-e '/CMAKE_C/{ s/STREQUAL/MATCHES/; s/"GNU/&|Clang/; }' \
-		${WRKSRC}/CMakeLists.txt \
-		${WRKSRC}/Source/Lib/Common/*/CMakeLists.txt
 # Avoid platform whitelists for generic non-Windows code
-	@${REINPLACE_CMD} -i .opsys 's/Linux/${OPSYS}/' \
-		${WRKSRC}/CMakeLists.txt \
-		${WRKSRC}/Source/Lib/*/*/CMakeLists.txt
+# https://github.com/OpenVisualCloud/SVT-AV1/pull/162
 	@${GREP} --exclude='*/third_party/*' -Flr '__linux' ${WRKSRC} | ${XARGS} \
-		${REINPLACE_CMD} -i .opsys -E 's/__linux(__)?/__${OPSYS}__/'
-# Avoid -msse4.1 for (unused) function not under Source/Lib/ASM_SSE4_1/
-	@${REINPLACE_CMD} -e '/_sse4_1/,/}/d; /smmintrin\.h/d' \
-		${WRKSRC}/Source/Lib/Common/Codec/EbInterPrediction.c
+		${REINPLACE_CMD} -i .opsys -E 's/__linux(__)?/__unix__/'
 
 .include <bsd.port.mk>

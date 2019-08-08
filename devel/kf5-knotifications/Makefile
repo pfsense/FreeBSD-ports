@@ -16,4 +16,12 @@ USE_QT=		buildtools_build core dbus gui linguisttools phonon4 \
 		qmake_build widgets x11extras
 USE_XORG=	x11
 
+OPTIONS_DEFINE=		AUDIO
+OPTIONS_DEFAULT=	AUDIO
+
+AUDIO_DESC=		Audio notifications/text-to-speech support
+AUDIO_LIB_DEPENDS=	libcanberra-gtk3.so:audio/libcanberra-gtk3
+AUDIO_USE=		QT=speech
+AUDIO_USES=		pkgconfig
+
 .include <bsd.port.mk>

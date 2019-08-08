@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hpl
-DISTVERSION=	2.2
+DISTVERSION=	2.3
 PORTREVISION=	1
 CATEGORIES=	benchmarks
 MASTER_SITES=	NETLIB/benchmark/hpl
@@ -28,6 +28,7 @@ post-patch:
 		s|^CC[ ]*=.*$$|CC = ${CC}| ; \
 		s|^CCFLAGS[ ]*=.*$$|CCFLAGS = $$\(HPL_DEFS\) ${CFLAGS} -fomit-frame-pointer -funroll-loops| ; \
 		s|^LINKER[ ]*=.*$$|LINKER = ${FC}| ; \
+		s|^LINKFLAGS[ ]*=\(.*\)$$|LINKFLAGS =\1 ${LDFLAGS}| ; \
 		s|^ARCHIVER[ ]*=.*$$|ARCHIVER = ${AR}| ; \
 		s|ARCH[ )]|_&|g ; \
 		s|^HPL_OPTS[ ]*=.*$$|HPL_OPTS =| ; \

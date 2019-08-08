@@ -1,6 +1,6 @@
---- chrome/browser/flag_descriptions.h.orig	2019-03-11 22:00:53 UTC
+--- chrome/browser/flag_descriptions.h.orig	2019-06-04 18:55:17 UTC
 +++ chrome/browser/flag_descriptions.h
-@@ -2192,12 +2192,12 @@ extern const char kWakeOnPacketsDescription[];
+@@ -2094,26 +2094,26 @@ extern const char kInstallableInkDropDescription[];
  
  // Random platform combinations -----------------------------------------------
  
@@ -13,11 +13,14 @@
 -#endif  // defined(OS_WIN) || defined(OS_LINUX)
 +#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
  
- extern const char kExperimentalUiName[];
- extern const char kExperimentalUiDescription[];
-@@ -2209,12 +2209,12 @@ extern const char kAutomaticTabDiscardingDescription[]
+-#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  
- #endif  // defined(OS_WIN) || defined(OS_MACOSX)
+ extern const char kWebGL2ComputeContextName[];
+ extern const char kWebGL2ComputeContextDescription[];
+ 
+-#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS)
++#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  
 -#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
 +#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)

@@ -3,7 +3,7 @@
 PORTNAME=	libfolia
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.15
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libicui18n.so:devel/icu \
 		libomp.so:devel/openmp \
 		libticcutils.so:devel/ticcutils
 
-USES=		autoreconf gmake gnome libtool pkgconfig
+USES=		autoreconf compiler:c++11-lang gmake gnome libtool pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
 USE_GITHUB=	yes

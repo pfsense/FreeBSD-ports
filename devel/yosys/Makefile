@@ -3,8 +3,8 @@
 
 PORTNAME=	yosys
 DISTVERSIONPREFIX=	yosys-
-DISTVERSION=	0.8
-PORTREVISION=	1
+DISTVERSION=	0.8-1116
+DISTVERSIONSUFFIX=	-g90ec2cda
 CATEGORIES=	devel
 
 MAINTAINER=	jsorocil@gmail.com
@@ -20,6 +20,7 @@ LIB_DEPENDS=	libffi.so:devel/libffi
 
 USES=		bison compiler:c++11-lang gmake pkgconfig python:3.6+ readline \
 		shebangfix tcl
+
 SHEBANG_FILES=	backends/smt2/smtbmc.py \
 		misc/yosys-config.in
 

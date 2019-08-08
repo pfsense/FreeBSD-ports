@@ -3,7 +3,7 @@
 
 PORTNAME=	abinit
 DISTVERSION=	8.10.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	https://www.abinit.org/sites/default/files/packages/
 
@@ -31,7 +31,7 @@ OPTIONS_DEFINE=			OPENMP MPI
 OPTIONS_DEFAULT=		OPENMP MPI
 
 OPENMP_CONFIGURE_ENABLE=	openmp
-OPENMP_LDFLAGS=			${LOCALBASE}/lib/libomp.so
+OPENMP_LDFLAGS=			-lomp
 OPENMP_LIB_DEPENDS=		libomp.so:devel/openmp
 
 MPI_CONFIGURE_ENABLE=		mpi

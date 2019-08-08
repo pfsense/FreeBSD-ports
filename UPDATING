@@ -5,6 +5,371 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+
+20190728:
+  AFFECTS: users of net-im/py-matrix-synapse
+  AUTHOR: kai@FreeBSD.org
+
+  The support for Python 2.7 has been dropped with the 1.1.0 release of
+  net/py-matrix-synapse.
+
+  Users that still use the Python 2.7 version of net-im/py-matrix-synapse
+  should switch to a newer Python version, e.g. 3.6, which is the default
+  Python version since April 2019. 
+
+20190701:
+  AFFECTS: users of databases/mysql56-(server|client)
+  AUTHOR: ale@FreeBSD.org
+
+  The default MySQL version has been updated from 5.6 to 5.7.
+
+  If you compile your own ports you may keep 5.6 as the default version by
+  adding the following lines to your /etc/make.conf file:
+
+  #
+  # Keep MySQL 5.6 as default version
+  #
+  DEFAULT_VERSIONS+=mysql=5.6
+
+  If you wish to update to the new default version, you need to first stop any
+  running server instance. Then, you will need to follow these steps, depending
+  on installed packages.
+
+  # pkg set -o databases/mysql56-client:databases/mysql57-client
+  # pkg set -o databases/mysql56-server:databases/mysql57-server
+  # pkg upgrade
+
+20190630:
+  AFFECTS: users of net/samba410
+  AUTHOR: timur@FreeBSD.org
+
+  If you used Samba in AD/DC mode with the previous versions of the port on UFS2
+  backed storage you have to add usage of vfs_freebsd VFS module for at least
+  SYSVOL share and confugure it to use 'legacy' mode(see manpage).
+
+  The reason behind this is that previous versions Samba port used a hack to
+  workaround broken mapping of Linux security and trusted extended attributes
+  into FreeBSD namespace. In particular, essential security.NTACL attribute
+  was replaced with the user.NTACL and placed in a insecure USER namespace.
+
+  This port dropped this hack in favor of vfs_freebsd module, which should
+  provide more controlled way of such a mapping.
+
+  To maintain the compatibility with the previous installations on UFS2 storage
+  (as ZFS uses it's own way of mapping SYSVOL, thanks to the iXsystems patches)
+  the vfs_freebsd module provides 'legacy' mode that implements old functionality.
+
+  For the presh installations it is recommended to use 'secure' mode of operations
+  for this module and use it as a global vfs objects.
+
+  Caution: The given module is still considered EXPERIMENTAL.
+
+20190630:
+  AFFECTS: users of net/samba410, net/samba4[6-8] and devel/talloc?, devel/tevent?,
+           databases/tdb?, databases/ldb*
+  AUTHOR: timur@FreeBSD.org
+
+  The port of the new version of Samba 4.10 is introduced. Due necessirity
+  to keep backwards compatibility for the legacy samba4[6-8] ports the 
+  upgrade procedure is a bit convoluted.
+
+  You are safe to perform fresh new install of samba410 port. In case you
+  are upgrading from the previous versions of Samba, please use the
+  following procedure:
+
+  0.  Take backups of all the relevant files, in particular PREFIX/etc/smb4.conf
+      and /var/db/samba4/ subdirectory. Keep in mind that files there (may)
+      have extended attributes, so use appropriate tools to preserve them.
+
+  1a. If you haven't updated Samba between 20190619 and 20190630 then next
+      step should be as simple as:
+
+        portmaster -o net/samba410 net/samba48
+
+  1b. If you have been affected by the archiving legacy versions of
+      Samba-related libraries for legacy versions of Samba, which happened
+      in the given time frame, then you need to reverse operation from the
+       20190619 entry:
+
+      for users of portmaster:
+        portmaster -o devel/talloc devel/talloc1
+        portmaster -o devel/tevent devel/tevent1
+        portmaster -o databases/tdb databases/tdb1
+        portmaster -o net/samba410 net/samba48
+
+      for users of portupgrade:
+        portupgrade -o devel/talloc devel/talloc1
+        portupgrade -o devel/tevent devel/tevent1
+        portupgrade -o databases/tdb databases/tdb1
+        portupgrade -o net/samba410 net/samba48
+
+20190619:
+  AFFECTS: users of samba4[6-8] and devel/talloc, devel/tevent, databases/tdb, databases/ldb*
+  AUTHOR: timur@FreeBSD.org
+
+  To introduce samba410(we deliberatly skip samba49 due the complexity of handling)
+  and to drop dependency on deprecated Python 2.7, Samba supplimentary libraries
+  talloc, tevent and tdb were splitted into current Python 3 compatiable versions
+  and legacy ones, with the suffix "1".
+
+  Old versions of Samba were changed to depend on the legacy supplimentary libraries,
+  so if you need to install samba46, samba47 or samba48 over previous Samba
+  installations you need to downgrade supplimentary libs with the following commands:
+
+  for users of portmaster:
+        portmaster -o devel/talloc1 devel/talloc
+        portmaster -o devel/tevent1 devel/tevent
+        portmaster -o databases/tdb1 databases/tdb
+        portmaster -r talloc1
+
+  for users of portupgrade:
+        portupgrade -o devel/talloc1 devel/talloc
+        portupgrade -o devel/tevent1 devel/tevent
+        portupgrade -o databases/tdb1 databases/tdb
+        portupgrade -fr devel/talloc1
+
+20190613:
+  AFFECTS: users of www/qt5-webengine
+  AUTHOR: kai@FreeBSD.org
+
+  Users that upgrade www/qt5-webengine without using pkg/poudriere might
+  experience failures due to conflicts with the installed version of 5.12.2.
+
+  In that case, pkg delete -f the qt5-webengine package before building
+  the updated version.
+
+20190611:
+  AFFECTS: users of net/routinator
+  AUTHOR: rodrigo@FreeBSD.org
+
+  Release 0.4.0 fundamentally changes the command line options for
+  running the server and introduces a new way to initialize the local RPKI
+  repository used by Routinator.
+  If you have been using previous releases, you will likely have to adjust
+  your tooling. We apologize for this, but we also feel that the new commands
+  are more intuitive and logical.
+
+20190604:
+  AFFECTS: users of samba47
+  AUTHOR: antoine@FreeBSD.org
+
+  The default version of samba has been switched from 4.7 to 4.8.
+  Upgrade instructions:
+
+  For package users having samba47 installed indirectly (as a dependency):
+    # pkg upgrade
+
+  For package users having samba47 installed directly (leaf port):
+    # pkg upgrade
+    # pkg install samba48
+
+  For ports users:
+    If you want to keep samba47, add DEFAULT_VERSIONS+= samba=4.7 to make.conf
+
+    If you want to upgrade to samba48, remove samba47:
+    # pkg delete -f samba47
+
+    Portmaster users:
+    # portmaster net/samba48
+    # portmaster -a
+
+    Portupgrade users:
+    # portinstall net/samba48
+    # portupgrade -a
+
+20180601:
+  AFFECTS: www/tt-rss
+  AUTHOR: dereks@lifeofadishwasher.com
+
+  tt-rss now uses php intl for extension; a web server reload
+  will be required if intl extension isn't already loaded.
+
+20190522:
+  AFFECTS: users of sysutils/graylog
+  AUTHOR: dch@FreeBSD.org
+
+  The port has been updated to the latest stable version 3.0.2, which
+  includes more plugins by default, but also requires manual changes to
+  graylog's configuration files, possibly port and URL changes, such as
+  X-Graylog-Server-URL settings, and elasticsearch must be >= 5.
+
+  The location of configuration files has been amended to align with the
+  official distribution files and locations.
+
+  After upgrading, manually review and merge changes from your
+  /usr/local/etc/graylog/server/server.conf into
+  /usr/local/etc/graylog/graylog.conf
+
+  Consult https://www.graylog.org/post/announcing-graylog-v3-0-ga for
+  further details.
+
+20190506:
+  AFFECTS: users of www/gitea
+  AUTHOR: stb@lassitu.de
+
+  Gitea requires the addition of another secret to the config file in order
+  to start up.  Either manually add JWT_SECRET to the
+  ${PREFIX}/etc/gitea/conf/app.ini config file (see app.ini.sample), or allow
+  Gitea to make the change for you by making the config file writable to the
+  git user.
+
+20190424:
+  AFFECTS: users of www/node
+  AUTHOR: bhughes@FreeBSD.org
+
+  The www/node port has been updated to Node.js v12.0.0, the latest
+  upstream release. This is a major release, including many significant
+  changes. Users are encouraged to read the release announcements before
+  upgrading:
+
+  https://nodejs.org/en/blog/release/v12.0.0/
+
+20190423:
+  AFFECTS: users of www/gitlab-ce
+  AUTHOR: mfechner@FreeBSD.org
+
+  The directory where all repositories and ssh permissions are stored
+  was changed from /usr/home/git back to /usr/local/git, to match again the
+  recommended standards on FreeBSD.
+  This will cause now some other git management packages to collide with
+  gitlab. Make sure you migrate all you git repositories to gitlab first,
+  before you continue.
+
+  Make sure /usr/local/git/repositories and /usr/local/git/.ssh are not
+  existing!
+  Otherwise the next commands can break your installation for managing
+  git repositories within gitlab and with your other gitlab management
+  software!
+
+  You must move the old files to the new location with:
+  # service gitlab stop
+  # mv /usr/home/git /usr/local/
+  # pkg upg
+
+  Make sure you update your config files, diff shows you what you maybe
+  must change:
+  # cd /usr/local/www/gitlab-ce
+  # git diff config/gitlab.yml.sample config/gitlab.yml
+  # cd /usr/local/share/gitlab-shell/
+  # git diff config.yml.sample config.yml
+  # cd /usr/local/share/gitaly
+  # git diff config.toml.sample config.toml
+
+  # Change home directory of user git back to /usr/local/git
+  # vipw
+  The line should now looks like:
+  git:*:211:211::0:0:gitosis user:/usr/local/git:/bin/sh
+
+  If you do an upgrade of gitlab follow the upgrade guide.
+  If not, just start gitlab again with:
+  # service gitlab start
+
+20190422:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 2.9 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies. Poudriere and pkg handle this correctly,
+  portmaster and portupgrade users can use the following to rebuild all
+  dependent ports.
+
+  Portmaster users:
+      portmaster -r libressl
+  Portupgrade users:
+      portupgrade -fr security/libressl
+
+20190421:
+  AFFECTS: users of databases/cego
+  AUTHOR: pi@FreeBSD.org
+
+  To upgrade from cego 2.39.16 to 2.44.1, you need to export to xml before
+  the upgrade and import from xml after the upgrade, because the internal
+  storage has changed for some types.
+
+  Use these steps:
+
+  - export your database while it runs, see
+    http://www.lemke-it.com/litexec?request=pubcegodoc&user=&lang=en&section=cgdoc_database_running.html#tsimpexp_mode
+    for details.
+  - stop the database
+    service cego stop
+  - upgrade the port/package
+  - re-create the database
+    cego --mode=create --tableset=<database> --dbxml=<database>.xml
+  - import the database
+    cego --mode=xmlimport --tableset=<database> \
+	--dbxml=<database>.xml --impfile=export.xml --doLogging
+  - modify /etc/rc.conf by adding
+    cego_<database>_cpdump="YES"
+    cego_<database>_cleanup="YES"
+  - start the database
+    service cego start
+
+20190420:
+  AFFECTS: users of lang/ruby24
+  AUTHOR: mfechner@FreeBSD.org
+
+  The default ruby version has been updated from 2.4 to 2.5.
+
+  If you compile your own ports you may keep 2.4 as the default version by
+  adding the following lines to your /etc/make.conf file:
+
+  #
+  # Keep ruby 2.4 as default version
+  #
+  DEFAULT_VERSIONS+=ruby=2.4
+
+  If you wish to update to the new default version, you need to first stop any
+  software that uses ruby. Then, you will need to follow these steps, depending
+  upon how you manage your system.
+
+  If you use pkgng, simply upgrade:
+  # pkg upgrade
+
+  If you use portmaster, install new ruby, then rebuild all ports that depend
+  on ruby:
+  # portmaster -o lang/ruby25 lang/ruby24
+  # portmaster -R -r ruby-2.5
+
+  If you use portupgrade, install new ruby, then rebuild all ports that depend
+  on ruby:
+
+  # pkg delete -f ruby portupgrade
+  # make -C /usr/ports/ports-mgmt/portupgrade install clean
+  # pkg set -o lang/ruby24:lang/ruby25
+  # portupgrade -x ruby-2.5.\* -fr lang/ruby25
+
+20190419:
+  AFFECTS: users of emulators/qemu
+  AUTHOR: bofh@FreeBSD.org
+
+  qemu 2.X version has been moved to qemu2. If you would like to use
+  2.X you should use qemu2. Otherwise you can use the new stable
+  upstream branch of 3.0.X.
+
+  Portmaster users will need to run this command:
+
+  portmaster -o emulators/qemu2 emulators/qemu
+
+20190410:
+  AFFECTS: users of python
+  AUTHOR: antoine@FreeBSD.org
+
+  Default version of python was switched to 3.6.
+
+  For ports users wanting to keep version 2.7 as default,
+  add DEFAULT_VERSIONS+= python=2.7 to make.conf
+
 20190328:
   AFFECTS: www/firefox-i18n, www/firefox-esr-i18n, mail/thunderbird-i18n, www/seamonkey-i18n
   AUTHOR: gecko@FreeBSD.org
@@ -53,7 +418,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: rodrigo@freebsd.org
 
   www/igal2 2.2-1 is now built with graphics/ImageMagick6-nox11
-  and don't install the ImageMagik X11 dependencies anymore.
+  and don't install the ImageMagick X11 dependencies anymore.
   A build option allows you to restore the previous behaviour.
 
 20190303:
@@ -88,10 +453,10 @@ you update your ports collection, before attempting any port upgrades.
   can remove the directory safely. If the directory is not empty, move it
   to ${SE_DBDIR} when upgrading softether. Following commands should help:
 
-      service softether_(bridge|cleint|server) stop
+      service softether_(bridge|client|server) stop
       (portmaster, portupgrade or pkg upgrade)
       mv ${PREFIX}/libexec/softether/chain_certs ${SE_DBDIR}/
-      service softether_(bridge|cleint|server) start
+      service softether_(bridge|client|server) start
 
   With the default Makefile settings, ${SE_DBDIR} is set to /var/db/softether.
 
@@ -114,8 +479,8 @@ you update your ports collection, before attempting any port upgrades.
 
   If you've mod_mam enabled with compress_xml set to true, then you're affected
   by bug where the XML namespace, and tag elements get interchanged in the MAM cache
-  which results in invalid XML, and causing XMPP clients to disconnect. For more details,
-  please refer to: https://github.com/processone/ejabberd/issues/2744
+  which results in invalid XML, and causing XMPP clients to disconnect.  For more
+  details, please refer to: https://github.com/processone/ejabberd/issues/2744
 
   This upgrade contains the patch that fixes the problem going forward. For fixing already
   affected users, you'll need to wipe off the MAM cache for the affected users:
@@ -137,10 +502,18 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of archivers/urbackup-server
   AUTHOR: freebsd@coombscloud.com
 
-  Some of the port's sources previously included absolute references to /etc/urbackup.  
-  The upgrade now changes these references to ${PREFIX}/etc/urbackup. If you have placed 
-  any configuration files within /etc/urbackup, these should be relocated to 
+  Some of the port's sources previously included absolute references to /etc/urbackup.
+  The upgrade now changes these references to ${PREFIX}/etc/urbackup.  If you have
+  placed any configuration files within /etc/urbackup, these should be relocated to
   ${PREFIX}/etc/urbackup.
+
+20190130:
+  AFFECTS: users of sysutils/password-store
+  AUTHOR: rene@FreeBSD.org
+
+  password-store now stores plugins in ${PREFIX}/libexec instead of ${PREFIX}/lib.
+  Ensure to move your own extensions there too and update your scripts to avoid
+  breakage.
 
 20190124:
   AFFECTS: users of sysutils/rubygem-fluentd, sysutils/fluent-bit
@@ -170,7 +543,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of german/webalizer2, japanese/webalizer, polish/webalizer2, portuguese/webalizer-pt_BR, portuguese/webalizer-pt_PT, ukrainian/webalizer, www/geolizer, www/webalizer
   AUTHOR: dinoex@FreeBSD.org
 
-  The option GEOIP has beeen changed to used the new datebase.
+  The option GEOIP has beeen changed to used the new database.
   Either copy GeoLite2-Country.mmdb in the working directory,
   or set the GeoIPDatabase option to the location of the file.
 
@@ -285,7 +658,7 @@ you update your ports collection, before attempting any port upgrades.
   # chown -R ntopng:ntopng /var/db/ntopng
   # service ntopng start
 
-  Please check hte upstream FAQ for reference:
+  Please check the upstream FAQ for reference:
 	https://www.ntop.org/support/faq/migrate-the-data-directory-in-ntopng/
 
 20181218:
@@ -641,7 +1014,7 @@ you update your ports collection, before attempting any port upgrades.
   The OpenEXR package has been renamed to openexr and updated to 2.3.0.
 
   The PORTREVISION of all ports requiring either has been bumped to
-  ease the reubuilds, and where there were versions in the file names,
+  ease the rebuilds, and where there were versions in the file names,
   these have been removed from the *_DEPENDS lines for easier maintenance.
 
   A full ports or package upgrade should just work.
@@ -781,7 +1154,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: www/tt-rss
   AUTHOR: thierry@FreeBSD.org
 
-  tt-rss now uses pdo_mysql/pgsql for database acccess; a web server reload
+  tt-rss now uses pdo_mysql/pgsql for database access; a web server reload
   will be required if pdo ext. isn't installed.
 
 20180804:
@@ -1036,7 +1409,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of www/node
   AUTHOR: bhughes@FreeBSD.org
 
-  The www/node port has been udpated to Node.js v10.0.0, the latest
+  The www/node port has been updated to Node.js v10.0.0, the latest
   upstream release. This is a major release, including many significant
   changes. Users are encouraged to read the release announcements before
   upgrading:
@@ -1122,7 +1495,7 @@ you update your ports collection, before attempting any port upgrades.
 
 20180412:
   AFFECTS: users of devel/php-composer
-  AUTHOT: madpilot@FreeBSD.org
+  AUTHOR: madpilot@FreeBSD.org
 
   Flavors have been added to the composer port with the update to
   1.6.3. Due to the change in PKGNAME pkg(and other tools) will not
@@ -1351,7 +1724,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of net-mgmt/pmacct
   AUTHOR: pi@FreeBSD.org
 
-  To allow separete pmacctd instances per interface, use
+  To allow separate pmacctd instances per interface, use
 
     pmacctd_enable="YES"
     pmacctd_interfaces="re1 re2"
@@ -7026,7 +7399,7 @@ you update your ports collection, before attempting any port upgrades.
   # portmaster -o www/mod_python33 www/mod_python3
 
   portupgrade users:
-  # portugrade -o www/mod_python33 www/mod_python3
+  # portupgrade -o www/mod_python33 www/mod_python3
 
 20140414:
   AFFECTS: users of dmd 1.X and dmd 2.x.
@@ -9975,8 +10348,8 @@ you update your ports collection, before attempting any port upgrades.
   # portmaster -o security/libotr3 security/libotr
   # portmaster -r libotr
     or
-  # portugrade -o security/libotr3 security/libotr
-  # portugrade -r libotr
+  # portupgrade -o security/libotr3 security/libotr
+  # portupgrade -r libotr
     or
   # pkg set -o security/libotr:security/libotr3
 
@@ -12850,7 +13223,7 @@ or
 	# portmaster -o audio/musepack audio/libmpcdec
 	# portmaster -r musepack-
 
-  Portupgrade user:
+  Portupgrade users:
 	# env DISABLE_CONFLICTS=1 portupgrade -o audio/musepack -f libmpcdec-\*
 	# pkgdb -Ff
 	# portupgrade -rf musepack-\*
@@ -13349,7 +13722,7 @@ or
 	portmaster -o www/neon29 www/neon28
 	portmaster -r neon29-
 
-  Portupgrade user:
+  Portupgrade users:
 	env DISABLE_CONFLICTS=1 portupgrade -o www/neon29 -f neon28-\*
 	pkgdb -Ff
 	portupgrade -rf neon29-\*

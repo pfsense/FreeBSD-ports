@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	consul-template
-PORTVERSION=	0.19.5
+PORTVERSION=	0.20.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
@@ -11,7 +11,7 @@ COMMENT=	Generic template rendering and notifications with Consul
 
 LICENSE=	MPL20
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
+USES=		go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hashicorp

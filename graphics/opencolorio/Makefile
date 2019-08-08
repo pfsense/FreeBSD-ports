@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	opencolorio
-PORTVERSION=	1.1.0
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.1.1
+PORTREVISION?=	0
 CATEGORIES=	graphics multimedia
 
 MAINTAINER?=	FreeBSD@Shaneware.biz
@@ -12,7 +12,8 @@ COMMENT?=	Complete color management solution
 
 LICENSE=	BSD3CLAUSE
 
-USES=		alias cmake compiler:c++11-lang pkgconfig shebangfix
+USES=		alias cmake compiler:c++11-lang localbase:ldflags pkgconfig \
+		shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	imageworks
@@ -20,10 +21,10 @@ GH_PROJECT=	OpenColorIO
 
 CMAKE_ON=	USE_EXTERNAL_TINYXML USE_EXTERNAL_YAML
 CMAKE_OFF=	OCIO_BUILD_JNIGLUE OCIO_BUILD_NUKE OCIO_BUILD_STATIC
-LDFLAGS+=	-L${LOCALBASE}/lib
-# pyglue gives an error on use of register
-# this should only be an error using c++17
-CXXFLAGS+=	-Wno-deprecated-register
+
+CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
+CXXFLAGS_gcc=	-Wno-unused-function -Wno-error
+CXXFLAGS_clang=	-Wno-deprecated-register
 
 SHEBANG_FILES=	share/sphinx/ExtractRstFromSourceCPP.py \
 		share/sphinx/ExtractRstFromSourceSimple.py \
@@ -32,6 +33,8 @@ SHEBANG_FILES=	share/sphinx/ExtractRstFromSourceCPP.py \
 OPTIONS_DEFINE=		DOCS
 
 DOCS_CMAKE_BOOL=	OCIO_BUILD_DOCS
+
+PLIST_SUB+=		LIBVERS=${PORTVERSION}
 
 .if ${MACHINE_CPU:Msse2}
 CMAKE_ON+=	OCIO_USE_SSE

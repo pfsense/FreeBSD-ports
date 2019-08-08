@@ -2,17 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	beautifulsoup
-PORTVERSION=	4.6.0
+PORTVERSION=	4.7.1
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	beautifulsoup4-${PORTVERSION}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	HTML/XML Parser for Python
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}soupsieve>=1.2:www/py-soupsieve@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}html5lib>=0:www/py-html5lib@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist concurrent distutils

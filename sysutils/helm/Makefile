@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	helm
-PORTVERSION=	2.13.0
+PORTVERSION=	2.14.1
 CATEGORIES=	sysutils
 MASTER_SITES=	LOCAL/danilo
 
@@ -20,17 +20,15 @@ PLIST_FILES=	bin/${PORTNAME} \
 		bin/rudder
 
 post-patch:
-	${RM} -r ${WRKSRC}/vendor/k8s.io/kubernetes/vendor
-	${RM} -r ${WRKSRC}/vendor/k8s.io/apiextensions-apiserver/vendor
 	${MV} ${WRKSRC}/vendor/* ${WRKDIR}/src/
 	${LN} -s ${WRKSRC} ${WRKDIR}/src/k8s.io/helm
 
 do-build:
 .for cmd in helm tiller rudder
 	cd ${WRKDIR}/src/k8s.io/helm/cmd/${cmd} ; \
-		GOPATH=${WRKDIR} go build \
+		GOPATH=${WRKDIR} GOCACHE=${WRKDIR}/.gocache go build \
 		-ldflags="-X k8s.io/helm/pkg/version.Version=v${PORTVERSION} \
-		-X k8s.io/helm/pkg/version.GitCommit=79d07943b03aea2b76c12644b4b54733bc5958d6 \
+		-X k8s.io/helm/pkg/version.GitCommit=5270352a09c7e8b6e8c9593002a73535276507c0 \
 		-X k8s.io/helm/pkg/version.BuildMetadata="
 .endfor
 
@@ -46,6 +44,7 @@ maintainer-distfile:
 		tar xzf v${PORTVERSION}.tar.gz; \
 		cd helm-${PORTVERSION}; \
 		glide install; \
+		${FIND} vendor/ -type d -name vendor -exec ${RM} -r {} +; \
 		cd ..; tar cJf helm-${PORTVERSION}.tar.xz helm-${PORTVERSION})
 
 .include <bsd.port.mk>

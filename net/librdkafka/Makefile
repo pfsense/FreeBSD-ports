@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	librdkafka
-PORTVERSION=	0.11.6
-PORTREVISION=	1
+PORTVERSION=	1.1.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	0
 CATEGORIES=	net
 
 MAINTAINER=	pizzamig@FreeBSD.org
@@ -17,9 +17,10 @@ BROKEN_mips=		fails to build: undefined reference to __sync_add_and_fetch_4
 BROKEN_mips64=		fails to build: undefined reference to __sync_add_and_fetch_4
 
 BUILD_DEPENDS=	bash:shells/bash
-LIB_DEPENDS=	liblz4.so:archivers/liblz4
+LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
+	libzstd.so:archivers/zstd
 
-USES=		compiler:c11 gmake ssl
+USES=		compiler:c11 gmake localbase:ldflags ssl
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	edenhill

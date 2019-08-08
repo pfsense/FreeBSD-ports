@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freetds
-PORTVERSION=	1.1.20
+PORTVERSION=	1.1.25
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	ftp://ftp.freetds.org/pub/freetds/current/
@@ -18,7 +18,6 @@ USES=		autoreconf gettext-tools gmake iconv libtool:keepla pkgconfig tar:bzip2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-dev.${PORTVERSION}
 TDS_VER?=	7.4
-GNU_GONFIGURE=	yes
 CPPFLAGS+=	"-I${LOCALBASE}/include"
 LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes

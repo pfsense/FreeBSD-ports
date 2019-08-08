@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libmatroska
-PORTVERSION=	1.5.0
+DISTVERSION=	1.5.2
 CATEGORIES=	multimedia audio
 MASTER_SITES=	http://dl.matroska.org/downloads/libmatroska/ \
 		http://www.bunkus.org/videotools/mkvtoolnix/sources/
@@ -10,7 +10,8 @@ MASTER_SITES=	http://dl.matroska.org/downloads/libmatroska/ \
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Extensible Multimedia Container Format
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/LICENSE.LGPL
 
 LIB_DEPENDS=	libebml.so:textproc/libebml
 

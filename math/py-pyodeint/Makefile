@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pyodeint
-DISTVERSION=	0.10.1
-PORTREVISION=	2
+DISTVERSION=	0.10.2
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +16,7 @@ BUILD_DEPENDS=	${PYNUMPY} \
 		${LOCALBASE}/include/boost/config.hpp:devel/boost-libs
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		localbase python
+USES=		compiler:c++11-lang localbase python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

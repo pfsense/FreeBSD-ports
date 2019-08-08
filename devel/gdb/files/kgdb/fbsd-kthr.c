@@ -44,7 +44,7 @@ static LONGEST dumptid;
 static CORE_ADDR stopped_cpus;
 static LONGEST mp_maxid;
 
-static struct kthr *first;
+static struct kthr *first, *last;
 struct kthr *curkthr;
 
 static int proc_off_p_pid, proc_off_p_comm, proc_off_p_list, proc_off_p_threads;
@@ -131,7 +131,11 @@ kgdb_thr_add_procs(CORE_ADDR paddr, CORE_ADDR (*cpu_pcb_addr) (u_int))
 				break;
 			} END_CATCH
 			kt = XNEW (struct kthr);
-			kt->next = first;
+			if (last == NULL)
+				first = last = kt;
+			else
+				last->next = kt;
+			kt->next = NULL;
 			kt->kaddr = tdaddr;
 			if (tid == dumptid)
 				kt->pcb = dumppcb;
@@ -143,7 +147,7 @@ kgdb_thr_add_procs(CORE_ADDR paddr, CORE_ADDR (*cpu_pcb_addr) (u_int))
 			kt->pid = pid;
 			kt->paddr = paddr;
 			kt->cpu = oncpu;
-			first = kt;
+			last = kt;
 			tdaddr = tdnext;
 		}
 		paddr = pnext;
@@ -155,7 +159,6 @@ kgdb_thr_init(CORE_ADDR (*cpu_pcb_addr) (u_int))
 {
 	struct gdbarch *gdbarch = target_gdbarch ();
 	struct type *ptr_type = builtin_type (gdbarch)->builtin_data_ptr;
-	enum bfd_endian byte_order = gdbarch_byte_order (gdbarch);
 	struct kthr *kt;
 	CORE_ADDR addr, paddr;
 	
@@ -164,6 +167,7 @@ kgdb_thr_init(CORE_ADDR (*cpu_pcb_addr) (u_int))
 		first = kt->next;
 		free(kt);
 	}
+	last = NULL;
 
 	addr = kgdb_lookup("allproc");
 	if (addr == 0)
@@ -230,7 +234,7 @@ kgdb_thr_init(CORE_ADDR (*cpu_pcb_addr) (u_int))
 			    "&((struct thread *)0)->td_plist");
 			thread_oncpu_size = parse_and_eval_long(
 			    "sizeof(((struct thread *)0)->td_oncpu)");
-		} CATCH(e, RETURN_MASK_ERROR) {
+		} CATCH(e2, RETURN_MASK_ERROR) {
 			proc_off_p_pid = offsetof(struct proc, p_pid);
 			proc_off_p_comm = offsetof(struct proc, p_comm);
 			proc_off_p_list = offsetof(struct proc, p_list);

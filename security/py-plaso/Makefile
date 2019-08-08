@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	plaso
-PORTVERSION=	20190131
+PORTVERSION=	20190531
 CATEGORIES=	security python
 MASTER_SITES=	https://github.com/log2timeline/plaso/releases/download/${PORTVERSION}/ \
 		LOCAL/antoine
@@ -29,7 +29,6 @@ RUN_DEPENDS=	libesedb>=e:devel/libesedb \
 		${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dfvfs>=0:security/py-dfvfs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dfwinreg>=0:security/py-dfwinreg@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}efilter>=0:devel/py-efilter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}elasticsearch>=0:textproc/py-elasticsearch@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lz4>=0:archivers/py-lz4@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pefile>=0:devel/py-pefile@${PY_FLAVOR} \
@@ -45,10 +44,11 @@ RUN_DEPENDS=	libesedb>=e:devel/libesedb \
 		${PYTHON_PKGNAMEPREFIX}yara>=0:security/py-yara@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR}
 
-NO_ARCH=	yes
 USES=		python
 USE_LOCALE=	en_US.UTF-8
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	distutils autoplist concurrent
+
+NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 
@@ -60,10 +60,12 @@ TEST_DEPENDS+=	ca_root_nss>=0:security/ca_root_nss
 .endif
 
 post-patch:
-	${REINPLACE_CMD} "/elasticsearch5/d" ${WRKSRC}/plaso/dependencies.py
-	${REINPLACE_CMD} "/^\[elasticsearch5/,/^$$/d" ${WRKSRC}/dependencies.ini
 	${REINPLACE_CMD} "s|'share', 'artifacts'|'share', '${PYTHON_PKGNAMEPREFIX}artifacts'|" \
 		${WRKSRC}/plaso/cli/helpers/artifact_definitions.py
+	${REINPLACE_CMD} "s|'share', 'plaso'|'share', '${PYTHON_PKGNAMEPREFIX}plaso'|" \
+		${WRKSRC}/plaso/cli/helpers/data_location.py
+	${REINPLACE_CMD} "s|share/doc/plaso|${DOCSDIR_REL}| ; s|share/plaso|${DATADIR_REL}|" \
+		${WRKSRC}/setup.py
 
 do-test:
 	@${TOUCH} ${TEST_WRKSRC}/utils/__init__.py

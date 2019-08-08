@@ -19,6 +19,8 @@ RUN_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2.py:textproc/py-libxml2@${PY_FLAVOR}
 USES=		python tar:bzip2
 GNU_CONFIGURE=	yes
 
+CONFLICTS_INSTALL=	itstool22
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|@PYTHON@|${PYTHON_CMD}|g' \
 		${WRKSRC}/itstool.in

@@ -2,7 +2,7 @@
 
 PORTNAME=	openmx
 DISTVERSION=	3.8.5 # the 18June12 patch upgrades 3.8 -> 3.8.5
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	science
 MASTER_SITES=	http://www.openmx-square.org/ \
 		http://www.openmx-square.org/bugfixed/18June12/:patch
@@ -17,12 +17,14 @@ COMMENT=	Nanoscale material simulations using density functional theories (DFT)
 LICENSE=	GPLv2
 
 BROKEN_i386=	undefined reference to `__atomic_load', see bug#229605 and https://reviews.llvm.org/D42154
+DEPRECATED=	Depends on expiring devel/openmp
+EXPIRATION_DATE=	2019-12-31
 
 LIB_DEPENDS=	libblas.so:math/blas \
 		libfftw3.so:math/fftw3 \
 		liblapack.so:math/lapack \
 		libmpich.so:net/mpich \
-		libomp.so:devel/openmp
+		libiomp5.so:devel/openmp
 
 USES=		dos2unix fortran gmake localbase:ldflags
 DOS2UNIX_FILES=	openmx_common.h

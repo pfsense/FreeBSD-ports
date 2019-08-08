@@ -3,7 +3,7 @@
 
 PORTNAME=	osm2pgsql
 PORTVERSION=	0.96.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	converters geography
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -16,12 +16,12 @@ LIB_DEPENDS=	libproj.so:graphics/proj \
 		libboost_system.so:devel/boost-libs \
 		libexpat.so:textproc/expat2
 
-BROKEN_powerpc64=	fails to compile: node-ram-cache.hpp: cstdint: No such file or directory
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	openstreetmap
 
-USES=		cmake lua:53 pgsql
+USES=		cmake compiler:c++11-lang lua:53 pgsql
+
+CXXFLAGS+=	"-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H=1"
 
 PLIST_FILES=	bin/osm2pgsql \
 		man/man1/osm2pgsql.1.gz

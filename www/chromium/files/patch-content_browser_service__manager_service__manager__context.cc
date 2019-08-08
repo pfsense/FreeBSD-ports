@@ -1,4 +1,4 @@
---- content/browser/service_manager/service_manager_context.cc.orig	2019-03-11 22:00:58 UTC
+--- content/browser/service_manager/service_manager_context.cc.orig	2019-06-04 18:55:23 UTC
 +++ content/browser/service_manager/service_manager_context.cc
 @@ -99,7 +99,7 @@
  #include "jni/ContentNfcDelegate_jni.h"
@@ -24,7 +24,7 @@
  
  std::unique_ptr<service_manager::Service> CreateResourceCoordinatorService(
      service_manager::mojom::ServiceRequest request) {
-@@ -618,7 +618,7 @@ ServiceManagerContext::ServiceManagerContext(
+@@ -605,7 +605,7 @@ ServiceManagerContext::ServiceManagerContext(
          base::BindRepeating(&CreateVideoCaptureService));
    }
  

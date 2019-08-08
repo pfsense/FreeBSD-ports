@@ -3,6 +3,7 @@
 
 PORTNAME=	aspell
 PORTVERSION=	0.60.6.1
+DISTVERSIONSUFFIX=	-9.el7
 PORTREVISION=	1
 CATEGORIES=	textproc linux
 
@@ -11,13 +12,12 @@ COMMENT=	Spelling checker with better logic than ispell (Linux CentOS ${LINUX_DI
 
 LICENSE=	LGPL21+
 
-CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
-
-DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
-RPMVERSION=	9.el7
 USES=		linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
+
+CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
+DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes

@@ -2,7 +2,7 @@
 
 PORTNAME=	git-absorb
 DISTVERSION=	0.3.0
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	devel
 
 MAINTAINER=	greg@unrelenting.technology
@@ -10,6 +10,8 @@ COMMENT=	Git command for automating fixup/autosquash commits
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+LIB_DEPENDS=	libgit2.so:devel/libgit2
 
 USES=		cargo
 USE_GITHUB=	yes

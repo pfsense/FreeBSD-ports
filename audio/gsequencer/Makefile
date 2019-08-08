@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	gsequencer
-DISTVERSION=	2.1.68
+DISTVERSION=	2.2.7
 CATEGORIES=	audio
-MASTER_SITES=	SAVANNAH/gsequencer/2.1.x
+MASTER_SITES=	SAVANNAH/gsequencer/${DISTVERSION:R}.x
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Advanced Gtk+ sequencer
@@ -32,8 +32,11 @@ USE_GCC=	yes # the project uses gnu99 extensions, clang fails even with USE_CSTD
 USE_CSTD=	gnu99
 USE_LDCONFIG=	yes
 
+CPPFLAGS+=	-DAGS_LICENSE_FILENAME=\\\"${LOCALBASE}/share/licenses/${PKGNAME}/${LICENSE}\\\" \
+		-DAGS_LOGO_FILENAME=\\\"${DATADIR}/images/ags.png\\\" # there should be no need to supply AGS_LOGO_FILENAME here since the app knows its location
 LDFLAGS+=	-luuid
 
+INSTALL_TARGET=	install-strip
 INSTALLS_ICONS=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}

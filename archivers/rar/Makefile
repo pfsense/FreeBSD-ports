@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rar
-PORTVERSION=	5.7.0
+PORTVERSION=	5.7.1
 PORTEPOCH=	3
 CATEGORIES=	archivers
 MASTER_SITES=	https://rarlab.com/rar/
@@ -29,5 +29,12 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/rar.txt ${STAGEDIR}${PREFIX}/man/cat1/rar.1
 	${INSTALL_DATA} ${WRKSRC}/rarfiles.lst ${STAGEDIR}${PREFIX}/etc
 	${INSTALL_DATA} ${WRKSRC}/default.sfx ${STAGEDIR}${PREFIX}/lib
+
+# maintainer section:
+
+.if defined(MAINTAINER_MODE)
+DISTFILES=	rarbsd-${PORTVERSION}.tar.gz \
+		rarbsd-x64-${PORTVERSION}.tar.gz
+.endif
 
 .include <bsd.port.mk>

@@ -2,25 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	boto3
-PORTVERSION=	1.9.106
+PORTVERSION=	1.9.159
 CATEGORIES=	www python devel
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	AWS SDK for Python
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}botocore>=1.12.106:devel/py-botocore@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jmespath>=0.7.1:devel/py-jmespath@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}s3transfer>=0.2.0:net/py-s3transfer@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}botocore>=1.12.159,<1.13.0:devel/py-botocore@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}jmespath>=0.7.1,<1.0.0:devel/py-jmespath@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}s3transfer>=0.2.0,<0.3.0:net/py-s3transfer@${PY_FLAVOR}
+
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
 
 # Actually 2.6-2.7,3.3-3.7
 USES=		python
+USE_GITHUB=	yes # tests missing from PyPI sdist
 USE_PYTHON=	autoplist distutils
+
+GH_ACCOUNT=	boto
 
 NO_ARCH=	yes
 

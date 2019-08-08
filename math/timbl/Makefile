@@ -4,6 +4,7 @@
 PORTNAME=	timbl
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.4.13
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +16,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libomp.so:devel/openmp \
 		libticcutils.so:devel/ticcutils
 
-USES=		autoreconf gmake gnome libtool pathfix pkgconfig
+USES=		autoreconf compiler:c++11-lang gmake gnome libtool \
+		pathfix pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	LanguageMachines
 GNU_CONFIGURE=	yes

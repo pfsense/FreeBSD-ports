@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	xeus-cling
-DISTVERSION=	0.4.11
+DISTVERSION=	0.5.1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,6 +9,8 @@ COMMENT=	C++ Jupyter Kernel
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_FreeBSD_13=	https://github.com/QuantStack/xeus-cling/issues/234
 
 BUILD_DEPENDS=	cppzmq>0:net/cppzmq \
 		cxxopts>0:devel/cxxopts \
@@ -21,7 +23,7 @@ LIB_DEPENDS=	libclingInterpreter.so:lang/cling \
 		libxeus.so:devel/xeus \
 		libzmq.so:net/libzmq4
 
-USES=		cmake compiler:c++14-lang pkgconfig
+USES=		cmake compiler:c++14-lang pkgconfig ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	QuantStack
 

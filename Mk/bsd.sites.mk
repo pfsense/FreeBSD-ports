@@ -443,26 +443,22 @@ GH_TAGNAME_SANITIZED=	${GH_TAGNAME:S,/,-,g}
 # and extraction directory.  It also replaces + with -.
 GH_TAGNAME_EXTRACT=	${GH_TAGNAME_SANITIZED:C/^[vV]([0-9])/\1/:S/+/-/g}
 .  endif
-.  if defined(_GITHUB_MUST_SET_DISTNAME)
+# This new scheme rerolls distfiles. Also ensure they are renamed to avoid
+# conflicts. Use _GITHUB_REV in case github changes their zipping or structure
+# which has happened before.
+_GITHUB_REV=	0
+_GITHUB_EXTRACT_SUFX=	.tar.gz
+# Put the DEFAULT distfile first
+_GITHUB_CLONE_DIR?=	${WRKDIR}/git-clone
+_PORTS_DIRECTORIES+=	${_GITHUB_CLONE_DIR}
+.  if !${USE_GITHUB:Mnodefault} && empty(MASTER_SITES:MGHC)
 # GH_TAGNAME defaults to DISTVERSIONFULL; Avoid adding DISTVERSIONFULL in twice
 .    if ${GH_TAGNAME} != ${DISTVERSIONFULL}
 DISTNAME=	${GH_ACCOUNT}-${GH_PROJECT}-${DISTVERSIONFULL}-${GH_TAGNAME_SANITIZED}
 .    else
 DISTNAME=	${GH_ACCOUNT}-${GH_PROJECT}-${GH_TAGNAME_SANITIZED}
 .    endif
-.  endif
-# This new scheme rerolls distfiles. Also ensure they are renamed to avoid
-# conflicts. Use _GITHUB_REV in case github changes their zipping or structure
-# which has happened before.
-_GITHUB_REV=	0
-.  if ${MASTER_SITES:MGH}
 DISTNAME:=	${DISTNAME}_GH${_GITHUB_REV}
-.  endif
-_GITHUB_EXTRACT_SUFX=	.tar.gz
-# Put the DEFAULT distfile first
-_GITHUB_CLONE_DIR?=	${WRKDIR}/git-clone
-_PORTS_DIRECTORIES+=	${_GITHUB_CLONE_DIR}
-.  if !${USE_GITHUB:Mnodefault} && defined(_GITHUB_MUST_SET_DISTNAME)
 DISTFILES+=	${DISTNAME}${_GITHUB_EXTRACT_SUFX}
 git-clone: git-clone-DEFAULT
 git-clone-DEFAULT: ${_GITHUB_CLONE_DIR}
@@ -592,15 +588,14 @@ GL_PROJECT:=	${GL_PROJECT_DEFAULT}
 GL_COMMIT:=	${GL_COMMIT_DEFAULT}
 GL_SUBDIR:=	${GL_SUBDIR_DEFAULT}
 
-
 _GITLAB_REV=	0
-DISTNAME:=	${GL_ACCOUNT}-${GL_PROJECT}-${GL_COMMIT}_GL${_GITLAB_REV}
 
 _GITLAB_EXTRACT_SUFX=	.tar.gz
 
 _GITLAB_CLONE_DIR?=	${WRKDIR}/git-clone
 _PORTS_DIRECTORIES+=	${_GITLAB_CLONE_DIR}
 .  if !${USE_GITLAB:Mnodefault}
+DISTNAME:=	${GL_ACCOUNT}-${GL_PROJECT}-${GL_COMMIT}_GL${_GITLAB_REV}
 DISTFILES+=	${DISTNAME}${_GITLAB_EXTRACT_SUFX}
 git-clone: git-clone-DEFAULT
 git-clone-DEFAULT: ${_GITLAB_CLONE_DIR}
@@ -624,7 +619,7 @@ GL_ACCOUNT_${_group}?=	${GL_ACCOUNT_DEFAULT}
 GL_PROJECT_${_group}?=	${GL_PROJECT_DEFAULT}
 
 _GL_TUPLE_OUT:=	${_GL_TUPLE_OUT} ${GL_SITE_${_group}}:${GL_ACCOUNT_${_group}}:${GL_PROJECT_${_group}}:${GL_COMMIT_${_group}}:${_group}/${GL_SUBDIR_${_group}}
-DISTNAME_${_group}:=	${GL_ACCOUNT}-${GL_PROJECT_${_group}}-${GL_COMMIT_${_group}}_GL${_GITLAB_REV}
+DISTNAME_${_group}:=	${GL_ACCOUNT_${_group}}-${GL_PROJECT_${_group}}-${GL_COMMIT_${_group}}_GL${_GITLAB_REV}
 DISTFILE_${_group}:=	${DISTNAME_${_group}}${_GITLAB_EXTRACT_SUFX}
 DISTFILES:=	${DISTFILES} ${DISTFILE_${_group}}:${_group}
 MASTER_SITES:=	${MASTER_SITES} ${GL_SITE_${_group}}/${GL_ACCOUNT_${_group}}/${GL_PROJECT_${_group}}/repository/${GL_COMMIT_${_group}}/archive.tar.gz?dummy=/:${_group}
@@ -1123,7 +1118,7 @@ MASTER_SITE_TEX_CTAN+= \
 # Derived from: https://www.torproject.org/getinvolved/mirrors.html.en
 .if !defined(IGNORE_MASTER_SITE_TOR)
 MASTER_SITE_TOR+= \
-		https://www.torproject.org/dist/%SUBDIR%/ \
+		https://dist.torproject.org/%SUBDIR%/ \
 		https://archive.torproject.org/tor-package-archive/%SUBDIR%/ \
 		ftp://ftp.bit.nl/mirror/tor/%SUBDIR%/ \
 		https://cyberside.net.ee/tor/%SUBDIR%/ \
@@ -1180,15 +1175,15 @@ MASTER_SITE_XCONTRIB+= \
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_XFCE)
+_XFCE_PATH=	${DISTNAME:S/-${DISTVERSIONFULL}//:tl}/${DISTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
+
 MASTER_SITE_XFCE+= \
-	https://mirror.netcologne.de/xfce/%SUBDIR%/ \
-	http://ftp.udc.es/xfce/%SUBDIR%/ \
-	http://xfce.mirror.uber.com.au/%SUBDIR%/ \
-	https://archive.be.xfce.org/%SUBDIR%/ \
-	http://archive.be2.xfce.org/%SUBDIR%/ \
-	https://archive.al-us.xfce.org/%SUBDIR%/ \
-	http://mirrors.tummy.com/pub/archive.xfce.org/%SUBDIR%/ \
-	http://mirror.perldude.de/archive.xfce.org/%SUBDIR%/
+	https://archive.xfce.org/src/%SUBDIR%/${_XFCE_PATH}/ \
+	https://mirror.netcologne.de/xfce/src/%SUBDIR%/${_XFCE_PATH}/ \
+	https://ftp.cixug.es/xfce/src/%SUBDIR%/${_XFCE_PATH}/ \
+	https://archive.be.xfce.org/src/%SUBDIR%/${_XFCE_PATH}/ \
+	https://archive.al-us.xfce.org/src/%SUBDIR%/${_XFCE_PATH}/ \
+	http://mirror.perldude.de/archive.xfce.org/src/%SUBDIR%/${_XFCE_PATH}/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_XORG)
@@ -1267,7 +1262,7 @@ MASTER_SITES_SUBDIRS=	APACHE_COMMONS_BINARIES:${PORTNAME:S,commons-,,} \
 			SAMBA:${PORTNAME} \
 			SAVANNAH:${PORTNAME:tl} \
 			SOURCEFORGE:${PORTNAME:tl}/${PORTNAME:tl}/${PORTVERSION} \
-			XFCE:xfce/${XFCE_MASTER_SITE_VER}/src
+			XFCE:xfce
 
 .if defined(MASTER_SITES) && ${MASTER_SITES:N*\:/*}
 

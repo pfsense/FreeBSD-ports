@@ -168,6 +168,20 @@ DEV_ERROR+=	"PORT${_type} does not do anything unless the ${_type} option is pre
 .  endif
 .endfor
 
+# Whitelist of options helper lookalikes that should not be reported on:
+_OPTIONS_HELPERS_SEEN+=	OPENSSL_LDFLAGS
+_BROKEN_OPTIONS_HELPERS=
+.for opt in ${_REALLY_ALL_POSSIBLE_OPTIONS}
+.  for helper in ${_ALL_OPTIONS_HELPERS}
+.    if defined(${opt}_${helper}) && empty(_OPTIONS_HELPERS_SEEN:M${opt}_${helper})
+_BROKEN_OPTIONS_HELPERS+=	${opt}_${helper}
+.    endif
+.  endfor
+.endfor
+.if !empty(_BROKEN_OPTIONS_HELPERS)
+DEV_ERROR+=	"The following options helpers are incorrectly set after bsd.port.options.mk and are ineffective: ${_BROKEN_OPTIONS_HELPERS}"
+.endif
+
 SANITY_UNSUPPORTED=	USE_OPENAL USE_FAM USE_MAKESELF USE_ZIP USE_LHA USE_CMAKE \
 		USE_READLINE USE_ICONV PERL_CONFIGURE PERL_MODBUILD \
 		USE_PERL5_BUILD USE_PERL5_RUN USE_DISPLAY USE_FUSE \
@@ -265,7 +279,7 @@ APACHE_PORT_ALT=	DEFAULT_VERSIONS+=apache=${APACHE_PORT:S/www\/apache//:C/2(0-9)
 USE_FPC_RUN_ALT=	USES=fpc:run
 WANT_FPC_BASE_ALT=	USES=fpc:base
 WANT_FPC_ALL_ALT=	USES=fpc:all
-USE_QT4_ALT=		USES=qt:4 and USE_QT=${USE_QT4}
+USE_QT4_ALT=		USES=qt:5 and USE_QT=${USE_QT4} (beware) as Qt4 has been removed
 USE_QT5_ALT=		USES=qt:5 and USE_QT=${USE_QT5}
 QT_NONSTANDARD_ALT=	USES=qmake:no_env
 

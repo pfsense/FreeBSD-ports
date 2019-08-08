@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	google-cloud-sdk
-PORTVERSION=	237.0.0
+PORTVERSION=	250.0.0
 CATEGORIES=	net
 MASTER_SITES=	https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/
 DISTNAME=	google-cloud-sdk-${PORTVERSION}-linux-x86_64
@@ -16,6 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
 USES=		python:2.7
+
 WRKSRC=		${WRKDIR}/google-cloud-sdk
 NO_ARCH=	yes
 

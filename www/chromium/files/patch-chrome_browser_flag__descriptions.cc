@@ -1,6 +1,6 @@
---- chrome/browser/flag_descriptions.cc.orig	2019-03-11 22:00:53 UTC
+--- chrome/browser/flag_descriptions.cc.orig	2019-06-04 18:55:17 UTC
 +++ chrome/browser/flag_descriptions.cc
-@@ -3656,13 +3656,13 @@ const char kWakeOnPacketsDescription[] =
+@@ -3465,29 +3465,29 @@ const char kInstallableInkDropDescription[] =
  
  // Random platform combinations -----------------------------------------------
  
@@ -14,11 +14,15 @@
 -#endif  // defined(OS_WIN) || defined(OS_LINUX)
 +#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
  
- #if defined(OS_WIN) || defined(OS_MACOSX)
+-#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  
-@@ -3675,13 +3675,13 @@ const char kAutomaticTabDiscardingDescription[] =
+ const char kWebGL2ComputeContextName[] = "WebGL 2.0 Compute";
+ const char kWebGL2ComputeContextDescription[] =
+     "Enable the use of WebGL 2.0 Compute API.";
  
- #endif  // defined(OS_WIN) || defined(OS_MACOSX)
+-#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS)
++#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  
 -#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
 +#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)

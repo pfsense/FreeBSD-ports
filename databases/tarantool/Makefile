@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tarantool
-PORTVERSION=	1.10.2
-PORTREVISION=	3
+PORTVERSION=	2.1.2
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -37,11 +36,11 @@ PLIST_SUB=	TT_DATADIR=${TT_DATADIR} \
 		TT_LOGDIR=${TT_LOGDIR}
 SUB_FILES=	pkg-message
 
-GH_TUPLE=	rtsisyk:luafun:04c99f9:luafun/third_party/luafun \
-		tarantool:luajit:b8587fa:luajit/third_party/luajit \
-		tarantool:luarocks:6e6fe62:luarocks/third_party/luarocks \
-		tarantool:small:22d1bad:small/src/lib/small \
-		tarantool:test-run:ff5fb4f:test_run/test-run
+GH_TUPLE=	luafun:luafun:e248e00:luafun/third_party/luafun \
+		tarantool:luajit:5f0a43a:luajit/third_party/luajit \
+		tarantool:luarocks:05312b5:luarocks/third_party/luarocks \
+		tarantool:small:020716d:small/src/lib/small \
+		tarantool:test-run:27aebd9:test_run/test-run
 USE_GITHUB=	yes
 
 USERS=		tarantool
@@ -58,6 +57,7 @@ DEBUG_CMAKE_BOOL=	ENABLE_BACKTRACE
 post-patch:
 	@${ECHO_CMD} ${PORTVERSION}-0 > ${WRKSRC}/VERSION
 	@${GREP} -lr 'msgpuck/msgpuck.h' ${WRKSRC}/ | ${XARGS} ${REINPLACE_CMD} -e 's|msgpuck/msgpuck.h|msgpuck.h|'
+	@${REINPLACE_CMD} -e 's|libmsgpuck.a|libmsgpuck.so|' ${WRKSRC}/cmake/FindMsgPuck.cmake
 
 post-install:
 	@${RMDIR} ${STAGEDIR}${PREFIX}/lib/tarantool/

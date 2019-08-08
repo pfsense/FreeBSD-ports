@@ -52,16 +52,21 @@ PYQT_MAINTAINER=	kde@FreeBSD.org
 
 MASTER_SITE_RIVERBANK=	http://www.riverbankcomputing.com/static/Downloads/%SUBDIR%/
 
-MASTER_SITES_SIP=	SF/pyqt/sip/sip-${PORTVERSION} \
+# https://www.riverbankcomputing.com/static/Downloads/sip/4.19.15/sip-4.19.15.tar.gz
+MASTER_SITES_SIP=	RIVERBANK/sip/${PORTVERSION} \
+			SF/pyqt/sip/sip-${PORTVERSION} \
 			GENTOO
-MASTER_SITES_PYQT5=	SF/pyqt/PyQt5/PyQt-${PORTVERSION} \
+MASTER_SITES_PYQT5=	RIVERBANK/PyQt5/${PORTVERSION} \
+			SF/pyqt/PyQt5/PyQt-${PORTVERSION} \
 			GENTOO
-MASTER_SITES_QSCI2=	SF/pyqt/QScintilla2/QScintilla-${PORTVERSION} \
+#https://www.riverbankcomputing.com/static/Downloads/QScintilla/QScintilla_gpl-2.11.tar.gz
+MASTER_SITES_QSCI2=	RIVERBANK/QScintilla/${PORTVERSION} \
+			SF/pyqt/QScintilla2/QScintilla-${PORTVERSION} \
 			GENTOO
 
-SIP_VERSION=		4.19.13
-QSCI2_VERSION=		2.10.8
-PYQT5_VERSION=		5.11.3
+SIP_VERSION=		4.19.17
+QSCI2_VERSION=		2.11.1
+PYQT5_VERSION=		5.12.2
 
 SIP_DISTNAME=		sip-${SIP_VERSION}
 PYQT5_DISTNAME=		PyQt5_gpl-${PYQT5_VERSION}
@@ -72,7 +77,7 @@ PYQT5_LICENSE=		GPLv3
 # Keep these synchronized with OPTIONS_DEFINE in devel/py-qt5
 # PyQt components split up into pyqt5/...
 _USE_PYQT_ALL=		core dbus dbussupport demo designer designerplugin \
-			gui multimedia network opengl qscintilla2 \
+			gui help multimedia network opengl qscintilla2 \
 			sql svg test webkit xml xmlpatterns sip
 # List of components only in pyqt5
 _USE_PYQT5_ONLY=	multimediawidgets printsupport qml quickwidgets \
@@ -111,7 +116,7 @@ py-sql_PATH=		${PYQT_PY_RELNAME}-sql>=${PYQT_VERSION}
 py-svg_PATH=		${PYQT_PY_RELNAME}-svg>=${PYQT_VERSION}
 py-test_PATH=		${PYQT_PY_RELNAME}-test>=${PYQT_VERSION}
 py-webchannel_PATH=	${PYQT_PY_RELNAME}-webchannel>=${PYQT_VERSION}
-py-webengine_PATH=	${PYQT_PY_RELNAME}-webengine>=${PYQT_VERSION}
+py-webengine_PATH=	${PYQT_PY_RELNAME}-webengine>=5.12.1
 py-webkit_PATH=		${PYQT_PY_RELNAME}-webkit>=${PYQT_VERSION}
 py-xml_PATH=		${PYQT_PY_RELNAME}-xml>=${PYQT_VERSION}
 py-xmlpatterns_PATH=	${PYQT_PY_RELNAME}-xmlpatterns>=${PYQT_VERSION}
@@ -221,7 +226,10 @@ PLIST_SUB+=	PYQT_APIDIR=${_APIDIR_REL} \
 		PYQT_EXAMPLEDIR=${_EXAMPLEDIR_REL} \
 		PYQT_SIPDIR=${_SIPDIR_REL} \
 		PYQT_DESIGNERDIR=${_DESIGNERDIR_REL} \
-		PYQT_QMLDIR=${_QMLDIR_REL}
+		PYQT_QMLDIR=${_QMLDIR_REL} \
+		PYQT_SIPVERSION=${SIP_VERSION} \
+		PYQT_QSCIVERSION=${QSCI2_VERSION} \
+		PYQT_PYQTVERSION=${PYQT_VERSION}
 
 .if defined(PYQT_DIST)
 PORTVERSION=	${PYQT_VERSION}

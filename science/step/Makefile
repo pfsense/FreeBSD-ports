@@ -20,7 +20,7 @@ USE_KDE=	attica auth bookmarks codecs completion config configwidgets \
 		kdelibs4support khtml kio newstuff notifications parts \
 		plotting service solid sonnet textwidgets unitconversion \
 		widgetsaddons windowsystem xmlgui
-USE_QT=		core dbus declarative gui network opengl printsupport svg \
+USE_QT=		concurrent core dbus declarative gui network opengl printsupport svg \
 		widgets xml \
 		buildtools_build qmake_build
 CXXFLAGS_powerpc64=	-Wno-error=return-type

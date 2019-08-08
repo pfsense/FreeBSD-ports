@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	slackclient
-PORTVERSION=	1.3.0
-DISTVERSIONPREFIX=	v
+PORTVERSION=	2.0.1
 CATEGORIES=	net-im python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,15 +10,14 @@ MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	Slack API clients for Web API and RTM API
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}websocket-client>=0.35:www/py-websocket-client@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}requests>=2.11:www/py-requests@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>=1.10:devel/py-six@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-mock>0:devel/py-pytest-mock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}responses>0:devel/py-responses@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-runner>0:devel/py-pytest-runner@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>3.5.2:www/py-aiohttp@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}aiodns>1.0:dns/py-aiodns@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
@@ -31,6 +29,6 @@ GH_PROJECT=	python-${PORTNAME}
 NO_ARCH=	yes
 
 do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v
+	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs
 
 .include <bsd.port.mk>

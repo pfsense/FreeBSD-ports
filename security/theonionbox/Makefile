@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	theonionbox
-PORTVERSION=	4.3.0
+DISTVERSION=	4.3.1
 CATEGORIES=	security net python
 MASTER_SITES=	CHEESESHOP
 
@@ -12,6 +12,7 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}apscheduler>=3.4:devel/py-apscheduler@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}bottle>=0.12.13:www/py-bottle@${PY_FLAVOR} \
+		${PY_FUTURES} \
 		${PYTHON_PKGNAMEPREFIX}psutil>=5.4.0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pysocks>=1.6.7:net/py-pysocks@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>2.18:www/py-requests@${PY_FLAVOR} \
@@ -19,10 +20,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}apscheduler>=3.4:devel/py-apscheduler@${PY_F
 		${PYTHON_PKGNAMEPREFIX}tzlocal>=1.5:devel/py-tzlocal@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urllib3>=1.22:net/py-urllib3@${PY_FLAVOR}
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} # workaround for bug#230613: missing internal sqlite3 module in python
-py27_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}futures>=3.2:devel/py-futures@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist noflavors
+
 NO_ARCH=	yes
 
 POST_PLIST=	correct-plist
@@ -41,7 +42,7 @@ post-patch:
 post-patch-DOCS-off:
 	@${REINPLACE_CMD} "s|('share/doc/${PORTNAME}', \['docs/\*\.\*'\]),||" ${WRKSRC}/setup.py
 
-post-install:
+xpost-install:
 	@${CHMOD} +x ${STAGEDIR}${PREFIX}/etc/rc.d/${PORTNAME}
 
 correct-plist:

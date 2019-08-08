@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	universal-ctags
-PORTVERSION=	g20190223
+PORTVERSION=	g20190522
 CATEGORIES=	devel
 
 MAINTAINER=	dereks@lifeofadishwasher.com
@@ -12,11 +12,12 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		autoreconf pkgconfig
+
 GNU_CONFIGURE=	yes
 
 USE_GITHUB=	yes
 GH_PROJECT=	ctags
-GH_TAGNAME=	0e5cfa3f4f8
+GH_TAGNAME=	3fdf28bc
 GH_TUPLE=	universal-ctags:packcc:de4991c:packcc/misc/packcc
 
 OPTIONS_DEFINE=			ASPELL DEBUG ICONV JSON LIBXML2 MANPAGES YAML

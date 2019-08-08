@@ -1,4 +1,4 @@
---- tools/gn/build/gen.py.orig	2019-03-11 22:12:13 UTC
+--- tools/gn/build/gen.py.orig	2019-06-04 19:02:25 UTC
 +++ tools/gn/build/gen.py
 @@ -44,7 +44,7 @@ class Platform(object):
  

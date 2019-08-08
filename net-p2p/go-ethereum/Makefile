@@ -2,7 +2,7 @@
 
 PORTNAME=	go-ethereum
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.22
+DISTVERSION=	1.8.27
 CATEGORIES=	net-p2p
 
 MAINTAINER=	me@enriquefynn.com
@@ -11,7 +11,7 @@ COMMENT=	Go implementation of the Ethereum y/w paper
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	go>=1.9.2:lang/go
+USES=		go:no_targets
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ethereum
