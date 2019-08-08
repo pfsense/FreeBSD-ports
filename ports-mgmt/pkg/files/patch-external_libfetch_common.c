@@ -1,4 +1,4 @@
---- external/libfetch/common.c.orig	2017-08-17 03:56:56 UTC
+--- external/libfetch/common.c.orig	2019-05-31 14:57:31 UTC
 +++ external/libfetch/common.c
 @@ -60,6 +60,11 @@
  #define INFTIM (-1)
@@ -12,8 +12,20 @@
  /*** Local data **************************************************************/
  
  /*
-@@ -836,13 +841,29 @@ fetch_ssl(conn_t *conn, const struct url *URL, int ver
+@@ -593,7 +598,7 @@ fetch_ssl_verify_altname(STACK_OF(GENERAL_NAME) *altna
+ #else
+ 		name = sk_GENERAL_NAME_value(altnames, i);
+ #endif
+-		ns = (const char *)ASN1_STRING_data(name->d.ia5);
++		ns = (const char *)ASN1_STRING_get0_data(name->d.ia5);
+ 		nslen = (size_t)ASN1_STRING_length(name->d.ia5);
+ 
+ 		if (name->type == GEN_DNS && ip == NULL &&
+@@ -834,15 +839,33 @@ fetch_ssl(conn_t *conn, const struct url *URL, int ver
+ #ifdef WITH_SSL
+ 	int ret, ssl_err;
  	X509_NAME *name;
++	OPENSSL_INIT_SETTINGS *settings;
  	char *str;
  
 +#ifdef WITH_STATIC_ENGINE
@@ -33,7 +45,8 @@
 +	ENGINE_register_all_complete();
 +#endif
  	SSL_load_error_strings();
-+	OPENSSL_config(NULL);
++	settings = OPENSSL_INIT_new();
++	OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CONFIG, settings);
 +
 +#ifdef WITH_STATIC_ENGINE
 +		fetch_ssl_initilized = 1;
