@@ -2,7 +2,6 @@
 
 PORTNAME=	pfSense-pkg-node_exporter
 PORTVERSION=	0.18.1
-PORTEPOCH=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +12,7 @@ COMMENT=	pfSense package node_exporter
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/node_exporter:sysutils/node_exporter
+RUN_DEPENDS=	node_exporter>0:sysutils/node_exporter
 
 NO_BUILD=	yes
 NO_MTREE=	yes
