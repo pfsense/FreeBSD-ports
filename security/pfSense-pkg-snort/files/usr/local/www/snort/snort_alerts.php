@@ -550,7 +550,7 @@ $supplist = snort_load_suppress_sigs($a_instance[$instanceid], true);
 // Load up an array with the configured Snort interfaces
 $interfaces = array();
 foreach ($a_instance as $id => $instance) {
-	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']);
+	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']) . " (" . get_real_interface($instance['interface']) . ")";
 }
 
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Alerts"));
