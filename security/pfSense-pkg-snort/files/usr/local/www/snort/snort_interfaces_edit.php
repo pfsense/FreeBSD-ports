@@ -441,6 +441,15 @@ if ($_POST['save'] && !$input_errors) {
 			$natent['sf_appid_statslog'] = "on";
 			$natent['sf_appid_stats_period'] = "300";
 
+			$natent['ssh_preproc_ports'] = '22';
+			$natent['ssh_preproc_max_encrypted_packets'] = 20;
+			$natent['ssh_preproc_max_client_bytes'] = 19600;
+			$natent['ssh_preproc_max_server_version_len'] = 100;
+			$natent['ssh_preproc_enable_respoverflow'] = 'on';
+			$natent['ssh_preproc_enable_srvoverflow'] = 'on';
+			$natent['ssh_preproc_enable_ssh1crc32'] = 'on';
+			$natent['ssh_preproc_enable_protomismatch'] = 'on';
+
 			$a_rule[] = $natent;
 		}
 
