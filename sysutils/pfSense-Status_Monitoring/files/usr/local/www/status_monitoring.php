@@ -123,7 +123,7 @@ if ($_POST['save-view']) {
 }
 
 //add a new view and make sure the string isn't empty
-if ($_POST['add-view']) {
+if ($_POST['add-view'] && !empty($view_title) && ($view_title != "default")) {
 
 	$title = $view_title;
 
