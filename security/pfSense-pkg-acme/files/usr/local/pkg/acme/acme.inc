@@ -256,6 +256,18 @@ $acme_domain_validation_method['dns_nsupdate'] = array('name' => "DNS-NSupdate /
 			'description' =>"(Optional) Explicitly set the zone name for updates."
 		)
 	));
+$acme_domain_validation_method['dns_acmeproxy'] = array('name' => "DNS-Acmeproxy",
+	'fields' => array(
+		'ACMEPROXY_ENDPOINT' => array('name'=>"acmeproxy_endpoint",'columnheader'=>"Endpoint URL",'type'=>"textbox",
+			'description' =>"Acmeproxy Endpoint URL (https://ip:port)"
+		),
+		'ACMEPROXY_USERNAME' => array('name'=>"acmeproxy_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Acmeproxy Username"
+		),
+		'ACMEPROXY_PASSWORD' => array('name'=>"acmeproxy_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Acmeproxy Password"
+		),
+	));
 $acme_domain_validation_method['dns_acmedns'] = array('name' => "DNS-acme-dns.io",
 	'fields' => array(
 		'ACMEDNS_USERNAME' => array('name'=>"acmedns_username",'columnheader'=>"Username",'type'=>"textbox",
@@ -343,11 +355,17 @@ $acme_domain_validation_method['dns_cloudns'] = array('name' => "DNS-ClouDNS",
 $acme_domain_validation_method['dns_cf'] = array('name' => "DNS-Cloudflare",
 	'fields' => array(
 		'CF_Key' => array('name'=>"cf_key",'columnheader'=>"Key",'type'=>"textbox",
-			'description' =>"Fill in the API Key"
+			'description' =>"Cloudflare API Key"
 		),
 		'CF_Email' => array('name'=>"cf_email",'columnheader'=>"Email",'type'=>"textbox",
-			'description' =>"Fill in the API Email Address"
-		)
+			'description' =>"Cloudflare API Email Address"
+		),
+		'CF_Token' => array('name'=>"cf_token",'columnheader'=>"Token",'type'=>"textbox",
+			'description' =>"Cloudflare API Token"
+		),
+		'CF_Account_ID' => array('name'=>"cf_account_id",'columnheader'=>"Account ID",'type'=>"textbox",
+			'description' =>"Cloudflare API Account ID"
+		),
 	));
 $acme_domain_validation_method['dns_cx'] = array('name' => "DNS-Cloudxns",
 	'fields' => array(
@@ -481,6 +499,15 @@ $acme_domain_validation_method['dns_duckdns'] = array('name' => "DNS-DuckDNS",
 			'description' =>"Fill in the DuckDNS API Token (Look in DuckDNS account settings)"
 		)
 	));
+$acme_domain_validation_method['dns_durabledns'] = array('name' => "DNS-DurableDNS.com",
+	'fields' => array(
+		'DD_API_User' => array('name'=>"dd_api_user",'columnheader'=>"API User",'type'=>"textbox",
+			'description' =>"DurableDNS API User"
+		),
+		'DD_API_Key' => array('name'=>"dd_api_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"DurableDNS API Key"
+		),
+	));
 $acme_domain_validation_method['dns_dyn'] = array('name' => "DNS-Dyn.com",
 	'fields' => array(
 		'DYN_Customer' => array('name'=>"dyn_customer",'columnheader'=>"Customer",'type'=>"textbox",
@@ -553,6 +580,15 @@ $acme_domain_validation_method['dns_gdnsdk'] = array('name' => "DNS-GratisDNS",
 			'description' =>"GratisDNS Password"
 		)
 	));
+$acme_domain_validation_method['dns_hexonet'] = array('name' => "DNS-Hexonet",
+	'fields' => array(
+		'Hexonet_Login' => array('name'=>"hexonet_login",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Hexonet Username"
+		),
+		'Hexonet_Password' => array('name'=>"hexonet_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Hexonet Password"
+		)
+	));
 $acme_domain_validation_method['dns_he'] = array('name' => "DNS-Hurricane Electric",
 	'fields' => array(
 		'HE_Username' => array('name'=>"he_username",'columnheader'=>"Username",'type'=>"textbox",
@@ -583,6 +619,15 @@ $acme_domain_validation_method['dns_infoblox'] = array('name' => "DNS-Infoblox",
 			'description' =>"Fill in the DNS View, or enter 'default'"
 		)
 	));
+$acme_domain_validation_method['dns_internetbs'] = array('name' => "DNS-Internet.BS",
+	'fields' => array(
+		'INTERNETBS_API_KEY' => array('name'=>"internetbs_api_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Internet.BS API Key"
+		),
+		'INTERNETBS_API_PASSWORD' => array('name'=>"internetbs_api_password",'columnheader'=>"API Password",'type'=>"textbox",
+			'description' =>"Internet.BS API Password"
+		)
+	));
 $acme_domain_validation_method['dns_inwx'] = array('name' => "DNS-INWX.de",
 	'fields' => array(
 		'INWX_User' => array('name'=>"inwx_username",'columnheader'=>"Username",'type'=>"textbox",
@@ -606,6 +651,18 @@ $acme_domain_validation_method['dns_ispconfig'] = array('name' => "DNS-ISPConfig
 		'ISPC_Api_Insecure' => array('name'=>"ispc_api_insecure",'columnheader'=>"Secure",'type'=>"textbox",
 			'description' =>"Fill in the Set 1 for insecure and 0 for secure  -> difference is whether ssl cert is checked for validity (0) or whether it is just accepted (1)"
 		)
+	));
+$acme_domain_validation_method['dns_jd'] = array('name' => "DNS-jdcloud.com",
+	'fields' => array(
+		'JD_ACCESS_KEY_ID' => array('name'=>"jd_access_key_id",'columnheader'=>"Key ID",'type'=>"textbox",
+			'description' =>"jdcloud Access Key ID"
+		),
+		'JD_ACCESS_KEY_SECRET' => array('name'=>"jd_access_key_secret",'columnheader'=>"Secret",'type'=>"textbox",
+			'description' =>"jdcloud Access Key Secret"
+		),
+		'JD_REGION' => array('name'=>"jd_region",'columnheader'=>"Region",'type'=>"textbox",
+			'description' =>"jdcloud Region"
+		),
 	));
 /*
 You must install python and lexicon before using it. ???
@@ -743,6 +800,15 @@ $acme_domain_validation_method['dns_nw'] = array('name' => "DNS-NW API: Nexcess 
 			'description' => 'Choose the NW API Endpoint'
 		),
 	));
+$acme_domain_validation_method['dns_one'] = array('name' => "DNS-one.com",
+	'fields' => array(
+		'ONECOM_User' => array('name'=>"onecom_user",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"One.com Username"
+		),
+		'ONECOM_Password' => array('name'=>"onecom_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"One.com Password"
+		)
+	));
 $acme_domain_validation_method['dns_online'] = array('name' => "DNS-Online.net",
 	'fields' => array(
 		'ONLINE_API_KEY' => array('name'=>"online_api_key",'columnheader'=>"API Key",'type'=>"textbox",
@@ -806,6 +872,24 @@ $acme_domain_validation_method['dns_rackspace'] = array('name' => "DNS-Rackspace
 			'description' =>"Rackspace API Key"
 		)
 	));
+$acme_domain_validation_method['dns_regru'] = array('name' => "DNS-reg.ru",
+	'fields' => array(
+		'REGRU_API_Username' => array('name'=>"regru_api_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"reg.ru Username"
+		),
+		'REGRU_API_Password' => array('name'=>"regru_api_password",'columnheader'=>"API Password",'type'=>"textbox",
+			'description' =>"reg.ru API Password"
+		)
+	));
+$acme_domain_validation_method['dns_schlundtech'] = array('name' => "DNS-schlundtech.de",
+	'fields' => array(
+		'SCHLUNDTECH_USER' => array('name'=>"schlundtech_user",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"schlundtech.de Username"
+		),
+		'SCHLUNDTECH_PASSWORD' => array('name'=>"schlundtech_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"schlundtech.de Password"
+		)
+	));
 $acme_domain_validation_method['dns_selectel'] = array('name' => "DNS-Selectel",
 	'fields' => array(
 		'SL_Key' => array('name'=>"sl_key",'columnheader'=>"Key",'type'=>"textbox",
@@ -852,6 +936,12 @@ $acme_domain_validation_method['dns_vscale'] = array('name' => "DNS-vscale.io",
 	'fields' => array(
 		'VSCALE_API_KEY' => array('name'=>"vscale_api_key",'columnheader'=>"API Key",'type'=>"textbox",
 			'description' =>"Fill in the API Key"
+		)
+	));
+$acme_domain_validation_method['dns_vultr'] = array('name' => "DNS-vultr.com",
+	'fields' => array(
+		'VULTR_API_KEY' => array('name'=>"vultr_api_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"vultr.com API Key"
 		)
 	));
 $acme_domain_validation_method['dns_yandex'] = array('name' => "DNS-Yandex",
@@ -1200,11 +1290,13 @@ function & get_certificate($name) {
 								$domain["{$method}nsupdate_server"],
 								$domain["{$method}nsupdate_keyname"],
 								$domain["{$method}nsupdate_keyalgo"],
-								$domain["{$method}nsupdate_key"]
+								$domain["{$method}nsupdate_key"],
+								$domain["{$method}nsupdate_zone"]
 						);
 					}
 					if (substr($method, 0, 4) == "dns_") {
 						$newdomain->setchallengealias($domain["anydns"."challengealias"]);
+						$newdomain->setchallengedomain($domain["anydns"."challengedomain"]);
 					}
 					$domainstosign[] = $newdomain;
 					$envvariables = array();
