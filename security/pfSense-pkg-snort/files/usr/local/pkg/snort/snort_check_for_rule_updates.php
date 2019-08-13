@@ -3,9 +3,9 @@
  * snort_check_for_rule_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -837,5 +837,4 @@ if ($update_errors)
 else
 	$config['installedpackages']['snortglobal']['last_rule_upd_status'] = gettext("success");
 $config['installedpackages']['snortglobal']['last_rule_upd_time'] = time();
-write_config("Snort pkg: updated status for updated rules package(s) check.", FALSE);
 ?>

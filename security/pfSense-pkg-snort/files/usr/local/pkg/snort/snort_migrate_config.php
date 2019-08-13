@@ -3,8 +3,8 @@
  * snort_migrate_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,8 +47,6 @@ if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 // Just exit if this is a clean install with no saved settings
 if (empty($config['installedpackages']['snortglobal']['rule']))
 	return;
-
-$rule = &$config['installedpackages']['snortglobal']['rule'];
 
 /****************************************************************************/
 /* Loop through all the <rule> elements in the Snort configuration and      */
@@ -161,7 +159,7 @@ if (empty($config['installedpackages']['snortglobal']['sid_list_migration']) && 
 /**********************************************************/
 /* Migrate per interface settings if required.            */
 /**********************************************************/
-foreach ($rule as &$r) {
+foreach ($config['installedpackages']['snortglobal']['rule'] as &$r) {
 	// Initialize arrays for supported preprocessors if necessary
 	if (!is_array($r['frag3_engine'])) {
 		$r['frag3_engine'] = array();

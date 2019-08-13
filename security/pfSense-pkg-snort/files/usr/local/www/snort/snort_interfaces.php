@@ -3,8 +3,8 @@
  * snort_interfaces.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -344,7 +344,7 @@ if ($savemsg)
 					/* convert fake interfaces to real and check if iface is up */
 					/* There has to be a smarter way to do this */
 					$if_real = get_real_interface($natent['interface']);
-					$natend_friendly = convert_friendly_interface_to_friendly_descr($natent['interface']);
+					$natend_friendly = convert_friendly_interface_to_friendly_descr($natent['interface']) . " ({$if_real})";
 					$snort_uuid = $natent['uuid'];
 
 					/* See if interface has any rules defined and set boolean flag */
