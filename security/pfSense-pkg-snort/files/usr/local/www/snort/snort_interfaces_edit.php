@@ -40,6 +40,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
 if (is_null($id)) {
+	unset($a_rule);
         header("Location: /snort/snort_interfaces.php");
         exit;
 }
@@ -51,13 +52,13 @@ if ($_REQUEST['ajax']) {
 	$type = $_REQUEST['type'];
 
 	if (isset($id) && isset($wlist)) {
-		$a_rule = $config['installedpackages']['snortglobal']['rule'][$id];
+		$rule = $config['installedpackages']['snortglobal']['rule'][$id];
 		if ($type == "homenet") {
-			$list = snort_build_list($a_rule, empty($wlist) ? 'default' : $wlist);
+			$list = snort_build_list($rule, empty($wlist) ? 'default' : $wlist);
 			$contents = implode("\n", $list);
 		}
 		elseif ($type == "passlist") {
-			$list = snort_build_list($a_rule, $wlist, true);
+			$list = snort_build_list($rule, $wlist, true);
 			$contents = implode("\n", $list);
 		}
 		elseif ($type == "suppress") {
@@ -66,14 +67,14 @@ if ($_REQUEST['ajax']) {
 		}
 		elseif ($type == "externalnet") {
 			if (empty($wlist) || $wlist == "default") {
-				$list = snort_build_list($a_rule, $a_rule['homelistname']);
+				$list = snort_build_list($rule, $rule['homelistname']);
 				$contents = "";
 				foreach ($list as $ip)
 					$contents .= "!{$ip}\n";
 				$contents = trim($contents, "\n");
 			}
 			else {
-				$list = snort_build_list($a_rule, $wlist, false, true);
+				$list = snort_build_list($rule, $wlist, false, true);
 				$contents = implode("\n", $list);
 			}
 		}
@@ -240,6 +241,7 @@ if ($_POST['save'] && !$input_errors) {
 		write_config("Snort pkg: modified interface configuration for {$a_rule[$id]['interface']}.");
 		$rebuild_rules = false;
 		sync_snort_package_config();
+		unset($a_rule);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -477,6 +479,7 @@ if ($_POST['save'] && !$input_errors) {
 		if ($snort_reload == true)
 			snort_reload_config($natent, "SIGHUP");
 
+		unset($a_rule);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -507,6 +510,10 @@ $if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interf
 if (empty($if_friendly)) {
 	$if_friendly = "None";
 }
+
+// Finished with config array reference, so release it
+unset($a_rule);
+
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Edit Interface"), gettext("{$if_friendly}"));
 include("head.inc");
 

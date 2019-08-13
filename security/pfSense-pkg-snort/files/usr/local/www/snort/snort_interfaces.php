@@ -144,6 +144,7 @@ if (isset($_POST['del_x'])) {
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
 		sync_snort_package_config();
+		unset($a_nat);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -177,6 +178,7 @@ else {
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
 		sync_snort_package_config();
+		unset($a_nat);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -674,6 +676,9 @@ if ($savemsg)
 </script>
 
 <?php
+// Finished with config array reference, so release it
+unset($a_nat);
+
 include("foot.inc");
 ?>
 
