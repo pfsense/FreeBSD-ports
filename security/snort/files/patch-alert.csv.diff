@@ -1,6 +1,6 @@
-diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_csv.c ./snort-2.9.13/src/output-plugins/spo_csv.c
---- ./snort-2.9.13.orig/src/output-plugins/spo_csv.c	2019-03-20 01:28:02.000000000 -0400
-+++ ./src/output-plugins/spo_csv.c	2019-05-27 15:44:49.000000000 -0400
+diff -ruN ./snort-2.9.14.1.orig/src/output-plugins/spo_csv.c ./snort-2.9.14.1/src/output-plugins/spo_csv.c
+--- ./snort-2.9.14.1.orig/src/output-plugins/spo_csv.c	2019-08-02 02:16:46.000000000 -0400
++++ ./src/output-plugins/spo_csv.c	2019-08-12 10:13:08.000000000 -0400
 @@ -66,10 +66,11 @@
  
  #include "snort.h"
@@ -14,29 +14,26 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_csv.c ./snort-2.9.13/src/ou
  
  #define DEFAULT_FILE  "alert.csv"
  #define DEFAULT_LIMIT (128*M_BYTES)
-@@ -90,7 +91,13 @@
+@@ -90,6 +91,12 @@
      AlertCSVConfig *config;
  } AlertCSVData;
  
 +/* Global variable used by Log output and other functions */
 +extern OptTreeNode *otn_tmp;
- 
++ 
 +/* Used to translate rule action keyword enum to string */
 +static const char* s_dispos[] = { "Allow", "CDrop", "WDrop", "Drop", "FDrop" };
 +static const char* s_rule_actions[] = { "none", "alert", "drop", "log", "pass", "reject", "sdrop" };
-+
+ 
  /* list of function prototypes for this preprocessor */
  static void AlertCSVInit(struct _SnortConfig *, char *);
- static AlertCSVData *AlertCSVParseArgs(struct _SnortConfig *, char *);
-@@ -497,6 +504,37 @@
-             {
-                 CreateTCPFlagString(p, tcpFlags);
+@@ -499,6 +506,37 @@
                  TextLog_Print(log, "%s", tcpFlags);
-+            }
-+        }
+             }
+         }
 +        else if (!strcasecmp("classification",type))
 +        {
-+	    if (otn_tmp != NULL) {
++            if (otn_tmp != NULL) {
 +                if ((otn_tmp->sigInfo.classType != NULL) && (otn_tmp->sigInfo.classType->name != NULL))
 +                    TextLog_Print(log, "%s", otn_tmp->sigInfo.classType->name);
 +            }
@@ -63,6 +60,8 @@ diff -ruN ./snort-2.9.13.orig/src/output-plugins/spo_csv.c ./snort-2.9.13/src/ou
 +                    dispos = ACTIVE_DROP;
 +
 +                TextLog_Print(log, "%s", s_dispos[dispos]);
-             }
-         }
++             }
++         }
  
+         if (num < numargs - 1)
+             TextLog_Putc(log, ',');
