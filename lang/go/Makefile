@@ -32,8 +32,6 @@ SHEBANG_GLOB=	*.bash *.pl *.sh
 sh_OLD_CMD=	/bin/bash "/usr/bin/env bash"
 sh_CMD=		${SH}
 
-# Fix extract on armv7
-EXTRACT_CMD=	env LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 ${TAR}
 WRKSRC=		${WRKDIR}/go
 ONLY_FOR_ARCHS=	i386 amd64 armv6 armv7
 
