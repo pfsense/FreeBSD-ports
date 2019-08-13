@@ -218,6 +218,9 @@ if ($input_errors)
 if ($savemsg)
 	print_info_box($savemsg);
 
+// Finished with config array reference, so release it
+unset($a_nat);
+
 $tab_array = array();
 $tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
 $tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");

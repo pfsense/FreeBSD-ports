@@ -108,6 +108,9 @@ function snort_add_supplist_entry($suppress) {
 		}
 	}
 
+	// Release config array reference
+	unset($a_suppress);
+
 	/* If we created a new list or updated an existing one, save the change, */
 	/* tell Snort to load it, and return true; otherwise return false.       */
 	if ($found_list) {
@@ -245,7 +248,7 @@ if ($_POST['save']) {
 	$config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
 
 	write_config("Snort pkg: updated ALERTS tab settings.");
-
+	unset($a_instance);
 	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
 	exit;
 }
@@ -513,6 +516,7 @@ if ($_POST['clear']) {
 	mwexec("/bin/chmod 660 {$snortlogdir}/*", true);
 	if (file_exists("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid"))
 		mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid -a");
+	unset($a_instance);
 	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
 	exit;
 }
@@ -550,7 +554,7 @@ $supplist = snort_load_suppress_sigs($a_instance[$instanceid], true);
 // Load up an array with the configured Snort interfaces
 $interfaces = array();
 foreach ($a_instance as $id => $instance) {
-	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']);
+	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']) . " (" . get_real_interface($instance['interface']) . ")";
 }
 
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Alerts"));
@@ -1078,6 +1082,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 		</div>
 	</div>
 <?php endif; ?>
+<?php unset($a_instance); ?>
 
 <script type="text/javascript">
 //<![CDATA[

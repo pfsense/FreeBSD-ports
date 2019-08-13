@@ -54,8 +54,9 @@ if (is_null($id)) {
 		$_POST['openruleset'] = $response[1];
 	}
 	else {
-	header("Location: /snort/snort_interfaces.php");
-	exit;
+		unset($a_rule);
+		header("Location: /snort/snort_interfaces.php");
+		exit;
 	}
 }
 
@@ -1678,6 +1679,7 @@ $modal->addInput(new Form_Textarea (
 ))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'soft');
 $form->add($modal);
 print($form);
+unset($a_rule);
 ?>
 
 <script type="text/javascript">
