@@ -155,7 +155,7 @@ include/snort/target_based/snort_protocols.h
 include/snort/time/clock_defs.h
 include/snort/time/packet_time.h
 include/snort/time/stopwatch.h
-include/snort/time/tsc_clock.h
+%%TSC%%include/snort/time/tsc_clock.h
 include/snort/utils/bitop.h
 include/snort/utils/cpp_macros.h
 include/snort/utils/endian.h
