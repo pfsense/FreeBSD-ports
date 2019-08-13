@@ -3,10 +3,10 @@
  * snort_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
  * All rights reserved.
  *
@@ -403,7 +403,7 @@ $supplist = snort_load_suppress_sigs($a_instance[$instanceid], true);
 // Load up an array with the configured Snort interfaces
 $interfaces = array();
 foreach ($a_instance as $id => $instance) {
-	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']);
+	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']) . " (" . get_real_interface($instance['interface']) . ")";
 }
 
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Alerts"));
