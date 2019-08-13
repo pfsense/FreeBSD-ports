@@ -3,9 +3,9 @@
  * snort_post_install.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -143,8 +143,7 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	if (count($config['installedpackages']['snortglobal']['rule']) > 0) {
 		$uuids = array();
 		$fixed_duplicate = FALSE;
-		$snortconf = &$config['installedpackages']['snortglobal']['rule'];
-		foreach ($snortconf as &$snortcfg) {
+		foreach ($config['installedpackages']['snortglobal']['rule'] as &$snortcfg) {
 			// Check for and fix a duplicate UUID
 			$if_real = get_real_interface($snortcfg['interface']);
 			if (!isset($uuids[$snortcfg['uuid']])) {
@@ -164,7 +163,8 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 				$fixed_duplicate = TRUE;
 			}
 		}
-		unset($uuids);
+		// Release config array reference and $uuids array memory
+		unset($snortcfg, $uuids);
 	}
 	/****************************************************************/
 	/* End of duplicate UUID bug fix.                               */
