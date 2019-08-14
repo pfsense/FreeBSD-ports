@@ -3,9 +3,9 @@
  * snort_interfaces_suppress.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -77,6 +77,7 @@ if (isset($_POST['del_btn'])) {
 		if ($need_save) {
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
 			sync_snort_package_config();
+			unset($a_suppress);
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
@@ -99,6 +100,7 @@ else {
 			unset($a_suppress[$delbtn_list]);
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
 			sync_snort_package_config();
+			unset($a_suppress);
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
@@ -184,6 +186,8 @@ display_top_tabs($tab_array, true);
 		</div>
 	</div>
 </div>
+
+<?php unset($a_suppress); ?>
 
 <script type="text/javascript">
 //<![CDATA[

@@ -158,6 +158,18 @@ function frr_plugin_carp($pluginparams) {
 	}
 }
 
+/*
+ * Called when IPsec reloads via rc.newipsecdns or similar. Cycles the IPsec
+ * interface in FRR status so routing will work again.
+ */
+function frr_ipsec_reload() {
+	require_once('interfaces.inc');
+	$vti_ifs = array_keys(interface_ipsec_vti_list_all());
+	foreach ($vti_ifs as $vif) {
+		mwexec('/usr/local/bin/frrctl cycleinterface ' . escapeshellarg($vif));
+	}
+}
+
 /* Function to get a few items of interface information from a 'friendly'
  * interface name */
 function frr_get_interfaceinfo($interface, $ipv6 = false) {

@@ -340,6 +340,7 @@
     SUBDIR += libcapn
     SUBDIR += libcmis
     SUBDIR += libcoap
+    SUBDIR += libdaq
     SUBDIR += libdmapsharing
     SUBDIR += libdnet
     SUBDIR += libexosip2

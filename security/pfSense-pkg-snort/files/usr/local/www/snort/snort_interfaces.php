@@ -144,6 +144,7 @@ if (isset($_POST['del_x'])) {
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
 		sync_snort_package_config();
+		unset($a_nat);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -177,6 +178,7 @@ else {
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
 		sync_snort_package_config();
+		unset($a_nat);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -365,7 +367,7 @@ if ($savemsg)
 					/* convert fake interfaces to real and check if iface is up */
 					/* There has to be a smarter way to do this */
 					$if_real = get_real_interface($natent['interface']);
-					$natend_friendly = convert_friendly_interface_to_friendly_descr($natent['interface']);
+					$natend_friendly = convert_friendly_interface_to_friendly_descr($natent['interface']) . " ({$if_real})";
 					$snort_uuid = $natent['uuid'];
 					$start_lck_file = "{$g['varrun_path']}/snort_{$if_real}_starting.lck";
 					$stop_lck_file = "{$g['varrun_path']}/snort_{$if_real}_stopping.lck";
@@ -674,6 +676,9 @@ if ($savemsg)
 </script>
 
 <?php
+// Finished with config array reference, so release it
+unset($a_nat);
+
 include("foot.inc");
 ?>
 

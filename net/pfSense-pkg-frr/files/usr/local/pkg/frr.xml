@@ -243,4 +243,5 @@
 	<custom_php_install_command>
 		frr_package_install();
 	</custom_php_install_command>
+	<ipsec_reload_function>frr_ipsec_reload</ipsec_reload_function>
 </packagegui>

@@ -367,6 +367,8 @@ if ($_POST['arp_spoof_save']) {
 			$a_nat[$id]['arp_spoof_engine']['item'][] = $engine;
 		}
 
+		unset($a_nat);
+
 		// Save the updates to the Snort configuration
 		write_config("Snort pkg: Updated ARP Spoofing engine address pairs for {$a_nat[$id]['interface']}.");
 		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
@@ -384,6 +386,7 @@ if ($_POST['del_http_inspect']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['http_inspect_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted http_inspect engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#httpinspect_row");
 		exit;
 	}
@@ -392,6 +395,7 @@ elseif ($_POST['del_frag3']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['frag3_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted frag3 engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#frag3_row");
 		exit;
 	}
@@ -400,6 +404,7 @@ elseif ($_POST['del_stream5_tcp']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['stream5_tcp_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted stream5 engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#stream5_row");
 		exit;
 	}
@@ -408,6 +413,7 @@ elseif ($_POST['del_ftp_client']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['ftp_client_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted ftp_client engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#ftp_telnet_row");
 		exit;
 	}
@@ -416,6 +422,7 @@ elseif ($_POST['del_ftp_server']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['ftp_server_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted ftp_server engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#ftp_telnet_row");
 		exit;
 	}
@@ -424,6 +431,7 @@ elseif ($_POST['del_arp_spoof_engine']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['arp_spoof_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted ARP spoof host address pair for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
 		exit;
 	}
@@ -733,6 +741,8 @@ if ($_POST['save']) {
 			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because Preprocessor changes require a restart.");
 		}
 
+		unset($a_nat);
+
 		/* Sync to configured CARP slaves if any are enabled */
 		snort_sync_on_changes();
 
@@ -765,6 +775,7 @@ if ($_POST['btn_import']) {
 				$a_nat[$id]['max_attribute_services_per_host'] = $pconfig['max_attribute_services_per_host'];
 				write_config("Snort pkg: imported Host Attribute Table data for {$a_nat[$id]['interface']}.");
 			}
+			unset($a_nat);
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -786,6 +797,7 @@ if ($_POST['btn_edit_hat']) {
 		$a_nat[$id]['max_attribute_hosts'] = $pconfig['max_attribute_hosts'];
 		$a_nat[$id]['max_attribute_services_per_host'] = $pconfig['max_attribute_services_per_host'];
 		write_config("Snort pkg: modified Host Attribute Table data for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_edit_hat_data.php?id=$id");
 		exit;
 	}
@@ -2226,6 +2238,7 @@ print($modal);
 print_callout('<p>' . gettext("Remember to save your changes before you exit this page.  Preprocessor changes will rebuild the rules file.  This ") . 
 		gettext("may take several seconds to complete.  Snort must also be restarted on the interface to activate any changes made on this screen.") . '</p>', 
 		'info', 'NOTE:');
+unset($a_nat);
 ?>
 
 <script type="text/javascript">

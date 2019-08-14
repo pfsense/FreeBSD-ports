@@ -25,10 +25,12 @@ class acme_sh_domain {
 	public $domainname;
 	public $method;
 	public $challengealias;
+	public $challengedomain;
 	public $NSUPDATE_SERVER;
 	public $NSUPDATE_KEYNAME;
 	public $NSUPDATE_KEYALGO;
 	public $NSUPDATE_KEY;
+	public $NSUPDATE_ZONE;
 	function __construct($domainname, $method) {
 		$this->domainname = $domainname;
 		$this->method = $method;
@@ -36,11 +38,15 @@ class acme_sh_domain {
 	function setchallengealias($challengealias) {
 		$this->challengealias = $challengealias;
 	}
-	function setnsupdateparameters($server, $keyname, $keyalgo, $key) {
+	function setchallengedomain($challengedomain) {
+		$this->challengedomain = $challengedomain;
+	}
+	function setnsupdateparameters($server, $keyname, $keyalgo, $key, $zone = "") {
 		$this->NSUPDATE_SERVER = $server;
 		$this->NSUPDATE_KEYNAME = $keyname;
 		$this->NSUPDATE_KEYALGO = $keyalgo;
 		$this->NSUPDATE_KEY = $key;
+		$this->NSUPDATE_ZONE = $zone;
 	}
 }
 	
@@ -232,11 +238,11 @@ EOF;
 				$nsupdatefileprefix = "{$certpath}nsupdate";
 				$envvariables['NSUPDATE_SERVER'] = $nsupdatefileprefix;
 				$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
+				$envvariables['NSUPDATE_ZONE'] = $domain->NSUPDATE_ZONE;
 				$nsupdatedomain = $domain->domainname;
 				if (!empty($domain->challengealias)) {
 					$nsupdatedomain = $domain->challengealias;
 				}
-
 
 				$acmechalengedom = (substr($nsupdatedomain, 0, 2) === "*.") ? substr($nsupdatedomain, 2) : $nsupdatedomain;
 				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);

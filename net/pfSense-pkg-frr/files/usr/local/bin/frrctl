@@ -200,4 +200,8 @@ bgp*)
 		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp memory $*"
 		;;
 	esac ;;
+cycleinterface)
+	daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "enable\nconfig terminal\ninterface $2\nshutdown\nexit\nexit"
+	sleep 1;
+	daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "enable\nconfig terminal\ninterface $2\nno shutdown\nexit\nexit"
 esac

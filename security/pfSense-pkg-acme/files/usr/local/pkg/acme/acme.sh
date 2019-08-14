@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-VER=2.8.1
+VER=2.8.2
 
 PROJECT_NAME="acme.sh"
 
@@ -14,7 +14,11 @@ _WINDOWS_SCHEDULER_NAME="$PROJECT_NAME.cron"
 
 _SCRIPT_="$0"
 
-_SUB_FOLDERS="dnsapi deploy"
+_SUB_FOLDER_NOTIFY="notify"
+_SUB_FOLDER_DNSAPI="dnsapi"
+_SUB_FOLDER_DEPLOY="deploy"
+
+_SUB_FOLDERS="$_SUB_FOLDER_DNSAPI $_SUB_FOLDER_DEPLOY $_SUB_FOLDER_NOTIFY"
 
 LETSENCRYPT_CA_V1="https://acme-v01.api.letsencrypt.org/directory"
 LETSENCRYPT_STAGING_CA_V1="https://acme-staging.api.letsencrypt.org/directory"
@@ -109,6 +113,18 @@ SYSLOG_LEVEL_DEFAULT=$SYSLOG_LEVEL_ERROR
 #none
 SYSLOG_LEVEL_NONE=0
 
+NOTIFY_LEVEL_DISABLE=0
+NOTIFY_LEVEL_ERROR=1
+NOTIFY_LEVEL_RENEW=2
+NOTIFY_LEVEL_SKIP=3
+
+NOTIFY_LEVEL_DEFAULT=$NOTIFY_LEVEL_RENEW
+
+NOTIFY_MODE_BULK=0
+NOTIFY_MODE_CERT=1
+
+NOTIFY_MODE_DEFAULT=$NOTIFY_MODE_BULK
+
 _DEBUG_WIKI="https://github.com/Neilpang/acme.sh/wiki/How-to-debug-acme.sh"
 
 _PREPARE_LINK="https://github.com/Neilpang/acme.sh/wiki/Install-preparations"
@@ -118,6 +134,8 @@ _STATELESS_WIKI="https://github.com/Neilpang/acme.sh/wiki/Stateless-Mode"
 _DNS_ALIAS_WIKI="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode"
 
 _DNS_MANUAL_WIKI="https://github.com/Neilpang/acme.sh/wiki/dns-manual-mode"
+
+_NOTIFY_WIKI="https://github.com/Neilpang/acme.sh/wiki/notify"
 
 _DNS_MANUAL_ERR="The dns manual mode can not renew automatically, you must issue it again manually. You'd better use the other modes instead."
 
@@ -786,6 +804,13 @@ _url_encode() {
   done
 }
 
+_json_encode() {
+  _j_str="$(sed 's/"/\\"/g' | sed "s/\r/\\r/g")"
+  _debug3 "_json_encode"
+  _debug3 "_j_str" "$_j_str"
+  echo "$_j_str" | _hex_dump | _lower_case | sed 's/0a/5c 6e/g' | tr -d ' ' | _h2b | tr -d "\r\n"
+}
+
 #options file
 _sed_i() {
   options="$1"
@@ -1091,14 +1116,14 @@ _createcsr() {
   elif [ -z "$domainlist" ] || [ "$domainlist" = "$NO_VALUE" ]; then
     #single domain
     _info "Single domain" "$domain"
-    printf -- "\nsubjectAltName=DNS:$(_idn $domain)" >>"$csrconf"
+    printf -- "\nsubjectAltName=DNS:$(_idn "$domain")" >>"$csrconf"
   else
     domainlist="$(_idn "$domainlist")"
     _debug2 domainlist "$domainlist"
     if _contains "$domainlist" ","; then
-      alt="DNS:$domain,DNS:$(echo "$domainlist" | sed "s/,,/,/g" | sed "s/,/,DNS:/g")"
+      alt="DNS:$(_idn "$domain"),DNS:$(echo "$domainlist" | sed "s/,,/,/g" | sed "s/,/,DNS:/g")"
     else
-      alt="DNS:$domain,DNS:$domainlist"
+      alt="DNS:$(_idn "$domain"),DNS:$domainlist"
     fi
     #multi
     _info "Multi domain" "$alt"
@@ -2066,6 +2091,28 @@ _readdomainconf() {
   _read_conf "$DOMAIN_CONF" "$1"
 }
 
+#key  value  base64encode
+_savedeployconf() {
+  _savedomainconf "SAVED_$1" "$2" "$3"
+  #remove later
+  _cleardomainconf "$1"
+}
+
+#key
+_getdeployconf() {
+  _rac_key="$1"
+  _rac_value="$(eval echo \$"$_rac_key")"
+  if [ "$_rac_value" ]; then
+    if _startswith "$_rac_value" '"' && _endswith "$_rac_value" '"'; then
+      _debug2 "trim quotation marks"
+      eval "export $_rac_key=$_rac_value"
+    fi
+    return 0 # do nothing
+  fi
+  _saved=$(_readdomainconf "SAVED_$_rac_key")
+  eval "export $_rac_key=$_saved"
+}
+
 #_saveaccountconf  key  value  base64encode
 _saveaccountconf() {
   _save_conf "$ACCOUNT_CONF_PATH" "$@"
@@ -2416,7 +2463,7 @@ _initpath() {
     . "$ACCOUNT_CONF_PATH"
   fi
 
-  if [ "$IN_CRON" ]; then
+  if [ "$ACME_IN_CRON" ]; then
     if [ ! "$_USER_PATH_EXPORTED" ]; then
       _USER_PATH_EXPORTED=1
       export PATH="$USER_PATH:$PATH"
@@ -3004,11 +3051,13 @@ _clearupdns() {
     d=$(_getfield "$entry" 1)
     txtdomain=$(_getfield "$entry" 2)
     aliasDomain=$(_getfield "$entry" 3)
+    _currentRoot=$(_getfield "$entry" 4)
     txt=$(_getfield "$entry" 5)
     d_api=$(_getfield "$entry" 6)
     _debug "d" "$d"
     _debug "txtdomain" "$txtdomain"
     _debug "aliasDomain" "$aliasDomain"
+    _debug "_currentRoot" "$_currentRoot"
     _debug "txt" "$txt"
     _debug "d_api" "$d_api"
     if [ "$d_api" = "$txt" ]; then
@@ -3035,11 +3084,12 @@ _clearupdns() {
         _err "It seems that your api file doesn't define $rmcommand"
         return 1
       fi
-
+      _info "Removing txt: $txt for domain: $txtdomain"
       if ! $rmcommand "$txtdomain" "$txt"; then
         _err "Error removing txt for domain:$txtdomain"
         return 1
       fi
+      _info "Removed: Success"
     )
 
   done
@@ -3054,27 +3104,29 @@ _clearupwebbroot() {
     return 0
   fi
 
-	h_api="$(_findHook "$d" httpapi "$_currentRoot")"
-	_debug h_api "$h_api"
-	if [ "$h_api" ]; then
-	  _info "Found domain http api file: $h_api"
-	  (
-		if ! . "$h_api"; then
-		  _err "Load file $h_api error. Please check your api file and try again."
-		  return 1
-		fi
+	if [ "$vtype" = "$VTYPE_HTTP" ]; then
+		h_api="$(_findHook "$d" httpapi "$_currentRoot")"
+		_debug h_api "$h_api"
+		if [ "$h_api" ]; then
+		  _info "Found domain http api file: $h_api"
+		  (
+			if ! . "$h_api"; then
+			  _err "Load file $h_api error. Please check your api file and try again."
+			  return 1
+			fi
 
-		rmcommand="${_currentRoot}_rm"
-		if ! _exists "$rmcommand"; then
-		  _err "It seems that your api file is not correct, it must have a function named: $rmcommand"
-		  return 1
-		fi
+			rmcommand="${_currentRoot}_rm"
+			if ! _exists "$rmcommand"; then
+			  _err "It seems that your api file is not correct, it must have a function named: $rmcommand"
+			  return 1
+			fi
 
-		if ! $rmcommand "$__domain" "$3"; then
-		  _err "Error rm webroot api for domain:$__webroot"
-		  return 1
+			if ! $rmcommand "$__domain" "$3"; then
+			  _err "Error rm webroot api for domain:$__webroot"
+			  return 1
+			fi
+		  )
 		fi
-	  )
 
 	else
 		_rmpath=""
@@ -3250,6 +3302,7 @@ _on_issue_success() {
   _chk_post_hook="$1"
   _chk_renew_hook="$2"
   _debug _on_issue_success
+
   #run the post hook
   if [ "$_chk_post_hook" ]; then
     _info "Run post hook:'$_chk_post_hook'"
@@ -3507,9 +3560,9 @@ _findHook() {
     d_api="$_SCRIPT_HOME/$_hookcat/$_hookname"
   elif [ -f "$_SCRIPT_HOME/$_hookcat/$_hookname.sh" ]; then
     d_api="$_SCRIPT_HOME/$_hookcat/$_hookname.sh"
-  elif [ -f "$LE_WORKING_DIR/$_hookdomain/$_hookname" ]; then
+  elif [ "$_hookdomain" ] && [ -f "$LE_WORKING_DIR/$_hookdomain/$_hookname" ]; then
     d_api="$LE_WORKING_DIR/$_hookdomain/$_hookname"
-  elif [ -f "$LE_WORKING_DIR/$_hookdomain/$_hookname.sh" ]; then
+  elif [ "$_hookdomain" ] && [ -f "$LE_WORKING_DIR/$_hookdomain/$_hookname.sh" ]; then
     d_api="$LE_WORKING_DIR/$_hookdomain/$_hookname.sh"
   elif [ -f "$LE_WORKING_DIR/$_hookname" ]; then
     d_api="$LE_WORKING_DIR/$_hookname"
@@ -3612,7 +3665,7 @@ _ns_purge_cf() {
   _cf_d="$1"
   _cf_d_type="$2"
   _debug "Cloudflare purge $_cf_d_type record for domain $_cf_d"
-  _cf_purl="https://1.1.1.1/api/v1/purge?domain=$_cf_d&type=$_cf_d_type"
+  _cf_purl="https://cloudflare-dns.com/api/v1/purge?domain=$_cf_d&type=$_cf_d_type"
   response="$(_post "" "$_cf_purl")"
   _debug2 response "$response"
 }
@@ -3648,9 +3701,9 @@ _check_dns_entries() {
     for entry in $dns_entries; do
       d=$(_getfield "$entry" 1)
       txtdomain=$(_getfield "$entry" 2)
-      txtdomain=$(_idn $txtdomain)
+      txtdomain=$(_idn "$txtdomain")
       aliasDomain=$(_getfield "$entry" 3)
-      aliasDomain=$(_idn $aliasDomain)
+      aliasDomain=$(_idn "$aliasDomain")
       txt=$(_getfield "$entry" 5)
       d_api=$(_getfield "$entry" 6)
       _debug "d" "$d"
@@ -3671,11 +3724,11 @@ _check_dns_entries() {
       fi
       _left=1
       _info "Not valid yet, let's wait 10 seconds and check next one."
-      _sleep 10
       __purge_txt "$txtdomain"
       if [ "$txtdomain" != "$aliasDomain" ]; then
         __purge_txt "$aliasDomain"
       fi
+      _sleep 10
     done
     if [ "$_left" ]; then
       _info "Let's wait 10 seconds and check again".
@@ -3845,14 +3898,14 @@ issue() {
   _savedomainconf "Le_Keylength" "$_key_length"
 
   vlist="$Le_Vlist"
-
+  _cleardomainconf "Le_Vlist"
   _info "Getting domain auth token for each domain"
   sep='#'
   dvsep=','
   if [ -z "$vlist" ]; then
     if [ "$ACME_VERSION" = "2" ]; then
       #make new order request
-      _identifiers="{\"type\":\"dns\",\"value\":\"$(_idn $_main_domain)\"}"
+      _identifiers="{\"type\":\"dns\",\"value\":\"$(_idn "$_main_domain")\"}"
       _w_index=1
       while true; do
         d="$(echo "$_alt_domains," | cut -d , -f "$_w_index")"
@@ -3861,7 +3914,7 @@ issue() {
         if [ -z "$d" ]; then
           break
         fi
-        _identifiers="$_identifiers,{\"type\":\"dns\",\"value\":\"$d\"}"
+        _identifiers="$_identifiers,{\"type\":\"dns\",\"value\":\"$(_idn "$d")\"}"
       done
       _debug2 _identifiers "$_identifiers"
       if ! _send_signed_request "$ACME_NEW_ORDER" "{\"identifiers\": [$_identifiers]}"; then
@@ -3949,7 +4002,7 @@ $_authorizations_map"
       fi
 
       if [ "$ACME_VERSION" = "2" ]; then
-        response="$(echo "$_authorizations_map" | grep "^$(_idn $d)," | sed "s/$d,//")"
+        response="$(echo "$_authorizations_map" | grep "^$(_idn "$d")," | sed "s/$d,//")"
         _debug2 "response" "$response"
         if [ -z "$response" ]; then
           _err "get to authz error."
@@ -4062,13 +4115,13 @@ $_authorizations_map"
         txt="$(printf "%s" "$keyauthorization" | _digest "sha256" | _url_replace)"
         _debug txt "$txt"
 
-        d_api="$(_findHook "$_dns_root_d" dnsapi "$_currentRoot")"
+        d_api="$(_findHook "$_dns_root_d" $_SUB_FOLDER_DNSAPI "$_currentRoot")"
         _debug d_api "$d_api"
 
         dns_entry="$dns_entry$dvsep$txt${dvsep}$d_api"
         _debug2 dns_entry "$dns_entry"
         if [ "$d_api" ]; then
-          _info "Found domain api file: $d_api"
+          _debug "Found domain api file: $d_api"
         else
           if [ "$_currentRoot" != "$W_DNS" ]; then
             _err "Can not find dns api hook for: $_currentRoot"
@@ -4093,11 +4146,12 @@ $_authorizations_map"
             _err "It seems that your api file is not correct, it must have a function named: $addcommand"
             return 1
           fi
-
+          _info "Adding txt value: $txt for domain:  $txtdomain"
           if ! $addcommand "$txtdomain" "$txt"; then
             _err "Error add txt for domain:$txtdomain"
             return 1
           fi
+          _info "The txt record is added: Success."
         )
 
         if [ "$?" != "0" ]; then
@@ -4364,6 +4418,8 @@ $_authorizations_map"
 
       if [ "$status" = "pending" ]; then
         _info "Pending"
+      elif [ "$status" = "processing" ]; then
+        _info "Processing"
       else
         _err "$d:Verify error:$response"
         _clearupwebbroot "$_currentRoot" "$removelevel" "$token" "$d"
@@ -4508,13 +4564,11 @@ $_authorizations_map"
       _info "Your cert key is in $(__green " $CERT_KEY_PATH ")"
     fi
 
-    if [ ! "$USER_PATH" ] || [ ! "$IN_CRON" ]; then
+    if [ ! "$USER_PATH" ] || [ ! "$ACME_IN_CRON" ]; then
       USER_PATH="$PATH"
       _saveaccountconf "USER_PATH" "$USER_PATH"
     fi
   fi
-
-  _cleardomainconf "Le_Vlist"
 
   if [ "$ACME_VERSION" = "2" ]; then
     _debug "v2 chain."
@@ -4650,7 +4704,7 @@ renew() {
   _info "$(__green "Renew: '$Le_Domain'")"
   if [ ! -f "$DOMAIN_CONF" ]; then
     _info "'$Le_Domain' is not a issued domain, skip."
-    return 0
+    return $RENEW_SKIP
   fi
 
   if [ "$Le_RenewalDays" ]; then
@@ -4693,9 +4747,9 @@ renew() {
     return "$RENEW_SKIP"
   fi
 
-  if [ "$IN_CRON" = "1" ] && [ -z "$Le_CertCreateTime" ]; then
+  if [ "$ACME_IN_CRON" = "1" ] && [ -z "$Le_CertCreateTime" ]; then
     _info "Skip invalid cert for: $Le_Domain"
-    return 0
+    return $RENEW_SKIP
   fi
 
   IS_RENEW="1"
@@ -4725,7 +4779,13 @@ renewAll() {
   _stopRenewOnError="$1"
   _debug "_stopRenewOnError" "$_stopRenewOnError"
   _ret="0"
-
+  _success_msg=""
+  _error_msg=""
+  _skipped_msg=""
+  _error_level=$NOTIFY_LEVEL_SKIP
+  _notify_code=$RENEW_SKIP
+  _set_level=${NOTIFY_LEVEL:-$NOTIFY_LEVEL_DEFAULT}
+  _debug "_set_level" "$_set_level"
   for di in "${CERT_HOME}"/*.*/; do
     _debug di "$di"
     if ! [ -d "$di" ]; then
@@ -4743,18 +4803,87 @@ renewAll() {
     )
     rc="$?"
     _debug "Return code: $rc"
-    if [ "$rc" != "0" ]; then
-      if [ "$rc" = "$RENEW_SKIP" ]; then
-        _info "Skipped $d"
-      elif [ "$_stopRenewOnError" ]; then
+    if [ "$rc" = "0" ]; then
+      if [ $_error_level -gt $NOTIFY_LEVEL_RENEW ]; then
+        _error_level="$NOTIFY_LEVEL_RENEW"
+        _notify_code=0
+      fi
+      if [ "$ACME_IN_CRON" ]; then
+        if [ $_set_level -ge $NOTIFY_LEVEL_RENEW ]; then
+          if [ "$NOTIFY_MODE" = "$NOTIFY_MODE_CERT" ]; then
+            _send_notify "Renew $d success" "Good, the cert is renewed." "$NOTIFY_HOOK" 0
+          fi
+        fi
+      fi
+      _success_msg="${_success_msg}    $d
+"
+    elif [ "$rc" = "$RENEW_SKIP" ]; then
+      if [ $_error_level -gt $NOTIFY_LEVEL_SKIP ]; then
+        _error_level="$NOTIFY_LEVEL_SKIP"
+        _notify_code=$RENEW_SKIP
+      fi
+      if [ "$ACME_IN_CRON" ]; then
+        if [ $_set_level -ge $NOTIFY_LEVEL_SKIP ]; then
+          if [ "$NOTIFY_MODE" = "$NOTIFY_MODE_CERT" ]; then
+            _send_notify "Renew $d skipped" "Good, the cert is skipped." "$NOTIFY_HOOK" "$RENEW_SKIP"
+          fi
+        fi
+      fi
+      _info "Skipped $d"
+      _skipped_msg="${_skipped_msg}    $d
+"
+    else
+      if [ $_error_level -gt $NOTIFY_LEVEL_ERROR ]; then
+        _error_level="$NOTIFY_LEVEL_ERROR"
+        _notify_code=1
+      fi
+      if [ "$ACME_IN_CRON" ]; then
+        if [ $_set_level -ge $NOTIFY_LEVEL_ERROR ]; then
+          if [ "$NOTIFY_MODE" = "$NOTIFY_MODE_CERT" ]; then
+            _send_notify "Renew $d error" "There is an error." "$NOTIFY_HOOK" 1
+          fi
+        fi
+      fi
+      _error_msg="${_error_msg}    $d
+"
+      if [ "$_stopRenewOnError" ]; then
         _err "Error renew $d,  stop now."
-        return "$rc"
+        _ret="$rc"
+        break
       else
         _ret="$rc"
         _err "Error renew $d."
       fi
     fi
   done
+  _debug _error_level "$_error_level"
+  _debug _set_level "$_set_level"
+  if [ "$ACME_IN_CRON" ] && [ $_error_level -le $_set_level ]; then
+    if [ -z "$NOTIFY_MODE" ] || [ "$NOTIFY_MODE" = "$NOTIFY_MODE_BULK" ]; then
+      _msg_subject="Renew"
+      if [ "$_error_msg" ]; then
+        _msg_subject="${_msg_subject} Error"
+        _msg_data="Error certs:
+${_error_msg}
+"
+      fi
+      if [ "$_success_msg" ]; then
+        _msg_subject="${_msg_subject} Success"
+        _msg_data="${_msg_data}Success certs:
+${_success_msg}
+"
+      fi
+      if [ "$_skipped_msg" ]; then
+        _msg_subject="${_msg_subject} Skipped"
+        _msg_data="${_msg_data}Skipped certs:
+${_skipped_msg}
+"
+      fi
+
+      _send_notify "$_msg_subject" "$_msg_data" "$NOTIFY_HOOK" "$_notify_code"
+    fi
+  fi
+
   return "$_ret"
 }
 
@@ -4903,7 +5032,7 @@ _deploy() {
   _hooks="$2"
 
   for _d_api in $(echo "$_hooks" | tr ',' " "); do
-    _deployApi="$(_findHook "$_d" deploy "$_d_api")"
+    _deployApi="$(_findHook "$_d" $_SUB_FOLDER_DEPLOY "$_d_api")"
     if [ -z "$_deployApi" ]; then
       _err "The deploy hook $_d_api is not found."
       return 1
@@ -5667,7 +5796,7 @@ install() {
     _debug "Skip install cron job"
   fi
 
-  if [ "$IN_CRON" != "1" ]; then
+  if [ "$ACME_IN_CRON" != "1" ]; then
     if ! _precheck "$_nocron"; then
       _err "Pre-check failed, can not install."
       return 1
@@ -5724,7 +5853,7 @@ install() {
 
   _info "Installed to $LE_WORKING_DIR/$PROJECT_ENTRY"
 
-  if [ "$IN_CRON" != "1" ] && [ -z "$_noprofile" ]; then
+  if [ "$ACME_IN_CRON" != "1" ] && [ -z "$_noprofile" ]; then
     _installalias "$_c_home"
   fi
 
@@ -5822,7 +5951,7 @@ _uninstallalias() {
 }
 
 cron() {
-  export IN_CRON=1
+  export ACME_IN_CRON=1
   _initpath
   _info "$(__green "===Starting cron===")"
   if [ "$AUTO_UPGRADE" = "1" ]; then
@@ -5843,7 +5972,7 @@ cron() {
   fi
   renewAll
   _ret="$?"
-  IN_CRON=""
+  ACME_IN_CRON=""
   _info "$(__green "===End cron===")"
   exit $_ret
 }
@@ -5851,6 +5980,117 @@ cron() {
 version() {
   echo "$PROJECT"
   echo "v$VER"
+}
+
+# subject content hooks code
+_send_notify() {
+  _nsubject="$1"
+  _ncontent="$2"
+  _nhooks="$3"
+  _nerror="$4"
+
+  if [ "$NOTIFY_LEVEL" = "$NOTIFY_LEVEL_DISABLE" ]; then
+    _debug "The NOTIFY_LEVEL is $NOTIFY_LEVEL, disabled, just return."
+    return 0
+  fi
+
+  if [ -z "$_nhooks" ]; then
+    _debug "The NOTIFY_HOOK is empty, just return."
+    return 0
+  fi
+
+  _send_err=0
+  for _n_hook in $(echo "$_nhooks" | tr ',' " "); do
+    _n_hook_file="$(_findHook "" $_SUB_FOLDER_NOTIFY "$_n_hook")"
+    _info "Sending via: $_n_hook"
+    _debug "Found $_n_hook_file for $_n_hook"
+    if [ -z "$_n_hook_file" ]; then
+      _err "Can not find the hook file for $_n_hook"
+      continue
+    fi
+    if ! (
+      if ! . "$_n_hook_file"; then
+        _err "Load file $_n_hook_file error. Please check your api file and try again."
+        return 1
+      fi
+
+      d_command="${_n_hook}_send"
+      if ! _exists "$d_command"; then
+        _err "It seems that your api file is not correct, it must have a function named: $d_command"
+        return 1
+      fi
+
+      if ! $d_command "$_nsubject" "$_ncontent" "$_nerror"; then
+        _err "Error send message by $d_command"
+        return 1
+      fi
+
+      return 0
+    ); then
+      _err "Set $_n_hook_file error."
+      _send_err=1
+    else
+      _info "$_n_hook $(__green Success)"
+    fi
+  done
+  return $_send_err
+
+}
+
+# hook
+_set_notify_hook() {
+  _nhooks="$1"
+
+  _test_subject="Hello, this is notification from $PROJECT_NAME"
+  _test_content="If you receive this message, your notification works."
+
+  _send_notify "$_test_subject" "$_test_content" "$_nhooks" 0
+
+}
+
+#[hook] [level] [mode]
+setnotify() {
+  _nhook="$1"
+  _nlevel="$2"
+  _nmode="$3"
+
+  _initpath
+
+  if [ -z "$_nhook$_nlevel$_nmode" ]; then
+    _usage "Usage: $PROJECT_ENTRY --set-notify [--notify-hook mailgun] [--notify-level $NOTIFY_LEVEL_DEFAULT] [--notify-mode $NOTIFY_MODE_DEFAULT]"
+    _usage "$_NOTIFY_WIKI"
+    return 1
+  fi
+
+  if [ "$_nlevel" ]; then
+    _info "Set notify level to: $_nlevel"
+    export "NOTIFY_LEVEL=$_nlevel"
+    _saveaccountconf "NOTIFY_LEVEL" "$NOTIFY_LEVEL"
+  fi
+
+  if [ "$_nmode" ]; then
+    _info "Set notify mode to: $_nmode"
+    export "NOTIFY_MODE=$_nmode"
+    _saveaccountconf "NOTIFY_MODE" "$NOTIFY_MODE"
+  fi
+
+  if [ "$_nhook" ]; then
+    _info "Set notify hook to: $_nhook"
+    if [ "$_nhook" = "$NO_VALUE" ]; then
+      _info "Clear notify hook"
+      _clearaccountconf "NOTIFY_HOOK"
+    else
+      if _set_notify_hook "$_nhook"; then
+        export NOTIFY_HOOK="$_nhook"
+        _saveaccountconf "NOTIFY_HOOK" "$NOTIFY_HOOK"
+        return 0
+      else
+        _err "Can not set notify hook to: $_nhook"
+        return 1
+      fi
+    fi
+  fi
+
 }
 
 showhelp() {
@@ -5885,6 +6125,8 @@ Commands:
   --create-domain-key      Create an domain private key, professional use.
   --createCSR, -ccsr       Create CSR , professional use.
   --deactivate             Deactivate the domain authz, professional use.
+  --set-notify             Set the cron notification hook, level or mode.
+
 
 Parameters:
   --domain, -d   domain.tld         Specifies a domain, used to issue, renew or revoke etc.
@@ -5953,7 +6195,18 @@ Parameters:
   --use-wget                        Force to use wget, if you have both curl and wget installed.
   --yes-I-know-dns-manual-mode-enough-go-ahead-please  Force to use dns manual mode: $_DNS_MANUAL_WIKI
   --branch, -b                      Only valid for '--upgrade' command, specifies the branch name to upgrade to.
-  "
+
+  --notify-level  0|1|2|3           Set the notification level:  Default value is $NOTIFY_LEVEL_DEFAULT.
+                                     0: disabled, no notification will be sent. 
+                                     1: send notifications only when there is an error.
+                                     2: send notifications when a cert is successfully renewed, or there is an error.
+                                     3: send notifications when a cert is skipped, renewed, or error.
+  --notify-mode   0|1               Set notification mode. Default value is $NOTIFY_MODE_DEFAULT.
+                                     0: Bulk mode. Send all the domain's notifications in one message(mail).
+                                     1: Cert mode. Send a message for every single cert.
+  --notify-hook   [hookname]        Set the notify hook
+
+"
 }
 
 # nocron noprofile
@@ -6087,6 +6340,9 @@ _process() {
   _syslog=""
   _use_wget=""
   _server=""
+  _notify_hook=""
+  _notify_level=""
+  _notify_mode=""
   while [ ${#} -gt 0 ]; do
     case "${1}" in
 
@@ -6172,6 +6428,9 @@ _process() {
         ;;
       --deactivate-account)
         _CMD="deactivateaccount"
+        ;;
+      --set-notify)
+        _CMD="setnotify"
         ;;
       --domain | -d)
         _dvalue="$2"
@@ -6521,6 +6780,37 @@ _process() {
         export BRANCH="$2"
         shift
         ;;
+      --notify-hook)
+        _nhook="$2"
+        if _startswith "$_nhook" "-"; then
+          _err "'$_nhook' is not a hook name for '$1'"
+          return 1
+        fi
+        if [ "$_notify_hook" ]; then
+          _notify_hook="$_notify_hook,$_nhook"
+        else
+          _notify_hook="$_nhook"
+        fi
+        shift
+        ;;
+      --notify-level)
+        _nlevel="$2"
+        if _startswith "$_nlevel" "-"; then
+          _err "'$_nlevel' is not a integer for '$1'"
+          return 1
+        fi
+        _notify_level="$_nlevel"
+        shift
+        ;;
+      --notify-mode)
+        _nmode="$2"
+        if _startswith "$_nmode" "-"; then
+          _err "'$_nmode' is not a integer for '$1'"
+          return 1
+        fi
+        _notify_mode="$_nmode"
+        shift
+        ;;
       *)
         _err "Unknown parameter : $1"
         return 1
@@ -6573,7 +6863,7 @@ _process() {
       _debug "Using server: $_server"
     fi
   fi
-
+  _debug "Running cmd: ${_CMD}"
   case "${_CMD}" in
     install) install "$_nocron" "$_confighome" "$_noprofile" ;;
     uninstall) uninstall "$_nocron" ;;
@@ -6638,7 +6928,9 @@ _process() {
     createCSR)
       createCSR "$_domain" "$_altdomains" "$_ecc"
       ;;
-
+    setnotify)
+      setnotify "$_notify_hook" "$_notify_level" "$_notify_mode"
+      ;;
     *)
       if [ "$_CMD" ]; then
         _err "Invalid command: $_CMD"

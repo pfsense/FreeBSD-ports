@@ -680,6 +680,9 @@ print($section);
 				gettext("The Enable SID File, Disable SID File, Modify SID File, Drop SID File and Reject SID File drop-down controls specify which rule modification lists are run automatically for the interface.  Setting a list control to 'None' disables that modification. " . 
 					"Setting all list controls for an interface to 'None' disables automatic SID state management for the interface.") .
 			'</p>', 'info', false);
+
+		// Finished with config array reference, so release it
+		unset($a_nat);
 	?>
 	</div>
 </div>

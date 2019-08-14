@@ -40,6 +40,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
 if (is_null($id)) {
+	unset($a_rule);
         header("Location: /snort/snort_interfaces.php");
         exit;
 }
@@ -51,13 +52,13 @@ if ($_REQUEST['ajax']) {
 	$type = $_REQUEST['type'];
 
 	if (isset($id) && isset($wlist)) {
-		$a_rule = $config['installedpackages']['snortglobal']['rule'][$id];
+		$rule = $config['installedpackages']['snortglobal']['rule'][$id];
 		if ($type == "homenet") {
-			$list = snort_build_list($a_rule, empty($wlist) ? 'default' : $wlist);
+			$list = snort_build_list($rule, empty($wlist) ? 'default' : $wlist);
 			$contents = implode("\n", $list);
 		}
 		elseif ($type == "passlist") {
-			$list = snort_build_list($a_rule, $wlist, true);
+			$list = snort_build_list($rule, $wlist, true);
 			$contents = implode("\n", $list);
 		}
 		elseif ($type == "suppress") {
@@ -66,14 +67,14 @@ if ($_REQUEST['ajax']) {
 		}
 		elseif ($type == "externalnet") {
 			if (empty($wlist) || $wlist == "default") {
-				$list = snort_build_list($a_rule, $a_rule['homelistname']);
+				$list = snort_build_list($rule, $rule['homelistname']);
 				$contents = "";
 				foreach ($list as $ip)
 					$contents .= "!{$ip}\n";
 				$contents = trim($contents, "\n");
 			}
 			else {
-				$list = snort_build_list($a_rule, $wlist, false, true);
+				$list = snort_build_list($rule, $wlist, false, true);
 				$contents = implode("\n", $list);
 			}
 		}
@@ -110,6 +111,11 @@ $snort_uuid = $pconfig['uuid'];
 // Get the physical configured interfaces on the firewall
 $interfaces = get_configured_interface_with_descr();
 
+// Footnote real interface associated with each configured interface
+foreach ($interfaces as $if => $desc) {
+		$interfaces[$if] = $interfaces[$if] . " (" . get_real_interface($if) . ")";
+}
+
 // See if interface is already configured, and use its values
 if (isset($id) && $a_rule[$id]) {
 	/* old options */
@@ -128,7 +134,20 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 	foreach ($ifaces as $i) {
 		if (!in_array($i, $ifrules)) {
 			$pconfig['interface'] = $i;
-			$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+
+			// If the interface is a VLAN, use the VLAN description
+			// if set, otherwise default to the friendly description.
+			if ($vlan = interface_is_vlan(get_real_interface($i))) {
+				if (strlen($vlan['descr']) > 0) {
+					$pconfig['descr'] = $vlan['descr'];
+				}
+				else {
+					$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+				}
+			}
+			else {
+				$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+			}
 			$pconfig['enable'] = 'on';
 			break;
 		}
@@ -168,7 +187,20 @@ if (strcasecmp($action, 'dup') == 0) {
 		if (!in_array($i, $ifrules)) {
 			$pconfig['interface'] = $i;
 			$pconfig['enable'] = 'on';
-			$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+
+			// If the interface is a VLAN, use the VLAN description
+			// if set, otherwise default to the friendly description.
+			if ($vlan = interface_is_vlan(get_real_interface($i))) {
+				if (strlen($vlan['descr']) > 0) {
+					$pconfig['descr'] = $vlan['descr'];
+				}
+				else {
+					$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+				}
+			}
+			else {
+				$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+			}
 			break;
 		}
 	}
@@ -209,6 +241,7 @@ if ($_POST['save'] && !$input_errors) {
 		write_config("Snort pkg: modified interface configuration for {$a_rule[$id]['interface']}.");
 		$rebuild_rules = false;
 		sync_snort_package_config();
+		unset($a_rule);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -410,6 +443,15 @@ if ($_POST['save'] && !$input_errors) {
 			$natent['sf_appid_statslog'] = "on";
 			$natent['sf_appid_stats_period'] = "300";
 
+			$natent['ssh_preproc_ports'] = '22';
+			$natent['ssh_preproc_max_encrypted_packets'] = 20;
+			$natent['ssh_preproc_max_client_bytes'] = 19600;
+			$natent['ssh_preproc_max_server_version_len'] = 100;
+			$natent['ssh_preproc_enable_respoverflow'] = 'on';
+			$natent['ssh_preproc_enable_srvoverflow'] = 'on';
+			$natent['ssh_preproc_enable_ssh1crc32'] = 'on';
+			$natent['ssh_preproc_enable_protomismatch'] = 'on';
+
 			$a_rule[] = $natent;
 		}
 
@@ -437,6 +479,7 @@ if ($_POST['save'] && !$input_errors) {
 		if ($snort_reload == true)
 			snort_reload_config($natent, "SIGHUP");
 
+		unset($a_rule);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -467,6 +510,10 @@ $if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interf
 if (empty($if_friendly)) {
 	$if_friendly = "None";
 }
+
+// Finished with config array reference, so release it
+unset($a_rule);
+
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Edit Interface"), gettext("{$if_friendly}"));
 include("head.inc");
 

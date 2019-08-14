@@ -135,8 +135,7 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	if (count($config['installedpackages']['snortglobal']['rule']) > 0) {
 		$uuids = array();
 		$fixed_duplicate = FALSE;
-		$snortconf = &$config['installedpackages']['snortglobal']['rule'];
-		foreach ($snortconf as &$snortcfg) {
+		foreach ($config['installedpackages']['snortglobal']['rule'] as &$snortcfg) {
 			// Check for and fix a duplicate UUID
 			$if_real = get_real_interface($snortcfg['interface']);
 			if (!isset($uuids[$snortcfg['uuid']])) {
@@ -156,7 +155,8 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 				$fixed_duplicate = TRUE;
 			}
 		}
-		unset($uuids);
+		// Release config array reference and $uuids array
+		unset($snortcfg, $uuids);
 	}
 	/****************************************************************/
 	/* End of duplicate UUID bug fix.                               */
@@ -172,8 +172,7 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	$rebuild_rules = true;
 
 	/* Create the snort.conf files for each enabled interface */
-	$snortconf = $config['installedpackages']['snortglobal']['rule'];
-	foreach ($snortconf as $snortcfg) {
+	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
 		$if_real = get_real_interface($snortcfg['interface']);
 		$snort_uuid = $snortcfg['uuid'];
 		$snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}";

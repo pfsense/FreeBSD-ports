@@ -103,55 +103,35 @@ if ($_POST['save-view']) {
 
 	$title = $view_title;
 
-	if (is_array($config['rrd']['savedviews'])) {
-
+	init_config_arr(array('rrd', 'savedviews'));
+	if (!empty($config['rrd']['savedviews'])) {
 		if($title == "default") {
-
 			$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
-
 		} else {
-
 			foreach ($config['rrd']['savedviews'] as $key => $view) {
-
 				if($title == createSlug($view['title'])) {
-
 					$config['rrd']['savedviews'][$key]['category'] =  "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
-
 				}
-
 			}
-
 		}
-
 	} else {
-
 		$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
-
 	}
 
 	write_config(gettext("Status Monitoring View Updated"));
-
 	$savemsg = "The current view has been updated.";
 }
 
 //add a new view and make sure the string isn't empty
-if ($_POST['add-view']) {
+if ($_POST['add-view'] && !empty($view_title) && ($view_title != "default")) {
 
 	$title = $view_title;
 
 	$values = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
 
-	if (is_array($config['rrd']['savedviews'])) {
-
-			$key = "view" . count($config['rrd']['savedviews']);
-
-			$config['rrd']['savedviews'][$key] = array('title' => $title, 'category' => $values);
-
-	} else {
-
-		$config['rrd']['savedviews']["view0"] = array('title' => $title, 'category' => $values);
-
-	}
+	init_config_arr(array('rrd', 'savedviews'));
+	$key = "view" . count($config['rrd']['savedviews']);
+	$config['rrd']['savedviews'][$key] = array('title' => $title, 'category' => $values);
 
 	write_config(gettext("Status Monitoring View Added"));
 
@@ -171,28 +151,20 @@ if ($_POST['remove-view']) {
 
 		$title = htmlspecialchars($view_title);
 
-		if (is_array($config['rrd']['savedviews'])) {
-
+		init_config_arr(array('rrd', 'savedviews'));
+		if (!empty($config['rrd']['savedviews'])) {
 			$savedviews = [];
 			$view_count = 0;
 
 			foreach ($config['rrd']['savedviews'] as $key => $view) {
-
 				if (createSlug($view['title']) !== $title) {
-
 					$view_key = "view" . $view_count;
-
-					//unset($config['rrd']['savedviews'][$key]);
 					$savedviews[$view_key] = array('title' => $view['title'], 'category' => $view['category']);
-
 					$view_count++;
-
 				}
-
 			}
 
 			$config['rrd']['savedviews'] = $savedviews;
-
 		}
 
 		write_config(gettext("Status Monitoring View Removed"));
@@ -208,30 +180,19 @@ if ($_POST['remove-view']) {
 $pconfig['enable'] = isset($config['rrd']['enable']);
 
 //grab settings for the active view
-if (is_array($config['rrd']['savedviews'])) {
-
+init_config_arr(array('rrd', 'savedviews'));
+if (!empty($config['rrd']['savedviews'])) {
 	if ($view_title == "default" || $view_removed) {
-
 		$pconfig['category'] = $config['rrd']['category'];
-
 	} else {
-
 		foreach ($config['rrd']['savedviews'] as $key => $view) {
-
 			if ($view_title === createSlug($view['title'])) {
-
 				$pconfig['category'] =  $view['category'];
-
 			}
-
 		}
-
 	}
-
 } else {
-
 	$pconfig['category'] = $config['rrd']['category'];
-
 }
 
 $system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = $wireless = $cellular = [];
@@ -419,23 +380,14 @@ if ($view_title == "default" || $view_removed) {
 
 $tab_array[] = array(gettext("Default"), $active_tab, "/status_monitoring.php?view=default");
 
-if (is_array($config['rrd']['savedviews'])) {
-
-	foreach ($config['rrd']['savedviews'] as $key => $view) {
-
-		$active_tab = false;
-
-		if ($view_title == createSlug($view['title'])) {
-
-			$active_tab = true;
-
-		}
-
-		$view_slug = "/status_monitoring.php?view=" . createSlug($view['title']);
-		$tab_array[] = array(htmlspecialchars($view['title']), $active_tab, $view_slug);
-
+init_config_arr(array('rrd', 'savedviews'));
+foreach ($config['rrd']['savedviews'] as $key => $view) {
+	$active_tab = false;
+	if ($view_title == createSlug($view['title'])) {
+		$active_tab = true;
 	}
-
+	$view_slug = "/status_monitoring.php?view=" . createSlug($view['title']);
+	$tab_array[] = array(htmlspecialchars($view['title']), $active_tab, $view_slug);
 }
 
 display_top_tabs($tab_array);
