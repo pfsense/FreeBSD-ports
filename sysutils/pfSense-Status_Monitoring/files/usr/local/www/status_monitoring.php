@@ -121,7 +121,7 @@ if ($_POST['save-view']) {
 }
 
 //add a new view and make sure the string isn't empty
-if ($_POST['add-view'] && !empty($view_title) && !preg_match("/[dD][eE][fF][aA][uU][lL][tT]/",$view_title)) {
+if ($_POST['add-view'] && !empty($view_title) && !preg_match("/default/i",$view_title)) {
 
 	$title = $view_title;
 
@@ -141,7 +141,7 @@ $view_removed = false;
 //remove current view
 if ($_POST['remove-view']) {
 
-	if (preg_match("/[dD][eE][fF][aA][uU][lL][tT]/",$view_title)) {
+	if (preg_match("/default/i",$view_title)) {
 
 		$savemsg = "Can't remove default view.";
 
@@ -1100,7 +1100,7 @@ events.push(function() {
 
 			var this_title = $(this).find('a:first').attr('href').split('=');
 
-			current_titles.push(this_title[1]);
+			current_titles.push(this_title[1]).toLowerCase;
 
 	    });
 
@@ -1111,7 +1111,7 @@ events.push(function() {
 				break;
 			}
 	        var title_slug = createSlug(view_title);
-
+		    
 	        if(jQuery.inArray(title_slug.toLowerCase(), current_titles) !== -1) {
 
 				alert('That title is already used, try again.');
