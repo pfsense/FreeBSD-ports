@@ -1100,7 +1100,7 @@ events.push(function() {
 
 			var this_title = $(this).find('a:first').attr('href').split('=');
 
-			current_titles.push(this_title[1]).toLowerCase;
+			current_titles.push(this_title[1].toLowerCase());
 
 	    });
 
