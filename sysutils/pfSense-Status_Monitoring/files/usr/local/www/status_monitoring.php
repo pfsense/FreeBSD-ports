@@ -1111,7 +1111,7 @@ events.push(function() {
 				break;
 			}
 	        var title_slug = createSlug(view_title);
-		    
+
 	        if(jQuery.inArray(title_slug.toLowerCase(), current_titles) !== -1) {
 
 				alert('That title is already used, try again.');
