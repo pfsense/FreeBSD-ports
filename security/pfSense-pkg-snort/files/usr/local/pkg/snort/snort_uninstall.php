@@ -3,9 +3,9 @@
  * snort_uninstall.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -158,6 +158,7 @@ unlink_if_exists("{$snortdir}/*.conf");
 unlink_if_exists("{$snortdir}/*.map");
 unlink_if_exists("{$snortdir}/*.config");
 unlink_if_exists("{$snortdir}/attribute_table.dtd");
+unlink_if_exists("{$snortdir}/rulesupd_status");
 
 if (is_array($config['installedpackages']['snortglobal']['rule']) && count($config['installedpackages']['snortglobal']['rule']) > 0) {
 	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
