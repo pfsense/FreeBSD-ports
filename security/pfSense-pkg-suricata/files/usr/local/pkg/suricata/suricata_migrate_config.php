@@ -125,6 +125,20 @@ if (empty($config['installedpackages']['suricata']['config'][0]['hide_deprecated
 }
 
 /**********************************************************/
+/* Remove the two deprecated Rules Update Status fields   */
+/* from the package configuration. The status is now      */
+/* stored in a local file.                                */
+/**********************************************************/
+if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status'];
+	$updated_cfg = true;
+}
+if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time']);
+	$updated_cfg = true;
+}
+
+/**********************************************************/
 /* Set default log size and retention limits if not set   */
 /**********************************************************/
 if (!isset($config['installedpackages']['suricata']['config'][0]['alert_log_retention']) && $config['installedpackages']['suricata']['config'][0]['alert_log_retention'] != '0') {
