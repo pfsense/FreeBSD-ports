@@ -80,6 +80,7 @@ unlink_if_exists("{$suricatadir}*.gz.md5");
 unlink_if_exists("{$suricatadir}gen-msg.map");
 unlink_if_exists("{$suricatadir}classification.config");
 unlink_if_exists("{$suricatadir}reference.config");
+unlink_if_exists("{$suricatadir}rulesupd_status");
 unlink_if_exists(SURICATA_RULES_DIR . "*.txt");
 unlink_if_exists(SURICATA_RULES_DIR . VRT_FILE_PREFIX . "*.rules");
 unlink_if_exists(SURICATA_RULES_DIR . ET_OPEN_FILE_PREFIX . "*.rules");
