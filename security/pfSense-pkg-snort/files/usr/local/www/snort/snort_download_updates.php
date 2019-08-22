@@ -3,8 +3,8 @@
  * snort_download_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2004-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,14 +47,15 @@ $openappid_detectors = $config['installedpackages']['snortglobal']['openappid_de
 $openappid_rules_detectors = $config['installedpackages']['snortglobal']['openappid_rules_detectors'];
 
 /* Get last update information if available */
-if (!empty($config['installedpackages']['snortglobal']['last_rule_upd_time']))
-	$last_rule_upd_time = date('M-d Y H:i', $config['installedpackages']['snortglobal']['last_rule_upd_time']);
-else
+if (file_exists(SNORTDIR . "/rulesupd_status")) {
+	$status = explode("|", file_get_contents(SNORTDIR . "/rulesupd_status"));
+	$last_rule_upd_time = date('M-d Y H:i', $status[0]);
+	$last_rule_upd_status = gettext($status[1]);
+}
+else {
 	$last_rule_upd_time = gettext("Unknown");
-if (!empty($config['installedpackages']['snortglobal']['last_rule_upd_status']))
-	$last_rule_upd_status = htmlspecialchars($config['installedpackages']['snortglobal']['last_rule_upd_status']);
-else
 	$last_rule_upd_status = gettext("Unknown");
+}
 
 if ($etpro == "on") {
 	$emergingthreats_filename = SNORT_ETPRO_DNLD_FILENAME;
