@@ -130,7 +130,7 @@ if (empty($config['installedpackages']['suricata']['config'][0]['hide_deprecated
 /* stored in a local file.                                */
 /**********************************************************/
 if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status'])) {
-	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status'];
+	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status']);
 	$updated_cfg = true;
 }
 if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time'])) {
