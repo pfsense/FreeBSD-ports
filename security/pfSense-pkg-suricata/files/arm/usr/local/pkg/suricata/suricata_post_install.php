@@ -160,8 +160,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 		$builtin_rules = array( "app-layer-events.rules", "decoder-events.rules", "dnp3-events.rules", "dns-events.rules", "files.rules", "http-events.rules",  
 					"modbus-events.rules", "smtp-events.rules", "stream-events.rules", "tls-events.rules" );
 		$rust_required_rules = array( "ipsec-events.rules", "kerberos-events.rules", "nfs-events.rules", "ntp-events.rules", "smb-events.rules" );
-		$suriconf = &$config['installedpackages']['suricata']['rule'];
-		foreach ($suriconf as &$suricatacfg) {
+		foreach ($config['installedpackages']['suricata']['rule']as &$suricatacfg) {
 			$rulesets = explode("||", $suricatacfg['rulesets']);
 			foreach ($builtin_rules as $name) {
 				if (in_array($name, $rulesets)) {
@@ -184,7 +183,8 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 			// and write result back to interface config location.
 			$suricatacfg['rulesets'] = implode("||", array_keys(array_flip($rulesets)));
 		}
-		unset($builtin_rules, $rulesets, $rust_required_rules);
+		// Release our config array reference and other memory
+		unset($suricatacfg, $builtin_rules, $rulesets, $rust_required_rules);
 	}
 	/****************************************************************/
 	/* End of built-in events rules fix.                            */
@@ -217,9 +217,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	}
 
 	// Create the suricata.yaml files for each enabled interface
-	$suriconf = $config['installedpackages']['suricata']['rule'];
-
-	foreach ($suriconf as $suricatacfg) {
+	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
 		$if_real = get_real_interface($suricatacfg['interface']);
 		$suricata_uuid = $suricatacfg['uuid'];
 		$suricatacfgdir = "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}";
