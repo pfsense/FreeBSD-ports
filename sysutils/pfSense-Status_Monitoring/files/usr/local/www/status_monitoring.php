@@ -121,7 +121,7 @@ if ($_POST['save-view']) {
 }
 
 //add a new view and make sure the string isn't empty
-if ($_POST['add-view'] && !empty($view_title) && !preg_match("/default/i",$view_title)) {
+if ($_POST['add-view'] && !empty($view_title) && strtolower($view_title) != "default") {
 
 	$title = $view_title;
 
@@ -141,7 +141,7 @@ $view_removed = false;
 //remove current view
 if ($_POST['remove-view']) {
 
-	if (preg_match("/default/i",$view_title)) {
+	if (strtolower($view_title) == "default") {
 
 		$savemsg = "Can't remove default view.";
 
