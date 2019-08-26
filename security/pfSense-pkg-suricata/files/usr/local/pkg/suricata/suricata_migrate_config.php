@@ -41,8 +41,6 @@ if (!is_array($config['installedpackages']['suricata']['rule']))
 if (empty($config['installedpackages']['suricata']['rule']))
 	return;
 
-$rule = &$config['installedpackages']['suricata']['rule'];
-
 /****************************************************************************/
 /* Loop through all the <rule> elements in the Suricata configuration and   */
 /* migrate relevant parameters to the new format.                           */
@@ -121,6 +119,20 @@ if (empty($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enabl
 /**********************************************************/
 if (empty($config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'])) {
 	$config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] = "off";
+	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Remove the two deprecated Rules Update Status fields   */
+/* from the package configuration. The status is now      */
+/* stored in a local file.                                */
+/**********************************************************/
+if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status']);
+	$updated_cfg = true;
+}
+if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time']);
 	$updated_cfg = true;
 }
 
@@ -206,7 +218,7 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['u2_archive_log
 }
 
 // Now process the interface-specific settings
-foreach ($rule as &$r) {
+foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 
 	// Initialize arrays for supported preprocessors if necessary
 	if (!is_array($r['libhtp_policy']))
