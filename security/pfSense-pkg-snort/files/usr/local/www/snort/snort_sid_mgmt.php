@@ -656,6 +656,7 @@ print($section);
 			</table>
 		</div>
 	</div>
+</div>
 	<div>
 		<button type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="btn btn-primary" value="<?=gettext("Save");?>" title="<?=gettext("Save SID Management configuration");?>" >
 			<i class="fa fa-save icon-embed-btn"></i>
@@ -685,7 +686,6 @@ print($section);
 		unset($a_nat);
 	?>
 	</div>
-</div>
 
 <script type="text/javascript">
 //<![CDATA[

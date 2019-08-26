@@ -3,11 +3,11 @@
  * suricata_download_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +37,15 @@ $etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rul
 $snortcommunityrules = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'];
 
 /* Get last update information if available */
-if (!empty($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time']))
-	$last_rule_upd_time = date('M-d Y H:i', $config['installedpackages']['suricata']['config'][0]['last_rule_upd_time']);
-else
+if (file_exists(SURICATADIR . "rulesupd_status")) {
+	$status = explode("|", file_get_contents(SURICATADIR . "rulesupd_status"));
+	$last_rule_upd_time = date('M-d Y H:i', $status[0]);
+	$last_rule_upd_status = gettext($status[1]);
+}
+else {
 	$last_rule_upd_time = gettext("Unknown");
-if (!empty($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status']))
-	$last_rule_upd_status = htmlspecialchars($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status']);
-else
 	$last_rule_upd_status = gettext("Unknown");
+}
 
 // Check for any custom URLs and extract custom filenames
 // if present, else use package default values.

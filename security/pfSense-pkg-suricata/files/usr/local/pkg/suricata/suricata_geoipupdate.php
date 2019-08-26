@@ -126,7 +126,7 @@ if ($rc === true) {
 			break;
 
 		default:
-			syslog(LOG_WARN, "[Suricata] WARNING: Received an unexpected HTTP response code " . $response . " during GeoLite2-Country database update check.");
+			syslog(LOG_WARNING, "[Suricata] WARNING: Received an unexpected HTTP response code " . $response . " during GeoLite2-Country database update check.");
 	}
 } else {
 	syslog(LOG_ERR, "[Suricata] ERROR: GeoLite2-Country IP database download failed.  The HTTP Response Code was " . $response . ".");
