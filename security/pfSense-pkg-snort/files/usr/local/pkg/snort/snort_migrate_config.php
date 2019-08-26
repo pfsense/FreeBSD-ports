@@ -186,6 +186,20 @@ elseif ($config['installedpackages']['snortglobal']['sid_list_migration'] < "2")
 }
 
 /**********************************************************/
+/* Remove the two deprecated Rules Update Status fields   */
+/* from the package configuration. The status is now      */
+/* stored in a local file.                                */
+/**********************************************************/
+if (isset($config['installedpackages']['snortglobal']['last_rule_upd_status'])) {
+	unset($config['installedpackages']['snortglobal']['last_rule_upd_status']);
+	$updated_cfg = true;
+}
+if (isset($config['installedpackages']['snortglobal']['last_rule_upd_time'])) {
+	unset($config['installedpackages']['snortglobal']['last_rule_upd_time']);
+	$updated_cfg = true;
+}
+
+/**********************************************************/
 /* Migrate per interface settings if required.            */
 /**********************************************************/
 foreach ($config['installedpackages']['snortglobal']['rule'] as &$rule) {
