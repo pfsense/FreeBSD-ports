@@ -50,10 +50,8 @@ chdir($home);
 
 function createSlug($string) {
 
-    //Lower case everything
-    $string = strtolower($string);
     //Make alphanumeric (removes all other characters)
-    $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+    $string = preg_replace("/[^a-zA-Z0-9_\s-]/", "", $string);
     //Clean up multiple dashes or whitespaces
     $string = preg_replace("/[\s-]+/", " ", $string);
     //Convert whitespaces and underscore to dash
@@ -123,7 +121,7 @@ if ($_POST['save-view']) {
 }
 
 //add a new view and make sure the string isn't empty
-if ($_POST['add-view'] && !empty($view_title) && ($view_title != "default")) {
+if ($_POST['add-view'] && !empty($view_title) && strtolower($view_title) != "default") {
 
 	$title = $view_title;
 
@@ -143,7 +141,7 @@ $view_removed = false;
 //remove current view
 if ($_POST['remove-view']) {
 
-	if ($view_title == "default") {
+	if (strtolower($view_title) == "default") {
 
 		$savemsg = "Can't remove default view.";
 
@@ -904,7 +902,7 @@ events.push(function() {
 
 	function createSlug(string) {
 
-	    return string.toString().toLowerCase()
+	    return string.toString()
 			.replace(/\s+/g, '-')       // Replace spaces with -
 			.replace(/[^\w\-]+/g, '')   // Remove all non-word chars
 			.replace(/\-\-+/g, '-')     // Replace multiple - with single -
@@ -1102,7 +1100,7 @@ events.push(function() {
 
 			var this_title = $(this).find('a:first').attr('href').split('=');
 
-			current_titles.push(this_title[1]);
+			current_titles.push(this_title[1].toLowerCase());
 
 	    });
 
@@ -1114,7 +1112,7 @@ events.push(function() {
 			}
 	        var title_slug = createSlug(view_title);
 
-	        if(jQuery.inArray(title_slug, current_titles) !== -1) {
+	        if(jQuery.inArray(title_slug.toLowerCase(), current_titles) !== -1) {
 
 				alert('That title is already used, try again.');
 

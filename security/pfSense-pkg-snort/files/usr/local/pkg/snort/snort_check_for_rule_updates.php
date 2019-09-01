@@ -819,10 +819,13 @@ snort_update_status(gettext("The Rules update has finished.") . "\n");
 syslog(LOG_NOTICE, gettext("[Snort] The Rules update has finished."));
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SNORT_RULES_UPD_LOGFILE);
 
-/* Save this update status to the configuration file */
-if ($update_errors)
-	$config['installedpackages']['snortglobal']['last_rule_upd_status'] = gettext("failed");
-else
-	$config['installedpackages']['snortglobal']['last_rule_upd_status'] = gettext("success");
-$config['installedpackages']['snortglobal']['last_rule_upd_time'] = time();
+/* Save this update status to the rulesupd_status file */
+$status = time() . '|';
+if ($update_errors) {
+	$status .= gettext("failed");
+}
+else {
+	$status .= gettext("success");
+}
+@file_put_contents(SNORTDIR . "/rulesupd_status", $status);
 ?>
