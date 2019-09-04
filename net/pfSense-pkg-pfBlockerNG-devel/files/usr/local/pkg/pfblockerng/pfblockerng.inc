@@ -329,9 +329,9 @@ function pfb_filter_service() {
 		fi
 
 		${tail_binary} /var/log/filter.log \
-	    	| /usr/local/bin/php_pfb \
-	    	-f /usr/local/pkg/pfblockerng/pfblockerng.inc \
-	    	filterlog &
+		    | /usr/local/bin/php_pfb \
+		    -f /usr/local/pkg/pfblockerng/pfblockerng.inc \
+		    filterlog &
 	fi
 EOF;
 	$rc['stop']	= <<<EOF
