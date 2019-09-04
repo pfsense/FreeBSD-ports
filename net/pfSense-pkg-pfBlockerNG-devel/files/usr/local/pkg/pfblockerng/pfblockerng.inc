@@ -321,17 +321,17 @@ function pfb_filter_service() {
 
 	# Start pfBlockerNG Firewall filter Daemon
 	if [ -e '/var/log/filter.log' ]; then
-	# Decide about using clog or tail
-	if [ -f /usr/local/sbin/clog_pfb ]; then
-		tail_binary="/usr/local/sbin/clog_pfb -f"
-	else
-		tail_binary="/usr/bin/tail_pfb -F"
-	fi
+		# Decide about using clog or tail
+		if [ -f /usr/local/sbin/clog_pfb ]; then
+			tail_binary="/usr/local/sbin/clog_pfb -f"
+		else
+			tail_binary="/usr/bin/tail_pfb -F"
+		fi
 
-	${tail_binary} /var/log/filter.log \
-	    | /usr/local/bin/php_pfb \
-	    -f /usr/local/pkg/pfblockerng/pfblockerng.inc \
-	    filterlog &
+		${tail_binary} /var/log/filter.log \
+	    	| /usr/local/bin/php_pfb \
+	    	-f /usr/local/pkg/pfblockerng/pfblockerng.inc \
+	    	filterlog &
 	fi
 EOF;
 	$rc['stop']	= <<<EOF
