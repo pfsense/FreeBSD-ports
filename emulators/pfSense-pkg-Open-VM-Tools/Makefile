@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Open-VM-Tools
 PORTVERSION=	10.1.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	# empty

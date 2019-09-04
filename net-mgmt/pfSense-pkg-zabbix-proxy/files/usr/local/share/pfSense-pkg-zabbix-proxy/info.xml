@@ -17,4 +17,7 @@
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>zabbix-proxy.xml</configurationfile>
 	</package>
+	<logging>
+		<logfilename>zabbix-proxy/zabbix_proxy.log</logfilename>
+	</logging>
 </pfsensepkgs>
