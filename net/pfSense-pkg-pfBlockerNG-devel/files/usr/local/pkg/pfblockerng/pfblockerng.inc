@@ -319,17 +319,20 @@ function pfb_filter_service() {
 		/bin/ln "\${php_path}/php" "\${php_path}/php_pfb"
 	fi
 
-        # Start pfBlockerNG Firewall filter Daemon
-        file="/usr/local/sbin/clog"
-        if [ -e '/var/log/filter.log']; then
-                if [ -f "$file" ]
-                then
-                /usr/local/sbin/clog_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
-                fi
-        else
-                /usr/bin/tail_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
-        fi
+	# Start pfBlockerNG Firewall filter Daemon
+	if [ -e '/var/log/filter.log' ]; then
+	# Decide about using clog or tail
+	if [ -f /usr/local/sbin/clog_pfb ]; then
+		tail_binary="/usr/local/sbin/clog_pfb -f"
+	else
+		tail_binary="/usr/bin/tail_pfb -F"
+	fi
 
+	${tail_binary} /var/log/filter.log \
+	    | /usr/local/bin/php_pfb \
+	    -f /usr/local/pkg/pfblockerng/pfblockerng.inc \
+	    filterlog &
+	fi
 EOF;
 	$rc['stop']	= <<<EOF
 
