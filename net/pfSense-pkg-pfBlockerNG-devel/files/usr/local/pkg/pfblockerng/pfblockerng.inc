@@ -319,15 +319,21 @@ function pfb_filter_service() {
 		/bin/ln "\${php_path}/php" "\${php_path}/php_pfb"
 	fi
 
-	# Start pfBlockerNG Firewall filter Daemon
-	if [ -e '/var/log/filter.log' ]; then
-		/usr/local/sbin/clog_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
-	fi
+        # Start pfBlockerNG Firewall filter Daemon
+        file="/usr/local/sbin/clog"
+        if [ -e '/var/log/filter.log']; then
+                if [ -f "$file" ]
+                then
+                /usr/local/sbin/clog_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
+                fi
+        else
+                /usr/bin/tail_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
+        fi
 
 EOF;
 	$rc['stop']	= <<<EOF
 
-	# Terminate pfBlockerNG Firewall filter Daemon (clog) and filter Daemon, if found
+	# Terminate pfBlockerNG Firewall filter Daemon (clog/tail) and filter Daemon, if found
 	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[c]log_pfb -f /var/log/filter.log\|[p]fblockerng.inc filterlog' | /usr/bin/awk '{print \$1}')"
 	if [ ! -z "\${pidnum}" ]; then
 		for i in \${pidnum}; do
