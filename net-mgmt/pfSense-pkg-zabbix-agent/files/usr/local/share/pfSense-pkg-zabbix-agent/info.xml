@@ -17,4 +17,7 @@
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>zabbix-agent.xml</configurationfile>
 	</package>
+	<logging>
+		<logfilename>zabbix-agent/zabbix_agentd.log</logfilename>
+	</logging>
 </pfsensepkgs>

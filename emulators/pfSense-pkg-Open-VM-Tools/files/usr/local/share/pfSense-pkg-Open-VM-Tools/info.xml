@@ -8,4 +8,7 @@
 		<pkginfolink>https://doc.pfsense.org/index.php/Open_VM_Tools_package</pkginfolink>
 		<configurationfile>open-vm-tools.xml</configurationfile>
 	</package>
+	<logging>
+		<logfilename>vmware-vmsvc.log</logfilename>
+	</logging>
 </pfsensepkgs>
