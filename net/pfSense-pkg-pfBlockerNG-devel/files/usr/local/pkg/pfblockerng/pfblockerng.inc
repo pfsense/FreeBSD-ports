@@ -7856,6 +7856,7 @@ function pfblockerng_php_pre_deinstall_command() {
 	unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
 	unlink_if_exists('/usr/local/bin/php_pfb');
 	unlink_if_exists('/usr/local/sbin/clog_pfb');
+	unlink_if_exists('/usr/local/sbin/tail_pfb');
 
 	// Remove incorrect xml setting
 	if (isset($config['installedpackages']['pfblockerngantartica'])) {
