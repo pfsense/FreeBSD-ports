@@ -322,8 +322,8 @@ function pfb_filter_service() {
 	# Start pfBlockerNG Firewall filter Daemon
 	if [ -e '/var/log/filter.log' ]; then
 		# clog is not required for pfSense 2.5 and above
-		if [ -e "\${php_path}/clog_pfb" ]; then
-			"\${php_path}/clog_pfb" -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
+		if [ -e "/usr/local/sbin/clog_pfb" ]; then
+			"/usr/local/sbin/clog_pfb" -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
 		else
 			/usr/bin/tail_pfb -F /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
 		fi
