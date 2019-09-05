@@ -325,7 +325,7 @@ function pfb_filter_service() {
 		if [ -e "\${php_path}/clog_pfb" ]; then
 			"\${php_path}/clog_pfb" -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
 		else
-			/usr/bin/tail -F /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
+			/usr/bin/tail_pfb -F /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
 		fi
 	fi
 
