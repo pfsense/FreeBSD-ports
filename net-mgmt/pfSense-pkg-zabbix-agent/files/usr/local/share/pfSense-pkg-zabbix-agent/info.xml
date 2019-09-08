@@ -16,5 +16,8 @@
 		<website>http://www.zabbix.com/product.php</website>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>zabbix-agent.xml</configurationfile>
+		<logging>
+			<logfilename>zabbix-agent/zabbix_agentd.log</logfilename>
+		</logging>
 	</package>
 </pfsensepkgs>

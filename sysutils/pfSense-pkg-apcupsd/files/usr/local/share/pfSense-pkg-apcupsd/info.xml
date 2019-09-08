@@ -6,5 +6,13 @@
 		<website>http://www.apcupsd.com/</website>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>apcupsd.xml</configurationfile>
+		<logging>
+			<logfilename>apcupsd.events</logfilename>
+			<logmode>644</logmode>
+			<rotatecount>7</rotatecount>
+			<logfilesize>102400</logfilesize>
+			<rotateflags>B</rotateflags>
+			<pidcmd>/var/run/apcupsd.pid</pidcmd>
+		</logging>
 	</package>
 </pfsensepkgs>

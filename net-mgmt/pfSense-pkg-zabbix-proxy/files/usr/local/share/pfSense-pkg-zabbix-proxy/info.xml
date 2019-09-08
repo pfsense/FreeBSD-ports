@@ -16,5 +16,8 @@
 		<website>http://www.zabbix.com/product.php</website>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>zabbix-proxy.xml</configurationfile>
+		<logging>
+			<logfilename>zabbix-proxy/zabbix_proxy.log</logfilename>
+		</logging>
 	</package>
 </pfsensepkgs>

@@ -167,8 +167,15 @@ stop_service('pfb_filter');
 update_status(" done.\nRenew Firewall filter executables...");
 unlink_if_exists('/usr/local/bin/php_pfb');
 link('/usr/local/bin/php', '/usr/local/bin/php_pfb');
+
+// clog is not required for pfSense 2.5 and above
 unlink_if_exists('/usr/local/sbin/clog_pfb');
-link('/usr/local/sbin/clog', '/usr/local/sbin/clog_pfb');
+unlink_if_exists('/usr/bin/tail_pfb');
+if (file_exists('/usr/local/sbin/clog')) {
+	link('/usr/local/sbin/clog', '/usr/local/sbin/clog_pfb');
+} else {
+	link('/usr/bin/tail', '/usr/bin/tail_pfb');
+}
 
 update_status(" done.\nStarting Firewall filter Service...");
 start_service('pfb_filter');

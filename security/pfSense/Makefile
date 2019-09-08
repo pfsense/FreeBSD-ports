@@ -18,7 +18,6 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		ca_root_nss>=0:security/ca_root_nss \
 		check_reload_status>=0:sysutils/check_reload_status \
 		choparp>=0:net-mgmt/choparp \
-		clog>=0:sysutils/clog \
 		cpdup>=0:sysutils/cpdup \
 		cpustats>=0:sysutils/cpustats \
 		dhcp6>=0:net/dhcp6 \
