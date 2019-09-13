@@ -28,6 +28,10 @@ if (!is_array($config['installedpackages']['avahi']['config'])) {
 }
 $a_avahi = &$config['installedpackages']['avahi']['config'][0];
 
+$actions = array(
+	"allow" => gettext("Allow Interfaces"),
+	"deny" => gettext("Deny Interfaces"),
+);
 
 if (isset($a_avahi)) {
 	if (isset($a_avahi['interfaces'])) {
@@ -71,11 +75,8 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
-	$pconfig['interfaces'] = implode(',', $pconfig['interfaces_a']);
-
-	/* Confirm at least one interface has been chosen */
-	if (empty($pconfig['interfaces_a'])) {
-		$input_errors[] = gettext("At least one interface must be selected");
+	if (isset($pconfig['interfaces_a']) && is_array($pconfig['interfaces_a'])) {
+		$pconfig['interfaces'] = implode(',', $pconfig['interfaces_a']);
 	}
 
 	/* Confirm that at least one protocol is enabled */
@@ -90,11 +91,15 @@ if ($_POST) {
 	if ($pconfig['override_domain'] && !preg_match('/^[a-zA-Z0-9-.]+$/', $pconfig['override_domain'])) {
 		$input_errors[] = gettext("Domain name may contain [a-zA-Z0-9-.] only");
 	}
+	if (!array_key_exists($pconfig['action'], $actions)) {
+		$input_errors[] = gettext("Invalid interface action");
+	}
 
 	if (!$input_errors) {
 		$avahi = array();
 
 		$avahi['enable'] = $pconfig['enable'];
+		$avahi['action'] = $pconfig['action'];
 		$avahi['interfaces'] = $pconfig['interfaces'];
 		$avahi['disable_ipv4'] = $pconfig['disable_ipv4'];
 		$avahi['disable_ipv6'] = $pconfig['disable_ipv6'];
@@ -125,8 +130,10 @@ if ($_POST) {
 
 $available_interfaces = get_configured_interface_with_descr();
 unset($available_interfaces['wan']);
-$pconfig['interfaces_a'] = explode(',', $pconfig['interfaces']);
 
+if (!empty($pconfig['interfaces'])) {
+	$pconfig['interfaces_a'] = explode(',', $pconfig['interfaces']);
+}
 
 $pgtitle = array(gettext("Services"), gettext("Avahi"));
 include("head.inc");
@@ -152,13 +159,27 @@ $section->addInput(new Form_Checkbox(
 ));
 
 $section->addInput(new Form_Select(
+	'action',
+	'Interface Action',
+	$pconfig['action'],
+	$actions,
+	false
+))->setHelp(
+	'Specify whether the interfaces selected below will be allowed or denied. ' .
+	'When using Deny mode, take care to select WANs and other interfaces where binding Avahi could be dangerous. ' .
+	'Also note that in Deny mode, Avahi will bind to unassigned interfaces.'
+);
+
+$section->addInput(new Form_Select(
 	'interfaces_a',
 	'Interfaces',
 	$pconfig['interfaces_a'],
 	$available_interfaces,
 	true
 ))->setHelp(
-	'Interfaces that the Avahi daemon will listen and send on'
+	'Interfaces that the Avahi daemon will listen and send on (Allow mode) ' .
+	'or be prevented from listening or sending on (Deny mode). ' .
+	'If empty, Avahi will listen on all available interfaces.'
 );
 
 $section->addInput(new Form_Checkbox(
