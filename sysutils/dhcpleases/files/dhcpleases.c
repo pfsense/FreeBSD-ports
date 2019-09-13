@@ -257,6 +257,18 @@ convert_time(struct tm lease_time)
 	return (time);
 }
 
+static void
+fix_hostname_spaces(char *hostname)
+{
+	unsigned int i;
+
+	for (i = 0; i < strlen(hostname); i++) {
+		if (*(hostname+i) == ' ') {
+			*(hostname+i) = '-';
+		}
+	}
+}
+
 static int
 load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now)
 {
@@ -308,7 +320,8 @@ load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now)
 							    "bad name in %s",
 							    leasefile);
 						*hostname = 0;
-					}
+					} else
+						fix_hostname_spaces(hostname);
 				} else if ((strcmp(token, "ends") == 0) ||
 				    (strcmp(token, "starts") == 0)) {
 					struct tm lease_time;
