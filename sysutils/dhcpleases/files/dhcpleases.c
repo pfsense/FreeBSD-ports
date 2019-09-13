@@ -262,120 +262,125 @@ load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now) {
 	LIST_INIT(&leases);
 
 	while ((next_token(token, MAXTOK, fp))) {
-		if (strcmp(token, "lease") == 0) {
-			*hostname = 0;
-			ttd = tts = (time_t)(-1);
-			if (next_token(token, MAXTOK, fp) &&
-			   (inet_pton(AF_INET, token, &host_address))) {
-				if (next_token(token, MAXTOK, fp) && *token == '{') {
-					while (next_token(token, MAXTOK, fp) && *token != '}') {
+		if (strcmp(token, "lease") != 0) {
+			continue;
+		}
+
+		*hostname = 0;
+		ttd = tts = (time_t)(-1);
+
+		if (!next_token(token, MAXTOK, fp) ||
+		   (!inet_pton(AF_INET, token, &host_address))) {
+			continue;
+		}
+
+		if (next_token(token, MAXTOK, fp) && *token == '{') {
+			while (next_token(token, MAXTOK, fp) && *token != '}') {
 #if DEBUG
-						printf("token: %s\n", token);
+				printf("token: %s\n", token);
 #endif
-						if ((strcmp(token, "client-hostname") == 0) ||
-						    (strcmp(token, "hostname") == 0)) {
-							if (next_token(hostname, MAXDNAME, fp)) {
-								if (*hostname == '}') {
-									*hostname = 0;
-								} else if (!canonicalise(hostname)) {
-									if (foreground)
-										printf("bad name(%s) in %s\n", hostname, leasefile);
-									else
-										syslog(LOG_ERR, "bad name in %s", leasefile);
-									*hostname = 0;
-								}
-							}
-						} else if ((strcmp(token, "ends") == 0) ||
-							    (strcmp(token, "starts") == 0)) {
-								struct tm lease_time;
-								int is_ends = (strcmp(token, "ends") == 0);
-								if (next_token(token, MAXTOK, fp) &&  /* skip weekday */
-								    next_token(token, MAXTOK, fp) &&  /* Get date from lease file */
-								    sscanf (token, "%d/%d/%d",
-									&lease_time.tm_year,
-									&lease_time.tm_mon,
-									&lease_time.tm_mday) == 3 &&
-								    next_token(token, MAXTOK, fp) &&
-								    sscanf (token, "%d:%d:%d:",
-									&lease_time.tm_hour,
-									&lease_time.tm_min,
-									&lease_time.tm_sec) == 3) {
-									if (is_ends)
-										ttd = convert_time(lease_time);
-									else
-										tts = convert_time(lease_time);
-								}
+				if ((strcmp(token, "client-hostname") == 0) ||
+				    (strcmp(token, "hostname") == 0)) {
+					if (next_token(hostname, MAXDNAME, fp)) {
+						if (*hostname == '}') {
+							*hostname = 0;
+						} else if (!canonicalise(hostname)) {
+							if (foreground)
+								printf("bad name(%s) in %s\n", hostname, leasefile);
+							else
+								syslog(LOG_ERR, "bad name in %s", leasefile);
+							*hostname = 0;
 						}
 					}
-				}
-
-				/* missing info? */
-				if (!*hostname)
-					continue;
-				if (ttd == (time_t)(-1))
-					ttd = (time_t)0;
-
-				/* We use 0 as infinite in ttd */
-				if ((tts != -1) && (ttd == tts - 1))
-					ttd = (time_t)0;
-
-				if ((dot = strchr(hostname, '.'))) {
-					if (!domain_suffix || hostname_isequal(dot+1, domain_suffix)) {
-						if (foreground)
-							printf("Other suffix in DHCP lease for %s", hostname);
+				} else if ((strcmp(token, "ends") == 0) ||
+				    (strcmp(token, "starts") == 0)) {
+					struct tm lease_time;
+					int is_ends = (strcmp(token, "ends") == 0);
+					if (next_token(token, MAXTOK, fp) &&  /* skip weekday */
+					    next_token(token, MAXTOK, fp) &&  /* Get date from lease file */
+					    sscanf (token, "%d/%d/%d",
+						&lease_time.tm_year,
+						&lease_time.tm_mon,
+						&lease_time.tm_mday) == 3 &&
+					    next_token(token, MAXTOK, fp) &&
+					    sscanf (token, "%d:%d:%d:",
+						&lease_time.tm_hour,
+						&lease_time.tm_min,
+						&lease_time.tm_sec) == 3) {
+						if (is_ends)
+							ttd = convert_time(lease_time);
 						else
-							syslog(LOG_WARNING, "Other suffix in DHCP lease for %s", hostname);
-
-						suffix = (dot + 1);
-						*dot = 0;
-					} else
-						suffix = domain_suffix;
-				} else
-					suffix = domain_suffix;
-
-				LIST_FOREACH(lease, &leases, next) {
-					if (hostname_isequal(lease->name, hostname)) {
-						lease->expires = ttd;
-						lease->addr = host_address;
-						break;
+							tts = convert_time(lease_time);
 					}
 				}
-
-				if (!lease) {
-					if ((lease = malloc(sizeof(struct isc_lease))) == NULL)
-						continue;
-					lease->expires = ttd;
-					lease->addr = host_address;
-					lease->fqdn = NULL;
-					lease->name = NULL;
-					LIST_INSERT_HEAD(&leases, lease, next);
-				} else {
-					if (lease->fqdn != NULL)
-						free(lease->fqdn);
-					if (lease->name != NULL)
-						free(lease->name);
-				}
-
-				if (foreground)
-					printf("Found hostname: %s.%s\n", hostname, suffix);
-
-				if (asprintf(&lease->name, "%s", hostname) < 0) {
-					LIST_REMOVE(lease, next);
-					if (lease->name != NULL)
-						free(lease->name);
-					if (lease->fqdn != NULL)
-						free(lease->fqdn);
-					free(lease);
-				}
-				if (asprintf(&lease->fqdn, "%s.%s", hostname, suffix) < 0) {
-					LIST_REMOVE(lease, next);
-					if (lease->name != NULL)
-						free(lease->name);
-					if (lease->fqdn != NULL)
-						free(lease->fqdn);
-					free(lease);
-				}
 			}
+		}
+
+		/* missing info? */
+		if (!*hostname)
+			continue;
+		if (ttd == (time_t)(-1))
+			ttd = (time_t)0;
+
+		/* We use 0 as infinite in ttd */
+		if ((tts != -1) && (ttd == tts - 1))
+			ttd = (time_t)0;
+
+		if ((dot = strchr(hostname, '.'))) {
+			if (!domain_suffix || hostname_isequal(dot+1, domain_suffix)) {
+				if (foreground)
+					printf("Other suffix in DHCP lease for %s", hostname);
+				else
+					syslog(LOG_WARNING, "Other suffix in DHCP lease for %s", hostname);
+
+				suffix = (dot + 1);
+				*dot = 0;
+			} else
+				suffix = domain_suffix;
+		} else
+			suffix = domain_suffix;
+
+		LIST_FOREACH(lease, &leases, next) {
+			if (hostname_isequal(lease->name, hostname)) {
+				lease->expires = ttd;
+				lease->addr = host_address;
+				break;
+			}
+		}
+
+		if (!lease) {
+			if ((lease = malloc(sizeof(struct isc_lease))) == NULL)
+				continue;
+			lease->expires = ttd;
+			lease->addr = host_address;
+			lease->fqdn = NULL;
+			lease->name = NULL;
+			LIST_INSERT_HEAD(&leases, lease, next);
+		} else {
+			if (lease->fqdn != NULL)
+				free(lease->fqdn);
+			if (lease->name != NULL)
+				free(lease->name);
+		}
+
+		if (foreground)
+			printf("Found hostname: %s.%s\n", hostname, suffix);
+
+		if (asprintf(&lease->name, "%s", hostname) < 0) {
+			LIST_REMOVE(lease, next);
+			if (lease->name != NULL)
+				free(lease->name);
+			if (lease->fqdn != NULL)
+				free(lease->fqdn);
+			free(lease);
+		}
+		if (asprintf(&lease->fqdn, "%s.%s", hostname, suffix) < 0) {
+			LIST_REMOVE(lease, next);
+			if (lease->name != NULL)
+				free(lease->name);
+			if (lease->fqdn != NULL)
+				free(lease->fqdn);
+			free(lease);
 		}
 	}
 
