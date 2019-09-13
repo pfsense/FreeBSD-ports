@@ -201,7 +201,7 @@ hostname_isequal(char *a, char *b)
 static int
 next_token (char *token, int buffsize, FILE * fp)
 {
-	int c, count = 0;
+	int c, count = 0, quotes = 0;
 	char *cp = token;
 
 	while((c = getc(fp)) != EOF) {
@@ -210,7 +210,10 @@ next_token (char *token, int buffsize, FILE * fp)
 				c = getc(fp);
 			} while (c != '\n' && c != EOF);
 
-		if (c == ' ' || c == '\t' || c == '\n' || c == ';') {
+		if (c == '"')
+			quotes = (quotes == 0 ? 1 : 0);
+		if ((c == ' ' && quotes == 0) || c == '\t' || c == '\n' ||
+		    c == ';') {
 			if (count)
 				break;
 		} else if ((c != '"') && (count<buffsize-1)) {
