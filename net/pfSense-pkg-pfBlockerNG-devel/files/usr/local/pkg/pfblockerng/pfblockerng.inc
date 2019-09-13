@@ -321,14 +321,19 @@ function pfb_filter_service() {
 
 	# Start pfBlockerNG Firewall filter Daemon
 	if [ -e '/var/log/filter.log' ]; then
-		/usr/local/sbin/clog_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
+		# clog is not required for pfSense 2.5 and above
+		if [ -e "/usr/local/sbin/clog_pfb" ]; then
+			/usr/local/sbin/clog_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
+		else
+			/usr/bin/tail_pfb -F /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
+		fi
 	fi
 
 EOF;
 	$rc['stop']	= <<<EOF
 
-	# Terminate pfBlockerNG Firewall filter Daemon (clog) and filter Daemon, if found
-	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[c]log_pfb -f /var/log/filter.log\|[p]fblockerng.inc filterlog' | /usr/bin/awk '{print \$1}')"
+	# Terminate pfBlockerNG Firewall filter Daemon (clog/tail) and filter Daemon, if found
+	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[c]log_pfb -f /var/log/filter.log\|[t]ail_pfb -F /var/log/filter.log\|[p]fblockerng.inc filterlog' | /usr/bin/awk '{print \$1}')"
 	if [ ! -z "\${pidnum}" ]; then
 		for i in \${pidnum}; do
 			/bin/kill -9 "\${i}"
@@ -7851,6 +7856,7 @@ function pfblockerng_php_pre_deinstall_command() {
 	unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
 	unlink_if_exists('/usr/local/bin/php_pfb');
 	unlink_if_exists('/usr/local/sbin/clog_pfb');
+	unlink_if_exists('/usr/bin/tail_pfb');
 
 	// Remove incorrect xml setting
 	if (isset($config['installedpackages']['pfblockerngantartica'])) {
