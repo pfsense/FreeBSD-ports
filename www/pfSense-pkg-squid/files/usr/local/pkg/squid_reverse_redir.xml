@@ -127,13 +127,14 @@
 			<type>info</type>
 			<description>
 				<![CDATA[
-				Use Redirect Domains row(s) below to match domains to redirect for (one per row).
+				Use Redirect Domains row(s) containing <strong>regular expressions</strong> below to match domains to redirect for (one per row).
 				<div class="infoblock">
 					Do <strong>NOT</strong> enter http:// or https:// - only the hostname is required.<br/><br/>
 					<span class="text-info">Examples:</span><br/>
 					example.com<br/>
-					sub.example.com<br/>
 					www.example.com<br/>
+					^this.example.com/.*$<br/>
+					^(?!butnotthis\.)(.*\.)?example\.com$
 					</span>
 				</div>
 				]]>
@@ -151,7 +152,7 @@
 					<required/>
 					<fielddescr>
 						<![CDATA[
-						Enter the domains to match here.
+						Enter <strong>regular expression(s)</strong> for the domain(s) to match here.
 						<span class="text-info">Click Info above for examples.</span>
 						]]>
 					</fielddescr>
@@ -164,7 +165,7 @@
 			<description>
 				<![CDATA[
 				Enter the path regex to match here.
-				<span class="text-info">Hint: Enter ^/$ to match the domain only.</span>
+				<span class="text-info">Hint: Enter ^/$ to match the domain(s) only.</span>
 				]]>
 			</description>
 			<type>input</type>

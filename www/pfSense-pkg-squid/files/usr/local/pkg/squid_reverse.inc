@@ -244,7 +244,7 @@ function squid_resync_reverse() {
 
 				if (is_array($rdr['row'])) {
 					foreach ($rdr['row'] as $uri) {
-						$conf_rdr .= "acl rdr_dst_{$rdr['name']} dstdomain {$uri['uri']}\n";
+ 						$conf_rdr .= "acl rdr_dst_{$rdr['name']} dstdom_regex -i {$uri['uri']}\n";
 					}
 				}
 
