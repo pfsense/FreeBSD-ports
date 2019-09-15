@@ -134,7 +134,7 @@
 					example.com<br/>
 					www.example.com<br/>
 					^this.example.com/.*$<br/>
-					^(?!butnotthis\.)(.*\.)?example\.com$
+					^(?!butnotthis\.)(.+\.)?example\.com$
 					</span>
 				</div>
 				]]>
