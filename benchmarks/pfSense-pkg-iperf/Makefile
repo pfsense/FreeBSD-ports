@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-iperf
-PORTVERSION=	2.0.5.5
-PORTREVISION=	3
+PORTVERSION=	3.0
 CATEGORIES=	benchmarks
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +12,7 @@ COMMENT=	pfSense package iperf
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/iperf:benchmarks/iperf
+RUN_DEPENDS=	${LOCALBASE}/bin/iperf3:benchmarks/iperf3
 
 NO_BUILD=	yes
 NO_MTREE=	yes
