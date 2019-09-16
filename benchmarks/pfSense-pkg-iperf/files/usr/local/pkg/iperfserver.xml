@@ -8,7 +8,7 @@
  * iperfserver.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2019 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,24 +47,13 @@
 		<field>
 			<fielddescr>Port</fielddescr>
 			<fieldname>port</fieldname>
-			<description>Enter the port that iperf will listen for connections on. (Default is 5001.)</description>
+			<description>
+				<![CDATA[
+					Enter the port that iperf will bind to listen for client connections. (Default is 5001.)<br/>
+					iperf3 binds to TCP by default, but if the client requests UDP, it will bind to the same port on UDP as well during the test.
+				]]>
+			</description>
 			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Protocol</fielddescr>
-			<fieldname>protocol</fieldname>
-			<description>Choose whether to use TCP or UDP here. (Default is TCP.)</description>
-			<type>select</type>
-			<options>
-				<option>
-					<name>TCP</name>
-					<value>tcp</value>
-				</option>
-				<option>
-					<name>UDP</name>
-					<value>udp</value>
-				</option>
-			</options>
 		</field>
 		<field>
 			<fielddescr>Output format</fielddescr>
@@ -89,42 +78,30 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Buffer length</fielddescr>
-			<fieldname>length</fieldname>
-			<description>Enter the length of buffers to read or write here. (Default 8KB for TCP, 1470B for UDP.)</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Socket buffer size</fielddescr>
-			<fieldname>window</fieldname>
-			<description>Enter the desired socket buffer size, if needed.</description>
-			<type>input</type>
+			<fielddescr>Other Options</fielddescr>
+			<fieldname>info</fieldname>
+			<description>
+				iperf3 automatically sets most parameters dynamically based upon what clients request.
+				Previously available server options are no longer necessary.
+			</description>
+			<type>info</type>
 		</field>
 	</fields>
 	<custom_add_php_command>
 	<![CDATA[
-		mwexec("/usr/bin/killall iperf");
+		mwexec("/usr/bin/killall iperf3");
 		$iperf_options = "";
-		if ($_POST['protocol'] == "udp") {
-			$iperf_options .= " -u";
-		}
 		if ($_POST['format'] == "bytes") {
-			$iperf_options .= " -f A";
+			$iperf_options .= " -f M";
 		}
 		if ($_POST['interval'] != "") {
 			$iperf_options .= " -i " . escapeshellarg($_POST['interval']);
-		}
-		if ($_POST['length'] != "") {
-			$iperf_options .= " -l " . escapeshellarg($_POST['length']);
-		}
-		if ($_POST['window'] != "") {
-			$iperf_options .= " -w " . escapeshellarg($_POST['window']);
 		}
 		if ($_POST['port'] != "") {
 			$iperf_options .= " -p " . escapeshellarg($_POST['port']);
 		}
 		$iperf_options .= " -s";
-		mwexec_bg("/usr/local/bin/iperf" . $iperf_options);
+		mwexec_bg("/usr/local/bin/iperf3" . $iperf_options);
 		echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to iperf server") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to iperf server") . '</button>';
 	]]>
 	</custom_add_php_command>
