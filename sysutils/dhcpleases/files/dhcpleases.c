@@ -75,8 +75,7 @@ struct isc_lease {
 	LIST_ENTRY(isc_lease) next;
 };
 
-LIST_HEAD(isc_leases, isc_lease) leases =
-	LIST_HEAD_INITIALIZER(leases);
+LIST_HEAD(isc_leases, isc_lease) leases = LIST_HEAD_INITIALIZER(leases);
 static char *HOSTS = NULL;
 static char *domain_suffix = NULL;
 static int hostssize = 0;
@@ -134,7 +133,8 @@ fsize(char * filename)
  * and space, for DNS-SD stuff)
  */
 static int
-legal_char(char c) {
+legal_char(char c)
+{
 	if ((c >= 'A' && c <= 'Z') ||
 	    (c >= 'a' && c <= 'z') ||
 	    (c >= '0' && c <= '9') ||
@@ -148,7 +148,8 @@ legal_char(char c) {
  * also fail empty string and label > 63 chars
  */
 static int
-canonicalise(char *s) {
+canonicalise(char *s)
+{
 	size_t dotgap = 0, l = strlen(s);
 	char c;
 	int nowhite = 0;
@@ -177,7 +178,8 @@ canonicalise(char *s) {
 
 /* don't use strcasecmp and friends here - they may be messed up by LOCALE */
 static int
-hostname_isequal(char *a, char *b) {
+hostname_isequal(char *a, char *b)
+{
 	unsigned int c1, c2;
 
 	do {
@@ -199,7 +201,7 @@ hostname_isequal(char *a, char *b) {
 static int
 next_token (char *token, int buffsize, FILE * fp)
 {
-	int c, count = 0;
+	int c, count = 0, quotes = 0;
 	char *cp = token;
 
 	while((c = getc(fp)) != EOF) {
@@ -208,7 +210,10 @@ next_token (char *token, int buffsize, FILE * fp)
 				c = getc(fp);
 			} while (c != '\n' && c != EOF);
 
-		if (c == ' ' || c == '\t' || c == '\n' || c == ';') {
+		if (c == '"')
+			quotes = (quotes == 0 ? 1 : 0);
+		if ((c == ' ' && quotes == 0) || c == '\t' || c == '\n' ||
+		    c == ';') {
 			if (count)
 				break;
 		} else if ((c != '"') && (count<buffsize-1)) {
@@ -232,25 +237,41 @@ next_token (char *token, int buffsize, FILE * fp)
  * fine here.
  */
 static time_t
-convert_time(struct tm lease_time) {
-	static const int months [11] = { 31, 59, 90, 120, 151, 181,
-						212, 243, 273, 304, 334 };
-	time_t time = ((((((365 * (lease_time.tm_year - 1970) + /* Days in years since '70 */
-			    (lease_time.tm_year - 1969) / 4 +   /* Leap days since '70 */
-			    (lease_time.tm_mon > 1		/* Days in months this year */
-				? months [lease_time.tm_mon - 2]
-				: 0) +
-			    (lease_time.tm_mon > 2 &&		/* Leap day this year */
-			    !((lease_time.tm_year - 1972) & 3)) +
-			    lease_time.tm_mday - 1) * 24) +	/* Day of month */
-			    lease_time.tm_hour) * 60) +
-			    lease_time.tm_min) * 60) + lease_time.tm_sec;
+convert_time(struct tm lease_time)
+{
+	static const int months [11] = {
+	    31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
+	};
+	time_t time =
+	    ((((((365 * (lease_time.tm_year - 1970) + /* Days in years since '70 */
+	    (lease_time.tm_year - 1969) / 4 +	/* Leap days since '70 */
+	    (lease_time.tm_mon > 1		/* Days in months this year */
+		? months [lease_time.tm_mon - 2]
+		: 0) +
+	    (lease_time.tm_mon > 2 &&		/* Leap day this year */
+		!((lease_time.tm_year - 1972) & 3)) +
+	    lease_time.tm_mday - 1) * 24) +	/* Day of month */
+		lease_time.tm_hour) * 60) +
+		lease_time.tm_min) * 60) + lease_time.tm_sec;
 
 	return (time);
 }
 
+static void
+fix_hostname_spaces(char *hostname)
+{
+	unsigned int i;
+
+	for (i = 0; i < strlen(hostname); i++) {
+		if (*(hostname+i) == ' ') {
+			*(hostname+i) = '-';
+		}
+	}
+}
+
 static int
-load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now) {
+load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now)
+{
 	char namebuff[256];
 	char *hostname = namebuff, *suffix = NULL;
 	char token[MAXTOK], *dot;
@@ -262,126 +283,151 @@ load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now) {
 	LIST_INIT(&leases);
 
 	while ((next_token(token, MAXTOK, fp))) {
-		if (strcmp(token, "lease") == 0) {
-			*hostname = 0;
-			ttd = tts = (time_t)(-1);
-			if (next_token(token, MAXTOK, fp) &&
-			   (inet_pton(AF_INET, token, &host_address))) {
-				if (next_token(token, MAXTOK, fp) && *token == '{') {
-					while (next_token(token, MAXTOK, fp) && *token != '}') {
+		if (strcmp(token, "lease") != 0) {
+			continue;
+		}
+
+		*hostname = 0;
+		ttd = tts = (time_t)(-1);
+
+		if (!next_token(token, MAXTOK, fp) ||
+		   (!inet_pton(AF_INET, token, &host_address))) {
+			continue;
+		}
+
+		if (next_token(token, MAXTOK, fp) && *token == '{') {
+			while (next_token(token, MAXTOK, fp) && *token != '}') {
 #if DEBUG
-						printf("token: %s\n", token);
+				printf("token: %s\n", token);
 #endif
-						if ((strcmp(token, "client-hostname") == 0) ||
-						    (strcmp(token, "hostname") == 0)) {
-							if (next_token(hostname, MAXDNAME, fp)) {
-								if (*hostname == '}') {
-									*hostname = 0;
-								} else if (!canonicalise(hostname)) {
-									if (foreground)
-										printf("bad name(%s) in %s\n", hostname, leasefile);
-									else
-										syslog(LOG_ERR, "bad name in %s", leasefile);
-									*hostname = 0;
-								}
-							}
-						} else if ((strcmp(token, "ends") == 0) ||
-							    (strcmp(token, "starts") == 0)) {
-								struct tm lease_time;
-								int is_ends = (strcmp(token, "ends") == 0);
-								if (next_token(token, MAXTOK, fp) &&  /* skip weekday */
-								    next_token(token, MAXTOK, fp) &&  /* Get date from lease file */
-								    sscanf (token, "%d/%d/%d",
-									&lease_time.tm_year,
-									&lease_time.tm_mon,
-									&lease_time.tm_mday) == 3 &&
-								    next_token(token, MAXTOK, fp) &&
-								    sscanf (token, "%d:%d:%d:",
-									&lease_time.tm_hour,
-									&lease_time.tm_min,
-									&lease_time.tm_sec) == 3) {
-									if (is_ends)
-										ttd = convert_time(lease_time);
-									else
-										tts = convert_time(lease_time);
-								}
-						}
-					}
-				}
-
-				/* missing info? */
-				if (!*hostname)
-					continue;
-				if (ttd == (time_t)(-1))
-					ttd = (time_t)0;
-
-				/* We use 0 as infinite in ttd */
-				if ((tts != -1) && (ttd == tts - 1))
-					ttd = (time_t)0;
-
-				if ((dot = strchr(hostname, '.'))) {
-					if (!domain_suffix || hostname_isequal(dot+1, domain_suffix)) {
-						if (foreground)
-							printf("Other suffix in DHCP lease for %s", hostname);
-						else
-							syslog(LOG_WARNING, "Other suffix in DHCP lease for %s", hostname);
-
-						suffix = (dot + 1);
-						*dot = 0;
-					} else
-						suffix = domain_suffix;
-				} else
-					suffix = domain_suffix;
-
-				LIST_FOREACH(lease, &leases, next) {
-					if (hostname_isequal(lease->name, hostname)) {
-						lease->expires = ttd;
-						lease->addr = host_address;
-						break;
-					}
-				}
-
-				if (!lease) {
-					if ((lease = malloc(sizeof(struct isc_lease))) == NULL)
+				if ((strcmp(token, "client-hostname") == 0) ||
+				    (strcmp(token, "hostname") == 0)) {
+					if (!next_token(hostname, MAXDNAME,
+					    fp)) {
 						continue;
-					lease->expires = ttd;
-					lease->addr = host_address;
-					lease->fqdn = NULL;
-					lease->name = NULL;
-					LIST_INSERT_HEAD(&leases, lease, next);
-				} else {
-					if (lease->fqdn != NULL)
-						free(lease->fqdn);
-					if (lease->name != NULL)
-						free(lease->name);
-				}
+					}
 
-				if (foreground)
-					printf("Found hostname: %s.%s\n", hostname, suffix);
-
-				if (asprintf(&lease->name, "%s", hostname) < 0) {
-					LIST_REMOVE(lease, next);
-					if (lease->name != NULL)
-						free(lease->name);
-					if (lease->fqdn != NULL)
-						free(lease->fqdn);
-					free(lease);
-				}
-				if (asprintf(&lease->fqdn, "%s.%s", hostname, suffix) < 0) {
-					LIST_REMOVE(lease, next);
-					if (lease->name != NULL)
-						free(lease->name);
-					if (lease->fqdn != NULL)
-						free(lease->fqdn);
-					free(lease);
+					if (*hostname == '}') {
+						*hostname = 0;
+					} else if (!canonicalise(hostname)) {
+						if (foreground)
+							printf(
+							    "bad name(%s) in %s\n",
+							    hostname,
+							    leasefile);
+						else
+							syslog(LOG_ERR,
+							    "bad name in %s",
+							    leasefile);
+						*hostname = 0;
+					} else
+						fix_hostname_spaces(hostname);
+				} else if ((strcmp(token, "ends") == 0) ||
+				    (strcmp(token, "starts") == 0)) {
+					struct tm lease_time;
+					int is_ends = (strcmp(token, "ends") ==
+					    0);
+					/* skip weekday */
+					if (next_token(token, MAXTOK, fp) &&
+					    /* Get date from lease file */
+					    next_token(token, MAXTOK, fp) &&
+					    sscanf (token, "%d/%d/%d",
+						&lease_time.tm_year,
+						&lease_time.tm_mon,
+						&lease_time.tm_mday) == 3 &&
+					    next_token(token, MAXTOK, fp) &&
+					    sscanf (token, "%d:%d:%d:",
+						&lease_time.tm_hour,
+						&lease_time.tm_min,
+						&lease_time.tm_sec) == 3) {
+						if (is_ends)
+							ttd = convert_time(
+							    lease_time);
+						else
+							tts = convert_time(
+							    lease_time);
+					}
 				}
 			}
+		}
+
+		/* missing info? */
+		if (!*hostname)
+			continue;
+		if (ttd == (time_t)(-1))
+			ttd = (time_t)0;
+
+		/* We use 0 as infinite in ttd */
+		if ((tts != -1) && (ttd == tts - 1))
+			ttd = (time_t)0;
+
+		if ((dot = strchr(hostname, '.'))) {
+			if (!domain_suffix ||
+			    hostname_isequal(dot+1, domain_suffix)) {
+				if (foreground)
+					printf(
+					    "Other suffix in DHCP lease for %s",
+					    hostname);
+				else
+					syslog(LOG_WARNING,
+					    "Other suffix in DHCP lease for %s",
+					    hostname);
+
+				suffix = (dot + 1);
+				*dot = 0;
+			} else
+				suffix = domain_suffix;
+		} else
+			suffix = domain_suffix;
+
+		LIST_FOREACH(lease, &leases, next) {
+			if (hostname_isequal(lease->name, hostname)) {
+				lease->expires = ttd;
+				lease->addr = host_address;
+				break;
+			}
+		}
+
+		if (!lease) {
+			if ((lease = malloc(sizeof(struct isc_lease))) == NULL)
+				continue;
+			lease->expires = ttd;
+			lease->addr = host_address;
+			lease->fqdn = NULL;
+			lease->name = NULL;
+			LIST_INSERT_HEAD(&leases, lease, next);
+		} else {
+			if (lease->fqdn != NULL)
+				free(lease->fqdn);
+			if (lease->name != NULL)
+				free(lease->name);
+		}
+
+		if (foreground)
+			printf("Found hostname: %s.%s\n", hostname, suffix);
+
+		if (asprintf(&lease->name, "%s", hostname) < 0) {
+			LIST_REMOVE(lease, next);
+			if (lease->name != NULL)
+				free(lease->name);
+			if (lease->fqdn != NULL)
+				free(lease->fqdn);
+			free(lease);
+		}
+		if (asprintf(&lease->fqdn, "%s.%s", hostname, suffix) < 0) {
+			LIST_REMOVE(lease, next);
+			if (lease->name != NULL)
+				free(lease->name);
+			if (lease->fqdn != NULL)
+				free(lease->fqdn);
+			free(lease);
 		}
 	}
 
 	/* prune expired leases */
 	LIST_FOREACH_SAFE(lease, &leases, next, tmp) {
-		if (lease->expires != (time_t)0 && difftime(now, lease->expires) > 0) {
+		if (lease->expires != (time_t)0 &&
+		    difftime(now, lease->expires) > 0) {
 			if (lease->name)
 				free(lease->name);
 			if (lease->fqdn)
@@ -395,7 +441,8 @@ load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now) {
 }
 
 static int
-write_status() {
+write_status()
+{
 	struct isc_lease *lease;
 	struct stat tmp;
 	size_t tmpsize;
@@ -412,7 +459,8 @@ write_status() {
 		if (foreground)
 			printf("%s changed size from original!", HOSTS);
 		else
-			syslog(LOG_WARNING, "%s changed size from original!", HOSTS);
+			syslog(LOG_WARNING, "%s changed size from original!",
+			    HOSTS);
 		hostssize = tmpsize;
 	}
 	ftruncate(fd, hostssize);
@@ -421,14 +469,21 @@ write_status() {
 		return 2;
 	}
 	/* write the tmp hosts file */
-	dprintf(fd, "\n# dhcpleases automatically entered\n"); /* put a blank line just to be on safe side */
+	/* put a blank line just to be on safe side */
+	dprintf(fd, "\n# dhcpleases automatically entered\n");
 	LIST_FOREACH(lease, &leases, next) {
 		if (foreground)
-			printf("%s\t%s %s\t\t# dynamic entry from dhcpd.leases\n", inet_ntoa(lease->addr),
-				lease->fqdn ? lease->fqdn  : "empty", lease->name ? lease->name : "empty");
+			printf(
+			    "%s\t%s %s\t\t# dynamic entry from dhcpd.leases\n",
+			    inet_ntoa(lease->addr),
+			    lease->fqdn ? lease->fqdn  : "empty",
+			    lease->name ? lease->name : "empty");
 		else
-			dprintf(fd, "%s\t%s %s\t\t# dynamic entry from dhcpd.leases\n", inet_ntoa(lease->addr),
-				lease->fqdn ? lease->fqdn  : "empty", lease->name ? lease->name : "empty");
+			dprintf(fd,
+			    "%s\t%s %s\t\t# dynamic entry from dhcpd.leases\n",
+			    inet_ntoa(lease->addr),
+			    lease->fqdn ? lease->fqdn  : "empty",
+			    lease->name ? lease->name : "empty");
 	}
 	close(fd);
 
@@ -439,7 +494,8 @@ write_status() {
 }
 
 static int
-write_unbound_conf() {
+write_unbound_conf()
+{
 	struct isc_lease *lease;
 	int fd;
 
@@ -447,16 +503,21 @@ write_unbound_conf() {
 	if (fd < 0)
 		return 1;
 
-	dprintf(fd, "\n# dhcpleases automatically entered\n"); /* put a blank line just to be on safe side */
+	/* put a blank line just to be on safe side */
+	dprintf(fd, "\n# dhcpleases automatically entered\n");
 	LIST_FOREACH(lease, &leases, next) {
 		if (!lease->fqdn)
 			continue;
 		if (foreground) {
-			printf("local-data: \"%s IN A %s\"\n", lease->fqdn, inet_ntoa(lease->addr));
-			printf("local-data-ptr: \"%s %s\"\n", inet_ntoa(lease->addr), lease->fqdn);
+			printf("local-data: \"%s IN A %s\"\n", lease->fqdn,
+			    inet_ntoa(lease->addr));
+			printf("local-data-ptr: \"%s %s\"\n",
+			    inet_ntoa(lease->addr), lease->fqdn);
 		} else {
-			dprintf(fd, "local-data: \"%s IN A %s\"\n", lease->fqdn, inet_ntoa(lease->addr));
-			dprintf(fd, "local-data-ptr: \"%s %s\"\n", inet_ntoa(lease->addr), lease->fqdn);
+			dprintf(fd, "local-data: \"%s IN A %s\"\n", lease->fqdn,
+			    inet_ntoa(lease->addr));
+			dprintf(fd, "local-data-ptr: \"%s %s\"\n",
+			    inet_ntoa(lease->addr), lease->fqdn);
 		}
 	}
 	close(fd);
@@ -482,7 +543,8 @@ truncate_hosts()
 		if (foreground)
 			printf("%s changed size from original!", HOSTS);
 		else
-			syslog(LOG_WARNING, "%s changed size from original!", HOSTS);
+			syslog(LOG_WARNING, "%s changed size from original!",
+			    HOSTS);
 		hostssize = tmpsize;
 	}
 	ftruncate(fd, hostssize);
@@ -490,7 +552,8 @@ truncate_hosts()
 }
 
 static void
-cleanup() {
+cleanup()
+{
 	struct isc_lease *lease, *tmp;
 
 	LIST_FOREACH_SAFE(lease, &leases, next, tmp) {
@@ -506,7 +569,8 @@ cleanup() {
 }
 
 static void
-signal_process(char *pidfile) {
+signal_process(char *pidfile)
+{
 	FILE *fd;
 	int size = 0;
 	char *pid = NULL, *pc;
@@ -548,12 +612,15 @@ signal_process(char *pidfile) {
 
 	return;
 error:
-	syslog(LOG_ERR, "Could not deliver signal HUP to process because its pidfile (%s) does not exist, %m.", pidfile);
+	syslog(LOG_ERR,
+	    "Could not deliver signal HUP to process because its pidfile (%s) does not exist, %m.",
+	    pidfile);
 	return;
 }
 
 static void
-handle_signal(int sig) {
+handle_signal(int sig)
+{
 	int size;
 
 	switch(sig) {
@@ -576,7 +643,8 @@ handle_signal(int sig) {
 }
 
 int
-main(int argc, char **argv) {
+main(int argc, char **argv)
+{
 	char *command, *domain_sufix, *leasefile, *pidfile;
 	FILE *fp;
 	struct kevent evlist;    /* events we want to monitor */
@@ -614,7 +682,8 @@ main(int argc, char **argv) {
 			unbound = 1;
 			break;
 		default:
-			printf("Wrong number of arguments given.\n"); /* XXX: usage */
+			/* XXX: usage */
+			printf("Wrong number of arguments given.\n");
 			exit(2);
 			/* NOTREACHED */
 		}
@@ -628,12 +697,15 @@ main(int argc, char **argv) {
 		exit(1);
 	}
 	if (!fexist(leasefile)) {
-		syslog(LOG_ERR, "lease file needs to exist before starting dhcpleases");
-		printf("lease file needs to exist before starting dhcpleases\n");
+		syslog(LOG_ERR,
+		    "lease file needs to exist before starting dhcpleases");
+		printf(
+		    "lease file needs to exist before starting dhcpleases\n");
 		exit(1);
 	}
 	if (domain_suffix == NULL) {
-		syslog(LOG_ERR, "a domain suffix is not passed as argument using 'local' as suffix");
+		syslog(LOG_ERR,
+		    "a domain suffix is not passed as argument using 'local' as suffix");
 		domain_suffix = "local";
 	}
 
@@ -645,18 +717,21 @@ main(int argc, char **argv) {
 
 	if (!foreground) {
 		if (HOSTS == NULL) {
-			syslog(LOG_ERR, "You need to specify the hosts file path.");
+			syslog(LOG_ERR,
+			    "You need to specify the hosts file path.");
 			printf("You need to specify the hosts file path.\n");
 			exit(8);
 		}
 		if (!fexist(HOSTS)) {
 			syslog(LOG_ERR, "Hosts file %s does not exist!", HOSTS);
-			printf("Hosts file passed as parameter does not exist.\n");
+			printf(
+			    "Hosts file passed as parameter does not exist.\n");
 			exit(8);
 		}
 
 		if ((hostssize = fsize(HOSTS)) < 0) {
-			syslog(LOG_ERR, "Error while getting %s file size.", HOSTS);
+			syslog(LOG_ERR, "Error while getting %s file size.",
+			    HOSTS);
 			printf("Error while getting /etc/hosts file size.\n");
 			exit(6);
 		}
@@ -719,10 +794,8 @@ reopen:
 		load_dhcp(fp, leasefile, domain_sufix, now);
 
 		write_status();
-		//syslog(LOG_INFO, "written temp hosts file after modification event.");
 
 		cleanup();
-		//syslog(LOG_INFO, "Cleaned up.");
 
 		if (!foreground)
 			signal_process(pidfile);
@@ -730,8 +803,11 @@ reopen:
 
 	if (!foreground) {
 		/* Initialise kevent structure */
-		EV_SET(&chlist, leasefd, EVFILT_VNODE, EV_ADD | EV_CLEAR | EV_ENABLE,
-			NOTE_WRITE | NOTE_ATTRIB | NOTE_DELETE | NOTE_RENAME | NOTE_LINK, 0, NULL);
+		EV_SET(&chlist, leasefd, EVFILT_VNODE,
+		    EV_ADD | EV_CLEAR | EV_ENABLE,
+		    NOTE_WRITE | NOTE_ATTRIB | NOTE_DELETE | NOTE_RENAME |
+			NOTE_LINK,
+		    0, NULL);
 		/* Loop forever */
 		for (;;) {
 			nev = kevent(kq, &chlist, 1, &evlist, 1, NULL);
@@ -741,11 +817,13 @@ reopen:
 				goto reopen;
 			} else if (nev > 0) {
 				if (evlist.flags & EV_ERROR) {
-					syslog(LOG_ERR, "EV_ERROR: %s\n", strerror(evlist.data));
+					syslog(LOG_ERR, "EV_ERROR: %s\n",
+					    strerror(evlist.data));
 					fclose(fp);
 					goto reopen;
 				}
-				if ((evlist.fflags & NOTE_DELETE) || (evlist.fflags & NOTE_RENAME)) {
+				if ((evlist.fflags & NOTE_DELETE) ||
+				    (evlist.fflags & NOTE_RENAME)) {
 					fclose(fp);
 					goto reopen;
 				}
@@ -753,13 +831,12 @@ reopen:
 				if (command != NULL)
 					system(command);
 				else {
-					load_dhcp(fp, leasefile, domain_sufix, now);
+					load_dhcp(fp, leasefile, domain_sufix,
+					    now);
 
 					write_status();
-					//syslog(LOG_INFO, "written temp hosts file after modification event.");
 
 					cleanup();
-					//syslog(LOG_INFO, "Cleaned up.");
 
 					signal_process(pidfile);
 				}
