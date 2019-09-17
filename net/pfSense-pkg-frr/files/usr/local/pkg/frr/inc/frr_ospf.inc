@@ -334,7 +334,7 @@ function frr_generate_config_ospf() {
 
 		$conffile .= frr_generate_config_ospf_areas();
 
-		if ($ospfd_conf['logging'] && $ospfd_conf['adjacencylog']) {
+		if ($frr_conf['logging'] && $ospfd_conf['adjacencylog']) {
 			$conffile .= "  log-adjacency-changes detail\n";
 		}
 
