@@ -1118,21 +1118,16 @@ export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
 # Setup proxy settings
 HTTP_PROXY=$(read_xml_tag.sh string system/proxyurl)
-if [ "${HTTP_PROXY}" != "" ]; then
+if [ -n "${HTTP_PROXY}" ]; then
 	HTTP_PROXY_PORT=$(read_xml_tag.sh string system/proxyport)
-	if [ "${HTTP_PROXY_PORT}" != "" ]; then
+	if [ -n "${HTTP_PROXY_PORT}" ]; then
 		HTTP_PROXY="${HTTP_PROXY}:${HTTP_PROXY_PORT}"
 	fi
 	export HTTP_PROXY
-fi
 
-# Only set proxy variables on FreeBSD 11 until the fix is on 10
-# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=194483
-if $(uname -r | grep -q '^11'); then
 	HTTP_PROXY_USER=$(read_xml_tag.sh string system/proxyuser)
 	HTTP_PROXY_PASS=$(read_xml_tag.sh string system/proxypass)
-	if [ "${HTTP_PROXY_USER}" != "" ] &&
-	    [ "${HTTP_PROXY_PASS}" != "" ]; then
+	if [ -n "${HTTP_PROXY_USER}" -a -n "${HTTP_PROXY_PASS}" ]; then
 		HTTP_PROXY_AUTH="${HTTP_PROXY_USER}:${HTTP_PROXY_PASS}"
 		HTTP_PROXY_AUTH="basic:*:${HTTP_PROXY_AUTH}"
 		export HTTP_PROXY_AUTH
