@@ -45,9 +45,9 @@
 	</menu>
 	<service>
 		<name>iperf</name>
-		<executable>iperf</executable>
+		<executable>iperf3</executable>
 		<description>iperf Network Performance Testing Daemon/Client</description>
-		<stopcmd>mwexec("/usr/bin/killall iperf");</stopcmd>
+		<stopcmd>mwexec("/usr/bin/killall iperf3");</stopcmd>
 	</service>
 	<tabs>
 		<tab>
