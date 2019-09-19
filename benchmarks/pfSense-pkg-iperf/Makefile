@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-iperf
 PORTVERSION=	3.0.2
+PORTREVISION=	1
 CATEGORIES=	benchmarks
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -30,6 +31,8 @@ do-install:
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/iperf.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/iperfserver.xml \
+		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/shortcuts/iperf.inc \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/iperf.priv.inc \
 		${STAGEDIR}/etc/inc/priv
