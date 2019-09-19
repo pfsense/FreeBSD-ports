@@ -64,7 +64,7 @@
 			<url>/pkg.php?xml=squid_users.xml</url>
 		</tab>
 		<tab>
-			<text>Real time</text>
+			<text>Real Time</text>
 			<url>/squid_monitor.php</url>
 		</tab>
 		<tab>
