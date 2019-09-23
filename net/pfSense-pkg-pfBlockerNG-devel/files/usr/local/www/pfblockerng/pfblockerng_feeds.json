@@ -61,18 +61,6 @@
 						]
 				},
 				{
-					"feed":		"Abuse Zeus Tracker",
-					"website":	"https://zeustracker.abuse.ch/blocklist.php",
-					"url":		"https://zeustracker.abuse.ch/blocklist.php?download=badips",
-					"header":	"Abuse_Zeus",
-					"alternate": [
-							{
-							"url":		"https://zeustracker.abuse.ch/blocklist.php?download=ipblocklist",
-							"header":	"Abuse_Zeus_Agr"
-							}
-						]
-				},
-				{
 					"feed":		"Bambenek Consulting",
 					"website":	"https://osint.bambenekconsulting.com/feeds/",
 					"contact":	"https://www.bambenekconsulting.com/contact/",
@@ -260,39 +248,50 @@
 				{
 					"feed":		"NoThink",
 					"website":	"https://www.nothink.org/",
-					"contact":	"https://www.linkedin.com/in/matteo-cantoni-9a9b84",
-					"url":		"https://www.nothink.org/blacklist/blacklist_malware_dns.txt",
-					"header":	"NoThink_DNS"
-				},
-				{
-					"feed":		"NoThink",
-					"website":	"https://www.nothink.org/",
-					"url":		"https://www.nothink.org/blacklist/blacklist_malware_http.txt",
-					"header":	"NoThink_HTTP"
-				},
-				{
-					"feed":		"NoThink",
-					"website":	"https://www.nothink.org/",
-					"url":		"https://www.nothink.org/blacklist/blacklist_malware_irc.txt",
-					"header":	"NoThink_IRC"
-				},
-				{
-					"feed":		"NoThink",
-					"website":	"https://www.nothink.org/",
 					"url":		"https://www.nothink.org/blacklist/blacklist_ssh_week.txt",
-					"header":	"NoThink_SSH"
+					"header":	"NoThink_SSH_7d",
+					"alternate": [
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_day.txt",
+							"header":	"NoThink_SSH_1d"
+							},
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_year.txt",
+							"header":	"NoThink_SSH_365d"
+							}
+						]
 				},
 				{
 					"feed":		"NoThink",
 					"website":	"https://www.nothink.org/",
 					"url":		"https://www.nothink.org/blacklist/blacklist_snmp_week.txt",
-					"header":	"NoThink_SNMP"
+					"header":	"NoThink_SNMP_7d",
+					"alternate": [
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_day.txt",
+							"header":	"NoThink_SNMP_1d"
+							},
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_year.txt",
+							"header":	"NoThink_SNMP_365d"
+							}
+						]
 				},
 				{
 					"feed":		"NoThink",
 					"website":	"https://www.nothink.org/",
 					"url":		"https://www.nothink.org/blacklist/blacklist_telnet_week.txt",
-					"header":	"NoThink_Telnet"
+					"header":	"NoThink_Telnet_7d",
+					"alternate": [
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_telnet_day.txt",
+							"header":	"NoThink_Telnet_1d"
+							},
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_telnet_year.txt",
+							"header":	"NoThink_Telnet_365d"
+							}
+						]
 				},
 				{
 					"feed":		"Stop Forum Spam",
@@ -301,14 +300,6 @@
 					"url":		"https://www.stopforumspam.com/downloads/toxic_ip_cidr.txt",
 					"delist":	"https://www.stopforumspam.com/removal",
 					"header":	"SFS_Toxic"
-				},
-				{
-					"feed":		"Suspect-Networks",
-					"website":	"https://suspect-networks.io/",
-					"contact":	"https://suspect-networks.io/contact/",
-					"url":		"https://suspect-networks.io/downloads/suspect_networks.txt",
-					"delist":	"https://suspect-networks.io/faq/#delist",
-					"header":	"SuspectNetworks"
 				},
 				{
 					"feed":		"WatchGuard",
@@ -593,7 +584,7 @@
 				{
 					"feed":		"Lashback",
 					"website":	"https://blacklist.lashback.com/",
-					"url":		"https://www.unsubscore.com/blacklist.txt",
+					"url":		"http://www.unsubscore.com/blacklist.txt",
 					"info":		"This is a very large Feed (~1.3M lines). To utilize, increase the pfSense 'Firewall Maximum Table entries' limit to 3-4M.",
 					"header":	"LB_BL"
 				},
@@ -1066,18 +1057,6 @@
 					"header":	"Abuse_URLBL"
 				},
 				{
-					"feed":		"Abuse Zeus",
-					"website":	"https://zeustracker.abuse.ch/blocklist.php",
-					"url":		"https://zeustracker.abuse.ch/blocklist.php?download=baddomains",
-					"header":	"Abuse_Zeus_BD",
-					"alternate": [
-							{
-							"url":		"https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist",
-							"header":	"Abuse_Zeus_BD_Agr"
-							}
-						]
-				},
-				{
 					"feed":		"Bambenek Consulting",
 					"website":	"https://osint.bambenekconsulting.com/feeds/",
 					"url":		"https://osint.bambenekconsulting.com/feeds/c2-dommasterlist-high.txt",
@@ -1515,12 +1494,6 @@
 					"website":	"https://quidsup.net/notrack/blocklist.php",
 					"url":		"https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt",
 					"header":	"Quidsup_Mal"
-				},
-				{
-					"feed":		"HostsFile",
-					"website":	"https://www.hostsfile.org/hosts.html",
-					"url":		"https://www.hostsfile.org/Downloads/hosts.txt",
-					"header":	"HostsFile_BD"
 				},
 				{
 					"feed":		"Yhonay",
