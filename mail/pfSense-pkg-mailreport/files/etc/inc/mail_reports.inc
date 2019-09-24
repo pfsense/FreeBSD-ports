@@ -23,27 +23,30 @@
 require_once("globals.inc");
 require_once("config.inc");
 require_once("filter.inc");
+require_once("syslog.inc");
 
 $logfile_friendly = array(
-	"dhcpd"      => "DHCP",
-	"filter"     => "Firewall (raw)",
-	"gateways"   => "Gateway Events",
-	"installer"  => "Installation",
-	"ipsec"      => "IPsec VPN",
-	"l2tps"      => "L2TP Server (raw)",
-	"lighttpd"   => "Web Server (lighttpd)",
-	"ntpd"       => "NTP",
-	"openvpn"    => "OpenVPN",
-	"poes"       => "PPPoE Server (raw)",
-	"portalauth" => "Captive Portal Authentication",
-	"ppp"        => "PPP",
-	"pptps"      => "PPTP Server (raw)",
-	"relayd"     => "Load Balancer (relayd)",
-	"resolver"   => "DNS Resolver",
-	"routing"    => "Routing",
-	"system"     => "System",
-	"vpn"        => "PPTP/L2TP/PPPoE Server Login Events",
-	"wireless"   => "Wireless"
+	"auth"            => "Authentication (General)",
+	"bsdinstall_log"  => "Installation",
+	"dhcpd"           => "DHCP",
+	"filter"          => "Firewall (raw)",
+	"gateways"        => "Gateway Events",
+	"ipsec"           => "IPsec VPN",
+	"l2tps"           => "L2TP Server (raw)",
+	"lighttpd"        => "Web Server (lighttpd)",
+	"nginx"           => "Web Server (nginx)",
+	"ntpd"            => "NTP",
+	"openvpn"         => "OpenVPN",
+	"poes"            => "PPPoE Server (raw)",
+	"portalauth"      => "Captive Portal Authentication",
+	"ppp"             => "PPP",
+	"pptps"           => "PPTP Server (raw)",
+	"resolver"        => "DNS Resolver",
+	"routing"         => "Routing",
+	"system"          => "System",
+	"userlog"         => "OS Account Changes",
+	"vpn"             => "PPPoE/L2TP Server Login Events",
+	"wireless"        => "Wireless"
 );
 
 function set_mail_report_cron_jobs($a_mailreports) {
@@ -153,24 +156,18 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 	}
 }
 
-function mail_report_get_log($logfile, $tail, $grepfor) {
+function mail_report_get_log($logfile, $tail = 100, $grepfor = array()) {
 	global $g, $config;
 	$logfile = "{$g['varlog_path']}/{$logfile}";
 	$logarr = "";
 	$grepline = "  ";
-	if(is_array($grepfor))
+
+	if (is_array($grepfor) && !empty($grepfor)) {
 		$grepline = " | /usr/bin/egrep " . escapeshellarg(implode("|", $grepfor));
-	if($config['system']['disablesyslogclog']) {
-		exec("cat {$logfile}{$grepline} | /usr/bin/tail -n {$tail}", $logarr);
-	} else {
-		if (is_executable("/usr/local/sbin/clog")) {
-			exec("/usr/local/sbin/clog {$logfile}{$grepline}| grep -v \"CLOG\" | grep -v \"\033\" | /usr/bin/tail -n {$tail}", $logarr);
-		} elseif (is_executable("/usr/sbin/clog")) {
-			exec("/usr/sbin/clog {$logfile}{$grepline}| grep -v \"CLOG\" | grep -v \"\033\" | /usr/bin/tail -n {$tail}", $logarr);
-		} else {
-			$logarr = array("Cannot locate clog which is required for reading log files.");
-		}
 	}
+
+	exec(system_log_get_cat() . ' ' . sort_related_log_files($logfile, true, true) . "{$grepline} | /usr/bin/tail -n " . escapeshellarg($tail), $logarr);
+
 	return($logarr);
 }
 

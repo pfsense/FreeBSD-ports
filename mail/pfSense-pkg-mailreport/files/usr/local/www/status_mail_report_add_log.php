@@ -62,7 +62,7 @@ if (isset($id) && !($a_logs[$id])) {
 
 $logpath = "/var/log/";
 chdir($logpath);
-$logfiles = glob("*.log");
+$logfiles = glob("*log");
 
 sort($logfiles);
 
@@ -89,7 +89,7 @@ $form = new Form();
 
 $section = new Form_Section('Log Settings');
 
-$no_list_logs = array("utx.log");
+$no_list_logs = array("utx.log", "lastlog");
 $logoptions = array();
 foreach ($logfiles as $logfile) {
 	if (in_array($logfile, $no_list_logs)) {
