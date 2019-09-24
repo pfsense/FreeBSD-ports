@@ -3,7 +3,7 @@
  * status_mail_report_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2014 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,59 +33,49 @@ $cmdid = $_REQUEST['cmdid'];
 $logid = $_REQUEST['logid'];
 $id = $_REQUEST['id'];
 
-if (!is_array($config['mailreports'])) {
-	$config['mailreports'] = array();
-}
-
-if (!is_array($config['mailreports']['schedule'])) {
-	$config['mailreports']['schedule'] = array();
-}
-
+init_config_arr(array('mailreports', 'schedule'));
 $a_mailreports = &$config['mailreports']['schedule'];
+
 if (isset($id) && $a_mailreports[$id]) {
-	if (!is_array($a_mailreports[$id]['row']))
-		$a_mailreports[$id]['row'] = array();
+	init_config_arr(array('mailreports', 'schedule', $id, 'cmd', 'row'));
+	init_config_arr(array('mailreports', 'schedule', $id, 'log', 'row'));
+
 	$pconfig = $a_mailreports[$id];
 	$a_cmds = $a_mailreports[$id]['cmd']['row'];
 	$a_logs = $a_mailreports[$id]['log']['row'];
 }
 
-if (!is_array($pconfig))
-	$pconfig = array();
-if (!is_array($a_cmds))
-	$a_cmds = array();
-if (!is_array($a_logs))
-	$a_logs = array();
-
 $frequencies = array("daily", "weekly", "monthly", "quarterly", "yearly");
 $daysofweek = array(
 		"" => "",
-		"0" => "Sunday",
-		"1" => "Monday",
-		"2" => "Tuesday",
-		"3" => "Wednesday",
-		"4" => "Thursday",
-		"5" => "Friday",
-		"6" => "Saturday");
+		"0" => gettext("Sunday"),
+		"1" => gettext("Monday"),
+		"2" => gettext("Tuesday"),
+		"3" => gettext("Wednesday"),
+		"4" => gettext("Thursday"),
+		"5" => gettext("Friday"),
+		"6" => gettext("Saturday"));
 $dayofmonth = array("", "1", "15");
 $monthofquarter = array(
 		"" => "",
-		"1" => "beginning",
-		"2" => "middle");
+		"1" => gettext("beginning"),
+		"2" => gettext("middle")
+);
 $monthofyear = array(
 		"" => "",
-		"1" => "January",
-		"2" => "February",
-		"3" => "March",
-		"4" => "April",
-		"5" => "May",
-		"6" => "June",
-		"7" => "July",
-		"8" => "August",
-		"9" => "September",
-		"10" => "October",
-		"11" => "November",
-		"12" => "December");
+		"1"  => gettext("January"),
+		"2"  => gettext("February"),
+		"3"  => gettext("March"),
+		"4"  => gettext("April"),
+		"5"  => gettext("May"),
+		"6"  => gettext("June"),
+		"7"  => gettext("July"),
+		"8"  => gettext("August"),
+		"9"  => gettext("September"),
+		"10" => gettext("October"),
+		"11" => gettext("November"),
+		"12" => gettext("December")
+);
 
 if (isset($_POST['del'])) {
 	$need_save = false;
@@ -138,9 +128,9 @@ if (isset($_POST['del'])) {
 
 
 if ($_POST) {
-	unset($_POST['__csrf_magic']);
+	unset($_POST['__csrf_magic'], $_POST['id'], $_POST['reportid'], $_POST['submit'], $_POST['save']);
 	$pconfig = $_POST;
-	if ($_POST['Submit'] == "Send Now") {
+	if (!empty($_POST['sendnow'])) {
 		mwexec_bg("/usr/local/bin/mail_reports_generate.php {$id}");
 		header("Location: status_mail_report_edit.php?id={$id}");
 		return;
@@ -151,12 +141,12 @@ if ($_POST) {
 	$pconfig['timeofday'] = isset($pconfig['timeofday']) ? $pconfig['timeofday'] : 0;
 	$pconfig['minuteofday'] = isset($pconfig['minuteofday']) ? $pconfig['minuteofday'] : 0;
 	$friendlytime = sprintf("%02d:%02d", $pconfig['timeofday'], $pconfig['minuteofday']);
-	$friendly = "Daily at {$friendlytime}";
+	$friendly = sprintf(gettext("Daily at %s"), $friendlytime);
 
 	// If weekly, check for day of week
 	if ($pconfig['frequency'] == "weekly") {
 		$pconfig['dayofweek'] = isset($pconfig['dayofweek']) ? $pconfig['dayofweek'] : 0;
-		$friendly = "Weekly, on {$daysofweek[$pconfig['dayofweek']]} at {$friendlytime}";
+		$friendly = sprintf(gettext("Weekly, on %s at %s"), $daysofweek[$pconfig['dayofweek']], $friendlytime);
 	} else {
 		if (isset($pconfig['dayofweek']))
 			unset($pconfig['dayofweek']);
@@ -165,7 +155,7 @@ if ($_POST) {
 	// If monthly, check for day of the month
 	if ($pconfig['frequency'] == "monthly") {
 		$pconfig['dayofmonth'] = isset($pconfig['dayofmonth']) ? $pconfig['dayofmonth'] : 1;
-		$friendly = "Monthly, on day {$pconfig['dayofmonth']} at {$friendlytime}";
+		$friendly = sprintf(gettext("Monthly, on day %s at %s"), $pconfig['dayofmonth'], $friendlytime);
 	} elseif ($pconfig['frequency'] != "yearly") {
 		if (isset($pconfig['dayofmonth']))
 			unset($pconfig['dayofmonth']);
@@ -174,7 +164,7 @@ if ($_POST) {
 	// If quarterly, check for day of the month
 	if ($pconfig['frequency'] == "quarterly") {
 		$pconfig['monthofquarter'] = isset($pconfig['monthofquarter']) ? $pconfig['monthofquarter'] : 1;
-		$friendly = "Quarterly, at the {$monthofquarter[$pconfig['monthofquarter']]}, at {$friendlytime}";
+		$friendly = sprintf(gettext("Quarterly, at the %s at %s"), $monthofquarter[$pconfig['monthofquarter']], $friendlytime);
 		switch ($pconfig['monthofquarter']) {
 			case 2:
 				$pconfig['dayofmonth'] = 15;
@@ -194,7 +184,7 @@ if ($_POST) {
 	// If yearly, check for day of the month
 	if ($pconfig['frequency'] == "yearly") {
 		$pconfig['monthofyear'] = isset($pconfig['monthofyear']) ? $pconfig['monthofyear'] : 1;
-		$friendly = "Yearly, on day {$pconfig['dayofmonth']} of {$monthofyear[$pconfig['monthofyear']]} at {$friendlytime}";
+		$friendly = sprintf(gettext("Yearly, on day %s of %s at %s"), $pconfig['dayofmonth'], $monthofyear[$pconfig['monthofyear']], $friendlytime);
 	} elseif ($pconfig['frequency'] != "quarterly") {
 		if (isset($pconfig['monthofyear']))
 			unset($pconfig['monthofyear']);
@@ -202,22 +192,23 @@ if ($_POST) {
 
 	// Copy back into the schedule.
 	if (count($a_cmds)) {
-		$pconfig['cmd']["row"] = $a_cmds;
+		$pconfig['cmd']['row'] = $a_cmds;
 	} elseif (is_array($pconfig['cmd'])) {
 		unset($pconfig['cmd']);
 	}
 	if (count($a_logs)) {
-		$pconfig['log']["row"] = $a_logs;
+		$pconfig['log']['row'] = $a_logs;
 	} elseif (is_array($pconfig['log'])) {
 		unset($pconfig['log']);
 	}
 
-	$pconfig['schedule_friendly'] = $friendly;
+	$pconfig['text'] = $friendly;
 
-	if (isset($id) && $a_mailreports[$id])
+	if (isset($id) && $a_mailreports[$id]) {
 		$a_mailreports[$id] = $pconfig;
-	else
+	} else {
 		$a_mailreports[] = $pconfig;
+	}
 
 	// Fix up cron job(s)
 	set_mail_report_cron_jobs($a_mailreports);
@@ -227,7 +218,7 @@ if ($_POST) {
 	return;
 }
 
-$pgtitle = array(gettext("Status"), gettext("Email Reports"), gettext("Edit Reports"));
+$pgtitle = array(gettext("Status"), gettext("Email Reports"), gettext("Edit Report"));
 include("head.inc");
 
 $form = new Form(false);
@@ -318,12 +309,12 @@ $section->addInput(new Form_Select(
 
 $group = new Form_Group('');
 $group->add(new Form_Button(
-	'Submit',
+	'submit',
 	'Save'
 ));
 if (isset($id) && $a_mailreports[$id]) {
 	$group->add(new Form_Button(
-		'Submit',
+		'sendnow',
 		'Send Now'
 	));
 }
@@ -429,7 +420,7 @@ $allcount = 0;
 <?php endif; ?>
 
 
-<?php print_info_box(gettext("Configure SMTP settings under <a href=\"/system_advanced_notifications.php\">System -&gt; Advanced, on the Notifications tab</a>"), 'info'); ?>
+<?php print_info_box(gettext("Configure SMTP settings at <a href=\"/system_advanced_notifications.php\">System &gt; Advanced, Notifications tab</a>"), 'info'); ?>
 
 <script type="text/javascript">
 //<![CDATA[
