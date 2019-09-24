@@ -100,7 +100,6 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 		$mail->SMTPSecure =  "";
 	}
 
-	$mail->SMTPAutoTLS = true;
 	if ($config['notifications']['smtp']['sslvalidate'] == "disabled") {
 		$mail->SMTPOptions = array(
 			'ssl' => array(
