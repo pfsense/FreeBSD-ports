@@ -3,7 +3,7 @@
  * status_mail_report_add_log.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2014 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2007-2011 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
@@ -33,9 +33,7 @@ require_once("mail_reports.inc");
 $reportid = $_REQUEST['reportid'];
 $id = $_REQUEST['id'];
 
-if (!is_array($config['mailreports']['schedule']))
-	$config['mailreports']['schedule'] = array();
-
+init_config_arr(array('mailreports', 'schedule'));
 $a_mailreports = &$config['mailreports']['schedule'];
 
 if (!isset($reportid) || !isset($a_mailreports[$reportid])) {
@@ -43,10 +41,7 @@ if (!isset($reportid) || !isset($a_mailreports[$reportid])) {
 	return;
 }
 
-if (!is_array($a_mailreports[$reportid]['log']['row'])) {
-	$a_mailreports[$reportid]['log'] = array();
-	$a_mailreports[$reportid]['log']['row'] = array();
-}
+init_config_arr(array('mailreports', 'schedule', $reportid, 'log', 'row'));
 $a_logs = $a_mailreports[$reportid]['log']['row'];
 
 if (isset($id) && $a_logs[$id]) {
@@ -67,13 +62,14 @@ $logfiles = glob("*log");
 sort($logfiles);
 
 if ($_POST) {
-	unset($_POST['__csrf_magic']);
+	unset($_POST['__csrf_magic'], $_POST['id'], $_POST['reportid'], $_POST['submit'], $_POST['save']);
 	$pconfig = $_POST;
 
-	if (isset($id) && $a_logs[$id])
+	if (isset($id) && $a_logs[$id]) {
 		$a_logs[$id] = $pconfig;
-	else
+	} else {
 		$a_logs[] = $pconfig;
+	}
 
 	$a_mailreports[$reportid]['log']['row'] = $a_logs;
 

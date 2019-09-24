@@ -4,7 +4,7 @@
  * mail_reports_generate.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2007-2011 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
@@ -24,49 +24,37 @@
 require_once("mail_reports.inc");
 require_once("notices.inc");
 
-$id = $_GET['id'];
-if (isset($_POST['id']))
-	$id = $_POST['id'];
+$id = $_REQUEST['id'];
 
-if (!isset($id) && isset($argv[1]))
+if (!isset($id) && isset($argv[1])) {
 	$id = $argv[1];
+}
 
-// No data, no report to run, bail!
-if (!isset($id))
-	exit;
+init_config_arr(array('mailreports', 'schedule'));
 
-// No reports to run, bail!
-if (!is_array($config['mailreports']['schedule']))
+// If there is no report ID or the report doesn't exist, bail.
+if (!isset($id) ||
+    !$config['mailreports']['schedule'][$id]) {
 	exit;
+}
 
-// The Requested report doesn't exist, bail!
-if (!$config['mailreports']['schedule'][$id])
-	exit;
+init_config_arr(array('mailreports', 'schedule', $id, 'cmd', 'row'));
+init_config_arr(array('mailreports', 'schedule', $id, 'log', 'row'));
 
 $thisreport = $config['mailreports']['schedule'][$id];
 
-if (is_array($thisreport['cmd']) && is_array($thisreport['cmd']['row']))
-	$cmds = $thisreport['cmd']['row'];
-else
-	$cmds = array();
-
-if (is_array($thisreport['log']) && is_array($thisreport['log']['row']))
-	$logs = $thisreport['log']['row'];
-else
-	$logs = array();
-
 // If there is nothing to do, bail!
-if ((!is_array($cmds) || !(count($cmds) > 0))
-	&& (!is_array($logs) || !(count($logs) > 0)))
+if (empty($thisreport['cmd']['row']) && empty($thisreport['log']['row'])) {
 	return;
+}
 
 // Print report header
 
 // Print command output
 $cmdtext = "";
-foreach ($cmds as $cmd) {
+foreach ($thisreport['cmd']['row'] as $cmd) {
 	$output = "";
-	$cmdtext .= "Command output: {$cmd['descr']} (" . htmlspecialchars($cmd['detail']) . ")<br />\n";
+	$cmdtext .= gettext("Command output") . ": {$cmd['descr']} (" . htmlspecialchars($cmd['detail']) . ")<br />\n";
 	exec($cmd['detail'], $output);
 	$cmdtext .= "<pre>\n";
 	$cmdtext .= implode("\n", $output);
@@ -75,10 +63,10 @@ foreach ($cmds as $cmd) {
 
 // Print log output
 $logtext = "";
-foreach ($logs as $log) {
+foreach ($thisreport['log']['row'] as $log) {
 	$lines = empty($log['lines']) ? 50 : $log['lines'];
 	$filter = empty($log['detail']) ? null : array($log['detail']);
-	$logtext .= "Log output: " . get_friendly_log_name($log['logfile']) . " ({$log['logfile']})<br />\n";
+	$logtext .= gettext("Log output") . ": " . get_friendly_log_name($log['logfile']) . " ({$log['logfile']})<br />\n";
 	$logtext .= "<pre>\n";
 	$logtext .= implode("\n", mail_report_get_log($log['logfile'], $lines, $filter));
 	$logtext .= "\n</pre>";
