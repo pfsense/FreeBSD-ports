@@ -557,7 +557,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$default = array( "name" => "default", "bind_to" => "all", "personality" => "IDS",
 					  "request-body-limit" => 4096, "response-body-limit" => 4096,
 					  "double-decode-path" => "no", "double-decode-query" => "no",
-					  "uri-include-all" => "no" );
+					  "uri-include-all" => "no", "meta-field-limit" => 18432 );
 			if (!is_array($natent['libhtp_policy']))
 				$natent['libhtp_policy'] = array();
 			if (!is_array($natent['libhtp_policy']['item']))

@@ -265,6 +265,9 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		}
 	}
 
+	// Release config array references used immediately above
+	unset($http_serv, $policy);
+
 	/***********************************************************/
 	/* Add the new 'dns-events.rules' file to the rulesets.    */
 	/***********************************************************/

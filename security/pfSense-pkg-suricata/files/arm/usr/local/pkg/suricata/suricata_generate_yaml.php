@@ -738,6 +738,7 @@ else {
 				$engine .= "]\n";
 				$engine .= "         personality: {$v['personality']}\n         request-body-limit: {$v['request-body-limit']}\n";
 				$engine .= "         response-body-limit: {$v['response-body-limit']}\n";
+				$engine .= "         meta-field-limit: " . (isset($v['meta-field-limit']) ? $v['meta-field-limit'] : "18432") . "\n";
 				$engine .= "         double-decode-path: {$v['double-decode-path']}\n";
 				$engine .= "         double-decode-query: {$v['double-decode-query']}\n";
 				$engine .= "         uri-include-all: {$v['uri-include-all']}\n";
@@ -751,6 +752,7 @@ else {
 		else {
 			$http_hosts_default_policy = "     personality: {$v['personality']}\n     request-body-limit: {$v['request-body-limit']}\n";
 			$http_hosts_default_policy .= "     response-body-limit: {$v['response-body-limit']}\n";
+			$http_hosts_default_policy .= "     meta-field-limit: " . (isset($v['meta-field-limit']) ? $v['meta-field-limit'] : "18432") . "\n";
 			$http_hosts_default_policy .= "     double-decode-path: {$v['double-decode-path']}\n";
 			$http_hosts_default_policy .= "     double-decode-query: {$v['double-decode-query']}\n";
 			$http_hosts_default_policy .= "     uri-include-all: {$v['uri-include-all']}\n";
