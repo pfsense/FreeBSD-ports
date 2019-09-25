@@ -3,7 +3,7 @@
  * mail_reports.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2007-2011 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
@@ -23,44 +23,46 @@
 require_once("globals.inc");
 require_once("config.inc");
 require_once("filter.inc");
+require_once("syslog.inc");
 
 $logfile_friendly = array(
-	"dhcpd"      => "DHCP",
-	"filter"     => "Firewall (raw)",
-	"gateways"   => "Gateway Events",
-	"installer"  => "Installation",
-	"ipsec"      => "IPsec VPN",
-	"l2tps"      => "L2TP Server (raw)",
-	"lighttpd"   => "Web Server (lighttpd)",
-	"ntpd"       => "NTP",
-	"openvpn"    => "OpenVPN",
-	"poes"       => "PPPoE Server (raw)",
-	"portalauth" => "Captive Portal Authentication",
-	"ppp"        => "PPP",
-	"pptps"      => "PPTP Server (raw)",
-	"relayd"     => "Load Balancer (relayd)",
-	"resolver"   => "DNS Resolver",
-	"routing"    => "Routing",
-	"system"     => "System",
-	"vpn"        => "PPTP/L2TP/PPPoE Server Login Events",
-	"wireless"   => "Wireless"
+	"auth"            => gettext("Authentication (General)"),
+	"bsdinstall_log"  => gettext("Installation"),
+	"dhcpd"           => gettext("DHCP"),
+	"filter"          => gettext("Firewall (raw)"),
+	"gateways"        => gettext("Gateway Events"),
+	"ipsec"           => gettext("IPsec VPN"),
+	"l2tps"           => gettext("L2TP Server (raw)"),
+	"lighttpd"        => gettext("Web Server (lighttpd)"),
+	"nginx"           => gettext("Web Server (nginx)"),
+	"ntpd"            => gettext("NTP"),
+	"openvpn"         => gettext("OpenVPN"),
+	"poes"            => gettext("PPPoE Server (raw)"),
+	"portalauth"      => gettext("Captive Portal Authentication"),
+	"ppp"             => gettext("PPP"),
+	"pptps"           => gettext("PPTP Server (raw)"),
+	"resolver"        => gettext("DNS Resolver"),
+	"routing"         => gettext("Routing"),
+	"system"          => gettext("System"),
+	"userlog"         => gettext("OS Account Changes"),
+	"vpn"             => gettext("PPPoE/L2TP Server Login Events"),
+	"wireless"        => gettext("Wireless")
 );
 
 function set_mail_report_cron_jobs($a_mailreports) {
 	global $config, $g;
 
-	if(!$config['cron']['item'])
-		$config['cron']['item'] = array();
+	init_config_arr(array('cron', 'item'));
 
 	// Search for old report cron jobs and remove them all
 	for ($x=0, $numjobs=sizeof($config['cron']['item']); $x < $numjobs; $x++) {
-		if(strpos($config['cron']['item'][$x]['command'], "mail_reports_generate.php") !== FALSE) {
+		if (strpos($config['cron']['item'][$x]['command'], "mail_reports_generate.php") !== FALSE) {
 			unset($config['cron']['item'][$x]);
 		}
 	}
 
 	// Add new cron jobs
-	foreach($a_mailreports as $id => $report) {
+	foreach ($a_mailreports as $id => $report) {
 		$cron_item = array();
 		$cron_item['minute'] = isset($report['minuteofday']) ? $report['minuteofday'] : 0;
 		$cron_item['hour'] = isset($report['timeofday']) ? $report['timeofday'] : 0;
@@ -78,26 +80,17 @@ include('phpmailer/PHPMailerAutoload.php');
 function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 	global $config, $g;
 
-	if (empty($config['notifications']['smtp']['ipaddress'])) {
+	if (empty($config['notifications']['smtp']['ipaddress']) ||
+	    empty($config['notifications']['smtp']['notifyemailaddress'])) {
 		return;
 	}
-	
-	if (empty($config['notifications']['smtp']['notifyemailaddress'])) {
-		return;
-	}
-	
+
 	$mail = new PHPMailer();
 	$mail->IsSMTP();
 	$mail->Host = $config['notifications']['smtp']['ipaddress'];
 	$mail->Port = empty($config['notifications']['smtp']['port']) ? 25 : $config['notifications']['smtp']['port'];
+	$mail->SMTPSecure = isset($config['notifications']['smtp']['ssl']) ? "ssl" : "";
 
-	if (isset($config['notifications']['smtp']['ssl'])) {
-		$mail->SMTPSecure =  "ssl";
-	} else {
-		$mail->SMTPSecure =  "";
-	}
-
-	$mail->SMTPAutoTLS = true;
 	if ($config['notifications']['smtp']['sslvalidate'] == "disabled") {
 		$mail->SMTPOptions = array(
 			'ssl' => array(
@@ -112,35 +105,36 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 			'verify_peer'       => true,
 			'verify_peer_name'  => true,
 			),
-		);		
+		);
 	}
-	
-	if($config['notifications']['smtp']['username'] &&
-	   $config['notifications']['smtp']['password']) {
-		$mail->SMTPAuth	= true;
-		$mail->Username	= $config['notifications']['smtp']['username'];
-		$mail->Password	= $config['notifications']['smtp']['password'];
+
+	if ($config['notifications']['smtp']['username'] &&
+	    $config['notifications']['smtp']['password']) {
+		$mail->SMTPAuth = true;
+		$mail->Username = $config['notifications']['smtp']['username'];
+		$mail->Password = $config['notifications']['smtp']['password'];
 	}
 
 	$mail->ContentType = 'text/html';
 	$mail->IsHTML(true);
-	$mail->AddReplyTo($config['notifications']['smtp']['fromaddress'], "Firewall Email Report");
-	$mail->SetFrom($config['notifications']['smtp']['fromaddress'], "Firewall Email Report");
+	$mail->AddReplyTo($config['notifications']['smtp']['fromaddress'], gettext("pfSense Email Report"));
+	$mail->SetFrom($config['notifications']['smtp']['fromaddress'], gettext("pfSense Email Report"));
 	$addresses = explode(",", $config['notifications']['smtp']['notifyemailaddress']);
 	foreach ($addresses as $address) {
 		$recipient = explode("@", $address);
 		$recipient = str_replace(array("_", "."), " ", $recipient[0]);
 		$mail->AddAddress($address, ucwords(strtolower($recipient)));
 	}
-	$mail->Subject = "{$config['system']['hostname']}.{$config['system']['domain']} Email Report: {$headertext}";
-	$mail->Body .= "This is a periodic report from your firewall, {$config['system']['hostname']}.{$config['system']['domain']}.<br /><br />Current report: {$headertext}<br />\n<br />\n";
+	$mail->Subject = "{$config['system']['hostname']}.{$config['system']['domain']} " . gettext("Email Report") . ": {$headertext}";
+	$mail->Body .= sprintf(gettext("This is a periodic report from pfSense at %s."), $config['system']['hostname'] . '.' . $config['system']['domain']);
+	$mail->Body .= "<br />\n<br />\n" . gettext("Current report") . ": {$headertext}<br />\n<br />\n";
 	if (!empty($cmdtext)) {
 		$mail->Body .= $cmdtext;
 	}
 	if (!empty($logtext)) {
 		$mail->Body .= $logtext;
 	}
-	if(is_array($attachments)) {
+	if (is_array($attachments)) {
 		foreach($attachments as $filename) {
 			$shortname = basename($filename);
 			$mail->AddEmbeddedImage($filename, $shortname, $shortname);
@@ -148,29 +142,27 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 		}
 	}
 
-	if(!$mail->Send()) {
-		echo "Mailer Error: " . $mail->ErrorInfo;
+	if (!$mail->Send()) {
+		echo gettext("Mailer Error") . ": " . $mail->ErrorInfo;
 	}
 }
 
-function mail_report_get_log($logfile, $tail, $grepfor) {
+function mail_report_get_log($logfile, $tail = 100, $grepfor = array()) {
 	global $g, $config;
 	$logfile = "{$g['varlog_path']}/{$logfile}";
 	$logarr = "";
 	$grepline = "  ";
-	if(is_array($grepfor))
+
+	if (is_array($grepfor) && !empty($grepfor)) {
 		$grepline = " | /usr/bin/egrep " . escapeshellarg(implode("|", $grepfor));
-	if($config['system']['disablesyslogclog']) {
-		exec("cat {$logfile}{$grepline} | /usr/bin/tail -n {$tail}", $logarr);
-	} else {
-		if (is_executable("/usr/local/sbin/clog")) {
-			exec("/usr/local/sbin/clog {$logfile}{$grepline}| grep -v \"CLOG\" | grep -v \"\033\" | /usr/bin/tail -n {$tail}", $logarr);
-		} elseif (is_executable("/usr/sbin/clog")) {
-			exec("/usr/sbin/clog {$logfile}{$grepline}| grep -v \"CLOG\" | grep -v \"\033\" | /usr/bin/tail -n {$tail}", $logarr);
-		} else {
-			$logarr = array("Cannot locate clog which is required for reading log files.");
-		}
 	}
+
+	exec(system_log_get_cat() . ' ' . sort_related_log_files($logfile, true, true) . "{$grepline} | /usr/bin/tail -n " . escapeshellarg($tail), $logarr);
+
+	if (empty($logarr)) {
+		$logarr = array(gettext("Log file is empty."));
+	}
+
 	return($logarr);
 }
 

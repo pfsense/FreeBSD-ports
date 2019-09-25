@@ -26,7 +26,6 @@
 	]]>
 	</copyright>
 	<name>avahi</name>
-	<version>2.0.0</version>
 	<title>Services: Avahi</title>
 	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/avahi/avahi.inc</include_file>

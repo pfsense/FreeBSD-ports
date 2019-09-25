@@ -3,7 +3,7 @@
  * status_mail_report.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2014 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,22 +29,15 @@
 require("guiconfig.inc");
 require_once("mail_reports.inc");
 
-if (!is_array($config['mailreports'])) {
-	$config['mailreports'] = array();
-}
-
-if (!is_array($config['mailreports']['schedule'])) {
-	$config['mailreports']['schedule'] = array();
-}
-
+init_config_arr(array('mailreports', 'schedule'));
 $a_mailreports = &$config['mailreports']['schedule'];
 
 if (isset($_POST['del'])) {
 	if (is_array($_POST['reports']) && count($_POST['reports'])) {
 		foreach ($_POST['reports'] as $reportsi) {
 			unset($a_mailreports[$reportsi]);
-			set_mail_report_cron_jobs($a_mailreports);
 		}
+		set_mail_report_cron_jobs($a_mailreports);
 		write_config("Removed Multiple Email Reports");
 		configure_cron();
 		header("Location: status_mail_report.php");
@@ -75,7 +68,7 @@ if (isset($_POST['del'])) {
 }
 
 
-$pgtitle = array(gettext("Status"), gettext("Email Reports"), gettext("Add Log"));
+$pgtitle = array(gettext("Status"), gettext("Email Reports"));
 include("head.inc");
 ?>
 
@@ -103,24 +96,33 @@ include("head.inc");
 			if (!is_array($mailreport)) {
 				$mailreport = array();
 			}
+
+			if (empty($mailreport['text']) &&
+			    !empty($mailreport['schedule_friendly'])) {
+				$friendly = $mailreport['schedule_friendly'];
+			} elseif (!empty($mailreport['text'])) {
+				$friendly = $mailreport['text'];
+			} else {
+				$friendly = "-";
+			}
 ?>
 		<tr>
 			<td><input type="checkbox" id="frc<?=$i?>" name="reports[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
-				<?=$mailreport['descr']; ?>
+				<?=$mailreport['descr'];?>
 			</td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
-				<?=$mailreport['schedule_friendly']; ?>
+				<?=$friendly;?>
 			</td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
-				<?=(is_array($mailreport['cmd']['row']) ? count($mailreport['cmd']['row']) : 0); ?>
+				<?=(is_array($mailreport['cmd']['row']) ? count($mailreport['cmd']['row']) : 0);?>
 			</td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
-				<?=(is_array($mailreport['log']['row']) ? count($mailreport['log']['row']) : 0); ?>
+				<?=(is_array($mailreport['log']['row']) ? count($mailreport['log']['row']) : 0);?>
 			</td>
 			<td style="cursor: pointer;">
 				<a class="fa fa-pencil" href="status_mail_report_edit.php?id=<?=$i?>" title="<?=gettext("Edit Report"); ?>"></a>
-				<a class="fa fa-trash no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Report'); ?>"></a>
+				<a class="fa fa-trash no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Report');?>"></a>
 				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="del_<?=$i?>" name="del_<?=$i?>" value="del_<?=$i?>" title="<?=gettext('Delete Report'); ?>">Delete</button>
 			</td>
 		</tr>
@@ -147,7 +149,7 @@ include("head.inc");
 <?php endif; ?>
 	</nav>
 </form>
-<?php print_info_box(gettext("Configure SMTP settings under <a href=\"/system_advanced_notifications.php\">System -&gt; Advanced, on the Notifications tab</a>"), 'info'); ?>
+<?php print_info_box(gettext("Configure SMTP settings at <a href=\"/system_advanced_notifications.php\">System &gt; Advanced, Notifications tab</a>"), 'info'); ?>
 <script type="text/javascript">
 //<![CDATA[
 
