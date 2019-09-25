@@ -413,6 +413,7 @@ if (($suricatacfg['eve_log_alerts'] == 'on')) {
 	$eve_out_types .= "\n            packet: ".($suricatacfg['eve_log_alerts_packet'] == 'on'?'yes':'no ')."               # enable dumping of packet (without stream segments)";
 	$eve_out_types .= "\n            http-body: ".($suricatacfg['eve_log_alerts_payload'] == 'on'?'yes':'no ' || $suricatacfg['eve_log_alerts_payload'] == 'only-base64' ?'yes':'no ')."            # enable dumping of http body in Base64";
 	$eve_out_types .= "\n            http-body-printable: ".($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-printable' ?'yes':'no ')."  # enable dumping of http body in printable format";
+	$eve_out_types .= "\n            metadata: ".($suricatacfg['eve_log_alerts_metadata'] == 'on'?'yes':'no ')."             # enable inclusion of app layer metadata with alert";
 	$eve_out_types .= "\n            tagged-packets: yes       # enable logging of tagged packets for rules using the 'tag' keyword";
 }
 

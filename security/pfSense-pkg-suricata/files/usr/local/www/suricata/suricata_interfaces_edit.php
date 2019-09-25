@@ -153,6 +153,8 @@ if (empty($pconfig['eve_log_alerts_packet']))
 	$pconfig['eve_log_alerts_packet'] = "on";
 if (empty($pconfig['eve_log_alerts_http']))
 	$pconfig['eve_log_alerts_http'] = "on";
+if (empty($pconfig['eve_log_alerts_metadata']))
+	$pconfig['eve_log_alerts_metadata'] = "on";
 if (empty($pconfig['eve_log_alerts_xff']))
 	$pconfig['eve_log_alerts_xff'] = "off";
 if (empty($pconfig['eve_log_alerts_xff_mode']))
@@ -382,6 +384,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_log_alerts'] == "on") { $natent['eve_log_alerts'] = 'on'; }else{ $natent['eve_log_alerts'] = 'off'; }
 		if ($_POST['eve_log_alerts_payload']) { $natent['eve_log_alerts_payload'] = $_POST['eve_log_alerts_payload']; }else{ $natent['eve_log_alerts_payload'] = 'off'; }
 		if ($_POST['eve_log_alerts_packet'] == "on") { $natent['eve_log_alerts_packet'] = 'on'; }else{ $natent['eve_log_alerts_packet'] = 'off'; }
+		if ($_POST['eve_log_alerts_metadata'] == "on") { $natent['eve_log_alerts_metadata'] = 'on'; }else{ $natent['eve_log_alerts_metadata'] = 'off'; }
 		if ($_POST['eve_log_alerts_http'] == "on") { $natent['eve_log_alerts_http'] = 'on'; }else{ $natent['eve_log_alerts_http'] = 'off'; }
 		if ($_POST['eve_log_alerts_xff'] == "on") { $natent['eve_log_alerts_xff'] = 'on'; }else{ $natent['eve_log_alerts_xff'] = 'off'; }
 		if ($_POST['eve_log_alerts_xff_mode']) { $natent['eve_log_alerts_xff_mode'] = $_POST['eve_log_alerts_xff_mode']; }else{ $natent['eve_log_alert_xff_mode'] = 'extra-data'; }
@@ -958,6 +961,14 @@ $group->add(new Form_Checkbox(
 	'Alert Payloads',
 	'Log additional HTTP data.',
 	$pconfig['eve_log_alerts_http'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_alerts_metadata',
+	'App Layer Metadata',
+	'Include App Layer metadata.',
+	$pconfig['eve_log_alerts_metadata'] == 'on' ? true:false,
 	'on'
 ));
 

@@ -332,6 +332,10 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$pconfig['eve_log_alerts'] = "on";
 		$updated_cfg = true;
 	}
+	if (!isset($pconfig['eve_log_alerts_metadata'])) {
+		$pconfig['eve_log_alerts_metadata'] = "on";
+		$updated_cfg = true;
+	}
 	if (!isset($pconfig['eve_log_http'])) {
 		$pconfig['eve_log_http'] = "on";
 		$updated_cfg = true;
