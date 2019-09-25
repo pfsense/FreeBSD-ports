@@ -45,6 +45,7 @@ if ($command == "importcert") {
 	$changedesc .= "Storing signed certificate: " . $certificatename;
 	write_config($changedesc);
 
+	acme_write_all_certificates();
 	if (is_array($certificate['a_actionlist']['item'])) {
 		foreach($certificate['a_actionlist']['item'] as $action) {
 			if ($action['status'] == "disable") {
@@ -77,7 +78,6 @@ if ($command == "importcert") {
 			}
 		}
 	}
-	acme_write_all_certificates();
 	return;
 }
 
