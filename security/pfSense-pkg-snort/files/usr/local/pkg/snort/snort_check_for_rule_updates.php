@@ -742,6 +742,13 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		/* Create configuration for each active Snort interface */
 		foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
 			$if_real = get_real_interface($value['interface']);
+
+			/* Skip processing for instances whose underlying physical        */
+			/* interface has been removed in pfSense.                         */
+			if ($if_real == "") {
+				continue;
+			}
+
 			$tmp = "Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($value['interface']) . " ...";
 			snort_update_status(gettext($tmp));
 
