@@ -1,6 +1,6 @@
-diff -ruN ./suricata-4.1.4.orig/src/Makefile.am ./suricata-4.1.4/src/Makefile.am
---- ./suricata-4.1.4.orig/src/Makefile.am	2019-04-30 03:14:35.000000000 -0400
-+++ ./src/Makefile.am	2019-06-05 15:42:11.000000000 -0400
+diff -ruN ./suricata-4.1.5.orig/src/Makefile.am ./suricata-4.1.5/src/Makefile.am
+--- ./suricata-4.1.5.orig/src/Makefile.am	2019-09-23 07:44:03.000000000 -0400
++++ ./src/Makefile.am	2019-09-25 10:41:16.000000000 -0400
 @@ -10,6 +10,7 @@
  suricata_SOURCES = \
  alert-debuglog.c alert-debuglog.h \
@@ -9,9 +9,9 @@ diff -ruN ./suricata-4.1.4.orig/src/Makefile.am ./suricata-4.1.4/src/Makefile.am
  alert-prelude.c alert-prelude.h \
  alert-syslog.c alert-syslog.h \
  alert-unified2-alert.c alert-unified2-alert.h \
-diff -ruN ./suricata-4.1.4.orig/src/Makefile.in ./suricata-4.1.4/src/Makefile.in
---- ./suricata-4.1.4.orig/src/Makefile.in	2019-04-30 03:14:50.000000000 -0400
-+++ ./src/Makefile.in	2019-06-05 15:43:34.000000000 -0400
+diff -ruN ./suricata-4.1.5.orig/src/Makefile.in ./suricata-4.1.5/src/Makefile.in
+--- ./suricata-4.1.5.orig/src/Makefile.in	2019-09-23 07:44:19.000000000 -0400
++++ ./src/Makefile.in	2019-09-25 10:42:32.000000000 -0400
 @@ -112,7 +112,7 @@
  am__installdirs = "$(DESTDIR)$(bindir)"
  PROGRAMS = $(bin_PROGRAMS)
@@ -29,10 +29,10 @@ diff -ruN ./suricata-4.1.4.orig/src/Makefile.in ./suricata-4.1.4/src/Makefile.in
  alert-prelude.c alert-prelude.h \
  alert-syslog.c alert-syslog.h \
  alert-unified2-alert.c alert-unified2-alert.h \
-diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
---- ./suricata-4.1.4.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2019-06-13 12:34:38.000000000 -0400
-@@ -0,0 +1,1129 @@
+diff -ruN ./suricata-4.1.5.orig/src/alert-pf.c ./suricata-4.1.5/src/alert-pf.c
+--- ./suricata-4.1.5.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/alert-pf.c	2019-09-25 10:59:45.000000000 -0400
+@@ -0,0 +1,1141 @@
 +/* Copyright (C) 2007-2019 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
@@ -166,9 +166,17 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +        AlertPfExitPrintStats);
 +}
 +
++/**
++ * Return TRUE only for valid packets we want
++ * to process.
++ */
 +int AlertPfCondition(ThreadVars *tv, const Packet *p)
 +{
-+    return (p->alerts.cnt ? TRUE : FALSE);
++    if (p->alerts.cnt == 0)
++        return FALSE;
++    if (!IPH_IS_VALID(p))
++        return FALSE;
++    return TRUE;
 +}
 +
 +/**
@@ -198,6 +206,9 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +// Used for Interface IP change monitoring thread
 +pthread_t alert_pf_ifmon_thread;
 +
++// Read-only data to associate with Radix Tree entries
++int alertpf_user_data = 1;
++
 +static int AlertPfInitIfaceList(AlertPfCtx *);
 +static int AlertPfParseIfamAddress(struct sockaddr *, Address *);
 +static void AlertPf_IflistMaint(Address *, AlertPfCtx *, u_char);
@@ -220,7 +231,7 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 + */
 +static void AlertPfFreeUserData(void *data)
 +{
-+   /* We have nothing to actually delete, so just exit. */
++   /* We have nothing to actually delete, so just return. */
 +   return;
 +}
 +
@@ -429,14 +440,14 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +        if (ret == 1 && strlen(cad) > 0) {
 +            /* is it an IPv6 address? */
 +            if (strchr(cad, ':') != NULL) {
-+                if (SCRadixAddKeyIPV6String(cad, ctx->tree, (void *)cad) == NULL) {
++                if (SCRadixAddKeyIPV6String(cad, ctx->tree, (void *)&alertpf_user_data) == NULL) {
 +                    SCLogInfo("alert-pf -> Invalid IP(%s) parameter provided in Pass List, skipping...", cad);
 +                    continue;
 +                }
 +                count++;
 +            }
 +            else {
-+                if (SCRadixAddKeyIPV4String(cad, ctx->tree, (void *)cad) == NULL) {
++                if (SCRadixAddKeyIPV4String(cad, ctx->tree, (void *)&alertpf_user_data) == NULL) {
 +                    SCLogInfo("alert-pf -> Invalid IP(%s) parameter provided in Pass List, skipping...", cad);
 +                    continue;
 +                }
@@ -480,13 +491,13 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +                    case AF_INET:
 +                        PrintInet(AF_INET, (const void *)&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, tmp, sizeof(tmp));
 +                        SCLogInfo("alert-pf -> adding firewall interface %s IPv4 address %s to automatic interface IP Pass List.", ifa->ifa_name, tmp);
-+                        SCRadixAddKeyIPV4((uint8_t *)(&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr), ctx->tree, (void *)tmp);
++                        SCRadixAddKeyIPV4((uint8_t *)(&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr), ctx->tree, (void *)&alertpf_user_data);
 +                    break;
 +
 +                    case AF_INET6:
 +                        PrintInet(AF_INET6, (const void *)&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, tmp, sizeof(tmp));
 +                        SCLogInfo("alert-pf -> adding firewall interface %s IPv6 address %s to automatic interface IP Pass List.", ifa->ifa_name, tmp);
-+                        SCRadixAddKeyIPV6((uint8_t *)(&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr), ctx->tree, (void *)tmp);
++                        SCRadixAddKeyIPV6((uint8_t *)(&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr), ctx->tree, (void *)&alertpf_user_data);
 +                        break;
 +
 +                    default:
@@ -561,7 +572,7 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +				(void)SCRadixFindKeyIPV4ExactMatch((uint8_t *)&ip->addr_data32, ctx->tree, &user_data);
 +				if (user_data == NULL) {
 +					// Not already in list, so add it
-+					SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree, (void *)tmp);
++					SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree, (void *)&alertpf_user_data);
 +    					PrintInet(AF_INET, (const void *)&ip->addr_data32, tmp, sizeof(tmp));
 +					SCLogInfo("alert-pf -> added address %s to automatic firewall interface IP Pass List.", tmp);
 +				}
@@ -570,7 +581,7 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +				(void)SCRadixFindKeyIPV6ExactMatch((uint8_t *)&ip->addr_data8, ctx->tree, &user_data);
 +				if (user_data == NULL) {
 +					// Not already in list, so add it
-+					SCRadixAddKeyIPV6((uint8_t *)&ip->addr_data8, ctx->tree, (void *)tmp);
++					SCRadixAddKeyIPV6((uint8_t *)&ip->addr_data8, ctx->tree, (void *)&alertpf_user_data);
 +    					PrintInet(AF_INET6, (const void *)&ip->addr_data8, tmp, sizeof(tmp));
 +					SCLogInfo("alert-pf -> added address %s to automatic firewall interface IP Pass List.", tmp);
 +				}
@@ -961,8 +972,8 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +        SC_ATOMIC_ADD(alert_pf_alerts, 1);
 +
 +	/* If blocking only DROP rules and alert is not from a DROP rule, ignore it */
-+	if (apft->ctx->block_drops && !(PACKET_TEST_ACTION(p, ACTION_DROP))) {
-+	    return TM_ECODE_OK;
++	if (apft->ctx->block_drops && !(pa->action & ACTION_DROP)) {
++	    continue;
 +	}
 +
 +        switch (apft->ctx->block_ip) {
@@ -982,6 +993,7 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
 +                    }
 +                }
++                user_data = NULL;
 +                (void)SCRadixFindKeyIPV4BestMatch((uint8_t *)&GET_IPV4_DST_ADDR_U32(p), apft->ctx->tree, &user_data);
 +                if (user_data == NULL) {
 +                    if (AlertPfBlock(apft, &p->dst) > 0) {
@@ -1031,8 +1043,8 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +                }
 +        }
 +
-+        /* Once we find and block the first packet alert for this IP, we're done */
-+        break;
++        /* Once we block the first alert for this packet, we're done */
++        return TM_ECODE_OK;
 +    }
 +
 +    return TM_ECODE_OK;
@@ -1071,8 +1083,8 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +        SC_ATOMIC_ADD(alert_pf_alerts, 1);
 +
 +        /* If blocking only DROP rules and alert is not from a DROP rule, ignore it */
-+        if (apft->ctx->block_drops && !(PACKET_TEST_ACTION(p, ACTION_DROP))) {
-+            return TM_ECODE_OK;
++        if (apft->ctx->block_drops && !(pa->action & ACTION_DROP)) {
++            continue;
 +        }
 +
 +        switch (apft->ctx->block_ip) {
@@ -1092,6 +1104,7 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
 +                    }
 +                }
++                user_data = NULL;
 +                (void)SCRadixFindKeyIPV6BestMatch((uint8_t *)&GET_IPV6_DST_ADDR(p), apft->ctx->tree, &user_data);
 +                if (user_data == NULL) {
 +                    if (AlertPfBlock(apft, &p->dst) > 0) {
@@ -1140,9 +1153,8 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +                    }
 +                }
 +        }
-+
-+        /* Once we find and block the first packet alert for this IP, we're done */
-+        break;
++        /* Once we block the first alert for this packet, we're done */
++        return TM_ECODE_OK;
 +    }
 +
 +    return TM_ECODE_OK;
@@ -1162,8 +1174,8 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.c ./suricata-4.1.4/src/alert-pf.c
 +    return TM_ECODE_OK;
 +}
 +
-diff -ruN ./suricata-4.1.4.orig/src/alert-pf.h ./suricata-4.1.4/src/alert-pf.h
---- ./suricata-4.1.4.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
+diff -ruN ./suricata-4.1.5.orig/src/alert-pf.h ./suricata-4.1.5/src/alert-pf.h
+--- ./suricata-4.1.5.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
 +++ ./src/alert-pf.h	2019-06-05 14:27:11.000000000 -0400
 @@ -0,0 +1,59 @@
 +/* Copyright (C) 2007-2019 Open Information Security Foundation
@@ -1225,9 +1237,9 @@ diff -ruN ./suricata-4.1.4.orig/src/alert-pf.h ./suricata-4.1.4/src/alert-pf.h
 +
 +#endif /* __ALERT_PF_H__ */
 +
-diff -ruN ./suricata-4.1.4.orig/src/output.c ./suricata-4.1.4/src/output.c
---- ./suricata-4.1.4.orig/src/output.c	2019-04-30 03:14:35.000000000 -0400
-+++ ./src/output.c	2019-06-05 15:47:14.000000000 -0400
+diff -ruN ./suricata-4.1.5.orig/src/output.c ./suricata-4.1.5/src/output.c
+--- ./suricata-4.1.5.orig/src/output.c	2019-09-23 07:44:03.000000000 -0400
++++ ./src/output.c	2019-09-25 10:44:10.000000000 -0400
 @@ -43,6 +43,7 @@
  #include "alert-fastlog.h"
  #include "alert-unified2-alert.h"
@@ -1245,9 +1257,9 @@ diff -ruN ./suricata-4.1.4.orig/src/output.c ./suricata-4.1.4/src/output.c
      /* prelue log */
      AlertPreludeRegister();
      /* syslog log */
-diff -ruN ./suricata-4.1.4.orig/src/suricata-common.h ./suricata-4.1.4/src/suricata-common.h
---- ./suricata-4.1.4.orig/src/suricata-common.h	2019-04-30 03:14:35.000000000 -0400
-+++ ./src/suricata-common.h	2019-06-05 15:48:20.000000000 -0400
+diff -ruN ./suricata-4.1.5.orig/src/suricata-common.h ./suricata-4.1.5/src/suricata-common.h
+--- ./suricata-4.1.5.orig/src/suricata-common.h	2019-09-23 07:44:03.000000000 -0400
++++ ./src/suricata-common.h	2019-09-25 10:45:05.000000000 -0400
 @@ -440,6 +440,7 @@
      LOGGER_PRELUDE,
      LOGGER_PCAP,

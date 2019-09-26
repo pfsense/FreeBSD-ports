@@ -413,6 +413,7 @@ if (($suricatacfg['eve_log_alerts'] == 'on')) {
 	$eve_out_types .= "\n            packet: ".($suricatacfg['eve_log_alerts_packet'] == 'on'?'yes':'no ')."               # enable dumping of packet (without stream segments)";
 	$eve_out_types .= "\n            http-body: ".($suricatacfg['eve_log_alerts_payload'] == 'on'?'yes':'no ' || $suricatacfg['eve_log_alerts_payload'] == 'only-base64' ?'yes':'no ')."            # enable dumping of http body in Base64";
 	$eve_out_types .= "\n            http-body-printable: ".($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-printable' ?'yes':'no ')."  # enable dumping of http body in printable format";
+	$eve_out_types .= "\n            metadata: ".($suricatacfg['eve_log_alerts_metadata'] == 'on'?'yes':'no ')."             # enable inclusion of app layer metadata with alert";
 	$eve_out_types .= "\n            tagged-packets: yes       # enable logging of tagged packets for rules using the 'tag' keyword";
 }
 
@@ -737,6 +738,7 @@ else {
 				$engine .= "]\n";
 				$engine .= "         personality: {$v['personality']}\n         request-body-limit: {$v['request-body-limit']}\n";
 				$engine .= "         response-body-limit: {$v['response-body-limit']}\n";
+				$engine .= "         meta-field-limit: " . (isset($v['meta-field-limit']) ? $v['meta-field-limit'] : "18432") . "\n";
 				$engine .= "         double-decode-path: {$v['double-decode-path']}\n";
 				$engine .= "         double-decode-query: {$v['double-decode-query']}\n";
 				$engine .= "         uri-include-all: {$v['uri-include-all']}\n";
@@ -750,6 +752,7 @@ else {
 		else {
 			$http_hosts_default_policy = "     personality: {$v['personality']}\n     request-body-limit: {$v['request-body-limit']}\n";
 			$http_hosts_default_policy .= "     response-body-limit: {$v['response-body-limit']}\n";
+			$http_hosts_default_policy .= "     meta-field-limit: " . (isset($v['meta-field-limit']) ? $v['meta-field-limit'] : "18432") . "\n";
 			$http_hosts_default_policy .= "     double-decode-path: {$v['double-decode-path']}\n";
 			$http_hosts_default_policy .= "     double-decode-query: {$v['double-decode-query']}\n";
 			$http_hosts_default_policy .= "     uri-include-all: {$v['uri-include-all']}\n";
