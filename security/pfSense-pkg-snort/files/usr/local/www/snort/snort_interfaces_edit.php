@@ -664,7 +664,7 @@ $section->addInput(new Form_Checkbox(
 	'Split ANY-ANY',
 	'Enable splitting of ANY-ANY port group.  Default is Not Checked.',
 	$pconfig['fpm_split_any_any'] == 'on' ? true:false,
-	'yes'
+	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'fpm_search_optimize',
