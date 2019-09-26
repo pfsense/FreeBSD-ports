@@ -65,7 +65,7 @@ if (isset($id) && $a_nat[$id]) {
 		$default = array( "name" => "default", "bind_to" => "all", "personality" => "IDS",
 				  "request-body-limit" => 4096, "response-body-limit" => 4096,
 				  "double-decode-path" => "no", "double-decode-query" => "no",
-				  "uri-include-all" => "no" );
+				  "uri-include-all" => "no", "meta-field-limit" => 18432 );
 		$pconfig['libhtp_policy']['item'] = array();
 		$pconfig['libhtp_policy']['item'][] = $default;
 		if (!is_array($a_nat[$id]['libhtp_policy']['item']))
@@ -99,6 +99,7 @@ elseif ($_POST['select_alias']) {
 	$eng_personality = $_POST['personality'];
 	$eng_req_body_limit = $_POST['req_body_limit'];
 	$eng_resp_body_limit = $_POST['resp_body_limit'];
+	$eng_meta_field_limit = $_POST['meta_field_limit'];
 	$eng_enable_double_decode_path = $_POST['enable_double_decode_path'];
 	$eng_enable_double_decode_query = $_POST['enable_double_decode_query'];
 	$eng_enable_uri_include_all = $_POST['enable_uri_include_all'];
@@ -140,6 +141,11 @@ if ($_POST['save_libhtp_policy']) {
 			$engine['response-body-limit'] = $_POST['resp_body_limit'];
 		else
 			$input_errors[] = gettext("The value for 'Response Body Limit' must be all numbers and greater than or equal to zero.");
+
+		if (is_numeric($_POST['meta_field_limit']) && $_POST['meta_field_limit'] >= 0)
+			$engine['meta-field-limit'] = $_POST['meta_field_limit'];
+		else
+			$input_errors[] = gettext("The value for 'Meta-Field Limit' must be all numbers and greater than or equal to zero.");
 
 		if ($_POST['enable_double_decode_path']) { $engine['double-decode-path'] = 'yes'; }else{ $engine['double-decode-path'] = 'no'; }
 		if ($_POST['enable_double_decode_query']) { $engine['double-decode-query'] = 'yes'; }else{ $engine['double-decode-query'] = 'no'; }
@@ -198,7 +204,7 @@ if ($_POST['save_libhtp_policy']) {
 elseif ($_POST['add_libhtp_policy']) {
 	$add_edit_libhtp_policy = true;
 	$pengcfg = array( "name" => "engine_{$libhtp_engine_next_id}", "bind_to" => "", "personality" => "IDS",
-			  "request-body-limit" => "4096", "response-body-limit" => "4096",
+			  "request-body-limit" => "4096", "response-body-limit" => "4096", "meta-field-limit" => 18432, 
 			  "double-decode-path" => "no", "double-decode-query" => "no", "uri-include-all" => "no" );
 	$eng_id = $libhtp_engine_next_id;
 }
@@ -284,6 +290,7 @@ elseif ($_POST['save_import_alias']) {
 		$pengcfg['personality'] = $_POST['eng_personality'];
 		$pengcfg['request-body-limit'] = $_POST['eng_req_body_limit'];
 		$pengcfg['response-body-limit'] = $_POST['eng_resp_body_limit'];
+		$pengcfg['meta-field-limit'] = $_POST['eng_meta_field_limit'];
 		$pengcfg['double-decode-path'] = $_POST['eng_enable_double_decode_path'];
 		$pengcfg['double-decode-query'] = $_POST['eng_enable_double_decode_query'];
 		$pengcfg['uri-include-all'] = $_POST['eng_enable_uri_include_all'];
@@ -305,6 +312,7 @@ elseif ($_POST['save_import_alias']) {
 			$eng_personality = $_POST['eng_personality'];
 			$eng_req_body_limit = $_POST['eng_req_body_limit'];
 			$eng_resp_body_limit = $_POST['eng_resp_body_limit'];
+			$eng_meta_field_limit = $_POST['eng_meta_field_limit'];
 			$eng_enable_double_decode_path = $_POST['eng_enable_double_decode_path'];
 			$eng_enable_double_decode_query = $_POST['eng_enable_double_decode_query'];
 			$eng_enable_uri_include_all = $_POST['eng_enable_uri_include_all'];
@@ -312,7 +320,7 @@ elseif ($_POST['save_import_alias']) {
 	}
 	else {
 		$engine = array( "name" => "", "bind_to" => "", "personality" => "IDS",
-				 "request-body-limit" => "4096", "response-body-limit" => "4096",
+				 "request-body-limit" => "4096", "response-body-limit" => "4096", "meta-field-limit" => 18432, 
 				 "double-decode-path" => "no", "double-decode-query" => "no", "uri-include-all" => "no" );
 
 		// See if anything was checked to import
@@ -380,6 +388,7 @@ elseif ($_POST['cancel_import_alias']) {
 		$pengcfg['personality'] = $_POST['eng_personality'];
 		$pengcfg['request-body-limit'] = $_POST['eng_req_body_limit'];
 		$pengcfg['response-body-limit'] = $_POST['eng_resp_body_limit'];
+		$pengcfg['meta-field-limit'] = $_POST['eng_meta_field_limit'];
 		$pengcfg['double-decode-path'] = $_POST['eng_enable_double_decode_path'];
 		$pengcfg['double-decode-query'] = $_POST['eng_enable_double_decode_query'];
 		$pengcfg['uri-include-all'] = $_POST['eng_enable_uri_include_all'];
@@ -535,6 +544,7 @@ if ($importalias) {
 		print('<input type="hidden" name="eng_personality" value="' . $eng_personality . '"/>');
 		print('<input type="hidden" name="eng_req_body_limit" value="' . $eng_req_body_limit . '"/>');
 		print('<input type="hidden" name="eng_resp_body_limit" value="' . $eng_resp_body_limit . '"/>');
+		print('<input type="hidden" name="eng_meta_field_limit" value="' . $eng_meta_field_limit . '"/>');
 		print('<input type="hidden" name="eng_enable_double_decode_path" value="' . $eng_enable_double_decode_path . '"/>');
 		print('<input type="hidden" name="eng_enable_double_decode_query" value="' . $eng_enable_double_decode_query . '"/>');
 		print('<input type="hidden" name="eng_enable_uri_include_all" value="' . $eng_enable_uri_include_all . '"/>');
