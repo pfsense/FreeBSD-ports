@@ -174,6 +174,11 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	/* Create the snort.conf files for each enabled interface */
 	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
 		$if_real = get_real_interface($snortcfg['interface']);
+
+		/* Skip instance if its real interface is missing in pfSense */
+		if ($if_real == "") {
+			continue;
+		}
 		$snort_uuid = $snortcfg['uuid'];
 		$snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}";
 		update_status(gettext("Generating configuration for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
