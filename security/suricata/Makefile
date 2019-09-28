@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	suricata
-DISTVERSION=	4.1.4
-PORTREVISION=	2
+DISTVERSION=	4.1.5
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -20,7 +19,7 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 
 USES=		autoreconf cpe gmake iconv:translit libtool pathfix pkgconfig
 
-CONFLICTS_INSTALL=libhtp
+CONFLICTS_INSTALL=	libhtp suricata5
 
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
@@ -115,7 +114,7 @@ REDIS_CONFIGURE_ON=		--enable-hiredis \
 				--with-libhiredis-includes=${LOCALBASE}/include \
 				--with-libhiredis-libraries=${LOCALBASE}/lib
 
-RUST_BUILD_DEPENDS=		rustc:lang/rust
+RUST_BUILD_DEPENDS=		rustc:lang/${RUST_DEFAULT}
 RUST_CONFIGURE_ENABLE=		rust
 
 TESTS_CONFIGURE_ENABLE=		unittests
