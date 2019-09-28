@@ -256,6 +256,9 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		}
 	}
 
+	// Release config array references used immediately above
+	unset($http_serv, $policy);
+
 	/***********************************************************/
 	/* Add the new 'dns-events.rules' file to the rulesets.    */
 	/***********************************************************/
@@ -321,6 +324,10 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	}
 	if (!isset($pconfig['eve_log_alerts'])) {
 		$pconfig['eve_log_alerts'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_alerts_metadata'])) {
+		$pconfig['eve_log_alerts_metadata'] = "on";
 		$updated_cfg = true;
 	}
 	if (!isset($pconfig['eve_log_http'])) {

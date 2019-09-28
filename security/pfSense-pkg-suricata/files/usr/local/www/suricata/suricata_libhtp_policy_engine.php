@@ -3,11 +3,11 @@
  * suricata_libhtp_policy_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,6 +43,7 @@
 	select_alias --> Submit button for select alias operation
 	req_body_limit --> Request Body Limit size
 	resp_body_limit --> Response Body Limit size
+	meta_field_limit --> Meta-Field Limit size
 	enable_double_decode_path --> double-decode path part of URI
 	enable_double_decode_query --> double-decode query string part of URI
 	enable_uri_include_all --> inspect all of URI
@@ -126,6 +127,12 @@ $section->addInput(new Form_Input(
 	'text',
 	$pengcfg['response-body-limit']
 ))->setHelp('Maximum number of HTTP response body bytes to inspect. Default is 4,096 bytes. HTTP response bodies are often big, so they take a lot of time to process which has a significant impact on performance. This sets the limit (in bytes) of the server-body that will be inspected. Setting this parameter to 0 will inspect all of the server-body.');
+$section->addInput(new Form_Input(
+	'meta_field_limit',
+	'Meta-Field Limit',
+	'text',
+	$pengcfg['meta-field-limit']
+))->setHelp('Hard size limit for request and response size limits. Applies to request line and headers, response line and headers. Does not apply to request or response bodies. Default is 18k (18432) bytes. If this limit is reached an event is raised.');
 $form->add($section);
 
 $section = new Form_Section('Decode Settings');
