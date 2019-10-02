@@ -20,7 +20,7 @@ BUILD_DEPENDS=	libdaq>=0:net/libdaq \
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
 		libpcap.so:net/libpcap \
-		libluajit-5.1.so:lang/luajit \
+		libluajit-5.1.so:lang/luajit-openresty \
 		libhwloc.so:devel/hwloc
 RUN_DEPENDS=	libdaq>=0:net/libdaq
 
