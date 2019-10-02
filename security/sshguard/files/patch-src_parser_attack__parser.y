@@ -1,23 +1,23 @@
---- src/parser/attack_parser.y.orig	2018-12-29 19:38:19 UTC
+--- src/parser/attack_parser.y.orig	2019-05-23 23:03:52 UTC
 +++ src/parser/attack_parser.y
-@@ -108,6 +108,8 @@ static void yyerror(attack_t *, const char *);
- %token COURIER_AUTHFAIL_PREF
- /* OpenVPN */
+@@ -110,6 +110,8 @@ static void yyerror(attack_t *, const char *);
  %token OPENVPN_TLS_ERR_SUFF
+ /* Gitea */
+ %token GITEA_ERR_PREF GITEA_ERR_SUFF
 +/* pfSense GUI authentication failures */
 +%token PFSENSE_AUTH_FAIL
  
  %%
  
-@@ -189,6 +191,7 @@ msg_single:
-     | opensmtpdmsg      {   attack->service = SERVICES_OPENSMTPD; }
+@@ -192,6 +194,7 @@ msg_single:
      | couriermsg        {   attack->service = SERVICES_COURIER; }
      | openvpnmsg        {   attack->service = SERVICES_OPENVPN; }
+     | giteamsg          {   attack->service = SERVICES_GITEA; }
 +    | pfsenseauthfail   {   attack->service = SERVICES_PFSENSE; }
      ;
  
  /* an address */
-@@ -346,6 +349,11 @@ clfwordpressmsg:
+@@ -349,6 +352,11 @@ clfwordpressmsg:
  opensmtpdmsg:
      OPENSMTPD_FAILED_CMD_PREF addr OPENSMTPD_AUTHFAIL_SUFF
      | OPENSMTPD_FAILED_CMD_PREF addr OPENSMTPD_UNSUPPORTED_CMD_SUFF
