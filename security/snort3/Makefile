@@ -13,12 +13,14 @@ COMMENT=	Lightweight network intrusion detection system
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		fails to build
+
 BUILD_DEPENDS=	libdaq>=0:net/libdaq \
 		bash>0:shells/bash
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
 		libpcap.so:net/libpcap \
-		libluajit-5.1.so:lang/luajit21 \
+		libluajit-5.1.so:lang/luajit \
 		libhwloc.so:devel/hwloc
 RUN_DEPENDS=	libdaq>=0:net/libdaq
 
@@ -33,7 +35,6 @@ SHEBANG_FILES=	tools/appid_detector_builder.sh
 OPTIONS_DEFINE=		ADDRESSSANITIZER DEBUG DOCS FLATBUFFERS LARGEPCAP PIE THREADSANITIZER STATICDAQ
 OPTIONS_DEFINE_amd64=	HYPERSCAN TSC
 OPTIONS_DEFAULT=	STATICDAQ
-OPTIONS_SUB=		yes
 
 ADDRESSSANITIZER_DESC=	Enable address sanitizer
 DEBUG_DESC=		Enable debug
@@ -60,10 +61,4 @@ HYPERSCAN_LIB_DEPENDS=	libhs.so:devel/hyperscan
 
 CONFLICTS=	snort-2*
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} != "amd64"
-PLIST_SUB+=	TSC="@comment "
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

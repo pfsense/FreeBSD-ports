@@ -10,6 +10,10 @@ MASTER_SITES=	NETBSD
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Makes ISO images suitable to boot on sparc systems
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 PLIST_FILES=	bin/mksunbootcd man/man1/${PORTNAME}.1.gz
 
 GNU_CONFIGURE=	yes

@@ -3,11 +3,11 @@
 
 PORTNAME=	mhgui
 PORTVERSION=	0.2
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	graphics
 MASTER_SITES=	SF/makehuman/MakeHuman%20Source/MakeHuman_091
 
-MAINTAINER=	amdmi3@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI widget library for MakeHuman
 
 LICENSE=	GPLv2

@@ -23,6 +23,7 @@
     SUBDIR += bitter
     SUBDIR += c64bdf
     SUBDIR += cantarell-fonts
+    SUBDIR += cascadia-code
     SUBDIR += charis
     SUBDIR += charis-compact
     SUBDIR += clearsans
@@ -98,6 +99,7 @@
     SUBDIR += font-xfree86-type1
     SUBDIR += fontconfig
     SUBDIR += fontconfig-reference
+    SUBDIR += fontmatrix
     SUBDIR += fonts-indic
     SUBDIR += fonttosfnt
     SUBDIR += freefont-ttf
@@ -169,6 +171,7 @@
     SUBDIR += nucleus
     SUBDIR += ohsnap
     SUBDIR += oldschool-pc-fonts
+    SUBDIR += open-sans
     SUBDIR += orbitron
     SUBDIR += oxygen-fonts
     SUBDIR += p5-Font-AFM

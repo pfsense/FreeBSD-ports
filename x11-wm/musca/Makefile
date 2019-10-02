@@ -11,6 +11,10 @@ COMMENT=	Simple dynamic window manager with tiling and stacking modes
 
 LICENSE=	GPLv3
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	dmenu:x11/dmenu
 
 USES=		pkgconfig tar:tgz

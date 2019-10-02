@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stow
-PORTVERSION=	2.3.0
+PORTVERSION=	2.3.1
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
@@ -12,6 +12,7 @@ COMMENT=	GNU version of Carnegie Mellon's "Depot" program
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+RUN_DEPENDS=	p5-Hash-Merge>=0:textproc/p5-Hash-Merge
 TEST_DEPENDS=	p5-Test-Output>0:devel/p5-Test-Output
 
 USES=		gmake perl5 tar:bzip2

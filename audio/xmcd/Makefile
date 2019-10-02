@@ -3,7 +3,7 @@
 
 PORTNAME=	xmcd
 PORTVERSION=	3.3.2
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	audio
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/
 
@@ -14,8 +14,8 @@ LIB_DEPENDS+=	libvorbis.so:audio/libvorbis \
 		libFLAC.so:audio/flac
 RUN_DEPENDS+=	lame:audio/lame
 
-USES=		imake motif ncurses
-USE_XORG=	x11 xext xaw xmu xp xpm xt sm ice
+USES=		imake motif ncurses xorg
+USE_XORG=	x11 xext xaw xmu xpm xt sm ice
 PLIST_SUB+=	RELEASE=${OSREL:R:R} ARCH=${ARCH:S/powerpc64/powerpc/} OPSYS=${OPSYS}
 SUB_FILES=	pkg-message
 

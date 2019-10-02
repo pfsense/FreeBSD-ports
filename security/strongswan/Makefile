@@ -1,9 +1,9 @@
 # Created by: Riaan Kruger <riaank@gmail.com>
-# $FreeBSD: head/security/strongswan/Makefile 471205 2018-05-31 12:39:51Z krion $
+# $FreeBSD$
 
 PORTNAME=	strongswan
 PORTVERSION=	5.8.1
-CATEGORIES=	security
+CATEGORIES=	security net-vpn
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
 

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	dMagnetic
-PORTVERSION=	0.15
+PORTVERSION=	0.17
 CATEGORIES=	games
 MASTER_SITES=	http://www.dettus.net/dMagnetic/
 DISTNAME=	${PORTNAME}_${PORTVERSION}

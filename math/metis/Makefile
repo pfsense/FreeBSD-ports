@@ -3,7 +3,7 @@
 
 PORTNAME=	metis
 PORTVERSION=	5.1.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	math
 MASTER_SITES=	http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/
 
@@ -67,7 +67,7 @@ pre-configure:
 	${WRKSRC}/GKlib/GKlibSystem.cmake
 	@${REINPLACE_CMD} -e "\|/home/karypis/|d" \
 	${WRKSRC}/programs/CMakeLists.txt
-.if ((${ARCH}=="amd64") || (${ARCH}=="aarch64") || (${ARCH}=="sparc64") || (${ARCH}=="powerpc64"))
+.if ${ARCH:M*64*}
 	@${REINPLACE_CMD}-e \
 		's|IDXTYPEWIDTH 32|IDXTYPEWIDTH 64|' \
 		${WRKSRC}/include/metis.h

@@ -11,11 +11,14 @@ DISTNAME=	${PORTVERSION}
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Python utilities for console mail clients (eg. mutt)
 
+LICENSE=	GPLv2
+
+USES=		python:2.7
+
 CONFLICTS=	zh-wenju-[0-9]* talkfilters-[0-9]* reed-[0-9]*
 
 CHANGESET=	8bb26094df06
 WRKSRC=		${WRKDIR}/blacktrash-${PORTNAME}-${CHANGESET}
-USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 PORTEXAMPLES=	*

@@ -3,12 +3,15 @@
 
 PORTNAME=	diehard
 PORTVERSION=	0.1
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://stat.fsu.edu/pub/diehard/
 DISTNAME=	die-c
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Marsaglia's Diehard Battery of Tests of Randomness
+
+LICENSE=	NONE
 
 ALL_TARGET=	diehard
 WRKSRC=		${WRKDIR}/die.c

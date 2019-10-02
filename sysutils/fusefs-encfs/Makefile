@@ -4,11 +4,11 @@
 PORTNAME=	encfs
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.9.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Encrypted pass-through FUSE filesystem
 
 LICENSE=	GPLv3

@@ -11,6 +11,10 @@ EXTRACT_SUFX=	.src.unix.cpio
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Safe/Fast I/O Library
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 EXTRACT_CMD=	${CPIO}
 EXTRACT_BEFORE_ARGS=	-idF
 EXTRACT_AFTER_ARGS=	# empty

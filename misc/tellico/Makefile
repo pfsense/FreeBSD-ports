@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tellico
-DISTVERSION=	3.2
-PORTREVISION=	2
+DISTVERSION=	3.2.1
+PORTREVISION=	4
 CATEGORIES=	misc kde
 MASTER_SITES=	http://tellico-project.org/files/
 

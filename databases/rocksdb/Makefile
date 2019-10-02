@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rocksdb
-PORTVERSION=	6.1.2
+PORTVERSION=	6.2.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -72,6 +72,10 @@ PLIST_SUB+=	LITE=${PKGNAMESUFFIX}
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
 CXXFLAGS+=	-Wno-inconsistent-missing-override
+# Clang 8 detects shadow enums and stops the build. This workaround adds -Wno-error=shadow to bypass it.
+.if ${COMPILER_VERSION} >= 80
+CXXFLAGS+=	-Wno-error=shadow
+.endif
 .endif
 
 post-patch:

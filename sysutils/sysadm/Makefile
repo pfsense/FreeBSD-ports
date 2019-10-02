@@ -3,7 +3,7 @@
 PORTNAME=	sysadm
 PORTVERSION=	1.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -19,5 +19,8 @@ MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	trueos
+
+DEPRECATED=	No longer maintained upstream
+EXPIRATION_DATE=	2019-11-01
 
 .include <bsd.port.mk>

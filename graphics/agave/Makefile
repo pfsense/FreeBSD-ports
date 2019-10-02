@@ -3,7 +3,7 @@
 
 PORTNAME=	agave
 PORTVERSION=	0.4.7
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	graphics gnome
 MASTER_SITES=	http://download.gna.org/colorscheme/releases/
 
@@ -11,6 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Color scheme builder for the GNOME desktop
 
 LICENSE=	GPLv2+
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libglademm-2.4.so:devel/libglademm24

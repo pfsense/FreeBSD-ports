@@ -3,6 +3,7 @@
 
 PORTNAME=	stonesoup
 PORTVERSION=	0.23.2
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	lifanov@FreeBSD.org
@@ -79,12 +80,6 @@ SOUND_MAKE_ARGS=	SOUND=y
 SOUND_RUN_DEPENDS=	sox:audio/sox
 LUA_MAKE_ARGS_OFF=	NO_LUA_BINDINGS=yes
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} != clang
-CFLAGS+=	-D_GLIBCXX_USE_C99
-.endif
-
 post-patch-SOUND-on:
 	@${REINPLACE_CMD} -e "s,%%LOCALBASE%%,${LOCALBASE}," ${WRKSRC}/sound.h
 	@${REINPLACE_CMD} -e "s,%%SOUND%%,," ${WRKSRC}/sound.h
@@ -109,4 +104,4 @@ post-install-EXAMPLES-on:
 post-install:
 	@${RM} -r ${STAGEDIR}${DATADIR}/settings/mac
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

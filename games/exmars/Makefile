@@ -10,6 +10,10 @@ MASTER_SITES=	http://corewar.co.uk/ankerl/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Memory Array Redcode Simulator, just like exhaust and pMARS
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 ALL_TARGET=	${PORTNAME}
 
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS

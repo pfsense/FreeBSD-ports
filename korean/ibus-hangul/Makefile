@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ibus-hangul
-PORTVERSION=	1.5.0
-PORTREVISION=	1
+PORTVERSION=	1.5.1
 CATEGORIES=	korean
 MASTER_SITES=	https://github.com/choehwanjin/ibus-hangul/releases/download/${PORTVERSION}/
 
@@ -14,11 +13,22 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libhangul.so:korean/libhangul \
 		libibus-1.0.so:textproc/ibus
 
+USES=		gmake gnome libtool pkgconfig python
+USE_GNOME=	gtk30 intlhack pygobject3
+
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	NLS
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext
+NLS_USES_OFF=		gettext-tools
+
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-python="${PYTHON_CMD}"
+
+GLIB_SCHEMAS=	org.freedesktop.ibus.engine.hangul.gschema.xml
+
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
-USE_GNOME=	gtk30 intlhack pygobject3
-USES=		gettext gmake libtool pkgconfig python
-USE_PYTHON=	py3kplist
 
 .include <bsd.port.mk>

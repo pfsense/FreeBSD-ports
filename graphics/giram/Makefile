@@ -13,6 +13,10 @@ COMMENT=	POV-Ray oriented modeller
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	lib3ds.so:graphics/lib3ds
 BUILD_DEPENDS=	povray:graphics/povray-meta
 RUN_DEPENDS:=	${BUILD_DEPENDS}

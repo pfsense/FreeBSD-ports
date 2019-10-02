@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	liveMedia
-PORTVERSION=	2019.06.28
+PORTVERSION=	2019.08.11
 PORTEPOCH=	2
 CATEGORIES=	net devel
 MASTER_SITES=	http://www.live555.com/liveMedia/public/ \
@@ -25,7 +25,7 @@ HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	genMakefiles
 CONFIGURE_ARGS=		fixed-freebsd
 
-USES=		gmake
+USES=		compiler:c++11-lang gmake
 USE_LDCONFIG=	yes
 
 .include <bsd.port.pre.mk>

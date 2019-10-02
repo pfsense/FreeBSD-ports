@@ -3,7 +3,7 @@
 
 PORTNAME=	kissdx
 PORTVERSION=	0.13.10a
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	multimedia net
 MASTER_SITES=	http://paragi.dk/kiss/
 
@@ -13,6 +13,9 @@ COMMENT=	Multimedia streaming server for KiSS/Linksys player
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 BROKEN_armv6=		fails to compile: kissdx.c: function definition is not allowed here
 BROKEN_armv7=		fails to compile: kissdx.c: function definition is not allowed here
 
@@ -43,7 +46,9 @@ post-patch:
 		 s|^\.o :|${PORTNAME}: $$(OBJS)| ; \
 		 /^all:/s| $$(OBJS)||' ${WRKSRC}/Makefile
 
-.if exists(/usr/lib/libstdc++.so)
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
 CFLAGS+=	-fnested-functions
 .endif
 
@@ -60,4 +65,4 @@ do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

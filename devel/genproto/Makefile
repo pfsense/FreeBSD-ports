@@ -9,6 +9,10 @@ MASTER_SITES=	http://freequaos.host.sk/genproto/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generates prototypes from C/C++ code
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 PLIST_FILES=	bin/genproto
 
 post-patch:

@@ -19,7 +19,7 @@ USE_KDE=	archive attica auth codecs completion config configwidgets \
 		wallet widgetsaddons xmlgui
 # pim components
 USE_KDE+=	akonadi akonadicontacts contacts imap libkdepim mime \
-		pimtextedit
+		pimtextedit purpose
 USE_QT=		concurrent core dbus designer gui network printsupport script testlib \
 		uiplugin uitools webkit widgets xml \
 		buildtools_build qmake_build

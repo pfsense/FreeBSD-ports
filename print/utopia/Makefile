@@ -9,6 +9,10 @@ MASTER_SITES=	http://www.mammothcheese.ca/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Adobe Utopia typeface for Groff
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 MAKE_ARGS=	DEST=${STAGEDIR}${DATADIR}/devps \
 		INSTALL_DATA="${INSTALL_DATA}" \
 		INSTALL_MAN="${INSTALL_MAN}" \

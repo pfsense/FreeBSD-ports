@@ -143,6 +143,7 @@
     SUBDIR += drm-fbsd12.0-kmod
     SUBDIR += drm-kmod
     SUBDIR += drm-legacy-kmod
+    SUBDIR += drm_info
     SUBDIR += dspdfviewer
     SUBDIR += duhdraw
     SUBDIR += dynamechs
@@ -198,6 +199,7 @@
     SUBDIR += fpc-rsvg
     SUBDIR += fpc-svgalib
     SUBDIR += fracplanet
+    SUBDIR += fractgen
     SUBDIR += fraqtive
     SUBDIR += freeglut
     SUBDIR += freeimage
@@ -252,7 +254,6 @@
     SUBDIR += gimp-refocus-plugin
     SUBDIR += gimp-resynthesizer
     SUBDIR += gimp-save-for-web
-    SUBDIR += gimp-wavelet-decompose-plugin
     SUBDIR += gimp-wavelet-denoise-plugin
     SUBDIR += gimp-wavelet-sharpen-plugin
     SUBDIR += giram
@@ -378,6 +379,7 @@
     SUBDIR += jhead
     SUBDIR += jogamp-jogl
     SUBDIR += jogl
+    SUBDIR += jp
     SUBDIR += jp2a
     SUBDIR += jpatch
     SUBDIR += jpeg
@@ -401,7 +403,7 @@
     SUBDIR += kf5-prison
     SUBDIR += kgraphviewer
     SUBDIR += kimagemapeditor
-    SUBDIR += kipiplugins
+    SUBDIR += kipi-plugins
     SUBDIR += kix-kmod
     SUBDIR += klatexformula
     SUBDIR += kludge3d
@@ -491,6 +493,7 @@
     SUBDIR += librsvg2-rust
     SUBDIR += libsixel
     SUBDIR += libspiro
+    SUBDIR += libspng
     SUBDIR += libsvg
     SUBDIR += libsvg-cairo
     SUBDIR += libvisual
@@ -515,6 +518,7 @@
     SUBDIR += linux-c6-sdl_ttf
     SUBDIR += linux-c6-tiff
     SUBDIR += linux-c7-cairo
+    SUBDIR += linux-c7-cairo-gobject
     SUBDIR += linux-c7-dri
     SUBDIR += linux-c7-gdk-pixbuf2
     SUBDIR += linux-c7-glx-utils
@@ -522,6 +526,8 @@
     SUBDIR += linux-c7-jasper
     SUBDIR += linux-c7-jbigkit
     SUBDIR += linux-c7-jpeg
+    SUBDIR += linux-c7-libdrm
+    SUBDIR += linux-c7-libepoxy
     SUBDIR += linux-c7-libglvnd
     SUBDIR += linux-c7-png
     SUBDIR += linux-c7-sdl_image
@@ -530,8 +536,6 @@
     SUBDIR += linux-c7-wayland
     SUBDIR += lua-gd
     SUBDIR += luminance-qt5
-    SUBDIR += luxrender
-    SUBDIR += luxrender14
     SUBDIR += lximage-qt
     SUBDIR += magnum
     SUBDIR += magnum-examples
@@ -567,6 +571,7 @@
     SUBDIR += mxp
     SUBDIR += mypaint
     SUBDIR += mypaint-brushes
+    SUBDIR += nanosvg
     SUBDIR += nathive
     SUBDIR += netpbm
     SUBDIR += nip2
@@ -651,8 +656,6 @@
     SUBDIR += p5-Geo-GDAL
     SUBDIR += p5-Geo-GML
     SUBDIR += p5-Geo-Gpx
-    SUBDIR += p5-Geo-Point
-    SUBDIR += p5-Geo-Proj4
     SUBDIR += p5-Geometry-Primitive
     SUBDIR += p5-Gimp
     SUBDIR += p5-Google-Chart
@@ -759,6 +762,8 @@
     SUBDIR += php72-gd
     SUBDIR += php73-exif
     SUBDIR += php73-gd
+    SUBDIR += php74-exif
+    SUBDIR += php74-gd
     SUBDIR += phplot
     SUBDIR += picpuz
     SUBDIR += piddle
@@ -769,10 +774,10 @@
     SUBDIR += pixelize
     SUBDIR += pixen
     SUBDIR += pixie
-    SUBDIR += pixmap
     SUBDIR += plasma-kmod
     SUBDIR += plotutils
     SUBDIR += png
+    SUBDIR += png++
     SUBDIR += png2html
     SUBDIR += png2ico
     SUBDIR += pngcheck
@@ -801,7 +806,6 @@
     SUBDIR += price
     SUBDIR += processing
     SUBDIR += proj
-    SUBDIR += proj5
     SUBDIR += pstoedit
     SUBDIR += pstoepsi
     SUBDIR += ptex
@@ -816,6 +820,7 @@
     SUBDIR += py-cairocffi
     SUBDIR += py-cartopy
     SUBDIR += py-chart
+    SUBDIR += py-colour
     SUBDIR += py-descartes
     SUBDIR += py-django-easy-thumbnails
     SUBDIR += py-djvulibre
@@ -867,6 +872,7 @@
     SUBDIR += py-pycollada
     SUBDIR += py-pydot
     SUBDIR += py-pyembree
+    SUBDIR += py-pyepsg
     SUBDIR += py-pygal
     SUBDIR += py-pyganim
     SUBDIR += py-pyglet
@@ -880,11 +886,13 @@
     SUBDIR += py-pyqtgraph
     SUBDIR += py-python-poppler-qt5
     SUBDIR += py-qt5-svg
+    SUBDIR += py-rawkit
     SUBDIR += py-sane
     SUBDIR += py-scikit-image
     SUBDIR += py-seqdiag
     SUBDIR += py-sorl-thumbnail
     SUBDIR += py-soya3d
+    SUBDIR += py-spectra
     SUBDIR += py-stltools
     SUBDIR += py-svgwrite
     SUBDIR += py-termtosvg
@@ -916,6 +924,7 @@
     SUBDIR += quesoglc
     SUBDIR += radiance
     SUBDIR += radius-engine
+    SUBDIR += rapid-photo-downloader
     SUBDIR += raster3d
     SUBDIR += rawtherapee
     SUBDIR += rayshade
@@ -951,6 +960,7 @@
     SUBDIR += rubygem-gruff
     SUBDIR += rubygem-image_science
     SUBDIR += rubygem-imagesize
+    SUBDIR += rubygem-invisible_captcha
     SUBDIR += rubygem-mini_magick
     SUBDIR += rubygem-objectdetect
     SUBDIR += rubygem-opengl
@@ -970,6 +980,7 @@
     SUBDIR += sane-epkowa
     SUBDIR += sane-frontends
     SUBDIR += scale2x
+    SUBDIR += scantailor
     SUBDIR += scr2png
     SUBDIR += scrot
     SUBDIR += scwm-icons
@@ -1005,6 +1016,7 @@
     SUBDIR += svg2pdf
     SUBDIR += svg2png
     SUBDIR += svgalib
+    SUBDIR += svgbob
     SUBDIR += swfdec
     SUBDIR += swfmill
     SUBDIR += swftools

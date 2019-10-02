@@ -6,7 +6,7 @@ CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bartosz@ixsystems.com
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python asnycio SSH protocol library
 
 LICENSE=	EPL

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	eccodes
-PORTVERSION=	2.12.5
+PORTVERSION=	2.13.1
 DISTVERSIONSUFFIX=	-Source
 CATEGORIES=	science
 MASTER_SITES=	https://confluence.ecmwf.int/download/attachments/45757960/ \
@@ -17,6 +17,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libnetcdf.so:science/netcdf \
 		libpng.so:graphics/png
 
+CONFLICTS_INSTALL=	grib_api
+
 OPTIONS_DEFINE=	AEC
 OPTIONS_SINGLE=	JPEG
 OPTIONS_SINGLE_JPEG=	JASPER OPENJPEG
@@ -25,7 +27,7 @@ AEC_DESC=	Adaptive Entropy Coding support
 
 PORTSCOUT=	site:https://confluence.ecmwf.int/display/ECC/Releases
 
-USES=		cmake shebangfix
+USES=		cmake perl5 shebangfix
 
 CMAKE_ARGS=	-DBUILD_SHARED_LIBS=BOTH
 CMAKE_OFF=	ENABLE_ALIGN_MEMORY \

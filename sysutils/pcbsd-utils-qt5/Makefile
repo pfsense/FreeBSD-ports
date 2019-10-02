@@ -3,7 +3,7 @@
 
 PORTNAME=	pcbsd-utils-qt5
 PORTVERSION=	1444236547
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -44,6 +44,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	pcbsd
 GH_PROJECT=	pcbsd
 GH_TAGNAME=	3c4d2b
+
+DEPRECATED=	No longer maintained upstream
+EXPIRATION_DATE=	2019-11-01
 
 post-install:
 	@${FIND} ${STAGEDIR}${PREFIX}/share/pcbsd/doc/html -type f | \

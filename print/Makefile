@@ -81,6 +81,7 @@
     SUBDIR += gutenprint
     SUBDIR += gv
     SUBDIR += harfbuzz
+    SUBDIR += harfbuzz-hb-view
     SUBDIR += harfbuzz-icu
     SUBDIR += hp2xx
     SUBDIR += hplip
@@ -182,7 +183,6 @@
     SUBDIR += pstotext
     SUBDIR += psutils
     SUBDIR += py-fonttools
-    SUBDIR += py-fonttools-lxml-ufo
     SUBDIR += py-fpdf
     SUBDIR += py-pdf
     SUBDIR += py-pdf2

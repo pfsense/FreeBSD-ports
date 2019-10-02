@@ -3,12 +3,8 @@ bin/pk-debuginfo-install
 bin/pkcon
 bin/pkgenpack
 bin/pkmon
-@unexec if cmp -s %D/etc/PackageKit/CommandNotFound.conf %D/etc/PackageKit/CommandNotFound.conf.default; then rm -f %D/etc/PackageKit/CommandNotFound.conf; fi
-etc/PackageKit/CommandNotFound.conf
-@exec [ -f %B/CommandNotFound.conf ] || cp %B/%f %B/CommandNotFound.conf
-@unexec if cmp -s %D/etc/PackageKit/PackageKit.conf %D/etc/PackageKit/PackageKit.conf.default; then rm -f %D/etc/PackageKit/PackageKit.conf; fi
-etc/PackageKit/PackageKit.conf
-@exec [ -f %B/PackageKit.conf ] || cp %B/%f %B/PackageKit.conf
+@sample etc/PackageKit/CommandNotFound.conf.default etc/PackageKit/CommandNotFound.conf
+@sample etc/PackageKit/PackageKit.conf.default etc/PackageKit/PackageKit.conf
 etc/PackageKit/Vendor.conf
 etc/PackageKit/events/post-transaction.d/README
 etc/PackageKit/events/pre-transaction.d/README
@@ -113,8 +109,7 @@ libexec/pk-command-not-found
 share/PackageKit/helpers/test_spawn/search-name.sh
 share/PackageKit/pk-upgrade-distro.sh
 share/PackageKit/transactions.db
-@exec mkdir -p /var/lib/PackageKit
-@exec if [ ! -f /var/lib/PackageKit/%f ]; then cp -f %B/%f /var/lib/PackageKit; chmod o-r /var/lib/PackageKit/%f; fi
+@postexec if [ ! -f /var/lib/PackageKit/%f ]; then cp -f %B/%f /var/lib/PackageKit; chmod o-r /var/lib/PackageKit/%f; fi
 share/PackageKit/website/img/assassin.png
 share/PackageKit/website/img/author-alefebvre.png
 share/PackageKit/website/img/author-btimothy.png

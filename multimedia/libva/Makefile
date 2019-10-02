@@ -1,14 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	libva
-PORTVERSION=	2.4.1
-PORTREVISION=	1
+PORTVERSION=	2.5.0
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	c2a431cc3cab.patch:-p1 5cfcd31635b1.patch:-p1
-PATCHFILES+=	394b1eb4ce5f.patch:-p1
-PATCHFILES+=	93c52a17b8d2.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT?=	VAAPI wrapper and dummy driver
@@ -22,7 +19,11 @@ USES=		meson pkgconfig
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	intel
-LDFLAGS+=	-lpthread # for pthread_getthreadid_np
+# -lpthread is not necessary if pthread_getthreadid_np is a libc stub
+LDFLAGS+=	${LDFLAGS_${OPSYS}_${OSREL}}
+LDFLAGS_FreeBSD_11.2=	-lpthread
+LDFLAGS_FreeBSD_11.3=	-lpthread
+LDFLAGS_FreeBSD_12.0=	-lpthread
 
 OPTIONS_DEFINE=	GLX WAYLAND X11
 OPTIONS_DEFAULT=GLX WAYLAND X11

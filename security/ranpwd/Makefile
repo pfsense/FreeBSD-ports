@@ -16,6 +16,10 @@ COMMENT=	Tool to generate random passwords
 
 LICENSE=	GPLv2+
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		gmake
 GNU_CONFIGURE=	yes
 

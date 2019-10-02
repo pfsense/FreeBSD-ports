@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	clutter
-PORTVERSION=	3.3.6
+PORTVERSION=	3.3.8
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
@@ -9,6 +9,7 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby binding for Clutter
 
 LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 BUILD_DEPENDS=	rubygem-rake>=0:devel/rubygem-rake
 LIB_DEPENDS=	libclutter-glx-1.0.so:graphics/clutter

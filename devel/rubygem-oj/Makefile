@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	oj
-PORTVERSION=	3.7.4
+PORTVERSION=	3.9.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast JSON parser and serializer
 
 LICENSE=	MIT

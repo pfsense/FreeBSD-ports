@@ -16,13 +16,14 @@ RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg \
 		${LOCALBASE}/lib/libSDL.so:devel/sdl12
 
 USES=		desktop-file-utils gl pkgconfig \
-		qmake qt:5 sdl shared-mime-info
+		qmake qt:5 sdl shared-mime-info \
+		xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mltframework
 
 # Needed to be able to correctly check for updates in-app.
-FULLVERSION=	19.06.15
+FULLVERSION=	19.09.14
 
 USE_GL+=	gl
 USE_QT=		buildtools_build concurrent_build core declarative \
@@ -63,7 +64,7 @@ pre-build:
 	@${FIND} ${WRKSRC} -name '.depend' -delete
 
 post-build-NLS-on:
-	${LRELEASE} ${WRKSRC}/src/src.pro
+	cd ${BUILD_WRKSRC}/translations && ${LRELEASE} *.ts
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps

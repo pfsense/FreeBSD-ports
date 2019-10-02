@@ -11,6 +11,10 @@ MASTER_SITES=	http://pl.ekg2.org/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text-mode Gadu-Gadu, Jabber, and IRC client
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libgadu.so:polish/libgadu \
 		libgnutls.so:security/gnutls \
 		libexpat.so:textproc/expat2

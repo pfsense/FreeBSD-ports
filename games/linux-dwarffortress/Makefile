@@ -3,10 +3,12 @@
 
 PORTNAME=	dwarffortress
 DISTVERSION=	0.44.12
+PORTREVISION=	2
 CATEGORIES=	games linux
 MASTER_SITES=	http://www.bay12games.com/dwarves/
 PKGNAMEPREFIX=	linux-
-DISTNAME=	df_${DISTVERSION:S|0.||:S|.|_|}_linux32
+DISTNAME_amd64=	df_${DISTVERSION:S|0.||:S|.|_|}_linux
+DISTNAME_i386=	df_${DISTVERSION:S|0.||:S|.|_|}_linux32
 
 MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	Dwarven fortress building game with ASCII graphics (Linux version)
@@ -26,10 +28,8 @@ LICENSE_TEXT=	Copyright (c) 2002-2016. All rights are retained by Tarn Adams, \
 		contact Tarn Adams at toadyone@bay12games.com.
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
-RUN_DEPENDS=	linux-${linux_ARGS}-sdl_ttf>0:graphics/linux-${linux_ARGS}-sdl_ttf
-
 USES=		linux tar:bzip2
-USE_LINUX=	dri gtk2 libsndfile openal-soft sdlimage xorglibs
+USE_LINUX=	dri gtk2 libsndfile openal-soft sdlimage sdlttf xorglibs
 
 SUB_FILES=	dwarffortress
 NO_BUILD=	yes
@@ -52,12 +52,15 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/libs/Dwarf_Fortress \
 		${STAGEDIR}${PREFIX}/libexec/dwarffortress
 	(cd ${WRKSRC}/libs && ${INSTALL_LIB} libgcc_s.so.1 libgraphics.so \
-		libstdc++.so.6 ${STAGEDIR}${PREFIX}/libexec/dwarffortress)
+		${STAGEDIR}${PREFIX}/libexec/dwarffortress)
 	@${MKDIR} ${STAGEDIR}${DATADIR}/data
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} raw ${STAGEDIR}${DATADIR})
 	(cd ${WRKSRC}/data && ${COPYTREE_SHARE} "announcement art dipscript \
 		help index init initial_movies movies shader.fs shader.vs \
 		sound speech" ${STAGEDIR}${DATADIR}/data)
+	# Switch off SOUND since it doesn't work with c7
+	${REINPLACE_CMD} -e 's/SOUND:ON/SOUND:OFF/' \
+		${STAGEDIR}${DATADIR}/data/init/init.txt
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

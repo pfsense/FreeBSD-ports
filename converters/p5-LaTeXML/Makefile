@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	LaTeXML
-PORTVERSION=	0.8.3
+PORTVERSION=	0.8.4
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN \
 		http://dlmf.nist.gov/LaTeXML/releases/

@@ -1,12 +1,16 @@
 # $FreeBSD$
 
 PORTNAME=		crystal
-DISTVERSION=		0.27.0
+DISTVERSION=		0.28.0
+PORTREVISION=		2
 CATEGORIES=		lang
 MASTER_SITES=		https://unrelentingtech.s3.dualstack.eu-west-1.amazonaws.com/crystal/:bootstrap
 DISTFILES=		${BOOTSTRAP_PATH}:bootstrap
 DIST_SUBDIR=		${PORTNAME}
 EXTRACT_ONLY=		${DISTNAME}${EXTRACT_SUFX}
+
+PATCH_SITES=		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=		2fafc7d60825.patch:-p1
 
 MAINTAINER=	greg@unrelenting.technology
 COMMENT=	Language with Ruby-like syntax and static type checking
@@ -29,11 +33,13 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	crystal-lang
 
 LLVM_VERSION=	60
-BOOTSTRAP_PATH=	crystal-0.27.0-freebsd${BOOTSTRAP_OSREL}-${ARCH}
+BOOTSTRAP_PATH=	crystal-${BOOTSTRAP_VER}-freebsd${BOOTSTRAP_OSREL}-${ARCH}
+BOOTSTRAP_VER?=	0.27.2
 
+MAKE_ENV=	LD_LIBMAP="libevent-2.1.so.6=libevent-2.1.so.7"
 MAKE_ARGS=	SHELL=sh \
 		LLVM_CONFIG="${LOCALBASE}/bin/llvm-config${LLVM_VERSION}" \
-		FLAGS="--release --no-debug --progress" \
+		FLAGS="--release --no-debug --progress --threads=${MAKE_JOBS_NUMBER}" \
 		EXPORTS='CRYSTAL_CONFIG_PATH="lib:${PREFIX}/lib/${PORTNAME}"' \
 		CRYSTAL_CACHE_DIR="${WRKDIR}/cache" \
 		CRYSTAL_CONFIG_VERSION="${DISTVERSION}"
@@ -61,7 +67,8 @@ post-extract:
 	${MKDIR} ${WRKSRC}/.build
 	${CP} ${DISTDIR}/${DIST_SUBDIR}/${BOOTSTRAP_PATH} ${WRKSRC}/.build/crystal
 	${CHMOD} +x ${WRKSRC}/.build/crystal
-	${LN} -s x86_64-portbld-freebsd ${WRKSRC}/src/lib_c/aarch64-portbld-freebsd
+	${LN} -s x86_64-freebsd ${WRKSRC}/src/lib_c/aarch64-portbld-freebsd
+	${LN} -s x86_64-freebsd ${WRKSRC}/src/lib_c/aarch64-freebsd
 
 do-build-DOCS-on:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} docs \

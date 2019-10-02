@@ -3,6 +3,7 @@
 PORTNAME=		afni
 DISTVERSIONPREFIX=	AFNI_
 DISTVERSION=		19.1.20
+PORTREVISION=	3
 CATEGORIES=		science biology graphics perl5 python
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -27,7 +28,7 @@ RUN_DEPENDS=	endian:sysutils/endian \
 		R:math/R
 
 USES=		compiler:openmp gettext gl gmake gnome iconv jpeg:run motif \
-		perl5 python shebangfix tar:xz
+		perl5 python shebangfix tar:xz xorg
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 
@@ -44,7 +45,7 @@ SHEBANG_FILES=	scripts_install/* \
 		pkundu/meica.libs/*/*/*.py
 
 USE_GL=		gl glu
-USE_XORG=	x11 xext xi xmu xp xt
+USE_XORG=	x11 xext xi xmu xt
 MAKE_ENV=	CC="${CC}" R_SHARE_DIR=${LOCALBASE}/lib/R/share
 MAKE_JOBS_UNSAFE=yes
 

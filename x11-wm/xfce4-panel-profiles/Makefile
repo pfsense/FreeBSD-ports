@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-panel-profiles
-PORTVERSION=	1.0.8
+PORTVERSION=	1.0.9
 CATEGORIES=	x11-wm xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
@@ -11,9 +11,10 @@ COMMENT=	Xfce's panel multiple layouts manager
 
 LICENSE=	GPLv3
 
-USES=		gettext gmake gnome python:3.3+ shebangfix tar:bz2
+USES=		gettext gmake gnome python:3.3+ shebangfix tar:bz2 xfce
 USE_GNOME=	gtk30 intltool
 USE_XFCE=	panel
+
 NO_ARCH=	yes
 HAS_CONFIGURE=	yes
 SHEBANG_FILES=	xfce4-panel-profiles/xfce4-panel-profiles.py \

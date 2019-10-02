@@ -14,6 +14,10 @@ COMMENT=	Small window manager for X11
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		gmake tar
 USE_XORG=	x11 xext
 MAKE_ENV=	XROOT="${LOCALBASE}" SYSCONFDIR="${ETCDIR}"

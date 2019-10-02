@@ -12,6 +12,10 @@ EXTRACT_SUFX=	.exe
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distributed client for Protein Folding
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		linux
 ONLY_FOR_ARCHS=	i386 amd64
 REINPLACE_ARGS=

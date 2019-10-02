@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xapian
-PORTVERSION=	1.4.11
+PORTVERSION=	1.4.12
 DISTVERSIONPREFIX=	bindings-
 CATEGORIES=	databases ruby
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -50,4 +50,10 @@ PORTDOCS=	*
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lstdc++||g' ${WRKSRC}/configure
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} >= 2.6
+BUILD_DEPENDS+=	rubygem-rdoc>=0:devel/rubygem-rdoc
+.endif
+
+.include <bsd.port.post.mk>

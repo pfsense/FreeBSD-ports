@@ -3,7 +3,7 @@
 
 PORTNAME=	gtkpool
 PORTVERSION=	0.5.0
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.seul.org/pub/gtkpool/ \
 		http://www.sourcefiles.org/Games/Sports/Pool/
@@ -13,6 +13,10 @@ COMMENT=	2D pool game using the GTK+ toolkit
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 USES=		autoreconf compiler:c++11-lang gmake perl5 pkgconfig
 USE_CXXSTD=	c++11

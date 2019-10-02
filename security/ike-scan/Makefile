@@ -3,7 +3,7 @@
 
 PORTNAME=	ike-scan
 PORTVERSION=	1.9
-CATEGORIES=	security
+CATEGORIES=	security net-vpn
 MASTER_SITES=	http://www.nta-monitor.com/tools/ike-scan/download/
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,6 +11,10 @@ COMMENT=	VPN scanner and identifier
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 USES=		ssl
 GNU_CONFIGURE=	yes

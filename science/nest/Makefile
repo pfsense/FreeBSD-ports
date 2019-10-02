@@ -3,7 +3,11 @@
 PORTNAME=	nest
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.18.0
+PORTREVISION=	2
 CATEGORIES=	science biology # NEST is used in neuroscience
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	ba8feb49570f1118e2896191ebae790e8feca3d8.diff:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Simulator for spiking neural network models

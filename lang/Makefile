@@ -34,7 +34,6 @@
     SUBDIR += chicken
     SUBDIR += chicken5
     SUBDIR += cim
-    SUBDIR += cint
     SUBDIR += cjs
     SUBDIR += cling
     SUBDIR += clips
@@ -53,8 +52,6 @@
     SUBDIR += diveintopython
     SUBDIR += dlang-tools
     SUBDIR += dlv
-    SUBDIR += dmd1
-    SUBDIR += dmd2
     SUBDIR += duktape
     SUBDIR += duktape-lib
     SUBDIR += ecl
@@ -62,6 +59,7 @@
     SUBDIR += elixir
     SUBDIR += elixir-mode.el
     SUBDIR += elk
+    SUBDIR += elm
     SUBDIR += emacs-lisp-intro
     SUBDIR += erlang
     SUBDIR += erlang-doc
@@ -92,6 +90,7 @@
     SUBDIR += fpc-rtl-extra
     SUBDIR += fpc-rtl-objpas
     SUBDIR += fpc-rtl-unicode
+    SUBDIR += fpc-source
     SUBDIR += fpc-units
     SUBDIR += fpc-utils
     SUBDIR += fsharp
@@ -132,7 +131,6 @@
     SUBDIR += go-devel
     SUBDIR += go14
     SUBDIR += gomacro
-    SUBDIR += gprolog
     SUBDIR += gravity
     SUBDIR += groovy
     SUBDIR += gscheme
@@ -167,6 +165,7 @@
     SUBDIR += jython
     SUBDIR += kawa
     SUBDIR += kf5-kross
+    SUBDIR += kotlin
     SUBDIR += kross-interpreters
     SUBDIR += kturtle
     SUBDIR += lafontaine
@@ -191,6 +190,7 @@
     SUBDIR += lua52
     SUBDIR += lua53
     SUBDIR += luajit
+    SUBDIR += luajit-openresty
     SUBDIR += malbolge
     SUBDIR += maude
     SUBDIR += mawk
@@ -275,6 +275,7 @@
     SUBDIR += perl5.30
     SUBDIR += petite-chez
     SUBDIR += pfe
+    SUBDIR += purescript
     SUBDIR += phantomjs
     SUBDIR += pharo
     SUBDIR += phc
@@ -285,13 +286,14 @@
     SUBDIR += php72-extensions
     SUBDIR += php73
     SUBDIR += php73-extensions
+    SUBDIR += php74
+    SUBDIR += php74-extensions
     SUBDIR += picoc
     SUBDIR += plexil
     SUBDIR += pocl
     SUBDIR += polyml
     SUBDIR += ponyc
     SUBDIR += ptoc
-    SUBDIR += pure
     SUBDIR += py-hy
     SUBDIR += py-mx-base
     SUBDIR += py-prolog
@@ -314,6 +316,7 @@
     SUBDIR += qmasm
     SUBDIR += qscheme
     SUBDIR += quack
+    SUBDIR += quickjs
     SUBDIR += racket
     SUBDIR += racket-minimal
     SUBDIR += ratfor
@@ -363,7 +366,6 @@
     SUBDIR += starlogo
     SUBDIR += stldoc
     SUBDIR += swi-pl
-    SUBDIR += swift
     SUBDIR += tcbasic
     SUBDIR += tcc
     SUBDIR += tcl-manual
@@ -387,5 +389,6 @@
     SUBDIR += yap-devel
     SUBDIR += yorick
     SUBDIR += ypsilon
+    SUBDIR += zig
 
 .include <bsd.port.subdir.mk>

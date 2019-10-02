@@ -2,7 +2,7 @@
 
 PORTNAME=	cocoalib
 DISTVERSION=	0.99600
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://cocoa.dima.unige.it/cocoalib/tgz/
 DISTNAME=	CoCoALib-0.99600
@@ -12,7 +12,7 @@ COMMENT=	C++ library for doing Computations in Commutative Algebra
 
 LICENSE=			GPLv3+ GFDL PD
 LICENSE_COMB=			multi
-LICENSE_FILE_GPL3+ =		${WRKSRC}/COPYING-GPLv3
+LICENSE_FILE_GPLv3+ =		${WRKSRC}/COPYING-GPLv3
 LICENSE_FILE_GFDL=		${WRKSRC}/doc/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash

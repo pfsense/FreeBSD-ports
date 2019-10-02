@@ -3,7 +3,7 @@
 
 PORTNAME=	ultracopier
 PORTVERSION=	1.2.1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://files.first-world.info/ultracopier/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -13,6 +13,10 @@ COMMENT=	Advanced file copier
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 USES=		compiler:c++11-lang qmake qt:5 tar:xz
 USE_QT=		buildtools_build linguisttools_build \

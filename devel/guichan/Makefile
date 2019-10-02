@@ -3,7 +3,7 @@
 
 PORTNAME=	guichan
 PORTVERSION=	0.8.2
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	devel games
 MASTER_SITES=	http://pkgs.fedoraproject.org/repo/pkgs/guichan/${DISTFILES}/af535d7f387e774e3197cef8023ea105/
 
@@ -13,7 +13,7 @@ COMMENT=	Small, efficient C++ GUI library designed for games
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake pathfix libtool localbase:ldflags
+USES=		compiler:c++11-lang gmake pathfix libtool localbase:ldflags
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 

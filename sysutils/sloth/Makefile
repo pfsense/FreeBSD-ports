@@ -10,6 +10,10 @@ MASTER_SITES=	http://www.sourcefiles.org/Utilities/Miscellaneous/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Slow down a process
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/sloth man/man1/${PORTNAME}.1.gz

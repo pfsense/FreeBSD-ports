@@ -2,7 +2,7 @@
 
 PORTNAME=	veracrypt
 PORTVERSION=	1.23
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME:S/v/V/:S/c/C/}%20${PORTVERSION}/
 DISTNAME=	${PORTNAME:S/v/V/:S/c/C/}_${PORTVERSION}_Source
@@ -25,6 +25,12 @@ SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "i386"
+MAKE_ENV+=	LFLAGS=-Wl,-z,notext
+.endif
+
 post-patch:
 	${REINPLACE_CMD} -e 's|wx-config|${WX_CONFIG}|g' ${WRKSRC}/src/Makefile
 	${REINPLACE_CMD} -e 's|/usr/bin|${PREFIX}/bin|g' -e \
@@ -40,4 +46,4 @@ do-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/License.txt ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc/html && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/html
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

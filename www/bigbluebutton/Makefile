@@ -3,7 +3,7 @@
 
 PORTNAME=	bigbluebutton
 PORTVERSION=	0.71
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	www java
 MASTER_SITES=	http://bigbluebutton.org/downloads/${PORTVERSION}/ \
 		http://bigbluebutton.org/downloads/0.70/:2 \
@@ -16,6 +16,9 @@ EXTRACT_ONLY=	bigbluebutton.tar.gz red5-0.9.1.tar.gz freeswitch-config.tar.gz
 
 MAINTAINER=	alex.deiter@gmail.com
 COMMENT=	Web conferencing system for distance education
+
+DEPRECATED=	Depends on expired www/tomcat6
+EXPIRATION_DATE=2019-11-01
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/pdf2swf:graphics/swftools \
 		${LOCALBASE}/bin/convert:graphics/ImageMagick6 \

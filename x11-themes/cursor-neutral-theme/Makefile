@@ -11,6 +11,10 @@ DISTNAME=	28310-neutral-${DISTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extended Jaguar X cursor theme
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/neutral

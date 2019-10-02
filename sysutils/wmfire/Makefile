@@ -10,6 +10,10 @@ MASTER_SITES=	http://www.swanson.ukfsn.org/wmfire/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Window Maker dock app showing load average as a flame
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop
 
 USES=		pkgconfig

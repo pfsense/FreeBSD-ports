@@ -15,7 +15,6 @@ LICENSE=	BSD2CLAUSE
 
 BROKEN_mips=		fails to link: libswipl.so: undefined reference to '__sync_sub_and_fetch_4'
 BROKEN_mips64=		fails to link: libswipl.so: undefined reference to '__sync_sub_and_fetch_4'
-BROKEN_powerpc64=	fails to compile: pce_principal.pl:155: Shared object "pl2xpce" not found, required by "swipl"
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libodbc.so:databases/unixODBC \
@@ -27,7 +26,7 @@ SWIPLDIR=	${PORTNAME:C/-//}-${PORTVERSION}
 
 NOPRECIOUSMAKEVARS=	yes
 
-USES=		libedit gmake jpeg libarchive pathfix pkgconfig \
+USES=		compiler:c11 libedit gmake jpeg libarchive pathfix pkgconfig \
 		readline shebangfix ssl
 USE_XORG=	ice sm x11 xext xft xinerama xpm xt
 
@@ -49,10 +48,10 @@ PLIST_SUB=	DISTNAME=${SWIPLDIR} ARCH=${ARCH} OS=${OPSYS:tl} \
 
 .include <bsd.port.pre.mk>
 
-.if (${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc)
-PLIST_SUB+=	BITS=32
-.else
+.if ${ARCH:M*64*}
 PLIST_SUB+=	BITS=64
+.else
+PLIST_SUB+=	BITS=32
 .endif
 
 .if (${ARCH} == amd64)

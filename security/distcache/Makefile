@@ -4,8 +4,7 @@
 PORTNAME=	distcache
 DISTVERSION=	1.5.1
 CATEGORIES=	security www
-MASTER_SITES=	SF/${PORTNAME}/2.%20${PORTNAME}-stable/${PORTVERSION} \
-		http://osdn.dl.sourceforge.net/sourceforge/${PORTNAME}/
+MASTER_SITES=	SF/distcache/1.%20distcache-devel/1.5.1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distributed OpenSSL session caching tools

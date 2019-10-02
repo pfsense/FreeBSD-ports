@@ -3,6 +3,7 @@
 
 PORTNAME=	minipro
 PORTVERSION=	0.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	lhondareyte@laposte.net
@@ -12,7 +13,7 @@ LICENSE=	GPLv3
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		gmake pkgconfig shebangfix
+USES=		compiler:c11 gmake pkgconfig shebangfix
 USE_GITLAB=	yes
 
 GL_ACCOUNT=	DavidGriffith
@@ -22,11 +23,6 @@ SHEBANG_FILES=	miniprohex
 PLIST_FILES=	bin/minipro \
 		bin/miniprohex \
 		man/man1/minipro.1.gz
-
-post-patch:
-	@${REINPLACE_CMD} -e ' s|gcc|clang|g'  \
-			-e 's|share/||g' \
-		${WRKSRC}/Makefile
 
 post-install:
 	@${GZIP_CMD} ${STAGEDIR}${PREFIX}/man/man1/minipro.1

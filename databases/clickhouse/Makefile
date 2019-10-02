@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	clickhouse
-PORTVERSION=	19.5.3.8
+PORTVERSION=	19.11.5.28
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-stable
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	proler@gmail.com
@@ -18,6 +19,7 @@ ONLY_FOR_ARCHS_REASON=	"Only supported on amd64"
 BUILD_DEPENDS=	bash:shells/bash \
 		sparsehash>=0:devel/sparsehash \
 		cctz>=0:devel/cctz \
+		rapidjson>=0:devel/rapidjson \
 		double-conversion>=0:devel/double-conversion
 LIB_DEPENDS=	libtcmalloc.so:devel/google-perftools \
 		libodbc.so:databases/unixODBC \
@@ -58,13 +60,14 @@ SHEBANG_FILES=	dbms/tests/performance/create_benchmark_page.py \
 
 CMAKE_ARGS=	-DUNBUNDLED=1 \
 		-DUSE_STATIC_LIBRARIES=0 \
+		-DENABLE_EMBEDDED_COMPILER=0 \
 		-DNO_WERROR=1
 
 USERS=		clickhouse
 GROUPS=		clickhouse
 
 # The version stamp of libclickhouse.so doesn't always match ${PORTVERSION}
-SOVERSION=	19.5.3.1
+SOVERSION=	${PORTVERSION}
 PLIST_SUB=	SOVERSION=${SOVERSION}
 
 OPTIONS_DEFINE=		TEST

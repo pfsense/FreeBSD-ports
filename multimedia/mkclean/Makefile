@@ -2,7 +2,7 @@
 
 PORTNAME=	mkclean
 PORTVERSION=	0.8.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/matroska/${PORTNAME}/
 
@@ -19,7 +19,7 @@ BROKEN_sparc64=	Does not install: gmake: GNUmakefile: No such file or directory
 
 HAS_CONFIGURE=	yes
 
-USES=		iconv localbase:ldflags gmake tar:bzip2
+USES=		compiler:c++11-lang iconv localbase:ldflags gmake tar:bzip2
 
 LDFLAGS+=	${ICONV_LIB}
 

@@ -3,6 +3,7 @@
 
 PORTNAME=	Ipopt
 DISTVERSION=	3.12.13
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	https://www.coin-or.org/download/source/Ipopt/ \
 		http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/OLD/:metis \
@@ -16,7 +17,8 @@ COMMENT=	Software package for large-scale nonlinear optimization
 
 LICENSE=	EPL
 
-USES=		blaslapack fortran libtool pathfix pkgconfig tar:tgz
+USES=		blaslapack compiler:c++11-lang fortran libtool pathfix \
+		pkgconfig tar:tgz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 TEST_TARGET=	test

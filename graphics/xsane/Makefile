@@ -6,7 +6,7 @@ PORTVERSION=	0.999
 PORTREVISION=	6
 CATEGORIES=	graphics
 
-MAINTAINER=	koalative@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gtk-based X11 frontend for SANE (Scanner Access Now Easy)
 
 LICENSE=	GPLv2+

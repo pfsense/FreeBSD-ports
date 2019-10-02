@@ -3,7 +3,7 @@
 PORTNAME=		libheif
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.3.2
-PORTREVISION=		2
+PORTREVISION=		4
 CATEGORIES=		graphics
 
 MAINTAINER=		me@sebastiansteinmetz.ch
@@ -11,7 +11,7 @@ COMMENT=		Libheif is an ISO/IEC 23008-12:2017 HEIF file format de- and encoder
 
 # N.B., subsequent revisions in Git relicense examples from GPL3+ to MIT.
 LICENSE=		LGPL3+
-LICENSE_FILE_LGPL3+=	${WRKSRC}/COPYING
+LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING
 
 USES=			autoreconf compiler:c++11-lang libtool localbase pkgconfig \
 			shebangfix
@@ -37,7 +37,7 @@ THREADS_CONFIGURE_OFF=	--disable-multithreading
 .if ${PORT_OPTIONS:MEXAMPLES}
 LICENSE+=		GPLv3+
 LICENSE_COMB=		multi
-LICENSE_FILE_GPLv3+=	${WRKSRC}/examples/COPYING
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/examples/COPYING
 USES+=			shared-mime-info
 .endif
 

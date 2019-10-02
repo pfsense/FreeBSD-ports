@@ -1,5 +1,3 @@
-TIMESTAMP = 1560055080
-SHA256 (universal-ctags-ctags-g20190522-3fdf28bc_GH0.tar.gz) = 423713ba0369c6af863d2cda6040c1b9d0a012461f44f72bda6dec7b20762331
-SIZE (universal-ctags-ctags-g20190522-3fdf28bc_GH0.tar.gz) = 1575712
-SHA256 (universal-ctags-packcc-de4991c_GH0.tar.gz) = 3449183b4274e7584c878e619eab243e80e3c3f289cc05d31d4a133f4cfa2a46
-SIZE (universal-ctags-packcc-de4991c_GH0.tar.gz) = 26795
+TIMESTAMP = 1566714561
+SHA256 (universal-ctags-ctags-g20190819-6ad4e957_GH0.tar.gz) = 5dfc14ca3836d46532d0bab885ac3a5e65b47348d47a77eee2e64aa5c315ed61
+SIZE (universal-ctags-ctags-g20190819-6ad4e957_GH0.tar.gz) = 1609204

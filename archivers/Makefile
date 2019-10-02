@@ -116,6 +116,7 @@
     SUBDIR += p5-Compress-Snappy
     SUBDIR += p5-Gzip-Faster
     SUBDIR += p5-IO-Compress
+    SUBDIR += p5-IO-Compress-Brotli
     SUBDIR += p5-IO-Compress-Lzf
     SUBDIR += p5-IO-Compress-Lzma
     SUBDIR += p5-IO-Compress-Lzop
@@ -162,6 +163,10 @@
     SUBDIR += php73-phar
     SUBDIR += php73-zip
     SUBDIR += php73-zlib
+    SUBDIR += php74-bz2
+    SUBDIR += php74-phar
+    SUBDIR += php74-zip
+    SUBDIR += php74-zlib
     SUBDIR += pigz
     SUBDIR += pixz
     SUBDIR += plzip
@@ -170,7 +175,6 @@
     SUBDIR += ppunpack
     SUBDIR += pxz
     SUBDIR += py-acefile
-    SUBDIR += py-attic
     SUBDIR += py-backports.lzma
     SUBDIR += py-borgbackup
     SUBDIR += py-brotli
@@ -182,6 +186,7 @@
     SUBDIR += py-librtfcomp
     SUBDIR += py-lz4
     SUBDIR += py-lzma
+    SUBDIR += py-lzstring
     SUBDIR += py-pyliblzma
     SUBDIR += py-python-lhafile
     SUBDIR += py-python-lzo

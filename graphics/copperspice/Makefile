@@ -3,7 +3,7 @@
 
 PORTNAME=	copperspice
 PORTVERSION=	1.3.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	http://download.copperspice.com/copperspice/source/
 
@@ -11,6 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern cross-platform C++ GUI library (derived from Qt 4.8)
 
 LICENSE=	LGPL21
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 LIB_DEPENDS=	libaudio.so:audio/nas \
 		libdrm.so:graphics/libdrm \

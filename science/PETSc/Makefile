@@ -3,7 +3,7 @@
 
 PORTNAME=	PETSc
 DISTVERSION=	3.10.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science devel
 MASTER_SITES=	http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/
 DISTNAME=	${PORTNAME:tl}-${DISTVERSION}
@@ -13,10 +13,6 @@ COMMENT=	Suite of data structures and routines from Argonne National Laboratory
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_aarch64=		fails to build: MPI compiler wrappers do not work. See http://www.mcs.anl.gov/petsc/documentation/faq.html#mpi-compilers
-BROKEN_armv6=		fails to build: MPI compiler wrappers do not work. See http://www.mcs.anl.gov/petsc/documentation/faq.html#mpi-compilers
-BROKEN_armv7=		fails to build: MPI compiler wrappers do not work. See http://www.mcs.anl.gov/petsc/documentation/faq.html#mpi-compilers
 
 LIB_DEPENDS=	libmpich.so:net/mpich
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	vmd
 DISTVERSION=	1.9.3
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	science graphics python tcl tk
 MASTER_SITES=	http://jedi.ks.uiuc.edu/~johns/raytracer/files/0.99b6/:tachyon \
 		http://www.photonlimited.com/~johns/tachyon/files/0.99b6/:tachyon \
@@ -39,15 +39,13 @@ LICENSE_PERMS_STRIDE=	dist-mirror pkg-mirror auto-accept
 LICENSE_NAME_STRIDE=	Stride Copyright Notice
 LICENSE_DISTFILES_STRIDE=${STRIDE_DIST}
 
-USES=		gmake perl5 python shebangfix sqlite tcl tk
-
+USES=		gl gmake perl5 python shebangfix sqlite tcl tk
 SHEBANG_FILES=	${WRKDIR}/plugins/topotools/*.tcl
-
 USE_PERL5=	build
 USE_GL=		gl glu
 USE_XORG=	x11
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64 i386
 
 CONFIGURE_ENV=	PYTHON_INCLUDE_DIR=${PYTHON_INCLUDEDIR} \
 		PYTHON_LIBRARY_DIR=${PYTHON_LIBDIR} \
@@ -145,7 +143,7 @@ do-build:
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} depend -C ${WRKSRC}/lib/surf
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} surf -C ${WRKSRC}/lib/surf
 		${MV} ${WRKSRC}/lib/surf/surf ${WRKSRC}/lib/surf/surf_${VMD_ARCH}
-	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} -C ${WRKSRC}/lib/stride 
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} -C ${WRKSRC}/lib/stride
 		${MV} ${WRKSRC}/lib/stride/stride ${WRKSRC}/lib/stride/stride_${VMD_ARCH}
 
 post-install:

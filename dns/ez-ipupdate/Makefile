@@ -12,6 +12,10 @@ MASTER_SITES=	http://dyn.pl/client/UNIX/ez-ipupdate/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Update your host name on any dynamic DNS service
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USE_RC_SUBR=	ez-ipupdate
 GNU_CONFIGURE=	yes
 

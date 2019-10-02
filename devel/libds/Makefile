@@ -4,7 +4,7 @@
 PORTNAME=	libds
 PORTVERSION=	2.1
 CATEGORIES=	devel
-MASTER_SITES=	SF
+MASTER_SITES=	SF/libds/libds/libds-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ANSI Generic Data Structures Library

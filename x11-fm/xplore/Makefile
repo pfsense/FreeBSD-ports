@@ -12,6 +12,10 @@ COMMENT=	Yet another Motif file manager
 
 LICENSE=	GPLv2
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		imake motif
 USE_XORG=	xpm
 MAKE_JOBS_UNSAFE=yes

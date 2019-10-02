@@ -3,7 +3,7 @@
 
 PORTNAME=	subtitleeditor
 PORTVERSION=	0.41.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia
 MASTER_SITES=	http://download.gna.org/${PORTNAME}/${PORTVERSION:C/\.[0-9]*$//}/
 
@@ -11,6 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Subtitle editor
 
 LICENSE=	GPLv3
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 BUILD_DEPENDS=	iso-codes>0:misc/iso-codes
 LIB_DEPENDS=	libglademm-2.4.so:devel/libglademm24 \

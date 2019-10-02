@@ -2,7 +2,7 @@
 
 PORTNAME=	timewarrior
 PORTVERSION=	1.1.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	deskutils
 MASTER_SITES=	https://taskwarrior.org/download/
 DISTNAME=	timew-${PORTVERSION}
@@ -14,7 +14,5 @@ LICENSE=	MIT
 
 USES=		cmake compiler:c++11-lang
 CMAKE_ARGS+=	-DTIMEW_DOCDIR=${DOCSDIR}
-
-OPTIONS_SUB=	yes
 
 .include <bsd.port.mk>

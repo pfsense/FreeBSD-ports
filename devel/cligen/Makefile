@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cligen
-PORTVERSION=	3.9.0
+PORTVERSION=	4.0.0
 CATEGORIES=	devel
 
 MAINTAINER=	dcornejo@netgate.com
@@ -17,6 +17,5 @@ GH_ACCOUNT=	olofhagsand
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-MAKE_JOBS_UNSAFE=	yes
 
 .include <bsd.port.mk>

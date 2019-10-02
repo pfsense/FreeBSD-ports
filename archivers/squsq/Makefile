@@ -4,7 +4,7 @@
 PORTNAME=	squsq
 PORTVERSION=	3.3
 CATEGORIES=	archivers
-MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ NETBSD
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ NETBSD LOCAL/danfe
 DISTNAME=	t20-squsq-3.3
 
 MAINTAINER=	ports@FreeBSD.org
@@ -16,8 +16,15 @@ MAKEFILE=	${FILESDIR}/Makefile
 CFLAGS+=	-Wno-error=return-type
 
 PLIST_FILES=	bin/sq bin/usq
+PORTDOCS=	readme
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/sq ${WRKSRC}/usq ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/readme ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	libkml
 PORTVERSION=	1.3.0
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	science
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -11,8 +11,6 @@ COMMENT=	Reference implementation of OGC KML 2.2
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_powerpc64=	fails to compile: iomem_simple.h: redefinition of typedef 'open_file_func'
 
 BUILD_DEPENDS=	boost-libs>=1.44.0:devel/boost-libs \
 		googletest>=1.7.0:devel/googletest \
@@ -25,10 +23,11 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 
 OPTIONS_DEFINE=	EXAMPLES
 
+USES=		cmake compiler:c11 pathfix
+
 CMAKE_OFF=	WITH_JAVA WITH_PYTHON WITH_SWIG
 USE_CXXSTD=	gnu++98
 USE_LDCONFIG=	yes
-USES=		cmake pathfix
 
 USE_GITHUB=	yes
 

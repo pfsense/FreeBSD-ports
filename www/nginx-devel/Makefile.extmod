@@ -44,7 +44,7 @@ DRIZZLE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-openresty-drizzle-nginx-module-co
 DYNAMIC_UPSTREAM_GH_TUPLE=	cubicdaiya:ngx_dynamic_upstream:v0.1.6:dynamic_upstream
 DYNAMIC_UPSTREAM_VARS=		DSO_EXTMODS+=dynamic_upstream
 
-DEVEL_KIT_GH_TUPLE=		simpl:ngx_devel_kit:v0.3.0:devel_kit
+DEVEL_KIT_GH_TUPLE=		simpl:ngx_devel_kit:v0.3.1:devel_kit
 DEVEL_KIT_VARS=			FIRST_DSO_EXTMODS+=devel_kit
 
 ENCRYPTSESSION_IMPLIES=		DEVEL_KIT
@@ -108,6 +108,14 @@ HTTP_GEOIP2_CFLAGS=		-I${LOCALBASE}/include
 HTTP_GEOIP2_VARS=		DSO_EXTMODS+=geoip2
 HTTP_GEOIP2_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 
+HTTP_IP2LOCATION_GH_TUPLE=	ip2location:ip2location-nginx:d47d248:ip2location
+HTTP_IP2LOCATION_LIB_DEPENDS=	libIP2Location.so:net/ip2location
+HTTP_IP2LOCATION_CONFIGURE_ON=	--add-module=${WRKSRC_ip2location}
+
+HTTP_IP2PROXY_GH_TUPLE=		ip2location:ip2proxy-nginx:d6fd05a:ip2proxy
+HTTP_IP2PROXY_LIB_DEPENDS=	libIP2Proxy.so:net/ip2proxy
+HTTP_IP2PROXY_CONFIGURE_ON=	--add-module=${WRKSRC_ip2proxy}
+
 HTTP_JSON_STATUS_GH_TUPLE=	nginx-modules:ngx_http_json_status_module:1d2f303:json_status
 HTTP_JSON_STATUS_CONFIGURE_ON=	--add-module=${WRKSRC_json_status}
 
@@ -125,7 +133,7 @@ HTTP_NOTICE_GH_TUPLE=		kr:nginx-notice:3c95966:notice
 HTTP_NOTICE_CONFIGURE_ON=	--add-module=${WRKSRC_notice}
 HTTP_NOTICE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_notice_module.c
 
-HTTP_PUSH_GH_TUPLE=		slact:nchan:v1.2.3:push
+HTTP_PUSH_GH_TUPLE=		slact:nchan:v1.2.6:push
 HTTP_PUSH_VARS=			DSO_EXTMODS+=push
 
 HTTP_PUSH_STREAM_GH_TUPLE=	wandenberg:nginx-push-stream-module:0.5.4:pushstream
@@ -138,6 +146,8 @@ HTTP_REDIS_VARS=		DSO_EXTDIRS+=ngx_http_redis-0.3.9
 HTTP_RESPONSE_MASTER_SITES=	http://catap.ru/downloads/nginx/:response
 HTTP_RESPONSE_DISTFILES=	ngx_http_response-0.3.tar.gz:response
 HTTP_RESPONSE_CONFIGURE_ON=	--add-module=${WRKDIR}/ngx_http_response-0.3
+
+HTTP_SLICE_AHEAD_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_http_modules_ngx_http_slice_read_ahead.c
 
 HTTP_SUBS_FILTER_GH_TUPLE=	yaoweibin:ngx_http_substitutions_filter_module:v0.6.4:subs_filter
 HTTP_SUBS_FILTER_CONFIGURE_ON=	--add-module=${WRKSRC_subs_filter}
@@ -190,10 +200,10 @@ LET_GH_TUPLE=		arut:nginx-let-module:v0.0.4:let
 LET_CONFIGURE_ON=	--add-module=${WRKSRC_let}
 
 LUA_IMPLIES=		DEVEL_KIT
-LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
-LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.0 \
+LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
+LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.1 \
 			LUAJIT_LIB=${LOCALBASE}/lib
-LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.14:lua
+LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.15:lua
 LUA_VARS=		DSO_EXTMODS+=lua
 
 MEMC_GH_TUPLE=		openresty:memc-nginx-module:v0.19:memc
@@ -207,7 +217,7 @@ MODSECURITY_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 MODSECURITY_USE=		GNOME=libxml2
 MODSECURITY_VERSION=		2.9.3
 MODSECURITY_USES=		apache:2.2+ pkgconfig shebangfix
-MODSECURITY_MASTER_SITES=	http://www.modsecurity.org/tarball/${MODSECURITY_VERSION}/:modsecurity
+MODSECURITY_MASTER_SITES=	https://www.modsecurity.org/tarball/${MODSECURITY_VERSION}/:modsecurity
 MODSECURITY_DISTFILES=		modsecurity-${MODSECURITY_VERSION}.tar.gz:modsecurity
 MODSECURITY_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-modsecurity-configure
 MODSECURITY_VARS=		WRKSRC_modsecurity=${WRKDIR}/modsecurity-${MODSECURITY_VERSION}
@@ -220,15 +230,15 @@ NAXSI_NGINX_VER=	0.56
 NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:0.3.3:njs
+NJS_GH_TUPLE=		nginx:njs:0.3.5:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
 
-PASSENGER_NGINX_VER=	6.0.2
+PASSENGER_NGINX_VER=	6.0.4
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USE=		ruby=yes
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake
 PASSENGER_RAKE_BIN=	${LOCALBASE}/bin/rake
-PASSENGER_MASTER_SITES=	http://s3.amazonaws.com/phusion-passenger/releases/:passenger
+PASSENGER_MASTER_SITES=	https://s3.amazonaws.com/phusion-passenger/releases/:passenger
 PASSENGER_DISTFILES=	passenger-${PASSENGER_NGINX_VER}.tar.gz:passenger
 PASSENGER_VARS=		WRKSRC_passenger=${WRKDIR}/passenger-${PASSENGER_NGINX_VER} \
 			DSO_EXTDIRS+=passenger-${PASSENGER_NGINX_VER}/src/nginx_module
@@ -254,7 +264,7 @@ RTMP_GH_TUPLE=		arut:nginx-rtmp-module:v1.2.1:rtmp
 RTMP_VARS=		DSO_EXTMODS+=rtmp
 
 SET_MISC_IMPLIES=	DEVEL_KIT
-SET_MISC_GH_TUPLE=	openresty:set-misc-nginx-module:cda7e50:setmisc
+SET_MISC_GH_TUPLE=	openresty:set-misc-nginx-module:048e9e0:setmisc
 SET_MISC_VARS=		DSO_EXTMODS+=setmisc
 
 SFLOW_GH_TUPLE=		sflow:nginx-sflow-module:543c72a:sflow
@@ -262,7 +272,7 @@ SFLOW_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_sflow_config.c \
 			${PATCHDIR}/extra-patch-ngx_http_sflow_config.h \
 			${PATCHDIR}/extra-patch-ngx_http_sflow_module.c
 
-SHIBBOLETH_GH_TUPLE=	nginx-shib:nginx-http-shibboleth:f07bf3c:shibboleth
+SHIBBOLETH_GH_TUPLE=	nginx-shib:nginx-http-shibboleth:d9fe8e5:shibboleth
 SHIBBOLETH_VARS=	DSO_EXTMODS+=shibboleth
 
 SLOWFS_CACHE_MASTER_SITES=	http://labs.frickle.com/files/:slowfs_cache
@@ -288,3 +298,6 @@ VTS_CONFIGURE_ON=	--add-module=${WRKSRC_vts}
 
 XSS_GH_TUPLE=		openresty:xss-nginx-module:v0.05:xss
 XSS_CONFIGURE_ON=	--add-module=${WRKSRC_xss}
+
+WEBSOCKIFY_GH_TUPLE=	tg123:websockify-nginx-module:e82d254:websockify
+WEBSOCKIFY_CONFIGURE_ON=	--add-module=${WRKSRC_websockify}

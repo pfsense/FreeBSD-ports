@@ -12,6 +12,9 @@ DISTNAME=	WorldOfGooDemo.${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Demo version of incredible physics based puzzle/construction game
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 ONLY_FOR_ARCHS=	i386 amd64
 
 USES=		linux
@@ -23,9 +26,9 @@ DOCSDIR=	${PREFIX}/share/doc/WorldOfGoo
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
-.if ${LINUX_ARCH} == "i386"
+.if ${ARCH} == i386
 TARGET_BIN=	WorldOfGoo.bin32
 .else
 TARGET_BIN=	WorldOfGoo.bin64
@@ -54,4 +57,4 @@ do-install:
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

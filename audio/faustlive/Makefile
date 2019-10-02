@@ -2,7 +2,7 @@
 
 PORTNAME=	faustlive
 PORTVERSION=	g20171205
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -26,7 +26,7 @@ GH_TAGNAME=	281fcb8
 USE_QT=		core gui network widgets buildtools_build qmake_build
 USE_GL=		gl
 
-LLVM_VERSION=	60 # llvm verion should be the same as in audio/faust
+LLVM_VERSION=	60 # llvm version should be the same as in audio/faust
 CXXFLAGS+=	$$(llvm-config${LLVM_VERSION} --cflags)
 LDFLAGS+=	-lexecinfo
 

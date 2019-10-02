@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	passman
-PORTVERSION=	2.3.1
+PORTVERSION=	2.3.2
 CATEGORIES=	security
 MASTER_SITES=	https://releases.passman.cc/
 PKGNAMEPREFIX=	nextcloud-
@@ -20,6 +20,7 @@ RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=14:www/nextcloud@${PHP_FLAVOR}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		php:flavors
+IGNORE_WITH_PHP=	74
 NO_BUILD=	yes
 NO_ARCH=	yes
 

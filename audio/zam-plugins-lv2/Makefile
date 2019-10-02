@@ -2,6 +2,7 @@
 
 PORTNAME=	zam-plugins
 DISTVERSION=	3.11-1
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-gce45995
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
@@ -36,13 +37,11 @@ post-extract:
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|#!/bin/bash|#!/bin/sh|' ${WRKSRC}/dpf/utils/generate-ttl.sh
-.if ${ARCH} == aarch64 || ${ARCH:Marmv*} || ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
-	${REINPLACE_CMD} -e '/-mfpmath=sse/d' \
-		-e 's/-mtune=generic -msse -msse2//' \
-		${WRKSRC}/Makefile.mk ${WRKSRC}/Makefile.mk
-	${REINPLACE_CMD} -e '/-mfpmath=sse/d' \
-		-e 's/-mtune=generic -msse -msse2//' \
-		${WRKSRC}/Makefile.mk ${WRKSRC}/dpf/dgl/Makefile.mk
+	${REINPLACE_CMD} -e 's/-mtune=generic//' \
+		${WRKSRC}/dpf/Makefile.base.mk
+.if ! ${ARCH} == amd64 && ! ${ARCH} == i386
+	${REINPLACE_CMD} -e 's/-msse -msse2//' \
+		${WRKSRC}/dpf/Makefile.base.mk
 .endif
 
 .include <bsd.port.post.mk>
