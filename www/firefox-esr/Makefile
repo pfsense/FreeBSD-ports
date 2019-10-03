@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	60.9.0
-PORTREVISION=	1
+DISTVERSION=	68.1.0
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}esr/source \
@@ -14,26 +14,25 @@ DISTFILES=	${DISTNAME}esr.source${EXTRACT_SUFX}
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
-BUILD_DEPENDS=	nspr>=4.19:devel/nspr \
-		nss>=3.36.7:security/nss \
-		icu>=59.1,1:devel/icu \
+BUILD_DEPENDS=	nspr>=4.21:devel/nspr \
+		nss>=3.44.1:security/nss \
+		icu>=63.1,1:devel/icu \
 		libevent>=2.1.8:devel/libevent \
-		harfbuzz>=1.7.6:print/harfbuzz \
-		graphite2>=1.3.11:graphics/graphite2 \
-		png>=1.6.34:graphics/png \
+		harfbuzz>=2.4.0:print/harfbuzz \
+		graphite2>=1.3.13:graphics/graphite2 \
+		png>=1.6.35:graphics/png \
 		libvpx>=1.5.0:multimedia/libvpx \
-		sqlite3>=3.22.0:databases/sqlite3 \
+		sqlite3>=3.28.0:databases/sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf-2.13:devel/autoconf213 \
-		yasm:devel/yasm \
+		nasm:devel/nasm \
 		zip:archivers/zip
 
 USE_GECKO=	gecko
 CPE_PRODUCT=	${PORTNAME}_esr
 CONFLICTS_INSTALL=	firefox
-MOZ_PKGCONFIG_FILES=	# empty
-USE_MOZILLA=	-webp -vpx
+USE_MOZILLA=	-hunspell -vpx
 
 USES=		tar:xz
 

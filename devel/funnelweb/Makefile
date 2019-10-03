@@ -10,6 +10,10 @@ DISTNAME=	funnelweb_v320_source
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful literate-programming macro pre-processor
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 PLIST_FILES=	bin/fw
 WRKSRC=		${WRKDIR}/fw_src/source
 

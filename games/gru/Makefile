@@ -10,6 +10,10 @@ MASTER_SITES=	http://www.bsddiary.net/gru/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gru makes your eyes happy
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		imake
 USE_XORG=	x11 xext xmu xpm xaw xt sm ice
 

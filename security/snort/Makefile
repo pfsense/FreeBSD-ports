@@ -78,7 +78,7 @@ FILEINSPECT_CONFIGURE_ENABLE=	file-inspect
 
 BARNYARD_RUN_DEPENDS=	barnyard2:security/barnyard2
 PULLEDPORK_RUN_DEPENDS=	pulledpork.pl:security/pulledpork
-APPID_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit21
+APPID_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 APPID_CONFIGURE_ENV+=	luajit_CFLAGS="-I${LOCALBASE}/include/luajit-2.1" \
 			luajit_LIBS="-L${LOCALBASE}/lib -lluajit-5.1"
 

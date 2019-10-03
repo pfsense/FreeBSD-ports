@@ -3,7 +3,7 @@
 
 PORTNAME=	efl
 DISTVERSION=	1.20.7
-PORTREVISION=	13
+PORTREVISION=	18
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 DIST_SUBDIR=	enlightenment
@@ -28,9 +28,9 @@ CONFLICTS_INSTALL=	libeio
 GNU_CONFIGURE=	yes
 USES=		autoreconf compiler:c++14-lang gettext-tools gmake iconv jpeg \
 		libtool pathfix pkgconfig python:2.7,run shared-mime-info \
-		shebangfix tar:xz
+		shebangfix tar:xz xorg
 SHEBANG_FILES=	src/scripts/eina/eina-bench-cmp
-USE_XORG=	x11 xcb xcursor xcomposite xdamage xext xfixes xi xinerama xp \
+USE_XORG=	x11 xcb xcursor xcomposite xdamage xext xfixes xi xinerama \
 		xrandr xrender xtst xscrnsaver
 USE_LDCONFIG=	yes
 
@@ -174,7 +174,7 @@ CONFIGURE_ARGS+=		--with-opengl=none
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
-.if ${ARCH} == "powerpc" || ${ARCH} == "sparc64"
+.if ${ARCH:Mpowerpc*} || ${ARCH} == "sparc64"
 USES+=				lua
 CONFIGURE_ARGS+=		--enable-lua-old
 PLIST_SUB+=			ELUA="@comment "

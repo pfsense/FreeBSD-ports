@@ -3,7 +3,7 @@
 
 PORTNAME=	xmmix
 PORTVERSION=	1.2.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio
 MASTER_SITES=	http://ftp.twaren.net/BSD/OpenBSD/distfiles/ \
 		http://freebsd.nsu.ru/distfiles/
@@ -13,8 +13,8 @@ COMMENT=	Motif-based audio mixer
 
 WRKSRC=		${WRKDIR}/xmmix-1.2
 
-USES=		imake motif
-USE_XORG=	x11 xext sm ice xt xp
+USES=		imake motif xorg
+USE_XORG=	x11 xext sm ice xt
 
 PLIST_FILES=	bin/xmmix lib/X11/app-defaults/XMmix lib/X11/xmmix.hlp \
 		man/man1/xmmix.1.gz

@@ -3,7 +3,7 @@
 
 PORTNAME=	vtk
 PORTVERSION=	6.2.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	6
@@ -24,9 +24,9 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 # * VTK Groups
 
 CONFLICTS=	vtk5 vtk8
+USES=		alias cmake jpeg localbase
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	xt sm ice x11 xext
-USES=		alias cmake jpeg localbase
 CXXFLAGS_powerpc64=	-mminimal-toc
 
 VTK_SHORT_VER=	${PORTVERSION:R}

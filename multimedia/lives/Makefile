@@ -3,7 +3,7 @@
 
 PORTNAME=	lives
 PORTVERSION=	2.10.2
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	multimedia
 MASTER_SITES=	http://lives-video.com/releases/
 DISTNAME=	LiVES-${PORTVERSION}
@@ -14,16 +14,10 @@ COMMENT=	Video editing system
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN=		fails to patch
-
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		${LOCALBASE}/bin/analyseplugin:audio/ladspa
-LIB_DEPENDS=	libasound.so:audio/alsa-lib \
-		libjack.so:audio/jack \
-		libogg.so:audio/libogg \
-		libpulse.so:audio/pulseaudio \
+LIB_DEPENDS=	libogg.so:audio/libogg \
 		liboil-0.3.so:devel/liboil \
-		libprojectM.so:graphics/libprojectm \
 		libvisual-0.4.so:graphics/libvisual04 \
 		libopencv_calib3d.so:graphics/opencv \
 		libopencv_core.so:graphics/opencv-core \
@@ -50,8 +44,10 @@ RUN_DEPENDS=	${LOCALBASE}/bin/analyseplugin:audio/ladspa \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		compiler:c++11-lib gettext-runtime ghostscript:run libtool \
-		localbase pathfix perl5 pkgconfig python shebangfix tar:bzip2
+USES=		autoreconf compiler:c++11-lib gettext-runtime gettext-tools \
+		ghostscript:run gl gnome \
+		libtool localbase pathfix perl5 pkgconfig python sdl \
+		shebangfix tar:bzip2 xorg
 SHEBANG_FILES=	build-lives-rfx-plugin build-lives-rfx-plugin-multi \
 		smogrify tools/autolives.pl lives-plugins/plugins/encoders/*_encoder \
 		lives-plugins/marcos-encoders/*encoder* \
@@ -73,17 +69,28 @@ DOC_FILES=	AUTHORS BUGS ChangeLog FEATURES GETTING.STARTED README \
 		lives-plugins/marcos-encoders/README.multi_encoder \
 		weed-docs/weedspec.txt weed-docs/weedevents.txt
 
-OPTIONS_DEFINE=	DOCS DOXYGEN FREI0R MATROSKA NLS
+OPTIONS_DEFINE=	ALSA DOCS DOXYGEN FREI0R JACK MATROSKA V4L NLS PROJECTM PULSEAUDIO
 OPTIONS_SUB=	yes
 
+ALSA_CONFIGURE_OFF=	--disable-alsa
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_CONFIGURE_OFF=	--disable-doxygen
 FREI0R_BUILD_DEPENDS=	frei0r>0:graphics/frei0r
 FREI0R_RUN_DEPENDS=	frei0r>0:graphics/frei0r
-FREI0R_CONFIGURE_ENV_OFF=	ac_cv_header_frei0r_h=no
+FREI0R_CONFIGURE_ENV_OFF=ac_cv_header_frei0r_h=no
+JACK_CONFIGURE_OFF=	--disable-jack
+JACK_LIB_DEPENDS=	libjack.so:audio/jack
 MATROSKA_RUN_DEPENDS=	mkvmerge:multimedia/mkvtoolnix
+V4L_BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
+V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 NLS_USES=		gettext-tools
 NLS_CONFIGURE_OFF=	--disable-nls
+PROJECTM_DESC=		projectM support
+PROJECTM_CONFIGURE_OFF=	--disable-projectM
+PROJECTM_LIB_DEPENDS=	libprojectM.so:graphics/libprojectm
+PULSEAUDIO_CONFIGURE_OFF=--disable-pulse
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 
 post-patch:
 	@${FIND} ${WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} \
@@ -111,7 +118,7 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${DOC_FILES:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 post-install-DOXYGEN-on:
-	@(cd ${STAGEDIR}${PREFIX} && ${FIND} ${DOCSDIR:S|${PREFIX}/||}/html \
-		! -type d >> ${TMPPLIST})
+	@(cd ${STAGEDIR}${PREFIX} && ${FIND} ${DOCSDIR_REL}/html \
+		-not -type d >> ${TMPPLIST})
 
 .include <bsd.port.mk>

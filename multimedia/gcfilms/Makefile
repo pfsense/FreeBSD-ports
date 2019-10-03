@@ -13,6 +13,10 @@ COMMENT=	Tool to manage movie collections
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 BUILD_DEPENDS=	p5-XML-Simple>=0:textproc/p5-XML-Simple \
 		p5-Gtk2>=0:x11-toolkits/p5-Gtk2 \
 		p5-HTML-Parser>=0:www/p5-HTML-Parser \

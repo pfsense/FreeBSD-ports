@@ -2,7 +2,7 @@
 
 PORTNAME=	portrac
 PORTVERSION=	0.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	http://e-soul.org/distfiles/ \
 		http://home.e-soul.org/~mgp/distfiles/
@@ -16,9 +16,6 @@ PLIST_FILES=	bin/portrac \
 		share/portrac/portrac.png \
 		share/portrac/up-to-date.png \
 		share/portrac/updates-available.png
-
-# Unhide std::to_string() to fix build with GCC (ports/193528)
-CXXFLAGS=	-D_GLIBCXX_USE_C99
 
 USES=		compiler:c++11-lib qmake qt:5 tar:bzip2
 USE_CXXSTD=	c++11

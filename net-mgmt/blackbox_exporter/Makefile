@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	blackbox_exporter
-PORTVERSION=	0.13.0
+PORTVERSION=	0.15.0
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt
 
@@ -12,16 +12,14 @@ COMMENT=	Prometheus exporter for endpoints over HTTP(S), DNS, TCP and ICMP
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		go:modules
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	prometheus
 USE_RC_SUBR=	blackbox_exporter
 
 USERS=		prometheus
 GROUPS=		prometheus
-
-GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
-GO_TARGET=	github.com/${GH_ACCOUNT}/${PORTNAME}
 
 PORTEXAMPLES=	${WRKSRC}/*.yml
 
@@ -33,8 +31,7 @@ PLIST_FILES=	bin/blackbox_exporter \
 		${EXAMPLESDIR}/blackbox.yml \
 		${EXAMPLESDIR}/example.yml
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKDIR}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.yml ${STAGEDIR}${EXAMPLESDIR}
 

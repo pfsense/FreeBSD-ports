@@ -3,7 +3,7 @@
 PORTNAME=	dbcsr
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,7 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	fypp:devel/py-fypp@${PY_FLAVOR}
 
-USES=		blaslapack:openblas cmake:noninja fortran python:build
+USES=		blaslapack:openblas cmake:noninja compiler:c++14-lang fortran \
+		python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	cp2k
 USE_LDCONFIG=	yes

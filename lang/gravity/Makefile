@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gravity
-DISTVERSION=	0.7.0-2
-DISTVERSIONSUFFIX=	-g916d558
+DISTVERSION=	0.7.5
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-lang
 
@@ -12,7 +11,7 @@ COMMENT=	Embeddable programming language
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake
+USES=		cmake compiler:c11
 USE_GITHUB=	yes
 GH_ACCOUNT=	marcobambini
 

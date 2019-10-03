@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	libcmis
-PORTVERSION=	0.5.1
-PORTREVISION=	12
+PORTVERSION=	0.5.2
 CATEGORIES=	net devel
-MASTER_SITES=	https://dev-www.libreoffice.org/src/
+MASTER_SITES=	https://github.com/tdf/libcmis/releases/download/v${PORTVERSION}/ \
+		https://dev-www.libreoffice.org/src/
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Client library for the CMIS interface
@@ -16,9 +16,11 @@ BROKEN_sparc64=	cannot link with boost
 
 BUILD_DEPENDS=	cppunit-config:devel/cppunit \
 		${LOCALBASE}/lib/libboost_regex.a:devel/boost-libs
-LIB_DEPENDS=	libcurl.so:ftp/curl
+LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs \
+		libcurl.so:ftp/curl
 
-USES=		compiler:c++11-lib gmake libtool pathfix pkgconfig
+USES=		compiler:c++11-lib gmake gnome libtool localbase pathfix \
+		pkgconfig tar:xz
 USE_GNOME=	libxml2
 
 CONFIGURE_ARGS=	--disable-werror --with-boost=${LOCALBASE} --without-man

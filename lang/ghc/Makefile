@@ -3,6 +3,7 @@
 
 PORTNAME=	ghc
 PORTVERSION=	${GHC_VERSION}
+PORTREVISION=	3
 CATEGORIES=	lang haskell
 MASTER_SITES=	https://www.haskell.org/ghc/dist/${PORTVERSION}/:source \
 		LOCAL/arrowd/:boot \
@@ -28,8 +29,6 @@ CONFIGURE_ARGS=		--with-iconv-includes=${LOCALBASE}/include \
 			--with-iconv-libraries=${LOCALBASE}/lib
 CONFIGURE_ENV=		CC=${CC} LD=${LD} PATH=${SLAVES_PREFIX}/bin:${PATH}
 MAKE_ENV=		PATH=${SLAVES_PREFIX}/bin:${PATH}
-# Turn off for a while, see PR 228727
-CONFIGURE_ARGS+=	--enable-dtrace=0
 
 SUB_FILES=		build.mk
 SUB_LIST=		GHC_VERSION=${GHC_VERSION} \
@@ -90,8 +89,14 @@ ONLY_FOR_ARCHS+=	aarch64 armv6 armv7 powerpc64
 
 .if ${GHC_VERSION_MAJOR} == 8 && ${GHC_VERSION_MINOR} <= 4
 LLVM_VERSION=		50
+# Turn off for old GHCs, see PR 228727
+CONFIGURE_ARGS+=	--enable-dtrace=0
 .else
 LLVM_VERSION=		60
+.endif
+
+.if ${ARCH} == powerpc64
+CONFIGURE_ARGS+=	--enable-dtrace=0
 .endif
 
 .if ${ARCH} == amd64 || ${ARCH} == i386
@@ -138,19 +143,18 @@ _EXECUTABLES+=	${GHC_LIBDIR}/bin/ghc-iserv-dyn
 .include <bsd.port.options.mk>
 
 .if empty(PORT_OPTIONS:MBOOT)
-
-DISTFILES+=		ghc-${BOOT_GHC_VERSION}-boot-${ARCH}-freebsd${EXTRACT_SUFX}:boot
+.  if ${ARCH} == powerpc64 && ${OSVERSION} < 1300040
+ELF_V=		-elfv1
+.  endif
+DISTFILES+=		ghc-${BOOT_GHC_VERSION}-boot-${ARCH}-freebsd${ELF_V}${EXTRACT_SUFX}:boot
 .endif # MBOOT
 
 .if ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7
 # CONFIGURE_TARGET must to be the same as the llvm triple
 CONFIGURE_TARGET=	${ARCH}-unknown-freebsd${"${ARCH:Maarch64}" != "":?:-gnueabihf}
 EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-aclocal.m4
-BUILD_DEPENDS+=		ld.gold:devel/binutils \
-			llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
-RUN_DEPENDS+=		ld.gold:devel/binutils \
-			llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
-USE_GCC=		yes
+BUILD_DEPENDS+=		llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+RUN_DEPENDS+=		llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 
 # When GHC being compiled and GHC used for bootstrapping support different
 # LLVM versions, we have to pull in both. Luckily, this is relatively rare.
@@ -158,21 +162,16 @@ USE_GCC=		yes
 BUILD_DEPENDS+=		llc${BOOT_LLVM_VERSION}:devel/llvm${BOOT_LLVM_VERSION}
 RUN_DEPENDS+=		llc${BOOT_LLVM_VERSION}:devel/llvm${BOOT_LLVM_VERSION}
 .  endif
-
-.  if ${OSVERSION} < 1200064
-IGNORE=	lang/ghc on ARM requires at least __FreeBSD_version 1200064
-.  endif
-
-.  ifdef QEMU_EMULATING
-IGNORE=	qemu-user-static isn't able to build lang/ghc, but it builds fine on a real hardware
-.  endif
 .endif
 
-.if ${ARCH} == powerpc64
+.if ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == powerpc64
 USE_GCC=	yes
 
 .  if ${OSVERSION} < 1200086
-IGNORE=	lang/ghc on powerpc64 requires at least __FreeBSD_version 1200086
+IGNORE=	lang/ghc requires at least FreeBSD 12.0-RELEASE
+.  endif
+.  ifdef QEMU_EMULATING
+IGNORE=	qemu-user-static isn't able to build lang/ghc, but it builds fine on a real hardware
 .  endif
 .endif
 
@@ -250,6 +249,12 @@ post-patch:
 	@${REINPLACE_CMD} -e '/^infodir/d' ${BOOT_DIR}/mk/build.mk
 	@${REINPLACE_CMD} -e '/^docdir/d' ${BOOT_DIR}/mk/build.mk
 	@${REINPLACE_CMD} -e '/^htmldir/d' ${BOOT_DIR}/mk/build.mk
+.endif
+
+# XXX osversion powerpc64 elfv2
+.if ${OSVERSION} >= 1300040
+	@${REINPLACE_CMD} -e 's/ELF_V1/ELF_V2/' \
+		${WRKSRC}/configure ${WRKSRC}/aclocal.m4
 .endif
 
 pre-configure: apply-slist

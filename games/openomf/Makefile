@@ -3,7 +3,7 @@
 
 PORTNAME=	openomf
 PORTVERSION=	0.6.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://www.omf2097.com/pub/files/omf/:data
 DISTFILES+=	omf2097.rar:data
@@ -18,8 +18,6 @@ LIB_DEPENDS=	libconfuse.so:devel/libconfuse \
 		libargtable2.so:devel/argtable \
 		libenet.so:net/enet
 EXTRACT_DEPENDS=	unrar:archivers/unrar
-
-BROKEN_powerpc64=	fails to compile: gcc5: error: unrecognized command line option '-msse'
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	omf2097
@@ -45,6 +43,8 @@ post-extract:
 post-patch:
 	${REINPLACE_CMD} -e 's,%%PREFIX%%,"${PREFIX}",g' \
 		${WRKSRC}/src/resources/pathmanager.c
+	${REINPLACE_CMD} -e 's,-msse ,,' \
+		${WRKSRC}/external/dumb/dumb/cmake/CMakeLists.txt
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/openomf ${STAGEDIR}${PREFIX}/bin

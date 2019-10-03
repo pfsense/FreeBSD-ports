@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mysql-connector-java
-PORTVERSION=	5.1.47
+PORTVERSION=	5.1.48
 CATEGORIES=	databases java
 MASTER_SITES=	MYSQL/Connector-J
 PKGNAMESUFFIX=	51
@@ -47,7 +47,7 @@ do-build:
 	@${DO_NADA}
 
 do-build-DOCS-on:
-.if ${JAVA_PORT_VERSION:M1.8.*}
+.if ${JAVA_PORT_VERSION:M*8*}
 	@${ECHO_MSG} "NOTE>>> Generating javadoc is broken with JDK 1.8+"
 .else
 	@${MKDIR} ${JAVADOCDIR} && (cd ${SRCDIR};               \
@@ -67,7 +67,7 @@ do-install-DOCS-on:
 	@for extradoc in ${EXTRADOCS} ; do                          \
 	  ${INSTALL_DATA} ${INSTALL_WRKSRC}/$$extradoc ${STAGEDIR}${DOCSDIR} ; \
 	done
-.if ${JAVA_PORT_VERSION:N1.8.*}
+.if ${JAVA_PORT_VERSION:N*8*}
 	@${MKDIR} ${STAGEDIR}${APIDOCSDIR}
 	@cd ${JAVADOCDIR} && ${COPYTREE_SHARE} . ${APIDOCSDIR}
 .endif

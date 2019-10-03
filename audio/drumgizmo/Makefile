@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	drumgizmo
-PORTVERSION=	0.9.16
+PORTVERSION=	0.9.17
 PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.drumgizmo.org/releases/${PORTNAME}-${PORTVERSION}/
@@ -25,7 +25,7 @@ USES=		compiler:c++11-lang gettext-runtime gnome libtool pkgconfig
 USE_GNOME=	glib20
 USE_XORG=	x11 xext
 
-CPPFLAGS+=	-I../include -I../../include -I../src -I../../src
+CPPFLAGS+=	-I../include -I../../include -I../src -I../../src -I${LOCALBASE}/include
 
 CONFIGURE_ENV=	EXPAT_CFLAGS=-isystem${LOCALBASE}/include EXPAT_LDFLAGS=-L${LOCALBASE}/lib \
 		ZITA_CPPFLAGS=-isystem${LOCALBASE}/include ZITA_LDFLAGS=-L${LOCALBASE}/lib

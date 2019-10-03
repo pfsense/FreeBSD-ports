@@ -2,7 +2,7 @@
 
 PORTNAME=	prometheus
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.11.2
+DISTVERSION=	2.12.0
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	dor.bsd@xm0.uk
@@ -11,11 +11,13 @@ COMMENT=	Systems monitoring and alerting toolkit
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go gmake
+USES=		go:modules gmake
 USE_GITHUB=	yes
 USE_RC_SUBR=	prometheus
 
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
+
+OPTIONS_DEFINE=	DOCS
 
 PROMETHEUS_USER?=	prometheus
 PROMETHEUS_GROUP?=	prometheus
@@ -23,7 +25,6 @@ PROMETHEUS_GROUP?=	prometheus
 USERS=		${PROMETHEUS_USER}
 GROUPS=		${PROMETHEUS_GROUP}
 
-PROMETHEUS_BINARIES=			prometheus promtool
 PROMETHEUS_SHARE_DIR=			${DATADIR}
 PROMETHEUS_CONSOLES_DIR=		${PROMETHEUS_SHARE_DIR}/consoles
 PROMETHEUS_CONSOLE_LIBRARIES_DIR=	${PROMETHEUS_SHARE_DIR}/console_libraries
@@ -49,25 +50,18 @@ PLIST_SUB+=	PORTNAME=${PORTNAME} \
 		PROMETHEUS_LOG_DIR=${PROMETHEUS_LOG_DIR}
 
 BUILD_USER?=	${USER}
-LD_FLAG_X_PREFIX=	-X ${GO_PKGNAME}/vendor/${GO_PKGNAME:H}/common/version
+LD_FLAG_X_PREFIX=	-X ${GO_PKGNAME:H}/common/version
 LD_FLAG_STRING=		-s \
 		${LD_FLAG_X_PREFIX}.Version=${PORTVERSION} \
 		${LD_FLAG_X_PREFIX}.Revision=${PORTREVISION} \
 		${LD_FLAG_X_PREFIX}.Branch=release-${PORTVERSION:R} \
 		${LD_FLAG_X_PREFIX}.BuildUser=${BUILD_USER}
+
 GO_BUILDFLAGS=	-v -ldflags "${LD_FLAG_STRING}"
+GO_TARGET=	./cmd/prometheus \
+		./cmd/promtool
 
-do-build:
-.for bin in ${PROMETHEUS_BINARIES}
-	( cd ${GO_WRKSRC}/cmd/${bin} ; \
-		${SETENV} ${MAKE_ENV} ${GO_ENV} \
-		${GO_CMD} install ${GO_BUILDFLAGS} )
-.endfor
-
-do-install:
-.for bin in ${PROMETHEUS_BINARIES}
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/${bin} ${STAGEDIR}${PREFIX}/bin
-.endfor
+post-install:
 	${INSTALL_DATA} \
 		${WRKSRC}/documentation/examples/prometheus.yml \
 		${STAGEDIR}${LOCALBASE}/etc/prometheus.yml.sample
@@ -81,5 +75,10 @@ do-install:
 	( cd ${WRKSRC}/consoles \
 		&& ${COPYTREE_SHARE} . ${STAGEDIR}${PROMETHEUS_CONSOLES_DIR} \
 	)
+
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/docs && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

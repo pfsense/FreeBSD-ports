@@ -2,6 +2,7 @@
 
 PORTNAME=	supercollider
 DISTVERSION=	3.10.2
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/supercollider/supercollider/releases/download/Version-${PORTVERSION}/
 DISTNAME=	SuperCollider-${PORTVERSION}-Source-linux
@@ -49,7 +50,7 @@ SUPERNOVA_CMAKE_BOOL=	SUPERNOVA
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ! ${ARCH} == amd64 && ! ${ARCH} == i386
 CMAKE_ARGS+=	-DSSE:BOOL=FALSE -DSSE2:BOOL=FALSE
 .endif
 

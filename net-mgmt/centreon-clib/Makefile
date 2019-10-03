@@ -3,12 +3,14 @@
 
 PORTNAME=	centreon-clib
 PORTVERSION=	19.04.0
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Common library of all Centreon projects written in C or C++
 
-LICENSE=	AGPLv3
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cmake compiler:c++11-lang
 

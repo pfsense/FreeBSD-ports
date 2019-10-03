@@ -3,6 +3,7 @@
 
 PORTNAME=	rar2fs
 PORTVERSION=	1.27.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
@@ -16,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${NONEXISTENT}:${LIBUNRAR_PORT}:patch
 LIB_DEPENDS=	libunrar.so:${LIBUNRAR_PORT}
 
-USES=		autoreconf gmake fuse
+USES=		autoreconf compiler:c11 gmake fuse
 USE_GITHUB=	yes
 GH_ACCOUNT=	hasse69
 

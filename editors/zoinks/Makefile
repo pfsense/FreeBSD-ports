@@ -13,6 +13,10 @@ COMMENT=	X11 programmer's editor and development environment
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		compiler
 USE_XORG=	x11 xext xpm
 GNU_CONFIGURE=	yes

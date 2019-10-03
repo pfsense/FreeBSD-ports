@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	freetds
-PORTVERSION=	1.1.6
+PORTVERSION=	1.1.16
 PORTEPOCH=	1
 CATEGORIES=	databases
-MASTER_SITES=	ftp://ftp.freetds.org/pub/freetds/stable/
+MASTER_SITES=	https://www.freetds.org/files/stable/ \
+		ftp://ftp.freetds.org/pub/freetds/stable/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Sybase/Microsoft TDS protocol library

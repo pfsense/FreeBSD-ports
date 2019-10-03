@@ -12,6 +12,10 @@ COMMENT=	GNAT Component Collection from Adacore
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING3
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 BUILD_DEPENDS=	gprbuild:devel/gprbuild \
 		gnat_util>=20140422:lang/gnat_util
 LIB_DEPENDS=	libgtkada.so:x11-toolkits/gtkada3 \

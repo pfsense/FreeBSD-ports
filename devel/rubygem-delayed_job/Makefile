@@ -2,20 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	delayed_job
-PORTVERSION=	4.1.5
+PORTVERSION=	4.1.8
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Asynchronously executing longer tasks in the background
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	rubygem-activesupport4>=3.0:devel/rubygem-activesupport4
+RUN_DEPENDS=	rubygem-activesupport4>=3.0<6.1:devel/rubygem-activesupport4
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

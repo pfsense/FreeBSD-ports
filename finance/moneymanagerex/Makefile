@@ -4,7 +4,7 @@
 PORTNAME=	mmex
 PORTVERSION=	1.2.7
 DISTVERSIONPREFIX=	v
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	finance
 MASTER_SITES=	https://github.com/vslavik/bakefile/releases/download/v0.2.9/:bakefile
 DISTFILES=	bakefile-0.2.9${EXTRACT_SUFX}:bakefile
@@ -47,13 +47,6 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == "gcc"
-CXXFLAGS+=	-D_GLIBCXX_USE_C99
-BUILD_DEPENDS+=	${LOCALBASE}/include/boost/lexical_cast.hpp:devel/boost-libs
-.endif
-
 post-extract:
 	@${MV} ${WRKDIR}/bakefile-0.2.9/autoconf/*.m4 ${WRKSRC}/m4
 
@@ -71,4 +64,4 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		's| -g0 -O2||' ${WRKSRC}/m4/wxpresets.m4
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

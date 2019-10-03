@@ -1,12 +1,12 @@
 # $FreeBSD$
 
-# TODO: once plasma5 ports are in, re-add dependency on workspace.
-
 PORTNAME=	ktorrent
-DISTVERSION=	5.1.1
-PORTREVISION=	3
+DISTVERSION=	5.1.2
 CATEGORIES=	net-p2p kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${DISTVERSION}/
+
+# Since libktorrent is released with ktorrent, it lives in a
+# strange download directory; keep this in-sync with net-p2p/libktorrent.
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	BitTorrent client for KDE
@@ -28,6 +28,7 @@ USE_QT=		core dbus gui network phonon4 script webkit widgets xml \
 
 OPTIONS_DEFINE=	WORKSPACE
 OPTIONS_DEFAULT=	WORKSPACE
+OPTIONS_SUB=	yes
 
 WORKSPACE_USE=	KDE=plasma-workspace
 WORKSPACE_DESC=	Shutdown on completion support

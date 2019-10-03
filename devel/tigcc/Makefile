@@ -3,7 +3,7 @@
 
 PORTNAME=	tigcc
 PORTVERSION=	0.96.b8
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=		GCC/snapshots/4.1-20060728:gcc \
 			GNU/binutils:gas \
@@ -144,7 +144,7 @@ do-install-EXAMPLES-on:
 
 .include <bsd.port.pre.mk>
 
-.if exists(/usr/lib/libstdc++.so)
+.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
 CFLAGS+=	-fnested-functions
 .endif
 

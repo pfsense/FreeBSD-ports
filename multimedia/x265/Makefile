@@ -2,18 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	x265
-PORTVERSION=	3.0
-PORTREVISION=	1
+PORTVERSION=	3.1.2
+PORTREVISION=	2
 CATEGORIES=	multimedia
-MASTER_SITES=	https://downloads.videolan.org/pub/videolan/x265/ \
+MASTER_SITES=	https://bitbucket.org/multicoreware/x265/downloads/ \
+		https://downloads.videolan.org/pub/videolan/x265/ \
 		https://mirror.leaseweb.com/videolan/x265/ \
 		http://downloads.videolan.org/pub/videolan/x265/ \
 		http://mirror.leaseweb.com/videolan/x265/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
-
-PATCH_SITES=	http://hg.videolan.org/${PORTNAME}/raw-rev/
-PATCHFILES+=	878541319ea1:-p1 a41325fc854f:-p1 # SVT-HEVC
-PATCHFILES+=	31ab7e09a3b5:-p1 e16999096b48:-p1 # SVT-HEVC
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	H.265/High Efficiency Video Coding (HEVC) format
@@ -47,8 +44,6 @@ SVTHEVC_DESC=	HEVC encoding via SVT-HEVC
 
 USE_LDCONFIG=	yes
 CMAKE_ARGS=	-DENABLE_PIC=on -DENABLE_TESTS=on
-CFLAGS_mips=	-DNO_ATOMICS # cannot use lang/gcc
-CFLAGS_mips64=	-DNO_ATOMICS # cannot use lang/gcc
 LDFLAGS_i386=	-Wl,-znotext
 EXTRACT_AFTER_ARGS+=	--exclude compat
 PATCH_WRKSRC=	${WRKSRC:H}

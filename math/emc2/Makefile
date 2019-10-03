@@ -3,7 +3,7 @@
 
 PORTNAME=	emc2
 DISTVERSIONPREFIX=v
-DISTVERSION=	2.16d
+DISTVERSION=	2.17
 CATEGORIES=	math science
 MASTER_SITES=	https://www.ljll.math.upmc.fr/~hecht/ftp/emc2/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -17,11 +17,11 @@ LICENSE_NAME=	INRIA license, perhaps specific to emc2
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LICENSE_PERMS=	auto-accept no-dist-sell no-pkg-sell
 
-RESTRICTED=	No resale, contact author for commercial usage
-
-USE_XORG=	x11
 USES=		gmake
+USE_XORG=	x11 xau xcb xdmcp
+
 ALL_TARGET=	${PORTNAME}
+RESTRICTED=	No resale, contact author for commercial usage
 
 .if defined(LANG) && ${LANG:Mfr*} != ""
 CFLAGS+=	-DFRENCH

@@ -3,9 +3,9 @@
 
 PORTNAME=	gecode
 PORTVERSION=	5.1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
-MASTER_SITES=	http://www.gecode.org/download/
+MASTER_SITES=	https://www.gecode.org/download/
 
 MAINTAINER=	dem.procopiou@gmail.com
 COMMENT=	Generic Constraint Development Environment

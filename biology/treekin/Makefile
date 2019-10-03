@@ -2,6 +2,7 @@
 
 PORTNAME=	treekin
 DISTVERSION=	0.5.1
+PORTREVISION=	1
 CATEGORIES=	biology
 MASTER_SITES=	https://www.tbi.univie.ac.at/RNA/packages/source/
 DISTNAME=	Treekin-${DISTVERSION}
@@ -16,7 +17,8 @@ LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror
 
 BUILD_DEPENDS=	lapacke>0:math/lapacke
 
-USES=		blaslapack:netlib fortran gmake localbase:ldflags
+USES=		blaslapack:netlib compiler:c++11-lang fortran gmake \
+		localbase:ldflags
 
 GNU_CONFIGURE=	yes
 

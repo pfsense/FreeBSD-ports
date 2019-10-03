@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	erkale
-DISTVERSION=	g20190412
-PORTREVISION=	1
+DISTVERSION=	g20190812
+PORTREVISION=	2
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,6 +22,7 @@ LIB_DEPENDS=	libderiv.so:science/libint \
 		libopenblas.so:math/openblas \
 		libsz.so:science/szip \
 		libxc.so:science/libxc
+RUN_DEPENDS=	${LOCALBASE}/share/erkale/basis/6-21G.gbs:science/erkale-pseudopotentials
 
 FLAVORS=	serial parallel
 FLAVOR?=	${FLAVORS:[1]}
@@ -30,7 +31,7 @@ serial_PKGNAMESUFFIX=	-serial
 USES=		cmake:noninja fortran pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	susilehtola
-GH_TAGNAME=	695bd16
+GH_TAGNAME=	b9279190bbd82fef33968e88bad706c8e213b6e4
 USE_LDCONFIG=	yes
 
 TEST_TARGET=	test
@@ -45,6 +46,7 @@ CMAKE_OFF=	USE_OPENMP
 .else # parallel
 CMAKE_ON+=	USE_OPENMP
 SUFFIX=		_omp
+LIB_DEPENDS+=	libomp.so:devel/openmp
 .endif
 
 OPTIONS_SINGLE=		LINALG

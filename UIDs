@@ -184,18 +184,18 @@ openhab:*:235:235::0:0:openHAB user:/var/db/openhab2/home:/usr/sbin/nologin
 rspamd:*:236:236::0:0:rspamd pseudo-user:/nonexistent:/usr/sbin/nologin
 paperless:*:237:237::0:0:paperless user:/var/db/paperless:/bin/sh
 sonic:*:238:238::0:0:sonic user:/var/db/sonic:/usr/sbin/nologin
-# free: 239
+restserver:*:239:239::0:0:restic rest-server Daemon:/var/db/restserver:/usr/sbin/nologin
 aprsd:*:240:240::0:0:aprsd:/nonexistent:/bin/sh
 tnc:*:241:241::0:0:aprsd:/nonexistent:/bin/sh
 prosody:*:242:242::0:0:Prosody Jabber Server:/nonexistent:/usr/sbin/nologin
-# free: 243
+ot-recorder:*:243:243::0:0:OwnTracks Recorder:/nonexistent:/usr/sbin/nologin
 mastodon:*:244:244::0:0:Mastodon User:/usr/local/www/mastodon:/bin/sh
 # free: 245
 # free: 246
 fcron:*:247:247::0:0:fcron pseudo-user:/nonexistent:/usr/sbin/nologin
 # free: 248
 # free: 249
-# free: 250
+sems:*:250:250::0:0:SIP Express Media Server:/nonexistent:/usr/sbin/nologin
 # free: 251
 # free: 252
 _adsuck:*:253:253::0:0:Adsuck ad blocking user:/nonexistent:/usr/sbin/nologin
@@ -301,7 +301,7 @@ radarr:*:352:352::0:0:Radarr Daemon:/nonexistent:/usr/sbin/nologin
 _iodined:*:353:353::0:0:Iodine Daemon:/nonexistent:/usr/sbin/nologin
 jackett:*:354:354::0:0:Jackett Torznab Proxy Daemon:/nonexistent:/usr/sbin/nologin
 nzbhydra2:*:355:355::0:0:NZBHydra 2 Daemon:/nonexistent:/usr/sbin/nologin
-# free: 356
+lidarr:*:356:356::0:0:Lidarr Daemon:/nonexistent:/usr/sbin/nologin
 # free: 357
 # free: 358
 # free: 359
@@ -546,10 +546,10 @@ avahi-autoipd:*:588:588::0:0:Avahi Autoipd Daemon user:/nonexistent:/usr/sbin/no
 # free: 598
 # free: 599
 _xsi:*:600:600::0:0:XMLSysInfo User:/nonexistent:/usr/sbin/nologin
-_tss:*:601:601:daemon:0:0:TrouSerS user:/var/empty:/usr/sbin/nologin
+_tss:*:601:601:daemon:0:0:TCG Software Stack user:/var/empty:/usr/sbin/nologin
 _pkcs11:*:602:602:daemon:0:0:opencryptoki user:/var/empty:/usr/sbin/nologin
 _acme:*:603:603::0:0:ACME client user:/var/empty:/usr/sbin/nologin
-# free: 604
+_lego:*:604:604::0:0:lego client user:/nonexistent:/usr/sbin/nologin
 _hockeypuck:*:605:605::0:0:hockeypuck pgp keyserver user:/var/empty:/usr/sbin/nologin
 # free: 606
 # free: 607
@@ -797,9 +797,9 @@ graylog:*:848:848::0:0:Graylog user:/nonexistent:/usr/sbin/nologin
 chronyd:*:849:849::0:0:chronyd user:/nonexistent:/usr/sbin/nologin
 qbittorrent:*:850:850::0:0:qBittorrent Daemon User:/var/db/qbittorrent/conf:/usr/sbin/nologin
 cassandra:*:851:851::0:0:Cassandra DB Daemon User:/var/db/cassandra:/usr/sbin/nologin
-# free: 852
+p0f:*:852:852::0:0:p0f unprivileged user:/var/empty:/usr/sbin/nologin
 _geodns:*:853:853::0:0:GeoDNS User:/var/empty:/usr/sbin/nologin
-# free: 854
+ebusd:*:854:854::0:0:eBUS Daemon user:/nonexistent:/usr/sbin/nologin
 # free: 855
 # free: 856
 # free: 857

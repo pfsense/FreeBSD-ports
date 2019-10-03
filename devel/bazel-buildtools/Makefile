@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	bazel-buildtools
-DISTVERSION=	0.26.0
+DISTVERSION=	0.28.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,10 +18,11 @@ GH_TUPLE=	\
 		google:skylark:a5f7082:skylark/vendor/github.com/google/skylark
 
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
-GO_TARGET=	${EXES:S/^/${GO_PKGNAME}\//}
+GO_TARGET=	./buildifier \
+		./buildifier2 \
+		./buildozer \
+		./unused_deps
 
-PLIST_FILES=	${EXES:S/^/bin\//}
-
-EXES=		buildifier buildifier2 buildozer unused_deps
+PLIST_FILES=	${GO_TARGET:S/^./bin/}
 
 .include <bsd.port.mk>

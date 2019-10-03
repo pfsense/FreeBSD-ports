@@ -2,9 +2,9 @@
 
 PORTNAME=	ncmpcpp
 DISTVERSION=	0.8.2
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	audio
-MASTER_SITES=	http://ncmpcpp.rybczak.net/stable/
+MASTER_SITES=	https://ncmpcpp.rybczak.net/stable/
 
 MAINTAINER=	yamagi@yamagi.org
 COMMENT=	Ncurses mpd client, clone of ncmpc with some new features

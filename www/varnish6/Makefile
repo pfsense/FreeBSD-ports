@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	varnish
-PORTVERSION=	6.2.1
+PORTVERSION=	6.3.0
 DISTVERSIONPREFIX=	varnish-
 CATEGORIES=	www
 PKGNAMESUFFIX=	6
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libpcre.so:devel/pcre
 
 CONFLICTS=	varnish-2.* varnish-3.* varnish4-4.* varnish5-5.*
 
-USES=		autoreconf cpe gmake libedit libtool ncurses pathfix \
+USES=		autoreconf compiler cpe gmake libedit libtool ncurses pathfix \
 		pkgconfig python:3.4+,build readline shebangfix
 SHEBANG_FILES=	lib/libvcc/*.py
 CPE_VENDOR=	varnish-cache
@@ -51,7 +51,7 @@ post-patch:
 .if defined(BAD_TESTS)
 	${RM} ${BAD_TESTS:C|.+|${WRKSRC}/bin/varnishtest/tests/\0.vtc|}
 .endif
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 	${REINPLACE_CMD} -e '/-Wno-unknown-warning-option -Wno-implicit-fallthrough/d' ${WRKSRC}/configure.ac
 .endif
 

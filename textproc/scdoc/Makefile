@@ -1,11 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	scdoc
-DISTVERSION=	1.9.4
+DISTVERSION=	1.10.0
 CATEGORIES=	textproc
-MASTER_SITES=	https://git.sr.ht/~sircmpwn/${PORTNAME}/archive/
-DISTFILES=	${DISTVERSIONFULL}${EXTRACT_SUFX}
-DIST_SUBDIR=	${PORTNAME}
+MASTER_SITES=	https://git.sr.ht/~sircmpwn/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Simple man page generator for POSIX systems written in C99
@@ -23,8 +21,8 @@ PLIST_FILES=	bin/${PORTNAME} \
 		man/man5/${PORTNAME}.5.gz
 
 post-patch:
-	@${REINPLACE_CMD} -i '' -e 's,--date=,-f "%F %T" ,' \
-		-e '/SOURCE_DATE/s/date/TZ=UTC+5 &/' \
+	@${REINPLACE_CMD} '/-static/d' ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -i '' -e 's,--date=,-jf "%F %T" ,' \
 		${WRKSRC}/test/preamble
 
 post-install:

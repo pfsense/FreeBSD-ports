@@ -18,6 +18,10 @@ COMMENT=	Implementation of Digital Video Transport System
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 CONFLICTS=	gdvrecv-[0-9]*
 
 USES=		autoreconf

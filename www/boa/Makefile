@@ -14,6 +14,10 @@ COMMENT=	High performance single-tasking web server
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		cpe gmake makeinfo tar:bzip2
 CPE_VENDOR=	${PORTVERSION:C/\.r/./}
 GNU_CONFIGURE=	yes

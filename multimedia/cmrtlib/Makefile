@@ -2,11 +2,11 @@
 
 PORTNAME=	cmrtlib
 DISTVERSIONPREFIX=	intel-media-
-DISTVERSION=	19.2.1
+DISTVERSION=	19.3.pre4
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	C for Media Runtime
+COMMENT=	C for Metal Runtime
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC:H}/LICENSE.md

@@ -3,7 +3,7 @@
 
 PORTNAME=	pingus
 PORTVERSION=	0.7.6
-PORTREVISION=	19
+PORTREVISION=	21
 CATEGORIES=	games
 MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
 
@@ -16,6 +16,8 @@ COMMENT=	Free Lemmings-like game
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		checksum mismatch
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/signals2.hpp:devel/boost-libs
 LIB_DEPENDS=	libpng.so:graphics/png

@@ -3,15 +3,13 @@
 PORTNAME=	cquery
 PORTVERSION=	20180718
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel
 
 MAINTAINER=	henry.hu.sh@gmail.com
 COMMENT=	Highly-scalable, low-latency language server for C/C++/Objective-C
 
 LICENSE=	MIT
-
-BROKEN_powerpc64=	fails to build: Checking for 'clang++' (C++ compiler): not found
 
 BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 LIB_DEPENDS=	libclang.so:devel/llvm${LLVM_DEFAULT}

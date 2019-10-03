@@ -3,7 +3,7 @@
 
 PORTNAME=	pipelight
 PORTVERSION=	0.2.8.2
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	emulators
 MASTER_SITES=	https://bitbucket.org/mmueller2012/pipelight/get/ \
 		http://repos.fds-team.de/pluginloader/v${DISTVERSION}/:plg
@@ -17,6 +17,10 @@ COMMENT=	Wrapper for using windows plugins in web browsers
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/gpg2:security/gnupg \
 		${LOCALBASE}/bin/bash:shells/bash

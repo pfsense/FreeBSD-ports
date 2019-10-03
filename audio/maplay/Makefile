@@ -13,6 +13,10 @@ COMMENT=	MPEG audio player/decoder decoding layer I and II MPEG audio streams
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 NO_WRKSUBDIR=	yes
 USES=		tar:Z
 

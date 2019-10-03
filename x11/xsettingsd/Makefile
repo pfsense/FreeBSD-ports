@@ -3,6 +3,7 @@
 PORTNAME=	xsettingsd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0-2
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-g1b2bcca
 CATEGORIES=	x11
 
@@ -24,7 +25,7 @@ PLIST_FILES=	bin/dump_xsettings \
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 pre-configure:
 	${REINPLACE_CMD} -e 's|-Wno-narrowing||' ${WRKSRC}/SConstruct
 .endif

@@ -2,6 +2,7 @@
 
 PORTNAME=	libunrar5
 PORTVERSION=	5.6.8
+PORTREVISION=	1
 CATEGORIES=	archivers
 MASTER_SITES=	http://www.rarlab.com/rar/
 DISTNAME=	unrarsrc-${PORTVERSION}
@@ -14,7 +15,7 @@ LICENSE_NAME=	UnRAR License
 LICENSE_FILE=	${WRKSRC}/license.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		gmake
+USES=		compiler:c++11-lang gmake
 USE_LDCONFIG=	yes
 
 ALL_TARGET=	lib

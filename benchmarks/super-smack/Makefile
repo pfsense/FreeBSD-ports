@@ -3,7 +3,7 @@
 
 PORTNAME=	super-smack
 PORTVERSION=	1.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	benchmarks databases
 MASTER_SITES=	GENTOO
 
@@ -25,6 +25,7 @@ OPTIONS_MULTI_DB=	MYSQL PGSQL
 OPTIONS_DEFAULT=	MYSQL
 
 MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		compiler:c++11-lang
 MYSQL_CONFIGURE_ON=	--with-mysql \
 			--with-mysql-include=${LOCALBASE}/include/mysql \
 			--with-mysql-lib=${LOCALBASE}/lib/mysql

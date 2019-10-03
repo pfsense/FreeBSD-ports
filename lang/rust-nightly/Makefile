@@ -1,7 +1,9 @@
 # Created by: Jean-Sébastien Pédron <dumbbell@FreeBSD.org>
 # $FreeBSD$
 
-PORTVERSION=	1.37.0.${NIGHTLY_DATE:C,-,,g}
+PORTVERSION=	1.40.0.${NIGHTLY_DATE:C,-,,g}
+# Always set PORTREVISION explicitly as otherwise it is inherited from lang/rust
+PORTREVISION=	0
 PKGNAMESUFFIX=	-nightly
 DISTNAME=	rustc-nightly-src
 
@@ -14,11 +16,11 @@ CONFLICTS_INSTALL=	rust
 # Which source to pull:
 #   https://static.rust-lang.org/dist/${NIGHTLY_DATE}/rustc-nightly-src.tar.gz
 #   https://static.rust-lang.org/dist/channel-rust-nightly.toml
-NIGHTLY_DATE=			2019-07-04
+NIGHTLY_DATE=			2019-10-01
 NIGHTLY_SUBDIR=			${NIGHTLY_DATE}/
 
 # See WRKSRC/src/stage0.txt for this date
-BOOTSTRAPS_DATE=		2019-05-23
+BOOTSTRAPS_DATE=		2019-09-25
 RUST_BOOTSTRAP_VERSION=		beta
 CARGO_BOOTSTRAP_VERSION=	beta
 

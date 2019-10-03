@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	cmprsk
-PORTREVISION=	3
-DISTVERSION=	2.2-7
+DISTVERSION=	2.2-8
+PORTREVISION=	1
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Subdistribution Analysis of Competing Risks
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv2+
 
 USES=		cran:auto-plist,compiles
 

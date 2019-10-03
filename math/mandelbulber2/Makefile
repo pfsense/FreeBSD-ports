@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	mandelbulber2
-DISTVERSION=	2.18-1
+DISTVERSION=	2.19
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +18,7 @@ LIB_DEPENDS=	libgsl.so:math/gsl \
 		liblzo2.so:archivers/lzo2 \
 		libomp.so:devel/openmp \
 		libOpenCL.so:devel/ocl-icd \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libsndfile.so:audio/libsndfile \
 		libtiff.so:graphics/tiff
 

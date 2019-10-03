@@ -18,6 +18,10 @@ COMMENT=	Data Test Program - disk/tape error diagnostic tool
 
 LICENSE=	ISCL
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 OPTIONS_DEFINE=	DOCS
 
 USES=		shebangfix

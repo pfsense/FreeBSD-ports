@@ -2,6 +2,7 @@
 
 PORTNAME=		webkit
 DISTVERSION=		5.212.0-alpha3
+PORTREVISION=	2
 CATEGORIES=		www
 MASTER_SITES=		https://github.com/qt${PORTNAME}/qt${PORTNAME}/releases/download/${DISTNAME}/
 PKGNAMEPREFIX=		qt5-
@@ -11,19 +12,17 @@ MAINTAINER=		kde@FreeBSD.org
 COMMENT=		QtWebKit with a more modern WebKit code base
 
 LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig \
-			libgstapp-1.0.so:multimedia/gstreamer1-plugins \
-			libgstbase-1.0.so:multimedia/gstreamer1 \
 			libhyphen.so:textproc/hyphen \
 			libicui18n.so:devel/icu \
 			libpng.so:graphics/png \
-			libwebp.so:graphics/webp
+			libwebp.so:graphics/webp \
+			libwoff2dec.so:devel/woff2
 
 USES=			bison cmake compiler:c++11-lang gperf jpeg \
 			pathfix perl5 pkgconfig python:2.7,build qt:5 sqlite:3 \
 			tar:xz
 USE_GNOME=		glib20 libxml2 libxslt
 USE_PERL5=		build
-USE_GSTREAMER1=		core
 USE_QT=			core declarative gui location network opengl printsupport \
 			sensors testlib webchannel widgets \
 			buildtools_build qmake_build
@@ -50,5 +49,13 @@ PLIST_SUB=		FULLVER="${PORTVERSION:R}"
 
 SUB_FILES=		pkg-install
 SUB_LIST=		QT_INCDIR="${QT_INCDIR}"
+
+OPTIONS_DEFINE=	GSTREAMER
+OPTIONS_DEFAULT=	GSTREAMER
+
+GSTREAMER_LIB_DEPENDS=	libgstapp-1.0.so:multimedia/gstreamer1-plugins \
+			libgstbase-1.0.so:multimedia/gstreamer1
+GSTREAMER_USE=		GSTREAMER1=core
+GSTREAMER_CMAKE_OFF=	-DUSE_GSTREAMER:BOOL=OFF
 
 .include <bsd.port.mk>

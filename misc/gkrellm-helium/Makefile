@@ -10,6 +10,10 @@ MASTER_SITES=	https://sites.google.com/site/makovick/projects/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GKrellM plugin reading data from helium thermometer at Strahov, Prague
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 LIB_DEPENDS=	libcurl.so:ftp/curl
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2

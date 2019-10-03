@@ -3,7 +3,7 @@
 
 PORTNAME=	csmash
 PORTVERSION=	0.6.6
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	games
 MASTER_SITES=	SF/cannonsmash/CannonSmash/${PORTVERSION}
 
@@ -13,7 +13,7 @@ COMMENT=	3D tabletennis game
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext gmake pkgconfig
+USES=		compiler:c++11-lang gettext gmake pkgconfig
 USE_SDL=	image mixer sdl
 USE_GL=		yes
 USE_GNOME=	gtk20

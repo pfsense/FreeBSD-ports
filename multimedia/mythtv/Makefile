@@ -4,9 +4,12 @@
 PORTNAME=	mythtv
 DISTVERSIONPREFIX=	v
 DISTVERSION=	30.0
-PORTREVISION?=	3
+PORTREVISION?=	4
 PORTEPOCH=	1
 CATEGORIES=	multimedia
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	aab7d3f065a7.patch:-p2
 
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	MythTV is a homebrew PVR project
@@ -104,8 +107,8 @@ DATADIR=	${PREFIX}/share/mythtv
 SUB_FILES=	pkg-message
 .endif
 
-OPTIONS_DEFINE=		BINDINGS JACK LIRC MYSQL PULSEAUDIO VDPAU
-OPTIONS_DEFAULT=	BINDINGS VDPAU
+OPTIONS_DEFINE=		BINDINGS HDHOMERUN JACK LIRC MYSQL PULSEAUDIO VDPAU
+OPTIONS_DEFAULT=	BINDINGS HDHOMERUN VDPAU
 OPTIONS_SUB=		yes
 
 BINDINGS_DESC=		Perl and Python bindings
@@ -135,6 +138,10 @@ BINDINGS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb
 			p5-LWP-UserAgent-Determined>=0:www/p5-LWP-UserAgent-Determined
 BINDINGS_CONFIGURE_ON=	--python=${PYTHON_CMD}
 BINDINGS_CONFIGURE_OFF=	--without-bindings=perl,python
+
+HDHOMERUN_DESC=		Native support for HDHomeRun network tuners
+HDHOMERUN_LIB_DEPENDS=	libhdhomerun.so:multimedia/libhdhomerun
+HDHOMERUN_CONFIGURE_OFF=	--disable-hdhomerun
 
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JACK_CONFIGURE_ON=	--enable-audio-jack --enable-indev=jack

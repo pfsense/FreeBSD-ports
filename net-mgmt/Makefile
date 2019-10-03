@@ -291,6 +291,7 @@
     SUBDIR += php71-snmp
     SUBDIR += php72-snmp
     SUBDIR += php73-snmp
+    SUBDIR += php74-snmp
     SUBDIR += phpipam
     SUBDIR += phpweathermap
     SUBDIR += pixilate
@@ -381,6 +382,7 @@
     SUBDIR += tcpreplay
     SUBDIR += tcptrack
     SUBDIR += telegraf
+    SUBDIR += thanos
     SUBDIR += tornova
     SUBDIR += torrus
     SUBDIR += triton-guesttools
