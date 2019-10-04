@@ -14,6 +14,10 @@ COMMENT=	Cleaned up copy of the original Quake III Arena source code
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		dos2unix gmake zip
 WRKSRC=		${WRKDIR}/CleanQ3
 BUILD_WRKSRC=	${WRKSRC}/code/unix

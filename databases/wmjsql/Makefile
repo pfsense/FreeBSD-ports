@@ -13,6 +13,10 @@ COMMENT=	MySQL server status displaying dockapp
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		gmake
 USE_MYSQL=	yes
 USE_XORG=	xpm

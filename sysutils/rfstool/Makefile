@@ -10,6 +10,10 @@ DISTNAME=	rfstool-0.14-source
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Read from a Reiser file system
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 PLIST_FILES=	bin/rfstool
 USES=		dos2unix zip
 USE_CXXSTD=	c++98

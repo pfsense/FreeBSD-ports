@@ -3,7 +3,7 @@
 
 PORTNAME=	pyawale
 PORTVERSION=	0.4.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games python
 MASTER_SITES=	http://download.gna.org/pyawale/
 
@@ -12,6 +12,10 @@ COMMENT=	African board game
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 RUN_DEPENDS=	${PYGAME}
 

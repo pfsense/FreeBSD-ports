@@ -11,6 +11,10 @@ MASTER_SITES=	http://freenet-homepage.de/thomas-steinke/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gkrellm2 plugin which shows the system load as a flame
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2
 

@@ -1,6 +1,6 @@
---- Telegram/SourceFiles/history/view/history_view_list_widget.cpp.orig	2019-04-13 06:46:58 UTC
+--- Telegram/SourceFiles/history/view/history_view_list_widget.cpp.orig	2019-09-06 13:41:43 UTC
 +++ Telegram/SourceFiles/history/view/history_view_list_widget.cpp
-@@ -2031,7 +2031,7 @@ void ListWidget::mouseActionFinish(
+@@ -2050,7 +2050,7 @@ void ListWidget::mouseActionFinish(
  	_mouseSelectType = TextSelectType::Letters;
  	//_widget->noSelectingScroll(); // #TODO select scroll
  
@@ -9,7 +9,7 @@
  	if (_selectedTextItem
  		&& _selectedTextRange.from != _selectedTextRange.to) {
  		if (const auto view = viewForItem(_selectedTextItem)) {
-@@ -2040,7 +2040,7 @@ void ListWidget::mouseActionFinish(
+@@ -2059,7 +2059,7 @@ void ListWidget::mouseActionFinish(
  				QClipboard::Selection);
  }
  	}

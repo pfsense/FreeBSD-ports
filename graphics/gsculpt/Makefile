@@ -3,7 +3,7 @@
 
 PORTNAME=	gsculpt
 PORTVERSION=	0.99.47
-PORTREVISION=	24
+PORTREVISION=	26
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME:S,-src,,}
 DISTNAME=	gSculpt-${PORTVERSION}-alpha-src
@@ -24,7 +24,7 @@ BROKEN_sparc64=		fails to compile
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S,-src,,}
 
-USES=		pkgconfig python:2.7 scons
+USES=		compiler:c++11-lang pkgconfig python:2.7 scons
 USE_GNOME=	pygtk2
 USE_GL=		glu
 USE_XORG=	x11

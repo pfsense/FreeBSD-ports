@@ -3,7 +3,7 @@
 PORTNAME=	qtpass
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	brouwer@annejan.com
@@ -29,6 +29,10 @@ DESKTOP_ENTRIES=	"QtPass" "" \
 			"${PREFIX}/share/pixmaps/qtpass.png" \
 			"${PREFIX}/bin/qtpass" \
 			"Security;Utility;" true
+
+# Fix build with Qt 5.13
+pre-build:
+	cd ${WRKSRC}/localization && ${LRELEASE} *ts
 
 # Install the icon of the port.
 post-install:

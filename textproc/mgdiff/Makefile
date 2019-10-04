@@ -3,7 +3,7 @@
 
 PORTNAME=	mgdiff
 PORTVERSION=	1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	XCONTRIB/applications
 DISTNAME=	${PORTNAME}
@@ -13,8 +13,8 @@ COMMENT=	Graphical front end to the UNIX diff command
 
 LICENSE=	MIT
 
-USES=		imake motif
-USE_XORG=	ice sm x11 xext xmu xp xt
+USES=		imake motif xorg
+USE_XORG=	ice sm x11 xext xmu xt
 
 DESKTOP_ENTRIES=	"mgdiff" "GUI front end to the UNIX diff command" \
 			"mgdiff-48x48" \

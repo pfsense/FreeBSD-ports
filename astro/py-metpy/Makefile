@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	metpy
-PORTVERSION=	0.10.0
-PORTREVISION=	2
+PORTVERSION=	0.10.2
+PORTREVISION=	1
 CATEGORIES=	astro python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -30,4 +30,10 @@ USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 3600
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}contextlib2>=0:devel/py-contextlib2@${PY_FLAVOR}
+.endif
+
+.include <bsd.port.post.mk>

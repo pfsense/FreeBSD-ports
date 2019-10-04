@@ -3,7 +3,7 @@
 
 PORTNAME=	lang
 PORTVERSION=	2.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games python
 MASTER_SITES=	http://download.gna.org/py4childs/pysycache/v${PORTVERSION}/
 PKGNAMEPREFIX=	pysycache-
@@ -12,6 +12,10 @@ DIST_SUBDIR=	pysycache
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The pysycache lang support
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 RUN_DEPENDS=	pysycache.py:games/pysycache
 

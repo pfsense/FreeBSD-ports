@@ -11,6 +11,10 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to patch modules and kernel
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 PLIST_FILES=	man/man8/${PORTNAME}.8.gz sbin/kldpatch
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

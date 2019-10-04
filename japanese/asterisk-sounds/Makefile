@@ -14,6 +14,10 @@ DISTNAME=	asterisk-sound-jp_${PORTVERSION:S|.||}_pre
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Japanese sound files for Asterisk
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 NO_BUILD=	yes
 ASTERISKDIR=	${PREFIX}/share/asterisk/sounds
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}

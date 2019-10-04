@@ -3,7 +3,7 @@
 
 PORTNAME=	super_mediator
 PORTVERSION=	1.6.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://tools.netsa.cert.org/releases/
 
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libfixbuf.so:net/libfixbuf \
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		libtool pathfix perl5 pkgconfig ssl
+USES=		compiler:c11 libtool pathfix perl5 pkgconfig ssl
 USE_GNOME=	glib20
 
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}"

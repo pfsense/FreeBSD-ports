@@ -1,30 +1,34 @@
 # $FreeBSD$
 
 PORTNAME=	mtm
-DISTVERSION=	g20180507
+DISTVERSION=	1.1.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	0mp@FreeBSD.org
-COMMENT=	Terminal multiplexer focued on simplicity, compatibility and stability
+COMMENT=	Terminal multiplexer focused on simplicity, compatibility and stability
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/README.rst
 
-USES=		ncurses
-
+# NB: ncurses 6.1 is required.
+USES=		localbase:ldflags ncurses:port
 USE_CSTD=	gnu99
 USE_GITHUB=	yes
 GH_ACCOUNT=	deadpixi
-GH_TAGNAME=	b861104
 
 PLIST_FILES=	bin/mtm \
 		man/man1/mtm.1.gz
 
-MAKE_ARGS+=	LIBS='-lutil -lncursesw'
+CFLAGS+=	-I${NCURSESINC}
+LDFLAGS+=	-L${NCURSESLIB} -ltinfow
 
 PORTDATA=	mtm.ti
 
-post-install:
+do-install:
+	@${MKDIR} ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/mtm.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/mtm.1
+	@${MKDIR} ${STAGEDIR}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/mtm ${STAGEDIR}${PREFIX}/bin/mtm
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/mtm.ti ${STAGEDIR}${DATADIR}/mtm.ti
 

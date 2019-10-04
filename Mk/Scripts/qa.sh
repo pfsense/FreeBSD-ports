@@ -77,6 +77,7 @@ shebangonefile() {
 	/usr/bin/nawk) ;;
 	/usr/bin/sed) ;;
 	/usr/sbin/dtrace) ;;
+	/usr/bin/make) ;;
 	*)
 		badinterp="${interp}"
 		;;
@@ -613,9 +614,6 @@ proxydeps_suggest_uses() {
 	# openal
 	elif [ ${pkg} = "audio/openal" -o ${pkg} = "audio/openal-soft" -o ${pkg} = "audio/freealut" ]; then
 		warn "you need USES+=openal"
-	# pure
-	elif [ ${pkg} = "lang/pure" ]; then
-		warn "you need USES+=pure"
 	# readline
 	elif [ ${pkg} = "devel/readline" ]; then
 		warn "you need USES+=readline"
@@ -994,10 +992,24 @@ depends_blacklist()
 	return $rc
 }
 
+pkgmessage()
+{
+	for message in ${PKGMESSAGES}; do
+		if [ -f "${message}" ]; then
+			if ! head -1 "${message}" | grep -q '^\['; then
+				warn "${message} not in UCL format, will be shown on initial install only."
+				warn "See https://www.freebsd.org/doc/en/books/porters-handbook/pkg-files.html#porting-message"
+			fi
+		fi
+	done
+
+	return 0
+}
+
 checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo"
 checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
 checks="$checks proxydeps sonames perlcore no_arch gemdeps gemfiledeps flavors"
-checks="$checks license depends_blacklist"
+checks="$checks license depends_blacklist pkgmessage"
 
 ret=0
 cd ${STAGEDIR} || exit 1

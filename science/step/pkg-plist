@@ -82,6 +82,8 @@ share/locale/lt/LC_MESSAGES/step.mo
 share/locale/lt/LC_MESSAGES/step_qt.qm
 share/locale/lv/LC_MESSAGES/step.mo
 share/locale/lv/LC_MESSAGES/step_qt.qm
+share/locale/ml/LC_MESSAGES/step.mo
+share/locale/ml/LC_MESSAGES/step_qt.qm
 share/locale/mr/LC_MESSAGES/step.mo
 share/locale/mr/LC_MESSAGES/step_qt.qm
 share/locale/nb/LC_MESSAGES/step.mo
@@ -122,6 +124,7 @@ share/locale/zh_CN/LC_MESSAGES/step_qt.qm
 share/locale/zh_TW/LC_MESSAGES/step.mo
 share/locale/zh_TW/LC_MESSAGES/step_qt.qm
 share/metainfo/org.kde.step.appdata.xml
+share/mime/packages/org.kde.step.xml
 %%DATADIR%%/examples/brownian.step
 %%DATADIR%%/examples/doublependulum.step
 %%DATADIR%%/examples/eightpendula.step

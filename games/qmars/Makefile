@@ -14,6 +14,10 @@ COMMENT=	Quicker Mars - heavily optimized mars simulator
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 BUILD_DEPENDS=	makedepend:devel/makedepend
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

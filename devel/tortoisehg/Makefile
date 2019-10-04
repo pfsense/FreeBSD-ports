@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	tortoisehg
-DISTVERSION=	4.9.1
+DISTVERSION=	5.0.2
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://bitbucket.org/tortoisehg/targz/downloads/
 
@@ -11,6 +12,7 @@ COMMENT=	GUI for Mercurial VCS
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
+BUILD_DEPENDS=	hg:devel/mercurial
 RUN_DEPENDS=	hg:devel/mercurial \
 		${PYTHON_PKGNAMEPREFIX}iniparse>=0.4:devel/py-iniparse@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR}

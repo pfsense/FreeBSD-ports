@@ -555,7 +555,7 @@ function snort_barnyard_start($snortcfg, $if_real, $background=FALSE) {
 	$snort_uuid = $snortcfg['uuid'];
 	$snortbindir = SNORT_BINDIR;
 
-	if ($snortcfg['barnyard_enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
+	if ($snortcfg['barnyard_enable'] == 'on' && $if_real <> "" && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
 		syslog(LOG_NOTICE, "[Snort] Barnyard2 START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		if ($background)
 			mwexec_bg("{$snortbindir}barnyard2 -f \"snort_{$snort_uuid}_{$if_real}.u2\" --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q");
@@ -577,7 +577,7 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 	else
 		$quiet = "-q --suppress-config-log";
 
-	if ($snortcfg['enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
+	if ($snortcfg['enable'] == 'on' && $if_real <> "" && !isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
 
 		// Adjust the interface specification and DAQ type according to operating mode
 		if ($snortcfg['ips_mode'] == "ips_mode_inline" && $snortcfg['blockoffenders7'] == "on") {
@@ -612,7 +612,7 @@ function snort_start_all_interfaces($background=FALSE) {
 		return;
 
 	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
-		if ($snortcfg['enable'] != 'on')
+		if ($snortcfg['enable'] != 'on' || get_real_interface($snortcfg['interface']) == "")
 			continue;
 		snort_start($snortcfg, get_real_interface($snortcfg['interface']), $background);
 	}
@@ -1020,7 +1020,7 @@ function snort_rules_up_install_cron($should_install) {
 	}
 }
 
-/* Only run when all ifaces needed to sync. Expects filesystem rw */
+/* Only run when all ifaces needed to sync */
 function sync_snort_package_config() {
 	global $config, $g;
 	global $rebuild_rules;
@@ -1041,8 +1041,10 @@ function sync_snort_package_config() {
 
 	$snortconf = $config['installedpackages']['snortglobal']['rule'];
 	foreach ($snortconf as $value) {
-		/* Skip configuration of any disabled interface */
-		if ($value['enable'] != 'on')
+		/* Skip configuration of any disabled instance or */
+		/* an instance whose assigned physical interface  */
+		/* has been removed.                              */
+		if (($value['enable'] != 'on') || (get_real_interface($value['interface']) == ""))
 			continue;
 
 		/* create a snort.conf file for interface */
@@ -3239,11 +3241,17 @@ function snort_create_rc() {
 	// Loop thru each configured interface and build
 	// the shell script.
 	foreach ($snortconf as $value) {
-		// Skip disabled Snort interfaces
-		if ($value['enable'] <> 'on')
+
+		// Attempt to grab physical interface
+		// for this Snort instance.
+		$if_real = get_real_interface($value['interface']);
+
+		// Skip disabled Snort instances or
+		// intances whose pfSense physical
+		// interface has been removed.
+		if (($value['enable'] <> 'on') || ($if_real == ""))
 			continue;
 		$snort_uuid = $value['uuid'];
-		$if_real = get_real_interface($value['interface']);
 
 		// Adjust the interface specification and DAQ type according to operating mode
 		if ($value['ips_mode'] == "ips_mode_inline" && $value['blockoffenders7'] == "on") {

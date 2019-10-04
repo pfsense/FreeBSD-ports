@@ -3,6 +3,7 @@
 
 PORTNAME=	mysql-connector-odbc
 PORTVERSION=	5.3.13
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	MYSQL/Connector-ODBC/5.3
 PKGNAMESUFFIX=	-${DRIVER_MANAGER}-mysql${MYSQL_VER}
@@ -16,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libodbc.so:databases/unixODBC
 
-USES=		cmake mysql
+USES=		cmake compiler:c++11-lang mysql
 
 CMAKE_ARGS=	-DWITH_UNIXODBC=1 -DDISABLE_GUI=1
 USE_LDCONFIG=	yes

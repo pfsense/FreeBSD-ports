@@ -13,6 +13,10 @@ COMMENT=	Simple telephone book
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	p5-Gtk2>=0:x11-toolkits/p5-Gtk2
 
 USES=		shebangfix tar:bzip2

@@ -1,3 +1,3 @@
-TIMESTAMP = 1559147086
-SHA256 (python-novaclient-14.1.0.tar.gz) = 882ae865ff5cebfaa0c323978da20486876ea17e500466cdabcd91038906a86b
-SIZE (python-novaclient-14.1.0.tar.gz) = 313948
+TIMESTAMP = 1568290960
+SHA256 (python-novaclient-15.1.0.tar.gz) = 9d4c9d2213b4f3dd3e5ee72cf0040a976bedf27735346b4526dc25bd56b96a0c
+SIZE (python-novaclient-15.1.0.tar.gz) = 322768

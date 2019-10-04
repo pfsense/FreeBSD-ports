@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	kicad
-PORTVERSION=	5.1.2
+PORTVERSION=	5.1.4
 CATEGORIES=	cad
 PKGNAMESUFFIX=	-doc
 
@@ -30,10 +30,10 @@ GH_PROJECT=	kicad-doc
 
 CONFLICTS=	kicad-devel-r2*
 
+NO_ARCH=	yes
+
 CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DLANGUAGES="ca;de;en;es;fr;id;it;ja;nl;ru"
 INSTALL_TARGET=	install
-
-NO_ARCH=	yes
 
 .include <bsd.port.mk>

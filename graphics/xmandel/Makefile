@@ -14,6 +14,10 @@ EXTRACT_SUFX=	.shar
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Window based interface to Mandelbrot sets and Julia sets
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 EXTRACT_CMD=	${SH}
 EXTRACT_BEFORE_ARGS=	# empty
 EXTRACT_AFTER_ARGS=	# empty

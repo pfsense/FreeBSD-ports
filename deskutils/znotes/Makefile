@@ -3,7 +3,7 @@
 
 PORTNAME=	znotes
 PORTVERSION=	0.4.5.20150825
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	deskutils
 
 MAINTAINER=	rigoletto@FreeBSD.org
@@ -34,6 +34,6 @@ post-patch:
 
 pre-configure:
 #Work around badly written .pro
-	${LRELEASE} ${WRKSRC}/${PORTNAME}.pro
+	cd ${WRKSRC} && ${LRELEASE} ${WRKSRC}/${PORTNAME}.pro
 
 .include <bsd.port.mk>

@@ -11,6 +11,10 @@ DISTNAME=	3414-qnxtheme-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	QNX-inspired theme for GTK2
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		gnome
 USE_GNOME=	gtk20
 

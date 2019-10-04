@@ -3,6 +3,7 @@
 
 PORTNAME=	syslog-ng
 DISTVERSION=	3.21.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/balabit/syslog-ng/releases/download/syslog-ng-${DISTVERSION}/
 .if !defined(MASTERDIR)
@@ -111,6 +112,7 @@ JAVA_USE=			JAVA=yes
 JAVA_PLIST_FILES=		lib/syslog-ng/libmod-java.so \
 				lib/syslog-ng/java-modules/syslog-ng-core.jar
 
+JAVA_MOD_IMPLIES=		JAVA
 JAVA_MOD_CONFIGURE_ENABLE=	java-modules
 JAVA_MOD_USE=			JAVA=yes
 JAVA_MOD_BUILD_DEPENDS=		gradle:devel/gradle \
@@ -204,6 +206,9 @@ BROKEN=		Default configuration does not currently support non-JSON builds
 post-patch:
 	@${CP} ${WRKSRC}/scl/syslog-ng.conf ${WRKSRC}/scl/syslog-ng.conf.dist
 	@${CP} ${WRKSRC}/scl/scl.conf ${WRKSRC}/scl/scl.conf.sample
+
+post-patch-JAVA_MOD-on:
+	@${REINPLACE_CMD} 's,$$(GRADLE),& --no-daemon,g' ${WRKSRC}/Makefile.in
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}

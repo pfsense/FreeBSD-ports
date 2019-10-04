@@ -2,6 +2,7 @@
 
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER:S/^0//}.${BSD_JDK_VERSION}
+PORTREVISION=	2
 CATEGORIES=	java devel
 MASTER_SITES=	LOCAL/jkim:jtreg
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
@@ -10,6 +11,8 @@ MAINTAINER=	java@FreeBSD.org
 COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
 
 LICENSE=	GPLv2
+
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		autoconf>0:devel/autoconf \
@@ -22,12 +25,11 @@ RUN_DEPENDS=	javavm:java/javavmwrapper \
 		dejavu>0:x11-fonts/dejavu
 
 USES=		compiler:features gmake iconv pkgconfig shebangfix
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	battleblow
 GH_PROJECT=	openjdk-jdk8u
 GH_TAGNAME=	jdk${JDK_MAJOR_VERSION}u${JDK_UPDATE_VERSION}-b${JDK_BUILD_NUMBER}.${BSD_JDK_VERSION}
-
-ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64
 
 SHEBANG_FILES=	configure
 
@@ -52,8 +54,8 @@ INSTALLDIR=	${PREFIX}/${PKGBASE}
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	212
-JDK_BUILD_NUMBER=	04
+JDK_UPDATE_VERSION=	222
+JDK_BUILD_NUMBER=	10
 BSD_JDK_VERSION=	1
 JTREG_VERSION=		4.1
 JTREG_BUILD_NUMBER=	b08
@@ -111,6 +113,7 @@ X11_MAKE_ENV_OFF=	BUILD_HEADLESS_ONLY=1 \
 			MAKEFLAGS=X_CFLAGS="-I${LOCALBASE}/include"
 X11_MAKE_ENV_ON=	MAKEFLAGS=""
 X11_USE=		XORG=x11,xext,xi,xrender,xt,xtst
+FONTCONFIG_EXTRA_PATCHES=	${PATCHDIR}/fontconfig.patch
 FONTCONFIG_IMPLIES=	X11
 
 JAVAVMS_COMMENT=	OpenJDK${JDK_MAJOR_VERSION}
@@ -222,9 +225,6 @@ ICONV_LDFLAGS=	-L${LOCALBASE}/lib ${ICONV_LIB}
 
 post-extract-TEST-on:
 	@${LN} -sf ${WRKDIR}/jtreg/linux/bin ${WRKDIR}/jtreg/
-
-do-patch-FONTCONFIG-on:
-	@${PATCH} -d ${PATCH_WRKSRC} < ${PATCHDIR}/fontconfig.patch
 
 post-patch:
 	@${FIND} ${WRKSRC} -name '*.orig' -delete

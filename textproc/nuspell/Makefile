@@ -2,8 +2,8 @@
 
 PORTNAME=	nuspell
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.0
-PORTREVISION=	2
+DISTVERSION=	2.3.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -20,9 +20,11 @@ USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 CMAKE_ON=	BUILD_SHARED_LIBS
 
-OPTIONS_DEFINE=	DOCS TEST
+OPTIONS_DEFINE=	MANPAGES TEST
+OPTIONS_DEFAULT=MANPAGES
 
-DOCS_BUILD_DEPENDS=	ronn:textproc/rubygem-ronn
+MANPAGES_BUILD_DEPENDS=	ronn:textproc/rubygem-ronn
+MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
 
 TEST_BUILD_DEPENDS=	catch>0:devel/catch \
 			bash:shells/bash
@@ -32,12 +34,6 @@ TEST_TEST_TARGET=	test
 post-patch:
 # Skip README as it only contains install instructions
 	@${REINPLACE_CMD} -i .doc '/README/d' ${WRKSRC}/CMakeLists.txt
-# Switch to system Catch2 and use IMPORTED target
-	@${REINPLACE_CMD} -i .catch '/Catch2/,//d' ${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -i .catch -e '/CMAKE_MODULE_PATH/,/Catch2/d' \
-		-e $$'/include.*Catch/i\\\nfind_package(Catch2 REQUIRED)\n' \
-		-e '/target_link_libraries/s/Catch2/&::&/' \
-		${WRKSRC}/tests/CMakeLists.txt
 # Respect PREFIX != /usr/local
 	@${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},' \
 		${WRKSRC}/src/nuspell/finder.cxx

@@ -7,7 +7,7 @@
 
 PORTNAME=	sphinxsearch
 PORTVERSION=	2.2.11
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc databases
 MASTER_SITES=	http://sphinxsearch.com/files/ \
 		http://snowball.tartarus.org/dist/:libstemmer
@@ -18,6 +18,8 @@ MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Sphinx Full-Text Search Engine
 
 LICENSE=	GPLv2
+
+USES=		compiler:c++11-lang
 
 # If expat is present on the system and configure finds it, it will
 # unconditionally link the output binary against it.  There's no way

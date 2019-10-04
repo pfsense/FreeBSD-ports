@@ -4,13 +4,17 @@
 PORTNAME=	viewnior
 PORTVERSION=	1.6
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast and simple image viewer
 
 LICENSE=	GPLv3
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 LIB_DEPENDS=	libexiv2.so:graphics/exiv2
 

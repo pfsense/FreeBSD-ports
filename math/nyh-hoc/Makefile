@@ -11,6 +11,10 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High Order Calculator
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 MAKE_JOBS_UNSAFE= yes
 
 GNU_CONFIGURE=	yes

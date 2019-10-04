@@ -3,6 +3,7 @@
 PORTNAME=	klee
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0
+PORTREVISION=	1
 CATEGORIES=	security devel
 
 MAINTAINER=	arrowd@FreeBSD.org
@@ -46,5 +47,11 @@ STP_DESC=		STP SMT solver
 STP_CMAKE_BOOL=		ENABLE_SOLVER_STP
 STP_CMAKE_ON=		-DFREEBSD_STP_STATIC_LIBRARY:STRING=${LOCALBASE}/lib/libstp.a
 STP_BUILD_DEPENDS=	stp>0:math/stp
+
+.include <bsd.port.options.mk>
+
+.if ${LLVM_DEFAULT:S,-devel,990,} >= 90
+LLVM_DEFAULT=	80
+.endif
 
 .include <bsd.port.mk>

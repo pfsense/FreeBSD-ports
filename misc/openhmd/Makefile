@@ -1,9 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	OpenHMD
-DISTVERSION=	0.2.0-215
+DISTVERSION=	0.3.0
 PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g6f91c10
 CATEGORIES=	misc
 MASTER_SITES=	CHEESESHOP
 
@@ -19,9 +18,12 @@ USES=		cmake compiler:c++11-lang
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 
+CMAKE_ON=	BUILD_SHARED_LIBS
+
 PLIST_FILES=	include/openhmd.h \
 		lib/libopenhmd.so \
 		lib/libopenhmd.so.0 \
-		lib/libopenhmd.so.0.1.0
+		lib/libopenhmd.so.0.1.0 \
+		libdata/pkgconfig/openhmd.pc
 
 .include <bsd.port.mk>

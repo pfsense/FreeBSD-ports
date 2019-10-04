@@ -2,21 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	libosinfo
-PORTVERSION=	1.5.0
+PORTVERSION=	1.6.0
 CATEGORIES=	devel
 MASTER_SITES=	https://releases.pagure.org/libosinfo/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Library for managing OS information for virtualization
 
-LIB_DEPENDS=	libsoup-gnome-2.4.so:devel/libsoup-gnome
+LIB_DEPENDS=	libsoup-gnome-2.4.so:devel/libsoup-gnome \
+		libsoup-2.4.so:devel/libsoup
 BUILD_DEPENDS=	${LOCALBASE}/share/pciids/pci.ids:misc/pciids \
 		${LOCALBASE}/share/usbids/usb.ids:misc/usbids
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		osinfo-db-import:sysutils/osinfo-db-tools \
 		${LOCALBASE}/share/osinfo/VERSION:misc/osinfo-db
 
-USES=		gettext-tools gmake libtool pathfix pkgconfig
+USES=		compiler:c11 gettext-tools gmake libtool pathfix pkgconfig
 USE_GNOME=	glib20 libxml2 libxslt introspection:build intlhack
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

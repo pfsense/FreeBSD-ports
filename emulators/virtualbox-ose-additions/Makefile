@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.2.30
+PORTVERSION=	5.2.32
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.oracle.com/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX?=	-additions
@@ -90,13 +91,7 @@ KMK_CONFIG+=	VBOX_LIBPATH_X11=${LOCALBASE} VBOX_FREEBSD_SRC=${SRC_BASE}/sys
 
 .if ${PORT_OPTIONS:MOPENGL}
 VBOX_LIBS=	VBoxEGL.so \
-		VBoxOGL.so \
-		VBoxOGLarrayspu.so \
-		VBoxOGLcrutil.so \
-		VBoxOGLerrorspu.so \
-		VBoxOGLfeedbackspu.so \
-		VBoxOGLpackspu.so \
-		VBoxOGLpassthroughspu.so
+		VBoxOGL.so
 .endif
 
 .if ${PORT_OPTIONS:MX11}
@@ -114,14 +109,14 @@ EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Additions-x11-VBoxClient-Makefil
 .endif
 
 post-patch:
-	@${ECHO} 'VBOX_ONLY_ADDITIONS = 1' > ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_WITH_DRAG_AND_DROP = ${VBOX_WITH_X11}' >> \
+	@${ECHO_CMD} 'VBOX_ONLY_ADDITIONS = 1' > ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_WITH_DRAG_AND_DROP = ${VBOX_WITH_X11}' >> \
 	    ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_WITH_DRAG_AND_DROP_GH = ${VBOX_WITH_X11}' >> \
+	@${ECHO_CMD} 'VBOX_WITH_DRAG_AND_DROP_GH = ${VBOX_WITH_X11}' >> \
 	    ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_WITH_X11_ADDITIONS = ${VBOX_WITH_X11}' >> \
+	@${ECHO_CMD} 'VBOX_WITH_X11_ADDITIONS = ${VBOX_WITH_X11}' >> \
 	    ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_GCC_std = -std=c++11' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_GCC_std = -std=c++11' >> ${WRKSRC}/LocalConfig.kmk
 .if ${COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's| -finline-limit=8000||' \
 	    -e 's| -fno-merge-constants||' \
@@ -145,14 +140,14 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|iconv||' ${WRKSRC}/Config.kmk \
 	    ${WRKSRC}/src/VBox/Runtime/Makefile.kmk \
 	    ${WRKSRC}/src/VBox/Additions/x11/VBoxClient/Makefile.kmk
-	@${ECHO} 'VBOX_ICONV_DEFS = LIBICONV_PLUG' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_ICONV_DEFS = LIBICONV_PLUG' >> ${WRKSRC}/LocalConfig.kmk
 .endif
 
 post-patch-OPENGL-on:
-	@${ECHO} 'VBOX_USE_SYSTEM_GL_HEADERS = 1' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_USE_SYSTEM_GL_HEADERS = 1' >> ${WRKSRC}/LocalConfig.kmk
 
 post-patch-X11-on:
-	@${ECHO} 'VBOX_USE_SYSTEM_XORG_HEADERS = 1' >> \
+	@${ECHO_CMD} 'VBOX_USE_SYSTEM_XORG_HEADERS = 1' >> \
 	    ${WRKSRC}/LocalConfig.kmk
 
 pre-build:

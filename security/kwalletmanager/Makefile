@@ -2,7 +2,6 @@
 
 PORTNAME=	kwalletmanager
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	2
 CATEGORIES=	security kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org

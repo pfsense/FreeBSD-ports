@@ -3,8 +3,8 @@
 
 PORTNAME=	godot
 PORTVERSION=	2.1.5
-PORTREVISION=	1
 DISTVERSIONSUFFIX=	-stable
+PORTREVISION=	3
 CATEGORIES=	devel games
 PKGNAMESUFFIX?=	2
 
@@ -31,16 +31,12 @@ USE_GL=		gl glu
 USE_GITHUB=	yes
 GH_ACCOUNT=	godotengine
 
-MAKE_ARGS+=		platform=x11 builtin_speex=no builtin_libmpcdec=no
+MAKE_ARGS+=		platform=x11 builtin_speex=no builtin_libmpcdec=no verbose=yes
 MAKE_ARGS+=		${MAKE_ARGS_${CHOSEN_COMPILER_TYPE}}
 MAKE_ARGS_clang=	use_llvm=yes
 CXXFLAGS+=		-DGLEW_NO_GLU -DRTAUDIO_ENABLED
 CXXFLAGS_i386=		${CXXFLAGS_i386_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_i386_gcc=	-march=i586
-CXXFLAGS_aarch64=	-DNO_THREADS
-CXXFLAGS_sparc64=	-DNO_THREADS
-CXXFLAGS_mips=		-DNO_THREADS
-CXXFLAGS_mips64=	-DNO_THREADS
 LDFLAGS+=		-lspeex -lmpcdec
 
 OPTIONS_DEFINE=		EXAMPLES TOOLS

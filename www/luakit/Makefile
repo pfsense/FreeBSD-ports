@@ -3,10 +3,10 @@
 
 PORTNAME=	luakit
 PORTVERSION=	2017.08.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 
-MAINTAINER=	ports@textmail.me
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast, small, webkit2 based browser framework extensible with Lua
 
 LICENSE=	GPLv3

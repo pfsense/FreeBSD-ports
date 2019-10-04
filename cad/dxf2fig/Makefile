@@ -9,6 +9,10 @@ MASTER_SITES=	http://ta.twi.tudelft.nl/ftp/dv/lemmens/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DXF to FIG converter
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 PLIST_FILES=	bin/dxf2fig
 
 post-patch:

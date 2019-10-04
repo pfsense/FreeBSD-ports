@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	xscreensaver
-PORTVERSION=	5.42
+PORTVERSION=	5.43
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://www.jwz.org/xscreensaver/
 
@@ -20,12 +21,11 @@ LIB_DEPENDS=	libgle.so:graphics/gle \
 CONFLICTS=	xscreensaver-gnome-[0-9]* xscreensaver-gnome-hacks-[0-9]*
 
 USES=		autoreconf gettext gl gmake gnome jpeg localbase:ldflags perl5 \
-		pkgconfig
+		pkgconfig xorg
 USE_GL=		gl glu
 USE_GNOME=	cairo gdkpixbuf2 gtk20 intltool libglade2 libxml2
 USE_PERL5=	run
-USE_XORG=	ice sm x11 xext xi xinerama xmu xrandr xrender xpm xt \
-		xxf86misc xxf86vm
+USE_XORG=	ice sm x11 xext xi xinerama xmu xrandr xrender xpm xt xxf86vm
 USE_CSTD=	gnu99
 
 GNU_CONFIGURE=	yes
@@ -39,6 +39,7 @@ CONFIGURE_ARGS=	--with-gtk --with-gl --with-gle --with-pixbuf --with-xpm \
 		--with-xf86gamma-ext --with-randr-ext --without-kerberos \
 		--without-setuid-hacks --enable-locking
 MAKE_ARGS+=	install_prefix=${STAGEDIR}
+MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=	PAM SETUID_HACKS FIREF NLS NSFW XAOS1 XDALI XEARTH \
 		XFT XMOUN XPLANET XSNOW

@@ -3,6 +3,7 @@
 
 PORTNAME=	libfm-qt
 PORTVERSION=	0.14.0
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	LXQT
 
@@ -10,6 +11,7 @@ MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	Qt port of libfm
 
 LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libmenu-cache.so:x11/menu-cache \
 		libexif.so:graphics/libexif

@@ -4,8 +4,8 @@
 PORTNAME=	fiked
 PORTVERSION=	0.0.5
 PORTREVISION=	7
-CATEGORIES=	security
-MASTER_SITES=	http://mirror.roe.ch/dist/fiked/
+CATEGORIES=	security net-vpn
+MASTER_SITES=	https://mirror.roe.ch/rel/fiked/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fake IKE PSK+XAUTH daemon based on VPNC

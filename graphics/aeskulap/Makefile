@@ -3,6 +3,7 @@
 
 PORTNAME=	aeskulap
 DISTVERSION=	0.2.2.20181229
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org
@@ -10,6 +11,10 @@ COMMENT=	Medical image viewer
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 LIB_DEPENDS=	libdcmimage.so:graphics/dcmtk \
 		libfontconfig.so:x11-fonts/fontconfig \

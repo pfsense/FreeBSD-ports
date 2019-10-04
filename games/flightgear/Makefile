@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flightgear
-PORTVERSION=	2018.3.2
-PORTREVISION=	4
+PORTVERSION=	2019.1.1
 CATEGORIES=	games
 MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 
@@ -20,17 +19,17 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libspeex.so:audio/speex \
 		libspeexdsp.so:audio/speexdsp \
 		libcurl.so:ftp/curl \
-		libudev.so:devel/libudev-devd
+		libudev.so:devel/libudev-devd \
+		libexpat.so:textproc/expat2 \
+		libSimGearCore.so:devel/simgear
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib \
-		${LOCALBASE}/lib/libSimGearCore.a:devel/simgear \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib \
-		${LOCALBASE}/lib/libSimGearCore.a:devel/simgear \
 		${LOCALBASE}/share/flightgear/version:games/flightgear-data
 
 # Disable ninja, see https://sourceforge.net/p/flightgear/codetickets/2118/
 USES=		alias cmake:noninja compiler:c++11-lang cpe dos2unix gl jpeg \
-		openal:al,alut sqlite tar:bzip2
+		openal:al,alut sqlite tar:bzip2 xorg
 USE_XORG=	ice sm x11 xext xft xi xinerama xmu xt
 USE_GL=		gl glew glu glut
 

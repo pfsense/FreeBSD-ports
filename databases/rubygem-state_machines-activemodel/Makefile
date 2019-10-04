@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	state_machines-activemodel
-PORTVERSION=	0.6.0
+PORTVERSION=	0.7.1
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 

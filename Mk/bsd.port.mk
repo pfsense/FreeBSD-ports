@@ -396,9 +396,6 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  Implies NO_LICENSES_INSTALL=yes, NO_MTREE=yes, and causes
 #				  Linux ldconfig to be used when USE_LDCONFIG is defined.
 ##
-# USE_XORG			- Set to a list of X.org module dependencies.
-#				  Implies inclusion of bsd.xorg.mk.
-##
 # USE_TEX			- A list of the TeX dependencies the port has.
 #
 ##
@@ -613,8 +610,8 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  scripts or nothing, depending on what's available.
 # build			- Actually compile the sources.
 # install		- Install the results of a build.
-# reinstall		- Install the results of a build, ignoring "already installed"
-#				  flag.
+# reinstall		- Install the results of a build, deinstalling any previous
+#				  installation if needed.
 # deinstall		- Remove the installation.
 # deinstall-all	- Remove all installations with the same PKGORIGIN.
 # test			- Run tests for the port.
@@ -1032,6 +1029,7 @@ STAGEDIR?=	${WRKDIR}/stage
 NOTPHONY?=
 FLAVORS?=
 FLAVOR?=
+OVERLAYS?=
 # Disallow forced FLAVOR as make argument since we cannot change it to the
 # proper default.
 .if empty(FLAVOR) && !empty(.MAKEOVERRIDES:MFLAVOR)
@@ -1041,7 +1039,9 @@ FLAVOR?=
 .if !defined(_FLAVOR)
 _FLAVOR:=	${FLAVOR}
 .endif
+.if !defined(PORTS_FEATURES) && empty(${PORTS_FEATURES:MFLAVORS})
 PORTS_FEATURES+=	FLAVORS
+.endif
 MINIMAL_PKG_VERSION=	1.6.0
 
 _PORTS_DIRECTORIES+=	${PKG_DBDIR} ${PREFIX} ${WRKDIR} ${EXTRACT_WRKDIR} \
@@ -1331,10 +1331,6 @@ DISTNAME?=	${PORTNAME}-${DISTVERSIONFULL}
 
 INDEXFILE?=		INDEX-${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}
 
-.if defined(USE_XORG) || defined(XORG_CAT)
-.include "${PORTSDIR}/Mk/bsd.xorg.mk"
-.endif
-
 PACKAGES?=		${PORTSDIR}/packages
 TEMPLATES?=		${PORTSDIR}/Templates
 KEYWORDS?=		${PORTSDIR}/Keywords
@@ -1350,6 +1346,18 @@ PKGCOMPATDIR?=		${LOCALBASE}/lib/compat/pkg
 
 .if defined(USE_LOCAL_MK)
 .include "${PORTSDIR}/Mk/bsd.local.mk"
+.endif
+
+.if defined(USE_XORG) && (!defined(USES) || !${USES:Mxorg})
+DEV_WARNING+=		"Using USE_XORG alone is deprecated, please use USES=xorg"
+USES+=	xorg
+.endif
+
+.if defined(XORG_CAT)
+DEV_WARNING+=		"Using XORG_CAT is deprecated, please use USES=xorg-cat:category"
+.if !defined(USES) || !${USES:Mxorg-cat*}
+USES+=	xorg-cat:${XORG_CAT}
+.endif
 .endif
 
 .if defined(USE_PHP) && (!defined(USES) || ( defined(USES) && !${USES:Mphp*} ))
@@ -1445,7 +1453,17 @@ ${_f}_ARGS:=	${f:C/^[^\:]*(\:|\$)//:S/,/ /g}
 .endif
 .endfor
 .for f in ${USES}
-.include "${USESDIR}/${f:C/\:.*//}.mk"
+.undef _usefound
+.for udir in ${OVERLAYS:C,$,/Mk/Uses,} ${USESDIR}
+_usefile=	${udir}/${f:C/\:.*//}.mk
+.if exists(${_usefile}) && !defined(_usefound)
+_usefound=
+.include "${_usefile}"
+.endif
+.endfor
+.if !defined(_usefound)
+ERROR+=	"Unknown USES=${f:C/\:.*//}"
+.endif
 .endfor
 
 .if !empty(FLAVORS)
@@ -1601,6 +1619,7 @@ QA_ENV+=		STAGEDIR=${STAGEDIR} \
 				"STRIP=${STRIP}" \
 				TMPPLIST=${TMPPLIST} \
 				CURDIR='${.CURDIR}' \
+				PKGMESSAGES='${_PKGMESSAGES}' \
 				FLAVOR=${FLAVOR} \
 				FLAVORS='${FLAVORS}' \
 				BUNDLE_LIBS=${BUNDLE_LIBS} \
@@ -1864,6 +1883,14 @@ USE_LDCONFIG=	${PREFIX}/lib
 IGNORE=			has USE_LDCONFIG32 set to yes, which is not correct
 .endif
 
+.if defined(USE_LDCONFIG) || defined(USE_LDCONFIG32)
+.if defined(USE_LINUX_PREFIX)
+PLIST_FILES+=	"@ldconfig-linux ${LINUXBASE}"
+.else
+PLIST_FILES+=	"@ldconfig"
+.endif
+.endif
+
 PKG_IGNORE_DEPENDS?=		'this_port_does_not_exist'
 
 .if defined(_DESTDIR_VIA_ENV)
@@ -1905,8 +1932,9 @@ _FORCE_POST_PATTERNS=	rmdir kldxref mkfontscale mkfontdir fc-cache \
 .include "${PORTSDIR}/Mk/bsd.local.mk"
 .endif
 
-.if defined(USE_XORG) || defined(XORG_CAT)
-.include "${PORTSDIR}/Mk/bsd.xorg.mk"
+.if defined(USE_XORG) && (!defined(USES) || ( defined(USES) && !${USES:Mxorg} ))
+DEV_WARNING+=	"Using USE_XORG alone is deprecated, please use USES=xorg"
+_USES_POST+=	xorg
 .endif
 
 .if defined(WANT_GSTREAMER) || defined(USE_GSTREAMER) || defined(USE_GSTREAMER1)
@@ -1947,7 +1975,17 @@ ${_f}_ARGS:=	${f:C/^[^\:]*(\:|\$)//:S/,/ /g}
 .endif
 .endfor
 .for f in ${_USES_POST}
-.include "${USESDIR}/${f:C/\:.*//}.mk"
+.undef _usefound
+.for udir in ${OVERLAYS:C,$,/Mk/Uses,} ${USESDIR}
+_usefile=	${udir}/${f:C/\:.*//}.mk
+.if exists(${_usefile}) && !defined(_usefound)
+_usefound=
+.include "${_usefile}"
+.endif
+.endfor
+.if !defined(_usefound)
+ERROR+=	"Unknown USES=${f:C/\:.*//}"
+.endif
 .endfor
 
 .if defined(PORTNAME)
@@ -1957,13 +1995,6 @@ ${_f}_ARGS:=	${f:C/^[^\:]*(\:|\$)//:S/,/ /g}
 .if defined(USE_LOCALE)
 CONFIGURE_ENV+=	LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
 MAKE_ENV+=		LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
-.endif
-
-.if defined(USE_XORG)
-# Add explicit X options to avoid problems with false positives in configure
-.if defined(GNU_CONFIGURE)
-CONFIGURE_ARGS+=--x-libraries=${LOCALBASE}/lib --x-includes=${LOCALBASE}/include
-.endif
 .endif
 
 # Macro for doing in-place file editing using regexps
@@ -2533,7 +2564,7 @@ VALID_CATEGORIES+= accessibility afterstep arabic archivers astro audio \
 	deskutils devel docs dns editors elisp emulators enlightenment finance french ftp \
 	games geography german gnome gnustep graphics hamradio haskell hebrew hungarian \
 	ipv6 irc japanese java kde ${_KDE_CATEGORIES_SUPPORTED} kld korean lang linux lisp \
-	mail mate math mbone misc multimedia net net-im net-mgmt net-p2p news \
+	mail mate math mbone misc multimedia net net-im net-mgmt net-p2p net-vpn news \
 	palm parallel pear perl5 plan9 polish portuguese ports-mgmt \
 	print python ruby rubygems russian \
 	scheme science security shells spanish sysutils \
@@ -3204,8 +3235,7 @@ do-configure:
 .endif
 
 # Build
-# XXX: ${MAKE_ARGS:N${DESTDIRNAME}=*} would be easier but it is not valid with the old fmake
-DO_MAKE_BUILD?=	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS:C,^${DESTDIRNAME}=.*,,g}
+DO_MAKE_BUILD?=	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS:N${DESTDIRNAME}=*}
 .if !target(do-build)
 do-build:
 	@(cd ${BUILD_WRKSRC}; if ! ${DO_MAKE_BUILD} ${ALL_TARGET}; then \
@@ -3325,7 +3355,7 @@ do-install:
 # Test
 
 .if !target(do-test) && defined(TEST_TARGET)
-DO_MAKE_TEST?=	${SETENV} ${TEST_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${TEST_ARGS:C,^${DESTDIRNAME}=.*,,g}
+DO_MAKE_TEST?=	${SETENV} ${TEST_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${TEST_ARGS:N${DESTDIRNAME}=*}
 do-test:
 	@(cd ${TEST_WRKSRC}; if ! ${DO_MAKE_TEST} ${TEST_TARGET}; then \
 		if [ -n "${TEST_FAIL_MESSAGE}" ] ; then \
@@ -3642,7 +3672,7 @@ checkpatch:
 .if !target(reinstall)
 reinstall:
 	@${RM} ${INSTALL_COOKIE} ${PACKAGE_COOKIE}
-	@cd ${.CURDIR} && DEPENDS_TARGET="${DEPENDS_TARGET}" ${MAKE} -DFORCE_PKG_REGISTER install
+	@cd ${.CURDIR} && DEPENDS_TARGET="${DEPENDS_TARGET}" ${MAKE} deinstall install
 .endif
 
 .if !target(restage)
@@ -3843,20 +3873,8 @@ _CHECKSUM_INIT_ENV= \
 # As we're fetching new distfiles, that are not in the distinfo file, disable
 # checksum and sizes checks.
 makesum: check-sanity
-.if !empty(DISTFILES)
-	@${SETENV} \
-			${_DO_FETCH_ENV} ${_MASTER_SITES_ENV} \
-			dp_NO_CHECKSUM=yes dp_DISABLE_SIZE=yes \
-			dp_SITE_FLAVOR=MASTER \
-			${SH} ${SCRIPTSDIR}/do-fetch.sh ${DISTFILES:C/.*/'&'/}
-.endif
-.if defined(PATCHFILES) && !empty(PATCHFILES)
-	@${SETENV} \
-			${_DO_FETCH_ENV} ${_PATCH_SITES_ENV} \
-			dp_NO_CHECKSUM=yes dp_DISABLE_SIZE=yes \
-			dp_SITE_FLAVOR=PATCH \
-			${SH} ${SCRIPTSDIR}/do-fetch.sh ${PATCHFILES:C/:-p[0-9]//:C/.*/'&'/}
-.endif
+	@cd ${.CURDIR} && ${MAKE} fetch NO_CHECKSUM=yes \
+			DISABLE_SIZE=yes
 	@${SETENV} \
 			${_CHECKSUM_INIT_ENV} \
 			dp_CHECKSUM_ALGORITHMS='${CHECKSUM_ALGORITHMS:tu}' \
@@ -3957,6 +3975,7 @@ ${deptype:tl}-depends:
 		dp_SH="${SH}" \
 		dp_SCRIPTSDIR="${SCRIPTSDIR}" \
 		PORTSDIR="${PORTSDIR}" \
+		dp_OVERLAYS="${OVERLAYS}" \
 		dp_MAKE="${MAKE}" \
 		dp_MAKEFLAGS='${.MAKEFLAGS}' \
 		${SH} ${SCRIPTSDIR}/do-depends.sh
@@ -4011,11 +4030,13 @@ DEPENDS-LIST= \
 			dp_PKGNAME="${PKGNAME}" \
 			dp_PKG_INFO="${PKG_INFO}" \
 			dp_SCRIPTSDIR="${SCRIPTSDIR}" \
+			dp_OVERLAYS="${OVERLAYS}" \
 			${SH} ${SCRIPTSDIR}/depends-list.sh \
 			${DEPENDS_SHOW_FLAVOR:D-f}
 
 ALL-DEPENDS-LIST=			${DEPENDS-LIST} -r ${_UNIFIED_DEPENDS:Q}
 ALL-DEPENDS-FLAVORS-LIST=	${DEPENDS-LIST} -f -r ${_UNIFIED_DEPENDS:Q}
+DEINSTALL-DEPENDS-FLAVORS-LIST=	${DEPENDS-LIST} -f -r ${_UNIFIED_DEPENDS:N${PKG_DEPENDS}:Q}
 MISSING-DEPENDS-LIST=		${DEPENDS-LIST} -m ${_UNIFIED_DEPENDS:Q}
 BUILD-DEPENDS-LIST=			${DEPENDS-LIST} "${PKG_DEPENDS} ${EXTRACT_DEPENDS} ${PATCH_DEPENDS} ${FETCH_DEPENDS} ${BUILD_DEPENDS} ${LIB_DEPENDS}"
 RUN-DEPENDS-LIST=			${DEPENDS-LIST} "${LIB_DEPENDS} ${RUN_DEPENDS}"
@@ -4040,7 +4061,7 @@ limited-clean-depends:
 .if !target(deinstall-depends)
 deinstall-depends:
 	@recursive_cmd="deinstall"; \
-	    recursive_dirs="$$(${ALL-DEPENDS-FLAVORS-LIST})"; \
+		recursive_dirs="$$(${DEINSTALL-DEPENDS-FLAVORS-LIST})"; \
 		${_FLAVOR_RECURSIVE_SH}
 .endif
 
@@ -4453,23 +4474,6 @@ generate-plist: ${WRKDIR}
 	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@dir ,' >> ${TMPPLIST}
 .endfor
 
-.if defined(USE_LINUX_PREFIX)
-.if defined(USE_LDCONFIG)
-	@${ECHO_CMD} '@preexec [ -n "`/sbin/sysctl -q compat.linux.osrelease`" ] || ( echo "Cannot install package: kernel missing Linux support"; exit 1 )' >> ${TMPPLIST}
-	@${ECHO_CMD} "@postexec ${LINUXBASE}/sbin/ldconfig" >> ${TMPPLIST}
-	@${ECHO_CMD} "@postunexec ${LINUXBASE}/sbin/ldconfig" >> ${TMPPLIST}
-.endif
-.else
-.if defined(USE_LDCONFIG) || defined(USE_LDCONFIG32)
-.if !defined(INSTALL_AS_USER)
-	@${ECHO_CMD} "@postexec /usr/sbin/service ldconfig restart > /dev/null" >> ${TMPPLIST}
-	@${ECHO_CMD} "@postunexec /usr/sbin/service ldconfig restart > /dev/null" >> ${TMPPLIST}
-.else
-	@${ECHO_CMD} "@postexec /usr/sbin/service ldconfig restart > /dev/null || ${TRUE}" >> ${TMPPLIST}
-	@${ECHO_CMD} "@postunexec /usr/sbin/service ldconfig restart > /dev/null || ${TRUE}" >> ${TMPPLIST}
-.endif
-.endif
-.endif
 .endif
 
 ${TMPPLIST}:
@@ -4648,12 +4652,9 @@ STAGE_ARGS=		-i ${STAGEDIR}
 fake-pkg:
 .if defined(INSTALLS_DEPENDS)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME} as automatic"
-.else
-	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME}"
-.endif
-.if defined(INSTALLS_DEPENDS)
 	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR} -f ${TMPPLIST}
 .else
+	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME}"
 	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} ${STAGE_ARGS} -m ${METADIR} -f ${TMPPLIST}
 .endif
 	@${RM} -r ${METADIR}

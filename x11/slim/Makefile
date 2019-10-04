@@ -3,7 +3,7 @@
 
 PORTNAME=	slim
 PORTVERSION=	1.3.6
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	x11
 MASTER_SITES=	ftp://ftp.berlios.de/pub/slim/ \
 		SF/slim.berlios
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		cmake jpeg pkgconfig
+USES=		cmake compiler:c++11-lang jpeg pkgconfig
 USE_XORG=	ice sm x11 xau xcb xdmcp xext xft xmu xorg-server xrandr \
 		xrender xt
 USE_RC_SUBR=	slim

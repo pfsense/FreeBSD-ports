@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dhcpcd
-PORTVERSION=	7.2.2
+PORTVERSION=	8.0.6
 CATEGORIES=	net
 MASTER_SITES=	http://roy.marples.name/downloads/dhcpcd/ \
 		ftp://roy.marples.name/pub/dhcpcd/\
@@ -14,6 +14,7 @@ MAINTAINER=	roy@marples.name
 COMMENT=	DHCP/IPv4LL/IPv6RS/DHCPv6 client
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe tar:xz
 

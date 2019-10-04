@@ -3,7 +3,8 @@
 
 PORTNAME=	snmp
 PORTVERSION=	5.7.3
-PORTREVISION=	19
+PORTREVISION=	20
+PORTEPOCH=	1
 CATEGORIES=	net-mgmt ipv6
 MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION} \
 		ZI
@@ -15,10 +16,6 @@ COMMENT=	Extendable SNMP implementation
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_SSL=	openssl111
-
-LIB_DEPENDS=	libpkg.so:ports-mgmt/pkg
 
 NOT_FOR_ARCHS=		mips mips64
 NOT_FOR_ARCHS_REASON=	SSP is currently broken on MIPS
@@ -77,7 +74,7 @@ TLS_CONFIGURE_ON=	--with-security-modules=tsm --with-transports=TLSTCP,DTLSUDP
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} >= 1200085
+.if (${OSVERSION} >= 1200085 || ${SSL_DEFAULT:Mopenssl111*})
 EXTRA_PATCHES=	${PATCHDIR}/extra-patch-openssl11
 .endif
 
@@ -251,8 +248,11 @@ post-patch:
 	@${REINPLACE_CMD} -e 's!utmp_p->ut_name!utmp_p->ut_user!' \
 	    ${WRKSRC}/agent/mibgroup/host/hr_system.c
 	@${REINPLACE_CMD} -E -e 's|return pci_lookup_name|disabled broken|g' \
-		-e 's|SSL_library_init|OPENSSL_init_ssl|g' \
 		${WRKSRC}/configure
+.if (${OSVERSION} >= 1200085 || ${SSL_DEFAULT:Mopenssl111*})
+	@${REINPLACE_CMD} -E -e 's|SSL_library_init|OPENSSL_init_ssl|g' \
+		${WRKSRC}/configure
+.endif
 	@${CP} ${WRKSRC}/include/net-snmp/system/freebsd12.h \
 		${WRKSRC}/include/net-snmp/system/freebsd13.h
 

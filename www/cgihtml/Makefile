@@ -12,6 +12,10 @@ MASTER_SITES=	http://www.eekim.com/software/cgihtml/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library that simplifies the task of writing CGI programs in C
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USE_LDCONFIG=	yes
 LLD_UNSAFE=	yes
 

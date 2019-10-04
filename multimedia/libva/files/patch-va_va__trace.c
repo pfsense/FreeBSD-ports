@@ -1,15 +1,15 @@
 - Implement gettid() for BSDs
 
---- va/va_trace.c.orig	2018-02-12 06:32:11 UTC
+--- va/va_trace.c.orig	2019-07-05 13:14:31 UTC
 +++ va/va_trace.c
-@@ -48,12 +48,36 @@
+@@ -48,12 +48,42 @@
  #include <unistd.h>
  #include <sys/types.h>
  #include <sys/stat.h>
 -#include <sys/syscall.h>
  #include <pthread.h>
  #include <unistd.h>
- #include <time.h>
+ #include <sys/time.h>
  #include <errno.h>
  
 +#if defined(__linux__)
@@ -18,7 +18,9 @@
 +#include <pthread_np.h>
 +#elif defined(__NetBSD__)
 +#include <lwp.h>
-+#else // OpenBSD, Solaris
++#elif defined(__sun)
++#include <thread.h>
++#else // fallback
 +#include <stdint.h>
 +#endif
 +
@@ -31,7 +33,11 @@
 +  return pthread_getthreadid_np();
 +#elif defined(__NetBSD__)
 +  return _lwp_self();
-+#else // OpenBSD, Solaris
++#elif defined(__OpenBSD__)
++  return getthrid();
++#elif defined(__sun)
++  return thr_self();
++#else // fallback
 +  return (intptr_t) pthread_self();
 +#endif
 +}
@@ -40,7 +46,7 @@
  /*
   * Env. to debug some issue, e.g. the decode/encode issue in a video conference scenerio:
   * .LIBVA_TRACE=log_file: general VA parameters saved into log_file
-@@ -290,7 +318,7 @@ static void add_trace_config_info(
+@@ -290,7 +314,7 @@ static void add_trace_config_info(
  {
      struct trace_config_info *pconfig_info;
      int idx = 0;
@@ -49,7 +55,7 @@
  
      LOCK_RESOURCE(pva_trace);
  
-@@ -668,7 +696,7 @@ static struct trace_log_file *start_tracing2log_file(
+@@ -668,7 +692,7 @@ static struct trace_log_file *start_tracing2log_file(
  {
      struct trace_log_files_manager *plog_files_mgr = NULL;
      struct trace_log_file *plog_file = NULL;
@@ -58,7 +64,7 @@
      int i = 0;
  
      LOCK_RESOURCE(pva_trace);
-@@ -707,7 +735,7 @@ static void refresh_log_file(
+@@ -707,7 +731,7 @@ static void refresh_log_file(
      struct trace_context *ptra_ctx)
  {
      struct trace_log_file *plog_file = NULL;
@@ -67,7 +73,7 @@
      int i = 0;
  
      plog_file = ptra_ctx->plog_file;
-@@ -1230,7 +1258,7 @@ static void internal_TraceUpdateContext (
+@@ -1238,7 +1262,7 @@ static void internal_TraceUpdateContext (
  {
      struct trace_context *trace_ctx = NULL;
      int i = 0, delete = 1;

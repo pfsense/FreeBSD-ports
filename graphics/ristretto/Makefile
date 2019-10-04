@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ristretto
-PORTVERSION=	0.8.4
+PORTVERSION=	0.10.0
+PORTREVISION=	1
 CATEGORIES=	graphics xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
@@ -13,16 +14,12 @@ COMMENT=	Image viewer with Xfce integration
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libexif.so:graphics/libexif \
-		libdbus-glib-1.so:devel/dbus-glib \
-		libdbus-1.so:devel/dbus \
-		libfreetype.so:print/freetype2 \
-		libfontconfig.so:x11-fonts/fontconfig
+LIB_DEPENDS=	libexif.so:graphics/libexif
 
 USES=		desktop-file-utils gettext-tools gmake gnome pkgconfig \
-		tar:bzip2 xfce
-USE_GNOME=	cairo gtk20 glib20 intltool
-USE_XFCE=	libmenu
+		tar:bzip2 xfce xorg
+USE_GNOME=	cairo gtk30 glib20 intltool
+USE_XFCE=	libmenu xfconf
 USE_XORG=	ice sm x11
 
 GNU_CONFIGURE=	yes

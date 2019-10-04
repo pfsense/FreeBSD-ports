@@ -4,6 +4,7 @@
 PORTNAME=	ispc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.11.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -40,5 +41,11 @@ run-examples:
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} && \
 	./${e}
 .endfor
+
+.include <bsd.port.options.mk>
+
+.if ${LLVM_DEFAULT:S,-devel,990,} >= 90
+LLVM_DEFAULT=	80
+.endif
 
 .include <bsd.port.mk>

@@ -4,10 +4,10 @@
 PORTNAME=	encryptpad
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.0.4
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	editors security
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Minimalist secure text editor and binary encryptor
 
 LICENSE=	GPLv2+
@@ -33,7 +33,7 @@ PORTDOCS=	*
 .include <bsd.port.pre.mk>
 
 post-patch:
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 	${REINPLACE_CMD} -e 's/freebsd-clang/freebsd-g++/' \
 		${WRKSRC}/build/Makefile.qt_ui
 .endif

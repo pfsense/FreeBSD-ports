@@ -3,6 +3,7 @@
 
 PORTNAME=	qtcreator
 DISTVERSION=	4.9.2
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/qtcreator/${DISTVERSION:R}/${DISTVERSION}
 DISTNAME=	qt-creator-opensource-src-${DISTVERSION}
@@ -35,10 +36,6 @@ QMAKE_ARGS+=	QBS_INSTALL_DIR=${PREFIX} CONFIG+=qbs_enable_project_file_updates
 
 # Enforce installation to ${PREFIX}.
 QMAKE_ARGS+=	QTC_PREFIX=${PREFIX} LLVM_INSTALL_DIR=${PREFIX}/llvm${LLVM_DEFAULT}
-
-# Required for building the port with GCC: the define below is required for
-# std::to_string() to exist. More details in ports/193528.
-QMAKE_ARGS+=	DEFINES+=_GLIBCXX_USE_C99
 
 DESKTOP_ENTRIES="Qt Creator" "" "QtProject-qtcreator" \
 		"${PREFIX}/bin/${PORTNAME}" "Development;Qt;" true
@@ -88,10 +85,14 @@ SHEBANG_FILES=		tests/system/tools/objectsToTable.py \
 
 .include <bsd.port.pre.mk>
 
+.if ${LLVM_DEFAULT:S,-devel,990,} >= 90
+LLVM_DEFAULT=	80
+.endif
+
 .if ${CHOSEN_COMPILER_TYPE} == gcc
-PLIST_SUB+=	GCC=""
+PLIST_SUB+=	GCC="" CLANG="@comment "
 .else
-PLIST_SUB+=	GCC="@comment "
+PLIST_SUB+=	GCC="@comment " CLANG=""
 .endif
 
 post-patch:

@@ -3,7 +3,7 @@
 
 PORTNAME=	llnlxftp
 PORTVERSION=	2.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	ftp
 MASTER_SITES=	https://computing.llnl.gov/resources/xdir/
 DISTNAME=	llnlxftp2.1
@@ -14,8 +14,8 @@ COMMENT=	Motif FTP client
 PLIST_FILES=	bin/xftp lib/X11/app-defaults/XFtp \
 		man/man1/xftp.1.gz
 WRKSRC=		${WRKDIR}/llnlxftp2.1/sources
-USES=		imake motif tar:Z
-USE_XORG=	ice sm x11 xext xp xt
+USES=		imake motif tar:Z xorg
+USE_XORG=	ice sm x11 xext xt
 
 CFLAGS+=	-Wno-implicit-int \
 		-Wno-implicit-function-declaration \

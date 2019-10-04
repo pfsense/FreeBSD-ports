@@ -3,7 +3,7 @@
 
 PORTNAME=	jools
 PORTVERSION=	0.20
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	http://pessimization.com/software/jools/
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
@@ -14,6 +14,10 @@ COMMENT=	Addictive jewel-swapping puzzle game
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 RUN_DEPENDS=	${PYGAME}
 

@@ -32,43 +32,35 @@ linux_ARGS=		c6
 .elif exists(${LINUXBASE}/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7)
 linux_ARGS=		c7
 .else
-linux_ARGS=		${LINUX_DEFAULT:S/_64//}
+linux_ARGS=		${LINUX_DEFAULT}
 .endif
 .endif
 
 .if ${linux_ARGS} == c6
 LINUX_DIST_VER?=	6.10
-.if ${ARCH} == amd64 && ${LINUX_DEFAULT} != c6
-LINUX_ARCH=		x86_64
-.elif ${ARCH} == amd64 || ${ARCH} == i386
-LINUX_ARCH=		i386
-.else
-LINUX_ARCH=		${ARCH}
-IGNORE=			Linux CentOS ${LINUX_DIST_VER} is unsupported on ${ARCH}
-.endif
 .elif ${linux_ARGS} == c7
-LINUX_DIST_VER?=	7.6.1810
-.if ${ARCH} == amd64
-LINUX_ARCH=		x86_64
-.elif ${ARCH} == i386
-LINUX_ARCH=		i386
-.else
-LINUX_ARCH=		${ARCH}
-IGNORE=			Linux CentOS ${LINUX_DIST_VER} is unsupported on ${ARCH}
-.endif
+LINUX_DIST_VER?=	7.7.1908
 .else
 IGNORE=			Invalid Linux distribution: ${linux_ARGS}
+.endif
+
+.ifndef ONLY_FOR_ARCHS
+ONLY_FOR_ARCHS=		amd64 i386
+ONLY_FOR_ARCHS_REASON=	Linux compatibility is only available on amd64 and i386
 .endif
 
 _linux_c7_alsa-lib-devel=		linux-c7-alsa-lib-devel>0:audio/linux-c7-alsa-lib-devel
 _linux_${linux_ARGS}_alsa-plugins-oss=	linux-${linux_ARGS}-alsa-plugins-oss>0:audio/linux-${linux_ARGS}-alsa-plugins-oss
 _linux_${linux_ARGS}_alsa-plugins-pulseaudio=linux-${linux_ARGS}-alsa-plugins-pulseaudio>0:audio/linux-${linux_ARGS}-alsa-plugins-pulseaudio
 _linux_${linux_ARGS}_alsalib=		linux-${linux_ARGS}-alsa-lib>0:audio/linux-${linux_ARGS}-alsa-lib
+_linux_c7_at-spi2-atk=			linux-c7-at-spi2-atk>0:accessibility/linux-c7-at-spi2-atk
+_linux_c7_at-spi2-core=			linux-c7-at-spi2-core>0:accessibility/linux-c7-at-spi2-core
 _linux_${linux_ARGS}_atk=		linux-${linux_ARGS}-atk>0:accessibility/linux-${linux_ARGS}-atk
 _linux_${linux_ARGS}_avahi-libs=	linux-${linux_ARGS}-avahi-libs>0:net/linux-${linux_ARGS}-avahi-libs
 _linux_c6_base=				linux_base-c6>=6.10:emulators/linux_base-c6
 _linux_c7_base=				linux_base-c7>=7.6.1810_7:emulators/linux_base-c7
 _linux_${linux_ARGS}_cairo=		linux-${linux_ARGS}-cairo>0:graphics/linux-${linux_ARGS}-cairo
+_linux_c7_cairo-gobject=		linux-c7-cairo-gobject>0:graphics/linux-c7-cairo-gobject
 _linux_${linux_ARGS}_cups-libs=		linux-${linux_ARGS}-cups-libs>0:print/linux-${linux_ARGS}-cups-libs
 _linux_${linux_ARGS}_curl=		linux-${linux_ARGS}-curl>0:ftp/linux-${linux_ARGS}-curl
 _linux_${linux_ARGS}_cyrus-sasl2=	linux-${linux_ARGS}-cyrus-sasl-lib>0:security/linux-${linux_ARGS}-cyrus-sasl2
@@ -88,6 +80,7 @@ _linux_${linux_ARGS}_gdkpixbuf2=	linux-${linux_ARGS}-gdk-pixbuf2>0:graphics/linu
 _linux_${linux_ARGS}_gnutls=		linux-${linux_ARGS}-gnutls>0:security/linux-${linux_ARGS}-gnutls
 _linux_c7_graphite2=			linux-c7-graphite2>0:graphics/linux-c7-graphite2
 _linux_${linux_ARGS}_gtk2=		linux-${linux_ARGS}-gtk2>0:x11-toolkits/linux-${linux_ARGS}-gtk2
+_linux_c7_gtk3=				linux-c7-gtk3>0:x11-toolkits/linux-c7-gtk3
 _linux_c7_harfbuzz=			linux-c7-harfbuzz>0:print/linux-c7-harfbuzz
 _linux_${linux_ARGS}_icu=		linux-${linux_ARGS}-icu>0:devel/linux-${linux_ARGS}-icu
 _linux_${linux_ARGS}_jasper=		linux-${linux_ARGS}-jasper-libs>0:graphics/linux-${linux_ARGS}-jasper
@@ -96,6 +89,8 @@ _linux_${linux_ARGS}_jpeg=		linux-${linux_ARGS}-jpeg>0:graphics/linux-${linux_AR
 _linux_${linux_ARGS}_libasyncns=	linux-${linux_ARGS}-libasyncns>0:dns/linux-${linux_ARGS}-libasyncns
 _linux_c6_libaudiofile=			linux-c6-audiofile>0:audio/linux-c6-libaudiofile
 _linux_c7_libaudiofile=			linux-c7-audiofile>0:audio/linux-c7-audiofile
+_linux_c7_libdrm=			linux-c7-libdrm>0:graphics/linux-c7-libdrm
+_linux_c7_libepoxy=			linux-c7-libepoxy>0:graphics/linux-c7-libepoxy
 _linux_${linux_ARGS}_libgcrypt=		linux-${linux_ARGS}-libgcrypt>0:security/linux-${linux_ARGS}-libgcrypt
 _linux_${linux_ARGS}_libgfortran=	linux-${linux_ARGS}-libgfortran>0:devel/linux-${linux_ARGS}-libgfortran
 _linux_c7_libglvnd=			linux-c7-libglvnd>0:graphics/linux-c7-libglvnd
@@ -111,6 +106,7 @@ _linux_${linux_ARGS}_libtheora=		linux-${linux_ARGS}-libtheora>0:multimedia/linu
 _linux_${linux_ARGS}_libunwind=		linux-${linux_ARGS}-libunwind>0:devel/linux-${linux_ARGS}-libunwind
 _linux_${linux_ARGS}_libv4l=		linux-${linux_ARGS}-libv4l>0:multimedia/linux-${linux_ARGS}-libv4l
 _linux_${linux_ARGS}_libvorbis=		linux-${linux_ARGS}-libvorbis>0:audio/linux-${linux_ARGS}-libvorbis
+_linux_c7_libxkbcommon=			linux-c7-libxkbcommon>0:x11/linux-c7-libxkbcommon
 _linux_${linux_ARGS}_libxml2=		linux-${linux_ARGS}-libxml2>0:textproc/linux-${linux_ARGS}-libxml2
 _linux_${linux_ARGS}_lttng-ust=		linux-${linux_ARGS}-lttng-ust>0:sysutils/linux-${linux_ARGS}-lttng-ust
 _linux_c7_lz4=				linux-c7-lz4>0:archivers/linux-c7-lz4
@@ -140,6 +136,7 @@ _linux_c7_qtwebkit=			linux-c7-qtwebkit>0:www/linux-c7-qtwebkit
 _linux_${linux_ARGS}_sdl12=		linux-${linux_ARGS}-sdl>0:devel/linux-${linux_ARGS}-sdl12
 _linux_${linux_ARGS}_sdlimage=		linux-${linux_ARGS}-sdl_image>0:graphics/linux-${linux_ARGS}-sdl_image
 _linux_${linux_ARGS}_sdlmixer=		linux-${linux_ARGS}-sdl_mixer>0:audio/linux-${linux_ARGS}-sdl_mixer
+_linux_${linux_ARGS}_sdlttf=		linux-${linux_ARGS}-sdl_ttf>0:graphics/linux-${linux_ARGS}-sdl_ttf
 _linux_${linux_ARGS}_sqlite3=		linux-${linux_ARGS}-sqlite>0:databases/linux-${linux_ARGS}-sqlite3
 _linux_c7_systemd-libs=			linux-c7-systemd-libs>0:devel/linux-c7-systemd-libs
 _linux_${linux_ARGS}_tcl85=		linux-${linux_ARGS}-tcl85>0:lang/linux-${linux_ARGS}-tcl85
@@ -182,6 +179,8 @@ MASTER_SITE_SUBDIR=	centos/${LINUX_DIST_VER}/os/x86_64/Packages/:DEFAULT,amd64 \
 			centos/${LINUX_DIST_VER}/updates/Source/SPackages/:SOURCE
 .endif
 DIST_SUBDIR?=		centos
+DEPRECATED=		Superseded by CentOS 7
+EXPIRATION_DATE=	2019-12-31
 .elif ${linux_ARGS} == c7
 .ifndef MASTER_SITES
 MASTER_SITES=		${MASTER_SITE_CENTOS_LINUX}
@@ -253,7 +252,7 @@ EXTRACT_AFTER_ARGS=	| ${TAR} xf - --no-same-owner --no-same-permissions
 .endif
 
 .if ${USE_LINUX_RPM} != noarch
-PLIST?=			${PKGDIR}/pkg-plist.${LINUX_ARCH:S/x86_64/amd64/}
+PLIST?=			${PKGDIR}/pkg-plist.${ARCH}
 .endif
 
 .if !target(do-install)
@@ -286,21 +285,13 @@ DISTFILES_i386?=	${DISTNAME_i386}${EXTRACT_SUFX}
 _ALL_DISTFILES=		${DISTFILES_amd64} ${DISTFILES_i386}
 DISTFILES=		${_ALL_DISTFILES:O:u}
 .else
-DISTFILES=		${DISTFILES_${LINUX_ARCH:S/x86_64/amd64/}}
+DISTFILES=		${DISTFILES_${ARCH}}
 .endif
-EXTRACT_ONLY?=		${DISTFILES_${LINUX_ARCH:S/x86_64/amd64/}:C/:[^:]+$//}
+EXTRACT_ONLY?=		${DISTFILES_${ARCH}:C/:[^:]+$//}
 .endif
 .endif
 .if !empty(SRC_DISTFILES) && (make(makesum) || defined(PACKAGE_BUILDING))
 DISTFILES+=		${SRC_DISTFILES}
-.endif
-
-# This triggers on amd64 with DEFAULT_VERSIONS+=linux=c6 (i386 Linux) and
-# ports with ONLY_FOR_ARCHS=amd64 or NOT_FOR_ARCHS=i386.  It may be removed
-# when c6 becomes an alias for c6_64 on amd64 (after FreeBSD 10.3 EoL).
-.if (defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:M${LINUX_ARCH:S/x86_64/amd64/})) \
- || !empty(NOT_FOR_ARCHS:M${LINUX_ARCH:S/x86_64/amd64/})
-IGNORE=			does not run on Linux/${LINUX_ARCH}
 .endif
 
 .endif # _POSTMKINCLUDED && ! _INCLUDE_USES_LINUX_POST_MK

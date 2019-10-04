@@ -3,7 +3,7 @@
 
 PORTNAME=	sparforte
 PORTVERSION=	2.0.2
-PORTREVISION=	5
+PORTREVISION=	6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	shells lang
 
@@ -13,6 +13,9 @@ COMMENT=	Shell and scripting language for mission-critical, scalable projects
 LICENSE=	GPLv2 GMGPL
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	uses expired bdb48
+EXPIRATION_DATE=2019-11-01
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kburtch

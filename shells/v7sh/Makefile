@@ -20,6 +20,9 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of the UNIX 7th Edition shell
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 BROKEN_aarch64=	Fails to link: missing sbrk
 
 USES=		uidfix

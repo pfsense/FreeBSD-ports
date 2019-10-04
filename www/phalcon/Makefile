@@ -3,7 +3,7 @@
 
 PORTNAME=	phalcon
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.4.3
+DISTVERSION=	3.4.4
 CATEGORIES=	www
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -12,10 +12,11 @@ COMMENT=	Phalcon PHP Framework written in C-language
 
 LICENSE=	BSD3CLAUSE
 
-ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386
+ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386
 
 USES=		php:ext
 USE_PHP=	hash:build json:build pdo:build
+IGNORE_WITH_PHP=	74
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	phalcon
@@ -26,7 +27,7 @@ CONFIGURE_ARGS=	--enable-phalcon
 
 .include <bsd.port.pre.mk>
 
-PBITS=		${ARCH:S/amd64/64/:C/armv.*/32/:S/i386/32/:S/x86_64/64/}
+PBITS=		${ARCH:S/aarch64/64/:S/amd64/64/:C/armv.*/32/:S/i386/32/:S/x86_64/64/}
 WRKSRC_SUBDIR=	build/php${PHP_VER:C/.$//}/${PBITS}bits
 
 post-patch:

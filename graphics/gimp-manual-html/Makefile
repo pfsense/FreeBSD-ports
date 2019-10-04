@@ -12,6 +12,10 @@ PKGNAMESUFFIX=	-${DOCFORMAT}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	User manual for the GNU Image Manipulation Program (GIMP)
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 EXTRACT_ONLY=	#empty
 NO_BUILD=	yes
 DOCDIR=		${STAGEDIR}${PREFIX}/share/doc/gimp

@@ -3,7 +3,7 @@
 
 PORTNAME=	dolphin-emu
 PORTVERSION=	5.0.9209
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -42,7 +42,7 @@ LIB_DEPENDS=	libpulse.so:audio/pulseaudio \
 		libhidapi.so:comms/hidapi
 
 USES=		cmake compiler:c++17-lang desktop-file-utils gl iconv \
-		pkgconfig qmake qt:5 sdl
+		pkgconfig qmake qt:5 sdl xorg
 
 USE_GITHUB=	yes
 GH_PROJECT=	dolphin

@@ -3,10 +3,9 @@
 #    $MCom: ports/biology/gperiodic/Makefile,v 1.1 2006/09/29 23:42:13 ahze Exp $
 
 PORTNAME=	gperiodic
-PORTVERSION=	2.0.10
-PORTREVISION=	8
+PORTVERSION=	3.0.3
 CATEGORIES=	biology
-MASTER_SITES=	http://www.frantz.fi/software/
+MASTER_SITES=	https://sourceforge.net/projects/gperiodic/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Displays a periodic table of the elements
@@ -14,12 +13,15 @@ COMMENT=	Displays a periodic table of the elements
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gpl.txt
 
-USE_GNOME=	gtk20
-USES=		pkgconfig
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig\
+		libfreetype.so:print/freetype2
 
-LANGS=		da fr gl it pl ru sv tr
+USES=		pkgconfig
+USE_GNOME=	cairo gdkpixbuf2 gtk20
 
 PORTDOCS=	AUTHORS ChangeLog README
+
+LANGS=		be cs da de es fi fr gl is it ms pl pt ru sv tr uk zh_CN
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
@@ -37,9 +39,7 @@ do-build-NLS-on:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gperiodic ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/gperiodic.desktop \
-		${STAGEDIR}${PREFIX}/share/applications
-	(cd ${WRKSRC} && ${INSTALL_DATA} gperiodic.png gperiodic-crystal.png \
+	(cd ${WRKSRC}/icons && ${INSTALL_DATA} gperiodic-crystal.png gperiodic.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps)
 
 do-install-NLS-on:

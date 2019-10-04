@@ -3,7 +3,7 @@
 
 PORTNAME=	xephem
 PORTVERSION=	3.7.7
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	astro
 MASTER_SITES=	http://www.clearskyinstitute.com/xephem/
 
@@ -13,8 +13,8 @@ COMMENT=	Interactive astronomical ephemeris program
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		gmake groff jpeg motif tar:tgz ssl
-USE_XORG=	xp xt xext xmu x11 xft
+USES=		gmake groff jpeg motif tar:tgz ssl xorg
+USE_XORG=	xt xext xmu x11 xft
 
 LDFLAGS+=	-lfontconfig
 

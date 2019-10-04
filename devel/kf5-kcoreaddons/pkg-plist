@@ -1,5 +1,4 @@
 bin/desktoptojson
-etc/xdg/kcoreaddons.categories
 include/KF5/KCoreAddons/KAboutData
 include/KF5/KCoreAddons/KAutoSaveFile
 include/KF5/KCoreAddons/KBackup
@@ -8,6 +7,7 @@ include/KF5/KCoreAddons/KCoreAddons
 include/KF5/KCoreAddons/KDirWatch
 include/KF5/KCoreAddons/KExportPlugin
 include/KF5/KCoreAddons/KFileSystemType
+include/KF5/KCoreAddons/KFileUtils
 include/KF5/KCoreAddons/KFormat
 include/KF5/KCoreAddons/KJob
 include/KF5/KCoreAddons/KJobTrackerInterface
@@ -42,6 +42,7 @@ include/KF5/KCoreAddons/kdelibs4migration.h
 include/KF5/KCoreAddons/kdirwatch.h
 include/KF5/KCoreAddons/kexportplugin.h
 include/KF5/KCoreAddons/kfilesystemtype.h
+include/KF5/KCoreAddons/kfileutils.h
 include/KF5/KCoreAddons/kformat.h
 include/KF5/KCoreAddons/kjob.h
 include/KF5/KCoreAddons/kjobtrackerinterface.h
@@ -184,3 +185,4 @@ share/locale/zh_CN/LC_MESSAGES/kcoreaddons5_qt.qm
 share/locale/zh_HK/LC_MESSAGES/kcoreaddons5_qt.qm
 share/locale/zh_TW/LC_MESSAGES/kcoreaddons5_qt.qm
 share/mime/packages/kde5.xml
+share/qlogging-categories5/kcoreaddons.categories

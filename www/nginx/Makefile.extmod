@@ -40,7 +40,7 @@ DRIZZLE_CONFIGURE_ON=	--add-module=${WRKSRC_drizzle}
 DYNAMIC_UPSTREAM_GH_TUPLE=	cubicdaiya:ngx_dynamic_upstream:cc5dac3:dynamic_upstream
 DYNAMIC_UPSTREAM_VARS=		DSO_EXTMODS+=dynamic_upstream
 
-DEVEL_KIT_GH_TUPLE=		simpl:ngx_devel_kit:v0.3.0:devel_kit
+DEVEL_KIT_GH_TUPLE=		simpl:ngx_devel_kit:v0.3.1:devel_kit
 DEVEL_KIT_VARS=			FIRST_DSO_EXTMODS+=devel_kit
 
 ECHO_GH_TUPLE=		openresty:echo-nginx-module:32859fc:echo
@@ -108,6 +108,14 @@ HTTP_GEOIP2_CFLAGS=		-I${LOCALBASE}/include
 HTTP_GEOIP2_VARS=		DSO_EXTMODS+=geoip2
 HTTP_GEOIP2_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 
+HTTP_IP2LOCATION_GH_TUPLE=	ip2location:ip2location-nginx:d47d248:ip2location
+HTTP_IP2LOCATION_LIB_DEPENDS=	libIP2Location.so:net/ip2location
+HTTP_IP2LOCATION_CONFIGURE_ON=	--add-module=${WRKSRC_ip2location}
+
+HTTP_IP2PROXY_GH_TUPLE=		ip2location:ip2proxy-nginx:d6fd05a:ip2proxy
+HTTP_IP2PROXY_LIB_DEPENDS=	libIP2Proxy.so:net/ip2proxy
+HTTP_IP2PROXY_CONFIGURE_ON=	--add-module=${WRKSRC_ip2proxy}
+
 HTTP_JSON_STATUS_GH_TUPLE=	nginx-modules:ngx_http_json_status_module:1d2f303:json_status
 HTTP_JSON_STATUS_CONFIGURE_ON=	--add-module=${WRKSRC_json_status}
 
@@ -138,6 +146,8 @@ HTTP_REDIS_VARS=		DSO_EXTDIRS+=ngx_http_redis-0.3.9
 HTTP_RESPONSE_MASTER_SITES=	http://catap.ru/downloads/nginx/:response
 HTTP_RESPONSE_DISTFILES=	ngx_http_response-0.3.tar.gz:response
 HTTP_RESPONSE_CONFIGURE_ON=	--add-module=${WRKDIR}/ngx_http_response-0.3
+
+HTTP_SLICE_AHEAD_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_http_modules_ngx__http__slice_read_ahead.c
 
 HTTP_SUBS_FILTER_GH_TUPLE=	yaoweibin:ngx_http_substitutions_filter_module:v0.6.4:subs_filter
 HTTP_SUBS_FILTER_CONFIGURE_ON=	--add-module=${WRKSRC_subs_filter}
@@ -193,10 +203,10 @@ LET_GH_TUPLE=		arut:nginx-let-module:v0.0.4:let
 LET_CONFIGURE_ON=	--add-module=${WRKSRC_let}
 
 LUA_IMPLIES=		DEVEL_KIT
-LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit21
+LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.1 \
 			LUAJIT_LIB=${LOCALBASE}/lib
-LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.14:lua
+LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.15:lua
 LUA_VARS=		DSO_EXTMODS+=lua
 
 MEMC_GH_TUPLE=		openresty:memc-nginx-module:v0.18:memc
@@ -204,7 +214,7 @@ MEMC_VARS=		DSO_EXTMODS+=memc
 
 MODSECURITY_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 				libcurl.so:ftp/curl \
-				libluajit-5.1.so:lang/luajit21 \
+				libluajit-5.1.so:lang/luajit-openresty \
 				libpcre.so:devel/pcre \
 				libyajl.so:devel/yajl
 MODSECURITY_USE=		GNOME=libxml2
@@ -223,10 +233,10 @@ NAXSI_NGINX_VER=	0.56
 NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:f5272a0:njs
+NJS_GH_TUPLE=		nginx:njs:08ccd37:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
 
-PASSENGER_NGINX_VER=	6.0.2
+PASSENGER_NGINX_VER=	6.0.4
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USE=		ruby=yes
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake
@@ -253,7 +263,7 @@ RDS_JSON_CONFIGURE_ON=	--add-module=${WRKSRC_rdsjson}
 REDIS2_GH_TUPLE=	openresty:redis2-nginx-module:v0.15:redis2
 REDIS2_VARS=		DSO_EXTMODS+=redis2
 
-RTMP_GH_TUPLE=		arut:nginx-rtmp-module:v1.2.1:rtmp
+RTMP_GH_TUPLE=		ut0mt8:nginx-rtmp-module:f0ea623:rtmp
 RTMP_VARS=		DSO_EXTMODS+=rtmp
 
 SET_MISC_IMPLIES=	DEVEL_KIT

@@ -137,43 +137,39 @@ MASTER_SITE_CRATESIO+=	https://crates.io/api/v1/crates/%SUBDIR%/download?dummy=/
 .if !defined(IGNORE_MASTER_SITE_DEBIAN)
 MASTER_SITE_DEBIAN+= \
 	http://cdn.debian.net/debian/%SUBDIR%/ \
+	http://http.debian.net/debian/%SUBDIR%/ \
 	http://www.gtlib.gatech.edu/pub/debian/%SUBDIR%/ \
 	ftp://ftp.us.debian.org/debian/%SUBDIR%/ \
-	${MASTER_SITE_DEBIAN_NON_US:S,/debian-non-US/,/debian/,}
-.endif
-
-.if !defined(IGNORE_MASTER_SITE_DEBIAN_NON_US)
-MASTER_SITE_DEBIAN_NON_US+= \
-	http://ftp.au.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.bg.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.br.debian.org/debian-non-US/%SUBDIR%/ \
-	http://ftp.cl.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.cz.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.de.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.ee.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.es.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.fi.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.fr.debian.org/debian-non-US/%SUBDIR%/ \
-	http://ftp.hk.debian.org/debian-non-US/%SUBDIR%/ \
-	http://ftp.hr.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.hu.debian.org/debian-non-US/%SUBDIR%/ \
-	http://ftp.ie.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.is.debian.org/debian-non-US/%SUBDIR%/ \
-	http://ftp.it.debian.org/debian-non-US/%SUBDIR%/ \
-	http://ftp.jp.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.nl.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.no.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.pl.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.ru.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.se.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.si.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.sk.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.uk.debian.org/debian-non-US/%SUBDIR%/ \
-	http://ftp.wa.au.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp2.de.debian.org/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.snt.utwente.nl/pub/linux/debian-non-US/%SUBDIR%/ \
-	ftp://ftp.acc.umu.se/debian-non-US/%SUBDIR%/ \
-	ftp://mirror.symnds.com/debian-non-US/%SUBDIR%/
+	http://ftp.au.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.bg.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.br.debian.org/debian/%SUBDIR%/ \
+	http://ftp.cl.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.cz.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.de.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.ee.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.es.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.fi.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.fr.debian.org/debian/%SUBDIR%/ \
+	http://ftp.hk.debian.org/debian/%SUBDIR%/ \
+	http://ftp.hr.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.hu.debian.org/debian/%SUBDIR%/ \
+	http://ftp.ie.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.is.debian.org/debian/%SUBDIR%/ \
+	http://ftp.it.debian.org/debian/%SUBDIR%/ \
+	http://ftp.jp.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.nl.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.no.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.pl.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.ru.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.se.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.si.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.sk.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.uk.debian.org/debian/%SUBDIR%/ \
+	http://ftp.wa.au.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp2.de.debian.org/debian/%SUBDIR%/ \
+	ftp://ftp.snt.utwente.nl/pub/linux/debian/%SUBDIR%/ \
+	ftp://ftp.acc.umu.se/debian/%SUBDIR%/ \
+	ftp://mirror.symnds.com/debian/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_DEBIAN_POOL)
@@ -544,7 +540,7 @@ check-makevars::
 	@${FALSE}
 .      endif
 .    endfor
-GL_SITE+=	${GL_TUPLE:C@^(([^:]*://[^:/]*(:[0-9]{1,5})?(/[^:]*[^/])?:)?)([^:]*):([^:]*):([^:]*)(:[^:/]*)((/.*)?)@\1\8@}
+GL_SITE+=	${GL_TUPLE:C@^(([^:]*://[^:/]*(:[0-9]{1,5})?(/[^:]*[^/])?:)?)([^:]*):([^:]*):([^:]*)(:[^:/]*)((/.*)?)@\1\8@:S@::@:@}
 GL_ACCOUNT+=	${GL_TUPLE:C@^(([^:]*://[^:/]*(:[0-9]{1,5})?(/[^:]*[^/])?:)?)([^:]*):([^:]*):([^:]*)(:[^:/]*)((/.*)?)@\5\8@}
 GL_PROJECT+=	${GL_TUPLE:C@^(([^:]*://[^:/]*(:[0-9]{1,5})?(/[^:]*[^/])?:)?)([^:]*):([^:]*):([^:]*)(:[^:/]*)((/.*)?)@\6\8@}
 GL_COMMIT+=	${GL_TUPLE:C@^(([^:]*://[^:/]*(:[0-9]{1,5})?(/[^:]*[^/])?:)?)([^:]*):([^:]*):([^:]*)(:[^:/]*)((/.*)?)@\7\8@}
@@ -803,7 +799,8 @@ MASTER_SITE_KDE+= \
 	https://ftp.icm.edu.pl/pub/unix/kde/%SUBDIR%/ \
 	http://ftp.fi.muni.cz/pub/kde/%SUBDIR%/ \
 	ftp://ftp.funet.fi/pub/mirrors/ftp.kde.org/pub/kde/%SUBDIR%/ \
-	http://ftp.funet.fi/pub/mirrors/ftp.kde.org/pub/kde/%SUBDIR%/
+	http://ftp.funet.fi/pub/mirrors/ftp.kde.org/pub/kde/%SUBDIR%/ \
+	http://kde.cs.nctu.edu.tw/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_LIBREOFFICE_DEV)
@@ -855,15 +852,12 @@ MASTER_SITE_MYSQL+= \
 
 .if !defined(IGNORE_MASTER_SITE_NETBSD)
 MASTER_SITE_NETBSD+= \
-	https://ftp.netbsd.org/pub/NetBSD/packages/distfiles/%SUBDIR%/ \
-	ftp://ftp.iastate.edu/pub/netbsd/packages/distfiles/%SUBDIR%/ \
-	ftp://ftp.plig.net/pub/NetBSD/packages/distfiles/%SUBDIR%/ \
-	ftp://ftp.proxad.net/mirrors/ftp.netbsd.org/packages/distfiles/%SUBDIR%/ \
-	ftp://ftp.unina.it/pub/Unix/NetBSD/packages/distfiles/%SUBDIR%/ \
-	ftp://ftp.uninett.no/bsd/unix/NetBSD/packages/distfiles/%SUBDIR%/ \
-	ftp://sunsite.uio.no/bsd/unix/NetBSD/packages/distfiles/%SUBDIR%/ \
-	ftp://ftp.demon.co.uk/pub/mirrors/NetBSD/packages/distfiles/%SUBDIR%/ \
-	ftp://ftp.funet.fi/pub/NetBSD/packages/distfiles/%SUBDIR%/
+	https://ftp.netbsd.org/pub/pkgsrc/distfiles/%SUBDIR%/ \
+	http://ftp.fr.netbsd.org/pub/pkgsrc/%SUBDIR%/ \
+	ftp://ftp2.fr.netbsd.org/pub/pkgsrc/%SUBDIR%/ \
+	ftp://ftp3.de.netbsd.org/pub/pkgsrc/%SUBDIR%/ \
+	ftp://ftp2.jp.netbsd.org/pub/pkgsrc/%SUBDIR%/ \
+	ftp://ftp7.jp.netbsd.org/pub/pkgsrc/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_NETLIB)

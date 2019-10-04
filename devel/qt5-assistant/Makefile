@@ -2,6 +2,7 @@
 
 PORTNAME=	assistant
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -19,6 +20,9 @@ DESKTOP_ENTRIES="Qt 5 Assistant" "" \
 
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}/${PORTNAME}
 INSTALL_WRKSRC=	${WRKSRC}/src/${PORTNAME}/${PORTNAME}
+
+# Link in QtHelp port
+_QT5_ADDITIONAL_LINK=	help
 
 post-install:
 	${INSTALL_DATA} ${INSTALL_WRKSRC}/images/assistant-128.png \

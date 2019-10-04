@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	moony
-DISTVERSION=	0.26.0
+DISTVERSION=	0.28.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://gitlab.com/OpenMusicKontrollers/moony.lv2/repository/archive.tar.gz?ref=${PORTVERSION}&dummy=/
 PKGNAMESUFFIX=	-lv2

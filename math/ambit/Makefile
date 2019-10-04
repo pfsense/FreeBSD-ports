@@ -3,7 +3,7 @@
 PORTNAME=	ambit
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 PKGNAMESUFFIX=	-tensor # avoid clash with shells/ambit
 

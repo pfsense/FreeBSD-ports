@@ -4,7 +4,7 @@ PORTNAME=	cadence
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.0-7
 DISTVERSIONSUFFIX=	-g4a5f5b4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -39,8 +39,9 @@ post-patch:
 		cadence cadence-aloop-daemon cadence-jacksettings cadence-logs \
 		cadence-pulse2jack cadence-pulse2loopback cadence-render \
 		cadence-session-start catarina catia claudia claudia-launcher
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
-	${REINPLACE_CMD} -e 's|-mtune=generic -msse -mfpmath=sse||' ${WRKSRC}/c++/Makefile.mk
+	${REINPLACE_CMD} -e 's|-mtune=generic||' ${WRKSRC}/c++/Makefile.mk
+.if ! ${ARCH} == amd64 && ! ${ARCH} == i386
+	${REINPLACE_CMD} -e 's|-msse -mfpmath=sse||' ${WRKSRC}/c++/Makefile.mk
 .endif
 
 .include <bsd.port.post.mk>

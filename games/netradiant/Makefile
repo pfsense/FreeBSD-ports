@@ -3,6 +3,7 @@
 
 PORTNAME=	netradiant
 PORTVERSION=	20150621
+PORTREVISION=	1
 CATEGORIES=	games cad
 MASTER_SITES=	http://ingar.intranifty.net/gtkradiant/files/ LOCAL/danfe \
 		http://ingar.intranifty.net/gtkradiant/files/gamepacks/:gp
@@ -15,15 +16,14 @@ COMMENT=	Fork of GtkRadiant v1.5 FPS games map editor
 
 LICENSE=	GPLv2
 
+BROKEN_armv6=		fails to build: h2data.armv6: No such file or directory
+BROKEN_armv7=		fails to build: h2data.armv7: No such file or directory
+
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libwebp.so:graphics/webp \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
-
-BROKEN_aarch64=		fails to link: ldd: install/modules/archivepak.so: not a FreeBSD ELF shared object
-BROKEN_armv6=		fails to build: h2data.armv6: No such file or directory
-BROKEN_armv7=		fails to build: h2data.armv7: No such file or directory
 
 USES=		compiler:c++11-lang gl gmake gnome jpeg localbase:ldflags \
 		pkgconfig tar:xz
@@ -34,7 +34,7 @@ MAKE_ENV=	BUILD=release DOWNLOAD_GAMEPACKS=no EXE=${ARCH} \
 		RADIANT_ABOUTMSG="For ${OPSYS} ${OSREL} (${ARCH})"
 
 SUB_FILES=	${PORTNAME}
-SUB_LIST=	ARCH=${ARCH:S/powerpc64/powerpc/}
+SUB_LIST=	ARCH=${ARCH}
 PLIST_SUB:=	${SUB_LIST}
 
 OPTIONS_DEFINE=	GAMEPACK

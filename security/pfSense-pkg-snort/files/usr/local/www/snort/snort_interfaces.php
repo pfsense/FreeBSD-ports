@@ -52,7 +52,11 @@ if ($_POST['status'] == 'check') {
 	// caller as a JSON object.
 	$i = 0;
 	foreach ($a_nat as $intf) {
-		$intf_key = "snort_" . get_real_interface($intf['interface']);
+		// Skip status update for any missing real interface
+		if (($if_real = get_real_interface($intf['interface'])) == "") {
+			continue;
+		}
+		$intf_key = "snort_" . $if_real;
 		$stop_lck_file = "{$g['varrun_path']}/{$intf_key}_stopping.lck";
 		$start_lck_file = "{$g['varrun_path']}/{$intf_key}_starting.lck";
 
@@ -123,22 +127,33 @@ if (isset($_POST['del_x'])) {
 	/* Delete selected Snort interfaces */
 	if (is_array($_POST['rule']) && count($_POST['rule'])) {
 		foreach ($_POST['rule'] as $rulei) {
-			$if_real = get_real_interface($a_nat[$rulei]['interface']);
-			$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
 			$snort_uuid = $a_nat[$rulei]['uuid'];
-			syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to interface deletion...");
-			snort_stop($a_nat[$rulei], $if_real);
-			rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
-			rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
+			$if_real = get_real_interface($a_nat[$rulei]['interface']);
+
+			// Check that we still have the real interface defined in pfSense.
+			// The real interface will return as an empty string if it has
+			// been removed in pfSense.
+			if ($if_real == "") {
+				rmdir_recursive("{$snortlogdir}/snort_*{$snort_uuid}");
+				rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_*");
+				syslog(LOG_NOTICE, "Deleted the Snort instance on a previously removed pfSense interface per user request...");
+			}
+			else {
+				$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
+				syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to Snort instance deletion...");
+				snort_stop($a_nat[$rulei], $if_real);
+				rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
+				rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
+				syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
+			}
 
 			// Finally delete the interface's config entry entirely
 			unset($a_nat[$rulei]);
-			syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
 		}
 	  
 		/* If all the Snort interfaces are removed, then unset the interfaces config array. */
 		if (empty($a_nat))
-			unset($a_nat);
+			unset($config['installedpackages']['snortglobal']['rule']);
 
 		// Save updated configuration
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
@@ -162,17 +177,28 @@ else {
 		}
 	}
 	if (is_numeric($delbtn_list) && $a_nat[$delbtn_list]) {
-		$if_real = get_real_interface($a_nat[$delbtn_list]['interface']);
-		$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
 		$snort_uuid = $a_nat[$delbtn_list]['uuid'];
-		syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to interface deletion...");
-		snort_stop($a_nat[$delbtn_list], $if_real);
-		rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
-		rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
+		$if_real = get_real_interface($a_nat[$delbtn_list]['interface']);
+
+		// Check that we still have the real interface defined in pfSense.
+		// The real interface will return as an empty string if it has
+		// been removed in pfSense.
+		if ($if_real == "") {
+			rmdir_recursive("{$snortlogdir}/snort_*{$snort_uuid}");
+			rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_*");
+			syslog(LOG_NOTICE, "Deleted the Snort instance on a previously removed pfSense interface per user request...");
+		}
+		else {
+			$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$delbtn_list]['interface']);
+			syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) due to interface deletion...");
+			snort_stop($a_nat[$delbtn_list], $if_real);
+			rmdir_recursive("{$snortlogdir}/snort_{$if_real}{$snort_uuid}");
+			rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
+			syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
+		}
 
 		// Finally delete the interface's config entry entirely
 		unset($a_nat[$delbtn_list]);
-		syslog(LOG_NOTICE, "Deleted Snort instance on {$if_friendly}({$if_real}) per user request...");
 
 		// Save updated configuration
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
@@ -361,13 +387,18 @@ if ($savemsg)
 				else
 					$no_rules = true;
 
-				foreach ($a_nat as $natent): ?>
+				foreach ($a_nat as $i => $natent): ?>
 				<tr id="fr<?=$i?>">
 				<?php
-					/* convert fake interfaces to real and check if iface is up */
-					/* There has to be a smarter way to do this */
-					$if_real = get_real_interface($natent['interface']);
-					$natend_friendly = convert_friendly_interface_to_friendly_descr($natent['interface']) . " ({$if_real})";
+					/* Convert fake interfaces to real and check if iface is up. */
+					/* A null real interface indicates it has been removed from system. */
+					if (($if_real = get_real_interface($natent['interface'])) == "") {
+						$natent['enable'] = "off";
+						$natend_friendly = gettext("Missing (removed?)");
+					}
+					else {
+						$natend_friendly = convert_friendly_interface_to_friendly_descr($natent['interface']) . " ({$if_real})";
+					}
 					$snort_uuid = $natent['uuid'];
 					$start_lck_file = "{$g['varrun_path']}/snort_{$if_real}_starting.lck";
 					$stop_lck_file = "{$g['varrun_path']}/snort_{$if_real}_stopping.lck";
@@ -395,7 +426,7 @@ if ($savemsg)
 						?>
 					</td>
 					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
-						<?php if ($config['installedpackages']['snortglobal']['rule'][$i]['enable'] == 'on') : ?>
+						<?php if ($natent['enable'] == 'on') : ?>
 							<?php if (snort_is_running($if_real) && !file_exists($stop_lck_file)) : ?>
 								<i id="snort_<?=$if_real;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('snort is running on this interface');?>"></i>
 								&nbsp;
@@ -420,23 +451,23 @@ if ($savemsg)
 						<?php endif; ?>
 					</td>
 					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
-						<?php if ($config['installedpackages']['snortglobal']['rule'][$i]['performance'] != "") : ?>
-							<?=gettext(strtoupper($config['installedpackages']['snortglobal']['rule'][$i]['performance']))?>
+						<?php if ($natent['performance'] != "") : ?>
+							<?=gettext(strtoupper($natent['performance']))?>
 						<?php else: ?>
 							<?=gettext('UNKNOWN');?>
 						<?php endif; ?>
 					</td>
 					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
-						<?php if ($config['installedpackages']['snortglobal']['rule'][$i]['blockoffenders7'] == 'on' && $config['installedpackages']['snortglobal']['rule'][$i]['ips_mode'] == 'ips_mode_legacy') : ?>
+						<?php if ($natent['blockoffenders7'] == 'on' && $config['installedpackages']['snortglobal']['rule'][$i]['ips_mode'] == 'ips_mode_legacy') : ?>
 							<?=gettext('LEGACY MODE');?>
-						<?php elseif ($config['installedpackages']['snortglobal']['rule'][$i]['blockoffenders7'] == 'on' && $config['installedpackages']['snortglobal']['rule'][$i]['ips_mode'] == 'ips_mode_inline') : ?>
+						<?php elseif ($natent['blockoffenders7'] == 'on' && $config['installedpackages']['snortglobal']['rule'][$i]['ips_mode'] == 'ips_mode_inline') : ?>
 							<?=gettext('INLINE IPS');?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>
 						<?php endif; ?>
 					</td>
 					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
-						<?php if ($config['installedpackages']['snortglobal']['rule'][$i]['barnyard_enable'] == 'on') : ?>
+						<?php if ($natent['barnyard_enable'] == 'on') : ?>
 							<?php if (snort_is_running($if_real, 'barnyard2') && !file_exists($stop_lck_file)) : ?>
 								<i id="barnyard2_<?=$if_real;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('barnyard2 is running on this interface');?>"></i>
 								&nbsp;
@@ -472,7 +503,7 @@ if ($savemsg)
 						<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$i?>" name="ldel_<?=$i?>" value="ldel_<?=$i?>" title="<?=gettext('Delete this Snort interface mapping'); ?>">Delete this Snort interface mapping</button>
 					</td>	
 				</tr>
-				<?php $i++; endforeach; ob_end_flush(); ?>
+				<?php endforeach; ob_end_flush(); ?>
 				</tbody>
 			</table>
 		</div>

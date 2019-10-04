@@ -15,6 +15,10 @@ PATCHFILES=	patch04.gz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast Log-Analyzer for web servers
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libgd.so:graphics/gd
 
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION:R}

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hunspell
-PORTVERSION=	6.3
+PORTVERSION=	6.4.1
 DISTVERSIONPREFIX=	french-dictionaries-v
 CATEGORIES=	french textproc
 MASTER_SITES=	https://www.dicollecte.org/download/fr/ \
@@ -18,13 +18,13 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/fr_FR.aff \
-		%%DATADIR%%/fr_FR.dic
+PLIST_FILES=	${DATADIR}/fr_FR.aff \
+		${DATADIR}/fr_FR.dic
 
 FRALIASES=	fr_BE fr_CA fr_CH fr_LU
 .for ALIAS in ${FRALIASES}
-PLIST_FILES+=	%%DATADIR%%/${ALIAS}.aff \
-		%%DATADIR%%/${ALIAS}.dic
+PLIST_FILES+=	${DATADIR}/${ALIAS}.aff \
+		${DATADIR}/${ALIAS}.dic
 .endfor
 
 do-install:

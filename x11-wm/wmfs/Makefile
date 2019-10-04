@@ -13,6 +13,10 @@ COMMENT=	Floating and tiling Window Manager From Scratch
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 USE_GITHUB=	yes

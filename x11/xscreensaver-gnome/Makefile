@@ -12,6 +12,10 @@ DISTNAME=	xscreensaver-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Save your screen while you entertain your cat (for GNOME users)
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libgle.so:graphics/gle
 
 #CONFLICTS?=	xscreensaver-[0-9]* xscreensaver-gnome-hacks-[0-9]*

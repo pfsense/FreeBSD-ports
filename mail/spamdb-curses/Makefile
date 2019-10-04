@@ -11,6 +11,10 @@ COMMENT=	Curses interface for OpenBSD spamd spam database (spamdb)
 
 LICENSE=	MIT
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	${LOCALBASE}/sbin/spamdb:mail/spamd
 
 USES=		python:2.7

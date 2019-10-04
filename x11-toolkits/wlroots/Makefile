@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	wlroots
-DISTVERSION=	0.6.0
+DISTVERSION=	0.7.0
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -26,12 +26,25 @@ USE_LDCONFIG=	yes
 GH_ACCOUNT=	swaywm
 MESON_ARGS=	-Dexamples=false
 
+# XXX Drop after FreeBSD 12.0 EOL
+.if exists(/usr/lib/clang/8.0.0)
 # https://github.com/swaywm/wlroots/issues/1450
 LLD_UNSAFE=	yes
+.endif
 
-OPTIONS_DEFINE=	FREERDP X11
+OPTIONS_DEFINE=	CONSOLEKIT FREERDP X11
 OPTIONS_DEFAULT=FREERDP X11
 OPTIONS_SUB=	yes
+
+CONSOLEKIT_DESC=	DRM sessions without root using ConsoleKit2
+CONSOLEKIT_PATCH_SITES=	https://github.com/myfreeweb/${GH_PROJECT}/commit/:ck2
+CONSOLEKIT_PATCHFILES=	ac65ec72a2f2.patch:-p1:ck2 # see #1467 upstream
+CONSOLEKIT_LIB_DEPENDS=	libdbus-1.so:devel/dbus \
+			libconsolekit.so:sysutils/consolekit2
+CONSOLEKIT_MESON_ENABLED=	consolekit2
+.if make(makesum)
+.MAKEFLAGS:		WITH+=CONSOLEKIT
+.endif
 
 FREERDP_DESC=	RDP backend with freerdp
 FREERDP_LIB_DEPENDS=	libfreerdp2.so:net/freerdp

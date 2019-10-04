@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	metasploit
-PORTVERSION=	5.0.28
+PORTVERSION=	5.0.47
 CATEGORIES=	security
 
 MAINTAINER=	tanawts@gmail.com
@@ -27,7 +27,7 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-metasploit-credential>=0:security/rubygem-metasploit-credential \
 		rubygem-metasploit_data_models>=3.0.10_2:security/rubygem-metasploit_data_models \
 		rubygem-metasploit-model>=0:security/rubygem-metasploit-model \
-		rubygem-metasploit-payloads>=1.3.70:security/rubygem-metasploit-payloads \
+		rubygem-metasploit-payloads>=1.3.77:security/rubygem-metasploit-payloads \
 		rubygem-metasploit_payloads-mettle>=0.5.16:security/rubygem-metasploit_payloads-mettle \
 		rubygem-msgpack>=0:devel/rubygem-msgpack \
 		rubygem-network_interface>=0:net/rubygem-network_interface \
@@ -50,6 +50,7 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-sshkey>=0:security/rubygem-sshkey \
 		rubygem-bit-struct>=0:devel/rubygem-bit-struct \
 		rubygem-windows_error>=0:devel/rubygem-windows_error \
+		rubygem-xmlrpc>=0:net/rubygem-xmlrpc \
 		rubygem-pdf-reader>=0:print/rubygem-pdf-reader \
 		rubygem-ruby-macho>=0:devel/rubygem-ruby-macho \
 		rubygem-dnsruby>=0:dns/rubygem-dnsruby \
@@ -85,7 +86,10 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-nexpose>=0:security/rubygem-nexpose \
 		rubygem-xdr>=0:converters/rubygem-xdr \
 		rubygem-faker>=0:devel/rubygem-faker \
-		rubygem-concurrent-ruby>=0:devel/rubygem-concurrent-ruby
+		rubygem-concurrent-ruby>=0:devel/rubygem-concurrent-ruby \
+		rubygem-aws-sdk-s3>=0:devel/rubygem-aws-sdk-s3 \
+		rubygem-aws-sdk-ec2>=0:devel/rubygem-aws-sdk-ec2 \
+		rubygem-aws-sdk-iam>=0:devel/rubygem-aws-sdk-iam
 
 SCRIPTS=	msfconsole msfd msfdb msfrpc msfrpcd msfvenom
 
@@ -124,26 +128,18 @@ SHEBANG_FILES=	data/exploits/CVE-2017-17562/build.sh \
 		tools/hardware/killerbee_msfrelay.py \
 		tools/modules/aws-aggregator-userdata.sh
 
-.include <bsd.port.pre.mk>
-
-.if ${RUBY_VER} >= 2.4
-RUN_DEPENDS+=	rubygem-xmlrpc>=0:net/rubygem-xmlrpc
-.endif
-
 post-patch:
 	${REINPLACE_CMD} 's,git ls-files,find . ! -type d | sed "s|^./||", ; \
 		/rb-readline/d' \
 		${WRKSRC}/metasploit-framework.gemspec
-	${REINPLACE_CMD} "/pg/s|, '0.20.0'||; \
-		/concurrent-ruby/s|,'1.0.5'||" ${WRKSRC}/metasploit-framework.gemspec
-.if ${RUBY_VER} < 2.4
-	${REINPLACE_CMD} '/xmlrpc/d' ${WRKSRC}/metasploit-framework.gemspec
-.endif
+	${REINPLACE_CMD} "/pg/s|, '~> 0.20'||; \
+		/concurrent-ruby/s|,'1.0.5'||; \
+		/bcrypt/s|, '3.1.12'||" ${WRKSRC}/metasploit-framework.gemspec
 
 do-build:
 	${RM} ${WRKSRC}/Gemfile.lock
 	${TOUCH} ${WRKSRC}/Gemfile.lock
-	${REINPLACE_CMD} '/^group :coverage/,/^end/d ; /^group :development/,/^end/d ; /^group :test/,/^end/d ; /git:/d' \
+	${REINPLACE_CMD} "/^group :coverage/,/^end/d ; /^group :development/,/^end/d ; /^group :test/,/^end/d ; /git:/d ; /sqlite3/s|, '~>1.3.0'||" \
 		${WRKSRC}/Gemfile
 
 do-install:
@@ -159,4 +155,4 @@ post-install:
 	@${FIND} -ds ${STAGEDIR}${DATADIR} -type d -empty | \
 		${SED} 's,${STAGEDIR}${PREFIX}/,, ; s,^,@dir ,' >> ${TMPPLIST}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

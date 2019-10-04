@@ -10,6 +10,10 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//g}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	USGS General Cartographic Transformation Package (GCTP)
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 WRKSRC=		${WRKDIR}/${PORTNAME}/source
 
 USES=		gmake tar:Z

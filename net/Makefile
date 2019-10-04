@@ -23,10 +23,12 @@
     SUBDIR += apinger
     SUBDIR += appkonference
     SUBDIR += aprsc
+    SUBDIR += aquantia-atlantic-kmod
     SUBDIR += arp-scan
     SUBDIR += arp-sk
     SUBDIR += arpdig
     SUBDIR += arping
+    SUBDIR += arpoison
     SUBDIR += arprelease
     SUBDIR += asio
     SUBDIR += aslookup
@@ -93,6 +95,7 @@
     SUBDIR += corosync3
     SUBDIR += coturn
     SUBDIR += courier-authlib-ldap
+    SUBDIR += courier-sox
     SUBDIR += cppzmq
     SUBDIR += cryptcat
     SUBDIR += csocks
@@ -197,6 +200,7 @@
     SUBDIR += gofish
     SUBDIR += gogoc
     SUBDIR += google-cloud-sdk
+    SUBDIR += google-cloud-sdk-app-engine-go
     SUBDIR += googlecl
     SUBDIR += gopher
     SUBDIR += goreplay
@@ -240,6 +244,7 @@
     SUBDIR += hostapd
     SUBDIR += howl
     SUBDIR += hping
+    SUBDIR += hping3
     SUBDIR += hs-network
     SUBDIR += hsflowd
     SUBDIR += htpdate
@@ -264,6 +269,7 @@
     SUBDIR += intel-ixl-kmod
     SUBDIR += iodine
     SUBDIR += ip2location
+    SUBDIR += ip2proxy
     SUBDIR += ip6_int
     SUBDIR += ipdecap
     SUBDIR += ipgrab
@@ -853,6 +859,8 @@
     SUBDIR += p5-Text-Authinfo
     SUBDIR += p5-Twitter-API
     SUBDIR += p5-URI
+    SUBDIR += p5-URI-Encode-XS
+    SUBDIR += p5-URI-Fast
     SUBDIR += p5-URI-FromHash
     SUBDIR += p5-URI-Match
     SUBDIR += p5-URI-Nested
@@ -945,6 +953,7 @@
     SUBDIR += pear-XML_RPC
     SUBDIR += pear-XML_RPC2
     SUBDIR += pecl-amqp
+    SUBDIR += pecl-mosquitto
     SUBDIR += pecl-oauth2
     SUBDIR += pecl-radius
     SUBDIR += pecl-rdkafka
@@ -966,6 +975,10 @@
     SUBDIR += php73-soap
     SUBDIR += php73-sockets
     SUBDIR += php73-xmlrpc
+    SUBDIR += php74-ldap
+    SUBDIR += php74-soap
+    SUBDIR += php74-sockets
+    SUBDIR += php74-xmlrpc
     SUBDIR += phpldapadmin
     SUBDIR += pim6-tools
     SUBDIR += pim6dd
@@ -993,7 +1006,6 @@
     SUBDIR += prtunnel
     SUBDIR += ptpd2
     SUBDIR += ptunnel
-    SUBDIR += pure-sockets
     SUBDIR += pvm
     SUBDIR += pwhois
     SUBDIR += pxe
@@ -1170,8 +1182,10 @@
     SUBDIR += remmina-plugin-nx
     SUBDIR += remmina-plugin-rdp
     SUBDIR += remmina-plugin-secret
-    SUBDIR += remmina-plugin-telepathy
+    SUBDIR += remmina-plugin-spice
+    SUBDIR += remmina-plugin-st
     SUBDIR += remmina-plugin-vnc
+    SUBDIR += remmina-plugin-www
     SUBDIR += remmina-plugin-xdmcp
     SUBDIR += remmina-plugins
     SUBDIR += remotebox
@@ -1191,6 +1205,7 @@
     SUBDIR += rtpbreak
     SUBDIR += rtpproxy
     SUBDIR += rtptools
+    SUBDIR += rubygem-activestorage52
     SUBDIR += rubygem-amazon-ec2
     SUBDIR += rubygem-amq-protocol
     SUBDIR += rubygem-amqp
@@ -1203,6 +1218,7 @@
     SUBDIR += rubygem-azure-core
     SUBDIR += rubygem-beefcake
     SUBDIR += rubygem-bunny
+    SUBDIR += rubygem-cloudflare
     SUBDIR += rubygem-connection_pool
     SUBDIR += rubygem-docker-api
     SUBDIR += rubygem-dogapi
@@ -1226,6 +1242,7 @@
     SUBDIR += rubygem-fog-dynect
     SUBDIR += rubygem-fog-ecloud
     SUBDIR += rubygem-fog-google
+    SUBDIR += rubygem-fog-gridscale
     SUBDIR += rubygem-fog-internet-archive
     SUBDIR += rubygem-fog-joyent
     SUBDIR += rubygem-fog-local
@@ -1248,8 +1265,11 @@
     SUBDIR += rubygem-gitaly
     SUBDIR += rubygem-gitaly-proto
     SUBDIR += rubygem-gitlab_omniauth-ldap
+    SUBDIR += rubygem-google-cloud-bigquery
     SUBDIR += rubygem-google-cloud-core
     SUBDIR += rubygem-google-cloud-env
+    SUBDIR += rubygem-google-cloud-logging
+    SUBDIR += rubygem-google-cloud-storage
     SUBDIR += rubygem-grpc
     SUBDIR += rubygem-hangouts-chat
     SUBDIR += rubygem-http_parser.rb
@@ -1262,6 +1282,7 @@
     SUBDIR += rubygem-mqtt
     SUBDIR += rubygem-net-ldap
     SUBDIR += rubygem-net-netrc
+    SUBDIR += rubygem-net-ntp
     SUBDIR += rubygem-net-ping
     SUBDIR += rubygem-netrc
     SUBDIR += rubygem-network_interface
@@ -1314,6 +1335,7 @@
     SUBDIR += rubygem-rye
     SUBDIR += rubygem-serverengine
     SUBDIR += rubygem-simple_oauth
+    SUBDIR += rubygem-stackdriver-core
     SUBDIR += rubygem-stompserver
     SUBDIR += rubygem-t
     SUBDIR += rubygem-tweetstream
@@ -1328,21 +1350,22 @@
     SUBDIR += rude
     SUBDIR += ryu
     SUBDIR += s3ql
-    SUBDIR += samba46
-    SUBDIR += samba47
-    SUBDIR += samba48
     SUBDIR += samba410
+    SUBDIR += samba48
     SUBDIR += samplicator
+    SUBDIR += savvycan
     SUBDIR += sbd
     SUBDIR += sbm
     SUBDIR += scamper
     SUBDIR += scapy
     SUBDIR += scnc
     SUBDIR += scr_ipfm
+    SUBDIR += sctplib
     SUBDIR += sdl2_net
     SUBDIR += sdl_net
     SUBDIR += seda
     SUBDIR += self-service-password
+    SUBDIR += sems
     SUBDIR += sendemail
     SUBDIR += sendsms
     SUBDIR += sendsnpp
@@ -1371,6 +1394,7 @@
     SUBDIR += sobby
     SUBDIR += socat
     SUBDIR += sock
+    SUBDIR += socketapi
     SUBDIR += socketbind
     SUBDIR += socketpipe
     SUBDIR += socketw
@@ -1392,12 +1416,14 @@
     SUBDIR += ssvnc
     SUBDIR += stone
     SUBDIR += stund
+    SUBDIR += subnetcalc
     SUBDIR += suckblow
     SUBDIR += sup
     SUBDIR += svnup
     SUBDIR += syncthing
     SUBDIR += tableutil
     SUBDIR += tac_plus4
+    SUBDIR += tacacs
     SUBDIR += tapidbus
     SUBDIR += tayga
     SUBDIR += tclsoap
@@ -1448,12 +1474,12 @@
     SUBDIR += tramp
     SUBDIR += trickle
     SUBDIR += tsclient
+    SUBDIR += tsctp
     SUBDIR += tshark
     SUBDIR += tshark-lite
     SUBDIR += tsocks
     SUBDIR += tucan
     SUBDIR += turnserver
-    SUBDIR += turses
     SUBDIR += twitux
     SUBDIR += u6rd
     SUBDIR += ucarp
@@ -1531,6 +1557,7 @@
     SUBDIR += yaz++
     SUBDIR += yazproxy
     SUBDIR += yconalyzer
+    SUBDIR += yggdrasil
     SUBDIR += yptransitd
     SUBDIR += zebra
     SUBDIR += zebra-server

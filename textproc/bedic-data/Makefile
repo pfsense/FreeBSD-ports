@@ -10,6 +10,10 @@ DISTNAME=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Data (dictionary) files for the kbedic and cbedic ports
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

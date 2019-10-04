@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Test2-Harness
-PORTVERSION=	0.001078
+PORTVERSION=	0.001099
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:EXODIST
@@ -20,8 +20,10 @@ RUN_DEPENDS=	p5-Data-UUID>=1.148:devel/p5-Data-UUID \
 		p5-Importer>=0.024:devel/p5-Importer \
 		p5-Module-Pluggable>=0:devel/p5-Module-Pluggable \
 		p5-Term-Table>=0.011:devel/p5-Term-Table \
-		p5-Test-Simple>=1.302133:devel/p5-Test-Simple \
-		p5-Test2-Suite>=0.000105:devel/p5-Test2-Suite \
+		p5-Test-Simple>=1.302165:devel/p5-Test-Simple \
+		p5-Test2-Plugin-MemUsage>=0.002002:devel/p5-Test2-Plugin-MemUsage \
+		p5-Test2-Plugin-UUID>=0.002001:devel/p5-Test2-Plugin-UUID \
+		p5-Test2-Suite>=0.000126:devel/p5-Test2-Suite \
 		p5-goto-file>=0.005:devel/p5-goto-file
 
 USES=		perl5

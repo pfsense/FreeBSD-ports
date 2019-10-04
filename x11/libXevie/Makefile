@@ -8,6 +8,9 @@ CATEGORIES=	x11
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	The Xevie library
 
+DEPRECATED=	Deprecated upstream
+EXPIRATION_DATE=2019-10-15
+
 LICENSE=	MIT
 
 XORG_CAT=	lib

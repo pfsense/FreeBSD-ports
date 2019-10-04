@@ -18,11 +18,11 @@
     SUBDIR += cascade
     SUBDIR += chipvault
     SUBDIR += cura-engine
+    SUBDIR += digital
     SUBDIR += dinotrace
     SUBDIR += dxf2fig
     SUBDIR += electric
     SUBDIR += electric-ng
-    SUBDIR += elmerfem
     SUBDIR += feappv
     SUBDIR += fidocadj
     SUBDIR += freecad

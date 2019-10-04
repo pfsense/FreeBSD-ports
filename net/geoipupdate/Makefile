@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	geoipupdate
-PORTVERSION=	4.0.3
+PORTVERSION=	4.0.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net geography
 
@@ -25,7 +25,7 @@ MAKE_ENV+=	GOPATH=${WRKSRC} \
 		DATADIR=${PREFIX}/share/GeoIP
 
 GH_SUBDIR=	src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}
-# Not needed: go-spew, pretty, pty, text, go-difflib, objx, testify
+# Not needed: go-spew, pretty, testify
 GH_TUPLE=	gofrs:flock:v0.7.1:flock/src/github.com/gofrs/flock \
 		pkg:errors:v0.8.1:pkg/src/github.com/pkg/errors \
 		spf13:pflag:v1.0.3:pflag/src/github.com/spf13/pflag
@@ -55,12 +55,12 @@ do-build-MANPAGES-on:
 		| ${SED} -e '1s/7/5/' > ${WRKSRC}/build/GeoIP.conf.5
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/GeoIP
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/GeoIP
 	${INSTALL_PROGRAM} ${WRKSRC}/build/geoipupdate ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKSRC}/build/GeoIP.conf ${STAGEDIR}${PREFIX}/etc/GeoIP.conf.sample
 
 do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/build && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 do-install-MANPAGES-on:

@@ -2,19 +2,19 @@
 
 PORTNAME=	xorg-apps
 PORTVERSION=	7.7
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.org apps meta-port
 
-COMPONENTS=	appres bitmap xf86dga:dga iceauth luit \
+COMPONENTS=	appres bitmap xf86dga:dga iceauth \
 		x11-fonts/mkfontscale:mkfontscale sessreg \
 		setxkbmap smproxy x11perf xauth xbacklight xcalc \
 		xcmsdb xconsole xcursorgen xdpyinfo xdriinfo xev xgamma xgc \
 		xhost xinput xkbcomp xkbevd xkbutils:xkbvleds xkill \
 		xlsatoms xlsclients xmodmap xpr xprop xrandr xrdb \
-		xrefresh xset xsetmode xsetroot xvinfo xwd xwininfo \
+		xrefresh xset xsetroot xvinfo xwd xwininfo \
 		xwud xmessage
 
 # These three are added for convenience purposes only.

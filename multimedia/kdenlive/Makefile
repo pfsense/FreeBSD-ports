@@ -1,8 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	kdenlive
+PORTREVISION=	4
+# NOTE KDE_APPLICATIONS_VERSION is set explicitly in this port, not 19.08
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	3
 CATEGORIES=	multimedia kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org

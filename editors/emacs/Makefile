@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	emacs
-DISTVERSION=	26.2
+DISTVERSION=	26.3
 PORTEPOCH=	3
 CATEGORIES=	editors ipv6
 MASTER_SITES=	GNU
 
 .if ${FLAVOR:U} == canna
 PATCH_DIST_STRIP=	-p1
-PATCH_SITES=	http://www.gentei.org/~yuuji/software/emacs26canna/
-PATCHFILES=	emacs26.1-canna-20180529.diff.gz
+PATCH_SITES=	https://www.gentei.org/~yuuji/software/emacs26canna/
+PATCHFILES=	emacs26.3-canna-20190828.diff.gz
 .endif
 
 MAINTAINER=	emacs@FreeBSD.org
@@ -35,7 +35,8 @@ nox_PKGNAMESUFFIX=	-nox
 
 USES=		cpe gmake localbase:ldflags makeinfo ncurses pkgconfig tar:xz
 .if ${FLAVOR:U} != nox
-USES+=		desktop-file-utils
+USES+=		desktop-file-utils gnome xorg
+INSTALLS_ICONS=	yes
 USE_XORG=	ice sm x11 xcb xext xfixes xinerama xmu xrandr xt
 .endif
 CPE_VENDOR=	gnu
@@ -70,9 +71,6 @@ INFO=		ada-mode auth autotype bovine calc ccmode cl dbus dired-x \
 		sasl sc semantic ses sieve smtpmail speedbar srecode todo-mode \
 		tramp url vhdl-mode vip viper widget wisent woman
 INFO_PATH=	${DATADIR_REL}/info
-.if ${FLAVOR:U} != nox
-INSTALLS_ICONS=	yes
-.endif
 .if ${FLAVOR:U} == canna
 PLIST_FILES+=	${DATADIR}/${DISTVERSION}/lisp/canna.el.gz \
 		${DATADIR}/${DISTVERSION}/lisp/canna.elc \
@@ -83,11 +81,11 @@ PLIST_SUB=	EMACS_VER=${DISTVERSION} GNU_HOST=${CONFIGURE_TARGET}
 SUB_FILES=	sources.el
 SUB_LIST=	EMACS_VER=${DISTVERSION} # sources.el
 
-OPTIONS_DEFINE=	ACL DBUS GCONF GNUTLS GSETTINGS JSON LCMS2 M17N MAILUTILS \
-		MODULES OTF SCROLLBARS SOURCES THREADS XFT XIM XML XWIDGETS
-OPTIONS_DEFAULT=	ACL DBUS GCONF GIF GNUTLS GSETTINGS GTK3 JPEG JSON \
-		KQUEUE LCMS2 M17N MAGICK MAILUTILS MODULES OSS OTF PNG \
-		SCROLLBARS SOURCES SVG THREADS TIFF XFT XIM XML XPM
+OPTIONS_DEFINE=	ACL DBUS GCONF GNUTLS GSETTINGS LCMS2 M17N MAILUTILS MODULES \
+		OTF SCROLLBARS SOURCES THREADS XFT XIM XML XWIDGETS
+OPTIONS_DEFAULT=	ACL DBUS GCONF GIF GNUTLS GSETTINGS GTK3 JPEG KQUEUE \
+		LCMS2 M17N MAGICK MAILUTILS MODULES OSS OTF PNG SCROLLBARS \
+		SOURCES SVG THREADS TIFF XFT XIM XML XPM
 OPTIONS_GROUP=	GRAPHICS
 OPTIONS_GROUP_GRAPHICS=	CAIRO GIF JPEG MAGICK PNG SVG TIFF XPM
 OPTIONS_RADIO=	FILENOTIFY SOUND X11TOOLKIT
@@ -103,62 +101,53 @@ OPTIONS_EXCLUDE=	ALSA CAIRO DBUS GCONF GFILE GIF GSETTINGS GTK2 GTK3 \
 OPTIONS_SUB=	YES
 
 ACL_DESC=	Access control list support
-CAIRO_DESC=	Experimental Cairo library support     (implies PNG, XFT)
+CAIRO_DESC=	Experimental Cairo library support  [implies PNG, XFT]
 FILENOTIFY_DESC=	File notification support
 GFILE_DESC=	File notification via gfile
 GRAPHICS_DESC=	Graphics support
 GSETTINGS_DESC=	GSettings API for application settings
 KQUEUE_DESC=	File notification via kqueue
 #LTO_DESC=	Enable link-time optimization
-M17N_DESC=	M17N support for text-shaping (implies XFT)
-MAGICK_DESC=	ImageMagick image processing support
+M17N_DESC=	M17N support for text-shaping       [implies XFT]
 MAILUTILS_DESC=	Mail framework via GNU Mailutils
 MODULES_DESC=	Dynamic modules support
-OTF_DESC=	Opentype fonts                         (implies XFT)
+OTF_DESC=	Opentype fonts                      [implies XFT]
 SCROLLBARS_DESC=	Toolkit scroll-bars
 SOURCES_DESC=	Install sources
-SVG_DESC=	Scalable vector graphics support       (implies PNG)
+SVG_DESC=	Scalable vector graphics support    [implies PNG]
 X11TOOLKIT_DESC=	X11 toolkit
 XAW3D_DESC=	Athena3D widgets
 XAW_DESC=	Athena widgets
 XIM_DESC=	X Input Method
-XWIDGETS_DESC=	Experimental GTK widgets               (requires GTK3)
+XWIDGETS_DESC=	Experimental GTK widgets            [implies GTK3]
 
 ACL_CONFIGURE_ENABLE=	acl
 ALSA_CONFIGURE_ON=	--with-sound=alsa
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
-CAIRO_USES=		gnome
 CAIRO_USE=		GNOME=cairo
 CAIRO_CONFIGURE_WITH=	cairo
 CAIRO_IMPLIES=		PNG XFT
 DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 DBUS_CONFIGURE_WITH=	dbus
-GCONF_USES=		gnome
 GCONF_USE=		GNOME=gconf2
 GCONF_CONFIGURE_WITH=	gconf
 GFILE_CONFIGURE_ON=	--with-file-notification=gfile
-GFILE_USES=		gnome
 GFILE_USE=		GNOME=glib20
 GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
 GIF_CONFIGURE_WITH=	gif
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_WITH=	gnutls
-GSETTINGS_USES=		gnome
 GSETTINGS_USE=		GNOME=glib20
 GSETTINGS_CONFIGURE_WITH=	gsettings
 GSETTINGS_IMPLIES=	DBUS
-GTK2_USES=		gnome
 GTK2_USE=		GNOME=cairo,gtk20
 GTK2_CONFIGURE_ON=	--with-x-toolkit=gtk2
 GTK2_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 			libfontconfig.so:x11-fonts/fontconfig
-GTK3_USES=		gnome
 GTK3_USE=		GNOME=cairo,gtk30
 GTK3_CONFIGURE_ON=	--with-x-toolkit=gtk3
 JPEG_USES=		jpeg
 JPEG_CONFIGURE_WITH=	jpeg
-JSON_CONFIGURE_WITH=	json
-JSON_LIB_DEPENDS=	libjansson.so:devel/jansson
 KQUEUE_CONFIGURE_ON=	--with-file-notification=kqueue
 LCMS2_CONFIGURE_WITH=	lcms2
 LCMS2_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
@@ -185,7 +174,6 @@ SCROLLBARS_CONFIGURE_WITH=	toolkit-scroll-bars
 .if ${FLAVOR:U} == canna
 SOURCES_PLIST_FILES=	${DATADIR}/${DISTVERSION}/src/canna.c
 .endif
-SVG_USES=		gnome
 SVG_USE=		GNOME=cairo,librsvg2
 SVG_CONFIGURE_WITH=	rsvg
 SVG_IMPLIES=		PNG
@@ -201,7 +189,7 @@ XFT_CONFIGURE_WITH=	xft
 XFT_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2
 XIM_CONFIGURE_WITH=	xim
-XML_USES=		gnome
+XML_USES=		gnome # portlint complains, but necessary for nox flavor
 XML_USE=		GNOME=libxml2
 XML_CONFIGURE_WITH=	xml2
 XPM_USE=		XORG=xpm

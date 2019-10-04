@@ -17,8 +17,7 @@ BROKEN_i386=	non-constant-expression cannot be narrowed from type 'unsigned int'
 USE_GITHUB=	yes
 GH_ACCOUNT=	raboof
 
-USES=	gmake shebangfix
-CXXFLAGS+=	-D_GLIBCXX_USE_C99 # XXX ports/193528
+USES=	compiler:c++11-lang gmake shebangfix
 
 SHEBANG_FILES=	determineVersion.sh
 bash_CMD=	/bin/sh
