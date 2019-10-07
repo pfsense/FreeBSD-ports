@@ -413,7 +413,10 @@ pkg_set_origin() {
 
 	local _pkg_source=""
 	local _pkg_target=""
-	for _pkg_source in $(_pkg query -x %n "${_source}*"); do
+
+	local _pkg_list=$(_pkg query -g %n "${_source}-*")
+	_pkg_list="${_pkg_list} $(_pkg query -g %n "*-${_source}")"
+	for _pkg_source in ${_pkg_list}; do
 		_pkg_target=$(echo ${_pkg_source} \
 		    | sed "s/${_source}/${_target}/g")
 		_origin_source=$(_pkg query %o ${_pkg_source})
@@ -621,6 +624,13 @@ pkg_upgrade() {
 			unlock_pkg=""
 		fi
 
+		local _new_php_pkg=$(_pkg rquery -U %dn ${_meta_pkg} \
+		    | egrep '^php[0-9]{2}$')
+
+		if [ "${cur_php_pkg}" != "${_new_php_pkg}" ]; then
+			pkg_set_origin ${cur_php_pkg} ${_new_php_pkg}
+		fi
+
 		# Download all upgrade packages first
 		fetch_upgrade_packages
 
@@ -709,13 +719,9 @@ pkg_upgrade() {
 		_pkg annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
-		local _new_php_pkg=$(_pkg rquery -U %dn ${_meta_pkg} \
-		    | egrep '^php[0-9]{2}$')
-
 		if [ "${cur_php_pkg}" != "${_new_php_pkg}" ]; then
 			_pkg annotate -q -M ${kernel_pkg} new_major_php \
 			    ${_new_php_pkg}
-			pkg_set_origin ${cur_php_pkg} ${_new_php_pkg}
 		fi
 
 		do_reboot
@@ -757,10 +763,6 @@ pkg_upgrade() {
 				/etc/rc.php_ini_setup >/dev/null 2>&1
 			fi
 
-			if [ -n "${new_major_php}" ]; then
-				_exec "pkg-static upgrade -x ${new_major_php}*" \
-				    "Upgrading PHP to new major version"
-			fi
 			_exec "pkg-static upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
@@ -1055,7 +1057,7 @@ do_reboot() {
 	if [ -z "${dont_reboot}" ]; then
 		_echo "Upgrade is complete.  Rebooting ${_msg}"
 		echo "Upgrade is complete.  Rebooting ${_msg}" | wall
-		/etc/rc.notify_message -e -g -m \
+		/etc/rc.notify_message -e -m \
 		    "Upgrade is complete.  Rebooting ${_msg}" >/dev/null 2>&1
 		if [ "${_now}" = "now" ]; then
 			/etc/rc.reboot ${reboot_params}
@@ -1066,7 +1068,7 @@ do_reboot() {
 	else
 		_echo "Upgrade is complete."
 		echo "Upgrade is complete." | wall
-		/etc/rc.notify_message -e -g -m "Upgrade is complete." \
+		/etc/rc.notify_message -e -m "Upgrade is complete." \
 		    >/dev/null 2>&1
 	fi
 }
@@ -1116,21 +1118,16 @@ export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
 # Setup proxy settings
 HTTP_PROXY=$(read_xml_tag.sh string system/proxyurl)
-if [ "${HTTP_PROXY}" != "" ]; then
+if [ -n "${HTTP_PROXY}" ]; then
 	HTTP_PROXY_PORT=$(read_xml_tag.sh string system/proxyport)
-	if [ "${HTTP_PROXY_PORT}" != "" ]; then
+	if [ -n "${HTTP_PROXY_PORT}" ]; then
 		HTTP_PROXY="${HTTP_PROXY}:${HTTP_PROXY_PORT}"
 	fi
 	export HTTP_PROXY
-fi
 
-# Only set proxy variables on FreeBSD 11 until the fix is on 10
-# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=194483
-if $(uname -r | grep -q '^11'); then
 	HTTP_PROXY_USER=$(read_xml_tag.sh string system/proxyuser)
 	HTTP_PROXY_PASS=$(read_xml_tag.sh string system/proxypass)
-	if [ "${HTTP_PROXY_USER}" != "" ] &&
-	    [ "${HTTP_PROXY_PASS}" != "" ]; then
+	if [ -n "${HTTP_PROXY_USER}" -a -n "${HTTP_PROXY_PASS}" ]; then
 		HTTP_PROXY_AUTH="${HTTP_PROXY_USER}:${HTTP_PROXY_PASS}"
 		HTTP_PROXY_AUTH="basic:*:${HTTP_PROXY_AUTH}"
 		export HTTP_PROXY_AUTH
@@ -1287,6 +1284,10 @@ if [ -n "${force_ipv4}" ]; then
 elif [ -n "${force_ipv6}" ]; then
 	export IP_VERSION="6"
 fi
+
+# Force debug if /cf/conf/upgrade_debug is present
+[ -f "/cf/conf/upgrade_debug" ] \
+    && stdout=''
 
 # Set default action when no parameter is set
 : ${action:="upgrade"}
