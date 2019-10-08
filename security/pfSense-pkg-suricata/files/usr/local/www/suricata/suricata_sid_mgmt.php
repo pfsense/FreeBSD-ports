@@ -558,6 +558,12 @@ if ($savemsg) {
 				</thead>
 				<tbody>
 			   <?php foreach ($a_nat as $k => $natent): ?>
+				<?php
+					// Skip displaying any instance where the physical pfSense interface is missing
+					if (get_real_interface($natent['interface']) == "") {
+						continue;
+					}
+				?>
 				<tr>
 					<td class="text-center">
 						<input type="checkbox" name="torestart[]" id="torestart[]" value="<?=$k;?>" title="<?=gettext("Apply new configuration and rebuild rules for this interface when saving");?>" />

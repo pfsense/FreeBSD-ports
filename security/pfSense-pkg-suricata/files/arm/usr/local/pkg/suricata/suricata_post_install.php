@@ -219,6 +219,11 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	// Create the suricata.yaml files for each enabled interface
 	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
 		$if_real = get_real_interface($suricatacfg['interface']);
+
+		/* Skip instance if its real interface is missing in pfSense */
+		if ($if_real == "") {
+			continue;
+		}
 		$suricata_uuid = $suricatacfg['uuid'];
 		$suricatacfgdir = "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}";
 		update_status(gettext("Generating YAML configuration file for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . "..."));

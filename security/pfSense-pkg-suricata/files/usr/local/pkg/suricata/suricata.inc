@@ -102,7 +102,7 @@ function suricata_barnyard_start($suricatacfg, $if_real) {
 	$suricatalogdir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
 	$suricatabindir = SURICATA_PBI_BINDIR;
 
-	if ($suricatacfg['barnyard_enable'] == 'on') {
+	if ($suricatacfg['barnyard_enable'] == 'on' && $if_real <> "") {
 		syslog(LOG_NOTICE, "[Suricata] Barnyard2 START for {$suricatacfg['descr']}({$if_real})...");
 		mwexec_bg("{$suricatabindir}barnyard2 -r {$suricata_uuid} -f unified2.alert --pid-path {$g['varrun_path']} --nolock-pidfile -c {$suricatadir}/barnyard2.conf -d {$suricatalogdir} -D -q");
 	}
@@ -116,7 +116,7 @@ function suricata_start($suricatacfg, $if_real) {
 	$suricatalogdir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
 	$suricatabindir = SURICATA_PBI_BINDIR;
 
-	if ($suricatacfg['enable'] == 'on') {
+	if ($suricatacfg['enable'] == 'on' && $if_real <> "") {
 		// Truncate suricata.log file for this interface.
 		file_put_contents("{$suricatalogdir}/suricata.log", '');
 		$run_mode = $suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on' ? '--netmap' : '-i ' . $if_real;
@@ -145,7 +145,7 @@ function suricata_start_all_interfaces($background=FALSE) {
 	}
 
 	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
-		if ($suricatacfg['enable'] != 'on') {
+		if ($suricatacfg['enable'] != 'on' || get_real_interface($suricatacfg['interface']) == "") {
 			continue;
 		}
 		suricata_start($suricatacfg, get_real_interface($suricatacfg['interface']));
@@ -206,6 +206,14 @@ function suricata_reload_config($suricatacfg, $signal="USR2") {
 	$suricatadir = SURICATADIR;
 	$suricata_uuid = $suricatacfg['uuid'];
 	$if_real = get_real_interface($suricatacfg['interface']);
+
+	/******************************************************/
+	/* Skip disabled Suricata instances or instances      */
+	/* whose pfSense physical interface has been removed. */
+	/******************************************************/
+	if (($suricatacfg['enable'] != 'on') || ($if_real == "")) {
+		return;
+	}
 
 	/******************************************************/
 	/* Only send the SIGUSR2 if Suricata is running and   */
@@ -881,8 +889,10 @@ function sync_suricata_package_config() {
 
 	$suricataconf = $config['installedpackages']['suricata']['rule'];
 	foreach ($suricataconf as $value) {
-		/* Skip configuration of any disabled interface */
-		if ($value['enable'] != 'on') {
+		/* Skip configuration of any disabled instance or */
+		/* an instance whose assigned physical interface  */
+		/* has been removed.                              */
+		if (($value['enable'] != 'on') || (get_real_interface($value['interface']) == "")) {
 			continue;
 		}
 
@@ -3603,12 +3613,18 @@ function suricata_create_rc() {
 	// Loop thru each configured interface and build
 	// the shell script.
 	foreach ($suricataconf as $value) {
-		// Skip disabled Suricata interfaces
-		if ($value['enable'] != 'on') {
+
+		// Attempt to grab physical interface
+		// for this Suricata instance.
+		$if_real = get_real_interface($value['interface']);
+
+		// Skip disabled Suricata instances
+		// or instances whose pfSense physical
+		// interface has been removed.
+		if (($value['enable'] != 'on') || ($if_real == "")) {
 			continue;
 		}
 		$suricata_uuid = $value['uuid'];
-		$if_real = get_real_interface($value['interface']);
 		$run_mode = $value['ips_mode'] == 'ips_mode_inline' && $value['blockoffenders'] == 'on' ? '--netmap' : '-i ' . $if_real;
 
 		$start_barnyard = <<<EOE

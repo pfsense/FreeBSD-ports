@@ -647,6 +647,13 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		/* Create configuration for each active Suricata interface */
 		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 			$if_real = get_real_interface($value['interface']);
+
+			/* Skip processing for instances whose underlying physical       */
+			/* interface has been removed in pfSense.                        */
+			if ($if_real == "") {
+				continue;
+			}
+
 			// Make sure the interface subdirectory exists.  We need to re-create
 			// it during a pkg reinstall on the intial rules set download.
 			if (!is_dir("{$suricatadir}suricata_{$value['uuid']}_{$if_real}"))
