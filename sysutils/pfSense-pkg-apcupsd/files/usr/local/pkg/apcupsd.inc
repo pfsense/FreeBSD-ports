@@ -42,11 +42,6 @@ function php_deinstall_apcupsd() {
 
 }
 
-function is_int_with_minus_one($arg) {
-  return (is_int($arg) || is_string($arg) && preg_match('/^-?\d+$/', trim($arg)))
-         && intval($arg) >= -1;
-}
-
 function validate_input_apcupsd($post, &$input_errors) {
 
 	if (isset($post['apcupsdenabled'])) {
@@ -58,11 +53,11 @@ function validate_input_apcupsd($post, &$input_errors) {
 			$input_errors[] = gettext('OnBattery Delay is not numeric.');
 		}
 
-		if ($post['batterylevel'] != '' && !is_int_with_minus_one($post['batterylevel'])) {
+		if ($post['batterylevel'] != '' && !(is_numericint($post['batterylevel']) || $post['batterylevel'] == '-1')) {
 			$input_errors[] = gettext('Battery Level is not numeric.');
 		}
 
-		if ($post['minutes'] != '' && !is_int_with_minus_one($post['minutes'])) {
+		if ($post['minutes'] != '' && !(is_numericint($post['minutes']) || $post['minutes'] == '-1')) {
 			$input_errors[] = gettext('Minutes is not numeric.');
 		}
 
