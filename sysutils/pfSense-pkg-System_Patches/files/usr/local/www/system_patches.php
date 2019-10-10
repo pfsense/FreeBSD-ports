@@ -35,6 +35,8 @@ require_once('classes/Form.class.php');
 
 init_config_arr(array('installedpackages', 'patches', 'item'));
 $a_patches = &$config['installedpackages']['patches']['item'];
+$logging_level = LOG_WARNING;
+$logging_prefix = gettext("System Patches");
 
 /* if a custom message has been passed along, lets process it */
 if ($_POST['savemsg']) {
@@ -66,10 +68,22 @@ if (($_POST['fulltest']) && ($a_patches[$_POST['id']])) {
 	}
 }
 if (($_POST['act'] == "apply") && ($a_patches[$_POST['id']])) {
-	$savemsg = patch_apply($a_patches[$_POST['id']]) ? gettext("Patch applied successfully") : gettext("Patch could NOT be applied!");
+	if (patch_apply($a_patches[$_POST['id']])) {
+		$savemsg = gettext("Patch applied successfully");
+		syslog($logging_level, "{$logging_prefix}: applied {$a_patches[$_POST['id']]['location']}");
+	} else {
+		$savemsg = gettext("Patch could NOT be applied!");
+		syslog($logging_level, "{$logging_prefix}: could not be applied {$a_patches[$_POST['id']]['location']}");
+	}
 }
 if (($_POST['act'] == "revert") && ($a_patches[$_POST['id']])) {
-	$savemsg = patch_revert($a_patches[$_POST['id']]) ? gettext("Patch reverted successfully") : gettext("Patch could NOT be reverted!");
+	if (patch_revert($a_patches[$_POST['id']])) {
+		$savemsg = gettext("Patch reverted successfully");
+		syslog($logging_level, "{$logging_prefix}: reverted {$a_patches[$_POST['id']]['location']}");
+	} else {
+		$savemsg = gettext("Patch could NOT be reverted!");
+		syslog($logging_level, "{$logging_prefix}: could not be reverted {$a_patches[$_POST['id']]['location']}");
+	}
 }
 
 $need_save = false;
