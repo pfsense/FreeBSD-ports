@@ -36,11 +36,6 @@ require_once('classes/Form.class.php');
 init_config_arr(array('installedpackages', 'patches', 'item'));
 $a_patches = &$config['installedpackages']['patches']['item'];
 
-function patchlog($msg, $descr) {
-	$logmsg = gettext("System Patches: {$msg} ({$descr})");
-	syslog(LOG_WARNING, $logmsg);
-}
-
 /* if a custom message has been passed along, lets process it */
 if ($_POST['savemsg']) {
 	$savemsg = $_POST['savemsg'];
