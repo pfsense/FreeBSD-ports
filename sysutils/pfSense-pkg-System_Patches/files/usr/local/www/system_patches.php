@@ -35,8 +35,11 @@ require_once('classes/Form.class.php');
 
 init_config_arr(array('installedpackages', 'patches', 'item'));
 $a_patches = &$config['installedpackages']['patches']['item'];
-$logging_level = LOG_WARNING;
-$logging_prefix = gettext("System Patches");
+
+function patchlog($msg, $descr) {
+	$logmsg = gettext("System Patches: {$msg} ({$descr})");
+	syslog(LOG_WARNING, $logmsg);
+}
 
 /* if a custom message has been passed along, lets process it */
 if ($_POST['savemsg']) {
@@ -50,39 +53,37 @@ if ($_POST) {
 	}
 }
 
-if (($_POST['act'] == "fetch") && ($a_patches[$_POST['id']])) {
-	$savemsg = patch_fetch($a_patches[$_POST['id']]) ? gettext("Patch Fetched Successfully") : gettext("Patch Fetch Failed");
-}
-if (($_POST['act'] == "test") && ($a_patches[$_POST['id']])) {
-	$savemsg = patch_test_apply($a_patches[$_POST['id']]) ? gettext("Patch can be applied cleanly") : gettext("Patch can NOT be applied cleanly");
-	$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=apply\" usepost>" . gettext("detail") . "</a>)";
-	$savemsg .= empty($savemsg) ? "" : "<br/>";
-	$savemsg .= patch_test_revert($a_patches[$_POST['id']]) ? gettext("Patch can be reverted cleanly") : gettext("Patch can NOT be reverted cleanly");
-	$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=revert\" usepost>" . gettext("detail") . "</a>)";
-}
-if (($_POST['fulltest']) && ($a_patches[$_POST['id']])) {
-	if ($_POST['fulltest'] == "apply") {
-		$fulldetail = patch_test_apply($a_patches[$_POST['id']], true);
-	} elseif ($_POST['fulltest'] == "revert") {
-		$fulldetail = patch_test_revert($a_patches[$_POST['id']], true);
+if ($a_patches[$_POST['id']]) {
+	$savemsg = gettext("Patch ");
+	$descr = $a_patches[$_POST['id']]['descr'];
+	switch ($_POST['act']) {
+	case 'fetch':
+		$savemsg .= patch_fetch($a_patches[$_POST['id']]) ? gettext("fetched succesfully") : gettext("fetch failed");
+		patchlog($savemsg, $descr);
+		break;
+	case 'test':
+		$savemsg .= patch_test_apply($a_patches[$_POST['id']]) ? gettext("can be applied cleanly") : gettext("can NOT be applied cleanly");
+		$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=apply\" usepost>" . gettext("detail") . "</a>)";
+		$savemsg .= empty($savemsg) ? "" : "<br/>";
+		$savemsg .= patch_test_revert($a_patches[$_POST['id']]) ? gettext("Patch can be reverted cleanly") : gettext("Patch can NOT be reverted cleanly");
+		$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=revert\" usepost>" . gettext("detail") . "</a>)";
+		break;
+	case 'apply':
+		$savemsg .= patch_apply($a_patches[$_POST['id']]) ? gettext("applied succesfully") : gettext("could NOT be applied");
+		patchlog($savemsg, $descr);
+		break;
+	case 'revert':
+		$savemsg .= patch_revert($a_patches[$_POST['id']]) ? gettext("reverted successfully") : gettext("could NOT be reverted!");
+		patchlog($savemsg, $descr);
+		break;
+	default:
 	}
-}
-if (($_POST['act'] == "apply") && ($a_patches[$_POST['id']])) {
-	if (patch_apply($a_patches[$_POST['id']])) {
-		$savemsg = gettext("Patch applied successfully");
-		syslog($logging_level, "{$logging_prefix}: applied {$a_patches[$_POST['id']]['location']}");
-	} else {
-		$savemsg = gettext("Patch could NOT be applied!");
-		syslog($logging_level, "{$logging_prefix}: could not be applied {$a_patches[$_POST['id']]['location']}");
-	}
-}
-if (($_POST['act'] == "revert") && ($a_patches[$_POST['id']])) {
-	if (patch_revert($a_patches[$_POST['id']])) {
-		$savemsg = gettext("Patch reverted successfully");
-		syslog($logging_level, "{$logging_prefix}: reverted {$a_patches[$_POST['id']]['location']}");
-	} else {
-		$savemsg = gettext("Patch could NOT be reverted!");
-		syslog($logging_level, "{$logging_prefix}: could not be reverted {$a_patches[$_POST['id']]['location']}");
+	if ($_POST['fulltest']) {
+		if ($_POST['fulltest'] == "apply") {
+			$fulldetail = patch_test_apply($a_patches[$_POST['id']], true);
+		} elseif ($_POST['fulltest'] == "revert") {
+			$fulldetail = patch_test_revert($a_patches[$_POST['id']], true);
+		}
 	}
 }
 
