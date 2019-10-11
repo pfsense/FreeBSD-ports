@@ -186,9 +186,8 @@ function bootup_apply_patches() {
 		   only attempt to apply if it can be applied;
 		   and	if it can be reverted it is presumably already applied, so skip it. */
 		if (isset($patch['autoapply']) && patch_test_apply($patch) && !patch_test_revert($patch)) {
-			$descr = $patch['descr'];
 			$savemsg = patch_apply($patch) ? gettext("Patch autoapplied succesfully") : gettext("Patch could NOT be autoapplied");
-	                patchlog($savemsg, $descr);
+	                patchlog($savemsg, $patch['descr']);
 		}
 	}
 }
