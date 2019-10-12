@@ -429,11 +429,11 @@ function sync_package_lcdproc() {
 				$config_text .= "Size={$lcdproc_config['size']}\n";
 				break;
 			case "rawserial":
-                                $config_text .= "[{$lcdproc_config['driver']}]\n";
-                                $config_text .= "Device={$realport}\n";
-                                $config_text .= "Size={$lcdproc_config['size']}\n";
-                                $config_text .= "UpdateRate=1\n";
-                                break;
+				$config_text .= "[{$lcdproc_config['driver']}]\n";
+				$config_text .= "Device={$realport}\n";
+				$config_text .= "Size={$lcdproc_config['size']}\n";
+				$config_text .= "UpdateRate=1\n";
+				break;
 			case "sdeclcd":
 				$config_text .= "[{$lcdproc_config['driver']}]\n";
 				break;
