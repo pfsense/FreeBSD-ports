@@ -50,28 +50,28 @@ if ($_POST) {
 
 if ($a_patches[$_POST['id']]) {
 	$savemsg = gettext("Patch ");
-	$descr = $a_patches[$_POST['id']]['descr'];
+	$descr = patch_descr($_POST['id']);
 	switch ($_POST['act']) {
-	case 'fetch':
-		$savemsg .= patch_fetch($a_patches[$_POST['id']]) ? gettext("fetched succesfully") : gettext("fetch failed");
-		patchlog($savemsg, $descr);
-		break;
-	case 'test':
-		$savemsg .= patch_test_apply($a_patches[$_POST['id']]) ? gettext("can be applied cleanly") : gettext("can NOT be applied cleanly");
-		$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=apply\" usepost>" . gettext("detail") . "</a>)";
-		$savemsg .= empty($savemsg) ? "" : "<br/>";
-		$savemsg .= patch_test_revert($a_patches[$_POST['id']]) ? gettext("Patch can be reverted cleanly") : gettext("Patch can NOT be reverted cleanly");
-		$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=revert\" usepost>" . gettext("detail") . "</a>)";
-		break;
-	case 'apply':
-		$savemsg .= patch_apply($a_patches[$_POST['id']]) ? gettext("applied succesfully") : gettext("could NOT be applied");
-		patchlog($savemsg, $descr);
-		break;
-	case 'revert':
-		$savemsg .= patch_revert($a_patches[$_POST['id']]) ? gettext("reverted successfully") : gettext("could NOT be reverted!");
-		patchlog($savemsg, $descr);
-		break;
-	default:
+		case 'fetch':
+			$savemsg .= patch_fetch($a_patches[$_POST['id']]) ? gettext("fetched succesfully") : gettext("fetch failed");
+			patchlog($savemsg . $descr);
+			break;
+		case 'test':
+			$savemsg .= patch_test_apply($a_patches[$_POST['id']]) ? gettext("can be applied cleanly") : gettext("can NOT be applied cleanly");
+			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=apply\" usepost>" . gettext("detail") . "</a>)";
+			$savemsg .= empty($savemsg) ? "" : "<br/>";
+			$savemsg .= patch_test_revert($a_patches[$_POST['id']]) ? gettext("Patch can be reverted cleanly") : gettext("Patch can NOT be reverted cleanly");
+			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=revert\" usepost>" . gettext("detail") . "</a>)";
+			break;
+		case 'apply':
+			$savemsg .= patch_apply($a_patches[$_POST['id']]) ? gettext("applied succesfully") : gettext("could NOT be applied");
+			patchlog($savemsg . $descr);
+			break;
+		case 'revert':
+			$savemsg .= patch_revert($a_patches[$_POST['id']]) ? gettext("reverted successfully") : gettext("could NOT be reverted!");
+			patchlog($savemsg . $descr);
+			break;
+		default:
 	}
 	if ($_POST['fulltest']) {
 		if ($_POST['fulltest'] == "apply") {
