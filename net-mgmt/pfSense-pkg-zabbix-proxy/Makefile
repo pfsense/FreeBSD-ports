@@ -15,7 +15,8 @@ LICENSE=	APACHE20
 
 CONFLICTS?=	pfSense-pkg-zabbix-proxy22 \
 		pfSense-pkg-zabbix-proxy4 \
-		pfSense-pkg-zabbix-proxy42
+		pfSense-pkg-zabbix-proxy42 \
+		pfSense-pkg-zabbix-proxy44
 
 RUN_DEPENDS?=	zabbix_proxy:net-mgmt/zabbix3-proxy
 
