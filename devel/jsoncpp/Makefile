@@ -36,6 +36,10 @@ CXXFLAGS+=	--std=gnu++11 -D_GLIBCXX_USE_C99=1
 .endif
 .endif
 
+post-patch:
+	@${REINPLACE_CMD} -E '/print / s/(print )(.*)/\1\(\2\)/' \
+		${WRKSRC}/SConstruct
+
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/jsoncpp
 	(cd ${WRKSRC}/include/ && ${COPYTREE_SHARE} json/ ${STAGEDIR}${PREFIX}/include/jsoncpp/)

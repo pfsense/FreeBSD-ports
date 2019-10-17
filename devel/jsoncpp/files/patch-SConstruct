@@ -1,4 +1,4 @@
---- SConstruct.orig	2016-05-09 23:15:49 UTC
+--- SConstruct.orig	2017-06-26 05:01:22 UTC
 +++ SConstruct
 @@ -26,7 +26,7 @@ try:
      if platform == 'linux-gcc':
@@ -26,7 +26,7 @@
  else:
      print "UNSUPPORTED PLATFORM."
      env.Exit(1)
-@@ -147,6 +148,11 @@ env['JSONCPP_VERSION'] = JSONCPP_VERSION
+@@ -147,12 +148,17 @@ env['JSONCPP_VERSION'] = JSONCPP_VERSION
  env['BUILD_DIR'] = env.Dir(build_dir)
  env['ROOTBUILD_DIR'] = env.Dir(rootbuild_dir)
  env['DIST_DIR'] = DIST_DIR
@@ -38,6 +38,13 @@
  if 'TarGz' in env['BUILDERS']:
  	class SrcDistAdder:
  		def __init__( self, env ):
+ 			self.env = env
+ 		def __call__( self, *args, **kw ):
+-			apply( self.env.SrcDist, (self.env['SRCDIST_TARGET'],) + args, kw )
++			self.env.SrcDist(*(self.env['SRCDIST_TARGET'],) + args, **kw )
+ 	env['SRCDIST_BUILDER'] = env.TarGz
+ else: # If tarfile module is missing
+ 	class SrcDistAdder:
 @@ -164,11 +170,11 @@ env['SRCDIST_ADD'] = SrcDistAdder( env )
  env['SRCDIST_TARGET'] = os.path.join( DIST_DIR, 'jsoncpp-src-%s.tar.gz' % env['JSONCPP_VERSION'] )
                        
@@ -52,7 +59,7 @@
      exe = env.Program( target=target_name,
                         source=target_sources )
      env['SRCDIST_ADD']( source=[target_sources] )
-@@ -187,14 +193,14 @@ def buildUnitTests( env, target_sources,
+@@ -187,14 +193,14 @@ def buildUnitTests( env, target_sources, target_name )
      env.AlwaysBuild( check_alias_target )
  
  def buildLibrary( env, target_sources, target_name ):
