@@ -54,6 +54,12 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		// Clean-up the rotated logs for each configured Suricata instance
 		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 			$if_real = get_real_interface($value['interface']);
+
+			// Skip instances where pfSense physical interface
+			// has been removed.
+			if ($if_real == "") {
+				continue;
+			}
 			$suricata_uuid = $value['uuid'];
 			$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
 			syslog(LOG_NOTICE, gettext("[Suricata] Cleaning logs for {$value['descr']} ({$if_real})..."));
@@ -94,6 +100,12 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		// Clean-up active logs for each configured Suricata instance
 		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 			$if_real = get_real_interface($value['interface']);
+
+			// Skip instances where pfSense physical interface
+			// has been removed.
+			if ($if_real == "") {
+				continue;
+			}
 			$suricata_uuid = $value['uuid'];
 			$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
 			if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
@@ -224,6 +236,12 @@ $logs['tls.log']['retention'] = $config['installedpackages']['suricata']['config
 if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 'on') {
 	foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 		$if_real = get_real_interface($value['interface']);
+
+		// Skip instances where pfSense physical interface
+		// has been removed.
+		if ($if_real == "") {
+			continue;
+		}
 		$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$value['uuid']}";
 		foreach ($logs as $k => $p) {
 			suricata_check_rotate_log("{$suricata_log_dir}/{$k}", $p['limit']*1024, $p['retention']);

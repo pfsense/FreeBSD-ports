@@ -3249,7 +3249,7 @@ function snort_create_rc() {
 		// Skip disabled Snort instances or
 		// intances whose pfSense physical
 		// interface has been removed.
-		if (($value['enable'] <> 'on') || ($if_real = ""))
+		if (($value['enable'] <> 'on') || ($if_real == ""))
 			continue;
 		$snort_uuid = $value['uuid'];
 
