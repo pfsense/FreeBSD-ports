@@ -15,7 +15,8 @@ LICENSE=	APACHE20
 
 CONFLICTS?=	pfSense-pkg-zabbix-agent22 \
 		pfSense-pkg-zabbix-agent4 \
-		pfSense-pkg-zabbix-agent42
+		pfSense-pkg-zabbix-agent42 \
+		pfSense-pkg-zabbix-agent44
 
 RUN_DEPENDS?=	zabbix_agentd:net-mgmt/zabbix3-agent
 
