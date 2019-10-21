@@ -49,7 +49,7 @@
 			<fieldname>port</fieldname>
 			<description>
 				<![CDATA[
-					Enter the port that iperf will bind to listen for client connections. (Default is 5001.)<br/>
+					Enter the port that iperf will bind to listen for client connections. (Default is 5201.)<br/>
 					iperf3 binds to TCP by default, but if the client requests UDP, it will bind to the same port on UDP as well during the test.
 				]]>
 			</description>
