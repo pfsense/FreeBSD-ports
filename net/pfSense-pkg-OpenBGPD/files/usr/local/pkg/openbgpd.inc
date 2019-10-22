@@ -268,7 +268,7 @@ EOF;
 }
 
 function openbgpd_restart() {
-	if (is_openbgpd_running() == true) {
+	if ((is_openbgpd_running() == true) && (file_exists("/var/run/bgpd.sock"))) {
 		exec(PKG_BGPD_BIN . "/bgpctl reload");
 	} else {
 		exec(PKG_BGPD_BIN . "/bgpd -f " . PKG_BGPD_CONFIG_BASE . "/bgpd.conf");
