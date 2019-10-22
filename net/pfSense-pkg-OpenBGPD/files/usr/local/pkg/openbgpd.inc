@@ -266,7 +266,7 @@ EOF;
 }
 
 function openbgpd_restart() {
-	if ((is_openbgpd_running() == true) && (file_exists("/var/run/bgpd.sock"))) {
+	if (is_openbgpd_running() == true) {
 		exec(PKG_BGPD_BIN . "/bgpctl reload");
 	} else {
 		exec(PKG_BGPD_BIN . "/bgpd -f " . PKG_BGPD_CONFIG_BASE . "/bgpd.conf");
@@ -398,7 +398,11 @@ EOF;
 function is_openbgpd_running() {
 	$status = shell_exec("/bin/ps auxw | /usr/bin/grep -c '[b]gpd.*parent'");
 	if (intval($status) > 0) {
-		return true;
+		if (file_exists("/var/run/bgpd.sock")) {
+			return true;
+		} else {
+			return false;
+		}
 	} else {
 		return false;
 	}
