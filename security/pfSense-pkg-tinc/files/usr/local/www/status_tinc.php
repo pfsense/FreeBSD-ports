@@ -24,10 +24,9 @@ require("guiconfig.inc");
 function tinc_status_usr1() {
 	exec("/usr/local/sbin/tincd --config=/usr/local/etc/tinc -kUSR1");
 	usleep(500000);
-	$clog_path = "/usr/local/sbin/clog";
 	$result = array();
 
-	exec("{$clog_path} /var/log/tinc.log | /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+	exec("cat /var/log/tinc.log | /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
 	$i = 0;
 	foreach ($result as $line) {
 		if (preg_match("/Connections:/", $line)) {
@@ -54,10 +53,9 @@ function tinc_status_usr1() {
 function tinc_status_usr2() {
 	exec("/usr/local/sbin/tincd --config=/usr/local/etc/tinc -kUSR2");
 	usleep(500000);
-	$clog_path = "/usr/local/sbin/clog";
 	$result = array();
 
-	exec("{$clog_path} /var/log/tinc.log | sed -e 's/.*tinc\[.*\]: //'",$result);
+	exec("cat /var/log/tinc.log | sed -e 's/.*tinc\[.*\]: //'",$result);
 	$i = 0;
 	foreach ($result as $line) {
 		if (preg_match("/Statistics for Generic BSD (tun|tap) device/",$line)) {
