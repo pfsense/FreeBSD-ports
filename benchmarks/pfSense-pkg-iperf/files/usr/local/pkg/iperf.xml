@@ -70,7 +70,7 @@
 		<field>
 			<fielddescr>Port</fielddescr>
 			<fieldname>port</fieldname>
-			<description>Enter the port that iperf will connect to. (Default is 5001.)</description>
+			<description>Enter the port that iperf will connect to. (Default is 5201.)</description>
 			<type>input</type>
 		</field>
 		<field>
