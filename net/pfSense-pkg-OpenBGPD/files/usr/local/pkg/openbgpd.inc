@@ -397,7 +397,7 @@ EOF;
 
 function is_openbgpd_running() {
 	$status = shell_exec("/bin/ps auxw | /usr/bin/grep -c '[b]gpd.*parent'");
-	if (intval($status) > 0) {
+	if (intval($status) > 0 && file_exists("/var/run/bgpd.sock")) {
 		return true;
 	} else {
 		return false;
