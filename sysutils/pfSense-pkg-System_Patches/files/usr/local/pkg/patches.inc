@@ -238,9 +238,9 @@ function patchlog($msg) {
 function patch_descr($id) {
 	global $config;
 	$a_patches = &$config['installedpackages']['patches']['item'];
-	$descr = " (" . gettext("ID") . ": {$a_patches[$id]['uniqid']}");
+	$descr = " (" . gettext("ID") . ": {$a_patches[$id]['uniqid']}";
 	if (isset($a_patches[$id]['descr'])) {
-		$descr .= ", " . gettext("DESCR") . ": {$a_patches[$id]['descr']}");
+		$descr .= ", " . gettext("DESCR") . ": {$a_patches[$id]['descr']}";
 	}
 	$descr .= ")";
 	return $descr;
