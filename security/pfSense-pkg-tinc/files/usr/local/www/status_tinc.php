@@ -25,8 +25,15 @@ function tinc_status_usr1() {
 	exec("/usr/local/sbin/tincd --config=/usr/local/etc/tinc -kUSR1");
 	usleep(500000);
 	$logfile = "/var/log/tinc.log";
+	$clog_path = "/usr/local/sbin/clog";
+	$firmware = host_firmware_version();
 
-	exec(system_log_get_cat() . ' ' . $logfile . "| /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+	if ($firmware['config_version'] >= 19.7) {
+		exec(system_log_get_cat() . ' ' . $logfile . "| /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+	} else {
+		exec("{$clog_path} /var/log/tinc.log | /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+	}
+	
 	$i = 0;
 	foreach ($result as $line) {
 		if (preg_match("/Connections:/", $line)) {
@@ -55,8 +62,15 @@ function tinc_status_usr2() {
 	usleep(500000);
 	$result = array();
 	$logfile = "/var/log/tinc.log";
+	$clog_path = "/usr/local/sbin/clog";
+	$firmware = host_firmware_version();
 
-	exec(system_log_get_cat() . ' ' . $logfile . "| /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+	if ($firmware['config_version'] >= 19.7) {
+		exec(system_log_get_cat() . ' ' . $logfile . "| /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+	} else {
+		exec("{$clog_path} /var/log/tinc.log | /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+	}
+	
 	$i = 0;
 	foreach ($result as $line) {
 		if (preg_match("/Statistics for Generic BSD (tun|tap) device/",$line)) {
