@@ -24,8 +24,8 @@ require("guiconfig.inc");
 function tinc_status_usr1() {
 	exec("/usr/local/sbin/tincd --config=/usr/local/etc/tinc -kUSR1");
 	usleep(500000);
-	$result = array();
 	$clog_path = "/usr/local/sbin/clog";
+	$result = array();
 	$logfile = "/var/log/tinc.log";
 	$firmware = host_firmware_version();
 
@@ -61,8 +61,8 @@ function tinc_status_usr1() {
 function tinc_status_usr2() {
 	exec("/usr/local/sbin/tincd --config=/usr/local/etc/tinc -kUSR2");
 	usleep(500000);
-	$result = array();
 	$clog_path = "/usr/local/sbin/clog";
+	$result = array();
 	$logfile = "/var/log/tinc.log";
 	$firmware = host_firmware_version();
 
