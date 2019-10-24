@@ -184,7 +184,9 @@ function bootup_apply_patches() {
 		   only attempt to apply if it can be applied;
 		   and	if it can be reverted it is presumably already applied, so skip it. */
 		if (isset($patch['autoapply']) && patch_test_apply($patch) && !patch_test_revert($patch)) {
-			patch_apply($patch);
+			$descr = patch_descr($patch);
+			$savemsg = patch_apply($patch) ? gettext("Patch autoapplied succesfully") : gettext("Patch could NOT be autoapplied");
+	                patchlog($savemsg . $descr);
 		}
 	}
 }
@@ -225,6 +227,21 @@ function patch_remove_shellcmd() {
 	if ($removed > 0) {
 		write_config("System Patches package removed {$removed} existing early shellcmd(s): apply patches");
 	}
+}
+
+function patchlog($msg) {
+        syslog(LOG_WARNING, gettext("System Patches: {$msg}"));
+}
+
+function patch_descr($id) {
+	global $config;
+	$a_patches = &$config['installedpackages']['patches']['item'];
+	$descr = " (" . gettext("ID") . ": {$a_patches[$id]['uniqid']}");
+	if (isset($a_patches[$id]['descr'])) {
+		$descr .= ", " . gettext("DESCR") . ": {$a_patches[$id]['descr']}";
+	}
+	$descr .= ")";
+	return $descr;
 }
 
 ?>
