@@ -21,33 +21,46 @@
 
 require("guiconfig.inc");
 
-function tinc_status_usr1() {
-	exec("/usr/local/sbin/tincd --config=/usr/local/etc/tinc -kUSR1");
+function tinc_status_usr($usr) {
+	exec("/usr/local/sbin/tincd --config=/usr/local/etc/tinc -k{$usr}");
 	usleep(500000);
-	$clog_path = "/usr/local/sbin/clog";
 	$result = array();
 	$logfile = "/var/log/tinc.log";
+	$clog_path = "/usr/local/sbin/clog";
 	$firmware = host_firmware_version();
-
-	if ($firmware['config_version'] >= 19.7) {
-		exec(system_log_get_cat() . ' ' . $logfile . "| /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
-	} else {
-		exec("{$clog_path} /var/log/tinc.log | /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+	
+	if ($firmware['kernel']['version'] >= 12.0) {
+		exec(system_log_get_cat() . ' ' . sort_related_log_files($logfile, true, true) . "| /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+		} else {
+		exec("{$clog_path} {$logfile} | /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
 	}
 	
 	$i = 0;
-	foreach ($result as $line) {
-		if (preg_match("/Connections:/", $line)) {
-			$begin = $i;
+	if ($usr == 'USR1') {
+		foreach ($result as $line) {
+			if (preg_match("/Connections:/", $line)) {
+				$begin = $i;
+			}
+			if (preg_match("/End of connections./", $line)) {
+				$end = $i;
+			}
+			$i++;
 		}
-		if (preg_match("/End of connections./", $line)) {
-			$end = $i;
+	} else {
+		foreach ($result as $line) {
+			if (preg_match("/Statistics for Generic BSD (tun|tap) device/",$line)) {
+				$begin = $i;
+			}
+			if (preg_match("/End of subnet list./",$line)) {
+				$end = $i;
+			}
+			$i++;
 		}
-		$i++;
 	}
+	
 	$output = "";
 	$i = 0;
-
+	
 	foreach ($result as $line) {
 		if ($i >= $begin && $i<= $end) {
 			$output .= "<tr class=\"text-nowrap\"><td>" . $line . "</td></tr>";
@@ -55,44 +68,7 @@ function tinc_status_usr1() {
 		$i++;
 	}
 	return $output;
-
-}
-
-function tinc_status_usr2() {
-	exec("/usr/local/sbin/tincd --config=/usr/local/etc/tinc -kUSR2");
-	usleep(500000);
-	$clog_path = "/usr/local/sbin/clog";
-	$result = array();
-	$logfile = "/var/log/tinc.log";
-	$firmware = host_firmware_version();
-
-	if ($firmware['config_version'] >= 19.7) {
-		exec(system_log_get_cat() . ' ' . $logfile . "| /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
-	} else {
-		exec("{$clog_path} /var/log/tinc.log | /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
-	}
 	
-	$i = 0;
-	foreach ($result as $line) {
-		if (preg_match("/Statistics for Generic BSD (tun|tap) device/",$line)) {
-			$begin = $i;
-		}
-		if (preg_match("/End of subnet list./",$line)) {
-			$end = $i;
-		}
-		$i++;
-	}
-	$output="";
-	$i = 0;
-
-        foreach ($result as $line) {
-                if ($i >= $begin && $i<= $end) {
-			$output .= "<tr class=\"text-nowrap\"><td>" . $line . "</td></tr>";
-                }
-                $i++;
-        }
-        return $output;
-
 }
 
 $shortcut_section = "tinc";
@@ -105,7 +81,7 @@ require_once("head.inc");
         <div class="panel-body table-responsive">
         <table class="table table-striped table-hover table-condensed">
         <tbody>
-		<?php print tinc_status_usr1(); ?>
+		<?php print tinc_status_usr('USR1'); ?>
         </tbody>
         </table>
         </div>
@@ -116,7 +92,7 @@ require_once("head.inc");
         <div class="panel-body table-responsive">
         <table class="table table-striped table-hover table-condensed">
         <tbody>
-		<?php print tinc_status_usr2(); ?>
+		<?php print tinc_status_usr('USR2'); ?>
         </tbody>
         </table>
         </div>
