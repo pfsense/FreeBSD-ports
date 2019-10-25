@@ -22,40 +22,37 @@
 require("guiconfig.inc");
 
 function tinc_status_usr($usr) {
+	global $g;
 	exec("/usr/local/sbin/tincd --config=/usr/local/etc/tinc -k{$usr}");
 	usleep(500000);
 	$result = array();
 	$logfile = "/var/log/tinc.log";
 	$clog_path = "/usr/local/sbin/clog";
-	$firmware = host_firmware_version();
 	
-	if ($firmware['kernel']['version'] >= 12.0) {
-		exec(system_log_get_cat() . ' ' . sort_related_log_files($logfile, true, true) . "| /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+	if (pfs_version_compare(false, 2.4, $g['product_version'])) {
+			exec(system_log_get_cat() . ' ' . sort_related_log_files($logfile, true, true) . "| /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
 		} else {
-		exec("{$clog_path} {$logfile} | /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
+			exec("{$clog_path} {$logfile} | /usr/bin/sed -e 's/.*tinc\[.*\]: //'", $result);
 	}
 	
 	$i = 0;
-	if ($usr == 'USR1') {
-		foreach ($result as $line) {
-			if (preg_match("/Connections:/", $line)) {
-				$begin = $i;
-			}
-			if (preg_match("/End of connections./", $line)) {
-				$end = $i;
-			}
-			$i++;
+	foreach ($result as $line) {
+		if ($usr == 'USR1') {
+				if (preg_match("/Connections:/", $line)) {
+					$begin = $i;
+				}
+				if (preg_match("/End of connections./", $line)) {
+					$end = $i;
+				}
+		} else {
+				if (preg_match("/Statistics for Generic BSD (tun|tap) device/",$line)) {
+					$begin = $i;
+				}	
+				if (preg_match("/End of subnet list./",$line)) {
+					$end = $i;
+				}
 		}
-	} else {
-		foreach ($result as $line) {
-			if (preg_match("/Statistics for Generic BSD (tun|tap) device/",$line)) {
-				$begin = $i;
-			}
-			if (preg_match("/End of subnet list./",$line)) {
-				$end = $i;
-			}
-			$i++;
-		}
+		$i++;
 	}
 	
 	$output = "";
