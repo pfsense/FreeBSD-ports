@@ -36,21 +36,14 @@ function tinc_status_usr($usr) {
 	}
 	
 	$i = 0;
+	$matchbegin = ($usr == 'USR1') ? "Connections:" : "Statistics for Generic BSD (tun|tap) device";
+	$matchend = ($usr == 'USR1') ? "End of connections." : "End of subnet list.";
 	foreach ($result as $line) {
-		if ($usr == 'USR1') {
-				if (preg_match("/Connections:/", $line)) {
-					$begin = $i;
-				}
-				if (preg_match("/End of connections./", $line)) {
-					$end = $i;
-				}
-		} else {
-				if (preg_match("/Statistics for Generic BSD (tun|tap) device/",$line)) {
-					$begin = $i;
-				}	
-				if (preg_match("/End of subnet list./",$line)) {
-					$end = $i;
-				}
+		if (preg_match("/{$matchbegin}/", $line)) {
+			$begin = $i;
+		}
+		if (preg_match("/{$matchend}/", $line)) {
+			$end = $i;
 		}
 		$i++;
 	}
