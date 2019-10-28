@@ -179,14 +179,14 @@ function bootup_apply_patches() {
 
 	$a_patches = &$config['installedpackages']['patches']['item'];
 
-	foreach ($a_patches as $patch) {
+	foreach ($a_patches as $id => $patch) {
 		/* Skip if it should not be automatically applied;
 		   only attempt to apply if it can be applied;
 		   and	if it can be reverted it is presumably already applied, so skip it. */
 		if (isset($patch['autoapply']) && patch_test_apply($patch) && !patch_test_revert($patch)) {
-			$descr = patch_descr($patch);
+			$descr = patch_descr($id);
 			$savemsg = patch_apply($patch) ? gettext("Patch autoapplied succesfully") : gettext("Patch could NOT be autoapplied");
-	                patchlog($savemsg . $descr);
+			patchlog($savemsg . $descr);
 		}
 	}
 }
@@ -230,12 +230,15 @@ function patch_remove_shellcmd() {
 }
 
 function patchlog($msg) {
-        syslog(LOG_WARNING, gettext("System Patches: {$msg}"));
+	syslog(LOG_WARNING, gettext("System Patches: {$msg}"));
 }
 
 function patch_descr($id) {
 	global $config;
 	$a_patches = &$config['installedpackages']['patches']['item'];
+	if (!isset($a_patches[$id])) {
+		return null;
+	}
 	$descr = " (" . gettext("ID") . ": {$a_patches[$id]['uniqid']}";
 	if (isset($a_patches[$id]['descr'])) {
 		$descr .= ", " . gettext("DESCR") . ": {$a_patches[$id]['descr']}";
