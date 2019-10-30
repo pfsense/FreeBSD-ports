@@ -80,9 +80,7 @@ function tinc_save() {
 	fwrite($fout, "name=" . $tincconf['name'] . "\n");
 	fwrite($fout, "AddressFamily=" . $tincconf['addressfamily'] . "\n");
 
-	if (!is_array($config['installedpackages']['tinchosts']['config'])) {
-		$config['installedpackages']['tinchosts']['config'] = array();
-	}
+	init_config_arr(array('installedpackages', 'tinchosts', 'config'));
 	foreach ($config['installedpackages']['tinchosts']['config'] as $host) {
 		if ($host['connect']) {
 			fwrite($fout, "ConnectTo=" . $host['name'] . "\n");
