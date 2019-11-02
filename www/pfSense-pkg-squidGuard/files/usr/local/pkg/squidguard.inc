@@ -1406,6 +1406,10 @@ function squidguard_adt_safesrch_add(&$rewrite_item)
     # DuckDuckGo
     $rewrite_item[] = array(F_TARGETURL => '(duckduckgo\..*/?.*q=.*)', F_REPLACETO => '\1\&kp=1', F_MODE => 'i');
 
+    # Extra search engines
+    $rewrite_item[] = array(F_TARGETURL => '(rambler\..*/?.*query=.*)', F_REPLACETO => '\1\&adult=family', F_MODE => 'i');
+    $rewrite_item[] = array(F_TARGETURL => '(qwant\..*/?.*q=.*)', F_REPLACETO => '\1\&s=2', F_MODE => 'i');
+
     return $rewrite_item;
 }
 
