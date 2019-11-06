@@ -3,9 +3,9 @@
  * snort_rules.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -927,7 +927,7 @@ print($section);
 
 			<?php if ($currentruleset != 'decoder.rules' && $currentruleset != 'preprocessor.rules'): ?>
 
-					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
+					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 						<colgroup>
 							<col width="3%">
 							<col width="4%">
@@ -941,15 +941,15 @@ print($section);
 						</colgroup>
 						<thead>
 						   <tr class="sortableHeaderRowIdentifier">
-							<th class="sorttable_nosort">&nbsp;</th>
-							<th><?=gettext("GID"); ?></th>
-							<th><?=gettext("SID"); ?></th>
-							<th><?=gettext("Proto"); ?></th>
-							<th><?=gettext("Source"); ?></th>
-							<th><?=gettext("SPort"); ?></th>
-							<th><?=gettext("Destination"); ?></th>
-							<th><?=gettext("DPort"); ?></th>
-							<th><?=gettext("Message"); ?></th>
+							<th data-sortable="false">&nbsp;</th>
+							<th data-sortable="true" data-sortable-type="numeric"><?=gettext("GID"); ?></th>
+							<th data-sortable="true" data-sortable-type="numeric"><?=gettext("SID"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Proto"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Source"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("SPort"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Destination"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("DPort"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Message"); ?></th>
 						   </tr>
 						</thead>
 						<tbody>
@@ -1089,7 +1089,7 @@ print($section);
 
 			<?php else: ?>
 
-					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
+					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 						<colgroup>
 							<col width="4%">
 							<col width="5%">
@@ -1100,12 +1100,12 @@ print($section);
 						</colgroup>
 						<thead>
 						   <tr class="sortableHeaderRowIdentifier">
-							<th sorttable_nosort>&nbsp;</th>
-							<th><?=gettext("GID"); ?></th>
-							<th><?=gettext("SID"); ?></th>
-							<th><?=gettext("Classification"); ?></th>
-							<th><?=gettext("IPS Policy"); ?></th>
-							<th><?=gettext("Message"); ?></th>
+							<th data-sortable="false">&nbsp;</th>
+							<th data-sortable="true" data-sortable-type="numeric"><?=gettext("GID"); ?></th>
+							<th data-sortable="true" data-sortable-type="numeric"><?=gettext("SID"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Classification"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("IPS Policy"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Message"); ?></th>
 						   </tr>
 						</thead>
 						<tbody>
