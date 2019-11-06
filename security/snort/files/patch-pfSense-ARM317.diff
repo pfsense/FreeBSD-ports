@@ -1,7 +1,7 @@
-diff -ruN ./snort-2.9.14.1.orig/configure ./snort-2.9.14.1/configure
---- ./snort-2.9.14.1.orig/configure	2019-08-02 02:33:43.000000000 -0400
-+++ ./configure	2019-08-12 09:56:25.000000000 -0400
-@@ -16210,6 +16210,21 @@
+diff -ruN ./snort-2.9.15.orig/configure ./snort-2.9.15/configure
+--- ./snort-2.9.15.orig/configure	2019-10-03 03:35:06.000000000 -0400
++++ ./configure	2019-11-05 19:49:52.000000000 -0500
+@@ -16864,6 +16864,21 @@
      echo "DAQ version doesn't support tracing verdict reason."
  fi
  
@@ -20,6 +20,3 @@ diff -ruN ./snort-2.9.14.1.orig/configure ./snort-2.9.14.1/configure
 +$as_echo "no" >&6; }
 +fi
 +
- # any sparc platform has to have this one defined.
- { $as_echo "$as_me:${as_lineno-$LINENO}: checking for sparc" >&5
- $as_echo_n "checking for sparc... " >&6; }
