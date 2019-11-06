@@ -337,9 +337,13 @@ if (!empty($act)) {
 			case "x64-win6":
 				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-x86_64.exe";
 				break;
-			case "24":
+			case "Win7":
+				$exp_name .= "{$current_openvpn_version}-I6{$current_openvpn_version_rev}-Win7.exe";
+				break;
+			case "Win10":
 			default:
-				$exp_name .= "{$current_openvpn_version}-I6{$current_openvpn_version_rev}.exe";
+				$exp_name .= "{$current_openvpn_version}-I6{$current_openvpn_version_rev}-Win10.exe";
+				break;
 		}
 
 		$exp_name = urlencode($exp_name);
@@ -651,7 +655,7 @@ print($form);
 <?= print_info_box(gettext("If a client is missing from the list it is likely due to a CA mismatch between the OpenVPN server instance and the client certificate, the client certificate does not exist on this firewall, or a user certificate is not associated with a user when local database authentication is enabled." .
 "<br />" .
 "<br />" .
-"OpenVPN 2.4 requires Windows Vista or later" .
+"OpenVPN 2.4.8 requires Windows 7 or later" .
 "<br />" .
 "The &quot;win6&quot; Windows installers include the tap-windows6 driver which requires Windows Vista or later. " .
 "<br />" .
@@ -931,7 +935,9 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-24\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Windows Vista and Later<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
 /* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
 		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -976,7 +982,9 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-24\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Windows Vista and Later<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
 /* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
 		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -1029,7 +1037,9 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-24\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Windows Vista and Later<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
 /* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
 		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";

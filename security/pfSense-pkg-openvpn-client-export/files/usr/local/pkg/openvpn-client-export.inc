@@ -28,8 +28,8 @@ require_once("util.inc");
 require_once("pfsense-utils.inc");
 
 global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
-$current_openvpn_version = "2.4.7";
-$current_openvpn_version_rev = "03";
+$current_openvpn_version = "2.4.8";
+$current_openvpn_version_rev = "02";
 $legacy_openvpn_version = "2.3.18";
 $legacy_openvpn_version_rev = "02";
 
@@ -548,9 +548,13 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 		case "x64-win6":
 			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-x86_64.exe";
 			break;
-		case "24":
+		case "Win7":
+			$client_install_exe = "openvpn-install-{$current_openvpn_version}-I6{$current_openvpn_version_rev}-Win7.exe";
+			break;
+		case "Win10":
 		default:
-			$client_install_exe = "openvpn-install-{$current_openvpn_version}-I6{$current_openvpn_version_rev}.exe";
+			$client_install_exe = "openvpn-install-{$current_openvpn_version}-I6{$current_openvpn_version_rev}-Win10.exe";
+			break;
 	}
 
 	$ovpndir = "/usr/local/share/openvpn";
@@ -578,10 +582,10 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	// and put the required installer exe in place
 	exec("/bin/cp {$tempdir}/{$client_install_exe} {$tempdir}/openvpn-install.exe");
 
-	/* OpenVPN 2.4 installer stub is 32-bit, but could need to read a 64-bit registry.
+	/* OpenVPN Win7/Win10 installer stub is 32-bit, but could need to read a 64-bit registry.
 	 * Using the 64-bit-aware openvpn-postinstall works fine even on 32-bit Windows 10.
 	 */
-	if ($openvpn_version == "24" || stristr($openvpn_version, "x64")) {
+	if (in_array($openvpn_version, array('Win7', 'Win10', 'x64-xp', 'x64-win6'))) {
 		rename("{$tempdir}/openvpn-postinstall64.exe", "{$tempdir}/openvpn-postinstall.exe");
 	}
 
