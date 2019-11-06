@@ -13,8 +13,7 @@ COMMENT=	pfSense package zabbix-proxy
 
 LICENSE=	APACHE20
 
-CONFLICTS?=	pfSense-pkg-zabbix-proxy22 \
-		pfSense-pkg-zabbix-proxy4 \
+CONFLICTS?=	pfSense-pkg-zabbix-proxy4 \
 		pfSense-pkg-zabbix-proxy42 \
 		pfSense-pkg-zabbix-proxy44
 
