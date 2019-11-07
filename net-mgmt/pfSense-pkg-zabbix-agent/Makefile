@@ -13,8 +13,7 @@ COMMENT=	pfSense package zabbix-agent
 
 LICENSE=	APACHE20
 
-CONFLICTS?=	pfSense-pkg-zabbix-agent22 \
-		pfSense-pkg-zabbix-agent4 \
+CONFLICTS?=	pfSense-pkg-zabbix-agent4 \
 		pfSense-pkg-zabbix-agent42 \
 		pfSense-pkg-zabbix-agent44
 
