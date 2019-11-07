@@ -40,7 +40,7 @@ function get_file($file) {
 
 	if ($files[$file] != "" && file_exists($files[$file])) {
 		print '<pre>';
-		print $files[$file] . "\n" . file_get_contents($files[$file]);
+		print $files[$file] . "\n" . htmlspecialchars(file_get_contents($files[$file]));
 		print '</pre>';
 	}
 }
