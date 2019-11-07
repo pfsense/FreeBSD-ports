@@ -46,7 +46,7 @@ function sync_package_softflowd() {
 			if (empty($interface)) {
 				continue;
 			}
-			
+
 			$start .= "\n\t/usr/local/sbin/softflowd ";
 			$start .= " -i " . escapeshellarg($if_index++ . ":" . $interface);
 			$start .= " -n " . escapeshellarg("{$cf['host']}:{$cf['port']}");
@@ -55,6 +55,9 @@ function sync_package_softflowd() {
 			}
 			if (is_numericint($cf['hoplimit'])) {
 				$start .= " -L " . escapeshellarg($cf['hoplimit']);
+			}
+			if (is_numericint($cf['sample']) && $cf['sample'] > 0) {
+				$start .= " -s " . escapeshellarg($cf['sample']);
 			}
 			if ($cf['version'] != "") {
 				$start .= " -v " . escapeshellarg($cf['version']);
@@ -167,7 +170,7 @@ function display_interface_indices_softflowd() {
 	} else {
 		$cf = array();
 	}
-	
+
 	/* Compile and display the list of interface indices if softflowd is active */
 	if (isset($cf['interface'])) {
 		$interface_list = explode(",", $cf['interface']);

@@ -79,6 +79,13 @@
 			<required/>
 		</field>
 		<field>
+			<fielddescr>Sample</fielddescr>
+			<fieldname>sample</fieldname>
+			<description>Specify periodical sampling rate (denominator). Empty or 0 disables sampling.</description>
+			<default_value>0</default_value>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Max Flows</fielddescr>
 			<fieldname>maxflows</fieldname>
 			<description>
