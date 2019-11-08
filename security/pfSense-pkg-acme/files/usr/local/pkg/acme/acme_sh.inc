@@ -62,7 +62,7 @@ class acme_sh {
 	private function execacmesh($command, $envvariables = null) {
 		$command = "/usr/local/pkg/acme/acme.sh " . $command;
 		if ($this->debug) {
-			echo "<br/>\n".$command."<br/>\n";
+			echo "\n{$command}\n";
 		}
 		// add to cron environment path: /usr/local/bin/
 		$env = array();
