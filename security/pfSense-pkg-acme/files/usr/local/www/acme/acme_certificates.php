@@ -156,7 +156,7 @@ echo "</div>";
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">×</span>
 	</button>
-	<div id="renewoutput" class="pull-left">
+	<div id="renewoutput" class="pull-left" style="white-space: pre-wrap">
 	</div>
 </div>
 	
@@ -326,7 +326,7 @@ function set_content(elementid, image) {
 
 function js_callbackrenew(data) {
 	$('#renewoutputbox').removeClass("hidden");
-	$('#renewoutput').html(data.replace(/(?:\r\n|\r|\n)/g, '<br />'));
+	$('#renewoutput').text(data);
 }
 
 function js_callback(req_content) {
