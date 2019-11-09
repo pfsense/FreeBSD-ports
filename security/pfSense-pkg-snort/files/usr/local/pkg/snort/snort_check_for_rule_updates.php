@@ -507,8 +507,9 @@ if ($snortdownload == 'on') {
 				$newfile = basename($file);
 				@copy($file, "{$snortdir}/rules/{$newfile}");
 			}
-			rmdir_recursive("{$tmpfname}/snortrules");
 		}
+		rmdir_recursive("{$tmpfname}/snortrules");
+
 		/* Extract the Snort preprocessor rules */
 		if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "preproc_rules/")) {
 			$files = glob("{$tmpfname}/preproc_rules/*.rules");
@@ -516,8 +517,9 @@ if ($snortdownload == 'on') {
 				$newfile = basename($file);
 				@copy($file, "{$snortdir}/preproc_rules/{$newfile}");
 			}
-			rmdir_recursive("{$tmpfname}/preproc_rules");
 		}
+		rmdir_recursive("{$tmpfname}/preproc_rules");
+
 		/* extract so rules */
 		error_log(gettext("\tUsing Snort Subscriber precompiled SO rules for {$freebsd_version_so} ...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		$snort_arch = php_uname("m");
@@ -542,8 +544,8 @@ if ($snortdownload == 'on') {
 					$newfile = basename($file, ".rules");
 					@copy($file, "{$snortdir}/rules/" . VRT_FILE_PREFIX . "{$newfile}.so.rules");
 				}
-				rmdir_recursive("{$tmpfname}/so_rules/");
 			}
+			rmdir_recursive("{$tmpfname}/so_rules/");
 		}
 		/* extract base etc files */
 		if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "etc/")) {
@@ -551,8 +553,8 @@ if ($snortdownload == 'on') {
 				if (file_exists("{$tmpfname}/etc/{$file}"))
 					@copy("{$tmpfname}/etc/{$file}", "{$tmpfname}/VRT_{$file}");
 			}
-			rmdir_recursive("{$tmpfname}/etc");
 		}
+		rmdir_recursive("{$tmpfname}/etc");
 
 		if (file_exists("{$tmpfname}/{$snort_filename_md5}")) {
 			snort_update_status(gettext("Copying md5 signature to snort directory..."));
@@ -631,8 +633,8 @@ if ($snortcommunityrules == 'on') {
 			}
 			snort_update_status(gettext(" done.") . "\n");
 			error_log(gettext("\tInstallation of Snort GPLv2 Community Rules completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
-			rmdir_recursive("{$tmpfname}/community/");
 		}
+		rmdir_recursive("{$tmpfname}/community/");
 	}
 }
 
@@ -642,7 +644,7 @@ if ($emergingthreats == 'on') {
 	if (file_exists("{$tmpfname}/{$emergingthreats_filename}")) {
 		snort_update_status(gettext("Installing {$et_name} rules..."));
 		error_log(gettext("\tExtracting and installing {$et_name} rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
-		if(snort_untar("xzf", "{$tmpfname}/{$emergingthreats_filename}", "{$tmpfname}/emerging rules/")) {
+		if(snort_untar("xzf", "{$tmpfname}/{$emergingthreats_filename}", "{$tmpfname}/emerging", "rules/")) {
 			/* Remove the old Emerging Threats rules files */
 			$eto_prefix = ET_OPEN_FILE_PREFIX;
 			$etpro_prefix = ET_PRO_FILE_PREFIX;
@@ -685,8 +687,8 @@ if ($emergingthreats == 'on') {
 			}
 			snort_update_status(gettext(" done.") . "\n");
 			error_log(gettext("\tInstallation of {$et_name} rules completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
-			rmdir_recursive("{$tmpfname}/emerging/");
 		}
+		rmdir_recursive("{$tmpfname}/emerging/");
 	}
 }
 
