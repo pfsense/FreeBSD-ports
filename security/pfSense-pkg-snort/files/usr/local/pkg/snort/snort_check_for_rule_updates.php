@@ -379,7 +379,7 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 
 function snort_untar($mode, $tarFile, $outputFolder = null, $extra = null){
 	$cmd = "/usr/bin/tar {$mode} {$tarFile}";
-	if($outputFolder != null) $cmd .= " -C {$outputFolder} {$extra}";
+	if($outputFolder != null) $cmd .= " -C {$outputFolder}";
 	if($extra != null) $cmd .= " {$extra}";
 	$ret = snort_exec($cmd);
 	return $ret === 0;
