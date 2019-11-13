@@ -381,15 +381,28 @@ function snort_untar($mode, $tarFile, $outputFolder = null, $extra = null){
 	$cmd = "/usr/bin/tar {$mode} {$tarFile}";
 	if($outputFolder != null) $cmd .= " -C {$outputFolder}";
 	if($extra != null) $cmd .= " {$extra}";
-	$ret = snort_exec($cmd);
-	return $ret === 0;
+	exec($cmd, $output, $ret);
+	$success = $ret === 0;
+	if(!$success) {
+		$err_msg = gettext("Failed to extract a rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. Tar file:") . $tarFile;
+		error_log('\t' . $err_msg . '\n', 3, SNORT_RULES_UPD_LOGFILE);
+		syslog(LOG_ERR, '[Snort] ' . $err_msg);
+	}
+	return $success;
 }
 
-function snort_exec($cmd, &$output = null){
-	$return = -1;
-	exec($cmd, $output, $return);
-	return $return;
+function snort_copy($srcFilePathPattern, $destPath){
+	$cmd = "/bin/cp {$srcFilePathPattern} {$destPath}";
+	exec($cmd, $output, $ret);
+	$success = $ret === 0;
+	if(!$success) {
+		$err_msg = gettext("Failed to copy some files from the rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. File(s):") . $srcFilePathPattern;
+		error_log('\t' . $err_msg . '\n', 3, SNORT_RULES_UPD_LOGFILE);
+		syslog(LOG_ERR, '[Snort] ' . $err_msg);
+	}
+	return $success;
 }
+
 
 /**********************/
 /* Start of main code */
@@ -526,11 +539,11 @@ if ($snortdownload == 'on') {
 		$nosorules = false;
 		if ($snort_arch  == 'i386'){
 			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "so_rules/precompiled/{$freebsd_version_so}/i386/{$snort_version}/")) {
-				exec("/bin/cp {$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/i386/{$snort_version}/*.so {$snortlibdir}/snort_dynamicrules/");
+				snort_copy("{$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/i386/{$snort_version}/*.so", "{$snortlibdir}/snort_dynamicrules/");
 			}
 		} elseif ($snort_arch == 'amd64') {
 			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "so_rules/precompiled/{$freebsd_version_so}/x86-64/{$snort_version}/")) {
-				exec("/bin/cp {$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/x86-64/{$snort_version}/*.so {$snortlibdir}/snort_dynamicrules/");
+				snort_copy("{$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/x86-64/{$snort_version}/*.so", "{$snortlibdir}/snort_dynamicrules/");
 			}
 		} else
 			$nosorules = true;
