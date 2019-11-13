@@ -1262,8 +1262,8 @@ $section->addInput(new Form_Select(
 	'mpm_algo',
 	'Pattern Matcher Algorithm',
 	$pconfig['mpm_algo'],
-	array('auto' => 'Auto', 'ac' => 'AC', 'ac-bs' => 'AC-BS', 'ac-ks' => 'AC-KS', 'hs' => 'Hyperscan')
-))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. Auto is the default, and is the best choice for almost all systems.  Auto will use hyperscan if available.');
+	array('auto' => 'Auto', 'ac' => 'AC', 'ac-bs' => 'AC-BS', 'ac-ks' => 'AC-KS')
+))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. Auto is the default, and is the best choice for almost all systems.');
 
 $section->addInput(new Form_Select(
 	'sgh_mpm_context',
