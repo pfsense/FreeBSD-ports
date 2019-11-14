@@ -585,8 +585,23 @@ EOD;
 							$zone_conf .= "\n\n;\n;custom zone records\n;\n".base64_decode($zone['customzonerecords'])."\n";
 						}
 
+						// Freeze dynamic zones to prevent journal corruption
+						$zone_is_dynamic = (($zone['enable_updatepolicy'] == "on") || ($zoneallowupdate != "none"));
+						$rndc_conf_path = BIND_LOCALBASE . "/etc/rndc.conf";
+						$rndc = "/usr/local/sbin/rndc -q -c {$rndc_conf_path}";
+						if ($zone_is_dynamic) {
+							exec("{$rndc} freeze " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+							// TODO: diff frozen zone DB with pfSense's stored DB file
+							//       and (optionally?) add dynamic records to customzonerecords
+						}
+
 						// Save zone configuration DB file
 						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf);
+
+						// Thaw frozen dynamic zone
+						if ($zone_is_dynamic) {
+							exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+						}
 
 						$config['installedpackages']['bindzone']['config'][$x]['resultconfig'] = base64_encode($zone_conf);
 						$write_config++;

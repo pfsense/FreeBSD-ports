@@ -169,17 +169,17 @@ $a_enabledisable['disable'] = array('name' => 'Disabled');
 
 global $a_acmeserver;
 $a_acmeserver = array();
-$a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging ACME v1 (for TESTING purposes)",
-    'url' => 'https://acme-staging.api.letsencrypt.org',
-);
 $a_acmeserver['letsencrypt-staging-2'] = array('name' => "Let's Encrypt Staging ACME v2 (for TESTING purposes)",
     'url' => 'https://acme-staging-v02.api.letsencrypt.org'
 );
-$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production ACME v1 (Applies rate limits to certificate requests)",
-    'url' => 'https://acme-v01.api.letsencrypt.org',
+$a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging ACME v1 (for TESTING purposes)",
+    'url' => 'https://acme-staging.api.letsencrypt.org',
 );
 $a_acmeserver['letsencrypt-production-2'] = array('name' => "Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v02.api.letsencrypt.org'
+);
+$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production ACME v1 (Applies rate limits to certificate requests)",
+    'url' => 'https://acme-v01.api.letsencrypt.org',
 );
 $a_acmeserver['buypass-production'] = array('name' => "BuyPass Production ACME v1 (Applies rate limits to certificate requests)",
     'url' => 'https://api.buypass.com/acme'
@@ -478,6 +478,15 @@ $acme_domain_validation_method['dns_do'] = array('name' => "DNS-Domain-Offensive
 			'description' =>"Fill in the DO Password"
 		)
 	));
+$acme_domain_validation_method['dns_domeneshop'] = array('name' => "DNS-domeneshop.no",
+	'fields' => array(
+		'DOMENESHOP_Token' => array('name'=>"domeneshop_token",'columnheader'=>"Token",'type'=>"textbox",
+			'description' =>"Domeneshop API Token"
+		),
+		'DOMENESHOP_Secret' => array('name'=>"domeneshop_secret",'columnheader'=>"Secret",'type'=>"textbox",
+			'description' =>"Domeneshop API Secret"
+		),
+	));
 $acme_domain_validation_method['dns_dp'] = array('name' => "DNS-Dnspod.cn",
 	'fields' => array(
 		'DP_Id' => array('name'=>"dp_id",'columnheader'=>"Id",'type'=>"textbox",
@@ -693,6 +702,12 @@ $acme_domain_validation_method['dns_knot'] = array('name' => "DNS-Knot API",
 			'description' =>"Fill in the Knot TSIG Key"
 		)
 	));
+$acme_domain_validation_method['dns_leaseweb'] = array('name' => "DNS-Leaseweb",
+	'fields' => array(
+		'LSW_Key' => array('name'=>"lsw_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Leaseweb API Key"
+		),
+	));
 $acme_domain_validation_method['dns_linode'] = array('name' => "DNS-Linode",
 	'fields' => array(
 		'LINODE_API_KEY' => array('name'=>"linode_api_key",'columnheader'=>"Linode API Key",'type'=>"textbox",
@@ -721,6 +736,18 @@ $acme_domain_validation_method['dns_lua'] = array('name' => "DNS-Luadns",
 		),
 		'LUA_Email' => array('name'=>"lua_email",'columnheader'=>"Email",'type'=>"textbox",
 			'description' =>"Fill in the API Email Address"
+		)
+	));
+$acme_domain_validation_method['dns_miab'] = array('name' => "DNS-MailinaBox",
+	'fields' => array(
+		'MIAB_Username' => array('name'=>"miab_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"MailinaBox Username"
+		),
+		'MIAB_Password' => array('name'=>"miab_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"MailinaBox Password"
+		),
+		'MIAB_Server' => array('name'=>"miab_server",'columnheader'=>"Server",'type'=>"textbox",
+			'description' =>"MailinaBox Server"
 		)
 	));
 $acme_domain_validation_method['dns_mydnsjp'] = array('name' => "DNS-MyDNS.JP",
@@ -778,6 +805,18 @@ $acme_domain_validation_method['dns_netcup'] = array('name' => "DNS-netcup.net",
 		),
 		'NC_CID' => array('name'=>"nc_cid",'columnheader'=>"CID",'type'=>"textbox",
 			'description' =>"Customer ID/Number"
+		)
+	));
+$acme_domain_validation_method['dns_nic'] = array('name' => "DNS-nic.ru",
+	'fields' => array(
+		'NIC_Token' => array('name'=>"nic_token",'columnheader'=>"API Token",'type'=>"textbox",
+			'description' =>"nic.ru API Token"
+		),
+		'NIC_Username' => array('name'=>"nic_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"nic.ru Username"
+		),
+		'NIC_Password' => array('name'=>"nic_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"nic.ru Password"
 		)
 	));
 $acme_domain_validation_method['dns_nsone'] = array('name' => "DNS-NS1 (nsone.com)",
@@ -872,6 +911,18 @@ $acme_domain_validation_method['dns_rackspace'] = array('name' => "DNS-Rackspace
 			'description' =>"Rackspace API Key"
 		)
 	));
+$acme_domain_validation_method['dns_rcode0'] = array('name' => "DNS-Rcode0",
+	'fields' => array(
+		'RCODE0_API_TOKEN' => array('name'=>"rcode0_api_token",'columnheader'=>"API Token",'type'=>"textbox",
+			'description' =>"Rcode0 API Token"
+		),
+		'RCODE0_URL' => array('name'=>"rcode0_url",'columnheader'=>"URL",'type'=>"textbox",
+			'description' =>"Rcode0 URL"
+		),
+		'RCODE0_TTL' => array('name'=>"rcode0_ttl",'columnheader'=>"TTL",'type'=>"textbox",
+			'description' =>"Rcode0 TTL"
+		)
+	));
 $acme_domain_validation_method['dns_regru'] = array('name' => "DNS-reg.ru",
 	'fields' => array(
 		'REGRU_API_Username' => array('name'=>"regru_api_username",'columnheader'=>"Username",'type'=>"textbox",
@@ -931,6 +982,12 @@ $acme_domain_validation_method['dns_unoeuro'] = array('name' => "DNS-UnoEuro",
 		'UNO_Key' => array('name'=>"uno_key",'columnheader'=>"API Key",'type'=>"textbox",
 			'description' =>"UnoEuro API Key"
 		)
+	));
+$acme_domain_validation_method['dns_variomedia'] = array('name' => "DNS-variomedia.de",
+	'fields' => array(
+		'VARIOMEDIA_API_TOKEN' => array('name'=>"variomedia_api_token",'columnheader'=>"API Token",'type'=>"textbox",
+			'description' =>"variomedia.de API Token"
+		),
 	));
 $acme_domain_validation_method['dns_vscale'] = array('name' => "DNS-vscale.io",
 	'fields' => array(
