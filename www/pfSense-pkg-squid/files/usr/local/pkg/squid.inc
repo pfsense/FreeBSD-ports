@@ -2442,12 +2442,8 @@ function squid_list_ssl_ca() {
 	global $config;
 	$prvca_list = array();
 	$ecdsagood = cert_build_list('ca', 'HTTPS');
-	if (isset($config['ca']) && is_array($config['ca'])) {
-		foreach ($config['ca'] as $ca) {
-			if (!empty($ca['prv']) && in_array($ca['refid'], array_keys($ecdsagood))) {
-				$prvca_list[] = $ca;
-			}
-		}
+	foreach ($ecdsagood as $refid => $descr) {
+		$prvca_list[] = array('refid' => $refid, 'descr' => $descr);
 	}
 	return $prvca_list;
 }
