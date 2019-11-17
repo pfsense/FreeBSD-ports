@@ -451,7 +451,7 @@ EOD;
 						$bind_conf .= "\t\tmasters { $zoneipslave; };\n";
 						$bind_conf .= "\t\tallow-query { $zoneallowquery; };\n";
 						//$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
-							if ($zonecustom != '' and !preg_match('/allow-transfer/', $zonecustom)) {
+							if ( $zonecustom == '' or ($zonecustom != '' and !preg_match('/allow-transfer/', $zonecustom))) {
 								$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
 							}
 						break;
