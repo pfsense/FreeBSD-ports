@@ -1607,12 +1607,8 @@ EOD;
 // Gets started from freeradiuseapconf.xml
 function freeradius_get_ca_or_certs($type) {
 	$c_arr = array();
-	if ($type == 'ca') {
-		$ecdsagood = cert_build_list('ca', 'IPsec');
-	} else {
-		$ecdsagood = cert_build_list('cert', 'IPsec');
-		$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-	}
+	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+	$ecdsagood = cert_build_list($type, 'IPsec');
 	foreach ($ecdsagood as $refid => $descr) {
 		$c_arr[] = array('refid' => $refid, 'descr' => $descr);
 	}
