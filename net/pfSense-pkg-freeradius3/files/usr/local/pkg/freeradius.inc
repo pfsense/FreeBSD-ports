@@ -1608,9 +1608,9 @@ EOD;
 function freeradius_get_ca_or_certs($type) {
 	$c_arr = array();
 	if ($type == 'ca') {
-		$ecdsagood = cert_build_list('ca', 'HTTPS');
+		$ecdsagood = cert_build_list('ca', 'IPsec');
 	} else {
-		$ecdsagood = cert_build_list('cert', 'HTTPS');
+		$ecdsagood = cert_build_list('cert', 'IPsec');
 		$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
 	}
 	foreach ($ecdsagood as $refid => $descr) {
