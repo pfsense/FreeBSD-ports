@@ -172,7 +172,10 @@
 			<fieldname>varuserspasswordencryption</fieldname>
 			<description>
 				<![CDATA[
-				Select the password encryption for this user. Default: Cleartext-Password
+				Select the password encryption for this user.
+				If the (pre-hashed) options are used, the password should already be hashed by the expected hash function.
+				Note that not all authentication protocols are compatible with all types of hashed passwords.
+				Default: Cleartext-Password
 				]]>
 			</description>
 			<type>select</type>
@@ -180,6 +183,8 @@
 			<options>
 				<option><name>Cleartext-Password</name><value>Cleartext-Password</value></option>
 				<option><name>MD5-Password</name><value>MD5-Password</value></option>
+				<option><name>MD5-Password (pre-hashed)</name><value>MD5-Password-hashed</value></option>
+				<option><name>NT-Password (pre-hashed)</name><value>NT-Password-hashed</value></option>
 			</options>
 		</field>
 		<field>
