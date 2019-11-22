@@ -476,6 +476,14 @@ function freeradius_users_resync($via_rpc = false) {
 				case "MD5-Password":
 					$varuserspassword = md5($varuserspassword);
 					break;
+				case "MD5-Password-hashed":
+					$varuserspassword = $users['varuserspassword']; // use hashed password as-is
+					$varuserspasswordencryption = "MD5-Password";
+					break;
+				case "NT-Password-hashed":
+					$varuserspassword = $users['varuserspassword'];
+					$varuserspasswordencryption = "NT-Password";
+					break;
 				default:
 					$varuserspassword = $users['varuserspassword'];
 			}
