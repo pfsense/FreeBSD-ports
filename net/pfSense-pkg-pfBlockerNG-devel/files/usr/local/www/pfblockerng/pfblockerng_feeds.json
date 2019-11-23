@@ -945,10 +945,10 @@
 					"header":	"EasyList_Lithuanian"
 				},
 				{
-					"feed":		"EasyList Norwegian",
+					"feed":		"EasyList Norwegian/Danish/Icelandic",
 					"website":	"https://easylist.to/",
-					"url":		"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/NorwegianList.txt",
-					"header":	"EasyList_Norwegian"
+					"url":		"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/NorwegianExperimentalList%20alternate%20versions/AdawayHosts",
+					"header":	"EasyList_Norwegian_Danish_Icelandic"
 				},
 				{
 					"feed":		"EasyList Polish",
