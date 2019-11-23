@@ -2435,11 +2435,11 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
  * This change cannot be pulled back to RELENG_2_4_4 since it would break there.
  * see https://redmine.pfsense.org/issues/9897
  */
-function squid_list_ssl_ca() {
-	$prvca_list = array();
-	$ecdsagood = cert_build_list('ca', 'HTTPS');
+function squid_get_ca_or_certs($type) {
+	$c_arr = array();
+	$ecdsagood = cert_build_list($type, 'HTTPS');
 	foreach ($ecdsagood as $refid => $descr) {
-		$prvca_list[] = array('refid' => $refid, 'descr' => $descr);
+		$c_arr[] = array('refid' => $refid, 'descr' => $descr);
 	}
-	return $prvca_list;
+	return $c_arr;
 }
