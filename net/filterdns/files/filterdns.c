@@ -575,16 +575,14 @@ check_hostname(void *arg)
 			}
 		}
 
-		if (update > 0) {
-			if (debug >= 4)
-				syslog(LOG_WARNING,
-				    "Change detected on host: %s",
-				    thr->hostname);
-			TAILQ_FOREACH(act, &thr->actions, next_actions) {
-				pthread_mutex_lock(&act->mtx);
-				pthread_cond_signal(&act->cond);
-				pthread_mutex_unlock(&act->mtx);
-			}
+		if (debug >= 4)
+			syslog(LOG_WARNING,
+			    "Change detected on host: %s",
+			    thr->hostname);
+		TAILQ_FOREACH(act, &thr->actions, next_actions) {
+			pthread_mutex_lock(&act->mtx);
+			pthread_cond_signal(&act->cond);
+			pthread_mutex_unlock(&act->mtx);
 		}
 
 		pthread_rwlock_unlock(&main_lock);
