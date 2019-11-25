@@ -188,7 +188,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_ca_certs()]]></source>
+			<source><![CDATA[freeradius_get_ca_or_certs('ca')]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
@@ -222,7 +222,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_server_certs()]]></source>
+			<source><![CDATA[freeradius_get_ca_or_certs('cert')]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>

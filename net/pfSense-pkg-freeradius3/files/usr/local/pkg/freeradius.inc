@@ -1601,18 +1601,18 @@ EOD;
 	}
 }
 
+/* This change cannot be pulled back to RELENG_2_4_4 since it would break there.
+ * see https://redmine.pfsense.org/issues/9897
+ */
 // Gets started from freeradiuseapconf.xml
-function freeradius_get_ca_certs() {
-	global $config;
-	$ca_arr = array();
-	$ca_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-
-	if (is_array($config['ca'])) {
-		foreach ($config['ca'] as $ca) {
-			$ca_arr[] = array('refid' => $ca['refid'], 'descr' => $ca['descr']);
-		}
+function freeradius_get_ca_or_certs($type) {
+	$c_arr = array();
+	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+	$ecdsagood = cert_build_list($type, 'IPsec');
+	foreach ($ecdsagood as $refid => $descr) {
+		$c_arr[] = array('refid' => $refid, 'descr' => $descr);
 	}
-	return $ca_arr;
+	return $c_arr;
 }
 
 // Gets started from freeradiuseapconf.xml
@@ -1627,20 +1627,6 @@ function freeradius_get_ca_crl() {
 		}
 	}
 	return $crl_arr;
-}
-
-// Gets started from freeradiuseapconf.xml
-function freeradius_get_server_certs() {
-	global $config;
-	$cert_arr = array();
-	$cert_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-
-	if (is_array($config['cert'])) {
-		foreach ($config['cert'] as $cert) {
-			$cert_arr[] = array('refid' => $cert['refid'], 'descr' => $cert['descr']);
-		}
-	}
-	return $cert_arr;
 }
 
 function freeradius_sqlconf_resync() {
