@@ -143,4 +143,16 @@ function stunnel_deinstall() {
 	rmdir_recursive("/var/tmp/stunnel");
 	rmdir_recursive(STUNNEL_ETCDIR);
 }
+
+/* This change cannot be pulled back to RELENG_2_4_4 since it would break there.
+ * see https://redmine.pfsense.org/issues/9897
+ */
+function stunnel_get_certs() {
+	$c_arr = array();
+	$ecdsagood = cert_build_list('cert', 'IPsec');
+	foreach ($ecdsagood as $refid => $descr) {
+		$c_arr[] = array('refid' => $refid, 'descr' => $descr);
+	}
+	return $c_arr;
+}
 ?>
