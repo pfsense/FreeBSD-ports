@@ -1601,20 +1601,6 @@ EOD;
 	}
 }
 
-/* This change cannot be pulled back to RELENG_2_4_4 since it would break there.
- * see https://redmine.pfsense.org/issues/9897
- */
-// Gets started from freeradiuseapconf.xml
-function freeradius_get_ca_or_certs($type) {
-	$c_arr = array();
-	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-	$ecdsagood = cert_build_list($type, 'IPsec');
-	foreach ($ecdsagood as $refid => $descr) {
-		$c_arr[] = array('refid' => $refid, 'descr' => $descr);
-	}
-	return $c_arr;
-}
-
 // Gets started from freeradiuseapconf.xml
 function freeradius_get_ca_crl() {
 	global $config;
@@ -4458,6 +4444,16 @@ function freeradius_validate_ldap($post, &$input_errors) {
 	 * Group Membership Options - Groupname Attribute, Group Membership Filter, Group Membership Attribute
 	 */
 
+}
+
+/* Simple dummy copy to use old 2.4.x style array. */
+if (!function_exists('cert_build_list')) {
+	function cert_build_list($type = 'cert', $consumer = '', $selectsource = false, $addnone = false) {
+		global $config;
+		$list = ($type == 'ca') ? $config['ca'] : $config['certs'];
+		array_shift($list, array('refid' => 'none', 'descr' => 'None'));
+		return $list;
+	}
 }
 
 ?>
