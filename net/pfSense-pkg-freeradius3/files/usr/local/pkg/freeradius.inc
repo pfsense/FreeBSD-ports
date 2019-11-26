@@ -4450,7 +4450,7 @@ function freeradius_validate_ldap($post, &$input_errors) {
 if (!function_exists('cert_build_list')) {
 	function cert_build_list($type = 'cert', $consumer = '', $selectsource = false, $addnone = false) {
 		global $config;
-		$list = ($type == 'ca') ? $config['ca'] : $config['certs'];
+		$list = ($type == 'ca') ? $config['ca'] : $config['cert'];
 		array_shift($list, array('refid' => 'none', 'descr' => 'None'));
 		return $list;
 	}
