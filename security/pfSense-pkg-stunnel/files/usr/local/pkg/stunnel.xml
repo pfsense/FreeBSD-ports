@@ -108,7 +108,7 @@
 			<fieldname>certificate</fieldname>
 			<description>Select server certificate to use for this tunnel.</description>
 			<type>select_source</type>
-			<source><![CDATA[stunnel_get_certs()]]></source>
+			<source><![CDATA[cert_build_list('cert', 'IPsec', true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 			<show_disable_value>default</show_disable_value>

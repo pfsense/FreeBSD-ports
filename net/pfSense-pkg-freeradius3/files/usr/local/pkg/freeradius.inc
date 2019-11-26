@@ -1601,20 +1601,6 @@ EOD;
 	}
 }
 
-/* This change cannot be pulled back to RELENG_2_4_4 since it would break there.
- * see https://redmine.pfsense.org/issues/9897
- */
-// Gets started from freeradiuseapconf.xml
-function freeradius_get_ca_or_certs($type) {
-	$c_arr = array();
-	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-	$ecdsagood = cert_build_list($type, 'IPsec');
-	foreach ($ecdsagood as $refid => $descr) {
-		$c_arr[] = array('refid' => $refid, 'descr' => $descr);
-	}
-	return $c_arr;
-}
-
 // Gets started from freeradiuseapconf.xml
 function freeradius_get_ca_crl() {
 	global $config;
