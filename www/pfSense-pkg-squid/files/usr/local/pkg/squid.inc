@@ -2440,7 +2440,7 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
  */
 function squid_get_ca_or_certs($type) {
 	$c_arr = array();
-	if (function_exists(cert_build_list)) {
+	if (function_exists('cert_build_list')) {
 		$c_arr = cert_build_list($type, 'HTTPS', true, true);
 	} else {
 		global $config;
