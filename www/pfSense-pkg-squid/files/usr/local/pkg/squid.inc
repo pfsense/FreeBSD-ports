@@ -2432,14 +2432,21 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 
 /* Get a listing of CA entries which are valid for use with MITM/Splice.
  * They MUST have a private key present!
- * This change cannot be pulled back to RELENG_2_4_4 since it would break there.
- * see https://redmine.pfsense.org/issues/9897
  */
 function squid_get_ca_or_certs($type) {
 	$c_arr = array();
-	$ecdsagood = cert_build_list($type, 'HTTPS');
-	foreach ($ecdsagood as $refid => $descr) {
-		$c_arr[] = array('refid' => $refid, 'descr' => $descr);
+	if (function_exists(cert_build_list)) {
+		$c_arr = cert_build_list($type, 'HTTPS', true, true);
+	} else {
+		global $config;
+		$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+		if (isset($config[$type]) && is_array($config[$type])) {
+			foreach ($config[$type] as $c) {
+				if (!empty($c['prv'])) {
+					$c_arr[] = $c;
+				}
+			}
+		}
 	}
 	return $c_arr;
 }
