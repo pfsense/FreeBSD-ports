@@ -2433,15 +2433,20 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 /* Get a listing of CA entries which are valid for use with MITM/Splice.
  * They MUST have a private key present!
  */
-function squid_list_ssl_ca() {
-	global $config;
-	$prvca_list = array();
-	if (isset($config['ca']) && is_array($config['ca'])) {
-		foreach ($config['ca'] as $ca) {
-			if (!empty($ca['prv'])) {
-				$prvca_list[] = $ca;
+function squid_get_ca_or_certs($type) {
+	$c_arr = array();
+	if (function_exists('cert_build_list')) {
+		$c_arr = cert_build_list($type, 'HTTPS', true, true);
+	} else {
+		global $config;
+		$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+		if (isset($config[$type]) && is_array($config[$type])) {
+			foreach ($config[$type] as $c) {
+				if (!empty($c['prv'])) {
+					$c_arr[] = $c;
+				}
 			}
 		}
 	}
-	return $prvca_list;
+	return $c_arr;
 }
