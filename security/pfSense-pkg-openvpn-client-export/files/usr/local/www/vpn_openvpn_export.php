@@ -64,6 +64,14 @@ foreach ($a_server as $server) {
 	if (stripos($server['mode'], "server") === false) {
 		continue;
 	}
+	if (function_exists('cert_build_list')) {
+		$ecdsagood = array_keys(cert_build_list('cert', 'OpenVPN'));
+	} else {
+		$ecdsagood = array();
+		foreach ($a_cert as $cindex => $cert) {
+			$ecdsagood[] = $cert['refid'];
+		}
+	}
 	if (($server['mode'] == "server_tls_user") && ($server['authmode'] == "Local Database")) {
 		foreach ($a_user as $uindex => $user) {
 			if (!is_array($user['cert'])) {
@@ -75,7 +83,7 @@ foreach ($a_server as $server) {
 					$cert = lookup_cert($cert);
 				}
 
-				if ($cert['caref'] != $server['caref']) {
+				if (($cert['caref'] != $server['caref']) || !in_array($cert['refid'], $ecdsagood)) {
 					continue;
 				}
 				$ras_userent = array();
@@ -90,7 +98,7 @@ foreach ($a_server as $server) {
 	} elseif (($server['mode'] == "server_tls") ||
 			(($server['mode'] == "server_tls_user") && ($server['authmode'] != "Local Database"))) {
 		foreach ($a_cert as $cindex => $cert) {
-			if (($cert['caref'] != $server['caref']) || ($cert['refid'] == $server['certref'])) {
+			if (($cert['caref'] != $server['caref']) || ($cert['refid'] == $server['certref']) || !in_array($cert['refid'], $ecdsagood)) {
 				continue;
 			}
 			$ras_cert_entry['cindex'] = $cindex;
@@ -650,6 +658,7 @@ print($form);
 		</div>
 	</div>
 </div>
+<span class="help-block"><?=gettext('Only OpenVPN-compatible certificates are shown')?>
 <br />
 <br />
 <?= print_info_box(gettext("If a client is missing from the list it is likely due to a CA mismatch between the OpenVPN server instance and the client certificate, the client certificate does not exist on this firewall, or a user certificate is not associated with a user when local database authentication is enabled." .
