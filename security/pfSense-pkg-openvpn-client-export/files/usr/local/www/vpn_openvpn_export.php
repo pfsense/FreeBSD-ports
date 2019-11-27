@@ -64,6 +64,7 @@ foreach ($a_server as $server) {
 	if (stripos($server['mode'], "server") === false) {
 		continue;
 	}
+	$ecdsagood = cert_build_list('cert', 'OpenVPN');
 	if (($server['mode'] == "server_tls_user") && ($server['authmode'] == "Local Database")) {
 		foreach ($a_user as $uindex => $user) {
 			if (!is_array($user['cert'])) {
@@ -75,7 +76,7 @@ foreach ($a_server as $server) {
 					$cert = lookup_cert($cert);
 				}
 
-				if ($cert['caref'] != $server['caref']) {
+				if (($cert['caref'] != $server['caref']) || !in_array($cert['refid'], array_keys($ecdsagood))) {
 					continue;
 				}
 				$ras_userent = array();
@@ -90,7 +91,7 @@ foreach ($a_server as $server) {
 	} elseif (($server['mode'] == "server_tls") ||
 			(($server['mode'] == "server_tls_user") && ($server['authmode'] != "Local Database"))) {
 		foreach ($a_cert as $cindex => $cert) {
-			if (($cert['caref'] != $server['caref']) || ($cert['refid'] == $server['certref'])) {
+			if (($cert['caref'] != $server['caref']) || ($cert['refid'] == $server['certref']) || !in_array($cert['refid'], array_keys($ecdsagood))) {
 				continue;
 			}
 			$ras_cert_entry['cindex'] = $cindex;
