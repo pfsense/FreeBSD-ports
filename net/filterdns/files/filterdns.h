@@ -41,6 +41,8 @@
 #define	THR_RUNNING	2
 #define	THR_DYING	4
 
+#define	ACT_FORCE	1
+
 struct _addr_entry {
 	TAILQ_ENTRY(_addr_entry) entry;
 	struct sockaddr	*addr;
@@ -69,6 +71,7 @@ struct action {
 	struct thread_host *host;
 	struct addr_list tbl_rnh;
 	struct addr_list rnh;
+	int flags;
 	int type;
 	char *tablename;
 	int pipe;

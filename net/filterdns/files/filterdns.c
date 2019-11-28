@@ -95,6 +95,8 @@ check_action(void *arg)
 			    act->hostname);
 
 		pthread_rwlock_rdlock(&main_lock);
+		if (act->flags & ACT_FORCE)
+			act->flags &= ~ACT_FORCE;
 		if (act->host != NULL) {
 			TAILQ_FOREACH(ent, &act->rnh, entry) {
 				if (ent->flags & ADDR_STATIC)
@@ -155,6 +157,7 @@ action_create(struct action *act, pthread_attr_t *attr)
 	if (act->state != 0)
 		return (-1);
 	act->state = THR_STARTING;
+	act->flags = ACT_FORCE;
 	if (debug > 3)
 		syslog(LOG_INFO,
 		    "Creating a new thread for action type: %s %s%s%shostname: %s",
@@ -575,16 +578,15 @@ check_hostname(void *arg)
 			}
 		}
 
-		if (update > 0) {
-			if (debug >= 4)
-				syslog(LOG_WARNING,
-				    "Change detected on host: %s",
-				    thr->hostname);
-			TAILQ_FOREACH(act, &thr->actions, next_actions) {
-				pthread_mutex_lock(&act->mtx);
-				pthread_cond_signal(&act->cond);
-				pthread_mutex_unlock(&act->mtx);
-			}
+		if (update > 0 && debug >= 4)
+			syslog(LOG_WARNING, "Change detected on host: %s",
+			    thr->hostname);
+		TAILQ_FOREACH(act, &thr->actions, next_actions) {
+			if (update == 0 && (act->flags & ACT_FORCE) == 0)
+				continue;
+			pthread_mutex_lock(&act->mtx);
+			pthread_cond_signal(&act->cond);
+			pthread_mutex_unlock(&act->mtx);
 		}
 
 		pthread_rwlock_unlock(&main_lock);
