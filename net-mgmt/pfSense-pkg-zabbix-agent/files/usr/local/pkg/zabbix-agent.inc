@@ -318,4 +318,22 @@ function zabbix_agent_add_keyfile($data, $directive) {
 	@chown($fpath, "zabbix");
 }
 
+function zabbix_certca($type) {
+	global $config;
+	$c_arr = array();
+	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+	if (isset($config[$type]) && is_array($config[$type])) {
+		foreach ($config[$type] as $c) {
+			if (!empty($c['prv'])) {
+				$res_key = openssl_pkey_get_private(base64_decode($c['prv']));
+				$key_details = openssl_pkey_get_details($res_key);
+				if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
+					$c_arr[] = $c;
+				}
+			}
+		}
+	}
+	return $c_arr;
+}
+
 ?>
