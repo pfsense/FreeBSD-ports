@@ -330,6 +330,8 @@ function zabbix_certca($type) {
                                 if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
                                         $c_arr[] = $c;
                                 }
+                        } if else ($type == 'ca') {
+                                $c_arr[] = $c;
                         }
                 }
         }
