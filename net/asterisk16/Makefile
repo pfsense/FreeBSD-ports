@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	16.5.1
-PORTREVISION=	1
+PORTVERSION=	16.6.2
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -296,6 +295,9 @@ post-configure-NEWG711-on:
 
 post-configure-OPTIMIZED_CFLAGS-off:
 	@cd ${WRKSRC} && ./menuselect/menuselect --disable BUILD_NATIVE menuselect.makeopts
+
+post-configure-OPUS-on:
+	@cd ${WRKSRC} && ./menuselect/menuselect --enable codec_opus_open_source menuselect.makeopts
 
 post-install:
 	@${RM} ${STAGEDIR}${ETCDIR}/*.conf ${STAGEDIR}${ETCDIR}/extensions.ael ${STAGEDIR}${ETCDIR}/extensions.lua

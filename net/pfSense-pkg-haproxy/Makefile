@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-haproxy
 PORTVERSION=	0.60
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

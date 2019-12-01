@@ -143,4 +143,5 @@ function stunnel_deinstall() {
 	rmdir_recursive("/var/tmp/stunnel");
 	rmdir_recursive(STUNNEL_ETCDIR);
 }
+
 ?>
