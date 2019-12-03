@@ -7,6 +7,7 @@ bin/elgetopt
 bin/elgetpositionals
 bin/elglob
 bin/emptyenv
+bin/envfile
 bin/exec
 bin/execlineb
 bin/exit
@@ -28,7 +29,6 @@ bin/if
 bin/ifelse
 bin/ifte
 bin/ifthenelse
-bin/import
 bin/importas
 bin/loopwhilex
 bin/multidefine
@@ -48,9 +48,9 @@ include/execline/config.h
 include/execline/execline.h
 lib/execline/libexecline.a
 lib/libexecline.so
-lib/libexecline.so.2.3
-lib/libexecline.so.2.3.0
-lib/libexecline.so.2.3.0.4
+lib/libexecline.so.2.5
+lib/libexecline.so.2.5.1
+lib/libexecline.so.2.5.1.0
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/README
 %%PORTDOCS%%%%DOCSDIR%%/background.html
@@ -67,6 +67,7 @@ lib/libexecline.so.2.3.0.4
 %%PORTDOCS%%%%DOCSDIR%%/elgetpositionals.html
 %%PORTDOCS%%%%DOCSDIR%%/elglob.html
 %%PORTDOCS%%%%DOCSDIR%%/emptyenv.html
+%%PORTDOCS%%%%DOCSDIR%%/envfile.html
 %%PORTDOCS%%%%DOCSDIR%%/exec.html
 %%PORTDOCS%%%%DOCSDIR%%/execline-shell.html
 %%PORTDOCS%%%%DOCSDIR%%/execline-startup.html
@@ -92,7 +93,6 @@ lib/libexecline.so.2.3.0.4
 %%PORTDOCS%%%%DOCSDIR%%/ifelse.html
 %%PORTDOCS%%%%DOCSDIR%%/ifte.html
 %%PORTDOCS%%%%DOCSDIR%%/ifthenelse.html
-%%PORTDOCS%%%%DOCSDIR%%/import.html
 %%PORTDOCS%%%%DOCSDIR%%/importas.html
 %%PORTDOCS%%%%DOCSDIR%%/index.html
 %%PORTDOCS%%%%DOCSDIR%%/loopwhilex.html

@@ -3,7 +3,7 @@
 
 PORTNAME=	fifechan
 PORTVERSION=	0.1.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel games
 
 MAINTAINER=	fiziologus@gmail.com
@@ -12,7 +12,7 @@ COMMENT=	Small, efficient C++ GUI library designed for games
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=	cmake:outsource
+USES=	cmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	fifengine

@@ -3,7 +3,7 @@
 
 PORTNAME=	tk
 PORTVERSION=	8.5.19
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	TCLTK/tcl8_5 SF/tcl/Tcl/${PORTVERSION}
 PKGNAMESUFFIX=	${SHORT_TK_VER}
@@ -16,6 +16,8 @@ LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+DEPRECATED=	Tcl/Tk 8.5 is nearing EOL, please consider switching to Tcl/Tk 8.6
 
 USES+=		tcl:${SHORT_TK_VER},tea
 USE_XORG=	x11 xft xscrnsaver
@@ -42,7 +44,7 @@ DATADIR=	${PREFIX}/share/${PORTNAME}${TK_VER}
 SUB_FILES=	pkgIndex.tcl
 
 OPTIONS_DEFINE=	TK85_MAN DEMOS THREADS
-OPTIONS_DEFAULT=THREADS
+OPTIONS_DEFAULT=TK85_MAN THREADS
 OPTIONS_SUB=	yes
 TK85_MAN_DESC=	Install tk 8.5 function manpages
 DEMOS_DESC=	Install demos

@@ -3,10 +3,13 @@
 
 PORTNAME=	mythtv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	29.1
-PORTREVISION?=	1
+DISTVERSION=	30.0
+PORTREVISION?=	4
 PORTEPOCH=	1
 CATEGORIES=	multimedia
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	aab7d3f065a7.patch:-p2
 
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	MythTV is a homebrew PVR project
@@ -15,19 +18,27 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=	amd64 i386
+.if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
+BROKEN_i386=	ld: error: can't create dynamic relocation R_386_32 against local symbol in readonly segment
+.endif
 
-LIB_DEPENDS=	libmp3lame.so:audio/lame \
+LIB_DEPENDS=	liblzo2.so:archivers/lzo2 \
+		libmp3lame.so:audio/lame \
+		libsamplerate.so:audio/libsamplerate \
 		libtag.so:audio/taglib \
 		libexiv2.so:graphics/exiv2 \
 		libva.so:multimedia/libva \
+		libva-glx.so:multimedia/libva-glx \
+		libbluray.so:multimedia/libbluray \
 		libass.so:multimedia/libass \
 		libfftw3_threads.so:math/fftw3 \
 		libfftw3f.so:math/fftw3-float \
 		libfreetype.so:print/freetype2 \
 		libxml2.so:textproc/libxml2
-BUILD_DEPENDS=	yasm:devel/yasm
+BUILD_DEPENDS=	yasm:devel/yasm \
+		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
-USES=		gmake iconv libtool pkgconfig pathfix qmake:no_env qt:5 ssl
+USES=		gmake gl iconv libtool pkgconfig pathfix qmake:no_env qt:5 ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	MythTV
 USE_GL=		gl
@@ -41,8 +52,8 @@ HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix="${PREFIX}" --cc="${CC}" --cxx="${CXX}" \
 		--libxml2-path="${LOCALBASE}/include/libxml2" \
 		--enable-opengl-video \
-		--disable-audio-alsa --disable-indev=alsa --disable-outdev=alsa \
-		--disable-mythlogserver
+		--disable-audio-alsa --disable-indev=alsa \
+		--disable-outdev=alsa
 CONFIGURE_ENV=	QMAKESPEC="${QMAKESPEC}" MOC="${MOC}" \
 		QTDIR="${PREFIX}" PKG_CONFIG_PATH="${LOCALBASE}/libdata/pkgconfig"
 MAKE_ENV=	QTDIR="${PREFIX}" \
@@ -83,7 +94,8 @@ SHEBANG_FILES=	programs/scripts/database/*.pl \
 		programs/scripts/internetcontent/nv_python_libs/*.py \
 		programs/scripts/hardwareprofile/*.py \
 		programs/scripts/metadata/Television/ttvdb.py \
-		programs/scripts/metadata/Movie/tmdb3.py
+		programs/scripts/metadata/Movie/tmdb3.py \
+		programs/scripts/metadata/Music/mbutils.py
 
 CONFIGURE_ARGS+=--dvb-path="${LOCALBASE}/include" \
 		--enable-ivtv --enable-v4l2 --enable-xv
@@ -95,8 +107,8 @@ DATADIR=	${PREFIX}/share/mythtv
 SUB_FILES=	pkg-message
 .endif
 
-OPTIONS_DEFINE=		BINDINGS JACK LIRC MYSQL PULSEAUDIO VDPAU
-OPTIONS_DEFAULT=	BINDINGS VDPAU
+OPTIONS_DEFINE=		BINDINGS HDHOMERUN JACK LIRC MYSQL PULSEAUDIO VDPAU
+OPTIONS_DEFAULT=	BINDINGS HDHOMERUN VDPAU
 OPTIONS_SUB=		yes
 
 BINDINGS_DESC=		Perl and Python bindings
@@ -107,11 +119,12 @@ BINDINGS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQL
 			p5-DBD-mysql>0:databases/p5-DBD-mysql \
 			p5-Net-UPnP>=0:multimedia/p5-Net-UPnP \
 			p5-IO-Socket-INET6>=2.51:net/p5-IO-Socket-INET6 \
+			p5-XML-Simple>=0:textproc/p5-XML-Simple \
 			p5-HTTP-Request-Params>=0:www/p5-HTTP-Request-Params \
 			p5-LWP-UserAgent-Determined>=0:www/p5-LWP-UserAgent-Determined
 BINDINGS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}futures>0:devel/py-futures@${PY_FLAVOR} \
+			${PY_FUTURES} \
 			${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}requests-cache>0:www/py-requests-cache@${PY_FLAVOR} \
@@ -120,10 +133,15 @@ BINDINGS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb
 			p5-DBD-mysql>0:databases/p5-DBD-mysql \
 			p5-Net-UPnP>=0:multimedia/p5-Net-UPnP \
 			p5-IO-Socket-INET6>=2.51:net/p5-IO-Socket-INET6 \
+			p5-XML-Simple>=0:textproc/p5-XML-Simple \
 			p5-HTTP-Request-Params>=0:www/p5-HTTP-Request-Params \
 			p5-LWP-UserAgent-Determined>=0:www/p5-LWP-UserAgent-Determined
 BINDINGS_CONFIGURE_ON=	--python=${PYTHON_CMD}
 BINDINGS_CONFIGURE_OFF=	--without-bindings=perl,python
+
+HDHOMERUN_DESC=		Native support for HDHomeRun network tuners
+HDHOMERUN_LIB_DEPENDS=	libhdhomerun.so:multimedia/libhdhomerun
+HDHOMERUN_CONFIGURE_OFF=	--disable-hdhomerun
 
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JACK_CONFIGURE_ON=	--enable-audio-jack --enable-indev=jack

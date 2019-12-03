@@ -13,6 +13,10 @@ COMMENT=	Moka Plank theme
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	plank:x11-wm/plank
 
 USES=	zip

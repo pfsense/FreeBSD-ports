@@ -1,7 +1,7 @@
---- daemon/http-tx-mgr.c.orig	2015-09-21 03:42:11 UTC
+--- daemon/http-tx-mgr.c.orig	2019-06-04 02:14:53 UTC
 +++ daemon/http-tx-mgr.c
-@@ -58,6 +58,22 @@
- #define USER_AGENT_OS "Linux"
+@@ -69,6 +69,22 @@
+ #define USER_AGENT_OS "BSD"
  #endif
  
 +#ifdef __FreeBSD__

@@ -1,8 +1,8 @@
---- Makefile.orig	2017-03-03 00:02:39 UTC
+--- Makefile.orig	2019-02-28 14:43:36 UTC
 +++ Makefile
-@@ -68,60 +68,47 @@ install: install-master-prime install-co
+@@ -95,60 +95,47 @@ install: install-master-prime install-common-prime ins
  
- install-pre: Makefile Makefile.config
+ install-pre: $(MAKEFILES)
  	@$(CHECKUSER)
 -	mkdir -p $(LOGDIR)
 -	mkdir -p $(STATEDIR)
@@ -24,12 +24,6 @@
 -	mkdir -p $(DBDIR)
 -	mkdir -p $(DBDIR)/cgi-tmp
 -	mkdir -p $(CGIDIR)
--
--	$(CHOWN) $(USER) $(HTMLDIR) $(DBDIR)
--	$(CHMOD) 0755 $(DBDIR)
--
--	$(CHOWN) $(CGIUSER) $(DBDIR)/cgi-tmp
--	$(CHMOD) 0755 $(DBDIR)/cgi-tmp
 +	mkdir -p $(DESTDIR)$(CONFDIR)/templates
 +	mkdir -p $(DESTDIR)$(CONFDIR)/static
 +	mkdir -p $(DESTDIR)$(CONFDIR)/templates/partial
@@ -40,6 +34,12 @@
 +	mkdir -p $(DESTDIR)$(DBDIR)/cgi-tmp
 +	mkdir -p $(DESTDIR)$(CGIDIR)
  
+-	$(CHOWN) $(USER) $(HTMLDIR) $(DBDIR)
+-	$(CHMOD) 0755 $(DBDIR)
+-
+-	$(CHOWN) $(CGIUSER) $(DBDIR)/cgi-tmp
+-	$(CHMOD) 0755 $(DBDIR)/cgi-tmp
+-
  	for p in master/www/*.tmpl ;  do \
 -		$(INSTALL) -m 0644 "$$p" $(CONFDIR)/templates/ ; \
 +		$(INSTALL) -m 0644 "$$p" $(DESTDIR)$(CONFDIR)/templates/ ; \
@@ -88,34 +88,36 @@
  
  # Not ready to be installed yet
  # $(INSTALL) -m 0755 build/master/_bin/munin-gather $(LIBDIR)/
-@@ -139,33 +126,29 @@ endif
- install-plugins-prime: install-plugins build $(PLUGINS) Makefile Makefile.config
+@@ -158,36 +145,30 @@ install-node-plugins: install-plugins-prime
+ install-plugins-prime: install-plugins build $(PLUGINS) $(MAKEFILES)
  	@$(CHECKGROUP)
  
 -	mkdir -p $(CONFDIR)/plugins
 -	mkdir -p $(CONFDIR)/plugin-conf.d
 -	mkdir -p $(LIBDIR)/plugins
 -	mkdir -p $(PLUGSTATE)
--
--	$(CHOWN) root:root $(PLUGSTATE)
--	$(CHMOD) 0755 $(PLUGSTATE)
--	$(CHMOD) 0755 $(CONFDIR)/plugin-conf.d
 +	mkdir -p $(DESTDIR)$(CONFDIR)/plugins
 +	mkdir -p $(DESTDIR)$(CONFDIR)/plugin-conf.d
 +	mkdir -p $(DESTDIR)$(LIBDIR)/plugins
 +	mkdir -p $(DESTDIR)$(PLUGSTATE)
  
+-	$(CHOWN) root:root $(PLUGSTATE)
+-	$(CHMOD) 0755 $(PLUGSTATE)
+-	$(CHMOD) 0755 $(CONFDIR)/plugin-conf.d
+-
+ 	@# Process the OS specific plugins at the end. Otherwise they would be overridden by the
+ 	@# generic ones.
  	for p in build/plugins/node.d/* build/plugins/node.d.$(OSTYPE)/* ; do \
- 	    if test -f "$$p" ; then                            \
- 		echo Installing $$p;                           \
--		$(INSTALL) -m 0755 $$p $(LIBDIR)/plugins/;     \
-+		$(INSTALL) -m 0755 $$p $(DESTDIR)$(LIBDIR)/plugins/;     \
- 	    fi                                                 \
+ 		if test -f "$$p"; then \
+ 			echo Installing $$p; \
+-			$(INSTALL) -m 0755 $$p $(LIBDIR)/plugins/; \
++			$(INSTALL) -m 0755 $$p $(DESTDIR)$(LIBDIR)/plugins/;     \
+ 		fi \
  	done
--	$(HPUXONLY) mv $(LIBDIR)/plugins/*.adv $(LIBDIR)
+-	@# Some HP-UX plugins need *.adv support files in LIBDIR
+-	if [ "$(OSTYPE)" = "hp-ux" ]; then mv $(LIBDIR)/plugins/*.adv $(LIBDIR); fi
 -	$(INSTALL) -m 0644 build/plugins/plugins.history $(LIBDIR)/plugins/
 -	$(INSTALL) -m 0644 build/plugins/plugin.sh $(LIBDIR)/plugins/
-+	$(HPUXONLY) mv $(DESTDIR)$(LIBDIR)/plugins/*.adv $(DESTDIR)$(LIBDIR)
 +	$(INSTALL) -m 0644 build/plugins/plugins.history $(DESTDIR)$(LIBDIR)/plugins/
 +	$(INSTALL) -m 0644 build/plugins/plugin.sh $(DESTDIR)$(LIBDIR)/plugins/
  
@@ -126,15 +128,15 @@
 +	mkdir -p $(DESTDIR)$(JAVALIBDIR)
 +	$(INSTALL) -m 0644 build/plugins/javalib/munin-jmx-plugins.jar $(DESTDIR)$(JAVALIBDIR)/
 +	mkdir -p $(DESTDIR)$(LIBDIR)/plugins
- 	for p in build/plugins/node.d.java/*; do               \
- 	    if test -f "$$p" ; then                            \
- 		echo Installing $$p;                           \
--		$(INSTALL) -m 0755 $$p $(LIBDIR)/plugins/;     \
-+		$(INSTALL) -m 0755 $$p $(DESTDIR)$(LIBDIR)/plugins/;     \
- 	    fi                                                 \
+ 	for p in build/plugins/node.d.java/*; do \
+ 		if test -f "$$p"; then \
+ 			echo Installing $$p; \
+-			$(INSTALL) -m 0755 $$p $(LIBDIR)/plugins/; \
++			$(INSTALL) -m 0755 $$p $(DESTDIR)$(LIBDIR)/plugins/;     \
+ 		fi \
  	done
  
-@@ -176,14 +159,14 @@ install-plugins-java: build-plugins-java
+@@ -198,14 +179,14 @@ install-plugins-java: build-plugins-java
  install-async-prime: install-async
  
  install-async:
@@ -153,20 +155,20 @@
  
  
  install-common-prime: build-common install-common
-@@ -449,7 +432,7 @@ t/install:
+@@ -518,7 +499,7 @@ t/install:
  
  # This builds */Build from Build.PL
  %/Build: %/Build.PL
--	cd $* && $(PERL) Build.PL
-+	cd $* && $(PERL) Build.PL --config perl=$(PERL)
+-	cd $* && $(PERL) -I. Build.PL
++	cd $* && $(PERL) -I. Build.PL --config perl=$(PERL)
  
  build-%: %/Build
  	cd $* && $(PERL) Build
-@@ -466,6 +449,7 @@ install-%: %/Build
-             --install_path sbin=$(SBINDIR)		\
-             --install_path bindoc=$(MANDIR)/man1	\
-             --install_path libdoc=$(MANDIR)/man3	\
-+	    --destdir=$(DESTDIR)
+@@ -534,6 +515,7 @@ install-%: %/Build
+ 		--install_path script=$(BINDIR) \
+ 		--install_path sbin=$(SBINDIR) \
+ 		--install_path bindoc=$(MANDIR)/man1 \
++		--destdir=$(DESTDIR) \
+ 		--install_path libdoc=$(MANDIR)/man3
  
  test-%: %/Build
- 	cd $* && $(PERL) Build test --verbose=0 || true

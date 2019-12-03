@@ -1,0 +1,23 @@
+--- shibboleth.spec.in.orig	2018-07-10 01:17:23 UTC
++++ shibboleth.spec.in
+@@ -69,7 +69,7 @@ BuildRequires: systemd-rpm-macros, syste
+ %if "%{_vendor}" == "suse"
+ %define pkgdocdir %{_docdir}/shibboleth
+ %else
+-%define pkgdocdir %{_docdir}/shibboleth-%{version}
++%define pkgdocdir %{_docdir}/shibboleth
+ %endif
+ 
+ %description
+@@ -289,11 +289,6 @@ exit 0
+ /sbin/ldconfig
+ %endif
+ 
+-# Key ownership fix.
+-if [ -f %{_sysconfdir}/shibboleth/sp-key.pem ] ; then
+-	%{__chown} %{runuser}:%{runuser} %{_sysconfdir}/shibboleth/sp-key.pem %{_sysconfdir}/shibboleth/sp-cert.pem 2>/dev/null || :
+-fi
+-
+ # Fix ownership of log files (even on new installs, if they're left from an older one).
+ %{__chown} %{runuser}:%{runuser} %{_localstatedir}/log/shibboleth/* 2>/dev/null || :
+ 

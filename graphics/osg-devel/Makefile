@@ -3,7 +3,7 @@
 
 PORTNAME=	osg
 PORTVERSION=	3.5.1
-PORTREVISION=	4
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	http://trac.openscenegraph.org/downloads/developer_releases/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -21,9 +21,9 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-CONFLICTS=	osg-[0-9]*
+CONFLICTS=	osg
 
-USES=		alias cmake:outsource jpeg pkgconfig zip
+USES=		alias cmake jpeg gl pkgconfig zip
 USE_GL=		gl glu
 USE_XORG=	x11
 USE_LDCONFIG=	yes
@@ -36,10 +36,8 @@ PLIST_SUB=	OSG_VERSION=${PORTVERSION} \
 PORTSCOUT=	limitw:1,odd
 
 OPTIONS_DEFINE=	CURL FFMPEG FREETYPE GDAL GIF GSTREAMER GTA INVENTOR \
-		JASPER LIBLAS LUA NVTT OPENEXR PDF SDL \
+		JASPER LIBLAS LUA NVTT OPENEXR PDF QT5 SDL \
 		SVG VNC XINE XRANDR
-OPTIONS_RADIO=	QT
-OPTIONS_RADIO_QT=QT4 QT5
 OPTIONS_DEFAULT=FFMPEG FREETYPE GIF XRANDR
 
 GDAL_DESC=	GDAL support
@@ -47,7 +45,6 @@ GTA_DESC=	GTA file format support
 INVENTOR_DESC=	SGI OpenInventor support
 LIBLAS_DESC=	liblas support
 NVTT_DESC=	Use NVidia texture tools
-QT_DESC=	QT toolkit support
 SDL_DESC=	Use SDL (joystick support in present3d)
 VNC_DESC=	LibVNCServer support
 
@@ -91,18 +88,13 @@ LUA_VARS_OFF=		FORCE_IGNORE+="Lua51 Lua52"
 NVTT_LIB_DEPENDS=	libnvtt.so:graphics/nvidia-texture-tools
 NVTT_VARS=		FORCE_REQUIRE+=NVTT
 NVTT_VARS_OFF=		FORCE_IGNORE+=NVTT
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
 OPENEXR_VARS=		FORCE_REQUIRE+=OpenEXR
 OPENEXR_VARS_OFF=	FORCE_IGNORE+=OpenEXR
 PDF_LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
 PDF_USE=		gnome=cairo
 PDF_VARS=		FORCE_REQUIRE+=Poppler-glib
 PDF_VARS_OFF=		FORCE_IGNORE+=Poppler-glib
-QT4_USES=		qt:4
-QT4_USE=		qt=corelib,gui,moc_build,opengl,qmake_build,rcc_build,uic_build
-QT4_CMAKE_ON=		-DDESIRED_QT_VERSION=4
-QT4_VARS=		FORCE_REQUIRE+=Qt4
-QT4_VARS_OFF=		FORCE_IGNORE+=Qt4
 QT5_USES=		qt:5
 QT5_USE=		qt=buildtools_build,core,gui,opengl,qmake_build,webkit
 QT5_CMAKE_ON=		-DDESIRED_QT_VERSION=5
@@ -111,8 +103,8 @@ QT5_VARS_OFF=		FORCE_IGNORE+="Qt5Widgets Qt5WebKitWidgets"
 SDL_USE=		sdl=sdl
 SDL_VARS=		FORCE_REQUIRE+=SDL
 SDL_VARS_OFF=		FORCE_IGNORE+=SDL
-SVG_LIB_DEPENDS=	librsvg-2.so:graphics/librsvg2
-SVG_USE=		gnome=cairo
+SVG_USES=		gnome
+SVG_USE=		gnome=cairo,librsvg2
 SVG_VARS=		FORCE_REQUIRE+=RSVG
 SVG_VARS_OFF=		FORCE_IGNORE+=RSVG
 VNC_LIB_DEPENDS=	libvncserver.so:net/libvncserver
@@ -134,7 +126,7 @@ FORCE_REQUIRE=	Threads OpenGL X11 JPEG PNG TIFF ZLIB		# common & lightweight
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MQT4} || ${PORT_OPTIONS:MQT5}
+.if ${PORT_OPTIONS:MQT5}
 CMAKE_ARGS+=		-DOSG_USE_QT:BOOL=ON
 PLIST_SUB+=		QT=""
 .else

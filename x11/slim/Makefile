@@ -3,7 +3,7 @@
 
 PORTNAME=	slim
 PORTVERSION=	1.3.6
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	x11
 MASTER_SITES=	ftp://ftp.berlios.de/pub/slim/ \
 		SF/slim.berlios
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		cmake jpeg pkgconfig
+USES=		cmake compiler:c++11-lang jpeg pkgconfig
 USE_XORG=	ice sm x11 xau xcb xdmcp xext xft xmu xorg-server xrandr \
 		xrender xt
 USE_RC_SUBR=	slim
@@ -30,7 +30,7 @@ CMAKE_ARGS=	-DUSE_CONSOLEKIT=yes \
 		-DBUILD_SHARED_LIBS=yes
 
 OPTIONS_DEFINE=		PAM UTF8 CONSOLEKIT
-OPTIONS_DEFAULT=	PAM CONSOLEKIT
+OPTIONS_DEFAULT=	PAM UTF8 CONSOLEKIT
 OPTIONS_SUB=	yes
 
 UTF8_DESC=	Support UTF-8 characters
@@ -45,7 +45,8 @@ PAM_CMAKE_OFF=	-DUSE_PAM=no
 UTF8_EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-utf8
 
 CONSOLEKIT_CMAKE_ON=	-DUSE_CONSOLEKIT=yes
-CONSOLEKIT_LIB_DEPENDS=	libck-connector.so:sysutils/consolekit2
+CONSOLEKIT_LIB_DEPENDS=	libck-connector.so:sysutils/consolekit2 \
+			libdbus-1.so:devel/dbus
 CONSOLEKIT_CMAKE_OFF=	-DUSE_CONSOLEKIT=no
 
 post-patch:

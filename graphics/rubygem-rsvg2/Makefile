@@ -1,23 +1,24 @@
 # $FreeBSD$
 
 PORTNAME=	rsvg2
-PORTVERSION=	3.2.5
+PORTVERSION=	3.3.8
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby binding for librsvg2
 
 LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 BUILD_DEPENDS=	rubygem-rake>=0:devel/rubygem-rake
-RUN_DEPENDS=	rubygem-cairo>=1.12.8:graphics/rubygem-cairo \
-		rubygem-cairo-gobject>=${PORTVERSION}:devel/rubygem-cairo-gobject \
+RUN_DEPENDS=	rubygem-cairo-gobject>=${PORTVERSION}:devel/rubygem-cairo-gobject \
 		rubygem-gdk_pixbuf2>=${PORTVERSION}:graphics/rubygem-gdk_pixbuf2
 
-NO_ARCH=	yes
+USES=		gem gnome
 USE_GNOME=	librsvg2
 USE_RUBY=	yes
-USES=		gem gnome
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

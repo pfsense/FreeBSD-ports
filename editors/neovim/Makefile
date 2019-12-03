@@ -3,7 +3,7 @@
 
 PORTNAME=	neovim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.0
+DISTVERSION=	0.3.8
 CATEGORIES=	editors
 
 MAINTAINER=	adamw@FreeBSD.org
@@ -14,14 +14,17 @@ LICENSE=	APACHE20
 BUILD_DEPENDS=	gperf:devel/gperf \
 		${LUA_MODLIBDIR}/bit.so:devel/lua-bitop \
 		${LUA_MODLIBDIR}/lpeg.so:devel/lua-lpeg
-LIB_DEPENDS=	libluajit-5.1.so:lang/luajit \
-		libmsgpackc.so:devel/msgpack \
+LIB_DEPENDS=	libmsgpackc.so:devel/msgpack \
 		libtermkey.so:devel/libtermkey \
 		libunibilium.so:devel/unibilium \
 		libuv.so:devel/libuv \
 		libvterm.so:devel/libvterm
+TEST_DEPENDS=	autoconf>=0:devel/autoconf \
+		aclocal:devel/automake \
+		gmake:devel/gmake \
+		libtool:devel/libtool
 
-USES=		cmake:outsource iconv lua:build pathfix pkgconfig
+USES=		cmake iconv pathfix pkgconfig
 USE_GITHUB=	yes
 GH_TUPLE=	libmpack:libmpack:1.0.5:libmpack \
 		libmpack:libmpack-lua:1.0.7:libmpack_lua
@@ -30,10 +33,25 @@ CMAKE_ARGS=	-DLUA_PRG:FILEPATH="${LUA_CMD}" \
 		-DCMAKE_INSTALL_MANDIR:PATH="${MANPREFIX}/man" \
 		-DDEPS_PREFIX:PATH="${LOCALBASE}"
 
-OPTIONS_DEFINE=	NLS
+OPTIONS_DEFINE=	LUAJIT NLS PYNVIM
+OPTIONS_DEFAULT=LUAJIT
+OPTIONS_EXCLUDE_aarch64=LUAJIT
+OPTIONS_EXCLUDE_mips64=	LUAJIT
+OPTIONS_EXCLUDE_powerpc64=	LUAJIT
+OPTIONS_EXCLUDE_riscv=	LUAJIT
+OPTIONS_EXCLUDE_sparc64=LUAJIT
 OPTIONS_SUB=	yes
+
+LUAJIT_DESC=	Use LuaJIT for faster Lua code
+LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUAJIT_USES=		lua:build
+LUAJIT_CMAKE_OFF=	-DPREFER_LUA:BOOL="ON"
+LUAJIT_USES_OFF=	lua:52
 NLS_CMAKE_BOOL=	ENABLE_LIBINTL
 NLS_USES=	gettext
+PYNVIM_DESC=	Enable support for plugins written in python
+PYNVIM_USES=	python:run
+PYNVIM_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pynvim>=0.3.0:editors/py-pynvim@${PY_FLAVOR}
 
 post-patch:
 	@${REINPLACE_CMD} -e \

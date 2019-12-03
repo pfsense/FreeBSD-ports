@@ -1,4 +1,3 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
 # $FreeBSD$
 
 CATEGORIES=	devel lang
@@ -11,5 +10,7 @@ USES=		fpc
 MASTERDIR=	${.CURDIR}/../../lang/fpc
 WRKUNITDIR=	${FPCSRCDIR}/packages/${PKGNAMESUFFIX:S/-//}
 EXTRACTUNITDIR=	${WRKUNITDIR}
+
+OPTIONS_DEFINE=	DOCS
 
 .include "${MASTERDIR}/Makefile"

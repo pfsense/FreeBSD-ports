@@ -1,4 +1,4 @@
---- storage/authreg_ldapfull.c.orig	2016-05-03 18:51:56 UTC
+--- storage/authreg_ldapfull.c.orig	2018-11-01 20:14:26 UTC
 +++ storage/authreg_ldapfull.c
 @@ -29,6 +29,8 @@
   * !!! this blocks for every auth.

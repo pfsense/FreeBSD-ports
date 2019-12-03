@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	svxlink
-PORTVERSION=	15.11
-PORTREVISION=	2
+PORTVERSION=	19.09.1
+PORTREVISION=	1
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
@@ -18,25 +18,27 @@ LIB_DEPENDS?=	libgsm.so:audio/gsm \
 		libsigc-2.0.so:devel/libsigc++20 \
 		libpopt.so:devel/popt \
 		libopus.so:audio/opus \
-		librtlsdr.so:comms/rtl-sdr
-BUILD_DEPENDS=	pkg-config:devel/pkgconf \
-		${LOCALBASE}/include/linux/input.h:multimedia/v4l_compat
+		librtlsdr.so:comms/rtl-sdr \
+		libcurl.so:ftp/curl
+BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
-USES+=		cmake compiler:c++11-lang tcl groff
+USES+=		cmake:noninja compiler:c++11-lang groff pkgconfig tcl
 USE_GITHUB=	yes
 GH_ACCOUNT=	sm0svx
 GH_PROJECT=	svxlink
 
 CMAKE_SOURCE_PATH=	${WRKSRC}/src
 CMAKE_ARGS+=	-DMAN_INSTALL_DIR:FILEPATH=${MANDIRS} \
-		-DLOCAL_STATE_DIR=/var
+		-DLOCAL_STATE_DIR=/var \
+		-DLOCALBASE:STRING="${LOCALBASE}"
+
 .if ${PORTNAME}==svxlink
 CMAKE_ARGS+=	-DUSE_QT:BOOL=NO
 .endif
 USE_LDCONFIG=	yes
 
 ALL_TARGET?=	all man
-OPTIONS_DEFINE=	DOXYGEN STATIC
+OPTIONS_DEFINE=	DOXYGEN STATIC DOCS
 STATIC_DESC=	Build and install static libraries
 STATIC_CMAKE_ON=	-DBUILD_STATIC_LIBS=YES
 .if ${PORTNAME}==svxlink
@@ -49,6 +51,7 @@ ALSA_CMAKE_ON=	-DUSE_ALSA:BOOL=ON
 OSS_CMAKE_OFF=	-DUSE_OSS:BOOL=OFF
 OSS_CMAKE_ON=	-DUSE_OSS:BOOL=ON
 .endif
+DOXYGEN_IMPLIES=	DOCS
 DOXYGEN_ALL_TARGET=doc
 DOXYGEN_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_Doxygen:BOOL=TRUE
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen \
@@ -79,16 +82,22 @@ post-patch-OSS-on:
 post-install:
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/.procmailrc \
 		${STAGEDIR}${PREFIX}/etc/svxlink/.procmailrc.sample
+	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/gpio.conf \
+		${STAGEDIR}${PREFIX}/etc/svxlink/gpio.conf.sample
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/TclVoiceMail.conf \
 		${STAGEDIR}${PREFIX}/etc/svxlink/TclVoiceMail.conf.sample
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/remotetrx.conf \
 		${STAGEDIR}${PREFIX}/etc/svxlink/remotetrx.conf.sample
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.conf \
 		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.conf.sample
+	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxreflector.conf \
+		${STAGEDIR}${PREFIX}/etc/svxlink/svxreflector.conf.sample
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleDtmfRepeater.conf \
 		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleDtmfRepeater.conf.sample
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleEchoLink.conf \
 		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleEchoLink.conf.sample
+	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleFrn.conf \
+		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleFrn.conf.sample
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleHelp.conf \
 		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleHelp.conf.sample
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleMetarInfo.conf \
@@ -101,6 +110,17 @@ post-install:
 		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleSelCallEnc.conf.sample
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleTclVoiceMail.conf \
 		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleTclVoiceMail.conf.sample
-.endif
+	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleTrx.conf \
+		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleTrx.conf.sample
 
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/src/doc/README-19.09.adoc ${STAGEDIR}${DOCSDIR}
+.endif
+.if ${PORTNAME}==qtel
+post-install:
+	${RM}	${STAGEDIR}${PREFIX}/include/svxlink/CppStdCompat.h
+	${RM}	${STAGEDIR}${PREFIX}/include/svxlink/common.h
+	${RM}	${STAGEDIR}${PREFIX}/lib/libsvxmisc.a
+.endif
 .include <bsd.port.mk>

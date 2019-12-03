@@ -3,7 +3,7 @@
 
 PORTNAME=	superlu_mt
 PORTVERSION=	3.1.20160319
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	http://crd.lbl.gov/~xiaoye/SuperLU/ \
 		http://crd.lbl.gov/~xiaoye/:doc
@@ -18,8 +18,12 @@ COMMENT=	Routines for performing multithreaded sparse factorization
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/License.txt
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 BROKEN_aarch64=		fails to build: undefined reference to sbrk
-BROKEN_sparc64=		Does not link on sparc64
+BROKEN_powerpc64=	fails to build: pstest runs away and consumes all memory
+BROKEN_sparc64=		fails to link
 
 USES=		fortran gmake
 

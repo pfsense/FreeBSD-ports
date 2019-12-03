@@ -2,7 +2,7 @@
 
 PORTNAME=	ffms2
 DISTVERSION=	2.23
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -22,11 +22,12 @@ EXCLUDE=	VSHelper.h VSScript.h VapourSynth.h
 EXTRACT_AFTER_ARGS=${EXCLUDE:S,^,--exclude ,}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-static
-CPPFLAGS+=	-D_GLIBCXX_USE_C99 # XXX ports/193528
 CPPFLAGS+=	`pkg-config vapoursynth --cflags`
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 DATADIR=	${PREFIX}/lib/vapoursynth
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^dist_doc_DATA/s,=,& \

@@ -12,11 +12,19 @@ COMMENT=	Old action game
 
 LICENSE=	GPLv2
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS+=	${LOCALBASE}/share/fonts/misc/9x18.pcf.gz:x11-fonts/font-misc-misc
+
+USES=	compiler
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--enable-doublesize
-CPPFLAGS+=	-I${LOCALBASE}/include
+# Build ignores CFLAGS, CXXFLAGS
+CPPFLAGS+=	-I${LOCALBASE}/include ${CPPFLAGS_${CHOSEN_COMPILER_TYPE}}
+CPPFLAGS_clang=	-Wno-c++11-narrowing
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_XORG=	x11 xext
 PLIST_FILES=	bin/pacman

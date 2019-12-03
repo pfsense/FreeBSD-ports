@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	deface
-PORTVERSION=	1.3.0
+PORTVERSION=	1.5.2
 CATEGORIES=	devel rubygems www
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Customize ERB, Haml and Slim views in a Rails application
 
 LICENSE=	MIT
@@ -16,8 +16,9 @@ RUN_DEPENDS=	rubygem-nokogiri>=1.6:textproc/rubygem-nokogiri \
 		rubygem-rails4>=4.1:www/rubygem-rails4 \
 		rubygem-rainbow>=2.1.0:devel/rubygem-rainbow
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

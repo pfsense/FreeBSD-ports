@@ -1,7 +1,12 @@
 bin/rsibreak
 etc/xdg/autostart/rsibreak_autostart.desktop
-share/applications/rsibreak.desktop
+share/applications/org.kde.rsibreak.desktop
 share/dbus-1/interfaces/org.rsibreak.rsiwidget.xml
+share/doc/HTML/ca/rsibreak/index.cache.bz2
+share/doc/HTML/ca/rsibreak/index.docbook
+share/doc/HTML/ca/rsibreak/logo.png
+share/doc/HTML/ca/rsibreak/statistics.png
+share/doc/HTML/ca/rsibreak/suspend.png
 share/doc/HTML/en/rsibreak/index.cache.bz2
 share/doc/HTML/en/rsibreak/index.docbook
 share/doc/HTML/en/rsibreak/logo.png
@@ -22,6 +27,9 @@ share/doc/HTML/sv/rsibreak/index.cache.bz2
 share/doc/HTML/sv/rsibreak/index.docbook
 share/doc/HTML/uk/rsibreak/index.cache.bz2
 share/doc/HTML/uk/rsibreak/index.docbook
+share/doc/HTML/uk/rsibreak/popup.png
+share/doc/HTML/uk/rsibreak/statistics.png
+share/doc/HTML/uk/rsibreak/suspend.png
 share/icons/hicolor/128x128/apps/rsibreak.png
 share/icons/hicolor/16x16/actions/rsibreak0.png
 share/icons/hicolor/16x16/actions/rsibreak1.png
@@ -54,7 +62,6 @@ share/icons/hicolor/48x48/actions/rsibreak4.png
 share/icons/hicolor/48x48/actions/rsibreakx.png
 share/knotifications5/rsibreak.notifyrc
 share/locale/ar/LC_MESSAGES/rsibreak.mo
-share/locale/ast/LC_MESSAGES/rsibreak.mo
 share/locale/be/LC_MESSAGES/rsibreak.mo
 share/locale/bs/LC_MESSAGES/rsibreak.mo
 share/locale/ca/LC_MESSAGES/rsibreak.mo
@@ -96,8 +103,10 @@ share/locale/se/LC_MESSAGES/rsibreak.mo
 share/locale/sk/LC_MESSAGES/rsibreak.mo
 share/locale/sl/LC_MESSAGES/rsibreak.mo
 share/locale/sv/LC_MESSAGES/rsibreak.mo
+share/locale/tg/LC_MESSAGES/rsibreak.mo
 share/locale/tr/LC_MESSAGES/rsibreak.mo
 share/locale/ug/LC_MESSAGES/rsibreak.mo
 share/locale/uk/LC_MESSAGES/rsibreak.mo
 share/locale/zh_CN/LC_MESSAGES/rsibreak.mo
 share/locale/zh_TW/LC_MESSAGES/rsibreak.mo
+share/metainfo/org.kde.rsibreak.appdata.xml

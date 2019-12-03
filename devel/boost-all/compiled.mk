@@ -4,10 +4,12 @@ MAKE_CMD=	bjam
 MAKEFILE=	#
 MAKE_FLAGS=	#
 ALL_TARGET=	stage
-USES+=		compiler:c++11-lib
-USE_CXXSTD=	gnu++11
+USES+=		compiler:c++17-lang
+USE_CXXSTD=	gnu++17
 
-PLIST_SUB+=	BOOST_SHARED_LIB_VER=${PORTVERSION}
+PLIST_SUB+=	MAJOR_VER=${PORTVERSION:R:R} \
+		MINOR_VER=${PORTVERSION:R:E} \
+		BOOST_SHARED_LIB_VER=${PORTVERSION}
 
 PKG_MESSAGE_FILE_THREADS=	${PORTSDIR}/devel/boost-all/pkg-message.threads
 PKG_MESSAGE_FILE_PYTHON=	${PORTSDIR}/devel/boost-all/pkg-message.python

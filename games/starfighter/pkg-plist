@@ -1,5 +1,8 @@
 bin/starfighter
 share/applications/starfighter.desktop
+%%PORTDOCS%%%%DOCSDIR%%/COPYING
+%%PORTDOCS%%%%DOCSDIR%%/LICENSES
+%%PORTDOCS%%%%DOCSDIR%%/README.txt
 share/icons/hicolor/128x128/apps/starfighter.png
 share/icons/hicolor/16x16/apps/starfighter.png
 share/icons/hicolor/32x32/apps/starfighter.png
@@ -8,8 +11,9 @@ share/icons/hicolor/64x64/apps/starfighter.png
 share/icons/hicolor/72x72/apps/starfighter.png
 share/icons/hicolor/96x96/apps/starfighter.png
 share/pixmaps/starfighter.png
+%%DATADIR%%/data/TakaoPGothic.ttf
 %%DATADIR%%/data/credits.txt
-%%DATADIR%%/data/intro.txt
+%%DATADIR%%/data/ipa_font_license.txt
 %%DATADIR%%/gfx/aimFighter1.png
 %%DATADIR%%/gfx/aimFighter2.png
 %%DATADIR%%/gfx/alienDevice.png
@@ -199,6 +203,10 @@ share/pixmaps/starfighter.png
 %%DATADIR%%/gfx/ursulaText.png
 %%DATADIR%%/gfx/wingmate1.png
 %%DATADIR%%/gfx/wingmate2.png
+%%DATADIR%%/locale/build.py
+%%DATADIR%%/locale/en.po
+%%DATADIR%%/locale/genpot.sh
+%%DATADIR%%/locale/pr-starfighter.pot
 %%DATADIR%%/music/RE.ogg
 %%DATADIR%%/music/death.ogg
 %%DATADIR%%/music/frozen_jam.ogg

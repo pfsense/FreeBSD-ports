@@ -3,7 +3,7 @@
 
 PORTNAME=	devtodo
 PORTVERSION=	0.1.20
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://swapoff.org/files/devtodo/
 
@@ -21,9 +21,6 @@ OPTIONS_DEFINE=	EXAMPLES
 # of malloc and realloc functions. Adding this define was the simplest
 # (although not elegant) solution.
 CFLAGS+=	-DSTDC_HEADERS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's/^\ttest -f.*todorc.*\n//' ${WRKSRC}/doc/Makefile.in
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

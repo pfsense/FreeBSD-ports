@@ -4,7 +4,7 @@
 PORTNAME=	nordlicht
 PORTVERSION=	0.4.5
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	multimedia
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -20,15 +20,14 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 
 USE_GITHUB=	yes
 
-USES=		cmake:outsource pkgconfig shebangfix
+USES=		cmake pkgconfig shebangfix
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
-BROKEN_aarch64=		Fails to install: runaway process
-BROKEN_powerpc64=	Does not build
-
 SHEBANG_FILES=	utils/mpv-nordlicht
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} \

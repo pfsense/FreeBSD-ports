@@ -100,10 +100,8 @@ audit_base() {
 	if [ $rc -ne 0 -o \
 		$(( 86400 \* "${security_status_baseaudit_expiry}" )) \
 		-le $(( ${now} - ${then} + 600 )) ]; then
-		## Random delay so the mirrors do not get slammed when run by periodic(8)
-		if [ ! -t 0 ]; then
-			sleep `jot -r 1 0 600`
-		fi
+		## When non-interactive, sleep to reduce congestion on mirrors
+		anticongestion
 		f="-F"
 	else
 		echo -n 'Database fetched: '

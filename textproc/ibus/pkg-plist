@@ -1,12 +1,14 @@
+bin/ibus
 bin/ibus-daemon
 bin/ibus-setup
-bin/ibus
 etc/xdg/autostart/ibus.desktop
 %%DCONF%%etc/dconf/db/ibus.d/00-upstream-settings
+%%DCONF%%man/man5/00-upstream-settings.5.gz
 %%DCONF%%@postunexec rm -f %D/etc/dconf/db/ibus
 %%DCONF%%@postexec dconf update
 %%DCONF%%etc/dconf/profile/ibus
 include/ibus-1.0/ibus.h
+include/ibus-1.0/ibusaccelgroup.h
 include/ibus-1.0/ibusattribute.h
 include/ibus-1.0/ibusattrlist.h
 include/ibus-1.0/ibusbus.h
@@ -17,6 +19,7 @@ include/ibus-1.0/ibusdebug.h
 include/ibus-1.0/ibusemoji.h
 include/ibus-1.0/ibusengine.h
 include/ibus-1.0/ibusenginedesc.h
+include/ibus-1.0/ibusenginesimple.h
 include/ibus-1.0/ibusenumtypes.h
 include/ibus-1.0/ibuserror.h
 include/ibus-1.0/ibusfactory.h
@@ -24,6 +27,7 @@ include/ibus-1.0/ibushotkey.h
 include/ibus-1.0/ibusinputcontext.h
 include/ibus-1.0/ibuskeymap.h
 include/ibus-1.0/ibuskeys.h
+include/ibus-1.0/ibuskeysyms-compat.h
 include/ibus-1.0/ibuskeysyms.h
 include/ibus-1.0/ibuslookuptable.h
 include/ibus-1.0/ibusobject.h
@@ -38,11 +42,11 @@ include/ibus-1.0/ibusservice.h
 include/ibus-1.0/ibusshare.h
 include/ibus-1.0/ibustext.h
 include/ibus-1.0/ibustypes.h
+include/ibus-1.0/ibusunicode.h
 include/ibus-1.0/ibusutil.h
 include/ibus-1.0/ibusversion.h
+include/ibus-1.0/ibusxevent.h
 include/ibus-1.0/ibusxml.h
-include/ibus-1.0/ibuskeysyms-compat.h
-include/ibus-1.0/ibusenginesimple.h
 %%GTK2%%lib/gtk-2.0/2.10.0/immodules/im-ibus.so
 %%GINTRO%%lib/girepository-1.0/IBus-1.0.typelib
 %%GINTRO%%share/gir-1.0/IBus-1.0.gir
@@ -52,7 +56,7 @@ include/ibus-1.0/ibusenginesimple.h
 %%GTK3%%lib/gtk-3.0/3.0.0/immodules/im-ibus.so
 lib/libibus-1.0.so
 lib/libibus-1.0.so.5
-lib/libibus-1.0.so.5.0.517
+lib/libibus-1.0.so.5.0.520
 %%PYTHON_LIB%%%%PYTHON_SITELIBDIR%%/ibus/__init__.py
 %%PYTHON_LIB%%%%PYTHON_SITELIBDIR%%/ibus/__init__.pyc
 %%PYTHON_LIB%%%%PYTHON_SITELIBDIR%%/ibus/__init__.pyo
@@ -159,6 +163,7 @@ lib/libibus-1.0.so.5.0.517
 %%PYTHON_LIB%%%%PYTHON_SITELIBDIR%%/ibus/utility.pyc
 %%PYTHON_LIB%%%%PYTHON_SITELIBDIR%%/ibus/utility.pyo
 libdata/pkgconfig/ibus-1.0.pc
+%%GTK3%%libexec/ibus-extension-gtk3
 %%GTK3%%libexec/ibus-ui-gtk3
 %%XIM%%libexec/ibus-x11
 %%GCONF%%libexec/ibus-gconf
@@ -169,62 +174,14 @@ libexec/ibus-portal
 man/man1/ibus-daemon.1.gz
 man/man1/ibus-setup.1.gz
 man/man1/ibus.1.gz
+man/man5/ibus.5.gz
 %%EMOJI%%man/man7/ibus-emoji.7.gz
-share/applications/ibus-setup.desktop
+share/applications/org.freedesktop.IBus.Setup.desktop
+%%EMOJI%%share/applications/org.freedesktop.IBus.Panel.Emojier.desktop
+%%GTK3%%share/applications/org.freedesktop.IBus.Panel.Extension.Gtk3.desktop
 share/dbus-1/services/org.freedesktop.IBus.service
 share/dbus-1/services/org.freedesktop.portal.IBus.service
-%%PORTDOCS%%%%DOCSDIR%%/IBusAttrList.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusAttribute.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusBus.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusComponent.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusConfig.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusConfigService.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusEngine.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusEngineDesc.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusEngineSimple.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusFactory.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusHotkeyProfile.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusInputContext.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusKeymap.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusLookupTable.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusObject.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusObservedPath.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusPanelService.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusPropList.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusProperty.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusProxy.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusRegistry.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusSerializable.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusService.html
-%%PORTDOCS%%%%DOCSDIR%%/IBusText.html
-%%PORTDOCS%%%%DOCSDIR%%/ch01.html
-%%PORTDOCS%%%%DOCSDIR%%/ch02.html
-%%PORTDOCS%%%%DOCSDIR%%/ch03.html
-%%PORTDOCS%%%%DOCSDIR%%/ch04.html
-%%PORTDOCS%%%%DOCSDIR%%/ch05.html
-%%PORTDOCS%%%%DOCSDIR%%/ch06.html
-%%PORTDOCS%%%%DOCSDIR%%/home.png
-%%PORTDOCS%%%%DOCSDIR%%/ibus-IBusKeysyms.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus-ibusdebug.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus-ibuserror.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus-ibusshare.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus-ibustypes.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus-ibusversion.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus-ibusxml.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus-ibuskeys.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus-ibuskeysyms-compat.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus-ibusutil.html
-%%PORTDOCS%%%%DOCSDIR%%/annotation-glossary.html
-%%PORTDOCS%%%%DOCSDIR%%/api-index-full.html
-%%PORTDOCS%%%%DOCSDIR%%/ibus.devhelp2
-%%PORTDOCS%%%%DOCSDIR%%/index.html
-%%PORTDOCS%%%%DOCSDIR%%/left.png
-%%PORTDOCS%%%%DOCSDIR%%/right.png
-%%PORTDOCS%%%%DOCSDIR%%/style.css
-%%PORTDOCS%%%%DOCSDIR%%/up.png
-%%PORTDOCS%%%%DOCSDIR%%/left-insensitive.png
-%%PORTDOCS%%%%DOCSDIR%%/right-insensitive.png
-%%PORTDOCS%%%%DOCSDIR%%/up-insensitive.png
+%%GTK3%%%%DATADIR%%/component/gtkextension.xml
 %%GTK3%%%%DATADIR%%/component/gtkpanel.xml
 %%GCONF%%%%DATADIR%%/component/gconf.xml
 %%DCONF%%%%DATADIR%%/component/dconf.xml
@@ -232,6 +189,7 @@ share/dbus-1/services/org.freedesktop.portal.IBus.service
 %%EMOJI%%%%DATADIR%%/dicts/emoji-af.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-am.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ar.dict
+%%EMOJI%%%%DATADIR%%/dicts/emoji-ar_SA.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-as.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ast.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-az.dict
@@ -254,6 +212,7 @@ share/dbus-1/services/org.freedesktop.portal.IBus.service
 %%EMOJI%%%%DATADIR%%/dicts/emoji-en_AU.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-en_CA.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-en_GB.dict
+%%EMOJI%%%%DATADIR%%/dicts/emoji-en_IN.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-es.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-es_419.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-es_MX.dict
@@ -275,16 +234,19 @@ share/dbus-1/services/org.freedesktop.portal.IBus.service
 %%EMOJI%%%%DATADIR%%/dicts/emoji-hr.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-hu.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-hy.dict
+%%EMOJI%%%%DATADIR%%/dicts/emoji-ia.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-id.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-is.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-it.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ja.dict
+%%EMOJI%%%%DATADIR%%/dicts/emoji-jv.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ka.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-kab.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-kk.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-km.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-kn.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ko.dict
+%%EMOJI%%%%DATADIR%%/dicts/emoji-ku.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ky.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-lo.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-lt.dict
@@ -305,6 +267,7 @@ share/dbus-1/services/org.freedesktop.portal.IBus.service
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ps.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-pt.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-pt_PT.dict
+%%EMOJI%%%%DATADIR%%/dicts/emoji-qu.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ro.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-root.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ru.dict
@@ -312,9 +275,12 @@ share/dbus-1/services/org.freedesktop.portal.IBus.service
 %%EMOJI%%%%DATADIR%%/dicts/emoji-si.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-sk.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-sl.dict
+%%EMOJI%%%%DATADIR%%/dicts/emoji-so.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-sq.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-sr.dict
+%%EMOJI%%%%DATADIR%%/dicts/emoji-sr_Cyrl_BA.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-sr_Latn.dict
+%%EMOJI%%%%DATADIR%%/dicts/emoji-sr_Latn_BA.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-sv.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-sw.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-ta.dict
@@ -333,6 +299,8 @@ share/dbus-1/services/org.freedesktop.portal.IBus.service
 %%EMOJI%%%%DATADIR%%/dicts/emoji-zh_Hant.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-zh_Hant_HK.dict
 %%EMOJI%%%%DATADIR%%/dicts/emoji-zu.dict
+%%EMOJI%%%%DATADIR%%/dicts/unicode-blocks.dict
+%%EMOJI%%%%DATADIR%%/dicts/unicode-names.dict
 %%DATADIR%%/keymaps/common
 %%DATADIR%%/keymaps/in
 %%DATADIR%%/keymaps/jp
@@ -341,7 +309,7 @@ share/dbus-1/services/org.freedesktop.portal.IBus.service
 %%DATADIR%%/keymaps/us
 %%DATADIR%%/setup/emojilang.py
 %%DATADIR%%/setup/emojilang.pyc
-%%DATADIR%%/setup/emojilang.%%PYTHON_PYOEXTENSION%%
+%%DATADIR%%/setup/emojilang.pyo
 %%DATADIR%%/setup/engineabout.py
 %%DATADIR%%/setup/engineabout.pyc
 %%DATADIR%%/setup/engineabout.pyo
@@ -405,8 +373,8 @@ share/icons/hicolor/scalable/apps/ibus.svg
 %%NLS%%share/locale/ml/LC_MESSAGES/ibus10.mo
 %%NLS%%share/locale/mn/LC_MESSAGES/ibus10.mo
 %%NLS%%share/locale/mr/LC_MESSAGES/ibus10.mo
-%%NLS%%share/locale/nl/LC_MESSAGES/ibus10.mo
 %%NLS%%share/locale/nb/LC_MESSAGES/ibus10.mo
+%%NLS%%share/locale/nl/LC_MESSAGES/ibus10.mo
 %%NLS%%share/locale/or/LC_MESSAGES/ibus10.mo
 %%NLS%%share/locale/pa/LC_MESSAGES/ibus10.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/ibus10.mo
@@ -434,7 +402,6 @@ share/bash-completion/completions/ibus.bash
 @dir %%DATADIR%%/engine
 %%COMPDIR%%@dir %%DATADIR%%/component
 @dir %%DATADIR%%
-%%PORTDOCS%%@dir %%DOCSDIR%%
 %%PYTHON_LIB%%@dir %%PYTHON_SITELIBDIR%%/ibus/interface
 %%PYTHON_LIB%%@dir %%PYTHON_SITELIBDIR%%/ibus
 @dir include/ibus-1.0

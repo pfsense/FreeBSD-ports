@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	xmonad-contrib
-PORTVERSION=	0.13
-PORTREVISION=	4
+PORTVERSION=	0.15
+PORTREVISION=	3
 CATEGORIES=	x11-wm haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -14,7 +14,6 @@ LICENSE=	BSD3CLAUSE
 USE_CABAL=	extensible-exceptions mtl>=1 old-time random utf8-string \
 		X11>=1.6.1 X11-xft>=0.2 xmonad
 USE_XORG=	x11
-
 RUN_DEPENDS+=	bash:shells/bash
 
 FLAGS_DISABLE=	testing

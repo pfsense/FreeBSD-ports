@@ -9,10 +9,10 @@ COMMENT=	KF5 addons to QtCore
 
 LICENSE=	LGPL21+ BSD3CLAUSE
 LICENSE_COMB=	multi
-LICENSE_FILE_LGPL21+=	${WRKSRC}/COPYING.LIB
+LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LIB
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/COPYING-CMAKE-SCRIPTS
 
-USES=		cmake:outsource compiler:c++11-lib kde:5 qt:5 shared-mime-info tar:xz
+USES=		cmake compiler:c++11-lib kde:5 qt:5 shared-mime-info tar:xz
 USE_KDE=	ecm
 USE_QT=		buildtools_build core linguisttools qmake_build
 
@@ -28,5 +28,9 @@ INOTIFY_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_INOTIFY
 FAM_DESC=		Filesystem alteration notifications using fam (broken: hangs on NFS)
 FAM_USES=		fam
 FAM_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_FAM
+
+post-patch:
+	${REINPLACE_CMD}  -e '/QStringLiteral/s|/etc/os-release|${LOCALBASE}/etc/os-release|g' \
+		${WRKSRC}/src/lib/util/kosrelease.cpp
 
 .include <bsd.port.mk>

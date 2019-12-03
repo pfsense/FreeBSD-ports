@@ -3,7 +3,7 @@
 
 PORTNAME=	authforce
 PORTVERSION=	0.9.9
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	security www
 MASTER_SITES=	GHC
 
@@ -12,6 +12,10 @@ COMMENT=	HTTP authentication brute forcer
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 NO_CCACHE=	yes
 

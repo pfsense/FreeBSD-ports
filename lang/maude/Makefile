@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	maude
-PORTVERSION=	2.6
-PORTREVISION=	1
+PORTVERSION=	2.7.1
 CATEGORIES=	lang
-MASTER_SITES=	http://maude.cs.illinois.edu/versions/${PORTVERSION}/
+MASTER_SITES=	http://maude.cs.illinois.edu/w/images/d/d8/
 DISTNAME=	Maude-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	greg@unrelenting.technology
 COMMENT=	High-performance reflective language
 
 LICENSE=	GPLv2
@@ -20,29 +19,37 @@ LIB_DEPENDS=	libbdd.so:science/buddy \
 		libgmp.so:math/gmp \
 		libsigsegv.so:devel/libsigsegv
 
-USES=		alias autoreconf bison ncurses
+USES=		alias autoreconf bison compiler:c++11-lang localbase:ldflags \
+		ncurses
+
+WRKSRC=		${WRKDIR}/maude-${PORTVERSION}
+
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${NCURSESINC} -I${LOCALBASE}/include
-LDFLAGS+=	-L${NCURSESLIB} -L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--datadir=${DATADIR}
 MAKE_JOBS_UNSAFE=	yes
 
-FULL_MAUDE_VER=	26b
+OPTIONS_SUB=		yes
+OPTIONS_DEFINE=		DOCS FULL_MAUDE CVC4
+OPTIONS_DEFAULT=	FULL_MAUDE CVC4
+FULL_MAUDE_DESC=	Install full-maude
+CVC4_DESC=		Enable SMT support via CVC4
 
-OPTIONS_DEFINE=	DOCS FULL_MAUDE
-OPTIONS_DEFAULT=	FULL_MAUDE
-FULL_MAUDE_DESC=	Install full-maude${FULL_MAUDE_VER}
+CVC4_LIB_DEPENDS=	libcvc4.so:math/cvc4
+CVC4_CONFIGURE_WITH=	cvc4
 
 PORTDOCS=	AUTHORS COPYING ChangeLog INSTALL NEWS README
 
-BROKEN_aarch64=		Fails to link: missing sbrk
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.options.mk>
+.if ${NCURSESLIB} != /usr/lib
+CPPFLAGS+=	-I${NCURSESINC}
+LDFLAGS+=	-L${NCURSESLIB}
+.endif
 
 .if ${PORT_OPTIONS:MFULL_MAUDE}
-MASTER_SITES+=	http://maude.lcc.uma.es/FullMaude/FM${FULL_MAUDE_VER}/:fm
-FULL_MAUDE=	full-maude${FULL_MAUDE_VER}.maude
-FULL_MAUDE_DIST=	full-maude.maude.zip
+MASTER_SITES+=	http://maude.cs.illinois.edu/w/images/c/ca/:fm
+FULL_MAUDE=	full-maude.maude
+FULL_MAUDE_DIST=	Full-Maude-${PORTVERSION}.zip
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${FULL_MAUDE_DIST}:fm
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 EXTRACT_DEPENDS+=	${LOCALBASE}/bin/unzip:archivers/unzip
@@ -68,4 +75,4 @@ post-install-DOCS-on:
 post-install-FULL_MAUDE-on:
 	${INSTALL_DATA} ${WRKDIR}/${FULL_MAUDE} ${STAGEDIR}${DATADIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

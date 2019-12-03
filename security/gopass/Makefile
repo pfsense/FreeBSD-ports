@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gopass
-PORTVERSION=	1.8.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.8.6
 CATEGORIES=	security
 
 MAINTAINER=	sascha@root-login.org
@@ -16,9 +16,11 @@ RUN_DEPENDS=	git:devel/git \
 		gpg2:security/gnupg
 
 USES=		go
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	gopasspw
+
+ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON=	Upstream only supports amd64
 
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
 

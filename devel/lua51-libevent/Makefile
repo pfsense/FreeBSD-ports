@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	lua51
-PORTVERSION=	0.4.4
+PORTVERSION=	0.4.6
 DISTVERSIONPREFIX=v
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-libevent
 
@@ -15,11 +16,11 @@ LICENSE=	MIT
 LIB_DEPENDS=	libevent.so:devel/libevent
 RUN_DEPENDS=	${LUA_MODLIBDIR}/socket/core.so:net/luasocket-51
 
+USES=		gmake pkgconfig lua:51
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	harningt
 GH_PROJECT=	luaevent
-
-USES=		gmake pkgconfig lua:51
 
 MAKE_ENV+=	INSTALL_DIR_LUA=${LUA_MODSHAREDIR}
 MAKE_ENV+=	INSTALL_DIR_BIN=${LUA_MODLIBDIR}

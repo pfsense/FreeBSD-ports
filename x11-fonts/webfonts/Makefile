@@ -3,7 +3,7 @@
 
 PORTNAME=	webfonts
 PORTVERSION=	0.30
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	x11-fonts
 MASTER_SITES=	SF/corefonts/the%20fonts/final:group1 \
 		ftp://ftp.botik.ru/rented/znamensk/distributions/ftp.vsu.ru/pub/tex/font-packs/mscore/:group1 \
@@ -32,7 +32,7 @@ EXTRACT_CMD=		${LOCALBASE}/bin/cabextract
 EXTRACT_BEFORE_ARGS=	-qLF '[a-uw-z]*.ttf' -d ${WRKSRC}
 EXTRACT_AFTER_ARGS=
 
-OPTIONS_DEFINE=	EXTRAFONTS CLEARTYPE NEWVERDANA
+OPTIONS_DEFINE=	EXTRAFONTS CLEARTYPE NEWVERDANA DOCS
 OPTIONS_SUB=	yes
 
 EXTRAFONTS_DESC=	Fonts licensed under MS Windows license

@@ -1,5 +1,6 @@
 # $FreeBSD$
 
+PORTREVISION=	3
 PKGNAMESUFFIX=	-icinga2
 
 MAINTAINER=	lme@FreeBSD.org

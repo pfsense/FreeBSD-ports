@@ -3,21 +3,20 @@
 
 PORTNAME=	fusefs-libs3
 DISTVERSIONPREFIX=	fuse-
-DISTVERSION=	3.2.2
+DISTVERSION=	3.7.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	se@freebsd.org
+MAINTAINER=	se@FreeBSD.org
 COMMENT=	FUSE library version 3 for filesystems implemented in userspace
 
-LICENSE=	LGPL21
-LICENSE_FILE=	${WRKSRC}/COPYING.LIB
+LICENSE=	GPLv2 LGPL21
+LICENSE_COMB=	multi
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_mips=		fails to compile: unrecognized command line option "-Wno-unused-result"
-BROKEN_mips64=		fails to compile: unrecognized command line option "-Wno-unused-result"
-BROKEN_powerpc64=	fails to compile: unrecognized command line option "-Wno-unused-result"
-
-USES=		meson
+USES=		compiler meson
 USE_LDCONFIG=	yes
+PLIST_SUB=	VERSION=${PORTVERSION}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	libfuse
@@ -27,6 +26,11 @@ GH_PROJECT=	libfuse
 
 .if ${OPSYS} == DragonFly
 IGNORE=	fusefs has not been implemented on DragonFly
+.endif
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+post-patch:
+	${REINPLACE_CMD} -e '/-Wno-unused-result/d' ${WRKSRC}/meson.build
 .endif
 
 .include <bsd.port.post.mk>

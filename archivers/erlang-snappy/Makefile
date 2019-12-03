@@ -3,7 +3,7 @@
 PORTNAME=	snappy
 PORTVERSION=	1.1.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	archivers
 PKGNAMEPREFIX=	erlang-
 
@@ -17,5 +17,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	skunkwerks
 GH_PROJECT=	snappy-erlang-nif
 GH_TAGNAME=	0951a1b
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

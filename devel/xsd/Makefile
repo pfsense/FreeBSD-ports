@@ -3,7 +3,7 @@
 PORTNAME=	xsd
 PORTVERSION=	4.0.0
 DISTVERSIONSUFFIX=	+dep
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://www.codesynthesis.com/download/${PORTNAME}/${PORTVERSION:R}/
 
@@ -39,6 +39,9 @@ post-patch:
 # Use devel/build instead of the port's bundled copy.
 	${RM} -r ${WRKSRC}/build-0.3
 	${LN} -s ${LOCALBASE}/include/build-0.3 ${WRKSRC}/build-0.3
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${MV} ${WRKSRC}/libxsd-frontend/version \
+		${WRKSRC}/libxsd-frontend/version.txt
 
 post-install:
 # Install examples into the right directory.

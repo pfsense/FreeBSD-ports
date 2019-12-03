@@ -10,7 +10,7 @@ MASTER_SITES=	LOCAL/perky \
 PKGNAMESUFFIX=	-doc
 DISTNAME=	ko-man-doc-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	hyun@caffeinated.codes
 COMMENT=	Korean online manual pages
 
 RUN_DEPENDS=	${LOCALBASE}/bin/groff:japanese/groff

@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-DISTVERSION=	2.19.81
+DISTVERSION=	2.19.83
 PORTREVISION=	1
 CATEGORIES=	print audio
-MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${DISTVERSION:R}/ \
-		http://lilypond.org/downloads/sources/v${DISTVERSION:R}/
+MASTER_SITES=	http://lilypond.org/download/source/v${DISTVERSION:R}/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	m.ne@gmx.net
@@ -17,7 +16,7 @@ LICENSE=	GPLv3
 BUILD_DEPENDS=	pdftexi2dvi:print/texinfo \
 		t1ascii:print/t1utils \
 		bash:shells/bash \
-		convert:graphics/ImageMagick \
+		convert:graphics/ImageMagick6 \
 		dblatex:textproc/dblatex \
 		fontforge:print/fontforge \
 		help2man:misc/help2man \
@@ -54,7 +53,6 @@ USE_PERL5=	build
 USE_GNOME=	pango
 
 MAKEFILE=	GNUmakefile
-GNU_MAKEFILE=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-texgyre-dir=${LOCALBASE}/${TEXMFDISTDIR}/fonts/opentype/public/tex-gyre \

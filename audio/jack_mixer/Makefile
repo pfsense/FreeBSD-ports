@@ -13,6 +13,10 @@ COMMENT=	Mixer for the jack audio connection kit
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libjack.so:audio/jack
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fpconst>=0:math/py-fpconst@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fpconst>=0:math/py-fpconst@${PY_FLAVOR}

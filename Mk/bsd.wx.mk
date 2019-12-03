@@ -10,6 +10,7 @@
 # before bsd.port.pre.mk, but Python components will only work if Python
 # variables (e.g. USE_PYTHON) are defined before it (this is a bsd.python.mk
 # limitation), at least it is manually included.
+#
 # USE_WX	- Set to the list of wxWidgets versions that can be used by
 #		  the port. The syntax allows the following elements:
 #		  - Single version (e.g. "3.0").
@@ -44,8 +45,8 @@
 #		  WX_CONFIG), and in second one "--with-wx=${LOCALBASE}" plus
 #		  "--with-wx-config=${WX_CONFIG:T} (prefix and name).
 # WX_PREMK	- Define to determine version and define WX_CONFIG/WX_VERSION
-#		  after <bsd.port.pre.mk> (in case the port needs to manually run
-#		  the script).
+#		  after <bsd.port.pre.mk> (in case the port needs to manually
+#		  run the script).
 # WANT_WX	- Set to "yes" or a valid single version (no ranges, etc).
 #		  In both cases it will detect the installed wxWidgets
 #		  components and add them to the variable HAVE_WX. If a
@@ -53,15 +54,15 @@
 #		  components in the other case it will contain a list of
 #		  "component-version" pairs (e.g. wx-2.8, contrib-2.8, etc).
 #		  It has to be used before bsd.port.pre.mk.
-# WANT_WX_VER	- Set to the prefered wxWidgets version for the port. It must
+# WANT_WX_VER	- Set to the preferred wxWidgets version for the port. It must
 #		  be present in USE_WX or missing in USE_WX_NOT. This is
-#		  overriden by the user variable WITH_WX_VER if set. It can
+#		  overridden by the user variable WITH_WX_VER if set. It can
 #		  contain multiple versions in order of preference (last ones
 #		  are tried first).
 #
 # The following variables are intended for the user and can be defined in
 # make.conf.
-# WITH_WX_VER	- Define to the list of prefered versions in reverse order.
+# WITH_WX_VER	- Define to the list of preferred versions in reverse order.
 #
 # The following variables are defined by this file, to be read from the port.
 # WX_CONFIG	- The path to the wx-config program (with different name).
@@ -111,9 +112,9 @@ _WX_Definitions_Done=	yes
 
 _WX_COMPS_ALL=		wx contrib python
 _WX_DEP_TYPES_ALL=	build lib run
-_WX_VERS_ALL=		2.8 3.0
-_WX_VERS_UC_ALL=	2.8 3.0
-_WX_VERS_SKIP=		3.0
+_WX_VERS_ALL=		2.8 3.0 3.1
+_WX_VERS_UC_ALL=	2.8 3.0 3.1
+_WX_VERS_SKIP=		3.0 3.1
 _WX_VERS_LISTS=		WANT_WX_VER WITH_WX_VER _WX_VER_INSTALLED
 
 #
@@ -140,9 +141,13 @@ _WX_PORT_wx_3.0=	x11-toolkits/wxgtk30
 _WX_LIB_wx_3.0=		wx_baseu-3.0
 
 _WX_PORT_python_3.0=	x11-toolkits/py-wxPython30
-_WX_FILE_python_3.0=	${PYTHON_SITELIBDIR}/wx-3.0-gtk2/wx/__init__.py
+_WX_FILE_python_3.0=	${PYTHON_SITELIBDIR}/wx-3.0-gtk3/wx/__init__.py
 
-# Set _WX_SHVER_comp_ver to 0 and _WX_FILE_comp_ver for libs appropiately.
+# wxgtk 3.1
+_WX_PORT_wx_3.1=	x11-toolkits/wxgtk31
+_WX_LIB_wx_3.1=		wx_baseu-3.1
+
+# Set _WX_SHVER_comp_ver to 0 and _WX_FILE_comp_ver for libs appropriately.
 # Set _WX_DEPTYPE_comp_ver for "python" to "run", and others to "lib".
 
 .	for comp in ${_WX_COMPS_ALL}
@@ -405,8 +410,14 @@ _WX_VER=		${ver}
 # Set variables.
 #
 
-WX_CONFIG?=		${LOCALBASE}/bin/wxgtk2${_WX_UC}-${_WX_VER}-config
-WXRC_CMD?=		${LOCALBASE}/bin/wxrc-gtk2${_WX_UC}-${_WX_VER}
+.if ${_WX_VER:R} == 3
+_GTKVER=	3
+.else
+_GTKVER=	2
+.endif
+
+WX_CONFIG?=		${LOCALBASE}/bin/wxgtk${_GTKVER}${_WX_UC}-${_WX_VER}-config
+WXRC_CMD?=		${LOCALBASE}/bin/wxrc-gtk${_GTKVER}${_WX_UC}-${_WX_VER}
 WX_VERSION?=		${_WX_VER}
 
 .endif		# _WX_Need_Version

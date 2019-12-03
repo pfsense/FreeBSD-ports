@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mate-settings-daemon
-PORTVERSION=	1.20.1
+PORTVERSION=	1.22.0
+PORTREVISION=	1
 CATEGORIES=	sysutils mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -27,15 +28,16 @@ RUN_DEPENDS=	xrdb:x11/xrdb
 PORTSCOUT=	limitw:1,even
 
 USES=		gettext gmake libtool localbase pathfix \
-		pkgconfig tar:xz
+		pkgconfig tar:xz xorg
 USE_MATE=	desktop libmatekbd mixer
-USE_XORG=	ice sm x11 xext xi xxf86misc
+USE_XORG=	ice sm x11 xext xi
 USE_GNOME=	cairo dconf gtk30 intlhack
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-dbus-services=${PREFIX}/share/dbus-1/services \
-		--with-gtk=3.0 \
-		--disable-static
+		--disable-static \
+		--disable-rfkill
+
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
@@ -44,12 +46,14 @@ GLIB_SCHEMAS=	org.mate.SettingsDaemon.plugins.a11y-keyboard.gschema.xml \
 		org.mate.SettingsDaemon.plugins.background.gschema.xml \
 		org.mate.SettingsDaemon.plugins.clipboard.gschema.xml \
 		org.mate.SettingsDaemon.plugins.datetime.gschema.xml \
+		org.mate.SettingsDaemon.plugins.gschema.xml \
 		org.mate.SettingsDaemon.plugins.housekeeping.gschema.xml \
 		org.mate.SettingsDaemon.plugins.keybindings.gschema.xml \
 		org.mate.SettingsDaemon.plugins.keyboard.gschema.xml \
 		org.mate.SettingsDaemon.plugins.media-keys.gschema.xml \
 		org.mate.SettingsDaemon.plugins.mouse.gschema.xml \
 		org.mate.SettingsDaemon.plugins.mpris.gschema.xml \
+		org.mate.SettingsDaemon.plugins.rfkill.gschema.xml \
 		org.mate.SettingsDaemon.plugins.smartcard.gschema.xml \
 		org.mate.SettingsDaemon.plugins.sound.gschema.xml \
 		org.mate.SettingsDaemon.plugins.typing-break.gschema.xml \

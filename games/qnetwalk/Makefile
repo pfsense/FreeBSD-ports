@@ -2,38 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	qnetwalk
-PORTVERSION=	1.4
+PORTVERSION=	1.5
 PORTREVISION=	2
 CATEGORIES=	games
-MASTER_SITES=	http://qt.osdn.org.ua/ \
-		http://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	Qt-version of the NetWalk game
+COMMENT=	Game for system administrators
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		qmake qt:4
-USE_QT=		corelib gui moc_build rcc_build
-USE_SDL=	mixer
+USE_GITHUB=	yes
+GH_ACCOUNT=	AMDmi3
 
-PLIST_FILES=	bin/qnetwalk \
-		man/man6/qnetwalk.6.gz \
-		share/applications/qnetwalk.desktop \
-		share/pixmaps/qnetwalk.xpm
+USES=		cmake compiler:c++11-lang qt:5
+USE_QT=		core gui widgets qmake_build buildtools_build linguisttools_build
+USE_SDL=	mixer sdl
 
-PORTDOCS=	ChangeLog README
+PORTDOCS=	ChangeLog.md README.md
 PORTDATA=	*
 
 OPTIONS_DEFINE=	DOCS
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/games|$$$${PREFIX}/bin|; \
-		s|/usr/share/man|$$$${PREFIX}/man|; \
-		s|/usr/share|$$$${PREFIX}/share|; \
-		/INSTALLS.*menu/ d' ${WRKSRC}/${PORTNAME}.pro
-
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}/
 

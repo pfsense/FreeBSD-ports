@@ -4,7 +4,7 @@ PORTNAME=	kterm
 PORTVERSION=	6.2.0
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	.fb6
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	japanese x11
 MASTER_SITES=	LOCAL/hrs:pcemu
 DISTFILES=	pcemu1.01alpha.tar.gz:pcemu
@@ -17,8 +17,6 @@ LICENSE=	MIT
 
 BUILD_DEPENDS=	nkf:japanese/nkf
 
-BROKEN_aarch64=	Fails to build: fatal error: kfontlist.c file not found
-
 USES=		imake
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 USE_GITHUB=	yes
@@ -27,7 +25,7 @@ VGAFONT_USES=	fonts
 CFLAGS+=	-Wno-return-type
 PORTDOCS=	README.kt README.wallpaper.ja dot.termcap
 
-OPTIONS_DEFINE=	TEKTRONIXEMU VGAFONT
+OPTIONS_DEFINE=	TEKTRONIXEMU VGAFONT DOCS
 OPTIONS_DEFAULT=DEFAULT
 OPTIONS_SINGLE=	SCROLLBAR
 OPTIONS_SINGLE_SCROLLBAR=	DEFAULT XAW3DLIB NEXTAWLIB
@@ -45,7 +43,6 @@ VGAFONT_DESC=	install VGA font
 VGAFONT_EXTRACT_DEPENDS= \
     ${LOCALBASE}/bin/bdftopcf:x11-fonts/bdftopcf
 VGAFONT_BUILD_DEPENDS= \
-    ${LOCALBASE}/bin/mkfontdir:x11-fonts/mkfontdir \
     ${LOCALBASE}/bin/mkfontscale:x11-fonts/mkfontscale
 
 NKFCMD=		${LOCALBASE}/bin/nkf

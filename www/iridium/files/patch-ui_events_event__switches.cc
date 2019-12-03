@@ -1,6 +1,6 @@
---- ui/events/event_switches.cc.orig	2017-04-19 19:06:54 UTC
+--- ui/events/event_switches.cc.orig	2019-03-11 22:01:19 UTC
 +++ ui/events/event_switches.cc
-@@ -17,7 +17,7 @@ const char kEnableScrollPrediction[] = "
+@@ -14,7 +14,7 @@ namespace switches {
  const char kCompensateForUnstablePinchZoom[] =
      "compensate-for-unstable-pinch-zoom";
  

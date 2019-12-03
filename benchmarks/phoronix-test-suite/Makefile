@@ -3,7 +3,7 @@
 
 PORTNAME=	phoronix-test-suite
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.0.0m3
+DISTVERSION=	9.0.0
 CATEGORIES=	benchmarks
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
@@ -12,6 +12,8 @@ COMMENT=	Phoronix Benchmarking Suite
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+RUN_DEPENDS=	sudo:security/sudo
 
 USES=		php:cli,build,flavors python
 USE_GITHUB=	yes

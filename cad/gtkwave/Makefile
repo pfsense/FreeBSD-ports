@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gtkwave
-PORTVERSION=	3.3.91
+PORTVERSION=	3.3.101
+PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://gtkwave.sourceforge.net/
 
@@ -15,13 +16,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		desktop-file-utils gettext gmake gperf pkgconfig shared-mime-info
+USES=		compiler:c++11-lang desktop-file-utils gettext gmake \
+		gnome gperf pkgconfig shared-mime-info
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-mime-update
 USE_GNOME=	cairo gtk20
 INSTALLS_ICONS=	yes
 
-OPTIONS_DEFINE=	TCL GCONF EXAMPLES
+OPTIONS_DEFINE=	TCL GCONF DOCS EXAMPLES
 TCL_DESC=	Enable support for TCL/TK
 TCL_USES=	tcl tk
 TCL_CONFIGURE_ON=	--with-tcl=${TCL_LIBDIR} \

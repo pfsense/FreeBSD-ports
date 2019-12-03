@@ -3,7 +3,7 @@
 
 PORTNAME=	auctex
 PORTVERSION=	11.90
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	print elisp
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -12,6 +12,10 @@ MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Integrated environment for writing LaTeX using GNU Emacs
 
 LICENSE=	GPLv3
+
+.if ${FLAVOR:U} == devel_full || ${FLAVOR:U} == devel_nox
+BROKEN=		tex.el:0:0: error: wrong-type-argument: (stringp nil)
+.endif
 
 USES=		emacs ghostscript gmake
 USE_TEX=	latex texhash

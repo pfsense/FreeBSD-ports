@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	konversation
-PORTVERSION=	1.7.4
-PORTREVISION=	2
+PORTVERSION=	1.7.5
+PORTREVISION=	4
 CATEGORIES=	irc kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${DISTVERSION}/src
 
@@ -13,9 +13,10 @@ COMMENT=	User friendly IRC client for KDE
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libqca-qt5.so:devel/qca@qt5
+LIB_DEPENDS=	libqca-qt5.so:devel/qca
 
-USES=		cmake:outsource desktop-file-utils gettext kde:5 python:run qt:5 shebangfix tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 \
+		python:run qt:5 shebangfix tar:xz
 USE_KDE=	archive auth bookmarks codecs completion config \
 		configwidgets coreaddons crash dbusaddons doctools ecm \
 		emoticons globalaccel i18n iconthemes idletime itemviews \

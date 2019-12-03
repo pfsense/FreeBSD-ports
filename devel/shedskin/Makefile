@@ -3,7 +3,7 @@
 
 PORTNAME=	shedskin
 PORTVERSION=	0.9.4
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel python
 
@@ -13,6 +13,8 @@ COMMENT=	Experimental (restricted) Python-to-C++ compiler
 LICENSE=	GPLv3 MIT BSD3CLAUSE
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv3=	${WRKSRC}/LICENSE
+
+BROKEN=		checksum mismatch
 
 RUN_DEPENDS=	${LOCALBASE}/lib/libgc.so:devel/boehm-gc \
 		${LOCALBASE}/lib/libpcre.so:devel/pcre

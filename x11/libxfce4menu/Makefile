@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	libxfce4menu
-PORTVERSION=	4.12.1
-PORTREVISION=	1
+PORTVERSION=	4.14.1
 CATEGORIES=	x11 xfce
-MASTER_SITES=	XFCE/src/xfce/libxfce4ui/${PORTVERSION:R}
-DISTNAME=	libxfce4ui-${PORTVERSION}
+MASTER_SITES=	XFCE
+DISTNAME=	libxfce4ui-${DISTVERSIONFULL}
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -14,29 +13,49 @@ COMMENT=	Widgets library for the Xfce desktop environment
 
 LICENSE=	GPLv2
 
-PORTSCOUT=	limit:^4\.12\.
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
 
-USES=		gmake libtool pathfix pkgconfig gettext-tools \
-		xfce tar:bzip2
-GNU_CONFIGURE=	yes
-USE_GNOME=	glib20 gtk20 intltool intlhack
+USES=		compiler:c11 gettext-tools gmake gnome libtool pathfix \
+		pkgconfig tar:bzip2 xfce xorg
+USE_GNOME=	cairo glib20 gtk30 intltool
 USE_LDCONFIG=	yes
 USE_XFCE=	xfconf
+USE_XORG=	ice sm x11
+
+GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
-
 CONFIGURE_ARGS=	--with-vendor-info=${OPSYS} --without-html-dir
+INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=		GLADE GTK3 NLS STARTUP
-OPTIONS_DEFAULT=	GTK3 STARTUP
+PORTSCOUT=	limitw:1,even
+
+OPTIONS_DEFINE=		GIR GLADE GTK2 NLS STARTUP VAPI
+OPTIONS_DEFAULT=	GIR GTK2 STARTUP VAPI
+OPTIONS_SUB=		yes
+
+GIR_DESC=		Use Gobject Introspection
+
+GIR_USE=		gnome=introspection:build
+GIR_CONFIGURE_ON=	--enable-introspection=yes
+GIR_CONFIGURE_OFF=	--enable-introspection=no
+
+GLADE_CONFIGURE_ENABLE=	gladeui2
+GLADE_LIB_DEPENDS=	libgladeui-2.so:devel/glade
+GLADE_USE=		gnome=libxml2
+
+GTK2_CONFIGURE_ENABLE=	gtk2
+GTK2_USE=		gnome=gtk20
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext-runtime
+
+STARTUP_CONFIGURE_ENABLE=	startup-notification
 STARTUP_DESC=		Startup notification
 STARTUP_LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification
-STARTUP_CONFIGURE_ENABLE=	startup-notification
-NLS_USES=		gettext-runtime
-NLS_CONFIGURE_ENABLE=	nls
-GLADE_LIB_DEPENDS=	libgladeui-1.so:devel/glade3
-GLADE_CONFIGURE_ENABLE=	gladeui
-GTK3_USE=		gnome=gtk30
-GTK3_CONFIGURE_ENABLE=	gtk3
-OPTIONS_SUB=		yes
+
+VAPI_BUILD_DEPENDS=	vapigen:lang/vala
+VAPI_CONFIGURE_ENABLE=	vala
+VAPI_IMPLIES=		GIR
 
 .include <bsd.port.mk>

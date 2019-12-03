@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	oslo.config
-PORTVERSION=	6.2.1
+PORTVERSION=	6.11.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,20 +19,16 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}debtcollector>=1.2.0:devel/py-debtcollector@
 		${PYTHON_PKGNAMEPREFIX}netaddr>=0.7.18:net/py-netaddr@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}oslo.i18n>=3.15.3:devel/py-oslo.i18n@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=3.12:devel/py-yaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}rfc3986>=0.3.1:www/py-rfc3986@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}rfc3986>=1.2.0:www/py-rfc3986@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.10.0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}stevedore>=1.20.0:devel/py-stevedore@${PY_FLAVOR}
 
-NO_ARCH=	yes
 USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
+NO_ARCH=	yes
+
 post-patch:
-	@${REINPLACE_CMD} -e 's|/etc|${PREFIX}/etc|g' \
-		${WRKSRC}/doc/source/reference/sphinxconfiggen.rst \
-		${WRKSRC}/oslo_config/_list_opts.py \
-		${WRKSRC}/oslo_config/cfg.py \
-		${WRKSRC}/oslo_config/tests/test_cfg.py \
-		${WRKSRC}/releasenotes/notes/add-default-config-dirs-03340ff6689afe94.yaml
+	@${GREP} -lr /etc ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} -e 's|/etc|${PREFIX}&|g'
 
 .include <bsd.port.mk>

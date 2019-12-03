@@ -3,14 +3,14 @@
 
 PORTNAME=	tex2im
 PORTVERSION=	1.8
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.nought.de/
 
 MAINTAINER=	TsurutaniNaoki@gmail.com
 COMMENT=	Converts LaTeX formulas into high resolution pixmap graphics
 
-RUN_DEPENDS=	convert:graphics/ImageMagick \
+RUN_DEPENDS=	convert:graphics/ImageMagick6 \
 		bash:shells/bash
 
 USE_TEX=	latex
@@ -19,6 +19,8 @@ PLIST_FILES=	bin/tex2im
 PORTEXAMPLES=	example1.png example1.tex example2.png example2.tex \
 		example3.png example3.tex example4.png example4.tex \
 		fig_1.eps
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e "s,^#!/bin/bash,#!${LOCALBASE}/bin/bash,g" ${WRKSRC}/tex2im

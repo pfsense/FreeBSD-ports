@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openemm2015
-PORTVERSION=	0
+PORTVERSION=	0.1
 CATEGORIES=	mail java www
 MASTER_SITES=	SF/openemm/OpenEMM%20software/OpenEMM%202015/ \
 		http://central.maven.org/maven2/com/lowagie/itext/2.1.7/:MAVEN2
@@ -20,9 +20,9 @@ BROKEN_powerpc64=	fails to build: gmake[1]: clang: Command not found
 
 LIB_DEPENDS=	libslang.so:devel/libslang2 \
 		libsa.so:net/ossp-sa
-BUILD_DEPENDS=	${TOMCATHOME}/bin/bootstrap.jar:www/tomcat8 \
+BUILD_DEPENDS=	${TOMCATHOME}/bin/bootstrap.jar:www/tomcat85 \
 		${ANT_CMD}:devel/apache-ant
-RUN_DEPENDS=	${TOMCATHOME}/bin/bootstrap.jar:www/tomcat8 \
+RUN_DEPENDS=	${TOMCATHOME}/bin/bootstrap.jar:www/tomcat85 \
 		py27-MySQLdb>=1.2.3:databases/py-MySQLdb
 
 USES=	dos2unix gmake python:2.7,run
@@ -34,7 +34,7 @@ DOS2UNIX_GLOB=	*.c *.cpp *.h *.java *.xml *.properties
 CC=	clang
 CXX=	clang++
 
-TOMCATVER=	apache-tomcat-8.0
+TOMCATVER=	apache-tomcat-8.5
 TOMCATDIR=	${PREFIX}/${TOMCATVER}
 TOMCATHOME=	${LOCALBASE}/${TOMCATVER}
 #WEBAPPDIR=	${TOMCATDIR}/webapps
@@ -63,6 +63,8 @@ ANT=		${SETENV} JAVA_HOME=${JAVA_HOME} ${ANT_CMD}
 ANT_TARGETS=	build
 ANT_BUILD_PARAM=	-Dbuild=${WRKSRC}/target -Doe.home=${WRKSRC}/target -Dbin=${WRKSRC}/target/bin -Dcatalina.home=${TOMCATDIR} -Dsrc=${WRKSRC} -f openemm_build.xml
 JAVA_BUILD=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 do-extract:
 	@cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${DISTNAME}.tar.gz ${EXTRACT_AFTER_ARGS}
@@ -225,6 +227,8 @@ do-install:
 
 	# create log files
 	${MKDIR} ${STAGEDIR}/var/log/${PORTNAME}
+	${TOUCH} ${STAGEDIR}/var/log/${PORTNAME}/openemm.log
+	${TOUCH} ${STAGEDIR}/var/log/${PORTNAME}/openemm-ws.log
 	${TOUCH} ${STAGEDIR}/var/log/${PORTNAME}/openemm_core.log
 	${TOUCH} ${STAGEDIR}/var/log/${PORTNAME}/userlogs.log
 	${TOUCH} ${STAGEDIR}/var/log/${PORTNAME}/openemm_axis.log

@@ -2,7 +2,7 @@
 
 PORTNAME=	wxPython
 PORTVERSION=	3.0.2.0
-PORTREVISION=	4
+PORTREVISION=	8
 DISTVERSIONPREFIX=	src-
 CATEGORIES=	x11-toolkits python
 MASTER_SITES=	SF/wxpython/wxPython/${PORTVERSION}
@@ -36,14 +36,13 @@ do-install:
 
 .else
 
-WXPORT=		gtk2
+WXPORT=		gtk3
 WX_PYTHON_DIR=	wx-${WX_VERSION}-${WXPORT}
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}wxPython-common>0:x11-toolkits/py-wxPython-common@${PY_FLAVOR}
 
 USES+=		gettext pkgconfig
 USE_WX=		3.0
-WANT_UNICODE=	yes
 USE_PYTHON=	distutils autoplist
 PYDISTUTILS_BUILDARGS=	WX_CONFIG="${WX_CONFIG}" \
 			WXPORT="${WXPORT}" \

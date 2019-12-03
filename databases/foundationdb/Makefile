@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	foundationdb
-PORTVERSION=	5.2.5
-#DISTVERSIONPREFIX=	release-
+PORTVERSION=	6.1.8
+PORTREVISION=	2
 CATEGORIES=	databases
 
 MAINTAINER=	vanilla@FreeBSD.org
@@ -25,8 +25,8 @@ GH_ACCOUNT=	apple
 USE_RC_SUBR=	foundationdb
 SHEBANG_FILES=	build/csprojtom4.py build/link-wrapper.sh build/vcxprojtom4.py \
 		bindings/c/generate_asm.py
-MAKE_ENV+=	PYTHON=${PYTHON_CMD}
-CXXFLAGS+=	-Wno-varargs
+MAKE_ENV+=	PYTHON=${PYTHON_CMD} TLS_DISABLED=yes
+CXXFLAGS+=	-Wno-varargs -DTLS_DISABLED
 
 USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
@@ -40,18 +40,22 @@ PLIST_SUB+=	DB_USER=${USERS} \
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/foundationdb.conf
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/flow/Platform.cpp
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/fdbbackup ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/fdbcli ${STAGEDIR}${PREFIX}/bin
 	${LN} -sf ${PREFIX}/bin/fdbbackup ${STAGEDIR}${PREFIX}/bin/fdbrestore
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/fdbmonitor ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/fdbserver ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_DATA} ${WRKSRC}/lib/libfdbclient.a ${STAGEDIR}/${PREFIX}/lib
+	${INSTALL_DATA} ${WRKSRC}/lib/libfdbrpc.a ${STAGEDIR}/${PREFIX}/lib
+	${INSTALL_DATA} ${WRKSRC}/lib/libflow.a ${STAGEDIR}/${PREFIX}/lib
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/foundationdb
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/foundationdb/backup_agent
 	${LN} -sf ${PREFIX}/bin/fdbbackup ${STAGEDIR}${PREFIX}/lib/foundationdb/backup_agent/backup_agent
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/foundationdb
 	${INSTALL_DATA} ${WRKSRC}/foundationdb.conf ${STAGEDIR}${PREFIX}/etc/foundationdb/foundationdb.conf.sample
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/fdbmonitor ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/fdbserver ${STAGEDIR}${PREFIX}/sbin
 	@${MKDIR} ${STAGEDIR}${DBDIR}
 	@${MKDIR} ${STAGEDIR}${LOGDIR}
 

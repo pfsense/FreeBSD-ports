@@ -1,4 +1,3 @@
-etc/xdg/knewstuff.categories
 include/KF5/KNewStuff3/KNS3/Button
 include/KF5/KNewStuff3/KNS3/DownloadDialog
 include/KF5/KNewStuff3/KNS3/DownloadManager
@@ -13,6 +12,7 @@ include/KF5/KNewStuff3/KNSCore/Cache
 include/KF5/KNewStuff3/KNSCore/DownloadManager
 include/KF5/KNewStuff3/KNSCore/Engine
 include/KF5/KNewStuff3/KNSCore/EntryInternal
+include/KF5/KNewStuff3/KNSCore/ErrorCode
 include/KF5/KNewStuff3/KNSCore/Installation
 include/KF5/KNewStuff3/KNSCore/ItemsModel
 include/KF5/KNewStuff3/KNSCore/Provider
@@ -20,6 +20,7 @@ include/KF5/KNewStuff3/KNSCore/Question
 include/KF5/KNewStuff3/KNSCore/QuestionListener
 include/KF5/KNewStuff3/KNSCore/QuestionManager
 include/KF5/KNewStuff3/KNSCore/Security
+include/KF5/KNewStuff3/KNSCore/TagsFilterChecker
 include/KF5/KNewStuff3/KNSCore/XmlLoader
 include/KF5/KNewStuff3/kns3/button.h
 include/KF5/KNewStuff3/kns3/downloaddialog.h
@@ -37,6 +38,7 @@ include/KF5/KNewStuff3/knscore/cache.h
 include/KF5/KNewStuff3/knscore/downloadmanager.h
 include/KF5/KNewStuff3/knscore/engine.h
 include/KF5/KNewStuff3/knscore/entryinternal.h
+include/KF5/KNewStuff3/knscore/errorcode.h
 include/KF5/KNewStuff3/knscore/installation.h
 include/KF5/KNewStuff3/knscore/itemsmodel.h
 include/KF5/KNewStuff3/knscore/knewstuffcore_export.h
@@ -45,6 +47,7 @@ include/KF5/KNewStuff3/knscore/question.h
 include/KF5/KNewStuff3/knscore/questionlistener.h
 include/KF5/KNewStuff3/knscore/questionmanager.h
 include/KF5/KNewStuff3/knscore/security.h
+include/KF5/KNewStuff3/knscore/tagsfilterchecker.h
 include/KF5/KNewStuff3/knscore/xmlloader.h
 include/KF5/knewstuff_version.h
 include/KF5/knewstuffcore_version.h
@@ -119,11 +122,9 @@ share/kf5/kmoretools/presets-kmoretools/shutter.svg
 share/kf5/kmoretools/presets-kmoretools/vokoscreen.desktop
 share/kf5/kmoretools/presets-kmoretools/vokoscreen.png
 share/kf5/kmoretools/presets-kmoretools/xfce4-taskmanager.desktop
-share/kf5/knewstuff/pics/thumb_frame.png
 share/locale/af/LC_MESSAGES/knewstuff5.mo
 share/locale/ar/LC_MESSAGES/knewstuff5.mo
 share/locale/as/LC_MESSAGES/knewstuff5.mo
-share/locale/ast/LC_MESSAGES/knewstuff5.mo
 share/locale/be/LC_MESSAGES/knewstuff5.mo
 share/locale/be@latin/LC_MESSAGES/knewstuff5.mo
 share/locale/bg/LC_MESSAGES/knewstuff5.mo
@@ -220,3 +221,4 @@ share/locale/xh/LC_MESSAGES/knewstuff5.mo
 share/locale/zh_CN/LC_MESSAGES/knewstuff5.mo
 share/locale/zh_HK/LC_MESSAGES/knewstuff5.mo
 share/locale/zh_TW/LC_MESSAGES/knewstuff5.mo
+share/qlogging-categories5/knewstuff.categories

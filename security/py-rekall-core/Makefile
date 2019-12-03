@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	rekall-core
-DISTVERSION=	1.7.2rc1
+DISTVERSION=	1.7.2rc1-52
+DISTVERSIONSUFFIX=	-g0cba831
+PORTREVISION=	1
 CATEGORIES=	security python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	antoine@FreeBSD.org
@@ -23,7 +24,7 @@ RUN_DEPENDS=	cabextract:archivers/cabextract \
 		${PYTHON_PKGNAMEPREFIX}parsedatetime>=2.4:devel/py-parsedatetime@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>=5.0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyaff4>=0.25:security/py-pyaff4@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pycryptodome>=3.4.7:security/py-pycryptodome@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pycryptodomex>=3.4.7:security/py-pycryptodomex@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyelftools>=0.24:devel/py-pyelftools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.1.5:devel/py-pyparsing@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dateutil>=2.6.1:devel/py-dateutil@${PY_FLAVOR} \
@@ -34,12 +35,25 @@ RUN_DEPENDS=	cabextract:archivers/cabextract \
 		${PYTHON_PKGNAMEPREFIX}rekall_lib>=0:security/py-rekall_lib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yara>=3.6:security/py-yara@${PY_FLAVOR}
 
-NO_ARCH=	yes
-USES=		python zip
+USE_GITHUB=	yes
+GH_ACCOUNT=	google
+GH_PROJECT=	rekall
+
+USES=		python
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
+WRKSRC_SUBDIR=	rekall-core
 
 .include <bsd.port.pre.mk>
 
 PYDISTUTILS_INSTALLARGS+=	--install-data=${PYTHON_SITELIBDIR}
+
+post-patch:
+	${REINPLACE_CMD} "s|from Crypto|from Cryptodome|" \
+		${WRKSRC}/rekall/compatibility.py \
+		${WRKSRC}/rekall/plugins/windows/mimikatz.py \
+		${WRKSRC}/rekall/plugins/windows/registry/hashdump.py \
+		${WRKSRC}/rekall/plugins/windows/registry/lsasecrets.py
 
 .include <bsd.port.post.mk>

@@ -2,7 +2,7 @@
 
 PORTNAME=	mp3unicode
 PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/downloads/alonbl/mp3unicode/
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libtag.so:audio/taglib
 
-USES=		iconv pkgconfig tar:bzip2
+USES=		compiler:c++11-lang iconv pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ICONV_CFLAGS="-I${LOCALBASE}/include" \
 		ICONV_LIBS="-L${LOCALBASE}/lib ${ICONV_LIB}"

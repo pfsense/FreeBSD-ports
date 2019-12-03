@@ -4,16 +4,17 @@
 PORTNAME=	encfs
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.9.5
+PORTREVISION=	4
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Encrypted pass-through FUSE filesystem
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake:outsource compiler:c++11-lib fuse ssl
+USES=		cmake compiler:c++11-lib fuse ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	vgough
 

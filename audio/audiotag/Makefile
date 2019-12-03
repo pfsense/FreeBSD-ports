@@ -12,6 +12,10 @@ COMMENT=	Command-line tool for mass tagging/renaming of audio files
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	Daenyth
 

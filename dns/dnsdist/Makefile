@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	dnsdist
-DISTVERSION=	1.3.0
-PORTREVISION=	5
+DISTVERSION=	1.3.3
+PORTREVISION=	11
 CATEGORIES=	dns net
 MASTER_SITES=	https://downloads.powerdns.com/releases/ \
 		LOCAL/cpm
@@ -52,9 +52,10 @@ FSTRM_CONFIGURE_ENABLE=	fstrm
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_ENABLE=gnutls
 
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so.2:lang/luajit
+LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
 LUAJIT_USES_OFF=	lua
-LUAJIT_CONFIGURE_WITH=	luajit
+LUAJIT_CONFIGURE_ON=	--with-lua=luajit
+LUAJIT_CONFIGURE_OFF=	--with-lua=lua-${LUA_VER}
 
 OPENSSL_USES=		ssl
 OPENSSL_CONFIGURE_ENABLE=libssl

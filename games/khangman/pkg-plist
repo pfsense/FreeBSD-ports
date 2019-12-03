@@ -9,6 +9,7 @@ man/man6/khangman.6.gz
 man/nl/man6/khangman.6.gz
 man/pt/man6/khangman.6.gz
 man/pt_BR/man6/khangman.6.gz
+man/ru/man6/khangman.6.gz
 man/sv/man6/khangman.6.gz
 man/uk/man6/khangman.6.gz
 share/applications/org.kde.khangman.desktop
@@ -88,7 +89,6 @@ share/icons/hicolor/scalable/apps/khangman.svgz
 %%DATADIR%%/themes/standardthemes.xml
 %%DATADIR%%/tr.txt
 share/locale/ar/LC_MESSAGES/khangman.mo
-share/locale/ast/LC_MESSAGES/khangman.mo
 share/locale/bg/LC_MESSAGES/khangman.mo
 share/locale/bs/LC_MESSAGES/khangman.mo
 share/locale/ca/LC_MESSAGES/khangman.mo
@@ -118,6 +118,7 @@ share/locale/kk/LC_MESSAGES/khangman.mo
 share/locale/km/LC_MESSAGES/khangman.mo
 share/locale/lt/LC_MESSAGES/khangman.mo
 share/locale/lv/LC_MESSAGES/khangman.mo
+share/locale/ml/LC_MESSAGES/khangman.mo
 share/locale/mr/LC_MESSAGES/khangman.mo
 share/locale/nb/LC_MESSAGES/khangman.mo
 share/locale/nds/LC_MESSAGES/khangman.mo

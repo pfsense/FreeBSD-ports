@@ -3,6 +3,7 @@
 
 PORTNAME=	PDL
 PORTVERSION=	2.019
+PORTREVISION=	2
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 
@@ -11,6 +12,10 @@ COMMENT=	Perl Data Language
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+
+.if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
+BROKEN_i386=	ld: error: can't create dynamic relocation R_386_32 against local symbol in readonly segment; recompile object files with -fPIC or pass '-Wl,-z,notext' to allow text relocations in the output
+.endif
 
 BUILD_DEPENDS=	p5-Astro-FITS-Header>=0:astro/p5-Astro-FITS-Header \
 		p5-Convert-UU>=0:converters/p5-Convert-UU \

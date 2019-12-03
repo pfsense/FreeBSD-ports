@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flightgear
-PORTVERSION=	2018.2.1
+PORTVERSION=	2019.1.1
 CATEGORIES=	games
 MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 
@@ -19,18 +19,21 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libspeex.so:audio/speex \
 		libspeexdsp.so:audio/speexdsp \
 		libcurl.so:ftp/curl \
-		libudev.so:devel/libudev-devd
+		libudev.so:devel/libudev-devd \
+		libexpat.so:textproc/expat2 \
+		libSimGearCore.so:devel/simgear
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib \
-		${LOCALBASE}/lib/libSimGearCore.a:devel/simgear
+		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib \
-		${LOCALBASE}/lib/libSimGearCore.a:devel/simgear \
 		${LOCALBASE}/share/flightgear/version:games/flightgear-data
 
-LLD_UNSAFE=	yes
-USES=		alias cmake compiler cpe dos2unix jpeg openal:al,alut sqlite \
-		tar:bzip2
+# Disable ninja, see https://sourceforge.net/p/flightgear/codetickets/2118/
+USES=		alias cmake:noninja compiler:c++11-lang cpe dos2unix gl jpeg \
+		openal:al,alut sqlite tar:bzip2 xorg
 USE_XORG=	ice sm x11 xext xft xi xinerama xmu xt
 USE_GL=		gl glew glu glut
+
+LLD_UNSAFE=	yes
 
 DOS2UNIX_REGEX=	.*\.(c|h|cxx|cpp|hxx|hpp)
 CMAKE_ARGS+=	-DSYSTEM_SQLITE:BOOL=ON \
@@ -48,23 +51,12 @@ DBUS_CMAKE_OFF=	-DUSE_DBUS:BOOL=OFF
 QT5_CMAKE_ON=	-DENABLE_QT:BOOL=ON
 QT5_CMAKE_OFF=	-DENABLE_QT:BOOL=OFF
 QT5_USES=	qt:5
-QT5_USE=	QT=core,buildtools,gui,network,qmake,qml,quick,widgets
+QT5_USE=	QT=core,buildtools,gui,declarative,network,qmake,widgets,svg
 
-.include <bsd.port.pre.mk>
+post-patch:
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
+	@${REINPLACE_CMD} -Ei .c++20 '/file|set_prop/s/version[[:>:]]/&.txt/' \
+		${WRKSRC}/CMakeLists.txt
 
-# Needs Clang 4.0+ to build, see:
-# https://sourceforge.net/p/flightgear/codetickets/2015/
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 40
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang40:devel/llvm40
-CPP=	${LOCALBASE}/bin/clang-cpp40
-CC=	${LOCALBASE}/bin/clang40
-CXX=	${LOCALBASE}/bin/clang++40
-.endif
-
-# Chase devel/simgear compiler version
-.if ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} < 46
-USE_GCC=	yes
-CXXFLAGS+=	-D_GLIBCXX_USE_C99
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

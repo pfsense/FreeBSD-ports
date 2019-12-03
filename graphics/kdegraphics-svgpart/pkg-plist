@@ -1,8 +1,6 @@
-%%QT_PLUGINDIR%%/svgpart.so
+%%QT_PLUGINDIR%%/kf5/parts/svgpart.so
 share/kservices5/svgpart.desktop
-share/kxmlgui5/svgpart/svgpart.rc
 share/locale/ar/LC_MESSAGES/svgpart.mo
-share/locale/ast/LC_MESSAGES/svgpart.mo
 share/locale/bg/LC_MESSAGES/svgpart.mo
 share/locale/bs/LC_MESSAGES/svgpart.mo
 share/locale/ca/LC_MESSAGES/svgpart.mo
@@ -31,6 +29,7 @@ share/locale/km/LC_MESSAGES/svgpart.mo
 share/locale/ko/LC_MESSAGES/svgpart.mo
 share/locale/lt/LC_MESSAGES/svgpart.mo
 share/locale/lv/LC_MESSAGES/svgpart.mo
+share/locale/ml/LC_MESSAGES/svgpart.mo
 share/locale/mr/LC_MESSAGES/svgpart.mo
 share/locale/nb/LC_MESSAGES/svgpart.mo
 share/locale/nds/LC_MESSAGES/svgpart.mo

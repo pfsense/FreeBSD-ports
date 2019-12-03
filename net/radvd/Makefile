@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	radvd
-PORTVERSION=	2.17
-PORTREVISION=	5
+PORTVERSION=	2.18
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.litech.org/radvd/dist/
 
@@ -23,6 +22,8 @@ USES=		gmake pkgconfig
 USE_RC_SUBR=	radvd
 
 PORTDOCS=	CHANGES COPYRIGHT INTRO.html README TODO
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/radvd.conf.example ${STAGEDIR}${PREFIX}/etc/radvd.conf.sample

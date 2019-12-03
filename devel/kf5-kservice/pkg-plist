@@ -1,5 +1,4 @@
 bin/kbuildsycoca5
-etc/xdg/kservice.categories
 etc/xdg/menus/kf5-applications.menu
 include/KF5/KService/KAutostart
 include/KF5/KService/KDBusServiceStarter
@@ -43,6 +42,7 @@ lib/libKF5Service.so.5
 lib/libKF5Service.so.%%KDE_FRAMEWORKS_VERSION%%
 man/ca/man8/desktoptojson.8.gz
 man/ca/man8/kbuildsycoca5.8.gz
+man/id/man8/desktoptojson.8.gz
 man/it/man8/desktoptojson.8.gz
 man/it/man8/kbuildsycoca5.8.gz
 man/de/man8/desktoptojson.8.gz
@@ -67,7 +67,6 @@ share/kservicetypes5/kplugininfo.desktop
 share/locale/af/LC_MESSAGES/kservice5.mo
 share/locale/ar/LC_MESSAGES/kservice5.mo
 share/locale/as/LC_MESSAGES/kservice5.mo
-share/locale/ast/LC_MESSAGES/kservice5.mo
 share/locale/be/LC_MESSAGES/kservice5.mo
 share/locale/be@latin/LC_MESSAGES/kservice5.mo
 share/locale/bg/LC_MESSAGES/kservice5.mo
@@ -164,3 +163,4 @@ share/locale/xh/LC_MESSAGES/kservice5.mo
 share/locale/zh_CN/LC_MESSAGES/kservice5.mo
 share/locale/zh_HK/LC_MESSAGES/kservice5.mo
 share/locale/zh_TW/LC_MESSAGES/kservice5.mo
+share/qlogging-categories5/kservice.categories

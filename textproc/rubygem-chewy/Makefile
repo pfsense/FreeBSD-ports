@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	chewy
-PORTVERSION=	5.0.0
+PORTVERSION=	5.1.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -16,8 +16,9 @@ RUN_DEPENDS=	rubygem-activesupport5>=4.0:devel/rubygem-activesupport5 \
 		rubygem-elasticsearch>=2.0.0:textproc/rubygem-elasticsearch \
 		rubygem-elasticsearch-dsl>=0:textproc/rubygem-elasticsearch-dsl
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

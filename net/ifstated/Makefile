@@ -3,12 +3,14 @@
 
 PORTNAME=	ifstated
 PORTVERSION=	5.1
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	3
 CATEGORIES=	net
-MASTER_SITES=	http://christianserving.org/ports/net/ifstated/
+MASTER_SITES=	LOCAL/tobik \
+		http://pkg.tobik.me/distfiles/ \
+		http://christianserving.org/ports/net/ifstated/
 
-MAINTAINER=	ports@christianserving.org
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Interface state daemon
 
 LIB_DEPENDS=	libevent.so:devel/libevent

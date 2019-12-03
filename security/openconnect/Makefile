@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	openconnect
-PORTVERSION=	7.08
-CATEGORIES=	security
+PORTVERSION=	8.03
+CATEGORIES=	security net-vpn
 MASTER_SITES=	ftp://ftp.infradead.org/pub/openconnect/ \
 		ZI
 
@@ -21,13 +21,15 @@ CONFIGURE_ARGS=	--disable-nls --with-vpnc-script=${LOCALBASE}/sbin/vpnc-script \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--without-openssl-version-check --without-libpcsclite \
 		--without-libpskc
-USES=		cpe gmake iconv libtool pkgconfig python:build ssl
+USES=		cpe gmake iconv libtool pkgconfig python:build ssl shebangfix
 CPE_VENDOR=	infradead
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+SHEBANG_FILES=	trojans/csd-post.sh trojans/csd-wrapper.sh \
+		trojans/tncc-wrapper.py
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	PROXY GNUTLS GSSAPI LZ4 P11 STOKEN
+OPTIONS_DEFINE=	DOCS PROXY GNUTLS GSSAPI LZ4 P11 STOKEN
 OPTIONS_DEFAULT=GSSAPI
 
 LZ4_DESC=		LZ4-based compression

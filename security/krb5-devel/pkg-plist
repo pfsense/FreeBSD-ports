@@ -80,15 +80,15 @@ lib/libk5crypto.so.3
 lib/libk5crypto.so.3.1
 lib/libkadm5clnt.so
 lib/libkadm5clnt_mit.so
-lib/libkadm5clnt_mit.so.11
-lib/libkadm5clnt_mit.so.11.0
+lib/libkadm5clnt_mit.so.12
+lib/libkadm5clnt_mit.so.12.0
 lib/libkadm5srv.so
 lib/libkadm5srv_mit.so
-lib/libkadm5srv_mit.so.11
-lib/libkadm5srv_mit.so.11.0
+lib/libkadm5srv_mit.so.12
+lib/libkadm5srv_mit.so.12.0
 lib/libkdb5.so
-lib/libkdb5.so.9
-lib/libkdb5.so.9.0
+lib/libkdb5.so.10
+lib/libkdb5.so.10.0
 lib/libkrb5.so
 lib/libkrb5.so.3
 lib/libkrb5.so.3.3
@@ -140,6 +140,7 @@ man/man5/.k5identity.5.gz
 man/man5/.k5login.5.gz
 man/man5/k5identity.5.gz
 man/man5/k5login.5.gz
+man/man7/kerberos.7.gz
 man/man8/krb5kdc.8.gz
 man/man8/kadmin.local.8.gz
 man/man8/kdb5_ldap_util.8.gz
@@ -153,6 +154,7 @@ sbin/gss-server
 sbin/kadmin.local
 sbin/kadmind
 %%LDAP%%sbin/kdb5_ldap_util
+sbin/kdc
 sbin/kdb5_util
 sbin/kprop
 sbin/kpropd

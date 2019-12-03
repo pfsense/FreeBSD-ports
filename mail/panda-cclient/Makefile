@@ -3,6 +3,7 @@
 
 PORTNAME=	cclient
 PORTVERSION=	20130621
+PORTREVISION=	1
 CATEGORIES=	mail devel ipv6
 PKGNAMEPREFIX=	panda-
 
@@ -33,12 +34,6 @@ USES+=		ssl
 PKGMESSAGE=	pkg-message-ssl
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MSSL} && ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
 USE_LDCONFIG=	yes
 ALL_TARGET=	bsf
 .if ! ${PORT_OPTIONS:MSSL}
@@ -57,7 +52,7 @@ SHLIBBASE=	c-client4
 SHLIBMAJ=	10
 SHLIBNAME=	lib${SHLIBBASE}.so.${SHLIBMAJ}
 MAKE_ENV+=	SHLIBNAME=${SHLIBNAME} SHLIBBASE=${SHLIBBASE}
-PLIST_SUB=	SHLIBNAME=${SHLIBNAME} SHLIBBASE=${SHLIBBASE}
+PLIST_SUB+=	SHLIBNAME=${SHLIBNAME} SHLIBBASE=${SHLIBBASE}
 
 pre-configure:
 .for file in Makefile src/osdep/unix/Makefile src/osdep/unix/Makefile.gss
@@ -113,4 +108,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/c-client/OSCFLAGS ${STAGEDIR}${PREFIX}/include/c-client
 	${INSTALL_DATA} ${PORTREV_H} ${STAGEDIR}${PREFIX}/include/c-client
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

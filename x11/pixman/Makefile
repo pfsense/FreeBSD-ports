@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pixman
-PORTVERSION=	0.34.0
+PORTVERSION=	0.38.4
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -27,7 +27,8 @@ MAKE_ARGS=      SUBDIRS=pixman
 
 .if ${ARCH} == "armv6" || ${ARCH} == "armv7"
 BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
-CONFIGURE_ENV+=	CCASFLAGS="${CFLAGS} -no-integrated-as"
+CONFIGURE_ENV+=	CCASFLAGS="${CFLAGS} -B${LOCALBASE}/bin -no-integrated-as"
+LLD_UNSAFE=	yes
 .endif
 
 .if ${ARCH} == "powerpc64" || ${ARCH} == "powerpc"

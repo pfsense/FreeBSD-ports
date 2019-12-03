@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	shairport-sync
-DISTVERSION=	3.2d8
+DISTVERSION=	3.3.2
 CATEGORIES=	audio
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -16,10 +16,11 @@ LIB_DEPENDS=	libavahi-client.so:net/avahi-app \
 		libpopt.so:devel/popt \
 		libsoxr.so:audio/libsoxr
 
-GNU_CONFIGURE=	yes
 USES=		autoreconf libtool pkgconfig ssl
-
 USE_GITHUB=	yes
+
+GNU_CONFIGURE=	yes
+
 GH_ACCOUNT=	mikebrady
 
 USE_RC_SUBR=	${PORTNAME}
@@ -31,7 +32,7 @@ ALAC_DESC=	Build with libalac support (experimental)
 CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc \
 		--with-piddir=/var/run/shairport-sync --with-avahi \
 		--with-ssl=openssl --with-metadata --with-soxr \
-		--with-stdout --with-pipe
+		--with-stdout --with-pipe --with-libdaemon
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lcrypto
@@ -49,5 +50,9 @@ SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
 
 PULSEAUDIO_CONFIGURE_ON=--with-pa
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
+
+post-patch:
+	@${REINPLACE_CMD} -e 's/-Wno-clobbered -Wno-psabi //' \
+		${WRKSRC}/Makefile.am
 
 .include <bsd.port.mk>

@@ -13,6 +13,10 @@ LICENSE=	GPLv2 CC-BY-NC-SA-3.0
 LICENSE_COMB=	multi
 LICENSE_FILE_CC-BY-NC-SA-3.0=	${WRKSRC}/LICENSE.music
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libftgl.so:graphics/ftgl \
 		libxml2.so:textproc/libxml2 \

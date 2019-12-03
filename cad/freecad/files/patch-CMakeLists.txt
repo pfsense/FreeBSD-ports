@@ -1,37 +1,31 @@
---- CMakeLists.txt.orig	2017-07-28 17:35:48 UTC
+--- CMakeLists.txt.orig	2019-06-16 18:08:47 UTC
 +++ CMakeLists.txt
-@@ -661,33 +661,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darw
-             if (WIN32)
-                 find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
-             else()
--                find_package(PkgConfig)
--                pkg_search_module(HDF5 hdf5-serial)
--                if(NOT HDF5_FOUND)
--                    find_package(HDF5 REQUIRED)
--                else()
--                    add_compile_options(${HDF5_CFLAGS})
--                    link_directories(${HDF5_LIBRARY_DIRS})
--                    link_libraries(${HDF5_LIBRARIES})
--                    find_file(Hdf5dotH hdf5.h PATHS ${HDF5_INCLUDE_DIRS} NO_DEFAULT_PATH)
--                    if(NOT Hdf5dotH)
--                        message( FATAL_ERROR "hdf5-serial not found in an error message above.")
--                    endif()
--                endif()
--                check_include_file_cxx(hdf5.h HDF5_FOUND)
--                if(NOT HDF5_FOUND)
--                    message( FATAL_ERROR "hdf5.h was not found.")
--                endif()
--
--                # Med Fichier can require MPI
--                pkg_search_module(OPENMPI ompi-cxx)
--                add_compile_options(${OPENMPI_CFLAGS})
--                link_directories(${OPENMPI_LIBRARY_DIRS})
--                link_libraries(${OPENMPI_LIBRARIES})
--                find_file(MpidotH mpi.h PATHS ${OPENMPI_INCLUDE_DIRS} NO_DEFAULT_PATH)
--                if(NOT MpidotH)
--                    message( WARNING "mpi.h was not found. Check for error above.")
--                endif()
-+                find_package(HDF5 REQUIRED)
+@@ -989,6 +989,13 @@ endif()
              endif()
-             find_package(MEDFile REQUIRED)
-             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
+         endif()
+ 
++        # pyside2 changed it's cmake files, this is the dance we have
++        # to dance to be compatible with the old and the new versions
++        if(SHIBOKEN_PYTHON_INCLUDE_DIRS AND NOT SHIBOKEN_INCLUDE_DIR)
++          get_property(SHIBOKEN_INCLUDE_DIR TARGET Shiboken2::libshiboken PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
++            get_property(SHIBOKEN_LIBRARY TARGET Shiboken2::libshiboken PROPERTY IMPORTED_LOCATION_RELEASE)
++        endif(SHIBOKEN_PYTHON_INCLUDE_DIRS AND NOT SHIBOKEN_INCLUDE_DIR)
++
+         if(NOT SHIBOKEN_INCLUDE_DIR)
+             MESSAGE("====================\n"
+                     "shiboken2 not found.\n"
+@@ -996,6 +1003,14 @@ endif()
+         endif(NOT SHIBOKEN_INCLUDE_DIR)
+ 
+         find_package(PySide2 QUIET)# REQUIRED
++
++        # pyside2 changed it's cmake files, this is the dance we have
++        # to dance to be compatible with the old and the new versions
++        if(NOT PYSIDE_INCLUDE_DIR)
++          get_property(PYSIDE_INCLUDE_DIR TARGET PySide2::pyside2 PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
++          get_property(PYSIDE_LIBRARY TARGET PySide2::pyside2 PROPERTY IMPORTED_LOCATION_RELEASE)
++        endif(NOT PYSIDE_INCLUDE_DIR)
++
+         if(NOT PYSIDE_INCLUDE_DIR)
+             MESSAGE("==================\n"
+                     "PySide2 not found.\n"

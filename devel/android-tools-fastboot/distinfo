@@ -1,9 +1,11 @@
-TIMESTAMP = 1529542722
+TIMESTAMP = 1568309901
 SHA256 (fastboot.1) = 2af01b064440952a82f1602691a0fecc030302722a71444946fb70d9c423d283
 SIZE (fastboot.1) = 5906
-SHA256 (aosp-mirror-platform_system_core-android-9.0.0_r3_GH0.tar.gz) = b9de23465b304432aa2b585aa66c6bf4841b177f2139b75ca5adc5d917e0ecd6
-SIZE (aosp-mirror-platform_system_core-android-9.0.0_r3_GH0.tar.gz) = 27484684
-SHA256 (jbeich-platform_system_extras-android-9.0.0_r3_GH0.tar.gz) = d82c4576bed24bfe701bb8c781714fa70365c03aed93cf4777407215de4d672d
-SIZE (jbeich-platform_system_extras-android-9.0.0_r3_GH0.tar.gz) = 211722695
+SHA256 (aosp-mirror-platform_system_core-platform-tools-29.0.4_GH0.tar.gz) = 95e20a50253d82b2d5f96b1acd2672c3fbdb57908e44757ba76a25d5d56a4f64
+SIZE (aosp-mirror-platform_system_core-platform-tools-29.0.4_GH0.tar.gz) = 61253830
+SHA256 (jbeich-platform_system_extras-platform-tools-29.0.4_GH0.tar.gz) = b273a90d91132732b1fa77df273ee219cdafa0f71b000350d406d720a1b59fda
+SIZE (jbeich-platform_system_extras-platform-tools-29.0.4_GH0.tar.gz) = 210790487
+SHA256 (jbeich-platform_system_tools_mkbootimg-platform-tools-29.0.4_GH0.tar.gz) = 743b5cbcacbc635238f7113c8ddcab212729e7abbbf50816b389b7a4a6442970
+SIZE (jbeich-platform_system_tools_mkbootimg-platform-tools-29.0.4_GH0.tar.gz) = 6619
 SHA256 (mbrubeck-android-completion-c1b0656_GH0.tar.gz) = ca3311ba47a5edd56c929ac9aae57c02c2c3f1636519c5f67abb00b6e3ecd75c
 SIZE (mbrubeck-android-completion-c1b0656_GH0.tar.gz) = 5967

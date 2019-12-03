@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	bareos
-PORTVERSION=	17.2.5
+PORTVERSION=	18.2.6
 CATEGORIES=	sysutils
 MASTER_SITES=	http://doc.bareos.org/master/
 PKGNAMESUFFIX=	-docs
@@ -13,6 +13,8 @@ COMMENT=	Bareos document set (PDF)
 NO_BUILD=	yes
 
 PORTDOCS=	*.pdf
+
+OPTIONS_DEFINE=	DOCS
 
 do-extract:
 	${MKDIR} ${WRKSRC}

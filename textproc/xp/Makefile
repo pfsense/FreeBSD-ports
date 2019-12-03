@@ -14,7 +14,6 @@ COMMENT=	XML parser written in Java
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 
-NO_WORKSUBDIR=	yes
 NO_BUILD=	yes
 USES=		zip
 
@@ -22,6 +21,8 @@ PORTDOCS=	api copying.txt index.html
 
 JARFILE=	${PORTNAME}.jar
 PLIST_FILES+=	%%JAVAJARDIR%%/${JARFILE}
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	@${ECHO_CMD} -n ">> Installing JAR as ${JAVAJARDIR}/${JARFILE}..."

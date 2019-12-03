@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	PkgConfig-LibPkgConf
-PORTVERSION=	0.08
+PORTVERSION=	0.10
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PLICEASE
@@ -15,12 +15,13 @@ LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	pkgconf>=1.3.90:devel/pkgconf
+BUILD_DEPENDS=	pkgconf>=1.5.0:devel/pkgconf
 LIB_DEPENDS=	libpkgconf.so:devel/pkgconf
 
-CFLAGS+=	-I${LOCALBASE}/include/pkgconf
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+CFLAGS+=	-I${LOCALBASE}/include/pkgconf
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/PkgConfig/LibPkgConf/LibPkgConf.so

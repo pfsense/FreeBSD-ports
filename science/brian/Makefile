@@ -3,6 +3,7 @@
 
 PORTNAME=	brian
 PORTVERSION=	1.4.4
+PORTREVISION=	2
 CATEGORIES=	science python
 
 MAINTAINER=	wen@FreeBSD.org

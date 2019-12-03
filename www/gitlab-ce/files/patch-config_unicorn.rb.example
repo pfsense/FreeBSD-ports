@@ -1,4 +1,4 @@
---- config/unicorn.rb.example.orig	2017-06-07 20:58:14 UTC
+--- config/unicorn.rb.example.orig	2018-12-21 14:23:37 UTC
 +++ config/unicorn.rb.example
 @@ -33,12 +33,12 @@ worker_processes 3
  
@@ -15,7 +15,7 @@
  listen "127.0.0.1:8080", :tcp_nopush => true
  
  # nuke workers after 30 seconds instead of 60 seconds (the default)
-@@ -59,13 +59,13 @@ listen "127.0.0.1:8080", :tcp_nopush => 
+@@ -59,13 +59,13 @@ listen "127.0.0.1:8080", :tcp_nopush => true
  timeout 60
  
  # feel free to point this anywhere accessible on the filesystem
@@ -30,5 +30,14 @@
 +stderr_path "%%PREFIX%%/www/gitlab-ce/log/unicorn.stderr.log"
 +stdout_path "%%PREFIX%%/www/gitlab-ce/log/unicorn.stdout.log"
  
- # combine Ruby 2.0.0dev or REE with "preload_app true" for memory savings
- # http://rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
+ # Save memory by sharing the application code among multiple Unicorn workers
+ # with "preload_app true". See:
+@@ -81,7 +81,7 @@ preload_app true
+ # fast LAN.
+ check_client_connection false
+ 
+-require_relative "/home/git/gitlab/lib/gitlab/cluster/lifecycle_events"
++require_relative "%%PREFIX%%/www/gitlab-ce/lib/gitlab/cluster/lifecycle_events"
+ 
+ before_exec do |server|
+   # Signal application hooks that we're about to restart

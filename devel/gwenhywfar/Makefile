@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	gwenhywfar
-PORTVERSION=	4.19.0
-PORTREVISION?=	1
+PORTVERSION=	4.20.0
+PORTREVISION?=	2
 CATEGORIES=	devel net security
-MASTER_SITES=	http://www.aquamaniac.de/sites/download/download.php?package=01&release=207&file=01&dummy=/
+MASTER_SITES=	http://www.aquamaniac.de/sites/download/download.php?package=01&release=208&file=02&dummy=/
 
 MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Multi-platform helper library for networking and security applications
@@ -58,15 +58,8 @@ LIB_DEPENDS+=	libfreetype.so:print/freetype2 \
 USE_GNOME+=	cairo gdkpixbuf2 gtk20
 .  elif ${SLAVEPORT}=="gtk3"
 USE_GNOME+=	cairo gdkpixbuf2 gtk30
-.  elif ${SLAVEPORT}=="qt4"
-USES+=		qmake:no_env qt:4
-USE_QT=		corelib gui moc_build uic_build
-CONFIGURE_ARGS+=--with-qt4-includes=${QT_INCDIR} \
-		--with-qt4-libs=${QT_LIBDIR} \
-		--with-qt4-moc=${MOC} \
-		--with-qt4-uic=${UIC}
 .  elif ${SLAVEPORT}=="qt5"
-USES+=		qmake:no_env qt:5
+USES+=		compiler:c++11-lang qmake:no_env qt:5
 USE_GL=		gl
 USE_QT=		core gui widgets \
 		buildtools_build qmake_build

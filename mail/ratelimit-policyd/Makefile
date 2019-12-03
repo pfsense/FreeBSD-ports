@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ratelimit-policyd
-PORTVERSION=	1.0.1
+PORTVERSION=	1.0.4
 CATEGORIES=	mail
-MASTER_SITES=	GH
 
 MAINTAINER=	000.fbsd@quip.cz
 COMMENT=	Sender rate limit policy daemon for Postfix
@@ -35,6 +34,8 @@ PLIST_FILES=	bin/ratelimit-policyd.pl \
 
 PORTDATA=	mysql-schema.sql
 PORTDOCS=	README.md
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${REINPLACE_CMD} -e "s|/usr/local|${PREFIX}|g" ${WRKSRC}/rc.d/ratelimit-policyd

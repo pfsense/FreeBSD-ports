@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nss
-PORTVERSION=	3.39
-#DISTVERSIONSUFFIX=	-with-ckbi-1.98
+PORTVERSION=	3.47.1
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
 
@@ -13,13 +12,12 @@ COMMENT=	Libraries to support development of security-enabled applications
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	zip:archivers/zip \
-		nspr>=4.12:devel/nspr \
-		sqlite3>=3.7.15:databases/sqlite3
+BUILD_DEPENDS=	zip:archivers/zip
 LIB_DEPENDS=	libnspr4.so:devel/nspr \
 		libsqlite3.so:databases/sqlite3
+TEST_DEPENDS=	bash:shells/bash
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/nss
+WRKSRC_SUBDIR=	nss
 
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	${PREFIX}/lib/nss
@@ -66,12 +64,12 @@ USE_BINUTILS=	# intel-gcm.s
 CC+=	-B${LOCALBASE}/bin
 .endif
 
-check regression-test test:
+do-test:
 	cd ${WRKSRC}/tests;	\
 		${SETENV} PATH="${BINS}/bin:${PATH}" \
 		    LD_LIBRARY_PATH="${BINS}/lib" \
 		    ${MAKE_ENV}	\
-			./all.sh
+			bash ./all.sh
 	@if ${GREP} -Fh '>Failed<'	\
 	    ${WRKSRC:H}/tests_results/security/*/results.html; then	\
 		echo "Some tests have failed. Let ${MAINTAINER} know.";	\
@@ -86,8 +84,6 @@ post-patch:
 	@cd ${WRKSRC} && \
 		${FIND} . -name "*.c" -o -name "*.h" | \
 		${XARGS} ${REINPLACE_CMD} -e 's|"nspr.h"|<nspr.h>|'
-	${FIND} ${WRKSRC}/tests -name '*.sh' | ${XARGS} ${GREP} -l -F '/bin/bash' | \
-		${XARGS} ${REINPLACE_CMD} -e 's|#! */bin/bash|#!${SH}|'
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/nss/nss ${STAGEDIR}${PREFIX}/lib/nss

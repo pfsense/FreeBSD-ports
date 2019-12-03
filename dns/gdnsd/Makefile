@@ -3,7 +3,7 @@
 
 PORTNAME=	gdnsd
 PORTVERSION=	1.11.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	dns
 MASTER_SITES=	https://github.com/blblack/gdnsd/releases/download/v${PORTVERSION}/ \
 		http://gdnsd.scaleengine.net/gdnsd/
@@ -23,18 +23,14 @@ USE_LDCONFIG=	yes
 USES=		pkgconfig libtool tar:xz
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-CONFLICTS_INSTALL=	gdnsd2-2.[0-9]*
+CONFLICTS_INSTALL=	gdnsd2-2.[0-9]* gdnsd3-3.[0-9]*
 
 USE_RC_SUBR=	gdnsd
 
 USERS?=		gdnsd
 GROUPS?=	gdnsd
 
-OPTIONS_DEFINE=	DOCS GEOIP URCU
-OPTIONS_DEFAULT=	GEOIP
-
-GEOIP_DESC=		Enable GeoIP Support
-GEOIP_RUN_DEPENDS=	GeoIP>=0:net/GeoIP
+OPTIONS_DEFINE=	DOCS URCU
 
 URCU_DESC=		Read-Copy-Update Support (Faster Zone Parsing)
 URCU_CONFIGURE_WITH=	urcu

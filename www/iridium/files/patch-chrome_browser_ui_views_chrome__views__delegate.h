@@ -1,6 +1,6 @@
---- chrome/browser/ui/views/chrome_views_delegate.h.orig	2017-04-19 19:06:30 UTC
+--- chrome/browser/ui/views/chrome_views_delegate.h.orig	2019-03-11 22:00:54 UTC
 +++ chrome/browser/ui/views/chrome_views_delegate.h
-@@ -43,7 +43,7 @@ class ChromeViewsDelegate : public views
+@@ -44,7 +44,7 @@ class ChromeViewsDelegate : public views::ViewsDelegat
    HICON GetSmallWindowIcon() const override;
    int GetAppbarAutohideEdges(HMONITOR monitor,
                               const base::Closure& callback) override;

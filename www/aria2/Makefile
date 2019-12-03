@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	aria2
-PORTVERSION=	1.33.1
-PORTREVISION=	1
+PORTVERSION=	1.34.0
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/release-${PORTVERSION}/ \
 		LOCAL/sunpoet

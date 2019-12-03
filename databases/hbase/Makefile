@@ -10,7 +10,7 @@ MASTER_SITES=	APACHE/${PORTNAME}/${PORTVERSION} \
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX} FreeBSD-${PORTNAME}-${PORTVERSION}-maven-repository.tar.gz:maven
 DIST_SUBDIR=	hadoop
 
-MAINTAINER=	demon@FreeBSD.org
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Hadoop database, a distributed, scalable, big data store
 
 LICENSE=	APACHE20
@@ -55,7 +55,7 @@ PLIST_SUB=	HBASE_USER=${HBASE_USER} \
 
 .include <bsd.port.pre.mk>
 
-.if ${JAVA_PORT_VERSION:M1.8.*}
+.if ${JAVA_PORT_VERSION:M*8*}
 JDK18_PROFILE=	,build-with-jdk8
 JDK18_SOURCE=	-DcompileSource=1.8
 .endif

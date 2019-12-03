@@ -11,12 +11,12 @@ COMMENT=	C++ class library for scientific computing
 LICENSE=	GPLv3 BSD3CLAUSE
 LICENSE_COMB=	multi
 
-BROKEN_FreeBSD_12=	fails to compile: ../blitz/blitz.h:58:12: 'iostream.h' file not found
+USES=		gmake libtool pathfix python:2.7
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-USES=		gmake libtool pathfix python
-USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-shared CXX_OPTIMIZE_FLAGS="${CFLAGS}"
+MAKE_JOBS_UNSAFE=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	blitzpp
@@ -28,9 +28,13 @@ PORTDOCS=	AUTHORS ChangeLog* LEGAL README NEWS \
 OPTIONS_DEFINE=	DOCS
 OPTIONS_SUB=	yes
 DOCS_INFO=	blitz
-DOCS_SUB_PLIST=	""
+DOCS_USES=	makeinfo
+
+ALL_TARGET=	all
+DOCS_ALL_TARGET=	info
 
 INSTALL_TARGET=	install-strip
+DOCS_INSTALL_TARGET=	install-info
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|g++|\$${CXX}|g ; \

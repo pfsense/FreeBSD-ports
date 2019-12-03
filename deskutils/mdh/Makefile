@@ -3,7 +3,7 @@
 
 PORTNAME=	mdh
 PORTVERSION=	1.9.60
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	http://www.gozer.org/programs/gtk/files/
 
@@ -12,6 +12,10 @@ COMMENT=	GTK2-based toolbar, like a smaller GNOME panel
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 USES=		gmake pkgconfig localbase tar:bzip2
 USE_GNOME=	gtk20

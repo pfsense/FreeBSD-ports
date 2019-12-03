@@ -12,6 +12,10 @@ SNAPSHOT=	20060727
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ BitTorrent Tracker
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 OPTIONS_DEFINE=	MYSQL DOCS
 
 USES=		dos2unix gmake tar:bzip2

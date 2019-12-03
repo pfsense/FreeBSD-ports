@@ -2,19 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	libevent
-PORTVERSION=	2.1.8
-PORTREVISION=	1
 DISTVERSIONPREFIX=	release-
+DISTVERSION=	2.1.11
 DISTVERSIONSUFFIX=	-stable
 CATEGORIES=	devel
 
-MAINTAINER=	mm@FreeBSD.org
+MAINTAINER=	zeising@FreeBSD.org
 COMMENT=	API for executing callback functions on events or timeouts
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf libtool pathfix python:2.7,env shebangfix
+USES=		autoreconf libtool pathfix pkgconfig python:2.7,env shebangfix
 SHEBANG_FILES=	event_rpcgen.py
 USE_GITHUB=	yes
 GNU_CONFIGURE=	yes

@@ -13,6 +13,7 @@ lib/libktcore.so.16.0.0
 %%QT_PLUGINDIR%%/ktorrent/ktorrent_scanfolder.so
 %%QT_PLUGINDIR%%/ktorrent/ktorrent_scripting.so
 %%QT_PLUGINDIR%%/ktorrent/ktorrent_search.so
+%%WORKSPACE%%%%QT_PLUGINDIR%%/ktorrent/ktorrent_shutdown.so
 %%QT_PLUGINDIR%%/ktorrent/ktorrent_stats.so
 %%QT_PLUGINDIR%%/ktorrent/ktorrent_syndication.so
 %%QT_PLUGINDIR%%/ktorrent/ktorrent_upnp.so
@@ -44,6 +45,7 @@ share/doc/HTML/sv/ktorrent/index.cache.bz2
 share/doc/HTML/sv/ktorrent/index.docbook
 share/doc/HTML/uk/ktorrent/index.cache.bz2
 share/doc/HTML/uk/ktorrent/index.docbook
+share/icons/hicolor/128x128/apps/ktorrent.png
 share/icons/hicolor/16x16/actions/kt-add-feeds.png
 share/icons/hicolor/16x16/actions/kt-add-filters.png
 share/icons/hicolor/16x16/actions/kt-remove-feeds.png
@@ -153,6 +155,7 @@ share/kxmlgui5/ktorrent/ktorrent_magnetgeneratorui.rc
 share/kxmlgui5/ktorrent/ktorrent_mediaplayerui.rc
 share/kxmlgui5/ktorrent/ktorrent_scriptingui.rc
 share/kxmlgui5/ktorrent/ktorrent_searchui.rc
+%%WORKSPACE%%share/kxmlgui5/ktorrent/ktorrent_shutdownui.rc
 share/kxmlgui5/ktorrent/ktorrent_syndicationui.rc
 share/kxmlgui5/ktorrent/ktorrentui.rc
 share/kxmlgui5/ktorrent/kttorrentactivityui.rc

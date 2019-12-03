@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hspec-discover
-PORTVERSION=	2.5.0
+PORTVERSION=	2.7.1
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 
@@ -10,9 +10,6 @@ COMMENT=	Automatically discover and run Hspec tests
 
 LICENSE=	MIT
 
-EXECUTABLE=	hspec-discover
+USES=		cabal
 
-OPTIONS_EXCLUDE=	DOCS
-
-.include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

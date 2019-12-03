@@ -2,18 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	turbolinks-source
-PORTVERSION=	5.1.0
+PORTVERSION=	5.2.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Turbolinks JavaScript assets
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

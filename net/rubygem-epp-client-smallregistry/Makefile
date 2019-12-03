@@ -1,8 +1,7 @@
-# Created by: mat@FreeBSD.org
 # $FreeBSD$
 
 PORTNAME=	epp-client-smallregistry
-PORTVERSION=	0.15.1
+PORTVERSION=	0.15.2
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

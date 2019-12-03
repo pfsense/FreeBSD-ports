@@ -3,7 +3,7 @@
 
 PORTNAME=	libdbi-drivers
 PORTVERSION=	0.9.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	databases devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${DISTVERSION}
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libdbi.so:databases/libdbi
 
-USES=		gmake libtool
+USES=		compiler:c11 gmake libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static \
 		--with-dbi-incdir=${LOCALBASE}/include \

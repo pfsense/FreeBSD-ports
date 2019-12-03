@@ -3,7 +3,7 @@
 
 PORTNAME=	see
 PORTVERSION=	3.1.1424
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang devel
 MASTER_SITES=	http://download.openpkg.org/components/cache/see/ \
 		http://lil.fr.distfiles.macports.org/see/ \
@@ -19,10 +19,6 @@ LICENSE_NAME_DTOA.C=	License of dtoa.c
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/COPYING
 LICENSE_FILE_DTOA.C=	${WRKSRC}/COPYING
 LICENSE_PERMS_DTOA.C=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-
-BROKEN_aarch64=		fails to configure: floating point not detected: Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined
-BROKEN_armv6=		fails to configure: floating point not detected: Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined
-BROKEN_armv7=		fails to configure: floating point not detected: Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined
 
 OPTIONS_DEFINE=	GC DEBUG DOCS
 OPTIONS_DEFAULT=	GC

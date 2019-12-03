@@ -3,6 +3,7 @@
 
 PORTNAME=	fuel
 DISTVERSION=	1.0.1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://fuel-scm.org/files/releases/
 
@@ -14,15 +15,9 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	fossil:devel/fossil
 
-OPTIONS_SINGLE=		GUI
-OPTIONS_SINGLE_GUI=	QT4 QT5
-OPTIONS_DEFAULT=	QT5
-
-USES=		qmake shebangfix
-QT4_USES=	qt:4
-QT4_USE=	QT=corelib,gui,webkit,linguisttools_build,moc_build,rcc_build,uic_build
-QT5_USES=	qt:5
-QT5_USE=	QT=core,gui,network,webkit,widgets,buildtools_build,linguisttools_build
+USES=		compiler:c++11-lang gmake qmake qt:5 shebangfix
+USE_QT=		core gui network webkit widgets \
+		buildtools_build linguisttools_build
 
 SHEBANG_FILES=	intl/convert.sh
 PLIST_FILES=	bin/fuel share/applications/fuel.desktop \

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	libstatgrab
-PORTVERSION=	0.91
+PORTVERSION=	0.92
 CATEGORIES=	devel
-MASTER_SITES=	http://ftp.mirrorservice.org/pub/i-scream/libstatgrab/ \
-		http://dl.ambiweb.de/mirrors/ftp.i-scream.org/libstatgrab/ \
+MASTER_SITES=	https://github.com/libstatgrab/libstatgrab/releases/download/LIBSTATGRAB_${PORTVERSION:S/./_/}/ \
+		http://ftp.mirrorservice.org/pub/i-scream/libstatgrab/ \
 		http://ftp.i-scream.org/pub/i-scream/libstatgrab/
 
 MAINTAINER=	tdb@FreeBSD.org
@@ -13,10 +13,10 @@ COMMENT=	Provides a useful interface to system statistics
 
 LICENSE=	LGPL21
 
-USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
 USES=		pathfix pkgconfig libtool
+USE_LDCONFIG=	yes
 
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--docdir=${DOCSDIR}
 
 OPTIONS_DEFINE=	TOOLS DOCS

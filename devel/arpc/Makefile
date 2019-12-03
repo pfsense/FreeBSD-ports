@@ -4,6 +4,7 @@
 PORTNAME=	arpc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	ed@FreeBSD.org
@@ -18,12 +19,8 @@ LIB_DEPENDS=	libargdata.so:devel/argdata
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyPEG2>=2.15.2:textproc/py-pyPEG2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}toposort>=1.5:devel/py-toposort@${PY_FLAVOR}
 
-BROKEN_armv6=		fails to build: *** Signal 11
-BROKEN_armv7=		fails to build: *** Signal 11
-
-IGNORE_FreeBSD_10=	requires various C++17 features
-
-USES=		cmake localbase:ldflags python:3.4+ shebangfix
+USES=		compiler:c++17-lang cmake:insource localbase:ldflags python:3.4+ \
+		shebangfix
 SHEBANG_FILES=	scripts/aprotoc.py
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes

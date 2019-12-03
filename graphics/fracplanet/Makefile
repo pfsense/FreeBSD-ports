@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fracplanet
-PORTVERSION=	0.4.0
-PORTREVISION=	16
+PORTVERSION=	0.5.1
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	SF \
 		SF/nemysisfreebsdp/:icons
@@ -16,56 +16,41 @@ COMMENT=	Interactive tool for creating random fractal planets and terrain
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_powerpc64=	fails to link: obj/fracplanet.o:(.text+0x250): undefined reference to boost::program_options::options_description::options_description
-
-BUILD_DEPENDS=	xsltproc:textproc/libxslt
 LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
+USES=		compiler:c++11-lang gl qmake:outsource qt:5
+USE_GL=		gl glu
+QMAKE_ARGS=	VERSION_NUMBER=${PORTVERSION}
+USE_QT=		buildtools_build core gui opengl
 
-USES=		gmake qmake:no_env qt:4
-USE_GL=		glu
-USE_QT=		corelib moc_build qmake_build gui opengl
-HAS_CONFIGURE=	yes
-CONFIGURE_ENV=	QTDIR="${PREFIX}"
-CONFIGURE_ARGS=	-spec ${QMAKESPEC}
-
-CXXFLAGS+=	-include ${WRKSRC}/precompiled.h
-
-PORTDOCS=	*
-
+DESKTOP_ENTRIES=	"Fracplanet" \
+			"" \
+			"${PORTNAME}" \
+			"${PORTNAME}" \
+			"Graphics;" \
+			""
 INSTALLS_ICONS=	yes
+PORTDOCS=	*
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+OPTIONS_DEFINE=		DOXYGEN DOCS
+DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
+DOXYGEN_IMPLIES=	DOCS
+
+CONFLICTS_INSTALL=	fracplanet-qt5
+
+DOCFILES=	BUGS NEWS README THANKS fracplanet.css fracplanet.htm
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
-DESKTOP_ENTRIES="Fracplanet" "" "${PORTNAME}" \
-		"${PORTNAME}" "Graphics;" ""
-
-OPTIONS_DEFINE=	DOXYGEN DOCS
-
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MDOCS} && ${PORT_OPTIONS:MDOXYGEN}
-BUILD_DEPENDS+=	doxygen:devel/doxygen
-.endif
-
 post-patch:
-.for f in BUILD VERSION configure
-	@${REINPLACE_CMD} -e 's|/bin/bash|/bin/sh|g' \
-		${WRKSRC}/${f}
-.endfor
-	@${REINPLACE_CMD} -e 's|qmake-qt4|${QMAKE} ${QMAKE_ARGS}|' \
-		${WRKSRC}/configure
-	@${REINPLACE_CMD} -e \
-		's|-lboost_program_options|-lboost_program_options -lGLU|' \
-		${WRKSRC}/fracplanet.pro
+	@${REINPLACE_CMD} -Ee 's|(OBJECTS_DIR)|#\1|' ${WRKSRC}/fracplanet.pro
 
-.if ${PORT_OPTIONS:MDOCS} && ${PORT_OPTIONS:MDOXYGEN}
-post-build:
+post-build-DOXYGEN-on:
 	cd ${WRKSRC} && doxygen .
-.endif
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/${PORTNAME} \
+		${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_MAN} ${WRKSRC}/man/man1/${PORTNAME}.1 \
 		${STAGEDIR}${MAN1PREFIX}/man/man1/
 
@@ -77,13 +62,12 @@ do-install:
 	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps
 
-.if ${PORT_OPTIONS:MDOCS}
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} BUGS NEWS README THANKS \
-		fracplanet.css fracplanet.htm ${STAGEDIR}${DOCSDIR}
-. if ${PORT_OPTIONS:MDOXYGEN}
-	@(cd ${WRKSRC} && ${COPYTREE_SHARE} "html latex" ${STAGEDIR}${DOCSDIR})
-. endif
-.endif
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCFILES} ${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.post.mk>
+post-install-DOXYGEN-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} "html latex" ${STAGEDIR}${DOCSDIR})
+
+.include <bsd.port.mk>

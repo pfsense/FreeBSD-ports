@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libxkbfile
-PORTVERSION=	1.0.9
+PORTVERSION=	1.1.0
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -12,6 +12,8 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 XORG_CAT=	lib
-USE_XORG=	x11 kbproto:both
+USE_XORG=	x11 xorgproto
+
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

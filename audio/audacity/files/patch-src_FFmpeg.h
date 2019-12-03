@@ -1,6 +1,6 @@
---- src/FFmpeg.h.orig	2016-07-26 13:34:06 UTC
+--- src/FFmpeg.h.orig	2018-10-01 14:07:33 UTC
 +++ src/FFmpeg.h
-@@ -689,7 +689,7 @@ extern "C" {
+@@ -667,7 +667,7 @@ extern "C" {
     FFMPEG_FUNCTION_WITH_RETURN(
        AVOutputFormat*,
        av_oformat_next,
@@ -8,8 +8,8 @@
 +      (const AVOutputFormat *f),
        (f)
     );
-    FFMPEG_FUNCTION_WITH_RETURN(
-@@ -756,7 +756,7 @@ extern "C" {
+ #endif
+@@ -748,7 +748,7 @@ extern "C" {
     FFMPEG_FUNCTION_WITH_RETURN(
        int,
        av_fifo_size,
@@ -17,8 +17,8 @@
 +      (const AVFifoBuffer *f),
        (f)
     );
-    FFMPEG_FUNCTION_WITH_RETURN(
-@@ -802,7 +802,7 @@ extern "C" {
+ #endif
+@@ -810,7 +810,7 @@ extern "C" {
     FFMPEG_FUNCTION_WITH_RETURN(
        AVDictionaryEntry *,
        av_dict_get,
@@ -26,4 +26,4 @@
 +      (const AVDictionary *m, const char *key, const AVDictionaryEntry *prev, int flags),
        (m, key, prev, flags)
     );
-    FFMPEG_FUNCTION_WITH_RETURN(
+ #endif

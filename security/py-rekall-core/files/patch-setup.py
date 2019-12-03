@@ -1,15 +1,13 @@
---- setup.py.orig	2017-12-05 23:44:52 UTC
+--- setup.py.orig	2019-01-04 00:51:27 UTC
 +++ setup.py
-@@ -52,28 +52,28 @@ def find_data_files(source):
- # approach ensures that any Rekall version will always work as tested - even
+@@ -53,27 +53,27 @@ def find_data_files(source):
  # when external packages are upgraded in an incompatible way.
  install_requires = [
--    'PyYAML==3.12',
--    'acora==2.0',
+     'PyYAML',
+-    'acora==2.1',
 -    'arrow==0.10.0',
 -    'artifacts==20170909',
-+    'PyYAML>=3.11',
-+    'acora>=2.0',
++    'acora>=2.1',
 +    'arrow>=0.10.0',
 +    'artifacts>=20170909',
      'future',
@@ -28,13 +26,13 @@
 -    'pytsk3==20170802',
 -    'pytz==2017.3',
 -    'rekall-capstone==3.0.5.post2',
-+    'pycryptodome>=3.4.7',
++    'pycryptodomex>=3.4.7',
 +    'pyelftools>=0.24',
 +    'pyparsing>=2.1.5',
 +    'python-dateutil>=2.6.1',
 +    'pytsk3>=20170802',
 +    'pytz>=2017.3',
-+    'capstone>=3.0.4',
++    'capstone>=3.0.5',
      "rekall-efilter >= 1.6, < 1.7",
  
      # Should match exactly the version of this package.

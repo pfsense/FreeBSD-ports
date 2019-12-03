@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	reportlab
-PORTVERSION=	3.2.0
+PORTVERSION=	3.5.21
 CATEGORIES=	print python
 MASTER_SITES=	CHEESESHOP \
-		http://www.reportlab.com/ftp/
+		https://www.reportlab.com/ftp/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PFBFER}
@@ -24,9 +24,7 @@ USE_PYTHON=	distutils autoplist
 CONFLICTS=	py*-reportlab[^3]-[^3].* \
 		py*-reportlab-[^3].*
 
-PORTSCOUT=	limit:^3\.0\.
-
-PFBFER_VERSION=	20070710
+PFBFER_VERSION=	20180109
 PFBFER=	pfbfer-${PFBFER_VERSION}.zip
 
 MAKE_ENV=	PACKAGE_PATH="${REPORTLABDIR}"
@@ -37,6 +35,9 @@ PORTDOCS=	reportlab-userguide.pdf
 
 OPTIONS_DEFINE=	CJK FREETYPE DOCS
 OPTIONS_DEFAULT=	CJK FREETYPE
+# XXX disable this 20190809 while linimon investigates why having it
+# enabled consumes all memory and swap during poudriere builds.
+OPTIONS_EXCLUDE_powerpc64=       DOCS
 CJK_DESC=	Adobe CMaps
 CJK_RUN_DEPENDS=	${LOCALBASE}/share/fonts/adobe-cmaps/ac15/cid2code.txt:print/adobe-cmaps
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2

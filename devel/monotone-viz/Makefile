@@ -17,6 +17,10 @@ COMMENT=	Visual interface for Monotone VCS with revision graphs
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 BUILD_DEPENDS=	xpmtoppm:graphics/netpbm \
 		lablgtk2:x11-toolkits/ocaml-lablgtk2
 RUN_DEPENDS=	dot:graphics/graphviz \

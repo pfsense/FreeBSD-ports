@@ -15,10 +15,9 @@ COMMENT=	Puzzle game - remove all tiles from the table
 USES=		tar:bzip2
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer image ttf
+USE_CXXSTD=	c++98
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-
-CXXFLAGS+=	-Wno-reserved-user-defined-literal
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	*

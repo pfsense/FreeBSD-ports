@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	faraday
-PORTVERSION=	0.15.2
+PORTVERSION=	0.15.4
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -12,10 +12,11 @@ COMMENT=	HTTP/REST API client library in Ruby
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	rubygem-multipart-post>=1.2:www/rubygem-multipart-post
+RUN_DEPENDS=	rubygem-multipart-post>=1.2<3:www/rubygem-multipart-post
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

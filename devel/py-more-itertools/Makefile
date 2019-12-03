@@ -2,17 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	more-itertools
-PORTVERSION=	4.0.1
+PORTVERSION=	7.2.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	More routines for operating on iterables, beyond itertools
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
-USE_PYTHON=	distutils autoplist
+USES=		python:3.4+
+USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
+
+do-test:
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

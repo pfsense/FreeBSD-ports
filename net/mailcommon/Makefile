@@ -17,17 +17,20 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpgmepp.so:security/gpgme-cpp \
 		libqgpgme.so:security/gpgme-qt5
 
-USES=		cmake:outsource compiler:c++11-lib gettext kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 tar:xz
 USE_KDE=	archive auth codecs completion config configwidgets coreaddons \
 		ecm i18n iconthemes itemmodels itemviews jobwidgets kio \
 		service sonnet syntaxhighlighting textwidgets wallet \
 		widgetsaddons windowsystem xmlgui
 # pim components
-USE_KDE+=	akonadi akonadicontacts akonadimime contacts identitymanagement ldap libkdepim libkleo mailimporter \
+USE_KDE+=	akonadi akonadicontacts akonadimime contacts identitymanagement \
+		imap ldap libkdepim libkleo mailimporter \
 		mailtransport messagelib mime pimcommon pimtextedit
-USE_QT=		core dbus network xml designer gui phonon4 testlib uiplugin \
-		uitools webkit widgets \
+USE_QT=		concurrent core dbus network xml designer gui multimedia \
+		phonon4 testlib uiplugin uitools webkit widgets \
                 buildtools_build qmake_build
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

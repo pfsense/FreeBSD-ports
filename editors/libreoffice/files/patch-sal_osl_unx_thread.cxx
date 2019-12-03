@@ -1,6 +1,12 @@
---- sal/osl/unx/thread.cxx.orig	2017-12-12 17:31:34.756103000 +0300
-+++ sal/osl/unx/thread.cxx	2017-12-12 17:33:13.924729000 +0300
-@@ -45,6 +45,10 @@
+osl_thread_priority_init_Impl() tries to assign values to variables
+declared as const on platforms not excluded by NO_PTHREAD_PRIORITY.
+This includes FreeBSD.  This is https://gerrit.libreoffice.org/69603
+upstream, and this comment and the relevant parts of this patch can
+be removed if/when that is merged.
+
+--- sal/osl/unx/thread.cxx.orig	2019-08-08 19:56:46.260832000 +0800
++++ sal/osl/unx/thread.cxx	2019-08-08 19:56:45.711297000 +0800
+@@ -46,6 +46,10 @@
  #include <sys/syscall.h>
  #endif
  

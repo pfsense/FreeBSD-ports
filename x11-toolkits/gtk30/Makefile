@@ -4,27 +4,24 @@
 # adwaita-icon-theme, gnome-themes-standard and mate-themes
 
 PORTNAME=	gtk
-PORTVERSION=	3.22.29
+PORTVERSION=	3.24.10
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME/sources/gtk+/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 PKGNAMESUFFIX=	3
 DISTNAME=	gtk+-${PORTVERSION}
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gimp Toolkit for X11 GUI (current stable version)
 
 LICENSE=	LGPL20
 
-USES=		tar:xz
-
-.if defined(REFERENCE_PORT)
-PORTSCOUT=	ignore:1
-.else
 PORTSCOUT=	limit:1,even
 
 BUILD_DEPENDS+=	at-spi2-atk>=0:accessibility/at-spi2-atk
 LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
+		libfribidi.so:converters/fribidi \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz
@@ -37,9 +34,8 @@ USE_PERL5=	build
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 USE_GNOME=	atk cairo gdkpixbuf2 introspection:build pango
-#gtk-update-icon-cache
-USES+=		compiler:c11 gettext gmake gnome libtool localbase \
-		pathfix perl5 pkgconfig
+USES=		compiler:c11 gettext gmake gnome libtool localbase \
+		pathfix perl5 pkgconfig tar:xz
 USE_XORG=	xext xrender x11 xinerama xi xrandr xcursor xfixes xdamage \
 		xcomposite
 CONFIGURE_ARGS=	--enable-x11-backend \
@@ -48,7 +44,7 @@ CPPFLAGS+=	-fno-omit-frame-pointer
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
-LIBVERSION=	0.2200.29
+LIBVERSION=	0.2404.6
 PLIST_SUB+=	LIBVERSION=${LIBVERSION}
 
 GLIB_SCHEMAS=	org.gtk.Demo.gschema.xml \
@@ -58,8 +54,7 @@ GLIB_SCHEMAS=	org.gtk.Demo.gschema.xml \
 		org.gtk.Settings.FileChooser.gschema.xml
 
 OPTIONS_DEFINE=	CUPS CLOUDPRINT COLORD DEBUG BROADWAY WAYLAND
-OPTIONS_DEFAULT=CUPS COLORD BROADWAY
-OPTIONS_EXCLUDE_FreeBSD_10=	WAYLAND
+OPTIONS_DEFAULT=CUPS COLORD BROADWAY WAYLAND
 OPTIONS_SUB=	yes
 
 BROADWAY_DESC=	Enable GDK Broadway backend for showing GTK+ in the webbrowser using HTML5 and web sockets.
@@ -74,18 +69,23 @@ CUPS_CONFIGURE_ENABLE=	cups
 
 CLOUDPRINT_DESC=	Cloud printing support
 CLOUDPRINT_CONFIGURE_ENABLE=	cloudprint
+CLOUDPRINT_USE=		gnome=libxml2
 CLOUDPRINT_LIB_DEPENDS=	librest-0.7.so:devel/librest \
+			libsoup-2.4.so:devel/libsoup \
 			libjson-glib-1.0.so:devel/json-glib
 
-# don't explicitly disable debug, this causes segfaults. ports r437293
+# don't explicitly disable debug, this causes segfaults. See ports r437293
 DEBUG_CONFIGURE_ON=	--enable-debug=yes
 
-WAYLAND_BUILD_DEPENDS=		wayland-protocols>=0:graphics/wayland-protocols
+WAYLAND_DESC=		GDK Wayland backend
 WAYLAND_CONFIGURE_ENABLE=	wayland-backend
-WAYLAND_LIB_DEPENDS=		libwayland-client.so:graphics/wayland \
-				libwayland-egl.so:graphics/mesa-libs \
-				libxkbcommon.so:x11/libxkbcommon
-WAYLAND_RUN_DEPENDS=		wayland-protocols>=0:graphics/wayland-protocols
+WAYLAND_BUILD_DEPENDS=	wayland-protocols>=0:graphics/wayland-protocols \
+			v4l_compat>=0:multimedia/v4l_compat
+WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland \
+			libxkbcommon.so:x11/libxkbcommon
+WAYLAND_RUN_DEPENDS=	wayland-protocols>=0:graphics/wayland-protocols
+WAYLAND_USES=		gl
+WAYLAND_USE=		GL=egl
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|[{]libdir[}]/locale|{datadir}/locale|g' \
@@ -109,5 +109,3 @@ post-install:
 		${STAGEDIR}${PREFIX}/man/man1
 
 .include <bsd.port.mk>
-
-.endif

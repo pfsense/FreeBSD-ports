@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libmtbl.so:devel/mtbl
 
-USES=		pkgconfig python shebangfix uniquefiles:dirs
+USES=		pkgconfig python:-3.6 shebangfix uniquefiles:dirs
 USE_PYTHON=	autoplist distutils
 
 SHEBANG_FILES=	examples/*.py examples/*/*.py
@@ -23,6 +23,8 @@ SHEBANG_FILES=	examples/*.py examples/*/*.py
 PORTEXAMPLES=	*
 
 CPPFLAGS+=	-I${LOCALBASE}/include
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}/${PYTHON_SITELIBDIR}/mtbl.so

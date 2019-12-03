@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	commit-patch
-PORTVERSION=	2.5.2
+PORTVERSION=	2.6
 CATEGORIES=	devel
 
 MAINTAINER=	lapo@lapo.it
 COMMENT=	Commit patches or partial workspace changes to a VCS repository
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	interdiff:misc/patchutils \
@@ -21,10 +21,13 @@ SHEBANG_FILES=	commit-patch
 
 GH_ACCOUNT=	caldwell
 
+NO_ARCH=	yes
 PLIST_FILES=	bin/commit-partial bin/commit-patch \
 		share/emacs/site-lisp/commit-patch-buffer.el \
 		man/man1/commit-partial.1.gz man/man1/commit-patch.1.gz
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 		${REINPLACE_CMD} -e 's/share[/]man/man/' \

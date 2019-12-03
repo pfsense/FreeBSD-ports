@@ -2,6 +2,7 @@
 
 PORTNAME=	gui
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits graphics
 PKGNAMEPREFIX=	qt5-
 
@@ -10,9 +11,11 @@ COMMENT=	Qt graphical user interface module
 
 BUILD_DEPENDS=	at-spi2-core>=0:accessibility/at-spi2-core
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
+		libevdev.so:devel/libevdev \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
+		libinput.so:x11/libinput \
 		libpng.so:graphics/png \
 		libxcb.so:x11/libxcb \
 		libxcb-image.so:x11/xcb-util-image \
@@ -22,14 +25,15 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libxkbcommon.so:x11/libxkbcommon
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		jpeg localbase qmake:no_env qt-dist:5,base
+USES=		compiler:c++11-lang gl gnome jpeg localbase qmake:no_env \
+		qt-dist:5,base xorg
 USE_GL=		gl egl
 USE_GNOME=	glib20
 USE_QT=		core dbus network qmake_build buildtools_build
 USE_XORG=	ice sm x11 xi xrender
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-eglfs \
-		-no-evdev \
+		-no-libudev \
 		-system-harfbuzz
 # Explicitely set to c++14 as to net get c++17/c++1z, as libX11's headers
 # are using the obsolete 'register' key word.
@@ -70,8 +74,6 @@ QT_CONFIG=	accessibility accessibility-atspi-bridge dbus \
 RUN_DEPENDS+=	${LOCALBASE}/share/fonts/encodings/encodings.dir:x11-fonts/encodings \
 		xorg-fonts-truetype>0:x11-fonts/xorg-fonts-truetype
 .endif
-
-CFLAGS_powerpc64=	-mminimal-toc
 
 post-configure:
 .for d in src/tools/qvkgen src/gui ${MORE_WRKSRCS}

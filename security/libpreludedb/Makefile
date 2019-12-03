@@ -3,6 +3,7 @@
 
 PORTNAME=	libpreludedb
 PORTVERSION=	1.2.6
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://www.prelude-siem.org/attachments/download/408/
 
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libprelude.so:security/libprelude
 
-USES=		gmake libtool
+USES=		compiler:c11 gmake libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-swig \
 		--without-python3

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	vmips
-PORTVERSION=	1.5
+PORTVERSION=	1.5.1
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF \
 		http://www.dgate.org/vmips/releases/${DISTNAME}/

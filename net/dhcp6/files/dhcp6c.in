@@ -4,7 +4,6 @@
 #
 
 # PROVIDE: dhcp6c
-# REQUIRE: DAEMON
 # BEFORE: NETWORKING
 # KEYWORD: shutdown
 
@@ -15,6 +14,8 @@
 # dhcp6c_enable (bool):			Set to NO by default.
 #		Set it to YES to enable dhcp6c.
 # dhcp6c_config (path):			Set to %%PREFIX%%/etc/dhcp6c.conf
+#		by default.
+# dhcp6c_dhcp6cctlkey (path):		Set to %%PREFIX%%/etc/dhcp6cctlkey
 #		by default.
 # dhcp6c_pidfile (path):		Set to /var/run/dhcp6c.pid
 #		by default.
@@ -35,17 +36,22 @@ load_rc_config $name
 
 : ${dhcp6c_enable="NO"}
 : ${dhcp6c_config="%%PREFIX%%/etc/${name}.conf"}
+: ${dhcp6c_dhcp6cctlkey="%%PREFIX%%/etc/dhcp6cctlkey"}
 : ${dhcp6c_pidfile="/var/run/${name}.pid"}
 
 required_files="${dhcp6c_config}"
 pidfile="${dhcp6c_pidfile}"
-command_args="-c ${dhcp6c_config} -p ${dhcp6c_pidfile} ${dhcp6c_flags} ${dhcp6c_interfaces}"
+command_args="-c ${dhcp6c_config} -p ${dhcp6c_pidfile} ${dhcp6c_interfaces}"
 
 dhcp6c_precmd()
 {
 	if [ -z ${dhcp6c_interfaces} ]; then
 		warn "dhcp6c_interfaces is not set."
 		return 1
+	fi
+	if [ ! -s ${dhcp6c_dhcp6cctlkey} ]; then
+		echo "Creating ${dhcp6c_dhcp6cctlkey}"
+		(umask 077 ; openssl rand -base64 48 > ${dhcp6c_dhcp6cctlkey})
 	fi
 }
 

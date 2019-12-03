@@ -1,0 +1,5 @@
+TIMESTAMP = 1565333921
+SHA256 (wpa_supplicant-2.9.tar.gz) = fcbdee7b4a64bea8177973299c8c824419c413ec2e3a95db63dd6a5dc3541f17
+SIZE (wpa_supplicant-2.9.tar.gz) = 3231785
+SHA256 (wpa-gui-icons.tar.gz) = c0d2adb4d8d9f58c015e4862a5ab50c7a562b6bb641e1bb6a0cc841249573b42
+SIZE (wpa-gui-icons.tar.gz) = 3797

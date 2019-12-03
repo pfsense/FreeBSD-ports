@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	coffeescript
-DISTVERSION=	2.2.4
+DISTVERSION=	2.4.1
 CATEGORIES=	lang
 
-MAINTAINER=	egypcio@googlemail.com
+MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Unfancy JavaScript
 
 LICENSE=	MIT
@@ -21,6 +21,7 @@ CONFLICTS_INSTALL=	cake
 
 OPTIONS_DEFINE=	EXAMPLES
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 do-install:

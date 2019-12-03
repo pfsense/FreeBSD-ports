@@ -2,22 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	libddoc
+PORTVERSION=	0.6.0
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.0-beta1
-PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	D implementation of the DDoc macro system
 
 LICENSE=	BSL
+LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
 
 BUILD_DEPENDS=	ldmd2:lang/ldc \
 		dub:devel/dub \
 		${LOCALBASE}/lib/d/libdparse.a:devel/libdparse
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	economicmodeling
+GH_ACCOUNT=	dlang-community
 # Note that beta.1 is a perfectly acceptable version, this is not required at
 # all.
 GH_TAGNAME=	${DISTVERSIONFULL:S/beta/beta./}

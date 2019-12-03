@@ -3,7 +3,8 @@
 # $FreeBSD$
 #
 # PROVIDE: rspamd
-# REQUIRE: LOGIN
+# REQUIRE: LOGIN redis
+# BEFORE:  mail
 # KEYWORD: shutdown
 #
 # Add the following line to /etc/rc.conf to enable rspamd:
@@ -11,9 +12,9 @@
 # rspamd_enable (bool):		Set to "NO" by default.
 #				Set it to "YES" to enable rspamd.
 #
-# rspamd_user (str):		Default to "nobody".
+# rspamd_user (str):		Default to "rspamd".
 #
-# rspamd_group (str):		Default to "nobody".
+# rspamd_group (str):		Default to "rspamd".
 #
 # rspamd_flags (str):		Default to "-c %%PREFIX%%/etc/rspamd.conf".
 
@@ -25,8 +26,8 @@ rcvar=rspamd_enable
 load_rc_config $name
 
 : ${rspamd_enable:="NO"}
-: ${rspamd_user="nobody"}
-: ${rspamd_group="nobody"}
+: ${rspamd_user="rspamd"}
+: ${rspamd_group="rspamd"}
 : ${rspamd_flags="-c %%PREFIX%%/etc/rspamd/rspamd.conf"}
 
 pidfile=${rspamd_pidfile:-"/var/run/rspamd/rspamd.pid"}

@@ -3,11 +3,14 @@
 
 PORTNAME=	openrct2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.2
-PORTREVISION=	1
+DISTVERSION=	0.2.3
+PORTREVISION=	2
 CATEGORIES=	games
 
-MAINTAINER=	pkubaj@anongoth.pl
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	a5555649ec59.patch:-p1
+
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Open source re-implementation of RollerCoaster Tycoon 2
 
 LICENSE=	GPLv3+
@@ -19,28 +22,40 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libspeexdsp.so:audio/speexdsp \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libcurl.so:ftp/curl \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libicuuc.so:devel/icu
 
-USES=		compiler:c++14-lang cmake:outsource desktop-file-utils iconv localbase:ldflags pkgconfig shared-mime-info ssl
+USES=		cmake compiler:c++17-lang desktop-file-utils gnome gl iconv \
+		localbase:ldflags pkgconfig sdl shared-mime-info ssl xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenRCT2
 GH_PROJECT=	OpenRCT2
+GH_TUPLE=	OpenRCT2:objects:v1.0.12:objects \
+		OpenRCT2:title-sequences:v0.1.2c:title_sequences
 USE_GL=		gl
 USE_LDCONFIG=	yes
 USE_SDL=	sdl2
-INSTALLS_ICONS=	yes
-SUB_FILES=	pkg-message
-SUB_LIST=	DISTVERSIONPREFIX=${DISTVERSIONPREFIX} \
-		DISTVERSION=${DISTVERSION} \
-		PORTNAME=${PORTNAME}
+
 CMAKE_ON=	BUILD_SHARED_LIBS
-CMAKE_OFF=	DOWNLOAD_TITLE_SEQUENCES
+CMAKE_OFF=	DOWNLOAD_TITLE_SEQUENCES \
+		DOWNLOAD_OBJECTS
+CXXFLAGS+=	-D_GNU_SOURCE
+
+PORTDATA=	*
+PORTDOCS=	changelog.txt contributors.md licence.txt readme.txt
+
+INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	DOCS
-PORTDOCS=	changelog.txt contributors.md licence.txt readme.txt
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|' \
 		${WRKSRC}/src/openrct2/config/Config.cpp
+
+post-install:
+	(cd ${WRKSRC_title_sequences}; \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/title)
+	(cd ${WRKSRC_objects}; \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/object)
 
 .include <bsd.port.mk>

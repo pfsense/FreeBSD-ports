@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 PORTSCOUT=	limit:^2.*
 
 USES=		gmake php:pecl
-IGNORE_WITH_PHP=	56
 CONFLICTS=	pecl-raphf-1*
+IGNORE_WITH_PHP=	74
 
 .include <bsd.port.mk>

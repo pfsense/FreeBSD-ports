@@ -4,7 +4,7 @@
 PORTNAME?=	xmms2
 PORTVERSION=	0.8
 DISTVERSIONSUFFIX=	DrO_o
-PORTREVISION?=	26
+PORTREVISION?=	31
 CATEGORIES?=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20${DISTVERSIONSUFFIX}
 
@@ -137,7 +137,7 @@ SPEEX_CONFIGURE_OFF=	--without-plugins="speex"
 TREMOR_LIB_DEPENDS=	libvorbisidec.so:audio/libtremor
 TREMOR_CONFIGURE_OFF=	--without-plugins="tremor"
 
-VISUAL_USE=		SDL=yes
+VISUAL_USE=		SDL=sdl
 VISUAL_LIB_DEPENDS=	libvisual-0.4.so:graphics/libvisual04
 VISUAL_CONFIGURE_OFF=	--without-optionals="vistest"
 VISUAL_CONFIGURE_ON=	--with-vis-reference-clients
@@ -199,6 +199,10 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src-clients-vistest-wscript
 .endif # !XMMS2_SLAVE
 
 .include <bsd.port.pre.mk>
+
+.if defined(XMMS2_SLAVE) && ${XMMS2_SLAVE} == perl && ${PERL_LEVEL} >= 503100
+BUILD_DEPENDS+=  p5-Pod-Parser>=0:textproc/p5-Pod-Parser
+.endif
 
 # Force to nothing to avoid bsd.openssl.mk adding definitions
 # to it when AIRPLAY option is active, waf does not understand it anyway.

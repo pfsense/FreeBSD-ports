@@ -1,18 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	cdialog
-PORTVERSION=	1.3.20160828
+DISTVERSION=	1.3.20180621
 PORTEPOCH=	2
 CATEGORIES=	devel
-MASTER_SITES=	ftp://invisible-island.net/${PORTNAME:S|^c||}/
+MASTER_SITES=	ftp://ftp.invisible-island.net/${PORTNAME:S|^c||}/
 DISTNAME=	${PORTNAME:S|^c||}-${PORTVERSION:R}-${PORTVERSION:E}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jcpierri@gmail.com
 COMMENT=	Enhanced version of 'dialog' to work with ncurses
 
 LICENSE=	LGPL21
-
-OPTIONS_DEFINE=	EXAMPLES
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		libtool:build ncurses tar:tgz
 GNU_CONFIGURE=	yes
@@ -26,6 +25,8 @@ MAKEFILE=	makefile
 
 INSTALL_TARGET=	install-strip install-man install-lib
 
+OPTIONS_DEFINE=	EXAMPLES
+
 .include <bsd.port.pre.mk>
 
 .if ${NCURSESBASE} != /usr
@@ -37,7 +38,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|$$(INSTALL_DATA) $$(LIB)|$$(INSTALL_DATA) -s $$(LIB)|'\
 		${WRKSRC}/${MAKEFILE}.in
 
-post-install:
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/samples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 

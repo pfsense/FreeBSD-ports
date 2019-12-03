@@ -3,13 +3,17 @@
 
 PORTNAME=	newscache
 PORTVERSION=	1.2.r.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	news
 MASTER_SITES=	http://src.linuxhacker.at/NewsCache/
 DISTNAME=	NewsCache-${PORTVERSION:S/.r./rc/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	NewsCache is a free cache server for USENET News
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 LIB_DEPENDS=	libsocket++.so:net/libsocket++
 

@@ -3,7 +3,8 @@
 
 PORTNAME=	snmp
 PORTVERSION=	5.7.3
-PORTREVISION=	18
+PORTREVISION=	20
+PORTEPOCH=	1
 CATEGORIES=	net-mgmt ipv6
 MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION} \
 		ZI
@@ -16,17 +17,13 @@ COMMENT=	Extendable SNMP implementation
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_SSL=	openssl-devel
-
-LIB_DEPENDS=	libpkg.so:ports-mgmt/pkg
-
 NOT_FOR_ARCHS=		mips mips64
 NOT_FOR_ARCHS_REASON=	SSP is currently broken on MIPS
 
 OPTIONS_DEFINE=	IPV6 MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
 		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP \
-		TLS
-OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX
+		TLS NEWSYSLOG
+OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX NEWSYSLOG
 OPTIONS_SUB=	yes
 
 MFD_REWRITES_DESC=	Use new MFD rewrites of mib modules
@@ -38,6 +35,7 @@ AX_DISABLE_TRAP_DESC=	Disable agentx subagent code in snmptrapd
 UNPRIVILEGED_DESC=	Allow unprivileged users to execute net-snmp
 SMUX_DESC=		Build with SNMP multiplexing (SMUX) support
 JAIL_DESC=		Options for running snmpd within a jail(8)
+NEWSYSLOG_DESC=		Automatically rotate snmpd.log via newsyslog
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -76,6 +74,10 @@ TLS_CONFIGURE_ON=	--with-security-modules=tsm --with-transports=TLSTCP,DTLSUDP
 
 .include <bsd.port.options.mk>
 
+.if (${OSVERSION} >= 1200085 || ${SSL_DEFAULT:Mopenssl111*})
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-openssl11
+.endif
+
 .if ${PORT_OPTIONS:MPYTHON}
 PYDISTUTILS_PKGNAME?=		netsnmp-python
 PYDISTUTILS_PKGVERSION?=	1.0a1
@@ -91,7 +93,7 @@ PLIST_SUB+=	PYDISTUTILS_PKGVERSION=${PYDISTUTILS_PKGVERSION}
 PLIST_SUB+=	WITH_PYTHON="@comment "
 .endif
 
-CONFIGURE_ARGS+=--with-openssl="/usr"
+CONFIGURE_ARGS+=--with-openssl="${OPENSSLBASE}"
 
 .if ${PORT_OPTIONS:MDUMMY}
 CONFIGURE_ARGS+=--with-dummy-values
@@ -123,7 +125,7 @@ PLIST_SUB+=	WITH_PERL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 CONFIGURE_ARGS+=--with-mysql
 CONFIGURE_ENV+=	MYSQLCONFIG=${LOCALBASE}/bin/mysql_config
 .endif
@@ -160,11 +162,7 @@ NET_SNMP_LOGFILE?=	/var/log/snmpd.log
 NET_SNMP_PERSISTENTDIR?=/var/net-snmp
 NET_SNMP_WITH_MIB_MODULE_LIST+=	host disman/event-mib mibII/mta_sendmail mibII/tcpTable ucd-snmp/diskio sctp-mib
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100062
-CFLAGS+=	-D_WANT_IFADDR
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100062
+.if ${OPSYS} == FreeBSD
 NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	mibII/ipv6
 .endif
 
@@ -251,6 +249,12 @@ post-patch:
 	    ${WRKSRC}/agent/mibgroup/host/hr_system.c
 	@${REINPLACE_CMD} -E -e 's|return pci_lookup_name|disabled broken|g' \
 		${WRKSRC}/configure
+.if (${OSVERSION} >= 1200085 || ${SSL_DEFAULT:Mopenssl111*})
+	@${REINPLACE_CMD} -E -e 's|SSL_library_init|OPENSSL_init_ssl|g' \
+		${WRKSRC}/configure
+.endif
+	@${CP} ${WRKSRC}/include/net-snmp/system/freebsd12.h \
+		${WRKSRC}/include/net-snmp/system/freebsd13.h
 
 post-configure:
 	@${FIND} ${WRKSRC} -name Makefile | \
@@ -282,13 +286,16 @@ post-build:
 .endif
 
 post-install: strip-files install-config-files install-doc-files
-	@${MKDIR} ${STAGEDIR}/var/agentx ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d
+	@${MKDIR} ${STAGEDIR}/var/agentx
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmp.so.${SHLIB_VERSION} libnetsnmp.so)
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmpagent.so.${SHLIB_VERSION} libnetsnmpagent.so)
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmphelpers.so.${SHLIB_VERSION} libnetsnmphelpers.so)
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmpmibs.so.${SHLIB_VERSION} libnetsnmpmibs.so)
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmptrapd.so.${SHLIB_VERSION} libnetsnmptrapd.so)
+.if ${PORT_OPTIONS:MNEWSYSLOG}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d
 	${INSTALL_DATA} ${FILESDIR}/net-snmp.conf ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d/
+.endif
 
 strip-files:
 	(cd ${STAGEDIR}${PREFIX}/bin; ${STRIP_CMD} ${BIN_FILES})

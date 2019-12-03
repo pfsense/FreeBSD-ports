@@ -77,6 +77,7 @@ shebangonefile() {
 	/usr/bin/nawk) ;;
 	/usr/bin/sed) ;;
 	/usr/sbin/dtrace) ;;
+	/usr/bin/make) ;;
 	*)
 		badinterp="${interp}"
 		;;
@@ -279,31 +280,16 @@ libperl() {
 			# No results presents a blank line from heredoc.
 			[ -z "${f}" ] && continue
 			files=$((files+1))
-			found=$(readelf -d ${f} | awk "BEGIN {libperl=1; rpath=10; runpath=100}
+			found=$(readelf -d ${f} | awk "BEGIN {libperl=1}
 				/NEEDED.*${LIBPERL}/  { libperl = 0 }
-				/RPATH.*perl.*CORE/   { rpath   = 0 }
-				/RUNPATH.*perl.*CORE/ { runpath = 0 }
-				END {print libperl+rpath+runpath}
+				END {print libperl}
 				")
 			case "${found}" in
-				*1)
+				1)
 					warn "${f} is not linked with ${LIBPERL}, not respecting lddlflags?"
 					;;
-				*0)
+				0)
 					has_some_libperl_so=1
-					# Older Perl did not USE_LDCONFIG.
-					if [ ! -f ${LOCALBASE}/${LDCONFIG_DIR}/perl5 ]; then
-						case "${found}" in
-							*1?)
-								warn "${f} does not have a rpath to ${LIBPERL}, not respecting lddlflags?"
-								;;
-						esac
-						case "${found}" in
-							1??)
-								warn "${f} does not have a runpath to ${LIBPERL}, not respecting lddlflags?"
-								;;
-						esac
-					fi
 					;;
 			esac
 		# Use heredoc to avoid losing rc from find|while subshell
@@ -312,7 +298,7 @@ libperl() {
 		EOT
 
 		if [ ${files} -gt 0 -a ${has_some_libperl_so} -eq 0 ]; then
-			err "None of the .so in ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL} are linked with ${LIBPERL}, see above for the full list."
+			err "None of the ${files} .so in ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL} are linked with ${LIBPERL}, see above for the full list."
 			return 1
 		else
 			return 0
@@ -378,14 +364,11 @@ proxydeps_suggest_uses() {
 		${pkg} = "graphics/cairo" -o \
 		${pkg} = "graphics/cairomm" -o \
 		${pkg} = "devel/dconf" -o \
-		${pkg} = "audio/esound" -o \
 		${pkg} = "devel/gconf2" -o \
 		${pkg} = "devel/gconfmm26" -o \
-		${pkg} = "devel/glib12" -o \
 		${pkg} = "devel/glib20" -o \
 		${pkg} = "devel/glibmm" -o \
 		${pkg} = "audio/gsound" -o \
-		${pkg} = "x11-toolkits/gtk12" -o \
 		${pkg} = "x11-toolkits/gtk20" -o \
 		${pkg} = "x11-toolkits/gtk30" -o \
 		${pkg} = "www/gtkhtml3" -o \
@@ -451,61 +434,91 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "x11/mate-panel" ]; then warn "you need USE_MATE+=panel"
 	elif [ ${pkg} = "sysutils/mate-polkit" ]; then warn "you need USE_MATE+=polkit"
 	# KDE
-	# grep -B1 _LIB= Mk/Uses/kde.mk | grep _PORT=|sed -e 's/^\(.*\)_PORT=[[:space:]]*\([^[:space:]]*\).*/elif [ ${pkg} = "\2" ]; then warn "you need to use USE_KDE+=\1"/'
-	elif [ ${pkg} = "sysutils/baloo" ]; then warn "you need to use USE_KDE+=baloo"
+	# grep -B1 _LIB= Mk/Uses/kde.mk | grep _PORT=|sed -e 's/^kde-\(.*\)_PORT=[[:space:]]*\([^[:space:]]*\).*/elif [ ${pkg} = "\2" ]; then warn "you need to use USE_KDE+=\1"/' 
+	# KDE Applications
+	elif [ ${pkg} = "net/akonadi-contacts" ]; then warn "you need to use USE_KDE+=akonadicontacts"
+	elif [ ${pkg} = "deskutils/akonadi-import-wizard" ]; then warn "you need to use USE_KDE+=akonadiimportwizard"
+	elif [ ${pkg} = "net/akonadi-mime" ]; then warn "you need to use USE_KDE+=akonadimime"
+	elif [ ${pkg} = "net/akonadi-notes" ]; then warn "you need to use USE_KDE+=akonadinotes"
+	elif [ ${pkg} = "net/akonadi-calendar" ]; then warn "you need to use USE_KDE+=akonadicalendar"
+	elif [ ${pkg} = "net/akonadi-search" ]; then warn "you need to use USE_KDE+=akonadisearch"
+	elif [ ${pkg} = "net/kalarmcal" ]; then warn "you need to use USE_KDE+=alarmcalendar"
+	elif [ ${pkg} = "net/kblog" ]; then warn "you need to use USE_KDE+=blog"
+	elif [ ${pkg} = "net/calendarsupport" ]; then warn "you need to use USE_KDE+=calendarsupport"
+	elif [ ${pkg} = "net/kcalcore" ]; then warn "you need to use USE_KDE+=calendarcore"
+	elif [ ${pkg} = "net/kcalutils" ]; then warn "you need to use USE_KDE+=calendarutils"
+	elif [ ${pkg} = "net/kcontacts" ]; then warn "you need to use USE_KDE+=contacts"
+	elif [ ${pkg} = "net/eventviews" ]; then warn "you need to use USE_KDE+=eventviews"
+	elif [ ${pkg} = "net/libkgapi" ]; then warn "you need to use USE_KDE+=gapi"
+	elif [ ${pkg} = "deskutils/grantleetheme" ]; then warn "you need to use USE_KDE+=grantleetheme"
+	elif [ ${pkg} = "net/libgravatar" ]; then warn "you need to use USE_KDE+=gravatar"
+	elif [ ${pkg} = "net/kidentitymanagement" ]; then warn "you need to use USE_KDE+=identitymanagement"
+	elif [ ${pkg} = "net/kimap" ]; then warn "you need to use USE_KDE+=imap"
+	elif [ ${pkg} = "net/incidenceeditor" ]; then warn "you need to use USE_KDE+=incidenceeditor"
+	elif [ ${pkg} = "deskutils/kdepim-apps-libs" ]; then warn "you need to use USE_KDE+=kdepim-apps-libs"
+	elif [ ${pkg} = "net/kitinerary" ]; then warn "you need to use USE_KDE+=kitinerary"
+	elif [ ${pkg} = "net/kontactinterface" ]; then warn "you need to use USE_KDE+=kontactinterface"
+	elif [ ${pkg} = "net/kdav" ]; then warn "you need to use USE_KDE+=kpimdav"
+	elif [ ${pkg} = "security/kpkpass" ]; then warn "you need to use USE_KDE+=kpkpass"
+	elif [ ${pkg} = "net/ksmtp" ]; then warn "you need to use USE_KDE+=ksmtp"
+	elif [ ${pkg} = "net/kldap" ]; then warn "you need to use USE_KDE+=ldap"
+	elif [ ${pkg} = "deskutils/libkdepim" ]; then warn "you need to use USE_KDE+=libkdepim"
+	elif [ ${pkg} = "security/libkleo" ]; then warn "you need to use USE_KDE+=libkleo"
+	elif [ ${pkg} = "net/libksieve" ]; then warn "you need to use USE_KDE+=libksieve"
+	elif [ ${pkg} = "net/mailcommon" ]; then warn "you need to use USE_KDE+=mailcommon"
+	elif [ ${pkg} = "net/mailimporter" ]; then warn "you need to use USE_KDE+=mailimporter"
+	elif [ ${pkg} = "net/kmailtransport" ]; then warn "you need to use USE_KDE+=mailtransport"
+	elif [ ${pkg} = "net/kmbox" ]; then warn "you need to use USE_KDE+=mbox"
+	elif [ ${pkg} = "net/messagelib" ]; then warn "you need to use USE_KDE+=messagelib"
+	elif [ ${pkg} = "net/kmime" ]; then warn "you need to use USE_KDE+=mime"
+	elif [ ${pkg} = "net/pimcommon" ]; then warn "you need to use USE_KDE+=pimcommon"
+	elif [ ${pkg} = "net/kpimtextedit" ]; then warn "you need to use USE_KDE+=pimtextedit"
+	elif [ ${pkg} = "net/ktnef" ]; then warn "you need to use USE_KDE+=tnef"
+	elif [ ${pkg} = "databases/akonadi" ]; then warn "you need to use USE_KDE+=akonadi"
 	elif [ ${pkg} = "sysutils/baloo-widgets" ]; then warn "you need to use USE_KDE+=baloo-widgets"
-	elif [ ${pkg} = "x11/kactivities" ]; then warn "you need to use USE_KDE+=kactivities"
-	elif [ ${pkg} = "editors/kate" ]; then warn "you need to use USE_KDE+=kate"
-	elif [ ${pkg} = "x11/kdelibs4" ]; then warn "you need to use USE_KDE+=kdelibs"
-	elif [ ${pkg} = "sysutils/kfilemetadata" ]; then warn "you need to use USE_KDE+=kfilemetadata"
 	elif [ ${pkg} = "audio/libkcddb" ]; then warn "you need to use USE_KDE+=libkcddb"
 	elif [ ${pkg} = "audio/libkcompactdisc" ]; then warn "you need to use USE_KDE+=libkcompactdisc"
-	elif [ ${pkg} = "graphics/libkdcraw-kde4" ]; then warn "you need to use USE_KDE+=libkdcraw"
-	elif [ ${pkg} = "misc/libkdeedu" ]; then warn "you need to use USE_KDE+=libkdeedu"
+	elif [ ${pkg} = "graphics/libkdcraw" ]; then warn "you need to use USE_KDE+=libkdcraw"
 	elif [ ${pkg} = "games/libkdegames" ]; then warn "you need to use USE_KDE+=libkdegames"
-	elif [ ${pkg} = "graphics/libkexiv2-kde4" ]; then warn "you need to use USE_KDE+=libkexiv2"
-	elif [ ${pkg} = "graphics/libkipi-kde4" ]; then warn "you need to use USE_KDE+=libkipi"
-	elif [ ${pkg} = "x11/libkonq" ]; then warn "you need to use USE_KDE+=libkonq"
+	elif [ ${pkg} = "misc/libkeduvocdocument" ]; then warn "you need to use USE_KDE+=libkeduvocdocument"
+	elif [ ${pkg} = "graphics/libkexiv2" ]; then warn "you need to use USE_KDE+=libkexiv2"
+	elif [ ${pkg} = "graphics/libkipi" ]; then warn "you need to use USE_KDE+=libkipi"
 	elif [ ${pkg} = "graphics/libksane" ]; then warn "you need to use USE_KDE+=libksane"
 	elif [ ${pkg} = "astro/marble" ]; then warn "you need to use USE_KDE+=marble"
-	elif [ ${pkg} = "sysutils/nepomuk-core" ]; then warn "you need to use USE_KDE+=nepomuk-core"
-	elif [ ${pkg} = "sysutils/nepomuk-widgets" ]; then warn "you need to use USE_KDE+=nepomuk-widgets"
 	elif [ ${pkg} = "graphics/okular" ]; then warn "you need to use USE_KDE+=okular"
-	elif [ ${pkg} = "deskutils/kdepimlibs4" ]; then warn "you need to use USE_KDE+=pimlibs"
-	elif [ ${pkg} = "devel/ruby-qtruby" ]; then warn "you need to use USE_KDE+=qtruby"
-	elif [ ${pkg} = "devel/smokegen" ]; then warn "you need to use USE_KDE+=smokegen"
-	elif [ ${pkg} = "devel/smokekde" ]; then warn "you need to use USE_KDE+=smokekde"
-	elif [ ${pkg} = "devel/smokeqt" ]; then warn "you need to use USE_KDE+=smokeqt"
-	elif [ ${pkg} = "x11/kde4-workspace" ]; then warn "you need to use USE_KDE+=workspace"
-	elif [ ${pkg} = "databases/akonadi" ]; then warn "you need to use USE_KDE+=akonadi"
-	elif [ ${pkg} = "x11-toolkits/attica" ]; then warn "you need to use USE_KDE+=attica"
-	elif [ ${pkg} = "x11/qimageblitz" ]; then warn "you need to use USE_KDE+=qimageblitz"
-	elif [ ${pkg} = "textproc/soprano" ]; then warn "you need to use USE_KDE+=soprano"
-	elif [ ${pkg} = "deskutils/libstreamanalyzer" ]; then warn "you need to use USE_KDE+=strigi"
+	# KDE Plasma
+	elif [ ${pkg} = "x11/plasma5-kactivitymanagerd" ]; then warn "you need to use USE_KDE+=activitymanagerd"
+	elif [ ${pkg} = "x11-wm/plasma5-kdecoration" ]; then warn "you need to use USE_KDE+=decoration"
+	elif [ ${pkg} = "devel/plasma5-khotkeys" ]; then warn "you need to use USE_KDE+=hotkeys"
+	elif [ ${pkg} = "sysutils/plasma5-kmenuedit" ]; then warn "you need to use USE_KDE+=kmenuedit"
+	elif [ ${pkg} = "security/plasma5-kscreenlocker" ]; then warn "you need to use USE_KDE+=kscreenlocker"
+	elif [ ${pkg} = "x11/plasma5-libkscreen" ]; then warn "you need to use USE_KDE+=libkscreen"
+	elif [ ${pkg} = "sysutils/plasma5-libksysguard" ]; then warn "you need to use USE_KDE+=libksysguard"
+	elif [ ${pkg} = "deskutils/plasma5-milou" ]; then warn "you need to use USE_KDE+=milou"
+	elif [ ${pkg} = "x11-themes/plasma5-oxygen" ]; then warn "you need to use USE_KDE+=oxygen"
+	elif [ ${pkg} = "x11/plasma5-plasma-workspace" ]; then warn "you need to use USE_KDE+=plasma-workspace"
+	elif [ ${pkg} = "sysutils/plasma5-powerdevil" ]; then warn "you need to use USE_KDE+=powerdevil"
 	# KDE Frameworks
-	elif [ ${pkg} = "devel/kf5-extra-cmake-modules" ]; then warn "you need to use USE_KDE+=ecm"
+	elif [ ${pkg} = "x11-toolkits/kf5-attica" ]; then warn "you need to use USE_KDE+=attica"
+	elif [ ${pkg} = "sysutils/kf5-baloo" ]; then warn "you need to use USE_KDE+=baloo"
+	elif [ ${pkg} = "x11/kf5-frameworkintegration" ]; then warn "you need to use USE_KDE+=frameworkintegration"
 	elif [ ${pkg} = "devel/kf5-kcmutils" ]; then warn "you need to use USE_KDE+=kcmutils"
 	elif [ ${pkg} = "devel/kf5-kdeclarative" ]; then warn "you need to use USE_KDE+=kdeclarative"
-	elif [ ${pkg} = "devel/kf5-kfilemetadata" ]; then warn "you need to use USE_KDE+=filemetadata5"
-	elif [ ${pkg} = "devel/kf5-kio" ]; then warn "you need to use USE_KDE+=kio"
-	elif [ ${pkg} = "devel/kf5-solid" ]; then warn "you need to use USE_KDE+=solid"
-	elif [ ${pkg} = "devel/kf5-threadweaver" ]; then warn "you need to use USE_KDE+=threadweaver"
-	elif [ ${pkg} = "devel/kio-extras-kf5" ]; then warn "you need to use USE_KDE+=kio-extras"
-	elif [ ${pkg} = "graphics/kf5-kimageformats" ]; then warn "you need to use USE_KDE+=kimageformats"
-	elif [ ${pkg} = "lang/kf5-kross" ]; then warn "you need to use USE_KDE+=kross"
-	elif [ ${pkg} = "security/kf5-kdesu" ]; then warn "you need to use USE_KDE+=kdesu"
-	elif [ ${pkg} = "sysutils/kf5-baloo" ]; then warn "you need to use USE_KDE+=baloo5"
-	elif [ ${pkg} = "sysutils/kf5-bluez-qt" ]; then warn "you need to use USE_KDE+=bluez-qt"
-	elif [ ${pkg} = "textproc/kf5-sonnet" ]; then warn "you need to use USE_KDE+=sonnet"
-	elif [ ${pkg} = "www/kf5-kdewebkit" ]; then warn "you need to use USE_KDE+=kdewebkit"
-	elif [ ${pkg} = "www/kf5-khtml" ]; then warn "you need to use USE_KDE+=khtml"
-	elif [ ${pkg} = "x11-themes/kf5-breeze-icons" ]; then warn "you need to use USE_KDE+=breeze-icons"
-	elif [ ${pkg} = "x11-themes/kf5-oxygen-icons5" ]; then warn "you need to use USE_KDE+=oxygen-icons5"
-	elif [ ${pkg} = "x11-toolkits/kf5-attica" ]; then warn "you need to use USE_KDE+=attica5"
-	elif [ ${pkg} = "x11/kf5-frameworkintegration" ]; then warn "you need to use USE_KDE+=frameworkintegration"
 	elif [ ${pkg} = "x11/kf5-kded" ]; then warn "you need to use USE_KDE+=kded"
 	elif [ ${pkg} = "x11/kf5-kdelibs4support" ]; then warn "you need to use USE_KDE+=kdelibs4support"
+	elif [ ${pkg} = "security/kf5-kdesu" ]; then warn "you need to use USE_KDE+=kdesu"
+	elif [ ${pkg} = "www/kf5-kdewebkit" ]; then warn "you need to use USE_KDE+=kdewebkit"
+	elif [ ${pkg} = "www/kf5-khtml" ]; then warn "you need to use USE_KDE+=khtml"
+	elif [ ${pkg} = "devel/kf5-kio" ]; then warn "you need to use USE_KDE+=kio"
+	elif [ ${pkg} = "lang/kf5-kross" ]; then warn "you need to use USE_KDE+=kross"
 	elif [ ${pkg} = "x11/kf5-plasma-framework" ]; then warn "you need to use USE_KDE+=plasma-framework"
+	elif [ ${pkg} = "graphics/kf5-prison" ]; then warn "you need to use USE_KDE+=prison"
+	elif [ ${pkg} = "misc/kf5-purpose" ]; then warn "you need to use USE_KDE+=purpose"
+	elif [ ${pkg} = "devel/kf5-solid" ]; then warn "you need to use USE_KDE+=solid"
+	elif [ ${pkg} = "textproc/kf5-sonnet" ]; then warn "you need to use USE_KDE+=sonnet"
+	elif [ ${pkg} = "net/kf5-syndication" ]; then warn "you need to use USE_KDE+=syndication"
+	elif [ ${pkg} = "textproc/kf5-syntax-highlighting" ]; then warn "you need to use USE_KDE+=syntaxhighlighting"
+	elif [ ${pkg} = "devel/kf5-threadweaver" ]; then warn "you need to use USE_KDE+=threadweaver"
 	elif expr ${pkg} : '.*/kf5-.*' > /dev/null; then
 		warn "you need USE_KDE+=$(echo ${pkg} | sed -E 's|.*/kf5-k||')"
 	# GStreamer 0.10
@@ -549,9 +562,6 @@ proxydeps_suggest_uses() {
 		warn "you need USE_XORG+=$(echo ${pkg} | sed -E 's|.*/lib||' | tr '[:upper:]' '[:lower:]')"
 	elif [ ${pkg} = 'x11/pixman' ]; then
 		warn "you need USE_XORG+=pixman"
-	# Qt4
-	elif expr ${pkg} : '.*/qt4-.*' > /dev/null; then
-		warn "you need USES=qt:4 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt4-||')"
 	# Qt5
 	elif expr ${pkg} : '.*/qt5-.*' > /dev/null; then
 		warn "you need USES=qt:5 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt5-||')"
@@ -604,14 +614,11 @@ proxydeps_suggest_uses() {
 	# openal
 	elif [ ${pkg} = "audio/openal" -o ${pkg} = "audio/openal-soft" -o ${pkg} = "audio/freealut" ]; then
 		warn "you need USES+=openal"
-	# pure
-	elif [ ${pkg} = "lang/pure" ]; then
-		warn "you need USES+=pure"
 	# readline
 	elif [ ${pkg} = "devel/readline" ]; then
 		warn "you need USES+=readline"
 	# ssl
-	elif [ ${pkg} = "security/openssl" -o ${pkg} = "security/openssl-devel" \
+	elif [ ${pkg} = "security/openssl" -o ${pkg} = "security/openssl111" \
 	  -o ${pkg} = "security/libressl" -o ${pkg} = "security/libressl-devel" \
 	  ]; then
 		warn "you need USES=ssl"
@@ -669,7 +676,7 @@ proxydeps() {
 				# If we don't already depend on it, and we don't provide it
 				if ! listcontains ${dep_file_pkg} "${LIB_RUN_DEPENDS} ${PKGORIGIN}"; then
 					# If the package has a flavor, check that the dependency is not on that particular flavor.
-					flavor=$(pkg annotate -q -S "${dep_file_pkg}" flavor)
+					flavor=$(pkg annotate -q -S "$(pkg which -q "${dep_file}")" flavor)
 					if [ -n "${flavor}" ]; then
 						if listcontains ${dep_file_pkg}@${flavor} "${LIB_RUN_DEPENDS} ${PKGORIGIN}"; then
 							continue
@@ -905,7 +912,7 @@ flavors()
 		pkgnames=$(make -C "${CURDIR}" flavors-package-names|sort)
 		uniques=$(echo "${pkgnames}"|uniq)
 		if [ "$pkgnames" != "${uniques}" ]; then
-			err "Package names are not uniques with flavors:"
+			err "Package names are not unique with flavors:"
 			make -C "${CURDIR}" pretty-flavors-package-names >&2
 			err "maybe use <flavor>_PKGNAMEPREFIX/SUFFIX".
 			rc=1
@@ -914,9 +921,95 @@ flavors()
 	return ${rc}
 }
 
+license()
+{
+	local lic autoaccept pkgmirror #distsell distmirror pkgsell
+
+	if [ -n "$DISABLE_LICENSES" ]; then
+		warn "You have disabled the licenses framework with DISABLE_LICENSES, unable to run checks"
+	elif [ -n "$LICENSE" ]; then
+		for lic in $LICENSE_PERMS; do
+			case "$lic" in
+				auto-accept) autoaccept=1 ;;
+				#dist-mirror) distmirror=1 ;;
+				#dist-sell)   distsell=1   ;;
+				pkg-mirror)  pkgmirror=1  ;;
+				#pkg-sell)    pkgsell=1    ;;
+			esac
+		done
+
+		if [ -z "$autoaccept" ]; then
+			warn "License is not auto-accepted, packages will not be built, ports depending on this one will be ignored."
+		fi
+		if [ -z "$pkgmirror" ]; then
+			warn "License does not allow package to be distributed, ports depending on this one will be ignored"
+		fi
+	fi
+
+	return 0
+}
+
+# This is to prevent adding dependencies to meta ports that are only there to
+# improve the end user experience.
+depends_blacklist()
+{
+	local dep rc instead
+
+	rc=0
+
+	for dep in ${UNIFIED_DEPENDS}; do
+		origin=$(expr "${dep}" : ".*:\([^@]*\)")
+		instead=""
+
+		case "$origin" in
+			lang/python|lang/python2|lang/python3)
+				# lang/python depends on lang/pythonX, but it's
+				# ok, it is also in the blacklist.
+				if [ ${PKGORIGIN} != lang/python ]; then
+					instead="USES=python:xy with a specific version"
+				fi
+				;;
+			lang/gcc)
+				instead="USE_GCC"
+				;;
+			lang/julia)
+				instead="a dependency on lang/julia\${JULIA_DEFAULT:S/.//}"
+				;;
+			devel/llvm)
+				instead="a dependency on devel/llvm\${LLVM_DEFAULT}"
+				;;
+			www/py-django)
+				instead="one of the www/py-djangoXYZ port"
+				;;
+		esac
+
+		if [ -n "${instead}" ]; then
+			err "$origin should not be depended upon. Instead, use $instead."
+			rc=1
+		fi
+	done
+
+	return $rc
+}
+
+pkgmessage()
+{
+	for message in ${PKGMESSAGES}; do
+		if [ -f "${message}" ]; then
+			if ! head -1 "${message}" | grep -q '^\['; then
+				warn "${message} not in UCL format, will be shown on initial install only."
+				warn "See https://www.freebsd.org/doc/en/books/porters-handbook/pkg-files.html#porting-message"
+			fi
+		fi
+	done
+
+	return 0
+}
+
 checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo"
 checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
 checks="$checks proxydeps sonames perlcore no_arch gemdeps gemfiledeps flavors"
+checks="$checks license depends_blacklist pkgmessage"
 
 ret=0
 cd ${STAGEDIR} || exit 1

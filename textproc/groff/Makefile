@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	groff
-PORTVERSION=	1.22.3
+PORTVERSION=	1.22.4
+PORTREVISION=	2
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 
@@ -11,13 +12,12 @@ COMMENT=	Software typesetting package
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	gsfonts>=0:print/gsfonts \
-		psselect:print/psutils
+BUILD_DEPENDS=	psselect:print/psutils
 RUN_DEPENDS:=	psselect:print/psutils
 
 MAKE_JOBS_UNSAFE=	yes
 
-USES=		cpe ghostscript gmake perl5 shebangfix
+USES=		cpe gmake perl5 shebangfix makeinfo
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-awk=/usr/bin/awk
 CONFIGURE_ENV+=	PERLPATH=${perl_CMD} # shebangfix
@@ -30,6 +30,11 @@ SHEBANG_LANG=	sed
 sed_OLD_CMD=	/bin/sed
 sed_CMD=	/usr/bin/sed
 
+.ifdef QEMU_EMULATING
+# XXX bug 224740: configure hangs: GSlice: failed to allocate 496 bytes (alignment: 512)
+CONFIGURE_ENV+=	gl_cv_func_printf_enomem=no
+.endif
+
 # Canonicalize to A4 if set.
 .if defined(A4) || (defined(PAPERSIZE) && ${PAPERSIZE:tu} == "A4")
 PAPERSIZE=A4
@@ -38,9 +43,10 @@ PAPERSIZE=A4
 CONFIGURE_ENV+=	PAGE=${PAPERSIZE}
 .endif
 
-OPTIONS_DEFINE=	X11
+OPTIONS_DEFINE=	X11 URWFONTS
 X11_DESC=	X11 devices (-TX*) and gxditview
-OPTIONS_DEFAULT=	X11
+URWFONTS_DESC=	URW fonts support (needed for growpdf)
+OPTIONS_DEFAULT=	X11 URWFONTS
 
 CONFLICTS=	ja-groff-[0-9]*
 
@@ -50,11 +56,15 @@ DATADIR=	${PREFIX}/share/${PORTNAME}/${PORTVERSION}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 EXAMPLESDIR=	${DOCSDIR}/examples
 
+URWFONTS_CONFIGURE_OFF= --without-urw-fonts-dir --without-gs
+URWFONTS_USES=	ghostscript:build
+URWFONTS_BUILD_DEPENDS=	gsfonts>=0:print/gsfonts
+OPTIONS_SUB=	yes
+
 .include <bsd.port.options.mk>
 
 .if ! ${PORT_OPTIONS:MX11}
 CONFIGURE_ARGS+=--without-x
-PLIST_SUB+=	X11="@comment "
 .if exists(${LOCALBASE}/bin/pnmcut) && exists(${LOCALBASE}/bin/pnmcrop) && \
     exists(${LOCALBASE}/bin/pnmtops) && exists(${LOCALBASE}/bin/pnmtopng)
 PLIST_SUB+=	HTMLDOCS=""
@@ -66,26 +76,8 @@ USE_XORG=	x11 xaw xmu
 BUILD_DEPENDS+=	${LOCALBASE}/bin/pnmtops:graphics/netpbm
 RUN_DEPENDS+=	${LOCALBASE}/bin/pnmtops:graphics/netpbm
 CONFIGURE_ARGS+=--with-x --with-appresdir=${PREFIX}/lib/X11/app-defaults
-PLIST_SUB+=	X11=""
 PLIST_SUB+=	HTMLDOCS=""
 .endif
-
-# Run in src/libs/gnulib subdir, too
-post-configure:
-	@(cd ${WRKSRC}/src/libs/gnulib && \
-	    ${SET_LATE_CONFIGURE_ARGS} \
-	    if ! ${SETENV} CC="${CC}" CPP="${CPP}" CXX="${CXX}" \
-	    CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" \
-	    INSTALL="/usr/bin/install -c" \
-	    INSTALL_DATA="${INSTALL_DATA}" \
-	    INSTALL_LIB="${INSTALL_LIB}" \
-	    INSTALL_PROGRAM="${INSTALL_PROGRAM}" \
-	    INSTALL_SCRIPT="${INSTALL_SCRIPT}" \
-	    ${CONFIGURE_ENV} ${CONFIGURE_CMD} ${CONFIGURE_ARGS}; then \
-		 ${ECHO_MSG} "===>  Script \"${CONFIGURE_SCRIPT}\" failed unexpectedly."; \
-		 (${ECHO_CMD} ${CONFIGURE_FAIL_MESSAGE}) | ${FMT} 75 79 ; \
-		 ${FALSE}; \
-	    fi)
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/mdoc.local ${STAGEDIR}/${PREFIX}/share/groff/site-tmac

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netsed
-PORTVERSION=	1.2
+PORTVERSION=	1.3
 CATEGORIES=	net security
 MASTER_SITES=	http://silicone.homelinux.org/release/netsed/
 
@@ -14,6 +14,8 @@ MAKE_ARGS=	CFLAGS="${CFLAGS}"
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	README
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	siren
-PORTVERSION=	0.7
-PORTREVISION=	3
+PORTVERSION=	0.9
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.kariliq.nl/${PORTNAME}/dist/
 

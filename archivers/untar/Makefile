@@ -13,6 +13,10 @@ EXTRACT_ONLY=
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lists/Extracts files from a "*.tgz" or "*.gz" archive
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 MAKEFILE=	/usr/share/mk/bsd.prog.mk
 NO_WRKSUBDIR=	yes
 PLIST_FILES=	bin/untar

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	kdirstat
-PORTVERSION=	2.7.8
-PORTREVISION=	3
+PORTVERSION=	3.1.4
+PORTREVISION=	1
 CATEGORIES=	sysutils kde
 MASTER_SITES=	https://bitbucket.org/jeromerobert/k4dirstat/get/
 DISTNAME=	k4dirstat-${PORTVERSION}
@@ -14,13 +14,15 @@ COMMENT=	KDE utility that sums up disk usage for directory trees
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-WRKSRC=		${WRKDIR}/jeromerobert-k4dirstat-3a4663ee20e7
+USES=		cmake compiler:c++11-lang cpe desktop-file-utils gettext-tools \
+		kde:5 qt:5 tar:bzip2
 
-USES=		cmake cpe gettext-tools kde:4 qt:4 tar:bzip2
+WRKSRC=		${WRKDIR}/jeromerobert-k4dirstat-0fd87f361645
+
 CPE_VENDOR=	kdirstat_project
-USE_KDE=	automoc4 kdelibs libkonq
-USE_QT=		corelib dbus gui network qt3support svg xml \
-		moc_build qmake_build rcc_build uic_build
+USE_KDE=	auth codecs completion config configwidgets coreaddons doctools \
+		i18n iconthemes jobwidgets kio service widgetsaddons xmlgui
+USE_QT=		buildtools_build core gui dbus network qmake_build widgets xml
 
 post-patch:
 	@${REINPLACE_CMD} -e \

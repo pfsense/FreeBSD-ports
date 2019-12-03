@@ -2,7 +2,6 @@ bin/ktp-contactlist
 share/applications/org.kde.ktpcontactlist.desktop
 share/dbus-1/services/org.kde.ktpcontactlist.service
 share/locale/ar/LC_MESSAGES/ktp-contactlist.mo
-share/locale/ast/LC_MESSAGES/ktp-contactlist.mo
 share/locale/bs/LC_MESSAGES/ktp-contactlist.mo
 share/locale/ca/LC_MESSAGES/ktp-contactlist.mo
 share/locale/ca@valencia/LC_MESSAGES/ktp-contactlist.mo
@@ -13,6 +12,7 @@ share/locale/el/LC_MESSAGES/ktp-contactlist.mo
 share/locale/en_GB/LC_MESSAGES/ktp-contactlist.mo
 share/locale/es/LC_MESSAGES/ktp-contactlist.mo
 share/locale/et/LC_MESSAGES/ktp-contactlist.mo
+share/locale/eu/LC_MESSAGES/ktp-contactlist.mo
 share/locale/fi/LC_MESSAGES/ktp-contactlist.mo
 share/locale/fr/LC_MESSAGES/ktp-contactlist.mo
 share/locale/ga/LC_MESSAGES/ktp-contactlist.mo

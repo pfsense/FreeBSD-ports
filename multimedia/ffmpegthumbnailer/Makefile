@@ -3,10 +3,10 @@
 
 PORTNAME=	ffmpegthumbnailer
 PORTVERSION=	2.2.0
-PORTREVISION=	5
+PORTREVISION=	10
 CATEGORIES=	multimedia graphics
 
-MAINTAINER=	clutton@zoho.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight video thumbnailer that can be used by file managers
 
 LICENSE=	GPLv2+
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 USE_GITHUB=	yes
 GH_ACCOUNT=	dirkvdb
 
-USES=		cmake:outsource compiler:c++11-lib jpeg localbase pathfix pkgconfig
+USES=		cmake compiler:c++11-lib jpeg localbase pathfix pkgconfig
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 

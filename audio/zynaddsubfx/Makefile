@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	zynaddsubfx
-PORTVERSION=	3.0.3
+PORTVERSION=	3.0.5
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -19,7 +20,7 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libmxml.so:textproc/mxml \
 		liblo.so:audio/liblo
 
-USES=		tar:bzip2 cmake pkgconfig
+USES=		cmake:insource compiler:c++11-lang pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=		OSS JACK GUI PORTAUDIO LASH DOCS EXAMPLES
@@ -47,7 +48,7 @@ GUI_ON=				-DGuiModule:STRING=fltk
 GUI_CMAKE_OFF=			-DGuiModule:STRING=OFF
 GUI_USE+=			XORG=x11,xext,xfixes,xcursor,xrender,ice,sm,xpm,xinerama,xft
 GUI_USE+=			GL=gl,glu
-GUI_USES=			jpeg
+GUI_USES=			gl jpeg
 
 OSS_CMAKE_ON=			-DOssEnable:BOOL=ON
 OSS_CMAKE_OFF=			-DOssEnable:BOOL=OFF
@@ -80,13 +81,6 @@ PORTEXAMPLES=	*
 
 CMAKE_ARGS+=	-DZYN_DATADIR:STRING=${DATADIR}
 CMAKE_ARGS+=	-DZYN_EXAMPLESDIR:STRING=${EXAMPLESDIR}
-
-.include <bsd.port.options.mk>
-
-# Build fix for ZynAddSubFx
-BUILD_DEPENDS+=	clang40:devel/llvm40
-CC=		clang40
-CXX=		clang++40
 
 .include <bsd.port.pre.mk>
 

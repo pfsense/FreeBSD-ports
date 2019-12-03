@@ -2,18 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	buildbot-pkg
-PORTVERSION=	0.9.11
-PORTREVISION=	1
+PORTVERSION=	2.3.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	koobs@FreeBSD.org
-COMMENT=	Continuous Integration Framework (packaging)
+COMMENT=	Buildbot packaging tools
 
 LICENSE=	GPLv2
+#LICENSE_FILE=	Not packaged in sdist
 
-USES=		python
+USES=		python:3.5+
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

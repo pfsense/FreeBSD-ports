@@ -2,7 +2,7 @@
 
 PORTNAME=	freetar
 PORTVERSION=	0.9
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	archivers gnustep
 MASTER_SITES=	http://download.gna.org/freetar/
 DISTNAME=	FreeTar-${PORTVERSION}
@@ -11,6 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	TAR archiver for GNUstep
 
 LICENSE=	GPLv2
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 USES=		gnustep
 USE_GNUSTEP=	back build

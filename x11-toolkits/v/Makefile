@@ -3,7 +3,7 @@
 
 PORTNAME=	v
 PORTVERSION=	1.90
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11-toolkits devel graphics
 MASTER_SITES=	SF/${PORTNAME}gui/V%20GUI/${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -12,9 +12,12 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ GUI development framework for X11 and Microsoft Windows
 
-USES=		dos2unix gmake
+USES=		compiler dos2unix gmake
 USE_XORG=	x11 xt xmu xaw
 MAKE_ENV=	INSTALLDIR=${PREFIX} HOMEV=${WRKSRC}
+# Build ignores CXXFLAGS
+CFLAGS+=	${CFLAGS_${CHOSEN_COMPILER_TYPE}}
+CFLAGS_clang=	-Wno-c++11-narrowing
 
 WRKSRC=		${WRKDIR}/home/vgui
 

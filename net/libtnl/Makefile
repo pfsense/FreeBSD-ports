@@ -3,13 +3,16 @@
 
 PORTNAME=	libtnl
 PORTVERSION=	1.5.0
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	net devel
 MASTER_SITES=	SF/opentnl/TNL%20Source/${PORTVERSION}
 DISTNAME=	tnl-${PORTVERSION}-source
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Robust, secure, easy to use cross-platform C++ networking API
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
 
 USES=		uidfix
 USE_GCC=	any

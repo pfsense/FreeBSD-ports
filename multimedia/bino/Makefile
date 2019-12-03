@@ -3,7 +3,7 @@
 
 PORTNAME=	bino
 PORTVERSION=	1.6.5
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	multimedia
 MASTER_SITES=	https://download.savannah.nongnu.org/releases/bino/
 
@@ -17,7 +17,8 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libavformat.so:multimedia/ffmpeg \
 		libopenal.so:audio/openal-soft
 
-USES=		autoreconf desktop-file-utils gmake iconv pkgconfig qt:5 tar:xz
+USES=		autoreconf compiler:c++11-lang desktop-file-utils gl gmake \
+		iconv pkgconfig qt:5 tar:xz
 USE_GL=		gl glu glew
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes

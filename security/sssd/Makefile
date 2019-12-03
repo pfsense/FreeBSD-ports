@@ -3,7 +3,7 @@
 
 PORTNAME=	sssd
 PORTVERSION=	1.11.7
-PORTREVISION=	12
+PORTREVISION=	19
 CATEGORIES=	security
 MASTER_SITES=	https://releases.pagure.org/SSSD/${PORTNAME}/
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libpopt.so:devel/popt \
 		libtalloc.so:devel/talloc \
 		libtevent.so:devel/tevent \
 		libtdb.so:databases/tdb \
-		libldb.so:databases/ldb \
+		libldb.so:databases/ldb14 \
 		libcares.so:dns/c-ares \
 		libdbus-1.so:devel/dbus \
 		libdhash.so:devel/ding-libs \
@@ -32,7 +32,7 @@ BUILD_DEPENDS=	xmlcatalog:textproc/libxml2 \
 		xsltproc:textproc/libxslt \
 		xmlcatmgr:textproc/xmlcatmgr \
 		krb5>=1.10:security/krb5 \
-		nsupdate:dns/bind99
+		nsupdate:dns/bind-tools
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-selinux=no --with-semanage=no \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flare
-PORTVERSION=	1.06
+PORTVERSION=	1.11
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 PKGNAMESUFFIX=	-engine
@@ -14,10 +14,10 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	clintbellanger
+GH_ACCOUNT=	flareteam
 GH_PROJECT=	${PORTNAME}${PKGNAMESUFFIX}
 
-USES=		cmake compiler:env
+USES=		cmake compiler:env sdl
 USE_SDL=	sdl2 mixer2 image2 ttf2
 CMAKE_BUILD_TYPE=	#empty
 

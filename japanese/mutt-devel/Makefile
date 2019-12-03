@@ -6,7 +6,7 @@
 
 PORTNAME=	mutt
 PORTVERSION=	${VERSION}.j${JP_VERSION}
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	japanese mail
 MASTER_SITES=	ftp://ftp.mutt.org/mutt/devel/:body \
 		ftp://ftp.fu-berlin.de/pub/unix/mail/mutt/devel/:body \
@@ -86,6 +86,8 @@ MAILDIR_HEADER_CACHE_DESC=	maildir header cache
 
 DOCS_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-nodoc-contrib
 
+MAILDIR_HEADER_CACHE_IMPLIES=	IMAP_HEADER_CACHE
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}
@@ -93,9 +95,6 @@ USES+=	gettext
 .endif
 .if ${PORT_OPTIONS:MCYRUS_SASL2}
 LIB_DEPENDS+=	libsasl2.so:security/cyrus-sasl2
-.endif
-.if ${PORT_OPTIONS:MMAILDIR_HEADER_CACHE}
-PORT_OPTIONS+=	MAILDIR_HEADER_CACHE
 .endif
 .if ${PORT_OPTIONS:MIMAP_HEADER_CACHE}
 USES+=		bdb
@@ -126,6 +125,11 @@ CONFIGURE_ARGS+=	--disable-hcache
 .endif
 .if ${PORT_OPTIONS:MMAILDIR_HEADER_CACHE}
 CONFIGURE_ARGS+=	--without-qdbm
+.endif
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	variable has incomplete type 'X509_STORE_CTX' (aka 'struct x509_store_ctx_st')
+BROKEN_FreeBSD_13=	variable has incomplete type 'X509_STORE_CTX' (aka 'struct x509_store_ctx_st')
 .endif
 
 post-patch:

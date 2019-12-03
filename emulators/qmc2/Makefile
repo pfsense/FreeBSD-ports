@@ -3,6 +3,7 @@
 
 PORTNAME=	qmc2
 PORTVERSION=	0.195
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF
 
@@ -16,11 +17,11 @@ OPTIONS_DEFINE=	DOCS
 
 NO_WRKSUBDIR=	yes
 
-USES=		gmake qt:5 tar:bzip2
+USES=		compiler:c++11-lang gmake qt:5 tar:bzip2
 USE_XORG=	x11 xmu
 USE_GL=		gl glu
-USE_QT=		buildtools_build core gui multimedia \
-		network opengl quick qmake_build qml \
+USE_QT=		buildtools_build core declarative gui multimedia \
+		network opengl qmake_build \
 		testlib script scripttools sql svg \
 		webkit widgets xml xmlpatterns
 USE_SDL=	sdl

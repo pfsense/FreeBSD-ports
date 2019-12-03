@@ -1,15 +1,11 @@
---- deps/openssl/config/archs/linux-elf/no-asm/openssl-cl.gypi.orig	2018-05-11 11:01:14 UTC
+--- deps/openssl/config/archs/linux-elf/no-asm/openssl-cl.gypi.orig	2019-08-06 20:46:23 UTC
 +++ deps/openssl/config/archs/linux-elf/no-asm/openssl-cl.gypi
-@@ -9,10 +9,10 @@
-       'OPENSSL_PIC',
-     ],
-     'openssl_cflags_linux-elf': [
--      '-Wall -O3 -pthread -DL_ENDIAN -fomit-frame-pointer',
-+      '-Wall -O3 -pthread -DL_ENDIAN',
+@@ -12,7 +12,7 @@
+       '-Wall -O3 -fomit-frame-pointer',
      ],
      'openssl_ex_libs_linux-elf': [
 -      '-ldl -pthread',
-+      '',
++      '-pthread',
      ],
      'openssl_cli_srcs_linux-elf': [
-       'openssl/apps/app_rand.c',
+       'openssl/apps/asn1pars.c',

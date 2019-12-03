@@ -3,10 +3,10 @@
 
 PORTNAME=	cmake
 # Remember to update devel/cmake-doc and devel/cmake-gui as well.
-DISTVERSION=	3.11.4
-PORTREVISION=	1
+DISTVERSION=	3.15.3
 CATEGORIES=	devel
-MASTER_SITES=	https://www.cmake.org/files/v${PORTVERSION:R}/
+MASTER_SITES=	https://github.com/Kitware/CMake/releases/download/v${DISTVERSION}/ \
+		https://www.cmake.org/files/v${PORTVERSION}/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Cross-platform Makefile generator
@@ -36,7 +36,7 @@ OPTIONS_DEFAULT=MANPAGES
 OPTIONS_SUB=	yes
 
 MANPAGES_USES=		python:env
-MANPAGES_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
+MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 MANPAGES_CONFIGURE_ON=	--sphinx-man
 
 CPACK_DESC=		Enable FreeBSD generator in CPack (experimental)

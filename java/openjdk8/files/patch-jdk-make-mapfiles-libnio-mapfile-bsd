@@ -1,0 +1,25 @@
+--- jdk/make/mapfiles/libnio/mapfile-bsd
++++ jdk/make/mapfiles/libnio/mapfile-bsd
+@@ -42,6 +42,7 @@ SUNWprivate_1.1 {
+ 		Java_sun_nio_ch_FileChannelImpl_position0;
+ 		Java_sun_nio_ch_FileChannelImpl_transferTo0;
+ 		Java_sun_nio_ch_FileChannelImpl_unmap0;
++		Java_sun_nio_ch_FileDispatcherImpl_allocate0;
+ 		Java_sun_nio_ch_FileDispatcherImpl_close0;
+ 		Java_sun_nio_ch_FileDispatcherImpl_closeIntFD;
+ 		Java_sun_nio_ch_FileDispatcherImpl_force0;
+@@ -143,6 +144,14 @@ SUNWprivate_1.1 {
+ 		Java_sun_nio_fs_MagicFileTypeDetector_initialize0;
+ 		Java_sun_nio_fs_MagicFileTypeDetector_probe0;
+ 		Java_sun_nio_fs_UnixCopyFile_transfer;
++		Java_sun_nio_fs_LinuxWatchService_eventSize;
++		Java_sun_nio_fs_LinuxWatchService_eventOffsets;
++		Java_sun_nio_fs_LinuxWatchService_inotifyInit;
++		Java_sun_nio_fs_LinuxWatchService_inotifyAddWatch;
++		Java_sun_nio_fs_LinuxWatchService_inotifyRmWatch;
++		Java_sun_nio_fs_LinuxWatchService_configureBlocking;
++		Java_sun_nio_fs_LinuxWatchService_socketpair;
++		Java_sun_nio_fs_LinuxWatchService_poll;
+ 		Java_sun_nio_fs_UnixNativeDispatcher_access0;
+ 		Java_sun_nio_fs_UnixNativeDispatcher_chmod0;
+ 		Java_sun_nio_fs_UnixNativeDispatcher_chown0;

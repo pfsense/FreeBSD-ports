@@ -1,8 +1,17 @@
---- ROX-Filer/src/Makefile.in.orig
+--- ROX-Filer/src/Makefile.in.orig	2011-10-09 14:31:59 UTC
 +++ ROX-Filer/src/Makefile.in
-@@ -46,10 +46,7 @@
+@@ -7,7 +7,7 @@ CC = @CC@
+ .SUFFIXES: .c .o
+ 
+ PKG_CONFIG = @PKG_CONFIG@
+-LIBS = @LIBS@ @LFS_LDFLAGS@ -lICE -lSM
++LIBS = @LIBS@ @LFS_LDFLAGS@ -lICE -lSM -linotify
+ #PROF = -fprofile-arcs -pg
+ 
+ PKG_CONFIG_FLAGS=
+@@ -47,10 +47,7 @@ OBJECTS = abox.o action.o appinfo.o appm
+ ${PROG}: ${OBJECTS}
  	${CC} -o "${PROG}" ${OBJECTS} ${LDFLAGS}
- 	[ -d "${PLATFORM_DIR}" ] || mkdir "${PLATFORM_DIR}"
  	mv "${PROG}" "${PLATFORM_DIR}"
 -	-(cd "${PLATFORM_DIR}" && \
 -	 objcopy --only-keep-debug ROX-Filer ROX-Filer.dbg && \

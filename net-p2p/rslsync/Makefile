@@ -1,14 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	rslsync
-PORTVERSION=	2.5.13
+PORTVERSION=	2.6.3
 CATEGORIES=	net-p2p
 MASTER_SITES=	https://download-cdn.resilio.com/${PORTVERSION}/FreeBSD-${CONFIG_ARCH}/ \
 		http://download-cdn.resilio.com/${PORTVERSION}/FreeBSD-${CONFIG_ARCH}/
 DISTNAME=	resilio-sync_freebsd_${CONFIG_ARCH}
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	joshruehlig@gmail.com
+MAINTAINER=	arcade@b1t.name
 COMMENT=	Distributed peer-to-peer file syncing application
 
 LICENSE=	EULA
@@ -37,7 +37,7 @@ CONFIG_ARCH=	${ARCH}
 .endif
 
 do-build:
-	${WRKSRC}/rslsync --nodaemon --dump-sample-config > ${WRKSRC}/rslsync.conf.sample
+	${WRKSRC}/rslsync --nodaemon --storage ${WRKSRC} --dump-sample-config > ${WRKSRC}/rslsync.conf.sample
 	${REINPLACE_CMD} -e 's;^//\([[:space:]]*"storage_path"[[:space:]]*:[[:space:]]*\)"/.*",$$;\1"/var/db/rslsync",;' ${WRKSRC}/rslsync.conf.sample
 	${REINPLACE_CMD} -e 's;^//\([[:space:]]*"pid_file"[[:space:]]*:[[:space:]]*\)"/.*",$$;\1"/var/run/rslsync/rslsync.pid",;' ${WRKSRC}/rslsync.conf.sample
 

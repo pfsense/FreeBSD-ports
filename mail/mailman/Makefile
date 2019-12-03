@@ -3,6 +3,7 @@
 
 PORTNAME=	mailman
 DISTVERSION=	2.1.29
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	GNU \
 		SF/${PORTNAME}/Mailman%202.1%20%28stable%29/${PORTVERSION} \
@@ -70,8 +71,8 @@ PORTDOCS=	ACKNOWLEDGMENTS BUGS FAQ INSTALL NEWS README README-I18N.en \
 
 OPTIONS_SINGLE=	MTA
 OPTIONS_SINGLE_MTA=	COURIER EXIM4 OPENSMTPD POSTFIX SENDMAIL
-OPTIONS_DEFINE=	HTDIG NAMAZU2 NLS DOCS
-OPTIONS_DEFAULT=	SENDMAIL
+OPTIONS_DEFINE=	HTDIG NAMAZU2 NOMAILPWD NLS DOCS
+OPTIONS_DEFAULT=	SENDMAIL NOMAILPWD
 COURIER_DESC=	for use with courier
 EXIM4_DESC=	for use with exim4
 OPENSMTPD_DESC=	for use with opensmtpd - EXPERIMENTAL -
@@ -79,6 +80,7 @@ POSTFIX_DESC=	for use with postfix
 SENDMAIL_DESC=	for use with sendmail
 HTDIG_DESC=	- EXPERIMENTAL - htdig integration patches
 NAMAZU2_DESC=	Make private archives searchable with namazu2
+NOMAILPWD_DESC=	Elide plaintext passwords from monthly reminders
 MTA_DESC=	Integrate with which MTA?
 
 .include <bsd.port.options.mk>
@@ -141,6 +143,10 @@ RUN_DEPENDS+=	mknmz:databases/namazu2
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-Mailman-Cgi-private.py
 .endif
 
+.if ${PORT_OPTIONS:MNOMAILPWD}
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-mailpasswds
+.endif
+
 BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dnspython>=0:dns/py-dnspython@${PY_FLAVOR}
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dnspython>=0:dns/py-dnspython@${PY_FLAVOR}
 
@@ -170,6 +176,20 @@ post-patch:
 	${REINPLACE_CMD} -e 's/messages//' ${WRKSRC}/Makefile.in
 .endif
 	${MV} ${WRKSRC}/configure.in ${WRKSRC}/configure.ac # suppress warning
+
+# post-patch-HTDIG-on is to fix https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=238508
+post-patch-HTDIG-on:
+	# these should match those in ht://Dig's ${LOCALBASE}/bin/rundig
+	${REINPLACE_CMD} -E \
+		-e 's#^(DBDIR)=/opt/www/var/htdig#\1=${LOCALBASE}/share/htdig/database#' \
+		-e 's#^(COMMONDIR)=/opt/www/share/htdig#\1=${LOCALBASE}/share/htdig/common#' \
+		-e 's#^(BINDIR)=/opt/www/bin#\1=${LOCALBASE}/bin#' \
+		-e 's#^(conffile)=/opt/www/conf/#\1=${LOCALBASE}/etc/htdig/#' \
+		${WRKSRC}/cron/rundig
+	${REINPLACE_CMD} -E \
+		-e 's#/opt/www/htdig/bin#${LOCALBASE}/bin#' \
+		${WRKSRC}/Mailman/Cgi/remote?mmsearch
+
 
 .if ${PORT_OPTIONS:MPOSTFIX}
 pre-configure:

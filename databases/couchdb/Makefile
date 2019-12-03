@@ -3,6 +3,7 @@
 
 PORTNAME=	couchdb
 DISTVERSION=	1.7.2
+PORTREVISION=	3
 PORTEPOCH=	2
 CATEGORIES=	databases
 MASTER_SITES=	APACHE/couchdb/source/${DISTVERSION}
@@ -45,6 +46,8 @@ GROUPS=		couchdb
 STRIP=	#empty
 
 INFO=		CouchDB
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

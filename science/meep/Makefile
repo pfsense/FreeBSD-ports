@@ -3,7 +3,7 @@
 
 PORTNAME=	meep
 PORTVERSION=	1.2.1
-PORTREVISION=	12
+PORTREVISION=	19
 CATEGORIES=	science
 MASTER_SITES=	http://ab-initio.mit.edu/meep/
 
@@ -13,11 +13,13 @@ COMMENT=	FDTD simulation software to model electromagnetic systems
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		very old version, incompatible with Guile 2.2
+
 BUILD_DEPENDS=	harminv:science/harminv \
 		gsed:textproc/gsed
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libblas.so:math/blas \
-		libguile-2.0.so:lang/guile2 \
+		libguile-2.2.so:lang/guile2 \
 		libctl.so:science/libctl \
 		libgc-threaded.so:devel/boehm-gc-threaded \
 		libgsl.so:math/gsl \

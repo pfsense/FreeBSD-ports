@@ -2,14 +2,13 @@
 
 PORTNAME=	plasma-workspace
 DISTVERSION=	${KDE_PLASMA_VERSION}
-PORTREVISION=	1
 CATEGORIES=	x11 kde kde-plasma
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Plasma5 Plasma workspace
 
 LIB_DEPENDS=	libcln.so:math/cln \
-		libdbusmenu-qt5.so:devel/libdbusmenu-qt@qt5 \
+		libdbusmenu-qt5.so:devel/libdbusmenu-qt \
 		libqalculate.so:math/libqalculate \
 		libxcb-image.so:x11/xcb-util-image \
 		libxcb-util.so:x11/xcb-util
@@ -21,7 +20,7 @@ RUN_DEPENDS=	ck-launch-session:sysutils/consolekit2\
 		${LOCALBASE}/libdata/pkgconfig/xkeyboard-config.pc:x11/xkeyboard-config \
 		iso-codes>=0:misc/iso-codes
 
-USES=		cmake:outsource compiler:c++11-lib cpe gettext kde:5 pkgconfig \
+USES=		cmake compiler:c++11-lib cpe gettext kde:5 pkgconfig \
 		qt:5 tar:xz
 USE_KDE=	activities activitymanagerd attica auth baloo bookmarks \
 		codecs completion config configwidgets coreaddons crash \
@@ -35,15 +34,18 @@ USE_KDE=	activities activitymanagerd attica auth baloo bookmarks \
 		texteditor textwidgets unitconversion wallet wayland \
 		widgetsaddons windowsystem xmlgui xmlrpcclient \
 		breeze_run breeze-icons_run oxygen-icons5_run \
-		kde-cli-tools_run kded_run milou_run
-USE_QT=		concurrent core dbus graphicaleffects gui network phonon4 \
-		printsupport qdbus qml quick quickcontrols_run script sql \
+		kded_run milou_run
+USE_QT=		concurrent core declarative dbus graphicaleffects gui network phonon4 \
+		printsupport qdbus quickcontrols_run script sql \
 		testlib webkit widgets x11extras xml \
 		paths_run \
 		buildtools_build qmake_build
 USE_XORG=	ice sm x11 xau xcb xcomposite xext xfixes xft xkbfile xrender xtst
 
 CMAKE_OFF=	BUILD_TESTING
+
+# In 5.15 a file was moved from x11/plasma5-plasma-desktop to x11/plasma5-plasma-workspace:
+CONFLICTS_INSTALL=	plasma5-plasma-desktop-5.14.*
 
 post-patch:
 # set the paths in startkde

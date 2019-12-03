@@ -2,7 +2,7 @@
 
 PORTNAME=	preferences
 PORTVERSION=	1.2.0
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	SF/prefsapp/prefsapp/${PORTVERSION}
 DISTNAME=	Preferences-${PORTVERSION}
@@ -17,7 +17,6 @@ USES=		tar:bzip2 gnustep
 USE_GNUSTEP=	back build
 USE_LDCONFIG=	${GNUSTEP_SYSTEM_LIBRARIES}
 
-DEAFULT_LIBVERSION=	1.1.1
 MODIFY=		GNUmakefile.preamble PrefsModule/GNUmakefile.preamble \
 		Modules/Keyboard/GNUmakefile.preamble \
 		Modules/PrefsApp/GNUmakefile.preamble

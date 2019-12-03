@@ -3,6 +3,7 @@
 
 PORTNAME=	gsmartcontrol
 PORTVERSION=	1.1.3
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
@@ -33,5 +34,15 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-libglade
 
 OPTIONS_DEFINE=	DOCS
+
+post-patch:
+# Avoid conflict with C++20 <version> by ignoring <...> under WRKSRC
+	@${REINPLACE_CMD} -i .c++20 '/ADDITIONAL_INCLUDES/s/-I/-iquote/g' \
+		${WRKSRC}/configure
+	@${REINPLACE_CMD} -i .c++20 's/-I/-iquote/g' \
+		${WRKSRC}/src/Makefile.in \
+		${WRKSRC}/src/*/Makefile.in
+	@${REINPLACE_CMD} -i .c++20 '/config\.h/y/<>/""/' \
+		${WRKSRC}/src/global_macros.h
 
 .include <bsd.port.mk>

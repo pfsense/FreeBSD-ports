@@ -1,6 +1,6 @@
---- content/browser/renderer_host/render_view_host_impl.cc.orig	2017-06-05 19:03:07 UTC
+--- content/browser/renderer_host/render_view_host_impl.cc.orig	2019-10-21 19:06:32 UTC
 +++ content/browser/renderer_host/render_view_host_impl.cc
-@@ -142,7 +142,7 @@ void GetPlatformSpecificPrefs(RendererPreferences* pre
+@@ -162,7 +162,7 @@ void GetPlatformSpecificPrefs(blink::mojom::RendererPr
        display::win::ScreenWin::GetSystemMetricsInDIP(SM_CYVSCROLL);
    prefs->arrow_bitmap_width_horizontal_scroll_bar_in_dips =
        display::win::ScreenWin::GetSystemMetricsInDIP(SM_CXHSCROLL);

@@ -1,7 +1,7 @@
---- chrome/browser/ui/startup/startup_browser_creator.cc.orig	2017-04-19 19:06:30 UTC
+--- chrome/browser/ui/startup/startup_browser_creator.cc.orig	2019-03-11 22:00:54 UTC
 +++ chrome/browser/ui/startup/startup_browser_creator.cc
-@@ -96,7 +96,7 @@
- #include "components/user_manager/user_manager.h"
+@@ -79,7 +79,7 @@
+ #include "chrome/browser/ui/user_manager.h"
  #endif
  
 -#if defined(TOOLKIT_VIEWS) && defined(OS_LINUX)
@@ -9,15 +9,14 @@
  #include "ui/events/devices/x11/touch_factory_x11.h"  // nogncheck
  #endif
  
-@@ -668,9 +668,11 @@ bool StartupBrowserCreator::ProcessCmdLi
+@@ -633,8 +633,10 @@ bool StartupBrowserCreator::ProcessCmdLineImpl(
    }
  #endif  // OS_CHROMEOS
  
 +#if 0 /* XXX */
  #if defined(TOOLKIT_VIEWS) && defined(USE_X11)
    ui::TouchFactory::SetTouchDeviceListFromCommandLine();
- #endif
 +#endif
+ #endif
  
  #if defined(OS_MACOSX)
-   if (web_app::MaybeRebuildShortcut(command_line))

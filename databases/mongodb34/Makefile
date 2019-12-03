@@ -2,8 +2,7 @@
 
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	3.4.9
-PORTREVISION=	6
+DISTVERSION=	3.4.22
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/ \
@@ -11,17 +10,15 @@ MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
 DISTNAME=	mongodb-src-${DISTVERSIONPREFIX}${DISTVERSION}
 
-MAINTAINER=	eric@camachat.org
+MAINTAINER=	ronald-lists@klop.ws
 COMMENT=	Distributed document-oriented "NoSQL" database
 
 # mongodb is AGPLv3, C++ driver is APACHE20
 LICENSE=	AGPLv3 APACHE20
 LICENSE_COMB=	multi
 
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	no member named 'SSLv2_method' in the global namespace
-ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=	"Only supported on amd64 (i386 deprecated in v3)"
+ONLY_FOR_ARCHS=	amd64 aarch64
+ONLY_FOR_ARCHS_REASON=	"Only supported on amd64 and aarch64 (i386 deprecated in v3)"
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libsnappy.so:archivers/snappy \
@@ -30,10 +27,11 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pymongo>=3.0:databases/pymongo@${PY_FLAVOR}
 
 CONFLICTS_BUILD=	mongo-cxx-driver
+CONFLICTS_INSTALL=	mongodb36 mongodb40
 
-CHOSEN_COMPILER_TYPE=	clang
+USES=		compiler:c++14-lang cpe dos2unix python:build scons
+DOS2UNIX_FILES=	src/third_party/IntelRDFPMathLib20U1/LIBRARY/src/bid_functions.h
 
-USES=		compiler:c++14-lang cpe python:build scons
 USE_RC_SUBR=	mongod
 
 MAKE_ARGS=	--prefix=${STAGEDIR}${PREFIX} \

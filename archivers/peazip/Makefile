@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	peazip
-PORTVERSION=	6.6.0
+PORTVERSION=	6.8.1
+PORTREVISION=	1
 CATEGORIES=	archivers
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 MASTER_SITES=	https://github.com/giorgiotani/PeaZip/releases/download/${PORTVERSION}/
@@ -12,20 +13,19 @@ COMMENT=	Free archiver and file compressor
 
 LICENSE=	LGPL3
 
-USES=		dos2unix fpc lazarus:flavors zip
-USE_FPC=	cairo chm fcl-base fcl-image pasjpeg rtl-objpas x11
+USES=		desktop-file-utils dos2unix fpc lazarus:flavors zip
+USE_FPC=	cairo chm fcl-base fcl-image fcl-xml pasjpeg rtl-objpas x11
 USE_XORG=	x11
 
-SUB_FILES=	pea pealauncher peazip
+SUB_FILES=	pea peazip
 
 DOS2UNIX_REGEX=		.*\.([txt]|pas|lpi|txt)
 
-LAZARUS_PROJECT_FILES=	project_pea.lpi project_peach.lpi project_gwrap.lpi
+LAZARUS_PROJECT_FILES=	project_pea.lpi project_peach.lpi
 LAZBUILD_ARGS=		-d
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt4 ${PORTNAME}-qt5
-qt4_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt4
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
 
 ARCHIVER_FILES=		#
 
@@ -39,6 +39,7 @@ UNACE_DESC=		Unace file archiver support
 OPTIONS_DEFAULT=	7Z
 
 .if ${FLAVOR:Ugtk2:Mgtk2}
+USES+=		gnome
 USE_GNOME+=	cairo
 .endif
 
@@ -91,11 +92,12 @@ do-install:
 .endfor
 	@cd ${WRKSRC}/res && ${COPYTREE_SHARE} "icons lang themes" ${STAGEDIR}${DATADIR}/res
 	@cd ${WRKSRC} && ${INSTALL_DATA} altconf.txt ${STAGEDIR}${DATADIR}/res && \
-			${INSTALL_PROGRAM} pea pealauncher ${STAGEDIR}${DATADIR}/res && \
+			${INSTALL_PROGRAM} pea ${STAGEDIR}${DATADIR}/res && \
 			${INSTALL_PROGRAM} peazip ${STAGEDIR}${DATADIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256/apps
 	@cd ${WRKSRC}/FreeDesktop_integration && \
 		${INSTALL_DATA} peazip.desktop ${STAGEDIR}${DESKTOPDIR} && \
-		${INSTALL_DATA} peazip.png ${STAGEDIR}${PREFIX}/share/pixmaps/
-	${INSTALL_SCRIPT} ${WRKDIR}/pea ${WRKDIR}/pealauncher ${WRKDIR}/peazip ${STAGEDIR}${PREFIX}/bin/
+		${INSTALL_DATA} peazip.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256/apps/${PORTNAME}.png
+	${INSTALL_SCRIPT} ${WRKDIR}/pea ${WRKDIR}/peazip ${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.mk>

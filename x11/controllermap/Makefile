@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	controllermap
-PORTVERSION=	2.0.8
+PORTVERSION=	2.0.10
 CATEGORIES=	x11
-MASTER_SITES=	http://www.libsdl.org/release/
+MASTER_SITES=	https://www.libsdl.org/release/
 DISTNAME=	SDL2-${DISTVERSION}
 
 MAINTAINER=	jbeich@FreeBSD.org

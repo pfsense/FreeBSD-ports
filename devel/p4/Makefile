@@ -3,7 +3,7 @@
 
 PORTNAME=	p4
 PORTVERSION=	${YEAR}.${MAJOR}.${MINOR}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 # Perforce stupidly rerolls their distfiles on a regular basis, updating the
 # files' timestamps when they do, which changes the zip file's checksum.  Work
@@ -22,6 +22,7 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_mips64=	fails to install: /wrkdirs/usr/ports/devel/p4/work/2016-1/p4-bin/p4: No such file or directory
+BROKEN_powerpc64=	fails to build: /bin/sh: clang++: not found
 
 BUILD_DEPENDS=	${JAM}:devel/jam
 
@@ -39,6 +40,7 @@ PLIST_FILES=	bin/p4
 do-build:
 	cd ${WRKSRC} && ${SETENV} C++="${CXX}" C++FLAGS="${CXXFLAGS}" \
 		CCFLAGS="${CFLAGS}" \
+		HDRS="${OPENSSLINC}" \
 		LINKFLAGS="${LDFLAGS}" \
 		OSVER=${OSVER} \
 		SSL="yes" \

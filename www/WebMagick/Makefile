@@ -3,7 +3,7 @@
 
 PORTNAME=	WebMagick
 PORTVERSION=	2.03p29
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	www graphics
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}-beta/${DISTVERSION}
@@ -15,7 +15,11 @@ COMMENT=	Image Web Generator - recursively build HTMLs, imagemaps, thumbnails
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
+LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick6
 RUN_DEPENDS=	p5-Sort-Naturally>=0:textproc/p5-Sort-Naturally
 
 USES=		shebangfix perl5 autoreconf

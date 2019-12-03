@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	abcde
-DISTVERSION=	2.9.1
-PORTREVISION=	1
+DISTVERSION=	2.9.3
 CATEGORIES=	audio
 MASTER_SITES=	http://abcde.einval.com/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Front-end shell script to encode CDs in flac/mp3/ogg/speex format
 
 LICENSE=	ART10 GPLv2
@@ -20,10 +19,10 @@ RUN_DEPENDS=	cd-discid:audio/cd-discid \
 		oggenc:audio/vorbis-tools \
 		bash:shells/bash
 
+USES=		shebangfix
+
 NO_ARCH=	yes
 NO_BUILD=	yes
-
-USES=		shebangfix
 SHEBANG_FILES=	abcde abcde-musicbrainz-tool cddb-tool
 
 SUB_FILES=	pkg-message
@@ -41,11 +40,9 @@ FLAC_RUN_DEPENDS=	flac:audio/flac
 MPP_RUN_DEPENDS=	mpcenc:audio/musepack
 MUSICBRAINZ_DESC=	Enable MusicBrainz DiscID support
 MUSICBRAINZ_USES=	perl5
-MUSICBRAINZ_USE_PERL5=	run
-MUSICBRAINZ_RUN_DEPENDS=p5-Digest-SHA>=0:security/p5-Digest-SHA \
-		p5-Getopt-Long>=0:devel/p5-Getopt-Long \
+MUSICBRAINZ_USE=	PERL5=run
+MUSICBRAINZ_RUN_DEPENDS=	\
 		p5-MusicBrainz-DiscID>=0:audio/p5-MusicBrainz-DiscID \
-		p5-Pod-Usage>=0:devel/p5-Pod-Usage \
 		p5-WebService-MusicBrainz>=1:www/p5-WebService-MusicBrainz
 NORMALIZE_DESC=		Enable normalize support
 NORMALIZE_RUN_DEPENDS=	normalize:audio/normalize

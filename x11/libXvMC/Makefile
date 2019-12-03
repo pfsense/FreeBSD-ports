@@ -2,16 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	libXvMC
-PORTVERSION=	1.0.10
+PORTVERSION=	1.0.11
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X Video Extension Motion Compensation library
 
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		cpe
 XORG_CAT=	lib
-USE_XORG=	x11 xext xv xextproto videoproto:both xproto:both
-USES+=	cpe
-CPE_PRODUCT=	libxvmc
+USE_XORG=	x11 xext xv xorgproto
 CPE_VENDOR=	x
+CPE_PRODUCT=	libxvmc
+
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	laszip
-PORTVERSION=	3.2.2
+PORTVERSION=	3.2.9
+PORTREVISION=	1
 CATEGORIES=	archivers
 
 MAINTAINER=	rhurlin@gwdg.de
@@ -11,7 +12,7 @@ COMMENT=	Library for lossless LAS compression
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake
+USES=		cmake compiler:c++0x
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

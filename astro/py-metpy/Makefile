@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	metpy
-PORTVERSION=	0.8.0
+PORTVERSION=	0.10.2
+PORTREVISION=	1
 CATEGORIES=	astro python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,16 +15,25 @@ COMMENT=	Collection of tools for processing weather data
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${ENUM34} \
-		${PYTHON_PKGNAMEPREFIX}matplotlib>=1.4:math/py-matplotlib@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}numpy>=1.10.0:math/py-numpy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pint>=0.8:converters/py-pint@${PY_FLAVOR} \
+RUN_DEPENDS=	${PY_ENUM34} \
+		${PYTHON_PKGNAMEPREFIX}matplotlib>=2.0.0:math/py-matplotlib@${PY_FLAVOR} \
+		${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}Pint>=0.8:devel/py-Pint@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pooch>=0.1:devel/py-pooch@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyproj>=1.9.4:graphics/py-pyproj@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}scipy>=0.14:science/py-scipy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}xarray>=0.9.6:devel/py-xarray@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}scipy>=0.17.0:science/py-scipy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}traitlets>=4.3.0:devel/py-traitlets@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}xarray011>=0.10.7:devel/py-xarray011@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USE_PYTHON=	autoplist concurrent distutils
-USES=		python
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 3600
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}contextlib2>=0:devel/py-contextlib2@${PY_FLAVOR}
+.endif
+
+.include <bsd.port.post.mk>

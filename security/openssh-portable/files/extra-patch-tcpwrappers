@@ -66,7 +66,7 @@ index 0ade557..045f149 100644
 +	allow_severity = options.log_facility|LOG_INFO;
 +	deny_severity = options.log_facility|LOG_WARNING;
 +	/* Check whether logins are denied from this host. */
-+	if (packet_connection_is_on_socket()) {
++	if (ssh_packet_connection_is_on_socket(ssh)) {
 +		struct request_info req;
 +
 +		request_init(&req, RQ_DAEMON, __progname, RQ_FILE, sock_in, 0);
@@ -85,11 +85,11 @@ index 0ade557..045f149 100644
  	laddr = get_local_ipaddr(sock_in);
 diff --git configure.ac configure.ac
 index f48ba4a..66fbe82 100644
---- configure.ac
-+++ configure.ac
-@@ -1380,6 +1380,62 @@ AC_ARG_WITH([skey],
- 	]
- )
+--- configure.ac.orig	2019-04-17 15:52:57.000000000 -0700
++++ configure.ac	2019-07-02 20:58:48.627832000 -0700
+@@ -1494,6 +1494,62 @@ else
+ 	AC_MSG_RESULT([no])
+ fi
  
 +# Check whether user wants TCP wrappers support
 +TCPW_MSG="no"
@@ -150,11 +150,11 @@ index f48ba4a..66fbe82 100644
  # Check whether user wants to use ldns
  LDNS_MSG="no"
  AC_ARG_WITH(ldns,
-@@ -4803,6 +4859,7 @@ echo "                 KerberosV support: $KRB5_MSG"
+@@ -5245,6 +5301,7 @@ echo "                       PAM support: $PAM_MSG"
+ echo "                   OSF SIA support: $SIA_MSG"
+ echo "                 KerberosV support: $KRB5_MSG"
  echo "                   SELinux support: $SELINUX_MSG"
- echo "                 Smartcard support: $SCARD_MSG"
- echo "                     S/KEY support: $SKEY_MSG"
 +echo "              TCP Wrappers support: $TCPW_MSG"
  echo "              MD5 password support: $MD5_MSG"
  echo "                   libedit support: $LIBEDIT_MSG"
- echo "  Solaris process contract support: $SPC_MSG"
+ echo "                   libldns support: $LDNS_MSG"

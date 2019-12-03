@@ -3,7 +3,7 @@
 
 PORTNAME=	lacaml
 PORTVERSION=	8.0.7
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/mmottl/lacaml/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	ocaml-
@@ -13,6 +13,8 @@ COMMENT=	OCaml interface to BLAS and LAPACK libraries
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
+
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 
 USE_OCAML=	yes
 USE_OCAML_FINDLIB=yes

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bsnmp-ucd
-PORTVERSION=	0.4.2
+PORTVERSION=	0.4.4
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	trociny@FreeBSD.org
@@ -16,7 +16,9 @@ GH_ACCOUNT=	trociny
 USES=		uidfix
 MAKE_ENV+=	NO_OBJ=yes
 
-post-install:
+OPTIONS_DEFINE=	EXAMPLES
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/snmpd.config.sample ${STAGEDIR}${EXAMPLESDIR}
 

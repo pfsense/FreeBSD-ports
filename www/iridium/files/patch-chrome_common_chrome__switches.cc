@@ -1,11 +1,17 @@
---- chrome/common/chrome_switches.cc.orig	2017-04-19 19:06:30 UTC
+--- chrome/common/chrome_switches.cc.orig	2019-03-11 22:00:54 UTC
 +++ chrome/common/chrome_switches.cc
-@@ -1138,7 +1138,7 @@ const char kAllowNaClSocketAPI[]        
- const char kEnableWaylandServer[] = "enable-wayland-server";
+@@ -914,12 +914,12 @@ const char kAllowNaClFileHandleAPI[]        = "allow-n
+ const char kAllowNaClSocketAPI[]            = "allow-nacl-socket-api";
  #endif
  
 -#if defined(OS_WIN) || defined(OS_LINUX)
 +#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
- extern const char kDisableInputImeAPI[] = "disable-input-ime-api";
- extern const char kEnableInputImeAPI[] = "enable-input-ime-api";
+ const char kDisableInputImeAPI[] = "disable-input-ime-api";
+ const char kEnableInputImeAPI[] = "enable-input-ime-api";
  #endif
+ 
+-#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
++#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_BSD)
+ const char kEnableNewAppMenuIcon[] = "enable-new-app-menu-icon";
+ #endif
+ 

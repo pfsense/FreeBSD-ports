@@ -2,6 +2,7 @@
 
 PORTNAME=	logstash-forwarder
 PORTVERSION=	0.4.0.20150507
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	cheffo@freebsd-bg.org
@@ -9,7 +10,7 @@ COMMENT=	Collect logs locally in preparation for processing elsewhere!
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	go:lang/go
+DEPRECATED=	Migrate to sysutils/beats
 
 USES=		go
 USE_GITHUB=	yes

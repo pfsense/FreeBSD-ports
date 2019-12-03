@@ -42,7 +42,6 @@ lib/libKF5WindowSystem.so.%%KDE_FRAMEWORKS_VERSION%%
 share/locale/af/LC_MESSAGES/kwindowsystem5_qt.qm
 share/locale/ar/LC_MESSAGES/kwindowsystem5_qt.qm
 share/locale/as/LC_MESSAGES/kwindowsystem5_qt.qm
-share/locale/ast/LC_MESSAGES/kwindowsystem5_qt.qm
 share/locale/be/LC_MESSAGES/kwindowsystem5_qt.qm
 share/locale/be@latin/LC_MESSAGES/kwindowsystem5_qt.qm
 share/locale/bg/LC_MESSAGES/kwindowsystem5_qt.qm
@@ -139,3 +138,4 @@ share/locale/xh/LC_MESSAGES/kwindowsystem5_qt.qm
 share/locale/zh_CN/LC_MESSAGES/kwindowsystem5_qt.qm
 share/locale/zh_HK/LC_MESSAGES/kwindowsystem5_qt.qm
 share/locale/zh_TW/LC_MESSAGES/kwindowsystem5_qt.qm
+share/qlogging-categories5/kwindowsystem.categories

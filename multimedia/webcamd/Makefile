@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	webcamd
-PORTVERSION=	4.12.0.1
+PORTVERSION=	5.3.7.1
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.selasky.org/hans_petter/distfiles/ \
-		http://home.selasky.org:8192/distfiles/
+		http://home.selasky.org/distfiles/
 
 MAINTAINER=	hselasky@FreeBSD.org
 COMMENT=	Port of Linux USB webcam and DVB drivers into userspace
@@ -21,13 +21,20 @@ USE_RC_SUBR=	webcamd
 SUB_FILES=	webcamd.conf
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	CUSE DEBUG HAL VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM
+OPTIONS_DEFINE=	COMPAT32 CUSE DEBUG HAL VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM
 OPTIONS_DEFAULT=DVB HAL INPUT RADIO WEBCAM
 
 .if exists(/usr/lib/libcuse.so)
 OPTIONS_DEFAULT+=	CUSE
 .else
 OPTIONS_EXCLUDE+=	CUSE
+.endif
+
+COMPAT32_DESC=	Enable 32-bit compatibility support
+COMPAT32_MAKE_ARGS=	HAVE_COMPAT32="YES"
+
+.if exists(/usr/lib32/libcuse.so)
+OPTIONS_DEFAULT+= COMPAT32
 .endif
 
 CUSE_DESC=	Use cuse(3) over multimedia/cuse4bsd-kmod

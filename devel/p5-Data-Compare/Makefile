@@ -10,14 +10,14 @@ MASTER_SITE_SUBDIR=	CPAN:DCANTRELL
 PKGNAMEPREFIX=	p5-
 DISTNAME=	${PORTNAME}-${PORTVERSION:C/0*$//}
 
-MAINTAINER=	tobez@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Data::Compare - compare perl data structures
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-File-Find-Rule>=0:devel/p5-File-Find-Rule
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-File-Find-Rule>=0:devel/p5-File-Find-Rule
 
 USES=		perl5
 USE_PERL5=	configure

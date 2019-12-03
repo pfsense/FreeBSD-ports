@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	openimageio
-PORTVERSION=	1.7.17
 DISTVERSIONPREFIX=	Release-
-PORTREVISION=	10
+DISTVERSION=	2.0.10
+PORTREVISION=	2
 CATEGORIES?=	graphics multimedia
 
 MAINTAINER?=	FreeBSD@Shaneware.biz
@@ -12,112 +12,115 @@ COMMENT?=	OpenImageIO graphics library
 
 LICENSE=	BSD3CLAUSE
 
+BUILD_DEPENDS=	${LOCALBASE}/include/tsl/robin_map.h:devel/robin-map
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libImath.so:graphics/ilmbase \
-		libIlmImf.so:graphics/OpenEXR \
+		libIlmImf.so:graphics/openexr \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
 		libwebp.so:graphics/webp \
 		libhdf5.so:science/hdf5
 
-# fbm also installs bin/idiff
-CONFLICTS=	fbm-[0-9]*
-
+USES=		cmake jpeg compiler:c++11-lib iconv:wchar_t
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenImageIO
 GH_PROJECT=	oiio
 
-USES=		cmake:outsource jpeg compiler:c++11-lib
-CMAKE_ARGS=	-DBUILDSTATIC:BOOL=OFF \
-		-DLINKSTATIC:BOOL=OFF \
-		-DNOTHREADS:BOOL=OFF \
-		-DSTOP_ON_WARNING:BOOL=OFF \
-		-DUSE_OPENSSL:BOOL=OFF
+# fbm also installs bin/idiff
+CONFLICTS=	fbm-[0-9]*
 
-OPTIONS_DEFINE=		DOCS FFMPEG FREETYPE GIF IMAGEVIEWER OCIO OPENCV \
-			OPENJPEG RAW TEST
-OPTIONS_DEFAULT=	FREETYPE GIF OCIO OPENJPEG
+CMAKE_ARGS=	USE_CPP:STRING=11
+CMAKE_OFF=	BUILDSTATIC LINKSTATIC NOTHREADS STOP_ON_WARNING USE_OPENSSL
+
+OPTIONS_DEFINE=		DICOM DOCS FFMPEG FREETYPE GIF IMAGEVIEWER OCIO \
+			OPENCV OPENJPEG RAW TBB TEST TOOLS VDB
+OPTIONS_DEFAULT=	DICOM FREETYPE GIF OCIO OPENJPEG
 OPTIONS_SUB=		yes
 
+DOCS_CMAKE_BOOL=	INSTALL_DOCS
+DOCS_CMAKE_ON=		-DCMAKE_INSTALL_DOCDIR:STRING=${DOCSDIR}
+
+DICOM_DESC=		DICOM/MEDICOM support
+DICOM_CMAKE_BOOL=	USE_DICOM
+DICOM_LIB_DEPENDS=	libdcmimage.so:graphics/dcmtk
+
 FFMPEG_DESC=		Use FFmpeg to support extra file types
-IMAGEVIEWER_DESC=	Build image viewer (requires Qt)
-OCIO_DESC=		Color management support
-
-DOCS_CMAKE_ON=		-DINSTALL_DOCS:BOOL=ON
-DOCS_CMAKE_OFF=		-DINSTALL_DOCS:BOOL=OFF
-
-FFMPEG_CMAKE_ON=	-DUSE_FFMPEG:BOOL=ON
-FFMPEG_CMAKE_OFF=	-DUSE_FFMPEG:BOOL=OFF
+FFMPEG_CMAKE_BOOL=	USE_FFMPEG
 FFMPEG_LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
 
-FREETYPE_CMAKE_ON=	-DUSE_FREETYPE:BOOL=ON
-FREETYPE_CMAKE_OFF=	-DUSE_FREETYPE:BOOL=OFF
+FREETYPE_CMAKE_BOOL=	USE_FREETYPE
+FREETYPE_CMAKE_ON=	-DFONTS_INSTALL_DIR:STRING=share/fonts/oiio_dev
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-GIF_CMAKE_ON=		-DUSE_GIF:BOOL=ON
-GIF_CMAKE_OFF=		-DUSE_GIF:BOOL=OFF
+GIF_CMAKE_BOOL=		USE_GIF
 GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
 
-IMAGEVIEWER_USES=	qt:4
-IMAGEVIEWER_CMAKE_ON=	-DUSE_QT:BOOL=ON -DUSE_OPENGL:BOOL=ON
-IMAGEVIEWER_CMAKE_OFF=	-DUSE_OPENGL:BOOL=OFF -DUSE_QT:BOOL=OFF
+IMAGEVIEWER_DESC=	Build image viewer (requires Qt)
+IMAGEVIEWER_USES=	qt:5
+IMAGEVIEWER_IMPLIES=	TOOLS
+IMAGEVIEWER_CMAKE_BOOL=	USE_QT USE_OPENGL
 IMAGEVIEWER_USE=	GL=gl,glu,glew \
-			QT=corelib,gui,opengl,qmake_build,moc_build,rcc_build,uic_build
+			QT=buildtools,core,gui,opengl,qmake_build,widgets
 
-OCIO_CMAKE_ON=		-DUSE_OCIO:BOOL=ON
-OCIO_CMAKE_OFF=		-DUSE_OCIO:BOOL=OFF
+OCIO_DESC=		Color management support
+OCIO_CMAKE_BOOL=	USE_OCIO
 OCIO_LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio
 
-OPENCV_CMAKE_ON=	-DUSE_OPENCV:BOOL=ON
-OPENCV_CMAKE_OFF=	-DUSE_OPENCV:BOOL=OFF
+OPENCV_CMAKE_BOOL=	USE_OPENCV
 OPENCV_LIB_DEPENDS=	libopencv_highgui.so:graphics/opencv \
 			libopencv_core.so:graphics/opencv-core \
 			libopenjpeg.so:graphics/openjpeg15
 
-OPENJPEG_CMAKE_ON=	-DUSE_OPENJPEG:BOOL=ON
-OPENJPEG_CMAKE_OFF=	-DUSE_OPENJPEG:BOOL=OFF
+OPENJPEG_CMAKE_BOOL=	USE_OPENJPEG
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
 
-RAW_CMAKE_ON=		-DUSE_LIBRAW:BOOL=ON
-RAW_CMAKE_OFF=		-DUSE_LIBRAW:BOOL=OFF
+RAW_CMAKE_BOOL=		USE_LIBRAW
 RAW_LIB_DEPENDS=	libraw_r.so:graphics/libraw
 
-TEST_CMAKE_ON=		-DOIIO_BUILD_TESTS:BOOL=ON
-TEST_CMAKE_OFF=		-DOIIO_BUILD_TESTS:BOOL=OFF
+TBB_DESC=		Intel tbb support
+TBB_CMAKE_BOOL=		USE_TBB
+TBB_LIB_DEPENDS=	libtbb.so:devel/tbb
+
+TEST_CMAKE_BOOL=	OIIO_BUILD_TESTS
+
+TOOLS_DESC=		Build CLI tools
+TOOLS_CMAKE_BOOL=	OIIO_BUILD_TOOLS
+
+VDB_DESC=		OpenVDB support
+VDB_CMAKE_BOOL=		USE_OPENVDB
+VDB_LIB_DEPENDS=	libopenvdb.so:misc/openvdb
 
 PLIST_SUB+=		LIBVERS=${PORTVERSION}
 
 .include <bsd.port.options.mk>
 
-.if ${SLAVE_PORT} == no
-USE_LDCONFIG=	yes
-CMAKE_ARGS+=	-DUSE_PYTHON:BOOL=OFF -DUSE_PYTHON3:BOOL=OFF \
-		-DOIIO_BUILD_TOOLS:BOOL=ON
-.else
-LIB_DEPENDS+=	libOpenImageIO.so:graphics/openimageio \
-		${PY_BOOST}
+.if ${SLAVE_PORT} == yes
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pybind11>0:devel/py-pybind11@${PY_FLAVOR}
+LIB_DEPENDS+=	libOpenImageIO.so:graphics/openimageio
 PLIST=		${PKGDIR}/pkg-plist-pybind
 USES+=		python
 USE_PYTHON=	flavors
-CMAKE_ARGS+=	-DUSE_PYTHON:BOOL=ON -DUSE_PYTHON3:BOOL=OFF \
-		-DOIIO_BUILD_TOOLS:BOOL=OFF -DUSE_FFMPEG:BOOL=OFF
-.endif
+CMAKE_ON+=	USE_PYTHON
+CMAKE_OFF+=	OIIO_BUILD_TOOLS USE_FFMPEG
+CMAKE_ARGS+=	-DPYTHON_VERSION:STRING=${PYTHON_VER} \
+		-DPYBIND11_HOME:STRING="${PYTHONPREFIX_INCLUDEDIR}"
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|share/doc/OpenImageIO|${DOCSDIR}|g' \
-		${WRKSRC}/CMakeLists.txt
-	${REINPLACE_CMD} -e '/find_/s/ boost_python[[:>:]]/ ${PY_BOOST_LIB}/' \
-		${WRKSRC}/src/cmake/externalpackages.cmake
+do-install:
+	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}
+	${INSTALL_LIB} ${BUILD_WRKSRC}/src/python/OpenImageIO.so ${STAGEDIR}${PYTHON_SITELIBDIR}
+.else # SLAVE_PORT == no
+USE_LDCONFIG=	yes
+CMAKE_ON+=	DOIIO_BUILD_TOOLS
+CMAKE_OFF+=	USE_PYTHON
 
 post-install:
-.if ${SLAVE_PORT} == no
-	${LN} -sf libOpenImageIO.so.1.7 \
-		${STAGEDIR}${PREFIX}/lib/libOpenImageIO.so.1
-	${LN} -sf libOpenImageIO_Util.so.1.7 \
-		${STAGEDIR}${PREFIX}/lib/libOpenImageIO_Util.so.1
-.endif
+	${LN} -sf libOpenImageIO.so.2.0 \
+		${STAGEDIR}${PREFIX}/lib/libOpenImageIO.so.2
+	${LN} -sf libOpenImageIO_Util.so.2.0 \
+		${STAGEDIR}${PREFIX}/lib/libOpenImageIO_Util.so.2
 
 do-test-TEST-on:
 	@cd ${BUILD_WRKSRC} && ${MAKE_CMD} ARGS=-V test
+.endif
 
 .include <bsd.port.mk>

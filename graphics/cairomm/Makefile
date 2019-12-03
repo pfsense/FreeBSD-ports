@@ -3,7 +3,7 @@
 
 PORTNAME=	cairomm
 PORTVERSION=	1.12.2
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	http://cairographics.org/releases/
 
@@ -25,7 +25,7 @@ CONFIGURE_ENV=	AUTOMAKE="${TRUE}" AUTOCONF="${TRUE}" DOXYGEN="${TRUE}"
 
 OPTIONS_DEFINE=	DOCS
 
-DOCS_CONFIGURE_ARGS_OFF=	--disable-documentation
+DOCS_CONFIGURE_OFF=	--disable-documentation
 
 post-configure-DOCS-off:
 	@${TOUCH} -f ${WRKSRC}/docs/reference/html/index.html

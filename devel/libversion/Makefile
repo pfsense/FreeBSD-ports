@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libversion
-PORTVERSION=	2.6.0
-PORTREVISION=	1
+PORTVERSION=	3.0.0
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	repology
 
-USES=		cmake
+USES=		cmake compiler:c++11-lang
 USE_LDCONFIG=	yes
 TEST_TARGET=	test
 PORTDOCS=	*
@@ -24,7 +23,7 @@ OPTIONS_DEFINE=	DOCS
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for f in CHANGES.md README.md TODO.md doc/ALGORITHM.md
+.for f in CHANGES.md README.md doc/ALGORITHM.md
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
 .endfor
 

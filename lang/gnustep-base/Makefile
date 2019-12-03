@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	gnustep-base
-PORTVERSION=	1.25.0
-PORTREVISION=	5
+DISTVERSIONPREFIX=	base-
+DISTVERSION=	1_26_0
+PORTREVISION=	2
 CATEGORIES=	lang devel gnustep
-MASTER_SITES=	GNUSTEP/core
 
 MAINTAINER=	theraven@FreeBSD.org
 COMMENT=	GNUstep Foundation library
@@ -13,7 +13,7 @@ COMMENT=	GNUstep Foundation library
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-BROKEN_aarch64=		fails to compile: <inline asm>:1:27: unexpected token in argument list
+BROKEN_powerpc64=	fails to link: ld.lld: error: /usr/src/lib/csu/common/crtend.c:55: relocation R_PPC64_ADDR16_DS out of range: -32776 is not in [-32768, 32767]
 
 LIB_DEPENDS+=	libffi.so:devel/libffi
 LIB_DEPENDS+=	libxml2.so:textproc/libxml2
@@ -26,9 +26,14 @@ RUN_DEPENDS+=	${LOCALBASE}/GNUstep/System/Library/Makefiles/GNUstep.sh:devel/gnu
 USES=		pkgconfig iconv gnustep
 USE_GNUSTEP=	build
 USE_LDCONFIG=	${GNUSTEP_SYSTEM_LIBRARIES}
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	gnustep
+GH_PROJECT=	libs-base
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-procfs --disable-mixedabi --with-installation-domain=SYSTEM
-CONFIGURE_ENV=	OBJCFLAGS='-fobjc-runtime=gnustep-1.7 -fblocks'
+CONFIGURE_ENV=	OBJCFLAGS='-fobjc-runtime=gnustep-2.0 -fblocks'
 
 MAKE_FLAGS=	OPTFLAG="${CFLAGS}"
 

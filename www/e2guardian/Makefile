@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	e2guardian
-PORTVERSION=	3.5.1
+PORTVERSION=	5.3.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
@@ -11,99 +12,88 @@ COMMENT=	Dansguardian fork with many improvements and bug fixes
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	rst2man:textproc/py-docutils
+BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
+USES=		autoreconf compiler:c++11-lang libtool pkgconfig python
 USE_GITHUB=	yes
-USES=		autoreconf libtool iconv pkgconfig
+
+USE_CXXSTD=	c++11
 USE_RC_SUBR=	e2guardian
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var \
 		--with-logdir=/var/log \
-		--with-piddir=/var/run \
-		--enable-fancydm
+		--with-piddir=/var/run
 
-OPTIONS_DEFINE=	APACHE TRICKLE CLISCAN CLAMD ICAP KAV NTLM DNS EMAIL DEBUG SSL DOCS
-OPTIONS_DEFAULT=TRICKLE 1024
+OPTIONS_RADIO=	AV
+OPTIONS_RADIO_AV=AVAST CLAMD KAV
+OPTIONS_DEFINE=	CLISCAN ICAP NTLM DNS EMAIL DEBUG DOCS SSL_MITM
+OPTIONS_DEFAULT=CLAMD DNS
 OPTIONS_SUB=	yes
 
-APACHE_DESC=	Enable Apache support for access denied page
-TRICKLE_DESC=	Enable the trickle download manager
 CLISCAN_DESC=	Enable support for CLI content scanners
 CLAMD_DESC=	Enable ClamD AV content scanner
 ICAP_DESC=	Enable ICAP AV content scanner support
 KAV_DESC=	Enable Kaspersky AV support
+AVAST_DESC=	Enable AvastD content scanner
 NTLM_DESC=	Include NTLM authentication plugin
 DNS_DESC=	Include DNS authetication plugin
 EMAIL_DESC=	Enable e-mail reporting support
-
-OPTIONS_RADIO=	DESCRIPTORS
-OPTIONS_RADIO_DESCRIPTORS=	1024 2048 4096 8192
-
-1024_DESC=	Enable default file descriptors
-2048_DESC=	Enable 2048 file descriptors
-4096_DESC=	Enable 4096 file descriptors
-8192_DESC=	Enable 8192 file descriptors
+DEBUG_DESC=	Enable debug build mode
+SSL_MITM_DESC=	Enable support for the SSL MITM plugin
 
 CONFDIR=	${PREFIX}/etc/e2guardian
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 CFLAGS+=	-I${LOCALBASE}/include
 
-APACHE_USE=			APACHE_RUN=22+
-TRICKLE_CONFIGURE_ENABLE=	trickledm
 CLISCAN_CONFIGURE_ENABLE=	commandline
-CLAMD_CONFIGURE_ENABLE=		clamd=yes
-CLAMD_RUN_DEPENDS=		${LOCALBASE}/sbin/clamd:security/clamav
+CLAMD_CONFIGURE_ENABLE=		clamd
+CLAMD_RUN_DEPENDS=		clamav>=0:security/clamav
 ICAP_CONFIGURE_ENABLE=		icap
 KAV_CONFIGURE_ENABLE=		kavd
+AVAST_CONFIGURE_ENABLE=		avastd
 NTLM_CONFIGURE_ENABLE=		ntlm
-NTLM_RUN_DEPENDS=		${LOCALBASE}/bin/iconv:converters/libiconv
 NTLM_USES=			iconv
 DNS_CONFIGURE_ENABLE=		dnsauth
 EMAIL_CONFIGURE_ENABLE=		email
-DEBUG_CONFIGURE_ON=		--with-dgdebug=on
-1024_CONFIGURE_ON=		--with-filedescriptors=1024
-2048_CONFIGURE_ON=		--with-filedescriptors=2048
-4096_CONFIGURE_ON=		--with-filedescriptors=4096
-8192_CONFIGURE_ON=		--with-filedescriptors=8192
-SSL_LDFLAGS=			-lssl -lcrypto
-SSL_CFLAGS=			-D__SSLMITM -D__SSLCERT
+DEBUG_CONFIGURE_OFF=		--with-dgdebug=off --with-newdebug=off
+DEBUG_CONFIGURE_ON=		--with-dgdebug=on --with-newdebug=on
+SSL_MITM_USES=			ssl
+SSL_MITM_CONFIGURE_ENABLE=	sslmitm
+SSL_MITM_CONFIGURE_ENV=		OPENSSL_LIBS="-lssl -lcrypto" \
+				OPENSSL_CFLAGS="-I${OPENSSLINC} -L${OPENSSLLIB}"
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLAMD} || ${PORT_OPTIONS:MICAP} || \
-    ${PORT_OPTIONS:MKAV} || ${PORT_OPTIONS:MCLISCAN}
+    ${PORT_OPTIONS:MKAV} || ${PORT_OPTIONS:MCLISCAN} || \
+    ${PORT_OPTIONS:MAVAST}
 PLIST_SUB+=	SCANNERS=""
 .else
 PLIST_SUB+=	SCANNERS="@comment "
 .endif
 
-post-extract:
-.if ${PORT_OPTIONS:M2048} || ${PORT_OPTIONS:M4096} || ${PORT_OPTIONS:M8192}
-	@${ECHO_MSG} ""
-	@${ECHO_MSG} "######################################################"
-	@${ECHO_MSG} "WARNING! Filedescriptors option higher then 1024."
-	@${ECHO_MSG} "Check/raise FD_SETSIZE in /usr/include/sys/select.h"
-	@${ECHO_MSG} "before preceeding with e2guardian compilation"
-	@${ECHO_MSG} "######################################################"
-	@${ECHO_MSG} ""
-.  if !(defined(PACKAGE_BUILDING) || defined(BATCH))
-	@sleep 3
-.  endif
-.endif
+SUB_FILES=	pkg-message pkg-install
 
 pre-configure:
 	@cd ${WRKSRC} && ${SH} ${WRKSRC}/autogen.sh
 
 post-install:
 	@${FIND} ${STAGEDIR}${ETCDIR} -type f \
-		\( -name '*.conf' -or -name '*list' \) -exec ${MV} {} {}.sample \;
+		\( -name '*.conf' -or -name '*list' -or -name '*.story' \) \
+		-exec ${MV} {} {}.sample \;
 	@${MV} ${STAGEDIR}${ETCDIR}/lists/authplugins/ipgroups \
 		${STAGEDIR}${ETCDIR}/lists/authplugins/ipgroups.sample
 	@${MV} ${STAGEDIR}${ETCDIR}/lists/authplugins/portgroups \
 		${STAGEDIR}${ETCDIR}/lists/authplugins/portgroups.sample
 	@${MV} ${STAGEDIR}${ETCDIR}/lists/bannedrooms/default \
 		${STAGEDIR}${ETCDIR}/lists/bannedrooms/default.sample
-
+	@${MV} ${STAGEDIR}${ETCDIR}/lists/bannedsitelistwithbypass \
+		${STAGEDIR}${ETCDIR}/lists/bannedsitelistwithbypass.sample
+	@${MKDIR} ${STAGEDIR}${ETCDIR}/lists/contentscanners
+	@${MV} ${STAGEDIR}${ETCDIR}/lists/exceptionvirusextensionlist.sample \
+		${STAGEDIR}${ETCDIR}/lists/contentscanners/
+	@${MV} ${STAGEDIR}${ETCDIR}/lists/exceptionvirussiteiplist.sample \
+		${STAGEDIR}${ETCDIR}/lists/contentscanners/
 .include <bsd.port.mk>

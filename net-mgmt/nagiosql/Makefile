@@ -2,24 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	nagiosql
-PORTVERSION=	3.2.0
-PORTREVISION=	2
+PORTVERSION=	3.4.0
+PORTREVISION=	3
 CATEGORIES=	net-mgmt www
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/NagiosQL%20${PORTVERSION}/
-DISTNAME=	${PORTNAME}_${PORTVERSION:S/.//g}
-DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}_SP2
 
-MAINTAINER=	chris@smartt.com
+MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Web based administration tool for Nagios
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	nagios:net-mgmt/nagios \
 		${PEARDIR}/HTML/Template/IT.php:devel/pear-HTML_Template_IT@${PHP_FLAVOR}
 
-USE_MYSQL=	yes
-USES=		cpe gettext php:web tar:bzip2
-USE_PHP=	mysql filter gettext session simplexml
+USES=		cpe gettext mysql php:web tar:bzip2
+USE_PHP=	filter gettext mysqli session simplexml
+
+USE_GITLAB=	yes
+GL_ACCOUNT=	wizonet
+GL_COMMIT=	0f1c063740b4d3dae98d74f293c53234f341b06e
 
 USERS?=		nagios
 GROUPS?=	nagios
@@ -27,7 +28,7 @@ NAGIOSUSER?=	nagios
 
 NO_BUILD=	yes
 NO_ARCH=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}32
+WRKSRC=		${WRKDIR}/${PORTNAME}-${GL_COMMIT}-${GL_COMMIT}
 
 SUB_FILES=	pkg-message
 PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP} NAGIOSUSER=${NAGIOSUSER}
@@ -42,15 +43,15 @@ CURL_USE=	PHP=curl
 FTP_USE=	PHP=ftp
 
 post-patch:
-	${REINPLACE_CMD} -e "s|\'/etc/nagiosql/|\'${ETCDIR}/|g" \
+	${REINPLACE_CMD} -e "s|'/etc/nagiosql/|'${ETCDIR}/|g" \
 		-e "s|/opt/nagios/etc/objects/|${LOCALBASE}/etc/nagios/objects/|" \
 		-e "s|/opt/nagios/bin/nagios|${LOCALBASE}/bin/nagios|" \
 		-e "s|/var/nagios/nagios.lock|/var/spool/nagios/nagios.lock|" \
 		-e "s|/var/nagios/rw/nagios.cmd|/var/spool/nagios/rw/nagios.cmd|" \
 		-e "s|nagios/etc/|etc/nagios/|" \
 		-e "s|nagiosql/etc/|${ETCDIR}/|" \
-		-e "s|\>/etc/nagiosql|\>${ETCDIR}|g" \
-		-e "s|\>/etc/nagios/|\>${LOCALBASE}/etc/nagios/|g" \
+		-e "s|>/etc/nagiosql|>${ETCDIR}|g" \
+		-e "s|>/etc/nagios/|>${LOCALBASE}/etc/nagios/|g" \
 		${WRKSRC}/install/sql/nagiosQL_v32_db_mysql.sql
 
 	${REINPLACE_CMD} -e "s|\"/etc/|\"${LOCALBASE}/etc/|" \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libXdmcp
-PORTVERSION=	1.1.2
+PORTVERSION=	1.1.3
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	X Display Manager Control Protocol library
 LICENSE=	MIT
 
 XORG_CAT=	lib
-USE_XORG=	xproto:both
+USE_XORG=	xorgproto:both
 
 CONFIGURE_ARGS+=--disable-docs --without-xmlto
 

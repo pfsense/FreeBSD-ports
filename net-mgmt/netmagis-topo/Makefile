@@ -2,6 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netmagis
+PORTREVISION=	1
 PKGNAMESUFFIX=	-topo
 
 COMMENT=	Netmagis topology module
@@ -23,6 +24,8 @@ PKGMESSAGE=	${.CURDIR}/pkg-message
 PLIST=		${.CURDIR}/pkg-plist
 
 ALL_TARGET=build${PKGNAMESUFFIX?=}
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
 	@${MKDIR} ${STAGEDIR}/var/netmagis/eqgen ${STAGEDIR}/var/netmagis/eqvirt

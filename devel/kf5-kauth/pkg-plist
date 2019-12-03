@@ -1,5 +1,3 @@
-etc/dbus-1/system.d/org.kde.kf5auth.conf
-etc/xdg/kauth.categories
 include/KF5/KAuth/KAuth
 include/KF5/KAuth/KAuthAction
 include/KF5/KAuth/KAuthActionReply
@@ -10,6 +8,7 @@ include/KF5/KAuth/kauth.h
 include/KF5/KAuth/kauth_export.h
 include/KF5/KAuth/kauthaction.h
 include/KF5/KAuth/kauthactionreply.h
+include/KF5/KAuth/kauthcore_export.h
 include/KF5/KAuth/kauthexecutejob.h
 include/KF5/KAuth/kauthhelpersupport.h
 include/KF5/KAuth/kauthobjectdecorator.h
@@ -24,16 +23,19 @@ lib/cmake/KF5Auth/KF5AuthToolsTargets.cmake
 lib/libKF5Auth.so
 lib/libKF5Auth.so.5
 lib/libKF5Auth.so.%%KDE_FRAMEWORKS_VERSION%%
+lib/libKF5AuthCore.so
+lib/libKF5AuthCore.so.5
+lib/libKF5AuthCore.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libexec/kauth/kauth-policy-gen
 %%QT_PLUGINDIR%%/kauth/backend/kauth_backend_plugin.so
 %%QT_PLUGINDIR%%/kauth/helper/kauth_helper_plugin.so
 %%QT_MKSPECDIR%%/modules/qt_KAuth.pri
+share/dbus-1/system.d/org.kde.kf5auth.conf
 share/kf5/kauth/dbus_policy.stub
 share/kf5/kauth/dbus_service.stub
 share/locale/af/LC_MESSAGES/kauth5_qt.qm
 share/locale/ar/LC_MESSAGES/kauth5_qt.qm
 share/locale/as/LC_MESSAGES/kauth5_qt.qm
-share/locale/ast/LC_MESSAGES/kauth5_qt.qm
 share/locale/be/LC_MESSAGES/kauth5_qt.qm
 share/locale/be@latin/LC_MESSAGES/kauth5_qt.qm
 share/locale/bg/LC_MESSAGES/kauth5_qt.qm
@@ -130,3 +132,4 @@ share/locale/xh/LC_MESSAGES/kauth5_qt.qm
 share/locale/zh_CN/LC_MESSAGES/kauth5_qt.qm
 share/locale/zh_HK/LC_MESSAGES/kauth5_qt.qm
 share/locale/zh_TW/LC_MESSAGES/kauth5_qt.qm
+share/qlogging-categories5/kauth.categories

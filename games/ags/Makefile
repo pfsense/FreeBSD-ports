@@ -1,9 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	ags
-DISTVERSIONPREFIX=	v.
-DISTVERSION=	3.4.1.13
+DISTVERSION=	3.4.4.1
 CATEGORIES=	games
+MASTER_SITES=	https://github.com/adventuregamestudio/ags/releases/download/v.${DISTVERSION}/
+DISTNAME=	ags_linux_v.${DISTVERSION}
 
 MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Adventure Game Studio Engine
@@ -18,25 +19,17 @@ LIB_DEPENDS=	liballeg.so:devel/allegro \
 		libvorbis.so:audio/libvorbis \
 		libfreetype.so:print/freetype2
 
-BROKEN_powerpc64=	fails to compile: cc1plus: unrecognized command line option "-std=c++11"
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	adventuregamestudio
-
-USES=		gmake localbase pkgconfig tar:xz
+USES=		compiler:c++11-lang gmake localbase pkgconfig tar:xz xorg
 USE_XORG=	x11
 
-BUILD_WRKSRC=	${WRKSRC}/Engine
-
 MAKE_ARGS=	V=1
+BUILD_WRKSRC=	${WRKSRC}/Engine
 
 PLIST_FILES=	bin/ags
 
 post-patch:
 	@${REINPLACE_CMD} 's|<endian.h>|<sys/endian.h>|' \
 		${WRKSRC}/Common/core/endianness.h
-	@${REINPLACE_CMD} 's|HWND editor_window_handle = NULL;|HWND editor_window_handle = 0;|g' \
-		${WRKSRC}/Engine/debug/debug.cpp
 	@${REINPLACE_CMD} -e 's|return cd_player|return 0; // cd_player|g' \
 		-e 's|cd_exit|//cd_exit|g' \
 		${WRKSRC}/Engine/platform/linux/acpllnx.cpp

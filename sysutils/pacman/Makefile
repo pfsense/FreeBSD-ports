@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pacman
-PORTVERSION=	5.1.0
+PORTVERSION=	5.1.3
 CATEGORIES=	sysutils
 MASTER_SITES=	https://sources.archlinux.org/other/${PORTNAME}/ \
 		https://mirror.amdmi3.ru/distfiles/
@@ -50,6 +50,10 @@ NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1300000
+BROKEN=		does not build (undefined reference to MD5_Final)
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|m4|gm4|' ${WRKSRC}/scripts/Makefile.in

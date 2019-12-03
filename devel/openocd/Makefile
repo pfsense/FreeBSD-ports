@@ -3,14 +3,12 @@
 
 PORTNAME=	openocd
 PORTVERSION=	0.10.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Open On-Chip Debugger
-
-BROKEN_powerpc64=	fails to configure: error: C compiler cannot create executables
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--disable-werror
@@ -44,7 +42,6 @@ ULINK_DESC=	Support Keil ULINK-JTAG Programmer
 ARMJTAGEW_DESC=	Support Olimex ARM-JTAG-EW Programmer
 BUSPIRATE_DESC=	Support BusPirate Programmer
 STLINK_DESC=	Support STLink Programmer
-TI_ICDI_DESC=	Support TI ICDI JTAG Programmer
 OSBDM_DESC=	Support OSBDM Programmer (JTAG only)
 OPENDOUS_DESC=	Support EStick/OpenDous Programmer
 SYSFSGPIO_DESC=	Support Programming via sysfs GPIOs
@@ -55,7 +52,7 @@ TIICDI_DESC=	Support for the TI ICDI JTAG Programmer
 USB_COMMS_DESC=	Enable verbose USB communication messages
 
 USES=		gmake libtool makeinfo pkgconfig tar:bzip2
-CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib -Wno-error=unused-command-line-argument
+CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib -Wno-error
 INFO=		openocd
 
 post-patch:

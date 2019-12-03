@@ -14,11 +14,13 @@ LICENSE_COMB=	multi
 
 USES=		elixir gmake
 USE_GITHUB=	yes
-GH_ACCOUNT=	elixircnx
+GH_ACCOUNT=	riverrun
 
 MIX_BUILD_DEPS=	devel/elixir-make \
 		security/elixir-comeonin_i18n
 MIX_RUN_DEPS:=	security/elixir-comeonin_i18n
+
+OPTIONS_DEFINE=	DOCS
 
 post-build:
 	${STRIP_CMD} ${WRKSRC}/priv/bcrypt_nif.so

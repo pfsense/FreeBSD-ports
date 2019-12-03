@@ -12,6 +12,10 @@ COMMENT=	UltraVNC repeater
 
 LICENSE=	GPLv2+
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		zip
 USE_RC_SUBR=	${PORTNAME}
 WRKSRC=		${WRKDIR}/Ver${PORTVERSION:C/\.//}

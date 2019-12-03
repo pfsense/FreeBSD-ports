@@ -2,7 +2,8 @@
 
 PORTNAME=	eternalterminal
 DISTVERSIONPREFIX=	et-v
-DISTVERSION=	4.2.1
+DISTVERSION=	5.1.9
+PORTREVISION=	4
 CATEGORIES=	net
 
 MAINTAINER=	trevis@silencedpoet.com
@@ -16,11 +17,15 @@ LIB_DEPENDS=	libgflags.so:devel/gflags \
 		libprotobuf.so:devel/protobuf \
 		libsodium.so:security/libsodium
 
-USES=		cmake:outsource ncurses
+USES=		cmake compiler:c++11-lang ncurses
 USE_GITHUB=	yes
 GH_ACCOUNT=	MisterTea
 GH_PROJECT=	EternalTerminal
 
-PLIST_FILES=	bin/et bin/etserver
+PLIST_FILES=	bin/et \
+		bin/etserver \
+		bin/etterminal \
+		bin/htm \
+		bin/htmd
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sterm
-DISTVERSION=	0.8.1
+DISTVERSION=	0.8.2
 CATEGORIES=	x11
 MASTER_SITES=	http://dl.suckless.org/st/
 DISTNAME=	st-${PORTVERSION}
@@ -40,8 +40,6 @@ SCROLLBACK_EXTRA_PATCHES=	${PATCHDIR}/extra-scrollback-patch-config.def.h \
 SOLARIZED_EXTRA_PATCHES=	${PATCHDIR}/extra-solarized-patch-config.def.h \
 		${PATCHDIR}/extra-solarized-patch-x.c \
 		${PATCHDIR}/extra-solarized-patch-st.h
-
-SUB_FILES=	pkg-message
 
 pre-everything::
 	@${ECHO_MSG} "You can build st with your own config.h using the ST_CONF knob:"

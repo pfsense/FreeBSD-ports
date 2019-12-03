@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	msgpack-d
-DISTVERSION=	1.0.0-beta7
+DISTVERSION=	1.0.0-beta8
 CATEGORIES=	devel
 
 MAINTAINER=	acm@FreeBSD.org

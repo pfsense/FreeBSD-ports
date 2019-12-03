@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	casstcl
-PORTVERSION=	2.11
+PORTVERSION=	2.13.2
 DISTVERSIONPREFIX=v
-PORTREVISION=	3
+PORTREVISION=	0
 CATEGORIES=	databases
 
 MAINTAINER=	gahr@FreeBSD.org
@@ -14,12 +14,12 @@ LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libcassandra.so:databases/cassandra-cpp-driver
 
-USES=		autoreconf tcl:85+,tea
+USES=		autoreconf tcl:tea
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	flightaware
 
 USE_LDCONFIG=	${PREFIX}/lib/casstcl${PORTVERSION}
-PLIST_SUB+=	PORTVERSION=${PORTVERSION}
+PLIST_SUB+=	PORTVERSION=${PORTVERSION:R}
 
 .include <bsd.port.mk>

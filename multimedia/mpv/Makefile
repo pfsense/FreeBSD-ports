@@ -2,10 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	mpv
-PORTVERSION=	0.28.2
+PORTVERSION=	0.29.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	11
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
+MASTER_SITES=	https://waf.io/:waf
+DISTFILES=	${WAF_RELEASE}${EXTRACT_SUFX}:waf
 
 MAINTAINER=	cpm@FreeBSD.org
 COMMENT=	Free and open-source general-purpose video player
@@ -13,19 +16,19 @@ COMMENT=	Free and open-source general-purpose video player
 LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	ffmpeg>=4.0,1:multimedia/ffmpeg
+BUILD_DEPENDS=	ffmpeg>=4.0.2,1:multimedia/ffmpeg
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 
 USES=		compiler:c11 desktop-file-utils iconv jpeg localbase:ldflags \
-		pkgconfig python:build waf
+		pkgconfig python:build tar:bz2 waf
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mpv-player
-# Keep in sync with bootstrap.py to avoid regressions
-GH_TUPLE=	waf-project:waf:waf-1.9.8:waf
 
-WAF_CMD=	${WRKSRC_waf}/waf-light
+# Keep in sync with bootstrap.py to avoid regressions
+WAF_CMD=	${WRKDIR}/${WAF_RELEASE}/waf-light
+WAF_RELEASE=	waf-2.0.9
 
 CONFIGURE_ENV=	BIN_PYTHON="${PYTHON_CMD}"
 CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
@@ -39,13 +42,13 @@ CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
 		--disable-vapoursynth-lazy \
 		--enable-libmpv-shared
 
-OPTIONS_DEFINE=		ARCHIVE ASS DOCS LCMS2 LUAJIT MANPAGES TEST UCHARDET ZSH
+OPTIONS_DEFINE=		ARCHIVE ASS DOCS LCMS2 LUAJIT MANPAGES TEST UCHARDET ZSH EXAMPLES
 OPTIONS_DEFAULT=	ARCHIVE ASS DVDREAD DVDNAV MANPAGES OPENGL UCHARDET \
-			V4L VAAPI VDPAU X11 YTDL
+			V4L VAAPI VDPAU VULKAN WAYLAND X11 YTDL
 OPTIONS_GROUP=		IN VO AO
 OPTIONS_GROUP_IN=	CDIO DVDREAD DVDNAV LIBBLURAY V4L YTDL SMB
-OPTIONS_GROUP_VO=	CACA OPENGL VAAPI VDPAU WAYLAND X11
-OPTIONS_GROUP_AO=	ALSA JACK PULSEAUDIO SDL SNDIO
+OPTIONS_GROUP_VO=	CACA OPENGL VAAPI VDPAU VULKAN WAYLAND X11
+OPTIONS_GROUP_AO=	ALSA JACK OPENAL PULSEAUDIO SDL SNDIO
 OPTIONS_SUB=		yes
 
 ASS_DESC=		ASS/SSA subtitle and OSD rendering
@@ -53,6 +56,7 @@ DVDREAD_DESC=		DVD Playback support
 DVDNAV_DESC=		DVD menu navigation
 LUAJIT_DESC=		Use LuaJIT instead of Lua scripting language support
 UCHARDET_DESC=		Guess subtitle encoding via uchardet
+VULKAN_DESC=		Vulkan output support
 WAYLAND_DESC=		Wayland (graphics) support
 YTDL_DESC=		Install youtube-dl
 IN_DESC=		Input
@@ -101,6 +105,11 @@ LUAJIT_CONFIGURE_OFF=		--lua=${LUA_VER_STR}fbsd
 MANPAGES_BUILD_DEPENDS=		rst2man:textproc/py-docutils
 MANPAGES_CONFIGURE_OFF=		--disable-manpage
 
+OPENAL_CONFIGURE_ENABLE=	openal
+OPENAL_USES=			openal
+OPENAL_VARS=			LLD_UNSAFE=yes # cf. PR 226980
+
+OPENGL_USES=			gl
 OPENGL_USE=			GL=egl,gbm,gl
 OPENGL_CONFIGURE_OFF=		--disable-gl
 OPENGL_IMPLIES=			X11
@@ -135,12 +144,21 @@ VAAPI_CONFIGURE_OFF=		--disable-vaapi
 VDPAU_LIB_DEPENDS=		libvdpau.so:multimedia/libvdpau
 VDPAU_CONFIGURE_OFF=		--disable-vdpau
 
+VULKAN_BUILD_DEPENDS=		${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
+VULKAN_LIB_DEPENDS=		libvulkan.so:graphics/vulkan-loader \
+				libshaderc_shared.so:graphics/shaderc
+VULKAN_CONFIGURE_OFF=		--disable-vulkan --disable-shaderc
+VULKAN_IMPLIES=			X11
+
+WAYLAND_BUILD_DEPENDS=		wayland-protocols>=1.14:graphics/wayland-protocols \
+				${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 WAYLAND_LIB_DEPENDS=		libwayland-client.so:graphics/wayland \
 				libwayland-cursor.so:graphics/wayland \
 				libxkbcommon.so:x11/libxkbcommon
 WAYLAND_CONFIGURE_OFF=		--disable-wayland
 
-X11_USE=			XORG=x11,xext,xinerama,xineramaproto,xrandr,xscrnsaver,xv,xxf86vm
+X11_USES=			gnome
+X11_USE=			XORG=x11,xext,xinerama,xorgproto,xrandr,xscrnsaver,xv,xxf86vm
 X11_VARS=			INSTALLS_ICONS=yes
 X11_CONFIGURE_OFF=		--disable-x11
 
@@ -161,6 +179,9 @@ CONFIGURE_ARGS+=	--disable-vaapi-wayland
 .endif
 
 post-patch:
+	@${REINPLACE_CMD} -e 's|sys/vt.h|sys/consio.h|g' \
+		${WRKSRC}/video/out/drm_common.c \
+		${WRKSRC}/wscript
 	@${REINPLACE_CMD} -e 's|/pkgconfig/mpv.pc|data/pkgconfig/mpv.pc|g' \
 		${WRKSRC}/wscript_build.py
 	@${REINPLACE_CMD} -e 's|DBL_EPSILON|FLT_EPSILON|'g \

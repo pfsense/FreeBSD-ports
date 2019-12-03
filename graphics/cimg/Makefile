@@ -3,7 +3,7 @@
 
 PORTNAME=	cimg
 DISTVERSIONPREFIX=	v.
-DISTVERSION=	2.3.0
+DISTVERSION=	2.7.2
 PORTEPOCH=	3
 CATEGORIES=	graphics devel
 
@@ -30,6 +30,8 @@ BROKEN_powerpc64=	invokes x86 assembler
 USE_GITHUB=	yes
 GH_ACCOUNT=	dtschump
 GH_PROJECT=	CImg
+
+USES=	xorg
 
 .if !defined(WITHOUT_LAPACK)
 . if defined(WITH_ATLAS)
@@ -58,7 +60,7 @@ LIB_DEPENDS+=	libcurl.so:ftp/curl			\
 		libpng.so:graphics/png			\
 		libtiff.so:graphics/tiff		\
 		libHalf.so:graphics/ilmbase		\
-		libIlmImf.so:graphics/OpenEXR		\
+		libIlmImf.so:graphics/openexr		\
 		libgimp-2.0.so:graphics/gimp-app	\
 		libfftw3.so:math/fftw3			\
 		libopencv_video.so:graphics/opencv	\
@@ -91,6 +93,7 @@ USE_XORG+=	xext
 . endif
 
 DOCBASE=	README.txt
+MAKE_ARGS+=	CPPFLAGS="${CFLAGS}" FREEBSD_LDFLAGS="${LDFLAGS}"
 PROGS=		CImg_demo captcha curve_editor2d dtmri_view3d			\
 	edge_explorer2d fade_images gaussian_fit1d generate_loop_macros		\
 	hough_transform2d image2ascii image_registration2d image_surface3d	\
@@ -130,7 +133,6 @@ pre-configure:
 		-e 's|XSHM_LDFLAGS = #|XSHM_LDFLAGS =|'		\
 		${BUILD_WRKSRC}/Makefile
 . endif
-	${REINPLACE_CMD} -e 's|-pedantic|${CFLAGS}|' ${BUILD_WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/CImg.h ${STAGEDIR}${PREFIX}/include

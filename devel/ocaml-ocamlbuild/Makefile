@@ -1,0 +1,21 @@
+# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
+# $FreeBSD$
+
+PORTNAME=	ocamlbuild
+PORTVERSION=	0.14.0
+CATEGORIES=	devel
+PKGNAMEPREFIX=	ocaml-
+
+MAINTAINER=	danfe@FreeBSD.org
+COMMENT=	Build tool for OCaml libraries and programs
+
+LICENSE=	GPLv2
+
+USES=		gmake
+USE_GITHUB=	yes
+GH_ACCOUNT=	ocaml
+USE_OCAML=	yes
+
+ALL_TARGET=	configure all
+
+.include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	avahi
 PORTVERSION=	0.7
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES?=	net dns
 MASTER_SITES=	http://www.avahi.org/download/
 PKGNAMESUFFIX?=	-app
@@ -26,7 +26,7 @@ LIB_DEPENDS?=	libexpat.so:textproc/expat2 \
 USERS?=		${PORTNAME}
 GROUPS?=	${USERS}
 
-USES+=		alias gettext gmake libtool pathfix pkgconfig
+USES+=		alias gettext gmake gnome libtool pathfix pkgconfig
 USE_GNOME+=	glib20 intltool introspection
 USE_GNOME_SUBR=	yes
 USE_LDCONFIG=	yes
@@ -37,6 +37,7 @@ CONFIGURE_ARGS?=--with-distro=freebsd \
 		--disable-doxygen-doc \
 		--disable-doxygen-dot \
 		--disable-qt3 \
+		--disable-qt4 \
 		--localstatedir=/var \
 		--enable-compat-howl
 CPPFLAGS+=	-I${LOCALBASE}/include -DHAVE_KQUEUE
@@ -78,12 +79,12 @@ CONFIGURE_ARGS+=--enable-python
 .else
 CONFIGURE_ARGS+=--disable-python
 .endif
-.if ${AVAHI_SLAVE} == qt4
-CONFIGURE_ARGS+=--enable-qt4 \
+.if ${AVAHI_SLAVE} == qt5
+CONFIGURE_ARGS+=--enable-qt5 \
 		--disable-expat \
 		--disable-gdbm
 .else
-CONFIGURE_ARGS+=--disable-qt4
+CONFIGURE_ARGS+=--disable-qt5
 .endif
 .if ${AVAHI_SLAVE} == sharp
 CONFIGURE_ARGS+=--enable-mono

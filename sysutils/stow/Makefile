@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stow
-PORTVERSION=	2.2.2
+PORTVERSION=	2.3.1
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
@@ -12,13 +12,12 @@ COMMENT=	GNU version of Carnegie Mellon's "Depot" program
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+RUN_DEPENDS=	p5-Hash-Merge>=0:textproc/p5-Hash-Merge
 TEST_DEPENDS=	p5-Test-Output>0:devel/p5-Test-Output
 
 USES=		gmake perl5 tar:bzip2
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ac_cv_path_PERL=${PERL}
-INSTALL_TARGET=	install-exec-am install-dist_pmstowDATA install-info-am \
-		install-man install-pmDATA
 
 OPTIONS_DEFINE=	DOCS
 
@@ -28,7 +27,7 @@ NO_ARCH=	yes
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for FILE in ChangeLog README
+.for FILE in ChangeLog README.md
 	${INSTALL_DATA} ${WRKSRC}/${FILE} ${STAGEDIR}${DOCSDIR}
 .endfor
 .for FILE in ChangeLog.OLD manual-single.html manual.pdf version.texi

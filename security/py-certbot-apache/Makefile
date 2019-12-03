@@ -2,7 +2,6 @@
 
 PORTNAME=	certbot-apache
 PORTVERSION=	${ACME_VERSION}
-PORTREVISION=	0
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -24,6 +23,11 @@ USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|apache2ctl|apachectl|' ${WRKSRC}/certbot_apache/configurator.py
+	@${REINPLACE_CMD} -e 's|/etc/apache2|${LOCALBASE}/etc/apache24|' \
+	${WRKSRC}/certbot_apache/configurator.py
 
 .include "${.CURDIR}/../py-acme/version.mk"
 .include <bsd.port.mk>

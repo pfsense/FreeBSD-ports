@@ -3,6 +3,7 @@
 
 PORTNAME=	rxvt-unicode
 PORTVERSION=	9.22
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://dist.schmorp.de/rxvt-unicode/%SUBDIR%/
 MASTER_SITE_SUBDIR=	. Attic
@@ -73,10 +74,10 @@ PATCH_DEPENDS+=	p5-Encode-HanExtra>=0:chinese/p5-Encode-HanExtra \
 CONFIGURE_ARGS+=	--disable-perl
 USES+=			perl5
 USE_PERL5=		build
-PLIST_SUB=		PERL="@comment "
+PLIST_SUB+=		PERL="@comment "
 .else
 USES+=			perl5
-PLIST_SUB=		PERL=""
+PLIST_SUB+=		PERL=""
 .endif
 
 # disable XIM (X Input Method) protocol support

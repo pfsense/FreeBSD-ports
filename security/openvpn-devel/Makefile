@@ -2,23 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=		openvpn
-DISTVERSION=		201821
-PORTREVISION=		1
-CATEGORIES=		security net
+DISTVERSION=		201935
+CATEGORIES=		security net net-vpn
 MASTER_SITES=		https://secure-computing.net/files/openvpn/ \
 			ftp://ftp2.secure-computing.net/pub/FreeBSD/openvpn-devel/
 PKGNAMESUFFIX=		-devel
 
 MAINTAINER=		ecrist@secure-computing.net
+# let's use ?= in spite of portlint WARNings because this might become
+# security/openvpn one day which would then have a slave port:
 COMMENT?=		Secure IP/Ethernet tunnel daemon
 
 LICENSE=		GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT.GPL
 
-CONFLICTS_INSTALL=	openvpn-2.[!4].* openvpn-[!2].* openvpn-beta-[0-9]* openvpn-devel-[0-9]*
+IGNORE_SSL=		libressl libressl-devel
 
+USES=			cpe libtool pkgconfig shebangfix tar:xz
+
+CONFLICTS_INSTALL?=	openvpn-2.[!4].* openvpn-[!2].* openvpn-beta-[0-9]* openvpn-devel-[0-9]* openvpn-mbedtls-[0-9]*
 GNU_CONFIGURE=		yes
 WRKSRC=			${WRKDIR}/${PORTNAME}${PKGNAMESUFFIX}
-USES=			cpe libtool pkgconfig shebangfix tar:xz
 SHEBANG_FILES=		sample/sample-scripts/verify-cn \
 			sample/sample-scripts/auth-pam.pl \
 			sample/sample-scripts/ucn.pl
@@ -41,7 +45,7 @@ OPTIONS_SINGLE=		SSL
 OPTIONS_SINGLE_SSL=	OPENSSL MBEDTLS
 PKCS11_DESC=		Use security/pkcs11-helper
 EASYRSA_DESC=		Install security/easy-rsa RSA helper package
-MBEDTLS_DESC=		SSL/TLS via mbedTLS
+MBEDTLS_DESC=		SSL/TLS via mbedTLS (lacks TLS v1.3)
 TUNNELBLICK_DESC=	Tunnelblick XOR scramble patch (READ HELP!)
 X509ALTUSERNAME_DESC=	Enable --x509-username-field (OpenSSL only)
 SMALL_DESC=		Build a smaller executable with fewer features
@@ -71,7 +75,6 @@ MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls
 MBEDTLS_CONFIGURE_ON=	--with-crypto-library=mbedtls
 
 USE_RC_SUBR=		openvpn
-USE_LDCONFIG=		${PREFIX}/lib
 
 SUB_FILES=		pkg-message openvpn-client
 
@@ -88,12 +91,6 @@ PORTEXAMPLES=		*
 
 TEST_ALL_TARGET=	check
 TEST_TEST_TARGET_OFF=	check
-
-# XXX Please remove this compatibility wrapper after 2017Q2 is branched.
-.ifdef(WITHOUT_CHECK)
-WARNING+=	"${.CURDIR}: WITHOUT_CHECK is deprecated, please use WITHOUT=TEST or OPTIONS_UNSET=TEST."
-WITHOUT+=	TEST
-.endif
 
 pre-configure:
 .ifdef (LOG_OPENVPN)
@@ -124,9 +121,9 @@ _tlslibs=libssl libcrypto
 # sanity check that we don't inherit incompatible SSL libs through,
 # for instance, pkcs11-helper:
 post-build:
-	   @a=$$(LC_ALL=C ldd -f '%o\n' ${WRKSRC}/src/openvpn/openvpn \
-       |	${SORT} -u) ; set -- $$(for i in ${_tlslibs} ; do ${PRINTF} '%s\n' "$$a" | ${GREP} $${i}.so | wc -l ; done | ${SORT} -u) ;\
-       if test "$$*" != "1" ; then ${ECHO_CMD} >&2 "${.CURDIR} FAILED: either of ${_tlslibs} libraries linked multiple times" ; ${PRINTF} '%s\n' "$$a"; ${RM} ${BUILD_COOKIE} ; exit 1 ; fi
+	@a=$$(LC_ALL=C ldd -f '%o\n' ${WRKSRC}/src/openvpn/openvpn \
+	|	${SORT} -u) ; set -- $$(for i in ${_tlslibs} ; do ${PRINTF} '%s\n' "$$a" | ${GREP} $${i}.so | wc -l ; done | ${SORT} -u) ;\
+	if test "$$*" != "1" ; then ${ECHO_CMD} >&2 "${.CURDIR} FAILED: either of ${_tlslibs} libraries linked multiple times" ; ${PRINTF} '%s\n' "$$a"; ${RM} ${BUILD_COOKIE} ; exit 1 ; fi
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/openvpn/plugins/openvpn-plugin-auth-pam.so

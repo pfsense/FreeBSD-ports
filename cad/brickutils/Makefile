@@ -14,10 +14,12 @@ DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	BrickUtils-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}_icons${EXTRACT_SUFX}
 
-MAINTAINER=	koalative@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility for building models with LEGO
 
 LICENSE=	GPLv3
+
+BROKEN=		missing RUN_DEPENDS
 
 RUN_DEPENDS=	${LOCALBASE}/share/ldraw/models/car.dat:cad/ldraw \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}

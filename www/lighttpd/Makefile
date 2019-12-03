@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME?=	lighttpd
-PORTVERSION=	1.4.51
+PORTVERSION=	1.4.54
 CATEGORIES?=	www
-MASTER_SITES?=	http://download.lighttpd.net/lighttpd/releases-1.4.x/
+MASTER_SITES?=	https://download.lighttpd.net/lighttpd/releases-1.4.x/
 
 MAINTAINER=	pkubaj@anongoth.pl
 COMMENT?=	Secure, fast, compliant, and flexible Web Server
@@ -16,13 +16,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS+=	libpcre.so:devel/pcre
 
-GNU_CONFIGURE=	yes
 USES=		autoreconf gmake libtool localbase pkgconfig tar:xz
 USE_CSTD=	gnu99
 
 .if !defined(_BUILDING_LIGHTTPD_MODULE)
 USES+=	cpe
 .endif
+
+GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS+=	--libdir=${PREFIX}/lib/lighttpd
 INSTALL_TARGET=	install-strip
@@ -35,7 +36,7 @@ PORTDOCS=	AUTHORS COPYING INSTALL NEWS README
 USE_RC_SUBR=	lighttpd
 REQUIRE=	DAEMON
 
-OPTIONS_DEFINE=	ATTR BZIP2 DOCS FAM GDBM GEOIP IPV6 KRB5 LIBEV LUA MEMCACHED \
+OPTIONS_DEFINE=	ATTR BZIP2 DOCS FAM GDBM IPV6 KRB5 LIBEV LUA MEMCACHED \
 		MYSQL LDAP OPENSSL SPAWNFCGI VALGRIND WEBDAV
 
 OPTIONS_DEFAULT=	LUA OPENSSL
@@ -61,8 +62,6 @@ FAM_CONFIGURE_ON=	--with-fam
 FAM_CONFIGURE_ENV=	FAM_CFLAGS="-I${LOCALBASE}/include" FAM_LIBS="-L${LOCALBASE}/lib"
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_WITH=	gdbm
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
-GEOIP_CONFIGURE_WITH=	geoip
 IPV6_CONFIGURE_OFF=	--disable-ipv6
 KRB5_CONFIGURE_WITH=	krb5
 KRB5_CPPFLAGS=		${GSSAPICPPFLAGS}

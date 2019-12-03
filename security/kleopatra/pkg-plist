@@ -1,7 +1,7 @@
 bin/kleopatra
 bin/kwatchgnupg
-etc/xdg/kleopatra.categories
-etc/xdg/kleopatra.renamecategories
+share/qlogging-categories5/kleopatra.categories
+share/qlogging-categories5/kleopatra.renamecategories
 lib/libkleopatraclientcore.so
 lib/libkleopatraclientcore.so.1
 lib/libkleopatraclientcore.so.1.3.0
@@ -37,8 +37,6 @@ share/kwatchgnupg/pics/kwatchgnupg.png
 share/kwatchgnupg/pics/kwatchgnupg2.png
 share/locale/ar/LC_MESSAGES/kleopatra.mo
 share/locale/ar/LC_MESSAGES/kwatchgnupg.mo
-share/locale/ast/LC_MESSAGES/kleopatra.mo
-share/locale/ast/LC_MESSAGES/kwatchgnupg.mo
 share/locale/bg/LC_MESSAGES/kleopatra.mo
 share/locale/bg/LC_MESSAGES/kwatchgnupg.mo
 share/locale/bs/LC_MESSAGES/kleopatra.mo

@@ -1,0 +1,43 @@
+diff -ru eclipse-platform-parent/pom.xml eclipse-platform-parent/pom.xml
+--- eclipse-platform-parent/pom.xml	0000-00-00 00:00:00.000000000 +0000
++++ eclipse-platform-parent/pom.xml	0000-00-00 00:00:00.000000000 +0000
+@@ -89,9 +89,9 @@
+       'eclipiserun-repo' repository, such as for computing .api-descriptions and
+       generating API Tools reports.
+     -->
+-    <eclipserun-repo>https://download.eclipse.org/eclipse/updates/4.12-I-builds/</eclipserun-repo>
++    <eclipserun-repo>https://download.eclipse.org/eclipse/updates/4.12/</eclipserun-repo>
+     
+-    <comparator.repo>https://download.eclipse.org/eclipse/updates/4.12-I-builds</comparator.repo>
++    <comparator.repo>https://download.eclipse.org/eclipse/updates/4.12</comparator.repo>
+ 
+     <!--
+       NOTE: this EMF and ECF URL must match exactly what is in the eclipse-sdk-prereqs.target file.
+@@ -100,7 +100,7 @@
+       it).
+       And, of course, in the PDE target file, the URL is expected to be the actual URL, not a variable.
+     -->
+-    <emf-repo.url>https://download.eclipse.org/modeling/emf/emf/builds/milestone/S201905280646</emf-repo.url>
++    <emf-repo.url>https://download.eclipse.org/modeling/emf/emf/builds/release/2.18</emf-repo.url>
+ 
+     <ecf-repo.url>https://download.eclipse.org/rt/ecf/3.14.5/site.p2/</ecf-repo.url>
+ 
+@@ -262,14 +262,14 @@
+           </target>
+           <environments>
+             <environment>
+-              <os>linux</os>
++              <os>freebsd</os>
+               <ws>gtk</ws>
+-              <arch>x86_64</arch>
++              <arch>amd64</arch>
+             </environment>
+             <environment>
+-              <os>linux</os>
++              <os>freebsd</os>
+               <ws>gtk</ws>
+-              <arch>ppc64le</arch>
++              <arch>powerpc64</arch>
+             </environment>
+             <environment>
+               <os>win32</os>

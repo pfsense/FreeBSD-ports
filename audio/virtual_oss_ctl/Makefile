@@ -2,19 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	virtual_oss_ctl
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.selasky.org/hans_petter/distfiles/ \
-		http://home.selasky.org:8192/distfiles/
+		http://home.selasky.org/distfiles/
 
 MAINTAINER=	hselasky@FreeBSD.org
-COMMENT=	Grapical control panel for the virtual OSS daemon
+COMMENT=	Graphical control panel for the virtual OSS daemon
 
 LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	virtual_oss:audio/virtual_oss
+LIB_DEPENDS=	libfftw3.so:math/fftw3
 
-USES=		qmake qt:4 tar:bzip2
-USE_QT=		corelib gui qmake_build moc_build rcc_build
+USES=		compiler:c++11-lang gl qmake qt:5 tar:bzip2
+USE_GL=		gl
+USE_QT=		buildtools_build core gui widgets
+
+PLIST_FILES= \
+	bin/virtual_oss_ctl \
+	share/pixmaps/virtual_oss_ctl.png \
+	share/applications/virtual_oss_ctl.desktop
 
 .include <bsd.port.mk>

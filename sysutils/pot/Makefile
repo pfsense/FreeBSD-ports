@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pot
-PORTVERSION=	0.5.7
+PORTVERSION=	0.9.2
 CATEGORIES=	sysutils
 
 MAINTAINER=	pizzamig@FreeBSD.org
@@ -11,11 +11,16 @@ COMMENT=	Container framework for FreeBSD
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+RUN_DEPENDS=	potnet:sysutils/potnet \
+	ncat:security/nmap \
+	${LOCALBASE}/share/freebsd/MANIFESTS/amd64-amd64-11.2-RELEASE:misc/freebsd-release-manifests
+
+USE_RC_SUBR=	pot
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	pizzamig
 NO_ARCH=	yes
 NO_BUILD=	yes
-USE_RC_SUBR=	pot
 
 OPTIONS_DEFINE=	ZSH
 
@@ -36,6 +41,8 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/etc/pot/pot.conf.sample \
 		${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/etc/pot/flavours/dns.sh \
+		${STAGEDIR}${ETCDIR}/flavours
+	${INSTALL_DATA} ${WRKSRC}/etc/pot/flavours/slim.sh \
 		${STAGEDIR}${ETCDIR}/flavours
 
 do-install-ZSH-on:

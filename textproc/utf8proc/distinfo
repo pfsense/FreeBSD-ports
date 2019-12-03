@@ -1,3 +1,3 @@
-TIMESTAMP = 1482911401
-SHA256 (JuliaLang-utf8proc-v2.1.0_GH0.tar.gz) = 25ccc5619ac400f9eaf24aafaae5b625afa1961e140b8dd6072b393267833260
-SIZE (JuliaLang-utf8proc-v2.1.0_GH0.tar.gz) = 151842
+TIMESTAMP = 1558637980
+SHA256 (JuliaStrings-utf8proc-v2.4.0_GH0.tar.gz) = b2e5d547c1d94762a6d03a7e05cea46092aab68636460ff8648f1295e2cdfbd7
+SIZE (JuliaStrings-utf8proc-v2.4.0_GH0.tar.gz) = 154936

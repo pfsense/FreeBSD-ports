@@ -2,7 +2,7 @@
 
 PORTNAME=	cockroach
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.2
+DISTVERSION=	2.0.7
 CATEGORIES=	databases
 MASTER_SITES=	https://binaries.cockroachdb.com/
 EXTRACT_SUFX=	.src.tgz
@@ -18,10 +18,9 @@ ONLY_FOR_ARCHS_REASON=	"Only supported on amd64"
 
 BUILD_DEPENDS=	autoconf:devel/autoconf \
 		bash:shells/bash \
-		cmake:devel/cmake \
-		go:lang/go
+		cmake:devel/cmake
 
-USES=		gmake libedit
+USES=		gmake go libedit
 
 USE_RC_SUBR=	cockroach
 
@@ -36,9 +35,11 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|LDFLAGS: -ledit|LDFLAGS: -L${LOCALBASE}/lib -ledit|g' \
 			  -e 's|CPPFLAGS: -Ishim|CPPFLAGS: -I${LOCALBASE}/include -Ishim|g' \
 		${WRKSRC}/src/github.com/cockroachdb/cockroach/vendor/github.com/knz/go-libedit/unix/editline_unix.go
+	@${REINPLACE_CMD} -e 's|build -i -o|build -o|g' \
+		${WRKSRC}/src/github.com/cockroachdb/cockroach/Makefile
 
 do-build:
-	@${SETENV} -i PATH="${PATH}" \
+	@${SETENV} -i ${MAKE_ENV} \
 		${MAKE_CMD} -C ${WRKSRC} buildoss
 
 do-install:

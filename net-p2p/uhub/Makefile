@@ -2,10 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	uhub
-PORTVERSION=	0.5.0
-DISTVERSIONSUFFIX=	-src
+PORTVERSION=	0.5.1
 CATEGORIES=	net-p2p
-MASTER_SITES=	http://www.extatic.org/downloads/uhub/
+USE_GITHUB=	yes
+GH_ACCOUNT=	janvidar
+GH_PROJECT=	uhub
+GH_TAGNAME=	a8ee6e7
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High performance peer-to-peer hub for the ADC network
@@ -15,9 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_aarch64=	fails to compile: CPUINFO not defined
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-USES=		cmake perl5 sqlite
+USES=		cmake:insource perl5 sqlite
 USE_RC_SUBR=	uhub
 USE_PERL5=	build
 
@@ -32,6 +32,8 @@ OPTIONS_SUB=		yes
 
 OPENSSL_USES=		ssl
 OPENSSL_CMAKE_BOOL=	SSL_SUPPORT
+
+.include <bsd.port.pre.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -55,4 +57,4 @@ do-install:
 	@${ECHO_CMD} -n > ${STAGEDIR}${ETCDIR}/${i}.sample
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

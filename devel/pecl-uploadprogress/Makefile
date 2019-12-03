@@ -2,17 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	uploadprogress
-PORTVERSION=	1.0.3
-PORTREVISION=	1
+DISTVERSION=	1.0.3.1.a.20190424
 CATEGORIES=	devel pear
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	daniel@morante.net
 COMMENT=	Provides track progress of a file upload
 
 LICENSE=	PHP301
 
 USES=		php:pecl
-IGNORE_WITH_PHP=	70 71 72
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	php
+GH_PROJECT=	pecl-php-${PORTNAME}
+GH_TAGNAME=	80a54fa
 
 CONFIGURE_ARGS=	--enable-uploadprogress
 

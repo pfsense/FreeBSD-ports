@@ -3,7 +3,7 @@
 
 PORTNAME=	vtk
 PORTVERSION=	6.2.0
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	6
@@ -23,11 +23,11 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 # TODO
 # * VTK Groups
 
-CONFLICTS=	vtk-4*
+CONFLICTS=	vtk5 vtk8
+USES=		alias cmake jpeg localbase
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	xt sm ice x11 xext
-USES=		alias cmake:outsource jpeg
-CXXFLAGS+=	-I${LOCALBASE}/include
+CXXFLAGS_powerpc64=	-mminimal-toc
 
 VTK_SHORT_VER=	${PORTVERSION:R}
 PLIST_SUB+=	VER2=${VTK_SHORT_VER}
@@ -36,7 +36,7 @@ DOCSDIR=	${PREFIX}/share/doc/vtk-${VTK_SHORT_VER}
 DATADIR=	${PREFIX}/share/vtk-${VTK_SHORT_VER}
 
 # Options
-OPTIONS_DEFINE=	DESIGNER DOCS OSMESA EXAMPLES SHARED
+OPTIONS_DEFINE=	DESIGNER DOCS OSMESA EXAMPLES SHARED QT5
 OPTIONS_DEFAULT=PYTHON SHARED
 #OPTIONS_DEFAULT=MPI Qt JAVA PYTHON TCLTK DESIGNER
 OSMESA_DESC=	Use Mesa for off-screen rendering
@@ -57,11 +57,6 @@ $g_DESC=	Build the $g group
 $w_DESC=	$w wrapping
 .endfor
 
-# Qt radio
-OPTIONS_RADIO=	Qt
-OPTIONS_RADIO_Qt=	QT4 QT5
-Qt_DESC=	Qt GUI support
-QT4_DESC=	Qt 4 toolkit support
 QT5_DESC=	Qt 5 toolkit support
 
 CMAKE_ARGS+=	-DVTK_INSTALL_LIBRARY_DIR=lib/vtk-${VTK_SHORT_VER} \
@@ -125,15 +120,6 @@ PLIST_SUB+=	MPI=""
 PLIST_SUB+=	MPI="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MQT4}
-USES+=		qt:4
-USE_QT=		gui_build gui_run network_build network_run sql_build sql_run \
-		moc_build uic_build qmake_build rcc_build opengl webkit_build \
-		webkit_run
-CMAKE_ARGS+=	-DVTK_QT_VERSION:STRING="4"
-PLIST_SUB+=	QTV="qt4"
-.endif
-
 .if ${PORT_OPTIONS:MQT5}
 USES+=		qt:5
 USE_QT=		gui_build gui_run network_build network_run sql_build sql_run \
@@ -143,7 +129,7 @@ CMAKE_ARGS+=	-DVTK_QT_VERSION:STRING="5" \
 PLIST_SUB+=	QTV="qt5"
 .endif
 
-.if ${PORT_OPTIONS:MQT4} || ${PORT_OPTIONS:MQT5}
+.if ${PORT_OPTIONS:MQT5}
 CMAKE_ARGS+=	-DVTK_Group_Qt:BOOL=ON
 PLIST_SUB+=	QT=""
 .else
@@ -154,10 +140,8 @@ CMAKE_ARGS+=	-DVTK_Group_Qt:BOOL=OFF
 .if ${PORT_OPTIONS:MDESIGNER}
 .if ${PORT_OPTIONS:MQT5}
 USE_QT+=	designer
-.elif ${PORT_OPTIONS:MQT4}
-USE_QT+=	designer
 .else
-IGNORE=	designer requires either QT4 or QT5
+IGNORE=	designer requires QT5
 .endif
 PLIST_SUB+=	DESIGNER=""
 CMAKE_ARGS+=	-DQT_DESIGNER_PLUGIN:BOOL=ON
@@ -217,6 +201,8 @@ PLIST_SUB+=	WRAP="@comment "
 .if ${PORT_OPTIONS:MDOCS}
 CMAKE_ARGS+=	-DBUILD_DOCUMENTATION:BOOL=ON
 BUILD_DEPENDS+=	doxygen:devel/doxygen
+USES+=		perl5
+USE_PERL5+=	build
 .else
 CMAKE_ARGS+=	-DBUILD_DOCUMENTATION:BOOL=OFF
 .endif

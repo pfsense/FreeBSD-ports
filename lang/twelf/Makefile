@@ -3,7 +3,7 @@
 
 PORTNAME=	twelf
 PORTVERSION=	1.7.1
-PORTREVISION=	1
+PORTREVISION=	4
 DISTVERSIONPREFIX=	src-
 CATEGORIES=	lang math
 MASTER_SITES=	http://twelf.plparty.org/releases/ \
@@ -15,6 +15,9 @@ COMMENT=	Meta-logical framework for deductive systems
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_FreeBSD_12=	invalid target: self
+BROKEN_FreeBSD_13=	invalid target: self
+
 RUN_DEPENDS=	mlton:lang/mlton
 BUILD_DEPENDS=	mlton:lang/mlton \
 		texi2html:textproc/texi2html
@@ -25,9 +28,9 @@ USES=		gmake
 ALL_TARGET=	mlton
 PLIST_FILES=	bin/${PORTNAME}-server
 PORTDATA=	emacs examples examples-clp examples-delphin tex vim README
-PORTDOCS=	dvi html info pdf ps
+PORTDOCS=	dvi html pdf ps
 WRKSRC=		${WRKDIR}/twelf
-INFO=		twelf
+DOCS_INFO=	twelf
 
 DOCS_USE=	TEX=dvipsk:build,tex:build
 DOCS_USES=	makeinfo
@@ -50,5 +53,6 @@ do-install:
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/info/twelf.info* ${STAGEDIR}${PREFIX}/${INFO_PATH}
 
 .include <bsd.port.mk>

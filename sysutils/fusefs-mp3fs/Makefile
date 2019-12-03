@@ -3,6 +3,7 @@
 
 PORTNAME=	mp3fs
 PORTVERSION=	0.91
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	sysutils audio
 MASTER_SITES=	https://github.com/khenriks/${PORTNAME}/releases/download/v${PORTVERSION}/
@@ -22,7 +23,7 @@ FETCH_CMD=	fetch -Fpr
 
 CFLAGS+=	-L${LOCALBASE}/lib -I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
-USES=		fuse pkgconfig
+USES=		compiler:c11 fuse pkgconfig
 PLIST_FILES=	bin/mp3fs \
 		man/man1/mp3fs.1.gz
 

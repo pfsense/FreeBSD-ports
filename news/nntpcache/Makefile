@@ -3,7 +3,7 @@
 
 PORTNAME=	nntpcache
 PORTVERSION=	3.0.2
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	news
 MASTER_SITES=	http://www.xs4all.nl/~suelette/
 
@@ -12,7 +12,6 @@ COMMENT=	News caching/anti-spam/server-merging system
 
 BROKEN_aarch64=		fails to link: missing sbrk
 BROKEN_mips64=		fails to build: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
-BROKEN_powerpc64=	fails to install: ./mmap_tests: Quit (core dumped)
 
 NO_CDROM=	Free for individuals and non-military, non-profit organisations only
 
@@ -20,7 +19,7 @@ NO_CDROM=	Free for individuals and non-military, non-profit organisations only
 # cache news articles and related data in ${SPOOLDIR}/nntpcache.
 SPOOLDIR?=	/var/spool
 
-USES=		gmake autoreconf shebangfix
+USES=		compiler:c11 gmake autoreconf shebangfix
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=${SPOOLDIR} \
 		--program-transform-name=''

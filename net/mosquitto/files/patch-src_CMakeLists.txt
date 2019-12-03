@@ -1,26 +1,21 @@
---- src/CMakeLists.txt.orig	2017-07-10 22:46:01 UTC
+Index: src/CMakeLists.txt
+===================================================================
+--- src/CMakeLists.txt.orig
 +++ src/CMakeLists.txt
-@@ -77,6 +77,7 @@ if (WIN32 OR CYGWIN)
+@@ -126,6 +126,7 @@ if (WIN32 OR CYGWIN)
  endif (WIN32 OR CYGWIN)
  
  add_definitions (-DWITH_BROKER)
 +add_definitions (-DWITH_THREADING)
  
- add_executable(mosquitto ${MOSQ_SRCS})
- 
-@@ -96,7 +97,7 @@ if (UNIX)
- 	if (APPLE)
- 		set (MOSQ_LIBS ${MOSQ_LIBS} dl m)
- 	else (APPLE)
--		set (MOSQ_LIBS ${MOSQ_LIBS} dl m)
-+		set (MOSQ_LIBS ${MOSQ_LIBS} m)
- 		find_library(LIBRT rt)
- 		if (LIBRT)
- 			set (MOSQ_LIBS ${MOSQ_LIBS} rt)
-@@ -141,6 +142,5 @@ if (${WITH_TLS} STREQUAL ON)
- endif (${WITH_TLS} STREQUAL ON)
- 
- if (UNIX)
--	install(CODE "EXEC_PROGRAM(/sbin/ldconfig)")
- endif (UNIX)
- 
+ if (WITH_DLT)
+     message(STATUS "DLT_LIBDIR = ${DLT_LIBDIR}")
+@@ -149,7 +150,7 @@ if (UNIX)
+     elseif(QNX)
+         set(MOSQ_LIBS ${MOSQ_LIBS} m socket)
+     else(APPLE)
+-        set (MOSQ_LIBS ${MOSQ_LIBS} dl m)
++        set (MOSQ_LIBS ${MOSQ_LIBS} m)
+         find_library(LIBRT rt)
+         if (LIBRT)
+             set (MOSQ_LIBS ${MOSQ_LIBS} rt)

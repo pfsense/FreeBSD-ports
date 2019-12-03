@@ -3,7 +3,7 @@
 
 PORTNAME=	certificate-transparency
 PORTVERSION=	20161015
-PORTREVISION=	25
+PORTREVISION=	37
 CATEGORIES=	security
 
 MAINTAINER=	ports@FreeBSD.org
@@ -25,7 +25,8 @@ LIB_DEPENDS?=	libevent.so:devel/libevent \
 		libsqlite3.so:databases/sqlite3 \
 		libtcmalloc.so:devel/google-perftools
 
-USES=		autoreconf compiler:c++11-lib gmake pkgconfig
+USES=		autoreconf compiler:c++11-lib gmake pkgconfig ssl
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	"CFLAGS+=-I${LOCALBASE}/include CXXFLAGS+=-lgtest CXXFLAGS+=-lgmock"
 MAKE_FLAGS+=	"V=1"
@@ -37,4 +38,11 @@ CPPFLAGS+=	"-I${LOCALBASE}/include"
 CPPFLAGS+=	"-I${LOCALBASE}/include/evhtp"
 LDFLAGS+=	"-L${LOCALBASE}/lib"
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	could not find the OpenSSL libraries
+BROKEN_FreeBSD_13=	could not find the OpenSSL libraries
+.endif
+
+.include <bsd.port.post.mk>

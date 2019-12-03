@@ -3,6 +3,7 @@
 
 PORTNAME=	fsearch
 DISTVERSION=	0.1beta2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	danfe@FreeBSD.org

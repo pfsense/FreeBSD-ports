@@ -6,14 +6,14 @@ MAINTAINER=	asomers@FreeBSD.org
 COMMENT=	QEMU userland utilities
 
 HAS_CONFIGURE=	yes
-USES=		cpe gmake pkgconfig perl5 python:2.7,build tar:bzip2
+USES=		cpe gmake pkgconfig perl5 python:build tar:xz
 USES+=		gettext-runtime
 USE_GNOME+=	glib20
 MAKE_ENV+=	BSD_MAKE="${MAKE}" PREFIX=${PREFIX}
 CONFLICTS_INSTALL=	qemu-[0-9]* qemu-devel-* qemu-sbruno-*
 
 OPTIONS_SLAVE=	DOCS
-OPTIONS_EXCLUDE=	SAMBA X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CURL \
+OPTIONS_EXCLUDE=	SAMBA X11 GTK3 OPENGL GNUTLS SASL JPEG PNG CURL \
 		CDROM_DMA PCAP USBREDIR GNS3 X86_TARGETS \
 		STATIC_LINK NCURSES VDE
 MASTERDIR=	${.CURDIR}/../qemu
@@ -23,7 +23,6 @@ EXTRA_PATCHES=	${.CURDIR}/files/patch-configure
 PKGMESSAGE=
 
 PORTDOCS=	qemu-doc.html qemu-doc.txt
-		
 
 CONFIGURE_ARGS?=--localstatedir=/var --extra-ldflags=-L\"${LOCALBASE}/lib\" \
 		--disable-libssh2 \
@@ -73,8 +72,7 @@ CONFIGURE_ARGS?=--localstatedir=/var --extra-ldflags=-L\"${LOCALBASE}/lib\" \
 		--disable-glusterfs \
 		--disable-tpm \
 		--disable-numa \
-		--disable-blobs \
-		--without-pixman
+		--disable-blobs
 
 LIB_DEPENDS=
 

@@ -12,6 +12,10 @@ COMMENT=	bsnmpd module to measure statistics about jails
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USES=		libtool

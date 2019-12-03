@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ophcrack
-PORTVERSION=	3.7.0
+PORTVERSION=	3.8.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	SF
 
@@ -14,25 +15,20 @@ LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		gmake localbase ssl tar:bzip2
+USES=		compiler:c++11-lang gmake localbase ssl tar:bzip2
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/ophcrack
 PORTDOCS=	AUTHORS ChangeLog README.md
 
-OPTIONS_DEFINE=	X11 GRAPH DOCS
-OPTIONS_DEFAULT=	X11 GRAPH
-GRAPH_IMPLIES=	X11
+OPTIONS_DEFINE=	X11 DOCS
+OPTIONS_DEFAULT=	X11
 
-X11_DESC=	Build Qt 4 GUI frontend
-GRAPH_DESC=	Enable graph rendering via Qwt
+X11_DESC=	Build with Qt 5 GUI frontend
 
-X11_USES=	qt:4
-X11_USE=	QT=moc_build,qmake_build,rcc_build,uic_build,corelib,gui
+X11_USES=	pkgconfig qt:5
+X11_USE=	QT=buildtools_build,qmake_build,charts,core,gui,widgets
 X11_CONFIGURE_OFF=	--disable-gui
-
-GRAPH_LIB_DEPENDS=	libqwt.so:x11-toolkits/qwt5
-GRAPH_CONFIGURE_OFF=	--disable-graph
 
 post-patch:
 	@${REINPLACE_CMD} -E '/#include <byteswap\.h>/d ; \

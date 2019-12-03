@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=		crystal
-DISTVERSIONPREFIX=	v
-DISTVERSION=		0.24.1
+DISTVERSION=		0.28.0
 PORTREVISION=		2
 CATEGORIES=		lang
 MASTER_SITES=		https://unrelentingtech.s3.dualstack.eu-west-1.amazonaws.com/crystal/:bootstrap
@@ -10,13 +9,17 @@ DISTFILES=		${BOOTSTRAP_PATH}:bootstrap
 DIST_SUBDIR=		${PORTNAME}
 EXTRACT_ONLY=		${DISTNAME}${EXTRACT_SUFX}
 
+PATCH_SITES=		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=		2fafc7d60825.patch:-p1
+
 MAINTAINER=	greg@unrelenting.technology
 COMMENT=	Language with Ruby-like syntax and static type checking
 
 LICENSE=	APACHE20
 
-ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=	requires prebuilt bootstrap compiler
+IGNORE_FreeBSD_11_aarch64=	prebuilt bootstrap for aarch64 only built for FreeBSD >=12
+ONLY_FOR_ARCHS=			aarch64 amd64
+ONLY_FOR_ARCHS_REASON=		requires prebuilt bootstrap compiler
 
 LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
 		libevent.so:devel/libevent \
@@ -25,34 +28,37 @@ LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
 BUILD_DEPENDS=	${LOCALBASE}/bin/llvm-config${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 
 USES=		compiler gmake pkgconfig
-LLVM_VERSION=	50
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	crystal-lang
 
+LLVM_VERSION=	60
+BOOTSTRAP_PATH=	crystal-${BOOTSTRAP_VER}-freebsd${BOOTSTRAP_OSREL}-${ARCH}
+BOOTSTRAP_VER?=	0.27.2
+
+MAKE_ENV=	LD_LIBMAP="libevent-2.1.so.6=libevent-2.1.so.7"
 MAKE_ARGS=	SHELL=sh \
 		LLVM_CONFIG="${LOCALBASE}/bin/llvm-config${LLVM_VERSION}" \
-		FLAGS="--release --no-debug --progress" \
+		FLAGS="--release --no-debug --progress --threads=${MAKE_JOBS_NUMBER}" \
 		EXPORTS='CRYSTAL_CONFIG_PATH="lib:${PREFIX}/lib/${PORTNAME}"' \
-		CRYSTAL_CACHE_DIR="${WRKDIR}/cache"
+		CRYSTAL_CACHE_DIR="${WRKDIR}/cache" \
+		CRYSTAL_CONFIG_VERSION="${DISTVERSION}"
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=		DOCS EXAMPLES BASH ZSH
-OPTIONS_DEFAULT=	DOCS EXAMPLES BASH ZSH
+OPTIONS_DEFAULT=	BASH ZSH
 OPTIONS_SUB=		yes
 
 .include <bsd.port.options.mk>
 
 .if ${OSVERSION} >= 1200000
-BOOTSTRAP_PATH=	crystal-0.24.1-freebsd12.0-2
+BOOTSTRAP_OSREL=	12
 .else
-BOOTSTRAP_PATH=	crystal-0.24.1-freebsd11.1-2
+BOOTSTRAP_OSREL=	11
 .endif
-.if ${OSVERSION} < 1100000
-IGNORE=		not supported on 10.x or older
-.endif
+
 .if ${OPSYS} != FreeBSD
 IGNORE=		not supported on anything but FreeBSD
 .endif
@@ -61,9 +67,8 @@ post-extract:
 	${MKDIR} ${WRKSRC}/.build
 	${CP} ${DISTDIR}/${DIST_SUBDIR}/${BOOTSTRAP_PATH} ${WRKSRC}/.build/crystal
 	${CHMOD} +x ${WRKSRC}/.build/crystal
-
-post-patch:
-	${LN} -s x86_64-portbld-freebsd ${WRKSRC}/src/lib_c/x86_64-unknown-freebsd
+	${LN} -s x86_64-freebsd ${WRKSRC}/src/lib_c/aarch64-portbld-freebsd
+	${LN} -s x86_64-freebsd ${WRKSRC}/src/lib_c/aarch64-freebsd
 
 do-build-DOCS-on:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} docs \

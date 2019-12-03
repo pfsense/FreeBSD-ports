@@ -3,6 +3,7 @@
 
 PORTNAME=	gnu-cobol
 PORTVERSION=	2.2
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	GNU/gnucobol
 DISTNAME=	gnucobol-${PORTVERSION}
@@ -23,6 +24,7 @@ INFO=		gnucobol
 DATADIR=	${PREFIX}/share/gnucobol
 
 INSTALL_TARGET=	install-strip
+SSP_CFLAGS?=	-fstack-protector # XXX -strong fails to build
 CPPFLAGS+=	-I${BDB_INCLUDE_DIR} -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 

@@ -1,6 +1,6 @@
---- Telegram/SourceFiles/qt_static_plugins.cpp.orig	2018-01-03 10:46:01 UTC
+--- Telegram/SourceFiles/qt_static_plugins.cpp.orig	2019-02-01 12:51:46 UTC
 +++ Telegram/SourceFiles/qt_static_plugins.cpp
-@@ -14,14 +14,5 @@ Q_IMPORT_PLUGIN(QWindowsIntegrationPlugi
+@@ -14,15 +14,5 @@ Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin)
  Q_IMPORT_PLUGIN(QWebpPlugin)
  Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin)
  Q_IMPORT_PLUGIN(QGenericEnginePlugin)
@@ -14,6 +14,7 @@
 -Q_IMPORT_PLUGIN(QIbusPlatformInputContextPlugin)
 -Q_IMPORT_PLUGIN(QFcitxPlatformInputContextPlugin)
 -Q_IMPORT_PLUGIN(QHimePlatformInputContextPlugin)
+-Q_IMPORT_PLUGIN(NimfInputContextPlugin)
 -#endif // Q_OS_WIN | Q_OS_MAC | Q_OS_LINUX
 +#elif defined Q_OS_LINUX || defined Q_OS_FREEBSD // Q_OS_WIN | Q_OS_MAC
 +#endif // Q_OS_WIN | Q_OS_MAC | Q_OS_LINUX | Q_OS_FREEBSD

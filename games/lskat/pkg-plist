@@ -1,5 +1,5 @@
 bin/lskat
-etc/xdg/lskat.categories
+share/qlogging-categories5/lskat.categories
 share/applications/org.kde.lskat.desktop
 share/icons/hicolor/128x128/apps/lskat.png
 share/icons/hicolor/16x16/apps/lskat.png
@@ -9,7 +9,6 @@ share/icons/hicolor/48x48/apps/lskat.png
 share/icons/hicolor/64x64/apps/lskat.png
 share/kxmlgui5/lskat/lskatui.rc
 share/locale/ar/LC_MESSAGES/lskat.mo
-share/locale/ast/LC_MESSAGES/lskat.mo
 share/locale/bg/LC_MESSAGES/lskat.mo
 share/locale/bs/LC_MESSAGES/lskat.mo
 share/locale/ca/LC_MESSAGES/lskat.mo

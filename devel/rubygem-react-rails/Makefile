@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	react-rails
-PORTVERSION=	2.4.4
+PORTVERSION=	2.4.7
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

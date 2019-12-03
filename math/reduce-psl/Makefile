@@ -2,25 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	reduce
-PORTVERSION=	20180117
+PORTVERSION=	20190413
 CATEGORIES=	math lang
 MASTER_SITES=	SF/reduce-algebra/${SFSUBDIR}/
 PKGNAMESUFFIX=	-psl
-DISTNAME=	Reduce-svn4372-src
+DISTNAME=	Reduce-svn4961-src
 
 MAINTAINER=	pfg@FreeBSD.org
-COMMENT=	REDUCE Portable Standard Lisp general-purpose algebra system
+COMMENT=	Portable Standard Lisp REDUCE general-purpose algebra system
 
 LICENSE=	BSD2CLAUSE
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-SFSUBDIR=	snapshot_2018-01-17
-
 USES=		autoreconf:build libtool gmake ncurses
+
+SFSUBDIR=	snapshot_2019-04-13
+
 TARGET_SDIR=	${ARCH:S/amd64/x86_64/}-unknown-${OPSYS:tl}${OSREL}
-CONFIGURE_ARGS=	--build=${TARGET_SDIR}
-WRKSRC=		${WRKDIR}/${DISTNAME}
 CPPFLAGS+=	-I${NCURSESINC}
 
 # Avoid GNU_CONFIGURE as it breaks staging
@@ -35,7 +34,7 @@ CONFIGURE_ARGS=	--with-psl
 
 REDUCE_BINS=	${WRKSRC}/pslbuild/${TARGET_SDIR}
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

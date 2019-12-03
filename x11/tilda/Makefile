@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	tilda
-PORTVERSION=	1.3.3
+PORTVERSION=	1.4.1
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11
 
 MAINTAINER=	rodrigo@FreeBSD.org
@@ -17,8 +17,9 @@ LIB_DEPENDS=	libconfuse.so:devel/libconfuse
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-rpath
-USE_GNOME=	gtk30
-USES=		gmake gettext pkgconfig autoreconf pathfix libtool
+USE_XORG+=	x11
+USE_GNOME+=	glib20 gtk30 gdkpixbuf2 pango
+USES=		gmake gettext gnome pkgconfig autoreconf pathfix libtool
 INSTALL_TARGET=	install-strip
 USE_GITHUB=	yes
 GH_ACCOUNT=	lanoxx

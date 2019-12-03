@@ -1,11 +1,11 @@
---- colorbars/colorbars.c.orig	2016-10-31 17:00:48 UTC
+--- colorbars/colorbars.c.orig	2018-11-23 03:38:50 UTC
 +++ colorbars/colorbars.c
-@@ -31,6 +31,10 @@
- #include <err.h>
- #include <stdlib.h>
+@@ -33,6 +33,10 @@
  
-+#ifndef __arysize
-+#define __arysize(n) (sizeof(n)/sizeof((n)[0]))
+ #include <sys/param.h>
+ 
++#ifndef NELEM
++#define NELEM(n) (sizeof(n)/sizeof((n)[0]))
 +#endif
 +
  int

@@ -3,34 +3,42 @@
 
 PORTNAME=	davical
 DISTVERSIONPREFIX=	r
-DISTVERSION=	1.1.7
+DISTVERSION=	1.1.8
+PORTREVISION=	2
 CATEGORIES?=	www
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	lebarondemerde@privacychain.ch
+MAINTAINER=	rigoletto@FreeBSD.org
 COMMENT=	Simple CalDAV server using a postgres backend
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg \
+RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}libawl>=0.60:devel/php-libawl@${PHP_FLAVOR} \
+		p5-DBD-Pg>=0:databases/p5-DBD-Pg \
 		p5-DBI>=0:databases/p5-DBI \
 		p5-YAML>=0:textproc/p5-YAML \
-		php-libawl>=0.54:devel/php-libawl \
 		pwgen:sysutils/pwgen
 
-USES=		pgsql php shebangfix
+USES=		pgsql php:flavors shebangfix
+
 USE_GITLAB=	yes
 GL_ACCOUNT=	davical-project
-GL_COMMIT=	05397d635c3f218b850775223aa5dd705da9f91c
-USE_PHP=	calendar curl gettext iconv pcre pdo pdo_pgsql pgsql xml
-SHEBANG_FILES=	scripts/sync-remote-caldav.php
-SUB_FILES=	pkg-message httpd-davical.conf
-PORTDOCS=	README INSTALL davical_en_user_guide.odt phpdoc.ini \
-		translation.rst
-PORTEXAMPLES=	config
+GL_COMMIT=	4af9595f4d0530268ac1289ba4ab2adb4890802e
+
+USE_PHP=	calendar curl gettext iconv pcre pdo \
+		pdo_pgsql pgsql xml
+
 NO_ARCH=	yes
 NO_BUILD=	yes
+
+PORTDOCS=	README INSTALL davical_en_user_guide.odt \
+		phpdoc.ini translation.rst
+PORTEXAMPLES=	config
+
+SHEBANG_FILES=	scripts/sync-remote-caldav.php
+SUB_FILES=	pkg-message httpd-davical.conf
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

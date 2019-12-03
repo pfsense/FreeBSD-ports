@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	verve-plugin
-PORTVERSION=	1.1.1
+PORTVERSION=	2.0.0
 CATEGORIES=	x11 xfce
-MASTER_SITES=	XFCE/src/panel-plugins/${PKGNAMEPREFIX}${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/panel-plugins
 PKGNAMEPREFIX=	xfce4-
-DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
+DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${DISTVERSIONFULL}
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -14,20 +14,20 @@ COMMENT=	Command line plugin for the Xfce Desktop
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libpcre.so:devel/pcre \
-		libdbus-glib-1.so:devel/dbus-glib
+LIB_DEPENDS=	libpcre.so:devel/pcre
+
+USES=		gettext-tools gmake gnome libtool pkgconfig tar:bzip2 xfce
+USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 intltool pango
+USE_XFCE=	panel
 
 GNU_CONFIGURE=	yes
-USES=		gettext-tools gmake libtool pkgconfig tar:bzip2 xfce
-USE_GNOME=	glib20 intltool intlhack
-USE_XFCE=	panel
 INSTALL_TARGET=	install-strip
+CONFIGURE_ARGS=	--enable-dbus
 
-CONFIGURE_ARGS=--enable-dbus
+OPTIONS_DEFINE=		NLS
+OPTIONS_SUB=		yes
 
-OPTIONS_DEFINE=	NLS
 NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=	gettext-runtime
-OPTIONS_SUB=	yes
+NLS_USES=		gettext-runtime
 
 .include <bsd.port.mk>

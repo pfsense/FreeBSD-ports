@@ -1,6 +1,6 @@
-POST-INSTALL CONFIGURATION FOR MOODLE
-=====================================
-
+[
+{ type: install
+  message: <<EOM
 1) Create a user and a database for Moodle to store all
    its tables in (or choose an existing database).
    It doesn't matter what the database or user names are,
@@ -10,18 +10,6 @@ POST-INSTALL CONFIGURATION FOR MOODLE
 
 2) Add the following to your Apache configuration file
    httpd.conf, and restart the server:
-
-   For Apache versions earlier than 2.4:
-
-   Alias /moodle %%PREFIX%%/%%MOODLEDIR%%/
-   AcceptPathInfo On
-   <Directory %%PREFIX%%/%%MOODLEDIR%%>
-      AllowOverride None
-      Order Allow,Deny
-      Allow from all
-   </Directory>
-
-   For Apache version 2.4.x or above:
 
    Alias /moodle %%PREFIX%%/%%MOODLEDIR%%/
    AcceptPathInfo On
@@ -55,11 +43,17 @@ For more information, see the INSTALL DOCUMENTATION:
 It may be worth reading the installation docs even if Moodle seems
 to be working at first, to ensure your PHP settings and database
 configuration will allow Moodle to operate properly.
-
+EOM
+}
+{ type: upgrade
+  message: <<EOM
 If you are upgrading from an earlier version of Moodle, check out
 possible additional steps at:
 
-   https://docs.moodle.org/30/en/Upgrading
+   https://docs.moodle.org/35/en/Upgrading
 
 If you have real trouble, please visit the Moodle course
 "Using Moodle" on moodle.org.
+EOM
+}
+]

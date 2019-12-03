@@ -2,44 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	fmit
-PORTVERSION=	0.99.5
-PORTREVISION=	4
+PORTVERSION=	1.2.13
+DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
-MASTER_SITES=	http://download.gna.org/fmit/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-Source
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Free Music Instrument Tuner
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 LGPL21
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING_GPL.txt
+LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING_LGPL.txt
 
 LIB_DEPENDS=	libfftw3.so:math/fftw3
 
-USE_XORG=	xmu
-USE_QT=		corelib gui opengl \
-		linguist_build moc_build qmake_build rcc_build uic_build
-USE_GL=		glut
-USES=		cmake pkgconfig qt:4 tar:bzip2
-INSTALLS_ICONS=	yes
+USES=		compiler:c++11-lang gl gnome pkgconfig qmake qt:5 tar:bzip2 xorg
 
-OPTIONS_DEFINE=	ALSA JACK OSS PORTAUDIO
+USE_QT=		buildtools_build core gui opengl qmake_build multimedia network svg widgets
+USE_GL=		gl glut
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	gillesdegottex
+
+QMAKE_ARGS+=	PREFIXSHORTCUT=${PREFIX}
+
+OPTIONS_DEFINE=		ALSA JACK OSS PORTAUDIO
 OPTIONS_DEFAULT=	JACK OSS
 
-OPTIONS_SUB=	yes
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+ALSA_QMAKE_ON=		CONFIG+=acs_alsa
 
-ALSA_LIB_DEPENDS=	libasound.so.2:audio/alsa-lib
-ALSA_CMAKE_ON=		-DSOUNDSYSTEM_USE_ALSA:BOOL=true
-ALSA_CMAKE_OFF=		-DSOUNDSYSTEM_USE_ALSA:BOOL=false
-
-OSS_CMAKE_ON=		-DSOUNDSYSTEM_USE_OSS:BOOL=true
-OSS_CMAKE_OFF=		-DSOUNDSYSTEM_USE_OSS:BOOL=false
+OSS_QMAKE_ON=		CONFIG+=acs_oss
 
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
-JACK_CMAKE_ON=		-DSOUNDSYSTEM_USE_JACK:BOOL=true
-JACK_CMAKE_OFF=		-DSOUNDSYSTEM_USE_JACK:BOOL=false
+JACK_QMAKE_ON=		CONFIG+=acs_jack
 
 PORTAUDIO_LIB_DEPENDS=	libportaudio.so:audio/portaudio
-PORTAUDIO_CMAKE_ON=	-DSOUNDSYSTEM_USE_PORTAUDIO:BOOL=true
-PORTAUDIO_CMAKE_OFF=	-DSOUNDSYSTEM_USE_PORTAUDIO:BOOL=false
+PORTAUDIO_QMAKE_ON=	CONFIG+=acs_portaudio
 
 .include <bsd.port.mk>

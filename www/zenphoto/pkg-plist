@@ -359,7 +359,10 @@
 %%WWWDIR%%/zp-core/class-feed.php
 %%WWWDIR%%/zp-core/class-gallery.php
 %%WWWDIR%%/zp-core/class-image.php
+%%WWWDIR%%/zp-core/class-mediaobject.php
+%%WWWDIR%%/zp-core/class-persistentobject.php
 %%WWWDIR%%/zp-core/class-search.php
+%%WWWDIR%%/zp-core/class-themeobject.php
 %%WWWDIR%%/zp-core/class-userdataexport.php
 %%WWWDIR%%/zp-core/classes.php
 %%WWWDIR%%/zp-core/controller.php
@@ -518,7 +521,7 @@
 %%WWWDIR%%/zp-core/js/jquery.js
 %%WWWDIR%%/zp-core/js/jquery.masonry.min.js
 %%WWWDIR%%/zp-core/js/jquery.pagination.js
-%%WWWDIR%%/zp-core/js/jquery.scrollTo.js
+%%WWWDIR%%/zp-core/js/jquery.scrollTo.min.js
 %%WWWDIR%%/zp-core/js/jquery.ui.nestedSortable.js
 %%WWWDIR%%/zp-core/js/jqueryui/i18n/jquery-ui-i18n.js
 %%WWWDIR%%/zp-core/js/jqueryui/i18n/jquery.ui.datepicker-af.js
@@ -639,9 +642,24 @@
 %%WWWDIR%%/zp-core/locale/de_DE/LC_MESSAGES/zenphoto.po
 %%WWWDIR%%/zp-core/locale/de_DE/flag.png
 %%WWWDIR%%/zp-core/locale/en_US/flag.png
+%%WWWDIR%%/zp-core/locale/es_AR/LC_MESSAGES/zenphoto.mo
+%%WWWDIR%%/zp-core/locale/es_AR/LC_MESSAGES/zenphoto.po
+%%WWWDIR%%/zp-core/locale/es_AR/flag.png
+%%WWWDIR%%/zp-core/locale/es_BO/LC_MESSAGES/zenphoto.mo
+%%WWWDIR%%/zp-core/locale/es_BO/LC_MESSAGES/zenphoto.po
+%%WWWDIR%%/zp-core/locale/es_BO/flag.png
 %%WWWDIR%%/zp-core/locale/es_ES/LC_MESSAGES/zenphoto.mo
 %%WWWDIR%%/zp-core/locale/es_ES/LC_MESSAGES/zenphoto.po
 %%WWWDIR%%/zp-core/locale/es_ES/flag.png
+%%WWWDIR%%/zp-core/locale/es_LA/LC_MESSAGES/zenphoto.mo
+%%WWWDIR%%/zp-core/locale/es_LA/LC_MESSAGES/zenphoto.po
+%%WWWDIR%%/zp-core/locale/es_LA/flag.png
+%%WWWDIR%%/zp-core/locale/es_US/LC_MESSAGES/zenphoto.mo
+%%WWWDIR%%/zp-core/locale/es_US/LC_MESSAGES/zenphoto.po
+%%WWWDIR%%/zp-core/locale/es_US/flag.png
+%%WWWDIR%%/zp-core/locale/es_UY/LC_MESSAGES/zenphoto.mo
+%%WWWDIR%%/zp-core/locale/es_UY/LC_MESSAGES/zenphoto.po
+%%WWWDIR%%/zp-core/locale/es_UY/flag.png
 %%WWWDIR%%/zp-core/locale/fr_FR/LC_MESSAGES/zenphoto.mo
 %%WWWDIR%%/zp-core/locale/fr_FR/LC_MESSAGES/zenphoto.po
 %%WWWDIR%%/zp-core/locale/fr_FR/flag.png
@@ -679,12 +697,12 @@
 %%WWWDIR%%/zp-core/locale/tr_TR/LC_MESSAGES/zenphoto.mo
 %%WWWDIR%%/zp-core/locale/tr_TR/LC_MESSAGES/zenphoto.po
 %%WWWDIR%%/zp-core/locale/tr_TR/flag.png
-%%WWWDIR%%/zp-core/locale/zh_CN/LC_MESSAGES/zenphoto.mo
-%%WWWDIR%%/zp-core/locale/zh_CN/LC_MESSAGES/zenphoto.po
-%%WWWDIR%%/zp-core/locale/zh_CN/flag.png
-%%WWWDIR%%/zp-core/locale/zh_TW/LC_MESSAGES/zenphoto.mo
-%%WWWDIR%%/zp-core/locale/zh_TW/LC_MESSAGES/zenphoto.po
-%%WWWDIR%%/zp-core/locale/zh_TW/flag.png
+%%WWWDIR%%/zp-core/locale/zh_Hans_CN/LC_MESSAGES/zenphoto.mo
+%%WWWDIR%%/zp-core/locale/zh_Hans_CN/LC_MESSAGES/zenphoto.po
+%%WWWDIR%%/zp-core/locale/zh_Hans_CN/flag.png
+%%WWWDIR%%/zp-core/locale/zh_Hant_TW/LC_MESSAGES/zenphoto.mo
+%%WWWDIR%%/zp-core/locale/zh_Hant_TW/LC_MESSAGES/zenphoto.po
+%%WWWDIR%%/zp-core/locale/zh_Hant_TW/flag.png
 %%WWWDIR%%/zp-core/no_uploader.php
 %%WWWDIR%%/zp-core/oldhtaccess
 %%WWWDIR%%/zp-core/password.php
@@ -692,8 +710,9 @@
 %%WWWDIR%%/zp-core/reconfigure.php
 %%WWWDIR%%/zp-core/rewrite.php
 %%WWWDIR%%/zp-core/setup.php
+%%WWWDIR%%/zp-core/setup/class-setup.php
+%%WWWDIR%%/zp-core/setup/class-setupmutex.php
 %%WWWDIR%%/zp-core/setup/index.php
-%%WWWDIR%%/zp-core/setup/setup-functions.php
 %%WWWDIR%%/zp-core/setup/setup-option-defaults.php
 %%WWWDIR%%/zp-core/setup/setup-primitive.php
 %%WWWDIR%%/zp-core/setup/setup-sqlform.php
@@ -707,6 +726,7 @@
 %%WWWDIR%%/zp-core/utilities/backup_restore.php
 %%WWWDIR%%/zp-core/utilities/database_reference.php
 %%WWWDIR%%/zp-core/utilities/gallery_statistics.php
+%%WWWDIR%%/zp-core/utilities/list_locales.php
 %%WWWDIR%%/zp-core/utilities/phpInfo.php
 %%WWWDIR%%/zp-core/utilities/refresh_database.php
 %%WWWDIR%%/zp-core/utilities/refresh_metadata.php
@@ -733,10 +753,10 @@
 %%WWWDIR%%/zp-core/zp-extensions/GoogleMap/markerClustererPlus/markerclusterer.js
 %%WWWDIR%%/zp-core/zp-extensions/GoogleMap/overlappingMarkerSpiderfier/oms.min.js
 %%WWWDIR%%/zp-core/zp-extensions/PHPMailer.php
-%%WWWDIR%%/zp-core/zp-extensions/PHPMailer/PHPMailerAutoload.php
-%%WWWDIR%%/zp-core/zp-extensions/PHPMailer/class.phpmailer.php
-%%WWWDIR%%/zp-core/zp-extensions/PHPMailer/class.pop3.php
-%%WWWDIR%%/zp-core/zp-extensions/PHPMailer/class.smtp.php
+%%WWWDIR%%/zp-core/zp-extensions/PHPMailer/Exception.php
+%%WWWDIR%%/zp-core/zp-extensions/PHPMailer/PHPMailer.php
+%%WWWDIR%%/zp-core/zp-extensions/PHPMailer/POP3.php
+%%WWWDIR%%/zp-core/zp-extensions/PHPMailer/SMTP.php
 %%WWWDIR%%/zp-core/zp-extensions/admin-approval.php
 %%WWWDIR%%/zp-core/zp-extensions/auto_backup.php
 %%WWWDIR%%/zp-core/zp-extensions/bxslider_thumb_nav.php
@@ -750,7 +770,7 @@
 %%WWWDIR%%/zp-core/zp-extensions/cacheManager.php
 %%WWWDIR%%/zp-core/zp-extensions/cacheManager/cacheDBImages.php
 %%WWWDIR%%/zp-core/zp-extensions/cacheManager/cacheImages.php
-%%WWWDIR%%/zp-core/zp-extensions/cacheManager/functions.php
+%%WWWDIR%%/zp-core/zp-extensions/cacheManager/deprecated-functions.php
 %%WWWDIR%%/zp-core/zp-extensions/check_for_update.php
 %%WWWDIR%%/zp-core/zp-extensions/class-AnyFile.php
 %%WWWDIR%%/zp-core/zp-extensions/class-AnyFile/anyFileDefault.png
@@ -762,9 +782,6 @@
 %%WWWDIR%%/zp-core/zp-extensions/class-textobject/class-textobject_core.php
 %%WWWDIR%%/zp-core/zp-extensions/class-textobject/textDefault.png
 %%WWWDIR%%/zp-core/zp-extensions/class-video.php
-%%WWWDIR%%/zp-core/zp-extensions/class-video/3gpDefault.png
-%%WWWDIR%%/zp-core/zp-extensions/class-video/flaDefault.png
-%%WWWDIR%%/zp-core/zp-extensions/class-video/flvDefault.png
 %%WWWDIR%%/zp-core/zp-extensions/class-video/getid3/getid3.lib.php
 %%WWWDIR%%/zp-core/zp-extensions/class-video/getid3/getid3.php
 %%WWWDIR%%/zp-core/zp-extensions/class-video/getid3/license.commercial.txt
@@ -781,7 +798,6 @@
 %%WWWDIR%%/zp-core/zp-extensions/class-video/getid3/module.tag.lyrics3.php
 %%WWWDIR%%/zp-core/zp-extensions/class-video/m4aDefault.png
 %%WWWDIR%%/zp-core/zp-extensions/class-video/m4vDefault.png
-%%WWWDIR%%/zp-core/zp-extensions/class-video/movDefault.png
 %%WWWDIR%%/zp-core/zp-extensions/class-video/mp3Default.png
 %%WWWDIR%%/zp-core/zp-extensions/class-video/mp4Default.png
 %%WWWDIR%%/zp-core/zp-extensions/class-video/multimediaDefault.png
@@ -990,19 +1006,21 @@
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/js/jquery.jplayer.min.js
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/js/jquery.jplayer.swf
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/js/popcorn.jplayer.min.js
-%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/jplayer.blue.monday.css
-%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/jplayer.blue.monday.jpg
-%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/jplayer.blue.monday.seeking.gif
-%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/jplayer.blue.monday.video.play.png
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/css/jplayer.blue.monday.css
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/css/jplayer.blue.monday.min.css
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/image/jplayer.blue.monday.jpg
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/image/jplayer.blue.monday.seeking.gif
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/image/jplayer.blue.monday.video.play.png
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/mustache/jplayer.blue.monday.audio.playlist.html
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/mustache/jplayer.blue.monday.audio.single.html
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/mustache/jplayer.blue.monday.audio.stream.html
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/mustache/jplayer.blue.monday.video.playlist.html
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/blue.monday/mustache/jplayer.blue.monday.video.single.html
-%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/jplayer.pink.flag.css
-%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/jplayer.pink.flag.jpg
-%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/jplayer.pink.flag.seeking.gif
-%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/jplayer.pink.flag.video.play.png
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/css/jplayer.pink.flag.css
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/css/jplayer.pink.flag.min.css
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/image/jplayer.pink.flag.jpg
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/image/jplayer.pink.flag.seeking.gif
+%%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/image/jplayer.pink.flag.video.play.png
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/mustache/jplayer.pink.flag.audio.playlist.html
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/mustache/jplayer.pink.flag.audio.single.html
 %%WWWDIR%%/zp-core/zp-extensions/jplayer/skin/pink.flag/mustache/jplayer.pink.flag.audio.stream.html
@@ -1051,7 +1069,6 @@
 %%WWWDIR%%/zp-core/zp-extensions/openstreetmap/leaflet.js
 %%WWWDIR%%/zp-core/zp-extensions/openstreetmap/leaflet.markercluster.js
 %%WWWDIR%%/zp-core/zp-extensions/openstreetmap/openstreetmap.css
-%%WWWDIR%%/zp-core/zp-extensions/openstreetmap/tile-definitions.js
 %%WWWDIR%%/zp-core/zp-extensions/paged_thumbs_nav.php
 %%WWWDIR%%/zp-core/zp-extensions/print_album_menu.php
 %%WWWDIR%%/zp-core/zp-extensions/publishContent.php
@@ -1066,6 +1083,7 @@
 %%WWWDIR%%/zp-core/zp-extensions/rating/star.png
 %%WWWDIR%%/zp-core/zp-extensions/rating/update.php
 %%WWWDIR%%/zp-core/zp-extensions/reCaptcha.php
+%%WWWDIR%%/zp-core/zp-extensions/redirector.php
 %%WWWDIR%%/zp-core/zp-extensions/register_user.php
 %%WWWDIR%%/zp-core/zp-extensions/register_user/register_user_form.php
 %%WWWDIR%%/zp-core/zp-extensions/related_items.php
@@ -1327,6 +1345,13 @@
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/admin-edit.php
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/admin-news-articles.php
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/admin-pages.php
+%%WWWDIR%%/zp-core/zp-extensions/zenpage/class-zenpage.php
+%%WWWDIR%%/zp-core/zp-extensions/zenpage/class-zenpagecategory.php
+%%WWWDIR%%/zp-core/zp-extensions/zenpage/class-zenpageitems.php
+%%WWWDIR%%/zp-core/zp-extensions/zenpage/class-zenpagenews.php
+%%WWWDIR%%/zp-core/zp-extensions/zenpage/class-zenpagepage.php
+%%WWWDIR%%/zp-core/zp-extensions/zenpage/class-zenpageroot.php
+%%WWWDIR%%/zp-core/zp-extensions/zenpage/deprecated-functions.php
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/images/add.png
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/images/clock.png
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/images/folder.png
@@ -1337,10 +1362,6 @@
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/images/zenpage-logo.gif
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/index.php
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/zenpage-admin-functions.php
-%%WWWDIR%%/zp-core/zp-extensions/zenpage/zenpage-class-category.php
-%%WWWDIR%%/zp-core/zp-extensions/zenpage/zenpage-class-news.php
-%%WWWDIR%%/zp-core/zp-extensions/zenpage/zenpage-class-page.php
-%%WWWDIR%%/zp-core/zp-extensions/zenpage/zenpage-class.php
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/zenpage-template-functions.php
 %%WWWDIR%%/zp-core/zp-extensions/zenpage/zenpage.css
 %%WWWDIR%%/zp-core/zp-extensions/zenphotoDonate.php
@@ -1349,9 +1370,9 @@
 %%WWWDIR%%/zp-core/zp-extensions/zenphoto_sendmail.php
 @dir %%WWWDIR%%/albums
 @dir %%WWWDIR%%/cache
-@dir %%WWWDIR%%/plugins/watermarks
 @dir %%WWWDIR%%/plugins/gd_fonts
 @dir %%WWWDIR%%/plugins/imagick_fonts
+@dir %%WWWDIR%%/plugins/watermarks
 @dir %%WWWDIR%%/uploaded
 @dir %%WWWDIR%%/zp-data
 @owner

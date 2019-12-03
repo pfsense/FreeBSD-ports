@@ -3,7 +3,7 @@
 
 PORTNAME=	valyriatear
 PORTVERSION=	1.0.0
-PORTREVISION=	4
+PORTREVISION=	11
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -23,33 +23,21 @@ GH_ACCOUNT=	Bertram25
 GH_PROJECT=	ValyriaTear
 GH_TAGNAME=	${PORTVERSION}-gcc5 # contains relevant tolua++ fixes
 
-USES=		alias cmake gettext-tools iconv lua:51 openal
+USES=		alias cmake compiler:c++11-lang gettext-tools gl iconv lua:51 \
+		openal sdl
 CMAKE_ARGS=	-DUSE_PCH_COMPILATION=OFF
 USE_SDL=	sdl image ttf
 USE_GL=		gl glu
 USE_XORG=	x11 xext sm ice
+USE_CXXSTD=	c++03
 INSTALLS_ICONS=	yes
 LLD_UNSAFE=	yes
-
-CXXFLAGS+=	-Wno-reserved-user-defined-literal
 
 PORTDOCS=	*
 PORTDATA=	*
 
-OPTIONS_DEFINE=	EDITOR DOCS NLS
+OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
-
-EDITOR_DESC=	Compile the Qt editor along with the game
-EDITOR_CMAKE_BOOL=	EDITOR_SUPPORT
-EDITOR_USES=	qt:4
-EDITOR_USE=	QT=corelib,gui,opengl,qmake_build,moc_build,uic_build,rcc_build
-EDITOR_DESKTOP_ENTRIES=	\
-		"Valyria Tear Editor" \
-		"Map editor for Valyria Tear game" \
-		"valyriatear" \
-		"vt-editor" \
-		"Graphics;2DGraphics;" \
-		""
 
 NLS_CMAKE_OFF=	-DDISABLE_TRANSLATIONS:BOOL=OFF
 NLS_USES=	gettext

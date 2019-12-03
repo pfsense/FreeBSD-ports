@@ -1,3 +1,3 @@
-TIMESTAMP = 1491605095
-SHA256 (xorg/lib/libpciaccess-0.13.5.tar.bz2) = 752c54e9b3c311b4347cb50aea8566fa48eab274346ea8a06f7f15de3240b999
-SIZE (xorg/lib/libpciaccess-0.13.5.tar.bz2) = 381729
+TIMESTAMP = 1564692641
+SHA256 (xorg/lib/libpciaccess-0.16.tar.bz2) = 214c9d0d884fdd7375ec8da8dcb91a8d3169f263294c9a90c575bf1938b9f489
+SIZE (xorg/lib/libpciaccess-0.16.tar.bz2) = 366603

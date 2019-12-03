@@ -2,25 +2,32 @@
 # $FreeBSD$
 
 PORTNAME=	cyberchef
-PORTVERSION=	0.0.0.20170124
+PORTVERSION=	9.7.1
+DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	security
+MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${GH_TAGNAME}/
+DISTNAME=	CyberChef_${DISTVERSIONPREFIX}${PORTVERSION}
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Cyber operations within a web browser
 
 LICENSE=	APACHE20
-LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_GITHUB=	yes
+USES=           zip
+
+USE_GITHUB=	nodefault
 GH_ACCOUNT=	gchq
 GH_PROJECT=	CyberChef
-GH_TAGNAME=	3c3f5d9
 
 NO_BUILD=       yes
 NO_ARCH=        yes
 
 do-install:
-	(cd ${WRKSRC}/build/prod && ${COPYTREE_SHARE} \*       ${STAGEDIR}${WWWDIR}/)
-	(cd ${WRKSRC}/build/prod && ${INSTALL_DATA}  .htaccess ${STAGEDIR}${WWWDIR}/)
+	${MKDIR} ${STAGEDIR}${WWWDIR}
+	${INSTALL} ${WRKDIR}/${DISTNAME}.html ${STAGEDIR}${WWWDIR}/index.html
+	${CP} -R ${WRKDIR}/images ${STAGEDIR}${WWWDIR}/
+	${CP} -R ${WRKDIR}/modules ${STAGEDIR}${WWWDIR}/
+	${CP} -R ${WRKDIR}/assets ${STAGEDIR}${WWWDIR}/
 
 .include <bsd.port.mk>

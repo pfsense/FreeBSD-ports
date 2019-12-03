@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xarray
-PORTVERSION=	0.10.4
+PORTVERSION=	0.13.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,17 +14,12 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}pandas>=0.18.0:math/py-pandas@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pandas>=0.19.2:math/py-pandas@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=2.7.1:devel/py-pytest@${PY_FLAVOR}
 
+USES=		python:3.5+
+USE_PYTHON=	autoplist distutils
+
 NO_ARCH=	yes
-USE_PYTHON=	autoplist concurrent distutils
-USES=		python
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3000
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

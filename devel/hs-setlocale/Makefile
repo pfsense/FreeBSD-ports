@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	setlocale
-PORTVERSION=	1.0.0.6
-PORTREVISION=	1
+PORTVERSION=	1.0.0.8
+PORTREVISION=	3
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

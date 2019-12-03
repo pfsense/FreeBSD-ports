@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	conky
-PORTVERSION=	1.10.8
+PORTVERSION=	1.11.5
 DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	sysutils
@@ -10,23 +10,23 @@ CATEGORIES=	sysutils
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT?=	Advanced, highly configurable system monitor for X11
 
-LIB_DEPENDS=	libtolua++-5.1.so:lang/tolua++ \
-		libinotify.so:devel/libinotify
+LIB_DEPENDS=	libinotify.so:devel/libinotify
 BUILD_DEPENDS=	db2x_xsltproc:textproc/docbook2X \
 		docbook-xsl>=0:textproc/docbook-xsl \
 		xsltproc:textproc/libxslt
 
-CONFLICTS?=	conky-awesome-[0-9]*
-SLAVEDIRS=	sysutils/conky-awesome
-
 USES=		cpe cmake:noninja compiler:c++11-lib gettext-runtime iconv \
-		localbase lua:51 pkgconfig tar:bzip2
-CMAKE_ARGS+=	-DBUILD_PORT_MONITORS:BOOL=false \
+		localbase lua:52 pkgconfig tar:bzip2
+
+CMAKE_ARGS=	-DBUILD_PORT_MONITORS:BOOL=false \
 		-DBUILD_IBM:BOOL=false \
 		-DBUILD_HDDTEMP:BOOL=false \
 		-DBUILD_IOSTATS:BOOL=false \
-		-DBUILD_AUDACIOUS:BOOL=false
+		-DBUILD_AUDACIOUS:BOOL=false \
+		-DBUILD_DOCS:BOOL=true
+CONFLICTS?=	conky-awesome-[0-9]*
 
+SLAVEDIRS=	sysutils/conky-awesome
 PLIST_FILES=	bin/conky man/man1/conky.1.gz
 PORTEXAMPLES=	conky.conf conky_no_x11.conf convert.lua
 PORTDOCS=	html/config_settings.html html/docs.html html/lua.html html/variables.html
@@ -39,7 +39,7 @@ OPTIONS_DEFINE=	APCUPSD CURL DOCS EXAMPLES IPV6 METAR MOC MPD NCURSES RSS \
 
 OPTIONS_GROUP?=	X11
 OPTIONS_GROUP_X11=	ARGB DOUBLE_BUFFER IMLIB2 XFT XINERAMA LUA_CAIRO LUA_IMLIB2 LUA_RSVG
-OPTIONS_DEFAULT?=	X11 ARGB DOUBLE_BUFFER XFT
+OPTIONS_DEFAULT?=	X11 ARGB DOUBLE_BUFFER XFT LUA_CAIRO
 
 APCUPSD_DESC=		Monitor APCUPSD
 APCUPSD_CMAKE_BOOL=	BUILD_APCUPSD
@@ -125,6 +125,11 @@ XOAP_USE=		gnome=libxml2
 PLIST_FILES+=		lib/conky/libcairo_imlib2_helper.so
 .endif
 
+# disable apm on non-x86 archs
+.if ${ARCH} != amd64 && ${ARCH} != i386
+EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-src_CMakeLists.txt
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's/^#\(set(RELEASE true\)/\1/' \
 		-e 's/-D_POSIX_C_SOURCE=200809L/& -D__BSD_VISIBLE=1 -D_XOPEN_SOURCE=700/' \
@@ -133,8 +138,7 @@ post-patch:
 		-e 's/ -lbsd/ -lintl -linotify/' \
 		${WRKSRC}/cmake/ConkyPlatformChecks.cmake
 	@${REINPLACE_CMD} -e 's,LOCALBASE,${LOCALBASE},' \
-		${WRKSRC}/doc/docgen.sh \
-		${WRKSRC}/doc/docs.xml
+		${WRKSRC}/doc/docgen.sh
 
 post-build:
 	(cd ${WRKSRC}/doc && ${SH} docgen.sh)

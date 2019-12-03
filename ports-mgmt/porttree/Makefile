@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	porttree
-PORTVERSION=	0.4.r${SVN_REV}
+PORTVERSION=	1.1.r${SVN_REV}
+PORTREVISION=	1
 CATEGORIES=	ports-mgmt python
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -11,16 +12,13 @@ COMMENT=	Show dependences of FreeBSD port as pseudo graphical tree
 
 LICENSE=	MIT
 
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}networkx>=2.0:math/py-networkx@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}configargparse>0:devel/py-configargparse@${PY_FLAVOR}
+
 USES=		python tar:bzip2 shebangfix
+#USE_PYTHON=	concurrent
 
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}networkx>=1.5:math/py-networkx@${PY_FLAVOR}
-
-.if target(gen-dist)
-FETCH_DEPENDS+=	svn:devel/subversion
-.endif
-
-SVNROOT?=	https://svn.code.sf.net/p/porttree/code/trunk
-SVN_REV=	65
+SVN_REV=	114
 NO_BUILD=	yes
 PLIST_FILES=	bin/porttree man/man1/porttree.1.gz
 NO_ARCH=	yes
@@ -31,6 +29,12 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/src/porttree.py ${STAGEDIR}${PREFIX}/bin/porttree
 	${INSTALL_MAN} ${WRKSRC}/src/porttree.1 ${STAGEDIR}${MANPREFIX}/man/man1
 
+do-test:
+	LC_ALL="en_US.UTF-8" ${WRKSRC}/tests/tests.sh
+
+# maintainer section:
+# require: devel/subversion
+SVNROOT?=	https://svn.code.sf.net/p/porttree/code/trunk
 gen-dist:
 	${MKDIR} ${WRKDIR}
 	${RM} -r ${WRKSRC}

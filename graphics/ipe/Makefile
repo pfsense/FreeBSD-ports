@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ipe
-PORTVERSION=	7.2.7
+PORTVERSION=	7.2.12
 PORTREVISION=	2
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	graphics
@@ -17,12 +17,13 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
-
-USES=		compiler:c++11-lib gmake jpeg lua:52 pkgconfig qt:5
+USES=		compiler:c++11-lib gmake gnome jpeg lua:52 pkgconfig qt:5
 USE_GNOME=	cairo
 USE_QT=		buildtools_build core gui qmake_build widgets
 USE_TEX=	pdftex
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
+
 MAKE_ENV=	DL_LIBS="" \
 		INSTALL_DIR="${MKDIR}" \
 		INSTALL_FILES="${INSTALL_DATA}" \
@@ -52,8 +53,6 @@ post-patch:
 		 /-O2/s|^|#|' ${WRKSRC}/common.mak
 	@${REINPLACE_CMD} -e \
 		's|\([[:blank:]]\)=|\1?=|' ${WRKSRC}/config.mak
-	@${REINPLACE_CMD} -e \
-		'/%s/s|gnome-open|xdg-open|' ${WRKSRC}/ipe/lua/prefs.lua
 
 post-install:
 	@${LN} -sf ${DATADIR}/${PORTVERSION}/ipe.png \

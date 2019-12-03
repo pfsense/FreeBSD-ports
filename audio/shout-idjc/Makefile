@@ -20,6 +20,7 @@ LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
 GNU_CONFIGURE=	yes
 USES=		libtool pathfix pkgconfig autoreconf
 USE_LDCONFIG=	yes
+LDFLAGS+=       -lcrypto -L${LOCALBASE}/lib -logg
 
 OPTIONS_DEFINE=	DOCS
 
@@ -33,6 +34,5 @@ post-patch:
 	@${REINPLACE_CMD} '/^m4data_DATA =/ s|shout.m4|shout-idjc.m4|' ${WRKSRC}/Makefile.am
 	@${REINPLACE_CMD} '/^ckportdir = .*/d' ${WRKSRC}/Makefile.am
 	@${REINPLACE_CMD} '/^ckport_DATA = .*/d' ${WRKSRC}/Makefile.am
-
 
 .include <bsd.port.mk>

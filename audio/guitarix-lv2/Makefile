@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	guitarix
-DISTVERSION=	0.37.1
-PORTREVISION=	1
+DISTVERSION=	0.38.1
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/
 PKGNAMESUFFIX=	-lv2
@@ -14,17 +14,13 @@ COMMENT=	Virtual versatile amplification for Jack and set of LV2 plugins
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_aarch64=		fails to compile: unknown FP unit 'sse'
-BROKEN_armv6=		fails to compile: unknown FP unit 'sse'
-BROKEN_armv7=		fails to compile: unknown FP unit 'sse'
-BROKEN_powerpc64=	fails to compile: unknown FP unit 'sse'
-
 BUILD_DEPENDS=	lv2>0:audio/lv2 \
 		${LOCALBASE}/include/fftw3.h:math/fftw3 \
 		roboto-fonts-ttf>0:x11-fonts/roboto-fonts-ttf \
 		ladspa>0:audio/ladspa # https://sourceforge.net/p/guitarix/bugs/61/
 LIB_DEPENDS=	libavahi-common.so:net/avahi-app \
 		libboost_system.so:devel/boost-libs \
+		libcurl.so:ftp/curl \
 		libfftw3f.so:math/fftw3-float \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
@@ -39,8 +35,8 @@ LIB_DEPENDS=	libavahi-common.so:net/avahi-app \
 		libzita-resampler.so:audio/zita-resampler
 RUN_DEPENDS=	roboto-fonts-ttf>0:x11-fonts/roboto-fonts-ttf
 
-USES=		eigen:3 libarchive localbase:ldflags pkgconfig \
-		python:build readline waf tar:xz
+USES=		compiler:c++11-lang eigen:3 gnome libarchive localbase:ldflags \
+		pkgconfig python:2.7,build readline waf tar:xz
 USE_GNOME=	atkmm cairo gtk20 gtkmm24 pangomm
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes

@@ -2,7 +2,7 @@
 
 PORTNAME=	hfm
 PORTVERSION=	1.2.3
-PORTREVISION=	2
+PORTREVISION=	6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -11,13 +11,14 @@ COMMENT=	Run tests in parallel at high frequency
 
 LICENSE=	BSD2CLAUSE
 
+BROKEN=		fails to build
+
 # gb 0.4 includes FreeBSD-specific fixes that this port requires
 #   https://github.com/constabulary/gb/issues/506
-BUILD_DEPENDS=	go>=1.5:lang/go \
-		gb>=0.4:devel/gb \
+BUILD_DEPENDS=	gb>=0.4:devel/gb \
 		${LOCALBASE}/lib/libucl.a:textproc/libucl
 
-USES=		compiler:c++11-lang
+USES=		compiler:c++11-lang go:no_targets
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	derekmarcotte
@@ -32,6 +33,8 @@ USE_RC_SUBR=	hfm
 MAKE_ARGS+=	ETCDIR=${ETCDIR} TAG=${DISTVERSIONPREFIX}${PORTVERSION}
 
 ALL_TARGET=	test build
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-patch:
 	(cd ${WRKSRC}; ${PATCH} vendor/src/github.com/mitchellh/go-libucl/libucl.go < vendor/patches/github.com/mitchellh/go-libucl/libucl.go.patch )

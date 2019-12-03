@@ -1,4 +1,4 @@
-etc/dbus-1/system.d/org.kde.ksysguard.processlisthelper.conf
+etc/xdg/libksysguard.categories
 include/ksysguard/ksgrd/SensorAgent.h
 include/ksysguard/ksgrd/SensorClient.h
 include/ksysguard/ksgrd/SensorManager.h
@@ -32,6 +32,7 @@ lib/libprocesscore.so.7
 lib/libprocessui.so
 lib/libprocessui.so.%%KDE_PLASMA_VERSION%%
 lib/libprocessui.so.7
+share/dbus-1/system.d/org.kde.ksysguard.processlisthelper.conf
 share/dbus-1/system-services/org.kde.ksysguard.processlisthelper.service
 share/ksysguard/scripts/README
 share/ksysguard/scripts/smaps/helper.js
@@ -45,10 +46,6 @@ share/locale/ar/LC_MESSAGES/ksysguardlsofwidgets.mo
 share/locale/ar/LC_MESSAGES/processcore.mo
 share/locale/ar/LC_MESSAGES/processui.mo
 share/locale/as/LC_MESSAGES/processui.mo
-share/locale/ast/LC_MESSAGES/ksgrd.mo
-share/locale/ast/LC_MESSAGES/ksysguardlsofwidgets.mo
-share/locale/ast/LC_MESSAGES/processcore.mo
-share/locale/ast/LC_MESSAGES/processui.mo
 share/locale/be/LC_MESSAGES/processcore.mo
 share/locale/be/LC_MESSAGES/processui.mo
 share/locale/be@latin/LC_MESSAGES/ksysguardlsofwidgets.mo
@@ -152,6 +149,7 @@ share/locale/ia/LC_MESSAGES/ksgrd.mo
 share/locale/ia/LC_MESSAGES/ksysguardlsofwidgets.mo
 share/locale/ia/LC_MESSAGES/processcore.mo
 share/locale/ia/LC_MESSAGES/processui.mo
+share/locale/id/LC_MESSAGES/ksgrd.mo
 share/locale/id/LC_MESSAGES/ksysguardlsofwidgets.mo
 share/locale/id/LC_MESSAGES/processcore.mo
 share/locale/id/LC_MESSAGES/processui.mo
@@ -193,6 +191,7 @@ share/locale/mai/LC_MESSAGES/processcore.mo
 share/locale/mai/LC_MESSAGES/processui.mo
 share/locale/mk/LC_MESSAGES/processcore.mo
 share/locale/mk/LC_MESSAGES/processui.mo
+share/locale/ml/LC_MESSAGES/ksgrd.mo
 share/locale/ml/LC_MESSAGES/ksysguardlsofwidgets.mo
 share/locale/ml/LC_MESSAGES/processcore.mo
 share/locale/ml/LC_MESSAGES/processui.mo

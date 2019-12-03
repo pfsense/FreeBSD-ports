@@ -11,21 +11,20 @@ COMMENT=	Web based git repository browser written in PHP
 
 LICENSE=	GPLv2
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		gettext php:web tar:bzip2
 USE_PHP=	bz2 fileinfo mbstring memcache posix simplexml spl zlib
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 
 PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 SUB_FILES=	pkg-message
 
-.include <bsd.port.pre.mk>
-
-.if (${PHP_VER} < 70)
-RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/xdiff.so:textproc/pecl-xdiff@${PHP_FLAVOR}
-.else
 RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/xdiff.so:textproc/pecl-xdiff2@${PHP_FLAVOR}
-.endif
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}
@@ -33,4 +32,4 @@ do-install:
 		 && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
 	${FIND} ${STAGEDIR}${WWWDIR} -type f -exec ${CHMOD} 644 {} +
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	openal-soft
-PORTVERSION=	1.18.2
-PORTREVISION=	2
+PORTVERSION=	1.19.1
+PORTREVISION=	3
 CATEGORIES=	audio
-MASTER_SITES=	http://kcat.strangesoft.net/openal-releases/
+MASTER_SITES=	https://openal-soft.org/openal-releases/
 
 MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Software implementation of the OpenAL specification
@@ -14,9 +14,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	openal-200[0-9]*
 
-USES=		cmake:outsource compiler:c11 tar:bzip2
+USES=		cmake compiler:c11 tar:bzip2
+USE_BINUTILS=	yes
 USE_LDCONFIG=	yes
-LLD_UNSAFE=	yes
+
 CMAKE_ARGS=	-DCMAKE_INSTALL_DATADIR:STRING="${PREFIX}/etc"
 CMAKE_OFF=	ALSOFT_BACKEND_ALSA \
 		ALSOFT_DLOPEN \
@@ -25,18 +26,23 @@ CMAKE_OFF=	ALSOFT_BACKEND_ALSA \
 		ALSOFT_REQUIRE_QSA
 CMAKE_ON=	ALSOFT_BACKEND_WAVE \
 		ALSOFT_UTILS
-LDFLAGS+=	-Wl,--as-needed # do not link with librt and libdl
 
-OPTIONS_DEFINE=		EXAMPLES CONFIG JACK OSS PORTAUDIO PULSEAUDIO SNDIO
+# use gold linker due to some problems with ld.bfd on 12-STABLE,
+# cf. PR 235603
+# do not link with librt and libdl.
+LDFLAGS+=	-fuse-ld=gold \
+		-Wl,--as-needed
+
+OPTIONS_DEFINE=		EXAMPLES CONFIG JACK OSS PORTAUDIO PULSEAUDIO SDL SNDIO
 OPTIONS_DEFAULT=	OSS
 OPTIONS_SUB=		yes
 
-CONFIG_DESC=		Install configuration utility (needs Qt 4.x)
+CONFIG_DESC=		Install configuration utility (needs Qt 5)
 
 CONFIG_CMAKE_BOOL_OFF=	ALSOFT_NO_CONFIG_UTIL
-CONFIG_CMAKE_ON=	-DALSOFT_NO_QT5:BOOL=ON
-CONFIG_USES=		qt:4
-CONFIG_USE=		QT=corelib,gui,qmake_build,moc_build,rcc_build,uic_build
+CONFIG_CMAKE_ON=	-DALSOFT_NO_QT5:BOOL=OFF
+CONFIG_USES=		qt:5
+CONFIG_USE=		QT=core,gui,widgets,buildtools_build,qmake_build
 
 JACK_CMAKE_BOOL=	ALSOFT_REQUIRE_JACK ALSOFT_BACKEND_JACK
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
@@ -49,13 +55,16 @@ PORTAUDIO_LIB_DEPENDS=	libportaudio.so:audio/portaudio
 PULSEAUDIO_CMAKE_BOOL=	ALSOFT_REQUIRE_PULSEAUDIO ALSOFT_BACKEND_PULSEAUDIO
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 
+SDL_CMAKE_BOOL=		ALSOFT_REQUIRE_SDL2 ALSOFT_BACKEND_SDL2
+SDL_USES=		localbase
+SDL_USE=		SDL=sdl2
+
 SNDIO_CMAKE_BOOL=	ALSOFT_REQUIRE_SNDIO ALSOFT_BACKEND_SNDIO
-SNDIO_IMPLIES=		OSS # provide fallback for missing sndio capture support
 SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
 
 post-patch:
 	@${REINPLACE_CMD} 's|/etc/openal|${ETCDIR}|' \
-		${WRKSRC}/Alc/alcConfig.c
+		${WRKSRC}/Alc/alconfig.c
 
 post-install-EXAMPLES-on:
 	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	solidity
-PORTVERSION=	0.4.23
+PORTVERSION=	0.5.11
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/ethereum/solidity/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -15,11 +15,19 @@ LICENSE=	GPLv3
 BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
 LIB_DEPENDS=	libjsoncpp.so:devel/jsoncpp
 
-OPTIONS_DEFINE=	SMT
-SMT_DESC=	SMT Checker
-SMT_LIB_DEPENDS=libz3.so:math/z3
+NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe sparc64
+NOT_FOR_ARCHS_REASON=	solidity currently does not support big endian systems
 
 USES=		cmake compiler:c++14-lang
+
+OPTIONS_DEFINE=	Z3 CVC4
+OPTIONS_DEFAULT=CVC4
+Z3_DESC=	SMT Checker via Z3
+CVC4_DESC=	SMT Checker via CVC4
+Z3_LIB_DEPENDS=		libz3.so:math/z3
+CVC4_LIB_DEPENDS=	libcvc4.so:math/cvc4 libgmp.so:math/gmp
+Z3_CMAKE_OFF=	USE_Z3
+CVC4_CMAKE_OFF=	USE_CVC4
 
 CMAKE_ARGS+=	-DUSE_LD_GOLD=OFF -DTESTS=OFF \
 		-DJSONCPP_INCLUDE_DIR:STRING="${LOCALBASE}/include/jsoncpp" \

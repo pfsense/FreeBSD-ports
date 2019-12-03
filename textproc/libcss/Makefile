@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	libcss
-PORTVERSION=	0.7.0
+PORTVERSION=	0.9.0
 CATEGORIES=	textproc
-MASTER_SITES=	http://download.netsurf-browser.org/libs/releases/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-src
+MASTER_SITES=	https://download.netsurf-browser.org/libs/releases/
+EXTRACT_SUFX=	-src.tar.gz
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	neel@neelc.org
 COMMENT=	Cascading Style Sheets library
 
 LICENSE=	MIT
@@ -18,13 +18,13 @@ LIB_DEPENDS=	libwapcaplet.so:textproc/libwapcaplet \
 		libparserutils.so:devel/libparserutils
 
 USES=		gmake iconv:wchar_t localbase pkgconfig
+
 USE_LDCONFIG=	yes
-WRKSRC=		${WRKDIR}/${DISTNAME:S/-src//}
-MAKE_ENV+=	COMPONENT_TYPE="lib-shared"
+MAKE_ENV=	COMPONENT_TYPE="lib-shared"
 LDFLAGS+=	${ICONV_LIB}
-PLIST_SUB+=	VERSION=${PORTVERSION}
+PLIST_SUB=	VERSION=${PORTVERSION}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcss.so*
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcss.so
 
 .include <bsd.port.mk>

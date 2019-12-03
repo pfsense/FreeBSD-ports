@@ -3,6 +3,7 @@
 
 PORTNAME=	postgres-xl
 DISTVERSION=	9.5r1.5
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://files.postgres-xl.org/
 
@@ -10,6 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scalable open source PostgreSQL-based database cluster
 
 LICENSE=	PostgreSQL
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 BUILD_DEPENDS=	bash:shells/bash
 

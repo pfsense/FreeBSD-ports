@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	asyncpg
-PORTVERSION=	0.16.0
+PORTVERSION=	0.18.3
 PORTREVISION=	1
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 OPTIONS_DEFINE=	DOCS
 
 USES=		pgsql:9.2+ python:3.5+
-USE_PYTHON=	autoplist concurrent distutils setuptools
+USE_PYTHON=	autoplist concurrent distutils
 
 PORTDOCS=	PKG-INFO README.rst
 

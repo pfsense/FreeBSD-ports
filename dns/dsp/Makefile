@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dsp
-PORTVERSION=	2.0.0
+PORTVERSION=	2.0.1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.dns-oarc.net/files/dsc/ \
 		https://dns.company/files/dsc/
@@ -27,5 +27,7 @@ GNU_CONFIGURE=	yes
 USES=		gmake perl5
 PERL5=		configure patch shebangfix
 NO_ARCH=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

@@ -10,7 +10,8 @@ COMMENT=	Archiving tool for KDE
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake:outsource gettext libarchive kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext libarchive kde:5 \
+		qt:5 shared-mime-info tar:xz
 USE_KDE=	archive auth bookmarks codecs completion config configwidgets \
 		coreaddons crash dbusaddons doctools ecm i18n iconthemes \
 		itemmodels itemviews jobwidgets khtml kio parts pty service \
@@ -20,13 +21,18 @@ USE_QT=		concurrent core dbus gui network widgets xml \
 
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	7ZIP RAR ZIP
+OPTIONS_DEFINE=	7ZIP RAR ZIP DOCS
+OPTIONS_DEFAULT=	7ZIP ZIP DOCS
+OPTIONS_DEFAULT_i386=	RAR
+OPTIONS_DEFAULT_amd64=	RAR
 OPTIONS_SUB=		YES
 
-7ZIP_DESC=	Support for 7-Zip archives
+# The 7ZIP and RAR options only need runtime dependencies;
+# the port builds identically with or without them.
+7ZIP_DESC=	Support for 7-Zip archives (runtime)
 7ZIP_RUN_DEPENDS=	7z:archivers/p7zip
 
-RAR_DESC=	Support for RAR archives
+RAR_DESC=	Support for RAR archives (runtime)
 RAR_RUN_DEPENDS=	unrar:archivers/unrar \
 			rar:archivers/rar
 

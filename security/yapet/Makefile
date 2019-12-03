@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	yapet
-DISTVERSION=	1.1
+DISTVERSION=	2.3
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://yapet.guengel.ch/downloads/
 
@@ -11,17 +12,19 @@ COMMENT=	Curses based password manager
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake ncurses ssl
+LIB_DEPENDS+=	libargon2.so:security/libargon2 \
+		libcppunit.so:devel/cppunit
+
+USES=		compiler:c++14-lang gmake ncurses ssl pkgconfig
+
 GNU_CONFIGURE=	yes
 
-OPTIONS_DEFINE=		CONVERTERS DOCS NLS
-OPTIONS_DEFAULT=	CONVERTERS
+OPTIONS_DEFINE=		DOCS NLS
 OPTIONS_SUB=		yes
 
-CONVERTERS_DESC=	Utilities for importing/exporting CSV files
-CONVERTERS_CONFIGURE_ENABLE=	converters
-
-NLS_USES=		gettext
+NLS_USES=		gettext-runtime
 NLS_CONFIGURE_ENABLE=	nls
+
+TEST_TARGET=	check
 
 .include <bsd.port.mk>

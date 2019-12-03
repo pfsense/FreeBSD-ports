@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	aphpunit
-DISTVERSION=	1.5
+DISTVERSION=	1.9
 CATEGORIES=	devel www
 MASTER_SITES=	http://phar.toco-domains.de/
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
@@ -11,8 +11,6 @@ MAINTAINER=	tz@FreeBSD.org
 COMMENT=	Testing framework for unit tests
 
 LICENSE=	BSD2CLAUSE
-
-IGNORE_WITH_PHP=	56
 
 USES=		php:flavors
 USE_PHP=	mbstring pcntl phar posix sysvmsg

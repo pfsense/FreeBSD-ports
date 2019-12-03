@@ -2,20 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	JSON-XS
-PORTVERSION=	3.04
+PORTVERSION=	4.02
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	perl@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	JSON serialising/deserialising, done correctly and fast
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Types-Serialiser>=0:devel/p5-Types-Serialiser \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Types-Serialiser>=0:devel/p5-Types-Serialiser \
 		p5-common-sense>0:devel/p5-common-sense
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure

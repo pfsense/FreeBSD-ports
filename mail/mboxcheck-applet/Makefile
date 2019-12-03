@@ -10,6 +10,10 @@ MASTER_SITES=	http://perso.orange.fr/seb128/fichiers/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mailbox checking applet for GNOME 2
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		python:2.7
 USE_GNOME=	pygnome2:run
 NO_BUILD=	yes

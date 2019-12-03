@@ -3,12 +3,16 @@
 
 PORTNAME=	nmzmail
 PORTVERSION=	0.1.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	http://www.ecademix.com/JohannesHofmann/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast mail searching for mutt
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 RUN_DEPENDS=	namazu:databases/namazu2
 

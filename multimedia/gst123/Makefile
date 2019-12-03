@@ -3,7 +3,7 @@
 
 PORTNAME=	gst123
 PORTVERSION=	0.3.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	http://space.twc.de/~stefan/gst123/
 
@@ -13,7 +13,7 @@ COMMENT=	Command-line tool to play audio and video files
 LICENSE=	LGPL20
 
 GNU_CONFIGURE=	yes
-USES=		gmake ncurses pkgconfig tar:bzip2
+USES=		compiler:c++11-lang gmake ncurses pkgconfig tar:bzip2
 USE_GNOME=	gtk20
 CONFIGURE_ENV=	NCURSES5_CONFIG=/usr/bin/true
 LDFLAGS+=	-lncurses -L${LOCALBASE}/lib

@@ -3,7 +3,7 @@
 
 PORTNAME=	ljit
 PORTVERSION=	0.2.5
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	deskutils
 MASTER_SITES=	http://kir.vtx.ru/ljit/dl/ \
 		http://freebsd.nsu.ru/distfiles/
@@ -14,8 +14,12 @@ COMMENT=	GUI tool to help LiveJournal users post images
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libcurl.so:ftp/curl
-RUN_DEPENDS=	convert:graphics/ImageMagick
+RUN_DEPENDS=	convert:graphics/ImageMagick6
 
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

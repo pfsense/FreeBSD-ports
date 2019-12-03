@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	ghostscript
-PORTVERSION=	9.23
-PORTREVISION=	1
+PORTVERSION=	9.27
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${PORTVERSION:S/.//}/
 PKGNAMESUFFIX=	9-agpl-base
@@ -12,11 +12,11 @@ COMMENT=	PostScript and PDF interpreter
 
 LICENSE=	AGPLv3
 
+BUILD_DEPENDS=	jbig2dec>=0.16:graphics/jbig2dec
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libidn.so:dns/libidn \
 		libjbig2dec.so:graphics/jbig2dec \
-		libopenjp2.so:graphics/openjpeg \
 		libpaper.so:print/libpaper \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
@@ -28,8 +28,10 @@ CONFLICTS_INSTALL= \
 		ghostscript9-agpl-[0-9]* \
 		ghostscript9-agpl-nox11-[0-9]*
 
-USES=		gmake iconv jpeg localbase pkgconfig tar:xz
+USES=		cpe gmake iconv jpeg localbase pkgconfig tar:xz
+USE_CSTD=	gnu99
 USE_LDCONFIG=	yes
+CPE_VENDOR=	artifex
 DATADIR=	${PREFIX}/share/${PORTNAME}/${PORTVERSION}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}/${PORTVERSION}
 GNU_CONFIGURE=	yes
@@ -40,7 +42,6 @@ CONFIGURE_ARGS=	--disable-compile-inits \
 		--enable-dynamic \
 		--enable-fontconfig \
 		--enable-freetype \
-		--enable-openjpeg \
 		--with-drivers=ALL \
 		--with-fontpath=${LOCALBASE}/share/fonts \
 		--with-jbig2dec \
@@ -53,8 +54,8 @@ ALL_TARGET=	so
 INSTALL_TARGET=	soinstall
 PLIST_SUB=	GS_VERSION="${PORTVERSION}"
 
-OPTIONS_DEFINE=	DOCS CUPS IJS
-OPTIONS_DEFAULT=CUPS IJS
+OPTIONS_DEFINE=	DOCS CUPS IJS JPEG2000
+OPTIONS_DEFAULT=CUPS
 OPTIONS_SUB=	yes
 
 CUPS_CONFIGURE_ENABLE=	cups
@@ -64,10 +65,13 @@ IJS_CONFIGURE_WITH=	ijs
 IJS_DESC=		Support libijs based Ghostscript devices
 IJS_LIB_DEPENDS=	libijs.so:print/libijs
 
+JPEG2000_CONFIGURE_ENABLE=	openjpeg
+JPEG2000_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
+
 post-patch:
-	@${RM} -r ${WRKSRC}/freetype ${WRKSRC}/ijs ${WRKSRC}/jbig2dec \
-		${WRKSRC}/jpeg ${WRKSRC}/libpng ${WRKSRC}/openjpeg \
-		${WRKSRC}/zlib
+	@${RM} -r ${WRKSRC}/cups/libs ${WRKSRC}/freetype ${WRKSRC}/ijs \
+		${WRKSRC}/jbig2dec ${WRKSRC}/jpeg ${WRKSRC}/libpng \
+		${WRKSRC}/openjpeg ${WRKSRC}/zlib
 
 post-install:
 	${MV} ${STAGEDIR}${PREFIX}/bin/gsc ${STAGEDIR}${PREFIX}/bin/gs

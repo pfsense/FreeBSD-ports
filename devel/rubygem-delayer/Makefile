@@ -1,16 +1,19 @@
 # $FreeBSD$
 
 PORTNAME=	delayer
-PORTVERSION=	0.0.2
+PORTVERSION=	1.0.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	meta@FreeBSD.org
 COMMENT=	Delay any task, similar to a priority-queue
 
-NO_ARCH=	yes
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

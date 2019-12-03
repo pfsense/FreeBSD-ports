@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rtmidi
-DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.0
+DISTVERSION=	4.0.0
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libjack.so:audio/jack
 
-USES=		autoreconf libtool localbase
+USES=		autoreconf compiler:c11 libtool localbase
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	thestk

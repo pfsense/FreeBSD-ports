@@ -7,10 +7,15 @@ CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Small text templating language
+MAINTAINER=	python@FreeBSD.org
+COMMENT=	Small templating language for text substitutions
 
-USES=			python
-USE_PYTHON=		distutils autoplist
+LICENSE=	MIT
+#LICENSE_FILE=	No license in PyPI sdist or repository
+
+USES=		python
+USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

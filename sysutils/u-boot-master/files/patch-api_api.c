@@ -1,6 +1,6 @@
---- api/api.c.orig	2018-01-09 01:25:29 UTC
+--- api/api.c.orig	2018-07-09 14:24:14 UTC
 +++ api/api.c
-@@ -290,6 +290,11 @@ static int API_dev_close(va_list ap)
+@@ -289,6 +289,11 @@ static int API_dev_close(va_list ap)
  	if (!err)
  		di->state = DEV_STA_CLOSED;
  

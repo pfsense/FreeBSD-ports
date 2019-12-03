@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libpeas
-PORTVERSION=	1.20.0
+PORTVERSION=	1.22.0
 PORTREVISION?=	0
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
@@ -30,8 +30,6 @@ USE_GNOME=	cairo gtk30 intlhack introspection
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS+=--disable-glade-catalog
 PLIST=          ${.CURDIR}/pkg-plist
@@ -40,7 +38,7 @@ PLIST=          ${.CURDIR}/pkg-plist
 USES+=		python
 USE_PYTHON=	flavors
 USE_GNOME+=	pygobject3
-.if ${FLAVOR:Upy27:Mpy2*}
+.if ${FLAVOR:Upy36:Mpy2*}
 CONFIGURE_ARGS+=	--disable-python3
 BUILD_WRKSRC=	${WRKSRC}/loaders/python
 INSTALL_WRKSRC=	${WRKSRC}/loaders/python

@@ -3,7 +3,7 @@
 
 PORTNAME=	clamfs
 PORTVERSION=	1.0.1
-PORTREVISION=	7
+PORTREVISION=	15
 CATEGORIES=	security
 MASTER_SITES=	SF
 
@@ -14,10 +14,9 @@ LICENSE=	GPLv2
 
 BROKEN_armv6=		fails to compile: ./config.hxx:52:17: expected namespace name
 BROKEN_armv7=		fails to compile: ./config.hxx:52:17: expected namespace name
-BROKEN_powerpc64=	fails to compile: g++6: unrecognized command line option '-mavx2'
 
 LIB_DEPENDS=	libccgnu2.so:devel/commoncpp \
-		libPocoNet.so:devel/poco-ssl \
+		libPocoNet.so:devel/poco \
 		librlog.so:devel/rlog
 BUILD_DEPENDS=	boost-libs>=1.33:devel/boost-libs
 RUN_DEPENDS=	clamd:security/clamav

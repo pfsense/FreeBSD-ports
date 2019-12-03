@@ -1,22 +1,31 @@
 # $FreeBSD$
 
 PORTNAME=	cutadapt
-PORTVERSION=	1.14
+DISTVERSION=	2.5
 CATEGORIES=	biology python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	jwb@FreeBSD.org
-COMMENT=	Finds and removes adapter sequences, primers, poly-A tails, etc
+COMMENT=	Trim adapters from high-throughput sequencing reads
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xopen>0:archivers/py-xopen@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xopen>=0.5.0:archivers/py-xopen@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dnaio>=0.3:biology/py-dnaio@${PY_FLAVOR} \
+		pigz>=0:archivers/pigz
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-timeout>0:devel/py-pytest-timeout@${PY_FLAVOR}
 
-USES=		python
-USE_PYTHON=	distutils py3kplist
+USES=		python:3.4+
+USE_PYTHON=	autoplist concurrent cython distutils
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cutadapt/*.so
+
+do-test:
+	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest
 
 .include <bsd.port.mk>

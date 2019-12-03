@@ -11,16 +11,8 @@ COMMENT=	High performance load generator for TCP and WebSocket servers
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=		invokes x86 assembler
-BROKEN_armv6=		invokes x86 assembler
-BROKEN_armv7=		invokes x86 assembler
-BROKEN_mips=		invokes x86 assembler
-BROKEN_mips64=		invokes x86 assembler
-BROKEN_sparc64=		invokes x86 assembler
-BROKEN_powerpc64=	invokes x86 assembler
-
 GNU_CONFIGURE=	yes
-USES=		autoreconf libtool gmake ncurses
+USES=		autoreconf compiler libtool gmake ncurses
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	machinezone
@@ -32,4 +24,10 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+BROKEN=		is marked as broken with GCC: src/tcpkali_atomic.h unconditionally includes x86 assembler
+.endif
+
+.include <bsd.port.post.mk>

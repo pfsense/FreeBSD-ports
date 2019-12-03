@@ -2,7 +2,8 @@
 # Created by: David Shane Holden <dpejesh@yahoo.com>
 # $FreeBSD$
 
-PORTVERSION=		1.1.18
+PORTVERSION=		1.1.19
+PORTREVISION=	1
 PKGNAMESUFFIX=		1
 
 .include "${.CURDIR}/Makefile.common"

@@ -1,6 +1,6 @@
---- Makefile.orig	2016-04-30 03:53:03 UTC
+--- Makefile.orig	2019-03-31 00:40:33 UTC
 +++ Makefile
-@@ -72,7 +72,7 @@
+@@ -73,7 +73,7 @@
  #    them; you can also ask for a package with convenience libraries instead --
  #    we'll try to provide them somewhere in the near future.
  
@@ -9,12 +9,12 @@
  
  # Disable GNU Make implicit rules and variables. Leaving them enabled will slow
  # down MinGW and Cygwin builds by a very VERY noticeable degree. Besides, we have
-@@ -106,23 +106,17 @@ include Makefile.obj
+@@ -108,16 +108,12 @@ include Makefile.obj
  # Which C++ standard to support
  STDFLAG = -std=c++11
  
 -CFOTHERS := -pipe $(EXTERNAL_FLAGS)
-+CFOTHERS := $(CFLAGS)
++CFOTHERS := $(EXTERNAL_FLAGS)
  CFWARN := 
  CFWARN_L := -Wall -Wformat-security -Wundef
  
@@ -27,31 +27,7 @@
  #
  # The GCC and GXX variables are set later.
  #
- AR = ar
- RANLIB = ranlib
--CC = $(GCC)
--CXX = $(GXX)
- RM = rm -f
- COPY = cp
- COPY_R = cp -r
-@@ -511,16 +505,6 @@ ifneq ($(GCC_VER),)
- GCC_VER_SUFFIX:=-$(GCC_VER)
- endif
- 
--# Attempt to use a full compiler name, to make
--# distcc builds work nicely.
--LMACH := $(shell gcc -dumpmachine)-
--ifeq ($(LMACH),-)
--LMACH :=
--endif
--ifeq ($(shell which $(LMACH)gcc$(GCC_VER_SUFFIX) > /dev/null 2> /dev/null && echo "Yes"),)
--LMACH :=
--endif
--
- ifneq ($(FORCE_CC),)
- GCC := $(FORCE_CC)
- HOSTCC := $(FORCE_CC)
-@@ -574,15 +558,6 @@ ifdef USE_ICC
+@@ -502,15 +498,6 @@ ifdef USE_ICC
  
  # Some very good optimization flags.
    CFOPTIMIZE := -O2 -parallel
@@ -66,17 +42,8 @@
 -  endif
  endif
  
- ifdef LTO
-@@ -660,7 +635,7 @@ ifndef BUILD_LUA
- endif
- ifndef BUILD_LUA
-   ifndef LUA_PACKAGE
--    LUA_PACKAGE = lua5.1
-+    LUA_PACKAGE = lua-5.1
-   endif
-   INCLUDES_L += $(shell $(PKGCONFIG) $(LUA_PACKAGE) --cflags-only-I | sed -e 's/-I/-isystem /')
-   CFLAGS_L  += $(shell $(PKGCONFIG) $(LUA_PACKAGE) --cflags-only-other)
-@@ -673,7 +648,7 @@ endif
+ # Define this to automatically generate code optimized for your machine
+@@ -624,7 +611,7 @@ endif
  
  ifndef BUILD_SQLITE
    ifeq ($(shell grep -q sqlite3_prepare $(SQLITE_INCLUDE_DIR)/sqlite3.h 2>/dev/null && echo yes),yes)
@@ -85,7 +52,7 @@
      LIBS += $(SQLITE_LIB)
      ifneq ($(shell grep -q sqlite3_prepare_v2 $(SQLITE_INCLUDE_DIR)/sqlite3.h 2>/dev/null && echo yes),yes)
        DEFINES_L += -DANCIENT_SQLITE
-@@ -830,7 +805,7 @@ ifndef NOWIZARD
+@@ -787,7 +774,7 @@ ifndef NOWIZARD
  DEFINES += -DWIZARD
  endif
  ifdef NO_OPTIMIZE

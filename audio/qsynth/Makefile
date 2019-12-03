@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	qsynth
-PORTVERSION=	0.5.1
+PORTVERSION=	0.5.7
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -14,31 +15,34 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
 
-USES=		gmake pkgconfig qt:5
+USES=		compiler:c++11-lang gmake pkgconfig qt:5
 USE_CXXSTD=	c++11
-USE_QT=		core gui widgets x11extras buildtools_build linguisttools_build qmake_build
-USE_GL=		gl
+USE_QT=		core gui network widgets x11extras buildtools_build \
+		linguisttools_build qmake_build
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ac_cv_path_ac_cv_qmake=${QMAKE} \
-		ac_cv_path_ac_moc=${MOC} \
-		ac_cv_path_ac_uic=${UIC} \
-		ac_cv_path_ac_lupdate=${LUPDATE} \
-		ac_cv_path_ac_lrelease=${LRELEASE}
 CONFIGURE_ARGS=	--localedir=${DATADIR} \
 		--with-fluidsynth=${LOCALBASE}
+CONFIGURE_ENV=	ac_cv_path_ac_cv_qmake=${QMAKE} \
+		ac_cv_path_ac_lrelease=${LRELEASE} \
+		ac_cv_path_ac_lupdate=${LUPDATE} \
+		ac_cv_path_ac_moc=${MOC} \
+		ac_cv_path_ac_uic=${UIC}
 
-OPTIONS_DEFINE=	GRADIENT SYSTEM_TRAY XUNIQUE
+# cf. PR 224488
+LDFLAGS+=	-Wl,--as-needed
+
+OPTIONS_DEFINE=		GRADIENT SYSTEM_TRAY XUNIQUE
 OPTIONS_DEFAULT=	GRADIENT SYSTEM_TRAY XUNIQUE
 
-GRADIENT_DESC=	Gradient eye-candy
+GRADIENT_DESC=		Gradient eye-candy
 SYSTEM_TRAY_DESC=	System-tray icon support
-XUNIQUE_DESC=	X11 unique/single instance
+XUNIQUE_DESC=		X11 unique/single instance
 
 GRADIENT_CONFIGURE_ENABLE=	gradient
 SYSTEM_TRAY_CONFIGURE_ENABLE=	system-tray
+XUNIQUE_USE=			XORG=x11
 XUNIQUE_CONFIGURE_ENABLE=	xunique
-XUNIQUE_USE=	XORG=x11
 
 post-patch:
 	@${REINPLACE_CMD} -e ' \

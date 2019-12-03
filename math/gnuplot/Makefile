@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gnuplot
-PORTVERSION=	5.2.4
+PORTVERSION=	5.2.7
+PORTREVISION=	1
 CATEGORIES=	math graphics
 MASTER_SITES=	SF
 
@@ -15,7 +16,7 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 CONFLICTS_INSTALL?=	gnuplot-lite-[0-9]*
 
-USES+=		groff iconv pkgconfig readline
+USES+=		compiler:c++11-lang groff iconv pkgconfig readline
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 CONFIGURE_ARGS+=--with-readline=gnu \
@@ -98,5 +99,10 @@ post-install-DOCS-on:
 	cd ${WRKSRC}/docs && ${INSTALL_DATA} gnuplot.txt gnuplot.dvi \
 		gnuplot.ps ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/docs/psdoc && ${INSTALL_DATA} README ps_* ${STAGEDIR}${DOCSDIR}/psdoc
+
+.if defined(LITE)
+post-stage:
+	@cd ${STAGEDIR}${PREFIX} && ${RMDIR} libexec/gnuplot/5.2 libexec/gnuplot
+.endif
 
 .include <bsd.port.mk>

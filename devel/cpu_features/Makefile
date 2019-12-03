@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cpu_features
-PORTVERSION=	0.1.0
+PORTVERSION=	0.4.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -10,9 +10,14 @@ COMMENT=	Cross platform C99 library to get cpu features at runtime
 
 LICENSE=	APACHE20
 
-USES=	cmake
+NOT_FOR_ARCHS=		aarch64 armv6 armv7 mips mips64
+NOT_FOR_ARCHS_REASON=	assumes android if on ARM or MIPS
+
+USES=	cmake:insource
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
+
+CFLAGS+=	-fPIC
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/list_cpu_features ${STAGEDIR}${PREFIX}/bin

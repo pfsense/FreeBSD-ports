@@ -1,10 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	qsstv
-PORTVERSION=	9.2.6
+PORTVERSION=	9.3.3
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://users.telenet.be/on4qz/qsstv/downloads/ \
-		LOCAL/db
+		LOCAL/shurd
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	hamradio@FreeBSD.org
@@ -21,12 +22,14 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libv4l2.so:multimedia/libv4l
 BUILD_DEPENDS=	v4l_compat>=0:multimedia/v4l_compat
 
-USES=		pkgconfig qmake qt:5
+USES=		compiler:c++11-lang gl pkgconfig qmake qt:5
 USE_QT=		buildtools core gui network widgets xml
-USE_GL+=	gl
+USE_GL=		gl
 
 OPTIONS_DEFINE=	DOCS
 DOCS_CXXFLAGS=	-DWITH_DOCS
+DOCS_QMAKE_ON=	CONFIG+=dox
+DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
@@ -36,8 +39,8 @@ post-patch:
 		${WRKSRC}/qsstv/qsstv.pro ${WRKSRC}/qwt/qwt.pro \
 		${WRKSRC}/qsstv/config/directoriesconfig.cpp \
 		${WRKSRC}/qsstv/documentation/manual/manual.doxy \
-		${WRKSRC}/qsstv/documentation/manual/manual/gettingstarted.html \
-		${WRKSRC}/qsstv/documentation/manual/manual.txt
+		${WRKSRC}/qsstv/documentation/manual/manual.txt \
+		${WRKSRC}/qsstv/documentation/api/api.doxy
 	${RM} ${WRKSRC}/qsstv/documentation/manual/manual.txt.*
 	${RM} ${WRKSRC}/qsstv/documentation/manual/manual.*.orig
 

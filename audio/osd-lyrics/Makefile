@@ -3,7 +3,7 @@
 
 PORTNAME=	osdlyrics
 PORTVERSION=	0.4.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio deskutils
 MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/osd-lyrics/
 
@@ -16,7 +16,8 @@ LIB_DEPENDS=	libnotify.so:devel/libnotify \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libcurl.so:ftp/curl
 
-USES=		desktop-file-utils gettext gmake iconv localbase pkgconfig sqlite
+USES=		compiler:c++11-lang desktop-file-utils gettext gmake gnome \
+		iconv localbase pkgconfig sqlite
 USE_GNOME=	gtk20 intltool
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes

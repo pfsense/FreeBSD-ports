@@ -10,6 +10,10 @@ DISTNAME=	STL_doc
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The STL reference manual by SGI
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 NO_BUILD=	yes
 
 do-install:

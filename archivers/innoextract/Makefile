@@ -1,8 +1,7 @@
-# Created by: Nikolai Lifanov <lifanov@mail.lifanov.com>
 # $FreeBSD$
 
 PORTNAME=	innoextract
-PORTVERSION=	1.7
+PORTVERSION=	1.8
 CATEGORIES=	archivers
 MASTER_SITES=	http://constexpr.org/innoextract/files/
 

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	stk
-PORTVERSION=	4.6.0
+PORTVERSION=	4.6.1
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://ccrma.stanford.edu/software/stk/release/
 
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libjack.so:audio/jack
 
-USES=		autoreconf dos2unix gmake pkgconfig localbase
+USES=		autoreconf compiler:c++11-lang dos2unix gmake localbase pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-jack --with-oss

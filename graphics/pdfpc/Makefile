@@ -1,15 +1,16 @@
 # $FreeBSD$
 
 PORTNAME=	pdfpc
-DISTVERSION=	4.1.2
+DISTVERSION=	4.3.4
 CATEGORIES=	graphics
 DISTVERSIONPREFIX=	v
+PORTREVISION=	4
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Keynote-like multi-monitor presentation viewer
 
 LICENSE=	GPLv2
-LICENSE_FILES=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	valac:lang/vala
 LIB_DEPENDS=	libgee-0.8.so:devel/libgee \

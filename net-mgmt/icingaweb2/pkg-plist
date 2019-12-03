@@ -1,6 +1,6 @@
 bin/icingacli
+etc/bash_completion.d/icingacli
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/apache/icingaweb2.conf
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/bash_completion.d/icingacli
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/nginx/icingaweb2.conf
 %%WWWDIR%%/.travis.yml
 %%WWWDIR%%/AUTHORS
@@ -14,6 +14,7 @@ bin/icingacli
 %%WWWDIR%%/application/clicommands/AutocompleteCommand.php
 %%WWWDIR%%/application/clicommands/HelpCommand.php
 %%WWWDIR%%/application/clicommands/ModuleCommand.php
+%%WWWDIR%%/application/clicommands/VersionCommand.php
 %%WWWDIR%%/application/clicommands/WebCommand.php
 %%WWWDIR%%/application/controllers/AboutController.php
 %%WWWDIR%%/application/controllers/AccountController.php
@@ -51,6 +52,8 @@ bin/icingacli
 %%WWWDIR%%/application/fonts/fontello-ifont/font/ifont.woff2
 %%WWWDIR%%/application/fonts/icingaweb.md
 %%WWWDIR%%/application/forms/Account/ChangePasswordForm.php
+%%WWWDIR%%/application/forms/AcknowledgeApplicationStateMessageForm.php
+%%WWWDIR%%/application/forms/ActionForm.php
 %%WWWDIR%%/application/forms/Announcement/AcknowledgeAnnouncementForm.php
 %%WWWDIR%%/application/forms/Announcement/AnnouncementForm.php
 %%WWWDIR%%/application/forms/Authentication/LoginForm.php
@@ -90,6 +93,7 @@ bin/icingacli
 %%WWWDIR%%/application/forms/RepositoryForm.php
 %%WWWDIR%%/application/forms/Security/RoleForm.php
 %%WWWDIR%%/application/layouts/scripts/body.phtml
+%%WWWDIR%%/application/layouts/scripts/external-logout.phtml
 %%WWWDIR%%/application/layouts/scripts/guest-error.phtml
 %%WWWDIR%%/application/layouts/scripts/inline.phtml
 %%WWWDIR%%/application/layouts/scripts/layout.phtml
@@ -104,10 +108,14 @@ bin/icingacli
 %%WWWDIR%%/application/locale/fi_FI/LC_MESSAGES/icinga.po
 %%WWWDIR%%/application/locale/it_IT/LC_MESSAGES/icinga.mo
 %%WWWDIR%%/application/locale/it_IT/LC_MESSAGES/icinga.po
+%%WWWDIR%%/application/locale/ja_JP/LC_MESSAGES/icinga.mo
+%%WWWDIR%%/application/locale/ja_JP/LC_MESSAGES/icinga.po
 %%WWWDIR%%/application/locale/pt_BR/LC_MESSAGES/icinga.mo
 %%WWWDIR%%/application/locale/pt_BR/LC_MESSAGES/icinga.po
 %%WWWDIR%%/application/locale/ru_RU/LC_MESSAGES/icinga.mo
 %%WWWDIR%%/application/locale/ru_RU/LC_MESSAGES/icinga.po
+%%WWWDIR%%/application/locale/uk_UA/LC_MESSAGES/icinga.mo
+%%WWWDIR%%/application/locale/uk_UA/LC_MESSAGES/icinga.po
 %%WWWDIR%%/application/views/helpers/CreateTicketLinks.php
 %%WWWDIR%%/application/views/helpers/FormDate.php
 %%WWWDIR%%/application/views/helpers/FormDateTime.php
@@ -119,7 +127,6 @@ bin/icingacli
 %%WWWDIR%%/application/views/scripts/about/index.phtml
 %%WWWDIR%%/application/views/scripts/account/index.phtml
 %%WWWDIR%%/application/views/scripts/announcements/index.phtml
-%%WWWDIR%%/application/views/scripts/application-state/index.phtml
 %%WWWDIR%%/application/views/scripts/authentication/login.phtml
 %%WWWDIR%%/application/views/scripts/authentication/logout.phtml
 %%WWWDIR%%/application/views/scripts/config/devtools.phtml
@@ -174,7 +181,9 @@ bin/icingacli
 %%WWWDIR%%/doc/05-Authentication.md
 %%WWWDIR%%/doc/06-Security.md
 %%WWWDIR%%/doc/07-Preferences.md
+%%WWWDIR%%/doc/15-Auditing.md
 %%WWWDIR%%/doc/20-Advanced-Topics.md
+%%WWWDIR%%/doc/60-Hooks.md
 %%WWWDIR%%/doc/70-Troubleshooting.md
 %%WWWDIR%%/doc/80-Upgrading.md
 %%WWWDIR%%/doc/90-SELinux.md
@@ -197,6 +206,8 @@ bin/icingacli
 %%WWWDIR%%/doc/res/GraphExample#7.png
 %%WWWDIR%%/doc/res/GraphExample#8.png
 %%WWWDIR%%/doc/res/GraphExample#9.png
+%%WWWDIR%%/doc/res/gitlab-job-artifacts.png
+%%WWWDIR%%/doc/res/gitlab-rpm-package-pipeline-jobs.png
 %%WWWDIR%%/etc/bash_completion.d/icingacli
 %%WWWDIR%%/etc/schema/mysql-upgrades/2.0.0beta3-2.0.0rc1.sql
 %%WWWDIR%%/etc/schema/mysql-upgrades/2.5.0.sql
@@ -212,8 +223,12 @@ bin/icingacli
 %%WWWDIR%%/library/Icinga/Application/Config.php
 %%WWWDIR%%/library/Icinga/Application/EmbeddedWeb.php
 %%WWWDIR%%/library/Icinga/Application/Hook.php
+%%WWWDIR%%/library/Icinga/Application/Hook/ApplicationStateHook.php
+%%WWWDIR%%/library/Icinga/Application/Hook/AuditHook.php
 %%WWWDIR%%/library/Icinga/Application/Hook/AuthenticationHook.php
+%%WWWDIR%%/library/Icinga/Application/Hook/ConfigFormEventsHook.php
 %%WWWDIR%%/library/Icinga/Application/Hook/GrapherHook.php
+%%WWWDIR%%/library/Icinga/Application/Hook/PdfexportHook.php
 %%WWWDIR%%/library/Icinga/Application/Hook/Ticket/TicketPattern.php
 %%WWWDIR%%/library/Icinga/Application/Hook/TicketHook.php
 %%WWWDIR%%/library/Icinga/Application/Hook/WebBaseHook.php
@@ -240,8 +255,8 @@ bin/icingacli
 %%WWWDIR%%/library/Icinga/Authentication/Auth.php
 %%WWWDIR%%/library/Icinga/Authentication/AuthChain.php
 %%WWWDIR%%/library/Icinga/Authentication/Authenticatable.php
-%%WWWDIR%%/library/Icinga/Authentication/PasswordHelper.php
 %%WWWDIR%%/library/Icinga/Authentication/Role.php
+%%WWWDIR%%/library/Icinga/Authentication/RolesConfig.php
 %%WWWDIR%%/library/Icinga/Authentication/User/DbUserBackend.php
 %%WWWDIR%%/library/Icinga/Authentication/User/DomainAwareInterface.php
 %%WWWDIR%%/library/Icinga/Authentication/User/ExternalBackend.php
@@ -413,6 +428,7 @@ bin/icingacli
 %%WWWDIR%%/library/Icinga/Util/Dimension.php
 %%WWWDIR%%/library/Icinga/Util/DirectoryIterator.php
 %%WWWDIR%%/library/Icinga/Util/EnumeratingFilterIterator.php
+%%WWWDIR%%/library/Icinga/Util/Environment.php
 %%WWWDIR%%/library/Icinga/Util/File.php
 %%WWWDIR%%/library/Icinga/Util/Format.php
 %%WWWDIR%%/library/Icinga/Util/GlobFilter.php
@@ -424,6 +440,7 @@ bin/icingacli
 %%WWWDIR%%/library/Icinga/Web/Announcement.php
 %%WWWDIR%%/library/Icinga/Web/Announcement/AnnouncementCookie.php
 %%WWWDIR%%/library/Icinga/Web/Announcement/AnnouncementIniRepository.php
+%%WWWDIR%%/library/Icinga/Web/ApplicationStateCookie.php
 %%WWWDIR%%/library/Icinga/Web/Controller.php
 %%WWWDIR%%/library/Icinga/Web/Controller/ActionController.php
 %%WWWDIR%%/library/Icinga/Web/Controller/AuthBackendController.php
@@ -445,11 +462,13 @@ bin/icingacli
 %%WWWDIR%%/library/Icinga/Web/Form/Decorator/Help.php
 %%WWWDIR%%/library/Icinga/Web/Form/Decorator/Spinner.php
 %%WWWDIR%%/library/Icinga/Web/Form/Element/Button.php
+%%WWWDIR%%/library/Icinga/Web/Form/Element/Checkbox.php
 %%WWWDIR%%/library/Icinga/Web/Form/Element/CsrfCounterMeasure.php
 %%WWWDIR%%/library/Icinga/Web/Form/Element/Date.php
 %%WWWDIR%%/library/Icinga/Web/Form/Element/DateTimePicker.php
 %%WWWDIR%%/library/Icinga/Web/Form/Element/Note.php
 %%WWWDIR%%/library/Icinga/Web/Form/Element/Number.php
+%%WWWDIR%%/library/Icinga/Web/Form/Element/Textarea.php
 %%WWWDIR%%/library/Icinga/Web/Form/Element/Time.php
 %%WWWDIR%%/library/Icinga/Web/Form/Element/TriStateCheckbox.php
 %%WWWDIR%%/library/Icinga/Web/Form/ErrorLabeller.php
@@ -466,17 +485,13 @@ bin/icingacli
 %%WWWDIR%%/library/Icinga/Web/Form/Validator/WritablePathValidator.php
 %%WWWDIR%%/library/Icinga/Web/Helper/CookieHelper.php
 %%WWWDIR%%/library/Icinga/Web/Helper/HtmlPurifier.php
+%%WWWDIR%%/library/Icinga/Web/Helper/Markdown.php
 %%WWWDIR%%/library/Icinga/Web/Hook.php
 %%WWWDIR%%/library/Icinga/Web/Hook/GrapherHook.php
 %%WWWDIR%%/library/Icinga/Web/Hook/TicketHook.php
 %%WWWDIR%%/library/Icinga/Web/JavaScript.php
 %%WWWDIR%%/library/Icinga/Web/LessCompiler.php
 %%WWWDIR%%/library/Icinga/Web/Menu.php
-%%WWWDIR%%/library/Icinga/Web/Menu/BadgeMenuItemRenderer.php
-%%WWWDIR%%/library/Icinga/Web/Menu/MenuItemRenderer.php
-%%WWWDIR%%/library/Icinga/Web/Menu/PermittedMenuItemFilter.php
-%%WWWDIR%%/library/Icinga/Web/Menu/SummaryMenuItemRenderer.php
-%%WWWDIR%%/library/Icinga/Web/MenuRenderer.php
 %%WWWDIR%%/library/Icinga/Web/Navigation/DashboardPane.php
 %%WWWDIR%%/library/Icinga/Web/Navigation/DropdownItem.php
 %%WWWDIR%%/library/Icinga/Web/Navigation/Navigation.php
@@ -494,6 +509,7 @@ bin/icingacli
 %%WWWDIR%%/library/Icinga/Web/Response.php
 %%WWWDIR%%/library/Icinga/Web/Response/JsonResponse.php
 %%WWWDIR%%/library/Icinga/Web/Session.php
+%%WWWDIR%%/library/Icinga/Web/Session/Php72Session.php
 %%WWWDIR%%/library/Icinga/Web/Session/PhpSession.php
 %%WWWDIR%%/library/Icinga/Web/Session/Session.php
 %%WWWDIR%%/library/Icinga/Web/Session/SessionNamespace.php
@@ -501,6 +517,7 @@ bin/icingacli
 %%WWWDIR%%/library/Icinga/Web/Url.php
 %%WWWDIR%%/library/Icinga/Web/UrlParams.php
 %%WWWDIR%%/library/Icinga/Web/View.php
+%%WWWDIR%%/library/Icinga/Web/View/Helper/IcingaCheckbox.php
 %%WWWDIR%%/library/Icinga/Web/View/helpers/format.php
 %%WWWDIR%%/library/Icinga/Web/View/helpers/generic.php
 %%WWWDIR%%/library/Icinga/Web/View/helpers/string.php
@@ -509,6 +526,7 @@ bin/icingacli
 %%WWWDIR%%/library/Icinga/Web/Widget.php
 %%WWWDIR%%/library/Icinga/Web/Widget/AbstractWidget.php
 %%WWWDIR%%/library/Icinga/Web/Widget/Announcements.php
+%%WWWDIR%%/library/Icinga/Web/Widget/ApplicationStateMessages.php
 %%WWWDIR%%/library/Icinga/Web/Widget/Chart/HistoryColorGrid.php
 %%WWWDIR%%/library/Icinga/Web/Widget/Chart/InlinePie.php
 %%WWWDIR%%/library/Icinga/Web/Widget/Dashboard.php
@@ -598,6 +616,7 @@ bin/icingacli
 %%WWWDIR%%/library/vendor/HTMLPurifier/AttrTransform/SafeParam.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/AttrTransform/ScriptRequired.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/AttrTransform/TargetBlank.php
+%%WWWDIR%%/library/vendor/HTMLPurifier/AttrTransform/TargetNoopener.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/AttrTransform/TargetNoreferrer.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/AttrTransform/Textarea.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/AttrTypes.php
@@ -666,6 +685,7 @@ bin/icingacli
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Cache.SerializerPath.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Cache.SerializerPermissions.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.AggressivelyFixLt.txt
+%%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.AggressivelyRemoveScript.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.AllowHostnameUnderscore.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.CollectErrors.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.ColorKeywords.txt
@@ -679,6 +699,7 @@ bin/icingacli
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.EscapeNonASCIICharacters.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.HiddenElements.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.Language.txt
+%%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.LegacyEntityDecoder.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.LexerImpl.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.MaintainLineNumbers.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/Core.NormalizeNewlines.txt
@@ -717,6 +738,7 @@ bin/icingacli
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/HTML.SafeScripting.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/HTML.Strict.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/HTML.TargetBlank.txt
+%%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/HTML.TargetNoopener.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/HTML.TargetNoreferrer.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/HTML.TidyAdd.txt
 %%WWWDIR%%/library/vendor/HTMLPurifier/ConfigSchema/schema/HTML.TidyLevel.txt
@@ -800,6 +822,7 @@ bin/icingacli
 %%WWWDIR%%/library/vendor/HTMLPurifier/HTMLModule/Tables.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/HTMLModule/Target.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/HTMLModule/TargetBlank.php
+%%WWWDIR%%/library/vendor/HTMLPurifier/HTMLModule/TargetNoopener.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/HTMLModule/TargetNoreferrer.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/HTMLModule/Text.php
 %%WWWDIR%%/library/vendor/HTMLPurifier/HTMLModule/Tidy.php
@@ -1547,6 +1570,7 @@ bin/icingacli
 %%WWWDIR%%/library/vendor/dompdf/lib/php-font-lib/src/FontLib/EOT/File.php
 %%WWWDIR%%/library/vendor/dompdf/lib/php-font-lib/src/FontLib/EOT/Header.php
 %%WWWDIR%%/library/vendor/dompdf/lib/php-font-lib/src/FontLib/EncodingMap.php
+%%WWWDIR%%/library/vendor/dompdf/lib/php-font-lib/src/FontLib/Exception/FontNotFoundException.php
 %%WWWDIR%%/library/vendor/dompdf/lib/php-font-lib/src/FontLib/Font.php
 %%WWWDIR%%/library/vendor/dompdf/lib/php-font-lib/src/FontLib/Glyph/Outline.php
 %%WWWDIR%%/library/vendor/dompdf/lib/php-font-lib/src/FontLib/Glyph/OutlineComponent.php
@@ -1606,6 +1630,7 @@ bin/icingacli
 %%WWWDIR%%/library/vendor/dompdf/lib/php-svg-lib/src/Svg/Tag/UseTag.php
 %%WWWDIR%%/library/vendor/dompdf/lib/php-svg-lib/src/autoload.php
 %%WWWDIR%%/library/vendor/dompdf/lib/res/broken_image.png
+%%WWWDIR%%/library/vendor/dompdf/lib/res/broken_image.svg
 %%WWWDIR%%/library/vendor/dompdf/lib/res/html.css
 %%WWWDIR%%/library/vendor/dompdf/src/Adapter/CPDF.php
 %%WWWDIR%%/library/vendor/dompdf/src/Adapter/GD.php
@@ -1688,6 +1713,10 @@ bin/icingacli
 %%WWWDIR%%/modules/doc/application/controllers/StyleController.php
 %%WWWDIR%%/modules/doc/application/locale/de_DE/LC_MESSAGES/doc.mo
 %%WWWDIR%%/modules/doc/application/locale/de_DE/LC_MESSAGES/doc.po
+%%WWWDIR%%/modules/doc/application/locale/ja_JP/LC_MESSAGES/doc.mo
+%%WWWDIR%%/modules/doc/application/locale/ja_JP/LC_MESSAGES/doc.po
+%%WWWDIR%%/modules/doc/application/locale/uk_UA/LC_MESSAGES/doc.mo
+%%WWWDIR%%/modules/doc/application/locale/uk_UA/LC_MESSAGES/doc.po
 %%WWWDIR%%/modules/doc/application/views/scripts/chapter.phtml
 %%WWWDIR%%/modules/doc/application/views/scripts/index/index.phtml
 %%WWWDIR%%/modules/doc/application/views/scripts/module/index.phtml
@@ -1719,6 +1748,7 @@ bin/icingacli
 %%WWWDIR%%/modules/doc/public/js/module.js
 %%WWWDIR%%/modules/doc/run.php
 %%WWWDIR%%/modules/migrate/application/clicommands/ConfigCommand.php
+%%WWWDIR%%/modules/migrate/application/clicommands/DashboardCommand.php
 %%WWWDIR%%/modules/migrate/library/Migrate/Config/UserDomainMigration.php
 %%WWWDIR%%/modules/migrate/module.info
 %%WWWDIR%%/modules/monitoring/application/clicommands/ConferenceCommand.php
@@ -1783,9 +1813,13 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/application/locale/de_DE/LC_MESSAGES/monitoring.po
 %%WWWDIR%%/modules/monitoring/application/locale/it_IT/LC_MESSAGES/monitoring.mo
 %%WWWDIR%%/modules/monitoring/application/locale/it_IT/LC_MESSAGES/monitoring.po
+%%WWWDIR%%/modules/monitoring/application/locale/ja_JP/LC_MESSAGES/monitoring.mo
+%%WWWDIR%%/modules/monitoring/application/locale/ja_JP/LC_MESSAGES/monitoring.po
 %%WWWDIR%%/modules/monitoring/application/locale/pt_BR/LC_MESSAGES/monitoring.mo
 %%WWWDIR%%/modules/monitoring/application/locale/pt_BR/LC_MESSAGES/monitoring.po
 %%WWWDIR%%/modules/monitoring/application/locale/ru_RU/LC_MESSAGES/monitoring.po
+%%WWWDIR%%/modules/monitoring/application/locale/uk_UA/LC_MESSAGES/monitoring.mo
+%%WWWDIR%%/modules/monitoring/application/locale/uk_UA/LC_MESSAGES/monitoring.po
 %%WWWDIR%%/modules/monitoring/application/views/helpers/CheckPerformance.php
 %%WWWDIR%%/modules/monitoring/application/views/helpers/ContactFlags.php
 %%WWWDIR%%/modules/monitoring/application/views/helpers/Customvar.php
@@ -1829,10 +1863,13 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/application/views/scripts/list/downtimes.phtml
 %%WWWDIR%%/modules/monitoring/application/views/scripts/list/eventgrid.phtml
 %%WWWDIR%%/modules/monitoring/application/views/scripts/list/eventhistory.phtml
+%%WWWDIR%%/modules/monitoring/application/views/scripts/list/hostgroup-grid.phtml
 %%WWWDIR%%/modules/monitoring/application/views/scripts/list/hostgroups.phtml
 %%WWWDIR%%/modules/monitoring/application/views/scripts/list/hosts.phtml
 %%WWWDIR%%/modules/monitoring/application/views/scripts/list/notifications.phtml
+%%WWWDIR%%/modules/monitoring/application/views/scripts/list/servicegrid-flipped.phtml
 %%WWWDIR%%/modules/monitoring/application/views/scripts/list/servicegrid.phtml
+%%WWWDIR%%/modules/monitoring/application/views/scripts/list/servicegroup-grid.phtml
 %%WWWDIR%%/modules/monitoring/application/views/scripts/list/servicegroups.phtml
 %%WWWDIR%%/modules/monitoring/application/views/scripts/list/services.phtml
 %%WWWDIR%%/modules/monitoring/application/views/scripts/object/detail-history.phtml
@@ -1912,7 +1949,11 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/DowntimeendhistoryQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/DowntimeeventQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/DowntimestarthistoryQuery.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/EmptyhostgroupQuery.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/EmptyservicegroupQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/EventgridQuery.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/EventgridhostsQuery.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/EventgridservicesQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/EventhistoryQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/FlappingendhistoryQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/FlappingeventQuery.php
@@ -1921,6 +1962,7 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/HostcommentQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/HostcommentdeletionhistoryQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/HostcommenthistoryQuery.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/HostcontactQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/HostdowntimeQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/HostdowntimeendhistoryQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/HostdowntimestarthistoryQuery.php
@@ -1944,6 +1986,7 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/ServicecommentQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/ServicecommentdeletionhistoryQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/ServicecommenthistoryQuery.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/ServicecontactQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/ServicedowntimeQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/ServicedowntimeendhistoryQuery.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Backend/Ido/Query/ServicedowntimestarthistoryQuery.php
@@ -2002,9 +2045,12 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Downtime.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Downtimeevent.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Eventgrid.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Eventgridhosts.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Eventgridservices.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Eventhistory.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Flappingevent.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Hostcomment.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Hostcontact.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Hostdowntime.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Hostgroup.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Hostgroupsummary.php
@@ -2017,6 +2063,7 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Runtimesummary.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Runtimevariables.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Servicecomment.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Servicecontact.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Servicedowntime.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Servicegroup.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/DataView/Servicegroupsummary.php
@@ -2035,6 +2082,7 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Hook/HostActionsHook.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Hook/IdoQueryExtensionHook.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Hook/ObjectActionsHook.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/Hook/PluginOutputHook.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Hook/ServiceActionsHook.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Hook/TimelineProviderHook.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/MonitoringWizard.php
@@ -2049,13 +2097,16 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Plugin.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Plugin/Perfdata.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Plugin/PerfdataSet.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/Plugin/ThresholdRange.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/ProvidedHook/ApplicationState.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/ProvidedHook/X509/Sni.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/SecurityStep.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Timeline/TimeEntry.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Timeline/TimeLine.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Timeline/TimeRange.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/TransportStep.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Web/Controller/MonitoredObjectController.php
-%%WWWDIR%%/modules/monitoring/library/Monitoring/Web/Helper/PluginOutputPurifier.php
+%%WWWDIR%%/modules/monitoring/library/Monitoring/Web/Helper/PluginOutputHookRenderer.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Web/Hook/HostActionsHook.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Web/Hook/ServiceActionsHook.php
 %%WWWDIR%%/modules/monitoring/library/Monitoring/Web/Hook/TimelineProviderHook.php
@@ -2074,11 +2125,13 @@ bin/icingacli
 %%WWWDIR%%/modules/monitoring/public/css/service-grid.less
 %%WWWDIR%%/modules/monitoring/public/css/tables.less
 %%WWWDIR%%/modules/monitoring/public/js/module.js
+%%WWWDIR%%/modules/monitoring/run.php
 %%WWWDIR%%/modules/monitoring/test/php/application/views/helpers/MonitoringFlagsTest.php
 %%WWWDIR%%/modules/monitoring/test/php/application/views/helpers/PluginOutputTest.php
 %%WWWDIR%%/modules/monitoring/test/php/library/Monitoring/Object/MacroTest.php
 %%WWWDIR%%/modules/monitoring/test/php/library/Monitoring/Plugin/PerfdataSetTest.php
 %%WWWDIR%%/modules/monitoring/test/php/library/Monitoring/Plugin/PerfdataTest.php
+%%WWWDIR%%/modules/monitoring/test/php/library/Monitoring/Plugin/ThresholdRangeTest.php
 %%WWWDIR%%/modules/monitoring/test/php/library/Monitoring/Web/Rest/RestRequestTest.php
 %%WWWDIR%%/modules/monitoring/test/php/regression/Bug11728Test.php
 %%WWWDIR%%/modules/monitoring/test/php/regression/Bug11796Test.php
@@ -2105,6 +2158,10 @@ bin/icingacli
 %%WWWDIR%%/modules/setup/application/locale/de_DE/LC_MESSAGES/setup.po
 %%WWWDIR%%/modules/setup/application/locale/it_IT/LC_MESSAGES/setup.mo
 %%WWWDIR%%/modules/setup/application/locale/it_IT/LC_MESSAGES/setup.po
+%%WWWDIR%%/modules/setup/application/locale/ja_JP/LC_MESSAGES/setup.mo
+%%WWWDIR%%/modules/setup/application/locale/ja_JP/LC_MESSAGES/setup.po
+%%WWWDIR%%/modules/setup/application/locale/uk_UA/LC_MESSAGES/setup.mo
+%%WWWDIR%%/modules/setup/application/locale/uk_UA/LC_MESSAGES/setup.po
 %%WWWDIR%%/modules/setup/application/views/scripts/form/setup-modules.phtml
 %%WWWDIR%%/modules/setup/application/views/scripts/form/setup-requirements.phtml
 %%WWWDIR%%/modules/setup/application/views/scripts/form/setup-summary.phtml
@@ -2182,6 +2239,7 @@ bin/icingacli
 %%WWWDIR%%/public/css/icinga/widgets.less
 %%WWWDIR%%/public/css/pdf/pdfprint.less
 %%WWWDIR%%/public/css/themes/Winter.less
+%%WWWDIR%%/public/css/themes/colorblind.less
 %%WWWDIR%%/public/css/themes/high-contrast.less
 %%WWWDIR%%/public/css/themes/solarized-dark.less
 %%WWWDIR%%/public/css/vendor/normalize.css
@@ -2288,6 +2346,11 @@ bin/icingacli
 %%WWWDIR%%/public/img/icons/user.png
 %%WWWDIR%%/public/img/icons/user_petrol.png
 %%WWWDIR%%/public/img/icons/win.png
+%%WWWDIR%%/public/img/select-icon-2x.png
+%%WWWDIR%%/public/img/select-icon.png
+%%WWWDIR%%/public/img/select-icon.svg
+%%WWWDIR%%/public/img/textarea-corner-2x.png
+%%WWWDIR%%/public/img/textarea-corner.png
 %%WWWDIR%%/public/img/touch-icon.png
 %%WWWDIR%%/public/img/tree/tree-minus.gif
 %%WWWDIR%%/public/img/tree/tree-plus.gif
@@ -2302,6 +2365,7 @@ bin/icingacli
 %%WWWDIR%%/public/js/icinga/behavior/actiontable.js
 %%WWWDIR%%/public/js/icinga/behavior/application-state.js
 %%WWWDIR%%/public/js/icinga/behavior/autofocus.js
+%%WWWDIR%%/public/js/icinga/behavior/collapsible.js
 %%WWWDIR%%/public/js/icinga/behavior/detach.js
 %%WWWDIR%%/public/js/icinga/behavior/dropdown.js
 %%WWWDIR%%/public/js/icinga/behavior/expandable.js
@@ -2311,7 +2375,6 @@ bin/icingacli
 %%WWWDIR%%/public/js/icinga/behavior/navigation.js
 %%WWWDIR%%/public/js/icinga/behavior/selectable.js
 %%WWWDIR%%/public/js/icinga/behavior/sparkline.js
-%%WWWDIR%%/public/js/icinga/behavior/tooltip.js
 %%WWWDIR%%/public/js/icinga/behavior/tristate.js
 %%WWWDIR%%/public/js/icinga/eventlistener.js
 %%WWWDIR%%/public/js/icinga/events.js
@@ -2319,19 +2382,16 @@ bin/icingacli
 %%WWWDIR%%/public/js/icinga/loader.js
 %%WWWDIR%%/public/js/icinga/logger.js
 %%WWWDIR%%/public/js/icinga/module.js
+%%WWWDIR%%/public/js/icinga/storage.js
 %%WWWDIR%%/public/js/icinga/timer.js
 %%WWWDIR%%/public/js/icinga/timezone.js
 %%WWWDIR%%/public/js/icinga/ui.js
 %%WWWDIR%%/public/js/icinga/utils.js
-%%WWWDIR%%/public/js/vendor/SOURCE.jquery.tipsy
-%%WWWDIR%%/public/js/vendor/jquery-1.11.0.js
-%%WWWDIR%%/public/js/vendor/jquery-1.11.0.min.js
-%%WWWDIR%%/public/js/vendor/jquery-1.11.0.min.map
-%%WWWDIR%%/public/js/vendor/jquery-2.1.0.js
-%%WWWDIR%%/public/js/vendor/jquery-2.1.0.min.js
-%%WWWDIR%%/public/js/vendor/jquery-2.1.0.min.map
+%%WWWDIR%%/public/js/vendor/jquery-3.4.1.js
+%%WWWDIR%%/public/js/vendor/jquery-3.4.1.min.js
+%%WWWDIR%%/public/js/vendor/jquery-3.4.1.min.map
+%%WWWDIR%%/public/js/vendor/jquery-migrate-3.1.0.js
+%%WWWDIR%%/public/js/vendor/jquery-migrate-3.1.0.min.js
 %%WWWDIR%%/public/js/vendor/jquery.sparkline.js
 %%WWWDIR%%/public/js/vendor/jquery.sparkline.min.js
-%%WWWDIR%%/public/js/vendor/jquery.tipsy.js
-%%WWWDIR%%/public/js/vendor/jquery.tipsy.min.js
 @dir %%ETCDIR%%

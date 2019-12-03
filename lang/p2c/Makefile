@@ -11,6 +11,10 @@ COMMENT=	Pascal to C translator
 
 LICENSE=	GPLv2
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 WRKSRC_SUBDIR=	src
 
 BROKEN_aarch64=	Fails to link: missing sbrk

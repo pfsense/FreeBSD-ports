@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	gimp
-DISTVERSION?=	2.8.22
-PORTREVISION?=	0
+DISTVERSION?=	2.10.12
+PORTREVISION?=	1
 PORTEPOCH?=	2
 CATEGORIES=	graphics gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	The "meta-port" for The Gimp
 
-RUN_DEPENDS=	gimp-2.8:graphics/gimp-app
+RUN_DEPENDS=	gimp-2.10:graphics/gimp-app
 
 USES+=	metaport
 

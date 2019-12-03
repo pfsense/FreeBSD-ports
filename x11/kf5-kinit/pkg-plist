@@ -25,7 +25,6 @@ share/dbus-1/interfaces/kf5_org.kde.KLauncher.xml
 share/locale/af/LC_MESSAGES/kinit5.mo
 share/locale/ar/LC_MESSAGES/kinit5.mo
 share/locale/as/LC_MESSAGES/kinit5.mo
-share/locale/ast/LC_MESSAGES/kinit5.mo
 share/locale/be/LC_MESSAGES/kinit5.mo
 share/locale/be@latin/LC_MESSAGES/kinit5.mo
 share/locale/bg/LC_MESSAGES/kinit5.mo
@@ -122,3 +121,4 @@ share/locale/xh/LC_MESSAGES/kinit5.mo
 share/locale/zh_CN/LC_MESSAGES/kinit5.mo
 share/locale/zh_HK/LC_MESSAGES/kinit5.mo
 share/locale/zh_TW/LC_MESSAGES/kinit5.mo
+share/qlogging-categories5/kinit.categories

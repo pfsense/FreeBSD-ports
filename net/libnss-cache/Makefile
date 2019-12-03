@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	libnss-cache
-PORTVERSION=	0.15
+PORTVERSION=	0.16
 DISTVERSIONPREFIX=	version/
 CATEGORIES=	net
 
-MAINTAINER=	kbowling@freebsd.org
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	NSS module for directory services using an indexed, local disk cache
 
 LICENSE=	LGPL3

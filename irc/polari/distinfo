@@ -1,2 +1,3 @@
-SHA256 (gnome3/polari-3.18.1.tar.xz) = 554a089b1edf88d49408ecf6ce79ad6f7114ecf557753c8f39a9af153a76843a
-SIZE (gnome3/polari-3.18.1.tar.xz) = 478244
+TIMESTAMP = 1538669593
+SHA256 (gnome/polari-3.28.1.tar.xz) = cc271aa1e8ba858caa6d29e2e46dd9f837b4dfd9ec8d9737ececcebc6890c680
+SIZE (gnome/polari-3.28.1.tar.xz) = 1171688

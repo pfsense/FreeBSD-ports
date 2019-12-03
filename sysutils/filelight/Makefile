@@ -12,11 +12,14 @@ BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-
 
 CONFLICTS_INSTALL=      ${PORTNAME}-kde4*
 
-USES=		cmake:outsource desktop-file-utils gettext kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext \
+		kde:5 qt:5 tar:xz
 USE_KDE=	auth codecs completion config configwidgets coreaddons doctools \
 		ecm i18n jobwidgets kio parts service solid sonnet textwidgets \
 		widgetsaddons xmlgui
-USE_QT=		core dbus gui network script widgets xml \
+USE_QT=		concurrent core dbus gui network script widgets xml \
 		buildtools_build qmake_build
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

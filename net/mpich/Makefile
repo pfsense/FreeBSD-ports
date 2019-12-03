@@ -2,8 +2,9 @@
 
 PORTNAME=	mpich
 PORTVERSION=	3.2.1
+PORTREVISION=	5
 CATEGORIES=	net parallel
-MASTER_SITES=	http://www.mpich.org/static/downloads/${DISTVERSION}/
+MASTER_SITES=	https://www.mpich.org/static/downloads/${DISTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable implementation of MPI-1, MPI-2 and MPI-3
@@ -18,7 +19,7 @@ LIB_DEPENDS=	libhwloc.so:devel/hwloc
 CONFLICTS=	lam-7.* mpd-[0-9]* mpiexec-0.* mpich2-[0-9]*
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		libtool pkgconfig
+USES=		compiler:c11 libtool pkgconfig
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=		DOCS FORTRAN

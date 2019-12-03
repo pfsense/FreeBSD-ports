@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	spglib
-DISTVERSION=	1.10.3.65
+DISTVERSION=	1.14.1
+DISTVERSIONSUFFIX=	.post0
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,5 +17,8 @@ RUN_DEPENDS=	${PYNUMPY}
 
 USES=		python
 USE_PYTHON=	distutils autoplist
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/spglib/_spglib.so
 
 .include <bsd.port.mk>

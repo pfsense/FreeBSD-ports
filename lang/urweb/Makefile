@@ -3,7 +3,7 @@
 
 PORTNAME=	urweb
 PORTVERSION=	20150520
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	lang www
 MASTER_SITES=	http://www.impredicative.com/ur/
 
@@ -12,6 +12,9 @@ COMMENT=	Ultimate host for embedded domain-specific languages
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_FreeBSD_12=	invalid target: self
+BROKEN_FreeBSD_13=	invalid target: self
 
 BUILD_DEPENDS=	mlton:lang/mlton
 

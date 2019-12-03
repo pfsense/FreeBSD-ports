@@ -3,7 +3,7 @@
 
 PORTNAME=	lua-gd
 PORTVERSION=	2.0.33r2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	http://files.luaforge.net/releases/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}forLua5.1/
 
@@ -23,7 +23,9 @@ GDFEATURES=	`gdlib-config --features |sed -e "s/GD_/-DGD_/g"`
 
 .include <bsd.port.options.mk>
 
+CFLAGS_aarch64+=-fPIC
 CFLAGS_amd64+=	-fPIC
+CFLAGS_i386+=	-fPIC
 
 do-build:
 	${CC} -o ${WRKSRC}/gd.so ${CPPFLAGS} ${CFLAGS} ${LDFLAGS} ${GDFEATURES} ${WRKSRC}/luagd.c

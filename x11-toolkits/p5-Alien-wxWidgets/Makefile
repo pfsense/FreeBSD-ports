@@ -3,6 +3,7 @@
 
 PORTNAME=	Alien-wxWidgets
 PORTVERSION=	0.69
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,8 +14,8 @@ COMMENT=	Perl5 module for building, finding and using wxWidgets binaries
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Module-Pluggable>=5.1:devel/p5-Module-Pluggable
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Module-Pluggable>=5.1:devel/p5-Module-Pluggable
 
 NO_ARCH=	yes
 USES=		perl5 compiler:env

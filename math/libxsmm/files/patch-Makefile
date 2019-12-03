@@ -1,0 +1,11 @@
+--- Makefile.orig	2018-11-15 03:24:29 UTC
++++ Makefile
+@@ -1683,7 +1683,7 @@ endif
+ endif
+ 
+ .PHONY: install-all
+-install-all: install samples
++install-all: install
+ ifneq ($(abspath $(INSTALL_ROOT)),$(abspath .))
+ 	@echo
+ 	@echo "LIBXSMM installing samples..."

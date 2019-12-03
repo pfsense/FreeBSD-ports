@@ -13,9 +13,7 @@ COMMENT=	AirSpy's usemode driver and associated tools
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/airspy-tools/LICENSE.md
 
-BROKEN_FreeBSD_10=	error: use of undeclared identifier '__m128'
-
-USES=		cmake:outsource pkgconfig
+USES=		cmake pkgconfig
 USE_GITHUB=	yes
 GH_PROJECT=	airspyone_host
 USE_LDCONFIG=	yes

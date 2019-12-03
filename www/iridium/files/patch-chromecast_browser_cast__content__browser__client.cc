@@ -1,9 +1,9 @@
---- chromecast/browser/cast_content_browser_client.cc.orig	2017-04-19 19:06:32 UTC
+--- chromecast/browser/cast_content_browser_client.cc.orig	2019-03-11 22:00:56 UTC
 +++ chromecast/browser/cast_content_browser_client.cc
-@@ -298,7 +298,7 @@ void CastContentBrowserClient::AppendExt
-       command_line->AppendSwitch(switches::kAllowHiddenMediaPlayback);
-   }
- 
+@@ -524,7 +524,7 @@ void CastContentBrowserClient::AppendExtraCommandLineS
+                                           switches::kAudioOutputChannels));
+     }
+   } else if (process_type == switches::kGpuProcess) {
 -#if defined(OS_LINUX)
 +#if defined(OS_LINUX) || defined(OS_BSD)
    // Necessary for accelerated 2d canvas.  By default on Linux, Chromium assumes

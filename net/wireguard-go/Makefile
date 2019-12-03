@@ -1,27 +1,27 @@
 # $FreeBSD$
 
 PORTNAME=	wireguard-go
-PORTVERSION=	0.0.20180613
-CATEGORIES=	net
-MASTER_SITES=	https://git.zx2c4.com/wireguard-go/snapshot/ \
-		LOCAL/decke
-DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX} \
-		${PORTNAME}-${PORTVERSION}-vendor${EXTRACT_SUFX}
+PORTVERSION=	0.0.20191012
+CATEGORIES=	net net-vpn
+MASTER_SITES=	https://git.zx2c4.com/wireguard-go/snapshot/
+DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	decke@FreeBSD.org
 COMMENT=	WireGuard implementation in Go
 
-LICENSE=	GPLv2
+LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	go:lang/go \
-		dep:devel/dep
+USES=		gmake go:modules,no_targets tar:xz
 
-USES=		gmake tar:xz
+USE_GITHUB=	nodefault
+GH_TUPLE=	golang:crypto:34f69633bfdc:golang_crypto/vendor/golang.org/x/crypto \
+		golang:net:d98b1b443823:golang_net/vendor/golang.org/x/net \
+		golang:sys:c178f38b412c:golang_sys/vendor/golang.org/x/sys \
+		golang:text:v0.3.2:golang_text/vendor/golang.org/x/text
+
+MAKE_ENV+=	GOFLAGS="${GO_BUILDFLAGS}"
 
 PLIST_FILES=	bin/${PORTNAME}
-
-# The vendor tar file is generated with the script from
-# https://people.freebsd.org/~decke/wireguard-go-genvendor.sh
 
 .include <bsd.port.mk>

@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	slepc
-DISTVERSION=	3.9.1
+DISTVERSION=	3.10.1
+PORTREVISION=	3
 CATEGORIES=	math devel
 MASTER_SITES=	http://slepc.upv.es/download/distrib/
 
@@ -13,13 +14,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libblas.so:math/blas \
 		liblapack.so:math/lapack \
-		libmpich.so:net/mpich2 \
+		libmpich.so:net/mpich \
 		libpetsc.so:science/PETSc
 
-USES=		gmake fortran python shebangfix
+USES=		gmake fortran python:2.7 shebangfix
 SHEBANG_FILES=	configure
+SHEBANG_GLOB=	*.py
 MAKEFILE=	makefile
-MAKE_ENV=	PETSC_DIR=${LOCALBASE} PETSC_ARCH="" SLEPC_DIR=${WRKSRC} FREEBSD_STAGEDIR=${STAGEDIR} PYTHON=${PYTHON_CMD}
+MAKE_ENV=	PETSC_DIR=${LOCALBASE} PETSC_ARCH="" SLEPC_DIR=${WRKSRC} PYTHON=${PYTHON_CMD}
 USE_XORG=	x11 # not really needed, but is inherited from the PETSc setup
 USE_LDCONFIG=	yes
 

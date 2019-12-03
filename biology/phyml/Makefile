@@ -3,15 +3,15 @@
 
 PORTNAME=	phyml
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.20180621
+DISTVERSION=	3.3.20190909
 PORTEPOCH=	1
 CATEGORIES=	biology
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, fast, and accurate algorithm to estimate large phylogenies
 
-LICENSE=	GPLv2
-#LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		autoreconf libtool pkgconfig
 
@@ -27,10 +27,11 @@ PLIST_FILES=	bin/phyml${BIN_SUFFIX}
 
 OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_RADIO=		MPI
-OPTIONS_RADIO_MPI=	MPICH2 OPENMPI
+OPTIONS_RADIO_MPI=	MPICH OPENMPI
 
-MPICH2_LIB_DEPENDS=	libmpich.so:net/mpich2
-MPICH2_MAKE_ARGS=	CC="${LOCALBASE}/bin/mpicc"
+MPICH_DESC=		Parallel processing support via MPICH
+MPICH_LIB_DEPENDS=	libmpich.so:net/mpich
+MPICH_MAKE_ARGS=	CC="${LOCALBASE}/bin/mpicc"
 OPENMPI_LIB_DEPENDS=	libmpi.so:net/openmpi
 OPENMPI_MAKE_ARGS=	CC="${LOCALBASE}/mpi/openmpi/bin/mpicc"
 

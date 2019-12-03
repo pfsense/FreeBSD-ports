@@ -1,21 +1,21 @@
 # $FreeBSD$
 
 PORTNAME=	pango
-PORTVERSION=	3.2.5
+PORTVERSION=	3.3.8
 CATEGORIES=	x11-toolkits rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby binding for Pango
 
 LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
-RUN_DEPENDS=	rubygem-cairo>=1.14.0:graphics/rubygem-cairo \
-		rubygem-cairo-gobject>=${PORTVERSION}:devel/rubygem-cairo-gobject \
+RUN_DEPENDS=	rubygem-cairo-gobject>=${PORTVERSION}:devel/rubygem-cairo-gobject \
 		rubygem-gobject-introspection>=${PORTVERSION}:devel/rubygem-gobject-introspection
 
+USES=		gem gnome
 USE_GNOME=	pango
 USE_RUBY=	yes
-USES=		gem gnome
 
 .include <bsd.port.mk>

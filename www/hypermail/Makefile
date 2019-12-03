@@ -3,7 +3,7 @@
 
 PORTNAME=	hypermail
 PORTVERSION=	2.3.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www mail
 MASTER_SITES=	SF
 
@@ -23,6 +23,8 @@ CONFIGURE_ARGS=	--with-htmldir=${STAGEDIR}${PREFIX}/share/doc/hypermail \
 
 CFLAGS+=	-L${LOCALBASE}/lib
 WRKSRC=		${WRKDIR}/${PORTNAME}
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/hypermail \

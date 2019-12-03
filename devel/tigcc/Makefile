@@ -3,7 +3,7 @@
 
 PORTNAME=	tigcc
 PORTVERSION=	0.96.b8
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=		GCC/snapshots/4.1-20060728:gcc \
 			GNU/binutils:gas \
@@ -15,13 +15,8 @@ DISTFILES=		gcc-core-4.1-20060728.tar.bz2:gcc \
 MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	C compiler for the TI89, 92, and 92+ calculators
 
-BROKEN_mips=		fails to compile: main_opt.inc: nested functions are disabled, use -fnested-functions to re-enable
-BROKEN_mips64=		fails to compile: main_opt.inc: nested functions are disabled, use -fnested-functions to re-enable
-BROKEN_powerpc64=	fails to compile: main_opt.inc: nested functions are disabled, use -fnested-functions to re-enable
-BROKEN_sparc64=		fails to compile: main_opt.inc: nested functions are disabled, use -fnested-functions to re-enable
-
-USE_CSTD=	gnu89
 USES=		bison compiler:nestedfct gmake tar:bzip2
+USE_CSTD=	gnu89
 NO_WRKSUBDIR=	yes
 SUB_FILES=	pkg-message
 
@@ -44,8 +39,8 @@ post-patch:
 		${WRKSRC}/tigcc/sources/patcher/src/Makefile ${WRKSRC}/tigcc/sources/tigcc/src/Makefile \
 		${WRKSRC}/tigcc/sources/tprbuilder/src/Makefile
 
-do-build:
-	@${ECHO} Building GNU AS
+do-configure:
+	@${ECHO} Configuring GNU AS
 	@${MKDIR} ${WRKSRC}/gnu/binutils_build
 	@cd ${WRKSRC}/gnu/binutils_build; \
 		${SETENV} CC="${CC}" CPP="${CPP}" CXX="${CXX}" \
@@ -54,9 +49,7 @@ do-build:
 		${CONFIGURE_ENV} \
 		${WRKSRC}/gnu/binutils-2.16.1/configure --disable-serial-configure --target=m68k-coff --disable-shared \
 		--enable-static --disable-multilib --disable-nls --disable-win32-registry
-	@cd ${WRKSRC}/gnu/binutils_build; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS}
-
-	@${ECHO} Building the GNU C COMPILER
+	@${ECHO} Configuring the GNU C COMPILER
 	@${MKDIR} ${WRKSRC}/gnu/gcc_build
 	@cd ${WRKSRC}/gnu/gcc_build; \
 		${SETENV} CC="${CC}" CPP="${CPP}" CXX="${CXX}" \
@@ -66,6 +59,12 @@ do-build:
 		${WRKSRC}/gnu/gcc-4.1-20060728/configure --target=m68k-coff --with-gnu-as --disable-nls --disable-multilib \
 		--disable-shared --enable-static --disable-threads --disable-win32-registry --disable-checking --disable-werror \
 		--disable-pch --disable-mudflap --disable-libssp
+
+do-build:
+	@${ECHO} Building GNU AS
+	@cd ${WRKSRC}/gnu/binutils_build; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS}
+
+	@${ECHO} Building the GNU C COMPILER
 	@cd ${WRKSRC}/gnu/gcc_build; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS}
 
 	@${ECHO} Building A68K
@@ -143,4 +142,10 @@ do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@${CP} ${WRKSRC}/tigcc/tigcclib/examples/* ${STAGEDIR}${EXAMPLESDIR}/
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
+CFLAGS+=	-fnested-functions
+.endif
+
+.include <bsd.port.post.mk>

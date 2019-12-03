@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	osm2pgsql
-PORTVERSION=	0.96.0
+PORTVERSION=	1.0.0
 CATEGORIES=	converters geography
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,12 +15,12 @@ LIB_DEPENDS=	libproj.so:graphics/proj \
 		libboost_system.so:devel/boost-libs \
 		libexpat.so:textproc/expat2
 
-BROKEN_powerpc64=	fails to compile: node-ram-cache.hpp: cstdint: No such file or directory
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	openstreetmap
 
-USES=		cmake:outsource lua:53 pgsql
+USES=		cmake compiler:c++11-lang pgsql
+
+CXXFLAGS+=	"-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H=1"
 
 PLIST_FILES=	bin/osm2pgsql \
 		man/man1/osm2pgsql.1.gz
@@ -28,7 +28,12 @@ PLIST_FILES=	bin/osm2pgsql \
 PORTDOCS=	AUTHORS ChangeLog README.md
 PORTDATA=	*
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS LUAJIT
+
+LUAJIT_DESC=		Build with LuaJIT support
+LUAJIT_CMAKE_BOOL=	WITH_LUAJIT
+LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUAJIT_USES_OFF=	lua:53
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|share/man/man1|man/man1|' ${WRKSRC}/CMakeLists.txt

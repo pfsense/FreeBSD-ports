@@ -9,7 +9,7 @@ COMMENT=	Plasma5 utility providing system information
 
 LIB_DEPENDS=	libpci.so:devel/libpci
 
-USES=		cmake:outsource compiler:c++11-lib cpe gettext kde:5 pkgconfig \
+USES=		cmake compiler:c++11-lib cpe gettext kde:5 pkgconfig \
 		qt:5 tar:xz
 USE_GL=		egl gl glu
 USE_KDE=	auth bookmarks codecs completion config configwidgets \
@@ -34,4 +34,3 @@ post-install:
 	${REINPLACE_CMD} -i "" -e "s#%%DATADIR%%#${DATADIR}#"  ${STAGEDIR}/${PREFIX}/etc/xdg/kcm-about-distrorc
 
 .include <bsd.port.mk>
-

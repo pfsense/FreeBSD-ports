@@ -15,13 +15,15 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LIB_DEPENDS=	libnmsg.so:net/nmsg
 
 USE_PYTHON=	autoplist distutils
-USES=		pkgconfig python shebangfix uniquefiles:dirs
+USES=		pkgconfig python:-3.6 shebangfix uniquefiles:dirs
 
 SHEBANG_FILES=	examples/*.py
 
 PORTEXAMPLES=	*
 
 CPPFLAGS+=	-I${LOCALBASE}/include
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_nmsg.so

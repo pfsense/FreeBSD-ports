@@ -2,8 +2,7 @@
 
 PORTNAME=	avldrums
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.2
-PORTREVISION=	1
+DISTVERSION=	0.3.5
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -15,11 +14,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	lv2>0:audio/lv2
 
-USES=		gmake pkgconfig
+USES=		gl gmake gnome pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	x42
 GH_PROJECT=	${PORTNAME}.lv2
-GH_TUPLE=	x42:robtk:05eb4b8:robtk/robtk
+GH_TUPLE=	x42:robtk:bad6354:robtk/robtk
 USE_GL=		gl glu
 USE_GNOME=	glib20 pango cairo
 USE_XORG=	x11

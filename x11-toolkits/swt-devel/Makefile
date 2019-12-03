@@ -15,6 +15,9 @@ COMMENT=	Standard Widget Toolkit for Java
 
 LICENSE=	EPL
 
+DEPRECATED=	Obsolete. Superseded by x11-toolkits/swt
+EXPIRATION_DATE=	2019-10-15
+
 ONLY_FOR_ARCHS=	i386 amd64 powerpc
 
 SWT_VERSION=	3738
@@ -59,8 +62,7 @@ MAKE_GNOME=	make_gnome
 .endif
 
 .if ${PORT_OPTIONS:MMOZILLA}
-USES=		gecko
-BROKEN=		Does now work with newer libxul
+BROKEN=		non-Flash plugins are no longer supported
 PLIST_FILES+=	lib/libswt-xulrunner-gtk-%%BUILD%%.so
 MAKE_MOZILLA=	make_xulrunner
 .endif

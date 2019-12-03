@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	sqlparse
-PORTVERSION=	0.2.4
+PORTVERSION=	0.3.0
+PORTREVISION=	1
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,10 +14,11 @@ COMMENT=	Non-validating SQL parser for Python
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}sqlparse01 ${PYTHON_PKGNAMEPREFIX}sqlparse020
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}sqlparse020
+
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USE_PYTHON=	autoplist concurrent distutils
-USES=		python
 
 .include <bsd.port.mk>

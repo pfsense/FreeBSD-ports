@@ -4,6 +4,7 @@
 PORTNAME=	libsdr
 PORTVERSION=	0.1.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	jeff@baitis.net
@@ -20,7 +21,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	hmatuschek
 
 MAKE_JOBS_UNSAFE=	yes
-USES=		cmake pkgconfig
+USES=		compiler:c++11-lang cmake pkgconfig
 CMAKE_ARGS+=-DCMAKE_BUILD_TYPE=RELEASE
 USE_LDCONFIG=	yes
 

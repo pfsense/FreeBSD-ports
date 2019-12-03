@@ -3,10 +3,10 @@
 
 PORTNAME=	minecraft-client
 PORTVERSION=	1.7.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games java
-MASTER_SITES=	http://s3.amazonaws.com/Minecraft.Download/launcher/:minecraft \
-		http://media-mcw.cursecdn.com/c/c5/:icon
+MASTER_SITES=	https://s3.amazonaws.com/Minecraft.Download/launcher/:minecraft \
+		https://media-mcw.cursecdn.com/c/c5/:icon
 DISTFILES=	Minecraft.jar:minecraft \
 		Grass.png:icon
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
@@ -15,22 +15,25 @@ EXTRACT_ONLY=
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client for the block building game
 
-RUN_DEPENDS=	${JAVALIBDIR}/lwjgl/lwjgl.jar:games/lwjgl
+RUN_DEPENDS=	${JAVALIBDIR}/lwjgl/lwjgl.jar:games/lwjgl \
+		xrandr:x11/xrandr
 
-WRKSRC=		${WRKDIR}
 USES=		openal
-NO_ARCH=	yes
-NO_BUILD=	yes
 USE_JAVA=	yes
 JAVA_OS=	native
 JAVA_VENDOR=	openjdk
 JAVA_VERSION=	1.8+
+
 DESKTOP_ENTRIES="Minecraft" \
 		"Block building game" \
 		"${PREFIX}/share/pixmaps/minecraft-client.png" \
 		"${PORTNAME}" \
 		"Game;Java;" \
 		false
+
+NO_ARCH=	yes
+NO_BUILD=	yes
+NO_WRKSUBDIR=	yes
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

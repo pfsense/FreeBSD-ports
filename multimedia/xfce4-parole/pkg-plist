@@ -7,9 +7,9 @@ include/parole/parole-provider-player.h
 include/parole/parole-provider-plugin.h
 include/parole/parole-stream.h
 include/parole/parole.h
+lib/parole-0/parole-mpris2.so
 lib/parole-0/parole-notify.so
 lib/parole-0/tray-icon.so
-share/appdata/parole.appdata.xml
 share/applications/org.xfce.Parole.desktop
 share/icons/hicolor/128x128/apps/parole.png
 share/icons/hicolor/16x16/apps/parole-extension-symbolic.svg
@@ -23,6 +23,7 @@ share/icons/hicolor/64x64/apps/parole.png
 share/icons/hicolor/scalable/apps/parole.svg
 %%NLS%%share/locale/ar/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/ast/LC_MESSAGES/parole.mo
+%%NLS%%share/locale/be/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/bg/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/ca/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/cs/LC_MESSAGES/parole.mo
@@ -39,7 +40,9 @@ share/icons/hicolor/scalable/apps/parole.svg
 %%NLS%%share/locale/he/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/hr/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/hu/LC_MESSAGES/parole.mo
+%%NLS%%share/locale/hy_AM/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/id/LC_MESSAGES/parole.mo
+%%NLS%%share/locale/ie/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/is/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/it/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/ja/LC_MESSAGES/parole.mo
@@ -57,6 +60,7 @@ share/icons/hicolor/scalable/apps/parole.svg
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/ru/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/sk/LC_MESSAGES/parole.mo
+%%NLS%%share/locale/sl/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/sq/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/sr/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/parole.mo
@@ -67,6 +71,8 @@ share/icons/hicolor/scalable/apps/parole.svg
 %%NLS%%share/locale/uk/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/parole.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/parole.mo
+share/metainfo/parole.appdata.xml
+%%DATADIR%%/parole-plugins-0/mpris2.desktop
 %%DATADIR%%/parole-plugins-0/notify.desktop
 %%DATADIR%%/parole-plugins-0/system-tray.desktop
 share/pixmaps/no-cover.png

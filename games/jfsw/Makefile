@@ -3,7 +3,7 @@
 
 PORTNAME=	jfsw
 PORTVERSION=	20131019
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -17,7 +17,12 @@ LICENSE_PERMS_BuildLic=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-acc
 
 LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis
 
-USES=		alias dos2unix gmake pkgconfig:build
+USES=		alias compiler:c++11-lang dos2unix gl gmake gnome \
+		pkgconfig:build sdl
+USE_GL=		gl
+USE_GNOME=	gtk20
+USE_SDL=	mixer sdl
+
 DOS2UNIX_REGEX=	.*(\.(c|h)|Makefile)(\.deps)?
 
 USE_GITHUB=	yes
@@ -29,10 +34,6 @@ GH_TAGNAME=	5cff6a81708ff053b569ba4400fba073afe207fe \
 		b1071da75cd465f59257240e5dbc60a014580190:mact
 GH_SUBDIR=	jfbuild:build jfaudiolib:audio jfmact:mact
 
-USE_GL=		gl
-USE_GNOME=	gtk20
-USE_SDL=	mixer sdl
-
 NO_CDROM=	Must be distributed only through the Internet and free of charge
 
 MAKE_ENV+=	DATADIR="${DATADIR}" \
@@ -42,6 +43,8 @@ MAKE_ENV+=	DATADIR="${DATADIR}" \
 SUB_FILES=	pkg-message
 
 PORTDOCS=	readme.txt releasenotes.html
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} 's|/usr/X11R6|${LOCALBASE}|' \

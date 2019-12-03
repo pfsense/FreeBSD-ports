@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	stumpwm
-DISTVERSION=	18.05
-PORTREVISION=	1
+DISTVERSION=	18.11-2
+DISTVERSIONSUFFIX=	-g84f093e
+PORTREVISION=	7
 CATEGORIES=	x11-wm lisp
 
 MAINTAINER=	jrm@FreeBSD.org
@@ -27,7 +28,6 @@ RUN_DEPENDS=	cl-alexandria>=0:devel/cl-alexandria \
 		cl-ppcre-sbcl>=0:textproc/cl-ppcre-sbcl
 
 USE_GITHUB=	yes
-GH_TAGNAME=	49fdf94
 USE_SBCL=	yes
 
 PLIST_SUB=	ASDF_PATHNAME="${ASDF_PATHNAME:S,^${PREFIX}/,,}" \

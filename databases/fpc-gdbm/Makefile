@@ -1,6 +1,6 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
 # $FreeBSD$
 
+PORTREVISION=	3
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-gdbm
 

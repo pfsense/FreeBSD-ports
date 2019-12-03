@@ -3,7 +3,7 @@
 
 PORTNAME=	opendesktop-fonts
 PORTVERSION=	1.4.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	chinese x11-fonts
 MASTER_SITES?=	LOCAL/chinsan/fonts
 
@@ -19,12 +19,6 @@ TTF=		odokai-ExtB.ttf odokai.ttf odosung-ExtB.ttf odosung.ttc
 PLIST_FILES=	${FONTSDIR_REL}/local.conf-odo
 
 .include "${.CURDIR}/../ttfm/Makefile.ttf"
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100077
-# chmod -R bug
-post-extract:
-	@${CHMOD} 0755 ${WRKSRC}/license
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr,${LOCALBASE},; s,opendesktop,,g' \

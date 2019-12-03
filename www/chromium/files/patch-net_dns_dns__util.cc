@@ -1,6 +1,6 @@
---- net/dns/dns_util.cc.orig	2017-06-05 19:03:10 UTC
+--- net/dns/dns_util.cc.orig	2019-10-21 19:06:38 UTC
 +++ net/dns/dns_util.cc
-@@ -26,6 +26,8 @@ const int kMaxLabelLength = 63;
+@@ -38,6 +38,8 @@ const uint16_t kFlagNamePointer = 0xc000;
  
  }  // namespace
  

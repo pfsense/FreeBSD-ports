@@ -3,7 +3,7 @@
 
 PORTNAME=	spring
 PORTVERSION=	98.0
-PORTREVISION=	11
+PORTREVISION=	19
 CATEGORIES=	games
 MASTER_SITES=	SF/springrts/springrts/${PORTNAME}-${PORTVERSION} \
 		http://springrts.com/dl/
@@ -33,7 +33,7 @@ USE_LDCONFIG=	yes
 LLD_UNSAFE=	yes
 DOS2UNIX_GLOB=	*.h *.hpp *.cpp
 
-USES=		cmake compiler:c++11-lib dos2unix openal:al tar:lzma
+USES=		cmake:insource compiler:c++11-lib dos2unix openal:al tar:lzma
 USES+=		desktop-file-utils shared-mime-info
 CMAKE_ARGS=	-DDATADIR:STRING="share/${PORTNAME}" \
 		-DAI_TYPES:STRING="NATIVE" \
@@ -58,7 +58,6 @@ OPTIONS_DEFINE=	MANPAGES PR_DOWNLOADER DOCS
 OPTIONS_DEFAULT=MANPAGES PR_DOWNLOADER
 OPTIONS_SUB=	yes
 
-HTMLDOCS_DESC=	Build and install HTML documentation
 PR_DOWNLOADER_DESC=	Map and game downloader
 
 MANPAGES_CMAKE_ON=	-DCREATE_MAN_PAGES:BOOL=true -DMANDIR:STRING="man"
@@ -68,8 +67,6 @@ MANPAGES_BUILD_DEPENDS=	7z:archivers/p7zip \
 			xsltproc:textproc/libxslt \
 			${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
 			bash:shells/bash
-MANPAGES_DOCS_ON=	-DUSERDOCS_PLAIN:BOOL=true
-MANPAGES_DOCS_OFF=	-DUSERDOCS_PLAIN:BOOL=false
 CXXFLAGS+=	-Wno-deprecated		# Too much noise
 
 PR_DOWNLOADER_LIB_DEPENDS=libcurl.so:ftp/curl

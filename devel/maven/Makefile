@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	maven
-DISTVERSION=	3.5.4
+DISTVERSION=	3.6.1
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/maven/maven-3/${DISTVERSION}/binaries
 DISTNAME=	apache-maven-${DISTVERSION}-bin
@@ -15,17 +15,18 @@ LICENSE=	APACHE20
 RUN_DEPENDS=	mvn:devel/maven-wrapper
 
 USES=		cpe
+USE_JAVA=	yes
+
 CPE_PRODUCT=	maven
 CPE_VENDOR=	apache
-
-USE_JAVA=	yes
 JAVA_VERSION=	1.7+
 NO_BUILD=	yes
 NO_ARCH=	yes
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 WRKSRC=		${WRKDIR}/apache-maven-${DISTVERSION}
 SUB_FILES=	mvn.sh
-SUB_LIST=	CLASSWORLDS_JAR=plexus-classworlds-2.5.2.jar
+SUB_LIST=	CLASSWORLDS_JAR=plexus-classworlds-2.6.0.jar
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 INSTANCE_FILE=	${PORTNAME}-${PORTVERSION}
 INSTANCES_DIR=	etc/maven-wrapper/instances.d/
 

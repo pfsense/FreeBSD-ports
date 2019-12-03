@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	nxengine
-PORTVERSION=	2.6.3
+PORTVERSION=	2.6.4
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 MASTER_SITES+=	https://www.cavestory.org/downloads/:data \
@@ -9,6 +10,10 @@ MASTER_SITES+=	https://www.cavestory.org/downloads/:data \
 DISTFILES+=	${PORTNAME}.png:icons \
 		cavestoryen.zip:data
 EXTRACT_ONLY=	${DISTFILES:[2..3]:S/:data//}
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	d38fcaf80ac5c4b1a2da51b5d1a605ed408a192f.patch:-p1 \
+		f6bbeb2555e7c10dfdc04be57f20fedfc9f401af.patch:-p1
 
 MAINTAINER=	lifanov@FreeBSD.org
 COMMENT=	Engine-rewrite of the classic platformer Cave Story
@@ -22,21 +27,20 @@ LICENSE_PERMS_FREEWARE=	dist-mirror pkg-mirror auto-accept
 LICENSE_DISTFILES_GPLv3=	${DISTFILES:[3]}
 LICENSE_DISTFILES_FREEWARE=	${DISTFILES:[2]:S/:data//}
 
-BROKEN_aarch64=		fails to compile: player.cpp:763:50: constant expression evaluates to -1 which cannot be narrowed to type 'char' [-Wc++11-narrowing]
-BROKEN_armv6=		fails to compile: player.cpp:763:50: constant expression evaluates to -1 which cannot be narrowed to type 'char' [-Wc++11-narrowing]
-BROKEN_armv7=		fails to compile: player.cpp:763:50: constant expression evaluates to -1 which cannot be narrowed to type 'char' [-Wc++11-narrowing]
+BROKEN=		checksum and size mismatch
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-DESKTOP_ENTRIES="NXEngine" "" "${PORTNAME}" \
-		"${PORTNAME}" "Game;AdventureGame;" ""
+USES=		cmake compiler:c++11-lang sdl
 
-USES=		cmake:outsource compiler:c++11-lang
 USE_SDL=	mixer2 sdl2
 SUB_FILES=	${PORTNAME}
 
 USE_GITHUB=	yes
 GH_PROJECT=	${PORTNAME}-evo
+
+DESKTOP_ENTRIES="NXEngine" "" "${PORTNAME}" \
+		"${PORTNAME}" "Game;AdventureGame;" ""
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

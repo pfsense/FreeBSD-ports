@@ -3,6 +3,7 @@
 
 PORTNAME=	pcsxr
 PORTVERSION=	1.9.95.20180604
+PORTREVISION=	2
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -16,10 +17,8 @@ LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 		libcdio.so:sysutils/libcdio \
 		libavformat.so:multimedia/ffmpeg
 
-WRKSRC_SUBDIR=	${PORTNAME}
-
-USES=		cmake desktop-file-utils dos2unix gettext iconv libarchive \
-		libtool pkgconfig tar:bzip2
+USES=		cmake desktop-file-utils dos2unix gettext gl gnome iconv \
+		libarchive libtool pkgconfig sdl tar:bzip2 xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	martymac
@@ -32,6 +31,8 @@ USE_XORG=	ice sm x11 xv xext xxf86vm xtst
 USE_SDL=	sdl2
 USE_GL=	gl
 INSTALLS_ICONS=	yes
+
+WRKSRC_SUBDIR=	${PORTNAME}
 
 CMAKE_ARGS+=	-DDL_LIB:STRING="" \
 		-DMANPREFIX:STRING="${MANPREFIX}" \
@@ -51,7 +52,7 @@ DEFAULT_DVD_DEVICE?=	/dev/cd0
 
 # XXX Gettext support is mandatory and cannot really be disabled.
 # The following option only enables/disables building *additional* translations
-OPTIONS_DEFINE=	NLS
+OPTIONS_DEFINE=	NLS DOCS
 OPTIONS_SUB=	yes
 NLS_DESC=	Build additional NLS translations
 NLS_CMAKE_ON=	-DDISABLE_NLS_TRANSLATIONS:BOOL=OFF

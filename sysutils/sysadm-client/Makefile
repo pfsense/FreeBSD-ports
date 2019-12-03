@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	sysadm-client
-PORTVERSION=	1.0
-PORTREVISION=	2
+PORTVERSION=	1.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -13,13 +13,16 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 WRKSRC_SUBDIR=	src-qt5
+USES=		compiler:c++11-lang gmake pkgconfig qmake ssl qt:5 tar:xz
 USE_QT=		core buildtools_build gui network qmake websockets widgets svg concurrent
-USES=		pkgconfig qt:5 tar:xz qmake ssl
 USE_GL+=	gl
 MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	trueos
 GH_PROJECT=	sysadm-ui-qt
+
+DEPRECATED=	No longer maintained upstream
+EXPIRATION_DATE=	2019-11-01
 
 .include <bsd.port.mk>

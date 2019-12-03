@@ -10,12 +10,14 @@
 # slave ports instead (`x11/nvidia-driver-340' or `x11/nvidia-driver-304').
 
 PORTNAME=	nvidia-driver
-DISTVERSION?=	390.67
+DISTVERSION?=	390.87
 # Always try to set PORTREVISION as it can be overridden by the slave ports
-PORTREVISION?=	0
+PORTREVISION?=	3
 CATEGORIES=	x11
 MASTER_SITES=	NVIDIA/XFree86/FreeBSD-${ARCH_SUFX}/${DISTVERSION}
 DISTNAME=	NVIDIA-FreeBSD-${ARCH_SUFX}-${DISTVERSION}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	NVidia graphics card binary drivers for hardware OpenGL rendering
@@ -40,7 +42,15 @@ USE_LDCONFIG=	yes
 # hack below to universally set NVIDIA_ROOT.  Also provide X11BASE value
 # since it is still used by legacy drivers.
 MAKE_ENV=	NVIDIA_ROOT=${WRKSRC} X11BASE=${LOCALBASE}
+PLIST_RE=	# empty
 SUB_FILES=	pkg-deinstall pkg-install pkg-message nvidia.conf
+SUB_PATCHES=	extra-patch-src-Makefile \
+		extra-patch-src-nv-freebsd.h \
+		extra-patch-src-nv-misc.h \
+		extra-patch-src-nvidia_ctl.c \
+		extra-patch-src-nvidia_dev.c \
+		extra-patch-src-nvidia_linux.c \
+		extra-patch-src-nvidia_pci.c
 DOCSDIR=	${PREFIX}/share/doc/NVIDIA_GLX-1.0
 MODULESDIR=	lib/xorg/modules
 PORTDOCS=	*
@@ -64,14 +74,8 @@ SUB_LIST+=	NVGL="\# "
 .endif
 
 .if ${NVVERSION} < 355.006
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-src-Makefile \
-		${FILESDIR}/extra-patch-src-nv-freebsd.h \
-		${FILESDIR}/extra-patch-src-nv-misc.h
 NVSRC=		.
 .else
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-src_nvidia_Makefile \
-		${FILESDIR}/extra-patch-src_nvidia_nv-freebsd.h \
-		${FILESDIR}/extra-patch-src_nvidia_nv-misc.h
 NVSRC=		nvidia
 .endif
 
@@ -85,6 +89,7 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src_nvidia-modeset_nvidia-modeset-freebs
 OPTIONS_DEFINE=	ACPI_PM LINUX WBINVD DOCS
 OPTIONS_DEFINE_i386=	PAE
 OPTIONS_DEFAULT=	LINUX
+OPTIONS_SUB=		yes
 
 ACPI_PM_DESC=		ACPI Power Management support
 LINUX_DESC=		Linux compatibility support
@@ -96,21 +101,331 @@ OPTIONS_DEFINE+=	FREEBSD_AGP
 FREEBSD_AGP_DESC=	Use FreeBSD AGP GART driver
 .endif
 
-PLIST_SUB+=	LINUXBASE=${LINUXBASE} SHLIB_VERSION=${PORTVERSION} \
+LINUX_MASTER_SITES=NVIDIA/XFree86/Linux-${ARCH_SUFX}/${DISTVERSION}/:linux
+LINUX_DISTFILES=NVIDIA-Linux-${ARCH_SUFX}-${DISTVERSION}.run:linux
+LINUX_USES=	linux
+LINUX_USE=	LINUX=xorglibs
+
+LINUX_LIBDIR=	/usr/lib${ARCH:S/i386//:S/amd//}
+LINUX_WRKSRC=	${WRKDIR}/NVIDIA-Linux-${ARCH_SUFX}-${DISTVERSION}
+
+LINUX_LIBS=	libcuda.so.${PORTVERSION} \
+		libnvcuvid.so.${PORTVERSION} \
+		libnvidia-cfg.so.${PORTVERSION} \
+		libnvidia-compiler.so.${PORTVERSION} \
+		libnvidia-glcore.so.${PORTVERSION} \
+		libnvidia-ml.so.${PORTVERSION} \
+		libnvidia-opencl.so.${PORTVERSION} \
+		libnvidia-tls.so.${PORTVERSION} \
+		libvdpau_nvidia.so.${PORTVERSION} \
+		tls/libnvidia-tls.so.${PORTVERSION}
+LINUX_LINKS=	libcuda.so.${PORTVERSION} libcuda.so.1 \
+		libcuda.so.${PORTVERSION} libcuda.so \
+		libnvcuvid.so.${PORTVERSION} libnvcuvid.so.1 \
+		libnvcuvid.so.${PORTVERSION} libnvcuvid.so \
+		libnvidia-cfg.so.${PORTVERSION} libnvidia-cfg.so.1 \
+		libnvidia-cfg.so.${PORTVERSION} libnvidia-cfg.so \
+		libnvidia-ml.so.${PORTVERSION} libnvidia-ml.so.1 \
+		libnvidia-ml.so.${PORTVERSION} libnvidia-ml.so \
+		libnvidia-opencl.so.${PORTVERSION} libnvidia-opencl.so.1 \
+		libvdpau_nvidia.so.${PORTVERSION} vdpau/libvdpau_nvidia.so.1
+LINUX32_LIBS=	libcuda.so.${PORTVERSION} \
+		libnvidia-compiler.so.${PORTVERSION} \
+		libnvidia-glcore.so.${PORTVERSION} \
+		libnvidia-ml.so.${PORTVERSION} \
+		libnvidia-opencl.so.${PORTVERSION} \
+		libnvidia-tls.so.${PORTVERSION} \
+		libvdpau_nvidia.so.${PORTVERSION} \
+		tls/libnvidia-tls.so.${PORTVERSION}
+LINUX32_LINKS=	libcuda.so.${PORTVERSION} libcuda.so.1 \
+		libcuda.so.${PORTVERSION} libcuda.so \
+		libnvidia-ml.so.${PORTVERSION} libnvidia-ml.so.1 \
+		libnvidia-ml.so.${PORTVERSION} libnvidia-ml.so \
+		libnvidia-opencl.so.${PORTVERSION} libnvidia-opencl.so.1 \
+		libvdpau_nvidia.so.${PORTVERSION} vdpau/libvdpau_nvidia.so.1
+LINUX_PROGS=	nvidia-debugdump nvidia-settings nvidia-smi nvidia-xconfig
+LINUX_MANS=	nvidia-settings nvidia-smi nvidia-xconfig
+LINUX_DATA=	nvidia.icd /etc/OpenCL/vendors
+.if ${NVVERSION} >= 375.010
+LINUX_DATA+=	10_nvidia.json /usr/share/glvnd/egl_vendor.d
+.else
+PLIST_RE+=	'\,${LINUXBASE}/usr/share/glvnd,d'
+.endif
+.if ${NVVERSION} >= 378.009
+LINUX_DATA+=	10_nvidia_wayland.json /usr/share/egl/egl_external_platform.d
+.else
+PLIST_RE+=	'\,${LINUXBASE}/usr/share/egl,d'
+.endif
+.if ${NVVERSION} >= 361.016
+LINUX_LIBS+=	libEGL_nvidia.so.${PORTVERSION}
+LINUX_LINKS+=	libEGL_nvidia.so.${PORTVERSION} libEGL_nvidia.so.0
+LINUX32_LIBS+=	libEGL_nvidia.so.${PORTVERSION}
+LINUX32_LINKS+=	libEGL_nvidia.so.${PORTVERSION} libEGL_nvidia.so.0
+.elif ${NVVERSION} >= 355.006
+LINUX_LIBS+=	libEGL_nvidia.so.0
+PLIST_RE+=	'\,${LINUXBASE}.*libEGL_nvidia\.so\.${PORTVERSION},d'
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libEGL_nvidia\.so,d'
+.endif
+.if ${NVVERSION} >= 361.016
+LINUX_LIBS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} \
+		libGLESv2_nvidia.so.${PORTVERSION} \
+		libGLX_nvidia.so.${PORTVERSION} \
+		libnvidia-fatbinaryloader.so.${PORTVERSION} \
+		libnvidia-ptxjitcompiler.so.${PORTVERSION}
+LINUX_LINKS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} libGLESv1_CM_nvidia.so.1 \
+		libGLESv2_nvidia.so.${PORTVERSION} libGLESv2_nvidia.so.2 \
+		libGLX_nvidia.so.${PORTVERSION} libGLX_nvidia.so.0 \
+		libGLX_nvidia.so.${PORTVERSION} libGLX_indirect.so.0 \
+		libnvidia-ptxjitcompiler.so.${PORTVERSION} libnvidia-ptxjitcompiler.so.1 \
+		libnvidia-ptxjitcompiler.so.${PORTVERSION} libnvidia-ptxjitcompiler.so
+LINUX32_LIBS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} \
+		libGLESv2_nvidia.so.${PORTVERSION} \
+		libGLX_nvidia.so.${PORTVERSION} \
+		libnvidia-fatbinaryloader.so.${PORTVERSION} \
+		libnvidia-ptxjitcompiler.so.${PORTVERSION}
+LINUX32_LINKS+=	libGLESv1_CM_nvidia.so.${PORTVERSION} libGLESv1_CM_nvidia.so.1 \
+		libGLESv2_nvidia.so.${PORTVERSION} libGLESv2_nvidia.so.2 \
+		libGLX_nvidia.so.${PORTVERSION} libGLX_nvidia.so.0 \
+		libGLX_nvidia.so.${PORTVERSION} libGLX_indirect.so.0 \
+		libnvidia-ptxjitcompiler.so.${PORTVERSION} libnvidia-ptxjitcompiler.so.1 \
+		libnvidia-ptxjitcompiler.so.${PORTVERSION} libnvidia-ptxjitcompiler.so
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libGLESv(1_CM|2)_nvidia\.so,d' \
+		'\,${LINUXBASE}.*libGLX_(nvidia|indirect)\.so,d' \
+		'\,${LINUXBASE}.*libnvidia-fatbinaryloader\.so,d' \
+		'\,${LINUXBASE}.*libnvidia-ptxjitcompiler\.so,d'
+.endif
+.if ${NVVERSION} >= 387.012
+LINUX_LIBS+=	libnvidia-egl-wayland.so.1.0.2
+LINUX_LINKS+=	libnvidia-egl-wayland.so.1.0.2 libnvidia-egl-wayland.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.1.0.2/'
+.elif ${NVVERSION} >= 378.013
+LINUX_LIBS+=	libnvidia-egl-wayland.so.1.0.1
+LINUX_LINKS+=	libnvidia-egl-wayland.so.1.0.1 libnvidia-egl-wayland.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.1.0.1/'
+.elif ${NVVERSION} >= 378.009
+LINUX_LIBS+=	libnvidia-egl-wayland.so.1.0.0
+LINUX_LINKS+=	libnvidia-egl-wayland.so.1.0.0 libnvidia-egl-wayland.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.1.0.0/'
+.elif ${NVVERSION} >= 364.012
+LINUX_LIBS+=	libnvidia-egl-wayland.so.${PORTVERSION}
+LINUX_LINKS+=	libnvidia-egl-wayland.so.${PORTVERSION} libnvidia-egl-wayland.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libnvidia-egl-wayland\.so)\.X/\1.${PORTVERSION}/'
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-egl-wayland\.so,d'
+.endif
+.if ${NVVERSION} >= 331.013
+LINUX_LIBS+=	libnvidia-eglcore.so.${PORTVERSION} \
+		libnvidia-fbc.so.${PORTVERSION} \
+		libnvidia-glsi.so.${PORTVERSION} \
+		libnvidia-ifr.so.${PORTVERSION}
+LINUX_LINKS+=	libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so.1 \
+		libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so \
+		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so.1 \
+		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so
+LINUX32_LIBS+=	libnvidia-eglcore.so.${PORTVERSION} \
+		libnvidia-fbc.so.${PORTVERSION} \
+		libnvidia-glsi.so.${PORTVERSION} \
+		libnvidia-ifr.so.${PORTVERSION}
+LINUX32_LINKS+=	libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so.1 \
+		libnvidia-fbc.so.${PORTVERSION} libnvidia-fbc.so \
+		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so.1 \
+		libnvidia-ifr.so.${PORTVERSION} libnvidia-ifr.so
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-(eglcore|fbc|glsi|ifr),d'
+.endif
+.if ${NVVERSION} >= 310.014
+LINUX_LIBS+=	libnvidia-encode.so.${PORTVERSION}
+LINUX_LINKS+=	libnvidia-encode.so.${PORTVERSION} libnvidia-encode.so.1 \
+		libnvidia-encode.so.${PORTVERSION} libnvidia-encode.so
+LINUX32_LIBS+=	libnvidia-encode.so.${PORTVERSION}
+LINUX32_LINKS+=	libnvidia-encode.so.${PORTVERSION} libnvidia-encode.so.1 \
+		libnvidia-encode.so.${PORTVERSION} libnvidia-encode.so
+PLIST_RE+=	'\,${LINUXBASE}.*libXvMCNVIDIA,d'
+.else
+LINUX_LIBS+=	libXvMCNVIDIA.so.${PORTVERSION}
+LINUX_LINKS+=	libXvMCNVIDIA.so.${PORTVERSION} libXvMCNVIDIA_dynamic.so.1 \
+		libXvMCNVIDIA.so.${PORTVERSION} libXvMCNVIDIA_dynamic.so
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-encode,d'
+.endif
+.if ${NVVERSION} >= 346.016
+LINUX_LIBS+=	libnvidia-gtk2.so.${PORTVERSION} \
+		libnvidia-gtk3.so.${PORTVERSION}
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libnvidia-gtk(2|3)\.so,d'
+.endif
+.if ${NVVERSION} >= 331.049 && ${NVVERSION} < 352.009
+LINUX_DATA+=	monitoring.conf /usr/share/nvidia \
+		${WRKSRC}/pci.ids /usr/share/nvidia
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*monitoring\.conf,d' \
+		'\,${LINUXBASE}.*pci\.ids,d'
+.endif
+.if ${NVVERSION} >= 334.016
+LINUX_DATA+=	nvidia-application-profiles-${PORTVERSION}-key-documentation /usr/share/nvidia
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*application-profiles-${PORTVERSION}-key-documentation,d'
+.endif
+.if ${NVVERSION} >= 319.012
+LINUX_DATA+=	nvidia-application-profiles-${PORTVERSION}-rc /usr/share/nvidia
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*share/nvidia,d'
+.endif
+.if ${NVVERSION} >= 319.017
+LINUX_PROGS+=	nvidia-cuda-mps-control nvidia-cuda-mps-server \
+		nvidia-persistenced
+LINUX_MANS+=	nvidia-cuda-mps-control nvidia-persistenced
+.else
+LINUX_PROGS+=	nvidia-cuda-proxy-control nvidia-cuda-proxy-server
+LINUX_MANS+=	nvidia-cuda-proxy-control
+PLIST_RE+=	'\,${LINUXBASE},s/cuda-mps/cuda-proxy/' \
+		'\,${LINUXBASE}.*nvidia-persistenced,d'
+.endif
+.if ${NVVERSION} >= 364.012
+LINUX_DATA+=	nvidia_icd.json /etc/vulkan/icd.d
+.else
+PLIST_RE+=	'\,${LINUXBASE}/etc/vulkan,d'
+.endif
+
+PLIST_SUB+=	LINUXBASE=${LINUXBASE} \
+		LINUX_LIBDIR=${LINUX_LIBDIR} \
+		SHLIB_VERSION=${PORTVERSION} \
 		MODULESDIR=${MODULESDIR}
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLINUX}
-CONFLICTS_INSTALL=	linux[-_]dri-[0-9]* linux-f10-dri-[0-9]*
-USES+=		linux
-USE_LINUX=	base:build,run xorglibs
-PLIST_SUB+=	LINUX=""
+.if ${NVVERSION} >= 390.042 && ${LINUX_DEFAULT} != c6
+USE_LINUX+=	libglvnd
+PLIST_RE+=	'\,${LINUXBASE}.*libEGL\.so,d' \
+		'\,${LINUXBASE}.*libGL\.so,d' \
+		'\,${LINUXBASE}.*libGLESv(1_CM|2)\.so,d' \
+		'\,${LINUXBASE}.*libGLX\.so,d' \
+		'\,${LINUXBASE}.*libGLdispatch\.so,d' \
+		'\,${LINUXBASE}.*libOpenGL\.so,d'
 .else
-PLIST_SUB+=	LINUX="@comment "
-# Propagate WITHOUT_LINUX variable down to inner Makefiles
-MAKE_ENV+=	WITHOUT_LINUX=yes
+.if ${NVVERSION} >= 390.042
+LINUX_LIBS+=	libEGL.so.1.1.0
+LINUX_LINKS+=	libEGL.so.1.1.0 libEGL.so.1
+LINUX32_LIBS+=	libEGL.so.1.1.0
+LINUX32_LINKS+=	libEGL.so.1.1.0 libEGL.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libEGL\.so)\.X/\1.1.1.0/'
+.elif ${NVVERSION} >= 355.006
+LINUX_LIBS+=	libEGL.so.1
+LINUX32_LIBS+=	libEGL.so.1
+PLIST_RE+=	'\,${LINUXBASE}.*libEGL\.so\.X,d'
+.elif ${NVVERSION} >= 331.013
+LINUX_LIBS+=	libEGL.so.${PORTVERSION}
+LINUX_LINKS+=	libEGL.so.${PORTVERSION} libEGL.so.1
+LINUX32_LIBS+=	libEGL.so.${PORTVERSION}
+LINUX32_LINKS+=	libEGL.so.${PORTVERSION} libEGL.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libEGL\.so)\.X/\1.${PORTVERSION}/'
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libEGL\.so,d'
 .endif
+.if ${NVVERSION} >= 390.042
+LINUX_LIBS+=	libGL.so.1.7.0
+LINUX_LINKS+=	libGL.so.1.7.0 libGL.so.1
+LINUX32_LIBS+=	libGL.so.1.7.0
+LINUX32_LINKS+=	libGL.so.1.7.0 libGL.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libGL\.so)\.X/\1.1.7.0/'
+.elif ${NVVERSION} >= 361.028
+LINUX_LIBS+=	libGL.so.1.0.0
+LINUX_LINKS+=	libGL.so.1.0.0 libGL.so.1
+LINUX32_LIBS+=	libGL.so.1.0.0
+LINUX32_LINKS+=	libGL.so.1.0.0 libGL.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libGL\.so)\.X/\1.1.0.0/'
+.elif ${NVVERSION} >= 361.016
+LINUX_LIBS+=	libGL.so.1
+LINUX32_LIBS+=	libGL.so.1
+PLIST_RE+=	'\,${LINUXBASE}.*libGL\.so\.X,d'
+.else
+LINUX_LIBS+=	libGL.so.${PORTVERSION}
+LINUX_LINKS+=	libGL.so.${PORTVERSION} libGL.so.1
+LINUX32_LIBS+=	libGL.so.${PORTVERSION}
+LINUX32_LINKS+=	libGL.so.${PORTVERSION} libGL.so.1
+PLIST_RE+=	'\,${LINUXBASE},s/(libGL\.so)\.X/\1.${PORTVERSION}/'
+.endif
+.if ${NVVERSION} >= 390.042
+LINUX_LIBS+=	libGLESv1_CM.so.1.2.0 \
+		libGLESv2.so.2.1.0
+LINUX_LINKS+=	libGLESv1_CM.so.1.2.0 libGLESv1_CM.so.1 \
+		libGLESv2.so.2.1.0 libGLESv2.so.2
+LINUX32_LIBS+=	libGLESv1_CM.so.1.2.0 \
+		libGLESv2.so.2.1.0
+LINUX32_LINKS+=	libGLESv1_CM.so.1.2.0 libGLESv1_CM.so.1 \
+		libGLESv2.so.2.1.0 libGLESv2.so.2
+PLIST_RE+=	'\,${LINUXBASE},s/(libGLESv1_CM\.so)\.X/\1.1.2.0/' \
+		'\,${LINUXBASE},s/(libGLESv2\.so)\.X/\1.2.1.0/'
+.elif ${NVVERSION} >= 361.016
+LINUX_LIBS+=	libGLESv1_CM.so.1 \
+		libGLESv2.so.2
+LINUX32_LIBS+=	libGLESv1_CM.so.1 \
+		libGLESv2.so.2
+PLIST_RE+=	'\,${LINUXBASE}.*GLESv(1_CM|2)\.so\.X,d'
+.elif ${NVVERSION} >= 331.013
+LINUX_LIBS+=	libGLESv1_CM.so.${PORTVERSION} \
+		libGLESv2.so.${PORTVERSION}
+LINUX_LINKS+=	libGLESv1_CM.so.${PORTVERSION} libGLESv1_CM.so.1 \
+		libGLESv2.so.${PORTVERSION} libGLESv2.so.2
+LINUX32_LIBS+=	libGLESv1_CM.so.${PORTVERSION} \
+		libGLESv2.so.${PORTVERSION}
+LINUX32_LINKS+=	libGLESv1_CM.so.${PORTVERSION} libGLESv1_CM.so.1 \
+		libGLESv2.so.${PORTVERSION} libGLESv2.so.2
+PLIST_RE+=	'\,${LINUXBASE},s/(libGLESv(1_CM|2)\.so)\.X/\1.${PORTVERSION}/'
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libGLESv(1_CM|2)\.so,d'
+.endif
+.if ${NVVERSION} >= 361.016
+LINUX_LIBS+=	libGLX.so.0
+LINUX32_LIBS+=	libGLX.so.0
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libGLX\.so,d'
+.endif
+.if ${NVVERSION} >= 355.006
+LINUX_LIBS+=	libGLdispatch.so.0 \
+		libOpenGL.so.0
+LINUX32_LIBS+=	libGLdispatch.so.0 \
+		libOpenGL.so.0
+.else
+PLIST_RE+=	'\,${LINUXBASE}.*libGLdispatch\.so,d' \
+		'\,${LINUXBASE}.*libOpenGL\.so,d'
+.endif
+.endif	# ${NVVERSION} >= 390.042 && ${LINUX_DEFAULT} != c6
+
+.if ${ARCH} == amd64
+.if ${NVVERSION} >= 310.014
+LINUX32_LIBS+=	libnvcuvid.so.${PORTVERSION}
+LINUX32_LINKS+=	libnvcuvid.so.${PORTVERSION} libnvcuvid.so.1 \
+		libnvcuvid.so.${PORTVERSION} libnvcuvid.so
+.else
+PLIST_RE+=	'\,${LINUXBASE}/usr/lib/libnvcuvid\.so,d'
+.endif
+.endif
+.endif	# ${PORT_OPTIONS:MLINUX}
+
+.if ${PORT_OPTIONS:MLINUX} && ${ARCH} == amd64
+PLIST_SUB+=	LINUX32=""
+.else
+PLIST_SUB+=	LINUX32="@comment "
+.endif
+
+# XXX Only needed to obtain PORTVERSION.
+.include <bsd.port.pre.mk>
+
+post-extract-LINUX-on:
+	@(cd ${WRKDIR} && ${SH} \
+		${DISTDIR}/NVIDIA-Linux-${ARCH_SUFX}-${DISTVERSION}.run \
+		--extract-only > /dev/null)
+
+pre-patch:
+.for p in ${SUB_PATCHES}
+	@${SED} 's/%%NVSRC%%/${NVSRC}/g' ${PATCHDIR}/${p}.in > ${WRKDIR}/${p}
+.endfor
+.for p in ${SUB_PATCHES}
+EXTRA_PATCHES+=	${WRKDIR}/${p}
+.endfor
 
 post-patch: .SILENT
 # We should support -CURRENT: kill the check
@@ -119,18 +434,9 @@ post-patch: .SILENT
 	${REINPLACE_CMD} -E '/#include "machine\/\.\.\/linux(32)?\/linux.h"/ \
 		{ x ; s/.*/#include "machine\/..\/..\/compat\/linux\/linux_ioctl.h"/ ; H ; x ; }' \
 			${WRKSRC}/src/${NVSRC}/nvidia_linux.c
-# Adjust `vm_object' locking after FreeBSD src r248084 and bogus memset() call
-	${REINPLACE_CMD} -e '/#include <vm\/vm_object.h>/ \
-		{ x ; s/.*/#include <sys\/rwlock.h>/ ; G ; }' \
-			${WRKSRC}/src/${NVSRC}/nv-freebsd.h
-	${REINPLACE_CMD} -E 's/(VM_OBJECT_)(UN)?(LOCK)/\1W\2\3/ ; \
-		/memset/s/sizeof\(ci/sizeof(*ci/' \
-			${WRKSRC}/src/${NVSRC}/nvidia_subr.c
-# Adjust kmem(9) calls after FreeBSD src r254025
-.if ${NVVERSION} < 331.067
-	${REINPLACE_CMD} -e '/kmem_/s/kernel_map/kernel_arena/' \
+# Fix bogus memset() call
+	${REINPLACE_CMD} -e '/memset/s/sizeof(ci/sizeof(*ci/' \
 		${WRKSRC}/src/${NVSRC}/nvidia_subr.c
-.endif
 # Chase `sys/capability.h' rename to `sys/capsicum.h' in FreeBSD src r263232
 	${REINPLACE_CMD} -e 's:sys/capability\.h:sys/capsicum.h:' \
 		${WRKSRC}/src/${NVSRC}/nv-freebsd.h
@@ -138,8 +444,20 @@ post-patch: .SILENT
 	${REINPLACE_CMD} -e 's:sys/capability\.h:sys/capsicum.h:' \
 		${WRKSRC}/src/nvidia-modeset/nvidia-modeset-freebsd.c
 .endif
-# Respect WITHOUT_LINUX setting
-	${REINPLACE_CMD} -e 's/exists(\/.*/& \&\& !defined(WITHOUT_LINUX)/' \
+# KPI of kmem_alloc_contig(),kmem_free() changed in FreeBSD src r338143,r338318
+.if ${OSVERSION} >= 1200079
+	${REINPLACE_CMD} \
+	    -e 's/kmem_alloc_contig(kmem_arena, /kmem_alloc_contig(/' \
+	    -e 's/kmem_free(kmem_arena, /kmem_free(/' \
+		${WRKSRC}/src/${NVSRC}/nvidia_subr.c
+.endif
+# Pull the right header after FreeBSD src r347984
+.if ${OSVERSION} >= 1300029 && ${NVVERSION} >= 358.009
+	${REINPLACE_CMD} -e '/^#include/s:lock\.h:mutex.h:' \
+		${WRKSRC}/src/nvidia-modeset/nvidia-modeset-freebsd.c
+.endif
+# Disable installation of Linux libraries
+	${REINPLACE_CMD} -e 's/exists(\/.*/& \&\& 0/' \
 		${WRKSRC}/lib/Makefile
 # Do not install VDPAU libraries which are provided by `multimedia/libvdpau'
 # port for a while now
@@ -199,6 +517,13 @@ post-patch: .SILENT
 	${REINPLACE_CMD} -E 's/(x11).*/\1/ ; /doc/d' ${WRKSRC}/Makefile
 .endif
 
+post-patch-LINUX-on:
+.if ${NVVERSION} >= 384.047
+	@${SED} 's/__NV_VK_ICD__/libGLX_nvidia.so.0/' \
+		${LINUX_WRKSRC}/nvidia_icd.json.template > \
+		${LINUX_WRKSRC}/nvidia_icd.json
+.endif
+
 pre-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${MODULESDIR}/drivers \
 		${STAGEDIR}${PREFIX}/${MODULESDIR}/extensions
@@ -208,55 +533,102 @@ post-install: .SILENT
 		${STAGEDIR}${PREFIX}/bin
 # pkg-plist is already overbloated, so use these hacks instead of PLIST_SUB's
 .if ${NVVERSION} >= 304.128 && ${NVVERSION} < 310.019 || ${NVVERSION} >= 361.016
-	${REINPLACE_CMD} -E '/libvdpau(_trace)?\.so/d' ${TMPPLIST}
+	${REINPLACE_CMD} -E '\,${LINUXBASE},!{/libvdpau(_trace)?\.so/d;}' \
+		${TMPPLIST}
 .endif
 .if ${NVVERSION} >= 310.019
-	${REINPLACE_CMD} -e '/libXvMCNVIDIA/d' ${TMPPLIST}
+	${REINPLACE_CMD} -e '\,${LINUXBASE},!{/libXvMCNVIDIA/d;}' ${TMPPLIST}
 .else	# some applications need this symlink (see PR ports/72877)
 	${LN} -sf libXvMCNVIDIA.so.1 \
 		${STAGEDIR}${PREFIX}/lib/libXvMCNVIDIA_dynamic.so.1
 .endif
 .if ${NVVERSION} < 331.013 || ${ARCH} == amd64 && ${NVVERSION} < 334.016
-	${REINPLACE_CMD} -E '/lib(nvidia-)?(EGL|eglcore|GLESv|glsi)/d' \
+	${REINPLACE_CMD} -E '\,${LINUXBASE},!{/lib(nvidia-)?(EGL|eglcore|GLESv|glsi)/d;}' \
 		${TMPPLIST}
 .endif
 .if ${NVVERSION} < 352.009
-	${REINPLACE_CMD} -E '/(lib)?nvidia-(debugdump|smi|ml)/d' ${TMPPLIST}
+	${REINPLACE_CMD} -E '\,${LINUXBASE},!{/(lib)?nvidia-(debugdump|smi|ml)/d;}' \
+		${TMPPLIST}
 .endif
 .if ${NVVERSION} < 355.006
-	${REINPLACE_CMD} -E '/(libEGL_nvidia|GLdispatch|OpenGL)/d' ${TMPPLIST}
+	${REINPLACE_CMD} -E '\,${LINUXBASE},!{/(libEGL_nvidia|GLdispatch|OpenGL)/d;}' \
+		${TMPPLIST}
 .else
-	${REINPLACE_CMD} 's/libEGL\.so\.${PORTVERSION}/libEGL.so/' \
+	${REINPLACE_CMD} '\,${LINUXBASE},!s/libEGL\.so\.${PORTVERSION}/libEGL.so/' \
 		${TMPPLIST}
 .endif
 .if ${NVVERSION} < 358.009
 	${REINPLACE_CMD} '/nvidia-modeset.ko/d' ${TMPPLIST}
 .endif
 .if ${NVVERSION} >= 361.028
-	${REINPLACE_CMD} -E '/(EGL_nvidia\.so|GLESv[12](_CM)?(\.so\.[0-9]+\.[0-9]+))$$/d' \
+	${REINPLACE_CMD} -E '\,${LINUXBASE},!{/(EGL_nvidia\.so|GLESv[12](_CM)?(\.so\.[0-9]+\.[0-9]+))$$/d;}' \
 		${TMPPLIST}
 .else
-	${REINPLACE_CMD} -E '/\/lib\/libGLESv[12](_CM)?(\.so)?(_nvidia.so(\.[0-9]|\.[0-9]+\.[0-9]+)?)?$$/d ; \
-		/libEGL_nvidia\.so\.${PORTVERSION}/d' ${TMPPLIST}
+	${REINPLACE_CMD} -E '\,${LINUXBASE},!{/\/lib\/libGLESv[12](_CM)?(\.so)?(_nvidia.so(\.[0-9]|\.[0-9]+\.[0-9]+)?)?$$/d ; \
+		/libEGL_nvidia\.so\.${PORTVERSION}/d;}' ${TMPPLIST}
 .endif
-# rename libGL.so, libEGL.so and libGLESv2.so
-	${MV} -f ${STAGEDIR}${PREFIX}/lib/libGL.so \
+	${REINPLACE_CMD} -E ${PLIST_RE:S/^/-e /} ${TMPPLIST}
+# Rename some libraries and install a libmap file to resolve conflict with
+# Mesa libraries.
+	${LN} -sf libGL-NVIDIA.so.1 \
 		${STAGEDIR}${PREFIX}/lib/libGL-NVIDIA.so
 	${MV} -f ${STAGEDIR}${PREFIX}/lib/libGL.so.1 \
 		${STAGEDIR}${PREFIX}/lib/libGL-NVIDIA.so.1
+	${RM} -f ${STAGEDIR}${PREFIX}/lib/libGL.so
 .if ${NVVERSION} >= 331.013
-	${MV} -f ${STAGEDIR}${PREFIX}/lib/libEGL.so \
+	${LN} -sf libEGL-NVIDIA.so.1 \
 		${STAGEDIR}${PREFIX}/lib/libEGL-NVIDIA.so
 	${MV} -f ${STAGEDIR}${PREFIX}/lib/libEGL.so.1 \
 		${STAGEDIR}${PREFIX}/lib/libEGL-NVIDIA.so.1
-	${MV} -f ${STAGEDIR}${PREFIX}/lib/libGLESv2.so \
+	${RM} -f ${STAGEDIR}${PREFIX}/lib/libEGL.so
+	${LN} -sf libGLESv2-NVIDIA.so.2 \
 		${STAGEDIR}${PREFIX}/lib/libGLESv2-NVIDIA.so
 	${MV} -f ${STAGEDIR}${PREFIX}/lib/libGLESv2.so.2 \
 		${STAGEDIR}${PREFIX}/lib/libGLESv2-NVIDIA.so.2
+	${RM} -f ${STAGEDIR}${PREFIX}/lib/libGLESv2.so
 .endif
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/libmap.d/
 	${INSTALL_DATA} ${WRKDIR}/nvidia.conf \
 		${STAGEDIR}${PREFIX}/etc/libmap.d/
+
+post-install-LINUX-on:
+.for f d in ${LINUX_DATA}
+	${MKDIR} ${STAGEDIR}${LINUXBASE}${d}
+	${INSTALL_DATA} ${LINUX_WRKSRC}/${f} ${STAGEDIR}${LINUXBASE}${d}
+.endfor
+	${MKDIR} ${STAGEDIR}${LINUXBASE}/usr/bin
+	${INSTALL_SCRIPT} ${LINUX_WRKSRC}/nvidia-bug-report.sh \
+		${STAGEDIR}${LINUXBASE}/usr/bin
+.for p in ${LINUX_PROGS}
+	${INSTALL_PROGRAM} ${LINUX_WRKSRC}/${p} ${STAGEDIR}${LINUXBASE}/usr/bin
+.endfor
+	${MKDIR} ${STAGEDIR}${LINUXBASE}/usr/share/man/man1
+.for m in ${LINUX_MANS}
+	${INSTALL_MAN} ${LINUX_WRKSRC}/${m}.1.gz \
+		${STAGEDIR}${LINUXBASE}/usr/share/man/man1
+.endfor
+	${MKDIR} ${STAGEDIR}${LINUXBASE}${LINUX_LIBDIR}/tls
+	${MKDIR} ${STAGEDIR}${LINUXBASE}${LINUX_LIBDIR}/vdpau
+.for l in ${LINUX_LIBS}
+	${INSTALL_LIB} ${LINUX_WRKSRC}/${l} \
+		${STAGEDIR}${LINUXBASE}${LINUX_LIBDIR}/${l}
+.endfor
+.for s t in ${LINUX_LINKS}
+	${RLN} ${STAGEDIR}${LINUXBASE}${LINUX_LIBDIR}/${s} \
+		${STAGEDIR}${LINUXBASE}${LINUX_LIBDIR}/${t}
+.endfor
+.if ${ARCH} == amd64
+	${MKDIR} ${STAGEDIR}${LINUXBASE}/usr/lib/tls
+	${MKDIR} ${STAGEDIR}${LINUXBASE}/usr/lib/vdpau
+.for l in ${LINUX32_LIBS}
+	${INSTALL_LIB} ${LINUX_WRKSRC}/32/${l} \
+		${STAGEDIR}${LINUXBASE}/usr/lib/${l}
+.endfor
+.for s t in ${LINUX32_LINKS}
+	${RLN} ${STAGEDIR}${LINUXBASE}/usr/lib/${s} \
+		${STAGEDIR}${LINUXBASE}/usr/lib/${t}
+.endfor
+.endif
 
 # Target below can be used instead of standard `makesum' to correctly
 # update distinfo (i.e., keeping other driver version entries intact)
@@ -271,4 +643,4 @@ update-distinfo: makesum .SILENT
 		${MASTERDIR}/distinfo
 	${RM} ${DISTINFO_FILE} ${MASTERDIR}/distinfo.bak
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -14,6 +14,10 @@ LICENSE_NAME=	Q PUBLIC LICENSE version 1.0
 LICENSE_TEXT=	Please refer to: http://www.opensource.org/licenses/qtpl.php for details
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu
 
 USES=		php tar:bzip2

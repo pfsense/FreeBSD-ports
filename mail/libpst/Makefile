@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	libpst
-PORTVERSION=	0.6.71
+PORTVERSION=	0.6.72
 CATEGORIES=	mail converters
-MASTER_SITES=	http://www.five-ten-sg.com/libpst/packages/ \
-		http://fossies.org/unix/privat/ \
+MASTER_SITES=	https://www.five-ten-sg.com/libpst/packages/ \
+		https://fossies.org/unix/privat/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -28,11 +28,11 @@ USES=		gmake iconv libtool pathfix pkgconfig
 
 PORTDOCS=	*
 
-PST2DII_BUILD_DEPENDS=	convert:graphics/ImageMagick
+PST2DII_BUILD_DEPENDS=	convert:graphics/ImageMagick6
 PST2DII_CONFIGURE_OFF=	--enable-dii=no
 PST2DII_CONFIGURE_ON=	--enable-dii=yes
 PST2DII_LIB_DEPENDS=	libgd.so:graphics/gd
-PST2DII_RUN_DEPENDS=	convert:graphics/ImageMagick
+PST2DII_RUN_DEPENDS=	convert:graphics/ImageMagick6
 
 post-patch:
 	@${GREP} -lr malloc.h ${WRKSRC}/ | ${XARGS} ${REINPLACE_CMD} -e 's|malloc.h|stdlib.h|g'

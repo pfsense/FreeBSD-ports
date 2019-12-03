@@ -3,7 +3,7 @@
 PORTNAME=	opencpn
 PORTVERSION=	4.4.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	astro geography
 
 MAINTAINER=	ml@netfence.it
@@ -20,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	${GH_PROJECT}
 GH_PROJECT=	OpenCPN
 
-USES=		cmake compiler:c++11-lib gettext-tools localbase
+USES=		cmake compiler:c++11-lang gettext-tools gl gnome localbase
 USE_CXXSTD=	c++11
 USE_GL=		gl
 USE_GNOME=	cairo gdkpixbuf2 gtk20
@@ -32,12 +32,18 @@ CMAKE_ARGS=	-DBUNDLE_DOCS=ON -DBUNDLE_GSHHS=CRUDE -DBUNDLE_TCDATA=ON
 LDFLAGS+=	-Wl,-E # plugins
 LDFLAGS+=	-Wl,--as-needed # ICE, SM, Xext
 
-BROKEN_aarch64=		Fails to compile: use of undeclared identifier rand
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.pre.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},' \
 		${WRKSRC}/src/mygdal/cpl_csv.cpp \
 		${WRKSRC}/src/mygdal/cpl_findfile.cpp \
 		${WRKSRC}/data/doc/help_en_US.html
+.if ${ARCH} != amd64 && ${ARCH} != i386
+	@${REINPLACE_CMD} -e '/-msse/d' -e '/-mssse3/d' \
+		-e '/-mavx2/d' ${WRKSRC}/CMakeLists.txt
+.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

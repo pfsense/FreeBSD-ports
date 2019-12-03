@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	FluidPlug
-PORTVERSION=	g20161020
+PORTVERSION=	g20181209
 PORTREVISION=	2
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
 USES=		gmake pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	falkTX
-GH_TAGNAME=	889b256
+GH_TAGNAME=	8457f10
 
 SOUNDFONT_DIR=	${PREFIX}/share/sounds/sf2
 
@@ -28,7 +28,7 @@ OPTIONS_DEFINE_i386=	SSE
 OPTIONS_DEFAULT_amd64=	SSE
 OPTIONS_DEFAULT_i386=	SSE
 
-SSE_MAKE_ARGS=	PORT_SIMD_FLAGS="-msse -msse2 -mfpmath=sse"
+SSE_MAKE_ARGS=	PORT_SIMD_FLAGS="-mtune=generic -msse -msse2 -mfpmath=sse"
 
 post-patch:
 	@${REINPLACE_CMD} -e ' \

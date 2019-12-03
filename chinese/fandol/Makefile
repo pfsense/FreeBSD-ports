@@ -3,6 +3,7 @@
 
 PORTNAME=	fandol
 PORTVERSION=	0.3
+PORTREVISION=	1
 CATEGORIES=	chinese
 MASTER_SITES=	http://mirrors.ctan.org/fonts/
 DISTNAME=	${PORTNAME}
@@ -11,7 +12,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CTAN Fandol: Four GNU GPLv3-licensed Chinese OpenType fonts
 
 LICENSE=	GPLv3
-LICENSE_FILES=	${WRKSRC}/fandol/COPYING
+LICENSE_FILE=	${WRKSRC}/fandol/COPYING
 
 USES=		fonts zip
 NO_WRKSUBDIR=	yes

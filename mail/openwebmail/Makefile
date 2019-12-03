@@ -3,7 +3,7 @@
 
 PORTNAME=	openwebmail
 PORTVERSION=	2.53
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	mail
 MASTER_SITES=	http://openwebmail.acatysmoof.com/download/release/ \
 		http://openwebmail.org/openwebmail/download/release/
@@ -11,7 +11,8 @@ MASTER_SITES=	http://openwebmail.acatysmoof.com/download/release/ \
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Webmail system designed to manage big mail folder files efficiently
 
-RUN_DEPENDS=	p5-Text-Iconv>=0:converters/p5-Text-Iconv
+RUN_DEPENDS=	p5-Text-Iconv>=0:converters/p5-Text-Iconv	\
+		p5-CGI>=0:www/p5-CGI
 
 USES=		perl5
 USE_PERL5=	run build patch
@@ -42,7 +43,7 @@ LEARNSPAM_DESC=	Learn HAM/SPAM
 LEARNSPAM_IMPLIES=	SPAMCHECK
 LSOF_DESC=	lsof
 LSOF_RUN_DEPENDS=	${LOCALBASE}/sbin/lsof:sysutils/lsof
-MAGICK_RUN_DEPENDS=	convert:graphics/ImageMagick
+MAGICK_RUN_DEPENDS=	convert:graphics/ImageMagick6
 PAM_DESC=	PAM
 PAM_RUN_DEPENDS=	p5-Authen-PAM>=0:security/p5-Authen-PAM
 POP3_OVER_SSL_DESC=	POP3 Over SSL

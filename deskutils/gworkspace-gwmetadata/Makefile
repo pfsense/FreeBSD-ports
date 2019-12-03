@@ -2,7 +2,7 @@
 
 PORTNAME=	gworkspace
 PORTVERSION=	0.9.4
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	deskutils gnustep
 #MASTER_SITES=	http://www.gnustep.it/enrico/gworkspace/
 MASTER_SITES=	GNUSTEP/usr-apps
@@ -12,6 +12,10 @@ MAINTAINER=	theraven@FreeBSD.org
 COMMENT=	GWMetadata for GNUstep workspace manager
 
 LICENSE=	GPLv2
+
+.if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
+BROKEN=		ld: error: /usr/local/GNUstep/System/Library/Libraries/libFSNode.so: undefined reference to NSApplicationFileType
+.endif
 
 USES=		gnustep sqlite
 USE_GNUSTEP=	back build

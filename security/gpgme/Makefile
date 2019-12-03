@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gpgme
-PORTVERSION=	1.10.0
-PORTREVISION?=	1
+PORTVERSION=	1.13.1
+PORTREVISION?=	0
 CATEGORIES?=	security
 MASTER_SITES=	GNUPG/gpgme
 
@@ -16,11 +16,8 @@ LICENSE_FILE?=	${WRKSRC}/COPYING.LESSER
 LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpg-error.so:security/libgpg-error
 
-USES=		cpe gmake libtool localbase:ldflags shebangfix tar:bzip2
+USES=		compiler:c11 cpe gmake libtool localbase:ldflags tar:bzip2
 USE_LDCONFIG=	yes
-
-SHEBANG_FILES=	tests/gpg/pinentry
-bash_CMD=	/bin/sh
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -88,13 +85,11 @@ BUILD_DEPENDS+=	swig3.0:devel/swig30 \
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 USES+=		python
 USE_PYTHON=	py3kplist flavors
-CONFIGURE_ENV+=	SWIG=${LOCALBASE}/bin/swig3.0
+CONFIGURE_ARGS+=--enable-languages="python"
+CONFIGURE_ENV+=	BSD_PYTHON="${PYTHON_CMD}" \
+		BSD_PYTHON_VERSION="${PYTHON_VER}" \
+		SWIG="${LOCALBASE}/bin/swig3.0"
 PLIST_SUB+=	VERSION=${PORTVERSION}
-.    if ${FLAVOR:Upy27:Mpy2*}
-CONFIGURE_ARGS+=--enable-languages="python2"
-.    else
-CONFIGURE_ARGS+=--enable-languages="python3"
-.    endif
 .  endif
 .endif
 
@@ -109,6 +104,9 @@ post-patch:
 .endif
 	@${REINPLACE_CMD} -e 's|^clfilesdir.*|clfilesdir=$$\(libdir\)/common-lisp/gpgme|g' \
 		${WRKSRC}/lang/cl/Makefile.in
+	@${REINPLACE_CMD} -e 's|-Wsuggest-override||g' \
+		${WRKSRC}/lang/cpp/src/Makefile.in \
+		${WRKSRC}/lang/qt/src/Makefile.in
 
 post-patch-DOXYGEN-off:
 	@${REINPLACE_CMD} -e '/SUBDIRS/s|doc||' \

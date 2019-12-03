@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	lxml
-PORTVERSION=	4.1.1
+PORTVERSION=	4.3.4
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,10 +14,8 @@ COMMENT=	Pythonic binding for the libxml2 and libxslt libraries
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/doc/licenses/BSD.txt
 
-LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
-		libxslt.so:textproc/libxslt
-
-USES=		python uniquefiles:dirs
+USES=		compiler gnome python uniquefiles:dirs
+USE_GNOME=	libxml2 libxslt
 USE_PYTHON=	autoplist concurrent distutils
 
 LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/lib
@@ -26,13 +25,20 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
+post-install:
+	${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} \
+	-name '*.so' -exec ${STRIP_CMD} {} +
+
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS_FILES:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} doc ${STAGEDIR}${DOCSDIR}
 
-post-install:
-	${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} \
-	-name '*.so' -exec ${STRIP_CMD} {} +
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+# if using gcc, force modern GCC due to use of #pragma
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+USE_GCC=	yes
+.endif
+
+.include <bsd.port.post.mk>

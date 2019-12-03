@@ -2,13 +2,14 @@
 
 PORTNAME=	printsupport
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	print
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt print support module
 
-USES=		qmake:no_env qt-dist:5,base
+USES=		compiler:c++11-lang qmake:no_env qt-dist:5,base
 USE_QT=		core gui widgets qmake_build buildtools_build
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}

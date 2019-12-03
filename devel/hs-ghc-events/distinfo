@@ -1,3 +1,9 @@
-TIMESTAMP = 1523991488
-SHA256 (cabal/ghc-events-0.7.2.tar.gz) = b01643f72a448fcd63a0b48781d71b21fb0bb22a54967f0b8a39db0e5638ffbf
-SIZE (cabal/ghc-events-0.7.2.tar.gz) = 203071
+TIMESTAMP = 1559892080
+SHA256 (cabal/ghc-events-0.9.0.tar.gz) = 20d4e10bcbe8d1dadbd5d1e6bb786d621a25c1117f57d954bd14780cb1748d00
+SIZE (cabal/ghc-events-0.9.0.tar.gz) = 1450026
+SHA256 (cabal/primitive-0.6.4.0/primitive-0.6.4.0.tar.gz) = 4cbeaf7924dd79221f327ea101a29bf35c4976dc3319df157ff46ea68e6a0c64
+SIZE (cabal/primitive-0.6.4.0/primitive-0.6.4.0.tar.gz) = 45937
+SHA256 (cabal/primitive-0.6.4.0/revision/1.cabal) = 5b6a2c3cc70a35aabd4565fcb9bb1dd78fe2814a36e62428a9a1aae8c32441a1
+SIZE (cabal/primitive-0.6.4.0/revision/1.cabal) = 2079
+SHA256 (cabal/vector-0.12.0.2/vector-0.12.0.2.tar.gz) = 52e89dacaff10bedb8653181963cae928f9674a099bb706713dae83994bbc0f3
+SIZE (cabal/vector-0.12.0.2/vector-0.12.0.2.tar.gz) = 124743

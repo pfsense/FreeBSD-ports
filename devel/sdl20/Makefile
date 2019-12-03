@@ -1,9 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	sdl2
-PORTVERSION=	2.0.7
+PORTVERSION=	2.0.10
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://www.libsdl.org/release/
+MASTER_SITES=	https://www.libsdl.org/release/
 DISTNAME=	SDL2-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -16,9 +17,7 @@ GNU_CONFIGURE=	yes
 USES=		gmake iconv libtool localbase:ldflags pathfix pkgconfig
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS+=	--disable-video-opengles \
-			--disable-altivec \
-			--disable-arts \
+CONFIGURE_ARGS+=	--disable-arts \
 			--enable-diskaudio \
 			--enable-dummyaudio \
 			--enable-video-dummy \
@@ -53,21 +52,27 @@ CONFIGURE_ARGS+=	--disable-sse3
 
 MAKE_ENV=	V=1
 
-OPTIONS_DEFINE=		ALSA ASM DLOPEN ESOUND JACK NAS OSS SAMPLERATE	\
-			PULSEAUDIO SNDIO PTHREADS SDL_ATOMIC SDL_AUDIO	\
-			SDL_CPUINFO SDL_EVENTS SDL_FILE SDL_HAPTIC	\
-			SDL_JOYSTICK SDL_LOADSO SDL_POWER SDL_RENDER	\
-			SDL_THREADS SDL_TIMERS SDL_VIDEO VIDEO_KMSDRM	\
-			VIDEO_OPENGL VIDEO_X11
+OPTIONS_DEFINE=		ALSA ASM DLOPEN HIDAPI JACK NAS OSS	\
+			PULSEAUDIO SAMPLERATE SNDIO PTHREADS		\
+			SDL_ATOMIC SDL_AUDIO SDL_CPUINFO SDL_EVENTS	\
+			SDL_FILE SDL_HAPTIC SDL_JOYSTICK SDL_LOADSO	\
+			SDL_POWER SDL_RENDER SDL_THREADS SDL_TIMERS	\
+			SDL_VIDEO UDEV VIDEO_KMSDRM VIDEO_OPENGL	\
+			VIDEO_OPENGLES2 VIDEO_WAYLAND VIDEO_X11
 OPTIONS_DEFAULT=	ASM DLOPEN OSS PTHREADS SDL_ATOMIC SDL_AUDIO	\
 			SDL_CPUINFO SDL_EVENTS SDL_FILE SDL_HAPTIC	\
 			SDL_JOYSTICK SDL_LOADSO SDL_POWER SDL_RENDER	\
 			SDL_THREADS SDL_TIMERS SDL_VIDEO VIDEO_KMSDRM	\
-			VIDEO_OPENGL VIDEO_X11
+			VIDEO_OPENGL VIDEO_OPENGLES2 VIDEO_WAYLAND	\
+			VIDEO_X11
+OPTIONS_DEFINE_powerpc=	ALTIVEC
+OPTIONS_DEFINE_powerpc64=	ALTIVEC
+OPTIONS_DEFAULT_powerpc=	ALTIVEC
+OPTIONS_DEFAULT_powerpc64=	ALTIVEC
 
 ALSA_DESC=		Audio output via the ALSA audio architecture
 DLOPEN_DESC=		Use dlopen for loading 3rd party libraries
-ESOUND_DESC=		Audio output via the EsounD sound server
+HIDAPI_DESC=		Use HIDAPI for low level joystick drivers
 JACK_DESC=		Audio output via the JackD sound server
 NAS_DESC=		Audio output via the Network Audio System
 OSS_DESC=		Audio output via the Open Sound System
@@ -87,12 +92,19 @@ SDL_RENDER_DESC=	Enable the SDL Render subsystem
 SDL_THREADS_DESC=	Enable the SDL Threads subsystem
 SDL_TIMERS_DESC=	Enable the SDL Timers subsystem
 SDL_VIDEO_DESC=		Enable the SDL Video subsystem
-VIDEO_KMSDRM_DESC=	KMSDRM rendering support
+UDEV_DESC=		Use udev for input device detection
+VIDEO_KMSDRM_DESC=	KMSDRM display support
 VIDEO_OPENGL_DESC=	OpenGL rendering support
-VIDEO_X11_DESC=		X11 rendering support
+VIDEO_OPENGLES2_DESC=	OpenGL ES 2.x rendering support
+VIDEO_WAYLAND_DESC=	Wayland display support
+VIDEO_X11_DESC=		X11 display support
 
+ALTIVEC_CONFIGURE_ENABLE=	altivec
 ASM_CONFIGURE_ENABLE=		assembly
 DLOPEN_CONFIGURE_ENABLE=	sdl-dlopen
+DLOPEN_CONFIGURE_OFF=		--disable-video-vulkan
+HIDAPI_CONFIGURE_ENABLE=	hidapi
+HIDAPI_IMPLIES=			SDL_JOYSTICK
 PTHREADS_CONFIGURE_ENABLE=	pthreads pthread-sem
 SAMPLERATE_CONFIGURE_ENABLE=	libsamplerate libsamplerate-shared
 SAMPLERATE_LIB_DEPENDS=		libsamplerate.so:audio/libsamplerate
@@ -109,6 +121,9 @@ SDL_RENDER_CONFIGURE_ENABLE=	render
 SDL_THREADS_CONFIGURE_ENABLE=	threads
 SDL_TIMERS_CONFIGURE_ENABLE=	timers
 SDL_VIDEO_CONFIGURE_ENABLE=	video
+UDEV_CONFIGURE_ENABLE=		libudev
+UDEV_LIB_DEPENDS=		libudev.so:devel/libudev-devd
+UDEV_BUILD_DEPENDS=		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
 .include <bsd.port.options.mk>
 
@@ -132,15 +147,7 @@ LIB_DEPENDS+=		libjack.so:audio/jack
 CONFIGURE_ARGS+=	--disable-jack --disable-jack-shared
 .endif
 
-.if ${PORT_OPTIONS:MESOUND}
-.if !${PORT_OPTIONS:MSDL_AUDIO}
-IGNORE=	option ESOUND requires SDL_AUDIO
-.endif
-CONFIGURE_ARGS+=	--enable-esd --enable-esd-shared
-USE_GNOME+=		esound
-.else
 CONFIGURE_ARGS+=	--disable-esd --disable-esd-shared
-.endif
 
 .if ${PORT_OPTIONS:MNAS}
 .if !${PORT_OPTIONS:MSDL_AUDIO}
@@ -196,6 +203,7 @@ CONFIGURE_ARGS+=	--disable-video-kmsdrm --disable-video-kmsdrm
 IGNORE=	option VIDEO_OPENGL requires SDL_VIDEO
 .endif
 CONFIGURE_ARGS+=	--enable-video-opengl
+USES+=			gl
 USE_GL+=		gl
 .else
 CONFIGURE_ARGS+=	--disable-video-opengl
@@ -225,6 +233,36 @@ CONFIGURE_ARGS+=	--disable-video-x11 \
 			--disable-video-x11-scrnsaver \
 			--disable-video-x11-xshape \
 			--disable-video-x11-vm
+.endif
+
+.if ${PORT_OPTIONS:MVIDEO_OPENGLES2}
+.if !${PORT_OPTIONS:MSDL_VIDEO}
+IGNORE=	option VIDEO_OPENGLES2 requires SDL_VIDEO
+.endif
+CONFIGURE_ARGS+=	--enable-video-opengles \
+			--enable-video-opengles2
+USE_GL+=		egl glesv2
+.else
+CONFIGURE_ARGS+=	--disable-video-opengles \
+			--disable-video-opengles2
+.endif
+
+.if ${PORT_OPTIONS:MVIDEO_WAYLAND}
+.if !${PORT_OPTIONS:MSDL_VIDEO}
+IGNORE=	option VIDEO_WAYLAND requires SDL_VIDEO
+.endif
+.if !${PORT_OPTIONS:MVIDEO_OPENGLES2}
+IGNORE=	option VIDEO_WAYLAND requires VIDEO_OPENGLES2
+.endif
+CONFIGURE_ARGS+=	--enable-video-wayland \
+			--enable-wayland-shared
+BUILD_DEPENDS+=		wayland-protocols>0:graphics/wayland-protocols \
+			${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+LIB_DEPENDS+=		libwayland-egl.so:graphics/wayland \
+			libxkbcommon.so:x11/libxkbcommon
+.else
+CONFIGURE_ARGS+=	--disable-video-wayland \
+			--disable-wayland-shared
 .endif
 
 .include <bsd.port.pre.mk>

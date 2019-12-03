@@ -4,7 +4,7 @@
 PORTNAME=	geda
 PORTVERSION=	1.8.2
 DISTVERSIONPREFIX=gaf-
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://ftp.geda-project.org/${PORTNAME}-gaf/stable/v${PORTVERSION:R}/${PORTVERSION}/
@@ -13,6 +13,10 @@ MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	GPL Electronic Design Automation tools
 
 LICENSE=	GPLv2+
+
+.if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
+BROKEN=		ld: error: ../src/.libs/libgeda.so: undefined reference to g_input_stream_get_type
+.endif
 
 LIB_DEPENDS=	libstroke.so:devel/libstroke \
 		libguile.so:lang/guile

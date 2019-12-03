@@ -2,7 +2,7 @@
 
 PORTNAME=	wxformbuilder
 DISTVERSION=	3.5.0-beta
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-nightly/${DISTVERSION}
 DISTNAME=	wxFormBuilder_v${DISTVERSION}-source
@@ -16,7 +16,6 @@ USES=		compiler:c++11-lib dos2unix gmake zip
 USE_CSTD=	c++11
 USE_LDCONFIG=	yes
 USE_WX=		3.0+
-WANT_UNICODE=	yes
 WRKSRC=		${WRKDIR}/source
 MAKE_ARGS=	config=release ARCH=
 BUILD_WRKSRC=	${WRKSRC}/build/${WX_VERSION}/gmake

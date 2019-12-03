@@ -1,0 +1,24 @@
+--- Makefile.orig	2019-08-12 00:36:38 UTC
++++ Makefile
+@@ -41,7 +41,7 @@ cc-option = $(shell if $(CC) $(1) -c -x c /dev/null -o
+ 	      1>&2 2>/dev/null; then echo $(1); fi)
+ 
+ override CFLAGS :=							\
+-	-O2 -fomit-frame-pointer $(CFLAGS) -std=c99 -I. -Icommon	\
++	$(CFLAGS) -std=c99 -I. -Icommon	\
+ 	-Wall -Wundef							\
+ 	$(call cc-option,-Wpedantic)					\
+ 	$(call cc-option,-Wdeclaration-after-statement)			\
+@@ -267,10 +267,10 @@ all:$(DEFAULT_TARGETS)
+ install:all
+ 	install -d $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCDIR) $(DESTDIR)$(BINDIR)
+ 	install -m644 $(STATIC_LIB) $(DESTDIR)$(LIBDIR)
+-	install -m755 $(SHARED_LIB) $(DESTDIR)$(LIBDIR)
++	install -s -m755 $(SHARED_LIB) $(DESTDIR)$(LIBDIR)
+ 	ln -sf $(SHARED_LIB) $(DESTDIR)$(LIBDIR)/libdeflate.so
+ 	install -m644 libdeflate.h $(DESTDIR)$(INCDIR)
+-	install -m755 gzip $(DESTDIR)$(BINDIR)/libdeflate-gzip
++	install -s -m755 gzip $(DESTDIR)$(BINDIR)/libdeflate-gzip
+ 	ln -f $(DESTDIR)$(BINDIR)/libdeflate-gzip $(DESTDIR)$(BINDIR)/libdeflate-gunzip
+ 
+ uninstall:

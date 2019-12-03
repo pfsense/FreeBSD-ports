@@ -1,24 +1,28 @@
 # $FreeBSD$
 
 PORTNAME=	comic-neue
-PORTVERSION=	1.1
-PORTREVISION=	2
+PORTVERSION=	2.4
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
-MASTER_SITES=	http://comicneue.com/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free Comic Sans alternative
 
-LICENSE=	CC0-1.0
+LICENSE=	OFL11
+LICENSE_FILE=	${WRKDIR}/comicneue-${PORTVERSION}/SIL-License.txt
 
-USES=		fonts zip
+USES=		fonts
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	crozynski
+GH_PROJECT=	comicneue
+
 NO_BUILD=	yes
-
-SUB_FILES=	pkg-message
-WRKSRC=		${WRKDIR}/${DISTNAME}
+WRKSRC_SUBDIR=		OTF
 
 do-install:
 	${MKDIR} ${STAGEDIR}${FONTSDIR}
-	${INSTALL_DATA} ${WRKSRC}/*.ttf ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.otf ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

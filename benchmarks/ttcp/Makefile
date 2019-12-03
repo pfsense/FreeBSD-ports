@@ -15,6 +15,10 @@ COMMENT=	Benchmarking tool for analysing TCP and UDP performance
 
 LICENSE=	PD
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 NO_WRKSUBDIR=	yes
 
 OPTIONS_DEFINE=	DOCS

@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	viking
-PORTVERSION=	1.6.2
-PORTREVISION=	5
+PORTVERSION=	1.7
+PORTREVISION=	1
 CATEGORIES=	astro
 MASTER_SITES=	SF/${PORTNAME}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Program to manage GPS data (tracks, waypoints, etc.)
 
 LICENSE=	GPLv2+
@@ -20,7 +20,9 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfreetype.so:print/freetype2 \
 		libgexiv2.so:graphics/gexiv2 \
 		libpcre.so:devel/pcre \
-		libpng.so:graphics/png
+		libpng.so:graphics/png \
+		libgeoclue-2.so:net/geoclue \
+		liboauth.so:net/liboauth
 RUN_DEPENDS=	gpsbabel:astro/gpsbabel
 
 USES=		compiler:c++11-lib gmake iconv desktop-file-utils perl5 pkgconfig tar:bzip2
@@ -39,9 +41,10 @@ PORTDOCS=	AUTHORS ChangeLog NEWS README
 OPTIONS_DEFINE=		DOCS GEOCACHES NLS GEOTAG GPSD MAPNIK MBTILES
 OPTIONS_DEFAULT=	GEOTAG GPSD JOSM MAPNIK MBTILES
 
-OPTIONS_MULTI=		OpenStreetMap-Editor
-OPTIONS_MULTI_OpenStreetMap-Editor=	JOSM MERKAATOR
+OPTIONS_MULTI=		EDITOR
+OPTIONS_MULTI_EDITOR=	JOSM MERKAATOR
 
+EDITOR_DESC=	OpenStreetMap editor
 GEOCACHES_DESC=	GeoCaches Acquire support
 GEOTAG_DESC=	Geotag support
 GPSD_DESC=	Realtime GPS tracking

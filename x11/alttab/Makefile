@@ -3,10 +3,10 @@
 
 PORTNAME=	alttab
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.0
+DISTVERSION=	1.4.0
 CATEGORIES=	x11
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Task switcher for minimalistic window managers
 
 LICENSE=	GPLv3
@@ -16,6 +16,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:devel/uthash
 LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		localbase pkgconfig
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	sagb
 GNU_CONFIGURE=	yes
@@ -27,5 +28,7 @@ PLIST_FILES=	bin/alttab \
 PORTDOCS=	README \
 		alttab.ad \
 		wm-setup.md
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

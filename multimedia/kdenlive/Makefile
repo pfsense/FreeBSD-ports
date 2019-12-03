@@ -1,6 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	kdenlive
+PORTREVISION=	4
+# NOTE KDE_APPLICATIONS_VERSION is set explicitly in this port, not 19.08
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	multimedia kde kde-applications
 
@@ -10,18 +12,23 @@ COMMENT=	KDE professional quality non-linear video editing suite
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libmlt.so:multimedia/mlt
-BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:multimedia/v4l_compat
+BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
+		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 RUN_DEPENDS=	ffmpeg${FFMPEG_SUFX}:multimedia/ffmpeg${FFMPEG_SUFX} \
 		${LOCALBASE}/lib/mlt/libmltqt.so:multimedia/mlt-qt5
 
-USES=		cmake:outsource desktop-file-utils gettext-tools pkgconfig \
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext-tools pkgconfig \
 		qt:5 shared-mime-info kde:5 tar:xz
-USE_KDE=	archive bookmarks config configwidgets coreaddons crash \
-		dbusaddons ecm filemetadata guiaddons iconthemes \
-		init_run kio newstuff notifications notifyconfig \
-		textwidgets widgetsaddons xmlgui
-USE_QT=		buildtools_build concurrent core dbus gui qmake_build \
-		qml quick quickcontrols_run script svg webkit widgets
+USE_GL=		gl glu
+USE_KDE=	archive attica auth bookmarks codecs completion config \
+		configwidgets coreaddons crash dbusaddons ecm filemetadata \
+		guiaddons i18n iconthemes kio itemviews jobwidgets newstuff \
+		notifications notifyconfig service solid sonnet textwidgets \
+		widgetsaddons xmlgui \
+		init_run
+USE_QT=		concurrent core dbus declarative gui network xml \
+		buildtools_build qmake_build \
+		quickcontrols_run script svg webkit widgets
 USE_XORG=	x11
 CFLAGS+=	-I${LOCALBASE}/include # linux/input.h
 CMAKE_ARGS=	-DFFMPEG_SUFFIX:STRING="${FFMPEG_SUFX}"
@@ -29,17 +36,24 @@ CMAKE_ARGS=	-DFFMPEG_SUFFIX:STRING="${FFMPEG_SUFX}"
 # Keep in sync with multimedia/mlt, possibly.
 FFMPEG_SUFX=	# Currently empty.
 
-OPTIONS_DEFINE=	DVDWIZARD FREI0R LADSPA SCREENCAST V4L XINE
-OPTIONS_DEFAULT=DVDWIZARD FREI0R LADSPA SCREENCAST V4L XINE
+OPTIONS_DEFINE=	DVDWIZARD FILESHARE FREI0R LADSPA SCREENCAST V4L XINE DOCS
+OPTIONS_DEFAULT=DVDWIZARD FILESHARE FREI0R SCREENCAST V4L XINE
+# As long as LADSPA -> audio/swhplugins is i386/amd64-only
+OPTIONS_DEFAULT_amd64=	LADSPA
+OPTIONS_DEFAULT_i386=	LADSPA
 OPTIONS_SUB=	yes
 
 DVDWIZARD_DESC=	DVD authoring via DVDAuthor and cdrtools
+FILESHARE_DESC=	Common KF5 filesharing support
 SCREENCAST_DESC=Screen capture support via recordMyDesktop
 V4L_DESC=	Webcam support via Video4Linux
 XINE_DESC=	DVD preview support via xine
 
 DVDWIZARD_RUN_DEPENDS=	dvdauthor:multimedia/dvdauthor \
 			cdrecord:sysutils/cdrtools
+
+FILESHARE_USE=	KDE=purpose
+FILESHARE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_KF5Purpose
 
 FREI0R_RUN_DEPENDS=	frei0r-plugins>=0:graphics/frei0r-plugins
 
@@ -51,7 +65,10 @@ V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 V4L_CMAKE_OFF=		-DWITH_LibV4L2:BOOL=FALSE
 
 XINE_RUN_DEPENDS=	xine:multimedia/xine
- 
+
+# kdenlive 19.04 has some issues that still need to be sorted out.
+KDE_APPLICATIONS_VERSION=	18.12.3
+
 post-patch:
 	@${REINPLACE_CMD} -e '/^update_xdg_mimetypes/ d' \
 		-e '/SharedMimeInfo/ d' \

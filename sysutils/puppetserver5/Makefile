@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	puppetserver
-PORTVERSION=	5.3.1
+PORTVERSION=	5.3.9
 CATEGORIES=	sysutils java
-MASTER_SITES=	http://downloads.puppetlabs.com/puppet/
+MASTER_SITES=	https://downloads.puppetlabs.com/puppet/
 PKGNAMESUFFIX=	5
 
 MAINTAINER=	puppet@FreeBSD.org
@@ -11,9 +11,11 @@ COMMENT=	Puppet Server running in the JVM
 
 LICENSE=	APACHE20
 
+BROKEN_FreeBSD_12=	Does not start. See PR 233766
+BROKEN_FreeBSD_13=	Does not start. See PR 233766
+
 RUN_DEPENDS=	bash>=0:shells/bash \
 		puppet5>=0:sysutils/puppet5
-BUILD_DEPENDS=	rubygem-rake>=0:devel/rubygem-rake
 
 USES=		shebangfix
 USE_RC_SUBR=	puppetserver
@@ -23,6 +25,8 @@ USE_RUBY=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes
 JAVA_VERSION=	1.8+
+
+CONFLICTS_INSTALL=	puppetserver-* puppetserver6-*
 
 SHEBANG_FILES=  ext/bin/puppetserver
 
@@ -39,10 +43,8 @@ OPTIONS_RADIO_FACTER=	CFACTER RFACTER
 RFACTER_DESC=	Use facter 2.x (written in Ruby)
 CFACTER_DESC=	Use facter 3.x (experimental rewrite in C++)
 
-RFACTER_BUILD_DEPENDS=	rubygem-facter>=2.0:sysutils/rubygem-facter
 RFACTER_RUN_DEPENDS=	rubygem-facter>=2.0:sysutils/rubygem-facter
 
-CFACTER_BUILD_DEPENDS=	facter>=3.0:sysutils/facter
 CFACTER_RUN_DEPENDS=	facter>=3.0:sysutils/facter
 
 post-patch:

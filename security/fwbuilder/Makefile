@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	fwbuilder
-PORTVERSION=	5.1.0
-DISTVERSIONSUFFIX=	.${BUILD}
-PORTREVISION=	4
+PORTVERSION=	5.3.7
+PORTREVISION=	2
+DISTVERSIONPREFIX=	v
 CATEGORIES=	security
-MASTER_SITES=	SF/${PORTNAME}/Current_Packages/${PORTVERSION}
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Firewall Builder GUI and policy compilers
@@ -16,9 +15,7 @@ BROKEN_powerpc64=	fails to configure: libz library not found
 LIB_DEPENDS=	libxslt.so:textproc/libxslt \
 		libnetsnmp.so:net-mgmt/net-snmp
 
-#OPTIONS_DEFINE=	DOCS
-
-BUILD=		3599
+OPTIONS_DEFINE=	DOCS
 
 .if defined(PKGNAMESUFFIX) && ${PKGNAMESUFFIX} == -devel
 CONFLICTS=	fwbuilder-[234].* fwbuilder-devel-[234].* \
@@ -28,18 +25,14 @@ CONFLICTS=	fwbuilder-[234].* fwbuilder-devel-* \
 		libfwbuilder-[234].* libfwbuilder-devel-*
 .endif
 
-USES=		autoreconf:build gmake libtool qmake:no_configure qt:4 ssl
-PLIST_SUB=	BUILD_VERSION=${PORTVERSION}.${BUILD}
-USE_QT=		corelib \
-		gui \
-		iconengines \
-		inputmethods \
+USES=		autoreconf:build gmake libtool qmake:no_configure qt:5 ssl
+USE_GITHUB=     yes
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
+USE_QT=		buildtools gui \
 		linguist_build \
-		moc_build \
-		rcc_build \
+		printsupport \
 		qmake_build \
 		svg \
-		uic_build \
 		xml
 
 QTDIR?=		${PREFIX}
@@ -76,6 +69,10 @@ post-patch:
 
 pre-configure:
 	(cd ${WRKSRC} && ./autogen.sh)
+
+# Work around an esoteric build issue related to the QT5 build infrastructure
+post-configure:
+	@find ${WRKSRC} -name Makefile | ${XARGS} ${REINPLACE_CMD} 's|-isystem /usr/include||g'
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/fwbuilder

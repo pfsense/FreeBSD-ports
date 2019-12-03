@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	luasec
-PORTVERSION=	0.6
+PORTVERSION=	0.8
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	security
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
@@ -12,15 +12,13 @@ COMMENT=	Lua binding for the OpenSSL library to provide TLS/SSL communication
 
 LICENSE=	MIT
 
-BROKEN_SSL=	openssl-devel
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	brunoos
 
 ALL_TARGET=	bsd
 LIBDIR=		-L${LUA_LIBDIR} -L${WRKSRC}/src/luasocket
 MAKE_ENV+=	INCDIR="-I${LUA_INCDIR} -I${WRKSRC}/src" LUAPATH=${LUA_MODSHAREDIR} \
-		CPATH=${LUA_MODLIBDIR} LD=${CC}
+		CPATH=${LUA_MODLIBDIR} LD=${CC} LIBDIR="${LIBDIR}"
 .if !defined(SLAVE_PORT)
 USES=		lua ssl
 .endif

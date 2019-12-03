@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	clamav
-PORTVERSION=	0.101.2
+PORTVERSION=	0.102.1
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.clamav.net/downloads/production/
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libcurl.so:ftp/curl
 
-USES=		cpe gmake gnome libtool ncurses pathfix pkgconfig ssl
+USES=		compiler cpe gmake gnome libtool ncurses pathfix pkgconfig ssl
 USE_RC_SUBR=	clamav-clamd clamav-freshclam
 USE_LDCONFIG=	yes
 
@@ -45,8 +45,6 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 # force to use -lthr until it's not fixed.
 LDFLAGS+=	-lthr -L${LOCALBASE}/lib
 
-CONFLICTS?=	clamav-milter-[0-9]*
-
 SUB_FILES=	pkg-deinstall
 SUB_LIST+=	DBDIR=${DBDIR} \
 		LOGDIR=${LOGDIR} \
@@ -62,23 +60,22 @@ SUB_LIST+=	DBDIR=${DBDIR} \
 PLIST_SUB+=	CLAMAVUSER=${CLAMAVUSER} \
 		CLAMAVGROUP=${CLAMAVGROUP}
 
-OPTIONS_DEFINE=	ARC ARJ LHA UNZOO UNRAR TESTS MILTER MSPACK LDAP ICONV STDERR \
-		EXPERIMENTAL DOCS IPV6 DMG_XAR JSON PCRE
+OPTIONS_DEFINE=	ARC ARJ DOCS DMG_XAR EXPERIMENTAL JSON LDAP ICONV IPV6 \
+		LHA MILTER MSPACK PCRE STDERR TESTS UNZOO UNRAR
 
-OPTIONS_DEFAULT=	ARC ARJ UNZOO UNRAR DMG_XAR \
-			JSON PCRE MSPACK
+OPTIONS_DEFAULT=	ARC ARJ DMG_XAR JSON MILTER PCRE UNZOO UNRAR
 OPTIONS_SUB=	yes
 
 ARC_DESC=		Enable arch archives support
 ARJ_DESC=		Enable arj archives support
+DMG_XAR_DESC=		Enable DMG and XAR archives support
+EXPERIMENTAL_DESC=	Build experimental code
 LHA_DESC=		Enable lha archives support
-UNZOO_DESC=		Enable zoo archives support
-TESTS_DESC=		Run compile-time tests (req. python)
 MILTER_DESC=		Compile the milter interface
 MSPACK_DESC=		Get mspack support from ports (otherwise use bundled)
 STDERR_DESC=		Print logs to stderr instead of stdout
-EXPERIMENTAL_DESC=	Build experimental code
-DMG_XAR_DESC=		Enable DMG and XAR archives support
+TESTS_DESC=		Run compile-time tests (req. python)
+UNZOO_DESC=		Enable zoo archives support
 
 ARC_RUN_DEPENDS=	arc:archivers/arc
 ARJ_RUN_DEPENDS=	arj:archivers/arj
@@ -144,9 +141,7 @@ SED_CONF=	-E -e 's|^\#?(Example)$$|\#\1|' \
 		-e 's|^\#?(MilterSocket) */tmp.*$$|\1 ${CLAMAV_MILTER_SOCKET}|' \
 		-e 's|^\#?(ClamdSocket).*$$|\1 unix:${CLAMAV_CLAMD_SOCKET}|'
 
-.if ${ARCH} == "armv6"
-WITH_DEBUG=	yes
-.endif
+.include <bsd.port.pre.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PTHREAD_LIBS%%|-lthr|g' \
@@ -156,7 +151,7 @@ post-patch:
 		${WRKSRC}/etc/clamd.conf.sample \
 		${WRKSRC}/etc/freshclam.conf.sample \
 		${WRKSRC}/etc/clamav-milter.conf.sample
-.if exists(/usr/lib/libstdc++.so)
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 	@${REINPLACE_CMD} -e 's|-Wno-logical-op-parentheses||' \
 			  -e 's|-Wno-dangling-else||' \
 		${WRKSRC}/libclamav/Makefile.am \
@@ -188,4 +183,4 @@ post-install:
 		  ${STAGEDIR}${RUNDIR}
 	(cd ${WRKSRC}/docs/html; ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/html)
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

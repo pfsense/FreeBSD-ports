@@ -3,6 +3,7 @@
 
 PORTNAME=	snappy
 PORTVERSION=	1.1.6
+PORTREVISION=	1
 CATEGORIES=	archivers
 
 MAINTAINER=	vanilla@FreeBSD.org
@@ -10,7 +11,7 @@ COMMENT=	Fast compressor/decompressor library
 
 LICENSE=	BSD3CLAUSE
 
-USES=		autoreconf libtool pathfix pkgconfig
+USES=		autoreconf compiler:c++11-lang libtool pathfix pkgconfig
 CONFIGURE_ARGS=	--disable-gtest
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

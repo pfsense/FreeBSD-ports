@@ -11,6 +11,10 @@ EXTRACT_ONLY=	# none
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of AT&T Research UNIX V8 newer(1)
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 CONFLICTS=	teTeX-base-[0-9]* tex-[0-9]* ja-ptex-base-*
 
 PLIST_FILES=	bin/newer

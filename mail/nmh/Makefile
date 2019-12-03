@@ -3,6 +3,7 @@
 
 PORTNAME=	nmh
 PORTVERSION=	1.7.1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	SAVANNAH
 
@@ -20,9 +21,11 @@ CONFIGURE_ARGS=	--libdir=${PREFIX}/libexec/nmh \
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
 OPTIONS_DEFINE=	DOCS HASH_BKP SASL2 TLS REPLYFILTER
+OPTIONS_RADIO=	MIME_HTML
 OPTIONS_SINGLE=	MTS LOCKING
 OPTIONS_SINGLE_MTS=	SMTP SENDMAIL_SMTP SENDMAIL_PIPE
 OPTIONS_SINGLE_LOCKING=	DOT FCNTL FLOCK LOCKF
+OPTIONS_RADIO_MIME_HTML=	ELINKS LINKS LYNX W3M
 
 SASL2_DESC=	SASL2 support
 SASL2_CONFIGURE_WITH=	cyrus-sasl
@@ -55,7 +58,26 @@ FLOCK_CONFIGURE_ON=	--with-locking=flock
 LOCKF_DESC=	lockf file locking
 LOCKF_CONFIGURE_ON=	--with-locking=lockf
 
-OPTIONS_DEFAULT=	SMTP FLOCK
+# The reason for BUILD_DEPENDS is nmh detects and configures itself for
+# whichever text-based browser is installed.
+
+ELINKS_DESC=	Install dependencies for www/elinks
+ELINKS_BUILD_DEPENDS=	elinks>=0:www/elinks
+ELINKS_RUN_DEPENDS=	elinks>=0:www/elinks
+
+LINKS_DESC=	Install dependencies for www/links
+LINKS_BUILD_DEPENDS=	links>=0:www/links
+LINKS_RUN_DEPENDS=	links>=0:www/links
+
+LYNX_DESC=	Install dependencies for www/lynx
+LYNX_BUILD_DEPENDS=	lynx>=0:www/lynx
+LYNX_RUN_DEPENDS=	lynx>=0:www/lynx
+
+W3M_DESC=	Install dependencies for www/w3m
+W3M_BUILD_DEPENDS=	w3m>=0:www/w3m
+W3M_RUN_DEPENDS=	w3m>=0:www/w3m
+
+OPTIONS_DEFAULT=	SMTP FLOCK W3M
 
 .include <bsd.port.options.mk>
 
@@ -72,8 +94,7 @@ LDFLAGS+=	-g
 DEBUG_FLAGS+=	-O0 -Wall -Wextra -g
 .endif
 
-CONFLICTS=	ja-mh-[0-9]*
-CONFLICTS_INSTALL=	pixie-* p5-Dist-Joseki-*
+CONFLICTS_INSTALL=	ja-mh-[0-9]* pixie-* p5-Dist-Joseki-*
 
 post-install:
 	@${FIND} ${STAGEDIR}${ETCDIR} -type f -exec ${MV} {} {}-dist \;

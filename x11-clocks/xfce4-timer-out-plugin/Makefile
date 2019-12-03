@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-time-out-plugin
-PORTVERSION=	1.0.2
-PORTREVISION=	1
+PORTVERSION=	1.0.3
 CATEGORIES=	x11-clocks xfce
-MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -13,12 +12,23 @@ COMMENT=	Timer out plugin for Xfce
 
 LICENSE=	GPLv2
 
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
+
+USES=		gettext-tools gmake gnome libtool pkgconfig tar:bzip2 \
+		xfce:gtk2 xorg
+USE_GNOME=	cairo gtk20 intltool
+USE_XFCE=	panel
+USE_XORG=	x11
+
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
-USES=		gettext gmake libtool pkgconfig xfce tar:bzip2
-USE_GNOME=	gtk20 intltool intlhack
-USE_XFCE=	panel
-USE_XORG=	x11
+
+OPTIONS_DEFINE=		NLS
+OPTIONS_SUB=		yes
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext-runtime
 
 .include <bsd.port.mk>

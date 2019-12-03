@@ -13,9 +13,10 @@ LICENSE=	BSD3CLAUSE MIT
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-BUILD_DEPENDS=	cmake:devel/cmake
-
+BROKEN_powerpc=		does not compile
 BROKEN_powerpc64=	does not build: undefined reference to fmax
+
+BUILD_DEPENDS=	cmake:devel/cmake
 
 CONFIGURE_WRKSRC=	${WRKDIR}/build
 BUILD_WRKSRC=		${WRKDIR}/build
@@ -25,7 +26,7 @@ TEST_TARGET=		test
 
 CMAKE_SOURCE_PATH=	${WRKSRC}
 
-USES=		cmake tar:bzip2
+USES=		cmake:insource tar:bzip2
 USE_LDCONFIG=	yes
 
 LLVM_SVN=	http://llvm.org/svn/llvm-project
@@ -46,8 +47,6 @@ PLIST_FILES=	include/Block.h \
 
 .if ${ARCH} == "i386"
 CFLAGS+=	-march=i486
-.elif ${ARCH} == "powerpc"
-BROKEN=		Does not compile on powerpc
 .endif
 
 .if defined(BOOTSTRAP)

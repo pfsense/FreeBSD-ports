@@ -7,13 +7,15 @@ CATEGORIES=	net-im kde kde-applications
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KRunner integration module for KDE Telepathy
 
-LIB_DEPENDS=	libtelepathy-qt5.so:net-im/telepathy-qt5 \
+LIB_DEPENDS=	libtelepathy-qt5.so:net-im/telepathy-qt \
 		libKTpCommonInternals.so:net-im/ktp-common-internals
 
-USES=		cmake:outsource gettext kde:5 qt:5 tar:xz
+USES=		compiler:c++11-lang cmake gettext kde:5 qt:5 tar:xz
 USE_KDE=	config coreaddons ecm i18n package plasma-framework runner \
 		service wallet
 USE_QT=		core dbus gui network widgets xml\
 		buildtools_build qmake_build
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

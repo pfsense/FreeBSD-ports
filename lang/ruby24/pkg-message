@@ -1,4 +1,6 @@
-====
+[
+{ type: install
+  message: <<EOM
 Some of the standard commands are provided as separate ports for ease
 of upgrading:
 
@@ -8,7 +10,10 @@ of upgrading:
 And some of the standard libraries are provided as separate ports
 since they require extra dependencies:
 
-	databases/ruby-gdbm:	GDBM module
+	databases/rubygem-dbm:  DBM module
+	databases/rubygem-gdbm:	GDBM module
 
 Install them as occasion demands.
-====
+EOM
+}
+]

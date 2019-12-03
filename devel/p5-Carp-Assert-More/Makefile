@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Carp-Assert-More
-PORTVERSION=	1.16
+PORTVERSION=	1.20
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -12,12 +12,13 @@ COMMENT=	Convenience wrappers around Carp::Assert
 
 LICENSE=	ART20
 
-BUILD_DEPENDS=	p5-Carp-Assert>=0:devel/p5-Carp-Assert
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Carp-Assert>=0:devel/p5-Carp-Assert
 TEST_DEPENDS=	p5-Test-Exception>=0:devel/p5-Test-Exception
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

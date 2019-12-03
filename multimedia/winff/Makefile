@@ -3,10 +3,10 @@
 
 PORTNAME=	WinFF
 PORTVERSION=	1.5.5
-PORTREVISION=	10
+PORTREVISION=	15
 CATEGORIES=	multimedia
-PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 MASTER_SITES=	http://winff.org/docs/source/
+PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 DISTNAME=	${_PORTNAME}-${PORTVERSION}-source
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -16,10 +16,11 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
 
-NO_WRKSUBDIR=	yes
 USE_XORG=	x11
 USES=		fpc lazarus:flavors
 USE_FPC=	chm fcl-base fcl-image fcl-json fcl-xml pasjpeg regexpr x11
+
+NO_WRKSUBDIR=	yes
 _PORTNAME=	${PORTNAME:tl}
 DATADIR=	${PREFIX}/share/${_PORTNAME}
 DOCSDIR=	${PREFIX}/share/doc/${_PORTNAME}
@@ -35,9 +36,6 @@ LAZARUS_NO_FLAVORS=	qt5
 LAZARUS_PROJECT_FILES=	winff.lpr
 LAZBUILD_ARGS=		-d
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt4
-qt4_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
-
 BUILD_WRKSRC=	${WRKDIR}/${PKGNAME}/${_PORTNAME}
 
 .if ${FLAVOR:Ugtk2:Mgtk2}
@@ -45,6 +43,8 @@ USE_FPC+=	cairo
 USE_GNOME+=	cairo
 INSTALLS_ICONS=yes
 .endif
+
+OPTIONS_DEFINE=	DOCS
 
 pre-configure:
 	${REINPLACE_CMD} -e 's|/usr/share|${PREFIX}/share|g' ${BUILD_WRKSRC}/unit1.pas

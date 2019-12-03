@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	maec
-PORTVERSION=	4.1.0.13
+PORTVERSION=	4.1.0.15
+DISTVERSIONPREFIX=	v
 CATEGORIES=	security python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	antoine@FreeBSD.org
@@ -18,9 +18,13 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=2.2.3:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mixbox>=0.0.13:security/py-mixbox@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	MAECProject
+GH_PROJECT=	python-${PORTNAME}
+
 NO_ARCH=	yes
 USES=		python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	concurrent distutils autoplist
 USE_LOCALE=	en_US.UTF-8
 
 PORTDOCS=	README.rst

@@ -17,6 +17,8 @@ LICENSE=	GPLv2
 RUN_DEPENDS=	itcl>=3.4:lang/itcl \
 		wish:x11-toolkits/tk-wrapper
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == i386
@@ -33,7 +35,7 @@ WITHOUTSO=	"@comment "
 PLIST_SUB+=	GORILLAARCH=${GORILLAARCH:tl} WITHOUTSO=${WITHOUTSO}
 
 WRKSRC=		${WRKDIR}/zdia-${PORTNAME}-${DISTVERSIONSUFFIX}
-USES=		tk:85+,run
+USES=		tk:run
 SUB_FILES=	gorilla
 SUB_LIST=	WISH=${WISH}
 PORTDOCS=	*

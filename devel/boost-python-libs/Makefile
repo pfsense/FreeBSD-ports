@@ -2,8 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	boost-libs
-COMMENT=	Framework for interfacing Python and C++
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+
+COMMENT=	Framework for interfacing Python and C++
+
+BUILD_DEPENDS=	bjam:devel/boost-jam \
+		${PYNUMPY}
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
 USES=		python
 USE_PYTHON=	flavors
@@ -19,11 +24,8 @@ MAKE_ENV+=	PYTHON_ROOT="${LOCALBASE}"\
 		PYTHON_INCLUDES="${PYTHON_INCLUDEDIR}"\
 		PYTHON_LIB_PATH="${PYTHON_LIBDIR}"
 
-LIB_DEPENDS+=	libboost_thread.so:devel/boost-libs
 MAKE_ARGS+=	--with-python
 ALL_TARGET=	stage
-
-BUILD_DEPENDS+=	bjam:devel/boost-jam
 
 pre-build:
 	@${ECHO_CMD} "using python : " ${PYTHON_VER} " : " ${PYTHON_CMD} " : " ${PYTHON_INCLUDEDIR} ";" >> ${WRKSRC}/tools/build/src/site-config.jam

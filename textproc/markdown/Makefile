@@ -8,7 +8,7 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	http://daringfireball.net/projects/downloads/
 DISTNAME=	Markdown_${PORTVERSION}
 
-MAINTAINER=	tobez@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text-to-HTML conversion tool for web writers
 
 LICENSE=	BSD3CLAUSE
@@ -23,6 +23,8 @@ OPTIONS_DEFINE=	DOCS
 PORTDOCS=	Markdown-Readme.text
 
 PLIST_FILES=	bin/markdown
+
+CONFLICTS_INSTALL=	discount
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/Markdown.pl ${STAGEDIR}${PREFIX}/bin/markdown

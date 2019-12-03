@@ -3,6 +3,7 @@
 
 PORTNAME=	milter-manager
 PORTVERSION=	2.1.1
+PORTREVISION=	1
 CATEGORIES=	mail ruby
 MASTER_SITES=	OSDN/${PORTNAME}/67935
 
@@ -18,16 +19,16 @@ BUILD_DEPENDS=	rubygem-glib2>0:devel/rubygem-glib2
 LIB_DEPENDS=	libev.so:devel/libev
 RUN_DEPENDS=	rubygem-glib2>0:devel/rubygem-glib2
 
-USES=		gettext gmake libtool pathfix pkgconfig
+USES=		compiler:c++11-lang gettext gmake gnome libtool pathfix pkgconfig
+USE_GNOME=	glib20 intltool
+USE_LDCONFIG=	yes
 USE_RC_SUBR=	milter-manager
+USE_RUBY=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libev \
 		--with-package-platform=freebsd
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
-USE_GNOME=	glib20 intltool
-USE_LDCONFIG=	yes
-USE_RUBY=	yes
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS EXAMPLES

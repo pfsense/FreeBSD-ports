@@ -2,6 +2,7 @@
 
 PORTNAME=	cwstudio
 DISTVERSION=	0.9.6
+PORTREVISION=	3
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SOURCEFORGE/cwstudio
 
@@ -10,11 +11,11 @@ COMMENT=	Multichannel portable Morse code signals generator
 
 LICENSE=	GPLv3+
 
-USES+=		ncurses
+USES=		compiler:c++11-lang ncurses
 USE_WX=		3.0+
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-wx-config=${LOCALBASE}/bin/wxgtk2u-3.0-config
+CONFIGURE_ARGS=	--with-wx-config=${WX_CONFIG}
 
 PLIST_FILES=	bin/cwcli \
 		bin/cwcurses \

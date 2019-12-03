@@ -3,7 +3,7 @@
 
 PORTNAME=	links-hacked
 DISTVERSION=	101110
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES?=	www
 MASTER_SITES=	http://xray.sai.msu.ru/~karpov/links-hacked/downloads/
 
@@ -11,6 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Hacked version of a Links WWW browser
 
 LICENSE=	GPLv2
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 USES=		autoreconf ssl
 USE_CSTD=	gnu89
@@ -42,10 +46,15 @@ JS_DESC=		Javascript interpreter support (very basic)
 JS_CONFIGURE_ENABLE=	javascript
 SVGALIB_LIB_DEPENDS=	libvga.so:graphics/svgalib
 SVGALIB_CONFIGURE_WITH=	svgalib
-X11_USE=		xorg=x11,xproto
+X11_USE=		xorg=x11,xorgproto
 X11_CONFIGURE_WITH=	x
 
 .include <bsd.port.options.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	incomplete definition of type 'struct ssl_st'
+BROKEN_FreeBSD_13=	incomplete definition of type 'struct ssl_st'
+.endif
 
 .if ${PORT_OPTIONS:MDIRECTFB} || ${PORT_OPTIONS:MSVGALIB} || ${PORT_OPTIONS:MX11}
 LIB_DEPENDS+=	libpng.so:graphics/png \

@@ -3,7 +3,7 @@
 
 PORTNAME=	baekmukfonts
 PORTVERSION=	2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	korean
 MASTER_SITES=	http://kldp.net/frs/download.php/1429/
 PKGNAMESUFFIX=	-ttf
@@ -14,6 +14,10 @@ COMMENT=	Baekmuk family Korean TrueType Fonts
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 NO_BUILD=	yes
 

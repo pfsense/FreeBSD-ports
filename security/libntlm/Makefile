@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libntlm
-PORTVERSION=	1.4
+PORTVERSION=	1.5
 CATEGORIES=	security
 MASTER_SITES=	http://www.nongnu.org/libntlm/releases/
 
@@ -18,7 +18,9 @@ USE_LDCONFIG=	yes
 
 PORTDOCS=	AUTHORS ChangeLog NEWS README THANKS
 
-post-install:
+OPTIONS_DEFINE=	DOCS
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

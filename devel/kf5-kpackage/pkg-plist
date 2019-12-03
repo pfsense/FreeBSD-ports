@@ -1,5 +1,4 @@
 bin/kpackagetool5
-etc/xdg/kpackage.categories
 include/KF5/KPackage/KPackage/Package
 include/KF5/KPackage/KPackage/PackageLoader
 include/KF5/KPackage/KPackage/PackageStructure
@@ -14,6 +13,8 @@ lib/cmake/KF5Package/KF5PackageConfigVersion.cmake
 lib/cmake/KF5Package/KF5PackageMacros.cmake
 lib/cmake/KF5Package/KF5PackageTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/KF5Package/KF5PackageTargets.cmake
+lib/cmake/KF5Package/KF5PackageToolsTargets-%%CMAKE_BUILD_TYPE%%.cmake
+lib/cmake/KF5Package/KF5PackageToolsTargets.cmake
 lib/cmake/KF5Package/qrc.cmake
 lib/libKF5Package.so
 lib/libKF5Package.so.5
@@ -32,7 +33,6 @@ share/kservicetypes5/kpackage-generic.desktop
 share/kservicetypes5/kpackage-genericqml.desktop
 share/kservicetypes5/kpackage-packagestructure.desktop
 share/locale/ar/LC_MESSAGES/libkpackage5.mo
-share/locale/ast/LC_MESSAGES/libkpackage5.mo
 share/locale/bs/LC_MESSAGES/libkpackage5.mo
 share/locale/ca/LC_MESSAGES/libkpackage5.mo
 share/locale/ca@valencia/LC_MESSAGES/libkpackage5.mo
@@ -56,6 +56,7 @@ share/locale/it/LC_MESSAGES/libkpackage5.mo
 share/locale/ja/LC_MESSAGES/libkpackage5.mo
 share/locale/ko/LC_MESSAGES/libkpackage5.mo
 share/locale/lt/LC_MESSAGES/libkpackage5.mo
+share/locale/ml/LC_MESSAGES/libkpackage5.mo
 share/locale/mr/LC_MESSAGES/libkpackage5.mo
 share/locale/nb/LC_MESSAGES/libkpackage5.mo
 share/locale/nds/LC_MESSAGES/libkpackage5.mo
@@ -74,8 +75,10 @@ share/locale/sr@ijekavian/LC_MESSAGES/libkpackage5.mo
 share/locale/sr@ijekavianlatin/LC_MESSAGES/libkpackage5.mo
 share/locale/sr@latin/LC_MESSAGES/libkpackage5.mo
 share/locale/sv/LC_MESSAGES/libkpackage5.mo
+share/locale/tg/LC_MESSAGES/libkpackage5.mo
 share/locale/tr/LC_MESSAGES/libkpackage5.mo
 share/locale/ug/LC_MESSAGES/libkpackage5.mo
 share/locale/uk/LC_MESSAGES/libkpackage5.mo
 share/locale/zh_CN/LC_MESSAGES/libkpackage5.mo
 share/locale/zh_TW/LC_MESSAGES/libkpackage5.mo
+share/qlogging-categories5/kpackage.categories

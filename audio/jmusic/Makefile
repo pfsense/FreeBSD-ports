@@ -17,6 +17,10 @@ EXTRACT_ONLY=	jMusic_1.6_inst.zip \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Composition in Java
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		zip
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	mhwaveedit
-PORTVERSION=	1.4.23
-PORTREVISION=	2
+PORTVERSION=	1.4.24
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
-MASTER_SITES=	http://download.gna.org/mhwaveedit/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Graphical program for editing sound files
@@ -13,23 +13,28 @@ COMMENT=	Graphical program for editing sound files
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		localbase pathfix pkgconfig tar:bzip2
+USE_GITHUB=	yes
+GH_ACCOUNT=	magnush
+
+USES=		autoreconf gnome localbase pathfix pkgconfig tar:bzip2
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--without-alsalib --without-arts
+CONFIGURE_ARGS=	--without-alsalib \
+		--without-arts \
+		--without-esound \
+		--with-build-date="-" \
+		--with-build-time="-"
 
 BROKEN_powerpc64=	fails to compile on powerpc64: convert_inc.c: conflicting types for 'C_FLOAT_PCM32SBEPM'
 BROKEN_sparc64=		fails to compile on sparc64
 
-OPTIONS_DEFINE=		DOUBLE_SAMPLES ESOUND JACK LADSPA OSS PORTAUDIO \
+OPTIONS_DEFINE=		DOUBLE_SAMPLES JACK LADSPA OSS PORTAUDIO \
 			PULSEAUDIO SAMPLERATE SDL SNDFILE NLS
 OPTIONS_DEFAULT=	OSS SAMPLERATE SNDFILE
 OPTIONS_SUB=		yes
 
 DOUBLE_SAMPLES_DESC=	Increase quality for 24/32-bit samplerates
 DOUBLE_SAMPLES_CONFIGURE_WITH=	double-samples
-ESOUND_USE=		gnome=esound
-ESOUND_CONFIGURE_WITH=	esound
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JACK_CONFIGURE_WITH=	jack
 LADSPA_BUILD_DEPENDS=	ladspa>0:audio/ladspa

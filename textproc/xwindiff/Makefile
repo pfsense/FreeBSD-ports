@@ -4,6 +4,7 @@ PORTNAME=	xwindiff
 PORTVERSION=	1.1.6
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.lurklurk.org/downloads/
+DIST_SUBDIR=	repacked
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical Diff for X

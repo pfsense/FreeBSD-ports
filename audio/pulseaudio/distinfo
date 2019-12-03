@@ -1,3 +1,3 @@
-TIMESTAMP = 1505745938
-SHA256 (pulseaudio-11.1.tar.xz) = f2521c525a77166189e3cb9169f75c2ee2b82fa3fcf9476024fbc2c3a6c9cd9e
-SIZE (pulseaudio-11.1.tar.xz) = 1648924
+TIMESTAMP = 1568380928
+SHA256 (pulseaudio-13.0.tar.xz) = 961b23ca1acfd28f2bc87414c27bb40e12436efcf2158d29721b1e89f3f28057
+SIZE (pulseaudio-13.0.tar.xz) = 1901768

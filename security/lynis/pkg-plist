@@ -5,8 +5,10 @@ man/man8/lynis.8.gz
 %%DATADIR%%/db/fileperms.db
 %%DATADIR%%/db/hints.db
 %%DATADIR%%/db/integrity.db
+%%DATADIR%%/db/languages/az
 %%DATADIR%%/db/languages/br
 %%DATADIR%%/db/languages/cn
+%%DATADIR%%/db/languages/da
 %%DATADIR%%/db/languages/de
 %%DATADIR%%/db/languages/en
 %%DATADIR%%/db/languages/en-GB
@@ -19,6 +21,7 @@ man/man8/lynis.8.gz
 %%DATADIR%%/db/languages/hu
 %%DATADIR%%/db/languages/it
 %%DATADIR%%/db/languages/ja
+%%DATADIR%%/db/languages/ko
 %%DATADIR%%/db/languages/nb-NO
 %%DATADIR%%/db/languages/nl
 %%DATADIR%%/db/languages/nl-BE
@@ -27,10 +30,12 @@ man/man8/lynis.8.gz
 %%DATADIR%%/db/languages/pt
 %%DATADIR%%/db/languages/ru
 %%DATADIR%%/db/languages/se
+%%DATADIR%%/db/languages/sk
 %%DATADIR%%/db/languages/tr
 %%DATADIR%%/db/malware-susp.db
 %%DATADIR%%/db/malware.db
 %%DATADIR%%/db/sbl.db
+%%DATADIR%%/db/software-eol.db
 %%DATADIR%%/db/tests.db
 @mode 0400
 %%DATADIR%%/include/binaries
@@ -39,6 +44,7 @@ man/man8/lynis.8.gz
 %%DATADIR%%/include/functions
 %%DATADIR%%/include/helper_audit_dockerfile
 %%DATADIR%%/include/helper_configure
+%%DATADIR%%/include/helper_generate
 %%DATADIR%%/include/helper_show
 %%DATADIR%%/include/helper_system_remote_scan
 %%DATADIR%%/include/helper_update

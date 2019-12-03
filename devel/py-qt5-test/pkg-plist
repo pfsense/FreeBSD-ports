@@ -1,10 +1,11 @@
 %%PYTHON_SITELIBDIR%%/PyQt5/QtTest.so
 %%PYTHON_SITELIBDIR%%/PyQt5/QtTest.pyi
 %%PYQT_SIPDIR%%/QtTest/QtTestmod.sip
+%%PYQT_SIPDIR%%/QtTest/qabstractitemmodeltester.sip
 %%PYQT_SIPDIR%%/QtTest/qsignalspy.sip
 %%PYQT_SIPDIR%%/QtTest/qtestcase.sip
 %%PYQT_SIPDIR%%/QtTest/qtestkeyboard.sip
 %%PYQT_SIPDIR%%/QtTest/qtestmouse.sip
 %%PYQT_SIPDIR%%/QtTest/qtestsystem.sip
 %%PYQT_SIPDIR%%/QtTest/qtesttouch.sip
-%%API%%share/qt5/qsci/api/python/QtTest.api
+%%API%%%%PYQT_APIDIR%%/api/python/QtTest.api

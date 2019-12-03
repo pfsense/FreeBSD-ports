@@ -3,7 +3,7 @@
 
 PORTNAME=	fishsupper
 PORTVERSION=	0.1.6
-PORTREVISION=	13
+PORTREVISION=	18
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -21,8 +21,7 @@ GNU_CONFIGURE=	yes
 USES=		gmake localbase:ldflags
 USE_SDL=	sdl image mixer
 USE_GL=		gl
-
-CXXFLAGS+=	-Wno-static-float-init -Wno-c++11-narrowing
+USE_CXXSTD=	c++98
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	*

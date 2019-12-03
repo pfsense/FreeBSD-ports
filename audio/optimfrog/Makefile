@@ -6,7 +6,7 @@ CATEGORIES=	audio
 MASTER_SITES=	http://losslessaudio.org/Downloads/A1C0/${DISTVERSION:S/.//}/FreeBSD/
 DISTNAME=	# OptimFROG_FreeBSD_${ARCH}_${DISTVERSION:S/.//}
 
-MAINTAINER=	rezny@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT?=	Best-ratio lossless audio codec
 
 LICENSE=	OptimFROG
@@ -28,7 +28,7 @@ USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE_i386=	SSE2
 OPTIONS_DEFINE?=	#
-SSE2_DESCR=	Use SSE2 instructions instead of x87 FPU
+SSE2_DESC=	Use SSE2 instructions instead of x87 FPU
 
 .include <bsd.port.pre.mk>
 

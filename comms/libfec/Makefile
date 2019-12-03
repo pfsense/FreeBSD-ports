@@ -3,7 +3,7 @@
 
 PORTNAME=	libfec
 PORTVERSION=	3.0.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	comms astro hamradio math
 MASTER_SITES=	http://www.ka9q.net/code/fec/ \
 		LOCAL/db
@@ -14,12 +14,10 @@ COMMENT=	Several forward error correction (FEC) decoders
 
 LICENSE=	LGPL21
 
-BROKEN_powerpc64=	fails to compile: cc1: error: unrecognized command line option -faltivec
-
 MAKEFILE=	makefile
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf gmake tar:bzip2
+USES=		autoreconf compiler:c11 gmake tar:bzip2
 USE_LDCONFIG=	yes
 PLIST_FILES=	include/fec.h		\
 		lib/libfec.so		\

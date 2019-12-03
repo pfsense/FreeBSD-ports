@@ -3,12 +3,13 @@
 
 PORTNAME=	qTox
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.15.0
-PORTREVISION=	1
+DISTVERSION=	1.16.3-529
+DISTVERSIONSUFFIX=	-gb4450319
+PORTREVISION=	6
 CATEGORIES=	net-im net-p2p
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	441931765ffe.patch:-p1
+PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
+PATCHFILES=	c3e4e82049b476de5453bc2c654c19d920e908a3.patch:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Qt 5 based Tox client
@@ -30,14 +31,13 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 
 USES=		cmake compiler:c++11-lib desktop-file-utils gettext openal:soft pkgconfig qt:5
 USE_GITHUB=	yes
-USE_GNOME=	gtk20 gdkpixbuf2 cairo
 USE_QT=		core gui network xml opengl sql sql-sqlite3_run widgets svg \
 		concurrent_build buildtools_build linguisttools_build qmake_build testlib_build
 CMAKE_ARGS=	-DGIT_DESCRIBE:STRING=${FULLVERSION}
 CMAKE_OFF=	USE_CCACHE
 
-OPTIONS_DEFINE=			FILTERAUDIO PLATFORM_EXTENSIONS
-OPTIONS_DEFAULT=		FILTERAUDIO PLATFORM_EXTENSIONS
+OPTIONS_DEFINE=			FILTERAUDIO PLATFORM_EXTENSIONS SPELL_CHECK APPINDICATOR GTK_SYSTRAY STATUSNOTIFIER
+OPTIONS_DEFAULT=		FILTERAUDIO PLATFORM_EXTENSIONS SPELL_CHECK GTK_SYSTRAY STATUSNOTIFIER # removing GTK_SYSTRAY, STATUSNOTIFIER doesn't reduce dependencies
 PLATFORM_EXTENSIONS_DESC=	Enable platform specific extensions
 FILTERAUDIO_DESC=		Enable the echo canceling backend
 
@@ -46,10 +46,28 @@ FILTERAUDIO_LIB_DEPENDS=	libfilteraudio.so:audio/libfilteraudio
 PLATFORM_EXTENSIONS_CMAKE_BOOL=	PLATFORM_EXTENSIONS
 PLATFORM_EXTENSIONS_USE=	XORG=x11,xscrnsaver
 
+SPELL_CHECK_DESC=	Spell checking support
+SPELL_CHECK_USES=	kde:5
+SPELL_CHECK_USE=	KDE=sonnet
+SPELL_CHECK_CMAKE_BOOL=	SPELL_CHECK
+
+APPINDICATOR_CMAKE_BOOL=	ENABLE_APPINDICATOR
+APPINDICATOR_BROKEN=	can not find appindicator-0.1
+
+GTK_SYSTRAY_DESC=	Enable GTK systray
+GTK_SYSTRAY_CMAKE_BOOL=	ENABLE_GTK_SYSTRAY
+GTK_SYSTRAY_USES=	gnome
+GTK_SYSTRAY_USE=	GNOME=atk,cairo,gdkpixbuf2,gtk20
+
+STATUSNOTIFIER_DESC=	Enable status notifier
+STATUSNOTIFIER_CMAKE_BOOL=	ENABLE_STATUSNOTIFIER
+STATUSNOTIFIER_USES=	gnome
+STATUSNOTIFIER_USE=	GNOME=atk,cairo,gdkpixbuf2,gtk20
+
 PLIST_FILES=	bin/qtox \
-		share/applications/qtox.desktop \
+		share/applications/io.github.qtox.qTox.desktop \
 		share/icons/hicolor/scalable/apps/qtox.svgz \
-		share/metainfo/qTox.appdata.xml
+		share/metainfo/io.github.qtox.qTox.appdata.xml
 .for SZ in 14 16 22 24 32 36 48 64 72 96 128 192 256 512
 PLIST_FILES+=	share/icons/hicolor/${SZ}x${SZ}/apps/qtox.png
 .endfor
@@ -61,10 +79,10 @@ PLIST_FILES+=	share/icons/hicolor/${SZ}x${SZ}/apps/qtox.png
 CFLAGS+=	-march=i586
 .endif
 
-.if !defined(GH_TAGNAME)
+.if !defined(DISTVERSIONSUFFIX)
 FULLVERSION=	${PKGVERSION}
 .else
-FULLVERSION=	"${PKGVERSION} (rev.${GH_TAGNAME})"
+FULLVERSION=	"${PKGVERSION} (rev.${DISTVERSIONSUFFIX:S/-g//})"
 .endif
 
 pre-everything::
@@ -74,6 +92,6 @@ pre-everything::
 
 pre-configure:
 	@${REINPLACE_CMD} '/Comment/s,=.*,=${COMMENT},' \
-		${WRKSRC}/qtox.desktop
+		${WRKSRC}/io.github.qtox.qTox.desktop
 
 .include <bsd.port.post.mk>

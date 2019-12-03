@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	aeskulap
-PORTVERSION=	0.2.2.20140119
+DISTVERSION=	0.2.2.20181229
 PORTREVISION=	1
 CATEGORIES=	graphics
 
@@ -12,18 +12,24 @@ COMMENT=	Medical image viewer
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libglademm-2.4.so:devel/libglademm24\
-		libdcmimage.so:devel/dcmtk
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	pipelka
-GH_TAGNAME=	ea0a119
+LIB_DEPENDS=	libdcmimage.so:graphics/dcmtk \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libglademm-2.4.so:devel/libglademm24 \
+		libpng.so:graphics/png \
+		libtiff.so:graphics/tiff
 
 USES=		compiler:c++11-lang autoreconf desktop-file-utils gettext \
-		gmake libtool localbase pkgconfig
+		gmake gnome jpeg libtool localbase pkgconfig
+USE_GITHUB=	yes
+GH_ACCOUNT=	stefanhusmann
+GH_TAGNAME=	26ad27a
 USE_CXXSTD=	c++11
-USE_GNOME=	gconfmm26 gtkmm24 intltool
-GCONF_SCHEMAS=	aeskulap.schemas
+USE_GNOME=	gconfmm26 gtkmm24 intltool libglade2
 USE_LDCONFIG=	${PREFIX}/lib/aeskulap
 
 GNU_CONFIGURE=	yes

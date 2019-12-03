@@ -24,7 +24,6 @@ share/icons/hicolor/64x64/apps/killbots.png
 %%DATADIR%%/themes/robotkill.desktop
 %%DATADIR%%/themes/robotkill.png
 %%DATADIR%%/themes/robotkill.svgz
-share/locale/ast/LC_MESSAGES/killbots.mo
 share/locale/bs/LC_MESSAGES/killbots.mo
 share/locale/ca/LC_MESSAGES/killbots.mo
 share/locale/ca@valencia/LC_MESSAGES/killbots.mo
@@ -47,6 +46,7 @@ share/locale/it/LC_MESSAGES/killbots.mo
 share/locale/ja/LC_MESSAGES/killbots.mo
 share/locale/kk/LC_MESSAGES/killbots.mo
 share/locale/km/LC_MESSAGES/killbots.mo
+share/locale/ko/LC_MESSAGES/killbots.mo
 share/locale/lt/LC_MESSAGES/killbots.mo
 share/locale/lv/LC_MESSAGES/killbots.mo
 share/locale/mr/LC_MESSAGES/killbots.mo
@@ -68,3 +68,4 @@ share/locale/ug/LC_MESSAGES/killbots.mo
 share/locale/uk/LC_MESSAGES/killbots.mo
 share/locale/zh_CN/LC_MESSAGES/killbots.mo
 share/locale/zh_TW/LC_MESSAGES/killbots.mo
+share/metainfo/org.kde.killbots.appdata.xml

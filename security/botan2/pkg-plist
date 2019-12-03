@@ -3,7 +3,12 @@ include/botan-2/botan/adler32.h
 include/botan-2/botan/aead.h
 include/botan-2/botan/aes.h
 include/botan-2/botan/alg_id.h
+include/botan-2/botan/argon2.h
 include/botan-2/botan/aria.h
+include/botan-2/botan/asio_async_ops.h
+include/botan-2/botan/asio_context.h
+include/botan-2/botan/asio_error.h
+include/botan-2/botan/asio_stream.h
 include/botan-2/botan/asn1_alt_name.h
 include/botan-2/botan/asn1_attribute.h
 include/botan-2/botan/asn1_obj.h
@@ -14,11 +19,12 @@ include/botan-2/botan/asn1_time.h
 include/botan-2/botan/assert.h
 include/botan-2/botan/atomic.h
 include/botan-2/botan/auto_rng.h
-include/botan-2/botan/b64_filt.h
 include/botan-2/botan/base32.h
+include/botan-2/botan/base58.h
 include/botan-2/botan/base64.h
 include/botan-2/botan/basefilt.h
 include/botan-2/botan/bcrypt.h
+include/botan-2/botan/bcrypt_pbkdf.h
 include/botan-2/botan/ber_dec.h
 include/botan-2/botan/bigint.h
 include/botan-2/botan/blake2b.h
@@ -42,6 +48,8 @@ include/botan-2/botan/ccm.h
 include/botan-2/botan/cecpq1.h
 include/botan-2/botan/cert_status.h
 include/botan-2/botan/certstor.h
+include/botan-2/botan/certstor_flatfile.h
+include/botan-2/botan/certstor_system.h
 include/botan-2/botan/certstor_sql.h
 %%SQLITE3%%include/botan-2/botan/certstor_sqlite.h
 include/botan-2/botan/cfb.h
@@ -115,7 +123,6 @@ include/botan-2/botan/gost_3411.h
 include/botan-2/botan/hash.h
 include/botan-2/botan/hash_id.h
 include/botan-2/botan/hex.h
-include/botan-2/botan/hex_filt.h
 include/botan-2/botan/hkdf.h
 include/botan-2/botan/hmac.h
 include/botan-2/botan/hmac_drbg.h
@@ -204,6 +211,7 @@ include/botan-2/botan/psk_db.h
 include/botan-2/botan/psk_db_sql.h
 include/botan-2/botan/pssr.h
 include/botan-2/botan/pubkey.h
+include/botan-2/botan/pwdhash.h
 include/botan-2/botan/rc4.h
 %%HAS_RDRAND_RNG%%include/botan-2/botan/rdrand_rng.h
 include/botan-2/botan/reducer.h
@@ -234,6 +242,7 @@ include/botan-2/botan/sm2.h
 include/botan-2/botan/sm2_enc.h
 include/botan-2/botan/sm3.h
 include/botan-2/botan/sm4.h
+include/botan-2/botan/sodium.h
 include/botan-2/botan/sp800_108.h
 include/botan-2/botan/sp800_56a.h
 include/botan-2/botan/sp800_56c.h
@@ -274,6 +283,7 @@ include/botan-2/botan/totp.h
 include/botan-2/botan/tss.h
 include/botan-2/botan/twofish.h
 include/botan-2/botan/types.h
+include/botan-2/botan/uuid.h
 include/botan-2/botan/version.h
 include/botan-2/botan/whrlpool.h
 include/botan-2/botan/workfactor.h
@@ -305,7 +315,7 @@ include/botan-2/botan/xts.h
 include/botan-2/botan/zlib.h
 lib/libbotan-2.a
 lib/libbotan-2.so
-lib/libbotan-2.so.7
-lib/libbotan-2.so.7.7.0
-%%PYTHON_SITELIBDIR%%/botan2.py
+lib/libbotan-2.so.%%SHLIBVER%%
+lib/libbotan-2.so.%%SHLIBVER%%.%%SHLIBVER%%.1
+%%PYTHON%%%%PYTHON_SITELIBDIR%%/botan2.py
 libdata/pkgconfig/botan-2.pc

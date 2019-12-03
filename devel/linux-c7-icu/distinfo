@@ -1,7 +1,7 @@
-TIMESTAMP = 1517427266
-SHA256 (centos/libicu-50.1.2-15.el7.i686.rpm) = 08d8d9c5b369b024de929897286887ced0514c3b0ffd0c4f71b88a23580e9fb6
-SIZE (centos/libicu-50.1.2-15.el7.i686.rpm) = 7250948
-SHA256 (centos/libicu-50.1.2-15.el7.x86_64.rpm) = eb08a0385dbe3fb12f16d0c6cda6695ee38757b88df00db8d009052bd882700b
-SIZE (centos/libicu-50.1.2-15.el7.x86_64.rpm) = 7204040
-SHA256 (centos/icu-50.1.2-15.el7.src.rpm) = 3c69462fb74bd49b84d1c12f437889822eb2700d9df9fae239ba6c5c3f8cbc14
-SIZE (centos/icu-50.1.2-15.el7.src.rpm) = 20399216
+TIMESTAMP = 1568990921
+SHA256 (centos/libicu-50.2-3.el7.i686.rpm) = 9320e87b1da4de7cc0ee17545d09f0d35687ed9d9c07618cb9e02be3be87cf0f
+SIZE (centos/libicu-50.2-3.el7.i686.rpm) = 7250232
+SHA256 (centos/libicu-50.2-3.el7.x86_64.rpm) = 739ebeae1af94b21ecc268e33f95b1970ebdf42f72bb73631c7c4b0ee39d3167
+SIZE (centos/libicu-50.2-3.el7.x86_64.rpm) = 7201996
+SHA256 (centos/icu-50.2-3.el7.src.rpm) = 63446930030604ccfa5271aa467bf42b721fb578a95d0c7075dbe236c1892c9b
+SIZE (centos/icu-50.2-3.el7.src.rpm) = 18434396

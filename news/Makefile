@@ -46,6 +46,7 @@
     SUBDIR += nntpcache
     SUBDIR += noffle
     SUBDIR += nzbget
+    SUBDIR += nzbhydra2
     SUBDIR += nzbperl
     SUBDIR += p5-NNTPClient
     SUBDIR += p5-News-Article
@@ -59,6 +60,7 @@
     SUBDIR += plor
     SUBDIR += py-pynzb
     SUBDIR += py-sabyenc
+    SUBDIR += py-sabyenc3
     SUBDIR += py-yenc
     SUBDIR += rawdog
     SUBDIR += s-news

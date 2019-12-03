@@ -3,16 +3,15 @@
 
 PORTNAME=	xbill
 PORTVERSION=	2.1
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	games
-MASTER_SITES=	http://www.xbill.org/download/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	http://www.xbill.org/download/
 
-MAINTAINER=	amdmi3@FreeBSD.org
+MAINTAINER=	ak@FreeBSD.org
 COMMENT=	Save your computers from the evil clutches of Bill
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--localstatedir=${SCORES_DIR}
+CONFIGURE_ARGS=	--localstatedir=${SCORES_DIR} --disable-gtk
 
 SCORES_DIR?=	${DATADIR}/scores
 
@@ -28,31 +27,23 @@ PLIST_FILES=	bin/${PORTNAME} \
 
 PORTDATA=	*
 
+USE_XORG=	xt x11 sm ice xpm
+
 OPTIONS_SINGLE=	WIDGETSET
-OPTIONS_SINGLE_WIDGETSET=	ATHENA GTK MOTIF
-OPTIONS_DEFAULT=	GTK
+OPTIONS_SINGLE_WIDGETSET=	ATHENA MOTIF
+OPTIONS_DEFAULT=	ATHENA
 
 ATHENA_DESC=	Athena widget set
-GTK_DESC=	GTK widget set
 MOTIF_DESC=	Motif widget set
 
-.include <bsd.port.options.mk>
+ATHENA_CONFIGURE_ON=	--disable-motif
+ATHENA_USE=	xorg=xaw,xmu
 
-.if ${PORT_OPTIONS:MATHENA}
-CONFIGURE_ARGS+=	--disable-gtk --disable-motif
-USE_XORG=	xaw xmu xt x11 sm ice
-.elif ${PORT_OPTIONS:MMOTIF}
-CONFIGURE_ARGS+=	--disable-athena --disable-gtk
-USE_XORG=	xt x11 sm ice xpm
-USES=		motif
-.else # ${PORT_OPTIONS:MGTK}
-CONFIGURE_ARGS+=	--disable-athena --disable-motif
-USE_GNOME=	gtk12
-USE_XORG=	sm ice
-.endif
+MOTIF_CONFIGURE_ON=	--disable-athena
+MOTIF_USES=	motif
 
 post-patch:
-	@${REINPLACE_CMD} -e '/WIDGET_LIBS=/ s|-lXm"$$|-lXm -lXpm"|' \
+	@${REINPLACE_CMD} -e '/WIDGET_LIBS=/ s|-lXt|-lXt -lXpm|' \
 		${WRKSRC}/configure
 
 post-install:

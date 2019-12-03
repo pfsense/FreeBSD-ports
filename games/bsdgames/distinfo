@@ -1,3 +1,5 @@
-TIMESTAMP = 1506702661
-SHA256 (bsdgames-4.8.1.tar.xz) = 31a27fcd003cc04f942078a278618e1bb5d472f68d52dcc1a26a3fcf74b4532b
-SIZE (bsdgames-4.8.1.tar.xz) = 1745908
+TIMESTAMP = 1557603153
+SHA256 (bsdgames_2.17.orig.tar.gz) = 066f924aef6c1c5ea946f588e36f303021f5dfc093944738f025d8edbc6fff60
+SIZE (bsdgames_2.17.orig.tar.gz) = 2563311
+SHA256 (DragonFlyBSD-DragonFlyBSD-v5.5.0_GH0.tar.gz) = e54ca3fea6e4ae4b384df4718f5ca749e597537112f1b2170e8fb5c296c1720b
+SIZE (DragonFlyBSD-DragonFlyBSD-v5.5.0_GH0.tar.gz) = 137084047

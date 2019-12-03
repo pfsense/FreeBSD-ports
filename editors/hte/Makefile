@@ -3,6 +3,7 @@
 
 PORTNAME=	hte
 PORTVERSION=	2.1.1.g20161206
+PORTREVISION=	3
 CATEGORIES=	editors
 
 MAINTAINER=	rene@FreeBSD.org
@@ -10,8 +11,6 @@ COMMENT=	File editor/viewer/analyzer for executables
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_FreeBSD_10=	misgenerated yacc code
 
 USES=		autoreconf compiler:c++14-lang makeinfo ncurses tar:bzip2
 USE_GITHUB=	yes
@@ -32,8 +31,8 @@ LZO2_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 LZO2_CONFIGURE_OFF=	--with-included-lzo
 
 X11_DESC=	X11 textmode support
+X11_USES=		localbase:ldflags xorg
 X11_USE=		XORG=x11
-X11_USES=		localbase:ldflags
 X11_CONFIGURE_ENABLE=	x11-textmode
 
 MAKE_JOBS_UNSAFE=	yes

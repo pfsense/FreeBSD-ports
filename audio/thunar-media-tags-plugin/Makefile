@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	thunar-media-tags-plugin
-PORTVERSION=	0.2.1
-PORTREVISION=	4
+PORTVERSION=	0.3.0
 CATEGORIES=	audio xfce
-MASTER_SITES=	XFCE/src/thunar-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/thunar-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -16,9 +15,17 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libtag.so:audio/taglib
 
-USES=		gmake pkgconfig gettext libtool xfce tar:bzip2
+USES=		gettext-tools gmake gnome libtool pkgconfig tar:bzip2 xfce
+USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
+USE_XFCE=	libexo thunar
+
 GNU_CONFIGURE=	yes
-USE_GNOME=	gtk20 intltool intlhack
-USE_XFCE=	thunar
+INSTALL_TARGET=	install-strip
+
+OPTIONS_DEFINE=		NLS
+OPTIONS_SUB=		yes
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext-runtime
 
 .include <bsd.port.mk>

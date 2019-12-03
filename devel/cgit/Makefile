@@ -2,6 +2,7 @@
 
 PORTNAME=	cgit
 PORTVERSION=	1.2.1
+PORTREVISION=	1
 CATEGORIES=	devel www
 MASTER_SITES=	http://git.zx2c4.com/cgit/snapshot/:cgit \
 		https://www.kernel.org/pub/software/scm/git/:git
@@ -17,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 TEST_DEPENDS=	msgfmt:devel/gettext-tools
 
 GIT_VERSION=	2.18.0
-USES=		cpe gmake iconv perl5 python:env shebangfix ssl tar:xz
+USES=		cpe gmake iconv perl5 python:3.2+,env shebangfix ssl tar:xz
 CPE_VENDOR=	lars_hjemli
 USE_PERL5=	test
 SHEBANG_FILES=	filters/email-gravatar.py \
@@ -35,7 +36,7 @@ SUB_FILES=	pkg-message
 PORTDOCS=	${PORTNAME}rc.5.txt
 
 OPTIONS_DEFINE=	DOCS ASCIIDOC
-OPTIONS_DEFAULT=	DOCS ASCIIDOC
+OPTIONS_DEFAULT=	ASCIIDOC
 OPTIONS_SUB=	yes
 
 ASCIIDOC_DESC=	Use asciidoc to preprocess man page

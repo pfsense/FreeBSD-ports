@@ -4,7 +4,7 @@
 PORTNAME=	eiskaltdcpp
 PORTVERSION=	2.2.10
 DISTVERSIONPREFIX=	v
-PORTREVISION=	11
+PORTREVISION=	19
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX?=	-lib
 
@@ -17,6 +17,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USE_GITHUB=	yes
 
 .if !defined (MASTERDIR)
+BROKEN_FreeBSD_12=	error: member access into incomplete type 'dh_st'
+BROKEN_FreeBSD_13=	error: member access into incomplete type 'dh_st'
+
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
 USES=		cmake gettext compiler:c++11-lib ssl
@@ -49,8 +52,8 @@ IDN_CMAKE_OFF=	-DUSE_IDNA:BOOL=OFF
 DHT_CMAKE_ON=	-DWITH_DHT:BOOL=ON
 DHT_CMAKE_OFF=	-DWITH_DHT:BOOL=OFF
 
-MINIUPNP_LIB_DEPENDS=	libminiupnpc.so:net/miniupnpc
-MINIUPNP_CMAKE_ON=	-DUSE_MINIUPNP:BOOL=ON -DLOCAL_MINIUPNP:BOOL=OFF
+#MINIUPNP_LIB_DEPENDS=	libminiupnpc.so:net/miniupnpc
+MINIUPNP_CMAKE_ON=	-DUSE_MINIUPNP:BOOL=ON -DLOCAL_MINIUPNP:BOOL=ON
 MINIUPNP_CMAKE_OFF=	-DUSE_MINIUPNP:BOOL=OFF
 .endif
 
@@ -66,6 +69,7 @@ CMAKE_ARGS+=	-DUSE_IDNA:BOOL=`${PKG_QUERY} '%Ok %Ov' ${PORTNAME}-lib | ${GREP} '
 CMAKE_ARGS+=	-DWITH_DHT:BOOL=`${PKG_QUERY} '%Ok %Ov' ${PORTNAME}-lib | ${GREP} '^DHT ' | ${CUT} -f 2 -d ' '`
 CMAKE_ARGS+=	-DLUA_SCRIPT:BOOL=`${PKG_QUERY} '%Ok %Ov' ${PORTNAME}-lib | ${GREP} '^LUA ' | ${CUT} -f 2 -d ' '`
 CMAKE_ARGS+=	-DUSE_MINIUPNP:BOOL=`${PKG_QUERY} '%Ok %Ov' ${PORTNAME}-lib | ${GREP} '^MINIUPNP ' | ${CUT} -f 2 -d ' '`
+CMAKE_ARGS+=	-DLOCAL_MINIUPNP:BOOL=`${PKG_QUERY} '%Ok %Ov' ${PORTNAME}-lib | ${GREP} '^MINIUPNP ' | ${CUT} -f 2 -d ' '`
 .endif
 
 .include <bsd.port.mk>

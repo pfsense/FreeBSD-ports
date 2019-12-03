@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tinyxml2
-PORTVERSION=	6.2.0
+PORTVERSION=	7.1.0
 PORTEPOCH=	1
 CATEGORIES=	textproc
 
@@ -10,23 +10,27 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Small C++ XML Parser
 
 LICENSE=	ZLIB
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-OPTIONS_DEFINE=	EXAMPLES
+USES=		cmake:insource compiler:c++11-lang dos2unix pathfix
 
 CMAKE_OFF=	BUILD_TESTS
-CMAKE_ON=	BUILD_SHARED_LIBS BUILD_STATIC_LIBS
+CMAKE_ON=	BUILD_SHARED_LIBS
 USE_LDCONFIG=	yes
-USES=		cmake dos2unix pathfix
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
-PORTEXAMPLES=	*
 
 GH_ACCOUNT=	leethomason
 USE_GITHUB=	yes
 
+OPTIONS_DEFINE=	EXAMPLES
+
 post-patch:
 	@${REINPLACE_CMD} -e '/CMAKE_DEBUG_POSTFIX/d' ${WRKSRC}/CMakeLists.txt
 
+post-install:
+	${AR} cq ${STAGEDIR}${PREFIX}/lib/libtinyxml2.a ${WRKSRC}/CMakeFiles/tinyxml2.dir/tinyxml2.cpp.o
+	
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	cd ${WRKSRC}/ && ${COPYTREE_SHARE} resources ${STAGEDIR}${EXAMPLESDIR}/

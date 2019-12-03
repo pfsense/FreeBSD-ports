@@ -16,6 +16,10 @@ EXTRACT_SUFX=	.run
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast-paced first-person-perspective online multiplayer game
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		linux makeself

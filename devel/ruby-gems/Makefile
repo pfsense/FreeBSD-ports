@@ -2,12 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	gems
-# Do not forget to update the following gemspec patches:
-# - security/rubygem-ezcrypto/files/patch-gemspec
-# - www/rubygem-gitlab-grack/files/patch-gemspec
-PORTVERSION=	2.7.6
+PORTVERSION=	3.0.6
 CATEGORIES=	devel ruby
-MASTER_SITES=	http://production.cf.rubygems.org/rubygems/
+MASTER_SITES=	https://rubygems.org/rubygems/
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DISTNAME=	ruby${PORTNAME}-${PORTVERSION}
 DIST_SUBDIR=	ruby
@@ -20,11 +17,12 @@ LICENSE_COMB=	dual
 LICENSE_FILE_MIT=	${WRKSRC}/MIT.txt
 LICENSE_FILE_RUBY=	${WRKSRC}/LICENSE.txt
 
+USES=		tar:tgz
+USE_RUBY=	yes
+
 NO_ARCH=	yes
 NO_BUILD=	yes
-USE_RUBY=	yes
 RUBY_SETUP=	setup.rb
-USES=		tar:tgz
 
 GEMS_BASE_DIR=		lib/ruby/gems
 GEMS_BASE_DIR_P=	${GEMS_BASE_DIR}
@@ -57,6 +55,7 @@ OPTIONS_DEFINE=	DOCS
 DOCS_VARS_OFF=	RUBY_SETUP_OPTIONS+="--no-ri --no-rdoc"
 
 do-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/${GEMS_VER_DIR}
 	cd ${WRKSRC}/ && ${SETENV} ${GEMS_ENV} ${RUBY} ${RUBY_SETUP} ${RUBY_SETUP_OPTIONS}
 	${LN} -sf gem${RUBY_VER_SHORT} ${STAGEDIR}${PREFIX}/bin/gem
 

@@ -1,19 +1,16 @@
---- chrome/app/chrome_main.cc.orig	2017-05-09 19:02:41 UTC
+--- chrome/app/chrome_main.cc.orig	2019-04-10 10:50:03 UTC
 +++ chrome/app/chrome_main.cc
-@@ -97,14 +97,14 @@ int ChromeMain(int argc, const char** ar
-   ALLOW_UNUSED_LOCAL(command_line);
+@@ -110,11 +110,11 @@ int ChromeMain(int argc, const char** argv) {
  #endif
  
--#if defined(OS_LINUX) || defined(OS_MACOSX)
-+#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_BSD)
+   // Chrome-specific process modes.
+-#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
++#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_BSD)
    if (command_line->HasSwitch(switches::kHeadless)) {
- #if defined(OS_MACOSX)
-     SetUpBundleOverrides();
- #endif
-     return headless::HeadlessShellMain(argc, argv);
+     return headless::HeadlessShellMain(params);
    }
--#endif  // defined(OS_LINUX) || defined(OS_MACOSX)
-+#endif  // defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_BSD)
+-#endif  // defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
++#endif  // defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_BSD)
  
- #if BUILDFLAG(ENABLE_PACKAGE_MASH_SERVICES)
-   version_info::Channel channel = chrome::GetChannel();
+   int rv = content::ContentMain(params);
+ 

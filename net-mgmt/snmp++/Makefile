@@ -3,6 +3,7 @@
 
 PORTNAME=	snmp++
 PORTVERSION=	3.3.0
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.agentpp.com/
 DISTNAME=	${PORTNAME}v${PORTVERSION}
@@ -15,7 +16,7 @@ LICENSE=	BSD3CLAUSE
 MAKEFILE=	Makefile.FreeBSD
 WRKSRC=		${WRKDIR}/${PORTNAME}/src
 
-USES=		gmake ssl:build
+USES=		compiler:c++11-lang gmake ssl:build
 USE_LDCONFIG=	yes
 MAKE_ARGS=	CC="${CXX}" PORTOPTS="-I${OPENSSLINC} -L${OPENSSLLIB}"
 

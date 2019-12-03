@@ -4,7 +4,7 @@
 PORTNAME=	groff
 PORTVERSION=	1.18.1
 DISTVERSIONSUFFIX=	.1
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	japanese print
 MASTER_SITES=	LOCAL/hrs
 DISTFILES=	${DISTNAME:S,-,_,}.orig${EXTRACT_SUFX} ${TMAC_DISTNAME}.tar.gz
@@ -19,6 +19,7 @@ COMMENT=	Japanese enhancement of GNU groff
 LICENSE=	GPLv2
 
 USES=		iconv:wchar_t cpe gmake makeinfo shebangfix
+
 SHEBANG_FILES=	src/utils/afmtodit/afmtodit.pl \
 		contrib/mm/mmroff.pl
 CPE_VENDOR=	gnu
@@ -44,6 +45,8 @@ TMAC_DISTNAME=	tmac-20030521_2
 TMACFILES=	tmac.orig_me tmac.vgrind \
 		an-old.tmac doc.tmac e.tmac
 MDOCFILES=	ja.eucJP doc-common doc-syms
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	${REINPLACE_CMD} -E -e 's|^@setfilename +groff|&.info|g;' \

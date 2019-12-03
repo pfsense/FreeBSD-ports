@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	pwned-check
-PORTVERSION=	2.0
+PORTVERSION=	2.2
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	#
 DISTFILES=	#
 
 MAINTAINER=	se@FreeBSD.org
-COMMENT=	Check whether password is known to have been exposed in data breaches
+COMMENT=	Check whether password is known to have been exposed in a data breach
 
 LICENSE=	BSD2CLAUSE
 

@@ -3,10 +3,11 @@
 
 PORTNAME=	check_smartmon
 PORTVERSION=	20100318
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://ftp.bsdserwis.com/pub/FreeBSD/ports/distfiles/
 PKGNAMEPREFIX=	nagios-
+PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@bsdserwis.com
 COMMENT=	Nagios plug-in to get status from smartmontools
@@ -16,6 +17,8 @@ LICENSE=	GPLv2+
 RUN_DEPENDS=	${LOCALBASE}/sbin/smartctl:sysutils/smartmontools
 
 USES=		python shebangfix
+USE_PYTHON=	concurrent
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

@@ -1,24 +1,25 @@
---- chrome/browser/ui/views/chrome_browser_main_extra_parts_views.cc.orig	2017-04-19 19:06:30 UTC
+--- chrome/browser/ui/views/chrome_browser_main_extra_parts_views.cc.orig	2019-03-11 22:00:54 UTC
 +++ chrome/browser/ui/views/chrome_browser_main_extra_parts_views.cc
-@@ -26,14 +26,14 @@
+@@ -35,7 +35,7 @@
  #include "ui/wm/core/wm_state.h"
  #endif  // defined(USE_AURA)
  
 -#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
 +#if (defined(OS_BSD) || defined(OS_LINUX)) && !defined(OS_CHROMEOS)
- #include "base/command_line.h"
- #include "chrome/browser/ui/simple_message_box.h"
- #include "chrome/grit/chromium_strings.h"
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <unistd.h>
+@@ -45,7 +45,7 @@
  #include "chrome/grit/generated_resources.h"
  #include "content/public/common/content_switches.h"
  #include "ui/base/l10n/l10n_util.h"
 -#endif  // defined(OS_LINUX) && !defined(OS_CHROMEOS)
 +#endif  // (defined(OS_BSD) || defined(OS_LINUX)) && !defined(OS_CHROMEOS)
  
- ChromeBrowserMainExtraPartsViews::ChromeBrowserMainExtraPartsViews() {
- }
-@@ -70,7 +70,7 @@ void ChromeBrowserMainExtraPartsViews::P
-     IMEDriver::Register();
+ ChromeBrowserMainExtraPartsViews::ChromeBrowserMainExtraPartsViews() {}
+ 
+@@ -93,7 +93,7 @@ void ChromeBrowserMainExtraPartsViews::PreProfileInit(
+   }
  #endif
  
 -#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
@@ -26,7 +27,7 @@
    // On the Linux desktop, we want to prevent the user from logging in as root,
    // so that we don't destroy the profile. Now that we have some minimal ui
    // initialized, check to see if we're running as root and bail if we are.
-@@ -94,7 +94,7 @@ void ChromeBrowserMainExtraPartsViews::P
+@@ -124,7 +124,7 @@ void ChromeBrowserMainExtraPartsViews::PreProfileInit(
    base::RunLoop().RunUntilIdle();
  
    exit(EXIT_FAILURE);
@@ -34,4 +35,4 @@
 +#endif  // (defined(OS_BSD) || defined(OS_LINUX)) && !defined(OS_CHROMEOS)
  }
  
- void ChromeBrowserMainExtraPartsViews::ServiceManagerConnectionStarted(
+ void ChromeBrowserMainExtraPartsViews::PostBrowserStart() {

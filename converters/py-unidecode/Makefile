@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	unidecode
-PORTVERSION=	1.0.22
+PORTVERSION=	1.0.23
+PORTREVISION=	1
 CATEGORIES=	converters python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,6 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		python
 USE_PYTHON=	distutils autoplist concurrent
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

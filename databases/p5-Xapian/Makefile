@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	Xapian
-PORTVERSION=	1.4.5.0
+PORTVERSION=	1.4.12.0
 CATEGORIES=	databases perl5
-MASTER_SITES=	http://oligarchy.co.uk/xapian/${PORTVERSION:R}/ \
+MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION:R}/ \
 		LOCAL/sunpoet
 PKGNAMEPREFIX=	p5-
 DISTNAME=	xapian-bindings-${PORTVERSION:R}
@@ -22,15 +22,26 @@ OPTIONS_DEFINE=	DOCS
 
 PORTSCOUT=	limitw:1,even
 
-CONFIGURE_ARGS=	--datarootdir=${DATADIR} --docdir=${DOCSDIR} \
+USES=		compiler:c++11-lang libtool perl5 tar:xz
+
+CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
+		--docdir=${DOCSDIR} \
+		--enable-shared \
 		--enable-static \
 		--with-perl \
-		--without-csharp --without-java --without-lua --without-php \
-		--without-python --without-python3 --without-ruby --without-tcl
+		--without-csharp \
+		--without-java \
+		--without-lua \
+		--without-php \
+		--without-php7 \
+		--without-python \
+		--without-python3 \
+		--without-ruby \
+		--without-tcl
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 LDFLAGS+=	-L${LOCALBASE}/lib/perl5/${PERL_VER}/mach/CORE -lperl
-USES=		libtool perl5 tar:xz
+USE_CXXSTD=	c++11
 
 PORTDOCS=	*
 

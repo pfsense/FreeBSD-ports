@@ -3,21 +3,23 @@
 
 PORTNAME=	docker-freebsd
 PORTVERSION=	20150625
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Docker containment system
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go>=1.4:lang/go \
-		bash:shells/bash \
+BROKEN=		fails to build
+
+BUILD_DEPENDS=	bash:shells/bash \
 		sqlite3:databases/sqlite3
-RUN_DEPENDS=	go>=1.4:lang/go \
-		bash:shells/bash \
+RUN_DEPENDS=	bash:shells/bash \
 		sqlite3:databases/sqlite3
+
+USES=		go:run
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kvasdopil

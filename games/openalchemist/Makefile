@@ -3,7 +3,7 @@
 
 PORTNAME=	openalchemist
 PORTVERSION=	0.3
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -19,19 +19,22 @@ BUILD_DEPENDS=	zip:archivers/zip
 LIB_DEPENDS=	libclanCore.so:devel/clanlib1 \
 		libpng.so:graphics/png
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
-GNU_CONFIGURE=	yes
-
-USES=		autoreconf gmake iconv jpeg pkgconfig python:2.7,run shebangfix
-SHEBANG_FILES=	openalchemist-config
-
+USES=		autoreconf gl gmake gnome iconv jpeg pkgconfig python:2.7,run \
+		sdl shebangfix xorg
 USE_GNOME=	pygtk2
 USE_XORG=	xxf86vm xi x11 xmu xext xdamage xfixes xau xdmcp xt sm ice
 USE_GL=		gl glu
 USE_SDL=	sdl gfx
 
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
+GNU_CONFIGURE=	yes
+
+SHEBANG_FILES=	openalchemist-config
+
 PORTDOCS=	AUTHORS ChangeLog README TODO
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -E -e 's|0.8|1.0|g' -e 's|^%|#|g' ${WRKSRC}/configure.ac

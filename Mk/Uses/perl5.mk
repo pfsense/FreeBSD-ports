@@ -44,12 +44,12 @@ USE_PERL5?=	run build
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-.    if ${PERL5_DEFAULT} == 5.24
-.include "${PORTSDIR}/lang/perl5.24/version.mk"
-.    elif ${PERL5_DEFAULT} == 5.26
+.    if ${PERL5_DEFAULT} == 5.26
 .include "${PORTSDIR}/lang/perl5.26/version.mk"
 .    elif ${PERL5_DEFAULT} == 5.28
 .include "${PORTSDIR}/lang/perl5.28/version.mk"
+.    elif ${PERL5_DEFAULT} == 5.30
+.include "${PORTSDIR}/lang/perl5.30/version.mk"
 .    elif ${PERL5_DEFAULT} == devel
 .include "${PORTSDIR}/lang/perl5-devel/version.mk"
 # Force PERL_PORT here in case two identical PERL_VERSION.
@@ -83,12 +83,12 @@ PERL_ARCH?=	mach
 # perl5_default file, or up there in the default versions selection.
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-.  if   ${PERL_LEVEL} >= 502800
+.  if   ${PERL_LEVEL} >= 503000
+PERL_PORT?=	perl5.30
+.  elif   ${PERL_LEVEL} >= 502800
 PERL_PORT?=	perl5.28
-.  elif   ${PERL_LEVEL} >= 502600
+.  else # ${PERL_LEVEL} < 502800
 PERL_PORT?=	perl5.26
-.  else # ${PERL_LEVEL} < 502600
-PERL_PORT?=	perl5.24
 .  endif
 
 SITE_PERL_REL?=	lib/perl5/site_perl
@@ -152,6 +152,18 @@ IGNORE=	${USE_PERL5_REASON}
 .    else # wrong suffix
 IGNORE=	improper use of USE_PERL5
 .    endif
+.  endif
+
+_USE_PERL5_VALID=	build configure extract modbuild modbuildtiny patch run \
+			test
+_USE_PERL5_UNKNOWN=
+.  for component in ${_USE_PERL5}
+.    if empty(_USE_PERL5_VALID:M${component})
+_USE_PERL5_UNKNOWN+=	${component}
+.    endif
+.  endfor
+.  if !empty(_USE_PERL5_UNKNOWN)
+IGNORE= has unknown USE_PERL5 components: ${_USE_PERL5_UNKNOWN}
 .  endif
 
 _USES_POST+=	perl5

@@ -3,7 +3,7 @@
 
 PORTNAME=	bulk_extractor
 PORTVERSION=	1.5.5
-PORTREVISION=	2
+PORTREVISION=	9
 CATEGORIES=	sysutils
 MASTER_SITES=	http://digitalcorpora.org/downloads/bulk_extractor/
 
@@ -13,15 +13,21 @@ COMMENT=	Program that scans a disk image and extracts useful information
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		sqlite ssl
 LIB_DEPENDS=	libafflib.so:sysutils/afflib \
+		libboost_system.so:devel/boost-libs \
 		libewf.so:devel/libewf \
 		libexiv2.so:graphics/exiv2 \
 		libexpat.so:textproc/expat2
 
+USES=		autoreconf compiler:c++11-lang gnome iconv:wchar_t localbase \
+		sqlite ssl
+USE_GNOME=	libxml2
+
 GNU_CONFIGURE=	yes
+CXXFLAGS_powerpc=	-DBIG_ENDIAN
+CXXFLAGS_powerpcspe=	-DBIG_ENDIAN
+CXXFLAGS_powerpc64=	-DBIG_ENDIAN
 CONFIGURE_ARGS=	--enable-exiv2=true
-CPPFLAGS+=	-I${LOCALBASE}/include
 
 PLIST_FILES=	bin/bulk_extractor bin/plugin_test man/man1/bulk_extractor.1.gz
 

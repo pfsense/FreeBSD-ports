@@ -14,6 +14,7 @@ COMMENT=	Graphical dungeon crawling game
 
 USES=		gmake
 USE_SDL=	sdl
+USE_CXXSTD=	c++98
 MAKE_JOBS_UNSAFE=yes
 
 BUILD_WRKSRC=	${WRKSRC}/port/linux
@@ -32,7 +33,9 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/powder ${STAGEDIR}${PREFIX}/bin/
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
 .endfor

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	php72
-DISTVERSION=	7.2.10
+DISTVERSION=	7.2.25
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -25,7 +25,6 @@ CONFIGURE_ARGS+=--with-layout=GNU \
 		--with-config-file-scan-dir=${PREFIX}/etc/php \
 		--disable-all \
 		--enable-libxml \
-		--enable-mysqlnd \
 		--with-libxml-dir=${LOCALBASE} \
 		--with-pcre-regex=${LOCALBASE} \
 		--with-password-argon2=${LOCALBASE} \
@@ -33,8 +32,11 @@ CONFIGURE_ARGS+=--with-layout=GNU \
 USES+=		autoreconf:build
 USE_GNOME=	libxml2
 
-OPTIONS_DEFINE+=CLI CGI FPM EMBED PHPDBG DEBUG DTRACE IPV6 LINKTHR ZTS
-OPTIONS_DEFAULT=CLI CGI FPM EMBED LINKTHR DTRACE
+# PR230207 Allow relocations against read-only segments (override lld default)
+LDFLAGS_i386=	-Wl,-z,notext
+
+OPTIONS_DEFINE+=CLI CGI FPM EMBED PHPDBG DEBUG DTRACE IPV6 MYSQLND LINKTHR ZTS
+OPTIONS_DEFAULT=CLI CGI FPM EMBED MYSQLND LINKTHR DTRACE
 OPTIONS_EXCLUDE_DragonFly=	DTRACE
 # ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
 OPTIONS_EXCLUDE_aarch64=	DTRACE
@@ -52,10 +54,11 @@ CGI_DESC=	Build CGI version
 FPM_DESC=	Build FPM version
 EMBED_DESC=	Build embedded library
 PHPDBG_DESC=	Interactive PHP debugger
+MYSQLND_DESC=	Build with MySQL Native Driver
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
 
-CONFLICTS=	php56-* php70-* php71-*
+#CONFLICTS=	php56-* php70-* php71-* php73-*
 
 DESTDIRNAME=	INSTALL_ROOT
 
@@ -63,6 +66,10 @@ DESTDIRNAME=	INSTALL_ROOT
 
 .if defined(PHP_FD_SETSIZE)
 CONFIGURE_ARGS+=	--enable-fd-setsize=${PHP_FD_SETSIZE}
+.endif
+
+.if ${PORT_OPTIONS:MMYSQLND}
+CONFIGURE_ARGS+=--enable-mysqlnd
 .endif
 
 .if ${PORT_OPTIONS:MCLI}

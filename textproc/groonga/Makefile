@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	groonga
-PORTVERSION=	8.0.3
+PORTVERSION=	9.0.7
 CATEGORIES=	textproc
 MASTER_SITES=	http://packages.groonga.org/source/groonga/
 
@@ -13,6 +13,7 @@ LICENSE=	LGPL21
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USES=		gmake libedit libtool pathfix pkgconfig
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-benchmark \
 		--disable-document \
@@ -48,6 +49,7 @@ SUGGEST_CONFIGURE_OFF=	--without-libevent \
 			--disable-zeromq
 RUBY_CONFIGURE_ON=	--enable-mruby
 RUBY_USE=		RUBY=yes
+RUBY_RUN_DEPENDS=	rubygem-bundler>=0:sysutils/rubygem-bundler
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -57,7 +59,11 @@ post-patch:
 		'/NGX_PID_PATH/s|mkdir|${TRUE}| ; \
 		 /NGX_HTTP_LOG_PATH/s|mkdir|${TRUE}| ; \
 		 /NGX_ERROR_LOG_PATH/s|mkdir|${TRUE}|' \
-		${WRKSRC}/vendor/nginx-1.14.0/auto/install
+		${WRKSRC}/vendor/nginx-1.17.3/auto/install
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
+	@${REINPLACE_CMD} -Ei .c++20 '/test|cat/s/[[:<:]]version/&.txt/' \
+		${WRKSRC}/version-gen.sh
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/groonga-httpd

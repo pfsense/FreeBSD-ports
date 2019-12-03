@@ -3,8 +3,9 @@
 
 PORTNAME=	db6
 PORTVERSION=	6.2.32
+PORTREVISION=	1
 CATEGORIES=	databases java
-MASTER_SITES=	http://download.oracle.com/berkeley-db/
+MASTER_SITES=	https://download.oracle.com/berkeley-db/
 PKGNAMEPREFIX?=
 #
 # the distfiles aren't named db6-* but db-*:
@@ -17,9 +18,11 @@ COMMENT=	Oracle Berkeley DB, revision ${BDBVER}
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
+BROKEN_mips64=	no usable MUTEX implementation, assy works only for MIPS32, POSIX mutexes are unshared
+
 BDBVER=		${PORTVERSION:R}
 BDBMAJ=		${BDBVER:R}
-CONFIGURE_ARGS=	--enable-cxx --enable-stl \
+CONFIGURE_ARGS=	--enable-cxx --enable-stl --enable-dbm \
 		--enable-compat185 --enable-dump185 \
 		--includedir=${PREFIX}/include/${PORTNAME} \
 		--libdir=${PREFIX}/lib/${PORTNAME} \
@@ -34,7 +37,7 @@ USE_LDCONFIG=	yes
 PLIST_SUB=	BDBMAJ=${BDBMAJ} BDBVER=${BDBVER}
 MAKE_ARGS+=	docdir=${DOCSDIR}
 
-OPTIONS_DEFINE=	CRYPTO L10N SQL JAVA TCL DOCS
+OPTIONS_DEFINE=	CRYPTO DEBUG L10N SQL JAVA TCL DOCS
 OPTIONS_DEFAULT=CRYPTO
 OPTIONS_SUB=	yes
 CRYPTO_DESC=	Cryptography support
@@ -56,12 +59,16 @@ JAVA_CONFIGURE_ENABLE=	java
 JAVA_CPPFLAGS=		-I"${JAVA_HOME}/include"
 JAVA_CONFIGURE_ENV=	JAVAC="${JAVAC}" JAR="${JAR}" JAVA="${JAVA}"
 TCL_CONFIGURE_ENABLE=	tcl
-TCL_USES=		tcl:85+
+TCL_USES=		tcl
 TCL_CONFIGURE_WITH=	tcl=${TCL_LIBDIR}
 TCL_VARS=		DBLIBS+=libdb_tcl
 DOCS_INSTALL_TARGET=	install_docs
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == aarch64
+CONFIGURE_ARGS+=	--with-mutex=POSIX/pthreads
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e '/^DOCLIST/{s/csharp//;}' ${WRKSRC}/../dist/Makefile.in
@@ -74,6 +81,7 @@ post-install:
 .for i in ${DBLIBS}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/${i}-${BDBVER}.so
 	${LN} -s -f ${PORTNAME}/${i}-${BDBVER}.so ${STAGEDIR}${PREFIX}/lib
+	${LN} -s -f ${PORTNAME}/${i}-${BDBVER}.so ${STAGEDIR}${PREFIX}/lib/${i}-${BDBMAJ}.so
 	${LN} -s -f ${i}-${BDBVER}.a ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/${i}.a
 .endfor
 	cd ${STAGEDIR}${PREFIX}/bin/${PORTNAME}; \

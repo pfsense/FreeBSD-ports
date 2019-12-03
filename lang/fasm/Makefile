@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	fasm
-PORTVERSION=	1.73.02
+PORTVERSION=	1.73.16
 CATEGORIES=	lang devel
-MASTER_SITES=	http://flatassembler.net/
+MASTER_SITES=	https://flatassembler.net/
 
-MAINTAINER=	graudeejs@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Flat, multiple-pass assembler for IA-32 & x86-64 architectures
 
 LICENSE=	BSD2CLAUSE
@@ -19,10 +19,12 @@ PLIST_FILES=	bin/fasm
 PORTDOCS=	*
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} != "i386"
-CFLAGS+=		-m32 -L/usr/lib32 -B/usr/lib32
+CFLAGS+=	-m32 -L/usr/lib32 -B/usr/lib32
 .endif
 
 do-build:
@@ -30,6 +32,8 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/fasm ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.txt ${STAGEDIR}${DOCSDIR}
 

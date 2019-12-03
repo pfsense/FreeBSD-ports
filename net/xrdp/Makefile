@@ -2,11 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	xrdp
-PORTVERSION=	0.9.6
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.9.11
 PORTEPOCH=	1
 CATEGORIES=	net
 DIST_SUBDIR?=	${PORTNAME}
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME}/commit/
 
 MAINTAINER=	meta@FreeBSD.org
 COMMENT=	Open source Remote Desktop Protocol (RDP) server
@@ -14,19 +16,20 @@ COMMENT=	Open source Remote Desktop Protocol (RDP) server
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-# pulseaudio's configured source is required for audio redirection
-BUILD_DEPENDS=	${NONEXISTENT}:audio/pulseaudio:configure \
-		${LOCALBASE}/bin/nasm:devel/nasm
-RUN_DEPENDS=	${LOCALBASE}/lib/xorg/modules/libxorgxrdp.so:x11-drivers/xorgxrdp
+BUILD_DEPENDS=	${LOCALBASE}/bin/nasm:devel/nasm
+RUN_DEPENDS=	xterm:x11/xterm \
+		${LOCALBASE}/lib/xorg/modules/libxorgxrdp.so:x11-drivers/xorgxrdp \
+		${LOCALBASE}/lib/pulse-13.0/modules/module-xrdp-sink.so:audio/pulseaudio-module-xrdp
 
 USES=		autoreconf:build jpeg localbase libtool pkgconfig ssl
 USE_XORG=	ice pixman sm x11 xfixes xrandr
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	${PREFIX}/lib/xrdp
 USE_GITHUB=	yes
+
+GNU_CONFIGURE=	yes
 GH_ACCOUNT=	neutrinolabs
 GH_PROJECT=	xrdp librfxcodec:librfxcodec libpainter:libpainter
-GH_TAGNAME=	v0.1.4:librfxcodec v0.1.1:libpainter
+GH_TAGNAME=	v0.1.5:librfxcodec v0.1.1:libpainter
 
 CONFIGURE_ARGS=	--localstatedir=/var --enable-strict-locations \
 		--with-pkgconfigdir=${LOCALBASE}/libdata/pkgconfig \
@@ -34,11 +37,11 @@ CONFIGURE_ARGS=	--localstatedir=/var --enable-strict-locations \
 LDFLAGS+=	-lssl
 CONFLICTS=	xrdp-devel[0-9]*
 INSTALL_TARGET=	install-strip
-SUB_FILES=	pkg-install pkg-message
+SUB_FILES=	pkg-deinstall pkg-install pkg-message
 SUB_LIST=	OPENSSLBASE=${OPENSSLBASE}
 
 OPTIONS_DEFINE=	DEBUG FUSE IPV6
-OPTIONS_DEFAULT=	FDKAAC MP3LAME OPUS
+OPTIONS_DEFAULT=	FDKAAC OPUS
 OPTIONS_GROUP=	AUDIO_CODEC
 OPTIONS_GROUP_AUDIO_CODEC=	FDKAAC MP3LAME OPUS
 FDKAAC_DESC=	Enable Fraunhofer FDK AAC for audio redirection
@@ -57,38 +60,26 @@ MP3LAME_LIB_DEPENDS=	libmp3lame.so:audio/lame
 OPUS_CONFIGURE_ENABLE=	opus
 OPUS_LIB_DEPENDS=	libopus.so:audio/opus
 
-# don't forget to increase PORTREVISION after pulseaudio update
-PULSE_VERSION=	${MAKE} -C ${PORTSDIR}/audio/pulseaudio -VPORTVERSION
-PULSE_WRKSRC=	${MAKE} -C ${PORTSDIR}/audio/pulseaudio -VWRKSRC
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+# As base OpenSSL doesn't install a .pc file, some flags such as -lcrypto
+# cannot be obtained automatically via pkgconfig. When compiled with base
+# OpenSSL, it needs to be specified explicitly.
+CONFIGURE_ENV+=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
+		OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"
+.endif
 
 post-extract:
 	# librfxcodec is provided as git submodule
 	@${CP} -r ${WRKSRC_librfxcodec}/ ${WRKSRC}/librfxcodec/
 	@${CP} -r ${WRKSRC_libpainter}/ ${WRKSRC}/libpainter/
 
-post-patch:
-	@${REINPLACE_CMD} \
-		-e "s|^PULSE_DIR = .*|PULSE_DIR = `${PULSE_WRKSRC}`|" \
-		-e "s|-Wall -O2|-Wall -O2 -I${LOCALBASE}/include|" \
-		${WRKSRC}/sesman/chansrv/pulse/Makefile
-
 pre-configure:
 	@cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ./bootstrap
 
-post-build:
-	# build pulseaudio module
-	@${CP} -r "`${PULSE_WRKSRC}`" ${WRKDIR}
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} -C sesman/chansrv/pulse
-
 post-install:
-	# install pulseaudio module
-	${MKDIR} "${STAGEDIR}${PREFIX}/lib/pulse-`${PULSE_VERSION}`/modules/"
-.for f in module-xrdp-sink.so module-xrdp-source.so
-	${INSTALL_LIB} -m 0755 ${WRKSRC}/sesman/chansrv/pulse/$f \
-		"${STAGEDIR}${PREFIX}/lib/pulse-`${PULSE_VERSION}`/modules/"
-.endfor
-	# substitute pkg-plist not using PLIST_SUB
-	${REINPLACE_CMD} -e "s|%%PULSE_VERSION%%|`${PULSE_VERSION}`|g" ${TMPPLIST}
+	${INSTALL_SCRIPT} ${FILESDIR}/startwm.sh ${STAGEDIR}${ETCDIR}
 
 post-stage:
 	@${RM} ${STAGEDIR}${PREFIX}/etc/xrdp/rsakeys.ini
@@ -98,4 +89,4 @@ post-stage:
 	@${MV} ${STAGEDIR}${PREFIX}/etc/xrdp/$f ${STAGEDIR}${PREFIX}/etc/xrdp/$f.sample
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

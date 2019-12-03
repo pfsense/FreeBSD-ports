@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	saga
-PORTVERSION=	6.3.0
+PORTVERSION=	7.3.0
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	SF/saga-gis/SAGA%20-%20${PORTVERSION:C/\.[[:digit:]]\.[[:digit:]]*$//}/SAGA%20-%20${PORTVERSION}
 
@@ -12,9 +13,10 @@ COMMENT=	System for Automated Geoscientific Analyses
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	clang50:devel/llvm50 \
+BUILD_DEPENDS=	clang${LLVM_VER}:devel/llvm${LLVM_VER} \
 		swig3.0:devel/swig30
-LIB_DEPENDS=	libfftw3.so:math/fftw3 \
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libfftw3.so:math/fftw3 \
 		libgdal.so:graphics/gdal \
 		libhpdf.so:print/libharu \
 		libjasper.so:graphics/jasper \
@@ -29,18 +31,17 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 RUN_DEPENDS:=	swig3.0:devel/swig30
 
 USES=		autoreconf compiler:c++11-lib desktop-file-utils dos2unix \
-		iconv:wchar_t libtool localbase pkgconfig python:2.7
+		iconv:wchar_t libtool localbase pkgconfig python
 USE_LDCONFIG=	yes
 USE_WX=		3.0+
+
 CONFIGURE_ARGS=	CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}" \
 		--enable-python --with-system-svm
 CONFIGURE_ENV=	SWIG="${LOCALBASE}/bin/swig3.0"
 GNU_CONFIGURE=	yes
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-CPP=		clang-cpp50
-CC=		clang50
-CXX=		clang++50
 INSTALLS_ICONS=	yes
 DOS2UNIX_GLOB=	*.cpp *.h
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
@@ -54,11 +55,10 @@ OPTIONS_SUB=	yes
 OPENMP_DESC=	Enable Multiprocessing (only amd64 and i386)
 VIGRA_DESC=	Enable 'Vision with Generic Algorithms' Library
 
-## TODO: OPENMP_?= Only for archs amd64 and i386
 OPENMP_CONFIGURE_ENABLE=	openmp
-OPENMP_LIB_DEPENDS=	libomp.so:devel/openmp
-OPENMP_LDFLAGS=		-L${LOCALBASE}/lib -lm -pthread
-#OPENMP_EXTRA_PATCHES=	${PATCHDIR}/
+OPENMP_LDFLAGS=		-L${LOCALBASE}/lib -lm
+# Use OpenMP from lang/llvm${LLVM_VER}
+OPENMP_LDFLAGS+=	-L${LOCALBASE}/llvm${LLVM_VER}/lib -lomp
 PGSQL_CONFIGURE_OFF=	--with-postgresql=no
 PGSQL_CONFIGURE_ON=	--with-postgresql=${LOCALBASE}/bin/pg_config
 PGSQL_USES=		pgsql
@@ -68,6 +68,12 @@ VIGRA_RUN_DEPENDS=	${LOCALBASE}/lib/libvigraimpex.so:graphics/vigra
 INSTALL_TARGET=	install-strip
 
 .include <bsd.port.pre.mk>
+
+# make describe needs them here
+LLVM_VER=	80
+CPP=		clang-cpp${LLVM_VER}
+CC=		clang${LLVM_VER}
+CXX=		clang++${LLVM_VER}
 
 SUB_FILES=	pkg-message
 
@@ -99,7 +105,10 @@ post-patch:
 		${WRKSRC}/src/saga_core/saga_gui/dlg_about.cpp
 
 post-patch-OPENMP-on:
-	@${REINPLACE_CMD} -e 's|-lgomp|-lomp|' ${WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|-lgomp|-lomp|' \
+		${WRKSRC}/configure.ac \
+		${WRKSRC}/configure \
+		${WRKSRC}/src/accessories/templates/template4saga-tools/my_tool_library/Makefile
 
 post-configure:
 	@${REINPLACE_CMD} -e 's|cd $$(pkgdatadir);|cd ${STAGEDIR}${DATADIR};|g' \
@@ -113,9 +122,10 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/src/saga_core/saga_gui/res/saga.png ${STAGEDIR}${DATADIR}
 	${RM} ${STAGEDIR}${DATADIR}/saga_dic.txt ${STAGEDIR}${DATADIR}/saga_srs.txt
 # toolchains dir was moved in r2805 (and followups r2810,r2811,r2820)
-	${MKDIR} ${STAGEDIR}${DATADIR}/accessories
-	(cd ${WRKSRC}/src/accessories && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/accessories)
+	(cd ${WRKSRC}/src/accessories && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
+	${RM} -R ${STAGEDIR}${DATADIR}/CMakeLists.txt
 	${RM} -R ${STAGEDIR}${DATADIR}/accessories/toolchains
+	${RM} -R ${STAGEDIR}${DATADIR}/templates/template4saga-tools/my_tool_library/Makefile.bak
 	${INSTALL_DATA} ${WRKSRC}/src/saga_core/saga_gui/res/saga.desktop \
 		${STAGEDIR}${PREFIX}/share/applications/
 # library helper files are not needed and cripple some math/qgis extensions

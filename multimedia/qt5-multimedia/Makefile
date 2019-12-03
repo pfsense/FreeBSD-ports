@@ -2,6 +2,7 @@
 
 PORTNAME=	multimedia
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	qt5-
 
@@ -10,10 +11,11 @@ COMMENT=	Qt audio, video, radio and camera support module
 
 # LICENSE set via USES_QT5 (bsd.qt.mk)
 
-USES=		pkgconfig qmake:norecursive qt-dist:5,multimedia
+USES=		compiler:c++11-lang gl gnome pkgconfig openal qmake:norecursive \
+		qt-dist:5,multimedia
 USE_GL=		gl
 USE_GNOME=	glib20
-USE_QT=		core gui network opengl qml quick widgets \
+USE_QT=		core declarative gui network opengl widgets \
 		buildtools_build
 USE_XORG=	x11 xext xv
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
@@ -46,8 +48,6 @@ GSTREAMER_VARS=		QT_CONFIG+=gstreamer-1.0 \
 			QMAKE_CONFIGURE_ARGS+=-gstreamer 1.0
 GSTREAMER_VARS_OFF=	QT_CONFIG+=-gstreamer-1.0 \
 			QMAKE_CONFIGURE_ARGS+=-no-gstreamer
-OPENAL_USES=		openal
-OPENAL_VARS_OFF=	QMAKE_CONFIGURE_ARGS+=-no-openal
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_VARS=	QT_CONFIG+=pulseaudio
 PULSEAUDIO_VARS_OFF=	QT_CONFIG+=-pulseaudio \

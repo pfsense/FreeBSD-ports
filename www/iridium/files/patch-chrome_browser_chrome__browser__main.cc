@@ -1,16 +1,16 @@
---- chrome/browser/chrome_browser_main.cc.orig	2017-04-24 14:40:28 UTC
+--- chrome/browser/chrome_browser_main.cc.orig	2019-03-11 22:00:53 UTC
 +++ chrome/browser/chrome_browser_main.cc
-@@ -181,7 +181,7 @@
- #include "chrome/browser/lifetime/application_lifetime.h"
- #endif  // defined(OS_ANDROID)
+@@ -217,7 +217,7 @@
+ #include "chromeos/settings/cros_settings_names.h"
+ #endif  // defined(OS_CHROMEOS)
  
 -#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
 +#if (defined(OS_BSD) || defined(OS_LINUX)) && !defined(OS_CHROMEOS)
  #include "chrome/browser/first_run/upgrade_util_linux.h"
  #endif  // defined(OS_LINUX) && !defined(OS_CHROMEOS)
  
-@@ -276,7 +276,7 @@
- #endif
+@@ -257,7 +257,7 @@
+ #endif  // defined(OS_WIN)
  
  #if defined(OS_WIN) || defined(OS_MACOSX) || \
 -    (defined(OS_LINUX) && !defined(OS_CHROMEOS))
@@ -18,48 +18,55 @@
  #include "chrome/browser/metrics/desktop_session_duration/desktop_session_duration_tracker.h"
  #endif
  
-@@ -479,10 +479,10 @@ void RegisterComponentsForUpdate() {
+@@ -1043,7 +1043,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+       AddFirstRunNewTabs(browser_creator_.get(), master_prefs_->new_tabs);
+     }
  
- #if !defined(OS_ANDROID)
-   RegisterPepperFlashComponent(cus);
--#if !defined(OS_CHROMEOS)
-+#if !defined(OS_CHROMEOS) && !defined(OS_BSD)
-   RegisterSwiftShaderComponent(cus);
-   RegisterWidevineCdmComponent(cus);
--#endif  // !defined(OS_CHROMEOS)
-+#endif  // !defined(OS_CHROMEOS) && !defined(OS_BSD)
- #endif  // !defined(OS_ANDROID)
+-#if defined(OS_MACOSX) || defined(OS_LINUX)
++#if defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
+     // Create directory for user-level Native Messaging manifest files. This
+     // makes it less likely that the directory will be created by third-party
+     // software with incorrect owner or permission. See crbug.com/725513 .
+@@ -1052,14 +1052,14 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+                                  &user_native_messaging_dir));
+     if (!base::PathExists(user_native_messaging_dir))
+       base::CreateDirectory(user_native_messaging_dir);
+-#endif  // defined(OS_MACOSX) || defined(OS_LINUX)
++#endif  // defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
+   }
+ #endif  // !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
  
- #if !defined(DISABLE_NACL) && !defined(OS_ANDROID)
-@@ -764,7 +764,7 @@ void ChromeBrowserMainParts::SetupFieldT
-   field_trial_synchronizer_ = new FieldTrialSynchronizer();
+-#if defined(OS_LINUX) || defined(OS_OPENBSD)
++#if defined(OS_LINUX)
+   // Set the product channel for crash reports.
+   breakpad::SetChannelCrashKey(chrome::GetChannelName());
+-#endif  // defined(OS_LINUX) || defined(OS_OPENBSD)
++#endif  // defined(OS_LINUX)
+ 
+ #if defined(OS_MACOSX)
+   // Get the Keychain API to register for distributed notifications on the main
+@@ -1087,7 +1087,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+   }
  
  #if defined(OS_WIN) || defined(OS_MACOSX) || \
 -    (defined(OS_LINUX) && !defined(OS_CHROMEOS))
 +    (defined(OS_LINUX) && !defined(OS_CHROMEOS) || defined(OS_BSD))
    metrics::DesktopSessionDurationTracker::Initialize();
  #endif
+   metrics::RendererUptimeTracker::Initialize();
+@@ -1267,6 +1267,7 @@ void ChromeBrowserMainParts::PostBrowserStart() {
+       base::TimeDelta::FromMinutes(1));
  
-@@ -1194,11 +1194,11 @@ int ChromeBrowserMainParts::PreCreateThr
+ #if !defined(OS_ANDROID)
++#if !defined(OS_BSD)
+   if (base::FeatureList::IsEnabled(features::kWebUsb)) {
+     web_usb_detector_.reset(new WebUsbDetector());
+     BrowserThread::PostAfterStartupTask(
+@@ -1275,6 +1276,7 @@ void ChromeBrowserMainParts::PostBrowserStart() {
+         base::BindOnce(&WebUsbDetector::Initialize,
+                        base::Unretained(web_usb_detector_.get())));
    }
- #endif  // !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
- 
--#if defined(OS_LINUX) || defined(OS_OPENBSD)
-+#if defined(OS_LINUX) || defined(OS_BSD)
-   // Set the product channel for crash reports.
-   base::debug::SetCrashKeyValue(crash_keys::kChannel,
-                                 chrome::GetChannelString());
--#endif  // defined(OS_LINUX) || defined(OS_OPENBSD)
-+#endif  // defined(OS_LINUX) || defined(OS_BSD)
- 
-   // Initialize tracking synchronizer system.
-   tracking_synchronizer_ = new metrics::TrackingSynchronizer(
-@@ -1387,7 +1387,7 @@ void ChromeBrowserMainParts::PreBrowserS
- 
- // Start the tab manager here so that we give the most amount of time for the
- // other services to start up before we start adjusting the oom priority.
--#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
-   g_browser_process->GetTabManager()->Start();
- #endif
- 
++#endif
+   if (base::FeatureList::IsEnabled(features::kTabMetricsLogging)) {
+     // Initialize the TabActivityWatcher to begin logging tab activity events.
+     resource_coordinator::TabActivityWatcher::GetInstance();

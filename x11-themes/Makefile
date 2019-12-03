@@ -3,13 +3,13 @@
 
     COMMENT = X11 themes
 
+    SUBDIR += Kvantum
     SUBDIR += adapta-backgrounds
     SUBDIR += adapta-gtk-theme
     SUBDIR += adwaita-icon-theme
     SUBDIR += adwaita-qt
     SUBDIR += arc-gruvbox-theme
     SUBDIR += audacious-skins
-    SUBDIR += beastie
     SUBDIR += claws-mail-themes
     SUBDIR += clearlooks
     SUBDIR += clearlooks-metacity
@@ -34,6 +34,8 @@
     SUBDIR += e16-themes
     SUBDIR += emerald-themes
     SUBDIR += fluxbox-tenr-styles-pack
+    SUBDIR += freebsd-8k-wallpapers
+    SUBDIR += freebsd-8k-wallpapers-kde
     SUBDIR += fvwm-themes
     SUBDIR += gnome-backgrounds
     SUBDIR += gnome-icon-theme-symbolic
@@ -49,6 +51,7 @@
     SUBDIR += gnome-icons-iris
     SUBDIR += gnome-icons-jini
     SUBDIR += gnome-icons-lila
+    SUBDIR += gnome-icons-luv
     SUBDIR += gnome-icons-noia-full
     SUBDIR += gnome-icons-noia-warm
     SUBDIR += gnome-icons-refined
@@ -57,8 +60,8 @@
     SUBDIR += gnome-icons-stylish
     SUBDIR += gnome-icons-ximian-south
     SUBDIR += gnome-themes
+    SUBDIR += gnome-themes-extra
     SUBDIR += gnome-themes-extras
-    SUBDIR += gnome-themes-standard
     SUBDIR += greybird-theme
     SUBDIR += gtk-E17-theme
     SUBDIR += gtk-aluminumalloy-cryogenic-theme
@@ -88,7 +91,6 @@
     SUBDIR += gtk-nodoka-engine
     SUBDIR += gtk-oxygen-engine
     SUBDIR += gtk-qnxtheme
-    SUBDIR += gtk-qt4-engine
     SUBDIR += gtk-xfce-engine
     SUBDIR += gtk3-oxygen-engine
     SUBDIR += gtk3-unico-engine
@@ -97,7 +99,6 @@
     SUBDIR += icons-tango
     SUBDIR += icons-tango-extras
     SUBDIR += irssi-themes
-    SUBDIR += kde-gtk-config
     SUBDIR += kde-icons-black-and-white
     SUBDIR += kde-icons-gartoon-blue-svg
     SUBDIR += kde-icons-gartoon-svg
@@ -108,16 +109,6 @@
     SUBDIR += kde-icons-noia
     SUBDIR += kde-icons-nuovext2
     SUBDIR += kde-icons-nuvola
-    SUBDIR += kde-base-artwork-kde4
-    SUBDIR += kde-wallpapers-kde4
-    SUBDIR += kde4-style-bespin
-    SUBDIR += kde4-style-nitrogen
-    SUBDIR += kde4-style-oxygen-transparent
-    SUBDIR += kde4-style-polyester
-    SUBDIR += kde4-style-skulpture
-    SUBDIR += kde4-windeco-crystal
-    SUBDIR += kde4-windeco-dekorator
-    SUBDIR += kdeartwork-kde4
     SUBDIR += kf5-breeze-icons
     SUBDIR += kf5-kemoticons
     SUBDIR += kf5-kiconthemes
@@ -126,10 +117,12 @@
     SUBDIR += lumina-themes
     SUBDIR += lxappearance
     SUBDIR += lxde-icon-theme
+    SUBDIR += lxqt-themes
     SUBDIR += mate-backgrounds
     SUBDIR += mate-icon-theme
     SUBDIR += mate-icon-theme-faenza
     SUBDIR += mate-themes
+    SUBDIR += materia-gtk-theme
     SUBDIR += metacity-aluminumalloy-cryogenic-theme
     SUBDIR += metacity-aluminumalloy-smog-theme
     SUBDIR += metacity-aluminumalloy-toxic-theme
@@ -147,24 +140,18 @@
     SUBDIR += numix-theme
     SUBDIR += openbox-arc-theme
     SUBDIR += openbox-themes
+    SUBDIR += papirus-icon-theme
     SUBDIR += plank-theme-moka
     SUBDIR += plasma5-breeze
     SUBDIR += plasma5-breeze-gtk
-    SUBDIR += plasma5-breeze-kde4
     SUBDIR += plasma5-kde-gtk-config
     SUBDIR += plasma5-oxygen
     SUBDIR += plasma5-plasma-workspace-wallpapers
-    SUBDIR += qt4-style-Kvantum
-    SUBDIR += qt4-style-float
-    SUBDIR += qt4-style-phase
-    SUBDIR += qt4-style-quantumstyle
-    SUBDIR += qt5-style-Kvantum
+    SUBDIR += plata-theme
     SUBDIR += qt5-style-plugins
     SUBDIR += qtcurve
     SUBDIR += qtcurve-gtk2
-    SUBDIR += qtcurve-kde4
     SUBDIR += qtcurve-kf5
-    SUBDIR += qtcurve-qt4
     SUBDIR += qtcurve-qt5
     SUBDIR += qtcurve-utils
     SUBDIR += rezlooks
@@ -175,7 +162,7 @@
     SUBDIR += slim-themes
     SUBDIR += thewidgetfactory
     SUBDIR += ubuntulooks
-    SUBDIR += wallpapers-freebsd-kde4
+    SUBDIR += wallpapers-freebsd-kde
     SUBDIR += xcursor-themes
     SUBDIR += xfce-evolution
     SUBDIR += xfce-icons-elementary

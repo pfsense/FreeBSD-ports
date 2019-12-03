@@ -69,14 +69,10 @@ status_cmd="activemq_status"
 stop_cmd="activemq_stop"
 
 activemq_precmd() {
-        touch ${pidfile}
-        chown ${activemq_user}:${activemq_group} ${pidfile}
-	if [ ! -d ${activemq_logs} ]; then 
-		/usr/bin/install -d -o ${activemq_user} -g ${activemq_group} ${activemq_logs}
-	fi
-	if [ ! -d ${activemq_data} ]; then 
-		/usr/bin/install -d -o ${activemq_user} -g ${activemq_group} ${activemq_data}
-	fi
+	touch ${pidfile}
+	chown ${activemq_user}:${activemq_group} ${pidfile}
+	/usr/bin/install -d -m 0750 -o ${activemq_user} -g ${activemq_group} ${activemq_logs}
+	/usr/bin/install -d -m 0750 -o ${activemq_user} -g ${activemq_group} ${activemq_data}
 }
 
 activemq_stop() {
@@ -89,7 +85,7 @@ activemq_stop() {
 	fi
 	
 	echo "Stopping ${name}."
-	${java_command} stop >/dev/null
+	/usr/bin/su -m $activemq_user -c "${java_command} stop" >/dev/null
 	activemq_wait_max_for_pid ${activemq_stop_timeout} ${rc_pid}
 	kill -KILL ${rc_pid} 2> /dev/null && echo "Killed."
 	rm -f ${pidfile}

@@ -3,7 +3,6 @@ share/dbus-1/services/org.freedesktop.Telepathy.Client.KTp.ConfAuthObserver.serv
 share/dbus-1/services/org.freedesktop.Telepathy.Client.KTp.SASLHandler.service
 share/dbus-1/services/org.freedesktop.Telepathy.Client.KTp.TLSHandler.service
 share/locale/ar/LC_MESSAGES/ktp-auth-handler.mo
-share/locale/ast/LC_MESSAGES/ktp-auth-handler.mo
 share/locale/bs/LC_MESSAGES/ktp-auth-handler.mo
 share/locale/ca/LC_MESSAGES/ktp-auth-handler.mo
 share/locale/ca@valencia/LC_MESSAGES/ktp-auth-handler.mo
@@ -14,6 +13,7 @@ share/locale/el/LC_MESSAGES/ktp-auth-handler.mo
 share/locale/en_GB/LC_MESSAGES/ktp-auth-handler.mo
 share/locale/es/LC_MESSAGES/ktp-auth-handler.mo
 share/locale/et/LC_MESSAGES/ktp-auth-handler.mo
+share/locale/eu/LC_MESSAGES/ktp-auth-handler.mo
 share/locale/fi/LC_MESSAGES/ktp-auth-handler.mo
 share/locale/fr/LC_MESSAGES/ktp-auth-handler.mo
 share/locale/ga/LC_MESSAGES/ktp-auth-handler.mo

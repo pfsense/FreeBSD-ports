@@ -7,13 +7,12 @@
     SUBDIR += avis
     SUBDIR += berkeley-db
     SUBDIR += bluej
+    SUBDIR += bootstrap-openjdk11
     SUBDIR += bootstrap-openjdk6
     SUBDIR += bootstrap-openjdk8
     SUBDIR += bouncycastle
     SUBDIR += bouncycastle15
-    SUBDIR += cacao
     SUBDIR += castor
-    SUBDIR += classpath
     SUBDIR += cos
     SUBDIR += cryptix-jce
     SUBDIR += dbvis
@@ -37,7 +36,6 @@
     SUBDIR += intellij-rubymine
     SUBDIR += intellij-ultimate
     SUBDIR += jad
-    SUBDIR += jaf
     SUBDIR += jai
     SUBDIR += jakarta-bcel
     SUBDIR += jakarta-commons-beanutils
@@ -54,7 +52,6 @@
     SUBDIR += jakarta-commons-primitives
     SUBDIR += jakarta-oro
     SUBDIR += jakarta-regexp
-    SUBDIR += jamvm
     SUBDIR += jasmin
     SUBDIR += jattach
     SUBDIR += java-checkstyle
@@ -72,13 +69,15 @@
     SUBDIR += jcommon
     SUBDIR += jd-gui
     SUBDIR += jdbcpool
+    SUBDIR += jdk10-doc
+    SUBDIR += jdk11-doc
+    SUBDIR += jdk12-doc
     SUBDIR += jdk8-doc
     SUBDIR += jdk9-doc
     SUBDIR += jdom
     SUBDIR += jflex
     SUBDIR += jfreechart
     SUBDIR += jgraph
-    SUBDIR += jgrapht
     SUBDIR += jgraphx
     SUBDIR += jikes
     SUBDIR += jlex
@@ -94,9 +93,7 @@
     SUBDIR += jxgrabkey
     SUBDIR += langspec
     SUBDIR += lightweight-java-profiler
-    SUBDIR += linux-oracle-jdk10
     SUBDIR += linux-oracle-jdk18
-    SUBDIR += linux-oracle-jdk9
     SUBDIR += linux-oracle-jre10
     SUBDIR += linux-oracle-jre18
     SUBDIR += linux-oracle-jre9
@@ -104,12 +101,12 @@
     SUBDIR += mmake
     SUBDIR += mx4j
     SUBDIR += netbeans
-    SUBDIR += netbeans-devel
     SUBDIR += netcomponents
     SUBDIR += netrexx
     SUBDIR += netty
-    SUBDIR += openjdk6
-    SUBDIR += openjdk6-jre
+    SUBDIR += openjdk11
+    SUBDIR += openjdk12
+    SUBDIR += openjdk13
     SUBDIR += openjdk7
     SUBDIR += openjdk7-jre
     SUBDIR += openjdk8
@@ -130,6 +127,11 @@
     SUBDIR += visualvm
     SUBDIR += wildfly10
     SUBDIR += wildfly11
+    SUBDIR += wildfly12
+    SUBDIR += wildfly13
+    SUBDIR += wildfly14
+    SUBDIR += wildfly15
+    SUBDIR += wildfly16
     SUBDIR += wildfly90
     SUBDIR += xdoclet
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	lilypond
 PORTVERSION=	2.18.2
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	print audio
 MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${PORTVERSION:R}/
 
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	pdftexi2dvi:print/texinfo \
 		t1ascii:print/t1utils \
 		bash:shells/bash \
-		convert:graphics/ImageMagick \
+		convert:graphics/ImageMagick6 \
 		dblatex:textproc/dblatex \
 		fontforge:print/fontforge \
 		help2man:misc/help2man \
@@ -33,12 +33,11 @@ LIB_DEPENDS=	libguile.so:lang/guile \
 RUN_DEPENDS=	mftrace:print/mftrace \
 		${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu
 
-USES=		bison:build gettext ghostscript gmake pkgconfig perl5 \
-		python:2.7
+USES=		bison:build compiler:c++11-lang gettext ghostscript gmake \
+		gnome pkgconfig perl5 python:2.7
 USE_TEX=	latex
 USE_PERL5=	build
 USE_GNOME=	pango
-#MAKE_JOBS_UNSAFE=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-ncsb-dir=${LOCALBASE}/share/ghostscript/fonts \
 		--with-python-include=${PYTHON_INCLUDEDIR}
@@ -46,7 +45,6 @@ CONFIGURE_ENV+=	ac_cv_prog_MAKEINFO="${LOCALBASE}/bin/makeinfo" \
 		FLEX=${FLEX} YACC=${YACC}
 
 MAKEFILE=	GNUmakefile
-GNU_MAKEFILE=	yes
 
 ALL_TARGET=	all
 TEST_TARGET=	test  # fails with sig11

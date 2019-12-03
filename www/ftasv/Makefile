@@ -13,6 +13,10 @@ COMMENT=	Is a commandline scoreboard viewer for the Apache server
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 GNU_CONFIGURE=	yes
 USES=		apache:2.2+
 

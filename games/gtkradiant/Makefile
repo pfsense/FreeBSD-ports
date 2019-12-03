@@ -3,7 +3,7 @@
 
 PORTNAME=	gtkradiant
 PORTVERSION=	1.5.0
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	games cad
 MASTER_SITES=	IDSOFTWARE/source/:id \
 		http://www.bsd-geek.de/FreeBSD/distfiles/:fb
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
 		libmhash.so:security/mhash \
 		libpng.so:graphics/png
 
-USES=		pkgconfig python:2.7,build scons zip
+USES=		compiler:c++11-lang gnome pkgconfig python:2.7,build scons zip
 USE_GNOME=	gtk20 libxml2
 MAKE_ARGS=	${MAKE_ENV} BUILD=release
 SSP_UNSAFE=	yes
@@ -29,8 +29,6 @@ DATADIR=	${PREFIX}/lib/${PORTNAME}
 WRKSRC=		${WRKDIR}/GPL/GtkRadiant
 
 SUB_FILES=	${PORTNAME}
-
-BROKEN_aarch64=		Fails to link: error: ldd command returned with exit code 256
 
 post-patch:
 	@${GREP} -Rl 'defined[[:blank:]]*([[:blank:]]*__linux__[[:blank:]]*) || defined[[:blank:]]*([[:blank:]]*__APPLE__[[:blank:]]*)' ${WRKSRC} | \
@@ -58,6 +56,11 @@ post-patch:
 # page size is deprecated" (very annoying)
 	@${GREP} -Rl --null gtk_adjustment_new ${WRKSRC} | ${XARGS} -0 \
 		${REINPLACE_CMD} -E 's|(gtk_adjustment_new[^)]*,)[^)]*|\1 0|'
+# Do not #include <sys/dir.h> header which is deprecated
+	@${REINPLACE_CMD} -e '/#include/s,<sys/dir,&ent,' \
+		${WRKSRC}/tools/quake2/qdata/qdata.c
+	@${REINPLACE_CMD} -e 's,#ifndef WIN32,#ifdef NeXT,' \
+		${WRKSRC}/tools/quake3/q3data/q3data.c
 
 pre-install:
 	cd ${WRKSRC} && ${PYTHON_CMD} install.py

@@ -4,7 +4,7 @@
 PORTNAME=	obfsclient
 PORTVERSION=	0.0.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	7
+PORTREVISION=	11
 CATEGORIES=	security
 
 MAINTAINER=	ports@FreeBSD.org
@@ -28,8 +28,17 @@ PLIST_FILES=	bin/${PORTNAME}
 
 PORTDOCS=	COPYING
 
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	field has incomplete type 'HMAC_CTX' (aka 'hmac_ctx_st')
+BROKEN_FreeBSD_13=	field has incomplete type 'HMAC_CTX' (aka 'hmac_ctx_st')
+.endif
+
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

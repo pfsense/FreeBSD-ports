@@ -131,6 +131,13 @@
 #				Option enabled  -D${content}=no
 #				Option disabled -D${content}=yes
 #
+# ${opt}_MESON_ENABLED		Will add to MESON_ARGS:
+#				Option enabled	-D${content}=enabled
+#				Option disabled	-D${content}=disabled
+# ${opt}_MESON_DISABLED		Will add to MESON_ARGS:
+#				Option enabled	-D${content}=disabled
+#				Option disabled	-D${content}=enabled
+#
 # ${opt}_IMPLIES		When opt is enabled, options named in IMPLIES will
 #				get enabled too.
 # ${opt}_PREVENTS		When opt is enabled, if any options in PREVENTS are
@@ -177,14 +184,23 @@ OPTIONS_FILE?=	${PORT_DBDIR}/${OPTIONS_NAME}/options
 
 _OPTIONS_FLAGS=	ALL_TARGET BROKEN CATEGORIES CFLAGS CONFIGURE_ENV CONFLICTS \
 		CONFLICTS_BUILD CONFLICTS_INSTALL CPPFLAGS CXXFLAGS \
-		DESKTOP_ENTRIES DISTFILES EXTRA_PATCHES EXTRACT_ONLY \
+		DESKTOP_ENTRIES DISTFILES EXECUTABLES EXTRA_PATCHES EXTRACT_ONLY \
 		GH_ACCOUNT GH_PROJECT GH_SUBDIR GH_TAGNAME GH_TUPLE \
 		GL_ACCOUNT GL_COMMIT GL_PROJECT GL_SITE GL_SUBDIR GL_TUPLE \
 		IGNORE INFO INSTALL_TARGET LDFLAGS LIBS MAKE_ARGS MAKE_ENV \
 		MASTER_SITES PATCHFILES PATCH_SITES PLIST_DIRS PLIST_FILES \
 		PLIST_SUB PORTDOCS PORTEXAMPLES SUB_FILES SUB_LIST \
-		TEST_TARGET USES BINARY_ALIAS
-_OPTIONS_DEPENDS=	PKG FETCH EXTRACT PATCH BUILD LIB RUN
+		TEST_TARGET USE_CABAL USES BINARY_ALIAS
+_OPTIONS_DEPENDS=	PKG FETCH EXTRACT PATCH BUILD LIB RUN TEST
+_ALL_OPTIONS_HELPERS=	${_OPTIONS_DEPENDS:S/$/_DEPENDS/} \
+			${_OPTIONS_DEPENDS:S/$/_DEPENDS_OFF/} \
+			${_OPTIONS_FLAGS:S/$/_OFF/} ${_OPTIONS_FLAGS} \
+			CABAL_FLAGS CMAKE_BOOL CMAKE_BOOL_OFF CMAKE_OFF CMAKE_ON \
+			CONFIGURE_ENABLE CONFIGURE_OFF CONFIGURE_ON \
+			CONFIGURE_WITH IMPLIES MESON_ARGS MESON_DISABLED \
+			MESON_ENABLED MESON_FALSE MESON_OFF MESON_ON MESON_TRUE \
+			PREVENTS PREVENTS_MSG QMAKE_OFF QMAKE_ON USE USE_OFF \
+			VARS VARS_OFF
 
 # The format here is target_family:priority:target-type
 _OPTIONS_TARGETS=	fetch:300:pre fetch:500:do fetch:700:post \
@@ -196,8 +212,6 @@ _OPTIONS_TARGETS=	fetch:300:pre fetch:500:do fetch:700:post \
 			test:300:pre test:500:do test:700:post  \
 			package:300:pre package:500:do package:700:post \
 			stage:800:post
-
-PORT_OPTIONS+=	DOCS NLS EXAMPLES IPV6
 
 # Add per arch options
 .for opt in ${OPTIONS_DEFINE_${ARCH}}
@@ -223,11 +237,10 @@ _ALL_EXCLUDE+=	${opt}
 .  endif
 .endfor
 
-# Remove options the port maintainer doesn't want
+# Remove options the port maintainer doesn't want, part 1
 .for opt in ${_ALL_EXCLUDE:O:u}
 OPTIONS_DEFAULT:=	${OPTIONS_DEFAULT:N${opt}}
 OPTIONS_DEFINE:=	${OPTIONS_DEFINE:N${opt}}
-PORT_OPTIONS:=		${PORT_OPTIONS:N${opt}}
 .  for otype in SINGLE RADIO MULTI GROUP
 .    for m in ${OPTIONS_${otype}}
 OPTIONS_${otype}_${m}:=	${OPTIONS_${otype}_${m}:N${opt}}
@@ -255,6 +268,18 @@ COMPLETE_OPTIONS_LIST=	${ALL_OPTIONS}
 .  for m in ${OPTIONS_${otype}}
 COMPLETE_OPTIONS_LIST+=	${OPTIONS_${otype}_${m}}
 .  endfor
+.endfor
+
+# Some options are always enabled by default.
+.for _opt in DOCS NLS EXAMPLES IPV6
+.if ${COMPLETE_OPTIONS_LIST:M${_opt}}
+PORT_OPTIONS+=	${_opt}
+.endif
+.endfor
+
+# Remove options the port maintainer doesn't want, part 2
+.for opt in ${_ALL_EXCLUDE:O:u}
+PORT_OPTIONS:=		${PORT_OPTIONS:N${opt}}
 .endfor
 
 ## Now create the list of activated options
@@ -410,22 +435,19 @@ PORT_OPTIONS+=	${OPTIONS_SLAVE}
 # Sort options and eliminate duplicates
 PORT_OPTIONS:=	${PORT_OPTIONS:O:u}
 
-## Now some compatibility
-.if empty(PORT_OPTIONS:MDOCS)
-PLIST_SUB+=		PORTDOCS="@comment "
-.else
-PLIST_SUB+=		PORTDOCS=""
-.endif
+_REALLY_ALL_POSSIBLE_OPTIONS:=	${COMPLETE_OPTIONS_LIST} ${_ALL_EXCLUDE}
+_REALLY_ALL_POSSIBLE_OPTIONS:=	${_REALLY_ALL_POSSIBLE_OPTIONS:O:u}
 
-.if empty(PORT_OPTIONS:MEXAMPLES)
-PLIST_SUB+=	        PORTEXAMPLES="@comment "
-.else
-PLIST_SUB+=	        PORTEXAMPLES=""
-.endif
-
-.if ${PORT_OPTIONS:MDEBUG}
-WITH_DEBUG=	yes
-.endif
+# Handle PORTDOCS and PORTEXAMPLES
+.for _type in DOCS EXAMPLES
+. if !empty(_REALLY_ALL_POSSIBLE_OPTIONS:M${_type})
+.  if empty(PORT_OPTIONS:M${_type})
+PLIST_SUB+=		PORT${_type}="@comment "
+.  else
+PLIST_SUB+=		PORT${_type}=""
+.  endif
+. endif
+.endfor
 
 .if defined(NO_OPTIONS_SORT)
 ALL_OPTIONS=	${OPTIONS_DEFINE}
@@ -435,7 +457,7 @@ ALL_OPTIONS=	${OPTIONS_DEFINE}
 _OPTIONS_${target}?=
 .endfor
 
-.for opt in ${COMPLETE_OPTIONS_LIST} ${_ALL_EXCLUDE:O:u}
+.for opt in ${_REALLY_ALL_POSSIBLE_OPTIONS}
 # PLIST_SUB
 PLIST_SUB?=
 SUB_LIST?=
@@ -496,6 +518,15 @@ MESON_ARGS+=		${${opt}_MESON_YES:C/.*/-D&=yes/}
 .    endif
 .    if defined(${opt}_MESON_NO)
 MESON_ARGS+=		${${opt}_MESON_NO:C/.*/-D&=no/}
+.    endif
+.    if defined(${opt}_MESON_ENABLED)
+MESON_ARGS+=		${${opt}_MESON_ENABLED:C/.*/-D&=enabled/}
+.    endif
+.    if defined(${opt}_MESON_DISABLED)
+MESON_ARGS+=		${${opt}_MESON_DISABLED:C/.*/-D&=disabled/}
+.    endif
+.    if defined(${opt}_CABAL_FLAGS)
+CABAL_FLAGS+=	${${opt}_CABAL_FLAGS}
 .    endif
 .    for configure in CONFIGURE CMAKE MESON QMAKE
 .      if defined(${opt}_${configure}_ON)
@@ -559,6 +590,15 @@ MESON_ARGS+=		${${opt}_MESON_YES:C/.*/-D&=no/}
 .    if defined(${opt}_MESON_NO)
 MESON_ARGS+=		${${opt}_MESON_NO:C/.*/-D&=yes/}
 .    endif
+.    if defined(${opt}_MESON_ENABLED)
+MESON_ARGS+=		${${opt}_MESON_ENABLED:C/.*/-D&=disabled/}
+.    endif
+.    if defined(${opt}_MESON_DISABLED)
+MESON_ARGS+=		${${opt}_MESON_DISABLED:C/.*/-D&=enabled/}
+.    endif
+.    if defined(${opt}_CABAL_FLAGS)
+CABAL_FLAGS+=	-${${opt}_CABAL_FLAGS}
+.    endif
 .    for configure in CONFIGURE CMAKE MESON QMAKE
 .      if defined(${opt}_${configure}_OFF)
 ${configure}_ARGS+=	${${opt}_${configure}_OFF}
@@ -581,6 +621,18 @@ _type=		${target:C/.*://}
 _OPTIONS_${_target}:=	${_OPTIONS_${_target}} ${_prio}:${_type}-${_target}-${opt}-off
 .    endfor
 .  endif
+.endfor
+
+# Collect which options helpers are defined at this point for
+# bsd.sanity.mk later to make sure no other options helper is
+# defined after bsd.port.options.mk.
+_OPTIONS_HELPERS_SEEN=
+.for opt in ${_REALLY_ALL_POSSIBLE_OPTIONS}
+.  for helper in ${_ALL_OPTIONS_HELPERS}
+.    if defined(${opt}_${helper})
+_OPTIONS_HELPERS_SEEN+=	${opt}_${helper}
+.    endif
+.  endfor
 .endfor
 
 .undef (SELECTED_OPTIONS)

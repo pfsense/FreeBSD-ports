@@ -11,8 +11,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	bill.brinzer@gmail.com
 COMMENT=	Call methods on native Perl types
 
-BUILD_DEPENDS=	p5-Scope-Guard>=0.20:devel/p5-Scope-Guard
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+LICENSE=	ART10 GPLv1+
+LICENSE_COMB=	dual
+
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Scope-Guard>=0.20:devel/p5-Scope-Guard
 
 USES=		perl5
 USE_PERL5=	configure

@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	webkit
-PORTVERSION=	2.20.3
-PORTREVISION=	1
+PORTVERSION=	2.26.2
 CATEGORIES=	www
-MASTER_SITES=	http://webkitgtk.org/releases/
+MASTER_SITES=	https://webkitgtk.org/releases/
 PKGNAMESUFFIX=	2-gtk3
 DISTNAME=	${PORTNAME}gtk-${PORTVERSION}
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Opensource browser engine using the GTK+ 3 toolkit
@@ -25,6 +25,7 @@ LIB_DEPENDS=	libenchant-2.so:textproc/enchant2 \
 		libnotify.so:devel/libnotify \
 		libhyphen.so:textproc/hyphen \
 		libicutu.so:devel/icu \
+		libopenjp2.so:graphics/openjpeg \
 		libharfbuzz.so:print/harfbuzz \
 		libharfbuzz-icu.so:print/harfbuzz-icu \
 		libsoup-2.4.so:devel/libsoup \
@@ -34,9 +35,9 @@ LIB_DEPENDS=	libenchant-2.so:textproc/enchant2 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		bison cmake:outsource compiler:c++14-lang gettext gnome gperf \
+USES=		bison cmake compiler:c++14-lang gettext gl gnome gperf \
 		jpeg localbase:ldflags perl5 pkgconfig python:2.7,build \
-		sqlite tar:xz
+		sqlite tar:xz xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build libxml2 libxslt
 USE_GL=		gl egl glesv2
 USE_GSTREAMER1=	bad gl
@@ -49,11 +50,12 @@ USE_XORG=	x11 xcomposite xdamage xext xrender xt ice
 BINARY_ALIAS=		python=${PYTHON_CMD}
 CXXFLAGS+=		-DFIXED_EXECUTABLE_MEMORY_POOL_SIZE_IN_MB=32
 CXXFLAGS_powerpc=	-DENABLE_YARR_JIT=0
-CXXFLAGS_powerpc64=	-DENABLE_YARR_JIT=0 \
-			-mminimal-toc
+CXXFLAGS_powerpc64=	-DENABLE_YARR_JIT=0
 CMAKE_ARGS=		-DPORT=GTK
-CMAKE_OFF=		USE_LD_GOLD ${CMAKE_OFF_${ARCH}:U}
-CMAKE_ON=		ENABLE_GLES2 ENABLE_MINIBROWSER
+CMAKE_OFF=		USE_LD_GOLD ${CMAKE_OFF_${ARCH}:U} \
+			ENABLE_GLES2 \
+			USE_SYSTEM_MALLOC
+CMAKE_ON=		ENABLE_MINIBROWSER
 CMAKE_OFF_armv6=	ENABLE_JIT
 CMAKE_OFF_armv7=	ENABLE_JIT
 CMAKE_OFF_powerpc=	ENABLE_JIT
@@ -63,17 +65,15 @@ INSTALL_TARGET=		install
 
 BROWSER_PLUGINS_DIR?=	${LOCALBASE}/lib/browser_plugins/symlinks/webkit-gtk3
 
-OPTIONS_DEFINE=		DEBUG GEOIP NPAPI WAYLAND
-OPTIONS_DEFAULT=	GEOIP
-OPTIONS_DEFAULT_i386=	NPAPI
-OPTIONS_DEFAULT_amd64=	NPAPI
+OPTIONS_DEFINE=		DEBUG GEOIP WAYLAND
+OPTIONS_DEFAULT=	GEOIP WAYLAND
 OPTIONS_SUB=		yes
-
-NPAPI_DESC=		Support gtk2 (NPAPI) based plugins (like flash)
 
 # Building WebKit with debugging symbols requires ar and ld with
 # support for thin archives.  Also see
 # https://bugs.webkit.org/show_bug.cgi?id=140384
+# binutils can be removed when 12.0-R and 11.2 and 11.3 are EOL
+# https://svnweb.freebsd.org/base?view=revision&revision=346079
 DEBUG_BUILD_DEPENDS=	binutils>=0:devel/binutils
 DEBUG_CMAKE_ON=		-DCMAKE_AR=${LOCALBASE}/bin/ar \
 			-DCMAKE_RANLIB=${LOCALBASE}/bin/ranlib \
@@ -90,12 +90,10 @@ GEOIP_CMAKE_BOOL=	ENABLE_GEOLOCATION
 GEOIP_BUILD_DEPENDS=	geoclue>=2.4.3:net/geoclue
 GEOIP_RUN_DEPENDS=	geoclue>=2.4.3:net/geoclue
 
-NPAPI_CMAKE_BOOL=	ENABLE_PLUGIN_PROCESS_GTK2
-NPAPI_USE=		GNOME=gtk20
-
 WAYLAND_CMAKE_BOOL=	ENABLE_WAYLAND_TARGET
-WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
-			libwayland-egl.so:graphics/mesa-libs
+WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland \
+			libwpe-1.0.so:www/libwpe \
+			libWPEBackend-fdo-1.0.so:www/wpebackend-fdo
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/lib/browser/plugins|${BROWSER_PLUGINS_DIR}|' \

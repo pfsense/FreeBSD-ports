@@ -4,7 +4,7 @@
 PORTNAME=	zmap
 PORTVERSION=	2.1.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libdnet.so:net/libdnet \
 
 USE_GITHUB=	yes
 
-USES=		cmake pkgconfig
+USES=		cmake:insource pkgconfig
 
 MANPAGE=	zblacklist.1 zmap.1 ztee.1
 

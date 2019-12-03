@@ -2,13 +2,13 @@
 
 PORTNAME=	api
 PORTVERSION=	0.5.0
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	security
 MASTER_SITES=	SF/razorbacktm/API
 PKGNAMEPREFIX=	razorback-
 DIST_SUBDIR=	razorback
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework for an intelligence driven security solution - API
 
 LICENSE=	GPLv2
@@ -35,7 +35,14 @@ ASSERT_CONFIGURE_ENABLE=	assert
 CNC_DEBUG_CONFIGURE_ENABLE=	cnc-debug
 STOMP_DEBUG_CONFIGURE_ENABLE=	stomp-debug
 
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base || ${SSL_DEFAULT} == openssl111
+BROKEN_FreeBSD_12=	incomplete definition of type 'struct rsa_st'
+BROKEN_FreeBSD_13=	incomplete definition of type 'struct rsa_st'
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e s/json/json-c/ -e s/-Werror// ${WRKSRC}/configure
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

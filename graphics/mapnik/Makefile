@@ -4,12 +4,13 @@
 PORTNAME=	mapnik
 PORTVERSION=	3.0.9
 DISTVERSIONPREFIX=	v
-PORTREVISION=	19
+PORTREVISION=	28
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://mapnik.s3.amazonaws.com/dist/v${PORTVERSION}/
 
 PATCH_SITES=	https://github.com/mapnik/mapnik/commit/
 PATCHFILES=	1ddfe6c31548.patch:-p1
+PATCHFILES+=	c067eb7eec32.patch:-p1
 
 MAINTAINER=	littlesavage@rambler.ru
 COMMENT=	Free Toolkit For Developing Mapping Applications
@@ -17,13 +18,13 @@ COMMENT=	Free Toolkit For Developing Mapping Applications
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		fails to build with boost 1.70, see bug 237016
+BROKEN_powerpc=		fails to install: runs out of virtual memory
+
 LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libboost_system.so:devel/boost-libs \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz
-
-BROKEN_powerpc=		fails to install: runs out of virtual memory
-BROKEN_powerpc64=	fails to link: libmapnik.so: undefined reference to boost::match_results
 
 USES=		compiler:c++11-lib pkgconfig python scons tar:bzip2
 USE_GNOME=	libxml2
@@ -36,7 +37,7 @@ PORTDOCS=	*
 
 INPUT_PLUGINS=	csv raster shape geojson topojson
 
-OPTIONS_DEFINE=	CAIRO JPEG PNG TIFF WEBP PROJ
+OPTIONS_DEFINE=	DOCS CAIRO JPEG PNG TIFF WEBP PROJ
 OPTIONS_DEFAULT=CAIRO GDAL OGR POSTGIS PGRASTER SQLITE3 JPEG PNG TIFF PROJ WEBP
 OPTIONS_GROUP=	INPUT
 OPTIONS_GROUP_INPUT=	GDAL OGR POSTGIS PGRASTER SQLITE3
@@ -79,12 +80,6 @@ CAIRO_LIB_DEPENDS=	libcairo.so:graphics/cairo
 CAIRO_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=1.8.2:graphics/py-cairo@${PY_FLAVOR}
 CAIRO_MAKE_ARGS_OFF=	CAIRO=False
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-CXXFLAGS+=	-D_GLIBCXX_USE_C99 # gcc c++11 support is broken on FreeBSD
-.endif
-
 pre-configure-SQLITE3-on:
 	@if ! ${LOCALBASE}/bin/sqlite3 :memory: 'create virtual table foo using rtree(pkid, xmin, xmax, ymin, ymax)' > /dev/null 2>&1; then \
 		${ECHO_MSG} "" ; \
@@ -111,4 +106,4 @@ post-install-DOCS-on:
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} "AUTHORS.md CHANGELOG.md README.md docs" \
 		${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

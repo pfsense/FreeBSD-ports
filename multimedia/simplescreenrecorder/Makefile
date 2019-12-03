@@ -1,7 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	simplescreenrecorder
-DISTVERSION=	0.3.11
+DISTVERSION=	0.3.11-20
+DISTVERSIONSUFFIX=	-g973cc00
+PORTREVISION=	3
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,12 +15,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libavformat.so:multimedia/ffmpeg
 
-USES=		cmake:outsource pkgconfig qt:5
+USES=		cmake compiler:c++11-lang pkgconfig qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	MaartenBaert
 GH_PROJECT=	ssr
 USE_QT=		core gui widgets x11extras buildtools_build linguisttools_build qmake_build
-USE_XORG=	x11 xext xfixes xi
+USE_XORG=	x11 xext xfixes xi xinerama
 
 CMAKE_ON=	WITH_QT5
 CMAKE_OFF=	WITH_GLINJECT  # doesn't yet work on FreeBSD: https://github.com/MaartenBaert/ssr/issues/586#issuecomment-343780107

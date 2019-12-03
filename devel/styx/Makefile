@@ -10,6 +10,10 @@ MASTER_SITES=	http://www.speculate.de/styx/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scanner/parser generator
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		autoreconf gmake iconv libtool
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

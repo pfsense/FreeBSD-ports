@@ -1,62 +1,61 @@
---- media/capture/video/linux/video_capture_device_linux.cc.orig	2017-06-05 19:03:08 UTC
+--- media/capture/video/linux/video_capture_device_linux.cc.orig	2019-04-30 22:22:52 UTC
 +++ media/capture/video/linux/video_capture_device_linux.cc
-@@ -21,6 +21,7 @@
+@@ -37,6 +37,7 @@ int TranslatePowerLineFrequencyToV4L2(PowerLineFrequen
  
- namespace media {
+ }  // namespace
  
 +#if !defined(OS_FREEBSD)
  // Translates Video4Linux pixel formats to Chromium pixel formats.
  // static
  VideoPixelFormat VideoCaptureDeviceLinux::V4l2FourCcToChromiumPixelFormat(
-@@ -34,6 +35,7 @@ std::list<uint32_t> VideoCaptureDeviceLinux::GetListOf
+@@ -50,6 +51,7 @@ std::vector<uint32_t> VideoCaptureDeviceLinux::GetList
      bool favour_mjpeg) {
    return V4L2CaptureDelegate::GetListOfUsableFourCcs(favour_mjpeg);
  }
 +#endif // !defined(OS_FREEBSD)
  
  VideoCaptureDeviceLinux::VideoCaptureDeviceLinux(
-     const VideoCaptureDeviceDescriptor& device_descriptor)
-@@ -47,6 +49,7 @@ VideoCaptureDeviceLinux::~VideoCaptureDeviceLinux() {
-   v4l2_thread_.Stop();
- }
- 
-+#if !defined(OS_FREEBSD)
- void VideoCaptureDeviceLinux::AllocateAndStart(
+     scoped_refptr<V4L2CaptureDevice> v4l2,
+@@ -71,6 +73,7 @@ void VideoCaptureDeviceLinux::AllocateAndStart(
      const VideoCaptureParams& params,
      std::unique_ptr<VideoCaptureDevice::Client> client) {
-@@ -74,7 +77,13 @@ void VideoCaptureDeviceLinux::AllocateAndStart(
-     v4l2_thread_.task_runner()->PostTask(FROM_HERE, request);
-   photo_requests_queue_.clear();
- }
-+#else // !defined(OS_FREEBSD)
-+void VideoCaptureDeviceLinux::AllocateAndStart(
-+    const VideoCaptureParams& params,
-+    std::unique_ptr<VideoCaptureDevice::Client> client) {}
-+#endif // !defined(OS_FREEBSD)
- 
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 +#if !defined(OS_FREEBSD)
+   DCHECK(!capture_impl_);
+   if (v4l2_thread_.IsRunning())
+     return;  // Wrong state.
+@@ -98,10 +101,12 @@ void VideoCaptureDeviceLinux::AllocateAndStart(
+   for (auto& request : photo_requests_queue_)
+     v4l2_thread_.task_runner()->PostTask(FROM_HERE, std::move(request));
+   photo_requests_queue_.clear();
++#endif // !defined(OS_FREEBSD)
+ }
+ 
  void VideoCaptureDeviceLinux::StopAndDeAllocate() {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++#if !defined(OS_FREEBSD)
    if (!v4l2_thread_.IsRunning())
      return;  // Wrong state.
-@@ -123,7 +132,11 @@ void VideoCaptureDeviceLinux::SetPhotoOptions(
-   }
-   v4l2_thread_.task_runner()->PostTask(FROM_HERE, std::move(functor));
- }
-+#else // !defined(OS_FREEBSD)
-+void VideoCaptureDeviceLinux::StopAndDeAllocate() {}
-+#endif // !defined(OS_FREEBSD)
+   v4l2_thread_.task_runner()->PostTask(
+@@ -111,6 +116,7 @@ void VideoCaptureDeviceLinux::StopAndDeAllocate() {
+   v4l2_thread_.Stop();
  
-+#if !defined(OS_FREEBSD)
+   capture_impl_ = nullptr;
++#endif // !defined(OS_FREEBSD)
+ }
+ 
+ void VideoCaptureDeviceLinux::TakePhoto(TakePhotoCallback callback) {
+@@ -158,11 +164,13 @@ void VideoCaptureDeviceLinux::SetPhotoOptions(
  void VideoCaptureDeviceLinux::SetRotation(int rotation) {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+   rotation_ = rotation;
++#if !defined(OS_FREEBSD)
    if (v4l2_thread_.IsRunning()) {
      v4l2_thread_.task_runner()->PostTask(
-@@ -131,6 +144,9 @@ void VideoCaptureDeviceLinux::SetRotation(int rotation
-         base::Bind(&V4L2CaptureDelegate::SetRotation, capture_impl_, rotation));
+         FROM_HERE, base::BindOnce(&V4L2CaptureDelegate::SetRotation,
+                                   capture_impl_->GetWeakPtr(), rotation));
    }
- }
-+#else // !defined(OS_FREEBSD)
-+void VideoCaptureDeviceLinux::SetRotation(int rotation) {}
 +#endif // !defined(OS_FREEBSD)
+ }
  
- // static
- int VideoCaptureDeviceLinux::TranslatePowerLineFrequencyToV4L2(
+ }  // namespace media

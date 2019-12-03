@@ -1,6 +1,6 @@
---- content/renderer/renderer_main_platform_delegate_linux.cc.orig	2017-04-19 19:06:34 UTC
+--- content/renderer/renderer_main_platform_delegate_linux.cc.orig	2019-03-11 22:00:58 UTC
 +++ content/renderer/renderer_main_platform_delegate_linux.cc
-@@ -29,6 +29,7 @@ void RendererMainPlatformDelegate::Platf
+@@ -30,6 +30,7 @@ void RendererMainPlatformDelegate::PlatformUninitializ
  }
  
  bool RendererMainPlatformDelegate::EnableSandbox() {
@@ -8,7 +8,7 @@
    // The setuid sandbox is started in the zygote process: zygote_main_linux.cc
    // https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox.md
    //
-@@ -59,7 +60,7 @@ bool RendererMainPlatformDelegate::Enabl
+@@ -65,7 +66,7 @@ bool RendererMainPlatformDelegate::EnableSandbox() {
      CHECK_EQ(errno, EPERM);
    }
  #endif  // __x86_64__

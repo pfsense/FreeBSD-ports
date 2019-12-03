@@ -2,26 +2,27 @@
 
 PORTNAME=	gogs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.11.53
-PORTREVISION=	1
+DISTVERSION=	0.11.91
 CATEGORIES=	devel www
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	1f247cf8139cb483276cd8dd06385a800ce9d4b2.patch:-p1
-
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Painless self-hosted Git service
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go:lang/go
 RUN_DEPENDS=	git:devel/git \
 		bash:shells/bash
+
+USES=		go
+
+GO_BUILDFLAGS=	-tags "sqlite pam cert"
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	gogs
 GH_SUBDIR=	src/github.com/${GH_ACCOUNT}/${PORTNAME}
+
+GO_TARGET=	:${PREFIX}/libexec/${PORTNAME}/${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS
 
@@ -58,13 +59,7 @@ post-patch:
 		-e 's|^DB_TYPE = mysql$$|DB_TYPE = sqlite3|' \
 		${WRKSRC}/conf/app.ini
 
-do-build:
-	@(cd ${WRKSRC}/${GH_SUBDIR} && \
-		${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go build -tags "sqlite pam cert" -p ${MAKE_JOBS_NUMBER} -o ${PORTNAME})
-
-do-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}/
+post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/gogs ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_SCRIPT} ${WRKDIR}/gogs-rm-data ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_SCRIPT} ${WRKDIR}/gogs-service ${STAGEDIR}${PREFIX}/etc/rc.d/gogs

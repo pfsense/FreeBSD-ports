@@ -1,9 +1,9 @@
---- src/tools/io/io_shapes_las/las_export.cpp.orig	2018-05-01 09:07:10 UTC
+--- src/tools/io/io_shapes_las/las_export.cpp.orig	2019-06-24 16:41:27 UTC
 +++ src/tools/io/io_shapes_las/las_export.cpp
-@@ -61,9 +61,9 @@
- //---------------------------------------------------------
- #include "las_export.h"
+@@ -59,9 +59,9 @@
+ ///////////////////////////////////////////////////////////
  
+ //---------------------------------------------------------
 -#include <liblas/laspoint.hpp>
 -#include <liblas/laswriter.hpp>
 -#include <liblas/capi/las_version.h>

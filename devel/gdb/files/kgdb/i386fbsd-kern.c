@@ -128,6 +128,13 @@ i386fbsd_supply_pcb(struct regcache *regcache, CORE_ADDR pcb_addr)
   gdb_byte buf[4];
   int i;
 
+  memset(buf, 0, sizeof(buf));
+
+  /*
+   * XXX The PCB may have been swapped out.  Supply a dummy %eip value
+   * so as to avoid triggering an exception during stack unwinding.
+   */
+  regcache->raw_supply(I386_EIP_REGNUM, buf);
   for (i = 0; i < ARRAY_SIZE (i386fbsd_pcb_offset); i++)
     if (i386fbsd_pcb_offset[i] != -1) {
       if (target_read_memory(pcb_addr + i386fbsd_pcb_offset[i], buf, sizeof buf)
@@ -179,7 +186,7 @@ i386fbsd_fetch_tss(void)
 	struct segment_descriptor sd;
 	CORE_ADDR addr, cpu0prvpage, tss;
 
-	kt = kgdb_thr_lookup_tid(ptid_get_tid(inferior_ptid));
+	kt = kgdb_thr_lookup_tid(inferior_ptid.tid());
 	if (kt == NULL || kt->cpu == NOCPU || kt->cpu < 0)
 		return (0);
 

@@ -2,6 +2,7 @@
 
 PORTNAME=	libmaxminddb
 PORTVERSION=	1.3.2
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/maxmind/libmaxminddb/releases/download/${PORTVERSION}/
 
@@ -11,10 +12,11 @@ COMMENT=	Library for the MaxMind DB file format used for GeoIP2
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-GNU_CONFIGURE=	yes
+USES=		compiler:c11 gmake libtool
+
 CONFIGURE_ARGS=	--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USES=		gmake libtool
 
 .include <bsd.port.mk>

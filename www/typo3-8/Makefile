@@ -13,20 +13,18 @@ COMMENT=	Typo3 content management system
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-IGNORE_WITH_PHP=	56
-
 PORTSCOUT=	limit:^${PORT_V_MAJOR}\.${PORT_V_MINOR}\.
 
 USES=		cpe php:web,flavors shebangfix
 SHEBANG_GLOB=	*.sh *.php
 NO_BUILD=	yes
 NO_ARCH=	yes
-USE_PHP=	ctype fileinfo filter hash json mysqli openssl pcre session soap xml zip simplexml
+USE_PHP=	ctype fileinfo filter hash json mysqli openssl pcre session simplexml xml zip
 WRKSRC=		${WRKDIR}/${TYPO3SRC}
 
 PORT_V_MAJOR=	8
 PORT_V_MINOR=	7
-PORT_V_PATCH=	17
+PORT_V_PATCH=	27
 
 TYPO3WWW=	www
 TYPO3SRC=	${PORTNAME}_src-${PORTVERSION}
@@ -34,6 +32,11 @@ TYPO3DIR=	${PORTNAME}-${PORT_V_MAJOR}
 
 USERS=		${WWWOWN}
 GROUPS=		${WWWGRP}
+
+SUB_FILES=	pkg-message
+SUB_LIST+=	PREFIX=${PREFIX} \
+		TYPO3WWW=${TYPO3WWW} \
+		TYPO3DIR=${TYPO3DIR}
 
 DISTFILES+=	${TYPO3SRC}${EXTRACT_SUFX}
 
@@ -55,9 +58,9 @@ ZLIB_USE=	PHP=zlib
 
 .if ${PORT_OPTIONS:MIMAGICK}
 .if ${PORT_OPTIONS:MX11}
-RUN_DEPENDS+=	convert:graphics/ImageMagick
+RUN_DEPENDS+=	convert:graphics/ImageMagick6
 .else
-RUN_DEPENDS+=	convert:graphics/ImageMagick-nox11
+RUN_DEPENDS+=	convert:graphics/ImageMagick6-nox11
 .endif
 .endif
 

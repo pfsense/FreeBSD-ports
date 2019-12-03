@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	iortcw
-PORTVERSION=	1.51b
+PORTVERSION=	1.51c
 PORTEPOCH=	1
 CATEGORIES=	games
 
@@ -11,45 +11,58 @@ COMMENT=	Game engine for Return to Castle Wolfenstein
 
 LICENSE=	GPLv3
 
-NOT_FOR_ARCHS=		aarch64 armv6 armv7 powerpc64
+NOT_FOR_ARCHS=		aarch64 armv6 armv7
 NOT_FOR_ARCHS_REASON=	fails to configure: Architecture not supported
 
-BUILD_DEPENDS=	opusfile>0:audio/opusfile
 LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libfreetype.so:print/freetype2 \
+		libogg.so:audio/libogg \
 		libopus.so:audio/opus \
-		libfreetype.so:print/freetype2
+		libopusfile.so:audio/opusfile
 
-USES=		jpeg pkgconfig gmake
+USES=		gl gmake jpeg openal pkgconfig sdl
+USE_GITHUB=	yes
 USE_GL=		gl
 USE_SDL=	sdl2
-
-USE_GITHUB=	yes
 
 WOLFDIR=	"libexec/${PORTNAME}"
 MAKE_ARGS=	BINDIR="${STAGEDIR}${PREFIX}/bin" \
 		COPYDIR="${STAGEDIR}${PREFIX}/${WOLFDIR}"
 
-PLIST_SUB=	ARCH="${ARCH}" WOLFDIR="${WOLFDIR}"
+# cf. PR 226980
+LLD_UNSAFE=	yes
 
-SUB_FILES=	iowolfsp iowolfmp iowolfded pkg-message
-SUB_LIST=	ARCH="${ARCH}" WOLFDIR="${PREFIX}/${WOLFDIR}" \
-		DISTVERSION="${DISTVERSION}"
+PLIST_SUB=	ARCH="${ARCH}" \
+		WOLFDIR="${WOLFDIR}"
 
-OPTIONS_DEFINE=	MP SP
+SUB_FILES=	iowolfded iowolfmp iowolfsp pkg-message
+SUB_LIST=	ARCH="${ARCH}" \
+		DISTVERSION="${DISTVERSION}" \
+		WOLFDIR="${PREFIX}/${WOLFDIR}"
+
+OPTIONS_DEFINE=		MP SP
 OPTIONS_DEFAULT=	MP SP
-OPTIONS_SUB=	yes
+OPTIONS_SUB=		yes
 
 MP_DESC=	Build multiplayer support
 SP_DESC=	Build singleplayer support
 
-SP_ALL_TARGET=	sp
-SP_DESKTOP_ENTRIES=	"Return to Castle Wolfenstein" "Return to Castle Wolfenstein" \
-			"${DATADIR}/wolf512.png" "iowolfsp" "Game;" false
+SP_ALL_TARGET=		sp
+SP_DESKTOP_ENTRIES=	"Return to Castle Wolfenstein" \
+			"Return to Castle Wolfenstein" \
+			"${DATADIR}/wolf512.png" \
+			"iowolfsp" \
+			"Game;" \
+			false
 SP_INSTALL_TARGET=	sp-install
 
-MP_ALL_TARGET=	mp
-MP_DESKTOP_ENTRIES=	"Return to Castle Wolfenstein (MP)" "Return to Castle Wolfenstein Multiplayer" \
-			"${DATADIR}/wolf512.png" "iowolfmp" "Game;" false
+MP_ALL_TARGET=		mp
+MP_DESKTOP_ENTRIES=	"Return to Castle Wolfenstein (MP)" \
+			"Return to Castle Wolfenstein Multiplayer" \
+			"${DATADIR}/wolf512.png" \
+			"iowolfmp" \
+			"Game;" \
+			false
 MP_INSTALL_TARGET=	mp-install
 
 post-extract:

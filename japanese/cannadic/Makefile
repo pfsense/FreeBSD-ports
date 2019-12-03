@@ -10,6 +10,10 @@ MASTER_SITES=	http://cannadic.oucrc.org/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Canna dictionary containing a lot of words
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	${LOCALBASE}/sbin/cannaserver:japanese/canna-server
 BUILD_DEPENDS=	crxdic:japanese/canna-server
 

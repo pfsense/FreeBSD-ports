@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pyvisa
-PORTVERSION=	1.9.0
+PORTVERSION=	1.10.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,8 +17,9 @@ RUN_DEPENDS=	${PY_ENUM34} \
 		${PYTHON_PKGNAMEPREFIX}pyvisa-py>=0:devel/py-pyvisa-py@${PY_FLAVOR}
 
 USES=		python
-USE_LOCALE=	en_US.UTF-8
 USE_PYTHON=	autoplist concurrent distutils
+
 NO_ARCH=	yes
+USE_LOCALE=	en_US.UTF-8
 
 .include <bsd.port.mk>

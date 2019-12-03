@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	e2fsprogs
-PORTVERSION=	1.44.4
-PORTREVISION?=	0
+PORTVERSION=	1.45.3
+PORTREVISION?=	2
 CATEGORIES?=	sysutils
 MASTER_SITES=	KERNEL_ORG/linux/kernel/people/tytso/${PORTNAME}/v${PORTVERSION}
 
@@ -14,18 +14,9 @@ LICENSE?=	GPLv2+
 .if !defined(_no_license_file)
 LICENSE_FILE?=	${WRKSRC}/NOTICE
 .endif
-LICENSE_DISTFILES_GPLv2=	${DISTNAME}${EXTRACT_SUFX}
+LICENSE_DISTFILES_GPLv2+ =	${DISTNAME}${EXTRACT_SUFX}
 
 PORTSCOUT=	ignore	# cannot handle the version in the directory
-
-.if !defined(MASTERDIR)
-BROKEN_aarch64=		fails to link: missing sbrk
-BROKEN_armv6=		fails to build: Tests failed: f_pre_1970_date_encoding
-BROKEN_armv7=		fails to build: Tests failed: f_pre_1970_date_encoding
-BROKEN_mips=		fails to build: Tests failed: f_pre_1970_date_encoding
-BROKEN_mips64=		fails to build: Tests failed: f_pre_1970_date_encoding
-BROKEN_powerpc64=	fails to build: Entry '..' in Signal (11) SIGSEGV si_code=SEGV_MAPERR fault addr=0x2434
-.endif
 
 USES=		cpe gmake makeinfo pkgconfig tar:xz
 CPE_VENDOR=	e2fsprogs_project
@@ -75,7 +66,8 @@ BASHTESTS_DESC=	Enable tests that require the GNU bash shell
 FUSEFS_CONFIGURE_ENABLE=	fuse2fs
 
 BUILD_DEPENDS+=	gdd:sysutils/coreutils
-BASHTEST_BUILD_DEPENDS=	bash:shells/bash
+BASHTESTS_BUILD_DEPENDS=	${BASH_CMD}:shells/bash
+BASH_CMD=	${LOCALBASE}/bin/bash
 
 LIB_DEPENDS+=	libblkid.so:misc/e2fsprogs-libblkid
 LIB_DEPENDS+=	libss.so:devel/e2fsprogs-libss
@@ -89,6 +81,12 @@ PKGDEINSTALL=	${PKGINSTALL}
 MAKE_ARGS+=	V=1
 
 .include <bsd.port.options.mk>
+
+. if ${ARCH} == powerpc64
+# Fix powerpc64 SIGSEGV,
+# see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=231570
+USES+=		compiler:c11
+. endif
 
 .if ${PORT_OPTIONS:MFUSEFS}
 USES+=		fuse
@@ -114,6 +112,10 @@ libintl=	${LOCALBASE}/lib/libintl.a ${LOCALBASE}/lib/libiconv.a
 .else
 CONFIGURE_ARGS+=--disable-nls
 libintl=
+.endif
+
+.if ${MASTERDIR} == ${.CURDIR} && ${ARCH} == "aarch64"
+EXTRA_PATCHES+=	${FILESDIR}/extrapatch-no-sbrk
 .endif
 
 # d_fallocate_blkmap appears to fail on some systems for unknown reasons.
@@ -206,7 +208,7 @@ _checkaddargs+=TMPDIR=${WRKDIR}/tmp
 .endif
 
 .if ${PORT_OPTIONS:MBASHTESTS}
-_checkaddargs+=--eval SHELL:=${LOCALBASE}/bin/bash
+_checkaddargs+=--eval SHELL:=${BASH_CMD}
 .endif
 
 .if ${PORT_OPTIONS:MSLOWTESTS}

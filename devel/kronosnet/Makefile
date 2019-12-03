@@ -3,7 +3,7 @@
 
 PORTNAME=	kronosnet
 PORTVERSION=	1.3
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	https://kronosnet.org/releases/
 
@@ -38,6 +38,8 @@ MANPAGES_CONFIGURE_ENABLE=	man
 .include <bsd.port.options.mk>
 
 .if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	error: storage size of 'ctx' isn't known
+BROKEN_FreeBSD_13=	error: storage size of 'ctx' isn't known
 EXTRA_PATCHES=	${.CURDIR}/files/extra-patch-ssl-base-configure.ac
 CONFIGURE_ENV=	openssl_CFLAGS=-I/usr/include openssl_LIBS=-lcrypto
 .elif ${SSL_DEFAULT} == libressl

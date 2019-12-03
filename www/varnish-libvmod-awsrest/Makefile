@@ -2,7 +2,7 @@
 
 PORTNAME=	libvmod-awsrest
 DISTVERSIONPREFIX=	v
-DISTVERSION=	60.9
+DISTVERSION=	62.10
 #DISTVERSIONSUFFIX=	-varnish40
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
@@ -23,5 +23,7 @@ INSTALL_TARGET=	install-strip
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	xcir
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

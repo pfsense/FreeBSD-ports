@@ -3,12 +3,16 @@
 
 PORTNAME=	smalltalk
 PORTVERSION=	3.2.5
-PORTREVISION=	10
+PORTREVISION=	14
 CATEGORIES=	lang
 MASTER_SITES=	GNU
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	GNU Smalltalk
+
+BROKEN_aarch64=		Fails to link: undefined reference to sbrk
+BROKEN_powerpc64=	Fails to build: gst-package: did not understand #~
+BROKEN_sparc64=		Fails to install
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		gawk:lang/gawk
@@ -43,9 +47,6 @@ PLIST_SUB=	VERSION="${PORTVERSION}"
 PORTDATA=	*
 
 INFO=		gst gst-base gst-libs
-
-BROKEN_aarch64=	Fails to link: undefined reference to sbrk
-BROKEN_sparc64=	Fails to install on sparc64
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/ia64-\*-\* /&|amd64-*-* /' \

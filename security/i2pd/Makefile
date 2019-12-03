@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	i2pd
-PORTVERSION=	2.19.0
+PORTVERSION=	2.28.0
 CATEGORIES=	security net-p2p
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 USE_GITHUB=	yes
 GH_ACCOUNT=	PurpleI2P
 
-USES=		cmake compiler:c++11-lib ssl
+USES=		cmake:insource compiler:c++11-lib ssl
 CMAKE_ARGS=	-DWITH_GUI=OFF
 CMAKE_SOURCE_PATH=	${WRKSRC}/build
 USE_RC_SUBR=	${PORTNAME}
@@ -39,7 +39,6 @@ AVX_CMAKE_BOOL=		WITH_AVX
 UPNP_DESC=		Include support for UPnP client
 UPNP_CMAKE_BOOL=	WITH_UPNP
 UPNP_LIB_DEPENDS=	libminiupnpc.so:net/miniupnpc
-UPNP_DESC=		Include support for UPnP client
 HARDENING_CMAKE_BOOL=	WITH_HARDENING
 HARDENING_DESC=		Use hardening compiler flags
 

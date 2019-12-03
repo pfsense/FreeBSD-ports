@@ -10,6 +10,8 @@ COMMENT=	Scalable RPC library for Erlang
 
 LICENSE=	APACHE20
 
+BROKEN=		fails to build
+
 USES=		erlang:rebar
 USE_GITHUB=	yes
 GH_ACCOUNT=	priestjim
@@ -17,5 +19,7 @@ GH_ACCOUNT=	priestjim
 ERL_BUILD_DEPS=	devel/erlang-hut \
 		devel/erlang-ssl_verify_fun
 ERL_RUN_DEPS:=  ${ERL_BUILD_DEPS}
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

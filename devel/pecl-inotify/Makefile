@@ -2,18 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	inotify
-PORTVERSION=	0.1.6
-PORTREVISION=	2
+PORTVERSION=	2.0.0
 CATEGORIES=	devel
 
-MAINTAINER=	gasol.wu@gmail.com
-COMMENT=	This extension allows to use inotify functions in a PHP scripts
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Inotify bindings for PHP
 
 LICENSE=	PHP301
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libinotify.so:devel/libinotify
 
 USES=		php:pecl
-IGNORE_WITH_PHP=	70 71 72
 
 .include <bsd.port.mk>

@@ -60,7 +60,6 @@ defcon*			games/linux-defcon	Redistribution is limited, see license
 djbdns*			dns/djbdns		No license -- see http://cr.yp.to/softwarelaw.html
 djbfft-*		math/djbfft		No license -- see http://cr.yp.to/softwarelaw.html
 dlv			lang/dlv		Not sure if we can redistribute it
-dmd-*			lang/dmd1		No redistribution of non validated binaries
 dn*.tgz			emulators/darcnes	Commercial use is restricted
 doom3-linux-*		games/linux-doom3	Redistribution is limited, see license; Requested by id Software
 doom3-linux-*		games/linux-doom3-demo	Redistribution is limited, see license; Requested by id Software
@@ -72,6 +71,7 @@ ecw_jpeg_2000_*.zip	graphics/libecwj2	Registration required to download sources,
 edith*			editors/edith		Redistribution not allowed
 eijiro*			japanese/eijiro-fpw	The original dictionary is not free
 emc2*			math/emc2		No resale, contact author for commercial usage
+emiclock-*		x11-clocks/emiclock	Changes on the code or repackaging requires author approval
 et-linux-*		games/linux-enemyterritory Redistribution limited
 etqw*			games/linux-etqw-demo-server Redistribution limited
 etqw*			games/linux-etqw-server Redistribution limited
@@ -96,7 +96,6 @@ giftool*		graphics/giftool	Do not redistribute for profit
 gnome2/mcitymicrogui-default* x11-themes/metacity-theme-microgui Themes may contain artwork not done by the author.  Keep FreeBSD safe if the theme author violated copyrights
 GoogleEarthLinux-*	astro/google-earth	Not really sure about the redistribution terms
 groupoffice-com-*	www/groupoffice		Free for personal use only
-gsview*			print/gsview		Can only be distributed for free
 HeroesOfMightAndMagic-*	games/HeroesOfMightAndMagic	Software is commercial
 homard-*		french/homard		The free downloading of HOMARD software is only allowed for coupling with Code_Aster. For any other use, a license agreement is requested. Please contact HOMARD project: <homard@edf.fr>.
 hplip-*-plugin.run	print/hplip-plugin	License agreement is required
@@ -118,7 +117,6 @@ jai-*-lib-linux-i586.*	java/jai		Redistribution is not permitted
 java3d-sdk-*-linux-i386* java/java3d		License does not allow distribution
 jdk-8*-apidocs.zip	java/jdk8-doc		This documentation is under license and export control
 jdk-8*-i586.tar.gz	java/linux-oracle-jdk18	Redistribution of repackaged binaries not permitted
-jdk-9*-x64_bin.tar.gz	java/linux-oracle-jdk9	Redistribution of repackaged binaries not permitted
 jfbuild-*		games/jfsw		Must be distributed only through the Internet and free of charge
 jmf-*-alljava.zip	java/jmf		Redistribution of pre-compiled binaries is not permitted
 jpgraph-2.*		graphics/jpgraph2	The free version cannot be used in a commercial context
@@ -137,6 +135,7 @@ libamrnb/26104-*.zip	audio/libamrnb		unclear legal status, probably need license
 libamrwb/26204-*.zip	audio/libamrwb		unclear legal status, probably need licenses from 3GPP and more
 libdvdcss-*.tar.bz2	multimedia/libdvdcss	CSS code may violate the DMCA
 linux-nwnclient/*	games/linux-nwnclient	Distribution not allowed
+linux-rkbin/*		sysutils/linux-rkbin	Unknown license
 linux-unrealgold*	games/linux-unrealgold	Redistribution limited
 linux-ut/*		games/linux-ut		Redistribution is limited, see license
 linuxq3ademo-*		games/linux-quake3	Restrictive license by Loki Software
@@ -151,8 +150,8 @@ malo-fw-*.tar.gz	net/malo-firmware-kmod	Marvell refuses to grant distribution ri
 mb339pan_*		games/flightgear-mb339-pan Redistribution prohibited
 mindfocus-*		games/mindfocus		Contains commercial character data
 mindterm-*		security/mindterm-binary Do not sell for profit
+mist64-cbmbasic-*	lang/cbmbasic		Based on decompiled C64 KERNAL binary; not really sure about the legal status
 molden*			biology/molden		Free for academic, non-profit usage; do not redistribute source and executable
-ncftpd-*		ftp/ncftpd		30 day evaluation license
 nero2_linux_*		games/linux-nerogame	Freeware, but license terms are unclear
 NetComponents-*		java/netcomponents	No redistribution except as part of a substantially different product
 nntpcache-*		news/nntpcache		Free for individuals and non-military, non-profit organisations only
@@ -182,15 +181,14 @@ serious.sam*		games/linux-ssamtfe	Redistribution limited
 serious.sam*		games/linux-ssamtse	Redistribution limited
 sharefonts-*		x11-fonts/sharefonts	Shareware: cannot be distributed without prior authorization
 shorten-*		audio/shorten		May not be sold.  May not be distributed if modified
-shoutcast		audio/shoutcast		Personal use only.  See tos.txt in this port for full details
 sid-milter-*		mail/sid-milter		May incorporate intellectual property, possible patent issues
 simian-*		devel/simian		Have to agree to license before download
-skype*			net-im/skype		Redistribution prohibited
 STonX-*			emulators/stonx		Contains ROM (C) by Atari
 stuffit*		archivers/stuffit	Only unmodified original package can be distributed
 susv2.tar.bz2		misc/susv2		Redistribution of the documents is not permitted
 susv3.tar.bz2		misc/susv3		Redistribution of the documents is not permitted
-susv4tc1.tar.bz2	misc/susv4		Redistribution of the documents is not permitted
+susv4tc2.tar.bz2	misc/susv4		Redistribution of the documents is not permitted
+susv4-2018.tar.bz2	misc/susv4		Redistribution of the documents is not permitted
 svm_light.tar.gz	science/svmlight	The software must not be further distributed without prior permission of the author
 taetgen-*		math/tetgen		Academic or personal use only
 tarsnap-*		sysutils/tarsnap	license restricts redistribution of source and binaries
@@ -200,7 +198,6 @@ thundercache		www/thundercache	Commercial software with shareware license to 50 
 tinker*			biology/tinker		Distribution is prohibited
 triangle-*/*		math/triangle		No commercial use without prior arrangement with the author
 Tripwire-*-1.tar.gz	security/tripwire-131	Cannot be redistributed for more than the cost of duplication
-tripwire-*.tar.gz	security/tripwire12	Cannot be redistributed for more than the cost of duplication
 TrueCrypt*		security/truecrypt	May not be redistributed.  Must accept license to download.
 tuc-*			converters/tuc		Author does not allow CD-ROM distribution
 tw_cli-*		sysutils/tw_cli		Redistribution forbidden by license
@@ -208,6 +205,7 @@ ue*dev.zip		editors/uemacs		Resale allowed for media cost only
 unifi-5*/UniFi.unix.zip	net-mgmt/unifi5		Redistribution of bundled firmware images is not permitted
 uplink-demo*		games/linux-uplink-demo	Redistribution is limited, see license
 uzap.tar.gz		editors/uzap		This software may not be used to make a profit in any way.
+vdbench*.zip		benchmarks/linux-vdbench	Redistribution is not permitted
 vdr-markad-*		multimedia/vdr-plugin-markad	Installs station logos
 vice-*			emulators/vice		ROMs are copyrighted by Commodore Business Machines
 VMware-vSphere-Perl*	net/vmware-vsphere-cli	May not be redistributed.  Must accept license to download.
@@ -238,3 +236,10 @@ sas2ircu-*		sysutils/sas2ircu	May not be redistributed. Must accept license to d
 snes9x-*		emulators/snes9x-gtk	Commercial users must seek permission from copyright holders.
 rainloop-1.*.zip	mail/rainloop		Redistribution in any form is prohibited
 lha-114i.tar.gz		archivers/lha		Binary only redistribution is prohibited. Non-network redistribution such as CDROM requires prior notification to author. Commercial use whose main purpose is to provide the functions of this program is prohibited.
+atom-*.tgz		science/atom		Redistribution in any form is prohibited
+charm-uiuc-*		net/charm		No commercial use: commercial use requires a commercial license
+namd-*			science/namd		No commercial use: commercial use requires a commercial license
+vmd-*			science/vmd		No commercial use: commercial use requires a commercial license
+msms-*			science/msms		No commercial use, only for use by individuals in scientific research
+unifi-devel-*		net-mgmt/unifi-devel	License restrictions, see https://www.ubnt.com/eula/
+netio*			benchmarks/netio	No commercial use: commercial use requires a commercial license

@@ -7,6 +7,10 @@ PORTREVISION=	3
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Screensaver modules for use with xscreensaver and gnome-screensaver
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 MASTERDIR=	${.CURDIR}/../xscreensaver-gnome
 DESCR=		${.CURDIR}/pkg-descr
 PLIST=		${.CURDIR}/pkg-plist
@@ -16,7 +20,8 @@ CONFLICTS=	xscreensaver-[0-9]* xscreensaver-gnome-[0-9]*
 OPTIONS_DEFINE=	ALL_FORTUNES
 ALL_FORTUNES_DESC=	Enable support for all fortunes
 
-USES=		shebangfix
+USES=		perl5 shebangfix
+USE_PERL5=	build
 SHEBANG_FILES=	${SS_SCRIPTS:S,^,driver/,}
 EXTRA_PATCHES=	${FILESDIR}/extra-patch-nodriver
 

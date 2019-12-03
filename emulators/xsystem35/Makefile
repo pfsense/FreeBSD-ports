@@ -3,10 +3,10 @@
 
 PORTNAME=	xsystem35
 DISTVERSION=	1.7.3-pre5
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	emulators games
 MASTER_SITES=	DEBIAN
-DISTNAME=	${PORTNAME}_${DISTVERSION}.orig
+DISTFILES=	${DISTNAME:S/-/_/}.orig${EXTRACT_SUFX}
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	AliceSoft System 3.5/3.6/3.8/3.9 on X Window System
@@ -17,31 +17,24 @@ LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis \
 		libltdl.so:devel/libltdl \
 		libfreetype.so:print/freetype2
 
-OPTIONS_DEFINE=	ESOUND DOCS EXAMPLES
+OPTIONS_DEFINE=	DOCS EXAMPLES
 OPTIONS_DEFINE_i386=	MMX
-OPTIONS_SINGLE=	GUI
-OPTIONS_SINGLE_GUI=	GTK1 GTK2
-OPTIONS_DEFAULT=GTK2
 OPTIONS_DEFAULT_i386=	${MACHINE_CPU:tu:MMMX}
 
-ESOUND_USE=	GNOME=esound
-ESOUND_CONFIGURE_ON=--enable-audio=oss,esd --with-default-output=esd
-GTK1_USE=	GNOME=gtk12
-GTK1_CONFIGURE_OFF=--with-glib-prefix=${NONEXISTENT} \
-		--with-gtk-prefix=${NONEXISTENT}
-GTK2_USE=	GNOME=gtk20
-GTK2_USES=	pkgconfig
 MMX_BUILD_DEPENDS=nasm:devel/nasm
 MMX_CONFIGURE_ENABLE=mmx
 
 EXTRACT_AFTER_ARGS=--exclude libltdl
-USES=		gettext gmake jpeg libtool localbase shebangfix
+USES=		gettext gmake gnome jpeg libtool localbase pkgconfig shebangfix
+USE_GNOME=	gtk20
 SHEBANG_FILES=	contrib/instgame
 USE_XORG=	x11 xext xxf86vm
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	X_LIBS="-lX11"
 CONFIGURE_ARGS=	\
 		--with-cachesize=20 \
+		--with-glib-prefix=${NONEXISTENT} \
+		--with-gtk-prefix=${NONEXISTENT} \
 		--disable-static \
 		--enable-audio=oss \
 		--with-default-output=oss \
@@ -51,7 +44,6 @@ INSTALL_TARGET=	install-strip
 
 SUB_FILES=	pkg-message
 
-WRKSRC=		${WRKDIR}/${DISTNAME:S/_/-/:S/.orig//}
 DOCSDIR=	${PREFIX}/share/doc/ja/${PORTNAME}
 
 post-patch:

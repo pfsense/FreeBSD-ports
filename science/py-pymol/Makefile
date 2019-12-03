@@ -3,10 +3,9 @@
 
 PORTNAME=	pymol
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.0
-PORTREVISION=	2
+DISTVERSION=	2.3.0
+PORTREVISION=	1
 CATEGORIES=	science biology python
-MASTER_SITES=	SF/pymol/pymol/2/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +16,9 @@ LICENSE_NAME=	Open-Source PyMOL Copyright
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	${PYNUMPY}
+BUILD_DEPENDS=	${PYNUMPY} \
+		${LOCALBASE}/include/glm/glm.hpp:math/glm \
+		${LOCALBASE}/include/mmtf.hpp:science/mmtf-cpp
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png \
 		libmsgpackc.so:devel/msgpack
@@ -25,13 +26,14 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack>0:devel/py-msgpack@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Pmw>0:x11-toolkits/py-Pmw@${PY_FLAVOR} \
 		${PYNUMPY}
 
-USES=		compiler:c++11-lang python:2.7 shebangfix tar:bz2
+USES=		compiler:c++11-lang gl gnome python:2.7 shebangfix tar:bz2
+USE_GITHUB=	yes
+GH_ACCOUNT=	schrodinger
+GH_PROJECT=	${PORTNAME}-open-source
 USE_GL=		gl glew glu glut
 USE_GNOME=	libxml2
 USE_PYTHON=	distutils concurrent # autoplist is broken: https://sourceforge.net/p/pymol/bugs/189
 SHEBANG_FILES=	test/show test/run test/cyg
-
-WRKSRC=		${WRKDIR}/pymol
 
 OPTIONS_SINGLE=	GUI
 OPTIONS_SINGLE_GUI=	QT5 TK
@@ -44,11 +46,11 @@ post-patch-TK-on:
 	@${REINPLACE_CMD} -e ' \
 		23s|if not PYQT_NAME:|if False:| ; \
 		s|from PyQt5 import|from X import|' \
-		${WRKSRC}/modules/pymol/Qt/__init__.py
+		${WRKSRC}/modules/${PORTNAME}/Qt/__init__.py
 
 post-install:
-	@${REINPLACE_CMD} -i '' -e 's|#!/bin/bash|#!/bin/sh|' ${STAGEDIR}${PREFIX}/bin/pymol
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pymol/_cmd.so
+	@${REINPLACE_CMD} -i '' -e 's|#!/bin/bash|#!/bin/sh|' ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/_cmd.so
 	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/chempy/champ/_champ.so
 
 .include <bsd.port.mk>

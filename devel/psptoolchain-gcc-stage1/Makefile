@@ -2,23 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=		gcc
-PORTVERSION=		4.6.2
-PORTREVISION?=		5
+PORTVERSION=		4.9.3
+PORTREVISION?=		1
 CATEGORIES=		devel
-MASTER_SITES=		GCC/releases/${DISTNAME}
+MASTER_SITES=		GCC
 PKGNAMEPREFIX=		psptoolchain-
 PKGNAMESUFFIX?=		-stage1
 
 MAINTAINER=		tphilipp@potion-studios.com
 COMMENT=		PlayStation Portable development toolchain ${PORTNAME}
 
-ONLY_FOR_ARCHS=		amd64 i386
+LICENSE=		GPLv3
 
-PSP_GCC_STAGE_PREFIX=	psp/stage1
+ONLY_FOR_ARCHS=		amd64 i386 powerpc64
 
 LIB_DEPENDS=		libgmp.so:math/gmp \
 			libmpfr.so:math/mpfr \
 			libmpc.so:math/mpc
+
+PSP_GCC_STAGE_PREFIX=	psp/stage1
 
 BUILD_DEPENDS+=		psp-addr2line:devel/psptoolchain-binutils \
 			psp-ar:devel/psptoolchain-binutils \
@@ -34,7 +36,7 @@ BUILD_DEPENDS+=		psp-addr2line:devel/psptoolchain-binutils \
 			psp-strings:devel/psptoolchain-binutils \
 			psp-strip:devel/psptoolchain-binutils
 
-USES=			gmake libtool tar:bzip2
+USES+=			compiler:c11 gmake libtool tar:bzip2
 
 MAKE_ENV+=		PATH=${LOCALBASE}/${PSP_GCC_STAGE_PREFIX}/bin:${PREFIX}/bin:${PATH}
 HAS_CONFIGURE=		yes
@@ -52,6 +54,13 @@ CONFIGURE_ARGS?=	--prefix=${PREFIX}/${PSP_GCC_STAGE_PREFIX} \
 			--with-ld=${LOCALBASE}/bin/psp-ld \
 			--with-as=${LOCALBASE}/bin/psp-as \
 			--mandir=${PREFIX}/man
+CFLAGS+=		-Wno-reserved-user-defined-literal
+SSP_CFLAGS?=		-fstack-protector # XXX -strong isn't supported by GCC < 4.9
+
+# make sure xgcc doesn't get any -march=... from env C(XX)?FLAGS (e.g. set by CPUTYPE in make.conf); also "disable" info file gen
+CONFIGURE_ENV+=		CFLAGS_FOR_TARGET="${CFLAGS:C/(^|[[:space:]])-march=[^[:space:]]*//g} ${XGCC_FLAGS}" \
+			CXXFLAGS_FOR_TARGET="${CXXFLAGS:C/(^|[[:space:]])-march=[^[:space:]]*//g} ${XGCC_FLAGS}" \
+			MAKEINFO=true
 
 # Don't install any documentation for psptoolchain's gcc stage 1 - makes no sense.
 # Disable installation of .info files and libiberty for both stages.

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=		mysql
-PORTVERSION=		8.0.12
+PORTVERSION=		8.0.17
 PORTREVISION?=		0
 CATEGORIES=		databases ipv6
 MASTER_SITES=		MYSQL/MySQL-8.0
@@ -17,8 +17,8 @@ LICENSE=		GPLv2
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
 
 SLAVEDIRS=	databases/mysql80-client
-USES=		bison:build cmake:outsource,noninja compiler:c++14-lang \
-		compiler:c++14-lib cpe libedit localbase perl5 shebangfix ssl
+USES=		bison:build cmake:noninja compiler:c++14-lang cpe \
+		libedit localbase perl5 pkgconfig shebangfix ssl
 
 USE_PERL5=	run
 
@@ -30,7 +30,11 @@ LIB_DEPENDS+=	libevent.so:devel/libevent \
 		libicutu.so:devel/icu \
 		liblz4.so:archivers/liblz4 \
 		libre2.so:devel/re2 \
-		libprotobuf.so:devel/protobuf
+		libprotobuf.so:devel/protobuf \
+		libunwind.so:devel/libunwind
+
+BUILD_DEPENDS=	liblz4>0:archivers/liblz4 \
+		libunwind>0:devel/libunwind
 
 CMAKE_BUILD_TYPE=	Release
 CFLAGS+=		-fPIC
@@ -41,7 +45,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_DOCDIR="share/doc/mysql" \
 		-DINSTALL_DOCREADMEDIR="share/doc/mysql" \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
-		-DINSTALL_INFODIR="info" \
+		-DINSTALL_INFODIR="${INFO_PATH}" \
 		-DINSTALL_LIBDIR="lib/mysql" \
 		-DINSTALL_MANDIR="man" \
 		-DINSTALL_MYSQLDATADIR="${MY_DBDIR}" \
@@ -56,13 +60,15 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_SUPPORTFILESDIR="share/mysql" \
 		-DMYSQL_KEYRINGDIR="${ETCDIR}/keyring" \
 		-DWITH_BOOST="${WRKSRC}/boost" \
+		-DWITH_SYSTEM_LIBS=1 \
 		-DWITH_EDITLINE=system \
 		-DWITH_LIBEVENT=system \
 		-DWITH_LZ4=system \
-		-DWITH_ZLIB=system \
 		-DWITH_ICU=system \
 		-DWITH_RE2=system \
 		-DWITH_PROTOBUF=system \
+		-DBUILD_BUNDLED_ZLIB=0 \
+		-DBUILD_BUNDLED_LZ4=0 \
 		-DINSTALL_MYSQLTESTDIR=0
 
 SHEBANG_FILES=	scripts/*.pl* scripts/*.sh

@@ -3,33 +3,25 @@
 
 PORTNAME=	znotes
 PORTVERSION=	0.4.5.20150825
+PORTREVISION=	4
 CATEGORIES=	deskutils
-PKGNAMESUFFIX=	-${FLAVOR}
 
-MAINTAINER=	lebarondemerde@privacychain.ch
+MAINTAINER=	rigoletto@FreeBSD.org
 COMMENT=	Simple notes managment application based on Qt
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-FLAVORS=	qt4 qt5
-FLAVOR?=	${FLAVORS:[1]}
-
-USES=		qmake
+USES=		compiler:c++11-lang gl qmake qt:5
 USE_GL=		gl
+USE_QT=		buildtools_build linguisttools_build core gui network printsupport widgets xml
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	proton
 GH_PROJECT=	zNotes
 GH_TAGNAME=	6423c5e
 
-. if ${FLAVOR} == qt4
-USES+=		qt:4
-USE_QT=		uic_build moc_build rcc_build linguisttools_build corelib gui network xml
-. else
-USES+=		qt:5
-USE_QT=		buildtools_build linguisttools_build core gui network printsupport widgets xml
-. endif
+CONFLICTS_INSTALL=	znotes-qt[45]
 
 DESKTOP_ENTRIES="zNotes" "Notes managment" \
 		"${PREFIX}/share/pixmaps/${PORTNAME}.png" "${PORTNAME}" \
@@ -42,6 +34,6 @@ post-patch:
 
 pre-configure:
 #Work around badly written .pro
-	${LRELEASE} ${WRKSRC}/${PORTNAME}.pro
+	cd ${WRKSRC} && ${LRELEASE} ${WRKSRC}/${PORTNAME}.pro
 
 .include <bsd.port.mk>

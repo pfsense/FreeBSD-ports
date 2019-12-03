@@ -12,6 +12,10 @@ COMMENT=	Parse and Decode METAR, TAF, SYNOP, BUOY and AMDAR and Write as XML
 
 LICENSE=	GPLv2+
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	p5-CGI>0:www/p5-CGI
 
 OPTIONS_DEFINE=	APACHE DOCS
@@ -32,7 +36,7 @@ MAKE_ARGS=	CGI_BIN_DIR=${WWWDIR}/cgi-bin \
 NO_BUILD=	yes
 NO_ARCH=	yes
 USES=		perl5 shebangfix tar:tgz
-USE_PERL5=	install run
+USE_PERL5=	run
 SHEBANG_FILES=	metaf.pl metaf2xml.pl metafsrc2raw.pl
 
 PLIST_SUB=	VERSION=${PORTVERSION}

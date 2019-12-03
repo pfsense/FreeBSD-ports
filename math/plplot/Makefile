@@ -3,7 +3,7 @@
 
 PORTNAME=	plplot
 PORTVERSION=	5.12.0
-PORTREVISION=	2
+PORTREVISION=	8
 CATEGORIES=	math science
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20Source
 
@@ -21,9 +21,10 @@ LIB_DEPENDS=	libLASi.so:devel/lasi \
 RUN_DEPENDS=	bash:shells/bash \
 		${FREEFONT_DIR}/FreeMono.ttf:x11-fonts/freefont-ttf
 
+USES=		compiler:c11 cmake gettext-runtime ghostscript gnome \
+		localbase perl5 pathfix pkgconfig
 USE_GNOME=	cairo pango
 USE_PERL5=	build
-USES=		cmake:outsource gettext-runtime ghostscript localbase perl5 pathfix pkgconfig
 CMAKE_ARGS=	-DENABLE_java:BOOL=OFF \
 		-DENABLE_octave:BOOL=OFF \
 		-DENABLE_pdl:BOOL=OFF \
@@ -36,10 +37,11 @@ CMAKE_ARGS=	-DENABLE_java:BOOL=OFF \
 		-DPLD_plmeta:BOOL=OFF
 CFLAGS+=	-D_IS_BUILDING_PLPLOT_PORT_
 USE_LDCONFIG=	yes
+CMAKE_OFF=		DEFAULT_NO_QT_DEVICES
 
 FREEFONT_DIR=	${LOCALBASE}/share/fonts/freefont-ttf
 
-OPTIONS_DEFINE=		DOCS FORTRAN GD LUA PYTHON QT4 TCLTK THREADS WXGTK X11
+OPTIONS_DEFINE=		DOCS FORTRAN GD LUA PYTHON TCLTK THREADS WXGTK X11
 OPTIONS_RADIO=		QHULL
 OPTIONS_RADIO_QHULL=	QHULL2015 QHULL2003
 OPTIONS_DEFAULT=	QHULL2015 THREADS X11
@@ -95,10 +97,6 @@ TCLTK_CMAKE_ON=		-DPLPLOT_TK_VERSION:STRING="${TK_VER}" \
 
 THREADS_CMAKE_BOOL=	THREADS_HAVE_PTHREAD_ARG
 
-QT4_USES=		qt:4
-QT4_USE=		QT=corelib,gui,svg,xml,moc_build,qmake_build,rcc_build,uic_build
-QT4_CMAKE_BOOL=		ENABLE_qt
-QT4_CMAKE_BOOL_OFF=	DEFAULT_NO_QT_DEVICES
 
 WXGTK_LIB_DEPENDS=	libagg.so:graphics/agg
 WXGTK_USE=		WX=3.0+
@@ -114,9 +112,5 @@ post-patch:
 		${WRKSRC}/cmake/modules/FindLTDL.cmake
 	${GREP} -lR "/usr/local" ${WRKSRC}/cmake/modules | ${XARGS} \
 		${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g'
-post-patch-QHULL2015:
-	${REINPLACE_CMD} -e 's|qhull/qhull_a|libqhull/qhull_a|'	\
-		${WRKSRC}/lib/nn/delaunay.c \
-		${WRKSRC}/src/plgridd.c
 
 .include <bsd.port.mk>

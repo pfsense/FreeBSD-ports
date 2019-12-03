@@ -26,7 +26,6 @@ share/kconf_update/klickety.upd
 %%DATADIR%%/themes/ksame_old_preview.png
 %%DATADIR%%/themes/ksame_preview.png
 share/kxmlgui5/klickety/klicketyui.rc
-share/locale/ast/LC_MESSAGES/klickety.mo
 share/locale/bs/LC_MESSAGES/klickety.mo
 share/locale/ca/LC_MESSAGES/klickety.mo
 share/locale/ca@valencia/LC_MESSAGES/klickety.mo
@@ -46,6 +45,7 @@ share/locale/is/LC_MESSAGES/klickety.mo
 share/locale/it/LC_MESSAGES/klickety.mo
 share/locale/ja/LC_MESSAGES/klickety.mo
 share/locale/kk/LC_MESSAGES/klickety.mo
+share/locale/ko/LC_MESSAGES/klickety.mo
 share/locale/lt/LC_MESSAGES/klickety.mo
 share/locale/lv/LC_MESSAGES/klickety.mo
 share/locale/mr/LC_MESSAGES/klickety.mo
@@ -67,5 +67,7 @@ share/locale/ug/LC_MESSAGES/klickety.mo
 share/locale/uk/LC_MESSAGES/klickety.mo
 share/locale/zh_CN/LC_MESSAGES/klickety.mo
 share/locale/zh_TW/LC_MESSAGES/klickety.mo
+share/metainfo/org.kde.klickety.appdata.xml
+share/metainfo/org.kde.ksame.appdata.xml
 share/sounds/klickety/game-finished.ogg
 share/sounds/klickety/remove.ogg

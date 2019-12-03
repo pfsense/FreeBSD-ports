@@ -13,8 +13,10 @@ BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-
 LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 		liblcms2.so:graphics/lcms2 \
 		libpng.so:graphics/png
+RUN_DEPENDS=	kipi-plugins>=0:graphics/kipi-plugins
 
-USES=		cmake:outsource gettext jpeg pkgconfig kde:5 qt:5 tar:xz
+USES=		compiler:c++11-lang cmake desktop-file-utils gettext jpeg pkgconfig \
+		kde:5 qt:5 tar:xz
 USE_KDE=	activities auth baloo bookmarks codecs completion config \
 		configwidgets coreaddons ecm emoticons filemetadata i18n \
 		iconthemes init itemmodels itemviews jobwidgets \
@@ -25,5 +27,7 @@ USE_QT=		concurrent core dbus gui network opengl phonon4 printsupport \
 		svg widgets x11extras xml \
 		buildtools_build qmake_build
 USE_XORG=	x11
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

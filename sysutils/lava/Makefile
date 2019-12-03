@@ -5,7 +5,7 @@ PORTNAME=	lava
 PORTVERSION=	1.0.1
 CATEGORIES=	sysutils
 
-MAINTAINER=	dch@skunkwerks.at
+MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Keeps your CouchDB views molten hot
 
 LICENSE=	MIT
@@ -22,6 +22,8 @@ NO_ARCH=	yes
 
 PLIST_FILES=	bin/${PORTNAME}.sh
 PORTDOCS=	README.md
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

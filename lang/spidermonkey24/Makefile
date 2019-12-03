@@ -3,7 +3,7 @@
 
 PORTNAME=		spidermonkey24
 PORTVERSION=		24.2.0
-PORTREVISION=		8
+PORTREVISION=		12
 CATEGORIES=		lang
 MASTER_SITES=		MOZILLA/js
 #http://people.mozilla.org/~sstangl/
@@ -39,7 +39,6 @@ OPTIONS_EXCLUDE_armv7=	DTRACE
 OPTIONS_SUB=	yes
 
 DEBUG_CONFIGURE_ENABLE=	debug debug-symbols
-DEBUG_CONFIGURE_DISABLE=debug
 DTRACE_CONFIGURE_ENABLE=dtrace profiling
 DTRACE_LIBS=		-lelf
 GCZEAL_DESC=		Enable Zealous garbage collecting

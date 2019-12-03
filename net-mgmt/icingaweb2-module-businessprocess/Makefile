@@ -2,7 +2,7 @@
 
 PORTNAME=	icingaweb2-module-businessprocess
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.0
+DISTVERSION=	2.2.0
 PORTREVISION=	1
 CATEGORIES=	net-mgmt www
 
@@ -12,7 +12,8 @@ COMMENT=	Manage Business Processes in Icinga Web 2
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	icingaweb2>=2.4.1:net-mgmt/icingaweb2
+RUN_DEPENDS=	icingaweb2>=2.4.1:net-mgmt/icingaweb2 \
+		icingaweb2-module-ipl>=0.1.1:net-mgmt/icingaweb2-module-ipl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga

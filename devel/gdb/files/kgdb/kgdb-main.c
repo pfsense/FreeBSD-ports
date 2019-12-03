@@ -50,7 +50,6 @@ __FBSDID("$FreeBSD$");
 #include <cli-out.h>
 #include <main.h>
 #include <objfiles.h>
-#include "observer.h"
 #include <target.h>
 #include <top.h>
 #include <ui-file.h>
@@ -221,9 +220,10 @@ main(int argc, char *argv[])
 	struct stat st;
 	struct captured_main_args args;
 	char *s;
-	int a, ch;
+	int a, ch, writeable;
 
 	dumpnr = NULL;
+	writeable = 0;
 
 	strlcpy(crashdir, "/var/crash", sizeof(crashdir));
 	s = getenv("KGDB_CRASH_DIR");
@@ -303,7 +303,7 @@ main(int argc, char *argv[])
 			verbose++;
 			break;
 		case 'w':	/* core file is writeable. */
-			add_arg(&args, "--write");
+			writeable = 1;
 			break;
 		case '?':
 		default:
@@ -386,7 +386,8 @@ main(int argc, char *argv[])
 	/* Open the vmcore if requested. */
 	if (vmcore != NULL) {
 		add_arg(&args, "-ex");
-		if (asprintf(&s, "target vmcore %s", vmcore) < 0)
+		if (asprintf(&s, "target vmcore %s%s", writeable ? "-w " : "",
+		    vmcore) < 0)
 			err(1, "couldn't build command line");
 		add_arg(&args, s);
 	}

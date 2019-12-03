@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cucumber-tag_expressions
-PORTVERSION=	1.1.1
+PORTVERSION=	2.0.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,9 +12,10 @@ COMMENT=	Cucumber tag expressions for Ruby
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/cucumber-tag-expressions
 

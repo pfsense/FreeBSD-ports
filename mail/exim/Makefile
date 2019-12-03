@@ -3,7 +3,6 @@
 
 PORTNAME=	exim
 PORTVERSION?=	${EXIM_VERSION}
-PORTREVISION=	2
 CATEGORIES=	mail ipv6
 MASTER_SITES=	EXIM:exim
 MASTER_SITE_SUBDIR=	/exim4/:exim \
@@ -18,7 +17,7 @@ COMMENT?=	High performance MTA for Unix systems on the Internet
 
 LICENSE=	GPLv2
 
-USES=		cpe tar:bzip2 perl5
+USES=		compiler cpe tar:bzip2 perl5
 USE_PERL5=	run
 
 # Exim build system is job unsafe atm
@@ -98,7 +97,7 @@ MASTER_SITES+=	http://marc.merlins.org/linux/exim/files/:sa_exim \
 DISTFILES+=	sa-exim-${SA_EXIM_VERSION}.tar.gz:sa_exim
 .endif
 
-EXIM_VERSION=	4.91
+EXIM_VERSION=	4.92.3
 SA_EXIM_VERSION=4.2
 EXIM_INSTALL_ARG+=	"-no_chown" "-no_symlink"
 
@@ -150,10 +149,7 @@ LOG_FILE_PATH?=		${LOGDIR}/%slog
 CONFIG_FILE_PATH?=	${PREFIX}/etc/exim/configure
 ALT_CONFIG_PREFIX?=	${PREFIX}/etc/exim/
 
-EXIM_DYNAMIC_LDFLAGS=	-fPIC -rdynamic -export-dynamic
-# Avoid too many warnings due to Exim code style
-EXIM_WARN_FLAGS?=	-Wno-logical-op-parentheses -Wno-macro-redefined -Wno-parentheses -Wno-dangling-else
-CFLAGS+=	${EXIM_WARN_FLAGS}
+EXIM_DYNAMIC_LDFLAGS=	-fPIC -rdynamic -Wl,--export-dynamic
 
 SED_SCRIPT=	-e 's,%%PREFIX%%,${PREFIX},g' \
 		-e 's,%%DOCSDIR%%,${DOCSDIR},g' \
@@ -327,15 +323,15 @@ SEDLIST+=	-e 's,XX_DB_LIBS_XX,${DB_LIBS:S/,/\\,/g},' \
 		-e 's,XX_DB_INCLUDES_XX,${DB_INCLUDES:S/,/\\,/g},'
 
 .if ${PORT_OPTIONS:MLMDB}
-LMDB_LIBS=	-L${LOCALBASE}/lib -llmdb
-LMDB_INCLUDES=	-I${LOCALBASE}/include
+_LMDB_LIBS=	-L${LOCALBASE}/lib -llmdb
+_LMDB_INCLUDES=	-I${LOCALBASE}/include
 SEDLIST+=	-e 's,^\# (EXPERIMENTAL_LMDB=),\1,'
 .else
-LMDB_LIBS=
-LMDB_INCLUDES=
+_LMDB_LIBS=
+_LMDB_INCLUDES=
 .endif
-SEDLIST+=	-e 's,XX_LMDB_LIBS_XX,${LMDB_LIBS:S/,/\\,/g},' \
-		-e 's,XX_LMDB_INCLUDES_XX,${LMDB_INCLUDES:S/,/\\,/g},'
+SEDLIST+=	-e 's,XX_LMDB_LIBS_XX,${_LMDB_LIBS:S/,/\\,/g},' \
+		-e 's,XX_LMDB_INCLUDES_XX,${_LMDB_INCLUDES:S/,/\\,/g},'
 
 .if ${PORT_OPTIONS:MMYSQL}
 SEDLIST+=	-e 's,XX_MYSQL_LIBS_XX,-L${LOCALBASE:S/,/\\,/g}/lib/mysql -l${_MYSQL_SHLIB:S/lib//},' \
@@ -568,6 +564,8 @@ do-configure:
 	@${REINPLACE_CMD} -E -e 's/^(PERL_COMMAND=).*/\1${PERL:S,/,\/,g}/' \
 		-e 's/^(CC=).*/\1${CC:S,/,\/,g}/' ${WRKSRC}/OS/Makefile-Default
 .if ${PORT_OPTIONS:MSA_EXIM}
+	@${REINPLACE_CMD} -E -e 's/^\# (HAVE_LOCAL_SCAN=).*/\1yes/' \
+		${WRKSRC}/OS/Makefile-Default
 	@${REINPLACE_CMD} -E -e 's/^(LOCAL_SCAN_SOURCE=).*/\1Local\/sa-exim.c/' \
 		${WRKSRC}/OS/Makefile-Default
 	@${CP} ${WRKDIR}/sa-exim-${SA_EXIM_VERSION}/sa-exim.c ${WRKSRC}/Local
@@ -625,4 +623,12 @@ post-install:
 
 .endif # ! defined(EXIMON_ONLY)
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# If using clang, avoid too many warnings due to Exim code style
+.if ${CHOSEN_COMPILER_TYPE} == "clang"
+EXIM_WARN_FLAGS?=	-Wno-logical-op-parentheses -Wno-macro-redefined -Wno-parentheses -Wno-dangling-else
+.endif
+CFLAGS+=	${EXIM_WARN_FLAGS}
+
+.include <bsd.port.post.mk>

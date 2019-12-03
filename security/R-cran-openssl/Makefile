@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openssl
-PORTVERSION=	1.0.1
+PORTVERSION=	1.4.1
 CATEGORIES=	security
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -11,15 +11,13 @@ COMMENT=	Toolkit for Encryption, Signatures and Certificates Based on OpenSSL
 
 LICENSE=	MIT
 
+CRAN_DEPENDS=	R-cran-askpass>0:security/R-cran-askpass
+BUILD_DEPENDS=	${CRAN_DEPENDS}
+RUN_DEPENDS=	${CRAN_DEPENDS}
 TEST_DEPENDS=	bash:shells/bash
 
 USES=		cran:auto-plist,compiles shebangfix ssl
 
 SHEBANG_FILES=	${WRKSRC}/tests/google.dk/generate.bash
-
-R_POSTCMD_INSTALL_OPTIONS+=	--configure-vars="INCLUDE_DIR=${OPENSSLINC} LIB_DIR=${OPENSSLLIB}"
-
-post-patch:
-	${REINPLACE_CMD} -e '1,5d' ${WRKSRC}/src/ssl.c
 
 .include <bsd.port.mk>

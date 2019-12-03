@@ -1,11 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	jbig2dec
-PORTVERSION=	0.14
+PORTVERSION=	0.16
 CATEGORIES=	graphics devel
-MASTER_SITES=	http://downloads.ghostscript.com/public/${PORTNAME}/ \
-		LOCAL/sunpoet:tests
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+MASTER_SITES=	LOCAL/sunpoet:tests
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Decoder implementation of the JBIG2 image compression format
@@ -17,11 +15,15 @@ OPTIONS_DEFINE=	PNG TESTS
 OPTIONS_DEFAULT=PNG
 TESTS_DESC=	Download and use test-images for post-build testing
 
+USES=		autoreconf:build libtool
+
 CONFIGURE_ENV=	ac_cv_func_getopt_long=yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USES=		autoreconf libtool
+
+GH_ACCOUNT=	ArtifexSoftware
+USE_GITHUB=	yes
 
 SHEBANG_FILES=	test_jbig2dec.py
 python_CMD=	${PYTHON_CMD}
@@ -37,10 +39,16 @@ post-patch:
 	@${RM} ${WRKSRC}/getopt* ${WRKSRC}/sha1.h
 	@${REINPLACE_CMD} -E 's|SHA1_Final\( *([^,]+), *([^\)]+)\)|SHA1_Final(\2, \1)|' ${WRKSRC}/jbig2dec.c ${WRKSRC}/sha1.c
 
-post-patch-PNG-on:
-	@${REINPLACE_CMD} 's|png_check_sig|png_sig_cmp|g' ${WRKSRC}/configure
-
 post-patch-TESTS-off:
-	@${REINPLACE_CMD} -e '/^TESTS = / s| test_jbig2dec.py||' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e '/^TESTS = / s| test_jbig2dec.py||' ${WRKSRC}/Makefile.am
+
+pre-configure:
+	@cd ${WRKSRC}/ && ${SH} autogen.sh
+
+# maintainer section:
+
+.if defined(MAINTAINER_MODE)
+DISTFILES=	jb2streams${EXTRACT_SUFX}:tests
+.endif
 
 .include <bsd.port.mk>

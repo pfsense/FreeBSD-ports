@@ -13,13 +13,12 @@ COMMENT=	Implement an RPC::ExtDirect gateway using Plack
 
 LICENSE=	ART10
 
-BUILD_DEPENDS=	pkg-config:devel/pkgconf \
-		p5-Plack>=0:www/p5-Plack \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Plack>=0:www/p5-Plack \
 		p5-RPC-ExtDirect>=3.20:www/p5-RPC-ExtDirect
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-Test-Pod>=1.46:devel/p5-Test-Pod
 
-USES=		perl5
+USES=		perl5 pkgconfig:both
 USE_PERL5=	configure
 NO_ARCH=	YES
 

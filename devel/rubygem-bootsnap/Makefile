@@ -1,20 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	bootsnap
-PORTVERSION=	1.3.0
+PORTVERSION=	1.4.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Boot large ruby/rails apps faster
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-msgpack1>=1.0:devel/rubygem-msgpack1
+RUN_DEPENDS=	rubygem-msgpack>=1.0<2:devel/rubygem-msgpack
 
-USE_RUBY=	yes
 USES=		gem shebangfix
+USE_RUBY=	yes
 
 SHEBANG_FILES=	bin/*
 

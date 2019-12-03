@@ -20,6 +20,7 @@ include/mysql/mariadb/ma_io.h
 include/mysql/mariadb_com.h
 include/mysql/mariadb_ctype.h
 include/mysql/mariadb_dyncol.h
+include/mysql/mariadb_rpl.h
 include/mysql/mariadb_stmt.h
 include/mysql/mariadb_version.h
 include/mysql/my_config.h
@@ -41,11 +42,13 @@ lib/mysql/libmysqlclient.a
 lib/mysql/libmysqlclient.so
 lib/mysql/libmysqlclient_r.a
 lib/mysql/libmysqlclient_r.so
-@comment lib/mysql/plugin/client_ed25519.so
+lib/mysql/plugin/caching_sha2_password.so
+lib/mysql/plugin/client_ed25519.so
 lib/mysql/plugin/daemon_example.ini
 lib/mysql/plugin/dialog.so
 lib/mysql/plugin/mysql_clear_password.so
 lib/mysql/plugin/sha256_password.so
+libdata/pkgconfig/libmariadb.pc
 %%DATADIR%%/charsets/Index.xml
 %%DATADIR%%/charsets/README
 %%DATADIR%%/charsets/armscii8.xml
@@ -75,6 +78,7 @@ lib/mysql/plugin/sha256_password.so
 man/man1/msql2mysql.1.gz
 man/man1/mysql.1.gz
 man/man1/mysql_config.1.gz
+@comment man/man1/mysql_embedded.1.gz
 man/man1/mysql_find_rows.1.gz
 man/man1/mysql_plugin.1.gz
 man/man1/mysql_waitpid.1.gz

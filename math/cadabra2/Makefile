@@ -1,12 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	cadabra2
-DISTVERSION=	2.2.0
-PORTREVISION=	1
+DISTVERSION=	2.2.5-5
+DISTVERSIONSUFFIX=	-gf10cac6b9a
+PORTREVISION=	5
 CATEGORIES=	math
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	5d52108df5b05eeba2ffbd7220776887297c2846.patch:-p1 # https://github.com/kpeeters/cadabra2/pull/82
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Computer algebra system for solving field theory problems
@@ -24,7 +22,7 @@ LIB_DEPENDS=	${PY_BOOST} \
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/sympy/__init__.py:math/py-sympy@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR}
 
-USES=		compiler:c++14-lang cmake:outsource dos2unix gettext-runtime localbase:ldflags pkgconfig python:3.4+ sqlite # USES=python picks random python versions
+USES=		compiler:c++14-lang cmake dos2unix gettext-runtime gnome localbase:ldflags pkgconfig python:3.4+ sqlite # USES=python picks random python versions
 USE_GITHUB=	yes
 GH_ACCOUNT=	kpeeters
 DOS2UNIX_FILES=	cmake/version.cmake
@@ -33,7 +31,7 @@ USE_TEX=	base texmf texhash
 USE_LDCONFIG=	yes
 OPTIONS_SUB=	yes
 
-CMAKE_ON=	USE_PYTHON_3 # OFF doesn't work, still links to python3: https://github.com/kpeeters/cadabra2/issues/76
+CMAKE_ON=	ENABLE_SYSTEM_JSONCPP BUILD_SHARED_LIBS USE_PYTHON_3 # OFF doesn't work, still links to python3: https://github.com/kpeeters/cadabra2/issues/76
 CMAKE_OFF=	ENABLE_MATHEMATICA
 CXXFLAGS+=	-I${LOCALBASE}/include/jsoncpp
 LDFLAGS+=	-ljsoncpp
@@ -44,9 +42,9 @@ OPTIONS_DEFAULT=	GUI
 GUI_USES=	desktop-file-utils
 GUI_USE=	GNOME=gtkmm30,gdkpixbuf2
 GUI_CMAKE_BOOL=	ENABLE_FRONTEND
-GUI_INSTALLS_ICONS=	yes
+GUI_VARS=	INSTALLS_ICONS=yes
 
 post-extract: # unbundle
-	@${RM} -r ${WRKSRC}/client_server/jsoncpp ${WRKSRC}/client_server/websocketpp
+	@${RM} -r ${WRKSRC}/libs/jsoncpp ${WRKSRC}/libs/websocketpp
 
 .include <bsd.port.mk>

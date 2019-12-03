@@ -2,19 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	jekyll-watch
-PORTVERSION=	2.0.0
+PORTVERSION=	2.2.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Handles rebuilding of Jekyll sites when a file changes
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-listen>=3.0:devel/rubygem-listen
+RUN_DEPENDS=	rubygem-listen>=3.0<4:devel/rubygem-listen
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

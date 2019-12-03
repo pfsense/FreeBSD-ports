@@ -3,8 +3,8 @@
 
 PORTNAME=	libmesh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.0
-PORTREVISION=	1
+DISTVERSION=	1.4.1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,11 +13,9 @@ COMMENT=	Numerical simulation of partial differential equations
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to link: libcontrib_opt.a: relocation truncated to fit: R_PPC64_GOT_TLSLD16 against .LANCHOR1
-
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
-USES=		autoreconf eigen:3 gmake libtool
+USES=		autoreconf compiler:c++11-lang eigen:3 gmake libtool
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libMesh
@@ -62,8 +60,6 @@ post-install:
 		Make.common \
 		contrib \
 		libdata/pkgconfig/Make.common # https://github.com/libMesh/libmesh/issues/1539
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmesh_opt.so.0.0.0
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmetaphysicl.so.0.0.0
 
 post-install-EXAMPLES-on:
 	# https://github.com/libMesh/libmesh/issues/1541

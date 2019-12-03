@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix22
-PORTVERSION=	2.2.21
+PORTVERSION=	2.2.23
 PORTREVISION?=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
@@ -28,7 +28,7 @@ USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}
 USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}d
 .endif
 
-USES=		pkgconfig iconv
+USES=		pkgconfig iconv localbase
 
 USERS=		zabbix
 GROUPS=		zabbix
@@ -55,16 +55,15 @@ CONFIGURE_ARGS+=	--enable-${ZABBIX_BUILD} \
 			--datadir=${ETCDIR} \
 			--with-iconv=${ICONV_PREFIX}
 
-.if ${ZABBIX_BUILD} != "agent"
+.if ${ZABBIX_BUILD} != "agent" && ${ZABBIX_BUILD} != "java"
 SUB_FILES=	pkg-message
 
 CONFIGURE_ARGS+=	--with-net-snmp
 
-OPTIONS_DEFINE=	IPV6 FPING JABBER CURL LDAP IPMI SSH NMAP JAVAGW LIBXML2
+OPTIONS_DEFINE=	IPV6 FPING JABBER CURL LDAP IPMI SSH NMAP LIBXML2
 OPTIONS_DEFAULT=	MYSQL FPING JABBER CURL UNIXODBC
 OPTIONS_SUB=	yes
 
-CURL_DESC=	Support for web monitoring
 FPING_DESC=	Build/install fping for ping checks
 IPMI_DESC=	Support for IPMI checks
 JABBER_DESC=	Support for Jabber media type
@@ -72,7 +71,6 @@ LDAP_DESC=	Support for LDAP server checks
 NMAP_DESC=	Build/install Nmap for OS detection
 SSH_DESC=	Support for SSH-based checks
 ODBC_DESC=	Support for database checks via ODBC
-JAVAGW_DESC=	Support for Java gateway
 LIBXML2_DESC=	Support for libxml2 (required by monitoring VMware)
 
 OPTIONS_SINGLE=	DB ODBC
@@ -89,9 +87,6 @@ SQLITE_CONFIGURE_WITH=	sqlite3
 SQLITE_USES+=	sqlite:3
 
 ORACLE_CONFIGURE_WITH=	oracle
-
-CURL_CONFIGURE_WITH=	libcurl
-CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=	OPENLDAP=yes
@@ -112,15 +107,16 @@ IODBC_LIB_DEPENDS=	libiodbc.so:databases/libiodbc
 
 UNIXODBC_CONFIGURE_WITH=	unixodbc
 UNIXODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
-.endif # if ${ZABBIX_BUILD} != "agent"
+.endif # if ${ZABBIX_BUILD} != "agent" && ${ZABBIX_BUILD} != "java"
+
+CURL_DESC=	Support for web monitoring
+CURL_CONFIGURE_WITH=	libcurl
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
 IPV6_CONFIGURE_ENABLE=	ipv6
 
 NMAP_RUN_DEPENDS=	nmap:security/nmap \
 		sudo:security/sudo
-
-JAVAGW_CONFIGURE_ENABLE=	java
-JAVAGW_USE=	JAVA=yes
 
 LIBXML2_CONFIGURE_WITH=	libxml2
 LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
@@ -134,6 +130,11 @@ post-patch:
 		${WRKSRC}/conf/zabbix_*.conf \
 		${WRKSRC}/src/zabbix_proxy/proxy.c \
 		${WRKSRC}/src/zabbix_server/server.c
+
+.if ${ZABBIX_BUILD} == "java"
+	@${REINPLACE_CMD} -e 's#PID_FILE="/tmp/zabbix_java.pid"#PID_FILE="/var/run/zabbix/zabbix_java.pid"#g' \
+		${WRKSRC}/src/zabbix_java/settings.sh
+.endif
 
 .if ${ZABBIX_BUILD} != "agent"
 .if ! ${PORT_OPTIONS:MFPING}
@@ -164,7 +165,7 @@ post-patch:
 		${WRKSRC}/conf/zabbix_agentd.conf
 .endif
 
-.if ${ZABBIX_BUILD} != "agent"
+.if ${ZABBIX_BUILD} != "agent" && ${ZABBIX_BUILD} != "java"
 	${MKDIR} "${STAGEDIR}${DATADIR}/${ZABBIX_BUILD}/database"
 	cd ${WRKSRC}/upgrades/ && ${COPYTREE_SHARE} dbpatches ${STAGEDIR}${DATADIR}/${ZABBIX_BUILD}/upgrades/
 	cd ${WRKSRC}/database/ && ${COPYTREE_SHARE} "ibm_db2 mysql oracle postgresql sqlite3" ${STAGEDIR}${DATADIR}/${ZABBIX_BUILD}/database/
@@ -172,8 +173,9 @@ post-patch:
 .endif
 
 post-install:
-.if ${PORT_OPTIONS:MJAVAGW}
+.if ${ZABBIX_BUILD} == "java"
 	@${MV} ${STAGEDIR}${PREFIX}/sbin/zabbix_java/settings.sh ${STAGEDIR}${PREFIX}/sbin/zabbix_java/settings.sh.sample
+	@${MKDIR} ${STAGEDIR}/var/run/zabbix
 .endif
 
 .include <bsd.port.mk>

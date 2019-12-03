@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME?=	percona
-DISTVERSION=	5.5.60-38.12
-PORTREVISION?=	1
+DISTVERSION=	5.5.61-38.13
+PORTREVISION?=	4
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.5/Percona-Server-${DISTVERSION}/source/tarball/
 PKGNAMESUFFIX?=	55-server
@@ -15,7 +15,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 SLAVEDIRS=	databases/percona55-client
-USES=		bison cmake:noninja readline shebangfix
+USES=		bison cmake:insource,noninja compiler:c11 readline shebangfix
 USE_CXXSTD=	gnu++98
 
 CXXFLAGS+=	${CPPFLAGS}
@@ -29,7 +29,7 @@ DATADIR=	${PREFIX}/share/mysql
 CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 		-DINSTALL_DOCREADMEDIR="share/doc/mysql" \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
-		-DINSTALL_INFODIR="info" \
+		-DINSTALL_INFODIR="${INFO_PATH}" \
 		-DINSTALL_LIBDIR="lib/mysql" \
 		-DINSTALL_MANDIR="man" \
 		-DINSTALL_MYSQLDATADIR="/var/db/mysql" \
@@ -53,7 +53,7 @@ SHEBANG_FILES=	scripts/*.pl* scripts/*.sh
 
 .if ${PORT_OPTIONS:MOPENSSL}
 CMAKE_ARGS+=	-DWITH_SSL=system
-OPENSSL_USES=	ssl
+USES+=		ssl
 .endif
 .if ${PORT_OPTIONS:MFASTMTX}
 CMAKE_ARGS+=	-DWITH_FAST_MUTEXES=1

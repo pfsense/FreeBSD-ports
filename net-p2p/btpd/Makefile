@@ -12,11 +12,15 @@ COMMENT=	Bittorrent client consisting of a daemon and client commands
 LICENSE=	BSD2CLAUSE BSD3CLAUSE
 LICENSE_COMB=	multi
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USE_GITHUB=	yes
 
 USES=		autoreconf ssl
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--with-openssl=${OPENSSLBASE}
+CONFIGURE_ARGS=	--with-openssl=${OPENSSLBASE}
 
 OPTIONS_DEFINE=	DOCS
 

@@ -16,7 +16,6 @@ LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 RUN_DEPENDS=	opencl>=0:devel/opencl
 
 ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON_amd64=	only builds and is supported on amd64
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	krrishnarraj
@@ -24,7 +23,7 @@ GH_TAGNAME=	75c8746
 
 USE_LDCONFIG=	yes
 USE_GL=		gl
-USES=		cmake
+USES=		cmake:insource
 
 CXXFLAGS+=	-std=c++11
 

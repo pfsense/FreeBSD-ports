@@ -1,11 +1,9 @@
-***********************************************************
+[
+{ type: install
+  message: <<EOM
+To configure ddclient, edit the following file:
 
-Copy
-	%%PREFIX%%/etc/ddclient.conf.sample
-to
 	%%PREFIX%%/etc/ddclient.conf
-
-and edit it to fit your needs.
 
 If you would like to run ddclient as a daemon add the
 following line to /etc/rc.conf
@@ -17,5 +15,6 @@ daily regardless of IP changes add the following line to
 your /etc/periodic.conf
 
 	daily_ddclient_force_enable="YES"
-
-***********************************************************
+EOM
+}
+]

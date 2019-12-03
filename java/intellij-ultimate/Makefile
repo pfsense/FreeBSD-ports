@@ -4,11 +4,11 @@
 # Based on the java/intellij port
 
 PORTNAME=	intellij-ultimate
-PORTVERSION=	2018.1.1
+PORTVERSION=	2019.2.3
 CATEGORIES=	java devel
-MASTER_SITES=	https://download.jetbrains.com/idea/ \
-		http://download.jetbrains.com/idea/
-DISTNAME=	ideaIU-${PORTVERSION}-no-jdk
+MASTER_SITES=	https://download-cf.jetbrains.com/idea/
+DISTNAME=	ideaIU-${PORTVERSION}-no-jbr
+DIST_SUBDIR=	jetbrains
 
 MAINTAINER=	andoriyu@gmail.com
 COMMENT=	IntelliJ IDEA Ultimate Edition
@@ -18,71 +18,57 @@ LICENSE_NAME=	Subscription license agreement for business and organizations
 LICENSE_TEXT=	See: https://www.jetbrains.com/store/license.html
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
-RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
-		intellij-pty4j>0:java/intellij-pty4j
+RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier
 
-USES=	python:run shebangfix
+USES=		python:run shebangfix
+
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
-SHEBANG_FILES=	bin/printenv.py bin/restart.py
+JAVA_VERSION=	8+
+
+SHEBANG_FILES=	bin/printenv.py bin/restart.py \
+		plugins/spy-js/server/node_modules/node-uuid/benchmark/bench.sh \
+		plugins/spy-js/server/proxy-nix.sh \
+		plugins/spy-js/server/proxy-osx.sh
 
 NO_ARCH=	yes
-NO_ARCH_IGNORE=	libnative_auth.so libnative_console.so libnative_filesystem.so \
-		libnative_misc.so libnative_synchronization.so \
-		native-platform-freebsd-amd64-libcpp-0.14.jar native-platform-freebsd-amd64-libstdcpp-0.14.jar \
-		native-platform-freebsd-i386-libcpp-0.14.jar native-platform-freebsd-i386-libstdcpp-0.14.jar
+NO_ARCH_IGNORE=	libjansi.so
 NO_BUILD=	yes
-USE_LDCONFIG=	${IDEA_HOME}/plugins/tfsIntegration/lib/native/freebsd/x86_64/
-USE_LDCONFIG32=	${IDEA_HOME}/plugins/tfsIntegration/lib/native/freebsd/x86/
 
-WRKSRC=	${WRKDIR}/idea-IU-181.4445.78
+WRKSRC=		${WRKDIR}/idea-IU-192.6817.14
 
-.include "${.CURDIR}/../intellij/common.mk"
-
-PLIST_SUB+=	IDEA_HOME=${IDEA_HOME}
-SUB_FILES+=	idea idea.desktop pkg-message
-SUB_LIST+=	IDEA_HOME=${IDEA_HOME}
+SUB_FILES=	idea idea.desktop pkg-message
 CONFLICTS=	intellij-20*
+
 do-install:
-	${MKDIR} ${STAGEDIR}${IDEA_HOME}
-	@${TAR} -czf - -C ${WRKSRC} . | ${TAR} xzf - -C ${STAGEDIR}${IDEA_HOME}
 # Linux/Windows/OS X only so remove them
-	@${RM} ${STAGEDIR}${IDEA_HOME}/bin/fsnotifier \
-		${STAGEDIR}${IDEA_HOME}/bin/fsnotifier-arm \
-		${STAGEDIR}${IDEA_HOME}/bin/fsnotifier64 \
-		${STAGEDIR}${IDEA_HOME}/bin/libbreakgen.so \
-		${STAGEDIR}${IDEA_HOME}/bin/libbreakgen64.so \
-		${STAGEDIR}${IDEA_HOME}/bin/libyjpagent-linux.so \
-		${STAGEDIR}${IDEA_HOME}/plugins/android/lib/gluegen-rt-natives-linux-*.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/android/lib/gluegen-rt-natives-macosx-universal.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/android/lib/gluegen-rt-natives-windows-*.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/android/lib/jogl-all-natives-linux-*.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/android/lib/jogl-all-natives-macosx-universal.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/android/lib/jogl-all-natives-windows-*.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-linux-*.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-osx-*.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-windows-*.jar \
-		${STAGEDIR}${IDEA_HOME}/bin/libyjpagent-linux64.so
-	@${RM} -r ${STAGEDIR}${IDEA_HOME}/plugins/tfsIntegration/lib/native/hpux/ \
-		${STAGEDIR}${IDEA_HOME}/plugins/tfsIntegration/lib/native/linux/ \
-		${STAGEDIR}${IDEA_HOME}/plugins/tfsIntegration/lib/native/macosx/ \
-		${STAGEDIR}${IDEA_HOME}/plugins/tfsIntegration/lib/native/solaris/ \
-		${STAGEDIR}${IDEA_HOME}/plugins/tfsIntegration/lib/native/win32/ \
-		${STAGEDIR}${IDEA_HOME}/plugins/tfsIntegration/lib/native/aix/
-# Remove the bundled native Pty4J support libraries, they are replaced
-# by java/intellij-pty4j
-	@${RM} -r ${STAGEDIR}${IDEA_HOME}/lib/libpty
-	@${RM} -r ${STAGEDIR}${IDEA_HOME}/jre/jre
-	@${RM} ${STAGEDIR}${IDEA_HOME}/lib/pty4j-0.7.1.jar
+	@${RM} -r ${WRKSRC}/bin/fsnotifier \
+		${WRKSRC}/bin/fsnotifier-arm \
+		${WRKSRC}/bin/fsnotifier64 \
+		${WRKSRC}/lib/pty4j-native/ \
+		${WRKSRC}/plugins/android/lib/libwebp/ \
+		${WRKSRC}/plugins/maven/lib/maven3/lib/jansi-native/linux32/ \
+		${WRKSRC}/plugins/maven/lib/maven3/lib/jansi-native/linux64/ \
+		${WRKSRC}/plugins/maven/lib/maven3/lib/jansi-native/osx/ \
+		${WRKSRC}/plugins/maven/lib/maven3/lib/jansi-native/windows32/ \
+		${WRKSRC}/plugins/maven/lib/maven3/lib/jansi-native/windows64/ \
+		${WRKSRC}/plugins/performanceTesting/bin/
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	@(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR} \
+		"! -name *\.so ! -name *\.dll ! -name *\.dylib ! -name *\.pdb ! -name *\.sh")
+	@(cd ${WRKSRC} && ${COPYTREE_BIN} . ${STAGEDIR}${DATADIR} "-name *\.sh")
+	${INSTALL_LIB} ${WRKSRC}/plugins/maven/lib/maven3/lib/jansi-native/freebsd32/libjansi.so \
+		${STAGEDIR}${DATADIR}/plugins/maven/lib/maven3/lib/jansi-native/freebsd32/
+	${INSTALL_LIB} ${WRKSRC}/plugins/maven/lib/maven3/lib/jansi-native/freebsd64/libjansi.so \
+		${STAGEDIR}${DATADIR}/plugins/maven/lib/maven3/lib/jansi-native/freebsd64/
 	${INSTALL_SCRIPT} ${WRKDIR}/idea ${STAGEDIR}${PREFIX}/bin/idea
 	${INSTALL_MAN} ${FILESDIR}/idea.1 ${STAGEDIR}${PREFIX}/man/man1
 	${INSTALL_DATA} ${WRKDIR}/idea.desktop ${STAGEDIR}${PREFIX}/share/applications/
-	cd ${WRKSRC}/lib && ${JAVA_HOME}/bin/jar xf icons.jar
-	${INSTALL_DATA} ${WRKSRC}/lib/icon.png ${STAGEDIR}${IDEA_HOME}/idea.png
-# TODO: Remove and enable fsnotifier when devel/libinotify is fixed
-# Disable filewatcher warning message on IDEA startup
-	${ECHO} "idea.filewatcher.disabled=true" >> ${STAGEDIR}${IDEA_HOME}/bin/idea.properties
 # Use fsnotifier replacement provided by java/intellij-fsnotifier
-	${ECHO} "idea.filewatcher.executable.path=${IDEA_HOME}/bin/fsnotifier" >> ${STAGEDIR}${IDEA_HOME}/bin/idea.properties
+	${ECHO} "idea.filewatcher.executable.path=${PREFIX}/intellij/bin/fsnotifier" >> ${STAGEDIR}${DATADIR}/bin/idea.properties
+# Fix "Typeahead timeout is exceeded" error
+	${ECHO} "action.aware.typeAhead=false" >> ${STAGEDIR}${DATADIR}/bin/idea.properties
+# Fix slow render
+	${ECHO} "-Dsun.java2d.xrender=false" >> ${STAGEDIR}${DATADIR}/bin/idea.vmoptions
+	${ECHO} "-Dsun.java2d.xrender=false" >> ${STAGEDIR}${DATADIR}/bin/idea64.vmoptions
 
 .include <bsd.port.mk>

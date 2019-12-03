@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ntp
-PORTVERSION=	4.3.93
-PORTREVISION=	10
+PORTVERSION=	4.3.99
+PORTREVISION=	5
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-dev/ \
 		http://archive.ntp.org/ntp4/ntp-dev/
@@ -13,18 +13,20 @@ DISTNAME=	${PORTNAME}-dev-${PORTVERSION:S/P/p/:S/r/-RC/:S/b/-beta/}
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	The Network Time Protocol Distribution
 
-FORBIDDEN=	It appears the development branch of NTP is dead.
-
-LIB_DEPENDS=	libevent.so:devel/libevent \
-		libmd5.so:www/libwww
+LIB_DEPENDS=	libevent.so:devel/libevent
 
 CONFLICTS=	ntp-[0-9].* openntpd-*
 
 USES=		cpe pathfix shebangfix libedit libtool localbase:ldflags \
 		pkgconfig gettext-runtime
+USES+=		autoreconf # until rlimit_memlock changes accepted upstream
+
+
+LIB_DEPENDS+=	libdns_sd.so:net/mDNSResponder
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-leap-smear
+CONFIGURE_ARGS=	--enable-leap-smear --enable-trustedbsd-mac \
+		--with-locfile=freebsd --with-memlock=-1
 
 TEST_TARGET=	check
 
@@ -65,20 +67,19 @@ DEBUG_CONFIGURE_ON=	--enable-debug
 THREADS_CONFIGURE_ENABLE=	thread-support
 THREADS_CONFIGURE_WITH=		threads
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mlibressl*}
-IGNORE=	detected LibreSSL (undefined references to MD5 symbols)
-.endif
-
 .for D in ${NTP_DRIVERS}
 ${D}_CONFIGURE_ENABLE=	${D}
 .endfor
+
+.include <bsd.port.pre.mk>
 
 # XXX Temporary hack. Remember to remove this next commit.
 post-extract:
 	@${TOUCH} ${WRKSRC}/scripts/build/checkHtmlFileDates
 	@${CHMOD} +x ${WRKSRC}/scripts/build/checkHtmlFileDates
+
+post-configure:
+	@${ECHO_CMD} '#define HAVE_CLOSEFROM        1' >> ${WRKSRC}/config.h
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

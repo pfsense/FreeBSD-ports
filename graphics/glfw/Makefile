@@ -2,36 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	glfw
-PORTVERSION=	3.2.1
-PORTREVISION=	2
+PORTVERSION=	3.3
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	neel@neelc.org
 COMMENT=	Portable framework for OpenGL development
 
 LICENSE=	ZLIB
-LICENSE_FILE=	${WRKSRC}/COPYING.txt
+LICENSE_FILE=	${WRKSRC}/README.md
 
-USES=		cmake localbase zip
+USES=		cmake:insource localbase zip
 USE_GL=		glu
 USE_LDCONFIG=	yes
+
 CMAKE_ON=	BUILD_SHARED_LIBS
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-OPTIONS_DEFINE=	DOCS EXAMPLES WAYLAND
-OPTIONS_EXCLUDE_FreeBSD_10=	WAYLAND # needs dev/evdev/input.h
+OPTIONS_DEFINE=	DOCS EXAMPLES
+OPTIONS_DEFAULT=X11
+PLATFORM_DESC=	Window creation platform
+OPTIONS_SINGLE=	PLATFORM
+OPTIONS_SINGLE_PLATFORM=	WAYLAND X11
 
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>=0:graphics/wayland-protocols
 WAYLAND_CMAKE_BOOL=	GLFW_USE_WAYLAND
-WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
-			libwayland-egl.so:graphics/mesa-libs \
+WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland \
 			libxkbcommon.so:x11/libxkbcommon
 WAYLAND_USES=		kde:5 pkgconfig
 WAYLAND_USE=		KDE=ecm
-WAYLAND_USE_OFF=	XORG=x11,xcursor,xinerama,xrandr,xxf86vm
+
+X11_USE=		XORG=x11,xcursor,xi,xinerama,xrandr,xxf86vm
+
+PLIST_SUB=	VERSION="${PORTVERSION}" MAJVER="${PORTVERSION:C|\..*||}"
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/docs/html/search
@@ -48,7 +54,7 @@ do-install-EXAMPLES-on:
 		${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/tests && ${INSTALL_PROGRAM} \
 		clipboard cursor empty events gamma glfwinfo iconify \
-		joysticks monitors msaa reopen sharing tearing \
+		joysticks monitors msaa reopen tearing \
 		threads title windows \
 		${STAGEDIR}${EXAMPLESDIR}/tests
 

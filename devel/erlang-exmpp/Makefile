@@ -4,16 +4,19 @@
 PORTNAME=	exmpp
 PORTVERSION=	0.9.9
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel net-im
 PKGNAMEPREFIX=	erlang-
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Fast and scalable library for XMPP written in Erlang/OTP
 
+BROKEN_SSL=	openssl111
+
 LICENSE=	EPL
 
-BUILD_DEPENDS=	erlc:lang/erlang
+BUILD_DEPENDS=	erlc:lang/erlang \
+		gsed:textproc/gsed
 RUN_DEPENDS=	erl:lang/erlang
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libxml2.so:textproc/libxml2
@@ -31,14 +34,23 @@ CONFIGURE_ARGS+=--enable-static=yes \
 		--disable-warnings \
 		--disable-examples \
 		--enable-escaping-using-cdata
+CONFIGURE_ENV=	ac_cv_path_SED=${LOCALBASE}/bin/gsed
 GNU_CONFIGURE_PREFIX=	"${PREFIX}/lib/erlang/lib"
 PLIST_SUB=	VERSION=${PORTVERSION}
 USES=		autoreconf cpe libtool pkgconfig ssl
 CPE_VENDOR=	process-one
 
+OPTIONS_DEFINE=	DOCS
+
 DOCS_CONFIGURE_ENABLE=	documentation
 
 MAKE_JOBS_UNSAFE=	yes
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base
+BROKEN=	Does not support OpenSSL 1.1
+.endif
 
 post-configure:
 	${REINPLACE_CMD}  's|\(-spec.*\)\/[0-9] ::\(.*\)|\1\2|g' ${WRKSRC}/src/network/*.erl

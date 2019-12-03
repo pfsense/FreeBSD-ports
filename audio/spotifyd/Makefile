@@ -1,0 +1,385 @@
+# $FreeBSD$
+
+PORTNAME=	spotifyd
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.2.17
+CATEGORIES=	audio
+
+MAINTAINER=	tobik@FreeBSD.org
+COMMENT=	Spotify daemon
+
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENCE
+
+LIB_DEPENDS=	libogg.so:audio/libogg
+
+USES=		cargo ssl:build
+USE_GITHUB=	yes
+GH_ACCOUNT=	Spotifyd
+GH_TUPLE=	plietar:dns-parser:1d3e5a5591bc72eb061c23bd426c4a25f2f73791:dnsparser \
+		librespot-org:librespot:76088d0fc99501813e1a42b0acccb152fc0c7800:librespot \
+		plietar:rust-mdns:66a74033da6c9f1a06e7b0a29f4544fd189d6479:mdns \
+		TeXitoi:structopt:0c888e962d842f2c90c6c290d3a2a40947b37005:structopt \
+		plietar:rust-tremor:5958cc302e78f535dad90e9665da981ddff4000a:tremor
+USE_RC_SUBR=	spotifyd
+
+CARGO_CRATES=	adler32-1.0.4 \
+		advapi32-sys-0.2.0 \
+		aes-0.3.2 \
+		aes-ctr-0.3.0 \
+		aes-soft-0.3.3 \
+		aesni-0.6.0 \
+		aho-corasick-0.6.10 \
+		aho-corasick-0.7.6 \
+		alsa-0.2.2 \
+		alsa-sys-0.1.2 \
+		ansi_term-0.11.0 \
+		arc-swap-0.4.3 \
+		arrayref-0.3.5 \
+		arrayvec-0.4.11 \
+		atty-0.2.13 \
+		autocfg-0.1.6 \
+		backtrace-0.3.38 \
+		backtrace-sys-0.1.31 \
+		base64-0.10.1 \
+		base64-0.6.0 \
+		base64-0.9.3 \
+		bit-set-0.5.1 \
+		bit-vec-0.5.1 \
+		bitflags-0.3.3 \
+		bitflags-0.9.1 \
+		bitflags-1.2.0 \
+		blake2b_simd-0.5.8 \
+		block-buffer-0.7.3 \
+		block-cipher-trait-0.6.2 \
+		block-modes-0.3.3 \
+		block-padding-0.1.4 \
+		boxfnonce-0.1.1 \
+		byte-tools-0.3.1 \
+		bytecount-0.4.0 \
+		byteorder-0.5.3 \
+		byteorder-1.3.2 \
+		bytes-0.4.12 \
+		c2-chacha-0.2.2 \
+		c_linked_list-1.1.1 \
+		cargo_metadata-0.6.4 \
+		cc-1.0.45 \
+		cfg-if-0.1.10 \
+		chrono-0.4.9 \
+		clap-2.33.0 \
+		cloudabi-0.0.3 \
+		constant_time_eq-0.1.4 \
+		cookie-0.12.0 \
+		cookie_store-0.7.0 \
+		core-foundation-0.6.4 \
+		core-foundation-sys-0.6.2 \
+		crc32fast-1.2.0 \
+		crossbeam-deque-0.7.1 \
+		crossbeam-epoch-0.7.2 \
+		crossbeam-queue-0.1.2 \
+		crossbeam-utils-0.6.6 \
+		crypto-mac-0.7.0 \
+		ctr-0.3.2 \
+		daemonize-0.4.1 \
+		dbus-0.2.3 \
+		dbus-0.6.5 \
+		dbus-tokio-0.2.1 \
+		derive-error-chain-0.10.1 \
+		derive_builder-0.5.1 \
+		derive_builder_core-0.2.0 \
+		digest-0.8.1 \
+		dirs-2.0.2 \
+		dirs-sys-0.3.4 \
+		dotenv-0.10.1 \
+		dtoa-0.4.4 \
+		either-1.5.3 \
+		encoding_rs-0.8.20 \
+		env_logger-0.5.13 \
+		env_logger-0.6.2 \
+		error-chain-0.10.0 \
+		error-chain-0.11.0 \
+		error-chain-0.12.1 \
+		extprim-1.7.0 \
+		failure-0.1.5 \
+		failure_derive-0.1.5 \
+		fake-simd-0.1.2 \
+		flate2-1.0.11 \
+		fnv-1.0.6 \
+		foreign-types-0.3.2 \
+		foreign-types-shared-0.1.1 \
+		fuchsia-cprng-0.1.1 \
+		fuchsia-zircon-0.3.3 \
+		fuchsia-zircon-sys-0.3.3 \
+		futures-0.1.29 \
+		futures-cpupool-0.1.8 \
+		gcc-0.3.55 \
+		generic-array-0.12.3 \
+		get_if_addrs-0.5.3 \
+		get_if_addrs-sys-0.1.1 \
+		gethostname-0.2.0 \
+		getopts-0.2.21 \
+		getrandom-0.1.12 \
+		glob-0.2.11 \
+		h2-0.1.26 \
+		heck-0.3.1 \
+		hex-0.3.2 \
+		hkdf-0.7.1 \
+		hmac-0.7.1 \
+		http-0.1.18 \
+		http-body-0.1.0 \
+		httparse-1.3.4 \
+		humantime-1.3.0 \
+		hyper-0.11.27 \
+		hyper-0.12.35 \
+		hyper-proxy-0.4.1 \
+		hyper-tls-0.3.2 \
+		idna-0.1.5 \
+		idna-0.2.0 \
+		indexmap-1.2.0 \
+		iovec-0.1.2 \
+		itertools-0.7.11 \
+		itoa-0.4.4 \
+		kernel32-sys-0.2.2 \
+		keyring-0.7.1 \
+		language-tags-0.2.2 \
+		lazy_static-1.4.0 \
+		lewton-0.9.4 \
+		libc-0.2.62 \
+		libdbus-sys-0.2.1 \
+		libpulse-sys-0.0.0 \
+		linear-map-1.2.0 \
+		lock_api-0.1.5 \
+		log-0.3.9 \
+		log-0.4.8 \
+		matches-0.1.8 \
+		memchr-2.2.1 \
+		memoffset-0.5.1 \
+		mime-0.3.14 \
+		mime_guess-2.0.1 \
+		miniz_oxide-0.3.2 \
+		mio-0.6.19 \
+		mio-named-pipes-0.1.6 \
+		mio-uds-0.6.7 \
+		miow-0.2.1 \
+		miow-0.3.3 \
+		multimap-0.4.0 \
+		native-tls-0.2.3 \
+		net2-0.2.33 \
+		nix-0.11.1 \
+		nix-0.9.0 \
+		nodrop-0.1.13 \
+		num-0.2.0 \
+		num-bigint-0.2.3 \
+		num-complex-0.2.3 \
+		num-integer-0.1.41 \
+		num-iter-0.1.39 \
+		num-rational-0.2.2 \
+		num-traits-0.2.8 \
+		num_cpus-1.10.1 \
+		ogg-0.7.0 \
+		ogg-sys-0.0.9 \
+		opaque-debug-0.2.3 \
+		openssl-0.10.24 \
+		openssl-probe-0.1.2 \
+		openssl-sys-0.9.49 \
+		owning_ref-0.4.0 \
+		parking_lot-0.7.1 \
+		parking_lot_core-0.4.0 \
+		pbkdf2-0.3.0 \
+		percent-encoding-1.0.1 \
+		percent-encoding-2.1.0 \
+		pkg-config-0.3.16 \
+		portaudio-rs-0.3.1 \
+		portaudio-sys-0.1.1 \
+		ppv-lite86-0.2.5 \
+		proc-macro-error-0.2.6 \
+		proc-macro2-0.4.30 \
+		proc-macro2-1.0.4 \
+		protobuf-2.8.1 \
+		protobuf-codegen-2.8.1 \
+		protobuf-codegen-pure-2.8.1 \
+		publicsuffix-1.5.3 \
+		pulldown-cmark-0.2.0 \
+		quick-error-1.2.2 \
+		quote-0.3.15 \
+		quote-0.6.13 \
+		quote-1.0.2 \
+		rand-0.3.23 \
+		rand-0.4.6 \
+		rand-0.5.6 \
+		rand-0.6.5 \
+		rand-0.7.2 \
+		rand_chacha-0.1.1 \
+		rand_chacha-0.2.1 \
+		rand_core-0.3.1 \
+		rand_core-0.4.2 \
+		rand_core-0.5.1 \
+		rand_hc-0.1.0 \
+		rand_hc-0.2.0 \
+		rand_isaac-0.1.1 \
+		rand_jitter-0.1.4 \
+		rand_os-0.1.3 \
+		rand_pcg-0.1.2 \
+		rand_xorshift-0.1.1 \
+		random-0.12.2 \
+		rdrand-0.4.0 \
+		redox_syscall-0.1.56 \
+		redox_users-0.3.1 \
+		regex-0.2.11 \
+		regex-1.3.1 \
+		regex-syntax-0.5.6 \
+		regex-syntax-0.6.12 \
+		relay-0.1.1 \
+		remove_dir_all-0.5.2 \
+		reqwest-0.9.20 \
+		result-1.0.0 \
+		rpassword-3.0.2 \
+		rspotify-0.2.5 \
+		rust-argon2-0.5.1 \
+		rustc-demangle-0.1.16 \
+		rustc-serialize-0.3.24 \
+		rustc_version-0.2.3 \
+		ryu-1.0.0 \
+		safemem-0.2.0 \
+		safemem-0.3.2 \
+		same-file-1.0.5 \
+		schannel-0.1.16 \
+		scoped-tls-0.1.2 \
+		scopeguard-0.3.3 \
+		scopeguard-1.0.0 \
+		secret-service-1.0.0 \
+		security-framework-0.3.1 \
+		security-framework-sys-0.3.1 \
+		semver-0.9.0 \
+		semver-parser-0.7.0 \
+		serde-1.0.101 \
+		serde_derive-1.0.101 \
+		serde_ini-0.2.0 \
+		serde_json-1.0.40 \
+		serde_urlencoded-0.5.5 \
+		sha-1-0.8.1 \
+		sha2-0.8.0 \
+		shannon-0.2.0 \
+		signal-hook-0.1.10 \
+		signal-hook-registry-1.1.1 \
+		simplelog-0.7.3 \
+		skeptic-0.13.4 \
+		slab-0.3.0 \
+		slab-0.4.2 \
+		smallvec-0.2.1 \
+		smallvec-0.6.10 \
+		socket2-0.2.4 \
+		socket2-0.3.11 \
+		stable_deref_trait-1.1.1 \
+		stream-cipher-0.3.2 \
+		string-0.2.1 \
+		strsim-0.8.0 \
+		subtle-1.0.0 \
+		syn-0.11.11 \
+		syn-0.15.44 \
+		syn-1.0.5 \
+		synom-0.11.3 \
+		synstructure-0.10.2 \
+		syslog-4.0.1 \
+		take-0.1.0 \
+		tempdir-0.3.7 \
+		tempfile-3.1.0 \
+		term-0.6.1 \
+		termcolor-1.0.5 \
+		textwrap-0.11.0 \
+		thread_local-0.3.6 \
+		time-0.1.42 \
+		tokio-0.1.22 \
+		tokio-buf-0.1.1 \
+		tokio-codec-0.1.1 \
+		tokio-core-0.1.17 \
+		tokio-current-thread-0.1.6 \
+		tokio-executor-0.1.8 \
+		tokio-fs-0.1.6 \
+		tokio-io-0.1.12 \
+		tokio-process-0.2.4 \
+		tokio-proto-0.1.1 \
+		tokio-reactor-0.1.9 \
+		tokio-service-0.1.0 \
+		tokio-signal-0.1.5 \
+		tokio-signal-0.2.7 \
+		tokio-sync-0.1.6 \
+		tokio-tcp-0.1.3 \
+		tokio-threadpool-0.1.15 \
+		tokio-timer-0.2.11 \
+		tokio-udp-0.1.5 \
+		tokio-uds-0.2.5 \
+		try-lock-0.1.0 \
+		try-lock-0.2.2 \
+		try_from-0.3.2 \
+		typenum-1.11.2 \
+		ucd-util-0.1.5 \
+		unicase-2.5.1 \
+		unicode-bidi-0.3.4 \
+		unicode-normalization-0.1.8 \
+		unicode-segmentation-1.3.0 \
+		unicode-width-0.1.6 \
+		unicode-xid-0.0.4 \
+		unicode-xid-0.1.0 \
+		unicode-xid-0.2.0 \
+		url-1.7.2 \
+		url-2.1.0 \
+		utf8-ranges-1.0.4 \
+		uuid-0.7.4 \
+		vcpkg-0.2.7 \
+		vec_map-0.8.1 \
+		vergen-3.0.4 \
+		version_check-0.1.5 \
+		void-1.0.2 \
+		walkdir-2.2.9 \
+		want-0.0.4 \
+		want-0.2.0 \
+		wasi-0.7.0 \
+		webbrowser-0.2.2 \
+		whoami-0.5.3 \
+		winapi-0.2.8 \
+		winapi-0.3.8 \
+		winapi-build-0.1.1 \
+		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-util-0.1.2 \
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		wincolor-1.0.2 \
+		winreg-0.6.2 \
+		ws2_32-sys-0.2.1 \
+		xdg-2.2.0
+CARGO_USE_GITHUB=	yes
+
+CARGO_BUILD_ARGS=	--no-default-features
+CARGO_INSTALL_ARGS=	--no-default-features
+CARGO_TEST_ARGS=	--no-default-features
+
+PLIST_FILES=	bin/spotifyd \
+		"@sample etc/spotifyd.conf.sample"
+PORTDOCS=	README.md
+
+OPTIONS_DEFINE=		DBUS DOCS PORTAUDIO PULSEAUDIO
+OPTIONS_DEFAULT=	PORTAUDIO
+
+DBUS_DESC=		D-Bus MPRIS support
+
+DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
+DBUS_VARS=		CARGO_FEATURES+=dbus_mpris
+
+PORTAUDIO_LIB_DEPENDS=	libportaudio.so:audio/portaudio
+PORTAUDIO_VARS=		CARGO_FEATURES+=portaudio_backend
+
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
+PULSEAUDIO_VARS=	CARGO_FEATURES+=pulseaudio_backend
+
+post-patch:
+	@${REINPLACE_CMD} 's,/etc/,${PREFIX}/etc/,g' ${WRKSRC}/src/config.rs
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/spotifyd
+	${INSTALL_DATA} ${FILESDIR}/spotifyd.conf ${STAGEDIR}${PREFIX}/etc/spotifyd.conf.sample
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+
+.include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	otrs
-PORTVERSION=	6.0.6
+PORTVERSION=	6.0.19
 PORTREVISION=	1
 CATEGORIES=	www
 
@@ -21,11 +21,10 @@ BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		p5-Net-DNS>=0.66:dns/p5-Net-DNS \
 		p5-CSS-Minifier-XS>=0:textproc/p5-CSS-Minifier-XS \
 		p5-JavaScript-Minifier-XS>=0:textproc/p5-JavaScript-Minifier-XS \
-		p5-TimeDate>=0:devel/p5-TimeDate \
+		p5-DateTime>=0:devel/p5-DateTime \
 		p5-Sys-Hostname-Long>=0:sysutils/p5-Sys-Hostname-Long \
 		p5-Proc-Daemon>=0:devel/p5-Proc-Daemon \
 		p5-JSON-XS>=0:converters/p5-JSON-XS \
-		p5-XML-Parser>=0:textproc/p5-XML-Parser \
 		p5-Text-CSV_XS>=0:textproc/p5-Text-CSV_XS \
 		p5-IO-Interactive>=0:devel/p5-IO-Interactive \
 		p5-Email-Valid>=0:mail/p5-Email-Valid \
@@ -45,15 +44,18 @@ BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		p5-Lingua-Translit>=0:devel/p5-Lingua-Translit \
 		p5-Pod-Strip>=0:textproc/p5-Pod-Strip \
 		p5-Template-Toolkit>=0:www/p5-Template-Toolkit \
+		p5-Sisimai>=0:mail/p5-Sisimai \
+		p5-XML-Parser>=0:textproc/p5-XML-Parser \
 		p5-XML-LibXML>=0:textproc/p5-XML-LibXML \
-		p5-Sisimai>=0:mail/p5-Sisimai
+		p5-XML-LibXML-Simple>=0:textproc/p5-XML-LibXML-Simple \
+		p5-XML-LibXSLT>=0:textproc/p5-XML-LibXSLT
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		cpe shebangfix perl5 tar:bzip2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	OTRS
-GH_TAGNAME=	51cbe50
+GH_TAGNAME=	b7b2693
 
 SHEBANG_FILES=	bin/cgi-bin/*.pl bin/cgi-bin/app.psgi bin/fcgi-bin/*.pl bin/*.pl \
 		scripts/tools/*.pl scripts/*.pl

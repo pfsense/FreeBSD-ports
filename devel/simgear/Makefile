@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	simgear
-PORTVERSION=	2018.2.1
+PORTVERSION=	2019.1.1
 CATEGORIES=	devel games
 MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 
@@ -13,26 +13,26 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
-		libosg.so:graphics/osg
+		libosg.so:graphics/osg \
+		libexpat.so:textproc/expat2 \
+		libcurl.so:ftp/curl
 
-USES=		alias cmake compiler:c++11-lib cpe jpeg openal:al,alut tar:bzip2
+USES=		alias cmake compiler:c++11-lib cpe gl jpeg openal:al,alut \
+		tar:bzip2 xorg
 USE_XORG=	ice sm x11 xext xi xmu xt
 USE_GL=		gl glu glut
 
-.include <bsd.port.pre.mk>
+USE_LDCONFIG=	yes
 
-# Needs Clang 4.0+ to build, see:
-# https://sourceforge.net/p/flightgear/codetickets/2015/
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 40
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang40:devel/llvm40
-CPP=	${LOCALBASE}/bin/clang-cpp40
-CC=	${LOCALBASE}/bin/clang40
-CXX=	${LOCALBASE}/bin/clang++40
-.endif
+LDFLAGS_gcc=	-losgDB
+LDFLAGS+=	${LDFLAGS_${CHOSEN_COMPILER_TYPE}}
 
-# Work around "'to_string' is not a member of 'std'" when building with Gcc < 6
-.if ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} < 60
-CFLAGS+=	-D_GLIBCXX_USE_C99
-.endif
+CMAKE_ARGS+=	-DSYSTEM_EXPAT:BOOL=ON
 
-.include <bsd.port.post.mk>
+post-patch:
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
+	@${REINPLACE_CMD} -Ei .c++20 '/file|set_prop/s/version[[:>:]]/&.txt/' \
+		${WRKSRC}/CMakeLists.txt
+
+.include <bsd.port.mk>

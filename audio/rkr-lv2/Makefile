@@ -17,11 +17,18 @@ BUILD_DEPENDS=	lv2>0:audio/lv2
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libsamplerate.so:audio/libsamplerate
 
-USES=		cmake:outsource pkgconfig
+USES=		cmake pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	ssj71
 GH_PROJECT=	${PORTNAME}lv2
 
 DATADIR=	${PREFIX}/share/${PORTNAME}.lv2
+
+OPTIONS_DEFINE_amd64=	SIMD
+OPTIONS_DEFINE_i386=	SIMD
+OPTIONS_DEFAULT_amd64=	SIMD
+OPTIONS_DEFAULT_i386=	SIMD
+
+SIMD_CMAKE_ON=	-DPORT_SIMD_FLAGS:STRING="-msse -msse2 -mfpmath=sse"
 
 .include <bsd.port.mk>

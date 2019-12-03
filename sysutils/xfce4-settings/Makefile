@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-settings
-PORTVERSION=	4.12.4
+PORTVERSION=	4.14.1
 CATEGORIES=	sysutils xfce
-MASTER_SITES=	XFCE/src/xfce/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -13,41 +13,46 @@ COMMENT=	Xfce 4 settings application
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libdbus-1.so:devel/dbus \
-		libdbus-glib-1.so:devel/dbus-glib \
+LIB_DEPENDS=	libcolord.so:graphics/colord \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libxklavier.so:x11/libxklavier
 
-PORTSCOUT=	limit:^4\.12\.
+USES=		compiler:c11 gettext-tools gmake gnome libtool pkgconfig \
+		tar:bzip2 xfce xorg
+USE_GNOME=	cairo glib20 gtk30 intltool
+USE_XFCE=	garcon libexo xfconf
+USE_XORG=	xorgproto x11 xcursor xi xrandr
 
-USES=		gettext-tools gmake libtool pkgconfig tar:bzip2 xfce
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-xorg-libinput \
+		--enable-pluggable-dialogs
 INSTALLS_ICONS=	yes
-USE_GNOME=	glib20 gtk20 cairo intltool intlhack
-USE_XFCE=	garcon libexo
-USE_XORG=	inputproto x11 xcursor xi xrandr
 
-CONFIGURE_ARGS=	--enable-debug=yes \
-		--disable-xorg-libinput
+PORTSCOUT=	limitw:1,even
 
 OPTIONS_DEFINE=		NOTIFY NLS UPOWER
 OPTIONS_DEFAULT=	NOTIFY
+OPTIONS_SUB=		yes
 
 UPOWER_DESC=		Power management tasks
 
-NOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
+NLS_CONFIGURE_ENABLE=		nls
+NLS_USES=			gettext-runtime
+
 NOTIFY_CONFIGURE_ENABLE=	libnotify
-NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=		gettext-runtime
-UPOWER_LIB_DEPENDS=	libupower-glib.so:sysutils/upower
+NOTIFY_LIB_DEPENDS=		libnotify.so:devel/libnotify
+
 UPOWER_CONFIGURE_ENABLE=	upower-glib
-OPTIONS_SUB=		yes
+UPOWER_LIB_DEPENDS=		libupower-glib.so:sysutils/upower
+
+.if defined(WITH_DEBUG)
+CONFIGURE_ARGS+=	--enable-debug=yes
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|Rodent|Adwaita|g' \
 		${WRKSRC}/dialogs/appearance-settings/main.c
-	@${REINPLACE_CMD} -e 's|IconThemeName" type="empty|IconThemeName" type="string" value="Adwaita|; \
-		s|"ThemeName" type="empty|"ThemeName" type="string" value="Xfce|' \
+	@${REINPLACE_CMD} -e 's|IconThemeName" type="empty|IconThemeName" type="string" value="Adwaita|' \
 		${WRKSRC}/xfsettingsd/xsettings.xml
 
 .include <bsd.port.mk>

@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	qcad
-PORTVERSION=	3.20.1.7
+PORTVERSION=	3.22.0.12
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
-#PORTREVISION=	1
+#PORTREVISION=
 CATEGORIES=	cad
 DIST_SUBDIR=	${PORTNAME}
 
@@ -13,18 +14,21 @@ COMMENT=	Professional CAD system
 
 LICENSE=	GPLv3
 
+.if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
+BROKEN_i386=	ld: error: relocation R_386_PC32 cannot be used against symbol ON_GetPointListBoundingBox
+.endif
+
 BUILD_DEPENDS=	bash:shells/bash	\
 		${LOCALBASE}/lib/libopenNURBS.a:graphics/opennurbs
-LIB_DEPENDS=	libquazip.so:archivers/quazip@qt4
 
 MAKE_JOBS_UNSAFE=yes
 
-USES=		gmake qmake qt:5
+USES=		compiler:c++11-lang gmake qmake qt:5
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 USE_QT=		buildtools qmake_build \
 		designer gui help imageformats network opengl script \
-		scripttools sql svg xml xmlpatterns webkit widgets uitools
+		scripttools sql svg uitools xml xmlpatterns webkit
 USE_GL=		glu
 
 DESKTOP_ENTRIES="QCad"	\
@@ -41,24 +45,22 @@ RESDIR=		${WRKSRC}/release
 .endif
 
 SHRLIBS=	qcadcore qcadecmaapi qcadentity qcadgrid qcadgui qcadoperations	\
-		qcadsnap qcadspatialindex qcadstemmer spatialindexnavel qcadzip
+		qcadsnap qcadspatialindex qcadstemmer spatialindexnavel
 STALIBS=	dxflib stemmer
 SHRDIR=		fonts libraries linetypes patterns plugins scripts themes ts
 #QSCRIPTS should not be installed to avoid conflicts with texlive-base
 QSCRIPTS=	bbox dwg2bmp dwg2pdf dwg2svg
+
+OPTIONS_DEFINE=	EXAMPLES
+
+CFLAGS_i386= -fPIC
+CXXFLAGS_i386= -fPIC
 
 pre-configure:
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\
 		${WRKSRC}/src/core/RS.cpp
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\
 		${WRKSRC}/src/core/RSettings.cpp
-
-# Temporary hack for Qt 4.8.7 support while upstream does not add proper
-# bindings.
-#	(cd ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-4.8.5 && \
-#		${COPYTREE_SHARE} . ../qt-labs-qtscriptgenerator-4.8.7)
-#	(cd ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-4.8.7 && \
-#		mv qt-labs-qtscriptgenerator-4.8.5.pro qt-labs-qtscriptgenerator-4.8.7.pro)
 
 do-install:
 	${INSTALL_PROGRAM} ${RESDIR}/qcad-bin ${STAGEDIR}${PREFIX}/bin/

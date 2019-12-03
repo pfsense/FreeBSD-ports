@@ -4,7 +4,7 @@
 PORTNAME=	pwcbsd
 PORTVERSION=	1.4.1
 PORTREVISION=	12
-CATEGORIES=	multimedia sysutils kld
+CATEGORIES=	multimedia sysutils
 MASTER_SITES=	http://raaf.atspace.org/ \
 		http://www.bsd-geek.de/FreeBSD/distfiles/ \
 		LOCAL/miwi
@@ -13,8 +13,6 @@ MAINTAINER=	lme@FreeBSD.org
 COMMENT=	The Linux pwc webcam driver ported to FreeBSD
 
 LICENSE=	GPLv2
-
-BROKEN_powerpc64=	fails to compile: pcpu.h:187: error: size of array '__assert_0' is negative
 
 CONFLICTS=	pwcview-[0-9]*
 

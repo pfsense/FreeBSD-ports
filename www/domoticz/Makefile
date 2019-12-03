@@ -28,15 +28,13 @@ TELLDUS_DESC=	Enable support for Telldus
 
 .include <bsd.port.options.mk>
 
-USES=		cmake iconv pkgconfig ssl
+USES=		cmake compiler:c++11-lang iconv pkgconfig ssl
 
 # This hack is to get rid of dependency of git while building
 # the package.
-DOMOTICZ_REL=	9700
-DOMOTICZ_TS=	1529904511
+DOMOTICZ_REL=	10717
+DOMOTICZ_TS=	1565707487
 USE_GITHUB=	yes
-GH_ACCOUNT=	domoticz
-GH_PROJECT=	domoticz
 
 USE_RC_SUBR=	domoticz
 
@@ -91,7 +89,7 @@ LIB_DEPENDS+=	libminizip.so:archivers/minizip
 
 .if ${PORT_OPTIONS:MPYTHON}
 CMAKE_ARGS+=	-DUSE_PYTHON="YES"
-USES+=		python:3.4
+USES+=		python:3.6
 .else
 CMAKE_ARGS+=	-DUSE_PYTHON="NO"
 .endif
@@ -105,7 +103,7 @@ post-patch:
 	@${REINPLACE_CMD} -e "s,%%PREFIX%%,${PREFIX},g" ${WRKSRC}/CMakeLists.txt
 	@${REINPLACE_CMD} -e "/^ADD_PRECOMPILED_HEADER/ d" ${WRKSRC}/CMakeLists.txt
 	@${REINPLACE_CMD} -e "s/\(#define APPVERSION\)\(.*\)/\1 ${DOMOTICZ_REL}/" ${WRKSRC}/appversion.default
-	@${REINPLACE_CMD} -e "s/\(#define APPHASH\)\(.*\)/\1 \"27772d9f\"/" ${WRKSRC}/appversion.default
+	@${REINPLACE_CMD} -e "s/\(#define APPHASH\)\(.*\)/\1 \"be79a17\"/" ${WRKSRC}/appversion.default
 	@${REINPLACE_CMD} -e "s/\(#define APPDATE\)\(.*\)/\1 ${DOMOTICZ_TS}/" ${WRKSRC}/appversion.default
 
 post-install:

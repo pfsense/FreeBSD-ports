@@ -36,7 +36,7 @@ REINPLACE_ARGS=	-i '' # no .bak files
 
 WEBPLUGIN_SUBDIR=	${LOCALBASE}/lib/browser_plugins/symlinks/opera
 
-OPTIONS_DEFINE=	CUPS VIDEO GTK2 KDE4
+OPTIONS_DEFINE=	CUPS VIDEO GTK2
 OPTIONS_DEFAULT=	CUPS VIDEO
 NO_OPTIONS_SORT=yes
 
@@ -47,8 +47,6 @@ CUPS_LIB_DEPENDS=	libcups.so:print/cups
 
 VIDEO_USE=	gstreamer=vorbis,ogg,theora,vp8,good
 GTK2_USE=	gnome=gtk20,libxml2
-KDE4_USES=	kde:4
-KDE4_USE=	KDE=kdelibs
 
 .include <bsd.port.options.mk>
 

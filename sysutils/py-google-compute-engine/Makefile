@@ -1,13 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	google-compute-engine
-DISTVERSION=	2.8.3
-PORTREVISION=	1
+DISTVERSION=	2.8.16
 CATEGORIES=	sysutils python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	helen.koike@collabora.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Guest Environment for Google Compute Engine
 
 LICENSE=	APACHE20
@@ -19,17 +17,29 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto>0:devel/py-boto@${PY_FLAVOR} \
 		google_oslogin_control:sysutils/google-compute-engine-oslogin \
 		sudo:security/sudo
 
-USES=		python
+.if ${FLAVOR:Upy36:Mpy3*}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}distro>0:sysutils/py-distro@${PY_FLAVOR}
+.endif
+
+USES=		python shebangfix
 USE_PYTHON=	autoplist concurrent distutils
+
+WRKSRC_SUBDIR=	packages/python-google-compute-engine
+
 NO_ARCH=	yes
+SHEBANG_FILES=	../google-compute-engine/src/usr/bin/google_optimize_local_ssd \
+		../google-compute-engine/src/usr/bin/google_set_multiqueue
 
-USE_RC_SUBR=	google_instance_setup \
-		google_accounts_daemon \
-		google_clock_skew_daemon \
-		google_network_daemon \
-		google_startup
+USE_GITHUB=	yes
+GH_ACCOUNT=	GoogleCloudPlatform
+GH_PROJECT=	compute-image-packages
+GH_TAGNAME=	20190522
 
-SUB_LIST=	PYTHON_CMD="${PYTHON_CMD}"
+USE_RC_SUBR=	google_accounts_daemon google_clock_skew_daemon \
+		google_instance_setup google_network_daemon google_startup
+
+SUB_LIST=	PYTHON_CMD="${PYTHON_CMD}" \
+		PYTHON_VER="${PYTHON_VER}"
 REINPLACE_ARGS=	-i ''
 
 post-install:

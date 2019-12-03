@@ -2,7 +2,8 @@
 
 PORTNAME=	pg_partman
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.1.3
+DISTVERSION=	4.0.0
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	lacey.leanne@gmail.com
@@ -24,6 +25,16 @@ SHEBANG_GLOB=	*.py
 
 OPTIONS_DEFINE=	DOCS
 
+.include <bsd.port.pre.mk>
+
+# With PG11+ some scripts are only installed when they are common to
+# all PG versions.
+.if ${PGSQL_VER:R} < 11
+PLIST_SUB+=	OLDPG=""
+.else
+PLIST_SUB+=	OLDPG="@comment "
+.endif
+
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/postgresql/pg_partman_bgw.so
 
@@ -36,4 +47,4 @@ post-install-DOCS-on:
 post-install-DOCS-off:
 	${RM} -r ${STAGEDIR}${PREFIX}/share/doc/postgresql
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

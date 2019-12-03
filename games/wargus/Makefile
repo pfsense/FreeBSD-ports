@@ -4,7 +4,7 @@
 PORTNAME=	wargus
 PORTVERSION=	2.4.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -22,7 +22,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 USE_GITHUB=	yes
 GH_ACCOUNT=	Wargus
 
-USES=		cmake pkgconfig
+USES=		cmake compiler:c++11-lang pkgconfig
 CMAKE_ARGS=	-DGAMEDIR:STRING="bin" \
 		-DSHAREDIR:STRING="${DATADIR_REL}"
 USE_XORG=	x11

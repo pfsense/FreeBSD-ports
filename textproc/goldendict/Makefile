@@ -2,31 +2,44 @@
 # $FreeBSD$
 
 PORTNAME=	goldendict
-PORTVERSION=	1.0.1
-PORTREVISION=	12
+DISTVERSION=	1.5.0-g20190709
+PORTREVISION=	2
 CATEGORIES=	textproc
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:C|(.*)\.[0-9]*$|\1|}/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	bsam@FreeBSD.org
-COMMENT=	Feature-rich Qt4 based dictionary lookup program
+COMMENT=	Feature-rich dictionary lookup program
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell \
+LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell \
+		liblzo2.so:archivers/lzo2 \
 		libvorbis.so:audio/libvorbis
 
-NO_WRKSUBDIR=	yes
-USES=		compiler:c++11-lang dos2unix iconv:wchar_t pkgconfig qmake qt:4 tar:bzip2
-DOS2UNIX_FILES=	processwrapper.cc
+USES=		compiler:c++11-lang gnome iconv:wchar_t pkgconfig \
+		qmake qt:5
+USE_GITHUB=	yes
+GH_TAGNAME=	05bfc35
 USE_XORG=	xtst
-USE_QT=		corelib gui webkit phonon \
-		linguist_build moc_build rcc_build script_build uic_build
-LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
+USE_QT=		buildtools_build linguisttools_build core gui help \
+		multimedia network printsupport sql svg webkit widgets \
+		x11extras xml
 INSTALLS_ICONS=	yes
+QMAKE_ARGS=	${PORTNAME}.pro CONFIG+="zim_support"
 
-post-patch:
-	@${REINPLACE_CMD} 's:/usr:${PREFIX}:' ${WRKSRC}/redist/goldendict.desktop
+OPTIONS_DEFINE=	EPWING FFMPEG OPENCC
+OPTIONS_DEFAULT=	EPWING FFMPEG OPENCC
+
+EPWING_DESC=		Japanese EPWING dictionary format support
+EPWING_LIB_DEPENDS=	libeb.so:japanese/eb
+EPWING_QMAKE_OFF=	CONFIG+="no_epwing_support"
+
+FFMPEG_LIB_DEPENDS=	libao.so:audio/libao \
+			libavutil.so:multimedia/ffmpeg
+FFMPEG_QMAKE_OFF=	CONFIG+="no_ffmpeg_player"
+
+OPENCC_DESC=		Chinese conversion support via OpenCC
+OPENCC_LIB_DEPENDS=	libopencc.so:chinese/opencc
+OPENCC_QMAKE_ON=	CONFIG+="chinese_conversion_support"
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/locale

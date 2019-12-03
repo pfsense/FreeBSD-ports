@@ -1,20 +1,24 @@
 # $FreeBSD$
 
 PORTNAME=	libtommath
-PORTVERSION=	1.0.1
-PORTREVISION=	1
+DISTVERSION=	1.1.0
+PORTREVISION=	2
 CATEGORIES=	math
-MASTER_SITES=	https://github.com/libtom/libtommath/releases/download/v${PORTVERSION}/
-DISTNAME=	ltm-${PORTVERSION}
+MASTER_SITES=	https://github.com/libtom/libtommath/releases/download/v${DISTVERSION}/
+DISTNAME=	ltm-${DISTVERSION}
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Comprehensive, modular, and portable mathematical routines
 
-LICENSE=	PD WTFPL
-LICENSE_COMB=	dual
+LICENSE=	UNLICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-USES=		gmake tar:xz
+USES=		gmake libtool:build tar:xz
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
+USE_LDCONFIG=	yes
+
+MAKEFILE=	makefile.shared
 ALL_TARGET=	default
 CFLAGS+=	-fPIC
 PORTDOCS=	*
@@ -22,19 +26,13 @@ PORTDOCS=	*
 PLIST_FILES=	include/tommath.h \
 		include/tommath_class.h \
 		include/tommath_superclass.h \
-		lib/libtommath.a
+		lib/libtommath.a \
+		lib/libtommath.so \
+		lib/libtommath.so.${DISTVERSION:R:R} \
+		lib/libtommath.so.${DISTVERSION} \
+		libdata/pkgconfig/libtommath.pc
 
-OPTIONS_DEFINE=	DOCS SHARED
-
-SHARED_DESC=		Build shared library
-SHARED_USES=		libtool:build
-SHARED_USE=		LDCONFIG=yes
-SHARED_PLIST_FILES=	lib/libtommath.so \
-			lib/libtommath.so.${PORTVERSION:R:R} \
-			lib/libtommath.so.${PORTVERSION} \
-			libdata/pkgconfig/libtommath.pc
-SHARED_VARS=		MAKEFILE=makefile.shared
-SHARED_VARS_OFF=	MAKEFILE=makefile
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -43,11 +41,11 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/tommath.pdf ${STAGEDIR}${DOCSDIR}
 
 post-install-SHARED-on:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtommath.so.${PORTVERSION}
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtommath.so.${DISTVERSION}
 
 do-test:
 	(cd ${WRKSRC}; \
-	 ${SETENV} ${MAKE_ENV} ${MAKE_CMD} -f ${MAKEFILE} mtest test; \
+	 ${SETENV} ${MAKE_ENV} ${MAKE_CMD} -f makefile mtest/mtest test; \
 	 ./mtest/mtest | ./test)
 
 .include <bsd.port.mk>

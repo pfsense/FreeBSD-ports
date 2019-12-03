@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	libunrar5
-PORTVERSION=	5.5.8
+PORTVERSION=	5.6.8
+PORTREVISION=	1
 CATEGORIES=	archivers
 MASTER_SITES=	http://www.rarlab.com/rar/
 DISTNAME=	unrarsrc-${PORTVERSION}
@@ -14,7 +15,7 @@ LICENSE_NAME=	UnRAR License
 LICENSE_FILE=	${WRKSRC}/license.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		gmake
+USES=		compiler:c++11-lang gmake
 USE_LDCONFIG=	yes
 
 ALL_TARGET=	lib
@@ -36,7 +37,6 @@ OPENSSL_AES_DESC=	Use OpenSSL implementation of AES
 OPENSSL_AES_CPPFLAGS=	-DOPENSSL_AES -I${OPENSSLINC}
 OPENSSL_AES_LDFLAGS=	-L${OPENSSLLIB} -lcrypto
 OPENSSL_AES_USES=	ssl
-OPENSSL_AES_VARS=	BROKEN_SSL=openssl-devel
 
 PLIST_FILES=	lib/libunrar.a \
 		lib/libunrar.so \

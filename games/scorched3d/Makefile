@@ -3,7 +3,7 @@
 
 PORTNAME=	scorched3d
 PORTVERSION=	0.${SCORCH_VERSION}${SCORCH_REVISION}
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Version%20${SCORCH_VERSION}
 DISTNAME=	Scorched3D-${SCORCH_VERSION}-src
@@ -23,11 +23,12 @@ OPTIONS_DEFINE=	MYSQL
 
 WRKSRC=		${WRKDIR}/scorched
 
+USES=		autoreconf compiler:c++11-lang dos2unix gmake iconv jpeg \
+		openal:al,alut perl5 pkgconfig
 USE_GL=		glew glu
 USE_SDL=	mixer net sdl
 USE_WX=		2.8
 WX_CONF_ARGS=	absolute
-USES=		autoreconf dos2unix gmake iconv jpeg openal:al,alut perl5 pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--datadir=${DATADIR}
 LLD_UNSAFE=	yes

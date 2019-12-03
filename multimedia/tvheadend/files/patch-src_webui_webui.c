@@ -1,7 +1,7 @@
-From d19ee83aba20e5a64a6cef6dd528191a71f9aa31 Mon Sep 17 00:00:00 2001
+From 411f957733222e24df4ead9fb15332dcb2c116da Mon Sep 17 00:00:00 2001
 From: Jongsung Kim <jongsung.kim@gmail.com>
 Date: Tue, 29 May 2018 03:42:04 +0900
-Subject: [PATCH] webui: fix http_serve_file() for FreeBSD
+Subject: [PATCH 1/2] webui: fix http_serve_file() for FreeBSD
 
 This patch fixes two major problems of FreeBSD port of tvheadend:
 
@@ -13,10 +13,15 @@ file offset, and return value must be checked to catch any error
 occurred. (i.e., closed connection)
 
 Patch tested with the latest FreeBSD port of tvheadend-4.2.6.
+---
+ src/webui/webui.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
---- src/webui/webui.c.orig	2018-03-26 10:19:37.000000000 +0200
-+++ src/webui/webui.c	2018-06-13 14:47:58.627430000 +0200
-@@ -1570,7 +1570,7 @@
+diff --git a/src/webui/webui.c b/src/webui/webui.c
+index 12b965230..331d998e9 100644
+--- src/webui/webui.c
++++ src/webui/webui.c
+@@ -1570,7 +1570,7 @@ http_serve_file(http_connection_t *hc, const char *fname,
  #if defined(PLATFORM_LINUX)
    ssize_t r;
  #elif defined(PLATFORM_FREEBSD) || defined(PLATFORM_DARWIN)
@@ -25,7 +30,7 @@ Patch tested with the latest FreeBSD port of tvheadend-4.2.6.
  #endif
    
    if (fconv) {
-@@ -1631,6 +1631,7 @@
+@@ -1631,11 +1631,15 @@ http_serve_file(http_connection_t *hc, const char *fname,
    sprintf(range_buf, "bytes %jd-%jd/%jd",
      file_start, file_end, (intmax_t)st.st_size);
  
@@ -33,17 +38,15 @@ Patch tested with the latest FreeBSD port of tvheadend-4.2.6.
    if(file_start > 0)
      if (lseek(fd, file_start, SEEK_SET) != file_start) {
        close(fd);
-@@ -1644,6 +1645,9 @@
-       return ret;
+       return HTTP_STATUS_INTERNAL;
      }
-   }
 +#elif defined(PLATFORM_FREEBSD) || defined(PLATFORM_DARWIN)
 +  o = file_start;
 +#endif
  
-   http_send_begin(hc);
-   http_send_header(hc, range ? HTTP_STATUS_PARTIAL_CONTENT : HTTP_STATUS_OK,
-@@ -1656,16 +1660,22 @@
+   if (preop) {
+     ret = preop(hc, file_start, content_len, opaque);
+@@ -1656,16 +1660,22 @@ http_serve_file(http_connection_t *hc, const char *fname,
        chunk = MIN(1024 * ((stats ? 128 : 1024) * 1024), content_len);
  #if defined(PLATFORM_LINUX)
        r = sendfile(hc->hc_fd, fd, NULL, chunk);
@@ -72,3 +75,6 @@ Patch tested with the latest FreeBSD port of tvheadend-4.2.6.
        content_len -= r;
        if (stats)
          stats(hc, r, opaque);
+-- 
+2.19.1
+

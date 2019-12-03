@@ -6,7 +6,7 @@ PORTNAME=	gstreamer
 PORTVERSION?=	${BASE_PORTVERSION}
 # When chasing a shared library for a plug-in bump the PORTREVISION in the
 # plug-in port instead, like ${category}/gstreamer-plugin-${PLUGIN}.
-PORTREVISION?=	8
+PORTREVISION?=	12
 PORTEPOCH=	3
 CATEGORIES?=	multimedia audio
 MASTER_SITES=	http://gstreamer.freedesktop.org/src/gst-plugins-base/:base \
@@ -45,8 +45,8 @@ DIST?=		good
 SHLIB_VERSION=	1
 VERSION=	${GST_VERSION}
 WANT_GSTREAMER=	yes
+USES=		gettext gmake gnome libtool:keepla pathfix pkgconfig shebangfix tar:bzip2
 USE_GNOME+=	introspection:build
-USES=		gettext gmake libtool:keepla pathfix pkgconfig shebangfix tar:bzip2
 GNU_CONFIGURE=	yes
 GST_PLUGIN?=	base
 INSTALL_TARGET=	install-strip
@@ -72,7 +72,7 @@ PLIST_SUB+=	I386="@comment "
 gst_base_DIST=	base
 NO_GSTREAMER_COMMON=	yes
 USE_LDCONFIG=	yes
-USE_XORG=	x11 xv xext videoproto xextproto
+USE_XORG=	x11 xv xext xorgproto
 PLIST_SUB+=	VERSION="${VERSION}" \
 		SHLIB_VERSION="${SHLIB_VERSION}"
 SHEBANG_FILES=	tools/gst-visualise-m.m

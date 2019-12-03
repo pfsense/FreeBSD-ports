@@ -17,11 +17,13 @@ LICENSE_TEXT=	It is and always will be free, and [Jim Graham] wrote it...\
 		so don't charge money for it, and don't claim that you wrote it
 LICENSE_PERMS=	dist-sell pkg-sell auto-accept
 
+BROKEN=		unfetchable
+
 LIB_DEPENDS=	libnetpbm.so:graphics/netpbm
 RUN_DEPENDS=	dtplite:devel/tcllib
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-USES=		tk:85
+USES=		tk
 NO_BUILD=	yes
 NO_ARCH=	yes
 
@@ -29,6 +31,8 @@ SUB_FILES=	${PORTNAME}.sh
 SUB_LIST=	WISH=${WISH}
 
 PORTDOCS=	00-README_FIRST.txt HISTORY install.txt jstrackdoc-v2.pdf
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/paths.tcl

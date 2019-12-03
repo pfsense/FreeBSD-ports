@@ -19,13 +19,13 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} FreeBSD-hadoop2-${PORTVERSION}-maven-repos
 DIST_SUBDIR=	hadoop
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} FreeBSD-hadoop2-${PORTVERSION}-maven-repository.tar.gz jetty-6.1.14.zip
 
-MAINTAINER=	demon@FreeBSD.org
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Apache Map/Reduce framework
 
 LICENSE=	APACHE20
 
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	incomplete definition of type 'struct evp_cipher_ctx_st'
+BROKEN_SSL=	openssl111
+BROKEN_SSL_REASON_openssl111=	incomplete definition of type 'struct evp_cipher_ctx_st'
 
 BUILD_DEPENDS=	${LOCALBASE}/share/java/maven3/bin/mvn:devel/maven3 \
 		cmake:devel/cmake \
@@ -74,6 +74,13 @@ SUB_LIST=	HDFS_USER="${HDFS_USER}" \
 		HADOOP_LOGDIR="${HADOOP_LOGDIR}" \
 		HADOOP_RUNDIR="${HADOOP_RUNDIR}"
 
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	incomplete definition of type 'struct evp_cipher_ctx_st'
+BROKEN_FreeBSD_13=	incomplete definition of type 'struct evp_cipher_ctx_st'
+.endif
+
 post-patch:
 	${REINPLACE_CMD} -e "s#/bin/bash#${LOCALBASE}/bin/bash#" ${WRKSRC}/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/main/java/org/apache/hadoop/yarn/server/nodemanager/DefaultContainerExecutor.java ${WRKSRC}/hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-core/src/main/java/org/apache/hadoop/mapreduce/MRJobConfig.java ${WRKSRC}/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/main/java/org/apache/hadoop/yarn/server/nodemanager/containermanager/launcher/ContainerLaunch.java ${WRKSRC}/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/Shell.java ${WRKSRC}/hadoop-common-project/hadoop-common/src/main/bin/hadoop-daemon.sh
 
@@ -120,4 +127,4 @@ do-install:
 	${MKDIR} ${STAGEDIR}${HADOOP_LOGDIR}
 	${MKDIR} ${STAGEDIR}${HADOOP_RUNDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

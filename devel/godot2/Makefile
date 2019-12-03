@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	godot
-PORTVERSION=	2.1.4
+PORTVERSION=	2.1.5
 DISTVERSIONSUFFIX=	-stable
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel games
 PKGNAMESUFFIX?=	2
 
@@ -25,22 +25,18 @@ RUN_DEPENDS=	xdg-user-dir:devel/xdg-user-dirs \
 		xmessage:x11/xmessage
 
 USES=		compiler:c++11-lib pkgconfig scons ssl
-USE_XORG=	x11 xcursor xinerama xrandr
+USE_XORG=	x11 xcursor xi xinerama xrandr
 USE_GL=		gl glu
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	godotengine
 
-MAKE_ARGS+=		platform=x11 builtin_speex=no builtin_libmpcdec=no
+MAKE_ARGS+=		platform=x11 builtin_speex=no builtin_libmpcdec=no verbose=yes
 MAKE_ARGS+=		${MAKE_ARGS_${CHOSEN_COMPILER_TYPE}}
 MAKE_ARGS_clang=	use_llvm=yes
 CXXFLAGS+=		-DGLEW_NO_GLU -DRTAUDIO_ENABLED
 CXXFLAGS_i386=		${CXXFLAGS_i386_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_i386_gcc=	-march=i586
-CXXFLAGS_aarch64=	-DNO_THREADS
-CXXFLAGS_sparc64=	-DNO_THREADS
-CXXFLAGS_mips=		-DNO_THREADS
-CXXFLAGS_mips64=	-DNO_THREADS
 LDFLAGS+=		-lspeex -lmpcdec
 
 OPTIONS_DEFINE=		EXAMPLES TOOLS
@@ -54,6 +50,7 @@ AUDIO_DESC=		Audio support
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_MAKE_ARGS=		alsa=yes
 EXAMPLES_GH_PROJECT=	godot-demo-projects:DEMOS
+EXAMPLES_GH_TAGNAME=	2.1.4-stable:DEMOS
 EXAMPLES_PORTEXAMPLES=	*
 OSS_MAKE_ARGS=		oss=yes
 PULSEAUDIO_LIB_DEPENDS=	libpulse-simple.so:audio/pulseaudio
@@ -61,6 +58,7 @@ PULSEAUDIO_MAKE_ARGS=	pulseaudio=yes
 TOOLS_DESC=		Include development tools (IDE)
 TOOLS_MAKE_ARGS=	target=release_debug tools=yes
 TOOLS_MAKE_ARGS_OFF=	target=release tools=no
+TOOLS_LDFLAGS=	-lexecinfo
 TOOLS_DESKTOP_ENTRIES=	"Godot-v2" "${COMMENT}" "${GODOTFILE}" \
 			"${GODOTFILE}" "Development;IDE;" ""
 TOOLS_PLIST_FILES=	share/pixmaps/${GODOTFILE}.png \

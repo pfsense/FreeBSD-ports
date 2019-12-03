@@ -1,71 +1,126 @@
---- build.sh.orig	2016-06-19 16:35:28 UTC
+--- build.sh.orig	2019-02-23 17:34:47 UTC
 +++ build.sh
-@@ -3,7 +3,7 @@
- EXEC_NAME=klayout
- IS_MAC="no"
- EXEC_HOLDER=""
--OTHER_BIN=""
-+OTHER_BIN="strm2gds strm2oas strm2txt strm2cif strm2dxf strmcmp strmclip strmxor"
- 
- CURR_DIR=`pwd`
- PLATFORM="linux-32-gcc-release"
-@@ -39,6 +39,9 @@ Darwin*)
-   PLATFORM="mac-yosemite-gcc-release"
-   EXEC_HOLDER="klayout.app/Contents/MacOS"
-   ;;
-+FreeBSD)
-+  PLATFORM="freebsd-32-gcc-release"
-+  ;;
- *)
-   # Assume Linux for the remaining variants
-   case `arch` in
-@@ -374,7 +377,7 @@ if [ $HAVE_64BIT_COORD != 0 ]; then
-   echo "    64 bit coordinates enabled"
- fi
- 
--gcc_path=`type gcc 2>/dev/null`
-+gcc_path=`type $CC 2>/dev/null`
- if [ "$gcc_path" = "" ]; then
-   echo "*** ERROR: unable to locate gcc in path"
-   exit 1
-@@ -463,11 +466,7 @@ else
-   cd $CURR_DIR
- fi
- 
--if ( gmake -v >/dev/null 2>/dev/null ); then
--  MAKE_PRG=gmake
--else
--  MAKE_PRG=make
--fi
-+MAKE_PRG="gmake ${_MAKE_JOBS}"
- 
+@@ -482,7 +482,7 @@ echo "    Build directory: $BUILD"
  mkdir -p $BUILD
- echo "WIN_CYGWIN=$WIN_CYGWIN"  >$BUILD/Makefile
-@@ -515,6 +514,9 @@ echo "PYTHONINCLUDE=$PYTHONINCLUDE" >>$B
- echo "HAVE_PYTHON=$HAVE_PYTHON" >>$BUILD/Makefile.env
- echo "HAVE_QTBINDINGS=$HAVE_QTBINDINGS" >>$BUILD/Makefile.env
- echo "HAVE_64BIT_COORD=$HAVE_64BIT_COORD" >>$BUILD/Makefile.env
-+echo "CFLAGS=$CFLAGS" >>$BUILD/Makefile.env
-+echo "CXXFLAGS=$CXXFLAGS" >>$BUILD/Makefile.env
-+echo "LDLAGS=$LDFLAGS" >>$BUILD/Makefile.env
  
- echo "Building plugins: $PLUGINS"
- echo ""
-@@ -549,12 +551,12 @@ if [ $WIN_CYGWIN = 0 ]; then
-   fi
-   echo ""
-   echo "Final binary is ready in $EXEC_FULL_PATH."
--  echo "To run it, you may need to add the following to your LD_LIBRARY_PATH:"
--  echo "$QTLIB"
-+#  echo "To run it, you may need to add the following to your LD_LIBRARY_PATH:"
-+#  echo "$QTLIB"
+ # source the version script
+-. $(dirname $(which $0))/version.sh
++. version.sh
  
--  LD_LIBRARY_PATH=$QTLIB:$LD_LIBRARY_PATH
--  $EXEC_FULL_PATH -v
--  $EXEC_FULL_PATH -h
-+#  LD_LIBRARY_PATH=$QTLIB:$LD_LIBRARY_PATH
-+#  $EXEC_FULL_PATH -v
-+#  $EXEC_FULL_PATH -h
+ # qmake needs absolute paths, so we get them now:
+ #   OSX does not have `readlink -f` command. Use equivalent Perl script.
+@@ -495,11 +495,7 @@ else
  fi
  
- exit 0
+ if [ "$IS_MAC" = "no" ]; then
+-  if ( gmake -v >/dev/null 2>/dev/null ); then
+     MAKE_PRG=gmake
+-  else
+-    MAKE_PRG=make
+-  fi
+ else
+   MAKE_PRG=make
+ fi
+@@ -521,9 +517,9 @@ cd $BUILD
+ 
+ # chose the right qmake
+ if [ $HAVE_QT5 = 0 ]; then
+-  export QT_SELECT=4
++  export QT_SELECT=qt4
+ else
+-  export QT_SELECT=5
++  export QT_SELECT=qt5
+ fi
+ 
+ $QMAKE -v
+@@ -531,54 +527,55 @@ $QMAKE -v
+ # Force a minimum rebuild because of version info
+ touch $CURR_DIR/src/version/version.h
+ 
+-qmake_options=(
++## XXX
++##  CONFIG=\"$CONFIG\"
++qmake_options="
+   -recursive
+-  CONFIG+="$CONFIG"
+-  RUBYLIBFILE="$RUBYLIBFILE"
+-  RUBYINCLUDE="$RUBYINCLUDE"
+-  RUBYINCLUDE2="$RUBYINCLUDE2"
+-  RUBYVERSIONCODE="$RUBYVERSIONCODE"
+-  HAVE_RUBY="$HAVE_RUBY"
+-  PYTHONLIBFILE="$PYTHONLIBFILE"
+-  PYTHONINCLUDE="$PYTHONINCLUDE"
+-  HAVE_PYTHON="$HAVE_PYTHON"
+-  HAVE_QTBINDINGS="$HAVE_QTBINDINGS"
+-  HAVE_64BIT_COORD="$HAVE_64BIT_COORD"
+-  HAVE_QT5="$HAVE_QT5"
+-  HAVE_CURL="$HAVE_CURL"
+-  PREFIX="$BIN"
+-  RPATH="$RPATH"
+-  KLAYOUT_VERSION="$KLAYOUT_VERSION"
+-  KLAYOUT_VERSION_DATE="$KLAYOUT_VERSION_DATE"
+-  KLAYOUT_VERSION_REV="$KLAYOUT_VERSION_REV"
+-)
++  RUBYLIBFILE=\"$RUBYLIBFILE\"
++  RUBYINCLUDE=\"$RUBYINCLUDE\"
++  RUBYINCLUDE2=\"$RUBYINCLUDE2\"
++  RUBYVERSIONCODE=\"$RUBYVERSIONCODE\"
++  HAVE_RUBY=\"$HAVE_RUBY\"
++  PYTHONLIBFILE=\"$PYTHONLIBFILE\"
++  PYTHONINCLUDE=\"$PYTHONINCLUDE\"
++  HAVE_PYTHON=\"$HAVE_PYTHON\"
++  HAVE_QTBINDINGS=\"$HAVE_QTBINDINGS\"
++  HAVE_64BIT_COORD=\"$HAVE_64BIT_COORD\"
++  HAVE_QT5=\"$HAVE_QT5\"
++  HAVE_CURL=\"$HAVE_CURL\"
++  PREFIX=\"$BIN\"
++  RPATH=\"$RPATH\"
++  KLAYOUT_VERSION=\"$KLAYOUT_VERSION\"
++  KLAYOUT_VERSION_DATE=\"$KLAYOUT_VERSION_DATE\"
++  KLAYOUT_VERSION_REV=\"$KLAYOUT_VERSION_REV\"
++"
+ 
+ if [ $BUILD_EXPERT = 1 ]; then
+-  qmake_options+=(
+-    QMAKE_AR="$AR cqs"
+-    QMAKE_LINK_C="$CC"
+-    QMAKE_LINK_C_SHLIB="$CC"
+-    QMAKE_LINK="$CXX"
+-    QMAKE_LINK_SHLIB="$CXX"
+-    QMAKE_OBJCOPY="$OBJCOPY"
++  qmake_options="$qmake_options
++    QMAKE_AR=\"$AR cqs\"
++    QMAKE_LINK_C=\"$CC\"
++    QMAKE_LINK_C_SHLIB=\"$CC\"
++    QMAKE_LINK=\"$CXX\"
++    QMAKE_LINK_SHLIB=\"$CXX\"
++    QMAKE_OBJCOPY=\"$OBJCOPY\"
+     QMAKE_RANLIB=
+     QMAKE_STRIP=
+-    QMAKE_CC="$CC"
+-    QMAKE_CXX="$CXX"
+-    QMAKE_CFLAGS="$CFLAGS"
++    QMAKE_CC=\"$CC\"
++    QMAKE_CXX=\"$CXX\"
++    QMAKE_CFLAGS=\"$CFLAGS\"
+     QMAKE_CFLAGS_RELEASE=
+     QMAKE_CFLAGS_DEBUG=
+-    QMAKE_CXXFLAGS="$CXXFLAGS"
++    QMAKE_CXXFLAGS=\"$CXXFLAGS\"
+     QMAKE_CXXFLAGS_RELEASE=
+     QMAKE_CXXFLAGS_DEBUG=
+-    QMAKE_LFLAGS="$LDFLAGS"
++    QMAKE_LFLAGS=\"$LDFLAGS\"
+     QMAKE_LFLAGS_RELEASE=
+     QMAKE_LFLAGS_DEBUG=
+-  )
++  "
+ fi
+ 
+-echo $QMAKE "$CURR_DIR/src/klayout.pro" "${qmake_options[@]}"
+-$QMAKE "$CURR_DIR/src/klayout.pro" "${qmake_options[@]}"
++echo $QMAKE "$CURR_DIR/src/klayout.pro" ${qmake_options} QMAKE_CFLAGS="$CFLAGS"
++$QMAKE "$CURR_DIR/src/klayout.pro" ${qmake_options} QMAKE_CXXFLAGS="$CXXFLAGS" QMAKE_CFLAGS="$CFLAGS" QMAKE_LFLAGS="$LDFLAGS"
+ 
+ cd $CURR_DIR
+ echo ""

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fcitx
-PORTVERSION=	4.2.9.1
-PORTREVISION=	4
+PORTVERSION=	4.2.9.6
+PORTREVISION=	3
 CATEGORIES=	chinese x11
 MASTER_SITES=	http://download.fcitx-im.org/fcitx/:fcitx \
 		http://download.fcitx-im.org/data/:data
@@ -21,14 +21,18 @@ COMMENT=	Flexible Input Method Framework
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
+BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
+		bash:shells/bash \
+		${LOCALBASE}/libdata/pkgconfig/xkeyboard-config.pc:x11/xkeyboard-config
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libdbus-1.so:devel/dbus \
 		libXfixes.so:x11/libXfixes \
 		libXinerama.so:x11/libXinerama \
 		libXrender.so:x11/libXrender \
-		libxkbcommon.so:x11/libxkbcommon
-RUN_DEPENDS=	xdg-open:devel/xdg-utils
+		libxkbcommon.so:x11/libxkbcommon \
+		libuuid.so:misc/e2fsprogs-libuuid
+RUN_DEPENDS=	xdg-open:devel/xdg-utils \
+		xkeyboard-config>=0:x11/xkeyboard-config
 
 SUB_FILES=	pkg-message
 SUB_LIST+=	PORTSDIR=${PORTSDIR}
@@ -39,13 +43,13 @@ USE_GNOME=	pango intltool libxml2 introspection
 USE_KDE=	ecm
 USE_XORG=	x11 xext xkbfile sm ice
 USE_LDCONFIG=	yes
-USES=		qt:4 tar:xz cmake:noninja desktop-file-utils \
+USES=		compiler:c++11-lang gnome tar:xz cmake:noninja desktop-file-utils \
 		gettext-tools:build,run gettext-runtime iconv:wchar_t \
-		kde:5 pkgconfig shared-mime-info
+		kde:5 pkgconfig shared-mime-info compiler:c++14-lang
 INSTALLS_ICONS=	yes
 
-OPTIONS_DEFINE=	GTK2 GTK3 QT4 OPENCC TPUNC DOCS
-OPTIONS_DEFAULT=GTK2 GTK3 QT4
+OPTIONS_DEFINE=	GTK2 GTK3 OPENCC TPUNC DOCS
+OPTIONS_DEFAULT=GTK2 GTK3
 OPTIONS_SUB=	yes
 
 GTK2_DESC=	Enable Gtk2 IM module
@@ -56,7 +60,6 @@ GTK3_DESC=	Enable Gtk3 IM module
 GTK3_USE=	GNOME=gtk30
 GTK3_CMAKE_ON=	-DENABLE_GTK3_IM_MODULE=ON
 
-QT4_DESC=	Enable Qt4 IM module
 OPENCC_DESC=	Enable OpenCC for Chinese Transform
 TPUNC_DESC=	Use traditional quotation marks
 
@@ -70,7 +73,7 @@ CMAKE_ARGS+=	-DENABLE_XDGAUTOSTART=OFF -DFORCE_ENCHANT=ON \
 		-DGOBJECT_INTROSPECTION_TYPELIBDIR=${PREFIX}/lib/girepository-1.0 \
 		-DMANPREFIX=${MANPREFIX} \
 		-DPREFIX=${PREFIX} \
-		-DQT_PLUGINS_DIR=${PREFIX}/lib/qt4/plugins
+		-DENABLE_QT=OFF -DENABLE_QT_IM_MODULE=OFF -DENABLE_QT_GUI=OFF
 
 .if ${PORT_OPTIONS:MGTK2}
 SUB_LIST+=	GTK2_IM=fcitx
@@ -86,16 +89,6 @@ PLIST_SUB+=	GTK3="@comment "
 SUB_LIST+=	GTK3_IM=xim
 .endif
 
-.if ${PORT_OPTIONS:MQT4}
-USES+=		qt:4
-USE_QT+=		qmake_build moc_build rcc_build uic_build dbus gui inputmethods corelib
-USE_LDCONFIG+=	${PREFIX}/lib/fcitx/qt
-PLIST_SUB+=	QT4=""
-.else
-CMAKE_ARGS+=	-DENABLE_QT=OFF -DENABLE_QT_IM_MODULE=OFF -DENABLE_QT_GUI=OFF
-PLIST_SUB+=	QT4="@comment "
-.endif
-
 .if ${PORT_OPTIONS:MOPENCC}
 LIB_DEPENDS+=	libopencc.so:chinese/opencc
 .else
@@ -109,8 +102,6 @@ EXTRA_PATCHES+=	${FILESDIR}/tpunc-data_punc.mb.zh_CN
 .if defined(WITH_DEBUG)
 CMAKE_ARGS+=	-DENABLE_DEBUG=ON
 .endif
-
-DOCS_EXTRA_PATCHES_OFF=	${FILESDIR}/nodocs-doc_CMakeLists.txt
 
 _DICT_VER=	20121020
 _PYSTROKE_VER=	20121124

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pysolfc
-DISTVERSION=	2.4.0
+DISTVERSION=	2.6.4
 CATEGORIES=	games python
 MASTER_SITES=	SF/${PORTNAME}/PySolFC/${PYSOLFCDIR} \
 		SF/${PORTNAME}/PySolFC-Cardsets/${CARDSETDIR}:cardsets
@@ -9,7 +9,7 @@ DISTFILES=	${PYSOLFCDIST} \
 		${CARDSETDIST}:cardsets
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	freebsd_ports@k-worx.org
+MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Solitaire game, written in Python and the successor of PySol
 
 LICENSE=	GPLv2+ GPLv3+ MIT PCW PD UCP UCJ ULG
@@ -89,7 +89,7 @@ post-patch-NLS-off:
 		${WRKSRC}/setup.py
 
 post-install:
-	${LN} -s ${PREFIX}/share/icons/pysol01.png \
+	${RLN} ${STAGEDIR}${PREFIX}/share/icons/pysol01.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
 	(cd ${WRKDIR}/${CARDSETDIR} && \
 		${COPYTREE_SHARE} \* ${STAGEDIR}${DATADIR})

@@ -1,33 +1,24 @@
---- chrome/browser/download/download_commands.cc.orig	2018-06-13 00:10:05.000000000 +0200
-+++ chrome/browser/download/download_commands.cc	2018-07-14 14:30:03.853964000 +0200
-@@ -249,7 +249,7 @@
-       return download_item_->GetOpenWhenComplete() ||
-              download_crx_util::IsExtensionDownload(*download_item_);
-     case ALWAYS_OPEN_TYPE:
+--- chrome/browser/download/download_commands.cc.orig	2019-07-24 18:58:09 UTC
++++ chrome/browser/download/download_commands.cc
+@@ -30,7 +30,7 @@
+ #include "net/base/url_util.h"
+ #include "ui/base/clipboard/scoped_clipboard_writer.h"
+ 
 -#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_MACOSX)
 +#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_BSD)
-       if (CanOpenPdfInSystemViewer()) {
-         DownloadPrefs* prefs = DownloadPrefs::FromBrowserContext(
-             content::DownloadItemUtils::GetBrowserContext(download_item_));
-@@ -293,7 +293,7 @@
-       bool is_checked = IsCommandChecked(ALWAYS_OPEN_TYPE);
-       DownloadPrefs* prefs = DownloadPrefs::FromBrowserContext(
-           content::DownloadItemUtils::GetBrowserContext(download_item_));
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_MACOSX)
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_BSD)
-       if (CanOpenPdfInSystemViewer()) {
-         prefs->SetShouldOpenPdfInSystemReader(!is_checked);
-         DownloadItemModel(download_item_)
-@@ -408,7 +408,7 @@
-   return browser_displayer.browser();
+ #include "chrome/browser/ui/browser.h"
+ #include "chrome/browser/ui/browser_finder.h"
+ #include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
+@@ -157,7 +157,7 @@ void DownloadCommands::ExecuteCommand(Command command)
+   model_->ExecuteCommand(this, command);
  }
  
 -#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
 +#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
- bool DownloadCommands::IsDownloadPdf() const {
-   base::FilePath path = download_item_->GetTargetFilePath();
-   return path.MatchesExtension(FILE_PATH_LITERAL(".pdf"));
-@@ -425,7 +425,7 @@
+ 
+ Browser* DownloadCommands::GetBrowser() const {
+   chrome::ScopedTabbedBrowserDisplayer browser_displayer(model_->profile());
+@@ -180,12 +180,12 @@ bool DownloadCommands::CanOpenPdfInSystemViewer() cons
    return IsDownloadPdf() &&
           (IsAdobeReaderDefaultPDFViewer() ? is_adobe_pdf_reader_up_to_date
                                            : true);
@@ -36,3 +27,9 @@
    return IsDownloadPdf();
  #endif
  }
+ 
+-#endif  // defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
++#endif  // defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
+ 
+ void DownloadCommands::CopyFileAsImageToClipboard() {
+   if (model_->GetState() != download::DownloadItem::COMPLETE ||

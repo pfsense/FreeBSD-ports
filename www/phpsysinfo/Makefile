@@ -3,23 +3,25 @@
 
 PORTNAME=	phpsysinfo
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.10
+DISTVERSION=	3.3.1
 CATEGORIES=	www
 
 MAINTAINER=	tremere@cainites.net
 COMMENT=	PHP script for displaying system information
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		php:web shebangfix
 USE_GITHUB=	yes
-SHEBANG_FILES=	tools/check.sh
 USE_PHP=	dom mbstring pcre simplexml xml
-NO_BUILD=	yes
-NO_ARCH=	yes
 
+SHEBANG_FILES=	tools/check.sh
+
+NO_ARCH=	yes
+NO_BUILD=	yes
 SUB_FILES=	pkg-message
+
 PLIST_FILES=	"@sample ${WWWDIR}/phpsysinfo.ini.new ${WWWDIR}/phpsysinfo.ini"
 
 do-install:

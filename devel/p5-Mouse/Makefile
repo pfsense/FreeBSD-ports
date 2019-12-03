@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Mouse
-PORTVERSION=	2.5.4
+PORTVERSION=	2.5.9
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	devel perl5
@@ -10,14 +10,14 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SKAJI
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	perl@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Moose minus the antlers
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	p5-Module-Build-XSUtil>=0:devel/p5-Module-Build-XSUtil
+BUILD_DEPENDS=	p5-Module-Build-XSUtil>=0.19:devel/p5-Module-Build-XSUtil
 TEST_DEPENDS=	p5-Declare-Constraints-Simple>=0:devel/p5-Declare-Constraints-Simple \
 		p5-HTTP-Message>=0:www/p5-HTTP-Message \
 		p5-IO-String>=0:devel/p5-IO-String \
@@ -39,11 +39,4 @@ USE_PERL5=	modbuild
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Mouse/Mouse.so
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502503
-BUILD_DEPENDS+=	p5-Devel-PPPort>=3.33:devel/p5-Devel-PPPort
-RUN_DEPENDS+=	p5-Devel-PPPort>=3.33:devel/p5-Devel-PPPort
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -117,15 +117,6 @@ DISABLED_EXTENSIONS+=	nis
 PLIST_SUB+=	NO_NIS=""
 .endif
 
-post-patch:
-# readline shared library is present on base before FreeBSD 11 - r268461
-# force setup.py ignore base and use readline from ports
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-	@${REINPLACE_CMD} -e \
-		"s|lib_dirs,\ \'readline\'|[\'${LOCALBASE}/lib\',\ \'.\'],\ \'readline\'|" \
-		${WRKSRC}/setup.py
-.endif
-
 post-install:
 .if ! ${PORT_OPTIONS:MDEBUG}
 	${RM} ${STAGEDIR}${PREFIX}/lib/libpython3.so						# Upstream Issue: https://bugs.python.org/issue17975
@@ -137,6 +128,12 @@ post-install:
 # FreeBSD base system provides.  sbruno 02Aug2017
 .if ${CC} == /nxb-bin/usr/bin/cc
 	@${REINPLACE_CMD} -e 's=/nxb-bin==' \
+		${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/_sysconfigdata_m_freebsd${OSREL:R}_.py
+	@cd ${WRKSRC} && ${SETENV} LD_LIBRARY_PATH=${WRKSRC} \
+		./python -E -m compileall -d ${PREFIX}/lib/python${PYTHON_VER} \
+		${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/_sysconfigdata_m_freebsd${OSREL:R}_.py
+	@cd ${WRKSRC} && ${SETENV} LD_LIBRARY_PATH=${WRKSRC} \
+		./python -E -O -m compileall -d ${PREFIX}/lib/python${PYTHON_VER} \
 		${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/_sysconfigdata_m_freebsd${OSREL:R}_.py
 	@${REINPLACE_CMD} -e 's=/nxb-bin==' \
 		${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/config-${PYTHON_VER}m/Makefile

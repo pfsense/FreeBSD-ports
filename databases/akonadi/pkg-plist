@@ -9,8 +9,8 @@ bin/akonadiselftest
 bin/akonadiserver
 bin/akonaditest
 bin/asapcat
-etc/xdg/akonadi.categories
-etc/xdg/akonadi.renamecategories
+share/qlogging-categories5/akonadi.categories
+share/qlogging-categories5/akonadi.renamecategories
 etc/xdg/akonadi/mysql-global-mobile.conf
 etc/xdg/akonadi/mysql-global.conf
 include/KF5/AkonadiAgentBase/AgentBase
@@ -28,6 +28,8 @@ include/KF5/AkonadiAgentBase/resourcebasesettings.h
 include/KF5/AkonadiAgentBase/resourcesettings.h
 include/KF5/AkonadiAgentBase/transportresourcebase.h
 include/KF5/AkonadiCore/AbstractDifferencesReporter
+include/KF5/AkonadiCore/AgentConfigurationBase
+include/KF5/AkonadiCore/AgentConfigurationFactoryBase
 include/KF5/AkonadiCore/AgentFilterProxyModel
 include/KF5/AkonadiCore/AgentInstance
 include/KF5/AkonadiCore/AgentInstanceCreateJob
@@ -94,7 +96,6 @@ include/KF5/AkonadiCore/NotificationSubscriber
 include/KF5/AkonadiCore/PartFetcher
 include/KF5/AkonadiCore/PersistentSearchAttribute
 include/KF5/AkonadiCore/Pop3ResourceAttribute
-include/KF5/AkonadiCore/QuotaColorProxyModel
 include/KF5/AkonadiCore/RecursiveCollectionFilterProxyModel
 include/KF5/AkonadiCore/RecursiveItemFetchJob
 include/KF5/AkonadiCore/Relation
@@ -130,6 +131,8 @@ include/KF5/AkonadiCore/TrashSettings
 include/KF5/AkonadiCore/UnlinkJob
 include/KF5/AkonadiCore/VectorHelper
 include/KF5/AkonadiCore/abstractdifferencesreporter.h
+include/KF5/AkonadiCore/agentconfigurationbase.h
+include/KF5/AkonadiCore/agentconfigurationfactorybase.h
 include/KF5/AkonadiCore/agentfilterproxymodel.h
 include/KF5/AkonadiCore/agentinstance.h
 include/KF5/AkonadiCore/agentinstancecreatejob.h
@@ -199,7 +202,6 @@ include/KF5/AkonadiCore/partfetcher.h
 include/KF5/AkonadiCore/persistentsearchattribute.h
 include/KF5/AkonadiCore/pop3resourceattribute.h
 include/KF5/AkonadiCore/qtest_akonadi.h
-include/KF5/AkonadiCore/quotacolorproxymodel.h
 include/KF5/AkonadiCore/recursivecollectionfilterproxymodel.h
 include/KF5/AkonadiCore/recursiveitemfetchjob.h
 include/KF5/AkonadiCore/relation.h
@@ -235,6 +237,8 @@ include/KF5/AkonadiCore/trashsettings.h
 include/KF5/AkonadiCore/unlinkjob.h
 include/KF5/AkonadiCore/vectorhelper.h
 include/KF5/AkonadiWidgets/AgentActionManager
+include/KF5/AkonadiWidgets/AgentConfigurationDialog
+include/KF5/AkonadiWidgets/AgentConfigurationWidget
 include/KF5/AkonadiWidgets/AgentInstanceWidget
 include/KF5/AkonadiWidgets/AgentTypeDialog
 include/KF5/AkonadiWidgets/AgentTypeWidget
@@ -252,7 +256,6 @@ include/KF5/AkonadiWidgets/EntityListView
 include/KF5/AkonadiWidgets/EntityTreeView
 include/KF5/AkonadiWidgets/ItemView
 include/KF5/AkonadiWidgets/ManageAccountWidget
-include/KF5/AkonadiWidgets/RenameFavoriteDialog
 include/KF5/AkonadiWidgets/StandardActionManager
 include/KF5/AkonadiWidgets/SubscriptionDialog
 include/KF5/AkonadiWidgets/TagEditWidget
@@ -261,6 +264,8 @@ include/KF5/AkonadiWidgets/TagSelectWidget
 include/KF5/AkonadiWidgets/TagSelectionDialog
 include/KF5/AkonadiWidgets/TagWidget
 include/KF5/AkonadiWidgets/agentactionmanager.h
+include/KF5/AkonadiWidgets/agentconfigurationdialog.h
+include/KF5/AkonadiWidgets/agentconfigurationwidget.h
 include/KF5/AkonadiWidgets/agentinstancewidget.h
 include/KF5/AkonadiWidgets/agenttypedialog.h
 include/KF5/AkonadiWidgets/agenttypewidget.h
@@ -279,7 +284,6 @@ include/KF5/AkonadiWidgets/entitytreeview.h
 include/KF5/AkonadiWidgets/etmviewstatesaver.h
 include/KF5/AkonadiWidgets/itemview.h
 include/KF5/AkonadiWidgets/manageaccountwidget.h
-include/KF5/AkonadiWidgets/renamefavoritedialog.h
 include/KF5/AkonadiWidgets/standardactionmanager.h
 include/KF5/AkonadiWidgets/subscriptiondialog.h
 include/KF5/AkonadiWidgets/tageditwidget.h
@@ -370,8 +374,6 @@ share/kf5/akonadi/kcfg2dbus.xsl
 share/kf5/akonadi_knut_resource/knut-template.xml
 share/locale/ar/LC_MESSAGES/akonadi_knut_resource.mo
 share/locale/ar/LC_MESSAGES/libakonadi5.mo
-share/locale/ast/LC_MESSAGES/akonadi_knut_resource.mo
-share/locale/ast/LC_MESSAGES/libakonadi5.mo
 share/locale/bs/LC_MESSAGES/akonadi_knut_resource.mo
 share/locale/bs/LC_MESSAGES/libakonadi5.mo
 share/locale/ca/LC_MESSAGES/akonadi_knut_resource.mo

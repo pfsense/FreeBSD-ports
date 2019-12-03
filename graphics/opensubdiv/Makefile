@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	opensubdiv
-PORTREVISION=	3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3_3_0
+DISTVERSION=	3_3_3
+PORTREVISION=	2
 CATEGORIES?=	graphics
 
 MAINTAINER=	FreeBSD@Shaneware.biz
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	glfw>2.7.0:graphics/glfw
 
-USES=		cmake:outsource
+USES=		cmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	PixarAnimationStudios
@@ -22,9 +22,7 @@ GH_PROJECT=	OpenSubdiv
 
 USE_GL=		gl glu glew
 USE_LDCONFIG=	yes
-CMAKE_ARGS+=	-DNO_CUDA:BOOL=ON \
-		-DNO_DX:BOOL=ON \
-		-DNO_OMP:BOOL=ON
+CMAKE_ON=	NO_CUDA NO_DX NO_OMP
 
 OPTIONS_DEFINE=		DOCS EXAMPLES OPENCL PTEX TBB TEST TUTORIALS
 OPTIONS_DEFAULT=	TBB
@@ -33,6 +31,7 @@ OPTIONS_SUB=		yes
 DOCS_CMAKE_BOOL_OFF=	NO_DOC
 DOCS_BUILD_DEPENDS=	rst2html.py:textproc/py-docutils \
 			doxygen>=1.8.4:devel/doxygen
+DOCS_USES=		python:build
 
 EXAMPLES_CMAKE_BOOL_OFF=	NO_EXAMPLES
 EXAMPLES_USE=		xorg=ice,sm,x11,xcursor,xext,xi,xinerama,xrandr,xxf86vm
@@ -45,9 +44,9 @@ OPENCL_BUILD_DEPENDS=	${LOCALBASE}/include/CL/cl.h:devel/opencl
 OPENCL_LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 
 PTEX_DESC=		ptex support
-PTEX_CMAKE_ON=		-DNO_PTEX:BOOL=OFF -DPTEX_LOCATION:STRING=${LOCALBASE} \
+PTEX_CMAKE_BOOL_OFF=	NO_PTEX
+PTEX_CMAKE_ON=		-DPTEX_LOCATION:STRING=${LOCALBASE} \
 			-DPTEX_INCLUDE_DIR:STRING=${LOCALBASE}/include/ptex
-PTEX_CMAKE_OFF=		-DNO_PTEX:BOOL=ON
 PTEX_LIB_DEPENDS=	libPtex.so:graphics/ptex
 
 TBB_DESC=		Intel threading building blocks

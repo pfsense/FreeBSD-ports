@@ -2,23 +2,26 @@
 # $FreeBSD$
 
 PORTNAME=	memcache
-PORTVERSION=	3.0.8
-PORTREVISION=	1
+PORTVERSION=	4.0.4
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Memcached extension for PHP 5.6
+COMMENT=	Unofficial Memcached extension
 
 LICENSE=	PHP30
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 OPTIONS_DEFINE=	EXAMPLES
 
-CONFIGURE_ARGS=	--with-zlib-dir=/usr
-IGNORE_WITH_PHP=70 71 72
-USE_CSTD=	gnu89
-USE_PHP=	session:build zlib:build
 USES=		dos2unix php:pecl
+USE_PHP=	session:build zlib:build
+
+CONFIGURE_ARGS=	--with-zlib-dir=/usr
+USE_CSTD=	gnu89
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	websupport-sk
+GH_PROJECT=	pecl-memcache
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/

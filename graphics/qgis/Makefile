@@ -3,192 +3,160 @@
 
 PORTNAME=	qgis
 DISTVERSIONPREFIX=	final-
-DISTVERSION=	2_18_17
-PORTREVISION=	7
+DISTVERSION=	3_8_2
 CATEGORIES=	graphics geography
 
 MAINTAINER=	rhurlin@gwdg.de
-COMMENT=	Geographical Information System (GIS) data viewer
+COMMENT=	Free and Open Source Geographic Information System
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	txt2tags:textproc/txt2tags
-LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+BUILD_DEPENDS=	clang${LLVM_VER}:devel/llvm${LLVM_VER} \
+		gpsbabel>=1.5.4:astro/gpsbabel \
+		txt2tags:textproc/txt2tags \
+		${PYTHON_PKGNAMEPREFIX}cycler>=0.10.0:devel/py-cycler@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dateutil>=2.8.0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}future>=0.17.1:devel/py-future@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}httplib2>=0.12.1:www/py-httplib2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}Jinja2>=2.10.1:devel/py-Jinja2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}MarkupSafe>=1.1.1:textproc/py-MarkupSafe@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}matplotlib>=2.2.4:math/py-matplotlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mock>=2.0.0:devel/py-mock@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}OWSLib>=0.17.1:graphics/py-OWSLib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pbr>=3.1.1:devel/py-pbr@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pip>=9.0.3:devel/py-pip@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}plotly>=3.0.2:graphics/py-plotly@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pygments>=2.4.1:textproc/py-pygments@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyproj>=2.1.3:graphics/py-pyproj@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytz>=2019.1:devel/py-pytz@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>=2.21.0:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>=1.12.0:devel/py-six@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>=3.6.8:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yaml>=5.1:devel/py-yaml@${PY_FLAVOR}
+RUN_DEPENDS=	astyle:devel/astyle \
+		${PYTHON_PKGNAMEPREFIX}cycler>=0.10.0:devel/py-cycler@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dateutil>=2.8.0:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}future>=0.17.1:devel/py-future@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}gdal>=2.4.1:graphics/py-gdal@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}geojson>=2.3.0:devel/py-geojson@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}httplib2>=0.12.1:www/py-httplib2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}Jinja2>=2.10.1:devel/py-Jinja2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}MarkupSafe>=1.1.1:textproc/py-MarkupSafe@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}matplotlib>=2.2.4:math/py-matplotlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mock>=2.0.0:devel/py-mock@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}nbformat>=4.4.0:devel/py-nbformat@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}networkx>=2.1:math/py-networkx@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}numpy>=1.16.1:math/py-numpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}OWSLib>=0.17.1:graphics/py-OWSLib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pbr>=3.1.1:devel/py-pbr@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=6.0.0:graphics/py-pillow@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pip>=9.0.3:devel/py-pip@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}plotly>=3.0.2:graphics/py-plotly@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}psycopg2>=2.8.3:databases/py-psycopg2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pygments>=2.4.1:textproc/py-pygments@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyproj>=2.1.3:graphics/py-pyproj@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytz>=2019.1:devel/py-pytz@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>=2.21.0:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scikit-image>=0.14.2_2:graphics/py-scikit-image@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}Shapely>=1.6.4:devel/py-shapely@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>=1.12.0:devel/py-six@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>=3.6.8:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}termcolor>=1.1.0:devel/py-termcolor@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yaml>=5.1:devel/py-yaml@${PY_FLAVOR}
+LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
+		libexpat.so:textproc/expat2 \
 		libgdal.so:graphics/gdal \
 		libgeos.so:graphics/geos \
 		libgsl.so:math/gsl \
+		libhdf5.so:science/hdf5 \
+		libnetcdf.so:science/netcdf \
 		libproj.so:graphics/proj \
-		libqca.so:devel/qca@qt4 \
-		libqjson.so:devel/qjson@qt4 \
-		libqscintilla2_qt4.so:devel/qscintilla2 \
-		libqwt.so:x11-toolkits/qwt5 \
+		libqca-qt5.so:devel/qca \
+		libqjson-qt5.so:devel/qjson \
+		libqscintilla2_qt5.so:devel/qscintilla2-qt5 \
+		libqt5keychain.so:security/qtkeychain \
+		libqwt6.so:x11-toolkits/qwt6 \
 		libspatialindex.so:devel/spatialindex \
 		libspatialite.so:databases/spatialite \
-		libxerces-c.so:textproc/xerces-c3
+		libsz.so:science/szip \
+		libxerces-c.so:textproc/xerces-c3 \
+		libzip.so:archivers/libzip
 
+### Fortran is needed by numpy, GRASS, etc.
 USES=		bison cmake compiler:features cpe desktop-file-utils \
-		fortran gmake pyqt:4 python:2.7 qt:4 sqlite:3
-USE_GITHUB=	yes
-GH_PROJECT=	${PORTNAME:tu}
-USE_PYQT=	core gui network qscintilla2 sip sql svg xml webkit_run
-USE_QT=		corelib designer doc gui linguist_build moc_build \
-		network qmake_build rcc_build script sql sql-pgsql \
-		sql-sqlite3 svg testlib uic_build webkit xml
+		fortran gmake gnome pgsql pyqt:5 python:3.6+ qt:5 \
+		shebangfix sqlite:3
+USE_GNOME=	libxml2
+USE_QT=		3d buildtools_build core concurrent dbus declarative \
+		designer doc gamepad gui linguist_build location \
+		network printsupport qmake_build script serialport \
+		sql sql-pgsql sql-sqlite3 svg testlib uitools \
+		webengine widgets webkit xml
+USE_PYQT=	core gui network qml qscintilla2 sip sql svg xml \
+		webkit_run webkitwidgets_run
 USE_LDCONFIG=	yes
 
-ICON_SIZES=	8 16 22 24 32 36 42 48 64 72 80 96 128 192 256 512
+CONFLICTS_INSTALL=	qgis-ltr
 
-OPTIONS_DEFINE=		PYTHON POSTGIS GRASS SERVER
-OPTIONS_GROUP=		DEVELOPER
-OPTIONS_GROUP_DEVELOPER=	CUSTOMWIDGETS ASTYLE TESTS DEBUG
-OPTIONS_DEFAULT=	PYTHON POSTGIS
-NO_OPTIONS_SORT=	yes
-OPTIONS_SUB=		yes
-ASTYLE_DESC=		Enable AStyle for QGis
-CUSTOMWIDGETS_DESC=	Enable QT4/QGis Custom Widgets
-DEBUG_DESC=		Write Debugging Output to Console
-SERVER_DESC=		Enable QGIS server
-TESTS_DESC=		Run the test suite after build process
+USE_GITHUB=	yes
+GH_PROJECT=	${PORTNAME:tu}
 
-CMAKE_ARGS+=	-DENABLE_QT5=OFF -DENABLE_PYTHON3=OFF \
-		-DWITH_ORACLE:BOOL=FALSE \
-		-DWITH_GLOBE:BOOL=FALSE \
-		-DPYUIC_PROGRAM:STRING="${LOCALBASE}/bin/pyuic4" # cmake script fails to find it without PYUIC_PROGRAM
+CMAKE_ARGS+=	-DCMAKE_BUILD_TYPE:STRING=Release \
+		-DPYRCC_PROGRAM:FILEPATH=${LOCALBASE}/bin/pyrcc5-${PYTHON_VER} \
+		-DPYUIC_PROGRAM:FILEPATH=${LOCALBASE}/bin/pyuic5-${PYTHON_VER} \
+		-DQSCI_SIP_DIR:PATH=${PYQT_SIPDIR}/Qsci \
+		-DQWT_INCLUDE_DIR:PATH=${LOCALBASE}/include/qt5/qwt6 \
+		-DQWT_LIBRARY:FILEPATH=${LOCALBASE}/lib/qt5/libqwt6.so \
+		-DCMAKE_POLICY_DEFAULT_CMP0056:STRING=NEW
+CMAKE_ON=	BUILD_TESTING ENABLE_TESTS WITH_3D WITH_ASTYLE \
+		WITH_BINDINGS WITH_CUSTOM_WIDGETS WITH_POSTGRESQL
+CMAKE_OFF=	WITH_GLOBE WITH_QWTPOLAR
 
 .if !defined(MAINTAINER_MODE)
 CMAKE_ARGS+=	-Wno-dev
-CMAKE_ARGS+=	-DSUPPRESS_SIP_WARNINGS=OFF -DSUPPRESS_QT_WARNINGS=OFF
-CMAKE_ARGS+=	-DWITH_INTERNAL_DATEUTIL=FALSE
-CMAKE_ARGS+=	-DWITH_INTERNAL_FUTURE=FALSE
-CMAKE_ARGS+=	-DWITH_INTERNAL_NOSE2=FALSE
-CMAKE_ARGS+=	-DWITH_INTERNAL_PYTZ=FALSE
-CMAKE_ARGS+=	-DWITH_INTERNAL_SIX=FALSE
-CMAKE_ARGS+=	-DWITH_INTERNAL_YAML=FALSE
+CMAKE_OFF+=	SUPPRESS_QT_WARNINGS
 .endif
 
-ASTYLE_RUN_DEPENDS=	astyle:devel/astyle
-ASTYLE_CMAKE_ON=	-DWITH_ASTYLE:BOOL=TRUE
-ASTYLE_CMAKE_OFF=	-DWITH_ASTYLE:BOOL=FALSE
+SHEBANG_FILES=	src/plugins/grass/scripts/*.py
 
-CUSTOMWIDGETS_CMAKE_ON=	-DWITH_CUSTOM_WIDGETS:BOOL=TRUE
-CUSTOMWIDGETS_CMAKE_OFF=	-DWITH_CUSTOM_WIDGETS:BOOL=FALSE
+OPTIONS_DEFINE=		GRASS SERVER
+OPTIONS_DEFAULT=	GRASS SERVER
+NO_OPTIONS_SORT=	yes
 
-DEBUG_CMAKE_ON=		-DCMAKE_BUILD_TYPE=Debug
-DEBUG_CMAKE_OFF=	-DCMAKE_BUILD_TYPE=Release
+OPTIONS_SUB=		yes
+SERVER_DESC=		Enable QGIS server
 
-GRASS_BUILD_DEPENDS=	grass72:databases/grass7
-GRASS_RUN_DEPENDS=	grass72:databases/grass7
-GRASS_CMAKE_ON=		-DWITH_GRASS7:BOOL=TRUE -DGRASS_PREFIX7=${LOCALBASE}/grass-7.2.2
+GRASS_BUILD_DEPENDS=	grass7:databases/grass7
+GRASS_RUN_DEPENDS=	${GRASS_BUILD_DEPENDS}
+GRASS_CMAKE_BOOL=	WITH_GRASS7
 GRASS_FORCE_MAKE_JOBS=	NO
-GRASS_CMAKE_OFF=	-DWITH_GRASS7:BOOL=FALSE
-
-POSTGIS_USES=		pgsql
-#POSTGIS_LIB_DEPENDS=	liblwgeom.so:databases/postgis22
-POSTGIS_CMAKE_ON=	-DWITH_POSTGRESQL:BOOL=TRUE
-POSTGIS_CMAKE_OFF=	-DWITH_POSTGRESQL:BOOL=FALSE
-
-PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cycler>=0.10.0:devel/py-cycler@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}dateutil>=2.6.0:devel/py-dateutil@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}functools32>=3.2.3:devel/py-functools32@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}future>=0.16.0:devel/py-future@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}httplib2>=2-0.9.2:www/py-httplib2@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}Jinja2>=2.8:devel/py-Jinja2@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}MarkupSafe>=1.0:textproc/py-MarkupSafe@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.3:math/py-matplotlib@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}mock>=1.3.0:devel/py-mock@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pbr>=1.8.1:devel/py-pbr@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pip>=9.0.1:devel/py-pip@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pygments>=2.1.3:textproc/py-pygments@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pyproj>=1.9.5.1:graphics/py-pyproj@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pyspatialite>=3.0.1:databases/pyspatialite@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pytz>=2016.10:devel/py-pytz@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}requests>=2.11.1:www/py-requests@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}six>=1.10.0:devel/py-six@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}sqlite3>=2.7.13:databases/py-sqlite3@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}wxPython-common>=3.0.2.0:x11-toolkits/py-wxPython-common@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR}
-PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cycler>=0.10.0:devel/py-cycler@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}dateutil>=2.6.0:devel/py-dateutil@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}functools32>=3.2.3:devel/py-functools32@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}future>=0.16.0:devel/py-future@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}gdal>=2.0.1:graphics/py-gdal@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}httplib2>=2-0.9.2:www/py-httplib2@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}Jinja2>=2.8:devel/py-Jinja2@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}MarkupSafe>=1.0:textproc/py-MarkupSafe@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.3:math/py-matplotlib@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}mock>=1.3.0:devel/py-mock@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}numpy>=1.11.2,1:math/py-numpy@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pbr>=1.8.1:devel/py-pbr@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pip>=9.0.1:devel/py-pip@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}psycopg2>=2.5.3:databases/py-psycopg2@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pygments>=2.1.3:textproc/py-pygments@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pyproj>=1.9.5.1:graphics/py-pyproj@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pyspatialite>=3.0.1:databases/pyspatialite@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}pytz>=2016.10:devel/py-pytz@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}requests>=2.11.1:www/py-requests@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}six>=1.10.0:devel/py-six@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}sqlite3>=2.7.13:databases/py-sqlite3@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}termcolor>=1.1.0:devel/py-termcolor@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}wxPython-common>=3.0.2.0:x11-toolkits/py-wxPython-common@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR}
-PYTHON_CMAKE_ON=	-DWITH_BINDINGS:BOOL=TRUE
-PYTHON_CMAKE_OFF=	-DWITH_BINDINGS:BOOL=FALSE
 
 SERVER_LIB_DEPENDS=	libfcgi.so:www/fcgi
-SERVER_CMAKE_ON=	-DWITH_SERVER:BOOL=TRUE
-SERVER_CMAKE_OFF=	-DWITH_SERVER:BOOL=FALSE
+SERVER_CMAKE_BOOL=	WITH_SERVER
 
-TESTS_CMAKE_ON=		-DENABLE_TESTS=TRUE
-TESTS_CMAKE_OFF=	-DENABLE_TESTS=FALSE
+PLIST_SUB=	DISTVERSION=${PORTVERSION}
 
-INSTALLS_ICONS=		yes
+.include <bsd.port.pre.mk>
 
-pre-patch:
-	@${REINPLACE_CMD} -e 's|tr( "QGIS code revision" ) + QString( "</td><td><a href=\\"https://github.com/qgis/QGIS/commit/%1\\">%1</a></td>" ).arg( QGis::QGIS_DEV_VERSION )|tr( "QGIS code revision" ) + "</td><td>" + tr( "${GH_TAGNAME}" ) + "</td>"|g' \
-		${WRKSRC}/src/app/qgisapp.cpp
-# [Ugly workaround!] Because of GitHub #76aa035 from 2015-05-23
-# 'Hide shared library symbols by default on GCC and Clang',
-# some layer properties are not visible on FreeBSD > 9.x
-	@${REINPLACE_CMD} -e 's|SET(CMAKE_CXX_VISIBILITY_PRESET hidden)|#SET(CMAKE_CXX_VISIBILITY_PRESET hidden)|' \
-		${WRKSRC}/CMakeLists.txt
+# make describe needs them here, after bsd.port.pre.mk
+# clang 7.x and 8.x do not build properly
+LLVM_VER=	90
+CPP=		clang-cpp${LLVM_VER}
+CC=		clang${LLVM_VER}
+CXX=		clang++${LLVM_VER}
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/bin/qgis|${LOCALBASE}/bin/qgis|g' \
-		${WRKSRC}/debian/${PORTNAME}.desktop
-	@${REINPLACE_CMD} -e 's|Icon=qgis|Icon=qgis-icon|' \
-		${WRKSRC}/debian/${PORTNAME}.desktop
-	@${REINPLACE_CMD} -e 's|env python|env ${PYTHON_VERSION}|g' \
-		${WRKSRC}/python/ext-libs/pytz/tzfile.py \
-		${WRKSRC}/scripts/generate_test_mask_image.py \
-		${WRKSRC}/scripts/random_vector.py \
-		${WRKSRC}/scripts/widgets_tree.py \
-		${WRKSRC}/src/plugins/grass/qgis_grass_test.py \
-		${WRKSRC}/src/plugins/grass/scripts/qgis.v.kernel.rast.py \
-		${WRKSRC}/src/plugins/grass/scripts/v.out.ogr.pg.py \
-		${WRKSRC}/src/plugins/grass/scripts/qgis.v.upgrade.py \
-		${WRKSRC}/src/plugins/grass/scripts/r.external.all.py \
-		${WRKSRC}/src/plugins/grass/scripts/db.connect-login.pg.py
 	@${REINPLACE_CMD} -e 's|markupsafe ||g' \
 		${WRKSRC}/python/ext-libs/CMakeLists.txt
 
+pre-configure:
+	${MKDIR} ${CONFIGURE_WRKSRC}/bin && ${LN} -s ${PYTHON_CMD} ${CONFIGURE_WRKSRC}/bin/python3
+
 post-install:
 	@${RM} ${STAGEDIR}${DATADIR}/python/pytz/tzfile.py.bak
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/applications
-	${INSTALL_DATA} ${WRKSRC}/debian/${PORTNAME}.desktop \
-		${STAGEDIR}${PREFIX}/share/applications/
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor
-.for SZ in ${ICON_SIZES}
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${SZ}x${SZ}
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${SZ}x${SZ}/apps
-	${INSTALL_DATA} ${WRKSRC}/debian/${PORTNAME}-icon${SZ}x${SZ}.png \
-		${STAGEDIR}${PREFIX}/share/icons/hicolor/${SZ}x${SZ}/apps/${PORTNAME}.png
-.endfor
-
-post-install-TESTS-on:
 	@${RM} /tmp/srs.db
 
 check:
 	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

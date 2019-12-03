@@ -1,4 +1,3 @@
-# Created by: mat
 # $FreeBSD$
 
 PORTNAME=	MasonX-Profiler
@@ -11,8 +10,8 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Mason per-component profiler
 
-BUILD_DEPENDS=	p5-HTML-Mason>=0:www/p5-HTML-Mason
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-HTML-Mason>=0:www/p5-HTML-Mason
 
 USES=		perl5
 USE_PERL5=	configure

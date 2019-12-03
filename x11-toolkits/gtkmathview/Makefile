@@ -3,7 +3,7 @@
 
 PORTNAME=	gtkmathview
 PORTVERSION=	0.8.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://helm.cs.unibo.it/mml-widget/sources/
 
@@ -13,19 +13,25 @@ COMMENT=	GTK Widget to Render MathML Documents
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+.if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
+BROKEN=		ld: error: ../src/backend/ps/.libs/libmathview_backend_ps.so: undefined reference to T1_AddToFileSearchPath
+.endif
+
 BUILD_DEPENDS=	xsltproc:textproc/libxslt
 LIB_DEPENDS=	libpopt.so:devel/popt \
 		libt1.so:devel/t1lib \
 		libgmetadom_gdome_cpp_smart.so:textproc/gmetadom
 
 GNU_CONFIGURE=	yes
-USES=		gmake libtool pathfix pkgconfig
+USES=		compiler:c++11-lang gmake gnome libtool localbase:ldflags \
+		pathfix pkgconfig
 USE_GNOME=	gtk20 libxml2 pangox-compat
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
+CXXFLAGS_clang=	-Wno-c++11-narrowing
+CXXFLAGS_gcc=	-Wno-error=narrowing
 
 post-patch:
 	@${REINPLACE_CMD} '/-lstdc++/d' ${WRKSRC}/src/Makefile.in \

@@ -3,7 +3,7 @@
 
 PORTNAME=	mbox
 PORTVERSION=	0.7.2
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	audio
 MASTER_SITES=	http://www.mbox.wz.cz/src/
 
@@ -11,6 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program intended to help with organizing your music files
 
 LICENSE=	GPLv2
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ogg>0:audio/py-ogg@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}vorbis>0:audio/py-vorbis@${PY_FLAVOR} \

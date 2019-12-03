@@ -33,7 +33,6 @@ share/kxmlgui5/kmplot/kmplot_part.rc
 share/kxmlgui5/kmplot/kmplot_part_readonly.rc
 share/kxmlgui5/kmplot/kmplot_shell.rc
 share/locale/ar/LC_MESSAGES/kmplot.mo
-share/locale/ast/LC_MESSAGES/kmplot.mo
 share/locale/bg/LC_MESSAGES/kmplot.mo
 share/locale/bs/LC_MESSAGES/kmplot.mo
 share/locale/ca/LC_MESSAGES/kmplot.mo
@@ -64,6 +63,7 @@ share/locale/km/LC_MESSAGES/kmplot.mo
 share/locale/ko/LC_MESSAGES/kmplot.mo
 share/locale/lt/LC_MESSAGES/kmplot.mo
 share/locale/lv/LC_MESSAGES/kmplot.mo
+share/locale/ml/LC_MESSAGES/kmplot.mo
 share/locale/mr/LC_MESSAGES/kmplot.mo
 share/locale/nb/LC_MESSAGES/kmplot.mo
 share/locale/nds/LC_MESSAGES/kmplot.mo

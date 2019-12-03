@@ -23,14 +23,12 @@ HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-accessibility -no-openssl -no-gui -no-cups \
 		-no-iconv -no-icu -no-dbus -no-xcb -no-opengl \
 		-no-glib -no-fontconfig \
-		-no-gtk -no-xinput2 \
+		-no-gtk \
 		-no-evdev -no-xkbcommon \
 		-no-freetype -no-gif -no-harfbuzz -no-libjpeg \
 		-no-libpng -no-widgets
 QMAKESPEC=	freebsd-${QMAKE_COMPILER}
 INSTALL_TARGET=	sub-qmake-qmake-aux-pro-install_subtargets install_mkspecs
-
-BROKEN_powerpc64=	fails to compile: error: unrecognized command line option -std=c++11
 
 BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}
 

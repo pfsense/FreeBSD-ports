@@ -1,5 +1,4 @@
 bin/kglobalaccel5
-etc/xdg/kglobalaccel.categories
 include/KF5/KGlobalAccel/KGlobalAccel
 include/KF5/KGlobalAccel/KGlobalShortcutInfo
 include/KF5/KGlobalAccel/kglobalaccel.h
@@ -27,7 +26,6 @@ share/kservices5/kglobalaccel5.desktop
 share/locale/af/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/ar/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/as/LC_MESSAGES/kglobalaccel5_qt.qm
-share/locale/ast/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/be/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/be@latin/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/bg/LC_MESSAGES/kglobalaccel5_qt.qm
@@ -124,3 +122,4 @@ share/locale/xh/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/zh_CN/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/zh_HK/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/zh_TW/LC_MESSAGES/kglobalaccel5_qt.qm
+share/qlogging-categories5/kglobalaccel.categories

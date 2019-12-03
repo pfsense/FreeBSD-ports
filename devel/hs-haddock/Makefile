@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	haddock
-PORTVERSION=	2.19.0.1
+PORTVERSION=	2.22.0
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 
@@ -11,18 +11,13 @@ COMMENT=	Documentation-generation tool for Haskell libraries
 
 LICENSE=	BSD3CLAUSE
 
-USE_CABAL=	haddock-api>=2.16
+USES=		cabal
 
-USE_ALEX=	true
-USE_HAPPY=	true
+USE_CABAL=	ghc-paths-0.1.0.9_4 haddock-api-${PORTVERSION} haddock-library-1.7.0
 
-EXECUTABLE=	haddock-${PORTVERSION}
+haddock_DATADIR_VARS=	haddock-api
 
-STANDALONE=	yes
+post-install:
+	cd ${WRKSRC}/haddock-api-${PORTVERSION}/resources/ && ${COPYTREE_SHARE} \* ${STAGEDIR}${DATADIR}
 
-PLIST_SUB+=	GHC_HADDOCK_CMD=${GHC_HADDOCK_CMD} HADDOCK=${PREFIX}/bin/haddock EXECUTABLE=${PREFIX}/bin/haddock-${PORTVERSION}
-
-CONFIGURE_ARGS+=	--program-suffix=-${PORTVERSION}
-
-.include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

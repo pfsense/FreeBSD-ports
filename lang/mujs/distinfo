@@ -1,3 +1,5 @@
-TIMESTAMP = 1521301055
-SHA256 (ccxvii-mujs-1.0.3_GH0.tar.gz) = 5aabafe512d7a7c6d2c8d67483a5331e55440eeca2db2dc4602ca643c62b5ef6
-SIZE (ccxvii-mujs-1.0.3_GH0.tar.gz) = 117180
+TIMESTAMP = 1565197211
+SHA256 (ccxvii-mujs-1.0.6_GH0.tar.gz) = a444d8ea22b18eff89acbc7f9e45cc95e5b63b30ae8f4b8000b858cd17006f2d
+SIZE (ccxvii-mujs-1.0.6_GH0.tar.gz) = 121385
+SHA256 (d9a1f4c57f976eeb67d877101fcdca89ecc047ed.patch) = de236ceb1d7df002bf0930ff31f07f58260e0faf780edef72f05d478185cb279
+SIZE (d9a1f4c57f976eeb67d877101fcdca89ecc047ed.patch) = 589

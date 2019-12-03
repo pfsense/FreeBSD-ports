@@ -4,7 +4,7 @@
 PORTNAME=	mongo-cxx-driver
 PORTVERSION=	1.1.2
 DISTVERSIONPREFIX=legacy-
-PORTREVISION=	7
+PORTREVISION=	13
 CATEGORIES=	devel
 
 MAINTAINER=	numisemis@yahoo.com
@@ -13,9 +13,8 @@ COMMENT=	MongoDB Legacy C++ Driver
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/APACHE-2.0.txt
 
-BROKEN_SSL=	openssl-devel
-BROKEN_SSL_REASON_openssl-devel=	use of undeclared identifier 'BIO_s_file_internal'
-BROKEN_powerpc64=			fails to configure: Checking for C++ library boost_regex... no
+BROKEN_SSL=	openssl111
+BROKEN_SSL_REASON_openssl111=	use of undeclared identifier 'BIO_s_file_internal'
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
@@ -32,10 +31,17 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	mongodb
 GH_PROJECT=	mongo-cxx-driver
 
-USES=		scons ssl
+USES=		compiler:c++11-lang scons ssl
 MAKE_ARGS=	--prefix=${STAGEDIR}${PREFIX} \
 		--cc=${CC} \
 		--cxx=${CXX}
 USE_LDCONFIG=	yes
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	use of undeclared identifier 'BIO_s_file_internal'
+BROKEN_FreeBSD_13=	use of undeclared identifier 'BIO_s_file_internal'
+.endif
+
+.include <bsd.port.post.mk>

@@ -7,15 +7,17 @@ PORTREVISION=	2
 CATEGORIES+=	net-p2p
 MASTER_SITES=	SF
 
-MAINTAINER?=	ports@FreeBSD.org
-COMMENT?=	OCAML client for multiple peer-to-peer networks
+EXTRA_PATCHES=	${FILESDIR}/git-30e77e2:-p1
+
+MAINTAINER?=	danfe@FreeBSD.org
+COMMENT?=	Multi-protocol peer-to-peer client written in OCaml
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/Copying.txt
 
 CONFLICTS=	mldonkey{-{core,gui},}-devel-[0-9]*
 
-USES=		gmake iconv pkgconfig tar:bzip2
+USES=		compiler:c++11-lang gmake iconv pkgconfig tar:bzip2
 USE_OCAML=	yes
 USE_OCAML_CAMLP4=yes
 GNU_CONFIGURE=	yes
@@ -66,11 +68,11 @@ PLIST_SUB+=	CORE="@comment " GUI="" GUICORE="@comment "
 
 .if ${PORT_OPTIONS:MGUI}
 BUILD_DEPENDS+=	${LOCALBASE}/lib/ocaml/site-lib/lablgtk2/lablrsvg.cma:x11-toolkits/ocaml-lablgtk2
-LIB_DEPENDS+=	librsvg-2.so:graphics/librsvg2
 
 CONFIGURE_ARGS+=--enable-gui=newgui2
 # we don't need lablgtk as RUN dependency, but we need gtk+glib
-USE_GNOME=	gtk20
+USES+=		gnome
+USE_GNOME=	gtk20 librsvg2
 .endif # ${PORT_OPTIONS:MGUI}
 
 .if ${PORT_OPTIONS:MCORE}
@@ -114,6 +116,13 @@ post-patch:
 		-e 's|http://www.bluetack.co.uk/config/antip2p.txt|http://www.bluetack.co.uk/config/level1.gz|' \
 		${WRKSRC}/src/daemon/common/commonOptions.ml \
 		${WRKSRC}/src/networks/donkey/donkeyServers.ml
+	@${REINPLACE_CMD} \
+		-e 's/[u(]int32/&_t/' ${WRKSRC}/src/utils/cdk/zlibstubs.c \
+		${WRKSRC}/src/utils/cdk/gdstubs.c
+	@${REINPLACE_CMD} \
+		-e 's/int64/&_t/' ${WRKSRC}/src/config/unix/os_stubs_c.c \
+		${WRKSRC}/src/utils/lib/os_stubs.h \
+		${WRKSRC}/src/utils/lib/fst_hash.c
 
 do-install:
 .if ${PORT_OPTIONS:MCORE}

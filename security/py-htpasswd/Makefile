@@ -2,23 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	htpasswd
-PORTVERSION=	2008.03.05
-PORTREVISION=	2
+PORTVERSION=	2019.10.15
 CATEGORIES=	security python
-MASTER_SITES=	http://files.bsdroot.lv/my/FreeBSD/distfiles/
+MASTER_SITES=	https://svn.apache.org/repos/asf/bloodhound/trunk/trac/contrib/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME}.py
+EXTRACT_SUFX=	# empty
 
-MAINTAINER=	graudeejs@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Replacement for htpasswd
 
-USES=		python shebangfix tar:xz
+USES=		python shebangfix
+SHEBANG_FILES=	${PORTNAME}.py
 
-PLIST_FILES=	bin/${PORTNAME}.py
+NO_ARCH=	yes
+
+NO_WRKSUBDIR=	yes
+EXTRACT_CMD=	${CP}
+EXTRACT_AFTER_ARGS=	${WRKSRC}
+EXTRACT_BEFORE_ARGS=	# empty
 
 NO_BUILD=	yes
-NO_WRKSUBDIR=	yes
-
-SHEBANG_FILES=	${PORTNAME}.py
+PLIST_FILES=	bin/${PORTNAME}.py
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME}.py ${STAGEDIR}${PREFIX}/bin

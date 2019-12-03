@@ -1,6 +1,6 @@
---- tty-keys.c.orig	2017-08-29 11:54:14 UTC
+--- tty-keys.c.orig	2019-05-01 06:07:32 UTC
 +++ tty-keys.c
-@@ -679,8 +679,6 @@ complete_key:
+@@ -704,8 +704,6 @@ complete_key:
  	 * used. termios should have a better idea.
  	 */
  	bspace = tty->tio.c_cc[VERASE];

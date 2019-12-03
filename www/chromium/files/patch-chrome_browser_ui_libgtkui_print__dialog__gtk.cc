@@ -1,6 +1,6 @@
---- chrome/browser/ui/libgtkui/print_dialog_gtk.cc.orig	2017-04-19 19:06:30 UTC
+--- chrome/browser/ui/libgtkui/print_dialog_gtk.cc.orig	2019-10-21 19:06:24 UTC
 +++ chrome/browser/ui/libgtkui/print_dialog_gtk.cc
-@@ -347,6 +347,7 @@ void PrintDialogGtk2::ShowDialog(
+@@ -336,6 +336,7 @@ void PrintDialogGtk::ShowDialog(
    // Since we only generate PDF, only show printers that support PDF.
    // TODO(thestig) Add more capabilities to support?
    GtkPrintCapabilities cap = static_cast<GtkPrintCapabilities>(

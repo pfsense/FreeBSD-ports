@@ -7,13 +7,14 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:NORBU
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	dch@skunkwerks.at
+MAINTAINER=	dch@FreeBSD.org
 COMMENT=	PERL-based software deployment tool inspired by capistrano
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	\
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	\
 		p5-Config-GitLike>=0:devel/p5-Config-GitLike \
 		p5-Expect>=0:lang/p5-Expect \
 		p5-Git-Repository>=0:devel/p5-Git-Repository \
@@ -22,7 +23,6 @@ BUILD_DEPENDS=	\
 		p5-Mouse>=0:devel/p5-Mouse \
 		p5-Net-OpenSSH>=0:net/p5-Net-OpenSSH
 
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes
 USES=		perl5

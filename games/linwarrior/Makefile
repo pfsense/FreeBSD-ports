@@ -12,11 +12,11 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Navigate a mech through a 3D world and fire at enemies
 
-USES=		gmake openal:al,alut
+USES=		gl gmake openal:al,alut sdl
 USE_GL=		gl glu
 USE_SDL=	sdl
-
-CFLAGS+=	-Wno-c++11-narrowing
+LLD_UNSAFE=	yes
+USE_CXXSTD=	gnu++98
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

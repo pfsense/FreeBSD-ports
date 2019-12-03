@@ -4,12 +4,12 @@
 PORTNAME=	nget
 PORTVERSION=	0.27.1
 DISTVERSIONSUFFIX=	+uulib
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	news
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Auto-resuming command line nntp file grabber
+COMMENT=	Auto-resuming command line NNTP file grabber
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -27,6 +27,13 @@ OPTIONS_DEFINE=	DOCS
 
 WRKSRC=	${WRKDIR}/nget-${PORTVERSION}
 
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+CXXFLAGS+=	-std=c++11
+.else
+CXXFLAGS+=	-std=c++98
+.endif
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/nget ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/ngetlite ${STAGEDIR}${PREFIX}/bin
@@ -39,4 +46,4 @@ do-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -80,7 +80,6 @@
 : ${ac_cv_header_strings_h=yes}
 : ${ac_cv_header_sys_acl_h=yes}
 : ${ac_cv_header_sys_cdefs_h=yes}
-: ${ac_cv_header_sys_dir_h=yes}
 : ${ac_cv_header_sys_fcntl_h=yes}
 : ${ac_cv_header_sys_file_h=yes}
 : ${ac_cv_header_sys_ioctl_h=yes}
@@ -682,7 +681,6 @@
 : ${ac_cv_have_decl_getpagesize=yes}
 : ${ac_cv_have_decl_getrlimit=yes}
 : ${ac_cv_have_decl_getrusage=yes}
-: ${ac_cv_have_decl_gets=yes}
 : ${ac_cv_have_decl_getsubopt=yes}
 : ${ac_cv_have_decl_gettimeofday=yes}
 : ${ac_cv_have_decl_getusershell=yes}
@@ -954,7 +952,6 @@
 : ${gl_cv_have_raw_decl_getlogin=yes}
 : ${gl_cv_have_raw_decl_getlogin_r=yes}
 : ${gl_cv_have_raw_decl_getpagesize=yes}
-: ${gl_cv_have_raw_decl_gets=yes}
 : ${gl_cv_have_raw_decl_getsubopt=yes}
 : ${gl_cv_have_raw_decl_gettimeofday=yes}
 : ${gl_cv_have_raw_decl_getusershell=yes}

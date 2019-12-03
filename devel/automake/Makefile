@@ -3,6 +3,7 @@
 
 PORTNAME=	automake
 PORTVERSION=	1.16.1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -24,5 +25,7 @@ GNU_CONFIGURE=	yes
 MAKE_ENV+=	MAKEINFOFLAGS=--no-split
 INFO=		automake automake-history
 CPE_VENDOR=	gnu
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

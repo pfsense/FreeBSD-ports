@@ -2,8 +2,9 @@
 
 PORTNAME=	xfce4-xkb-plugin
 PORTVERSION=	0.8.1
+PORTREVISION=	2
 CATEGORIES=	deskutils xfce
-MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/panel-plugins
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Keyboard layout switching plugin for the Xfce panel
@@ -12,12 +13,20 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libxklavier.so:x11/libxklavier
 
-USES=		gettext gmake libtool pkgconfig tar:bzip2 xfce:gtk3
-GNU_CONFIGURE=	yes
-USE_GNOME=	gtk30 intltool librsvg2 libwnck3 cairo
+USES=		gettext-tools gmake gnome libtool pkgconfig tar:bzip2 \
+		xfce xorg
+USE_GNOME=	cairo gtk30 intltool librsvg2 libwnck3
 USE_XFCE=	panel
 USE_XORG=	x11
+
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+
+OPTIONS_DEFINE=		NLS
+OPTIONS_SUB=		yes
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext-runtime
 
 # Downgrade libxklavier
 post-patch:

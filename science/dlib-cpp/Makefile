@@ -1,18 +1,19 @@
 # $FreeBSD$
 
 PORTNAME=	dlib
-DISTVERSION=	19.13
+DISTVERSION=	19.17
+PORTREVISION=	2
 CATEGORIES=	science devel math
 MASTER_SITES=	http://dlib.net/files/
 PKGNAMESUFFIX=	-cpp
 
-MAINTAINER=	6yearold@gmail.com
+MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Machine learning framework written in C++
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/dlib/LICENSE.txt
 
-USES=			cmake:outsource pkgconfig tar:bzip2
+USES=			cmake compiler:c++11-lang pkgconfig tar:bzip2
 USE_LDCONFIG=		yes
 
 OPTIONS_DEFINE=		X11 JPEG PNG GIF SQLITE BLASLAPACK PYTHON AVX

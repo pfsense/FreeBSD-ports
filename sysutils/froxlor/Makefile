@@ -3,7 +3,7 @@
 
 PORTNAME=	froxlor
 PORTVERSION=	0.9.38.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils www
 MASTER_SITES=	http://files.froxlor.org/releases/
 
@@ -12,18 +12,16 @@ COMMENT=	PHP-based ISP Server Management Panel
 
 LICENSE=	GPLv2
 
-WRKSRC=		${WRKDIR}
-
-SUB_FILES+=	pkg-message pkg-deinstall
-SUB_LIST+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP} PORTNAME=${PORTNAME}
-PLIST_SUB+=	${SUB_LIST}
-
+USES=		php:cli
 USE_PHP=	bcmath curl filter ftp json pdo_mysql posix session xml zip
 
-USES=		php:cli
+SUB_FILES=	pkg-message pkg-deinstall
+SUB_LIST=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP} PORTNAME=${PORTNAME}
+PLIST_SUB=	${SUB_LIST}
 
 NO_ARCH=	yes
 NO_BUILD=	yes
+NO_WRKSUBDIR=	yes
 
 OPTIONS_DEFINE=	LIBNSS LOGROTATE MYSQLS DKIM PCNTL NLS
 
@@ -46,7 +44,6 @@ APACHE_DESC=	Apache as HTTP/HTTPS server
 LIGHTTPD_DESC=	Lighttpd as HTTP/HTTPS server
 NGINX_DESC=	Nginx as HTTP/HTTPS server
 MYSQLC_DESC=	MySQL database client only
-MYSQLS_DESC=	MySQL database server and client
 POSTFIX_DESC=	Postfix as SMTP server
 EXIM_DESC=	Exim as SMTP server
 DKIM_DESC=	OpenDKIM for DomainKeys Identified Mail
@@ -55,7 +52,7 @@ COURIER_DESC=	Courier as IMAP/POP3 server
 PROFTPD_DESC=	ProFTPd as FTP server
 PUREFTPD_DESC=	Pure-FTPd as FTP server
 POWERDNS_DESC=	Powerdns as DNS server
-ISCDNS_DESC=	ISC BIND 9.9 from ports as DNS server
+ISCDNS_DESC=	ISC BIND 9.11 from ports as DNS server
 PCNTL_DESC=	Use php-pcntl (speeds up statistics creation)
 LIBNSS_DESC=	Libnss-mysql for authentication
 WEBALIZER_DESC=	Webalizer (small, fast, static result pages)
@@ -64,7 +61,7 @@ LOGROTATE_DESC=	Logrotate for log rotation
 MYSQLS_DESC=	Depend on MySQL server
 NLS_DESC=	Enable NLS support (required for webFTP frontend)
 
-OPTIONS_DEFAULT=	APACHE MYSQLS POSTFIX DOVECOT2 PROFTPD WEBALIZER MYSQLS PCNTL
+OPTIONS_DEFAULT=	APACHE POSTFIX DOVECOT2 PROFTPD WEBALIZER MYSQLS PCNTL
 
 POSTFIX_RUN_DEPENDS=	postfix:mail/postfix
 
@@ -82,7 +79,7 @@ PUREFTPD_RUN_DEPENDS=	pure-ftpd:ftp/pure-ftpd
 
 POWERDNS_RUN_DEPENDS=	pdns_control:dns/powerdns
 
-ISCDNS_RUN_DEPENDS=	bind>=9.9.0.0:dns/bind99
+ISCDNS_RUN_DEPENDS=	bind>=9.11.0.0:dns/bind911
 
 LIBNSS_RUN_DEPENDS=	${LOCALBASE}/lib/nss_mysql.so:net/libnss-mysql
 
@@ -106,7 +103,7 @@ NLS_USES=	gettext-runtime:run
 NLS_USE=	PHP=gettext
 
 do-install:
-	cd ${WRKDIR}/${PORTNAME} && \
+	cd ${WRKSRC}/${PORTNAME} && \
 	${FIND} . ! -name .gitignore | \
 	${CPIO} --quiet -pdm ${STAGEDIR}${WWWDIR}
 

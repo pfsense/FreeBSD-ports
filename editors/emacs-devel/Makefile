@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	emacs
-DISTVERSION=	${EMACS_VER}.${EMACS_REV}
-PORTREVISON=	1
+DISTVERSION=	27.0.50.20190917
 PORTEPOCH=	2
 CATEGORIES=	editors ipv6
 PKGNAMESUFFIX=	-devel
@@ -17,25 +16,28 @@ COMMENT+=	(No X flavor)
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	texinfo>=6.5,1:print/texinfo
+LIB_DEPENDS=	libgmp.so:math/gmp
+
 FLAVORS=		full nox
 full_CONFLICTS_INSTALL=	emacs-devel-nox
 nox_CONFLICTS_INSTALL=	emacs-devel
 nox_PKGNAMESUFFIX=	-devel-nox
 
-USES=		autoreconf:build cpe gmake localbase:ldflags makeinfo ncurses \
-		pkgconfig
+USES=		autoreconf:build cpe gmake localbase:ldflags ncurses pkgconfig
 .if ${FLAVOR:U} != nox
-USES+=		desktop-file-utils
-USE_XORG=	ice sm x11 xcb xext xfixes xinerama xmu xrandr xt
+USES+=		desktop-file-utils gnome xorg
+INSTALLS_ICONS=	yes
+USE_XORG=	ice sm x11 xcb xext xfixes xinerama xmu xrandr xrender xt
 .endif
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	66ad986
+GH_TAGNAME=	746b20c
 
 CONFIGURE_ARGS=	--disable-build-details \
-		--localstatedir=/var \
-		--with-gameuser=games:games
+		--localstatedir=/var
+
 .if ${FLAVOR:U} == nox
 CONFIGURE_ARGS+=	--with-sound=no --without-cairo --without-dbus \
 			--without-gconf --without-gif --without-gsettings \
@@ -52,7 +54,7 @@ CONFIGURE_ARGS+=	--with-x
 CONFIGURE_ENV=	ac_cv_header_sys_sysinfo_h=no
 CONFLICTS_INSTALL=	emacs emacs-canna emacs-nox
 GNU_CONFIGURE=	yes
-INFO=		ada-mode auth autotype bovine calc ccmode cl dbus dired-x \
+INFO=		auth autotype bovine calc ccmode cl dbus dired-x \
 		ebrowse ede ediff edt efaq eieio eintr elisp emacs emacs-gnutls \
 		emacs-mime epa erc ert eshell eudc eww flymake forms gnus \
 		htmlfontify idlwave ido info mairix-el message mh-e newsticker \
@@ -60,16 +62,14 @@ INFO=		ada-mode auth autotype bovine calc ccmode cl dbus dired-x \
 		sasl sc semantic ses sieve smtpmail speedbar srecode todo-mode \
 		tramp url vhdl-mode vip viper widget wisent woman
 INFO_PATH=	${DATADIR_REL}/info
-.if ${FLAVOR:U} != nox
-INSTALLS_ICONS=	yes
-.endif
-PLIST_SUB=	EMACS_VER=${EMACS_VER} GNU_HOST=${CONFIGURE_TARGET}
+PLIST_SUB=	EMACS_VER=${DISTVERSION:R} GNU_HOST=${CONFIGURE_TARGET}
 SUB_FILES=	sources.el
-SUB_LIST=	EMACS_VER=${EMACS_VER} # sources.el
+SUB_LIST=	EMACS_VER=${DISTVERSION:R} # sources.el
 
-OPTIONS_DEFINE=	ACL DBUS GCONF GNUTLS GSETTINGS JSON LCMS2 M17N MAILUTILS \
-		MODULES OTF SCROLLBARS SOURCES THREADS XFT XIM XML XWIDGETS
-OPTIONS_DEFAULT=	ACL DBUS GCONF GIF GNUTLS GSETTINGS GTK3 JPEG JSON \
+OPTIONS_DEFINE=	ACL DBUS GCONF GNUTLS GSETTINGS HARFBUZZ JSON LCMS2 M17N \
+		 MAILUTILS MODULES OTF SCROLLBARS SOURCES THREADS XFT XIM XML \
+		XWIDGETS
+OPTIONS_DEFAULT=	ACL DBUS GIF GNUTLS GSETTINGS GTK3 HARFBUZZ JPEG JSON \
 		KQUEUE LCMS2 M17N MAGICK MAILUTILS MODULES OSS OTF PNG \
 		SCROLLBARS SOURCES SVG THREADS TIFF XFT XIM XML XPM
 OPTIONS_GROUP=	GRAPHICS
@@ -81,32 +81,32 @@ OPTIONS_RADIO_X11TOOLKIT=	GTK2 GTK3 MOTIF XAW XAW3D
 
 .if ${FLAVOR:U} == nox
 OPTIONS_EXCLUDE=	ALSA CAIRO DBUS GCONF GFILE GIF GSETTINGS GTK2 GTK3 \
-			JPEG LCMS2 M17N MAGICK MOTIF OSS OTF PNG SCROLLBARS SVG \
-			TIFF XAW XAW3D XFT XIM XPM XWIDGETS
+			HARFBUZZ JPEG LCMS2 M17N MAGICK MOTIF OSS OTF PNG \
+			SCROLLBARS SVG TIFF XAW XAW3D XFT XIM XPM XWIDGETS
 .endif
 OPTIONS_SUB=	YES
 
 ACL_DESC=	Access control list support
-CAIRO_DESC=	Experimental Cairo library support     (implies PNG, XFT)
+CAIRO_DESC=	Cairo graphics library support    [implies PNG, XFT]
 FILENOTIFY_DESC=	File notification support
 GFILE_DESC=	File notification via gfile
 GRAPHICS_DESC=	Graphics support
 GSETTINGS_DESC=	GSettings API for application settings
+HARFBUZZ_DESC=	HarfBuzz for text shaping
 KQUEUE_DESC=	File notification via kqueue
 #LTO_DESC=	Enable link-time optimization
-M17N_DESC=	M17N support for text-shaping (implies XFT)
-MAGICK_DESC=	ImageMagick image processing support
+M17N_DESC=	M17N support for text-shaping     [implies XFT]
 MAILUTILS_DESC=	Mail framework via GNU Mailutils
 MODULES_DESC=	Dynamic modules support
-OTF_DESC=	Opentype fonts                         (implies XFT)
+OTF_DESC=	Opentype fonts                    [implies XFT]
 SCROLLBARS_DESC=	Toolkit scroll-bars
 SOURCES_DESC=	Install sources
-SVG_DESC=	Scalable vector graphics support       (implies PNG)
+SVG_DESC=	Scalable vector graphics support  [implies PNG]
 X11TOOLKIT_DESC=	X11 toolkit
 XAW3D_DESC=	Athena3D widgets
 XAW_DESC=	Athena widgets
 XIM_DESC=	X Input Method
-XWIDGETS_DESC=	Experimental GTK widgets               (requires GTK3)
+XWIDGETS_DESC=	Experimental GTK widgets          [implies GTK3]
 
 ACL_CONFIGURE_ENABLE=	acl
 ALSA_CONFIGURE_ON=	--with-sound=alsa
@@ -133,6 +133,8 @@ GTK2_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 			libfontconfig.so:x11-fonts/fontconfig
 GTK3_USE=		GNOME=cairo,gtk30
 GTK3_CONFIGURE_ON=	--with-x-toolkit=gtk3
+HARFBUZZ_CONFIGURE_WITH=	harfbuzz
+HARFBUZZ_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 JPEG_USES=		jpeg
 JPEG_CONFIGURE_WITH=	jpeg
 JSON_CONFIGURE_WITH=	json
@@ -144,7 +146,7 @@ LCMS2_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 M17N_LIB_DEPENDS=	libm17n.so:devel/m17n-lib
 M17N_CONFIGURE_WITH=	m17n-flt
 M17N_IMPLIES=		XFT
-MAGICK_LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick
+MAGICK_LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick6
 MAGICK_CONFIGURE_WITH=	imagemagick
 MAILUTILS_CONFIGURE_WITH=	mailutils
 MAILUTILS_CONFIGURE_ENV_OFF=	ac_cv_prog_liblockfile=no ac_cv_lib_lockfile_maillock=no
@@ -175,6 +177,7 @@ XFT_CONFIGURE_WITH=	xft
 XFT_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2
 XIM_CONFIGURE_WITH=	xim
+XML_USES=		gnome # portlint complains, but necessary for nox flavor
 XML_USE=		GNOME=libxml2
 XML_CONFIGURE_WITH=	xml2
 XPM_USE=		XORG=xpm
@@ -184,9 +187,6 @@ XWIDGETS_CONFIGURE_WITH=	xwidgets
 XWIDGETS_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 			libsoup-2.4.so:devel/libsoup
 XWIDGETS_IMPLIES=	GTK3
-
-EMACS_VER=	27.0.50
-EMACS_REV=	20180607
 
 .include <bsd.port.options.mk>
 
@@ -202,6 +202,10 @@ CONFIGURE_ARGS+=	--with-x-toolkit=no
 
 pre-configure:
 	@(cd ${WRKSRC} && ./autogen.sh all)
+	@${REINPLACE_CMD} \
+	  -e '/emacs-repository-version/s/^.*$$/(setq emacs-repository-version "${GH_TAGNAME}")/' \
+	  -e '/emacs-repository-branch/s/^.*$$/(setq emacs-repository-branch "master")/' \
+	  ${WRKSRC}/lisp/loadup.el
 
 .if ${FLAVOR} == nox
 # With a desktop entry stage-qa will give a warning about requiring
@@ -213,12 +217,12 @@ post-patch:
 
 post-install-MAILUTILS-on:
 	${LN} -sf ${PREFIX}/bin/movemail \
-		${STAGEDIR}${PREFIX}/libexec/emacs/${EMACS_VER}/${CONFIGURE_TARGET}
+		${STAGEDIR}${PREFIX}/libexec/emacs/${DISTVERSION:R}/${CONFIGURE_TARGET}
 
 post-install-SOURCES-on:
-	@${MKDIR} ${STAGEDIR}${DATADIR}/${EMACS_VER}/src
-	${INSTALL_DATA} ${WRKSRC}/src/*.[ch] ${STAGEDIR}${DATADIR}/${EMACS_VER}/src
-	${INSTALL_DATA} ${WRKDIR}/sources.el ${STAGEDIR}${DATADIR}/${EMACS_VER}/site-lisp/site-start.el
+	@${MKDIR} ${STAGEDIR}${DATADIR}/${DISTVERSION:R}/src
+	${INSTALL_DATA} ${WRKSRC}/src/*.[ch] ${STAGEDIR}${DATADIR}/${DISTVERSION:R}/src
+	${INSTALL_DATA} ${WRKDIR}/sources.el ${STAGEDIR}${DATADIR}/${DISTVERSION:R}/site-lisp/site-start.el
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/lib/systemd

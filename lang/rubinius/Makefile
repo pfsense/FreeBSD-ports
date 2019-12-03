@@ -3,6 +3,7 @@
 
 PORTNAME=	rubinius
 PORTVERSION=	3.86
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	http://releases.rubini.us/:source
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:source
@@ -14,9 +15,12 @@ COMMENT=	LLVM based ruby language implementation
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		Could not find 'bundler' (1.13.6)
+ONLY_FOR_ARCHS=	amd64
+
 BUILD_DEPENDS=	${LOCALBASE}/bin/bundle:sysutils/rubygem-bundler \
 		${LOCALBASE}/bin/bison:devel/bison \
-		${LLVM_CONFIG_PATH}:${LLVM_PORT}
+		${LLVM_CONFIG_PATH}:devel/llvm${LLVM_DEFAULT}
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
 
 HAS_CONFIGURE=	yes
@@ -35,16 +39,6 @@ CONFIGURE_ARGS=	-P "${PREFIX}" \
 		--vendordir "${PREFIX}/lib/ruby/vendor_ruby/rubinius" \
 		--stagingdir "${STAGEDIR}${PREFIX}" --with-execinfo \
 		--system-name ${OPSYS}
-
-OPTIONS_RADIO=		LLVM
-OPTIONS_DEFAULT=	LLVM40
-OPTIONS_RADIO_LLVM=	LLVM38 LLVM39 LLVM40
-
-ONLY_FOR_ARCHS=	amd64
-
-LLVM38_DESC=	LLVM 3.8
-LLVM39_DESC=	LLVM 3.9
-LLVM40_DESC=	LLVM 4.0
 
 USES=		gmake perl5 readline tar:bzip2 libedit ssl
 USE_LOCALE=	en_US.UTF-8
@@ -70,28 +64,18 @@ MAKE_ENV+=	GEM_PATH=${GEM_PATH}
 F_OS=		${OPSYS:tl}
 F_MAJOR=	${OSREL:C/\..*$//}
 FREEBSD_DIR=	${F_ARCH}-${F_OS}-${F_MAJOR}
-LLVM_CC_PATH=	${LOCALBASE}/bin/${LLVM_CC}
-LLVM_CXX_PATH=	${LOCALBASE}/bin/${LLVM_CXX}
-LLVM_CONFIG_PATH=	${LOCALBASE}/bin/${LLVM_CONFIG}
-
-LLVM38_VARS=	LLVM_CONFIG=llvm-config38 \
-		LLVM_PORT=devel/llvm38 \
-		LLVM_CC=clang38 \
-		LLVM_CXX=clang++38
-LLVM39_VARS=	LLVM_CONFIG=llvm-config39 \
-		LLVM_PORT=devel/llvm39 \
-		LLVM_CC=clang39 \
-		LLVM_CXX=clang++39
-LLVM40_VARS=	LLVM_CONFIG=llvm-config40 \
-		LLVM_PORT=devel/llvm40 \
-		LLVM_CC=clang40 \
-		LLVM_CXX=clang++40
+LLVM_CC_PATH=	${LOCALBASE}/bin/clang${LLVM_DEFAULT}
+LLVM_CXX_PATH=	${LOCALBASE}/bin/clang++${LLVM_DEFAULT}
+LLVM_CONFIG_PATH=	${LOCALBASE}/bin/llvm-config${LLVM_DEFAULT}
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64
-.elif ${ARCH} == "amd64"
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	checking for OpenSSL_add_all_digests() in -lcrypto... no
+BROKEN_FreeBSD_13=	checking for OpenSSL_add_all_digests() in -lcrypto... no
+.endif
+
+.if ${ARCH} == "amd64"
 F_ARCH=		x86_64
 .elif ${ARCH} == "i386"
 F_ARCH=		x86

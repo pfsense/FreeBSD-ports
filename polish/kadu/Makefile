@@ -3,7 +3,7 @@
 
 PORTNAME=	kadu
 PORTVERSION=	4.3
-PORTREVISION=	6
+PORTREVISION=	15
 PORTEPOCH=	1
 CATEGORIES=	polish net-im
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}/:kadu \
@@ -23,7 +23,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient \
 		libsndfile.so:audio/libsndfile \
 		libinjeqt.so:devel/injeqt \
-		libqca-qt5.so:devel/qca@qt5 \
+		libqca-qt5.so:devel/qca \
 		libidn.so:dns/libidn \
 		libqxmpp.so:net-im/qxmpp-qt5 \
 		libgadu.so:polish/libgadu \
@@ -36,12 +36,12 @@ LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient \
 GG6_EMOTS_DISTFILE=	kompatybilne_z_GG6.tar.gz
 GG7_EMOTS_DISTFILE=	dodatkowe_emoty_GG7.tar.gz
 
-USES=		cmake compiler:c++11-lib gettext-runtime \
+USES=		cmake:insource compiler:c++11-lib gettext-runtime \
 		libarchive pkgconfig qt:5 readline tar:bzip2
 USE_XORG=	x11 xext xfixes xscrnsaver
 USE_GNOME=	glib20
-USE_QT=		concurrent core dbus gui multimedia network \
-		qml quick script scripttools sql webkit widgets x11extras \
+USE_QT=		concurrent core dbus declarative gui multimedia network \
+		script scripttools sql webkit widgets x11extras \
 		xml xmlpatterns buildtools_build linguisttools_build \
 		qmake_build imageformats_run sql-sqlite3_run
 # Setting KADU_VERSION disables git invocation

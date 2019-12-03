@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	YouCompleteMe
-DISTVERSION=	g20180417
-PORTREVISION=	1
+DISTVERSION=	g20190314
+PORTREVISION=	3
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -30,9 +30,9 @@ USES=		cmake python
 USE_PYTHON=	flavors
 USE_GITHUB=	yes
 GH_ACCOUNT=	Valloric
-GH_TAGNAME=	6975efd
-GH_TUPLE=	Valloric:ycmd:2f87e12:ycm/third_party/ycmd \
-		vheon:JediHTTP:d283a73:ycmd5/third_party/ycmd/third_party/JediHTTP
+GH_TAGNAME=	299f8e4
+GH_TUPLE=	Valloric:ycmd:d0eba90:ycm/third_party/ycmd \
+		micbou:regex:d2ef9c4:ycmd5/third_party/ycmd/third_party/cregex
 
 CMAKE_SOURCE_PATH+=	${WRKSRC}/third_party/ycmd/cpp
 
@@ -40,22 +40,19 @@ PLIST_SUB=		VIMFILESDIR=share/vim/vimfiles \
 			YCMDDIR=share/vim/vimfiles/third_party/ycmd
 
 SUB_FILES=		pkg-message pkg-install pkg-deinstall
-SUB_LIST=		VIMFILESDIR="${VIMFILESDIR}"
+SUB_LIST=		VIMFILESDIR="${VIMFILESDIR}" \
+			FIND="${FIND}"
 
-OPTIONS_DEFINE=		C GO MONO RUST
-OPTIONS_DEFAULT=	C GO MONO RUST
+OPTIONS_DEFINE=		C MONO RUST
+OPTIONS_DEFAULT=	C MONO RUST
 OPTIONS_SUB=		yes
 
 C_DESC=			C-family Semantic Completion Support
-GO_DESC=		Go Semantic Completion Support
 MONO_DESC=		C\# Semantic Completion Support
 RUST_DESC=		Rust Semantic Completion Support
 
-C_CMAKE_ON=		-DPATH_TO_LLVM_ROOT=${LOCALBASE}/llvm60
-C_LIB_DEPENDS=		libclang.so:devel/llvm60
-
-GO_RUN_DEPENDS=		gocode:devel/go-gocode \
-			godef:devel/go-godef
+C_CMAKE_ON=		-DPATH_TO_LLVM_ROOT=${LOCALBASE}/llvm70
+C_LIB_DEPENDS=		libclang.so:devel/llvm70
 
 MONO_RUN_DEPENDS=	${LOCALBASE}/share/omnisharp-server/bin/Release/OmniSharp.exe:devel/omnisharp-server
 MONO_VARS=		MONOFILESDIR=${VIMFILESDIR}/third_party/ycmd/third_party/OmniSharpServer
@@ -74,9 +71,8 @@ do-install:
 		(cd ${WRKSRC}/third_party/ycmd && ${COPYTREE_SHARE} \
 			"ycmd CORE_VERSION cpp clang_includes" \
 			"${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/${d}")
-		${RM} -r ${WRKSRC}/third_party/ycmd/third_party/JediHTTP/vendor
 		(cd ${WRKSRC}/third_party/ycmd/third_party && ${COPYTREE_SHARE} \
-			"JediHTTP tern_runtime" \
+			"cregex tern_runtime" \
 			"${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/third_party")
 		${RM} -rf ${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/cpp/ycm/tests \
 			${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/ycmd/tests

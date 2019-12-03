@@ -1,6 +1,7 @@
---- shared_app.pri.orig	2015-11-28 16:39:25.396369000 +0000
-+++ shared_app.pri	2015-11-28 16:41:00.193868000 +0000
-@@ -18,6 +18,6 @@
+--- shared_app.pri.orig	2019-05-04 22:28:42 UTC
++++ shared_app.pri
+@@ -15,8 +15,8 @@ LIBS += \
+ 
  !r_no_opennurbs {
      LIBS += \
 -        -lopennurbs \
@@ -9,3 +10,4 @@
 +        -lz
  }
  
+ win32 {

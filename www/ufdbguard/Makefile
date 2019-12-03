@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	ufdbGuard
-PORTVERSION=	1.33.6
+PORTVERSION=	1.34.3
 CATEGORIES=	www
-MASTER_SITES=	SF/${PORTNAME:tl}/1.33
+MASTER_SITES=	SF/${PORTNAME:tl}/1.34
 
 MAINTAINER=	timp87@gmail.com
 COMMENT=	URL filter for the Squid web proxy
@@ -12,10 +12,8 @@ COMMENT=	URL filter for the Squid web proxy
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_aarch64=		fails to compile: error: regparm is not valid on this platform
-BROKEN_SSL=	openssl-devel libressl libressl-devel
-
 USES=		perl5 shebangfix ssl
+
 SHEBANG_FILES=	samples/URLblocked.cgi
 GNU_CONFIGURE=	yes
 USE_RC_SUBR=	ufdbguardd
@@ -53,11 +51,11 @@ CONFIGURE_ARGS=	--with-ssl=${OPENSSLBASE} \
 		--with-ufdb-samplesdir=${EXAMPLESDIR} \
 		--with-ufdb-config=${ETCDIR} \
 		--with-ufdb-dbhome=${DBDIR} \
-		--with-ufdb-images_dir=${EXAMPLESDIR}/images
+		--with-ufdb-imagesdir=${EXAMPLESDIR}/images
 
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFINE=	UNIXSOCKETS
+OPTIONS_DEFINE=	UNIXSOCKETS EXAMPLES
 
 UNIXSOCKETS_CONFIGURE_WITH=	unix-sockets
 

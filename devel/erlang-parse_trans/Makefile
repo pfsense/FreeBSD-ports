@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	parse_trans
-PORTVERSION=	3.2.0
+PORTVERSION=	3.3.0
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 
@@ -14,7 +14,9 @@ GH_ACCOUNT=	uwiger
 
 ERL_DOCS=	doc/*
 
-post-install:
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
 

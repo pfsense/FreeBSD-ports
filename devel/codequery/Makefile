@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	codequery
-PORTVERSION=	0.21.0
+PORTVERSION=	0.21.1
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -11,16 +12,17 @@ COMMENT=	Code understanding, browsing and search tool
 
 LICENSE=	MPL20 MIT
 LICENSE_COMB=	multi
+
 LICENSE_FILE_MPL20=	${WRKSRC}/LICENSE.md
 LICENSE_FILE_MIT=	${WRKSRC}/querylib/README.txt
 
-USES=		cmake compiler:c++11-lang ninja qt:4 sqlite
+USES=		cmake:insource compiler:c++11-lang ninja qt:5 sqlite
+USE_QT=		concurrent core gui widgets xml  \
+		buildtools_build linguisttools_build qmake_build
+CMAKE_ON=	BUILD_QT5
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ruben2020
-
-USE_QT=		linguisttools_build moc_build rcc_build uic_build \
-		corelib gui qmake xml
 
 PLIST_FILES=	bin/codequery \
 		bin/cqmakedb \

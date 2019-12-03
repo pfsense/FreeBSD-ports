@@ -1,8 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	Carla
-DISTVERSION=	1.9.8-135
-DISTVERSIONSUFFIX=	-g2be9e402
+DISTVERSIONPREFIX=	v
+DISTVERSION=	2.0.0
+PORTREVISION=	3
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,19 +18,23 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyliblo>0:audio/py-pyliblo@${PY_FLAVOR}
 
 CONFLICTS_BUILD=	rtaudio-* rtmidi-*
 
-USES=		compiler:c++11-lib desktop-file-utils gmake localbase \
+USES=		compiler:c++11-lib desktop-file-utils gl gmake gnome localbase \
 		pkgconfig pyqt:5 python:3.4+ qt:5 shared-mime-info shebangfix tar:bz2
 USE_GITHUB=	yes
 GH_ACCOUNT=	falkTX
 USE_PYQT=	core_run gui_run sip svg_run widgets_run xml_build  # "sip" should be "sip_build", but "import PyQt5.QtCore" wants "sip". See bug#225040
 USE_GNOME=	gtk20 gtk30
 USE_QT=		core gui widgets buildtools_build
+USE_GL=		gl
 USE_XORG=	x11
 USE_LDCONFIG=	${PREFIX}/lib/carla
 SHEBANG_FILES=	data/carla-single source/native-plugins/resources/*
 
 MAKE_ARGS=	HAVE_QT4=false \
-		EXTERNAL_PLUGINS=false
+		EXTERNAL_PLUGINS=false \
+# Give the Makefile the proper versioned binaries of PyQt
+BINARY_ALIAS=	pyuic5=${LOCALBASE}/bin/pyuic5-${PYTHON_VER} \
+		pyrcc5=${LOCALBASE}/bin/pyrcc5-${PYTHON_VER}
 
 OPTIONS_DEFINE=		FFMPEG FLUIDSYNTH LINUXSAMPLER
 OPTIONS_DEFAULT=	FFMPEG FLUIDSYNTH JACK LINUXSAMPLER
@@ -49,7 +54,10 @@ PULSEAUDIO_LIB_DEPENDS=		libpulse-simple.so:audio/pulseaudio
 PULSEAUDIO_MAKE_ARGS_OFF=	HAVE_PULSEAUDIO=false
 
 post-install:
-	@${REINPLACE_CMD} -i '' -e 's|^PYTHON=.*|PYTHON=${PYTHON_CMD}|' ${STAGEDIR}${PREFIX}/bin/carla*
+	@${REINPLACE_CMD} -i '' -e ' \
+		s|^PYTHON=.*|PYTHON=${PYTHON_CMD}|; \
+		s|#!/bin/bash|#!/bin/sh|' \
+		${STAGEDIR}${PREFIX}/bin/carla*
 
 devel-features: patch
 	@${ECHO} "Developer command: show build features"

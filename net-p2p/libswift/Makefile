@@ -2,46 +2,49 @@
 # $FreeBSD$
 
 PORTNAME=		libswift
-PORTVERSION=	20160817
-PORTREVISION=	2
+PORTVERSION=		20190302
+PORTREVISION=		1
 CATEGORIES=		net-p2p
 
-MAINTAINER=		dch@skunkwerks.at
-COMMENT=	IETF Peer-to-Peer Streaming Peer Protocol implementation
+MAINTAINER=		dch@FreeBSD.org
+COMMENT=		IETF Peer-to-Peer Streaming Peer Protocol implementation
 
-LICENSE=	LGPL21
-
-BROKEN_mips=		fails to build: gmake: clang++: Command not found
-BROKEN_mips64=		fails to build: gmake: clang++: Command not found
-BROKEN_powerpc64=	fails to build: gmake: clang++: Command not found
+LICENSE=		LGPL21
 
 LIB_DEPENDS=		libevent.so:devel/libevent
 
+USES=			compiler:c++11-lang gmake ssl
+
 USE_GITHUB=		yes
-GH_TAGNAME=		dda307f
-
-USES=		gmake ssl
-
+GH_ACCOUNT=		skunkwerks
+GH_TAGNAME=		dc0cbcc
 PORTDOCS=		README.md
 
 SUB_FILES=		${PORTNAME}
 SUB_LIST+=		SWIFT_USER=${SWIFT_USER} \
-			SWIFT_GROUP=${SWIFT_GROUP} \
-			SWIFT_SHAREDIR=${SWIFT_SHAREDIR} \
-			SWIFT_PIDDIR=${SWIFT_PIDDIR}
+				SWIFT_GROUP=${SWIFT_GROUP} \
+				SWIFT_SHAREDIR=${SWIFT_SHAREDIR} \
+				SWIFT_PIDDIR=${SWIFT_PIDDIR}
 
 PLIST_SUB=		SWIFT_USER=${SWIFT_USER} \
-			SWIFT_GROUP=${SWIFT_GROUP} \
-			SWIFT_SHAREDIR=${SWIFT_SHAREDIR} \
-			SWIFT_PIDDIR=${SWIFT_PIDDIR}
+				SWIFT_GROUP=${SWIFT_GROUP} \
+				SWIFT_SHAREDIR=${SWIFT_SHAREDIR} \
+				SWIFT_PIDDIR=${SWIFT_PIDDIR}
 
-SWIFT_USER?=		www
-SWIFT_GROUP?=		www
+SWIFT_USER?=	www
+SWIFT_GROUP?=	www
 
-SWIFT_SHAREDIR=		/var/db/${PORTNAME}/
-SWIFT_PIDDIR=		/var/run/${PORTNAME}/
+SWIFT_SHAREDIR=	/var/db/${PORTNAME}/
+SWIFT_PIDDIR=	/var/run/${PORTNAME}/
 
-USE_RC_SUBR=		${PORTNAME}
+USE_RC_SUBR=	${PORTNAME}
+
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.pre.mk>
+
+post-patch:
+	${REINPLACE_CMD} -e 's/CXX=clang++/CXX?=clang++/' ${WRKSRC}/Makefile
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR} \
@@ -50,4 +53,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/swift ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,8 +1,7 @@
 bin/pea
-bin/pealauncher
 bin/peazip
 share/applications/peazip.desktop
-share/pixmaps/peazip.png
+share/icons/hicolor/256x256/apps/peazip.png
 %%DATADIR%%/peazip
 %%DATADIR%%/res/altconf.txt
 %%DATADIR%%/res/icons/PeaZip.ico
@@ -45,6 +44,7 @@ share/pixmaps/peazip.png
 %%DATADIR%%/res/lang/ru.txt
 %%DATADIR%%/res/lang/si.txt
 %%DATADIR%%/res/lang/sk.txt
+%%DATADIR%%/res/lang/sl.txt
 %%DATADIR%%/res/lang/sv.txt
 %%DATADIR%%/res/lang/tj.txt
 %%DATADIR%%/res/lang/tr.txt
@@ -52,7 +52,6 @@ share/pixmaps/peazip.png
 %%DATADIR%%/res/lang/uz.txt
 %%DATADIR%%/res/lang/vn.txt
 %%DATADIR%%/res/pea
-%%DATADIR%%/res/pealauncher
 %%DATADIR%%/res/themes/classic.theme.7z
 %%DATADIR%%/res/themes/experience.theme.7z
 %%DATADIR%%/res/themes/firecrystal.theme.7z

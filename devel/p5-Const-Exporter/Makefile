@@ -15,16 +15,17 @@ COMMENT=	Declare constants for export
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	p5-Const-Fast>=0:devel/p5-Const-Fast \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Const-Fast>=0:devel/p5-Const-Fast \
 		p5-List-AllUtils>=0.10:devel/p5-List-AllUtils \
 		p5-Package-Stash>=0:devel/p5-Package-Stash \
 		p5-Ref-Util>=0:devel/p5-Ref-Util
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-Hash-Objectify>=0:devel/p5-Hash-Objectify \
 		p5-Test-Most>=0:devel/p5-Test-Most
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -2,62 +2,46 @@
 # $FreeBSD$
 
 PORTNAME=	ncmpc
-PORTVERSION=	0.29
+PORTVERSION=	0.34
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://www.musicpd.org/download/ncmpc/0/
 
-MAINTAINER=	henrik@affekt.org
+MAINTAINER=	laurent@nuxi.ca
 COMMENT=	Ncurses client for the musicpd
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+		libmpdclient.so:audio/libmpdclient \
+		libpcre.so:devel/pcre
 
-USES=		iconv localbase meson ncurses pkgconfig tar:xz
-USE_GNOME=	glib20
+USES=		compiler:c++14-lang iconv localbase:ldflags meson ncurses \
+		pkgconfig tar:xz
 
-OPTIONS_DEFINE=	NLS LYRICS
-OPTIONS_DEFAULT=	LYRICS
-LYRICS_DESC=	Compile with lyrics screen
+OPTIONS_DEFINE=		COLORS DOCS LYRICS MANPAGES NLS
+OPTIONS_DEFAULT=	COLORS LYRICS MANPAGES
+OPTIONS_SUB=		yes
 
-PLIST_FILES=	bin/ncmpc \
-		man/man1/ncmpc.1.gz \
-		${EXAMPLESDIR}/config \
-		${EXAMPLESDIR}/keys \
-		${EXAMPLESDIR}/ncmpc.lirc
+COLORS_DESC=		Compile with color support
+LYRICS_DESC=		Compile with lyrics screen
 
-NLS_USES=		gettext
-NLS_MESON_TRUE=	nls
+COLORS_MESON_TRUE=	colors
 
-LANGUAGES=cs da de eo es fi fr gl he hu it ko nb nl pl pt_BR ru sk sv uk zh_CN
-.for language in ${LANGUAGES}
-NLS_PLIST_FILES+=share/locale/${language}/LC_MESSAGES/ncmpc.mo
-.endfor
+DOCS_IMPLIES=		MANPAGES
+DOCS_MESON_TRUE=	html_manual
 
 LYRICS_MESON_TRUE=	lyrics_screen
-LYRICS_PLIST_FILES=	lib/ncmpc/lyrics/10-hd.sh \
-		lib/ncmpc/lyrics/20-lyricwiki.rb
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/_build/ncmpc ${STAGEDIR}${PREFIX}/bin
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/config.sample ${STAGEDIR}${EXAMPLESDIR}/config
-	${INSTALL_DATA} ${WRKSRC}/doc/keys.sample ${STAGEDIR}${EXAMPLESDIR}/keys
-	${INSTALL_DATA} ${WRKSRC}/doc/ncmpc.lirc ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_MAN} ${WRKSRC}/doc/ncmpc.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+MANPAGES_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
+MANPAGES_MAKE_ENV=	PYTHON=${PYTHON_CMD} \
+			SPHINX=sphinx-build-${PYTHON_VER}
+MANPAGES_MESON_TRUE=	manual
+MANPAGES_USES=		python:build
 
-do-install-NLS-on:
-.for language in ${LANGUAGES}
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/locale/${language}/LC_MESSAGES
-	${INSTALL_DATA} ${WRKSRC}/po/${language}.po \
-		${STAGEDIR}${PREFIX}/share/locale/${language}/LC_MESSAGES/ncmpc.mo
-.endfor
-
-do-install-LYRICS-on:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/ncmpc/lyrics
-	(cd ${WRKSRC}/lyrics && ${INSTALL_SCRIPT} \
-		10-hd.sh 20-lyricwiki.rb \
-		${STAGEDIR}${PREFIX}/lib/ncmpc/lyrics)
+NLS_LDFLAGS=		-lintl
+NLS_MESON_ENABLED=	nls
+NLS_USES=		gettext
 
 .include <bsd.port.mk>

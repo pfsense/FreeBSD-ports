@@ -48,10 +48,10 @@ lib/libKF5XmlGui.so.5
 lib/libKF5XmlGui.so.%%KDE_FRAMEWORKS_VERSION%%
 lib/libexec/kf5/ksendbugmail
 %%QT_MKSPECDIR%%/modules/qt_KXmlGui.pri
+%%QT_PLUGINDIR%%/designer/kxmlgui5widgets.so
 share/locale/af/LC_MESSAGES/kxmlgui5.mo
 share/locale/ar/LC_MESSAGES/kxmlgui5.mo
 share/locale/as/LC_MESSAGES/kxmlgui5.mo
-share/locale/ast/LC_MESSAGES/kxmlgui5.mo
 share/locale/be/LC_MESSAGES/kxmlgui5.mo
 share/locale/be@latin/LC_MESSAGES/kxmlgui5.mo
 share/locale/bg/LC_MESSAGES/kxmlgui5.mo
@@ -148,3 +148,4 @@ share/locale/xh/LC_MESSAGES/kxmlgui5.mo
 share/locale/zh_CN/LC_MESSAGES/kxmlgui5.mo
 share/locale/zh_HK/LC_MESSAGES/kxmlgui5.mo
 share/locale/zh_TW/LC_MESSAGES/kxmlgui5.mo
+share/qlogging-categories5/kxmlgui.categories

@@ -15,14 +15,17 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libflatzebra-0.1.so:devel/flatzebra
 
-USES=		pkgconfig
+USES=		pkgconfig sdl
 USE_CXXSTD=	gnu++98
 USE_SDL=	mixer sdl
+
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTDOCS=	AUTHORS COPYING INSTALL NEWS README THANKS TODO
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|^pkgsounddir =.*|pkgsounddir = ${DATADIR}/sounds|' \

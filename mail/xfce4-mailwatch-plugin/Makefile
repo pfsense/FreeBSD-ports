@@ -3,26 +3,40 @@
 
 PORTNAME=	xfce4-mailwatch-plugin
 PORTVERSION=	1.2.0
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	mail xfce
-MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Mail notification applet for the Xfce panel
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 LIB_DEPENDS=	libgnutls.so:security/gnutls \
-		libgcrypt.so:security/libgcrypt
+		libgcrypt.so:security/libgcrypt \
+		libgpg-error.so:security/libgpg-error \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
+
+USES=		gettext-tools gmake gnome libtool pkgconfig tar:bzip2 \
+		xfce:gtk2 xorg
+USE_GNOME=	cairo glib20 gtk20 intltool
+USE_XFCE=	panel
+USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
-USES=		gettext gmake libtool pkgconfig xfce tar:bzip2
-USE_GNOME=	glib20 gtk20 intltool intlhack
-USE_XFCE=	panel
-USE_XORG=	x11
 
-CONFIGURE_ARGS=--enable-ipv6
+OPTIONS_DEFINE=		IPV6 NLS
+OPTIONS_SUB=		yes
+
+IPV6_CONFIGURE_ENABLE=	ipv6
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext-runtime
 
 post-patch:
 	${REINPLACE_CMD} -e 's|xfce-mail|mail-send|' \

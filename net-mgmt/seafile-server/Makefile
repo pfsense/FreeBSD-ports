@@ -22,15 +22,16 @@ LIB_DEPENDS=	libsearpc.so:devel/libsearpc \
 		libccnet.so:net-mgmt/ccnet-server \
 		libevent.so:devel/libevent \
 		libuuid.so:misc/e2fsprogs-libuuid \
-		libjansson.so:devel/jansson
+		libjansson.so:devel/jansson \
+		libonig.so:devel/oniguruma
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR} \
 		bash:shells/bash
 
 CONFLICTS=	seafile-[0-9]*
 
-USES=		autoreconf iconv libarchive libtool localbase mysql \
-		pathfix pgsql pkgconfig python:-2.7 shebangfix sqlite ssl
+USES=		autoreconf compiler:c11 gnome iconv libarchive libtool localbase mysql \
+		pathfix pgsql pkgconfig python:2.7 shebangfix sqlite ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	haiwen
 USE_GNOME=	glib20
@@ -62,13 +63,9 @@ FUSE_LIB_DEPENDS=	libfuse.so:sysutils/fusefs-libs
 
 NLS_USES=		gettext
 
-.include <bsd.port.options.mk>
-
 post-patch:
 # Fix P_KTHREAD r295435
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100097
 	${REINPLACE_CMD} 's/P_KTHREAD/P_KPROC/' ${WRKSRC}/lib/utils.c
-.endif
 	${REINPLACE_CMD} 's/python/${PYTHON_VERSION}/' \
 		${WRKSRC}/scripts/upgrade/regenerate_secret_key.sh
 	${REINPLACE_CMD} -e 's|^INSTALL.*|INSTALLPATH="${PREFIX}/${SEAFILE_SERVER}/seafile"|' \
@@ -100,8 +97,8 @@ post-install:
 		${STAGEDIR}${PREFIX}/${SEAFILE_SERVER}/upgrade
 	${INSTALL_DATA} ${WRKSRC}/doc/seafile-tutorial.doc \
 		${STAGEDIR}${PREFIX}/${SEAFILE_SERVER}/seafile/share/doc/seafile/
-	(cd ${WRKSRC}/scripts/upgrade && \
-		${COPYTREE_SHARE} sql ${STAGEDIR}${PREFIX}/${SEAFILE_SERVER}/upgrade)
+	(cd ${WRKSRC}/scripts && \
+		${COPYTREE_SHARE} "sql upgrade/sql" ${STAGEDIR}${PREFIX}/${SEAFILE_SERVER})
 
 makesum-all:
 .for PORT in net-mgmt/ccnet-server net-mgmt/seafile-server www/py-seafdav www/py-seafobj www/seahub

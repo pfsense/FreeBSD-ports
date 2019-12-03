@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hpl
-PORTVERSION=	2.1
-PORTREVISION=	9
+DISTVERSION=	2.3
+PORTREVISION=	2
 CATEGORIES=	benchmarks
 MASTER_SITES=	NETLIB/benchmark/hpl
 
@@ -11,7 +11,7 @@ MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	High Performance Computing Linpack Benchmark
 
 LIB_DEPENDS=	libblas.so:math/blas \
-		libmpich.so:net/mpich2
+		libmpich.so:net/mpich
 
 USES=		fortran
 USE_LDCONFIG=	yes
@@ -28,11 +28,13 @@ post-patch:
 		s|^CC[ ]*=.*$$|CC = ${CC}| ; \
 		s|^CCFLAGS[ ]*=.*$$|CCFLAGS = $$\(HPL_DEFS\) ${CFLAGS} -fomit-frame-pointer -funroll-loops| ; \
 		s|^LINKER[ ]*=.*$$|LINKER = ${FC}| ; \
+		s|^LINKFLAGS[ ]*=\(.*\)$$|LINKFLAGS =\1 ${LDFLAGS}| ; \
 		s|^ARCHIVER[ ]*=.*$$|ARCHIVER = ${AR}| ; \
 		s|ARCH[ )]|_&|g ; \
 		s|^HPL_OPTS[ ]*=.*$$|HPL_OPTS =| ; \
 		s|^LAlib[ ]*=.*$$|LAlib = $$\(LAdir\)/lib/libblas.a| ; \
-		s|libpmpich.a|libmpl.a -lpthread|' \
+		s|libmpich.a|libmpich.so -lpthread| ; \
+		s|libpmpich.a|libmpl.so -lpthread|' \
 		${WRKSRC}/setup/Make.${HPL_ARCH}
 	@${REINPLACE_CMD} -e 's|HPL\.dat|${PREFIX}/etc/${PORTNAME}/&|' \
 		${WRKSRC}/testing/ptest/HPL_pdinfo.c

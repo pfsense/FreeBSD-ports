@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	codesearch-py
-DISTVERSION=	g20180623
+DISTVERSION=	g20190528
 PORTEPOCH=	1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,7 @@ USE_PYTHON=	autoplist concurrent distutils
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	chromium
-GH_TAGNAME=	49bcab5
+GH_TAGNAME=	11b86e5
 
 NO_ARCH=	yes
 

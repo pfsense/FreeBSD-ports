@@ -14,6 +14,10 @@ COMMENT=	Simple battery meter
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		imake
 USE_XORG=	x11 xext
 WRKSRC=		${WRKDIR}/xbattbar-${PORTVERSION}

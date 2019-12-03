@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rawtherapee
-PORTVERSION=	5.4
-PORTREVISION=	0
-#DISTNAME=	${PORTNAME}-${PORTVERSION:R}-r${PORTVERSION:E}${DISTVERSIONSUFFIX}
+PORTVERSION=	5.7
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://rawtherapee.com/shared/source/
 
@@ -28,17 +27,28 @@ LIB_DEPENDS=	\
 		libsigc-2.0.so:devel/libsigc++20 \
 		libtiff.so:graphics/tiff
 
-USES=		cmake:outsource desktop-file-utils dos2unix \
+USES=		cmake desktop-file-utils compiler:gcc-c++11-lib gnome \
 		jpeg localbase:ldflags pkgconfig tar:xz
+
 DOS2UNIX_REGEX=	.*\.(cc|h)
-LDFLAGS+=	-Wl,--as-needed # fontconfig, freetype, gettext, libX11
-USE_GNOME=	gtkmm30
-USE_LDCONFIG=	yes
-# The -D_GLIBCXX_USE_C99 works around stoi not being defined
-# by default because the GCC headers believe FreeBSD insufficiently C99
-# compliant.
-CFLAGS+=	-I${LOCALBASE}/include -fPIC -D_GLIBCXX_USE_C99 -Wno-deprecated-declarations -Wno-unused-result
-LDFLAGS+=	-lpthread
+USE_GNOME=	gtkmm30 librsvg2
+USE_GCC=	9+
+USE_BINUTILS=	yes
+
+# gcc needs -flto=${MAKE_JOBS_NUMBER} for parallel link
+#   and does not understand -flto=thin
+#   
+# llvm/clang needs -flto=thin and will automatically parallelize the link
+#
+# As of 2019-09-29, this port is known to be micompiled by clang90 (SIGSEGV or SIBGUS)
+# FreeBSD 12.0's base clang 6.0.1 emits worse code with considerably higher
+# processing times.
+# so we shall stick to GCC 9.x for now
+_LTO_FLAGS=	-flto=${MAKE_JOBS_NUMBER}
+_AR=		${CC:S/gcc/gcc-ar/}
+_RANLIB=	${CC:S/gcc/gcc-ranlib/}
+CFLAGS+=	-I${LOCALBASE}/include -fPIC ${_LTO_FLAGS} ${_OPT_FLAGS}
+LDFLAGS+=	-Wl,--as-needed -lpthread ${_LTO_FLAGS} ${_OPT_FLAGS}
 CMAKE_ARGS+=	-DDOCDIR="${DOCSDIR}" \
 		-DCREDITSDIR="${DOCSDIR}" \
 		-DLICENCEDIR="${DOCSDIR}" \
@@ -46,6 +56,8 @@ CMAKE_ARGS+=	-DDOCDIR="${DOCSDIR}" \
 		-DDATADIR="${DATADIR}" \
 		-DCACHE_NAME_SUFFIX="" \
 		-Wno-dev \
+		-DCMAKE_AR:FILEPATH=${_AR} \
+		-DCMAKE_RANLIB:FILEPATH=${_RANLIB} \
 		-DCMAKE_POLICY_DEFAULT_CMP0056:STRING=NEW
 # 3.4.x: CMAKE_EXE_LINKER_FLAGS is not passed to TRY_COMPILE by default
 # any more. The CMP0056 policy must be explicitly set to NEW to ensure
@@ -54,47 +66,47 @@ CMAKE_ARGS+=	-DDOCDIR="${DOCSDIR}" \
 
 INSTALLS_ICONS=	yes
 
-.if defined(PACKAGE_BUILDING) && empty(CFLAGS:M-march*)
+.if defined(PACKAGE_BUILDING) && empty(CFLAGS:M-march*) && (${ARCH} == i386 || ${ARCH} == amd64 || ${ARCH} == aarch64)
+# this gets translated to -mtune=generic, see ${WRKSRC}/ProcessorTargets.cmake
+# and as of GCC 8.3, it appears that among FreeBSD's supported architectures,
+# only the three listed above support this GCC option.
 CMAKE_ARGS+=	-DPROC_TARGET_NUMBER="1"
+.endif
+
+.if "${WITH_CCACHE_BUILD}" == "yes" && !defined(NO_CCACHE) 
+CMAKE_ARGS+=	-DCMAKE_C_COMPILER_LAUNCHER=${LOCALBASE}/bin/ccache \
+		-DCMAKE_CXX_COMPILER_LAUNCHER=${LOCALBASE}/bin/ccache
 .endif
 
 RTDIR=		${PREFIX}/libdata/${PORTNAME}
 
-OPTIONS_DEFINE=		OPTIMIZED_CFLAGS OPENMP NATIVE
-OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS OPENMP
-OPENMP_DESC=		Enable multicore processing using OpenMP (amd64)
-OPTIMIZED_CFLAGS_DESC=	Use extra compiler optimizations (requires SSE2 support)
-NATIVE_DESC=		Use -march=native for compilation (do not use for generic packages!)
+OPTIONS_DEFINE=		DOCS NATIVE
+OPTIONS_DEFINE_i386=	DOCS NATIVE OPENMP
+OPTIONS_DEFINE_amd64=	DOCS NATIVE OPENMP
+OPTIONS_DEFAULT=	OPENMP
+OPENMP_DESC=		Enable OpenMP parallel processing (i386/amd64 only)
+NATIVE_DESC=		Use -march=native (avoid for generic packages!)
 
 OPENMP_CMAKE_BOOL=	OPTION_OMP
-
-OPTIMIZED_CFLAGS_CFLAGS=	-O3 -funroll-loops -msse2
-# GCC 5.4 includes -fexpensive-optimizations in -O2 already
 
 .include <bsd.port.options.mk>
 
 # -------------------------------------------------------------------
-#
 
-BROKEN_aarch64=		fails to build: gcc5: error: unrecognized command line option -msse2
-BROKEN_powerpc64=	fails to build: gcc6: error: unrecognized command line option -msse2
-
-.if ${OPSYS} == FreeBSD
-.if ${OSVERSION} >= 1200000
+.if (${OPSYS} == FreeBSD) && (${OSVERSION} >= 1300000)
 # don't waste everybody's time with Tier-2 and moving targets.
 # might add ARM64 or SPARC64 later on if they are established by the
 # time FreeBSD 12 is out.
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=Only amd64 is supported on non-released FreeBSD versions.
 .endif
-.endif
 
 .if ${PORT_OPTIONS:MNATIVE}
 CMAKE_ARGS+=	-DPROC_TARGET_NUMBER="2"
 .endif
 
-.if !empty(PORT_OPTIONS:MOPENMP) && ${ARCH} == "amd64"
-LIB_DEPENDS+=	libomp.so.0:devel/openmp
+.if !empty(PORT_OPTIONS:MOPENMP) && !empty(OPTIONS_DEFINE:MOPENMP)
+LIB_DEPENDS+=	libomp.so:devel/openmp
 OPENMP_FLAGS=	-lm -lomp
 LDFLAGS+=	${OPENMP_FLAGS}
 .endif
@@ -103,27 +115,19 @@ LDFLAGS+=	${OPENMP_FLAGS}
 STRIP=
 .endif
 
+_OPT_FLAGS=	-O3 -funroll-loops
+# GCC 5.4 includes -fexpensive-optimizations in -O2 already
+.if (${ARCH} == i386) || (${ARCH} == amd64)
+_OPT_FLAGS+=	-msse2
+.endif
+
 .if ${ARCH} == i386
-USES+=		compiler:c++11-lib
-# If we were to use GCC on i386, we'd need to use -mstackrealign
-# or similar options, else we get SIGBUS when SSE2 is enabled due to
-# improper alignment. Base clang is good enough though, i386 does not
-# support OpenMP, and those seeking ultimate performance need to use
-# amd64. Workaround implemented below.
-.else
-USES+=		compiler:c++14-lang
+_OPT_FLAGS+=	-mstackrealign
 .endif
 
 # -------------------------------------------------------------------
 
 .include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-# work around compiler faults
-.if ${ARCH} == i386
-CFLAGS+=	-mstackrealign
-.endif
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's#DESTINATION "$${CMAKE_INSTALL_PREFIX}/share/man/man1"#DESTINATION "${MANPREFIX}/man/man1/"#' \
@@ -133,7 +137,7 @@ post-patch:
 # shared libraries (this hinges on proper RPATH setting and propagation)
 post-install:
 	@${ECHO_MSG} "===> Running smoke tests"
-	@TMP=$$(mktemp -d -t ${PORTNAME}) && trap "rc=$$? ; rm -rf \"$$TMP\" ; exit \$$rc" 0 && \
+	@TMP=$$(mktemp -d -t ${PORTNAME}) && trap "rc=$$? ; ${RM} -rf \"$$TMP\" ; exit \$$rc" 0 && \
 	${SETENV} LANG= LC_ALL=C LANGUAGE= DISPLAY= HOME="$$TMP" ${STAGEDIR}${PREFIX}/bin/rawtherapee --help 2>&1 \
 	    | ${EGREP} -q "RawTherapee, version ${PKGVERSION:C/_.*//:C/,.*//}|cannot open display:" && \
 	${SETENV} LANG= LC_ALL=C LANGUAGE= DISPLAY= HOME="$$TMP" ${STAGEDIR}${PREFIX}/bin/rawtherapee-cli --version 2>&1 \

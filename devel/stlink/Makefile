@@ -10,7 +10,7 @@ COMMENT=	STM32 ST-Link JTAG variant tools
 
 LICENSE=	BSD3CLAUSE
 
-OPTIONS_DEFINE=		GTK3
+OPTIONS_DEFINE=		GTK3 DOCS
 OPTIONS_SUB=		yes
 GTK3_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-pacth-turn-off-gtk
 GTK3_USE=		GNOME=gtk30
@@ -25,7 +25,7 @@ PORTDOCS=	README.md tested-boards.md tutorial.md
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "i386" || ${ARCH} == "powerpc" || ${ARCH} == "arm" || ${ARCH} == "armv6" || ${ARCH} == "mips"
+.if ! ${ARCH:M*64*}
 EXTRA_PATCHES+=	${FILESDIR}/extra-pacth-32bit
 .endif
 

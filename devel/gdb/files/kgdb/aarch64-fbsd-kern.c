@@ -73,7 +73,7 @@ aarch64_fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
   struct gdbarch *gdbarch = get_frame_arch (this_frame);
   enum bfd_endian byte_order = gdbarch_byte_order (gdbarch);
   struct trad_frame_cache *cache;
-  CORE_ADDR addr, func, pc, sp;
+  CORE_ADDR func, pc, sp;
   const char *name;
   int i;
 
@@ -180,6 +180,11 @@ aarch64_fbsd_kernel_init_abi (struct gdbarch_info info, struct gdbarch *gdbarch)
 
   fbsd_vmcore_set_supply_pcb (gdbarch, aarch64_fbsd_supply_pcb);
   fbsd_vmcore_set_cpu_pcb_addr (gdbarch, kgdb_trgt_stop_pcb);
+
+  /* The kernel is linked at a virtual address with the upper 4 bits
+     set, so all 64 bits of virtual addresses need to be treated as
+     significant.  */
+  set_gdbarch_significant_addr_bit (gdbarch, 64);
 }
 
 /* Provide a prototype to silence -Wmissing-prototypes.  */

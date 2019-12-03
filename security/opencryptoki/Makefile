@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	opencryptoki
-PORTVERSION=	3.6
+PORTVERSION=	3.11.0
 PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	security
-MASTER_SITES=	SF
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Open PKCS\#11 implementation library
@@ -17,12 +17,15 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libtspi.so:security/trousers
 
-USES=		alias autoreconf gmake libtool ssl tar:tgz
+USES=		alias autoreconf gmake libtool localbase ssl tar:tgz
+USE_GCC=	yes
+USE_OPENLDAP=	yes
 USE_LDCONFIG=	${PREFIX}/lib/opencryptoki
-WRKSRC=		${WRKDIR}/${PORTNAME}
+USE_GITHUB=	yes
 INSTALL_TARGET=	install-strip
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-swtok --enable-tpmtok \
+		--enable-icsftok \
 		--disable-crtok --disable-aeptok \
 		--disable-ccatok --disable-bcomtok \
 		--disable-pkcscca_migrate \
@@ -33,19 +36,12 @@ CONFIGURE_ARGS=	--enable-swtok --enable-tpmtok \
 		--with-pkcs11user=${USERS} \
 		--with-pkcs11group=${GROUPS} \
 		ac_cv_path_CHGRP=true
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 USE_RC_SUBR=	pkcsslotd
 SUB_FILES=	pkg-message
 SUB_LIST=	USERS="${USERS}" GROUPS="${GROUPS}"
 PLIST_SUB=	USERS="${USERS}" GROUPS="${GROUPS}"
 USERS=		_pkcs11
 GROUPS=		_pkcs11
-
-OPTIONS_DEFINE=	LDAP
-OPTIONS_SUB=	yes
-LDAP_CONFIGURE_ENABLE=	icsf
-LDAP_USE=	OPENLDAP=yes
 
 post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/opencryptoki.conf \

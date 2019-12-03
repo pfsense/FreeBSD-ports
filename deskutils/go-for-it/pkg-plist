@@ -8,14 +8,17 @@ share/icons/hicolor/48x48/apps/go-for-it.svg
 share/icons/hicolor/64x64/apps/go-for-it.svg
 share/icons/hicolor/128x128/apps/go-for-it.svg
 share/icons/hicolor/24x24/actions/go-for-it-open-menu-fallback.svg
-%%DATADIR%%/style/go-for-it-3.10.css
-%%DATADIR%%/style/go-for-it-3.10-dark.css
+share/icons/hicolor/16x16/actions/go-for-it-go-to-done.svg
+share/icons/hicolor/16x16/actions/go-for-it-go-to-list-symbolic.svg
+share/icons/hicolor/24x24/actions/go-for-it-go-to-done.svg
+share/icons/hicolor/24x24/actions/go-for-it-go-to-list-symbolic.svg
 %%DATADIR%%/style/widgets-3.10.css
-%%DATADIR%%/style/go-for-it-3.20.css
-%%DATADIR%%/style/go-for-it-3.20-dark.css
 %%DATADIR%%/style/widgets-3.20.css
-%%DATADIR%%/style/colors.css
-%%DATADIR%%/style/colors-dark.css
+%%DATADIR%%/style/palettes/elementary-dark.css
+%%DATADIR%%/style/palettes/elementary.css
+%%DATADIR%%/style/palettes/theme-based.css
+%%DATADIR%%/style/widgets-minimal-3.10.css
+%%DATADIR%%/style/widgets-minimal-3.20.css
 share/locale/aa/LC_MESSAGES/go-for-it.mo
 share/locale/ab/LC_MESSAGES/go-for-it.mo
 share/locale/ae/LC_MESSAGES/go-for-it.mo
@@ -69,7 +72,6 @@ share/locale/fj/LC_MESSAGES/go-for-it.mo
 share/locale/fo/LC_MESSAGES/go-for-it.mo
 share/locale/fr/LC_MESSAGES/go-for-it.mo
 share/locale/fr_CA/LC_MESSAGES/go-for-it.mo
-share/locale/fr_FR/LC_MESSAGES/go-for-it.mo
 share/locale/fy/LC_MESSAGES/go-for-it.mo
 share/locale/ga/LC_MESSAGES/go-for-it.mo
 share/locale/gd/LC_MESSAGES/go-for-it.mo
@@ -134,7 +136,6 @@ share/locale/ms/LC_MESSAGES/go-for-it.mo
 share/locale/mt/LC_MESSAGES/go-for-it.mo
 share/locale/my/LC_MESSAGES/go-for-it.mo
 share/locale/na/LC_MESSAGES/go-for-it.mo
-share/locale/nb/LC_MESSAGES/go-for-it.mo
 share/locale/nd/LC_MESSAGES/go-for-it.mo
 share/locale/ne/LC_MESSAGES/go-for-it.mo
 share/locale/ng/LC_MESSAGES/go-for-it.mo
@@ -209,7 +210,6 @@ share/locale/yi/LC_MESSAGES/go-for-it.mo
 share/locale/yo/LC_MESSAGES/go-for-it.mo
 share/locale/za/LC_MESSAGES/go-for-it.mo
 share/locale/zh/LC_MESSAGES/go-for-it.mo
-share/locale/zh_CN/LC_MESSAGES/go-for-it.mo
 share/locale/zh_HK/LC_MESSAGES/go-for-it.mo
 share/locale/zh_TW/LC_MESSAGES/go-for-it.mo
 share/locale/zu/LC_MESSAGES/go-for-it.mo

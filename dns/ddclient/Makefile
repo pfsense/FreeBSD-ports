@@ -2,26 +2,30 @@
 # $FreeBSD$
 
 PORTNAME=	ddclient
-PORTVERSION=	3.8.3
-PORTREVISION=	3
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.8.3-104
+DISTVERSIONSUFFIX=	-gec2acfb
+PORTREVISION=	2
 CATEGORIES=	dns
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	mjl@luckie.org.nz
 COMMENT=	Update dynamic DNS entries
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-NO_BUILD=	yes
+RUN_DEPENDS=	p5-Data-Validate-IP>0:net-mgmt/p5-Data-Validate-IP
 
 USES=		perl5 tar:bzip2
+USE_GITHUB=	yes
 USE_PERL5=	run
-
 USE_RC_SUBR=	${PORTNAME}
 
+NO_ARCH=	yes
+NO_BUILD=	yes
 SUB_FILES=	pkg-message ddclient_force
 
-OPTIONS_DEFINE=	SSL
+OPTIONS_DEFINE=	SSL DOCS
 OPTIONS_DEFAULT=SSL
 
 SSL_RUN_DEPENDS=ca_root_nss>0:security/ca_root_nss \
@@ -30,7 +34,7 @@ SSL_RUN_DEPENDS=ca_root_nss>0:security/ca_root_nss \
 PORTDOCS=	COPYRIGHT ChangeLog README.cisco README.ssl README.md \
 		sample-etc_cron.d_ddclient sample-etc_dhclient-exit-hooks \
 		sample-etc_dhcpc_dhcpcd-eth0.exe sample-etc_ppp_ip-up.local
-PLIST_FILES=	"@sample etc/ddclient.conf.sample" etc/periodic/daily/ddclient_force \
+PLIST_FILES=	"@sample(,,600) etc/ddclient.conf.sample" etc/periodic/daily/ddclient_force \
 		sbin/ddclient
 
 post-patch:
@@ -38,6 +42,8 @@ post-patch:
 		's|/usr|${PREFIX}|g'
 	@${REINPLACE_CMD} -e 's|%%ETCDIR%%|${PREFIX}/etc| ; \
 		 s|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/ddclient
+	@${REINPLACE_CMD} -e '/^\#\!\/usr\/local\/local/d' \
+		${WRKSRC}/ddclient
 
 do-install:
 	(cd ${WRKSRC} && ${INSTALL_DATA} sample-etc_ddclient.conf \

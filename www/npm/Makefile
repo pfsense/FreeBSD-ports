@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	npm
-PORTVERSION=	5.10.0
+PORTVERSION=	6.11.3
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/sunpoet
 
@@ -14,19 +14,20 @@ LICENSE_FILE=	${WRKSRC}/lib/node_modules/npm/LICENSE
 
 RUN_DEPENDS=	gmake:devel/gmake
 
-CONFLICTS_INSTALL?=	npm-node4 npm-node6 npm-node8 npm2 npm3 npm4
-
-OPTIONS_SINGLE=	BACKEND
-OPTIONS_SINGLE_BACKEND=	NODE NODE6 NODE8
-OPTIONS_DEFAULT=NODE
-NODE_DESC=	Use Node.js 9.x/10.x (www/node) as backend
-NODE6_DESC=	Use Node.js 6.x (www/node6) as backend
-NODE8_DESC=	Use Node.js 8.x (www/node8) as backend
+USES=		cpe python:2.7,run shebangfix tar:xz
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 REINPLACE_ARGS=	-i ''
-USES=		cpe python:2.7,run shebangfix tar:xz
+
+CONFLICTS_INSTALL?=	npm-node10 npm-node8
+
+OPTIONS_SINGLE=	BACKEND
+OPTIONS_SINGLE_BACKEND=	NODE NODE10 NODE8
+OPTIONS_DEFAULT=NODE
+NODE_DESC=	Use Node.js 11.x/12.x (www/node) as backend
+NODE10_DESC=	Use Node.js 10.x (www/node10) as backend
+NODE8_DESC=	Use Node.js 8.x (www/node8) as backend
 
 CPE_VENDOR=	npmjs
 CPE_PRODUCT=	node_packaged_modules
@@ -35,12 +36,12 @@ SHEBANG_GLOB=	*.py
 SHEBANG_FILES=	lib/node_modules/npm/node_modules/node-gyp/gyp/samples/samples
 
 NODE_RUN_DEPENDS=	node>=0.8.0:www/node
-NODE6_RUN_DEPENDS=	node6>=0.8.0:www/node6
+NODE10_RUN_DEPENDS=	node10>=0.8.0:www/node10
 NODE8_RUN_DEPENDS=	node8>=0.8.0:www/node8
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "i386"
+.if ${ARCH} == i386
 # Workaround for kernel bug 178881
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-bug-178881
 .endif

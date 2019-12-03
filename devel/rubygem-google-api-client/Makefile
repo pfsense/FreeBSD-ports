@@ -1,30 +1,31 @@
 # $FreeBSD$
 
 PORTNAME=	google-api-client
-PORTVERSION=	0.23.0
+PORTVERSION=	0.31.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Client for accessing Google APIs
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-addressable>=2.5.1:www/rubygem-addressable \
-		rubygem-googleauth>=0.5:security/rubygem-googleauth \
-		rubygem-httpclient>=2.8.1:www/rubygem-httpclient \
-		rubygem-mime-types>=3.0:misc/rubygem-mime-types \
-		rubygem-representable>=3.0:textproc/rubygem-representable \
-		rubygem-retriable>=2.0:devel/rubygem-retriable
+RUN_DEPENDS=	rubygem-addressable>=2.5.1<3:www/rubygem-addressable \
+		rubygem-googleauth>=0.5<0.10.0:security/rubygem-googleauth \
+		rubygem-httpclient>=2.8.1<3.0:www/rubygem-httpclient \
+		rubygem-mini_mime>=1.0<2:mail/rubygem-mini_mime \
+		rubygem-representable>=3.0<4:textproc/rubygem-representable \
+		rubygem-retriable>=2.0<4.0:devel/rubygem-retriable \
+		rubygem-signet>=0.10<1:security/rubygem-signet
 
-# bin/generate-api
-CONFLICTS_INSTALL=	rubygem-google-api-client010
-
-NO_ARCH=	yes
-USES=		gem
+USES=		gem shebangfix
 USE_RUBY=	yes
 
+NO_ARCH=	yes
+
 PLIST_FILES=	bin/generate-api
+
+SHEBANG_FILES=	.kokoro/build.sh
 
 .include <bsd.port.mk>

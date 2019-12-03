@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	teamspeak3-server
-PORTVERSION=	3.2.0
+PORTVERSION=	3.9.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	audio net
-MASTER_SITES=	http://dl.4players.de/ts/releases/${PORTVERSION}/ \
-		http://teamspeak.gameserver.gamed.de/ts3/releases/${PORTVERSION}/
+MASTER_SITES=	https://files.teamspeak-services.com/releases/server/${PORTVERSION}/
 DISTNAME=	${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}-${PORTVERSION}
 
 MAINTAINER=	ultima@FreeBSD.org
@@ -55,12 +55,6 @@ MYSQL_VARS=	SUB_LIST+=MYSQL=mysql
 MYSQL_VARS_OFF=	SUB_LIST+=MYSQL=
 
 .include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100000 && ${OSVERSION} < 1100507
-SUB_LIST+=	CD="cd \$$db_dir"
-.else
-SUB_LIST+=	CD=
-.endif
 
 .if ${ARCH} == "i386"
 TEAMSPEAK_ARCH=	x86

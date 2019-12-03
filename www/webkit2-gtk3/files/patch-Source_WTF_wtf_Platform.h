@@ -1,4 +1,4 @@
---- Source/WTF/wtf/Platform.h.orig	2018-02-20 09:12:50 UTC
+--- Source/WTF/wtf/Platform.h.orig	2019-01-14 07:57:51 UTC
 +++ Source/WTF/wtf/Platform.h
 @@ -182,6 +182,7 @@
  #elif defined(__ARM_ARCH_6__) \

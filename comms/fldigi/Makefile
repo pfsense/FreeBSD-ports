@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	fldigi
-PORTVERSION=	4.0.17
+PORTVERSION=	4.1.08
+PORTREVISION=	1
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}
 
@@ -22,20 +23,22 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs\
 		libsamplerate.so:audio/libsamplerate
 
 USES=		autoreconf compiler:c++11-lib jpeg gmake perl5 pkgconfig shebangfix
+
 USE_CXXSTD=	gnu++0x
 GNU_CONFIGURE=	yes
-USE_XORG=	x11 xft xext xfixes xcursor xinerama
+USE_XORG=	x11 xft xext xfixes xcursor xinerama xrender
 CONFIGURE_ENV=	FLTK_CONFIG="${LOCALBASE}/bin/fltk-config" \
 		    EXTRA_LIBS="-lexecinfo"
 
-OPTIONS_DEFINE=	NATIVE_OPT FLARQ PULSEAUDIO HAMLIB NLS DOCS
+OPTIONS_DEFINE=	NATIVE_OPT FLARQ OSS PULSEAUDIO HAMLIB NLS DOCS
 
 NATIVE_OPT_DESC=	Enable Native Optimizations
 FLARQ_DESC=		Compile flarq
+OSS_DESC=		Support OSS
 PULSEAUDIO_DESC=	PulseAudio support
 HAMLIB_DESC=		Support rig control via hamlib
 
-OPTIONS_DEFAULT=	FLARQ HAMLIB
+OPTIONS_DEFAULT=	FLARQ OSS HAMLIB
 OPTIONS_SUB=		yes
 
 NATIVE_OPT_CONFIGURE_ON=	--enable-optimizations=native
@@ -51,9 +54,8 @@ NLS_USES=			gettext
 
 # Always need asciidoc for man pages
 CONFIGURE_ARGS+=--with-asciidoc
-# Upstream as of 4.0.5 always uses portaudio and sndfile now
-# Which makes fldigi configure options portaudio & oss useless
-CONFIGURE_ARGS+=--with-portaudio --disable-oss
+# Always need soundfile
+CONFIGURE_ARGS+=--with-sndfile
 
 post-configure:
 # force rebuild of man pages

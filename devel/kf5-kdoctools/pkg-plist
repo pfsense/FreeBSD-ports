@@ -7,6 +7,8 @@ lib/cmake/KF5DocTools/KF5DocToolsConfigVersion.cmake
 lib/cmake/KF5DocTools/KF5DocToolsMacros.cmake
 lib/cmake/KF5DocTools/KF5DocToolsTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/KF5DocTools/KF5DocToolsTargets.cmake
+lib/cmake/KF5DocTools/KF5DocToolsToolsTargets-%%CMAKE_BUILD_TYPE%%.cmake
+lib/cmake/KF5DocTools/KF5DocToolsToolsTargets.cmake
 lib/libKF5DocTools.so
 lib/libKF5DocTools.so.5
 lib/libKF5DocTools.so.%%KDE_FRAMEWORKS_VERSION%%
@@ -22,6 +24,7 @@ man/es/man1/checkXML5.1.gz
 man/es/man7/kf5options.7.gz
 man/es/man7/qt5options.7.gz
 man/es/man1/meinproc5.1.gz
+man/id/man1/checkXML5.1.gz
 man/it/man1/checkXML5.1.gz
 man/it/man7/kf5options.7.gz
 man/it/man7/qt5options.7.gz
@@ -318,6 +321,7 @@ share/kf5/kdoctools/customization/eo/lang.entities
 share/kf5/kdoctools/customization/eo/strings.entities
 share/kf5/kdoctools/customization/eo/user.entities
 share/kf5/kdoctools/customization/es/catalog.xml
+share/kf5/kdoctools/customization/es/entities/ccbysa4-notice.docbook
 share/kf5/kdoctools/customization/es/entities/fdl-notice.docbook
 share/kf5/kdoctools/customization/es/entities/gpl-notice.docbook
 share/kf5/kdoctools/customization/es/entities/help-menu.docbook
@@ -327,6 +331,7 @@ share/kf5/kdoctools/customization/es/entities/lgpl-notice.docbook
 share/kf5/kdoctools/customization/es/entities/report-bugs.docbook
 share/kf5/kdoctools/customization/es/entities/underArtisticLicense.docbook
 share/kf5/kdoctools/customization/es/entities/underBSDLicense.docbook
+share/kf5/kdoctools/customization/es/entities/underCCBYSA4.docbook
 share/kf5/kdoctools/customization/es/entities/underFDL.docbook
 share/kf5/kdoctools/customization/es/entities/underGPL.docbook
 share/kf5/kdoctools/customization/es/entities/underLGPL.docbook
@@ -460,6 +465,7 @@ share/kf5/kdoctools/customization/hu/lang.entities
 share/kf5/kdoctools/customization/hu/strings.entities
 share/kf5/kdoctools/customization/hu/user.entities
 share/kf5/kdoctools/customization/id/catalog.xml
+share/kf5/kdoctools/customization/id/entities/ccbysa4-notice.docbook
 share/kf5/kdoctools/customization/id/entities/fdl-notice.docbook
 share/kf5/kdoctools/customization/id/entities/gpl-notice.docbook
 share/kf5/kdoctools/customization/id/entities/help-menu.docbook
@@ -469,8 +475,10 @@ share/kf5/kdoctools/customization/id/entities/lgpl-notice.docbook
 share/kf5/kdoctools/customization/id/entities/report-bugs.docbook
 share/kf5/kdoctools/customization/id/entities/underArtisticLicense.docbook
 share/kf5/kdoctools/customization/id/entities/underBSDLicense.docbook
+share/kf5/kdoctools/customization/id/entities/underCCBYSA4.docbook
 share/kf5/kdoctools/customization/id/entities/underFDL.docbook
 share/kf5/kdoctools/customization/id/entities/underGPL.docbook
+share/kf5/kdoctools/customization/id/entities/underLGPL.docbook
 share/kf5/kdoctools/customization/id/entities/underX11License.docbook
 share/kf5/kdoctools/customization/id/entities/update-doc.docbook
 share/kf5/kdoctools/customization/id/lang.entities
@@ -951,6 +959,7 @@ share/kf5/kdoctools/customization/xsl/et.xml
 share/kf5/kdoctools/customization/xsl/fr.xml
 share/kf5/kdoctools/customization/xsl/gl.xml
 share/kf5/kdoctools/customization/xsl/hu.xml
+share/kf5/kdoctools/customization/xsl/id.xml
 share/kf5/kdoctools/customization/xsl/it.xml
 share/kf5/kdoctools/customization/xsl/lt.xml
 share/kf5/kdoctools/customization/xsl/nds.xml
@@ -1022,8 +1031,8 @@ share/kf5/kdoctools/customization/zh-TW/lang.entities
 share/kf5/kdoctools/customization/zh-TW/strings.entities
 share/kf5/kdoctools/customization/zh-TW/user.entities
 share/locale/af/LC_MESSAGES/kdoctools5.mo
-share/locale/ar/LC_MESSAGES/kdoctools5.mo
 share/locale/ast/LC_MESSAGES/kdoctools5.mo
+share/locale/ar/LC_MESSAGES/kdoctools5.mo
 share/locale/be/LC_MESSAGES/kdoctools5.mo
 share/locale/bg/LC_MESSAGES/kdoctools5.mo
 share/locale/bn/LC_MESSAGES/kdoctools5.mo
@@ -1069,6 +1078,7 @@ share/locale/lt/LC_MESSAGES/kdoctools5.mo
 share/locale/lv/LC_MESSAGES/kdoctools5.mo
 share/locale/mai/LC_MESSAGES/kdoctools5.mo
 share/locale/mk/LC_MESSAGES/kdoctools5.mo
+share/locale/ml/LC_MESSAGES/kdoctools5.mo
 share/locale/mr/LC_MESSAGES/kdoctools5.mo
 share/locale/ms/LC_MESSAGES/kdoctools5.mo
 share/locale/nb/LC_MESSAGES/kdoctools5.mo

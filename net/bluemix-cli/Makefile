@@ -6,13 +6,17 @@ CATEGORIES=	net
 MASTER_SITES=	http://public.dhe.ibm.com/cloud/${PORTNAME:C/-.*//}/cli/${PORTNAME}/
 DISTNAME=	Bluemix_CLI_${PORTVERSION}_386
 
-MAINTAINER=	avilla@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bluemix command line interface
 
 LICENSE=	BLUEMIX
 LICENSE_NAME=	IBM Bluemix Service Description
 LICENSE_FILE=	${WRKSRC}/bin/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 RUN_DEPENDS=	cf:net/cf
 

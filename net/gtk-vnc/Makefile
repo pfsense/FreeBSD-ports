@@ -3,6 +3,7 @@
 
 PORTNAME=	gtk-vnc
 PORTVERSION=	0.7.2
+PORTREVISION=	1
 CATEGORIES=	net gnome
 MASTER_SITES=	GNOME
 
@@ -19,7 +20,7 @@ LIB_DEPENDS=	libgnutls.so:security/gnutls \
 		libsasl2.so:security/cyrus-sasl2
 
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool introspection:build
-USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool localbase pathfix pkgconfig python tar:xz
 USE_XORG=	x11
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

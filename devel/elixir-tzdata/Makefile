@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	tzdata
-PORTVERSION=	0.5.16
+PORTVERSION=	0.5.19
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	elixir-
@@ -18,6 +18,8 @@ GH_ACCOUNT=	lau
 MIX_BUILD_DEPS=	www/elixir-httpoison \
 		www/erlang-hackney
 MIX_REWRITE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	@${RM} ${WRKSRC}/priv/release_ets/.gitkeep

@@ -1,9 +1,7 @@
-# Created by: mat
 # $FreeBSD$
 
 PORTNAME=	perl
 DISTVERSION=	${PERL_VERSION}
-PORTREVISION=	0
 CATEGORIES=	lang devel perl5
 MASTER_SITES=	CPAN/../../src/5.0 CPAN/../../authors/id/X/XS/XSAWYERX/
 DIST_SUBDIR=	perl
@@ -17,8 +15,8 @@ LICENSE_FILE_ART10=	${WRKSRC}/Artistic
 LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
 
 # Uncomment when the default Perl is switched to 5.30
-#DEPRECATED=	Support end three years after .0 release, please upgrade to a more recent version of Perl
-#EXPIRATION_DATE=	2021-06-22
+DEPRECATED=	Support end three years after .0 release, please upgrade to a more recent version of Perl
+EXPIRATION_DATE=	2021-06-22
 
 TEST_TARGET=	test_harness
 TEST_ENV=	${MAKE_ENV} TEST_JOBS=${MAKE_JOBS_NUMBER} \
@@ -28,7 +26,6 @@ OPTIONS_DEFINE=	DEBUG GDBM PERL_64BITINT MULTIPLICITY SITECUSTOMIZE \
 		THREADS PERL_MALLOC DTRACE DOT_INC
 OPTIONS_DEFAULT=	PERL_64BITINT THREADS MULTIPLICITY DTRACE
 
-OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
@@ -255,7 +252,10 @@ post-install:
 	${MKDIR} ${STAGEDIR}${SITE_MAN1} ${STAGEDIR}${SITE_MAN3}
 	${MKDIR} ${STAGEDIR}${SITE_ARCH}/auto
 	${MKDIR} ${STAGEDIR}${SITE_PERL}/auto
-	${LN} ${STAGEDIR}${PREFIX}/bin/perl${PERL_VERSION} ${STAGEDIR}${PREFIX}/bin/perl5
+.if defined(IAMDEFAULTPERL)
+	${LN} -sf perl ${STAGEDIR}${PREFIX}/bin/perl5
+	${LN} -sf perl ${STAGEDIR}${PREFIX}/bin/perl${PERL_VERSION}
+.endif
 	${LN} -sf libperl.so.${PERL_VERSION} ${STAGEDIR}${PREFIX}/${_ARCH_LIB}/CORE/libperl.so
 	${LN} -sf libperl.so.${PERL_VERSION} ${STAGEDIR}${PREFIX}/${_ARCH_LIB}/CORE/libperl.so.${PERL_VER}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/perl${PERL_VERSION}

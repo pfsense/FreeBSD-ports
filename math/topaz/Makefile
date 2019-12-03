@@ -3,7 +3,7 @@
 
 PORTNAME=	topaz
 DISTVERSION=	3_41
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://hp.vector.co.jp/authors/VA007663/topaz/bin/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-src
@@ -18,6 +18,8 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 USES=		ncurses readline
 USE_XORG=	x11
 MAKEFILE=	Makefile.freebsd
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
 	${LN} -sf ${PREFIX}/lib/topaz/topaz.sh ${STAGEDIR}${PREFIX}/bin/topaz

@@ -3,7 +3,7 @@
 
 PORTNAME=	xchm
 PORTVERSION=	1.23
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}/xCHM/${PORTNAME}-${PORTVERSION}
 
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libchm.so:misc/chmlib
 
 GNU_CONFIGURE=	yes
-USES=		localbase
+USES=		compiler:c++11-lang localbase
 USE_WX=		2.8
 WX_CONF_ARGS=	absolute
 LDFLAGS+=	-lpthread

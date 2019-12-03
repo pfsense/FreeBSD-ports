@@ -3,7 +3,7 @@
 
 PORTNAME=	pgaccess
 PORTVERSION=	1.00.20140902
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	databases tcl tk
 MASTER_SITES=	http://bsdforge.com/projects/source/databases/pgaccess/
 
@@ -14,7 +14,7 @@ LICENSE=	BSD4CLAUSE
 
 RUN_DEPENDS=	${LOCALBASE}/lib/pgtcl/pkgIndex.tcl:databases/pgtcl
 
-USES=		pgsql tk:85+ tar:xz
+USES=		pgsql tk tar:xz
 
 NO_ARCH=	yes
 

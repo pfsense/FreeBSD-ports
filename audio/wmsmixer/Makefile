@@ -13,6 +13,10 @@ COMMENT=	Audio mixer for the WindowMaker dock
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		alias imake
 USE_XORG=	xpm
 MAKE_ARGS=	CC="${CXX}" CFLAGS="${CXXFLAGS}"

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	icestorm
-PORTVERSION=	g20180310
+PORTVERSION=	g20190526
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	jsorocil@gmail.com
@@ -11,15 +12,17 @@ COMMENT=	IceStorm tools for Lattice iCE40 FPGAs
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libftdi1.so:devel/libftdi1
+LIB_DEPENDS=	libftdi1.so:devel/libftdi1 \
+		libboost_python${PYTHON_SUFFIX}.so:devel/boost-python-libs
 
-USES=		gmake python:3.3+ shebangfix pkgconfig
+USES=		compiler:c++11-lang gmake pkgconfig python:3.3+ shebangfix
+
 SHEBANG_FILES=	${WRKSRC}/icebox/*.py \
 		${WRKSRC}/icebox/Makefile
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	cliffordwolf
-GH_TAGNAME=	4476d83f76fa0222be0b691fe27c1e0228266f82
+GH_TAGNAME=	710470f9
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 

@@ -2,7 +2,7 @@
 
 PORTNAME=		ldb
 PORTVERSION=		1.2.3
-PORTREVISION=		0
+PORTREVISION=		3
 PORTEPOCH=		0
 CATEGORIES=		databases
 MASTER_SITES=		SAMBA
@@ -18,20 +18,20 @@ IGNORE_NONTHREAD_PYTHON=needs port lang/python${PYTHON_SUFFIX} to be build with 
 BUILD_DEPENDS=		${LDB_DEPENDS}
 RUN_DEPENDS=		${LDB_DEPENDS}
 
-LDB_DEPENDS=		talloc>=2.1.10:devel/talloc \
-			tevent>=0.9.34:devel/tevent \
-			tdb>=1.3.15:databases/tdb \
+LDB_DEPENDS=		talloc1>=2.1.10:devel/talloc1 \
+			tevent1>=0.9.34:devel/tevent1 \
+			tdb1>=1.3.15:databases/tdb1 \
 			cmocka>=1.1.1:sysutils/cmocka \
 			popt>=0:devel/popt
 
-CONFLICTS_INSTALL=	ldb-1.1.* ldb13-1.3.*
+CONFLICTS_INSTALL=	ldb-1.1.* ldb1[3-6]-1.*
 
 #FLAVORS=		default nopython
 #nopython_PKGNAMESUFFIX=	-nopython
 #nopython_CONFLICTS=	ldb
 #default_CONFLICTS=	ldb-nopython
 
-USES=			compiler pkgconfig waf
+USES=			compiler:c++11-lang pkgconfig waf
 USE_LDCONFIG=		yes
 WAF_CMD=		buildtools/bin/waf
 CONFIGURE_LOG=		bin/config.log
@@ -133,7 +133,7 @@ BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/do
 			xsltproc:textproc/libxslt
 .endif
 # No fancy color error messages
-.if ${COMPILER_TYPE} == "clang"
+.if ${CHOSEN_COMPILER_TYPE} == clang
 CFLAGS+=		-fno-color-diagnostics
 .endif
 CONFIGURE_ENV+=		NOCOLOR=yes

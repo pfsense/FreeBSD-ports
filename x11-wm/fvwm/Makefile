@@ -11,6 +11,10 @@ PKGNAMESUFFIX=	1${PKGNAMESUFFIX2}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fvwm window manager
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained, unsupported upstream
+EXPIRATION_DATE=	2019-10-05
+
 CONFLICTS=	fvwm-2.*
 
 USES=		imake

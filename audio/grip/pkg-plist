@@ -2,6 +2,7 @@ bin/grip
 man/man1/grip.1.gz
 share/applications/grip.desktop
 share/apps/solid/actions/grip-audiocd.desktop
+share/solid/actions/grip-audiocd.desktop
 share/gnome/help/grip/C/cdconfig.png
 share/gnome/help/grip/C/cdplayer.png
 share/gnome/help/grip/C/cdplayersmall.png
@@ -61,6 +62,7 @@ share/icons/hicolor/scalable/apps/grip.svg
 %%NLS%%share/locale/be/LC_MESSAGES/grip.mo
 %%NLS%%share/locale/bg/LC_MESSAGES/grip.mo
 %%NLS%%share/locale/ca/LC_MESSAGES/grip.mo
+%%NLS%%share/locale/da/LC_MESSAGES/grip.mo
 %%NLS%%share/locale/de/LC_MESSAGES/grip.mo
 %%NLS%%share/locale/es/LC_MESSAGES/grip.mo
 %%NLS%%share/locale/fi/LC_MESSAGES/grip.mo

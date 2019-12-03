@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	z3
-DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	4.7.1
+DISTVERSIONPREFIX=	z3-
+DISTVERSION=	4.8.6
 CATEGORIES=	math
 
 MAINTAINER=	arrowd@FreeBSD.org
@@ -11,37 +11,30 @@ COMMENT=	Z3 Theorem Prover
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-# compiler picks ${LOCALBASE}/include/dictionary.h from iniparser
-CONFLICTS=		iniparser-*
-
+USES=		compiler:c++11-lang python:2.7,build
 USE_GITHUB=	yes
 GH_ACCOUNT=	Z3Prover
 
-OPTIONS_DEFINE=		DEBUG STATIC PYTHON GMP
+HAS_CONFIGURE=		yes
+CONFIGURE_ARGS=		--prefix=${PREFIX}
+USE_LDCONFIG=		yes
 
-OPTIONS_DEFAULT=	STATIC PYTHON
+OPTIONS_DEFINE=		DEBUG STATIC GMP
+
+OPTIONS_DEFAULT=	STATIC
 OPTIONS_SUB=		yes
 
 DEBUG_CONFIGURE_ON=	--debug
-
-PYTHON_DESC=		Enable python bindings
-PYTHON_CONFIGURE_ON=	--python
-PYTHON_USES=		python:2.7
-PYTHON_USES_OFF=	python:2.7,build
-PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 
 STATIC_DESC=		Build static z3 library
 STATIC_CONFIGURE_ON=	--staticlib
 
 GMP_DESC=		Use GMP library for AP arithmetic
 GMP_CONFIGURE_ON=	--gmp
-GMP_CXXFLAGS=		-I${LOCALBASE}/include
-GMP_LDFLAGS=		-L${LOCALBASE}/lib
+GMP_USES=		localbase:ldflags
 GMP_LIB_DEPENDS=	libgmp.so:math/gmp
 
-HAS_CONFIGURE=		yes
-CONFIGURE_ARGS=		--prefix=${PREFIX}
-USE_LDCONFIG=		yes
+LDFLAGS_i386=		-Wl,-znotext
 BUILD_WRKSRC=		${WRKSRC}/build
 INSTALL_WRKSRC=		${WRKSRC}/build
 

@@ -1,6 +1,6 @@
---- remoting/host/host_details.cc.orig	2017-08-03 00:05:16.000000000 +0200
-+++ remoting/host/host_details.cc	2017-08-10 16:20:00.950699000 +0200
-@@ -22,7 +22,7 @@
+--- remoting/host/host_details.cc.orig	2019-09-09 21:55:22 UTC
++++ remoting/host/host_details.cc
+@@ -22,7 +22,7 @@ std::string GetHostOperatingSystemName() {
    return "Mac";
  #elif defined(OS_CHROMEOS)
    return "ChromeOS";

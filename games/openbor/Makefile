@@ -2,14 +2,14 @@
 
 PORTNAME=	openbor
 # Hint: svn revision is git rev-list --count ${GH_TAGNAME}
-PORTVERSION?=	6235
+PORTVERSION?=	7082
 .ifndef PKGNAMESUFFIX
 PORTREVISION=	0
 .endif
 CATEGORIES=	games
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Moddable fighting game engine (aka Beats of Rage)
+COMMENT=	2D side scrolling engine for beat 'em ups, shooters, and more #'
 
 LICENSE=	BSD3CLAUSE GPLv2+
 .if ${PORTVERSION} >= 4134
@@ -31,7 +31,7 @@ PORTSCOUT=	ignore:1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	DCurrent
-GH_TAGNAME?=	66ce9c7b
+GH_TAGNAME?=	5428eec8
 
 USES+=		gmake pkgconfig
 .if ${PORTVERSION} < 4433
@@ -39,8 +39,10 @@ USE_CSTD=	gnu89
 .endif
 .if ${PORTVERSION} < 4108
 USE_SDL=	gfx
-.else
+.elif ${PORTVERSION} < 6639
 USE_SDL=	gfx2
+.else
+USE_SDL=	sdl2
 .endif
 WRKSRC_SUBDIR=	engine
 MAKE_ENV=	BUILD_LINUX=1 SDKPATH="${LOCALBASE}" \
@@ -63,7 +65,7 @@ DESKTOP_ENTRIES="OpenBOR v3.0 Build ${PORTVERSION}" \
 		"Game;ArcadeGame;" \
 		""
 
-OPTIONS_DEFINE=		TREMOR
+OPTIONS_DEFINE=		DOCS TREMOR
 OPTIONS_DEFAULT=	${MACHINE_CPU:Msoftfp:C/.+/TREMOR/}
 OPTIONS_DEFINE_i386=	MMX
 OPTIONS_DEFAULT_i386=	MMX # runtime detection
@@ -79,6 +81,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's/ -O[0-9]//; s/ -g//; s/ -Werror//' \
 		-e 's/ -fomit-frame-pointer//' \
 		-e 's/ -freorder-blocks//' \
+		-e 's/ -Wno-unused-result//' \
 		-e 's/ -Wl,-rpath,$$(LIBRARIES)//' \
 		-e '/echo/!s/	@/	/' \
 		-e 's/@echo/@$$(ECHO)/' \
@@ -89,11 +92,12 @@ post-patch:
 	@${GREP} -Flr 'malloc.h' ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
 		's,malloc\.h,stdlib.h,'
 	@${REINPLACE_CMD} -e 's/^function \(.*\) {/\1() {/' \
-		-e 's/^get_revnum$$/VERSION_BUILD=${PORTVERSION}/' \
+		-e '/^[[:space:]]*VERSION_.*=0000/d' \
 		${WRKSRC}/version.sh
 
 do-configure:
-	(cd ${WRKSRC} && ${SH} ./version.sh)
+	(cd ${WRKSRC} && VERSION_BUILD=${PORTVERSION} VERSION_COMMIT=${GH_TAGNAME} \
+		${SH} ./version.sh)
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/OpenBOR.elf \

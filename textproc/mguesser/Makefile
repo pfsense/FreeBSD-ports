@@ -9,6 +9,10 @@ MASTER_SITES=	http://www.mnogosearch.org/guesser/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for guessing a text's charset and language
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 post-patch:
 	${REINPLACE_CMD} -E \
 		"s/^CC=.+//g; s|^CFLAGS=|CFLAGS+=|g; s|-Wall -g||g; \

@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	shotcut
-PORTVERSION=	${FULLVERSION:R}
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+DISTVERSION=	${FULLVERSION}
 CATEGORIES=	multimedia
 
-MAINTAINER=	avilla@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free, open source, cross-platform video editor
 
 LICENSE=	GPLv3
@@ -16,16 +15,22 @@ RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg \
 		${LOCALBASE}/lib/libjack.so:audio/jack \
 		${LOCALBASE}/lib/libSDL.so:devel/sdl12
 
+USES=		desktop-file-utils gl pkgconfig \
+		qmake qt:5 sdl shared-mime-info \
+		xorg
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	mltframework
-# Needed to be able to correctly check for updates in-app.
-FULLVERSION=	17.02.01
 
-USES=		pkgconfig qmake qt:5
-USE_QT=		buildtools_build concurrent_build core \
+# Needed to be able to correctly check for updates in-app.
+FULLVERSION=	19.09.14
+
+USE_GL+=	gl
+USE_QT=		buildtools_build concurrent_build core declarative \
 		graphicaleffects_run gui multimedia network opengl \
-		printsupport qml quick quickcontrols_run sql \
+		printsupport quickcontrols_run sql \
 		sql-sqlite3_run webkit websockets widgets x11extras xml
+USE_SDL=	sdl2
 USE_XORG=	x11
 QMAKE_ARGS=	${PORTNAME:tu}_VERSION="${FULLVERSION}"
 DESKTOP_ENTRIES="Shotcut" \
@@ -53,21 +58,17 @@ WEBVFX_RUN_DEPENDS=	${LOCALBASE}/lib/mlt/libmltwebvfx.so:multimedia/webvfx-qt5
 post-patch:
 	${REINPLACE_CMD} -e 's/"qmelt"/"melt"/' \
 		${WRKSRC}/src/jobs/meltjob.cpp
+	${REINPLACE_CMD} -e 's|/share/man/man1|/man/man1|' ${WRKSRC}/src/src.pro
 
 pre-build:
 	@${FIND} ${WRKSRC} -name '.depend' -delete
 
 post-build-NLS-on:
-	${LRELEASE} ${WRKSRC}/src/src.pro
+	cd ${BUILD_WRKSRC}/translations && ${LRELEASE} *.ts
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps
 	${INSTALL_DATA} ${WRKSRC}/icons/${PORTNAME}-logo-64.png \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps/${PORTNAME}.png
-
-post-install-NLS-on:
-	${MKDIR} ${STAGEDIR}${DATADIR}/translations
-	${INSTALL_DATA} ${WRKSRC}/translations/*.qm \
-		${STAGEDIR}${DATADIR}/translations
 
 .include <bsd.port.mk>

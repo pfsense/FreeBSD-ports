@@ -46,7 +46,6 @@ lib/libKF5Solid.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/solid/qmldir
 %%QT_MKSPECDIR%%/modules/qt_Solid.pri
 share/locale/ar/LC_MESSAGES/solid5_qt.qm
-share/locale/ast/LC_MESSAGES/solid5_qt.qm
 share/locale/bg/LC_MESSAGES/solid5_qt.qm
 share/locale/bs/LC_MESSAGES/solid5_qt.qm
 share/locale/ca/LC_MESSAGES/solid5_qt.qm
@@ -69,6 +68,7 @@ share/locale/he/LC_MESSAGES/solid5_qt.qm
 share/locale/hr/LC_MESSAGES/solid5_qt.qm
 share/locale/hu/LC_MESSAGES/solid5_qt.qm
 share/locale/ia/LC_MESSAGES/solid5_qt.qm
+share/locale/id/LC_MESSAGES/solid5_qt.qm
 share/locale/is/LC_MESSAGES/solid5_qt.qm
 share/locale/it/LC_MESSAGES/solid5_qt.qm
 share/locale/ja/LC_MESSAGES/solid5_qt.qm
@@ -99,9 +99,11 @@ share/locale/sr@ijekavianlatin/LC_MESSAGES/solid5_qt.qm
 share/locale/sr@latin/LC_MESSAGES/solid5_qt.qm
 share/locale/sv/LC_MESSAGES/solid5_qt.qm
 share/locale/ta/LC_MESSAGES/solid5_qt.qm
+share/locale/tg/LC_MESSAGES/solid5_qt.qm
 share/locale/th/LC_MESSAGES/solid5_qt.qm
 share/locale/tr/LC_MESSAGES/solid5_qt.qm
 share/locale/ug/LC_MESSAGES/solid5_qt.qm
 share/locale/uk/LC_MESSAGES/solid5_qt.qm
 share/locale/zh_CN/LC_MESSAGES/solid5_qt.qm
 share/locale/zh_TW/LC_MESSAGES/solid5_qt.qm
+share/qlogging-categories5/solid.categories

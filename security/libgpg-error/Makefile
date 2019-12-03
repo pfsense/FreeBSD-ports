@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libgpg-error
-PORTVERSION=	1.31
+PORTVERSION=	1.36
 CATEGORIES=	security devel
 MASTER_SITES=	GNUPG
 
@@ -14,23 +14,23 @@ LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LIB
 
-OPTIONS_DEFINE=	DOCS NLS
-OPTIONS_SUB=	yes
-
 USES=		gmake libtool tar:bzip2
+
 USE_LDCONFIG=		yes
 GNU_CONFIGURE=		yes
 MAKE_JOBS_UNSAFE=	yes
 CPP+=			-P
 CONFIGURE_ARGS=		--enable-static=yes
 INSTALL_TARGET=		install-strip
+DOCS=		AUTHORS ChangeLog NEWS README
+INFO=		gpgrt
+
+OPTIONS_DEFINE=	DOCS NLS
+OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_OFF=	--disable-nls
 NLS_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG} --with-libintl-prefix=${LOCALBASE}
 NLS_USES=		gettext iconv
-
-DOCS=		AUTHORS ChangeLog NEWS README
-INFO=		gpgrt
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

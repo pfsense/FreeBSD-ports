@@ -3,8 +3,8 @@
 
 PORTNAME=	ispc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.2
-PORTREVISION=	2
+DISTVERSION=	1.11.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,34 +16,21 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 ONLY_FOR_ARCHS=		amd64 i386
 ONLY_FOR_ARCHS_REASON=	only available for x86 architectures
 
-LIB_DEPENDS=	libLLVM.so:devel/llvm${CLANG_VERSION}
+LIB_DEPENDS=	libLLVM.so:devel/llvm${LLVM_DEFAULT}
 
-USES=		bison gmake python:build shebangfix
+USES=		bison cmake python:build shebangfix
 USE_GITHUB=	yes
-
-ALL_TARGET=	default
-MAKE_ENV=	LLVM_HOME="${LOCALBASE}"
-CLANG_VERSION=	50
 SHEBANG_FILES=	*.py
 
-MAKE_ARGS=	LLVM_CONFIG=${LOCALBASE}/bin/llvm-config${CLANG_VERSION} \
-		CLANG=clang${CLANG_VERSION} CXX=clang++${CLANG_VERSION}
+CONFIGURE_ENV=	PATH=${LOCALBASE}/llvm${LLVM_DEFAULT}/bin:${PATH}
+CMAKE_OFF=	ISPC_INCLUDE_EXAMPLES
 
-PLIST_FILES=	bin/ispc
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|python|${PYTHON_CMD}| ; s|@$$(C|$$(C|' \
-		${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e '/alloca\.h/d' ${WRKSRC}/util.cpp
-.if ${CLANG_VERSION} >= 50
-	@${REINPLACE_CMD} -e '/^LLVM_LIBS=/s|$$| -lexecinfo|' \
-		${WRKSRC}/Makefile
-.endif
+PLIST_FILES=	bin/ispc \
+		bin/check_isa
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/ispc ${STAGEDIR}${PREFIX}/bin
-
-do-test:
+do-test: # tests are broken with python-3.6
 	@cd ${WRKSRC} && ISPC_HOME=${WRKSRC} ./run_tests.py
 
 run-examples:
@@ -54,5 +41,11 @@ run-examples:
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} && \
 	./${e}
 .endfor
+
+.include <bsd.port.options.mk>
+
+.if ${LLVM_DEFAULT:S,-devel,990,} >= 90
+LLVM_DEFAULT=	80
+.endif
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vapoursynth
-PORTVERSION=	R43
-PORTREVISION=	1
+PORTVERSION=	R47.2
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -14,7 +13,6 @@ USE_GITHUB=	yes
 
 USES=		autoreconf gmake libtool localbase pathfix pkgconfig
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-D_GLIBCXX_USE_C99 # XXX ports/193528
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 DATADIR=	${PREFIX}/lib/vapoursynth
@@ -53,7 +51,7 @@ SIMD_CONFIGURE_ENABLE=		x86-asm
 # COMPS group
 
 CORE_DESC=			Core library
-CORE_BUILD_DEPENDS=		sekrit-twc-zimg>=2.4:graphics/sekrit-twc-zimg
+CORE_BUILD_DEPENDS=		sekrit-twc-zimg>=2.9.1:graphics/sekrit-twc-zimg
 CORE_LIB_DEPENDS=		libzimg.so:graphics/sekrit-twc-zimg
 CORE_USES=			compiler:c++11-lib
 CORE_CONFIGURE_ENABLE=		core
@@ -70,7 +68,7 @@ VSPIPE_CONFIGURE_ENABLE=	vspipe
 VSPIPE_IMPLIES=			VSSCRIPT
 
 VSSCRIPT_DESC=			Scripting library
-VSSCRIPT_USES=			compiler:c++11-lib python:3.3-
+VSSCRIPT_USES=			compiler:c++11-lib python:3.3+
 VSSCRIPT_CONFIGURE_ENABLE=	vsscript
 
 # PLUGINS group

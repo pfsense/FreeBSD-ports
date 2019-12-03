@@ -12,10 +12,6 @@ COMMENT=	Library for JPEG XR, a.k.a. Windows MediaTM Photo
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_mips=		fails to compile: cc1: unrecognized command line option "-Wno-extra-tokens"
-BROKEN_mips64=		fails to compile: cc1: unrecognized command line option "-Wno-extra-tokens"
-BROKEN_powerpc64=	fails to compile: cc1: unrecognized command line option "-Wno-extra-tokens"
-
 USES=		dos2unix uidfix
 USE_LDCONFIG=	yes
 MAKEFILE=	BSDmakefile	# created by do-configure
@@ -33,7 +29,7 @@ do-configure:
 post-build:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/jxrlib
 
-regression-test test check: build
+do-test:
 	${SETENV} WRKSRC="${WRKSRC}" ${SH} -x ${FILESDIR}/test.sh
 
 .include <bsd.port.mk>

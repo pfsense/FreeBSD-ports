@@ -1,5 +1,3 @@
-etc/dbus-1/system.d/org.kde.powerdevil.backlighthelper.conf
-etc/dbus-1/system.d/org.kde.powerdevil.discretegpuhelper.conf
 etc/xdg/autostart/powerdevil.desktop
 lib/libexec/kauth/backlighthelper
 lib/libexec/kauth/discretegpuhelper
@@ -27,6 +25,8 @@ lib/libpowerdevilui.so.%%KDE_PLASMA_VERSION%%
 %%QT_PLUGINDIR%%/powerdevilsuspendsessionaction_config.so
 share/dbus-1/system-services/org.kde.powerdevil.backlighthelper.service
 share/dbus-1/system-services/org.kde.powerdevil.discretegpuhelper.service
+share/dbus-1/system.d/org.kde.powerdevil.backlighthelper.conf
+share/dbus-1/system.d/org.kde.powerdevil.discretegpuhelper.conf
 share/doc/HTML/ca/kcontrol/powerdevil/index.cache.bz2
 share/doc/HTML/ca/kcontrol/powerdevil/index.docbook
 share/doc/HTML/de/kcontrol/powerdevil/index.cache.bz2
@@ -46,8 +46,16 @@ share/doc/HTML/pt/kcontrol/powerdevil/index.cache.bz2
 share/doc/HTML/pt/kcontrol/powerdevil/index.docbook
 share/doc/HTML/pt_BR/kcontrol/powerdevil/index.cache.bz2
 share/doc/HTML/pt_BR/kcontrol/powerdevil/index.docbook
+share/doc/HTML/ru/kcontrol/powerdevil/activity.png
+share/doc/HTML/ru/kcontrol/powerdevil/advanced.png
+share/doc/HTML/ru/kcontrol/powerdevil/energy.png
 share/doc/HTML/ru/kcontrol/powerdevil/index.cache.bz2
 share/doc/HTML/ru/kcontrol/powerdevil/index.docbook
+share/doc/HTML/sv/kcontrol/powerdevil/index.cache.bz2
+share/doc/HTML/sv/kcontrol/powerdevil/index.docbook
+share/doc/HTML/uk/kcontrol/powerdevil/activity.png
+share/doc/HTML/uk/kcontrol/powerdevil/advanced.png
+share/doc/HTML/uk/kcontrol/powerdevil/energy.png
 share/doc/HTML/uk/kcontrol/powerdevil/index.cache.bz2
 share/doc/HTML/uk/kcontrol/powerdevil/index.docbook
 share/knotifications5/powerdevil.notifyrc
@@ -68,11 +76,6 @@ share/locale/ar/LC_MESSAGES/powerdevilactivitiesconfig.mo
 share/locale/ar/LC_MESSAGES/powerdevilglobalconfig.mo
 share/locale/ar/LC_MESSAGES/powerdevilprofilesconfig.mo
 share/locale/as/LC_MESSAGES/powerdevil.mo
-share/locale/ast/LC_MESSAGES/libpowerdevilcommonconfig.mo
-share/locale/ast/LC_MESSAGES/powerdevil.mo
-share/locale/ast/LC_MESSAGES/powerdevilactivitiesconfig.mo
-share/locale/ast/LC_MESSAGES/powerdevilglobalconfig.mo
-share/locale/ast/LC_MESSAGES/powerdevilprofilesconfig.mo
 share/locale/be@latin/LC_MESSAGES/powerdevil.mo
 share/locale/bg/LC_MESSAGES/powerdevil.mo
 share/locale/bg/LC_MESSAGES/powerdevilactivitiesconfig.mo
@@ -219,7 +222,11 @@ share/locale/lv/LC_MESSAGES/powerdevil.mo
 share/locale/lv/LC_MESSAGES/powerdevilglobalconfig.mo
 share/locale/lv/LC_MESSAGES/powerdevilprofilesconfig.mo
 share/locale/mai/LC_MESSAGES/powerdevil.mo
+share/locale/ml/LC_MESSAGES/libpowerdevilcommonconfig.mo
 share/locale/ml/LC_MESSAGES/powerdevil.mo
+share/locale/ml/LC_MESSAGES/powerdevilactivitiesconfig.mo
+share/locale/ml/LC_MESSAGES/powerdevilglobalconfig.mo
+share/locale/ml/LC_MESSAGES/powerdevilprofilesconfig.mo
 share/locale/mr/LC_MESSAGES/powerdevil.mo
 share/locale/mr/LC_MESSAGES/powerdevilactivitiesconfig.mo
 share/locale/mr/LC_MESSAGES/powerdevilglobalconfig.mo

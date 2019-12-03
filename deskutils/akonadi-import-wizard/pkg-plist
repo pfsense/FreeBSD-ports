@@ -1,6 +1,6 @@
 bin/akonadiimportwizard
-etc/xdg/importwizard.categories
-etc/xdg/importwizard.renamecategories
+share/qlogging-categories5/importwizard.categories
+share/qlogging-categories5/importwizard.renamecategories
 include/KF5/KPim/ImportWizard/AbstractAddressBook
 include/KF5/KPim/ImportWizard/AbstractBase
 include/KF5/KPim/ImportWizard/AbstractCalendar
@@ -40,7 +40,6 @@ share/importwizard/pics/step1.png
 share/kconf_update/importwizard-15.08-kickoff.sh
 share/kconf_update/importwizard.upd
 share/locale/ar/LC_MESSAGES/akonadiimportwizard.mo
-share/locale/ast/LC_MESSAGES/akonadiimportwizard.mo
 share/locale/bs/LC_MESSAGES/akonadiimportwizard.mo
 share/locale/ca/LC_MESSAGES/akonadiimportwizard.mo
 share/locale/ca@valencia/LC_MESSAGES/akonadiimportwizard.mo

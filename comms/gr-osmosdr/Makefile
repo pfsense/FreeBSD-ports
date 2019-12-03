@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	gr-osmosdr
-PORTVERSION=	20170612
-PORTREVISION=	2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.1.4-127
+DISTVERSIONSUFFIX=	-g4d83c60
+PORTEPOCH=	1
 CATEGORIES=	comms hamradio
-MASTER_SITES=	http://contribs.martymac.org/FreeBSD-ports/distfiles/ \
-		LOCAL/martymac
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	GNU Radio OsmoSDR module
@@ -18,15 +18,22 @@ LIB_DEPENDS=	libgnuradio-runtime.so:comms/gnuradio \
 		libgnuradio-pmt.so:comms/gnuradio \
 		libgnuradio-blocks.so:comms/gnuradio \
 		libboost_system.so:devel/boost-libs \
-		libboost_thread.so:devel/boost-libs
+		libboost_thread.so:devel/boost-libs \
+		liblog4cpp.so:devel/log4cpp \
+		libgmpxx.so:math/gmp \
+		libgmp.so:math/gmp \
+		liborc-0.4.so:devel/orc
 
 USES=	cmake compiler:c++11-lang fortran pkgconfig python:2.7 tar:tgz
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	osmocom
+
 USE_LDCONFIG=	yes
 BINARY_ALIAS=	swig=swig3.0
 
 # See lib/CMakeLists.txt to enable more components
 CMAKE_ARGS+=	-DENABLE_DEFAULT:BOOL=OFF \
-		-DENABLE_FCD:BOOL=ON \
 		-DENABLE_FILE:BOOL=ON \
 		-DENABLE_PYTHON=ON \
 		-DPYTHON_EXECUTABLE:STRING="${PYTHON_CMD}"

@@ -1,83 +1,58 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	19.3.6.9
+DISTVERSIONPREFIX=	OTP-
+DISTVERSION=	21.3.8.7
 PORTEPOCH=	1
 CATEGORIES=	lang parallel
-MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
-		http://erlang.stacken.kth.se/download/:erlangorg	\
-		http://www.csd.uu.se/ftp/mirror/erlang/download/:erlangorg
 PKGNAMESUFFIX=	-wx
-DISTNAME=	otp_src_${ERL_RELEASE}
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:erlangorg
 DIST_SUBDIR=	erlang
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
-
-PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
-		LOCAL/olgeni
-PATCHFILES=	patch-otp-19.3.1 patch-otp-19.3.2 patch-otp-19.3.3 \
-		patch-otp-19.3.4 patch-otp-19.3.5 patch-otp-19.3.6 \
-		patch-otp-19.3.6.1 patch-otp-19.3.6.2 patch-otp-19.3.6.3 \
-		patch-otp-19.3.6.4 patch-otp-19.3.6.5 patch-otp-19.3.6.6 \
-		patch-otp-19.3.6.7 patch-otp-19.3.6.8 patch-otp-19.3.6.9
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Erlang bindings for wxWindows
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/erl:lang/erlang
+BUILD_DEPENDS=	erlang>=21.3.8:lang/erlang
+RUN_DEPENDS=	erlang>=21.3.8:lang/erlang
 
-WRKSRC=		${WRKDIR}/otp_src_${ERL_RELEASE}
+USES=		autoreconf:build gl gmake perl5 xorg
+USE_GITHUB=	yes
+GH_PROJECT=	otp
+USE_GL=		gl glu
+USE_PERL5=	build
+USE_WX=		3.1+
 
-PLIST_SUB=	APP_VERSION=${APP_VERSION} \
-		CONFIGURE_TARGET=${CONFIGURE_TARGET}
+WX_COMPS=	wx
 
+GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=yes
 
-OPTIONS_DEFINE=	DOCS
-
-ERL_RELEASE=	19.3
-
-USES=		gmake
-USE_GL=		gl glu
-GNU_CONFIGURE=	yes
-LDFLAGS+=	-L${LOCALBASE}/lib
-
-APP_VERSION=	1.8
-APP_DIR=	${PREFIX}/lib/erlang/lib/wx-${APP_VERSION}
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
-DISTFILES+=	${ERLANG_DOCS}:erlangorg
-.endif
+WX_APPS=	wx debugger et observer
 
 CONFIGURE_ARGS+=--enable-threads --without-odbc --without-javac --with-wx-config=${WX_CONFIG}
 
-USE_WX=		2.8+
-WX_COMPS=	wx contrib
-
-ERLANG_DOCS=	otp_doc_html_${ERL_RELEASE}.tar.gz
+pre-configure:
+	@cd ${WRKSRC} && ./otp_build autoconf
 
 do-build:
-	cd ${WRKSRC}/lib/wx && ${GMAKE} ERL_TOP=${WRKSRC} TARGET=${CONFIGURE_TARGET}
+.for app in wx debugger et observer
+	cd ${WRKSRC}/lib/${app} && ${SETENV} ERL_LIBS=${WRKSRC}/lib ${GMAKE} ERL_TOP=${WRKSRC} TARGET=${CONFIGURE_TARGET}
+.endfor
 	${STRIP_CMD} ${WRKSRC}/lib/wx/priv/${CONFIGURE_TARGET}/erl_gl.so
 	${STRIP_CMD} ${WRKSRC}/lib/wx/priv/${CONFIGURE_TARGET}/wxe_driver.so
 	${MV} ${WRKSRC}/lib/wx/priv/${CONFIGURE_TARGET}/*.so ${WRKSRC}/lib/wx/priv
 	${RMDIR} ${WRKSRC}/lib/wx/priv/${CONFIGURE_TARGET}
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${APP_DIR}
-	cd ${WRKSRC}/lib/wx && ${COPYTREE_SHARE} ebin ${STAGEDIR}${APP_DIR}
-	cd ${WRKSRC}/lib/wx && ${COPYTREE_SHARE} include ${STAGEDIR}${APP_DIR}
-	cd ${WRKSRC}/lib/wx && ${COPYTREE_SHARE} priv ${STAGEDIR}${APP_DIR}
-	cd ${WRKSRC}/lib/wx && ${COPYTREE_SHARE} src ${STAGEDIR}${APP_DIR}
-
-do-install-DOCS-on:
-	cd ${WRKSRC}/lib/wx && ${COPYTREE_SHARE} doc ${STAGEDIR}${APP_DIR}
-	${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_DOCS} \
-		-C ${STAGEDIR}${PREFIX}/lib/erlang lib/wx-${APP_VERSION}
-	@${FIND} ${STAGEDIR}${APP_DIR} -type d -empty -delete
+.for app in ${WX_APPS}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${app}-$$(${CUT} -w -f3 ${WRKSRC}/lib/${app}/vsn.mk)
+	${FIND} ${WRKSRC}/lib/${app} -type d -empty -delete
+.for dir in src include priv ebin
+	cd ${WRKSRC}/lib/${app} && if [ -d ${dir} ]; then \
+		${COPYTREE_SHARE} ${dir} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${app}-$$(${CUT} -w -f3 vsn.mk); \
+	fi
+.endfor
+.endfor
 
 .include <bsd.port.mk>

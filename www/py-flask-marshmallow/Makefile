@@ -2,22 +2,30 @@
 # $FreeBSD$
 
 PORTNAME=	flask-marshmallow
-PORTVERSION=	0.8.0
+PORTVERSION=	0.10.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Marshmallow support for Flask
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>0:www/py-flask@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=0:www/py-flask@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}marshmallow>=2.0.0:devel/py-marshmallow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.9.0:devel/py-six@${PY_FLAVOR}
 
-USES=		python
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python:3.5+
+USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
+
+OPTIONS_DEFINE=	SQLALCHEMY
+SQLALCHEMY_DESC=SQLAlchemy support
+
+SQLALCHEMY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flask-sqlalchemy>=0:databases/py-flask-sqlalchemy@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}marshmallow-sqlalchemy>=0.13.0:databases/py-marshmallow-sqlalchemy@${PY_FLAVOR}
 
 .include <bsd.port.mk>

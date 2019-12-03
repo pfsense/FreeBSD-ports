@@ -12,20 +12,21 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cross-platform library for parsing flash media stream URLs
 
 LICENSE=	LGPL21+
-LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	libquvi-scripts>=0.4.0:multimedia/libquvi-scripts
+BUILD_DEPENDS=	${RUN_DEPENDS}
 LIB_DEPENDS=	libcurl.so:ftp/curl
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+RUN_DEPENDS=	libquvi-scripts>=0.4.0:multimedia/libquvi-scripts
 
 OPTIONS_DEFINE=	DOCS LUAJIT
 LUAJIT_DESC=	Use LuaJIT instead of Lua
 
 PORTSCOUT=	limit:^0\.4\.
 
+USES=		iconv libtool pathfix pkgconfig tar:xz
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		iconv libtool pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*

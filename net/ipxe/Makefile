@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ipxe
-PORTVERSION=	20180514
+PORTVERSION=	20190715
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -25,10 +26,12 @@ USE_GITHUB=	yes
 #   A: iPXE uses a rolling release model, in which every commit is intended
 #      to be production-ready.  You should always use the latest code.
 #
-GH_TAGNAME=	e7f67d5a4c6e9f06aa7a9db1b4245f5e16f00bb2
+GH_TAGNAME=	a385e2376859dc0195ec77aeab220876b201c16b
 USE_PERL5=	build
 
 ALL_TARGET=	bin/ipxe.dsk bin/ipxe.lkrn bin/ipxe.pxe bin/ipxe.usb bin/undionly.kpxe
+# VMware ROMs
+ALL_TARGET+=	bin/8086100f.mrom bin/808610d3.mrom bin/10222000.rom bin/15ad07b0.rom
 MAKE_ARGS=	HOST_CC=${CC} \
 		PERL=${PERL} \
 		CC=${CC} \

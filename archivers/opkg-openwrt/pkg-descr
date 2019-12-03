@@ -1,0 +1,9 @@
+The opkg utility (an ipkg fork) is a lightweight package manager used 
+to download and install OpenWrt packages from local package repositories
+or ones located in the Internet.
+
+opkg is part of the OpenWrt project
+
+This is a patched version with chroot support
+
+WWW: https://openwrt.org/docs/guide-user/additional-software/opkg

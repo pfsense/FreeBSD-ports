@@ -1,12 +1,16 @@
-======================================================================
+[
+{ type: install
+  message: <<EOM
+tuptime requires execution at startup and shutdown on rc.d, please
+add it to /etc/rc.conf and start:
 
-tuptime requires the following be added to /etc/crontab:
+	sysrc tuptime_enable=YES
+	service tuptime start
+
+tuptime requires a scheduled execution on cron, please add to
+/etc/crontab:
 
 	*/5 * * * * root %%PREFIX%%/bin/tuptime -x > /dev/null
-
-If you are upgrading from an older version you need to run the following scripts:
-
-	%%EXAMPLESDIR%%/db-tuptime-migrate.sh
-	%%EXAMPLESDIR%%/db-tuptime-migrate-3.0-to-3.1.sh
-
-======================================================================
+EOM
+}
+]

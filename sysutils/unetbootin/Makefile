@@ -16,9 +16,9 @@ RUN_DEPENDS=	7z:archivers/p7zip \
 		syslinux:sysutils/syslinux \
 		mke2fs:sysutils/e2fsprogs
 
-USES=	qt:4
-USE_QT=		linguisttools_build moc_build qmake_build uic_build \
-		corelib gui network
+USES=		qt:5
+USE_QT=		buildtools_build linguisttools_build qmake_build \
+		core gui network widgets
 QMAKE_ARGS=	DEFINES+=LOCALBASE=\\\\\\\"${LOCALBASE}\\\\\\\"
 
 NO_WRKSUBDIR=	yes
@@ -28,9 +28,9 @@ post-patch:
 		${WRKSRC}/main.cpp
 
 do-configure:
-	${LUPDATE} ${WRKSRC}/unetbootin.pro
-	${LRELEASE} ${WRKSRC}/unetbootin.pro
-	cd ${WRKSRC} && ${QMAKE_ENV} ${QMAKE} ${QMAKE_ARGS}
+	cd ${CONFIGURE_WRKSRC} && ${LUPDATE} unetbootin.pro \
+		     && ${LRELEASE} unetbootin.pro \
+		     && ${QMAKE_ENV} ${QMAKE} ${QMAKE_ARGS}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/unetbootin ${STAGEDIR}${PREFIX}/bin

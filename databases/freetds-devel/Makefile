@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	freetds
-PORTVERSION=	1.00.365
+PORTVERSION=	1.1.57
 PORTEPOCH=	1
 CATEGORIES=	databases
-MASTER_SITES=	ftp://ftp.freetds.org/pub/freetds/current/
+MASTER_SITES=	https://www.freetds.org/files/current/ \
+		ftp://ftp.freetds.org/pub/freetds/current/
 PKGNAMESUFFIX=	-devel
 DISTNAME=	${PORTNAME}-dev.${PORTVERSION}
 
@@ -14,10 +15,11 @@ COMMENT=	Sybase/Microsoft TDS protocol library
 
 LICENSE=	LGPL20
 
+USES=		autoreconf compiler:c11 gettext-tools gmake iconv \
+		libtool:keepla pkgconfig tar:bzip2
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-dev.${PORTVERSION}
 TDS_VER?=	7.4
-USES=		autoreconf gettext-tools gmake iconv libtool:keepla pkgconfig tar:bzip2
-GNU_GONFIGURE=	yes
 CPPFLAGS+=	"-I${LOCALBASE}/include"
 LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes

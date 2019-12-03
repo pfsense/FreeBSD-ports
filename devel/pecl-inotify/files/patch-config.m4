@@ -1,7 +1,7 @@
---- ./config.m4.orig	2012-05-04 17:51:20.000000000 +0800
-+++ ./config.m4	2013-08-29 12:49:00.000000000 +0800
+--- config.m4.orig	2016-01-30 12:34:05 UTC
++++ config.m4
 @@ -1,22 +1,51 @@
- dnl $Id: config.m4 262896 2008-07-17 19:11:16Z lbarnaud $
+ dnl $Id$
  dnl config.m4 for extension inotify
  
 -PHP_ARG_ENABLE(inotify, whether to enable inotify support,

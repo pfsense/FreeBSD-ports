@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	re2
-PORTVERSION=	20180401
+PORTVERSION=	20190701
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -11,9 +12,10 @@ COMMENT=	Fast C++ regex library
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		compiler:c++11-lang gmake pathfix
+
 MAKE_ARGS=	CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" SED_INPLACE="${SED} -i ''" prefix=${PREFIX}
 USE_LDCONFIG=	yes
-USES=		compiler:c++11-lang gmake pathfix
 
 PATHFIX_MAKEFILEIN=	Makefile
 

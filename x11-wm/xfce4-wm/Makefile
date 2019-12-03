@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-wm
-PORTVERSION=	4.12.4
+PORTVERSION=	4.14.0
+PORTREVISION=	1
 CATEGORIES=	x11-wm xfce
-MASTER_SITES=	XFCE/src/xfce/xfwm4/${PORTVERSION:R}
-DISTNAME=	xfwm4-${PORTVERSION}
+MASTER_SITES=	XFCE
+DISTNAME=	xfwm4-${DISTVERSIONFULL}
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -13,35 +14,41 @@ COMMENT=	Xfce's window manager
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libdbus-1.so:devel/dbus \
-		libdbus-glib-1.so:devel/dbus-glib \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
+
+USES=		compiler:c11 gettext-tools gmake gnome pkgconfig tar:bzip2 \
+		xfce xorg
+USE_GNOME=	cairo gtk30 intltool libwnck3
+USE_XFCE=	libmenu xfconf
+USE_XORG=	ice sm x11 xcomposite xdamage xext xfixes xi xinerama \
+		xorgproto xpresent xrandr xrender 
 
 CONFIGURE_ARGS=	--enable-xsync \
 		--enable-render \
 		--enable-randr \
 		--enable-compositor \
+		--enable-xpresent \
 		--disable-kde-systray
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
-USES=		gettext-tools gmake pkgconfig tar:bzip2 xfce
-USE_GNOME=	gtk20 intltool libwnck cairo
-USE_LDCONFIG=	yes
-USE_XFCE=	libmenu
-USE_XORG=	ice sm x11 xcomposite xdamage xext xfixes xrandr xrender
 DATADIR=	${PREFIX}/share/xfwm4
 
-OPTIONS_DEFINE=		DRM NLS STARTUP
+PORTSCOUT=	limitw:1,even
+
+OPTIONS_DEFINE=		NLS STARTUP
 OPTIONS_DEFAULT=	STARTUP
-DRM_DESC=	Direct Rendering Module service
-STARTUP_DESC=	Startup notification
-DRM_LIB_DEPENDS=	libdrm.so:graphics/libdrm
-DRM_CONFIGURE_ENABLE=	libdrm
-NLS_USES=	gettext-runtime
+OPTIONS_SUB=		yes
+
+STARTUP_DESC=		Startup notification
+
 NLS_CONFIGURE_ENABLE=	nls
-STARTUP_LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification
+NLS_USES=		gettext-runtime
+
 STARTUP_CONFIGURE_ENABLE=	startup-notification
-OPTIONS_SUB=	yes
+STARTUP_LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|Default|Greybird|' \
+		${WRKSRC}/settings-dialogs/xfwm4-settings.c
 
 .include <bsd.port.mk>

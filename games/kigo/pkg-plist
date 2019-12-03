@@ -18,7 +18,6 @@ share/icons/hicolor/64x64/apps/kigo.png
 %%DATADIR%%/themes/kigo_plain.svgz
 %%DATADIR%%/themes/plain.desktop
 share/kxmlgui5/kigo/kigoui.rc
-share/locale/ast/LC_MESSAGES/kigo.mo
 share/locale/bs/LC_MESSAGES/kigo.mo
 share/locale/ca/LC_MESSAGES/kigo.mo
 share/locale/ca@valencia/LC_MESSAGES/kigo.mo
@@ -41,6 +40,7 @@ share/locale/it/LC_MESSAGES/kigo.mo
 share/locale/ja/LC_MESSAGES/kigo.mo
 share/locale/kk/LC_MESSAGES/kigo.mo
 share/locale/km/LC_MESSAGES/kigo.mo
+share/locale/ko/LC_MESSAGES/kigo.mo
 share/locale/lt/LC_MESSAGES/kigo.mo
 share/locale/lv/LC_MESSAGES/kigo.mo
 share/locale/mr/LC_MESSAGES/kigo.mo

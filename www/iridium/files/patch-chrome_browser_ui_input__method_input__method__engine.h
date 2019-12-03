@@ -1,6 +1,6 @@
---- chrome/browser/ui/input_method/input_method_engine.h.orig	2017-04-19 19:06:30 UTC
+--- chrome/browser/ui/input_method/input_method_engine.h.orig	2019-03-11 22:00:54 UTC
 +++ chrome/browser/ui/input_method/input_method_engine.h
-@@ -27,7 +27,7 @@ class InputMethodEngine : public InputMe
+@@ -27,7 +27,7 @@ class InputMethodEngine : public InputMethodEngineBase
  
    // ui::IMEEngineHandlerInterface:
    bool IsActive() const override;

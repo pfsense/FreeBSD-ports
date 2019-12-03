@@ -9,6 +9,10 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast Genetic Algorithm library
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		gmake

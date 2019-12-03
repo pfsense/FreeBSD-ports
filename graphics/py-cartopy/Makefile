@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	cartopy
-PORTVERSION=	0.16.0
+PORTVERSION=	0.17.0
+PORTREVISION=	3
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +15,7 @@ COMMENT=	Cartographic library with Matplotlib support for visualisation
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
-BUILD_DEPENDS=	geos>-3.3.3:graphics/geos \
+BUILD_DEPENDS=	geos>=3.3.3:graphics/geos \
 		proj>=4.9.0:graphics/proj \
 		${PYNUMPY}
 LIB_DEPENDS=	libgeos.so:graphics/geos \
@@ -24,7 +25,22 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}Shapely>=1.5.6:devel/py-shapely@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.3.0:devel/py-six@${PY_FLAVOR}
 
-USE_PYTHON=	autoplist concurrent cython distutils
 USES=		python
+USE_PYTHON=	autoplist concurrent cython distutils
+
+CPPFLAGS+=	-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H
+
+OPTIONS_DEFINE=	EPSG OWS PLOTTING
+EPSG_DESC=	EPSG database support
+OWS_DESC=	OGC Web Service support
+PLOTTING_DESC=	Plotting support
+
+EPSG_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyepsg>=0:graphics/py-pyepsg@${PY_FLAVOR}
+OWS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}OWSLib>=0.8.11:graphics/py-OWSLib@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}pillow>=1.7.8:graphics/py-pillow@${PY_FLAVOR}
+PLOTTING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gdal>=1.10.0:graphics/py-gdal@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.1:math/py-matplotlib@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}pillow>=1.7.8:graphics/py-pillow@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}scipy>=0.10:science/py-scipy@${PY_FLAVOR}
 
 .include <bsd.port.mk>

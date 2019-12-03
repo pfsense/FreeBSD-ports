@@ -1,10 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	turba
-PORTVERSION=	4.2.21
-PORTREVISION=	1
-PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
+PORTVERSION=	4.2.25
 CATEGORIES=	mail www pear
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde web based address book
@@ -17,7 +16,7 @@ FACEBOOK_DESC=	Support connections with Facebook
 IMSP_DSC=	Support IMSP addressbooks
 LDAP_DESC=	Support LDAP Addressbooks
 
-USES=	horde cpe
+USES=		horde cpe
 USE_PHP=	gettext hash json
 USE_HORDE_BUILD=	Horde_Role
 USE_HORDE_RUN=	Horde_Role \
@@ -43,6 +42,7 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Url \
 		Horde_Util \
 		Horde_View
+NO_ARCH=	yes
 
 FACEBOOK_USE=	HORDE_RUN=Horde_Service_Facebook
 IMSP_USE=	HORDE_RUN=Horde_Imsp

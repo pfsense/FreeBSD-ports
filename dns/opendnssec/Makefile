@@ -3,6 +3,7 @@
 
 PORTNAME=	opendnssec
 PORTVERSION=	1.4.14
+PORTREVISION=	2
 CATEGORIES=	dns
 MASTER_SITES=	http://dist.opendnssec.org/source/
 
@@ -18,7 +19,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir="${PREFIX}/var"
 USE_RC_SUBR=	opendnssec
 USE_GNOME=	libxml2
-USES=		perl5 ssl
+USES=		compiler:c11 perl5 ssl
 USE_LDCONFIG=	yes
 
 CONFLICTS=	opendnssec-1.[0-3]* opendnssec2-[0-9]*

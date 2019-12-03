@@ -1,10 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	rofi
-DISTVERSION=	1.5.1
-PORTREVISION=	1
+DISTVERSION=	1.5.4
 CATEGORIES=	x11
-MASTER_SITES=	https://github.com/DaveDavenport/rofi/releases/download/${PORTVERSION}/
+MASTER_SITES=	https://github.com/davatorium/rofi/releases/download/${PORTVERSION}/
 
 MAINTAINER=	nomoo@nomoo.ru
 COMMENT=	Window switcher, run dialog and dmenu replacement
@@ -21,7 +20,7 @@ LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification \
 		libxcb-xrm.so:x11/xcb-util-xrm \
 		libxkbcommon-x11.so:x11/libxkbcommon
 
-USES=		bison gmake libtool pkgconfig shebangfix
+USES=		bison gmake gnome libtool pkgconfig shebangfix
 USE_GNOME=	cairo gdkpixbuf2 librsvg2 pango
 USE_XORG=	xcb
 

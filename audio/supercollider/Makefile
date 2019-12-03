@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	supercollider
-PORTVERSION=	3.8.0
-PORTREVISION=	6
+DISTVERSION=	3.10.2
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/supercollider/supercollider/releases/download/Version-${PORTVERSION}/
 DISTNAME=	SuperCollider-${PORTVERSION}-Source-linux
 
-MAINTAINER=	brittlehaus@gmail.com
+MAINTAINER=	ports@nicandneal.net
 COMMENT=	Programming language for real time audio synthesis
 
 LICENSE=	GPLv3
@@ -20,11 +20,12 @@ LIB_DEPENDS=	libavahi-client.so:net/avahi-app \
 		libsndfile.so:audio/libsndfile \
 		libfftw3f.so:math/fftw3-float
 
-USES=		cmake:outsource iconv localbase pkgconfig qt:5 readline \
-		shared-mime-info tar:bzip2
-USE_QT=		buildtools_build concurrent core gui linguisttools location \
-		network opengl printsupport qmake_build qml quick sensors \
-		sql webkit widgets
+USES=		cmake compiler:c++11-lang iconv localbase pkgconfig \
+		qt:5 readline shared-mime-info tar:bzip2
+USE_QT=		buildtools_build concurrent core declarative gui linguisttools location \
+		network opengl printsupport qmake_build sensors \
+		sql widgets webengine websockets webchannel svg
+USE_XORG=	x11
 USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/SuperCollider-Source
@@ -39,8 +40,6 @@ DESKTOP_ENTRIES="SuperCollider IDE" "" "${LOCALBASE}/share/pixmaps/sc_ide.svg" \
 
 OPTIONS_DEFINE=		HELP SUPERNOVA
 OPTIONS_DEFAULT=	HELP SUPERNOVA
-# SUPERNOVA option BROKEN_FreeBSD_10: No viable conversion from 'boost::lockfree::detail::tagged_ptr<nova::freelist::freelist_node>'
-OPTIONS_EXCLUDE_FreeBSD_10=	SUPERNOVA
 OPTIONS_SUB=	yes
 
 HELP_DESC=	Install on-line help text
@@ -48,7 +47,20 @@ SUPERNOVA_DESC=	Build with supernova as optional audio synthesis server
 
 HELP_CMAKE_BOOL=	INSTALL_HELP
 SUPERNOVA_CMAKE_BOOL=	SUPERNOVA
-SUPERNOVA_USE=		XORG=x11
+
+.include <bsd.port.pre.mk>
+
+.if ! ${ARCH} == amd64 && ! ${ARCH} == i386
+CMAKE_ARGS+=	-DSSE:BOOL=FALSE -DSSE2:BOOL=FALSE
+.endif
+
+.if ${OPSYS} == FreeBSD
+.if (${OSVERSION} >= 1102507 && ${OSVERSION} < 1200000) || \
+	(${OSVERSION} >= 1200506 && ${OSVERSION} < 1300000) || \
+	${OSVERSION} >= 1300014
+BROKEN=	fails to compile with Clang 8 due shipped Boost 1.66 libraries. Not compatible with Boost 1.70+, either
+.endif
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|MATCHES "Linux" AND|MATCHES "FreeBSD" AND|' \
@@ -59,4 +71,4 @@ post-patch:
 		${WRKSRC}/server/plugins/CMakeLists.txt
 	@${REINPLACE_CMD} -e 's|__linux__|__FreeBSD__|' ${WRKSRC}/server/supernova/server/main.cpp
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

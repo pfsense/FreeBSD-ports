@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	rtorrent
-PORTVERSION=	0.9.6
-PORTREVISION=	3
+PORTVERSION=	0.9.8
 CATEGORIES=	net-p2p
-MASTER_SITES=	http://rtorrent.net/downloads/
+MASTER_SITES=	https://rtorrent.net/downloads/
 
-MAINTAINER=	pipfstarrd@openmailbox.org
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	BitTorrent Client written in C++
 
 LICENSE=	GPLv2 GPLv3
@@ -17,9 +16,10 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libtorrent.so:net-p2p/libtorrent
 
 USES=		compiler:c++11-lang ncurses pkgconfig
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-debug
-LDFLAGS+=	-pthread
+LDFLAGS+=	-lexecinfo -pthread
 
 PLIST_FILES=	bin/rtorrent
 PORTDOCS=	README
@@ -36,12 +36,6 @@ XMLRPC_CONFIGURE_ON=	--with-xmlrpc-c
 XMLRPC_LIB_DEPENDS=	libxmlrpc.so:net/xmlrpc-c
 
 .include <bsd.port.options.mk>
-
-# Workaround to build on >= 10.x
-.if ${OPSYS} == FreeBSD
-USE_CXXSTD=	c++11
-EXTRA_PATCHES+=	${FILESDIR}/extra-clang
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-O3|${CFLAGS}|' ${WRKSRC}/configure

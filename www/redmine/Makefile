@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	redmine
-PORTVERSION=	3.4.5
-PORTREVISION=	1
+PORTVERSION=	3.4.11
 CATEGORIES=	www
-MASTER_SITES=	http://www.redmine.org/releases/
+MASTER_SITES=	https://www.redmine.org/releases/
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Flexible project management web application
@@ -14,7 +13,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
 RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
-		rubygem-rails4>=4.2.8:www/rubygem-rails4 \
+		rubygem-rails4>=4.2.11.1:www/rubygem-rails4 \
 		rubygem-jquery-rails>=3.1.4:www/rubygem-jquery-rails \
 		rubygem-coderay>=1.1.1:textproc/rubygem-coderay \
 		rubygem-request_store>=1.0.5:devel/rubygem-request_store \
@@ -25,19 +24,20 @@ RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
 		rubygem-roadie>=3.2.1:mail/rubygem-roadie \
 		rubygem-mimemagic>=0:misc/rubygem-mimemagic \
 		rubygem-mail>=2.6.4:mail/rubygem-mail \
-		rubygem-nokogiri>=1.8.1:textproc/rubygem-nokogiri \
+		rubygem-nokogiri18>=1.8.1:textproc/rubygem-nokogiri18 \
 		rubygem-i18n>=0.7:devel/rubygem-i18n \
 		rubygem-rails-html-sanitizer>=1.0.3:textproc/rubygem-rails-html-sanitizer \
-		rubygem-rbpdf>=1.19.3:print/rubygem-rbpdf \
+		rubygem-rbpdf>=1.19.6:print/rubygem-rbpdf \
 		rubygem-net-ldap>=0.12:net/rubygem-net-ldap \
 		rubygem-ruby-openid>=2.3:net/rubygem-ruby-openid \
 		rubygem-rack-openid>=0:www/rubygem-rack-openid \
 		rubygem-rake>=0:devel/rubygem-rake
 
+USES=		cpe
+USE_RUBY=	yes
+
 NO_ARCH=	yes
 NO_BUILD=	yes
-USE_RUBY=	yes
-USES=		cpe
 
 USERS=		${WWWOWN}
 GROUPS=		${WWWGRP}
@@ -55,9 +55,9 @@ MYSQL_DESC=	MySQL database support (via mysql2 rubygem)
 NO_OPTIONS_SORT=	yes
 
 MYSQL_RUN_DEPENDS=	rubygem-mysql2>=0.4.6:databases/rubygem-mysql2
-POSTGRESQL_RUN_DEPENDS=	rubygem-pg>=0.18.1:databases/rubygem-pg
+POSTGRESQL_RUN_DEPENDS=	rubygem-pg018>=0.18.1:databases/rubygem-pg018
 MARKDOWN_RUN_DEPENDS=	rubygem-redcarpet>=3.4.0:textproc/rubygem-redcarpet
-RMAGIC_RUN_DEPENDS=	rubygem-rmagick>=2.14.0:graphics/rubygem-rmagick
+RMAGIC_RUN_DEPENDS=	rubygem-rmagick>=2.16.0:graphics/rubygem-rmagick
 THIN_RUN_DEPENDS=	rubygem-thin>=1.6.2:www/rubygem-thin
 THIN_SUB_LIST=		WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 THIN_VARS=		USE_RC_SUBR=redmine

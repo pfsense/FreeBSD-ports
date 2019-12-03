@@ -1,3 +1,3 @@
-TIMESTAMP = 1529849203
-SHA256 (prometheus-alertmanager-v0.15.0_GH0.tar.gz) = 69694bd32d1159eef8eaace6c65fb2f683cde607e98c663bfdc4bf158a679de8
-SIZE (prometheus-alertmanager-v0.15.0_GH0.tar.gz) = 2755787
+TIMESTAMP = 1563397402
+SHA256 (prometheus-alertmanager-v0.18.0_GH0.tar.gz) = aa9536f001c4c46ceb5aa1767c81922777b3a2740529d25d86c9f27554cbd466
+SIZE (prometheus-alertmanager-v0.18.0_GH0.tar.gz) = 5181819

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	netdisco
-DISTVERSION=	2.039031
+DISTVERSION=	2.042005
+PORTREVISION=	1
 CATEGORIES=	net-mgmt perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:OLIVER
@@ -14,10 +15,12 @@ COMMENT=	Network discovery/management tool with web console
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-BUILD_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg \
 		p5-Net-SNMP>=6.0.1:net-mgmt/p5-Net-SNMP \
 		p5-Algorithm-Cron>=0.07:devel/p5-Algorithm-Cron \
 		p5-aliased>=0:devel/p5-aliased \
+		p5-autovivification>=0:devel/p5-autovivification \
 		p5-AnyEvent>=7.05:devel/p5-AnyEvent \
 		p5-AnyEvent-DNS-EtcHosts>=0.0103:dns/p5-AnyEvent-DNS-EtcHosts \
 		p5-App-cpanminus>=1.6108:devel/p5-App-cpanminus \
@@ -31,8 +34,10 @@ BUILD_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg \
 		p5-Dancer-Plugin-DBIC>=0.2001:databases/p5-Dancer-Plugin-DBIC \
 		p5-Dancer-Plugin-Auth-Extensible>=0.30:security/p5-Dancer-Plugin-Auth-Extensible \
 		p5-Dancer-Plugin-Passphrase>=2.0.1:security/p5-Dancer-Plugin-Passphrase \
+		p5-Dancer-Plugin-Swagger>=0:www/p5-Dancer-Plugin-Swagger \
 		p5-Dancer-Session-Cookie>=0.27:www/p5-Dancer-Session-Cookie \
 		p5-Env-Path>=0:devel/p5-Env-Path \
+		p5-Expect>=0:lang/p5-Expect \
 		p5-File-ShareDir>=1.03:devel/p5-File-ShareDir \
 		p5-File-Slurp>=9999.19:devel/p5-File-Slurp \
 		p5-Guard>=1.022:devel/p5-Guard \
@@ -41,19 +46,19 @@ BUILD_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg \
 		p5-HTML-Parser>=3.70:www/p5-HTML-Parser \
 		p5-HTTP-Tiny>=0.029:www/p5-HTTP-Tiny \
 		p5-JSON>=0:converters/p5-JSON \
-		p5-List-MoreUtils>=0.33:lang/p5-List-MoreUtils \
+		p5-List-MoreUtils>=0.428:lang/p5-List-MoreUtils \
 		p5-Log-Message-Simple>=0:devel/p5-Log-Message-Simple \
 		p5-Module-Find>=0.12:devel/p5-Module-Find \
 		p5-Module-Load>=0.32:devel/p5-Module-Load \
 		p5-Moo>=1.001000:devel/p5-Moo \
 		p5-MCE>=1.515:devel/p5-MCE \
-		p5-MIME-Base64>=0:converters/p5-MIME-Base64 \
 		p5-Net-DNS>=0.72:dns/p5-Net-DNS \
 		p5-perl-ldap>=0:net/p5-perl-ldap \
 		p5-Net-OpenSSH>=0:net/p5-Net-OpenSSH \
 		p5-NetAddr-MAC>=0:net/p5-NetAddr-MAC \
 		p5-NetAddr-IP>=4.068:net-mgmt/p5-NetAddr-IP \
 		p5-Path-Class>=0.32:devel/p5-Path-Class \
+		p5-Path-Tiny>=0:devel/p5-Path-Tiny \
 		p5-Plack>=1.0023:www/p5-Plack \
 		p5-Plack-Middleware-Debug>=0:www/p5-Plack-Middleware-Debug \
 		p5-Plack-Middleware-Expires>=0.03:www/p5-Plack-Middleware-Expires \
@@ -63,7 +68,7 @@ BUILD_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg \
 		p5-Socket6>=0.23:net/p5-Socket6 \
 		p5-Starman>=0.4008:www/p5-Starman \
 		p5-Sys-SigAction>=0:devel/p5-Sys-SigAction \
-		p5-SNMP-Info>=3.54:net-mgmt/p5-SNMP-Info \
+		p5-SNMP-Info>=3.64:net-mgmt/p5-SNMP-Info \
 		p5-SQL-Translator>=0.11018:databases/p5-SQL-Translator \
 		p5-Template-Toolkit>=2.24:www/p5-Template-Toolkit \
 		p5-Template-Plugin-CSV>=0.04:textproc/p5-Template-Plugin-CSV \
@@ -79,7 +84,11 @@ BUILD_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg \
 		p5-IO-Socket-SSL>=2.048:security/p5-IO-Socket-SSL \
 		p5-File-Slurper>=0:devel/p5-File-Slurper
 
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+USES=		perl5 pgsql
+USE_PERL5=	modbuild
+USE_RC_SUBR=	netdisco
+
+NO_ARCH=	yes
 
 USERS=		netdisco
 GROUPS=		netdisco
@@ -91,11 +100,6 @@ SUB_LIST=	SITE_PERL=${STAGEDIR}${PREFIX}/${SITE_PERL_REL} \
 		ETCDIR=${ETCDIR} \
 		ETCDIR_REL=${ETCDIR_REL}
 PLIST_SUB+=	ETCDIR=${ETCDIR}
-
-USES=		perl5 pgsql
-USE_PERL5=	modbuild
-USE_RC_SUBR=	netdisco
-NO_ARCH=	yes
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/perl5/bin

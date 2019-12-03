@@ -3,6 +3,7 @@
 PORTNAME=	qtpass
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.3
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	brouwer@annejan.com
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	pass:sysutils/password-store
 
-USES=		qmake:outsource qt:5
+USES=		compiler:c++11-lang gl qmake:outsource qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	IJhack
 GH_PROJECT=	QtPass
@@ -28,6 +29,10 @@ DESKTOP_ENTRIES=	"QtPass" "" \
 			"${PREFIX}/share/pixmaps/qtpass.png" \
 			"${PREFIX}/bin/qtpass" \
 			"Security;Utility;" true
+
+# Fix build with Qt 5.13
+pre-build:
+	cd ${WRKSRC}/localization && ${LRELEASE} *ts
 
 # Install the icon of the port.
 post-install:

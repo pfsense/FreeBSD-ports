@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=		mapserver
-PORTVERSION=		7.0.7
+PORTVERSION=		7.4.1
 PORTREVISION=	1
 CATEGORIES=		graphics www geography
-MASTER_SITES=		http://download.osgeo.org/mapserver/
+MASTER_SITES=		https://download.osgeo.org/mapserver/
 
 MAINTAINER=		wen@FreeBSD.org
 COMMENT=		System for developing web-based GIS applications
@@ -16,23 +16,26 @@ LIB_DEPENDS=		libgd.so:graphics/gd \
 			libproj.so:graphics/proj \
 			libpng.so:graphics/png \
 			libgif.so:graphics/giflib \
-			libharfbuzz.so:print/harfbuzz \
 			libsvg.so:graphics/libsvg \
 			libfreetype.so:print/freetype2
 
-USES=			cpe cmake:outsource jpeg
+USES=			compiler:c++11-lang cpe cmake gnome jpeg \
+			localbase:ldflags
 CPE_VENDOR=		umn
-USE_GNOME=		libxml2
-LDFLAGS+=		-L${LOCALBASE} -pthread
+LDFLAGS+=		-pthread
 CMAKE_ARGS+=		-DCMAKE_PREFIX_PATH=${LOCALBASE} \
 			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 			-DWITH_GD=1
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFINE=		FRIBIDI CURL GDAL GEOS KML POSTGIS PHP PERL PYTHON \
-			WMS WFS WCS FASTCGI DEBUG CAIRO CAIRO_SVG \
-			CLIENT_WMS CLIENT_WFS
-OPTIONS_DEFAULT=	FRIBIDI GDAL GEOS CLIENT_WMS CLIENT_WFS KML CAIRO_SVG
+PROG_FILES=		legend scalebar shp2img shptree shptreetst shptreevis \
+			sortshp msencrypt tile4ms mapserv
+
+OPTIONS_DEFINE=		CAIRO CAIRO_SVG CLIENT_WMS CLIENT_WFS CURL DEBUG \
+			FASTCGI FRIBIDI GDAL GEOS HARFBUZZ KML \
+			PERL PHP POSTGIS PROTOBUFC PYTHON WCS WFS WMS
+OPTIONS_DEFAULT=	CAIRO FRIBIDI GDAL GEOS \
+			HARFBUZZ POSTGIS PROTOBUFC WCS WFS
 CAIRO_SVG_DESC=		Cairo SVG parser support
 GDAL_DESC=		GDAL library support
 FRIBIDI_DESC=		Fribidi library support
@@ -64,10 +67,26 @@ CMAKE_ARGS+=		-DWITH_CAIRO=0
 .endif
 
 .if ${PORT_OPTIONS:MFRIBIDI}
-LIB_DEPENDS+=		libfribidi.so:converters/fribidi
-CMAKE_ARGS+=		-DWITH_FRIBIDI=1
+LIB_DEPENDS+=		libfribidi.so:converters/fribidi \
+			libharfbuzz.so:print/harfbuzz
+CMAKE_ARGS+=		-DWITH_FRIBIDI=1 -DWITH_HARFBUZZ=1
 .else
-CMAKE_ARGS+=		-DWITH_FRIBIDI=0
+CMAKE_ARGS+=		-DWITH_FRIBIDI=0 -DWITH_HARFBUZZ=0
+.endif
+
+.if ${PORT_OPTIONS:MHARFBUZZ}
+LIB_DEPENDS+=		libfribidi.so:converters/fribidi \
+			libharfbuzz.so:print/harfbuzz
+CMAKE_ARGS+=		-DWITH_FRIBIDI=1 -DWITH_HARFBUZZ=1
+.else
+CMAKE_ARGS+=		-DWITH_FRIBIDI=0 -DWITH_HARFBUZZ=0
+.endif
+
+.if ${PORT_OPTIONS:MPROTOBUFC}
+LIB_DEPENDS+=		libprotobuf-c.so:devel/protobuf-c
+CMAKE_ARGS+=		-DWITH_PROTOBUFC=1
+.else
+CMAKE_ARGS+=		-DWITH_PROTOBUFC=0
 .endif
 
 .if ${PORT_OPTIONS:MCAIRO_SVG}
@@ -129,7 +148,6 @@ CMAKE_ARGS+=		-DWITH_POSTGIS=0
 
 .if ${PORT_OPTIONS:MPHP}
 USES+=			php:build
-IGNORE_WITH_PHP=	70
 CMAKE_ARGS+=		-DWITH_PHP=1
 PLIST_SUB+=		PHP=""
 .else
@@ -167,9 +185,6 @@ CMAKE_ARGS+=		-DCMAKE_BUILD_TYPE=Debug
 .else
 CMAKE_ARGS+=		-DCMAKE_BUILD_TYPE=Release
 .endif
-
-PROG_FILES=		legend scalebar shp2img shptree shptreetst shptreevis \
-			sortshp msencrypt tile4ms mapserv
 
 .if ${PORT_OPTIONS:MCLIENT_WMS}
 LIB_DEPENDS+=		libcurl.so:ftp/curl

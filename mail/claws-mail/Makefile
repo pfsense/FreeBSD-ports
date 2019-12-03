@@ -2,10 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	claws-mail
-PORTREVISION=	1
+PORTREVISION=	0
 CATEGORIES=	mail news ipv6
 
 COMMENT=	Lightweight and featureful GTK+ based e-mail and news client
+
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libetpan.so:mail/libetpan \
@@ -14,18 +17,20 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgnutls.so:security/gnutls \
 		libgcrypt.so:security/libgcrypt \
 		libexpat.so:textproc/expat2 \
-		libfontconfig.so:x11-fonts/fontconfig
+		libfontconfig.so:x11-fonts/fontconfig \
+		libnettle.so:security/nettle
 RUN_DEPENDS=	mime-support>0:misc/mime-support
 
+USES=		autoreconf gettext-tools compiler:c++11-lang cpe desktop-file-utils gettext gnome pathfix \
+		python:3.6 shebangfix ssl
 USE_XORG=	ice sm
 USE_GNOME=	cairo gtk20 librsvg2
-USES=		cpe desktop-file-utils pathfix python:2.7,run shebangfix ssl
 SHEBANG_FILES=	tools/*.pl tools/*.py tools/tb2claws-mail
 INSTALLS_ICONS=	yes
 
-OPTIONS_DEFINE=	COMPFACE DEBUG DOCS ENCHANT IPV6 JPILOT LDAP \
-		MANUAL NLS STARTUP THEMES
-OPTIONS_DEFAULT=COMPFACE ENCHANT MANUAL STARTUP THEMES
+OPTIONS_DEFINE=	COMPFACE DEBUG DOCS ENCHANT IPV6 LDAP \
+		NLS STARTUP THEMES
+OPTIONS_DEFAULT=COMPFACE ENCHANT STARTUP THEMES
 OPTIONS_SUB=	yes
 
 COMPFACE_DESC=		X-Face support
@@ -40,18 +45,8 @@ ENCHANT_LIB_DEPENDS=	libenchant.so:textproc/enchant
 
 IPV6_CONFIGURE_ENABLE=	ipv6
 
-JPILOT_DESC=		JPilot support
-JPILOT_CONFIGURE_ENABLE=	jpilot
-JPILOT_LIB_DEPENDS=	libpisock.so:palm/pilot-link
-JPILOT_RUN_DEPENDS=	jpilot:palm/jpilot
-
 LDAP_CONFIGURE_ENABLE=	ldap
 LDAP_USE=		openldap=yes
-
-MANUAL_DESC=		User manual (many dependencies, including texlive)
-MANUAL_CONFIGURE_ON=	--enable-manual --with-manualdir=${DOCSDIR}/manual
-MANUAL_CONFIGURE_OFF=	--disable-manual
-MANUAL_BUILD_DEPENDS=	docbook-utils>0:textproc/docbook-utils
 
 NLS_CONFIGURE_OFF=	--disable-nls
 NLS_USES=		gettext-tools

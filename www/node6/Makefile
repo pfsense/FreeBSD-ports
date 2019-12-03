@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	6.14.4
+PORTVERSION=	6.17.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
@@ -13,29 +14,34 @@ COMMENT=	V8 JavaScript for client and server (6.x LTS)
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386
+BROKEN_SSL=		openssl111 libressl libressl-devel
+BROKEN_SSL_REASON=	Node.js 6.x LTS requires OpenSSL 1.0.2 or the BUNDLED_SSL option enabled
+DEPRECATED=		Node.js 6.x LTS reaches end-of-life on 2019-04-30, see https://github.com/nodejs/Release
+EXPIRATION_DATE=	2019-04-30
+ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 powerpc64
 
-OPTIONS_DEFINE=	BUNDLED_SSL DOCS NLS DTRACE
-OPTIONS_DEFAULT=DTRACE
-OPTIONS_SUB=	yes
-
-OPTIONS_DEFAULT_FreeBSD_10=	BUNDLED_SSL
-OPTIONS_DEFAULT+=		${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
+OPTIONS_DEFINE=		BUNDLED_SSL DOCS NLS DTRACE
+OPTIONS_DEFAULT=	DTRACE
+OPTIONS_DEFAULT_FreeBSD_12=	BUNDLED_SSL
+OPTIONS_DEFAULT_FreeBSD_13=	BUNDLED_SSL
+OPTIONS_DEFAULT+=	${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
+OPTIONS_SUB=		yes
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
 
-OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 # dt_modtext:/usr/src/cddl/contrib/opensolaris/lib/libdtrace/common/dt_link.c(820): arm not implemented
 OPTIONS_EXCLUDE_armv6=		DTRACE
 OPTIONS_EXCLUDE_armv7=		DTRACE
+OPTIONS_EXCLUDE_powerpc64=	DTRACE
 
 BUNDLED_SSL_DESC=		Use node.js's bundled OpenSSL implementation #'
 BUNDLED_SSL_USES_OFF=		ssl
 BUNDLED_SSL_CONFIGURE_OFF+=	--shared-openssl
 
 NLS_CONFIGURE_ON=	--with-intl=system-icu
+NLS_BUILD_DEPENDS=	icu>=58.2:devel/icu
 NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
 
 DTRACE_CONFIGURE_ON=	--with-dtrace
@@ -45,7 +51,7 @@ USES=		compiler:c++11-lib gmake python:2.7,build pkgconfig \
 
 HAS_CONFIGURE=	yes
 
-CONFLICTS_INSTALL=	node[458]-[0-9]* node-[0-9]*
+CONFLICTS_INSTALL=	node8-[0-9]* node10-[0-9]* node-[0-9]*
 
 CONFIGURE_ARGS=	--prefix=${PREFIX_RELDEST} \
 		--without-npm \
@@ -57,34 +63,23 @@ SHEBANG_FILES=	tools/specialize_node_d.py tools/genv8constants.py
 
 PREFIX_RELDEST=	${PREFIX:S,^${DESTDIR},,}
 REINPLACE_ARGS=	-i ''
-MAKE_ENV+=	CC.host=${CC} CXX.host=${CXX} LINK.host=${CXX} LINK.target=${CXX}
+MAKE_ENV+=	CC.host=${CC} CFLAGS.host="${CFLAGS}" \
+		CXX.host=${CXX} CXXFLAGS.host="${CXXFLAGS}" \
+		LINK.host=${CXX} LDFLAGS.host="${LDFLAGS}"
 
+BUILD_DEPENDS+=	c-ares>=1.10.0:dns/c-ares\
+		libuv>=1.16.1:devel/libuv
 LIB_DEPENDS+=	libcares.so:dns/c-ares\
 		libuv.so:devel/libuv
 
 .include <bsd.port.options.mk>
 
-.if empty(PORT_OPTIONS:MBUNDLED_SSL)
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100085 && ${SSL_DEFAULT} == base
-IGNORE=		node.js requires openssl 1.0.2, add DEFAULT_VERSIONS+=ssl=openssl to /etc/make.conf or enable BUNDLED_SSL option
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085
+BROKEN_SSL+=	base
 .endif
 
-.if !empty(SSL_DEFAULT:Mlibressl*)
-IGNORE=		cannot build node.js with LibreSSL. You must enable BUNDLED_SSL
-.endif
-
-.endif
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == armv6 || ${ARCH} == armv7
+.if ${PORT_OPTIONS:MBUNDLED_SSL} && ${ARCH} != amd64 && ${ARCH} != i386
 CONFIGURE_ARGS+=--openssl-no-asm
-.endif
-
-.if ${COMPILER_TYPE} == gcc
-# GCC does not expose std::snprintf() without this define
-CXXFLAGS+=	-D_GLIBCXX_USE_C99
 .endif
 
 post-patch:
@@ -112,4 +107,4 @@ post-configure:
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/node
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

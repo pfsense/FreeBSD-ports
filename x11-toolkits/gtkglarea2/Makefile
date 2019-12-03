@@ -1,22 +1,25 @@
 # Created by: Marc Recht <marc@informatik.uni-bremen.de>
 # $FreeBSD$
-#    $MCom: ports/x11-toolkits/gtkglarea2/Makefile,v 1.2 2006/09/10 00:51:17 mezz Exp $
 
 PORTNAME=	gtkglarea
 PORTVERSION=	2.0.1
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 DISTNAME=	gtkglarea-${PORTVERSION}
 DIST_SUBDIR=	gnome2
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL widget for the GTK+2 GUI toolkit
 
-USES=		libtool:keepla pathfix pkgconfig tar:bzip2
-USE_GNOME=	gtk20
-USE_GL=		yes
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
+
+USES=		compiler:c++11-lang gl gnome libtool:keepla pathfix pkgconfig tar:bzip2
+USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GL=		gl glu
 USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-lib-GL
 INSTALL_TARGET=	install-strip

@@ -14,6 +14,10 @@ COMMENT=	Text-mode Gadu-Gadu client
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/src/COPYING
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libgadu.so:polish/libgadu
 
 USES=		gmake localbase ncurses pathfix pkgconfig
@@ -36,7 +40,14 @@ ASPELL_RUN_DEPENDS=	pl-aspell>0:polish/aspell
 OPENSSL_USES=		ssl
 OPENSSL_CONFIGURE_OFF=	--without-openssl
 
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	variable has incomplete type 'EVP_MD_CTX' (aka 'struct evp_md_ctx_st')
+BROKEN_FreeBSD_13=	variable has incomplete type 'EVP_MD_CTX' (aka 'struct evp_md_ctx_st')
+.endif
+
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ekg
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

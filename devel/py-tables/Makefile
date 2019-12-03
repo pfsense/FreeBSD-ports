@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tables
-PORTVERSION=	3.4.4
+PORTVERSION=	3.5.2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,6 +19,8 @@ LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		liblzo2.so:archivers/lzo2 \
 		libucl.so:archivers/ucl
 RUN_DEPENDS:=	${BUILD_DEPENDS}
+
+CONFLICTS_BUILD=	zstd # conflicting version of zstd is bundled
 
 USES=		fortran python
 USE_PYTHON=	autoplist concurrent distutils cython

@@ -2,7 +2,7 @@
 
 PORTNAME=	icingaweb2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.3
+DISTVERSION=	2.7.3
 CATEGORIES=	net-mgmt www
 
 MAINTAINER=	lme@FreeBSD.org
@@ -30,7 +30,7 @@ SUB_LIST=	WWWDIR=${WWWDIR} \
 PLIST_SUB=	WWWOWN=${WWWOWN} \
 		WWWGRP=${WWWGRP}
 
-OPTIONS_DEFINE=		NLS LDAP MYSQL PGSQL PDF
+OPTIONS_DEFINE=		NLS LDAP MYSQL PGSQL PDF EXAMPLES
 OPTIONS_DEFAULT=	LDAP MYSQL PGSQL
 
 PDF_DESC=	Export graphs as PDF
@@ -48,9 +48,9 @@ post-patch:
 	${REINPLACE_CMD} 's%readlink[^)]*)%"${PREFIX}/bin/php"%g' \
 		${WRKSRC}/application/clicommands/WebCommand.php
 do-install:
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/bash_completion.d/
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 	${INSTALL_DATA} ${WRKSRC}/etc/bash_completion.d/icingacli \
-		${STAGEDIR}${EXAMPLESDIR}/bash_completion.d
+		${STAGEDIR}${PREFIX}/etc/bash_completion.d
 	(cd ${WRKSRC} && ${RM} -r .mailmap changelog.py icingaweb2.spec \
 		bin/license_writer.py packages test)
 	(${FIND} ${WRKSRC} -name "*.bak" -delete)
@@ -60,6 +60,7 @@ do-install:
 	${CHMOD} 755 ${STAGEDIR}${WWWDIR}/bin/icingacli
 	${RLN} ${STAGEDIR}${WWWDIR}/bin/icingacli ${STAGEDIR}${PREFIX}/bin/icingacli
 	${MKDIR} ${STAGEDIR}${ETCDIR}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 .for webserver in apache nginx
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/${webserver}
 	# ICINGAWEB_CONFIGDIR is set to /nonexistent to allow staging as user.

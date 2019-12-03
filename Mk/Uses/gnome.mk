@@ -67,19 +67,16 @@ IGNORE=	USES=gnome takes no arguments
 .endif
 
 # non-version specific components
-_USE_GNOME_ALL= esound intlhack intltool introspection \
+_USE_GNOME_ALL= intlhack intltool introspection \
 		referencehack gnomemimedata \
 		gnomeprefix
-
-# GNOME 1 components
-_USE_GNOME_ALL+= gdkpixbuf glib12 gtk12
 
 # GNOME 2 components
 _USE_GNOME_ALL+= atk cairo \
 		gdkpixbuf2 gconf2 glib20 \
 		gnomedocutils gnomesharp20 \
 		gnomevfs2 gtk-update-icon-cache gtk20 gtkhtml3 \
-		gtksharp20 gtksourceview gtksourceview2 gvfs libartlgpl2 libbonobo \
+		gtksharp20 gtksourceview2 gvfs libartlgpl2 libbonobo \
 		libbonoboui libglade2 libgnome \
 		libgnomecanvas libgnomekbd libgnomeprint libgnomeprintui \
 		libgnomeui libgsf libgtkhtml libidl librsvg2 libwnck \
@@ -99,6 +96,10 @@ _USE_GNOME_ALL+=atkmm cairomm gconfmm26 glibmm gtkmm20 gtkmm24 \
 		gtkmm30 gtksourceviewmm3 libgdamm5 \
 		libgtksourceviewmm libxml++26 libsigc++12 libsigc++20 \
 		pangomm
+
+# glib-mkenums often fails with C locale
+# https://gitlab.gnome.org/GNOME/glib/issues/1430
+USE_LOCALE?=	en_US.UTF-8
 
 GNOME_MAKEFILEIN?=	Makefile.in
 SCROLLKEEPER_DIR=	/var/db/rarian
@@ -163,28 +164,6 @@ libsigc++20_LIB_DEPENDS=	libsigc-2.0.so:devel/libsigc++20
 
 pangomm_LIB_DEPENDS=	libpangomm-1.4.so:x11-toolkits/pangomm
 pangomm_USE_GNOME_IMPL=	pango glibmm cairomm
-
-ESD_CONFIG?=		${LOCALBASE}/bin/esd-config
-esound_LIB_DEPENDS=	libesd.so:audio/esound
-esound_CONFIGURE_ENV=	ESD_CONFIG="${ESD_CONFIG}"
-esound_MAKE_ENV=	ESD_CONFIG="${ESD_CONFIG}"
-
-GLIB_CONFIG?=		${LOCALBASE}/bin/glib-config
-glib12_LIB_DEPENDS=	libglib.so:devel/glib12
-glib12_CONFIGURE_ENV=	GLIB_CONFIG="${GLIB_CONFIG}"
-glib12_MAKE_ENV=	GLIB_CONFIG="${GLIB_CONFIG}"
-
-GTK_CONFIG?=		${LOCALBASE}/bin/gtk-config
-gtk12_LIB_DEPENDS=	libgtk.so:x11-toolkits/gtk12
-gtk12_CONFIGURE_ENV=	GTK_CONFIG="${GTK_CONFIG}"
-gtk12_MAKE_ENV=		GTK_CONFIG="${GTK_CONFIG}"
-gtk12_USE_GNOME_IMPL=	glib12
-
-GDK_PIXBUF_CONFIG?=	${LOCALBASE}/bin/gdk-pixbuf-config
-gdkpixbuf_LIB_DEPENDS=	libgdk_pixbuf.so:graphics/gdk-pixbuf
-gdkpixbuf_CONFIGURE_ENV=GDK_PIXBUF_CONFIG="${GDK_PIXBUF_CONFIG}"
-gdkpixbuf_MAKE_ENV=	GDK_PIXBUF_CONFIG="${GDK_PIXBUF_CONFIG}"
-gdkpixbuf_USE_GNOME_IMPL=gtk12
 
 gnomemimedata_BUILD_DEPENDS=${LOCALBASE}/libdata/pkgconfig/gnome-mime-data-2.0.pc:misc/gnome-mime-data
 gnomemimedata_RUN_DEPENDS=${LOCALBASE}/libdata/pkgconfig/gnome-mime-data-2.0.pc:misc/gnome-mime-data
@@ -310,9 +289,6 @@ libgda5_USE_GNOME_IMPL=	glib20 libxslt
 libgda5-ui_LIB_DEPENDS=	libgda-ui-5.0.so:databases/libgda5-ui
 libgda5-ui_USE_GNOME_IMPL=glib20 libxslt libgda5
 
-gtksourceview_LIB_DEPENDS=	libgtksourceview-1.0.so:x11-toolkits/gtksourceview
-gtksourceview_USE_GNOME_IMPL=libgnome libgnomeprintui
-
 gtksourceview2_LIB_DEPENDS=	libgtksourceview-2.0.so:x11-toolkits/gtksourceview2
 gtksourceview2_USE_GNOME_IMPL=gtk20 libxml2
 
@@ -421,11 +397,6 @@ _USE_GNOME+=	${${component}_USE_GNOME_IMPL} ${component}
 # and theme engines.
 PLIST_SUB+=			GTK2_VERSION="${GTK2_VERSION}" \
 				GTK3_VERSION="${GTK3_VERSION}"
-
-# Set USE_CSTD for all ports that depend on glib12
-.if defined(_USE_GNOME) && !empty(_USE_GNOME:Mglib12)
-USE_CSTD=	gnu89
-.endif
 
 .if defined(_USE_GNOME) && empty(_USE_GNOME:Mglib20:u) && defined(GLIB_SCHEMAS)
 IGNORE=		GLIB_SCHEMAS is set, but needs USE_GNOME=glib20 to work

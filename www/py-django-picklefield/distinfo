@@ -1,3 +1,3 @@
-TIMESTAMP = 1519504362
-SHA256 (django-picklefield-1.0.0.tar.gz) = 61e3ba7f6df82d8df9e6be3a8c55ef589eb3bf926c3d25d2b7949b07eae78354
-SIZE (django-picklefield-1.0.0.tar.gz) = 12939
+TIMESTAMP = 1548421079
+SHA256 (django-picklefield-2.0.tar.gz) = f1733a8db1b6046c0d7d738e785f9875aa3c198215de11993463a9339aa4ea24
+SIZE (django-picklefield-2.0.tar.gz) = 10293

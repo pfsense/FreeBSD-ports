@@ -2,9 +2,9 @@
 
 PORTNAME=	ncmpcpp
 DISTVERSION=	0.8.2
-PORTREVISION=	2
+PORTREVISION=	11
 CATEGORIES=	audio
-MASTER_SITES=	http://ncmpcpp.rybczak.net/stable/
+MASTER_SITES=	https://ncmpcpp.rybczak.net/stable/
 
 MAINTAINER=	yamagi@yamagi.org
 COMMENT=	Ncurses mpd client, clone of ncmpc with some new features
@@ -18,8 +18,6 @@ LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient \
 		libicuuc.so:devel/icu \
 		libboost_filesystem.so:devel/boost-libs \
 		libcurl.so:ftp/curl
-
-BROKEN_powerpc64=	fails to compile: tags.cpp: undefined reference to TagLib::String::to8Bit
 
 USES=		compiler:c++14-lang iconv libtool localbase ncurses:port pkgconfig readline tar:bzip2
 GNU_CONFIGURE=	yes

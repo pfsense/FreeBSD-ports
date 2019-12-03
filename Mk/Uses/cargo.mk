@@ -7,7 +7,7 @@
 # Usage:	USES=cargo
 # Valid ARGS:	none
 #
-# MAINTAINER: ports@FreeBSD.org
+# MAINTAINER: rust@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_CARGO_MK)
 _INCLUDE_USES_CARGO_MK=	yes
@@ -30,23 +30,20 @@ CARGO_VENDOR_DIR?=	${WRKSRC}/cargo-crates
 CARGO_CARGOTOML?=	${WRKSRC}/Cargo.toml
 CARGO_CARGOLOCK?=	${WRKSRC}/Cargo.lock
 
-# Define MASTER_SITES_CRATESIO for crates.io
-MASTER_SITES_CRATESIO=	https://crates.io/api/v1/crates
-
 # Save crates inside ${DISTDIR}/rust/crates by default.
 CARGO_DIST_SUBDIR?=	rust/crates
 
 # Generate list of DISTFILES.
 .for _crate in ${CARGO_CRATES}
-MASTER_SITES+=	${MASTER_SITES_CRATESIO}/${_crate:C/-[0-9].*$//}/${_crate:C/^.*-([0-9].*)/\1/}/download?dummy=/:cargo_${_crate:S/-//g:S/.//g}
-DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}.tar.gz:cargo_${_crate:S/-//g:S/.//g}
+MASTER_SITES+=	CRATESIO/${_crate:C/^(.*)-[0-9].*/\1/}/${_crate:C/^.*-([0-9].*)/\1/}:cargo_${_crate:C/[^a-zA-Z0-9_]//g}
+DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}.tar.gz:cargo_${_crate:C/[^a-zA-Z0-9_]//g}
 .endfor
 
 # Build dependencies.
 
 CARGO_BUILDDEP?=	yes
 .if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	 rust>=1.31.0:lang/rust
+BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.38.0:lang/${RUST_DEFAULT}
 .endif
 
 # Location of cargo binary (default to lang/rust's Cargo binary)
@@ -62,21 +59,23 @@ CARGO_TARGET_DIR?=	${WRKDIR}/target
 #  - RUSTC: path of rustc binary (default to lang/rust)
 #  - RUSTDOC: path of rustdoc binary (default to lang/rust)
 #  - RUSTFLAGS: custom flags to pass to all compiler invocations that Cargo performs
-#
-# XXX LDFLAGS => -C link-arg=$1 (via RUSTFLAGS)
 CARGO_ENV+= \
 	CARGO_HOME=${WRKDIR}/cargo-home \
 	CARGO_BUILD_JOBS=${MAKE_JOBS_NUMBER} \
 	CARGO_TARGET_DIR=${CARGO_TARGET_DIR} \
 	RUSTC=${LOCALBASE}/bin/rustc \
 	RUSTDOC=${LOCALBASE}/bin/rustdoc \
-	RUSTFLAGS="${RUSTFLAGS}"
+	RUSTFLAGS="${RUSTFLAGS} -C linker=${CC:Q} ${LDFLAGS:C/.+/-C link-arg=&/}"
 
 # Adjust -C target-cpu if -march/-mcpu is set by bsd.cpu.mk
 .if ${ARCH} == amd64 || ${ARCH} == i386
 RUSTFLAGS+=	${CFLAGS:M-march=*:S/-march=/-C target-cpu=/}
 .else
 RUSTFLAGS+=	${CFLAGS:M-mcpu=*:S/-mcpu=/-C target-cpu=/}
+.endif
+
+.if ${ARCH} == powerpc64
+USE_GCC?=	yes
 .endif
 
 # Helper to shorten cargo calls.
@@ -87,6 +86,7 @@ CARGO_CARGO_RUN= \
 # User arguments for cargo targets.
 CARGO_BUILD_ARGS?=
 CARGO_INSTALL_ARGS?=
+CARGO_INSTALL_PATH?=	.
 CARGO_TEST_ARGS?=
 CARGO_UPDATE_ARGS?=
 
@@ -95,13 +95,15 @@ CARGO_BUILD?=	yes
 CARGO_CONFIGURE?=	yes
 CARGO_INSTALL?=	yes
 CARGO_TEST?=	yes
-CARGO_USE_GITHUB?=	no
 
-# If your application has multiple Cargo.toml files which all use
-# git-sourced dependencies and require the use of CARGO_USE_GITHUB and
-# GH_TUPLE, then you add them to CARGO_GH_CARGOTOML to also point them
-# to the correct offline sources.
-CARGO_GH_CARGOTOML?=	${CARGO_CARGOTOML}
+# Set CARGO_USE_GIT{HUB,LAB} to yes if your application requires
+# some dependencies from git repositories hosted on GitHub or
+# GitLab instances.  All Cargo.toml files will be patched to point
+# to the right offline sources based on what is defined in
+# {GH,GL}_TUPLE.  This makes sure that cargo does not attempt to
+# access the network during the build.
+CARGO_USE_GITHUB?=	no
+CARGO_USE_GITLAB?=	no
 
 # Manage crate features.
 .if !empty(CARGO_FEATURES)
@@ -125,38 +127,38 @@ BUILD_DEPENDS+=	gmake:devel/gmake
 BUILD_DEPENDS+=	cmake:devel/cmake
 .endif
 
-.if ${CARGO_CRATES:Mfreetype-sys-[0-9]*}
-LIB_DEPENDS+=	libfreetype.so:print/freetype2
-.endif
-
 .if ${CARGO_CRATES:Mgettext-sys-[0-9]*}
-.include "${USESDIR}/gettext.mk"
 CARGO_ENV+=	GETTEXT_BIN_DIR=${LOCALBASE}/bin \
 		GETTEXT_INCLUDE_DIR=${LOCALBASE}/include \
 		GETTEXT_LIB_DIR=${LOCALBASE}/lib
 .endif
 
-.if ${CARGO_CRATES:Mlibc-[0-9]*}
+.if ${CARGO_CRATES:Mjemalloc-sys-[0-9]*}
+BUILD_DEPENDS+=	gmake:devel/gmake
+.endif
+
+.for libc in ${CARGO_CRATES:Mlibc-[0-9]*}
 # FreeBSD 12.0 changed ABI: r318736 and r320043
 # https://github.com/rust-lang/libc/commit/78f93220d70e
 # https://github.com/rust-lang/libc/commit/969ad2b73cdc
-_libc_VER=	${CARGO_CRATES:Mlibc-[0-9]*:C/.*-//}
+_libc_VER=	${libc:C/.*-//}
 . if ${_libc_VER:R:R} == 0 && (${_libc_VER:R:E} < 2 || ${_libc_VER:R:E} == 2 && ${_libc_VER:E} < 38)
-DEV_WARNING+=	"CARGO_CRATES=libc-0.2.37 or older maybe unstable on FreeBSD 12.0. Consider updating to the latest version."
+DEV_ERROR+=	"CARGO_CRATES=${libc} may be unstable on FreeBSD 12.0. Consider updating to the latest version \(higher than 0.2.37\)."
+. endif
+. if ${_libc_VER:R:R} == 0 && (${_libc_VER:R:E} < 2 || ${_libc_VER:R:E} == 2 && ${_libc_VER:E} < 49)
+DEV_ERROR+=	"CARGO_CRATES=${libc} may be unstable on aarch64 or not build on armv6, armv7, powerpc64. Consider updating to the latest version \(higher than 0.2.49\)."
 . endif
 .undef _libc_VER
-.endif
+.endfor
 
 .if ${CARGO_CRATES:Mlibgit2-sys-[0-9]*}
 # Use the system's libgit2 instead of building the bundled version
 CARGO_ENV+=	LIBGIT2_SYS_USE_PKG_CONFIG=1
-LIB_DEPENDS+=	libgit2.so:devel/libgit2
 .endif
 
 .if ${CARGO_CRATES:Mlibssh2-sys-[0-9]*}
 # Use the system's libssh2 instead of building the bundled version
 CARGO_ENV+=	LIBSSH2_SYS_USE_PKG_CONFIG=1
-LIB_DEPENDS+=	libssh2.so:security/libssh2
 .endif
 
 .if ${CARGO_CRATES:Monig_sys-[0-9]*}
@@ -166,22 +168,28 @@ LIB_DEPENDS+=	libssh2.so:security/libssh2
 # RUSTONIG_SYSTEM_LIBONIG is not necessary, but will force onig_sys to
 # always use the system's libonig as returned by `pkg-config oniguruma`.
 CARGO_ENV+=	RUSTONIG_SYSTEM_LIBONIG=1
-LIB_DEPENDS+=	libonig.so:devel/oniguruma
+.endif
+
+.if ${CARGO_CRATES:Mopenssl-0.[0-9].*}
+# FreeBSD 12.0 updated base OpenSSL in r339270:
+# https://github.com/sfackler/rust-openssl/commit/276577553501
+. if !exists(${PATCHDIR}/patch-openssl-1.1.1) # skip if backported
+_openssl_VER=	${CARGO_CRATES:Mopenssl-0.[0-9].*:C/.*-//}
+.  if ${_openssl_VER:R:R} == 0 && (${_openssl_VER:R:E} < 10 || ${_openssl_VER:R:E} == 10 && ${_openssl_VER:E} < 4)
+DEV_WARNING+=	"CARGO_CRATES=openssl-0.10.3 or older do not support OpenSSL 1.1.1. Consider updating to the latest version."
+.  endif
+. endif
+.undef _openssl_VER
 .endif
 
 .if ${CARGO_CRATES:Mopenssl-sys-[0-9]*}
 # Make sure that openssl-sys can find the correct version of OpenSSL
-.include "${USESDIR}/ssl.mk"
 CARGO_ENV+=	OPENSSL_LIB_DIR=${OPENSSLLIB} \
 		OPENSSL_INCLUDE_DIR=${OPENSSLINC}
 .endif
 
 .if ${CARGO_CRATES:Mpkg-config-[0-9]*}
 .include "${USESDIR}/pkgconfig.mk"
-.endif
-
-.if ${CARGO_CRATES:Mthrussh-libsodium-[0-9]*}
-LIB_DEPENDS+=	libsodium.so:security/libsodium
 .endif
 
 _USES_extract+=	600:cargo-extract
@@ -195,18 +203,32 @@ cargo-extract:
 	@${PRINTF} '{"package":"%s","files":{}}' \
 		$$(${SHA256} -q ${DISTDIR}/${CARGO_DIST_SUBDIR}/${_crate}.tar.gz) \
 		> ${CARGO_VENDOR_DIR}/${_crate}/.cargo-checksum.json
+	@if [ -r ${CARGO_VENDOR_DIR}/${_crate}/Cargo.toml.orig ]; then \
+		${MV} ${CARGO_VENDOR_DIR}/${_crate}/Cargo.toml.orig \
+			${CARGO_VENDOR_DIR}/${_crate}/Cargo.toml.orig-cargo; \
+	fi
 .endfor
 
+_CARGO_GIT_PATCH_CARGOTOML=
 .if ${CARGO_USE_GITHUB:tl} == "yes"
-_USES_patch+=	600:cargo-patch-github
+.  for _group in ${GH_TUPLE:C@^[^:]*:[^:]*:[^:]*:(([^:/]*)?)((/.*)?)@\2@}
+_CARGO_GIT_PATCH_CARGOTOML:= ${_CARGO_GIT_PATCH_CARGOTOML} \
+	-e 's@git = "(https|http|git)://github.com/${GH_ACCOUNT_${_group}}/${GH_PROJECT_${_group}}(\.git)?/?"@path = "${WRKSRC_${_group}}"@'
+.  endfor
+.endif
+.if ${CARGO_USE_GITLAB:tl} == "yes"
+.  for _group in ${GL_TUPLE:C@^(([^:]*://[^:/]*(:[0-9]{1,5})?(/[^:]*[^/])?:)?)([^:]*):([^:]*):([^:]*)(:[^:/]*)((/.*)?)@\8@:S/^://}
+_CARGO_GIT_PATCH_CARGOTOML:= ${_CARGO_GIT_PATCH_CARGOTOML} \
+	-e 's@git = "${GL_SITE_${_group}}/${GL_ACCOUNT_${_group}}/${GL_PROJECT_${_group}}(\.git)?/?"@path = "${WRKSRC_${_group}}"@'
+.  endfor
+.endif
 
-.for _group in ${GH_TUPLE:C@^[^:]*:[^:]*:[^:]*:(([^:/]*)?)((/.*)?)@\2@}
-_CARGO_GH_PATCH_CARGOTOML:= ${_CARGO_GH_PATCH_CARGOTOML} \
-	-e 's@git = "(https|http|git)://github.com/${GH_ACCOUNT_${_group}}/${GH_PROJECT_${_group}}(\.git)?"@path = "${WRKSRC_${_group}}"@'
-.endfor
+.if !empty(_CARGO_GIT_PATCH_CARGOTOML)
+_USES_patch+=	600:cargo-patch-git
 
-cargo-patch-github:
-	@${SED} -i.dist -E ${_CARGO_GH_PATCH_CARGOTOML} ${CARGO_GH_CARGOTOML}
+cargo-patch-git:
+	@${FIND} ${WRKDIR} -name Cargo.toml -type f -exec \
+		${SED} -i.dist -E ${_CARGO_GIT_PATCH_CARGOTOML} {} +
 .endif
 
 .if !target(do-configure) && ${CARGO_CONFIGURE:tl} == "yes"
@@ -240,11 +262,14 @@ do-build:
 
 .if !target(do-install) && ${CARGO_INSTALL:tl} == "yes"
 do-install:
+.  for path in ${CARGO_INSTALL_PATH}
 	@${CARGO_CARGO_RUN} install \
+		--path "${path}" \
 		--root "${STAGEDIR}${PREFIX}" \
 		--verbose \
 		${CARGO_INSTALL_ARGS}
 	@${RM} -- "${STAGEDIR}${PREFIX}/.crates.toml"
+.  endfor
 .endif
 
 .if !target(do-test) && ${CARGO_TEST:tl} == "yes"
@@ -259,9 +284,16 @@ do-test:
 # Helper targets for port maintainers
 #
 
-# cargo-crates will output the crates list from Cargo.lock.
+# cargo-crates will output the crates list from Cargo.lock.  If there
+# is no Cargo.lock for some reason, try and generate it first.
 cargo-crates: extract
-	@${SETENV} USE_GITHUB=${USE_GITHUB} \
+	@if [ ! -r "${CARGO_CARGOLOCK}" ]; then \
+		${ECHO_MSG} "===> ${CARGO_CARGOLOCK} not found.  Trying to generate it..."; \
+		${CARGO_CARGO_RUN} generate-lockfile \
+			--manifest-path ${CARGO_CARGOTOML} \
+			--verbose; \
+	fi
+	@${SETENV} USE_GITHUB=${USE_GITHUB} USE_GITLAB=${USE_GITLAB} GL_SITE=${GL_SITE} \
 		${AWK} -f ${SCRIPTSDIR}/cargo-crates.awk ${CARGO_CARGOLOCK}
 
 # cargo-crates-licenses will try to grab license information from

@@ -1,5 +1,5 @@
-etc/xdg/calendarsupport.categories
-etc/xdg/calendarsupport.renamecategories
+share/qlogging-categories5/calendarsupport.categories
+share/qlogging-categories5/calendarsupport.renamecategories
 include/KF5/CalendarSupport/ArchiveDialog
 include/KF5/CalendarSupport/CalPrintDefaultPlugins
 include/KF5/CalendarSupport/CalPrintPluginBase
@@ -60,7 +60,6 @@ lib/libKF5CalendarSupport.so.%%KDE_APPLICATIONS_SHLIB_VER%%
 %%QT_MKSPECDIR%%/modules/qt_CalendarSupport.pri
 share/kservicetypes5/calendarplugin.desktop
 share/locale/ar/LC_MESSAGES/calendarsupport.mo
-share/locale/ast/LC_MESSAGES/calendarsupport.mo
 share/locale/bg/LC_MESSAGES/calendarsupport.mo
 share/locale/bs/LC_MESSAGES/calendarsupport.mo
 share/locale/ca/LC_MESSAGES/calendarsupport.mo

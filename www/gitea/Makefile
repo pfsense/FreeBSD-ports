@@ -1,9 +1,8 @@
-# Created by: Stefan Bethke <stb@lassitu.de>
 # $FreeBSD$
 
 PORTNAME=	gitea
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.3
+DISTVERSION=	1.10.0
 CATEGORIES=	www
 
 MAINTAINER=	stb@lassitu.de
@@ -14,14 +13,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	git:devel/git
 
-USES=		go
+USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	go-gitea
-
-GO_PKGNAME=	code.gitea.io/${PORTNAME}
-GO_TARGET=	-tags "${GO_TAGS}"
-
 USE_RC_SUBR=	gitea
+
+GO_BUILDFLAGS=	-tags "${GO_TAGS}" -ldflags '-X "main.Version=${PORTVERSION}"'
+GO_TARGET=	:${PREFIX}/sbin/${PORTNAME}
+
 SUB_FILES+=	app.ini.sample
 SUB_LIST+=	GITUSER=${USERS}
 
@@ -29,18 +28,18 @@ USERS=		git
 GROUPS=		git
 
 OPTIONS_DEFINE=	CERT PAM SQLITE
+OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
+
 CERT_DESC=	Automatic creation of self-signed certificates
 PAM_DESC=	Authentication using PAM
 
-OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
-
 CERT_VARS=	GO_TAGS+=cert
 PAM_VARS=	GO_TAGS+=pam
-SQLITE_VARS=	GO_TAGS+=sqlite
+SQLITE_VARS=	GO_TAGS+="sqlite sqlite_unlock_notify"
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100513
+.if ${OPSYS} == FreeBSD
 DAEMONARGS=	-S -l \$${gitea_facility} -s \$${gitea_priority} -T \$${name}
 .else
 DAEMONARGS=	-f
@@ -48,17 +47,7 @@ DAEMONARGS=	-f
 
 SUB_LIST+=	DAEMONARGS="${DAEMONARGS}"
 
-post-patch:
-	# Gitea releases don't supply the release version number; the
-	# automatic method to obtain the version number in the Gitea build
-	# system only works when sources are checked out from git.
-	# See https://github.com/go-gitea/gitea/issues/1136#issuecomment-311622745
-	@${SED} -Ei .orig \
-		-e 's#^(var Version = )"[^"]+"#\1"${PORTVERSION}"#' \
-		${GO_WRKSRC}/main.go
-
-do-install:
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/${PORTNAME} ${STAGEDIR}${PREFIX}/sbin
+post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/conf
 	${INSTALL_DATA} ${WRKDIR}/app.ini.sample ${STAGEDIR}${ETCDIR}/conf/app.ini.sample
 	${INSTALL_DATA} ${GO_WRKSRC}/custom/conf/app.ini.sample ${STAGEDIR}${ETCDIR}/conf/app.ini.defaults

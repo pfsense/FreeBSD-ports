@@ -7,6 +7,7 @@ bin/%%GCC_TARGET%%-gcc-ar
 bin/%%GCC_TARGET%%-gcc-nm
 bin/%%GCC_TARGET%%-gcc-ranlib
 bin/%%GCC_TARGET%%-gcov
+bin/%%GCC_TARGET%%-gcov-dump
 bin/%%GCC_TARGET%%-gcov-tool
 lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/adxintrin.h
 lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/ammintrin.h
@@ -35,7 +36,6 @@ lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/cpuid.h
 lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/cross-stdarg.h
 lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/emmintrin.h
 lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/f16cintrin.h
-lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/float.h
 lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/fma4intrin.h
 lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/fmaintrin.h
 lib/gcc/%%GCC_TARGET%%/%%GCC_VERSION%%/include/fxsrintrin.h
@@ -480,3 +480,5 @@ man/man1/%%GCC_TARGET%%-cpp.1.gz
 man/man1/%%GCC_TARGET%%-g++.1.gz
 man/man1/%%GCC_TARGET%%-gcc.1.gz
 man/man1/%%GCC_TARGET%%-gcov.1.gz
+man/man1/%%GCC_TARGET%%-gcov-dump.1.gz
+man/man1/%%GCC_TARGET%%-gcov-tool.1.gz

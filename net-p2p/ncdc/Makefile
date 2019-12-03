@@ -2,11 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	ncdc
-PORTVERSION=	1.19.1
-PORTREVISION=	7
+PORTVERSION=	1.22.1
 CATEGORIES=	net-p2p
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
-		http://dev.yorhel.nl/download/
+MASTER_SITES=	http://dev.yorhel.nl/download/
 
 MAINTAINER=	earl1k@mail.ru
 COMMENT=	Lightweight direct connect client with ncurses interface
@@ -21,7 +19,7 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
 		libnettle.so:security/nettle \
 		libp11-kit.so:security/p11-kit
 
-USES=		gmake pkgconfig ncurses
+USES=		gmake gnome pkgconfig ncurses:port
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/ncdc \
@@ -30,11 +28,11 @@ PLIST_FILES=	bin/ncdc \
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	GEOIP
+OPTIONS_DEFINE=		GEOIP
+OPTIONS_DEFAULT=	GEOIP
 
 GEOIP_CONFIGURE_WITH=	geoip
-GEOIP_CONFIGURE_ENV=	GEOIP_CFLAGS="-I${LOCALBASE}/include" \
-			GEOIP_LIBS="-L${LOCALBASE}/lib -lGeoIP"
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
+GEOIP_CONFIGURE_ENV=	GEOIP_LIBS="-L${LOCALBASE}/lib -lmaxminddb"
+GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 
 .include <bsd.port.mk>

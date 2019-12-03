@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Quantum-Superpositions
-PORTVERSION=	2.02
-PORTREVISION=	1
+PORTVERSION=	2.03
 CATEGORIES=	lang science perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,10 +13,11 @@ COMMENT=	QM-like superpositions in Perl
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Class-Multimethods>=0:devel/p5-Class-Multimethods
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Class-Multimethods>=0:devel/p5-Class-Multimethods
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

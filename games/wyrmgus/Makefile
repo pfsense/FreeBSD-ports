@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	wyrmgus
-PORTVERSION=	3.3.1
-PORTREVISION=	3
+PORTVERSION=	3.5.4
 DISTVERSIONPREFIX=	v
+PORTREVISION=	3
 CATEGORIES=	games devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -17,12 +17,13 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libtolua++-${LUA_VER}.so:lang/tolua++ \
 		libogg.so:audio/libogg \
 		liboaml.so:audio/oaml
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/tokenizer.hpp:devel/boost-libs
 
 USE_GITHUB=     yes
 GH_ACCOUNT=     Andrettin
 GH_PROJECT=     Wyrmgus
 
-USES=		compiler:c++11-lib cmake:outsource lua:51 pkgconfig sqlite
+USES=		compiler:c++11-lib cmake lua:51 pkgconfig sqlite
 USE_SDL=	sdl
 CMAKE_ARGS=	-DGAMEDIR:STRING="bin" \
 		-DTOLUA++_APP:STRING="tolua++-${LUA_VER}" \
@@ -40,9 +41,15 @@ PLIST_FILES=	bin/${PORTNAME} \
 OPTIONS_DEFINE=	OPENGL DOCS
 OPTIONS_DEFAULT=OPENGL
 
+OPENGL_USES=		gl
 OPENGL_USE=		GL=gl,glu
 OPENGL_CMAKE_ON=	-DWITH_RENDERER="OpenGL"
 OPENGL_CMAKE_OFF=	-DWITH_RENDERER="NativeSDL"
+
+post-patch:
+# fix debug build
+	@${REINPLACE_CMD} -e 's|OAML_LIBRARIES_SHARED_DEBUG|OAML_LIBRARIES_SHARED|' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e '/stratagus-dbg/ d' ${WRKSRC}/CMakeLists.txt
 
 do-install:
 	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/stratagus ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

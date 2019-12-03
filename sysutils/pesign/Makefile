@@ -3,8 +3,11 @@
 
 PORTNAME=	pesign
 PORTVERSION=	0.110
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	sysutils
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	b535d1ac5cbc.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Signing utility for UEFI secure boot

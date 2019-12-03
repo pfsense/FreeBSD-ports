@@ -1,22 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	cyrus-imapd
-PORTVERSION=	3.0.7
-PORTREVISION=	3
+PORTVERSION=	3.0.11
+#PORTREVISION=	0
 CATEGORIES=	mail ipv6
-MASTER_SITES=	ftp://ftp.cyrusimap.org/cyrus-imapd/ \
-		https://www.cyrusimap.org/releases/
+MASTER_SITES=	https://www.cyrusimap.org/releases/
 PKGNAMESUFFIX=	30
 
 MAINTAINER=	ume@FreeBSD.org
-COMMENT=	The cyrus mail server, supporting POP3 and IMAP4 protocols
+COMMENT=	Cyrus mail server, supporting POP3 and IMAP4 protocols
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_armv6=		fails to compile: gmake[1]: *** [Makefile:6747: lib/imapopts.c] Error 1
-BROKEN_armv7=		fails to compile: gmake[1]: *** [Makefile:6718: lib/imapopts.c] Error 1
-BROKEN_powerpc64=	fails to compile: mailbox.h: redefinition of typedef 'message_t'
 
 LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libicuuc.so:devel/icu \
@@ -25,7 +20,7 @@ LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 
 CONFLICTS_INSTALL=	cyrus-imapd-2.* cyrus-imapd2*
 
-USES=		cpe gmake libtool perl5 pkgconfig ssl
+USES=		compiler:c11 cpe gmake libtool perl5 pkgconfig ssl
 USE_RC_SUBR=	imapd
 GNU_CONFIGURE=	yes
 CYRUS_PREFIX=	${PREFIX}/cyrus
@@ -48,8 +43,7 @@ CPE_PRODUCT=	cyrus_imap_server
 OPTIONS_DEFINE=		AUTOCREATE BACKUP CLAMAV HTTP IDLED LDAP LMDB MURDER \
 			MYSQL NNTP PGSQL REPLICATION SNMP SQLITE SQUAT XAPIAN \
 			DOCS
-#OPTIONS_DEFINE+=	DRAC
-OPTIONS_DEFAULT=	AUTOCREATE CLAMAV IDLED SQLITE SQUAT
+OPTIONS_DEFAULT=	AUTOCREATE IDLED SQLITE SQUAT
 OPTIONS_SUB=		yes
 AUTOCREATE_DESC=	Enable autocreate support
 AUTOCREATE_CONFIGURE_ENABLE=	autocreate
@@ -58,9 +52,6 @@ BACKUP_CONFIGURE_ENABLE=backup
 CLAMAV_DESC=		Use ClamAV
 CLAMAV_CONFIGURE_WITH=	clamav
 CLAMAV_LIB_DEPENDS=	libclamav.so:security/clamav
-DRAC_DESC=		Enable DRAC support
-DRAC_CONFIGURE_ON=	--with-drac=${LOCALBASE}
-DRAC_BUILD_DEPENDS=	${LOCALBASE}/lib/libdrac.a:mail/drac
 HTTP_DESC=		Enable HTTP support
 HTTP_CONFIGURE_ENABLE=	http
 HTTP_LIB_DEPENDS=	libical.so:devel/libical \
@@ -100,6 +91,8 @@ SQUAT_CONFIGURE_OFF=	--disable-squat
 XAPIAN_DESC=		Enable Xapian support
 XAPIAN_CONFIGURE_ENABLE=xapian
 XAPIAN_LIB_DEPENDS=	libxapian.so:databases/xapian-core
+XAPIAN_BUILD_DEPENDS=	rsync:net/rsync
+XAPIAN_RUN_DEPENDS=	${XAPIAN_BUILD_DEPENDS}
 
 OPTIONS_RADIO=			GSSAPI READLINE
 OPTIONS_RADIO_GSSAPI=		GSSAPI_HEIMDAL GSSAPI_MIT
@@ -144,18 +137,13 @@ CYRUS_MAN8=	arbitron backupd chk_cyrus ctl_backups ctl_conversationsdb \
 		cyr_buildinfo cyr_dbtool cyr_deny cyr_df cyr_expire cyr_info \
 		cyr_synclog cyr_virusscan deliver fud idled imapd ipurge lmtpd \
 		master mbexamine mbpath mbtool notifyd pop3d quota reconstruct \
-		restore rmnews smmapd timsieved tls_prune unexpunge
+		restore smmapd timsieved tls_prune unexpunge
 CYRUS_PERL_MAN1=cyradm
 CYRUS_PERL_MAN3=Cyrus::Annotator::Daemon Cyrus::Annotator::Message \
 		Cyrus::IMAP Cyrus::IMAP::Admin Cyrus::IMAP::IMSP \
 		Cyrus::IMAP::Shell Cyrus::SIEVE::managesieve
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDRAC}
-IGNORE=		DRAC is not available
-# EXTRA_PATCHES+=	${FILESDIR}/extra-patch-cmulocal__sasl2.m4
-.endif
 
 .if ${PORT_OPTIONS:MHTTP} || ${PORT_OPTIONS:MSQLITE}
 USES+=	sqlite
@@ -182,12 +170,6 @@ PLIST_SUB+=	SQUATTER=""
 PLIST_SUB+=	SQUATTER="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MDRAC}
-pre-patch:
-	${PATCH} -d ${PATCH_WRKSRC} --forward --quiet -E -p1 \
-		< ${WRKSRC}/contrib/drac_auth.patch
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e "s|/etc/|${PREFIX}/etc/|" \
 			  -e "s|%%CYRUS_USER%%|${CYRUS_USER}|g" \
@@ -200,9 +182,6 @@ post-patch:
 		-e 's|$$(libdir)/\(pkgconfig\)|${PREFIX}/libdata/\1|g' \
 		-e 's|$$(mandir)/\(man[8]\)|${PREFIX}/cyrus/man/\1|g' \
 		${WRKSRC}/Makefile.in
-
-post-patch-DRAC-on:
-	@${RM} -r ${WRKSRC}/autom4te.cache
 
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

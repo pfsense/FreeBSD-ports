@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	radare2
-DISTVERSION=	2.4.0
+DISTVERSION=	3.7.1
 CATEGORIES=	devel
 
 MAINTAINER=	mizhka@gmail.com
@@ -11,19 +11,19 @@ COMMENT=	Tools to disasm, debug, analyze, and manipulate binary files
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcapstone.so:devel/capstone4
-
-NOT_FOR_ARCHS=		aarch64 armv6 armv7 mips mips64 powerpc powerpc64 sparc64
+NOT_FOR_ARCHS=		armv6 armv7 mips mips64 powerpc powerpc64 sparc64
 NOT_FOR_ARCHS_REASON=	does not build: Unsupported BSD architecture
 
-CONFIGURE_ARGS=	--with-syscapstone
+LIB_DEPENDS=	libcapstone.so:devel/capstone4
 
-USES=		gmake localbase pathfix pkgconfig tar:xz
-USE_GITHUB=	yes
-GH_ACCOUNT=	radare
+USES=		gmake localbase pathfix pkgconfig
+USE_GITHUB=		yes
+USE_LDCONFIG=		yes
+
+CONFIGURE_ARGS=	--with-syscapstone
+GH_ACCOUNT=		radare
 PATHFIX_MAKEFILEIN=	Makefile
-GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
+GNU_CONFIGURE=		yes
 
 MAKE_ENV+=	HOST_CC=${CC}
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
@@ -33,5 +33,11 @@ OPTIONS_DEFINE=	DOCS
 post-patch-DOCS-off:
 	@${REINPLACE_CMD} -e 's| install-doc ||g' \
 		${WRKSRC}/Makefile
+
+# libr/flag/d/Makefile generates an r2 script from all files in
+# current directory, including .bak file left by ${REINPLACE_CMD}
+# called by pathfix.
+post-patch:
+	${RM} ${WRKSRC}/libr/flag/d/Makefile.bak
 
 .include <bsd.port.mk>

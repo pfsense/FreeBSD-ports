@@ -7,6 +7,8 @@ bin/openmw-iniimporter
 bin/openmw-launcher
 bin/openmw-wizard
 %%ETCDIR%%/gamecontrollerdb.txt
+%%ETCDIR%%/gamecontrollerdb_204.txt
+%%ETCDIR%%/gamecontrollerdb_205.txt
 %%ETCDIR%%/openmw-cs.cfg
 %%ETCDIR%%/openmw.cfg
 %%ETCDIR%%/settings-default.cfg
@@ -105,6 +107,8 @@ share/metainfo/openmw.appdata.xml
 %%DATADIR%%/resources/shaders/objects_fragment.glsl
 %%DATADIR%%/resources/shaders/objects_vertex.glsl
 %%DATADIR%%/resources/shaders/parallax.glsl
+%%DATADIR%%/resources/shaders/s360_fragment.glsl
+%%DATADIR%%/resources/shaders/s360_vertex.glsl
 %%DATADIR%%/resources/shaders/terrain_fragment.glsl
 %%DATADIR%%/resources/shaders/terrain_vertex.glsl
 %%DATADIR%%/resources/shaders/water_fragment.glsl

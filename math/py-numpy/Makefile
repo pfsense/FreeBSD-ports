@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	numpy
-PORTVERSION=	1.14.3
-DISTVERSIONPREFIX=	v
+PORTVERSION=	1.16.5
 PORTEPOCH=	1
 CATEGORIES=	math python
-MASTER_SITES=	http://docs.scipy.org/doc/${PORTNAME}-${PORTVERSION:R}.0/:doc
+MASTER_SITES=	CHEESESHOP \
+		https://docs.scipy.org/doc/${PORTNAME}-${PORTVERSION}/:doc
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTFILES=	${PORTNAME}-ref-${PORTVERSION:R}.0.pdf:doc \
-		${PORTNAME}-user-${PORTVERSION:R}.0.pdf:doc
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		${PORTNAME}-ref-${PORTVERSION:R}.1.pdf:doc \
+		${PORTNAME}-user-${PORTVERSION:R}.1.pdf:doc
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	python@FreeBSD.org
@@ -18,76 +19,59 @@ COMMENT=	The New Numeric Extension to Python
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-PYDISTUTILS_BUILDARGS=		--fcompiler=gnu95
-PYDISTUTILS_CONFIGUREARGS=	--fcompiler=gnu95
-USES=		fortran python
-USE_GITHUB=	yes
-USE_PYTHON=	concurrent distutils py3kplist cython allflavors
-LDFLAGS+=	-shared
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR}
 
-OPTIONS_DEFINE=		DOCS SUITESPARSE TESTS
-OPTIONS_SINGLE=		BLASLIB
-OPTIONS_DEFAULT=	NETLIB SUITESPARSE
-OPTIONS_SINGLE_BLASLIB=	ATLAS NETLIB OPENBLAS
-SUITESPARSE_DESC=	Use AMD and UMFPACK in SuiteSparse
-TESTS_DESC=		Install test suite requirements
-
-PLIST_SUB=	PYTHON_VER=${PYTHON_VER}
-PORTDOCS=	*
+USES=		fortran python zip
+USE_PYTHON=	allflavors autoplist concurrent cython distutils
 
 GCCLIBDIR_CMDS=	${FC} -print-file-name=libgfortran.so | ${SED} -e s/libgfortran.so//
+LDFLAGS+=	-shared
+PYDISTUTILS_BUILDARGS=		--fcompiler=gnu95
+PYDISTUTILS_CONFIGUREARGS=	--fcompiler=gnu95
+
+PORTDOCS=	*
+
+OPTIONS_DEFINE=		DOCS SUITESPARSE
+OPTIONS_SINGLE=		BLASLIB
+OPTIONS_SINGLE_BLASLIB=	ATLAS NETLIB OPENBLAS
+OPTIONS_DEFAULT=	NETLIB SUITESPARSE
+SUITESPARSE_DESC=	Use AMD and UMFPACK in SuiteSparse
 
 ATLAS_USES=		blaslapack:atlas
+ATLAS_VARS=		BLASLIBS="ptf77blas, ptcblas" BLASNAME=atlas LAPACKLIBS=alpack LIBRARIES=atlas_libs
 NETLIB_USES=		blaslapack:netlib
+NETLIB_VARS=		BLASLIBS="blas, cblas" BLASNAME=atlas LAPACKLIBS=lapack LIBRARIES=atlas_libs
 NETLIB_LIB_DEPENDS=	libcblas.so:math/cblas
 OPENBLAS_USES=		blaslapack:openblas
+OPENBLAS_VARS=		BLASLIBS="openblasp, gfortran" BLASNAME=openblas LAPACKLIBS="openblasp, gfortran" LIBRARIES=libraries
 SUITESPARSE_LIB_DEPENDS=libumfpack.so:math/suitesparse
-TESTS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
-.include <bsd.port.pre.mk>
+post-extract:
+	@${TOUCH} ${WRKSRC}/numpy/f2py/tests/src/temp
 
 post-patch:
-	@${REINPLACE_CMD} -e "s|%%FC%%|${FC}|" ${WRKSRC}/numpy/distutils/fcompiler/gnu.py
+	@${REINPLACE_CMD} -e 's|%%FC%%|${FC}|' ${WRKSRC}/numpy/distutils/fcompiler/gnu.py
 	@${CP} ${FILESDIR}/site.cfg ${WRKSRC}/site.cfg
 
+post-patch-SUITESPARSE-off:
+	@${REINPLACE_CMD} -e 's|:%%LOCALBASE%%/include/suitesparse||' ${WRKSRC}/site.cfg
+
 pre-configure:
-	@${REINPLACE_CMD} -e "s|%%GCCLIBDIR%%|$$(${GCCLIBDIR_CMDS})|" \
-		-e "s|%%LOCALBASE%%|${LOCALBASE}|g" \
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		-e 's|%%BLASLIBS%%|${BLASLIBS}|; s|%%BLASNAME%%|${BLASNAME}|' \
+		-e 's|%%LAPACKLIBS%%|${LAPACKLIBS}|; s|%%LIBRARIES%%|${LIBRARIES}|' \
 			${WRKSRC}/site.cfg
-	@${REINPLACE_CMD} -e "s|%%GCCLIBDIR%%|$$(${GCCLIBDIR_CMDS})|" ${WRKSRC}/numpy/distutils/system_info.py
-
-pre-configure-ATLAS-on:
-	@${REINPLACE_CMD} -e "s|%%BLASNAME%%|atlas|" \
-		-e "s|%%LIBRARIES%%|atlas_libs|" \
-		-e "s|%%BLASLIBS%%|%%ATLASLIBS%%|" \
-		-e "s|%%LAPACKLIBS%%|alapack|" \
-		-e "s|%%ATLASLIBS%%|ptf77blas, ptcblas|" \
-			${WRKSRC}/site.cfg
-
-pre-configure-NETLIB-on:
-	@${REINPLACE_CMD} -e "s|%%BLASNAME%%|atlas|" \
-		-e "s|%%LIBRARIES%%|atlas_libs|" \
-		-e "s|%%BLASLIBS%%|blas, cblas|" \
-		-e "s|%%LAPACKLIBS%%|lapack|" \
-			${WRKSRC}/site.cfg
-
-pre-configure-OPENBLAS-on:
-	@${REINPLACE_CMD} -e "s|%%BLASNAME%%|openblas|" \
-		-e "s|%%LIBRARIES%%|libraries|" \
-		-e "s|%%LAPACKLIBS%%|%%BLASLIBS%%|" \
-		-e "s|%%BLASLIBS%%|openblasp, gfortran|" \
-			${WRKSRC}/site.cfg
-
-pre-configure-SUITESPARSE-off:
-	@${REINPLACE_CMD} -e "s|:%%LOCALBASE%%/include/suitesparse||" ${WRKSRC}/site.cfg
+	@${REINPLACE_CMD} -e "s|%%GCCLIBDIR%%|$$(${GCCLIBDIR_CMDS})|" ${WRKSRC}/site.cfg ${WRKSRC}/numpy/distutils/system_info.py
 
 post-install:
-#	${INSTALL_MAN} ${WRKSRC}/doc/f2py/f2py.1 ${STAGEDIR}${MANPREFIX}/man/man1/f2py.1
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' | ${XARGS} ${STRIP_CMD}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/${PORTNAME}-ref-${PORTVERSION:C/\.[0-9]+$/.0/}.pdf ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/${PORTNAME}-user-${PORTVERSION:C/\.[0-9]+$/.0/}.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DISTDIR}/${PORTNAME}-ref-${PORTVERSION:R}.1.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DISTDIR}/${PORTNAME}-user-${PORTVERSION:R}.1.pdf ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+do-test:
+	@cd ${WRKSRC} && ${PYTHON_CMD} runtests.py
+
+.include <bsd.port.mk>

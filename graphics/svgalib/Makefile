@@ -10,9 +10,12 @@ MASTER_SITES=	http://www.svgalib.org/
 MAINTAINER=	zeising@FreeBSD.org
 COMMENT=	Low level console graphics library
 
+LICENSE=	PD
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
 ONLY_FOR_ARCHS=	i386 amd64
 
-USES=	gmake uidfix dos2unix shebangfix
+USES=		gmake uidfix dos2unix shebangfix
 DOS2UNIX_FILES=	utils/gtf/gtf.h utils/gtf/scitech.h
 SHEBANG_FILES=	utils/svgakeymap
 USE_LDCONFIG=	yes
@@ -22,7 +25,7 @@ ALL_TARGET=	shared static
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} != "i386"
-MAKE_ENV=	NO_ASM=y
+MAKE_ENV+=	NO_ASM=y
 .endif
 
 post-patch: .SILENT

@@ -4,7 +4,7 @@
 PORTNAME=	maxminddb
 PORTVERSION=	1.1.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel net
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -22,6 +22,6 @@ GH_PROJECT=	MaxMind-DB-Reader-php
 
 WRKSRC_SUBDIR=	ext
 
-USES=		php:ext localbase:ldflags
+USES=		compiler:c11 php:ext localbase:ldflags
 
 .include <bsd.port.mk>

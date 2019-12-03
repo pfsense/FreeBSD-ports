@@ -2,13 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	tvheadend
-PORTVERSION=	4.2.6
+PORTVERSION=	4.2.8
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	multimedia
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	3cb4f580565b.patch:-p1
 
 MAINTAINER=	decke@FreeBSD.org
 COMMENT=	TV streaming server supporting DVB, IPTV, SAT>IP and more
@@ -23,18 +20,12 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		liburiparser.so:net/uriparser
 RUN_DEPENDS=	dtv-scan-tables>=0:multimedia/dtv-scan-tables
 
-BROKEN_mips=		fails to configure: No C compiler found
-BROKEN_mips64=		fails to configure: No C compiler found
-BROKEN_powerpc64=	fails to configure: No C compiler found
-
-USES=		gettext gmake pkgconfig python shebangfix ssl
+USES=		compiler:c++11-lang gettext gmake pkgconfig python shebangfix ssl
 USE_GITHUB=	yes
 
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 USE_RC_SUBR=	${PORTNAME}
-
-PORTSCOUT=	limitw:1,even
 
 SHEBANG_FILES=	${WRKSRC}/Autobuild.sh \
 		${WRKSRC}/configure \
@@ -57,7 +48,7 @@ CONFIGURE_ARGS+=--disable-dvbscan --disable-zlib --disable-hdhomerun_static \
 CFLAGS+=	-I${LOCALBASE}/include -Wno-conversion -Wno-int-to-pointer-cast
 LDFLAGS+=	-L${LOCALBASE}/lib -lexecinfo -lssl -lcrypto -lz
 
-OPTIONS_DEFINE=	AVAHI DVBCSA HDHOMERUN INOTIFY TRANSCODING XMLTV
+OPTIONS_DEFINE=	AVAHI DVBCSA DVBEN50221 HDHOMERUN INOTIFY TRANSCODING XMLTV
 OPTIONS_DEFAULT=DVBCSA HDHOMERUN INOTIFY
 
 AVAHI_LIB_DEPENDS=	libavahi-client.so:net/avahi-app
@@ -65,6 +56,10 @@ AVAHI_LIB_DEPENDS=	libavahi-client.so:net/avahi-app
 DVBCSA_DESC=		Replace internal ffdecsa with dvbcsa
 DVBCSA_LIB_DEPENDS=	libdvbcsa.so:multimedia/libdvbcsa
 DVBCSA_CONFIGURE_ENABLE=	dvbcsa
+
+DVBEN50221_DESC=	Hardware CAM support
+DVBEN50221_LIB_DEPENDS=	libdvben50221.so:multimedia/dvb-apps
+DVBEN50221_CONFIGURE_ENABLE=	dvben50221
 
 HDHOMERUN_DESC=		Native support for HDHomeRun network tuners
 HDHOMERUN_LIB_DEPENDS=	libhdhomerun.so:multimedia/libhdhomerun

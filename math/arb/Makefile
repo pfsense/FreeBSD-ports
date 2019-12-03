@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	arb
-DISTVERSION=	2.13.0
+DISTVERSION=	2.16.0
 PORTREVISION=	1
 CATEGORIES=	math
 
@@ -21,8 +21,5 @@ CONFIGURE_ARGS=	--disable-static
 USE_GITHUB=	yes
 GH_ACCOUNT=	fredrik-johansson
 USE_LDCONFIG=	yes
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libarb.so.*
 
 .include <bsd.port.mk>

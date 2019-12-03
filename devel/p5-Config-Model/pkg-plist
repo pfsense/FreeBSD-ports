@@ -10,7 +10,6 @@
 %%SITE_PERL%%/Config/Model/Backend/PerlFile.pm
 %%SITE_PERL%%/Config/Model/Backend/PlainFile.pm
 %%SITE_PERL%%/Config/Model/Backend/ShellVar.pm
-%%SITE_PERL%%/Config/Model/Backend/Yaml.pm
 %%SITE_PERL%%/Config/Model/BackendMgr.pm
 %%SITE_PERL%%/Config/Model/BackendTrackOrder.pm
 %%SITE_PERL%%/Config/Model/CheckList.pm
@@ -42,6 +41,7 @@
 %%SITE_PERL%%/Config/Model/SimpleUI.pm
 %%SITE_PERL%%/Config/Model/TermUI.pm
 %%SITE_PERL%%/Config/Model/TreeSearcher.pm
+%%SITE_PERL%%/Config/Model/TypeConstraints.pm
 %%SITE_PERL%%/Config/Model/Utils/GenClassPod.pm
 %%SITE_PERL%%/Config/Model/Value.pm
 %%SITE_PERL%%/Config/Model/Value/LayeredInclude.pm
@@ -82,7 +82,6 @@
 %%PERL5_MAN3%%/Config::Model::Backend::PerlFile.3.gz
 %%PERL5_MAN3%%/Config::Model::Backend::PlainFile.3.gz
 %%PERL5_MAN3%%/Config::Model::Backend::ShellVar.3.gz
-%%PERL5_MAN3%%/Config::Model::Backend::Yaml.3.gz
 %%PERL5_MAN3%%/Config::Model::BackendMgr.3.gz
 %%PERL5_MAN3%%/Config::Model::BackendTrackOrder.3.gz
 %%PERL5_MAN3%%/Config::Model::CheckList.3.gz
@@ -114,6 +113,7 @@
 %%PERL5_MAN3%%/Config::Model::SimpleUI.3.gz
 %%PERL5_MAN3%%/Config::Model::TermUI.3.gz
 %%PERL5_MAN3%%/Config::Model::TreeSearcher.3.gz
+%%PERL5_MAN3%%/Config::Model::TypeConstraints.3.gz
 %%PERL5_MAN3%%/Config::Model::Utils::GenClassPod.3.gz
 %%PERL5_MAN3%%/Config::Model::Value.3.gz
 %%PERL5_MAN3%%/Config::Model::Value::LayeredInclude.3.gz

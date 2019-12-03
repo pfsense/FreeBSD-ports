@@ -3,7 +3,7 @@
 
 PORTNAME=	gnustep-app
 PORTVERSION=	2.0.0
-PORTREVISION=	9
+PORTREVISION=	16
 CATEGORIES=	x11 gnustep
 
 MAINTAINER=	theraven@FreeBSD.org
@@ -33,14 +33,11 @@ RUN_DEPENDS=	aclock>0:x11-clocks/aclock \
 		fortytwo-bdb>0:databases/fortytwo-bdb \
 		fortytwo-encore>0:devel/fortytwo-encore \
 		fortytwo>0:graphics/fortytwo \
-		freetar>0:archivers/freetar \
 		gmastermind>0:games/gmastermind \
 		gmines>0:games/gmines \
 		gnumail>0:mail/gnumail \
 		gnustep-ftp>0:ftp/gnustep-ftp \
 		gnustep-ladder>0:games/gnustep-ladder \
-		gnustep-slideshowkit>0:graphics/gnustep-slideshowkit \
-		gnustep-slideshow>0:graphics/gnustep-slideshow \
 		gnustep-sudoku>0:games/gnustep-sudoku \
 		gnustep-wrapper>0:deskutils/gnustep-wrapper \
 		gorm>0:devel/gorm \
@@ -67,6 +64,7 @@ RUN_DEPENDS=	aclock>0:x11-clocks/aclock \
 		nextgo>0:games/nextgo \
 		paje>0:science/paje \
 		pantomime>0:mail/pantomime \
+		pikopixel>0:graphics/pikopixel \
 		pixen>0:graphics/pixen \
 		plopfolio>0:deskutils/plopfolio \
 		poe>0:multimedia/poe \

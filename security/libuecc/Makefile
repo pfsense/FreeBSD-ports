@@ -15,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libsodium.so:security/libsodium
 
+USES=		cmake pkgconfig tar
 USE_LDCONFIG=	yes
-
-USES=		cmake:outsource pkgconfig tar
 
 .include <bsd.port.mk>

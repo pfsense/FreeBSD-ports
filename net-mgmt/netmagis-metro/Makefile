@@ -2,6 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netmagis
+PORTREVISION=	1
 PKGNAMESUFFIX=	-metro
 
 COMMENT=	Netmagis metrology module
@@ -23,5 +24,7 @@ MASTERDIR=	${.CURDIR}/../netmagis-common
 
 PKGMESSAGE=	${.CURDIR}/pkg-message
 PLIST=		${.CURDIR}/pkg-plist
+
+OPTIONS_DEFINE=	EXAMPLES
 
 .include "${MASTERDIR}/Makefile"

@@ -14,7 +14,8 @@ COMMENT=	Wrapper for AT&T Graphviz
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	dot:graphics/graphviz \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	dot:graphics/graphviz \
 		p5-Algorithm-Dependency>=1.110:devel/p5-Algorithm-Dependency \
 		p5-Capture-Tiny>=0.36:devel/p5-Capture-Tiny \
 		p5-Class-ISA>=0.36:devel/p5-Class-ISA \
@@ -33,7 +34,7 @@ BUILD_DEPENDS=	dot:graphics/graphviz \
 		p5-Lingua-EN-PluralToSingular>=0.14:textproc/p5-Lingua-EN-PluralToSingular \
 		p5-Log-Handler>=0.84:devel/p5-Log-Handler \
 		p5-Moo>=2.001001:devel/p5-Moo \
-		p5-Parse-RecDescent>=1.965.001:devel/p5-Parse-RecDescent \
+		p5-Parse-RecDescent>=1.965001:devel/p5-Parse-RecDescent \
 		p5-Set-Array>=0.23:devel/p5-Set-Array \
 		p5-Text-Xslate>=1.2000:textproc/p5-Text-Xslate \
 		p5-Tree-DAG_Node>=1.06:devel/p5-Tree-DAG_Node \
@@ -41,14 +42,14 @@ BUILD_DEPENDS=	dot:graphics/graphviz \
 		p5-Type-Tiny>=1.000005:devel/p5-Type-Tiny \
 		p5-XML-Bare>=0:textproc/p5-XML-Bare \
 		p5-XML-Tiny>=2.06:textproc/p5-XML-Tiny
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-Test-Pod>=1.48:devel/p5-Test-Pod
 
 OPTIONS_DEFINE=	EXAMPLES
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5 shebangfix tar:tgz
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 PORTEXAMPLES=	*
 

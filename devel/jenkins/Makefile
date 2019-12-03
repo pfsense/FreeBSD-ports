@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	jenkins
-PORTVERSION=	2.138
+PORTVERSION=	2.198
 CATEGORIES=	devel java
 MASTER_SITES=	http://mirrors.jenkins-ci.org/war/${PORTVERSION}/
 DISTNAME=	jenkins
@@ -14,15 +14,17 @@ COMMENT=	Open-source continuous integration server
 
 LICENSE=	MIT
 
+USES=		cpe
+
 CONFLICTS=	jenkins-lts-[0-9]*
 USE_JAVA=	yes
 JAVA_VERSION=	1.8+
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 USE_RC_SUBR=	jenkins
 
-USES+=		cpe
 CPE_VENDOR=	cloudbees
 
 JENKINS_HOME?=	${PREFIX}/jenkins

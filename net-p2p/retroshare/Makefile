@@ -4,7 +4,11 @@
 PORTNAME=	retroshare
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.6.4
+PORTREVISION=	4
 CATEGORIES=	net-p2p
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	428b331d8efe.patch:-p1
 
 MAINTAINER=	peter@netkey.at
 COMMENT=	Private and secure decentralised communication platform
@@ -15,16 +19,17 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LIB_DEPENDS=	libsqlcipher.so:databases/sqlcipher \
 		libspeex.so:audio/speex \
 		libspeexdsp.so:audio/speexdsp \
-		libupnp.so:devel/upnp \
 		libgnome-keyring.so:security/libgnome-keyring \
 		libgpgme.so:security/gpgme \
 		libopencv_highgui.so:graphics/opencv \
 		libopencv_imgproc.so:graphics/opencv-core \
 		libavcodec.so:multimedia/ffmpeg \
 		libcurl.so:ftp/curl \
-		libmicrohttpd.so:www/libmicrohttpd
+		libmicrohttpd.so:www/libmicrohttpd \
+		libminiupnpc.so:net/miniupnpc
 
-USES=		compiler:features desktop-file-utils dos2unix pkgconfig qmake qt:5 ssl
+USES=		compiler:features desktop-file-utils dos2unix \
+		gnome pkgconfig qmake qt:5 ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	RetroShare
 GH_PROJECT=	RetroShare

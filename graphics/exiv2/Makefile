@@ -2,32 +2,38 @@
 # $FreeBSD$
 
 PORTNAME=	exiv2
-DISTVERSION=	0.26
-DISTVERSIONSUFFIX=	-trunk
+DISTVERSION=	0.27.1
+DISTVERSIONSUFFIX=	-Source
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://www.exiv2.org/builds/
+MASTER_SITES=	https://www.exiv2.org/releases/
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Exif, IPTC, and XMP metadata manipulation library and tools
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		cmake:outsource cpe gettext iconv pathfix
+USES=		cmake compiler:c++11-lang cpe gettext iconv pathfix localbase:ldflags
 USE_LDCONFIG=	yes
 
+LDFLAGS+=	-lintl
+
 CMAKE_ON=	EXIV2_ENABLE_VIDEO \
-		EXIV2_ENABLE_BUILD_PO
-CMAKE_OFF=	EXIV2_ENABLE_BUILD_SAMPLES \
-		EXIV2_ENABLE_LIBXMP
+		EXIV2_BUILD_PO
+CMAKE_OFF=	EXIV2_ENABLE_LIBXMP
+
+OPTIONS_DEFINE=	SAMPLE
+OPTIONS_SUB=	yes
+
+SAMPLE_DESC=	Include sample applications
+SAMPLE_CMAKE_BOOL=	EXIV2_BUILD_SAMPLES
 
 PATHFIX_CMAKELISTSTXT=	CMakeChecks.txt
 
-CFLAGS_powerpc64=	-mminimal-toc
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-trunk
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-Source
 
 .include <bsd.port.mk>

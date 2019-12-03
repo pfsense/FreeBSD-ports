@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	xapian
-PORTVERSION=	1.4.5
+PORTVERSION=	1.4.12
 DISTVERSIONPREFIX=	bindings-
 CATEGORIES=	databases
-MASTER_SITES=	http://oligarchy.co.uk/xapian/${PORTVERSION}/ \
+MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
 		LOCAL/sunpoet
 PKGNAMEPREFIX=	php-
 
@@ -24,29 +24,30 @@ OPTIONS_DEFINE=	DOCS
 
 PORTSCOUT=	limitw:1,even
 
-CONFIGURE_ARGS=	--datarootdir=${DATADIR} --docdir=${DOCSDIR} \
+USES=		compiler:c++11-lang libtool php:build tar:xz
+
+CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
+		--docdir=${DOCSDIR} \
+		--enable-shared \
 		--enable-static \
-		--with-php \
-		--without-csharp --without-java --without-lua --without-perl \
-		--without-python --without-python3 --without-ruby --without-tcl
+		--with-php7 \
+		--without-csharp \
+		--without-java \
+		--without-lua \
+		--without-perl \
+		--without-php \
+		--without-python \
+		--without-python3 \
+		--without-ruby \
+		--without-tcl
 CONFIGURE_ENV=	PHP_CONFIG=${LOCALBASE}/bin/php-config
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		libtool php:build tar:xz
+USE_CXXSTD=	c++11
 
-PLIST_SUB=	PHP_EXT_DIR=${PHP_EXT_DIR} PHP_MAJOR_VER=${PHP_VER:C|.$||}
-
-.include <bsd.port.pre.mk>
-
-.if ${PHP_VER} >= 70
-CONFIGURE_ARGS+=--with-php7 --without-php
-PLIST_SUB+=	PHP5="@comment " PHP7=""
-.else
-CONFIGURE_ARGS+=--with-php --without-php7
-PLIST_SUB+=	PHP5="" PHP7="@comment "
-.endif
+PLIST_SUB=	PHP_EXT_DIR=${PHP_EXT_DIR}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lstdc++||g' ${WRKSRC}/configure
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

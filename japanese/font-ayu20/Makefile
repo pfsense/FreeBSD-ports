@@ -2,7 +2,7 @@
 
 PORTNAME=	ayu20
 PORTVERSION=	1.7.a
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	japanese x11-fonts
 MASTER_SITES=	OSDN/x-tt/8536/
 PKGNAMEPREFIX=	ja-font-
@@ -13,8 +13,6 @@ COMMENT=	Ayu 20-dot Kanji font
 
 BUILD_DEPENDS=	mkitalic:x11-fonts/mkbold-mkitalic \
 		bdftopcf:x11-fonts/bdftopcf
-
-CONFLICS=	ja-kappa20-[0-9]*
 
 USES=		fonts
 NO_ARCH=	yes

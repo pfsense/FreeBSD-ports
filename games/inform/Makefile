@@ -15,6 +15,10 @@ EXTRACT_ONLY=	inform${PORTVERSION:S/.//}_source.zip
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Compiler for producing text adventure games
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 NO_WRKSUBDIR=	yes
 
 USES=		zip:infozip

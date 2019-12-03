@@ -1,4 +1,5 @@
 bin/kblocks
+share/qlogging-categories5/kblocks.categories
 etc/xdg/kblocks.knsrc
 share/applications/org.kde.kblocks.desktop
 share/config.kcfg/kblocks.kcfg
@@ -21,7 +22,6 @@ share/icons/hicolor/64x64/apps/kblocks.png
 %%DATADIR%%/themes/oxygen_preview.png
 share/kxmlgui5/kblocks/kblocksui.rc
 share/locale/ar/LC_MESSAGES/kblocks.mo
-share/locale/ast/LC_MESSAGES/kblocks.mo
 share/locale/bg/LC_MESSAGES/kblocks.mo
 share/locale/bs/LC_MESSAGES/kblocks.mo
 share/locale/ca/LC_MESSAGES/kblocks.mo
@@ -50,6 +50,7 @@ share/locale/km/LC_MESSAGES/kblocks.mo
 share/locale/ko/LC_MESSAGES/kblocks.mo
 share/locale/lt/LC_MESSAGES/kblocks.mo
 share/locale/lv/LC_MESSAGES/kblocks.mo
+share/locale/ml/LC_MESSAGES/kblocks.mo
 share/locale/mr/LC_MESSAGES/kblocks.mo
 share/locale/nb/LC_MESSAGES/kblocks.mo
 share/locale/nds/LC_MESSAGES/kblocks.mo

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tty-pager
-PORTVERSION=	0.11.0
+PORTVERSION=	0.12.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,12 +12,13 @@ COMMENT=	Terminal output paging in cross-platform way
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-strings>=0.1.0:devel/rubygem-strings \
-		rubygem-tty-screen>=0.6.4:devel/rubygem-tty-screen \
-		rubygem-tty-which>=0.3.0:devel/rubygem-tty-which
+RUN_DEPENDS=	rubygem-strings>=0.1.4<0.2:devel/rubygem-strings \
+		rubygem-tty-screen>=0.6<1:devel/rubygem-tty-screen \
+		rubygem-tty-which>=0.4<1:devel/rubygem-tty-which
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

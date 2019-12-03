@@ -2,40 +2,36 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	62.0
-PORTREVISION=	1
+DISTVERSION=	71.0
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
-		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build2/source
+		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build5/source
 DISTFILES=	${DISTNAME}.source${EXTRACT_SUFX}
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
-BUILD_DEPENDS=	nspr>=4.19:devel/nspr \
-		nss>=3.38:security/nss \
-		icu>=59.1,1:devel/icu \
+BUILD_DEPENDS=	nspr>=4.23:devel/nspr \
+		nss>=3.47.1:security/nss \
+		icu>=64.1,1:devel/icu \
 		libevent>=2.1.8:devel/libevent \
-		harfbuzz>=1.7.6:print/harfbuzz \
-		graphite2>=1.3.11:graphics/graphite2 \
-		png>=1.6.34:graphics/png \
-		libvorbis>=1.3.6,3:audio/libvorbis \
+		harfbuzz>=2.6.2:print/harfbuzz \
+		graphite2>=1.3.13:graphics/graphite2 \
+		png>=1.6.35:graphics/png \
 		libvpx>=1.5.0:multimedia/libvpx \
-		sqlite3>=3.24.0:databases/sqlite3 \
+		sqlite3>=3.29.0:databases/sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf-2.13:devel/autoconf213 \
-		yasm:devel/yasm \
+		nasm:devel/nasm \
 		zip:archivers/zip
-#		soundtouch>=1.9.0:audio/soundtouch \
 
 USE_GECKO=	gecko
 CONFLICTS_INSTALL=	firefox-esr
-MOZ_PKGCONFIG_FILES=	# empty
-USE_MOZILLA=	-cairo -hunspell -soundtouch
+USE_MOZILLA=	-hunspell -vpx
 
-USE_GL=		gl
 USES=		tar:xz
 
 FIREFOX_ICON=		${MOZILLA}.png
@@ -43,8 +39,6 @@ FIREFOX_ICON_SRC=	${PREFIX}/lib/${MOZILLA}/browser/chrome/icons/default/default4
 FIREFOX_DESKTOP=	${MOZSRC}/taskcluster/docker/${MOZILLA}-snap/${MOZILLA}.desktop
 MOZ_OPTIONS=	--enable-application=browser \
 		--enable-official-branding
-
-OPTIONS_EXCLUDE=	BUNDLED_CAIRO DTRACE
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
 

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fox
-PORTVERSION=	1.7.62
+PORTVERSION=	1.7.64
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://ftp.fox-toolkit.org/pub/ \
 		ftp://ftp.fox-toolkit.org/pub/
@@ -13,6 +14,8 @@ COMMENT=	Fast and extensive C++ GUI toolkit (development version)
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_powerpc=		missing __sync_bool_compare_and_swap_8()
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
@@ -34,9 +37,6 @@ MAJORVER=	${PORTVERSION:R}
 PLIST_SUB+=	MAJORVER=${MAJORVER}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${MAJORVER}
 PORTDOCS=	*
-
-BROKEN_aarch64=		Fails to compile: cannot initialize a parameter of type void * with an lvalue of type long
-BROKEN_powerpc=		missing __sync_bool_compare_and_swap_8()
 
 OPTIONS_DEFINE=		DEBUG DOCS EXAMPLES OPTIMIZED_CFLAGS PROFILE TEST
 OPTIONS_GROUP=		IMGFMTS
@@ -68,7 +68,7 @@ CXXFLAGS+=	-O2 -ffast-math
 .  if !${PORT_OPTIONS:MPROFILE}
 CXXFLAGS+=	-fomit-frame-pointer
 .  endif
-.  if ${COMPILER_TYPE} == "gcc"
+.  if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-fexpensive-optimizations -finline-functions
 .  endif
 .endif

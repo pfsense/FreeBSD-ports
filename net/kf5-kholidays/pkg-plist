@@ -2,17 +2,14 @@ include/KF5/KHolidays/KHolidays/AstroSeasons
 include/KF5/KHolidays/KHolidays/Holiday
 include/KF5/KHolidays/KHolidays/HolidayRegion
 include/KF5/KHolidays/KHolidays/LunarPhase
+include/KF5/KHolidays/KHolidays/SunRiseSet
 include/KF5/KHolidays/KHolidays/Zodiac
-include/KF5/KHolidays/kholidays/AstroSeasons
-include/KF5/KHolidays/kholidays/Holiday
-include/KF5/KHolidays/kholidays/HolidayRegion
-include/KF5/KHolidays/kholidays/LunarPhase
-include/KF5/KHolidays/kholidays/Zodiac
 include/KF5/KHolidays/kholidays/astroseasons.h
 include/KF5/KHolidays/kholidays/holiday.h
 include/KF5/KHolidays/kholidays/holidayregion.h
 include/KF5/KHolidays/kholidays/kholidays_export.h
 include/KF5/KHolidays/kholidays/lunarphase.h
+include/KF5/KHolidays/kholidays/sunriseset.h
 include/KF5/KHolidays/kholidays/zodiac.h
 include/KF5/kholidays_version.h
 lib/cmake/KF5Holidays/KF5HolidaysConfig.cmake
@@ -26,7 +23,6 @@ lib/libKF5Holidays.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kholidays/libkholidaysdeclarativeplugin.so
 %%QT_QMLDIR%%/org/kde/kholidays/qmldir
 share/locale/ar/LC_MESSAGES/libkholidays5_qt.qm
-share/locale/ast/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/be/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/bg/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/br/LC_MESSAGES/libkholidays5_qt.qm
@@ -63,6 +59,7 @@ share/locale/km/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/ko/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/lt/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/lv/LC_MESSAGES/libkholidays5_qt.qm
+share/locale/ml/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/mk/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/mr/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/ms/LC_MESSAGES/libkholidays5_qt.qm
@@ -87,6 +84,7 @@ share/locale/sr@ijekavianlatin/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/sr@latin/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/sv/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/ta/LC_MESSAGES/libkholidays5_qt.qm
+share/locale/tg/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/th/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/tr/LC_MESSAGES/libkholidays5_qt.qm
 share/locale/ug/LC_MESSAGES/libkholidays5_qt.qm

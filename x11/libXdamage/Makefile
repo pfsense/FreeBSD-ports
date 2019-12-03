@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libXdamage
-PORTVERSION=	1.1.4
-PORTREVISION=	3
+PORTVERSION=	1.1.5
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -13,6 +12,8 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 XORG_CAT=	lib
-USE_XORG=	x11 damageproto:both xfixes fixesproto xextproto xproto:both
+USE_XORG=	x11 xfixes xorgproto
+
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

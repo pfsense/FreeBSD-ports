@@ -2,31 +2,40 @@
 # $FreeBSD$
 
 PORTNAME=	thunar-vcs-plugin
-PORTVERSION=	0.1.5
+PORTVERSION=	0.2.0
 CATEGORIES=	devel xfce
-MASTER_SITES=	XFCE/src/thunar-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/thunar-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	sergey.dyatko@gmail.com
 COMMENT=	Version Control System plugin for Thunar
 
-GNU_CONFIGURE=	yes
-USE_GNOME=	gtk20 glib20 intltool intlhack
-USE_XFCE=	thunar
-INSTALLS_ICONS=	yes
-USES=		gettext-tools gmake libtool localbase pkgconfig tar:bzip2 \
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		gettext-tools gmake gnome libtool localbase pkgconfig tar:bzip2 \
 		xfce
+USE_GNOME=	cairo gtk30 glib20 intltool
+USE_XFCE=	libexo thunar
+
+GNU_CONFIGURE=	yes
+INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	NLS GIT SVN
+OPTIONS_DEFINE=		NLS GIT SVN
 OPTIONS_DEFAULT=	SVN
-GIT_DESC=	Git support
-NLS_USES=	gettext-runtime
-NLS_CONFIGURE_ENABLE=	nls
-GIT_RUN_DEPENDS=	git:devel/git
+OPTIONS_SUB=		yes
+
+GIT_DESC=		Git support
+
 GIT_CONFIGURE_ENABLE=	git
-SVN_LIB_DEPENDS=	libsvn_client-1.so:devel/subversion
+GIT_RUN_DEPENDS=	git:devel/git
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext-runtime
+
 SVN_CONFIGURE_ENABLE=	subversion
-OPTIONS_SUB=	yes
+SVN_LIB_DEPENDS=	libsvn_client-1.so:devel/subversion \
+			libapr-1.so:devel/apr1
 
 .include <bsd.port.mk>

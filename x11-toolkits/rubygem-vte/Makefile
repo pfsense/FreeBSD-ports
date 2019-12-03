@@ -1,19 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	vte
-PORTVERSION=	3.2.5
+PORTVERSION=	3.3.8
 CATEGORIES=	x11-toolkits rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby binding for VTE
 
 LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 RUN_DEPENDS=	rubygem-gtk2>=${PORTVERSION}:x11-toolkits/rubygem-gtk2
 
+USES=		gem gnome
 USE_GNOME=	vte
 USE_RUBY=	yes
-USES=		gem gnome
 
 .include <bsd.port.mk>

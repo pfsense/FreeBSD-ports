@@ -3,19 +3,20 @@
 
 PORTNAME=	json
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.1.2
+DISTVERSION=	3.7.0
 CATEGORIES=	devel
 PKGNAMEPREFIX=	nlohmann-
 
-MAINTAINER=	SlavaMikerov@gmail.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	JSON library for Modern C++
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.MIT
 
-USES=		cmake:outsource compiler:c++11-lib
+USES=		cmake compiler:c++11-lib
 USE_GITHUB=	yes
 GH_ACCOUNT=	nlohmann
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

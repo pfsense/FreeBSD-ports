@@ -1,4 +1,4 @@
---- storage/authreg_mysql.c.orig	2016-05-22 15:52:07 UTC
+--- storage/authreg_mysql.c.orig	2018-11-02 00:09:16 UTC
 +++ storage/authreg_mysql.c
 @@ -20,6 +20,8 @@
  

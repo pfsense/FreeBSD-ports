@@ -6,11 +6,15 @@ PORTVERSION=	1.4.9.1
 CATEGORIES=	benchmarks
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Model-based file system workload generator
 
 LICENSE=	CDDL
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 GNU_CONFIGURE=	yes
 

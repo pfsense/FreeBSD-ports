@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	mod_auth_cas
-PORTVERSION=	1.1
+PORTVERSION=	1.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	0
 CATEGORIES=	www
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 
@@ -11,13 +12,15 @@ MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Apache 2.x module that supports the CASv1 and CASv2 protocols
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/README
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre.so:devel/pcre
 
+USES=		apache:2.4 ssl
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	Jasig
-USES=		apache:2.2+ ssl
 
 HAS_CONFIGURE=	yes
 # configure requires LDFLAGS to find libpcre
@@ -35,7 +38,7 @@ SUB_FILES=	${APMOD_FILE}
 APMOD_FILE=	250_${PORTNAME}.conf.sample
 PLIST_SUB+=	APMOD_FILE=${APMOD_FILE}
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEMODDIR} ${STAGEDIR}${DOCSDIR}
@@ -46,4 +49,4 @@ do-install:
 	${INSTALL_DATA} ${WRKDIR}/${APMOD_FILE} ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

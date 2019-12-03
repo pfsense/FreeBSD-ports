@@ -1,52 +1,54 @@
 # $FreeBSD$
 
 PORTNAME=	klayout
-PORTVERSION=	0.24.9
-PORTREVISION=	2
+PORTVERSION=	0.25.8
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	cad
-MASTER_SITES=	http://www.klayout.org/downloads/source/
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Qt-based GDS2 Viewer
 
 LICENSE=	GPLv2
 
-USES=		compiler:c++0x gmake python qt:4
-USE_RUBY=	yes
-USE_QT=		corelib designer gui network moc_build sql uic_build \
-		rcc_build qt3support xml
-USE_LDCONFIG=	yes
-PLIST_FILES=	bin/klayout \
-		bin/strm2cif \
-		bin/strm2dxf \
-		bin/strm2gds \
-		bin/strm2oas \
-		bin/strm2txt \
-		bin/strmclip \
-		bin/strmcmp \
-		bin/strmxor \
-		lib/libklayout.so
-PLATFORMKEYWORD=freebsd-32-gcc-release
-
+BROKEN_i386=	type 'hash<long long>' does not provide a call operator
 BROKEN_sparc64=	Does not compile on sparc64: gcc bug
 
-do-build:
-	cd ${WRKSRC} && \
-	    ${SETENV} CC=${CC} CXX=${CXX} CFLAGS="${CFLAGS}" \
-		CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}" \
-		_MAKE_JOBS="${_MAKE_JOBS}" LOCALBASE="${LOCALBASE}" \
-		${SH} build.sh -platform ${PLATFORMKEYWORD} \
-		-qtbin ${QT_BINDIR} \
-		-qtinc ${QT_INCDIR} \
-		-qtlib ${QT_LIBDIR} \
-		-python ${PYTHON_CMD}
+USES=		compiler:c++0x gmake gl python qt:5
+USE_GITHUB=	yes
+GH_ACCOUNT=	KLayout
+USE_GL=		gl
+USE_RUBY=	yes
+USE_QT=		core buildtools designer gui multimedia network printsupport \
+		qmake sql svg testlib widgets xml xmlpatterns
+USE_LDCONFIG=	yes
 
-do-install:
-	cd ${WRKSRC}/bin.${PLATFORMKEYWORD} && \
-	    ${INSTALL_PROGRAM} ${PLIST_FILES:Mbin/*:S,^bin/,,} \
-	    ${STAGEDIR}${PREFIX}/bin
-	cd ${WRKSRC}/build.${PLATFORMKEYWORD}/main && \
-	    ${INSTALL_LIB} ${PLIST_FILES:Mlib/*:S,^lib/,,} \
-	    ${STAGEDIR}${PREFIX}/lib
+CXXFLAGS+=	-fPIC -I${LOCALBASE}/include/qt5
+LDFLAGS+=	${LIBS} -L${LOCALBASE}/lib/qt5 -lpthread
+QT5MODULES=	Core Designer Gui Multimedia MultimediaWidgets \
+		Network PrintSupport Sql Svg Test Widgets Xml XmlPatterns
+.for M in ${QT5MODULES}
+CXXFLAGS+=	-I${LOCALBASE}/include/qt5/Qt${M}
+LIBS+=		-lQt5${M}
+.endfor
+MAKE_ENV=	INSTALL_ROOT=${STAGEDIR}
+BUILD_WRKSRC=	${WRKSRC}/build-release
+INSTALL_WRKSRC=	${WRKSRC}/build-release
+
+do-configure:
+	cd ${WRKSRC} && \
+	    ${SETENV} ${MAKE_ENV} ${SH} build.sh \
+		-with-qtbinding \
+		-qt5 \
+		-rpath ${LOCALBASE}/lib \
+		-prefix ${PREFIX} \
+		-python ${PYTHON_CMD} \
+		-ruby ${RUBY} \
+		-dry-run
+
+post-install:
+	cd ${STAGEDIR}${PREFIX} && \
+	    ${MV} libklayout* ${STAGEDIR}${PREFIX}/lib && \
+	    ${MV} klayout strm* ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

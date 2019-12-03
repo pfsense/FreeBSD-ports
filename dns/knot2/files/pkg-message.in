@@ -1,5 +1,6 @@
-################################################################################
-
+[
+{ type: install
+  message: <<EOM
   To start using Knot DNS, you should complete the following tasks:
 
     cp %%ETCDIR%%/knot.conf.sample %%ETCDIR%%/knot.conf
@@ -13,8 +14,8 @@
    - man knotd
    - https://www.knot-dns.cz/documentation/
 
-  When upgrading from 2.4.x to 2.5.x read:
+  When upgrading from 2.4.x read:
    - https://www.knot-dns.cz/docs/2.5/html/migration.html#upgrade-2-4-x-to-2-5-x
-
-################################################################################
-
+EOM
+}
+]

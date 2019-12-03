@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=		krb5
-PORTVERSION=		1.15.3
-PORTREVISION=		5
+PORTVERSION=		1.15.5
+PORTREVISION=		2
 CATEGORIES=		security
 MASTER_SITES=		http://web.mit.edu/kerberos/dist/${PORTNAME}/${PORTVERSION:C/^[0-9]*\.[0-9]*/&X/:C/X\.[0-9]*$//:C/X//}/
 .if !defined(MASTERDIR)
@@ -16,9 +16,12 @@ PATCH_DIST_STRIP=	-p2
 MAINTAINER=		cy@FreeBSD.org
 COMMENT=		MIT implementation of RFC 4120 network authentication service
 
+DEPRECATED=		EOL one year after the release of krb5 1.17
+EXPIRATION_DATE=	2020-01-31
+
 LICENSE=		MIT
 
-CONFLICTS=		heimdal-[0-9]* srp-[0-9]* krb5-11[34]-[0-9]* \
+CONFLICTS=		heimdal-[0-9]* srp-[0-9]* krb5-11[3467]-[0-9]* \
 			krb5-1.[0-9]* krb5-devel-*
 CONFLICTS_BUILD=	boringssl-*
 
@@ -28,10 +31,11 @@ USE_LDCONFIG=		yes
 USE_CSTD=		gnu99
 GNU_CONFIGURE=		yes
 USES=			cpe gmake localbase perl5 libtool:build \
-			gssapi:bootstrap,mit pkgconfig:run ssl \
+			gssapi:bootstrap,mit pkgconfig ssl \
 			gettext-runtime
 CONFIGURE_ARGS?=	--enable-shared --without-system-verto \
-			--disable-rpath --localstatedir="${PREFIX}/var"
+			--disable-rpath --localstatedir="${PREFIX}/var" \
+			--runstatedir="${PREFIX}/var/run"
 CONFIGURE_ENV=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}" YACC="${YACC}"
 MAKE_ARGS=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}"
 
@@ -106,6 +110,8 @@ PDF_DOC_DIR=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/doc/pdf
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/krb5
+	@${SED} "s|%%PREFIX%%|${PREFIX}|" ${FILESDIR}/kdc.in > ${STAGEDIR}${PREFIX}/sbin/kdc; \
+	${CHMOD} +x ${STAGEDIR}${PREFIX}/sbin/kdc
 # html documentation
 .if ${PORT_OPTIONS:MKRB5_PDF}
 	pdf_files=`${FIND} ${PDF_DOC_DIR} ! -type d`

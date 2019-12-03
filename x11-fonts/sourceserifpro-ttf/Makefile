@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sourceserifpro
-PORTVERSION=	2.000
+PORTVERSION=	3.000
 DISTVERSIONSUFFIX=	R
 CATEGORIES=	x11-fonts
 PKGNAMESUFFIX=	-ttf
@@ -11,13 +11,14 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Set of fonts by Adobe designed for UI
 
 LICENSE=	OFL11
-LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 PORTSCOUT=	skipv:variable-fonts
 
+USES=		fonts
+
 NO_ARCH=	yes
 NO_BUILD=	yes
-USES=		fonts
 
 FONTNAME=	SourceSerifPro
 SUB_FILES=	pkg-message

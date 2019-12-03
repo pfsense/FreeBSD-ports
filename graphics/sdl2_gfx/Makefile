@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sdl2_gfx
-PORTVERSION=	1.0.1
-PORTREVISION=	4
+PORTVERSION=	1.0.4
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.ferzkopp.net/Software/SDL2_gfx/
 DISTNAME=	SDL2_gfx-${PORTVERSION}
@@ -13,11 +12,13 @@ COMMENT=	SDL graphics drawing primitives and other support functions
 
 LICENSE=	ZLIB
 
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
 USES=		gmake libtool pathfix
 USE_SDL=	sdl2
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+
+PORTSCOUT=	limit:^1\.0\.
 
 OPTIONS_DEFINE=	MMX
 

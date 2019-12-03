@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	classInt
-DISTVERSION=	0.2-3
+DISTVERSION=	0.4-1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -11,8 +11,7 @@ COMMENT=	Choose Univariate Class Intervals
 
 LICENSE=	GPLv2+
 
-CRAN_DEPENDS=	R-cran-spData>=0.2.6.2:math/R-cran-spData \
-		R-cran-e1071>0:science/R-cran-e1071
+CRAN_DEPENDS=	R-cran-e1071>0:science/R-cran-e1071
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 

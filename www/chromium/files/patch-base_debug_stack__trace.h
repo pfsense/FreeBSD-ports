@@ -1,9 +1,9 @@
---- base/debug/stack_trace.h.orig	2017-08-02 19:09:58.400190000 +0200
-+++ base/debug/stack_trace.h	2017-08-02 19:10:33.950334000 +0200
-@@ -16,6 +16,7 @@
- #include "build/build_config.h"
- 
- #if defined(OS_POSIX)
+--- base/debug/stack_trace.h.orig	2019-09-09 21:55:05 UTC
++++ base/debug/stack_trace.h
+@@ -19,6 +19,7 @@
+ #if !defined(OS_NACL)
+ #include <signal.h>
+ #endif
 +#include <sys/stdint.h>
  #include <unistd.h>
  #endif

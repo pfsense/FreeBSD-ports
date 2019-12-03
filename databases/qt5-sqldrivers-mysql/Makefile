@@ -1,5 +1,6 @@
 # $FreeBSD$
 
+
 DB=		MYSQL
 DB_DESC=	MySQL
 

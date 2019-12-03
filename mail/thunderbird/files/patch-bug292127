@@ -1,5 +1,5 @@
---- ldap/c-sdk/include/ldap.h~
-+++ ldap/c-sdk/include/ldap.h
+--- comm/ldap/c-sdk/include/ldap.h~
++++ comm/ldap/c-sdk/include/ldap.h
 @@ -40,6 +40,229 @@
  #ifndef _LDAP_H
  #define _LDAP_H
@@ -227,6 +227,6 @@
 +#define ldap_x_malloc moz_ldap_x_malloc
 +#define ldap_x_realloc moz_ldap_x_realloc
 +
- /* Standard LDAP API functions and declarations */ 
+ /* Standard LDAP API functions and declarations */
  #include "ldap-standard.h"
  

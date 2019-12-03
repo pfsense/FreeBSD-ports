@@ -3,7 +3,7 @@
 
 PORTNAME=	dunelegacy
 PORTVERSION=	0.96.4
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -14,11 +14,13 @@ COMMENT=	Open source clone of Dune II
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to compile: functional.h: 'std::bind' has not been declared
-
 USES=		autoreconf compiler:c++11-lib tar:bzip2 pkgconfig
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl2 mixer2
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|MIX_INIT_FLUIDSYNTH|MIX_INIT_MID|g' \
+		${WRKSRC}/src/FileClasses/music/*.cpp
 
 .include <bsd.port.mk>

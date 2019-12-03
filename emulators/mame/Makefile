@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	mame
-PORTVERSION=	0.198
+PORTVERSION=	0.209
+PORTREVISION=	1
 CATEGORIES=	emulators
 
 MAINTAINER=	ports@FreeBSD.org
@@ -10,8 +11,8 @@ COMMENT=	Multi Arcade Machine Emulator
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=		amd64 i386
-ONLY_FOR_ARCHS_REASON=	not yet ported to any arch other than x86
+ONLY_FOR_ARCHS=		amd64 i386 powerpc64
+ONLY_FOR_ARCHS_REASON=	not yet ported to any arch other than x86 and powerpc64
 
 LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libexpat.so:textproc/expat2 \
@@ -19,7 +20,8 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	liberation-fonts-ttf>=0:x11-fonts/liberation-fonts-ttf
 
-USES=		compiler:c++14-lang gmake jpeg pkgconfig python:2.7,build qt:5 shebangfix
+USES=		compiler:c++14-lang gl gmake jpeg pkgconfig \
+		python:2.7,build qt:5 sdl shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mamedev
@@ -56,13 +58,13 @@ DEBUG_MAKE_ENV=		DEBUG=1
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == amd64
+.if ${ARCH} == amd64 || ${ARCH} == powerpc64
 MAKE_ARGS+=	PTR64=1
 EMULATOR=	${MSUBTARGET}64
 .else
 EMULATOR=	${MSUBTARGET}
 .endif
-PLIST_SUB=	EMULATOR=${EMULATOR}
+PLIST_SUB+=	EMULATOR=${EMULATOR}
 
 post-patch:
 	@${RM} ${WRKSRC}/3rdparty/bx/include/compat/freebsd/dirent.h
@@ -93,6 +95,8 @@ post-patch:
 		${WRKSRC}/scripts/genie.lua
 	@${GREP} -rl '"png.h"' ${WRKSRC}/src | ${XARGS} ${REINPLACE_CMD} \
 		-e 's|"png.h"|"localpng.h"|'
+	@${REINPLACE_CMD} -e 's|"util/png.h"|"util/localpng.h"|' \
+		${WRKSRC}/src/frontend/mame/ui/icorender.cpp
 	@${MV} ${WRKSRC}/src/lib/util/png.h ${WRKSRC}/src/lib/util/localpng.h
 
 do-install:

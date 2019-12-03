@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	grass
-PORTVERSION=	7.4.0
-PORTREVISION=	2
+PORTVERSION=	7.6.1
+PORTREVISION=	7
 CATEGORIES=	databases geography
-MASTER_SITES=	http://grass.osgeo.org/%SUBDIR%/ \
+MASTER_SITES=	https://grass.osgeo.org/%SUBDIR%/ \
 		http://grass.cict.fr/%SUBDIR%/ \
 		http://grass.fbk.eu/%SUBDIR%/ \
 		http://grass.gis-lab.info/%SUBDIR%/ \
@@ -16,7 +16,7 @@ MASTER_SITES=	http://grass.osgeo.org/%SUBDIR%/ \
 		http://pinus.gntech.ac.kr/grass/%SUBDIR%/ \
 		http://wgbis.ces.iisc.ernet.in/grass/%SUBDIR%/ \
 		http://wgrass.media.osaka-cu.ac.jp/grassh/%SUBDIR%/
-MASTER_SITE_SUBDIR=	grass74/source
+MASTER_SITE_SUBDIR=	grass${VER}/source
 PKGNAMESUFFIX=	7
 
 MAINTAINER=	lbartoletti@tuxfamily.org
@@ -25,7 +25,7 @@ COMMENT=	Open source Geographical Information System (GIS)
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL.TXT
 
-BROKEN=		fails to package
+BROKEN_sparc64=	Does not configure on sparc64
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.2:math/py-numpy@${PY_FLAVOR}
 LIB_DEPENDS=	libgdal.so:graphics/gdal \
@@ -38,8 +38,9 @@ LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libgeos.so:graphics/geos
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		fortran gettext gmake iconv jpeg perl5 pkgconfig python:2.7 \
-		readline shebangfix tk
+USES=		blaslapack fortran gmake gl gnome \
+		iconv jpeg perl5 pkgconfig python:2.7 \
+		readline shebangfix tk xorg
 SHEBANG_LANG=	nviz
 nviz_OLD_CMD=	nviz
 nviz_CMD=	${PREFIX}/${GRASS_INST_DIR}/bin/nviz
@@ -60,46 +61,49 @@ CONFIGURE_ARGS=	--with-includes=${LOCALBASE}/include \
 		--with-blas \
 		--with-lapack \
 		--with-cairo \
-		--with-nls \
 		--with-readline \
 		--enable-largefile \
 		--with-wxwidgets=${WX_CONFIG} \
 		--with-proj-share=${LOCALBASE}/share/proj \
 		--with-geos=${LOCALBASE}/bin/geos-config \
 		--with-gdal=${LOCALBASE}/bin/gdal-config \
-		--with-pthread=yes \
-		--with-openmp
+		--with-pthread=yes
+		#--with-openmp
 
 ALL_TARGET=	default
 USE_LDCONFIG=	${PREFIX}/${GRASS_INST_DIR}/lib
 MAKE_ENV+=	TARGET="${CONFIGURE_TARGET}"
+VER=		${PORTVERSION:R:C/\.//}
 
 PLIST_SUB=	GRASS_INST_DIR="${GRASS_INST_DIR}" \
-		VERSION="${PORTVERSION}" \
-		VER="${PORTVERSION:R:C/\.//}"
+		VERSION="${PORTVERSION}" VERS="${PORTVERSION:C/([0-9]+).([0-9]+)(.*)/\1.\2/}" \
+		VER="${VER}" MAJVER="${PKGNAMESUFFIX}"
 
-BROKEN_sparc64=		Does not configure on sparc64
-
-OPTIONS_DEFINE=		ATLAS LAS MOTIF NETCDF PDAL
+OPTIONS_DEFINE=		LAS NETCDF NLS PDAL ZSTD
 OPTIONS_MULTI=		DB
 OPTIONS_MULTI_DB=	MYSQL ODBC PGSQL SQLITE
-OPTIONS_DEFAULT=	LAS PDAL PGSQL SQLITE
+#OPTIONS_SINGLE=		BLAS
+#OPTIONS_SINGLE_BLAS=	ATLAS NETLIB GOTOBLAS OPENBLAS
+OPTIONS_DEFAULT=	LAS NETCDF NLS PDAL PGSQL SQLITE ZSTD
 OPTIONS_SUB=		yes
 
-ATLAS_DESC=		Use ATLAS for BLAS and LAPACK
+# BLAS/LAPACK: Only netlib compile the maxmimum number of modules
+#BLAS_DESC=		BLAS/LAPACK support
+#GOTOBLAS_DESC=		GotoBLAS implementationS
+#ATLAS_USES=		blaslapack:atlas
+#NETLIB_USES=		blaslapack
+#GOTOBLAS_USES=		blaslapack:gotoblas
+#OPENBLAS_USES=		blaslapack:openblas
 LAS_DESC=		Enable LiDAR modules
 PDAL_DESC=		Enable points cloud data modules
-ATLAS_USES=		blaslapack:atlas
-ATLAS_USES_OFF=		blaslapack
 DB_DESC=		Database support
+NLS_CONFIGURE_WITH=	nls
+NLS_USES=		gettext	
 LAS_CONFIGURE_ON=	--with-liblas=yes
 LAS_LIB_DEPENDS=	liblas.so:devel/liblas \
 			libboost_program_options.so:devel/boost-libs \
 			libboost_thread.so:devel/boost-libs \
 			libgeotiff.so:graphics/libgeotiff
-MOTIF_USES=		motif
-MOTIF_USE=		GL=glw
-MOTIF_CONFIGURE_ON=	--with-motif --with-glw
 MYSQL_USES=		mysql
 MYSQL_CONFIGURE_ON=	--with-mysql \
 			--with-mysql-includes=${LOCALBASE}/include/mysql \
@@ -115,21 +119,23 @@ PGSQL_CONFIGURE_ON=	--with-postgres
 SQLITE_USES=		sqlite
 SQLITE_CONFIGURE_ON=	--with-sqlite
 SQLITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
+ZSTD_CONFIGURE_WITH=	zstd
+ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 .include <bsd.port.options.mk>
 
 .if !defined (GRASS_INST_DIR)
-GRASS_INST_DIR=	${PORTNAME}-${PORTVERSION}
+GRASS_INST_DIR=	${PORTNAME}${VER}
 .endif
 
-MANDIRS=	${PREFIX}/grass-${PORTVERSION}/docs/man/man1
+MANDIRS=	${PREFIX}/grass${VER}/docs/man/man1
 
 post-patch:
-	@${REINPLACE_CMD} -e \
+	${REINPLACE_CMD} -e \
 		's|-lblas|${BLASLIB}|g ; \
 		 s|-llapack|${LAPACKLIB}|g ; \
 		 s|g2c|f2c|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e \
+	${REINPLACE_CMD} -e \
 		's|make -C|$$(MAKE) -C| ; \
 		 /^BINDIR/s|=.*|=	$${DESTDIR}$${UNIX_BIN}| ; \
 		 /test /s| $$(INST_DIR)| $${DESTDIR}$${INST_DIR}|g ; \
@@ -140,38 +146,54 @@ post-patch:
 		 /$$(MAKE) /s| $$(INST_DIR)| $${DESTDIR}$${INST_DIR}|g ; \
 		 /^$$(INST_DIR)\//s|$$(INST_DIR)|$${DESTDIR}$${INST_DIR}|g ; \
 		 s|> $$(INST_DIR)|> $${DESTDIR}$${INST_DIR}|' ${WRKSRC}/include/Make/Install.make
-	@${REINPLACE_CMD} \
+	${REINPLACE_CMD} \
 		's|= python|= ${PYTHON_CMD:T}|' ${WRKSRC}/include/Make/Platform.make.in
-	@${REINPLACE_CMD} \
+	${REINPLACE_CMD} \
 		"s|'make'|'gmake'|g" ${WRKSRC}/scripts/g.extension/g.extension.py
-	@${REINPLACE_CMD} \
+	${REINPLACE_CMD} \
 		's|$$(ARCH)|$$(TARGET)|g' ${WRKSRC}/include/Make/Grass.make
 # Replace hardcoded python interpreter to PYTHON_CMD
-	@${REINPLACE_CMD} -e 's|env python|env ${PYTHON_CMD}|g' \
-		${WRKSRC}/lib/gis/parser_script.c \
-		${WRKSRC}/general/g.parser/g.parser.html \
-		${WRKSRC}/lib/python/docs/src/script_intro.rst \
-		${WRKSRC}/lib/init/grass7.html \
-		${WRKSRC}/raster/r.solute.transport/r.solute.transport.html
-	@${REINPLACE_CMD} "s|'GRASS_PYTHON', 'python'|'GRASS_PYTHON', \'${PYTHON_CMD}\'|g" \
+	${REINPLACE_CMD} "s|'GRASS_PYTHON', 'python'|'GRASS_PYTHON', \'${PYTHON_CMD}\'|g" \
 		${WRKSRC}/scripts/wxpyimgview/wxpyimgview.py
-	@${REINPLACE_CMD} 's|GRASS_PYTHON=python|GRASS_PYTHON=${PYTHON_CMD}|g' \
+	${REINPLACE_CMD} 's|GRASS_PYTHON=python|GRASS_PYTHON=${PYTHON_CMD}|g' \
 		${WRKSRC}/lib/init/grass.sh
-	@${REINPLACE_CMD} \
+	${REINPLACE_CMD} \
 		"s|environ\['GRASS_PYTHON'\] = "'"python"'"|environ['GRASS_PYTHON'] = "'"${PYTHON_CMD}"'"|g" \
 		${WRKSRC}/lib/python/script/setup.py
-	@${FIND} ${WRKSRC} -type f -name "*.py" | ${XARGS} ${REINPLACE_CMD} \
-		's|env python|env ${PYTHON_CMD}|g'
+	cd ${WRKSRC}; \
+	for i in `${FIND} . -type f -print`; do \
+		${REINPLACE_CMD} \
+		's|#!/usr/bin/env python|#!/usr/bin/env ${PYTHON_CMD}|' $$i; \
+	done
 
 post-install:
-	@${RM} -rf ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/demolocation/PERMANENT/.tmp/
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/bin/*
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/driver/db/*
-.for i in clean_temp current_time_s_ms echo i.find lock run r.watershed/seg r.watershed/ram
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/etc/${i}
+	${RM} -rf ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/demolocation/PERMANENT/.tmp/
+	${RM} -rf ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/docs/html/colortables/*bak.png
+	${MKDIR} ${STAGEDIR}${LOCALBASE}/${PORTNAME}${VER}/docs/html/
+.for file in i_atcorr_B02_atcorr.png \
+		i_ortho_photo_step1.png \
+		i_ortho_photo_step5.png \
+		i_ortho_photo_step6.png \
+		i_ortho_photo_step7.png \
+		i_ortho_photo_step8.png \
+		r.viewshed.png \
+		rterraflow_accumulation.png \
+		rterraflow_dir2.png \
+		rterraflow_dir3.png \
+		sweep1.png \
+		sweep2.png
+	${TOUCH} ${STAGEDIR}${LOCALBASE}/${PORTNAME}${VER}/docs/html/${file}
 .endfor
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/etc/lister/*
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/lib/libgrass_*.so
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/tools/g.echo
-
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/bin/*
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/driver/db/*
+.for i in clean_temp current_time_s_ms echo i.find lock run r.watershed/seg r.watershed/ram
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/etc/${i}
+.endfor
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/etc/lister/*
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/lib/libgrass_*.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GRASS_INST_DIR}/tools/g.echo
+	${LN} -sf ${PORTNAME}${VER} \
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}${PKGNAMESUFFIX}
+	${LN} -s ${PORTNAME}${VER} \
+		${STAGEDIR}${PREFIX}/${PORTNAME}-${PORTVERSION}
 .include <bsd.port.mk>

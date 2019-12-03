@@ -1,2 +1,5 @@
-SHA256 (lollypop-0.9.15.tar.xz) = 7d86463fe229cecc779db3db98f720dbb1b8ee97144fb7f7e242650c510bc960
-SIZE (lollypop-0.9.15.tar.xz) = 397220
+TIMESTAMP = 1559840354
+SHA256 (World-lollypop-fdcb83e6a3dbd7afa9c479490d124d6603dbc7df_GL0.tar.gz) = 4c77021bc768e19955766ec92647832ebedc9e0658703e69f926e930eea973a1
+SIZE (World-lollypop-fdcb83e6a3dbd7afa9c479490d124d6603dbc7df_GL0.tar.gz) = 377960
+SHA256 (gnumdk-lollypop-po-7dd29b33dbd6f976f4d376a32851fe8abbda2949_GL0.tar.gz) = f02fc0fb849b5d0726f047dbaee6a96e9d10464242c1e8b890f9d0fd7fbb5956
+SIZE (gnumdk-lollypop-po-7dd29b33dbd6f976f4d376a32851fe8abbda2949_GL0.tar.gz) = 497620

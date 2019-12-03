@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netdata
-PORTVERSION=	1.10.0
+PORTVERSION=	1.17.1
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt
 
@@ -11,15 +11,17 @@ COMMENT=	Scalable distributed realtime performance and health monitoring
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${LOCALBASE}/include/uuid/uuid.h:misc/e2fsprogs-libuuid
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
+
 RUN_DEPENDS=	bash:shells/bash \
 		curl:ftp/curl
 
-USES=		autoreconf pathfix pkgconfig:both python shebangfix
+USES=		autoreconf cpe pathfix pkgconfig:both python shebangfix ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	firehol
+
+SHEBANG_GLOB=	*
 
 NETDATA_CACHE=	/var/cache/${PORTNAME}
 NETDATA_LOG=	/var/log/${PORTNAME}
@@ -45,11 +47,27 @@ SUB_FILES=	${PORTNAME}.conf.sample
 USERS=		netdata
 GROUPS=		netdata
 
-OPTIONS_DEFINE=	FREEIPMI
+OPTIONS_DEFINE=	CUPS DBENGINE FREEIPMI JSON
 OPTIONS_SUB=	YES
-FREEIPMI_DESC=	Enable support for freeipmi
+OPTIONS_DEFAULT=	DBENGINE JSON
 
+CUPS_DESC=	Enable support for cups
+CUPS_CONFIGURE_ENABLE=	plugin-cups
+CUPS_LIB_DEPENDS=	libcups.so:print/cups
+
+DBENGINE_DESC=	Enable support for database engine
+DBENGINE_CONFIGURE_ENABLE=	dbengine
+DBENGINE_LIB_DEPENDS=	libuv.so:devel/libuv \
+			liblz4.so:archivers/liblz4 \
+			libJudy.so:devel/judy
+
+FREEIPMI_DESC=	Enable support for freeipmi
+FREEIPMI_CONFIGURE_ENABLE=	plugin-freeipmi
 FREEIPMI_LIB_DEPENDS=	libfreeipmi.so:sysutils/freeipmi
+
+JSON_DESC=	Enable support for json
+JSON_CONFIGURE_ENABLE=	jsonc
+JSON_LIB_DEPENDS=	libjson-c.so:devel/json-c
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%NETDATA_CACHE%%|${NETDATA_CACHE}|g' \
@@ -67,7 +85,8 @@ post-install:
 	${MKDIR} ${STAGEDIR}${NETDATA_CACHE}
 	${MKDIR} ${STAGEDIR}${NETDATA_LOG}
 	${MKDIR} ${STAGEDIR}${NETDATA_PERST}
-	(for file in ${STAGEDIR}${ETCDIR}/*.conf ${STAGEDIR}${ETCDIR}/*/*.conf; do \
+	(for file in ${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*.conf \
+			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*/*.conf; do \
 		${MV} $$file $$file".sample"; \
 	done)
 

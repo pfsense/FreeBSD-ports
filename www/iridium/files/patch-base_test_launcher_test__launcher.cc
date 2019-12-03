@@ -1,13 +1,10 @@
---- base/test/launcher/test_launcher.cc.orig	2017-04-19 19:06:28 UTC
+--- base/test/launcher/test_launcher.cc.orig	2019-03-11 22:00:51 UTC
 +++ base/test/launcher/test_launcher.cc
-@@ -60,6 +60,10 @@
- #include "base/win/windows_version.h"
- #endif
+@@ -53,6 +53,7 @@
+ #include "testing/gtest/include/gtest/gtest.h"
  
-+#if defined(OS_FREEBSD)
+ #if defined(OS_POSIX)
 +#include <signal.h>
-+#endif
-+
- namespace base {
+ #include <fcntl.h>
  
- // See https://groups.google.com/a/chromium.org/d/msg/chromium-dev/nkdTP7sstSc/uT3FaE_sgkAJ .
+ #include "base/files/file_descriptor_watcher_posix.h"

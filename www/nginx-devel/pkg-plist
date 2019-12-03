@@ -28,7 +28,6 @@
 %%DSO%%%%HTTP_AUTH_PAM%%libexec/nginx/ngx_http_auth_pam_module.so
 %%DSO%%%%HTTP_EVAL%%libexec/nginx/ngx_http_eval_module.so
 %%DSO%%%%HTTP_FANCYINDEX%%libexec/nginx/ngx_http_fancyindex_module.so
-%%DSO%%%%HTTP_GEOIP%%libexec/nginx/ngx_http_geoip_module.so
 %%DSO%%%%HTTP%%%%HTTP_GEOIP2%%libexec/nginx/ngx_http_geoip2_module.so
 %%DSO%%%%STREAM%%%%HTTP_GEOIP2%%libexec/nginx/ngx_stream_geoip2_module.so
 %%DSO%%%%HTTP_IMAGE_FILTER%%libexec/nginx/ngx_http_image_filter_module.so
@@ -64,6 +63,7 @@
 %%WWW%%@postexec chmod a-w %D/www/nginx-dist
 %%WWW%%@postunexec if [ -L %D/www/nginx ]; then rm -f %D/www/nginx; fi
 sbin/nginx
+%%NJS%%sbin/njs
 share/vim/vimfiles/ftdetect/nginx.vim
 share/vim/vimfiles/ftplugin/nginx.vim
 share/vim/vimfiles/indent/nginx.vim

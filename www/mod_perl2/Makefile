@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mod_perl
-PORTVERSION=	2.0.10
+PORTVERSION=	2.0.11
 PORTEPOCH=	3
 CATEGORIES=	www perl5
 MASTER_SITES=	APACHE/perl
@@ -31,13 +31,6 @@ APMOD_FILE=	260_${PORTNAME}.conf.sample
 PLIST_SUB+=	APMOD_FILE=${APMOD_FILE}
 
 .include <bsd.port.pre.mk>
-
-# Provider is built if apache24 is in use
-.if ${APACHE_VERSION:M2.2}
-PLIST_SUB+=	AP22="@comment "
-.else
-PLIST_SUB+=	AP22=""
-.endif
 
 CONFIGURE_ARGS=	PREFIX=${PREFIX} MP_APXS=${APXS} \
 		MP_APR_CONFIG=${LOCALBASE}/bin/apr-1-config

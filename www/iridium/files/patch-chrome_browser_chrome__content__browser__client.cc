@@ -1,24 +1,29 @@
---- chrome/browser/chrome_content_browser_client.cc.orig	2017-04-24 14:40:25 UTC
+--- chrome/browser/chrome_content_browser_client.cc.orig	2019-03-11 22:00:53 UTC
 +++ chrome/browser/chrome_content_browser_client.cc
-@@ -244,7 +244,7 @@
- #include "mash/public/interfaces/launchable.mojom.h"
- #include "services/service_manager/public/cpp/interface_factory.h"
- #include "services/service_manager/public/interfaces/interface_provider_spec.mojom.h"
+@@ -395,7 +395,7 @@
+ #include "components/user_manager/user_manager.h"
+ #include "services/service_manager/public/mojom/interface_provider_spec.mojom.h"
+ #include "services/ws/common/switches.h"
 -#elif defined(OS_LINUX)
 +#elif defined(OS_LINUX) || defined(OS_BSD)
  #include "chrome/browser/chrome_browser_main_linux.h"
  #elif defined(OS_ANDROID)
- #include "chrome/browser/android/app_hooks.h"
-@@ -265,7 +265,7 @@
+ #include "base/android/application_status_listener.h"
+@@ -441,11 +441,11 @@
+ #include "components/services/patch/public/interfaces/constants.mojom.h"
+ #endif
+ 
+-#if defined(OS_LINUX) || defined(OS_WIN)
++#if defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
  #include "chrome/browser/webshare/share_service_impl.h"
  #endif
  
--#if defined(OS_POSIX) && !defined(OS_MACOSX)
-+#if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_BSD)
- #include "base/debug/leak_annotations.h"
- #include "components/crash/content/app/breakpad_linux.h"
- #include "components/crash/content/browser/crash_handler_host_linux.h"
-@@ -289,7 +289,7 @@
+-#if defined(OS_WIN) || defined(OS_MACOSX) || \
++#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_BSD) || \
+     (defined(OS_LINUX) && !defined(OS_CHROMEOS))
+ #include "chrome/browser/browser_switcher/browser_switcher_navigation_throttle.h"
+ #endif
+@@ -462,7 +462,7 @@
  #include "chrome/browser/ui/views/chrome_browser_main_extra_parts_views.h"
  #endif
  
@@ -27,43 +32,34 @@
  #include "chrome/browser/ui/views/chrome_browser_main_extra_parts_views_linux.h"
  #endif
  
-@@ -700,7 +700,7 @@ bool CertMatchesFilter(const net::X509Ce
-   return false;
- }
- 
--#if defined(OS_POSIX) && !defined(OS_ANDROID) && !defined(OS_MACOSX)
-+#if defined(OS_POSIX) && !defined(OS_ANDROID) && !defined(OS_MACOSX) && !defined(OS_BSD)
- breakpad::CrashHandlerHostLinux* CreateCrashHandlerHost(
-     const std::string& process_type) {
-   base::FilePath dumps_path;
-@@ -1023,7 +1023,7 @@ content::BrowserMainParts* ChromeContent
-   main_parts = new ChromeBrowserMainPartsMac(parameters);
+@@ -1144,7 +1144,7 @@ content::BrowserMainParts* ChromeContentBrowserClient:
  #elif defined(OS_CHROMEOS)
-   main_parts = new chromeos::ChromeBrowserMainPartsChromeos(parameters);
+   main_parts = new chromeos::ChromeBrowserMainPartsChromeos(
+       parameters, chrome_feature_list_creator_);
 -#elif defined(OS_LINUX)
 +#elif defined(OS_LINUX) || defined(OS_BSD)
-   main_parts = new ChromeBrowserMainPartsLinux(parameters);
+   main_parts =
+       new ChromeBrowserMainPartsLinux(parameters, chrome_feature_list_creator_);
  #elif defined(OS_ANDROID)
-   main_parts = new ChromeBrowserMainPartsAndroid(parameters);
-@@ -1039,7 +1039,7 @@ content::BrowserMainParts* ChromeContent
+@@ -1164,7 +1164,7 @@ content::BrowserMainParts* ChromeContentBrowserClient:
    // Construct additional browser parts. Stages are called in the order in
    // which they are added.
  #if defined(TOOLKIT_VIEWS)
 -#if defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(USE_OZONE)
-+#if (defined(OS_BSD) || defined(OS_LINUX)) && !defined(OS_CHROMEOS) && !defined(USE_OZONE)
++#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS) && !defined(USE_OZONE)
    main_parts->AddParts(new ChromeBrowserMainExtraPartsViewsLinux());
  #else
    main_parts->AddParts(new ChromeBrowserMainExtraPartsViews());
-@@ -1680,7 +1680,7 @@ void ChromeContentBrowserClient::AppendE
+@@ -1956,7 +1956,7 @@ void ChromeContentBrowserClient::AppendExtraCommandLin
      command_line->AppendSwitchASCII(switches::kMetricsClientID,
                                      client_info->client_id);
    }
 -#elif defined(OS_POSIX)
 +#elif defined(OS_POSIX) && !defined(OS_BSD)
-   if (breakpad::IsCrashReporterEnabled()) {
-     std::string switch_value;
-     std::unique_ptr<metrics::ClientInfo> client_info =
-@@ -2972,7 +2972,7 @@ void ChromeContentBrowserClient::GetAddi
+ #if defined(OS_ANDROID)
+   bool enable_crash_reporter = true;
+ #else
+@@ -3550,7 +3550,7 @@ void ChromeContentBrowserClient::GetAdditionalFileSyst
    }
  }
  
@@ -72,21 +68,30 @@
  void ChromeContentBrowserClient::GetAdditionalMappedFilesForChildProcess(
      const base::CommandLine& command_line,
      int child_process_id,
-@@ -3001,7 +3001,7 @@ void ChromeContentBrowserClient::GetAddi
+@@ -4288,7 +4288,7 @@ ChromeContentBrowserClient::CreateThrottlesForNavigati
+             handle));
    }
- #endif  // defined(OS_ANDROID)
- }
--#endif  // defined(OS_POSIX) && !defined(OS_MACOSX)
-+#endif  // defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_BSD)
  
- #if defined(OS_WIN)
- base::string16 ChromeContentBrowserClient::GetAppContainerSidForSandboxType(
-@@ -3193,6 +3193,8 @@ void ChromeContentBrowserClient::Registe
-         base::Bind(&ForwardShareServiceRequest,
-                    web_contents->GetJavaInterfaces()->GetWeakPtr()));
-   }
-+#elif defined(OS_BSD)
-+  NOTREACHED();
- #else
-   if (AreExperimentalWebPlatformFeaturesEnabled() &&
-       base::FeatureList::IsEnabled(features::kWebPayments)) {
+-#if defined(OS_WIN) || defined(OS_MACOSX) || \
++#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_BSD) || \
+     (defined(OS_LINUX) && !defined(OS_CHROMEOS))
+   std::unique_ptr<content::NavigationThrottle> browser_switcher_throttle =
+       browser_switcher::BrowserSwitcherNavigationThrottle ::
+@@ -4409,7 +4409,7 @@ void ChromeContentBrowserClient::InitWebContextInterfa
+ #if defined(OS_ANDROID)
+   frame_interfaces_parameterized_->AddInterface(base::Bind(
+       &ForwardToJavaWebContentsRegistry<blink::mojom::ShareService>));
+-#elif defined(OS_LINUX) || defined(OS_WIN)
++#elif defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
+   frame_interfaces_->AddInterface(base::Bind(&ShareServiceImpl::Create));
+ #endif
+ 
+@@ -5047,7 +5047,7 @@ std::unique_ptr<content::OverlayWindow>
+ ChromeContentBrowserClient::CreateWindowForPictureInPicture(
+     content::PictureInPictureWindowController* controller) {
+ #if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
+-    defined(OS_CHROMEOS)
++    defined(OS_CHROMEOS) || defined(OS_BSD)
+   // Note: content::OverlayWindow::Create() is defined by platform-specific
+   // implementation in chrome/browser/ui/views. This layering hack, which goes
+   // through //content and ContentBrowserClient, allows us to work around the

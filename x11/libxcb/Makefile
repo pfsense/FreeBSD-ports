@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libxcb
-PORTVERSION=	1.13
+PORTVERSION=	1.13.1
 CATEGORIES=	x11 python
-MASTER_SITES=	http://xcb.freedesktop.org/dist/
+MASTER_SITES=	https://xcb.freedesktop.org/dist/
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	The X protocol C-language Binding (XCB) library
@@ -20,7 +20,7 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-st
 CONFIGURE_ARGS+=	--disable-build-docs --without-doxygen --enable-xinput
 
 XORG_CAT=	lib
-USES=		cpe gmake python:build
+USES=		cpe gmake gnome python:build
 USE_GNOME=	libxslt:build
 USE_XORG=	xau xdmcp
 INSTALL_TARGET=	install-strip

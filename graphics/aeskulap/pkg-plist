@@ -1,4 +1,5 @@
 bin/aeskulap
+lib/aeskulap/libaeskulap-glade.so
 lib/aeskulap/libconfiguration.so
 lib/aeskulap/libimagepool.so
 %%DATADIR%%/glade/aeskulap.glade
@@ -24,7 +25,9 @@ lib/aeskulap/libimagepool.so
 %%DATADIR%%/images/stock-tool-eraser-22.png
 %%DATADIR%%/images/stock-tool-measure-22.png
 %%DATADIR%%/images/stock-tool-scale-22.png
+share/appdata/aeskulap.appdata.xml
 share/applications/aeskulap.desktop
+share/glib-2.0/schemas/org.gnu.aeskulap.gschema.xml
 share/icons/hicolor/64x64/apps/aeskulap.png
 share/icons/hicolor/scalable/apps/aeskulap.svg
 share/locale/de/LC_MESSAGES/aeskulap.mo

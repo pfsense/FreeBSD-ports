@@ -13,12 +13,13 @@ COMMENT=	Sprockets Rails integration
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS?=	rubygem-actionpack5>0:www/rubygem-actionpack5 \
-		rubygem-activesupport5>0:devel/rubygem-activesupport5 \
+RUN_DEPENDS=	rubygem-actionpack5>=4.0:www/rubygem-actionpack5 \
+		rubygem-activesupport5>=4.0:devel/rubygem-activesupport5 \
 		rubygem-sprockets3>=3.0.0:devel/rubygem-sprockets3
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

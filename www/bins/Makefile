@@ -3,16 +3,20 @@
 
 PORTNAME=	bins
 PORTVERSION=	1.1.29
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	www
 MASTER_SITES=	http://download.gna.org/bins/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to generate HTML photo albums with XML support
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	\
 	p5-HTML-Parser>=0:www/p5-HTML-Parser \
-	convert:graphics/ImageMagick \
+	convert:graphics/ImageMagick6 \
 	p5-Text-Iconv>=0:converters/p5-Text-Iconv \
 	p5-Text-Unaccent>=0:textproc/p5-Text-Unaccent \
 	p5-TimeDate>=0:devel/p5-TimeDate \

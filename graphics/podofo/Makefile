@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	podofo
-PORTVERSION=	0.9.5
+PORTVERSION=	0.9.6
 PORTREVISION=	1
 CATEGORIES=	graphics print
 MASTER_SITES=	SF
@@ -41,14 +41,8 @@ PNG_LIB_DEPENDS=	libpng.so:graphics/png
 TIFF_CMAKE_BOOL=	WANT_TIFF
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} >= 50
-CXXFLAGS+=	-std=gnu++11 -D_GLIBCXX_USE_C99=1
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|$${LIBDIRNAME}/pkgconfig|${PREFIX}/libdata/pkgconfig|' ${WRKSRC}/src/CMakeLists.txt
 	@${REINPLACE_CMD} -e '/^Libs: / s|-@PODOFO_VERSION_MAJOR@||' ${WRKSRC}/src/libpodofo.pc.in
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

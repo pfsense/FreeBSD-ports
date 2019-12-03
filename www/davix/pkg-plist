@@ -5,6 +5,8 @@ bin/davix-mkdir
 bin/davix-mv
 bin/davix-put
 bin/davix-rm
+bin/davix-tester
+bin/davix-unit-tests
 include/davix/auth/davixauth.hpp
 include/davix/auth/davixx509cred.hpp
 include/davix/compat/davix_ignored.hpp
@@ -26,6 +28,7 @@ include/davix/request/httprequest.hpp
 include/davix/status/davixstatusrequest.hpp
 include/davix/utils/davix_azure_utils.hpp
 include/davix/utils/davix_config.hpp
+include/davix/utils/davix_gcloud_utils.hpp
 include/davix/utils/davix_logger.hpp
 include/davix/utils/davix_misc_utils.hpp
 include/davix/utils/davix_nocopy.hpp
@@ -34,7 +37,7 @@ include/davix/utils/davix_types.hpp
 include/davix/utils/davix_uri.hpp
 lib/libdavix.so
 lib/libdavix.so.0
-lib/libdavix.so.0.6.7
+lib/libdavix.so.%%PORTVERSION%%
 libdata/pkgconfig/davix.pc
 man/man1/davix-get.1.gz
 man/man1/davix-http.1.gz

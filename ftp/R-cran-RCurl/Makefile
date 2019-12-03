@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	RCurl
-DISTVERSION=	1.95-4.10
+DISTVERSION=	1.95-4.12
+PORTREVISION=	1
 CATEGORIES=	ftp
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -17,6 +18,7 @@ BUILD_DEPENDS=	curl-config:ftp/curl \
 RUN_DEPENDS=	${CRAN_DEPENDS}
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		cran:auto-plist,compiles
+USES=		cran:auto-plist,compiles gnome
+USE_GNOME=	libxml2
 
 .include <bsd.port.mk>

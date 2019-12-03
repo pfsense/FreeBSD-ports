@@ -3,7 +3,7 @@
 
 PORTNAME=	gmetadom
 PORTVERSION=	0.2.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
@@ -12,12 +12,11 @@ COMMENT=	Collection of DOM Implementations
 
 LIB_DEPENDS=	libgdome.so:textproc/gdome2
 
-USES=		gmake iconv libtool pathfix pkgconfig
+USES=		compiler:c++11-lang gmake gnome iconv libtool localbase \
+		pathfix pkgconfig
 USE_GNOME=	glib20 libxml2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	OCAML

@@ -2,8 +2,8 @@
 
 PORTNAME=		shards
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.7.2
-PORTREVISION=		2
+DISTVERSION=		0.9.0
+PORTREVISION=		1
 CATEGORIES=		devel
 
 MAINTAINER=	greg@unrelenting.technology
@@ -21,16 +21,11 @@ RUN_DEPENDS=	git:devel/git
 USE_GITHUB=	yes
 GH_ACCOUNT=	crystal-lang
 
+MAKE_ARGS+=	CRFLAGS="--release --no-debug" \
+		MANDIR="${STAGEDIR}${PREFIX}/man"
+
 PLIST_FILES=	bin/shards \
 		man/man1/shards.1.gz \
 		man/man5/shard.yml.5.gz
-
-do-build:
-	cd ${WRKSRC} && crystal build --release --no-debug -o bin/shards src/shards.cr
-
-do-install:
-	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/bin/shards ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${INSTALL_WRKSRC}/src/man/shards.1 ${STAGEDIR}${MANPREFIX}/man/man1/
-	${INSTALL_MAN} ${INSTALL_WRKSRC}/src/man/shard.yml.5 ${STAGEDIR}${MANPREFIX}/man/man5/
 
 .include <bsd.port.mk>

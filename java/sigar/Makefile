@@ -3,11 +3,11 @@
 
 PORTNAME=	sigar
 PORTVERSION=	1.7.3
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	java devel
 PKGNAMEPREFIX=	java-
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java bindings for the Sigar system information API
 
 LICENSE=	APACHE20
@@ -25,7 +25,7 @@ GH_ACCOUNT=	amishHammer
 GH_TAGNAME=	b5af695
 
 USES=		perl5
-USES_PERL5=	build
+USE_PERL5=	build
 USE_JAVA=	yes
 JAVA_RUN=	yes
 USE_GCC=	any

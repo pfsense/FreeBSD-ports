@@ -15,10 +15,16 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libqgpgme.so:security/gpgme-qt5 \
 		libgpgmepp.so:security/gpgme-cpp
 
-USES=		cmake:outsource compiler:c++11-lib gettext kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 tar:xz
 USE_KDE=	auth codecs config configwidgets coreaddons dbusaddons \
 		doctools ecm i18n iconthemes notifications service \
 		widgetsaddons windowsystem
 USE_QT=		buildtools_build core dbus gui qmake_build widgets xml
+
+OPTIONS_DEFINE=	PINENTRY
+OPTIONS_DEFAULT= PINENTRY
+
+PINENTRY_DESC=	Include pinentry-qt, for wallet passwords
+PINENTRY_RUN_DEPENDS=	pinentry-qt5:security/pinentry-qt5
 
 .include <bsd.port.mk>

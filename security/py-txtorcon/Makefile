@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	txtorcon
-DISTVERSION=	0.20.0
+DISTVERSION=	19.0.0
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,11 +20,11 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=15.5.0:devel/py-twisted@${PY_FLAVOR
 		${PYTHON_PKGNAMEPREFIX}Automat>0:devel/py-Automat@${PY_FLAVOR}
 
 USES=		python shebangfix
-USE_PYTHON=	distutils autoplist concurrent
+USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 SHEBANG_FILES=	examples/*.py
 
-OPTIONS_DEFINE=		DOCS EXAMPLES
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e " \

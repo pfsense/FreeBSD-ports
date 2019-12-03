@@ -4,7 +4,7 @@
 PORTNAME=	opensmtpd
 PORTVERSION=	5.9.2p1
 PORTEPOCH=	1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	mail
 MASTER_SITES=	http://www.opensmtpd.org/archives/ \
 		http://distfiles.pirateparty.in/ashish/
@@ -14,6 +14,9 @@ COMMENT=	Security- and simplicity-focused SMTP server from OpenBSD
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_SSL=	openssl111
+BROKEN_SSL_REASON_openssl111=		Incompatible with Openssl 1.1.x yet
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 
@@ -55,10 +58,18 @@ CONFIGURE_ARGS+=	--with-libasr=${LOCALBASE} \
 			--with-libssl=${OPENSSLBASE} \
 			--sysconfdir=${PREFIX}/etc/mail/
 
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && \
+    ((${OSVERSION} > 1200084 && ${SSL_DEFAULT} == "base") || \
+    (${SSL_DEFAULT} == "openssl111"))
+BROKEN=		Incompatible with Openssl 1.1.x yet
+.endif
+
 post-patch:
 	${REINPLACE_CMD} -e '/chmod 2555/d' ${WRKSRC}/mk/smtpctl/Makefile.in
 
 post-install-TABLE_DB-on:
 	@${LN} -sf ${PREFIX}/sbin/smtpctl ${STAGEDIR}${PREFIX}/libexec/opensmtpd/makemap
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

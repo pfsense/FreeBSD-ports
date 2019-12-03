@@ -38,10 +38,10 @@ DOCS_ALL_TARGET=javadoc
 
 .include <bsd.port.pre.mk>
 
-.if ${JAVA_PORT_VERSION} == "1.6.0"
-PLIST_SUB=	JDK6=""
+.if ${JAVA_PORT_VERSION:M*6*}
+PLIST_SUB+=	JDK6=""
 .else
-PLIST_SUB=	JDK6="@comment "
+PLIST_SUB+=	JDK6="@comment "
 .endif
 
 do-install:

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gromacs
-DISTVERSION=	2018.2
-PORTREVISION=	1
+DISTVERSION=	2019.3
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	ftp://ftp.gromacs.org/pub/gromacs/
 
@@ -13,10 +13,12 @@ COMMENT=	Compute molecular dynamics
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_i386=	undefined reference to `__atomic_load' and `__atomic_compare_exchange'
+
 BUILD_DEPENDS=	boost-libs>=1.44:devel/boost-libs
 LIB_DEPENDS=	libhwloc.so:devel/hwloc
 
-USES=		cmake fortran perl5 pkgconfig shebangfix
+USES=		cmake compiler:c++11-lang fortran gnome perl5 pkgconfig shebangfix
 SHEBANG_FILES=	admin/*.sh scripts/*.pl scripts/*.sh src/gromacs/selection/*.sh
 bash_CMD=	${SH}
 USE_GNOME=	libxml2
@@ -26,7 +28,7 @@ USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=		ATLAS FLOAT OPENCL OPENMP SIMD X11
 OPTIONS_SINGLE=		MP
-OPTIONS_SINGLE_MP=	NOMP MPICH2 OPENMPI THREAD_MPI
+OPTIONS_SINGLE_MP=	NOMP MPICH OPENMPI THREAD_MPI
 OPTIONS_DEFAULT=	FLOAT OPENMP THREAD_MPI X11
 OPTIONS_SUB=		yes
 
@@ -53,6 +55,7 @@ OPENCL_LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 OPENMP_USES=		compiler:openmp
 OPENMP_CMAKE_ON=	-DGMX_CXX11:BOOL=OFF
 OPENMP_CMAKE_OFF=	-DGMX_OPENMP:BOOL=OFF
+OPENMP_LIB_DEPENDS=	libomp.so:devel/openmp
 
 SIMD_CMAKE_OFF=		-DGMX_SIMD:STRING="None"
 
@@ -64,10 +67,11 @@ MP_DESC=		Multiprocessing
 NOMP_DESC=		No multiprocessing support
 NOMP_PLIST_SUB=		SUFFIX_MPI=""
 
-MPICH2_LIB_DEPENDS=	libmpich.so:net/mpich2
-MPICH2_CMAKE_ON=	-DGMX_MPI:BOOL=ON \
+MPICH_DESC=		Parallel processing support via MPICH
+MPICH_LIB_DEPENDS=	libmpich.so:net/mpich
+MPICH_CMAKE_ON=		-DGMX_MPI:BOOL=ON \
 			-DMPI_C_COMPILER:FILEPATH="${LOCALBASE}/bin/mpicc"
-MPICH2_PLIST_SUB=	SUFFIX_MPI="_mpi"
+MPICH_PLIST_SUB=	SUFFIX_MPI="_mpi"
 
 OPENMPI_BUILD_DEPENDS=	openmpi>0:net/openmpi
 OPENMPI_RUN_DEPENDS=	openmpi>0:net/openmpi

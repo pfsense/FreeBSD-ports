@@ -1,11 +1,10 @@
---- tools/variations/fieldtrial_to_struct.py.orig	2017-04-19 19:06:54 UTC
+--- tools/variations/fieldtrial_to_struct.py.orig	2019-03-11 22:01:18 UTC
 +++ tools/variations/fieldtrial_to_struct.py
-@@ -116,7 +116,7 @@ def main(arguments):
-   if not opts.platform:
-     parser.error('You must specify a --platform.')
- 
--  supported_platforms = ['android', 'chromeos', 'ios', 'linux', 'mac', 'win']
-+  supported_platforms = ['android', 'chromeos', 'ios', 'linux', 'mac', 'win', 'bsd']
-   if opts.platform not in supported_platforms:
-     parser.error('\'%s\' is an unknown platform. Supported platforms: %s' %
-         (opts.platform, supported_platforms))
+@@ -24,6 +24,7 @@ finally:
+ _platforms = [
+   'android',
+   'android_webview',
++  'freebsd',
+   'chromeos',
+   'fuchsia',
+   'ios',

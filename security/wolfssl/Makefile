@@ -3,18 +3,17 @@
 PORTNAME=	wolfssl
 PORTVERSION=	3.13.0
 CATEGORIES=	security devel
-MASTER_SITES=	http://www.wolfssl.com/
+MASTER_SITES=	https://www.wolfssl.com/
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Embedded SSL C-Library
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	bash:shells/bash
-
 BROKEN_mips=		fails to package: pkg-static: Unable to access file libwolfssl.so.3: No such file or directory
 BROKEN_mips64=		fails to package: pkg-static: Unable to access file libwolfssl.so.3: No such file or directory
-BROKEN_powerpc64=	fails to package: pkg-static: Unable to access file libwolfssl.so.3: No such file or directory
+
+BUILD_DEPENDS=	bash:shells/bash
 
 USES=		libtool zip
 GNU_CONFIGURE=	yes
@@ -27,6 +26,8 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 
 USE_LDCONFIG=	yes
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-configure:
 	@${REINPLACE_CMD} \

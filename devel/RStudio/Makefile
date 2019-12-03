@@ -1,11 +1,12 @@
 # $FreeBSD$
 
 # This port opens too many files during build, more than the default setting.
-# Its build is known to succeed with MAX_FILES_RStudio=2048 in poudriere.conf when ports-mgmt/poudriere-devel is used.
+# Its build is known to succeed with MAX_FILES_RStudio=4096 in poudriere.conf when ports-mgmt/poudriere-devel is used.
 
 PORTNAME=	RStudio
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.679
+DISTVERSION=	1.2.1335
+PORTREVISION=	4
 CATEGORIES=	devel math java
 MASTER_SITES=	https://s3.amazonaws.com/rstudio-dictionaries/:dictionaries \
 		https://s3.amazonaws.com/rstudio-buildtools/:buildtools
@@ -13,6 +14,9 @@ DISTFILES=	core-dictionaries.zip:dictionaries \
 		gin-${GIN_VERSION}.zip:buildtools \
 		gwt-${GWT_VERSION}.zip:buildtools \
 		mathjax-26.zip:buildtools
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	33c2c42d40ad.patch:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Integrated development environment (IDE) for R
@@ -28,8 +32,8 @@ LIB_DEPENDS=	libR.so:math/R \
 		libinotify.so:devel/libinotify \
 		libuuid.so:misc/e2fsprogs-libuuid
 
-USES=		cmake:outsource desktop-file-utils fortran pkgconfig qt:5 shared-mime-info ssl
-USE_QT=		core dbus gui location network opengl printsupport qml quick sensors \
+USES=		cmake desktop-file-utils fortran pkgconfig qt:5 shared-mime-info ssl
+USE_QT=		core dbus declarative gui location network opengl printsupport sensors \
 		sql svg webchannel webengine webkit widgets xml xmlpatterns buildtools_build qmake_build
 USE_JAVA=	yes
 JAVA_BUILD=	yes
@@ -43,6 +47,8 @@ GH_TUPLE=	rstudio:r2d3:v0.2.0:r2d3/dependencies/common/r2d3 \
 CMAKE_ARGS=	-DRSTUDIO_TARGET=Desktop \
 		-DFREEBSD_RSTUDIO_VERSION:STRING=${PORTVERSION} \
 		-DFREEBSD_LIBDIR:STRING=${PREFIX}/lib
+CMAKE_ARGS+=	-DRSTUDIO_BOOST_SIGNALS_VERSION=2 # until Boost 1.69 or RStudio 1.3
+CMAKE_ARGS+=    -DQT_QMAKE_EXECUTABLE:STRING=${QMAKE}
 MAKE_ENV=	HOME=${WRKDIR} \
 		ANT_OPTS="-Duser.home=${WRKDIR}"
 
@@ -83,7 +89,7 @@ post-install:
 	  echo "fi"; \
 	  echo ""; \
 	  echo "# workaround for the problem that RStudio passes /lib with LD_LIBRARY_PATH that causes the /lib/libgcc_s.so.1 conflict with gcc"; \
-	  echo "LD_PRELOAD=${PREFIX}/lib/gcc6/libgcc_s.so ${PREFIX}/lib/rstudio/bin/rstudio \"$$@\"" \
+	  echo "LD_PRELOAD=${PREFIX}/lib/gcc${GCC_DEFAULT}/libgcc_s.so ${PREFIX}/lib/rstudio/bin/rstudio \"$$@\"" \
 	) > ${STAGEDIR}${PREFIX}/bin/rstudio
 	@${CHMOD} +x ${STAGEDIR}${PREFIX}/bin/rstudio
 	@${REINPLACE_CMD} -e 's|^Exec=.*/rstudio|Exec=${PREFIX}/bin/rstudio|' ${STAGEDIR}${PREFIX}/share/applications/rstudio.desktop

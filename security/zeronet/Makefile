@@ -3,8 +3,9 @@
 
 PORTNAME=	zeronet
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.2
-PORTREVISION=	1
+DISTVERSION=	0.6.5-25
+DISTVERSIONSUFFIX=	-gabb566e3
+PORTREVISION=	2
 CATEGORIES=	security net-p2p
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +16,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack>0:devel/py-msgpack@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gevent>0:devel/py-gevent@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}stem>0:security/py-stem@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}stem>0:security/py-stem@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
 SUB_FILES=	zeronet-service zeronet-cmd pkg-message
 SUB_LIST=	LOCALBASE=${LOCALBASE} USER=${USER} GROUP=${GROUP}
@@ -39,14 +41,14 @@ USER=		nobody
 GROUP=		nobody
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|msgpack-python|msgpack|' ${WRKSRC}/requirements.txt
+	@${REINPLACE_CMD} -i '' -e 's|msgpack-python|msgpack|' ${WRKSRC}/requirements.txt
 
 do-build:
-	@(cd ${WRKSRC} && \
+	@cd ${WRKSRC} && \
 	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
 		-d ${WRKSRC} -f ${WRKSRC} && \
 	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
-		-d ${WRKSRC} -f ${WRKSRC})
+		-d ${WRKSRC} -f ${WRKSRC}
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	@${CP} -R ${WRKSRC}/* ${STAGEDIR}${DATADIR}/
@@ -59,6 +61,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}/var/log/zeronet
 	@${LN} -s /var/db/zeronet ${STAGEDIR}${DATADIR}/data
 	@${LN} -s /var/log/zeronet ${STAGEDIR}${DATADIR}/log
+	@${LN} -s /var/db/zeronet/zeronet.conf ${STAGEDIR}${DATADIR}/zeronet.conf # ZeroNet writes this file when it is used w/out the 'tor' option
 	${INSTALL_SCRIPT} ${WRKDIR}/zeronet-cmd ${STAGEDIR}${PREFIX}/bin/zeronet
 	${INSTALL_SCRIPT} ${WRKDIR}/zeronet-service ${STAGEDIR}${PREFIX}/etc/rc.d/zeronet
 

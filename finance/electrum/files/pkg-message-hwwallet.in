@@ -1,3 +1,6 @@
+[
+{ type: install
+  message: <<EOM
 For hardware wallet devices to work you need to be in the operator group
 and need r/w permissions to the appropriate /dev/usb/* device.
 
@@ -7,8 +10,11 @@ Add a user to operator group:
 
 Edit your configuration:
 
-%%PREFIX%%/etc/devd/*_wallet.conf
+%%PREFIX%%/etc/devd/hardware_wallet.conf
 
 Then restart devd to load the new rules:
 
 % /etc/rc.d/devd restart
+EOM
+}
+]

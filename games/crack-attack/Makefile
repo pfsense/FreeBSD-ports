@@ -3,14 +3,14 @@
 
 PORTNAME=	crack-attack
 PORTVERSION=	1.1.14
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OpenGL game based on Super Nintendo classic Tetris Attack
 
-USES=		pkgconfig
+USES=		compiler:c++11-lang pkgconfig
 USE_XORG=	x11 xi xmu sm ice
 USE_GL=		glut
 USE_GNOME=	gtk20

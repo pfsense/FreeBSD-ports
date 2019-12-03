@@ -2,34 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	quazip
-DISTVERSION=	0.7.3
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.8.1
 PORTREVISION=	1
 CATEGORIES=	archivers
-MASTER_SITES=	SF
-PKGNAMESUFFIX=	-${FLAVOR}
+PKGNAMESUFFIX=	-qt5
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt/C++ wrapper for ZIP/UNZIP package
 
 LICENSE=	LGPL21
 
-FLAVORS=	qt4 qt5
-FLAVOR?=	${FLAVORS:[1]}
-
-USES=		cmake:outsource 
+USES=		cmake compiler:c++11-lang qt:5
+USE_GITHUB=	yes
+GH_ACCOUNT=	stachenov
 USE_LDCONFIG=	yes
-
-.  if ${FLAVOR} == qt4
-USES+=		qt:4
-USE_QT=		corelib moc_build network_build qmake_build rcc_build uic_build
-CMAKE_ARGS=	-DBUILD_WITH_QT4:BOOL=TRUE
-.  else
-USES+=		qt:5
 USE_QT=		core buildtools_build qmake_build
 CMAKE_ARGS=	-DBUILD_WITH_QT4:BOOL=FALSE
-QTVER_SUFFIX=	5
-.  endif
 
-PLIST_SUB=	QTVER_SUFFIX="${QTVER_SUFFIX}"
+PLIST_SUB=	QTVER_SUFFIX=5
 
 .include <bsd.port.mk>

@@ -8,11 +8,14 @@ CATEGORIES=	textproc databases www pear
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	DataSource driver using RSS files
 
+LICENSE=	BSD2CLAUSE
+
 BUILD_DEPENDS=	${PEARDIR}/Structures/DataGrid/DataSource/Array.php:databases/pear-Structures_DataGrid_DataSource_Array@${PHP_FLAVOR}
 RUN_DEPENDS=	${PEARDIR}/Structures/DataGrid/DataSource/Array.php:databases/pear-Structures_DataGrid_DataSource_Array@${PHP_FLAVOR}
 
 USES=	pear
-USE_PHP=	mysql
-IGNORE_WITH_PHP=70 71 72
+USE_PHP=	mysqli
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

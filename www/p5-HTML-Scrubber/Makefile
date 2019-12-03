@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	HTML-Scrubber
-PORTVERSION=	0.17
+PORTVERSION=	0.19
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,16 +14,14 @@ LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	p5-HTML-Parser>=3.47:www/p5-HTML-Parser
-RUN_DEPENDS:=	${BUILD_DEPENDS}
-TEST_DEPENDS=	p5-Test-CPAN-Meta>=0:devel/p5-Test-CPAN-Meta \
-		p5-Test-Differences>=0:devel/p5-Test-Differences \
-		p5-Test-EOL>=0:devel/p5-Test-EOL \
-		p5-Test-Memory-Cycle>=0:devel/p5-Test-Memory-Cycle \
-		p5-Test-NoTabs>=0:devel/p5-Test-NoTabs
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-HTML-Parser>=3.47:www/p5-HTML-Parser
+TEST_DEPENDS=	p5-Test-Differences>=0:devel/p5-Test-Differences \
+		p5-Test-Memory-Cycle>=0:devel/p5-Test-Memory-Cycle
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

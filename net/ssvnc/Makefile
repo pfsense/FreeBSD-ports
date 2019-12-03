@@ -3,7 +3,7 @@
 
 PORTNAME=	ssvnc
 PORTVERSION=	1.0.29
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net security
 MASTER_SITES=	SF
 EXTRACT_SUFX=	.src.tar.gz
@@ -34,6 +34,8 @@ ULTRAFTP_DESC=		UltraVNC File Transfer support (Java required)
 ULTRAFTP_USE=		JAVA=yes
 ULTRAFTP_MAKE_ARGS_OFF=	JSRC=""
 
+.include <bsd.port.pre.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|netstat -ant|netstat -an|' \
 		${WRKSRC}/scripts/util/ss_vncviewer
@@ -44,4 +46,4 @@ do-configure:
 	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
 		${MAKE_CMD} ${MAKE_ARGS} config)
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

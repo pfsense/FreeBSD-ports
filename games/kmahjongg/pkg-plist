@@ -1,4 +1,5 @@
 bin/kmahjongg
+share/qlogging-categories5/kmahjongg.categories
 share/applications/org.kde.kmahjongg.desktop
 share/config.kcfg/kmahjongg.kcfg
 share/icons/hicolor/128x128/apps/kmahjongg.png
@@ -154,7 +155,6 @@ share/icons/hicolor/scalable/apps/kmahjongg.svgz
 %%DATADIR%%/layouts/well.layout
 share/kxmlgui5/kmahjongg/kmahjonggui.rc
 share/locale/ar/LC_MESSAGES/kmahjongg.mo
-share/locale/ast/LC_MESSAGES/kmahjongg.mo
 share/locale/bg/LC_MESSAGES/kmahjongg.mo
 share/locale/bs/LC_MESSAGES/kmahjongg.mo
 share/locale/ca/LC_MESSAGES/kmahjongg.mo

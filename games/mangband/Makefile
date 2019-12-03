@@ -15,11 +15,10 @@ ALL_TARGET=	mangclient mangband
 WRKSRC=		${WRKDIR}/${DISTNAME}/src
 GNU_CONFIGURE=	yes
 USES=		dos2unix gmake ncurses
-DOS2UNIXFILES=	${WRKSRC}/client/main-sdl.c
 
 MAKE_ARGS=	"DATADIR=${DATADIR}"
 
-OPTIONS_DEFINE=	GCU X11 SDL
+OPTIONS_DEFINE=	GCU X11 SDL EXAMPLES
 OPTIONS_DEFAULT=	GCU X11 SDL
 GCU_DESC=	Display module GCU (curses)
 X11_DESC=	Display module X11

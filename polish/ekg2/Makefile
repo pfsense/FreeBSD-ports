@@ -3,13 +3,17 @@
 
 PORTNAME=	ekg2
 PORTVERSION=	0.3.1
-PORTREVISION=	10
+PORTREVISION=	11
 PORTEPOCH=	1
 CATEGORIES=	polish net-im
 MASTER_SITES=	http://pl.ekg2.org/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text-mode Gadu-Gadu, Jabber, and IRC client
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 LIB_DEPENDS=	libgadu.so:polish/libgadu \
 		libgnutls.so:security/gnutls \
@@ -81,6 +85,13 @@ UNICODE_CONFIGURE_ENABLE=	unicode
 XOSD_CONFIGURE_WITH=	libxosd
 XOSD_LIB_DEPENDS=	libxosd.so:misc/xosd
 
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	variable has incomplete type 'EVP_MD_CTX' (aka 'struct evp_md_ctx_st')
+BROKEN_FreeBSD_13=	variable has incomplete type 'EVP_MD_CTX' (aka 'struct evp_md_ctx_st')
+.endif
+
 post-patch:
 # needs newer headers for O_NOFOLLOW flag
 	@${REINPLACE_CMD} '/_XOPEN_SOURCE/ s|600|700|' \
@@ -90,4 +101,4 @@ post-patch-UNICODE-on:
 	@${REINPLACE_CMD} -e 's|ncursesw/||' ${WRKSRC}/configure \
 		${WRKSRC}/plugins/ncurses/ecurses.h
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

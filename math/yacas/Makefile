@@ -2,44 +2,37 @@
 # $FreeBSD$
 
 PORTNAME=	yacas
-PORTVERSION=	1.6.0
-PORTREVISION=	2
+PORTVERSION=	1.7.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Yet Another Computer Algebra System
 
-LICENSE=	GPLv2
+LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-TEST_DEPENDS=	bash:shells/bash
+TEST_DEPENDS=	bash:shells/bash \
 
-OPTIONS_DEFINE=	DOCS
-DOCS_CMAKE_ON=	-DENABLE_DOCS:BOOL=ON \
-		-DDOCSDIR:STRING=${DOCSDIR_REL} \
+BUILD_DEPENDS=	gtest-config:devel/googletest
+
+CMAKE_ARGS=	-DENABLE_DOCS:BOOL=OFF \
 		-DENABLE_CYACAS_CONSOLE:BOOL=ON \
 		-DENABLE_CYACAS_KERNEL:BOOL=OFF \
 		-DENABLE_CYACAS_GUI:BOOL=OFF \
-		-DENABLE_JYACAS:BOOL=OFF
-DOCS_BUILD_DEPENDS=	sphinx-autogen:textproc/py-sphinx
-
-PORTDOCS=	*
+		-DENABLE_JYACAS:BOOL=OFF \
+		-DENABLE_CYACAS_UNIT_TESTS:BOOL=ON \
+		-DENABLE_CYACAS_BENCHMARKS:BOOL=OFF
 
 TEST_TARGET=	test
 
-USES=		cmake:outsource compiler:c++11-lib
+USES=		cmake compiler:c++17-lang
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	grzegorzmazur
 
 PLIST_SUB=	SHLIB_VERSION=${PORTVERSION:S/.//}.0
-
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == "gcc"
-CXXFLAGS+=	-D_GLIBCXX_USE_C99
-.endif
 
 post-patch:
 #	Can't use USES=shebangfix here, cause the path appears several
@@ -48,4 +41,5 @@ post-patch:
 		${WRKSRC}/tests/test-yacas
 	@${REINPLACE_CMD} -e '/^install/s|^|#|' \
 		${WRKSRC}/tests/CMakeLists.txt
-.include <bsd.port.post.mk>
+
+.include <bsd.port.mk>

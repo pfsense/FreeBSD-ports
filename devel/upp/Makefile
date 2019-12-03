@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	upp
-DISTVERSION=	11540
+DISTVERSION=	11873
+PORTREVISION=	3
 CATEGORIES=	devel x11-toolkits
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/2017.2/
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/2018.1/
 DISTNAME=	${PORTNAME}-x11-src-${PORTVERSION}
 
 MAINTAINER=	m.sund@arcor.de
@@ -13,7 +14,6 @@ COMMENT=	Ultimate++, a BSD-licensed, cross-platform, C/C++ RAD suite
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${BUILD_WRKSRC}/Core/Copying
 
-BROKEN_aarch64=		Does not compile on ${ARCH}: error Unknown CPU architecture
 BROKEN_powerpc=		Does not compile on ${ARCH}: error Unknown CPU architecture
 BROKEN_powerpc64=	Does not compile on ${ARCH}: error Unknown CPU architecture
 BROKEN_sparc64=		Does not compile on ${ARCH}
@@ -70,6 +70,8 @@ LLD_UNSAFE=	yes
 CXXFLAGS+=	-Wno-logical-op-parentheses
 .endif
 
+CXXFLAGS_i386+=	-msse2
+
 post-patch: .SILENT
 	${CP} ${BUILD_WRKSRC}/Makefile.in ${BUILD_WRKSRC}/Makefile
 	${CP} ${BUILD_WRKSRC}/uMakefile.in ${BUILD_WRKSRC}/uMakefile
@@ -125,7 +127,7 @@ do-build-UMK-on:
 
 do-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDATA}" ${STAGEDIR}${DATADIR} \
-		"-not ( -type d -empty )")
+		"-not ( -type d -empty ) -o -name '*.orig'")
 	(cd ${STAGEDIR}${DATADIR}/uppsrc && ${RM} build_info.h *Makefile*)
 
 do-install-IDE-on:

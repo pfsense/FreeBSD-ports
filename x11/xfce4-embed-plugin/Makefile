@@ -3,8 +3,9 @@
 
 PORTNAME=	xfce4-embed-plugin
 PORTVERSION=	1.6.0
+PORTREVISION=	2
 CATEGORIES=	x11 xfce
-MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -12,22 +13,22 @@ COMMENT=	Embed arbitrary windows into the Xfce panel
 
 LICENSE=	GPLv2
 
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
+
+USES=		gettext-tools gmake gnome libtool pkgconfig tar:bzip2 \
+		xfce:gtk2 xorg
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20 intltool
+USE_XFCE=	panel
+USE_XORG=	ice sm x11
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		gettext-tools gmake libtool pkgconfig tar:bzip2 xfce
-USE_XORG=	x11
-USE_GNOME=	glib20 gtk20 intltool intlhack
-USE_XFCE=	panel
 
-OPTIONS_DEFINE=	NLS
-NLS_USES=	gettext-runtime
+OPTIONS_DEFINE=		NLS
+OPTIONS_SUB=		yes
+
 NLS_CONFIGURE_ENABLE=	nls
-OPTIONS_SUB=	yes
-
-.include <bsd.port.options.mk>
-
-.if !${PORT_OPTIONS:MNLS}
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-configure
-.endif
+NLS_USES=		gettext-runtime
 
 .include <bsd.port.mk>

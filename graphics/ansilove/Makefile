@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ansilove
-PORTVERSION=	3.0.9
+PORTVERSION=	4.0.3
 CATEGORIES=	graphics textproc
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	ANSi / ASCII art to PNG converter
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libgd.so:graphics/gd
+LIB_DEPENDS=	libansilove.so:graphics/libansilove
 
 USE_GITHUB=	yes
 
@@ -32,13 +32,13 @@ post-install-DOCS-on:
 .endfor
 
 post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}/
+	@cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
 do-test:
-	@cd ${WRKSRC}/examples/ && for f in *; do \
-		${WRKSRC}/${PORTNAME} -o "${WRKSRC}/$$f.png" "$$f"; \
-		${FILE} "${WRKSRC}/$$f.png" | ${GREP} -q 'PNG'; \
+	@cd ${WRKSRC}/examples/ && for f in */*.ans; do \
+		${MKDIR} -p ${WRKDIR}/test/`dirname "$$f"`; \
+		${BUILD_WRKSRC}/${PORTNAME} -o "${WRKDIR}/test/$$f.png" "$$f"; \
+		${FILE} "${WRKDIR}/test/$$f.png" | ${GREP} -q 'PNG'; \
 	done
 
 .include <bsd.port.mk>

@@ -12,9 +12,13 @@ COMMENT=	IRC to instant messaging gateway
 
 LICENSE=	GPLv2
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 LIB_DEPENDS=	libpurple.so:net-im/libpurple
 
-USES=		cmake pkgconfig
+USES=		cmake:insource pkgconfig
 USE_GNOME=	glib20
 USE_RC_SUBR=	${PORTNAME}
 

@@ -1,9 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	clojure-cider
-PORTVERSION=	0.16.0
+PORTVERSION=	0.22.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -28,7 +27,6 @@ NO_ARCH=	yes
 PLIST_FILES=	${EMACS_SITE_LISPDIR}/cider-client.el \
 		${EMACS_SITE_LISPDIR}/cider-eldoc.el \
 		${EMACS_SITE_LISPDIR}/cider-inspector.el \
-		${EMACS_SITE_LISPDIR}/cider-interaction.el \
 		${EMACS_SITE_LISPDIR}/cider-macroexpansion.el \
 		${EMACS_SITE_LISPDIR}/cider-mode.el \
 		${EMACS_SITE_LISPDIR}/cider-repl.el \

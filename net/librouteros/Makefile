@@ -7,11 +7,15 @@ PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	http://verplant.org/librouteros/files/
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for communicating with network devices by MikroTik
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 

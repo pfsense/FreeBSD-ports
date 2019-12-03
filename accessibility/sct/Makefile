@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	sct
-DISTVERSION=	0.2.1
+DISTVERSION=	1.0.0
 CATEGORIES=	accessibility
 
 MAINTAINER=	0mp@FreeBSD.org

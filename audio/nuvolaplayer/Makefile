@@ -2,13 +2,17 @@
 
 PORTNAME=	nuvolaplayer
 PORTVERSION=	3.0.4
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio www
 
-MAINTAINER=	avilla@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cloud music integration for your desktop
 
 LICENSE=	BSD2CLAUSE
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 LIB_DEPENDS=	libdioritegtk-0.2.so:x11-toolkits/diorite \
 		libjson-glib-1.0.so:devel/json-glib \
@@ -21,7 +25,7 @@ RUN_DEPENDS=	${PORTNAME}-all-services>=0:www/${PORTNAME}-all-services
 USE_GITHUB=	yes
 GH_ACCOUNT=	tiliado
 
-USES=		gnome libarchive pkgconfig waf
+USES=		compiler:c11 gnome libarchive pkgconfig waf
 USE_GNOME=	glib20 gtk30
 USE_XORG=	x11
 # src/nuvolakit-runner/components/keybindings/XKeyGrabber.c:128:2: error: non-void function 'nuvola_xkey_grabber_construct' should return a value [-Wreturn-type]

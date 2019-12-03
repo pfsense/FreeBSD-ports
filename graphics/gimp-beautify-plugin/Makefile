@@ -3,7 +3,7 @@
 
 PORTNAME=	beautify
 PORTVERSION=	2012.08.12.00
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	gimp-
 PKGNAMESUFFIX=	-plugin
@@ -24,7 +24,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	hejiann
 GH_TAGNAME=	e209c8d
 
-USES=		gettext gmake pkgconfig
+USES=		gettext gmake gnome pkgconfig
 USE_GCC=	yes
 USE_GNOME=	atk cairo gdkpixbuf2 gtk20
 USE_XORG=	x11 xcomposite xcursor xdamage xext xfixes xi xinerama xrandr xrender

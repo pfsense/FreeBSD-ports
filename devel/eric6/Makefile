@@ -1,49 +1,42 @@
 # Created by: Boris Samorodov <bsam@FreeBSD.org>
 # $FreeBSD$
 
+PORTREVISION=	3
 PKGNAMESUFFIX=	-${FLAVOR:U:S/_/-/}
 DISTNAME=	${PORTNAME}-nolang-${DISTVERSION}
 CATEGORIES=	devel python
 
 BROKEN_powerpc64=	fails to link: libstdc++.so.6: version GLIBCXX_3.4.14 required by /usr/local/lib/qt4/libqscintilla2_qt4.so.13 not found
 
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/PyQt${PYQTVER}/QtGui.so:x11-toolkits/py-qt${PYQTVER}-gui@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt${PYQTVER}/Qsci.so:devel/py-qt${PYQTVER}-qscintilla2@${PY_FLAVOR}
-RUN_DEPENDS:=	${BUILD_DEPENDS} \
-		${PYTHON_SITELIBDIR}/PyQt${PYQTVER}/QtNetwork.so:net/py-qt${PYQTVER}-network@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt${PYQTVER}/QtSvg.so:graphics/py-qt${PYQTVER}-svg@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt${PYQTVER}/QtSql.so:databases/py-qt${PYQTVER}-sql@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt${PYQTVER}/QtWebKit.so:www/py-qt${PYQTVER}-webkit@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt${PYQTVER}/QtHelp.so:devel/py-qt${PYQTVER}-help@${PY_FLAVOR} \
-		${PYTHON_LIBDIR}/lib-dynload/_sqlite3.so:databases/py-sqlite3@${PY_FLAVOR}
+# Note to MAINTAINER: this should be converted to USES=pyqt, USE_PYQT=[...]
+RUN_DEPENDS=	${PYTHON_LIBDIR}/lib-dynload/_sqlite3.so:databases/py-sqlite3@${PY_FLAVOR}
 
 CONFLICTS_INSTALL=	${FLAVORS:N${FLAVOR}:C/^/${PKGNAMEPREFIX}${PORTNAME}-/:C/$/-[0-9]*/}
 
-USES=		desktop-file-utils python:${FLAVOR:C/.*_py([0-9])/\1./}
-INSTALL_CMD=	install.py -c -f eric6config.freebsd -i ${STAGEDIR} --pyqt=${PYQTVER}
+USES=		desktop-file-utils python:${FLAVOR:C/.*_py([0-9])/\1./} pyqt:5
+USE_PYQT=	core gui qscintilla2 webengine \
+		help_run network_run svg_run sql_run
+INSTALL_CMD=	install.py -c -f eric6config.freebsd -i ${STAGEDIR} --pyqt=5
 SUB_FILES=	eric6.desktop
-PYQTVER=	${FLAVOR:C/qt([45])_py[0-9]+/\1/}
 MASTERPORT=	yes
 
 PORTDATA=	*
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 .include "${.CURDIR}/bsd.eric6.mk"
 .include <bsd.port.options.mk>
 
 PY_FLAVORS=	py${PYTHON_DEFAULT:S/.//} py${PYTHON2_DEFAULT:S/.//} py${PYTHON3_DEFAULT:S/.//}
 .for flavor in ${PY_FLAVORS}
-.  if empty(FLAVORS:Mqt4_${flavor})
-FLAVORS:=	${FLAVORS} qt4_${flavor} qt5_${flavor}
+.  if empty(FLAVORS:Mqt5_${flavor})
+FLAVORS:=	${FLAVORS} qt5_${flavor}
 .  endif
 .endfor
 .if empty(FLAVOR)
 FLAVOR=		${FLAVORS:[1]}
-.endif
-
-.if ${PYQTVER} == 5
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/PyQt5/QtWebKitWidgets.so:www/py-qt5-webkitwidgets@${PY_FLAVOR}
 .endif
 
 post-patch:

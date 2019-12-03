@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=		openvpn
-DISTVERSION=		2.4.6
-PORTREVISION?=		1
-CATEGORIES=		security net
+DISTVERSION=		2.4.8
+PORTREVISION?=		0
+CATEGORIES=		security net net-vpn
 MASTER_SITES=		https://swupdate.openvpn.org/community/releases/ \
 			https://build.openvpn.net/downloads/releases/
 
@@ -12,16 +12,18 @@ MAINTAINER=		mandree@FreeBSD.org
 COMMENT?=		Secure IP/Ethernet tunnel daemon
 
 LICENSE=		GPLv2
+LICENSE_FILE=		${WRKSRC}/COPYRIGHT.GPL
+
+USES=			cpe libtool pkgconfig shebangfix tar:xz
 
 CONFLICTS_INSTALL?=	openvpn-2.[!4].* openvpn-[!2].* openvpn-beta-[0-9]* openvpn-devel-[0-9]* openvpn-mbedtls-[0-9]*
 
 GNU_CONFIGURE=		yes
-USES=			cpe libtool pkgconfig shebangfix tar:xz
 SHEBANG_FILES=		sample/sample-scripts/verify-cn \
 			sample/sample-scripts/auth-pam.pl \
 			sample/sample-scripts/ucn.pl
 CONFIGURE_ARGS+=	--enable-strict
-# avoid picking up CMAKE, we don't have cmocka in the tarballs..
+# avoid picking up CMAKE, we don't have cmocka in the tarballs.
 CONFIGURE_ENV+=		ac_cv_prog_CMAKE= CMAKE=
 
 # let OpenVPN's configure script pick up the requisite libraries,
@@ -39,7 +41,7 @@ OPTIONS_SINGLE=		SSL
 OPTIONS_SINGLE_SSL=	OPENSSL MBEDTLS
 PKCS11_DESC=		Use security/pkcs11-helper
 EASYRSA_DESC=		Install security/easy-rsa RSA helper package
-MBEDTLS_DESC=		SSL/TLS via mbedTLS
+MBEDTLS_DESC=		SSL/TLS via mbedTLS (lacks TLS v1.3)
 TUNNELBLICK_DESC=	Tunnelblick XOR scramble patch (READ HELP!)
 X509ALTUSERNAME_DESC=	Enable --x509-username-field (OpenSSL only)
 SMALL_DESC=		Build a smaller executable with fewer features
@@ -69,7 +71,6 @@ MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls
 MBEDTLS_CONFIGURE_ON=	--with-crypto-library=mbedtls
 
 USE_RC_SUBR=		openvpn
-USE_LDCONFIG=		${PREFIX}/lib
 
 SUB_FILES=		pkg-message openvpn-client
 
@@ -111,17 +112,6 @@ _tlslibs=libmbedtls libmbedx509 libmbedcrypto
 .else
 # OpenSSL
 _tlslibs=libssl libcrypto
-.endif
-
-.if ${SSL_DEFAULT:Mlibressl*} && empty(PORT_OPTIONS:MMBEDTLS)
-pre-everything::
-	@${ECHO_CMD} "WARNING: OpenVPN does not officially support LibreSSL."
-	@${ECHO_CMD} "If things break, rebuild with OpenSSL or mbedTLS."
-	@${ECHO_CMD} "You may wish to change your default SSL library"
-	@${ECHO_CMD} "and press Ctrl+C within the next 10 seconds to abort."
-.  if !(defined(PACKAGE_BUILDING) || defined(BATCH))
-	@sleep 10
-.  endif
 .endif
 
 # sanity check that we don't inherit incompatible SSL libs through,

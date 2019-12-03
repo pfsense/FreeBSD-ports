@@ -5,7 +5,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=	php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	72
-IGNORE_WITH_PHP= 56 70 71
+IGNORE_WITH_PHP= 71 73
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -131,6 +131,11 @@ CONFIGURE_ARGS+=--with-gmp=${LOCALBASE}
 .if ${PHP_MODNAME} == "hash"
 CONFIGURE_ARGS+=--enable-hash \
 		--with-mhash
+CFLAGS_mips64=		-DHAVE_SLOW_HASH3
+CFLAGS_powerpc64=	-DHAVE_SLOW_HASH3
+CFLAGS_powerpc=		-DHAVE_SLOW_HASH3
+CFLAGS_powerpcspe=	-DHAVE_SLOW_HASH3
+CFLAGS_sparc64=		-DHAVE_SLOW_HASH3
 .endif
 
 .if ${PHP_MODNAME} == "iconv"
@@ -140,6 +145,7 @@ USES+=	iconv:translit
 .endif
 
 .if ${PHP_MODNAME} == "imap"
+PHP_MOD_PRIO=	30
 OPTIONS_DEFINE=	PANDA
 PANDA_DESC=	Uses the forked panda-cclient instead of the original cclient
 

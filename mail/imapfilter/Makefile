@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	imapfilter
-PORTVERSION=	2.6.11
-PORTREVISION=	1
+PORTVERSION=	2.6.13
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 
@@ -12,9 +11,12 @@ COMMENT=	IMAP mail filtering utility
 
 LICENSE=	MIT
 
+BROKEN_FreeBSD_11=Requires openssl111 to build
+
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USES=		lua ssl
+
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LUA_INCDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib -L${LUA_LIBDIR}
 
@@ -29,6 +31,8 @@ MAKE_ARGS=	PREFIX=${PREFIX} \
 		SHAREDIR=${DATADIR} \
 		MANDIR=${MANPREFIX}/man \
 		LIBLUA=-llua-${LUA_VER}
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} 's|-ldl ||' ${WRKSRC}/src/Makefile

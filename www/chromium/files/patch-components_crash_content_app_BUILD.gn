@@ -1,19 +1,20 @@
---- components/crash/content/app/BUILD.gn.orig	2018-06-13 00:10:13.000000000 +0200
-+++ components/crash/content/app/BUILD.gn	2018-07-18 23:31:26.635837000 +0200
-@@ -36,7 +36,7 @@
+--- components/crash/content/app/BUILD.gn.orig	2019-10-21 19:06:28 UTC
++++ components/crash/content/app/BUILD.gn
+@@ -54,7 +54,7 @@ static_library("app") {
      sources += [ "crashpad.cc" ]
    }
  
--  if (is_android || is_linux) {
-+  if (is_android || is_linux && !is_bsd) {
-     # Want these files on both Linux and Android.
-     set_sources_assignment_filter([])
+-  if (is_linux) {
++  if (is_linux && !is_bsd) {
      sources += [
-@@ -73,7 +73,6 @@
-       "//content/public/common:content_descriptors",
-       "//content/public/common:result_codes",
-       "//sandbox",
--      "//third_party/breakpad:client",
+       "breakpad_linux.cc",
+       "breakpad_linux.h",
+@@ -98,7 +98,7 @@ static_library("app") {
      ]
+   }
  
-     # Clang's -mstackrealign doesn't work well with
+-  if (is_linux) {
++  if (is_linux && !is_bsd) {
+     deps += [ "//third_party/breakpad:client" ]
+   }
+ 

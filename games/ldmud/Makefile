@@ -3,7 +3,7 @@
 
 PORTNAME=	ldmud
 PORTVERSION=	3.3.720
-PORTREVISION=	3
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	games net
 MASTER_SITES=	http://www.bearnip.com/ftp/mud/ \
@@ -44,6 +44,11 @@ SQLITE_USES=		sqlite
 SQLITE_CONFIGURE_ENABLE=use-sqlite
 
 .include <bsd.port.options.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	incomplete definition of type 'struct rsa_st'
+BROKEN_FreeBSD_13=	incomplete definition of type 'struct rsa_st'
+.endif
 
 .if ${PORT_OPTIONS:MMYSQL}
 LDFLAGS+=	-L${LOCALBASE}/lib/mysql

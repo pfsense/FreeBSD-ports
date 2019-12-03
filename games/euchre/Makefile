@@ -3,7 +3,7 @@
 
 PORTNAME=	euchre
 PORTVERSION=	0.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -16,7 +16,7 @@ COMMENT=	Very popular card game with variable skill levels
 
 LICENSE=	GPLv2
 
-USES=		pkgconfig
+USES=		compiler:c++11-lang pkgconfig
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 

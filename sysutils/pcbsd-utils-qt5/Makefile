@@ -3,13 +3,16 @@
 
 PORTNAME=	pcbsd-utils-qt5
 PORTVERSION=	1444236547
-PORTREVISION=	6
+PORTREVISION=	13
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
 COMMENT=	PC-BSD Qt5 Utilities
 
 LICENSE=	BSD3CLAUSE
+
+BROKEN_FreeBSD_12=	fails to compile: netif.cpp: error: use of undeclared identifier 'IFM_FDDI'
+BROKEN_FreeBSD_13=	fails to compile: netif.cpp: error: use of undeclared identifier 'IFM_FDDI'
 
 BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx \
 		${PYTHON_PKGNAMEPREFIX}sphinx-intl>=0:textproc/py-sphinx-intl@${PY_FLAVOR} \
@@ -23,8 +26,6 @@ RUN_DEPENDS=	pc-updatemanager:sysutils/pcbsd-utils \
 		cdda2wav:sysutils/cdrtools
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpoppler-qt5.so:graphics/poppler-qt5
-
-CONFLICTS?=	pcbsd-utils-qt4-[0-9]*
 
 MAKE_JOBS_UNSAFE=yes
 ONLY_FOR_ARCHS=	amd64
@@ -43,6 +44,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	pcbsd
 GH_PROJECT=	pcbsd
 GH_TAGNAME=	3c4d2b
+
+DEPRECATED=	No longer maintained upstream
+EXPIRATION_DATE=	2019-11-01
 
 post-install:
 	@${FIND} ${STAGEDIR}${PREFIX}/share/pcbsd/doc/html -type f | \

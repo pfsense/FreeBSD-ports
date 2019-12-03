@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	gtk-gnutella
-PORTVERSION=	1.1.13
+PORTVERSION=	1.1.15
+DISTVERSIONPREFIX=v
 CATEGORIES=	net-p2p ipv6
-MASTER_SITES=	SF
 
 MAINTAINER=	woodsb02@FreeBSD.org
 COMMENT=	GTK based Gnutella client
@@ -12,8 +12,12 @@ COMMENT=	GTK based Gnutella client
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		iconv localbase:ldflags pkgconfig tar:xz
+ONLY_FOR_ARCHS=	amd64 i386
+
+USES=		gnome iconv localbase:ldflags pkgconfig tar:xz
+USE_GITHUB=	yes
 USE_GNOME=	glib20 libxml2
+
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	Configure
 CONFIGURE_ARGS=	-O -Dyacc='byacc' \
@@ -28,10 +32,6 @@ MAKE_ARGS=	INSTALL_PREFIX="${STAGEDIR}"
 INSTALL_TARGET=	install install.man
 
 PLIST_SUB=	ARCH="${ARCH}" OPSYS="${OPSYS:tl}"
-
-ONLY_FOR_ARCHS=	i386 amd64
-
-MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=		DBUS DEBUG GUI IPV6 NLS PORTABILITY TLS
 OPTIONS_DEFAULT=	GUI TLS

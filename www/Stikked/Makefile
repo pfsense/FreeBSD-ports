@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Stikked
-DISTVERSION=	0.12.0
-PORTREVISION=	1
+DISTVERSION=	0.13.0
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	dvl@FreeBSD.org
@@ -29,10 +29,12 @@ MYSQL_DESC=	Include the PHP shared extension for MySQL
 PGSQL_DESC=	Include the PHP shared extension for PostgreSQL
 SQLITE_DESC=	Include the PHP shared extension for SQLite3
 
+MYSQL_BROKEN=	USE_PHP=mysql no longer supported, unclear if USE_PHP=mysqli works
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_PHP+=	mysql
+#USE_PHP+=	mysql
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}

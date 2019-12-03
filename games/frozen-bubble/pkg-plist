@@ -1,12 +1,6 @@
 bin/fb-server
 bin/frozen-bubble
 bin/frozen-bubble-editor
-%%PERL5_MAN3%%/Games::FrozenBubble.3.gz
-%%PERL5_MAN3%%/Games::FrozenBubble::LevelEditor.3.gz
-%%PERL5_MAN3%%/Games::FrozenBubble::MDKCommon.3.gz
-%%PERL5_MAN3%%/Games::FrozenBubble::Net.3.gz
-%%PERL5_MAN3%%/Games::FrozenBubble::NetDiscover.3.gz
-%%PERL5_MAN3%%/Games::FrozenBubble::Stuff.3.gz
 %%SITE_ARCH%%/Games/FrozenBubble.pm
 %%SITE_ARCH%%/Games/FrozenBubble/CStuff.pm
 %%SITE_ARCH%%/Games/FrozenBubble/Config.pm
@@ -3191,6 +3185,7 @@ bin/frozen-bubble-editor
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/gfx/pinguins/win_rp4_0066.png
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/gfx/pinguins/win_rp4_0067.png
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/gfx/pinguins/win_rp4_0068.png
+%%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/gfx/pinguins/window_icon_penguin.bmp
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/gfx/pinguins/window_icon_penguin.png
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/gfx/purple_hover.gif
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/gfx/scroll_list_background.png
@@ -3217,6 +3212,7 @@ bin/frozen-bubble-editor
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/icons/frozen-bubble-icon-32x32.png
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/icons/frozen-bubble-icon-48x48.png
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/icons/frozen-bubble-icon-64x64.png
+%%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/icons/frozen-bubble.ico
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/locale/af.po
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/locale/bg.po
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/locale/br.po
@@ -3249,6 +3245,7 @@ bin/frozen-bubble-editor
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/locale/sv.po
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/locale/tr.po
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/locale/zh_CN.po
+%%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/locale/zh_TW.po
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/snd/applause.ogg
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/snd/cancel.ogg
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/snd/chatted.ogg
@@ -3272,4 +3269,10 @@ bin/frozen-bubble-editor
 %%SITE_ARCH%%/auto/share/dist/Games-FrozenBubble/snd/typewriter.ogg
 %%PERL5_MAN1%%/frozen-bubble-editor.1.gz
 %%PERL5_MAN1%%/frozen-bubble.1.gz
+%%PERL5_MAN3%%/Games::FrozenBubble.3.gz
+%%PERL5_MAN3%%/Games::FrozenBubble::LevelEditor.3.gz
+%%PERL5_MAN3%%/Games::FrozenBubble::MDKCommon.3.gz
+%%PERL5_MAN3%%/Games::FrozenBubble::Net.3.gz
+%%PERL5_MAN3%%/Games::FrozenBubble::NetDiscover.3.gz
+%%PERL5_MAN3%%/Games::FrozenBubble::Stuff.3.gz
 share/pixmaps/frozen-bubble.png

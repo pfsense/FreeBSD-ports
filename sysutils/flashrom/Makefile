@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	flashrom
-PORTVERSION=	1.0
+PORTVERSION=	1.1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://download.flashrom.org/releases/
+DISTVERSIONPREFIX=	v
 
 MAINTAINER=	mizhka@gmail.com
 COMMENT=	Utility for reading, writing, verifying, and erasing flash ROM chips
@@ -12,28 +13,29 @@ COMMENT=	Utility for reading, writing, verifying, and erasing flash ROM chips
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64 i386
+NOT_FOR_ARCHS=		aarch64
+NOT_FOR_ARCHS_REASON=	./hwaccess.h:126:2: error: Unable to determine endianness.
 
 LIB_DEPENDS=	libpci.so:devel/libpci
 
 USES=		gmake tar:bzip2
-MAKE_ENV=	CONFIG_BUSPIRATE_SPI=no \
-		WARNERROR=no
+
+MAKE_ENV=	WARNERROR=no
 
 PLIST_FILES=	bin/flashrom \
 		man/man8/flashrom.8.gz
 PORTDOCS=	*
 
-OPTIONS_DEFINE=		BUSPIRATE DMIDECODE DOCS FTDI
-OPTIONS_DEFAULT=	DMIDECODE FTDI
+OPTIONS_DEFINE=		BUSPIRATE DOCS FTDI
+OPTIONS_DEFINE_amd64=	DMIDECODE
+OPTIONS_DEFINE_i386=	DMIDECODE
+OPTIONS_DEFAULT_amd64=	DMIDECODE
+OPTIONS_DEFAULT_i386=	DMIDECODE
 
-BUSPIRATE_DESC=		Enable buspirate support (broken)
 DMIDECODE_DESC=		Use dmidecode to gather DMI information
 FTDI_DESC=		Enable external FT2232SPI flasher support
 
-BUSPIRATE_MAKE_ENV=	CONFIG_BUSPIRATE_SPI=yes
-
-DMIDECODE_RUN_DEPENDS+=	dmidecode:sysutils/dmidecode
+DMIDECODE_RUN_DEPENDS=	dmidecode:sysutils/dmidecode
 
 FTDI_LIB_DEPENDS=	libftdi1.so:devel/libftdi1
 FTDI_USES=		pkgconfig

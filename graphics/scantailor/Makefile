@@ -1,33 +1,31 @@
-# Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	scantailor
-PORTVERSION=	0.9.11.1
-PORTREVISION=	13
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0.16
 CATEGORIES=	graphics
-MASTER_SITES=	SF
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	m.ne@gmx.net
 COMMENT=	Interactive post-processing tool for scanned pages
 
 LICENSE=	GPLv3
-
-BROKEN_powerpc64=	fails to compile: core.hpp:69: boost::lambda::<unnamed>::_1 causes a section type conflict
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
-LIB_DEPENDS=	libtiff.so:graphics/tiff \
-		libjbig.so:graphics/jbigkit \
-		libpng.so:graphics/png
+LIB_DEPENDS=	libjbig.so:graphics/jbigkit \
+		libpng.so:graphics/png \
+		libtiff.so:graphics/tiff
 
-#MAKE_JOBS_UNSAFE=	yes
-USES=		cmake gettext jpeg qt:4
-USE_QT=		corelib gui xml qmake_build uic_build moc_build rcc_build \
-		linguist_build
+USES=		cmake compiler:c++11-lang desktop-file-utils jpeg qt:5 \
+		shared-mime-info xorg
+USE_CXXSTD=	gnu++98
+USE_GITHUB=	yes
+USE_QT=		core gui network opengl widgets xml buildtools_build \
+		linguisttools_build qmake_build
 USE_XORG+=	xrender
 
-DESKTOP_ENTRIES="Scan Tailor" "${COMMENT}" "${PORTNAME}" \
-		"${PORTNAME}" "Graphics;Scanning;" false
-
+GH_ACCOUNT=	4lex4
+GH_PROJECT=	scantailor-advanced
 OPTIONS_GROUP=	DOXYGEN
 
 OPTIONS_GROUP_DOXYGEN=	HTML LATEX
@@ -37,7 +35,10 @@ OPTIONS_DEFAULT=
 HTML_DESC=	Install HTML Doxygen files
 LATEX_DESC=	Install LaTeX Doxygen files
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS NLS
+OPTIONS_SUB=	yes
+
+NLS_USES=	gettext
 
 .include <bsd.port.options.mk>
 
@@ -52,6 +53,11 @@ BUILD_DEPENDS+=	doxygen:devel/doxygen
 post-patch:
 	@${REINPLACE_CMD} -e 's|_[12]|boost::lambda::&|g; s|bind(|boost::lambda::&|' \
 		${WRKSRC}/filters/*/Filter.cpp
+	@${REINPLACE_CMD} -e '/Categories/s|Applications|Scanning|' \
+		${WRKSRC}/resources/unix/scantailor.desktop
+
+post-patch-NLS-off:
+	@${REINPLACE_CMD} -e '/\/translations/s/install/# install/' ${WRKSRC}/CMakeLists.txt
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/resources/icons/appicon-about.png \

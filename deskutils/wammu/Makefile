@@ -3,6 +3,7 @@
 
 PORTNAME=	wammu
 PORTVERSION=	0.44
+PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	http://dl.cihar.com/wammu/v0/ \
 		http://dl.cihar.com.nyud.net/wammu/v0/
@@ -12,6 +13,8 @@ COMMENT=	GUI manager of contacts, todos, calendar, and messages in your phone
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_aarch64=		fails to build: Signal 11
 
 LIB_DEPENDS=	libGammu.so:comms/gammu
 

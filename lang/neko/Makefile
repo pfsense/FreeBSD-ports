@@ -3,7 +3,7 @@
 PORTNAME=	neko
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2-2-0
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	lang
 
 MAINTAINER=	penzin.dev@gmail.com
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
 		libmbedtls.so:security/mbedtls libmbedcrypto.so:security/mbedtls libmbedx509.so:security/mbedtls \
 		libfontconfig.so:x11-fonts/fontconfig libfreetype.so:print/freetype2
 
-USES=		cmake:outsource mysql pkgconfig sqlite:3
+USES=		cmake mysql pkgconfig sqlite:3
 USE_GITHUB=	yes
 GH_ACCOUNT=	HaxeFoundation
 USE_LDCONFIG=	${PREFIX}/lib ${PREFIX}/lib/neko

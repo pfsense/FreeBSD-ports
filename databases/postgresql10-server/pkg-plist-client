@@ -25,6 +25,7 @@ include/pg_config.h
 include/pg_config_ext.h
 include/pg_config_manual.h
 include/pg_config_os.h
+include/pgtypes.h
 include/pgtypes_date.h
 include/pgtypes_error.h
 include/pgtypes_interval.h
@@ -378,6 +379,7 @@ include/postgresql/server/optimizer/geqo_recombination.h
 include/postgresql/server/optimizer/geqo_selection.h
 include/postgresql/server/optimizer/joininfo.h
 include/postgresql/server/optimizer/orclauses.h
+include/postgresql/server/optimizer/paramassign.h
 include/postgresql/server/optimizer/pathnode.h
 include/postgresql/server/optimizer/paths.h
 include/postgresql/server/optimizer/placeholder.h
@@ -1010,6 +1012,7 @@ man/man7/WITH.7.gz
 %%NLS%%share/locale/cs/LC_MESSAGES/pg_config-10.mo
 %%NLS%%share/locale/cs/LC_MESSAGES/pg_dump-10.mo
 %%NLS%%share/locale/cs/LC_MESSAGES/pgscripts-10.mo
+%%NLS%%share/locale/cs/LC_MESSAGES/psql-10.mo
 %%NLS%%share/locale/de/LC_MESSAGES/ecpg-10.mo
 %%NLS%%share/locale/de/LC_MESSAGES/ecpglib6-10.mo
 %%NLS%%share/locale/de/LC_MESSAGES/libpq5-10.mo

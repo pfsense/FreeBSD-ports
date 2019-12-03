@@ -3,7 +3,7 @@
 
 PORTNAME=		libgeodecomp
 PORTVERSION=		0.4.0
-PORTREVISION=		9
+PORTREVISION=		18
 CATEGORIES=		science devel
 MASTER_SITES=		http://www.libgeodecomp.org/archive/
 
@@ -16,7 +16,7 @@ LICENSE_FILE=		${WRKSRC}/LICENSE
 LIB_DEPENDS=		libboost_system.so:devel/boost-libs libboost_date_time.so:devel/boost-libs \
 			libboost_filesystem.so:devel/boost-libs
 
-USES=			cmake:outsource compiler:c++11-lib
+USES=			cmake compiler:c++11-lib
 USE_GCC=		yes
 USE_LDCONFIG=		yes
 
@@ -24,15 +24,11 @@ CMAKE_ARGS=		-DWITH_CUDA:BOOL=FALSE -DWITH_VISIT:BOOL=FALSE \
 			-DWITH_HPX:BOOL=FALSE -DWITH_OPENCL:BOOL=FALSE \
 			-DWITH_OPENCV:BOOL=FALSE -DWITH_TYPEMAPS=FALSE
 
-OPTIONS_DEFINE=		MPI QT4 SILO SCOTCH
-OPTIONS_DEFAULT=	MPI QT4 SILO SCOTCH
+OPTIONS_DEFINE=		MPI SILO SCOTCH
+OPTIONS_DEFAULT=	MPI SILO SCOTCH
 
 MPI_LIB_DEPENDS=	libmpich.so:net/mpich2
 MPI_CMAKE_BOOL=		WITH_MPI
-
-QT4_USES=	qt:4
-QT4_USE=		QT=corelib,gui,opengl,qmake_build,moc_build,rcc_build,uic_build
-QT4_CMAKE_BOOL=		WITH_QT
 
 SILO_DESC=		Enable Silo dependend output
 SILO_LIB_DEPENDS=	libsiloh5.so:science/silo

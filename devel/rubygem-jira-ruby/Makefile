@@ -2,22 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	jira-ruby
-PORTVERSION=	1.5.0
+PORTVERSION=	1.7.1
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	API for JIRA
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-activesupport4>=4.0:devel/rubygem-activesupport4 \
+RUN_DEPENDS=	rubygem-activesupport52>=0:devel/rubygem-activesupport52 \
+		rubygem-atlassian-jwt>=0:www/rubygem-atlassian-jwt \
 		rubygem-multipart-post>=0:www/rubygem-multipart-post \
-		rubygem-oauth>=0.5.0:net/rubygem-oauth
+		rubygem-oauth>=0.5.0<1.0:net/rubygem-oauth
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

@@ -14,10 +14,9 @@ COMMENT=	SDL port of the scrolling game XKobo
 
 USES=		tar:bzip2
 USE_SDL=	image sdl
+USE_CXXSTD=	c++98
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sharedstatedir=${SCOREDIR} --enable-oss
-
-CXXFLAGS+=	-Wno-reserved-user-defined-literal
 
 SCOREDIR=	/var/games/${PORTNAME}
 

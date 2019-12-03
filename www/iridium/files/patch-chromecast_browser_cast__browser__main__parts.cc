@@ -1,24 +1,24 @@
---- chromecast/browser/cast_browser_main_parts.cc.orig	2017-04-19 19:06:32 UTC
+--- chromecast/browser/cast_browser_main_parts.cc.orig	2019-03-11 22:00:56 UTC
 +++ chromecast/browser/cast_browser_main_parts.cc
-@@ -70,7 +70,7 @@
- #include <signal.h>
- #include <sys/prctl.h>
- #endif
+@@ -66,7 +66,7 @@
+ #include "ui/compositor/compositor_switches.h"
+ #include "ui/gl/gl_switches.h"
+ 
 -#if defined(OS_LINUX)
 +#if defined(OS_LINUX) || defined(OS_BSD)
  #include <fontconfig/fontconfig.h>
- #endif
- 
-@@ -229,7 +229,7 @@ DefaultCommandLineSwitch g_default_switc
- #if BUILDFLAG(IS_CAST_AUDIO_ONLY)
-   { switches::kDisableGpu, "" },
- #endif
+ #include <signal.h>
+ #include <sys/prctl.h>
+@@ -244,7 +244,7 @@ const DefaultCommandLineSwitch kDefaultSwitches[] = {
+     {cc::switches::kDisableThreadedAnimation, ""},
+ #endif  // defined(OS_ANDROID)
+ #endif  // BUILDFLAG(IS_CAST_AUDIO_ONLY)
 -#if defined(OS_LINUX)
 +#if defined(OS_LINUX) || defined(OS_BSD)
  #if defined(ARCH_CPU_X86_FAMILY)
-   // This is needed for now to enable the x11 Ozone platform to work with
-   // current Linux/NVidia OpenGL drivers.
-@@ -371,7 +371,7 @@ void CastBrowserMainParts::PostMainMessa
+     // This is needed for now to enable the x11 Ozone platform to work with
+     // current Linux/NVidia OpenGL drivers.
+@@ -393,7 +393,7 @@ void CastBrowserMainParts::PostMainMessageLoopStart() 
  }
  
  void CastBrowserMainParts::ToolkitInitialized() {

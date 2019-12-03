@@ -2,6 +2,7 @@
 
 PORTNAME=	gsimplecal
 PORTVERSION=	2.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 
@@ -15,7 +16,7 @@ GH_ACCOUNT=	dmedvinsky
 
 GNU_CONFIGURE=	yes
 
-USES=		autoreconf gmake pkgconfig
+USES=		autoreconf compiler:c++11-lang gmake pkgconfig
 USE_GNOME=	glib20 gtk30
 
 PLIST_FILES=	bin/gsimplecal \

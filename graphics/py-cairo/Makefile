@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	cairo
-PORTVERSION=	1.14.1
+PORTVERSION=	1.18.1
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	https://github.com/pygobject/pycairo/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,12 +19,9 @@ LICENSE_FILE_MPL11=	${WRKSRC}/COPYING-MPL-1.1
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gnome pkgconfig python
-USE_PYTHON=	distutils
+USES=		compiler:c11 gnome pkgconfig python
+USE_PYTHON=	distutils py3kplist
 USE_GNOME=	cairo
-py34_PLIST=	${.CURDIR}/pkg-plist-py3
-py35_PLIST=	${.CURDIR}/pkg-plist-py3
-py36_PLIST=	${.CURDIR}/pkg-plist-py3
 
 PLIST_SUB=	PORTVER=${PORTVERSION}
 

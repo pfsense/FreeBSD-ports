@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	patchelf
-PORTVERSION=	0.9
+PORTVERSION=	0.10
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	wg@FreeBSD.org
@@ -11,12 +12,11 @@ COMMENT=	Utility to modify the dynamic linker
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf gmake
-GNU_CONFIGURE=	yes
-
+USES=		autoreconf compiler:c++11-lang gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	NixOS
-GH_PROJECT=	patchelf
+
+GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	DOCS
 

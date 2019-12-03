@@ -94,45 +94,85 @@
 -}
 -
 --- generic/crc_zlib.c	2009-06-18 00:54:43.000000000 -0400
-+++ generic/crc_zlib.c	2009-07-12 23:51:04.000000000 -0400
++++ generic/crc_zlib.c	2019-04-11 00:09:21.075344000 -0400
 @@ -29,4 +29,5 @@
  
  #include "transformInt.h"
 +#include <zlib.h>
  
  /*
-@@ -47,7 +48,6 @@
+@@ -39,5 +40,5 @@
+ 
+ #define DIGEST_SIZE               4 /* byte == 32 bit */
+-#define CTX_TYPE                  uLong
++#define CTX_TYPE                  uint32_t
+ 
+ /*
+@@ -46,8 +47,6 @@
+ 
  static void MDcrcz_Start     _ANSI_ARGS_ ((VOID* context));
- static void MDcrcz_Update    _ANSI_ARGS_ ((VOID* context, unsigned int character));
+-static void MDcrcz_Update    _ANSI_ARGS_ ((VOID* context, unsigned int character));
 -static void MDcrcz_UpdateBuf _ANSI_ARGS_ ((VOID* context, unsigned char* buffer, int bufLen));
 -static void MDcrcz_Final     _ANSI_ARGS_ ((VOID* context, VOID* digest));
 -static int  MDcrcz_Check     _ANSI_ARGS_ ((Tcl_Interp* interp));
 +static void MDcrcz_UpdateBuf _ANSI_ARGS_ ((VOID* context, unsigned char* buffer, size_t bufLen));
-+static void MDcrcz_Final     _ANSI_ARGS_ ((VOID* digest, VOID* context));
++static void MDcrcz_Final     _ANSI_ARGS_ ((VOID* digest, VOID *context));
  
  /*
-@@ -63,5 +63,5 @@
+@@ -60,11 +59,11 @@
+   DIGEST_SIZE,
+   MDcrcz_Start,
+-  MDcrcz_Update,
++  NULL,
    MDcrcz_UpdateBuf,
    MDcrcz_Final,
 -  MDcrcz_Check
 +  NULL
  };
  
-@@ -118,5 +118,5 @@
+-#define CRC (*((uLong*) context))
++#define CRC (*((CTX_TYPE *) context))
+ 
+ /*
+@@ -118,36 +117,5 @@
    /* call md specific initialization here */
  
 -  CRC = zf.zcrc32 (0L, Z_NULL, 0);
+-}
+-
+-/*
+- *------------------------------------------------------*
+- *
+- *	MDcrcz_Update --
+- *
+- *	------------------------------------------------*
+- *	Update the internal state of the message digest
+- *	generator for a single character.
+- *	------------------------------------------------*
+- *
+- *	Sideeffects:
+- *		As of the called procedure.
+- *
+- *	Result:
+- *		None.
+- *
+- *------------------------------------------------------*
+- */
+-
+-static void
+-MDcrcz_Update (context, character)
+-VOID* context;
+-unsigned int   character;
+-{
+-  /* call md specific update here */
+-
+-  unsigned char buf = character;
+-
+-  CRC = zf.zcrc32 (CRC, &buf, 1);
 +  CRC = crc32(0L, Z_NULL, 0);
  }
  
-@@ -149,5 +149,5 @@
-   unsigned char buf = character;
- 
--  CRC = zf.zcrc32 (CRC, &buf, 1);
-+  CRC = crc32(CRC, &buf, 1);
- }
- 
-@@ -175,9 +175,9 @@
+@@ -175,9 +143,9 @@
  VOID* context;
  unsigned char* buffer;
 -int   bufLen;
@@ -141,17 +181,24 @@
    /* call md specific update here */
  
 -  CRC = zf.zcrc32 (CRC, buffer, bufLen);
-+  CRC = crc32(CRC, buffer, bufLen);
++  CRC = crc32 (CRC, buffer, bufLen);
  }
  
-@@ -202,5 +202,5 @@
+@@ -202,5 +170,5 @@
  
  static void
 -MDcrcz_Final (context, digest)
 +MDcrcz_Final (digest, context)
  VOID* context;
  VOID* digest;
-@@ -217,28 +217,2 @@
+@@ -208,5 +176,5 @@
+   /* call md specific finalization here */
+ 
+-  uLong crc = CRC;
++  CTX_TYPE crc = CRC;
+   char*   out = (char*) digest;
+ 
+@@ -217,28 +185,2 @@
    out [0] = (char) ((crc >>  0) & 0xff);
  }
 -

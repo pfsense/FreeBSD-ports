@@ -2,7 +2,7 @@
 
 PORTNAME=	webalizer
 PORTVERSION=	2.23.8
-PORTREVISION=	6
+PORTREVISION=	12
 CATEGORIES+=	www
 MASTER_SITES=	ftp://ftp.mrunix.net/pub/webalizer/:main \
 		ftp://ftp.mrunix.net/pub/webalizer/geodb/:geodb \
@@ -47,10 +47,13 @@ CLICKABLE_REFERER_DESC=Make referers clickable
 IP_AS_HOSTNAME_DESC=Show IP as hostname when IP does not resolve
 LARGE_URL_DESC=Enable URLs longer 512 bytes
 
+GEODB_IMPLIES=		BDB
+GEODB_PREVENTS=		BDB1
 GEOIP_CONFIGURE_ON=	--enable-geoip \
 			--with-geoip-lib=${LOCALBASE}/lib \
 			--with-geoip-inc=${LOCALBASE}/include
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
+GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
+GEOIP_USES=		compiler:c++11-lang
 BDB1_CFLAGS=		-DUSE_DB185
 BDB_USES=		bdb
 BDB_LDFLAGS=		-L${BDB_LIB_DIR}
@@ -69,7 +72,7 @@ IP_AS_HOSTNAME_CFLAGS=		-DUSE_IP_AS_HOSTNAME
 DISTFILES+=	webalizer-flags.tgz:main
 .endif
 .if ${PORT_OPTIONS:MGEODB} || make(makesum) || defined(FETCH_ALL)
-DISTFILES+=	webalizer-geodb-20170201.tgz:geodb
+DISTFILES+=	webalizer-geodb-20190501.tgz:geodb
 .endif
 
 # slave ports override with languages specific gd
@@ -140,9 +143,13 @@ pre-configure:
 .endif
 .if ${PORT_OPTIONS:MBDB}
 	${REINPLACE_CMD} -e "s|-ldb|-l${BDB_LIB_NAME}|" \
+		-e "s|GeoIP[.]h|maxminddb.h|" \
+		-e "s|-lGeoIP|-lmaxminddb|" \
 		${WRKSRC}/configure
 .else
 	${REINPLACE_CMD} -e "s|-ldb||" \
+		-e "s|GeoIP[.]h|maxminddb.h|" \
+		-e "s|-lGeoIP|-lmaxminddb|" \
 		${WRKSRC}/configure
 .endif
 

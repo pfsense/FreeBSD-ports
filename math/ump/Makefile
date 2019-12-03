@@ -3,7 +3,7 @@
 
 PORTNAME=	ump
 PORTVERSION=	0.8.6
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	math
 MASTER_SITES=	SF/u-m-p/u-m-p/${PORTVERSION}
 PKGNAMESUFFIX=	-math
@@ -13,7 +13,7 @@ COMMENT=	Graphical, easy to use math program
 
 LICENSE=	GPLv2
 
-USES=		gmake pkgconfig tar:bzip2
+USES=		compiler:c++11-lang gmake pkgconfig tar:bzip2
 USE_GNOME=	gtk20
 USE_GL=		glu
 

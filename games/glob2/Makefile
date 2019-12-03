@@ -3,7 +3,7 @@
 
 PORTNAME=	glob2
 PORTVERSION=	0.9.4.4
-PORTREVISION=	21
+PORTREVISION=	28
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH/${PORTNAME}/${PORTVERSION:R}/
 
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 
 OPTIONS_DEFINE=	DOCS PORTAUDIO
 
-USES=		pkgconfig scons
+USES=		compiler:c++11-lang pkgconfig scons
 USE_SDL=	image net sdl ttf
 USE_GL=		gl glu
 MAKE_ARGS=	CCFLAGS="${CFLAGS}" \
@@ -71,7 +71,7 @@ post-install:
 	(cd ${WRKSRC}/data/icons && ${INSTALL_DATA} glob2-icon-${s}x${s}.png \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}x${s}/apps/${PORTNAME}.png)
 .endfor
-	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \
+	${RLN} ${STAGEDIR}${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} README ${STAGEDIR}${DOCSDIR})

@@ -1,7 +1,6 @@
 bin/fontmatrix
+man/man1/fontmatrix.1.gz
 share/applications/fontmatrix.desktop
-share/icons/hicolor/48x48/apps/fontmatrix.png
-share/man/man1/fontmatrix.1.gz
 %%DATADIR%%/help/en/additional.html
 %%DATADIR%%/help/en/additional_db_check.html
 %%DATADIR%%/help/en/additional_editing_panose.html
@@ -121,6 +120,7 @@ share/man/man1/fontmatrix.1.gz
 %%DATADIR%%/resources/template_default.xml
 %%DATADIR%%/resources/template_oneline.png
 %%DATADIR%%/resources/template_oneline.xml
+%%DATADIR%%/resources/welcome_cs.html
 %%DATADIR%%/resources/welcome_da.html
 %%DATADIR%%/resources/welcome_de.html
 %%DATADIR%%/resources/welcome_en.html
@@ -136,3 +136,4 @@ share/man/man1/fontmatrix.1.gz
 %%DATADIR%%/resources/welcome_uk.html
 %%DATADIR%%/resources/welcome_zh_CN.html
 %%DATADIR%%/resources/welcome_zh_TW.html
+share/icons/hicolor/48x48/apps/fontmatrix.png

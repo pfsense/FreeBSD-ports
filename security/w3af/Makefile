@@ -3,7 +3,7 @@
 
 PORTNAME=	w3af
 PORTVERSION=	1.6.49
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	security python www
 
 MAINTAINER=	dbaio@FreeBSD.org
@@ -21,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=2.1:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}nltk>0:textproc/py-nltk@${PY_FLAVOR} \
 		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}pdf>0:print/py-pdf@${PY_FLAVOR} \
-		scapy>0:net/scapy \
+		${PYTHON_PKGNAMEPREFIX}scapy>0:net/scapy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wordnet>0:textproc/py-wordnet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyClamd>=0.2.2:security/py-pyclamd@${PY_FLAVOR} \
@@ -57,15 +57,8 @@ USE_PYTHON=	flavors
 SHEBANG_FILES=	tools/* w3af_console w3af_gui
 NO_BUILD=	yes
 
-OPTIONS_DEFINE=	GUI DOCS
+OPTIONS_DEFINE=	DOCS
 OPTIONS_SUB=	yes
-
-GUI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygraphviz>0:graphics/py-pygraphviz@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gtksourceview>=2.10.1:x11-toolkits/py-gtksourceview@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}xdot-06=0.6:x11/py-xdot06@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}webkitgtk>=1.1.8:www/py-webkitgtk@${PY_FLAVOR}
-
-GUI_USE=	GNOME=pygtk2
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|msgpack-python|msgpack|' ${WRKSRC}/w3af/core/controllers/dependency_check/requirements.py
@@ -86,10 +79,6 @@ do-install:
 	@(cd ${WRKSRC}/${f}/ && ${COPYTREE_SHARE} \* \
 		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/${f})
 .endfor
-
-do-install-GUI-on:
-	${INSTALL_SCRIPT} ${WRKSRC}/w3af_gui \
-		${STAGEDIR}${PREFIX}/bin/w3af_gui
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

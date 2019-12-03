@@ -3,6 +3,7 @@
 
 PORTNAME=	hplip
 PORTVERSION=	3.17.11
+PORTREVISION=	5
 CATEGORIES=	print
 MASTER_SITES=	SF
 
@@ -34,13 +35,12 @@ CONFIGURE_ARGS=	--with-cupsbackenddir=${PREFIX}/libexec/cups/backend \
 		--with-mimedir=${PREFIX}/share/cups/mime \
 		--with-docdir=${DOCSDIR} \
 		--with-htmldir=${DOCSDIR} \
-		--with-drvdir=${PREFIX}/share/cups/drv
+		--with-drvdir=${PREFIX}/share/cups/drv \
+		--disable-qt4
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=		DOCS FAX SCAN SNMP X11 XSANE
-OPTIONS_RADIO=		GUI
-OPTIONS_RADIO_GUI=	QT4 QT5
+OPTIONS_DEFINE=		DOCS FAX SCAN SNMP X11 XSANE QT5
 OPTIONS_DEFAULT=	QT5 SCAN SNMP X11
 OPTIONS_SUB=		yes
 
@@ -69,14 +69,6 @@ XSANE_RUN_DEPENDS=	xsane:graphics/xsane
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MQT4} && ${PORT_OPTIONS:MX11}
-USES+=			pyqt:4
-USE_PYQT=		core_run dbussupport_run gui_run sip
-CONFIGURE_ARGS+=	--enable-qt4
-.else
-CONFIGURE_ARGS+=	--disable-qt4
-.endif
-
 .if ${PORT_OPTIONS:MQT5} && ${PORT_OPTIONS:MX11}
 USES+=			pyqt:5
 USE_PYQT=		core_run dbussupport_run gui_run sip widgets_run
@@ -85,8 +77,8 @@ CONFIGURE_ARGS+=	--enable-qt5
 CONFIGURE_ARGS+=	--disable-qt5
 .endif
 
-.if ${PORT_OPTIONS:MX11} && ! ${PORT_OPTIONS:MQT4} && ! ${PORT_OPTIONS:MQT5}
-BROKEN=			The X11 option requires one of the QT4 or QT5 options
+.if ${PORT_OPTIONS:MX11} && ! ${PORT_OPTIONS:MQT5}
+BROKEN=			The X11 option requires the QT5 option
 .endif
 
 post-patch:

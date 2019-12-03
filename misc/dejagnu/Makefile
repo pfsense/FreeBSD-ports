@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dejagnu
-PORTVERSION=	1.6.1
+PORTVERSION=	1.6.2
 CATEGORIES=	misc tcl
 MASTER_SITES=	GNU
 
@@ -13,7 +13,8 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libexpect.so:lang/expect
 
-USES+=		gmake tcl:85+
+USES+=		gmake tcl
+
 GNU_CONFIGURE=	yes
 
 INFO=		${PORTNAME}

@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=		krb5
-PORTVERSION=		1.17.${MIT_COMMIT_DATE}
+PORTVERSION=		1.18.${MIT_COMMIT_DATE}
 CATEGORIES=		security
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=		-devel
 .endif
-HASH=			3a30dec
-MIT_COMMIT_DATE=	2018.06.20
+HASH=			ca1057fe6
+MIT_COMMIT_DATE=	2019.09.20
 
 PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 PATCH_DIST_STRIP=	-p2
@@ -29,8 +29,8 @@ USE_PERL5=		build
 USE_LDCONFIG=		yes
 USE_CSTD=		gnu99
 GNU_CONFIGURE=		yes
-USES=			autoreconf cpe gmake localbase perl5 libtool:build \
-			gssapi:bootstrap,mit pkgconfig:run ssl
+USES=			autoreconf compiler:c11 cpe gmake localbase perl5 \
+			libtool:build gssapi:bootstrap,mit pkgconfig ssl
 CONFIGURE_ARGS?=	--enable-shared --without-system-verto \
 			--disable-rpath --localstatedir="${PREFIX}/var"
 CONFIGURE_ENV=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}" YACC="${YACC}"
@@ -50,7 +50,7 @@ DNS_FOR_REALM_CONFIGURE_ENABLE=	dns-for-realm
 LDAP=			Enable LDAP support
 LDAP_USE=		OPENLDAP=yes
 LDAP_CONFIGURE_WITH=	ldap
-LMDB_DESC=		Enable OpenLDAP Lightning Memory-Mapped Database
+LMDB_DESC=		OpenLDAP Lightning Memory-Mapped Database support
 LMDB_CONFIGURE_WITH=	lmdb
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
 LMDB_IMPLIES=		LDAP
@@ -107,6 +107,8 @@ CONFIGURE_ARGS+=	--program-transform-name="${PROGRAM_TRANSFORM_NAME}"
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/krb5
 	${ECHO_CMD} @dir share/doc/krb5 >> ${TMPPLIST}
+	@${SED} "s|%%PREFIX%%|${PREFIX}|" ${FILESDIR}/kdc.in > ${STAGEDIR}${PREFIX}/sbin/kdc; \
+	${CHMOD} +x ${STAGEDIR}${PREFIX}/sbin/kdc
 
 post-install-LDAP-on:
 	${MKDIR} ${STAGEDIR}${DATADIR}

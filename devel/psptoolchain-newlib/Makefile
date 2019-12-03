@@ -23,10 +23,18 @@ BUILD_DEPENDS+=		${LOCALBASE}/${PSP_SDK_STAGE_PREFIX}/sdk/include/pspsdk.h:devel
 
 USES=			gmake makeinfo
 HAS_CONFIGURE=		yes
-CONFIGURE_ENV=		PATH=${LOCALBASE}/${PSP_GCC_STAGE_PREFIX}/bin:${PATH}
+
+# psp-gcc doesn't need -march=... in CFLAGS (e.g. set by CPUTYPE in make.conf); also need -g on psp for some reason
+CONFIGURE_ENV=		PATH=${LOCALBASE}/${PSP_GCC_STAGE_PREFIX}/bin:${PATH} \
+			CFLAGS="${CFLAGS:C/(^|[[:space:]])-march=[^[:space:]]*//g} -g"
 MAKE_ENV=		PATH=${LOCALBASE}/${PSP_GCC_STAGE_PREFIX}/bin:${PATH}
 CONFIGURE_ARGS=		--prefix=${PREFIX} --target="psp"
-MAKE_ARGS+=		CC="${CC}" CFLAGS="${CFLAGS} -g" # Apparently, it doesn't work on the PSP without debug information
+SSP_CFLAGS?=		-fstack-protector # XXX -strong isn't supported by GCC < 4.9
+# there is no libssp w/ PSP SDK, disable stack guards as they would be
+# unresolved symbols, explicitly disable to be on the safe side
+SSP_UNSAFE=	yes
+CFLAGS+=	-fno-stack-protector
+LDFLAGS+=	-fno-stack-protector
 
 # Disable installation of .info files and fix includedir reference.
 post-patch:

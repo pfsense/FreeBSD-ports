@@ -2,6 +2,7 @@
 
 PORTNAME=	cec
 PORTVERSION=	0.2.6
+PORTREVISION=	1
 CATEGORIES=	multimedia python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,9 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcec.so:multimedia/libcec
 
-USES=		python:2.7
+USES=		compiler:c++11-lang localbase python:2.7
 USE_PYTHON=	distutils autoplist
-
-CPPFLAGS+=	-I${LOCALBASE}/include
 
 .include <bsd.port.mk>

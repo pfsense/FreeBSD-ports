@@ -3,7 +3,7 @@
 # Observium version can be found by looking at ${WRKSRC}/includes/definitions/version.inc.php
 
 PORTNAME=	observium
-PORTVERSION=	0.17.9.8859
+PORTVERSION=	0.18.9.1
 PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.observium.org/
@@ -22,7 +22,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		php:cli python${PY_MYSQL} shebangfix
 SHEBANG_FILES=	\
-		mibs/process.pl \
 		poller-wrapper.py \
 		poller.php \
 		scripts/
@@ -63,13 +62,14 @@ WMIC_RUN_DEPENDS=	wmic:net-mgmt/wmi-client
 .include <bsd.port.options.mk>
 
 SUB_FILES+=	pkg-message observium.conf.sample
-SUB_LIST+=	PHP="${PHPBASE}/bin/php" PYTHON=${PHPBASE}/bin/python
+SUB_LIST+=	PHP="${PREFIX}/bin/php" PYTHON="${PYTHON_CMD}"
 
-ROOT_FILES=	add_device.php adduser.php alerter.php alerts.php \
+ROOT_FILES=	add_device.php adduser.php alerter.php \
 		check-errors.php check-services.php config_to_json.php \
 		config.php.default delete_device.php discovery.php housekeeping.php \
 		irc.php poller-wrapper.py poller.php rename_device.php \
-		snmptrap.php snmptrap.php syslog.php test_alert.php
+		snmp.conf.example snmpd.conf.example \
+		snmptrap.php snmptrap.php syslog.php test_alert.php test_code.php VERSION
 ROOT_DIRS=	html includes libs logs mibs rrd scripts templates tests update
 
 PORTDOCS=	INSTALL README VERSION

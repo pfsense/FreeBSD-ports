@@ -2,27 +2,25 @@
 
 PORTNAME=	qtcurve
 DISTVERSION=	1.9.0-rc1
-PORTREVISION?=	0
+PORTREVISION?=	6
 CATEGORIES=	x11-themes
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT?=	Widget styles for Qt and GTK+ toolkits
 
 .if !defined(QTCURVE_SLAVE)
-USES=		metaport qt:4
+USES=		metaport
 # There is no NO_PATCH
 PATCHDIR=	${MASTERDIR}/none
 
 OPTIONS_RADIO=		QT5
 OPTIONS_RADIO_QT5=	KF5 QT5
-OPTIONS_DEFINE=		GTK2 KDE4 QT4
-OPTIONS_DEFAULT=	GTK2 KDE4 QT4 QT5
+OPTIONS_DEFINE=		GTK2
+OPTIONS_DEFAULT=	GTK2 QT5
 
 GTK2_RUN_DEPENDS=	gtk2-qtcurve-theme>=${PORTVERSION}:x11-themes/qtcurve-gtk2
-KDE4_RUN_DEPENDS=	kde4-style-qtcurve>=${PORTVERSION}:x11-themes/qtcurve-kde4
 KF5_DESC=		KDE Frameworks 5 + Qt 5 toolkit support
 KF5_RUN_DEPENDS=	kf5-style-qtcurve>=${PORTVERSION}:x11-themes/qtcurve-kf5
-QT4_RUN_DEPENDS=	qt4-style-qtcurve>=${PORTVERSION}:x11-themes/qtcurve-qt4
 QT5_RUN_DEPENDS=	qt5-style-qtcurve>=${PORTVERSION}:x11-themes/qtcurve-qt5
 
 .else # !defined(QTCURVE_SLAVE)
@@ -33,18 +31,18 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	KDE
 GH_TAGNAME=	a1ec5f8
 
-USES=		compiler:c++11-lib cmake pkgconfig
+USES=		compiler:c++11-lib cmake:insource pkgconfig
 USE_XORG=	x11 xcb
 
-.for i in gtk2 kde4 kf5 qt4 qt5
+.for i in gtk2 kf5 qt5
 WITH_${i}=	Off
 .endfor
 WITH_${QTCURVE_SLAVE}=	On
 
 CMAKE_ARGS+=	-DENABLE_GTK2=${WITH_gtk2} \
-		-DENABLE_QT4=${WITH_qt4} \
+		-DENABLE_QT4=Off \
 		-DENABLE_QT5=${WITH_qt5} \
-		-DQTC_QT4_ENABLE_KDE=${WITH_kde4} \
+		-DQTC_QT4_ENABLE_KDE=Off \
 		-DQTC_QT5_ENABLE_KDE=${WITH_kf5}
 LDFLAGS+=	-L${LOCALBASE}/lib
 
@@ -72,15 +70,6 @@ post-install:
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET})
 .endif
 
-.if ${QTCURVE_SLAVE} == "kde4"
-WITH_qt4=	On # required for KDE 4
-PKGNAMEPREFIX=	kde4-style-
-USE_KDE=	kdelibs workspace automoc4
-USES+=		kde:4 qt:4
-USE_QT=		corelib dbus gui svg moc_build qmake_build rcc_build uic_build
-BUILD_WRKSRC=	${WRKSRC}/qt4
-.endif
-
 .if ${QTCURVE_SLAVE} == "kf5"
 CONFLICTS_INSTALL=	qt5-style-qtcurve
 WITH_qt5=	On # required for KF5
@@ -92,13 +81,6 @@ USE_KDE=	archive completion config configwidgets coreaddons \
 USE_QT=		core dbus gui printsupport svg widgets x11extras \
 		buildtools_build qmake_build
 BUILD_WRKSRC=	${WRKSRC}/qt5
-.endif
-
-.if ${QTCURVE_SLAVE} == "qt4"
-PKGNAMEPREFIX=	qt4-style-
-USES+=		qt:4
-USE_QT=		corelib dbus gui svg moc_build qmake_build rcc_build uic_build
-PLIST_FILES=	${QT_PLUGINDIR_REL}/styles/qtcurve.so
 .endif
 
 .if ${QTCURVE_SLAVE} == "qt5"

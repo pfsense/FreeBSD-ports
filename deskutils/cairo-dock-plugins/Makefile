@@ -2,7 +2,7 @@
 
 PORTNAME=	cairo-dock-plugins
 PORTVERSION=	3.4.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	deskutils
 
 MAINTAINER=	ports@FreeBSD.org
@@ -10,6 +10,7 @@ COMMENT=	Cairo-Dock-Plugins for Cairo-Dock
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
 
 RUN_DEPENDS=	wget:ftp/wget
 LIB_DEPENDS=	libgldi.so:deskutils/cairo-dock
@@ -28,18 +29,19 @@ USE_XORG=	xrender
 USES=		cmake gettext pkgconfig python
 LDFLAGS+=	-L${LOCALBASE}/lib
 PLIST_SUB=	PYVER="${PYTHON_VERSION:S/thon//}"
-CMAKE_ARGS=	-DROOT_PREFIX:PATH=${STAGEDIR}
+CMAKE_ARGS=	-DROOT_PREFIX:PATH=${STAGEDIR} \
+		-Denable-weblets:BOOL=FALSE
 
 OPTIONS_GROUP=		INTEGR PLUGINS ADDON TPI
-OPTIONS_GROUP_INTEGR=	GNOME_INTEGRATION KDE_INTEGRATION XFCE_INTEGRATION
+OPTIONS_GROUP_INTEGR=	GNOME_INTEGRATION XFCE_INTEGRATION
 OPTIONS_GROUP_PLUGINS=	ALSA_MIXER GMENU IMPULSE KEYBOARD_INDICATOR \
-			MAIL SOUND_EFFECTS WEBLETS XGAMMA ZEITGEIST
+			MAIL SOUND_EFFECTS XGAMMA ZEITGEIST
 OPTIONS_GROUP_ADDON=	EXIF ICAL UPOWER
 #OPTIONS_GROUP_TPI=	PYTHON RUBY MONO VALA
 
 OPTIONS_SUB=		yes
 
-OPTIONS_DEFAULT=	GMENU WEBLETS
+OPTIONS_DEFAULT=	GMENU
 
 ALSA_MIXER_DESC=	Alsa-Mixer applet
 EXIF_DESC=		Read file meta-data
@@ -47,7 +49,6 @@ GMENU_DESC=		GMenu applet
 GNOME_INTEGRATION_DESC=	GNOME integration support
 ICAL_DESC=		IETF Calendaring and Scheduling protocols
 IMPULSE_DESC=		Impulse applet
-KDE_INTEGRATION_DESC=	KDE integration support
 KEYBOARD_INDICATOR_DESC=	 Keyboard-indicator applet
 MAIL_DESC=		Mail applet
 #MONO_DESC=		Mono interface
@@ -55,7 +56,7 @@ MAIL_DESC=		Mail applet
 #RUBY_DESC=		Ruby interface
 SOUND_EFFECTS_DESC=	Sound Effects applet
 UPOWER_DESC=		D-Bus daemon for power management tasks
-TERMINAL_DESC=		Terminal applet
+#TERMINAL_DESC=		Terminal applet
 #VALA_DESC=		Vala interface
 WEBLETS_DESC=		Weblets applet
 XGAMMA_DESC=		Xgamma applet
@@ -85,12 +86,6 @@ ICAL_CMAKE_BOOL=	enable-ical-support
 
 IMPULSE_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 IMPULSE_CMAKE_BOOL=	enable-impulse
-
-#KDE_INTEGRATION_LIB_DEPENDS=
-KDE_INTEGRATION_USE_QT=		corelib
-KDE_INTEGRATION_USES=		kde:4 qt:4
-KDE_INTEGRATION_USE=		KDE=kdelibs
-KDE_INTEGRATION_CMAKE_BOOL=	enable-kde-integration
 
 KEYBOARD_INDICATOR_LIB_DEPENDS=	libexif.so:graphics/libexif \
 				libxklavier.so:x11/libxklavier
@@ -127,9 +122,6 @@ UPOWER_CMAKE_BOOL=	enable-upower-support
 #VALA_CMAKE_BOOL=	enable-vala-interface
 CMAKE_ARGS+=		-Denable-vala-interface:BOOL=FALSE
 
-WEBLETS_LIB_DEPENDS=	libwebkitgtk-3.0.so:www/webkit-gtk3
-WEBLETS_CMAKE_BOOL=	enable-weblets
-
 XGAMMA_RUN_DEPENDS=	xgamma:x11/xgamma
 XGAMMA_CMAKE_BOOL=	enable-xgamma
 
@@ -138,6 +130,8 @@ XFCE_INTEGRATION_CMAKE_BOOL=	enable-xfce-integration
 
 ZEITGEIST_LIB_DEPENDS=	libzeitgeist-2.0.so:sysutils/zeitgeist
 ZEITGEIST_CMAKE_BOOL=	enable-recent-events
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	@${FIND} ${WRKSRC} -type f \( -name "*.c" -o -name "*.conf" \

@@ -8,12 +8,14 @@ CATEGORIES=	devel
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Generates Go code from any file
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
+USES=		go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jteeuwen
 GH_TAGNAME=	a0ff256
 GH_SUBDIR=	src/github.com/jteeuwen/go-bindata
+
+GO_TARGET=	./go-bindata
 
 PLIST_FILES=	bin/go-bindata
 
@@ -21,19 +23,10 @@ PORTDOCS=	CONTRIBUTING.md LICENSE README.md
 
 OPTIONS_DEFINE=	DOCS
 
-do-build:
-	cd ${WRKSRC} ; \
-		${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go build -o bin/go-bindata ./go-bindata/
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} \
-		${STAGEDIR}${PREFIX}/bin/
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-
 do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for x in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/${x} \
-		${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${x} ${STAGEDIR}${DOCSDIR}
 .endfor
 
 .include <bsd.port.mk>

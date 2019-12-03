@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tvnamer
-PORTVERSION=	2.4
+PORTVERSION=	2.5
+PORTREVISION=	1
 CATEGORIES=	multimedia python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,8 +16,9 @@ LICENSE=	GPLv2
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tvdb_api>=1.5:www/py-tvdb_api@${PY_FLAVOR}
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tvdb_api>=1.5:www/py-tvdb_api@${PY_FLAVOR}
 
-USES=		python:2.7
-USE_PYTHON=	distutils autoplist
+USES=		python
+USE_PYTHON=	distutils autoplist flavors
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

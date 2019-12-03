@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	mate-applets
-PORTVERSION=	1.20.1
+PORTVERSION=	1.22.1
+PORTREVISION=	1
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -24,8 +25,8 @@ LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 gettext gmake libtool localbase pkgconfig \
-		python:2.7 tar:xz
+USES=		compiler:c11 gettext gmake gnome libtool localbase mate \
+		pkgconfig python:2.7 tar:xz
 USE_CSTD=	c11
 
 USE_MATE=	libmateweather panel
@@ -38,7 +39,8 @@ INSTALLS_ICONS=	yes
 CONFIGURE_ENV=	OS_SYS="/usr/include"
 INSTALL_TARGET=	install-strip
 
-GLIB_SCHEMAS=	org.mate.panel.applet.charpick.gschema.xml \
+GLIB_SCHEMAS=	org.mate.drivemount.gschema.xml \
+		org.mate.panel.applet.charpick.gschema.xml \
 		org.mate.panel.applet.command.gschema.xml \
 		org.mate.panel.applet.geyes.gschema.xml \
 		org.mate.panel.applet.multiload.gschema.xml \

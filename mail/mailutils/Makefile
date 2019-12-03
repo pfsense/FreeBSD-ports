@@ -2,10 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	mailutils
-PORTVERSION=	3.4
-PORTREVISION=   1
+PORTVERSION=	3.7
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	GNU GNU_ALPHA
+
+EXTRA_PATCHES=	${FILESDIR}/git-018df5d:-p1 \
+		${FILESDIR}/git-113e144:-p1
 
 MAINTAINER=	zeus@gnu.org.ua
 COMMENT=	Utilities, daemons, and filters for processing e-mail
@@ -14,13 +17,13 @@ LICENSE=	GPLv3+
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		gmake libtool localbase readline tar:xz
+USES=		gmake iconv libtool localbase readline tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	comsatd imap4d pop3d
 INSTALL_TARGET=	install-strip
 
-PLIST_SUB+=	LIBVERSION=5.0.5 VERSION=${PORTVERSION}
+PLIST_SUB+=	LIBVERSION=6.0.0 LIBSUFX=6 VERSION=${PORTVERSION}
 
 INFO=		${PORTNAME}
 PORTDOCS=	AUTHORS ChangeLog NEWS README* THANKS TODO
@@ -32,7 +35,6 @@ OPTIONS_MULTI=		DB
 OPTIONS_MULTI_DB=	BDB GDBM KYOTOCABINET LDAP MYSQL PGSQL TOKYOCABINET
 OPTIONS_SUB=		yes
 
-BDB_DESC=		Berkeley DB v4.8 support (last working one)
 DB_DESC=		Database configuration
 EMACS_DESC=		Emacs interface to MH (implies MH)
 KYOTOCABINET_DESC=	Kyoto Cabinet database support
@@ -50,7 +52,8 @@ GNUTLS_CONFIGURE_WITH=	gnutls
 GSSAPI_RUN_DEPENDS=	cyrus-sasl-gssapi>0:security/cyrus-sasl2-gssapi
 GSSAPI_CONFIGURE_WITH=	gssapi
 
-GUILE_LIB_DEPENDS=	libguile.so:lang/guile libgmp.so:math/gmp
+GUILE_LIB_DEPENDS=	libguile-2.2.so:lang/guile2 libgmp.so:math/gmp
+GUILE_USES=		makeinfo pkgconfig
 GUILE_CONFIGURE_WITH=	guile
 
 MH_CONFIGURE_ENABLE=	mh
@@ -62,15 +65,14 @@ NLS_CONFIGURE_ENABLE=	nls
 
 PAM_CONFIGURE_ENABLE=	pam
 
-PYTHON_BUILD_DEPENDS=	python-config:lang/python
+PYTHON_BINARY_ALIAS=	python-config=python${PYTHON_VER}-config
 PYTHON_USES=		python:2.7
 PYTHON_CONFIGURE_ENABLE=python
 
-BDB_USES=		bdb:48
+BDB_USES=		bdb
 BDB_CONFIGURE_WITH=	berkeley-db
 BDB_CPPFLAGS=		-I${BDB_INCLUDE_DIR}
 BDB_LDFLAGS=		-L${BDB_LIB_DIR}
-INVALID_BDB_VER=	5+
 
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_WITH=	gdbm

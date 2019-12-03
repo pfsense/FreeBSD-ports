@@ -3,7 +3,7 @@
 
 PORTNAME=	madsonic
 PORTVERSION=	6.2.9040
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www java
 MASTER_SITES=	http://madsonic.org/download/6.2/
 DISTFILES=	${DISTDATE}_${DISTNAME}-war-tomcat.zip \
@@ -16,10 +16,8 @@ LICENSE=	GPLv3
 
 OPTIONS_SINGLE=	APPSERVER
 APPSERVER_DESC=	Java Application Server
-OPTIONS_SINGLE_APPSERVER=	JETTY TOMCAT8 TOMCAT7 TOMCAT6 RESIN3
-TOMCAT8_DESC=	Use Tomcat 8.x
+OPTIONS_SINGLE_APPSERVER=	JETTY TOMCAT7 RESIN3
 TOMCAT7_DESC=	Use Tomcat 7.x
-TOMCAT6_DESC=	Use Tomcat 6.x
 JETTY_DESC=	Use Jetty
 RESIN3_DESC=	Use Resin 3
 
@@ -41,12 +39,8 @@ OPTIONS_SUB=	yes
 
 RUN_DEPENDS+=	${JAVALIBDIR}/servlet-api.jar:www/servlet-api \
 	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins
-TOMCAT8_BUILD_DEPENDS=	${LOCALBASE}/${SERVERDIR}/bin/bootstrap.jar:www/tomcat8
-TOMCAT8_RUN_DEPENDS=	${LOCALBASE}/${SERVERDIR}/bin/bootstrap.jar:www/tomcat8
 TOMCAT7_BUILD_DEPENDS=	${LOCALBASE}/${SERVERDIR}/bin/bootstrap.jar:www/tomcat7
 TOMCAT7_RUN_DEPENDS=	${LOCALBASE}/${SERVERDIR}/bin/bootstrap.jar:www/tomcat7
-TOMCAT6_BUILD_DEPENDS=	${LOCALBASE}/${SERVERDIR}/bin/bootstrap.jar:www/tomcat6
-TOMCAT6_RUN_DEPENDS=	${LOCALBASE}/${SERVERDIR}/bin/bootstrap.jar:www/tomcat6
 JETTY_BUILD_DEPENDS=	${LOCALBASE}/${SERVERDIR}/start.jar:www/jetty8
 JETTY_RUN_DEPENDS=	${LOCALBASE}/${SERVERDIR}/start.jar:www/jetty8
 RESIN3_BUILD_DEPENDS=	${LOCALBASE}/${SERVERDIR}/lib/resin.jar:www/resin3
@@ -81,28 +75,12 @@ SUB_FILES=	message-common\
 	message-transcoding
 SUB_LIST=	MADSONIC_HOME="${MADSONIC_HOME}"
 
-.if ${PORT_OPTIONS:MTOMCAT8}
-APPPKGMESSAGE=	pkg-message-tomcat
-DISTVER=	tomcat
-PKGNAMESUFFIX=	-tomcat8
-SERVERDIR=	apache-tomcat-8.0
-SUB_LIST+=	CONTAINERFLAGS="tomcat8_java_opts"
-.endif
-
 .if ${PORT_OPTIONS:MTOMCAT7}
 APPPKGMESSAGE=	pkg-message-tomcat
 DISTVER=	tomcat
 PKGNAMESUFFIX=	-tomcat7
 SERVERDIR=	apache-tomcat-7.0
 SUB_LIST+=	CONTAINERFLAGS="tomcat7_java_opts"
-.endif
-
-.if ${PORT_OPTIONS:MTOMCAT6}
-APPPKGMESSAGE=	pkg-message-tomcat
-DISTVER=	tomcat
-PKGNAMESUFFIX=	-tomcat6
-SERVERDIR=	apache-tomcat-6.0
-SUB_LIST+=	CONTAINERFLAGS="tomcat60_java_opts"
 .endif
 
 .if ${PORT_OPTIONS:MJETTY}
@@ -139,13 +117,15 @@ pre-install:
 	@cd ${WRKSRC}; ${FIND} . -type d | cut -c2- \
 		| ${SED} 's|^|@dir ${WEBAPPDIR:S,${PREFIX}/,,}/${PORTNAME}|' \
 		| ${SORT} -r >> ${PLIST}
-	@${RM} ${PKGMESSAGE}
-	@${CAT} ${PKGDIR}/pkg-message-spacer >> ${PKGMESSAGE}
+	@${ECHO_CMD} "[" > ${PKGMESSAGE}
+	@${ECHO_CMD} "{ type: install, message: <<EOM" >> ${PKGMESSAGE}
 	@${CAT} ${PKGDIR}/${APPPKGMESSAGE} >> ${PKGMESSAGE}
 	@${CAT} ${WRKDIR}/message-common >> ${PKGMESSAGE}
 	@${CAT} ${PKGDIR}/pkg-message-spacer >> ${PKGMESSAGE}
 	@${CAT} ${WRKDIR}/message-transcoding >> ${PKGMESSAGE}
-	@${CAT} ${PKGDIR}/pkg-message-spacer >> ${PKGMESSAGE}
+	@${ECHO_CMD} "EOM" >> ${PKGMESSAGE}
+	@${ECHO_CMD} "}" >> ${PKGMESSAGE}
+	@${ECHO_CMD} "]" >> ${PKGMESSAGE}
 
 do-install:
 	cd ${WRKDIR} && ${COPYTREE_SHARE} ${PORTNAME} ${STAGEDIR}${WEBAPPDIR}

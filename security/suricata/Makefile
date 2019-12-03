@@ -76,7 +76,7 @@ LUA_CONFIGURE_ON=		--enable-lua \
 				--with-liblua-includes=${LUA_INCDIR} \
 				--with-liblua-libraries=${LUA_LIBDIR}
 
-LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit21
+LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit-openresty
 LUAJIT_CONFIGURE_ON=		--enable-luajit
 
 NSS_LIB_DEPENDS=		libnss3.so:security/nss \

@@ -11,6 +11,10 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ftp-like shell for accessing Apple II disk images
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 PLIST_FILES=	bin/aftp man/man1/aftp.1.gz
 
 post-patch:

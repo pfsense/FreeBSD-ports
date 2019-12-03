@@ -2,15 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	exact-image
-PORTVERSION=	0.9.1
-PORTREVISION=	1
+PORTVERSION=	1.0.2
 CATEGORIES=	graphics perl5 python
-MASTER_SITES=	http://dl.exactcode.de/oss/${PORTNAME}/ LOCAL/bf
+MASTER_SITES=	https://dl.exactcode.de/oss/exact-image/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast image processing library
 
 LICENSE=	GPLv2
+
+BROKEN_armv6=		fails to configure: C++ compiler is not installed or does not work correctly
+BROKEN_armv7=		fails to configure: C++ compiler is not installed or does not work correctly
 
 BUILD_DEPENDS=	swig3.0:devel/swig30
 LIB_DEPENDS=	libagg.so:graphics/agg \
@@ -18,18 +20,17 @@ LIB_DEPENDS=	libagg.so:graphics/agg \
 		libpng.so:graphics/png \
 		libgif.so:graphics/giflib \
 		libjasper.so:graphics/jasper \
-		libIlmImf.so:graphics/OpenEXR \
+		libImath-2_3.so:graphics/ilmbase \
+		libIlmImf.so:graphics/openexr \
 		liblcms.so:graphics/lcms \
 		libfreetype.so:print/freetype2 \
 		libexpat.so:textproc/expat2
-
-BROKEN_armv6=		fails to configure: C++ compiler is not installed or does not work correctly
-BROKEN_armv7=		fails to configure: C++ compiler is not installed or does not work correctly
 
 #hack to get custom exactcode configure script to enable tiff support with
 #broken headers on c++ in base system:
 CPPFLAGS+=	-fpermissive -I${LOCALBASE}/include
 USES=		gmake jpeg perl5 pkgconfig python:2.7 tar:bzip2
+USE_CXXSTD=	c++03
 USE_XORG=	x11
 HAS_CONFIGURE=	yes
 INSTALL_WRKSRC=	${WRKSRC}/objdir
@@ -41,12 +42,8 @@ PLIST_FILES=	${BINS:S|^|bin/|} \
 		%%PYTHON_SITELIBDIR%%/_ExactImage.so
 BINARY_ALIAS=	swig=swig3.0
 
-post-extract:
-	@${RM} -r ${WRKSRC}/agg-2.4/
-
 post-patch:
 	@${REINPLACE_CMD} -e '1s|/.*|/bin/sh|;s|/usr/local|${LOCALBASE}|;\
-		s|libungif|giflib|; s|LIBUNGIF|GIFLIB|; \
 		/parse_options/d;s| cc | ${CC} |;s| c++ | ${CXX} |;\
 		s|python -V|${PYTHON_CMD} -V|;\
 		/PYTHONINCS/s|=.*$$|=-I${PYTHON_INCLUDEDIR}|; \
@@ -56,18 +53,16 @@ post-patch:
 	@${REINPLACE_CMD} -e '/^Q =/d;s|$$[(]COMPILE.cc[)]|${CXX} $${CPPFLAGS} -c|;\
 		s|$$[(]CXX[)]|${CXX}|;s|$$[(]COMPILE.c[)]|${CC} $${CPPFLAGS} -c|'\
 		${WRKSRC}/build/bottom.make
-	@${REINPLACE_CMD} -e '/^CFLAGS =/d;/^CXXFLAGS =/d;/march=/d;\
-		/mtune=/d;/call cc-option/d;' ${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e 's|-lungif|-lgif|; s|LIBUNGIF|GIFLIB|' \
-		${WRKSRC}/codecs/Makefile
 	@${REINPLACE_CMD} -e '/CFLAGS=/s|".*"|"${CFLAGS} -I${LOCALBASE}/include"|;\
 		/LIBS=/s|".*"|"-L${LOCALBASE}/lib -lX11"|' ${WRKSRC}/config/pkgcheck-x11.c
 	@${REINPLACE_CMD} -e 's|$$prg|$$prg ${CPPFLAGS} -I${LOCALBASE}/include|;\
 		s|/usr/local|${PREFIX}|;/^var_remove/,/^}/d;/^parse_options/,/^}/d; \
 		s| ++errors | errors+=1 |g' \
 		${WRKSRC}/config/functions
-	@${REINPLACE_CMD} -e 's|/usr/X11|${LOCALBASE}|' ${WRKSRC}/lib/vectorial.cc \
+	@${REINPLACE_CMD} -e 's|/usr/X11|${LOCALBASE}|' \
+		${WRKSRC}/image/vectorial.cc \
 		${WRKSRC}/edisplay/edisplay.cc
+	@${REINPLACE_CMD} -e 's| = {}||g' ${WRKSRC}/image/Colorspace.cc
 
 do-install:
 	@cd ${INSTALL_WRKSRC}/&&for i in ${BINS};do\

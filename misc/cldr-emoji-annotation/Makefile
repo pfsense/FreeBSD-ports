@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cldr-emoji-annotation
-DISTVERSION=	33.0.0_2
+DISTVERSION=	34.12.14891_0
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,6 +16,7 @@ USES=		autoreconf gmake libtool
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	fujiwarat
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

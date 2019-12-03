@@ -2,29 +2,36 @@
 # $FreeBSD$
 
 PORTNAME=	qtfm
-DISTVERSION=	5.5
+PORTVERSION=	6.2.0
+PORTREVISION=	1
 CATEGORIES=	x11-fm
-MASTER_SITES=	http://www.qtfm.org/
 
-MAINTAINER=	lichray@gmail.com
+MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Small, lightweight file manager based on pure Qt
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		dos2unix qmake qt:4
-DOS2UNIX_REGEX=	.*\.(h|cpp)
-USE_QT=		gui network moc_build rcc_build \
-		imageformats_run
+LIB_DEPENDS=	libinotify.so:devel/libinotify
+
+USES=		compiler:c++11-lang desktop-file-utils gl qmake qt:5
+USE_GL=		gl
+USE_QT=		concurrent core dbus gui widgets \
+		buildtools_build qmake_build
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	rodlie
+
+QMAKE_ARGS=	MANDIR=${MANDIRS} \
+		PREFIX=${PREFIX} \
+		XDGDIR=${PREFIX}/etc/xdg \
+		DOCDIR=${DOCSDIR}
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@cd ${WRKSRC} && \
-		${REINPLACE_CMD} -e s@/usr/@${PREFIX}/@g \
-		 -e s@share/qtfm@${DATADIR_REL}@ \
-		qtfm.pro src/main.cpp
-	@cd ${WRKSRC}/src && \
-		${REINPLACE_CMD} -e s@/usr/@${LOCALBASE}/@g \
-		icondlg.cpp mainwindow.cpp mymodel.cpp
+	@${REINPLACE_CMD} -e 's|docs.path.*|docs.path = $$$${DOCDIR}|' \
+		${WRKSRC}/libfm/libfm.pro
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/qtfm

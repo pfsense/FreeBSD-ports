@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	gawk
-PORTVERSION=	4.1.4
-PORTREVISION=	2
+PORTVERSION=	5.0.0
 CATEGORIES=	lang
 MASTER_SITES=	GNU
 
 MAINTAINER=	johans@FreeBSD.org
-COMMENT=	GNU version of Awk
+COMMENT=	GNU version of AWK scripting language
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,7 +22,7 @@ MPFR_DESC?=		Support multiple-precision floating-point computation
 MPFR_LIB_DEPENDS=	libmpfr.so:math/mpfr
 MPFR_CONFIGURE_OFF=	--without-gmp --without-mpfr
 
-INFO=		gawk gawkinet
+INFO=		gawk gawkinet gawkworkflow
 
 GNU_CONFIGURE=	yes
 USES=		iconv libtool makeinfo readline tar:xz

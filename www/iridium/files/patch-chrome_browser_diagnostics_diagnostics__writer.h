@@ -1,11 +1,11 @@
---- chrome/browser/diagnostics/diagnostics_writer.h.orig	2017-04-19 19:06:29 UTC
+--- chrome/browser/diagnostics/diagnostics_writer.h.orig	2019-03-11 22:00:53 UTC
 +++ chrome/browser/diagnostics/diagnostics_writer.h
-@@ -19,7 +19,7 @@ class DiagnosticsWriter : public Diagnos
+@@ -15,6 +15,8 @@ namespace diagnostics {
+ // Console base class used internally.
+ class SimpleConsole;
+ 
++#undef MACHINE
++
+ class DiagnosticsWriter : public DiagnosticsModel::Observer {
   public:
    // The type of formatting done by this writer.
-   enum FormatType {
--    MACHINE,
-+    THEMACHINE,
-     LOG,
-     HUMAN
-   };

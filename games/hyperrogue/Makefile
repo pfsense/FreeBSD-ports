@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hyperrogue
-PORTVERSION=	10.4f
+PORTVERSION=	10.5e
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -12,14 +13,12 @@ COMMENT=	Roguelike in a non-euclidean world
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to link: langen-langen.o: relocation truncated to fit: R_PPC64_TOC16_DS
-
 LIB_DEPENDS=	libpng.so:graphics/png
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	zenorogue
 
-USES=		autoreconf localbase
+USES=		autoreconf compiler:c++11-lang gl localbase sdl
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer gfx ttf
 USE_GL=		gl glew
@@ -38,6 +37,9 @@ DESKTOP_ENTRIES="HyperRogue" \
 		""
 
 OPTIONS_DEFINE=	DOCS
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|isnumber|is_number|' ${WRKSRC}/archimedean.cpp
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/hr-icon.ico ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.ico

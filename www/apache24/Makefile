@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	apache24
-PORTVERSION=	2.4.34
+PORTVERSION=	2.4.41
+PORTREVISION=	0
 CATEGORIES=	www ipv6
 MASTER_SITES=	APACHE_HTTPD
 DISTNAME=	httpd-${PORTVERSION}
@@ -17,9 +18,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libapr-1.so:devel/apr1 \
 		libpcre.so:devel/pcre
 
-CONFLICTS_INSTALL=	apache22-*
-
-USES=		apache:server,2.4 autoreconf cpe iconv libtool perl5 tar:bzip2
+USES=		apache:server,2.4 autoreconf compiler:c11 cpe iconv libtool perl5 tar:bzip2
 USE_PERL5=	run
 USE_RC_SUBR=	apache24 htcacheclean
 GNU_CONFIGURE=	yes
@@ -83,6 +82,7 @@ MD_LIB_DEPENDS=			libcurl.so:ftp/curl \
 				libjansson.so:devel/jansson
 MD_USES=			ssl
 PROXY_HTML_USE=			GNOME=libxml2
+PROXY_HTML_USES=		gnome
 PROXY_HTTP2_CONFIGURE_ON=	--with-nghttp2=${LOCALBASE}
 PROXY_HTTP2_LIB_DEPENDS=	libnghttp2.so:www/libnghttp2
 SOCACHE_DC_CONFIGURE_ON=	--with-distcache=${LOCALBASE}
@@ -92,6 +92,7 @@ SOCACHE_DC_LIB_DEPENDS=		libdistcache.so:security/distcache
 SSL_CONFIGURE_ON=		--with-ssl=${OPENSSLBASE}
 SSL_USES=			ssl
 XML2ENC_USE=			GNOME=libxml2
+XML2ENC_USES=			gnome
 
 ETC_SUBDIRS=		Includes envvars.d extra modules.d
 
@@ -138,7 +139,7 @@ IGNORE=	LDAP and AUTHNZ_LDAP requires APR-util to have LDAP support built in.\
 .  endif
 .  if ${PORT_OPTIONS:MSESSION_CRYPTO} && \
 	!(exists(${APU_CRYPTO_OPENSSL}) || exists(${APU_CRYPTO_NSS}))
-IGNORE=	SESSION_CRYPTO requires APR-util to have crypto openssl support build in.\
+IGNORE=	SESSION_CRYPTO requires APR-util to have crypto openssl support built in.\
 	Please rebuild APR with crypto openssl support
 .  endif
 .endif	# exists APU_CONFIG
@@ -175,11 +176,6 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-server_buildmark.c
 .endif
 .if defined(WITH_EXCEPTION_HOOK)
 CONFIGURE_ARGS+=	--enable-exception-hook
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100085 &&\
-	${PORT_OPTIONS:MHTTP2} && ${OPENSSLBASE} == /usr
-SUB_FILES+=		pkg-message
 .endif
 
 pre-extract-SUEXEC-on:

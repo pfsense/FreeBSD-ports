@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mosquitto
-PORTVERSION=	0.3.0
-PORTREVISION=	1
+PORTVERSION=	0.4.0
 CATEGORIES=	net pear
 DISTNAME=	Mosquitto-${PORTVERSION}
 
@@ -15,6 +14,5 @@ LICENSE=	BSD3CLAUSE
 BUILD_DEPENDS=	mosquitto>=0:net/mosquitto
 
 USES=		php:pecl
-IGNORE_WITH_PHP=	70 71 72
 
 .include <bsd.port.mk>

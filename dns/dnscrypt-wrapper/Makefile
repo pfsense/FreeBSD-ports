@@ -1,8 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	dnscrypt-wrapper
-PORTVERSION=	0.4.1
+PORTVERSION=	0.4.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	dns
 
 MAINTAINER=	freebsd@toyingwithfate.com

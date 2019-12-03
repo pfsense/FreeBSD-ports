@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	courier-authlib
-PORTVERSION=	0.68.0
-PORTREVISION?=	1
+PORTVERSION=	0.69.1
 CATEGORIES?=	security mail
 .if defined(PKGNAMESUFFIX)
 MASTER_SITES=	SF/courier/authlib/${PORTVERSION}
@@ -75,6 +74,8 @@ CONFIGURE_ARGS+=--with-base --with-authpam --with-authpipe
 USERS=		${MAILOWN}
 GROUPS=		${MAILGRP}
 
+OPTIONS_DEFINE+=	DOCS
+
 DOCS=		AUTHORS COPYING ChangeLog INSTALL NEWS README \
 		README.authdebug.html README_authlib.html
 
@@ -108,6 +109,8 @@ REMOVE_SUBDIRS+=makedat userdb
 
 .if ${AUTHMOD} == authldap
 RUN_DEPENDS+=	${LOCALBASE}/share/sysconftool/sysconftool:devel/sysconftool
+OPTIONS_DEFINE+=	DOCS
+
 DOCS=		README.ldap
 USE_OPENLDAP=	yes
 CONFIGURE_ARGS+=--with-authldap
@@ -117,7 +120,10 @@ CONFIGURE_ARGS+=--without-authldap
 
 .if ${AUTHMOD} == authmysql
 RUN_DEPENDS+=	${LOCALBASE}/share/sysconftool/sysconftool:devel/sysconftool
+OPTIONS_DEFINE+=	DOCS
+
 DOCS=		README.authmysql.html README.authmysql.myownquery
+USES+=		compiler:c11
 USE_MYSQL=	yes
 CONFIGURE_ARGS+=--with-authmysql \
 		--with-mysql-libs=${LOCALBASE}/lib/mysql \
@@ -128,6 +134,8 @@ CONFIGURE_ARGS+=--without-authmysql
 
 .if ${AUTHMOD} == authpgsql
 RUN_DEPENDS+=	${LOCALBASE}/share/sysconftool/sysconftool:devel/sysconftool
+OPTIONS_DEFINE+=	DOCS
+
 DOCS=		README.authpostgres.html
 USES+=		pgsql
 CONFIGURE_ARGS+=--with-authpgsql

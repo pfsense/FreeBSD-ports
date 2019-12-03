@@ -1,30 +1,34 @@
 # $FreeBSD$
 
-PORTNAME=	git-lfs
+PORTNAME=		git-lfs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.2
-CATEGORIES=	devel
+DISTVERSION=		2.8.0
+CATEGORIES=		devel
 
-MAINTAINER=	kenji@k2r.org
+MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Git extension for versioning large files
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-BUILD_DEPENDS=	bash:shells/bash
-
-USES=		go
+USES=		go:modules
 USE_GITHUB=	yes
-PLIST_FILES=	bin/git-lfs
 
-GO_PKGNAME=	github.com/${PORTNAME}/${PORTNAME}
+OPTIONS_DEFINE=		GIT_SUBVERSION MANPAGES
+OPTIONS_DEFAULT=	MANPAGES
+OPTIONS_SUB=		yes
 
-# see https://github.com/git-lfs/git-lfs/wiki/Installation
+GIT_SUBVERSION_DESC=		Use 'git-subversion' instead of 'git' as backend
+GIT_SUBVERSION_RUN_DEPENDS=	git-subversion>0:devel/git-subversion
+GIT_SUBVERSION_RUN_DEPENDS_OFF=	git:devel/git
 
-do-build:
-	@cd ${WRKSRC} && ${MKDIR} ${WRKSRC}/.tmp && ${SETENV} ${MAKE_ENV} ${GO_ENV} TMPDIR=${WRKSRC}/.tmp script/bootstrap
+MANPAGES_BUILD_DEPENDS=	ronn:textproc/rubygem-ronn
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/git-lfs ${STAGEDIR}${PREFIX}/bin/git-lfs
+post-build-MANPAGES-on:
+	cd ${GO_WRKSRC}/docs/man && ${LOCALBASE}/bin/ronn -r *.ronn
+
+post-install-MANPAGES-on:
+	${INSTALL_MAN} ${GO_WRKSRC}/docs/man/*.1 ${STAGEDIR}${LOCALBASE}/man/man1
+	${INSTALL_MAN} ${GO_WRKSRC}/docs/man/*.5 ${STAGEDIR}${LOCALBASE}/man/man5
 
 .include <bsd.port.mk>

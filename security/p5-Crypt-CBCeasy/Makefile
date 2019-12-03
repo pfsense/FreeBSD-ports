@@ -1,4 +1,3 @@
-# Created by: mat
 # $FreeBSD$
 
 PORTNAME=	Crypt-CBCeasy
@@ -11,9 +10,9 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy things make really easy with Crypt::CBC
 
-BUILD_DEPENDS=	p5-Crypt-CBC>=0:security/p5-Crypt-CBC \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Crypt-CBC>=0:security/p5-Crypt-CBC \
 		p5-MD5>=0:security/p5-MD5
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure

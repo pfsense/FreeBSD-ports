@@ -3,8 +3,8 @@
 
 PORTNAME=		open-vm-tools
 PORTVERSION=		${RELEASE_VER}
+PORTREVISION=		1
 DISTVERSIONPREFIX=	stable-
-PORTREVISION=	1
 PORTEPOCH=		2
 CATEGORIES=		emulators
 
@@ -16,33 +16,31 @@ LICENSE_FILE=		${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=		amd64 i386
 
-LIB_DEPENDS=		libmspack.so:archivers/libmspack
+LIB_DEPENDS=		libmspack.so:archivers/libmspack \
+			libdnet.so:net/libdnet
 
-RELEASE_VER=		10.2.5
-BUILD_VER=		8068406
+RELEASE_VER=		10.3.0
+BUILD_VER=		8931395
 
-OPTIONS_DEFINE=		DNET LIBNOTIFY OPENSSL X11
-OPTIONS_DEFAULT=	DNET LIBNOTIFY OPENSSL X11
+OPTIONS_DEFINE=		LIBNOTIFY OPENSSL X11
+OPTIONS_DEFAULT=	LIBNOTIFY OPENSSL X11
 
 OPTIONS_SUB=
 
-DNET_DESC=		libdnet support
 LIBNOTIFY_DESC=		Desktop notification support
 
 X11_CONFIGURE_WITH=	x gtk2 gtkmm
-X11_USE=		xorg=ice,sm,x11,xext,xi,xinerama,xineramaproto,xrandr,xrender,xtst \
+X11_USE=		xorg=ice,sm,x11,xext,xi,xinerama,xorgproto,xrandr,xrender,xtst \
 			gnome=gdkpixbuf2,gtk20,gtkmm24
 X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2
 LIBNOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
-DNET_CONFIGURE_WITH=	dnet
-DNET_LIB_DEPENDS=	libdnet.so:net/libdnet
 OPENSSL_CONFIGURE_WITH=	ssl
 
 WRKSRC_SUBDIR=		open-vm-tools
 
 GNU_CONFIGURE=		yes
-USES=			autoreconf fuse gettext-runtime kmod libtool localbase pathfix pkgconfig
+USES=			autoreconf fuse gettext-runtime kmod libtool localbase pathfix pkgconfig gnome
 USE_GNOME=		glib20
 
 USE_GITHUB=		yes
@@ -66,9 +64,9 @@ INSTALL_TARGET=		install-strip
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MX11}
-CONFLICTS=		open-vm-tools-nox11-[0-9]*
+CONFLICTS+=		open-vm-tools-nox11-[0-9]*
 .else
-CONFLICTS=		open-vm-tools-[0-9]*
+CONFLICTS+=		open-vm-tools-[0-9]*
 .endif
 
 CONFIGURE_ENV+=		SYSDIR=${SRC_BASE}/sys

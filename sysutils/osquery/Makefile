@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	osquery
-PORTVERSION=	3.2.6
-PORTREVISION=	1
+PORTVERSION=	3.3.2
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
 MAINTAINER=	zi@FreeBSD.org
@@ -21,6 +21,7 @@ BUILD_DEPENDS=	thrift>=0.11.0:devel/thrift \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR}
 LIB_DEPENDS=	libaugeas.so:textproc/augeas \
 		libboost_regex.so:devel/boost-libs \
+		libfuzzy.so:security/ssdeep \
 		libgflags.so:devel/gflags \
 		libglog.so:devel/glog \
 		libicuuc.so:devel/icu \
@@ -29,11 +30,12 @@ LIB_DEPENDS=	libaugeas.so:textproc/augeas \
 		libzstd.so:archivers/zstd
 RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss
 
-USES=		cmake:outsource libtool python:build compiler:c++11-lib \
+USES=		cmake libtool python:2.7,build compiler:c++11-lib \
 		libarchive ssl
 USE_GNOME=	libxml2
 CONFIGURE_ENV+=	OSQUERY_BUILD_VERSION="${PORTVERSION}" HOME="${WRKDIR}" \
-		SKIP_TESTS="yes" CC="${CC}" CXX="${CXX}"
+		SKIP_TESTS="yes" CC="${CC}" CXX="${CXX}" \
+		SKIP_SMART=1
 CMAKE_ARGS+=	-DFREEBSD=awesome -DCMAKE_SYSTEM_NAME="FreeBSD"
 BLDDIR=		${WRKDIR}/.build/${PORTNAME}
 TPVERSION=	3.0.0
@@ -64,12 +66,6 @@ LLDPD_LIB_DEPENDS=	liblldpctl.so:net-mgmt/lldpd
 LLDPD_CONFIGURE_ENV_OFF=SKIP_LLDPD=1
 
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1100000
-BUILD_DEPENDS+=	clang40:devel/llvm40
-CC=	clang40
-CXX=	clang++40
-.endif
 
 post-patch:
 	${REINPLACE_CMD} -e 's|/var/osquery/|/var/db/osquery/|g' \

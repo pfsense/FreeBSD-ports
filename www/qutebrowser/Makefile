@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	qutebrowser
-DISTVERSION=	1.3.3
-PORTREVISION=	1
+DISTVERSION=	1.8.1
 CATEGORIES=	www
 MASTER_SITES=	CHEESESHOP
 
@@ -32,7 +31,9 @@ PLIST_FILES=	share/applications/${PORTNAME}-${PYTHON_VER}.desktop
 
 OPTIONS_MULTI=	BACKEND
 OPTIONS_MULTI_BACKEND=	WEBKIT WEBENGINE
-OPTIONS_DEFAULT=	WEBKIT WEBENGINE
+OPTIONS_DEFAULT=	WEBKIT
+OPTIONS_DEFAULT_amd64=	WEBENGINE
+OPTIONS_DEFAULT_i386=	WEBENGINE
 
 WEBENGINE_DESC=		WebEngine webpage renderer support
 
@@ -40,7 +41,7 @@ WEBKIT_USE=	PYQT=webkit,webkitwidgets
 WEBENGINE_USE=	PYQT=webengine,webchannel
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/misc/${PORTNAME}.desktop \
+	${INSTALL_DATA} ${WRKSRC}/misc/org.qutebrowser.qutebrowser.desktop \
 		${STAGEDIR}${PREFIX}/share/applications/${PORTNAME}-${PYTHON_VER}.desktop
 
 .include <bsd.port.mk>

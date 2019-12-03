@@ -3,7 +3,7 @@
 
 PORTNAME=	ike
 PORTVERSION=	2.2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security net
 MASTER_SITES=	https://www.shrew.net/download/ike/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-release
@@ -14,7 +14,7 @@ COMMENT=	Shrew Soft IKE daemon and client tools
 ONLY_FOR_ARCHS=	i386 amd64
 
 USE_RC_SUBR=	iked
-USES=		bison cmake libedit localbase:ldflags tar:tbz2 ssl
+USES=		bison cmake:insource libedit localbase:ldflags tar:tbz2 ssl
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
@@ -24,10 +24,9 @@ CMAKE_ARGS=	-DETCDIR:PATH="${PREFIX}/etc" \
 		-DLIBDIR:PATH="${PREFIX}/lib" \
 		-DMANDIR:PATH="${PREFIX}/man"
 
-OPTIONS_DEFINE=	QTGUI NATT LDAP DEBUG
+OPTIONS_DEFINE=	NATT LDAP DEBUG
 OPTIONS_SUB=	yes
 
-QTGUI_DESC=	Enable QT client front end applications
 NATT_DESC=	Enable NAT-Traversal
 LDAP_DESC=	Enable LDAP XAuth daemon support
 
@@ -36,9 +35,13 @@ DEBUG_CMAKE_ON=	-DDEBUG=YES
 LDAP_USE=	OPENLDAP=yes
 LDAP_CMAKE_ON=	-DLDAP=YES
 NATT_CMAKE_ON=	-DNATT=YES
-QTGUI_CMAKE_ON=	-DQTGUI=YES
-QTGUI_USES=	qt:4
-QTGUI_USE=	QT=gui,moc_build,qmake_build,rcc_build,uic_build
+
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'evp_cipher_ctx_st')
+BROKEN_FreeBSD_13=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'evp_cipher_ctx_st')
+.endif
 
 post-install:
 	@if ! ${SYSCTL} -a | ${GREP} -q ipsec; then \
@@ -55,4 +58,4 @@ post-install-NATT-on:
 	@${ECHO_MSG} "===>   options IPSEC_NAT_T"
 	@${ECHO_MSG} "===> -------------------------------------------------------------------------"
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

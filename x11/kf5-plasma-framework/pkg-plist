@@ -70,7 +70,6 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_PLUGINDIR%%/kpackage/packagestructure/plasmatheme_packagestructure.so
 %%QT_PLUGINDIR%%/kpackage/packagestructure/plasmoid_packagestructure.so
 %%QT_PLUGINDIR%%/plasma/scriptengines/plasma_appletscript_declarative.so
-%%QT_PLUGINDIR%%/plasma_engine_testengine.so
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/BusyIndicator.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Button.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/CheckBox.qml
@@ -89,14 +88,16 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Label.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Menu.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/MenuItem.qml
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/PageIndicator.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Popup.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/ProgressBar.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/RadioButton.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/RadioDelegate.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/RadioIndicator.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/RangeSlider.qml
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/RoundButton.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/ScrollBar.qml
-%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/ScrollView.qml	
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/ScrollView.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Slider.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/SpinBox.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Switch.qml
@@ -109,10 +110,14 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/ToolBar.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/ToolButton.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/ToolTip.qml
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/mobiletextselection/MobileCursor.qml
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/mobiletextselection/MobileTextActionsToolBar.qml
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/mobiletextselection/qmldir
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/private/ButtonShadow.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/private/DefaultListItemBackground.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/private/RoundShadow.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/private/TextFieldFocus.qml
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/private/qmldir
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/qmldir
 %%QT_QMLDIR%%/QtQuick/Controls/Styles/Plasma/ApplicationWindowStyle.qml
 %%QT_QMLDIR%%/QtQuick/Controls/Styles/Plasma/BusyIndicatorStyle.qml
@@ -178,6 +183,7 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/plasma/components.3/RadioIndicator.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/RangeSlider.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/ScrollBar.qml
+%%QT_QMLDIR%%/org/kde/plasma/components.3/ScrollView.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/Slider.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/SpinBox.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/Switch.qml
@@ -189,10 +195,15 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/plasma/components.3/TextField.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/ToolBar.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/ToolButton.qml
+%%QT_QMLDIR%%/org/kde/plasma/components.3/ToolTip.qml
+%%QT_QMLDIR%%/org/kde/plasma/components.3/mobiletextselection/MobileCursor.qml
+%%QT_QMLDIR%%/org/kde/plasma/components.3/mobiletextselection/MobileTextActionsToolBar.qml
+%%QT_QMLDIR%%/org/kde/plasma/components.3/mobiletextselection/qmldir
 %%QT_QMLDIR%%/org/kde/plasma/components.3/private/ButtonShadow.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/private/DefaultListItemBackground.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/private/RoundShadow.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/private/TextFieldFocus.qml
+%%QT_QMLDIR%%/org/kde/plasma/components.3/private/qmldir
 %%QT_QMLDIR%%/org/kde/plasma/components.3/qmldir
 %%QT_QMLDIR%%/org/kde/plasma/components/BusyIndicator.qml
 %%QT_QMLDIR%%/org/kde/plasma/components/Button.qml
@@ -277,7 +288,6 @@ share/kdevappwizard/templates/plasma-wallpaper.tar.bz2
 share/kdevappwizard/templates/plasma-wallpaper-with-qml-extension.tar.bz2
 share/kdevappwizard/templates/qml-plasmoid.tar.bz2
 share/kdevappwizard/templates/qml-plasmoid-with-qml-extension.tar.bz2
-share/kservices5/plasma-dataengine-testengine.desktop
 share/kservices5/plasma-scriptengine-applet-declarative.desktop
 share/kservicetypes5/plasma-applet.desktop
 share/kservicetypes5/plasma-containment.desktop
@@ -291,7 +301,6 @@ share/kservicetypes5/plasma-service.desktop
 share/kservicetypes5/plasma-shell.desktop
 share/kservicetypes5/plasma-wallpaper.desktop
 share/locale/ar/LC_MESSAGES/libplasma5.mo
-share/locale/ast/LC_MESSAGES/libplasma5.mo
 share/locale/bs/LC_MESSAGES/libplasma5.mo
 share/locale/ca/LC_MESSAGES/libplasma5.mo
 share/locale/ca@valencia/LC_MESSAGES/libplasma5.mo
@@ -317,6 +326,7 @@ share/locale/ko/LC_MESSAGES/libplasma5.mo
 share/locale/lt/LC_MESSAGES/libplasma5.mo
 share/locale/lt/LC_SCRIPTS/libplasma5/libplasma5.js
 share/locale/lt/LC_SCRIPTS/libplasma5/plasmoids.js
+share/locale/ml/LC_MESSAGES/libplasma5.mo
 share/locale/mr/LC_MESSAGES/libplasma5.mo
 share/locale/nb/LC_MESSAGES/libplasma5.mo
 share/locale/nds/LC_MESSAGES/libplasma5.mo
@@ -335,6 +345,7 @@ share/locale/sr@ijekavian/LC_MESSAGES/libplasma5.mo
 share/locale/sr@ijekavianlatin/LC_MESSAGES/libplasma5.mo
 share/locale/sr@latin/LC_MESSAGES/libplasma5.mo
 share/locale/sv/LC_MESSAGES/libplasma5.mo
+share/locale/tg/LC_MESSAGES/libplasma5.mo
 share/locale/tr/LC_MESSAGES/libplasma5.mo
 share/locale/ug/LC_MESSAGES/libplasma5.mo
 share/locale/uk/LC_MESSAGES/libplasma5.mo
@@ -444,6 +455,7 @@ share/plasma/desktoptheme/default/icons/cantata.svgz
 share/plasma/desktoptheme/default/icons/computer.svgz
 share/plasma/desktoptheme/default/icons/configure.svgz
 share/plasma/desktoptheme/default/icons/device.svgz
+share/plasma/desktoptheme/default/icons/disk.svgz
 share/plasma/desktoptheme/default/icons/distribute.svgz
 share/plasma/desktoptheme/default/icons/document.svgz
 share/plasma/desktoptheme/default/icons/drive.svgz
@@ -474,6 +486,7 @@ share/plasma/desktoptheme/default/icons/media.svgz
 share/plasma/desktoptheme/default/icons/nepomuk.svgz
 share/plasma/desktoptheme/default/icons/network.svgz
 share/plasma/desktoptheme/default/icons/notification.svgz
+share/plasma/desktoptheme/default/icons/osd.svgz
 share/plasma/desktoptheme/default/icons/phone.svgz
 share/plasma/desktoptheme/default/icons/plasmavault.svgz
 share/plasma/desktoptheme/default/icons/plasmavault_error.svgz

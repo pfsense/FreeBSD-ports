@@ -2,7 +2,7 @@
 
 PORTNAME=	sendmail
 PORTVERSION=	8.15.2
-PORTREVISION=	11
+PORTREVISION=	18
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/
 DISTNAME=	${PORTNAME}.${PORTVERSION}
@@ -25,13 +25,15 @@ MAKE_ARGS=	UBINOWN=${UID} UBINGRP=${GID} \
 		SBINOWN=${UID} SBINGRP=${GID} \
 		GBINOWN=${UID} GBINGRP=${GID} \
 		MANOWN=${UID} MANGRP=${GID} \
+		CFOWN=${UID} CFGRP=${GID} \
+		MSPQOWN=${UID} \
 		LIBMODE=0644 UBINMODE=0755 GBINMODE=2755
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DOCS=		KNOWNBUGS LICENSE PGPKEYS README RELEASE_NOTES \
 		sendmail/TRACEFLAGS sendmail/SECURITY sendmail/TUNING
 PLIST_SUB+=	PREFIX=${PREFIX:S=${PREFIX}/==} \
 		MANPREFIX=${MANPREFIX:S=$=/=:S=${PREFIX}==:S=^/==}
-PKGMESSAGE=	${WRKSRC}/pkg-message
+SUB_FILES=	pkg-message
 
 WCONF=		${WRKSRC}/devtools/Site
 SITE=		${FILESDIR}/site.config.m4.pre4
@@ -49,7 +51,6 @@ OPTIONS_DEFINE?=	SHMEM SEM LA NIS IPV6 TLS SASL SASLAUTHD LDAP BDB \
 			PICKY_HELO_CHECK MILTER DOCS
 OPTIONS_DEFAULT?=	SHMEM SEM LA NIS TLS SASL SASLAUTHD BDB1 \
 			BLACKLISTD PICKY_HELO_CHECK MILTER
-OPTIONS_EXCLUDE_FreeBSD_10=	BLACKLISTD
 NO_OPTIONS_SORT=yes
 SHMEM_DESC=		System V shared memory support
 LA_DESC=		load averages support
@@ -149,31 +150,25 @@ NO_PACKAGE=	GPLv3 license conflict
 SITE+=	${FILESDIR}/site.config.m4.gdbm
 .endif
 
-SED_SCRIPT=	-e "s|\`-O\'|\`${CFLAGS}\'|" \
+SED_SCRIPT=	-e "s|\`-O'|\`${CFLAGS}'|" \
 		-e 's|%%CC%%|${CC}|' -e 's|%%LD%%|${LD}|'
 
 .if ! ${PORT_OPTIONS:MNIS}
 SED_SCRIPT+=	-e "s;-DNIS ;;"
 .endif
 
-post-patch:
-	@${SED} -e "s=%%PREFIX%%=${PREFIX}=g" \
-		-e "s=%%LOCALBASE%%=${LOCALBASE}=g" \
-		-e "s=%%PORTSDIR%%=${PORTSDIR}=g" \
-		${PKGDIR}/pkg-message > ${WRKSRC}/pkg-message
-
 do-configure:
 .if ${PORT_OPTIONS:MGDBM}
 	@(if [ ! -e "${LOCALBASE}/lib/libgdbm_compat.so" ] ; then \
 	  ${ECHO_MSG} "===> option COMPAT is missing in databases/gdbm."; \
-          ${FALSE}; \
-          fi)
+	  ${FALSE}; \
+	  fi)
 .endif
 .if ${PORT_OPTIONS:MBLACKLISTD}
 	@(if [ ! -e "${DESTDIR}/usr/lib/libblacklist.so" ] ; then \
 	  ${ECHO_MSG} "===> libblacklist.so not found. Please update to FreeBSD 11"; \
-          ${FALSE}; \
-          fi)
+	  ${FALSE}; \
+	  fi)
 .endif
 	${REINPLACE_CMD} ${SED_SCRIPT} ${WRKSRC}/devtools/OS/FreeBSD
 	${SED} -e "s=%%PREFIX%%=${PREFIX}=g" \
@@ -236,6 +231,11 @@ pre-install:
 	@${ECHO_CMD} "share/doc/sendmail/CYRUS_LOOKUP" >>${PLIST}
 .endif
 .endif
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/mail
+	@${SED} \
+	 -e "s=\([ 	]\)/.*$$=\\1${SENDMAIL}=" \
+	 ${FILESDIR}/mailer.conf \
+	 > ${STAGEDIR}${PREFIX}/etc/mail/mailer.conf.sendmail
 
 # We want mail.local and rmail for our system.
 # the build install catmans only, we have to fix this.
@@ -259,7 +259,6 @@ post-install:
 	${RM} ${STAGEDIR}${PREFIX}/man/cat*/*
 # final perm of sendmail is 2555 (see plist), needed for strip cmd
 	${CHMOD} 755 ${STAGEDIR}${PREFIX}/sbin/sendmail
-
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/vacation
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rmail
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/*
@@ -280,27 +279,22 @@ post-install-DOCS-on:
 
 mailer.base:
 	@${SED} \
-	-e "s=^sendmail[ 	]*/.*$$=sendmail	${BASEMAIL}=" \
-	-e "s=^send-mail[ 	]*/.*$$=send-mail	${BASEMAIL}=" \
-	-e "s=^mailq[ 	]*/.*$$=mailq		${BASEMAIL}=" \
-	-e "s=^newaliases[ 	]*/.*$$=newaliases	${BASEMAIL}=" \
-	-e "s=^hoststat[ 	]*/.*$$=hoststat	${BASEMAIL}=" \
-	-e "s=^purgestat[ 	]*/.*$$=purgestat	${BASEMAIL}=" \
-	 ${DESTDIR}/etc/mail/mailer.conf > ${DESTDIR}/etc/mail/mailer.conf.new
+	 -e "s=\([ 	]\)/.*$$=\\1${BASEMAIL}=" \
+	 ${FILESDIR}/mailer.conf > ${DESTDIR}/etc/mail/mailer.conf.new
 	${MV} ${DESTDIR}/etc/mail/mailer.conf.new \
 		${DESTDIR}/etc/mail/mailer.conf
 
 mailer.conf:
+.if exists(${DESTDIR}${PREFIX}/etc/mail/mailer.conf.sendmail)
+	@${CP} -v ${DESTDIR}${PREFIX}/etc/mail/mailer.conf.sendmail \
+		${DESTDIR}${PREFIX}/etc/mail/mailer.conf
+.else
+	@${MKDIR} ${DESTDIR}${PREFIX}/etc/mail
 	@${SED} \
-	-e "s=^sendmail[ 	]*/.*$$=sendmail	${SENDMAIL}=" \
-	-e "s=^send-mail[ 	]*/.*$$=send-mail	${SENDMAIL}=" \
-	-e "s=^mailq[ 	]*/.*$$=mailq		${SENDMAIL}=" \
-	-e "s=^newaliases[ 	]*/.*$$=newaliases	${SENDMAIL}=" \
-	-e "s=^hoststat[ 	]*/.*$$=hoststat	${SENDMAIL}=" \
-	-e "s=^purgestat[ 	]*/.*$$=purgestat	${SENDMAIL}=" \
-	 ${DESTDIR}/etc/mail/mailer.conf > ${DESTDIR}/etc/mail/mailer.conf.new
-	${MV} ${DESTDIR}/etc/mail/mailer.conf.new \
-		${DESTDIR}/etc/mail/mailer.conf
+	 -e "s=\([ 	]\)/.*$$=\\1${SENDMAIL}=" \
+	 ${FILESDIR}/mailer.conf \
+	 > ${DESTDIR}${PREFIX}/etc/mail/mailer.conf
+.endif
 
 # create sumbit.cf on older systems
 #
@@ -370,7 +364,7 @@ pre-everything::
 	@${ECHO_CMD} "#"
 	@${ECHO_CMD} "# Please install with normal PREFIX"
 	@${ECHO_CMD} "# and activate the port version with"
-	@${ECHO_CMD} "# cd ${PORTSDIR}/mail/sendmail && make mailer.conf"
+	@${ECHO_CMD} "# cd /usr/local/etc/mail && cp mailer.conf.sendmail mailer.conf"
 	@${ECHO_CMD} "#"
 	@${FALSE}
 .endif

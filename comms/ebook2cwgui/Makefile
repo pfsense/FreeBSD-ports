@@ -2,7 +2,7 @@
 
 PORTNAME=	ebook2cwgui
 PORTVERSION=	0.1.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://fkurz.net/ham/ebook4cw/
 
@@ -14,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	ebook2cw:comms/ebook2cw
 
+USES=		compiler:c++11-lang
 USE_WX=		2.8
 
 PORTDOCS=	*

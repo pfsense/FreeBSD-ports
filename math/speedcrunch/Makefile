@@ -2,30 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	speedcrunch
-PORTVERSION=	0.12.0
+PORTVERSION=	0.12.0	# XXX: should really be 0.12, change upon next update
 DISTVERSIONSUFFIX=	-${BB_COMMIT}
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
-MAINTAINER=	mikael.urankar@gmail.com
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Keyboard-oriented desktop scientific calculator
 
 LICENSE=	GPLv2+
 
-USES=		cmake:outsource qt:5
-
 BB_ACCOUNT=	heldercorreia
 BB_PROJECT=	${PORTNAME}
-BB_COMMIT=	7f2565d6a0ad
+BB_COMMIT=	c0fc9c68d292
 
-WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
-CMAKE_SOURCE_PATH=	${WRKSRC}/src
-USE_QT=		buildtools core gui help qmake_build qml widgets
+USES=		cmake compiler:c++11-lang qt:5
+USE_QT=		buildtools_build qmake_build core gui help sql widgets
 USE_XORG=	x11
 
+WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
+WRKSRC_SUBDIR=	src
+
 post-patch:
-# Remove custom options for compiler warnings
-	@${REINPLACE_CMD} -e 's|-W[-_[:alnum:]]*||g' \
+	@${REINPLACE_CMD} -e 's|-W[-_[:alnum:]]*|| ; s|metainfo|appdata| \
+	    ; s|master|${PORTVERSION:R}-git-${BB_COMMIT}|' \
 		${CMAKE_SOURCE_PATH}/CMakeLists.txt
 
 .include <bsd.port.mk>

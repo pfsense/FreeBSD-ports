@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ransack
-PORTVERSION=	1.8.8
+PORTVERSION=	2.1.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,14 +12,14 @@ COMMENT=	Successor to the MetaSearch gem
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-actionpack4>=3.0:www/rubygem-actionpack4 \
-		rubygem-activerecord4>=3.0:databases/rubygem-activerecord4 \
-		rubygem-activesupport4>=3.0:devel/rubygem-activesupport4 \
-		rubygem-i18n>=0:devel/rubygem-i18n \
-		rubygem-polyamorous>=1.3.2:devel/rubygem-polyamorous
+RUN_DEPENDS=	rubygem-actionpack5>=5.0:www/rubygem-actionpack5 \
+		rubygem-activerecord5>=5.0:databases/rubygem-activerecord5 \
+		rubygem-activesupport5>=5.0:devel/rubygem-activesupport5 \
+		rubygem-i18n>=0:devel/rubygem-i18n
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

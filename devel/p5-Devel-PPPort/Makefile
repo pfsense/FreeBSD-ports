@@ -1,13 +1,12 @@
-# Created by: mat
 # $FreeBSD$
 
 PORTNAME=	Devel-PPPort
-PORTVERSION=	3.42
+PORTVERSION=	3.54
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	perl@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl/Pollution/Portability
 
 LICENSE=	ART10 GPLv1+

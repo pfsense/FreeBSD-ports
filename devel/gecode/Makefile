@@ -3,9 +3,9 @@
 
 PORTNAME=	gecode
 PORTVERSION=	5.1.0
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	devel
-MASTER_SITES=	http://www.gecode.org/download/
+MASTER_SITES=	https://www.gecode.org/download/
 
 MAINTAINER=	dem.procopiou@gmail.com
 COMMENT=	Generic Constraint Development Environment
@@ -37,19 +37,11 @@ CONFIGURE_ARGS=	--disable-static \
 		--with-gmp-include=${LOCALBASE}/include \
 		--with-gmp-lib=${LOCALBASE}/lib \
 		--with-mpfr-include=${LOCALBASE}/include \
-		--with-mpfr-lib=${LOCALBASE}/lib
+		--with-mpfr-lib=${LOCALBASE}/lib \
+		--disable-gist --disable-qt
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=yes
 PLIST_SUB=	SHLIB_VERSION=44
-
-OPTIONS_DEFINE=	GIST
-OPTIONS_SUB=	yes
-
-GIST_DESC=	Interactive Search Tool (requires Qt)
-GIST_USES=	qt:4
-GIST_USE=	QT=corelib,gui,moc_build,qmake_build
-GIST_CONFIGURE_ON=	--enable-gist --enable-qt
-GIST_CONFIGURE_OFF=	--disable-gist --disable-qt
 
 .include <bsd.port.options.mk>
 

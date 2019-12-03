@@ -3,8 +3,8 @@
 
     COMMENT = Ports for managing, installing, and developing FreeBSD ports and packages
 
-    SUBDIR += bsdadminscripts
     SUBDIR += bsdadminscripts2
+    SUBDIR += caronade
     SUBDIR += chucky
     SUBDIR += create-rb-port
     SUBDIR += dialog4ports
@@ -14,11 +14,11 @@
     SUBDIR += freebsd-bugzilla-cli
     SUBDIR += genpatch
     SUBDIR += genplist
-    SUBDIR += hs-porte
     SUBDIR += jailaudit
     SUBDIR += lsknobs
     SUBDIR += managepkg
     SUBDIR += mkreadmes
+    SUBDIR += modules2tuple
     SUBDIR += octopkg
     SUBDIR += p5-FreeBSD-Portindex
     SUBDIR += p5-FreeBSD-Ports
@@ -48,6 +48,7 @@
     SUBDIR += portell
     SUBDIR += portest
     SUBDIR += portfind
+    SUBDIR += portfmt
     SUBDIR += portgraph
     SUBDIR += portless
     SUBDIR += portlint
@@ -67,11 +68,11 @@
     SUBDIR += poudriere
     SUBDIR += poudriere-devel
     SUBDIR += psearch
+    SUBDIR += py-FreeBSD-ports
     SUBDIR += py-pytoport
     SUBDIR += py-skog
     SUBDIR += symports
     SUBDIR += synth
-    SUBDIR += tinderbox
     SUBDIR += wanted-ports
 
 .include <bsd.port.subdir.mk>

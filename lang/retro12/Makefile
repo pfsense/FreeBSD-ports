@@ -1,53 +1,54 @@
 # $FreeBSD$
 
 PORTNAME=	retro12
-DISTVERSION=	2018.4.20
+DISTVERSION=	2019.7
 CATEGORIES=	lang
-MASTER_SITES=	https://forthworks.com/retro/r/
+MASTER_SITES=	http://forthworks.com/retro/r/ \
+		https://forthworks.com/retro/r/
 DISTNAME=	${PORTNAME:tu}-${DISTVERSION}
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Clean, elegant, and pragmatic dialect of Forth
 
 LICENSE=	ISCL
-LICENSE_FILE=	${WRKSRC}/LICENSE.md
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-# Conflicting files: bin/listener bin/repl bin/ri
-CONFLICTS_INSTALL=	audio/listener mail/nmh japanese/mh lang/ruby
+USES=	ncurses shebangfix
 
-USES=	ncurses
+SHEBANG_FILES=	example/Atua*
+SHEBANG_LANG=	retro
 
 MAKE_ENV=	DATADIR=${DATADIR} \
 		DESTDIR=${DESTDIR} \
 		DOCSDIR=${DOCSDIR} \
 		EXAMPLESDIR=${EXAMPLESDIR} \
 		PREFIX=${PREFIX}
-OPTIONS_DEFINE=	DOCS EXAMPLES
+# There are race conditions in the makefile due to missing dependencies for
+# targets as upstream tests releases on single core machines.
+MAKE_JOBS_UNSAFE=	yes
 
-PLIST_FILES=	bin/embedimage \
-		bin/extend \
-		bin/injectimage-js \
-		bin/listener \
-		bin/muri \
-		bin/repl \
-		bin/ri \
-		bin/rre \
-		bin/unu
+PLIST_FILES=	bin/retro \
+		bin/retro-describe \
+		bin/retro-document \
+		bin/retro-embedimage \
+		bin/retro-extend \
+		bin/retro-muri \
+		bin/retro-unu
 
-PORTDATA=	RETRO12.html \
-		glossary.forth \
+PORTDATA=	glossary.forth \
 		ngaImage \
 		tests \
 		words.tsv
 
 PORTDOCS=	doc \
-		literate \
-		README.md \
-		RELEASE_NOTES.md
+		README \
+		RELEASE-NOTES
 
 PORTEXAMPLES=	example
 
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	test
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.mk>

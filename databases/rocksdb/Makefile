@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rocksdb
-PORTVERSION=	5.13.4
+PORTVERSION=	6.2.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -27,6 +27,7 @@ OPTIONS_DEFINE=	DEBUG LZ4 ZSTD
 OPTIONS_DEFAULT=LZ4
 
 USES=		compiler:c++11-lib gmake localbase:ldflags shebangfix
+
 ALL_TARGET=	shared_lib static_lib all
 CFLAGS+=	-DOS_FREEBSD
 CONFIGURE_ARGS=	make_config.mk
@@ -36,6 +37,7 @@ HAS_CONFIGURE=	yes
 MAKE_ENV=	CXX=${CXX} INSTALL_PATH=${STAGEDIR}${PREFIX}
 USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
+TEST_TARGET=	check
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION} SHLIB_MAJOR=${PORTVERSION:R:R} SHLIB_MINOR=${PORTVERSION:R:E}
 PORTDATA=	make_config.mk
@@ -45,8 +47,8 @@ USE_GITHUB=	yes
 
 SHEBANG_FILES=	*/*.sh
 
-BENCHMARKS=	cache_bench column_aware_encoding_exp db_bench memtablerep_bench persistent_cache_bench table_reader_bench
-TOOLS=		db_repl_stress db_sanity_test db_stress ldb rocksdb_dump rocksdb_undump sst_dump write_stress
+BENCHMARKS=	cache_bench db_bench memtablerep_bench persistent_cache_bench range_del_aggregator_bench table_reader_bench
+TOOLS=		blob_dump db_repl_stress db_sanity_test db_stress ldb rocksdb_dump rocksdb_undump sst_dump trace_analyzer write_stress
 
 DEBUG_MAKE_ENV=		DEBUG_LEVEL=2
 DEBUG_MAKE_ENV_OFF=	DEBUG_LEVEL=0
@@ -68,12 +70,12 @@ PLIST_SUB+=	LITE=${PKGNAMESUFFIX}
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 36
+.if ${CHOSEN_COMPILER_TYPE} == clang
 CXXFLAGS+=	-Wno-inconsistent-missing-override
+# Clang 8 detects shadow enums and stops the build. This workaround adds -Wno-error=shadow to bypass it.
+.if ${COMPILER_VERSION} >= 80
+CXXFLAGS+=	-Wno-error=shadow
 .endif
-
-.if ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} < 60
-CFLAGS+=	-D_GLIBCXX_USE_C99
 .endif
 
 post-patch:
@@ -97,8 +99,5 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/librocksdb${PKGNAMESUFFIX}.so
 	${INSTALL_DATA} ${WRKSRC}/librocksdb${PKGNAMESUFFIX}_tools.a ${STAGEDIR}${PREFIX}/lib/
 	${INSTALL_DATA} ${WRKSRC}/make_config.mk ${STAGEDIR}${DATADIR}/
-
-regression-test test: build
-	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check
 
 .include <bsd.port.post.mk>

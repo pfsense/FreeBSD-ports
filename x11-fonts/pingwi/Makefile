@@ -3,7 +3,7 @@
 
 PORTNAME=	pingwi
 PORTVERSION=	0.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://www.pingwinsoft.ru/system/uploads/16/original/ \
 		http://fbsd.zlonet.ru/distfiles/
@@ -12,6 +12,10 @@ DISTNAME=	fonts_test
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PingWi Typography fonts
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 USES=		fonts zip
 NO_BUILD=	yes

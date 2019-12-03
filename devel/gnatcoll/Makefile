@@ -3,7 +3,7 @@
 
 PORTNAME=	gnatcoll
 PORTVERSION=	2016	# branch: gpl-for-gps-2016
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,6 +11,10 @@ COMMENT=	GNAT Component Collection from Adacore
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING3
+
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
 
 BUILD_DEPENDS=	gprbuild:devel/gprbuild \
 		gnat_util>=20140422:lang/gnat_util
@@ -23,7 +27,7 @@ GH_ACCOUNT=	AdaCore
 GH_PROJECT=	gprbuild:libgpr
 GH_TAGNAME=	858f72c a2e9066:libgpr
 
-USES=		ada gmake pkgconfig python shebangfix
+USES=		ada gmake pkgconfig python:2.7 shebangfix
 SHEBANG_FILES=	src/dborm.py
 USE_GNOME=	pygobject3
 
@@ -40,7 +44,8 @@ OPTIONS_DEFINE=		READLINE SYSLOG PGSQL DOCS EXAMPLES
 OPTIONS_DEFAULT=	READLINE SYSLOG
 OPTIONS_SUB=		yes
 
-DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
+DOCS_BUILD_DEPENDS=	sphinx-build-${PYTHON_VER}:textproc/py-sphinx@${PY_FLAVOR}
+DOCS_BINARY_ALIAS=	sphinx-build=sphinx-build-${PYTHON_VER}
 DOCS_ALL_TARGET=	docs
 SYSLOG_CONFIGURE_ENABLE=	syslog
 

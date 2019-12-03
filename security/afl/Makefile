@@ -4,7 +4,7 @@
 PORTNAME=	afl
 PORTVERSION=	2.52
 DISTVERSIONSUFFIX=	b
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	http://lcamtuf.coredump.cx/afl/releases/
 
@@ -19,30 +19,32 @@ LICENSE_FILE=	${WRKSRC}/docs/COPYING
 ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	Uses binary instrumentation
 
-USES=	gmake tar:tgz
+USES=		gmake tar:tgz
 
 ALL_TARGET=	all libdislocator
 TEST_TARGET=	test_build
 
-OPTIONS_DEFINE=	DEBUG DOCS LLVM
+CONFLICTS_INSTALL=	afl++
+
+OPTIONS_DEFINE=		DEBUG DOCS LLVM
 OPTIONS_DEFAULT=	LLVM
-OPTIONS_SUB=	yes
+OPTIONS_SUB=		yes
 
 LLVM_DESC=	LLVM-based instrumentation
 
-# You have implicit approval to bump the LLVM version here as long as
-# it builds WITH=LLVM and `make test` passes on all supported
-# releases.
-LLVM_VERSION?= 60
-
+LLVM_BUILD_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
+LLVM_RUN_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
+LLVM_MAKE_ARGS=		LLVM_CONFIG=llvm-config${LLVM_DEFAULT}
 LLVM_ALL_TARGET=	llvm_mode
-LLVM_BUILD_DEPENDS=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
-LLVM_RUN_DEPENDS=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 LLVM_TEST_TARGET=	test_llvm_mode
-LLVM_VARS=	CC=clang${LLVM_VERSION} CXX=clang++${LLVM_VERSION} \
-		MAKE_ARGS=LLVM_CONFIG=llvm-config${LLVM_VERSION}
+LLVM_VARS=		CC=clang${LLVM_DEFAULT} \
+			CXX=clang++${LLVM_DEFAULT}
 
 .include <bsd.port.options.mk>
+
+.if ${LLVM_DEFAULT:S,-devel,990,} >= 90
+LLVM_DEFAULT=	80
+.endif
 
 .if ${ARCH} == "i386"
 # Clang i386 emits .cfi_sections which base as(1) doesn't understand
@@ -64,8 +66,8 @@ post-patch:
 
 post-patch-LLVM-on:
 	@${REINPLACE_CMD} \
-		-e 's|"clang"|"clang${LLVM_VERSION}"|g' \
-		-e 's|"clang\+\+"|"clang\+\+${LLVM_VERSION}"|g' \
+		-e 's|"clang"|"clang${LLVM_DEFAULT}"|g' \
+		-e 's|"clang\+\+"|"clang\+\+${LLVM_DEFAULT}"|g' \
 		${WRKSRC}/llvm_mode/afl-clang-fast.c
 
 post-install:

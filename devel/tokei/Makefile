@@ -2,7 +2,8 @@
 
 PORTNAME=	tokei
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.0.3
+DISTVERSION=	10.0.1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -15,95 +16,147 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENCE-MIT
 
 USES=		cargo
 USE_GITHUB=	yes
-GH_ACCOUNT=	Aaronepower
+GH_ACCOUNT=	XAMPPRocky
 
-CARGO_CRATES=	aho-corasick-0.6.4 \
+CARGO_CRATES=	aho-corasick-0.7.3 \
 		ansi_term-0.11.0 \
-		arrayvec-0.4.7 \
-		atty-0.2.10 \
-		bitflags-1.0.3 \
-		byteorder-1.2.3 \
-		cfg-if-0.1.3 \
-		clap-2.31.2 \
-		crossbeam-0.3.2 \
+		argon2rs-0.2.5 \
+		arrayvec-0.4.10 \
+		atty-0.2.11 \
+		autocfg-0.1.4 \
+		backtrace-0.3.30 \
+		backtrace-sys-0.1.28 \
+		bitflags-1.1.0 \
+		blake2-rfc-0.2.18 \
+		block-buffer-0.7.3 \
+		block-padding-0.1.4 \
+		bstr-0.1.4 \
+		byte-tools-0.3.1 \
+		bytecount-0.5.1 \
+		byteorder-1.3.2 \
+		cc-1.0.37 \
+		cfg-if-0.1.9 \
+		clap-2.33.0 \
+		cloudabi-0.0.3 \
+		constant_time_eq-0.1.3 \
+		crossbeam-channel-0.3.8 \
 		crossbeam-deque-0.2.0 \
 		crossbeam-epoch-0.3.1 \
 		crossbeam-utils-0.2.2 \
-		dtoa-0.4.2 \
-		either-1.5.0 \
-		encoding-0.2.33 \
-		encoding-index-japanese-1.20141219.5 \
-		encoding-index-korean-1.20141219.5 \
-		encoding-index-simpchinese-1.20141219.5 \
-		encoding-index-singlebyte-1.20141219.5 \
-		encoding-index-tradchinese-1.20141219.5 \
-		encoding_index_tests-0.1.4 \
-		env_logger-0.5.10 \
+		crossbeam-utils-0.6.5 \
+		digest-0.8.0 \
+		dirs-2.0.1 \
+		dirs-sys-0.3.3 \
+		dtoa-0.4.4 \
+		either-1.5.2 \
+		encoding_rs-0.8.17 \
+		encoding_rs_io-0.1.6 \
+		env_logger-0.6.1 \
+		failure-0.1.5 \
+		failure_derive-0.1.5 \
+		fake-simd-0.1.2 \
 		fnv-1.0.6 \
-		fuchsia-zircon-0.3.3 \
-		fuchsia-zircon-sys-0.3.3 \
-		globset-0.4.0 \
-		handlebars-0.32.4 \
+		fuchsia-cprng-0.1.1 \
+		generic-array-0.12.0 \
+		git2-0.9.1 \
+		globset-0.4.3 \
+		grep-matcher-0.1.2 \
+		grep-searcher-0.1.4 \
+		half-1.3.0 \
+		handlebars-1.1.0 \
 		hex-0.3.2 \
-		humantime-1.1.1 \
-		ignore-0.4.2 \
-		itoa-0.4.1 \
-		lazy_static-1.0.1 \
-		libc-0.2.42 \
-		linked-hash-map-0.5.1 \
-		log-0.4.1 \
-		memchr-2.0.1 \
+		humantime-1.2.0 \
+		idna-0.1.5 \
+		ignore-0.4.7 \
+		itoa-0.4.4 \
+		kernel32-sys-0.2.2 \
+		lazy_static-1.3.0 \
+		libc-0.2.58 \
+		libgit2-sys-0.8.0 \
+		libz-sys-1.0.25 \
+		linked-hash-map-0.5.2 \
+		log-0.4.6 \
+		maplit-1.0.1 \
+		matches-0.1.8 \
+		memchr-2.2.0 \
+		memmap-0.7.0 \
 		memoffset-0.2.1 \
-		nodrop-0.1.12 \
-		num_cpus-1.8.0 \
-		pest-1.0.6 \
-		pest_derive-1.0.7 \
-		proc-macro2-0.4.4 \
+		nodrop-0.1.13 \
+		num_cpus-1.10.1 \
+		numtoa-0.1.0 \
+		opaque-debug-0.2.2 \
+		percent-encoding-1.0.1 \
+		pest-2.1.1 \
+		pest_derive-2.1.0 \
+		pest_generator-2.1.0 \
+		pest_meta-2.1.1 \
+		pkg-config-0.3.14 \
+		proc-macro2-0.4.30 \
 		quick-error-1.2.2 \
-		quote-0.3.15 \
-		quote-0.6.3 \
-		rand-0.4.2 \
-		rayon-1.0.1 \
-		rayon-core-1.4.0 \
-		redox_syscall-0.1.40 \
+		quote-0.6.12 \
+		rand-0.6.5 \
+		rand_chacha-0.1.1 \
+		rand_core-0.3.1 \
+		rand_core-0.4.0 \
+		rand_hc-0.1.0 \
+		rand_isaac-0.1.1 \
+		rand_jitter-0.1.4 \
+		rand_os-0.1.3 \
+		rand_pcg-0.1.2 \
+		rand_xorshift-0.1.1 \
+		rayon-1.0.3 \
+		rayon-core-1.4.1 \
+		rdrand-0.4.0 \
+		redox_syscall-0.1.54 \
 		redox_termios-0.1.1 \
-		regex-0.2.11 \
-		regex-1.0.0 \
-		regex-syntax-0.5.6 \
-		regex-syntax-0.6.0 \
+		redox_users-0.3.0 \
+		regex-1.1.7 \
+		regex-syntax-0.6.7 \
 		remove_dir_all-0.5.1 \
-		same-file-1.0.2 \
+		rustc-demangle-0.1.15 \
+		ryu-0.2.8 \
+		same-file-1.0.4 \
+		scoped_threadpool-0.1.9 \
 		scopeguard-0.3.3 \
-		serde-1.0.65 \
-		serde_cbor-0.8.2 \
-		serde_derive-1.0.65 \
-		serde_json-1.0.19 \
-		serde_yaml-0.7.4 \
-		strsim-0.7.0 \
-		syn-0.11.11 \
-		syn-0.14.1 \
-		synom-0.11.3 \
-		tempdir-0.3.7 \
-		termcolor-0.3.6 \
-		termion-1.5.1 \
-		textwrap-0.9.0 \
-		thread_local-0.3.5 \
-		toml-0.4.6 \
-		ucd-util-0.1.1 \
+		serde-1.0.92 \
+		serde_cbor-0.9.0 \
+		serde_derive-1.0.92 \
+		serde_json-1.0.39 \
+		serde_yaml-0.8.9 \
+		sha-1-0.8.1 \
+		smallvec-0.6.10 \
+		strsim-0.8.0 \
+		syn-0.15.35 \
+		synstructure-0.10.2 \
+		tempfile-3.0.8 \
+		term_size-0.3.1 \
+		termcolor-1.0.5 \
+		termion-1.5.2 \
+		textwrap-0.11.0 \
+		thread_local-0.3.6 \
+		toml-0.5.1 \
+		typenum-1.10.0 \
+		ucd-trie-0.1.1 \
+		ucd-util-0.1.3 \
+		unicode-bidi-0.3.4 \
+		unicode-normalization-0.1.8 \
 		unicode-width-0.1.5 \
-		unicode-xid-0.0.4 \
 		unicode-xid-0.1.0 \
-		unreachable-1.0.0 \
-		utf8-ranges-1.0.0 \
+		url-1.7.2 \
+		utf8-ranges-1.0.3 \
+		vcpkg-0.2.6 \
 		vec_map-0.8.1 \
-		void-1.0.2 \
-		walkdir-2.1.4 \
-		winapi-0.3.4 \
+		walkdir-2.2.8 \
+		winapi-0.2.8 \
+		winapi-0.3.7 \
+		winapi-build-0.1.1 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-util-0.1.2 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		wincolor-0.1.6 \
-		yaml-rust-0.4.0
-CARGO_FEATURES=	all # enable all output serialization formats
+		wincolor-1.0.1 \
+		yaml-rust-0.4.3
+# enable all output serialization formats
+CARGO_FEATURES=	all
 
 PLIST_FILES=	bin/tokei
 

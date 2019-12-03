@@ -3,12 +3,12 @@
 
 PORTNAME=	surf
 DISTVERSION=	2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	http://dl.suckless.org/${PORTNAME}/
 PKGNAMESUFFIX=	-browser
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Simple Web browser based on WebKit2/GTK+
 
 LICENSE=	MIT
@@ -20,7 +20,7 @@ RUN_DEPENDS=	dmenu:x11/dmenu \
 		curl:ftp/curl \
 		xterm:x11/xterm
 
-USES=		pkgconfig
+USES=		compiler:c11 pkgconfig
 USE_GNOME=	gtk30 pango cairo gdkpixbuf2
 USE_XORG=	x11
 

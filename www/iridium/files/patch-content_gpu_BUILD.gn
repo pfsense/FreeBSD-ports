@@ -1,10 +1,11 @@
---- content/gpu/BUILD.gn.orig	2017-04-19 19:06:34 UTC
+--- content/gpu/BUILD.gn.orig	2019-03-11 22:00:58 UTC
 +++ content/gpu/BUILD.gn
-@@ -98,6 +98,7 @@ target(link_target_type, "gpu_sources") 
+@@ -133,7 +133,7 @@ target(link_target_type, "gpu_sources") {
  
-   if (use_x11) {
-     deps += [ "//ui/events/platform/x11" ]
-+    configs += [ "//build/config/linux:x11" ]
+   # Use DRI on desktop Linux builds.
+   if (current_cpu != "s390x" && current_cpu != "ppc64" && is_desktop_linux &&
+-      (!is_chromecast || is_cast_desktop_build)) {
++      (!is_chromecast || is_cast_desktop_build) && !is_bsd) {
+     configs += [ "//build/config/linux/dri" ]
    }
- 
-   if (use_ozone) {
+ }

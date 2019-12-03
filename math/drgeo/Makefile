@@ -3,7 +3,7 @@
 
 PORTNAME=	drgeo
 PORTVERSION=	1.1.0
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	math
 MASTER_SITES=	SF/ofset/${PORTNAME}/${PORTVERSION}
 
@@ -13,11 +13,9 @@ COMMENT=	GTK interactive geometry software
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to compile: ./geo/libgeo.a: multiple definition of drgeoDialogData
-
 LIB_DEPENDS=	libguile.so:lang/guile
 
-USES=		gettext gmake localbase:ldflags pkgconfig pathfix
+USES=		compiler:c++11-lang gettext gmake localbase:ldflags pkgconfig pathfix
 GNU_CONFIGURE=	yes
 USE_GNOME=	gnomeprefix intlhack libglade2
 

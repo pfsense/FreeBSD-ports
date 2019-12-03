@@ -2,7 +2,7 @@
 
 PORTNAME=	libcutl
 PORTVERSION=	1.10.0
-PORTREVISION=	9
+PORTREVISION=	16
 CATEGORIES=	devel
 MASTER_SITES=	http://www.codesynthesis.com/download/${PORTNAME}/${PORTVERSION:R}/
 
@@ -32,5 +32,13 @@ CONFIGURE_ARGS=	--disable-static \
 		--with-external-boost \
 		--with-external-expat \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
+
+OPTIONS_DEFINE=	DOCS
+
+post-patch:
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
+	@${REINPLACE_CMD} -i .c++20 '/doc_DATA/s/version/&.txt/' \
+		${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

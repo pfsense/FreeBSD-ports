@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	darktable
-PORTVERSION=	2.4.4
+PORTVERSION=	2.6.2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
@@ -27,8 +28,8 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 ONLY_FOR_ARCHS=		amd64
 ONLY_FOR_ARCHS_REASON=	uses SSE instructions and 64-bit address space
 
-USES=		cmake:outsource compiler:c++11-lib desktop-file-utils	\
-		jpeg pkgconfig sqlite tar:xz
+USES=		cmake compiler:c++11-lib desktop-file-utils	\
+		gl gnome jpeg pkgconfig sqlite tar:xz
 USE_GL=		glu
 USE_GNOME=	cairo gtk30 intltool librsvg2 libxml2
 USE_XORG=	ice sm x11 xext xrandr
@@ -51,6 +52,7 @@ CMAKE_ARGS+=	-DBINARY_PACKAGE_BUILD=1
 CMAKE_ARGS+=	-DBUILD_CMSTEST:BOOL=ON
 CMAKE_ARGS+=	-DUSE_KWALLET:BOOL=ON
 LDFLAGS+=	-L${LOCALBASE}/lib
+CFLAGS+=	-fopenmp
 
 COLORD_LIB_DEPENDS=	libcolord.so:graphics/colord \
 			libcolord-gtk.so:graphics/colord-gtk
@@ -81,8 +83,8 @@ NLS_USES_OFF=		gettext-runtime
 NLS_CMAKE_OFF=		-DUSE_NLS:BOOL=OFF
 NLS_LDFLAGS=		-L${LOCALBASE}/lib -lintl
 
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
-			libIlmThread-2_2.so:graphics/ilmbase
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
+			libIlmThread.so:graphics/ilmbase
 OPENEXR_CMAKE_OFF=	-DUSE_OPENEXR:BOOL=OFF
 
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
@@ -105,16 +107,7 @@ CPP=		clang-cpp${LLVM_VER}
 CC=		clang${LLVM_VER}
 CXX=		clang++${LLVM_VER}
 
-# Depend on devel/openmp instead of the full LLVM at runtime. Required
-# for a consistent libomp experience.
-LIB_DEPENDS+=	libomp.so.0:devel/openmp
-
-# Last but not least, there is a second change or regression in CMake
-# 3.4.x: CMAKE_EXE_LINKER_FLAGS is not passed to TRY_COMPILE by default
-# anymore. The CMP0056 policy must be explicitly set to NEW to ensure
-# linker flags are passed.
-# See: https://cmake.org/cmake/help/v3.4/policy/CMP0056.html
-CMAKE_ARGS+=	-DCMAKE_POLICY_DEFAULT_CMP0056:STRING=NEW
+LIB_DEPENDS+=	libomp.so:devel/llvm${LLVM_VER}
 .endif
 
 .if defined(WITH_DEBUG)

@@ -1,3 +1,3 @@
-TIMESTAMP = 1508503209
-SHA256 (gnome2/libsoup-2.54.1.tar.xz) = 47b42c232034734d66e5f093025843a5d8cc4b2357c011085a2fd04ef02dd633
-SIZE (gnome2/libsoup-2.54.1.tar.xz) = 1793108
+TIMESTAMP = 1539116814
+SHA256 (gnome/libsoup-2.62.3.tar.xz) = d312ade547495c2093ff8bda61f9b9727a98cfdae339f3263277dd39c0451172
+SIZE (gnome/libsoup-2.62.3.tar.xz) = 1851780

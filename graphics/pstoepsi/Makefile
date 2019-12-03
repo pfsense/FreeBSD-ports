@@ -13,6 +13,10 @@ EXTRACT_ONLY=	#empty
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Wiliam Chia-Wei Cheng's yet another PS to EPSI converter
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 RUN_DEPENDS=	pbmtoepsi:graphics/netpbm
 
 USES=		ghostscript:run

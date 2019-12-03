@@ -3,22 +3,23 @@
 
 PORTNAME=	quagga
 PORTVERSION=	1.2.4
+PORTREVISION=	7
 CATEGORIES=	net ipv6
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Free RIPv1, RIPv2, OSPFv2, BGP4, IS-IS route software
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gawk:lang/gawk
 
-CONFLICTS=	frr3 frr4 frr5 frr6 openbgpd pimd zebra
+CONFLICTS=	frr5 frr6 frr7 openbgpd pimd zebra
 
 USES=		compiler:c11 cpe gmake libtool makeinfo \
 		perl5 readline ssl
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-exampledir=${PREFIX}/share/examples/quagga
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 USE_PERL5=	build
@@ -26,7 +27,7 @@ USE_PERL5=	build
 INFO=		quagga
 
 OPTIONS_DEFINE=	ISISD PIMD PAM RTADV SNMP TCPSOCKETS DLMALLOC \
-		NO_BGP_ANNOUNCE OSPF_NEXTHOP ISIS_TOPOLOGY
+		NO_BGP_ANNOUNCE OSPF_NEXTHOP ISIS_TOPOLOGY EXAMPLES
 # IRDP needs something freebsd does not seem to have:
 # configure: error: 'IRDP requires in_pktinfo at the moment!'
 OPTIONS_DEFAULT=	ISISD PIMD RTADV
@@ -62,6 +63,9 @@ CONFIGURE_ARGS=	--enable-user=${ENABLE_USER} \
 CONFIGURE_ARGS+=--enable-vty-group=${ENABLE_VTY_GROUP}
 .endif
 
+EXAMPLES_CONFIGURE_ON=	--enable-exampledir=${PREFIX}/share/examples/quagga
+EXAMPLES_CONFIGURE_OFF=	--disable-exampledir
+
 ISISD_CONFIGURE_ENABLE=	isisd
 ISIS_TOPOLOGY_CONFIGURE_ENABLE=	isis-topology
 PIMD_CONFIGURE_ENABLE=	pimd
@@ -88,10 +92,6 @@ PLIST_SUB+=	LOCALSTATE_DIR=${LOCALSTATE_DIR} \
 		ENABLE_USER=${ENABLE_USER} \
 		ENABLE_GROUP=${ENABLE_GROUP}
 
-post-patch:
-	@${REINPLACE_CMD} -e '/test.*enable_snmp.*= ""/s/""/"no"/' \
-		${WRKSRC}/configure
-
 pre-everything::
 	@${ECHO} "============================================================="
 	@${ECHO}
@@ -104,8 +104,6 @@ pre-everything::
 	@${ECHO} "LOCALSTATE_DIR    Specify directory for Quagga runtime files"
 
 post-install:
-	${MKDIR} ${STAGEDIR}${LOCALSTATE_DIR} ${STAGEDIR}${SYSCONF_DIR} \
-		${STAGEDIR}${EXAMPLESDIR}
-	@${MV} ${STAGEDIR}${SYSCONF_DIR}/* ${STAGEDIR}${EXAMPLESDIR}
+	${MKDIR} ${STAGEDIR}${LOCALSTATE_DIR} ${STAGEDIR}${SYSCONF_DIR}
 
 .include <bsd.port.mk>

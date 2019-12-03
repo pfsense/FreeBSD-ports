@@ -10,6 +10,10 @@ MASTER_SITES=	ftp://ftp.flux.utah.edu/pub/skill/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SuperKILL, kill, or renice processes by pid, name, tty, or uid
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		tar:tgz
 
 .include <bsd.port.mk>

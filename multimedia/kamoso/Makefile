@@ -9,13 +9,17 @@ COMMENT=	Application to take pictures and videos out of your webcam
 
 LICENSE=	GPLv2
 
-USES=		cmake:outsource gettext kde:5 pkgconfig qt:5 tar:xz
+USES=		cmake compiler:c++11-lang gettext gl kde:5 pkgconfig qt:5 tar:xz
+USE_GL=		gl
 USE_GNOME=	glib20
 USE_GSTREAMER1=	yes
 USE_KDE=	auth bookmarks codecs completion config configwidgets \
-		coreaddons ecm i18n itemviews jobwidgets kio purpose \
-		service solid widgetsaddons xmlgui
-USE_QT=		core dbus gui network qml quick widgets xml \
+		coreaddons ecm i18n itemviews jobwidgets kio kirigami2 \
+		notifications purpose service solid widgetsaddons xmlgui
+USE_QT=		concurrent core dbus declarative graphicaleffects gui network \
+		quickcontrols widgets xml \
 		buildtools_build qmake_build
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

@@ -2,19 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	musescore
-PORTVERSION=	2.1
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.2.3
 CATEGORIES=	audio
-MASTER_SITES=	http://ftp.osuosl.org/pub/musescore/releases/MuseScore-${PORTVERSION}/
-DISTNAME=	MuseScore-${PORTVERSION}
+# DISTNAME=	MuseScore-${DISTVERSION}
 
 MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	Free music composition & notation software
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/LICENSE.GPL
-
-BROKEN_aarch64=		Fails to compile: error: constant expression evaluates to -1
+# LICENSE_FILE=	LICENSE.GPL
 
 LIB_DEPENDS=	libmp3lame.so:audio/lame \
 		libsndfile.so:audio/libsndfile \
@@ -22,21 +19,35 @@ LIB_DEPENDS=	libmp3lame.so:audio/lame \
 		libogg.so:audio/libogg \
 		libfreetype.so:print/freetype2
 
-USES=		cmake:outsource compiler:c++11-lib desktop-file-utils \
-		pkgconfig qt:5 shared-mime-info zip
-USE_QT=		core gui widgets opengl concurrent designer help network \
-		scripttools qml quick svg sql printsupport testlib webkit \
+USES=		cmake compiler:c++11-lib desktop-file-utils \
+		pkgconfig qt:5 shared-mime-info
+USE_QT=		core declarative gui widgets opengl concurrent designer help network \
+		scripttools svg sql printsupport testlib \
 		xml xmlpatterns \
 		buildtools_build linguisttools_build qmake_build uitools_build
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	musescore
+GH_PROJECT=	MuseScore
+
+# Each release gets a subdir containing the distfiles for that release,
+# so hope that scanning the parent dir finds new ones.
+DATADIR=	${PREFIX}/share/mscore-${PORTVERSION:R}
+
 ALL_TARGET=	lrelease manpages all
-INSTALLS_ICONS=	yes
-CMAKE_ARGS+=	-DUSE_SYSTEM_FREETYPE="ON"
+CMAKE_ARGS+=	-DUSE_SYSTEM_FREETYPE="ON" \
+		-DBUILD_PORTMIDI=OFF \
+		-DBUILD_PCH=OFF \
+		-DDOWNLOAD_SOUNDFONT=OFF
 
-DATADIR=	${PREFIX}/share/mscore-${PORTVERSION}
-
-OPTIONS_DEFINE=		ALSA JACK PORTAUDIO PULSEAUDIO OCR
+# WebEngine is only available on i386/amd64; defaults to ON there.
+# If enabled on arches that don't have WebEngine, the build breaks.
+OPTIONS_DEFINE=		ALSA JACK PORTAUDIO PULSEAUDIO WEBENGINE
 OPTIONS_DEFAULT=	PORTAUDIO
-OCR_DESC=		Optical Character Recognition
+OPTIONS_DEFAULT_amd64=	WEBENGINE
+OPTIONS_DEFAULT_i386=	WEBENGINE
+
+WEBENGINE_DESC=		Use WebEngine in the welcome panel
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_CMAKE_BOOL=	BUILD_ALSA
@@ -46,7 +57,8 @@ PORTAUDIO_LIB_DEPENDS=	libportaudio.so:audio/portaudio
 PORTAUDIO_CMAKE_BOOL=	BUILD_PORTAUDIO
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CMAKE_BOOL=	BUILD_PULSEAUDIO
-OCR_CMAKE_BOOL=		OCR
+WEBENGINE_USE=		qt=webengine
+WEBENGINE_CMAKE_BOOL=	BUILD_WEBENGINE
 
 .include <bsd.port.pre.mk>
 

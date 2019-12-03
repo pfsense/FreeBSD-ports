@@ -2,6 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netmagis
+PORTREVISION=	1
 PKGNAMESUFFIX=	-detecteq
 
 COMMENT=	Files for detection of equipment modifications
@@ -14,5 +15,7 @@ MASTERDIR=	${.CURDIR}/../netmagis-common
 
 PKGMESSAGE=	${.CURDIR}/pkg-message
 PLIST=		${.CURDIR}/pkg-plist
+
+OPTIONS_DEFINE=	EXAMPLES
 
 .include "${MASTERDIR}/Makefile"

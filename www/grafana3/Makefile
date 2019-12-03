@@ -7,12 +7,13 @@ PORTREVISION=	3
 PKGNAMESUFFIX=	3
 CATEGORIES=	www
 
-MAINTAINER=	jhixson@gmail.com
+MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	Dashboard and graph editor for Graphite, InfluxDB & OpenTSDB
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
+DEPRECATED=	Depends on expired lang/phantomjs
+EXPIRATION_DATE=2019-12-01
 
 RUN_DEPENDS=	${LOCALBASE}/bin/phantomjs:lang/phantomjs \
 		webfonts>=0:x11-fonts/webfonts
@@ -21,11 +22,11 @@ ONLY_FOR_ARCHS=	i386 amd64
 
 USE_RC_SUBR=	grafana3
 
-USES=	compiler
+USES=	compiler go
 
 USE_GITHUB=	yes
 
-GH_TUPLE= \
+GH_TUPLE=	\
 	BurntSushi:toml:v0.2.0:toml/src/github.com/BurntSushi/toml                                       \
 	Unknwon:com:v1:com/src/github.com/Unknwon/com                                                    \
 	aws:aws-sdk-go:v1.1.36:aws_sdk_go/src/github.com/aws/aws-sdk-go                                  \

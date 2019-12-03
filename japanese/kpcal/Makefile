@@ -14,6 +14,10 @@ PATCH_DIST_STRIP=	-p1
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Make Calendar in Postscript format
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 ALL_TARGET=	kpcal
 
 PLIST_FILES=	bin/kpcal man/man1/kpcal.1.gz

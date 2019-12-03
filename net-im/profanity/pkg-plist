@@ -1,10 +1,15 @@
 bin/profanity
 include/profapi.h
 lib/libprofanity.so
+lib/libprofanity.so.0
+lib/libprofanity.so.0.0.0
 man/man1/profanity.1.gz
 %%DATADIR%%/themes/aqua
 %%DATADIR%%/themes/batman
+%%DATADIR%%/themes/bios
 %%DATADIR%%/themes/boothj5
+%%DATADIR%%/themes/boothj5_laptop
+%%DATADIR%%/themes/boothj5_slack
 %%DATADIR%%/themes/hacker
 %%DATADIR%%/themes/headache
 %%DATADIR%%/themes/joker
@@ -20,5 +25,3 @@ man/man1/profanity.1.gz
 %%DATADIR%%/themes/simple
 %%DATADIR%%/icons/proIcon.png
 %%DATADIR%%/icons/proIconMsg.png
-%%DATADIR%%/themes/bios
-%%DATADIR%%/themes/boothj5_slack

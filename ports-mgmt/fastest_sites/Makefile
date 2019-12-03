@@ -10,6 +10,10 @@ EXTRACT_SUFX=	.py
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sort MASTER_SITE_* based upon TCP handshake times
 
+BROKEN=		unfetchable
+DEPRECATED=	Unfetchable, unmaintained
+EXPIRATION_DATE=	2019-10-16
+
 USES=		python shebangfix
 NO_BUILD=	yes
 

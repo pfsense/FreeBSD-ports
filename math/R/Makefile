@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	R
-DISTVERSION=	3.5.0
-PORTREVISION=	1
+DISTVERSION=	3.6.1
+PORTREVISION=	2
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${PORTVERSION:C|\..*||}
 
@@ -12,8 +12,7 @@ COMMENT=	Language for statistical computing and graphics
 
 LICENSE=	GPLv2
 
-BROKEN_FreeBSD_10_armv6=	Fails to build
-ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc64
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre.so:devel/pcre
@@ -26,7 +25,8 @@ RUN_DEPENDS=	gmake:devel/gmake # R packages may require GNU make
 # - Create ports for each of the recommended packages
 # - Create a meta-port for the recommended packages
 
-USES=		gmake iconv libtool localbase pathfix perl5 readline:port
+USES=		compiler:c++11-lang gmake iconv libtool localbase pathfix \
+		perl5 readline:port
 USE_LDCONFIG=	${PREFIX}/lib/R/lib
 USE_PERL5=	build
 
@@ -38,17 +38,17 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 PLIST_SUB=	LIBVER=${LIBVER}
 
-OPTIONS_DEFINE=		FLANG ICU INFO LDOUBLE LETTER MEMPROF NLS OPENMP RPROF X11
-OPTIONS_EXCLUDE_aarch64=	FLANG OPENMP
-OPTIONS_EXCLUDE_armv6=	FLANG OPENMP
-OPTIONS_EXCLUDE_armv7=	FLANG OPENMP
-OPTIONS_EXCLUDE_i386=	FLANG
+OPTIONS_DEFINE=		ICU INFO LDOUBLE LETTER MEMPROF NLS RPROF X11
+OPTIONS_DEFINE_amd64=	FLANG OPENMP
+OPTIONS_DEFINE_i386=	OPENMP
 OPTIONS_GROUP=		NEEDX11
 OPTIONS_GROUP_NEEDX11=	GHOSTSCRIPT JPEG CAIROPANGO PNG TCLTK TEXDOCS TIFF
 OPTIONS_SINGLE=		BLAS
 OPTIONS_SINGLE_BLAS=	ATLAS OPENBLAS NETLIB RBLAS
-OPTIONS_DEFAULT=	CAIROPANGO GHOSTSCRIPT ICU INFO JPEG LDOUBLE OPENMP PNG \
-			RBLAS RPROF TCLTK TIFF X11
+OPTIONS_DEFAULT=	CAIROPANGO GHOSTSCRIPT ICU INFO JPEG LDOUBLE PNG RBLAS \
+			RPROF TCLTK TIFF X11
+OPTIONS_DEFAULT_amd64=	OPENMP
+OPTIONS_DEFAULT_i386=	OPENMP
 OPTIONS_SUB=		YES
 
 ATLAS_DESC=		ATLAS BLAS implementation
@@ -73,10 +73,10 @@ ATLAS_USES=		blaslapack:atlas
 ATLAS_CONFIGURE_ON=	--disable-BLAS-shlib
 CAIROPANGO_IMPLIES=	X11
 CAIROPANGO_CONFIGURE_WITH=	cairo
-CAIROPANGO_USES=	gettext jpeg pkgconfig
+CAIROPANGO_USES=	gettext gnome jpeg pkgconfig
 CAIROPANGO_USE=		GNOME=pango,cairo
+FLANG_LIB_DEPENDS=	libpgmath.so:math/libpgmath
 FLANG_USES=		fortran:flang
-FLANG_USES_OFF=		fortran
 FLANG_PREVENTS=		ATLAS OPENBLAS NETLIB
 GHOSTSCRIPT_IMPLIES=	X11
 GHOSTSCRIPT_USES=	ghostscript
@@ -121,17 +121,32 @@ TIFF_IMPLIES=		X11
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 TIFF_CONFIGURE_WITH=	libtiff
 X11_CONFIGURE_WITH=	x
+X11_USES=		xorg
 X11_USE=		xorg=ice,sm,x11,xext,xmu,xscrnsaver,xt
 
 LIBVER=		${PORTVERSION:R}
 
 .include <bsd.port.options.mk>
-.include "compiler.mk"
 
-# LLVM, which gets pulled in with FLANG, provides libomp.  So, only depend on
-# devel/openmp when GFORTRAN and OPENMP are on.
-.if ! ${PORT_OPTIONS:MFLANG} && ${PORT_OPTIONS:MOPENMP}
+# libomp is provided by
+#  - LLVM, which gets pulled in with FLANG
+#  - gcc
+#
+# So, *must* only depend on devel/openmp when
+#   - the OPENMP knob is on
+#   - FLANG is off (guaranteed to be off for all archs except amd64)
+#   - clang is the C compiler.
+#
+# But, we cannot modify LIB_DEPENDS after CHOSEN_COMPILER_TYPE is defined, so
+# for now, limit the OPENMP knob for i386 and amd64 where clang is the default
+# compiler.
+#
+# This will be moot after 12.1 when openmp will be in base.
+.if ! ${PORT_OPTIONS:MFLANG}
+USES+=	fortran
+.if ${PORT_OPTIONS:MOPENMP}
 LIB_DEPENDS+=	libomp.so:devel/openmp
+.endif
 .endif
 
 post-patch:

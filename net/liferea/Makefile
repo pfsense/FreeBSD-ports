@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	liferea
-PORTVERSION=	1.12.3
+DISTVERSION=	1.12.7
 CATEGORIES=	net gnome
 MASTER_SITES=	https://github.com/lwindolf/liferea/releases/download/v${PORTVERSION:S/.r/-rc/}/
 
@@ -11,7 +11,7 @@ COMMENT=	Simple RSS/RDF feed reader
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	fails to compile: WebKitWebEditor.h:40: redefinition of typedef 'WebKitWebEditor'
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
@@ -21,10 +21,12 @@ LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 RUN_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
 		${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py-libpeas@${PY_FLAVOR}
 
-USES=		desktop-file-utils gettext gmake gnome libtool localbase \
+USES=		compiler:c++11-lang desktop-file-utils gettext \
+		gmake gnome libtool localbase \
 		pathfix pkgconfig python:3.4+ sqlite tar:bzip2
 USE_GNOME=	cairo dconf:run gtk30 intltool introspection \
 		libxslt libxml2
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS=	--enable-introspection

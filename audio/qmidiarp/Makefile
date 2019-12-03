@@ -3,9 +3,8 @@
 
 PORTNAME=	qmidiarp
 DISTVERSIONPREFIX=	qmidiarp-
-DISTVERSION=	0.6.4-26
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g1a15c13
+DISTVERSION=	0.6.5
+PORTREVISION=	4
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,7 +21,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 PORTSCOUT=	limit:^qmidiarp
 
 USES=		autoreconf compiler:c++11-lib desktop-file-utils \
-		gmake localbase libtool pkgconfig qt:5
+		gmake gnome localbase libtool pkgconfig qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	emuse
 USE_QT=		core gui network widgets buildtools_build \
@@ -32,14 +31,18 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-qt5 --enable-translations=yes
 INSTALLS_ICONS=	yes
 
+CXXFLAGS+=	-Duint=uint32_t # workaround for https://sourceforge.net/p/qmidiarp/bugs/27/
+
 OPTIONS_DEFINE=	NLS LV2
 OPTIONS_DEFAULT=LV2
 OPTIONS_SUB=	yes
+
 LV2_DESC=	Build and install LV2 plugins
 LV2_CONFIGURE_OFF=	--disable-lv2plugins
+
 NLS_CONFIGURE_ON=	--enable-translations
 
 post-install-LV2-on:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lv2/qmidiarp_[lsa][fer][oqp].lv2/*.so
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lv2/qmidiarp_[lsa][fer][oqp].lv2/*.so
 
 .include <bsd.port.mk>

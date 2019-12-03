@@ -2,21 +2,29 @@
 
 PORTNAME=	xmpp-client
 PORTVERSION=	20170324
+PORTREVISION=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	cs@FreeBSD.org
 COMMENT=	XMPP client with OTR support
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/${GO_LIBDIR}/golang.org/x/crypto/bcrypt.a:security/go.crypto \
-		${LOCALBASE}/${GO_LIBDIR}/golang.org/x/net/dict.a:net/go.net
+USES=		go
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	agl
-GH_TAGNAME=	3030ad42ee2df255ffc108dc6d04893d9501c863
-USES=		go
+GH_TUPLE=	agl:xmpp-client:3030ad4:DEFAULT/vendor/github.com/agl/xmpp-client \
+		golang:crypto:c126467:crypto/vendor/golang.org/x/crypto \
+		golang:net:a680a1e:net/vendor/golang.org/x/net \
+		golang:sys:ac767d6:sys/vendor/golang.org/x/sys
+
+GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
+
 PLIST_FILES=	bin/xmpp-client
-GO_PKGNAME=	github.com/agl/${PORTNAME}
+
+do-test:
+	cd ${WRKSRC}; \
+		${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} test ${GO_BUILDFLAGS} . ./xmpp
 
 .include <bsd.port.mk>

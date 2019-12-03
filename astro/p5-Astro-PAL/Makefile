@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Astro-PAL
-PORTVERSION=	1.07
-PORTREVISION=	3
+PORTVERSION=	1.08
 CATEGORIES=	astro perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,8 +14,8 @@ LICENSE=	GPLv3
 
 TEST_DEPENDS=	p5-Test-Number-Delta>=1:devel/p5-Test-Number-Delta
 
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Astro/PAL/PAL.so

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	x2goclient
-PORTVERSION=	4.1.0.0
+PORTVERSION=	4.1.2.1
 CATEGORIES=	net
 MASTER_SITES=	http://code.x2go.org/releases/source/x2goclient/
 
@@ -19,10 +19,11 @@ LIB_DEPENDS=	libcups.so:print/cups \
 RUN_DEPENDS=	nxproxy:net/nxproxy \
 		x2goclient-cli:net/x2goclient-cli
 
-USES=		qmake qt:4
-USE_XORG=	xpm
-USE_QT=		gui network svg \
-		linguisttools_build moc_build rcc_build uic_build
+USES=		compiler:c++11-lang gl qmake qt:5
+USE_GL=		gl
+USE_XORG=	x11 xpm
+USE_QT=		core gui network svg widgets x11extras  \
+		buildtools_build linguisttools_build qmake_build
 QMAKE_ARGS=	QMAKE_LRELEASE="${LRELEASE}"
 
 OPTIONS_DEFINE=		DOCS LDAP

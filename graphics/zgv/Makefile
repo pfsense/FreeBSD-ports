@@ -3,7 +3,7 @@
 
 PORTNAME=	zgv
 PORTVERSION=	5.9
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	graphics
 MASTER_SITES=	SUNSITE/apps/graphics/viewers/svga
 
@@ -32,7 +32,7 @@ LDFLAGS+=	$$(${SDL_CONFIG} --libs)
 .else
 LIB_DEPENDS+=	libvga.so:graphics/svgalib
 MAKE_ENV+=	BACKEND=SVGALIB
-ONLY_FOR_ARGS=	i386 amd64
+ONLY_FOR_ARCHS=	i386 amd64
 .endif
 
 post-extract:

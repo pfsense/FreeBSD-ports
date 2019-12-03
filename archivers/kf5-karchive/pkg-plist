@@ -1,4 +1,3 @@
-etc/xdg/karchive.categories
 include/KF5/KArchive/K7Zip
 include/KF5/KArchive/KAr
 include/KF5/KArchive/KArchive
@@ -8,6 +7,7 @@ include/KF5/KArchive/KArchiveFile
 include/KF5/KArchive/KCompressionDevice
 include/KF5/KArchive/KFilterBase
 include/KF5/KArchive/KFilterDev
+include/KF5/KArchive/KRcc
 include/KF5/KArchive/KTar
 include/KF5/KArchive/KZip
 include/KF5/KArchive/KZipFileEntry
@@ -21,6 +21,7 @@ include/KF5/KArchive/karchivefile.h
 include/KF5/KArchive/kcompressiondevice.h
 include/KF5/KArchive/kfilterbase.h
 include/KF5/KArchive/kfilterdev.h
+include/KF5/KArchive/krcc.h
 include/KF5/KArchive/ktar.h
 include/KF5/KArchive/kzip.h
 include/KF5/KArchive/kzipfileentry.h
@@ -33,3 +34,4 @@ lib/libKF5Archive.so
 lib/libKF5Archive.so.5
 lib/libKF5Archive.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_MKSPECDIR%%/modules/qt_KArchive.pri
+share/qlogging-categories5/karchive.categories

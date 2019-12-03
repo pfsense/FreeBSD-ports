@@ -2,7 +2,7 @@
 
 PORTNAME=	tmate
 PORTVERSION=	2.2.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
 MAINTAINER=	swills@FreeBSD.org
@@ -10,14 +10,13 @@ COMMENT=	Instant terminal sharing
 
 LIB_DEPENDS=	libevent.so:devel/libevent \
 		libmsgpackc.so:devel/msgpack \
-		libssh_threads.so:security/libssh
+		libssh.so:security/libssh
 
 USES=		autoreconf ncurses pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	tmate-io
 
 GNU_CONFIGURE=	yes
-INSTALL_ARGET=	install-strip
 USE_LDCONFIG=	yes
 LDFLAGS+=	-lexecinfo
 

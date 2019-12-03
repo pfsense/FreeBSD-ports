@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libuv
-PORTVERSION=	1.21.0
+PORTVERSION=	1.32.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
-#MASTER_SITES=	http://dist.libuv.org/dist/v${PORTVERSION}/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Multi-platform support library with a focus on asynchronous I/O
@@ -15,23 +14,20 @@ LICENSE_NAME=	NODE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-TEST_DEPENDS=	gyp:devel/py-gyp	\
-		gmake:devel/gmake
+TEST_DEPENDS=	gyp:devel/py-gyp
 
 USE_GITHUB=	yes
 
-USES=		autoreconf libtool pathfix pkgconfig
+USES=		autoreconf libtool pathfix pkgconfig python:test shebangfix
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
+SHEBANG_FILES=	gyp_uv.py
+
+TEST_TARGET=	check
 
 pre-configure:
 	${ECHO_CMD} "m4_define([UV_EXTRA_AUTOMAKE_FLAGS], [ serial-tests])" \
 		> ${WRKSRC}/m4/libuv-extra-automake-flags.m4
-
-do-test:
-	(cd ${WRKSRC} && ./gyp_uv.py -f make &&	\
-	${SETENV} ${MAKE_ENV} ${GMAKE} -C out && \
-	./out/Debug/run-tests)
 
 .include <bsd.port.mk>

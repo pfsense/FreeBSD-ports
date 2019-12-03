@@ -2,6 +2,7 @@
 
 PORTNAME=	libvmod-maxminddb
 DISTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
@@ -14,7 +15,8 @@ BUILD_DEPENDS=	rst2man:textproc/py-docutils
 
 LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 
-USES=		autoreconf gmake libtool pkgconfig python:2.7,build varnish
+USES=		autoreconf compiler:c11 gmake libtool pkgconfig \
+		python:2.7,build varnish
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
 INSTALL_TARGET=	install-strip
@@ -25,5 +27,7 @@ GH_PROJECT=	libvmod_maxminddb
 GH_TAGNAME=	4ae6a7f
 
 MAKE_JOBS_UNSAFE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

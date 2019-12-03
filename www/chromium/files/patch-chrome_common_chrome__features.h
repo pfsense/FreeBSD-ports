@@ -1,29 +1,24 @@
---- chrome/common/chrome_features.h.orig	2018-08-01 00:08:33.000000000 +0200
-+++ chrome/common/chrome_features.h	2018-08-05 16:48:04.662112000 +0200
-@@ -52,7 +52,7 @@
- extern const base::Feature kAutomaticTabDiscarding;
- #endif  // defined(OS_WIN) || defined(OS_MACOSX)
+--- chrome/common/chrome_features.h.orig	2019-10-21 19:06:25 UTC
++++ chrome/common/chrome_features.h
+@@ -64,10 +64,10 @@ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::Feature kAutoFetchOnNetErrorPage;
+ #endif
  
 -#if defined(OS_WIN) || defined(OS_LINUX)
 +#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
+ COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::Feature kBackgroundModeAllowRestart;
- #endif  // defined(OS_WIN) || defined(OS_LINUX)
+-#endif  // defined(OS_WIN) || defined(OS_LINUX)
++#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
  
-@@ -76,7 +76,7 @@
- extern const base::Feature kTabStripKeyboardFocus;
- #endif  // defined(OS_MACOSX)
+ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::Feature kBlockPromptsIfDismissedOften;
+@@ -86,7 +86,7 @@ extern const base::Feature kBundledConnectionHelpFeatu
+ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::Feature kCaptionSettings;
  
 -#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_MACOSX)
 +#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_MACOSX) || defined(OS_BSD)
+ COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::Feature kCertDualVerificationTrialFeature;
  #endif
- 
-@@ -204,7 +204,7 @@
- extern const base::Feature kAcknowledgeNtpOverrideOnDeactivate;
- #endif
- 
--#if defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS))
-+#if defined(OS_WIN) || ((defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS))
- extern const base::Feature kWarnBeforeQuitting;
- #endif
- 

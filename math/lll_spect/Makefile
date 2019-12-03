@@ -3,7 +3,7 @@
 
 PORTNAME=	lll_spect
 DISTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	LOCAL/bf/lll_spect/
 DISTFILES=	lll_spect.C lll_search.C examples.txt
@@ -15,6 +15,8 @@ COMMENT=	LLL-spectral test of linear congruential random number generators
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libntl.a:math/ntl
 RUN_DEPENDS=	${LOCALBASE}/lib/libntl.a:math/ntl
+
+USES=		compiler:c++11-lang
 
 PLIST_FILES=	bin/lll_spect bin/lll_search
 PORTEXAMPLES=	examples.txt

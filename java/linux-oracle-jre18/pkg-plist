@@ -31,6 +31,7 @@
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libavplugin-57.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libavplugin-ffmpeg-56.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libavplugin-ffmpeg-57.so
+%%T%%/lib/%%JAVA_ARCHLIBDIR%%/libavplugin-ffmpeg-58.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libawt.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libawt_headless.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libawt_xawt.so
@@ -42,6 +43,9 @@
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libfontmanager.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libfxplugins.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libglass.so
+%%T%%/lib/%%JAVA_ARCHLIBDIR%%/libglassgtk2.so
+%%T%%/lib/%%JAVA_ARCHLIBDIR%%/libglassgtk3.so
+%%T%%/lib/%%JAVA_ARCHLIBDIR%%/libglib-lite.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libgstreamer-lite.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libhprof.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libinstrument.so
@@ -66,7 +70,6 @@
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjsig.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjsound.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjsoundalsa.so
-%%T%%/lib/%%JAVA_ARCHLIBDIR%%/libkcms.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/liblcms.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libmanagement.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libmlib_image.so

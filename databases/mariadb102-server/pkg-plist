@@ -60,6 +60,7 @@ lib/mysql/plugin/auth_ed25519.so
 lib/mysql/plugin/auth_pam.so
 lib/mysql/plugin/auth_socket.so
 lib/mysql/plugin/auth_test_plugin.so
+@comment lib/mysql/plugin/caching_sha2_password.so
 @comment lib/mysql/plugin/daemon_example.ini
 lib/mysql/plugin/debug_key_management.so
 @comment lib/mysql/plugin/dialog.so
@@ -103,7 +104,9 @@ man/man1/aria_read_log.1.gz
 man/man1/galera_new_cluster.1.gz
 man/man1/galera_recovery.1.gz
 man/man1/innochecksum.1.gz
+man/man1/mariabackup.1.gz
 man/man1/mariadb-service-convert.1.gz
+man/man1/mbstream.1.gz
 man/man1/my_print_defaults.1.gz
 man/man1/myisam_ftdump.1.gz
 man/man1/myisamchk.1.gz
@@ -113,6 +116,7 @@ man/man1/mysql.server.1.gz
 man/man1/mysql_convert_table_format.1.gz
 man/man1/mysql_fix_extensions.1.gz
 man/man1/mysql_install_db.1.gz
+man/man1/mysql_ldb.1.gz
 man/man1/mysql_secure_installation.1.gz
 man/man1/mysql_setpermission.1.gz
 man/man1/mysql_tzinfo_to_sql.1.gz
@@ -127,11 +131,13 @@ man/man1/perror.1.gz
 man/man1/replace.1.gz
 man/man1/resolve_stack_dump.1.gz
 man/man1/resolveip.1.gz
-man/man1/tokuft_logdump.1.gz
-man/man1/tokuftdump.1.gz
+%%TOKUDB%%man/man1/tokuft_logprint.1.gz
+%%TOKUDB%%man/man1/tokuftdump.1.gz
 man/man1/wsrep_sst_common.1.gz
+man/man1/wsrep_sst_mariabackup.1.gz
 man/man1/wsrep_sst_mysqldump.1.gz
 man/man1/wsrep_sst_rsync.1.gz
+man/man1/wsrep_sst_rsync_wan.1.gz
 man/man1/wsrep_sst_xtrabackup-v2.1.gz
 man/man1/wsrep_sst_xtrabackup.1.gz
 man/man8/mysqld.8.gz
@@ -186,3 +192,21 @@ man/man8/mysqld.8.gz
 %%DATADIR%%/wsrep_notify
 %%MROONGA%%share/groonga-normalizer-mysql/README.md
 %%MROONGA%%share/groonga/README.md
+@comment bin/mariadb_config
+@comment bin/mysql
+@comment bin/mysqladmin
+@comment bin/mysqlbinlog
+@comment bin/mysqlcheck
+@comment bin/mysqldump
+@comment bin/mysqlimport
+@comment bin/mysqlshow
+@comment bin/mysqlslap
+@comment include/mysql/mariadb/ma_io.h
+@comment include/mysql/mysql/client_plugin.h
+@comment include/mysql/mysql/plugin_auth.h
+@comment include/mysql/mysql/plugin_auth_common.h
+@comment lib/mysql/plugin/auth_gssapi_client.so
+@comment lib/mysql/plugin/client_ed25519.so
+@comment lib/mysql/plugin/mysql_clear_password.so
+@comment lib/mysql/plugin/sha256_password.so
+@comment libdata/pkgconfig/libmariadb.pc

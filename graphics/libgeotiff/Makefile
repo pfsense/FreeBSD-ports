@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libgeotiff
-PORTVERSION=	1.4.2
+PORTVERSION=	1.5.1
 CATEGORIES=	graphics
-MASTER_SITES=	http://download.osgeo.org/geotiff/libgeotiff/ \
-		ftp://ftp.remotesensing.org/geotiff/libgeotiff/ \
+MASTER_SITES=	https://download.osgeo.org/geotiff/libgeotiff/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -14,9 +13,12 @@ COMMENT=	Library for reading and writing GeoTIFF information tags
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	proj>=6:graphics/proj
 LIB_DEPENDS=	libjbig.so:graphics/jbigkit \
 		libproj.so:graphics/proj \
 		libtiff.so:graphics/tiff
+
+USES=		jpeg libtool
 
 CONFIGURE_ARGS=	--datadir=${DATADIR} \
 		--disable-doxygen-doc \
@@ -31,6 +33,5 @@ CPPFLAGS+=	-fPIC
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USES=		jpeg libtool
 
 .include <bsd.port.mk>

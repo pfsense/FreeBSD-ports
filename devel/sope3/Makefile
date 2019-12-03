@@ -3,7 +3,7 @@
 
 PORTNAME=		sope3
 PORTVERSION=		3.2.10
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=		devel gnustep
 MASTER_SITES=		http://www.sogo.nu/files/downloads/SOGo/Sources/
 DISTNAME=		SOPE-${PORTVERSION}
@@ -30,6 +30,7 @@ MEMCACHED_DESC=		Install memcached
 USES=			gmake iconv gnustep
 USE_GNUSTEP=		base build
 USE_LDCONFIG=		${GNUSTEP_LOCAL_LIBRARIES}
+LLD_UNSAFE=		yes # PR 230608
 
 CONFLICTS=		sope2-[0-9]*
 

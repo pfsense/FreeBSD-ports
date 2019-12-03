@@ -1,0 +1,7 @@
+TIMESTAMP = 1568990814
+SHA256 (centos/elfutils-libs-0.176-2.el7.i686.rpm) = 7094d11ea6e816af90decaf6338c4d3f3c440c9fc35c13a3e969eb2052fe9482
+SIZE (centos/elfutils-libs-0.176-2.el7.i686.rpm) = 325368
+SHA256 (centos/elfutils-libs-0.176-2.el7.x86_64.rpm) = bbb561cd7c11ba8470657beaef48adb1e3e50dcf48129a85cbecd72044fe454f
+SIZE (centos/elfutils-libs-0.176-2.el7.x86_64.rpm) = 297560
+SHA256 (centos/elfutils-0.176-2.el7.src.rpm) = 990a26dd8a282ecec5dcffbe0353ade599e019c74f4c878f208f4e816d316a7f
+SIZE (centos/elfutils-0.176-2.el7.src.rpm) = 8689102

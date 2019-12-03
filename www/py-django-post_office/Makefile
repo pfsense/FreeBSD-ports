@@ -3,8 +3,7 @@
 
 PORTNAME=	django-post_office
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.4
-PORTREVISION=	1
+DISTVERSION=	3.2.1
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -19,6 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django-jsonfield>=0:www/py-django-jsonfield@
 
 USES=		python
 USE_PYTHON=	autoplist distutils
+USE_LOCALE=	en_US.UTF-8
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ui

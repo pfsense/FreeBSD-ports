@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	slony1v2
-PORTVERSION=	2.2.6
+PORTVERSION=	2.2.7
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://main.slony.info/downloads/2.2/source/
 DISTNAME=	slony1-${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${DISTNAME}-docs${EXTRACT_SUFX}
 
-MAINTAINER=	olgeni@FreeBSD.org
+MAINTAINER=	dgilbert@eicat.ca
 COMMENT=	PostgreSQL master to multiple replicas replication system
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
@@ -31,7 +32,6 @@ CONFLICTS?=	slony1-1*
 
 CONFIGURE_ENV+=	FLEX=${LOCALBASE}/bin/flex
 
-PERLTOOLS_DESC=	Install perl configuration tools
 PERLTOOLS_USES=	perl5
 PERLTOOLS_CONFIGURE_ENV=	PERL=${PERL}
 PERLTOOLS_CONFIGURE_ON=		--with-perltools=${LOCALBASE}/sbin
@@ -54,14 +54,6 @@ PORTDOCS=	*
 DOCS=		COPYRIGHT INSTALL README README.Unicode RELEASE \
 		SAMPLE TODO UPGRADING
 
-post-patch:
-	@for _file in ${WRKSRC}/doc/adminguide/man7/*.7; do \
-		${MV} "$${_file}" $$(echo $${_file} | ${SED} -e 's/ [ ]*/_/g'); \
-	done
-	@for _file in ${WRKSRC}/doc/adminguide/man7/*.7; do \
-		${REINPLACE_CMD} -e '/^.TH/s/  [ ]*/ /g' $${_file}; \
-	done
-
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/slon
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/slonik
@@ -73,8 +65,6 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/${_file} ${STAGEDIR}${DOCSDIR}
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/doc/adminguide/*.html ${WRKSRC}/doc/adminguide/*.png ${STAGEDIR}${DOCSDIR}/adminguide/
-	${INSTALL_MAN} ${WRKSRC}/doc/adminguide/man1/*.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/doc/adminguide/man7/*.7 ${STAGEDIR}${MAN1PREFIX}/man/man7
 	${INSTALL_SCRIPT} ${WRKDIR}/slon-mkservice.sh ${STAGEDIR}${PREFIX}/sbin/slon-mkservice
 	${INSTALL_DATA} ${FILESDIR}/slon.conf-sample ${STAGEDIR}${PREFIX}/etc
 

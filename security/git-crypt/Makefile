@@ -3,6 +3,7 @@
 
 PORTNAME=	git-crypt
 PORTVERSION=	0.6.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.agwa.name/projects/git-crypt/downloads/ \
 		LOCAL/ashish/
@@ -18,7 +19,6 @@ RUN_DEPENDS=	git:devel/git \
 
 OPTIONS_DEFINE=	MANPAGES
 
-LDFLAGS+=	-L${OPENSSLLIB}
 MAKE_ENV+=	PREFIX=${PREFIX} "CXXFLAGS=${CXXFLAGS}" \
 		"LDFLAGS=${LDFLAGS}"
 
@@ -29,9 +29,16 @@ MANPAGES_MAKE_ARGS=		ENABLE_MAN=yes \
 			DOCBOOK_XSL=${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl
 MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
 
-USES=		gmake ssl
+USES=		compiler:c++11-lang gmake ssl
 
 PLIST_FILES=	bin/${PORTNAME}
+
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} != base
+CXXFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
+.endif
 
 post-extract:
 	@${GREP} -Rl '"gpg"' ${WRKSRC} |${XARGS} ${REINPLACE_CMD} -e 's,"gpg","${LOCALBASE}/bin/gpg",'
@@ -40,4 +47,4 @@ post-extract:
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/git-crypt
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

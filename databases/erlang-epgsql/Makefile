@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	epgsql
-PORTVERSION=	3.4.0
+PORTVERSION=	4.1.0
 CATEGORIES=	databases
 PKGNAMEPREFIX=	erlang-
 
@@ -12,5 +12,7 @@ LICENSE=	BSD3CLAUSE
 
 USES=		erlang:rebar3
 USE_GITHUB=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

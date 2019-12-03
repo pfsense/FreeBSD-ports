@@ -2,8 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	faup
-PORTVERSION=	1.5
+DISTVERSION=	1.5-48
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+DISTVERSIONSUFFIX=	-g88dbbe2
 CATEGORIES=	www devel
 MASTER_SITES=	GH LOCAL/antoine
 
@@ -16,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USE_GITHUB=	yes
 GH_ACCOUNT=	stricaud
 
-USES=		cmake:outsource lua
+USES=		cmake compiler:c++11-lang lua
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*
@@ -26,7 +28,8 @@ OPTIONS_DEFINE=	DOCS
 post-patch:
 	@${REINPLACE_CMD} "s,LUA_VERSION,LUA_VERSION_STRING, ; \
 		s,pkg_check_modules(LUA lua>=5.1),FIND_PACKAGE(Lua REQUIRED), ; \
-		s,LUA_INCLUDE_DIRS,LUA_INCLUDE_DIR," \
+		s,LUA_INCLUDE_DIRS,LUA_INCLUDE_DIR, ; \
+		s,LUA_LDFLAGS,LUA_LIBRARIES," \
 		${WRKSRC}/CMakeLists.txt \
 		${WRKSRC}/src/lib/CMakeLists.txt \
 		${WRKSRC}/src/tools/CMakeLists.txt

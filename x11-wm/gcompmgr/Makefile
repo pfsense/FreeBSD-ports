@@ -3,14 +3,12 @@
 
 PORTNAME=	gcompmgr
 PORTVERSION=	0.21
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNOME interface to xcompmgr
-
-BROKEN_powerpc64=	fails to compile: params.cc:135:37: 'memset' was not declared in this scope
 
 RUN_DEPENDS=	xcompmgr:x11-wm/xcompmgr
 

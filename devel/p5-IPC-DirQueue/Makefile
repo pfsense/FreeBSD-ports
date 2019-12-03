@@ -8,11 +8,11 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	tobez@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	IPC::DirQueue - disk-based many-to-many task queue
 
-BUILD_DEPENDS=	p5-POE>0:devel/p5-POE
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-POE>0:devel/p5-POE
 
 USES=		perl5
 USE_PERL5=	configure

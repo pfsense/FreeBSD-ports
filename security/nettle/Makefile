@@ -2,32 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	nettle
-PORTVERSION=	3.4
+PORTVERSION=	3.5.1
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	GNU \
-		http://www.lysator.liu.se/~nisse/archive/
+		https://www.lysator.liu.se/~nisse/archive/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Low-level cryptographic library
 
 LICENSE=	GPLv2+ LGPL3
 LICENSE_COMB=	multi
-LICENSE_FILE_GPLv2=	${WRKSRC}/COPYINGv2
-LICENSE_FILE_GPLv3=	${WRKSRC}/COPYINGv3
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYINGv2
 LICENSE_FILE_LGPL3=	${WRKSRC}/COPYING.LESSERv3
 
+BUILD_DEPENDS=	gmp>=6.0.0:math/gmp
 LIB_DEPENDS=	libgmp.so:math/gmp
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+USES=		compiler:c11 gmake localbase makeinfo pathfix
 
 CONFIGURE_ARGS=	--enable-shared
 CONFIGURE_ENV=	M4="/usr/bin/m4 -g"
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		gmake localbase makeinfo pathfix
 
 INFO=		nettle
-PORTDOCS=	NEWS README TODO nettle.html nettle.pdf
+PORTDOCS=	NEWS README nettle.html nettle.pdf
 PORTEXAMPLES=	*.c *.h
 
 .include <bsd.port.options.mk>

@@ -4,7 +4,7 @@
 
 PORTNAME=	tagtool
 PORTVERSION=	0.12.3
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -17,12 +17,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libid3.so:audio/id3lib \
 		libvorbis.so:audio/libvorbis
 
-USES=		tar:bzip2 gettext gmake pathfix pkgconfig
+USES=		compiler:c++11-lang gettext gmake localbase:ldflags pathfix \
+		pkgconfig tar:bzip2
 USE_GNOME=	intlhack libglade2
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -lpthread -logg -lm
+LDFLAGS+=	-lpthread -logg -lm
 
 .include <bsd.port.mk>

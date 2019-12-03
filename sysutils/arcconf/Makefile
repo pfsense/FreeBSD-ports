@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	arcconf
-DISTVERSION=	1_8_21375
+DISTVERSION=	3_01_23531
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://download.adaptec.com/raid/storage_manager/
@@ -11,7 +12,8 @@ DISTNAME=	arcconf_v${DISTVERSION}
 MAINTAINER=	michael@fuckner.net
 COMMENT=	Adaptec SCSI/SAS RAID administration tool
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64
+LIB_DEPENDS=	libstdc++.so.6:lang/gcc${GCC_DEFAULT}
 
 USES=		zip
 
@@ -23,28 +25,13 @@ RESTRICTED=	May not be redistributed in binary form
 NO_CDROM=	May not be redistributed in binary form
 
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} != FreeBSD
-IGNORE=		installs incompatible binaries for FreeBSD
-.else
-DIST_OSVER=	10
-.endif
-
-.if ${ARCH} == amd64
-DIST_EXT=	_x64
-.elif ${ARCH} == i386
-.if ${OPSYS} == FreeBSD
-# use the 9 i386 version for 10 i386
-DIST_OSVER=	9
-RUN_DEPENDS+=	${LOCALBASE}/lib/compat/libstdc++.so.6:misc/compat9x
-.endif
-.endif
+DIST_TYPE=	11_x64
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/freebsd${DIST_OSVER}${DIST_EXT}/cmdline/arcconf ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_PROGRAM} ${WRKSRC}/freebsd${DIST_TYPE}/cmdline/arcconf ${STAGEDIR}${PREFIX}/sbin
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/periodic/daily
 	${INSTALL_SCRIPT} ${WRKDIR}/${PERIODICSCRIPT} ${STAGEDIR}${PREFIX}/etc/periodic/daily
 

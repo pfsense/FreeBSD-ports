@@ -29,7 +29,6 @@ share/icons/hicolor/64x64/apps/kbounce.png
 %%DATADIR%%/themes/thebeach_preview.png
 share/kxmlgui5/kbounce/kbounceui.rc
 share/locale/ar/LC_MESSAGES/kbounce.mo
-share/locale/ast/LC_MESSAGES/kbounce.mo
 share/locale/bg/LC_MESSAGES/kbounce.mo
 share/locale/bs/LC_MESSAGES/kbounce.mo
 share/locale/ca/LC_MESSAGES/kbounce.mo
@@ -60,6 +59,7 @@ share/locale/km/LC_MESSAGES/kbounce.mo
 share/locale/ko/LC_MESSAGES/kbounce.mo
 share/locale/lt/LC_MESSAGES/kbounce.mo
 share/locale/lv/LC_MESSAGES/kbounce.mo
+share/locale/ml/LC_MESSAGES/kbounce.mo
 share/locale/mr/LC_MESSAGES/kbounce.mo
 share/locale/nb/LC_MESSAGES/kbounce.mo
 share/locale/nds/LC_MESSAGES/kbounce.mo
@@ -80,3 +80,4 @@ share/locale/ug/LC_MESSAGES/kbounce.mo
 share/locale/uk/LC_MESSAGES/kbounce.mo
 share/locale/zh_CN/LC_MESSAGES/kbounce.mo
 share/locale/zh_TW/LC_MESSAGES/kbounce.mo
+share/metainfo/org.kde.kbounce.appdata.xml

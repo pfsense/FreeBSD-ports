@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	broom
-DISTVERSION=	0.4.4
+DISTVERSION=	0.5.2
+PORTREVISION=	1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -11,12 +12,14 @@ COMMENT=	Convert Statistical Analysis Objects into Tidy Data Frames
 
 LICENSE=	MIT
 
-CRAN_DEPENDS=	R-cran-plyr>0:devel/R-cran-plyr \
+CRAN_DEPENDS=	R-cran-backports>0:math/R-cran-backports \
 		R-cran-dplyr>0:math/R-cran-dplyr \
-		R-cran-tidyr>0:devel/R-cran-tidyr \
-		R-cran-psych>0:math/R-cran-psych \
+		R-cran-generics>=0.0.2:devel/R-cran-generics \
+		R-cran-purrr>0:devel/R-cran-purrr \
+		R-cran-reshape2>0:devel/R-cran-reshape2 \
 		R-cran-stringr>0:textproc/R-cran-stringr \
-		R-cran-reshape2>0:devel/R-cran-reshape2
+		R-cran-tibble>0:devel/R-cran-tibble \
+		R-cran-tidyr>0:devel/R-cran-tidyr
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 

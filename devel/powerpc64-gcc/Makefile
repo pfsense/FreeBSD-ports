@@ -2,11 +2,12 @@
 
 PORTNAME=	gcc
 PORTVERSION=	6.4.0
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	GCC/releases/gcc-${DISTVERSION}
 PKGNAMEPREFIX?=	powerpc64-
 
-MAINTAINER=	kan@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross GNU Compiler Collection for ${PKGNAMEPREFIX:C/-//g}
 
 LICENSE=	GPLv3 GPLv3RLE
@@ -18,25 +19,21 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 BUILD_DEPENDS=	${BU_PREFIX}-as:devel/${PKGNAMEPREFIX}binutils
 RUN_DEPENDS=	${BU_PREFIX}-as:devel/${PKGNAMEPREFIX}binutils
 
-USES=	gmake iconv libtool tar:xz makeinfo compiler
+USES=	gmake iconv libtool tar:xz makeinfo compiler:c++11-lang
 PLIST_SUB=	TARGETARCH=${PKGNAMEPREFIX:C/-//g} \
 		OPSYS=${OPSYS:tl} \
 		GCC_TARGET=${GCC_TARGET} \
 		GCC_VERSION=${PORTVERSION}
 
+TARGETARCH=	${PKGNAMEPREFIX:C/-//g}
+
 .if empty(GCC_TARGET)
 # We are building for a FreeBSD target
-GCC_TARGET?=	${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}
-BU_PREFIX?=	${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}
-EXTRA_PATCHES+= ${FILESDIR}/freebsd-format-extensions
-.else
+GCC_TARGET=	${PKGNAMEPREFIX:S/amd64/x86_64/}unknown-${OPSYS:tl}${OSREL}
+EXTRA_PATCHES+= ${FILESDIR}/freebsd-format-extensions \
+		${FILESDIR}/freebsd-libdir
+.endif
 BU_PREFIX?=	${GCC_TARGET}
-.if defined(FREEBSD_EXTENSION)
-EXTRA_PATCHES+= ${FILESDIR}/freebsd-format-extensions
-.endif
-.endif
-
-TARGETARCH=${PKGNAMEPREFIX:C/-//g}
 
 GNU_CONFIGURE=	yes
 CONFIGURE_OUTSOURCE=	yes
@@ -54,11 +51,12 @@ CONFIGURE_ARGS+=--target=${GCC_TARGET} --disable-nls --enable-languages=c,c++ \
 ALL_TARGET?=	all-gcc
 INSTALL_TARGET?=	install-gcc
 
-# Force build of a cross compiler even if the target matches the host.
-CFLAGS+=	-DCROSS_DIRECTORY_STRUCTURE
-
 .include <bsd.port.options.mk>
 .include <bsd.port.pre.mk>
+
+.if ${GCC_TARGET:M*${OPSYS:tl}*} != ""
+CONFIGURE_ARGS+= --enable-initfini-array
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/LIBSTDCXX/ s/stdc\+\+/c\+\+/g ' \
@@ -66,7 +64,7 @@ post-patch:
 	@${REINPLACE_CMD} -e '/LOCAL_INCLUDE_DIR/ d ' \
 		${WRKSRC}//gcc/Makefile.in
 
-.if ${TARGETARCH} == "amd64"
+.if ${ARCH} == "amd64"
 CONFIGURE_TARGET=	x86_64-unknown-${OPSYS:tl}${OSREL}
 .else
 CONFIGURE_TARGET=	${ARCH}-unknown-${OPSYS:tl}${OSREL}
@@ -78,14 +76,20 @@ MAKE_ARGS+=CXXFLAGS=-fbracket-depth=512
 . endif
 .endif
 
+.if ${ARCH} == "aarch64"
+PLIST_SUB+=	PLUGINS="@comment plugin does not build"
+.else
+PLIST_SUB+=	PLUGINS=""
+.endif
+
 post-install:
-.for f in cpp gcov gcov-tool
+.for f in cpp gcov gcov-dump gcov-tool
 	@if [ -f ${STAGEDIR}${PREFIX}/bin/$f ] ; then \
 		${MV} ${STAGEDIR}${PREFIX}/bin/$f  \
 		    ${STAGEDIR}${PREFIX}/bin/${GCC_TARGET}-$f ; \
 	fi
 .endfor
-.for f in c++ cpp g++ gcc gcc-ar gcc-nm gcc-ranlib gcov gcov-tool
+.for f in c++ cpp g++ gcc gcc-ar gcc-nm gcc-ranlib gcov gcov-dump gcov-tool
 	@if [ ! -f ${STAGEDIR}${PREFIX}/man/man1/${GCC_TARGET}-$f.1 ] ; then \
 		if [ -f ${STAGEDIR}${PREFIX}/man/man1/$f.1 ] ; then \
 			${CP} ${STAGEDIR}${PREFIX}/man/man1/$f.1  \
@@ -96,14 +100,14 @@ post-install:
 	@${RM} ${STAGEDIR}${PREFIX}/man/man1/$f.1
 	@${RM} ${STAGEDIR}${PREFIX}/man/man1/$f.1.gz
 .endfor
-	@${RM} ${STAGEDIR}${PREFIX}/info/*
+	@${RM} ${STAGEDIR}${PREFIX}/share/info/*
 	@${RM} ${STAGEDIR}${PREFIX}/man/man7/*
 .if empty(PKGNAMEPREFIX:M*-*-)
 	@${RM} -r ${STAGEDIR}${PREFIX}/lib/gcc/${GCC_TARGET}/${PORTVERSION}/include-fixed
 .endif
-
-# This port and all its slave ports fail on aarch64 -- but not all
-# the same way.  Provide this definition for the master.
-BROKEN_aarch64?=	fails to package
+.if ${TARGETARCH} == "amd64" || ${TARGETARCH} == "i386"
+	# Conflicts with sys/x86/include/float.h
+	${RM} ${STAGEDIR}${PREFIX}/lib/gcc/${GCC_TARGET}/${PORTVERSION}/include/float.h
+.endif
 
 .include <bsd.port.post.mk>

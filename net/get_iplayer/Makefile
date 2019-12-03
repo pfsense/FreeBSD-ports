@@ -1,24 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	get_iplayer
-PORTVERSION=	3.13
+PORTVERSION=	3.22
 DISTVERSIONPREFIX=v
 CATEGORIES=	net multimedia
 
-MAINTAINER=	crees@FreeBSD.org
+MAINTAINER=	jamie@catflap.org
 COMMENT=	Search, index, or stream archive video from BBC iPlayer
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	p5-HTML-Parser>=0:www/p5-HTML-Parser \
-		p5-HTTP-Cookies>=0:www/p5-HTTP-Cookies \
-		p5-HTTP-Message>=0:www/p5-HTTP-Message \
-		p5-XML-Simple>=0:textproc/p5-XML-Simple \
-		p5-URI>=0:net/p5-URI \
-		p5-libwww>=0:www/p5-libwww \
+RUN_DEPENDS=	p5-XML-LibXML>=0:textproc/p5-XML-LibXML \
 		p5-Mojolicious>=0:www/p5-Mojolicious \
-		rtmpdump:multimedia/rtmpdump
+		p5-LWP-Protocol-https>=0:www/p5-LWP-Protocol-https \
+		p5-CGI>=0:www/p5-CGI
 
 USES=		perl5 shebangfix
 USE_GITHUB=	yes
@@ -40,7 +36,11 @@ PLIST_FILES=	bin/${PORTNAME} ${SCRIPTS:S,^,${WWWDIR_REL}/,} \
 DATADIR=	${WWWDIR}
 PORTDOCS=	CHANGELOG.md README.md
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS FFMPEG ATOMICPARSLEY
+FFMPEG_DESC=	Enable file conversion using FFmpeg
+FFMPEG_RUN_DEPENDS=	ffmpeg>=0:multimedia/ffmpeg
+ATOMICPARSLEY_DESC=	Enable tagging of media files
+ATOMICPARSLEY_RUN_DEPENDS=	AtomicParsley>=0:multimedia/atomicparsley
 
 post-patch:
 	${REINPLACE_CMD} -e "s|/usr/bin/get_iplayer|${PREFIX}/bin/${PORTNAME}|" \

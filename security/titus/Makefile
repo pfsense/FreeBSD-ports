@@ -3,15 +3,13 @@
 
 PORTNAME=	titus
 PORTVERSION=	0.3
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	security
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	TLS/SSL proxy server
 
 LICENSE=	MIT
-
-BROKEN_powerpc64=	fails to compile: child.cpp: undefined reference to std::__cxx11::basic_string
 
 USES=		compiler:c++11-lang ssl
 USE_RC_SUBR=	titus
@@ -26,10 +24,17 @@ MAKE_ENV+=	MANDIR=${MANPREFIX}/man
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_12=	member access into incomplete type 'dh_st'
+BROKEN_FreeBSD_13=	member access into incomplete type 'dh_st'
+.endif
+
 post-patch:
 	${REINPLACE_CMD} 's|/var/lib/titus/empty|/var/empty|' ${WRKSRC}/titus.conf.example
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/titus.conf.example ${STAGEDIR}${PREFIX}/etc/titus.conf.sample
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

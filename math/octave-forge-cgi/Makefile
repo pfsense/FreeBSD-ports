@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-cgi
 PORTVERSION=	0.1.2
-PORTREVISION=	6
+PORTREVISION=	12
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

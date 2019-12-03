@@ -1,30 +1,17 @@
-Emby Server uses FFmpeg for transcoding and ImageMagick for
-generating thumbnails. The default ports/pkg builds of FFmpeg
-and ImageMagick on FreeBSD have a number of options which
-could be SET/UNSET to improve your Emby Server experience.
-
-It is recommended to recompile the multimedia/ffmpeg package
-from ports with the following options ENABLED (SET):
- - ASS (required for subtitle rendering)
- - LAME (required for mp3 audio transcoding, disabled by default due to mp3 licensing restrictions)
- - OPUS (required for opus audio codec support)
- - X265 (required for H.265 video codec support
-
-It is recommended to recompile the graphics/ImageMagick package
-from ports with the following options DISABLED (UNSET):
- - 16BIT_PIXEL (to increase thumbnail generation performance)
-
-If you had mediabrowser installed before the project was
-renamed to emby-server, you may want to rename the user and
-group (note that moving the database is not supported):
-# pw groupmod 989 -n mediabrowser -l emby
-# pw usermod 989 -n mediabrowser -l emby -g emby -c Emby\ Server
+[
+{ type: install
+  message: <<EOM
+It is recommended to recompile this port from source
+with the LAME option enabled to support mp3 transcoding.
 
 To automatically start Emby Server at boot time:
-# echo 'emby_server_enable="YES"' >> /etc/rc.conf
+# sysrc emby_server_enable="YES"
 
 To then manually start Emby Server without rebooting:
 # service emby-server start
 
 Once started, visit the following webpage to configure:
 http://localhost:8096/
+EOM
+}
+]

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libring
-DISTVERSION=	1.3.1
+DISTVERSION=	1.3.2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	elixir-
 
@@ -15,5 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	bitwalker
 
 MIX_REWRITE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

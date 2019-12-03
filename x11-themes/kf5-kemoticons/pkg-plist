@@ -1715,3 +1715,4 @@ share/kservices5/emoticonstheme_kde.desktop
 share/kservices5/emoticonstheme_pidgin.desktop
 share/kservices5/emoticonstheme_xmpp.desktop
 share/kservicetypes5/kemoticonsTheme.desktop
+share/qlogging-categories5/kemoticons.categories
