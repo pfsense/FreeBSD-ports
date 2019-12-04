@@ -38,7 +38,7 @@ post-install:
 
 .include <bsd.port.pre.mk>
 
-.if ! ${SSL_DEFAULT:Mlibressl*}
+.if ${OSVERSION} >= 1200000 && ! ${SSL_DEFAULT:Mlibressl*}
 . ifnmake describe
 STAGEDIR_libressl!=	${MAKE} -V STAGEDIR -C ${PORTSDIR}/security/libressl
 . endif
