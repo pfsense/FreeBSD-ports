@@ -13,7 +13,7 @@ COMMENT=	FRR package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	frr6>=0:net/frr6
+RUN_DEPENDS=	frr7>=0:net/frr7
 
 CONFLICTS=	pfSense-pkg-OpenBGPD-[0-9]* \
 		pfSense-pkg-Quagga_OSPF-[0-9]*
