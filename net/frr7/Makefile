@@ -5,6 +5,7 @@ PORTVERSION=	7.2
 DISTVERSIONPREFIX=	frr-
 CATEGORIES=	net ipv6
 PKGNAMESUFFIX=	7
+PORTREVISION=	1
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	IP routing protocol suite including BGP, IS-IS, OSPF and RIP
