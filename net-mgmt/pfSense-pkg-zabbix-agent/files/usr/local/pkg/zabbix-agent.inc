@@ -316,7 +316,7 @@ function zabbix_agent_add_keyfile($data, $directive) {
 	@chown($fpath, "zabbix");
 }
 
-function zabbix_certca($type) {
+function zabbix_agent_certca($type) {
 	global $config;
 	$c_arr = array();
 	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
