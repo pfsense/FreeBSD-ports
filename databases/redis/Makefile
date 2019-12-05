@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	4.0.14
-PORTREVISION=	1
+PORTVERSION=	5.0.6
 CATEGORIES=	databases
 MASTER_SITES=	http://download.redis.io/releases/
 
@@ -12,14 +11,18 @@ COMMENT=	Persistent key-value database with built-in net interface
 
 LICENSE=	BSD3CLAUSE
 
-OPTIONS_DEFINE=	TESTS TRIB
+OPTIONS_DEFINE=	JEMALLOC TESTS TRIB
 OPTIONS_RADIO=	EXTLUA
 OPTIONS_RADIO_EXTLUA=	LUA LUAJIT
 OPTIONS_SUB=	yes
+JEMALLOC_DESC=	Use jemalloc
 LUA_DESC=	Use lang/lua instead of builtin lua
 LUAJIT_DESC=	Use lang/luajit instead of builtin lua
 TESTS_DESC=	Install lang/tcl for redis unit tests
 TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
+
+USES+=		compiler gmake
+MAKE_ENV=	"V=yo"
 
 .include <bsd.port.options.mk>
 
@@ -27,6 +30,10 @@ TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
 # Needed for __atomic_fetch_add_8
 USE_GCC=	yes
 CFLAGS+=	-march=i586
+.endif
+
+.if ${PORT_OPTIONS:MJEMALLOC}
+MAKE_ENV+=	"USE_JEMALLOC=yes"
 .endif
 
 .if ${PORT_OPTIONS:MTRIB}
@@ -56,10 +63,8 @@ USES+=		tcl:build
 
 LDFLAGS+=	-lpthread -lm -lexecinfo
 
-CONFLICTS?=	redis-devel-5.*
+CONFLICTS?=	redis4-4.* redis-devel-5.*
 
-USES+=		gmake
-MAKE_ENV=	"V=yo"
 USE_RC_SUBR=	redis sentinel
 BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb \
 		redis-cli redis-sentinel redis-server
@@ -84,9 +89,17 @@ PLIST_SUB+=	REDIS_USER=${USERS} \
 	REDIS_DBDIR=${REDIS_DBDIR} \
 	REDIS_RUNDIR=${REDIS_RUNDIR}
 
-.if ${PORT_OPTIONS:MLUAJIT} || ${PORT_OPTIONS:MLUA}
+.include <bsd.port.pre.mk>
+
 post-patch:
+.if ${PORT_OPTIONS:MJEMALLOC}
+	@${REINPLACE_CMD} '35s!Linux!FreeBSD!g' ${WRKSRC}/src/Makefile
+.endif
+.if ${PORT_OPTIONS:MLUA} || ${PORT_OPTIONS:MLUAJIT}
 	@cd ${WRKSRC}/deps/lua/src && ${CP} fpconv.* lua_* strbuf.* ${WRKSRC}/src/
+.endif
+.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
+	${REINPLACE_CMD} -e '/pragma/d' ${WRKSRC}/src/lzf_d.c
 .endif
 
 post-build:
@@ -107,4 +120,4 @@ do-install:
 do-test:
 	@cd ${WRKSRC} && ${TCLSH} tests/test_helper.tcl
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
