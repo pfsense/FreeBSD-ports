@@ -318,7 +318,7 @@ function zabbix_proxy_add_keyfile($data, $directive) {
 	@chown($fpath, "zabbix");
 }
 
-function zabbix_certca($type) {
+function zabbix_proxy_certca($type) {
         global $config;
         $c_arr = array();
         $c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
