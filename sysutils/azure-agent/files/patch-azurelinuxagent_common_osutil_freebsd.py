@@ -1,7 +1,7 @@
---- azurelinuxagent/common/osutil/freebsd.py.orig	2017-06-08 17:53:14 UTC
+--- azurelinuxagent/common/osutil/freebsd.py.orig	2019-11-07 00:36:56 UTC
 +++ azurelinuxagent/common/osutil/freebsd.py
-@@ -30,14 +30,16 @@ class FreeBSDOSUtil(DefaultOSUtil):
-         self._scsi_disks_timeout_set = False
+@@ -36,14 +36,16 @@ class FreeBSDOSUtil(DefaultOSUtil):
+         self.jit_enabled = True
  
      def set_hostname(self, hostname):
 -        rc_file_path = '/etc/rc.conf'
@@ -21,22 +21,22 @@
 +        #return shellutil.run('service sshd restart', chk_err=False)
 +        return shellutil.run("/usr/local/sbin/pfSctl -c 'service restart sshd'", chk_err=False)
  
-     def useradd(self, username, expiration=None):
+     def useradd(self, username, expiration=None, comment=None):
          """
-@@ -48,10 +50,9 @@ class FreeBSDOSUtil(DefaultOSUtil):
+@@ -53,10 +55,9 @@ class FreeBSDOSUtil(DefaultOSUtil):
+         if userentry is not None:
              logger.warn("User {0} already exists, skip useradd", username)
              return
- 
 +        cmd = "/usr/local/sbin/add-pfsense-user {0}".format(username)
          if expiration is not None:
 -            cmd = "pw useradd {0} -e {1} -m".format(username, expiration)
 -        else:
 -            cmd = "pw useradd {0} -m".format(username)
 +            cmd += " {0}".format(expiration)
+         if comment is not None:
+             cmd += " -c {0}".format(comment)
          retcode, out = shellutil.run_get_output(cmd)
-         if retcode != 0:
-             raise OSUtilError(("Failed to create user account:{0}, "
-@@ -66,15 +67,16 @@ class FreeBSDOSUtil(DefaultOSUtil):
+@@ -73,15 +74,16 @@ class FreeBSDOSUtil(DefaultOSUtil):
          self.conf_sudoer(username, remove=True)
  
      def chpasswd(self, username, password, crypt_id=6, salt_len=10):
@@ -62,7 +62,7 @@
  
      def del_root_password(self):
          err = shellutil.run('pw usermod root -h -')
-@@ -129,7 +131,8 @@ class FreeBSDOSUtil(DefaultOSUtil):
+@@ -441,7 +443,8 @@ class FreeBSDOSUtil(DefaultOSUtil):
  
      def restart_if(self, ifname):
          # Restart dhclient only to publish hostname
