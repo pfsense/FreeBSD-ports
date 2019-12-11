@@ -1159,8 +1159,7 @@ EOD;
 	}
 
 
-	// This is for the pfsense cert manager.
-	// Depends on freeradius_get_server_certs() and freeradius_get_ca_certs()
+	// For pfSense cert manager
 	$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
 	if ($ca_cert == false) {
 		if (!is_array($config['ca'])) {
