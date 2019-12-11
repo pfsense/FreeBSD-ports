@@ -496,7 +496,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_ca_or_certs('ca')]]></source>
+			<source><![CDATA[cert_build_list('ca', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
@@ -513,7 +513,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_ca_or_certs('cert')]]></source>
+			<source><![CDATA[cert_build_list('cert', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
@@ -988,7 +988,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_ca_certs()]]></source>
+			<source><![CDATA[cert_build_list('ca', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
@@ -1005,7 +1005,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_server_certs()]]></source>
+			<source><![CDATA[cert_build_list('cert', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
