@@ -227,28 +227,36 @@ foreach ($side as $settings) {
 				$ignore = true;
 				break;
 			case "inpass":
+				if ($settings['category'] === "traffic") {
+					$multiplier = 8;
+				}
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "max":
 				$format = "s";
 				break;
 			case "inpass6":
+				if ($settings['category'] === "traffic") {
+					$multiplier = 8;
+				}
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "outpass":
+				if ($settings['category'] === "traffic") {
+					$multiplier = 8;
+				}
 				$invert = $invert_graph;
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "outpass6":
+				if ($settings['category'] === "traffic") {
+					$multiplier = 8;
+				}
 				$invert = $invert_graph;
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "rate":
