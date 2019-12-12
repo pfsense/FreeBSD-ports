@@ -90,12 +90,6 @@ BUILD_DEPENDS+=	gcc9:lang/gcc9
 USE_GCC=	yes
 .endif
 
-.if ${OPSYS} == FreeBSD && ${ARCH} == aarch64 && \
-	(${OSVERSION} < 1200502 || \
-	(${OSVERSION} > 1300000 && ${OSVERSION} < 1300006))
-IGNORE=	fails to run due to a bug in rtld, update to 12-STABLE r342847 or 13-CURRENT r342113
-.endif
-
 .ifdef QEMU_EMULATING
 IGNORE=	fails to build with qemu-user-static
 .endif
