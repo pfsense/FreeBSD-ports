@@ -38,14 +38,14 @@ function node_exporter_write_config($node_exporter_config) {
 
 	$listen_addr = get_interface_ip($node_exporter_config["listen_iface"]);
 	$listen_port = $node_exporter_config["listen_port"] ?: "9100";
-	$txt .= "node_exporter_listen_address=\"" . $listen_addr . ":" . $listen_port . "\"\n";
+	$txt .= "node_exporter_listen_address=\"{$listen_addr}:{$listen_port}\"\n";
 
 	$collectorTxt = "";
 	foreach (explode(",", $node_exporter_config["collectors"]) as $collector) {
 		$collectorTxt .= " --collector.".$collector;
 	}
 
-	$txt .= "node_exporter_args=\"". $collectorTxt ." " . $node_exporter_config["extra_flags"] . "\"\n";
+	$txt .= "node_exporter_args=\"{$collectorTxt} {$node_exporter_config['extra_flags']}\"\n";
 
 	if (!file_put_contents(NODE_EXPORTER_CONFIG_FILE, $txt)) {
 		log_error("ERROR: Could not open {" . NODE_EXPORTER_CONFIG_FILE . "} for writing");
@@ -60,12 +60,7 @@ function node_exporter_sync_config() {
 	}
 
 	$node_exporter_config = &$config['installedpackages']['nodeexporter']['config'][0];
-	if (isset($node_exporter_config['enable'])) {
-		$enable = $node_exporter_config['enable'];
-	} else {
-		$enable = 'no';
-	}
-	if ($enable !== 'on') {
+	if ($node_exporter_config['enable'] !== 'on') {
 		unlink_if_exists(NODE_EXPORTER_RCFILE);
 		return;
 	}
@@ -122,11 +117,11 @@ function node_exporter_deinstall_command() {
 
 function node_exporter_validate_form($post, &$input_errors) {
 	if (empty($post['listen_iface'])) {
-		$input_errors[] = 'You must select an interface to listen to';
+		$input_errors[] = gettext('You must select an interface to listen to');
 	}
 
 	if (!is_port($post['listen_port'])) {
-		$input_errors[] = 'You must enter a valid port number in the \'Listen Port\' field';
+		$input_errors[] = gettext('You must enter a valid port number in the \'Listen Port\' field');
 	}
 }
 

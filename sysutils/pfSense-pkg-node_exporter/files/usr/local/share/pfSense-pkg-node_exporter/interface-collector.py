@@ -14,7 +14,7 @@ class simplemetric:
 	def __repr__(self):
 		return self.__str__()
 	def add(self, val, **labelpairs):
-		lvs = ['{key}="{value}"'.format(key=key, value=value) for key,value in labelpairs.items()]
+		lvs = ['{key}="{value}"'.format(key=key, value=value) for key,value in list(labelpairs.items())]
 		self.series.append('{name}{{{labels}}} {val}'.format(name=self.name, labels=','.join(lvs), val=val))
 
 metrics = {
@@ -32,5 +32,5 @@ for elem in root.find("interfaces"):
 	metrics['info'].add(enabled, description=descr, interface=if_name, name=pf_name)
 
 textfile = open('/var/tmp/node_exporter/pfsense.prom','w')
-textfile.write('\n'.join(str(m) for m in metrics.values()))
+textfile.write('\n'.join(str(m) for m in list(metrics.values())))
 textfile.write('\n') # Ensure trailing newline
