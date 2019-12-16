@@ -4,6 +4,11 @@ if [ "${2}" != "POST-INSTALL" ]; then
 	exit 0
 fi
 
+# Workaround to prevent https://redmine.pfsense.org/issues/9873
+if grep -q "pkg info" /etc/rc.php_ini_setup; then
+	sed -i '' -e 's/pkg info/pkg-static info/g' /etc/rc.php_ini_setup
+fi
+
 # Do not configure pkg repo on poudriere
 if [ -f /etc/make.conf ] && grep -q 'POUDRIERE_PORTS_NAME=' /etc/make.conf; then
 	exit 0
