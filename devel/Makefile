@@ -812,7 +812,6 @@
     SUBDIR += git-remote-hg
     SUBDIR += git-review
     SUBDIR += git-subrepo
-    SUBDIR += git-subversion
     SUBDIR += git-town
     SUBDIR += gitaly
     SUBDIR += gitblit
