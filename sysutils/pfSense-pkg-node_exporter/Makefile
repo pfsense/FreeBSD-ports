@@ -13,6 +13,7 @@ COMMENT=	pfSense package node_exporter
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	node_exporter>0:sysutils/node_exporter
+USES=			python
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -25,13 +26,10 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.conf.d
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/node_exporter.xml ${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/node_exporter.inc ${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/rc.conf.d/node_exporter ${STAGEDIR}${PREFIX}/etc/rc.conf.d/
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml ${STAGEDIR}${DATADIR}
-	${INSTALL_SCRIPT} ${FILESDIR}${DATADIR}/node_exporter.sh ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${FILESDIR}${DATADIR}/interface-collector.py ${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" ${STAGEDIR}${DATADIR}/info.xml
 
