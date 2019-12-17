@@ -6,7 +6,11 @@ fi
 
 # Workaround to prevent https://redmine.pfsense.org/issues/9873
 if grep -q "pkg info" /etc/rc.php_ini_setup; then
-	sed -i '' -e 's/pkg info/pkg-static info/g' /etc/rc.php_ini_setup
+	sed -i '' -e 's,pkg info,/usr/local/sbin/pkg-static info,g' \
+	    /etc/rc.php_ini_setup
+elif grep -q "if pkg-static info" /etc/rc.php_ini_setup; then
+	sed -i '' -e 's,pkg-static info,/usr/local/sbin/pkg-static info,g' \
+	    /etc/rc.php_ini_setup
 fi
 
 # Do not configure pkg repo on poudriere
