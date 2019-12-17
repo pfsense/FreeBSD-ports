@@ -57,6 +57,7 @@ function stunnel_save() {
 					trim(base64_decode($cert['crt'])) . "\n" .
 					ca_chain($cert));
 				fwrite($fout, "cert = " . STUNNEL_ETCDIR . "/{$pkgconfig['certificate']}.pem\n");
+				chmod(STUNNEL_ETCDIR . "/{$pkgconfig['certificate']}.pem", 0600);
 				$in_use_certs[] = "{$pkgconfig['certificate']}.pem";
 			}
 		} else {

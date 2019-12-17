@@ -228,7 +228,6 @@ foreach ($side as $settings) {
 				break;
 			case "inpass":
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "max":
@@ -236,19 +235,16 @@ foreach ($side as $settings) {
 				break;
 			case "inpass6":
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "outpass":
 				$invert = $invert_graph;
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "outpass6":
 				$invert = $invert_graph;
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "rate":
@@ -273,6 +269,10 @@ foreach ($side as $settings) {
 			case "freq":
 				$unit_acronym = "";
 				break;
+		}
+
+		if ($settings['category'] === "traffic") {
+			$multiplier = 8;
 		}
 
 		if (!$ignore) {
