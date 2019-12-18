@@ -57,6 +57,7 @@ function stunnel_save() {
 					trim(base64_decode($cert['crt'])) . "\n" .
 					ca_chain($cert));
 				fwrite($fout, "cert = " . STUNNEL_ETCDIR . "/{$pkgconfig['certificate']}.pem\n");
+				chmod(STUNNEL_ETCDIR . "/{$pkgconfig['certificate']}.pem", 0600);
 				$in_use_certs[] = "{$pkgconfig['certificate']}.pem";
 				$config['installedpackages']['stunnel']['config'][$num]['certname'] = $cert['descr'];
 			}
@@ -78,7 +79,7 @@ function stunnel_save() {
 		fwrite($fout, base64_decode($pkgconfig['custom_options']) . "\n");
 	}
 	fclose($fout);
-	write_config();
+	write_config('stunnel configuration changed');
 
 	// Clean up certs that are no longer in use.
 	foreach (glob(STUNNEL_ETCDIR . "/*.pem") as $file) {
