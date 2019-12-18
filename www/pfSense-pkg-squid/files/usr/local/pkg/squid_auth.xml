@@ -181,6 +181,12 @@
 			</options>
 		</field>
 		<field>
+			<fielddescr>Use TLS encryption</fielddescr>
+			<fieldname>ldap_use_tls</fieldname>
+			<description>Use TLS encryption for LDAP connection.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>LDAP Server User DN</fielddescr>
 			<fieldname>ldap_user</fieldname>
 			<description>Enter the user DN to use to connect to the LDAP server here.</description>
