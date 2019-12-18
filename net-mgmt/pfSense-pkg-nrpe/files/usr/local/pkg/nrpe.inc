@@ -247,7 +247,7 @@ function nrpe_custom_php_validation_command($post, &$input_errors) {
 		}
 	}
 	foreach (explode(",", $post['allowed_hosts']) as $host) {
-		if (!empty($host) && !is_ipaddr($host)) {
+		if (!empty($host) && !is_ipaddr($host) && !is_ipaddrv6($host)) {
 			$input_errors[] = gettext("'Nagios Server(s)' entry '{$host}' is not a valid IP address.");
 		}
 	}
