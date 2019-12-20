@@ -181,6 +181,28 @@
 			</options>
 		</field>
 		<field>
+                        <fielddescr>Transport</fielddescr>
+			<fieldname>ldap_urltype</fieldname>
+			<type>select</type>
+			<default_value>standard</default_value>
+			<options>
+				<option><name>TCP - Standard</name><value>standard</value></option>
+				<option><name>TCP - STARTTLS</name><value>starttls</value></option>
+				<option><name>SSL - Encrypted</name><value>ssl</value></option>
+			</options>
+		</field>
+		<field>
+                        <fielddescr>Peer Certificate Authority</fielddescr>
+                        <fieldname>ldap_caref</fieldname>
+                        <description>This option is used if 'SSL Encrypted' or 'TCP - STARTTLS' options are chosen. It must match with the CA in the AD otherwise problems will arise.</description>
+                        <type>select_source</type>
+                        <source><![CDATA[squid_get_ca_or_certs('ca', 'IPsec', true, false)]]></source>
+                        <source_name>descr</source_name>
+                        <source_value>refid</source_value>
+                        <show_disable_value>none</show_disable_value>
+                        <default_value>none</default_value>
+                </field>
+		<field>
 			<fielddescr>LDAP Server User DN</fielddescr>
 			<fieldname>ldap_user</fieldname>
 			<description>Enter the user DN to use to connect to the LDAP server here.</description>
