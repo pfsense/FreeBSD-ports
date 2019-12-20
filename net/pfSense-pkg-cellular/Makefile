@@ -2,7 +2,6 @@
 
 PORTNAME=	pfSense-pkg-cellular
 PORTVERSION=	1.2.2
-PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
