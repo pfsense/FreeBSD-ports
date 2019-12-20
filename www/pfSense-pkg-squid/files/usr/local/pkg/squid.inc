@@ -1140,7 +1140,11 @@ function squid_resync_general() {
 					if (is_dir(SQUID_SSL_DB)) {
 						mwexec("/bin/rm -rf " . SQUID_SSL_DB);
 					}
-					mwexec(SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -c -s " . SQUID_SSL_DB);
+					if (file_exists(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen")) {
+						mwexec(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen -c -s " . SQUID_SSL_DB . " -M 4MB");
+					} else {
+						mwexec(SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -c -s " . SQUID_SSL_DB);
+					}
 				}
 				// force squid user permission on /var/squid/lib/ssl_db/
 				squid_chown_recursive(SQUID_SSL_DB, SQUID_UID, SQUID_GID);
