@@ -1920,19 +1920,23 @@ function squid_resync_auth() {
 				$conf .= 'auth_param basic program ' . SQUID_LOCALBASE . '/libexec/squid/basic_ncsa_auth ' . SQUID_PASSWD . "\n";
 				break;
 			case 'ldap':
-				$port = '';
-				$ldap_proto = '';
-				$usetls = '';
 				if (isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) {
 					$port = ":{$settings['auth_server_port']}";
 				} else if ($settings['ldap_urltype'] == 'ssl') {
 					$port = ':636';
+				} else {
+					$port = '';
 				}
 				if ($settings['ldap_urltype'] == 'ssl') {
 					$ldap_proto = 'ldaps://';
+					$usetls = '';
 				} else if ($settings['ldap_urltype'] == 'starttls') {
+					$ldap_proto = '';
 					$usetls = '-Z';
-				} 
+				} else {
+					$ldap_proto = '';
+					$usetls = '';
+				}
 				if (!empty($settings['ldap_caref']) || ($settings['ldap_urltype'] != 'standard')) {
 					$caref = lookup_ca($settings['ldap_caref']);
 					if (!$caref) {
