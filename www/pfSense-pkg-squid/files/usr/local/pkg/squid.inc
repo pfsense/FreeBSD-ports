@@ -1933,7 +1933,7 @@ function squid_resync_auth() {
 				} else if ($settings['ldap_urltype'] == 'starttls') {
 					$usetls = '-Z';
 				} 
-				if (!empty($settings['ldap_caref']) || ($settings['ldap_urltype'] != 'standard')) {
+				if (!empty($settings['ldap_caref']) && ($settings['ldap_urltype'] != 'standard')) {
 					$caref = lookup_ca($settings['ldap_caref']);
 					if (!$caref) {
 						log_error(sprintf(gettext("LDAP: Could not lookup CA by reference for host %s."), $settings['ldap_caref']));
@@ -2465,17 +2465,17 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 /* Get a listing of CA entries which are valid for use with MITM/Splice.
  * They MUST have a private key present!
  */
-function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false) {
+function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false, $addnone = true) {
 	global $config;
 	$c_arr = array();
-	$extrac_arr = array();
 	if (function_exists('cert_build_list')) {
-		$list_arr = cert_build_list($type, $consumer, true, true);
+		$list_arr = cert_build_list($type, $consumer, true, false);
 	}
 	if (isset($config[$type]) && is_array($config[$type])) {
 		if (is_array($list_arr)) {
 			foreach ($config[$type] as $c) {
-				if (in_array($c['refid'],array_column($list_arr, 'refid'))) {
+				if (in_array($c['refid'],array_column($list_arr, 'refid')) && 
+				 (!empty($c['prv']) || $noprv)) {
 					$c_arr[] = $c;
 				}
 			}
@@ -2487,6 +2487,8 @@ function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false) {
 			}
 		}
 	}
-	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+	if ($addnone) {
+		$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+	}
 	return $c_arr;
 }
