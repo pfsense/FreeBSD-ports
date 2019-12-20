@@ -61,7 +61,7 @@
 		</columnitem>
 		<columnitem>
 			<fielddescr>Certificate</fielddescr>
-			<fieldname>certificatelink</fieldname>
+			<fieldname>certname</fieldname>
 		</columnitem>
 		<columnitem>
 			<fielddescr>Redirects to IP</fielddescr>
