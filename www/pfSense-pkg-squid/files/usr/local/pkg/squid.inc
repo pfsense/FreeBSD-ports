@@ -1915,36 +1915,10 @@ function squid_resync_auth() {
 				$conf .= 'auth_param basic program ' . SQUID_LOCALBASE . '/libexec/squid/basic_ncsa_auth ' . SQUID_PASSWD . "\n";
 				break;
 			case 'ldap':
-				if (isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) {
-					$port = ":{$settings['auth_server_port']}";
-				} else if ($settings['ldap_urltype'] == 'ssl') {
-					$port = ':636';
-				} else {
-					$port = '';
-				}
-				if ($settings['ldap_urltype'] == 'ssl') {
-					$ldap_proto = 'ldaps://';
-					$usetls = '';
-				} else if ($settings['ldap_urltype'] == 'starttls') {
-					$ldap_proto = '';
-					$usetls = '-Z';
-				} else {
-					$ldap_proto = '';
-					$usetls = '';
-				}
-				if (!empty($settings['ldap_caref']) || ($settings['ldap_urltype'] != 'standard')) {
-					$caref = lookup_ca($settings['ldap_caref']);
-					if (!$caref) {
-						log_error(sprintf(gettext("LDAP: Could not lookup CA by reference for host %s."), $settings['ldap_caref']));
-						return;
-					}
-					$squidldapca = "/usr/local/etc/openldap/cacerts";
-					safe_mkdir($squidldapca);
-					unlink_if_exists("{$squidldapca}/ca");
-					file_put_contents("{$squidldapca}/ca", base64_decode($caref['crt']));
-				}
+				$port = ((isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) ? ":{$settings['auth_server_port']}" : '');
 				$password = (isset($settings['ldap_pass']) ? "-w {$settings['ldap_pass']}" : '');
-				$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/basic_ldap_auth {$usetls} -v {$settings['ldap_version']} -b {$settings['ldap_basedomain']} -D {$settings['ldap_user']} $password -f \"{$settings['ldap_filter']}\" -u {$settings['ldap_userattribute']} -P $ldap_proto{$settings['auth_server']}$port\n";
+				$usetls = ($settings['ldap_use_tls'] ? '-Z' : '');
+				$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/basic_ldap_auth {$usetls} -v {$settings['ldap_version']} -b {$settings['ldap_basedomain']} -D {$settings['ldap_user']} $password -f \"{$settings['ldap_filter']}\" -u {$settings['ldap_userattribute']} -P {$settings['auth_server']}$port\n";
 				break;
 			case 'radius':
 				$port = ((isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) ? "-p {$settings['auth_server_port']}" : '');
@@ -2460,28 +2434,20 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 /* Get a listing of CA entries which are valid for use with MITM/Splice.
  * They MUST have a private key present!
  */
-function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false) {
-	global $config;
+function squid_get_ca_or_certs($type) {
 	$c_arr = array();
-	$extrac_arr = array();
 	if (function_exists('cert_build_list')) {
-		$list_arr = cert_build_list($type, $consumer, true, true);
-	}
-	if (isset($config[$type]) && is_array($config[$type])) {
-		if (is_array($list_arr)) {
+		$c_arr = cert_build_list($type, 'HTTPS', true, true);
+	} else {
+		global $config;
+		$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+		if (isset($config[$type]) && is_array($config[$type])) {
 			foreach ($config[$type] as $c) {
-				if (in_array($c['refid'],array_column($list_arr, 'refid'))) {
-					$c_arr[] = $c;
-				}
-			}
-		} else {
-			foreach ($config[$type] as $c) {
-				if (!empty($c['prv']) || $noprv) {
+				if (!empty($c['prv'])) {
 					$c_arr[] = $c;
 				}
 			}
 		}
 	}
-	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
 	return $c_arr;
 }
