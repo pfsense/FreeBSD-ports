@@ -1092,10 +1092,15 @@ function squid_validate_auth($post, &$input_errors) {
 		switch ($auth_method) {
 			case 'ldap':
 				$user = trim($post['ldap_user']);
+				$ldaptype = trim($post['ldap_urltype']);
+				$ldapversion = trim($post['ldap_version']);
 				if (empty($user)) {
 					$input_errors[] = "'LDAP server user DN' is required.";
 				} elseif (!$user) {
 					$input_errors[] = "'LDAP server user DN' must be a valid DN.";
+				}
+				if ($ldaptype == 'starttls' && $ldapversion == '2') {
+					$input_errors[] = "'STARTTLS supported only by LDAP version 3.";
 				}
 				break;
 			case 'radius':
@@ -1939,9 +1944,13 @@ function squid_resync_auth() {
 						return;
 					}
 					$squidldapca = "/usr/local/etc/openldap/cacerts";
+					rmdir_recursive($squidldapca);
 					safe_mkdir($squidldapca);
-					unlink_if_exists("{$squidldapca}/ca");
-					file_put_contents("{$squidldapca}/ca", base64_decode($caref['crt']));
+					$cert_contents = base64_decode($caref['crt']);
+					$cert_details = openssl_x509_parse($cert_contents);
+					$ca_filename = "{$squidldapca}/{$cert_details['hash']}.0";
+					file_put_contents($ca_filename, $cert_contents);
+					chmod($ca_filename, 0644);
 				}
 				$password = (isset($settings['ldap_pass']) ? "-w {$settings['ldap_pass']}" : '');
 				$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/basic_ldap_auth {$usetls} -v {$settings['ldap_version']} -b {$settings['ldap_basedomain']} -D {$settings['ldap_user']} $password -f \"{$settings['ldap_filter']}\" -u {$settings['ldap_userattribute']} -P $ldap_proto{$settings['auth_server']}$port\n";
