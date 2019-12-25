@@ -6047,8 +6047,12 @@ function sync_package_pfblockerng($cron='') {
 												continue;
 											}
 
-											$domain_data = "local-data: \"" . strtolower($line)
-													. " 60 IN A {$sinkhole_type}\"\n";
+											$lowerline = strtolower($line);
+											if (preg_match('/(.*)\.'.$config['system']['domain'].'$/', $lowerline)) {
+												$domain_data = "local-zone: " . $lowerline . " redirect local-data: \"" . $lowerline . " 60 IN A {$sinkhole_type}\"\n";
+											} else {
+												$domain_data = "local-data: \"" . $lowerline . " 60 IN A {$sinkhole_type}\"\n";
+											}
 											@fwrite($dhandle, $domain_data);
 										}
 									}
