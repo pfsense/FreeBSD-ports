@@ -30,6 +30,7 @@ require_once('util.inc');
 if (!function_exists("filter_configure")) {
 	require_once("filter.inc");
 }
+
 define("SYSLOGNG_BASEDIR", "/usr/local/");
 define('SYSLOGNG_DIR', "/var/etc/syslog-ng/");
 
@@ -127,6 +128,7 @@ function syslogng_build_default_objects($settings) {
 	$default_port = $settings['default_port'];
 	$default_logdir = $settings['default_logdir'];
 	$default_logfile = $settings['default_logfile'];
+
 	$default_objects[0] = array("objecttype"=>"source", "objectname"=>"_DEFAULT", "objectparameters"=>"{ internal(); syslog(transport($default_protocol) port($default_port)");
 
 	if ($settings['default_protocol'] == 'tls') {
