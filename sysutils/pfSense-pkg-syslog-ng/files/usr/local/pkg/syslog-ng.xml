@@ -80,9 +80,28 @@
 			<options>
 				<option><name>UDP</name><value>udp</value></option>
 				<option><name>TCP</name><value>tcp</value></option>
+				<option><name>TLS</name><value>tls</value></option>
 			</options>
 			<required/>
 		</field>
+		<field>
+                        <fielddescr>CA</fielddescr>
+                        <fieldname>dca</fieldname>
+                        <description>Select Certificate Authority to use for TLS protocol.</description>
+                        <type>select_source</type>
+                        <source><![CDATA[syslogng_get_ca_or_certs('ca')]]></source>
+                        <source_name>descr</source_name>
+                        <source_value>refid</source_value>
+                </field>
+		<field>
+                        <fielddescr>Certificate</fielddescr>
+                        <fieldname>certificate</fieldname>
+                        <description>Select server certificate for TLS protocol.</description>
+                        <type>select_source</type>
+                        <source><![CDATA[syslogng_get_ca_or_certs('cert')]]></source>
+                        <source_name>descr</source_name>
+                        <source_value>refid</source_value>
+                </field>
 		<field>
 			<fielddescr>Default Port</fielddescr>
 			<fieldname>default_port</fieldname>
