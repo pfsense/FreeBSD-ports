@@ -421,13 +421,13 @@ function syslogng_get_ca_or_certs($type, $consumer = 'IPsec') {
 		if (is_array($list_arr)) {
 			foreach ($config[$type] as $c) {
 				if (in_array($c['refid'],array_column($list_arr, 'refid')) &&
-				 (!empty($c['prv']))) {
+				 (!empty($c['prv']) || $type == 'ca')) {
 					$c_arr[] = $c;
 				}
 			}
 		} else {
 			foreach ($config[$type] as $c) {
-				if (!empty($c['prv'])) {
+				if (!empty($c['prv']) || $type == 'ca') {
 					$c_arr[] = $c;
 				}
 			}
