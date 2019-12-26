@@ -87,7 +87,12 @@
 		<field>
                         <fielddescr>CA</fielddescr>
                         <fieldname>dca</fieldname>
-                        <description>Select Certificate Authority to use for TLS protocol.</description>
+			<description>
+				<![CDATA[
+				Select Certificate Authority for TLS protocol.<br />
+				You can use it in your object definition as ca-dir('/var/etc/syslog-ng/ca.d') option of tls( ).
+				]]>
+			</description>
                         <type>select_source</type>
                         <source><![CDATA[syslogng_get_ca_or_certs('ca')]]></source>
                         <source_name>descr</source_name>
@@ -96,7 +101,12 @@
 		<field>
                         <fielddescr>Certificate</fielddescr>
                         <fieldname>certificate</fieldname>
-                        <description>Select server certificate for TLS protocol.</description>
+			<description>
+				<![CDATA[
+				Select server certificate for TLS protocol.<br />
+			       	You can use it in your object definition as key-file('/var/etc/syslog-ng/syslog-ng.key') and cert-file('/var/etc/syslog-ng/syslog-ng.cert') options of tls( ).
+				]]>
+			</description>
                         <type>select_source</type>
                         <source><![CDATA[syslogng_get_ca_or_certs('cert')]]></source>
                         <source_name>descr</source_name>
