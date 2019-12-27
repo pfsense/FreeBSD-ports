@@ -56,6 +56,10 @@ function ladvd_resync_config() {
 		$cmdline .= "-s ";
 	}
 
+	if (!empty($ladvd_conf['infdescr'])) {
+		$cmdline .= "-z ";
+	}
+
 	if (!empty($ladvd_conf['management'])) {
 		$cmdline .= "-m " . escapeshellarg(get_real_interface($ladvd_conf['management'])) . " ";
 	}

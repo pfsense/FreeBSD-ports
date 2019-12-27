@@ -90,6 +90,12 @@
 			<type>checkbox</type>
 		</field>
 		<field>
+			<fielddescr>Set interface description</fielddescr>
+			<fieldname>infdescr</fieldname>
+			<description>Save received info in interface description.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Management Interfaces</fielddescr>
 			<fieldname>management</fieldname>
 			<value>lan</value>
