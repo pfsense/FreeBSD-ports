@@ -39,7 +39,7 @@ $pconfig['pfb_dnsvip_type']	= $pfb['dconfig']['pfb_dnsvip_type']			?: 'ipalias';
 $pconfig['pfb_dnsvip_pass']	= $pfb['dconfig']['pfb_dnsvip_pass']			?: '';
 $pconfig['pfb_dnsport']		= $pfb['dconfig']['pfb_dnsport']			?: '8081';
 $pconfig['pfb_dnsport_ssl']	= $pfb['dconfig']['pfb_dnsport_ssl']			?: '8443';
-$pconfig['dnsbl_interface']	= $pfb['dconfig']['dnsbl_interface']			?: 'lan';
+$pconfig['dnsbl_interface']	= $pfb['dconfig']['dnsbl_interface']			?: 'lo0';
 $pconfig['pfb_dnsbl_rule']	= $pfb['dconfig']['pfb_dnsbl_rule']			?: '';
 $pconfig['dnsbl_allow_int']	= explode(',', $pfb['dconfig']['dnsbl_allow_int'])	?: array();
 $pconfig['dnsbl_webpage']	= $pfb['dconfig']['dnsbl_webpage']			?: 'dnsbl_default.php';
@@ -116,7 +116,7 @@ if ($_POST) {
 		$pfb['dconfig']['pfb_dnsvip_pass']	= $_POST['pfb_dnsvip_pass']			?: '';
 		$pfb['dconfig']['pfb_dnsport']		= $_POST['pfb_dnsport']				?: '8081';
 		$pfb['dconfig']['pfb_dnsport_ssl']	= $_POST['pfb_dnsport_ssl']			?: '8443';
-		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']			?: 'lan';
+		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']			?: 'lo0';
 		$pfb['dconfig']['pfb_dnsbl_rule']	= $_POST['pfb_dnsbl_rule']			?: '';
 		$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])?: '';
 		$pfb['dconfig']['dnsbl_webpage']	= $_POST['dnsbl_webpage']			?: 'dnsbl_default.php';
@@ -368,7 +368,7 @@ $section->addInput(new Form_Input(
 		. 'This Port must not be in use by any other process.'
 );
 
-$interface_list	= pfb_build_if_list(FALSE, FALSE);
+$interface_list	= pfb_build_if_list(FALSE, FALSE, FALSE);
 $int_size	= count($interface_list) ?: '1';
 
 $section->addInput(new Form_Select(

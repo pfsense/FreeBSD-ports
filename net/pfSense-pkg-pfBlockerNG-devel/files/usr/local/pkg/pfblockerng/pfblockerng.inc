@@ -779,7 +779,7 @@ function pfb_get_gateways() {
 
 
 // Collect all Interfaces for General Tab and DNSBL Firewall Permit Rule
-function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE) {
+function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE, $showpseudo=TRUE) {
 	global $config;
 	$pfb_interfaces = array();
 
@@ -795,13 +795,17 @@ function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE) {
 		}
 	}
 
-	if (ipsec_enabled()) {
-		$pfb_interfaces['enc0'] = 'IPsec';
+	if ($showpseudo) {
+		if (ipsec_enabled()) {
+			$pfb_interfaces['enc0'] = 'IPsec';
+		}
+
+		if ($config['openvpn']['openvpn-server'] || $config['openvpn']['openvpn-client']) {
+			$pfb_interfaces['openvpn'] = 'OpenVPN';
+		}
 	}
 
-	if ($config['openvpn']['openvpn-server'] || $config['openvpn']['openvpn-client']) {
-		$pfb_interfaces['openvpn'] = 'OpenVPN';
-	}
+	$pfb_interfaces['lo0'] = 'Localhost';
 
 	return $pfb_interfaces;
 }
@@ -1196,7 +1200,11 @@ function pfb_create_dnsbl($mode) {
 			write_config('pfBlockerNG: saving DNSBL changes');
 
 			// Execute ifconfig to enable VIP address
-			$iface = get_real_interface("{$pfb['dnsbl_iface']}");
+			if ($pfb['dnsbl_iface'] == 'lo0') {
+				$iface = $pfb['dnsbl_iface'];
+			} else {
+				$iface = get_real_interface("{$pfb['dnsbl_iface']}");
+			}
 			if (!empty($iface) && !empty($pfb['dnsbl_vip'])) {
 
 				// Clear any existing VIP
@@ -1257,7 +1265,11 @@ function pfb_create_dnsbl($mode) {
 	}
 	else {
 		// Remove DNSBL VIP address
-		$iface = get_real_interface("{$pfb['dnsbl_iface']}");
+		if ($pfb['dnsbl_iface'] == 'lo0') {
+			$iface = $pfb['dnsbl_iface'];
+		} else {
+			$iface = get_real_interface("{$pfb['dnsbl_iface']}");
+		}
 		if (!empty($iface) && !empty($pfb['dnsbl_vip'])) {
 
 			// Clear any existing VIP
@@ -4820,7 +4832,7 @@ function sync_package_pfblockerng($cron='') {
 	// DNSBL settings
 	$pfb['dnsbl_vip_type']	= $pfb['dnsblconfig']['pfb_dnsvip_type'] ?: 'ipalias';	// Virtual IP type
 	$pfb['dnsbl_vip_pass']	= $pfb['dnsblconfig']['pfb_dnsvip_pass'];		// Virtual IP Carp password (if required)
-	$pfb['dnsbl_iface']	= $pfb['dnsblconfig']['dnsbl_interface']?: 'lan';	// VIP Local Interface setting
+	$pfb['dnsbl_iface']	= $pfb['dnsblconfig']['dnsbl_interface']?: 'lo0';	// VIP Local Interface setting
 	$pfb['dnsbl_ip']	= $pfb['dnsblconfig']['action']		?: 'Disabled';	// Enable/Disable IP blocking from DNSBL lists
 	$pfb['dnsbl_rule']	= $pfb['dnsblconfig']['pfb_dnsbl_rule'] ?: 'Disabled';	// Auto create a Floating Pass Rule for other Lan subnets
 	$pfb['dnsbl_alexa_cnt']	= $pfb['dnsblconfig']['alexa_count']	?: '1000';	// TOP1M whitelist domain setting
