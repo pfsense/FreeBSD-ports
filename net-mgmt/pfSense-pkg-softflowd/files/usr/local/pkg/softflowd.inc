@@ -62,6 +62,9 @@ function sync_package_softflowd() {
 			if ($cf['flowtracking'] != "") {
 				$start .= " -T " . escapeshellarg($cf['flowtracking']);
 			}
+			if ($cf['flowtimestamp'] != "" && $cf['flowtimestamp'] != "omit") {
+				$start .= " -A " . escapeshellarg($cf['flowtimestamp']);
+			}
 			if (is_numericint($cf['timeout-general'])) {
 				$start .= " -t " . escapeshellarg("general={$cf['timeout-general']}");
 			}
@@ -116,8 +119,11 @@ function validate_form_softflowd($post, &$input_errors) {
 	if (!in_array($post['version'], array(1, 5, 9, 10))) {
 		$input_errors[] = 'You must specify a netflow version';
 	}
-	if (!in_array($post['flowtracking'], array("vlan", "full", "proto", "ip"))) {
+	if (!in_array($post['flowtracking'], array("ether", "vlan", "full", "proto", "ip"))) {
 		$input_errors[] = 'You must specify a valid flow tracking selection';
+	}
+	if (!in_array($post['flowtimestamp'], array("sec", "milli", "micro", "nano", "omit"))) {
+		$input_errors[] = 'You must specify a valid flow timestamp precision';
 	}
 	if (!empty($post['hoplimit']) && (!is_numericint($post['hoplimit']) || ($post['hoplimit'] < 1) || ($post['hoplimit'] > 255))) {
 		$input_errors[] = 'You must specify a valid hop limit';
