@@ -345,14 +345,6 @@
 			</description>
 		</field>
 		<field>
-			<fielddescr>Disable MaxMind Binary database Updates</fielddescr>
-			<fieldname>database_cb</fieldname>
-			<type>checkbox</type>
-			<description>This will disable the MaxMind monthly Binary GeoIP database Cron update.
-				This does not affect the MaxMind CSV cron task.
-			</description>
-		</field>
-		<field>
 			<name><![CDATA[Interface/Rules Configuration]]></name>
 			<type>listtopic</type>
 		</field>
