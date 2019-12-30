@@ -152,7 +152,7 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.shodan.io/host/<?=$host;?>">
+					<td><a target="_blank" href="https://www.shodan.io/search?query=<?=$host;?>">
 						<?=gettext("Shodan");?></a></td>
 				</tr>
 				<tr>

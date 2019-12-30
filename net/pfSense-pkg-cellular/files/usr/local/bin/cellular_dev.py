@@ -25,7 +25,8 @@ Helper to mount cellular modem at fixed dev point
 
 import sys
 import os
-import commands
+import subprocess
+import shlex
 
 import argparse
 
@@ -46,7 +47,7 @@ def remove_link():
     data_lock = "/var/spool/lock/LCK.." + data_file
     if os.path.exists(data_lock):
         os.remove(data_lock)
-    
+
     mgmt_lock = "/var/spool/lock/LCK.." + mgm_file
     if os.path.exists(mgmt_lock):
         os.remove(mgmt_lock)
@@ -65,6 +66,9 @@ parser.add_argument("-r", "--remove",
 parser.add_argument("-d", "--device",
         dest="device",
         help="device name")
+parser.add_argument("-m", "--model",
+        dest="model",
+        help="model name")
 
 
 # parse commandline args
@@ -72,7 +76,13 @@ args = parser.parse_args()
 args.silent = False
 
 if args.add:
-    if args.device:
+    if args.device and args.model:
+
+        dataport = ".0"
+        controlport = ".2"
+        if args.model == "1e0e9001":
+            dataport = ".2"
+            controlport = ".3"
 
         #Make sure the links are gone
         remove_link()
@@ -82,17 +92,20 @@ if args.add:
 
         dev_pre = args.device[:-1]
         dev_post = args.device[-1]
-        dev_ug = commands.getoutput("/sbin/sysctl -n dev." + dev_pre + "." + dev_post + ".ttyname")
+        command = "/sbin/sysctl -n dev." + dev_pre + "." + dev_post + ".ttyname"
+        process = subprocess.run(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        dev_ug = process.stdout.decode('utf-8').strip()
         path_ug = "/dev/cua" + dev_ug
 
-        data_ug = path_ug + ".0"
+        data_ug = path_ug + dataport
         if os.path.exists(data_ug):
             os.symlink(data_ug, data_path)
 
-        mgmt_ug = path_ug + ".2"
+        mgmt_ug = path_ug + controlport
         if os.path.exists(mgmt_ug):
             os.symlink(mgmt_ug, mgmt_path)
 
 elif args.remove:
 
     remove_link()
+
