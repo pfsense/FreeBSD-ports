@@ -447,13 +447,19 @@ function pfb_determine_list_detail($list='', $header='', $confconfig='', $key=''
 
 
 // Determine if cron task requires updating
-function pfblockerng_cron_exists($crontask, $pfb_min, $pfb_hour) {
+function pfblockerng_cron_exists($crontask, $pfb_min, $pfb_hour, $pfb_mday, $pfb_wday) {
 	global $config;
 
 	if (isset($config['cron']['item'])) {
 		foreach ($config['cron']['item'] as $item) {
 			if (strpos($item['command'], $crontask) !== FALSE) {
 				if ($item['minute'] != $pfb_min) {
+					return FALSE;
+				}
+				if ($item['mday'] != $pfb_mday) {
+					return FALSE;
+				}
+				if ($item['wday'] != $pfb_wday) {
 					return FALSE;
 				}
 				if ($pfb_hour == 'maxmind' && !empty($item['hour'])) {
@@ -5399,7 +5405,7 @@ function sync_package_pfblockerng($cron='') {
 		$pfb_who	= 'root';
 
 		// Determine if CRON job requires updating
-		if (!pfblockerng_cron_exists($pfb_cmd, $pfb['min'], $pfb_hour)) {
+		if (!pfblockerng_cron_exists($pfb_cmd, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_wday)) {
 			install_cron_job($pfb_cmd, true, $pfb['min'], $pfb_hour, $pfb_mday, $pfb_month, $pfb_wday, $pfb_who);
 		}
 	}
@@ -5414,13 +5420,13 @@ function sync_package_pfblockerng($cron='') {
 		// MaxMind GeoIP CRON hour is randomized between 0-23 Hour to minimize effect on MaxMind website
 		$pfb_gmin	= '0';
 		$pfb_ghour	= rand(0,23);
-		$pfb_gmday	= '1-7';
+		$pfb_gmday	= '4-10';
 		$pfb_gmonth	= '*';
 		$pfb_gwday	= '*';
 		$pfb_gwho	= 'root';
 
 		// Determine if CRON job requires updating
-		if (!pfblockerng_cron_exists($pfb_gcmd, $pfb_gmin, 'maxmind')) {
+		if (!pfblockerng_cron_exists($pfb_gcmd, $pfb_gmin, 'maxmind', $pfb_gmday, $pfb_gwday)) {
 			install_cron_job($pfb_gcmd, true, $pfb_gmin, $pfb_ghour, $pfb_gmday, $pfb_gmonth, $pfb_gwday, $pfb_gwho);
 		}
 	}
