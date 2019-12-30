@@ -402,6 +402,16 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 					<td><a target="_blank" href="https://www.fortiguard.com/webfilter?q=<?=$domain;?>&version=8">
 						<?=gettext("FortiGuard");?></a></td>
 				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.shodan.io/search?query=<?=$host;?>">
+						<?=gettext("Shodan");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://api.stopforumspam.org/api?ip=<?=$host;?>">
+						<?=gettext("Stop Forum Spam");?></a></td>
+				</tr>
 
 			<?php else: ?>
 
