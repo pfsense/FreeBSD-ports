@@ -32,6 +32,7 @@ if (!function_exists("filter_configure")) {
 }
 
 define("SYSLOGNG_BASEDIR", "/usr/local/");
+define('SYSLOGNG_DIR', "/var/etc/syslog-ng/");
 
 function syslogng_get_real_interface_address($interface) {
 	$interface = convert_friendly_interface_to_real_interface_name($interface);
@@ -129,6 +130,19 @@ function syslogng_build_default_objects($settings) {
 	$default_logfile = $settings['default_logfile'];
 
 	$default_objects[0] = array("objecttype"=>"source", "objectname"=>"_DEFAULT", "objectparameters"=>"{ internal(); syslog(transport($default_protocol) port($default_port)");
+
+	if ($settings['default_protocol'] == 'tls') {
+		safe_mkdir(SYSLOGNG_DIR);
+		safe_mkdir(SYSLOGNG_DIR . "/ca.d");
+		syslogng_build_cert();
+		$default_objects[0]['objectparameters'] .= " tls(
+		    key-file('/var/etc/syslog-ng/syslog-ng.key')
+		    cert-file('/var/etc/syslog-ng/syslog-ng.cert')
+		    ca-dir('/var/etc/syslog-ng/ca.d'))";
+	} else {
+		rmdir_recursive(SYSLOGNG_DIR);
+	}
+
 	foreach (explode(",", $interfaces) as $interface) {
 		$interface_address = syslogng_get_real_interface_address($interface);
 		if ($interface_address[0]) {
@@ -392,5 +406,48 @@ fi
 
 EOD;
 	write_rcfile($rc);
+}
+
+function syslogng_get_ca_or_certs($type, $consumer = 'IPsec') {
+	global $config;
+	$c_arr = array();
+	if (function_exists('cert_build_list')) {
+		$list_arr = cert_build_list($type, $consumer, true, false);
+	}
+	if (isset($config[$type]) && is_array($config[$type])) {
+		if (is_array($list_arr)) {
+			foreach ($config[$type] as $c) {
+				if (in_array($c['refid'],array_column($list_arr, 'refid')) &&
+				 (!empty($c['prv']) || $type == 'ca')) {
+					$c_arr[] = $c;
+				}
+			}
+		} else {
+			foreach ($config[$type] as $c) {
+				if (!empty($c['prv']) || $type == 'ca') {
+					$c_arr[] = $c;
+				}
+			}
+		}
+	}
+	return $c_arr;
+}
+
+function syslogng_build_cert() {
+	global $config;
+
+	$settings = $config['installedpackages']['syslogng']['config'][0];
+	$ca = lookup_ca($settings['dca']);
+	$cert = lookup_cert($settings['certificate']);
+
+	if ($cert != false) {
+		file_put_contents(SYSLOGNG_DIR . "/syslog-ng.cert", base64_decode($cert['crt']));
+		file_put_contents(SYSLOGNG_DIR . "/syslog-ng.key", base64_decode($cert['prv']));
+		chmod(SYSLOGNG_DIR . "/syslog-ng.key", 0600);
+	}
+
+	if ($ca != false) {
+		file_put_contents(SYSLOGNG_DIR . "/ca.d/cacert.pem", base64_decode($ca['crt']));
+	}
 }
 ?>
