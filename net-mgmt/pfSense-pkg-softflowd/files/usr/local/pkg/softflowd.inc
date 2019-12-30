@@ -47,7 +47,7 @@ function sync_package_softflowd() {
 				continue;
 			}
 			
-			$start .= "\n\t/usr/local/sbin/softflowd ";
+			$start .= "\n\t/usr/local/bin/softflowd ";
 			$start .= " -i " . escapeshellarg($if_index++ . ":" . $interface);
 			$start .= " -n " . escapeshellarg("{$cf['host']}:{$cf['port']}");
 			if (is_numericint($cf['maxflows'])) {
