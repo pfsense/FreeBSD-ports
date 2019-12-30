@@ -337,11 +337,19 @@
 			<default_value>en</default_value>
 		</field>
 		<field>
-			<fielddescr>Disable MaxMind Updates</fielddescr>
+			<fielddescr>Disable MaxMind CSV database Updates</fielddescr>
 			<fieldname>database_cc</fieldname>
 			<type>checkbox</type>
-			<description>This will disable the MaxMind monthly GeoIP database Cron update.
-				This does not affect the MaxMind binary cron task that is used for other GeoIP funcionality in the package.
+			<description>This will disable the MaxMind monthly CSV GeoIP database Cron update.
+				This does not affect the MaxMind binary cron task that is used for other GeoIP functionality in the package.
+			</description>
+		</field>
+		<field>
+			<fielddescr>Disable MaxMind Binary database Updates</fielddescr>
+			<fieldname>database_cb</fieldname>
+			<type>checkbox</type>
+			<description>This will disable the MaxMind monthly Binary GeoIP database Cron update.
+				This does not affect the MaxMind CSV cron task.
 			</description>
 		</field>
 		<field>
