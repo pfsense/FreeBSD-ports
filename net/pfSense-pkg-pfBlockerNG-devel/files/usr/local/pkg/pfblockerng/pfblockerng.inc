@@ -98,6 +98,7 @@ $pfb['dnsbl_tld_txt']	= "{$pfb['dnsdir']}/DNSBL_TLD.txt";
 $pfb['dnsbl_tld_data']	= '/usr/local/pkg/pfblockerng/dnsbl_tld';
 $pfb['dnsbl_conf']	= '/var/unbound/pfb_dnsbl_lighty.conf';
 $pfb['dnsbl_cert']	= '/var/unbound/dnsbl_cert.pem';
+$pfb['dnsbl_web_cert']	= '/var/unbound/dnsbl_web_cert.pem';
 
 // tmp files
 $pfb['geoip_tmp']		= '/tmp/pfb_continent';
@@ -244,6 +245,7 @@ function pfb_global() {
 	$pfb['dnsbl_vip']	= $pfb['dnsblconfig']['pfb_dnsvip']	?: '';	// Virtual IP local address
 	$pfb['dnsbl_port']	= $pfb['dnsblconfig']['pfb_dnsport'];		// Lighttpd web server http port setting
 	$pfb['dnsbl_port_ssl']	= $pfb['dnsblconfig']['pfb_dnsport_ssl'];	// Lighttpd web server https port setting
+	$pfb['dnsbl_ssl_cert']	= $pfb['dnsblconfig']['pfb_ssl_cert'];		// Lighttpd web server SSL/TLS certificate
 	$pfb['dnsbl_alexa']	= $pfb['dnsblconfig']['alexa_enable'];		// TOP1M whitelist
 	$pfb['dnsbl_alexatype'] = $pfb['dnsblconfig']['alexa_type'] ?: 'Alexa'; // TOP1M type (Alexa or Cisco)
 	$pfb['dnsbl_sync']	= $pfb['dnsblconfig']['pfb_dnsbl_sync'];	// Live Updates to Resolver without a Reload
@@ -1010,7 +1012,7 @@ accesslog.filename		= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblock
 \$HTTP["remoteip"] =~ ".*" {
 	\$SERVER["socket"] == "0.0.0.0:{$pfb['dnsbl_port_ssl']}" {
 		ssl.engine	= "enable"
-		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
+		ssl.pemfile	= "/var/unbound/dnsbl_web_cert.pem"
 		ssl.dh-file	= "/etc/dh-parameters.4096"
 		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
 		ssl.ec-curve	= "secp384r1"
@@ -1018,7 +1020,7 @@ accesslog.filename		= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblock
 
 	\$SERVER["socket"] == "{$pfb['dnsbl_vip']}:443" {
 		ssl.engine	= "enable"
-		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
+		ssl.pemfile	= "/var/unbound/dnsbl_web_cert.pem"
 		ssl.dh-file	= "/etc/dh-parameters.4096"
 		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
 		ssl.ec-curve	= "secp384r1"
@@ -1037,7 +1039,7 @@ EOF;
 // Function to create DNSBL SSL certificate
 function pfb_create_dnsbl_cert() {
 	global $pfb;
-
+	
 	$dn = array (	'countryName'		=> 'CA',
 			'stateOrProvinceName'	=> 'ST_DNSBL',
 			'localityName'		=> 'LN_DNSBL',
@@ -1061,6 +1063,18 @@ function pfb_create_dnsbl_cert() {
 	@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
 }
 
+function pfb_put_ssl_cert() {
+	global $pfb;
+	
+	if (!empty($pfb['dnsbl_ssl_cert']) && ($pfb['dnsbl_ssl_cert'] != 'default')) {
+		$crt	= lookup_cert($pfb['dnsbl_ssl_cert']);
+		$cert	= base64_decode($crt['crt']);
+		$pkey	= base64_decode($crt['prv']);
+		@file_put_contents("{$pfb['dnsbl_web_cert']}", "{$pkey}{$cert}", LOCK_EX);
+	} else {
+		copy("{$pfb['dnsbl_cert']}", "{$pfb['dnsbl_web_cert']}");
+	}
+}
 
 // Create DNSBL VIP and NAT rules, lighttpd conf and services
 function pfb_create_dnsbl($mode) {
@@ -1173,8 +1187,20 @@ function pfb_create_dnsbl($mode) {
 			}
 		}
 
+		if (file_exists($pfb['dnsbl_web_cert'])) {
+			$certf_fp = openssl_x509_fingerprint(file_get_contents($pfb['dnsbl_web_cert']));
+			$certconf = lookup_cert($pfb['dnsbl_ssl_cert']);
+			$certc_fp = openssl_x509_fingerprint(base64_decode($certconf['crt']));
+			if ($certc_fp != $certf_fp) {
+				$pfbupdate = TRUE;
+			}
+		} else {
+			$pfbupdate = TRUE;
+		}
+
 		// Only create DNSBL Lighttpd configuration file if not exists, or listening port changed
 		if (!file_exists($pfb['dnsbl_conf']) && $mode == 'enable' || $pfbupdate && $mode == 'enable') {
+			pfb_put_ssl_cert();
 			pfb_create_lighttpd();
 			$pfbupdate = TRUE;
 
@@ -7847,6 +7873,7 @@ function pfblockerng_php_pre_deinstall_command() {
 
 		unlink_if_exists("{$pfb['dnsbl_conf']}");
 		unlink_if_exists("{$pfb['dnsbl_cert']}");
+		unlink_if_exists("{$pfb['dnsbl_web_cert']}");
 		unlink_if_exists("{$pfb['aliasarchive']}");
 	}
 	else {
@@ -8132,5 +8159,23 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 			return TRUE;
 		}
 	}
+}
+
+function pfb_ssl_certs() {
+        $c_arr = array();
+        if (function_exists('cert_build_list')) {
+                $c_arr = cert_build_list('cert', 'HTTPS');
+        } else {
+                global $config;
+                if (isset($config['cert']) && is_array($config['cert'])) {
+                        foreach ($config['cert'] as $c) {
+                                if (!empty($c['prv'])) {
+                                        $c_arr[] = $c;
+                                }
+                        }
+                }
+        }
+	$c_arr['default'] = 'Default (auto)';
+        return $c_arr;
 }
 ?>

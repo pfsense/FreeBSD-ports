@@ -39,6 +39,7 @@ $pconfig['pfb_dnsvip_type']	= $pfb['dconfig']['pfb_dnsvip_type']			?: 'ipalias';
 $pconfig['pfb_dnsvip_pass']	= $pfb['dconfig']['pfb_dnsvip_pass']			?: '';
 $pconfig['pfb_dnsport']		= $pfb['dconfig']['pfb_dnsport']			?: '8081';
 $pconfig['pfb_dnsport_ssl']	= $pfb['dconfig']['pfb_dnsport_ssl']			?: '8443';
+$pconfig['pfb_ssl_cert']	= $pfb['dconfig']['pfb_ssl_cert']			?: 'default';
 $pconfig['dnsbl_interface']	= $pfb['dconfig']['dnsbl_interface']			?: 'lan';
 $pconfig['pfb_dnsbl_rule']	= $pfb['dconfig']['pfb_dnsbl_rule']			?: '';
 $pconfig['dnsbl_allow_int']	= explode(',', $pfb['dconfig']['dnsbl_allow_int'])	?: array();
@@ -116,6 +117,7 @@ if ($_POST) {
 		$pfb['dconfig']['pfb_dnsvip_pass']	= $_POST['pfb_dnsvip_pass']			?: '';
 		$pfb['dconfig']['pfb_dnsport']		= $_POST['pfb_dnsport']				?: '8081';
 		$pfb['dconfig']['pfb_dnsport_ssl']	= $_POST['pfb_dnsport_ssl']			?: '8443';
+		$pfb['dconfig']['pfb_ssl_cert']		= $_POST['pfb_ssl_cert']			?: 'default';
 		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']			?: 'lan';
 		$pfb['dconfig']['pfb_dnsbl_rule']	= $_POST['pfb_dnsbl_rule']			?: '';
 		$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])?: '';
@@ -367,6 +369,13 @@ $section->addInput(new Form_Input(
 ))->setHelp('Example ( 8443 )<br />Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br />'
 		. 'This Port must not be in use by any other process.'
 );
+
+$section->addInput(new Form_Select(
+	'pfb_ssl_cert',
+	gettext('SSL Certificate'),
+	$pconfig['pfb_ssl_cert'],
+	pfb_ssl_certs()
+))->setHelp('SSL/TLS certificate for DNSBL Webserver. Select Default (auto) to use self-generated certificate.');
 
 $interface_list	= pfb_build_if_list(FALSE, FALSE);
 $int_size	= count($interface_list) ?: '1';
