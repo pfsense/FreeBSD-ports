@@ -186,9 +186,8 @@ EOD;
 
 	/* Raw additional configuration options */
  	if ($telegraf_conf["telegraf_raw_config"]) {
-		#$telegraf_conf["telegraf_raw_config"] = $_POST["telegraf_raw_config"];
 		$cfg .= "\n# Additional Raw Options\n";
-		$cfg .= $_POST["telegraf_raw_config"];
+		$cfg .= base64_decode($telegraf_conf["telegraf_raw_config"]);
 		$cfg .= "\n";
 	}
 
