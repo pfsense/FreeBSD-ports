@@ -3,7 +3,7 @@
  * haproxy_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (C) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
