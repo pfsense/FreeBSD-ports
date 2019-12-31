@@ -3,7 +3,7 @@
  * vpn_openvpn_export_shared.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Shrew Soft Inc
  * All rights reserved.
  *

@@ -3,7 +3,7 @@
  * snort_alerts.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
