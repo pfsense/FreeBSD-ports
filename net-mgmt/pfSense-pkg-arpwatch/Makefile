@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-arpwatch
-PORTVERSION=	0.1.2
+PORTVERSION=	0.2.0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,7 +12,7 @@ COMMENT=	Arpwatch package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	arpwatch>=0:net-mgmt/arpwatch
+RUN_DEPENDS=	arpwatch>=3.0:net-mgmt/arpwatch
 
 NO_BUILD=	yes
 NO_MTREE=	yes

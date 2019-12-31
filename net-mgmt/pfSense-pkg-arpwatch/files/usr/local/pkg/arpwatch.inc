@@ -19,7 +19,7 @@
  */
 
 define('ARPWATCH_LOCAL_DIR', '/usr/local/arpwatch');
-define('ARPWATCH_ETHERCODES_URL', 'http://linuxnet.ca/ieee/oui/ethercodes.dat');
+define('ARPWATCH_ETHERCODES_URL', 'http://standards-oui.ieee.org/oui/oui.csv');
 define('ARPWATCH_SENDMAIL_PATH', '/usr/sbin/sendmail');
 define('ARPWATCH_SENDMAIL_PROXY', '/usr/local/arpwatch/sendmail_proxy.php');
 
@@ -32,6 +32,7 @@ function arpwatch_install_command() {
 	$arpwatch_config = $config['installedpackages']['arpwatch']['config'][0];
 	$active_interfaces = $arpwatch_config['active_interfaces'];
 	$notifications_recipient = $arpwatch_config['notifications_recipient'];
+	$enable_zeropad = ($arpwatch_config['zeropad'] == 'on') ? '-Z' : '-C';
 	$disable_carp = ($arpwatch_config['disable_carp'] == 'on') ? '-v' : '';
 	$disable_bogons = ($arpwatch_config['disable_bogons'] == 'on') ? '-N' : '';
 	$disable_zero = ($arpwatch_config['disable_zero'] == 'on') ? '-z' : '';
@@ -39,7 +40,7 @@ function arpwatch_install_command() {
 	$clear_database = ($arpwatch_config['clear_database'] == 'on');
 
 	if ($update_vendors) {
-		arpwatch_update_vendors();
+		arpwatch_update_vendors($enable_zeropad);
 	}
 
 	if ($clear_database) {
@@ -61,7 +62,15 @@ function arpwatch_install_command() {
 
 			touch($arp_file);
 
-			$rc['start'] .= "/usr/local/sbin/arpwatch $disable_carp $disable_bogons $disable_zero -f $arp_file -i $ifname -m $notifications_recipient"."\n";
+			$rc['start'] .= '/usr/local/sbin/arpwatch'
+			    .' '.$disable_carp
+			    .' '.$disable_bogons
+			    .' '.$disable_zero
+			    .' '.$enable_zeropad
+			    .' -f '.escapeshellarg($arp_file)
+			    .' -i '.escapeshellarg($ifname)
+			    .' -w '.escapeshellarg($notifications_recipient)
+			    ."\n";
 		}
 	}
 
@@ -109,11 +118,13 @@ function arpwatch_resync_config_command() {
 }
 
 function arpwatch_get_arp_file($ifname) {
-	return ARPWATCH_LOCAL_DIR."/arp_$ifname.dat";
+	return ARPWATCH_LOCAL_DIR."/arp_{$ifname}.dat";
 }
 
-function arpwatch_update_vendors() {
-	download_file(ARPWATCH_ETHERCODES_URL, ARPWATCH_LOCAL_DIR."/ethercodes.dat");
+function arpwatch_update_vendors($args) {
+	exec('/usr/bin/fetch -qo - '.ARPWATCH_ETHERCODES_URL.'|'
+	    .ARPWATCH_LOCAL_DIR.'/massagevendor '.$args.' >'
+	    .ARPWATCH_LOCAL_DIR.'/ethercodes.dat');
 }
 
 function arpwatch_clear_database() {
