@@ -1039,7 +1039,7 @@ EOF;
 // Function to create DNSBL SSL certificate
 function pfb_create_dnsbl_cert() {
 	global $pfb;
-	
+
 	$dn = array (	'countryName'		=> 'CA',
 			'stateOrProvinceName'	=> 'ST_DNSBL',
 			'localityName'		=> 'LN_DNSBL',
