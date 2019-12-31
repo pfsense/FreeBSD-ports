@@ -3,7 +3,7 @@
  * openbgpd_raw.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2007-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2007-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Aarno Aukia (aarnoaukia@gmail.com)
  * All rights reserved.
  *

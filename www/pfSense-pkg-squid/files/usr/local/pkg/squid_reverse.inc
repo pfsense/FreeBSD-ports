@@ -3,7 +3,7 @@
  * squid_reverse.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Martin Fuchs
  * Copyright (c) 2012-2014 Marcello Coutinho
  * Copyright (c) 2013-2015 Gekkenhuis

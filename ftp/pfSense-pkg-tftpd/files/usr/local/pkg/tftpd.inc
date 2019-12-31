@@ -3,7 +3,7 @@
  * tftpd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Stefan Seidel
  * All rights reserved.
  *

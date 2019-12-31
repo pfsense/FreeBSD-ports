@@ -3,7 +3,7 @@
  * filer.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Marcello Coutinho
  * Copyright (c) 2012 Brian Scholer
  * All rights reserved.
