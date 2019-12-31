@@ -81,6 +81,13 @@
 			<required/>
 		</field>
 		<field>
+			<fielddescr>Zero padded ethernet addresses</fielddescr>
+			<fieldname>zeropad</fieldname>
+			<type>checkbox</type>
+			<description>Use zero padded ethernet addresses in *.dat files</description>
+			<default_value>on</default_value>
+		</field>
+		<field>
 			<fielddescr>Disable CARP/VRRP</fielddescr>
 			<fieldname>disable_carp</fieldname>
 			<type>checkbox</type>
@@ -102,7 +109,7 @@
 			<fielddescr>Update vendors</fielddescr>
 			<fieldname>update_vendors</fieldname>
 			<type>checkbox</type>
-			<description>Updates the ethernet vendor database, downloaded from http://linuxnet.ca/ieee/oui/.</description>
+			<description>Updates the ethernet vendor database, downloaded from http://standards-oui.ieee.org/oui/oui.csv.</description>
 		</field>
 		<field>
 			<fielddescr>Clear database</fielddescr>
