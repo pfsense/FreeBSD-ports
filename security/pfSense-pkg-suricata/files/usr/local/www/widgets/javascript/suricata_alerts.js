@@ -2,7 +2,7 @@
  * suricata_alerts.js
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2014 Bill Meeks
  * All rights reserved.
  *
