@@ -3,7 +3,7 @@
  * telegraf.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2019 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -186,9 +186,8 @@ EOD;
 
 	/* Raw additional configuration options */
  	if ($telegraf_conf["telegraf_raw_config"]) {
-		#$telegraf_conf["telegraf_raw_config"] = $_POST["telegraf_raw_config"];
 		$cfg .= "\n# Additional Raw Options\n";
-		$cfg .= $_POST["telegraf_raw_config"];
+		$cfg .= base64_decode($telegraf_conf["telegraf_raw_config"]);
 		$cfg .= "\n";
 	}
 

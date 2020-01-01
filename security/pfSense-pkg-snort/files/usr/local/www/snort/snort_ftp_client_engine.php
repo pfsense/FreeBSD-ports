@@ -3,7 +3,7 @@
  * snort_ftp_client_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
