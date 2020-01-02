@@ -155,6 +155,7 @@ include/wine/windows/cmdtxt.idl
 include/wine/windows/cmnquery.h
 include/wine/windows/cmnquery.idl
 include/wine/windows/colinf.idl
+include/wine/windows/colordlg.h
 include/wine/windows/comcat.h
 include/wine/windows/comcat.idl
 include/wine/windows/commctrl.h
@@ -551,6 +552,8 @@ include/wine/windows/mprerror.h
 include/wine/windows/msacm.h
 include/wine/windows/msacmdlg.h
 include/wine/windows/msacmdrv.h
+include/wine/windows/msado15_backcompat.h
+include/wine/windows/msado15_backcompat.idl
 include/wine/windows/msasn1.h
 include/wine/windows/mscat.h
 include/wine/windows/mscoree.h
@@ -700,8 +703,8 @@ include/wine/windows/raserror.h
 include/wine/windows/reason.h
 include/wine/windows/regstr.h
 include/wine/windows/restartmanager.h
-%%STAGING%%include/wine/windows/restrictederrorinfo.h
-%%STAGING%%include/wine/windows/restrictederrorinfo.idl
+include/wine/windows/restrictederrorinfo.h
+include/wine/windows/restrictederrorinfo.idl
 include/wine/windows/richedit.h
 include/wine/windows/richole.h
 include/wine/windows/richole.idl
@@ -731,6 +734,7 @@ include/wine/windows/rtutils.h
 include/wine/windows/sal.h
 include/wine/windows/sapi.h
 include/wine/windows/sapi.idl
+include/wine/windows/sapiaut.idl
 include/wine/windows/sapiddk.h
 include/wine/windows/sapiddk.idl
 include/wine/windows/scarderr.h
@@ -1264,6 +1268,7 @@ lib/wine/capi2032.dll.so
 lib/wine/cards.dll.so
 lib/wine/cdosys.dll.so
 lib/wine/cfgmgr32.dll.so
+lib/wine/chcp.com.so
 lib/wine/clock.exe.so
 lib/wine/clusapi.dll.so
 lib/wine/cmd.exe.so
@@ -1388,6 +1393,7 @@ lib/wine/dpnsvr.exe.so
 lib/wine/dpvoice.dll.so
 lib/wine/dpwsockx.dll.so
 lib/wine/drmclien.dll.so
+lib/wine/dsdmo.dll.so
 lib/wine/dsound.dll.so
 lib/wine/dsquery.dll.so
 lib/wine/dssenh.dll.so
@@ -1715,6 +1721,7 @@ lib/wine/fakedlls/capi2032.dll
 lib/wine/fakedlls/cards.dll
 lib/wine/fakedlls/cdosys.dll
 lib/wine/fakedlls/cfgmgr32.dll
+lib/wine/fakedlls/chcp.com
 lib/wine/fakedlls/clock.exe
 lib/wine/fakedlls/clusapi.dll
 lib/wine/fakedlls/cmd.exe
@@ -1839,6 +1846,7 @@ lib/wine/fakedlls/dpnsvr.exe
 lib/wine/fakedlls/dpvoice.dll
 lib/wine/fakedlls/dpwsockx.dll
 lib/wine/fakedlls/drmclien.dll
+lib/wine/fakedlls/dsdmo.dll
 lib/wine/fakedlls/dsound.dll
 lib/wine/fakedlls/dsquery.dll
 lib/wine/fakedlls/dssenh.dll
@@ -2016,6 +2024,7 @@ lib/wine/fakedlls/mprapi.dll
 %%WINE32%%lib/wine/fakedlls/msacm.dll16
 lib/wine/fakedlls/msacm32.dll
 lib/wine/fakedlls/msacm32.drv
+lib/wine/fakedlls/msado15.dll
 lib/wine/fakedlls/msadp32.acm
 lib/wine/fakedlls/msasn1.dll
 lib/wine/fakedlls/mscat32.dll
@@ -2116,6 +2125,7 @@ lib/wine/fakedlls/ntprint.dll
 %%WINE64%%%%STAGING%%lib/wine/fakedlls/nvencodeapi64.dll
 lib/wine/fakedlls/objsel.dll
 lib/wine/fakedlls/odbc32.dll
+lib/wine/fakedlls/odbcbcp.dll
 lib/wine/fakedlls/odbccp32.dll
 lib/wine/fakedlls/odbccu32.dll
 %%WINE32%%lib/wine/fakedlls/ole2.dll16
@@ -2523,6 +2533,7 @@ lib/wine/libdbgeng.def
 lib/wine/libdbghelp.def
 lib/wine/libdciman32.def
 lib/wine/libddraw.def
+lib/wine/libdhcpcsvc.def
 lib/wine/libdinput.a
 lib/wine/libdinput8.a
 lib/wine/libdmoguids.a
@@ -2713,6 +2724,7 @@ lib/wine/mprapi.dll.so
 %%WINE32%%lib/wine/msacm.dll16.so
 lib/wine/msacm32.dll.so
 lib/wine/msacm32.drv.so
+lib/wine/msado15.dll.so
 lib/wine/msadp32.acm.so
 lib/wine/msasn1.dll.so
 lib/wine/mscat32.dll.so
@@ -2813,6 +2825,7 @@ lib/wine/ntprint.dll.so
 %%WINE64%%%%STAGING%%lib/wine/nvencodeapi64.dll.so
 lib/wine/objsel.dll.so
 lib/wine/odbc32.dll.so
+lib/wine/odbcbcp.dll.so
 lib/wine/odbccp32.dll.so
 lib/wine/odbccu32.dll.so
 %%WINE32%%lib/wine/ole2.dll16.so

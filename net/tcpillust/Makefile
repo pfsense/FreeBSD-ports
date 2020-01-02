@@ -11,7 +11,9 @@ MASTER_SITES=	http://www.jp.nishida.org/tcpillust/
 MAINTAINER=	nishida@sfc.wide.ad.jp
 COMMENT=	Graphical TCP connection analysis tool
 
-USES=		motif tk
+BROKEN=		unfetchable
+
+USES=		motif tk xorg
 USE_XORG=	xt
 
 PORTDOCS=	tcpclient.log tcpserver.log

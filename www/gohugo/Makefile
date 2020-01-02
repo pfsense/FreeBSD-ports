@@ -2,7 +2,7 @@
 
 PORTNAME=	hugo
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.58.3
+DISTVERSION=	0.62.0
 CATEGORIES=	www
 PKGNAMEPREFIX=	go
 DIST_SUBDIR=	${PKGNAMEPREFIX}${PORTNAME}
@@ -23,7 +23,7 @@ GH_TUPLE=	\
 		BurntSushi:toml:v0.3.1:burntsushi_toml/vendor/github.com/BurntSushi/toml \
 		PuerkitoBio:purell:v1.1.0:puerkitobio_purell/vendor/github.com/PuerkitoBio/purell \
 		PuerkitoBio:urlesc:de5bf2ad4578:puerkitobio_urlesc/vendor/github.com/PuerkitoBio/urlesc \
-		alecthomas:chroma:v0.6.4:alecthomas_chroma/vendor/github.com/alecthomas/chroma \
+		alecthomas:chroma:v0.7.0:alecthomas_chroma/vendor/github.com/alecthomas/chroma \
 		armon:go-radix:v1.0.0:armon_go_radix/vendor/github.com/armon/go-radix \
 		aws:aws-sdk-go:v1.19.40:aws_aws_sdk_go/vendor/github.com/aws/aws-sdk-go \
 		bep:debounce:v1.2.0:bep_debounce/vendor/github.com/bep/debounce \
@@ -34,11 +34,10 @@ GH_TUPLE=	\
 		cpuguy83:go-md2man:v1.0.10:cpuguy83_go_md2man/vendor/github.com/cpuguy83/go-md2man \
 		danwakefield:fnmatch:cbb64ac3d964:danwakefield_fnmatch/vendor/github.com/danwakefield/fnmatch \
 		disintegration:gift:v1.2.1:disintegration_gift/vendor/github.com/disintegration/gift \
-		dlclark:regexp2:v1.1.6:dlclark_regexp2/vendor/github.com/dlclark/regexp2 \
+		dlclark:regexp2:v1.2.0:dlclark_regexp2/vendor/github.com/dlclark/regexp2 \
 		dustin:go-humanize:v1.0.0:dustin_go_humanize/vendor/github.com/dustin/go-humanize \
-		eknkc:amber:cdade1c07385:eknkc_amber/vendor/github.com/eknkc/amber \
 		fortytw2:leaktest:v1.3.0:fortytw2_leaktest/vendor/github.com/fortytw2/leaktest \
-		frankban:quicktest:v1.4.1:frankban_quicktest/vendor/github.com/frankban/quicktest \
+		frankban:quicktest:v1.6.0:frankban_quicktest/vendor/github.com/frankban/quicktest \
 		fsnotify:fsnotify:v1.4.7:fsnotify_fsnotify/vendor/github.com/fsnotify/fsnotify \
 		go-yaml:yaml:v2.2.2:go_yaml_yaml/vendor/gopkg.in/yaml.v2 \
 		gobwas:glob:v0.2.3:gobwas_glob/vendor/github.com/gobwas/glob \
@@ -49,15 +48,16 @@ GH_TUPLE=	\
 		golang:oauth2:aaccbc9213b0:golang_oauth2/vendor/golang.org/x/oauth2 \
 		golang:protobuf:v1.3.1:golang_protobuf/vendor/github.com/golang/protobuf \
 		golang:sync:112230192c58:golang_sync/vendor/golang.org/x/sync \
-		golang:sys:fae7ac547cb7:golang_sys/vendor/golang.org/x/sys \
+		golang:sys:33540a1f6037:golang_sys/vendor/golang.org/x/sys \
 		golang:text:v0.3.2:golang_text/vendor/golang.org/x/text \
 		golang:xerrors:a985d3407aa7:golang_xerrors/vendor/golang.org/x/xerrors \
 		google:go-cloud:v0.15.0:google_go_cloud/vendor/gocloud.dev \
-		google:go-cmp:v0.3.1:google_go_cmp/vendor/github.com/google/go-cmp \
+		google:go-cmp:481baca67f93:google_go_cmp/vendor/github.com/google/go-cmp \
 		google:go-genproto:c2c4e71fbf69:google_go_genproto/vendor/google.golang.org/genproto \
 		google:uuid:v1.1.1:google_uuid/vendor/github.com/google/uuid \
 		google:wire:v0.2.2:google_wire/vendor/github.com/google/wire \
 		googleapis:gax-go:v2.0.2:googleapis_gax_go/vendor/github.com/googleapis/gax-go \
+		googleapis:gax-go:v2.0.4:googleapis_gax_go_1/vendor/github.com/googleapis/gax-go/v2 \
 		googleapis:google-api-go-client:v0.5.0:googleapis_google_api_go_client/vendor/google.golang.org/api \
 		googleapis:google-cloud-go:v0.39.0:googleapis_google_cloud_go/vendor/cloud.google.com/go \
 		gorilla:websocket:v1.4.0:gorilla_websocket/vendor/github.com/gorilla/websocket \
@@ -69,7 +69,7 @@ GH_TUPLE=	\
 		jmespath:go-jmespath:c2b33e8439af:jmespath_go_jmespath/vendor/github.com/jmespath/go-jmespath \
 		kr:pretty:v0.1.0:kr_pretty/vendor/github.com/kr/pretty \
 		kr:text:v0.1.0:kr_text/vendor/github.com/kr/text \
-		kyokomi:emoji:v1.5.1:kyokomi_emoji/vendor/github.com/kyokomi/emoji \
+		kyokomi:emoji:v2.1.0:kyokomi_emoji/vendor/github.com/kyokomi/emoji \
 		magefile:mage:v1.4.0:magefile_mage/vendor/github.com/magefile/mage \
 		magiconair:properties:v1.8.1:magiconair_properties/vendor/github.com/magiconair/properties \
 		markbates:inflect:a12c3aec81a6:markbates_inflect/vendor/github.com/markbates/inflect \
@@ -80,7 +80,7 @@ GH_TUPLE=	\
 		mitchellh:mapstructure:v1.1.2:mitchellh_mapstructure/vendor/github.com/mitchellh/mapstructure \
 		muesli:smartcrop:f6ebaa786a12:muesli_smartcrop/vendor/github.com/muesli/smartcrop \
 		nicksnyder:go-i18n:v1.10.0:nicksnyder_go_i18n/vendor/github.com/nicksnyder/go-i18n \
-		niklasfasching:go-org:v0.1.4:niklasfasching_go_org/vendor/github.com/niklasfasching/go-org \
+		niklasfasching:go-org:v0.1.9:niklasfasching_go_org/vendor/github.com/niklasfasching/go-org \
 		olekukonko:tablewriter:d4647c9c7a84:olekukonko_tablewriter/vendor/github.com/olekukonko/tablewriter \
 		pelletier:go-toml:v1.4.0:pelletier_go_toml/vendor/github.com/pelletier/go-toml \
 		pkg:errors:v0.8.1:pkg_errors/vendor/github.com/pkg/errors \
@@ -95,10 +95,11 @@ GH_TUPLE=	\
 		spf13:jwalterweatherman:v1.1.0:spf13_jwalterweatherman/vendor/github.com/spf13/jwalterweatherman \
 		spf13:pflag:v1.0.3:spf13_pflag/vendor/github.com/spf13/pflag \
 		spf13:viper:v1.4.0:spf13_viper/vendor/github.com/spf13/viper \
-		tdewolff:minify:v2.3.7:tdewolff_minify/vendor/github.com/tdewolff/minify/v2 \
-		tdewolff:parse:v2.3.5:tdewolff_parse/vendor/github.com/tdewolff/parse/v2 \
+		tdewolff:minify:v2.6.1:tdewolff_minify/vendor/github.com/tdewolff/minify/v2 \
+		tdewolff:parse:v2.3.14:tdewolff_parse/vendor/github.com/tdewolff/parse/v2 \
 		wellington:go-libsass:c63644206701:wellington_go_libsass/vendor/github.com/wellington/go-libsass \
-		yosssi:ace:v0.0.5:yosssi_ace/vendor/github.com/yosssi/ace
+		yuin:goldmark-highlighting:78f32c8dd6d5:yuin_goldmark_highlighting/vendor/github.com/yuin/goldmark-highlighting \
+		yuin:goldmark:v1.1.18:yuin_goldmark/vendor/github.com/yuin/goldmark
 
 GO_BUILDFLAGS=	-ldflags="\
 		-s -w \
@@ -128,7 +129,7 @@ PORTMANS=	hugo-config.1 hugo-convert-toJSON.1 hugo-convert-toTOML.1 \
 .include <bsd.port.pre.mk>
 
 SOURCE_DATE_EPOCH_CMD=	date -r $$(grep TIMESTAMP ${DISTINFO_FILE} | ${SED} -e 's/[^0-9]//g') '+%FT%TZ%z'
-COMMIT_ID=	4aac02d49c2e2bab9f36f0caabbbd9f3cb4715cd
+COMMIT_ID=		6608f1557054a7d0230dff260c1b66bc19e65ec8
 
 do-build-MANPAGES-on:
 	@cd ${GO_WRKSRC} && ${GO_WRKDIR_BIN}/${PORTNAME} gen man --dir man/man1/

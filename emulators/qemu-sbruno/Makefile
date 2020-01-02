@@ -2,26 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	2.11.50.g20190730
+PORTVERSION=	2.11.50.g20191211
 CATEGORIES=	emulators
 PKGNAMESUFFIX?=	-sbruno
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
-MAINTAINER=	sbruno@FreeBSD.org
+MAINTAINER=	emulation@FreeBSD.org
 COMMENT?=	QEMU CPU Emulator - github bsd-user branch
 
 LICENSE=	GPLv2
 USE_GITHUB=	yes
-GH_TUPLE=	seanbruno:qemu-bsd-user:7b21781 \
+GH_TUPLE=	seanbruno:qemu-bsd-user:d587db6	\
 		qemu:keycodemapdb:10739aa:keycodemapdb/ui/keycodemapdb
 HAS_CONFIGURE=	yes
-USES=		gmake pkgconfig bison perl5 python:2.7,build
+USES=		bison compiler:c11 gmake perl5 pkgconfig python:2.7,build
 USE_PERL5=	build
 MAKE_ENV+=	BSD_MAKE="${MAKE}" V=1
 
 ONLY_FOR_ARCHS=		amd64 powerpc powerpc64 # XXX someone wants to debug sparc64 hosts?
 BROKEN_i386=		aarch64 system target is currently broken for i386 hosts, disable for now while dealing with upstream
-BROKEN_powerpc64=	fails to build: async.c: internal compiler error: Segmentation fault
 
 OPTIONS_DEFINE=	SAMBA X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CURL \
 		CDROM_DMA PCAP USBREDIR X86_TARGETS BSD_USER \
@@ -41,6 +40,8 @@ OPTIONS_DEFAULT=X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CDROM_DMA CURL PCAP
 
 .if !defined(QEMU_USER_STATIC)
 CONFLICTS_INSTALL=	qemu-[0-9]* qemu-devel-*
+.else
+CONFLICTS_INSTALL=	qemu-user-static-devel-*
 .endif
 
 .if defined(QEMU_USER_STATIC)
@@ -51,6 +52,7 @@ CONFIGURE_ARGS+=	--disable-tools
 .endif
 .else
 # qemu-system-* targets require pixman to build, add an explicit dependency.
+USES+=		xorg
 USE_XORG=	pixman
 .endif
 
@@ -59,6 +61,7 @@ USE_XORG=	pixman
 .if defined(QEMU_USER_STATIC)
 BUILD_DEPENDS+=	${LOCALBASE}/lib/libglib-2.0.a:devel/glib20
 .else
+USES+=		gnome
 USE_GNOME+=	glib20
 BUILD_DEPENDS+=	${LOCALBASE}/lib/libfdt.so:sysutils/dtc
 .endif
@@ -144,6 +147,7 @@ CONFIGURE_ARGS+=	--prefix=${PREFIX} --cc=${CC} --enable-docs \
 CONFIGURE_ARGS+=	--disable-sdl
 .else
 CONFIGURE_ARGS+=	--enable-sdl
+USES+=		sdl
 USE_SDL=	sdl
 .endif
 
@@ -152,12 +156,15 @@ CONFIGURE_ARGS+=	--disable-gtk --disable-vte
 PLIST_SUB+=	GTK2="@comment "
 .else
 USE_GNOME+=	gtk20 vte
-USES+=		gettext
+USES+=		gettext gnome
 PLIST_SUB+=	GTK2=""
 .endif
 
 .if ${PORT_OPTIONS:MGNUTLS}
 LIB_DEPENDS+=	libgnutls.so:security/gnutls
+CONFIGURE_ARGS+=	--enable-gnutls
+.else
+CONFIGURE_ARGS+=	--disable-gnutls
 .endif
 
 .if empty(PORT_OPTIONS:MSASL)
@@ -187,7 +194,8 @@ LIB_DEPENDS+=	libcurl.so:ftp/curl
 .if empty(PORT_OPTIONS:MOPENGL)
 CONFIGURE_ARGS+=	--disable-opengl
 .else
-USE_GL=		yes
+USES+=		gl
+USE_GL=		glu
 .endif
 
 .if empty(PORT_OPTIONS:MUSBREDIR)

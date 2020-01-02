@@ -22,7 +22,6 @@ USES=		perl5 readline
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 HAS_CONFIGURE=	yes
-CFLAGS_powerpc64=	-mminimal-toc
 CONFIGURE_SCRIPT=	Configure
 CONFIGURE_ARGS=	--mandir=${MANPREFIX}/man/man1 \
 		--prefix=${PREFIX} \
@@ -42,6 +41,7 @@ OPTIMIZED_CFLAGS_CFLAGS=	-O3 -fno-strict-aliasing -fomit-frame-pointer
 .endif
 X11_CONFIGURE_ON=	--graphic=X11
 X11_CONFIGURE_OFF=	--graphic=none
+X11_USES=		xorg
 X11_USE=		xorg=x11
 MPI_RUN_DEPENDS=	${LOCALBASE}/bin/mpirun:net/mpich
 MPI_BUILD_DEPENDS=	${LOCALBASE}/bin/mpicc:net/mpich
@@ -56,6 +56,12 @@ PLIST_SUB=	GP_VERSION=${PORTVERSION:R} PORTVERSION=${PORTVERSION}
 PORTDATA=	*
 PORTDOCS=	*
 PORTEXAMPLES=	*
+
+.include <bsd.port.pre.mk>
+
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
+CFLAGS+=	-mminimal-toc
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -E '/libpari_base\=/s/-tls|-gmp//' \
@@ -76,4 +82,4 @@ do-test-PTHREADS-on:
 do-test-MPI-on:
 	@cd ${WRKSRC} && ${MAKE_CMD} test-parallel RUNTEST="mpirun -np 3"
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

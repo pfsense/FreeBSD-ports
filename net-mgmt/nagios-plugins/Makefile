@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nagios-plugins
-PORTVERSION=	2.2.1
-PORTREVISION=	8
+DISTVERSION=	2.3.1
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://www.nagios-plugins.org/download/ \
@@ -39,7 +38,7 @@ SSH_PORTABLE_DESC=	Build check_ssh with ports openssh (instead of base)
 
 DNS_DESC=	Configuration of check_dig and check_dns (see help)
 
-DNS_BASE_DESC=	>= 10 means drill for check_dig and no check_dns
+DNS_BASE_DESC=	Use drill for check_dig, check_dns not available
 DNS_BINDTOOLS_DESC=	Use dig and nslookup from dns/bind-tools
 
 EXTRAOPTS_CONFIGURE_ENABLE=	extra-opts
@@ -100,7 +99,7 @@ NETSNMP_CONFIGURE_OFF=	ac_cv_path_PATH_TO_SNMPGET= \
 RADIUS_LIB_DEPENDS=	libradiusclient-ng.so:net/radiusclient
 RADIUS_CONFIGURE_WITH=	radius
 
-MYSQL_USE=	mysql=yes
+MYSQL_USES=	mysql
 MYSQL_CONFIGURE_WITH=	mysql=${LOCALBASE}
 
 PGSQL_USES=	pgsql

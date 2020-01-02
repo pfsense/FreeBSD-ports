@@ -2,7 +2,8 @@
 
 PORTNAME=	obfs4proxy
 DISTVERSION=	0.0.11
-CATEGORIES=	security net ipv6
+PORTREVISION=	1
+CATEGORIES=	security net
 MASTER_SITES=	https://people.torproject.org/~yawning/releases/${PORTNAME}/
 PKGNAMESUFFIX=	-tor
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}

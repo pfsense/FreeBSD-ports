@@ -18,8 +18,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
 
 GROUPS=		${PORTNAME}
-USES=		gettext gmake iconv libtool localbase pathfix pkgconfig readline \
-		tar:bzip2
+USES=		gettext gmake gnome iconv libtool localbase pathfix pkgconfig \
+		readline tar:bzip2
 USE_LDCONFIG=	yes
 USE_CSTD=	gnu89
 USE_GNOME=	glib20 intltool
@@ -72,6 +72,7 @@ SQLITE_CONFIGURE_OFF=	--disable-sqlite
 X11_CONFIGURE_WITH=	x
 X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2
+X11_USES=		gnome xorg
 X11_USE=		XORG=x11 XORG=xpm \
 			GNOME=cairo GNOME=gdkpixbuf2 GNOME=gtk20
 X11_PLIST_SUB=		X11=''

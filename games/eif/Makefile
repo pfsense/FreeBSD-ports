@@ -4,11 +4,11 @@
 PORTNAME=	eif
 PORTVERSION=	1.3.4
 PORTREVISION=	4
-CATEGORIES=	games ipv6
+CATEGORIES=	games
 MASTER_SITES=	http://www.stack.nl/~marcolz/empire/ \
 		ftp://ftp.stack.nl/pub/users/johans/eif/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Empire text client
 
 GNU_CONFIGURE=	yes

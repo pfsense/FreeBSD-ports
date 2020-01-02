@@ -4,15 +4,13 @@
 PORTNAME=	zetacoin
 PORTVERSION=	0.13.2.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	net-p2p finance
 
 MAINTAINER=	daniel@morante.net
 COMMENT=	Peer-to-Peer crypto currency with quick transactions
 
 LICENSE=	MIT
-
-NOT_FOR_ARCHS=		powerpc powerpc64 sparc64
-NOT_FOR_ARCHS_REASON=	does not support big-endian architectures
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libevent.so:devel/libevent

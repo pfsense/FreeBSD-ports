@@ -2,11 +2,11 @@
 
 PORTNAME=		libnormaliz
 DISTVERSIONPREFIX=	v
-DISTVERSION=		3.8.0
-PORTREVISION=	1
+DISTVERSION=		3.8.3
+PORTREVISION=		1
 CATEGORIES=		math
 
-MAINTAINER=	phascolarctos@protonmail.ch
+MAINTAINER=	salvadore@FreeBSD.org
 COMMENT=	Computations in affin monoids, vector configurations etc
 
 LICENSE=	GPLv3+

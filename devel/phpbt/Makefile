@@ -10,12 +10,16 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bug-tracking system developed in PHP
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${LOCALBASE}/share/pear/DB.php:databases/pear-DB@${PHP_FLAVOR}
 
 .if !defined(WITHOUT_PHP_DEPENDS)
+USES=		php
 USE_PHP=	ctype pcre posix session tokenizer xml zlib
 .endif
 

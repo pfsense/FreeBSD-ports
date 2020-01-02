@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	quantlib
-PORTVERSION=	1.15
-PORTREVISION=	5
+PORTVERSION=	1.16
+PORTREVISION=	1
 CATEGORIES=	finance math devel
 MASTER_SITES=	https://dl.bintray.com/${PORTNAME}/releases/
 DISTNAME=	QuantLib-${PORTVERSION}

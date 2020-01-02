@@ -2,7 +2,7 @@
 
 PORTNAME=	oidn
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0
+DISTVERSION=	1.1.0
 PORTREVISION=	1
 CATEGORIES=	graphics
 
@@ -12,15 +12,16 @@ COMMENT=	Intel(R) Open Image Denoise library
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN_i386=	Intel(R) MKL-DNN supports 64 bit platforms only (oidn contains a custom version of mkl-dnn, see math/mkl-dnn)
+ONLY_FOR_ARCHS=		amd64
+ONLY_FOR_ARCHS_REASON=	Intel(R) MKL-DNN supports x86 64 bit platforms only (oidn contains a custom version of mkl-dnn, see math/mkl-dnn)
 
 LIB_DEPENDS=	libtbb.so:devel/tbb
 
 USES=		cmake:noninja compiler:c++11-lang python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenImageDenoise
-GH_TUPLE=	OpenImageDenoise:oidn-weights:cd8e2ce:w/weights \
-		OpenImageDenoise:mkl-dnn:6241ac7:m/mkl-dnn
+GH_TUPLE=	OpenImageDenoise:oidn-weights:f175104:w/weights \
+		OpenImageDenoise:mkl-dnn:096bda1:m/mkl-dnn
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	DOCS

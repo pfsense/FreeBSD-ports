@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-calc
-PORTVERSION=	1.22.0
+PORTVERSION=	1.22.2
 CATEGORIES=	math mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	itstool:textproc/itstool
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake pkgconfig localbase tar:xz
+USES=		gettext gmake gnome localbase pkgconfig tar:xz
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intlhack libxml2
 GNU_CONFIGURE=	yes
 

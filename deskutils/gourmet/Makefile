@@ -3,7 +3,7 @@
 
 PORTNAME=	gourmet
 PORTVERSION=	0.17.4
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	deskutils gnome
 
 MAINTAINER=	rm@FreeBSD.org
@@ -27,7 +27,7 @@ OPTIONS_DEFINE=		IPYTHON
 IPYTHON_DESC=		Interactive shell support
 IPYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipython>0:devel/ipython@${PY_FLAVOR}
 
-USES=		gettext python:-2.7
+USES=		gettext gnome python:-2.7
 USE_GNOME=	intltool pygnome2 pygtk2
 USE_PYTHON=	autoplist distutils
 PLIST_FILES+=	man/man1/gourmet.1.gz

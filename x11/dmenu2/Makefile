@@ -8,6 +8,8 @@ CATEGORIES=	x11
 MAINTAINER=	beyert@cs.ucr.edu
 COMMENT=	Fork of dmenu with many enhancements and additional options
 
+BROKEN=		unfetchable
+
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
@@ -18,6 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	mrshankly
 GH_TAGNAME=	a4eb44b
 
+USES=		xorg
 USE_XORG=	x11 xft xrender
 
 PLIST_FILES=	bin/dmenu2 bin/dmenu2_path bin/dmenu2_run bin/stest2 \

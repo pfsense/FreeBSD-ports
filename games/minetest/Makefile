@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	minetest
-PORTVERSION=	5.0.1
+PORTVERSION=	5.1.0
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -45,7 +45,7 @@ CLIENT_DESC=		Build client
 CLIENT_CMAKE_BOOL=	BUILD_CLIENT
 CLIENT_LIB_DEPENDS=	libpng.so:graphics/png \
 			libIrrlicht.so:x11-toolkits/irrlicht
-CLIENT_USES=		gl jpeg
+CLIENT_USES=		gl jpeg xorg
 CLIENT_USE=		GL=gl XORG=x11,xext,xxf86vm
 SERVER_DESC=		Build server
 SERVER_CMAKE_BOOL=	BUILD_SERVER

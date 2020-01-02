@@ -3,7 +3,7 @@
 PORTNAME=	openfx-arena
 PORTVERSION=	2.3.14
 DISTVERSIONPREFIX=	Natron-
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	graphics
 
 MAINTAINER=	olivier@FreeBSD.org
@@ -35,7 +35,7 @@ LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio \
 		libltdl.so:devel/libltdl \
 		libpoppler.so:graphics/poppler
 
-USES=		gmake iconv
+USES=		gl gmake gnome iconv xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	NatronGitHub
 GH_PROJECT=	openfx-arena

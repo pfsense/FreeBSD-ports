@@ -2,13 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	bitcoin
-PORTVERSION=	0.18.1
+PORTVERSION=	0.19.0.1
+PORTREVISION?=	1
 CATEGORIES=	net-p2p finance
 MASTER_SITES=	https://bitcoincore.org/bin/bitcoin-core-${PORTVERSION}/ \
 		LOCAL/swills:icon
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} bitcoin128.png:icon
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${_DISTFILES:N*.png}
+
+PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
+PATCHFILES+=	a64e97dd476b.patch:-p1 # https://github.com/bitcoin/bitcoin/pull/17654
 
 MAINTAINER=	kbowling@FreeBSD.org
 COMMENT?=	Virtual Peer-to-Peer Currency Client (QT)
@@ -32,7 +36,6 @@ USE_QT=		core gui network widgets \
 BUILD_DEPENDS+=	protoc:devel/protobuf
 LIB_DEPENDS+=	libprotobuf.so:devel/protobuf
 
-TESTS_USES=	qt:5
 TESTS_USE=		QT=testlib
 TESTS_PLIST_FILES=	bin/test_bitcoin-qt \
 			bin/test_bitcoin
@@ -53,7 +56,6 @@ WALLET_BDBMODERN_DESC=	Wallet using modern BDB 5.x or 6.x
 ZMQ_DESC=	Block and transaction broadcasting with ZeroMQ
 
 DBUS_CONFIGURE_WITH=	dbus
-DBUS_USES=	qt:5
 DBUS_USE=		QT=dbus
 
 DEBUG_CONFIGURE_ENABLE=		debug

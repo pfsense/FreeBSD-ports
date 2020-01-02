@@ -15,6 +15,9 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple 2D puzzle game with bombs
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.TXT
 
@@ -22,7 +25,7 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/Bombz
 
-USES=		dos2unix python:2.7 zip
+USES=		dos2unix gnome python:2.7 sdl zip
 DOS2UNIX_FILES=	*.txt
 USE_SDL=	sdl image mixer
 INSTALLS_ICONS=	yes

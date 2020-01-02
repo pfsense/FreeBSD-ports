@@ -33,7 +33,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	DCurrent
 GH_TAGNAME?=	5428eec8
 
-USES+=		gmake pkgconfig
+USES+=		gmake pkgconfig sdl
 .if ${PORTVERSION} < 4433
 USE_CSTD=	gnu89
 .endif

@@ -43,7 +43,7 @@ DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}.tar.gz:cargo_${_crate:C/[^a-zA-Z0-9_]
 
 CARGO_BUILDDEP?=	yes
 .if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.38.0:lang/${RUST_DEFAULT}
+BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.40.0:lang/${RUST_DEFAULT}
 .endif
 
 # Location of cargo binary (default to lang/rust's Cargo binary)
@@ -74,7 +74,7 @@ RUSTFLAGS+=	${CFLAGS:M-march=*:S/-march=/-C target-cpu=/}
 RUSTFLAGS+=	${CFLAGS:M-mcpu=*:S/-mcpu=/-C target-cpu=/}
 .endif
 
-.if ${ARCH} == powerpc64
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
 USE_GCC?=	yes
 .endif
 
@@ -117,10 +117,6 @@ CARGO_BUILD_ARGS+=	--release
 CARGO_TEST_ARGS+=	--release
 .else
 CARGO_INSTALL_ARGS+=	--debug
-.endif
-
-.if ${CARGO_CRATES:Mbacktrace-sys-[0-9]*}
-BUILD_DEPENDS+=	gmake:devel/gmake
 .endif
 
 .if ${CARGO_CRATES:Mcmake-[0-9]*}
@@ -212,14 +208,28 @@ cargo-extract:
 _CARGO_GIT_PATCH_CARGOTOML=
 .if ${CARGO_USE_GITHUB:tl} == "yes"
 .  for _group in ${GH_TUPLE:C@^[^:]*:[^:]*:[^:]*:(([^:/]*)?)((/.*)?)@\2@}
+.    if empty(CARGO_GIT_SUBDIR:M${_group}\:*)
 _CARGO_GIT_PATCH_CARGOTOML:= ${_CARGO_GIT_PATCH_CARGOTOML} \
-	-e 's@git = "(https|http|git)://github.com/${GH_ACCOUNT_${_group}}/${GH_PROJECT_${_group}}(\.git)?/?"@path = "${WRKSRC_${_group}}"@'
+	-e "s@git = ['\"](https|http|git)://github.com/${GH_ACCOUNT_${_group}}/${GH_PROJECT_${_group}}(\.git)?/?[\"']@path = \"${WRKSRC_${_group}}\"@"
+.    else
+.      for _group2 _crate _subdir in ${CARGO_GIT_SUBDIR:M${_group}\:*:S,:, ,g}
+_CARGO_GIT_PATCH_CARGOTOML:= ${_CARGO_GIT_PATCH_CARGOTOML} \
+	-e "/^${_crate} =/ s@git = ['\"](https|http|git)://github.com/${GH_ACCOUNT_${_group}}/${GH_PROJECT_${_group}}(\.git)?/?[\"']@path = \"${WRKSRC_${_group}}/${_subdir}\"@"
+.	endfor
+.    endif
 .  endfor
 .endif
 .if ${CARGO_USE_GITLAB:tl} == "yes"
 .  for _group in ${GL_TUPLE:C@^(([^:]*://[^:/]*(:[0-9]{1,5})?(/[^:]*[^/])?:)?)([^:]*):([^:]*):([^:]*)(:[^:/]*)((/.*)?)@\8@:S/^://}
+.    if empty(CARGO_GIT_SUBDIR:M${_group}\:*)
 _CARGO_GIT_PATCH_CARGOTOML:= ${_CARGO_GIT_PATCH_CARGOTOML} \
-	-e 's@git = "${GL_SITE_${_group}}/${GL_ACCOUNT_${_group}}/${GL_PROJECT_${_group}}(\.git)?/?"@path = "${WRKSRC_${_group}}"@'
+	-e "s@git = ['\"]${GL_SITE_${_group}}/${GL_ACCOUNT_${_group}}/${GL_PROJECT_${_group}}(\.git)?/?['\"]@path = \"${WRKSRC_${_group}}\"@"
+.    else
+.      for _group2 _crate _subdir in ${CARGO_GIT_SUBDIR:M${_group}\:*:S,:, ,g}
+_CARGO_GIT_PATCH_CARGOTOML:= ${_CARGO_GIT_PATCH_CARGOTOML} \
+	-e "/^${_crate} = / s@git = ['\"]${GL_SITE_${_group}}/${GL_ACCOUNT_${_group}}/${GL_PROJECT_${_group}}(\.git)?/?['\"]@path = \"${WRKSRC_${_group}}/${_subdir}\"@"
+.      endfor
+.    endif
 .  endfor
 .endif
 
@@ -231,10 +241,12 @@ cargo-patch-git:
 		${SED} -i.dist -E ${_CARGO_GIT_PATCH_CARGOTOML} {} +
 .endif
 
-.if !target(do-configure) && ${CARGO_CONFIGURE:tl} == "yes"
+.if ${CARGO_CONFIGURE:tl} == "yes"
+_USES_configure+=	250:cargo-configure
+
 # configure hook.  Place a config file for overriding crates-io index
 # by local source directory.
-do-configure:
+cargo-configure:
 	@${MKDIR} ${WRKDIR}/.cargo
 	@${ECHO_CMD} "[source.cargo]" > ${WRKDIR}/.cargo/config
 	@${ECHO_CMD} "directory = '${CARGO_VENDOR_DIR}'" >> ${WRKDIR}/.cargo/config

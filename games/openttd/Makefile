@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openttd
-DISTVERSION=	1.9.1
-PORTREVISION=	2
+DISTVERSION=	1.9.3
 CATEGORIES=	games
 MASTER_SITES=	https://proxy.binaries.openttd.org/openttd-releases/${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-source
@@ -60,7 +59,7 @@ CONFIGURE_ARGS+=	--enable-dedicated
 CFLAGS+=	-I${LOCALBASE}/include
 USE_RC_SUBR=	${PORTNAME}
 .else
-USES+=		compiler:c++11-lib sdl
+USES+=		compiler:c++11-lib gnome sdl
 USE_CXXSTD=	gnu++11
 CXXFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 LIB_DEPENDS+=	libfreetype.so:print/freetype2 \

@@ -13,6 +13,8 @@ DISTNAME=	Longhorn_Inspirat
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Port of Windows XP theme Longhorn Inspirat
 
+BROKEN=		unfetchable
+
 USES=		tar:bzip2
 NO_BUILD=	yes
 
@@ -23,6 +25,7 @@ WRKSRC=		${WRKDIR}/${THEME_NAME}
 .if ${TYPE} == gtk
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}
 PLIST_SUB+=	GTK20="" METACITY="@comment "
+USES+=		gnome
 USE_GNOME=	gtk20
 .else	# metacity
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}

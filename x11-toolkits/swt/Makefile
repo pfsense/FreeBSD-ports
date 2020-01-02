@@ -15,7 +15,7 @@ LICENSE=	EPL
 ONLY_FOR_ARCHS=	amd64 i386
 BROKEN_i386=	missing distinfo
 
-USES=		gl gnome pkgconfig zip:infozip
+USES=		gl gnome pkgconfig zip:infozip xorg
 
 SWT_VERSION=	4763
 OUTPUT_JAR=	swt.jar
@@ -24,7 +24,6 @@ USE_GL=		glu gl
 USE_GNOME=	gtk20
 USE_JAVA=	yes
 USE_XORG=	xtst
-JAVA_VERSION=	1.6+
 JAVA_OS=	native
 USE_ANT=	yes
 MAKE_ARGS+=	-Doutput.jar=${OUTPUT_JAR}

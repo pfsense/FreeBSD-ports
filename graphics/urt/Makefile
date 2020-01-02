@@ -5,7 +5,7 @@ PORTNAME=	urt
 PORTVERSION=	3.1b1
 PORTREVISION=	12
 CATEGORIES=	graphics
-MASTER_SITES=	http://BSDforge.com/projects/source/graphics/utah-raster/
+MASTER_SITES=	https://BSDforge.com/projects/source/graphics/utah-raster/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Toolkit and library for raster image processing
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/copyright
 LIB_DEPENDS=	libnetpbm.so:graphics/netpbm \
 		libtiff.so:graphics/tiff
 
-USES=		gmake tar:xz
+USES=		gmake tar:xz xorg
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

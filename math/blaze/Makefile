@@ -2,7 +2,7 @@
 
 PORTNAME=	blaze
 DISTVERSION=	3.5
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/downloads/
 
@@ -11,9 +11,6 @@ COMMENT=	C++ math library for dense and sparse arithmetic
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-DEPRECATED=	Depends on expiring devel/openmp
-EXPIRATION_DATE=	2019-12-31
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		openblas>0:math/openblas \

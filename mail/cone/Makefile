@@ -11,7 +11,7 @@ CATEGORIES=	mail
 # This is for release versions, leave it in please:
 MASTER_SITES=	SF/courier/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	cpeticus@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console based mail client with POP3/IMAP/SMAP support
 
 LICENSE=	GPLv3
@@ -23,8 +23,9 @@ LIB_DEPENDS=	libaspell.so:textproc/aspell \
 BUILD_DEPENDS=	gpgv:security/gnupg1
 RUN_DEPENDS=	gpgv:security/gnupg1
 
-USES=		compiler:c++11-lang fam gettext gmake iconv localbase:ldflags \
-		ncurses perl5 pkgconfig shebangfix ssl tar:bzip2
+USES=		compiler:c++11-lang fam gettext gmake gnome iconv \
+		localbase:ldflags ncurses perl5 pkgconfig shebangfix ssl \
+		tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-certdb=${PREFIX}/share/cone/rootcerts --exec-prefix=${PREFIX} \
 		--with-notice=unicode

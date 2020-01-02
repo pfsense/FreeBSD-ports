@@ -3,12 +3,13 @@
 
 PORTNAME=	fonttools
 PORTVERSION=	3.44.0
+PORTREVISION=	2
 CATEGORIES=	print python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT?=	Open source library for manipulating fonts, written in Python
+COMMENT=	Open source library for manipulating fonts, written in Python
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,6 +21,8 @@ MAKE_ENV=	FONTTOOLS_MANPATH="man"
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	GRAPHITE INTERPOLATABLE LXML PLOT SYMFONT UFO UNICODE WOFF
+OPTIONS_DEFAULT= LXML UFO UNICODE
+
 GRAPHITE_DESC=	Process graphite type tables in ttLib/tables
 INTERPOLATABLE_DESC=	Interpolatability support
 LXML_DESC=	Read/write XML files via lxml (faster/safer than built-in ElementTree)

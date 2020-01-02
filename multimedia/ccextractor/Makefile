@@ -3,7 +3,7 @@
 PORTNAME=	ccextractor
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.85
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	multimedia
 
 MAINTAINER=	oz@nixil.net
@@ -29,7 +29,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libx265.so:multimedia/x265 \
 		libxvidcore.so:multimedia/xvid
 
-USES=		cmake iconv localbase:ldflags pkgconfig
+USES=		cmake iconv localbase:ldflags pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	CCExtractor
 USE_XORG=	x11

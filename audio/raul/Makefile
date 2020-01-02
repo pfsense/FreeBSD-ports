@@ -3,7 +3,7 @@
 
 PORTNAME=	raul
 PORTVERSION=	0.8.0
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	audio
 MASTER_SITES=	http://download.drobilla.net/
 
@@ -15,7 +15,7 @@ LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs
 
-USES=		pkgconfig tar:bzip2 waf
+USES=		gnome pkgconfig tar:bzip2 waf
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 

@@ -7,7 +7,7 @@ PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.abisource.com/downloads/wv/${PORTVERSION}/
 
-MAINTAINER=	phascolarctos@protonmail.ch
+MAINTAINER=	salvadore@FreeBSD.org
 COMMENT=	Library and executables to access Microsoft Word files
 
 LICENSE=	GPLv2+
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png \
 		libwmf.so:graphics/libwmf
 
-USES=		gmake jpeg pkgconfig libtool
+USES=		gmake gnome jpeg pkgconfig libtool xorg
 USE_GNOME=	libgsf
 USE_XORG=	x11
 USE_LDCONFIG=	yes

@@ -10,6 +10,9 @@ DIST_SUBDIR=	python
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lean, flexible frontend to MPlayer written in Python
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
@@ -19,7 +22,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	jdolan
 GH_TAGNAME=	bea99d9
 
-USES=		shebangfix python:2.7
+USES=		gnome python:2.7 shebangfix
 SHEBANG_FILES=	*.py
 USE_GNOME=	pygtk2
 NO_ARCH=	yes

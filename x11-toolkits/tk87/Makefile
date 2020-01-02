@@ -24,14 +24,13 @@ OPTIONS_DEFINE=	TKMAN DEMOS
 OPTIONS_SUB=	yes
 TKMAN_DESC=	Install Tk function manpages
 DEMOS_DESC=	Install demos
-XSS_DESC=	XScrnSaver support
 
 WRKSRC=		${WRKDIR}/${PORTNAME}${DISTVERSION}/unix
 
 ALL_TARGET=	all
 INSTALL_TARGET=	install-strip
 
-USES+=		tcl:${SHORT_TK_VER},tea
+USES+=		tcl:${SHORT_TK_VER},tea xorg
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xext xft xrender xscrnsaver
 CONFIGURE_ARGS=	--enable-xss \

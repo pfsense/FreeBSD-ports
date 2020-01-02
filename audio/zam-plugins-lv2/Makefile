@@ -1,9 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	zam-plugins
-DISTVERSION=	3.11-1
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-gce45995
+DISTVERSION=	3.12
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -20,7 +18,7 @@ LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 		libsamplerate.so:audio/libsamplerate \
 		libzita-convolver.so:audio/zita-convolver
 
-USES=		compiler:c++11-lib gl gmake localbase:ldflags pkgconfig
+USES=		compiler:c++11-lib gl gmake localbase:ldflags pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	zamaudio
 GH_TUPLE=	DISTRHO:DPF:68b3a57:d/dpf

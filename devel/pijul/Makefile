@@ -3,7 +3,7 @@
 
 PORTNAME=	pijul
 PORTVERSION=	0.12.0
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	devel
 MASTER_SITES=	https://pijul.org/releases/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -12,8 +12,6 @@ MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Distributed version control system
 
 LICENSE=	GPLv2
-
-BROKEN_aarch64=		fails to compile: aesv8-armx-linux64.S:53:2: instruction requires: crypto aese v6.16b,v0.16b
 
 BUILD_DEPENDS=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
 LIB_DEPENDS=	libgmp.so:math/gmp \

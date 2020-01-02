@@ -44,6 +44,7 @@ BAD_GST_ALL_PLUGINS+= \
 		modplug \
 		mpeg2enc \
 		mplex \
+		msdk \
 		musepack \
 		neon \
 		ofa \
@@ -83,7 +84,6 @@ BAD_GST_NON_PLUGINS= \
 		--disable-directfb \
 		--disable-direct3d \
 		--disable-directsound \
-		--disable-msdk \
 		--disable-nvenc \
 		--disable-nvdec \
 		--disable-sbc \
@@ -328,6 +328,7 @@ gst_libmms_LIB_DEPENDS=	libmms.so:net/libmms
 gst_libmms_PLIST_FILES=	${GST_LIB_DIR}/libgstmms.so
 
 # librfb
+gst_librfb_USES=	xorg
 gst_librfb_USE_XORG=	x11
 
 # liblv2
@@ -359,6 +360,12 @@ gst_mplex_LIB_DEPENDS=	libmplex2.so:multimedia/mjpegtools
 
 # mpg123
 gst_mpg123_LIB_DEPENDS=	libmpg123.so:audio/mpg123
+
+# msdk
+gst_msdk_LIB_DEPENDS=	libgudev-1.0.so:devel/libgudev \
+			libmfx.so:multimedia/intel-media-sdk \
+			libva-drm.so:multimedia/libva
+gst_msdk_GST_PLUGIN_DIR=	sys/msdk
 
 # musepack
 gst_musepack_LIB_DEPENDS=libmpcdec.so:audio/musepack
@@ -490,6 +497,7 @@ gst_webrtcdsp_LIB_DEPENDS=	libwebrtc_audio_processing.so:audio/webrtc-audio-proc
 
 # X ximage and xvimage sinks aka output
 .if ${DIST} == base
+gst_x_USES=		xorg
 gst_x_USE_XORG=		x11 xv xext
 gst_x_CONFIGURE_ARGS=	--enable-xvideo --enable-xshm
 gst_x_GST_PLUGIN_DIR=	sys/ximage sys/xvimage
@@ -499,6 +507,7 @@ gst_x_PLIST_FILES=	${GST_LIB_DIR}/libgstximagesink.so \
 
 .if ${DIST} == good
 # Ximagesrc
+gst_x_USES=		xorg
 gst_x_USE_XORG=		x11 xfixes xdamage xext
 gst_x_CONFIGURE_ARGS=	--enable-x
 gst_x_GST_PLUGIN_DIR=	sys/ximage
@@ -536,8 +545,10 @@ gst_${GST_PLUGIN}_EXTRA_LIBS?=
 gst_${GST_PLUGIN}_PREBUILD_DIR?=
 gst_${GST_PLUGIN}_GST_PLUGIN_DIR?=	ext/${GST_PLUGIN}
 gst_${GST_PLUGIN}_POSTBUILD_DIR?=
+gst_${GST_PLUGIN}_USE_XORG?=
 gst_${GST_PLUGIN}_USE_GNOME?=
 gst_${GST_PLUGIN}_CONFIGURE_ENV?=
+gst_${GST_PLUGIN}_USE_GL?=
 gst_${GST_PLUGIN}_GLIB_SCHEMAS?=
 gst_${GST_PLUGIN}_CONFIGURE_ARGS?=
 gst_${GST_PLUGIN}_USE_SDL?=
@@ -549,10 +560,16 @@ RUN_DEPENDS+=	${gst_${GST_PLUGIN}_RUN_DEPENDS}
 USES+=		${gst_${GST_PLUGIN}_USES}
 PLIST_FILES=	${gst_${GST_PLUGIN}_PLIST_FILES}
 EXTRA_LIBS+=	${gst_${GST_PLUGIN}_EXTRA_LIBS}
+.if ${gst_${GST_PLUGIN}_USE_XORG}!=""
 USE_XORG+=	${gst_${GST_PLUGIN}_USE_XORG}
+.endif
+.if ${gst_${GST_PLUGIN}_USE_GNOME}!=""
 USE_GNOME+=	${gst_${GST_PLUGIN}_USE_GNOME}
+.endif
 CONFIGURE_ENV+=	${gst_${GST_PLUGIN}_CONFIGURE_ENV}
+.if ${gst_${GST_PLUGIN}_USE_GL}!=""
 USE_GL+=	${gst_${GST_PLUGIN}_USE_GL}
+.endif
 
 .if ${gst_${GST_PLUGIN}_GLIB_SCHEMAS}!=""
 GLIB_SCHEMAS=	${gst_${GST_PLUGIN}_GLIB_SCHEMAS}

@@ -4,7 +4,7 @@
 PORTNAME=	freeorion
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.8
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -21,6 +21,7 @@ PATCHFILES+=	78b7a1994b8b.patch:-p1
 PATCHFILES+=	ff8c06a6685f.patch:-p1
 PATCHFILES+=	4a7b8833cb8d.patch:-p1 # rebased from 7513ede6b03c
 PATCHFILES+=	17caf5a174d3.patch:-p1
+PATCHFILES+=	5ad3f175925d.patch:-p1
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Turn-based space empire and galactic conquest game
@@ -48,7 +49,7 @@ TEST_USES=		localbase
 
 HEADLESS_DESC=		Build only headless components: server and AI
 HEADLESS_CMAKE_BOOL=	BUILD_HEADLESS
-HEADLESS_USES_OFF=	openal
+HEADLESS_USES_OFF=	gl openal sdl
 HEADLESS_USE_OFF=	SDL=sdl2 GL=gl,glu,glew
 HEADLESS_LIB_DEPENDS_OFF= \
 		libfreetype.so:print/freetype2 \

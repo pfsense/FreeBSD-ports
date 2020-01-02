@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	dnscrypt-proxy
-PORTVERSION=	2.0.27
-CATEGORIES=	dns security ipv6
+PORTVERSION=	2.0.34
+CATEGORIES=	dns security
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	egypcio@FreeBSD.org
@@ -17,7 +17,7 @@ USES=		go:modules
 USE_RC_SUBR=	${PORTNAME}
 USE_GITHUB=	yes
 
-GH_ACCOUNT=	jedisct1
+GH_ACCOUNT=	DNSCrypt
 
 GO_TARGET=	./dnscrypt-proxy:${PREFIX}/sbin/dnscrypt-proxy
 

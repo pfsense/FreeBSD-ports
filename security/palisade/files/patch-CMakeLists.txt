@@ -1,0 +1,11 @@
+--- CMakeLists.txt.orig	2019-12-27 18:44:46 UTC
++++ CMakeLists.txt
+@@ -183,7 +183,7 @@ set(COMPILEFLAGS "-Wall -Werror -O3 -DPALISADE_VERSION
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMPILEFLAGS}")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILEFLAGS}")
+ 
+-find_package (Git REQUIRED)
++find_package (Git)
+ 
+ find_package (Doxygen QUIET COMPONENTS dot)
+ if (DOXYGEN_FOUND)

@@ -11,10 +11,13 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	On-Screen-Display infrastructure using Pango text rendering
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext-tools gmake pathfix pkgconfig python:2.7
+USES=		gettext-tools gmake gnome pathfix pkgconfig python:2.7
 USE_GNOME=	gnomeprefix intlhack pygnome2
 GNU_CONFIGURE=	yes
 NO_ARCH=	yes

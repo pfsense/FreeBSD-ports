@@ -10,13 +10,15 @@ MASTER_SITES=	http://forja.rediris.es/frs/download.php/2051/
 MAINTAINER=	gustau.perez@gmail.com
 COMMENT=	Tucan Manager aids file-sharing with 1-click hosters
 
+BROKEN=		unfetchable
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
 		${LOCALBASE}/bin/cntraining:graphics/tesseract
 
 NO_BUILD=	yes
 USE_GNOME=	pygtk2 librsvg2
 
-USES=		gettext python:2.7
+USES=		gettext gnome python:2.7
 
 post-patch:
 	${REINPLACE_CMD} -Ee 's|#! /usr/bin/env python|#! ${PYTHON_CMD}|' ${WRKSRC}/tucan.py

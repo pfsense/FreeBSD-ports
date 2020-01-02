@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	qtum
-PORTVERSION=	0.18.1
+PORTVERSION=	0.18.2
 DISTVERSIONPREFIX=	mainnet-ignition-v
+PORTREVISION=	1
 CATEGORIES=	net-p2p finance
 
 MAINTAINER=	vd@FreeBSD.org
@@ -56,9 +57,9 @@ GH_TUPLE=	qtumproject:qtum:${DISTVERSIONPREFIX}${PORTVERSION} \
 # setting some related environment variables.
 .if ${SSL_DEFAULT} == base
 CONFIGURE_ENV+=	CRYPTO_CFLAGS="-I${OPENSSLINC}" \
-		CRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto" \
+		CRYPTO_LIBS="-lcrypto" \
 		SSL_CFLAGS="-I${OPENSSLINC}" \
-		SSL_LIBS="-L${OPENSSLLIB} -lssl"
+		SSL_LIBS="-lssl"
 .endif
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
@@ -67,7 +68,7 @@ CONFIGURE_ENV+=	CRYPTO_CFLAGS="-I${OPENSSLINC}" \
 # symbol' can not be used when making a shared object; recompile with -fPIC
 CONFIGURE_ENV+=	CPPFLAGS="-I${LOCALBASE}/include -fPIC -DPIC"
 post-patch:
-	${SED} -i '' -e 's/AC_SUBST(PIE_FLAGS)//' ${WRKSRC}/configure.ac
+	${REINPLACE_CMD} -e 's/AC_SUBST(PIE_FLAGS)//' ${WRKSRC}/configure.ac
 .else
 CONFIGURE_ENV+=	CPPFLAGS="-I${LOCALBASE}/include"
 .endif

@@ -3,6 +3,7 @@
 
 PORTNAME=	commons-beanutils
 PORTVERSION=	1.9.2
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	APACHE_COMMONS_SOURCE
 PKGNAMEPREFIX=	jakarta-
@@ -13,16 +14,15 @@ COMMENT=	JavaBeans utility library
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging \
-		${JAVALIBDIR}/commons-collections.jar:java/jakarta-commons-collections
-RUN_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging \
-		${JAVALIBDIR}/commons-collections.jar:java/jakarta-commons-collections
+BUILD_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging \
+		${JAVALIBDIR}/commons-collections.jar:java/apache-commons-collections
+RUN_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging \
+		${JAVALIBDIR}/commons-collections.jar:java/apache-commons-collections
 
 USES=		dos2unix
 USE_JAVA=	yes
 USE_ANT=	yes
 DOS2UNIX_FILES=	build.xml
-JAVA_VERSION=	1.6+
 ALL_TARGET=	dist
 MAKE_ARGS+=	-Dcommons-collections.jar=${JAVALIBDIR}/commons-collections.jar \
 		-Dcommons-logging.jar=${JAVALIBDIR}/commons-logging.jar

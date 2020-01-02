@@ -9,8 +9,10 @@ MASTER_SITES=	http://www.afnix.org/ftp/ \
 		ftp://ftp.stack.nl/pub/users/johans/afnix/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-threaded functional programming language
+
+BROKEN=		unfetchable
 
 BROKEN_armv6=		fails to compile: operator new takes type size_t as first parameter
 BROKEN_armv7=		fails to compile: operator new takes type size_t as first parameter

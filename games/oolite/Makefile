@@ -12,6 +12,9 @@ DIST_SUBDIR=		oolite
 MAINTAINER=		ports@FreeBSD.org
 COMMENT=		Trade and combat space simulator, clone of Elite
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=		CC-BY-NC-SA-3.0 GPLv2 ZLIB
 LICENSE_COMB=		multi
 LICENSE_FILE_CC-BY-NC-SA-3.0=	${WRKSRC}/Doc/LICENSE.TXT
@@ -24,7 +27,8 @@ LIB_DEPENDS=		libespeak.so:audio/espeak \
 			libpng.so:graphics/png \
 			libminizip.so:archivers/minizip
 
-USES=			gl gnustep openal:al perl5 python:2.7,build tar:bzip2
+USES=			gl gnustep openal:al perl5 python:2.7,build sdl \
+			tar:bzip2 xorg
 USE_CXXSTD=		gnu++98
 USE_GL=			gl glu
 USE_SDL=		sdl

@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	busybox
-PORTVERSION=	1.30.1
+PORTVERSION=	1.31.0
 PORTREVISION=	1
 CATEGORIES=	sysutils misc shells
 MASTER_SITES=	https://busybox.net/downloads/
 
-MAINTAINER=	samm@os2.kiev.ua
+MAINTAINER=	samm@freebsd.org
 COMMENT=	Set of common utilities built as single binary
 
 LICENSE=	GPLv2

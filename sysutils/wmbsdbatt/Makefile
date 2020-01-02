@@ -10,6 +10,9 @@ MASTER_SITES=	http://homepage.univie.ac.at/l.ertl/wmbsdbatt/files/
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	Dockapp for battery & temperature monitoring through ACPI
 
+BROKEN=		unfetchable
+
+USES=		xorg
 USE_XORG=	x11 xpm
 
 PLIST_FILES=	bin/wmbsdbatt

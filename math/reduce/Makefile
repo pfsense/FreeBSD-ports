@@ -12,7 +12,6 @@ COMMENT=	Codemist Standard Lisp REDUCE general-purpose computer system
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_aarch64=		fails to install: Reduce-svn4372-src/cslbuild/aarch64-unknown-freebsd11.1/csl/reduce.img: No such file or directory
 BROKEN_armv6=		fails to compile: redfront.h:118:12: conflicting types for '__wcwidth'
 BROKEN_powerpc64=	fails to compile: arith01.cpp: 'statuc' does not name a type
 
@@ -22,7 +21,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		autoreconf:build libtool gmake ncurses jpeg
+USES=		autoreconf:build libtool gmake ncurses jpeg xorg
 USE_XORG=	x11 xcursor xext xorgproto xft xrandr xrender
 
 SFSUBDIR=	snapshot_2019-04-13

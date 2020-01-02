@@ -3,7 +3,7 @@
 
 PORTNAME=	dsniff
 DISTVERSION=	2.4b1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	http://www.monkey.org/~dugsong/${PORTNAME}/beta/ \
 		LOCAL/sbz
@@ -29,6 +29,7 @@ OPTIONS_DEFINE=	X11
 OPTIONS_DEFAULT=	X11
 OPTIONS_SUB=	yes
 
+X11_USES=	xorg
 X11_USE=	xorg=x11,xmu
 X11_CONFIGURE_WITH=x
 

@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	grafana
-PORTVERSION=	6.3.5
+PORTVERSION=	6.5.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
-MASTER_SITES+=	https://s3-us-west-2.amazonaws.com/grafana-releases/release/:public
+MASTER_SITES+=	https://dl.grafana.com/oss/release/:public
 PKGNAMESUFFIX=	${PORTVERSION:C/([0-9]).*/\1/1}
 DISTFILES=	grafana-${PORTVERSION}.linux-amd64${EXTRACT_SUFX}:public
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
@@ -55,15 +55,6 @@ PLIST_SUB+=	GRAFANAHOMEDIR=${GRAFANAHOMEDIR}
 post-extract:
 	@${RM} -r ${WRKSRC}/public
 	@(cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${DISTDIR}/grafana-${PORTVERSION}.linux-amd64${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS} grafana-${PORTVERSION}/public)
-
-# unbreak vendored golang.org/x/xerrors with go1.13
-# can be removed after vendor/golang.org/x/xerrors is updated to a985d3407aa7 or later
-post-patch:
-	@${RM} ${WRKSRC}/vendor/golang.org/x/xerrors/adaptor_go1_13.go
-	@${RM} ${WRKSRC}/vendor/golang.org/x/xerrors/format_go1_13.go
-	@${REINPLACE_CMD} '/build !go1.13/d' ${WRKSRC}/vendor/golang.org/x/xerrors/adaptor_go1_12.go
-	@${REINPLACE_CMD} '/build !go1.13/d' ${WRKSRC}/vendor/golang.org/x/xerrors/format_go1_12.go
-	@${REINPLACE_CMD} '/build !go1.13/d' ${WRKSRC}/vendor/golang.org/x/xerrors/frame_go1_12.go
 
 post-install:
 	cd ${WRKSRC} && \

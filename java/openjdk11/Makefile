@@ -25,7 +25,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libpng.so:graphics/png
 RUN_DEPENDS=	javavm:java/javavmwrapper
 
-USES=		compiler:features gmake iconv jpeg pkgconfig
+USES=		compiler:features gmake iconv jpeg pkgconfig xorg
 USE_XORG=	x11 xext xi xrandr xrender xt xtst
 
 USE_GITHUB=	yes
@@ -55,7 +55,7 @@ NOPRECIOUSMAKEVARS=	yes
 JDK_MAJOR_VERSION=	11
 JDK_MINOR_VERSION=	0
 JDK_PATCH_VERSION=	5
-JDK_BUILD_NUMBER=	8
+JDK_BUILD_NUMBER=	10
 BSD_JDK_VERSION=	1
 
 GNU_CONFIGURE=	yes
@@ -134,6 +134,9 @@ CONFIGURE_ARGS+=	--disable-warnings-as-errors \
 .endif
 .if ${ARCH} != amd64
 CONFIGURE_ARGS+=	--enable-aot=no
+.endif
+.if ${ARCH} == powerpc64 && ${OSREL:C/\.[0-9]//} == 12
+EXTRA_PATCHES=		${PATCHDIR}/extra-patch-src_hotspot_cpu_ppc_vm__version__ppc.hpp
 .endif
 
 .if empty(ICONV_LIB)

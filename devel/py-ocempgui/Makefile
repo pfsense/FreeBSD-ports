@@ -12,13 +12,16 @@ DISTNAME=	OcempGUI-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI toolkit in python
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${PYGAME}
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python:2.7
+USES=		gnome python:2.7
 USE_GNOME=	atk
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes

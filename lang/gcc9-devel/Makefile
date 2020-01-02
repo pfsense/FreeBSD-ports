@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	9.2.1.s20190921
+PORTVERSION=	9.2.1.s20191214
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -45,8 +45,8 @@ SSP_UNSAFE=	yes
 CFLAGS:=	${CFLAGS:N-mretpoline}
 CXXFLAGS:=	${CXXFLAGS:N-mretpoline}
 
-OPTIONS_DEFINE=		BOOTSTRAP GRAPHITE
-OPTIONS_DEFAULT=	BOOTSTRAP
+OPTIONS_DEFINE=		BOOTSTRAP GRAPHITE PLUGINS
+OPTIONS_DEFAULT=	BOOTSTRAP PLUGINS
 BOOTSTRAP_DESC=		Build using a full bootstrap
 GRAPHITE_DESC=		Support for Graphite loop optimizations
 
@@ -61,6 +61,8 @@ MULTILIB_CONFIGURE_ENABLE=	multilib
 CONFIGURE_ARGS+=	--disable-multilib
 .endif
 
+PLUGINS_CONFIGURE_ENABLE=	plugin
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64
@@ -68,7 +70,11 @@ CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 
 .elif ${ARCH} == powerpc64
 CONFIGURE_ENV+=	UNAME_m="powerpc64"
+. if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+CONFIGURE_ARGS+=	--with-abi=elfv2
+. else
 USE_GCC=	8
+. endif
 .endif
 
 LANGUAGES:=	c,c++,objc,fortran

@@ -2,6 +2,7 @@
 
 PORTNAME=	uhd
 PORTVERSION=	3.14.1.1
+PORTREVISION=	1
 #PORTREVISION=	1
 CATEGORIES=	comms hamradio
 #MASTER_SITES=	http://files.ettus.com/binaries/images/
@@ -17,9 +18,6 @@ COMMENT=	Ettus Research UHD driver framework
 # until terms of the "Alternate License" are made clear.  When that
 # is understood and if appropriate, we can add that license here.
 LICENSE=	GPLv3
-
-BROKEN=		fails to package
-BROKEN_powerpc64=	fails to link: undefined reference to boost function
 
 LIB_DEPENDS=	${PY_BOOST} \
 		libboost_system.so:devel/boost-libs
@@ -70,7 +68,7 @@ DOXYGEN_CMAKE_OFF=	-DENABLE_DOXYGEN:STRING="OFF" -DENABLE_MANUAL:STRING="OFF"
 do-install:
 # install host component
 # hack the install prefix now
-	@${REINPLACE_CMD} -e "s|/usr/local|${STAGEDIR}${PREFIX}|g" \
+	@${REINPLACE_CMD} -e 's|"${LOCALBASE}"|"${STAGEDIR}${PREFIX}"|g' \
 		${CONFIGURE_WRKSRC}/cmake_install.cmake
 	cd ${CONFIGURE_WRKSRC} && ${MAKE_CMD} install
 #.for subdir in images

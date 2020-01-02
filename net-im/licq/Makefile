@@ -4,7 +4,7 @@
 
 PORTNAME=	base
 PORTVERSION=	1.9.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-im
 PKGNAMEPREFIX=	licq-
 PKGNAMESUFFIX=	${SOCKS_SUFFIX}${PKGNAMESUFFIX2}
@@ -16,7 +16,8 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs
 
-BROKEN_sparc64=		Does not build: fails to link
+BROKEN_powerpc64=	fails to link: undefined reference to `boost::re_detail_106900::cpp_regex_traits_implementation<char>::transform(char const*, char const*) const'
+BROKEN_sparc64=		fails to link
 
 USES=		cmake:noninja iconv ssl
 USE_CXXSTD=	c++98
@@ -24,7 +25,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	licq-im
 GH_PROJECT=	licq
 GH_TAGNAME=	f271d55
-WRKSRC=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME}/licq
+WRKSRC_SUBDIR=	licq
 CFLAGS+=	-I${LOCALBASE}/include
 CXXFLAGS+=	-DGTEST_USE_OWN_TR1_TUPLE
 

@@ -5,6 +5,7 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	0.5.097
 PORTREVISION=	1
 CATEGORIES=	audio
+MASTER_SITES=	https://gitlab.com/${PORTNAME}/${PORTNAME}/-/archive/${DISTVERSIONFULL}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Modern music production system, also known as DAW
@@ -30,10 +31,10 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 RUN_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
 		kf5-breeze-icons>0:x11-themes/kf5-breeze-icons
 
-USES=		gettext-tools meson python:3.5+,build gettext-runtime gnome libtool pkgconfig shebangfix
-USE_GITLAB=	yes
-GL_SITE=	https://git.zrythm.org
-GL_COMMIT=	5b1f4efa53ca33090ef7795204dfc387072f58f5
+USES=		compiler:c11 gettext-tools gettext-runtime gnome libtool \
+		meson pkgconfig python:3.5+,build shebangfix xorg
+#USE_GITLAB=	yes # broken: doesn't require GL_COMMIT any more, see bug#242329
+#GL_SITE=	https://git.zrythm.org
 SHEBANG_FILES=	resources/gen-gtk-gresources-xml.py scripts/collect_translatables.sh scripts/meson_post_install.py
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 libxml2 pango
 USE_XORG=	x11

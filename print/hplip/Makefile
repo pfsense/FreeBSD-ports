@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hplip
-PORTVERSION=	3.17.11
-PORTREVISION=	5
+PORTVERSION=	3.19.12
 CATEGORIES=	print
 MASTER_SITES=	SF
 
@@ -22,10 +21,11 @@ RUN_DEPENDS=	cups-filters>=0:print/cups-filters \
 CONFLICTS_INSTALL=	hpijs-[0-9]*
 
 INSTALL_TARGET=	install-strip
-USES=		jpeg libtool pkgconfig python shebangfix
+USES=		dos2unix gnome jpeg libtool pkgconfig python shebangfix
 USE_GNOME=	pygobject
 USE_LDCONFIG=	yes
 SHEBANG_GLOB=	*.py hpps pstotiff
+DOS2UNIX_FILES=	scan/sane/orblite.c
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-cupsbackenddir=${PREFIX}/libexec/cups/backend \
@@ -37,7 +37,8 @@ CONFIGURE_ARGS=	--with-cupsbackenddir=${PREFIX}/libexec/cups/backend \
 		--with-htmldir=${DOCSDIR} \
 		--with-drvdir=${PREFIX}/share/cups/drv \
 		--disable-qt4
-CPPFLAGS+=	-I${LOCALBASE}/include
+CONFIGURE_ENV+=	PYTHONINCLUDEDIR=${PYTHON_INCLUDEDIR}
+CPPFLAGS+=	-I${LOCALBASE}/include -I${PYTHON_INCLUDEDIR}
 LIBS+=		-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=		DOCS FAX SCAN SNMP X11 XSANE QT5

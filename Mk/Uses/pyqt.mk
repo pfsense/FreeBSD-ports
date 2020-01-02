@@ -64,9 +64,9 @@ MASTER_SITES_QSCI2=	RIVERBANK/QScintilla/${PORTVERSION} \
 			SF/pyqt/QScintilla2/QScintilla-${PORTVERSION} \
 			GENTOO
 
-SIP_VERSION=		4.19.17
-QSCI2_VERSION=		2.11.1
-PYQT5_VERSION=		5.12.2
+SIP_VERSION=		4.19.19
+QSCI2_VERSION=		2.11.2
+PYQT5_VERSION=		5.13.1
 
 SIP_DISTNAME=		sip-${SIP_VERSION}
 PYQT5_DISTNAME=		PyQt5_gpl-${PYQT5_VERSION}
@@ -184,6 +184,7 @@ py-phonon_DESC=		Python bindings for Phonon module
 py-qscintilla2_DESC=	Python bindings for QScintilla2
 py-script_DESC=		Python bindings for QtScript module
 py-scripttools_DESC=	Python bindings for QtScriptTools module
+py-sip_DESC=		Python bindings generator for C and C++ libraries
 py-sql_DESC=		Python bindings for QtSql module
 py-svg_DESC=		Python bindings for QtSvg module
 py-test_DESC=		Python bindings for QtTest module
@@ -217,7 +218,7 @@ _QMLDIR_REL=		${QT_QMLDIR_REL}/${_VERSION_SUBDIR_REL}
 PYQT_APIDIR=		${PREFIX}/${_APIDIR_REL}
 PYQT_DOCDIR=		${PREFIX}/${_DOCDIR_REL}
 PYQT_EXAMPLEDIR=	${PREFIX}/${_EXAMPLEDIR_REL}
-PYQT_SIPDIR=		${PREFIX}/${_SIPDIR_REL}
+PYQT_SIPDIR?=		${PREFIX}/${_SIPDIR_REL}
 PYQT_DESIGNERDIR=	${PREFIX}/${_DESIGNERDIR_REL}
 PYQT_QMLDIR=		${PREFIX}/${_QMLDIR_REL}
 

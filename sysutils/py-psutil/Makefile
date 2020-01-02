@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	psutil
-PORTVERSION=	5.6.3
+PORTVERSION=	5.6.7
+PORTREVISION=	1
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,7 +23,7 @@ USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/psutil/_psutil_bsd.so ${STAGEDIR}${PYTHON_SITELIBDIR}/psutil/_psutil_posix.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/psutil/_psutil_bsd.so ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/psutil/_psutil_posix.so
 
 .include <bsd.port.pre.mk>
 

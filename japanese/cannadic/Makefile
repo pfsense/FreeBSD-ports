@@ -3,16 +3,14 @@
 
 PORTNAME=	cannadic
 PORTVERSION=	0.95c
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	japanese
-MASTER_SITES=	http://cannadic.oucrc.org/
+MASTER_SITES=	LOCAL/hrs
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Canna dictionary containing a lot of words
 
-BROKEN=		unfetchable
-DEPRECATED=	Unfetchable, unmaintained
-EXPIRATION_DATE=	2019-10-16
+LICENSE=	GPLv2
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/cannaserver:japanese/canna-server
 BUILD_DEPENDS=	crxdic:japanese/canna-server
@@ -29,8 +27,10 @@ OPTIONS_DEFINE=	DOCS
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${DICDIR}
 	cd ${WRKSRC} && \
-		${INSTALL_DATA} ${DICS} ${DICSFILE} ${STAGEDIR}${PREFIX}/${DICDIR}
+	    ${INSTALL_DATA} ${DICS} ${DICSFILE} ${STAGEDIR}${PREFIX}/${DICDIR}
 	${INSTALL_DATA} ${WRKDIR}/README.FreeBSD ${WRKSRC}
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 

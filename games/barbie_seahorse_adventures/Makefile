@@ -12,6 +12,9 @@ DIST_SUBDIR=	python
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	You are a seahorse and you want to go to the moon!
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
@@ -19,7 +22,7 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/barbie-${DISTVERSION}
 
-USES=		dos2unix python:2.7 shebangfix tar:tgz
+USES=		dos2unix gnome python:2.7 shebangfix tar:tgz
 SHEBANG_FILES=	run_game.py create-upload.py
 DOS2UNIX_GLOB=	*.py
 NO_BUILD=	yes

@@ -5,7 +5,7 @@ PORTNAME=	xclip
 PORTVERSION=	0.13
 CATEGORIES=	x11
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interface to X selections ("the clipboard") from the command line
 
 LICENSE=	GPLv2
@@ -13,7 +13,7 @@ LICENSE=	GPLv2
 USE_GITHUB=	yes
 GH_ACCOUNT=	astrand
 
-USES=		autoreconf gmake iconv
+USES=		autoreconf gmake iconv xorg
 USE_XORG=	x11 xmu
 
 GNU_CONFIGURE=	yes

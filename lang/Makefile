@@ -11,7 +11,7 @@
     SUBDIR += alchemist.el
     SUBDIR += algol68g
     SUBDIR += angelscript
-    SUBDIR += arena
+    SUBDIR += apache-commons-jelly
     SUBDIR += asis
     SUBDIR += asn1c
     SUBDIR += atlast
@@ -31,7 +31,6 @@
     SUBDIR += chaiscript
     SUBDIR += chez-scheme
     SUBDIR += chibi-scheme
-    SUBDIR += chicken
     SUBDIR += chicken5
     SUBDIR += cim
     SUBDIR += cjs
@@ -49,7 +48,6 @@
     SUBDIR += crystal
     SUBDIR += csharp-mode.el
     SUBDIR += cython
-    SUBDIR += diveintopython
     SUBDIR += dlang-tools
     SUBDIR += dlv
     SUBDIR += duktape
@@ -66,11 +64,6 @@
     SUBDIR += erlang-java
     SUBDIR += erlang-man
     SUBDIR += erlang-riak
-    SUBDIR += erlang-runtime15
-    SUBDIR += erlang-runtime16
-    SUBDIR += erlang-runtime17
-    SUBDIR += erlang-runtime18
-    SUBDIR += erlang-runtime19
     SUBDIR += erlang-runtime20
     SUBDIR += erlang-runtime21
     SUBDIR += erlang-runtime22
@@ -102,11 +95,9 @@
     SUBDIR += gcc-ecj45
     SUBDIR += gcc10-devel
     SUBDIR += gcc48
-    SUBDIR += gcc5
     SUBDIR += gcc6
     SUBDIR += gcc6-aux
     SUBDIR += gcc7
-    SUBDIR += gcc7-devel
     SUBDIR += gcc8
     SUBDIR += gcc8-devel
     SUBDIR += gcc9
@@ -123,7 +114,6 @@
     SUBDIR += gnatdroid-binutils-x86
     SUBDIR += gnatdroid-sysroot
     SUBDIR += gnatdroid-sysroot-x86
-    SUBDIR += gnatdroid-x86
     SUBDIR += gnu-apl
     SUBDIR += gnu-cobol
     SUBDIR += gnustep-base
@@ -147,12 +137,12 @@
     SUBDIR += icc
     SUBDIR += ici
     SUBDIR += icon
+    SUBDIR += intel-compute-runtime
     SUBDIR += intercal
     SUBDIR += io
     SUBDIR += io-devel
     SUBDIR += itcl
     SUBDIR += itcl4
-    SUBDIR += jakarta-commons-jelly
     SUBDIR += janet
     SUBDIR += jimtcl
     SUBDIR += jruby
@@ -176,7 +166,6 @@
     SUBDIR += libobjc2
     SUBDIR += librep
     SUBDIR += libstdc++_stldoc_4.2.2
-    SUBDIR += linux-c6-tcl85
     SUBDIR += linux-c7-tcl85
     SUBDIR += linux-dotnet-cli
     SUBDIR += linux-dotnet-runtime
@@ -200,7 +189,6 @@
     SUBDIR += mixal
     SUBDIR += mlton
     SUBDIR += mmix
-    SUBDIR += modula3
     SUBDIR += mono
     SUBDIR += mono-basic
     SUBDIR += mosh
@@ -235,7 +223,6 @@
     SUBDIR += opendylan
     SUBDIR += ott
     SUBDIR += owl-lisp
-    SUBDIR += p2c
     SUBDIR += p5-Data-JavaScript
     SUBDIR += p5-Error
     SUBDIR += p5-Expect
@@ -275,13 +262,9 @@
     SUBDIR += perl5.30
     SUBDIR += petite-chez
     SUBDIR += pfe
-    SUBDIR += purescript
-    SUBDIR += phantomjs
     SUBDIR += pharo
     SUBDIR += phc
     SUBDIR += php-mode.el
-    SUBDIR += php71
-    SUBDIR += php71-extensions
     SUBDIR += php72
     SUBDIR += php72-extensions
     SUBDIR += php73
@@ -294,10 +277,12 @@
     SUBDIR += polyml
     SUBDIR += ponyc
     SUBDIR += ptoc
+    SUBDIR += purescript
     SUBDIR += py-hy
     SUBDIR += py-mx-base
     SUBDIR += py-prolog
     SUBDIR += py-qt5-qml
+    SUBDIR += py-textX
     SUBDIR += pypy
     SUBDIR += pypy3
     SUBDIR += python
@@ -313,9 +298,9 @@
     SUBDIR += python35
     SUBDIR += python36
     SUBDIR += python37
+    SUBDIR += python38
     SUBDIR += qmasm
     SUBDIR += qscheme
-    SUBDIR += quack
     SUBDIR += quickjs
     SUBDIR += racket
     SUBDIR += racket-minimal
@@ -360,11 +345,11 @@
     SUBDIR += spidermonkey185
     SUBDIR += spidermonkey24
     SUBDIR += spidermonkey52
+    SUBDIR += spidermonkey60
     SUBDIR += spl
     SUBDIR += squeak
     SUBDIR += squirrel
     SUBDIR += starlogo
-    SUBDIR += stldoc
     SUBDIR += swi-pl
     SUBDIR += tcbasic
     SUBDIR += tcc
@@ -381,9 +366,11 @@
     SUBDIR += twelf
     SUBDIR += ucc
     SUBDIR += urweb
+    SUBDIR += v
     SUBDIR += v8
     SUBDIR += vala
     SUBDIR += visualworks
+    SUBDIR += voc
     SUBDIR += yabasic
     SUBDIR += yap
     SUBDIR += yap-devel

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	4.0.0
+PORTVERSION=	4.0.1
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
 PKGNAMESUFFIX=	40
@@ -21,7 +21,8 @@ LIB_DEPENDS=	libnettle.so:security/nettle \
 		libepoxy.so:graphics/libepoxy \
 		libpcre2-8.so:devel/pcre2
 
-USES=		bison cpe gmake gnome iconv:wchar_t perl5 pkgconfig python:build tar:xz
+USES=		bison compiler:c11 cpe gmake gnome iconv:wchar_t perl5 \
+		pkgconfig python:build tar:xz
 USE_GNOME=	cairo glib20 libxml2
 USE_PERL5=	build
 
@@ -50,11 +51,11 @@ VDE_DESC=		vde dependency (for vde networking)
 OPTIONS_DEFAULT=X11 GTK3 OPENGL GNUTLS SASL JPEG PNG CDROM_DMA CURL PCAP NCURSES VDE
 OPTIONS_SUB=	yes
 X11_USE=	SDL=sdl2 XORG=x11,xext GNOME=gdkpixbuf2
-X11_USES=	sdl
+X11_USES=	gnome sdl xorg
 X11_CONFIGURE_ENABLE=	sdl
 GTK3_LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon
 GTK3_USE=	GNOME=gdkpixbuf2,gtk30,vte3 XORG=x11,xext
-GTK3_USES=	gettext gl
+GTK3_USES=	gettext gl xorg
 GTK3_CONFIGURE_OFF=	--disable-gtk --disable-vte
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_OFF=	--disable-gnutls

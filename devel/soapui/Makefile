@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	soapui
-PORTVERSION=	5.2.1
+PORTVERSION=	5.5.0
 CATEGORIES=	devel java www
-MASTER_SITES=	http://smartbearsoftware.com/distrib/soapui/${PORTVERSION}/
+MASTER_SITES=	https://s3.amazonaws.com/downloads.eviware/soapuios/${PORTVERSION}/
 DISTNAME=	SoapUI-${PORTVERSION}-linux-bin
 
 MAINTAINER=	pi@FreeBSD.org
@@ -23,7 +23,7 @@ LICENSE_PERMS_EUPL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		cpe
 CPE_VENDOR=	smartbear
-USE_JAVA=	1.7+
+USE_JAVA=	yes
 WRKSRC=		${WRKDIR}/SoapUI-${PORTVERSION}
 REINPLACE_ARGS=	-i ''
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qtcreator
-DISTVERSION=	4.9.2
-PORTREVISION=	1
+DISTVERSION=	4.11.0
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/qtcreator/${DISTVERSION:R}/${DISTVERSION}
 DISTNAME=	qt-creator-opensource-src-${DISTVERSION}
@@ -40,7 +39,7 @@ QMAKE_ARGS+=	QTC_PREFIX=${PREFIX} LLVM_INSTALL_DIR=${PREFIX}/llvm${LLVM_DEFAULT}
 DESKTOP_ENTRIES="Qt Creator" "" "QtProject-qtcreator" \
 		"${PREFIX}/bin/${PORTNAME}" "Development;Qt;" true
 
-BROKEN_aarch64=		fails to build: invokes x86 asm
+PORTDOCS=		*
 
 OPTIONS_DEFINE=		DOCS EXAMPLES QTWEBENGINE
 OPTIONS_SUB=		yes
@@ -51,6 +50,8 @@ EXAMPLES_USE=		QT=examples_run
 OPTIONS_DEFAULT=	DOCS EXAMPLES
 OPTIONS_DEFAULT_amd64=	QTWEBENGINE
 OPTIONS_DEFAULT_i386=	QTWEBENGINE
+OPTIONS_DEFAULT_powerpc64=	${OPTIONS_DEFAULT_powerpc64_${OSREL:R}}
+OPTIONS_DEFAULT_powerpc64_13=	QTWEBENGINE
 
 QTWEBENGINE_DESC=	Add dependency on qt5-webengine
 QTWEBENGINE_USE=	qt=webengine
@@ -87,12 +88,6 @@ SHEBANG_FILES=		tests/system/tools/objectsToTable.py \
 
 .if ${LLVM_DEFAULT:S,-devel,990,} >= 90
 LLVM_DEFAULT=	80
-.endif
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-PLIST_SUB+=	GCC="" CLANG="@comment "
-.else
-PLIST_SUB+=	GCC="@comment " CLANG=""
 .endif
 
 post-patch:

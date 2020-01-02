@@ -10,7 +10,7 @@ DISTNAME=	FrodoV4_1b.Src
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Emulates a Commodore 64
 
-USES=		shebangfix tk:run
+USES=		shebangfix tk:run xorg
 USE_CXXSTD=	gnu++98
 CXXFLAGS+=	-std=gnu++98
 USE_XORG=	x11 xt xext sm ice
@@ -30,6 +30,7 @@ OPTIONS_DEFAULT=SDL
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSDL}
+USES+=		sdl
 USE_SDL=	sdl
 .endif
 

@@ -10,6 +10,11 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Configuration management system written in Python
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
+BROKEN=		unfetchable
+
 LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}daemon>=0:devel/py-daemon@${PY_FLAVOR} \

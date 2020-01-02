@@ -3,7 +3,7 @@
 
 PORTNAME=	evolution
 PORTVERSION=	3.28.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -45,7 +45,7 @@ PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c11 desktop-file-utils cmake gettext gnome \
 		iconv:wchar_t sqlite libarchive localbase pathfix pkgconfig \
-		tar:xz
+		tar:xz xorg
 USE_GNOME=	cairo evolutiondataserver3 gnomedesktop3 intltool
 GNU_CONFIGURE=	yes
 USE_XORG=	x11
@@ -130,6 +130,7 @@ MAPS_LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 			libclutter-1.0.so:graphics/clutter \
 			libclutter-gtk-1.0.so:graphics/clutter-gtk3 \
 			libchamplain-0.12.so:graphics/libchamplain
+MAPS_USES=		gl xorg
 MAPS_USE=		xorg=xcomposite,xdamage,xext,xfixes,xi,xrandr gl=egl
 
 .include <bsd.port.mk>

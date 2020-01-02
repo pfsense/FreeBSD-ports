@@ -54,16 +54,16 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.16.5
+KDE_PLASMA_VERSION?=		5.17.4
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.62.0
+KDE_FRAMEWORKS_VERSION?=	5.65.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	19.08.1
-KDE_APPLICATIONS_SHLIB_VER?=	5.12.1
+KDE_APPLICATIONS_VERSION?=	19.12.0
+KDE_APPLICATIONS_SHLIB_VER?=	5.13.0
 KDE_APPLICATIONS_BRANCH?=	stable
 # Upstream moves old software to Attic/. Specify the newest applications release there.
 # Only the major version is used for the comparison.
@@ -106,8 +106,10 @@ PORTVERSION?=		${KDE_APPLICATIONS_VERSION}
 # Decide where the file lies on KDE's servers: Check whether the file lies in Attic
 .        if ${KDE_APPLICATIONS_VERSION:R:R} <= ${_KDE_APPLICATIONS_ATTIC_VERSION:R:R}
 MASTER_SITES?=		KDE/Attic/applications/${KDE_APPLICATIONS_VERSION}/src
-.        else
+.        elseif ${KDE_APPLICATIONS_VERSION:R} < 19.12
 MASTER_SITES?=		KDE/${KDE_APPLICATIONS_BRANCH}/applications/${KDE_APPLICATIONS_VERSION}/src
+.        else
+MASTER_SITES?=		KDE/${KDE_APPLICATIONS_BRANCH}/release-service/${KDE_APPLICATIONS_VERSION}/src
 # Let bsd.port.mk create the plist-entries for the documentation.
 # KDE Applications ports install their documentation to
 # ${PREFIX}/share/doc.
@@ -180,7 +182,7 @@ _USE_KDE_BOTH=		akonadi attica libkcddb libkcompactdisc libkdcraw libkdegames \
 # that our list of frameworks matches the structure offered upstream.
 _USE_FRAMEWORKS_TIER1=	apidox archive attica5 breeze-icons codecs config \
 			coreaddons dbusaddons dnssd holidays i18n idletime itemmodels \
-			itemviews kirigami2 oxygen-icons5 plotting prison \
+			itemviews kirigami2 kquickcharts oxygen-icons5 plotting prison \
 			qqc2-desktop-style solid sonnet syntaxhighlighting \
 			threadweaver wayland widgetsaddons windowsystem
 # NOT LISTED TIER1: modemmanagerqt networkmanagerqt (not applicable)
@@ -196,7 +198,7 @@ _USE_FRAMEWORKS_TIER3=	activities activities-stats baloo5 bookmarks configwidget
 			people plasma-framework purpose runner service texteditor \
 			textwidgets wallet xmlgui xmlrpcclient
 
-_USE_FRAMEWORKS_TIER4= 	frameworkintegration
+_USE_FRAMEWORKS_TIER4= 	frameworkintegration calendarcore contacts
 
 # Porting Aids frameworks provide code and utilities to ease the transition from
 # kdelibs 4 to KDE Frameworks 5. Code should aim to port away from this framework,
@@ -361,7 +363,7 @@ kde-kdeclarative_PORT=		devel/kf5-kdeclarative
 kde-kdeclarative_LIB=		libKF5Declarative.so
 
 kde-kded_PORT=			x11/kf5-kded
-kde-kded_LIB=			libkdeinit5_kded5.so
+kde-kded_PATH=			${KDE_PREFIX}/bin/kded5
 
 kde-kdelibs4support_PORT=	x11/kf5-kdelibs4support
 kde-kdelibs4support_LIB=	libKF5KDELibs4Support.so
@@ -384,6 +386,9 @@ kde-kio_LIB=			libKF5KIOCore.so
 
 kde-kirigami2_PORT=		x11-toolkits/kf5-kirigami2
 kde-kirigami2_PATH=		${QT_QMLDIR}/org/kde/kirigami.2/libkirigamiplugin.so
+
+kde-kquickcharts_PORT=		graphics/kf5-kquickcharts
+kde-kquickcharts_PATH=		${QT_QMLDIR}/org/kde/quickcharts/controls/libchartscontrolsplugin.so
 
 kde-kross_PORT=			lang/kf5-kross
 kde-kross_LIB=			libKF5KrossCore.so
@@ -618,13 +623,13 @@ kde-blog_LIB=			libKF5Blog.so
 kde-calendarsupport_PORT=	net/calendarsupport
 kde-calendarsupport_LIB=	libKF5CalendarSupport.so
 
-kde-calendarcore_PORT=		net/kcalcore
+kde-calendarcore_PORT=		net/kf5-kcalendarcore
 kde-calendarcore_LIB=		libKF5CalendarCore.so
 
 kde-calendarutils_PORT=		net/kcalutils
 kde-calendarutils_LIB=		libKF5CalendarUtils.so
 
-kde-contacts_PORT=		net/kcontacts
+kde-contacts_PORT=		net/kf5-kcontacts
 kde-contacts_LIB=		libKF5Contacts.so
 
 kde-eventviews_PORT=		net/eventviews

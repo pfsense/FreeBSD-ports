@@ -1,22 +1,23 @@
-# Created by: Alex Samorukov <samm@os2.kiev.ua>
+# Created by: Alex Samorukov <samm@freebsd.org>
 # $FreeBSD$
 
 PORTNAME=	atop
 PORTVERSION=	2.0.2.b3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
-MAINTAINER=	samm@os2.kiev.ua
+MAINTAINER=	samm@freebsd.org
 COMMENT=	ASCII Monitor for system resources and process activity
 
 LICENSE=	GPLv2
+
+USES=		ncurses
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	samm-git
 GH_PROJECT=	atop-freebsd
 GH_TAGNAME=	${PORTNAME}-${PORTVERSION:C|b|fbsd.beta|}
 
-USES=		ncurses
 MAKEFILE=	BSDmakefile
 LOGDIR?=	/var/log/atop
 PLIST_SUB+=	LOGDIR="${LOGDIR}"

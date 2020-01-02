@@ -3,7 +3,7 @@
 PORTNAME=	openvdb
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.1.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libblosc.so:archivers/c-blosc \
 		libHalf.so:graphics/ilmbase \
 		libtbb.so:devel/tbb
 
-USES=		cmake compiler:c++11-lang pkgconfig
+USES=		cmake compiler:c++11-lang localbase:ldflags pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	AcademySoftwareFoundation
 USE_LDCONFIG=	yes

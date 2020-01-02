@@ -2,7 +2,7 @@
 
 PORTNAME=	viennarna
 DISTVERSION=	2.4.13
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	biology
 MASTER_SITES=	https://www.tbi.univie.ac.at/RNA/download/sourcecode/2_4_x/
 DISTNAME=	ViennaRNA-${DISTVERSION}
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 		libgsl.so:math/gsl \
 		libmpfr.so:math/mpfr
 
-USES=		autoreconf compiler:c++11-lang gmake libtool localbase perl5 pkgconfig # w/out autoreconf -lstdc++ is present in configure and Makefiles and this causes link failure
+USES=		autoreconf compiler:c++11-lang gmake libtool localbase perl5 pkgconfig xorg # w/out autoreconf -lstdc++ is present in configure and Makefiles and this causes link failure
 USE_XORG=	x11 xext # only for build
 
 GNU_CONFIGURE=	yes

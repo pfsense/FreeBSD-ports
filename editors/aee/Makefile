@@ -10,6 +10,8 @@ MASTER_SITES=	http://www.users.uswest.net/~hmahon/sources/
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Easy editor with both curses and X11 interfaces
 
+BROKEN=		unfetchable
+
 LICENSE=	ART10
 
 USES=		ncurses
@@ -21,6 +23,7 @@ MAKE_JOBS_UNSAFE=	yes
 OPTIONS_DEFINE=	XAE
 
 XAE_DESC=		Build X11 version 'xae'
+XAE_USES=		xorg
 XAE_USE=		XORG=x11
 XAE_PLIST_FILES=	bin/xae bin/rxae
 XAE_ALL_TARGET=		xae

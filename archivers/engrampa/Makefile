@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	engrampa
-PORTVERSION=	1.22.1
+PORTVERSION=	1.22.2
 CATEGORIES=	archivers mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -20,8 +20,8 @@ RUN_DEPENDS=	${LOCALBASE}/bin/gtar:archivers/gtar \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		desktop-file-utils gettext gmake libtool localbase \
-		pathfix pkgconfig tar:xz
+USES=		desktop-file-utils gettext gmake gnome libtool localbase \
+		mate pathfix pkgconfig tar:xz
 USE_MATE=	caja
 USE_GNOME=	cairo gtk30 intltool
 USE_LDCONFIG=	yes

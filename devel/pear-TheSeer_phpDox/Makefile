@@ -10,6 +10,8 @@ PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}TheSeer_
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PHP Documentation generation framework and tool
 
+BROKEN=		unfetchable
+
 LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	${PEAR_PKGNAMEPREFIX}TheSeer_DirectoryScanner>=1.1.0:devel/pear-TheSeer_DirectoryScanner@${PHP_FLAVOR} \
@@ -25,6 +27,6 @@ RUN_DEPENDS=	${PEAR_PKGNAMEPREFIX}TheSeer_DirectoryScanner>=1.1.0:devel/pear-The
 
 USE_PHP=	dom tokenizer xsl iconv
 PEAR_CHANNEL=	theseer
-USES=	pear
+USES=		pear php
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	tcpflow
 PORTVERSION=	1.5.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	http://digitalcorpora.org/downloads/${PORTNAME}/
 
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		python:2.7 ssl
+USES=		python:2.7 ssl xorg
 USE_XORG=	pixman
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_lib_md_MD5=no \

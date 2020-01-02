@@ -9,6 +9,8 @@ MASTER_SITES=	http://sonarsource.bintray.com/Distribution/sonarqube/
 MAINTAINER=	freebsd@dussan.org
 COMMENT=	Platform for continuous inspection of code quality
 
+BROKEN=		unfetchable
+
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -27,7 +29,6 @@ CPE_VENDOR=	sonarsource
 DOS2UNIX_GLOB=	*.properties *.conf
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 
 SQ_FILE=	sonar.sh
 SQ_HOME=	${PREFIX}/share/${PORTNAME}
@@ -52,7 +53,7 @@ PLIST_SUB+=	SQ_DB_DIR=${SQ_DB_DIR} \
 OPTIONS_RADIO=		SQL
 OPTIONS_RADIO_SQL=	MYSQL PGSQL
 
-MYSQL_USE=	mysql=yes
+MYSQL_USES=	mysql
 PGSQL_USES=	pgsql
 
 post-patch:

@@ -42,8 +42,8 @@ USE_LDCONFIG32=	${PREFIX}/lib32 ${PREFIX}/lib32/wine
 USES=		tar:xz
 BUNDLE_LIBS=	yes
 
-GECKO_RUN_DEPENDS=	${DATADIR}/gecko/wine_gecko-2.47-x86.msi:emulators/wine-gecko-devel
-MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.7.1.msi:emulators/wine-mono-devel
+GECKO_RUN_DEPENDS=	${DATADIR}/gecko/wine-gecko-2.47.1-x86.msi:emulators/wine-gecko-devel
+MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.9.4.msi:emulators/wine-mono-devel
 
 PORTSCOUT=	limitw:1,even
 
@@ -58,8 +58,8 @@ PLIST_SUB+=	OSREL${osrel}="@comment "
 .endif
 .endfor
 
-.if ${OPSYS} != FreeBSD || (!(${OSVERSION} >= 1102000 && ${OSVERSION} < 1200000) && !(${OSVERSION} >= 1200086 && ${OSVERSION} < 1300000) && !(${OSVERSION} >= 1300003 && ${OSVERSION} < 1400000))
-IGNORE=		binaries compiled for FreeBSD 11.2+, 12.0+ and -current only
+.if ${OPSYS} != FreeBSD || (!(${OSVERSION} >= 1103000 && ${OSVERSION} < 1200000) && !(${OSVERSION} >= 1200086 && ${OSVERSION} < 1300000) && !(${OSVERSION} >= 1300003 && ${OSVERSION} < 1400000))
+IGNORE=		binaries compiled for FreeBSD 11.3+, 12.0+ and -current only
 DISTFILES=
 .endif
 

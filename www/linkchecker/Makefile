@@ -11,6 +11,9 @@ DISTNAME=	LinkChecker-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Check HTML documents for broken links
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -19,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dnspython>0:dns/py-dnspython@${PY_FLAVOR} \
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
-USES=		cpe python:2.7
+USES=		cpe gnome python:2.7
 CPE_VENDOR=	bastian_kleineidam
 USE_PYTHON=	distutils autoplist
 INSTALLS_ICONS=	yes
