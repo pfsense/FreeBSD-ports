@@ -13,20 +13,18 @@ COMMENT=	Multi-layer client for the GitHub API v3
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-addressable>=2.4.0:www/rubygem-addressable \
-		rubygem-faraday>=0.8:www/rubygem-faraday \
-		rubygem-multi_json>=1.0:devel/rubygem-multi_json \
-		rubygem-net-http-persistent2>=2.9:www/rubygem-net-http-persistent2 \
+RUN_DEPENDS=	rubygem-addressable>=2.4.0<3:www/rubygem-addressable \
+		rubygem-faraday>=0.8<1:www/rubygem-faraday \
+		rubygem-multi_json>=1.0<2:devel/rubygem-multi_json \
+		rubygem-net-http-persistent2>=2.9<3:www/rubygem-net-http-persistent2 \
 		rubygem-net-http-pipeline>=0:www/rubygem-net-http-pipeline
 
-NO_ARCH=	yes
-REINPLACE_ARGS=	-i ''
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 post-patch:
-# Remove backports
-	@${REINPLACE_CMD} -e '/backports/d' ${WRKSRC}/${GEMSPEC}
-	@${REINPLACE_CMD} -e "/require 'backports'/d" ${WRKSRC}/lib/gh.rb ${WRKSRC}/lib/gh/parallel.rb
+	@${RM} ${WRKSRC}/lib/gh.rb.orig ${WRKSRC}/gh.gemspec.orig
 
 .include <bsd.port.mk>

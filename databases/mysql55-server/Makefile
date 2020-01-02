@@ -4,7 +4,7 @@
 PORTNAME?=	mysql
 PORTVERSION=	5.5.62
 PORTREVISION?=	3
-CATEGORIES=	databases ipv6
+CATEGORIES=	databases
 MASTER_SITES=	MYSQL/MySQL-5.5
 PKGNAMESUFFIX?=	55-server
 
@@ -65,8 +65,7 @@ CMAKE_ARGS+=	-DWITH_FAST_MUTEXES=1
 
 # MySQL-Server part
 .if !defined(CLIENT_ONLY)
-USE_MYSQL=	yes
-WANT_MYSQL_VER=	55
+USES+=		mysql:55
 
 CONFLICTS_INSTALL=	mysql5[0-46-9]-server-* \
 			mysqlwsrep* \

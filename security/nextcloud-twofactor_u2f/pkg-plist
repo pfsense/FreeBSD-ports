@@ -3,6 +3,7 @@
 @comment %%WWWDIR%%/.github/ISSUE_TEMPLATE/feature_request.md
 @comment %%WWWDIR%%/.github/ISSUE_TEMPLATE/question.md
 @comment %%WWWDIR%%/.github/autoapproval.yml
+@comment %%WWWDIR%%/.github/workflows/dependabot-approve.yml
 %%WWWDIR%%/.jshintrc
 %%WWWDIR%%/CHANGELOG.md
 %%WWWDIR%%/README.md
@@ -14,6 +15,8 @@
 %%WWWDIR%%/img/app.svg
 %%WWWDIR%%/js/challenge.js
 %%WWWDIR%%/js/challenge.js.map
+%%WWWDIR%%/js/login-setup.js
+%%WWWDIR%%/js/login-setup.js.map
 %%WWWDIR%%/js/settings.js
 %%WWWDIR%%/js/settings.js.map
 %%WWWDIR%%/l10n/.gitkeep
@@ -85,6 +88,8 @@
 %%WWWDIR%%/l10n/gl.json
 %%WWWDIR%%/l10n/he.js
 %%WWWDIR%%/l10n/he.json
+%%WWWDIR%%/l10n/hr.js
+%%WWWDIR%%/l10n/hr.json
 %%WWWDIR%%/l10n/hu.js
 %%WWWDIR%%/l10n/hu.json
 %%WWWDIR%%/l10n/is.js
@@ -135,14 +140,15 @@
 %%WWWDIR%%/lib/Db/RegistrationMapper.php
 %%WWWDIR%%/lib/Event/DisabledByAdmin.php
 %%WWWDIR%%/lib/Event/StateChanged.php
-%%WWWDIR%%/lib/Listener/IListener.php
 %%WWWDIR%%/lib/Listener/StateChangeActivity.php
 %%WWWDIR%%/lib/Listener/StateChangeRegistryUpdater.php
 %%WWWDIR%%/lib/Migration/Version010601Date20181022142736.php
+%%WWWDIR%%/lib/Provider/U2FLoginProvider.php
 %%WWWDIR%%/lib/Provider/U2FProvider.php
 %%WWWDIR%%/lib/Service/U2FManager.php
 %%WWWDIR%%/lib/Settings/Personal.php
 %%WWWDIR%%/templates/challenge.php
+%%WWWDIR%%/templates/loginsetup.php
 %%WWWDIR%%/templates/personal.php
 %%WWWDIR%%/vendor/autoload.php
 %%WWWDIR%%/vendor/composer/ClassLoader.php

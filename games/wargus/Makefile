@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	wargus
-PORTVERSION=	2.4.1
+PORTVERSION=	2.4.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -22,13 +21,14 @@ LIB_DEPENDS=	libpng.so:graphics/png
 USE_GITHUB=	yes
 GH_ACCOUNT=	Wargus
 
-USES=		cmake compiler:c++11-lang pkgconfig
+USES=		cmake compiler:c++11-lang gnome pkgconfig xorg
 CMAKE_ARGS=	-DGAMEDIR:STRING="bin" \
 		-DSHAREDIR:STRING="${DATADIR_REL}"
 USE_XORG=	x11
 USE_GNOME=	gtk20
 SUB_FILES=	pkg-message
 
+PORTDATA=	*
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS

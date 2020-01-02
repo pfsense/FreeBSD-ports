@@ -3,7 +3,7 @@
 PORTNAME=	nheko
 DISTVERSIONPREFIX=v
 DISTVERSION=	0.6.4
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	net-im
 
 MAINTAINER=	adridg@FreeBSD.org
@@ -12,10 +12,11 @@ COMMENT=	Matrix IM client based on Qt technologies
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	mtxclient>=0.2.1:net-im/mtxclient \
-		nlohmann-json>=3:devel/nlohmann-json \
-		spdlog>=1.3:devel/spdlog
+BUILD_DEPENDS=	nlohmann-json>=3:devel/nlohmann-json \
+		spdlog>=1.4:devel/spdlog
 LIB_DEPENDS=	liblmdb.so:databases/lmdb \
+		libfmt.so:devel/libfmt \
+		libmatrix_client.so:net-im/mtxclient \
 		libsodium.so:security/libsodium \
 		libolm.so:security/olm \
 		libcmark.so:textproc/cmark
@@ -32,6 +33,8 @@ USE_QT=		concurrent core dbus declarative gui multimedia network svg widgets \
 #    in include/. Add one more symlink to the build for that.
 CMAKE_ARGS=	-DLMDBXX_INCLUDE_DIR=${WRKSRC}/deps/lmdb \
 		-DTWEENY_INCLUDE_DIR=${WRKSRC}/deps/tweeny
+CFLAGS+=	-DSPDLOG_FMT_EXTERNAL=1
+LDFLAGS+=	-L${LOCALBASE}/lib -lfmt
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Nheko-Reborn

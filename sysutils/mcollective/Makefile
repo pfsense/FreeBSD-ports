@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mcollective
-PORTVERSION=	2.12.4
+PORTVERSION=	2.12.5
 CATEGORIES=	sysutils
 MASTER_SITES=	https://downloads.puppetlabs.com/${PORTNAME}/
 
@@ -32,7 +32,7 @@ SUB_LIST+=	RUBY=${RUBY}
 
 OPTIONS_DEFINE=	DOCS
 
-do-patch:
+post-patch:
 	@${REINPLACE_CMD} -e "s|/etc/mcollective|${ETCDIR}|" \
 	    ${WRKSRC}/bin/mcollectived \
 		${WRKSRC}/etc/server.cfg.dist \

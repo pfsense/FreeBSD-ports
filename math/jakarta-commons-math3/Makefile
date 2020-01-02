@@ -15,6 +15,8 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Java library of self-contained mathematics and statistics components
 
+BROKEN=		unfetchable
+
 LICENSE=	APACHE20
 
 BROKEN_armv6=		fails to compile: build.xml: Compile failed; see the compiler error output for details
@@ -22,7 +24,6 @@ BROKEN_armv7=		fails to compile: PowellOptimizer.java:301: error: Illegal static
 
 USE_ANT=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_LOCALE=	en_US.ISO8859-1
 
 ALL_TARGET=	jar

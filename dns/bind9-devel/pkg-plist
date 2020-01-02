@@ -124,6 +124,7 @@ include/irs/version.h
 include/isc/aes.h
 include/isc/app.h
 include/isc/assertions.h
+include/isc/astack.h
 include/isc/atomic.h
 include/isc/backtrace.h
 include/isc/base32.h
@@ -150,6 +151,7 @@ include/isc/hash.h
 include/isc/heap.h
 include/isc/hex.h
 include/isc/hmac.h
+include/isc/hp.h
 include/isc/ht.h
 include/isc/httpd.h
 include/isc/interfaceiter.h
@@ -254,7 +256,6 @@ include/pk11/internal.h
 include/pk11/pk11.h
 include/pk11/result.h
 include/pk11/site.h
-include/pkcs11/cryptoki.h
 include/pkcs11/eddsa.h
 include/pkcs11/pkcs11.h
 lib/libbind9.a

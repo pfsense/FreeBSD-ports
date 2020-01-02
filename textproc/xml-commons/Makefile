@@ -12,12 +12,11 @@ MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Provides common XML code for Apache projects
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_RUN=	yes
 NO_BUILD=	yes
 
-PLIST_FILES=	%%JAVAJARDIR%%/xml-apis-ext.jar \
-		%%JAVAJARDIR%%/xml-apis.jar
+PLIST_FILES=	${JAVAJARDIR}/xml-apis-ext.jar \
+		${JAVAJARDIR}/xml-apis.jar
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/xml-apis-ext.jar ${STAGEDIR}${JAVAJARDIR}

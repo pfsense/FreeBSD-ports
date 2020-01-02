@@ -3,13 +3,15 @@
 
 PORTNAME=	wizd
 PORTVERSION=	24
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net multimedia
 MASTER_SITES=	SF/${PORTNAME}/Sources/Sources%20v${PORTVERSION}
 DISTFILES=	wizd_sources_v${PORTVERSION}.zip simplicity_v1-2.zip
 
 MAINTAINER=	kikuchan@uranus.dti.ne.jp
 COMMENT=	Open-source media server for Syabas-based media players
+
+BROKEN=		unfetchable
 
 LIB_DEPENDS=	libdvdread.so:multimedia/libdvdread
 RUN_DEPENDS=	nkf:japanese/nkf

@@ -3,7 +3,7 @@
 
 PORTNAME=	exim
 PORTVERSION?=	${EXIM_VERSION}
-CATEGORIES=	mail ipv6
+CATEGORIES=	mail
 MASTER_SITES=	EXIM:exim
 MASTER_SITE_SUBDIR=	/exim4/:exim \
 			/exim4/old/:exim
@@ -46,12 +46,13 @@ AUTH_SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 BDB_USES=	bdb
 DMARC_LIB_DEPENDS=	libopendmarc.so:mail/opendmarc
 EMBEDDED_PERL_USE=	perl5=run,build
+EXIMON_USES=	xorg
 EXIMON_USE=	xorg=x11,xaw,xt
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 ICONV_USES=	iconv:lib,build
 INTERNATIONAL_LIB_DEPENDS=	libidn.so:dns/libidn
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
-MYSQL_USE=	mysql=yes
+MYSQL_USES=	mysql
 OPENLDAP_USE=	openldap=yes
 PGSQL_USES=	pgsql
 REDIS_LIB_DEPENDS=	libhiredis.so:databases/hiredis

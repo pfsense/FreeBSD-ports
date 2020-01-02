@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	noti
-DISTVERSION=	3.2.0
+DISTVERSION=	3.4.0
 CATEGORIES=	deskutils
 
 MAINTAINER=	tagattie@yandex.com

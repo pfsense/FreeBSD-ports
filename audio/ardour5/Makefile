@@ -3,7 +3,7 @@
 
 PORTNAME=	ardour5
 PORTVERSION=	5.12.0
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/beerml/ardour_releases/raw/master/
 # The original master side points to the latest release only:
@@ -39,8 +39,9 @@ LIB_DEPENDS=	libserd-0.so:devel/serd \
 		libogg.so:audio/libogg \
 		libFLAC.so:audio/flac
 
-USES=		compiler:c++11-lang desktop-file-utils gettext libarchive \
-		pkgconfig python:2.7,build readline:port tar:bzip2 waf
+USES=		compiler:c++11-lang desktop-file-utils gettext gnome \
+		libarchive pkgconfig python:2.7,build readline:port tar:bzip2 \
+		waf xorg
 USE_CXXSTD=	c++11
 USE_XORG=	x11
 USE_GNOME=	atk cairo cairomm gdkpixbuf2 glib20 glibmm gtk20 gtkmm24 pango

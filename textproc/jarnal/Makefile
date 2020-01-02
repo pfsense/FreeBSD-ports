@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	jarnal
-PORTVERSION=	1078
+PORTVERSION=	1079
 CATEGORIES=	textproc editors
-MASTER_SITES=	http://levine.sscnet.ucla.edu/general/software/tc1000/
+MASTER_SITES=	http://www.dklevine.com/general/software/tc1000/
 DISTNAME=	${PORTNAME}-install
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
@@ -15,7 +15,6 @@ LICENSE=	GPLv2
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 NO_BUILD=	yes
 NO_ARCH=	yes

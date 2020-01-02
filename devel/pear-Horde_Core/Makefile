@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Core
-DISTVERSION=	2.31.10
+DISTVERSION=	2.31.13
 CATEGORIES=	devel www pear
 
 MAINTAINER=	horde@FreeBSD.org
@@ -15,7 +15,7 @@ KOLAB_DESC=	Enable Kolab server support
 LZF_DESC=	Depend on lzf PHP extension
 SOCKETS_DESC=	Depend on sockets PHP extension
 
-USES=	horde
+USES=		horde php
 USE_PHP=	session
 
 USE_HORDE_BUILD=	Horde_Role

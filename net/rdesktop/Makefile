@@ -4,14 +4,14 @@
 PORTNAME=	rdesktop
 PORTVERSION=	1.8.6
 DISTVERSIONPREFIX=	v
-CATEGORIES=	net comms ipv6
+CATEGORIES=	net comms
 
 MAINTAINER=	gregf@hugops.pw
 COMMENT=	RDP client for Windows NT/2000/2003 Terminal Server
 
 LICENSE=	GPLv3
 
-USES=		autoreconf gmake iconv pkgconfig ssl
+USES=		autoreconf gmake iconv pkgconfig ssl xorg
 USE_XORG=	x11 xrandr
 USE_GITHUB=	yes
 

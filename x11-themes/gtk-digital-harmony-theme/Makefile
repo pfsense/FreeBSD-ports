@@ -13,6 +13,8 @@ DISTNAME=	Digital-Harmony
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Another popular theme for GNOME desktop
 
+BROKEN=		unfetchable
+
 NO_BUILD=	yes
 
 TYPE?=		gtk
@@ -21,6 +23,7 @@ THEME_NAME=	${DISTNAME}
 .if ${TYPE} == gtk
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}
 PLIST_SUB+=	GTK20="" METACITY="@comment "
+USES+=		gnome
 USE_GNOME=	gtk20
 .else	# metacity
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}

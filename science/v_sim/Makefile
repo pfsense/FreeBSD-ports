@@ -5,7 +5,7 @@ PORTNAME=	v_sim
 PORTVERSION=	3.7.2
 PORTREVISION=	12
 CATEGORIES=	science
-MASTER_SITES=	http://inac.cea.fr/L_Sim/V_Sim/download/
+MASTER_SITES=	http://inac.cea.fr/sp2m/L_Sim/V_Sim/download/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Visualization of atomic structures
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig	\
 		libftgl.so:graphics/ftgl
 
 USES=		compiler:c11 fortran gl gmake gnome libtool localbase:ldflags \
-		pkgconfig tar:bzip2
+		pkgconfig tar:bzip2 xorg
 USE_XORG=	x11
 USE_GNOME=	gtk20 intltool cairo
 USE_GL=		gl glu

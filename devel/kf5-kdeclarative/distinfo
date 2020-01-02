@@ -1,3 +1,3 @@
-TIMESTAMP = 1568002270
-SHA256 (KDE/frameworks/5.62.0/kdeclarative-5.62.0.tar.xz) = 804bc6dd1848fe38b9160a680f3d9f9b67d47150ee9683b3d2c5a07b96a12e46
-SIZE (KDE/frameworks/5.62.0/kdeclarative-5.62.0.tar.xz) = 174812
+TIMESTAMP = 1575803837
+SHA256 (KDE/frameworks/5.65.0/kdeclarative-5.65.0.tar.xz) = a0274de8c84d73dd17b1bc0faf64a9e0d0655035c0574148ba64986e367cd881
+SIZE (KDE/frameworks/5.65.0/kdeclarative-5.65.0.tar.xz) = 174756

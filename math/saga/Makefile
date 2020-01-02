@@ -3,7 +3,7 @@
 
 PORTNAME=	saga
 PORTVERSION=	7.3.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	SF/saga-gis/SAGA%20-%20${PORTVERSION:C/\.[[:digit:]]\.[[:digit:]]*$//}/SAGA%20-%20${PORTVERSION}
 
@@ -30,7 +30,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS:=	swig3.0:devel/swig30
 
-USES=		autoreconf compiler:c++11-lib desktop-file-utils dos2unix \
+USES=		autoreconf compiler:c++11-lib desktop-file-utils dos2unix gnome \
 		iconv:wchar_t libtool localbase pkgconfig python
 USE_LDCONFIG=	yes
 USE_WX=		3.0+

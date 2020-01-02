@@ -11,7 +11,7 @@ MASTER_SITES=	http://www.fishies.org.uk/ \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Fly a little plane around and shoot things and drop bombs
 
-USES=		dos2unix
+USES=		dos2unix sdl
 USE_SDL=	sdl
 USE_CXXSTD=	c++98
 DOS2UNIX_GLOB=	*.cpp
@@ -33,7 +33,7 @@ DESKTOP_ENTRIES="Apricots" \
 OPTIONS_DEFINE=	DOCS OPENAL
 OPTIONS_DEFAULT=OPENAL
 
-OPENAL_USES=	openal:al,alut
+OPENAL_USES=	compiler:c++11-lang openal:al,alut
 OPENAL_CPPFLAGS=-DAP_AUDIO_OPENAL
 OPENAL_LDFLAGS=	-L${LOCALBASE}/lib -lopenal -lalut
 

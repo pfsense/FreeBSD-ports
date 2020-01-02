@@ -3,7 +3,7 @@
 
 PORTNAME=	parrot
 PORTVERSION=	8.1.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	lang
 MASTER_SITES=	ftp://ftp.parrot.org/pub/parrot/releases/supported/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -14,7 +14,6 @@ COMMENT=	Parrot - virtual machine for dynamic languages
 LICENSE=	ART20
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
-		gm4:devel/m4 \
 		pcre-config:devel/pcre
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libicudata.so:devel/icu
@@ -41,6 +40,7 @@ SHEBANG_FILES=	tools/dev/create_language.pl \
 		tools/dev/pprof2cg.pl \
 		tools/dev/reconfigure.pl
 perl_OLD_CMD=	perl
+BINARY_WRAPPERS=	gm4
 
 DOCSDIR=	share/doc/${PORTNAME}/${PORTVERSION}
 PLIST_SUB=	PARROT_VER="${PORTVERSION}"

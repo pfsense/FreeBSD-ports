@@ -35,7 +35,7 @@ USE_LDCONFIG=	${PREFIX}/${_ARCH_LIB}/CORE
 USE_GITHUB=	yes
 GH_ACCOUNT=	Perl
 GH_PROJECT=	perl5
-GH_TAGNAME=	v5.31.4-270-g059703b088
+GH_TAGNAME=	v5.31.6-149-g4eb6628cb1
 
 TEST_TARGET=	test_harness
 TEST_ENV=	${MAKE_ENV} TEST_JOBS=${MAKE_JOBS_NUMBER} \
@@ -150,8 +150,10 @@ OPTIONS_DEFAULT=	PERL_64BITINT THREADS MULTIPLICITY DTRACE
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE=	DTRACE
 .endif
-.for a in aarch64 arm armeb armv6 armv7 mips mips64 mips64el mipsel mipsn32 powerpc \
-	powerpc64 sparc64
+.for a in aarch64 arm armv6 armv7 \
+	mips mips64 mips64el mips64elhf mips64hf mipsel mipselhf mipshf mipsn32 \
+	powerpc powerpc64 powerpcspe \
+	sparc64
 OPTIONS_EXCLUDE_${a}=	DTRACE
 .endfor
 

@@ -13,13 +13,12 @@ COMMENT?=	QEMU CPU Emulator
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	fails to compile: In function aio_bh_poll: internal compiler error: Segmentation fault
-
 LIB_DEPENDS?=	libnettle.so:security/nettle \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES?=		cpe gmake gnome pkgconfig bison perl5 python:build tar:xz
+USES?=		compiler:c11 cpe gmake gnome pkgconfig bison perl5 python:build \
+		tar:xz
 USE_PERL5=	build
 
 PORTSCOUT=	limit:^3\.0\.
@@ -55,7 +54,7 @@ GTK3_LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon \
 			libepoxy.so:graphics/libepoxy \
 			libpcre2-8.so:devel/pcre2
 GTK3_USE=	GNOME=gtk30,vte3,gdkpixbuf2 XORG=x11,xext GL=gbm
-GTK3_USES=	gettext gl
+GTK3_USES=	gettext gl gnome xorg
 JPEG_CONFIGURE_OFF=	--disable-vnc-jpeg
 JPEG_USES=		jpeg
 NCURSES_USES=		ncurses:base
@@ -81,7 +80,7 @@ VDE_CONFIGURE_OFF=	--disable-vde
 VDE_LIB_DEPENDS=	libvdeplug.so:net/vde2
 X11_CONFIGURE_ENABLE=	sdl
 X11_USE=	SDL=sdl2 XORG=x11,xext
-X11_USES=	sdl
+X11_USES=	sdl xorg
 .if !defined(PKGNAMESUFFIX) || ${PKGNAMESUFFIX} != "-utils"
 X86_TARGETS_USE_OFF=	GNOME=cairo,gdkpixbuf2
 .endif

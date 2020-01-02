@@ -200,6 +200,7 @@
     SUBDIR += neovim-qt
     SUBDIR += nvi-devel
     SUBDIR += nvi-m17n
+    SUBDIR += o
     SUBDIR += omegaT
     SUBDIR += openoffice-4
     SUBDIR += openoffice-devel
@@ -247,6 +248,7 @@
     SUBDIR += vim
     SUBDIR += vim-console
     SUBDIR += vim-tiny
+    SUBDIR += vscode
     SUBDIR += web-mode
     SUBDIR += with-editor
     SUBDIR += wordgrinder
@@ -258,6 +260,5 @@
     SUBDIR += xvile
     SUBDIR += yudit
     SUBDIR += zile
-    SUBDIR += zoinks
 
 .include <bsd.port.subdir.mk>

@@ -6,7 +6,7 @@ PORTVERSION=	2.1.6
 PORTREVISION=	2
 CATEGORIES=	audio python
 MASTER_SITES=	https://launchpad.net/soundconverter/trunk/2.1.6/+download/ \
-		http://BSDforge.com/projects/source/audio/soundconverter/
+		https://BSDforge.com/projects/source/audio/soundconverter/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Sound conversion application for the GNOME environment
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gstreamer>=0.10:multimedia/py-gstreamer@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		desktop-file-utils gettext-tools gmake python:2.7 \
+USES=		desktop-file-utils gettext-tools gmake gnome python:2.7 \
 		shebangfix tar:xz
 
 SHEBANG_FILES=	bin/soundconverter.py

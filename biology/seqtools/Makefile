@@ -9,6 +9,8 @@ MASTER_SITES=	ftp://ftp.sanger.ac.uk/pub4/resources/software/seqtools/PRODUCTION
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Tools for visualising sequence alignments
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
@@ -16,7 +18,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		compiler:c++14-lang gettext libtool pkgconfig
+USES=		compiler:c++14-lang gettext gnome libtool pkgconfig xorg
 GNU_CONFIGURE=	yes
 USE_GNOME=	cairo gdkpixbuf2 gtk20
 USE_XORG=	x11

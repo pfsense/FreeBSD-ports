@@ -2,13 +2,15 @@
 
 PORTNAME=	auto-multiple-choice
 PORTVERSION=	1.3.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	misc
 MASTER_SITES=	http://download.gna.org/auto-qcm/
 DISTNAME=	auto-multiple-choice_${PORTVERSION}_precomp
 
 MAINTAINER=	hiroto.kagotani@gmail.com
 COMMENT=	Multiple-choice questionnaire management with automated marking
+
+BROKEN=		unfetchable
 
 LICENSE=	GPLv2
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	unar
 PORTVERSION=	1.10.1
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	archivers gnustep
 MASTER_SITES=	http://wakaba.c3.cx/releases/TheUnarchiver/
 DISTNAME=	${PORTNAME}${PORTVERSION}_src
@@ -13,6 +13,8 @@ COMMENT=	Unarchiver for a vast variety of file formats
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/License.txt
+
+BROKEN_powerpc64=	fails to compile: Your gnustep-base was configured for the objc-nonfragile-abi but you are not using it now.
 
 # XXX: USES=gnustep overrides MAKEFILE we set below, so depend explicitly
 LIB_DEPENDS=	libgnustep-base.so:lang/gnustep-base \

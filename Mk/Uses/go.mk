@@ -44,7 +44,7 @@
 #	command
 #
 # GO_BUILDFLAGS
-#	Additional build arguments to be passed to the `go install` command
+#	Additional build arguments to be passed to the `go build` command
 #
 # GO_PORT
 #	The Go port to use.  By default this is lang/go but can be set
@@ -62,6 +62,7 @@ IGNORE=	USES=go has invalid arguments: ${go_ARGS:Nmodules:Nno_targets:Nrun}
 .endif
 
 # Settable variables
+
 .if empty(GO_PKGNAME)
 .  if !empty(GH_SUBDIR)
 GO_PKGNAME=	${GH_SUBDIR:S|^src/||}
@@ -72,18 +73,24 @@ GO_PKGNAME=	${PORTNAME}
 .  endif
 .endif
 GO_TARGET?=	${GO_PKGNAME}
+
 GO_BUILDFLAGS+=	-v -buildmode=exe
+.if !defined(WITH_DEBUG) && empty(GO_BUILDFLAGS:M-ldflags*)
+GO_BUILDFLAGS+=	-ldflags=-s
+.endif
+
 CGO_ENABLED?=	1
 CGO_CFLAGS+=	-I${LOCALBASE}/include
 CGO_LDFLAGS+=	-L${LOCALBASE}/lib
+
 .if ${ARCH} == armv6 || ${ARCH} == armv7
 GOARM?=		${ARCH:C/armv//}
 .endif
 
 # Read-only variables
+
 GO_CMD=		${LOCALBASE}/bin/go
 GO_WRKDIR_BIN=	${WRKDIR}/bin
-
 GO_ENV+=	CGO_ENABLED=${CGO_ENABLED} \
 		CGO_CFLAGS="${CGO_CFLAGS}" \
 		CGO_LDFLAGS="${CGO_LDFLAGS}" \
@@ -101,7 +108,11 @@ GO_ENV+=	GOPATH="${WRKDIR}" \
 		GOBIN=""
 .endif
 
-GO_PORT?=	lang/go
+# Tentatively enable package building for Go ports on aarch64 to catch regressions early.
+# Can be removed after go1.14 is officially released in Jan 2020 and lang/go is updated to 1.14
+GO_PORT_aarch64=	lang/go-devel
+GO_PORT?=	${GO_PORT_${ARCH}:Ulang/go}
+
 BUILD_DEPENDS+=	${GO_CMD}:${GO_PORT}
 .if ${go_ARGS:Mrun}
 RUN_DEPENDS+=	${GO_CMD}:${GO_PORT}
@@ -154,11 +165,15 @@ do-install:
 .if ${go_ARGS:Mmodules}
 _MODULES2TUPLE_CMD=	modules2tuple
 gomod-vendor: patch
-	@if type ${_MODULES2TUPLE_CMD} > /dev/null 2>&1; then \
-		cd ${WRKSRC}; ${GO_CMD} mod vendor; \
-		[ -r vendor/modules.txt ] && ${_MODULES2TUPLE_CMD} vendor/modules.txt; \
+	@if type ${GO_CMD} > /dev/null 2>&1; then \
+		if type ${_MODULES2TUPLE_CMD} > /dev/null 2>&1; then \
+			cd ${WRKSRC}; ${GO_CMD} mod vendor; \
+			[ -r vendor/modules.txt ] && ${_MODULES2TUPLE_CMD} vendor/modules.txt; \
+		else \
+			${ECHO_MSG} "===> Please install \"ports-mgmt/modules2tuple\""; \
+		fi \
 	else \
-		${ECHO_MSG} "===> Please install \"ports-mgmt/modules2tuple\""; \
+		${ECHO_MSG} "===> Please install \"${GO_PORT}\""; \
 	fi
 .endif
 

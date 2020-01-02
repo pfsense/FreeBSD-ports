@@ -3,7 +3,7 @@
 PORTNAME=	dartsim
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.8.5
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,19 +19,20 @@ LIB_DEPENDS=	libassimp.so:multimedia/assimp \
 		libBulletDynamics.so:devel/bullet \
 		libboost_system.so:devel/boost-libs \
 		libccd.so:math/libccd \
-		libconsole_bridge.so:misc/console-bridge \
+		libconsole_bridge.so:devel/ros-console_bridge \
 		libfcl.so:math/fcl \
 		libflann_cpp.so:math/flann \
 		libipopt.so:math/ipopt \
 		liblz4.so:archivers/liblz4 \
 		liboctomap.so:math/octomap \
 		libode.so:devel/ode \
-		libosg.so:graphics/osg \
+		libosg.so:graphics/osg34 \
 		libnlopt.so:math/nlopt \
 		libtinyxml2.so:textproc/tinyxml2 \
-		liburdfdom_world.so:misc/urdfdom
+		liburdfdom_world.so:devel/ros-urdfdom
 
-USES=		cmake compiler:c++11-lang eigen:3 gl localbase:ldflags pkgconfig
+USES=		cmake compiler:c++11-lang eigen:3 gl localbase:ldflags \
+		pkgconfig xorg
 USE_GITHUB=	yes
 GH_PROJECT=	dart
 USE_GL=		gl glu glut

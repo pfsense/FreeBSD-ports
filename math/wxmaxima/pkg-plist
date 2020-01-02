@@ -7,7 +7,6 @@ share/bash-completion/completions/wxmaxima
 %%DOCSDIR%%/Autocomplete2.jpg
 %%DOCSDIR%%/BatchImage.jpg
 %%DOCSDIR%%/BatchImage.png
-%%DOCSDIR%%/InputCell.jpg
 %%DOCSDIR%%/Matrix table example.png
 %%DOCSDIR%%/MatrixTableExample.png
 %%DOCSDIR%%/Second table example.png
@@ -58,20 +57,25 @@ share/wxMaxima/README
 share/wxMaxima/README.md
 share/wxMaxima/a.png
 share/wxMaxima/all-celltypes.wxmx
+share/wxMaxima/autosave.cfg
 share/wxMaxima/b.png
 share/wxMaxima/c.png
+share/wxMaxima/complete_config_file.cfg
+share/wxMaxima/config_from_19.11.cfg
 share/wxMaxima/d.png
 share/wxMaxima/foreign-characters.wxm
 share/wxMaxima/io.github.wxmaxima_developers.wxMaxima.png
 share/wxMaxima/io.github.wxmaxima_developers.wxMaxima.svg
+share/wxMaxima/noautosave.cfg
 share/wxMaxima/other-features.wxm
-share/wxMaxima/quit.mac
 share/wxMaxima/testbench_all_celltypes.wxm
 share/wxMaxima/testbench_automatic_absCells.wxm
 share/wxMaxima/testbench_automatic_atCells.wxm
 share/wxMaxima/testbench_automatic_boxes.wxm
+share/wxMaxima/testbench_automatic_commentBegin.wxm
 share/wxMaxima/testbench_automatic_conjugateCells.wxm
 share/wxMaxima/testbench_automatic_diffCells.wxm
+share/wxMaxima/testbench_automatic_empty_file.wxm
 share/wxMaxima/testbench_automatic_exptCells.wxm
 share/wxMaxima/testbench_automatic_formerCrashes.wxm
 share/wxMaxima/testbench_automatic_fracCells.wxm
@@ -97,5 +101,4 @@ share/wxMaxima/testbench_automatic_sumCells.wxm
 share/wxMaxima/testbench_automatic_unicode.wxm
 share/wxMaxima/testbench_automatic_weirdLabels.wxm
 share/wxMaxima/testbench_automatic_xmlQuote.wxm
-share/wxMaxima/testbench_simple.wxmx
 share/wxMaxima/textcells.wxm

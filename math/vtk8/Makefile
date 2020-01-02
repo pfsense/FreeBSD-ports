@@ -20,7 +20,7 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 
 CONFLICTS=	vtk5 vtk6
 
-USES=		alias cmake compiler:c++11-lang gl jpeg localbase
+USES=		alias cmake compiler:c++11-lang gl jpeg localbase xorg
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	ice x11 xt xext sm
 
@@ -49,9 +49,11 @@ OPTIONS_SUB=	yes
 #VTK_GROUPS=	Imaging MPI Qt Rendering StandAlone Views
 VTK_GROUPS=	MPI
 VTK_WRAPS=	JAVA TCLTK
-OPTIONS_GROUP=	Groups Wrapping
-OPTIONS_GROUP_Groups=${VTK_GROUPS}
-OPTIONS_GROUP_Wrapping=${VTK_WRAPS}
+OPTIONS_GROUP=	GROUPS WRAPPING
+OPTIONS_GROUP_GROUPS=${VTK_GROUPS}
+OPTIONS_GROUP_WRAPPING=${VTK_WRAPS}
+GROUPS_DESC=	Groups
+WRAPPING_DESC=	Wrapping
 .for g in ${VTK_GROUPS}
 $g_DESC=	Build the $g group
 .endfor
@@ -116,6 +118,7 @@ CMAKE_ARGS+=	-DVTK_Group_${g}:BOOL=OFF
 .endfor
 
 .if !${PORT_OPTIONS:MOSMESA}
+USES+=		gl
 USE_GL=		gl glu
 .endif
 

@@ -4,7 +4,7 @@
 PORTNAME=	xastir
 DISTVERSIONPREFIX=	Release-
 DISTVERSION=	2.1.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	carl@stagecraft.cx
@@ -26,7 +26,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libwebpmux.so:graphics/webp \
 		libwmflite.so:graphics/libwmf
 
-USES=		gettext gmake jpeg motif python:run shebangfix
+USES=		gettext gmake gnome jpeg motif python:run shebangfix xorg
 
 USE_XORG=	ice sm x11 xext xt
 USE_GNOME+=	libxml2

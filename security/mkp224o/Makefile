@@ -2,7 +2,7 @@
 
 PORTNAME=	mkp224o
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.0
+DISTVERSION=	1.4.0
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 LIB_DEPENDS=	libsodium.so:security/libsodium
 
-USES=		autoreconf gmake localbase:ldflags
+USES=		autoreconf compiler:c11 gmake localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	cathugger
 GNU_CONFIGURE=	yes

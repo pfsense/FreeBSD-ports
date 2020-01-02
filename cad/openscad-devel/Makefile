@@ -3,9 +3,12 @@
 
 PORTNAME=	openscad
 PORTVERSION=	2019.09.05
-#PORTREVISION=	1
+PORTREVISION=	1
 CATEGORIES=	cad
 PKGNAMESUFFIX=	-devel
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	b6c170cc5dd1.patch:-p1
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Programmer's solid 3D CAD modeller #'
@@ -29,7 +32,7 @@ LIB_DEPENDS=	libzip.so:archivers/libzip \
 CONFLICTS=	openscad
 
 USES=		bison compiler:c++11-lib desktop-file-utils eigen:3 gettext \
-		pkgconfig qmake qt:5 shared-mime-info
+		gl gnome pkgconfig qmake qt:5 shared-mime-info xorg
 USE_GITHUB=	yes
 USE_GL=		gl glu glew
 USE_GNOME=	glib20 libxml2

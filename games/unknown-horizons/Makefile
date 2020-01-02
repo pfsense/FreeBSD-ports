@@ -9,6 +9,8 @@ CATEGORIES=	games
 MAINTAINER=	fiziologus@gmail.com
 COMMENT=	Real time simulation game
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
@@ -20,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_SITELIBDIR}/fife/__init__.py:games/py-fife@${PY_FLAVOR} \
 
 ONLY_FOR_ARCHS=	i386 amd64
 
-USES=		gettext-tools python:2.7 shebangfix tar:xz
+USES=		gettext-tools gnome python:2.7 shebangfix tar:xz
 USE_GITHUB=	yes
 USE_GNOME=	intltool
 USE_PYTHON=	distutils

@@ -10,10 +10,13 @@ MASTER_SITES=	http://randomwalker.info/gretools/${PORTVERSION:R}/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNOME vocabulary builder
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake pathfix pkgconfig python:2.7 shebangfix
+USES=		gmake gnome pathfix pkgconfig python:2.7 shebangfix
 SHEBANG_FILES=	gretools.in gretools.py
 USE_GNOME=	gnomeprefix pygnome2
 GNU_CONFIGURE=	yes

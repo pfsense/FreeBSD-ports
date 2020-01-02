@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	8.1.0
-PORTREVISION=	1
+PORTVERSION=	8.3.0
 CATEGORIES=	devel
+MASTER_SITES=	GCC
 PKGNAMEPREFIX=	riscv64-
 
 MAINTAINER=	lwhsu@FreeBSD.org
@@ -12,20 +12,15 @@ COMMENT=	Cross GNU Compiler Collection for ${PKGNAMEPREFIX:C/-//g}
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	${PKGNAMEPREFIX}binutils>0:devel/${PKGNAMEPREFIX}binutils
-RUN_DEPENDS=	${PKGNAMEPREFIX}binutils>0:devel/${PKGNAMEPREFIX}binutils
+BUILD_DEPENDS=	${PKGNAMEPREFIX}binutils>0:devel/binutils@${PKGNAMEPREFIX:C/-$//}
+RUN_DEPENDS=	${PKGNAMEPREFIX}binutils>0:devel/binutils@${PKGNAMEPREFIX:C/-$//}
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
 		libmpc.so:math/mpc
 
-USES=	iconv gmake libtool makeinfo
+USES=	iconv gmake libtool makeinfo tar:xz
 
 USE_LDCONFIG=	yes
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	freebsd-riscv
-GH_PROJECT=	riscv-gcc
-GH_TAGNAME=	7a5a908
 
 GCC_TARGET=	${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}
 
@@ -38,9 +33,8 @@ CONFIGURE_ARGS=	--target=${GCC_TARGET} \
 		--without-headers \
 		--with-pkgversion="FreeBSD Ports Collection for ${PKGNAMEPREFIX:C/-//g}" \
 		--with-system-zlib \
-		--with-as=${LOCALBASE}/bin/${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}-as \
-		--with-ld=${LOCALBASE}/bin/${PKGNAMEPREFIX}unknown-${OPSYS:tl}${OSREL}-ld \
-		--disable-werror \
+		--with-as=${LOCALBASE}/bin/${GCC_TARGET}-as \
+		--with-ld=${LOCALBASE}/bin/${GCC_TARGET}-ld \
 		--enable-threads \
 		--enable-tls \
 		--enable-languages=c,c++ \

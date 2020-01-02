@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libva
-PORTVERSION=	2.5.0
+PORTVERSION=	2.6.0
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -21,7 +21,6 @@ USE_LDCONFIG=	yes
 GH_ACCOUNT=	intel
 # -lpthread is not necessary if pthread_getthreadid_np is a libc stub
 LDFLAGS+=	${LDFLAGS_${OPSYS}_${OSREL}}
-LDFLAGS_FreeBSD_11.2=	-lpthread
 LDFLAGS_FreeBSD_11.3=	-lpthread
 LDFLAGS_FreeBSD_12.0=	-lpthread
 
@@ -39,7 +38,11 @@ GLX_IMPLIES=		X11
 WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_MESON_YES=	with_wayland
 
+X11_USES=		xorg
 X11_USE=		XORG=x11,xorgproto,xext,xfixes
 X11_MESON_YES=		with_x11
+
+post-patch:
+	@${REINPLACE_CMD} 's,/etc,${PREFIX}&,' ${WRKSRC}/va/va.c
 
 .include <bsd.port.mk>

@@ -60,6 +60,11 @@ include/ags/audio/ags_synth_generator.h
 include/ags/audio/ags_synth_util.h
 include/ags/audio/ags_track.h
 include/ags/audio/ags_wave.h
+include/ags/audio/audio-unit/ags_audio_unit_client.h
+include/ags/audio/audio-unit/ags_audio_unit_devin.h
+include/ags/audio/audio-unit/ags_audio_unit_devout.h
+include/ags/audio/audio-unit/ags_audio_unit_port.h
+include/ags/audio/audio-unit/ags_audio_unit_server.h
 include/ags/audio/core-audio/ags_core_audio_client.h
 include/ags/audio/core-audio/ags_core_audio_devin.h
 include/ags/audio/core-audio/ags_core_audio_devout.h
@@ -238,6 +243,7 @@ include/ags/audio/task/ags_remove_audio_signal.h
 include/ags/audio/task/ags_remove_note.h
 include/ags/audio/task/ags_remove_soundcard.h
 include/ags/audio/task/ags_reset_amplitude.h
+include/ags/audio/task/ags_reset_note.h
 include/ags/audio/task/ags_reset_peak.h
 include/ags/audio/task/ags_resize_audio.h
 include/ags/audio/task/ags_seek_soundcard.h
@@ -261,9 +267,12 @@ include/ags/audio/thread/ags_audio_thread.h
 include/ags/audio/thread/ags_channel_thread.h
 include/ags/audio/thread/ags_export_thread.h
 include/ags/audio/thread/ags_sequencer_thread.h
+include/ags/audio/thread/ags_sf2_loader.h
 include/ags/audio/thread/ags_sfz_loader.h
 include/ags/audio/thread/ags_soundcard_thread.h
 include/ags/audio/thread/ags_wave_loader.h
+include/ags/audio/wasapi/ags_wasapi_devin.h
+include/ags/audio/wasapi/ags_wasapi_devout.h
 include/ags/config.h
 include/ags/file/ags_file.h
 include/ags/file/ags_file_id_ref.h
@@ -302,6 +311,7 @@ include/ags/object/ags_marshal.h
 include/ags/object/ags_mutable.h
 include/ags/object/ags_plugin.h
 include/ags/object/ags_portlet.h
+include/ags/object/ags_priority.h
 include/ags/object/ags_seekable.h
 include/ags/object/ags_sequencer.h
 include/ags/object/ags_sound_server.h

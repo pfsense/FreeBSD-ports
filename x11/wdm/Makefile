@@ -17,6 +17,8 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	WINGs Display Manager; an xdm replacement
 
+BROKEN=		unfetchable
+
 LIB_DEPENDS=	libWINGs.so:x11-wm/windowmaker
 
 NOT_FOR_ARCHS=	sparc64
@@ -25,7 +27,7 @@ OPTIONS_DEFINE=	PAM
 OPTIONS_DEFAULT=	PAM
 OPTIONS_SUB=	yes
 
-USES=		gettext localbase tar:bzip2
+USES=		gettext localbase tar:bzip2 xorg
 USE_XORG=	x11 xmu
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	DEF_SERVER="${DEF_SERVER}" XRDB_PATH="${XRDB_PATH}"

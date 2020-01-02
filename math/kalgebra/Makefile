@@ -11,7 +11,7 @@ LIB_DEPENDS=	libAnalitza.so:math/analitza
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl \
 		docbook-xml>0:textproc/docbook-xml
 
-USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 \
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext gl kde:5 \
 		readline qt:5 tar:xz
 USE_GL=		glu
 USE_KDE=	auth codecs config configwidgets coreaddons doctools ecm i18n \
@@ -24,6 +24,8 @@ CMAKE_ARGS=	-DBUILD_mobile:BOOL=FALSE
 OPTIONS_DEFINE=	DOCS WEBENGINE
 OPTIONS_DEFAULT_amd64=	WEBENGINE
 OPTIONS_DEFAULT_i386=	WEBENGINE
+OPTIONS_DEFAULT_powerpc64=	${OPTIONS_DEFAULT_powerpc64_${OSREL:R}}
+OPTIONS_DEFAULT_powerpc64_13=	WEBENGINE
 OPTIONS_SUB=	yes
 
 WEBENGINE_DESC=	Add dependency on qt5-webengine

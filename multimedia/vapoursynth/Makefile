@@ -1,13 +1,16 @@
 # $FreeBSD$
 
 PORTNAME=	vapoursynth
-PORTVERSION=	R47.2
+DISTVERSION=	R48
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Video processing framework with simplicity in mind
 
 LICENSE=	LGPL21+
+
+ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS_REASON=	https://github.com/vapoursynth/vapoursynth/issues/509
 
 USE_GITHUB=	yes
 

@@ -12,12 +12,14 @@ PKGNAMESUFFIX=	-engine
 MAINTAINER=	sk8harddiefast@gmail.com
 COMMENT=	Engine, and collection of icons, themes from OpenSolaris
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	icon-naming-utils>=0.8.90:x11-themes/icon-naming-utils
 
 GNU_CONFIGURE=	yes
-USES=		gmake libtool perl5 pkgconfig tar:bzip2
+USES=		gmake gnome libtool perl5 pkgconfig tar:bzip2
 USE_GNOME=	glib20 gtk20 intltool intlhack
 INSTALLS_ICONS=	yes
 

@@ -3,6 +3,17 @@
 
     COMMENT = Java language support
 
+    SUBDIR += apache-bcel
+    SUBDIR += apache-commons-cli
+    SUBDIR += apache-commons-codec
+    SUBDIR += apache-commons-collections
+    SUBDIR += apache-commons-dbcp
+    SUBDIR += apache-commons-httpclient
+    SUBDIR += apache-commons-lang
+    SUBDIR += apache-commons-lang3
+    SUBDIR += apache-commons-logging
+    SUBDIR += apache-commons-pool
+    SUBDIR += apache-commons-primitives
     SUBDIR += aparapi
     SUBDIR += avis
     SUBDIR += berkeley-db
@@ -22,8 +33,6 @@
     SUBDIR += eclipse-drjava
     SUBDIR += eclipse-ecj
     SUBDIR += eclipse-findbugs
-    SUBDIR += eclipse-log4e
-    SUBDIR += eclipse-lomboz
     SUBDIR += eclipse-pydev
     SUBDIR += eclipse-shelled
     SUBDIR += eclipse-windowbuilder
@@ -37,24 +46,12 @@
     SUBDIR += intellij-ultimate
     SUBDIR += jad
     SUBDIR += jai
-    SUBDIR += jakarta-bcel
     SUBDIR += jakarta-commons-beanutils
-    SUBDIR += jakarta-commons-cli
-    SUBDIR += jakarta-commons-codec
-    SUBDIR += jakarta-commons-collections
-    SUBDIR += jakarta-commons-dbcp
     SUBDIR += jakarta-commons-discovery
-    SUBDIR += jakarta-commons-httpclient
-    SUBDIR += jakarta-commons-lang
-    SUBDIR += jakarta-commons-lang3
-    SUBDIR += jakarta-commons-logging
-    SUBDIR += jakarta-commons-pool
-    SUBDIR += jakarta-commons-primitives
     SUBDIR += jakarta-oro
     SUBDIR += jakarta-regexp
     SUBDIR += jasmin
     SUBDIR += jattach
-    SUBDIR += java-checkstyle
     SUBDIR += java-cup
     SUBDIR += java-getopt
     SUBDIR += java-subversion
@@ -69,11 +66,9 @@
     SUBDIR += jcommon
     SUBDIR += jd-gui
     SUBDIR += jdbcpool
-    SUBDIR += jdk10-doc
     SUBDIR += jdk11-doc
     SUBDIR += jdk12-doc
     SUBDIR += jdk8-doc
-    SUBDIR += jdk9-doc
     SUBDIR += jdom
     SUBDIR += jflex
     SUBDIR += jfreechart
@@ -94,9 +89,7 @@
     SUBDIR += langspec
     SUBDIR += lightweight-java-profiler
     SUBDIR += linux-oracle-jdk18
-    SUBDIR += linux-oracle-jre10
     SUBDIR += linux-oracle-jre18
-    SUBDIR += linux-oracle-jre9
     SUBDIR += linux-oracle-serverjre10
     SUBDIR += mmake
     SUBDIR += mx4j
@@ -132,6 +125,8 @@
     SUBDIR += wildfly14
     SUBDIR += wildfly15
     SUBDIR += wildfly16
+    SUBDIR += wildfly17
+    SUBDIR += wildfly18
     SUBDIR += wildfly90
     SUBDIR += xdoclet
 

@@ -17,7 +17,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		7z:p7zip compiler:c++14-lang gettext gmake gnome pkgconfig
+USES=		7z:p7zip compiler:c++14-lang gettext gmake gnome pkgconfig xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk20 gtksourceview2
 USE_XORG=	x11 xext
 USE_CSTD=	c99
@@ -41,9 +41,11 @@ INPUT_SDL_DESC=		Build SDL input driver
 INPUT_X_DESC=		Build X input driver
 
 
+GLX_USES=	gl
 GLX_USE=	GL=gl
 GLX_VARS=	VIDEO_DRIVER+=video.glx
 
+SDL_USES=	sdl
 SDL_USE=	XORG=xv SDL=sdl
 SDL_VARS=	VIDEO_DRIVER+=video.sdl
 
@@ -64,6 +66,7 @@ OSS_VARS=	AUDIO_DRIVER+=audio.oss
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_VARS=	AUDIO_DRIVER+=audio.pulseaudio
 
+INPUT_SDL_USES=	sdl
 INPUT_SDL_USE=	SDL=sdl
 INPUT_SDL_VARS=	INPUT_DRIVER+=input.sdl
 

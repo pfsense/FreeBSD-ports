@@ -9,12 +9,15 @@ MASTER_SITES=	http://launchpadlibrarian.net/43860543/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-track non-linear audio editing
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}
 
-USES=		desktop-file-utils python:2.7 shared-mime-info
+USES=		desktop-file-utils gnome python:2.7 shared-mime-info
 USE_PYTHON=	distutils
 USE_GSTREAMER=	gnonlin good python
 INSTALLS_ICONS=	yes

@@ -12,6 +12,8 @@ COMMENT=	Run tests in parallel at high frequency
 LICENSE=	BSD2CLAUSE
 
 BROKEN=		fails to build
+DEPRECATED=	Broken for more than 4 months
+EXPIRATION_DATE=	2020-01-10
 
 # gb 0.4 includes FreeBSD-specific fixes that this port requires
 #   https://github.com/constabulary/gb/issues/506
@@ -36,7 +38,7 @@ ALL_TARGET=	test build
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-do-patch:
+post-patch:
 	(cd ${WRKSRC}; ${PATCH} vendor/src/github.com/mitchellh/go-libucl/libucl.go < vendor/patches/github.com/mitchellh/go-libucl/libucl.go.patch )
 
 do-install:

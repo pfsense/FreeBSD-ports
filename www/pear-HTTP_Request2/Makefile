@@ -14,13 +14,16 @@ RUN_DEPENDS=	${PEARDIR}/Net/URL2.php:net/pear-Net_URL2@${PHP_FLAVOR}
 
 OPTIONS_DEFINE=	CURL FILEINFO ZLIB
 CURL_DESC=	PHP CURL extension support
-FILEINF_DESC=	PHP FILEINFO extension support
-ZLI_DESC=	PECL ZLIB support
+FILEINFO_DESC=	PHP FILEINFO extension support
+ZLIB_DESC=	PECL ZLIB support
 
 USES=	pear
 
+CURL_USES=	php
 CURL_USE=	PHP=curl
+FILEINFO_USES=	php
 FILEINFO_USE=	PHP=fileinfo
+ZLIB_USES=	php
 ZLIB_USE=	PHP=zlib
 
 .include <bsd.port.mk>

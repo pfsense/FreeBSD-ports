@@ -3,7 +3,7 @@
 
 PORTNAME=	elinks
 DISTVERSION=	0.11.7
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	www
 MASTER_SITES=	http://elinks.or.cz/download/
 
@@ -14,7 +14,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		bison cpe gmake localbase ssl tar:bzip2
+USES=		bison:alias cpe gmake localbase ssl tar:bzip2
 CONFIGURE_ARGS=	--without-zlib
 
 LIBS+=		-lexecinfo
@@ -85,7 +85,7 @@ LOCAL_CGI_CONFIGURE_ENABLE=	cgi
 
 XBELMARKS_LIB_DEPENDS=	libexpat.so:textproc/expat2
 XBELMARKS_CONFIGURE_ON=	--enable-xbel --with-expat
-XBELNARKS_CONFIGURE_OFF=--disable-xbel
+XBELMARKS_CONFIGURE_OFF=--disable-xbel
 
 256COLORS_CONFIGURE_ON=	--enable-256-colors
 

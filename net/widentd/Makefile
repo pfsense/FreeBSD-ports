@@ -3,8 +3,8 @@
 
 PORTNAME=	widentd
 PORTVERSION=	1.04
-CATEGORIES=	net ipv6
-MASTER_SITES=	http://BSDforge.com/projects/source/net/widentd/
+CATEGORIES=	net
+MASTER_SITES=	https://BSDforge.com/projects/source/net/widentd/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	RFC1413 auth/identd daemon providing a fixed fake reply

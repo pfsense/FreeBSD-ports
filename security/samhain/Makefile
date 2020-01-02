@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	samhain
-PORTVERSION=	4.3.2
-PORTREVISION=	1
+PORTVERSION=	4.3.3
 CATEGORIES=	security
 MASTER_SITES=	http://la-samhna.de/archive/
 DISTNAME=	samhain_signed-${PORTVERSION}
@@ -103,7 +102,7 @@ PROCESS_CHECK_CONFIGURE_ENABLE=	process-check
 
 POSIX_ACL_CONFIGURE_ENABLE=	posix-acl
 
-PRELUDE_LIB_DEPENDS=		prelude:security/libprelude
+PRELUDE_LIB_DEPENDS=		libprelude.so:security/libprelude
 PRELUDE_CONFIGURE_WITH=		prelude
 
 PTRACE_CONFIGURE_ENABLE=	ptrace

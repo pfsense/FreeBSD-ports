@@ -10,6 +10,9 @@ CATEGORIES=	graphics gnome
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Weird GNOME fractal generator
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -20,7 +23,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils
 USE_GITHUB=	yes
 GH_ACCOUNT=	edyoung
 
-USES=		desktop-file-utils display:build jpeg localbase pathfix \
+USES=		desktop-file-utils display:build gnome jpeg localbase pathfix \
 		pkgconfig python:2.7 shared-mime-info shebangfix
 SHEBANG_FILES=	fractutils/get.py
 USE_GNOME=	intlhack libxslt:build pygtk2

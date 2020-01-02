@@ -12,11 +12,14 @@ MASTER_SITES=	TUCOWS/x11/dock \
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Window Maker dockapp that displays cpu load and a realtime 3D object
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2
 
 OPTIONS_DEFINE=	DOCS
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/${PORTNAME}
+USES=		xorg
 USE_XORG=	xpm
 MAKEFILE=	Makefile.FREEBSD
 PORTDOCS=	CHANGES README TODO

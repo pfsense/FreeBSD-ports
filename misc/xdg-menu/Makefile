@@ -15,6 +15,9 @@ EXTRACT_ONLY=	XDG-Menu-${DISTVERSION}.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ROX panel applet that displays an applications menu button
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/Help/COPYING
 
@@ -25,7 +28,7 @@ RUN_DEPENDS=	${LOCALBASE}/bin/rox:x11-fm/rox-filer \
 WRKSRC=		${WRKDIR}/XDG-Menu
 DATADIR=	${PREFIX}/apps/XDG-Menu
 
-USES=		python:2.7 shebangfix
+USES=		gnome python:2.7 shebangfix
 SHEBANG_FILES=	AppRun AppletRun
 INSTALLS_ICONS=	yes
 NO_ARCH=	yes

@@ -3,7 +3,7 @@
 PORTNAME=	emulationstation
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.7.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	emulators
 
 MAINTAINER=	freebsd@coombscloud.com
@@ -24,7 +24,7 @@ LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libpugixml.so:textproc/pugixml \
 		libvlc.so:multimedia/vlc
 
-USES=		cmake compiler:gcc-c++11-lib gl pkgconfig
+USES=		cmake compiler:gcc-c++11-lib gl pkgconfig sdl
 USE_GITHUB=	yes
 GH_ACCOUNT=	RetroPie
 GH_PROJECT=	EmulationStation

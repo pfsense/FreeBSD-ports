@@ -10,9 +10,11 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Build form data request bodies
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

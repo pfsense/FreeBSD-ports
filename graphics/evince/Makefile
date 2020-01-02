@@ -3,7 +3,7 @@
 
 PORTNAME=	evince
 PORTVERSION=	3.28.5
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	graphics print gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -28,7 +28,7 @@ PORTSCOUT=	limitw:1,even
 SLAVEPORT?=	no
 
 USES=		compiler:c++11-lib desktop-file-utils gettext gmake \
-		gnome libarchive libtool localbase pathfix pkgconfig tar:xz
+		gnome libarchive libtool localbase pathfix pkgconfig tar:xz xorg
 USE_GNOME=	cairo gtk30 intlhack
 USE_GSTREAMER1=	yes
 USE_LDCONFIG=	yes
