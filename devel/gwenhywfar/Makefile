@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	gwenhywfar
-PORTVERSION=	4.20.0
-PORTREVISION?=	2
+PORTVERSION=	4.20.2
+PORTREVISION?=	0
 CATEGORIES=	devel net security
-MASTER_SITES=	http://www.aquamaniac.de/sites/download/download.php?package=01&release=208&file=02&dummy=/
+MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/108/
 
 MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Multi-platform helper library for networking and security applications
@@ -55,11 +55,13 @@ CONFIGURE_ARGS+=--with-fox-includes=${LOCALBASE}/include/fox-1.6 \
 .  elif ${SLAVEPORT}=="gtk2"
 LIB_DEPENDS+=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
+USES+=		gnome
 USE_GNOME+=	cairo gdkpixbuf2 gtk20
 .  elif ${SLAVEPORT}=="gtk3"
+USES+=		gnome
 USE_GNOME+=	cairo gdkpixbuf2 gtk30
 .  elif ${SLAVEPORT}=="qt5"
-USES+=		compiler:c++11-lang qmake:no_env qt:5
+USES+=		compiler:c++11-lang gl qmake:no_env qt:5
 USE_GL=		gl
 USE_QT=		core gui widgets \
 		buildtools_build qmake_build

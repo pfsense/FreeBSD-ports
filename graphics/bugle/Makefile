@@ -12,9 +12,12 @@ COMMENT=	Debugging library for OpenGL
 
 LICENSE=	GPLv2
 
+DEPRECATED=	no longer actively developed; use devel/apitrace instead
+EXPIRATION_DATE=	2020-01-15
+
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		libtool pathfix perl5
+USES=		gl libtool pathfix perl5
 USE_GL=		gl
 USE_GCC=	7
 GNU_CONFIGURE=	yes
@@ -31,6 +34,7 @@ OPTIONS_DEFAULT=	READLINE THREADS
 FFMPEG_CONFIGURE_WITH=	lavc
 FFMPEG_LIB_DEPENDS=	libavcodec.so.1:multimedia/ffmpeg
 GTK2_LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
+GTK2_USES=		gnome
 GTK2_USE=		gnome=gtk20
 GTK2_CONFIGURE_WITH=	gtk gtkglext
 READLINE_USES=		readline

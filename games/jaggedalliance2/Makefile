@@ -4,7 +4,7 @@
 PORTNAME=	ja2
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.16.1
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	games
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -79,11 +79,6 @@ CARGO_CRATES=	aho-corasick-0.5.3 \
 post-patch:
 	@${REINPLACE_CMD} -e 's|/some/place/where/the/data/is|${DATADIR}|' \
 		${WRKSRC}/rust/src/stracciatella.rs
-
-post-configure:
-	@${MKDIR} ${CONFIGURE_WRKSRC}
-	@cd ${CONFIGURE_WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} \
-		${CMAKE_ARGS} ${CMAKE_SOURCE_PATH}
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ja2 \

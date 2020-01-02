@@ -10,6 +10,9 @@ MASTER_SITES=	http://www.linuks.mine.nu/dockapps/
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	Host availability monitor intended for the WindowMaker dock
 
+BROKEN=		unfetchable
+
+USES=		xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 

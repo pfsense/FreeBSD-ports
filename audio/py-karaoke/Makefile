@@ -14,8 +14,6 @@ COMMENT=	Python karaoke application (Plays CD+G, MP3+G, OGG+G files)
 
 LICENSE=	LGPL21+
 
-BROKEN_aarch64=		fails to build: Signal 11
-
 BUILD_DEPENDS=	${PYGAME} \
 		${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
 LIB_DEPENDS=	libaa.so:graphics/aalib
@@ -23,7 +21,8 @@ RUN_DEPENDS=	dejavu>0:x11-fonts/dejavu \
 		${PYGAME} \
 		${PYNUMPY}
 
-USES=		compiler:c++11-lib desktop-file-utils iconv python:2.7 shebangfix zip
+USES=		compiler:c++11-lib desktop-file-utils iconv python:2.7 sdl \
+		shebangfix xorg zip
 SHEBANG_FILES=	install/pykaraoke_mini install/pykar install/pykaraoke \
 		install/pycdg install/pympg
 USE_SDL=	sdl

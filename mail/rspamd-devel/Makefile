@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rspamd
-PORTVERSION=	2.0.a1.20190719
-PORTREVISION=	1
+PORTVERSION=	2.3.a1.20191120
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
 
@@ -30,10 +29,11 @@ CONFLICTS_INSTALL=	rspamd
 USERS=		rspamd
 GROUPS=		rspamd
 
-OPTIONS_DEFINE=		CGP GPERF
+OPTIONS_DEFINE=		BLAS CGP GPERF
 OPTIONS_DEFINE_amd64=	HYPERSCAN
 OPTIONS_SUB=	yes
 
+BLAS_DESC=		Use OpenBLAS to accelerate KANN
 CGP_DESC=		Install Communigate Pro(tm) helper
 GPERF_DESC=		Google perf-tools profiling
 HYPERSCAN_DESC=		Use hyperscan optimizations (amd64 only)
@@ -52,12 +52,15 @@ CMAKE_ARGS+=	-DCONFDIR=${PREFIX}/etc/rspamd \
 		-DDEBUG=ON \
 		-DGIT_ID=${GH_TAGNAME}
 USE_GITHUB=	yes
-GH_TAGNAME=	06a167b
+GH_TAGNAME=	b30c5df
 
 DEBUG_FLAGS=	-g -O0
 WITH_DEBUG=	yes
 
 USE_RC_SUBR=	rspamd
+
+BLAS_CMAKE_ON=	-DENABLE_BLAS=ON
+BLAS_USES=	blaslapack:openblas
 
 GPERF_CMAKE_ON=	-DENABLE_GPERF_TOOLS=ON
 GPERF_LIB_DEPENDS=	libprofiler.so:devel/google-perftools
@@ -71,16 +74,14 @@ CGP_RUN_DEPENDS+=	\
 	p5-EV>=0:devel/p5-EV \
 	p5-JSON-XS>=0:converters/p5-JSON-XS
 
-.include <bsd.port.options.mk>
-
 post-install:
 	@${MKDIR} \
 		${STAGEDIR}/var/log/rspamd \
 		${STAGEDIR}/var/db/rspamd \
 		${STAGEDIR}/var/run/rspamd
+	${RM} ${STAGEDIR}/${ETCDIR}/rspamd.conf.sample
 	# Linux specific
 	${RM} ${STAGEDIR}/${ETCDIR}/rspamd.systemd.conf
-	# No need, since rspamd.conf.sample is a same
 	${RM} ${STAGEDIR}/${ETCDIR}/rspamd.sysvinit.conf
 	# No examples installed by the port
 	${RMDIR} ${STAGEDIR}/${EXAMPLESDIR}

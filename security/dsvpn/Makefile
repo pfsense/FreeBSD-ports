@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	dsvpn
-PORTVERSION=	0.1.3
+PORTVERSION=	0.1.4
 CATEGORIES=	security net net-vpn
 
 MAINTAINER=	egypcio@FreeBSD.org

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gemrb
-PORTVERSION=	0.8.5
+PORTVERSION=	0.8.6
 CATEGORIES=	games emulators
 MASTER_SITES=	SF/${PORTNAME}/GemRB%20Sources/GemRB%20${PORTVERSION:.1=}%20Sources
 
@@ -19,11 +19,13 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 OPTIONS_DEFINE=	DOCS OPENGL
 OPTIONS_SUB=	yes
 
+OPENGL_USES=	gl
 OPENGL_USE=	gl=gl,glu,glew
 OPENGL_CMAKE_ON=-DOPENGL_BACKEND=OpenGL
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
-USES=		cmake openal:al,alut python:2.7 shebangfix iconv localbase
+USES=		cmake compiler:c11 gnome iconv localbase openal:al,alut \
+		python:2.7 sdl shebangfix
 SHEBANG_FILES=	admin/extend2da.py
 USE_SDL=	sdl2
 USE_LDCONFIG=	yes

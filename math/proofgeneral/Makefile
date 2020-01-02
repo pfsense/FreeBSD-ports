@@ -12,13 +12,15 @@ DISTNAME=	ProofGeneral-${PORTVERSION}
 MAINTAINER=	beyert@cs.ucr.edu
 COMMENT=	Generic interface for proof assistants
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	${LOCALBASE}/share/icons/hicolor/index.theme:misc/hicolor-icon-theme
 
-USES=		emacs gmake perl5 shebangfix tar:tgz
+USES=		emacs gmake gnome perl5 shebangfix tar:tgz
 EMACS_FLAVORS_EXCLUDE=	nox devel_nox
 
 INSTALLS_ICONS=	yes

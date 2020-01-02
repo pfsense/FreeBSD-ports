@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		autoreconf gmake perl5 tar:tgz
+USES=		autoreconf gl gmake perl5 tar:tgz xorg
 USE_GL=		glut glu
 USE_XORG=	xmu xi x11
 USE_PERL5=	build
@@ -29,7 +29,7 @@ LLD_UNSAFE=	yes
 OPTIONS_DEFINE=	OPENAL
 OPTIONS_DEFAULT=OPENAL
 
-OPENAL_USES=	openal:alut
+OPENAL_USES=	compiler:c++11-lang openal:alut
 OPENAL_CONFIGURE_ENABLE=	sound
 
 pre-patch:

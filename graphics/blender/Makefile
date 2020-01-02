@@ -3,7 +3,7 @@
 
 PORTNAME=	blender
 DISTVERSION=	2.80
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -25,7 +25,8 @@ RUN_DEPENDS=	${PYNUMPY}
 # libraries are used, if either of the most common options in blender
 # are set. We will pull boost in just to be on the safe side.
 
-USES=		cmake compiler:c++14-lang gl jpeg python:3.7 shebangfix
+USES=		cmake compiler:c++14-lang gl gnome jpeg python:3.7 shebangfix \
+		xorg
 USE_XORG=	x11 xext xfixes xmu xrender
 USE_GL=		gl glu glew
 
@@ -48,7 +49,7 @@ CXXFLAGS_i386=	-march=i586
 # version without trailing update letters
 VERDIR=		${DISTVERSION:C/[abcdef]//g}
 PLIST_SUB+=	VER=${VERDIR}
-LLVM_VER=	60
+LLVM_VER=	80
 OPTIONS_SUB=	yes
 
 .include "${.CURDIR}/Makefile.options"

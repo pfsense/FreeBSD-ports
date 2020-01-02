@@ -3,11 +3,15 @@
 
 PORTNAME=	exact-image
 PORTVERSION=	1.0.2
+PORTREVISION=	2
 CATEGORIES=	graphics perl5 python
 MASTER_SITES=	https://dl.exactcode.de/oss/exact-image/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast image processing library
+
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
 
 LICENSE=	GPLv2
 
@@ -20,7 +24,7 @@ LIB_DEPENDS=	libagg.so:graphics/agg \
 		libpng.so:graphics/png \
 		libgif.so:graphics/giflib \
 		libjasper.so:graphics/jasper \
-		libImath-2_3.so:graphics/ilmbase \
+		libImath.so:graphics/ilmbase \
 		libIlmImf.so:graphics/openexr \
 		liblcms.so:graphics/lcms \
 		libfreetype.so:print/freetype2 \
@@ -29,8 +33,8 @@ LIB_DEPENDS=	libagg.so:graphics/agg \
 #hack to get custom exactcode configure script to enable tiff support with
 #broken headers on c++ in base system:
 CPPFLAGS+=	-fpermissive -I${LOCALBASE}/include
-USES=		gmake jpeg perl5 pkgconfig python:2.7 tar:bzip2
-USE_CXXSTD=	c++03
+USES=		gmake jpeg perl5 pkgconfig python:2.7 tar:bzip2 xorg
+USE_CXXSTD=	c++11
 USE_XORG=	x11
 HAS_CONFIGURE=	yes
 INSTALL_WRKSRC=	${WRKSRC}/objdir

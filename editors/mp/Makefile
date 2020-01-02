@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mp
-DISTVERSION=	5.31
-PORTREVISION=	1
+DISTVERSION=	5.36
 CATEGORIES=	editors
 MASTER_SITES=	http://triptico.com/download/mp/
 
@@ -49,12 +48,10 @@ ANSI_CONFIGURE_WITH=	ansi
 GTK2_USES=		gnome pkgconfig
 GTK2_USE=		gnome=cairo,gdkpixbuf2,gtk20
 GTK2_CONFIGURE_ON=	--with-gtk=2
-GTK2_DESKTOP_ENTRIES=	"Minimum Profit" "" "mp" "mp-5" "Utility;TextEditor;GTK;" ""
 
 GTK3_USES=		gnome pkgconfig
 GTK3_USE=		gnome=cairo,gdkpixbuf2,gtk30
 GTK3_CONFIGURE_ON=	--with-gtk=3
-GTK3_DESKTOP_ENTRIES=	"Minimum Profit" "" "mp" "mp-5" "Utility;TextEditor;GTK;" ""
 
 NCURSES_USES=		ncurses
 NCURSES_CONFIGURE_WITH=	curses
@@ -66,11 +63,12 @@ QT5_USE=		cxxstd=-std=c++11 \
 			qt=buildtools_build,core,gui,widgets
 QT5_CONFIGURE_ENV=	CCLINK="${CXX}"
 QT5_CONFIGURE_ON=	--with-qt5 --with-moc="${MOC}"
-QT5_DESKTOP_ENTRIES=	"Minimum Profit" "" "mp" "mp-5" "Utility;TextEditor;Qt;" ""
+QT5_CONFIGURE_OFF=	--without-qt
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGTK*} || ${PORT_OPTIONS:MQT5}
+USES+=		desktop-file-utils
 PLIST_SUB+=	GUI=""
 .else
 PLIST_SUB+=	GUI="@comment "
@@ -94,7 +92,10 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mp-5 ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/mp-5.1 ${STAGEDIR}${MANPREFIX}/man/man1
 .if ${PORT_OPTIONS:MGTK*} || ${PORT_OPTIONS:MQT5}
-	${INSTALL_DATA} ${WRKSRC}/mp.png ${STAGEDIR}${PREFIX}/share/pixmaps
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/applications
+	${INSTALL_DATA} ${WRKSRC}/minimum-profit.desktop ${STAGEDIR}${PREFIX}/share/applications
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/48x48/apps
+	${INSTALL_DATA} ${WRKSRC}/minimum-profit.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/48x48/apps
 .endif
 
 do-install-NLS-on:

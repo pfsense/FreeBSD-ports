@@ -3,9 +3,9 @@
 
 PORTNAME=	glosm
 PORTVERSION=	0.0.2
+DISTVERSIONPREFIX=	${PORTNAME}-
 PORTREVISION=	6
 CATEGORIES=	graphics geography
-MASTER_SITES=	GHC http://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	3D OpenGL renderer for OpenStreetMap
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libexpat.so:textproc/expat2
 
-USES=		cmake gl sdl tar:bzip2
+USES=		cmake gl sdl tar:bzip2 xorg
 USE_GL=		gl
 USE_XORG=	x11
 USE_SDL=	sdl

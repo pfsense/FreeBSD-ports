@@ -3,7 +3,7 @@
 
 PORTNAME=	madedit
 PORTVERSION=	0.2.9
-PORTREVISION=	23
+PORTREVISION=	24
 CATEGORIES=	editors
 MASTER_SITES=	SF/${PORTNAME}/MadEdit/MadEdit-${PORTVERSION}
 
@@ -14,7 +14,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs
 
-USES=		gettext pkgconfig dos2unix desktop-file-utils
+USES=		gettext pkgconfig dos2unix desktop-file-utils xorg
 USE_WX=		2.8
 USE_XORG=	x11
 

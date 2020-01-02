@@ -2,8 +2,10 @@
 
 PORTNAME=	otter-browser
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.01
-PORTREVISION=	3
+# Latest upstream release is 1.0.01, this is "after 1.0.01 but before
+# whatever comes next".
+# DISTVERSION=	1.0.01
+PORTVERSION=	1.0.01.1
 CATEGORIES=	www
 
 MAINTAINER=	kde@FreeBSD.org
@@ -21,12 +23,15 @@ USE_QT=		concurrent core dbus declarative gui multimedia network printsupport \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	OtterBrowser
+GH_TAGNAME=	22de58d
 
 OPTIONS_MULTI=		BACKEND
 OPTIONS_MULTI_BACKEND=	QTWEBENGINE QTWEBKIT
 OPTIONS_DEFAULT=	QTWEBKIT
 OPTIONS_DEFAULT_amd64=	QTWEBENGINE
 OPTIONS_DEFAULT_i386=	QTWEBENGINE
+OPTIONS_DEFAULT_powerpc64=	${OPTIONS_DEFAULT_powerpc64_${OSREL:R}}
+OPTIONS_DEFAULT_powerpc64_13=	QTWEBENGINE
 
 QTWEBENGINE_DESC=	Build QtWebEngine backend
 QTWEBKIT_DESC=		Build QtWebKit backend

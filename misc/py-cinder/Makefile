@@ -8,7 +8,7 @@ CATEGORIES=	misc python
 MASTER_SITES=	https://tarballs.openstack.org/cinder/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	alexander.nusov@nfvexpress.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenStack Storage Service (Cinder)
 
 LICENSE=	APACHE20
@@ -93,8 +93,8 @@ CONFLICTS_INSTALL=	py??-cinder-*
 
 OPTIONS_GROUP=		MISC
 OPTIONS_GROUP_MISC=	MEMCACHED MONGODB
-OPTIONS_GROUP_RADIO=	DB
-OPTIONS_GROUP_RADIO_DB=	MYSQL PGSQL
+OPTIONS_RADIO=		DB
+OPTIONS_RADIO_DB=	MYSQL PGSQL
 
 MEMCACHED_DESC=		memcached support
 MONGODB_DESC=		MongoDB support (used for messaging services)

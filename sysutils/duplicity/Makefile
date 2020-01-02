@@ -21,6 +21,8 @@ USES=		python:2.7 shebangfix
 USE_PYTHON=	autoplist distutils
 USE_LDCONFIG=	yes
 
+CONFLICTS_INSTALL=	duplicity-devel
+
 SHEBANG_FILES=	bin/duplicity bin/rdiffdir
 
 PORTDOCS=	CHANGELOG COPYING README README-REPO README-LOG

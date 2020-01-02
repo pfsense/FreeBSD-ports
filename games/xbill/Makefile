@@ -27,6 +27,7 @@ PLIST_FILES=	bin/${PORTNAME} \
 
 PORTDATA=	*
 
+USES=		xorg
 USE_XORG=	xt x11 sm ice xpm
 
 OPTIONS_SINGLE=	WIDGETSET
@@ -37,6 +38,7 @@ ATHENA_DESC=	Athena widget set
 MOTIF_DESC=	Motif widget set
 
 ATHENA_CONFIGURE_ON=	--disable-motif
+ATHENA_USES=	xorg
 ATHENA_USE=	xorg=xaw,xmu
 
 MOTIF_CONFIGURE_ON=	--disable-athena

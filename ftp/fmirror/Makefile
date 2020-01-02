@@ -4,8 +4,8 @@
 PORTNAME=	fmirror
 PORTVERSION=	0.8.4
 PORTREVISION=	4
-CATEGORIES=	ftp ipv6
-MASTER_SITES=	http://BSDforge.com/projects/source/ftp/fmirror/
+CATEGORIES=	ftp
+MASTER_SITES=	https://BSDforge.com/projects/source/ftp/fmirror/
 
 MAINTAINER=	kiwi@oav.net
 COMMENT=	Program for mirroring files and directories from FTP server

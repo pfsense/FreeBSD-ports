@@ -13,6 +13,9 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Equinox Desktop Environment
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2+ LGPL20+
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
@@ -26,8 +29,8 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libstartup-notification-1.so:x11/startup-notification \
 		libfltk.so:x11-toolkits/fltk
 
-USES=		fam gettext iconv:translit localbase:ldflags pathfix \
-		pkgconfig python:2.7 shared-mime-info shebangfix
+USES=		fam gettext gnome iconv:translit localbase:ldflags pathfix \
+		pkgconfig python:2.7 shared-mime-info shebangfix xorg
 
 BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 SHEBANG_FILES=	doc/asciidoc/asciidoc.py

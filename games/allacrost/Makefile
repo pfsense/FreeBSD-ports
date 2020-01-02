@@ -3,7 +3,7 @@
 
 PORTNAME=	allacrost
 PORTVERSION=	1.0.2
-PORTREVISION=	28
+PORTREVISION=	29
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-demo/${PORTVERSION}
 DISTNAME=	${PORTNAME}_demo_source_${PORTVERSION}
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libboost_thread.so:devel/boost-libs
 
 GNU_CONFIGURE=	yes
-USES=		gettext gmake iconv jpeg localbase lua:51 openal:al
+USES=		gettext gl gmake iconv jpeg localbase lua:51 openal:al sdl xorg
 USE_SDL=	sdl ttf net
 USE_GL=		gl glu
 USE_XORG=	x11

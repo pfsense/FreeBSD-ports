@@ -2,7 +2,6 @@
 
 PORTNAME=	spectacle
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	graphics kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -13,11 +12,11 @@ LIB_DEPENDS=	libxcb-cursor.so:x11/xcb-util-cursor \
 		libxcb-util.so:x11/xcb-util
 RUN_DEPENDS=	kipi-plugins>=0:graphics/kipi-plugins
 
-USES=		cmake compiler:c++11-lang gettext kde:5 pkgconfig qt:5 tar:xz
+USES=		cmake compiler:c++11-lang gettext kde:5 pkgconfig qt:5 tar:xz xorg
 USE_KDE=	attica auth codecs completion config configwidgets coreaddons \
 		dbusaddons doctools ecm i18n jobwidgets kdeclarative kio \
-		libkipi newstuff notifications package service widgetsaddons \
-		windowsystem xmlgui
+		libkipi newstuff notifications package service wayland \
+		widgetsaddons windowsystem xmlgui
 USE_QT=		core concurrent dbus declarative gui network printsupport \
 		quickcontrols widgets x11extras xml \
 		buildtools_build qmake_build

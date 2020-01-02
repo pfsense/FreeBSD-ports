@@ -2,7 +2,7 @@
 
 PORTNAME=	cubicsdr
 DISTVERSION=	0.2.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
@@ -10,6 +10,8 @@ COMMENT=	SDR receiver using liquidsdr
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		fails to build
 
 RUN_DEPENDS=	${PYNUMPY} \
 		${LOCALBASE}/lib/libEGL.so:graphics/mesa-libs \

@@ -10,10 +10,13 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DV tools for FreeBSD
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:2.7 tar:bzip2
+USES=		gnome python:2.7 tar:bzip2
 USE_GNOME=	pygtk2
 USE_PYTHON=	distutils
 DESKTOP_ENTRIES="Capture Video" \

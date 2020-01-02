@@ -3,7 +3,7 @@
 
 PORTNAME=	pdfviewer
 PORTVERSION=	0.0.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	print
 MASTER_SITES=	http://www.defora.org/os/download/download/4431/
 PKGNAMEPREFIX=	deforaos-
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libSystem.so:devel/deforaos-libsystem \
 		libfreetype.so:print/freetype2
 
 MAKE_ARGS+=	PREFIX=${PREFIX}
-USES=		desktop-file-utils pkgconfig
+USES=		desktop-file-utils gnome pkgconfig
 USE_GNOME=	gtk20 gdkpixbuf2 cairo
 MAKE_ENV+=	MANDIR=${STAGEDIR}${MANPREFIX}/man
 

@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-suricata
 PORTVERSION=	4.1.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	pfSense package suricata
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	suricata>=4.1.5:security/suricata \
+RUN_DEPENDS=	suricata4>=4.1.5:security/suricata4 \
 		barnyard2:security/barnyard2
 
 NO_BUILD=	yes

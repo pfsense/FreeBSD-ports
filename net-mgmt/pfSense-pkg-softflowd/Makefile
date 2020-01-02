@@ -12,7 +12,7 @@ COMMENT=	pfSense package softflowd
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/softflowd:net-mgmt/softflowd
+RUN_DEPENDS=	softflowd>0:net-mgmt/softflowd
 
 NO_BUILD=	yes
 NO_MTREE=	yes

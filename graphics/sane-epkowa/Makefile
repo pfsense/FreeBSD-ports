@@ -49,6 +49,8 @@ DISTNAME=	iscan_${PORTVERSION}-1
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	The sane-epkowa driver for FreeBSD
 
+BROKEN=		unfetchable
+
 # use the following two lines for 2.15.0
 # MASTER_SITES=http://linux.avasys.jp/drivers/iscan/${PORTVERSION}/
 # DISTNAME=	iscan_${PORTVERSION}-3
@@ -69,7 +71,7 @@ USE_GNOME=	gtk20
 
 # The original uses gmake and ./configure
 # Also pass appropriate flags to configure to use FreeBSD locations.
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--prefix=${PREFIX} LDFLAGS="-L${PREFIX}/lib -lgetline" CPPFLAGS=-I${PREFIX}/include
 

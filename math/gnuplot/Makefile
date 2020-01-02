@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnuplot
-PORTVERSION=	5.2.7
-PORTREVISION=	1
+PORTVERSION=	5.2.8
 CATEGORIES=	math graphics
 MASTER_SITES=	SF
 
@@ -43,7 +42,7 @@ CONFIGURE_ARGS+=--disable-x11-mbfonts \
 		--without-kpsexpand
 PLIST_SUB+=	X11="@comment "
 .else
-USES+=		jpeg lua:53
+USES+=		gnome jpeg lua:53 xorg
 USE_TEX=	kpathsea
 USE_GNOME+=	atk cairo gtk20 gdkpixbuf2
 USE_WX=		2.8

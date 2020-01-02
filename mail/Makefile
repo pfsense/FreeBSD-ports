@@ -10,7 +10,6 @@
     SUBDIR += aerc
     SUBDIR += akpop3d
     SUBDIR += alpine
-    SUBDIR += altermime
     SUBDIR += amavis-logwatch
     SUBDIR += anomy-sanitizer
     SUBDIR += antivirus-milter
@@ -26,7 +25,6 @@
     SUBDIR += astroid
     SUBDIR += automx
     SUBDIR += autorespond
-    SUBDIR += autosig
     SUBDIR += avenger
     SUBDIR += balsa
     SUBDIR += batv-milter
@@ -138,7 +136,6 @@
     SUBDIR += geary
     SUBDIR += gensig
     SUBDIR += getmail
-    SUBDIR += gkrellmmailwatch2
     SUBDIR += gmime2
     SUBDIR += gmime2-sharp
     SUBDIR += gmime24
@@ -220,7 +217,6 @@
     SUBDIR += mblaze
     SUBDIR += mbox2imap
     SUBDIR += mbox2mdir
-    SUBDIR += mboxcheck-applet
     SUBDIR += mboxgrep
     SUBDIR += mboxstats
     SUBDIR += mbx2mbox
@@ -260,7 +256,6 @@
     SUBDIR += neomutt
     SUBDIR += nextcloud-mail
     SUBDIR += nmh
-    SUBDIR += nmzmail
     SUBDIR += noattach
     SUBDIR += nocc
     SUBDIR += nohtml
@@ -273,21 +268,10 @@
     SUBDIR += offlineimap
     SUBDIR += opendkim
     SUBDIR += opendmarc
-    SUBDIR += openemm2013
     SUBDIR += openemm2015
     SUBDIR += opensmtpd
     SUBDIR += opensmtpd-devel
     SUBDIR += opensmtpd-extras
-    SUBDIR += opensmtpd-extras-filter-clamav
-    SUBDIR += opensmtpd-extras-filter-dkim
-    SUBDIR += opensmtpd-extras-filter-dnsbl
-    SUBDIR += opensmtpd-extras-filter-lua
-    SUBDIR += opensmtpd-extras-filter-monkey
-    SUBDIR += opensmtpd-extras-filter-pause
-    SUBDIR += opensmtpd-extras-filter-perl
-    SUBDIR += opensmtpd-extras-filter-python
-    SUBDIR += opensmtpd-extras-filter-regex
-    SUBDIR += opensmtpd-extras-filter-spamassassin
     SUBDIR += opensmtpd-extras-queue-python
     SUBDIR += opensmtpd-extras-queue-ram
     SUBDIR += opensmtpd-extras-scheduler-python
@@ -300,7 +284,6 @@
     SUBDIR += opensmtpd-extras-table-redis
     SUBDIR += opensmtpd-extras-table-socketmap
     SUBDIR += opensmtpd-extras-table-sqlite
-    SUBDIR += opensmtpd-extras-tool-stats
     SUBDIR += openwebmail
     SUBDIR += osbf-lua
     SUBDIR += ovs
@@ -479,7 +462,6 @@
     SUBDIR += perdition
     SUBDIR += pflogsumm
     SUBDIR += pfqueue
-    SUBDIR += php71-imap
     SUBDIR += php72-imap
     SUBDIR += php73-imap
     SUBDIR += php74-imap
@@ -495,7 +477,6 @@
     SUBDIR += popfile
     SUBDIR += poppassd
     SUBDIR += poppwd
-    SUBDIR += poppy
     SUBDIR += popular
     SUBDIR += postfinger
     SUBDIR += postfix
@@ -515,14 +496,12 @@
     SUBDIR += prayer
     SUBDIR += prepflog
     SUBDIR += procmail
-    SUBDIR += prom-wl
     SUBDIR += proxsmtp
     SUBDIR += py-Products.MailHost
     SUBDIR += py-Products.SecureMailHost
     SUBDIR += py-afew
     SUBDIR += py-aiosmtpd
     SUBDIR += py-alot
-    SUBDIR += py-apolicy
     SUBDIR += py-authres
     SUBDIR += py-cyruslib
     SUBDIR += py-dkimpy
@@ -623,11 +602,10 @@
     SUBDIR += rubygem-premailer-rails
     SUBDIR += rubygem-premailer-rails-rails5
     SUBDIR += rubygem-premailer-rails-rails52
-    SUBDIR += rubygem-premailer-rails19-rails5
-    SUBDIR += rubygem-premailer-rails19-rails52
     SUBDIR += rubygem-rmail
     SUBDIR += rubygem-roadie
     SUBDIR += rubygem-roadie-rails
+    SUBDIR += rubygem-roadie-rails52
     SUBDIR += rubygem-ruby-qmail
     SUBDIR += rubygem-tmail
     SUBDIR += rubygem-vmail
@@ -665,7 +643,6 @@
     SUBDIR += spambnc
     SUBDIR += spamcup
     SUBDIR += spamd
-    SUBDIR += spamdb-curses
     SUBDIR += spamdyke
     SUBDIR += spamguard
     SUBDIR += spamilter
@@ -748,7 +725,6 @@
     SUBDIR += xcite
     SUBDIR += xfaces
     SUBDIR += xfce4-mailwatch-plugin
-    SUBDIR += xlbiff
     SUBDIR += xmail
     SUBDIR += xmailbox
     SUBDIR += xmailwatcher

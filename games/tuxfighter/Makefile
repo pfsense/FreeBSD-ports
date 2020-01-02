@@ -14,12 +14,15 @@ DIST_SUBDIR=	python
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Little Asteroids-like Shooter game
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL.txt
 
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python:2.7 shebangfix
+USES=		gnome python:2.7 shebangfix
 SHEBANG_FILES=	TuxFighter54.py
 
 PORTDOCS=	readme_TuxFighter54.txt

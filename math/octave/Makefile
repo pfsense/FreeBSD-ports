@@ -43,11 +43,10 @@ LIB_DEPENDS=	libGraphicsMagick.so:graphics/GraphicsMagick \
 
 USES=		charsetfix fortran gmake libtool perl5 pkgconfig readline \
 		tar:xz compiler:c++14-lang \
-		desktop-file-utils gl iconv
+		desktop-file-utils gl iconv xorg
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}/${PORTVERSION}
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
-JAVA_VERSION=	1.7+
 USE_QT=		core gui help network opengl \
 		qmake_build buildtools_build linguist_build \
 		printsupport sql widgets \

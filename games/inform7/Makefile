@@ -4,8 +4,7 @@
 PORTNAME=	inform7
 PORTVERSION=	6L38
 CATEGORIES=	games
-MASTER_SITES=	http://ftp.ifarchive.org/if-archive/infocom/compilers/inform7/executables/ \
-		http://ifarchive.heanet.ie/if-archive/infocom/compilers/inform7/executables/
+MASTER_SITES=	http://ifarchive.org/if-archive/infocom/compilers/inform7/executables/
 DISTNAME=	I7_6L38_FreeBSD
 
 MAINTAINER=	akosela@andykosela.com

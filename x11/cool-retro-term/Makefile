@@ -7,7 +7,7 @@ PORTREVISION=	1
 CATEGORIES=	x11
 
 MAINTAINER=	danfe@FreeBSD.org
-COMMENT=	Terminal emulator which mimics the old cathode display
+COMMENT=	Terminal emulator which mimics old cathode displays
 
 LICENSE=	GPLv3
 
@@ -15,26 +15,13 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Swordfish90
 GH_PROJECT=	qmltermwidget:qtw
 GH_TAGNAME=	0.2.0:qtw
+GH_SUBDIR=	${GH_PROJECT}
 
-USES=		gmake gl qmake qt:5
+USES=		compiler:c++11-lang gl gmake qmake qt:5
 USE_GL=		gl
 USE_QT=		qmake_build buildtools_build core declarative gui \
 		network sql widgets graphicaleffects_run \
 		quickcontrols_run sql-sqlite3_run
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
-USE_GCC=	yes
-.else
-CC=		clang
-CXX=		clang++
-CPP=		clang-cpp
-.endif
-
-post-extract:
-	@${RMDIR} ${WRKSRC}/qmltermwidget
-	@${LN} -s ../qmltermwidget-0.2.0 ${WRKSRC}/qmltermwidget
 
 post-patch:
 	@${REINPLACE_CMD} -e '/DEFINES +=/s,^macx:,,' \
@@ -48,4 +35,4 @@ post-install:
 	${INSTALL_MAN} ${WRKSRC}/packaging/debian/cool-retro-term.1 \
 		${STAGEDIR}${MANPREFIX}/man/man1
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

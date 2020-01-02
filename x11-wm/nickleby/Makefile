@@ -9,6 +9,9 @@ MASTER_SITES=	http://www.mammothcheese.ca/
 MAINTAINER=	jimmy@mammothcheese.ca
 COMMENT=	Simple window manager
 
+BROKEN=		unfetchable
+
+USES=		xorg
 USE_XORG=	x11
 DESTDIRNAME=	STAGEDIR
 

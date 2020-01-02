@@ -11,6 +11,9 @@ DISTNAME=	Kana_no_quiz-${DISTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Educational tool to memorize Japanese KANA (Hiragana/Katakana)
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL.txt
 
@@ -19,7 +22,7 @@ RUN_DEPENDS=	${PYGAME}
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-USES=		gettext python:2.7 tar:bzip2
+USES=		gettext gnome python:2.7 tar:bzip2
 USE_GNOME=	pygtk2:run
 USE_PYTHON=	distutils autoplist
 

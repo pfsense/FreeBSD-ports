@@ -10,6 +10,9 @@ DISTNAME=	Slune-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D racing game with car-crashing and lots of action
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libcal3d.so:graphics/cal3d
@@ -18,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openal>0:audio/py-openal@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}soya3d>0:graphics/py-soya3d@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}py2play>0:net-p2p/py-py2play@${PY_FLAVOR}
 
-USES=		dos2unix gettext python:2.7
+USES=		dos2unix gettext gl python:2.7 sdl
 
 DOS2UNIX_GLOB=	*.po *.mo
 USE_GL=		glew

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	genius
-PORTVERSION=	1.0.23
-PORTREVISION=	2
+PORTVERSION=	1.0.24
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME \
 		http://ftp.5z.com/pub/genius/
@@ -21,8 +20,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libmpfr.so:math/mpfr
 RUN_DEPENDS=	rarian-sk-config:textproc/rarian
 
-USES=		desktop-file-utils gmake libtool pathfix pkgconfig \
-		readline shared-mime-info tar:xz
+USES=		desktop-file-utils gmake gnome libtool pathfix pkgconfig \
+		readline shared-mime-info tar:xz xorg
 USE_GNOME=	cairo gnomedocutils gnomeprefix gtksourceview2 gnomevfs2 vte intltool
 USE_XORG=	x11 xext
 GNU_CONFIGURE=	yes

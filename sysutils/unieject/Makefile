@@ -3,7 +3,7 @@
 
 PORTNAME=	unieject
 PORTVERSION=	6
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libconfuse.so:devel/libconfuse \
 		libpcre.so:devel/pcre \
 		libcdio.so:sysutils/libcdio
 
-USES=		tar:bzip2 pathfix pkgconfig gettext iconv libtool
+USES=		gettext gnome iconv libtool pathfix pkgconfig tar:bzip2
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-doc

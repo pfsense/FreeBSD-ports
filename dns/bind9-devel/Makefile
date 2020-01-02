@@ -11,7 +11,7 @@ PORTREVISION=	0
 # dns/bind9xx here
 PORTREVISION=	0
 .endif
-CATEGORIES=	dns net ipv6
+CATEGORIES=	dns net
 # XXX: put the ISC master_site
 #MASTER_SITES=	ISC/bind9/${ISCVERSION}
 MASTER_SITES=	LOCAL/mat/bind
@@ -33,7 +33,8 @@ COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-LIB_DEPENDS=	libxml2.so:textproc/libxml2
+LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
+		libuv.so:devel/libuv
 .if !defined(BIND_TOOLS_SLAVE)
 RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 .endif
@@ -41,13 +42,13 @@ RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 # XXX: remove tar:bz2
 USES=	compiler:c11 cpe libedit pkgconfig ssl tar:bz2
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.15.3a0.2019.09.30
+ISCVERSION=	9.15.6a0.2019.12.13
 # XXX: Remove gitlab
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.isc.org
 GL_ACCOUNT=	isc-projects
 GL_PROJECT=	bind9
-GL_COMMIT=	98886bab43fd27d50cca373566c048db4aa373b6
+GL_COMMIT=	0b7339ac6e85555fa496ed72da121e403938cd40
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}

@@ -9,6 +9,8 @@ CATEGORIES=	astro geography
 MAINTAINER=	ml@netfence.it
 COMMENT=	Concise ChartPlotter/Navigator
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libportaudio.so:audio/portaudio \
@@ -20,7 +22,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	${GH_PROJECT}
 GH_PROJECT=	OpenCPN
 
-USES=		cmake compiler:c++11-lang gettext-tools gl gnome localbase
+USES=		cmake compiler:c++11-lang gettext-tools gl gnome localbase xorg
 USE_CXXSTD=	c++11
 USE_GL=		gl
 USE_GNOME=	cairo gdkpixbuf2 gtk20

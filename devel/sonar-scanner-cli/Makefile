@@ -11,6 +11,8 @@ DISTNAME=	sonar-scanner-${PORTVERSION}
 MAINTAINER=	freebsd@dussan.org
 COMMENT=	Launcher for analyzing projects with SonarQube
 
+BROKEN=		unfetchable
+
 LICENSE=	LGPL3
 
 NO_ARCH=	yes
@@ -20,7 +22,6 @@ USES=		cpe zip
 CPE_VENDOR=	sonarsource
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 
 SR=		sonar-runner
 SQ_CLI=		sonar-scanner

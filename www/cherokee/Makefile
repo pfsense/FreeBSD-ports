@@ -10,6 +10,9 @@ CATEGORIES=	www
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast and flexible web server
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 
 BROKEN_FreeBSD_12=	fails to configure: Unable to detect data struct is used by crypt_r
@@ -73,7 +76,7 @@ IPV6_CONFIGURE_OFF=	--disable-ipv6
 LDAP_USE=		openldap=yes
 LDAP_CONFIGURE_ON=	--with-ldap=yes
 LDAP_CONFIGURE_OFF=	--with-ldap=no
-MYSQL_USE=		mysql=yes
+MYSQL_USES=		mysql
 MYSQL_CONFIGURE_ON=	--with-mysql=yes
 MYSQL_CONFIGURE_OFF=	--with-mysql=no
 RRDTOOL_DESC=		Usage graphs support

@@ -1,19 +1,21 @@
 # $FreeBSD$
 
 PORTNAME=	emby-server
-PORTVERSION=	4.2.1.0
+PORTVERSION=	4.3.1.0
 PORTREVISION=	1
+FFVERSION=	2019_11_09
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/MediaBrowser/Emby.Releases/releases/download/${PORTVERSION}/ \
 		https://mediabrowser.github.io/embytools/
 DISTNAME=	embyserver-netframework_${PORTVERSION}
 DISTFILES=	${DISTNAME}.zip \
-		ffdetect_4.0.3_x64_freebsd12.tar.xz \
-		ffmpeg-2019_04_09.tar.gz \
+		ffdetect-${FFVERSION}-x64_freebsd12.tar.xz \
+		ffmpeg-${FFVERSION}.tar.gz \
 		license.docx
 DIST_SUBDIR=	${PORTNAME}
-EXTRACT_ONLY=	${DISTNAME}.zip ffdetect_4.0.3_x64_freebsd12.tar.xz \
-		ffmpeg-2019_04_09.tar.gz
+EXTRACT_ONLY=	${DISTNAME}.zip \
+		ffdetect-${FFVERSION}-x64_freebsd12.tar.xz \
+		ffmpeg-${FFVERSION}.tar.gz
 
 MAINTAINER=	alucryd@archlinux.org
 COMMENT=	Media server to organize, play & stream audio/video to various devices
@@ -32,6 +34,7 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libfreetype.so:print/freetype2 \
 		libfribidi.so:converters/fribidi \
 		libgnutls.so:security/gnutls \
+		libmfx.so:multimedia/intel-media-sdk \
 		libogg.so:audio/libogg \
 		libopus.so:audio/opus \
 		libpng.so:graphics/png \
@@ -59,7 +62,7 @@ SUB_LIST=	GROUP=${GROUPS} \
 USERS=		emby
 GROUPS=		emby
 
-WRKSRC=		${WRKDIR}/ffmpeg-2019_04_09
+WRKSRC=		${WRKDIR}/ffmpeg-${FFVERSION}_public_fixed
 
 MAKE_ENV=	V=1
 NOPRECIOUSMAKEVARS=	yes
@@ -85,6 +88,7 @@ CONFIGURE_ARGS=	--cc="${CC}" \
 		--enable-libdrm \
 		--enable-libfreetype \
 		--enable-libfribidi \
+		--enable-libmfx \
 		--enable-libopus \
 		--enable-libtheora \
 		--enable-libvorbis \
@@ -107,6 +111,7 @@ LAME_LIB_DEPENDS=	libmp3lame.so:audio/lame
 SMB_CONFIGURE_ENABLE=	libsmbclient
 SMB_USES=		samba:lib
 
+X11_USES=		xorg
 X11_USE=		xorg=x11
 X11_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6
 X11_LIB_DEPENDS_OFF=	libMagickWand-6.so:graphics/ImageMagick6-nox11

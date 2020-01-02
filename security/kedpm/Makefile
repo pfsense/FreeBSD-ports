@@ -10,13 +10,16 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple application for managing personal data
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2+
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>0:security/py-pycrypto@${PY_FLAVOR}
 
 NO_ARCH=	yes
 
-USES=		python:2.7
+USES=		gnome python:2.7
 USE_GNOME=	pygtk2
 USE_PYTHON=	autoplist distutils
 

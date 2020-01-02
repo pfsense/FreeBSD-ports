@@ -2,7 +2,7 @@
 
 PORTNAME=	syncthing-gtk
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.4.3
+DISTVERSION=	0.9.4.4
 CATEGORIES=	deskutils python
 
 MAINTAINER=	swills@FreeBSD.org
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bcrypt>0:security/py-bcrypt@${PY_FLAVOR} \
 		libappindicator>=0:devel/libappindicator \
 		syncthing>=0.14.50:net/syncthing
 
-USES=		python:2.7
+USES=		gnome python:2.7
 USE_PYTHON=	autoplist distutils
 USE_GNOME=	gtk30 pygobject3
 INSTALLS_ICONS=	yes

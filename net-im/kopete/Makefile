@@ -2,6 +2,7 @@
 
 PORTNAME=	kopete
 PORTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	net-im kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -14,8 +15,8 @@ LIB_DEPENDS=    libidn.so:dns/libidn \
 		libqca-qt5.so:devel/qca \
 		libv4l2.so:multimedia/libv4l
 
-USES=		cmake compiler:c++11-lang desktop-file-utils jpeg kde:5 qt:5 shebangfix \
-		tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gnome jpeg kde:5 \
+		qt:5 shebangfix tar:xz
 USE_GNOME=	libxml2 libxslt
 USE_KDE=	archive auth bookmarks codecs completion config configwidgets \
 		coreaddons crash dbusaddons dnssd ecm emoticons guiaddons i18n \
@@ -27,9 +28,6 @@ USE_KDE=	archive auth bookmarks codecs completion config configwidgets \
 USE_KDE+=	contacts identitymanagement libkleo pimtextedit
 USE_QT=		concurrent core dbus gui network phonon4 printsupport sql widgets xml \
 		buildtools_build qmake_build
-
-# See #228640: temporary work around to fix the build on Current with ld being lld.
-LLD_UNSAFE=	yes
 
 SHEBANG_FILES=	protocols/winpopup/winpopup-install \
 		protocols/winpopup/winpopup-send \

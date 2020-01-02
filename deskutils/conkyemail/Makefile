@@ -12,8 +12,13 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Email script for conky
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	No longer maintained by upstream
 
 RUN_DEPENDS=	conky:sysutils/conky
 

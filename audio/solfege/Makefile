@@ -12,13 +12,17 @@ PKGNAMESUFFIX=	-nosound
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free ear training software
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	docbook-xsl>0:textproc/docbook-xsl \
 		txt2man:textproc/txt2man
 
-USES=		gettext gmake makeinfo pathfix pkgconfig python:2.7 shebangfix
+USES=		gettext gmake gnome makeinfo pathfix pkgconfig python:2.7 \
+		shebangfix
 SHEBANG_FILES=	exercises/standard/lesson-files/bin/csound-play-harmonic-interval.sh
 USE_GNOME=	pygtk2
 GNU_CONFIGURE=	yes

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nginx
-PORTVERSION=	1.17.4
+PORTVERSION=	1.17.7
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
 		LOCAL/osa
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	nginx
 
-PORTSCOUT=	limit:^1\.15\.[0-9]*
+PORTSCOUT=	limit:^1\.17\.[0-9]*
 
 USES=		cpe
 
@@ -129,7 +129,6 @@ DSO_CONFIGURE_ON=	--modules-path=${MODULESDIR}
 DSO_VARS=		MODULESDIR=${PREFIX}/libexec/${PORTNAME}
 FILE_AIO_CONFIGURE_ON=	--with-file-aio
 IPV6_CONFIGURE_OFF=	--with-cc-opt="-DNGX_HAVE_INET6=0 -I ${LOCALBASE}/include"
-IPV6_CATEGORIES=	ipv6
 THREADS_CONFIGURE_ON=	--with-threads
 
 # Bundled modules
@@ -166,6 +165,7 @@ HTTP_SSL_CONFIGURE_ON=		--with-http_ssl_module
 HTTP_SSL_USES=			ssl
 HTTP_STATUS_CONFIGURE_ON=	--with-http_stub_status_module
 HTTP_SUB_CONFIGURE_ON=		--with-http_sub_module
+HTTP_XSLT_USES=			gnome
 HTTP_XSLT_USE=			GNOME=libxml2,libxslt
 HTTP_XSLT_VARS=			DSO_BASEMODS+=http_xslt_module
 HTTPV2_IMPLIES=			HTTP_SSL
@@ -177,7 +177,7 @@ MAIL_SMTP_CONFIGURE_OFF=	--without-mail_smtp_module
 MAIL_SSL_USES=			ssl
 MAIL_SSL_CONFIGURE_ON=		--with-mail_ssl_module
 STREAM_VARS=			DSO_BASEMODS+=stream
-STREAM_SSL_IMPLIES=		HTTP_SSL
+STREAM_SSL_USES=		ssl
 STREAM_SSL_CONFIGURE_ON=	--with-stream_ssl_module
 STREAM_SSL_PREREAD_CONFIGURE_ON=--with-stream_ssl_preread_module
 
@@ -345,6 +345,11 @@ do-install-DSO-on:
 do-install-FASTDFS-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/fdfs
 	${INSTALL_DATA} ${WRKSRC_fastdfs}/src/mod_fastdfs.conf ${STAGEDIR}${PREFIX}/etc/fdfs/mod_fastdfs.conf.sample
+
+do-install-MODSECURITY-on:
+	${INSTALL_DATA} \
+	${WRKDIR}/modsecurity-${MODSECURITY_VERSION}/unicode.mapping \
+	${STAGEDIR}${ETCDIR}
 
 do-install-NAXSI-on:
 	${INSTALL_DATA} \

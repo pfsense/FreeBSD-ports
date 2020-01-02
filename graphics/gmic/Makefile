@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gmic
-DISTVERSION=	2.7.1
+DISTVERSION=	2.8.1
 PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://gmic.eu/files/source/
@@ -17,7 +17,6 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BROKEN_i386=	error: "c++ crashes, clang-5 and 6 fail: undefined reference to `__atomic_load'"
 
-BUILD_DEPENDS=	${LOCALBASE}/include/CImg.h:graphics/cimg
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libGraphicsMagick++.so:graphics/GraphicsMagick \
 		libIlmImf.so:graphics/openexr \
@@ -53,6 +52,14 @@ PLUGINS_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 PLUGINS_BROKEN=		cmake files support was accidentally broken, need to convert the port to gmake use: https://github.com/dtschump/gmic/issues/135
 
 X11_CMAKE_BOOL=		ENABLE_X
+X11_USES=		xorg
 X11_USE=		XORG=ice,sm,x11,xext
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# XXX Drop after FreeBSD 12.0 EOL
+.if ${CHOSEN_COMPILER_TYPE} == clang && !exists(/usr/include/omp.h)
+LIB_DEPENDS+=	libomp.so:devel/openmp
+.endif
+
+.include <bsd.port.post.mk>

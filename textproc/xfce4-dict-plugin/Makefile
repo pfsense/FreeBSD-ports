@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-dict
-PORTVERSION=	0.8.2
-PORTREVISION=	1
+PORTVERSION=	0.8.3
 CATEGORIES=	textproc xfce
 MASTER_SITES=	XFCE/apps
 PKGNAMESUFFIX=	-plugin
@@ -15,8 +14,8 @@ COMMENT=	Xfce4 plugin to query different dictionaries
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext-tools gmake gnome libtool pkgconfig tar:bzip2 \
-		xfce xorg
+USES=		compiler:c11 gettext-tools gmake gnome libtool pkgconfig \
+		tar:bzip2 xfce xorg
 USE_GNOME=	cairo glib20 gtk30 intltool
 USE_XFCE=	panel
 USE_XORG=	x11

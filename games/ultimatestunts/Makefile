@@ -19,18 +19,22 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis
 
-USES=		compiler gettext openal:al,alut pkgconfig
+USES=		compiler gettext gl gnome openal:al,alut pkgconfig sdl
 USE_GL=		gl glu
 USE_SDL=	sdl image
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-openal
 MAKE_JOBS_UNSAFE=	yes
+# XXX Drop after FreeBSD 12.0 EOL
+.if exists(/usr/lib/clang/6.0.1)
 LLD_UNSAFE=	yes
+.endif
 
 CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_clang=	-Wno-c++11-narrowing
 CPPFLAGS+=	$$(pkgconf --cflags-only-I sdl)
 LDFLAGS+=	$$(pkgconf --libs-only-L sdl)
+LDFLAGS_i386=	-Wl,-z,notext
 
 PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS NLS

@@ -2,7 +2,7 @@
 
 PORTNAME=	libcoap
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.2.0
+DISTVERSION=	4.2.1
 CATEGORIES=	net
 
 MAINTAINER=	tcberner@FreeBSD.org
@@ -30,5 +30,7 @@ DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen \
 DOXYGEN_CONFIGURE_ENABLE=	doxygen
 
 INSTALL_TARGET=	install-strip
+
+PORTSCOUT=	ignore:tinydtls
 
 .include <bsd.port.mk>

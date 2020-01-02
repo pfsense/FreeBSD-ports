@@ -10,13 +10,16 @@ MASTER_SITES=	GNOME/sources/gazpacho/${PORTVERSION:R}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI builder for the GTK+ toolkit
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	LGPL21+ # source mentions LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}kiwi-gtk>=0:x11-toolkits/py-kiwi-gtk@${PY_FLAVOR}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		desktop-file-utils gettext python:2.7
+USES=		desktop-file-utils gettext gnome python:2.7
 USE_GNOME=	pygtk2
 USE_PYTHON=	distutils
 NO_BUILD=	yes

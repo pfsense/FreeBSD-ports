@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	16.6.2
+PORTVERSION=	16.7.0
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -20,11 +20,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 		libjansson.so:devel/jansson
 
-ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386 powerpc sparc64
+ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386 powerpc powerpc64 sparc64
 
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
-USES=		bison cpe gmake gnome iconv libedit localbase \
+USES=		bison compiler:c11 cpe gmake gnome iconv libedit localbase \
 		shebangfix sqlite ssl ncurses
 USE_CSTD=	gnu89
 USE_GNOME=	libxml2
@@ -59,7 +59,7 @@ CONFLICTS=		ossp-uuid-[0-9]*
 CONFLICTS_BUILD=	linuxthreads-*
 CONFLICTS_INSTALL=	asterisk13 asterisk15
 
-OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS LDAP LUA MACRO \
+OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS G729 LDAP LUA MACRO \
 				MP3PLAYER OOH323 OPTIMIZED_CFLAGS PJSIP PORTAUDIO RADIUS SNMP \
 				SPANDSP SRTP SYSINFO XMPP
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MACRO MP3PLAYER NEWT ODBC MYSQL PGSQL \
@@ -69,20 +69,14 @@ OPTIONS_DEFINE_i386=		DAHDI
 OPTIONS_DEFINE_amd64=		DAHDI
 OPTIONS_DEFINE_sparc64=		DAHDI
 
-OPTIONS_DEFAULT_i386=		DAHDI BASE XMPP
-OPTIONS_DEFAULT_amd64=		DAHDI BASE XMPP
-OPTIONS_DEFAULT_sparc64=	DAHDI GCC XMPP
-OPTIONS_DEFAULT_powerpc=	GCC XMPP
-OPTIONS_DEFAULT_armv6=		BASE
-OPTIONS_DEFAULT_armv7=		BASE
+OPTIONS_DEFAULT_i386=		DAHDI XMPP
+OPTIONS_DEFAULT_amd64=		DAHDI XMPP
+OPTIONS_DEFAULT_sparc64=	DAHDI XMPP
+OPTIONS_DEFAULT_powerpc=	XMPP
 
 OPTIONS_GROUP=			CODECS
 OPTIONS_GROUP_CODECS=		GSM NEWG711 OPUS SPEEX VORBIS
 CODECS_DESC=			Encoder/Decoder (Codec) Support
-
-OPTIONS_SINGLE=			COMPILER
-OPTIONS_SINGLE_COMPILER=	BASE GCC
-COMPILER_DESC=			Compiler to use
 
 OPTIONS_GROUP+=			DATABASE
 OPTIONS_GROUP_DATABASE=		MYSQL ODBC PGSQL SQLITE2
@@ -93,11 +87,6 @@ OPTIONS_MULTI_MENU=		NCURSES NEWT
 MENU_DESC=			Menuselect Interface Backend
 NEWT_DESC=			Newt User Interface
 
-OPTIONS_GROUP+=			SOUNDS
-OPTIONS_GROUP_SOUNDS=		G729 JAPANESE
-SOUNDS_DESC=			Core and Music-on-Hold (MoH) Sound Files
-G729_DESC=			Install G.729 format sounds
-JAPANESE_DESC=			Install Japanese voice prompts
 ASTERISK_CORE_G729_SOUNDS=	asterisk-core-sounds-en-g729-1.5.tar.gz
 ASTERISK_MOH_G729_SOUNDS=	asterisk-moh-opsound-g729-2.03.tar.gz
 G729_DISTFILES=			${ASTERISK_CORE_G729_SOUNDS}:g729 \
@@ -105,9 +94,9 @@ G729_DISTFILES=			${ASTERISK_CORE_G729_SOUNDS}:g729 \
 
 ASTVERSION_DESC?= Install astversion (requires bash)
 BACKTRACE_DESC?= Stack backtrace support via (lib)execinfo
-BASE_DESC=	Use base compiler
 DAHDI_DESC?=	DAHDI support
 EXCHANGE_DESC?=	Exchange calendar support
+G729_DESC?=	Install G.729 format sounds for Music-on-Hold (MoH)
 MACRO_DESC?=	Enable app_macro (deprecated)
 MP3PLAYER_DESC=	Install MP3 Player for Music-On-Hold (mpg123)
 NEWG711_DESC?=	New G711 Codec
@@ -143,12 +132,8 @@ FREETDS_CONFIGURE_ON=	--with-tds=${LOCALBASE}
 FREETDS_CONFIGURE_OFF=	--without-tds
 FREETDS_LIB_DEPENDS=	libsybdb.so:databases/freetds
 
-GCC_USE=		GCC=yes
-
 GSM_CONFIGURE_WITH=	gsm
 GSM_LIB_DEPENDS=	libgsm.so:audio/gsm
-
-JAPANESE_RUN_DEPENDS=	${LOCALBASE}/share/asterisk/sounds/ja/digits/0.gsm:japanese/asterisk-sounds
 
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=		OPENLDAP=yes

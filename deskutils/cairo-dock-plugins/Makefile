@@ -26,7 +26,7 @@ GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 gtk30 librsvg2 libxml2
 USE_LDCONFIG=	yes
 USE_XORG=	xrender
-USES=		cmake gettext pkgconfig python
+USES=		cmake gettext gnome pkgconfig python xorg
 LDFLAGS+=	-L${LOCALBASE}/lib
 PLIST_SUB=	PYVER="${PYTHON_VERSION:S/thon//}"
 CMAKE_ARGS=	-DROOT_PREFIX:PATH=${STAGEDIR} \
@@ -91,6 +91,8 @@ KEYBOARD_INDICATOR_LIB_DEPENDS=	libexif.so:graphics/libexif \
 				libxklavier.so:x11/libxklavier
 KEYBOARD_INDICATOR_CMAKE_BOOL=	enable-keyboard-indicator
 
+# libetpan 1.9.4 replaces libetpan-config with libetpan.pc
+MAIL_BUILD_DEPENDS=	libetpan>=1.9.4:mail/libetpan
 MAIL_LIB_DEPENDS=	libetpan.so:mail/libetpan
 MAIL_CMAKE_BOOL=	enable-mail
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	solidity
-PORTVERSION=	0.5.11
+PORTVERSION=	0.6.0
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/ethereum/solidity/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -12,11 +12,11 @@ COMMENT=	Solidity Contract-Oriented Programming Language
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
-LIB_DEPENDS=	libjsoncpp.so:devel/jsoncpp
-
 NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe sparc64
 NOT_FOR_ARCHS_REASON=	solidity currently does not support big endian systems
+
+BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
+LIB_DEPENDS=	libjsoncpp.so:devel/jsoncpp
 
 USES=		cmake compiler:c++14-lang
 
