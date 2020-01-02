@@ -111,11 +111,11 @@ if (!empty($gtype)) {
 
 if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_POST['save'])) {
 
-	$rowid		= 0;
 	$pfb_found	= FALSE;
 	$disable_move	= TRUE;
 	init_config_arr(array('installedpackages', $conf_type, 'config'));
 	$rowdata	= $config['installedpackages'][$conf_type]['config'];
+	$rowid		= count($rowdata);
 	$all_group = $new_group = array();
 
 	$feed_info = convert_feeds_json();			// Load/convert Feeds (w/alternative aliasname(s), if user-configured
@@ -257,7 +257,7 @@ if ($_POST && isset($_POST['save'])) {
 	if (isset($savemsg)) {
 		unset($savemsg);
 	}
-	
+
 	if (isset($_REQUEST['savemsg'])) {
 		unset($_REQUEST['savemsg']);
 	}
@@ -303,6 +303,12 @@ if ($_POST && isset($_POST['save'])) {
 							. "API key not defined! Add your subscripton API Key to the Source field URL or disable/remove feed.";
 			}
 			$line++;
+		}
+
+		// Validate MaxMind License Key
+		if ($value == 'geoip' && strpos($key, 'format-') !== FALSE && empty($pfb['maxmind_key'])) {
+			$input_errors[] = "{$type} Source Definitions, Line {$line}: "
+				. 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information.';
 		}
 	}
 
@@ -466,7 +472,15 @@ if ($_POST && isset($_POST['save'])) {
 		print_input_errors($input_errors);
 
 		// Restore $_POST data on input errors
-		$pconfig = $_POST;
+		foreach ($_POST as $key => $value) {
+			if (strpos($key, '-') !== FALSE) {
+				$k_field = explode('-', $key);
+				$rowdata[$rowid]['row'][$k_field[1]][$k_field[0]] = $value;
+			}
+			else {
+				$pconfig[$key] = $value;
+			}
+		}
 	}
 }
 else {
@@ -589,7 +603,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 	$tab_array[]	= array(gettext('Reputation'),	false,			'/pfblockerng/pfblockerng_reputation.php');
 }
 else {
-	$tab_array[]	= array(gettext('DNSBL Feeds'),		$active['feeds'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
+	$tab_array[]	= array(gettext('DNSBL Groups'),	$active['feeds'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
 	$tab_array[]	= array(gettext('DNSBL Category'),	false,			'/pfblockerng/pfblockerng_blacklist.php');
 }
 display_top_tabs($tab_array, true);
