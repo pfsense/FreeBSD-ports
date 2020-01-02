@@ -8,6 +8,7 @@ bin/gpsfake
 %%NCURSES%%bin/gpsmon
 bin/gpspipe
 bin/gpsprof
+bin/gpsrinex
 bin/gpxlogger
 bin/lcdgps
 bin/ubxtool
@@ -18,8 +19,8 @@ bin/zerk
 include/gps.h
 include/libgpsmm.h
 lib/libgps.so
-lib/libgps.so.24
-lib/libgps.so.24.0.0
+lib/libgps.so.25
+lib/libgps.so.25.0.0
 man/man1/cgps.1.gz
 man/man1/gegps.1.gz
 man/man1/gps.1.gz
@@ -31,6 +32,7 @@ man/man1/gpsfake.1.gz
 man/man1/gpsmon.1.gz
 man/man1/gpspipe.1.gz
 man/man1/gpsprof.1.gz
+man/man1/gpsrinex.1.gz
 man/man1/gpxlogger.1.gz
 man/man1/lcdgps.1.gz
 man/man1/ubxtool.1.gz
