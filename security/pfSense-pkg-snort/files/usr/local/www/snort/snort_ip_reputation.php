@@ -3,7 +3,7 @@
  * snort_ip_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
