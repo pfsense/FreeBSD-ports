@@ -1,5 +1,5 @@
 # Created by: Patrick Tracanelli <eksffa@freebsdbrasil.com.br>
-# $FreeBSD:$
+# $FreeBSD$
 
 PORTNAME=	suricata
 DISTVERSION=	5.0.1

@@ -1,5 +1,5 @@
 #!/bin/sh
-# $FreeBSD:$
+# $FreeBSD$
 
 # PROVIDE: suricata
 # REQUIRE: DAEMON
