@@ -1,6 +1,6 @@
 --- src/sshguard.in.orig	2019-05-23 22:25:17 UTC
 +++ src/sshguard.in
-@@ -97,14 +97,8 @@ elif [ -z "$tailcmd" ]; then
+@@ -97,19 +97,12 @@ elif [ -z "$tailcmd" ]; then
      exit 1
  fi
  
@@ -17,3 +17,9 @@
  
  # Make sure to kill entire process group (subshell) on exit/interrupts.
  trap "clean_and_exit" INT TERM
+ trap "kill 0" EXIT
+ 
+ eval $tailcmd | $libexec/sshg-parser | \
+-    $libexec/sshg-blocker $flags | $BACKEND &
+-wait
++    $libexec/sshg-blocker $flags | ($BACKEND ; pkill -PIPE -P $$)
