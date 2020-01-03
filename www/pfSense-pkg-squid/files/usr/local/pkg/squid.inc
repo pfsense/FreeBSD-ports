@@ -1138,12 +1138,15 @@ function squid_resync_general() {
 		$srv_cert = lookup_ca($settings["dca"]);
 		if ($srv_cert != false) {
 			if (base64_decode($srv_cert['prv'])) {
+				if (file_exists(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen")) {
+					$squid4 = true;
+				}
 				// check if ssl_db was initilized by Squid
 				if (!file_exists(SQUID_SSL_DB . "/serial")) {
 					if (is_dir(SQUID_SSL_DB)) {
 						mwexec("/bin/rm -rf " . SQUID_SSL_DB);
 					}
-					if (file_exists(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen")) {
+					if ($squid4) {
 						mwexec(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen -c -s " . SQUID_SSL_DB . " -M 4MB");
 					} else {
 						mwexec(SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -c -s " . SQUID_SSL_DB);
@@ -1185,16 +1188,26 @@ function squid_resync_general() {
 				file_put_contents($crt_pk, unixnewlines(base64_decode($srv_cert['prv']) . "\n" . base64_decode($srv_cert['crt'])));
 				$sslcrtd_children = ($settings['sslcrtd_children'] ? $settings['sslcrtd_children'] : 5);
 				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
-				$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
+				if ($squid4) {
+					$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/security_file_certgen -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
+					$interception_checks .= "tls_outgoing_options capath={$crt_capath}\n";
+					$interception_checks .= "tls_outgoing_options options={$sslproxy_options}\n";
+					$interception_checks .= "tls_outgoing_options cipher={$sslproxy_cipher}\n";
+					if (preg_match("/sslproxy_flags/", $settings["interception_checks"])) {
+						$interception_checks .= "tls_outgoing_options flags=DONT_VERIFY_PEER\n";
+					}
+				} else {
+					$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
+					$interception_checks .= "sslproxy_capath {$crt_capath}\n";
+					$interception_checks .= "sslproxy_options {$sslproxy_options}\n";
+					$interception_checks .= "sslproxy_cipher {$sslproxy_cipher}\n";
+					if (preg_match("/sslproxy_flags/", $settings["interception_checks"])) {
+						$interception_checks .= "sslproxy_flags DONT_VERIFY_PEER\n";
+					}
+				}
 				$interception_checks .= "sslcrtd_children {$sslcrtd_children}\n";
-				$interception_checks .= "sslproxy_capath {$crt_capath}\n";
-				$interception_checks .= "sslproxy_options {$sslproxy_options}\n";
-				$interception_checks .= "sslproxy_cipher {$sslproxy_cipher}\n";
 				if (preg_match("/sslproxy_cert_error/", $settings["interception_checks"])) {
 					$interception_checks .= "sslproxy_cert_error allow all\n";
-				}
-				if (preg_match("/sslproxy_flags/", $settings["interception_checks"])) {
-					$interception_checks .= "sslproxy_flags DONT_VERIFY_PEER\n";
 				}
 				if ($settings["interception_adapt"] != "") {
 					foreach (explode(",", $settings["interception_adapt"]) as $adapt) {
