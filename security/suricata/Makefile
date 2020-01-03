@@ -1,5 +1,5 @@
 # Created by: Patrick Tracanelli <eksffa@freebsdbrasil.com.br>
-# $FreeBSD: head/security/suricata/Makefile 520857 2019-12-25 13:30:20Z amdmi3 $
+# $FreeBSD:$
 
 PORTNAME=	suricata
 DISTVERSION=	5.0.1
@@ -76,7 +76,7 @@ LUA_CONFIGURE_ON=		--enable-lua \
 				--with-liblua-includes=${LUA_INCDIR} \
 				--with-liblua-libraries=${LUA_LIBDIR}
 
-LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit
+LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit-openresty
 LUAJIT_CONFIGURE_ON=		--enable-luajit
 
 NSS_LIB_DEPENDS=		libnss3.so:security/nss \
