@@ -3,7 +3,7 @@
  * snort_check_for_rule_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
  * Copyright (c) 2013-2019 Bill Meeks
  * All rights reserved.
