@@ -1,5 +1,5 @@
 #!/bin/sh
-# $FreeBSD$
+# $FreeBSD: head/security/suricata/files/suricata.in 454649 2017-11-21 18:55:28Z zeising $
 
 # PROVIDE: suricata
 # REQUIRE: DAEMON
