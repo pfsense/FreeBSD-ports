@@ -56,6 +56,10 @@ function squid_resync_reverse() {
 
 	$conf = "# Reverse Proxy settings\n";
 
+	if (file_exists(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen")) {
+		$squid4 = true;
+	}
+
 	if (isset($settings['reverse_ssl_cert']) && $settings['reverse_ssl_cert'] != "none") {
 		$svr_cert = lookup_cert($settings['reverse_ssl_cert']);
 		if ($svr_cert != false) {
@@ -113,7 +117,11 @@ function squid_resync_reverse() {
 	$https_defsite = (empty($settings['reverse_https_defsite']) ? $settings['reverse_external_fqdn'] : $settings['reverse_https_defsite']);
 
 	// Ignore Internal Certificate Validation
-	$sslflags_cache_peer = ($settings['reverse_ignore_ssl_valid'] == "on" ? "sslflags=DONT_VERIFY_PEER" : "");
+	if ($squid4) {
+		$sslflags_cache_peer = ($settings['reverse_ignore_ssl_valid'] == "on" ? "tls-flags=DONT_VERIFY_PEER" : "");
+	} else {
+		$sslflags_cache_peer = ($settings['reverse_ignore_ssl_valid'] == "on" ? "sslflags=DONT_VERIFY_PEER" : "");
+	}
 
 	// Reverse Proxy HTTPS security settings
 	$options = "NO_SSLv2,NO_SSLv3,CIPHER_SERVER_PREFERENCE";
@@ -196,6 +204,12 @@ function squid_resync_reverse() {
 		}
 	}
 
+	if ($squid4) {
+		$ssl = 'tls';
+	} else {
+		$ssl = 'ssl';
+	}
+
 	// peers
 	if ($settings['reverse_owa'] == 'on') {
 		if (!empty($settings['reverse_owa_ip'])) {
@@ -203,7 +217,7 @@ function squid_resync_reverse() {
 			$casnr = 0;
 			foreach ($reverse_owa_ip as $reowaip) {
 				$casnr++;
-				$conf .= "cache_peer {$reowaip} parent 443 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on ssl {$sslflags_cache_peer} front-end-https=on name=OWA_HOST_443_{$casnr}_pfs\n";
+				$conf .= "cache_peer {$reowaip} parent 443 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on {$ssl} {$sslflags_cache_peer} front-end-https=on name=OWA_HOST_443_{$casnr}_pfs\n";
 				$conf .= "cache_peer {$reowaip} parent 80 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on name=OWA_HOST_80_{$casnr}_pfs\n";
 			}
 		}
@@ -216,7 +230,7 @@ function squid_resync_reverse() {
 				$conf_peer = "#{$rp['description']}\n";
 				$conf_peer .= "cache_peer {$rp['ip']} parent {$rp['port']} 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on round-robin ";
 				if ($rp['protocol'] == 'HTTPS') {
-					$conf_peer .= "ssl {$sslflags_cache_peer} front-end-https=auto ";
+					$conf_peer .= "{$ssl} {$sslflags_cache_peer} front-end-https=auto ";
 				}
 				$conf_peer .= "name=rvp_{$rp['name']}\n\n";
 
