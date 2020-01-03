@@ -1889,7 +1889,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 		elseif ($file_type == 'application/zip') {
 
 			// Extras - MaxMind/Alexa downloads
-			if ($logtype == 3) {
+			if ($logtype >= 3) {
 				// Determine if Zip contains multiple files
 				exec("/usr/bin/tar -tf {$file_dwn}.raw 2>&1", $archive_count, $retval);
 				if ($archive_count[0] == 'tar: Failed to set default locale') {
