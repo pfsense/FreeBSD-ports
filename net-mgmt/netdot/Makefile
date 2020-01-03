@@ -3,9 +3,9 @@
 
 PORTNAME=	netdot
 PORTVERSION=	1.0.7
+DISTVERSIONPREFIX=	${PORTNAME}-
 PORTREVISION=	4
 CATEGORIES=	net-mgmt
-MASTER_SITES=	http://netdot.uoregon.edu/pub/dists/
 
 MAINTAINER=	nick@foobar.org
 COMMENT=	Open source tool to organize and maintain network information
@@ -41,9 +41,13 @@ RUN_DEPENDS=	p5-libapreq2>=0:www/p5-libapreq2 \
 		rrdtool:databases/rrdtool \
 		netdisco-mibs>=0:net-mgmt/netdisco-mibs
 
-USES=		gmake perl5 shebangfix
+USES=		gmake mysql perl5 shebangfix
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	cvicente
+GH_PROJECT=	Netdot
+
 NO_BUILD=	yes
-USE_MYSQL=	yes
 
 SUB_FILES=	pkg-message pkg-install
 SUB_LIST=	WWWDIR="${WWWDIR}"	\
@@ -72,7 +76,7 @@ post-patch:
 
 post-install:
 .for f in export/bind export/dhcpd export/ethers export/rancid export/smokeping export/sysmon htdocs/img/graphs lib/Netdot/Manual tmp/sessions/locks htdocs/masondata/cache
-		@${TOUCH} ${STAGEDIR}${WWWDIR}/${f}/.keep-me
+	@${TOUCH} ${STAGEDIR}${WWWDIR}/${f}/.keep-me
 .endfor
 .for f in initdb
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/${f} ${STAGEDIR}${WWWDIR}/bin/${f}

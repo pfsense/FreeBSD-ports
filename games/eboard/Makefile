@@ -13,13 +13,13 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		eboard-extras-2.tar.gz:p2
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK+ chess board interface (mainly for FICS and chessd)
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
 EXTRAS=		1pl2 2
-USES=		shebangfix pkgconfig perl5 tar:bzip2
+USES=		gnome perl5 pkgconfig shebangfix tar:bzip2
 HAS_CONFIGURE=	yes
 USE_PERL5=	build
 USE_GNOME=	gtk20
@@ -33,6 +33,7 @@ INSTALL_TARGET=	install install-man
 
 OPTIONS_DEFINE=	JOYSTICK DOCS
 JOYSTICK_DESC=	Enable joystick support
+JOYSTICK_BUILD_DEPENDS=	${LOCALBASE}/include/linux/joystick.h:devel/evdev-proto
 
 DESKTOP_ENTRIES="eboard" \
 		"Play chess" \
@@ -42,11 +43,6 @@ DESKTOP_ENTRIES="eboard" \
 		true
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MJOYSTICK}
-BUILD_DEPENDS+=	${LOCALBASE}/include/linux/joystick.h:devel/linux-js
-RUN_DEPENDS+=	${LOCALBASE}/include/linux/joystick.h:devel/linux-js
-.endif
 
 post-extract:
 .for e in ${EXTRAS}

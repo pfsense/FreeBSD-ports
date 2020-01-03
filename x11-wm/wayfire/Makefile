@@ -1,15 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	wayfire
-DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2
+DISTVERSION=	0.3.0
 PORTREVISION=	1
 CATEGORIES=	x11-wm
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	c51e3eda7fa0.patch:-p1 # drop unused
-PATCHFILES+=	c4d4c941e773.patch:-p1 # support SUID
-PATCHFILES+=	45535347c922.patch:-p1 # wlroots 0.7
+PATCHFILES=	8d8581a3e791.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	3D wayland compositor
@@ -29,7 +26,7 @@ LIB_DEPENDS=	libinotify.so:devel/libinotify \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
-USES=		compiler:c++11-lib gl jpeg meson pkgconfig
+USES=		compiler:c++11-lib gl gnome jpeg meson pkgconfig xorg
 USE_GITHUB=	yes
 USE_GL=		egl glesv2
 USE_GNOME=	cairo

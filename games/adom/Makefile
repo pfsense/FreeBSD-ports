@@ -11,6 +11,8 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//g}-elf
 MAINTAINER=	sr-13@mail.ru
 COMMENT=	Rogue-like advanced rpg with color support (binary port)
 
+BROKEN=		unfetchable
+
 LICENSE=	unknown
 LICENSE_NAME=	The ADOM License
 LICENSE_FILE=	${WRKSRC}/readme.1st
@@ -30,10 +32,12 @@ NO_BUILD=	yes
 SUB_FILES=	pkg-message
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/adom ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/adom ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for docs in readme.1st adomfaq.txt manual.doc
-	@${INSTALL_DATA} ${WRKSRC}/${docs} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${docs} ${STAGEDIR}${DOCSDIR}
 .endfor
 
 .include <bsd.port.mk>

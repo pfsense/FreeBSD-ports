@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	astLib
-PORTVERSION=	0.10.2
-PORTREVISION=	2
+PORTVERSION=	0.11.3
 CATEGORIES=	astro python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astropy>=1.1:astro/py-astropy@${PY_FLAVOR} \
 
 PORTSCOUT=	skipv:0.15,0.17,0.17.1 # incorrect versioning upstream
 
-USES=		python
+USES=		python:3.5+
 USE_PYTHON=	autoplist concurrent distutils
 
 post-install:

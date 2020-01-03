@@ -17,6 +17,8 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} FreeBSD-${PORTNAME}-${PORTVERSION}-mave
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Workflow scheduler for Hadoop
 
+BROKEN=		unfetchable
+
 LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${LOCALBASE}/share/java/maven3/bin/mvn:devel/maven3 \
@@ -27,7 +29,6 @@ RUN_DEPENDS=	bash:shells/bash \
 
 USES=		shebangfix
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 TOMCAT_VERSION=	6.0.43
 HADOOP_VERSION=	2.7.2		# Matches devel/hadoop2
 SHEBANG_FILES=	client/src/main/bin/oozie distro/src/main/bin/addtowar.sh distro/src/main/bin/oozied.sh distro/src/main/bin/oozie-setup.sh distro/src/main/bin/oozie-sys.sh tools/src/main/bin/ooziedb.sh core/src/main/conf/oozie-env.sh

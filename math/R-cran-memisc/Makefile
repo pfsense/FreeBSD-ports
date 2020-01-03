@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	memisc
-DISTVERSION=	0.99.17.2
-PORTREVISION=	1
+DISTVERSION=	0.99.21
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -12,7 +11,8 @@ COMMENT=	Provides an infrastructure for the management of survey data
 
 LICENSE=	GPLv2
 
-CRAN_DEPENDS=	R-cran-repr>0:devel/R-cran-repr
+CRAN_DEPENDS=	R-cran-repr>0:devel/R-cran-repr \
+		R-cran-data.table>0:devel/R-cran-data.table
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 

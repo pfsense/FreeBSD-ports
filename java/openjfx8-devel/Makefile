@@ -3,7 +3,7 @@
 
 PORTNAME=	openjfx8
 DISTVERSION=	8u202-b07
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	java x11-toolkits devel
 MASTER_SITES=	https://github.com/t6/openjfx/releases/download/release/ \
@@ -26,7 +26,8 @@ BUILD_DEPENDS=	apache-ant>0:devel/apache-ant \
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		gettext-runtime gl gnome jpeg localbase:ldflags pkgconfig sqlite
+USES=		gettext-runtime gl gnome jpeg localbase:ldflags pkgconfig \
+		sqlite xorg
 USE_GL=		gl
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 gtk30 pango
 USE_JAVA=	yes
@@ -53,8 +54,8 @@ MEDIA_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 MEDIA_USES=	gmake
 MEDIA_VARS=	COMPILE_MEDIA=true
 
-SWT_BUILD_DEPENDS=	swt-devel>0:x11-toolkits/swt-devel
-SWT_RUN_DEPENDS=	swt-devel>0:x11-toolkits/swt-devel
+SWT_BUILD_DEPENDS=	swt>0:x11-toolkits/swt
+SWT_RUN_DEPENDS=	swt>0:x11-toolkits/swt
 SWT_VARS=	COMPILE_SWT=true
 
 TEST_USES=	display:test

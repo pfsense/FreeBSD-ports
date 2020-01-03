@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-desktop
-PORTVERSION=	1.22.1
+PORTVERSION=	1.22.2
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -21,8 +21,8 @@ BUILD_DEPENDS=	iso-codes>=0:misc/iso-codes
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake libtool localbase pathfix \
-		pkgconfig python shebangfix tar:xz
+USES=		gettext gmake gnome libtool localbase pathfix \
+		pkgconfig python shebangfix tar:xz xorg
 USE_XORG=	x11 xrandr
 USE_GNOME=	cairo dconf gdkpixbuf2 gnomeprefix gtk30 \
 		intltool introspection:build

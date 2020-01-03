@@ -10,6 +10,8 @@ MASTER_SITES=	http://shutter-project.org/wp-content/uploads/releases/tars/
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Screenshot tool
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv3 GPLv2 # the latter for some shipped cursors
 LICENSE_COMB=	multi
 
@@ -55,7 +57,7 @@ SHEBANG_FILES=	bin/shutter share/shutter/resources/system/upload_plugins/*.pm
 SHUTTER_DESKTOP=	share/applications/shutter.desktop
 
 USE_PERL5=	run
-USES=	desktop-file-utils gettext-runtime perl5 shebangfix
+USES=		desktop-file-utils gettext-runtime gnome perl5 shebangfix
 
 .include <bsd.port.options.mk>
 

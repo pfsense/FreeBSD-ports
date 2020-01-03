@@ -2,9 +2,13 @@
 
 PORTNAME=	media-driver
 DISTVERSIONPREFIX=	intel-media-
-DISTVERSION=	19.3.1
+DISTVERSION=	19.4.0
+PORTREVISION=	4
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	libva-intel-
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	c203c89a9695.patch:-p1 12b7fcded6c7.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	VAAPI driver for Intel HD 5000 (Gen8) or newer
@@ -17,7 +21,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	Only Intel GPUs on x86 are supported
 
 BUILD_DEPENDS=	gmmlib>=19.3.1:multimedia/gmmlib \
-		libva>=2.5.0:multimedia/libva
+		libva>=2.6.0:multimedia/libva
 LIB_DEPENDS=	libpciaccess.so:devel/libpciaccess \
 		libigdgmm.so:multimedia/gmmlib \
 		libva.so:multimedia/libva
@@ -30,6 +34,7 @@ CMAKE_OFF=	MEDIA_BUILD_FATAL_WARNINGS BUILD_CMRTLIB
 CMAKE_ARGS=	-DBUILD_TYPE:STRING="${CMAKE_BUILD_TYPE}" \
 		-DARCH:STRING="${ARCH_SUFX}" \
 		-DUFO_MARCH:STRING="${CPUTYPE}"
+CFLAGS+=	-Wno-macro-redefined # __fastcall
 PLIST_FILES=	lib/dri/iHD_drv_video.so
 
 OPTIONS_DEFINE=	TEST X11
@@ -48,9 +53,6 @@ post-patch:
 		${REINPLACE_CMD} -i .gcc.bak '/-fno-tree-pre/d' \
 			${WRKSRC}/media_driver/cmake/linux/media_compile_flags_linux.cmake; \
 	fi
-# Silence -Wmacro-redefined
-	@${REINPLACE_CMD} -e '/__fastcall/d' \
-		${WRKSRC}/media_driver/linux/common/cm/cm_mem_os.h
 
 post-patch-X11-off:
 	@${REINPLACE_CMD} -i .nox11 '/find_package.*X11/d' \

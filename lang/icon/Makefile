@@ -12,6 +12,8 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Icon programming language
 
+BROKEN=		unfetchable
+
 USE_GCC=	any
 ALL_TARGET=	All
 MAKE_JOBS_UNSAFE=	yes
@@ -29,6 +31,7 @@ OPTIONS_DEFINE=	DOCS X11
 CONFIG_CMD=	Configure
 PLIST_SUB+=	WITHOUT_X11="@comment "
 .else
+USES+=		xorg
 USE_XORG=	x11 xpm
 CFLAGS+=	-I${LOCALBASE}/include
 CONFIG_CMD=	X-Configure

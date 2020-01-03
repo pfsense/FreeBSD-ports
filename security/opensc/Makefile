@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	opensc
-PORTVERSION=	0.19.0
+DISTVERSION=	0.20.0
 CATEGORIES=	security devel
-MASTER_SITES=	https://github.com/OpenSC/OpenSC/releases/download/${PORTVERSION}/
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Libraries and utilities to access smart cards
 
 LICENSE=	LGPL21
 
-USES=		autoreconf compiler gmake libtool pkgconfig ssl
+USES=		autoreconf compiler:c11 gmake libtool pkgconfig ssl
 
 OPTIONS_SINGLE=	BACKEND
 OPTIONS_SINGLE_BACKEND=PCSC OPENCT CTAPI
@@ -24,6 +23,10 @@ OPENCT_DESC=	Use OpenCT backend
 CTAPI_DESC=	Use CT-API backend
 SM_DESC=	Enable secure messaging support
 NOTIFY_DESC=	Enable notification support
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	OpenSC
+GH_PROJECT=	${GH_ACCOUNT}
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -66,12 +69,4 @@ CONFIGURE_ENV+=	XSLTPROC="${FALSE}"
 CONFIGURE_ARGS+=--without-xsl-stylesheetsdir
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-post-patch:
-	${REINPLACE_CMD} -e '/-Wno-unused-but-set-variable/d' \
-		${WRKSRC}/src/tools/Makefile.am
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

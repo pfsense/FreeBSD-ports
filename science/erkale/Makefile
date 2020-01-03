@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	erkale
-DISTVERSION=	g20190812
-PORTREVISION=	2
+DISTVERSION=	g20191120
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +10,6 @@ COMMENT=	Quantum chemistry program to solve the electronic structure of atoms
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_aarch64=	clang-8: error: no such file or directory: 'NOTFOUND'
 BROKEN_i386=	liberkale_omp.so.0.1.0: undefined reference to `__atomic_compare_exchange'
 
 BUILD_DEPENDS=	armadillo>0:math/armadillo
@@ -31,7 +29,7 @@ serial_PKGNAMESUFFIX=	-serial
 USES=		cmake:noninja fortran pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	susilehtola
-GH_TAGNAME=	b9279190bbd82fef33968e88bad706c8e213b6e4
+GH_TAGNAME=	2afb257548dbd8246aac921d0d9dce7ecb744a6f
 USE_LDCONFIG=	yes
 
 TEST_TARGET=	test

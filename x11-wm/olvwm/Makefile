@@ -23,9 +23,8 @@ LIB_DEPENDS=	libxview.so:x11-toolkits/xview
 
 REINPLACE_ARGS= -i ""
 NO_WRKSUBDIR=	yes
-USES=		imake tar:Z
+USES=		imake tar:Z xorg
 USE_XORG=	xpm
-XFREE86_HTML_MAN=	no
 
 IMAKECPPFLAGS+=	-DXVDestDir=${STAGEDIR}${PREFIX}
 

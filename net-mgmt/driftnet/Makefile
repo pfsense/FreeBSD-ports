@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	driftnet
-PORTVERSION=	1.2.0
+PORTVERSION=	1.3.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-mgmt
 
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	makedepend:devel/makedepend
 
 GNU_CONFIGURE=	yes
 USES=		autoreconf gettext-runtime gmake gnome jpeg localbase:ldflags \
-		pkgconfig
+		pkgconfig xorg
 USE_CSTD=	c99
 USE_GITHUB=	yes
 USE_GNOME=	gtk20

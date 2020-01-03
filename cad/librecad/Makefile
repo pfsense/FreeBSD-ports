@@ -2,8 +2,13 @@
 
 PORTNAME=	librecad
 DISTVERSION=	2.2.0-rc1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	cad
+
+PATCH_SITES_gcc= https://github.com/LibreCAD/LibreCAD/commit/
+PATCH_SITES=	${PATCH_SITES_${CHOSEN_COMPILER_TYPE}}
+PATCHFILES_gcc=	d0a0ef284b7fcc5c0d65b92c30855f62b637653f.patch:-p1
+PATCHFILES=	${PATCHFILES_${CHOSEN_COMPILER_TYPE}}
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	2D CAD system
@@ -15,7 +20,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/version.hpp:devel/boost-libs
 LIB_DEPENDS=	libmuparser.so:math/muparser \
 		libfreetype.so:print/freetype2
 
-USES=		compiler:c++11-lib desktop-file-utils pkgconfig qmake qt:5
+USES=		compiler:c++11-lib desktop-file-utils pkgconfig gl qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	LibreCAD
 GH_PROJECT=	LibreCAD

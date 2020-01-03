@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	kstars
-DISTVERSION=	3.3.5
-PORTREVISION=	1
+DISTVERSION=	3.3.8
 PORTEPOCH=	1
 CATEGORIES=	astro kde
 MASTER_SITES=	KDE/stable/${PORTNAME}
@@ -33,11 +32,5 @@ USE_QT=		concurrent core datavis3d dbus declarative gui multimedia \
 		network opengl printsupport sql svg testlib websockets widgets \
 		xml \
 		buildtools_build qmake_build
-
-post-patch:
-# climits defines ULLONG_MAX and LLONG_MAX
-	${REINPLACE_CMD} -e 's#ULONG_LONG_MAX#ULLONG_MAX#g' \
-			 -e 's#LONG_LONG_MAX#LLONG_MAX#g' \
-		${WRKSRC}/kstars/fitsviewer/fitsdata.cpp
 
 .include <bsd.port.mk>

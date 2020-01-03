@@ -1,6 +1,5 @@
 # $FreeBSD$
 
-PORTREVISION=	1
 PKGNAMESUFFIX=	-server
 CATEGORIES=	net x11-servers
 
@@ -9,18 +8,19 @@ COMMENT=	TigerVNC Server
 PATCH_DEPENDS+=	${NONEXISTENT}:x11-servers/xorg-server:patch
 BUILD_DEPENDS+=	${LOCALBASE}/include/GL/internal/dri_interface.h:graphics/mesa-dri \
 		${LOCALBASE}/libdata/pkgconfig/fontutil.pc:x11-fonts/font-util \
-		gm4:devel/m4 \
 		bash:shells/bash
 LIB_DEPENDS=	libxshmfence.so:x11/libxshmfence
 # almost equivalent to x11-servers/xorg-server's
 RUN_DEPENDS+=	${LOCALBASE}/share/X11/xkb/rules/base:x11/xkeyboard-config \
 		xkbcomp:x11/xkbcomp
 
-USES+=		autoreconf:build gl jpeg libtool pkgconfig ssl
+USES+=		autoreconf:build gl jpeg libtool pkgconfig ssl xorg
 USE_LDCONFIG=	yes
 USE_GL+=	gl
 USE_XORG+=	ice pixman sm x11 xau xdamage xdmcp xext xfixes xfont xkbfile \
 		xorg-macros xorgproto xrandr xrender xtrans xtst
+
+BINARY_WRAPPERS=	gm4
 
 OPTIONS_DEFINE=	DOCS GNUTLS PAM
 OPTIONS_DEFAULT=	GNUTLS PAM

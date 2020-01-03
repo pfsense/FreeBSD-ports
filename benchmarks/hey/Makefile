@@ -4,9 +4,10 @@
 PORTNAME=	hey
 PORTVERSION=	0.1.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	benchmarks
 
-MAINTAINER=	brd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tiny program that sends some load to a web application
 
 LICENSE=	APACHE20

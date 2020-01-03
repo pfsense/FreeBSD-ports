@@ -7,7 +7,6 @@
     SUBDIR += advancemame
     SUBDIR += advancemenu
     SUBDIR += advancemess
-    SUBDIR += aftp
     SUBDIR += almostti
     SUBDIR += anese 
     SUBDIR += aqemu
@@ -55,7 +54,6 @@
     SUBDIR += hugo
     SUBDIR += i386-wine
     SUBDIR += i386-wine-devel
-    SUBDIR += ia64sim
     SUBDIR += ines
     SUBDIR += javatari
     SUBDIR += joytran
@@ -65,13 +63,10 @@
     SUBDIR += lib765
     SUBDIR += libdsk
     SUBDIR += libspectrum
-    SUBDIR += linux-c6
     SUBDIR += linux-c7
     SUBDIR += linux-power9-functional-sim
-    SUBDIR += linux_base-c6
     SUBDIR += linux_base-c7
     SUBDIR += lisaem
-    SUBDIR += loemu
     SUBDIR += mame
     SUBDIR += mastergear
     SUBDIR += mednafen
@@ -106,7 +101,6 @@
     SUBDIR += pcem
     SUBDIR += pcemu
     SUBDIR += pcsxr
-    SUBDIR += pipelight
     SUBDIR += playonbsd
     SUBDIR += ppsspp
     SUBDIR += ppsspp-qt5
@@ -118,8 +112,10 @@
     SUBDIR += qemu-powernv
     SUBDIR += qemu-sbruno
     SUBDIR += qemu-user-static
+    SUBDIR += qemu-user-static-devel
     SUBDIR += qemu-utils
     SUBDIR += qemu30
+    SUBDIR += qemu31
     SUBDIR += qemu40
     SUBDIR += qmc2
     SUBDIR += quasi88
@@ -142,6 +138,7 @@
     SUBDIR += tuxnes
     SUBDIR += uae
     SUBDIR += ucon64
+    SUBDIR += ukncbtl
     SUBDIR += unicorn
     SUBDIR += vba
     SUBDIR += vboxtool

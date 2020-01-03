@@ -3,8 +3,8 @@
 
 PORTNAME=	xine
 PORTVERSION=	1.2.9
-PORTREVISION=	9
-CATEGORIES=	multimedia ipv6
+PORTREVISION=	11
+CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-lib/${PORTVERSION}
 PKGNAMEPREFIX=	lib
 DISTNAME=	${PORTNAME}-lib-${PORTVERSION}
@@ -39,8 +39,8 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libogg.so:audio/libogg \
 		libdvdnav.so:multimedia/libdvdnav
 
-USES=		compiler cpe gmake gnome iconv libtool:keepla jpeg \
-		localbase pathfix perl5 pkgconfig tar:xz
+USES=		compiler cpe gl gmake gnome iconv libtool:keepla jpeg \
+		localbase pathfix perl5 pkgconfig sdl tar:xz xorg
 LLD_UNSAFE=	yes
 CPE_PRODUCT=	xine-lib
 CPE_VENDOR=	xine

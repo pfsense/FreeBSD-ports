@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	recoll
-DISTVERSION=	1.25.16
+DISTVERSION=	1.25.22
 PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	https://www.lesbonscomptes.com/recoll/
@@ -68,7 +68,7 @@ QT5_CONFIGURE_ENV=	QMAKE="${QMAKE}" QMAKESPEC="${QMAKESPEC}" \
 SOUND_RUN_DEPENDS=	mutagen-pony-${PYTHON_VER}:audio/py-mutagen@${PY_FLAVOR} \
 			pykaraoke:audio/py-karaoke@${PY_FLAVOR}
 X11MON_DESC=		X11 session monitoring support
-X11MON_USES=		fam
+X11MON_USES=		fam xorg
 X11MON_USE=		xorg=ice,sm,x11
 X11MON_CONFIGURE_ENABLE=	x11mon
 X11MON_CONFIGURE_WITH=	fam

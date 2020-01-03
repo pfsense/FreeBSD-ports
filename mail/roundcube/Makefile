@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	roundcube
-DISTVERSION=	1.3.9
+DISTVERSION=	1.4.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES?=	mail www
 MASTER_SITES=	https://github.com/roundcube/roundcubemail/releases/download/${DISTVERSION}/
@@ -26,7 +27,7 @@ USES=		cpe php:web,flavors
 CPE_PRODUCT=	webmail
 CPE_VENDOR=	roundcube
 
-USE_PHP=	pcre mbstring session iconv dom xml json intl zip filter openssl fileinfo exif
+USE_PHP=	pcre mbstring session iconv dom xml json intl zip filter openssl fileinfo exif ctype
 
 OPTIONS_DEFINE=	LDAP GD PSPELL NSC DOCS EXAMPLES
 OPTIONS_MULTI=	DB
@@ -46,18 +47,16 @@ GD_VARS=	use_php+=gd
 LDAP_VARS=	use_php+=ldap
 MYSQL_VARS=	use_php+=pdo_mysql
 NSC_IMPLIES=	PSPELL
-NSC_VARS=	use_php+=simplexml rcubecomp+=spellchecker.php
+NSC_VARS=	use_php+=simplexml
 PGSQL_VARS=	use_php+=pdo_pgsql
 PSPELL_VARS=	use_php+=pspell
 SQLITE_VARS=	use_php+=pdo_sqlite
 
 SUB_FILES=	newsyslog.conf
 
-post-extract-NSC:
-	@${CP} ${FILESDIR}/spellchecker.php ${WRKSRC}
-
 post-patch:
 	@${FIND} ${WRKSRC} -name \*.orig -type f -delete
+	@${RMDIR} ${WRKSRC}/plugins/archive/skins/larry
 
 do-install:
 	-${MKDIR} ${STAGEDIR}${WWWDIR}
@@ -71,6 +70,10 @@ do-install:
 		>> ${TMPPLIST}
 	@${ECHO_CMD} '@postexec chown ${WWWOWN}:${WWWGRP} %D/${WWWDIR_REL}/temp' \
 		>> ${TMPPLIST}
+
+do-install-NSC-on:
+	@${INSTALL_DATA} ${FILESDIR}/spellchecker.php ${STAGEDIR}${WWWDIR}
+	@${ECHO_CMD} '${WWWDIR_REL}/spellchecker.php' >> ${TMPPLIST}
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

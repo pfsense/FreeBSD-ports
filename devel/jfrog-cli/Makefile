@@ -2,10 +2,13 @@
 
 PORTNAME=	jfrog-cli
 PORTVERSION=	1.25.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	CLI client for Artifactory
+
+BROKEN=		unfetchable
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

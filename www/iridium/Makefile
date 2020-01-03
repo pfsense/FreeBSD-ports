@@ -3,7 +3,7 @@
 
 PORTNAME=	iridium
 PORTVERSION=	2019.04.73
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	https://downloads.iridiumbrowser.de/source/
 PKGNAMESUFFIX=	-browser
@@ -64,7 +64,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		bison desktop-file-utils dos2unix gl gnome jpeg localbase:ldflags \
-		ninja perl5 pkgconfig python:2.7,build shebangfix tar:xz
+		ninja perl5 pkgconfig python:2.7,build shebangfix tar:xz xorg
 USE_GL=		gl
 USE_LDCONFIG=	${DATADIR}
 USE_PERL5=	build

@@ -16,8 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_sparc64=	fails to compile: no atomic ops available
 
-TEST_DEPENDS=	googlemock>=0:devel/googlemock \
-		googletest>=0:devel/googletest
+TEST_DEPENDS=	googletest>=0:devel/googletest
 
 USES=		compiler:c++11-lang gmake libtool localbase pathfix pkgconfig
 
@@ -38,7 +37,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|^check-local:|disabled-&|' ${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e 's|$$(GOOGLETEST_BUILD_DIR)/lib/libgtest\.la|-lgtest|' ${WRKSRC}/src/Makefile.in
-	@${REINPLACE_CMD} -e 's|$$(GOOGLEMOCK_BUILD_DIR)/lib/libgmock\(.*\)\.la|-lgmock\1|' ${WRKSRC}/src/Makefile.in
+	@${REINPLACE_CMD} -Ee 's,[^ 	]*lib(gtest|gmock.*)\.la,-l\1,' ${WRKSRC}/src/Makefile.in
 
 .include <bsd.port.mk>

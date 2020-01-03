@@ -8,6 +8,9 @@ CATEGORIES=	x11-toolkits devel
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility and widget library based on GLib and GTK+ 3
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	BSD2CLAUSE
 
 BUILD_DEPENDS=	valac:lang/vala
@@ -16,7 +19,7 @@ GH_ACCOUNT=	tiliado
 
 # USES=waf implicity does USES=python:2.7,build but that is not sufficient
 # for shebangfix to know the python version
-USES=		gnome pkgconfig python:2.7,build shebangfix waf
+USES=		gnome pkgconfig python:2.7,build shebangfix waf xorg
 USE_GITHUB=	yes
 USE_GNOME=	gdkpixbuf2 glib20 gtk30
 USE_XORG=	x11

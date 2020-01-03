@@ -3,7 +3,7 @@
 
 PORTNAME=	xournal
 PORTVERSION=	0.4.8.2016
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		pkgconfig desktop-file-utils shared-mime-info
+USES=		gnome pkgconfig desktop-file-utils shared-mime-info xorg
 USE_GNOME=	cairo libgnomecanvas
 USE_XORG=	x11
 GNU_CONFIGURE=	yes

@@ -2,7 +2,7 @@
 
 PORTNAME=	calligra
 DISTVERSION=	3.1.0
-PORTREVISION=	24
+PORTREVISION=	29
 CATEGORIES=	editors kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE/${PORTNAME}
@@ -37,8 +37,8 @@ BUILD_DEPENDS=	pstoedit:graphics/pstoedit
 RUN_DEPENDS=	pstoedit:graphics/pstoedit
 
 USES=		cmake cpe compiler:c++11-lib desktop-file-utils eigen:3 \
-		gettext iconv:translit jpeg kde:5 localbase:ldflags perl5 pkgconfig \
-		qt:5 shared-mime-info sqlite tar:xz
+		gettext iconv:translit jpeg kde:5 localbase:ldflags perl5 \
+		pkgconfig qt:5 shared-mime-info sqlite tar:xz xorg
 USE_KDE=	akonadicontacts activities archive auth bookmarks codecs completion \
 		config configwidgets contacts coreaddons crash dbusaddons doctools ecm \
 		emoticons guiaddons holidays i18n iconthemes init itemmodels itemviews \
@@ -69,8 +69,4 @@ CMAKE_ARGS+=	-DCMAKE_CXX_FLAGS="-DKDE_NO_DEBUG_OUTPUT"
 
 PLIST_SUB+=	SHLIB_VER=16.0.0
 
-post-patch:
-	# Fix with poppler 0.73
-	${REINPLACE_CMD} -e 's|Guchar|unsigned char|g' \
-		${WRKSRC}/filters/karbon/pdf/SvgOutputDev.cpp
 .include <bsd.port.mk>

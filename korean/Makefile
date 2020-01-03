@@ -12,7 +12,6 @@
     SUBDIR += engdic
     SUBDIR += fcitx-hangul
     SUBDIR += gimp-help
-    SUBDIR += gtkcomm
     SUBDIR += h2ps
     SUBDIR += hanyangfonts
     SUBDIR += hcode
@@ -35,6 +34,8 @@
     SUBDIR += nanumfonts-otf
     SUBDIR += nanumfonts-ttf
     SUBDIR += nhpf
+    SUBDIR += p5-Lingua-KO-Hangul-Util
+    SUBDIR += p5-Lingua-KO-Romanize-Hangul
     SUBDIR += scim-hangul
     SUBDIR += scim-tables
     SUBDIR += sourcehansans-otf

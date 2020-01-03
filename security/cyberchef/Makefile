@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	cyberchef
-PORTVERSION=	9.7.1
+PORTVERSION=	9.12.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${GH_TAGNAME}/
 DISTNAME=	CyberChef_${DISTVERSIONPREFIX}${PORTVERSION}
@@ -14,14 +13,14 @@ COMMENT=	Cyber operations within a web browser
 
 LICENSE=	APACHE20
 
-USES=           zip
+USES=		zip
 
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	gchq
 GH_PROJECT=	CyberChef
 
-NO_BUILD=       yes
-NO_ARCH=        yes
+NO_BUILD=	yes
+NO_ARCH=	yes
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}

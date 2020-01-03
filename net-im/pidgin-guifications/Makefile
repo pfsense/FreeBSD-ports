@@ -10,12 +10,14 @@ MASTER_SITES=	https://www.mimar.rs/distfiles/
 MAINTAINER=	marko.cupac@mimar.rs
 COMMENT=	Plugin to add msn style "toaster" popups to Pidgin
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	${LOCALBASE}/include/pidgin/pidgin.h:net-im/pidgin
 RUN_DEPENDS=	pidgin:net-im/pidgin
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:bzip2
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:bzip2
 USE_GNOME=	gtk20 intltool
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

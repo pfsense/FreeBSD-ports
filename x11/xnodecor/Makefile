@@ -11,7 +11,10 @@ DISTFILES=	xnodecor.c
 MAINTAINER=	katsura@cc.osaka-kyoiku.ac.jp
 COMMENT=	Utility to set override_redirect in XWindowAttributes to True
 
+BROKEN=		unfetchable
+
 NO_WRKSUBDIR=	yes
+USES=		xorg
 USE_XORG=	x11
 PLIST_FILES=	bin/xnodecor
 

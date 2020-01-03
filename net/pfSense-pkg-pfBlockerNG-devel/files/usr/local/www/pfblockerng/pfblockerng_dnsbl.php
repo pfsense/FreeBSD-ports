@@ -3,7 +3,7 @@
  * pfblockerng_dnsbl.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -212,7 +212,7 @@ $tab_array[]	= array(gettext('Sync'),	false,	'/pfblockerng/pfblockerng_sync.php'
 display_top_tabs($tab_array, true);
 
 $tab_array	= array();
-$tab_array[]	= array(gettext('DNSBL Feeds'),		false,		'/pfblockerng/pfblockerng_category.php?type=dnsbl');
+$tab_array[]	= array(gettext('DNSBL Groups'),		false,		'/pfblockerng/pfblockerng_category.php?type=dnsbl');
 $tab_array[]	= array(gettext('DNSBL Category'),	false,		'/pfblockerng/pfblockerng_blacklist.php');
 display_top_tabs($tab_array, true);
 

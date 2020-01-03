@@ -11,10 +11,12 @@ DISTNAME=	gpct${PORTVERSION:S/.//g}
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Evaluation tool for the Generic Polygon Clipper library
 
+BROKEN=		unfetchable
+
 LIB_DEPENDS=	libgpc.so:devel/libgpc	\
 		libformsGL.so:x11-toolkits/xforms
 
-USES=		zip:infozip uidfix
+USES=		gl zip:infozip uidfix
 USE_GL=		yes
 PLIST_FILES=	bin/gpctool
 USE_LDCONFIG=	yes

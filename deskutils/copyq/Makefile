@@ -2,7 +2,7 @@
 
 PORTNAME=	copyq
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.9.2
+DISTVERSION=	3.9.3
 CATEGORIES=	deskutils
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	Qt5 based clipboard manager
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c++11-lang qt:5
+USES=		cmake compiler:c++11-lang qt:5 xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	hluk
 GH_PROJECT=	CopyQ

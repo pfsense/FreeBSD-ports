@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	postgresql
-PORTVERSION=	11.01.0000
-PORTREVISION=	1
+PORTVERSION=	12.00.0000
 CATEGORIES=	databases
 MASTER_SITES=	PGSQL/odbc/versions/src
 PKGNAMESUFFIX=	-odbc
@@ -15,17 +14,15 @@ COMMENT=	PostgreSQL ODBC driver
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-BROKEN_powerpc64=	fails to compile: misc.h:58:21: expected ';' before 'dummy_for_check'
-
 LIB_DEPENDS=	libodbc.so:databases/unixODBC
 
 USES=		compiler:c11 libtool pgsql
+USE_CSTD=	gnu11
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-unixodbc=${LOCALBASE}
 INSTALL_TARGET=	install-strip
-CFLAGS+=	-std=c11
 
 DOCSDIR=	${PREFIX}/share/doc/postgresql/odbc
 EXAMPLESDIR=	${PREFIX}/share/examples/postgresql/odbc

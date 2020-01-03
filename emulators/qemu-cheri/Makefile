@@ -20,12 +20,13 @@ RUN_DEPENDS=	qemu-system-i386:emulators/qemu
 LICENSE=	GPLv2
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	CTSRD-CHERI
-GH_TAGNAME=	${QEMU_COMMIT}
-GH_TUPLE=	qemu:keycodemapdb:6b3d716:qemu/ui/keycodemapdb
+GH_TUPLE=	CTSRD-CHERI:qemu:${QEMU_COMMIT} \
+		CTSRD-CHERI:libslirp:${LIBSLIRP_COMMIT}:libslirp/slirp \
+		qemu:keycodemapdb:6b3d716:qemu/ui/keycodemapdb \
 
 HAS_CONFIGURE=	yes
-USES=	gettext-runtime gmake gnome libtool makeinfo pkgconfig python:2.7,build
+USES=	compiler:c11 gettext-runtime gl gmake gnome libtool makeinfo pkgconfig \
+	python:build xorg
 USE_XORG=	pixman
 USE_GNOME+=	glib20 libxml2
 USE_GL+=	gbm
@@ -40,7 +41,6 @@ CONFIGURE_ARGS+= \
 		--disable-curl \
 		--disable-git-update \
 		--disable-gtk \
-		--disable-libssh2 \
 		--disable-linux-user \
 		--disable-linux-aio \
 		--disable-kvm \

@@ -3,7 +3,7 @@
 
 PORTNAME=	fidocadj
 PORTVERSION=	0.24.6
-#PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/:src SF/${PORTNAME}/manuals/:docs
 DISTFILES=	${PORTNAME}.jar:src
@@ -11,6 +11,8 @@ EXTRACT_ONLY=
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Easy to use graphical editor for electronics
+
+BROKEN=		unfetchable
 
 LICENSE=	GPLv3
 
@@ -21,7 +23,6 @@ NO_BUILD=	yes
 
 SUB_FILES=	${PORTNAME}.sh
 
-JAVA_VERSION=	1.6+
 USE_JAVA=	yes
 
 OPTIONS_DEFINE=	DOCS

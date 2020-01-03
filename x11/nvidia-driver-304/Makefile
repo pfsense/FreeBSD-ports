@@ -3,7 +3,7 @@
 
 DISTVERSION=	304.137
 # Explicitly set PORTREVISION as it can be overridden by the master port
-PORTREVISION=	4
+PORTREVISION=	5
 
 MASTERDIR=	${.CURDIR}/../nvidia-driver
 PKGNAMESUFFIX=	-304

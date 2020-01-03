@@ -3,7 +3,7 @@
 PORTNAME=	coyim
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.11
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-im
 
 MAINTAINER=	fox@FreeBSD.org
@@ -43,8 +43,6 @@ GTK_BUILD_TAG=	gtk_${GTK_VERSION}
 COYIM_ICON=	coyim.png
 COYIM_ICON_SRC=	${WRKSRC}/build/mac-bundle/coy.iconset/icon_32x32@2x.png
 COYIM_DESKTOP=	${WRKSRC}/build/coyim.desktop
-
-INSTALLATION_DIRS+=	share/applications share/pixmaps
 
 pre-build:
 	cd ${WRKSRC} && ${SH} ./gen_version_file.sh ${DISTVERSIONPREFIX}${DISTVERSION}

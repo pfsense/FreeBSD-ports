@@ -14,6 +14,9 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tank game for 2 players
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/gpl.txt
 
@@ -23,7 +26,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	horstjens
 GH_TAGNAME=	d95263f
 
-USES=		python:2.7 shebangfix
+USES=		gnome python:2.7 shebangfix
 SHEBANG_FILES=	schwarzweiss_start.py data/*.py
 
 PORTDOCS=	readme.txt

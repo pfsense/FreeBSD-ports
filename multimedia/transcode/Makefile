@@ -3,7 +3,7 @@
 
 PORTNAME=	transcode
 PORTVERSION=	1.1.7
-PORTREVISION=	39
+PORTREVISION=	41
 CATEGORIES=	multimedia
 MASTER_SITES=	https://bitbucket.org/france/transcode-tcforge/downloads/
 
@@ -31,6 +31,7 @@ POSTPROC_DESC=		Libpostproc support
 DVDREAD_DESC=		Libdvdread support
 LZO_DESC=		LZO compression support
 
+X11_USES=			xorg
 X11_USE=			xorg=xv,xaw,xpm
 X11_CONFIGURE_WITH=		x
 
@@ -86,6 +87,7 @@ FAAC_LIB_DEPENDS=		libfaac.so:audio/faac
 FAAC_CONFIGURE_ENABLE=		faac
 FAAC_CONFIGURE_ON=		--with-faac-prefix=${LOCALBASE}
 
+LIBXML2_USES=			gnome
 LIBXML2_USE=			GNOME=libxml2
 LIBXML2_CONFIGURE_ENABLE=	libxml2
 

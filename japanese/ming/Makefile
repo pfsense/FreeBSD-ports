@@ -11,13 +11,14 @@ DISTNAME=	jaming-${PORTVERSION}
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	LGPL'ed Flash 4/5 movie output library with Japanese languages support
 
+BROKEN=		unfetchable
+
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libgif.so:graphics/giflib
 
 CONFLICTS=	ming-*
 
 WRKSRC=		${WRKDIR}/jaming-${PORTVERSION}/src
-MAKE_ARGS=	NO_PROFILE=true
 USE_LDCONFIG=	yes
 USES=		bison uidfix
 MAKE_ENV=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null

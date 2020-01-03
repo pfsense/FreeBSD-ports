@@ -3,13 +3,16 @@
 PORTNAME=	python2
 PORTVERSION=	${PYTHON_MAJOR_VER}
 PORTREVISION=	3
-CATEGORIES=	lang python ipv6
+CATEGORIES=	lang python
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	The "meta-port" for version 2 of the Python interpreter
+
+DEPRECATED=	EOLed upstream
+EXPIRATION_DATE=	2020-12-31
 
 USES=		python:run
 

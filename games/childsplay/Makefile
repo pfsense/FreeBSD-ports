@@ -10,6 +10,9 @@ MASTER_SITES=	SAVANNAH
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Educative games for children
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv3 # only
 LICENSE_FILE=	${WRKSRC}/gpl-3.0.txt
 
@@ -17,7 +20,7 @@ BUILD_DEPENDS=	${PYGAME}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy10>0:databases/py-sqlalchemy10@${PY_FLAVOR} \
 		${PYGAME}
 
-USES=		gettext shebangfix tar:tgz python:2.7
+USES=		gettext gnome python:2.7 shebangfix tar:tgz
 USE_GNOME=	pygtk2
 NO_BUILD=	yes
 NO_ARCH=	yes

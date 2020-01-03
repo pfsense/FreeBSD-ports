@@ -11,11 +11,13 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 MAINTAINER=	pneumann@gmail.com
 COMMENT=	GTK+ 2.x engine from Ubuntu Dapper
 
+BROKEN=		unfetchable
+
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gtk-engines-2.pc:x11-themes/gtk-engines2
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gtk-engines-2.pc:x11-themes/gtk-engines2
 
 GNU_CONFIGURE=	yes
-USES=		gmake libtool pkgconfig
+USES=		gmake gnome libtool pkgconfig
 USE_GNOME=	gtk20
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

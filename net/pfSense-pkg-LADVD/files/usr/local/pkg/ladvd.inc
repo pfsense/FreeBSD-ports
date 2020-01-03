@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2014 Andrea Tuccia
- * Copyright (c) 2014-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2019 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,6 +54,10 @@ function ladvd_resync_config() {
 
 	if (!empty($ladvd_conf['silent'])) {
 		$cmdline .= "-s ";
+	}
+
+	if (!empty($ladvd_conf['infdescr'])) {
+		$cmdline .= "-z ";
 	}
 
 	if (!empty($ladvd_conf['management'])) {

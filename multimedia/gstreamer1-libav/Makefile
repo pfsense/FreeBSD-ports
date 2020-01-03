@@ -19,14 +19,13 @@ LIB_DEPENDS=	liborc-0.4.so:devel/orc
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:features gettext-runtime gmake libtool localbase \
+USES=		compiler:features gettext-runtime gmake gnome libtool localbase \
 		pkgconfig python:build tar:xz
 USE_LDCONFIG=	yes
 USE_GSTREAMER1=	yes
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-CFLAGS_powerpc64=	-mminimal-toc
 
 OPTIONS_DEFINE=	FFMPEG
 OPTIONS_DEFAULT=FFMPEG

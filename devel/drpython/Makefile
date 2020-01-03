@@ -12,9 +12,10 @@ DISTNAME=	DrPython_${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Highly customizable cross-platform ide to aid programming in Python
 
-LICENSE=	GPLv2
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
 
-BROKEN_aarch64=		fails to build: Signal 11
+LICENSE=	GPLv2
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
 RUN_DEPENDS=	xdg-open:devel/xdg-utils

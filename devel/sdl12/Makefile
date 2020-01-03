@@ -47,6 +47,7 @@ AALIB_LIB_DEPENDS=		libaa.so:graphics/aalib
 NAS_CONFIGURE_ENABLE=		nas
 NAS_LIB_DEPENDS=		libaudio.so:audio/nas
 LINJOY_VARS=			PKGMESSAGE+=pkg-message.linjoy
+LINJOY_BUILD_DEPENDS=		${LOCALBASE}/include/linux/joystick.h:devel/evdev-proto
 OPENGL_CONFIGURE_ENABLE=	video-opengl
 OPENGL_USES=			gl
 OPENGL_USE=			GL=glu
@@ -60,6 +61,7 @@ SVGALIB_LIB_DEPENDS=		libvga.so:graphics/svgalib
 VGL_CONFIGURE_ENABLE=		video-vgl
 VGL_VARS=			PKGMESSAGE+=pkg-message.vgl
 X11_CONFIGURE_ENABLE=		video-x11
+X11_USES=			xorg
 X11_USE=			XORG=x11,xrender,xrandr,xorgproto
 
 post-patch:
@@ -67,11 +69,6 @@ post-patch:
 		${WRKSRC}/configure
 
 post-patch-LINJOY-on:
-	@${MKDIR} ${WRKSRC}/include/linux/
-	@${CP} -f ${FILESDIR}/input.h ${WRKSRC}/include/linux/
-	@${CP} -f ${FILESDIR}/input-event-codes.h ${WRKSRC}/include/linux/
-	@${CP} -f ${FILESDIR}/joystick.h ${WRKSRC}/include/linux/
-	@${CP} -f ${FILESDIR}/types.h ${WRKSRC}/include/linux/
 	@${CP} -f ${WRKSRC}/src/joystick/linux/SDL_sysjoystick.c \
 	    ${WRKSRC}/src/joystick/bsd/
 	@${REINPLACE_CMD} -e 's|#ifdef SDL_JOYSTICK_LINUX|#if 1|g ; \

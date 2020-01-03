@@ -12,7 +12,9 @@ COMMENT=	L-SMASH source plugin for VapourSynth
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+.if ${MACHINE_ARCH} == amd64 || ${MACHINE_ARCH} == i386
 BUILD_DEPENDS=	${LOCALBASE}/include/vapoursynth/VSHelper.h:multimedia/vapoursynth
+.endif
 BUILD_DEPENDS+=	ffmpeg>=3.2,1:multimedia/ffmpeg
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		liblsmash.so:multimedia/l-smash
@@ -22,8 +24,10 @@ GH_ACCOUNT=	VFR-maniac
 GH_PROJECT=	L-SMASH-Works
 
 USES=		gmake pkgconfig shebangfix
+.if ${MACHINE_ARCH} == amd64 || ${MACHINE_ARCH} == i386
 EXCLUDE=	VSHelper.h VSScript.h VapourSynth.h
 EXTRACT_AFTER_ARGS=${EXCLUDE:S,^,--exclude ,}
+.endif
 WRKSRC_SUBDIR=	VapourSynth
 SHEBANG_FILES=	configure
 bash_CMD=	${SH}
@@ -36,12 +40,14 @@ CONFIGURE_ARGS=	--prefix="${PREFIX}" \
 		--extra-libs="${LIBS}"
 MAKEFILE=	GNUmakefile
 MAKE_ARGS=	STRIP="${STRIP_CMD}"
+.if ${MACHINE_ARCH} == amd64 || ${MACHINE_ARCH} == i386
 CPPFLAGS+=	`pkg-config vapoursynth --cflags`
+.endif
 USE_LDCONFIG=	yes
 DATADIR=	${PREFIX}/lib/vapoursynth
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
-PLIST_FILES=	lib/libvslsmashsource.so.${PORTVERSION:E} \
-		%%DATADIR%%/libvslsmashsource.so
+PLIST_FILES=	lib/libvslsmashsource.so.${PORTVERSION:E}
+PORTDATA=	libvslsmashsource.so
 PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
@@ -54,6 +60,8 @@ post-patch:
 	@${REINPLACE_CMD} 's/ -msse2 -g0//' ${WRKSRC}/${MAKEFILE}
 
 post-install:
+	${RLN} ${STAGEDIR}${PREFIX}/lib/libvslsmashsource.so.${PORTVERSION:E} \
+		${STAGEDIR}${DATADIR}/libvslsmashsource.so
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
 		"${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
 

@@ -6,7 +6,7 @@ PORTVERSION=		3.6.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=		devel
 
-MAINTAINER=		freebsd@grem.de
+MAINTAINER=		grembo@FreeBSD.org
 COMMENT=		Modern alternative to object middleware such as CORBA/COM/DCOM/COM+
 
 LICENSE=		GPLv2
@@ -19,7 +19,7 @@ MAKE_JOBS_UNSAFE=	yes
 .if ${SLAVE_PORT} == "no"
 LIB_DEPENDS=		libexpat.so:textproc/expat2 \
 			libmcpp.so:devel/mcpp
-USES+=			ssl
+USES+=			compiler:c++11-lang ssl
 .else
 LIB_VRS=		${PORTVERSION:R:S|.||g}
 LIB_DEPENDS+=		libIce.so.${LIB_VRS}:devel/ice
@@ -42,6 +42,7 @@ INVALID_BDB_VER=	48 6
 USE_LDCONFIG=		yes
 BUILD_WRKSRC?=		${WRKSRC}/cpp
 INSTALL_WRKSRC?=	${WRKSRC}/cpp
+PORTSCOUT=		limit:^3\.6\.
 USE_GITHUB=		yes
 GH_ACCOUNT=		zeroc-ice
 GH_PROJECT=		ice

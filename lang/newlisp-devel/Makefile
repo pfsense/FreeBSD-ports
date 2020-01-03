@@ -11,6 +11,8 @@ PKGNAMESUFFIX=	-devel
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	LISP like scripting language
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv3
 
 BROKEN_mips=		fails to compile: unrecognized command line option "-m64"
@@ -65,7 +67,7 @@ PLIST_SUB+=	GSL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 MODULES+=	mysql
 PLIST_SUB+=	MYSQL=""
 .else

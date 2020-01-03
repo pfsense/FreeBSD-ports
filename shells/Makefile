@@ -10,16 +10,15 @@
     SUBDIR += bash
     SUBDIR += bash-completion
     SUBDIR += bash-static
-    SUBDIR += bashc
     SUBDIR += bicon
     SUBDIR += ch
     SUBDIR += dash
+    SUBDIR += elvish
     SUBDIR += envy
     SUBDIR += es
     SUBDIR += esh
     SUBDIR += fd
     SUBDIR += fish
-    SUBDIR += flash
     SUBDIR += git-prompt.zsh
     SUBDIR += heirloom-sh
     SUBDIR += ibsh
@@ -46,7 +45,6 @@
     SUBDIR += sash
     SUBDIR += scponly
     SUBDIR += shell-include
-    SUBDIR += sparforte
     SUBDIR += starship
     SUBDIR += tcsh_nls
     SUBDIR += tcshrc

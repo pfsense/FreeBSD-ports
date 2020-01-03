@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tin
-PORTVERSION=	2.4.2
-PORTREVISION=	5
-CATEGORIES+=	news ipv6
+PORTVERSION=	2.4.3
+CATEGORIES+=	news
 MASTER_SITES=	ftp://ftp.tin.org/pub/news/clients/tin/v${PORTVERSION:R}/ \
 		ftp://ftp.sunet.se/pub/news/readers/tin/v${PORTVERSION:R}/ \
 		ftp://sunsite.icm.edu.pl/pub/unix/news/tin/v${PORTVERSION:R}/ \
@@ -18,7 +17,7 @@ MASTER_SITES=	ftp://ftp.tin.org/pub/news/clients/tin/v${PORTVERSION:R}/ \
 		ftp://ftp.cs.tu-berlin.de/pub/net/news/tin/v${PORTVERSION:R}/ \
 		ftp://ftp.informatik.uni-hamburg.de/pub/soft/news/tin/v${PORTVERSION:R}/
 
-MAINTAINER?=	johans@FreeBSD.org
+MAINTAINER?=	kbowling@FreeBSD.org
 COMMENT=	Easy-to-use threaded newsreader with NOV/NNTP support
 
 LICENSE=	BSD3CLAUSE
@@ -98,6 +97,7 @@ post-patch:
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/tin.defaults \
 		${STAGEDIR}${PREFIX}/etc/tin.defaults.sample
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tin
 	ln -sf tin ${STAGEDIR}${PREFIX}/bin/rtin
 
 .include <bsd.port.mk>

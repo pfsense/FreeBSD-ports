@@ -12,11 +12,14 @@ DIST_SUBDIR=	python
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tower Defense Game
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv3
 
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python:2.7 shebangfix zip
+USES=		gnome python:2.7 shebangfix zip
 SHEBANG_FILES=	pyconsole.py
 INSTALLS_ICONS=	yes
 NO_ARCH=	yes

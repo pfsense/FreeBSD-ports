@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	kicad
-PORTVERSION=	5.1.4
+PORTVERSION=	5.1.5
 PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	cad
@@ -27,8 +27,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	KiCad
 GH_PROJECT=	kicad-source-mirror
 
-USES=		cmake:noninja compiler:c++11-lib desktop-file-utils gl gnome	\
-		pkgconfig python:2.7 shared-mime-info shebangfix ssl tar:xz
+USES=		cmake:noninja compiler:c++11-lib desktop-file-utils gl \
+		gnome pkgconfig python:2.7 shared-mime-info shebangfix ssl \
+		tar:xz xorg
 SHEBANG_FILES=	pcbnew/python/plugins/touch_slider_wizard.py
 
 USE_XORG=	ice x11 xext

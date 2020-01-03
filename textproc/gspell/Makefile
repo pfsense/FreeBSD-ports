@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gspell
-PORTVERSION=	1.8.1
+PORTVERSION=	1.8.2
 CATEGORIES=	textproc
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libenchant-2.so:textproc/enchant2 \
 
 PORTSCOUT=	limitw:even
 
-USES=		gmake iconv libtool pathfix pkgconfig tar:xz
+USES=		gmake gnome iconv libtool pathfix pkgconfig tar:xz
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 introspection:build \
 		libxml2 pango
 GNU_CONFIGURE=	yes

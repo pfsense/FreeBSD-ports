@@ -49,6 +49,7 @@
 %%LDAP%%lib/dovecot/libdovecot-ldap.so.0
 %%LDAP%%lib/dovecot/libdovecot-ldap.so.0.0.0
 %%LIBWRAP%%libexec/dovecot/tcpwrap
+libexec/dovecot/health-check.sh
 %%LUA%%%%LUA_LIBDIR%%/dovecot/%%LUA_LIBDIR%%01_mail_lua_plugin.a
 %%LUA%%%%LUA_LIBDIR%%/dovecot/%%LUA_LIBDIR%%01_mail_lua_plugin.so
 %%LUA%%%%LUA_LIBDIR%%/dovecot/%%LUA_LIBDIR%%22_push_notification_lua_plugin.a
@@ -90,7 +91,6 @@ include/dovecot/auth-master-connection.h
 include/dovecot/auth-master.h
 include/dovecot/auth-penalty.h
 include/dovecot/auth-policy.h
-include/dovecot/auth-postfix-connection.h
 include/dovecot/auth-request-handler.h
 include/dovecot/auth-request-stats.h
 include/dovecot/auth-request-var-expand.h
@@ -105,7 +105,6 @@ include/dovecot/backtrace-string.h
 include/dovecot/base32.h
 include/dovecot/base64.h
 include/dovecot/bits.h
-include/dovecot/bloomfilter.h
 include/dovecot/bsearch-insert-pos.h
 include/dovecot/buffer.h
 include/dovecot/byteorder.h
@@ -494,7 +493,6 @@ include/dovecot/mmap-util.h
 include/dovecot/module-context.h
 include/dovecot/module-dir.h
 include/dovecot/mountpoint.h
-include/dovecot/murmurhash3.h
 include/dovecot/mycrypt.h
 include/dovecot/net.h
 include/dovecot/nfs-workarounds.h
@@ -589,6 +587,7 @@ include/dovecot/sha1.h
 include/dovecot/sha2.h
 include/dovecot/sha3.h
 include/dovecot/shared-storage.h
+include/dovecot/sleep.h
 include/dovecot/smtp-address.h
 include/dovecot/smtp-client-command.h
 include/dovecot/smtp-client-connection.h
@@ -861,4 +860,4 @@ man/man1/dsync.1.gz
 man/man7/doveadm-search-query.7.gz
 sbin/dovecot
 share/aclocal/dovecot.m4
-@postunexec echo "If you are removing dovecot2 permanently, you should 'rm -rf /var/db/dovecot' to clear out any remaining data."
+@postunexec echo "If you are removing dovecot permanently, you should 'rm -rf /var/db/dovecot' to clear out any remaining data."

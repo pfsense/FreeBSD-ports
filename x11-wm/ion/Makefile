@@ -10,10 +10,12 @@ MASTER_SITES=	http://modeemi.fi/~tuomov/dl/archives/
 MAINTAINER=	ricci@cs.utah.edu
 COMMENT=	Window manager with a text-editorish, keyboard friendly interface
 
+BROKEN=		unfetchable
+
 CONFLICTS=	ion-2-*
 CONFLICTS_INSTALL=	ion-shell
 
+USES=		gmake xorg
 USE_XORG=	x11
-USES=		gmake
 
 .include <bsd.port.mk>

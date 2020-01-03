@@ -4,14 +4,14 @@
 PORTNAME=	thefish
 PORTVERSION=	0.6.7
 CATEGORIES=	sysutils
-MASTER_SITES=	http://BSDforge.com/projects/source/sysutils/thefish/
+MASTER_SITES=	https://BSDforge.com/projects/source/sysutils/thefish/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Gtk+/ncurses rc.conf editor/management tool
 
 LICENSE=	BSD2CLAUSE
 
-USES=		pkgconfig tar:xz
+USES=		gnome pkgconfig tar:xz
 
 OPTIONS_SINGLE=		X11
 OPTIONS_SINGLE_X11=	GTK2

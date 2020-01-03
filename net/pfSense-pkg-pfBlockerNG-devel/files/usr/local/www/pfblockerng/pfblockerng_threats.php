@@ -3,7 +3,7 @@
  * pfblockerng_threats.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2019 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -401,6 +401,16 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.fortiguard.com/webfilter?q=<?=$domain;?>&version=8">
 						<?=gettext("FortiGuard");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.shodan.io/search?query=<?=$host;?>">
+						<?=gettext("Shodan");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://api.stopforumspam.org/api?ip=<?=$host;?>">
+						<?=gettext("Stop Forum Spam");?></a></td>
 				</tr>
 
 			<?php else: ?>

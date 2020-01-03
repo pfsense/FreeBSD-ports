@@ -10,7 +10,7 @@ PORTREVISION=	0
 # dns/bind914 here
 PORTREVISION=	0
 .endif
-CATEGORIES=	dns net ipv6
+CATEGORIES=	dns net
 MASTER_SITES=	ISC/bind9/${ISCVERSION}
 .if defined(BIND_TOOLS_SLAVE)
 PKGNAMESUFFIX=	-tools
@@ -36,7 +36,7 @@ RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 
 USES=	compiler:c11 cpe libedit pkgconfig ssl
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.14.8
+ISCVERSION=	9.14.9
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}

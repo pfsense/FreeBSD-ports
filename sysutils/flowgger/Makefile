@@ -3,7 +3,7 @@
 PORTNAME=	flowgger
 DISTVERSION=	0.2.6-28
 DISTVERSIONSUFFIX=	-gab572a0
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	sysutils
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,6 +11,9 @@ COMMENT=	Fast data collector
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+# for backtrace-sys < 0.1.24
+BUILD_DEPENDS=	gmake:devel/gmake
 
 USES=		cargo ssl
 USE_GITHUB=	yes

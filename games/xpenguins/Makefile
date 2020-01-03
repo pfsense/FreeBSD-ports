@@ -14,8 +14,11 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	lyngbol@wheel.dk
 COMMENT=	Cute little penguins that walk along the tops of your windows
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2
 
+USES=		xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 

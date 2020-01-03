@@ -3,7 +3,7 @@
 PORTNAME=	vortex
 DISTVERSION=	2.9.0-59
 PORTREVISION=	1
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}-ids/${PORTNAME}/2.9.0/
 EXTRACT_SUFX=	.tgz
 
@@ -15,8 +15,10 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	${LOCALBASE}/lib/libnids.a:net/libnids
 LIB_DEPENDS=	libnet.so:net/libnet
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-2.9.0
+USES=		gnome
 USE_GNOME=	glib20
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-2.9.0
 
 do-build:
 	cd ${WRKSRC} && ${CC} -c vortex.c -I${LOCALBASE}/include

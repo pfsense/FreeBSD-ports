@@ -2,7 +2,6 @@
 
 PORTNAME=	akonadi
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	databases kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -16,8 +15,8 @@ BUILD_DEPENDS=	xsltproc:textproc/libxslt
 
 CONFLICTS=	akonadi-[0-9]* akonadi-kf5-git-[0-9]*
 
-USES=		cmake compiler:c++11-lib gettext kde:5 \
-		qt:5 shared-mime-info tar:xz
+USES=		cmake compiler:c++11-lib gettext gnome kde:5 qt:5 \
+		shared-mime-info tar:xz
 USE_GNOME=	libxml2
 USE_KDE=	auth codecs completion config configwidgets coreaddons crash \
 		dbusaddons ecm guiaddons i18n iconthemes itemmodels itemviews \
@@ -34,8 +33,8 @@ OPTIONS_MULTI_DB=	MYSQL PGSQL SQLITE
 OPTIONS_SUB=		yes
 
 MYSQL_DESC=		Install MySQL Qt plugin and server
-MYSQL_USES=	qt:5
-MYSQL_USE=		MYSQL=server QT=sql-mysql_run
+MYSQL_USES=	mysql:server qt:5
+MYSQL_USE=		QT=sql-mysql_run
 
 PGSQL_DESC=		Install PostgreSQL Qt plugin
 # Do not add a dependency on PostgreSQL server as someone preferring

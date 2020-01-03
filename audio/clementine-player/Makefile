@@ -4,7 +4,7 @@
 PORTNAME=	clementine
 DISTVERSION=	1.3.1-661
 DISTVERSIONSUFFIX=	-g4ff370ce1
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-player
 
@@ -31,7 +31,9 @@ USES=		cmake \
 		pkgconfig \
 		qt:5 \
 		sqlite \
-		gl
+		gl \
+		gnome \
+		xorg
 
 USE_CXXSTD=	c++11
 

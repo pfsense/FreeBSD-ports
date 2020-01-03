@@ -12,12 +12,15 @@ DISTNAME=	PyGUI-${PORTVERSION}-1
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Cross-platform pythonic GUI API
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyrex>0:devel/pyrex@${PY_FLAVOR}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES OPENGL
 
 USE_GNOME=	pygtk2
-USES=		python:2.7
+USES=		gnome python:2.7
 USE_PYTHON=	distutils autoplist
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}

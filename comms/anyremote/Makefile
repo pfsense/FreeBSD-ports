@@ -1,12 +1,12 @@
-# Created by: Alex Samorukov <samm@os2.kiev.ua>
+# Created by: Alex Samorukov <samm@freebsd.org>
 # $FreeBSD$
 
 PORTNAME=	anyremote
-PORTVERSION=	6.7.1
+PORTVERSION=	6.7.2
 CATEGORIES=	comms
 MASTER_SITES=	SF
 
-MAINTAINER=	samm@os2.kiev.ua
+MAINTAINER=	samm@freebsd.org
 COMMENT=	Remote control service over Bluetooth, infrared, or TCP/IP networking
 
 LICENSE=	GPLv2
@@ -15,9 +15,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libavahi-client.so:net/avahi-app
 
-USES=		alias iconv pkgconfig python shebangfix
-SHEBANG_FILES=	cfg-data/Utils/all-in-1.py
+USES=		alias iconv pkgconfig python shebangfix gnome xorg
 USE_GNOME=	glib20
+SHEBANG_FILES=	cfg-data/Utils/all-in-1.py
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}

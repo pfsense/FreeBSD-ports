@@ -19,11 +19,14 @@ DIST_SUBDIR=	kye
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Puzzle game with arcade game elements
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 RESTRICTED=	kye-data_nuke_levels is charityware
 RESTRICTED_FILES=	 kye-data_nuke_levels.20121101.tar.gz
 
 USE_GNOME=	pygtk2 librsvg2
-USES=		python:2.7
+USES=		gnome python:2.7
 USE_PYTHON=	distutils
 
 PORTDOCS=	NEWS README

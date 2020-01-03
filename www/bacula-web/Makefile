@@ -10,6 +10,8 @@ MASTER_SITES=	http://www.bacula-web.org/files/bacula-web.org/downloads/
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Bacula-web provides a summarized output of Bacula jobs
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
@@ -33,7 +35,7 @@ SQLITE_USES=	sqlite
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=		yes
+USES+=			mysql
 CONFIGURE_ARGS+=	--with-mysql=yes
 SUB_LIST+=		REQ_MYSQL=mysql
 USE_PHP+=		pdo_mysql

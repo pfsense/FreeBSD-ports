@@ -2,17 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	zerotier
-DISTVERSION=	1.4.2
-
+DISTVERSION=	1.4.6
 CATEGORIES=	net
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Network virtualization everywhere
 
-LICENSE=	GPLv3+ MIT PD
-LICENSE_COMB=	multi
-LICENSE_FILE_GPLv3+ =${WRKSRC}/LICENSE.GPL-3
-LICENSE_FILE_MIT=${WRKSRC}/ext/json/LICENSE.MIT
+LICENSE=		BUSINESS MIT PD
+LICENSE_COMB=		multi
+LICENSE_NAME_BUSINESS=	Business Source License
+LICENSE_FILE_BUSINESS=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE_MIT=	${WRKSRC}/ext/json/LICENSE.MIT
+LICENSE_PERMS_BUSINESS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		gmake compiler:c++14-lang
 USE_RC_SUBR=	zerotier
@@ -28,11 +29,13 @@ DBG_ALL_TARGET=	debug
 
 PLIST_FILES=	bin/zerotier-cli bin/zerotier-idtool sbin/zerotier-one
 
+LEGAL_TEXT=	No SaaS or Govt usage: https://github.com/zerotier/ZeroTierOne/blob/master/LICENSE.txt
+
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == "FreeBSD"
 # log output via syslog when daemon(8) supports it
-.if ((${OSVERSION} >= 1100513 && ${OSVERSION} < 1200000) || ${OSVERSION} >= 1200015)
+.if (${OSVERSION} < 1200000 || ${OSVERSION} >= 1200015)
 SUB_LIST+=	ZEROTIER_SYSLOG="-s debug -T zerotier"
 .else
 SUB_LIST+=	ZEROTIER_SYSLOG=""

@@ -10,9 +10,12 @@ MASTER_SITES=	SF/${PORTNAME}iv
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast and simple image viewer
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv3
 
-USES=		desktop-file-utils gettext python:2.7 tar:bzip2
+USES=		desktop-file-utils gettext gnome python:2.7 tar:bzip2
 USE_GNOME=	gtk20 pygtk2
 USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	Mirage

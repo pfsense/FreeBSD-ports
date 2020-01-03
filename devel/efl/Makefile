@@ -3,7 +3,7 @@
 
 PORTNAME=	efl
 DISTVERSION=	1.20.7
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 DIST_SUBDIR=	enlightenment
@@ -26,8 +26,8 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 CONFLICTS_INSTALL=	libeio
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf compiler:c++14-lang gettext-tools gmake iconv jpeg \
-		libtool pathfix pkgconfig python:2.7,run shared-mime-info \
+USES=		autoreconf compiler:c++14-lang gettext-tools gmake gnome iconv \
+		jpeg libtool pathfix pkgconfig python:2.7,run shared-mime-info \
 		shebangfix tar:xz xorg
 SHEBANG_FILES=	src/scripts/eina/eina-bench-cmp
 USE_XORG=	x11 xcb xcursor xcomposite xdamage xext xfixes xi xinerama \
@@ -96,7 +96,7 @@ WAYLAND_CONFIGURE_ENABLE=	wayland
 
 WAYLAND_EGL_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland
 WAYLAND_EGL_CONFIGURE_ENABLE=	egl
-WAYLANG_EGL_USE=		GL=egl
+WAYLAND_EGL_USE=		GL=egl
 WAYLAND_EGL_IMPLIES=		WAYLAND OPENGLES
 
 GSTREAMER_USE=			GSTREAMER1=core
@@ -136,11 +136,14 @@ WEBP_CONFIGURE_ENABLE=		image-loader-webp
 
 XCF_CONFIGURE_ENABLE=		xcf
 
+OPENGL_USES=			gl
 OPENGL_USE=			GL=gl
 
+OPENGLES_USES=			gl
 OPENGLES_USE=			GL=glesv2
 OPENGLES_CONFIGURE_ON=		--with-opengl=es --enable-egl
 
+SDL_USES=			sdl
 SDL_USE=			SDL=sdl2
 SDL_CONFIGURE_ENABLE=		sdl
 
