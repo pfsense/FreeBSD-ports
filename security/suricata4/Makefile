@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	suricata
-DISTVERSION=	4.1.5
-PORTREVISION=	1
+DISTVERSION=	4.1.6
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 PKGNAMESUFFIX=	4
@@ -21,7 +20,7 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 
 USES=		autoreconf cpe gmake iconv:translit libtool pathfix pkgconfig
 
-CONFLICTS_INSTALL=	libhtp suricata5
+CONFLICTS_INSTALL=	libhtp suricata suricata5
 
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
