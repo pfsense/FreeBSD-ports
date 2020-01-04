@@ -25,10 +25,10 @@ DATADIR=	${PREFIX}/share/pfSense
 
 .include <bsd.port.pre.mk>
 
-PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel
-PFSENSE_REPOS_${ARCH}?=	${PFSENSE_REPOS}
-PFSENSE_DEFAULT_REPO?=	pfSense-repo-devel
-PFSENSE_DEFAULT_REPO_${ARCH}?=	${PFSENSE_DEFAULT_REPO}
+PFSENSE_REPOS=	pfSense-repo pfSense-repo-devel
+PFSENSE_REPOS_${ARCH}=	${PFSENSE_REPOS}
+PFSENSE_DEFAULT_REPO=	pfSense-repo-devel
+PFSENSE_DEFAULT_REPO_${ARCH}=	${PFSENSE_DEFAULT_REPO}
 DEFAULT_REPO=	${DATADIR}/pkg/repos/${PFSENSE_DEFAULT_REPO_${ARCH}}.conf
 TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.descr/} \
