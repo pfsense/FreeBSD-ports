@@ -1,5 +1,7 @@
 /etc/inc/priv/status_traffic_totals.priv.inc
 pkg/Status_Traffic_Totals.xml
+pkg/status_traffic_totals.inc
+pkg/shortcuts/status_traffic_totals.sc.inc
 www/status_traffic_totals.php
 www/vnstat_fetch_json.php
 %%DATADIR%%/info.xml

@@ -3,12 +3,13 @@
 
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION1}.${AOOVERSION2}.${TIMESTAMP}
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	4
 CATEGORIES=	editors java
 MASTER_SITES=	https://dist.apache.org/repos/dist/dev/openoffice/${AOOVERSION}-${AOORC}-${TIMESTAMP}/source/ \
 		http://tools.openoffice.org/unowinreg_prebuild/680/:unoreg \
-		LOCAL/truckman/openoffice:snap,extsrc
+		LOCAL/truckman/openoffice:snap,extsrc \
+		SF/oooextras.mirror/:sf
 .if defined(LANG_PKGNAME)
 PKGNAMEPREFIX=		${LANG_PKGNAME}-
 .endif
@@ -50,21 +51,20 @@ LICENSE_PERMS_TWAIN=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_W3C=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386 powerpc64
+BROKEN_powerpc64=	fails to compile: aoo-4.2.0/main/solver/420/unxfbsdppc64.pro/inc/stl/vector:31:11: fatal error: boost/tr1/tr1/vector: No such file or directory
 
 BUILD_DEPENDS=								\
 		p5-Archive-Zip>=0:archivers/p5-Archive-Zip		\
 		${LOCALBASE}/bin/unzip:archivers/unzip			\
 		zip:archivers/zip					\
 		ant:devel/apache-ant					\
-		${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs \
 		dmake:devel/dmake					\
 		epm:devel/epm						\
 		${LOCALBASE}/bin/gperf:devel/gperf			\
 		imake:devel/imake					\
 		gpatch:devel/patch					\
 		${LOCALBASE}/include/sane/sane.h:graphics/sane-backends	\
-		${LOCALBASE}/bin/vigra-config:graphics/vigra		\
-		${JAVALIBDIR}/commons-lang3.jar:java/jakarta-commons-lang3 \
+		${JAVALIBDIR}/commons-lang3.jar:java/apache-commons-lang3 \
 		${JAVALIBDIR}/junit.jar:java/junit			\
 		${JAVALIBDIR}/bsh.jar:lang/bsh				\
 		bash:shells/bash					\
@@ -92,7 +92,7 @@ LIB_DEPENDS=								\
 		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=								\
 		${LOCALBASE}/share/icons/hicolor/index.theme:misc/hicolor-icon-theme \
-		${JAVALIBDIR}/commons-lang3.jar:java/jakarta-commons-lang3 \
+		${JAVALIBDIR}/commons-lang3.jar:java/apache-commons-lang3 \
 		${JAVALIBDIR}/bsh.jar:lang/bsh				\
 		${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
 		${LOCALBASE}/share/fonts/Carlito/Carlito-Bold.ttf:x11-fonts/crosextrafonts-carlito-ttf \
@@ -107,7 +107,6 @@ USE_JAVA=	yes
 JAVA_BUILD=	jdk
 JAVA_RUN=	jdk
 JAVA_VENDOR=	openjdk
-JAVA_VERSION=	1.6+
 USE_PERL5=	build
 USE_XORG=	ice sm x11 xau xaw xcomposite xcursor xdamage xext xfixes xi \
 		xinerama xrandr xrender xt
@@ -119,8 +118,8 @@ AOOVERSION2=	2
 AOOVERSION3=	0
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
 AOOTAG=		AOO420m1\(Build:9821\)
-GITREVISION=	d871312c80
-TIMESTAMP=	1568906168
+GITREVISION=	1742cb93dc
+TIMESTAMP=	1573127763
 #AOORC=rc3
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
@@ -211,8 +210,8 @@ WIKI_PUBLISHER_CONFIGURE_WITH=						\
 	commons-codec-jar=${JAVALIBDIR}/commons-codec.jar		\
 	commons-httpclient-jar=${JAVALIBDIR}/commons-httpclient.jar
 WIKI_PUBLISHER_JAR_DEPENDS=						\
-	${JAVALIBDIR}/commons-codec.jar:java/jakarta-commons-codec	\
-	${JAVALIBDIR}/commons-httpclient.jar:java/jakarta-commons-httpclient
+	${JAVALIBDIR}/commons-codec.jar:java/apache-commons-codec	\
+	${JAVALIBDIR}/commons-httpclient.jar:java/apache-commons-httpclient
 WIKI_PUBLISHER_BUILD_DEPENDS=	${WIKI_PUBLISHER_JAR_DEPENDS}
 WIKI_PUBLISHER_RUN_DEPENDS=	${WIKI_PUBLISHER_JAR_DEPENDS}
 
@@ -232,8 +231,8 @@ CONFIGURE_ARGS+=	--enable-symbols
 .endif
 
 .if ${PORT_OPTIONS:MREPORT_BUILDER} || ${PORT_OPTIONS:MWIKI_PUBLISHER}
-BUILD_DEPENDS+=	${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging
-RUN_DEPENDS+=	${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging
+BUILD_DEPENDS+=	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging
+RUN_DEPENDS+=	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging
 CONFIGURE_ARGS+=	--with-commons-logging-jar=${JAVALIBDIR}/commons-logging.jar
 .else
 CONFIGURE_ARGS+=	--without-commons-logging
@@ -241,8 +240,21 @@ CONFIGURE_ARGS+=	--without-commons-logging
 
 .include <${FILESDIR}/Makefile.localized>
 
+GCC_EXTRA_DISTFILES=	d6eef4b4cacb2183f2bf265a5a03a354-boost_1_55_0.tar.bz2 \
+			d62650a6f908e85643e557a236ea989c-vigra1.6.0.tar.gz
+
 .if ${CHOSEN_COMPILER_TYPE} == clang
 CPPFLAGS+=		-I${LOCALBASE}/include
+CONFIGURE_ARGS+=	--with-system-boost --with-system-vigra
+BUILD_DEPENDS+=		${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs \
+			${LOCALBASE}/bin/vigra-config:graphics/vigra
+.endif
+
+# These extra distfiles are needed to use the bundled versions of
+# boost and vigra for compatiblity with gcc.  Also include them
+# for the makesum target so they are included in distinfo
+.if ${CHOSEN_COMPILER_TYPE} == gcc || make(makesum) || make(distclean)
+DISTFILES+=		${GCC_EXTRA_DISTFILES:C/.*/&:sf/g}
 .endif
 
 .if ${ARCH} == amd64
@@ -278,7 +290,6 @@ CONFIGURE_ARGS+=							\
 			--with-system-apr-util				\
 			--with-system-beanshell				\
 			--with-beanshell-jar=${JAVALIBDIR}/bsh.jar	\
-			--with-system-boost				\
 			--enable-category-b				\
 			--with-system-cairo --enable-cairo		\
 			--with-system-coinmp				\
@@ -321,7 +332,6 @@ CONFIGURE_ARGS+=							\
 			--with-vendor="FreeBSD ports system"		\
 			--with-build-version="PKGNAME: ${PKGNAME:S/,/@/g}" \
 			--enable-verbose				\
-			--with-system-vigra				\
 			--with-system-xrender				\
 			--with-system-zlib
 
@@ -352,6 +362,11 @@ do-extract-SDK-on:
 
 post-extract:
 	${TAR} -C ${WRKSUBDIR} -xzf ${DISTDIR}/${DIST_SUBDIR}/${EXTSRC}
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+.  for f in ${GCC_EXTRA_DISTFILES}
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/${f} ${WRKSUBDIR}/ext_sources/${f}
+.  endfor
+.endif
 	${CP} ${FILESDIR}/freebsd-aoo-intro-developer.png \
 		${WRKSRC}/default_images/introabout/intro.png
 	${CP} ${FILESDIR}/freebsd-aoo-about-developer.png \
@@ -394,8 +409,6 @@ post-patch:
 		${WRKSRC}/sysui/desktop/productversion.mk
 	${REINPLACE_CMD} -e "s|%%JAVA_HOME%%|${JAVA_HOME}|" \
 		${WRKSRC}/desktop/scripts/soffice.sh
-	${REINPLACE_CMD} -e "/#test/i\\${.newline}	return '${GITREVISION}';" \
-		${WRKSRC}/solenv/bin/modules/SvnRevision.pm
 	${REINPLACE_CMD} -e '/^mkdir -p/,$$d' ${CREATE_TREE}
 
 do-build:

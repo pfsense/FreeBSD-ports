@@ -2,7 +2,7 @@
 
 PORTNAME=	xorgxrdp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.11
+DISTVERSION=	0.2.12
 CATEGORIES=	x11-drivers
 DIST_SUBDIR=	xrdp
 
@@ -14,14 +14,14 @@ LICENSE=	MIT
 RUN_DEPENDS=	xauth:x11/xauth
 BUILD_DEPENDS=	nasm:devel/nasm
 
-USES=		autoreconf libtool:build pkgconfig
+USES=		autoreconf libtool:build pkgconfig xorg
 USE_XORG=	xorgproto xorg-server
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	neutrinolabs
 GH_PROJECT=	xrdp:xrdp
-GH_TAGNAME=	v0.9.11:xrdp
+GH_TAGNAME=	v0.9.12:xrdp
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 

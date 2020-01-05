@@ -110,7 +110,7 @@ DIST_SUBDIR=	PECL
 
 PHPBASE?=	${LOCALBASE}
 
-_ALL_PHP_VERSIONS=	71 72 73 74
+_ALL_PHP_VERSIONS=	72 73 74
 
 # Make the already installed PHP the default one.
 .  if exists(${PHPBASE}/etc/php.conf)
@@ -130,7 +130,7 @@ IGNORE=	does not work with PHP versions "${IGNORE_WITH_PHP}" and "${_INSTALLED_P
 PHP_VER?=	${PHP_DEFAULT:S/.//}
 .  endif # .if exists(${PHPBASE}/etc/php.conf)
 
-# Use the "default" php version as th first version for flavors, so that it
+# Use the "default" php version as the first version for flavors, so that it
 # gets to be the default flavor.
 _ALL_FLAVOR_VERSIONS=	${PHP_VER} ${_ALL_PHP_VERSIONS:N${PHP_VER}}
 
@@ -159,6 +159,10 @@ FLAVOR=	${FLAVORS:[1]}
 .    endif
 .  endif
 
+.if ${PHP_VER} == 74 && (${ARCH:Mmips*} || (${ARCH:Mpowerpc*} && !exists(/usr/bin/clang)) || ${ARCH} == sparc64)
+USE_GCC=	yes
+.endif
+
 # This variable is for dependencies lines, so you write:
 # ${PHP_PKGNAMEPREFIX}foo:devel/php-foo@${PHP_FLAVOR}
 PHP_FLAVOR=	php${PHP_VER}
@@ -182,9 +186,6 @@ PHP_EXT_DIR=   20180731
 PHP_EXT_INC=    pcre spl
 .    elif ${PHP_VER} == 72
 PHP_EXT_DIR=   20170718
-PHP_EXT_INC=    pcre spl
-.    elif ${PHP_VER} == 71
-PHP_EXT_DIR=   20160303
 PHP_EXT_INC=    pcre spl
 .    else
 # (rene) default to DEFAULT_VERSIONS
@@ -378,7 +379,6 @@ _USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
 		sockets spl sqlite3 sysvmsg sysvsem sysvshm \
 		tidy tokenizer xml xmlreader xmlrpc xmlwriter xsl zip zlib
 # version specific components
-_USE_PHP_VER71=	${_USE_PHP_ALL} interbase recode wddx
 _USE_PHP_VER72=	${_USE_PHP_ALL} interbase recode sodium wddx
 _USE_PHP_VER73=	${_USE_PHP_ALL} interbase recode sodium wddx
 _USE_PHP_VER74=	${_USE_PHP_ALL} ffi sodium
@@ -410,12 +410,8 @@ intl_DEPENDS=	devel/php${PHP_VER}-intl
 json_DEPENDS=	devel/php${PHP_VER}-json
 ldap_DEPENDS=	net/php${PHP_VER}-ldap
 mbstring_DEPENDS=	converters/php${PHP_VER}-mbstring
-.    if ${PHP_VER} >= 72
 mcrypt_DEPENDS=	security/pecl-mcrypt@${PHP_FLAVOR}
-.    else
-mcrypt_DEPENDS=	security/php${PHP_VER}-mcrypt
-.    endif
-memcache_DEPENDS=	databases/php-memcache@${PHP_FLAVOR}
+memcache_DEPENDS=	databases/pecl-memcache@${PHP_FLAVOR}
 memcached_DEPENDS=	databases/pecl-memcached@${PHP_FLAVOR}
 mssql_DEPENDS=	databases/php${PHP_VER}-mssql
 mysqli_DEPENDS=	databases/php${PHP_VER}-mysqli

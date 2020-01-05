@@ -4,7 +4,7 @@
 PORTNAME=	ndpmon
 PORTVERSION=	1.4.0
 PORTREVISION=	6
-CATEGORIES=	net-mgmt ipv6
+CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-1.4/
 
 MAINTAINER=	pi@FreeBSD.org
@@ -13,7 +13,7 @@ COMMENT=	On-link icmpv6 message monitoring and reporting daemon
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		perl5 shebangfix ssl tar:tgz
+USES=		gnome perl5 shebangfix ssl tar:tgz
 SHEBANG_FILES=	demopipeprogram.pl.sample
 USE_PERL5=	run
 USE_GNOME=	libxml2

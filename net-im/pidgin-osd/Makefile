@@ -10,12 +10,14 @@ MASTER_SITES=	https://babelize.org/download/pidgin-osd/
 MAINTAINER=	anikinsl@gmail.com
 COMMENT=	Pidgin plugin for displaying new messages on screen
 
+BROKEN=		unfetchable
+
 BUILD_DEPENDS=	pidgin:net-im/pidgin \
 		xosd>=2.2.12:misc/xosd
 RUN_DEPENDS=	pidgin:net-im/pidgin \
 		xosd>=2.2.12:misc/xosd
 
-USES=		gmake libtool pkgconfig tar:bzip2
+USES=		gmake gnome libtool pkgconfig tar:bzip2
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 

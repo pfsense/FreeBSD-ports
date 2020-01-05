@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	yadm
-PORTVERSION=	1.12.0
+PORTVERSION=	2.3.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	alex@xanderio.de
+MAINTAINER=	vendion@gmail.com
 COMMENT=	Yet Another Dotfiles Manager
 
 LICENSE=	GPLv3+

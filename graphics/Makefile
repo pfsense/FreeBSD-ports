@@ -21,6 +21,7 @@
     SUBDIR += R-cran-diagram
     SUBDIR += R-cran-dichromat
     SUBDIR += R-cran-dygraphs
+    SUBDIR += R-cran-farver
     SUBDIR += R-cran-ggplot2
     SUBDIR += R-cran-gridBase
     SUBDIR += R-cran-gridExtra
@@ -40,8 +41,6 @@
     SUBDIR += aalib
     SUBDIR += aaphoto
     SUBDIR += acidwarp
-    SUBDIR += aeskulap
-    SUBDIR += agave
     SUBDIR += agg
     SUBDIR += alembic
     SUBDIR += alpng
@@ -60,6 +59,7 @@
     SUBDIR += autopano-sift-c
     SUBDIR += autotrace
     SUBDIR += aview
+    SUBDIR += avir
     SUBDIR += azpainter
     SUBDIR += backfract
     SUBDIR += barbecue
@@ -82,7 +82,6 @@
     SUBDIR += cal3d
     SUBDIR += camera
     SUBDIR += camerakit
-    SUBDIR += cbview
     SUBDIR += cbviewer
     SUBDIR += cegui
     SUBDIR += cenon
@@ -101,11 +100,8 @@
     SUBDIR += commons-utilities
     SUBDIR += compupic
     SUBDIR += converseen
-    SUBDIR += copperspice
     SUBDIR += cosmoplayer
-    SUBDIR += cptutils
     SUBDIR += crw
-    SUBDIR += cthumb
     SUBDIR += curator
     SUBDIR += cuttlefish
     SUBDIR += darktable
@@ -147,6 +143,7 @@
     SUBDIR += dspdfviewer
     SUBDIR += duhdraw
     SUBDIR += dynamechs
+    SUBDIR += ebsynth
     SUBDIR += edje_viewer
     SUBDIR += electricsheep
     SUBDIR += electrix
@@ -209,7 +206,6 @@
     SUBDIR += frei0r-plugins-opencv
     SUBDIR += frogr
     SUBDIR += ftgl
-    SUBDIR += fujiplay
     SUBDIR += fusefs-gphotofs
     SUBDIR += fv
     SUBDIR += fyre
@@ -243,25 +239,18 @@
     SUBDIR += gimp-app
     SUBDIR += gimp-beautify-plugin
     SUBDIR += gimp-data-extras
-    SUBDIR += gimp-ez-perspective-plugin
-    SUBDIR += gimp-focusblur-plugin
     SUBDIR += gimp-gmic-plugin
     SUBDIR += gimp-help
-    SUBDIR += gimp-jagged-border-script
     SUBDIR += gimp-lensfun-plugin
     SUBDIR += gimp-lqr-plugin
-    SUBDIR += gimp-manual-html
     SUBDIR += gimp-refocus-plugin
     SUBDIR += gimp-resynthesizer
-    SUBDIR += gimp-save-for-web
-    SUBDIR += gimp-wavelet-denoise-plugin
-    SUBDIR += gimp-wavelet-sharpen-plugin
-    SUBDIR += giram
     SUBDIR += gkrellkam2
     SUBDIR += glad
     SUBDIR += gle
     SUBDIR += glee
     SUBDIR += glew
+    SUBDIR += glew-wayland
     SUBDIR += glexcess
     SUBDIR += glfw
     SUBDIR += glfw2
@@ -367,7 +356,6 @@
     SUBDIR += instant-meshes
     SUBDIR += intel-backlight
     SUBDIR += intergif
-    SUBDIR += inventor
     SUBDIR += ipe
     SUBDIR += jalbum
     SUBDIR += jasper
@@ -386,8 +374,6 @@
     SUBDIR += jpeg-turbo
     SUBDIR += jpeginfo
     SUBDIR += jpegoptim
-    SUBDIR += jpg2pdf
-    SUBDIR += jpgraph2
     SUBDIR += jpgtn
     SUBDIR += jslice
     SUBDIR += kamera
@@ -400,6 +386,7 @@
     SUBDIR += kdiagram
     SUBDIR += kf5-kimageformats
     SUBDIR += kf5-kplotting
+    SUBDIR += kf5-kquickcharts
     SUBDIR += kf5-prison
     SUBDIR += kgraphviewer
     SUBDIR += kimagemapeditor
@@ -410,6 +397,7 @@
     SUBDIR += kolourpaint
     SUBDIR += kooka
     SUBDIR += kphotoalbum
+    SUBDIR += kqtquickcharts
     SUBDIR += krita
     SUBDIR += kudu
     SUBDIR += kxstitch
@@ -428,7 +416,6 @@
     SUBDIR += lfview
     SUBDIR += lib3ds
     SUBDIR += libGLU
-    SUBDIR += libGLw
     SUBDIR += libQGLViewer
     SUBDIR += libafterimage
     SUBDIR += libansilove
@@ -507,16 +494,6 @@
     SUBDIR += libzmf
     SUBDIR += lightzone
     SUBDIR += linplasma
-    SUBDIR += linux-c6-cairo
-    SUBDIR += linux-c6-dri
-    SUBDIR += linux-c6-gdk-pixbuf2
-    SUBDIR += linux-c6-glx-utils
-    SUBDIR += linux-c6-jasper
-    SUBDIR += linux-c6-jpeg
-    SUBDIR += linux-c6-png
-    SUBDIR += linux-c6-sdl_image
-    SUBDIR += linux-c6-sdl_ttf
-    SUBDIR += linux-c6-tiff
     SUBDIR += linux-c7-cairo
     SUBDIR += linux-c7-cairo-gobject
     SUBDIR += linux-c7-dri
@@ -543,7 +520,6 @@
     SUBDIR += magnum-plugins
     SUBDIR += mahotas
     SUBDIR += maim
-    SUBDIR += makehuman
     SUBDIR += mandelbulber
     SUBDIR += mapcache
     SUBDIR += mapnik
@@ -615,7 +591,7 @@
     SUBDIR += optar
     SUBDIR += optipng
     SUBDIR += osg
-    SUBDIR += osg-devel
+    SUBDIR += osg34
     SUBDIR += osgearth
     SUBDIR += ossim
     SUBDIR += oyranos
@@ -756,8 +732,6 @@
     SUBDIR += phototonic
     SUBDIR += php-facedetect
     SUBDIR += php-geos
-    SUBDIR += php71-exif
-    SUBDIR += php71-gd
     SUBDIR += php72-exif
     SUBDIR += php72-gd
     SUBDIR += php73-exif
@@ -770,6 +744,7 @@
     SUBDIR += piglit
     SUBDIR += pikopixel
     SUBDIR += pinpoint
+    SUBDIR += pinta
     SUBDIR += pixd
     SUBDIR += pixelize
     SUBDIR += pixen
@@ -807,7 +782,6 @@
     SUBDIR += processing
     SUBDIR += proj
     SUBDIR += pstoedit
-    SUBDIR += pstoepsi
     SUBDIR += ptex
     SUBDIR += py-OWSLib
     SUBDIR += py-PyOpenGL
@@ -818,6 +792,7 @@
     SUBDIR += py-blockdiagcontrib-cisco
     SUBDIR += py-cairo
     SUBDIR += py-cairocffi
+    SUBDIR += py-cairosvg
     SUBDIR += py-cartopy
     SUBDIR += py-chart
     SUBDIR += py-colour
@@ -876,6 +851,7 @@
     SUBDIR += py-pygal
     SUBDIR += py-pyganim
     SUBDIR += py-pyglet
+    SUBDIR += py-pyglet12
     SUBDIR += py-pygooglechart
     SUBDIR += py-pygraphviz
     SUBDIR += py-pyinsane2
@@ -884,7 +860,9 @@
     SUBDIR += py-pyproj
     SUBDIR += py-pyqrcode
     SUBDIR += py-pyqtgraph
+    SUBDIR += py-pyrsgis
     SUBDIR += py-python-poppler-qt5
+    SUBDIR += py-pyvips
     SUBDIR += py-qt5-svg
     SUBDIR += py-rawkit
     SUBDIR += py-sane
@@ -898,9 +876,11 @@
     SUBDIR += py-termtosvg
     SUBDIR += py-toyplot
     SUBDIR += py-traitsui
+    SUBDIR += py-visvis
     SUBDIR += py-wand
     SUBDIR += py-webcolors
     SUBDIR += py-willow
+    SUBDIR += py-willow11
     SUBDIR += py-yaswfp
     SUBDIR += pygts
     SUBDIR += pymorph
@@ -1041,10 +1021,12 @@
     SUBDIR += togl
     SUBDIR += ttygif
     SUBDIR += tumble
+    SUBDIR += tweeny
     SUBDIR += ufraw
     SUBDIR += uniconvertor
     SUBDIR += uniconvw
     SUBDIR += unpaper
+    SUBDIR += urho3d
     SUBDIR += urt
     SUBDIR += vapoursynth-fmtconv
     SUBDIR += vapoursynth-waifu2x-w2xc
@@ -1061,6 +1043,7 @@
     SUBDIR += vv
     SUBDIR += waffle
     SUBDIR += waifu2x-converter-cpp
+    SUBDIR += waifu2x-ncnn-vulkan
     SUBDIR += wayland
     SUBDIR += wayland-protocols
     SUBDIR += waylandpp
@@ -1081,7 +1064,6 @@
     SUBDIR += xglurbules
     SUBDIR += xgrasp
     SUBDIR += xli
-    SUBDIR += xmandel
     SUBDIR += xmedcon
     SUBDIR += xmlgraphics-commons
     SUBDIR += xmountains
@@ -1102,6 +1084,7 @@
     SUBDIR += xv-m17n
     SUBDIR += xwpick
     SUBDIR += xzgv
+    SUBDIR += yacreader
     SUBDIR += yafaray
     SUBDIR += yed
     SUBDIR += yukon

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	yabasic
-PORTVERSION=	2.84.1
+PORTVERSION=	2.86.3
 PORTEPOCH=	1
 CATEGORIES=	lang
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libffi.so:devel/libffi
 
-USES=		autoreconf bison gmake localbase ncurses
+USES=		autoreconf bison gmake localbase ncurses xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	marcIhm
 
@@ -22,7 +22,7 @@ GNU_CONFIGURE=	yes
 USE_XORG=	ice sm x11
 TEST_TARGET=	check
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/unix/lang
+WRKSRC_SUBDIR=	unix/lang
 
 PORTDOCS=	ChangeLog README
 PLIST_FILES=	bin/yabasic man/man1/yabasic.1.gz

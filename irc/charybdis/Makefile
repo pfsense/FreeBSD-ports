@@ -2,11 +2,13 @@
 
 PORTNAME=	charybdis
 PORTVERSION=	3.5.3
-CATEGORIES=	irc ipv6 net
+CATEGORIES=	irc net
 MASTER_SITES=	http://distfiles.charybdis.io/
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Powerful IRC daemon, based on ircd-ratbox
+
+BROKEN=		unfetchable
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE

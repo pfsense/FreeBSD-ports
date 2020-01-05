@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vim
-PORTVERSION=	8.1.1954
+PORTVERSION=	8.1.2372
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
@@ -86,6 +86,7 @@ NLS_USES=		gettext
 
 # UI
 ATHENA_PLIST_SUB=	GUI="" DESKTOP="@comment "
+ATHENA_USES=		xorg
 ATHENA_USE=		XORG=ice,sm,x11,xaw,xmu,xpm,xt
 ATHENA_VARS=		GUI=athena
 
@@ -96,29 +97,30 @@ CONSOLE_VARS=		GUI=no
 GNOME_PLIST_SUB=	GUI="" DESKTOP=""
 GNOME_IMPLIES=		NLS
 GNOME_USE=		GNOME=gdkpixbuf2,libgnomeui XORG=ice,sm,xorgproto,x11,xpm,xt
-GNOME_USES=		desktop-file-utils gnome
+GNOME_USES=		desktop-file-utils gnome xorg
 GNOME_VARS=		GUI=gnome2 INSTALLS_ICONS=yes
 
 GTK2_PLIST_SUB=		GUI="" DESKTOP=""
 GTK2_USE=		GNOME=gdkpixbuf2,gtk20 XORG=ice,sm,x11,xpm,xt
-GTK2_USES=		desktop-file-utils gnome
+GTK2_USES=		desktop-file-utils gnome xorg
 GTK2_VARS=		GUI=gtk2 INSTALLS_ICONS=yes
 
 GTK3_PLIST_SUB=		GUI="" DESKTOP=""
 GTK3_USE=		GNOME=cairo,gdkpixbuf2,gtk30 XORG=ice,sm,x11,xpm,xt
-GTK3_USES=		desktop-file-utils gnome
+GTK3_USES=		desktop-file-utils gnome xorg
 GTK3_VARS=		GUI=gtk3 INSTALLS_ICONS=yes
 
 MOTIF_CONFIGURE_ENV=	MOTIFHOME=${LOCALBASE}
 MOTIF_CONFIGURE_WITH=	motif-lib="${MOTIFLIB}"
 MOTIF_PLIST_SUB=	GUI="" DESKTOP="@comment "
 MOTIF_USE=		XORG=ice,sm,x11,xmu,xt
-MOTIF_USES=		motif
+MOTIF_USES=		motif xorg
 MOTIF_VARS=		GUI=motif
 
 X11_CONFIGURE_WITH=	x
 X11_PLIST_SUB=		GUI="@comment " DESKTOP="@comment "
 X11_USE=		XORG=ice,sm,x11,xt
+X11_USES=		xorg
 X11_VARS=		GUI=no
 
 # LANGUAGE BINDINGS

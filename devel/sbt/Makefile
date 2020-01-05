@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sbt
-PORTVERSION=	1.3.2
+PORTVERSION=	1.3.6
 CATEGORIES=	devel java
 MASTER_SITES=	https://github.com/sbt/sbt/releases/download/v${PORTVERSION}/
 
@@ -15,7 +15,7 @@ USES=		tar:tgz
 
 OPTIONS_DEFINE=	ADVANCED PRELOADED
 OPTIONS_DEFAULT=ADVANCED
-ADVANCED_DESC=	Install advanced bash shell-script
+ADVANCED_DESC=	Install advanced bash shell-script (required for Java 11+)
 PRELOADED_DESC=	Install preloaded jars for offline usage
 
 NO_BUILD=	yes
@@ -41,6 +41,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/bin/sbt-launch.jar ${STAGEDIR}${DATADIR}
 .if ${PORT_OPTIONS:MADVANCED}
+	${INSTALL_DATA} ${WRKSRC}/bin/java9-rt-export.jar ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/sbt ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${DATADIR}/conf
 	${INSTALL_DATA} ${FILESDIR}/sbtopts ${STAGEDIR}${DATADIR}/conf
@@ -49,7 +50,6 @@ do-install:
 .endif
 	${LN} -s ../${DATADIR_REL}/sbt ${STAGEDIR}${PREFIX}/bin/
 .else
-	${INSTALL_DATA} ${WRKSRC}/bin/sbt-launch.jar ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/sbt.sh ${STAGEDIR}${PREFIX}/bin/sbt
 .endif
 

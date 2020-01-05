@@ -11,12 +11,15 @@ DISTNAME=	4stAttack-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Connect four stones in a straight line
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL
 
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python:2.7 shebangfix
+USES=		gnome python:2.7 shebangfix
 SHEBANG_FILES=	4stattack.py
 NO_ARCH=	yes
 

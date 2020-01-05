@@ -3,12 +3,14 @@
 PORTNAME=	ipv6mon
 PORTVERSION=	1.0
 PORTREVISION=	3
-CATEGORIES=	net-mgmt ipv6
+CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.si6networks.com/tools/ipv6mon/
 DISTNAME=	${PORTNAME}-v${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Tool for monitoring IPv6 address usage
+
+BROKEN=		unfetchable
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT

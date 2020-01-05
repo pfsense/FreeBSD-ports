@@ -3,7 +3,7 @@
 
 PORTNAME=	pinot
 PORTVERSION=	1.09
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	deskutils
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -41,7 +41,7 @@ GH_ACCOUNT=	FabriceColin
 GH_TAGNAME=	c14d6d5
 
 USES=		compiler:c++11-lang autoreconf gettext gnome libarchive \
-		libtool pkgconfig python shebangfix sqlite:3 ssl
+		libtool pkgconfig python shebangfix sqlite:3 ssl xorg
 USE_CXXSTD=	c++11
 USE_XORG=	pixman
 USE_GNOME=	atkmm cairo cairomm glibmm gtk20 gtkmm24 libsigc++20 libxml2 pangomm

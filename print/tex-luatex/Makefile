@@ -2,7 +2,7 @@
 
 PORTNAME=	luatex
 PORTVERSION=	0.80.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
 PKGNAMEPREFIX=	tex-
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libmpfr.so:math/mpfr \
 		libzzip.so:devel/zziplib
 
-USES=		pkgconfig tar:xz libtool
+USES=		gnome libtool pkgconfig tar:xz xorg
 USE_TEX=	kpathsea web2c texmf formats texlua texluajit fmtutil
 USE_XORG=	pixman
 USE_GNOME=	cairo

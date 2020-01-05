@@ -3,13 +3,16 @@
 
 PORTNAME=	gsculpt
 PORTVERSION=	0.99.47
-PORTREVISION=	26
+PORTREVISION=	27
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME:S,-src,,}
 DISTNAME=	gSculpt-${PORTVERSION}-alpha-src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Opensource 3D modelling application
+
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,7 +27,7 @@ BROKEN_sparc64=		fails to compile
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S,-src,,}
 
-USES=		compiler:c++11-lang pkgconfig python:2.7 scons
+USES=		compiler:c++11-lang gl gnome pkgconfig python:2.7 scons xorg
 USE_GNOME=	pygtk2
 USE_GL=		glu
 USE_XORG=	x11

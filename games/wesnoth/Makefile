@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	wesnoth
-PORTVERSION=	1.14.7
-PORTREVISION=	2
+PORTVERSION=	1.14.9
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}/${PORTNAME}-${PORTVERSION} \
@@ -26,8 +25,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib -lboost_system
 
 PORTSCOUT=	limitw:1,even
 
-USES=		cmake compiler:c++11-lang cpe pkgconfig \
-		python:2.7,run readline:port shebangfix ssl tar:bzip2
+USES=		cmake compiler:c++11-lang cpe gnome pkgconfig \
+		python:2.7,run readline:port shebangfix ssl sdl tar:bzip2 xorg
 USE_SDL=	image2 mixer2 ttf2
 USE_LDCONFIG=	yes
 USE_GNOME=	cairo pango

@@ -3,7 +3,7 @@
 
 PORTNAME=	gnormalize
 PORTVERSION=	0.63
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -13,7 +13,7 @@ COMMENT=	Alternative for replaygain
 RUN_DEPENDS+=	p5-Gtk2>=0:x11-toolkits/p5-Gtk2 \
 		wavegain:audio/wavegain
 
-USES=		perl5 shebangfix
+USES=		gnome perl5 shebangfix
 USE_PERL5=	run
 INSTALLS_ICONS=	yes
 
@@ -21,7 +21,7 @@ SHEBANG_FILES=	${PORTNAME}
 
 NO_BUILD=	yes
 
-OPTIONS_DEFINE=	MP3 OGG MP4 CDPARANOIA CDDB CDPLAY PLAC MAC MUSEPACK
+OPTIONS_DEFINE=	MP3 OGG MP4 CDPARANOIA CDDB CDPLAY FLAC MAC MUSEPACK
 OPTIONS_DEFAULT=	MP3 OGG MP4
 
 MAC_DESC=	Monkey's Audio Encoding and Playback

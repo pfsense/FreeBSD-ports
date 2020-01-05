@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tig
-PORTVERSION=	2.4.1
-PORTREVISION=	2
+PORTVERSION=	2.5.0
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/jonas/tig/releases/download/${DISTNAME}/
 
@@ -12,6 +11,8 @@ COMMENT=	Text-mode interface for git
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+TEST_DEPENDS=	git:devel/git
 
 USES=		iconv gmake ncurses readline:port
 GNU_CONFIGURE=	yes
@@ -35,5 +36,11 @@ GIT_VARS_OFF=	PKGMESSAGE="${.CURDIR}/pkg-message-git"
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tig
+
+do-test:
+# Tests fail when running as part of a non-interactive Poudriere
+# build, but using script(1) seems to be a good enough workaround and
+# allows them to run successfully anyway.
+	@/usr/bin/script -q /dev/null ${GMAKE} -C ${WRKSRC} test
 
 .include <bsd.port.mk>

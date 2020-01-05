@@ -9,8 +9,8 @@ COMMENT=	Plasma5 utility providing system information
 
 LIB_DEPENDS=	libpci.so:devel/libpci
 
-USES=		cmake compiler:c++11-lib cpe gettext kde:5 pkgconfig \
-		qt:5 tar:xz
+USES=		cmake compiler:c++11-lib cpe gettext gl kde:5 pkgconfig \
+		qt:5 tar:xz xorg
 USE_GL=		egl gl glu
 USE_KDE=	auth bookmarks codecs completion config configwidgets \
 		coreaddons crash dbusaddons doctools ecm emoticons guiaddons \

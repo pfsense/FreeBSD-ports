@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	elasticsearch
-PORTVERSION=	6.5.4
-PORTREVISION=	0
+PORTVERSION=	6.8.5
 CATEGORIES=	textproc java devel
 MASTER_SITES=	https://artifacts.elastic.co/downloads/${PORTNAME}/ \
 		http://mirrors.rit.edu/zi/
 PKGNAMESUFFIX=	6
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	elastic@FreeBSD.org
 COMMENT=	Full-text search engine for Java
 
 LICENSE=	APACHE20
@@ -18,28 +17,64 @@ BUILD_DEPENDS=	jna>0:devel/jna
 RUN_DEPENDS=	bash>0:shells/bash \
 		jna>0:devel/jna
 
+USES=		cpe shebangfix
+
 CONFLICTS=	elasticsearch-[0-9]* elasticsearch2-[0-9]* elasticsearch5-[0-9]*
 
-USES=		cpe shebangfix
 NO_ARCH=	yes
 USE_JAVA=	yes
 NO_BUILD=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 USE_RC_SUBR=	${PORTNAME}
 SHEBANG_FILES=	bin/elasticsearch \
+		bin/elasticsearch-certgen \
+		bin/elasticsearch-certutil \
 		bin/elasticsearch-cli \
+		bin/elasticsearch-croneval \
 		bin/elasticsearch-env \
-		bin/elasticsearch-plugin
+		bin/elasticsearch-keystore \
+		bin/elasticsearch-migrate \
+		bin/elasticsearch-plugin \
+		bin/elasticsearch-saml-metadata \
+		bin/elasticsearch-setup-passwords \
+		bin/elasticsearch-shard \
+		bin/elasticsearch-sql-cli \
+		bin/elasticsearch-syskeygen \
+		bin/elasticsearch-translog \
+		bin/elasticsearch-users \
+		bin/x-pack-env \
+		bin/x-pack-security-env \
+		bin/x-pack-watcher-env
 
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-CONFIG_FILES=	elasticsearch.yml log4j2.properties jvm.options
+CONFIG_FILES=	elasticsearch.yml \
+		log4j2.properties \
+		jvm.options \
+		role_mapping.yml \
+		roles.yml
 BINS=		elasticsearch \
+		elasticsearch-certgen \
+		elasticsearch-certutil \
 		elasticsearch-cli \
+		elasticsearch-croneval \
 		elasticsearch-env \
-		elasticsearch-plugin
+		elasticsearch-keystore \
+		elasticsearch-migrate \
+		elasticsearch-plugin \
+		elasticsearch-saml-metadata \
+		elasticsearch-setup-passwords \
+		elasticsearch-shard \
+		elasticsearch-sql-cli \
+		elasticsearch-sql-cli-${PORTVERSION}.jar \
+		elasticsearch-syskeygen \
+		elasticsearch-translog \
+		elasticsearch-users \
+		x-pack-env \
+		x-pack-security-env \
+		x-pack-watcher-env
 
 PORTDOCS=	LICENSE.txt \
 		NOTICE.txt \
@@ -51,7 +86,7 @@ SEARCHGROUP?=	${SEARCHUSER}
 USERS=		${SEARCHUSER}
 GROUPS=		${SEARCHGROUP}
 
-SUB_LIST=	ETCDIR=${ETCDIR} JAVA=${JAVA}
+SUB_LIST=	ETCDIR=${ETCDIR} JAVA_HOME=${JAVA_HOME}
 SUB_FILES=	pkg-message
 
 post-patch:

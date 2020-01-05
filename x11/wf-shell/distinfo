@@ -1,3 +1,5 @@
-TIMESTAMP = 1563441350
-SHA256 (WayfireWM-wf-shell-v0.1-13-gefe1fd4_GH0.tar.gz) = 64bd5975372a78c1832e44607bd080945760b18caecc857d388172d8d72d2f53
-SIZE (WayfireWM-wf-shell-v0.1-13-gefe1fd4_GH0.tar.gz) = 2969618
+TIMESTAMP = 1570475746
+SHA256 (WayfireWM-wf-shell-0.3_GH0.tar.gz) = 326c732415a10215997c0915741fd561a306412327fae123eab67f1af9ee41de
+SIZE (WayfireWM-wf-shell-0.3_GH0.tar.gz) = 2973206
+SHA256 (GNOME-libgnome-volume-control-468022b_GH0.tar.gz) = 1c1d806ad1f57d7f644381b67ee87ef3e7e10f3a2da1432beef535ca50c0040f
+SIZE (GNOME-libgnome-volume-control-468022b_GH0.tar.gz) = 45503

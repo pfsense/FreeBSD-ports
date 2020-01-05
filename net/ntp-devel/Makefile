@@ -3,8 +3,8 @@
 
 PORTNAME=	ntp
 PORTVERSION=	4.3.99
-PORTREVISION=	5
-CATEGORIES=	net ipv6
+PORTREVISION=	6
+CATEGORIES=	net
 MASTER_SITES=	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-dev/ \
 		http://archive.ntp.org/ntp4/ntp-dev/
 PKGNAMESUFFIX=	-devel

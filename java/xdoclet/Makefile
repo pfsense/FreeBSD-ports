@@ -13,11 +13,12 @@ DISTFILES=	${DISTNAME}.zip xjavadoc-${XJAVADOC_VER}.zip
 MAINTAINER=	lxv@omut.org
 COMMENT=	Java attribute-oriented code generation engine
 
+BROKEN=		unfetchable
+
 RUN_DEPENDS=	${LOCALBASE}/bin/ant:devel/apache-ant
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes

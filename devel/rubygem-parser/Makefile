@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	parser
-PORTVERSION=	2.6.4.1
+PORTVERSION=	2.6.5.0
 CATEGORIES=	devel ruby
 MASTER_SITES=	RG
 
@@ -11,7 +11,7 @@ COMMENT=	Ruby parser written in pure Ruby
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-ast>=2.4.0:devel/rubygem-ast
+RUN_DEPENDS=	rubygem-ast>=2.4.0<2.5:devel/rubygem-ast
 
 USES=		gem
 USE_RUBY=	yes

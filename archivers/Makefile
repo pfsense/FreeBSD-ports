@@ -30,7 +30,6 @@
     SUBDIR += file-roller
     SUBDIR += fpc-bzip2
     SUBDIR += fpc-unzip
-    SUBDIR += freetar
     SUBDIR += gcab
     SUBDIR += gcpio
     SUBDIR += gnome-autoar
@@ -39,9 +38,7 @@
     SUBDIR += gzip
     SUBDIR += gzrecover
     SUBDIR += ha
-    SUBDIR += hffzip
     SUBDIR += hlextract
-    SUBDIR += hpack.non-usa.only
     SUBDIR += innoextract
     SUBDIR += javatar
     SUBDIR += jzlib
@@ -64,7 +61,6 @@
     SUBDIR += liblz4
     SUBDIR += liblzxcomp
     SUBDIR += libmspack
-    SUBDIR += liborange
     SUBDIR += libpar2
     SUBDIR += librtfcomp
     SUBDIR += libunrar
@@ -151,10 +147,6 @@
     SUBDIR += php-lz4
     SUBDIR += php-snappy
     SUBDIR += php-zstd
-    SUBDIR += php71-bz2
-    SUBDIR += php71-phar
-    SUBDIR += php71-zip
-    SUBDIR += php71-zlib
     SUBDIR += php72-bz2
     SUBDIR += php72-phar
     SUBDIR += php72-zip
@@ -224,7 +216,6 @@
     SUBDIR += snappy
     SUBDIR += snappy-java
     SUBDIR += snzip
-    SUBDIR += squeeze
     SUBDIR += squsq
     SUBDIR += star
     SUBDIR += stuffit
@@ -238,6 +229,7 @@
     SUBDIR += unalz
     SUBDIR += unarchiver
     SUBDIR += unarj
+    SUBDIR += unarr
     SUBDIR += undms
     SUBDIR += unfoo
     SUBDIR += unlzx
@@ -246,7 +238,6 @@
     SUBDIR += unrar
     SUBDIR += unrar-iconv
     SUBDIR += unshield
-    SUBDIR += untar
     SUBDIR += unzip
     SUBDIR += unzoo
     SUBDIR += upx

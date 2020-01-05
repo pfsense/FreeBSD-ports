@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	astk
-DISTVERSION=	2018.0-1
+DISTVERSION=	2019.0-1
+PORTREVISION=	1
 CATEGORIES=	cad
 .if !defined(CLIENT_SEUL)
 PKGNAMESUFFIX=	-serveur
@@ -14,6 +15,9 @@ MAINTAINER=	thierry@FreeBSD.org
 COMMENT?=	Graphical interface for Code_Aster (server side)
 
 LICENSE=	GPLv2
+
+NOT_FOR_ARCHS=		armv6 armv7 i386 mips powerpc
+NOT_FOR_ARCHS_REASON=	ARG_MAX is too small for Code_Aster on 32 bits systems
 
 #-----------------------------------------------------------------------
 # You may define these options:
@@ -30,8 +34,9 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS+=	${SHELL_INSTALL_ASTER}:shells/${SHIADEP}
 
+USES=		gettext
 .if !defined(CLIENT_SEUL)
-USES+=		gettext python:2.7 shebangfix tk:build
+USES+=		python:3.6+ shebangfix tk:build
 SHEBANG_FILES=	unittest/run_test.py
 .else
 USES+=		tk
@@ -57,6 +62,12 @@ tools_dir=	${LOCALBASE}/aster/outils
 conf_dir=	${WRKSRC}/etc/astkrc
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ((${OSREL:R} <= 12 && ${OSVERSION} < 1201506)	\
+			|| (${OSREL:R} > 12 && ${OSVERSION} < 1300068))
+# ASTK is not useful without french/aster
+IGNORE=	a larger value of ARG_MAX is needed for Code_Aster, please upgrade your system
+.endif
 
 WRKCONF=	${WRKDIR}/${PORTNAME}-${PORTVERSION:R}/configuration
 .if !defined(CLIENT_SEUL)
@@ -171,6 +182,7 @@ ASTK_LANG=	ENG
 
 pre-configure:
 	${RM} ${PATCH2RM:C|^|${WRKSRC}/|:C|$|.orig|}
+	${RM} ${WRKSRC}/configuration/*.pyc
 
 do-configure:
 .if !defined(CLIENT_SEUL)
@@ -207,7 +219,7 @@ do-configure:
 		${WRKSRC}/etc/profile.sh
 . for libs in ${S_PYLIBS}
 	${REINPLACE_CMD} -e "s|/opt/aster/NEW9|${aster_dir}|"			\
-		 -e "s|/opt/aster/NEW10|${aster_dir}|"				\
+		 -e "s|/opt/aster/NEW11|${aster_dir}|"				\
 		-e "s|/opt/aster/ASTK|${inst_dir}|"				\
 		-e "s|/opt/aster|${LOCALBASE}/aster|g"				\
 		-e "s|/usr/bin/editor|${WITH_ED}|"				\

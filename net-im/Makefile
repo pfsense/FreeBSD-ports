@@ -3,6 +3,8 @@
 
     COMMENT = Instant messaging
 
+    SUBDIR += 6cord
+    SUBDIR += beebeep
     SUBDIR += centerim
     SUBDIR += centerim-devel
     SUBDIR += chattahoochie
@@ -72,6 +74,7 @@
     SUBDIR += linux-telegram-desktop
     SUBDIR += loudmouth
     SUBDIR += matterbridge
+    SUBDIR += matterhorn
     SUBDIR += matterircd
     SUBDIR += mbpurple
     SUBDIR += mcabber
@@ -100,7 +103,6 @@
     SUBDIR += p5-SOAP-Transport-JABBER
     SUBDIR += pecl-stomp2
     SUBDIR += pidgin
-    SUBDIR += pidgin-birthday-reminder
     SUBDIR += pidgin-bs
     SUBDIR += pidgin-fetion
     SUBDIR += pidgin-guifications
@@ -110,14 +112,11 @@
     SUBDIR += pidgin-libnotify
     SUBDIR += pidgin-manualsize
     SUBDIR += pidgin-osd
-    SUBDIR += pidgin-pidgimpd
-    SUBDIR += pidgin-privacy-please
     SUBDIR += pidgin-rocketchat
     SUBDIR += pidgin-sipe
     SUBDIR += pidgin-skypeweb
     SUBDIR += pidgin-twitter
     SUBDIR += pidgin-window_merge
-    SUBDIR += poezio
     SUBDIR += profanity
     SUBDIR += prosody
     SUBDIR += prosody-modules

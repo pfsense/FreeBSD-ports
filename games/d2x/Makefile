@@ -11,7 +11,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unix port of Descent 2 Game
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl image
 
 CONFIGURE_ARGS=	--disable-network --disable-debug
@@ -24,6 +24,7 @@ OPTIONS_DEFINE=	OPENGL DOCS
 OPENGL_CONFIGURE_WITH=	opengl
 OPENGL_CXXFLAGS=	-I${LOCALBASE}/include
 OPENGL_LDFLAGS=		-L${LOCALBASE}/lib
+OPENGL_USES=	gl
 OPENGL_USE=	GL=glut
 
 post-install-OPENGL-on:

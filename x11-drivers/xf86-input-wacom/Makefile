@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	xf86-input-wacom
-PORTVERSION=	0.37.0
+PORTVERSION=	0.39.0
 CATEGORIES=	x11-drivers
 MASTER_SITES=	https://github.com/linuxwacom/${PORTNAME}/releases/download/${DISTNAME}/
 
@@ -13,9 +13,8 @@ LICENSE=	GPLv2+
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
 
-USES=		gmake pathfix
+USES=		gmake pathfix xorg xorg-cat:driver
 USE_XORG=	x11 xext xinerama xrandr
-XORG_CAT=	driver
 LDFLAGS+=	-Wl,--as-needed # Xext
 USE_RC_SUBR=	wacom
 SUB_FILES=	pkg-message

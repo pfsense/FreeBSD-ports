@@ -2,7 +2,7 @@
 
 PORTNAME=		git-lfs
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.8.0
+DISTVERSION=		2.9.1
 CATEGORIES=		devel
 
 MAINTAINER=	egypcio@FreeBSD.org
@@ -10,6 +10,8 @@ COMMENT=	Git extension for versioning large files
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+RUN_DEPENDS=	git:devel/git
 
 USES=		go:modules
 USE_GITHUB=	yes

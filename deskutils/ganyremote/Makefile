@@ -9,12 +9,15 @@ MASTER_SITES=	SF/anyremote/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNOME frontend for anyRemote
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	anyremote:comms/anyremote
 
-USES=		python:2.7 shebangfix
+USES=		gnome python:2.7 shebangfix
 SHEBANG_FILES=	ganyremote
 USE_GNOME=	pygobject3 gtk30
 GNU_CONFIGURE=	yes

@@ -10,10 +10,13 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dynamic GUI for an OS command
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		dos2unix python:2.7 shebangfix
+USES=		dos2unix gnome python:2.7 shebangfix
 SHEBANG_FILES=	src/*.py
 DOS2UNIX_GLOB=	*.py
 USE_PYTHON=	distutils autoplist

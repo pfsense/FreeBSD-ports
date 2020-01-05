@@ -10,6 +10,8 @@ MASTER_SITES=	http://www.ecromedos.net/files/src/${PORTVERSION}/
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Document preparation system that allows concurrent publication
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libxml2>=0:textproc/py-libxml2@${PY_FLAVOR} \
@@ -19,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libxml2>=0:textproc/py-libxml2@${PY_FLAVOR} 
 
 NO_BUILD=	yes
 
-USES=		python:2.7
+USES=		gnome python:2.7
 USE_GNOME=	libxml2 libxslt
 USE_TEX=	latex
 

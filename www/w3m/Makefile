@@ -3,7 +3,7 @@
 
 PORTNAME=	w3m
 PORTVERSION=	0.5.3.${SNAPDATE}
-CATEGORIES+=	www ipv6
+CATEGORIES+=	www
 
 MAINTAINER?=	nobutaka@FreeBSD.org
 COMMENT?=	Pager/text-based WWW browser
@@ -49,6 +49,7 @@ JAPANESE_DESC=		Japanese messages and migemo support
 KEY_LYNX_DESC=		Keymap like lynx browser
 OPTIONS_SUB=	yes
 
+INLINE_IMAGE_USES=	gnome xorg
 INLINE_IMAGE_USE=	xorg=x11 gnome=gtk20,gdkpixbuf2
 INLINE_IMAGE_CONFIGURE_ON=	--with-imagelib=gtk2 --enable-image=fb,x11
 INLINE_IMAGE_CONFIGURE_OFF=	--enable-image=no

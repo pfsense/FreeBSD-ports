@@ -53,6 +53,7 @@ G729_LIB_DEPENDS=	libbcg729.so:audio/bcg729
 
 GLX_IMPLIES=		VIDEO
 GLX_CMAKE_BOOL=		ENABLE_GL ENABLE_GLX
+GLX_USES=		gl
 GLX_USE=		GL=glew
 
 GSM_CMAKE_BOOL=		ENABLE_GSM
@@ -86,6 +87,7 @@ VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
 
 XVIDEO_IMPLIES=		VIDEO
 XVIDEO_CMAKE_BOOL=	ENABLE_X11 ENABLE_XV
+XVIDEO_USES=		xorg
 XVIDEO_USE=		XORG=xorgproto,x11,xv
 
 .include <bsd.port.pre.mk>

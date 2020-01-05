@@ -10,6 +10,9 @@ MASTER_SITES=	http://www.mired.org/downloads/
 MAINTAINER=	mwm@mired.org
 COMMENT=	Simple menu patterened for use with ratpoison
 
+BROKEN=		unfetchable
+
+USES=		xorg
 USE_XORG=	x11
 ALL_TARGET=	ratmenu
 PLIST_FILES=	bin/ratmenu \

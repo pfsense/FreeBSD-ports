@@ -3,13 +3,13 @@
 
 PORTNAME=	xshttpd
 DISTVERSION=	3.7b35
-CATEGORIES=	www ipv6
+CATEGORIES=	www
 MASTER_SITES=	ftp://ftp.stack.nl/pub/xs-httpd/release/ \
 		ftp://mud.stack.nl/pub/xs-httpd/release/
 PKGNAMESUFFIX=	-devel
 DISTNAME=	${PORTNAME}-${DISTVERSION:S/.//}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Webserver with CGI as own user and SSL support
 
 RUN_DEPENDS=	run-mailcap:misc/mime-support

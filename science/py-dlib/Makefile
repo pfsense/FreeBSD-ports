@@ -2,7 +2,7 @@
 
 PORTNAME=	dlib
 DISTVERSION=	19.17
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science devel math python
 MASTER_SITES=	http://dlib.net/files/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -27,6 +27,7 @@ OPTIONS_DEFAULT=	X11 JPEG PNG GIF SQLITE
 BLASLAPACK_DESC=	Use Blas and Lapack libraries from ports
 AVX_DESC=		Use AVX instructions if supported by CPU
 
+X11_USES=		xorg
 X11_USE=		xorg=x11
 
 JPEG_USES=		jpeg

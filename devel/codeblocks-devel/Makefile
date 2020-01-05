@@ -3,7 +3,7 @@
 
 PORTNAME=	codeblocks
 PORTVERSION=	18.04
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	http://download.tuxfamily.org/bartcoding/FreeBSD/ \
 		${MASTER_SITE_LOCAL}
@@ -22,8 +22,9 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfreetype.so:print/freetype2 \
 		libhunspell-1.7.so:textproc/hunspell
 
-USES=		autoreconf compiler:c++11-lang desktop-file-utils fam:gamin localbase \
-		gettext-runtime libtool pathfix pkgconfig shared-mime-info
+USES=		autoreconf compiler:c++11-lang desktop-file-utils gnome \
+		fam:gamin localbase gettext-runtime libtool pathfix pkgconfig \
+		shared-mime-info xorg
 USE_WX=		2.8
 USE_GNOME=	gtk20 cairo
 USE_XORG=	x11

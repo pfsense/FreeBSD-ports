@@ -9,11 +9,14 @@ CATEGORIES=	graphics math
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ library for manipulating animation particle formats
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	swig3.0:devel/swig30
 
-USES=		cmake compiler:c++11-lang gl python:2.7 shebangfix
+USES=		cmake compiler:c++11-lang gl python:2.7 shebangfix xorg
 SHEBANG_FILES=	src/tools/partedit.py src/tools/partinspect.py \
 		src/tools/partjson.py
 USE_GL=		gl glu glut

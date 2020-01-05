@@ -5,7 +5,7 @@ PORTNAME=	ical
 PORTVERSION=	2.2
 PORTREVISION=	5
 CATEGORIES=	deskutils tk
-MASTER_SITES=	ftp://ftp.sunet.se/pub/vendor/sco/skunkware/src/shellutil/
+MASTER_SITES=	http://opal.com/jr/ical/
 
 PATCH_SITES=	http://www.isi.edu/~johnh/SOFTWARE/ICAL/
 PATCHFILES=	ical-2.3.1-upvar.patch
@@ -18,7 +18,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		tk
+USES=		tk xorg
 USE_XORG=	x11 xext xft xrender xscrnsaver
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-tclconfig=${TCL_LIBDIR} \

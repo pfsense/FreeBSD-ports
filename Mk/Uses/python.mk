@@ -250,7 +250,7 @@ _INCLUDE_USES_PYTHON_MK=	yes
 # What Python version and what Python interpreters are currently supported?
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-_PYTHON_VERSIONS=		2.7 3.6 3.7 3.5 # preferred first
+_PYTHON_VERSIONS=		2.7 3.7 3.8 3.6 3.5 # preferred first
 _PYTHON_PORTBRANCH=		2.7		# ${_PYTHON_VERSIONS:[1]}
 _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		lang/python
@@ -496,8 +496,8 @@ PYTHON_CMD?=		${_PYTHON_BASECMD}${_PYTHON_VERSION}
 .if ${PYTHON_VER} != 2.7
 .if exists(${PYTHON_CMD}-config)
 PYTHON_ABIVER!=		${PYTHON_CMD}-config --abiflags
-.else
-# Default ABI flags for lang/python3x ports
+.elif ${PYTHON_REL} < 3800
+# Default ABI flags for lang/python3[567] ports
 PYTHON_ABIVER=		m
 .endif
 .endif

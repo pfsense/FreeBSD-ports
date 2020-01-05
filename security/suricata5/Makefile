@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	suricata
-DISTVERSION=	5.0.0-beta1
-PORTREVISION=	1
+DISTVERSION=	5.0.0-rc1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 PKGNAMESUFFIX=	5
@@ -39,7 +39,7 @@ TEST_TARGET=		check
 
 OPTIONS_DEFINE=		GEOIP IPFW NSS PORTS_PCAP PRELUDE REDIS TESTS
 OPTIONS_DEFINE_amd64=	HYPERSCAN
-OPTIONS_DEFAULT=	IPFW HYPERSCAN
+OPTIONS_DEFAULT=	IPFW
 OPTIONS_SUB=		yes
 
 OPTIONS_RADIO=		SCRIPTS
@@ -57,7 +57,7 @@ REDIS_DESC=		Redis output support
 TESTS_DESC=		Unit tests in suricata binary
 
 GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
-GEOIP_CONFIGURE_ENABLE=	geoip
+GEOIP_CONFIGURE_ON=	--enable-geoip
 HYPERSCAN_LIB_DEPENDS=	libhs.so:devel/hyperscan
 IPFW_CONFIGURE_ON=	--enable-ipfw
 LUA_USES=		lua:51

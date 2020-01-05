@@ -11,6 +11,8 @@ DISTNAME=	gogland-${PORTVERSION}
 MAINTAINER=	bsam@FreeBSD.org
 COMMENT=	JetBrains Gogland IDE (Preview Edition)
 
+BROKEN=		unfetchable
+
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
@@ -19,7 +21,6 @@ RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
 USES=		python:run shebangfix
 SHEBANG_FILES=	bin/printenv.py bin/restart.py
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 
 NO_ARCH=	yes
 NO_BUILD=	yes

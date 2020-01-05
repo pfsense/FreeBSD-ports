@@ -2,7 +2,7 @@
 
 PORTNAME=	fractal
 DISTVERSION=	4.0.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	net-im
 MASTER_SITES=	https://gitlab.gnome.org/World/fractal/uploads/${GL_HASH}/
 
@@ -12,7 +12,7 @@ COMMENT=	GTK+ Matrix IM client
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-# gmake for the backtrace-sys crate
+# gmake for the gettext-sys crate
 BUILD_DEPENDS=	cargo:lang/${RUST_DEFAULT} \
 		gmake:devel/gmake
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \

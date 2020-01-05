@@ -4,9 +4,9 @@
 PORTNAME=	psearch
 PORTVERSION=	2.0.2
 CATEGORIES=	ports-mgmt
-MASTER_SITES=	http://www.maxlor.com/files/
+MASTER_SITES=	https://opsec.eu/src/
 
-MAINTAINER=	mail@maxlor.com
+MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Utility for searching the FreeBSD Ports Collection
 
 PLIST_FILES=	bin/psearch \

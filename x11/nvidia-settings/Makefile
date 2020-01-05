@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nvidia-settings
-PORTVERSION=	435.21
+PORTVERSION=	440.26
 CATEGORIES=	x11
 
 MAINTAINER=	bland@FreeBSD.org
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libjansson.so:devel/jansson \
 		libvdpau.so:multimedia/libvdpau
 
-USES=		gmake pkgconfig gettext-runtime xorg gnome
+USES=		gl gmake gnome pkgconfig gettext-runtime xorg
 USE_GNOME=	gtk20 cairo gdkpixbuf2
 USE_GL=		gl
 USE_XORG=	x11 xext xv xxf86vm

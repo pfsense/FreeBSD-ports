@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tomcat
-PORTVERSION=	9.0.26
+PORTVERSION=	9.0.29
 PORTREVISION=	0
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${PORTVERSION:C/([0-9])(.*)/\1/}/v${PORTVERSION}/bin
@@ -14,7 +14,7 @@ COMMENT=	Open-source Java web server by Apache, 9.0.x branch
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	jsvc:devel/jakarta-commons-daemon
+RUN_DEPENDS=	jsvc:devel/apache-commons-daemon
 
 USES=		cpe
 CPE_VENDOR=	apache

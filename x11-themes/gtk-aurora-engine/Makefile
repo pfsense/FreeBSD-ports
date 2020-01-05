@@ -13,10 +13,12 @@ DISTNAME=	56438-aurora-1.5.1
 MAINTAINER=	root@cooltrainer.org
 COMMENT=	Aurora GTK+ 2.x engine and "Aurora" theme
 
+BROKEN=		unfetchable
+
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gtk-engines-2.pc:x11-themes/gtk-engines2
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gtk-engines-2.pc:x11-themes/gtk-engines2
 
-USES=		gmake libtool pkgconfig tar:bzip2
+USES=		gmake gnome libtool pkgconfig tar:bzip2
 USE_GNOME=	gtk20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

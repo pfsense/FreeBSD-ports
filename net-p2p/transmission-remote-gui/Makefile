@@ -1,14 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	transmission-remote-gui
-PORTVERSION=	5.17.0
-PORTREVISION=	1
+PORTVERSION=	5.18.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	transmission-remote-gui
 GH_PROJECT=	transgui
 
 MAINTAINER=	acm@FreeBSD.org
@@ -28,7 +26,6 @@ DESKTOP_ENTRIES="Transmission Remote GUI" \
                 "Application;Network;" \
                 ${TRUE}
 
-WRKSRC=		${WRKDIR}/transgui-${PORTVERSION}
 PLIST_FILES=	bin/transgui \
 		share/icons/hicolor/48x48/apps/transgui.png
 PORTDATA=	*

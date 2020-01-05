@@ -3,7 +3,7 @@
 
 PORTNAME=	phalcon
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.4.4
+DISTVERSION=	3.4.5
 CATEGORIES=	www
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -13,6 +13,8 @@ COMMENT=	Phalcon PHP Framework written in C-language
 LICENSE=	BSD3CLAUSE
 
 ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386
+
+CONFLICTS_INSTALL=	${PKGNAMEPREFIX}phalcon4
 
 USES=		php:ext
 USE_PHP=	hash:build json:build pdo:build

@@ -3,7 +3,7 @@
  * pfblockerng_category.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -91,7 +91,8 @@ switch ($gtype) {
 		$active		= array('ip' => TRUE, 'geoip' => TRUE);
 		break;
 	case 'dnsbl':
-		$type		= 'DNSBL Feeds';
+	default:
+		$type		= 'DNSBL Groups';
 		$conf_type	= 'pfblockerngdnsbl';
 		$active		= array('dnsbl' => TRUE);
 		break;
@@ -210,7 +211,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6' || $gtype == 'geoip') {
 	$tab_array[]	= array(gettext('Reputation'),	false,			'/pfblockerng/pfblockerng_reputation.php');
 }
 else {
-	$tab_array[]	= array(gettext('DNSBL Feeds'),		$active['dnsbl'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
+	$tab_array[]	= array(gettext('DNSBL Groups'),	$active['dnsbl'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
 	$tab_array[]	= array(gettext('DNSBL Category'),	false,			'/pfblockerng/pfblockerng_blacklist.php');
 }
 display_top_tabs($tab_array, true);
@@ -238,6 +239,20 @@ if (isset($savemsg)) {
 		<?php endif; ?>
 	</div>
 	<div id="<?=$pageid;?>" class="panel-body">
+
+		<?php
+			// Maxmind License Key verification
+			if ($gtype == 'geoip') {
+				$maxmind_verify = TRUE;
+				if (empty($pfb['maxmind_key'])) {
+					$maxmind_verify = FALSE;
+					print_callout('<br /><p><strong>'
+							. 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information.'
+							. '</strong></p><br />', 'warning', '');
+				}
+			}
+		?>
+
 		<div class="table-responsive">
 		<table id="<?=$pageid;?>" class="table table-striped table-hover table-compact sortable-theme-bootstrap table-rowdblclickedit" data-sortable>
 			<thead>
@@ -375,7 +390,7 @@ if (isset($savemsg)) {
 							<i class="fa fa-check-square-o" style="cursor: default" title="DNSBL Primary Group order defined"></i>
 							<?php endif; ?>
 
-					<?php else: ?>
+					<?php elseif ($maxmind_verify && file_exists("/usr/local/www/pfblockerng/pfblockerng_{$row['filename']}.php")): ?>
 						<a href="/pfblockerng/pfblockerng_<?=$row['filename'];?>.php">
 							<i class="fa fa-pencil" alt="edit"></i>
 						</a>

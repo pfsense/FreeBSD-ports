@@ -4,7 +4,7 @@
 PORTNAME=	mapnik
 PORTVERSION=	3.0.9
 DISTVERSIONPREFIX=	v
-PORTREVISION=	28
+PORTREVISION=	30
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://mapnik.s3.amazonaws.com/dist/v${PORTVERSION}/
 
@@ -19,6 +19,8 @@ LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN=		fails to build with boost 1.70, see bug 237016
+DEPRECATED=	Broken for more than 8 months
+EXPIRATION_DATE=	2020-01-10
 BROKEN_powerpc=		fails to install: runs out of virtual memory
 
 LIB_DEPENDS=	libicuuc.so:devel/icu \
@@ -26,7 +28,7 @@ LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz
 
-USES=		compiler:c++11-lib pkgconfig python scons tar:bzip2
+USES=		compiler:c++11-lib gnome pkgconfig python scons tar:bzip2
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 MAKE_ARGS=	INPUT_PLUGINS="`${ECHO} ${INPUT_PLUGINS} | ${TR} ' ' ,`" \

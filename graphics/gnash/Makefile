@@ -3,7 +3,7 @@
 
 PORTNAME=	gnash
 PORTVERSION=	0.8.10
-PORTREVISION=	44
+PORTREVISION=	45
 CATEGORIES=	graphics
 MASTER_SITES=	http://git.savannah.gnu.org/cgit/gnash.git/snapshot/
 DISTNAME=	gnash-2b3bdede0305c4fc3ad21a0a4197330606c9b880
@@ -26,8 +26,8 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 
 CONFLICTS=	gnash-devel-[0-9]*
 
-USES=		cpe tar:bzip2 compiler:c++11-lang autoreconf gmake libtool \
-		pkgconfig jpeg gnome gl desktop-file-utils
+USES=		cpe tar:bzip2 compiler:c++11-lang autoreconf gl gmake gnome \
+		libtool pkgconfig jpeg gnome gl desktop-file-utils xorg
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 WANT_GSTREAMER=	yes
@@ -149,11 +149,13 @@ LIB_DEPENDS+=		libavcodec.so:multimedia/ffmpeg \
 CONFIGURE_ARGS+=	--enable-media=ffmpeg \
 			--with-ffmpeg-incl=${LOCALBASE}/include/libavcodec \
 			--with-ffmpeg-lib=${LOCALBASE}/lib
+USES+=			sdl
 USE_SDL+=		sdl
 MAKE_ARGS+=		INCLUDES="-I${LOCALBASE}/include/ffmpeg"
 .elif ${PORT_OPTIONS:MGSTREAMER} && empty(PORT_OPTIONS:MFFMPEG)
 USE_GSTREAMER=		ffmpeg mad vorbis
 CONFIGURE_ARGS+=	--enable-media=gst
+USES+=			sdl
 USE_SDL+=		sdl
 .else
 CONFIGURE_ARGS+=	--enable-media=none

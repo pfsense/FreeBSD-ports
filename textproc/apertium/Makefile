@@ -6,18 +6,21 @@ PORTVERSION=	3.4.2
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:R}
 
-MAINTAINER=	bofs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Toolbox to build shallow-transfer machine translation systems
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_powerpc64=	fails to configure: error: *** unable to locate pcrecpp library ***
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	liblttoolbox3.so:textproc/lttoolbox \
 		libpcre.so:devel/pcre
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		autoreconf pathfix pkgconfig libtool localbase:ldflags
+USES=		autoreconf compiler:c++11-lang gnome libtool localbase:ldflags \
+		pathfix pkgconfig
 USE_GNOME=	libxml2 libxslt
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

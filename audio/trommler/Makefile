@@ -11,9 +11,12 @@ DISTNAME=	${PORTNAME}.${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK+2 based drum machine
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 
-USES=		gmake pkgconfig python:2.7,build shebangfix
+USES=		gmake gnome pkgconfig python:2.7,build shebangfix
 SHEBANG_FILES=	genexport.py
 USE_GNOME=	gtk20
 

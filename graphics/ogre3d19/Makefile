@@ -3,7 +3,7 @@
 
 PORTNAME=	ogre3d
 PORTVERSION=	1.9.0
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	graphics devel
 MASTER_SITES=   https://bitbucket.org/sinbad/ogre/get/
 DISTNAME=	v1-9-0
@@ -22,7 +22,7 @@ LIB_DEPENDS=	libzzip.so:devel/zziplib \
 CONFLICTS=	ogre3d-[0-9]*
 
 USE_LDCONFIG=	yes
-USES=		tar:bzip2 cmake pkgconfig compiler:c++11-lib
+USES=		tar:bzip2 cmake pkgconfig compiler:c++11-lib sdl xorg
 USE_SDL=	sdl
 USE_XORG=	xaw xrandr
 WRKSRC=		${WRKDIR}/sinbad-ogre-dd30349ea667

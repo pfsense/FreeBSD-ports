@@ -3,7 +3,7 @@
 
 PORTNAME=	pdf2svg
 PORTVERSION=	0.2.3
-PORTREVISION=	11
+PORTREVISION=	12
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
 USE_GITHUB=	yes
 GH_ACCOUNT=	db9052
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	cairo
 GNU_CONFIGURE=	yes
 

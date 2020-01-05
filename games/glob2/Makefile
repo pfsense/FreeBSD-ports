@@ -3,7 +3,7 @@
 
 PORTNAME=	glob2
 PORTVERSION=	0.9.4.4
-PORTREVISION=	28
+PORTREVISION=	29
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH/${PORTNAME}/${PORTVERSION:R}/
 
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 
 OPTIONS_DEFINE=	DOCS PORTAUDIO
 
-USES=		compiler:c++11-lang pkgconfig scons
+USES=		compiler:c++11-lang gl gnome pkgconfig scons sdl
 USE_SDL=	image net sdl ttf
 USE_GL=		gl glu
 MAKE_ARGS=	CCFLAGS="${CFLAGS}" \

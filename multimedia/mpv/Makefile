@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mpv
-PORTVERSION=	0.29.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	11
+DISTVERSION=	0.31.0
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
 MASTER_SITES=	https://waf.io/:waf
@@ -38,27 +37,27 @@ CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
 		--disable-optimize \
 		--disable-pdf \
 		--disable-rubberband \
+		--disable-shaderc \
 		--disable-vapoursynth \
-		--disable-vapoursynth-lazy \
 		--enable-libmpv-shared
 
-OPTIONS_DEFINE=		ARCHIVE ASS DOCS LCMS2 LUAJIT MANPAGES TEST UCHARDET ZSH EXAMPLES
-OPTIONS_DEFAULT=	ARCHIVE ASS DVDREAD DVDNAV MANPAGES OPENGL UCHARDET \
+OPTIONS_DEFINE=		ARCHIVE ASS DOCS LCMS2 LUAJIT MANPAGES TEST UCHARDET EXAMPLES ZIMG
+OPTIONS_DEFAULT=	ARCHIVE ASS DVDNAV MANPAGES OPENGL UCHARDET \
 			V4L VAAPI VDPAU VULKAN WAYLAND X11 YTDL
 OPTIONS_GROUP=		IN VO AO
-OPTIONS_GROUP_IN=	CDIO DVDREAD DVDNAV LIBBLURAY V4L YTDL SMB
+OPTIONS_GROUP_IN=	CDIO DVDNAV LIBBLURAY V4L YTDL SMB
 OPTIONS_GROUP_VO=	CACA OPENGL VAAPI VDPAU VULKAN WAYLAND X11
 OPTIONS_GROUP_AO=	ALSA JACK OPENAL PULSEAUDIO SDL SNDIO
 OPTIONS_SUB=		yes
 
 ASS_DESC=		ASS/SSA subtitle and OSD rendering
-DVDREAD_DESC=		DVD Playback support
 DVDNAV_DESC=		DVD menu navigation
 LUAJIT_DESC=		Use LuaJIT instead of Lua scripting language support
 UCHARDET_DESC=		Guess subtitle encoding via uchardet
 VULKAN_DESC=		Vulkan output support
 WAYLAND_DESC=		Wayland (graphics) support
 YTDL_DESC=		Install youtube-dl
+ZIMG_DESC=		High quality software scaling via "z" library
 IN_DESC=		Input
 VO_DESC=		Video Output
 AO_DESC=		Audio Output
@@ -81,11 +80,9 @@ CDIO_CONFIGURE_ON=		--enable-cdda
 DOCS_BUILD_DEPENDS=		rst2html:textproc/py-docutils
 DOCS_CONFIGURE_ON=		--enable-html
 
-DVDNAV_LIB_DEPENDS=		libdvdnav.so:multimedia/libdvdnav
+DVDNAV_LIB_DEPENDS=		libdvdnav.so:multimedia/libdvdnav \
+				libdvdread.so:multimedia/libdvdread
 DVDNAV_CONFIGURE_ON=		--enable-dvdnav
-
-DVDREAD_LIB_DEPENDS=		libdvdread.so:multimedia/libdvdread
-DVDREAD_CONFIGURE_ON=		--enable-dvdread
 
 JACK_LIB_DEPENDS=		libjack.so:audio/jack
 JACK_CONFIGURE_OFF=		--disable-jack
@@ -117,6 +114,7 @@ OPENGL_IMPLIES=			X11
 PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
 
+SDL_USES=			sdl
 SDL_USE=			SDL=sdl2
 SDL_CONFIGURE_ON=		--enable-sdl2
 
@@ -127,16 +125,13 @@ SNDIO_CONFIGURE_OFF=		--disable-sndio
 SMB_USES=			samba:lib
 SMB_CONFIGURE_ON=		--enable-libsmbclient
 
-TEST_BUILD_DEPENDS=		cmocka>=1.1.0:sysutils/cmocka
-TEST_CONFIGURE_ON=		--enable-test
-TEST_UNITTESTFILES=		chmap chmap_sel gl_video
+TEST_CONFIGURE_ON=		--enable-tests
 
 UCHARDET_LIB_DEPENDS=		libuchardet.so:textproc/uchardet
 UCHARDET_CONFIGURE_OFF=		--disable-uchardet
 
-V4L_BUILD_DEPENDS=		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
-V4L_LIB_DEPENDS=		libv4l2.so:multimedia/libv4l
-V4L_CONFIGURE_ON=		--enable-tv --enable-dvbin
+V4L_BUILD_DEPENDS=		${LOCALBASE}/include/linux/dvb/dmx.h:multimedia/v4l_compat
+V4L_CONFIGURE_ON=		--enable-dvbin
 
 VAAPI_LIB_DEPENDS=		libva.so:multimedia/libva
 VAAPI_CONFIGURE_OFF=		--disable-vaapi
@@ -145,9 +140,9 @@ VDPAU_LIB_DEPENDS=		libvdpau.so:multimedia/libvdpau
 VDPAU_CONFIGURE_OFF=		--disable-vdpau
 
 VULKAN_BUILD_DEPENDS=		${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
-VULKAN_LIB_DEPENDS=		libvulkan.so:graphics/vulkan-loader \
-				libshaderc_shared.so:graphics/shaderc
-VULKAN_CONFIGURE_OFF=		--disable-vulkan --disable-shaderc
+VULKAN_LIB_DEPENDS=		libplacebo.so:graphics/libplacebo \
+				libvulkan.so:graphics/vulkan-loader
+VULKAN_CONFIGURE_OFF=		--disable-vulkan --disable-libplacebo
 VULKAN_IMPLIES=			X11
 
 WAYLAND_BUILD_DEPENDS=		wayland-protocols>=1.14:graphics/wayland-protocols \
@@ -157,17 +152,15 @@ WAYLAND_LIB_DEPENDS=		libwayland-client.so:graphics/wayland \
 				libxkbcommon.so:x11/libxkbcommon
 WAYLAND_CONFIGURE_OFF=		--disable-wayland
 
-X11_USES=			gnome
+X11_USES=			gnome xorg
 X11_USE=			XORG=x11,xext,xinerama,xorgproto,xrandr,xscrnsaver,xv,xxf86vm
 X11_VARS=			INSTALLS_ICONS=yes
 X11_CONFIGURE_OFF=		--disable-x11
 
 YTDL_RUN_DEPENDS=		youtube-dl:www/youtube_dl
 
-ZSH_USES=			perl5
-ZSH_USE=			PERL5=build
-ZSH_CONFIGURE_ENV=		BIN_PERL="${PERL}"
-ZSH_CONFIGURE_ENABLE=		zsh-comp
+ZIMG_LIB_DEPENDS=		libzimg.so:graphics/sekrit-twc-zimg
+ZIMG_CONFIGURE_OFF=		--disable-zimg
 
 .include <bsd.port.options.mk>
 
@@ -184,17 +177,13 @@ post-patch:
 		${WRKSRC}/wscript
 	@${REINPLACE_CMD} -e 's|/pkgconfig/mpv.pc|data/pkgconfig/mpv.pc|g' \
 		${WRKSRC}/wscript_build.py
-	@${REINPLACE_CMD} -e 's|DBL_EPSILON|FLT_EPSILON|'g \
-		${WRKSRC}/test/test_helpers.h
 
 post-patch-MANPAGES-on:
 	@${FIND} ${WRKSRC}/DOCS/man -name '*.rst' | ${XARGS} ${REINPLACE_CMD} \
 		-e 's|/usr/local|${PREFIX}|g'
 
 pre-install-TEST-on:
-.for test in ${TEST_UNITTESTFILES}
-	cd ${WRKSRC}/build/test && ./${test}
-.endfor
+	@(cd ${WRKSRC} && ${SETENV} ${TEST_ENV} build/mpv --unittest=all-simple)
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/mpv

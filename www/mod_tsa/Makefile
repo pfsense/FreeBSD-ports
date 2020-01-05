@@ -11,6 +11,8 @@ MASTER_SITES=	http://am.nesiac.org/static/ \
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Time stamping authority (RFC 3161) module for apache
 
+BROKEN=		unfetchable
+
 OPTIONS_DEFINE=	MYSQL PGSQL FIREBIRD DEBUG DEBUG_MEMORY EXAMPLES
 DEBUG_MEMORY_DESC=	Memory debug
 
@@ -33,7 +35,7 @@ PORTEXAMPLES=	*.sql tsa.conf
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 CONFIGURE_ARGS+=	--enable-mysql=yes
 SRC_FILE+=	db_mysql.c
 AP_INC+=	-I${LOCALBASE}/include/mysql

@@ -10,6 +10,9 @@ CATEGORIES=	multimedia
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Create video DVDs, VCDs, sVCDs, or CVDs from any number of video files
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv3+
 
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg \
@@ -23,7 +26,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	rastersoft
 GH_PROJECT=	Devede
 
-USES=		iconv python:2.7,run shebangfix
+USES=		gnome iconv python:2.7,run shebangfix
 USE_GNOME=	pygtk2:run
 SHEBANG_FILES=	devede
 NO_ARCH=	yes

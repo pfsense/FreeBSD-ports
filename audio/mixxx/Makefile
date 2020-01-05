@@ -3,8 +3,7 @@
 
 PORTNAME=	mixxx
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	2.2.2
-PORTREVISION=	2
+DISTVERSION=	2.2.3
 CATEGORIES=	audio
 
 MAINTAINER=	acm@FreeBSD.org
@@ -12,8 +11,6 @@ COMMENT=	DJ mixing application
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_aarch64=		fails to compile: Exception("invalid machine type")
 
 BUILD_DEPENDS=	lv2>=1.14.0:audio/lv2
 LIB_DEPENDS=	libchromaprint.so:audio/chromaprint \
@@ -35,7 +32,7 @@ LIB_DEPENDS=	libchromaprint.so:audio/chromaprint \
 		libprotobuf.so:devel/protobuf \
 		liblilv-0.so:audio/lilv
 
-USES=		compiler:c++11-lang gl iconv qt:5 pkgconfig scons
+USES=		compiler:c++11-lang gl iconv qt:5 pkgconfig scons xorg
 USE_XORG=	x11
 USE_GL=		gl glu
 USE_GITHUB=	yes

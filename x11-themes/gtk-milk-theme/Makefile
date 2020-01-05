@@ -14,6 +14,8 @@ DISTNAME=	Milk-${PORTVERSION}
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Port of Milk, Mac OS X theme
 
+BROKEN=		unfetchable
+
 USES=		tar:bzip2
 NO_BUILD=	yes
 
@@ -23,6 +25,7 @@ THEME_NAME=	Milk
 .if ${TYPE} == gtk
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}
 PLIST_SUB+=	GTK20="" METACITY="@comment "
+USES+=		gnome
 USE_GNOME=	gtk20
 .else	# metacity
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}

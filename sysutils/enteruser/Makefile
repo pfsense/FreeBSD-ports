@@ -9,14 +9,18 @@ DISTNAME=	enteruser
 EXTRACT_SUFX=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Extensible script for adding new users
 
-USES=		shebangfix perl5
-NO_WRKSUBDIR=	yes
-NO_BUILD=	yes
+LICENSE=	BSD2CLAUSE
 
+USES=		perl5 shebangfix
+USE_PERL5=	run
 SHEBANG_FILES=	enteruser
+
+NO_ARCH=	yes
+NO_BUILD=	yes
+NO_WRKSUBDIR=	yes
 
 do-extract:
 	@${MKDIR} ${WRKSRC}
@@ -24,6 +28,6 @@ do-extract:
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/enteruser ${STAGEDIR}${PREFIX}/sbin
-	@cd ${STAGEDIR}${PREFIX}/sbin; ${LN} -sf enteruser queueuser
+	@cd ${STAGEDIR}${PREFIX}/sbin && ${LN} -sf enteruser queueuser
 
 .include <bsd.port.mk>

@@ -11,6 +11,8 @@ DISTNAME=	${PORTNAME}-b${PORTVERSION}-src
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Enhanced Quake II client/server focusing on stability
 
+BROKEN=		unfetchable
+
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	sets the FPU rounding mode and precision (not available in fenv.h)
 
@@ -58,7 +60,7 @@ PLIST_SUB+=	GAME="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MREF_GL}
-USES+=		jpeg
+USES+=		gl jpeg sdl
 USE_GL=		gl
 USE_SDL=	sdl
 LIB_DEPENDS+=	libpng.so:graphics/png

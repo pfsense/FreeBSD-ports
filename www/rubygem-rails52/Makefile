@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	rails
-PORTVERSION=	5.2.3
+PORTVERSION=	5.2.4.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	52
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Full-stack web application framework
 
 LICENSE=	MIT

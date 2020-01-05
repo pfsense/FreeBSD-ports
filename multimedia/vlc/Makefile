@@ -3,9 +3,9 @@
 
 PORTNAME=	vlc
 DISTVERSION=	3.0.8
-PORTREVISION=	2
+PORTREVISION=	15
 PORTEPOCH=	4
-CATEGORIES=	multimedia audio ipv6 net www
+CATEGORIES=	multimedia audio net www
 MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
 		http://ftp.snt.utwente.nl/pub/software/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
 		ftp://ftp.crans.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/
@@ -63,7 +63,7 @@ CFLAGS_i386=	-fomit-frame-pointer
 OPTIONS_DEFINE=	A52 AALIB AOM ASS AVAHI CACA CHROMECAST DAV1D DBUS DCA DOCS DVDREAD \
 		DVDNAV FAAD FLAC FLUID FREERDP FRIBIDI GME GNUTLS \
 		GOOM HARFBUZZ JACK JPEG KATE LIBBLURAY LIBPLACEBO LIBRSVG2 LIBSSH2 LIRC \
-		LIVEMEDIA LUA MAD MODPLUG MPEG2 MTP MUSEPACK \
+		LIVEMEDIA LUA MAD MFX MODPLUG MPEG2 MTP MUSEPACK \
 		NCURSES NFS NLS NOTIFY OGG OGGSPOTS OPTIMIZED_CFLAGS OPUS PNG PULSEAUDIO \
 		QT5 REALRTSP RUNROOT SAMPLERATE SIDPLAY SCHROEDINGER \
 		SDL SHOUTCAST SKINS SMB SNDIO STREAM SPEEX TAGLIB THEORA \
@@ -92,6 +92,7 @@ HARFBUZZ_DESC=	OpenType text shaping engine
 KATE_DESC=	Kate codec support
 LIBPLACEBO_DESC=HDR tonemapping support through libplacebo
 LIBSSH2_DESC=	SCP/SFTP support via libssh2
+MFX_DESC=	Intel MediaSDK (aka Quick Sync Video)
 OGGSPOTS_DESC=	Experimental OggSpots codec
 REALRTSP_DESC=	Real RTSP access module
 RUNROOT_DESC=	Enable running as root
@@ -124,7 +125,7 @@ CACA_LIB_DEPENDS=	libcaca.so:graphics/libcaca
 CACA_CONFIGURE_ENABLE=	caca
 
 CHROMECAST_LIB_DEPENDS=	libprotobuf-lite.so:devel/protobuf
-CHROMECASE_CONFIGURE_ENABLE=	chromecast
+CHROMECAST_CONFIGURE_ENABLE=	chromecast
 
 DAV1D_LIB_DEPENDS=	libdav1d.so:multimedia/dav1d
 DAV1D_CONFIGURE_ENABLE=	dav1d
@@ -218,6 +219,9 @@ LUA_CONFIGURE_ON=	LUAC=${LUAC_CMD} LUA_CFLAGS="-I${LUA_INCDIR}" \
 MAD_LIB_DEPENDS=	libmad.so:audio/libmad
 MAD_CONFIGURE_ENABLE=	mad
 MAD_CONFIGURE_ON=	--with-mad=${LOCALBASE}
+
+MFX_LIB_DEPENDS=	libmfx.so:multimedia/intel-media-sdk
+MFX_CONFIGURE_ENABLE=	mfx
 
 MODPLUG_LIB_DEPENDS=	libmodplug.so:audio/libmodplug
 MODPLUG_CONFIGURE_ENABLE=	mod
@@ -345,7 +349,7 @@ WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_CONFIGURE_ENABLE=	wayland
 
 X11_USE=		GL=gl XORG=xcb,xorgproto,sm,ice,x11
-X11_USES=		gl
+X11_USES=		gl xorg
 X11_LIB_DEPENDS=	libxcb-keysyms.so:x11/xcb-util-keysyms
 X11_CONFIGURE_ENABLE=	xcb xvideo
 X11_CONFIGURE_WITH=	x

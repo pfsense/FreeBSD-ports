@@ -11,6 +11,9 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nmap frontend developed with Python and PyGTK
 
+DEPRECATED=	Unmaintained, uses EOLed python27
+EXPIRATION_DATE=	2020-01-27
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -19,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} 
 
 NO_ARCH=	yes
 
-USES=		python:2.7 shebangfix tar:bzip2
+USES=		gnome python:2.7 shebangfix tar:bzip2
 USE_GNOME=	pygtk2
 USE_PYTHON=	distutils
 INSTALLS_ICONS=	yes
