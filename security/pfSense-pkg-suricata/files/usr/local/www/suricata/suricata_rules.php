@@ -1118,24 +1118,25 @@ print($section);
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-enabled by SID Mgmt');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action/content modified by SID Mgmt');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is alert');?></small></td>
-				<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') : ?>
-						<td style="padding-left: 8px;"><i class="fa fa-hand-stop-o text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
-				<?php else : ?>
-						<td><td></td></td>
-				<?php endif; ?>
+						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule contains noalert option');?></small></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle-o text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Disabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
-						<td><td></td></td>
+						<td></td><td></td>
 				<?php if ($a_rule[$id]['blockoffenders'] == 'on') : ?>
 						<td style="padding-left: 8px;"><i class="fa fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
+					<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline') : ?>
+						<td style="padding-left: 8px;"><i class="fa fa-hand-stop-o text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
+					<?php else : ?>
+						<td></td><td></td>
+					<?php endif; ?>
 				<?php else : ?>
-						<td><td></td></td>
+						<td></td><td></td>
 				<?php endif; ?>
-						<td><td></td></td>
+						<td></td><td></td>
 					</tr>
 				</tbody>
 			</table>
@@ -1259,6 +1260,12 @@ print($section);
 									$title_act .= gettext("  Click to change rule action.");
 								}
 
+								// Rules with "noalert;" option enabled get special treatment
+								if ($v['noalert'] == 1) {
+									$iconact_class = 'class="fa fa-exclamation-triangle text-success text-center"';
+									$title_act = gettext("Rule contains the 'noalert;' and/or 'flowbits:noalert;' options.");
+								}
+
 								// Pick off the first section of the rule (prior to the start of the MSG field),
 								// and then use a REGX split to isolate the remaining fields into an array.
 								$tmp = substr($v['rule'], 0, strpos($v['rule'], "("));
@@ -1279,6 +1286,13 @@ print($section);
 								$destination_port = $rule_content[6]; //destination port field
 								$message = suricata_get_msg($v['rule']); // description field
 								$sid_tooltip = gettext("View the raw text for this rule");
+
+								// Show text of "noalert;" flagged rules in Bootstrap SUCCESS color
+								if ($v['noalert'] == 1) {
+									$tag_class = ' class="text-success" ';
+								} else {
+									$tag_class = "";
+								}
 					?>
 								<tr class="text-nowrap">
 									<td><?=$textss; ?>
@@ -1289,7 +1303,7 @@ print($section);
 						<?php endif; ?>
 									</td>
 
-						<?php if ($a_rule[$id]['blockoffenders'] == 'on') : ?>
+						<?php if ($a_rule[$id]['blockoffenders'] == 'on' && $v['noalert'] == 0) : ?>
 								       <td><?=$textss; ?><a id="rule_<?=$gid; ?>_<?=$sid; ?>_action" href="#" onClick="toggleAction('<?=$sid; ?>', '<?=$gid; ?>');" 
 										<?=$iconact_class; ?> title="<?=$title_act; ?>"></a><?=$textse; ?>
 								       </td>
@@ -1306,22 +1320,22 @@ print($section);
 										onclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');" 
 										title="<?=$sid_tooltip;?>"><?=$textss . $sid . $textse;?></a>
 								       </td>
-								       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$textss . $protocol . $textse;?>
 							       	       </td>
-								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$srcspan . $source;?></span>
 								       </td>
-								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$srcprtspan . $source_port;?></span>
 								       </td>
-								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$dstspan . $destination;?></span>
 								       </td>
-								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									       <?=$dstprtspan . $destination_port;?></span>
 								       </td>
-									<td style="word-wrap:break-word; white-space:normal" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+									<td <?=$tag_class;?> style="word-wrap:break-word; white-space:normal" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$textss . $message . $textse;?>
 								       </td>
 								</tr>
