@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1141,7 +1141,7 @@ print($section);
 			</table>
 		</div>
 
-		<table  style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
+		<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 			<colgroup>
 				<col width="5%">
 				<col width="5%">
@@ -1155,17 +1155,17 @@ print($section);
 				<col>
 			</colgroup>
 			<thead>
-			   <tr>
-				<th><?=gettext("State");?></th>
-				<th><?=gettext("Action");?></th>
-				<th><?=gettext("GID");?></th>
-				<th><?=gettext("SID");?></th>
-				<th><?=gettext("Proto");?></th>
-				<th><?=gettext("Source");?></th>
-				<th><?=gettext("SPort");?></th>
-				<th><?=gettext("Destination");?></th>
-				<th><?=gettext("DPort");?></th>
-				<th><?=gettext("Message");?></th>
+			   <tr class="sortableHeaderRowIdentifier">
+				<th data-sortable="false"><?=gettext("State");?></th>
+				<th data-sortable="false"><?=gettext("Action");?></th>
+				<th data-sortable="true" data-sortable-type="numeric"><?=gettext("GID");?></th>
+				<th data-sortable="true" data-sortable-type="numeric"><?=gettext("SID");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Proto");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Source");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("SPort");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Destination");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("DPort");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Message");?></th>
 			   </tr>
 			</thead>
 			<tbody>
@@ -1387,7 +1387,7 @@ print($section);
 					<i class="fa fa-save icon-embed-btn"></i>
 					<?=gettext("Save");?>
 				</button>
-				<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
+				<button type="button" class="btn btn-sm btn-warning" id="cancelcancel_sid_action" name="cancel_sid_action" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
 					<?=gettext("Cancel");?>
 				</button>
 			</div>
@@ -1424,7 +1424,7 @@ print($section);
 					<i class="fa fa-save icon-embed-btn"></i>
 					<?=gettext("Save");?>
 				</button>
-				<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
+				<button type="button" class="btn btn-sm btn-warning" id="cancel_state_action" name="cancelcancel_state_action" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
 					<?=gettext("Cancel");?>
 				</button>
 			</div>
