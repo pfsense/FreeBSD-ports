@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (C) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2548,7 +2548,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 					$changecount++;
 					$modcount++;
 				}
-				elseif ($action == 'drop' && $rule_map[$k1][$k2]['action'] != 'drop') {
+				elseif ($action == 'drop' && $rule_map[$k1][$k2]['action'] != 'drop' && !in_array('noalert', $rule_map[$k1][$k2]['flowbits'])) {
 					if ($tmp = preg_replace('/\s*alert\s*/', 'drop ', $rule_map[$k1][$k2]['rule'], 1)) {
 						$rule_map[$k1][$k2]['rule'] = $tmp;
 						$rule_map[$k1][$k2]['action'] = 'drop';
@@ -2558,7 +2558,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 						$modcount++;
 					}
 				}
-				elseif ($action == 'reject' && $rule_map[$k1][$k2]['action'] != 'reject') {
+				elseif ($action == 'reject' && $rule_map[$k1][$k2]['action'] != 'reject' && !in_array('noalert', $rule_map[$k1][$k2]['flowbits'])) {
 					if ($tmp = preg_replace('/\s*alert\s*/', 'reject ', $rule_map[$k1][$k2]['rule'], 1)) {
 						$rule_map[$k1][$k2]['rule'] = $tmp;
 						$rule_map[$k1][$k2]['action'] = 'reject';
