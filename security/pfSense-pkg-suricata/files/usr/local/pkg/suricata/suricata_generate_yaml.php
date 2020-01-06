@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (C) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,18 +44,18 @@ foreach ($config_files as $file) {
 
 // Set HOME_NET and EXTERNAL_NET for the interface
 $home_net_list = suricata_build_list($suricatacfg, $suricatacfg['homelistname']);
-$home_net = implode(",", $home_net_list);
+$home_net = implode(", ", $home_net_list);
 $home_net = trim($home_net);
 $external_net = "";
 if (!empty($suricatacfg['externallistname']) && $suricatacfg['externallistname'] != 'default') {
 	$external_net_list = suricata_build_list($suricatacfg, $suricatacfg['externallistname'], false, true);
-	$external_net = implode(",", $external_net_list);
+	$external_net = implode(", ", $external_net_list);
 	$external_net = "[" . trim($external_net) . "]";
 }
 else {
 	$external_net = "[";
 	foreach ($home_net_list as $ip)
-		$external_net .= "!{$ip},";
+		$external_net .= "!{$ip}, ";
 	$external_net = trim($external_net, ', ') . "]";
 }
 
@@ -78,14 +78,14 @@ $suricata_servers = array (
 	"sql_servers" => "\$HOME_NET", "telnet_servers" => "\$HOME_NET", "dnp3_server" => "\$HOME_NET",
 	"dnp3_client" => "\$HOME_NET", "modbus_server" => "\$HOME_NET", "modbus_client" => "\$HOME_NET",
 	"enip_server" => "\$HOME_NET", "enip_client" => "\$HOME_NET", "ftp_servers" => "\$HOME_NET", "ssh_servers" => "\$HOME_NET", 
-	"aim_servers" => "64.12.24.0/23,64.12.28.0/23,64.12.161.0/24,64.12.163.0/24,64.12.200.0/24,205.188.3.0/24,205.188.5.0/24,205.188.7.0/24,205.188.9.0/24,205.188.153.0/24,205.188.179.0/24,205.188.248.0/24", 
+	"aim_servers" => "64.12.24.0/23, 64.12.28.0/23, 64.12.161.0/24, 64.12.163.0/24, 64.12.200.0/24, 205.188.3.0/24, 205.188.5.0/24, 205.188.7.0/24, 205.188.9.0/24, 205.188.153.0/24, 205.188.179.0/24, 205.188.248.0/24", 
 	"sip_servers" => "\$HOME_NET"
 );
 $addr_vars = "";
 	foreach ($suricata_servers as $alias => $avalue) {
 		if (!empty($suricatacfg["def_{$alias}"]) && is_alias($suricatacfg["def_{$alias}"])) {
 			$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
-			$avalue = preg_replace('/\s+/', ',', trim($avalue));
+			$avalue = preg_replace('/\s+/', ', ', trim($avalue));
 		}
 		$addr_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
 	}
@@ -101,14 +101,14 @@ $suricata_ports = array(
 	"ssh_ports" => $ssh_port, 
 	"shellcode_ports" => "!80", 
 	"DNP3_PORTS" => "20000", 
-	"file_data_ports" => "\$HTTP_PORTS,110,143", 
-	"sip_ports" => "5060,5061,5600"
+	"file_data_ports" => "\$HTTP_PORTS, 110, 143", 
+	"sip_ports" => "5060, 5061, 5600"
 );
 $port_vars = "";
 	foreach ($suricata_ports as $alias => $avalue) {
 		if (!empty($suricatacfg["def_{$alias}"]) && is_alias($suricatacfg["def_{$alias}"])) {
 			$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
-			$avalue = preg_replace('/\s+/', ',', trim($avalue));
+			$avalue = preg_replace('/\s+/', ', ', trim($avalue));
 		}
 		$port_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
 	}
