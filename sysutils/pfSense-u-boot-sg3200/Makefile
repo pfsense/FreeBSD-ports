@@ -2,6 +2,7 @@
 
 PORTNAME=	u-boot
 DISTVERSION=	20200106
+PORTREVISION=	1
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 PKGNAMESUFFIX=	-sg3200
@@ -22,7 +23,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	u-boot-binaries
-GL_COMMIT=	e4f2bfd3d7a6f46b88b807d714b679d321d70654
+GL_COMMIT=	95479b3d4df51b14670a37aca00512e47cf7afe7
 FETCH_BEFORE_ARGS=	--no-verify-peer
 
 do-install:
