@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,6 @@ require_once("/usr/local/pkg/suricata/suricata.inc");
 global $g, $config;
 $supplist = array();
 $suri_pf_table = SURICATA_PF_TABLE;
-$filterlogentries = FALSE;
 
 function suricata_is_alert_globally_suppressed($list, $gid, $sid) {
 
@@ -212,9 +211,23 @@ if (isset($_POST['resolve'])) {
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
 
-if ($_POST['filterlogentries_submit']) {
-	// Set flag for filtering alert entries
+# Check for persisted filtering of alerts log entries and populate
+# the required $filterfieldsarray when persisting filtered entries.
+if ($_POST['persist_filter'] == "yes" && !empty($_POST['persist_filter_content'])) {
 	$filterlogentries = TRUE;
+	$persist_filter_log_entries = "yes";
+	$filterfieldsarray = json_decode($_POST['persist_filter_content'], TRUE);
+}
+else {
+	$filterlogentries = FALSE;
+	$persist_filter_log_entries = "";
+	$filterfieldsarray = array();
+}
+
+if ($_POST['filterlogentries_submit']) {
+	// Set flags for filtering alert log entries
+	$filterlogentries = TRUE;
+	$persist_filter_log_entries = "yes";
 
 	// -- IMPORTANT --
 	// Note the order of these fields must match the order decoded from the alerts log
@@ -244,6 +257,7 @@ if ($_POST['filterlogentries_submit']) {
 if ($_POST['filterlogentries_clear']) {
 	$filterfieldsarray = array();
 	$filterlogentries = TRUE;
+	$persist_filter_log_entries = "";
 }
 
 if ($_POST['save']) {
@@ -834,6 +848,23 @@ $form->addGlobal(new Form_Input(
 	''
 ));
 
+if ($persist_filter_log_entries == "yes") {
+	$form->addGlobal(new Form_Input(
+		'persist_filter',
+		'persist_filter',
+		'hidden',
+		$persist_filter_log_entries
+	));
+
+	// Pass the $filterfieldsarray variable as serialized data
+	$form->addGlobal(new Form_Input(
+		'persist_filter_content',
+		'persist_filter_content',
+		'hidden',
+		json_encode($filterfieldsarray)
+	));
+}
+
 print($form);
 
 if ($filterlogentries && count($filterfieldsarray)) {
@@ -1225,7 +1256,7 @@ function resolve_with_ajax(ip_to_resolve) {
 			dataType: 'json',
 			data: {
 				resolve: ip_to_resolve,
-				},
+			      },
 			complete: resolve_ip_callback
 		});
 }
