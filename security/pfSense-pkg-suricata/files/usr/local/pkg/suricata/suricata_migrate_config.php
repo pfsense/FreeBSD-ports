@@ -99,10 +99,12 @@ if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migrat
 }
 
 /**********************************************************/
-/* Create new Auto GeoIP update setting if not set        */
+/* Default Auto GeoLite2 DB update setting to "off" due   */
+/* to recent MaxMind changes to the GeoLite2 database     */
+/* download permissions.                                  */
 /**********************************************************/
-if (empty($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'])) {
-	$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] = "on";
+if (empty($config['installedpackages']['suricata']['config'][0]['autogeoipupdate']) || empty($config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'])) {
+	$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] = "off";
 	$updated_cfg = true;
 }
 
