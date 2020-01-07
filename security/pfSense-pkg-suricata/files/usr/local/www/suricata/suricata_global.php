@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,6 +51,7 @@ else {
 	$pconfig['snortcommunityrules'] = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == "on" ? 'on' : 'off';
 	$pconfig['snort_rules_file'] = htmlentities($config['installedpackages']['suricata']['config'][0]['snort_rules_file']);
 	$pconfig['autogeoipupdate'] = $config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "off" ? 'off' : 'on';
+	$pconfig['maxmind_geoipdb_key'] = htmlentities($config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key']);
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on" ? 'on' : 'off';
 	$pconfig['enable_etopen_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] == "on" ? 'on' : 'off';
 	$pconfig['enable_etpro_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] == "on" ? 'on' : 'off';
@@ -160,6 +161,7 @@ if (!$input_errors) {
 		$config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'] = trim(html_entity_decode($_POST['etpro_custom_rule_url']));
 		$config['installedpackages']['suricata']['config'][0]['snort_custom_url'] = trim(html_entity_decode($_POST['snort_custom_url']));
 		$config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'] = trim(html_entity_decode($_POST['gplv2_custom_url']));
+		$config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'] = trim(html_entity_decode($_POST['maxmind_geoipdb_key']));
 
 		/* Check and adjust format of Rule Update Starttime string to add colon and leading zero if necessary */
 		if ($_POST['autoruleupdatetime']) {
@@ -379,11 +381,20 @@ $section->addInput(new Form_Checkbox(
 ))->setHelp('When enabled, Suricata will perform a live load of the new rules following an update instead of a hard restart. If issues are encountered with live load, uncheck this option to perform a hard restart of all Suricata instances following an update.');
 $section->addInput(new Form_Checkbox(
 	'autogeoipupdate',
-	'GeoIP DB Update',
-	'Enable downloading of free GeoIP Country Database updates. Default is Checked',
+	'GeoLite2 DB Update',
+	'Enable downloading of free GeoLite2 Country IP Database updates. Default is Not Checked',
 	$pconfig['autogeoipupdate'] == 'on' ? true:false,
 	'on'
-))->setHelp('When enabled, Suricata will automatically download updates for the free GeoLite2 IP country database.<br /><br />If you have a subscription for more current GeoIP2 updates, uncheck this option and instead create your own process to place the required database file in /usr/local/share/suricata/GeoLite2/.');
+))->setHelp('When enabled, Suricata will automatically download updates for the free GeoLite2 country IP database.<br /><br />If you have a subscription for more current GeoIP2 updates, uncheck this option and instead create your own process to place the required database file in /usr/local/share/suricata/GeoLite2/.');
+$section->addInput(new Form_Input(
+	'maxmind_geoipdb_key',
+	gettext('GeoLite2 DB License Key'),
+	'text',
+	$pconfig['maxmind_geoipdb_key'],
+	['placeholder' => 'Enter your MaxMind GeoLite2 License Key']
+))->setHelp('To utilize the free MaxMind GeoLite2 GeoIP functionality, you must <a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">register for a free MaxMind user account</a>. '
+	. '<strong>Use the GeoIP Update version 3.1.1 or newer registration option.</strong>')
+  ->setAttribute('autocomplete', 'off');
 $form->add($section);
 
 $section = new Form_Section('General Settings');
@@ -504,6 +515,11 @@ events.push(function(){
 		hideInput('log_to_systemlog_facility', hide);
 	}
 
+	function enable_geoip2_upd() {
+		var hide = ! $('#autogeoipupdate').prop('checked');
+		hideInput('maxmind_geoipdb_key', hide);
+	}
+
 	// ---------- Click checkbox handlers ---------------------------------------------------------
 	// When 'enable_vrt_rules' is clicked, toggle the Oinkmaster text control
 	$('#enable_vrt_rules').click(function() {
@@ -560,11 +576,17 @@ events.push(function(){
 		toggle_log_to_systemlog();
 	});
 
+	// When 'autogeoipupdate' is clicked, toggle 'maxmind_geoipdb_key'
+	$('#autogeoipupdate').click(function() {
+		enable_geoip2_upd();
+	});
+
 	// ---------- On initial page load ------------------------------------------------------------
 	enable_snort_vrt();
 	enable_et_rules();
 	enable_etpro_rules();
 	enable_gplv2_rules();
+	enable_geoip2_upd();
 	enable_change_rules_upd($('#autoruleupdate').prop('selectedIndex'));
 	toggle_log_to_systemlog();
 

@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -218,7 +218,7 @@ $section->addInput(new Form_Checkbox(
 	'enable_iprep',
 	'Enable',
 	'Use IP Reputation Lists on this interface. Default is NOT Checked.',
-	$pconfig['enable_iprep'],
+	$pconfig['enable_iprep'] == 'on' ? true:false,
 	'on'
 ));
 
