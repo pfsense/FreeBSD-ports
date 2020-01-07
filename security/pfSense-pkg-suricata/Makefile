@@ -13,7 +13,7 @@ COMMENT=	pfSense package suricata
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	suricata4>=4.1.5:security/suricata4 \
+RUN_DEPENDS=	suricata4>=4.1.6:security/suricata4 \
 		barnyard2:security/barnyard2
 
 NO_BUILD=	yes
