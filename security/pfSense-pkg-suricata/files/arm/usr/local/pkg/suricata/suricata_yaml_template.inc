@@ -111,7 +111,7 @@ outputs:
   - file-store:
       version: 2
       enabled: {$file_store_enabled}
-      log-dir: files
+      dir: {$file_store_logdir}
       force-magic: {$json_log_magic}
       {$json_log_hash}
       {$file_store_waldo}

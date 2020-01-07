@@ -292,10 +292,17 @@ if ($suricatacfg['enable_file_store'] == 'on') {
 	if (!file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo"))
 		@file_put_contents("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo", "");
 	$file_store_waldo = "waldo: file.waldo";
+	if (!empty($suricatacfg['file_store_logdir'])) {
+		$file_store_logdir = base64_decode($suricatacfg['file_store_logdir']);
+	}
+	else {
+		$file_store_logdir = "filestore";
+	}
 }
 else {
 	$file_store_enabled = "no";
 	$file_store_waldo = "#waldo: file.waldo";
+	$file_store_logdir = "filestore";
 }
 
 if ($suricatacfg['enable_pcap_log'] == 'on')
