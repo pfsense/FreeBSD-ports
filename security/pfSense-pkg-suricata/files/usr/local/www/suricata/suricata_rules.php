@@ -1401,7 +1401,7 @@ print($section);
 					<i class="fa fa-save icon-embed-btn"></i>
 					<?=gettext("Save");?>
 				</button>
-				<button type="button" class="btn btn-sm btn-warning" id="cancelcancel_sid_action" name="cancel_sid_action" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
+				<button type="button" class="btn btn-sm btn-warning" id="cancel_sid_action" name="cancel_sid_action" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
 					<?=gettext("Cancel");?>
 				</button>
 			</div>
