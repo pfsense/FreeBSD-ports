@@ -100,6 +100,9 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 	}
 }
 
+// Get real interface where this Suricata instance runs
+$if_real = get_real_interface($a_rule[$id]['interface']);
+
 // Set defaults for any empty key parameters
 if (empty($pconfig['blockoffendersip']))
 	$pconfig['blockoffendersip'] = "both";
@@ -237,6 +240,9 @@ if (empty($pconfig['intf_promisc_mode']))
 if (empty($pconfig['intf_snaplen']))
 	$pconfig['intf_snaplen'] = "1518";
 
+if (empty($pconfig['file_store_logdir']))
+	$pconfig['file_store_logdir'] = base64_encode("{$suricatalogdir}suricata_{$if_real}{$a_rule[$id]['uuid']}/filestore");
+
 // See if creating a new interface by duplicating an existing one
 if (strcasecmp($action, 'dup') == 0) {
 
@@ -357,6 +363,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['enable_tracked_files_magic'] == "on") { $natent['enable_tracked_files_magic'] = 'on'; }else{ $natent['enable_tracked_files_magic'] = 'off'; }
 		if ($_POST['tracked_files_hash']) $natent['tracked_files_hash'] = $_POST['tracked_files_hash'];
 		if ($_POST['enable_file_store'] == "on") { $natent['enable_file_store'] = 'on'; }else{ $natent['enable_file_store'] = 'off'; }
+		if ($_POST['file_store_logdir']) $natent['file_store_logdir'] = base64_encode($_POST['file_store_logdir']);
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
 		if ($_POST['runmode']) $natent['runmode'] = $_POST['runmode']; else unset($natent['runmode']);
 		if ($_POST['max_pending_packets']) $natent['max_pending_packets'] = $_POST['max_pending_packets']; else unset($natent['max_pending_packets']);
@@ -800,12 +807,14 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_tracked_files_magic'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Select(
 	'tracked_files_hash',
 	'Tracked-Files Checksum',
 	$pconfig['tracked_files_hash'],
 	array("none" => "None", "md5" => "MD5", "sha1" => "SHA1", "sha256" => "SHA256")
 ))->setHelp('Suricata will generate checksums for all logged Tracked Files using the chosen algorithm. Default is None.');
+
 $section->addInput(new Form_Checkbox(
 	'enable_file_store',
 	'Enable File-Store',
@@ -813,6 +822,13 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_file_store'] == 'on' ? true:false,
 	'on'
 ));
+
+$section->addInput(new Form_Input(
+	'file_store_logdir',
+	'File Store Logging Directory',
+	'text',
+	base64_decode($pconfig['file_store_logdir'])
+))->setHelp('Enter directory path for saving the files extracted from application layer streams. Default path is "' . SURICATALOGDIR . 'suricata_' . $if_real . $a_rule[$id]['uuid'] . '/filestore".');
 
 $section->addInput(new Form_Checkbox(
 	'enable_pcap_log',
@@ -1587,6 +1603,11 @@ events.push(function(){
 		hideCheckbox('tls_log_extended', hide);
 	}
 
+	function toggle_enable_file_store() {
+		var hide = ! $('#enable_file_store').prop('checked');
+		hideInput('file_store_logdir', hide);
+	}
+
 	function toggle_json_file_log() {
 		var hide = ! $('#enable_json_file_log').prop('checked');
 		hideCheckbox('append_json_file_log', hide);
@@ -1722,6 +1743,7 @@ events.push(function(){
 		disableInput('enable_tracked_files_magic', disable);
 		disableInput('tracked_files_hash', disable);
 		disableInput('enable_file_store', disable);
+		disableInput('file_store_logdir', disable);
 		disableInput('enable_pcap_log', disable);
 		disableInput('max_pcap_log_size', disable);
 		disableInput('max_pcap_log_files', disable);
@@ -1848,6 +1870,10 @@ events.push(function(){
 		toggle_tls_log();
 	});
 
+	$('#enable_file_store').click(function() {
+		toggle_enable_file_store();
+	});
+
 	$('#enable_json_file_log').click(function() {
 		toggle_json_file_log();
 	});
@@ -1944,6 +1970,7 @@ events.push(function(){
 	toggle_stats_log();
 	toggle_http_log();
 	toggle_tls_log();
+	toggle_enable_file_store();
 	toggle_json_file_log();
 	toggle_pcap_log();
 	toggle_eve_log();
