@@ -802,11 +802,11 @@ pkg_upgrade() {
 			delete_annotation=""
 		fi
 
+		# Cleanup a possible crash report created during PHP upgrade
+		rm -f /tmp/PHP_errors.log
+
 		if [ -n "${new_major_php}" ]; then
 			_pkg annotate -q -D ${kernel_pkg} new_major_php
-			# Cleanup a possible crash report created by moving
-			# to a new major PHP version
-			rm -f /tmp/PHP_errors.log
 		fi
 
 		_pkg annotate -q -D ${kernel_pkg} next_stage
