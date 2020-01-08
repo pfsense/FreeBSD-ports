@@ -7,7 +7,7 @@ DISTVERSION=	1.8.2
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	VP8/VP9 Codec SDK
+COMMENT=	VP8/VP9 reference encoder/decoder
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -43,18 +43,19 @@ MULTIRES_DESC=		Enable multi-resolution encoding
 MULTIRES_CONFIGURE_ON=	--enable-multi-res-encoding
 
 POSTPROC_DESC=		Enable postprocessing
-POSTPROC_CONFIGURE_ON=	--enable-postproc --enable-vp9-postproc	\
+POSTPROC_CONFIGURE_ON=	--enable-vp9-postproc \
 			--enable-vp9-temporal-denoising
+POSTPROC_CONFIGURE_OFF=	--disable-postproc
 
 RTCPU_DESC=		Detect CPU capabilities at runtime
-RTCPU_CONFIGURE_ON=	--enable-runtime-cpu-detect
+RTCPU_CONFIGURE_OFF=	--disable-runtime-cpu-detect
 
 SHARED_DESC=		Enable shared-library support
 SHARED_CONFIGURE_ON=	--enable-shared
 
 SIZE_LIMIT_DESC=	Maximum size allowed by decoder: ${SIZE_LIMIT}
 SIZE_LIMIT_CONFIGURE_ON=--size-limit=${SIZE_LIMIT}
-SIZE_LIMIT?=		16384x16384 # Chromium; Firefox has 4000x3000
+SIZE_LIMIT?=		16384x16384 # Chromium; Firefox has 8192x4608
 
 TEST_CONFIGURE_OFF=	--disable-unit-tests
 
