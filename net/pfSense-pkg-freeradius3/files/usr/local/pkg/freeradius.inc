@@ -1031,11 +1031,17 @@ function freeradius_clients_resync($restart_svc = true) {
 			} else {
 				$varclientpassword = "password = {$varclientpasswordinput}";
 			}
+			if (preg_match('/^(.+)\/(\d+)$/',$varclientip, $matches)) {
+				$varclientip = $matches[1];
+				$varclientprefix = '/' . $matches[2];
+			} else {
+				$varclientprefix = '';
+			}
 
 			$conf .= <<<EOD
 
 client "{$varclientshortname}" {
-	{$varclientipversion} = {$varclientip}
+	{$varclientipversion} = {$varclientip}{$varclientprefix}
 	proto = {$varclientproto}
 	secret = {$varclientsharedsecret}
 	require_message_authenticator = {$varrequiremessageauthenticator}
@@ -3986,11 +3992,22 @@ function freeradius_validate_clients($post, &$input_errors) {
 
 	// Client IP Address
 	if ($post['varclientip'] != '*') {
-		if ($post['varclientipversion'] == 'ipaddr' && !is_ipaddrv4($post['varclientip'])) {
-			$input_errors[] = "The 'Client IP Address' field must contain a valid IPv4 address when IPv4 is selected under 'Client IP Version'.";
-		}
-		if ($post['varclientipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varclientip'])) {
-			$input_errors[] = "The 'Client IP Address' field must contain a valid IPv6 address when IPv6 is selected under 'Client IP Version'.";
+		if (preg_match('/^(.+)\/(\d+)$/',$post['varclientip'], $matches)) {
+			if ($post['varclientipversion'] == 'ipaddr' && (!is_ipaddrv4($matches[1]) ||
+			    !is_numeric($matches[2]) || ($matches[2] > 32) || ($matches[2] < 1))) {
+				$input_errors[] = "The 'Client IP Address' field must contain a valid IPv4 address and CIDR prefix when IPv4 is selected under 'Client IP Version'.";
+			}
+			if ($post['varclientipversion'] == 'ipv6addr' && (!is_ipaddrv6($matches[1]) ||
+			    !is_numeric($matches[2]) || ($matches[2] > 128) || ($matches[2] < 1))) {
+				$input_errors[] = "The 'Client IP Address' field must contain a valid IPv6 address and prefix when IPv6 is selected under 'Client IP Version'.";
+			}
+		} else {
+			if ($post['varclientipversion'] == 'ipaddr' && !is_ipaddrv4($post['varclientip'])) {
+				$input_errors[] = "The 'Client IP Address' field must contain a valid IPv4 address when IPv4 is selected under 'Client IP Version'.";
+			}
+			if ($post['varclientipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varclientip'])) {
+				$input_errors[] = "The 'Client IP Address' field must contain a valid IPv6 address when IPv6 is selected under 'Client IP Version'.";
+			}
 		}
 	}
 
