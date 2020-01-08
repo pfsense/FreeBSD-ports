@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (C) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1359,7 +1359,7 @@ function suricata_load_rules_map($rules_path) {
 	 * Read all the rules into the map array.
 	 * The structure of the map array is:
 	 *
-	 *  map[gid][sid]['rule']['category']['action']['disabled']['managed']
+	 *  map[gid][sid]['rule']['category']['action']['disabled']['managed']['noalert']
          *     ['default_state']['default_action']['state_toggled']['modified']['flowbits']
 	 *
 	 *  where:
@@ -1372,6 +1372,8 @@ function suricata_load_rules_map($rules_path) {
 	 *                    rule is enabled
 	 *   managed        = 1 if rule is auto-managed by SID MGMT process,
 	 *                    0 if not auto-managed
+	 *   noalert        = 1 if rule contains "noalert" or "flowbits:noalert"
+	 *		        options
 	 *   default_state  = 1 if rule is default enabled, 0 if default disabled
 	 *   default_action = alert, drop, reject or pass  
 	 *   state_toggled  = 1 if rule was toggled by SID MGMT process,
@@ -1475,6 +1477,13 @@ function suricata_load_rules_map($rules_path) {
 			$map_ref[$gid][$sid]['state_toggled'] = 0;
 			$map_ref[$gid][$sid]['modified'] = 0;
 			$map_ref[$gid][$sid]['managed'] = 0;
+
+			// Check for "noalert;" rule option
+			if (strpos($rule, 'noalert;') !== FALSE) {
+				$map_ref[$gid][$sid]['noalert'] = 1;
+			} else {
+				$map_ref[$gid][$sid]['noalert'] = 0;
+			}				
 
 			// Grab the rule action
 			$matches = array();
@@ -2548,7 +2557,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 					$changecount++;
 					$modcount++;
 				}
-				elseif ($action == 'drop' && $rule_map[$k1][$k2]['action'] != 'drop') {
+				elseif ($action == 'drop' && $rule_map[$k1][$k2]['action'] != 'drop' && !in_array('noalert', $rule_map[$k1][$k2]['flowbits']) && $rule_map[$k1][$k2]['noalert'] == 0) {
 					if ($tmp = preg_replace('/\s*alert\s*/', 'drop ', $rule_map[$k1][$k2]['rule'], 1)) {
 						$rule_map[$k1][$k2]['rule'] = $tmp;
 						$rule_map[$k1][$k2]['action'] = 'drop';
@@ -2558,7 +2567,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 						$modcount++;
 					}
 				}
-				elseif ($action == 'reject' && $rule_map[$k1][$k2]['action'] != 'reject') {
+				elseif ($action == 'reject' && $rule_map[$k1][$k2]['action'] != 'reject' && !in_array('noalert', $rule_map[$k1][$k2]['flowbits']) && $rule_map[$k1][$k2]['noalert'] == 0) {
 					if ($tmp = preg_replace('/\s*alert\s*/', 'reject ', $rule_map[$k1][$k2]['rule'], 1)) {
 						$rule_map[$k1][$k2]['rule'] = $tmp;
 						$rule_map[$k1][$k2]['action'] = 'reject';
