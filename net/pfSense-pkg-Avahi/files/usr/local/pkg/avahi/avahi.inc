@@ -117,10 +117,30 @@ function avahi_sync_config() {
 		return;
 	}
 
-	log_error("Starting service avahi");
-	start_service('avahi');
+	/* Start/Restart Avahi, if a CARP VIP is set, check its status and act
+	* appropriately. */
+	if (isset($avahi_config['carpstatusvid']) && $avahi_config['carpstatusvid'] != "none") {
+		$status = get_carp_interface_status($avahi_config['carpstatusvid']);
+		switch (strtoupper($status)) {
+			// Stop the service if the VIP is in BACKUP or INIT state.
+			case "BACKUP":
+			case "INIT":
+				log_error("Stopping service avahi (CARP BACKUP/INIT)");
+				stop_service("avahi");
+				break;
+			// Start the service if the VIP is MASTER state.
+			case "MASTER":
+			// Assume it's up if the status can't be determined.
+			default:
+				log_error("Starting service avahi");
+				start_service('avahi');
+				break;
+		}
+	} else {
+		log_error("Starting service avahi");
+		start_service('avahi');
+	}
 }
-
 
 function avahi_deinstall_command() {
 	if (is_service_running('avahi')) {
@@ -129,4 +149,45 @@ function avahi_deinstall_command() {
 	}
 
 	unlink_if_exists(AVAHI_RCFILE);
+}
+
+function avahi_get_carp_list() {
+	$list = array();
+	$list['none'] = 'none';
+	$carplist = get_configured_vip_list("all", VIP_CARP);
+	foreach ($carplist as $vid => $vaddr) {
+		$vip = get_configured_vip($vid);
+		$list[$vid] = "{$vaddr} (vhid: {$vip['vhid']})";
+	}
+	return ($list);
+}
+
+function avahi_plugin_carp($pluginparams) {
+	global $config;
+	/* If avahi is not configured, then stop */
+	if (is_array($config['installedpackages']['avahi']['config'])) {
+		$avahi_config = &$config['installedpackages']['avahi']['config'][0];
+	} else {
+		return null;
+	}
+	/* If there is no properly configured CARP status check IP, then stop */
+	if (!isset($avahi_config['carpstatusvid']) || $avahi_config['carpstatusvid'] == "none") {
+		return null;
+	}
+	/* Locate the VIP and match it against the configured check address */
+	list($vhid, $iface) = explode("@", trim($pluginparams['interface']));
+	$friendly = convert_real_interface_to_friendly_interface_name($iface);
+	$vip = get_configured_vip($avahi_config['carpstatusvid']);
+	if (($vip['vhid'] != $vhid) || ($vip['interface'] != $friendly)) {
+		/* This is not the VIP we're looking for, move along. */
+		return null;
+	}
+	/* Start or stop the service as needed based on the CARP transition. */
+	if ($pluginparams['event'] == "rc.carpmaster") {
+		log_error("Starting service avahi");
+		start_service("avahi");
+	} elseif ($pluginparams['event'] == "rc.carpbackup") {
+		log_error("Stopping service avahi (CARP BACKUP/INIT)");
+		stop_service("avahi");
+	}
 }
