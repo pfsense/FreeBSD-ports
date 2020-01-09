@@ -306,7 +306,7 @@ events.push(function() {
 		});
 
 		allOptions.forEach(function(entry) {
-			
+
 			var currentOption = entry.split("=");
 
 			if(currentOption[0] === "interfaces[]") {
@@ -368,7 +368,7 @@ events.push(function() {
 
 				$("#traffic-totals-chart").hide();
 				$("#loading-msg").hide();
-				
+
 				//check if interface databases don't exist
 				if(errorMsg.substring(0,17) === "No database found" || errorMsg.substring(0,23) === "Unable to open database" || errorMsg.substring(0,23) === "Failed to open database" ) {
 
@@ -378,13 +378,13 @@ events.push(function() {
 					errorMsg = "Graphing is not enabled, Enable Graphing in the Advanced Settings above.";
 
 				}
-				
+
 
 				$("#chart-error").show().html('<strong>Error</strong>: ' + errorMsg);
 
 				return console.warn(raw_json.error);
 			}
-				
+
 			var interfaces = $( "#interfaces" ).val();
 			var timePeriod = $( "li.active a:first" ).attr('href').substring(1);
 			var graphtype = $( "#graph-type" ).val();
@@ -414,7 +414,7 @@ events.push(function() {
 			var current_hour = current_date.getHours();
 
 			$.each(interfaces, function(index, interface) {
-				
+
 				var tx_series = [];
 				var rx_series = [];
 				var interface_index = 0;
@@ -464,7 +464,7 @@ events.push(function() {
 
 						current_utc = current_utc+(ClientUTCOffset*3600000);
 
-						for(var t = 0; t < tx_series.length; t++) {	
+						for(var t = 0; t < tx_series.length; t++) {
 
 							//TODO break if length === period interval?
 
@@ -539,7 +539,7 @@ events.push(function() {
 
 							//TODO break if length === period interval?
 
-							for(var t = 0; t < tx_series.length; t++) {	
+							for(var t = 0; t < tx_series.length; t++) {
 
 								if(tx_series[t][0]+tzOffset > (current_utc-(86400000*count)+tzOffset)) {
 
@@ -656,7 +656,7 @@ events.push(function() {
 						$.each(raw_json.interfaces[interface_index].traffic.top, function(index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day);
-							
+
 							localStorage.setItem(value.id+1, date);
 
 							tx_series.push([value.id+1, value.tx]);
@@ -695,11 +695,11 @@ events.push(function() {
 
 						tx_series[index][1] = tx_series[index][1] + tx_previous;
 						rx_series[index][1] = rx_series[index][1] + rx_previous;
-						
+
 					});
 
 				}
-				
+
 				json[index*2] = {};
 
 				var ifNick = interface;
@@ -907,7 +907,7 @@ events.push(function() {
 		.fail(function(error) {
 			$("#traffic-totals-chart").hide();
 			$("#chart-error").show().html('<strong>Error</strong>: ' + error);
-			
+
 			console.warn(error);
 		});
 
@@ -1017,7 +1017,7 @@ events.push(function() {
 					}
 
 					body += '<td>' + tx.toFixed(2) + ' ' + txUnit + '</td><td>' + rx.toFixed(2) + ' ' + rxUnit + '</td><td>' + ratio.toFixed(2) + '</td><td>' + total.toFixed(2) + ' ' + totalUnit + '</td>';
-					
+
 				}
 
 				body += '</tr>';
