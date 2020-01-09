@@ -92,7 +92,6 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 
 			case 200:  // Successful file download
 			case 201:  // Successful file download (resource created)
-//				syslog(LOG_NOTICE, gettext("[Suricata] New GeoLite2-Country IP database gzip archive successfully downloaded."));
 				break;
 
 			default:
@@ -103,7 +102,7 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 	}
 	fclose($fout);
 	curl_close($ch);
-	if (isset($result) && $rc == TRUE) {
+	if (isset($result) && $rc === TRUE) {
 		$result = $response;
 	}
 	return $rc;
