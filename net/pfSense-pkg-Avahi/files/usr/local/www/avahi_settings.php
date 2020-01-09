@@ -38,6 +38,7 @@ if (isset($a_avahi)) {
 		$pconfig = $a_avahi;
 	} elseif (isset($a_avahi['denyinterfaces'])) {
 		$pconfig['enable'] = $a_avahi['enable'];
+		$pconfig['carpstatusvid'] = $a_avahi['carpstatusvid'];
 
 		$available_interfaces = get_configured_interface_list();
 		unset($available_interfaces['wan']);
@@ -99,6 +100,7 @@ if ($_POST) {
 		$avahi = array();
 
 		$avahi['enable'] = $pconfig['enable'];
+		$avahi['carpstatusvid'] = $pconfig['carpstatusvid'];
 		$avahi['action'] = $pconfig['action'];
 		$avahi['interfaces'] = $pconfig['interfaces'];
 		$avahi['disable_ipv4'] = $pconfig['disable_ipv4'];
@@ -138,7 +140,6 @@ if (!empty($pconfig['interfaces'])) {
 $pgtitle = array(gettext("Services"), gettext("Avahi"));
 include("head.inc");
 
-
 if (isset($migration_warning)) {
 	print_info_box($migration_warning);
 }
@@ -157,6 +158,13 @@ $section->addInput(new Form_Checkbox(
 	'Enable the Avahi daemon',
 	$pconfig['enable']
 ));
+
+$section->addInput(new Form_Select(
+	'carpstatusvid',
+	'CARP Status VIP',
+	$pconfig['carpstatusvid'],
+	avahi_get_carp_list()
+))->setHelp('Used to determine the HA MASTER/BACKUP status. Avahi will be stopped when the chosen VIP is in BACKUP status, and started in MASTER status.');
 
 $section->addInput(new Form_Select(
 	'action',
