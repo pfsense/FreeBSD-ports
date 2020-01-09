@@ -308,7 +308,9 @@ EOF;
 			$conf .= "pkcs11-id '{$pkcs11id}'{$nl}";
 		} elseif ($usetoken) {
 			$conf .= "ca {$cafile}{$nl}";
-			$conf .= "cryptoapicert \"SUBJ:{$user['name']}\"{$nl}";
+			$crt = openssl_x509_parse(base64_decode($cert['crt']));
+			$subj = implode(', ', $crt['subject']);
+			$conf .= "cryptoapicert \"SUBJ:{$subj}\"{$nl}";
 		} elseif (substr($expformat, 0, 6) != "inline") {
 			$conf .= "pkcs12 {$prefix}.p12{$nl}";
 		}

@@ -181,6 +181,18 @@
 			</options>
 		</field>
 		<field>
+                        <fielddescr>Transport</fielddescr>
+			<fieldname>ldap_urltype</fieldname>
+			<type>select</type>
+			<default_value>standard</default_value>
+			<options>
+				<option><name>TCP - Standard</name><value>standard</value></option>
+				<option><name>TCP - STARTTLS</name><value>starttls</value></option>
+				<option><name>SSL - Encrypted</name><value>ssl</value></option>
+			</options>
+			<description>If 'SSL Encrypted' or 'TCP - STARTTLS' is selected, the CA certificate of the LDAP server must be trusted by the Operating System Trust Store. This is automatic for certificates signed by globally trusted CAs such as Let's Encrypt; self-signed CAs can optionally be added to the Trust Store on pfSense 2.5.</description>
+		</field>
+		<field>
 			<fielddescr>LDAP Server User DN</fielddescr>
 			<fieldname>ldap_user</fieldname>
 			<description>Enter the user DN to use to connect to the LDAP server here.</description>

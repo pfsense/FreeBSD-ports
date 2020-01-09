@@ -74,15 +74,20 @@ function vnstat_create_nic_dbs() {
 	//TODO: code that allows you to just add new interfaces (check exsisting first and compare)
 	//List can be obtained from vnstat --iflist.
 	foreach(vnstat_portlist() as $interface => $details) {
-		unset($test);
+		unset($output);
 		exec('/usr/local/bin/vnstat' .
 			' -i ' . escapeshellarg($details['if']) .
 			' --setalias ' . escapeshellarg($details['descr']) .
-			' --add', $test);
+			' --add', $output);
 
-		//TODO check output array for errors
-		//print_r($test);
+		if (strpos($output[0], 'already exists in the database') !== false) {
+			exec('/usr/local/bin/vnstat' .
+			' -i ' . escapeshellarg($details['if']) .
+			' --setalias ' . escapeshellarg($details['descr']));
+		}
 	}
+
+    sleep(5);
 	restart_service_if_running('vnstatd');
 }
 
@@ -214,9 +219,10 @@ function vnstat_sync() {
 		//overwrite vnstat conf
 		vnstat_write_conf();
 		//loop through interfaces and create databases
-		vnstat_create_nic_dbs();
 		vnstat_write_rcfile();
-		restart_service('vnstatd');
+		start_service('vnstatd');
+		sleep(5);
+		vnstat_create_nic_dbs();
 	} else {
 		// disable
 		//loop through interfaces and delete databases
@@ -228,6 +234,8 @@ function vnstat_sync() {
 function vnstat_reset() {
 	//loop through interfaces and delete databases
 	vnstat_delete_nic_dbs();
+	restart_service('vnstatd');
+	sleep(5);
 	//loop through interfaces and re-create databases
 	vnstat_create_nic_dbs();
 }

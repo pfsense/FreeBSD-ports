@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (C) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,14 +59,8 @@ else {
 // Set the output filename for the downloaded DB archive
 $tmpfile = $geoip_tmppath . "GeoLite2-Country.mmdb.gz";
 
-// Set the URL string.  We supply the MD5 hash for our
-// current file.  The server will compare it to the
-// value for the latest file and return the HTTP
-// Response Code "304" if no newer file is available.
-// If a newer file is available, the server will send
-// it to us.  We obtain and examine the CURLINFO_RESPONSE_CODE
-// value to see which result occurs.
-$url = "https://updates.maxmind.com/geoip/databases/GeoLite2-Country/update?db_md5=" . $md5_hash;
+// Set the URL string.
+$url = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=" . $config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'] . "&suffix=tar.gz";
 
 // Get a file handle for CURL and then start the CURL
 // transfer.
