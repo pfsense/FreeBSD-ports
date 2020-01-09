@@ -370,7 +370,7 @@ events.push(function() {
 				$("#loading-msg").hide();
 				
 				//check if interface databases don't exist
-				if(errorMsg.substring(0,17) === "No database found" || errorMsg.substring(0,23) === "Unable to open database" ) {
+				if(errorMsg.substring(0,17) === "No database found" || errorMsg.substring(0,23) === "Unable to open database" || errorMsg.substring(0,23) === "Failed to open database" ) {
 
 					//flip enable graphing button
 					$( "#enable" ).val('true').html('<i class="fa fa-check fa-lg"></i> Enable Graphing').removeClass('btn-danger').addClass('btn-success');
