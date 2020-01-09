@@ -434,7 +434,7 @@ events.push(function() {
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.hours, function(hour_index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.hour, function(hour_index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day, value.id);
 
@@ -505,7 +505,7 @@ events.push(function() {
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.days, function(index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.day, function(index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day);
 
@@ -580,7 +580,7 @@ events.push(function() {
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.months, function(index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.month, function(index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1);
 
@@ -653,9 +653,9 @@ events.push(function() {
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.tops, function(index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.top, function(index, value) {
 
-							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day, value.time.hour, value.time.minutes);
+							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day);
 							
 							localStorage.setItem(value.id+1, date);
 
