@@ -306,7 +306,7 @@ events.push(function() {
 		});
 
 		allOptions.forEach(function(entry) {
-			
+
 			var currentOption = entry.split("=");
 
 			if(currentOption[0] === "interfaces[]") {
@@ -368,9 +368,9 @@ events.push(function() {
 
 				$("#traffic-totals-chart").hide();
 				$("#loading-msg").hide();
-				
+
 				//check if interface databases don't exist
-				if(errorMsg.substring(0,17) === "No database found" || errorMsg.substring(0,23) === "Unable to open database" ) {
+				if(errorMsg.substring(0,17) === "No database found" || errorMsg.substring(0,23) === "Unable to open database" || errorMsg.substring(0,23) === "Failed to open database" ) {
 
 					//flip enable graphing button
 					$( "#enable" ).val('true').html('<i class="fa fa-check fa-lg"></i> Enable Graphing').removeClass('btn-danger').addClass('btn-success');
@@ -378,13 +378,13 @@ events.push(function() {
 					errorMsg = "Graphing is not enabled, Enable Graphing in the Advanced Settings above.";
 
 				}
-				
+
 
 				$("#chart-error").show().html('<strong>Error</strong>: ' + errorMsg);
 
 				return console.warn(raw_json.error);
 			}
-				
+
 			var interfaces = $( "#interfaces" ).val();
 			var timePeriod = $( "li.active a:first" ).attr('href').substring(1);
 			var graphtype = $( "#graph-type" ).val();
@@ -414,7 +414,7 @@ events.push(function() {
 			var current_hour = current_date.getHours();
 
 			$.each(interfaces, function(index, interface) {
-				
+
 				var tx_series = [];
 				var rx_series = [];
 				var interface_index = 0;
@@ -434,7 +434,7 @@ events.push(function() {
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.hours, function(hour_index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.hour, function(hour_index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day, value.id);
 
@@ -464,7 +464,7 @@ events.push(function() {
 
 						current_utc = current_utc+(ClientUTCOffset*3600000);
 
-						for(var t = 0; t < tx_series.length; t++) {	
+						for(var t = 0; t < tx_series.length; t++) {
 
 							//TODO break if length === period interval?
 
@@ -505,7 +505,7 @@ events.push(function() {
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.days, function(index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.day, function(index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day);
 
@@ -539,7 +539,7 @@ events.push(function() {
 
 							//TODO break if length === period interval?
 
-							for(var t = 0; t < tx_series.length; t++) {	
+							for(var t = 0; t < tx_series.length; t++) {
 
 								if(tx_series[t][0]+tzOffset > (current_utc-(86400000*count)+tzOffset)) {
 
@@ -580,7 +580,7 @@ events.push(function() {
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.months, function(index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.month, function(index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1);
 
@@ -653,10 +653,10 @@ events.push(function() {
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.tops, function(index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.top, function(index, value) {
 
-							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day, value.time.hour, value.time.minutes);
-							
+							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day);
+
 							localStorage.setItem(value.id+1, date);
 
 							tx_series.push([value.id+1, value.tx]);
@@ -695,11 +695,11 @@ events.push(function() {
 
 						tx_series[index][1] = tx_series[index][1] + tx_previous;
 						rx_series[index][1] = rx_series[index][1] + rx_previous;
-						
+
 					});
 
 				}
-				
+
 				json[index*2] = {};
 
 				var ifNick = interface;
@@ -783,7 +783,12 @@ events.push(function() {
 				//TODO units changes based on period?
 				chart.yAxis1.tickFormat(function(d) {
 
-					var dUnit = 'K';
+					var dUnit = 'B';
+
+					if(d >= 1000 || d <= -1000) {
+						d = d / 1024;
+						dUnit = 'K';
+					}
 
 					if(d >= 1000 || d <= -1000) {
 						d = d / 1024;
@@ -855,12 +860,17 @@ events.push(function() {
 
 					for ( var v = 0; v < data.series.length; v++ ){
 
-						var unit = 'KiB';
+						var unit = 'B';
 
 						if ( ($("#invert").val() === "true" && data.series[v].key.includes('(rx)')) &&  ($("#graph-type").val() != "area" && $("#graph-type").val() != "stacked")) {
 							var trueValue = 0 - data.series[v].value;
 						} else {
 							var trueValue = data.series[v].value;
+						}
+
+						if(trueValue >= 1000) {
+							trueValue = trueValue / 1024;
+							unit = 'KiB';
 						}
 
 						if(trueValue >= 1000) {
@@ -907,7 +917,7 @@ events.push(function() {
 		.fail(function(error) {
 			$("#traffic-totals-chart").hide();
 			$("#chart-error").show().html('<strong>Error</strong>: ' + error);
-			
+
 			console.warn(error);
 		});
 
@@ -967,9 +977,14 @@ events.push(function() {
 					}
 
 					var total = tx + rx;
-					var txUnit = 'KiB';
-					var rxUnit = 'KiB';
-					var totalUnit = 'KiB';
+					var txUnit = 'B';
+					var rxUnit = 'B';
+					var totalUnit = 'B';
+
+					if(tx >= 1000) {
+						tx = tx / 1024;
+						txUnit = 'KiB';
+					}
 
 					if(tx >= 1000) {
 						tx = tx / 1024;
@@ -984,6 +999,11 @@ events.push(function() {
 					if(tx >= 1000) {
 						tx = tx / 1024;
 						txUnit = 'TiB';
+					}
+
+					if(rx >= 1000) {
+						rx = rx / 1024;
+						rxUnit = 'KiB';
 					}
 
 					if(rx >= 1000) {
@@ -1003,6 +1023,11 @@ events.push(function() {
 
 					if(total >= 1000) {
 						total = total / 1024;
+						totalUnit = 'KiB';
+					}
+
+					if(total >= 1000) {
+						total = total / 1024;
 						totalUnit = 'MiB';
 					}
 
@@ -1017,7 +1042,7 @@ events.push(function() {
 					}
 
 					body += '<td>' + tx.toFixed(2) + ' ' + txUnit + '</td><td>' + rx.toFixed(2) + ' ' + rxUnit + '</td><td>' + ratio.toFixed(2) + '</td><td>' + total.toFixed(2) + ' ' + totalUnit + '</td>';
-					
+
 				}
 
 				body += '</tr>';
@@ -1080,9 +1105,14 @@ events.push(function() {
 					}
 
 					var total = tx + rx;
-					var txUnit = 'KiB';
-					var rxUnit = 'KiB';
-					var totalUnit = 'KiB';
+					var txUnit = 'B';
+					var rxUnit = 'B';
+					var totalUnit = 'B';
+
+					if(tx >= 1000) {
+						tx = tx / 1024;
+						txUnit = 'KiB';
+					}
 
 					if(tx >= 1000) {
 						tx = tx / 1024;
@@ -1101,6 +1131,11 @@ events.push(function() {
 
 					if(rx >= 1000) {
 						rx = rx / 1024;
+						rxUnit = 'KiB';
+					}
+
+					if(rx >= 1000) {
+						rx = rx / 1024;
 						rxUnit = 'MiB';
 					}
 
@@ -1112,6 +1147,11 @@ events.push(function() {
 					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'TiB';
+					}
+
+					if(total >= 1000) {
+						total = total / 1024;
+						totalUnit = 'KiB';
 					}
 
 					if(total >= 1000) {
