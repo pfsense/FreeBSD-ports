@@ -1,0 +1,11 @@
+--- external/libfetch/Makefile.autosetup.orig	2020-01-14 16:56:02 UTC
++++ external/libfetch/Makefile.autosetup
+@@ -11,6 +11,7 @@ LOCAL_CFLAGS=	-I$(top_srcdir)/compat \
+ 		-Wno-unused-parameter \
+ 		-Wno-pointer-sign \
+ 		-DWITH_SSL \
+-		-DINET6
++		-DINET6 \
++		-DWITH_STATIC_ENGINE
+ 
+ include $(MK)/static-lib.mk

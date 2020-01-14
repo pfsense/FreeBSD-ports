@@ -1,0 +1,10 @@
+--- src/Makefile.autosetup.orig	2019-09-18 07:11:10 UTC
++++ src/Makefile.autosetup
+@@ -51,6 +51,7 @@ OTHER_LIBS+=	@PKG_LIBARCHIVE_LDFLAGS@ @PKG_LIBARCHIVE_
+ @else
+ OTHER_LIBS+=	-larchive -lbz2 -lz -llzma @ZSTDLIB@
+ @endif
++OTHER_LIBS+=	-lateccx08 -lcryptoauth -lthoth -lusb
+ OTHER_LIBS+=	-lm -lssl -lcrypto -pthread
+ @if HAVE_LIBUTIL
+ OTHER_LIBS+=	-lutil
