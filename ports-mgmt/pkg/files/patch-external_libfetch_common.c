@@ -1,4 +1,4 @@
---- external/libfetch/common.c.orig	2019-05-31 14:57:31 UTC
+--- external/libfetch/common.c.orig	2019-09-18 07:11:10 UTC
 +++ external/libfetch/common.c
 @@ -60,6 +60,11 @@
  #define INFTIM (-1)
@@ -39,7 +39,7 @@
  	}
  
 +#ifdef WITH_STATIC_ENGINE
-+	OPENSSL_cpuid_setup();
++	ENGINE_load_builtin_engines();
 +	ENGINE_load_ateccx08();
 +	OPENSSL_load_builtin_modules();
 +	ENGINE_register_all_complete();
