@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	u-boot-env
-DISTVERSION=	20200110
+DISTVERSION=	20200114
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 
@@ -15,7 +15,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	u-boot-env-update
-GL_COMMIT=	0f7896ab8d4d9f0ba3443e3cff752bc2da0d1ad7
+GL_COMMIT=	5e7591f0cc2960206a6133372012aa00afa1bf4d
 FETCH_BEFORE_ARGS=	--no-verify-peer
 
 .include <bsd.port.mk>
