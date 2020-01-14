@@ -47,10 +47,12 @@ BUILD_DEPENDS+=	${NONEXISTENT}:security/libressl:stage
 
 CFLAGS+=	-I${STAGEDIR_libressl}${LOCALBASE}/include
 
+.if ${OSVERSION} >= 1200000
 post-configure:
 	${REINPLACE_CMD} 's|-lssl|${STAGEDIR_libressl}${LOCALBASE}/lib/libssl.a|g' \
 		 ${WRKSRC}/relayd/Makefile
 	${REINPLACE_CMD} 's|-lcrypto|${STAGEDIR_libressl}${LOCALBASE}/lib/libcrypto.a|g' \
 		${WRKSRC}/relayd/Makefile
+.endif
 
 .include <bsd.port.post.mk>
