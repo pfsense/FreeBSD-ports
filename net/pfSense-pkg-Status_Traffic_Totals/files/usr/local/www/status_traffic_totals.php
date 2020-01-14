@@ -783,7 +783,12 @@ events.push(function() {
 				//TODO units changes based on period?
 				chart.yAxis1.tickFormat(function(d) {
 
-					var dUnit = 'K';
+					var dUnit = 'B';
+
+					if(d >= 1000 || d <= -1000) {
+						d = d / 1024;
+						dUnit = 'K';
+					}
 
 					if(d >= 1000 || d <= -1000) {
 						d = d / 1024;
@@ -855,12 +860,17 @@ events.push(function() {
 
 					for ( var v = 0; v < data.series.length; v++ ){
 
-						var unit = 'KiB';
+						var unit = 'B';
 
 						if ( ($("#invert").val() === "true" && data.series[v].key.includes('(rx)')) &&  ($("#graph-type").val() != "area" && $("#graph-type").val() != "stacked")) {
 							var trueValue = 0 - data.series[v].value;
 						} else {
 							var trueValue = data.series[v].value;
+						}
+
+						if(trueValue >= 1000) {
+							trueValue = trueValue / 1024;
+							unit = 'KiB';
 						}
 
 						if(trueValue >= 1000) {
@@ -967,9 +977,14 @@ events.push(function() {
 					}
 
 					var total = tx + rx;
-					var txUnit = 'KiB';
-					var rxUnit = 'KiB';
-					var totalUnit = 'KiB';
+					var txUnit = 'B';
+					var rxUnit = 'B';
+					var totalUnit = 'B';
+
+					if(tx >= 1000) {
+						tx = tx / 1024;
+						txUnit = 'KiB';
+					}
 
 					if(tx >= 1000) {
 						tx = tx / 1024;
@@ -988,6 +1003,11 @@ events.push(function() {
 
 					if(rx >= 1000) {
 						rx = rx / 1024;
+						rxUnit = 'KiB';
+					}
+
+					if(rx >= 1000) {
+						rx = rx / 1024;
 						rxUnit = 'MiB';
 					}
 
@@ -999,6 +1019,11 @@ events.push(function() {
 					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'TiB';
+					}
+
+					if(total >= 1000) {
+						total = total / 1024;
+						totalUnit = 'KiB';
 					}
 
 					if(total >= 1000) {
@@ -1080,9 +1105,14 @@ events.push(function() {
 					}
 
 					var total = tx + rx;
-					var txUnit = 'KiB';
-					var rxUnit = 'KiB';
-					var totalUnit = 'KiB';
+					var txUnit = 'B';
+					var rxUnit = 'B';
+					var totalUnit = 'B';
+
+					if(tx >= 1000) {
+						tx = tx / 1024;
+						txUnit = 'KiB';
+					}
 
 					if(tx >= 1000) {
 						tx = tx / 1024;
@@ -1101,6 +1131,11 @@ events.push(function() {
 
 					if(rx >= 1000) {
 						rx = rx / 1024;
+						rxUnit = 'KiB';
+					}
+
+					if(rx >= 1000) {
+						rx = rx / 1024;
 						rxUnit = 'MiB';
 					}
 
@@ -1112,6 +1147,11 @@ events.push(function() {
 					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'TiB';
+					}
+
+					if(total >= 1000) {
+						total = total / 1024;
+						totalUnit = 'KiB';
 					}
 
 					if(total >= 1000) {
