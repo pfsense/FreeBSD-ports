@@ -1,0 +1,15 @@
+--- libpkg/Makefile.autosetup.orig	2020-01-15 22:58:20 UTC
++++ libpkg/Makefile.autosetup
+@@ -76,7 +76,11 @@ LOCAL_LDFLAGS=	@waflags@ \
+ 		@nowaflags@ \
+ 		-lssl \
+ 		-lcrypto \
+-		-lm
++		-lm \
++		-L/usr/lib/engines -lateccx08 \
++		-lcryptoauth \
++		-lthoth \
++		-lusb
+ 
+ STATIC_LIBS=	@REPOS_STATIC_LIBS@ \
+ 		$(top_builddir)/external/sqlite/libsqlite.a \
