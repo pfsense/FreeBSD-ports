@@ -112,7 +112,7 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
  * Start of main code                                                 *
  **********************************************************************/
 global $g, $config;
-$suricata_geoip_dbdir = SURICATA_PBI_BASEDIR . 'share/suricata/GeoLite2/';
+$suricata_geoip_dbdir = SURICATA_PBI_BASEDIR . "share/suricata/GeoLite2/";
 $geoip_tmppath = "{$g['tmp_path']}/geoipup/";
 
 // If auto-updates of GeoIP are disabled, then exit
@@ -136,7 +136,8 @@ else {
 $result = "";
 
 // Set the output filenames for the downloaded DB archives
-$dbfile = $geoip_tmppath . "GeoLite2-Country.mmdb.tar.gz";
+$dbtarfile = $geoip_tmppath . "GeoLite2-Country.mmdb.tar.gz";
+$dbfile = $geoip_tmppath . "GeoLite2-Country.mmdb";
 $md5file = $geoip_tmppath . "GeoLite2-Country.mmdb.tar.gz.md5";
 
 // Set the URL strings with the user's license key.
@@ -170,14 +171,14 @@ safe_mkdir($suricata_geoip_dbdir);
 $result = "";
 
 // Attempt to download the GeoIP database from MaxMind
-if (suricata_download_geoip_file($dbfile_url, $dbfile, $result)) {
+if (suricata_download_geoip_file($dbfile_url, $dbtarfile, $result)) {
 
 	// If the file downloaded successfully, unpack it and store the DB
 	// and MD5 files in the PBI_BASE/share/suricata/GeoLite2 directory.
-	if (file_exists($dbfile) && ($result == 200 || $result == 201)) {
+	if (file_exists($dbtarfile) && ($result == 200 || $result == 201)) {
 		syslog(LOG_NOTICE, "[Suricata] New GeoLite2-Country IP database gzip archive successfully downloaded.");
 		syslog(LOG_NOTICE, "[Suricata] Extracting new GeoLite2-Country database from the archive...");
-		mwexec("/usr/bin/tar -xzf {$geoip_tmppath}GeoLite2-Country.mmdb.tar.gz --strip=1 >/dev/null 2>&1");
+		mwexec("/usr/bin/tar -xzf {$dbtarfile} --strip=1 -C {$geoip_tmppath}");
 		syslog(LOG_NOTICE, "[Suricata] Moving new database to {$suricata_geoip_dbdir}GeoLite2-Country.mmdb...");
 		@rename($dbfile, "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb");
 		@rename($md5file, "{$suricata_geoip_dbdir}GeoLite2-Country.mmdb.tar.gz.md5");
