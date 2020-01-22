@@ -91,7 +91,7 @@ foreach ($map_files as $f) {
 if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == 'on' && !empty($config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'])) {
 	syslog(LOG_NOTICE, gettext("[Suricata] Installing free GeoLite2 country IP database file in /usr/local/share/suricata/GeoLite2/..."));
 	include("/usr/local/pkg/suricata/suricata_geoipupdate.php");
-	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 6, "*", "*", "1", "root");
+	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 6, "*", "*", "*", "root");
 }
 
 // Download the latest ET IQRisk updates and create cron task if the feature is not disabled

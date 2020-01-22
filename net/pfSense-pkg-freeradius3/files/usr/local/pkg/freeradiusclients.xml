@@ -120,7 +120,7 @@
 			<fieldname>varclientip</fieldname>
 			<description>
 				<![CDATA[
-				Enter the IP address of the RADIUS client. This is the IP of the NAS (switch, access point, firewall, router, etc.).
+				Enter the IP address or network of the RADIUS client(s) in CIDR notation. This is the IP of the NAS (switch, access point, firewall, router, etc.).
 				]]>
 			</description>
 			<type>input</type>
