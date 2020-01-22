@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * pimd_interfaces.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2020 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>pimd_interfaces</name>
+	<title>Services/PIMD/Interfaces</title>
+	<include_file>/usr/local/pkg/pimd.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=pimd/pimd_interfaces.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>pkg_edit.php?xml=pimd.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>pkg.php?xml=pimd/pimd_interfaces.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>BSR Candidates</text>
+			<url>pkg.php?xml=pimd/pimd_bsrcandidate.xml</url>
+		</tab>
+		<tab>
+			<text>RP Candidates</text>
+			<url>pkg.php?xml=pimd/pimd_rpcandidate.xml</url>
+		</tab>
+		<tab>
+			<text>RP Addresses</text>
+			<url>pkg.php?xml=pimd/pimd_rpaddress.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_pimd.php</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>ifname</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Enabled</fielddescr>
+			<fieldname>enable</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Altnet</fielddescr>
+			<fieldname>altnet</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Scoped</fielddescr>
+			<fieldname>scoped</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>Interface Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>interface</fieldname>
+			<description>
+				<![CDATA[
+				Select the interface or address to bind.
+				Multiple entries may be added for the same interface to specify multiple values
+				for items such as Alternative Networks and Multicast Scope.
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[pimd_get_interfaces(false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<required/>
+		</field>
+		<field>
+			<fieldname>ifname</fieldname>
+			<type>hidden</type>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>30</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Interface Binding</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>
+				<![CDATA[
+				Binding behavior for this interface. Combines with Default Bind setting on the
+				General tab to determine whether or not this interface will be used by PIMD.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>default</default_value>
+			<options>
+				<option><name>Default</name><value>default</value></option>
+				<option><name>Always Bind</name><value>enable</value></option>
+				<option><name>Never Bind</name><value>disable</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>IGMP Version</fielddescr>
+			<fieldname>igmpversion</fieldname>
+			<description>
+				<![CDATA[
+				The IGMP version to use on this interface.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>default</default_value>
+			<options>
+				<option><name>PIMD Default (Currently: IGMPv3)</name><value>default</value></option>
+				<option><name>IGMPv3</name><value>3</value></option>
+				<option><name>IGMPv2</name><value>2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>DR Priority</fielddescr>
+			<fieldname>dr_priority</fieldname>
+			<description>
+				<![CDATA[
+					Priority to use for Designated Router (DR) election.
+					Highest advertised priority wins the election.
+					Ties are given to the router with the highest IP address in the subnet.
+					(1-4294967294, Default: 1)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>TTL Threshold</fielddescr>
+			<fieldname>ttl_threshold</fieldname>
+			<description>
+				<![CDATA[
+					The TTL threshold for multicast frames to be forwarded from this interface.
+					(1-255, Default: 1)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Route Distance</fielddescr>
+			<fieldname>distance</fieldname>
+			<description>
+				<![CDATA[
+					Default administrative distance for routes on this interface.
+					Overrides the global Default Route Distance value.
+					(1-255, Default: Default Route Distance on General tab)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Route Metric</fielddescr>
+			<fieldname>metric</fieldname>
+			<description>
+				<![CDATA[
+					Default metric for routes on this interface.
+					Overrides the global Default Route Metric value.
+					(1-1024, Default: Default Route Metric on General tab)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Alternative Network</fielddescr>
+			<fieldname>altnet</fieldname>
+			<description>
+				<![CDATA[
+					Alternative host or network to accept as a locally attached multicast source.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Multicast Scope</fielddescr>
+			<fieldname>scoped</fieldname>
+			<description>
+				<![CDATA[
+					Multicast streams belonging to this scoped group will not be forwarded.
+					Allows interfaces to be configured as an administrative boundary for the specified group.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+	</fields>
+
+	<custom_php_resync_config_command>
+		pimd_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		pimd_validate_input_interfaces();
+	</custom_php_validation_command>
+</packagegui>

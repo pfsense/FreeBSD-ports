@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * pimd.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2020 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>pimd</name>
+	<title>Services/PIMD</title>
+	<include_file>/usr/local/pkg/pimd.inc</include_file>
+	<aftersaveredirect>pkg_edit.php?xml=pimd.xml</aftersaveredirect>
+	<menu>
+		<name>PIMD</name>
+		<section>Services</section>
+		<configfile>pimd.xml</configfile>
+		<url>/pkg_edit.php?xml=pimd.xml</url>
+	</menu>
+	<menu>
+		<name>PIMD</name>
+		<section>Status</section>
+		<configfile>pimd.xml</configfile>
+		<url>/status_pimd.php</url>
+	</menu>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>pkg_edit.php?xml=pimd.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>pkg.php?xml=pimd/pimd_interfaces.xml</url>
+		</tab>
+		<tab>
+			<text>BSR Candidates</text>
+			<url>pkg.php?xml=pimd/pimd_bsrcandidate.xml</url>
+		</tab>
+		<tab>
+			<text>RP Candidates</text>
+			<url>pkg.php?xml=pimd/pimd_rpcandidate.xml</url>
+		</tab>
+		<tab>
+			<text>RP Addresses</text>
+			<url>pkg.php?xml=pimd/pimd_rpaddress.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_pimd.php</url>
+		</tab>
+	</tabs>
+	<service>
+		<name>pimd</name>
+		<rcfile>pimd.sh</rcfile>
+		<executable>pimd</executable>
+		<description>PIMD multicast routing daemon</description>
+	</service>
+	<plugins>
+		<item>
+			<type>plugin_carp</type>
+		</item>
+	</plugins>
+	<fields>
+		<field>
+			<name>Service Control</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Enable PIMD</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Default Bind</fielddescr>
+			<fieldname>interfacemode</fieldname>
+			<description>
+				<![CDATA[
+				Default interface binding behavior. Per-interface behavior can be set on the Interfaces tab.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Bind to None</name><value>none</value></option>
+				<option><name>Bind to All</name><value>all</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Log Level</fielddescr>
+			<fieldname>loglevel</fieldname>
+			<description>Default Logging Level</description>
+			<type>select</type>
+			<default_value>notice</default_value>
+			<options>
+				<option><name>None</name><value>none</value></option>
+				<option><name>Error</name><value>error</value></option>
+				<option><name>Warning</name><value>warning</value></option>
+				<option><name>Notice</name><value>notice</value></option>
+				<option><name>Info</name><value>info</value></option>
+				<option><name>Debug</name><value>debug</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>CARP Status VIP</fielddescr>
+			<fieldname>carpstatusvip</fieldname>
+			<description>
+				<![CDATA[
+				Used to determine the CARP status. When the CARP vhid is in BACKUP status, pimd will not be started.<br />
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[pimd_get_carp_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<name>General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Default Route Distance</fielddescr>
+			<fieldname>default_route_distance</fieldname>
+			<description>
+				<![CDATA[
+					Default value for unicast routing protocol administrative distance. It is used
+					in PIM Assert elections to determine upstream routers.  The router advertising
+					the lowest assert preference will be selected as the forwarder and upstream
+					router for the LAN.
+					(1-255, Default: 101)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Default Route Metric</fielddescr>
+			<fieldname>default_route_metric</fieldname>
+			<description>
+				<![CDATA[
+					The default cost for sending data through this router. Only PIM-SM data should
+					to go to this daemon; so a high value is recommended to prevent accidental
+					usage.
+					(1-1024, Default: 1024)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>IGMP Query Interval</fielddescr>
+			<fieldname>igmp_query_interval</fieldname>
+			<description>
+				<![CDATA[
+					The interval, in seconds, between IGMP queries when elected as querier.
+					(1-65535, Default: 12)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>IGMP Querier Timeout</fielddescr>
+			<fieldname>igmp_querier_timeout</fieldname>
+			<description>
+				<![CDATA[
+					The timeout, in seconds, after which PIMD will take over for a failed elected
+					querier.
+					(8-65535, Default: 42)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Hello Interval</fielddescr>
+			<fieldname>hello_interval</fieldname>
+			<description>
+				<![CDATA[
+					The interval, in seconds, between PIM Hello messages sent by pimd. This value
+					also affects the Hold Time, which is 3.5x this value.
+					(30-18724, Default: 30)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Tree Switch Threshold</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Threshold Type</fielddescr>
+			<fieldname>spt_type</fieldname>
+			<description>Type of check to perform when making SPT decisions.</description>
+			<type>select</type>
+			<default_value>default</default_value>
+			<options>
+				<option><name>Default</name><value>default</value></option>
+				<option><name>Rate (Kbit/s)</name><value>rate</value></option>
+				<option><name>Packets (Count)</name><value>packets</value></option>
+				<option><name>Infinity (Disable)</name><value>infinity</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Threshold Value</fielddescr>
+			<fieldname>spt_value</fieldname>
+			<description>
+				<![CDATA[
+					When Threshold Type is set to Rate, this value is a rate in Kbit/s.
+					When set to Packets, this value is a specific number of packets.
+					When set to Default or Infinity, this value is ignored.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>SPT Interval</fielddescr>
+			<fieldname>spt_interval</fieldname>
+			<description>
+				<![CDATA[
+					The interval, in seconds, after which PIMD will switch from the shared tree to
+					the shortest-path source tree.
+					(Default: 100)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		pimd_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		pimd_validate_input_general();
+	</custom_php_validation_command>
+	<custom_php_install_command>
+		pimd_package_install();
+	</custom_php_install_command>
+</packagegui>
