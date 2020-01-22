@@ -39,5 +39,5 @@
  {
  	dlog(LOG_DEBUG, 4, "checking ipv6 forwarding of interface not supported");
 -	return -1;
-+	return 0;
++	return 1;
  }
