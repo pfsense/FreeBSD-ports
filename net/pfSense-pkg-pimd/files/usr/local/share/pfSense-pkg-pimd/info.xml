@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>PIMD</name>
+		<internal_name>pimd</internal_name>
+		<descr><![CDATA[PIMD Multicast Routing. Lightweight, stand-alone implementation of Protocol Independent Multicast-Sparse Mode.&lt;br /&gt;
+			&lt;strong&gt;Conflicts with Quagga OSPF; these packages cannot be installed at the same time.&lt;/strong&gt;]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>pimd.xml</configurationfile>
+	</package>
+</pfsensepkgs>

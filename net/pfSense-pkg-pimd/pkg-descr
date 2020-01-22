@@ -1,0 +1,5 @@
+PIMD Multicast Routing. Lightweight, stand-alone implementation of Protocol
+Independent Multicast-Sparse Mode.
+
+Conflicts with Quagga OSPF.
+These packages cannot be installed at the same time.
