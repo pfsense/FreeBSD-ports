@@ -1969,10 +1969,10 @@ EOD;
 	} else {
 		$varsqlconfauthorize = <<<EOD
 	### sql DISABLED ###
-	daily
-	weekly
-	monthly
-	forever
+	-daily
+	-weekly
+	-monthly
+	-forever
 EOD;
 	}
 
