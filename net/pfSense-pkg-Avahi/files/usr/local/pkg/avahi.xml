@@ -41,6 +41,11 @@
 		<executable>avahi-daemon</executable>
 		<description>Avahi mDNS/DNS-SD daemon</description>
 	</service>
+	<plugins>
+		<item>
+			<type>plugin_carp</type>
+		</item>
+	</plugins>
 	<custom_php_resync_config_command>
 		avahi_sync_config();
 	</custom_php_resync_config_command>
