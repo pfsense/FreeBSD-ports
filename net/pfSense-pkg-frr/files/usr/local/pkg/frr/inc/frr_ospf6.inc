@@ -19,6 +19,8 @@
  * limitations under the License.
  */
 
+require_once("frr/inc/frr_ospf.inc");
+
 function frr_generate_config_ospf6() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
 	unlink_if_exists("{$frr_config_base}/ospf6d.conf");
@@ -94,6 +96,9 @@ function frr_generate_config_ospf6() {
 				if (!empty($conf['passive'])) {
 					$conffile .= "  ipv6 ospf6 passive\n";
 				}
+				if (!empty($conf['mtuignore'])) {
+					$conffile .= "  ipv6 ospf6 mtu-ignore\n";
+				}
 				list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface'], true);
 				$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['area'];
 				if (is_subnetv6("{$subnet}/{$interface_subnet}")) {
@@ -112,15 +117,10 @@ function frr_generate_config_ospf6() {
 				if (empty($redistr['routevalue'])) {
 					continue;
 				}
-				if (isset($redistr['redistribute'])) {
-					/* Add this to the "do not redistribute" ACL */
-					$noredist .= "  access-list dnr-list deny {$redistr['routevalue']}\n";
-				} else {
-					$area = ($redistr['routearea'] == "") ? $ospf6d_conf['area'] : $redistr['routearea'];
-					$cost = (is_numeric($redistr['routearea']) && ($redistr['routearea'] >= 0)) ? $redistr['routearea']: 1;
-					// Disable for now. Not yet supported in FRR.
-					// $redist .= "  area {$area} range {$redistr['routevalue']} cost {$cost}\n";
-				}
+				$area = ($redistr['routearea'] == "") ? $ospf6d_conf['area'] : $redistr['routearea'];
+				$cost = (is_numeric($redistr['routearea']) && ($redistr['routearea'] >= 0)) ? $redistr['routearea']: 1;
+				// Disable for now. Not yet supported in FRR.
+				$redist .= "  area {$area} range {$redistr['routevalue']} cost {$cost}\n";
 			}
 		}
 		/* OSPF6 Settings */
@@ -157,25 +157,64 @@ function frr_generate_config_ospf6() {
 			$conffile .= "  log-adjacency-changes detail\n";
 		}
 
-		/* When defining the redistribute directives, also specify a
-		 * "Do not redistribute" route-map to filter. */
-		if ($ospf6d_conf['redistributeconnectedsubnets']) {
-			$conffile .= "  redistribute connected route-map DNR6\n";
-		}
-		if ($ospf6d_conf['redistributestatic']) {
-			$conffile .= "  redistribute static route-map DNR6\n";
-		}
-		if ($ospf6d_conf['redistributekernel']) {
-			$conffile .= "  redistribute kernel route-map DNR6\n";
-		}
+		/* Route Redistribution */
+		$conffile .= frr_generate_config_ospf_redistribute($ospf6d_conf, 'redistributeconnectedsubnets', 'connected');
+		$conffile .= frr_generate_config_ospf_redistribute($ospf6d_conf, 'redistributekernel', 'kernel');
+		$conffile .= frr_generate_config_ospf_redistribute($ospf6d_conf, 'redistributebgp', 'bgp');
+		$conffile .= frr_generate_config_ospf_redistribute($ospf6d_conf, 'redistributestatic', 'static');
+
 		if ($ospf6d_conf['spfholdtime'] || $ospf6d_conf['spfdelay']) {
 			$spf_minhold = ($ospf6d_conf['spfholdtime']) ? $ospf6d_conf['spfholdtime'] : 1000;
 			$spf_maxhold = $spf_minhold * 10;
 			$spf_delay = ($ospf6d_conf['spfdelay']) ? $ospf6d_conf['spfdelay'] : 200;
 			$conffile .= "  timers throttle spf {$spf_delay} {$spf_minhold} {$spf_maxhold}\n";
 		}
+
+		if (!empty($ospf6d_conf['referencebandwidth'])) {
+			$conffile .= "  auto-cost reference-bandwidth {$ospf6d_conf['referencebandwidth']}\n";
+		}
+
+		if (!empty($ospf6d_conf['distance'])) {
+			$conffile .= "  distance {$ospf6d_conf['distance']}\n";
+		}
+
+		$odist = "";
+		if (!empty($ospf6d_conf['distance_external'])) {
+			$odist .= " external {$ospf6d_conf['distance']}";
+		}
+		if (!empty($ospf6d_conf['distance_interarea'])) {
+			$odist .= " inter-area {$ospf6d_conf['distance_interarea']}";
+		}
+		if (!empty($ospf6d_conf['distance_intraarea'])) {
+			$odist .= " intra-area {$ospf6d_conf['distance_intraarea']}";
+		}
+
+		if (!empty($odist)) {
+			$conffile .= "  distance ospf6{$odist}\n";
+		}
+
 		if (!empty($redist)) {
 			$conffile .= $redist;
+		}
+
+		/* exportlist */
+		if (!empty($ospf6d_conf['exportlist']) && ($ospf6d_conf['exportlist'] != "none")) {
+			$conffile .= "  area {$ospf6d_conf['area']} export-list {$ospf6d_conf['exportlist']}\n";
+		}
+
+		/* importlist */
+		if (!empty($ospf6d_conf['importlist']) && ($ospf6d_conf['importlist'] != "none")) {
+			$conffile .= "  area {$ospf6d_conf['area']} import-list {$ospf6d_conf['importlist']}\n";
+		}
+
+		/* filterlist_out */
+		if (!empty($ospf6d_conf['filterlist_out']) && ($ospf6d_conf['filterlist_out'] != "none")) {
+			$conffile .= "  area {$ospf6d_conf['area']} filter-list prefix {$ospf6d_conf['filterlist_out']} out\n";
+		}
+
+		/* filterlist_in */
+		if (!empty($ospf6d_conf['filterlist_in']) && ($ospf6d_conf['filterlist_in'] != "none")) {
+			$conffile .= "  area {$ospf6d_conf['area']} filter-list prefix {$ospf6d_conf['filterlist_in']} in\n";
 		}
 
 		/* Setup a "do not redistribute" list in a couple different ways:

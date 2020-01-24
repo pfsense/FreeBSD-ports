@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * pimd_rpcandidate.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2020 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>pimd_rpcandidate</name>
+	<title>Services/PIMD/RP Candidates</title>
+	<include_file>/usr/local/pkg/pimd.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=pimd/pimd_rpcandidate.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>pkg_edit.php?xml=pimd.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>pkg.php?xml=pimd/pimd_interfaces.xml</url>
+		</tab>
+		<tab>
+			<text>BSR Candidates</text>
+			<url>pkg.php?xml=pimd/pimd_bsrcandidate.xml</url>
+		</tab>
+		<tab>
+			<text>RP Candidates</text>
+			<url>pkg.php?xml=pimd/pimd_rpcandidate.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>RP Addresses</text>
+			<url>pkg.php?xml=pimd/pimd_rpaddress.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_pimd.php</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>ifname</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Priority</fielddescr>
+			<fieldname>priority</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>interface</fieldname>
+			<description>
+				<![CDATA[
+				The interface or address on which to enable Rendezvous Point (RP) candidate
+				election participation.<br/>
+				When set to "default", the feature is enabled without a specific interface,
+				which will default to the highest available IP address.
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[pimd_get_interfaces()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<required/>
+		</field>
+		<field>
+			<fieldname>ifname</fieldname>
+			<type>hidden</type>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>30</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Priority</fielddescr>
+			<fieldname>priority</fieldname>
+			<description>
+				<![CDATA[
+					Priority of this router when electing an RP.
+					Lower values are preferred by participating routers.
+					(0-255, Default: 0)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Time</fielddescr>
+			<fieldname>time</fieldname>
+			<description>
+				<![CDATA[
+					The number of seconds to wait between RP advertisements.
+					Lower values allow for faster convergence.
+					(10-16383, Default: 30)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Group Prefixes</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Group Prefix (Address or CIDR Format)</fielddescr>
+					<fieldname>groupprefix</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+
+	<custom_php_resync_config_command>
+		pimd_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		pimd_validate_input_rpcandidate();
+	</custom_php_validation_command>
+</packagegui>
