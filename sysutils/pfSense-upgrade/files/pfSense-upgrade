@@ -445,10 +445,12 @@ pkg_upgrade() {
 	local _model=$(/bin/kenv -q smbios.system.product 2>/dev/null)
 
 	SYSTEM=""
-	if [ "${_model}" = "mvebu_armada-37xx" ]; then
+	if [ "${_model}" = "mvebu_armada-37xx" -o "${_model}" = "SG-3200" ]; then
 		_type=$(/usr/sbin/ofwdump -P model -R / 2>/dev/null)
 		if [ "${_type}" = "Netgate SG-1100" ]; then
 			SYSTEM="SG-1100"
+		elif [ "${_type}" = "Netgate SG-3200" ]; then
+			SYSTEM="SG-3200"
 		fi
 	fi
 
@@ -476,6 +478,11 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.bin
 		export \
 		    uboot_update=/usr/local/share/u-boot/sg3100/u-boot-update.sh
+	elif is_pkg_installed ${product}-u-boot-sg3200\*; then
+		export uboot_pkg=$(_pkg query %n $(_pkg info \
+		    ${product}-u-boot-sg3200\*))
+		export \
+		    uboot_update=/usr/local/share/u-boot/sg3200/u-boot-update.sh
 	fi
 
 	if [ -n "${uboot_pkg}" -a -n "${uboot_mntp}" -a \
@@ -688,6 +695,13 @@ pkg_upgrade() {
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
 				cp /boot/dtb/armada-3720-sg1100.dtb /boot/msdos
+				umount /boot/msdos >/dev/null 2>&1
+			fi
+			if [ "${SYSTEM}" = "SG-3200" ]; then
+				# Mount /boot/msdos and update the DTB in FAT
+				# slice.
+				mount /boot/msdos >/dev/null 2>&1
+				cp /boot/dtb/armada-3720-sg3200.dtb /boot/msdos
 				umount /boot/msdos >/dev/null 2>&1
 			fi
 		fi
@@ -1337,6 +1351,13 @@ progress_file=${logfile%.*}.json
 
 if [ -e "${progress_file}" ]; then
 	rm -f ${progress_file}
+fi
+
+arch=$(uname -p)
+
+# Initialize the Thoth certificates on ARM64
+if [ "${arch}" = "aarch64" ]; then
+	/usr/local/bin/ping-auth.sh > /dev/null
 fi
 
 abi_setup
