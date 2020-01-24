@@ -72,6 +72,10 @@
 	</adddeleteeditpagefields>
 	<fields>
 		<field>
+			<name>Interface Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
 			<fielddescr>Interface</fielddescr>
 			<fieldname>interface</fieldname>
 			<type>select_source</type>
@@ -89,6 +93,12 @@
 				]]>
 			</description>
 		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>30</size>
+			<type>input</type>
+		</field>
  		<field>
 			<fielddescr>Network Type</fielddescr>
 			<fieldname>networktype</fieldname>
@@ -100,6 +110,23 @@
 				<option><value>broadcast</value><name>Broadcast</name></option>
 				<option><value>point-to-point</value><name>Point-to-Point</name></option>
 			</options>
+		</field>
+		<field>
+			<fielddescr>Interface is Passive</fielddescr>
+			<fieldname>passive</fieldname>
+			<description>Prevent transmission and reception of OSPF6 packets on this interface. The specified interface will be announced as a stub network.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Ignore MTU</fielddescr>
+			<fieldname>mtuignore</fieldname>
+			<description>Ignore MTU values for OSPF6 peers on this interface. Allows OSPF6 to form full adjacencies even when there is an MTU mismatch.</description>
+			<type>checkbox</type>
+		</field>
+
+		<field>
+			<name>OSPF6 Interface Handling</name>
+			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Instance ID</fielddescr>
@@ -119,17 +146,10 @@
 			<description>The area for this interface (leave blank for default).</description>
 			<type>input</type>
 		</field>
+
 		<field>
-			<fielddescr>Description</fielddescr>
-			<fieldname>descr</fieldname>
-			<size>30</size>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Interface is Passive</fielddescr>
-			<fieldname>passive</fieldname>
-			<description>Prevent transmission and reception of OSPF6 packets on this interface. The specified interface will be announced as a stub network.</description>
-			<type>checkbox</type>
+			<name>Advanced</name>
+			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Router Priority</fielddescr>
