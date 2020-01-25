@@ -51,9 +51,7 @@ display_top_tabs($tab_array);
 		<div class="table-responsive">
 <?php if ($enabled): ?>
 	<?php if (is_service_running('pimd')): ?>
-			<pre>
-			<?= htmlspecialchars(shell_exec('/usr/local/sbin/pimd --show-routes')); ?>
-			</pre>
+			<pre><?= htmlspecialchars(shell_exec('/usr/local/sbin/pimd --show-routes')); ?></pre>
 	<?php else: ?>
 			<br/>
 			<p class="text-center"><?= gettext('PIMD is enabled but not running. Check the configuration.'); ?></p>
