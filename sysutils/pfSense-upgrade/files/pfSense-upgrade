@@ -466,7 +466,7 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.img
 		export \
 		    uboot_update=/usr/local/share/u-boot/ufw/u-boot-update.sh
-	elif is_pkg_installed ${product}-u-boot-sg1100\*; then
+	elif [ "${SYSTEM}" = "SG-1100" ] && is_pkg_installed ${product}-u-boot-sg1100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-sg1100\*))
 		export \
@@ -478,7 +478,7 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.bin
 		export \
 		    uboot_update=/usr/local/share/u-boot/sg3100/u-boot-update.sh
-	elif is_pkg_installed ${product}-u-boot-sg3200\*; then
+	elif [ "${SYSTEM}" = "SG-3200" ] && is_pkg_installed ${product}-u-boot-sg3200\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-sg3200\*))
 		export \
