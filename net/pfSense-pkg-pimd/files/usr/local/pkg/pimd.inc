@@ -136,6 +136,8 @@ EOF;
 	/usr/local/sbin/pimd -q
 	sleep 3
 	/usr/bin/killall -q -9 pimd
+	# Exit without error no matter what happened with killall
+	exit 0
 EOF;
 
 	$interfacemode = ($pimd_conf['interfacemode'] == 'all') ? '' : '--disable-vifs';

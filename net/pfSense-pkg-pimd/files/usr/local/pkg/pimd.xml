@@ -29,6 +29,7 @@
 	<title>Services/PIMD</title>
 	<include_file>/usr/local/pkg/pimd.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=pimd.xml</aftersaveredirect>
+	<shortcut_section>pimd</shortcut_section>
 	<menu>
 		<name>PIMD</name>
 		<section>Services</section>

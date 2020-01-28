@@ -176,7 +176,9 @@ function pimd_validate_input_rpcandidate() {
 
 	foreach ($pkgarr['row'] as $idx => $row) {
 		foreach (array_keys($row) as $keyname) {
-			if (($keyname == 'groupprefix') && !is_v4($_POST["{$keyname}{$idx}"])) {
+			if (($keyname == 'groupprefix') &&
+			    !empty($_POST["{$keyname}{$idx}"]) &&
+			    !is_v4($_POST["{$keyname}{$idx}"])) {
 				$input_errors[] = gettext('Invalid Group Prefix value');
 			}
 		}
