@@ -79,6 +79,13 @@
 			<required/>
 		</field>
 		<field>
+			<fielddescr>Sample</fielddescr>
+			<fieldname>sample</fieldname>
+			<description>Specify periodical sampling rate (denominator). Empty or 0 disables sampling.</description>
+			<default_value>0</default_value>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Max Flows</fielddescr>
 			<fieldname>maxflows</fieldname>
 			<description>
@@ -106,11 +113,13 @@
 			<description>Select the desired version of the NetFlow protocol (10 means IPFIX).</description>
 			<type>select</type>
 			<options>
+				<option><name>PSAMP</name><value>psamp</value></option>
 				<option><name>10</name><value>10</value></option>
 				<option><name>9</name><value>9</value></option>
 				<option><name>5</name><value>5</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
+			<default_value>10</default_value>
 			<required/>
 		</field>
 		<field>
