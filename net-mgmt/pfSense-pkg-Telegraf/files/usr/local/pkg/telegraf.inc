@@ -64,7 +64,7 @@ function telegraf_resync_config() {
 	if (count($a_ca)) {
 		$ca_pem = '';
 		foreach ($a_ca as $ca) {
-			$ca_pem .= base64_decode($ca['crt']);
+			$ca_pem .= base64_decode($ca['crt']) . "\n";
 		}
 		file_put_contents($ca_pem_file, $ca_pem);
 	}
