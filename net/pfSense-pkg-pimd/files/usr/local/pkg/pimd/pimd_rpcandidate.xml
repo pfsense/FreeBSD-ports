@@ -29,6 +29,7 @@
 	<title>Services/PIMD/RP Candidates</title>
 	<include_file>/usr/local/pkg/pimd.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=pimd/pimd_rpcandidate.xml</aftersaveredirect>
+	<shortcut_section>pimd</shortcut_section>
 	<tabs>
 		<tab>
 			<text>General</text>
@@ -140,6 +141,9 @@
 	<custom_php_resync_config_command>
 		pimd_generate_config();
 	</custom_php_resync_config_command>
+	<custom_delete_php_command>
+		pimd_generate_config();
+	</custom_delete_php_command>
 	<custom_php_validation_command>
 		pimd_validate_input_rpcandidate();
 	</custom_php_validation_command>
