@@ -451,7 +451,9 @@ EOD;
 					case 'slave':
 						$bind_conf .= "\t\tmasters { $zoneipslave; };\n";
 						$bind_conf .= "\t\tallow-query { $zoneallowquery; };\n";
-						$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
+						if (!preg_match('/allow-transfer/', $zonecustom)) {
+							$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
+						}
 						break;
 					case 'forward':
 						$bind_conf .= "\t\tforward only;\n";
