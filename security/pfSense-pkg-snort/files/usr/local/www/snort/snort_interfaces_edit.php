@@ -459,6 +459,8 @@ if ($_POST['save'] && !$input_errors) {
 			$natent['ssh_preproc_enable_ssh1crc32'] = 'on';
 			$natent['ssh_preproc_enable_protomismatch'] = 'on';
 
+			$natent['autoflowbitrules'] = 'on';
+
 			$a_rule[] = $natent;
 		}
 
