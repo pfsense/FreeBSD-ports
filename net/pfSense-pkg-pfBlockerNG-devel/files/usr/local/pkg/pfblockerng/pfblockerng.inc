@@ -6350,6 +6350,7 @@ function sync_package_pfblockerng($cron='') {
 				$log = "\nMaxMind Database downloading and processing ( approx 4MB ) ... Please wait ...\n";
 				pfb_logger("{$log}", 1);
 				exec("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php dc >> {$pfb['log']} 2>&1");
+				restart_service('pfb_filter');
 			}
 			else {
 				$log = "\nMaxMind download already in process...\n";
@@ -6363,7 +6364,7 @@ function sync_package_pfblockerng($cron='') {
 		if (isset($config['installedpackages']['pfblockerng' . strtolower(str_replace(' ', '', $continent))]['config'])) {
 			$continent_config = $config['installedpackages']['pfblockerng' . strtolower(str_replace(' ', '', $continent))]['config'][0];
 			$cc_name = 'pfblockerng' . strtolower(str_replace(' ', '', $continent));
-			if ($continent_config['action'] != 'Disabled' && $pfb['enable'] == 'on') {
+			if (isset($continent_config['action']) && $continent_config['action'] != 'Disabled' && $pfb['enable'] == 'on') {
 
 				// Maxmind License Key verification and user notification
 				if ($maxmind_run_once && !$maxmind_verify) {
