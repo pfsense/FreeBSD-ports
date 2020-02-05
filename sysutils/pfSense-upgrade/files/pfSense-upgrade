@@ -1168,7 +1168,7 @@ export pkg_prefix=$(php -n /usr/local/sbin/read_global_var pkg_prefix \
 export platform=$(cat /etc/platform)
 
 USE_MFS_TMPVAR=$(read_xml_tag.sh boolean system/use_mfs_tmpvar)
-if [ "${USE_MFS_TMPVAR}" = "true" ]; then
+if [ "${USE_MFS_TMPVAR}" = "true" -a ! -e /conf/ram_disks_failed ]; then
 	export PKG_DBDIR=/root/var/db/pkg
 	export PKG_CACHEDIR=/root/var/cache/pkg
 fi
