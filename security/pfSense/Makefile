@@ -103,7 +103,7 @@ RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
 .endif
 
 .if (${ARCH} == "arm64")
-RUN_DEPENDS+=   ${LOCALBASE}/sbin/sg3200resetbtn:sysutils/arm64resetbutton \
+RUN_DEPENDS+=   ${LOCALBASE}/sbin/sg3200resetbtn:sysutils/arm64resetbutton
 .endif
 
 do-install:
