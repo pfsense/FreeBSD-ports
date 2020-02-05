@@ -102,6 +102,10 @@ RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
 		devcpu-data>=0:sysutils/devcpu-data
 .endif
 
+.if (${ARCH} == "arm64")
+RUN_DEPENDS+=   ${LOCALBASE}/sbin/sg3200resetbtn:sysutils/arm64resetbutton \
+.endif
+
 do-install:
 	${MKDIR} ${STAGEDIR}/etc
 	${ECHO} ${PORTREVISION} > ${STAGEDIR}/etc/version.patch
