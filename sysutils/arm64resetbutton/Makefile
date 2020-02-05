@@ -12,7 +12,7 @@ COMMENT=	Utility to detect platform reset button state for use in scripting
 
 PLIST_FILES=	sbin/sg3200resetbtn
 
-ONLY_FOR_ARCHS=	arm64
+ONLY_FOR_ARCHS=	aarch64
 
 do-extract:
 	${MKDIR} ${WRKSRC}
