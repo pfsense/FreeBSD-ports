@@ -56,6 +56,9 @@ function sync_package_softflowd() {
 			if (is_numericint($cf['hoplimit'])) {
 				$start .= " -L " . escapeshellarg($cf['hoplimit']);
 			}
+			if (is_numericint($cf['sample']) && ($cf['sample'] > 0)) {
+				$start .= " -s " . escapeshellarg($cf['sample']);
+			}
 			if ($cf['version'] != "") {
 				$start .= " -v " . escapeshellarg($cf['version']);
 			}

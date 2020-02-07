@@ -55,6 +55,8 @@ if (isset($id) && $a_nat[$id]) {
 	$pconfig['ips_policy_enable'] = $a_nat[$id]['ips_policy_enable'] == 'on' ? 'on' : 'off';;
 	$pconfig['ips_policy'] = $a_nat[$id]['ips_policy'];
 	$pconfig['ips_policy_mode'] = $a_nat[$id]['ips_policy_mode'];
+} else {
+	$pconfig['autoflowbitrules'] = 'on';
 }
 
 $if_real = get_real_interface($pconfig['interface']);
