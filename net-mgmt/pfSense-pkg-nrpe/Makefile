@@ -36,7 +36,7 @@ do-install:
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/libexec/nagios/check_carp_freebsd.sh \
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/libexec/nagios/check_carp_freebsd.sh \
 		/usr/local/libexec/nagios/
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
