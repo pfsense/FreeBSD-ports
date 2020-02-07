@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-nrpe
 PORTVERSION=	3.1
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -35,6 +36,8 @@ do-install:
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/libexec/nagios/check_carp_freebsd.sh \
+		/usr/local/libexec/nagios/
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
 
