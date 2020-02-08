@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+		<![CDATA[
+/* $Id$ */
+/*
+ * e2guardian_ips.xml
+ *
+ * part of Unofficial packages for pfSense(R) softwate
+ * Copyright (c) 2015-2017 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+		]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>e2guardianips</name>
+	<version>1.0</version>
+	<title>Services: E2guardian</title>
+	<include_file>/usr/local/pkg/e2guardian/e2guardian.inc</include_file>
+	<tabs>
+		<tab>
+			<text>Daemon</text>
+			<url>/pkg_edit.php?xml=e2guardian.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_config.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Limits</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_limits.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Blacklist</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_blacklist.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_site_acl.xml</url>
+		</tab>
+		<tab>
+			<text>LDAP</text>
+			<url>/pkg.php?xml=e2guardian/e2guardian_ldap.xml</url>
+		</tab>
+		<tab>
+			<text>Groups</text>
+			<url>/pkg.php?xml=e2guardian/e2guardian_groups.xml</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_users.xml</url>
+		</tab>
+		<tab>
+			<text>IPs</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_ips.xml</url>
+			<active/>
+		</tab>
+               <tab>
+                        <text>Real Time</text>
+			<url>/e2guardian/e2guardian_monitor.php</url>
+                </tab>
+		<tab>
+			<text>Report and log</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_log.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_sync.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Help</text>
+			<url>/e2guardian/e2guardian_about.php</url>
+		</tab>
+	</tabs>
+	<fields>
+	<field>
+			<fieldname>exceptioniplist</fieldname>
+			<fielddescr>Exception Ip List</fielddescr>
+			<description><![CDATA[Include ip addresses and or ip addresses/netmask of computers from which web access should not be filtered.<br>
+								  Leave empty to load e2guardian defaults.<br>This list does not works with DenyAll group mode.]]></description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>11</rows>
+			<encoding>base64</encoding>
+	</field>
+	<field>
+			<fieldname>bannediplist</fieldname>
+			<fielddescr>Banned Ip List</fielddescr>
+			<description><![CDATA[Include ip addresses and or ip addresses/netmask of computers from which web access should be Denied.<br>
+								  Leave empty to load e2guardian defaults.]]></description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>11</rows>
+			<encoding>base64</encoding>
+	</field>
+		
