@@ -24,6 +24,7 @@ require_once("globals.inc");
 require_once("interfaces.inc");
 require_once("notices.inc");
 require_once("pkg-utils.inc");
+require_once("pfsense-utils.inc");
 require_once("services.inc");
 require_once("util.inc");
 require_once("filter.inc");
@@ -44,29 +45,13 @@ $pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 define('E2GUARDIAN_DIR', '/usr/local');
 
 if ($_POST['clear_cert_cache'] == 'clear_cert_cache') {
-    //clear MITM cert cache data
-    $tc_dir = "/usr/local/etc/e2guardian/ssl/generatedcerts";
-    if (e2g_delTree($tc_dir)) {
-        mkdir ($tc_dir, "0755", true);
-        mwexec_bg("/usr/local/sbin/e2guardian -Q");
-        clear_subsystem_dirty('e2guardian');
-    }
+	//clear MITM cert cache data
+	$tc_dir = "/usr/local/etc/e2guardian/ssl/generatedcerts";
+	@rmdir_recursive($tc_dir);
+	mkdir ($tc_dir, "0755", true);
+	mwexec_bg("/usr/local/sbin/e2guardian -Q");
+	clear_subsystem_dirty('e2guardian');
 }
-
-function e2g_delTree($dir) {
-    //at least two slashes, two dirs and 10 char long
-    if(preg_match("@/\w+/\w+@", $dir) && strlen($dir) > 10) {
-        $files = array_diff(scandir($dir), array('.', '..'));
-        
-        foreach ($files as $file) {
-            (is_dir("$dir/$file")) ? e2g_delTree("$dir/$file") : unlink("$dir/$file");
-        }
-        
-        return rmdir($dir);
-    } else {
-        return false;
-    }
-} 
 
 function e2_text_area_decode($text) {
 	return preg_replace('/\r\n/', "\n", base64_decode($text));
