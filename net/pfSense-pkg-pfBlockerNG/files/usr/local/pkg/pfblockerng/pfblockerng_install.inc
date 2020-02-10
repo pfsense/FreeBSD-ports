@@ -31,7 +31,7 @@ pfb_global();
 $g['pfblockerng_install'] = true;
 
 // MaxMind Database is no longer pre-installed during package installation
-update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will require to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
+update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
 
 if (!file_exists('/usr/local/pkg/pfblockerng/pfblockerng_TopSpammers.xml')) {
 

@@ -1,5 +1,6 @@
 pkg/nrpe.xml
 pkg/nrpe.inc
+libexec/nagios/check_carp_freebsd.sh
 /etc/inc/priv/nrpe.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
