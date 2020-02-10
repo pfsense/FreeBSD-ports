@@ -36,7 +36,7 @@ while (!feof($logline)) {
 		// Apply date format
 		$fields[0] = date("d.m.Y H:i:s", $fields[0]);
 		foreach ($fields as $field) {
-			// Write the Squid log line with human readable date/time
+			// Write Squid log line with human readable date/time
 			echo "{$field} ";
 		}
 		echo "\n";

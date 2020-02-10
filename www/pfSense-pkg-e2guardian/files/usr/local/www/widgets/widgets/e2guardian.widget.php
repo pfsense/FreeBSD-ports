@@ -28,16 +28,17 @@ require_once("pkg-utils.inc");
 require_once("service-utils.inc");
 
 function e2g_open_table($thead=""){
-	echo "<table border=1 class='table table-striped table-hover table-condensed'>\n";
+	echo "<table border=1 class='table table-striped table-hover " .
+	    "table-condensed'>\n";
 	echo "<thead><tr>".$thead."</tr></thread>";
-        echo "<tbody>\n";
+	echo "<tbody>\n";
 }
 
 function e2g_open_table_header(){
 	global $dbc;
 	//$h="<th style='text-align:center;'>Date</th>"; //print"<tr>";
-        foreach ($dbc as $c){
-        	$h .= "<th style='text-align:center;'>".ucfirst($c)."</th>";
+	foreach ($dbc as $c){
+		$h .= "<th style='text-align:center;'>".ucfirst($c)."</th>";
 	}
 	e2g_open_table($h);
 }
@@ -53,10 +54,11 @@ function e2guardian_show_dstats($count = 5) {
 		print "<tr>\n";
 		$dstat = preg_replace("/\s+/"," ",$dstats[$d]);
 		$fields = explode(" ",$dstat);
-		//$fields[0] = date('r', $fields[0]);
-		print "<th style='text-align:right;'><a>" . date('H:i',$fields[0]) . "</a></th>\n";
+		print "<th style='text-align:right;'><a>" .
+		    date('H:i',$fields[0]) . "</a></th>\n";
 		for ($i = 2; $i < 11; $i++) {
-			print "<th style='text-align:right;'><a>" . number_format($fields[$i],0,"",".") . "</a></th>\n";
+			print "<th style='text-align:right;'><a>" .
+			    number_format($fields[$i],0,"",".") . "</a></th>\n";
 		}
 		print "</tr>\n";
 	}
@@ -71,7 +73,8 @@ global $config;
 
 $size = $config['installedpackages']['e2guardian']['config'][0]['widget_count'];
 
-$dbc = array('time','busy','httpwQ','logQ','conx','conx/s','reqs','reqs/s','maxfd','LCcnt');
+$dbc = array('time','busy','httpwQ','logQ','conx','conx/s','reqs','reqs/s',
+    'maxfd','LCcnt');
 $curr_time = time();
 e2g_open_table_header();
 e2guardian_show_dstats();
@@ -80,9 +83,10 @@ echo"  </tr>";
 echo"</table></div>";
 
 ?>
+<!-- XXX Is this jquery version available??? -->
 <script src="/vendor/jquery/jquery-1.12.0.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-   function getstatus_e2guardian() {
+function getstatus_e2guardian() {
 	var url = "/widgets/widgets/e2guardian.widget.php";
 	jQuery.ajax(url,
 		{
@@ -94,10 +98,9 @@ echo"</table></div>";
 			$('#e2guardian').html(ret);
 		}
 	});
-    }
+}
 
-	$(document).ready(function() {
-		setTimeout(getstatus_e2guardian,20000);
-	});
-
+$(document).ready(function() {
+	setTimeout(getstatus_e2guardian,20000);
+});
 </script>

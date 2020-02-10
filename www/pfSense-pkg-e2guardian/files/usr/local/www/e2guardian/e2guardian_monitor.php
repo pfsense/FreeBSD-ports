@@ -36,26 +36,39 @@ if ($savemsg) {
 }
 
 $tab_array = array();
-	$tab_array[] = array(gettext("Daemon"), false, "/pkg_edit.php?xml=e2guardian.xml");
-	$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=e2guardian/e2guardian_config.xml");
-	$tab_array[] = array(gettext("Limits"), false, "/pkg_edit.php?xml=e2guardian/e2guardian_limits.xml");
-	$tab_array[] = array(gettext("Blacklist"), false, "/pkg_edit.php?xml=e2guardian/e2guardian_blacklist.xml");
-	$tab_array[] = array(gettext("ACLs"), false, "/pkg.php?xml=e2guardian/e2guardian_site_acl.xml");
-	$tab_array[] = array(gettext("LDAP"), false, "/pkg.php?xml=e2guardian/e2guardian_ldap.xml");
-	$tab_array[] = array(gettext("Groups"), false, "/pkg.php?xml=e2guardian/e2guardian_groups.xml");
-	$tab_array[] = array(gettext("Users"), false, "/pkg_edit.php?xml=e2guardian/e2guardian_users.xml");
-	$tab_array[] = array(gettext("IPs"), false, "/pkg_edit.php?xml=e2guardian/e2guardian_ips.xml");
-	$tab_array[] = array(gettext("Real Time"), true, "/e2guardian/e2guardian_monitor.php");
-	$tab_array[] = array(gettext("Report and log"), false, "/pkg_edit.php?xml=e2guardian/e2guardian_log.xml");
-	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=e2guardian/e2guardian_sync.xml");
-	$tab_array[] = array(gettext("Help"), false, "/e2guardian/e2guardian_about.php");
+$tab_array[] = array(gettext("Daemon"), false,
+    "/pkg_edit.php?xml=e2guardian.xml");
+$tab_array[] = array(gettext("General"), false,
+    "/pkg_edit.php?xml=e2guardian/e2guardian_config.xml");
+$tab_array[] = array(gettext("Limits"), false,
+    "/pkg_edit.php?xml=e2guardian/e2guardian_limits.xml");
+$tab_array[] = array(gettext("Blacklist"), false,
+    "/pkg_edit.php?xml=e2guardian/e2guardian_blacklist.xml");
+$tab_array[] = array(gettext("ACLs"), false,
+    "/pkg.php?xml=e2guardian/e2guardian_site_acl.xml");
+$tab_array[] = array(gettext("LDAP"), false,
+    "/pkg.php?xml=e2guardian/e2guardian_ldap.xml");
+$tab_array[] = array(gettext("Groups"), false,
+    "/pkg.php?xml=e2guardian/e2guardian_groups.xml");
+$tab_array[] = array(gettext("Users"), false,
+    "/pkg_edit.php?xml=e2guardian/e2guardian_users.xml");
+$tab_array[] = array(gettext("IPs"), false,
+    "/pkg_edit.php?xml=e2guardian/e2guardian_ips.xml");
+$tab_array[] = array(gettext("Real Time"), true,
+    "/e2guardian/e2guardian_monitor.php");
+$tab_array[] = array(gettext("Report and log"), false,
+    "/pkg_edit.php?xml=e2guardian/e2guardian_log.xml");
+$tab_array[] = array(gettext("Sync"), false,
+    "/pkg_edit.php?xml=e2guardian/e2guardian_sync.xml");
+$tab_array[] = array(gettext("Help"), false,
+    "/e2guardian/e2guardian_about.php");
 
 display_top_tabs($tab_array);
 
 if (is_array($config['installedpackages']['e2guardianlog'])) {
-        $e2glog = $config['installedpackages']['e2guardianlog']['config'][0];
+	$e2glog = $config['installedpackages']['e2guardianlog']['config'][0];
 } else {
-        $e2glog = array();
+	$e2glog = array();
 }
 
 ?>
@@ -85,7 +98,7 @@ if (is_array($config['installedpackages']['e2guardianlog'])) {
 						</span>
 					</td>
 				</tr>
-                <tr>
+				<tr>
 					<td width="22%" valign="top" class="vncellreq">Update Interval:</td>
 					<td width="78%" class="vtable">
 						<select name="interval" id="interval">
@@ -102,21 +115,25 @@ if (is_array($config['installedpackages']['e2guardianlog'])) {
 						</span>
 					</td>
 				</tr>
-				<?php if($e2glog['logfileformat'] == 1 || $e2glog['logfileformat'] == 4 || $e2glog['logdeniedcgi'] == "on") {?>
+<?php
+			if ($e2glog['logfileformat'] == 1 || $e2glog['logfileformat'] == 4 || $e2glog['logdeniedcgi'] == "on") :
+?>
 				<tr>
-				<td width="22%" valign="top" class="vncellreq">Erro to show:</td>
-                                        <td width="78%" class="vtable">
-                                                <select name="error" id="error">
-                                                        <option value="reason">Reason</option>
-                                                        <option value="detailed" selected="selected">Detailed info</option>
-                                                </select>
-                                                <br/>
-                                                <span class="vexpl">
-                                                        <?=gettext("Select denied info to show while using logs in E2g format.")?>
-                                                </span>
-                                        </td>
+					<td width="22%" valign="top" class="vncellreq">Erro to show:</td>
+					<td width="78%" class="vtable">
+						<select name="error" id="error">
+							<option value="reason">Reason</option>
+							<option value="detailed" selected="selected">Detailed info</option>
+						</select>
+						<br/>
+						<span class="vexpl">
+							<?=gettext("Select denied info to show while using logs in E2g format.")?>
+						</span>
+					</td>
 				</tr>
-				<?php }?>
+<?php
+			endif;
+?>
 				<tr>
 					<td width="22%" valign="top" class="vncellreq">String filter:</td>
 					<td width="78%" class="vtable">
@@ -144,13 +161,12 @@ if (is_array($config['installedpackages']['e2guardianlog'])) {
 			</form>
 		</div>
 	</div>
-	</div>
-	</div>
-	<div class="panel panel-default" style='margin:0 auto;width:97%'> 
-	<div class="panel-heading"><h2 class="panel-title"><?=gettext("E2guardian Access Table"); ?></h2></div>
+</div>
+<div class="panel panel-default" style='margin:0 auto;width:97%'> 
+<div class="panel-heading"><h2 class="panel-title"><?=gettext("E2guardian Access Table"); ?></h2></div>
 	<div class="panel-body">
 		<div class="">
-			<table class="table table-responsive table-striped table-hover table-condensed"
+			<table class="table table-responsive table-striped table-hover table-condensed">
 				<tbody>
 				<tr><td>
 					<table class="table" xclaxss="tabcont" width="100%" border="0" cellspacing="2" cellpadding="0">
@@ -165,31 +181,32 @@ if (is_array($config['installedpackages']['e2guardianlog'])) {
 			</table>
 		</div>
 	</div>
+</div>
+<br />
+<?php
+if($e2glog['logfileformat'] == 3 && $e2glog['logdeniedcgi'] == "on") :
+?>
+<div class="panel panel-default" style='margin:0 auto;width:97%'>
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Detailed denied log"); ?></h2></div>
+	<div class="panel-body">
+		<div class="">
+			<table class="table table-responsive table-striped table-hover table-condensed">
+				<tbody>
+				<tr><td>
+					<table class="table" xclaxss="tabcont" width="100%" border="0" cellspacing="2" cellpadding="0">
+						<thead id="e2gerrorhead"><tr></tr></thead>
+						<tbody id="e2gerror"><tr><td></td></tr></tbody>
+					</table>
+				</td></tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<BR>
-	<?php if($e2glog['logfileformat'] == 3 && $e2glog['logdeniedcgi'] == "on") {?>	
-        <div class="panel panel-default" style='margin:0 auto;width:97%'>
-        <div class="panel-heading"><h2 class="panel-title"><?=gettext("Detailed denied log"); ?></h2></div>
-        <div class="panel-body">
-                <div class="">
-                        <table class="table table-responsive table-striped table-hover table-condensed"
-                                <tbody>
-                                <tr><td>
-                                        <table class="table" xclaxss="tabcont" width="100%" border="0" cellspacing="2" cellpadding="0">
-                                                <thead id="e2gerrorhead"><tr>
-                                                </tr></thead>
-                                                <tbody id="e2gerror">
-                                                <tr><td></td></tr>
-                                                </tbody>
-                                        </table>
-                                </td></tr>
-                                </tbody>
-                        </table>
-                </div>
-        </div>
-        </div>
-        <BR>
-	<?php } ?>
+</div>
+<br />
+<?php
+endif;
+?>
 
 <!-- Function to call programs logs -->
 <script type="text/javascript">
@@ -216,7 +233,7 @@ function showLog(content, url, program) {
 
 function updateAllLogs() {
 	showLog('e2gView', 'e2guardian_monitor_data.php', 'access');
-    showLog('e2gerror', 'e2guardian_monitor_data.php', 'e2gerror');
+	showLog('e2gerror', 'e2guardian_monitor_data.php', 'e2gerror');
 	document.timeoutVal = $('#interval').val();
 	setTimeout(updateAllLogs, document.timeoutVal);
 }
@@ -227,6 +244,5 @@ events.push(function() {
 });
 //]]>
 </script>
+
 <?php include("foot.inc"); ?>
-
-
