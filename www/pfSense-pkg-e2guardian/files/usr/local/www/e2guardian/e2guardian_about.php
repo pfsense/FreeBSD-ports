@@ -5,6 +5,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2017 Marcello Coutinho
+ * Copyright (c) 2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
