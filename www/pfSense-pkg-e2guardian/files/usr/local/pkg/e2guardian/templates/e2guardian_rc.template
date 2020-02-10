@@ -20,8 +20,9 @@ sysctl kern.maxfilesperproc=104856
 sysctl kern.threads.max_threads_per_proc=20480
 
 if [ -f /var/run/e2guardian.dirty ]; then
-   rm -f /var/run/e2guardian.dirty
+	rm -f /var/run/e2guardian.dirty
 fi
+
 e2guardian_enable=${e2guardian_enable:-"YES"}
 e2guardian_pidfile=${e2guardian_pidfile:-"/var/run/e2guardian.pid"}
 
@@ -35,19 +36,4 @@ load_rc_config $name
 
 pidfile="${e2guardian_pidfile}"
 
-#hack to get e2guardian working on 2.3.x
-if [ -f /usr/local/sbin/libc.so.7 ];then
-	cp /usr/local/sbin/libc.so.7 /usr/local/lib
-fi
-
-if [ ! -x $command ];then
-        /bin/chmod +x $command
-fi
-
 run_rc_command "$1"
-
-#hack to get e2guardian working on 2.3.x
-if [ -f /usr/local/lib/libc.so.7 ];then
-	sleep 3
-	rm -f /usr/local/lib/libc.so.7
-fi
