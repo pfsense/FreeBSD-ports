@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+		<![CDATA[
+/* $Id$ */
+/*
+ * e2guardian_config.xml
+ *
+ * part of Unofficial packages for pfSense(R) softwate
+ * Copyright (c) 2015-2017 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+		]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>e2guardianconfig</name>
+	<version>1.0</version>
+	<title>Services: E2guardian</title>
+	<include_file>/usr/local/pkg/e2guardian/e2guardian.inc</include_file>
+	<tabs>
+		<tab>
+			<text>Daemon</text>
+			<url>/pkg_edit.php?xml=e2guardian.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_config.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Limits</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_limits.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Blacklist</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_blacklist.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg.php?xml=e2guardian/e2guardian_site_acl.xml</url>
+		</tab>
+		<tab>
+			<text>LDAP</text>
+			<url>/pkg.php?xml=e2guardian/e2guardian_ldap.xml</url>
+		</tab>
+		<tab>
+			<text>Groups</text>
+			<url>/pkg.php?xml=e2guardian/e2guardian_groups.xml</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_users.xml</url>
+		</tab>
+		<tab>
+			<text>IPs</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_ips.xml</url>
+ 		</tab>
+                <tab>
+                        <text>Real Time</text>
+			<url>/e2guardian/e2guardian_monitor.php</url>
+                </tab>
+		<tab>
+			<text>Report and log</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_log.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=e2guardian/e2guardian_sync.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Help</text>
+			<url>/e2guardian/e2guardian_about.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Config Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Auth Plugins</fielddescr>
+			<fieldname>auth_plugin</fieldname>
+			<description><![CDATA[This option handles the extraction of client usernames from various sources, such as Proxy-Authorisation headers and ident servers,
+				enabling requests to be handled according to the settings of the user's filter group.<br>
+				Use CTRL + click for multiple select.<br>
+				<strong>Note:</strong>E2guardian supports different authentication on different ports but
+				 Current package configuration forces multiport to off.]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Proxy-Basic</name><value>proxy-basic.conf</value></option>
+				<option><name>Proxy-Digest</name><value>proxy-digest.conf</value></option>
+				<option><name>Proxy-Ntlm</name><value>proxy-ntlm.conf</value></option>
+				<option><name>Ident</name><value>ident.conf</value></option>
+				<option><name>Ip Address</name><value>ip.conf</value></option>
+				<option><name>Proxy-Header</name><value>proxy-header.conf</value></option>
+				<option><name>DNS</name><value>dnsauth.conf</value></option>
+				<option><name>none</name><value>none</value></option>
+			</options>
+			<multiple/>
+			<size>8</size>
+		</field>
+		<field>
+			<fielddescr>Scan Options</fielddescr>
+			<fieldname>scan_options</fieldname>
+			<description><![CDATA[Scan options. Default values are in ( )<br>
+				Use CTRL + click for multiple select.]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Scan clean cache (on)</name><value>scancleancache</value></option>
+				<option><name>Hex decode content (off)</name><value>hexdecodecontent</value></option>
+				<option><name>Force quick search (off)</name><value>forcequicksearch</value></option>
+				<option><name>Reverse address lookups (off)</name><value>reverseaddresslookups</value></option>
+				<option><name>Reverse client ip lookups (off)</name><value>reverseclientiplookups</value></option>
+				<option><name>Log client hostnames (off)</name><value>logclienthostnames</value></option>
+				<option><name>Create list cache files (on)</name><value>createlistcachefiles</value></option>
+				<option><name>Prefer cached lists (off)</name><value>prefercachedlists</value></option>
+				<option><name>deletedownloadedtempfiles (on)</name><value>deletedownloadedtempfiles</value></option>
+			</options>
+			<multiple/>
+			<size>10</size>
+		</field>
+ 		<field>
+                        <fielddescr>Filter Mode</fielddescr>
+                        <fieldname>filtermode</fieldname>
+                        <description><![CDATA[ This option determines whether clients have their web access unfiltered, filtered, or banned.<br>
+                                This mechanism replaces the "banneduserlist" and "exceptionuserlist"]]></description>
+                        <type>select</type>
+                        <options>
+                                <option><name>Filtered (default)</name><value>1</value></option>
+                                <option><name>unfiltered (exception)</name><value>2</value></option>
+                                <option><name>banned</name><value>0</value></option>
+                        </options>
+                </field>
+		<field>
+			<fielddescr>Weighted phrase mode</fielddescr>
+			<fieldname>weightedphrasemode</fieldname>
+			<description><![CDATA[Default option for Weighted phrase mode on group configuration.<br>
+				IMPORTANT: Note that setting this to "0" turns off all features which extract phrases from page content,
+				including banned & exception phrases (not just weighted), search term filtering, and scanning for links to banned URLs.]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Singular = each weighted phrase found only counts once on a page. (default)</name><value>2</value></option>
+				<option><name>Normal = normal weighted phrase operation.</name><value>1</value></option>
+				<option><name>Off = do not use the weighted phrase feature.</name><value>0</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Lower casing options</fielddescr>
+			<fieldname>preservecase</fieldname>
+			<description><![CDATA[When a document is scanned the uppercase letters are converted to lower case in order to compare them with the phrases.<br>
+				However this can break Big5 and other 16-bit texts.  If needed preserve the case.]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Force lower case (default)</name><value>0</value></option>
+				<option><name>Do not change case</name><value>1</value></option>
+				<option><name>Scan first in lower case, then in original case</name><value>2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Phrase filter mode</fielddescr>
+			<fieldname>phrasefiltermode</fieldname>
+			<description><![CDATA[Smart, Raw and Meta/Title phrase content filtering options<br>
+				Smart is where the multiple spaces and HTML are removed before phrase filtering<br>
+				Raw is where the raw HTML including meta tags are phrase filtered<br>
+				Meta/Title is where only meta and title tags are phrase filtered (v. quick)<br>
+				CPU usage can be effectively halved by using setting 0 or 1 compared to 2]]></description>
+			<type>select</type>
+			<options>
+				<option><name>use both (default)</name><value>2</value></option>
+				<option><name>meta/title</name><value>3</value></option>
+				<option><name>smart only</name><value>1</value></option>
+				<option><name>raw only</name><value>0</value></option>
+			</options>
+		</field>
+			<field>
+			<fielddescr>Url cache number</fielddescr>
+			<fieldname>urlcachenumber</fieldname>
+			<type>input</type>
+			<size>10</size>
+			<description><![CDATA[Positive (clean) result caching for URLs Caches good pages so they don't need to be scanned again.It also works with AV plugins.<br>
+				0 = off (recommended for ISPs with users with dissimilar browsing)<br>
+				<strong>1000 = recommended for most user</strong><br>
+				5000 = suggested max upper limit<br>
+				If you're using an AV plugin then use at least 5000.]]></description>
+		</field>
+		<field>
+			<fielddescr>Url cache age</fielddescr>
+			<fieldname>urlcacheage</fieldname>
+			<type>input</type>
+			<size>10</size>
+			<description><![CDATA[Age before cache are stale and should be ignored in seconds<br>
+				<strong>900 = 15 mins(recommended)</strong><br>
+				0 = never]]></description>
+		</field>
+		<field>
+			<name>Content Scanner</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Content Scanners (antivirus)</fielddescr>
+			<fieldname>content_scanners</fieldname>
+			<description><![CDATA[Content Scanners options. Default values are in ( )]]></description>
+			<type>select</type>
+			<options>
+				<option><name>clamdscan (off)</name><value>/usr/local/etc/e2guardian/contentscanners/clamdscan.conf</value></option>
+				<option><name>icapscan (off)</name><value>/usr/local/etc/e2guardian/contentscanners/icapscan.conf</value></option>
+			</options>
+			<multiple/>
+			<size>3</size>
+		</field>
+		<field>
+			<fielddescr>freshclam frequency</fielddescr>
+			<fieldname>cron</fieldname>
+			<description><![CDATA[Default:<strong>Every day</strong><br>
+				Select how often pfsense will update clamd virus database]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Every day</name><value>day</value></option>
+				<option><name>Every 2 days</name><value>02days</value></option>
+				<option><name>Once a week</name><value>week</value></option>
+				<option><name>Never</name><value>never</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Content scanner timeout</fielddescr>
+			<fieldname>contentscannertimeout</fieldname>
+			<type>input</type>
+			<size>10</size>
+			<description><![CDATA[<strong>Default is 60</strong><br>
+				Some of the content scanners support using a timeout value to stop processing (eg AV scanning) the file if it takes too long.<br>
+				If supported this will be used.<br>
+				The default of 60 seconds is probably reasonable.]]></description>
+		</field>
+		<field>
+			<fielddescr>Content scan exceptions</fielddescr>
+			<fieldname>contentscanexceptions</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[If 'on' exception sites, urls, users etc will be scanned.<br>
+				This is probably not desirable behavour as exceptions are supposed to be trusted and will increase load.<br>
+				Correct use of grey lists are a better idea.]]></description>
+		</field>
+		<field>
+			<fielddescr>ICAP URL</fielddescr>
+			<fieldname>contentscannericapurl</fieldname>
+			<type>input</type>
+			<size>40</size>
+			<description><![CDATA[Enter ICAP URL in <strong>icap://127.0.0.1:1344/squid_clamav</strong> format<br>
+				Use hostname rather than IP address and Always specify the port]]></description>
+		</field>
+		<field>
+			<name>Misc settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Misc Options</fielddescr>
+			<fieldname>misc_options</fieldname>
+			<description><![CDATA[Misc options. Default values are in ( )]]></description>
+			<type>select</type>
+			<options>
+				<option><name>recheckreplacedurls (off)</name><value>recheckreplacedurls</value></option>
+				<option><name>forwardedfor (off)</name><value>forwardedfor</value></option>
+				<option><name>usexforwardedfor (off)</name><value>usexforwardedfor</value></option>
+			</options>
+			<multiple/>
+			<size>4</size>
+		</field>
+     		<field>
+                        <fielddescr>XForwarded for filter ip</fielddescr>
+                        <fieldname>xforwardedforfilterip</fieldname>
+                        <description><![CDATA[Headers can be easily spoofed in order to fake the request origin by setting the X-Forwarded-For header.<br>
+				If you have the  "usexforwardedfor" option enabled, you may want to specify the IPs from which this kind of header is allowed,
+				such as another upstream proxy server for instance If you want authorize multiple IPs, 
+				specify each one on an individual xforwardedforfilterip line.]]></description>
+                        <type>textarea</type>
+                        <cols>25</cols>
+                        <rows>5</rows>
+                        <encoding>base64</encoding>
+                </field>
+	</fields>
+	<custom_php_command_before_form>
+		e2guardian_check_config();
+	</custom_php_command_before_form>
+	<custom_php_install_command>
+		e2guardian_php_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		e2guardian_php_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		e2guardian_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		sync_package_e2guardian();
+	</custom_php_resync_config_command>
+</packagegui>

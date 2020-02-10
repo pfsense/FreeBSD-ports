@@ -1,0 +1,70 @@
+<?php
+
+/*
+ * e2guardian_story.template
+ *
+ * part of Unofficial packages for pfSense(R) softwate
+ * Copyright (c) 2018 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+$dg_story = <<<EOF
+.Include<{$e2_dir}/etc/e2guardian/common.story>
+.Include<{$e2_dir}/etc/e2guardian/site.story>
+
+# Add any altered functions for this filtergroup here
+# They will overwrite library or site level definitions
+
+# To allow unfiltered access to this group
+# uncomment next 4 lines
+#function(checkrequest)
+#if(true) return setexception
+#function(thttps-checkrequest)
+#if(true) return setexception
+
+# To block all access to this group
+# uncomment next 4 lines
+#function(checkrequest)
+#if(true,,105) return setblock
+#function(sslexceptioncheck)
+#function(localsslcheckrequest)
+
+# Note: Blanket blocks are checked after exceptions
+# and can be used to make a 'walled garden' filtergroup
+
+# To create blanket block for http
+# uncomment next line and one condition line.
+#function(checkblanketblock)
+#if(true,,502) return setblock  # = ** total blanket
+#if(siteisip,,505) return setblock  # = *ip ip blanket
+
+# To create blanket block for SSL
+# uncomment next line and one condition line.
+#function(sslcheckblanketblock)
+#if(true,,506) return setblock  # = **s total blanket
+#if(siteisip,,507) return setblock  # = **ips ip blanket
+
+# To limit MITM to sslgreylist
+# replaces onlymitmsslgrey e2guardianf1.conf option
+# uncomment the next 2 lines
+#function(sslcheckmitm)
+#if(true) return sslcheckmitmgreyonly
+
+{$group_type}
+{$blockdownloads}
+{$sslcheckmitmgreyonly}
+
+EOF;
+?>
