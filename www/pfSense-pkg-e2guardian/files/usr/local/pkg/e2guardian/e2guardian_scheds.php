@@ -28,9 +28,6 @@ require_once("pkg-utils.inc");
 require_once("services.inc");
 require_once("util.inc");
 require_once("filter.inc");
-if ($pfs_version == "2.3" ) {
-        require_once("xmlrpc.inc");
-}
 require_once("xmlrpc_client.inc");
 require_once("/usr/local/pkg/e2guardian/e2guardian.inc");
 require_once("service-utils.inc");

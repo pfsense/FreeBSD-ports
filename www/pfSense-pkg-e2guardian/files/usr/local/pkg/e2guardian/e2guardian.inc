@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 require_once("config.inc");
 require_once("functions.inc");
 require_once("globals.inc");
@@ -28,8 +29,6 @@ require_once("pfsense-utils.inc");
 require_once("services.inc");
 require_once("util.inc");
 require_once("filter.inc");
-$pfs_version = substr(trim(file_get_contents("/etc/version")),0,3);
-
 require_once("xmlrpc_client.inc");
 
 if (version_compare(PHP_VERSION, "7.3") < 0 && !function_exists("is_countable")) {
@@ -40,7 +39,6 @@ if (version_compare(PHP_VERSION, "7.3") < 0 && !function_exists("is_countable"))
 
 $shortcut_section = "e2guardian";
 
-$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 
 define('E2GUARDIAN_DIR', '/usr/local');
 
