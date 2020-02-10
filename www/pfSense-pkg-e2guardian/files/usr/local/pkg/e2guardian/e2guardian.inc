@@ -39,9 +39,6 @@ if (version_compare(PHP_VERSION, "7.3") < 0 && !function_exists("is_countable"))
 
 $shortcut_section = "e2guardian";
 
-
-define('E2GUARDIAN_DIR', '/usr/local');
-
 if ($_POST['clear_cert_cache'] == 'clear_cert_cache') {
 	//clear MITM cert cache data
 	$tc_dir = "/usr/local/etc/e2guardian/ssl/generatedcerts";
@@ -426,7 +423,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	if ($e2guardian_config['auth_plugin'] != "") {
 		$auth_plugins = explode(",", $e2guardian_config['auth_plugin']);
 		$authplugin = "";
-		$auth_prefix = E2GUARDIAN_DIR . "/etc/e2guardian/authplugins/";
+		$auth_prefix = "/usr/local/etc/e2guardian/authplugins/";
 		foreach ($auth_plugins as $auth_selected) {
 			if ($auth_selected != "none") {
 				if ($auth_selected == "dnsauth.conf") {
@@ -456,7 +453,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 
 	if ($e2guardian_config['contentscannericapurl'] != "") {
 		include("/usr/local/pkg/e2guardian/templates/icapscan.conf.template");
-		file_put_contents(E2GUARDIAN_DIR . "/etc/e2guardian/contentscanners/icapscan.conf", $icap_conf_file , LOCK_EX);
+		file_put_contents("/usr/local/etc/e2guardian/contentscanners/icapscan.conf", $icap_conf_file , LOCK_EX);
 	}
 	// limits
 	// moved to groups
@@ -482,8 +479,8 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	$reportlanguage = ($e2guardian_log['report_language'] ? $e2guardian_log['report_language'] : "ukenglish");
 	$showweightedfound = (preg_match('/showweightedfound/', $e2guardian_log['report_options']) ? "on" : "off");
 	$usecustombannedflash = (preg_match('/usecustombannedflash/', $e2guardian_log['report_options']) ? "on" : "off");
-	if (file_exists(E2GUARDIAN_DIR . '/share/e2guardian/blockedflash.swf')) {
-		$custombannedflashfile = "custombannedflashfile = '" . E2GUARDIAN_DIR . "/share/e2guardian/blockedflash.swf'";
+	if (file_exists('/usr/local/share/e2guardian/blockedflash.swf')) {
+		$custombannedflashfile = "custombannedflashfile = '/usr/local/share/e2guardian/blockedflash.swf'";
 	}
 	$usecustombannedimage = (preg_match('/usecustombannedimage/', $e2guardian_log['report_options'])? "on" : "off");
 	$nonstandarddelimiter = (preg_match('/nonstandarddelimiter/', $e2guardian_log['report_options'])? "on" : "off");
@@ -545,7 +542,7 @@ $files = array(
 		"/lists/exceptioniplist",
 		"/lists/pics");
 
-	$e2guardian_dir = E2GUARDIAN_DIR . "/etc/e2guardian";
+	$e2guardian_dir = "/usr/local/etc/e2guardian";
 
 	if (file_exists("{$e2guardian_dir}/lists/bannedsitelistwithbypass")) {
 		rename("{$e2guardian_dir}/lists/bannedsitelistwithbypass", "{$e2guardian_dir}/lists/bannedsitewithbypasslist");
@@ -611,7 +608,7 @@ $files = array(
 	$match[1] = "/(\/usr.local)/";
 	$match[2] = "/,/";
 	$replace[0] = "$1'";
-	$replace[1] = "contentscanner = '" . E2GUARDIAN_DIR;
+	$replace[1] = "contentscanner = '/usr/local";
 	$replace[2] = "\n";
 
 	$contentscanners = preg_replace($match, $replace, $e2guardian_config['content_scanners']);
@@ -621,20 +618,20 @@ $files = array(
 	$match[1] = "/\/usr.local/";
 	$match[2] = "/,/";
 	$replace[0] = "$1>\n";
-	$replace[1] = "\n.Include<" . E2GUARDIAN_DIR;
+	$replace[1] = "\n.Include</usr/local";
 	$replace[2] = ">";
 
 	//phrase ACL
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardianphraseacl']['config'])) {
-		$banned_file = file(E2GUARDIAN_DIR . "/etc/e2guardian/lists/bannedphraselist");
+		$banned_file = file("/usr/local/etc/e2guardian/lists/bannedphraselist");
 		foreach ($banned_file as $file_line) {
 			if (preg_match ("/^.Include<(\S+)>/", $file_line, $matches)) {
 				$banned_includes .= $matches[1] . ",";
 			}
 		}
 
-		$weighted_file = file(E2GUARDIAN_DIR . "/etc/e2guardian/lists/weightedphraselist");
+		$weighted_file = file("/usr/local/etc/e2guardian/lists/weightedphraselist");
 		foreach ($weighted_file as $file_line) {
 			if (preg_match ("/^.Include<(\S+)>/", $file_line, $matches)) {
 				$weighted_includes .= $matches[1] . ",";
@@ -1254,8 +1251,8 @@ break;
 		// temp v5 static lists
 		$tlist_dirs = array('contentscanners');
 		foreach ($tlist_dirs as $tlist_dir) {
-			if ( ! is_dir(E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$tlist_dir}")) {
-				mkdir(E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$tlist_dir}",0755);
+			if ( ! is_dir("/usr/local/etc/e2guardian/lists/{$tlist_dir}")) {
+				mkdir("/usr/local/etc/e2guardian/lists/{$tlist_dir}",0755);
 			}
 		}
 		$tlist = array ("nocheckcertsiteiplist",
@@ -1294,11 +1291,11 @@ break;
 			"contentscanners/exceptionvirusextensionlist",
                         "urlredirectregexplist");
 		foreach ($tlist as $tl) {
-			if ( ! file_exists(E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$tl}.g_{$e2guardian_groups['name']}")) {
-				if ( file_exists (E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$tl}.sample")) {
-					copy (E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$tl}.sample", E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$tl}.g_{$e2guardian_groups['name']}");
+			if ( ! file_exists("/usr/local/etc/e2guardian/lists/{$tl}.g_{$e2guardian_groups['name']}")) {
+				if ( file_exists ("/usr/local/etc/e2guardian/lists/{$tl}.sample")) {
+					copy ("/usr/local/etc/e2guardian/lists/{$tl}.sample", "/usr/local/etc/e2guardian/lists/{$tl}.g_{$e2guardian_groups['name']}");
 				} else {
-					file_put_contents(E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$tl}.g_{$e2guardian_groups['name']}","",LOCK_EX);
+					file_put_contents("/usr/local/etc/e2guardian/lists/{$tl}.g_{$e2guardian_groups['name']}","",LOCK_EX);
 				}
 			}
 		}
@@ -1331,7 +1328,7 @@ break;
 						$aclschedule[$dacl][$list_value] == "Always active" ||
 						$e2g_sched_in_use[$aclschedule[$dacl][$list_value]]) {
 						$dacl = (preg_match("/\w+/", $dacl) ? $dacl : "sample");
-						$ft = E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$list_value}list.{$dacl}";
+						$ft = "/usr/local/etc/e2guardian/lists/{$list_value}list.{$dacl}";
 						if (file_exists($ft)) {
 							$file_temp = file_get_contents($ft) . "\n";
 						}
@@ -1347,13 +1344,13 @@ break;
                 array_unshift($save_array, "#Do not edit this file.", "#It's created by e2guardian package and overwritten every config save.");
 	
 				//save group file and unset array
-				//file_put_contents(E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$list_value}list.g_{$e2guardian_groups['name']}", implode("\n", array_unique(${$list_value})) . "\n", LOCK_EX);
-				file_put_contents(E2GUARDIAN_DIR . "/etc/e2guardian/lists/{$list_value}list.g_{$e2guardian_groups['name']}", implode("\n",$save_array) . "\n", LOCK_EX);
+				//file_put_contents("/usr/local/etc/e2guardian/lists/{$list_value}list.g_{$e2guardian_groups['name']}", implode("\n", array_unique(${$list_value})) . "\n", LOCK_EX);
+				file_put_contents("/usr/local/etc/e2guardian/lists/{$list_value}list.g_{$e2guardian_groups['name']}", implode("\n",$save_array) . "\n", LOCK_EX);
 				unset(${$list_value});
 			}
 		}
 
-		$e2_dir = E2GUARDIAN_DIR;
+		$e2_dir = '/usr/local';
 		
 		//remove localchecks from common.story
 		$c_story_file = "/usr/local/etc/e2guardian/common.story";
@@ -1489,7 +1486,7 @@ EOF;
 		extract_black_list();
 	}
 	//get clamav user
-	$cconf = E2GUARDIAN_DIR . "/etc/clamd.conf";
+	$cconf = "/usr/local/etc/clamd.conf";
 	$cconf_file = file_get_contents($cconf);
 	if (preg_match("/User (\w+)/", $cconf_file, $matches)) {
 		mwexec("/usr/sbin/pw user show {$matches[1]} || /usr/sbin/pw user add -n {$matches[1]} -s /usr/sbin/nologin");
@@ -1568,7 +1565,7 @@ EOF;
 		e2g_check_cron($cron_cmd, "remove");
 	}
 
-	$cron_cmd = E2GUARDIAN_DIR . "/bin/freshclam";
+	$cron_cmd = "/usr/local/bin/freshclam";
 	$cron_field= array('day' => '*' , '02days' => '*/2', 'week' => '*/7');
 	if ($e2guardian_config['cron'] && preg_match("/clamd/", $e2guardian_config['content_scanners'])) {
 		e2g_check_cron($cron_cmd, "create", "0", "0", $cron_field[$e2guardian_config['cron']]);
@@ -1603,7 +1600,7 @@ EOF;
 	write_config();
 
 	$dirs = array(
-		E2GUARDIAN_DIR . '/etc/e2guardian/lists/bannedrooms/',
+		'/usr/local/etc/e2guardian/lists/bannedrooms/',
 		'/var/log/e2guardian');
 
 	foreach ($dirs as $dir) {
@@ -1613,14 +1610,14 @@ EOF;
 	}
 
 	//update file owner
-	mwexec("chown -R $daemonuser:$daemongroup " . E2GUARDIAN_DIR . "/etc/e2guardian");
+	mwexec("chown -R $daemonuser:$daemongroup " . "/usr/local/etc/e2guardian");
 	mwexec("chown -R $daemonuser:$daemongroup /var/log/e2guardian");
 
 	//create config files
 	file_put_contents($e2guardian_dir . "/e2guardian.conf", $dg, LOCK_EX);
 
 	//check virus_scanner options
-	$libexec_dir = E2GUARDIAN_DIR . "/libexec/e2guardian/";
+	$libexec_dir = "/usr/local/libexec/e2guardian/";
 	if ($install_process == true) {
 		update_output_window("Skipping clamav check during package install.");
 	}
@@ -1628,17 +1625,17 @@ EOF;
 		if (!(file_exists('/var/db/clamav/main.cvd') || file_exists('/var/db/clamav/main.cld'))) {
 			file_notice("E2guardian",$error,"E2guardian - " . gettext("No antivirus database found for clamav, running freshclam in background."), "");
 			log_error('No antivirus database found for clamav, running freshclam in background. Content-scanner may not work until freshclam finishes.');
-			mwexec_bg(E2GUARDIAN_DIR . '/bin/freshclam && /usr/local/etc/rc.d/clamav-clamd');
+			mwexec_bg('/usr/local/bin/freshclam && /usr/local/etc/rc.d/clamav-clamd');
 		}
 		//clamdscan.conf e2guardian file
-		$cconf = E2GUARDIAN_DIR . "/etc/e2guardian/contentscanners/clamdscan.conf";
+		$cconf = "/usr/local/etc/e2guardian/contentscanners/clamdscan.conf";
 		$cconf_file = file_get_contents($cconf);
 		if (preg_match('/#clamdudsfile/', $cconf_file)) {
 			$cconf_file = preg_replace('/#clamdudsfile/', 'clamdudsfile', $cconf_file);
 			file_put_contents($cconf, $cconf_file, LOCK_EX);
 		}
 		//clamd conf file
-		$cconf = E2GUARDIAN_DIR . "/etc/clamd.conf";
+		$cconf = "/usr/local/etc/clamd.conf";
 		$cconf_file = file_get_contents($cconf);
 		if (preg_match("/User (\w+)/", $cconf_file, $matches)) {
 			#clamd script file
@@ -1648,7 +1645,7 @@ EOF;
 			$cpreg_m[0] = "@NO@";
 			$cpreg_m[1] = "@/usr/local@";
 			$cpreg_r[0] = "YES";
-			$cpreg_r[1] = E2GUARDIAN_DIR;
+			$cpreg_r[1] = '/usr/local';
 			foreach ($script_file as $script_line) {
 				if (preg_match("/command=/", $script_line)) {
 					$new_clamav_startup .= 'if [ ! -d /var/run/clamav ];then /bin/mkdir /var/run/clamav;fi' . "\n";
@@ -1797,8 +1794,8 @@ function e2guardian_start($via_rpc = "no", $install_process = false, $force_star
 			chmod ($script, 444);
 		}
 	}
-	if (!file_exists(E2GUARDIAN_DIR . '/etc/e2guardian/lists/phraselists/pornography/weighted_russian_utf8')) {
-		file_put_contents(E2GUARDIAN_DIR . '/etc/e2guardian/lists/phraselists/pornography/weighted_russian_utf8', "", LOCK_EX);
+	if (!file_exists('/usr/local/etc/e2guardian/lists/phraselists/pornography/weighted_russian_utf8')) {
+		file_put_contents('/usr/local/etc/e2guardian/lists/phraselists/pornography/weighted_russian_utf8', "", LOCK_EX);
 	}
 
 	//check ca certs hashes
@@ -2060,7 +2057,7 @@ function e2guardian_php_deinstall_command() {
 	echo "Removing package crons...\n";
 	$crons = array("/bin/sh /usr/local/bin/e2g_watchdog.sh", //robotman3000 - Leave this until the branch to the v5 gui
 			"/usr/local/bin/php -q /usr/local/pkg/e2guardian/e2guardian_scheds.php",
-			E2GUARDIAN_DIR . "/bin/freshclam",
+			"/usr/local/bin/freshclam",
 			"/usr/local/bin/php /usr/local/pkg/e2guardian/e2guardian.php fetch_blacklist",
 			"/usr/local/bin/php /usr/local/pkg/e2guardian/e2guardian_ldap.php",
 			"/usr/local/bin/php -q /usr/local/pkg/e2guardian/e2guardian_logrotate.php");
