@@ -95,13 +95,13 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/e2guardian
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/e2guardian/e2guardian_monitor_data.php \
 		${STAGEDIR}${PREFIX}/pkg/e2guardian
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/e2guardian/e2guardian_ldap.php \
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/e2guardian/e2guardian_ldap.php \
 		${STAGEDIR}${PREFIX}/pkg/e2guardian
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/e2guardian/e2guardian_log_parser.php \
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/e2guardian/e2guardian_log_parser.php \
 		${STAGEDIR}${PREFIX}/pkg/e2guardian
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/e2guardian/e2guardian_scheds.php \
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/e2guardian/e2guardian_scheds.php \
 		${STAGEDIR}${PREFIX}/pkg/e2guardian
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/e2guardian/e2guardian_logrotate.php \
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/e2guardian/e2guardian_logrotate.php \
 		${STAGEDIR}${PREFIX}/pkg/e2guardian
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/e2guardian/e2guardian_about.php \
 		${STAGEDIR}${PREFIX}/www/e2guardian
