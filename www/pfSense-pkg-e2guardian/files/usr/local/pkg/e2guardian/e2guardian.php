@@ -36,7 +36,7 @@ require_once("/etc/inc/util.inc");
 require_once("/etc/inc/functions.inc");
 require_once("/etc/inc/pkg-utils.inc");
 require_once("/etc/inc/globals.inc");
-require_once("/usr/local/pkg/e2guardian.inc");
+require_once("/usr/local/pkg/e2guardian/e2guardian.inc");
 
 function fetch_blacklist($log_notice = true, $install_process = false) {
 	global $config, $g;

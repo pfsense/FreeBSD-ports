@@ -163,7 +163,7 @@ if (is_array($config['installedpackages']['e2guardiangroups']['config'])) {
 if ($apply_config > 0) {
 	print "User list from LDAP is different from current group, applying new configuration...";
 	write_config();
-	include("/usr/local/pkg/e2guardian.inc");
+	include("/usr/local/pkg/e2guardian/e2guardian.inc");
 	sync_package_e2guardian();
 	e2guardian_start();
 	print "done\n";
