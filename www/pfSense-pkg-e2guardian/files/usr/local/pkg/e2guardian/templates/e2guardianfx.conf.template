@@ -1,0 +1,551 @@
+<?php
+/*
+ * e2guardianfx.conf.template
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2017 Marcello Coutinho
+ * Copyright (c) 2020 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+$dgf = <<<EOF
+# e2guardian filter group config file for version 5.0.1
+
+# This file is re-read on gentle restart and any changes actioned
+
+# Filter group mode IS NOT LONGER SUPPORTED after 4.x
+# Unauthenticated users are treated as being in the first filter group.
+# groupmode = 1 #DISABLED
+
+# Filter group name
+# Used to fill in the -FILTERGROUP- placeholder in the HTML template file, and to
+# name the group in the access logs
+# Defaults to empty string
+#groupname = ''
+groupname = '{$e2guardian_groups['name']}'
+
+# Much logic has moved to storyboard files
+storyboard = '{$e2_dir}/etc/e2guardian/g_{$e2guardian_groups['name']}.story'
+
+# Enable legacy (DG) ssl logic
+# 
+# The following option is replaced by storyboard logic
+# ssllegacylogic = off
+
+# Content filtering files location
+bannedphraselist = '{$e2_dir}/etc/e2guardian/lists/bannedphraselist.g_{$e2guardian_groups['name']}'
+weightedphraselist = '{$e2_dir}/etc/e2guardian/lists/weightedphraselist.g_{$e2guardian_groups['name']}'
+exceptionphraselist = '{$e2_dir}/etc/e2guardian/lists/exceptionphraselist.g_{$e2guardian_groups['name']}'
+
+### NOTE - New format for all other list definition in v5.0 
+
+#banned lists
+#banned lists
+sitelist = 'name=banned,messageno=500,path={$e2_dir}/etc/e2guardian/lists/bannedsitelist.g_{$e2guardian_groups['name']}'
+ipsitelist = 'name=banned,messageno=510,path={$e2_dir}/etc/e2guardian/lists/bannedsiteiplist.g_{$e2guardian_groups['name']}'
+urllist = 'name=banned,messageno=501,path={$e2_dir}/etc/e2guardian/lists/bannedurllist.g_{$e2guardian_groups['name']}'
+regexpboollist = 'name=banned,messageno=503,path={$e2_dir}/etc/e2guardian/lists/bannedregexpurllist.g_{$e2guardian_groups['name']}'
+regexpboollist = 'name=banneduseragent,messageno=522,path={$e2_dir}/etc/e2guardian/lists/bannedregexpuseragentlist.g_{$e2guardian_groups['name']}'
+
+sitelist = 'name=bannedssl,messageno=520,path={$e2_dir}/etc/e2guardian/lists/bannedsslsitelist.g_{$e2guardian_groups['name']}'
+ipsitelist = 'name=bannedssl,messageno=520,path={$e2_dir}/etc/e2guardian/lists/bannedsslsiteiplist.g_{$e2guardian_groups['name']}'
+
+#grey (i.e. content check) lists
+sitelist = 'name=grey,path={$e2_dir}/etc/e2guardian/lists/greysitelist.g_{$e2guardian_groups['name']}'
+ipsitelist = 'name=grey,path={$e2_dir}/etc/e2guardian/lists/greysiteiplist.g_{$e2guardian_groups['name']}'
+urllist = 'name=grey,path={$e2_dir}/etc/e2guardian/lists/greyurllist.g_{$e2guardian_groups['name']}'
+sitelist = 'name=greyssl,path={$e2_dir}/etc/e2guardian/lists/greysslsitelist.g_{$e2guardian_groups['name']}'
+ipsitelist = 'name=greyssl,path={$e2_dir}/etc/e2guardian/lists/greysslsiteiplist.g_{$e2guardian_groups['name']}'
+
+#exception lists
+sitelist = 'name=exception,messageno=602,path={$e2_dir}/etc/e2guardian/lists/exceptionsitelist.g_{$e2guardian_groups['name']}'
+ipsitelist = 'name=exception,messageno=602,path={$e2_dir}/etc/e2guardian/lists/exceptionsiteiplist.g_{$e2guardian_groups['name']}'
+urllist = 'name=exception,messageno=603,path={$e2_dir}/etc/e2guardian/lists/exceptionurllist.g_{$e2guardian_groups['name']}'
+regexpboollist = 'name=exception,messageno=609,path={$e2_dir}/etc/e2guardian/lists/exceptionregexpurllist.g_{$e2guardian_groups['name']}'
+regexpurlboollist = 'name=exceptionuseragent,messageno=610,path={$e2_dir}/etc/e2guardian/lists/exceptionregexpuseragentlist.g_{$e2guardian_groups['name']}'
+
+#sitelist = 'name=authexception,path={$e2_dir}/etc/e2guardian/lists/authexceptionsitelist.g_{$e2guardian_groups['name']}'
+#ipsitelist = 'name=authexception,path={$e2_dir}/etc/e2guardian/lists/authexceptionsiteiplist.g_{$e2guardian_groups['name']}'
+#urllist = 'name=authexception,messageno=603,path={$e2_dir}/etc/e2guardian/lists/authexceptionurllist.g_{$e2guardian_groups['name']}'
+
+sitelist = 'name=embededreferer,path={$e2_dir}/etc/e2guardian/lists/embededreferersitelist.g_{$e2guardian_groups['name']}'
+ipsitelist = 'name=embededreferer,path={$e2_dir}/etc/e2guardian/lists/embededreferersiteiplist.g_{$e2guardian_groups['name']}'
+urllist = 'name=embededreferer,path={$e2_dir}/etc/e2guardian/lists/embededrefererurllist.g_{$e2guardian_groups['name']}'
+
+sitelist = 'name=refererexception,messageno=620,path={$e2_dir}/etc/e2guardian/lists/refererexceptionsitelist.g_{$e2guardian_groups['name']}'
+ipsitelist = 'name=refererexception,messageno=620,path={$e2_dir}/etc/e2guardian/lists/refererexceptionsiteiplist.g_{$e2guardian_groups['name']}'
+urllist = 'name=refererexception,messageno=620,path={$e2_dir}/etc/e2guardian/lists/refererexceptionurllist.g_{$e2guardian_groups['name']}'
+
+#modification lists
+regexpreplacelist = 'name=change,path={$e2_dir}/etc/e2guardian/lists/urlregexplist.g_{$e2guardian_groups['name']}'
+regexpreplacelist = 'name=sslreplace,path={$e2_dir}/etc/e2guardian/lists/sslsiteregexplist.g_{$e2guardian_groups['name']}'
+
+#redirection lists
+regexpreplacelist = 'name=redirect,path={$e2_dir}/etc/e2guardian/lists/urlredirectregexplist.g_{$e2guardian_groups['name']}'
+
+contentregexplist = '{$e2_dir}/etc/e2guardian/lists/contentregexplist.g_{$e2guardian_groups['name']}'
+
+# local versions of lists 
+
+#local banned
+#sitelist = 'name=localbanned,messageno=560,path={$e2_dir}/etc/e2guardian/lists/localbannedsitelist.g_{$e2guardian_groups['name']}'
+#ipsitelist = 'name=localbanned,messageno=560,path={$e2_dir}/etc/e2guardian/lists/localbannedsiteiplist.g_{$e2guardian_groups['name']}'
+#urllist = 'name=localbanned,messageno=561,path={$e2_dir}/etc/e2guardian/lists/localbannedurllist.g_{$e2guardian_groups['name']}'
+#sitelist = 'name=localbannedssl,messageno=580,path={$e2_dir}/etc/e2guardian/lists/localbannedsslsitelist.g_{$e2guardian_groups['name']}'
+#ipsitelist = 'name=localbannedssl,messageno=580,path={$e2_dir}/etc/e2guardian/lists/localbannedsslsiteiplist.g_{$e2guardian_groups['name']}'
+searchlist = 'name=localbanned,messageno=581,path={$e2_dir}/etc/e2guardian/lists/localbannedsearchlist.g_{$e2guardian_groups['name']}'
+
+#local grey lists
+#sitelist = 'name=localgrey,path={$e2_dir}/etc/e2guardian/lists/localgreysitelist.g_{$e2guardian_groups['name']}'
+#ipsitelist = 'name=localgrey,path={$e2_dir}/etc/e2guardian/lists/localgreysiteiplist.g_{$e2guardian_groups['name']}'
+#urllist = 'name=localgrey,path={$e2_dir}/etc/e2guardian/lists/localgreyurllist.g_{$e2guardian_groups['name']}'
+sitelist = 'name=localgreyssl,path={$e2_dir}/etc/e2guardian/lists/localgreysslsitelist.g_{$e2guardian_groups['name']}'
+#ipsitelist = 'name=localgreyssl,path={$e2_dir}/etc/e2guardian/lists/localgreysslsiteiplist.g_{$e2guardian_groups['name']}'
+
+#local exception lists
+#sitelist = 'name=localexception,messageno=662,path={$e2_dir}/etc/e2guardian/lists/localexceptionsitelist.g_{$e2guardian_groups['name']}'
+#ipsitelist = 'name=localexception,messageno=662,path={$e2_dir}/etc/e2guardian/lists/localexceptionsiteiplist.g_{$e2guardian_groups['name']}'
+#urllist = 'name=localexception,messageno=663,path={$e2_dir}/etc/e2guardian/lists/localexceptionurllist.g_{$e2guardian_groups['name']}'
+
+
+# Filetype filtering
+#
+# Allow bannedregexpurllist with grey list mode
+# bannedregexpheaderlist and bannedregexpurllist
+#
+# The following option is replaced by storyboard logic
+# bannedregexwithblanketblock = off
+#
+# The following option is replaced by storyboard logic
+# blockdownloads = off
+
+fileextlist = 'name=exceptionextension,path={$e2_dir}/etc/e2guardian/lists/exceptionextensionlist.g_{$e2guardian_groups['name']}'
+mimelist = 'name=exceptionmime,path={$e2_dir}/etc/e2guardian/lists/exceptionmimetypelist.g_{$e2guardian_groups['name']}'
+
+#
+# Use the following lists to block specific kinds of file downloads.
+# The two exception lists above can be used to override these.
+#
+fileextlist = 'name=bannedextension,messageno=900,path={$e2_dir}/etc/e2guardian/lists/bannedextensionlist.g_{$e2guardian_groups['name']}'
+mimelist = 'name=bannedmime,messageno=800,path={$e2_dir}/etc/e2guardian/lists/bannedmimetypelist.g_{$e2guardian_groups['name']}'
+
+#
+# In either file filtering mode, the following list can be used to override
+# MIME type & extension blocks for particular domains & URLs (trusted download sites).
+#
+sitelist = 'name=exceptionfile,path={$e2_dir}/etc/e2guardian/lists/exceptionfilesitelist.g_{$e2guardian_groups['name']}'
+ipsitelist = 'name=exceptionfile,path={$e2_dir}/etc/e2guardian/lists/exceptionfilesiteiplist.g_{$e2guardian_groups['name']}'
+urllist = 'name=exceptionfile,path={$e2_dir}/etc/e2guardian/lists/exceptionfileurllist.g_{$e2guardian_groups['name']}'
+
+# POST protection (web upload and forms)
+# does not block forms without any file upload, i.e. this is just for
+# blocking or limiting uploads
+# measured in kilobytes after MIME encoding and header bumph
+# use 0 for a complete block
+# use higher (e.g. 512 = 512Kbytes) for limiting
+# use -1 for no blocking
+#maxuploadsize = 512
+#maxuploadsize = 0
+maxuploadsize = {$e2guardian_groups['maxuploadsize']}
+
+# Categorise without blocking:
+# Supply categorised lists here and the category string shall be logged against
+# matching requests, but matching these lists does not perform any filtering
+# action.
+#sitelist = 'name=log,path={$e2_dir}/etc/e2guardian/lists/logsitelist.g_{$e2guardian_groups['name']}'
+#ipsitelist = 'name=log,path={$e2_dir}/etc/e2guardian/lists/logsiteiplist.g_{$e2guardian_groups['name']}'
+#urllist = 'name=log,path={$e2_dir}/etc/e2guardian/lists/logurllist.g_{$e2guardian_groups['name']}'
+#regexpboollist = 'name=log,path={$e2_dir}/etc/e2guardian/lists/logregexpurllist.g_{$e2guardian_groups['name']}'
+
+
+
+# Outgoing HTTP header rules:
+# Optional lists for blocking based on, and modification of, outgoing HTTP
+# request headers.  Format for headerregexplist is one modification rule per
+# line, similar to content/URL modifications.  Format for
+# bannedregexpheaderlist is one regular expression per line, with matching
+# headers causing a request to be blocked.
+# Headers are matched/replaced on a line-by-line basis, not as a contiguous
+# block.
+# Use for example, to remove cookies or prevent certain user-agents.
+#headerregexplist = '{$e2_dir}/etc/e2guardian/lists/headerregexplist'
+regexpreplacelist = 'name=headermods,path={$e2_dir}/etc/e2guardian/lists/headerregexplist.g_{$e2guardian_groups['name']}'
+##bannedregexpheaderlist = '{$e2_dir}/etc/e2guardian/lists/bannedregexpheaderlist'
+regexpboollist = 'name=bannedheader,path={$e2_dir}/etc/e2guardian/lists/bannedregexpheaderlist.g_{$e2guardian_groups['name']}'
+##exceptionregexpheaderlist = '{$e2_dir}/etc/e2guardian/lists/exceptionregexpheaderlist'
+regexpboollist = 'name=exceptionheader,path={$e2_dir}/etc/e2guardian/lists/exceptionregexpheaderlist.g_{$e2guardian_groups['name']}'
+
+#Virus checking exceptions - matched urls will not be virus checked
+#5.0.2#mimelist = 'name=exceptionvirus,path={$e2_dir}/etc/e2guardian/lists/contentscanners/exceptionvirusmimetypelist.g_{$e2guardian_groups['name']}'
+#5.0.2#fileextlist = 'name=exceptionvirus,path={$e2_dir}/etc/e2guardian/lists/contentscanners/exceptionvirusextensionlist.g_{$e2guardian_groups['name']}'
+#5.0.2#sitelist = 'name=exceptionvirus,path={$e2_dir}/etc/e2guardian/lists/contentscanners/exceptionvirussitelist.g_{$e2guardian_groups['name']}'
+#5.0.2#ipsitelist = 'name=exceptionvirus,path={$e2_dir}/etc/e2guardian/lists/contentscanners/exceptionvirussiteiplist.g_{$e2guardian_groups['name']}'
+#5.0.2#urllist = 'name=exceptionvirus,path={$e2_dir}/etc/e2guardian/lists/contentscanners/exceptionvirusurllist.g_{$e2guardian_groups['name']}'
+
+# Weighted phrase mode
+# Optional; overrides the weightedphrasemode option in e2guardian.conf
+# for this particular group.  See documentation for supported values in
+# that file.
+weightedphrasemode = {$e2guardian_groups['weightedphrasemode']}
+
+# Naughtiness limit
+# This the limit over which the page will be blocked.  Each weighted phrase is given
+# a value either positive or negative and the values added up.  Phrases to do with
+# good subjects will have negative values, and bad subjects will have positive
+# values.  See the weightedphraselist file for examples.
+# As a guide:
+# 50 is for young children,  100 for old children,  160 for young adults.
+naughtynesslimit = {$e2guardian_groups['naughtynesslimit']}
+
+# Search term blocking
+# Search terms can be extracted from search URLs and filtered using one or 
+# both of two different methods.
+
+# Method 1 is that developed by Protex where specific 
+# search terms are contained in a bannedsearchlist.  
+# (localbannedsearchlist and bannedsearchoveridelist can be used to suppliment 
+# and overide this list as required.)  
+# These lists contain banned search words combinations on each line.  
+# Words are separated by '+' and must be in sorted order within a line.
+#    so to block 'sexy girl' then the list must contain the line
+#    	girl+sexy
+#    and this will block both 'sexy girl' and 'girl sexy'
+# To use this method, the searchregexplist must be enabled and the bannedsearchlist(s) defined
+
+# Method 2 is uses the 
+# bannedphraselist, weightedphraselist and exceptionphraselist, with a separate
+# threshold for blocking than that used for normal page content.
+# To do this, the searchregexplist must be enabled and searchtermlimit 
+# must be greater than 0.
+ 
+#
+# Search engine regular expression list (need for both options)
+# List of regular expressions for matching search engine URLs.  It is assumed
+# that the search terms themselves will be contained in the 
+# of output of each expression.
+regexpreplacelist = 'name=searchterms,path={$e2_dir}/etc/e2guardian/lists/searchregexplist.g_{$e2guardian_groups['name']}'
+#
+# Banned Search Term list(s) for option 1
+searchlist = 'name=banned,path={$e2_dir}/etc/e2guardian/lists/bannedsearchlist.g_{$e2guardian_groups['name']}'
+#5.0.2#searchlist = 'name=override,path={$e2_dir}/etc/e2guardian/lists/bannedsearchoveridelist.g_{$e2guardian_groups['name']}'
+
+# Search term limit (for Option 2)
+# The limit over which requests will be blocked for containing search terms
+# which match the weightedphraselist.  This should usually be lower than the
+# 'naughtynesslimit' value above, because the amount of text being filtered
+# is only a few words, rather than a whole page.
+# This option must be uncommented if searchregexplist is uncommented.
+# A value of 0 here indicates that search terms should be extracted,
+# but no phrase filtering should be performed on the resulting text.
+searchtermlimit = {$e2guardian_groups['searchtermlimit']}
+#
+# Search term phrase lists (for Option 2) 
+# If the three lines below are uncommented, search term blocking will use
+# the banned, weighted & exception phrases from these lists, instead of using
+# the same phrase lists as for page content.  This is optional but recommended,
+# as weights for individual phrases in the "normal" lists may not be
+# appropriate for blocking when those phrases appear in a much smaller block
+# of text.
+# Please note that all or none of the below should be uncommented, not a
+# mixture.
+# NOTE: these are phrase lists and still use the old style defines
+#bannedsearchtermlist = '{$e2_dir}/etc/e2guardian/lists/bannedsearchtermlist'
+#weightedsearchtermlist = '{$e2_dir}/etc/e2guardian/lists/weightedsearchtermlist'
+#exceptionsearchtermlist = '{$e2_dir}/etc/e2guardian/lists/exceptionsearchtermlist'
+
+# Category display threshold
+# This option only applies to pages blocked by weighted phrase filtering.
+# Defines the minimum score that must be accumulated within a particular
+# category in order for it to show up on the block pages' category list.
+# All categories under which the page scores positively will be logged; those
+# that were not displayed to the user appear in brackets.
+#
+# -1 = display only the highest scoring category
+# 0 = display all categories (default)
+# > 0 = minimum score for a category to be displayed
+categorydisplaythreshold = {$e2guardian_groups['categorydisplaythreshold']}
+
+# Embedded URL weighting
+# When set to something greater than zero, this option causes URLs embedded within a
+# page's HTML (from links, image tags, etc.) to be extracted and checked against the
+# bannedsitelist and bannedurllist. Each link to a banned page causes the amount set
+# here to be added to the page's weighting.
+# The behaviour of this option with regards to multiple occurrences of a site/URL is
+# affected by the weightedphrasemode setting.
+#
+# NB: Currently, this feature uses regular expressions that require the PCRE library.
+# As such, it is only available if you compiled e2guardian with '--enable-pcre=yes'.
+# You can check compile-time options by running 'e2guardian -v'.
+#
+# Set to 0 to disable.
+# Defaults to 0.
+# WARNING: This option is highly CPU intensive!
+embeddedurlweight = {$e2guardian_groups['embeddedurlweight']}
+
+# Temporary Denied Page Bypass
+# This provides a link on the denied page to bypass the ban for a few minutes.  To be
+# secure it uses a random hashed secret generated at daemon startup.  You define the
+# number of seconds the bypass will function for before the deny will appear again.
+# To allow the link on the denied page to appear you will need to edit the template.html
+# or e2guardian.pl file for your language.
+# 300 = enable for 5 minutes
+# 0 = disable ( defaults to 0 )
+# -1 = enable but you require a separate program/CGI to generate a valid link
+bypass = {$e2guardian_groups['bypass']}
+
+# Temporary Denied Page Bypass Secret Key
+# Rather than generating a random key you can specify one.  It must be more than 8 chars.
+# '' = generate a random one (recommended and default)
+# 'Mary had a little lamb.' = an example
+# '76b42abc1cd0fdcaf6e943dcbc93b826' = an example
+bypasskey = '{$e2guardian_groups['bypasskey']}'
+
+#  Users will not be able to bypass sites/urls in these lists
+sitelist = 'name=bannedbypass,messageno=500,path={$e2_dir}/etc/e2guardian/lists/bannedsitelistwithbypass.g_{$e2guardian_groups['name']}'
+#5.0.2#ipsitelist = 'name=bannedbypass,messageno=500,path={$e2_dir}/etc/e2guardian/lists/bannedsiteiplistwithbypass.g_{$e2guardian_groups['name']}'
+#5.0.2#urllist = 'name=bannedbypass,messageno=501,path={$e2_dir}/etc/e2guardian/lists/bannedurllistwithbypass.g_{$e2guardian_groups['name']}'
+
+# Infection/Scan Error Bypass
+# Similar to the 'bypass' setting, but specifically for bypassing files scanned and found
+# to be infected, or files that trigger scanner errors - for example, archive types with
+# recognised but unsupported compression schemes, or corrupt archives.
+# The option specifies the number of seconds for which the bypass link will be valid.
+# 300 = enable for 5 minutes
+# 0 = disable (default)
+# -1 = enable, but require a separate program/CGI to generate a valid link
+infectionbypass = {$e2guardian_groups['infectionbypass']}
+
+# Infection/Scan Error Bypass Secret Key
+# Same as the 'bypasskey' option, but used for infection bypass mode.
+infectionbypasskey = '{$e2guardian_groups['infectionbypasskey']}'
+
+# Infection/Scan Error Bypass on Scan Errors Only
+# Enable this option to allow infectionbypass links only when virus scanning fails,
+# not when a file is found to contain a virus.
+# on = enable (default and highly recommended)
+# off = disable
+infectionbypasserrorsonly = {$e2guardian_groups['infectionbypasserrorsonly']}
+
+# Disable content scanning
+# If you enable this option you will disable content scanning for this group.
+# Content scanning primarily is AV scanning (if enabled) but could include
+# other types.
+# (on|off) default = off.
+disablecontentscan = {$e2guardian_groups['disablecontentscan']}
+
+# Disable content scanning with error (timeout, AV crash, etc)
+# If you enable this option you will allow object with an unexpected result
+# Content scanning primarily is AV scanning (if enabled) but could include
+# other types.
+# With "on" you can allow INFECTED objects 
+# (on|off) default = off. (default and highly recommended)
+disablecontentscanerror = off
+
+# If 'on' exception sites, urls, users etc will be scanned
+# This is probably not desirable behavour as exceptions are
+# supposed to be trusted and will increase load.
+# Correct use of grey lists are a better idea.
+# (on|off) default = off
+contentscanexceptions = off
+
+# Auth plugins
+# Enable Deep URL Analysis
+# When enabled, DG looks for URLs within URLs, checking against the bannedsitelist and
+# bannedurllist. This can be used, for example, to block images originating from banned
+# sites from appearing in Google Images search results, as the original URLs are
+# embedded in the thumbnail GET requests.
+# (on|off) default = off
+deepurlanalysis = {$e2guardian_groups['deepurlanalysis']}
+
+# reportinglevel
+#
+# -1 = log, but do not block - Stealth mode
+#  0 = just say 'Access Denied'
+#  1 = report why but not what denied phrase
+#  2 = report fully
+#  3 = use HTML template file (accessdeniedaddress ignored) - recommended
+#
+# If defined, this overrides the global setting in e2guardian.conf for
+# members of this filter group.
+#
+# reportinglevel = 3
+{$groupreportinglevel}
+
+# accessdeniedaddress is the address of your web server to which the cgi
+# e2guardian reporting script was copied. Only used in reporting levels
+# 1 and 2.
+#
+# This webserver must be either:
+#  1. Non-proxied. Either a machine on the local network, or listed as an
+#     exception in your browser's proxy configuration.
+#  2. Added to the exceptionsitelist. Option 1 is preferable; this option is
+#     only for users using both transparent proxying and a non-local server
+#     to host this script.
+#
+#accessdeniedaddress = 'http://YOURSERVER.YOURDOMAIN/cgi-bin/e2guardian.pl'
+{$groupaccessdeniedaddress}
+
+# sslaccessdeniedaddress is the address of your web server to which the static page
+# e2guardian reporting was copied.
+
+# With ssldeniedrewrite 'off' it works only with firefox 
+# With ssldeniedrewrite 'on' there are several limitations, SSL warning, basic page, etc, eg this webserver can't be listed as an
+# exception in your browser's proxy configuration.
+# Keep in mind, this is only a trick to avoid blank page, the best way still to use SSLMITM   
+# 
+# sslaccessdeniedaddress = 'http://YOURSERVER.YOURDOMAIN/denyssl.htm'
+
+# Break SSL protocol and redirect to another HTTPS website for denied page (sslaccessdeniedaddress url)
+
+#ssldeniedrewrite = 'on'
+
+# HTML Template override
+# If defined, this specifies a custom HTML template file for members of this
+# filter group, overriding the global setting in e2guardian.conf. This is
+# only used in reporting level 3.
+#
+# The default template file path is <languagedir>/<language>/template.h
+# e.g. /usr/local/share/e2guardian/languages/ukenglish/template.html when using 'ukenglish'
+# language.
+#
+# This option generates a file path of the form:
+# <languagedir>/<language>/<htmltemplate>
+# e.g. /usr/local/share/e2guardian/languages/ukenglish/custom.html
+#
+#htmltemplate = 'custom.html'
+
+#Template for use to report network issues and sites which are not responding
+# if blank htmltemplate will be used
+#neterrtemplate = 'neterr.html'
+
+# Non standard delimiter (only used with accessdeniedaddress)
+# To help preserve the full banned URL, including parameters, the variables
+# passed into the access denied CGI are separated using non-standard
+# delimiters. This can be useful to ensure correct operation of the filter
+# bypass modes. Parameters are split using "::" in place of "&", and "==" in
+# place of "=".
+# Default is enabled, but to go back to the standard mode, disable it.
+
+#nonstandarddelimiter = off
+
+# Email reporting - original patch by J. Gauthier
+
+# Use SMTP
+# If on, will enable system wide events to be reported by email.
+# need to configure mail program (see 'mailer' in global config)
+# and email recipients
+# default usesmtp = off
+#!! Not compiled !!usesmtp = off   #NOT YET TESTED
+
+# mailfrom
+# who the email would come from
+# example: mailfrom = 'e2guardian@mycompany.com'
+#!! Not compiled !!mailfrom = ''
+
+# avadmin
+# who the virus emails go to (if notify av is on)
+# example: avadmin = 'admin@mycompany.com'
+#!! Not compiled !!avadmin = ''
+
+# contentdmin
+# who the content emails go to (when thresholds are exceeded)
+# and contentnotify is on
+# example: contentadmin = 'admin@mycompany.com'
+#!! Not compiled !!contentadmin = ''
+
+# avsubject
+# Subject of the email sent when a virus is caught.
+# only applicable if notifyav is on
+# default avsubject = 'e2guardian virus block'
+#!! Not compiled !!avsubject = 'e2guardian virus block'
+
+# content
+# Subject of the email sent when violation thresholds are exceeded
+# default contentsubject = 'e2guardian violation'
+#!! Not compiled !!contentsubject = 'e2guardian violation'
+
+# notifyAV
+# This will send a notification, if usesmtp/notifyav is on, any time an
+# infection is found.
+# Important: If this option is off, viruses will still be recorded like a
+# content infraction.
+#!! Not compiled !!notifyav = off
+
+# notifycontent
+# This will send a notification, if usesmtp is on, based on thresholds
+# below
+#!! Not compiled !!notifycontent = off
+
+# thresholdbyuser
+# results are only predictable with user authenticated configs
+# if enabled the violation/threshold count is kept track of by the user
+#!! Not compiled !!thresholdbyuser = off
+
+#violations
+# number of violations before notification
+# setting to 0 will never trigger a notification
+#!! Not compiled !!violations = 0
+
+#threshold
+# this is in seconds. If 'violations' occur in 'threshold' seconds, then
+# a notification is made.
+# if this is set to 0, then whenever the set number of violations are made a 
+# notifaction will be sent.
+#!! Not compiled !!threshold = 0
+
+#NOTE to enable SSL MITM or NON-MITM SSL CERT checking
+# enablessl must be defined as 'yes' in e2guardian.conf
+
+#SSL certificate checking
+# Check that ssl certificates for servers on https connections are valid
+# and signed by a ca in the configured path
+# ONLY for connections that are NOT MITM
+#sslcertcheck = {$e2guardian_groups['sslcheckcert']} - NOT implimented in V5 yet
+
+#SSL man in the middle
+# Forge ssl certificates for all non-exception sites, decrypt the data then re encrypt it
+# using a different private key. Used to filter ssl sites
+sslmitm = {$e2guardian_groups['sslmitm']}
+
+#Limit SSL MITM to sites in greysslsitelist(s)
+# ignored if  sslmitm is off
+# SSL sites not matching greysslsitelist will be treat as if sslmitm is off.
+# The following option is replaced by storyboard logic
+#onlymitmsslgrey = off  - ignored in V5
+
+# Enable MITM site certificate checking
+# ignored if  sslmitm is off
+# default (recommended) is 'on'
+mitmcheckcert = {$e2guardian_groups['sslcheckcert']}
+
+#Do not check ssl certificates for sites listed
+# Can be used to allow sites with self-signed or invalid certificates
+# or to reduced CPU load by not checking certs on heavily used sites (e.g. Google, Bing)
+# Use with caution!
+# Ignored if mitmcheckcert is 'off'
+#nocheckcertsitelist = '/usr/local/etc/e2guardian/lists/nocheckcertsitelist'
+sitelist = 'name=nocheckcert,path={$e2_dir}/etc/e2guardian/lists/nocheckcertsitelist.g_{$e2guardian_groups['name']}'
+ipsitelist = 'name=nocheckcert,path={$e2_dir}/etc/e2guardian/lists/nocheckcertsiteiplist.g_{$e2guardian_groups['name']}'
+#
+
+# Auto switch to MITM with upstream connection error or to deliver block page
+# ignored if  sslmitm is off
+# To revert to v4 type behavour switch this off
+# Default is 'on'
+automitm = {$e2guardian_groups['automitm']}
+
+EOF;
+
+?>

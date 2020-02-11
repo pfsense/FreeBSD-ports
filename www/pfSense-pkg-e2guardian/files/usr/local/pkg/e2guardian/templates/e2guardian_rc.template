@@ -1,0 +1,39 @@
+#!/bin/sh
+# $FreeBSD: ports/www/e2guardian-devel/files/e2guardian.in,v 1.6 2012/01/14 08:57:12 dougb Exp $
+
+# PROVIDE: e2guardian
+# REQUIRE: NETWORKING SERVERS squid
+# KEYWORD: shutdown
+
+# Define these e2guardian_* variables in one of these files:
+#       /etc/rc.conf
+#       /etc/rc.conf.local
+#       /etc/rc.conf.d/e2guardian
+#
+# DO YEST CHANGE THESE DEFAULT VALUES HERE
+#
+# e2guardian_enable="YES"
+# e2guardian_flags="<set as needed>"
+sysctl kern.ipc.somaxconn=16384
+sysctl kern.maxfiles=131072
+sysctl kern.maxfilesperproc=104856
+sysctl kern.threads.max_threads_per_proc=20480
+
+if [ -f /var/run/e2guardian.dirty ]; then
+	rm -f /var/run/e2guardian.dirty
+fi
+
+e2guardian_enable=${e2guardian_enable:-"YES"}
+e2guardian_pidfile=${e2guardian_pidfile:-"/var/run/e2guardian.pid"}
+
+. /etc/rc.subr
+
+name="e2guardian"
+rcvar=e2guardian_enable
+command="/usr/local/sbin/${name}"
+
+load_rc_config $name
+
+pidfile="${e2guardian_pidfile}"
+
+run_rc_command "$1"
