@@ -177,7 +177,7 @@ $section->addInput(
 			'NoritakeVFD'  => 'NoritakeVFD',
 			'picolcd'      => 'picolcd',
 			'pyramid'      => 'pyramid',
-			'rawserial'    => 'rawserial'
+			'rawserial'    => 'rawserial',
 			'sdeclcd'      => 'Watchguard Firebox with SDEC',
 			'sed1330'      => 'sed1330',
 			'sed1520'      => 'sed1520',
