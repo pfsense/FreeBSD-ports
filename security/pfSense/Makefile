@@ -71,7 +71,8 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
 		xinetd>=0:security/xinetd \
-		openvpn-auth-script>=0:security/openvpn-auth-script
+		openvpn-auth-script>=0:security/openvpn-auth-script \
+		iftop>0:net-mgmt/iftop
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
