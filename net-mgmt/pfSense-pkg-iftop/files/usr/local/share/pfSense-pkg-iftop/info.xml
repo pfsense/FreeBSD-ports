@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>iftop</name>
+		<pkginfolink>https://forum.pfsense.org/</pkginfolink>
+		<descr><![CDATA[Realtime interface monitor (console/shell only).]]></descr>
+		<website>http://www.ex-parrot.com/~pdw/iftop/</website>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>iftop.xml</configurationfile>
+	</package>
+</pfsensepkgs>
