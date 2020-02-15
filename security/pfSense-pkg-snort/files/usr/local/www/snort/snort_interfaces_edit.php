@@ -442,6 +442,8 @@ if ($_POST['save'] && !$input_errors) {
 			$natent['sf_appid_statslog'] = "on";
 			$natent['sf_appid_stats_period'] = "300";
 
+			$natent['autoflowbitrules'] = 'on';
+
 			$a_rule[] = $natent;
 		}
 
