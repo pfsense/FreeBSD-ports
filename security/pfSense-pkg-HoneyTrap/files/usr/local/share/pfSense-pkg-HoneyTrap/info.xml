@@ -1,0 +1,17 @@
+<pfsensepkgs>
+      <package>
+            <name>HoneyTrap</name>
+            <internal_name>HoneyTrap</internal_name>
+            <pkginfolink>https://github.com/honeytrap/honeytrap</pkginfolink>
+            <descr><![CDATA[HoneyTrap is a modular framework for running, monitoring and managing honeypots.&lt;br /&gt;
+                   Using HoneyTrap you can use sensors, high interaction and low interaction honeypots together,&lt;br /&gt;
+                   while still using the same event mechanisms.&lt;br /&gt;
+                   HoneyTrap consists of services, directors, listeners and channels. It is easy to build new services,&lt;br /&gt;
+                   attach existing honeypots and extend channels or directors.]]></descr>
+            <website>https://dutchsec.com/</website>
+            <category>security</category>
+            <version>%%PKGVERSION%%</version>
+            <status>Beta</status>
+            <configurationfile>honeytrap-plugin.xml</configurationfile>
+      </package>
+</pfsensepkgs>

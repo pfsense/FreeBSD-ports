@@ -1,0 +1,10 @@
+pkg/honeytrap-plugin.xml
+pkg/honeytrap/config/default.toml
+pkg/honeytrap/honeytrap-plugin.inc
+pkg/priv/honeytrap.priv.inc
+@dir(honeytrap,honeytrap,4775) pkg/honeytrap/.data
+www/honeytrap/honeytrap_settings.php
+www/honeytrap/honeytrap_logs.php
+www/shortcuts/pkg_honeytrap.inc
+%%DATADIR%%/info.xml
+@dir(honeytrap,honeytrap,4775) /var/log/honeytrap
