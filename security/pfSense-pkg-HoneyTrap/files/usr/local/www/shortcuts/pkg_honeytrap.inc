@@ -18,8 +18,6 @@
  * limitations under the License.
  */
 
-global $shortcuts;
-
 $shortcuts['honeytrap'] = array();
 $shortcuts['honeytrap']['main'] = "/honeytrap/honeytrap_settings.php";
 $shortcuts['honeytrap']['status'] = "/status_services.php";
