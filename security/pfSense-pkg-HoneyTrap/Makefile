@@ -10,9 +10,9 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	remco.verhoef@dutchsec.com
 COMMENT=	PfSense package HoneyTrap
 
-LICENSE=	ART20
+LICENSE=	APACHE20
 
-RUN_DEPENDS=	honeytrap:security/honeytrap
+RUN_DEPENDS=	honeytrap>0:security/honeytrap
 
 NO_BUILD=	yes
 

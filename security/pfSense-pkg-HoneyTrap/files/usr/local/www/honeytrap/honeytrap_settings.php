@@ -23,40 +23,37 @@ require_once('globals.inc');
 
 require_once('honeytrap/honeytrap-plugin.inc');
 
-global $config, $g;
-
+init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
 $gconfig = &$config['installedpackages']['honeytrap']['config'][0];
 
-if ($_POST) {
-    if (isset($_POST['save'])) {
-        if (isset($_POST['enable']) && $_POST['enable'] == 'on') {
-            $gconfig['enable'] = $_POST['enable'];
+if ($_POST && isset($_POST['save'])) {
+    if (isset($_POST['enable']) && $_POST['enable'] == 'on') {
+        $gconfig['enable'] = $_POST['enable'];
+    } else {
+        unset($gconfig['enable']);
+    }
+
+    if (isset($_POST['truncate']) && $_POST['truncate'] == 'on') {
+        $gconfig['truncate'] = $_POST['truncate'];
+    } else {
+        unset($gconfig['truncate']);
+    }
+
+    if (isset($_POST['config_file'])) {
+        $part_parts = pathinfo($_POST['config_file']);
+        if ($part_parts['extension'] != 'toml') {
+            $input_errors[] = "Config file must be a TOML file.\nCurrent extension is {$part_parts['extension']}";
+        } elseif (!realpath($_POST['config_file'])) {
+            $input_errors[] = 'File can\'t be found.';
         } else {
-            unset($gconfig['enable']);
+            $gconfig['config_file'] = $_POST['config_file'];
         }
+    }
 
-        if (isset($_POST['truncate']) && $_POST['truncate'] == 'on') {
-            $gconfig['truncate'] = $_POST['truncate'];
-        } else {
-            unset($gconfig['truncate']);
-        }
-
-        if (isset($_POST['config_file'])) {
-            $part_parts = pathinfo($_POST['config_file']);
-            if ($part_parts['extension'] != 'toml') {
-                $input_errors[] = "Config file must be a TOML file.\nCurrent extension is {$part_parts['extension']}";
-            } elseif (!realpath($_POST['config_file'])) {
-                $input_errors[] = 'File can\'t be found.';
-            } else {
-                $gconfig['config_file'] = $_POST['config_file'];
-            }
-        }
-
-        if (!$input_errors) {
-            $savemsg = 'Successfully modified settings.';
-            write_config($savemsg);
-            honeytrap_sync_config();
-        }
+    if (!$input_errors) {
+        $savemsg = 'Successfully modified settings.';
+        write_config($savemsg);
+        honeytrap_sync_config();
     }
 }
 

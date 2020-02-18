@@ -23,8 +23,7 @@ require_once('globals.inc');
 
 require_once('honeytrap/honeytrap-plugin.inc');
 
-global $config, $g;
-
+init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
 $gconfig = &$config['installedpackages']['honeytrap']['config'][0];
 
 $config_file =  $gconfig['config_file'];
@@ -37,9 +36,9 @@ $pglinks = array('', '/honeytrap/honeytrap_settings.php', '@self');
 $shortcut_section = 'honeytrap';
 include_once('head.inc');
 
-if (!realpath($logfile)) {
+if (!realpath($logfile)):
     print_info_box('Logfile doesn\'t seem to exist');
-} else {
+else:
     $logfile_contents = file_get_contents($logfile);
 
     ?>
@@ -55,8 +54,7 @@ if (!realpath($logfile)) {
     </div>
 </div>
 <?php
-
-}
+endif;
 
 include_once('foot.inc');
 ?>

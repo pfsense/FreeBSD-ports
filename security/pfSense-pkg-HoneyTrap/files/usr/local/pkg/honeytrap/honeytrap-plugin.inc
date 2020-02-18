@@ -24,6 +24,7 @@ require_once('service-utils.inc');
 
 function honeytrap_sync_config() {
     global $g, $config;
+    init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
     $gconfig = $config['installedpackages']['honeytrap']['config'][0];
 
     if (is_service_running('honeytrap')){
@@ -31,7 +32,7 @@ function honeytrap_sync_config() {
         stop_service('honeytrap');
     }
 
-    if (!isset($gconfig['enable']) | $gconfig['enable'] !== 'on') {
+    if (!isset($gconfig['enable']) || $gconfig['enable'] !== 'on') {
         return;
     }
 
@@ -65,11 +66,10 @@ function honeytrap_sync_config() {
 }
 
 function honeytrap_install() {
-    global $config, $g;
+    global $config;
 
     if (!isset($config['installedpackages']['honeytrap'])) {
-        $config['installedpackages']['honeytrap'] = array();
-        $config['installedpackages']['honeytrap']['config'] = array();
+        init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
     }
 
     $gconfig =& $config['installedpackages']['honeytrap']['config'][0];
@@ -80,34 +80,14 @@ function honeytrap_install() {
     write_config('HoneyTrap: Add config');
 }
 
-function recursiveDelete($str, $inclusive=false) {
-    if (is_file($str)) {
-        return @unlink($str);
-    }
-    elseif (is_dir($str)) {
-        $scan = glob(rtrim($str,'/').'/*');
-        foreach($scan as $index=>$path) {
-            recursiveDelete($path);
-        }
-        if ($inclusive) {
-            return @rmdir($str);
-        }
-    }
-}
-
 function honeytrap_deinstall() {
     if (is_service_running('honeytrap')) {
         log_error('Stopping service honeytrap');
         stop_service('honeytrap');
     }
 
-    global $config;
-    unset($config['installedpackages']['honeytrap']);
-
-    write_config('HoneyTrap: Remove config');
-
     unlink_if_exists('/usr/local/etc/rc.d/honeytrap-daemon.sh');
-    recursiveDelete('/usr/local/pkg/honeytrap/.data/');
-    recursiveDelete("{$g['varlog_path']}/honeytrap/", true);
+    rmdir_recursive('/usr/local/pkg/honeytrap/.data/');
+    rmdir_recursive("{$g['varlog_path']}/honeytrap/", true);
 }
 ?>
