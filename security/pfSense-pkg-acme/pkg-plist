@@ -18,8 +18,10 @@ pkg/acme/dnsapi/dns_aws.sh
 pkg/acme/dnsapi/dns_azure.sh
 pkg/acme/dnsapi/dns_cf.sh
 pkg/acme/dnsapi/dns_cloudns.sh
+pkg/acme/dnsapi/dns_clouddns.sh
 pkg/acme/dnsapi/dns_cn.sh
 pkg/acme/dnsapi/dns_conoha.sh
+pkg/acme/dnsapi/dns_constellix.sh
 pkg/acme/dnsapi/dns_cx.sh
 pkg/acme/dnsapi/dns_cyon.sh
 pkg/acme/dnsapi/dns_da.sh
@@ -37,6 +39,7 @@ pkg/acme/dnsapi/dns_duckdns.sh
 pkg/acme/dnsapi/dns_durabledns.sh
 pkg/acme/dnsapi/dns_dyn.sh
 pkg/acme/dnsapi/dns_dynu.sh
+pkg/acme/dnsapi/dns_easydns.sh
 pkg/acme/dnsapi/dns_euserv.sh
 pkg/acme/dnsapi/dns_exoscale.sh
 pkg/acme/dnsapi/dns_freedns.sh
@@ -52,6 +55,7 @@ pkg/acme/dnsapi/dns_internetbs.sh
 pkg/acme/dnsapi/dns_inwx.sh
 pkg/acme/dnsapi/dns_ispconfig.sh
 pkg/acme/dnsapi/dns_jd.sh
+pkg/acme/dnsapi/dns_kas.sh
 pkg/acme/dnsapi/dns_kinghost.sh
 pkg/acme/dnsapi/dns_knot.sh
 pkg/acme/dnsapi/dns_leaseweb.sh
@@ -62,6 +66,7 @@ pkg/acme/dnsapi/dns_loopia.sh
 pkg/acme/dnsapi/dns_lua.sh
 pkg/acme/dnsapi/dns_me.sh
 pkg/acme/dnsapi/dns_miab.sh
+pkg/acme/dnsapi/dns_misaka.sh
 pkg/acme/dnsapi/dns_myapi.sh
 pkg/acme/dnsapi/dns_mydnsjp.sh
 pkg/acme/dnsapi/dns_namecheap.sh
@@ -79,6 +84,7 @@ pkg/acme/dnsapi/dns_online.sh
 pkg/acme/dnsapi/dns_openprovider.sh
 pkg/acme/dnsapi/dns_ovh.sh
 pkg/acme/dnsapi/dns_pdns.sh
+pkg/acme/dnsapi/dns_pleskxml.sh
 pkg/acme/dnsapi/dns_pointhq.sh
 pkg/acme/dnsapi/dns_rackspace.sh
 pkg/acme/dnsapi/dns_rcode0.sh
