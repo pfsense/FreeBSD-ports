@@ -15,8 +15,8 @@ LICENSE=	APACHE20
 RUN_DEPENDS=	${LOCALBASE}/bin/socat:net/socat \
 		${PHP_PKGNAMEPREFIX}pecl-ssh2>=0:security/pecl-ssh2@${PHP_FLAVOR}
 
-USES=		php:flavors
 IGNORE_WITH_PHP=	56 70 71
+USES=		php:flavors
 USE_PHP=	ftp
 
 NO_BUILD=	yes
