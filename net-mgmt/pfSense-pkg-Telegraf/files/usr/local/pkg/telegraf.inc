@@ -35,7 +35,6 @@ function telegraf_resync_config() {
 		}
 	}
 
-	conf_mount_rw();
 
 	/* disable telegraf if not enabled */
 	if ($telegraf_conf['enable'] != "on") {
@@ -213,6 +212,5 @@ EOD;
 	}
 
 	sleep(1);
-	conf_mount_ro();
 }
 ?>

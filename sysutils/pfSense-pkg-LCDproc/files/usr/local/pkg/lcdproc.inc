@@ -503,14 +503,12 @@ EOD;
 		$start .= "\t/usr/bin/nice -20 /usr/local/bin/php -f /usr/local/pkg/lcdproc_client.php &\n";
 
 		/* Write out the configuration */
-		conf_mount_rw();
 		lcdproc_write_config(LCDPROC_CONFIG, $config_text);
 		write_rcfile(array(
 				'file' => 'lcdproc.sh',
 				'start' => $start,
 				'stop' => $stop
 				));
-		conf_mount_ro();
 		/* Or restart lcdproc if settings were changed*/
 		if (is_service_running(LCDPROC_SERVICE_NAME)) {
 			lcdproc_notice("Sync: Restarting the service");
@@ -528,10 +526,8 @@ EOD;
 				lcdproc_notice('Stopping service: no COM port selected');
 			}
 			stop_service(LCDPROC_SERVICE_NAME);
-			conf_mount_rw();
 			unlink(LCDPROC_RCFILE);
 			unlink(LCDPROC_CONFIG);
-			conf_mount_ro();
 		}
 	}
 	lcdproc_notice("Sync: End package sync");

@@ -123,9 +123,7 @@ if ($_POST['addsuppress'] && is_numeric($_POST['sid']) && is_numeric($_POST['gid
 	if ($found_list) {
 		write_config("Snort pkg: modified Suppress List for {$a_nat[$id]['interface']}.");
 		$rebuild_rules = false;
-		conf_mount_rw();
 		sync_snort_package_config();
-		conf_mount_ro();
 		snort_reload_config($a_nat[$id]);
 		$savemsg = gettext("An entry to suppress the Alert for 'gen_id {$_POST['gid']}, sig_id {$_POST['sid']}' has been added to Suppress List '{$a_nat[$id]['suppresslistname']}'.");
 	}

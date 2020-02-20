@@ -33,7 +33,6 @@ function sync_package_softflowd() {
 	} else {
 		$cf = array();
 	}
-	conf_mount_rw();
 	$interface_list = explode(",", $cf['interface']);
 	if (!empty($cf['host']) && !empty($interface_list) && $cf['enable'] != "off") {
 		$cf['host'] = is_ipaddrv6($cf['host']) ? "[{$cf['host']}]" : $cf['host'];
@@ -111,7 +110,6 @@ function sync_package_softflowd() {
 		stop_service("softflowd");
 		unlink_if_exists("/usr/local/etc/rc.d/softflowd.sh");
 	}
-	conf_mount_ro();
 }
 
 function validate_form_softflowd($post, &$input_errors) {

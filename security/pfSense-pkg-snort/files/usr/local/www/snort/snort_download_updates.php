@@ -169,7 +169,6 @@ if (isset($_POST['clear'])) {
 if (isset($_POST['mode'])) {
 	if ($_POST['mode'] == 'force') {
 		// Mount file system R/W since we need to remove files
-		conf_mount_rw();
 
 		// Remove the existing MD5 signature files to force a download
 		unlink_if_exists("{$snortdir}/{$emergingthreats_filename}.md5");
@@ -178,7 +177,6 @@ if (isset($_POST['mode'])) {
 		unlink_if_exists("{$snortdir}/{$snort_openappid_filename}.md5");
 
 		// Revert file system to R/O.
-		conf_mount_ro();
 	}
 	
 	// Launch a background process to download the updates

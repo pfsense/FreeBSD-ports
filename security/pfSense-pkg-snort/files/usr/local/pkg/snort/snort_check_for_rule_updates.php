@@ -70,7 +70,6 @@ $snort_rule_url = VRT_DNLD_URL;
 
 /* Mount the Snort conf directories R/W, if not already, so we can modify files there */
 if (!is_subsystem_dirty('mount')) {
-	conf_mount_rw();
 	$mounted_rw = TRUE;
 }
 
@@ -829,7 +828,6 @@ error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s")
 
 /* Remount filesystem read-only if we changed it in this module */
 if ($mounted_rw == TRUE)
-	conf_mount_ro();
 
 /* Save this update status to the rulesupd_status file */
 $status = time() . '|';

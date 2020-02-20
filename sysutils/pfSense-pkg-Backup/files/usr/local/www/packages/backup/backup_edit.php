@@ -40,12 +40,10 @@ if (isset($_POST['id'])) {
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'backup') {
 		if ($a_backup[$_GET['id']]) {
-			conf_mount_rw();
 			unset($a_backup[$_GET['id']]);
 			write_config();
 			backup_sync_package();
 			header("Location: backup.php");
-			conf_mount_ro();
 			exit;
 		}
 	}

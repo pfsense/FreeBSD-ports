@@ -129,7 +129,6 @@ if ($config['installedpackages']['snortglobal']['clearlogs'] == 'on') {
 /* so we can make changes there                           */
 /**********************************************************/
 if (!is_subsystem_dirty('mount')) {
-	conf_mount_rw();
 	$mounted_rw = TRUE;
 }
 
@@ -196,7 +195,6 @@ else {
 /* read-only if we changed it.                            */
 /**********************************************************/
 if ($mounted_rw == TRUE) {
-	conf_mount_ro();
 }
 return true;
 ?>

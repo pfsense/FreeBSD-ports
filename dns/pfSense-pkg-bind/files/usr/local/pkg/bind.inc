@@ -111,7 +111,6 @@ if (!function_exists('pf_version')) {
 function bind_sync() {
 
 	global $config;
-	conf_mount_rw();
 	$bind = $config['installedpackages']['bind']['config'][0];
 	// Create rndc
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
@@ -761,7 +760,6 @@ EOD;
 	}
 	// Sync to backup servers
 	bind_sync_on_changes();
-	conf_mount_ro();
 }
 
 function bind_print_javascript_type_zone() {
@@ -909,9 +907,7 @@ EOD;
 			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /cf/named/
 		fi
 EOD;
-	conf_mount_rw();
 	write_rcfile($rc);
-	conf_mount_ro();
 }
 
 /* Uses XMLRPC to synchronize the changes to a remote node */

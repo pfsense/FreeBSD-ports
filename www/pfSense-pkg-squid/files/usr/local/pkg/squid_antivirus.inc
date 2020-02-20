@@ -690,10 +690,8 @@ fi
 
 EOD;
 
-	conf_mount_rw();
 	log_error("[squid] Creating 'clamd.sh' rc script.");
 	write_rcfile($rc);
-	conf_mount_ro();
 }
 
 /* Create c-icap.sh rc script */
@@ -713,7 +711,6 @@ fi
 sleep 5
 /bin/rm -f {$cicap_pipe}
 EOF;
-	conf_mount_rw();
 	log_error("[squid] Creating '{$c_icap_rcfile}' rc script.");
 	write_rcfile(array(
 		"file" => "{$c_icap_rcfile}",
@@ -721,7 +718,6 @@ EOF;
 		"stop" => "{$cicap_stop_cmd}"
 		)
 	);
-	conf_mount_ro();
 }
 
 /* (Re)start antivirus services if AV features are enabled */

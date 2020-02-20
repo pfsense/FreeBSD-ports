@@ -123,9 +123,7 @@ if ($_POST['save']) {
 			$a_suppress[] = $s_list;
 
 		write_config("Snort pkg: modified Suppress List {$s_list['name']}.");
-		conf_mount_rw();
 		sync_snort_package_config();
-		conf_mount_ro();
 
 		header("Location: /snort/snort_interfaces_suppress.php");
 		exit;

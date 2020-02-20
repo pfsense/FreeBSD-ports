@@ -113,7 +113,6 @@ function validate_input_zabbix_agent($post, &$input_errors) {
 function sync_package_zabbix_agent() {
 	global $config, $g;
 
-	conf_mount_rw();
 
 	// Check Zabbix Agent settings
 	if (isset($config['installedpackages']['%%ZABBIXUNIQNAME%%']) &&
@@ -305,7 +304,6 @@ EOF;
 		unlink_if_exists($zagent_rcfile);
 	}
 
-	conf_mount_ro();
 }
 
 // Based on openvpn_add_keyfile() function

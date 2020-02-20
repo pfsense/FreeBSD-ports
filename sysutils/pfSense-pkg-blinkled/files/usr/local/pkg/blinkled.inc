@@ -39,13 +39,11 @@ EOD;
 	if (($blinkled_config['enable_led3']) && ($blinkled_config['iface_led3']))
 		$start .= "\t" . blinkled_launch(convert_friendly_interface_to_real_interface_name($blinkled_config['iface_led3']), 3, true) . "\n";
 
-	conf_mount_rw();
 	write_rcfile(array(
 		'file' => 'blinkled.sh',
 		'start' => $start,
 		'stop' => $stop)
 	);
-	conf_mount_ro();
 }
 
 function sync_package_blinkled() {

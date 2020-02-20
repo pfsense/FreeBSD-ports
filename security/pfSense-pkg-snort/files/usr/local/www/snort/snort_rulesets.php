@@ -150,9 +150,7 @@ if (isset($_POST["save"])) {
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	conf_mount_rw();
 	snort_generate_conf($a_nat[$id]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 
 	/* Soft-restart Snort to live-load new rules */

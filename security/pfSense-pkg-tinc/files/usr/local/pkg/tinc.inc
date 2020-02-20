@@ -57,7 +57,6 @@ function tinc_save() {
 	global $config, $configpath;
 	$configpath = '/usr/local/etc/tinc';
 
-	conf_mount_rw();
 
 	rmdir_recursive("{$configpath}.old");
 	rename("{$configpath}", "{$configpath}.old");
@@ -166,7 +165,6 @@ function tinc_save() {
 		unlink_if_exists("/usr/local/etc/rc.d/tinc.sh");
 	}
 
-	conf_mount_ro();
 }
 
 function tinc_write_rcfile() {
