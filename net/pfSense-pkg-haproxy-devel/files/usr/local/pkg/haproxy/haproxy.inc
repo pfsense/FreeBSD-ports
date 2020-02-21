@@ -1568,7 +1568,8 @@ function haproxy_writeconf($configpath) {
 			$tmp = !empty($a_global['resolver_timeoutretry']) ? $a_global['resolver_timeoutretry'] : '1s';
 			fwrite ($fd, "\ttimeout retry {$tmp}\n");
 			$tmp = !empty($a_global['resolver_holdvalid']) ? $a_global['resolver_holdvalid'] : '10s';
-			fwrite ($fd, "\thold valid {$tmp}\n");
+			fwrite ($fd, "\ttimeout resolve {$tmp}\n");
+            
 			fwrite ($fd, "\n");
 		}
 	}
@@ -2236,7 +2237,7 @@ function load_ipfw_rules() {
 	$rules = "flush\n";
 	foreach($transparent_backends as $transparent_be) {
 		if (is_ipaddrv4($transparent_be["address"])) {
-			$rules .= "add $rulenum fwd localhost tcp from {$transparent_be["address"]} {$transparent_be["port"]} to any in recv {$transparent_be["interface"]}\n";
+			$rules .= "add $rulenum fwd 127.0.0.1 tcp from {$transparent_be["address"]} {$transparent_be["port"]} to any in recv {$transparent_be["interface"]}\n";
 		} elseif (is_ipaddrv6($transparent_be["address"])) {
 			list ($addr, $scope) = explode("%", $transparent_be['address']);
 			$rules .= "add $rulenum fwd ::1 tcp from {$addr} {$transparent_be["port"]} to any in recv {$transparent_be["interface"]}\n";
