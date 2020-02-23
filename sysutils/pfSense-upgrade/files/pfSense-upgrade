@@ -661,17 +661,6 @@ pkg_upgrade() {
 				[ -f /tmp/loader.rc.local ] \
 				    && cp /tmp/loader.rc.local /boot 2>/dev/null
 			fi
-			# Save a copy of loader.conf and restore after kernel
-			# upgrade if it is removed. There was a bug that added
-			# a static copy of loader.conf on amd64 kernel package
-			# for a period of time in 2.4.4-devel that lead users
-			# to have no loader.conf after upgrade, we want to
-			# workaround it
-			rm -f /tmp/loader.conf.backup
-			if [ "${_arch}" = "amd64" ] && \
-			    [ -s /boot/loader.conf ]; then
-				cp -fp /boot/loader.conf /tmp/loader.conf.backup
-			fi
 			# Force upgrade pfSense-rc together with kernel. It's
 			# failing for some reason on armv[67] even with the
 			# proper dependency version registered
@@ -681,11 +670,6 @@ pkg_upgrade() {
 			fi
 			_exec "pkg-static upgrade -U ${kernel_pkg}" \
 			    "Upgrading ${product} kernel"
-			if [ "${_arch}" = "amd64" ] && \
-			    [ -s /tmp/loader.conf.backup ] && \
-			    [ ! -s /boot/loader.conf ]; then
-				cp -fp /tmp/loader.conf.backup /boot/loader.conf
-			fi
 			if [ "${SYSTEM}" = "SG-1100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.

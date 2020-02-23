@@ -226,17 +226,67 @@
 			</rowhelper>
 		</field>
 		<field>
+			<fielddescr>CARP Mode</fielddescr>
+			<fieldname>carpmode</fieldname>
+			<description>
+				<![CDATA[
+				Determines OSPF behavior when used in conjunction with CARP.<br /><b>"Quagga Disable"</b> mode keeps Quagga disabled on backup unit until it is active.<br /><b>"OSPF Cost"</b> mode dynamically changes OSPF cost allowing both firwalls to have an active routing table.<br />
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do not track CARP status) (default)</name><value>none</value></option>
+				<option><name>Quagga Disable (Disable Quagga if backup)</name><value>quaggadisable</value></option>
+				<option><name>OSPF Cost (Dynamically change OSPF cost)</name><value>ospfcost</value></option>
+			</options>
+		</field>
+		<field>
 			<fielddescr>CARP Status IP</fielddescr>
 			<fieldname>carpstatusvid</fieldname>
 			<description>
 				<![CDATA[
-				Used to determine the CARP status. When the CARP vhid is in BACKUP status, quagga will not be started.<br />
+				<b>For "Quagga Disable" mode.</b> Used to determine the CARP status. When the CARP vhid is in BACKUP status, quagga will not be started.<br />
 				]]>
 			</description>
 			<type>select_source</type>
 			<source><![CDATA[quagga_ospfd_get_carp_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>OSPF Cost Interfaces</fielddescr>
+			<fieldname>carpcostvid</fieldname>
+			<description>
+				<![CDATA[
+				<b>For "OSPF Cost" mode.</b> Select interfaces for dynamic OSPF cost changes based on CARP Master/Backup status.<br />
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[quagga_ospfd_get_carp_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<multiple></multiple>
+		</field>
+		<field>
+			<fielddescr>CARP OSPF Active Cost</fielddescr>
+			<fieldname>carpactivecost</fieldname>
+			<description>
+				<![CDATA[
+				<b>For "OSPF Cost" mode.</b> OSPF cost on selected interfaces when CARP Master. (Range 1-65535 or 0 for default/auto cost)<br />
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>CARP OSPF Backup Cost</fielddescr>
+			<fieldname>carpbackupcost</fieldname>
+			<description>
+				<![CDATA[
+				<b>For "OSPF Cost" mode.</b> OSPF cost on selected interfaces when CARP Backup. (Range 1-65535 or 0 for default/auto cost)<br />
+				]]>
+			</description>
+			<type>input</type>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
