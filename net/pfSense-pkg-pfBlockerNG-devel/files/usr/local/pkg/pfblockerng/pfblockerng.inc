@@ -1017,6 +1017,9 @@ accesslog.filename		= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblock
 		ssl.ec-curve	= "secp384r1"
 	}
 
+	\$SERVER["socket"] == "{$pfb['dnsbl_vip']}:80" {
+	}
+	
 	\$SERVER["socket"] == "{$pfb['dnsbl_vip']}:443" {
 		ssl.engine	= "enable"
 		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
@@ -1037,28 +1040,30 @@ EOF;
 
 // Function to create DNSBL SSL certificate
 function pfb_create_dnsbl_cert() {
-	global $pfb;
+	global $pfb, $config, $cert_strict_values;
 
-	$dn = array (	'countryName'		=> 'CA',
-			'stateOrProvinceName'	=> 'ST_DNSBL',
-			'localityName'		=> 'LN_DNSBL',
-			'organizationName'	=> 'ON_DNSBL',
-			'organizationalUnitName'=> 'OU_DNSBL',
-			'commonName'		=> 'CN_DNSBL',
-			'emailAddress'		=> 'dnsbl@example.com'
-			);
+	$cert = array();
+	$cert['refid'] = uniqid();
+	$cert['descr'] = sprintf(gettext("pfBlockerNG DNSBL (%s)"), $cert['refid']);
+	$cert_hostname = "{$config['system']['hostname']}-PFbNG-DNSBL-{$cert['refid']}";
 
-	$pkey_config = array (	'digest_alg'		=> 'sha256',
-				'private_key_bits'	=> 2048,
-				'private_key_type'	=> OPENSSL_KEYTYPE_RSA
-				);
+	$dn = array(
+		'organizationName' => "pfBlockerNG DNSBL Self-Signed Certificate",
+		'commonName' => $cert_hostname,
+		'subjectAltName' => "DNS:{$cert_hostname}");
 
-	$pkey	= openssl_pkey_new($pkey_config);
-	$csr	= openssl_csr_new($dn, $pkey);
-	$cert	= openssl_csr_sign($csr, NULL, $pkey, 3650);
-
-	openssl_pkey_export($pkey, $privatekey);
-	openssl_x509_export($cert, $publickey);
+	$old_err_level = error_reporting(0); /* otherwise openssl_ functions throw warnings directly to a page screwing menu tab */
+	if (!cert_create($cert, null, 2048, $cert_strict_values['max_server_cert_lifetime'], $dn, "self-signed", "sha256")) {
+		while ($ssl_err = openssl_error_string()) {
+			log_error(sprintf(gettext("Error creating pfBlockerNG DNSBL Certificate: openssl library returns: %s"), $ssl_err));
+		}
+		error_reporting($old_err_level);
+		return null;
+	}
+	error_reporting($old_err_level);
+	$privatekey = base64_decode($cert['prv']);
+	$publickey = base64_decode($cert['crt']);
+ 
 	@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
 }
 
