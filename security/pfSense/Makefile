@@ -96,15 +96,16 @@ PLIST_DIRS=	/etc
 .include <bsd.port.pre.mk>
 
 .if (${ARCH} == "amd64" || ${ARCH} == "i386")
-RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
-		${LOCALBASE}/sbin/wrapresetbtn:sysutils/wrapalixresetbutton \
-		${LOCALBASE}/bin/beep:audio/beep \
+RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
+		smartmontools>=0:sysutils/smartmontools \
+		wrapalixresetbutton>=0:sysutils/wrapalixresetbutton \
+		beep>=0:audio/beep \
 		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
 		devcpu-data>=0:sysutils/devcpu-data
 .endif
 
 .if (${ARCH} == "aarch64")
-RUN_DEPENDS+=   ${LOCALBASE}/sbin/sg3200resetbtn:sysutils/arm64resetbutton
+RUN_DEPENDS+=   arm64resetbutton>=0:sysutils/arm64resetbutton
 .endif
 
 do-install:
