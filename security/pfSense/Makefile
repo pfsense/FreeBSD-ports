@@ -95,10 +95,10 @@ PLIST_DIRS=	/etc
 .include <bsd.port.pre.mk>
 
 .if (${ARCH} == "amd64" || ${ARCH} == "i386")
-RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
-		${LOCALBASE}/sbin/smartctl:sysutils/smartmontools \
-		${LOCALBASE}/sbin/wrapresetbtn:sysutils/wrapalixresetbutton \
-		${LOCALBASE}/bin/beep:audio/beep \
+RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
+		smartctl>=0:sysutils/smartmontools \
+		wrapresetbtn>=0:sysutils/wrapalixresetbutton \
+		beep>=0:audio/beep \
 		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
 		devcpu-data>=0:sysutils/devcpu-data
 .endif
