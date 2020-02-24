@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <packagegui>
-    <copyright>
-        <![CDATA[
+	<copyright>
+		<![CDATA[
 /*
 * honeytrap-plugin.xml
 *
@@ -20,34 +20,34 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-        ]]>
-    </copyright>
-    <name>HoneyTrap</name>
-    <version>0.1</version>
-    <title>Services/HoneyTrap</title>
-    <include_file>/usr/local/pkg/honeytrap/honeytrap-plugin.inc</include_file>
-    <menu>
-        <name>HoneyTrap</name>
-        <section>Services</section>
-        <url>/honeytrap/honeytrap_settings.php</url>
-    </menu>
-    <service>
-        <name>honeytrap</name>
-        <rcfile>honeytrap-daemon.sh</rcfile>
-        <executable>honeytrap</executable>
-        <description>HoneyTrap daemon</description>
-    </service>
-    <tabs>
-    </tabs>
-    <fields>
-    </fields>
-    <custom_php_install_command>
-        honeytrap_install();
-    </custom_php_install_command>
-    <custom_php_resync_config_command>
-        honeytrap_sync_config();
-    </custom_php_resync_config_command>
-    <custom_php_pre_deinstall_command>
-        honeytrap_deinstall();
-    </custom_php_pre_deinstall_command>
+		]]>
+	</copyright>
+	<name>HoneyTrap</name>
+	<version>0.1</version>
+	<title>Services/HoneyTrap</title>
+	<include_file>/usr/local/pkg/honeytrap/honeytrap-plugin.inc</include_file>
+	<menu>
+		<name>HoneyTrap</name>
+		<section>Services</section>
+		<url>/honeytrap/honeytrap_settings.php</url>
+	</menu>
+	<service>
+		<name>honeytrap</name>
+		<rcfile>honeytrap-daemon.sh</rcfile>
+		<executable>honeytrap</executable>
+		<description>HoneyTrap daemon</description>
+	</service>
+	<tabs>
+	</tabs>
+	<fields>
+	</fields>
+	<custom_php_install_command>
+		honeytrap_install();
+	</custom_php_install_command>
+	<custom_php_resync_config_command>
+		honeytrap_sync_config();
+	</custom_php_resync_config_command>
+	<custom_php_pre_deinstall_command>
+		honeytrap_deinstall();
+	</custom_php_pre_deinstall_command>
 </packagegui>

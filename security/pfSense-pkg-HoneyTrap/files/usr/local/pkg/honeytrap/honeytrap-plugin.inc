@@ -23,71 +23,71 @@ require_once('pfsense-utils.inc');
 require_once('service-utils.inc');
 
 function honeytrap_sync_config() {
-    global $g, $config;
-    init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
-    $gconfig = $config['installedpackages']['honeytrap']['config'][0];
+	global $g, $config;
+	init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
+	$gconfig = $config['installedpackages']['honeytrap']['config'][0];
 
-    if (is_service_running('honeytrap')){
-        log_error('Stopping service honeytrap');
-        stop_service('honeytrap');
-    }
+	if (is_service_running('honeytrap')){
+		log_error('Stopping service honeytrap');
+		stop_service('honeytrap');
+	}
 
-    if (!isset($gconfig['enable']) || $gconfig['enable'] !== 'on') {
-        return;
-    }
+	if (!isset($gconfig['enable']) || $gconfig['enable'] !== 'on') {
+		return;
+	}
 
-    $config_file = $gconfig['config_file'];
-    $part_parts = pathinfo($config_file);
-    $stdout = "{$g['varlog_path']}/honeytrap/{$part_parts['filename']}.log";
+	$config_file = $gconfig['config_file'];
+	$part_parts = pathinfo($config_file);
+	$stdout = "{$g['varlog_path']}/honeytrap/{$part_parts['filename']}.log";
 
-    $daemon = '/usr/local/bin/honeytrap';
-    $data_dir = '/usr/local/pkg/honeytrap/.data/';
-    $pid = "{$g['varrun_path']}/honeytrap.pid";
-    $stop = "/bin/kill -INT `/bin/cat {$pid}`";
-    $start = "/usr/sbin/daemon -o {$stdout} -p {$pid} -u honeytrap {$daemon} --data {$data_dir} --config {$config_file}";
-    if (isset($gconfig['truncate']) && $gconfig['truncate'] === 'on') {
-        $clear = "/usr/bin/truncate -c -s 0 {$stdout}".PHP_EOL;
-        $start = $clear ."\t". $start;
-    }
+	$daemon = '/usr/local/bin/honeytrap';
+	$data_dir = '/usr/local/pkg/honeytrap/.data/';
+	$pid = "{$g['varrun_path']}/honeytrap.pid";
+	$stop = "/bin/kill -INT `/bin/cat {$pid}`";
+	$start = "/usr/sbin/daemon -o {$stdout} -p {$pid} -u honeytrap {$daemon} --data {$data_dir} --config {$config_file}";
+	if (isset($gconfig['truncate']) && $gconfig['truncate'] === 'on') {
+		$clear = "/usr/bin/truncate -c -s 0 {$stdout}".PHP_EOL;
+		$start = $clear ."\t". $start;
+	}
 
-    $write = write_rcfile(array(
-        'file' => 'honeytrap-daemon.sh',
-        'start' => $start,
-        'stop' => $stop
-    )
-    );
+	$write = write_rcfile(array(
+		'file' => 'honeytrap-daemon.sh',
+		'start' => $start,
+		'stop' => $stop
+	)
+	);
 
-    if (platform_booting()) {
-        return;
-    }
+	if (platform_booting()) {
+		return;
+	}
 
-    log_error('Starting service honeytrap');
-    start_service('honeytrap');
+	log_error('Starting service honeytrap');
+	start_service('honeytrap');
 }
 
 function honeytrap_install() {
-    global $config;
+	global $config;
 
-    if (!isset($config['installedpackages']['honeytrap'])) {
-        init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
-    }
+	if (!isset($config['installedpackages']['honeytrap'])) {
+		init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
+	}
 
-    $gconfig =& $config['installedpackages']['honeytrap']['config'][0];
+	$gconfig =& $config['installedpackages']['honeytrap']['config'][0];
 
-    $gconfig['config_file'] = '/usr/local/pkg/honeytrap/config/default.toml';
-    $gconfig['truncate'] = 'on';
+	$gconfig['config_file'] = '/usr/local/pkg/honeytrap/config/default.toml';
+	$gconfig['truncate'] = 'on';
 
-    write_config('HoneyTrap: Add config');
+	write_config('HoneyTrap: Add config');
 }
 
 function honeytrap_deinstall() {
-    if (is_service_running('honeytrap')) {
-        log_error('Stopping service honeytrap');
-        stop_service('honeytrap');
-    }
+	if (is_service_running('honeytrap')) {
+		log_error('Stopping service honeytrap');
+		stop_service('honeytrap');
+	}
 
-    unlink_if_exists('/usr/local/etc/rc.d/honeytrap-daemon.sh');
-    rmdir_recursive('/usr/local/pkg/honeytrap/.data/');
-    rmdir_recursive("{$g['varlog_path']}/honeytrap/", true);
+	unlink_if_exists('/usr/local/etc/rc.d/honeytrap-daemon.sh');
+	rmdir_recursive('/usr/local/pkg/honeytrap/.data/');
+	rmdir_recursive("{$g['varlog_path']}/honeytrap/", true);
 }
 ?>

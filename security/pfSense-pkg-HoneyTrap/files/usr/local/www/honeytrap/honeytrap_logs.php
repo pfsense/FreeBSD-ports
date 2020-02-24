@@ -26,7 +26,7 @@ require_once('honeytrap/honeytrap-plugin.inc');
 init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
 $gconfig = &$config['installedpackages']['honeytrap']['config'][0];
 
-$config_file =  $gconfig['config_file'];
+$config_file =	$gconfig['config_file'];
 $path_parts = pathinfo($config_file);
 
 $logfile = "{$g['varlog_path']}/honeytrap/{$path_parts['filename']}.log";
@@ -37,21 +37,21 @@ $shortcut_section = 'honeytrap';
 include_once('head.inc');
 
 if (!realpath($logfile)):
-    print_info_box('Logfile doesn\'t seem to exist');
+	print_info_box('Logfile doesn\'t seem to exist');
 else:
-    $logfile_contents = file_get_contents($logfile);
+	$logfile_contents = file_get_contents($logfile);
 
-    ?>
+	?>
 <div class="panel panel-default">
-    <div class="panel-heading"><h2 class="panel-title">HoneyTrap service log</h2></div>
-    <div class="panel-body">
-        <pre>
+	<div class="panel-heading"><h2 class="panel-title">HoneyTrap service log</h2></div>
+	<div class="panel-body">
+		<pre>
 <?php
-    echo htmlspecialchars($logfile_contents, ENT_SUBSTITUTE) . PHP_EOL;
+	echo htmlspecialchars($logfile_contents, ENT_SUBSTITUTE) . PHP_EOL;
 
-    ?>
-        </pre>
-    </div>
+	?>
+		</pre>
+	</div>
 </div>
 <?php
 endif;

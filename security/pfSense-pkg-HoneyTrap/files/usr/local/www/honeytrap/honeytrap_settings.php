@@ -27,34 +27,34 @@ init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
 $gconfig = &$config['installedpackages']['honeytrap']['config'][0];
 
 if ($_POST && isset($_POST['save'])) {
-    if (isset($_POST['enable']) && $_POST['enable'] == 'on') {
-        $gconfig['enable'] = $_POST['enable'];
-    } else {
-        unset($gconfig['enable']);
-    }
+	if (isset($_POST['enable']) && $_POST['enable'] == 'on') {
+		$gconfig['enable'] = $_POST['enable'];
+	} else {
+		unset($gconfig['enable']);
+	}
 
-    if (isset($_POST['truncate']) && $_POST['truncate'] == 'on') {
-        $gconfig['truncate'] = $_POST['truncate'];
-    } else {
-        unset($gconfig['truncate']);
-    }
+	if (isset($_POST['truncate']) && $_POST['truncate'] == 'on') {
+		$gconfig['truncate'] = $_POST['truncate'];
+	} else {
+		unset($gconfig['truncate']);
+	}
 
-    if (isset($_POST['config_file'])) {
-        $part_parts = pathinfo($_POST['config_file']);
-        if ($part_parts['extension'] != 'toml') {
-            $input_errors[] = "Config file must be a TOML file.\nCurrent extension is {$part_parts['extension']}";
-        } elseif (!realpath($_POST['config_file'])) {
-            $input_errors[] = 'File can\'t be found.';
-        } else {
-            $gconfig['config_file'] = $_POST['config_file'];
-        }
-    }
+	if (isset($_POST['config_file'])) {
+		$part_parts = pathinfo($_POST['config_file']);
+		if ($part_parts['extension'] != 'toml') {
+			$input_errors[] = "Config file must be a TOML file.\nCurrent extension is {$part_parts['extension']}";
+		} elseif (!realpath($_POST['config_file'])) {
+			$input_errors[] = 'File can\'t be found.';
+		} else {
+			$gconfig['config_file'] = $_POST['config_file'];
+		}
+	}
 
-    if (!$input_errors) {
-        $savemsg = 'Successfully modified settings.';
-        write_config($savemsg);
-        honeytrap_sync_config();
-    }
+	if (!$input_errors) {
+		$savemsg = 'Successfully modified settings.';
+		write_config($savemsg);
+		honeytrap_sync_config();
+	}
 }
 
 $pgtitle = array(gettext("Service"), gettext("HoneyTrap"));
@@ -62,37 +62,37 @@ $shortcut_section = 'honeytrap';
 include_once('head.inc');
 
 if (isset($input_errors)) {
-    print_input_errors($input_errors);
+	print_input_errors($input_errors);
 }
 
 if (isset($savemsg)) {
-    print_info_box($savemsg, 'success');
+	print_info_box($savemsg, 'success');
 }
 
 $form = new Form();
 
 $section = new Form_Section('HoneyTrap Service Settings');
 $section->addInput(new Form_Checkbox(
-    'enable',
-    'Enable',
-    'Enable the HoneyTrap service',
-    $gconfig['enable'] === 'on' ? true:false,
-    'on'
+	'enable',
+	'Enable',
+	'Enable the HoneyTrap service',
+	$gconfig['enable'] === 'on' ? true:false,
+	'on'
 ));
 
 $section->addInput(new Form_Checkbox(
-    'truncate',
-    'Truncate',
-    'Truncate logs on service start',
-    $gconfig['truncate'] === 'on' ? true:false,
-    'on'
+	'truncate',
+	'Truncate',
+	'Truncate logs on service start',
+	$gconfig['truncate'] === 'on' ? true:false,
+	'on'
 ));
 
 $section->addInput(new Form_Input(
-    'config_file',
-    'Config file path',
-    'text',
-    $gconfig['config_file']
+	'config_file',
+	'Config file path',
+	'text',
+	$gconfig['config_file']
 ));
 
 $form->add($section);
