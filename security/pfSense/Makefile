@@ -96,8 +96,8 @@ PLIST_DIRS=	/etc
 
 .if (${ARCH} == "amd64" || ${ARCH} == "i386")
 RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
-		smartctl>=0:sysutils/smartmontools \
-		wrapresetbtn>=0:sysutils/wrapalixresetbutton \
+		smartmontools>=0:sysutils/smartmontools \
+		wrapalixresetbutton>=0:sysutils/wrapalixresetbutton \
 		beep>=0:audio/beep \
 		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
 		devcpu-data>=0:sysutils/devcpu-data
