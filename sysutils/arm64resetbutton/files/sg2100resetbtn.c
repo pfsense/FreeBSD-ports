@@ -3,7 +3,7 @@
  */
 
 /*
- * sg3200resetbtn
+ * sg2100resetbtn
  *
  * Check if button is pressed and stays pressed for 2 seconds.
  * Flash LED if so and return 99 as status.
@@ -18,9 +18,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define	SG3200_BTN_GPIO_UNIT		1
-#define	SG3200_BTN_GPIO_PIN		22
-#define	SG3200_LED_GPIO_UNIT		2
+#define	SG2100_BTN_GPIO_UNIT		1
+#define	SG2100_BTN_GPIO_PIN		22
+#define	SG2100_LED_GPIO_UNIT		2
 
 static int led_pins[3] = { 0, 3, 6 };
 
@@ -32,9 +32,9 @@ flash_led(void)
 	int i, j, maxpins, mib[8], val;
 	size_t miblen;
 
-	gpio = gpio_open(SG3200_LED_GPIO_UNIT);
+	gpio = gpio_open(SG2100_LED_GPIO_UNIT);
 	if (gpio == -1) {
-		printf("cannot open /dev/gpioc%d\n", SG3200_LED_GPIO_UNIT);
+		printf("cannot open /dev/gpioc%d\n", SG2100_LED_GPIO_UNIT);
 		exit(-1);
 	}
 	if (ioctl(gpio, GPIOMAXPIN, &maxpins) < 0) {
@@ -44,7 +44,7 @@ flash_led(void)
 	for (i = 0; i < (maxpins + 1) / 3; i++) {
 		memset(strmib, 0, sizeof(strmib));
 		snprintf(strmib, sizeof(strmib), "dev.gpio.%d.led.%d.pwm",
-		    SG3200_LED_GPIO_UNIT, i);
+		    SG2100_LED_GPIO_UNIT, i);
 		miblen = nitems(mib);
 		val = 0;
 		if (sysctlnametomib(strmib, mib, &miblen) == -1 ||
@@ -72,8 +72,8 @@ main(int argc, char *argv[])
 	int i, pin, unit;
 	gpio_handle_t gpio;
 
-	pin = SG3200_BTN_GPIO_PIN;
-	unit = SG3200_BTN_GPIO_UNIT;
+	pin = SG2100_BTN_GPIO_PIN;
+	unit = SG2100_BTN_GPIO_UNIT;
 	gpio = gpio_open(unit);
 	if (gpio == -1) {
 		printf("cannot open /dev/gpioc%d\n", unit);
