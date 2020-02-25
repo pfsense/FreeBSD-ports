@@ -1058,20 +1058,14 @@ function openvpn_client_export_find_port_forwards($targetip, $targetport, $targe
 }
 
 function openvpn_client_export_find_hostname($interface) {
-	global $config;
-	if (is_array($config['dyndnses']['dyndns'])) {
-		foreach ($config['dyndnses']['dyndns'] as $ddns) {
+	global $config, $dyndns_split_domain_types;
+	init_config_arr(array('dyndnses', 'dyndns'));
+	init_config_arr(array('dnsupdates', 'dnsupdate'));
+	foreach (array($config['dyndnses']['dyndns'], $config['dnsupdates']['dnsupdate']) as $ddnslist) {
+		foreach ($ddnslist as $ddns) {
 			if (($ddns['interface'] == $interface) && isset($ddns['enable']) && !empty($ddns['host']) && !is_numeric($ddns['host']) && is_hostname($ddns['host'])) {
-				return $ddns['host'];
+				return $ddns['host'] . ((in_array($ddns['type'], $dyndns_split_domain_types)) ? '.' . $ddns['domainname'] : '');
 			}
 		}
 	}
-	if (is_array($config['dnsupdates']['dnsupdate'])) {
-		foreach ($config['dnsupdates']['dnsupdate'] as $ddns) {
-			if (($ddns['interface'] == $interface) && isset($ddns['enable']) && !empty($ddns['host']) && !is_numeric($ddns['host']) && is_hostname($ddns['host'])) {
-				return $ddns['host'];
-			}
-		}
-	}
-
 }
