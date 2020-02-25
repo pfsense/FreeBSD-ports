@@ -93,9 +93,10 @@ $section->addInput(new Form_Checkbox(
 	$gconfig['keep'] === 'on' ? true:false,
 	'on'
 ));
+$form->add($section);
 
-$group = new Form_Group('Service Settings');
-$group->addInput(new Form_Checkbox(
+$section = new Form_Section('Service Settings');
+$section->addInput(new Form_Checkbox(
 	'truncate',
 	'Truncate',
 	'Truncate serice output logs on service start',
@@ -103,13 +104,12 @@ $group->addInput(new Form_Checkbox(
 	'on'
 ));
 
-$group->addInput(new Form_Input(
+$section->addInput(new Form_Input(
 	'config_file',
 	'Config file path',
 	'text',
 	$gconfig['config_file']
 ));
-$section->add($group);
 
 $form->add($section);
 print($form);
