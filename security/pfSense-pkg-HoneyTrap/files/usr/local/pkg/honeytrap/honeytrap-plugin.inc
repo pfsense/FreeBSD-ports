@@ -88,7 +88,7 @@ function honeytrap_deinstall() {
 	init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
 	$gconfig =& $config['installedpackages']['honeytrap']['config'][0];
 
-	if (isset($gconfig['keep']) || $gconfig['keep'] != 'on') {
+	if (!isset($gconfig['keep']) || $gconfig['keep'] != 'on') {
 		update_status('Removing HoneyTrap configuration');
 		unset($config['installedpackages']['honeytrap']);
 		write_config('HoneyTrap: Remove config');
