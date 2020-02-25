@@ -109,7 +109,7 @@ $group->addInput(new Form_Input(
 	'text',
 	$gconfig['config_file']
 ));
-$section->add($group)
+$section->add($group);
 
 $form->add($section);
 print($form);
