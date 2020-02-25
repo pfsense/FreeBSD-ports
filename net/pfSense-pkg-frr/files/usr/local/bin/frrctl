@@ -51,6 +51,7 @@ fi
 
 daemon_command() {
 	COMMANDS=${2}
+	COMMANDS=${COMMANDS}`echo -e "\nterminal length 0\n"`
 	COMMANDS=${COMMANDS}`echo -e "\n${3}\n"`
 	COMMANDS=${COMMANDS}`echo -e "\nexit\n"`
 	echo "$COMMANDS" | /usr/bin/nc localhost ${1} | /usr/bin/tail -n +10 | sed '$d'
