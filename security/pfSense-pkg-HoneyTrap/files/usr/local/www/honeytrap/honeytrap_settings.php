@@ -33,6 +33,12 @@ if ($_POST && isset($_POST['save'])) {
 		unset($gconfig['enable']);
 	}
 
+	if (isset($_POST['keep']) && $_POST['keep'] == 'on') {
+		$gconfig['keep'] = $_POST['keep'];
+	} else {
+		unset($gconfig['keep']);
+	}
+
 	if (isset($_POST['truncate']) && $_POST['truncate'] == 'on') {
 		$gconfig['truncate'] = $_POST['truncate'];
 	} else {
@@ -71,29 +77,39 @@ if (isset($savemsg)) {
 
 $form = new Form();
 
-$section = new Form_Section('HoneyTrap Service Settings');
+$section = new Form_Section('HoneyTrap General Settings');
 $section->addInput(new Form_Checkbox(
 	'enable',
 	'Enable',
-	'Enable the HoneyTrap service',
+	'Enable HoneyTrap',
 	$gconfig['enable'] === 'on' ? true:false,
 	'on'
 ));
 
 $section->addInput(new Form_Checkbox(
+	'keep',
+	'Keep',
+	'Keep settings on install,upgrade or deinstall',
+	$gconfig['keep'] === 'on' ? true:false,
+	'on'
+));
+
+$group = new Form_Group('Service Settings');
+$group->addInput(new Form_Checkbox(
 	'truncate',
 	'Truncate',
-	'Truncate logs on service start',
+	'Truncate serice output logs on service start',
 	$gconfig['truncate'] === 'on' ? true:false,
 	'on'
 ));
 
-$section->addInput(new Form_Input(
+$group->addInput(new Form_Input(
 	'config_file',
 	'Config file path',
 	'text',
 	$gconfig['config_file']
 ));
+$section->add($group)
 
 $form->add($section);
 print($form);
