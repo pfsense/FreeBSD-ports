@@ -67,10 +67,7 @@ function honeytrap_sync_config() {
 
 function honeytrap_install() {
 	global $config;
-
-	if (!isset($config['installedpackages']['honeytrap'])) {
-		init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
-	}
+	init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
 
 	$gconfig =& $config['installedpackages']['honeytrap']['config'][0];
 
@@ -81,25 +78,23 @@ function honeytrap_install() {
 }
 
 function honeytrap_deinstall() {
-    update_status('Removing HoneyTrap')
+	update_status('Removing HoneyTrap')
 	if (is_service_running('honeytrap')) {
 		update_status('Stopping HoneyTrap service');
 		stop_service('honeytrap');
 	}
 
-    global $config;
-	if (!isset($config['installedpackages']['honeytrap'])) {
-		init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
-	}
-    $gconfig =& $config['installedpackages']['honeytrap']['config'][0];
+	global $config;
+	init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
+	$gconfig =& $config['installedpackages']['honeytrap']['config'][0];
 
-    if (isset($gconfig['keep']) || $gconfig['keep'] != 'on') {
+	if (isset($gconfig['keep']) || $gconfig['keep'] != 'on') {
 		update_status('Removing HoneyTrap configuration');
-        unset($config['installedpackages']['honeytrap']);
-        write_config('HoneyTrap: Remove config')
-        unlink_if_exists('/usr/local/etc/rc.d/honeytrap-daemon.sh');
-        rmdir_recursive('/usr/local/pkg/honeytrap/.data');
-        rmdir_recursive('/usr/local/pkg/honeytrap/config');
-    }
+		unset($config['installedpackages']['honeytrap']);
+		write_config('HoneyTrap: Remove config')
+		unlink_if_exists('/usr/local/etc/rc.d/honeytrap-daemon.sh');
+		rmdir_recursive('/usr/local/pkg/honeytrap/.data');
+		rmdir_recursive('/usr/local/pkg/honeytrap/config');
+	}
 }
 ?>
