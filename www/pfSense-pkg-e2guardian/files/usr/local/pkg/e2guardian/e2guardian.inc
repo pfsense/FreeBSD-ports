@@ -93,13 +93,7 @@ function e2g_watchdog_script($wpid, $wcmd, $winfo) {
 	$wlog = "/var/log/e2guardian/start.log";
 	$wscript = <<<EOF
 # watchdog script for {$winfo}
-if [ -f {$wpid} ];then
-	cat {$wpid} | xargs ps
-	if [ $? -ne 0 ]; then
-		{$wcmd}
-		echo "`date +'%a %b %d %T %Y'` {$winfo} start" >> {$wlog}
-	fi
-else
+if [ ! -f {$wpid} ] || ! pgrep -q -F {$wpid}; then
 	{$wcmd}
 	echo "`date +'%a %b %d %T %Y'` {$winfo} start" >> {$wlog}
 fi
@@ -2206,7 +2200,7 @@ EOF;
 		$cconf = "/usr/local/etc/clamd.conf";
 		$cconf_file = file_get_contents($cconf);
 		if (preg_match("/User (\w+)/", $cconf_file, $matches)) {
-#clamd script file
+			//clamd script file
 			$script = '/usr/local/etc/rc.d/clamav-clamd';
 			$script_file = file($script);
 			$new_clamav_startup = "";
