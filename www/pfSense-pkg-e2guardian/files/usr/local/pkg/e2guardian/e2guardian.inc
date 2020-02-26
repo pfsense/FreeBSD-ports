@@ -112,8 +112,6 @@ EOF;
  * output
  */
 function dg_get_real_interface_address($iface) {
-	global $config;
-
 	$iface = convert_friendly_interface_to_real_interface_name($iface);
 	$line = trim(shell_exec("ifconfig $iface | grep inet | grep -v inet6"));
 	list($dummy, $ip, $dummy2, $netmask) = explode(" ", $line);
@@ -121,8 +119,6 @@ function dg_get_real_interface_address($iface) {
 }
 
 function check_ca_hashes() {
-	global $config, $g;
-
 	//check certificates
 	$cert_count = 0;
 	if (is_dir('/usr/local/share/certs')) {
@@ -405,7 +401,7 @@ function e2g_generate_rules($type) {
 }
 
 function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
-	global $config, $g, $savemsg, $e2g_sched_in_use, $e2g_templates,
+	global $config, $savemsg, $e2g_sched_in_use, $e2g_templates,
 	    $e2g_etc;
 
 	// detect boot process
@@ -2127,7 +2123,7 @@ function e2guardian_check_config() {
 
 function e2guardian_start($via_rpc = "no", $install_process = false,
     $force_start = false) {
-	global $g, $config, $savemsg, $e2g_templates, $e2g_etc;
+	global $config, $savemsg, $e2g_templates, $e2g_etc;
 
 	clear_subsystem_dirty('e2guardian');
 
@@ -2544,9 +2540,8 @@ function e2guardian_php_install_command() {
 	echo "Blacklist check done, continuing package config sync.\n";
 	clear_subsystem_dirty('e2guardian');
 }
-
 function e2guardian_php_deinstall_command() {
-	global $config, $g, $e2g_etc;
+	global $e2g_etc;
 
 	echo "Remove modified xml files...\n";
 	$e2gxmls = array("users", "ips");
@@ -2593,7 +2588,7 @@ function e2guardian_php_deinstall_command() {
 
 function e2guardian_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
     $password, $synctimeout = 30) {
-	global $config, $g;
+	global $config;
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" ||
 	    $port == "" || $protocol == "") {
