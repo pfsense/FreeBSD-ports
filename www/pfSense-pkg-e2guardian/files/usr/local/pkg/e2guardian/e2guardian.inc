@@ -167,7 +167,7 @@ function check_ca_hashes() {
 function e2g_generate_rules($type) {
 	global $config;
 
-	$e2g_conf = $config['installedpackages']['e2guardian']['config'][0];
+	$e2g_conf = $config['installedpackages']['e2guardian']['config'];
 
 	// Do not install any firewall rules if E2guardian is disabled
 	if ($e2g_conf['enable'] != "on") {
@@ -427,10 +427,8 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 		    isset($boot_process) . " rpc:" . $via_rpc);
 	}
 
-	/* XXX If array only has the index 0, it shouldn't be an array */
-	// assign xml arrays
 	if (!is_array($config['installedpackages']['e2guardian'])) {
-		$config['installedpackages']['e2guardian']['config'][0] = array(
+		$config['installedpackages']['e2guardian']['config'] = array(
 		    'interface' => 'lo0',
 		    'filterports' => '8080',
 		    'parentmode' => 'direct',
@@ -440,10 +438,9 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 		    'daemon_options' => 'softrestart'
 		);
 	}
-	$e2guardian = $config['installedpackages']['e2guardian']['config'][0];
-	/* XXX If array only has the index 0, it shouldn't be an array */
+	$e2guardian = $config['installedpackages']['e2guardian']['config'];
 	if (!is_array($config['installedpackages']['e2guardianconfig'])) {
-		$config['installedpackages']['e2guardianconfig']['config'][0] =
+		$config['installedpackages']['e2guardianconfig']['config'] =
 			array(
 				'auth_plugin' => '',
 				'scan_options' => 'scancleancache," .
@@ -457,10 +454,9 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 			);
 	}
 	$e2guardian_config =
-	    $config['installedpackages']['e2guardianconfig']['config'][0];
-	/* XXX If array only has the index 0, it shouldn't be an array */
+	    $config['installedpackages']['e2guardianconfig']['config'];
 	if (!is_array($config['installedpackages']['e2guardianlog'])) {
-		$config['installedpackages']['e2guardianlog']['config'][0] =
+		$config['installedpackages']['e2guardianlog']['config'] =
 			array(
 				'report_level' => '3',
 				'report_language' => 'ukenglish',
@@ -477,22 +473,19 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 			);
 	}
 	$e2guardian_log =
-	    $config['installedpackages']['e2guardianlog']['config'][0];
-	/* XXX If array only has the index 0, it shouldn't be an array */
+	    $config['installedpackages']['e2guardianlog']['config'];
 	if (is_array($config['installedpackages']['e2guardianlimits'])) {
 		$e2guardian_limits =
-		    $config['installedpackages']['e2guardianlimits']['config'][0];
+		    $config['installedpackages']['e2guardianlimits']['config'];
 	}
-	/* XXX If array only has the index 0, it shouldn't be an array */
 	if (is_array($config['installedpackages']['e2guardianusers'])) {
 		$e2guardian_users =
-		    $config['installedpackages']['e2guardianusers']['config'][0];
+		    $config['installedpackages']['e2guardianusers']['config'];
 	}
-	/* XXX If array only has the index 0, it shouldn't be an array */
 	if (is_array(
 	    $config['installedpackages']['e2guardianblacklist']['config'])) {
 		$e2guardian_blacklist =
-		    $config['installedpackages']['e2guardianblacklist']['config'][0];
+		    $config['installedpackages']['e2guardianblacklist']['config'];
 	}
 
 	// daemon options
@@ -812,7 +805,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	$match[0] = "/(conf)/";
 	$match[1] = "/(\/usr.local)/";
 	$match[2] = "/,/";
-	$replace[0] = "$1'";
+	$replbce[0] = "$1'";
 	$replace[1] = "contentscanner = '/usr/local";
 	$replace[2] = "\n";
 
@@ -846,7 +839,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 				$weighted_includes .= $matches[1] . ",";
 			}
 		}
-		$config['installedpackages']['e2guardianphraseacl']['config'][0] = array(
+		$config['installedpackages']['e2guardianphraseacl']['config'] = array(
 		    'name' => 'Default',
 		    'aclschedule' => 'Always active',
 		    'description' => 'Default Phrase access list setup',
@@ -922,7 +915,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	//site ACL
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardiansiteacl']['config'])) {
-		$config['installedpackages']['e2guardiansiteacl']['config'][0] = array(
+		$config['installedpackages']['e2guardiansiteacl']['config'] = array(
 		    'name' => 'Default',
 		    'aclschedule' => 'Always active',
 		    'description' => 'Default Site access list setup',
@@ -934,7 +927,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 
 	//Blacklist
 	if (!is_array($config['installedpackages']['e2guardianblacklist']['config'])) {
-		$config['installedpackages']['e2guardianblacklist']['config'][0] = array(
+		$config['installedpackages']['e2guardianblacklist']['config'] = array(
 		    'liston' => 'both',
 		    'cron' => '02days',
 		    /* XXX Save this URL on a variable? */
@@ -1080,7 +1073,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	//URL ACL
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardianurlacl']['config'])) {
-		$config['installedpackages']['e2guardianurlacl']['config'][0] = array(
+		$config['installedpackages']['e2guardianurlacl']['config'] = array(
 		    'name' => 'Default',
 		    'aclschedule' => 'Always active',
 		    'description' => 'Default Url access list setup',
@@ -1253,7 +1246,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	//Pics ACL
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardianpicsacl']['config'])) {
-		$config['installedpackages']['e2guardianpicsacl']['config'][0] = array(
+		$config['installedpackages']['e2guardianpicsacl']['config'] = array(
 		    'name' => 'Default',
 		    'aclschedule' => 'Always active',
 		    'description' => 'Default file access list setup');
@@ -1281,7 +1274,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	//Search ACL
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardiansearchacl']['config'])) {
-		$config['installedpackages']['e2guardiansearchacl']['config'][0] = array(
+		$config['installedpackages']['e2guardiansearchacl']['config'] = array(
 		    'name' => 'Default',
 		    'aclschedule' => 'Always active',
 		    'description' => 'Default search engine list setup');
@@ -1340,7 +1333,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	//File ACL
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardianfileacl']['config'])) {
-		$config['installedpackages']['e2guardianfileacl']['config'][0] = array(
+		$config['installedpackages']['e2guardianfileacl']['config'] = array(
 		    'name' => 'Default',
 		    'aclschedule' => 'Always active',
 		    'description' => 'Default file access list setup',
@@ -1390,7 +1383,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	//header ACL
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardianheaderacl']['config'])) {
-		$config['installedpackages']['e2guardianheaderacl']['config'][0] = array(
+		$config['installedpackages']['e2guardianheaderacl']['config'] = array(
 		    'name' => 'Default',
 		    'aclschedule' => 'Always active',
 		    'description' => 'Default header access list setup');
@@ -1431,7 +1424,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	//Content ACL
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardiancontentacl']['config'])) {
-		$config['installedpackages']['e2guardiancontentacl']['config'][0] = array(
+		$config['installedpackages']['e2guardiancontentacl']['config'] = array(
 		    'name' => 'Default',
 		    'aclschedule' => 'Always active',
 		    'description' => 'Default content setup');
@@ -1455,37 +1448,37 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	//Antivirus ACL
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardianantivirusacl']['config'])) {
-		$config['installedpackages']['e2guardianantivirusacl']['config'][0] = array();
+		$config['installedpackages']['e2guardianantivirusacl']['config'] = array();
 	}
 
-	$e2guardian_antivirus = $config['installedpackages']['e2guardianantivirusacl']['config'][0];
+	$e2guardian_antivirus = $config['installedpackages']['e2guardianantivirusacl']['config'];
 	//exceptionvirusmimetypelist
 	if ($e2guardian_antivirus['mime_list'] == "" && file_exists($e2g_etc . '/lists/contentscanners/exceptionvirusmimetypelist.sample')) {
-		$config['installedpackages']['e2guardianantivirusacl']['config'][0]['mime_list'] = base64_encode(file_get_contents($e2g_etc . '/lists/contentscanners/exceptionvirusmimetypelist.sample'));
+		$config['installedpackages']['e2guardianantivirusacl']['config']['mime_list'] = base64_encode(file_get_contents($e2g_etc . '/lists/contentscanners/exceptionvirusmimetypelist.sample'));
 		$load_samples++;
 	}
-	file_put_contents($e2g_etc . "/lists/contentscanners/exceptionvirusmimetypelist", ($e2guardian_antivirus['mime_enabled'] ? e2_text_area_decode($config['installedpackages']['e2guardianantivirusacl']['config'][0]['mime_list']) : ""), LOCK_EX);
+	file_put_contents($e2g_etc . "/lists/contentscanners/exceptionvirusmimetypelist", ($e2guardian_antivirus['mime_enabled'] ? e2_text_area_decode($config['installedpackages']['e2guardianantivirusacl']['config']['mime_list']) : ""), LOCK_EX);
 
 	//exceptionvirussitelist
 	if ($e2guardian_antivirus['site_list'] == "" && file_exists($e2g_etc . '/lists/contentscanners/exceptionvirussitelist.sample')) {
-		$config['installedpackages']['e2guardianantivirusacl']['config'][0]['site_list'] = base64_encode(file_get_contents($e2g_etc . '/lists/contentscanners/exceptionvirussitelist.sample'));
+		$config['installedpackages']['e2guardianantivirusacl']['config']['site_list'] = base64_encode(file_get_contents($e2g_etc . '/lists/contentscanners/exceptionvirussitelist.sample'));
 		$load_samples++;
 	}
-	file_put_contents($e2g_etc . "/lists/contentscanners/exceptionvirussitelist", ($e2guardian_antivirus['site_enabled'] ? e2_text_area_decode($config['installedpackages']['e2guardianantivirusacl']['config'][0]['site_list']) : ""), LOCK_EX);
+	file_put_contents($e2g_etc . "/lists/contentscanners/exceptionvirussitelist", ($e2guardian_antivirus['site_enabled'] ? e2_text_area_decode($config['installedpackages']['e2guardianantivirusacl']['config']['site_list']) : ""), LOCK_EX);
 
 	//exceptionvirusurllist
 	if ($e2guardian_antivirus['url_list'] == "" && file_exists($e2g_etc . '/lists/contentscanners/exceptionvirusurllist.sample')) {
-		$config['installedpackages']['e2guardianantivirusacl']['config'][0]['url_list'] = base64_encode(file_get_contents($e2g_etc . '/lists/contentscanners/exceptionvirusurllist.sample'));
+		$config['installedpackages']['e2guardianantivirusacl']['config']['url_list'] = base64_encode(file_get_contents($e2g_etc . '/lists/contentscanners/exceptionvirusurllist.sample'));
 		$load_samples++;
 	}
-	file_put_contents($e2g_etc . "/lists/contentscanners/exceptionvirusurllist", ($e2guardian_antivirus['url_enabled'] ? e2_text_area_decode($config['installedpackages']['e2guardianantivirusacl']['config'][0]['url_list']) : ""), LOCK_EX);
+	file_put_contents($e2g_etc . "/lists/contentscanners/exceptionvirusurllist", ($e2guardian_antivirus['url_enabled'] ? e2_text_area_decode($config['installedpackages']['e2guardianantivirusacl']['config']['url_list']) : ""), LOCK_EX);
 
 	//exceptionvirusextensionlist
 	if ($e2guardian_antivirus['extension_list'] == "" && file_exists($e2g_etc . '/lists/contentscanners/exceptionvirusextensionlist.sample')) {
-		$config['installedpackages']['e2guardianantivirusacl']['config'][0]['extension_list'] = base64_encode(file_get_contents($e2g_etc . '/lists/contentscanners/exceptionvirusextensionlist.sample'));
+		$config['installedpackages']['e2guardianantivirusacl']['config']['extension_list'] = base64_encode(file_get_contents($e2g_etc . '/lists/contentscanners/exceptionvirusextensionlist.sample'));
 		$load_samples++;
 	}
-	file_put_contents($e2g_etc . "/lists/contentscanners/exceptionvirusextensionlist", ($e2guardian_antivirus['extension_enabled'] ? e2_text_area_decode($config['installedpackages']['e2guardianantivirusacl']['config'][0]['extension_list']):""), LOCK_EX);
+	file_put_contents($e2g_etc . "/lists/contentscanners/exceptionvirusextensionlist", ($e2guardian_antivirus['extension_enabled'] ? e2_text_area_decode($config['installedpackages']['e2guardianantivirusacl']['config']['extension_list']):""), LOCK_EX);
 
 	//log report
 	$rf = "/usr/local/share/e2guardian/languages/{$reportlanguage}/template.html";
@@ -1495,7 +1488,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	if ($e2guardian_log['report_file'] == "" && file_exists("$rf.sample")) {
 		$report_file = file_get_contents("$rf.sample");
 		$report_file = preg_replace('/<.*(html|head)>/', '', $report_file);
-		$config['installedpackages']['e2guardianlog']['config'][0]['report_file'] = base64_encode($report_file);
+		$config['installedpackages']['e2guardianlog']['config']['report_file'] = base64_encode($report_file);
 		$e2guardian_log['report_file'] = base64_encode($report_file);
 		$load_samples++;
 	}
@@ -1503,14 +1496,14 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	//exception ip list
 	//create a default setup if not exists
 	if (!is_array($config['installedpackages']['e2guardianips']['config'])) {
-		$config['installedpackages']['e2guardianips']['config'][0] = array("exceptioniplist" => "", "bannediplist" => "");
+		$config['installedpackages']['e2guardianips']['config'] = array("exceptioniplist" => "", "bannediplist" => "");
 	}
-	if ($config['installedpackages']['e2guardianips']['config'][0]['exceptioniplist'] == "" && file_exists($e2g_etc . '/lists/exceptioniplist.sample')) {
-		$config['installedpackages']['e2guardianips']['config'][0]['exceptioniplist'] = base64_encode(file_get_contents($e2g_etc . '/lists/exceptioniplist.sample'));
+	if ($config['installedpackages']['e2guardianips']['config']['exceptioniplist'] == "" && file_exists($e2g_etc . '/lists/exceptioniplist.sample')) {
+		$config['installedpackages']['e2guardianips']['config']['exceptioniplist'] = base64_encode(file_get_contents($e2g_etc . '/lists/exceptioniplist.sample'));
 		$load_samples++;
 	}
-	file_put_contents($e2g_etc . "/lists/exceptioniplist", e2_text_area_decode($config['installedpackages']['e2guardianips']['config'][0]['exceptioniplist']), LOCK_EX);
-	file_put_contents($e2g_etc . "/lists/bannediplist", e2_text_area_decode($config['installedpackages']['e2guardianips']['config'][0]['bannediplist']), LOCK_EX);
+	file_put_contents($e2g_etc . "/lists/exceptioniplist", e2_text_area_decode($config['installedpackages']['e2guardianips']['config']['exceptioniplist']), LOCK_EX);
+	file_put_contents($e2g_etc . "/lists/bannediplist", e2_text_area_decode($config['installedpackages']['e2guardianips']['config']['bannediplist']), LOCK_EX);
 
 	if ($load_samples > 0) {
 		write_config();
@@ -1521,7 +1514,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 
 	//Filtergroups
 	if (!is_array($config['installedpackages']['e2guardiangroups']['config'])) {
-		$config['installedpackages']['e2guardiangroups']['config'][0] = array(
+		$config['installedpackages']['e2guardiangroups']['config'] = array(
 		    'name' => 'Default',
 		    'description' => 'Default e2guardian filtergroup',
 		    'picsacl' => "Default",
@@ -1777,10 +1770,10 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 		include("{$e2g_templates}/e2guardianfx.conf.template");
 		file_put_contents($e2g_etc . "/e2guardianf" . $count . ".conf", $dgf, LOCK_EX);
 
-		if ($config['installedpackages']['e2guardianusers']['config'][0][$e2guardian_group_name] != "") {
-			$import_users = explode("\n", base64_decode($config['installedpackages']['e2guardianusers']['config'][0][$e2guardian_group_name]));
+		if ($config['installedpackages']['e2guardianusers']['config'][$e2guardian_group_name] != "") {
+			$import_users = explode("\n", base64_decode($config['installedpackages']['e2guardianusers']['config'][$e2guardian_group_name]));
 			asort($import_users);
-			$config['installedpackages']['e2guardianusers']['config'][0][$e2guardian_group_name] = base64_encode(implode("\n", $import_users));
+			$config['installedpackages']['e2guardianusers']['config'][$e2guardian_group_name] = base64_encode(implode("\n", $import_users));
 			foreach ($import_users as $new_user) {
 				if (preg_match("/(\S+)\s+(\S+)/", $new_user, $matches)) {
 					$filtergroupslist .= $matches[1] . "=filter" . $count . " #" . $matches[2] . "\n";
@@ -1789,10 +1782,10 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 				}
 			}
 		}
-		if ($config['installedpackages']['e2guardianips']['config'][0][$e2guardian_group_name] != "") {
-			$import_ips = explode("\n", base64_decode($config['installedpackages']['e2guardianips']['config'][0][$e2guardian_group_name]));
+		if ($config['installedpackages']['e2guardianips']['config'][$e2guardian_group_name] != "") {
+			$import_ips = explode("\n", base64_decode($config['installedpackages']['e2guardianips']['config'][$e2guardian_group_name]));
 			asort($import_ips);
-			$config['installedpackages']['e2guardianips']['config'][0][$e2guardian_group_name] = base64_encode(implode("\n", $import_ips));
+			$config['installedpackages']['e2guardianips']['config'][$e2guardian_group_name] = base64_encode(implode("\n", $import_ips));
 			foreach ($import_ips as $new_ip) {
 				if (preg_match("/(\S+)\s+(.*)/", $new_ip, $matches)) {
 					$filtergroupsiplist .= $matches[1] . " = filter" . $count . " #" . $matches[2] . "\n";
@@ -1942,7 +1935,7 @@ EOF;
 		$watchdog_e2g = e2g_watchdog_script($we2g_pid,$we2g_cmd,"e2guardian");
 		//e2g main squid process
 		if (is_array($config['installedpackages']['squid'])) {
-			$squid_cfg = $config['installedpackages']['squid']['config'][0];
+			$squid_cfg = $config['installedpackages']['squid']['config'];
 			if ($squid_cfg['enable_squid'] == "on") {
 				$msqd_pid = "/var/run/squid/squid.pid";
 				$msqd_cmd = "/usr/local/sbin/squid -f /usr/local/etc/squid/squid.conf";
@@ -2098,7 +2091,7 @@ function e2g_check_cron($cron_cmd, $action, $min = "*", $hour = "*", $mday = "*"
 function e2guardian_check_config() {
 	global $savemsg, $config;
 
-	if (!isset($config['installedpackages']['e2guardian']['config'][0]['enable'])) {
+	if (!isset($config['installedpackages']['e2guardian']['config']['enable'])) {
 		return 1;
 	}
 
@@ -2134,7 +2127,7 @@ function e2guardian_start($via_rpc = "no", $install_process = false,
 	}
 
 	if (is_array($config['installedpackages']['e2guardian']['config'])) {
-		$e2g_cfg = $config['installedpackages']['e2guardian']['config'][0];
+		$e2g_cfg = $config['installedpackages']['e2guardian']['config'];
 	} else {
 		log_error('Cannot find E2guardian daemon configuration');
 	}
@@ -2230,7 +2223,7 @@ function e2guardian_start($via_rpc = "no", $install_process = false,
 	if (!isset($boot_process) || $via_rpc == "yes") {
 		/* Uses XMLRPC to synchronize the changes to a remote node */
 		if (is_array($config['installedpackages']['e2guardiansync']['config'])) {
-			$e2_sync = $config['installedpackages']['e2guardiansync']['config'][0];
+			$e2_sync = $config['installedpackages']['e2guardiansync']['config'];
 			$synconchanges = $e2_sync['synconchanges'];
 			$synctimeout = $e2_sync['synctimeout'];
 			$rs = array();
@@ -2336,7 +2329,7 @@ function e2guardian_validate_input($post, &$input_errors) {
 	}
 	if (is_array($config['installedpackages']['e2guardian'])) {
 		$settings =
-		    $config['installedpackages']['e2guardian']['config'][0];
+		    $config['installedpackages']['e2guardian']['config'];
 	} else {
 		$settings = array();
 	}
@@ -2395,7 +2388,7 @@ function e2guardian_validate_input($post, &$input_errors) {
 	}
 
 	if ($post['report_language'] != "") {
-		$e2glog = $config['installedpackages']['e2guardianlog']['config'][0];
+		$e2glog = $config['installedpackages']['e2guardianlog']['config'];
 		if ($_POST['report_file'] == "" ||
 		    $post['report_language'] != $e2glog['report_language']) {
 			$rf = "/usr/local/share/e2guardian/languages/" .
