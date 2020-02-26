@@ -40,18 +40,21 @@ log_error("e2guardian - rotating logs.");
 service_control_stop("e2guardian", array());
 
 log_error("e2guardian - stoping");
-$e2guardian_log = $config['installedpackages']['e2guardianlog']['config'][0];
+
+init_config_arr(array('installedpackages', 'e2guardianlog', 'config'));
+$e2guardian_log = $config['installedpackages']['e2guardianlog']['config'];
+
 $logfilecount = ($e2guardian_log['logcount']
     ? $e2guardian_log['logcount'] : "30");
 $log="/var/log/e2guardian/access.log";
+
 // logrotate script file distrubuted with e2guardian translated to php
-if (file_exists("{$log}.{$logfilecount}")){
-	unlink("{$log}.{$logfilecount}");
-}
+unlink_if_exists("{$log}.{$logfilecount}");
+
 $n = $logfilecount - 1;
 while ($n > 0){
 	$m = $n + 1;
-	if(file_exists("{$log}.{$n}")){
+	if (file_exists("{$log}.{$n}")) {
 		rename("{$log}.{$n}", "{$log}.{$m}");
 	}
 	$n--;

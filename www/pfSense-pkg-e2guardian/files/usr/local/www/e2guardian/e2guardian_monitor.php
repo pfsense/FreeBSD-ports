@@ -65,11 +65,8 @@ $tab_array[] = array(gettext("Help"), false,
 
 display_top_tabs($tab_array);
 
-if (is_array($config['installedpackages']['e2guardianlog'])) {
-	$e2glog = $config['installedpackages']['e2guardianlog']['config'][0];
-} else {
-	$e2glog = array();
-}
+init_config_arr(array('installedpackages', 'e2guardianlog'));
+$e2glog = $config['installedpackages']['e2guardianlog']['config'];
 
 ?>
 
@@ -116,7 +113,8 @@ if (is_array($config['installedpackages']['e2guardianlog'])) {
 					</td>
 				</tr>
 <?php
-			if ($e2glog['logfileformat'] == 1 || $e2glog['logfileformat'] == 4 || $e2glog['logdeniedcgi'] == "on") :
+			if ((isset($e2glog['logfileformat']) && $e2glog['logfileformat'] == 1 || $e2glog['logfileformat'] == 4) ||
+			    (isset($e2glog['logdeniedcgi']) && $e2glog['logdeniedcgi'] == "on")) :
 ?>
 				<tr>
 					<td width="22%" valign="top" class="vncellreq">Erro to show:</td>
@@ -184,7 +182,8 @@ if (is_array($config['installedpackages']['e2guardianlog'])) {
 </div>
 <br />
 <?php
-if($e2glog['logfileformat'] == 3 && $e2glog['logdeniedcgi'] == "on") :
+if (isset($e2glog['logfileformat']) && $e2glog['logfileformat'] == 3 &&
+    isset($e2glog['logdeniedcgi']) && $e2glog['logdeniedcgi'] == "on") :
 ?>
 <div class="panel panel-default" style='margin:0 auto;width:97%'>
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Detailed denied log"); ?></h2></div>
