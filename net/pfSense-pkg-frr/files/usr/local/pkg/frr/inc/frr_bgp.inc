@@ -182,64 +182,37 @@ function frr_bgp_generate_router() {
 	}
 
 	/* (Re)distribute */
-	/* TODO: Candidate for moving to address-family */
-	/* In each of these cases, if the user selected "yes" then the action is
-	 * enabled. If a route-map was chosen instead, it is added at the end. */
-	if (!empty($frr_bgp_conf['redistributeconnectedsubnets']) && ($frr_bgp_conf['redistributeconnectedsubnets'] != "no")) {
-		$bgpconf .= "  redistribute connected";
-		if (($frr_bgp_conf['redistributeconnectedsubnets'] != "yes") &&
-		    in_array($frr_bgp_conf['redistributeconnectedsubnets'], frr_get_list_values(frr_get_routemap_list(false, true)))) {
-			$bgpconf .= " route-map {$frr_bgp_conf['redistributeconnectedsubnets']}";
-		}
-		$bgpconf .= "\n";
-	}
-	if (!empty($frr_bgp_conf['redistributestatic']) && ($frr_bgp_conf['redistributestatic'] != "no")) {
-		$bgpconf .= "  redistribute static";
-		if (($frr_bgp_conf['redistributestatic'] != "yes") &&
-		    in_array($frr_bgp_conf['redistributestatic'], frr_get_list_values(frr_get_routemap_list(false, true)))) {
-			$bgpconf .= " route-map {$frr_bgp_conf['redistributestatic']}";
-		}
-		$bgpconf .= "\n";
-	}
-	if (!empty($frr_bgp_conf['redistributekernel']) && ($frr_bgp_conf['redistributekernel'] != "no")) {
-		$bgpconf .= "  redistribute kernel";
-		if (($frr_bgp_conf['redistributekernel'] != "yes") &&
-		    in_array($frr_bgp_conf['redistributekernel'], frr_get_list_values(frr_get_routemap_list(false, true)))) {
-			$bgpconf .= " route-map {$frr_bgp_conf['redistributekernel']}";
-		}
-		$bgpconf .= "\n";
-	}
-	if (!empty($frr_bgp_conf['redistributeospf']) && ($frr_bgp_conf['redistributeospf'] != "no")) {
-		$bgpconf .= "  redistribute ospf";
-		if (($frr_bgp_conf['redistributeospf'] != "yes") &&
-		    in_array($frr_bgp_conf['redistributeospf'], frr_get_list_values(frr_get_routemap_list(false, true)))) {
-			$bgpconf .= " route-map {$frr_bgp_conf['redistributeospf']}";
-		}
-		$bgpconf .= "\n";
-	}
-
-	/* Network Distribution */
-	/* TODO: Candidate for moving to address-family */
-
-	/* Loop through the defined network list and create appropriate entries,
-	 * using address-family directives for IPv4 or IPv6 unicast as needed
-	 */
-	foreach ($frr_bgp_conf['row'] as $net) {
-		/* Networks and route-map */
-		if (is_subnet($net['distributeroutevalue']) || is_ipaddr($net['distributeroutevalue'])) {
-			$bgpconf .= "  address-family";
-			if (is_subnetv4($net['distributeroutevalue'])) {
-				$bgpconf .= " ipv4";
-			} elseif (is_subnetv6($net['distributeroutevalue'])) {
-				$bgpconf .= " ipv6";
+	foreach (array('ipv4', 'ipv6') as $ipfamily) {
+		$familyconf = '';
+		foreach (array('connected', 'static', 'kernel', 'ospf') as $redist) {
+			if ($redist == 'connected') {
+				$source = 'connectedsubnets';
+			} else {
+				$source = $redist;
 			}
-			$bgpconf .= " unicast\n";
-			$bgpconf .= "   network {$net['distributeroutevalue']}";
-			if (($net['distributeroutemap'] != "none") &&
-			    in_array($net['distributeroutemap'], frr_get_list_values(frr_get_routemap_list()))) {
-				$bgpconf .= " route-map {$net['distributeroutemap']}";
+			if (in_array($frr_bgp_conf['redistribute' . $source], array($ipfamily, 'yes'))) {
+				$familyconf .= "   redistribute $redist\n";
+			} elseif (!in_array($frr_bgp_conf['redistribute' . $source], array('no', 'yes', 'ipv4', 'ipv6')) &&
+				    in_array($frr_bgp_conf['redistribute' . $source], frr_get_list_values(frr_get_routemap_list(false, true)))) {
+					$familyconf .= "   redistribute $redist route-map {$frr_bgp_conf['redistribute' . $source]}\n";
 			}
-			$bgpconf .= "\n";
+		}
+		foreach ($frr_bgp_conf['row'] as $net) {
+			if (is_subnet($net['distributeroutevalue']) || is_ipaddr($net['distributeroutevalue'])) {
+				if ((is_subnetv4($net['distributeroutevalue']) && ($ipfamily == 'ipv4')) ||
+				    (is_subnetv6($net['distributeroutevalue']) && ($ipfamily == 'ipv6'))) {
+					$familyconf .= "   network {$net['distributeroutevalue']}";
+					if (($net['distributeroutemap'] != "none") &&
+					    in_array($net['distributeroutemap'], frr_get_list_values(frr_get_routemap_list()))) {
+						$familyconf .= " route-map {$net['distributeroutemap']}";
+					}
+					$familyconf .= "\n";
+				}
+			}
+		}
+		if (!empty($familyconf)) {
+			$bgpconf .= "  address-family {$ipfamily} unicast\n";
+			$bgpconf .= $familyconf;
 			$bgpconf .= "  exit-address-family \n";
 		}
 	}

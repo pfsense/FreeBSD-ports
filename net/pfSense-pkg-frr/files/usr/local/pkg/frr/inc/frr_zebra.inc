@@ -54,7 +54,9 @@ function frr_get_routemap_list($exitaction = false, $yesno = false) {
 	 * for those, offer a "yes" or "no" choice. */
 	if ($yesno) {
 		$list[] = array("name" => "No", "value" => "no");
-		$list[] = array("name" => "Yes", "value" => "yes");
+		$list[] = array("name" => "IPv4", "value" => "ipv4");
+		$list[] = array("name" => "IPv6", "value" => "ipv6");
+		$list[] = array("name" => "IPv4+IPv6", "value" => "yes");
 	} else {
 		$list[] = array("name" => "None", "value" => "none");
 	}
