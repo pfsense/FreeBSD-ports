@@ -1685,7 +1685,6 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	foreach ($config['installedpackages']['e2guardiangroups']['config'] as
 	    &$e2guardian_groups) {
 		$e2guardian_group_name = strtolower($e2guardian_groups['name']);
-		$dgfg[$count] = $e2guardian_group_name;
 		$e2guardian_groups['blockdownloads'] =
 		    ($e2guardian_groups['blockdownloads']
 			? $e2guardian_groups['blockdownloads']
