@@ -517,6 +517,29 @@
 			<default_value>192.168.0.0/16,10.0.0.0/8,172.16.0.0/20</default_value>
 		</field>
 		<field>
+			<name>Plugin Settings - SIP Trunk</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>SIP Trunk</fielddescr>
+			<fieldname>plugin_siptrunk</fieldname>
+			<description>Enable SIP Trunk Plugin</description>
+			<sethelp>Plugin to handle SIP Trunks where using *one* single SIP account to which a whole number block is routed. This means an incoming INVITE does carry the target number (in SIP URI or To: header field) but does not really carry any clear indications to which account it belongs to.</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>SIP account</fielddescr>
+			<fieldname>plugin_siptrunk_account</fieldname>
+			<description>SIP account in the form of 'sip:user@host', identical as used for registration.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>REGEX number</fielddescr>
+			<fieldname>plugin_siptrunk_numbers_regex</fieldname>
+			<description>Regular expression that matches the whole number block associated with this account. Example: ^555123(10[0-9]|11[012])$</description>
+			<type>input</type>
+		</field>
+		<field>
 			<name>Debug Options</name>
 			<type>listtopic</type>
 		</field>

@@ -338,6 +338,16 @@ function sync_package_siproxd() {
 		}
 	}
 
+	if ($siproxd_conf['plugin_siptrunk'] != "") {
+		fwrite($fout, "load_plugin=plugin_siptrunk.la\n");
+		fwrite($fout, "plugin_siptrunk_name = SIP Trunk\n");
+		if ($siproxd_conf['plugin_siptrunk_account'] != "") {
+			fwrite($fout, "plugin_siptrunk_account = " . $siproxd_conf['plugin_siptrunk_account'] . "\n");
+		}
+		if ($siproxd_conf['plugin_siptrunk_numbers_regex'] != "") {
+			fwrite($fout, "plugin_siptrunk_numbers_regex = " . $siproxd_conf['plugin_siptrunk_numbers_regex'] . "\n");
+		}
+	}
 
 	fclose($fout);
 
@@ -410,6 +420,9 @@ function validate_form_siproxd($post, &$input_errors) {
 	}
 	if ($post['plugin_stun_period'] && (!is_numeric($post['plugin_stun_period']) || ($post['plugin_stun_period'] < 0))) {
 		$input_errors[] = '"STUN Period" must be numeric and greater than 0.';
+	}
+	if (isset($post['plugin_defaulttarget']) && isset($post['plugin_siptrunk'])) {
+		$input_errors[] = 'Plugin SIP Trunk is mutually exclusive with Plugin Default Target.';
 	}
 
 }
