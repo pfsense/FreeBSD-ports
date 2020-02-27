@@ -64,6 +64,7 @@ if ($_POST) {
 		$lldpd['enable'] = $pconfig['enable'];
 		$lldpd['receiveonly'] = $pconfig['receiveonly'];
 		$lldpd['interfaces'] = $pconfig['interfaces'];
+		$lldpd['agentx'] = $pconfig['agentx'];
 		$lldpd['chassis'] = $pconfig['chassis'];
 		$lldpd['management'] = $pconfig['management'];
 
@@ -148,6 +149,13 @@ $section->addInput(new Form_Checkbox(
 	'Receive Only Mode',
 	'Do not transmit discovery frames, even in response to received frames',
 	$pconfig['receiveonly']
+));
+
+$section->addInput(new Form_Checkbox(
+	'agentx',
+	'Enable AgentX',
+	'With this option, lldpd will enable an SNMP subagent using AgentX protocol',
+	$pconfig['agentx']
 ));
 
 $section->addInput(new Form_Select(
