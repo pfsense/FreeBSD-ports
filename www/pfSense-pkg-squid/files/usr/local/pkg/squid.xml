@@ -132,6 +132,19 @@
 			<default_value>on</default_value>
 		</field>
 		<field>
+			<fielddescr>Listen IP Version</fielddescr>
+			<fieldname>listenproto</fieldname>
+			<description>Select the IP version Squid will use to select addresses for accepting client connections.</description>
+			<type>select</type>
+			<options>
+				<option><name>IPv4</name><value>inet</value></option>
+				<option><name>IPv6</name><value>inet6</value></option>
+				<option><name>IPv4+IPv6</name><value>any</value></option>
+			</options>
+			<size>1</size>
+			<default_value>inet</default_value>
+		</field>
+		<field>
 			<fielddescr>Proxy Interface(s)</fielddescr>
 			<fieldname>active_interface</fieldname>
 			<description>
