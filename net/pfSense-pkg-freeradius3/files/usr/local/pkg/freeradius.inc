@@ -490,6 +490,9 @@ function freeradius_users_resync($via_rpc = false) {
 			$varusersframedipaddress = $users['varusersframedipaddress'];
 			$varusersframedipnetmask = $users['varusersframedipnetmask'];
 			$varusersframedroute = $users['varusersframedroute'];
+			$varusersframedip6address = $users['varusersframedip6address'];
+			$varusersframedip6prefix = $users['varusersframedip6prefix'];
+			$varusersframedip6route = $users['varusersframedip6route'];
 			$varusersexpiration = $users['varusersexpiration'];
 			$varuserssessiontimeout = $users['varuserssessiontimeout'];
 			$varuserslogintime = $users['varuserslogintime'];
@@ -634,6 +637,33 @@ EOD;
 	Framed-Route = "{$varusersframedroute}"
 EOD;
 			}
+			if ($varusersframedip6address != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= <<<EOD
+
+	Framed-IPv6-Address = {$varusersframedip6address}
+EOD;
+			}
+			if ($varusersframedip6prefix != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= <<<EOD
+
+	Framed-IPv6-Prefix = {$varusersframedip6prefix}
+EOD;
+			}
+			if ($varusersframedip6route != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= <<<EOD
+
+	Framed-IPv6-Route = "{$varusersframedip6route}"
+EOD;
+			}
 			if ($varuserssessiontimeout != '') {
 				if ($varusersreplyitem != '') {
 					$varusersreplyitem .= ",";
@@ -768,6 +798,9 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 			$varmacsframedipaddress = $macs['varmacsframedipaddress'];
 			$varmacsframedipnetmask = $macs['varmacsframedipnetmask'];
 			$varmacsframedroute = $macs['varmacsframedroute'];
+			$varmacsframedip6address = $macs['varmacsframedip6address'];
+			$varmacsframedip6prefix = $macs['varmacsframedip6prefix'];
+			$varmacsframedip6route = $macs['varmacsframedip6route'];
 			$varmacsexpiration = $macs['varmacsexpiration'];
 			$varmacssessiontimeout = $macs['varmacssessiontimeout'];
 			$varmacslogintime = $macs['varmacslogintime'];
@@ -877,6 +910,33 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Framed-IP-Netmask = {$varmacsframedipnetmask}
+EOD;
+			}
+			if ($varmacsframedip6address != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= <<<EOD
+
+	Framed-IPv6-Address = {$varmacsframedip6address}
+EOD;
+			}
+			if ($varmacsframedip6prefix != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= <<<EOD
+
+	Framed-IPv6-Prefix = {$varmacsframedip6prefix}
+EOD;
+			}
+			if ($varmacsframedip6route != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= <<<EOD
+
+	Framed-IPv6-Route = "{$varmacsframedip6route}"
 EOD;
 			}
 			if ($varmacsframedroute != '') {
@@ -3743,17 +3803,17 @@ function freeradius_validate_users($post, &$input_errors) {
 	if ($post['varusersframedipaddress']) {
 		$framedip = str_replace('+', '', $post['varusersframedipaddress'], $pluscnt);
 		if (!is_ipaddrv4($framedip)) {
-			$input_errors[] = "The 'IP Address' field must contain a valid IPv4 address.";
+			$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
 		}
 		if ($pluscnt > 1) {
-			$input_errors[] = "The 'IP Address' field may optionally contain only a single trailing '+'.";
+			$input_errors[] = "The 'IPv4 Address' field may optionally contain only a single trailing '+'.";
 		}
 	}
 
 	// Subnet Mask
 	if ($post['varusersframedipnetmask']) {
 		if ($post['varusersframedipaddress'] == '') {
-			$input_errors[] = "To specify a 'Subnet Mask', the 'IP Address' field must not be empty.";
+			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
 		} elseif (is_ipaddrv4($framedip)) {
 			$ip = long2ip(ip2long($framedip) & ip2long($post['varusersframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varusersframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
@@ -3769,19 +3829,62 @@ function freeradius_validate_users($post, &$input_errors) {
 		$cnt = count($framedroute);
 		// One or more metrics are allowed per RFC2865 (5.22)
 		if ($cnt < 3) {
-			$input_errors[] = "The 'Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
+			$input_errors[] = "The 'IPv4 Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
 		}
 		// The subnet CIDR is optional per RFC2865 (5.22)
 		if (!is_ipaddrv4($framedroute[0]) && !is_subnetv4($framedroute[0])) {
-			$input_errors[] = "The 'Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
+			$input_errors[] = "The 'IPv4 Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
 		}
 		if (!is_ipaddrv4($framedroute[1])) {
-			$input_errors[] = "The 'Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
+			$input_errors[] = "The 'IPv4 Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
 		}
 		// One or more metrics are allowed per RFC2865 (5.22)
 		for ($i = 2; $i < $cnt; $i++) {
 			if (!is_numericint($framedroute[$i])) {
-				$input_errors[] = "The 'Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+				$input_errors[] = "The 'IPv4 Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+			}
+		}
+	}
+
+	// IPv6 Address; may contain a single trailing '+' for simultaneous connections
+	if ($post['varusersframedip6address']) {
+		$framedip6 = str_replace('+', '', $post['varusersframedip6address'], $pluscnt);
+		if (!is_ipaddrv6($framedip6)) {
+			$input_errors[] = "The 'IPv6 Address' field must contain a valid IPv6 address.";
+		}
+		if ($pluscnt > 1) {
+			$input_errors[] = "The 'IPv6 Address' field may optionally contain only a single trailing '+'.";
+		}
+	}
+
+	// IPv6 Prefix
+	if ($post['varusersframedip6prefix']) {
+		if ($post['varusersframedip6address'] == '') {
+			$input_errors[] = "To specify a 'IPv6 Prefix', the 'IPv6 Address' field must not be empty.";
+		} elseif (is_ipaddrv6($framedip6)) {
+			if (!is_subnetv6("{$framedip6}/{$post['varusersframedip6prefix']}")) {
+				$input_errors[] = "The 'IPv6 Prefix' field must contain a valid prefix.";
+			}
+		}
+	}
+
+	// IPv6 Gateway
+	if ($post['varusersframedip6route'] != '') {
+		$framed6route = explode(" ", $post['varusersframedip6route']);
+		$cnt = count($framed6route);
+		if ($cnt < 3) {
+			$input_errors[] = "The 'IPv6 Gateway' field must match the required format: Prefix Gateway Metric(s) (e.g. 2001:db8:0:106::/64 2001:db8::106:a00:20ff:fe99:a998 1).";
+		}
+		// The prefix is optional per RFC3162 (2.5)
+		if (!is_ipaddrv6($framed6route[0]) && !is_subnetv6($framed6route[0])) {
+			$input_errors[] = "The 'IPv6 Gateway' field's prefix part '{$framed6route[0]}' must be a valid IPv6 prefix.";
+		}
+		if (!is_ipaddrv6($framed6route[1])) {
+			$input_errors[] = "The 'IPv6 Gateway' field's gateway part '{$framed6route[1]}' must be a valid IPv6 gateway address.";
+		}
+		for ($i = 2; $i < $cnt; $i++) {
+			if (!is_numericint($framed6route[$i])) {
+				$input_errors[] = "The 'IPv6 Gateway' field's metric part '{$framed6route[$i]}' must contain an integer value.";
 			}
 		}
 	}
@@ -3876,17 +3979,17 @@ function freeradius_validate_macs($post, &$input_errors) {
 	if ($post['varmacsframedipaddress']) {
 		$framedip = str_replace('+', '', $post['varmacsframedipaddress'], $pluscnt);
 		if (!is_ipaddrv4($framedip)) {
-			$input_errors[] = "The 'IP Address' field must contain a valid IPv4 address.";
+			$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
 		}
 		if ($pluscnt > 1) {
-			$input_errors[] = "The 'IP Address' field may optionally contain only a single trailing '+'.";
+			$input_errors[] = "The 'IPv4 Address' field may optionally contain only a single trailing '+'.";
 		}
 	}
 
 	// Subnet Mask
 	if ($post['varmacsframedipnetmask']) {
 		if ($post['varmacsframedipaddress'] == '') {
-			$input_errors[] = "To specify a 'Subnet Mask', the 'IP Address' field must not be empty.";
+			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
 		} elseif (is_ipaddrv4($framedip)) {
 			$ip = long2ip(ip2long($framedip) & ip2long($post['varmacsframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varmacsframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
@@ -3902,19 +4005,62 @@ function freeradius_validate_macs($post, &$input_errors) {
 		$cnt = count($framedroute);
 		// One or more metrics are allowed per RFC2865 (5.22)
 		if ($cnt < 3) {
-			$input_errors[] = "The 'Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
+			$input_errors[] = "The 'IPv4 Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
 		}
 		// The subnet CIDR is optional per RFC2865 (5.22)
 		if (!is_ipaddrv4($framedroute[0]) && !is_subnetv4($framedroute[0])) {
-			$input_errors[] = "The 'Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
+			$input_errors[] = "The 'IPv4 Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
 		}
 		if (!is_ipaddrv4($framedroute[1])) {
-			$input_errors[] = "The 'Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
+			$input_errors[] = "The 'IPv4 Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
 		}
 		// One or more metrics are allowed per RFC2865 (5.22)
 		for ($i = 2; $i < $cnt; $i++) {
 			if (!is_numericint($framedroute[$i])) {
-				$input_errors[] = "The 'Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+				$input_errors[] = "The 'IPv4 Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+			}
+		}
+	}
+
+	// IPv6 Address; may contain a single trailing '+' for simultaneous connections
+	if ($post['varmacsframedip6address']) {
+		$framedip6 = str_replace('+', '', $post['varmacsframedip6address'], $pluscnt);
+		if (!is_ipaddrv6($framedip6)) {
+			$input_errors[] = "The 'IPv6 Address' field must contain a valid IPv6 address.";
+		}
+		if ($pluscnt > 1) {
+			$input_errors[] = "The 'IPv6 Address' field may optionally contain only a single trailing '+'.";
+		}
+	}
+
+	// IPv6 Prefix
+	if ($post['varmacsframedip6prefix']) {
+		if ($post['varmacsframedip6address'] == '') {
+			$input_errors[] = "To specify a 'IPv6 Prefix', the 'IPv6 Address' field must not be empty.";
+		} elseif (is_ipaddrv6($framedip6)) {
+			if (!is_subnetv6("{$framedip6}/{$post['varmacsframedip6prefix']}")) {
+				$input_errors[] = "The 'IPv6 Prefix' field must contain a valid prefix.";
+			}
+		}
+	}
+
+	// IPv6 Gateway
+	if ($post['varmacsframedip6route'] != '') {
+		$framed6route = explode(" ", $post['varmacsframedip6route']);
+		$cnt = count($framed6route);
+		if ($cnt < 3) {
+			$input_errors[] = "The 'IPv6 Gateway' field must match the required format: Prefix Gateway Metric(s) (e.g. 2001:db8:0:106::/64 2001:db8::106:a00:20ff:fe99:a998 1).";
+		}
+		// The prefix is optional per RFC3162 (2.5)
+		if (!is_ipaddrv6($framed6route[0]) && !is_subnetv6($framed6route[0])) {
+			$input_errors[] = "The 'IPv6 Gateway' field's prefix part '{$framed6route[0]}' must be a valid IPv6 prefix.";
+		}
+		if (!is_ipaddrv6($framed6route[1])) {
+			$input_errors[] = "The 'IPv6 Gateway' field's gateway part '{$framed6route[1]}' must be a valid IPv6 gateway address.";
+		}
+		for ($i = 2; $i < $cnt; $i++) {
+			if (!is_numericint($framed6route[$i])) {
+				$input_errors[] = "The 'IPv6 Gateway' field's metric part '{$framed6route[$i]}' must contain an integer value.";
 			}
 		}
 	}
