@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	u-boot
-DISTVERSION=	20200224
+DISTVERSION=	20200227
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 PKGNAMESUFFIX=	-sg2100
@@ -22,7 +22,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	u-boot-binaries
-GL_COMMIT=	6cade61adad30db22dc761edd85ad66b14e26b3b
+GL_COMMIT=	a6057a3a67b15e4a5753a95522c13741b77520f5
 FETCH_BEFORE_ARGS=	--no-verify-peer
 
 do-install:
