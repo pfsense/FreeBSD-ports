@@ -632,6 +632,13 @@ pkg_upgrade() {
 				[ -f /tmp/loader.rc.local ] \
 				    && cp /tmp/loader.rc.local /boot 2>/dev/null
 			fi
+			# Force upgrade pfSense-rc together with kernel. It's
+			# failing for some reason on armv6 even with the proper
+			# dependency version registered
+			if upgrade_available ${product}-rc; then
+				_exec "pkg-static upgrade -U ${product}-rc" \
+				    "Upgrading ${product}-rc"
+			fi
 			# Save a copy of loader.conf and restore after kernel
 			# upgrade if it is removed. There was a bug that added
 			# a static copy of loader.conf on amd64 kernel package
@@ -642,13 +649,6 @@ pkg_upgrade() {
 			if [ "${_arch}" = "amd64" ] && \
 			    [ -s /boot/loader.conf ]; then
 				cp -fp /boot/loader.conf /tmp/loader.conf.backup
-			fi
-			# Force upgrade pfSense-rc together with kernel. It's
-			# failing for some reason on armv6 even with the proper
-			# dependency version registered
-			if upgrade_available ${product}-rc; then
-				_exec "pkg-static upgrade -U ${product}-rc" \
-				    "Upgrading ${product}-rc"
 			fi
 			_exec "pkg-static upgrade -U ${kernel_pkg}" \
 			    "Upgrading ${product} kernel"
