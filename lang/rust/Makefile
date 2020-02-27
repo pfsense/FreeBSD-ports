@@ -203,7 +203,8 @@ do-install:
 		${STAGEDIR}${DOCSDIR}/html/.stamp \
 		${STAGEDIR}${PREFIX}/lib/rustlib/install.log \
 		${STAGEDIR}${PREFIX}/lib/rustlib/manifest-* \
-		${STAGEDIR}${PREFIX}/lib/rustlib/uninstall.sh
+		${STAGEDIR}${PREFIX}/lib/rustlib/uninstall.sh \
+		${STAGEDIR}${PREFIX}/share/man/man1
 	@${FIND} ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/lib -exec ${FILE} -i {} + | \
 		${AWK} -F: '/executable|sharedlib/ { print $$1 }' | ${XARGS} ${STRIP_CMD}
 	@${FIND} ${STAGEDIR}${PREFIX} -not -type d | \
