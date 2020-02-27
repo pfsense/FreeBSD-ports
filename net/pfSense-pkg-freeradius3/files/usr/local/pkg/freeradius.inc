@@ -3665,8 +3665,8 @@ EOD;
 function freeradius_validate_users($post, &$input_errors) {
 
 	// Username
-	if ($post['varusersmotpenable'] == 'on' && !preg_match('/^[a-zA-Z0-9_.-]*$/', $post['varusersusername'])) {
-		$input_errors[] = "The 'Username' field may only contain a-z, A-Z, 0-9, underscore, period and hyphen (regex /^[a-zA-Z0-9_.-]*$/) when 'Enable One-Time-Password for this user' is checked.";
+	if (!preg_match('/^[a-zA-Z0-9_.-]*$/', $post['varusersusername'])) {
+		$input_errors[] = "The 'Username' field may only contain a-z, A-Z, 0-9, underscore, period and hyphen (regex /^[a-zA-Z0-9_.-]*$/).";
 	}
 
 	// Password
