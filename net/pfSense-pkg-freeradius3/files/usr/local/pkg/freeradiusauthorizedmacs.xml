@@ -186,19 +186,19 @@
 			<type>input</type>
 		</field>
 		<field>
-			<name>Network Configuration</name>
+			<name>IPv4 Network Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>IP Address</fielddescr>
+			<fielddescr>IPv4 Address</fielddescr>
 			<fieldname>varmacsframedipaddress</fieldname>
 			<description>
 				<![CDATA[
 				<b>Framed-IP-Address</b> must be supported by NAS. <span class="text-info">Click Info for details.</span><br/>
-				<span class="text-danger">IMPORTANT:</span> You must enter an IP address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
+				<span class="text-danger">IMPORTANT:</span> You must enter an IPv4 address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
 				<div class="infoblock">
-				If you want this MAC address to be assigned a specific IP address from RADIUS, enter the IP address here.<br/>
-				Continuous IP address is available with "+" suffix (e.g. 192.168.1.5+). This can be useful for simultaneous connections.
+				If you want this MAC address to be assigned a specific IPv4 address from RADIUS, enter the IP address here.<br/>
+				Continuous IPv4 address is available with "+" suffix (e.g. 192.168.1.5+). This can be useful for simultaneous connections.
 				</div>
 				]]>
 			</description>
@@ -215,7 +215,7 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Gateway</fielddescr>
+			<fielddescr>IPv4 Gateway</fielddescr>
 			<fieldname>varmacsframedroute</fieldname>
 			<description>
 				<![CDATA[
@@ -224,6 +224,49 @@
 				]]>
 			</description>
 			<type>input</type>
+		</field>
+		<field>
+			<name>IPv6 Network Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>IPv6 Address</fielddescr>
+			<fieldname>varmacsframedip6address</fieldname>
+			<description>
+				<![CDATA[
+				<b>Framed-IPv6-Address</b> must be supported by NAS. <span class="text-info">Example: 2001:db8:abab::1</span>
+				<div class="infoblock">
+				If you want this MAC address to be assigned a specific IPv6 address from RADIUS, enter the IPv6 address here.<br/>
+				Continuous IPv6 address is available with "+" suffix (e.g. 2001:db8::5+). This can be useful for simultaneous connections.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>IPv6 Prefix</fielddescr>
+			<fieldname>varmacsframedip6prefix</fieldname>
+			<description>
+				<![CDATA[
+				<b>Framed-IPv6-Prefix</b> must be supported by NAS. <span class="text-info">Example: 64</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>IPv6 Gateway</fielddescr>
+			<fieldname>varmacsframedip6route</fieldname>
+			<description>
+				<![CDATA[
+				<b>Framed-IPv6-Route</b> must be supported by NAS.
+				<span class="text-info">Required format: Prefix Gateway Metric(s) (e.g. 2001:db8:0:16::/64 2001:db8::16:a0:20ff:fe99:a998 1)</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>VLAN Configuration</name>
+			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>VLAN ID</fielddescr>
