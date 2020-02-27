@@ -71,6 +71,7 @@ function honeytrap_install() {
 
 	$gconfig =& $config['installedpackages']['honeytrap']['config'][0];
 
+	$gconfig['keep'] = 'on';
 	$gconfig['config_file'] = '/usr/local/pkg/honeytrap/config/default.toml';
 	$gconfig['truncate'] = 'on';
 
