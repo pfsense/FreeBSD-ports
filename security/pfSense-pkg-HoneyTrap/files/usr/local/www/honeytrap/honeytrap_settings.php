@@ -89,7 +89,7 @@ $section->addInput(new Form_Checkbox(
 $section->addInput(new Form_Checkbox(
 	'keep',
 	'Keep',
-	'Keep settings on install,upgrade or deinstall',
+	'Keep settings on install, upgrade or deinstall',
 	$gconfig['keep'] === 'on' ? true:false,
 	'on'
 ));
@@ -99,7 +99,7 @@ $section = new Form_Section('Service Settings');
 $section->addInput(new Form_Checkbox(
 	'truncate',
 	'Truncate',
-	'Truncate serice output logs on service start',
+	'Truncate service output logs on service start',
 	$gconfig['truncate'] === 'on' ? true:false,
 	'on'
 ));
