@@ -50,6 +50,7 @@ if (!isset($pconfig['scr_traffic_interface']))               $pconfig['scr_traff
 if (!isset($pconfig['scr_top_interfaces_by_bps']))           $pconfig['scr_top_interfaces_by_bps']           = false;
 if (!isset($pconfig['scr_top_interfaces_by_total_bytes']))   $pconfig['scr_top_interfaces_by_total_bytes']   = false;
 if (!isset($pconfig['scr_top_interfaces_by_bytes_today']))   $pconfig['scr_top_interfaces_by_bytes_today']   = false;
+if (!isset($pconfig['scr_interfaces_link']))                 $pconfig['scr_interfaces_link']                 = false;
 if (!isset($pconfig['scr_traffic_by_address']))              $pconfig['scr_traffic_by_address']              = false;
 if (!isset($pconfig['scr_traffic_by_address_if']))           $pconfig['scr_traffic_by_address_if']           = '';
 if (!isset($pconfig['scr_traffic_by_address_sort']))         $pconfig['scr_traffic_by_address_sort']         = 'in';
@@ -85,6 +86,7 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_top_interfaces_by_bps']           = $pconfig['scr_top_interfaces_by_bps'];
 		$lcdproc_screens_config['scr_top_interfaces_by_total_bytes']   = $pconfig['scr_top_interfaces_by_total_bytes'];
 		$lcdproc_screens_config['scr_top_interfaces_by_bytes_today']   = $pconfig['scr_top_interfaces_by_bytes_today'];
+		$lcdproc_screens_config['scr_interfaces_link']                 = $pconfig['scr_interfaces_link'];
 		$lcdproc_screens_config['scr_traffic_by_address']              = $pconfig['scr_traffic_by_address'];
 		$lcdproc_screens_config['scr_traffic_by_address_if']           = $pconfig['scr_traffic_by_address_if'];
 		$lcdproc_screens_config['scr_traffic_by_address_sort']         = $pconfig['scr_traffic_by_address_sort'];
@@ -228,8 +230,8 @@ $section->addInput(
 	)
 );
 
-
 $group = new Form_Group('Traffic of interface');
+
 $group->add(
 	new Form_Checkbox(
 		'scr_traffic', // checkbox name (id)
@@ -255,8 +257,7 @@ $section->addInput(
 		'Interfaces listed with current bits-per-second (in & out)', // checkbox text
 		$pconfig['scr_top_interfaces_by_bps'] // checkbox initial value
 	)
-)->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
-
+)->setHelp('A 4-row 20-column display size, or higher, is recommended for this screen.');
 $section->addInput(
 	new Form_Checkbox(
 		'scr_top_interfaces_by_total_bytes', // checkbox name (id)
@@ -264,8 +265,7 @@ $section->addInput(
 		'Interfaces listed with total bytes since last boot (in & out)', // checkbox text
 		$pconfig['scr_top_interfaces_by_total_bytes'] // checkbox initial value
 	)
-)->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
-
+)->setHelp('A 4-row 20-column display size, or higher, is recommended for this screen.');
 $section->addInput(
 	new Form_Checkbox(
 		'scr_top_interfaces_by_bytes_today', // checkbox name (id)
@@ -273,10 +273,27 @@ $section->addInput(
 		'Interfaces listed with total bytes since the start of the day, or since LCDproc reset (in & out)', // checkbox text
 		$pconfig['scr_top_interfaces_by_bytes_today'] // checkbox initial value
 	)
-)->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
+)->setHelp('A 4-row 20-column display size, or higher, is recommended for this screen.');
 
+$section->addInput(
+	new Form_Checkbox(
+		'scr_interfaces_link', // checkbox name (id)
+		'Interfaces link status', // checkbox label
+		'Display the interfaces current link status', // checkbox text
+		$pconfig['scr_interfaces_link'] // checkbox initial value
+	)
+)->setHelp(
+	'This will create a seperate status screen for each inferface with four lines each:%1$s' .
+	'%2$sIFNAME%3$s: %2$slink status%3$s%1$s' .
+	'v4: %2$sip v4 address%3$s%1$s' .
+	'v6: %2$sip v6 address%3$s%1$s' .
+	'm: %2$smac address%3$s%1$s' .
+	'A 4-row 20-column display size, or higher, is recommended for this screen.',
+	'<br/>', '&lt;', '&gt;', '&hyphen;'
+);
 
 $group = new Form_Group('Addresses by traffic');
+
 $group->add(new Form_Checkbox(
 		'scr_traffic_by_address',
 		'',
@@ -313,18 +330,18 @@ $group->add(new Form_Select(
 	null,
 	$pconfig['scr_traffic_by_address_hostipformat'],
 	array (
-		''			=> gettext('IP Address'),
+		''		=> gettext('IP Address'),
 		'hostname'	=> gettext('Host Name'),
 		'descr'		=> gettext('Description'),
 		'fqdn'		=> gettext('FQDN')
 	)
 ))->setHelp('Display');
-$group->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
+
+$group->setHelp('A 4-row 20-column display size, or higher, is recommended for this screen.');
 $section->add($group);
 
-
-$form->add($section); // Add the section to our form
-print($form); // Finally . . We can display our new form
+$form->add($section);
+print($form);
 
 ?>
 
