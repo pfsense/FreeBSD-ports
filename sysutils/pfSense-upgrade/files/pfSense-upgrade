@@ -672,22 +672,18 @@ pkg_upgrade() {
 				_exec "pkg-static upgrade -U ${product}-rc" \
 				    "Upgrading ${product}-rc"
 			fi
-			# Save a copy of loader.conf and restore after kernel
-			# upgrade if it is removed. There was a bug that added
-			# a static copy of loader.conf on amd64 kernel package
-			# for a period of time in 2.4.4-devel that lead users
-			# to have no loader.conf after upgrade, we want to
-			# workaround it
-			rm -f /tmp/loader.conf.backup
-			if [ "${_arch}" = "amd64" ] && \
-			    [ -s /boot/loader.conf ]; then
+			# In the past /boot/loader.conf was part of kernel pkg
+			# and now it's an orphan file.  Check if current
+			# installation has it registered on kernel pkg and make
+			# a copy to preserve file across upgrade process
+			local _restore_loaderconf=""
+			if _pkg which -q /boot/loader.conf; then
+				_restore_loaderconf=1
 				cp -fp /boot/loader.conf /tmp/loader.conf.backup
 			fi
 			_exec "pkg-static upgrade -U ${kernel_pkg}" \
 			    "Upgrading ${product} kernel"
-			if [ "${_arch}" = "amd64" ] && \
-			    [ -s /tmp/loader.conf.backup ] && \
-			    [ ! -s /boot/loader.conf ]; then
+			if [ -n "${_restore_loaderconf}" ]; then
 				cp -fp /tmp/loader.conf.backup /boot/loader.conf
 			fi
 			if [ "${SYSTEM}" = "SG-1100" ]; then
