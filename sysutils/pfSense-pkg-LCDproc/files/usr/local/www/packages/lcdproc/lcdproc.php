@@ -41,6 +41,7 @@ if (!isset($pconfig['offbrightness']))               $pconfig['offbrightness']  
 if (!isset($pconfig['contrast']))                    $pconfig['contrast']                    = '-1';
 if (!isset($pconfig['backlight']))                   $pconfig['backlight']                   = 'default';
 if (!isset($pconfig['outputleds']))                  $pconfig['outputleds']                  = 'no';
+if (!isset($pconfig['controlmenu']))                 $pconfig['controlmenu']                 = 'no';
 if (!isset($pconfig['mtxorb_type']))                 $pconfig['mtxorb_type']                 = 'lcd'; // specific to Matrix Orbital driver
 if (!isset($pconfig['mtxorb_adjustable_backlight'])) $pconfig['mtxorb_adjustable_backlight'] = true;  // specific to Matrix Orbital driver
 
@@ -66,6 +67,7 @@ if ($_POST) {
 		$lcdproc_config['contrast']                    = $pconfig['contrast'];
 		$lcdproc_config['backlight']                   = $pconfig['backlight'];
 		$lcdproc_config['outputleds']                  = $pconfig['outputleds'];
+		$lcdproc_config['controlmenu']                 = $pconfig['controlmenu'];
 		$lcdproc_config['mtxorb_type']                 = $pconfig['mtxorb_type'];
 		$lcdproc_config['mtxorb_adjustable_backlight'] = $pconfig['mtxorb_adjustable_backlight'];
 
@@ -248,7 +250,12 @@ $subsection->add(
 		$pconfig['mtxorb_adjustable_backlight'] // initial value
 	)
 );
-$subsection->setHelp('Select the Matrix Orbital display type.<br />Some old firmware versions of Matrix Orbital modules do not support an adjustable backlight but only can switch the backlight on/off. If you own such a module and experience randomly appearing block characters and backlight cannot be switched on or off, uncheck the adjustable backlight option.');
+$subsection->setHelp(
+	'Select the Matrix Orbital display type.%1$s' .
+	'Some old firmware versions of Matrix Orbital modules do not support an adjustable backlight' .
+	'but only can switch the backlight on/off. If you own such a module and experience randomly' .
+	'appearing block characters and backlight cannot be switched on or off, uncheck the adjustable backlight option.'
+);
 $section->add($subsection);
 ?>
 
@@ -298,7 +305,11 @@ $section->addInput(
 			'115200' => '115200 bps'
 		]
 	)
-)->setHelp('Set the port speed.<br />Caution: not all the driver or panels support all the speeds, leave "default" if unsure.');
+)->setHelp(
+	'Set the port speed.%1$s' .
+	'Caution: not all the driver or panels support all the speeds, leave "default" if unsure.',
+	'<br />'
+);
 
 /********* New section *********/
 $form->add($section);
@@ -331,14 +342,27 @@ $section->addInput(
 		$pconfig['outputleds'] // checkbox initial value
 	)
 )->setHelp(
-	'This feature is currently supported by the CFontz633 driver only.<br />' .
-	'Each LED can be off or show two colors: RED (alarm) or GREEN (everything ok) and shows:<br />' .
-	'LED1: NICs status (green: ok, red: at least one nic down)<br />' .
-	'LED2: CARP status (green: master, red: backup, off: CARP not implemented)<br />' .
-	'LED3: CPU status (green &lt; 50%, red &gt; 50%)<br />' .
-	'LED4: Gateway status (green: ok, red: at least one gateway not responding, off: no gateway configured).'
+	'This feature is currently supported by the CFontz633 driver only.%1$s' .
+	'Each LED can be off or show two colors: RED (alarm) or GREEN (everything ok) and shows:%1$s' .
+	'LED1: NICs status (green: ok, red: at least one nic down)%1$s' .
+	'LED2: CARP status (green: master, red: backup, off: CARP not implemented)%1$s' .
+	'LED3: CPU status (green %2$s 50%, red %3$s 50%)%1$s' .
+	'LED4: Gateway status (green: ok, red: at least one gateway not responding, off: no gateway configured).',
+	'<br />', '&lt;', '&gt;'
 );
 
+$section->addInput(
+	new Form_Checkbox(
+		'controlmenu', // checkbox name (id)
+		'pfSense control menu', // checkbox label
+		'Enable the pfSense control menu next to LCDproc\'s Options menu.', // checkbox text
+		$pconfig['controlmenu'] // checkbox initial value
+	)
+)->setHelp(
+	'This will only be usefull on display with buttons.%1$s' .
+	'Currently you can REBOOT and HALT the system from there.',
+	'<br />'
+);
 
 $section->addInput(
 	new Form_Select(
@@ -360,7 +384,11 @@ $section->addInput(
 			'100' => '100%'
 		]
 	)
-)->setHelp('Set the brightness of the LCD panel.<br />This option is not supported by all the LCD panels, leave "default" if unsure.');
+)->setHelp(
+	'Set the brightness of the LCD panel.%1$s' . '
+	This option is not supported by all the LCD panels, leave "default" if unsure.',
+	'<br />'
+);
 
 $section->addInput(
 	new Form_Select(
@@ -383,8 +411,9 @@ $section->addInput(
 		]
 	)
 )->setHelp(
-	'Set the contrast of the LCD panel.<br />' .
-	'This option is not supported by all the LCD panels, leave "default" if unsure.'
+	'Set the contrast of the LCD panel.%1$s' .
+	'This option is not supported by all the LCD panels, leave "default" if unsure.',
+	'<br />'
 );
 
 $section->addInput(
@@ -399,8 +428,9 @@ $section->addInput(
 		]
 	)
 )->setHelp(
-	'Set the backlight setting. If set to the default value, then the backlight setting of the display can be influenced by the clients.<br />' .
-	'This option is not supported by all the LCD panels, leave "default" if unsure.'
+	'Set the backlight setting. If set to the default value, then the backlight setting of the display can be influenced by the clients.%1$s' .
+	'This option is not supported by all the LCD panels, leave "default" if unsure.',
+	'<br />'
 );
 
 $section->addInput(
@@ -424,8 +454,9 @@ $section->addInput(
 		]
 	)
 )->setHelp(
-	'Set the off-brightness of the LCD panel. This value is used when the display is normally switched off in case LCDd is inactive.<br />' .
-	'This option is not supported by all the LCD panels, leave "default" if unsure.'
+	'Set the off-brightness of the LCD panel. This value is used when the display is normally switched off in case LCDd is inactive.%1$s' .
+	'This option is not supported by all the LCD panels, leave "default" if unsure.',
+	'<br />'
 );
 
 $form->add($section); // Add the section to our form
