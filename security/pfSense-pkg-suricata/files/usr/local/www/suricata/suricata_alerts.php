@@ -127,10 +127,22 @@ function suricata_escape_filter_regex($filtertext) {
 	return str_replace('/', '\/', str_replace('\/', '/', $filtertext));
 }
 
-function suricata_match_filter_field($flent, $fields) {
+function suricata_match_filter_field($flent, $fields, $exact_match = FALSE) {
 	foreach ($fields as $key => $field) {
 		if ($field == null)
 			continue;
+
+		// Only match whole field string when
+		// performing an exact match.
+		if ($exact_match) {
+			if ($flent[$key] == $field) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
 		if ((strpos($field, '!') === 0)) {
 			$field = substr($field, 1);
 			$field_regex = suricata_escape_filter_regex($field);
@@ -216,6 +228,7 @@ if (isset($_POST['resolve'])) {
 if ($_POST['persist_filter'] == "yes" && !empty($_POST['persist_filter_content'])) {
 	$filterlogentries = TRUE;
 	$persist_filter_log_entries = "yes";
+	$filterlogentries_exact_match = $_POST['persist_filter_exact_match'];
 	$filterfieldsarray = json_decode($_POST['persist_filter_content'], TRUE);
 }
 else {
@@ -228,6 +241,14 @@ if ($_POST['filterlogentries_submit']) {
 	// Set flags for filtering alert log entries
 	$filterlogentries = TRUE;
 	$persist_filter_log_entries = "yes";
+
+	// Set 'exact match only' flag if enabled
+	if ($_POST['filterlogentries_exact_match'] == 'on') {
+		$filterlogentries_exact_match = TRUE;
+	}
+	else {
+		$filterlogentries_exact_match = FALSE;
+	}
 
 	// -- IMPORTANT --
 	// Note the order of these fields must match the order decoded from the alerts log
@@ -790,6 +811,14 @@ if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
 	))->setHelp('Dropped');
 }
 
+$group->add(new Form_Checkbox(
+	'filterlogentries_exact_match',
+	'Exact Match Only',
+	null,
+	$filterlogentries_exact_match == "on" ? true:false,
+	'on'
+))->setHelp('Exact Match');
+
 $group->add(new Form_Button(
 	'filterlogentries_submit',
 	'Filter',
@@ -856,6 +885,13 @@ if ($persist_filter_log_entries == "yes") {
 		$persist_filter_log_entries
 	));
 
+	$form->addGlobal(new Form_Input(
+		'persist_filter_exact_match',
+		'persist_filter_exact_match',
+		'hidden',
+		$filterlogentries_exact_match
+	));
+
 	// Pass the $filterfieldsarray variable as serialized data
 	$form->addGlobal(new Form_Input(
 		'persist_filter_content',
@@ -868,14 +904,14 @@ if ($persist_filter_log_entries == "yes") {
 print($form);
 
 if ($filterlogentries && count($filterfieldsarray)) {
-	$sectitle = "Last %s Alert Entries. (Most recent entries are listed first)  ** FILTERED VIEW **  clear filter to see all entries";
+	$sectitle = sprintf("Last %s Alert Entries. (Most recent entries are listed first)  ** FILTERED VIEW **  clear filter to see all entries", $anentries);
 } else {
-	$sectitle = "Last %s Alert Entries. (Most recent entries are listed first)";
+	$sectitle = sprintf("Last %s Alert Entries. (Most recent entries are listed first)", $anentries);
 }
 
 ?>
 <div class="panel panel-default">
-	<div class="panel-heading"><h2 class="panel-title"><?=sprintf($sectitle, $anentries)?></h2></div>
+	<div class="panel-heading"><h2 class="panel-title"><?=sprintf($sectitle)?></h2></div>
 	<div class="panel-body table-responsive">
 	<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on') : ?>
 		<div class="content table-responsive">
@@ -994,7 +1030,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			// Suppress it with @
 			@$fields['time'] = date_format($event_tm, "m/d/Y") . " " . date_format($event_tm, "H:i:s");
 
-			if ($filterlogentries && !suricata_match_filter_field($fields, $filterfieldsarray)) {
+			if ($filterlogentries && !suricata_match_filter_field($fields, $filterfieldsarray, $filterlogentries_exact_match)) {
 				continue;
 			}
 
