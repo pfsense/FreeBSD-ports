@@ -1373,6 +1373,9 @@ fi
 
 abi_setup
 
+# Set itself as vital to prevent users ending up without upgrade script
+set_vital_flag ${product}-upgrade
+
 # figure out which PHP major version is running
 cur_php_pkg=$(_pkg query -x %n '^php[0-9]{2}-[0-9]')
 if [ -n "${booting}" ]; then
