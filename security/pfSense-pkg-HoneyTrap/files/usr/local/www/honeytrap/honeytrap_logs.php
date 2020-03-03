@@ -27,9 +27,8 @@ init_config_arr(array('installedpackages', 'honeytrap', 'config', 0));
 $gconfig = &$config['installedpackages']['honeytrap']['config'][0];
 
 $config_file =	$gconfig['config_file'];
-$path_parts = pathinfo($config_file);
 
-$logfile = "{$g['varlog_path']}/honeytrap/{$path_parts['filename']}.log";
+$logfile = "{$g['varlog_path']}/honeytrap/service.log";
 
 $pgtitle = array(gettext("Service"), gettext("HoneyTrap"), gettext('Logs'));
 $pglinks = array('', '/honeytrap/honeytrap_settings.php', '@self');

@@ -37,8 +37,7 @@ function honeytrap_sync_config() {
 	}
 
 	$config_file = $gconfig['config_file'];
-	$part_parts = pathinfo($config_file);
-	$stdout = "{$g['varlog_path']}/honeytrap/{$part_parts['filename']}.log";
+	$stdout = "{$g['varlog_path']}/honeytrap/service.log";
 
 	$daemon = '/usr/local/bin/honeytrap';
 	$data_dir = '/usr/local/pkg/honeytrap/.data/';
