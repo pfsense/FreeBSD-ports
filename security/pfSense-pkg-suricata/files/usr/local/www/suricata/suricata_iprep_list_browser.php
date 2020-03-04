@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -55,11 +55,11 @@ $target = htmlspecialchars($_GET['target']);
 <table width="100%">
 	<tr>
 		<td width="25px" align="left">
-			<img src="/filebrowser/images/icon_home.gif" alt="Home" title="Home" />
+			<img src="/vendor/filebrowser/images/icon_home.gif" alt="Home" title="Home" />
 		</td>
 		<td><b><?=$path;?></b></td>
 		<td class="fbClose" align="right">
-			<img onClick="$('#<?=$container;?>').hide();" border="0" src="/filebrowser/images/icon_cancel.gif" alt="Close" title="Close" />
+			<img onClick="$('#<?=$container;?>').hide();" border="0" src="/vendor/filebrowser/images/icon_cancel.gif" alt="Close" title="Close" />
 		</td>
 	</tr>
 	<tr>
@@ -107,7 +107,7 @@ foreach($files as $file):
 		<td class="fbFile vexpl" id="<?=$fqpn;?>" align="left">
 			<?php $filename = str_replace("//","/", "{$path}/{$file}"); ?>
 			<div onClick="$('#<?=$target;?>').val('<?=$filename?>'); $('#<?=$container;?>').hide();">
-				<img src="/filebrowser/images/file_<?=$type;?>.gif" alt="" title="">
+				<img src="/vendor/filebrowser/images/file_<?=$type;?>.gif" alt="" title="">
 				&nbsp;<?=$file;?>
 			</div>
 		</td>
