@@ -1,0 +1,56 @@
+pkg/suricata.xml
+/etc/inc/priv/suricata.priv.inc
+pkg/suricata/suricata.inc
+pkg/suricata/suricata_sync.xml
+pkg/suricata/suricata_check_cron_misc.inc
+pkg/suricata/suricata_check_for_rule_updates.php
+pkg/suricata/suricata_yaml_template.inc
+pkg/suricata/suricata_generate_yaml.php
+pkg/suricata/suricata_migrate_config.php
+pkg/suricata/suricata_post_install.php
+pkg/suricata/suricata_uninstall.php
+pkg/suricata/suricata_defs.inc
+pkg/suricata/suricata_geoipupdate.php
+pkg/suricata/suricata_etiqrisk_update.php
+pkg/suricata/deprecated_rules
+www/suricata/suricata_download_updates.php
+www/suricata/suricata_global.php
+www/suricata/suricata_alerts.php
+www/suricata/suricata_interfaces.php
+www/suricata/suricata_interfaces_edit.php
+www/suricata/suricata_rules.php
+www/suricata/suricata_rulesets.php
+www/suricata/suricata_rules_flowbits.php
+www/suricata/suricata_rules_edit.php
+www/suricata/suricata_flow_stream.php
+www/suricata/suricata_os_policy_engine.php
+www/suricata/suricata_import_aliases.php
+www/suricata/suricata_suppress.php
+www/suricata/suricata_suppress_edit.php
+www/suricata/suricata_logs_browser.php
+www/suricata/suricata_logs_mgmt.php
+www/suricata/suricata_sid_mgmt.php
+www/suricata/suricata_list_view.php
+www/suricata/suricata_app_parsers.php
+www/suricata/suricata_libhtp_policy_engine.php
+www/suricata/suricata_define_vars.php
+www/suricata/suricata_barnyard.php
+www/suricata/suricata_ip_list_mgmt.php
+www/suricata/suricata_ip_reputation.php
+www/suricata/suricata_iprep_list_browser.php
+www/widgets/javascript/suricata_alerts.js
+www/widgets/widgets/suricata_alerts.widget.php
+www/widgets/include/widget-suricata.inc
+www/suricata/suricata_blocked.php
+www/suricata/suricata_passlist.php
+www/suricata/suricata_passlist_edit.php
+www/suricata/suricata_select_alias.php
+/var/db/suricata/sidmods/disablesid-sample.conf
+/var/db/suricata/sidmods/enablesid-sample.conf
+/var/db/suricata/sidmods/modifysid-sample.conf
+/var/db/suricata/sidmods/dropsid-sample.conf
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir /etc/inc
+@dir /var/db/suricata/sidmods
+@dir /var/db/suricata
