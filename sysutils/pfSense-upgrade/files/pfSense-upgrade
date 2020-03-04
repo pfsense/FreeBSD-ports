@@ -631,6 +631,19 @@ pkg_upgrade() {
 			fi
 		fi
 
+		# Detect the move from suricata to suricata4
+		if is_pkg_installed ${product}-pkg-suricata \
+		    && ${_pkg} rquery -U %n ${product}-pkg-suricata4 \
+		    >/dev/null 2>&1; then
+			pkg_set_origin ${product}-pkg-suricata \
+			    ${product}-pkg-suricata4
+		elif is_pkg_installed ${product}-pkg-suricata4 \
+		    && ${_pkg} rquery -U %n ${product}-pkg-suricata \
+		    >/dev/null 2>&1; then
+			pkg_set_origin ${product}-pkg-suricata4 \
+			    ${product}-pkg-suricata
+		fi
+
 		# Help users to fix fstab before risk moving to FreeBSD 11
 		if grep -q -E '/dev/ad[[:digit:]]' /etc/fstab; then
 			_exec "/usr/local/sbin/ufslabels.sh commit" \
