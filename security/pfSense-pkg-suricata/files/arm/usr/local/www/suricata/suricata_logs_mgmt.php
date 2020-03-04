@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,6 +52,7 @@ $pconfig['tls_log_retention'] = $config['installedpackages']['suricata']['config
 $pconfig['unified2_log_limit'] = $config['installedpackages']['suricata']['config'][0]['unified2_log_limit'];
 $pconfig['u2_archive_log_retention'] = $config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'];
 $pconfig['file_store_retention'] = $config['installedpackages']['suricata']['config'][0]['file_store_retention'];
+$pconfig['file_store_limit_size'] = $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'];
 $pconfig['tls_certs_store_retention'] = $config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'];
 $pconfig['dns_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['dns_log_limit_size'];
 $pconfig['dns_log_retention'] = $config['installedpackages']['suricata']['config'][0]['dns_log_retention'];
@@ -128,6 +129,8 @@ if (!isset($pconfig['eve_log_limit_size']))
 	$pconfig['eve_log_limit_size'] = "5000";
 if (!isset($pconfig['sid_changes_log_limit_size']))
 	$pconfig['sid_changes_log_limit_size'] = "250";
+if (!isset($pconfig['file_store_limit_size']))
+	$pconfig['file_store_limit_size'] = intval($pconfig['suricataloglimitsize'] * 0.60);
 
 if (isset($_POST['ResetAll'])) {
 
@@ -155,6 +158,7 @@ if (isset($_POST['ResetAll'])) {
 	$pconfig['unified2_log_limit'] = "32";
 	$pconfig['eve_log_limit_size'] = "5000";
 	$pconfig['sid_changes_log_limit_size'] = "250";
+	$pconfig['file_store_limit_size'] = intval($pconfig['suricataloglimitsize'] * 0.60);
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All log management settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -205,6 +209,7 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 		$config['installedpackages']['suricata']['config'][0]['unified2_log_limit'] = $_POST['unified2_log_limit'];
 		$config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] = $_POST['u2_archive_log_retention'];
 		$config['installedpackages']['suricata']['config'][0]['file_store_retention'] = $_POST['file_store_retention'];
+		$config['installedpackages']['suricata']['config'][0]['file_store_limit_size'] = $_POST['file_store_limit_size'];
 		$config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] = $_POST['tls_certs_store_retention'];
 		$config['installedpackages']['suricata']['config'][0]['dns_log_limit_size'] = $_POST['dns_log_limit_size'];
 		$config['installedpackages']['suricata']['config'][0]['dns_log_retention'] = $_POST['dns_log_retention'];
@@ -451,6 +456,12 @@ $section->addInput(new Form_Select(
 	$pconfig['u2_archive_log_retention'],
 	$retentions
 ))->setHelp('Choose retention period for archived Barnyard2 binary log files. Default is 7 days. When file capture and store is enabled, Suricata captures downloaded files from HTTP sessions and stores them, along with metadata, for later analysis. This setting determines how long files remain in the File Store folder before they are automatically deleted.');
+$section->addInput(new Form_Input(
+	'file_store_limit_size',
+	'Captured Files Storage Limit',
+	'text',
+	$pconfig['file_store_limit_size']
+))->setHelp('File Store captured files storage limit in megabytes (MB). Initial default value is 60% of the Log Directory Size Limit parameter configured above. This sets the maximum storage limit (disk utilization) for captured files. When this limit is reached, older files will purged to reduce disk consumption below the configured limit. Entering zero disables this check and allows unlimited storage.');
 $section->addInput(new Form_Select(
 	'file_store_retention',
 	'Captured Files Retention Period',
@@ -500,6 +511,7 @@ events.push(function(){
 		disableInput('sid_changes_log_retention', hide);
 		disableInput('sid_changes_log_limit_size', hide);
 		disableInput('file_store_retention', hide);
+		disableInput('file_store_limit_size', hide);
 		disableInput('tls_certs_store_retention', hide);
 	}
 
