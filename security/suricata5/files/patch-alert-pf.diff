@@ -1,6 +1,6 @@
-diff -ruN ./suricata-4.1.7.orig/src/Makefile.am ./suricata-4.1.7/src/Makefile.am
---- ./suricata-4.1.7.orig/src/Makefile.am	2020-02-13 08:49:02.000000000 -0500
-+++ ./src/Makefile.am	2020-02-29 10:04:49.000000000 -0500
+diff -ruN ./suricata-5.0.2.orig/src/Makefile.am ./suricata-5.0.2/src/Makefile.am
+--- ./suricata-5.0.2.orig/src/Makefile.am	2020-02-13 05:58:27.000000000 -0500
++++ ./src/Makefile.am	2020-02-29 10:17:44.000000000 -0500
 @@ -10,6 +10,7 @@
  suricata_SOURCES = \
  alert-debuglog.c alert-debuglog.h \
@@ -9,10 +9,10 @@ diff -ruN ./suricata-4.1.7.orig/src/Makefile.am ./suricata-4.1.7/src/Makefile.am
  alert-prelude.c alert-prelude.h \
  alert-syslog.c alert-syslog.h \
  alert-unified2-alert.c alert-unified2-alert.h \
-diff -ruN ./suricata-4.1.7.orig/src/Makefile.in ./suricata-4.1.7/src/Makefile.in
---- ./suricata-4.1.7.orig/src/Makefile.in	2020-02-13 08:49:18.000000000 -0500
-+++ ./src/Makefile.in	2020-02-29 10:06:34.000000000 -0500
-@@ -112,7 +112,7 @@
+diff -ruN ./suricata-5.0.2.orig/src/Makefile.in ./suricata-5.0.2/src/Makefile.in
+--- ./suricata-5.0.2.orig/src/Makefile.in	2020-02-13 05:58:43.000000000 -0500
++++ ./src/Makefile.in	2020-02-29 10:18:53.000000000 -0500
+@@ -110,7 +110,7 @@
  am__installdirs = "$(DESTDIR)$(bindir)"
  PROGRAMS = $(bin_PROGRAMS)
  am_suricata_OBJECTS = alert-debuglog.$(OBJEXT) alert-fastlog.$(OBJEXT) \
@@ -21,7 +21,7 @@ diff -ruN ./suricata-4.1.7.orig/src/Makefile.in ./suricata-4.1.7/src/Makefile.in
  	alert-unified2-alert.$(OBJEXT) app-layer.$(OBJEXT) \
  	app-layer-dcerpc.$(OBJEXT) app-layer-dcerpc-udp.$(OBJEXT) \
  	app-layer-detect-proto.$(OBJEXT) app-layer-dnp3.$(OBJEXT) \
-@@ -659,6 +659,7 @@
+@@ -661,6 +661,7 @@
  suricata_SOURCES = \
  alert-debuglog.c alert-debuglog.h \
  alert-fastlog.c alert-fastlog.h \
@@ -29,9 +29,9 @@ diff -ruN ./suricata-4.1.7.orig/src/Makefile.in ./suricata-4.1.7/src/Makefile.in
  alert-prelude.c alert-prelude.h \
  alert-syslog.c alert-syslog.h \
  alert-unified2-alert.c alert-unified2-alert.h \
-diff -ruN ./suricata-4.1.7.orig/src/alert-pf.c ./suricata-4.1.7/src/alert-pf.c
---- ./suricata-4.1.7.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2020-02-29 10:29:27.000000000 -0500
+diff -ruN ./suricata-5.0.2.orig/src/alert-pf.c ./suricata-5.0.2/src/alert-pf.c
+--- ./suricata-5.0.2.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/alert-pf.c	2020-01-06 14:22:20.000000000 -0500
 @@ -0,0 +1,1151 @@
 +/* Copyright (C) 2007-2020 Open Information Security Foundation
 + *
@@ -1184,9 +1184,9 @@ diff -ruN ./suricata-4.1.7.orig/src/alert-pf.c ./suricata-4.1.7/src/alert-pf.c
 +    return TM_ECODE_OK;
 +}
 +
-diff -ruN ./suricata-4.1.7.orig/src/alert-pf.h ./suricata-4.1.7/src/alert-pf.h
---- ./suricata-4.1.7.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.h	2020-02-29 10:02:39.000000000 -0500
+diff -ruN ./suricata-5.0.2.orig/src/alert-pf.h ./suricata-5.0.2/src/alert-pf.h
+--- ./suricata-5.0.2.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
++++ ./src/alert-pf.h	2020-02-29 10:25:58.000000000 -0500
 @@ -0,0 +1,59 @@
 +/* Copyright (C) 2007-2020 Open Information Security Foundation
 + *
@@ -1247,9 +1247,9 @@ diff -ruN ./suricata-4.1.7.orig/src/alert-pf.h ./suricata-4.1.7/src/alert-pf.h
 +
 +#endif /* __ALERT_PF_H__ */
 +
-diff -ruN ./suricata-4.1.7.orig/src/output.c ./suricata-4.1.7/src/output.c
---- ./suricata-4.1.7.orig/src/output.c	2020-02-13 08:49:02.000000000 -0500
-+++ ./src/output.c	2020-02-29 10:08:09.000000000 -0500
+diff -ruN ./suricata-5.0.2.orig/src/output.c ./suricata-5.0.2/src/output.c
+--- ./suricata-5.0.2.orig/src/output.c	2020-02-13 05:58:28.000000000 -0500
++++ ./src/output.c	2020-02-29 10:20:55.000000000 -0500
 @@ -43,6 +43,7 @@
  #include "alert-fastlog.h"
  #include "alert-unified2-alert.h"
@@ -1258,19 +1258,21 @@ diff -ruN ./suricata-4.1.7.orig/src/output.c ./suricata-4.1.7/src/output.c
  #include "alert-prelude.h"
  #include "alert-syslog.h"
  #include "output-json-alert.h"
-@@ -1045,6 +1046,8 @@
+@@ -1048,6 +1049,10 @@
      AlertFastLogRegister();
      /* debug log */
      AlertDebugLogRegister();
 +    /* alerf pf */
 +    AlertPfRegister();
++    /* alerf pf */
++    AlertPfRegister();
      /* prelue log */
      AlertPreludeRegister();
      /* syslog log */
-diff -ruN ./suricata-4.1.7.orig/src/suricata-common.h ./suricata-4.1.7/src/suricata-common.h
---- ./suricata-4.1.7.orig/src/suricata-common.h	2020-02-13 08:49:02.000000000 -0500
-+++ ./src/suricata-common.h	2020-02-29 10:08:57.000000000 -0500
-@@ -440,6 +440,7 @@
+diff -ruN ./suricata-5.0.2.orig/src/suricata-common.h ./suricata-5.0.2/src/suricata-common.h
+--- ./suricata-5.0.2.orig/src/suricata-common.h	2020-02-13 05:58:28.000000000 -0500
++++ ./src/suricata-common.h	2020-02-29 10:21:45.000000000 -0500
+@@ -461,6 +461,7 @@
      LOGGER_PRELUDE,
      LOGGER_PCAP,
      LOGGER_JSON_METADATA,

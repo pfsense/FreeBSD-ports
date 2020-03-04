@@ -1,6 +1,6 @@
-diff -ruN ./suricata-4.1.6.orig/configure.ac ./suricata-4.1.6/configure.ac
---- ./suricata-4.1.6.orig/configure.ac	2019-12-13 07:50:27.000000000 -0500
-+++ ./configure.ac	2020-01-02 23:06:45.000000000 -0500
+diff -ruN ./suricata-4.1.7.orig/configure.ac ./suricata-4.1.7/configure.ac
+--- ./suricata-4.1.7.orig/configure.ac	2020-02-13 08:49:02.000000000 -0500
++++ ./configure.ac	2020-02-29 09:57:37.000000000 -0500
 @@ -272,6 +272,23 @@
      esac
      AC_MSG_RESULT(ok)
@@ -25,7 +25,7 @@ diff -ruN ./suricata-4.1.6.orig/configure.ac ./suricata-4.1.6/configure.ac
      # enable modifications for AFL fuzzing
      AC_ARG_ENABLE(afl,
             AS_HELP_STRING([--enable-afl], Enable AFL fuzzing logic[])], [enable_afl="$enableval"],[enable_afl=no])
-@@ -2426,6 +2443,15 @@
+@@ -2451,6 +2468,15 @@
              fi
          fi
      fi

@@ -1038,8 +1038,8 @@ netmap:
    disable-promisc: {$netmap_intf_promisc_mode}
    checksum-checks: auto
  - interface: {$if_real}
-   copy-iface: {$if_real}^
- - interface: {$if_real}^
+   copy-iface: {$if_real}+
+ - interface: {$if_real}+
    copy-iface: {$if_real}
 EOD;
 }
