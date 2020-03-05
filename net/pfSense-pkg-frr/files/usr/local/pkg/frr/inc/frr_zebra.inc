@@ -691,3 +691,20 @@ function frr_generate_config_zebra() {
 		file_put_contents("{$frr_config_base}/staticd.conf", $staticdconffile);
 	}
 }
+
+/* The following function checks for the presence of and writes the contents of "/var/etc/frr/$module.conf" into the $module . "running" field within the config.xml file  */
+function write_frr_running_config() {
+	global $config, $frr_config_base;
+	$modules = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d');
+
+	foreach ($modules as $module) {
+		$moduleRunningFile = "{$frr_config_base}/{$module}.conf";
+		if (file_exists($moduleRunningFile) && (filesize($moduleRunningFile) > 0)) {
+			$moduleRunning = fopen("$moduleRunningFile", "r");
+			$config['installedpackages']['frrglobalraw']['config'][0][$module . "running"] = base64_encode(fread($moduleRunning, filesize($moduleRunningFile)));
+		} else {
+			$config['installedpackages']['frrglobalraw']['config'][0][$module . "running"] = base64_encode("file {$module}.conf does not exist or is empty.");
+		}
+	}
+	write_config(gettext("FRR: Wrote running configuration to pfSense config file."), false, true);
+}

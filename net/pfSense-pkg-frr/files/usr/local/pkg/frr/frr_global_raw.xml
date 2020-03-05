@@ -129,7 +129,7 @@
 			<type>info</type>
 		</field>
 		<field>
-			<fielddescr>zebra.conf</fielddescr>
+			<fielddescr>SAVED zebra.conf</fielddescr>
 			<fieldname>zebra</fieldname>
 			<description>
 				<![CDATA[
@@ -143,7 +143,38 @@
 			<cols>65</cols>
 		</field>
 		<field>
-			<fielddescr>staticd.conf</fielddescr>
+			<fielddescr>RUNNING zebra.conf</fielddescr>
+			<fieldname>zebrarunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var zebra = document.getElementById('zebra');
+				var zebrarunning = document.getElementById('zebrarunning'); 
+				function onCopyClick(elem1, elem2) {
+					elem1.value = elem2.value;
+					configCheck(elem1, elem2);
+				}
+				window.onload = configCheck(zebra, zebrarunning);
+				ospfd.addEventListener('keyup', function() { configCheck(zebra, zebrarunning)});
+				ospfdrunning.addEventListener('keyup', function() { configCheck(zebra, zebrarunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/zebra.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(zebra, zebrarunning); return false'>Copy Zebra Running to Saved</button>
+				</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>SAVED staticd.conf</fielddescr>
 			<fieldname>staticd</fieldname>
 			<description>
 				<![CDATA[
@@ -157,7 +188,34 @@
 			<cols>65</cols>
 		</field>
 		<field>
-			<fielddescr>bgpd.conf</fielddescr>
+			<fielddescr>RUNNING staticd.conf</fielddescr>
+			<fieldname>staticdrunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var staticd = document.getElementById('staticd');
+				var staticdrunning = document.getElementById('staticdrunning'); 
+				window.onload = configCheck(staticd, staticdrunning);
+				zebra.addEventListener('keyup', function() { configCheck(staticd, staticdrunning)});
+				zebrarunning.addEventListener('keyup', function() { configCheck(staticd, staticdrunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/staticd.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(staticd, staticdrunning); return false'>Copy STATICd Running to Saved</button>
+				</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>SAVED bgpd.conf</fielddescr>
 			<fieldname>bgpd</fieldname>
 			<description>
 				<![CDATA[
@@ -171,7 +229,34 @@
 			<cols>65</cols>
 		</field>
 		<field>
-			<fielddescr>ospfd.conf</fielddescr>
+			<fielddescr>RUNNING bgpd.conf</fielddescr>
+			<fieldname>bgpdrunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var bgpd = document.getElementById('bgpd');
+				var bgpdrunning = document.getElementById('bgpdrunning'); 
+				window.onload = configCheck(bgpd, bgpdrunning);
+				zebra.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning)});
+				zebrarunning.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/bgpd.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(bgpd, bgpdrunning); return false'>Copy BGPd Running to Saved</button>
+				</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>SAVED ospfd.conf</fielddescr>
 			<fieldname>ospfd</fieldname>
 			<description>
 				<![CDATA[
@@ -185,7 +270,34 @@
 			<cols>65</cols>
 		</field>
 		<field>
-			<fielddescr>ospf6d.conf</fielddescr>
+			<fielddescr>RUNNING ospfd.conf</fielddescr>
+			<fieldname>ospfdrunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var ospfd = document.getElementById('ospfd');
+				var ospfdrunning = document.getElementById('ospfdrunning'); 
+				window.onload = configCheck(ospfd, ospfdrunning);
+				zebra.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning)});
+				zebrarunning.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/ospfd.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(ospfd, ospfdrunning); return false'>Copy OSPFd Running to Saved</button>
+				</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>SAVED ospf6d.conf</fielddescr>
 			<fieldname>ospf6d</fieldname>
 			<description>
 				<![CDATA[
@@ -198,9 +310,49 @@
 			<rows>30</rows>
 			<cols>65</cols>
 		</field>
+		<field>
+			<fielddescr>RUNNING ospf6d.conf</fielddescr>
+			<fieldname>ospf6drunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var ospf6d = document.getElementById('ospf6d');
+				var ospf6drunning = document.getElementById('ospf6drunning'); 
+				window.onload = configCheck(ospf6d, ospf6drunning);
+				zebra.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning)});
+				zebrarunning.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/ospf6d.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(ospf6d, ospf6drunning); return false'>Copy OSPF6d Running to Saved</button>
+				</p>
+				<p>
+				<button onclick='onCopyClick(zebra, zebrarunning); onCopyClick(staticd, staticdrunning);
+					onCopyClick(bgpd, bgpdrunning); onCopyClick(ospfd, ospfdrunning); 
+					onCopyClick(ospf6d, ospf6drunning); return false'>Copy All Running to Saved</button>
+				</p>
+				<p><b>Clicking "Update RUNNING" will fill RUNNING fields with current configuration.</b></p><p>
+				<button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update RUNNING'><i class="fa fa-refresh icon-embed-btn"></i>Update RUNNING</button>
+				</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
 	</fields>
 	<custom_php_resync_config_command>
+		<![CDATA[
+		if ($_POST['update_running']) {
+                        write_frr_running_config();
+                }
 		frr_generate_config();
+		]]>
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>
 		frr_global_raw_validate_input();
