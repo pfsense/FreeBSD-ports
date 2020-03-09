@@ -90,7 +90,7 @@
 			<default_value>0.0.0.0</default_value>
 			<type>input</type>
 			<size>60</size>
-			<description>Listen IP for connections from the server. (Default: 0.0.0.0 - all interfaces)</description>
+			<description>Comma-separated list of IP addresses for connections from the server. (Default: 0.0.0.0 - all IPv4 interfaces)</description>
 		</field>
 		<field>
 			<fielddescr>Listen Port</fielddescr>
