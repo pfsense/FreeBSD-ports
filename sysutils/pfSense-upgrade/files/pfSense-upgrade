@@ -536,6 +536,15 @@ pkg_upgrade() {
 			unlock_pkg=1
 		fi
 
+		# Before 2.4.5, pfSense-repo used to depend of pfSense-upgrade
+		# and then it is upgraded to latest version in pkg_upgrade_repo
+		# call below.  Detect when a new version is available early on
+		# old versions and make it to exit returning code 99
+		local _new_pfsense_upgrade=""
+		if [ "$(compare_pkg_version ${product}-upgrade)" != "=" ]; then
+			_new_pfsense_upgrade=1
+		fi
+
 		pkg_upgrade_repo
 
 		# If a new version of pfSense-upgrade is available, upgrade it
@@ -545,6 +554,12 @@ pkg_upgrade() {
 			_exec "pkg-static upgrade${dont_update} -f \
 			    ${product}-upgrade" "Upgrading ${product}-upgrade" \
 			    mute
+			_exit 99
+		fi
+
+		# If a new version of pfSense-upgrade was detected early and
+		# was upgraded together with pfSense-repo, exit 99
+		if [ -n "${_new_pfsense_upgrade}" ]; then
 			_exit 99
 		fi
 
@@ -616,6 +631,19 @@ pkg_upgrade() {
 			fi
 		fi
 
+		# Detect the move from suricata to suricata4
+		if is_pkg_installed ${product}-pkg-suricata \
+		    && ${_pkg} rquery -U %n ${product}-pkg-suricata4 \
+		    >/dev/null 2>&1; then
+			pkg_set_origin ${product}-pkg-suricata \
+			    ${product}-pkg-suricata4
+		elif is_pkg_installed ${product}-pkg-suricata4 \
+		    && ${_pkg} rquery -U %n ${product}-pkg-suricata \
+		    >/dev/null 2>&1; then
+			pkg_set_origin ${product}-pkg-suricata4 \
+			    ${product}-pkg-suricata
+		fi
+
 		# Help users to fix fstab before risk moving to FreeBSD 11
 		if grep -q -E '/dev/ad[[:digit:]]' /etc/fstab; then
 			_exec "/usr/local/sbin/ufslabels.sh commit" \
@@ -668,8 +696,20 @@ pkg_upgrade() {
 				_exec "pkg-static upgrade -U ${product}-rc" \
 				    "Upgrading ${product}-rc"
 			fi
+			# In the past /boot/loader.conf was part of kernel pkg
+			# and now it's an orphan file.  Check if current
+			# installation has it registered on kernel pkg and make
+			# a copy to preserve file across upgrade process
+			local _restore_loaderconf=""
+			if _pkg which -q /boot/loader.conf; then
+				_restore_loaderconf=1
+				cp -fp /boot/loader.conf /tmp/loader.conf.backup
+			fi
 			_exec "pkg-static upgrade -U ${kernel_pkg}" \
 			    "Upgrading ${product} kernel"
+			if [ -n "${_restore_loaderconf}" ]; then
+				cp -fp /tmp/loader.conf.backup /boot/loader.conf
+			fi
 			if [ "${SYSTEM}" = "SG-1100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
@@ -1332,6 +1372,9 @@ if [ "${arch}" = "aarch64" ]; then
 fi
 
 abi_setup
+
+# Set itself as vital to prevent users ending up without upgrade script
+set_vital_flag ${product}-upgrade
 
 # figure out which PHP major version is running
 cur_php_pkg=$(_pkg query -x %n '^php[0-9]{2}-[0-9]')
