@@ -25,6 +25,7 @@ require_once("config.inc");
 require_once("functions.inc");
 require_once("interfaces.inc");
 require_once("/usr/local/pkg/lcdproc.inc");
+require_once("system.inc");
 
 function get_pfstate() {
 	global $config;
@@ -360,11 +361,7 @@ function send_lcd_commands($lcd, $lcd_cmds) {
 		lcdproc_warn("Failed to interpret lcd commands");
 		return;
 	}
-	while (($cmd_output = fgets($lcd, 8000)) !== false) {
-		if (preg_match("/^huh?/", $cmd_output)) {
-			lcdproc_notice("LCDd output: \"$cmd_output\". Executed \"$lcd_cmd\"");
-		}
-	}
+	get_lcd_messages($lcd);
 	foreach ($lcd_cmds as $lcd_cmd) {
 		if (! fwrite($lcd, "$lcd_cmd\n")) {
 			lcdproc_warn("Connection to LCDd process lost $errstr ($errno)");
@@ -373,6 +370,24 @@ function send_lcd_commands($lcd, $lcd_cmds) {
 		}
 	}
 	return true;
+}
+
+function get_lcd_messages($lcd) {
+	while (($cmd_output = fgets($lcd, 8000)) !== false) {
+		if (preg_match("/^huh?/", $cmd_output)) {
+			lcdproc_notice("LCDd output: \"$cmd_output\". Executed \"$lcd_cmd\"");
+		}
+		if (cmenu_enabled()) {
+			if (preg_match("/^menuevent select r_ask_yes/", $cmd_output)) {
+				lcdproc_notice("init REBOOT!");
+				system_reboot();
+			}
+			if (preg_match("/^menuevent select s_ask_yes/", $cmd_output)) {
+				lcdproc_notice("init SHUTDOWN!");
+				system_halt();
+			}
+		}
+	}
 }
 
 function get_lcdpanel_width() {
@@ -425,6 +440,15 @@ function outputled_enabled_CFontz633() {
 	}
 }
 
+function cmenu_enabled() {
+	global $config;
+	$lcdproc_config = $config['installedpackages']['lcdproc']['config'][0];
+	if (!isset($lcdproc_config['controlmenu'])) {
+		return false;
+	}
+	return true;
+}
+
 function outputled_carp() {
 	/* Returns the status of CARP for the box.
 	Assumes ALL CARP status are the same for all the intefaces.
@@ -472,6 +496,51 @@ function outputled_gateway() {
 		}
 	}
 	return 1;
+}
+
+function build_interface_link_list() {
+	// Returns a dictionary of all the interfaces along with their
+	// link and address information, keyed on the interface description.
+	global $config;
+
+	$result = array();
+	$ifList = get_configured_interface_with_descr();
+
+	foreach($ifList as $ifdescr => $ifname) {
+
+		// get the interface link infos
+		$ifinfo = get_interface_info($ifdescr);
+
+		$entry = array();
+		$entry['name'] = $ifname;
+		$entry['mac'] = $ifinfo['macaddr'];
+
+		if (($ifinfo['status'] == "up") ||
+		    ($ifinfo['status'] == "associated")) {
+
+			$entry['status'] = "up";
+		} else {
+			$entry['status'] = "down";
+		}
+
+		if (($ifinfo['pppoelink'] == "up") ||
+		    ($ifinfo['pptplink']  == "up") ||
+		    ($ifinfo['l2tplink']  == "up")) {
+
+			$entry['link'] = sprintf(gettext("Uptime %s"), $ifinfo['ppp_uptime']);
+		} else {
+			$entry['link'] = $ifinfo['media'];
+		}
+
+		$entry['v4addr'] = (empty($ifinfo['ipaddr'])) ?
+			"n/a" : $ifinfo['ipaddr'];
+
+		$entry['v6addr'] = (empty($ifinfo['ipaddrv6'])) ?
+			"n/a" : $ifinfo['ipaddrv6'];
+
+		$result[$ifdescr] = $entry;
+	}
+	return $result;
 }
 
 function build_interface_traffic_stats_list() {
@@ -818,6 +887,17 @@ function build_interface($lcd) {
 	$lcd_cmds[] = "hello";
 	$lcd_cmds[] = "client_set name pfSense";
 
+	/* setup pfsense control menu */
+	if (cmenu_enabled()) {
+		$lcd_cmds[] = 'menu_add_item "" reboot_menu menu "Reboot"';
+		$lcd_cmds[] = 'menu_add_item "reboot_menu" r_ask_no action "No" -next _close_';
+		$lcd_cmds[] = 'menu_add_item "reboot_menu" r_ask_yes action "Yes" -next _quit_';
+
+		$lcd_cmds[] = 'menu_add_item "" shutdown_menu menu "Shutdown"';
+		$lcd_cmds[] = 'menu_add_item "shutdown_menu" s_ask_no action "No" -next _close_';
+		$lcd_cmds[] = 'menu_add_item "shutdown_menu" s_ask_yes action "Yes" -next _quit_';
+	}
+
 	/* process screens to display */
 	if (is_array($lcdproc_screens_config)) {
 		foreach ($lcdproc_screens_config as $name => $screen) {
@@ -966,6 +1046,30 @@ function build_interface($lcd) {
 						}
 						$includeSummary = false; // this screen needs all the lines
 						break;
+					case "scr_interfaces_link":
+						$ifLinkList = build_interface_link_list();
+						foreach ($ifLinkList as $ifdescr => $iflink) {
+							$s_name = $name . $ifdescr;
+							$ifname = $iflink['name'] . ":";
+							$lcd_cmds[] = "screen_add $s_name";
+							$lcd_cmds[] = "screen_set $s_name heartbeat off";
+							$lcd_cmds[] = "screen_set $s_name name \"$name.$ifdescr\"";
+							$lcd_cmds[] = "screen_set $s_name duration $refresh_frequency";
+							$lcd_cmds[] = "widget_add $s_name ifname_wdgt string";
+							$lcd_cmds[] = "widget_set $s_name ifname_wdgt 1 1 \"$ifname\"";
+							$lcd_cmds[] = "widget_add $s_name link_wdgt scroller";
+							$lcd_cmds[] = "widget_add $s_name v4l_wdgt string";
+							$lcd_cmds[] = "widget_set $s_name v4l_wdgt 1 2 \"v4:\"";
+							$lcd_cmds[] = "widget_add $s_name v4a_wdgt scroller";
+							$lcd_cmds[] = "widget_add $s_name v6l_wdgt string";
+							$lcd_cmds[] = "widget_set $s_name v6l_wdgt 1 3 \"v6:\"";
+							$lcd_cmds[] = "widget_add $s_name v6a_wdgt scroller";
+							$lcd_cmds[] = "widget_add $s_name macl_wdgt string";
+							$lcd_cmds[] = "widget_set $s_name macl_wdgt 1 4 \"m:\"";
+							$lcd_cmds[] = "widget_add $s_name maca_wdgt scroller";
+							$includeSummary = false; // this screen needs all the lines
+						}
+						break;
 					case "scr_traffic_by_address":
 						$lcd_cmds[] = "screen_add $name";
 						$lcd_cmds[] = "screen_set $name heartbeat off";
@@ -1024,6 +1128,7 @@ function loop_status($lcd) {
 
 		$lcd_cmds = array();
 		$interfaceTrafficList = null;
+		$ifLinkList = null;
 
 		/* initializes the widget counter */
 		$widget_counter = 0;
@@ -1178,6 +1283,38 @@ function loop_status($lcd) {
 					for($i = 0; $i < ($lcdpanel_height - 1) && i < count($interfaceTrafficStrings); $i++) {
 
 						$lcd_cmds[] = "widget_set $name text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
+					}
+					$updateSummary = false;
+					break;
+				case "scr_interfaces_link":
+					// We only want build_interface_link_list() to be
+					// called once per loop, and only if it's needed
+					if ($ifLinkList == null) {
+						$ifLinkList = build_interface_link_list();
+					}
+
+					foreach ($ifLinkList as $ifdescr => $iflink) {
+						$s_name = $name . $ifdescr;
+						$ifname = $iflink['name'] . ":";
+						$l_str = ($iflink['status'] == "down") ? "down" : $iflink['link'];
+
+						$lcd_cmds[] = "widget_set $s_name ifname_wdgt 1 1 \"$ifname\"";
+
+						$lcd_cmds[] = "widget_set $s_name link_wdgt " .
+							(strlen($iflink['name']) + 3) . " 1 " .
+							$lcdpanel_width . " 1 h 4 \"" . $l_str . "\"";
+
+						$lcd_cmds[] = "widget_set $s_name v4a_wdgt 5 2 " .
+							$lcdpanel_width . " 2 h 4 \"" .
+							$iflink['v4addr'] . "\"";
+
+						$lcd_cmds[] = "widget_set $s_name v6a_wdgt 5 3 " .
+							$lcdpanel_width . " 3 h 4 \"" .
+							$iflink['v6addr'] . "\"";
+
+						$lcd_cmds[] = "widget_set $s_name maca_wdgt 4 4 " .
+							$lcdpanel_width . " 4 h 4 \"" .
+							$iflink['mac'] . "\"";
 					}
 					$updateSummary = false;
 					break;
