@@ -25,6 +25,7 @@ require_once("config.inc");
 require_once("functions.inc");
 require_once("interfaces.inc");
 require_once("/usr/local/pkg/lcdproc.inc");
+require_once("system.inc");
 
 function get_pfstate() {
 	global $config;
@@ -360,11 +361,7 @@ function send_lcd_commands($lcd, $lcd_cmds) {
 		lcdproc_warn("Failed to interpret lcd commands");
 		return;
 	}
-	while (($cmd_output = fgets($lcd, 8000)) !== false) {
-		if (preg_match("/^huh?/", $cmd_output)) {
-			lcdproc_notice("LCDd output: \"$cmd_output\". Executed \"$lcd_cmd\"");
-		}
-	}
+	get_lcd_messages($lcd);
 	foreach ($lcd_cmds as $lcd_cmd) {
 		if (! fwrite($lcd, "$lcd_cmd\n")) {
 			lcdproc_warn("Connection to LCDd process lost $errstr ($errno)");
@@ -373,6 +370,24 @@ function send_lcd_commands($lcd, $lcd_cmds) {
 		}
 	}
 	return true;
+}
+
+function get_lcd_messages($lcd) {
+	while (($cmd_output = fgets($lcd, 8000)) !== false) {
+		if (preg_match("/^huh?/", $cmd_output)) {
+			lcdproc_notice("LCDd output: \"$cmd_output\". Executed \"$lcd_cmd\"");
+		}
+		if (cmenu_enabled()) {
+			if (preg_match("/^menuevent select r_ask_yes/", $cmd_output)) {
+				lcdproc_notice("init REBOOT!");
+				system_reboot();
+			}
+			if (preg_match("/^menuevent select s_ask_yes/", $cmd_output)) {
+				lcdproc_notice("init SHUTDOWN!");
+				system_halt();
+			}
+		}
+	}
 }
 
 function get_lcdpanel_width() {
@@ -423,6 +438,15 @@ function outputled_enabled_CFontz633() {
 			return false;
 		}
 	}
+}
+
+function cmenu_enabled() {
+	global $config;
+	$lcdproc_config = $config['installedpackages']['lcdproc']['config'][0];
+	if (!isset($lcdproc_config['controlmenu'])) {
+		return false;
+	}
+	return true;
 }
 
 function outputled_carp() {
@@ -862,6 +886,17 @@ function build_interface($lcd) {
 	$lcd_cmds = array();
 	$lcd_cmds[] = "hello";
 	$lcd_cmds[] = "client_set name pfSense";
+
+	/* setup pfsense control menu */
+	if (cmenu_enabled()) {
+		$lcd_cmds[] = 'menu_add_item "" reboot_menu menu "Reboot"';
+		$lcd_cmds[] = 'menu_add_item "reboot_menu" r_ask_no action "No" -next _close_';
+		$lcd_cmds[] = 'menu_add_item "reboot_menu" r_ask_yes action "Yes" -next _quit_';
+
+		$lcd_cmds[] = 'menu_add_item "" shutdown_menu menu "Shutdown"';
+		$lcd_cmds[] = 'menu_add_item "shutdown_menu" s_ask_no action "No" -next _close_';
+		$lcd_cmds[] = 'menu_add_item "shutdown_menu" s_ask_yes action "Yes" -next _quit_';
+	}
 
 	/* process screens to display */
 	if (is_array($lcdproc_screens_config)) {
