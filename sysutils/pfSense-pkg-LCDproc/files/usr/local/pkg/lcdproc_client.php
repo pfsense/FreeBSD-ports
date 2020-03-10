@@ -1399,7 +1399,7 @@ function loop_status($lcd) {
 							$clearLinesFrom = 1;
 						}												
 					} else {
-						for($i = 0; $i < ($lcdpanel_height - 1) && i < count($traffic); $i++) {
+						for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($traffic); $i++) {
 							$speeds = $traffic[$i]['in/out'];
 							$left = $lcdpanel_width - strlen($speeds);							
 							$lcd_cmds[] = "widget_set $name data_wdgt{$i} " . ($left + 1) . " " . ($i + 2) . " \"{$speeds}\"";							
