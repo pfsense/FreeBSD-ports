@@ -128,9 +128,9 @@ function frr_generate_config_ospf6() {
 		/* If the router ID is defined in BGP, use that, otherwise try to use
 		 * the global router ID, if one is set. */
 		if (is_ipaddrv4($ospf6d_conf['routerid'])) {
-			$conffile .= "  router-id {$ospf6d_conf['routerid']}\n";
+			$conffile .= "  ospf6 router-id {$ospf6d_conf['routerid']}\n";
 		} elseif (is_ipaddrv4($frr_conf['routerid'])) {
-			$conffile .= "  router-id {$frr_conf['routerid']}\n";
+			$conffile .= "  ospf6 router-id {$frr_conf['routerid']}\n";
 		}
 
 		$conffile .= $router_interface_areas;
