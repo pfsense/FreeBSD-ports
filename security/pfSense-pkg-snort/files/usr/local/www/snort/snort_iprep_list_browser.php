@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,11 +53,11 @@ $target = htmlspecialchars($_POST['target']);
 	<table class="table table-striped table-hover table-condensed">
 		<thead>
 			<tr>
-				<th><img src="/filebrowser/images/icon_home.gif" alt="Home" title="Home" /></th>
+				<th><img src="/vendor/filebrowser/images/icon_home.gif" alt="Home" title="Home" /></th>
 				<th><b><?=$path;?></b></th>
 				<th><b><?=gettext('File Size'); ?></th>
 				<th class="fbClose pull-right">
-					<img onClick="$('<?=$container;?>').hide();" border="0" src="/filebrowser/images/icon_cancel.gif" alt="Close" title="Close" />
+					<img onClick="$('<?=$container;?>').hide();" border="0" src="/vendor/filebrowser/images/icon_cancel.gif" alt="Close" title="Close" />
 				</th>
 			</tr>
 		</thead>
@@ -103,7 +103,7 @@ $target = htmlspecialchars($_POST['target']);
 				<td class="fbFile" id="<?=$fqpn;?>">
 					<?php $filename = str_replace("//","/", "{$path}/{$file}"); ?>
 					<div onClick="$('<?=$target;?>').value='<?=$filename?>'; $('<?=$container;?>').hide();">
-						<img src="/filebrowser/images/file_<?=$type;?>.gif" alt="" title="">&nbsp;<?=$file;?>
+						<img src="/vendor/filebrowser/images/file_<?=$type;?>.gif" alt="" title="">&nbsp;<?=$file;?>
 					</div>
 				</td>
 				<td><?=$size;?></td>
