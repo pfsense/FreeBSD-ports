@@ -79,7 +79,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 USES=		kmod php:flavors
 
 IGNORE_WITH_PHP=	56 70 71
-USE_PHP=	bz2 bcmath ctype curl dom filter gettext json mbstring \
+USE_PHP=	bz2 bcmath ctype curl dom filter gettext intl json mbstring \
 		mcrypt hash opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
 		sysvshm sqlite3 tokenizer xml ldap zlib xmlreader xmlwriter
