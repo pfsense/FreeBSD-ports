@@ -1675,6 +1675,10 @@ EOD;
 		if (!empty($contents)) {
 			file_put_contents(SQUID_ACLDIR . "/$option.acl", $contents);
 			$conf .= "acl $option $directive \"" . SQUID_ACLDIR . "/$option.acl\"\n";
+			if (($squidsettings['sslproxy_mitm_mode'] == "splicewhitelist") &&
+		            ($option == 'whitelist')) {
+				$conf .= "acl sslwhitelist ssl::server_name_regex -i \"" . SQUID_ACLDIR . "/$option.acl\"\n";
+			}
 			$valid_acls[] = $option;
 		} elseif (file_exists(SQUID_ACLDIR . "/$option.acl")) {
 			unlink(SQUID_ACLDIR . "/$option.acl");
@@ -1938,7 +1942,7 @@ function squid_resync_auth() {
 				// 'Splice Whitelist, Bump Otherwise' SSL/MIMT configuration (Default)
 				$conf .= "ssl_bump peek step1\n";
 				if (!empty($settingsnac['whitelist'])) {
-					$conf .= "ssl_bump splice whitelist\n";
+					$conf .= "ssl_bump splice sslwhitelist\n";
 				}
 				$conf .= "ssl_bump bump all\n";
 			}
@@ -2023,7 +2027,7 @@ EOD;
 				// 'Splice Whitelist, Bump Otherwise' SSL/MIMT configuration (Default)
 				$conf .= "ssl_bump peek step1\n";
 				if (!empty($settingsnac['whitelist'])) {
-					$conf .= "ssl_bump splice whitelist\n";
+					$conf .= "ssl_bump splice sslwhitelist\n";
 				}
 				$conf .= "ssl_bump bump all\n";
 			}
