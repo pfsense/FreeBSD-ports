@@ -527,7 +527,7 @@ pkg_upgrade() {
 			rm -f ${logfile}
 		fi
 
-		pkg_update
+		pkg_update force
 
 		# Lock pkg to avoid having pkg binary for version N+1 installed
 		# on N
