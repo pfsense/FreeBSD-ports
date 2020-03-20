@@ -1295,10 +1295,15 @@ function squid_resync_general() {
 					continue;
 				} else {
 					$real_ifaces[] = $iface_ip;
-					if (in_array($iface, $ssl_ifaces)) {
-						$conf .= "http_port {$iface_ip[0]}:{$port} {$ssl_interception}\n";
+					if (is_ipaddrv4($iface_ip[0])) {
+						$listenip = "{$iface_ip[0]}";
 					} else {
-						$conf .= "http_port {$iface_ip[0]}:{$port}\n";
+						$listenip = "[{$iface_ip[0]}]";
+					}
+					if (in_array($iface, $ssl_ifaces)) {
+						$conf .= "http_port {$listenip}:{$port} {$ssl_interception}\n";
+					} else {
+						$conf .= "http_port {$listenip}:{$port}\n";
 					}
 				}
 			}
