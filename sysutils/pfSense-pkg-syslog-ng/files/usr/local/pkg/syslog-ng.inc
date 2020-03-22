@@ -447,7 +447,14 @@ function syslogng_build_cert() {
 	}
 
 	if ($ca != false) {
-		file_put_contents(SYSLOGNG_DIR . "/ca.d/cacert.pem", base64_decode($ca['crt']));
+		$ca_content = base64_decode($ca['crt']);
+		$temp_file_name = tempnam(sys_get_temp_dir(), 'syslog-ng');
+
+		file_put_contents($temp_file_name, $ca_content);
+		$ca_hash = trim(shell_exec("/usr/bin/openssl x509 -noout -hash -in " . $temp_file_name));
+		unlink($temp_file_name);
+
+		file_put_contents(SYSLOGNG_DIR . "/ca.d/" . $ca_hash . ".0", $ca_content);
 	}
 }
 ?>
