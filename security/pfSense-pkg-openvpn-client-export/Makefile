@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-openvpn-client-export
-PORTVERSION=	1.4.20
+PORTVERSION=	1.4.21
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
