@@ -131,8 +131,7 @@ $act = $_POST['act'];
 
 global $simplefields;
 $simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','legacy','randomlocalport',
-	'usepkcs11','pkcs11providers',
-	'usetoken','usepass',
+	'usepkcs11','pkcs11providers','usetoken','usepass',
 	'useproxy','useproxytype','proxyaddr','proxyport','useproxypass','proxyuser');
 	//'pass','proxypass','advancedoptions'
 
@@ -382,7 +381,12 @@ if (!empty($act)) {
 		exit;
 	}
 }
+?>
 
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+<?php
 include("head.inc");
 
 if ($input_errors) {
@@ -608,7 +612,7 @@ $form->add($section);
 
 print($form);
 ?>
-
+	
 <div class="panel panel-default" id="search-panel">
 	<div class="panel-heading">
 		<h2 class="panel-title">
@@ -641,20 +645,24 @@ print($form);
 "These features include: AEAD encryption such as AES-GCM, TLS Encryption+Authentication, ECDH, LZ4 Compression and other non-legacy compression choices, IPv6 DNS servers, and more."), 'warning', false); ?>
 
 <div class="panel panel-default">
+	
+	
+	
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("OpenVPN Clients")?></h2></div>
 	<div class="panel-body">
-		<div class="table-responsive">
+		<div class="">
 			<table class="table table-striped table-hover table-condensed" id="users">
 				<thead>
 					<tr>
 						<td width="25%" class="listhdrr"><?=gettext("User")?></td>
 						<td width="35%" class="listhdrr"><?=gettext("Certificate Name")?></td>
-						<td width="40%" class="listhdrr"><i class='fa fa-download'> </i><?=gettext("Export Client Configuration")?></td>
+						<td width="40%" class="listhdrr"><i class='fa fa-download'> </i> <?=gettext("Export Client Configuration")?></td>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 			</table>
+			
 		</div>
 	</div>
 </div>
@@ -679,6 +687,8 @@ Links to OpenVPN clients for various platforms:<br />
 <br/><a href="https://www.sparklabs.com/viscosity/"><?= gettext("Viscosity") ?></a> - <?= gettext("Recommended commercial client for Mac OS X and Windows") ?>
 <br/><a href="https://tunnelblick.net"><?= gettext("Tunnelblick") ?></a> - <?= gettext("Free client for OS X") ?>
 <br/><a href="https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos"><?= gettext("Using the Latest OpenVPN on Linux Distros") ?></a> - <?= gettext("Install OpenVPN using the OpenVPN apt repositories to get the latest version, rather than one included with distributions.") ?>
+
+
 
 <script type="text/javascript">
 //<![CDATA[
@@ -730,14 +740,22 @@ function make_form_variable(varname, varvalue) {
 	return exportinput;
 }
 
+function download_format_args(act) {
+	
+	if(typeof act !== "undefined" && act != "") {
+		var res = act.split(",");
+	 	download_begin(res[0], res[1], res[2]);
+	}
+	
+}
+
 function download_begin(act, i, j) {
 	var index = document.getElementById("server").value;
 	var users = servers[index][1];
 	var certs = servers[index][3];
 	var useaddr;
-
 	var advancedoptions;
-
+	
 	if (document.getElementById("useaddr").value == "other") {
 		if (document.getElementById("useaddr_hostname").value == "") {
 			alert("Please specify an IP address or hostname.");
@@ -917,111 +935,91 @@ function server_changed() {
 		break;
 	}
 
+    <?php
+    // Define download config groups, configs and descritions for combo box 
+    $groups = array("inline"  => "Inline Configurations",
+        "bundle"  => "Bundled Configurations",
+        "cur_win" => "Current Windows Installer({$current_openvpn_version}-Ix{$current_openvpn_version_rev})",
+        "old_win" => "Old Windows Installers ({$legacy_openvpn_version}-Ix{$legacy_openvpn_version_rev})",
+        "viscosi" => "Viscosity (Mac OS X and Windows)");
+    
+    $group_itens["inline"] = array('confinline' => "Config file + certs (Most Clients)",
+        'confinlinedroid' => "Android",
+        'confinlineios' => "OpenVPN Connect (iOS/Android)");
+    
+    $group_itens["bundle"] = array('confzip' => "Archive",
+        'conf' => "Config File Only");
+    
+    $group_itens["cur_win"] = array('inst-Win7' => "Windows 7/8/8.1 and Windows server 2012r",
+        'inst-Win10' => "Windows 10, Windows server 2016/2019");
+    
+    $group_itens["old_win"] = array('inst-x86-xp' => "Windows XP 32 Bits",
+        'inst-x64-xp' => "Windows XP 64 Bits",
+        'inst-x86-win6' => "Windows 6 32 Bits",
+        'inst-x64-win6' => "Windows 6 64 Bits");
+    
+    $group_itens["viscosi"] = array('visc' => "Viscosity Bundle",
+        'confinlinevisc' => "Viscosity Inline");
+        
+    ?>
 
+	
 	var users = servers[index][1];
 	var certs = servers[index][3];
-	for (i = 0; i < users.length; i++) {
-		var row = table.insertRow(table.rows.length);
-		var cell0 = row.insertCell(0);
-		var cell1 = row.insertCell(1);
-		var cell2 = row.insertCell(2);
-		cell0.className = "listlr";
-		cell0.innerHTML = users[i][2];
-		cell1.className = "listr";
-		cell1.innerHTML = users[i][3];
-		cell2.className = "listr";
-		cell2.innerHTML = "- Inline Configurations:<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
-		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
-		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
-/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
-		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-xp\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-win6\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-win6<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-win6\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-win6<\/a>";
-		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Bundle<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Inline Config<\/a>";
+	<?php
+	foreach ($server['users'] as $j => &$cert) {
+	//for (i = 0; i < users.length; i++) {
+	    print "\nvar row = table.insertRow(table.rows.length);\n";
+		print "var cell0 = row.insertCell(0);\n";
+	    print "var cell1 = row.insertCell(1);\n";
+		print "var cell2 = row.insertCell(2);\n";
+	    print "cell0.className = 'listlr';\n";
+		print "cell0.innerHTML = '{$cert['name']}'\n";
+	    print "cell1.className = 'listr';\n";
+		print "cell1.innerHTML = '{$cert['certname']}'\n";
+	    print "cell2.className = 'listr';\n";
+		
+		$mselect = "<select class='selectpicker' data-style='btn-primary' data-max-options='1' multiple onchange='download_format_args(this.value)'>";
+		foreach ($groups as $group_id => $group_descr) {
+            $mselect .= "<optgroup label= '{$group_descr}'>";
+            foreach ($group_itens[$group_id] as $item_cmd => $item_descr) {
+                $mselect .= "<option value='{$item_cmd},{$j},-1'>&nbsp;{$item_descr}</a></option>";
+            }
+            $mselect .= "</optgroup>";
+        }
+		$mselect .= "</select>";
+		print "cell2.innerHTML = \"{$mselect}\"\n\n\n";
+		
 	}
-	for (j = 0; j < certs.length; j++) {
-		var row = table.insertRow(table.rows.length);
-		var cell0 = row.insertCell(0);
-		var cell1 = row.insertCell(1);
-		var cell2 = row.insertCell(2);
-		cell0.className = "listlr";
-		if (servers[index][2] == "server_tls") {
-			cell0.innerHTML = "Certificate (SSL/TLS, no Auth)";
-		} else {
-			cell0.innerHTML = "Certificate with External Auth";
-		}
-		cell1.className = "listr";
-		cell1.innerHTML = certs[j][1];
-		cell2.className = "listr";
-		cell2.innerHTML = "- Inline Configurations:<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
-		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
-		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
-/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
-		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-xp\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-win6\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-win6<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-win6\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-win6<\/a>";
-		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Bundle<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Inline Config<\/a>";
-		if (servers[index][2] == "server_tls") {
-			cell2.innerHTML += "<br\/>- Yealink SIP Handsets:<br\/>";
-			cell2.innerHTML += "&nbsp;&nbsp; ";
-			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t28\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> T28<\/a>";
-			cell2.innerHTML += "&nbsp;&nbsp; ";
-			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t38g\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> T38G (1)<\/a>";
-			cell2.innerHTML += "&nbsp;&nbsp; ";
-			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t38g2\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> T38G (2) / V83<\/a>";
-			cell2.innerHTML += "<br\/>- Snom SIP Handsets:<br\/>";
-			cell2.innerHTML += "&nbsp;&nbsp; ";
-			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_snom\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> SNOM<\/a>";
-		}
+	
+ 	
+	foreach ($server['certs'] as $j => &$cert) {
+	    print "\nvar row = table.insertRow(table.rows.length);\n";
+	    print "var cell0 = row.insertCell(0);\n";
+	    print "var cell1 = row.insertCell(1);\n";
+	    print "var cell2 = row.insertCell(2);\n";
+	    print "cell0.className = 'listlr';\n";
+	    if ($server["mode"] == "server_tls") {
+	        print "cell0.innerHTML = 'Certificate (SSL/TLS, no Auth)';\n"; 
+	    } else {
+	        print "cell0.innerHTML = 'Certificate with External Auth';\n";
+	    }
+	    print "cell1.className = 'listr';\n";
+	    print "cell1.innerHTML = '{$cert['certname']}';\n";
+	    print "cell2.className = 'listr';\n";
+        $mselect = "<select class='selectpicker' data-style='btn-primary' data-max-options='1' multiple onchange='download_format_args(this.value)'>";
+        foreach ($groups as $group_id => $group_descr) {
+            $mselect .= "<optgroup label= '{$group_descr}'>";
+            foreach ($group_itens[$group_id] as $item_cmd => $item_descr) {
+		          $mselect .= "<option value='{$item_cmd},-1,{$j}'>{$item_descr}</option>";
+            }
+            $mselect .= "</optgroup>";
+        }
+		$mselect .= "</select>";
+		print "cell2.innerHTML = \"{$mselect}\"\n\n\n";
 	}
+###########################################
+?>
 	if (servers[index][2] == 'server_user') {
 		var row = table.insertRow(table.rows.length);
 		var cell0 = row.insertCell(0);
@@ -1032,38 +1030,20 @@ function server_changed() {
 		cell1.className = "listr";
 		cell1.innerHTML = "none";
 		cell2.className = "listr";
-		cell2.innerHTML = "- Inline Configurations:<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
-		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
-		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
-/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
-		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-xp\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-win6\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-win6<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-win6\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-win6<\/a>";
-		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Bundle<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Inline Config<\/a>";
+		 
+		/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
+		<?php
+		$mselect = "<select class='selectpicker' data-style='btn-primary' data-max-options='1' multiple onchange='download_format_args(this.value)'>";
+		foreach ($groups as $group_id => $group_descr) {
+            $mselect .= "<optgroup label= '{$group_descr}'>";
+            foreach ($group_itens[$group_id] as $item_cmd => $item_descr) {
+		          $mselect .= "<option value='{$item_cmd},' + i>{$item_descr}</option>";
+            }
+            $mselect .= "</optgroup>";
+        }
+		$mselect .= "</select>";
+		print "cell2.innerHTML = \"{$mselect}\"\n\n\n";
+		?>
 	}
 }
 
@@ -1123,7 +1103,7 @@ function useproxy_changed() {
 
 events.push(function(){
 	// ---------- OnChange handlers ---------------------------------------------------------
-
+	
 	$('#server').on('change', function() {
 		server_changed();
 	});
