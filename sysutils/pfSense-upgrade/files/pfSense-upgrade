@@ -633,13 +633,13 @@ pkg_upgrade() {
 
 		# Detect the move from suricata to suricata4
 		if is_pkg_installed ${product}-pkg-suricata \
-		    && ${_pkg} rquery -U %n ${product}-pkg-suricata4 \
+		    && _pkg rquery -U %n ${product}-pkg-suricata4 \
 		    >/dev/null 2>&1; then
 			pkg_set_origin ${product}-pkg-suricata \
 			    ${product}-pkg-suricata4
 			pkg_set_origin suricata suricata4
 		elif is_pkg_installed ${product}-pkg-suricata4 \
-		    && ${_pkg} rquery -U %n ${product}-pkg-suricata \
+		    && _pkg rquery -U %n ${product}-pkg-suricata \
 		    >/dev/null 2>&1; then
 			pkg_set_origin ${product}-pkg-suricata4 \
 			    ${product}-pkg-suricata
