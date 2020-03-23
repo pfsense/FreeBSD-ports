@@ -649,7 +649,7 @@ print($form);
 					<tr>
 						<td width="25%" class="listhdrr"><?=gettext("User")?></td>
 						<td width="35%" class="listhdrr"><?=gettext("Certificate Name")?></td>
-						<td width="40%" class="listhdrr"><?=gettext("Export")?></td>
+						<td width="40%" class="listhdrr"><i class='fa fa-download'> </i><?=gettext("Export Client Configuration")?></td>
 					</tr>
 				</thead>
 				<tbody>
