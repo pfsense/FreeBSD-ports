@@ -167,16 +167,16 @@ function squid_resync_reverse() {
 	}
 
 	foreach (explode(",", $ifaces) as $i => $iface) {
-		$real_ifaces[] = squid_get_real_interface_address($iface);
+		$real_ifaces[] = squid_get_real_interface_address($iface, 'inet');
 		if ($real_ifaces[$i][0]) {
 			//HTTP
 			if ((!empty($settings['reverse_http'])) || ($settings['reverse_owa_autodiscover'] == 'on')) {
-				$conf .= "http_port {$real_ifaces[$i][0]}:{$http_port} accel defaultsite={$http_defsite} vhost\n";
+				$conf .= "http_port {$real_ifaces[$i][0][0]}:{$http_port} accel defaultsite={$http_defsite} vhost\n";
 			}
 			//HTTPS
 			if (!empty($settings['reverse_https'])) {
 				// Squid will fail when the line length exceeds 1024 characters, this can happen because of the long ciphersuite so break the line
-				$conf .= "https_port {$real_ifaces[$i][0]}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$clientca_opts} {$sslflags_https_port_iface} {$dhparams} {$ciphers} \\\n";
+				$conf .= "https_port {$real_ifaces[$i][0][0]}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$clientca_opts} {$sslflags_https_port_iface} {$dhparams} {$ciphers} \\\n";
 				$conf .= " options={$options} defaultsite={$https_defsite} vhost\n";
 				$conf .= "\n";
 			}
