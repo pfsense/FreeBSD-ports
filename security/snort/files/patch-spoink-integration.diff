@@ -1,20 +1,20 @@
-diff -ruN ./snort-2.9.15.orig/src/output-plugins/Makefile.am ./snort-2.9.15/src/output-plugins/Makefile.am
---- ./snort-2.9.15.orig/src/output-plugins/Makefile.am	2019-10-03 02:42:32.000000000 -0400
-+++ ./src/output-plugins/Makefile.am	2019-11-05 20:04:22.000000000 -0500
+diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/Makefile.am ./snort-2.9.15.1/src/output-plugins/Makefile.am
+--- ./snort-2.9.15.1.orig/src/output-plugins/Makefile.am	2019-12-03 04:06:15.000000000 -0500
++++ ./src/output-plugins/Makefile.am	2020-03-04 20:18:00.000000000 -0500
 @@ -13,7 +13,8 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
  spo_alert_sf_socket.h spo_alert_sf_socket.c \
 -spo_alert_test.c spo_alert_test.h
-++spo_alert_test.c spo_alert_test.h \
-++spo_pf.h spo_pf.c
++spo_alert_test.c spo_alert_test.h \
++spo_pf.h spo_pf.c
  
  if BUILD_BUFFER_DUMP
  libspo_a_SOURCES += \
-diff -ruN ./snort-2.9.15.orig/src/output-plugins/Makefile.in ./snort-2.9.15/src/output-plugins/Makefile.in
---- ./snort-2.9.15.orig/src/output-plugins/Makefile.in	2019-10-03 03:35:05.000000000 -0400
-+++ ./src/output-plugins/Makefile.in	2019-11-05 20:06:45.000000000 -0500
-@@ -116,7 +116,8 @@
+diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/Makefile.in ./snort-2.9.15.1/src/output-plugins/Makefile.in
+--- ./snort-2.9.15.1.orig/src/output-plugins/Makefile.in	2019-12-03 04:30:45.000000000 -0500
++++ ./src/output-plugins/Makefile.in	2020-03-04 20:20:02.000000000 -0500
+@@ -106,7 +106,8 @@
  	spo_log_tcpdump.c spo_log_tcpdump.h spo_unified2.c \
  	spo_unified2.h spo_log_ascii.c spo_log_ascii.h \
  	spo_alert_sf_socket.h spo_alert_sf_socket.c spo_alert_test.c \
@@ -24,7 +24,7 @@ diff -ruN ./snort-2.9.15.orig/src/output-plugins/Makefile.in ./snort-2.9.15/src/
  @BUILD_BUFFER_DUMP_TRUE@am__objects_1 = spo_log_buffer_dump.$(OBJEXT)
  am_libspo_a_OBJECTS = spo_alert_fast.$(OBJEXT) \
  	spo_alert_full.$(OBJEXT) spo_alert_syslog.$(OBJEXT) \
-@@ -124,6 +125,7 @@
+@@ -114,6 +115,7 @@
  	spo_log_null.$(OBJEXT) spo_log_tcpdump.$(OBJEXT) \
  	spo_unified2.$(OBJEXT) spo_log_ascii.$(OBJEXT) \
  	spo_alert_sf_socket.$(OBJEXT) spo_alert_test.$(OBJEXT) \
@@ -32,7 +32,7 @@ diff -ruN ./snort-2.9.15.orig/src/output-plugins/Makefile.in ./snort-2.9.15/src/
  	$(am__objects_1)
  libspo_a_OBJECTS = $(am_libspo_a_OBJECTS)
  AM_V_P = $(am__v_P_@AM_V@)
-@@ -334,6 +336,7 @@
+@@ -322,6 +324,7 @@
  	spo_log_tcpdump.h spo_unified2.c spo_unified2.h \
  	spo_log_ascii.c spo_log_ascii.h spo_alert_sf_socket.h \
  	spo_alert_sf_socket.c spo_alert_test.c spo_alert_test.h \
@@ -40,12 +40,12 @@ diff -ruN ./snort-2.9.15.orig/src/output-plugins/Makefile.in ./snort-2.9.15/src/
  	$(am__append_1)
  all: all-am
  
-diff -ruN ./snort-2.9.15.orig/src/output-plugins/spo_pf.c ./snort-2.9.15/src/output-plugins/spo_pf.c
---- ./snort-2.9.15.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.c	2019-08-12 10:29:00.000000000 -0400
+diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.c ./snort-2.9.15.1/src/output-plugins/spo_pf.c
+--- ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.c	2020-03-04 20:27:18.000000000 -0500
 @@ -0,0 +1,762 @@
 +/*
-+* Copyright (c) 2019  Bill Meeks
++* Copyright (c) 2020  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
 +* Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 +* Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -806,12 +806,12 @@ diff -ruN ./snort-2.9.15.orig/src/output-plugins/spo_pf.c ./snort-2.9.15/src/out
 +	}
 +}
 +
-diff -ruN ./snort-2.9.15.orig/src/output-plugins/spo_pf.h ./snort-2.9.15/src/output-plugins/spo_pf.h
---- ./snort-2.9.15.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.h	2019-08-12 10:29:00.000000000 -0400
+diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.h ./snort-2.9.15.1/src/output-plugins/spo_pf.h
+--- ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.h	2020-03-04 20:22:33.000000000 -0500
 @@ -0,0 +1,42 @@
 +/*
-+* Copyright (c) 2019  Bill Meeks
++* Copyright (c) 2020  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
 +* Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 +* Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -852,9 +852,9 @@ diff -ruN ./snort-2.9.15.orig/src/output-plugins/spo_pf.h ./snort-2.9.15/src/out
 +void AlertPfSetup(void);
 +
 +#endif 
-diff -ruN ./snort-2.9.15.orig/src/plugbase.c ./snort-2.9.15/src/plugbase.c
---- ./snort-2.9.15.orig/src/plugbase.c	2019-10-03 02:42:32.000000000 -0400
-+++ ./src/plugbase.c	2019-11-05 20:03:19.000000000 -0500
+diff -ruN ./snort-2.9.15.1.orig/src/plugbase.c ./snort-2.9.15.1/src/plugbase.c
+--- ./snort-2.9.15.1.orig/src/plugbase.c	2019-12-03 04:06:15.000000000 -0500
++++ ./src/plugbase.c	2020-03-04 20:21:50.000000000 -0500
 @@ -123,6 +123,7 @@
  #include "output-plugins/spo_csv.h"
  #include "output-plugins/spo_log_null.h"
