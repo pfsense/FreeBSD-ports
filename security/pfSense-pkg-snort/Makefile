@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-snort
 PORTVERSION=	4.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	pfSense package snort
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	snort>=2.9.15:security/snort \
+RUN_DEPENDS=	snort>=2.9.15.1:security/snort \
 		barnyard2>=0:security/barnyard2
 
 NO_BUILD=	yes

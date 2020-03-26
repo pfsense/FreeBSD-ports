@@ -1295,10 +1295,15 @@ function squid_resync_general() {
 					continue;
 				} else {
 					$real_ifaces[] = $iface_ip;
-					if (in_array($iface, $ssl_ifaces)) {
-						$conf .= "http_port {$iface_ip[0]}:{$port} {$ssl_interception}\n";
+					if (is_ipaddrv4($iface_ip[0])) {
+						$listenip = "{$iface_ip[0]}";
 					} else {
-						$conf .= "http_port {$iface_ip[0]}:{$port}\n";
+						$listenip = "[{$iface_ip[0]}]";
+					}
+					if (in_array($iface, $ssl_ifaces)) {
+						$conf .= "http_port {$listenip}:{$port} {$ssl_interception}\n";
+					} else {
+						$conf .= "http_port {$listenip}:{$port}\n";
 					}
 				}
 			}
@@ -1675,6 +1680,10 @@ EOD;
 		if (!empty($contents)) {
 			file_put_contents(SQUID_ACLDIR . "/$option.acl", $contents);
 			$conf .= "acl $option $directive \"" . SQUID_ACLDIR . "/$option.acl\"\n";
+			if (($squidsettings['sslproxy_mitm_mode'] == "splicewhitelist") &&
+		            ($option == 'whitelist')) {
+				$conf .= "acl sslwhitelist ssl::server_name_regex -i \"" . SQUID_ACLDIR . "/$option.acl\"\n";
+			}
 			$valid_acls[] = $option;
 		} elseif (file_exists(SQUID_ACLDIR . "/$option.acl")) {
 			unlink(SQUID_ACLDIR . "/$option.acl");
@@ -1938,7 +1947,7 @@ function squid_resync_auth() {
 				// 'Splice Whitelist, Bump Otherwise' SSL/MIMT configuration (Default)
 				$conf .= "ssl_bump peek step1\n";
 				if (!empty($settingsnac['whitelist'])) {
-					$conf .= "ssl_bump splice whitelist\n";
+					$conf .= "ssl_bump splice sslwhitelist\n";
 				}
 				$conf .= "ssl_bump bump all\n";
 			}
@@ -2023,7 +2032,7 @@ EOD;
 				// 'Splice Whitelist, Bump Otherwise' SSL/MIMT configuration (Default)
 				$conf .= "ssl_bump peek step1\n";
 				if (!empty($settingsnac['whitelist'])) {
-					$conf .= "ssl_bump splice whitelist\n";
+					$conf .= "ssl_bump splice sslwhitelist\n";
 				}
 				$conf .= "ssl_bump bump all\n";
 			}
