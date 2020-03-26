@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
  * All rights reserved.
  *
@@ -128,10 +128,22 @@ function snort_escape_filter_regex($filtertext) {
 	return str_replace('/', '\/', str_replace('\/', '/', $filtertext));
 }
 
-function snort_match_filter_field($flent, $fields) {
+function snort_match_filter_field($flent, $fields, $exact_match = FALSE) {
 	foreach ($fields as $key => $field) {
 		if ($field == null)
 			continue;
+
+		// Only match whole field string when
+		// performing an exact match.
+		if ($exact_match) {
+			if ($flent[$key] == $field) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
 		if ((strpos($field, '!') === 0)) {
 			$field = substr($field, 1);
 			$field_regex = snort_escape_filter_regex($field);
@@ -197,9 +209,32 @@ if (isset($_POST['resolve'])) {
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
 
+# Check for persisted filtering of alerts log entries and populate
+# the required $filterfieldsarray when persisting filtered entries.
+if ($_POST['persist_filter'] == "yes" && !empty($_POST['persist_filter_content'])) {
+	$filterlogentries = TRUE;
+	$persist_filter_log_entries = "yes";
+	$filterlogentries_exact_match = $_POST['persist_filter_exact_match'];
+	$filterfieldsarray = json_decode($_POST['persist_filter_content'], TRUE);
+}
+else {
+	$filterlogentries = FALSE;
+	$persist_filter_log_entries = "";
+	$filterfieldsarray = array();
+}
+
 if ($_POST['filterlogentries_submit']) {
 	// Set flag for filtering alert entries
 	$filterlogentries = TRUE;
+	$persist_filter_log_entries = "yes";
+
+	// Set 'exact match only' flag if enabled
+	if ($_POST['filterlogentries_exact_match'] == 'on') {
+		$filterlogentries_exact_match = TRUE;
+	}
+	else {
+		$filterlogentries_exact_match = FALSE;
+	}
 
 	// -- IMPORTANT --
 	// Note the order of these fields must match the order decoded from the alerts log
@@ -223,6 +258,7 @@ if ($_POST['filterlogentries_submit']) {
 
 if ($_POST['filterlogentries_clear']) {
 	$filterlogentries = TRUE;
+	$persist_filter_log_entries = "";
 	$filterfieldsarray = array();
 }
 
@@ -557,6 +593,13 @@ $group->add(new Form_Input(
 	'text',
 	$filterfieldsarray[11]
 ))->setHelp('Classification');
+$group->add(new Form_Checkbox(
+	'filterlogentries_exact_match',
+	'Exact Match Only',
+	null,
+	$filterlogentries_exact_match == "on" ? true:false,
+	'on'
+))->setHelp('Exact Match');
 $group->add(new Form_Button(
 	'filterlogentries_submit',
 	' ' . 'Filter',
@@ -575,6 +618,7 @@ $section->add($group);
 $form->add($section);
 // ========== END Log filter Panel =============================================================
 
+// ========== Hidden form controls ==============
 if (isset($instanceid)) {
 	$form->addGlobal(new Form_Input(
 		'id',
@@ -613,6 +657,29 @@ $form->addGlobal(new Form_Input(
 	'hidden',
 	''
 ));
+if ($persist_filter_log_entries == "yes") {
+	$form->addGlobal(new Form_Input(
+		'persist_filter',
+		'persist_filter',
+		'hidden',
+		$persist_filter_log_entries
+	));
+
+	$form->addGlobal(new Form_Input(
+		'persist_filter_exact_match',
+		'persist_filter_exact_match',
+		'hidden',
+		$filterlogentries_exact_match
+	));
+
+	// Pass the $filterfieldsarray variable as serialized data
+	$form->addGlobal(new Form_Input(
+		'persist_filter_content',
+		'persist_filter_content',
+		'hidden',
+		json_encode($filterfieldsarray)
+	));
+}
 
 $tab_array = array();
 	$tab_array[0] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
@@ -676,7 +743,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			if(count($fields) < 13)
 				continue;
 
-			if ($filterlogentries && !snort_match_filter_field($fields, $filterfieldsarray)) {
+			if ($filterlogentries && !snort_match_filter_field($fields, $filterfieldsarray, $filterlogentries_exact_match)) {
 				continue;
 			}
 
