@@ -1991,12 +1991,13 @@ function squid_resync_auth() {
 				} else if ($settings['ldap_urltype'] == 'starttls') {
 					$usetls = '-Z';
 				} 
-				$password = (isset($settings['ldap_pass']) ? "-w {$settings['ldap_pass']}" : '');
+				$password = (isset($settings['ldap_pass']) ? "-w " . escapeshellarg($settings['ldap_pass']) : '');
+				$noreferrals = (isset($settings['ldap_noreferrals']) ? "-R " : '');
 				$conf .= "auth_param basic program " . SQUID_LOCALBASE
 					. "/libexec/squid/basic_ldap_auth -v {$settings['ldap_version']} -b " . escapeshellarg($settings['ldap_basedomain'])
-					. " -D " . escapeshellarg($settings['ldap_user']) . " " . escapeshellarg($password)
+					. " -D " . escapeshellarg($settings['ldap_user']) . " " . $password
 					. " -f " . escapeshellarg($settings['ldap_filter']) . " -u " . escapeshellarg($settings['ldap_userattribute'])
-					. " -P " . escapeshellarg($settings['auth_server'] . $port) . "\n";
+					. " -P " . escapeshellarg($settings['auth_server'] . $port) . " " . $noreferrals . "\n";
 				break;
 			case 'radius':
 				$port = ((isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) ? "-p {$settings['auth_server_port']}" : '');
