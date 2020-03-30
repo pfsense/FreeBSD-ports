@@ -1053,7 +1053,7 @@ function pfb_create_dnsbl_cert() {
 		'subjectAltName' => "DNS:{$cert_hostname}");
 
 	$old_err_level = error_reporting(0); /* otherwise openssl_ functions throw warnings directly to a page screwing menu tab */
-	if (!cert_create($cert, null, 2048, $cert_strict_values['max_server_cert_lifetime'], $dn, "self-signed", "sha256")) {
+	if (!cert_create($cert, null, 2048, $cert_strict_values['max_server_cert_lifetime'] ?? 398, $dn, "self-signed", "sha256")) {
 		while ($ssl_err = openssl_error_string()) {
 			log_error(sprintf(gettext("Error creating pfBlockerNG DNSBL Certificate: openssl library returns: %s"), $ssl_err));
 		}
