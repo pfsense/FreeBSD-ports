@@ -35,7 +35,7 @@ load_rc_config $name
 : ${telegraf_group:="%%TELEGRAF_GROUP%%"}
 : ${telegraf_flags:="--quiet"}
 : ${telegraf_conf:="%%PREFIX%%/etc/${name}.conf"}
-: ${telegraph_confdir:=""}
+: ${telegraf_confdir:=""}
 : ${telegraf_options:="${telegraf_flags} --config=${telegraf_conf}"}
 
 if [ -n "${telegraf_confdir}" ]; then
@@ -57,8 +57,8 @@ telegraf_prestart()
 telegraf_start()
 {
     echo "Starting ${name}"
-    /usr/sbin/daemon -cr -P ${pidfile} -u ${telegraf_user} \
-        %%PREFIX%%/bin/${name} ${telegraf_options} >> ${logfile} 2>&1
+    /usr/sbin/daemon -fcr -P ${pidfile} -u ${telegraf_user} -o ${logfile} \
+        %%PREFIX%%/bin/${name} ${telegraf_options}
 }
 
 telegraf_stop()
