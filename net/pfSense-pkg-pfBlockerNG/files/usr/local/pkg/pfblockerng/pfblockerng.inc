@@ -1870,7 +1870,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 		unset($retval);
 
 		// Decompress file if required
-		if ($file_type == 'application/x-gzip') {
+		if ($file_type == 'application/x-gzip' || $file_type == 'application/gzip') {
 			if ($logtype == 3) {
 				// Extras - MaxMind downloads
 				@rename("{$file_dwn}.raw", strstr("{$file_dwn}.raw", '.raw', TRUE));
