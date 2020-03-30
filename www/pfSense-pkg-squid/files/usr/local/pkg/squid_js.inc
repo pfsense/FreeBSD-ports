@@ -54,10 +54,12 @@ function on_auth_method_changed() {
 	$('#auth_server_port').prop("disabled", true);
 	$('#ldap_user').prop("disabled", true);
 	$('#ldap_version').prop("disabled", true);
+	$('#ldap_urltype').prop("disabled", true);
 	$('#ldap_userattribute').prop("disabled", true);
 	$('#ldap_filter').prop("disabled", true);
 	$('#ldap_pass').prop("disabled", true);
 	$('#ldap_basedomain').prop("disabled", true);
+	$('#ldap_noreferrals').prop("disabled", true);
 	$('#radius_secret').prop("disabled", true);
 	$('#auth_prompt').prop("disabled", true);
 	$('#auth_processes').prop("disabled", true);
@@ -83,10 +85,12 @@ function on_auth_method_changed() {
 		$('#auth_server_port').prop("disabled", true);
 		$('#ldap_user').prop("disabled", true);
 		$('#ldap_version').prop("disabled", true);
+		$('#ldap_urltype').prop("disabled", true);
 		$('#ldap_userattribute').prop("disabled", true);
 		$('#ldap_filter').prop("disabled", true);
 		$('#ldap_pass').prop("disabled", true);
 		$('#ldap_basedomain').prop("disabled", true);
+		$('#ldap_noreferrals').prop("disabled", true);
 		$('#radius_secret').prop("disabled", true);
 		$('#auth_prompt').prop("disabled", true);
 		$('#auth_processes').prop("disabled", true);
@@ -108,9 +112,11 @@ function on_auth_method_changed() {
 		$('#ldap_user').prop("disabled", true);
 		$('#ldap_pass').prop("disabled", true);
 		$('#ldap_version').prop("disabled", true);
+		$('#ldap_urltype').prop("disabled", true);
 		$('#ldap_userattribute').prop("disabled", true);
 		$('#ldap_filter').prop("disabled", true);
 		$('#ldap_basedomain').prop("disabled", true);
+		$('#ldap_noreferrals').prop("disabled", true);
 		$('#radius_secret').prop("disabled", true);
 		break;
 	case 'ldap':
@@ -119,9 +125,11 @@ function on_auth_method_changed() {
 		$('#ldap_user').prop("disabled", false);
 		$('#ldap_pass').prop("disabled", false);
 		$('#ldap_version').prop("disabled", false);
+		$('#ldap_urltype').prop("disabled", false);
 		$('#ldap_userattribute').prop("disabled", false);
 		$('#ldap_filter').prop("disabled", false);
 		$('#ldap_basedomain').prop("disabled", false);
+		$('#ldap_noreferrals').prop("disabled", false);
 		$('#radius_secret').prop("disabled", true);
 		break;
 	case 'radius':
@@ -130,9 +138,11 @@ function on_auth_method_changed() {
 		$('#ldap_user').prop("disabled", true);
 		$('#ldap_pass').prop("disabled", true);
 		$('#ldap_version').prop("disabled", true);
+		$('#ldap_urltype').prop("disabled", true);
 		$('#ldap_userattribute').prop("disabled", true);
 		$('#ldap_filter').prop("disabled", true);
 		$('#ldap_basedomain').prop("disabled", true);
+		$('#ldap_noreferrals').prop("disabled", true);
 		$('#radius_secret').prop("disabled", false);
 		break;
 	case 'cp':
@@ -140,10 +150,12 @@ function on_auth_method_changed() {
 		$('#auth_server_port').prop("disabled", true);
 		$('#ldap_user').prop("disabled", true);
 		$('#ldap_version').prop("disabled", true);
+		$('#ldap_urltype').prop("disabled", true);
 		$('#ldap_userattribute').prop("disabled", true);
 		$('#ldap_filter').prop("disabled", true);
 		$('#ldap_pass').prop("disabled", true);
 		$('#ldap_basedomain').prop("disabled", true);
+		$('#ldap_noreferrals').prop("disabled", true);
 		$('#radius_secret').prop("disabled", true);
 		$('#auth_prompt').prop("disabled", true);
 		$('#auth_processes').prop("disabled", false);
