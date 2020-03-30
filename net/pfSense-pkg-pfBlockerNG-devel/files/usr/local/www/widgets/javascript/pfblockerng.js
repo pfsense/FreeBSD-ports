@@ -24,7 +24,7 @@
 var pfBlockerNGFailedTimer;
 var pfBlockerNGWidgetTimer;
 
-<!-- update timers (10000 ms = 10 seconds, 60000 ms = 1 minute, 300000 ms = 5 mins) -->
+/* update timers (10000 ms = 10 seconds, 60000 ms = 1 minute, 300000 ms = 5 mins) */
 var pfBlockerNGupdateFailedDelay	= 300000;
 var pfBlockerNGupdateWidgetDelay	= 10000;
 
