@@ -230,6 +230,12 @@
 			<default_value>(&amp;(objectClass=person)(uid=%s))</default_value>
 		</field>
 		<field>
+			<fielddescr>LDAP not follow referrals</fielddescr>
+			<fieldname>ldap_noreferrals</fieldname>
+			<description>Do not follow referrals.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<name>Squid Authentication RADIUS Settings</name>
 			<type>listtopic</type>
 		</field>
