@@ -76,6 +76,7 @@ pkg/acme/dnsapi/dns_nederhost.sh
 pkg/acme/dnsapi/dns_neodigit.sh
 pkg/acme/dnsapi/dns_netcup.sh
 pkg/acme/dnsapi/dns_nic.sh
+pkg/acme/dnsapi/dns_nm.sh
 pkg/acme/dnsapi/dns_nsone.sh
 pkg/acme/dnsapi/dns_nsupdate.sh
 pkg/acme/dnsapi/dns_nw.sh
