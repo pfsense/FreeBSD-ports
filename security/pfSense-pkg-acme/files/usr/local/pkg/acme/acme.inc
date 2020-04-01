@@ -340,7 +340,10 @@ $acme_domain_validation_method['dns_aws'] = array('name' => "DNS-Amazon Route53"
 		),
 		'AWS_SECRET_ACCESS_KEY' => array('name' => "aws_secret_access_key", 'columnheader' => "API Key", 'type' => "password",
 			'description' => "AWS Secret Access / API Key"
-		)
+		),
+		'AWS_DNS_SLOWRATE' => array('name' => "aws_dns_slowrate", 'columnheader' => "Slow Rate", 'type' => "textbox",
+			'description' => "Sleep interval after TXT record update, in seconds (default: 1)"
+		),
 	));
 $acme_domain_validation_method['dns_azure'] = array('name' => "DNS-Azure (Microsoft)",
 	'fields' => array(
@@ -394,6 +397,9 @@ $acme_domain_validation_method['dns_cf'] = array('name' => "DNS-Cloudflare",
 		),
 		'CF_Account_ID' => array('name' => "cf_account_id", 'columnheader' => "Account ID", 'type' => "textbox",
 			'description' => "Cloudflare API Account ID"
+		),
+		'CF_Zone_ID' => array('name' => "cf_zone_id", 'columnheader' => "Zone ID", 'type' => "textbox",
+			'description' => "Cloudflare API Zone ID"
 		),
 	));
 $acme_domain_validation_method['dns_cx'] = array('name' => "DNS-Cloudxns",
@@ -691,7 +697,10 @@ $acme_domain_validation_method['dns_inwx'] = array('name' => "DNS-INWX.de",
 		),
 		'INWX_Password' => array('name' => "inwx_password", 'columnheader' => "Password", 'type' => "password",
 			'description' => "INWX.de password"
-		)
+		),
+		'INWX_Shared_Secret' => array('name' => "inwx_shared_secret", 'columnheader' => "Shared Secret", 'type' => "password",
+			'description' => "INWX.de shared secret"
+		),
 	));
 $acme_domain_validation_method['dns_ispconfig'] = array('name' => "DNS-ISPConfig",
 	'fields' => array(
@@ -818,6 +827,15 @@ $acme_domain_validation_method['dns_namecheap'] = array('name' => "DNS-Namecheap
 		),
 		'NAMECHEAP_USERNAME' => array('name' => "namecheap_username", 'columnheader' => "Username", 'type' => "textbox",
 			'description' => "Namecheap Username"
+		)
+	));
+$acme_domain_validation_method['dns_nm'] = array('name' => "DNS-NameMaster.de",
+	'fields' => array(
+		'NM_user' => array('name' => "nm_user", 'columnheader' => "User", 'type' => "textbox",
+			'description' => "namemaster.de API username"
+		),
+		'NM_sha256' => array('name' => "nm_sha256", 'columnheader' => "Password Hash", 'type' => "textbox",
+			'description' => "namemaster.de API password as SHA256 hash"
 		)
 	));
 $acme_domain_validation_method['dns_nederhost'] = array('name' => "DNS-NederHost",
