@@ -402,6 +402,10 @@ function acme_htmllist_js($tablename = "") {
 			result="<input name='" + tableId + field['name'] + rowId +
 			"' id='" + tableId + field['name'] + rowId +
 			"'><\/input> ";
+		} else if(field['type'] === 'password') {
+			result="<input name='" + tableId + field['name'] + rowId +
+			"' id='" + tableId + field['name'] + rowId +
+			"' type='password'\/> ";
 		} else if(field['type'] === 'textarea') {
 			result="<textarea class='form-control nowrap' cols='" + field['size'] + "' rows='15' style='width:100%' name='" + tableId + field['name'] + rowId +
 			"' id='" + tableId + field['name'] + rowId +
