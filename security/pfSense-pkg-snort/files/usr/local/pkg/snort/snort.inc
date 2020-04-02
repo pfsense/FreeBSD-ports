@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -940,7 +940,7 @@ function snort_rules_up_install_cron($should_install) {
 	if (!empty($config['installedpackages']['snortglobal']['rule_update_starttime']))
 		$snort_rules_upd_time = $config['installedpackages']['snortglobal']['rule_update_starttime'];
 	else
-		$snort_rules_upd_time = "00:03";
+		$snort_rules_upd_time = "00:" . strval(random_int(0, 59));
 
 	if ($snort_rules_up_info_ck == "6h_up") {
 		$snort_rules_up_min = intval(substr($snort_rules_upd_time, -2));
@@ -3926,7 +3926,9 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 	unset(\$g["snort_postinstall"]);
 	log_error(gettext("[snort] XMLRPC pkg sync: Generating snort.conf file using Master Host settings..."));
 	\$rebuild_rules = true;
+	conf_mount_rw();
 	sync_snort_package_config();
+	conf_mount_ro();
 	\$rebuild_rules = false;
 	{$snortstart}
 	log_error(gettext("[snort] XMLRPC pkg sync process on this host is complete..."));
