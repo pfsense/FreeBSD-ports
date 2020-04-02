@@ -731,6 +731,13 @@ EOD;
 		}
 		exec("/sbin/devfs -m {$bind_dev_dir} rule applyset", $dout);
 	}
+	// Handle /usr/local/lib/named for chroot
+	$bind_plugin_dir = CHROOT_LOCALBASE . BIND_LOCALBASE . "/lib/named";
+	rmdir_recursive($bind_plugin_dir);
+	safe_mkdir($bind_plugin_dir, 0755);
+	foreach (glob(BIND_LOCALBASE . "/lib/named/*.so") as $bind_plugin) {
+		copy($bind_plugin, CHROOT_LOCALBASE . $bind_plugin);
+	}
 	// http://www.unixwiz.net/techtips/bind9-chroot.html
 	file_put_contents(CHROOT_LOCALBASE . '/etc/namedb/named.conf', $bind_conf);
 	file_put_contents(CHROOT_LOCALBASE . '/etc/namedb/rndc.conf', $rndc_file);
