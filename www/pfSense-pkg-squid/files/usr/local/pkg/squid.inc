@@ -1979,7 +1979,7 @@ function squid_resync_auth() {
 				break;
 			case 'ldap':
 				$port = '';
-				$ldap_proto = '';
+				$ldap_proto = 'ldap://';
 				$usetls = '';
 				if (isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) {
 					$port = ":{$settings['auth_server_port']}";
@@ -1989,7 +1989,7 @@ function squid_resync_auth() {
 				if ($settings['ldap_urltype'] == 'ssl') {
 					$ldap_proto = 'ldaps://';
 				} else if ($settings['ldap_urltype'] == 'starttls') {
-					$usetls = '-Z';
+					$usetls = '-ZZ';
 				} 
 				$password = (isset($settings['ldap_pass']) ? "-w " . escapeshellarg($settings['ldap_pass']) : '');
 				$noreferrals = ($settings['ldap_noreferrals'] == 'on' ? "-R" : '');
@@ -1997,7 +1997,7 @@ function squid_resync_auth() {
 					. "/libexec/squid/basic_ldap_auth -v {$settings['ldap_version']} -b " . escapeshellarg($settings['ldap_basedomain'])
 					. " " . $noreferrals . " -D " . escapeshellarg($settings['ldap_user']) . " " . $password
 					. " -f " . escapeshellarg($settings['ldap_filter']) . " -u " . escapeshellarg($settings['ldap_userattribute'])
-					. " -P " . escapeshellarg($settings['auth_server'] . $port) . "\n";
+					. " -P -H " . escapeshellarg($ldap_proto . $settings['auth_server'] . $port) . "\n";
 				break;
 			case 'radius':
 				$port = ((isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) ? "-p {$settings['auth_server_port']}" : '');
