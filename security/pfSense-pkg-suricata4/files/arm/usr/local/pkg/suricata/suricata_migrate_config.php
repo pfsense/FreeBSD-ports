@@ -139,6 +139,18 @@ if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_t
 }
 
 /**********************************************************/
+/* Randomize the Rules Update Start Time minutes field    */
+/* per request of Snort.org team to minimize impact of    */
+/* large numbers of pfSense users hitting Snort.org at    */
+/* the same minute past the hour for rules updates.       */
+/**********************************************************/
+if (empty($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']) || 
+	  $config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] == '00:05') {
+	$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = "00:" . strval(random_int(0, 59));
+	$updated_cfg = true;
+}
+
+/**********************************************************/
 /* Set default log size and retention limits if not set   */
 /**********************************************************/
 if (!isset($config['installedpackages']['suricata']['config'][0]['alert_log_retention']) && $config['installedpackages']['suricata']['config'][0]['alert_log_retention'] != '0') {
