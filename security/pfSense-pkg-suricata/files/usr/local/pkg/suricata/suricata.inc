@@ -667,7 +667,7 @@ function suricata_rules_up_install_cron($should_install=true) {
 	if (!empty($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'])) {
 		$suricata_rules_upd_time = $config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'];
 	} else {
-		$suricata_rules_upd_time = "00:" . strval(random_int(0, 59));
+		$suricata_rules_upd_time = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 	}
 
 	if ($suricata_rules_up_info_ck == "6h_up") {
