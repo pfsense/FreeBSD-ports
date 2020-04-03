@@ -1405,14 +1405,18 @@ EOD;
 		$src = '';
 		foreach ($real_ifaces as $iface) {
 			list($ip, $mask) = $iface;
-			$ip = long2ip(ip2long($ip) & ip2long($mask));
-			$mask = 32 - log((ip2long($mask) ^ ip2long('255.255.255.255')) +1, 2);
-			if (!preg_match("@$ip/$mask@", $src)) {
-				// XXX: Do not add invalid subnets (Bug #4331, Bug #4526)
-				if (is_subnet("{$ip}/{$mask}")) {
-					$src .= " $ip/$mask";
-				} else {
-					log_error("[squid] 'Allow Users on Interface' ACL skipped for '{$ip}/{$mask}' since it is not a valid subnet.");
+			if (is_subnetv6("{$ip}/{$mask}")) {
+				$src .= " " . gen_subnetv6($ip, $mask) . "/" . $mask;
+			} else {
+				$ip = long2ip(ip2long($ip) & ip2long($mask));
+				$mask = 32 - log((ip2long($mask) ^ ip2long('255.255.255.255')) +1, 2);
+				if (!preg_match("@$ip/$mask@", $src)) {
+					// XXX: Do not add invalid subnets (Bug #4331, Bug #4526)
+					if (is_subnetv4("{$ip}/{$mask}")) {
+						$src .= " $ip/$mask";
+					} else {
+						log_error("[squid] 'Allow Users on Interface' ACL skipped for '{$ip}/{$mask}' since it is not a valid IPv4 subnet.");
+					}
 				}
 			}
 		}

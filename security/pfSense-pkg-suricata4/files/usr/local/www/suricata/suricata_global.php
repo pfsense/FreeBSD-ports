@@ -65,7 +65,7 @@ else {
 
 // Do input validation on parameters
 if (empty($pconfig['autoruleupdatetime']))
-	$pconfig['autoruleupdatetime'] = '00:30';
+	$pconfig['autoruleupdatetime'] = '00:' . strval(random_int(0, 59));
 
 if (empty($pconfig['log_to_systemlog_facility']))
 	$pconfig['log_to_systemlog_facility'] = "local1";
@@ -316,7 +316,7 @@ $section->addInput(new Form_Input(
 	'Snort Rules Filename',
 	'text',
 	$pconfig['snort_rules_file']
-))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29130.tar.gz<br />DO NOT specify a Snort3 rules file!  Snort3 rules are incompatible witih Suricata 4.x and will break your installation!');
+))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29151.tar.gz<br />DO NOT specify a Snort3 rules file!  Snort3 rules are incompatible witih Suricata and will break your installation!');
 $section->addInput(new Form_Input(
 	'oinkcode',
 	'Snort Oinkmaster Code',
@@ -371,7 +371,11 @@ $section->addInput(new Form_Input(
 	'Update Start Time',
 	'text',
 	$pconfig['autoruleupdatetime']
-))->setHelp('Enter the rule update start time in 24-hour format (HH:MM). Default is 00:30.<br /><br />Rules will update at the interval chosen above starting at the time specified here. For example, using the default start time of 00:30 and choosing 12 Hours for the interval, the rules will update at 00:03 and 12:03 each day.');
+))->setHelp('Enter the rule update start time in 24-hour format (HH:MM).  Default is 00 hours with a randomly chosen minutes value.  ' . 
+			'Rules will update at the interval chosen above starting at the time specified here. ' . 
+			'For example, using a start time of 00:08 and choosing 12 Hours for the interval, ' . 
+			'the rules will update at 00:08 and 12:08 each day. The randomized minutes value should ' . 
+			'be retained to minimize the impact to the rules update site from large numbers of simultaneous requests.');
 $section->addInput(new Form_Checkbox(
 	'live_swap_updates',
 	'Live Rule Swap on Update',
