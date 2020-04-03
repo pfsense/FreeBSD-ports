@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -167,6 +167,18 @@ if (isset($config['installedpackages']['snortglobal']['last_rule_upd_status'])) 
 }
 if (isset($config['installedpackages']['snortglobal']['last_rule_upd_time'])) {
 	unset($config['installedpackages']['snortglobal']['last_rule_upd_time']);
+	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Randomize the Rules Update Start Time minutes field    */
+/* per request of Snort.org team to minimize impact of    */
+/* large numbers of pfSense users hitting Snort.org at    */
+/* the same minute past the hour for rules updates.       */
+/**********************************************************/
+if (empty($config['installedpackages']['snortglobal']['rule_update_starttime']) || 
+	  $config['installedpackages']['snortglobal']['rule_update_starttime'] == '00:05') {
+	$config['installedpackages']['snortglobal']['rule_update_starttime'] = "00:" . strval(random_int(0, 59));
 	$updated_cfg = true;
 }
 

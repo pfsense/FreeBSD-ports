@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * Copyright (c) 2008-2009 Robert Zelaya
  * All rights reserved.
  *
@@ -54,7 +54,7 @@ else {
 
 /* Set sensible values for any empty default params */
 if (!isset($pconfig['rule_update_starttime']))
-	$pconfig['rule_update_starttime'] = '00:05';
+	$pconfig['rule_update_starttime'] = '00:' . strval(random_int(0, 59));
 if (!isset($config['installedpackages']['snortglobal']['forcekeepsettings']))
 	$pconfig['forcekeepsettings'] = 'on';
 if (!isset($config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer']))
@@ -162,7 +162,9 @@ if (!$input_errors) {
 		write_config("Snort pkg: modified global settings.");
 
 		/* create whitelist and homenet file, then sync files */
+		conf_mount_rw();
 		sync_snort_package_config();
+		conf_mount_ro();
 
 		/* forces page to reload new settings */
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
@@ -303,10 +305,11 @@ $section->addInput(new Form_Input(
 	'Update Start Time',
 	'text',
 	$pconfig['rule_update_starttime']
-))->setHelp('Enter the rule update start time in 24-hour format (HH:MM).  Default is 00:05.  ' . 
+))->setHelp('Enter the rule update start time in 24-hour format (HH:MM).  Default is 00 hours with a randomly chosen minutes value.  ' . 
 			'Rules will update at the interval chosen above starting at the time specified here. ' . 
-			'For example, using the default start time of 00:05 and choosing 12 Hours for the interval, ' . 
-			'the rules will update at 00:05 and 12:05 each day.');
+			'For example, using a start time of 00:08 and choosing 12 Hours for the interval, ' . 
+			'the rules will update at 00:08 and 12:08 each day. The randomized minutes value should ' . 
+			'be retained to minimize the impact to the rules update site from large numbers of simultaneous requests.');
 $section->addInput(new Form_Checkbox(
 	'hide_deprecated_rules',
 	'Hide Deprecated Rules Categories',
