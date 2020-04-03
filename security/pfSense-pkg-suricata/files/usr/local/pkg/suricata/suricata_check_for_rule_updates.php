@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (C) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -404,6 +404,9 @@ if (file_exists(SURICATA_RULES_UPD_LOGFILE)) {
 else {
 	file_put_contents(SURICATA_RULES_UPD_LOGFILE, "");
 }
+
+/* Sleep for random number of seconds between 0 and 35 to spread load on rules site */
+sleep(random_int(0, 35));
 
 /* Log start time for this rules update */
 error_log(gettext("Starting rules update...  Time: " . date("Y-m-d H:i:s") . "\n"), 3, SURICATA_RULES_UPD_LOGFILE);
