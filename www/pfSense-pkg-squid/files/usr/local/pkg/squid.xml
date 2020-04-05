@@ -279,10 +279,10 @@
 		<field>
 			<fielddescr>Bypass Proxy for Private Address Destination</fielddescr>
 			<fieldname>private_subnet_proxy_off</fieldname>
-			<description>Do not forward traffic to Private Address Space (RFC 1918) destinations.</description>
+			<description>Do not forward traffic to Private Address Space (RFC 1918 and IPv6 ULA) destinations.</description>
 			<sethelp>
 				<![CDATA[
-				Destinations in Private Address Space (<a href="https://tools.ietf.org/html/rfc1918" target="_blank">RFC 1918</a>) are passed directly through the firewall, not through the proxy server.
+				Destinations in Private Address Space (<a href="https://tools.ietf.org/html/rfc1918" target="_blank">RFC 1918</a> and <a href="https://tools.ietf.org/html/rfc4193" target="_blank">IPv6 ULA</a>) are passed directly through the firewall, not through the proxy server.
 				]]>
 			</sethelp>
 			<type>checkbox</type>
