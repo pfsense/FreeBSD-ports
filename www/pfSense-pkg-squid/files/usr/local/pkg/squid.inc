@@ -71,7 +71,8 @@ require_once('/usr/local/pkg/squid_antivirus.inc');
 
 /* Handle base64 encoding and linebreaks in textarea configuration fields */
 function sq_text_area_decode($text) {
-	return preg_replace('/\r\n/', "\n", base64_decode($text));
+	$contents = preg_replace('/\r\n/', "\n", base64_decode($text));
+	return implode("\n", array_map('idn_to_ascii', explode("\n", $contents)));
 }
 
 /* Get interface IP and netmask for Squid interfaces */
