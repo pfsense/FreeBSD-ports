@@ -3,7 +3,7 @@
 
 PORTNAME=	arpwatch
 PORTVERSION=	3.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://ee.lbl.gov/downloads/arpwatch/ \
 		LOCAL/leres/arpwatch
