@@ -158,7 +158,7 @@ function arpwatch_parse_database() {
 				$mac = preg_replace('/(^|:)([a-f0-9])(:|$)/', '${1}0${2}${3}', $mac);
 			}
 
-			$oui = strtoupper(substr($mac, 0, 8));
+			$oui = strtolower(substr($mac, 0, 8));
 			$matches = array();
 
 			if (preg_match("/^$oui\s+(.*)$/m", file_get_contents(ARPWATCH_LOCAL_DIR.'/ethercodes.dat'), $matches)) {
