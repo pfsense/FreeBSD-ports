@@ -311,7 +311,7 @@ function sync_package_lcdproc() {
 				$config_text .= "[{$lcdproc_config['driver']}]\n";
 				$config_text .= "driverpath=/usr/local/lib/lcdproc/\n";
 				$config_text .= "ConnectionType={$lcdproc_config['connection_type']}\n";
-				if ($lcdproc_config['comport'] != "none") {
+				if ($lcdproc_config['comport'] != "none" && $lcdproc_config['connection_type'] != "ezio") {
 					$config_text .= "Device={$realport}\n";
 					$config_text .= "Port=0x378\n";
 					$config_text .= "Speed=0\n";
@@ -332,6 +332,24 @@ function sync_package_lcdproc() {
 					}
 				}
 				if ($lcdproc_config['connection_type'] == "winamp") {
+					$config_text .= "KeyDirect_1=Enter\n";
+					$config_text .= "KeyDirect_2=Up\n";
+					$config_text .= "KeyDirect_3=Down\n";
+					$config_text .= "KeyDirect_4=Escape\n";
+				}
+				if ($lcdproc_config['connection_type'] == "ezio") {
+					$config_text .= "Device={$realport}\n";
+					$config_text .= "Port=0x378\n";
+					$config_text .= "Speed=0\n";
+					$config_text .= set_lcd_value("contrast", 1000, 850);
+					$config_text .= set_lcd_value("brightness", 1000, 800);
+					$config_text .= set_lcd_value("offbrightness", 1000, 0);
+					$config_text .= "OutputPort=no\n";
+					$config_text .= "Charmap=hd44780_default\n";
+					$config_text .= "DelayBus=true\n";
+					$config_text .= "Size={$lcdproc_config['size']}\n";
+					$config_text .= "Backlight=no\n";
+					$config_text .= "Keypad=yes\n";
 					$config_text .= "KeyDirect_1=Enter\n";
 					$config_text .= "KeyDirect_2=Up\n";
 					$config_text .= "KeyDirect_3=Down\n";
