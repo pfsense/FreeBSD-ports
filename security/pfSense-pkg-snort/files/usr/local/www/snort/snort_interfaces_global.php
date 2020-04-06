@@ -54,7 +54,7 @@ else {
 
 /* Set sensible values for any empty default params */
 if (!isset($pconfig['rule_update_starttime']))
-	$pconfig['rule_update_starttime'] = '00:' . strval(random_int(0, 59));
+	$pconfig['rule_update_starttime'] = '00:' . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 if (!isset($config['installedpackages']['snortglobal']['forcekeepsettings']))
 	$pconfig['forcekeepsettings'] = 'on';
 if (!isset($config['installedpackages']['snortglobal']['clearblocks']))

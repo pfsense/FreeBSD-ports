@@ -65,7 +65,7 @@ else {
 
 // Do input validation on parameters
 if (empty($pconfig['autoruleupdatetime']))
-	$pconfig['autoruleupdatetime'] = '00:' . strval(random_int(0, 59));
+	$pconfig['autoruleupdatetime'] = '00:' . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 
 if (empty($pconfig['log_to_systemlog_facility']))
 	$pconfig['log_to_systemlog_facility'] = "local1";

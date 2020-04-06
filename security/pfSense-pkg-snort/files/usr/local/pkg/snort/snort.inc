@@ -948,7 +948,7 @@ function snort_rules_up_install_cron($should_install) {
 	if (!empty($config['installedpackages']['snortglobal']['rule_update_starttime']))
 		$snort_rules_upd_time = $config['installedpackages']['snortglobal']['rule_update_starttime'];
 	else
-		$snort_rules_upd_time = "00:" . strval(random_int(0, 59));
+		$snort_rules_upd_time = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 
 	if ($snort_rules_up_info_ck == "6h_up") {
 		$snort_rules_up_min = intval(substr($snort_rules_upd_time, -2));
