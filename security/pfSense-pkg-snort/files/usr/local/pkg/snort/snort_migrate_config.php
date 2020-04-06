@@ -177,8 +177,9 @@ if (isset($config['installedpackages']['snortglobal']['last_rule_upd_time'])) {
 /* the same minute past the hour for rules updates.       */
 /**********************************************************/
 if (empty($config['installedpackages']['snortglobal']['rule_update_starttime']) || 
-	  $config['installedpackages']['snortglobal']['rule_update_starttime'] == '00:05') {
-	$config['installedpackages']['snortglobal']['rule_update_starttime'] = "00:" . strval(random_int(0, 59));
+	  $config['installedpackages']['snortglobal']['rule_update_starttime'] == '00:05' || 
+	  strlen($config['installedpackages']['snortglobal']['rule_update_starttime']) < 5 ) {
+	$config['installedpackages']['snortglobal']['rule_update_starttime'] = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 	$updated_cfg = true;
 }
 
