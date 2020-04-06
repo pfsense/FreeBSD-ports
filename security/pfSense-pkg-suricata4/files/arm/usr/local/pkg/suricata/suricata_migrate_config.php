@@ -145,8 +145,9 @@ if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_t
 /* the same minute past the hour for rules updates.       */
 /**********************************************************/
 if (empty($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']) || 
-	  $config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] == '00:05') {
-	$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = "00:" . strval(random_int(0, 59));
+	  $config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] == '00:05' || 
+	  strlen($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']) < 5) {
+	$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 	$updated_cfg = true;
 }
 
