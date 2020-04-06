@@ -144,7 +144,7 @@
 			<description>
 				<![CDATA[
 				Enter the MAC address. Leave empty if you want to use custom options instead of MAC address.<br/>
-				<span class="text-info">Required format: <code>0a-1b-2c-4d-5f-fa</code></span>
+				<span class="text-info">Required format: <code>0a-1b-2c-4d-5f-fa</code> or <code>0a:1b:2c:4d:5f:fa</code></span>
 				]]>
 			</description>
 			<type>input</type>

@@ -797,9 +797,9 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 	if (!empty($arrmacs)) {
 		foreach ($arrmacs as $macs) {
 			// Variables for authorized_macs file defined parameters
-			$varmacsaddress = $macs['varmacsaddress'];
+			$varmacsaddress = str_replace(":", "-", $macs['varmacsaddress']);
 			// We don't need a password but we need this field to make syntac correct for CHECK-ITEMS
-			$varmacspassword = $macs['varmacsaddress'];
+			$varmacspassword = str_replace(":", "-", $macs['varmacsaddress']);
 
 			$varmacssimultaneousconnect = ($macs['varmacssimultaneousconnect'] ?: '');
 			$varmacsswisprredirectionurl = $macs['varmacsswisprredirectionurl'];
@@ -3733,12 +3733,12 @@ EOD;
 function freeradius_validate_users($post, &$input_errors) {
 
 	// Username
-	if (!preg_match('/^[a-zA-Z0-9_.-]*$/', $post['varusersusername'])) {
+	if (($post['varusersmotpenable'] == 'on') && !preg_match('/^[a-zA-Z0-9_.-]*$/', $post['varusersusername'])) {
 		$input_errors[] = "The 'Username' field may only contain a-z, A-Z, 0-9, underscore, period and hyphen (regex /^[a-zA-Z0-9_.-]*$/).";
 	}
 
 	// Password
-	if ($post['varusersmotpenable'] == 'on' && $post['varuserspassword'] != '') {
+	if (($post['varusersmotpenable'] == 'on') && ($post['varuserspassword'] != '')) {
 		$input_errors[] = "The 'Password' field must be left empty when 'Enable One-Time-Password for this user' is checked.";
 	}
 
@@ -3961,8 +3961,8 @@ function freeradius_validate_macs($post, &$input_errors) {
 
 	// MAC Address
 	if (!empty($post['varmacsaddress'])) {
-		if (!preg_match('/^[0-9A-F]{2}(?:[-][0-9A-F]{2}){5}$/i', $post['varmacsaddress'])) {
-			$input_errors[] = "The 'MAC Address' field must contain a valid MAC address, delimited with '-' character.";
+		if (!preg_match('/^[0-9A-F]{2}(?:[-:][0-9A-F]{2}){5}$/i', $post['varmacsaddress'])) {
+			$input_errors[] = "The 'MAC Address' field must contain a valid MAC address, delimited with '-' or ':' character.";
 		}
 	}
 
