@@ -441,7 +441,8 @@ pkg_upgrade() {
 	local _model=$(/bin/kenv -q smbios.system.product 2>/dev/null)
 
 	SYSTEM=""
-	if [ "${_model}" = "mvebu_armada-37xx" -o "${_model}" = "SG-2100" ]; then
+	if [ "${_model}" = "mvebu_armada-37xx" -o "${_model}" = "SG-2100" ]
+	then
 		_type=$(/usr/sbin/ofwdump -P model -R / 2>/dev/null)
 		if [ "${_type}" = "Netgate SG-1100" ]; then
 			SYSTEM="SG-1100"
@@ -462,7 +463,8 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.img
 		export \
 		    uboot_update=/usr/local/share/u-boot/ufw/u-boot-update.sh
-	elif [ "${SYSTEM}" = "SG-1100" ] && is_pkg_installed ${product}-u-boot-sg1100\*; then
+	elif [ "${SYSTEM}" = "SG-1100" ] && \
+	    is_pkg_installed ${product}-u-boot-sg1100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-sg1100\*))
 		export \
@@ -474,7 +476,8 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.bin
 		export \
 		    uboot_update=/usr/local/share/u-boot/sg3100/u-boot-update.sh
-	elif [ "${SYSTEM}" = "SG-2100" ] && is_pkg_installed ${product}-u-boot-sg2100\*; then
+	elif [ "${SYSTEM}" = "SG-2100" ] && \
+	    is_pkg_installed ${product}-u-boot-sg2100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-sg2100\*))
 		export \
