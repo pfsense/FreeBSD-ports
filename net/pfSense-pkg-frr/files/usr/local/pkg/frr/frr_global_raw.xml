@@ -64,6 +64,10 @@
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
 		</tab>
@@ -264,6 +268,47 @@
 			<cols>65</cols>
 		</field>
 		<field>
+			<fielddescr>SAVED bfdd.conf</fielddescr>
+			<fieldname>bfdd</fieldname>
+			<description>
+				<![CDATA[
+				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
+				To get back the GUI configuration save this form below once with empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>RUNNING bfdd.conf</fielddescr>
+			<fieldname>bfddrunning</fieldname>
+			<description>
+				<![CDATA[
+				<script>
+				var bfdd = document.getElementById('bfdd');
+				var bfddrunning = document.getElementById('bfddrunning');
+				window.onload = configCheck(bfdd, bfddrunning);
+				zebra.addEventListener('keyup', function() { configCheck(bfdd, bfddrunning)});
+				zebrarunning.addEventListener('keyup', function() { configCheck(bfdd, bfddrunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/bfdd.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(bfdd, bfddrunning); return false'>Copy BFDd Running to Saved</button>
+				</p>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
 			<fielddescr>SAVED ospfd.conf</fielddescr>
 			<fieldname>ospfd</fieldname>
 			<description>
@@ -341,7 +386,8 @@
 				<p>
 				<button onclick='onCopyClick(zebra, zebrarunning); onCopyClick(staticd, staticdrunning);
 					onCopyClick(bgpd, bgpdrunning); onCopyClick(ospfd, ospfdrunning); 
-					onCopyClick(ospf6d, ospf6drunning); return false'>Copy All Running to Saved</button>
+					onCopyClick(ospf6d, ospf6drunning); onCopyClick(bfdd, bfddrunning);
+					return false'>Copy All Running to Saved</button>
 				</p>
 				<p><b>Clicking "Update RUNNING" will fill RUNNING fields with current configuration.</b></p><p>
 				<button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update RUNNING'><i class="fa fa-refresh icon-embed-btn"></i>Update RUNNING</button>
