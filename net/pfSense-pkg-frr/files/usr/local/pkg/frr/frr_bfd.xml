@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_bfd.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_bfd</name>
+	<title>Services/FRR/BFD</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg_edit.php?xml=frr/frr_bfd.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>BFD</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php?protocol=bfd</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>BFD Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Enable BFD Daemon</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Peer Configurations</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				<b>Detect Multiplier</b> : the detection multiplier to determine packet loss.
+				<br/><br/>
+				<b>Receive Interval</b> : the minimum interval that this system is capable of receiving control packets.
+				<br/><br/>
+				<b>Transmit Interval</b> : the minimum transmission interval (less jitter) that this system wants to use to send BFD
+				control packets.
+				<br/><br/>
+				<b>shutdown</b> : Enables or disables the peer.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Peers</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Peer IP</fielddescr>
+					<fieldname>peerip</fieldname>
+					<type>input</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Detect Multiplier (2-255)</fielddescr>
+					<fieldname>detectmultiplier</fieldname>
+					<type>input</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Receive Interval (10-60000)</fielddescr>
+					<fieldname>receiveinterval</fieldname>
+					<type>input</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Transmit Interval (10-60000)</fielddescr>
+					<fieldname>transmitinterval</fieldname>
+					<type>input</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Shutdown</fielddescr>
+					<fieldname>shutdown</fieldname>
+					<type>checkbox</type>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_bfd_validate_input();
+	</custom_php_validation_command>
+</packagegui>

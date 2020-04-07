@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-frr
-PORTVERSION=	0.6.5
-PORTREVISION=	2
+PORTVERSION=	0.6.6
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -66,11 +65,15 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_bgp.xml \
 		${STAGEDIR}${PREFIX}/pkg/frr
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_bfd.xml \
+		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_ospf6.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_ospf.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_bgp.inc \
+		${STAGEDIR}${PREFIX}/pkg/frr/inc
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_bfd.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_validation.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc

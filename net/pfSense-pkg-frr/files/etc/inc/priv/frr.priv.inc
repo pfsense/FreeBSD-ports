@@ -38,6 +38,7 @@ $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_ospf6_int
 $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_ospf6.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_ospf_interfaces.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_ospf.xml*";
+$priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_bfd.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg.php?xml=frr/frr_bgp_aspaths.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg.php?xml=frr/frr_bgp_communities.xml*";
