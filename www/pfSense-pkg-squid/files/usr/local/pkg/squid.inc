@@ -70,9 +70,9 @@ require_once('/usr/local/pkg/squid_antivirus.inc');
  */
 
 /* Handle base64 encoding and linebreaks in textarea configuration fields */
-function sq_text_area_decode($text) {
+function sq_text_area_decode($text, $idn=false) {
 	$contents = preg_replace('/\r\n/', "\n", base64_decode($text));
-	if (function_exists('idn_to_ascii')) {
+	if (function_exists('idn_to_ascii') && $idn) {
 		return implode("\n", array_map('idn_to_ascii', explode("\n", $contents)));
 	} else {
 		return $contents;
@@ -1740,7 +1740,7 @@ EOD;
 	);
 
 	foreach ($options as $option => $directive) {
-		$contents = sq_text_area_decode($settings[$option]);
+		$contents = sq_text_area_decode($settings[$option], true);
 		if (!empty($contents)) {
 			file_put_contents(SQUID_ACLDIR . "/$option.acl", $contents);
 			$conf .= "acl $option $directive \"" . SQUID_ACLDIR . "/$option.acl\"\n";
