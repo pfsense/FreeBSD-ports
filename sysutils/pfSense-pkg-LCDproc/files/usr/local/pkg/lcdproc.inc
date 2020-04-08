@@ -339,15 +339,11 @@ function sync_package_lcdproc() {
 				}
 				if ($lcdproc_config['connection_type'] == "ezio") {
 					$config_text .= "Device={$realport}\n";
-					$config_text .= "Port=0x378\n";
 					$config_text .= "Speed=0\n";
-					$config_text .= set_lcd_value("contrast", 1000, 850);
-					$config_text .= set_lcd_value("brightness", 1000, 800);
-					$config_text .= set_lcd_value("offbrightness", 1000, 0);
 					$config_text .= "OutputPort=no\n";
 					$config_text .= "Charmap=hd44780_default\n";
 					$config_text .= "DelayBus=true\n";
-					$config_text .= "Size={$lcdproc_config['size']}\n";
+					$config_text .= "Size=16x2\n";
 					$config_text .= "Backlight=no\n";
 					$config_text .= "Keypad=yes\n";
 					$config_text .= "KeyMatrix_4_1=Enter\n";
