@@ -339,10 +339,7 @@ function sync_package_lcdproc() {
 				}
 				if ($lcdproc_config['connection_type'] == "ezio") {
 					$config_text .= "Device={$realport}\n";
-					$config_text .= "Speed=0\n";
-					$config_text .= "OutputPort=no\n";
 					$config_text .= "Charmap=hd44780_default\n";
-					$config_text .= "DelayBus=true\n";
 					$config_text .= "Size=16x2\n";
 					$config_text .= "Backlight=no\n";
 					$config_text .= "Keypad=yes\n";
