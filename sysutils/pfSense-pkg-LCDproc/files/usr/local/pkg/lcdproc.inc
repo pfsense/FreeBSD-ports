@@ -350,10 +350,10 @@ function sync_package_lcdproc() {
 					$config_text .= "Size={$lcdproc_config['size']}\n";
 					$config_text .= "Backlight=no\n";
 					$config_text .= "Keypad=yes\n";
-					$config_text .= "KeyDirect_1=Enter\n";
-					$config_text .= "KeyDirect_2=Up\n";
-					$config_text .= "KeyDirect_3=Down\n";
-					$config_text .= "KeyDirect_4=Escape\n";
+					$config_text .= "KeyMatrix_4_1=Enter\n";
+					$config_text .= "KeyMatrix_4_2=Up\n";
+					$config_text .= "KeyMatrix_4_3=Down\n";
+					$config_text .= "KeyMatrix_4_4=Escape\n";
 				}
 				break;
 			case "icp_a106":
