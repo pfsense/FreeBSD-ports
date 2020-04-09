@@ -1,6 +1,6 @@
---- external/libfetch/common.c.orig	2019-09-18 07:11:10 UTC
+--- external/libfetch/common.c.orig	2020-02-21 14:18:42 UTC
 +++ external/libfetch/common.c
-@@ -60,6 +60,11 @@
+@@ -63,6 +63,11 @@ __FBSDID("$FreeBSD: head/lib/libfetch/common.c 347050 
  #define INFTIM (-1)
  #endif
  
@@ -12,16 +12,7 @@
  /*** Local data **************************************************************/
  
  /*
-@@ -593,7 +598,7 @@ fetch_ssl_verify_altname(STACK_OF(GENERAL_NAME) *altna
- #else
- 		name = sk_GENERAL_NAME_value(altnames, i);
- #endif
--		ns = (const char *)ASN1_STRING_data(name->d.ia5);
-+		ns = (const char *)ASN1_STRING_get0_data(name->d.ia5);
- 		nslen = (size_t)ASN1_STRING_length(name->d.ia5);
- 
- 		if (name->type == GEN_DNS && ip == NULL &&
-@@ -834,15 +839,33 @@ fetch_ssl(conn_t *conn, const struct url *URL, int ver
+@@ -923,15 +928,33 @@ fetch_ssl(conn_t *conn, const struct url *URL, int ver
  #ifdef WITH_SSL
  	int ret, ssl_err;
  	X509_NAME *name;
