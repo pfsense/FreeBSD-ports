@@ -2,8 +2,8 @@
 
 PORTNAME=	xen
 PKGNAMESUFFIX=	-tools
-PORTVERSION=	4.12.1
-PORTREVISION=	0
+PORTVERSION=	4.13.0
+PORTREVISION=	1
 CATEGORIES=	sysutils emulators
 MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
 
@@ -16,7 +16,8 @@ LICENSE_COMB=	multi
 LIB_DEPENDS=	libyajl.so:devel/yajl \
 		liblzo2.so:archivers/lzo2 \
 		libpixman-1.so:x11/pixman \
-		libargp.so:devel/argp-standalone
+		libargp.so:devel/argp-standalone \
+		libxml2.so:textproc/libxml2
 BUILD_DEPENDS=	seabios>0:misc/seabios
 RUN_DEPENDS=	seabios>0:misc/seabios
 DOCS_BUILD_DEPENDS=markdown:textproc/markdown
@@ -34,9 +35,10 @@ ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	"not yet ported to anything other than amd64"
 
 USES=		cpe gettext gmake gnome libtool localbase:ldflags perl5 \
-		pkgconfig python:2.7 shebangfix
+		pkgconfig python shebangfix iconv
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
+USE_PYTHON=	py3kplist
 HAS_CONFIGURE=	yes
 # Set ARCH=x86_64 in order to overwrite the environment ARCH=amd64
 MAKE_ARGS=	clang=y ARCH=x86_64
@@ -54,17 +56,8 @@ DOCS_ALL_TARGET=	docs
 INSTALL_TARGET=		install-tools
 DOCS_INSTALL_TARGET=	install-docs
 
-EXTRA_PATCHES+=	${PATCHDIR}/0001-tools-include-propagate-python-interpreter-path.patch:-p1
-
-# LLD 8 changed the behaviour re the placement of orphaned sections, which
-# produces a non-bootable Xen kernel:
-#
-# https://bugs.llvm.org/show_bug.cgi?id=42327
-#
-# Backport the fixes from upstream
-EXTRA_PATCHES+=	${PATCHDIR}/0001-x86-linker-add-a-reloc-section-to-ELF-linker-script.patch:-p1 \
-		${PATCHDIR}/0003-xen-link-handle-.init.rodata.cst-sections-in-the-lin.patch:-p1 \
-		${PATCHDIR}/0004-x86-check-for-multiboot-1-2-header-presence.patch:-p1
+# Fix build with clang 10.0 (re convert enum constant to boolean)
+EXTRA_PATCHES+= ${PATCHDIR}/0001-libfsimage-fix-clang-10-build.patch:-p1
 
 .include <bsd.port.options.mk>
 

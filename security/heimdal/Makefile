@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	heimdal
-PORTVERSION=	7.5.0
-PORTREVISION=	4
+PORTVERSION=	7.7.0
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/heimdal/heimdal/releases/download/${DISTNAME}/
 
@@ -19,13 +18,14 @@ CONFLICTS=	krb4-[0-9]* krb5-[0-9]* krb5-maint-[0-9]* srp-[0-9]* \
 USES=		gettext-runtime gssapi:bootstrap,heimdal libtool pathfix \
 		pkgconfig readline makeinfo ssl
 USE_LDCONFIG=	${GSSAPILIBDIR}
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_header_fnmatch_h=yes \
 		ac_cv_header_db_h=no \
 		ac_cv_header_db3_db_h=no \
 		ac_cv_header_db4_db_h=no \
 		ac_cv_header_db5_db_h=no \
-		ac_cv_header_db5_h=no \
+		ac_cv_header_db6_db_h=no \
 		ac_cv_prog_COMPILE_ET=${WRKSRC}/lib/com_err/compile_et
 CONFIGURE_ARGS=	--with-berkeley-db \
 		--with-libintl \
@@ -53,7 +53,7 @@ INFO=		heimdal hx509
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	IPV6 BDB LMDB SQLITE LDAP PKINIT DIGEST KX509 CRACKLIB
-OPTIONS_DEFAULT=     BDB             PKINIT DIGEST KX509
+OPTIONS_DEFAULT=IPV6 BDB                  PKINIT DIGEST KX509
 OPTIONS_SUB=	yes
 
 IPV6_CONFIGURE_WITH=	ipv6

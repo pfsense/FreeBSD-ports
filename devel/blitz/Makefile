@@ -2,7 +2,7 @@
 
 PORTNAME=	blitz
 DISTVERSION=	1.0.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,9 @@ COMMENT=	Blitz++ Multi-Dimensional Array Library for C++
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
 
 USES=		cmake:noninja libtool localbase python:2.7,build
 USE_GITHUB=	yes

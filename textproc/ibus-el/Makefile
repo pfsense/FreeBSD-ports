@@ -2,7 +2,7 @@
 
 PORTNAME=	ibus-el
 PORTVERSION=	0.3.2
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	textproc elisp
 MASTER_SITES=	http://www11.atwiki.jp/s-irie/pub/emacs/ibus/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -12,6 +12,9 @@ COMMENT=	IBus client for GNU Emacs
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 RUN_DEPENDS=	ibus-daemon:textproc/ibus \
 		${PYTHON_SITELIBDIR}/Xlib/X.py:x11-toolkits/py-xlib@${PY_FLAVOR}

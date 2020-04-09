@@ -13,6 +13,7 @@ COMMENT=	GNU Compiler Collection 7
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
+DEPRECATED=	Unsupported by upstream. Use GCC 9 or newer instead.
 ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 armv7 i386 powerpc powerpc64 powerpcspe sparc64
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
@@ -27,8 +28,6 @@ BUILD_DEPENDS+=	runtest:misc/dejagnu
 USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:xz
 USE_BINUTILS=	yes
 USE_PERL5=	build
-
-CONFLICTS=	gcc7-devel-7.*
 
 CPE_VENDOR=	gnu
 

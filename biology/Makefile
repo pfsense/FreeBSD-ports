@@ -68,6 +68,7 @@
     SUBDIR += libbigwig
     SUBDIR += libgtextutils
     SUBDIR += libsbml
+    SUBDIR += linux-foldingathome
     SUBDIR += mafft
     SUBDIR += mapm3
     SUBDIR += migrate
@@ -135,7 +136,6 @@
     SUBDIR += py-pyfaidx
     SUBDIR += py-pysam
     SUBDIR += py-xenaPython
-    SUBDIR += pycogent
     SUBDIR += pyfasta
     SUBDIR += python-nexus
     SUBDIR += rainbow
@@ -165,7 +165,6 @@
     SUBDIR += trimadap
     SUBDIR += trimmomatic
     SUBDIR += ugene
-    SUBDIR += unanimity
     SUBDIR += vcflib
     SUBDIR += vcftools
     SUBDIR += velvet

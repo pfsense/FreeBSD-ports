@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdvdnav
-PORTVERSION=	6.0.1
+PORTVERSION=	6.1.0
 CATEGORIES=	multimedia
 MASTER_SITES=	http://download.videolan.org/pub/videolan/libdvdnav/${PORTVERSION}/ \
 		http://dvdnav.mplayerhq.hu/releases/ \
@@ -19,6 +19,7 @@ LIB_DEPENDS=	libdvdread.so:multimedia/libdvdread
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USES=		tar:bz2 gmake libtool pathfix pkgconfig
+USE_CSTD=	c99
 USE_LDCONFIG=	yes
 
 PORTDOCS=	AUTHORS COPYING ChangeLog README TODO

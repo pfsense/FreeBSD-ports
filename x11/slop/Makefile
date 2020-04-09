@@ -3,10 +3,10 @@
 PORTNAME=	slop
 PORTVERSION=	7.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Make a screen selection and print the selection coordinates to stdout
 
 LICENSE=	GPLv3

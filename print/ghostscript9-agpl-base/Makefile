@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	ghostscript
-PORTVERSION=	9.50
+PORTVERSION=	9.52
+PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${PORTVERSION:S/.//}/
 PKGNAMESUFFIX=	9-agpl-base
@@ -10,6 +11,7 @@ MAINTAINER=	doceng@FreeBSD.org
 COMMENT=	PostScript and PDF interpreter
 
 LICENSE=	AGPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	jbig2dec>=0.17:graphics/jbig2dec
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
@@ -33,6 +35,15 @@ CONFLICTS_INSTALL= \
 CPE_VENDOR=	artifex
 DATADIR=	${PREFIX}/share/${PORTNAME}/${PORTVERSION}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}/${PORTVERSION}
+EXTRACT_AFTER_ARGS= \
+	--exclude cups/libs \
+	--exclude freetype \
+	--exclude ijs \
+	--exclude jbig2dec \
+	--exclude jpeg \
+	--exclude libpng \
+	--exclude openjpeg \
+	--exclude zlib
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-compile-inits \
 		--disable-dbus \
@@ -66,11 +77,6 @@ IJS_LIB_DEPENDS=	libijs.so:print/libijs
 
 JPEG2000_CONFIGURE_ENABLE=	openjpeg
 JPEG2000_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
-
-post-patch:
-	@${RM} -r ${WRKSRC}/cups/libs ${WRKSRC}/freetype ${WRKSRC}/ijs \
-		${WRKSRC}/jbig2dec ${WRKSRC}/jpeg ${WRKSRC}/libpng \
-		${WRKSRC}/openjpeg ${WRKSRC}/zlib
 
 post-install:
 	${MV} ${STAGEDIR}${PREFIX}/bin/gsc ${STAGEDIR}${PREFIX}/bin/gs

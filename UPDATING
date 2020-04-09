@@ -5,6 +5,150 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20200403:
+  AFFECTS: users of x11-fonts/fontconfig
+  AUTHOR: desktop@FreeBSD.org
+
+  Fontconfig 2.13.1 generated .uuid files in the fonts directory which where
+  not properly registered to the packages. To clean them up, please execute the
+  following command:
+
+  	find /usr/local/share/fonts -type f -name .uuid -delete
+
+20200326:
+  AFFECTS: users of devel/sonarqube and devel/sonar-ant-task
+  AUTHOR: netchild@FreeBSD.org
+
+  The outdated port devel/sonarqube has moved to
+  devel/sonarqube-community to make it clear that it is the community
+  edition. The log and DB files are still stored in the same location.
+
+  The devel/sonar-ant-task port has moved to devel/sonarqube-ant-task
+  to match the upstream-name. The install location is renamed
+  accordingly.
+
+  At the same time the user/group of the sonarqube port changed from
+  www:www to sonarqube:sonarqube.
+
+  It is expected that nobody was using the 6.2 version from 2016
+  anymore and no change needs to be done. No analysis was done to check
+  if the old 6.2 version can be updated in-place to the 8.2 version.
+  As such if there is still someone using the old 6.2 version, you may
+  have to delete /var/log/sonarqube and /var/db/sonarqube before
+  installing the new version.
+
+20200320
+  AFFECTS: users of devel/qca
+  AUTHOR: kde@FreeBSD.org
+
+  New versions of devel/qca stopped supporting OpenSSL < 1.1.
+  For this reason devel/qca-legacy has been added, which is
+  held back at an older version until FreeBSD 11 goes EOL.
+
+  Ports depending on devel/qca should stop adding direct LIB_DEPENDS
+  and switch to depending on it via USES=qca.
+
+  FreeBSD 11 users might want to run something like
+
+      pkg set -o devel/qca:devel/qca-legacy
+
+20200320:
+  AFFECTS: users of x11/libxkbcommon
+  AUTHOR: zeising@FreeBSD.org
+
+  The libxkbcommon library (x11/libxkbcommon), used to handle keyboards
+  in some applications, most notably kde and wayland, have been switched
+  to use evdev rules by default on FreeBSD 12 and later.  Some keys, most
+  notably arrow keys, may not work in applications using libxkbcommon if
+  you are using xf86-input-keyboard rather than xf86-input-libinput.
+  If you have trouble with the keyboard keys, and if /var/log/Xorg.*.log
+  shows that the "kbd" or "keyboard" driver is being used, you need to
+  switch to legacy rules by setting the environment variable
+  XKB_DEFAULT_RULES to xorg.
+  This switch is made to match the default configuration on FreeBSD 12.1 and
+  later, the default configuration on FreeBSD 11.3 still uses the legacy
+  rules.
+
+20200316:
+  AFFECTS: users of net-im/slack-term
+  AUTHOR: dmgk@FreeBSD.org
+
+  The config file location was changed from ~/.slack-term to
+  ~/.config/slack-term/config, please move your existing config file
+  accordingly.
+
+20200308
+  AFFECTS: users of graphics/mesa-libs and legacy graphics drivers
+  AUTHOR: zeising@FreeBSD.org
+
+  The mesa OpenGL library (graphics/mesa-libs) has been switched to use DRI3
+  by default, instead of the older DRI2 interface.  This might cause regressions
+  when using the legacy graphics drivers, either through
+  graphics/drm-legacy-kmod or the graphics drivers in base.
+  
+  If you experience issues when running OpenGL applications it is possible
+  to force the use of DRI2 by setting the LIBGL_DRI3_DISABLE environment
+  variable to 1 before starting any OpenGL application.  The easiest way to
+  do this is by adding it to either your shell startup files or .xinitrc.
+
+20200306
+  AFFECTS: users of databases/mysql80-server
+  AUTHOR: joneum@FreeBSD.org
+
+  As of MySQL 8.0.16, the MySQL server performs the upgrade tasks previously
+  handled by mysql_upgrade. Consequently, mysql_upgrade is unneeded and is
+  deprecated as of that version, and will be removed in a future MySQL version.
+  Because mysql_upgrade no longer performs upgrade tasks,
+  it exits with status 0 unconditionally.
+
+20200303:
+  AFFECTS: users of net-mgmt/librenms
+  AUTHOR: dvl@FreeBSD.org
+
+  1. Apache / mod_php options removed
+
+  The APACHEMOD option has been removed. LibreNMS can be used
+  with other webservers, not just Apache. In order to simplify
+  the port, the option was removed.
+
+  Now you manually install the webserver of your preference.
+
+  If upgrading from LibreNMS < 1.61, you can do this to
+  prevent 'pkg autoremove' from uninstalling Apache / mod_php:
+
+  $ sudo pkg set -A 0 apache24 mod_php74
+  Mark apache24-2.4.41 as not automatically installed? [y/N]: y
+  Mark mod_php74-7.4.3 as not automatically installed? [y/N]: y
+
+  Adjust mod_php74 to suit the version of mod_php you have.
+
+  2. include/defaults.inc.php is gone
+
+  The file include/defaults.inc.php is no longer distributed by
+  the upstream project. The FreeBSD port patched this file to
+  correct the paths to common tools such as ping, snmpwalk, etc.
+
+  These values previously adjusted by the port must now be specified
+  in config.php. New installs will have this automatically, but existing
+  installs must be updated manually. These are the entries you should
+  add if upgrading from LibreNMS < 1.61:
+
+  $config['snmpwalk']       = '/usr/local/bin/snmpwalk';
+  $config['snmpget']        = '/usr/local/bin/snmpget';
+  $config['snmpbulkwalk']   = '/usr/local/bin/snmpbulkwalk';
+  $config['snmptranslate']  = '/usr/local/bin/snmptranslate';
+
+  $config['ping']           = '/sbin/ping';
+  $config['mtr']            = '/usr/local/bin/mtr';
+  $config['nmap']           = '/usr/local/bin/nmap';
+
+  $config['nagios_plugins'] = '/usr/local/libexec/nagios';
+  $config['ipmitool']       = '/usr/local/bin/ipmitool';
+  $config['virsh']          = '/usr/local/bin/virsh';
+  $config['dot']            = '/usr/local/bin/dot';
+  $config['sfdp']           = '/usr/local/bin/sfdp';
+  $config['nfdump']         = '/usr/local/bin/nfdump';
+
 20200229:
   AFFECTS: users of textproc/apache-solr
   AUTHOR: mfechner@FreeBSD.org
@@ -13,6 +157,219 @@ you update your ports collection, before attempting any port upgrades.
   Make sure you update the following files accordingly:
   /usr/local/etc/solr.in.sh (see /usr/local/etc/solr.in.sh.sample)
   /usr/local/etc/javavm_opts.conf (JAVA_HOME=/usr/local/openjdk11/)
+
+20200225:
+  AFFECTS: users of net-mgmt/netbox
+  AUTHOR: kai@FreeBSD.org
+
+  1. Removal of the Topology Maps feature
+
+  The deprecated topology maps feature has been removed.  Please replicate
+  any required data to another source before upgrading NetBox to v2.7.7, as
+  any existing topology maps will be deleted.
+
+
+  2. Changed REDIS database configuration settings
+
+  The REDIS database configuration parameters were splitted up in two
+  discrete subsections named "webhooks" and "caching" with the 2.7 release.
+  This requires modification of the REDIS parameter in configuration.py as
+  follows:
+
+  Old Redis sample configuration:
+
+  REDIS = {
+    'HOST': 'localhost',
+    'PORT': 6379,
+    'PASSWORD': '',
+    'DATABASE': 0,
+    'CACHE_DATABASE': 1,
+    'DEFAULT_TIMEOUT': 300,
+    'SSL': False,
+  }
+
+  New Redis sample configuration:
+
+  REDIS = {
+    'webhooks': {
+        'HOST': 'redis.example.com',
+        'PORT': 1234,
+        'PASSWORD': 'foobar',
+        'DATABASE': 0,
+        'DEFAULT_TIMEOUT': 300,
+        'SSL': False,
+    },
+    'caching': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'PASSWORD': '',
+        'DATABASE': 1,
+        'DEFAULT_TIMEOUT': 300,
+        'SSL': False,
+    }
+  }
+
+  Note that the CACHE_DATABASE parameter has been removed and the connection
+  settings have been duplicated for both webhooks and caching.  This allows
+  one to make use of separate Redis instances if desired.  It is fine to use
+  the same Redis service for both functions, although the database
+  identifiers should be different.
+
+  Please also check the pkg-message and the changelogs for further info.
+
+20200223:
+  AFFECTS: users of security/gsasl
+  AUTHOR: hrs@FreeBSD.org
+
+  The library part of security/gsasl has been split into security/libgsasl.
+  The security/gsasl now depends on security/libgsasl. Due to this change,
+  old security/gsasl conflicts with the new security/libgsasl and it can
+  prevent the installed security/gsasl from upgrading. Please remove the
+  installed security/gsasl before upgrading if a conflict error occurs.
+
+20200220:
+  AFFECTS: users of x11-servers/xorg-server
+  AUTHOR: zeising@FreeBSD.org
+
+  x11-servers/xorg-server has been updated to 1.20.7.
+
+  With this update, xorg-server has switched from using the devd backend to
+  the udev backend for device configuration on FreeBSD 12 and 13.  If you have
+  issues with input devices, please see the install message for details.
+
+  The HAL backend option has been completely removed, as it was deprecated.
+
+  If you have problems with input devices, ensure that both x11/libinput and
+  x11-drivers/xf86-input-libinput are installed.  They are installed in the
+  default configuration, but if you have a custom configuration, they might not
+  be.
+
+20200210:
+  AFFECTS: users of net-im/prosody
+  AUTHOR: thomas@beingboiled.info
+
+  Prosody's pid file and data directory have moved to a new location.
+  If you are upgrading from a version with the pid file and data
+  directory in /usr/local/var/lib/prosody please perform these steps:
+
+    # stop Prosody
+    pkill -F /usr/local/var/lib/prosody/prosody.pid
+
+    # copy the data directory
+    cp -a /usr/local/var/lib/prosody /var/db/prosody
+    rm -f /var/db/prosody/prosody.pid
+
+  Make sure your prosody config has the following option set:
+
+    pidfile = "/var/run/prosody/prosody.pid"
+
+  Then start Prosody again. Everything should be working as before and
+  the /usr/local/var/lib/prosody directory can now be removed.
+
+20200207:
+  AFFECTS: users of security/nss
+  AUTHOR: lwhsu@FreeBSD.org
+
+  NSS header files and libraries have been moved from ${PREFIX}/include/nss/nss
+  and ${PREFIX}/lib/nss to ${PREFIX}/include/nss and ${PREFIX}/lib
+
+20200204:
+  AFFECTS: users of editors/vim
+  AUTHOR: adamw@FreeBSD.org
+
+  The PYTHON2 and PYTHON3 options have been turned into a single PYTHON
+  option that uses whichever python you've set as default. However,
+  this means that you cannot have both python2 and python3 support at
+  the same time.
+
+20200126:
+  AFFECTS: users of multimedia/gstreamer1-plugins[-bad]
+  AUTHOR: kwm@freebsd.org
+
+  In GStreamer 1.16 some files moved from the gstreamer1-plugins-bad package
+  to the gstreamer1-plugins package.
+
+  If your using a tool like portmaster or portupgrade delete the old -bad
+  port and then follow the normal upgrade method.
+  # pkg delete -f gstreamer1-plugins-bad
+
+20200126:
+  AFFECTS: users of sysutils/helm
+  AUTHOR: danilo@FreeBSD.org
+
+  The Helm project have deprecated the Tiller utility in Helm 3. If you are using
+  Helm 2 you will need to migrate the configuration to be compatible with Helm 3.
+  Please, refer to the following documentation for more information about the
+  migration process:
+
+  https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/
+
+  Note that the 2to3 plugin binary is not available for FreeBSD and you will need
+  to compile it yourself.
+
+20200113:
+  AFFECTS: users of python and net/samba410, devel/talloc, devel/tevent, databases/tdb, databases/ldb*
+  AUTHOR: timur@FreeBSD.org
+
+  In the entry 20191216 for the Python update the filtering constrains
+  are too limiting and omit the Samba supplimentary libraries, which do
+  have Python bindings to the default Python 3.x version. With the update
+  of the default Python3 version you also need to rebuild all the
+  supplimentary Samba libraries and samba410 itself.
+
+  For portmaster users it would be enough to run:
+
+  # portmaster devel/talloc devel/tevent databases/tdb databases/ldb15 net/samba410
+
+
+20200109:
+  AFFECTS: www/firefox
+  AUTHOR: gecko@FreeBSD.org
+
+  Firefox requires Capsicum since r522464 for IPC and in future will
+  require Capsicum for process sandboxing. If you use a custom kernel
+  make sure to copy the following lines from GENERIC kernel:
+
+    options 	CAPABILITY_MODE		# Capsicum capability mode
+    options 	CAPABILITIES		# Capsicum capabilities
+
+20200107:
+  AFFECTS: Users of *-emacs27-* packages
+  AUTHOR: ashish@FreeBSD.org
+
+  There is a major version bump in 28.0.50, therefore to upgrade all the
+  packages dependent on editors/emacs-devel, please use the following commands:
+
+    # sh
+    # for i in $(pkg query -g %n '*-emacs27*'); do \
+        nn=$(echo "$i" | sed -e 's/emacs27/emacs28/'); \
+        pkg set -yn "$i":"$nn"; done;
+    # pkg upgrade
+
+20200106:
+  AFFECTS: users of net/gnatsd
+  AUTHOR: olgeni@FreeBSD.org
+
+  net/gnatsd has been replaced by net/nats-server to reflect the
+  new naming upstream.
+
+  All options in rc.conf should be renamed by replacing 'gnats'
+  with 'nats' (nats_enable, nats_user, nats_options).
+
+20200101:
+  AFFECTS: users of security/openssl and security/openssl111
+  AUTHOR: brnrd@FreeBSD.org
+
+  The openssl port was removed on 2019-12-31, subsequently the openssl111
+  port was renamed to openssl on 2020-01-01.
+
+  The shared library version of OpenSSL has been bumped.
+
+  Users of DEFAULT_VERSIONS= ssl=openssl111 must update this to
+  ssl=openssl.
+
+  You must rebuild all ports that depend on OpenSSL if you use OpenSSL
+  from ports.
 
 20191226:
   AFFECTS: users of sysutils/dsbmd
@@ -64,6 +421,8 @@ you update your ports collection, before attempting any port upgrades.
   # portmaster $REINSTALL
   # REBUILD=$(pkg query -g "%n:%dn" '*' | grep py3 | grep -v py37 | cut -d : -f 1 | sort -u)
   # portmaster $REBUILD
+  # REBUILD2=$(pkg list | grep python-36 | xargs pkg which | awk '{print $6}' | sort -u)
+  # portmaster $REBUILD2
 
 20191204
   AFFECTS: users of mail/nextcloud-mail
@@ -99,7 +458,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of emulators/qemu
   AUTHOR: bofh@FreeBSD.org
 
-  emulators/qemu31 has been updated to 4.1.1. Previous 3.1.X branch has 
+  emulators/qemu31 has been updated to 4.1.1. Previous 3.1.X branch has
   been repocopied to emulators/qemu31. If someone wants to stick with 3.1.X
   branch please use one of the following command:
 
@@ -132,7 +491,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: osa@FreeBSD.org
 
   The databases/redis port has been updated to the recent stable release.
-  Users wanting to stay on v4.x can replace databases/redis with 
+  Users wanting to stay on v4.x can replace databases/redis with
   databases/redis4 with one of the following commands:
 
   # pkg install databases/redis4

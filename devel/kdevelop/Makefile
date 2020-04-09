@@ -4,17 +4,18 @@
 #  devel/kdev-php
 #  devel/kdev-python
 PORTNAME=	kdevelop
-DISTVERSION=	5.4.5
-PORTREVISION=	2
+DISTVERSION=	5.5.0
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/stable/kdevelop/${DISTVERSION}/src
 DIST_SUBDIR=	KDE/kdevelop
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	Plugin extensible IDE for KDE
+COMMENT=	Plugin extensible IDE for C/C++ and other languages
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv2+ LGPL20+
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
+LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING.LIB
 
 BUILD_DEPENDS=	kdev-pg-qt:devel/kdevelop-pg-qt \
 		llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
@@ -44,8 +45,8 @@ SHEBANG_FILES=	kdevplatform/util/kdevplatform_shell_environment.sh \
 CMAKE_ARGS=	-DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DLLVM_ROOT=${LOCALBASE}/llvm${LLVM_DEFAULT}
 
 # Versioning values, to reduce plist churn
-PLATFORM_VER=	32
-SO_VER=		54
+PLATFORM_VER=	33
+SO_VER=		55
 PLIST_SUB+=	PLATFORM_VER=${PLATFORM_VER} SO_VER=${SO_VER} SO_VER_LONG=${DISTVERSION}
 
 OPTIONS_DEFINE=	WEBENGINE

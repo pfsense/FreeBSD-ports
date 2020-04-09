@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	duplicity
-PORTVERSION=	0.7.19
+PORTVERSION=	0.8.12
+DISTVERSIONSUFFIX=	.1612
 CATEGORIES=	sysutils
-MASTER_SITES=	http://launchpad.net/duplicity/0.7-series/${PORTVERSION}/+download/
+MASTER_SITES=	https://code.launchpad.net/duplicity/0.8-series/${PORTVERSION}/+download/
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Backup tool that uses librsync and GnuPG
@@ -14,50 +15,56 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	librsync.so:net/librsync2
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fasteners>=0:devel/py-fasteners@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}paramiko>=1.7.7.1:security/py-paramiko@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pexpect>0:misc/py-pexpect@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}paramiko>=0:security/py-paramiko@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pexpect>0:misc/py-pexpect@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}urllib3>=0:net/py-urllib3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR}
 
-USES=		python:2.7 shebangfix
-USE_PYTHON=	autoplist distutils
+USES=		localbase python shebangfix
+USE_PYTHON=	autoplist distutils noflavors
 USE_LDCONFIG=	yes
 
-CONFLICTS_INSTALL=	duplicity-devel
+CONFLICTS_INSTALL=	duplicity07 duplicity-devel
 
 SHEBANG_FILES=	bin/duplicity bin/rdiffdir
 
 PORTDOCS=	CHANGELOG COPYING README README-REPO README-LOG
 
-OPTIONS_DEFINE=		DOCS FTP FTPS GDOCS GIO NLS S3
+POST_PLIST=	trim-duplicity-testing
+
+OPTIONS_DEFINE=		B2 DOCS FTP FTPS GDOCS NLS S3
 OPTIONS_GROUP=		GPG
 OPTIONS_SINGLE=		GPG
 OPTIONS_SINGLE_GPG=	GNUPG GNUPG2
-OPTIONS_DEFAULT=	FTP FTPS GNUPG2 S3
+OPTIONS_DEFAULT=	B2 FTP FTPS GNUPG2 S3
+
+B2_DESC=		Backblaze B2 backend
 FTP_DESC=		FTP backend
 FTPS_DESC=		FTPS backend
 GDOCS_DESC=		Google Docs backend
-GIO_DESC=		GIO backend
 GPG_DESC=		GnuPG support
 GNUPG_DESC=		Use GnuPG 1
 GNUPG2_DESC=		Use GnuPG 2
 S3_DESC=		Amazon S3 backend
 
+B2_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}b2sdk>=0.1.8:devel/py-b2sdk@${PY_FLAVOR}
 FTP_RUN_DEPENDS=	ncftp>=3.2.2:ftp/ncftp3
 FTPS_RUN_DEPENDS=	lftp>=3.7.15:ftp/lftp
-GDOCS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gdata>0:devel/py-gdata@${PY_FLAVOR}
-GIO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject>0:devel/py-gobject@${PY_FLAVOR} \
-					dbus>0:devel/dbus
+GDOCS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pydrive>0:devel/py-pydrive@${PY_FLAVOR}
 GNUPG_RUN_DEPENDS=	gnupg1>=1.4.7:security/gnupg1
 GNUPG2_RUN_DEPENDS=	gpg2:security/gnupg
 NLS_USES=		gettext
 S3_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}boto>=1.6b:devel/py-boto@${PY_FLAVOR}
 
 post-patch:
-.for f in cfbackend _cf_cloudfiles _cf_pyrax
+.for f in cfbackend _cf_cloudfiles _cf_pyrax giobackend
 	@${RM} ${WRKSRC}/${PORTNAME}/backends/${f}.py
 .endfor
 
 post-patch-NLS-off:
-	@${REINPLACE_CMD} -e '56,67d' \
+	@${REINPLACE_CMD} -e '105,129d' \
 		${WRKSRC}/setup.py
 
 post-patch-FTP-off:
@@ -74,14 +81,17 @@ post-patch-S3-off:
 post-patch-GDOCS-off:
 	@${RM} ${WRKSRC}/${PORTNAME}/backends/gdocsbackend.py
 
-post-patch-GIO-off:
-	@${RM} ${WRKSRC}/${PORTNAME}/backends/giobackend.py
+post-patch-B2-off:
+	@${RM} ${WRKSRC}/${PORTNAME}/backends/b2backend.py
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/python2.7/site-packages/duplicity/_librsync.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/duplicity/_librsync.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|g} ${STAGEDIR}${DOCSDIR}
+
+trim-duplicity-testing:
+	@${REINPLACE_CMD} '/\/testing\//d' ${TMPPLIST}
 
 .include <bsd.port.mk>

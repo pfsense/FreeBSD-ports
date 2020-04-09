@@ -2,9 +2,13 @@
 
 PORTNAME=	xorgxrdp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.12
+DISTVERSION=	0.2.13
+PORTREVISION=	2
 CATEGORIES=	x11-drivers
 DIST_SUBDIR=	xrdp
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	d3cefac.patch:-p1
 
 MAINTAINER=	meta@FreeBSD.org
 COMMENT=	X.Org driver enabling use through an RDP session with xrdp
@@ -21,15 +25,26 @@ USE_GITHUB=	yes
 
 GH_ACCOUNT=	neutrinolabs
 GH_PROJECT=	xrdp:xrdp
-GH_TAGNAME=	v0.9.12:xrdp
+GH_TAGNAME=	v0.9.13:xrdp
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
 CFLAGS+=	-I${LOCALBASE}/include
-LIBS=		-I${LOCALBASE}/lib
+LIBS=		-L${LOCALBASE}/lib
 CONFIGURE_ENV=	XRDP_CFLAGS=-I${WRKSRC_xrdp}/common
 
-OPTIONS_DEFINE=	DEBUG
+OPTIONS_DEFINE=	DEBUG DRI3
+OPTIONS_DEFAULT=
+
+DRI3_DESC=	DRI3/Glamor OpenGL Support
+DRI3_CONFIGURE_ENABLE=	glamor
+DRI3_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
+
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MDRI3}
+SUB_FILES=	pkg-message
+.endif
 
 post-patch-DEBUG-on:
 	${FIND} ${WRKSRC} -type f | ${XARGS} ${REINPLACE_CMD} -e 's|#define LOG_LEVEL [0-9]*|#define LOG_LEVEL 20|'
@@ -37,4 +52,4 @@ post-patch-DEBUG-on:
 pre-configure:
 	@cd ${WRKSRC} && ./bootstrap
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

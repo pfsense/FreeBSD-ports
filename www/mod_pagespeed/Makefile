@@ -2,7 +2,7 @@
 
 PORTNAME=	mod_pagespeed
 PORTVERSION=	1.12.34.2
-PORTREVISION=	25
+PORTREVISION=	27
 PORTEPOCH=	1
 CATEGORIES=	www devel
 MASTER_SITES=	LOCAL/mmokhi:boringssl,chromium_base,chromium_build,googleurl,gflags_arch,gflags_src,libjpeg_turbo_src,yasm_patched,libwebp,modpb64 \
@@ -15,6 +15,9 @@ MAINTAINER=	mmokhi@FreeBSD.org
 COMMENT=	Apache module for rewriting web pages to reduce latency
 
 LICENSE=	APACHE20
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 BUILD_DEPENDS=	bash:shells/bash \
 		curl:ftp/curl \

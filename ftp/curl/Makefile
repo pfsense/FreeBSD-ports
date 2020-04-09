@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	curl
-PORTVERSION=	7.67.0
+PORTVERSION=	7.69.1
 CATEGORIES=	ftp net www
 MASTER_SITES=	https://curl.haxx.se/download/ \
 		LOCAL/sunpoet
@@ -32,7 +32,7 @@ HTTP2_DESC=		HTTP/2 support (requires HTTP)
 HTTP2_IMPLIES=		HTTP
 IMAP_DESC=		IMAP/IMAPS support
 LDAPS_IMPLIES=		LDAP
-LIBSSH2_DESC=		SCP/SFTP support via libssh2
+LIBSSH2_DESC=		SCP/SFTP support via libssh2 (requires OPENSSL)
 LIBSSH2_IMPLIES=	OPENSSL
 POP3_DESC=		POP3/POP3S support
 PROXY_IMPLIES=		HTTP
@@ -43,7 +43,7 @@ SMTP_DESC=		SMTP/SMTPS support
 THREADED_RESOLVER_DESC=	Threaded DNS resolver
 TLS_SRP_DESC=		TLS-SRP (Secure Remote Password) support
 
-USES=		cpe gmake libtool localbase pathfix perl5 shebangfix tar:xz
+USES=		cpe libtool localbase pathfix perl5 shebangfix tar:xz
 USE_PERL5=	build
 
 CONFIGURE_ARGS=	--disable-werror \
@@ -140,7 +140,6 @@ THREADED_RESOLVER_CONFIGURE_ENABLE=	pthreads threaded-resolver
 TLS_SRP_CONFIGURE_ENABLE=	tls-srp
 WOLFSSL_CONFIGURE_WITH=	wolfssl
 WOLFSSL_LIB_DEPENDS=	libwolfssl.so:security/wolfssl
-WOLFSSL_BROKEN=		does not build
 
 .include <bsd.port.pre.mk>
 

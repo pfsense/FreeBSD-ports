@@ -1,15 +1,12 @@
---- libcaf_io/src/io/network/default_multiplexer.cpp.orig	2019-12-27 13:41:05 UTC
+--- libcaf_io/src/io/network/default_multiplexer.cpp.orig	2020-04-05 00:30:36 UTC
 +++ libcaf_io/src/io/network/default_multiplexer.cpp
-@@ -63,11 +63,11 @@
+@@ -59,6 +59,9 @@
+ #  include <ws2ipdef.h>
+ #  include <ws2tcpip.h>
+ #else
++#  ifdef __FreeBSD__
++#    include <sys/types.h>
++#  endif
+ #  include <arpa/inet.h>
  #  include <cerrno>
  #  include <fcntl.h>
- #  include <netdb.h>
-+#  include <sys/types.h>
- #  include <netinet/in.h>
- #  include <netinet/ip.h>
- #  include <netinet/tcp.h>
- #  include <sys/socket.h>
--#  include <sys/types.h>
- #  include <unistd.h>
- #  ifdef CAF_POLL_MULTIPLEXER
- #    include <poll.h>

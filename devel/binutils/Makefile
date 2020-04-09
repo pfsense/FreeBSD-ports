@@ -4,6 +4,7 @@
 PORTNAME=	binutils
 PORTVERSION=	2.33.1
 PORTEPOCH?=	1
+PORTREVISION=	2
 CATEGORIES?=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases
 
@@ -14,7 +15,8 @@ LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
 FLAVORS=	native aarch64 aarch64_none_elf amd64 arm_gnueabi arm_none_eabi \
-		avr i386 mingw32 mips mips64 powerpc powerpc64 riscv64 s390x sparc64
+		avr i386 mingw32 mips mips64 powerpc powerpc64 riscv64 \
+		riscv64_none_elf s390x sparc64 riscv32_unknown_elf
 FLAVOR?=	native
 
 RELRO_CONFIGURE_ON=	--enable-relro
@@ -29,7 +31,7 @@ TEST_TARGET=	check
 OPTIONS_DEFINE=	NLS RELRO STATIC
 STATIC_PREVENTS=	NLS
 
-RELRO_DESC=	enable -z relro in ELF linker by default
+RELRO_DESC=	Enable relocation memory corruption mitigation (-z relro) by default
 
 LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING3
 LICENSE_FILE_LGPL3=	${WRKSRC}/COPYING3.LIB
@@ -63,7 +65,7 @@ INFO_PATH=	${PKGNAMEPREFIX:S/-$//}/share/info
 .if ${FLAVOR} == aarch64
 BROKEN_mips=		fails to configure: error: C compiler cannot create executables
 BROKEN_mips64=		fails to configure: error: C compiler cannot create executables
-.elif ${FLAVOR} == aarch64_none_elf || ${FLAVOR} == arm_none_eabi || ${FLAVOR} == mingw32 || ${FLAVOR} == avr
+.elif ${FLAVOR} == aarch64_none_elf || ${FLAVOR} == arm_none_eabi || ${FLAVOR} == riscv64_none_elf || ${FLAVOR} == mingw32 || ${FLAVOR} == avr || ${FLAVOR} == riscv32_unknown_elf
 BUTARGET=	${FLAVOR:C/_/-/g}
 .elif ${FLAVOR} == amd64
 BUTARGET=	x86_64-unknown-${OPSYS:tl}${OSREL}
@@ -106,7 +108,7 @@ MAKE_ARGS+=	LIBDL=""
 .include <bsd.port.pre.mk>
 
 # Actual earliest version may differ slightly
-.if ${ARCH} != sparc64 && ${ARCH} != mips && ${ARCH} != mips64 && ${ARCH} != powerpc && ${ARCH} != powerpc64 && ${ARCH} != powerpcspe && !defined(PKGNAMEPREFIX)
+.if (${ARCH} != sparc64 && ${ARCH} != mips && ${ARCH} != mips64 && ${ARCH} != powerpcspe && ${ARCH} != powerpc && ${ARCH} != powerpc64 && !defined(PKGNAMEPREFIX)) || ((${ARCH} == powerpc || ${ARCH} == powerpc64) && ${CHOSEN_COMPILER_TYPE} != gcc && !defined(PKGNAMEPREFIX))
 CONFIGURE_ARGS+=	--enable-gold --enable-plugins
 CXXFLAGS+=	-Wno-c++11-narrowing
 PLIST_SUB+=	GOLD=""

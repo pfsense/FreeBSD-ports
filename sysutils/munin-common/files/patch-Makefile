@@ -1,6 +1,8 @@
---- Makefile.orig	2019-11-20 19:39:52 UTC
+Install things at the correct places.
+
+--- Makefile.orig	2020-03-24 12:31:00 UTC
 +++ Makefile
-@@ -95,96 +95,77 @@ install: install-master-prime install-common-prime ins
+@@ -94,96 +94,77 @@ install: install-master-prime install-common-prime ins
  
  install-pre: $(MAKEFILES)
  	@$(CHECKUSER)
@@ -135,7 +137,7 @@
  		fi \
  	done
  
-@@ -195,14 +176,14 @@ install-plugins-java: build-plugins-java
+@@ -194,14 +175,14 @@ install-plugins-java: build-plugins-java
  install-async-prime: install-async
  
  install-async:
@@ -154,7 +156,7 @@
  
  
  install-common-prime: build-common install-common
-@@ -519,7 +500,7 @@ t/install:
+@@ -518,7 +499,7 @@ t/install:
  
  # This builds */Build from Build.PL
  %/Build: %/Build.PL
@@ -163,7 +165,7 @@
  
  build-%: %/Build
  	cd $* && $(PERL) Build
-@@ -535,6 +516,7 @@ install-%: %/Build
+@@ -534,6 +515,7 @@ install-%: %/Build
  		--install_path script=$(BINDIR) \
  		--install_path sbin=$(SBINDIR) \
  		--install_path bindoc=$(MANDIR)/man1 \

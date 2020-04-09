@@ -1,39 +1,28 @@
 # $FreeBSD$
 
 PORTNAME=	xpra
-PORTVERSION=	2.5.1
-PORTREVISION=	5
+PORTVERSION=	3.0.7
 CATEGORIES=	x11
 MASTER_SITES=	http://xpra.org/src/
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Xpra gives you persistent remote applications for X
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}gtk2>2:x11-toolkits/py-gtk2@${PY_FLAVOR} \
-		brotli:archivers/brotli
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
-		libturbojpeg.so:graphics/libjpeg-turbo \
-		libwebp.so:graphics/webp
-RUN_DEPENDS=	${LOCALBASE}/share/X11/xkb/rules/base:x11/xkeyboard-config \
-		${PYNUMPY} \
+LIB_DEPENDS=	libwebp.so:graphics/webp
+RUN_DEPENDS=	${PY_PILLOW} \
+		${PYTHON_PKGNAMEPREFIX}bencode.py>1:converters/py-bencode.py@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}brotli>1:archivers/py-brotli@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cryptography>1:security/py-cryptography@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dbus>1:devel/py-dbus@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gtk2>2:x11-toolkits/py-gtk2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gtkglext>1:x11-toolkits/py-gtkglext@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lz4>=0.7.0_1:archivers/py-lz4@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}netifaces>0:net/py-netifaces@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}paramiko>0:security/py-paramiko@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>=3.0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyinotify>0:devel/py-pyinotify@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}PyOpenGL-accelerate>=3.1.0:graphics/py-PyOpenGL-accelerate@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}PyOpenGL>=3.1.0:graphics/py-PyOpenGL@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rencode>1:converters/py-rencode@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}xxhash>0:devel/py-xxhash@${PY_FLAVOR} \
-		gstreamer1-plugins-pulse>=0:audio/gstreamer1-plugins-pulse \
 		setxkbmap:x11/setxkbmap \
 		ssh-askpass:security/openssh-askpass \
 		xauth:x11/xauth \
@@ -41,21 +30,22 @@ RUN_DEPENDS=	${LOCALBASE}/share/X11/xkb/rules/base:x11/xkeyboard-config \
 		Xvfb:x11-servers/xorg-vfbserver
 
 USES=		desktop-file-utils fortran gettext-runtime gnome pkgconfig \
-		python:2.7 shared-mime-info shebangfix tar:xz xorg
+		python:3.6+ shared-mime-info shebangfix tar:xz xorg
 
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 pango
+USE_GNOME=	cairo gdkpixbuf2 gtk30 pygobject3
 USE_PYTHON=	cython distutils
 USE_XORG=	x11 xcomposite xdamage xext xfixes xi xkbfile xrandr xtst
 PLIST_SUB+=	PORTVERSION=${PORTVERSION} \
+		PYTHON_SUFFIX=${PYTHON_SUFFIX} \
 		PYTHON_VER=${PYTHON_VER}
-SHEBANG_FILES=	cups/xpraforwarder scripts/auth_dialog \
+SHEBANG_FILES=	cups/xpraforwarder scripts/auth_dialog scripts/xdg-open \
 		scripts/xpra_udev_product_version
 MAKE_ENV=	XPRA_USE_PROCESS_POLLING=1
 
-OPTIONS_DEFINE=		AVAHI AVCODEC CUPS FFMPEG GSTREAMER HTML5 LIBYUV \
-			SWSCALE VPX WEBCAM X264 X265
-OPTIONS_DEFAULT=	AVAHI AVCODEC CUPS FFMPEG GSTREAMER HTML5 LIBYUV \
-			SWSCALE VPX X264
+OPTIONS_DEFINE=		AVCODEC CUPS FFMPEG GSTREAMER HTML5 LIBYUV SWSCALE VPX \
+			WEBCAM X264 X265
+OPTIONS_DEFAULT=	AVCODEC CUPS FFMPEG GSTREAMER HTML5 LIBYUV SWSCALE VPX \
+			X264 X265
 OPTIONS_SUB=		yes
 
 AVCODEC_DESC=	Enable avcodec2 (FFmpeg) decoder
@@ -68,10 +58,8 @@ SWSCALE_DESC=	Enable swscale (FFmpeg) CSC module
 VPX_DESC=	Enable VP8 and VP9 codec
 WEBCAM_DESC=	Enable webcam forwarding (client only)
 X264_DESC=	Enable X264 encoder
-X265_DESC=	Enable X265 encoder (slow)
+X265_DESC=	Enable X265 encoder
 
-AVAHI_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}avahi>0:net/py-avahi@${PY_FLAVOR}
-AVAHI_VARS=			XPRA_OPTIONS+=mdns
 AVCODEC_VARS=			XPRA_OPTIONS+=dec_avcodec2
 CUPS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}pycups>1:print/py-pycups@${PY_FLAVOR}
 CUPS_VARS=			XPRA_OPTIONS+=printing
@@ -96,9 +84,9 @@ X265_VARS=			XPRA_OPTIONS+=enc_x265
 
 PYDISTUTILS_PKGNAME=	xpra_all
 XPRA_OPTIONS_ALL+=	${XPRA_OPTIONS_DISABLED} csc_libyuv csc_swscale \
-			dec_avcodec2 enc_ffmpeg enc_x264 enc_x265 html5 mdns \
+			dec_avcodec2 enc_ffmpeg enc_x264 enc_x265 html5 \
 			printing sound vpx webcam
-XPRA_OPTIONS_DISABLED=	minify netdev uinput Xdummy Xdummy_wrapper
+XPRA_OPTIONS_DISABLED=	gtk2 mdns minify netdev uinput Xdummy Xdummy_wrapper
 
 .include <bsd.port.options.mk>
 
@@ -116,7 +104,7 @@ LIB_DEPENDS+=	libavcodec.so:multimedia/ffmpeg
 
 .include <bsd.port.pre.mk>
 
-PYDISTUTILS_BUILDARGS+=		${PYDISTUTILS_ARGS}
+PYDISTUTILS_BUILDARGS+=	${PYDISTUTILS_ARGS}
 PYDISTUTILS_CONFIGUREARGS+=	${PYDISTUTILS_ARGS}
 PYDISTUTILS_INSTALLARGS+=	${PYDISTUTILS_ARGS}
 

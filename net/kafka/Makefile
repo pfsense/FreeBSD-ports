@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	kafka
-PORTVERSION=	2.3.0
+PORTVERSION=	2.4.1
 CATEGORIES=	net java
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}_2.12-${PORTVERSION}
@@ -20,18 +20,23 @@ SHEBANG_FILES=	bin/*.sh
 
 OPTIONS_DEFINE=	DOCS
 
-USERS=		kafka
-GROUPS=		kafka
+KAFKA_USER?=	kafka
+KAFKA_GROUP?=	kafka
+KAFKA_DATADIR?=	/var/db/${PORTNAME}
+KAFKA_LOGDIR?=	/var/log/${PORTNAME}
+
+USERS=		${KAFKA_USER}
+GROUPS=		${KAFKA_GROUP}
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
-KAFKA_DATADIR=	/var/db/${PORTNAME}
-KAFKA_LOGDIR=	/var/log/${PORTNAME}
-KAFKA_BINS=	connect-distributed.sh connect-standalone.sh kafka-acls.sh \
+KAFKA_BINS=	connect-distributed.sh connect-mirror-maker.sh \
+		connect-standalone.sh kafka-acls.sh \
 		kafka-broker-api-versions.sh kafka-configs.sh \
 		kafka-console-consumer.sh kafka-console-producer.sh \
 		kafka-consumer-groups.sh kafka-consumer-perf-test.sh \
 		kafka-delegation-tokens.sh kafka-delete-records.sh \
-		kafka-dump-log.sh kafka-log-dirs.sh kafka-mirror-maker.sh \
+		kafka-dump-log.sh kafka-leader-election.sh \
+		kafka-log-dirs.sh kafka-mirror-maker.sh \
 		kafka-preferred-replica-election.sh kafka-producer-perf-test.sh \
 		kafka-reassign-partitions.sh kafka-replica-verification.sh \
 		kafka-run-class.sh kafka-server-start.sh kafka-server-stop.sh \
@@ -41,30 +46,31 @@ KAFKA_BINS=	connect-distributed.sh connect-standalone.sh kafka-acls.sh \
 KAFKA_CONFIGS=	connect-console-sink.properties \
 		connect-console-source.properties \
 		connect-distributed.properties connect-file-sink.properties \
-		connect-file-source.properties connect-log4j.properties \
+		connect-file-source.properties connect-mirror-maker.properties \
+		connect-log4j.properties \
 		connect-standalone.properties consumer.properties \
 		log4j.properties producer.properties server.properties \
 		tools-log4j.properties trogdor.conf
 
-SUB_FILES=	kafka
-SUB_LIST=	ETCDIR=${ETCDIR} \
-		GROUPS=${GROUPS} \
-		JAVA=${JAVA} \
-		KAFKA_LOGDIR=${KAFKA_LOGDIR} \
-		USERS=${USERS}
+USE_RC_SUBR=	kafka kafka_connect
+SUB_LIST=	JAVA=${JAVA} \
+		ETCDIR=${ETCDIR} \
+		KAFKA_USER=${KAFKA_USER} \
+		KAFKA_GROUP=${KAFKA_GROUP} \
+		KAFKA_LOGDIR=${KAFKA_LOGDIR}
 
-PLIST_SUB=	ETCDIR=${ETCDIR} \
-		GROUPS=${GROUPS} \
-		KAFKA_DATADIR=${KAFKA_DATADIR} \
+PLIST_SUB=	PORTVERSION=${PORTVERSION} \
+		ETCDIR=${ETCDIR} \
+		KAFKA_USER=${KAFKA_USER} \
+		KAFKA_GROUP=${KAFKA_GROUP} \
 		KAFKA_LOGDIR=${KAFKA_LOGDIR} \
-		PORTVERSION=${PORTVERSION} \
-		USERS=${USERS}
+		KAFKA_DATADIR=${KAFKA_DATADIR}
 
 NO_BUILD=	yes
 NO_ARCH=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
-USE_RC_SUBR=	kafka
+JAVA_VERSION=	8+
+JAVA_RUN=	yes
 
 post-patch:
 	@${REINPLACE_CMD} "s|JAVA=\"java\"|JAVA=\"${JAVA}\"|" ${WRKSRC}/bin/kafka-run-class.sh
@@ -81,11 +87,10 @@ do-install:
 .for f in ${KAFKA_BINS}
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/${f} ${STAGEDIR}${DATADIR}/bin/
 .endfor
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} libs ${STAGEDIR}${DATADIR} "-not ( \
+	@(cd ${WRKSRC} && ${COPYTREE_SHARE} libs ${STAGEDIR}${DATADIR} "-not ( \
 		-name kafka_*-javadoc\.jar -or -name kafka_*-scaladoc\.jar -or \
 		-name kafka_*-sources\.jar -or -name kafka_*-test\.jar -or \
-		-name *\.asc \
-		)" \
+		-name *\.asc )" \
 	)
 .for f in ${KAFKA_CONFIGS}
 	${INSTALL_DATA} ${WRKSRC}/config/${f} ${STAGEDIR}${ETCDIR}/${f}.sample

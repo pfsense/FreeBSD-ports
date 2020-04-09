@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tabulator
-PORTVERSION=	1.31.2
+PORTVERSION=	1.36.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -31,4 +31,3 @@ USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 
 .include <bsd.port.mk>
-

@@ -20,7 +20,7 @@ USE_KDE=	auth codecs config configwidgets coreaddons crash ecm \
 		kdeclarative kdelibs4support notifications package \
 		plasma-framework sonnet textwidgets wayland widgetsaddons \
 		windowsystem xmlgui
-USE_QT=		core dbus declarative gui network testlib widgets x11extras xml \
+USE_QT=		core dbus declarative gui network qdbus testlib widgets x11extras xml \
 		buildtools_build qmake_build
 USE_XORG=	ice sm x11 xcb xcursor xext xi
 

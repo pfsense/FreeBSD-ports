@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nextcloudclient
-PORTVERSION=	2.6.2
+PORTVERSION=	2.6.4
 #PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
@@ -46,8 +46,8 @@ PLIST_SUB=	VERSION=${PORTVERSION}
 CMAKE_ARGS+=	-DCMAKE_BUILD_TYPE:STRING=Debug
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && !${SSL_DEFAULT:Mopenssl111}
-BROKEN=	nextcloudclient requires OpenSSL 1.1.0, add DEFAULT_VERSIONS+=ssl=openssl111 to /etc/make.conf
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && !${SSL_DEFAULT:Mopenssl}
+BROKEN=	nextcloudclient requires OpenSSL 1.1.0, add DEFAULT_VERSIONS+=ssl=openssl to /etc/make.conf
 .endif
 
 post-patch:

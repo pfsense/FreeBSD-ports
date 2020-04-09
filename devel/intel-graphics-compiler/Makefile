@@ -2,11 +2,8 @@
 
 PORTNAME=	intel-graphics-compiler
 DISTVERSIONPREFIX=	igc-
-DISTVERSION=	1.0.3041
+DISTVERSION=	1.0.3586
 CATEGORIES=	devel
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	add5ac2f64f3.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Intel Graphics Compiler for OpenCL
@@ -16,6 +13,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	Only Intel GPUs on x86 are supported
+.if exists(/usr/lib/clang/10.0.0) && ${CXX} == c++
+BROKEN=		https://github.com/intel/intel-graphics-compiler/issues/126
+.endif
 
 LIB_DEPENDS=	libopencl-clang.so:devel/opencl-clang
 

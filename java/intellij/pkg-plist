@@ -151,7 +151,7 @@ share/applications/idea.desktop
 %%DATADIR%%/lib/intellij-dvcs.jar
 %%DATADIR%%/lib/intellij-test-discovery-agent-1.0.508.jar
 %%DATADIR%%/lib/intellij-xml.jar
-%%DATADIR%%/lib/ion-java-1.5.0-1.jar
+%%DATADIR%%/lib/ion-java-1.5.2-2.jar
 %%DATADIR%%/lib/isorelax-20030108.jar
 %%DATADIR%%/lib/istack-commons-runtime-3.0.7.jar
 %%DATADIR%%/lib/j2objc-annotations-1.1.jar
@@ -172,7 +172,7 @@ share/applications/idea.desktop
 %%DATADIR%%/lib/jcip-annotations-1.0.jar
 %%DATADIR%%/lib/jdkAnnotations.jar
 %%DATADIR%%/lib/jdom.jar
-%%DATADIR%%/lib/jediterm-pty-2.22.jar
+%%DATADIR%%/lib/jediterm-pty-2.24.jar
 %%DATADIR%%/lib/jetCheck-0.2.1.jar
 %%DATADIR%%/lib/jing-20030619.jar
 %%DATADIR%%/lib/jna-platform.jar

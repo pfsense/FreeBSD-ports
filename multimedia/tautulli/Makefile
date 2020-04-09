@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tautulli
-PORTVERSION=	2.1.37
+PORTVERSION=	2.1.41
 DISTVERSIONPREFIX=v
 CATEGORIES=	multimedia python
 
@@ -11,6 +11,9 @@ COMMENT=	Monitoring, analytics, and notifications for Plex Media Server
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${PY_FLAVOR} \

@@ -23,7 +23,7 @@ LIB_DEPENDS=	liblilv-0.so:audio/lilv \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		compiler:c++11-lang gnome pkgconfig qmake:no_configure,no_env \
+USES=		compiler:c++11-lang gnome pkgconfig python:2.7,build qmake:no_configure,no_env \
 		qt:5 tar:bz2 waf
 CONFIGURE_ARGS=	--no-qt4
 USE_CXXSTD=	c++11
@@ -31,12 +31,7 @@ USE_QT=		core gui widgets buildtools_build
 USE_GNOME=	atk atkmm cairo cairomm pango pangomm libsigc++20 \
 		gdkpixbuf2 glib20 glibmm  gtk20 gtk30 gtkmm24
 
-post-patch:
-		@${REINPLACE_CMD} 's|$${MANDIR}|${MAN1PREFIX}/man|' \
-			${WRKSRC}/wscript
-
 post-install:
-		@${GZIP_CMD} ${STAGEDIR}${MAN1PREFIX}/man/man1/*
 		@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/jalv*
 
 .include <bsd.port.mk>

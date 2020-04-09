@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	barvinok
-DISTVERSION=	0.41.2
-PORTREVISION=	1
+DISTVERSION=	0.41.3
 CATEGORIES=	math
 MASTER_SITES=	http://barvinok.gforge.inria.fr/
 
@@ -10,6 +9,8 @@ MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library for counting the number of integer points in polytopes
 
 LICENSE=	GPLv2
+
+BROKEN=		fails to build
 
 LIB_DEPENDS=	libglpk.so:math/glpk \
 		libgmp.so:math/gmp \

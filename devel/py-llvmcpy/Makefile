@@ -12,6 +12,9 @@ COMMENT=	Python bindings for LLVM auto-generated from the LLVM-C API
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 RUN_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 		${PYTHON_PKGNAMEPREFIX}appdirs>0:devel/py-appdirs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cffi>=1.0.0:devel/py-cffi@${PY_FLAVOR} \
@@ -19,7 +22,7 @@ RUN_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 		${PYTHON_PKGNAMEPREFIX}pycparser>0:devel/py-pycparser@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}shutilwhich>0:sysutils/py-shutilwhich@${PY_FLAVOR}
 
-USES=		python:-3.3 # sysutils/py-shutilwhich has this
+USES=		python:2.7 # sysutils/py-shutilwhich has this
 USE_GITHUB=	yes
 GH_ACCOUNT=	revng
 USE_PYTHON=	distutils autoplist

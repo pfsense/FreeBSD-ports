@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pkg
-DISTVERSION=	1.12.99.1
+DISTVERSION=	1.13.99.7
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
 PKGNAMESUFFIX=	-devel
@@ -13,11 +13,10 @@ LICENSE=	BSD2CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
-GH_TAGNAME=	48de026e
+GH_TAGNAME=	4c4f6f85
 
-WITH_DEBUG=	yes
 CFLAGS+=	-O0 -g -Wno-error
-USE_LDCONFIG=	yes
+USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
 HAS_CONFIGURE=	yes
 PORTDOCS=	NEWS
 PORTSCOUT=	ignore:1
@@ -49,11 +48,12 @@ PKG_DEPENDS=
 .endif
 
 .undef INSTALLS_DEPENDS
-.if !exists(${LOCALBASE}/sbin/pkg) || !defined(CROSS_TOOLCHAIN)
+.if !exists(${LOCALBASE}/sbin/pkg) && !defined(CROSS_TOOLCHAIN)
 PKG_BIN=	${WRKSRC}/src/pkg-static
 .endif
 
 post-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/compat/pkg
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/NEWS ${STAGEDIR}${DOCSDIR}/NEWS
 

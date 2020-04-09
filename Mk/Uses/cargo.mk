@@ -21,6 +21,8 @@ IGNORE+=	USES=cargo takes no arguments
 CARGO_CRATES?=
 
 # List of features to build (space separated list).
+# Use special token --no-default-features to disable default
+# features by passing it to cargo build/install/test.
 CARGO_FEATURES?=
 
 # Name of the local directory for vendoring crates.
@@ -35,7 +37,7 @@ CARGO_DIST_SUBDIR?=	rust/crates
 
 # Generate list of DISTFILES.
 .for _crate in ${CARGO_CRATES}
-MASTER_SITES+=	CRATESIO/${_crate:C/^(.*)-[0-9].*/\1/}/${_crate:C/^.*-([0-9].*)/\1/}:cargo_${_crate:C/[^a-zA-Z0-9_]//g}
+MASTER_SITES+=	CRATESIO/${_crate:C/^([-_a-zA-Z0-9]+)-[0-9].*/\1/}/${_crate:C/^[-_a-zA-Z0-9]+-([0-9].*)/\1/}:cargo_${_crate:C/[^a-zA-Z0-9_]//g}
 DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}.tar.gz:cargo_${_crate:C/[^a-zA-Z0-9_]//g}
 .endfor
 
@@ -43,7 +45,7 @@ DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}.tar.gz:cargo_${_crate:C/[^a-zA-Z0-9_]
 
 CARGO_BUILDDEP?=	yes
 .if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.40.0:lang/${RUST_DEFAULT}
+BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.42.0:lang/${RUST_DEFAULT}
 .endif
 
 # Location of cargo binary (default to lang/rust's Cargo binary)
@@ -56,6 +58,7 @@ CARGO_TARGET_DIR?=	${WRKDIR}/target
 #  - CARGO_HOME: local cache of the registry index
 #  - CARGO_BUILD_JOBS: configure number of jobs to run
 #  - CARGO_TARGET_DIR: location of where to place all generated artifacts
+#  - RUST_BACKTRACE: produce backtraces when something in the build panics
 #  - RUSTC: path of rustc binary (default to lang/rust)
 #  - RUSTDOC: path of rustdoc binary (default to lang/rust)
 #  - RUSTFLAGS: custom flags to pass to all compiler invocations that Cargo performs
@@ -63,6 +66,7 @@ CARGO_ENV+= \
 	CARGO_HOME=${WRKDIR}/cargo-home \
 	CARGO_BUILD_JOBS=${MAKE_JOBS_NUMBER} \
 	CARGO_TARGET_DIR=${CARGO_TARGET_DIR} \
+	RUST_BACKTRACE=1 \
 	RUSTC=${LOCALBASE}/bin/rustc \
 	RUSTDOC=${LOCALBASE}/bin/rustdoc \
 	RUSTFLAGS="${RUSTFLAGS} -C linker=${CC:Q} ${LDFLAGS:C/.+/-C link-arg=&/}"
@@ -106,10 +110,15 @@ CARGO_USE_GITHUB?=	no
 CARGO_USE_GITLAB?=	no
 
 # Manage crate features.
-.if !empty(CARGO_FEATURES)
-CARGO_BUILD_ARGS+=	--features='${CARGO_FEATURES}'
-CARGO_INSTALL_ARGS+=	--features='${CARGO_FEATURES}'
-CARGO_TEST_ARGS+=	--features='${CARGO_FEATURES}'
+.if !empty(CARGO_FEATURES:M--no-default-features)
+CARGO_BUILD_ARGS+=	--no-default-features
+CARGO_INSTALL_ARGS+=	--no-default-features
+CARGO_TEST_ARGS+=	--no-default-features
+.endif
+.if !empty(CARGO_FEATURES:N--no-default-features)
+CARGO_BUILD_ARGS+=	--features='${CARGO_FEATURES:N--no-default-features}'
+CARGO_INSTALL_ARGS+=	--features='${CARGO_FEATURES:N--no-default-features}'
+CARGO_TEST_ARGS+=	--features='${CARGO_FEATURES:N--no-default-features}'
 .endif
 
 .if !defined(WITH_DEBUG)
@@ -279,11 +288,11 @@ do-build:
 do-install:
 .  for path in ${CARGO_INSTALL_PATH}
 	@${CARGO_CARGO_RUN} install \
+		--no-track \
 		--path "${path}" \
 		--root "${STAGEDIR}${PREFIX}" \
 		--verbose \
 		${CARGO_INSTALL_ARGS}
-	@${RM} -- "${STAGEDIR}${PREFIX}/.crates.toml"
 .  endfor
 .endif
 

@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	clementine
-DISTVERSION=	1.3.1-661
-DISTVERSIONSUFFIX=	-g4ff370ce1
-PORTREVISION=	11
+DISTVERSION=	1.4.0
+PORTREVISION=	1
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-player
 
@@ -18,7 +17,6 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 LIB_DEPENDS=	libtag.so:audio/taglib \
 		libchromaprint.so:audio/chromaprint \
 		libprotobuf.so:devel/protobuf \
-		libqca-qt5.so:devel/qca \
 		libqjson-qt5.so:devel/qjson \
 		libfftw3.so:math/fftw3 \
 		libechonest5.so:audio/libechonest \
@@ -29,6 +27,7 @@ USES=		cmake \
 		desktop-file-utils \
 		gettext-tools \
 		pkgconfig \
+		qca \
 		qt:5 \
 		sqlite \
 		gl \
@@ -40,6 +39,8 @@ USE_CXXSTD=	c++11
 USE_GITHUB=	yes
 GH_ACCOUNT=	clementine-player
 GH_PROJECT=	Clementine
+GH_TAGNAME=     1.4.0rc1
+
 
 USE_GL=		gl glew glu
 USE_XORG=	x11

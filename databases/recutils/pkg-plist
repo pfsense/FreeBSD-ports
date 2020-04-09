@@ -1,4 +1,5 @@
 bin/csv2rec
+%%MDB%%bin/mdb2rec
 bin/rec2csv
 bin/recdel
 bin/recfix
@@ -13,6 +14,7 @@ lib/librec.so
 lib/librec.so.1
 lib/librec.so.1.0.0
 man/man1/csv2rec.1.gz
+%%MDB%%man/man1/mdb2rec.1.gz
 man/man1/rec2csv.1.gz
 man/man1/recdel.1.gz
 man/man1/recfix.1.gz
@@ -24,9 +26,11 @@ man/man1/recset.1.gz
 share/emacs/site-lisp/ob-rec.el
 share/emacs/site-lisp/rec-mode.el
 %%NLS%%share/locale/de/LC_MESSAGES/recutils.mo
+%%NLS%%share/locale/es/LC_MESSAGES/recutils.mo
 %%NLS%%share/locale/fi/LC_MESSAGES/recutils.mo
 %%NLS%%share/locale/fr/LC_MESSAGES/recutils.mo
 %%NLS%%share/locale/nl/LC_MESSAGES/recutils.mo
+%%NLS%%share/locale/pt_BR/LC_MESSAGES/recutils.mo
 %%NLS%%share/locale/sr/LC_MESSAGES/recutils.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/recutils.mo
 %%NLS%%share/locale/uk/LC_MESSAGES/recutils.mo

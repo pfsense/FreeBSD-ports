@@ -1,30 +1,24 @@
---- setup.py.orig	2019-03-19 15:05:07 UTC
+--- setup.py.orig	2020-03-13 16:51:18 UTC
 +++ setup.py
-@@ -1551,12 +1551,12 @@ else:
-             add_data_files("%s/xpra/" % libexec, libexec_scripts)
-     if data_ENABLED:
-         man_path = "share/man"
--        if OPENBSD:
-+        if OPENBSD or FREEBSD:
-             man_path = "man"
+@@ -1491,7 +1491,7 @@ else:
+         libexec = "libexec"
+     else:
+         libexec = "lib"
+-    if LINUX:
++    if LINUX or FREEBSD:
+         if scripts_ENABLED:
+             scripts += ["scripts/xpra_udev_product_version", "scripts/xpra_signal_listener"]
+         libexec_scripts = []
+@@ -1508,7 +1508,7 @@ else:
          add_data_files("%s/man1" % man_path,  ["man/xpra.1", "man/xpra_launcher.1"])
          add_data_files("share/applications",  glob.glob("xdg/*.desktop"))
          add_data_files("share/mime/packages", ["xdg/application-x-xpraconfig.xml"])
 -        add_data_files("share/icons",         ["xdg/xpra.png", "xdg/xpra-mdns.png", "xdg/xpra-shadow.png"])
-+        add_data_files("share/pixmaps",       ["xdg/xpra.png", "xdg/xpra-mdns.png", "xdg/xpra-shadow.png"])
-         add_data_files("share/appdata",       ["xdg/xpra.appdata.xml"])
++        add_data_files("share/pixmaps",         ["xdg/xpra.png", "xdg/xpra-mdns.png", "xdg/xpra-shadow.png"])
+         add_data_files("share/metainfo",      ["xdg/xpra.appdata.xml"])
  
      #here, we override build and install so we can
-@@ -1605,7 +1605,7 @@ else:
- 
-             if printing_ENABLED and POSIX:
-                 #install "/usr/lib/cups/backend" with 0700 permissions:
--                copytodir("cups/xpraforwarder", "lib/cups/backend", chmod=0o700)
-+                copytodir("cups/xpraforwarder", "libexec/cups/backend", chmod=0o700)
- 
-             if x11_ENABLED:
-                 #install xpra_Xdummy if we need it:
-@@ -1678,8 +1678,8 @@ else:
+@@ -1633,8 +1633,8 @@ else:
          remove_packages("xpra.platform.win32", "xpra.platform.darwin")
          if data_ENABLED:
              #not supported by all distros, but doesn't hurt to install them anyway:

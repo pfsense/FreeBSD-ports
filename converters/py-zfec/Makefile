@@ -3,38 +3,31 @@
 
 PORTNAME=	zfec
 DISTVERSION=	1.5.3
+PORTREVISION=	1
 CATEGORIES=	converters python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Fast erasure codec for Python
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Efficient, portable erasure coding tool
 
-DEPRECATED=	Unmaintained, uses EOLed python27
-EXPIRATION_DATE=	2020-01-27
+LICENSE=	GPLv2+ TGGPL
+LICENSE_COMB=	dual
+LICENSE_NAME_TGGPL=	Transitive Grace Period Public Licence 1.0
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING.GPL
+LICENSE_FILE_TGGPL=	${WRKSRC}/COPYING.TGPPL.rst
+LICENSE_PERMS_TGGPL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING.GPL
-
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}argparse>=0:devel/py-argparse@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyutil>=0:devel/py-pyutil@${PY_FLAVOR}
-
-USES=		python:2.7
-USE_PYTHON=	distutils autoplist concurrent
-
-DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
-
-OPTIONS_DEFINE=	DOCS
-
-PORTDOCS=	COPYING.TGPPL.rst README.rst TODO
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/zfec/_fec.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/zfec/_fec.so
 
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for DOC in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${DOC} ${STAGEDIR}${DOCSDIR}/
-.endfor
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+.if ${PYTHON_REL} < 3000
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}argparse>=0.8:devel/py-argparse@${PY_FLAVOR}
+.endif
+
+.include <bsd.port.post.mk>

@@ -19,7 +19,7 @@ PATCHFILES+=	dd1279592b04.patch:-p1
 PATCHFILES+=	498422ccef03.patch:-p1
 PATCHFILES+=	7022ca4d1a1b.patch:-p1
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Userland USB HID device driver using libusb20
 
 LICENSE=	BSD2CLAUSE
@@ -28,7 +28,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	kaiwang27
 
 USES=		uidfix
-MAKE_ENV+=	BINDIR="${PREFIX}/sbin" MANDIR="${MANPREFIX}/man/man"
+MAKE_ENV+=	BINDIR="${PREFIX}/sbin" MANDIR="${PREFIX}/share/man/man"
 MAKE_ARGS=	LIBDIR="${LOCALBASE}/lib"
 USE_RC_SUBR=	uhidd
 

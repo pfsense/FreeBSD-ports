@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	graphviz
-PORTVERSION=	2.42.2
-PORTREVISION=	3
+PORTVERSION=	2.42.3
+PORTREVISION=	1
 CATEGORIES=	graphics tk
-MASTER_SITES=	https://gitlab.com/graphviz/graphviz/-/archive/${PORTVERSION}/
+MASTER_SITES=	https://www2.graphviz.org/Packages/stable/portable_source/
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Graph Visualization Software from AT&T and Bell Labs
@@ -114,6 +114,7 @@ PHP_LIB_DEPENDS=	libpcre.so:devel/pcre \
 GHOSTSCRIPT_LIB_DEPENDS=	libgs.so:print/${_GS_PORT}
 
 XPM_CONFIGURE_WITH=		x
+XPM_CONFIGURE_ENV=		ac_cv_header_sys_inotify_h=no
 DIGCOLA_CONFIGURE_WITH=		digcola
 IPSEPCOLA_CONFIGURE_WITH=	ipsepcola
 IPSEPCOLA_IMPLIES=		DIGCOLA

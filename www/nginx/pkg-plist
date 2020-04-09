@@ -2,6 +2,7 @@
 @sample %%ETCDIR%%/fastcgi_params-dist %%ETCDIR%%/fastcgi_params
 %%ETCDIR%%/koi-utf
 %%ETCDIR%%/koi-win
+%%LINK%%include/ngx_link_func_module.h
 %%MODSECURITY%%%%ETCDIR%%/unicode.mapping
 %%NAXSI%%%%ETCDIR%%/naxsi_core.rules
 @sample %%ETCDIR%%/scgi_params-dist %%ETCDIR%%/scgi_params
@@ -64,6 +65,7 @@
 %%WWW%%www/nginx-dist/50x.html
 %%WWW%%@postexec chmod a-w %D/www/nginx-dist
 %%WWW%%@postunexec if [ -L %D/www/nginx ]; then rm -f %D/www/nginx; fi
+%%NJS%%sbin/njs
 sbin/nginx
 share/vim/vimfiles/ftdetect/nginx.vim
 share/vim/vimfiles/ftplugin/nginx.vim

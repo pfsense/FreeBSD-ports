@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nano
-PORTVERSION=	4.6
+PORTVERSION=	4.8
 CATEGORIES=	editors
 MASTER_SITES=	https://www.nano-editor.org/dist/v${PORTVERSION:R}/ GNU
 
@@ -20,7 +20,7 @@ GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--docdir=${DOCSDIR} --enable-utf8
 CONFIGURE_ENV+=	NCURSESW_CFLAGS="-I${NCURSESINC}" \
-		NCURSESW_LIBS="-L${NCURSESLIB} -lncursesw"
+		NCURSESW_LIBS="-L${NCURSESLIB} -l${NCURSES_IMPL}"
 
 MAKE_ARGS+=	install_htmlmanDATA=install-htmlmanDATA
 

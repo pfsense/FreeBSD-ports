@@ -3,6 +3,7 @@
 
 PORTNAME=	hplip
 PORTVERSION=	3.19.12
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	SF
 
@@ -22,7 +23,7 @@ CONFLICTS_INSTALL=	hpijs-[0-9]*
 
 INSTALL_TARGET=	install-strip
 USES=		dos2unix gnome jpeg libtool pkgconfig python shebangfix
-USE_GNOME=	pygobject
+USE_GNOME=	pygobject3
 USE_LDCONFIG=	yes
 SHEBANG_GLOB=	*.py hpps pstotiff
 DOS2UNIX_FILES=	scan/sane/orblite.c
@@ -52,8 +53,8 @@ FAX_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}reportlab>=0:print/py-reportlab@${PY_FLA
 FAX_CONFIGURE_ENABLE=	fax-build
 
 SCAN_DESC=		Scanning support
+SCAN_RUN_DEPENDS=	${PY_PILLOW}
 SCAN_LIB_DEPENDS=	libsane.so:graphics/sane-backends
-SCAN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR}
 SCAN_CONFIGURE_ENABLE=	scan-build
 
 SNMP_DESC=		Network/JetDirect support

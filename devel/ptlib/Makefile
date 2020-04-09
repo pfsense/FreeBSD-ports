@@ -3,7 +3,7 @@
 
 PORTNAME=	ptlib
 PORTVERSION=	2.10.11
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2
 
 CONFLICTS=	pwlib-1.*
 
-USES=		autoreconf:build bison compiler:c11 gmake localbase:ldflags \
+USES=		autoreconf:build bison:wrapper compiler:c11 gmake localbase:ldflags \
 		pathfix pkgconfig ssl tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -36,15 +36,20 @@ CONFIGURE_ARGS+=--disable-lua \
 CONFIGURE_ENV+=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 		OPENSSL_LIBS="-L${OPENSSLLIB} -lssl"
 
-OPTIONS_DEFINE=	BSDVIDEO DEBUG ODBC ALSA JABBER V4L SDL LDAP PULSEAUDIO
-OPTIONS_DEFAULT=BSDVIDEO SDL V4L JABBER
+OPTIONS_DEFINE=	DEBUG ODBC ALSA JABBER V4L SDL LDAP PULSEAUDIO
+OPTIONS_DEFAULT=SDL V4L JABBER
 
 BSDVIDEO_DESC=	BSD video support
 DEBUG_DESC=	Install debug library
 
 .include <bsd.port.options.mk>
 
-.if (${OPSYS} == FreeBSD && ${OSVERSION} > 1200085 && ${SSL_DEFAULT} == base) || ${SSL_DEFAULT} == openssl111
+.if (${OPSYS} == FreeBSD && ${OSVERSION} < 1300082)
+OPTIONS_DEFINE+=	BSDVIDEO
+OPTIONS_DEFAULT+=	BSDVIDEO
+.endif
+
+.if (${OPSYS} == FreeBSD && ${OSVERSION} > 1200085 && ${SSL_DEFAULT} == base) || ${SSL_DEFAULT} == openssl
 EXTRA_PATCHES+= ${FILESDIR}/extra-patch-src_ptclib_pssl.cxx-openssl111
 .else
 EXTRA_PATCHES+= ${FILESDIR}/extra-patch-src_ptclib_pssl.cxx

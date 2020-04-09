@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rails
-PORTVERSION=	5.2.4.1
+PORTVERSION=	5.2.4.2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	52
@@ -23,6 +23,7 @@ RUN_DEPENDS=	rubygem-actioncable52>=${PORTVERSION}:www/rubygem-actioncable52 \
 		rubygem-activesupport52>=${PORTVERSION}:devel/rubygem-activesupport52 \
 		rubygem-bundler>=1.3.0:sysutils/rubygem-bundler \
 		rubygem-railties52>=${PORTVERSION}:www/rubygem-railties52 \
+		rubygem-sprockets-rails-rails52>=2.0.0:devel/rubygem-sprockets-rails-rails52 \
 		rubygem-bootsnap>=1.1.0:devel/rubygem-bootsnap \
 		rubygem-byebug>=0:devel/rubygem-byebug \
 		rubygem-capybara>=2.15:devel/rubygem-capybara \
@@ -39,7 +40,7 @@ RUN_DEPENDS=	rubygem-actioncable52>=${PORTVERSION}:www/rubygem-actioncable52 \
 		rubygem-sqlite3>=1.3.6:databases/rubygem-sqlite3 \
 		rubygem-turbolinks>=5:www/rubygem-turbolinks \
 		rubygem-uglifier>=1.3.0:www/rubygem-uglifier \
-		rubygem-web-console-rails52>=3.3.0:devel/rubygem-web-console-rails52
+		rubygem-web-console3-rails52>=3.3.0:devel/rubygem-web-console3-rails52
 
 USES=		cpe gem
 USE_RUBY=	yes

@@ -2,11 +2,20 @@
 
 PORTNAME=	gmmlib
 DISTVERSIONPREFIX=	intel-${PORTNAME}-
-DISTVERSION=	19.4.1
+DISTVERSION=	20.1.1
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	f17dd87c7f57.patch:-p1 # https://github.com/intel/gmmlib/pull/67
+PATCHFILES+=	7171f6d818fc.patch:-p1 # https://github.com/intel/gmmlib/pull/68
+PATCHFILES+=	6fc5091d3329.patch:-p1 # https://github.com/intel/gmmlib/pull/68
+PATCHFILES+=	a3272580cea0.patch:-p1 # https://github.com/intel/gmmlib/pull/68
+PATCHFILES+=	8b172b9ff4ea.patch:-p1 # https://github.com/intel/gmmlib/pull/68
+PATCHFILES+=	53c731fbe8be.patch:-p1 # https://github.com/intel/gmmlib/pull/68
+PATCHFILES+=	0a8db9639503.patch:-p1 # https://github.com/intel/gmmlib/pull/68
+PATCHFILES+=	a512c6b7b1a2.patch:-p1 # https://github.com/intel/gmmlib/pull/68
+PATCHFILES+=	6af9ac5b3f49.patch:-p1 # https://github.com/intel/gmmlib/pull/68
+PATCHFILES+=	7b4f7fe0fa59.patch:-p1 # https://github.com/intel/gmmlib/pull/68
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Intel Graphics Memory Management Library
@@ -29,17 +38,6 @@ OPTIONS_DEFINE=	TEST
 # XXX Unbundle googletest
 TEST_CMAKE_BOOL=	RUN_TEST_SUITE
 TEST_TEST_TARGET=	Run_ULT
-
-post-patch:
-# Silence -Wmacro-redefined
-	@${REINPLACE_CMD} -e '/__fastcall/d' \
-		${WRKSRC}/Source/inc/portable_compiler.h
-# XXX Uncomment and drop patches if upstream doesn't regain sanity
-.if !exists(${.CURDIR}/files/patch-gcc-atomics) && !exists(${.CURDIR}/files/patch-unix)
-# Avoid platform whitelists for generic non-Windows code
-	@${GREP} --exclude='*/os.h*' --exclude='*/googletest/*' -Flr '__linux' ${WRKSRC} | ${XARGS} \
-		${REINPLACE_CMD} -i .opsys -E 's/__linux(__)?/__unix__/'
-.endif
 
 post-install:
 # Clean up after PATTERN-based install

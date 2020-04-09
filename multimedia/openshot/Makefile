@@ -3,8 +3,8 @@
 
 PORTNAME=	openshot
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.4-443
-DISTVERSIONSUFFIX=	-g7351f506
+DISTVERSION=	2.5.1-7
+DISTVERSIONSUFFIX=	-g90e7bc4c
 CATEGORIES=	multimedia
 
 MAINTAINER=	tatsuki_makino@hotmail.com
@@ -13,7 +13,7 @@ COMMENT=	OpenShot Video Editor
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/openshot.py:multimedia/libopenshot \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libopenshot>=0.2.4:multimedia/libopenshot@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyzmq>=0:net/py-pyzmq@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR}
 
@@ -23,7 +23,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	OpenShot
 GH_PROJECT=	${PORTNAME}-qt
 USE_PYQT=	core gui svg webkitwidgets widgets
-USE_PYTHON=	distutils noflavors
+USE_PYTHON=	distutils optsuffix
 
 SHEBANG_FILES=	src/language/generate_translations.py\
 		src/language/show_translations.py\

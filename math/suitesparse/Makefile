@@ -3,7 +3,7 @@
 
 PORTNAME=	suitesparse
 DISTVERSION=	5.4.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	http://faculty.cse.tamu.edu/davis/SuiteSparse/	\
 		https://mirror.sobukus.de/files/src/suitesparse/
@@ -48,7 +48,7 @@ OPENBLAS_USES=		blaslapack:openblas
 OPENMP_USES=		compiler:openmp
 OPENMP_MAKE_ENV_OFF=	CFOPENMP=
 .if !exists(/usr/include/omp.h)
-# XXX ports/199603 + ports/210337
+# XXX ports/199603: LLVM openmp in base doesn't support aarch64, armv6, armv7 yet
 OPENMP_VARS=		OPENMP=gcc-
 .endif
 

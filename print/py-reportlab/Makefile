@@ -3,6 +3,7 @@
 
 PORTNAME=	reportlab
 PORTVERSION=	3.5.21
+PORTREVISION=	1
 CATEGORIES=	print python
 MASTER_SITES=	CHEESESHOP \
 		https://www.reportlab.com/ftp/
@@ -16,7 +17,7 @@ COMMENT=	Library to create PDF documents using the Python language
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR}
+RUN_DEPENDS=	${PY_PILLOW}
 
 USES=		python
 USE_PYTHON=	distutils autoplist
@@ -41,8 +42,6 @@ OPTIONS_EXCLUDE_powerpc64=       DOCS
 CJK_DESC=	Adobe CMaps
 CJK_RUN_DEPENDS=	${LOCALBASE}/share/fonts/adobe-cmaps/ac15/cid2code.txt:print/adobe-cmaps
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%DISTDIR%%|${DISTDIR}|' \

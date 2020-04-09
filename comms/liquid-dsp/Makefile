@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	liquid-dsp
-DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	1.3.1
-#PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.3.2
+PORTREVISION=	1
 CATEGORIES=	comms
 
 MAINTAINER=	mr@FreeBSD.org
@@ -15,23 +15,18 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libfftw3f.so:math/fftw3-float
 
+USES=		autoreconf gmake iconv:wchar_t libtool localbase
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	jgaeddert
-GH_TAGNAME=		4c9a751
+USE_LDCONFIG=	yes
 
-USES=		autoreconf:build gmake #gettext-tools iconv:wchar_t libtool
 GNU_CONFIGURE=	yes
 MAKEFILE=	makefile
-#USE_LDCONFIG=	yes
-#INSTALL_TARGET=	install-strip
-PORTDOCS=	*
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+TEST_TARGET=	check
 
-OPTIONS_DEFINE=	DOCS
-
-pre-configure:
-	@cd ${WRKSRC}; ${SH} bootstrap.sh
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libliquid.so
 
 .include <bsd.port.mk>

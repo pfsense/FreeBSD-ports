@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	uefi-edk2-qemu
-DISTVERSION=	g20190307
-PORTREVISION=	1
+DISTVERSION=	g20191122
 CATEGORIES=	sysutils
 
 MAINTAINER=	bcran@FreeBSD.org
@@ -20,7 +19,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 FLAVORS=	x86_64 i386
 
 USES=		gmake \
-		python:2.7,build
+		python:3.4+,build
 
 x86_64_PKGNAMESUFFIX=	-x86_64
 i386_PKGNAMESUFFIX=	-i386
@@ -28,7 +27,7 @@ i386_PKGNAMESUFFIX=	-i386
 USE_GITHUB=	yes
 GH_ACCOUNT=	tianocore openssl:ssl
 GH_PROJECT=	edk2 openssl:ssl
-GH_TAGNAME=	edk2-stable201903 OpenSSL_1_1_0j:ssl
+GH_TAGNAME=	edk2-stable201911 c3656cc594daac8167721dde7220f0e59ae146fc:ssl
 GH_SUBDIR=	CryptoPkg/Library/OpensslLib/openssl:ssl
 
 PLIST_FILES=	share/uefi-edk2-qemu/QEMU_UEFI_CODE${PLIST_SUFFIX}-${PKGSUFFIX}.fd \
@@ -69,7 +68,7 @@ post-patch:
 	${LN} -sf ${LOCALBASE}/bin/gcc-ar${GCC_DEFAULT} ${BUILD_WRKSRC}/BaseTools/Bin/FreeBSD-${MACHINE}/gcc-ar
 	${LN} -sf ${LOCALBASE}/bin/gcc-nm${GCC_DEFAULT} ${BUILD_WRKSRC}/BaseTools/Bin/FreeBSD-${MACHINE}/gcc-nm
 	${LN} -sf ${LOCALBASE}/bin/objcopy ${BUILD_WRKSRC}/BaseTools/Bin/FreeBSD-${MACHINE}/objcopy
-	${LN} -sf ${LOCALBASE}/bin/python2.7 ${BUILD_WRKSRC}/BaseTools/Bin/FreeBSD-${MACHINE}/python
+	${LN} -sf ${PYTHON_CMD} ${BUILD_WRKSRC}/BaseTools/Bin/FreeBSD-${MACHINE}/python
 	${LN} -sf ${LOCALBASE}/bin/nasm ${BUILD_WRKSRC}/BaseTools/Bin/FreeBSD-${MACHINE}/nasm
 
 do-build:

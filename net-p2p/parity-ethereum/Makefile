@@ -2,8 +2,8 @@
 
 PORTNAME=	parity-ethereum
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.12
-PORTREVISION=	1
+DISTVERSION=	2.7.2
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 
 MAINTAINER=	ale@FreeBSD.org
@@ -15,6 +15,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BROKEN_i386=		fails to build
 BROKEN_FreeBSD_11=	fails to build
 
+BUILD_DEPENDS=	${LOCALBASE}/bin/llvm-config90:devel/llvm90
+
 USES=		cargo
 
 USE_GITHUB=	yes
@@ -24,6 +26,8 @@ PLIST_FILES=	bin/parity
 
 CARGO_FEATURES=	final
 CARGO_TEST=	yes
+
+MAKE_ENV+=	LLVM_CONFIG_PATH="${LOCALBASE}/bin/llvm-config90"
 
 .include "${.CURDIR}/Makefile.crates"
 

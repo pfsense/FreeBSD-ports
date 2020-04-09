@@ -1,9 +1,4 @@
 bin/netron
-%%PYTHON_SITELIBDIR%%/netron-3.6.5-py%%PYTHON_VER%%.egg-info/PKG-INFO
-%%PYTHON_SITELIBDIR%%/netron-3.6.5-py%%PYTHON_VER%%.egg-info/SOURCES.txt
-%%PYTHON_SITELIBDIR%%/netron-3.6.5-py%%PYTHON_VER%%.egg-info/dependency_links.txt
-%%PYTHON_SITELIBDIR%%/netron-3.6.5-py%%PYTHON_VER%%.egg-info/entry_points.txt
-%%PYTHON_SITELIBDIR%%/netron-3.6.5-py%%PYTHON_VER%%.egg-info/top_level.txt
 %%PYTHON_SITELIBDIR%%/netron/__init__.py
 %%PYTHON_SITELIBDIR%%/netron/__pycache__/__init__.%%PYTHON_CPYTHON%%.opt-1.pyc
 %%PYTHON_SITELIBDIR%%/netron/__pycache__/__init__.%%PYTHON_CPYTHON%%.pyc
@@ -44,7 +39,6 @@ bin/netron
 %%PYTHON_SITELIBDIR%%/netron/flux-metadata.json
 %%PYTHON_SITELIBDIR%%/netron/flux.js
 %%PYTHON_SITELIBDIR%%/netron/gzip.js
-%%PYTHON_SITELIBDIR%%/netron/handlebars.min.js
 %%PYTHON_SITELIBDIR%%/netron/hdf5.js
 %%PYTHON_SITELIBDIR%%/netron/icon.png
 %%PYTHON_SITELIBDIR%%/netron/index.html
@@ -53,6 +47,7 @@ bin/netron
 %%PYTHON_SITELIBDIR%%/netron/keras.js
 %%PYTHON_SITELIBDIR%%/netron/long.js
 %%PYTHON_SITELIBDIR%%/netron/marked.min.js
+%%PYTHON_SITELIBDIR%%/netron/mediapipe.js
 %%PYTHON_SITELIBDIR%%/netron/mlnet-metadata.json
 %%PYTHON_SITELIBDIR%%/netron/mlnet.js
 %%PYTHON_SITELIBDIR%%/netron/mnn-metadata.json
@@ -90,12 +85,9 @@ bin/netron
 %%PYTHON_SITELIBDIR%%/netron/tflite.js
 %%PYTHON_SITELIBDIR%%/netron/torch-metadata.json
 %%PYTHON_SITELIBDIR%%/netron/torch.js
-%%PYTHON_SITELIBDIR%%/netron/torchscript-metadata.json
-%%PYTHON_SITELIBDIR%%/netron/torchscript.js
 %%PYTHON_SITELIBDIR%%/netron/view-grapher.css
 %%PYTHON_SITELIBDIR%%/netron/view-grapher.js
 %%PYTHON_SITELIBDIR%%/netron/view-sidebar.css
 %%PYTHON_SITELIBDIR%%/netron/view-sidebar.js
-%%PYTHON_SITELIBDIR%%/netron/view.css
 %%PYTHON_SITELIBDIR%%/netron/view.js
 %%PYTHON_SITELIBDIR%%/netron/zip.js

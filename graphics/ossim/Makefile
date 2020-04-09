@@ -2,11 +2,11 @@
 
 PORTNAME=	ossim
 DISTVERSIONPREFIX=	Neptune-
-DISTVERSION=	2.10.0
+DISTVERSION=	2.10.1
 PORTREVISION=	1
 CATEGORIES=	graphics geography
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Powerful suite of geospatial libraries and applications
 
 LICENSE=	MIT

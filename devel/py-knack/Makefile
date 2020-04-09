@@ -6,7 +6,7 @@ CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Command line interface framework
 
 LICENSE=	MIT

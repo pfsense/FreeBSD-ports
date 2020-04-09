@@ -2,7 +2,7 @@
 
 PORTNAME=	fleur
 DISTVERSION=	0.27-3 # Release 3 of Version 0.27
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	science
 MASTER_SITES=	http://www.flapw.de/pm/uploads/FLEUR/
 DISTNAME=	fleurMaXR${DISTVERSION:C/.*-//}
@@ -12,6 +12,8 @@ COMMENT=	FLAPW code for atomic computations in quantum chemistry and physics
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		Fails to build with cmake-3.16.0
 
 LIB_DEPENDS=	libopenblas.so:math/openblas
 

@@ -2,14 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=		crmsh
-PORTVERSION=		3.0.1
+PORTVERSION=		3.0.4
 CATEGORIES=		net-mgmt python
 
-MAINTAINER=		dpejesh@yahoo.com
+MAINTAINER=		egypcio@FreeBSD.org
 COMMENT=		Command-line interface for High-Availability cluster management
 
 LICENSE=		GPLv2
 LICENSE_FILE=		${WRKSRC}/COPYING
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 # Set the build/run depends on setuptools instead of adding distutils to USE_PYTHON
 # because the crmsh build uses autotools which then calls setup.py.

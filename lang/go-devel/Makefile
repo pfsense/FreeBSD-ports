@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	go
-PORTVERSION=	g20191217
+PORTVERSION=	g20200319
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/dmgk/go-bootstrap/releases/download/${BOOTSTRAP_TAG}/:bootstrap \
 		LOCAL/dmgk:bootstrap
@@ -28,20 +28,22 @@ RUN_DEPENDS_aarch64=	binutils>0:devel/binutils
 TEST_DEPENDS=	${TEST_DEPENDS_${ARCH}}
 TEST_DEPENDS_aarch64=	binutils>0:devel/binutils
 
-USES=		shebangfix tar:xz
+USES=		shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	golang
-GH_TAGNAME=	a5bfd9da1d1b24f326399b6b75558ded14514f23
+GH_TAGNAME=	564c76a268b75f56d6f465b82fba7f6fb929fd70
 
 SHEBANG_FILES=	misc/wasm/go_js_wasm_exec \
 		src/net/http/cgi/testdata/test.cgi
 SHEBANG_GLOB=	*.bash *.pl *.sh
-SHEBANG_LANG=	sh
 sh_OLD_CMD=	/bin/bash "/usr/bin/env bash"
 sh_CMD=		${SH}
 
 CONFLICTS_INSTALL=	go
+
+# Upstream archive contains files with UTF-8 names
+EXTRACT_CMD=	${SETENV} LC_ALL=en_US.UTF-8 ${TAR}
 
 OPTIONS_DEFINE_i386=	GO387
 
@@ -50,7 +52,7 @@ GO387_DESC=	Do not generate code with SSE2 (for old x86 CPU)
 GO387_VARS=	GO386=387
 
 BINARIES=	go gofmt
-BOOTSTRAP_TAG=	go1.13beta1-1224-g45b4ed7577
+BOOTSTRAP_TAG=	go1.14
 
 GOARCH_aarch64=	arm64
 GOARCH_amd64=	amd64
@@ -61,10 +63,21 @@ GOARCH_i386=	386
 GOARM_armv6=	6
 GOARM_armv7=	7
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == aarch64 && ${OSVERSION} < 1200000
+IGNORE=	aarch64 support requires FreeBSD 12.0 or newer
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|^if ulimit -T|false \&\& &|' ${WRKSRC}/src/run.bash
 	# Needed only for untagged releases
-	${ECHO_CMD} "devel +${GH_TAGNAME}" > ${WRKSRC}/VERSION
+	# ${ECHO_CMD} "devel +${GH_TAGNAME}" > ${WRKSRC}/VERSION
+
+pre-build:
+	# Check that the running kernel has COMPAT_FREEBSD11 required by lang/go{,-devel} post-ino64
+	@${SETENV} CC="${CC}" OPSYS="${OPSYS}" OSVERSION="${OSVERSION}" WRKDIR="${WRKDIR}" \
+		${SH} ${SCRIPTSDIR}/rust-compat11-canary.sh
 
 do-build:
 	cd ${WRKSRC}/src ; ${SETENV} \
@@ -80,21 +93,16 @@ do-build:
 		${SH} make.bash -v
 
 do-install:
-	cd ${WRKSRC} ; \
+	@cd ${WRKSRC} ; \
 		${RM} -r .gitattributes .gitignore .github favicon.ico robots.txt \
 		pkg/obj pkg/bootstrap pkg/${OPSYS:tl}_${GOARCH_${ARCH}}/cmd
 	@${MKDIR} ${STAGEDIR}${PREFIX}/go
 	@${CP} -a ${WRKSRC}/* ${STAGEDIR}${PREFIX}/go
 .for file in ${BINARIES}
 	@${LN} -sf ../go/bin/${file} ${STAGEDIR}${PREFIX}/bin/${file}
-.endfor
-
-post-install:
-.for file in ${BINARIES}
 	@${ECHO_CMD} bin/${file} >> ${TMPPLIST}
 .endfor
-	@cd ${STAGEDIR}${PREFIX} && \
-		${FIND} go -type f >> ${TMPPLIST}
+	@cd ${STAGEDIR}${PREFIX} && ${FIND} go -type f >> ${TMPPLIST}
 
 do-test:
 	cd ${WRKSRC}/src && ${SETENV} \
@@ -104,18 +112,18 @@ do-test:
 		GOARCH=${GOARCH_${ARCH}} \
 		GO386=${GO386} \
 		GOARM=${GOARM_${ARCH}} \
-		${SH} run.bash
+		${SH} run.bash -no-rebuild
 
 .if !defined(_GO_MAKESUM_GUARD)
 makesum:
 	${MAKE} -D_GO_MAKESUM_GUARD makesum ARCH=${ONLY_FOR_ARCHS:O:[1]} DISTINFO_FILE=${DISTINFO_FILE}.tmp
 .for arch in ${ONLY_FOR_ARCHS:O:[2..-1]}
 	${MAKE} -D_GO_MAKESUM_GUARD makesum ARCH=${arch} DISTINFO_FILE=${DISTINFO_FILE}.${arch}
-	${GREP} ${GOARCH_${arch}:U${arch}} ${DISTINFO_FILE}.${arch} >> ${DISTINFO_FILE}.tmp
+	${SED} 1d ${DISTINFO_FILE}.${arch} >> ${DISTINFO_FILE}.tmp
 	${RM} ${DISTINFO_FILE}.${arch}
 .endfor
 	${AWK} '!seen[$$0]++' ${DISTINFO_FILE}.tmp > ${DISTINFO_FILE}
 	${RM} ${DISTINFO_FILE}.tmp
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

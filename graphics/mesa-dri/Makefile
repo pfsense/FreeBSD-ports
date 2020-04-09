@@ -3,7 +3,7 @@
 
 PORTNAME=	mesa-dri
 PORTVERSION=	${MESAVERSION}
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics
 
 COMMENT=	OpenGL hardware acceleration drivers for DRI2+
@@ -40,7 +40,7 @@ GALLIUM_DRIVERS=	""
 .endif
 VULKAN_DRIVERS=		#
 
-.if ${ARCH} == amd64 || ${ARCH} == i386 \
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386 \
  || ${ARCH} == powerpc || ${ARCH} == powerpc64
 DRI_DRIVERS+=		RADEON R200
 GALLIUM_DRIVERS+=	R300 R600 RADEONSI

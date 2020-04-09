@@ -3,6 +3,7 @@
 
 PORTNAME=	apr
 PORTVERSION=	${APR_VERSION}.${APU_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/apr
 DISTFILES=	apr-${APR_VERSION}.tar.gz \
@@ -113,6 +114,10 @@ APU_CONF_ENV+=	${CONFIGURE_ENV:O:u} CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${AP
 
 .include <bsd.port.options.mk>
 
+.if ${ARCH} == powerpc || ${ARCH} == powerpcspe
+CONFIGURE_ENV+=	ap_cv_atomic_builtins=no
+.endif
+
 .if ${PORT_OPTIONS:MSSL} || ${PORT_OPTIONS:MNSS}
 APU_CONF_ARGS+=	--with-crypto
 .else
@@ -128,8 +133,6 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e 's/OSVERSION/${OSVERSION}/g' \
 		${APR_WRKDIR}/configure
-	@${REINPLACE_CMD} -e '/recursive:/s/$$/ .MAKE/' \
-		${APR_WRKDIR}/build/apr_rules.mk.in
 
 do-configure:
 	@${ECHO_MSG} "# ===> ${.TARGET} apr-${APR_VERSION}"

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	aws-sdk-chime
-PORTVERSION=	1.17.0
+PORTVERSION=	1.21.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

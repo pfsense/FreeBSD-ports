@@ -2,8 +2,12 @@
 
 PORTNAME=	intel-media-sdk
 DISTVERSIONPREFIX=	intel-mediasdk-
-DISTVERSION=	19.4.0
+DISTVERSION=	20.1.0
 CATEGORIES=	multimedia
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	713312353ec3.patch:-p1
+PATCHFILES+=	19d11bf1cfd4.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Hardware video decoding/encoding/filtering on Intel GPUs
@@ -52,7 +56,7 @@ post-patch:
 # Pick git commit from port and use reproducible time
 	@${REINPLACE_CMD} -e "/COMMAND/s/date/& -r `${AWK} '/TIMESTAMP/ \
 			{ print \$$3 }' ${DISTINFO_FILE}`/" \
-		-e '/set( git_commit/s/""/"${DISTVERSIONFULL}"/' \
+		-e '/set( *git_commit/s/"[^"]*"/"${DISTVERSIONFULL}"/' \
 		${WRKSRC}/builder/FindFunctions.cmake \
 		${WRKSRC}/builder/FindGlobals.cmake
 # Don't depend on lang/intel-compute-runtime during build

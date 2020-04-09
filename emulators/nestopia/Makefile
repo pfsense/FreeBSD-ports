@@ -1,11 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	nestopia
-DISTVERSION=	1.49
-PORTREVISION=	2
+DISTVERSION=	1.50
 CATEGORIES=	emulators
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable NES/Famicom emulator
 
 LICENSE=	GPLv2

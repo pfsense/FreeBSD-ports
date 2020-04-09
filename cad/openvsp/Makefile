@@ -2,7 +2,7 @@
 
 PORTNAME=	openvsp
 DISTVERSIONPREFIX=	${GH_PROJECT}_
-DISTVERSION=	3.19.1
+DISTVERSION=	3.20.0
 CATEGORIES=	cad
 
 MAINTAINER=	fernape@FreeBSD.org
@@ -13,6 +13,7 @@ LICENSE_NAME=	NASA Open Source Agreement version 1.3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+BROKEN=		fails to link
 BROKEN_aarch64=		fails to compile: invokes x86 asm
 
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \

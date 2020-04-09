@@ -3,7 +3,7 @@
 
 PORTNAME=	scilab
 PORTVERSION=	5.5.2
-PORTREVISION=	22
+PORTREVISION=	24
 CATEGORIES=	math cad java
 MASTER_SITES=	https://www.scilab.org/download/${PORTVERSION}/
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
@@ -15,6 +15,8 @@ LICENSE=	GPLv2 BSD3CLAUSE
 LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/COPYING-BSD
+
+BROKEN=		fails to build
 
 # A partial dependencies list can be found at:
 # http://wiki.scilab.org/Dependencies_of_Scilab_5.X
@@ -80,7 +82,7 @@ _GUI_DEPENDS+=	${LOCALBASE}/share/java/fop/build/fop.jar:textproc/fop \
 		${JAVALIBDIR}/commons-io.jar:devel/apache-commons-io \
 		${JAVALIBDIR}/xmlgraphics-commons.jar:graphics/xmlgraphics-commons
 # Code quality:
-_GUI_DEPENDS+=	${JAVALIBDIR}/commons-beanutils.jar:java/jakarta-commons-beanutils \
+_GUI_DEPENDS+=	${JAVALIBDIR}/commons-beanutils.jar:java/apache-commons-beanutils \
 		${JAVALIBDIR}/antlr.jar:devel/antlr \
 		${JAVALIBDIR}/junit4.jar:java/junit \
 		${LOCALBASE}/bin/splint:devel/splint

@@ -3,6 +3,7 @@
 
 PORTNAME=	google-appengine
 DISTVERSION=	1.9.82
+PORTREVISION=	1
 CATEGORIES=	www devel python
 MASTER_SITES=	https://storage.googleapis.com/appengine-sdks/featured/
 DISTFILES=	${PORTNAME:S|-|_|}_${PORTVERSION}.zip
@@ -13,8 +14,11 @@ COMMENT=	Development tools for Google App Engine (SDK)
 LICENSE=	APACHE20 BSD3CLAUSE GPLv2 LGPL21 MIT MPL11 PSFL
 LICENSE_COMB=	multi
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=${PYTHON_VER}:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
+		${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}pycrypto>=2.6:security/py-pycrypto@${PY_FLAVOR}
 
 WRKSRC=	${WRKDIR}/${PORTNAME:S,-,_,}

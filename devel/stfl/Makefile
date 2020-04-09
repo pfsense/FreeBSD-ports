@@ -3,6 +3,7 @@
 
 PORTNAME=	stfl
 PORTVERSION=	0.24
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.clifford.at/stfl/
 
@@ -22,7 +23,8 @@ MAKE_ENV=	LDLIBS="${LDFLAGS}"
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-Os||;/gcc/d;/-MM/s|-I.|$${CFLAGS}|; \
-		/pkgconfig/s|$$(libdir)|libdata|' \
+		/pkgconfig/s|$$(libdir)|libdata| ; \
+		s/-lncursesw/-l${NCURSES_IMPL}/g' \
 		${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e '/Libs.private/s|$$| ${ICONV_LIB}|' \
 		${WRKSRC}/stfl.pc.in
@@ -37,5 +39,6 @@ pre-build:
 
 post-install:
 	${LN} -s libstfl.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libstfl.so.0
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libstfl.so.${PORTVERSION}
 
 .include <bsd.port.mk>

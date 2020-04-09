@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	grafana
-PORTVERSION=	6.5.2
+PORTVERSION=	6.6.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES+=	https://dl.grafana.com/oss/release/:public
@@ -21,7 +21,7 @@ USES=		go:modules
 USE_RC_SUBR=	grafana
 
 USE_GITHUB=	yes
-TAG=		9504db8
+TAG=		5c11bbd
 
 GO_TARGET=	./pkg/cmd/grafana-server \
 		./pkg/cmd/grafana-cli
@@ -50,7 +50,7 @@ SUB_LIST+=	GRAFANA_USER=${GRAFANA_USER} \
 		GRAFANAPLUGINDIR=${GRAFANAPLUGINDIR} \
 		GRAFANAPROVISIONINGDIR=${GRAFANAPROVISIONINGDIR}
 
-PLIST_SUB+=	GRAFANAHOMEDIR=${GRAFANAHOMEDIR}
+PLIST_SUB+=	${SUB_LIST}
 
 post-extract:
 	@${RM} -r ${WRKSRC}/public
