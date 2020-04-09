@@ -3,13 +3,13 @@
 
 PORTNAME?=		mysql
 PORTVERSION=		8.0.19
-PORTREVISION?=		0
+PORTREVISION?=		2
 CATEGORIES=		databases
 MASTER_SITES=		MYSQL/MySQL-8.0
 PKGNAMESUFFIX?=		80-server
 DISTNAME=		${PORTNAME}-boost-${PORTVERSION}${DISTVERSIONSUFFIX}
 
-MAINTAINER=		mmokhi@FreeBSD.org
+MAINTAINER=		joneum@FreeBSD.org
 COMMENT?=		Multithreaded SQL database (server)
 
 LICENSE=		GPLv2
@@ -18,7 +18,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
 
 SLAVEDIRS=	databases/mysql80-client
 USES=		bison:build cmake:noninja compiler:c++14-lang cpe \
-		libedit localbase ncurses perl5 pkgconfig shebangfix ssl
+		groff:run libedit localbase ncurses perl5 pkgconfig shebangfix ssl
 
 USE_PERL5=	run
 

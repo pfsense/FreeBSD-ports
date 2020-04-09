@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	xterm
-PORTVERSION=	351
+PORTVERSION=	353
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	ftp://ftp.invisible-island.net/xterm/:src1 \
 		https://invisible-mirror.net/archives/xterm/:src1 \

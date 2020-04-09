@@ -2,7 +2,7 @@
 
 PORTNAME=	xf86-video-ati-legacy
 PORTVERSION=	7.9.0
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	x11-drivers
 DISTNAME=	xf86-video-ati-${DISTVERSION}
@@ -12,6 +12,8 @@ COMMENT=	X.Org ati display driver
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		does not build with xorg-server 1.20.7
 
 # No Radeon kernel driver on non-x86 and PC98.
 ONLY_FOR_ARCHS=		amd64 i386 powerpc64

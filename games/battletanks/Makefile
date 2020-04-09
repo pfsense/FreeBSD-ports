@@ -7,11 +7,8 @@ PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Fast 2D tank arcade game with multiplayer and split-screen modes
-
-DEPRECATED=	Unmaintained, uses EOLed python27
-EXPIRATION_DATE=	2020-01-27
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -22,7 +19,7 @@ LIB_DEPENDS=	libsigc-2.0.so:devel/libsigc++20 \
 		libvorbisfile.so:audio/libvorbis \
 		libsmpeg.so:multimedia/smpeg
 
-USES=		lua:51 openal:al pkgconfig python:2.7,build scons sdl tar:bzip2
+USES=		lua:51 openal:al pkgconfig python:build scons sdl tar:bzip2
 USE_CXXSTD=	gnu++98
 USE_LDCONFIG=	yes
 USE_SDL=	image sdl
@@ -37,13 +34,14 @@ DESKTOP_ENTRIES="Battle Tanks" "" "" "${PORTNAME}" "Game;ArcadeGame;" ""
 
 OPTIONS_DEFINE=	DOCS
 
-pre-build:
-# Regenerate `sl08.h' after we patch `sl08.py' (as patching the header itself
-# would have resulted in a larger diff and gratuitous difference with Debian)
-	@cd ${WRKSRC} && ${PYTHON_CMD} engine/sl08/sl08.py > engine/sl08/sl08.h
-
 post-patch:
-	@${REINPLACE_CMD} -e "s/lua5.1/lua-${LUA_VER}/g" ${WRKSRC}/engine/SConscript
+	@${REINPLACE_CMD} -e 's/lua5\.1/lua-${LUA_VER}/' \
+		${WRKSRC}/engine/SConscript
+
+pre-build:
+# Regenerate `sl08.h' after we patch `sl08.py' (patching the header itself
+# would've resulted in a larger diff and gratuitous difference with Debian)
+	cd ${WRKSRC} && ${PYTHON_CMD} engine/sl08/sl08.py > engine/sl08/sl08.h
 
 post-install:
 	${INSTALL_MAN} ${FILESDIR}/${PORTNAME}.6 \

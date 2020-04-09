@@ -6,8 +6,11 @@ DISTVERSION=	2.7.0
 PORTREVISION=	5
 CATEGORIES=	net
 
-MAINTAINER=	fatih@gandi.net
+MAINTAINER=	freebsd@gandi.net
 COMMENT=	NFS fileserver that runs in user mode
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 LIB_DEPENDS=	libdbus-1.so:devel/dbus
 RUN_DEPENDS=	nfs-ganesha-kmod>0:net/nfs-ganesha-kmod \

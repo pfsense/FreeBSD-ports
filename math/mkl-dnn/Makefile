@@ -2,8 +2,8 @@
 
 PORTNAME=	mkl-dnn
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.20191027
-CATEGORIES=	math
+DISTVERSION=	1.2.2
+CATEGORIES=	math # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Intel(R) Math Kernel Library for Deep Neural Networks
@@ -25,7 +25,6 @@ OPTIONS_DEFINE=		OPENMP
 OPTIONS_DEFAULT=	OPENMP
 
 OPENMP_CMAKE_BOOL=	USE_OPENMP
-OPENMP_LIB_DEPENDS=	libomp.so:devel/openmp
 OPENMP_BROKEN_OFF=	still requires omp.h, see https://github.com/intel/mkl-dnn/issues/581
 
 CXXFLAGS_amd64=	-msse4.1

@@ -3,13 +3,10 @@
 
 PORTNAME=	qTox
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.16.3-529
-DISTVERSIONSUFFIX=	-gb4450319
-PORTREVISION=	6
+DISTVERSION=	1.16.3-784
+DISTVERSIONSUFFIX=	-g981ecfca
+PORTREVISION=	1
 CATEGORIES=	net-im net-p2p
-
-PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
-PATCHFILES=	c3e4e82049b476de5453bc2c654c19d920e908a3.patch:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Qt 5 based Tox client
@@ -33,7 +30,7 @@ USES=		cmake compiler:c++11-lib desktop-file-utils gettext openal:soft pkgconfig
 USE_GITHUB=	yes
 USE_QT=		core gui network xml opengl sql sql-sqlite3_run widgets svg \
 		concurrent_build buildtools_build linguisttools_build qmake_build testlib_build
-CMAKE_ARGS=	-DGIT_DESCRIBE:STRING=${FULLVERSION}
+CMAKE_ARGS=	-DGIT_DESCRIBE:STRING=${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
 CMAKE_OFF=	USE_CCACHE
 
 OPTIONS_DEFINE=			FILTERAUDIO PLATFORM_EXTENSIONS SPELL_CHECK APPINDICATOR GTK_SYSTRAY STATUSNOTIFIER

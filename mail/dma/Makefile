@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dma
-PORTVERSION=	0.12
+PORTVERSION=	0.13
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	mail
@@ -26,7 +26,7 @@ CFLAGS+=	-I${OPENSSLINC} \
 LDFLAGS+=	-L${OPENSSLLIB}
 
 MAKE_ENV=	__MAKE_CONF=/dev/null SRCCONF=/dev/null NO_WERROR=defined \
-		MANDIR=${MANDIRS}/man
+		MANDIR=${PREFIX}/share/man/man
 
 USE_RC_SUBR=	dma_flushq
 SUB_FILES=	pkg-message

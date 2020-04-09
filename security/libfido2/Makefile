@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libfido2
-PORTVERSION=	0.4.0
+PORTVERSION=	1.3.1
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://developers.yubico.com/libfido2/Releases/
 
@@ -17,8 +18,10 @@ LIB_DEPENDS=	libcbor.so:devel/libcbor \
 
 USES=		cmake compiler pkgconfig ssl
 
-CFLAGS+=	-D_WITH_GETLINE
-LDFLAGS+=	-lcrypto
+CFLAGS+=	-D_WITH_GETLINE -DUSE_HIDAPI
+LDFLAGS+=	-lcrypto -lusbhid
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=	DOCS
 
@@ -26,7 +29,6 @@ OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/libcrypto/d' ${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -e 's|share/man|man|' ${WRKSRC}/man/CMakeLists.txt
 	@${REINPLACE_CMD} -e 's|endian.h|sys/&|' ${WRKSRC}/CMakeLists.txt ${WRKSRC}/openbsd-compat/openbsd-compat.h
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 	@${REINPLACE_CMD} -e '/-Wno-unused-result/d; /-Wno-discarded-qualifiers/d' ${WRKSRC}/CMakeLists.txt

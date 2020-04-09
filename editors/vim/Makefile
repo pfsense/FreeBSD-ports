@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vim
-PORTVERSION=	8.1.2372
+PORTVERSION=	8.2.0491
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
@@ -28,35 +28,34 @@ MAKE_ARGS=	STRIP="${STRIP_CMD}" \
 
 CPE_VERSION=	${PORTVERSION:R}
 GNU_CONFIGURE=	yes
-MAKE_JOBS_UNSAFE=	yes
 PLIST_SUB=	VIM_VER=${VIM_VER}
 PORTDATA?=	${VIM_VER}
 PORTSCOUT=	ignore:1
-REINPLACE_ARGS=	-i ''
 SHEBANG_FILES=	runtime/tools/demoserver.py runtime/tools/efm_perl.pl
 VIM_VER=	${PORTNAME}${PORTVERSION:R:S|.||g}
 
 # OPTIONS
 # ### Make sure any new options are excluded below in CONSOLE/TINY
-OPTIONS_DEFAULT=	CSCOPE DEFAULT_VIMRC CTAGS_EXUBERANT GTK3 PERL PYTHON3 RUBY
-OPTIONS_DEFINE=		CSCOPE DEFAULT_VIMRC NLS XTERM_SAVE
+OPTIONS_DEFAULT=	CSCOPE DEFAULT_VIMRC CTAGS_EXUBERANT GTK3 PERL PYTHON RUBY
+OPTIONS_DEFINE=		CSCOPE DEFAULT_VIMRC MAKE_JOBS NLS XTERM_SAVE
 OPTIONS_SINGLE=		CTAGS UI
 OPTIONS_SINGLE_CTAGS=	CTAGS_BASE CTAGS_EXUBERANT CTAGS_UNIVERSAL
 OPTIONS_SINGLE_UI=	ATHENA CONSOLE GNOME GTK2 GTK3 MOTIF X11
 OPTIONS_GROUP=		LANGBIND
-OPTIONS_GROUP_LANGBIND=	LUA PERL PYTHON2 PYTHON3 RUBY SCHEME TCL
+OPTIONS_GROUP_LANGBIND=	LUA PERL PYTHON RUBY SCHEME TCL
 OPTIONS_SUB=		yes
 
 .if defined(CONSOLE) || defined(TINY)
 OPTIONS_SLAVE=		CONSOLE
-# Exclude everything except the two options above
-OPTIONS_EXCLUDE:=	${OPTIONS_DEFINE:NDEFAULT_VIMRC} \
+# Exclude everything except CONSOLE, DEFAULT_VIMRC, MAKE_JOBS
+OPTIONS_EXCLUDE:=	${OPTIONS_DEFINE:NDEFAULT_VIMRC:NMAKE_JOBS} \
 			${OPTIONS_SINGLE_UI:NCONSOLE} \
 			${OPTIONS_GROUP_LANGBIND} \
 			${OPTIONS_SINGLE_CTAGS}
 .endif
 
 DEFAULT_VIMRC_DESC=	Install bundled vimrc as default setting
+MAKE_JOBS_DESC=		Enable parallel build
 XTERM_SAVE_DESC=	Restore xterm screen after exit
 
 CTAGS_BASE_DESC=	Use system ctags
@@ -80,6 +79,8 @@ CSCOPE_RUN_DEPENDS=	cscope:devel/cscope
 
 CTAGS_EXUBERANT_RUN_DEPENDS=	exctags:devel/ctags
 CTAGS_UNIVERSAL_RUN_DEPENDS=	uctags:devel/universal-ctags
+
+MAKE_JOBS_VARS_OFF=	MAKE_JOBS_UNSAFE=yes
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
@@ -131,14 +132,8 @@ LUA_USES=		lua
 PERL_CONFIGURE_ENABLE=	perlinterp
 PERL_USES=		perl5
 
-PYTHON2_CONFIGURE_ENABLE=	pythoninterp
-PYTHON2_CONFIGURE_WITH=	python-command=${LOCALBASE}/bin/python${PYTHON2_DEFAULT}
-PYTHON2_BUILD_DEPENDS=	python${PYTHON2_DEFAULT}:lang/python${PYTHON2_DEFAULT:S/.//}
-PYTHON2_RUN_DEPENDS=	${PYTHON2_BUILD_DEPENDS}
-
-PYTHON3_CONFIGURE_ENABLE=	python3interp
-PYTHON3_CONFIGURE_WITH=	python3-command=${PYTHON_CMD}
-PYTHON3_USES=		python:3.4+
+PYTHON_USES=		python
+PYTHON_USES_OFF=	python:env
 
 RUBY_CONFIGURE_ENABLE=	rubyinterp
 RUBY_USE=		RUBY=yes
@@ -151,6 +146,19 @@ TCL_CONFIGURE_ENABLE=	tclinterp
 TCL_CONFIGURE_WITH=	tclsh=tclsh${TCL_VER}
 TCL_USES=		tcl
 
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MPYTHON}
+.  if !empty(WITH_DEBUG)
+CFLAGS+=		-DPy_DEBUG -DPy_DEBUG_NO_PYMALLOC
+.  endif
+.  if ${PYTHON_MAJOR_VER} == 3
+CONFIGURE_ARGS+=	--enable-python3interp --with-python3-command=${PYTHON_CMD}
+.  else
+CONFIGURE_ARGS+=	--enable-pythoninterp  --with-python-command=${PYTHON_CMD}
+.  endif
+.endif
+
 post-extract:
 	${INSTALL_DATA} ${FILESDIR}/vietnamese_viscii.vim ${WRKSRC}/runtime/keymap
 
@@ -159,8 +167,6 @@ post-patch:
 	${ECHO_CMD} '#define SYS_GVIMRC_FILE "'${ETCDIR}'/gvimrc"' >> ${WRKSRC}/src/feature.h
 	${REINPLACE_CMD} -e 's|-liconv|${ICONV_LIB}|g; s|/usr/local|${LOCALBASE}|g' \
 		${WRKSRC}/src/auto/configure
-# Work around qa-check shebang error
-	${REINPLACE_CMD} -e 1d ${WRKSRC}/runtime/tools/demoserver.py
 
 post-configure:
 # Needed when devel/libsysinfo is installed:
@@ -180,13 +186,16 @@ post-install:
 
 # OPTIONS
 post-patch-CTAGS_BASE-on:
-	${FIND} ${WRKSRC}/runtime/ -name 'menu*.vim' -print0 | ${XARGS} -0 ${REINPLACE_CMD} -Ee 's!ctags -R ?\.!${FIND} . -type f \\| ${XARGS} ctags!g'
+	${FIND} ${WRKSRC}/runtime -name 'menu*.vim' | ${XARGS} ${GREP} -l 'ctags -R' | \
+		${XARGS} ${REINPLACE_CMD} -Ee 's!ctags -R ?\.!${FIND} . -type f \\| ${XARGS} ctags!g'
 
 post-patch-CTAGS_EXUBERANT-on:
-	${FIND} ${WRKSRC}/runtime/ -name 'menu*.vim' -print0 | ${XARGS} -0 ${REINPLACE_CMD} -e 's|ctags -R|exctags -R|g'
+	${FIND} ${WRKSRC}/runtime -name 'menu*.vim' | ${XARGS} ${GREP} -l 'ctags -R' | \
+		${XARGS} ${REINPLACE_CMD} -e 's|ctags -R|exctags -R|g'
 
 post-patch-CTAGS_UNIVERSAL-on:
-	${FIND} ${WRKSRC}/runtime/ -name 'menu*.vim' -print0 | ${XARGS} -0 ${REINPLACE_CMD} -e 's|ctags -R|uctags -R|g'
+	${FIND} ${WRKSRC}/runtime -name 'menu*.vim' | ${XARGS} ${GREP} -l 'ctags -R' | \
+		${XARGS} ${REINPLACE_CMD} -e 's|ctags -R|uctags -R|g'
 
 post-patch-LUA-on:
 	${REINPLACE_CMD} -e 's|set dummy lua;|set dummy ${LUA_CMD};|g' ${WRKSRC}/src/auto/configure
@@ -202,4 +211,4 @@ post-install-NLS-off:
 	${INSTALL_DATA} ${WRKSRC}/runtime/keymap/* ${STAGEDIR}${DATADIR}/${VIM_VER}/keymap
 .endif	#!defined(TINY)
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

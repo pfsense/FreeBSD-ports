@@ -87,6 +87,7 @@ share/ECM/test-modules/test_execute_and_compare.cmake
 share/ECM/toolchain/Android.cmake
 share/ECM/toolchain/ECMAndroidDeployQt.cmake
 share/ECM/toolchain/deployment-file.json.in
+share/ECM/toolchain/deployment-file-qt514.json.in
 share/ECM/toolchain/hasMainSymbol.cmake
 share/ECM/toolchain/specifydependencies.cmake
 %%HELP%%%%DOCSDIR%%/ExtraCMakeModules.qch
@@ -116,6 +117,7 @@ share/ECM/toolchain/specifydependencies.cmake
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/find-module/FindXCB.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/index.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDECMakeSettings.rst.txt
+%%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDEClangFormat.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDECompilerSettings.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDEFrameworkCompilerSettings.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDEInstallDirs.rst.txt
@@ -205,6 +207,7 @@ share/ECM/toolchain/specifydependencies.cmake
 %%PORTDOCS%%%%DOCSDIR%%/html/genindex.html
 %%PORTDOCS%%%%DOCSDIR%%/html/index.html
 %%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDECMakeSettings.html
+%%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDEClangFormat.html
 %%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDECompilerSettings.html
 %%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDEFrameworkCompilerSettings.html
 %%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDEInstallDirs.html

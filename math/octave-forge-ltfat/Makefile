@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-ltfat
 PORTVERSION=	2.3.1
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	math
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libportaudio.so:audio/portaudio \
-		libcblas.so:math/cblas
+		libopenblas.so:math/openblas
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.

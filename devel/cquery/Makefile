@@ -3,7 +3,7 @@
 PORTNAME=	cquery
 PORTVERSION=	20180718
 DISTVERSIONPREFIX=	v
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel
 
 MAINTAINER=	henry.hu.sh@gmail.com
@@ -11,10 +11,9 @@ COMMENT=	Highly-scalable, low-latency language server for C/C++/Objective-C
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 LIB_DEPENDS=	libclang.so:devel/llvm${LLVM_DEFAULT}
 
-USES=		compiler:c++14-lang waf
+USES=		compiler:c++14-lang cmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	cquery-project
@@ -27,8 +26,8 @@ GH_TUPLE=	miloyip:rapidjson:daabb88:rapidjson/third_party/rapidjson \
 
 PLIST_FILES=	bin/cquery
 
-CONFIGURE_ARGS=	--variant=system --llvm-config=${LOCALBASE}/bin/llvm-config${LLVM_DEFAULT}
-MAKE_ARGS=	--variant=system
+CMAKE_ON=	SYSTEM_CLANG
+CMAKE_ARGS=	-DCLANG_ROOT=${LOCALBASE}/llvm${LLVM_DEFAULT}
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/cquery

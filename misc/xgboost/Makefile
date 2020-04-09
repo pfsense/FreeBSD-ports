@@ -2,8 +2,7 @@
 
 PORTNAME=	xgboost
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.90-235
-DISTVERSIONSUFFIX=	-gad4a1c73
+DISTVERSION=	1.0.2
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -26,8 +25,6 @@ LDFLAGS+=	${LOCALBASE}/lib/libdmlc.so -lexecinfo
 OPTIONS_DEFINE=		OPENMP
 
 OPENMP_CMAKE_BOOL=	USE_OPENMP
-OPENMP_LIB_DEPENDS=	libomp.so:devel/openmp
-OPENMP_BROKEN=		error: unsupported argument 'libomp  -I/usr/local/include -L/usr/local/lib' to option 'fopenmp='
 
 post-patch: # https://github.com/dmlc/rabit/issues/131
 	@${FIND} ${WRKSRC} -name "*.h" -o -name "*.cc" | ${XARGS} ${REINPLACE_CMD} -i '' -e 's| _assert(| _xassert(|; s| _assert)| _xassert)|'

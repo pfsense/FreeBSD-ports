@@ -3,7 +3,7 @@
 
 PORTNAME=	recoll
 DISTVERSION=	1.25.22
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	deskutils
 MASTER_SITES=	https://www.lesbonscomptes.com/recoll/
 
@@ -12,6 +12,9 @@ COMMENT=	Personal full text search package, based on Xapian
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 LIB_DEPENDS=	libxapian.so:databases/xapian-core
@@ -42,17 +45,13 @@ PYDISTUTILS_PKGVERSION=	1.0
 PLIST_SUB=		VERSION="${PORTVERSION}" \
 			PYDISTUTILS_EGGINFO="${PYDISTUTILS_EGGINFO}"
 
-OPTIONS_DEFINE=		ASPELL CHM DJVU LATEX IMAGE PDF PS \
+OPTIONS_DEFINE=		ASPELL DJVU LATEX IMAGE PDF PS \
 			SOUND QT5 X11MON
 OPTIONS_DEFAULT=	ASPELL IMAGE PDF PS SOUND
 OPTIONS_SUB=		yes
 
 ASPELL_LIB_DEPENDS=	libaspell.so:textproc/aspell
 ASPELL_CONFIGURE_WITH=	aspell
-CHM_DESC=		CHM via CHMLIB
-CHM_CONFIGURE_ENABLE=	python-chm
-CHM_LIB_DEPENDS=	libchm.so:misc/chmlib
-CHM_RUN_DEPENDS=	pychm>0:textproc/pychm
 DJVU_RUN_DEPENDS=	djvutxt:graphics/djvulibre
 IMAGE_DESC=		Store personal tags or textual descriptions in images
 IMAGE_RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
@@ -95,8 +94,5 @@ pre-build-QT5-on:
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/recoll/*.so \
 		${STAGEDIR}${PREFIX}/lib/recoll/*.so
-
-post-install-CHM-on:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/recollchm/*.so
 
 .include <bsd.port.mk>

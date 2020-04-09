@@ -3,7 +3,7 @@
 
 PORTNAME=	redmine
 PORTVERSION=	3.4.11
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	https://www.redmine.org/releases/
 
@@ -13,6 +13,10 @@ COMMENT=	Flexible project management web application
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
+DEPRECATED=	EOLed upstream
+# Remove the port before 2020Q3
+EXPIRATION_DATE=	2020-06-25
+
 RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
 		rubygem-rails4>=4.2.11.1:www/rubygem-rails4 \
 		rubygem-jquery-rails>=3.1.4:www/rubygem-jquery-rails \
@@ -20,9 +24,9 @@ RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
 		rubygem-request_store>=1.0.5:devel/rubygem-request_store \
 		rubygem-mime-types>=3.0:misc/rubygem-mime-types \
 		rubygem-protected_attributes>=0:devel/rubygem-protected_attributes \
-		rubygem-actionpack-xml_parser1>=0:textproc/rubygem-actionpack-xml_parser1 \
-		rubygem-roadie-rails>=1.1.1:mail/rubygem-roadie-rails \
-		rubygem-roadie>=3.2.1:mail/rubygem-roadie \
+		rubygem-actionpack-xml_parser1-rails4>=0:textproc/rubygem-actionpack-xml_parser1-rails4 \
+		rubygem-roadie3>=3.2.1<4:mail/rubygem-roadie3 \
+		rubygem-roadie-rails-rails4>=1.1.1:mail/rubygem-roadie-rails-rails4 \
 		rubygem-mimemagic>=0:misc/rubygem-mimemagic \
 		rubygem-mail>=2.6.4:mail/rubygem-mail \
 		rubygem-nokogiri18>=1.8.1:textproc/rubygem-nokogiri18 \

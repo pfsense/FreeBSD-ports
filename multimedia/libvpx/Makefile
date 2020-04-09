@@ -4,6 +4,7 @@
 PORTNAME=	libvpx
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.8.2
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -26,40 +27,16 @@ SHEBANG_FILES=	build/make/ads2gas.pl
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--disable-install-docs \
 		--disable-install-srcs \
+		--disable-unit-tests \
+		--enable-multi-res-encoding \
 		--enable-pic \
-		--enable-vp8 \
-		--enable-vp9
+		--enable-shared \
+		--enable-vp9-highbitdepth \
+		--enable-vp9-postproc \
+		--enable-vp9-temporal-denoising \
+		--size-limit=16384x16384
 MAKE_ARGS+=	verbose=yes
 ALL_TARGET=	# empty
-
-OPTIONS_DEFINE=	DEBUG MULTIRES POSTPROC RTCPU SHARED SIZE_LIMIT TEST THREADS
-OPTIONS_DEFAULT=MULTIRES POSTPROC RTCPU SHARED SIZE_LIMIT THREADS
-OPTIONS_EXCLUDE_powerpcspe=RTCPU
-OPTIONS_SUB=		yes
-
-DEBUG_CONFIGURE_ON=	--enable-debug
-
-MULTIRES_DESC=		Enable multi-resolution encoding
-MULTIRES_CONFIGURE_ON=	--enable-multi-res-encoding
-
-POSTPROC_DESC=		Enable postprocessing
-POSTPROC_CONFIGURE_ON=	--enable-vp9-postproc \
-			--enable-vp9-temporal-denoising
-POSTPROC_CONFIGURE_OFF=	--disable-postproc
-
-RTCPU_DESC=		Detect CPU capabilities at runtime
-RTCPU_CONFIGURE_OFF=	--disable-runtime-cpu-detect
-
-SHARED_DESC=		Enable shared-library support
-SHARED_CONFIGURE_ON=	--enable-shared
-
-SIZE_LIMIT_DESC=	Maximum size allowed by decoder: ${SIZE_LIMIT}
-SIZE_LIMIT_CONFIGURE_ON=--size-limit=${SIZE_LIMIT}
-SIZE_LIMIT?=		16384x16384 # Chromium; Firefox has 8192x4608
-
-TEST_CONFIGURE_OFF=	--disable-unit-tests
-
-THREADS_CONFIGURE_OFF=	--disable-multithread
 
 post-patch:
 	@${REINPLACE_CMD} -E '/gcctarget|link_with_cc/s/gcc[[:>:]]/$${CC}/' \
@@ -70,8 +47,6 @@ post-patch:
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/vpx*
-
-post-install-SHARED-on:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libvpx.so.*.*.*
 
 .include <bsd.port.mk>

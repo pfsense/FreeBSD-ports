@@ -4,6 +4,7 @@
     COMMENT = CAD tools
 
     SUBDIR += NASTRAN-95
+    SUBDIR += PrusaSlicer
     SUBDIR += abc
     SUBDIR += admesh
     SUBDIR += adms
@@ -12,7 +13,6 @@
     SUBDIR += astk-serveur
     SUBDIR += atlc
     SUBDIR += basicdsp
-    SUBDIR += brickutils
     SUBDIR += brlcad
     SUBDIR += calculix
     SUBDIR += calculix-ccx
@@ -20,13 +20,14 @@
     SUBDIR += cascade
     SUBDIR += cascade-compiler
     SUBDIR += chipvault
+    SUBDIR += cura
     SUBDIR += cura-engine
     SUBDIR += digital
     SUBDIR += dinotrace
     SUBDIR += electric
     SUBDIR += electric-ng
-    SUBDIR += elmerfem
     SUBDIR += fasm
+    SUBDIR += fdm_materials
     SUBDIR += feappv
     SUBDIR += fidocadj
     SUBDIR += freecad
@@ -35,10 +36,12 @@
     SUBDIR += gdsreader
     SUBDIR += gdt
     SUBDIR += geda
+    SUBDIR += gerbv
     SUBDIR += ghdl
     SUBDIR += gmsh
     SUBDIR += gnucap
     SUBDIR += gplcver
+    SUBDIR += graywolf
     SUBDIR += gspiceui
     SUBDIR += gtkwave
     SUBDIR += impact
@@ -67,16 +70,18 @@
     SUBDIR += libredwg
     SUBDIR += librepcb
     SUBDIR += linux-eagle5
-    SUBDIR += linuxcnc-devel
     SUBDIR += logisim
     SUBDIR += magic
     SUBDIR += meshdev
     SUBDIR += netgen
+    SUBDIR += netgen-lvs
     SUBDIR += ngspice_rework
     SUBDIR += nvc
     SUBDIR += opencascade
+    SUBDIR += openctm
     SUBDIR += openscad
     SUBDIR += openscad-devel
+    SUBDIR += opensta
     SUBDIR += openvsp
     SUBDIR += oregano
     SUBDIR += p5-GDS2
@@ -86,13 +91,13 @@
     SUBDIR += py-gdspy
     SUBDIR += py-lcapy
     SUBDIR += py-phidl
-    SUBDIR += py-pycam
     SUBDIR += py-pyfda
     SUBDIR += python-gdsii
-    SUBDIR += pythoncad
     SUBDIR += qcad
     SUBDIR += qelectrotech
+    SUBDIR += qflow
     SUBDIR += qmls
+    SUBDIR += qrouter
     SUBDIR += repsnapper
     SUBDIR += rubygem-gdsii
     SUBDIR += scotch
@@ -105,10 +110,13 @@
     SUBDIR += tkgate
     SUBDIR += tochnog
     SUBDIR += transcalc
+    SUBDIR += uranium
     SUBDIR += varkon
     SUBDIR += verilator
     SUBDIR += verilog-mode.el
+    SUBDIR += veroroute
     SUBDIR += xcircuit
+    SUBDIR += yosys
     SUBDIR += z88
     SUBDIR += zcad
 

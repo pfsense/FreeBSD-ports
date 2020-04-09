@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sdparm
-PORTVERSION=	1.10
+PORTVERSION=	1.11
 CATEGORIES=	sysutils
 MASTER_SITES=	http://sg.danny.cz/sg/p/
 
@@ -10,6 +10,8 @@ MAINTAINER=	delphij@FreeBSD.org
 COMMENT=	Utilities to access SCSI device parameters
 
 LICENSE=	BSD3CLAUSE
+
+BROKEN_FreeBSD_11=	Lack of NVME_STATUS_GET_SCT
 
 USE_LDCONFIG=	yes
 USES=		shebangfix tar:tgz

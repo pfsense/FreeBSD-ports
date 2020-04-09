@@ -54,16 +54,16 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.17.4
+KDE_PLASMA_VERSION?=		5.18.4.1
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.65.0
+KDE_FRAMEWORKS_VERSION?=	5.68.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	19.12.0
-KDE_APPLICATIONS_SHLIB_VER?=	5.13.0
+KDE_APPLICATIONS_VERSION?=	19.12.3
+KDE_APPLICATIONS_SHLIB_VER?=	5.13.3
 KDE_APPLICATIONS_BRANCH?=	stable
 # Upstream moves old software to Attic/. Specify the newest applications release there.
 # Only the major version is used for the comparison.
@@ -123,7 +123,7 @@ DIST_SUBDIR?=		KDE/applications/${KDE_APPLICATIONS_VERSION}
 .      elif ${_KDE_CATEGORY:Mkde-plasma}
 PORTVERSION?=		${KDE_PLASMA_VERSION}
 PKGNAMEPREFIX?=		plasma5-
-MASTER_SITES?=		KDE/${KDE_PLASMA_BRANCH}/plasma/${KDE_PLASMA_VERSION}
+MASTER_SITES?=		KDE/${KDE_PLASMA_BRANCH}/plasma/${KDE_PLASMA_VERSION:R}
 DIST_SUBDIR?=		KDE/plasma/${KDE_PLASMA_VERSION}
 .      elif ${_KDE_CATEGORY:Mkde-frameworks}
 PORTVERSION?=		${KDE_FRAMEWORKS_VERSION}
@@ -493,7 +493,7 @@ kde-breeze_PORT=		x11-themes/plasma5-breeze
 kde-breeze_PATH=		${KDE_PREFIX}/share/QtCurve/Breeze.qtcurve
 
 kde-breeze-gtk_PORT=		x11-themes/plasma5-breeze-gtk
-kde-breeze-gtk_PATH=		${KDE_PREFIX}/lib/kconf_update_bin/gtkbreeze5.5
+kde-breeze-gtk_PATH=		${KDE_PREFIX}/share/themes/Breeze/gtk-2.0/gtkrc
 
 kde-decoration_PORT=		x11-wm/plasma5-kdecoration
 kde-decoration_LIB=		libkdecorations2.so
@@ -514,7 +514,7 @@ kde-kde-cli-tools_PORT=		sysutils/plasma5-kde-cli-tools
 kde-kde-cli-tools_PATH=		${KDE_PREFIX}/bin/kcmshell5
 
 kde-kde-gtk-config_PORT=	x11-themes/plasma5-kde-gtk-config
-kde-kde-gtk-config_PATH=	${QT_PLUGINDIR}/kcm_kdegtkconfig.so
+kde-kde-gtk-config_PATH=	${KDE_PREFIX}/lib/kconf_update_bin/gtk_theme
 
 kde-kdeplasma-addons_PORT=	x11-toolkits/plasma5-kdeplasma-addons
 kde-kdeplasma-addons_PATH=	${QT_PLUGINDIR}/kcm_krunner_dictionary.so

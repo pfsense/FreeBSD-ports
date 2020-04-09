@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	gimp-app
-PORTVERSION=	2.10.14
+PORTVERSION=	2.10.18
+PORTREVISION=	1
 PORTEPOCH?=	1
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}
@@ -54,6 +55,7 @@ TEST_TARGET=	check
 TEST_ENV=	XAUTHORITY=${HOME}/.Xauthority
 .endif
 CONFIGURE_ARGS?=--with-html-dir=${PREFIX}/share/doc/gimp \
+		--with-bug-report-url="https://bugs.freebsd.org/" \
 		--disable-gtk-doc \
 		--without-linux-input \
 		--with-print \

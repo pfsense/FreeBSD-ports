@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION?=	1.41.1
-PORTREVISION?=	0
+PORTVERSION?=	1.42.0
+PORTREVISION?=	1
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
 		LOCAL/tobik/rust:bootstrap \
@@ -58,9 +58,9 @@ WASM_VARS_OFF=		_RUST_BUILD_WASM=false
 WASM_VARS=		_RUST_BUILD_WASM=true
 
 # See WRKSRC/src/stage0.txt for the date and version values.
-BOOTSTRAPS_DATE?=		2020-01-11
-RUST_BOOTSTRAP_VERSION?=	1.40.0
-CARGO_BOOTSTRAP_VERSION?=	0.41.0
+BOOTSTRAPS_DATE?=		2020-02-29
+RUST_BOOTSTRAP_VERSION?=	1.41.1
+CARGO_BOOTSTRAP_VERSION?=	0.42.0
 
 BOOTSTRAPS_SUFFIX?=		${BOOTSTRAPS_SUFFIX_${ARCH}}
 BOOTSTRAPS_SUFFIX_powerpc64?=	-${PPC_ABI:tl}
@@ -78,17 +78,11 @@ _CARGO_BOOTSTRAP=	${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/cargo-${CARGO_B
 
 .include <bsd.port.pre.mk>
 
-.if exists(${PATCHDIR}/libgit2)
-# lang/rust-bootstrap builds the bundled libgit2 and using the patch
-# to fix runtime with system libgit2 is incompatible with it.  Keep
-# it separate.
-EXTRA_PATCHES+=	${PATCHDIR}/libgit2
-.endif
 .if exists(${PATCHDIR}/${ARCH}${BOOTSTRAPS_SUFFIX})
 EXTRA_PATCHES+=	${PATCHDIR}/${ARCH}${BOOTSTRAPS_SUFFIX}
 .endif
 
-.if ${ARCH} == powerpc64 && ${PPC_ABI} == ELFv1
+.if ${ARCH} == powerpc64
 # The bootstrap is hardcoded to use gcc9
 # but we can build with a newer or older compiler as provided by USE_GCC=yes
 BUILD_DEPENDS+=	gcc9:lang/gcc9

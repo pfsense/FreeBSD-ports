@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	samurai
-DISTVERSION=	1.0
+DISTVERSION=	1.1
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/michaelforney/samurai/releases/download/${DISTVERSION}/
 
@@ -12,6 +12,8 @@ LICENSE=	APACHE20 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE
+
+USES=		compiler:c11
 
 ALL_TARGET=	samu
 PLIST_FILES=	bin/samu \

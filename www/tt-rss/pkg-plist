@@ -15,7 +15,6 @@
 %%WWWDIR%%/classes/article.php
 %%WWWDIR%%/classes/auth/base.php
 %%WWWDIR%%/classes/backend.php
-%%WWWDIR%%/classes/ccache.php
 %%WWWDIR%%/classes/counters.php
 %%WWWDIR%%/classes/db.php
 %%WWWDIR%%/classes/db/mysqli.php
@@ -60,17 +59,6 @@
 @mode 0400
 @sample %%WWWDIR%%/config.php.sample
 @mode
-%%WWWDIR%%/css/cdm.less
-%%WWWDIR%%/css/default.css
-%%WWWDIR%%/css/default.css.map
-%%WWWDIR%%/css/default.less
-%%WWWDIR%%/css/defines.less
-%%WWWDIR%%/css/dijit_basic.less
-%%WWWDIR%%/css/dijit_light.less
-%%WWWDIR%%/css/prefs.less
-%%WWWDIR%%/css/tt-rss.less
-%%WWWDIR%%/css/utility.less
-%%WWWDIR%%/css/zoom.less
 %%WWWDIR%%/errors.php
 %%WWWDIR%%/feed-icons/.empty
 %%WWWDIR%%/feed-icons/index.html
@@ -93,12 +81,12 @@
 %%WWWDIR%%/include/sanity_check.php
 %%WWWDIR%%/include/sanity_config.php
 %%WWWDIR%%/include/sessions.php
-%%WWWDIR%%/include/version.php
 %%WWWDIR%%/index.php
 %%WWWDIR%%/install/index.php
 %%WWWDIR%%/js/AppBase.js
 %%WWWDIR%%/js/Article.js
 %%WWWDIR%%/js/form/ComboButton.js
+%%WWWDIR%%/js/form/ValidationTextArea.js
 %%WWWDIR%%/js/CommonDialogs.js
 %%WWWDIR%%/js/CommonFilters.js
 %%WWWDIR%%/js/FeedStoreModel.js
@@ -120,6 +108,7 @@
 %%WWWDIR%%/js/index.html
 %%WWWDIR%%/js/prefs.js
 %%WWWDIR%%/js/tt-rss.js
+%%WWWDIR%%/js/utility.js
 %%WWWDIR%%/lib/CheckBoxStoreModel.js
 %%WWWDIR%%/lib/CheckBoxTree.js
 %%WWWDIR%%/lib/MiniTemplator.class.php
@@ -2289,6 +2278,8 @@
 %%WWWDIR%%/locale/de_DE/LC_MESSAGES/messages.po
 %%WWWDIR%%/locale/el_GR/LC_MESSAGES/messages.mo
 %%WWWDIR%%/locale/el_GR/LC_MESSAGES/messages.po
+%%WWWDIR%%/locale/eo/LC_MESSAGES/messages.mo
+%%WWWDIR%%/locale/eo/LC_MESSAGES/messages.po
 %%WWWDIR%%/locale/es_ES/LC_MESSAGES/messages.mo
 %%WWWDIR%%/locale/es_ES/LC_MESSAGES/messages.po
 %%WWWDIR%%/locale/es_LA/LC_MESSAGES/messages.mo
@@ -2299,6 +2290,7 @@
 %%WWWDIR%%/locale/fr_FR/LC_MESSAGES/messages.po
 %%WWWDIR%%/locale/hu_HU/LC_MESSAGES/messages.mo
 %%WWWDIR%%/locale/hu_HU/LC_MESSAGES/messages.po
+%%WWWDIR%%/locale/id/LC_MESSAGES/messages.mo
 %%WWWDIR%%/locale/it_IT/LC_MESSAGES/messages.mo
 %%WWWDIR%%/locale/it_IT/LC_MESSAGES/messages.po
 %%WWWDIR%%/locale/ja_JP/LC_MESSAGES/messages.mo
@@ -2343,12 +2335,15 @@
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_darklegacy.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_dilbert.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_explosm.php
+%%WWWDIR%%/plugins/af_comics/filters/af_comics_gocomics.php
+%%WWWDIR%%/plugins/af_comics/filters/af_comics_gocomics_farside.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_pa.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_pvp.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_tfd.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_twp.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_whomp.php
 %%WWWDIR%%/plugins/af_comics/init.php
+%%WWWDIR%%/plugins/af_readability/init.js
 %%WWWDIR%%/plugins/af_readability/vendor/andreskrey/Readability/Configuration.php
 %%WWWDIR%%/plugins/af_readability/vendor/andreskrey/Readability/Nodes/DOM/DOMAttr.php
 %%WWWDIR%%/plugins/af_readability/vendor/andreskrey/Readability/Nodes/DOM/DOMCdataSection.php
@@ -2560,6 +2555,7 @@
 %%WWWDIR%%/schema/versions/mysql/136.sql
 %%WWWDIR%%/schema/versions/mysql/137.sql
 %%WWWDIR%%/schema/versions/mysql/138.sql
+%%WWWDIR%%/schema/versions/mysql/139.sql
 %%WWWDIR%%/schema/versions/pgsql/3.sql
 %%WWWDIR%%/schema/versions/pgsql/4.sql
 %%WWWDIR%%/schema/versions/pgsql/5.sql
@@ -2696,6 +2692,7 @@
 %%WWWDIR%%/schema/versions/pgsql/136.sql
 %%WWWDIR%%/schema/versions/pgsql/137.sql
 %%WWWDIR%%/schema/versions/pgsql/138.sql
+%%WWWDIR%%/schema/versions/pgsql/139.sql
 %%WWWDIR%%/templates/digest_template.txt
 %%WWWDIR%%/templates/digest_template_html.txt
 %%WWWDIR%%/templates/email_article_template.txt
@@ -2704,12 +2701,27 @@
 %%WWWDIR%%/templates/otp_disabled_template.txt
 %%WWWDIR%%/templates/password_change_template.txt
 %%WWWDIR%%/templates/resetpass_link_template.txt
-%%WWWDIR%%/tests/ApiTest.php
 %%WWWDIR%%/themes.local/.empty
 %%WWWDIR%%/themes/.empty
 %%WWWDIR%%/themes/compact.css
 %%WWWDIR%%/themes/compact.css.map
 %%WWWDIR%%/themes/compact.less
+%%WWWDIR%%/themes/compact_base.less
+%%WWWDIR%%/themes/compact_night.css
+%%WWWDIR%%/themes/compact_night.css.map
+%%WWWDIR%%/themes/compact_night.less
+%%WWWDIR%%/themes/light.css
+%%WWWDIR%%/themes/light.css.map
+%%WWWDIR%%/themes/light.less
+%%WWWDIR%%/themes/light/cdm.less
+%%WWWDIR%%/themes/light/defines.less
+%%WWWDIR%%/themes/light/dijit_basic.less
+%%WWWDIR%%/themes/light/dijit_light.less
+%%WWWDIR%%/themes/light/light_base.less
+%%WWWDIR%%/themes/light/prefs.less
+%%WWWDIR%%/themes/light/tt-rss.less
+%%WWWDIR%%/themes/light/utility.less
+%%WWWDIR%%/themes/light/zoom.less
 %%WWWDIR%%/themes/night.css
 %%WWWDIR%%/themes/night.css.map
 %%WWWDIR%%/themes/night.less
@@ -2717,16 +2729,11 @@
 %%WWWDIR%%/themes/night_blue.css
 %%WWWDIR%%/themes/night_blue.css.map
 %%WWWDIR%%/themes/night_blue.less
+%%WWWDIR%%/version_static.txt
 @mode u=rx
 %%WWWDIR%%/update.php
 %%WWWDIR%%/update_daemon2.php
 %%WWWDIR%%/utils/extract-i18n-js.pl
-%%WWWDIR%%/utils/gitlab-ci/check-schema.sh
-%%WWWDIR%%/utils/gitlab-ci/config-template.php
-%%WWWDIR%%/utils/gitlab-ci/nginx-default
-%%WWWDIR%%/utils/gitlab-ci/php-lint.sh
-%%WWWDIR%%/utils/gitlab-ci/phpmd-ruleset.xml
-%%WWWDIR%%/utils/gitlab-ci/phpmd.sh
 @mode
 %%WWWDIR%%/utils/localized_schema.txt
 @mode u=rx
@@ -2753,11 +2760,9 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/vendor/Psr/Log/Test
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/vendor/Psr/Log
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/vendor/OTPHP
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/utils/gitlab-ci
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/utils
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/themes.local
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/themes
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/tests
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/templates
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/schema/versions/pgsql
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/schema/versions/mysql
@@ -3127,7 +3132,6 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/images
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/icons
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/feed-icons
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/css
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/classes/pref
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/classes/logger
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/classes/handler

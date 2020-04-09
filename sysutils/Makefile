@@ -94,6 +94,9 @@
     SUBDIR += bareos17-client
     SUBDIR += bareos17-client-static
     SUBDIR += bareos17-server
+    SUBDIR += bareos18-client
+    SUBDIR += bareos18-server
+    SUBDIR += bareos18-traymonitor
     SUBDIR += barrier
     SUBDIR += bastille
     SUBDIR += batmon
@@ -159,6 +162,7 @@
     SUBDIR += cfengine313
     SUBDIR += cfengine314
     SUBDIR += cfengine315
+    SUBDIR += checkrestart
     SUBDIR += chgrep
     SUBDIR += chyves
     SUBDIR += cinnamon-control-center
@@ -255,7 +259,6 @@
     SUBDIR += docker
     SUBDIR += docker-compose
     SUBDIR += docker-credential-pass
-    SUBDIR += docker-freebsd
     SUBDIR += docker-machine
     SUBDIR += doctl
     SUBDIR += doinkd
@@ -273,11 +276,12 @@
     SUBDIR += dtc
     SUBDIR += dtpstree
     SUBDIR += du2ps
+    SUBDIR += dua-cli
     SUBDIR += duff
     SUBDIR += dunst
     SUBDIR += dupd
     SUBDIR += duplicity
-    SUBDIR += duplicity-devel
+    SUBDIR += duplicity07
     SUBDIR += duply
     SUBDIR += dupmerge
     SUBDIR += dvd+rw-tools
@@ -321,7 +325,6 @@
     SUBDIR += fcron
     SUBDIR += fd
     SUBDIR += fdupes
-    SUBDIR += feather
     SUBDIR += fetchlog
     SUBDIR += ffs2recov
     SUBDIR += file
@@ -361,6 +364,7 @@
     SUBDIR += fsbackup
     SUBDIR += fsc
     SUBDIR += fsearch
+    SUBDIR += fselect
     SUBDIR += fstyp
     SUBDIR += fswatch-mon
     SUBDIR += ftwin
@@ -432,7 +436,6 @@
     SUBDIR += gnome-control-center
     SUBDIR += gnome-mount
     SUBDIR += gnome-power-manager
-    SUBDIR += gnome-schedule
     SUBDIR += gnome-settings-daemon
     SUBDIR += gnome-system-monitor
     SUBDIR += gnome_subr
@@ -457,10 +460,6 @@
     SUBDIR += gstreamer-plugins-hal
     SUBDIR += gstreamer1-plugins-cdio
     SUBDIR += gtk-imonc
-    SUBDIR += hachoir-metadata
-    SUBDIR += hachoir-subfile
-    SUBDIR += hachoir-urwid
-    SUBDIR += hachoir-wx
     SUBDIR += hal
     SUBDIR += hal-info
     SUBDIR += hardlink
@@ -475,7 +474,6 @@
     SUBDIR += helm
     SUBDIR += hextools
     SUBDIR += hexyl
-    SUBDIR += hfm
     SUBDIR += hfsexplorer
     SUBDIR += hfsutils
     SUBDIR += hidesvn
@@ -495,6 +493,7 @@
     SUBDIR += i2c-tools
     SUBDIR += i7z
     SUBDIR += iat
+    SUBDIR += iichid
     SUBDIR += immortal
     SUBDIR += incron
     SUBDIR += inotify-tools
@@ -559,6 +558,7 @@
     SUBDIR += kfloppy
     SUBDIR += khelpcenter
     SUBDIR += kiconvtool
+    SUBDIR += kio-fuse
     SUBDIR += kldfind
     SUBDIR += kldpatch
     SUBDIR += kops
@@ -591,7 +591,9 @@
     SUBDIR += lineak-xosdplugin
     SUBDIR += lineakd
     SUBDIR += linrename
+    SUBDIR += linux-c7-dosfstools
     SUBDIR += linux-c7-lttng-ust
+    SUBDIR += linux-c7-numactl-libs
     SUBDIR += linux-c7-userspace-rcu
     SUBDIR += linux-crashplan
     SUBDIR += linux-rkbin
@@ -750,6 +752,7 @@
     SUBDIR += nsysctl
     SUBDIR += ntfy
     SUBDIR += nut
+    SUBDIR += nut-devel
     SUBDIR += nvclock
     SUBDIR += nvme-cli
     SUBDIR += nvramtool
@@ -763,6 +766,7 @@
     SUBDIR += opencorsairlink
     SUBDIR += openipmi
     SUBDIR += opensbi
+    SUBDIR += openseachest
     SUBDIR += openupsd
     SUBDIR += openzfs
     SUBDIR += openzfs-kmod
@@ -846,6 +850,7 @@
     SUBDIR += p5-arclog
     SUBDIR += p5-reslog
     SUBDIR += packer
+    SUBDIR += packmule
     SUBDIR += pacman
     SUBDIR += paicc
     SUBDIR += paladin
@@ -879,6 +884,7 @@
     SUBDIR += pear-Translation2
     SUBDIR += pecl-proctitle
     SUBDIR += pefs-kmod
+    SUBDIR += perp
     SUBDIR += personality
     SUBDIR += pesign
     SUBDIR += pfetch
@@ -947,7 +953,6 @@
     SUBDIR += pwgen
     SUBDIR += pwsafe
     SUBDIR += pxattr
-    SUBDIR += py-XenAPI
     SUBDIR += py-analyzemft
     SUBDIR += py-ansible-lint
     SUBDIR += py-ansible-runner
@@ -956,13 +961,12 @@
     SUBDIR += py-azure-cli-base
     SUBDIR += py-azure-cli-core
     SUBDIR += py-azure-cli-telemetry
-    SUBDIR += py-bcfg2
     SUBDIR += py-bitrot
     SUBDIR += py-borgmatic
     SUBDIR += py-cdmi
     SUBDIR += py-cpuinfo
+    SUBDIR += py-cron-descriptor
     SUBDIR += py-croniter
-    SUBDIR += py-crontab
     SUBDIR += py-diffoscope
     SUBDIR += py-dirsync
     SUBDIR += py-distro
@@ -973,7 +977,6 @@
     SUBDIR += py-ezjailremote
     SUBDIR += py-filelike
     SUBDIR += py-filelock
-    SUBDIR += py-freenas.cli
     SUBDIR += py-glances
     SUBDIR += py-gmailfs-fuse
     SUBDIR += py-google-compute-engine
@@ -999,6 +1002,7 @@
     SUBDIR += py-psutil121
     SUBDIR += py-ptyprocess
     SUBDIR += py-python-consul
+    SUBDIR += py-python-crontab
     SUBDIR += py-python-nomad
     SUBDIR += py-pytsk
     SUBDIR += py-pywatchman
@@ -1044,7 +1048,6 @@
     SUBDIR += rcm
     SUBDIR += rdate
     SUBDIR += rdiff-backup
-    SUBDIR += rdiff-backup-devel
     SUBDIR += rdup
     SUBDIR += read-edid
     SUBDIR += realsync
@@ -1071,6 +1074,7 @@
     SUBDIR += roottail
     SUBDIR += rovclock
     SUBDIR += rpi-firmware
+    SUBDIR += rsfetch
     SUBDIR += rshim-user-space
     SUBDIR += rsnapshot
     SUBDIR += rsyncbackup
@@ -1120,6 +1124,7 @@
     SUBDIR += rubygem-httplog
     SUBDIR += rubygem-itamae
     SUBDIR += rubygem-librarian-puppet
+    SUBDIR += rubygem-license-acceptance
     SUBDIR += rubygem-log4r
     SUBDIR += rubygem-logify
     SUBDIR += rubygem-mogilefs-client
@@ -1172,6 +1177,7 @@
     SUBDIR += safe-rm
     SUBDIR += safecat
     SUBDIR += safecopy
+    SUBDIR += samdruckerclientshell
     SUBDIR += samefile
     SUBDIR += samesame
     SUBDIR += sample
@@ -1266,6 +1272,7 @@
     SUBDIR += syslog-ng323
     SUBDIR += syslog-ng324
     SUBDIR += syslog-ng325
+    SUBDIR += syslog-ng326
     SUBDIR += syslogger
     SUBDIR += sysrc
     SUBDIR += system-tools-backends
@@ -1279,8 +1286,8 @@
     SUBDIR += tclsyslog
     SUBDIR += tcplist
     SUBDIR += tdir
+    SUBDIR += tealdeer
     SUBDIR += tenshi
-    SUBDIR += tentakel
     SUBDIR += terraform
     SUBDIR += terraform-provider-vultr
     SUBDIR += testdisk
@@ -1306,6 +1313,7 @@
     SUBDIR += tracker-miners
     SUBDIR += tree
     SUBDIR += tren
+    SUBDIR += triton
     SUBDIR += trueos-libqt5
     SUBDIR += ts
     SUBDIR += tss
@@ -1365,8 +1373,6 @@
     SUBDIR += u-boot-tools
     SUBDIR += u-boot-utilite
     SUBDIR += u-boot-wandboard
-    SUBDIR += u-boot-zedboard
-    SUBDIR += u-boot-zybo
     SUBDIR += ua
     SUBDIR += ucspi-ipc
     SUBDIR += ucspi-proxy

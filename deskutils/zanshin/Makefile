@@ -1,17 +1,12 @@
 # $FreeBSD
 
 PORTNAME=	zanshin
-DISTVERSION=	0.5.0
-PORTREVISION=	5
+DISTVERSION=	0.5.71
 CATEGORIES=	deskutils kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Daily organizer for KDE
-
-BROKEN=		Broken by update to appliations 19.04.2
-DEPRECATED=	Broken for more than 5 months
-EXPIRATION_DATE=	2020-01-10
 
 LIB_DEPENDS=	libical.so:devel/libical
 

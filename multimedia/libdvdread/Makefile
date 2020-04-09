@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdvdread
-PORTVERSION=	6.0.2
+PORTVERSION=	6.1.0
 CATEGORIES=	multimedia
 MASTER_SITES=	http://download.videolan.org/pub/videolan/libdvdread/${PORTVERSION}/ \
 		http://dvdnav.mplayerhq.hu/releases/ \
@@ -15,6 +15,7 @@ COMMENT=	Videolan version of the libdvdread project
 LICENSE=	GPLv2
 
 USES=		tar:bz2 gmake libtool pathfix pkgconfig
+USE_CSTD=	c99
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

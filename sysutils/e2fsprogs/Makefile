@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	e2fsprogs
-PORTVERSION=	1.45.5
+PORTVERSION=	1.45.6
 PORTREVISION?=	1
 CATEGORIES?=	sysutils
 MASTER_SITES=	KERNEL_ORG/linux/kernel/people/tytso/${PORTNAME}/v${PORTVERSION}
@@ -26,7 +26,9 @@ USE_CSTD=	gnu99
 USE_LDCONFIG=	${PREFIX}/lib/e2fsprogs
 .endif
 GNU_CONFIGURE=	yes
-LLD_UNSAFE=	yes
+
+# while we use the system blkid, we need to --enable-libblkid
+# so that the tools get built:
 CONFIGURE_ARGS?=--disable-fsck \
 		--disable-e2initrd-helper \
 		--disable-libuuid \
@@ -38,6 +40,7 @@ CONFIGURE_ARGS?=--disable-fsck \
 		--with-root-prefix='${PREFIX}' \
 		--without-included-gettext \
 		LDFLAGS='${LDFLAGS} -L${LOCALBASE}/lib -Wl,--rpath -Wl,${LOCALBASE}/lib/e2fsprogs'
+CONFIGURE_ENV?=	LIBS='-Wl,--as-needed ${LIBS} -lexecinfo -lelf'
 CPPFLAGS+=	-I${WRKSRC}/lib -I${LOCALBASE}/include # -D_EXT2_USE_C_VERSIONS
 MAKE_ARGS+=	pkgconfigdir='${PREFIX}/libdata/pkgconfig'
 MAKE_ENV+=	CHECK_CMD=@true
@@ -47,7 +50,7 @@ PORTSCOUT=	ignore	# cannot handle the version in the directory
 .if !defined(MASTERDIR)
 INSTALL_TARGET=		install install-libs
 
-OPTIONS_DEFINE=		DOCS NLS FUSEFS PARALLELTESTS SLOWTESTS BASHTESTS
+OPTIONS_DEFINE=		DOCS NLS FUSEFS PARALLELTESTS SLOWTESTS BASHTESTS LIBUNWIND
 OPTIONS_EXCLUDE+=	EXAMPLES
 OPTIONS_SUB=		yes
 
@@ -62,6 +65,7 @@ ALLTESTS_DESC=	Run most self-tests (needs more RAM/disk space)
 PARALLELTESTS_DESC=	Parallelize self-tests (needs more disk space)
 SLOWTESTS_DESC=	Enable slow tests that are skipped by default
 BASHTESTS_DESC=	Enable tests that require the GNU bash shell
+LIBUNWIND_DESC=	Backtrace with libunwind (do set WITH_DEBUG_PORTS+=${PKGORIGIN}!)
 
 FUSEFS_CONFIGURE_ENABLE=	fuse2fs
 
@@ -73,8 +77,21 @@ LIB_DEPENDS+=	libblkid.so:misc/e2fsprogs-libblkid
 LIB_DEPENDS+=	libss.so:devel/e2fsprogs-libss
 LIB_DEPENDS+=	libuuid.so:misc/e2fsprogs-libuuid
 
+LIBUNWIND_LIB_DEPENDS=	libunwind.so:devel/libunwind
+LIBUNWIND_LIBS+=	-L${LOCALBASE}/lib -lunwind
+LIBUNWIND_LDFLAGS+=	-rdynamic
+LIBUNWIND_EXTRA_PATCHES=${FILESDIR}/extrapatch-e2fsck_sigcatcher.c
+
 PORTDOCS=	NOTICE README RELEASE-NOTES SUBMITTING-PATCHES
 .endif
+
+# even under DEVELOPER, no REINPLACE_CMD warnings desired
+# it simply makes no sense to warn about dozens of files
+# for systematic edits that run over files that don't need the edits.
+# a "warn if nothing was edited by one command" would be acceptable,
+# but until we have that in the framework, just
+# avoid Tools/scripts/sed_checked altogether:
+REINPLACE_CMD=	${SED} ${REINPLACE_ARGS}
 
 PKGDEINSTALL=	${PKGINSTALL}
 
@@ -82,9 +99,10 @@ MAKE_ARGS+=	V=1
 
 .include <bsd.port.options.mk>
 
-. if ${ARCH} == powerpc64
-# Fix powerpc64 SIGSEGV,
-# see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=231570
+. if ! empty(ARCH:Mpowerpc*)
+# Fix powerpc64/powerpc SIGSEGV,
+# see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=231570 (ppc64)
+# see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=242798 (ppc32 - untested)
 USES+=		compiler:c11
 . endif
 
@@ -120,8 +138,6 @@ EXTRA_PATCHES+=	${FILESDIR}/extrapatch-no-sbrk
 
 # d_fallocate_blkmap appears to fail on some systems for unknown reasons.
 post-patch::
-# don't build/install libext2fs.info
-	@${REINPLACE_CMD} -e 's/ install-doc-libs$$//' ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -E -e 's/md5sum ([^ ]*)/printf "%s  %s\\n" $$(md5 -q \1) \1/' \
 	    -e "s/ == 0/ = 0/" -e "s/tar x$$/tar xf -/" -e "s/\<dd\>/gdd/" \
 	    ${WRKSRC}/tests/[a-z]_*/script
@@ -219,16 +235,23 @@ _check_target=check
 _check_timeout=180
 .endif
 
+.if ${PORT_OPTIONS:MLIBUNWIND}
+_staticlibs+=${LOCALBASE}/lib/libunwind.a /usr/lib/liblzma.a
+.endif
+
 post-build:
 # Relink e2fsck statically - We need to make sure that tools for the root file
 # system are statically linked against anything that is outside the root fs,
 # else we're in trouble if e2fsck is needed for boot:
 # (we don't use e2fsck.static, since we can link libc.so dynamically)
+# NOTE: we need to link libgcc statically, it might be under /usr/local!
+# => do not add a -Bdynamic - but instead list the dynamic libraries
+# before the -Bstatic
 	cd ${WRKSRC}/e2fsck && ${RM} -f e2fsck \
 		&& ${MAKE_CMD} e2fsck V=1 \
-		LIBS="../lib/libsupport.a ../lib/libext2fs.a ../lib/libcom_err.a \
-		${LOCALBASE}/lib/libblkid.a ${LOCALBASE}/lib/libuuid.a ${libintl} ../lib/libe2p.a" \
-		LIBMAGIC=/usr/lib/libmagic.a\ -lz
+		LIBS="-static-libgcc -lc -Bstatic ../lib/libsupport.a ../lib/libext2fs.a ../lib/libcom_err.a \
+		${_staticlibs} /usr/lib/libexecinfo.a /usr/lib/libelf.a \
+		${LOCALBASE}/lib/libblkid.a ${LOCALBASE}/lib/libuuid.a ${libintl} ../lib/libe2p.a "
 # Regression check: avoid a port (not upstream!) regression from 1.40.5,
 # check that e2fsck isn't dynalinked against anything but libc.so:
 	@${ECHO_CMD} -n "===>  checking that e2fsck depends on no shared objects outside /lib: "

@@ -208,12 +208,17 @@ LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.1 \
 LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.15:lua
 LUA_VARS=		DSO_EXTMODS+=lua
 
+LINK_GH_TUPLE=		Taymindis:nginx-link-function:3.2.1:link
+LINK_CONFIGURE_ON=	--add-module=${WRKSRC_link}
+LINK_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-link-function-config \
+			${PATCHDIR}/extra-patch-ngx_link_func_module.c
+
 MEMC_GH_TUPLE=		openresty:memc-nginx-module:v0.19:memc
 MEMC_VARS=		DSO_EXTMODS+=memc
 
 MODSECURITY_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 				libcurl.so:ftp/curl \
-				libluajit-5.1.so:lang/luajit \
+				libluajit-5.1.so:lang/luajit-openresty \
 				libpcre.so:devel/pcre \
 				libyajl.so:devel/yajl
 MODSECURITY_USE=		GNOME=libxml2
@@ -226,14 +231,14 @@ MODSECURITY_VARS=		WRKSRC_modsecurity=${WRKDIR}/modsecurity-${MODSECURITY_VERSIO
 MODSECURITY_CONFIGURE_ON=	--add-module=${WRKDIR}/modsecurity-${MODSECURITY_VERSION}/nginx/modsecurity
 
 MODSECURITY3_LIB_DEPENDS=	libmodsecurity.so:security/modsecurity3
-MODSECURITY3_GH_TUPLE=		SpiderLabs:ModSecurity-nginx:c6fd138:modsec
+MODSECURITY3_GH_TUPLE=		SpiderLabs:ModSecurity-nginx:v1.0.1:modsec
 MODSECURITY3_CONFIGURE_ON=	--add-module=${WRKSRC_modsec}
 
 NAXSI_NGINX_VER=	0.56
 NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:0.3.7:njs
+NJS_GH_TUPLE=		nginx:njs:0.3.9:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
 
 PASSENGER_NGINX_VER=	6.0.4

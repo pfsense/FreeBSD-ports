@@ -18,6 +18,7 @@ MASTER_SITES=	LOCAL/mat/bind
 .if defined(BIND_TOOLS_SLAVE)
 PKGNAMESUFFIX=	-tools
 .else
+# XXX: correct SUFFIX.
 PKGNAMESUFFIX=	9-devel
 .endif
 # XXX: correct DISTNAME.
@@ -30,25 +31,30 @@ COMMENT=	Command line tools from BIND: delv, dig, host, nslookup...
 COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
 .endif
 
+# Uncomment when bind9xx comes of age. +3 years if ESV, +1year otherwise, see
+# https://kb.isc.org/docs/aa-00896
+# DEPRECATED=	End of life, please migrate to a newer version of BIND9
+# EXPIRATION_DATE=	XXX-12-31
+
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
-		libuv.so:devel/libuv
+LIB_DEPENDS=	libuv.so:devel/libuv \
+		libxml2.so:textproc/libxml2
 .if !defined(BIND_TOOLS_SLAVE)
 RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 .endif
 
 # XXX: remove tar:bz2
-USES=	compiler:c11 cpe libedit pkgconfig ssl tar:bz2
+USES=		compiler:c11 cpe libedit libtool pkgconfig ssl tar:bz2
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.15.6a0.2019.12.13
+ISCVERSION=	9.17.0a0.2020.03.30
 # XXX: Remove gitlab
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.isc.org
 GL_ACCOUNT=	isc-projects
 GL_PROJECT=	bind9
-GL_COMMIT=	0b7339ac6e85555fa496ed72da121e403938cd40
+GL_COMMIT=	2df610a882d57fd95221ece4df03c04cd0f702b7
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -57,50 +63,52 @@ CPE_UPDATE=	${ISCVERSION:C/.*-//:tl}
 .endif
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--localstatedir=/var --disable-linux-caps \
-		--with-libxml2 \
-		--with-readline="-L${LOCALBASE}/lib -ledit" \
+CONFIGURE_ARGS=	--disable-linux-caps \
+		--localstatedir=/var \
+		--sysconfdir=${ETCDIR} \
 		--with-dlopen=yes \
+		--disable-shared \
+		--with-libxml2 \
 		--with-openssl=${OPENSSLBASE} \
-		--sysconfdir=${ETCDIR}
+		--with-readline="-L${LOCALBASE}/lib -ledit"
 ETCDIR=		${PREFIX}/etc/namedb
 
 .if defined(BIND_TOOLS_SLAVE)
-CONFIGURE_ARGS+=	--disable-shared
-EXTRA_PATCHES=	${PATCHDIR}/extrapatch-bind-tools
+EXTRA_PATCHES=		${PATCHDIR}/extrapatch-bind-tools
 .else
-USE_RC_SUBR=	named
-SUB_FILES=	pkg-message named.conf
-EXTRA_PATCHES=	${PATCHDIR}/extrapatch-no-bind-tools
+USE_RC_SUBR=		named
+# XXX: remove the big warning about it being a development version from pkg-message
+SUB_FILES=		named.conf pkg-message
+EXTRA_PATCHES=		${PATCHDIR}/extrapatch-no-bind-tools
 
 PORTDOCS=	*
 
 # XXX: Add -devel
-CONFLICTS=	bind911 bind912 bind913 bind914
+CONFLICTS=	bind911 bind912 bind913 bind914 bind916
 .endif	# BIND_TOOLS_SLAVE
 
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFAULT=	DLZ_FILESYSTEM GSSAPI_NONE IDN JSON \
-			LMDB PYTHON SIGCHASE TCP_FASTOPEN
-OPTIONS_DEFINE=		DNSTAP DOCS FIXED_RRSET IDN JSON LARGE_FILE \
-			LMDB OVERRIDECACHE PORTREVISION PYTHON QUERYTRACE \
-			SIGCHASE START_LATE TCP_FASTOPEN TUNING_LARGE GEOIP
+OPTIONS_DEFAULT=	DLZ_FILESYSTEM GSSAPI_NONE IDN JSON LMDB PYTHON \
+			SIGCHASE TCP_FASTOPEN
+OPTIONS_DEFINE=		DNSTAP DOCS FIXED_RRSET GEOIP IDN JSON LARGE_FILE LMDB \
+			OVERRIDECACHE PORTREVISION PYTHON QUERYTRACE SIGCHASE \
+			START_LATE TCP_FASTOPEN TUNING_LARGE
 
-OPTIONS_RADIO=	CRYPTO
+OPTIONS_RADIO=		CRYPTO
 OPTIONS_RADIO_CRYPTO=	NATIVE_PKCS11
 
 OPTIONS_GROUP=		DLZ
-OPTIONS_GROUP_DLZ=	DLZ_POSTGRESQL DLZ_MYSQL DLZ_BDB \
-			DLZ_LDAP DLZ_FILESYSTEM DLZ_STUB
+OPTIONS_GROUP_DLZ=	DLZ_BDB DLZ_FILESYSTEM DLZ_LDAP DLZ_MYSQL \
+			DLZ_POSTGRESQL DLZ_STUB
 
 OPTIONS_SINGLE=		GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 
 .if defined(BIND_TOOLS_SLAVE)
-OPTIONS_EXCLUDE=	DOCS ${OPTIONS_GROUP_DLZ} \
-			OVERRIDECACHE PORTREVISION QUERYTRACE LMDB DNSTAP \
-			START_LATE TUNING_LARGE TCP_FASTOPEN GEOIP
+OPTIONS_EXCLUDE=	${OPTIONS_GROUP_DLZ} DNSTAP DOCS GEOIP LMDB \
+			OVERRIDECACHE PORTREVISION QUERYTRACE START_LATE \
+			TCP_FASTOPEN TUNING_LARGE
 .else
 OPTIONS_EXCLUDE=	PYTHON
 .endif	# BIND_TOOLS_SLAVE
@@ -139,7 +147,7 @@ DLZ_BDB_USES=		bdb
 DLZ_FILESYSTEM_CONFIGURE_ON=	--with-dlz-filesystem=yes
 
 DLZ_LDAP_CONFIGURE_ON=	--with-dlz-ldap=yes
-DLZ_LDAP_USE=		openldap=yes
+DLZ_LDAP_USE=		OPENLDAP=yes
 
 DLZ_MYSQL_CONFIGURE_ON=	--with-dlz-mysql=yes
 DLZ_MYSQL_USES=		mysql
@@ -150,8 +158,8 @@ DLZ_POSTGRESQL_USES=		pgsql
 DLZ_STUB_CONFIGURE_ON=	--with-dlz-stub=yes
 
 DNSTAP_CONFIGURE_ENABLE=	dnstap
-DNSTAP_LIB_DEPENDS=	libfstrm.so:devel/fstrm \
-			libprotobuf-c.so:devel/protobuf-c
+DNSTAP_LIB_DEPENDS=		libfstrm.so:devel/fstrm \
+				libprotobuf-c.so:devel/protobuf-c
 
 FIXED_RRSET_CONFIGURE_ENABLE=	fixed-rrset
 
@@ -159,22 +167,23 @@ GEOIP_CONFIGURE_ENABLE=	geoip
 GEOIP_CONFIGURE_WITH=	maxminddb
 GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 
-GSSAPI_BASE_CONFIGURE_ON=\
-	--with-gssapi=${GSSAPIBASEDIR} KRB5CONFIG="${KRB5CONFIG}"
-GSSAPI_BASE_USES=	gssapi
+GSSAPI_BASE_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} \
+				KRB5CONFIG="${KRB5CONFIG}"
+GSSAPI_BASE_USES=		gssapi
 
-GSSAPI_HEIMDAL_CONFIGURE_ON=\
-	--with-gssapi=${GSSAPIBASEDIR} KRB5CONFIG="${KRB5CONFIG}"
-GSSAPI_HEIMDAL_USES=	gssapi:heimdal
+GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} \
+				KRB5CONFIG="${KRB5CONFIG}"
+GSSAPI_HEIMDAL_USES=		gssapi:heimdal
 
-GSSAPI_MIT_CONFIGURE_ON=\
-	--with-gssapi=${GSSAPIBASEDIR} KRB5CONFIG="${KRB5CONFIG}"
-GSSAPI_MIT_USES=	gssapi:mit
+GSSAPI_MIT_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} \
+				KRB5CONFIG="${KRB5CONFIG}"
+GSSAPI_MIT_USES=		gssapi:mit
 
 GSSAPI_NONE_CONFIGURE_ON=	--without-gssapi
 
 IDN_CONFIGURE_OFF=	--without-libidn2
-IDN_CONFIGURE_ON=	--with-libidn2=${LOCALBASE} ${ICONV_CONFIGURE_BASE}
+IDN_CONFIGURE_ON=	${ICONV_CONFIGURE_BASE} \
+			--with-libidn2=${LOCALBASE}
 IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2
 IDN_USES=		iconv
 
@@ -194,16 +203,16 @@ NATIVE_PKCS11_CONFIGURE_ENABLE=	native-pkcs11
 PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply@${PY_FLAVOR}
 PYTHON_CONFIGURE_WITH=	python=${PYTHON_CMD}
 PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply@${PY_FLAVOR}
-PYTHON_USES=	python
+PYTHON_USES=		python
 
 QUERYTRACE_CONFIGURE_ENABLE=	querytrace
 
 SIGCHASE_CONFIGURE_ON=	STD_CDEFINES="-DDIG_SIGCHASE=1"
 
-START_LATE_SUB_LIST=	NAMED_REQUIRE="SERVERS cleanvar" \
-			NAMED_BEFORE="LOGIN"
-START_LATE_SUB_LIST_OFF=NAMED_REQUIRE="NETWORKING ldconfig syslogd" \
-			NAMED_BEFORE="SERVERS"
+START_LATE_SUB_LIST=		NAMED_BEFORE="LOGIN" \
+				NAMED_REQUIRE="SERVERS cleanvar"
+START_LATE_SUB_LIST_OFF=	NAMED_BEFORE="SERVERS" \
+				NAMED_REQUIRE="NETWORKING ldconfig syslogd"
 
 TCP_FASTOPEN_CONFIGURE_ENABLE=	tcp-fastopen
 
@@ -213,13 +222,11 @@ TUNING_LARGE_CONFIGURE_OFF=	--with-tuning=default
 .include <bsd.port.options.mk>
 
 .if defined(WITH_DEBUG)
-CONFIGURE_ARGS+=	--enable-symtable \
-			--enable-developer
-USES+=	perl5
-USE_PERL5=	build
-BUILD_DEPENDS+=	cmocka>0:sysutils/cmocka
-.else
-CONFIGURE_ARGS+=	--disable-symtable
+CONFIGURE_ARGS+=	--enable-developer \
+			--enable-symtable
+USES+=			perl5
+USE_PERL5=		build
+BUILD_DEPENDS+=		cmocka>0:sysutils/cmocka
 .endif
 
 .include <bsd.port.pre.mk>

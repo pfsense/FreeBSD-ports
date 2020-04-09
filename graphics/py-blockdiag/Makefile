@@ -3,6 +3,7 @@
 
 PORTNAME=	blockdiag
 PORTVERSION=	1.5.4
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,11 +14,11 @@ COMMENT=	Simple block-diagram image generator
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=2.2.1:graphics/py-pillow@${PY_FLAVOR} \
+RUN_DEPENDS=	${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}funcparserlib>=0.3.6:devel/py-funcparserlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}webcolors>=0:graphics/py-webcolors@${PY_FLAVOR}
 
-USES=	python:-3.4
+USES=		python:2.7
 USE_PYTHON=	autoplist distutils
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
@@ -32,7 +33,7 @@ PDF_DESC=	Enable PDF output
 
 OPTIONS_DEFAULT=	PDF
 
-IPAFONT_RUN_DEPENDS=	${LOCALBASE}/share/font-ipa/ipag.otf:japanese/font-ipa
+IPAFONT_RUN_DEPENDS=	${LOCALBASE}/share/font/ipa/ipag.otf:japanese/font-ipa
 PDF_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}reportlab>0:print/py-reportlab@${PY_FLAVOR}
 
 post-patch:

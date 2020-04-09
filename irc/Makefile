@@ -6,6 +6,7 @@
     SUBDIR += anope
     SUBDIR += atheme-services
     SUBDIR += bip
+    SUBDIR += birch
     SUBDIR += bitchx
     SUBDIR += bitlbee
     SUBDIR += bitlbee-discord
@@ -24,14 +25,12 @@
     SUBDIR += dxirc
     SUBDIR += eggdrop
     SUBDIR += eggdrop-devel
-    SUBDIR += eggdrop16
     SUBDIR += epic4
     SUBDIR += epic5
     SUBDIR += evangeline
     SUBDIR += ezbounce
     SUBDIR += fisg
     SUBDIR += gruftistats
-    SUBDIR += gseen.mod
     SUBDIR += hexchat
     SUBDIR += hexchat-fish
     SUBDIR += hybserv
@@ -96,8 +95,6 @@
     SUBDIR += py-fishcrypt
     SUBDIR += py-irc
     SUBDIR += py-limnoria
-    SUBDIR += py-supybot
-    SUBDIR += py-supybot-plugins
     SUBDIR += quassel
     SUBDIR += quassel-core
     SUBDIR += quirc

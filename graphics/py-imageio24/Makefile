@@ -2,7 +2,7 @@
 
 PORTNAME=	imageio
 DISTVERSION=	2.4.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,8 +18,8 @@ LIB_DEPENDS=	libfreeimage.so:graphics/freeimage
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg \
 		${PY_ENUM34} \
 		${PY_FUTURES} \
-		${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR}
+		${PY_PILLOW} \
+		${PYNUMPY}
 
 USES=		python
 USE_PYTHON=	distutils concurrent autoplist

@@ -2,14 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	openblas
-PORTVERSION=	0.2.20
-PORTREVISION=	11
+PORTVERSION=	0.3.7
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	math
 MASTER_SITES=	NL/lapack/timing/:lapack_tmg
-DISTFILES=	large.tgz:lapack_tmg timing.tgz:lapack_tmg
+DISTFILES=	large.tgz:lapack_tmg \
+		timing.tgz:lapack_tmg
 DIST_SUBDIR=	openblas
+
+PATCH_SITES=	https://github.com/xianyi/OpenBLAS/commit/
+PATCHFILES=	3e67017ac8f0246f5fc14572ca663fb0968d1046.patch:-p1
 
 MAINTAINER=	phd_kimberlite@yahoo.co.jp
 COMMENT=	Optimized BLAS library based on GotoBLAS2
@@ -17,7 +21,9 @@ COMMENT=	Optimized BLAS library based on GotoBLAS2
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		fortran gmake perl5
+USES=		fortran gmake perl5 pkgconfig
+
+CONFLICTS_INSTALL=	cblas lapacke
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	xianyi
@@ -28,18 +34,14 @@ TIMING_FILE=	timing.tgz
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 
-OPENBLAS_SUFX=	r${PORTVERSION}
-OPENBLAS_LIBS=	libopenblas libopenblasp
 OPENBLAS_SVER=	0
-OPENBLAS_FILES=	${OPENBLAS_LIBS:S|$|.so|} ${OPENBLAS_LIBS:S|$|.so.${OPENBLAS_SVER}|} ${OPENBLAS_LIBS:S|$|.a|}
-PLIST_FILES=	${OPENBLAS_FILES:S|^|lib/|}
 TEST_TARGET=	tests
 
-BUILDFLAGS=	FCOMMON_OPT=-frecursive MAKE_NB_JOBS=-1
+PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
-OPTIONS_DEFINE=		INTERFACE64 OPENMP
-OPTIONS_DEFINE_i386=	DYNAMIC_ARCH AVX AVX2
-OPTIONS_DEFINE_amd64=	${OPTIONS_DEFINE_i386}
+OPTIONS_DEFINE=			DYNAMIC_ARCH INTERFACE64 OPENMP
+OPTIONS_DEFINE_i386=		AVX AVX2
+OPTIONS_DEFINE_amd64=		AVX AVX2
 OPTIONS_DEFINE_powerpc64=	POWER6
 OPTIONS_EXCLUDE_powerpc64=	OPENMP
 
@@ -58,7 +60,7 @@ POWER6_DESC=		Optimize for POWER6, instead of the default PPC970
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == powerpc64
-USE_GCC=	yes
+USE_GCC=		yes
 .  if ${PORT_OPTIONS:MPOWER6}
 TARGET_CPU_ARCH=	POWER6
 .else
@@ -66,148 +68,82 @@ TARGET_CPU_ARCH=	PPC970
 .  endif
 .endif
 
-.if defined(TARGET_CPU_ARCH)
-BUILDFLAGS+=	TARGET=${TARGET_CPU_ARCH}
-.endif
-
 MAXTHREADS?=	64
-BUILDFLAGS_THREAD+=	NUM_THREADS=${MAXTHREADS} USE_THREAD=1
-
-.if ${ARCH:M*64} == ""
-BUILDFLAGS+=	BINARY32=1
-.else
-BUILDFLAGS+=	BINARY64=1
-.endif
 
 .if ! ${PORT_OPTIONS:MDYNAMIC_ARCH} && ( ${ARCH} == "amd64" || ${ARCH} == "i386" )
 MANUAL_PACKAGE_BUILD=	Optimizes for the build machine.
 .endif
 
 .if ${PORT_OPTIONS:MDYNAMIC_ARCH}
-BUILDFLAGS+=	DYNAMIC_ARCH=1
 PLIST_SUB+=	DYNARCH=""
 .else
 PLIST_SUB+=	DYNARCH="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MINTERFACE64}
-BUILDFLAGS+=	INTERFACE64=1
-.endif
-
 .if ${PORT_OPTIONS:MOPENMP}
 USES+=		compiler:openmp
-BUILDFLAGS_THREAD+=	USE_OPENMP=1
 .else
 USES+=		compiler:c11
 .endif
 
-.if ! ${PORT_OPTIONS:MAVX}
-BUILDFLAGS+=	NO_AVX=1
-.endif
+.include <bsd.port.pre.mk>
 
-.if ! ${PORT_OPTIONS:MAVX2}
-BUILDFLAGS+=	NO_AVX2=1
+.if ${PORT_OPTIONS:MOPENMP}
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+USE_GCC=	yes
+.endif
 .endif
 
 post-extract:
 	cd ${DISTDIR}/${DIST_SUBDIR} ; \
 	${CP} ${LARGE_FILE} ${TIMING_FILE} ${WRKSRC}
-	${MKDIR} ${WRKDIR}/lib
 
 post-patch:
-	${REINPLACE_CMD} -e "s+%%FIND%%+${FIND}+" \
-	-e "s+%%XARGS%%+${XARGS}+" \
-	-e "s+%%REINPLACE_CMD%%+${REINPLACE_CMD}+" \
-		${WRKSRC}/Makefile
-	${REINPLACE_CMD} -e "s+%%FC%%+${FC}+" -e "s+%%CC%%+${CC}+" \
-		${WRKSRC}/Makefile.rule
-	${REINPLACE_CMD} -e "s+(ARCH)+(ARCH_)+" \
-		${WRKSRC}/Makefile.rule \
-		${WRKSRC}/Makefile.tail \
-		${WRKSRC}/driver/level3/Makefile \
-		${WRKSRC}/driver/others/Makefile \
-		${WRKSRC}/exports/Makefile \
-		${WRKSRC}/interface/Makefile \
-		${WRKSRC}/kernel/Makefile \
-		${WRKSRC}/kernel/Makefile.L3 \
-		${WRKSRC}/lapack/laswp/Makefile \
-		${WRKSRC}/lapack-netlib/SRC/Makefile \
-		${WRKSRC}/lapack-netlib/SRC/VARIANTS/Makefile \
-		${WRKSRC}/lapack-netlib/TESTING/MATGEN/Makefile \
-		${WRKSRC}/lapack-netlib/LAPACKE/src/Makefile \
-		${WRKSRC}/lapack-netlib/LAPACKE/utils/Makefile \
-		${WRKSRC}/reference/Makefile
-	${REINPLACE_CMD} -e "s+(ARCH)+(ARCH_)+" \
-	-e 's+%%LDFLAGS%%+${LDFLAGS}+' \
-	-e 's+%%LOCALBASE%%+${LOCALBASE}+' \
-	-e 's+%%FIND%%+${FIND}+' \
-	-e 's+%%XARGS%%+${XARGS}+' \
-	-e 's+%%REINPLACE_CMD%%+${REINPLACE_CMD}+' \
-	-e 's+$${CROSS_SUFFIX}+${LOCALBASE}/bin/+' \
-	-e '/Clang.*OpenMP/g' \
-		${WRKSRC}/Makefile.system
-	${REINPLACE_CMD} \
-	-e 's/defined(linux)/(defined(linux) || defined(__FreeBSD__))/g' \
-	-e 's/ifdef linux/if defined(linux) || defined(__FreeBSD__)/g' \
-		${WRKSRC}/kernel/power/*.S
+	@${ECHO} MAKE_NB_JOBS=-1 >> ${WRKSRC}/Makefile.rule
+	@${ECHO} NUM_THREADS=${MAXTHREADS} >> ${WRKSRC}/Makefile.rule
+	@${ECHO} USE_THREAD=1 >> ${WRKSRC}/Makefile.rule
+.if ! ${PORT_OPTIONS:MAVX}
+	@${ECHO} NO_AVX=1 >> ${WRKSRC}/Makefile.rule
+.endif
+.if ! ${PORT_OPTIONS:MAVX2}
+	@${ECHO} NO_AVX2=1 >> ${WRKSRC}/Makefile.rule
+.endif
+.if ${PORT_OPTIONS:MDYNAMIC_ARCH}
+	@${ECHO} DYNAMIC_ARCH=1 >> ${WRKSRC}/Makefile.rule
+	@${ECHO} DYNAMIC_OLDER=1 >> ${WRKSRC}/Makefile.rule
+.endif
+.if defined(TARGET_CPU_ARCH)
+	@${ECHO} TARGET=${TARGET_CPU_ARCH} >> ${WRKSRC}/Makefile.rule
+.endif
+.if ${PORT_OPTIONS:MINTERFACE64}
+	@${ECHO} INTERFACE64=1 >> ${WRKSRC}/Makefile.rule
+.endif
+.if ${PORT_OPTIONS:MOPENMP}
+	@${ECHO} USE_OPENMP=1 >> ${WRKSRC}/Makefile.rule
+.endif
+.if ${ARCH:M*64} == ""
+	@${ECHO} BINARY=32 >> ${WRKSRC}/Makefile.rule
+.else
+	@${ECHO} BINARY=64 >> ${WRKSRC}/Makefile.rule
+.endif
 
 post-patch-OPENMP-on:
-	${REINPLACE_CMD} -e "s+OPENBLAS_NUM_THREADS+OMP_NUM_THREADS+g" \
+	@${REINPLACE_CMD} -e "s+OPENBLAS_NUM_THREADS+OMP_NUM_THREADS+g" \
 		${WRKSRC}/test/Makefile \
 		${WRKSRC}/ctest/Makefile
 
-do-build:
-	cd ${WRKSRC} ; ${SETENV} ${BUILDFLAGS} NUM_THREADS=1 USE_THREAD=0 \
-	${MAKE_CMD} ${MAKE_ARGS}
-	${CP} ${WRKSRC}/libopenblas-${OPENBLAS_SUFX}.a ${WRKDIR}/lib/libopenblas.a
-	${CP} ${WRKSRC}/libopenblas-${OPENBLAS_SUFX}.so ${WRKDIR}/lib/libopenblas.so.${OPENBLAS_SVER}
-	cd ${WRKSRC} ; ${MAKE_CMD} ${MAKE_ARGS} clean
-	cd ${WRKSRC} ; ${SETENV} ${BUILDFLAGS} ${BUILDFLAGS_THREAD} \
-	${MAKE_CMD} ${MAKE_ARGS}
-	${CP} ${WRKSRC}/libopenblasp-${OPENBLAS_SUFX}.a ${WRKDIR}/lib/libopenblasp.a
-	${CP} ${WRKSRC}/libopenblasp-${OPENBLAS_SUFX}.so ${WRKDIR}/lib/libopenblasp.so.${OPENBLAS_SVER}
-
 BENCHMARK_MAXTHREADS?=	${MAXTHREADS}
 .if ${PORT_OPTIONS:MOPENMP}
-BENCHMARK_THREADS_FLAG=		OMP_NUM_THREADS=${BENCHMARK_MAXTHREADS}
+BENCHMARK_THREADS_FLAG=	OMP_NUM_THREADS=${BENCHMARK_MAXTHREADS}
 .else
-BENCHMARK_THREADS_FLAG=		OPENBLAS_NUM_THREADS=${BENCHMARK_MAXTHREADS}
+BENCHMARK_THREADS_FLAG=	OPENBLAS_NUM_THREADS=${BENCHMARK_MAXTHREADS}
 .endif
 
 benchmark: build
-	cd ${WRKSRC} ; ${SETENV} ${BUILDFLAGS} NUM_THREADS=${MAXTHREADS} \
-	USE_THREAD=1 ${MAKE_CMD} ${MAKE_ARGS} hpl
-	cd ${WRKSRC}/benchmark ; ${SETENV} ${BUILDFLAGS} NUM_THREADS=${MAXTHREADS} \
-	USE_THREAD=1 ${BENCHMARK_THREADS_FLAG} ${MAKE_CMD} ${MAKE_ARGS}
+	cd ${WRKSRC} ; ${SETENV} ${MAKE_CMD} ${MAKE_ARGS} hpl
+	cd ${WRKSRC}/benchmark ; ${SETENV} ${BENCHMARK_THREADS_FLAG} ${MAKE_CMD} ${MAKE_ARGS}
 
-do-install:
-.for L in ${OPENBLAS_LIBS}
-	${INSTALL_DATA} ${WRKDIR}/lib/${L}.a ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_LIB} ${WRKDIR}/lib/${L}.so.${OPENBLAS_SVER} ${STAGEDIR}${PREFIX}/lib
-	${LN} -sf ${L}.so.${OPENBLAS_SVER} ${STAGEDIR}${PREFIX}/lib/${L}.so
-.endfor
-	cd ${WRKSRC} && \
-		${FIND} . -name 'common*.h' -print | ${XARGS} ${BASENAME} | ${XARGS} -I {} ${MV} {} openblas_{}
-	${MV} ${WRKSRC}/version.h ${WRKSRC}/openblas_version.h
-	${MV} ${WRKSRC}/param.h ${WRKSRC}/openblas_param.h
-	${MV} ${WRKSRC}/cpuid.h ${WRKSRC}/openblas_cpuid.h
-	${MV} ${WRKSRC}/config.h ${WRKSRC}/openblas_config.h
-	${REINPLACE_CMD} \
-	-e 's/"common.h"/"openblas_common.h"/' \
-	-e 's/"version.h"/"openblas_version.h"/' \
-	-e 's/"param.h"/"openblas_param.h"/' \
-	-e 's/"cpuid.h"/"openblas_cpuid.h"/' \
-	-e 's/"config.h"/"openblas_config.h"/' \
-	-e 's/"common_/"openblas_common_/' \
-		${WRKSRC}/*.h \
-		${WRKSRC}/*.c \
-		${WRKSRC}/interface/*.c
-	${MKDIR} ${STAGEDIR}${PREFIX}/include/openblas
-	${INSTALL_DATA} ${WRKSRC}/openblas_*.h ${STAGEDIR}${PREFIX}/include/openblas
-	${INSTALL_DATA} ${WRKSRC}/cblas.h ${WRKSRC}/config_last.h ${WRKSRC}/l1param.h ${WRKSRC}/l2param.h ${WRKSRC}/symcopy.h \
-		${STAGEDIR}${PREFIX}/include/openblas
+post-install-DYNAMIC_ARCH-off:
+	cd ${STAGEDIR}${PREFIX} && ls lib/libopenblas_*p-r${PORTVERSION}.* >> ${TMPPLIST}
 
-do-install-DYNAMIC_ARCH-on:
-	${INSTALL_DATA} ${WRKSRC}/config_kernel.h ${STAGEDIR}${PREFIX}/include/openblas
-
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

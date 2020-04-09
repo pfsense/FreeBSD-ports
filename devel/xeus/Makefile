@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	xeus
-DISTVERSION=	0.23.2
-PORTREVISION=	2
+DISTVERSION=	0.23.10
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,9 +19,10 @@ LIB_DEPENDS=	libcryptopp.so:security/cryptopp \
 
 USES=		cmake compiler:c++14-lang localbase:ldflags pkgconfig ssl
 USE_GITHUB=	yes
-GH_ACCOUNT=	QuantStack
+GH_ACCOUNT=	jupyter-xeus
+USE_LDCONFIG=	yes
+
 CMAKE_OFF=	BUILD_STATIC_LIBS
 CMAKE_ON=	DISABLE_ARCH_NATIVE
-USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	torrent-file-editor
-PORTVERSION=	0.3.16
+PORTVERSION=	0.3.17
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-p2p
 
@@ -25,6 +25,8 @@ DONATION_DESC=	Show donation text in the About dialog
 DONATION_CMAKE_OFF=	-DDISABLE_DONATION:BOOL=ON
 
 post-patch:
+	@${REINPLACE_CMD} -e 's,const auto file,const auto \&file,' \
+		${WRKSRC}/bencodemodel.cpp ${WRKSRC}/mainwindow.cpp
 # Avoid conflict with C++20 <version> by adding .txt suffix
 	@${REINPLACE_CMD} -i .c++20 '/file/s/version/&.txt/' \
 		${WRKSRC}/cmake/Dmg.cmake ${WRKSRC}/cmake/Version.cmake

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	istio
-PORTVERSION=	1.4.2
+PORTVERSION=	1.4.6
 CATEGORIES=	sysutils
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -18,6 +18,9 @@ OPTIONS_DEFINE=	EXAMPLES
 OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
+
+# The vendored golang/sys fails to build on aarch64
+GOLANG_SYS_V=	9fbb57f87de9
 
 GH_TUPLE=	\
 		Azure:go-autorest:v12.0.0:azure_go_autorest/vendor/github.com/Azure/go-autorest \
@@ -42,6 +45,7 @@ GH_TUPLE=	\
 		circonus-labs:circonus-gometrics:v2.3.1:circonus_labs_circonus_gometrics/vendor/github.com/circonus-labs/circonus-gometrics \
 		circonus-labs:circonusllhist:v0.1.3:circonus_labs_circonusllhist/vendor/github.com/circonus-labs/circonusllhist \
 		containerd:containerd:v1.3.0:containerd_containerd/vendor/github.com/containerd/containerd \
+		coreos:etcd:v3.3.15:coreos_etcd/vendor/github.com/coreos/etcd \
 		coreos:go-oidc:v2.1.0:coreos_go_oidc/vendor/github.com/coreos/go-oidc \
 		cpuguy83:go-md2man:v1.0.10:cpuguy83_go_md2man/vendor/github.com/cpuguy83/go-md2man \
 		cyphar:filepath-securejoin:v0.2.2:cyphar_filepath_securejoin/vendor/github.com/cyphar/filepath-securejoin \
@@ -81,7 +85,7 @@ GH_TUPLE=	\
 		golang:snappy:v0.0.1:golang_snappy/vendor/github.com/golang/snappy \
 		golang:sync:112230192c58:golang_sync/vendor/golang.org/x/sync \
 		golang:sync:1d60e4601c6f:golang_sync_1/vendor/github.com/golang/sync \
-		golang:sys:fead79001313:golang_sys/vendor/golang.org/x/sys \
+		golang:sys:${GOLANG_SYS_V}:golang_sys/vendor/golang.org/x/sys \
 		golang:text:v0.3.2:golang_text/vendor/golang.org/x/text \
 		golang:time:9d24e82272b4:golang_time/vendor/golang.org/x/time \
 		golang:tools:70d37148ca0c:golang_tools/vendor/golang.org/x/tools \
@@ -201,8 +205,8 @@ GH_TUPLE=	\
 		yl2chen:cidranger:928b519e5268:yl2chen_cidranger/vendor/github.com/yl2chen/cidranger \
 		yuin:gopher-lua:84ea3a3c79b3:yuin_gopher_lua/vendor/github.com/yuin/gopher-lua \
 		istio:pkg:10d06b6b315e:istio_pkg/vendor/istio.io/pkg \
-		istio:operator:2689e5c3357f:istio_operator/vendor/istio.io/operator \
-		istio:api:e1a1952e5b81:istio_api/vendor/istio.io/api \
+		istio:operator:508c83195d0b:istio_operator/vendor/istio.io/operator \
+		istio:api:ed4b507c54e1:istio_api/vendor/istio.io/api \
 		istio:gogo-genproto:f7d19ec0141d:istio_gogo_genproto/vendor/istio.io/gogo-genproto \
 		census-ecosystem:opencensus-go-exporter-prometheus:v0.1.0:census_ecosystem_opencensus_go_exporter_prometheus/vendor/contrib.go.opencensus.io/exporter/prometheus \
 		census-ecosystem:opencensus-go-exporter-zipkin:v0.1.1:census_ecosystem_opencensus_go_exporter_zipkin/vendor/contrib.go.opencensus.io/exporter/zipkin \

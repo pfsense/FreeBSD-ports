@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nss
-PORTVERSION=	3.51
+PORTVERSION=	3.51.1
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
 
@@ -12,16 +12,17 @@ COMMENT=	Libraries to support development of security-enabled applications
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	zip:archivers/zip
 LIB_DEPENDS=	libnspr4.so:devel/nspr \
 		libsqlite3.so:databases/sqlite3
 TEST_DEPENDS=	bash:shells/bash
 
-WRKSRC_SUBDIR=	nss
+USES=		cpe gmake perl5
 
 MAKE_JOBS_UNSAFE=	yes
-USE_LDCONFIG=	${PREFIX}/lib/nss
-USES=		cpe gmake perl5
+
+WRKSRC_SUBDIR=	nss
+
+USE_LDCONFIG=	yes
 CPE_VENDOR=	mozilla
 CPE_PRODUCT=	network_security_services
 USE_PERL5=	build
@@ -56,7 +57,7 @@ BINS=		${DIST}/${OPSYS}${OSREL}_DBG.OBJ
 .endif
 
 .if ${ARCH} == powerpc64
-USES+=		compiler:c++11-lang # -mcrypto -mvsx
+USE_GCC=	yes
 .else
 MAKE_ENV+=	NSS_DISABLE_ALTIVEC=1
 .endif
@@ -88,13 +89,13 @@ post-patch:
 		${XARGS} ${REINPLACE_CMD} -e 's|"nspr.h"|<nspr.h>|'
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/include/nss/nss ${STAGEDIR}${PREFIX}/lib/nss
+	${MKDIR} ${STAGEDIR}${PREFIX}/include/nss ${STAGEDIR}${PREFIX}/lib
 	${FIND} ${DIST}/public/nss -type l \
-		-exec ${INSTALL_DATA} {} ${STAGEDIR}${PREFIX}/include/nss/nss \;
+		-exec ${INSTALL_DATA} {} ${STAGEDIR}${PREFIX}/include/nss \;
 	${INSTALL_LIB} ${BINS}/lib/*.so \
-		${STAGEDIR}${PREFIX}/lib/nss
+		${STAGEDIR}${PREFIX}/lib/
 	${INSTALL_DATA} ${BINS}/lib/libcrmf.a \
-		${STAGEDIR}${PREFIX}/lib/nss
+		${STAGEDIR}${PREFIX}/lib/
 .for bin in ${INSTALL_BINS}
 	${INSTALL_PROGRAM} ${BINS}/bin/${bin} \
 		${STAGEDIR}${PREFIX}/bin

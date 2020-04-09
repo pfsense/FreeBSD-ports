@@ -2,6 +2,7 @@
 %%ETCDIR%%/koi-win
 %%ETCDIR%%/win-utf
 %%FASTDFS%%@sample etc/fdfs/mod_fastdfs.conf.sample
+%%LINK%%include/ngx_link_func_module.h
 %%MODSECURITY%%%%ETCDIR%%/unicode.mapping
 %%NAXSI%%%%ETCDIR%%/naxsi_core.rules
 @sample %%ETCDIR%%/fastcgi_params-dist %%ETCDIR%%/fastcgi_params
@@ -72,4 +73,4 @@ share/vim/vimfiles/syntax/nginx.vim
 %%WWW%%@postunexec if [ -L %D/www/nginx ]; then rm -f %D/www/nginx; fi
 @dir %%NGINX_TMPDIR%%
 @dir %%NGINX_LOGDIR%%
-man/man8/nginx.8.gz
+share/man/man8/nginx.8.gz

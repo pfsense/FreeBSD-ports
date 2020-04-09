@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	13.30.0
+PORTVERSION=	13.32.0
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -174,7 +174,7 @@ RADIUS_LIB_DEPENDS=	libradiusclient-ng.so:net/radiusclient
 
 SNMP_CONFIGURE_WITH=	netsnmp
 SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp \
-			libpkg.so:ports-mgmt/pkg
+			libpkg.so:${PKG_ORIGIN}
 
 SPANDSP_CONFIGURE_WITH=	spandsp
 SPANDSP_LIB_DEPENDS=	libspandsp.so:comms/spandsp \

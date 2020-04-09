@@ -15,7 +15,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 CONFLICTS=	gbase-0.* gmap-2015.*
 
-USES=		bison gmake localbase
+USES=		bison:alias gmake localbase
 
 MAKE_JOBS_UNSAFE=yes
 
@@ -27,7 +27,7 @@ INSTALL_WRKSRC=	${BUILD_WRKSRC}
 TEST_WRKSRC=	${BUILD_WRKSRC}
 ALL_TARGET=	esmumps
 TEST_TARGET=	check
-MAKE_ENV=	prefix=${STAGEDIR}${PREFIX} mandir=${STAGEDIR}${MANDIRS}	\
+MAKE_ENV=	prefix=${STAGEDIR}${PREFIX} mandir=${STAGEDIR}${PREFIX}/share/man	\
 		-DSCOTCH_PTHREAD_NUMBER=2
 
 DOCVER=		${PORTVERSION:R:R}

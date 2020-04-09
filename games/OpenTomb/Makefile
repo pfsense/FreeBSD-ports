@@ -1,4 +1,4 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
+# Created by: Piotr Kubaj <pkubaj@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	OpenTomb
@@ -7,7 +7,7 @@ DISTVERSION=	2018-02-03_alpha
 PORTREVISION=	2
 CATEGORIES=	games
 
-MAINTAINER=	pkubaj@anongoth.pl
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Open-source Tomb Raider 1-5 engine remake
 
 LICENSE=	LGPL3
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 USES=		cmake:insource compiler:c++11-lang lua openal sdl
 USE_GITHUB=	yes
 USE_SDL=	sdl2
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 SUB_FILES=	OpenTomb
 
 post-patch:

@@ -5,7 +5,7 @@ PORTNAME=	lattice-ice40-examples-hx1k
 PORTVERSION=	g20180310
 CATEGORIES=	devel
 
-MAINTAINER=	jsorocil@gmail.com
+MAINTAINER=	manu@FreeBSD.org
 COMMENT=	Lattice iCE40 FPGA examples for the Olimex HX1K board
 
 LICENSE=	APACHE20
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	abc:cad/abc \
 		arachne-pnr:devel/arachne-pnr \
 		icepack:devel/icestorm \
-		yosys:devel/yosys
+		yosys:cad/yosys
 
 USES=		gmake
 USE_GITHUB=	yes

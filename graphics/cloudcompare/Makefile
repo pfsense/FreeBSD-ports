@@ -3,14 +3,17 @@
 PORTNAME=	cloudcompare
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.10.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D point cloud processing software
 
 LICENSE=	GPLv2+ LGPL20+
 LICENSE_COMB=	multi
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 BROKEN_aarch64=		fails to compile: mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
 

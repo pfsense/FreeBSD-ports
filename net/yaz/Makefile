@@ -3,10 +3,11 @@
 
 PORTNAME=	yaz
 DISTVERSION=	5.28.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://ftp.indexdata.dk/pub/yaz/
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Z39.50/SR client and API library
 
 LICENSE=	BSD3CLAUSE

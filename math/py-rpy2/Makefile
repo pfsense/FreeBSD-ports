@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rpy2
-PORTVERSION=	3.2.4
+PORTVERSION=	3.2.7
 CATEGORIES=	math
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -24,7 +24,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.13.1:devel/py-cffi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}simplegeneric>=0:devel/py-simplegeneric@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tzlocal>=0:devel/py-tzlocal@${PY_FLAVOR}
 
-USES=		compiler:c11 fortran python:3.5+ readline
+USES=		compiler:c11 fortran python:3.6+ readline
 USE_PYTHON=	autoplist distutils
 
 MAKE_ENV=	RPY2_CFFI_MODE=BOTH
@@ -36,10 +36,4 @@ PLIST_FILES=	${PYTHON_SITELIBDIR}/__pycache__/_rinterface_cffi_abi.cpython-${PYT
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_rinterface_cffi_api.abi3.so
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == clang && !exists(/usr/include/omp.h)
-LIB_DEPENDS+=	libomp.so:devel/openmp
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -15,6 +15,9 @@ COMMENT=	Educational game aiming to teach programming to kids
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libsndfile.so:audio/libsndfile \
 		libvorbis.so:audio/libvorbis \
@@ -32,7 +35,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_TUPLE=	colobot:colobot-data:c467bd9:data
 
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 post-extract:
 	@${MV} ${WRKDIR}/colobot-data-c467bd9/* ${WRKSRC}/data

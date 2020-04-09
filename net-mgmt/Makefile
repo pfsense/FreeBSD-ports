@@ -19,6 +19,7 @@
     SUBDIR += bandwidthd
     SUBDIR += bgpq
     SUBDIR += bgpq3
+    SUBDIR += bgpq4
     SUBDIR += bgpuma
     SUBDIR += blackbox_exporter
     SUBDIR += bpft
@@ -70,7 +71,6 @@
     SUBDIR += ettercap
     SUBDIR += fastnetmon
     SUBDIR += fetchconfig
-    SUBDIR += flow-extract
     SUBDIR += flow-tools
     SUBDIR += flowd
     SUBDIR += flowviewer
@@ -174,6 +174,7 @@
     SUBDIR += net-snmp
     SUBDIR += netbox
     SUBDIR += netdata
+    SUBDIR += netdata-go
     SUBDIR += netdisco
     SUBDIR += netdisco-mibs
     SUBDIR += netdot
@@ -212,7 +213,6 @@
     SUBDIR += ocsinventory-ocsreports
     SUBDIR += ocsinventory-server
     SUBDIR += omping
-    SUBDIR += onionlauncher
     SUBDIR += openbmp
     SUBDIR += openlldp
     SUBDIR += openvmps
@@ -281,7 +281,6 @@
     SUBDIR += pandorafms_agent
     SUBDIR += pandorafms_console
     SUBDIR += pandorafms_server
-    SUBDIR += pdagent-integrations
     SUBDIR += percona-monitoring-plugins
     SUBDIR += pftabled
     SUBDIR += php72-snmp
@@ -311,7 +310,6 @@
     SUBDIR += py-napalm-logs
     SUBDIR += py-ncclient
     SUBDIR += py-nxapi-plumbing
-    SUBDIR += py-pdagent
     SUBDIR += py-prometheus-client
     SUBDIR += py-pyIOSXR
     SUBDIR += py-pyang
@@ -376,7 +374,6 @@
     SUBDIR += tcptrack
     SUBDIR += telegraf
     SUBDIR += thanos
-    SUBDIR += tornova
     SUBDIR += torrus
     SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter

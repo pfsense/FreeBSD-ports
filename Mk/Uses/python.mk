@@ -324,32 +324,15 @@ _PYTHON_TEST_DEP=	yes
 WARNING+=	"PYTHON_DEFAULT must be a version present in PYTHON2_DEFAULT or PYTHON3_DEFAULT, if you want more Python flavors, set BUILD_ALL_PYTHON_FLAVORS in your make.conf"
 .endif
 
-.if ${_PYTHON_ARGS} == "2"
+.if ${_PYTHON_ARGS} == 2.7
+DEV_WARNING+=		"lang/python27 reached End of Life and will be removed on 2020-12-31, consider converting to a modern version of python"
+.elif ${_PYTHON_ARGS} == 2
 DEV_ERROR+=		"USES=python:2 is no longer supported, use USES=python:2.7"
-.elif ${_PYTHON_ARGS} == "3"
+.elif ${_PYTHON_ARGS} == 3
 DEV_ERROR+=		"USES=python:3 is no longer supported, use USES=python:3.5+ or an appropriate version range"
-.endif  # ${_PYTHON_ARGS} == "2"
+.endif  # ${_PYTHON_ARGS} == 2.7
 
-.if defined(PYTHON_VERSION)
-# A port/user requests a specific python version for its dependencies via
-# DEPENDS_ARGS, since it requires the specific python version itself.
-# Several things can happen now:
-#	a) the dependency supports the requested version -> everything's fine
-#	b) the dependency does not support the requested version
-#		1) the dependency works in a way that the different python
-#		   versions do not matter -> everything's fine
-#		2) the dependency is likely to break due to the conflict
-#		   nothing's fine
-#
-# b.2) needs to be resolved. Due to the complexity of how different pieces of
-# software are built, we can't solve this automatically. Instead, let's assume
-# that maintainers know what they are doing and assume PYTHON_VERSION to be a
-# hint. Just warn maintainers, if the versions do not match
-# (_PYTHON_VERSION_NONSUPPORTED).
-_PYTHON_VERSION:=	${PYTHON_VERSION:S/^python//}
-.else
 _PYTHON_VERSION:=	${PYTHON_DEFAULT}
-.endif # defined(PYTHON_VERSION)
 
 # Validate Python version whether it meets the version restriction.
 _PYTHON_VERSION_CHECK:=		${_PYTHON_ARGS:C/^([1-9]\.[0-9])$/\1-\1/}
@@ -374,10 +357,6 @@ _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MAXIMUM} at most
 
 # If we have an unsupported version of Python, try another.
 .if defined(_PYTHON_VERSION_NONSUPPORTED)
-.if defined(PYTHON_VERSION) || defined(PYTHON_CMD)
-_PV:=		${_PYTHON_VERSION}	# preserve the specified python version
-IGNORE=		needs Python ${_PYTHON_VERSION_NONSUPPORTED}, but ${_PV} was specified
-.endif # defined(PYTHON_VERSION) || defined(PYTHON_CMD)
 .undef _PYTHON_VERSION
 .for ver in ${PYTHON2_DEFAULT} ${PYTHON3_DEFAULT} ${_PYTHON_VERSIONS}
 __VER=		${ver}
@@ -454,25 +433,7 @@ PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 # - From PYTHON_DEFAULT
 PY_FLAVOR=	py${_PYTHON_VERSION:S/.//}
 
-# Pass PYTHON_VERSION down the dependency chain. This ensures that
-# port A -> B -> C all will use the same python version and do not
-# try to find a different one, if the passed version fits into
-# the supported version range.
-PYTHON_VERSION?=	python${_PYTHON_VERSION}
-.if !defined(PYTHON_NO_DEPENDS) && \
-    ${PYTHON_VERSION} != python${PYTHON_DEFAULT}
-DEPENDS_ARGS+=		PYTHON_VERSION=${PYTHON_VERSION}
-.endif
-
-# NOTE:
-#
-#  PYTHON_VERSION will hold whatever is passed down the dependency chain.
-#  If a user runs `make PYTHON_VERSION=python3.5, PYTHON_VERSION will be
-#  set to 'python3.5'. A port however may require a different version,
-#  which is stored (above) in _PYTHON_VERSION.
-#  Every python bit below hence should use python${_PYTHON_VERSION}, since
-#  this is the value, the _port_ requires
-#
+PYTHON_VERSION=	python${_PYTHON_VERSION}
 
 # Got the correct python version, set some publicly accessible variables
 PYTHON_VER=		${_PYTHON_VERSION}
@@ -557,7 +518,7 @@ DEV_WARNING+=	"USE_PYTHON=concurrent when only one of Python 2 or 3 is supported
 _USES_POST+=		uniquefiles:dirs
 .if defined(_PYTHON_FEATURE_FLAVORS) && ${FLAVOR} == ${FLAVORS:[1]}
 UNIQUE_DEFAULT_LINKS=	yes
-.elif !defined(_PYTHON_FEATURE_FLAVORS) && ${PYTHON_VERSION} == python${PYTHON_DEFAULT}
+.elif !defined(_PYTHON_FEATURE_FLAVORS) && ${_PYTHON_VERSION} == ${PYTHON_DEFAULT}
 UNIQUE_DEFAULT_LINKS=	yes
 .else
 UNIQUE_DEFAULT_LINKS=	no
@@ -576,7 +537,7 @@ _UNIQUE_FIND_SUFFIX_FILES=	${SED} -e 's|^${PREFIX}/||' ${TMPPLIST} 2>/dev/null
 UNIQUE_FIND_SUFFIX_FILES+=	${_UNIQUE_FIND_SUFFIX_FILES} | \
 				${EGREP} -he '^bin/.*$$|^sbin/.*$$|^libexec/.*$$'
 UNIQUE_FIND_SUFFIX_MAN_FILES+=	${_UNIQUE_FIND_SUFFIX_FILES} | \
-				${EGREP} -he '^man/man[1-9ln]/.*$$'
+				${EGREP} -he '^man/man[1-9ln]/.*$$|^share/man/man[1-9ln]/.*$$'
 .endif # defined(_PYTHON_FEATURE_CONCURRENT)
 
 _CURRENTPORT:=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
@@ -633,6 +594,7 @@ add-plist-pymod:
 	@${SED} -e 's|^${STAGEDIR}${PREFIX}/||' \
 		-e 's|^${PREFIX}/||' \
 		-e 's|^\(man/.*man[0-9]\)/\(.*\.[0-9]\)$$|\1/\2.gz|' \
+		-e 's|^\(share/man/.*man[0-9]\)/\(.*\.[0-9]\)$$|\1/\2.gz|' \
 		-e 's|[[:alnum:]|[:space:]]*/\.\./*||g; s|/\./|/|g' \
 		${_PYTHONPKGLIST} | ${SORT} >> ${TMPPLIST}
 
@@ -665,27 +627,27 @@ CMAKE_ARGS+=	-DPython_ADDITIONAL_VERSIONS=${PYTHON_VER}
 
 # Python 3rd-party modules
 PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}
-PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR}
+PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.15,1<1.19,1:math/py-numpy@${PY_FLAVOR}
 
 # Common Python modules that can be needed but only for some versions of Python.
 .if ${PYTHON_REL} < 3500
+PY_PILLOW=	${PYTHON_PKGNAMEPREFIX}pillow6>=6.0.0:graphics/py-pillow6@${PY_FLAVOR}
 PY_TYPING=	${PYTHON_PKGNAMEPREFIX}typing>=3.7.4:devel/py-typing@${PY_FLAVOR}
 .else
+PY_PILLOW=	${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR}
 PY_TYPING=
 .endif
 
 .if ${PYTHON_REL} < 3400
-PY_ENUM34=	${PYTHON_PKGNAMEPREFIX}enum34>0:devel/py-enum34@${PY_FLAVOR}
-PY_ENUM_COMPAT=	${PYTHON_PKGNAMEPREFIX}enum-compat>0:devel/py-enum-compat@${PY_FLAVOR}
+PY_ENUM34=	${PYTHON_PKGNAMEPREFIX}enum34>=1.1<2.0:devel/py-enum34@${PY_FLAVOR}
 PY_PATHLIB=	${PYTHON_PKGNAMEPREFIX}pathlib>0:devel/py-pathlib@${PY_FLAVOR}
 .else
 PY_ENUM34=
-PY_ENUM_COMPAT=
 PY_PATHLIB=	
 .endif
 
 .if ${PYTHON_REL} < 3300
-PY_IPADDRESS=	${PYTHON_PKGNAMEPREFIX}ipaddress>0:net/py-ipaddress@${PY_FLAVOR}
+PY_IPADDRESS=	${PYTHON_PKGNAMEPREFIX}ipaddress>=1.0.23:net/py-ipaddress@${PY_FLAVOR}
 .else
 PY_IPADDRESS=
 .endif

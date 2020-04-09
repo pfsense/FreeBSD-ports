@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Rex
-PORTVERSION=	1.7.1
+PORTVERSION=	1.8.2
 CATEGORIES=	sysutils perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:FERKI
@@ -43,6 +43,8 @@ USES=		perl5 shebangfix
 USE_PERL5=	configure
 
 NO_ARCH=	yes
+
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 SHEBANG_FILES=	lib/Rex/Commands/templates/append_if_no_such_line.tpl.pl
 

@@ -191,15 +191,15 @@ prosody:*:242:242::0:0:Prosody Jabber Server:/nonexistent:/usr/sbin/nologin
 ot-recorder:*:243:243::0:0:OwnTracks Recorder:/nonexistent:/usr/sbin/nologin
 mastodon:*:244:244::0:0:Mastodon User:/usr/local/www/mastodon:/bin/sh
 routinator:*:245:245::0:0:Routinator 3000 Pseudo User:/nonexistent:/usr/sbin/nologin
-# free: 246
+fahclient:*:246:246::0:0:Folding@home User:/nonexistent:/usr/sbin/nologin
 fcron:*:247:247::0:0:fcron pseudo-user:/nonexistent:/usr/sbin/nologin
-# free: 248
-# free: 249
+signal-cli:*:248:248::0:0:Signal CLI:/nonexistent:/usr/sbin/nologin
+sonarqube:*:249:249::0:0:SonarQube Server:/nonexistent:/usr/sbin/nologin
 sems:*:250:250::0:0:SIP Express Media Server:/nonexistent:/usr/sbin/nologin
 # free: 251
 # free: 252
 _adsuck:*:253:253::0:0:Adsuck ad blocking user:/nonexistent:/usr/sbin/nologin
-# free: 254
+imds:*:254:254::0:0:Instance Metadata Service filter:/nonexistent:/usr/sbin/nologin
 _i2pd:*:255:255::0:0:I2P daemon:/var/db/i2pd:/usr/sbin/nologin
 _tor:*:256:256::0:0:Tor anonymizing router:/var/db/tor:/usr/sbin/nologin
 _smtpd:*:257:257::0:0:OpenSMTPD:/var/empty:/usr/sbin/nologin
@@ -278,7 +278,7 @@ smfs:*:326:326::0:0:SMFSAV Owner:/nonexistent:/usr/sbin/nologin
 orthanc:*:330:330::0:0:Orthanc Daemon:/nonexistent:/usr/sbin/nologin
 # free: 331
 # free: 332
-# free: 333
+honeytrap:*:333:333::0:0:HoneyTrap Daemon:/nonexistent:/usr/sbin/nologin
 # free: 334
 # free: 335
 _pma:*:336:80::0:0:phpMyAdmin Owner:/nonexistent:/usr/sbin/nologin
@@ -400,7 +400,7 @@ ecartis:*:450:450::0:0:Ecartis Listserver:/usr/local/ecartis:/usr/sbin/nologin
 # free: 452
 # free: 453
 # free: 454
-# free: 455
+inadyn:*:455:455::0:0:inadyn user:/nonexistent:/usr/sbin/nologin
 # free: 456
 # free: 457
 # free: 458
@@ -817,8 +817,8 @@ ebusd:*:854:854::0:0:eBUS Daemon user:/nonexistent:/usr/sbin/nologin
 # free: 869
 # free: 870
 archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
-# free: 872
-# free: 873
+bitmark:*:872:872::0:0:Bitmark Property System:/var/lib/bitmarkd:/usr/sbin/nologin
+bitmark-recorder:*:873:873::0:0:Bitmark Property Recorder:/var/lib/recorderd:/usr/sbin/nologin
 # free: 874
 # free: 875
 # free: 876
@@ -826,7 +826,7 @@ archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
 # free: 878
 # free: 879
 # free: 880
-# free: 881
+ultimaker:*:881:881::0:0:Ultimaker user:/nonexistent:/usr/sbin/nologin
 midpoint:*:882:882::0:0:midPoint user:/var/db/midpoint:/usr/sbin/nologin
 ipfs-go:*:883:883::0:0:ipfs-go user:/var/db/ipfs-go:/bin/sh
 telegraf:*:884:884::0:0:telegraf user:/nonexistent:/usr/sbin/nologin

@@ -40,7 +40,6 @@ atari800/*		emulators/atari800	xf25 contains copyright ROMs and cannot be distri
 baudline_*		audio/baudline		No redistribution allowed
 BCWipe-*		security/bcwipe		Non-commercial distribution and use only
 bicom*			archivers/bicom		Contact author personally regarding commercial use
-boodler-*		audio/boodler		Not for commercial use
 Browser*.tar.gz		net/ldapbrowser		No reply from author regarding redistribution licensing
 bzip-*			archivers/bzip		Some algorithms used may infringe certain US patents.  Opinions differ.  Commercial use could render you liable to unfriendly legal action
 citrix_ica-*		net/citrix_ica		License prohibits redistribution
@@ -78,6 +77,7 @@ etqw*			games/linux-etqw-demo-server Redistribution limited
 etqw*			games/linux-etqw-server Redistribution limited
 ezmlm-*			mail/ezmlm		No license -- see http://cr.yp.to/softwarelaw.html
 ezmlm-*			mail/ezmlm-idx		No license -- see http://cr.yp.to/softwarelaw.html
+fahclient-*		biology/linux-foldingathome Distribution without permission is prohibited
 fasta2*			biology/fasta		May not be sold or incorporated into a commercial product
 fasta3*			biology/fasta3		May not be sold or incorporated into a commercial product
 festival/festlex_OALD*	audio/festlex-oald	No commercial use
@@ -122,7 +122,6 @@ jmf-*-alljava.zip	java/jmf		Redistribution of pre-compiled binaries is not permi
 jre-8*-i586.tar.gz	java/linux-oracle-jre18	License does not allow distribution with fee
 jta-*.zip		java/jta		See the license
 komodo-*		editors/komodo-edit	Distribution not permitted
-kye-data_nuke_levels.20121101.tar.gz games/kye	kye-data_nuke_levels is charityware
 kzip-*			archivers/kzip		License does not allow redistribution
 l0phtcrack/*		security/l0phtcrack	Parts are under GPL, so binaries should not be distributed.  Contains crypto code from OpenSSL
 ladder.tar		games/ladder		Possible copyright problems
@@ -221,7 +220,6 @@ xinvaders-*		games/xinvaders		Do not sell for profit
 xmdiary-*		deskutils/xmdiary	Do not sell for profit
 xrisk-*			games/xrisk		Possible copyright/trademark violation
 xtr1.50e*		japanese/xtr		Need to obtain permission for commercial redistribution
-xtris-*.tar.gz		games/xtris		Possible trademark infringement
 xzx-pro-*.tar.gz	emulators/xzx		Redistribution forbidden by license
 yEd*			graphics/yed		Downloading requires acceptance of license agreement
 zh-moettf/*		chinese/moettf		Contact Taiwan's Ministry of Education for commercial use

@@ -2,6 +2,7 @@
 
 PORTNAME=	cantor
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	2
 CATEGORIES=	math kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,6 +12,7 @@ LIB_DEPENDS=	libAnalitza.so:math/analitza \
 		libcln.so:math/cln \
 		libqalculate.so:math/libqalculate \
 		libspectre.so:print/libspectre \
+		libpoppler.so:graphics/poppler \
 		libpoppler-qt5.so:graphics/poppler-qt5
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl \
 		docbook-xml>0:textproc/docbook-xml
@@ -22,7 +24,7 @@ USE_KDE=	attica auth archive bookmarks codecs completion config \
 		itemmodels itemviews init jobwidgets kdelibs4support kio \
 		newstuff parts pty service solid sonnet syntaxhighlighting \
 		texteditor textwidgets widgetsaddons xmlgui
-USE_QT=		concurrent core dbus gui network printsupport widgets xml xmlpatterns \
+USE_QT=		concurrent core dbus gui network printsupport svg widgets xml xmlpatterns \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes
 

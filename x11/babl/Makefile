@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	babl
-PORTVERSION=	0.1.72
+PORTVERSION=	0.1.74
 CATEGORIES=	x11
 MASTER_SITES=	GIMP
 
@@ -27,4 +27,10 @@ SIMD_MESON_OFF=	-Denable-mmx=false -Denable-sse=false \
 		-Denable-sse4_1=false -Denable-avx2=false \
 		-Denable-f16c=false
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == powerpc64
+USE_GCC=	yes
+.endif
+
+.include <bsd.port.post.mk>

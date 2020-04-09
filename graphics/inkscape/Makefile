@@ -3,7 +3,7 @@
 
 PORTNAME=	inkscape
 PORTVERSION=	0.92.4
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	graphics gnome
 MASTER_SITES=	https://media.inkscape.org/dl/resources/file/
 
@@ -88,11 +88,5 @@ post-patch:
 	# Third entry in the table of interpreters is basename of executable
 	@${REINPLACE_CMD} -e 's|python|${PYTHON_VERSION}|3' \
 		${WRKSRC}/src/extension/implementation/script.cpp
-	# Obtained from Arch Linux
-	@${REINPLACE_CMD} -e 's|gTrue|true|g' -e 's|gFalse|false|g' -e 's|GBool|bool|g' \
-		${WRKSRC}/src/extension/internal/pdfinput/pdf-parser.*
-	# Fix with poppler 0.73
-	@${REINPLACE_CMD} -E '/#include "goo\/gtypes.h"/d' \
-		${WRKSRC}/src/extension/internal/pdfinput/pdf-parser.h
 
 .include <bsd.port.mk>

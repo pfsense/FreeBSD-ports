@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	code_saturne
-PORTVERSION=	5.3.3
-PORTREVISION=	2
+PORTVERSION=	6.0.2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	science parallel
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -13,12 +13,13 @@ COMMENT=	EDF's general purpose Computational Fluid Dynamics (CFD) software
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	gsed:textproc/gsed
 LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo	\
 		libcgns.so:science/cgnslib	\
 		libhdf5.so:science/hdf5		\
-		libomp.so:devel/openmp		\
 		libmedC.so:french/med
-RUN_DEPENDS=	xmgrace:math/grace	\
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}	\
+		xmgrace:math/grace	\
 		bash:shells/bash	\
 		xterm:x11/xterm
 
@@ -33,17 +34,21 @@ USE_PYQT=	core gui sip widgets xml_build
 SHEBANG_FILES=	install_saturne.py tests/unittests.py bin/*.py build-aux/*.py
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/libxml2
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--without-salome --without-salome-yacs --without-salome-kernel	\
+		--without-salome-gui
+CONFIGURE_ENV=	ac_cv_path_SED=${LOCALBASE}/bin/gsed
 USE_LDCONFIG=	yes
 BINARY_ALIAS=	python=${PYTHON_CMD} \
 		pyrcc5=pyrcc5-${PYTHON_VER} \
 		pyuic5=pyuic5-${PYTHON_VER}
 
-OPTIONS_DEFINE=		DOCS EXAMPLES ATLAS BATCH MPI
-OPTIONS_DEFAULT=	BATCH MPI METIS
+OPTIONS_DEFINE=		DOCS EXAMPLES BATCH BLAS MPI
+OPTIONS_DEFAULT=	BATCH BLAS MPI METIS
 OPTIONS_RADIO=		METIS
 OPTIONS_RADIO_METIS=	METIS PARMETIS
-ATLAS_USES=		blaslapack:atlas
-ATLAS_CONFIGURE_ON=	--with-blas=yes --with-blas-type=ATLAS
+BLAS_USES=		blaslapack
+BLAS_CONFIGURE_ON=	--with-blas=yes --with-blas-lib=${LOCALBASE}/lib --with-blas-libs=-lopenblas
+BLAS_LIB_DEPENDS=	libopenblas.so:math/openblas
 BATCH_DESC=		Use Torque to submit batches
 BATCH_RUN_DEPENDS=	pbs-config:sysutils/torque
 MPI_LIB_DEPENDS=	libmpi.so:net/mpich
@@ -98,6 +103,6 @@ post-install-DOCS-on:
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	@cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

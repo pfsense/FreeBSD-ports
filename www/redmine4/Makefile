@@ -2,25 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	redmine
-PORTVERSION=	4.0.5
-PORTREVISION=	4
+PORTVERSION=	4.0.6
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://www.redmine.org/releases/
 PKGNAMESUFFIX=	4
 
-MAINTAINER=	mikael.urankar@gmail.com
+MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Flexible project management web application
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
 RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
-		rubygem-rails52>=5.2.4.1:www/rubygem-rails52 \
+		rubygem-rails52>=5.2.4.2:www/rubygem-rails52 \
 		rubygem-rouge312>=3.12.0:textproc/rubygem-rouge312 \
 		rubygem-request_store>=1.0.5:devel/rubygem-request_store \
 		rubygem-mini_mime>=1.0.1:mail/rubygem-mini_mime \
-		rubygem-actionpack-xml_parser52>=0:textproc/rubygem-actionpack-xml_parser52 \
-		rubygem-roadie-rails52>=1.3.0:mail/rubygem-roadie-rails52 \
+		rubygem-actionpack-xml_parser-rails52>=0:textproc/rubygem-actionpack-xml_parser-rails52 \
+		rubygem-roadie-rails-rails52>=1.3.0:mail/rubygem-roadie-rails-rails52 \
 		rubygem-mimemagic>=0:misc/rubygem-mimemagic \
 		rubygem-mail>=2.7.1:mail/rubygem-mail \
 		rubygem-nokogiri>=1.10.0:textproc/rubygem-nokogiri \
@@ -35,8 +35,6 @@ RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
 USES=		cpe
 USE_RUBY=	yes
 
-CONFLICTS_INSTALL=	redmine
-
 NO_ARCH=	yes
 NO_BUILD=	yes
 
@@ -46,7 +44,7 @@ PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 SUB_LIST=	RUBY_NAME=${RUBY_NAME}
 
 OPTIONS_DEFINE=	MYSQL POSTGRESQL MARKDOWN RMAGIC THIN
-OPTIONS_DEFAULT=MYSQL MARKDOWN RMAGIC THIN
+OPTIONS_DEFAULT=MYSQL MARKDOWN THIN
 OPTIONS_SUB=	yes
 POSTGRESQL_DESC=Enable PostgreSQL support
 MARKDOWN_DESC=	Enable Markdown support
@@ -62,6 +60,16 @@ RMAGIC_RUN_DEPENDS=	rubygem-rmagick>=2.16.0:graphics/rubygem-rmagick
 THIN_RUN_DEPENDS=	rubygem-thin>=1.6.2:www/rubygem-thin
 THIN_SUB_LIST=		WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 THIN_VARS=		USE_RC_SUBR=redmine
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MRMAGIC}
+# rubygem-mini_magick-4.10.1 wants imagemagick7
+# and rubygem-rmagick-2.16.0_6 wants imagemagick6
+# fixed in 4.1.0: https://www.redmine.org/projects/redmine/repository/revisions/18366
+# but not in 4.0-stable as of 2020/02/13
+BROKEN=	conflicting dependencies
+.endif
 
 post-extract:
 	@${RM} -r ${WRKSRC}/.hgignore ${WRKSRC}/.gitignore ${WRKSRC}/.github \

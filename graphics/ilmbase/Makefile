@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	ilmbase
-PORTVERSION=	2.3.0
-PORTREVISION=	4
+PORTVERSION=	2.4.1
+PORTREVISION=	1
 CATEGORIES=	graphics devel
-MASTER_SITES=	https://github.com/openexr/openexr/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	ILM Base libraries a.k.a. Half, IlmThread, Imath, and Iex
@@ -17,29 +16,26 @@ LICENSE=	BSD3CLAUSE
 # path we will pass down through CONFIGURE_SHELL below.
 BUILD_DEPENDS=	${BASH_CMD}:shells/bash
 
-USES=		compiler:c++14-lang pkgconfig libtool
+USES=		cmake compiler:c++14-lang pkgconfig libtool
 USE_LDCONFIG=	yes
 
-GNU_CONFIGURE=	yes
-# The configure script uses bash arrays
-CONFIGURE_SHELL=${BASH_CMD}
-CONFIGURE_ARGS=	--disable-static
-# libtool links C++ libraries with -nostdlib, which prevents -pthread from
-# having an effect (at least with clang). Make sure we also pass -lpthread so
-# we do link against libthr.so.
-CONFIGURE_ENV+=	PTHREAD_LIBS="-pthread -lpthread"
-TEST_TARGET=	check
+USE_GITHUB=	yes
+GH_TUPLE=	AcademySoftwareFoundation:openexr:v${PORTVERSION}
+WRKSRC_SUBDIR=	IlmBase
 
-PORTDOCS=	AUTHORS ChangeLog README.md
+PORTDOCS=	README.md
 OPTIONS_DEFINE=		DOCS LARGE_STACK
 LARGE_STACK_DESC=	Enable sys-dependent large stack optimizations
 LARGE_STACK_CONFIGURE_ENABLE=	large-stack
+LARGE_STACK_CMAKE_BOOL=		ILMBASE_ENABLE_LARGE_STACK
+
+CMAKE_ARGS+=	-DCMAKE_INSTALL_PREFIX=${PREFIX} --target install
 
 BASH_CMD=	${LOCALBASE}/bin/bash
 
 OPTIONS_SUB=	yes
 
-MAJORVER=	2_3
+MAJORVER=	2_4
 VER=		24
 
 PLIST_SUB=	MAJORVER=${MAJORVER}
@@ -47,22 +43,19 @@ PLIST_SUB+=	VER=${VER}
 
 HALF_BIN=	eLut toFloat
 
-regression-test regression check::	test
-
-post-configure:
-	${REINPLACE_CMD} -e 's/#define HAVE_UCONTEXT_H 1/#undef HAVE_UCONTEXT_H/' ${WRKSRC}/config/IlmBaseConfig.h
+test regression-test regression check::
+	cd ${BUILD_WRKSRC} && ctest
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libHalf.so.${VER}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libHalf-${MAJORVER}.so
 	${RM} ${STAGEDIR}${PREFIX}/lib/*.la
-.for l in libIex libIexMath libImath libIlmThread
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${l}-${MAJORVER}.so.${VER}
-	@#${LN} -s ${l}-${MAJORVER}.so.${VER} ${STAGEDIR}${PREFIX}/lib/${l}.so || :
-	${LN} -s ${l}.so ${STAGEDIR}${PREFIX}/lib/${l}-${MAJORVER}.so
+.for l in libHalf libIex libIexMath libImath libIlmThread
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${l}-${MAJORVER}.so
+	${LN} -s ${l}-${MAJORVER}.so.${VER} ${STAGEDIR}${PREFIX}/lib/${l}.so || :
 .endfor
 
 .for e in ${HALF_BIN}
-	${INSTALL_PROGRAM} ${WRKSRC}/Half/${e} ${STAGEDIR}${PREFIX}/bin/${e}
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/Half/${e} ${STAGEDIR}${PREFIX}/bin/${e}
 .endfor
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

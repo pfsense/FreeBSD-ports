@@ -3,7 +3,7 @@
 
 PORTNAME=	cjdns
 DISTVERSIONPREFIX=	cjdns-v
-DISTVERSION=	20.4
+DISTVERSION=	20.5
 CATEGORIES=	net security
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,6 +11,9 @@ COMMENT=	Routing engine designed for security, scalability, speed
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
 
 BUILD_DEPENDS=	node:www/node \
 		bash:shells/bash

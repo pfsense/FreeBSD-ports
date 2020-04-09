@@ -16,7 +16,11 @@ COMMENT=	OpenEMM a email marketing enterprise app
 LICENSE=	CPAL-1.0
 LICENSE_FILE=	${WRKSRC}/other/LICENSE.txt
 
-BROKEN_powerpc64=	fails to build: gmake[1]: clang: Command not found
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
+BROKEN_FreeBSD_11_powerpc64=	fails to build: gmake[1]: clang: Command not found
+BROKEN_FreeBSD_12_powerpc64=	fails to build: gmake[1]: clang: Command not found
 
 LIB_DEPENDS=	libslang.so:devel/libslang2 \
 		libsa.so:net/ossp-sa

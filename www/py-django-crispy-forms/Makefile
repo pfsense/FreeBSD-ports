@@ -15,12 +15,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django111>=0:www/py-django111@${PY_FLAVOR}
 
-USES=		python
+USES=		dos2unix python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}dj21-django-crispy-forms \
 			${PYTHON_PKGNAMEPREFIX}dj22-django-crispy-forms
+
+# django-crispy-forms 1.9.0+ requires Django 2.2+
+PORTSCOUT=	limit:^1\.8\.
 
 .include <bsd.port.mk>
