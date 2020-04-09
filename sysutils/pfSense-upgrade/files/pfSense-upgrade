@@ -317,9 +317,42 @@ EOF
 	export CUR_ABI CUR_ALTABI ABI ALTABI NEW_MAJOR
 }
 
+get_pkg_repo_url() {
+	local _url=$(_pkg -vv 2>&1 | \
+	    sed -e "/^ *${product}: *{/,/^ *}/!d" \
+		-e '/^ *url *:/!d' \
+		-e 's/^[^"]*"\(.*\)".*/\1/')
+
+	local _srv=""
+	if [ "${_url##pkg+}" != "${_url}" ]; then
+		_srv=1
+		_url=${_url##pkg+}
+	fi
+
+	local _host=${_url##https://}
+	_host=${_host##http://}
+	_host=${_host%%/*}
+
+	if [ -n "${_srv}" ]; then
+		local _n=$(host -t SRV _https._tcp.${_host} 2>/dev/null | wc -l)
+		if [ ${_n} -eq 0 ]; then
+			return 1
+		fi
+
+		local _real_host=$(host -t SRV _https._tcp.${_host} \
+		    2>/dev/null | sed -e "$(jot -r 1 1 ${_n})!d" \
+		    -e 's/^.* //; s/\.$//')
+
+		_url=$(echo "${_url}" | sed "s,${_host},${_real_host},")
+	fi
+
+	echo "${_url}"
+}
+
 pkg_update() {
 	local _force=""
-	local _mute=""
+	local _mute="off"
+	local _do_not_bootstrap="${3}"
 
 	[ "${1}" = "force" ] \
 	    && _force=" -f"
@@ -334,7 +367,27 @@ pkg_update() {
 	abi_setup
 
 	_exec "pkg-static update${_force}" "Updating repositories metadata" \
-	    ${_mute}
+	    ${_mute} "" do_not_exit
+
+	if [ $? -ne 0 -a -z "${_do_not_bootstrap}" ]; then
+		# Since pkg version 1.13 it moved to use repository metadata
+		# version 2, which cannot be processed by older pkg binaries
+		#
+		# Detect if remote repository has a meta.conf file available,
+		# what indicates it is using meta version 2, and in this case
+		# force to bootstrap pkg on local system
+		local _ver=$(_pkg query %v pkg)
+		local _cmp=$(_pkg version -t ${_ver} "1.13")
+
+		local _url=$(get_pkg_repo_url)
+		if [ $? -eq 0 -a "${_cmp}" = "<" ] \
+		    && fetch -o /dev/null ${_url}/meta.conf >/dev/null 2>&1
+		then
+			_exec "/usr/sbin/pkg bootstrap -f" \
+			    "Bootstrap pkg due to meta version change"
+			pkg_update "${force}" "${_mute}" _do_not_bootstrap
+		fi
+	fi
 }
 
 pkg_upgrade_repo() {
