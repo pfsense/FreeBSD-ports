@@ -490,7 +490,7 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 
 	// daemon options
 	$e2guardian_enabled = $e2guardian['enable_dg'];
-	$filterport = ($e2guardian['filterports'] ?e2guardian['filterports'] :
+	$filterport = ($e2guardian['filterports'] ? $e2guardian['filterports'] :
 	    "8080");
 	$softrestart = (preg_match('/softrestart/',
 	    $e2guardian['daemon_options']) ? "on" : "off");
