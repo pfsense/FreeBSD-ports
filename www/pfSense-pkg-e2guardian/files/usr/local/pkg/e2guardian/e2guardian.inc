@@ -424,7 +424,8 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	}
 
 	init_config_arr(array('installedpackages', 'e2guardian', 'config'));
-	$e2guardian &= $config['installedpackages']['e2guardian']['config'];
+	@$e2guardian = $config['installedpackages']['e2guardian']['config'][0];
+
 	if (empty($e2guardian)) {
 		$e2guardian = array(
 		    'interface' => 'lo0',
@@ -439,8 +440,8 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 
 	init_config_arr(array('installedpackages', 'e2guardianconfig',
 	    'config'));
-	$e2guardian_config &=
-	    $config['installedpackages']['e2guardianconfig']['config'];
+	@$e2guardian_config = $config['installedpackages']['e2guardianconfig']['config'];
+
 	if (empty($e2guardian_config)) {
 		$e2guardian_config = array(
 		    'auth_plugin' => '',
@@ -455,8 +456,8 @@ function sync_package_e2guardian($via_rpc = "no", $install_process = false) {
 	}
 
 	init_config_arr(array('installedpackages', 'e2guardianlog', 'config'));
-	$e2guardian_log &=
-	    $config['installedpackages']['e2guardianlog']['config'];
+	@$e2guardian_log = $config['installedpackages']['e2guardianlog']['config'];
+
 	if (empty($e2guardian_log)) {
 		$e2guardian_log = array(
 		    'report_level' => '3',
