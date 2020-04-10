@@ -30,9 +30,15 @@
 	<category>VPN</category>
 	<title>VPN: IPsec Profile Setup Wizard</title> 
 	<menu>
-		<name>Apple IPsec Profile</name>
+		<name>IPsec Export: Apple Profile</name>
 		<tooltiptext>IPsec Profile Export</tooltiptext>
 		<section>VPN</section>
 		<url>vpn_ipsec_profile.php</url>
+	</menu>
+	<menu>
+		<name>IPsec Export: Windows</name>
+		<tooltiptext>IPsec Profile Export</tooltiptext>
+		<section>VPN</section>
+		<url>vpn_ipsec_export_win.php</url>
 	</menu>
 </packagegui>

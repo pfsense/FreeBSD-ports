@@ -1,16 +1,18 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-ipsec-profile-wizard
-PORTVERSION=	0.12
+PORTVERSION=	0.20
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	PfSense package IPsec Profile Generation for Apple devices
+COMMENT=	PfSense package IPsec Export for Apple and Windows devices
 
 LICENSE=	APACHE20
+
+RUN_DEPENDS=	zip>0:archivers/zip
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -33,6 +35,8 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/ipsec-profile.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/vpn_ipsec_profile.php \
+		${STAGEDIR}${PREFIX}/www/
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/vpn_ipsec_export_win.php \
 		${STAGEDIR}${PREFIX}/www/
 	 ${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

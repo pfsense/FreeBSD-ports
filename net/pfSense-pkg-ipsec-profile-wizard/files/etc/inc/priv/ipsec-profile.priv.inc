@@ -22,9 +22,15 @@
 global $priv_list;
 
 $priv_list['page-ios-ipsec-profile-download'] = array();
-$priv_list['page-ios-ipsec-profile-download']['name'] = "WebCfg - VPN: Apple IPsec Profile download";
-$priv_list['page-ios-ipsec-profile-download']['descr'] = "Allow access to the 'VPN: Apple IPsec Profile download' page.";
+$priv_list['page-ios-ipsec-profile-download']['name'] = "WebCfg - VPN: IPsec Export: Apple Profile";
+$priv_list['page-ios-ipsec-profile-download']['descr'] = "Allow access to the 'VPN: IPsec Export: Apple Profile' page.";
 $priv_list['page-ios-ipsec-profile-download']['match'] = array();
 $priv_list['page-ios-ipsec-profile-download']['match'][] = "vpn_ipsec_profile.php";
+
+$priv_list['page-windows-ipsec-profile-download'] = array();
+$priv_list['page-windows-ipsec-profile-download']['name'] = "WebCfg - VPN: IPsec Export: Windows";
+$priv_list['page-windows-ipsec-profile-download']['descr'] = "Allow access to the 'VPN: IPsec Export: Windows' page.";
+$priv_list['page-windows-ipsec-profile-download']['match'] = array();
+$priv_list['page-windows-ipsec-profile-download']['match'][] = "vpn_ipsec_export_win.php";
 
 ?>
