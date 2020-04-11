@@ -498,8 +498,11 @@ function freeradius_users_resync($via_rpc = false) {
 			$varusersframedipaddress = $users['varusersframedipaddress'];
 			$varusersframedipnetmask = $users['varusersframedipnetmask'];
 			$varusersframedroute = $users['varusersframedroute'];
-			$varusersframedip6address = $users['varusersframedip6address'];
-			$varusersframedip6prefix = $users['varusersframedip6prefix'];
+			if (is_ipaddrv6($users['varusersframedip6address'])) {
+				$varusersframedip6address = $users['varusersframedip6address'];
+			} elseif (is_subnetv6($users['varusersframedip6address'])) {
+				$varusersframedip6prefix = $users['varusersframedip6address'];
+			}
 			$varusersframedip6route = $users['varusersframedip6route'];
 			$varusersexpiration = $users['varusersexpiration'];
 			$varuserssessiontimeout = $users['varuserssessiontimeout'];
@@ -806,8 +809,11 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 			$varmacsframedipaddress = $macs['varmacsframedipaddress'];
 			$varmacsframedipnetmask = $macs['varmacsframedipnetmask'];
 			$varmacsframedroute = $macs['varmacsframedroute'];
-			$varmacsframedip6address = $macs['varmacsframedip6address'];
-			$varmacsframedip6prefix = $macs['varmacsframedip6prefix'];
+			if (is_ipaddrv6($macs['varmacsframedip6address'])) {
+				$varmacsframedip6address = $macs['varmacsframedip6address'];
+			} elseif (is_subnetv6($macs['varmacsframedip6address'])) {
+				$varmacsframedip6prefix = $macs['varmacsframedip6address'];
+			}
 			$varmacsframedip6route = $macs['varmacsframedip6route'];
 			$varmacsexpiration = $macs['varmacsexpiration'];
 			$varmacssessiontimeout = $macs['varmacssessiontimeout'];
@@ -920,6 +926,15 @@ EOD;
 	Framed-IP-Netmask = {$varmacsframedipnetmask}
 EOD;
 			}
+			if ($varmacsframedroute != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= <<<EOD
+
+	Framed-Route = "{$varmacsframedroute}"
+EOD;
+			}
 			if ($varmacsframedip6address != '') {
 				if ($varmacsreplyitem != '') {
 					$varmacsreplyitem .= ",";
@@ -945,15 +960,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Framed-IPv6-Route = "{$varmacsframedip6route}"
-EOD;
-			}
-			if ($varmacsframedroute != '') {
-				if ($varmacsreplyitem != '') {
-					$varmacsreplyitem .= ",";
-				}
-				$varmacsreplyitem .= <<<EOD
-
-	Framed-Route = "{$varmacsframedroute}"
 EOD;
 			}
 			if ($varmacssessiontimeout != '') {
@@ -3854,26 +3860,10 @@ function freeradius_validate_users($post, &$input_errors) {
 		}
 	}
 
-	// IPv6 Address; may contain a single trailing '+' for simultaneous connections
-	if ($post['varusersframedip6address']) {
-		$framedip6 = str_replace('+', '', $post['varusersframedip6address'], $pluscnt);
-		if (!is_ipaddrv6($framedip6)) {
-			$input_errors[] = "The 'IPv6 Address' field must contain a valid IPv6 address.";
-		}
-		if ($pluscnt > 1) {
-			$input_errors[] = "The 'IPv6 Address' field may optionally contain only a single trailing '+'.";
-		}
-	}
-
-	// IPv6 Prefix
-	if ($post['varusersframedip6prefix']) {
-		if ($post['varusersframedip6address'] == '') {
-			$input_errors[] = "To specify a 'IPv6 Prefix', the 'IPv6 Address' field must not be empty.";
-		} elseif (is_ipaddrv6($framedip6)) {
-			if (!is_subnetv6("{$framedip6}/{$post['varusersframedip6prefix']}")) {
-				$input_errors[] = "The 'IPv6 Prefix' field must contain a valid prefix.";
-			}
-		}
+	// IPv6 Address
+	if ($post['varusersframedip6address'] && !is_subnetv6($post['varusersframedip6address']) &&
+	    !is_ipaddrv6($post['varusersframedip6address'])) {
+		$input_errors[] = "The 'IPv6 Address' field must contain a valid IPv6 address or IPv6 prefix.";
 	}
 
 	// IPv6 Gateway
@@ -4030,26 +4020,10 @@ function freeradius_validate_macs($post, &$input_errors) {
 		}
 	}
 
-	// IPv6 Address; may contain a single trailing '+' for simultaneous connections
-	if ($post['varmacsframedip6address']) {
-		$framedip6 = str_replace('+', '', $post['varmacsframedip6address'], $pluscnt);
-		if (!is_ipaddrv6($framedip6)) {
-			$input_errors[] = "The 'IPv6 Address' field must contain a valid IPv6 address.";
-		}
-		if ($pluscnt > 1) {
-			$input_errors[] = "The 'IPv6 Address' field may optionally contain only a single trailing '+'.";
-		}
-	}
-
-	// IPv6 Prefix
-	if ($post['varmacsframedip6prefix']) {
-		if ($post['varmacsframedip6address'] == '') {
-			$input_errors[] = "To specify a 'IPv6 Prefix', the 'IPv6 Address' field must not be empty.";
-		} elseif (is_ipaddrv6($framedip6)) {
-			if (!is_subnetv6("{$framedip6}/{$post['varmacsframedip6prefix']}")) {
-				$input_errors[] = "The 'IPv6 Prefix' field must contain a valid prefix.";
-			}
-		}
+	// IPv6 Address
+	if ($post['varmacsframedip6address'] && !is_subnetv6($post['varmacsframedip6address']) &&
+	    !is_ipaddrv6($post['varmacsframedip6address'])) {
+		$input_errors[] = "The 'IPv6 Address' field must contain a valid IPv6 address or IPv6 prefix.";
 	}
 
 	// IPv6 Gateway
