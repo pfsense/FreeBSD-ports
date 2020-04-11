@@ -196,10 +196,6 @@
 				<![CDATA[
 				<b>Framed-IP-Address</b> must be supported by NAS. <span class="text-info">Click Info for details.</span><br/>
 				<span class="text-danger">IMPORTANT:</span> You must enter an IPv4 address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
-				<div class="infoblock">
-				If you want this MAC address to be assigned a specific IPv4 address from RADIUS, enter the IP address here.<br/>
-				Continuous IPv4 address is available with "+" suffix (e.g. 192.168.1.5+). This can be useful for simultaneous connections.
-				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -234,21 +230,9 @@
 			<fieldname>varmacsframedip6address</fieldname>
 			<description>
 				<![CDATA[
-				<b>Framed-IPv6-Address</b> must be supported by NAS. <span class="text-info">Example: 2001:db8:abab::1</span>
-				<div class="infoblock">
-				If you want this MAC address to be assigned a specific IPv6 address from RADIUS, enter the IPv6 address here.<br/>
-				Continuous IPv6 address is available with "+" suffix (e.g. 2001:db8::5+). This can be useful for simultaneous connections.
-				</div>
-				]]>
-			</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>IPv6 Prefix</fielddescr>
-			<fieldname>varmacsframedip6prefix</fieldname>
-			<description>
-				<![CDATA[
-				<b>Framed-IPv6-Prefix</b> must be supported by NAS. <span class="text-info">Example: 64</span>
+				When the IPv6 prefix part is empty it uses <b>Framed-IPv6-Address</b>. 
+				When the prefix part is filled in, it uses <b>Framed-IPv6-Prefix</b>.<br />
+			        <span class="text-info">Example: 2001:db8:abab::5 or 2001:db8:abab::/64</span>
 				]]>
 			</description>
 			<type>input</type>
