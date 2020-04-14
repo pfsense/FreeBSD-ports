@@ -453,6 +453,10 @@ function ipsec_export_win($vpn_name, $server_address, $user_certref = null) {
 		file_put_contents("{$script_dir}/{$ucafn}", base64_decode($uca['crt']));
 		$script .= "{$nl}# Import User TLS Certificate CA{$nl}";
 		$script .= "Import-Certificate -FilePath \"{$ucafn}\" -CertStoreLocation Cert:\\LocalMachine\\Root\\{$nl}";
+		/* Get CA Fingerprint */
+		$ca_fingerprint = openssl_x509_fingerprint(openssl_x509_read(base64_decode($uca['crt'])));
+		/* Reformat as Windows "Thumbprint" style */
+		$ca_thumbprint = chunk_split($ca_fingerprint, 2, ' ');
 
 		/* Export P12 with random password and store */
 		$args = array();
@@ -486,7 +490,38 @@ function ipsec_export_win($vpn_name, $server_address, $user_certref = null) {
 	/* Make Add Command */
 	$script .= "{$nl}# Add VPN Connection{$nl}";
 	if ($mobile_p1['authentication_method'] == 'eap-tls') {
-		$script .= "\$CustomEAP = New-EapConfiguration -Tls -UserCertificate{$nl}";
+		$script .= "\$CustomEAP = '";
+		$script .= <<<EOD
+<EapHostConfig xmlns="http://www.microsoft.com/provisioning/EapHostConfig">
+   <EapMethod>
+      <Type xmlns="http://www.microsoft.com/provisioning/EapCommon">13</Type>
+      <VendorId xmlns="http://www.microsoft.com/provisioning/EapCommon">0</VendorId>
+      <VendorType xmlns="http://www.microsoft.com/provisioning/EapCommon">0</VendorType>
+      <AuthorId xmlns="http://www.microsoft.com/provisioning/EapCommon">0</AuthorId>
+   </EapMethod>
+   <Config>
+      <Eap xmlns="http://www.microsoft.com/provisioning/BaseEapConnectionPropertiesV1">
+         <Type>13</Type>
+         <EapType xmlns="http://www.microsoft.com/provisioning/EapTlsConnectionPropertiesV1">
+            <CredentialsSource>
+               <CertificateStore>
+                  <SimpleCertSelection>true</SimpleCertSelection>
+               </CertificateStore>
+            </CredentialsSource>
+            <ServerValidation>
+               <DisableUserPromptForServerValidation>false</DisableUserPromptForServerValidation>
+               <ServerNames>{$server_address}</ServerNames>
+               <TrustedRootCA>{$ca_thumbprint}</TrustedRootCA>
+            </ServerValidation>
+            <DifferentUsername>false</DifferentUsername>
+            <PerformServerValidation xmlns="http://www.microsoft.com/provisioning/EapTlsConnectionPropertiesV2">true</PerformServerValidation>
+            <AcceptServerName xmlns="http://www.microsoft.com/provisioning/EapTlsConnectionPropertiesV2">true</AcceptServerName>
+         </EapType>
+      </Eap>
+   </Config>
+</EapHostConfig>
+EOD;
+		$script .= "'{$nl}{$nl}";
 	}
 	$script .= "Add-VpnConnection -Name \"{$vpn_name}\" -TunnelType \"Ikev2\" -EncryptionLevel Required `{$nl}";
 
@@ -503,7 +538,7 @@ function ipsec_export_win($vpn_name, $server_address, $user_certref = null) {
 	}
 	/* Authentication Method */
 	if ($mobile_p1['authentication_method'] == 'eap-tls') {
-		$script .= " -AuthenticationMethod EAP -EapConfigXmlStream \$CustomEAP.EapConfigXmlStream";
+		$script .= " -AuthenticationMethod EAP -EapConfigXmlStream \$CustomEAP";
 	}
 	$script .= " -PassThru{$nl}";
 
@@ -596,7 +631,7 @@ $shortcut_section = "ipsec";
 if ($_POST && empty($input_errors)) {
 	try {
 		/* Use the user-supplied VPN name or a simple default if it was empty */
-		$vpn_name = (!empty($_POST['name'])) ? $_POST['name'] : "pfSense VPN";
+		$vpn_name = (!empty($_POST['name'])) ? $_POST['name'] : "Mobile IPsec ({$config['system']['hostname']})";
 		/* Ensure it's only a filename, not a path */
 		$vpn_name = basename($vpn_name);
 
@@ -634,7 +669,7 @@ $section->addInput(new Form_Input(
 	'name',
 	'VPN Name',
 	'text',
-	"pfSense VPN - " . (empty($mobile_p1['descr']) ? $config['system']['hostname'] : $mobile_p1['descr'])
+	"VPN ({$config['system']['hostname']}) - " . (!empty($mobile_p1['descr']) ? $mobile_p1['descr'] : 'Mobile IPsec')
 ))->setHelp('The name of the VPN as seen by the client in their network list. ' .
 		'This name is also used when creating the download archive.');
 
