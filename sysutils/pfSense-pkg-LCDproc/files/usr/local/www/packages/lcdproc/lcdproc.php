@@ -221,7 +221,8 @@ $section->addInput(
 			'mplay'         => 'MPlay Blast from VLSystem',
 			'ftdi'          => 'LCD connected to FTDI 2232D USB chip',
 			'usblcd'        => 'USBLCD adapter from Adams IT Services',
-			'i2c'           => 'LCD driven by PCF8574/PCA9554 connected via i2c'
+			'i2c'           => 'LCD driven by PCF8574/PCA9554 connected via i2c',
+			'ezio'          => 'Portwell EZIO-100 and EZIO-300'
 		]
 	)
 )->setHelp('Select the HD44780 connection type');

@@ -334,7 +334,7 @@ function squid_resync_reverse() {
 						foreach (explode(',', $rm['peers']) as $map_peer) {
 							if (in_array($map_peer, $active_peers)) {
 								$cache_peer_allow_conf .= "cache_peer_access rvp_{$map_peer} allow rvm_{$rm['name']}\n";
-								$cache_peer_deny_conf .= "cache_peer_access rvp_{$map_peer} deny allsrc\n";
+								$cache_peer_deny_conf .= "cache_peer_access rvp_{$map_peer} deny !rvm_{$rm['name']}\n";
 							}
 						}
 						$last_rm_name = $rm['name'];
@@ -548,24 +548,42 @@ function squid_validate_reverse($post, &$input_errors) {
 		}
 	}
 
-	$contents = $post['reverse_cache_peer'];
-	if (!empty($contents)) {
-		$defs = explode("\r\n", ($contents));
-		foreach ($defs as $def) {
-			$cfg = explode(";", ($def));
-			if (!is_ipaddr($cfg[1])) {
-				$input_errors[] = "Please choose a valid IP in the cache peer configuration.";
-			}
-			if (!is_port($cfg[2])) {
-				$input_errors[] = "Please choose a valid port in the cache peer configuration.";
-			}
-			if (($cfg[3] != 'HTTPS') && ($cfg[3] != 'HTTP')) {
-				$input_errors[] = "Please choose HTTP or HTTPS in the cache peer configuration.";
+	if (isset($post['name']) && preg_match('/[^A-Za-z0-9\-_]/', $post['name'])) {
+		switch ($post['xml']) {
+			case 'squid_reverse_peer.xml':
+				$errname = 'Peer Alias';
+				break;
+			case 'squid_reverse_uri.xml':
+				$errname = 'Group Name';
+				break;
+			case 'squid_reverse_redir.xml':
+				$errname = 'Redirect Name';
+				break;
+			default:
+				break;
+		}
+		$input_errors[] = "The {$errname} may only contain the characters a-z, A-Z, 0-9, '-' and '_'";
+	}
+
+	if ($post['xml'] == 'squid_reverse_redir.xml') {
+		for ($i = 0; $i < 30; $i++) {
+			if (!empty($post["uri{$i}"]) && !is_domain($post["uri{$i}"])) {
+				$input_errors[] = "{$post["uri{$i}"]} is not valid domain name.";
 			}
 		}
-		unset($cfg, $defs);
 	}
-	unset($contents);
+
+	if ($post['xml'] == 'squid_reverse_peer.xml') {
+		if (!is_ipaddr($post['ip'])) {
+			$input_errors[] = "Please choose a valid IP in the cache peer configuration.";
+		}
+		if (!is_port($post['port'])) {
+			$input_errors[] = "Please choose a valid port in the cache peer configuration.";
+		}
+		if (($post['protocol'] != 'HTTPS') && ($post['protocol'] != 'HTTP')) {
+			$input_errors[] = "Please choose HTTP or HTTPS in the cache peer configuration.";
+		}
+	}
 }
 
 ?>
