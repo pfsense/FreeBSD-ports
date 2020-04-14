@@ -266,7 +266,7 @@ usecustombannedflash = {$usecustombannedflash}
 # to filter group 1.  You must have some sort of authentication to be able to map users
 # to a group.
 filtergroups = {$filtergroups}
-filtergroupslist = '{$e2guardian_dir}/lists/filtergroupslist'
+filtergroupslist = '{$e2g_etc}/lists/filtergroupslist'
 
 # default filtergroup for standard (explicit) mode
 # optional defaults to 1
@@ -489,7 +489,7 @@ trickledelay =  {$trickledelay}
 # and other matching mechanisms.
 #
 # NOTE - ONLY default downloadmanager is supported in v5
-downloadmanager = '{$e2guardian_dir}/downloadmanagers/default.conf'
+downloadmanager = '{$e2g_etc}/downloadmanagers/default.conf'
 
 # Content Scanners (Also known as AV scanners)
 # These are plugins that scan the content of all files your browser fetches
@@ -684,7 +684,7 @@ enablessl = {$enablessl}
 # monitorflagprefix = '/home/e2g/run/e2g_flag_'
 
 # Much logic has moved to storyboard files
-preauthstoryboard = '{$e2guardian_dir}/preauth.story'
+preauthstoryboard = '{$e2g_etc}/preauth.story'
 
 # Storyboard tracing
 # Warning - produces verbose output - do not use in production
