@@ -130,8 +130,8 @@ function squidguard_prepfor_JS($cont) {
 	$cont = str_replace("\n", "\\n", $cont);
 	$cont = str_replace("\r", "\\r", $cont);
 	$cont = str_replace("\t", "\\t", $cont);
-	$cont = str_replace("\"", "\'",  $cont);
 	$cont = str_replace("'", "\'",  $cont);
+	$cont = str_replace("\"", "\'",  $cont);
 	return $cont;
 }
 
