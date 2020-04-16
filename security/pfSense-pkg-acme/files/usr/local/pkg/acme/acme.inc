@@ -1202,9 +1202,26 @@ function acme_custom_php_install_command() {
 	/* Remove old cron job (if present), see #9279 */
 	install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall"', false);
 	set_cronjob();
+	/* convert <desc> to <descr> to allow IDN characters, #10442 */
+	acme_convert_desc_to_descr();
 	$static_output .= "Acme, running acme_custom_php_install_command() DONE\n";
 	update_output_window($static_output);
 	acme_write_all_certificates();
+}
+
+function acme_convert_desc_to_descr() {
+	global $config;
+	init_config_arr(array('installedpackages', 'acme', 'accountkeys', 'item'));
+	init_config_arr(array('installedpackages', 'acme', 'certificates', 'item'));
+
+	foreach (array('accountkeys', 'certificates') as $a_array) {
+		foreach ($config['installedpackages']['acme'][$a_array]['item'] as & $item) {
+			if (isset($item['desc'])) {
+				$item['descr'] = $item['desc'];
+				unset($item['desc']);
+			}
+		}
+	}
 }
 
 function get_itembyname($a_array, $name) {

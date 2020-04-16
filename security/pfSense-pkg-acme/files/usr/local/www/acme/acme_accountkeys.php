@@ -169,7 +169,7 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 				<?=$accountname;?>
 			  </td>
 			  <td>
-				<?=htmlspecialchars($accountkey['desc']);?>
+				<?=htmlspecialchars($accountkey['descr']);?>
 			  </td>
 			  <td>
 				<?=htmlspecialchars($accountkey['acmeserver']);?>

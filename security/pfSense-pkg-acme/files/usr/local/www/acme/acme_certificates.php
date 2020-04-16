@@ -242,7 +242,7 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				<?=$certificate['name'];?>
 			  </td>
 			  <td>
-				<?=htmlspecialchars($certificate['desc']);?>
+				<?=htmlspecialchars($certificate['descr']);?>
 			  </td>
 			  <td>
 				<?=htmlspecialchars($certificate['acmeaccount']);?>
