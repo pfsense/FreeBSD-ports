@@ -43,10 +43,6 @@ function arpwatch_install_command() {
 		arpwatch_update_vendors($enable_zeropad);
 	}
 
-	if ($clear_database) {
-		arpwatch_clear_database();
-	}
-
 	$rc = array();
 	$rc['file'] = 'arpwatch.sh';
 
@@ -88,7 +84,9 @@ function arpwatch_install_command() {
 }
 
 function arpwatch_deinstall_command() {
-	arpwatch_clear_database();
+	if ($clear_database) {
+		arpwatch_clear_database();
+	}
 	arpwatch_uninstall_sendmail_proxy();
 }
 

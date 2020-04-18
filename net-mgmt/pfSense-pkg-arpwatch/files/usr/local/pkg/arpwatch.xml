@@ -115,7 +115,7 @@
 			<fielddescr>Clear database</fielddescr>
 			<fieldname>clear_database</fieldname>
 			<type>checkbox</type>
-			<description>Reset the database of collected mac/ip addresses before starting Arpwatch.</description>
+			<description>Reset the database of collected mac/ip addresses when uninstalling or upgrading Arpwatch.</description>
 		</field>
 	</fields>
 	<custom_php_install_command>
