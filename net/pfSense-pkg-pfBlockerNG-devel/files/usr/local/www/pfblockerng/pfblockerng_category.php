@@ -213,6 +213,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6' || $gtype == 'geoip') {
 else {
 	$tab_array[]	= array(gettext('DNSBL Groups'),	$active['dnsbl'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
 	$tab_array[]	= array(gettext('DNSBL Category'),	false,			'/pfblockerng/pfblockerng_blacklist.php');
+	$tab_array[]    = array(gettext('DNSBL SafeSearch'),    false,   '/pfblockerng/pfblockerng_safesearch.php');
 }
 display_top_tabs($tab_array, true);
 

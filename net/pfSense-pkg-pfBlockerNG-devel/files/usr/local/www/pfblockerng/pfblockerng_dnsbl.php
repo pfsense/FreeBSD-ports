@@ -214,6 +214,7 @@ display_top_tabs($tab_array, true);
 $tab_array	= array();
 $tab_array[]	= array(gettext('DNSBL Groups'),		false,		'/pfblockerng/pfblockerng_category.php?type=dnsbl');
 $tab_array[]	= array(gettext('DNSBL Category'),	false,		'/pfblockerng/pfblockerng_blacklist.php');
+$tab_array[]    = array(gettext('DNSBL SafeSearch'),    false,   '/pfblockerng/pfblockerng_safesearch.php');
 display_top_tabs($tab_array, true);
 
 if (isset($input_errors)) {
