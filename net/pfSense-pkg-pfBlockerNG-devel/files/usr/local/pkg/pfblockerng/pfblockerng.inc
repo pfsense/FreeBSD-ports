@@ -99,6 +99,11 @@ $pfb['dnsbl_tld_data']	= '/usr/local/pkg/pfblockerng/dnsbl_tld';
 $pfb['dnsbl_conf']	= '/var/unbound/pfb_dnsbl_lighty.conf';
 $pfb['dnsbl_cert']	= '/var/unbound/dnsbl_cert.pem';
 
+$pfb['dnsbl_safesearch']		= '/usr/local/pkg/pfblockerng/pfb_dnsbl.safesearch.conf';
+$pfb['dnsbl_youtube_restrict']		= '/usr/local/pkg/pfblockerng/pfb_dnsbl.youtube_restrict.conf';
+$pfb['dnsbl_youtube_restrictmoderate']	= '/usr/local/pkg/pfblockerng/pfb_dnsbl.youtube_restrictmoderate.conf';
+$pfb['dnsbl_firefoxdoh']		= '/usr/local/pkg/pfblockerng/pfb_dnsbl.firefoxdoh.conf';
+
 // tmp files
 $pfb['geoip_tmp']		= '/tmp/pfb_continent';
 $pfb['ip_unlock']		= '/tmp/ip_unlock';
@@ -4840,6 +4845,11 @@ function sync_package_pfblockerng($cron='') {
 	$pfb['dnsbl_alexa_inc']	= $pfb['dnsblconfig']['alexa_inclusion'] ?: '';		// TOP1M TLDs inclusions for whitelisting
 	$pfb['dnsbl_tld']	= $pfb['dnsblconfig']['pfb_tld'];			// Enable TLD Function
 
+	init_config_arr(array('installedpackages', 'pfblockerngsafesearch'));
+	$pfb['safesearch_enable']	= $config['installedpackages']['pfblockerngsafesearch']['safesearch_enable']	?: 'Disabled';
+	$pfb['safesearch_youtube']	= $config['installedpackages']['pfblockerngsafesearch']['safesearch_youtube']	?: 'Disabled';
+	$pfb['safesearch_firefoxdoh']	= $config['installedpackages']['pfblockerngsafesearch']['safesearch_firefoxdoh']?: 'Disabled';
+
 	// Reputation config variables
 	init_config_arr(array('installedpackages', 'pfblockerngreputation', 'config', 0));
 	$pfb['config_rep'] = $config['installedpackages']['pfblockerngreputation']['config'][0];
@@ -5363,10 +5373,60 @@ function sync_package_pfblockerng($cron='') {
 				touch("{$pfb['dnsbl_file']}.reload");
 			}
 
+			// SafeSearch
+			pfb_logger("\n Loading DNSBL SafeSearch...", 1);
+			$safesearch_hosts = array();
+			$safesearch_types = array(	array( 'safesearch_enable',	'Enable',	'safesearch'),
+							array( 'safesearch_youtube',	'Strict',	'youtube_restrict'),
+							array( 'safesearch_youtube',	'Moderate',	'youtube_restrictmoderate'),
+							array( 'safesearch_firefoxdoh',	'Enable',	'firefoxdoh')
+							);
+
+			$safesearch_update = $pfb_found = FALSE;
+			foreach ($safesearch_types as $safe_type) {
+				if ($pfb[$safe_type[0]] == $safe_type[1]) {
+					$pfb_found = TRUE;
+
+					if (!file_exists("{$pfb['dnsbldir']}/pfb_dnsbl.{$safe_type[2]}.conf") ||
+					    @md5_file($pfb["dnsbl_{$safe_type[2]}"]) !==
+					    @md5_file("{$pfb['dnsbldir']}/pfb_dnsbl.{$safe_type[2]}.conf")) {
+						@copy($pfb["dnsbl_{$safe_type[2]}"], "{$pfb['dnsbldir']}/pfb_dnsbl.{$safe_type[2]}.conf");
+						$safesearch_update = TRUE;
+					}
+
+					// Collect SafeSearch domains for wildcard whitelisting
+					exec("cut -d '\"' -f2 {$pfb['dnsbldir']}/pfb_dnsbl.{$safe_type[2]}.conf | cut -d ' ' -f1", $safesearch_hosts);
+				}
+				elseif (file_exists("{$pfb['dnsbldir']}/pfb_dnsbl.{$safe_type[2]}.conf")) {
+					unlink("{$pfb['dnsbldir']}/pfb_dnsbl.{$safe_type[2]}.conf");
+					$safesearch_update = TRUE;
+				}
+			}
+
+			// Wildcard whitelist SafeSearch domains
+			$pfb_whitelist = '';
+			if (!empty($safesearch_hosts)) {
+				$safesearch_hosts = array_unique($safesearch_hosts);
+				foreach ($safesearch_hosts as $line) {
+					if (!empty($line)) {
+						// Remove 'www.' prefix
+						if (substr($line, 0, 4) == 'www.') {
+							$line = substr($line, 4);
+						}
+						$pfb_whitelist .= ".{$line} 60\n\"{$line} 60\n";
+					}
+				}
+			}
+
+			$s_log = ' disabled';
+			if ($pfb_found) {
+				$s_log = ' enabled';
+			}
+			pfb_logger(" {$s_log}", 1);
+
 			// Collect Whitelist, create string, and save to file (for grep -vF -f cmd)
 			pfb_logger("\n Loading DNSBL Whitelist...", 1);
 			$pfb_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE);
-			$pfb_whitelist = '';
 			if (!empty($pfb_white)) {
 				foreach ($pfb_white as $line) {
 					if (!empty($line)) {
@@ -5389,9 +5449,17 @@ function sync_package_pfblockerng($cron='') {
 					}
 				}
 			}
+
 			$pfb_whitelist .= "\"localhost.localdomain 60\n";	// Added due to SWC Feed
 			@file_put_contents("{$pfb['dnsbl_supptxt']}", $pfb_whitelist, LOCK_EX);
 			pfb_logger(" completed", 1);
+
+			if ($safesearch_update) {
+				$log = "\n DNSBL - SafeSearch changes found - Rebuilding!\n";
+				pfb_logger("{$log}", 1);
+				$pfb['reuse_dnsbl'] = 'on';
+				touch("{$pfb['dnsbl_file']}.reload");
+			}
 
 			// Call TOP1M whitelist process
 			if ($pfb['dnsbl_alexa'] == 'on') {
@@ -6288,7 +6356,7 @@ function sync_package_pfblockerng($cron='') {
 		}
 
 		// Load new DNSBL updates to Unbound Resolver
-		if ($pfb['domain_update'] || $pfbupdate || $pfb['domain_clear']) {
+		if ($pfb['domain_update'] || $pfbupdate || $pfbpython ||$pfb['domain_clear'] || $safesearch_update) {
 			pfb_update_unbound('enabled', $pfbupdate);
 		}
 
