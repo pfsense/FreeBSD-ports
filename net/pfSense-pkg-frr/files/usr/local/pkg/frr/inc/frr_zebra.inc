@@ -705,7 +705,7 @@ function write_frr_running_config() {
 			$moduleRunning = fopen("$moduleRunningFile", "r");
 			$config['installedpackages']['frrglobalraw']['config'][0][$module . "running"] = base64_encode(fread($moduleRunning, filesize($moduleRunningFile)));
 		} else {
-			$config['installedpackages']['frrglobalraw']['config'][0][$module . "running"] = base64_encode("file {$module}.conf does not exist or is empty.");
+			$config['installedpackages']['frrglobalraw']['config'][0][$module . "running"] = base64_encode("# file {$module}.conf does not exist or is empty.");
 		}
 	}
 	write_config(gettext("FRR: Wrote running configuration to pfSense config file."), false, true);
