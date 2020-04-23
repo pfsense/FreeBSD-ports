@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ if (!defined("SNORT_BIN_VERSION")) {
 		define("SNORT_BIN_VERSION", $matches[0]);
 	}
 	else {
-		define("SNORT_BIN_VERSION", "2.9.15");
+		define("SNORT_BIN_VERSION", "2.9.16");
 	}
 }
 
