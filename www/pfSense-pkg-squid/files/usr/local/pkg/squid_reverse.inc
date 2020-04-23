@@ -255,10 +255,15 @@ function squid_resync_reverse() {
 		foreach ($reverse_redir as $rdr) {
 			if ($rdr['enable'] == "on" && $rdr['name'] != "" && $rdr['pathregex'] != "" && $rdr['redirurl'] != "") {
 				$conf_rdr = "# Redirect: {$rdr['description']}\n";
+				if ($rdr['dstdomregex'] == "on") {
+					$dsttype = "dstdom_regex -i";
+				} else {
+					$dsttype = "dstdomain";
+				}
 
 				if (is_array($rdr['row'])) {
 					foreach ($rdr['row'] as $uri) {
-						$conf_rdr .= "acl rdr_dst_{$rdr['name']} dstdomain {$uri['uri']}\n";
+						$conf_rdr .= "acl rdr_dst_{$rdr['name']} {$dsttype} {$uri['uri']}\n";
 					}
 				}
 
@@ -565,7 +570,7 @@ function squid_validate_reverse($post, &$input_errors) {
 		$input_errors[] = "The {$errname} may only contain the characters a-z, A-Z, 0-9, '-' and '_'";
 	}
 
-	if ($post['xml'] == 'squid_reverse_redir.xml') {
+	if (($post['xml'] == 'squid_reverse_redir.xml') && ($post['dstdomregex'] != 'on')) {
 		for ($i = 0; $i < 30; $i++) {
 			if (!empty($post["uri{$i}"]) && !is_domain($post["uri{$i}"])) {
 				$input_errors[] = "{$post["uri{$i}"]} is not valid domain name.";

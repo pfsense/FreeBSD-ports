@@ -115,7 +115,32 @@
 			<fielddescr>Clear database</fielddescr>
 			<fieldname>clear_database</fieldname>
 			<type>checkbox</type>
-			<description>Reset the database of collected mac/ip addresses before starting Arpwatch.</description>
+			<description>Reset the database of collected mac/ip addresses when uninstalling or upgrading Arpwatch.</description>
+		</field>
+		<field>
+			<fielddescr>Suppress MAC</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fieldname>mac</fieldname>
+					<type>input</type>
+					<required/>
+					<fielddescr>Enter the MAC addresses you want to suppress from the notifications.</fielddescr>
+				</rowhelperfield>
+				<rowhelperfield>
+				<fieldname>notification_type</fieldname>
+					<type>select</type>
+					<options>
+						<option><name>all</name><value>all</value></option>
+						<option><name>new activity</name><value>new activity</value></option>
+						<option><name>new station</name><value>new station</value></option>
+						<option><name>flip flop</name><value>flip flop</value></option>
+						<option><name>changed ethernet address</name><value>changed ethernet address</value></option>
+					</options>
+					<fielddescr>Type of notification to suppress.</fielddescr>
+				</rowhelperfield>
+			</rowhelper>
 		</field>
 	</fields>
 	<custom_php_install_command>

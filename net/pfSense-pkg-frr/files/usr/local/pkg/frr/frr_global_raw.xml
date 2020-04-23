@@ -154,9 +154,17 @@
 					elem1.value = elem2.value;
 					configCheck(elem1, elem2);
 				}
+				function configCheck(elem1,elem2) {
+					if (elem1.value == elem2.value ) {
+						elem1.style.backgroundColor = elem2.style.backgroundColor = '#FAFAFA';
+					}
+					else {
+						elem1.style.backgroundColor = elem2.style.backgroundColor = 'white';
+					}
+				}
 				window.onload = configCheck(zebra, zebrarunning);
-				ospfd.addEventListener('keyup', function() { configCheck(zebra, zebrarunning)});
-				ospfdrunning.addEventListener('keyup', function() { configCheck(zebra, zebrarunning) });
+				zebra.addEventListener('keyup', function() { configCheck(zebra, zebrarunning)});
+				zebrarunning.addEventListener('keyup', function() { configCheck(zebra, zebrarunning) });
 				</script>
 				]]>
 				<![CDATA[
@@ -196,8 +204,8 @@
 				var staticd = document.getElementById('staticd');
 				var staticdrunning = document.getElementById('staticdrunning'); 
 				window.onload = configCheck(staticd, staticdrunning);
-				zebra.addEventListener('keyup', function() { configCheck(staticd, staticdrunning)});
-				zebrarunning.addEventListener('keyup', function() { configCheck(staticd, staticdrunning) });
+				staticd.addEventListener('keyup', function() { configCheck(staticd, staticdrunning)});
+				staticdrunning.addEventListener('keyup', function() { configCheck(staticd, staticdrunning) });
 				</script>
 				]]>
 				<![CDATA[
@@ -237,8 +245,8 @@
 				var bgpd = document.getElementById('bgpd');
 				var bgpdrunning = document.getElementById('bgpdrunning'); 
 				window.onload = configCheck(bgpd, bgpdrunning);
-				zebra.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning)});
-				zebrarunning.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning) });
+				bgpd.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning)});
+				bgpdrunning.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning) });
 				</script>
 				]]>
 				<![CDATA[
@@ -278,8 +286,8 @@
 				var ospfd = document.getElementById('ospfd');
 				var ospfdrunning = document.getElementById('ospfdrunning'); 
 				window.onload = configCheck(ospfd, ospfdrunning);
-				zebra.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning)});
-				zebrarunning.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning) });
+				ospfd.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning)});
+				ospfdrunning.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning) });
 				</script>
 				]]>
 				<![CDATA[
@@ -319,8 +327,8 @@
 				var ospf6d = document.getElementById('ospf6d');
 				var ospf6drunning = document.getElementById('ospf6drunning'); 
 				window.onload = configCheck(ospf6d, ospf6drunning);
-				zebra.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning)});
-				zebrarunning.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning) });
+				ospf6d.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning)});
+				ospf6drunning.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning) });
 				</script>
 				]]>
 				<![CDATA[
