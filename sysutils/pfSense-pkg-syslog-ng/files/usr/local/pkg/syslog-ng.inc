@@ -134,7 +134,7 @@ function syslogng_build_default_objects($settings) {
 	if ($settings['default_protocol'] == 'tls') {
 		safe_mkdir(SYSLOGNG_DIR);
 		safe_mkdir(SYSLOGNG_DIR . "/ca.d");
-		syslogng_build_cert();
+		syslogng_build_cert($settings);
 		$default_objects[0]['objectparameters'] .= " tls(
 		    key-file('/var/etc/syslog-ng/syslog-ng.key')
 		    cert-file('/var/etc/syslog-ng/syslog-ng.cert')
@@ -433,10 +433,9 @@ function syslogng_get_ca_or_certs($type, $consumer = 'IPsec') {
 	return $c_arr;
 }
 
-function syslogng_build_cert() {
+function syslogng_build_cert($settings) {
 	global $config;
 
-	$settings = $config['installedpackages']['syslogng']['config'][0];
 	$ca = lookup_ca($settings['dca']);
 	$cert = lookup_cert($settings['certificate']);
 
