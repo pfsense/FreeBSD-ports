@@ -70,7 +70,7 @@ if (!is_numeric($id))
 
 global $simplefields;
 $simplefields = array(
-	"name","desc", "email",
+	"name","descr", "email",
 	"acmeserver","renewafter"
 );
 
@@ -200,7 +200,7 @@ $form = new \Form;
 $section = new \Form_Section('Edit Certificate options');
 $section->addInput(new \Form_Input('name', 'Name', 'text', $pconfig['name']
 ))->setHelp('');
-$section->addInput(new \Form_Input('desc', 'Description', 'text', $pconfig['desc']));
+$section->addInput(new \Form_Input('descr', 'Description', 'text', $pconfig['descr']));
 
 $section->addInput(new \Form_Select(
 	'acmeserver',
