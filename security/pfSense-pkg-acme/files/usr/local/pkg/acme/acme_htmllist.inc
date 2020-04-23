@@ -169,6 +169,7 @@ class HtmlList
 			}
 			if ((stripos($item['name'], 'key') !== false) ||
 			    (stripos($item['name'], 'secret') !== false) ||
+			    (stripos($item['name'], 'sha256') !== false) ||
 			    (stripos($item['name'], 'password') !== false) ||
 			    (stripos($item['name'], 'token') !== false)) {
 				$itemvalue = '********';
