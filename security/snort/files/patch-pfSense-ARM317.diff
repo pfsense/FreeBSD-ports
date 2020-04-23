@@ -1,7 +1,7 @@
-diff -ruN ./snort-2.9.15.1.orig/configure ./snort-2.9.15.1/configure
---- ./snort-2.9.15.1.orig/configure	2019-12-03 04:30:47.000000000 -0500
-+++ ./configure	2020-03-04 20:05:41.000000000 -0500
-@@ -16211,6 +16211,21 @@
+diff -ruN ./snort-2.9.16.orig/configure ./snort-2.9.16/configure
+--- ./snort-2.9.16.orig/configure	2020-04-08 08:30:40.000000000 -0400
++++ ./configure	2020-04-23 15:00:07.000000000 -0400
+@@ -16865,6 +16865,21 @@
      echo "DAQ version doesn't support tracing verdict reason."
  fi
  
