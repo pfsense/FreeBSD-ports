@@ -123,24 +123,40 @@
 			<required/>
 		</field>
 		<field>
-			<fielddescr>Redirect Domains Settings</fielddescr>
+			<fielddescr>Redirect Settings</fielddescr>
 			<type>info</type>
 			<description>
 				<![CDATA[
-				Use Redirect Domains row(s) below to match domains to redirect for (one per row).
+				Use Redirect row(s) below to match domains or regular expressions to redirect for (one per row).
 				<div class="infoblock">
 					Do <strong>NOT</strong> enter http:// or https:// - only the hostname is required.<br/><br/>
 					<span class="text-info">Examples:</span><br/>
 					example.com<br/>
 					sub.example.com<br/>
-					www.example.com<br/>
+					www.example.com<br/><br />
+					</span>
+					<span class="text-info">Regular expressions examples:</span><br/>
+					(^|\.)example\.com$<br/>
+					^[^\.]*\.example\.*<br/>
+					.+\.www\.example\.com$<br/>
 					</span>
 				</div>
 				]]>
 			</description>
 		</field>
 		<field>
-			<fielddescr>Redirect Domains</fielddescr>
+			<fielddescr>Redirect is Regular Expression</fielddescr>
+			<fieldname>dstdomregex</fieldname>
+			<description>
+				<![CDATA[
+				Select this check box if the fields below are a regular expressions,
+			       	otherwise they are domains.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Redirects</fielddescr>
 			<fieldname>none</fieldname>
 			<type>rowhelper</type>
 			<rowhelper>
@@ -151,7 +167,7 @@
 					<required/>
 					<fielddescr>
 						<![CDATA[
-						Enter the domains to match here.
+						Enter the domains or regular expressions to match here.<br />
 						<span class="text-info">Click Info above for examples.</span>
 						]]>
 					</fielddescr>
