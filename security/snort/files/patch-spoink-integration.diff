@@ -1,6 +1,6 @@
-diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/Makefile.am ./snort-2.9.15.1/src/output-plugins/Makefile.am
---- ./snort-2.9.15.1.orig/src/output-plugins/Makefile.am	2019-12-03 04:06:15.000000000 -0500
-+++ ./src/output-plugins/Makefile.am	2020-03-04 20:18:00.000000000 -0500
+diff -ruN ./snort-2.9.16.orig/src/output-plugins/Makefile.am ./snort-2.9.16/src/output-plugins/Makefile.am
+--- ./snort-2.9.16.orig/src/output-plugins/Makefile.am	2020-04-08 07:45:13.000000000 -0400
++++ ./src/output-plugins/Makefile.am	2020-04-23 15:17:18.000000000 -0400
 @@ -13,7 +13,8 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
@@ -11,10 +11,10 @@ diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/Makefile.am ./snort-2.9.15.1/
  
  if BUILD_BUFFER_DUMP
  libspo_a_SOURCES += \
-diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/Makefile.in ./snort-2.9.15.1/src/output-plugins/Makefile.in
---- ./snort-2.9.15.1.orig/src/output-plugins/Makefile.in	2019-12-03 04:30:45.000000000 -0500
-+++ ./src/output-plugins/Makefile.in	2020-03-04 20:20:02.000000000 -0500
-@@ -106,7 +106,8 @@
+diff -ruN ./snort-2.9.16.orig/src/output-plugins/Makefile.in ./snort-2.9.16/src/output-plugins/Makefile.in
+--- ./snort-2.9.16.orig/src/output-plugins/Makefile.in	2020-04-08 08:30:39.000000000 -0400
++++ ./src/output-plugins/Makefile.in	2020-04-23 15:20:03.000000000 -0400
+@@ -116,7 +116,8 @@
  	spo_log_tcpdump.c spo_log_tcpdump.h spo_unified2.c \
  	spo_unified2.h spo_log_ascii.c spo_log_ascii.h \
  	spo_alert_sf_socket.h spo_alert_sf_socket.c spo_alert_test.c \
@@ -24,7 +24,7 @@ diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/Makefile.in ./snort-2.9.15.1/
  @BUILD_BUFFER_DUMP_TRUE@am__objects_1 = spo_log_buffer_dump.$(OBJEXT)
  am_libspo_a_OBJECTS = spo_alert_fast.$(OBJEXT) \
  	spo_alert_full.$(OBJEXT) spo_alert_syslog.$(OBJEXT) \
-@@ -114,6 +115,7 @@
+@@ -124,6 +125,7 @@
  	spo_log_null.$(OBJEXT) spo_log_tcpdump.$(OBJEXT) \
  	spo_unified2.$(OBJEXT) spo_log_ascii.$(OBJEXT) \
  	spo_alert_sf_socket.$(OBJEXT) spo_alert_test.$(OBJEXT) \
@@ -32,7 +32,7 @@ diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/Makefile.in ./snort-2.9.15.1/
  	$(am__objects_1)
  libspo_a_OBJECTS = $(am_libspo_a_OBJECTS)
  AM_V_P = $(am__v_P_@AM_V@)
-@@ -322,6 +324,7 @@
+@@ -334,6 +336,7 @@
  	spo_log_tcpdump.h spo_unified2.c spo_unified2.h \
  	spo_log_ascii.c spo_log_ascii.h spo_alert_sf_socket.h \
  	spo_alert_sf_socket.c spo_alert_test.c spo_alert_test.h \
@@ -40,8 +40,8 @@ diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/Makefile.in ./snort-2.9.15.1/
  	$(am__append_1)
  all: all-am
  
-diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.c ./snort-2.9.15.1/src/output-plugins/spo_pf.c
---- ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
+diff -ruN ./snort-2.9.16.orig/src/output-plugins/spo_pf.c ./snort-2.9.16/src/output-plugins/spo_pf.c
+--- ./snort-2.9.16.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
 +++ ./src/output-plugins/spo_pf.c	2020-03-04 20:27:18.000000000 -0500
 @@ -0,0 +1,762 @@
 +/*
@@ -806,8 +806,8 @@ diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.c ./snort-2.9.15.1/src
 +	}
 +}
 +
-diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.h ./snort-2.9.15.1/src/output-plugins/spo_pf.h
---- ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
+diff -ruN ./snort-2.9.16.orig/src/output-plugins/spo_pf.h ./snort-2.9.16/src/output-plugins/spo_pf.h
+--- ./snort-2.9.16.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
 +++ ./src/output-plugins/spo_pf.h	2020-03-04 20:22:33.000000000 -0500
 @@ -0,0 +1,42 @@
 +/*
@@ -852,17 +852,17 @@ diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_pf.h ./snort-2.9.15.1/src
 +void AlertPfSetup(void);
 +
 +#endif 
-diff -ruN ./snort-2.9.15.1.orig/src/plugbase.c ./snort-2.9.15.1/src/plugbase.c
---- ./snort-2.9.15.1.orig/src/plugbase.c	2019-12-03 04:06:15.000000000 -0500
-+++ ./src/plugbase.c	2020-03-04 20:21:50.000000000 -0500
-@@ -123,6 +123,7 @@
- #include "output-plugins/spo_csv.h"
+diff -ruN ./snort-2.9.16.orig/src/plugbase.c ./snort-2.9.16/src/plugbase.c
+--- ./snort-2.9.16.orig/src/plugbase.c	2020-04-08 07:45:15.000000000 -0400
++++ ./src/plugbase.c	2020-04-23 15:22:48.000000000 -0400
+@@ -124,6 +124,7 @@
  #include "output-plugins/spo_log_null.h"
  #include "output-plugins/spo_log_ascii.h"
-+#include "output-plugins/spo_pf.h"
  #include "output-plugins/spo_unified2.h"
++#include "output-plugins/spo_pf.h"
  
  #ifdef DUMP_BUFFER
+ #include "output-plugins/spo_log_buffer_dump.h"
 @@ -1579,6 +1580,7 @@
      LogTcpdumpSetup();
      AlertFastSetup();
