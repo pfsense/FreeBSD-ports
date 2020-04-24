@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -262,7 +262,7 @@ print ($section);
 						<td><?=gettext("Snort alerts and event details");?></td>
 					</tr>
 					<tr>
-						<td>appid-stats</td>
+						<td>app-stats</td>
 						<td><select name="appid_stats_log_limit_size" class="form-control" id="appid_stats_log_limit_size">
 							<?php foreach ($log_sizes as $k => $l): ?>
 								<option value="<?=$k;?>"

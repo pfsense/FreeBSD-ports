@@ -1,6 +1,6 @@
-diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_csv.c ./snort-2.9.15.1/src/output-plugins/spo_csv.c
---- ./snort-2.9.15.1.orig/src/output-plugins/spo_csv.c	2019-12-03 04:06:15.000000000 -0500
-+++ ./src/output-plugins/spo_csv.c	2020-03-04 20:14:59.000000000 -0500
+diff -ruN ./snort-2.9.16.orig/src/output-plugins/spo_csv.c ./snort-2.9.16/src/output-plugins/spo_csv.c
+--- ./snort-2.9.16.orig/src/output-plugins/spo_csv.c	2020-04-08 07:45:15.000000000 -0400
++++ ./src/output-plugins/spo_csv.c	2020-04-23 15:12:22.000000000 -0400
 @@ -66,10 +66,11 @@
  
  #include "snort.h"
@@ -27,14 +27,16 @@ diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_csv.c ./snort-2.9.15.1/sr
  
  /* list of function prototypes for this preprocessor */
  static void AlertCSVInit(struct _SnortConfig *, char *);
-@@ -498,6 +505,37 @@
+@@ -497,6 +504,39 @@
+             {
                  CreateTCPFlagString(p, tcpFlags);
                  TextLog_Print(log, "%s", tcpFlags);
-             }
++            }
 +        }
 +        else if (!strcasecmp("classification",type))
 +        {
-+            if (otn_tmp != NULL) {
++            if (otn_tmp != NULL)
++            {
 +                if ((otn_tmp->sigInfo.classType != NULL) && (otn_tmp->sigInfo.classType->name != NULL))
 +                    TextLog_Print(log, "%s", otn_tmp->sigInfo.classType->name);
 +            }
@@ -44,7 +46,8 @@ diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_csv.c ./snort-2.9.15.1/sr
 +            if (otn_tmp != NULL)
 +                TextLog_Print(log, "%d", otn_tmp->sigInfo.priority);
 +        }
-+        else if (!strcasecmp("action",type)) {
++        else if (!strcasecmp("action",type))
++        {
 +            if (otn_tmp != NULL)
 +            {
 +                RuleTreeNode *rtn;
@@ -61,7 +64,6 @@ diff -ruN ./snort-2.9.15.1.orig/src/output-plugins/spo_csv.c ./snort-2.9.15.1/sr
 +                    dispos = ACTIVE_DROP;
 +
 +                TextLog_Print(log, "%s", s_dispos[dispos]);
-+             }
+             }
          }
  
-         if (num < numargs - 1)

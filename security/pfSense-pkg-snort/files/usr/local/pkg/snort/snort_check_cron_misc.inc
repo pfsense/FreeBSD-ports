@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -55,6 +55,12 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 		// Clean-up the logs for each configured Snort instance
 		foreach ($config['installedpackages']['snortglobal']['rule'] as $value) {
 			$if_real = get_real_interface($value['interface']);
+
+			// Skip instances where pfSense physical interface has been removed
+			if ($if_real == "") {
+				continue;
+			}
+
 			$snort_uuid = $value['uuid'];
 			$snort_log_dir = SNORTLOGDIR . "/snort_{$if_real}{$snort_uuid}";
 			syslog(LOG_NOTICE, gettext("[Snort] Truncating logs for {$value['descr']} ({$if_real})..."));
@@ -69,6 +75,13 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 				}
 			}
 
+			// Now cleanup any existing rotated alert log files
+			$list = array();
+			$list = glob("{$snort_log_dir}/alert.*");
+			foreach ($list as $file) {
+				unlink_if_exists($file);
+			}
+
 			// Cleanup any perfmon stats logs
 			$files = array();
 			$list = glob("{$snort_log_dir}/*");
@@ -80,7 +93,7 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 				unlink_if_exists($file);
 
 			// Cleanup any AppID stats logs
-			$files = glob("{$snort_log_dir}/appid-stats.log.*");
+			$files = glob("{$snort_log_dir}/app-stats.log.*");
 			foreach ($files as $file)
 				unlink_if_exists($file);
 
@@ -176,9 +189,33 @@ if (!is_array($config['installedpackages']['snortglobal']['rule']))
 if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 	foreach ($config['installedpackages']['snortglobal']['rule'] as $value) {
 		$if_real = get_real_interface($value['interface']);
+
+		// Skip instances where pfSense physical interface has been removed
+		if ($if_real == "") {
+			continue;
+		}
+
 		$snort_log_dir = SNORTLOGDIR . "/snort_{$if_real}{$value['uuid']}";
+
+		// Check if any logs need to be rotated
 		foreach ($logs as $k => $p) {
 			snort_check_rotate_log("{$snort_log_dir}/{$k}", $p['limit']*1024, $p['retention']);
+		}
+
+		// Prune aged-out rotated alert log files if any exist
+		if ($config['installedpackages']['snortglobal']['alert_log_retention'] > 0) {
+			$now = time();
+			$rotated_files = glob("{$snort_log_dir}/alert.*");
+			$prune_count = 0;
+			foreach ($rotated_files as $file) {
+				if (($now - filemtime($file)) > ($config['installedpackages']['snortglobal']['alert_log_retention'] * 3600)) {
+					$prune_count++;
+					unlink_if_exists($file);
+				}
+			}
+			unset($rotated_files);
+			if ($prune_count > 0)
+				log_error(gettext("[Snort] Alerts log file cleanup job removed {$prune_count} rotated alert log file(s) from {$snort_log_dir}/..."));
 		}
 
 		// Prune aged-out event packet capture files if any exist
