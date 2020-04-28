@@ -37,7 +37,6 @@ function arpwatch_install_command() {
 	$disable_bogons = ($arpwatch_config['disable_bogons'] == 'on') ? '-N' : '';
 	$disable_zero = ($arpwatch_config['disable_zero'] == 'on') ? '-z' : '';
 	$update_vendors = ($arpwatch_config['update_vendors'] == 'on');
-	$clear_database = ($arpwatch_config['clear_database'] == 'on');
 
 	if ($update_vendors) {
 		arpwatch_update_vendors($enable_zeropad);
@@ -84,7 +83,10 @@ function arpwatch_install_command() {
 }
 
 function arpwatch_deinstall_command() {
-	if ($clear_database) {
+	global $config;
+
+	init_config_arr(array('installedpackages', 'arpwatch', 'config', 0));
+	if ($config['installedpackages']['arpwatch']['config'][0]['clear_database'] == 'on') {
 		arpwatch_clear_database();
 	}
 	arpwatch_uninstall_sendmail_proxy();
