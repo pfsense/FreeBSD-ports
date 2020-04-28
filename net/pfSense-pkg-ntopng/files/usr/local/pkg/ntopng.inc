@@ -238,19 +238,15 @@ function ntopng_create_datadir() {
 	mwexec("/usr/sbin/chown -R nobody:nobody /var/db/ntopng");
 }
 
-function ntopng_update_geoip() {
+function ntopng_update_geoip($key) {
 	global $config;
 	$fetchcmd = "/usr/bin/fetch";
-	$geolite_city = "https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz";
-	$geolite_city_v6 = "https://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz";
-	$geoip_asnum = "https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz";
-	$geoip_asnum_v6 = "https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNumv6.dat.gz";
+	$geolite_city = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key={$key}&suffix=tar.gz";
+	$geoip_asnum = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-ASN&license_key={$key}&suffix=tar.gz";
 	$output_dir = "/usr/local/share/ntopng";
 
-	mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geolite_city}");
-	mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geolite_city_v6}");
-	mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geoip_asnum}");
-	mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geoip_asnum_v6}");
+	mwexec("{$fetchcmd} -o {$output_dir}/GeoLite2-City.tar.gz -T 5 \"{$geolite_city}\"");
+	mwexec("{$fetchcmd} -o {$output_dir}/GeoLite2-ASN.tar.gz -T 5 \"{$geoip_asnum}\"");
 
 	ntopng_fixup_geoip();
 
@@ -271,16 +267,14 @@ function ntopng_fixup_geoip() {
 
 	safe_mkdir($target_dir, 0755);
 
-	foreach(glob("{$source_dir}/Geo*.dat*") as $geofile) {
-		/* Decompress if needed. */
-		if (substr($geofile, -3, 3) == ".gz") {
-			// keep -f here, otherwise the files will not get updated
-			mwexec("/usr/bin/gzip -d -f " . escapeshellarg($geofile));
+	foreach(glob("{$source_dir}/Geo*.tar.gz") as $geofile) {
+		if (substr($geofile, -7, 7) == ".tar.gz") {
+			mwexec("tar -C {$source_dir} -f {$geofile} --strip 1 -xz '*.mmdb'");
 		}
 	}
 
 	/* Use a separate glob since the filenames could have changed since the last run */
-	foreach(glob("{$source_dir}/Geo*.dat*") as $geofile) {
+	foreach(glob("{$source_dir}/Geo*.mmdb*") as $geofile) {
 		$target_file = $target_dir . '/' . basename($geofile);
 		if (!file_exists($target_file)) {
 			symlink($geofile, $target_file);
@@ -341,8 +335,12 @@ function ntopng_validate_input($post, &$input_errors) {
 			}
 		}
 	}
-	if ($post['Submit'] == "Update GeoIP Data") {
-		ntopng_update_geoip();
+	if ($post['Submit'] == "Update GeoLite2 DB") {
+		if (empty($post['maxmind_key'])) {
+			$input_errors[] = "To download MaxMind GeoIP data, you need to provide a valid GeoLite2 DB license key.";
+		} else {
+			ntopng_update_geoip($post['maxmind_key']);
+		}
 	}
 	if ($post['Delete'] == "Delete Data") {
 		ntopng_flush_historical_data();
