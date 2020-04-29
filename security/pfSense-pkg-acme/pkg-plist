@@ -8,11 +8,13 @@ pkg/acme/acme.sh
 pkg/acme/acme_command.sh
 pkg/acme/acme_sh.inc
 pkg/acme/pkg_acme_tabs.inc
+pkg/acme/dnsapi/dns_1984hosting.sh
 pkg/acme/dnsapi/dns_acmedns.sh
 pkg/acme/dnsapi/dns_acmeproxy.sh
 pkg/acme/dnsapi/dns_active24.sh
 pkg/acme/dnsapi/dns_ad.sh
 pkg/acme/dnsapi/dns_ali.sh
+pkg/acme/dnsapi/dns_arvan.sh
 pkg/acme/dnsapi/dns_autodns.sh
 pkg/acme/dnsapi/dns_aws.sh
 pkg/acme/dnsapi/dns_azure.sh
@@ -55,6 +57,7 @@ pkg/acme/dnsapi/dns_internetbs.sh
 pkg/acme/dnsapi/dns_inwx.sh
 pkg/acme/dnsapi/dns_ispconfig.sh
 pkg/acme/dnsapi/dns_jd.sh
+pkg/acme/dnsapi/dns_joker.sh
 pkg/acme/dnsapi/dns_kas.sh
 pkg/acme/dnsapi/dns_kinghost.sh
 pkg/acme/dnsapi/dns_knot.sh
