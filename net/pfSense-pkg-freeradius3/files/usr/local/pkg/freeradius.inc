@@ -102,8 +102,7 @@ function freeradius_deinstall_command() {
 			}
 		}
 	}
-
-	return;
+	write_config("[freeRADIUS] Package uninstalled.");
 }
 
 function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
