@@ -210,7 +210,6 @@
 	</custom_php_resync_config_command>
 	<custom_php_install_command>
 		ntopng_php_install_command();
-		ntopng_update_geoip();
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		ntopng_php_deinstall_command();
